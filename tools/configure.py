@@ -430,7 +430,7 @@ def main():
 
         n.rule(
             name="configure_and_build",
-            command=f"{PYTHON} tools/configure.py {configure_cmdline} && ninja objdiff check sha1",
+            command=f"{PYTHON} tools/configure.py {configure_cmdline} && ninja",
             generator=True,
         )
         n.newline()
@@ -449,7 +449,7 @@ def main():
             add_apply_build(n, project)
 
             # Full build defaults
-            n.default(["objdiff", "check", "sha1"])
+            n.default(["objdiff", "check", "sha1", "report"])
         else:
             # Minimal configuration - set up automatic workflow
             # When tools are missing, default to a target that downloads tools, reconfigures, and builds
