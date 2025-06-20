@@ -37,11 +37,11 @@ typedef struct _sj_vtable {
     /* 0x2C */ void (*EntryErrFunc)(SJ* sj, void (*func)(void* obj, s32 ecode), void* obj);
 } _sj_vtable;
 
-#define SJ_Destroy(sj) (*(sj)->vtable->Destroy)(sj)
-#define SJ_Reset(sj) (*(sj)->vtable->Reset)(sj)
+#define SJ_Destroy(sj)                 (*(sj)->vtable->Destroy)(sj)
+#define SJ_Reset(sj)                   (*(sj)->vtable->Reset)(sj)
 #define SJ_GetChunk(sj, id, nbyte, ck) (*(sj)->vtable->GetChunk)(sj, id, nbyte, ck)
-#define SJ_UngetChunk(sj, id, ck) (*(sj)->vtable->UngetChunk)(sj, id, ck)
-#define SJ_PutChunk(sj, id, ck) (*(sj)->vtable->PutChunk)(sj, id, ck)
-#define SJ_GetNumData(sj, id) (*(sj)->vtable->GetNumData)(sj, id)
+#define SJ_UngetChunk(sj, id, ck)      (*(sj)->vtable->UngetChunk)(sj, id, ck)
+#define SJ_PutChunk(sj, id, ck)        (*(sj)->vtable->PutChunk)(sj, id, ck)
+#define SJ_GetNumData(sj, id)          (*(sj)->vtable->GetNumData)(sj, id)
 
 #endif // SJ_H

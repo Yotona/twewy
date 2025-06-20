@@ -25,6 +25,18 @@ jobs:
           mv /extract/* ./extract
           mv ./extract/arm7_bios.bin .
 
+      - name: Download dsd
+        run: |
+          python tools/download_tool.py dsd v0.9.1 --path dsd
+
+      - name: Download objdiff
+        run: |
+          python tools/download_tool.py objdiff v2.7.1 --path objdiff-cli
+
+      - name: Download wibo
+        run: |
+          python tools/download_tool.py wibo 0.6.16 --path wibo
+
       - name: Build
         run: |
           python tools/configure.py --version ${{ matrix.version }} -w wibo --compiler /mwccarm --no-extract

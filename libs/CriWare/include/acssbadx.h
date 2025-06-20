@@ -27,12 +27,12 @@ typedef struct _acssbadx_vtable {
     void (*StartMemIdx)(ACSSBADX* badx, s32, s32);
     void (*Stop)(ACSSBADX* badx);
     void (*Pause)(ACSSBADX* badx);
-    s32  (*GetStatPause)(ACSSBADX* badx);
-    s32  (*GetStat)(ACSSBADX* badx);
+    s32 (*GetStatPause)(ACSSBADX* badx);
+    s32 (*GetStat)(ACSSBADX* badx);
     void (*SetOutVol)(ACSSBADX* badx, s16 vol);
-    s32  (*GetOutVol)(ACSSBADX* badx);
+    s32 (*GetOutVol)(ACSSBADX* badx);
     void (*SetOutVol2)(ACSSBADX* badx, s32, s16 vol);
-    s32  (*GetOutVol2)(ACSSBADX* badx, s32);
+    s32 (*GetOutVol2)(ACSSBADX* badx, s32);
     void (*SetLpFlg)(ACSSBADX* badx, s32 flag);
     ADXT* (*GetAdxt)(ACSSBADX* badx);
 } _acssbadx_vtable;

@@ -7,7 +7,7 @@ typedef struct CvFileHandle {
 
 } CvFileHandle;
 
-s32 cvFsGetFileSize(char *filename);
+s32 cvFsGetFileSize(char* filename);
 
 CvFileHandle* cvFsOpen(const char* filename, const char* mode, s32);
 

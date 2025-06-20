@@ -52,7 +52,7 @@ complete
 
 libs/CriWare/src/acsvhl.c:
     .text       start:0x02021184 end:0x02021534
-    .data       start:0x020658EC end:0x020659BC  
+    .data       start:0x020658EC end:0x020659BC
 
 src/cache.c:
 complete

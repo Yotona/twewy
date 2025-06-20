@@ -1,6 +1,6 @@
-#include <acsvhl.h>
 #include <acssnd.h>
 #include <acssvr.h>
+#include <acsvhl.h>
 
 ACSVHL* ACSVHL_Create(ACSVHL* vhl, u16 workSize) {
     if (vhl == NULL) {
