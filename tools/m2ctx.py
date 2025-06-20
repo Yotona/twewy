@@ -22,7 +22,6 @@ CXX_FLAGS = [
     '-Iinclude',
     '-Ilibs/NitroSDK/include',
     '-Ilibs/CriWare/include',
-    # '-Ilibs/nds/include'
 ]
 
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -36,7 +35,7 @@ INCLUDE_REGEX = r'^\s*#\s*include\s*([<"][\S ]+[>"])\s*$'
 # Finds all line comments and multiline comments
 COMMENT_REGEX = r'\/\/.*$|\/\*(?:.|\r|\n)+?\*\/'
 
-with open(args.file, 'r') as f:
+with open(args.file, 'r', encoding=args.encoding) as f:
     contents = f.read()
 contents = re.sub(COMMENT_REGEX, '', contents, count=0, flags=re.MULTILINE)
 includes = re.findall(INCLUDE_REGEX, contents, flags=re.MULTILINE)

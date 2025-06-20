@@ -17,17 +17,30 @@ This repository contains a reverse-engineered codebase for *The World Ends With 
     - GCC 9+
     - Ninja
 3. Install Python dependencies: `python -m pip install -r tools/requirements.txt`
+4. Install pre-commit hooks: `pre-commit install`
+
+Note: For a byte-matching build, add a copy of the ARM7 bios files to the project root. See [contribution instructions](docs/CONTRIBUTING.md) for more details.
 
 ## Setup Instructions
 
-1. **Obtain the Original Game**: Ensure you have a legitimate copy of *The World Ends With You* for the Nintendo DS. Extract an .nds ROM file from your cartridge, and then rename and place this file into the `extract` directory. The specific supported cartridges and expected names are detailed in the [extract](extract/README.md) directory. Instructions for how to extract a ROM file from the cartridge are not included in this repository.
-2. **Initialize the Build Configuration**: Run `python tools/configure.py`. This initializes the project for its first usage. After configuring once, the build command `ninja` will re-configure the project if needed.
-3. **Build the Project**: Run `ninja`. When first performed, additionally required executables will be downloaded, as listed in the [tools](tools/download_tool.py) directory. This includes [dsd](https://github.com/AetiasHax/ds-decomp), [wibo](https://github.com/decompals/wibo), and the compilers used to build a matching executable.
-4. The final executable will be found in the [build](build) directory.
+1. **Obtain the Original Game**:
+    - Ensure you have a legitimate copy of *The World Ends With You* for the Nintendo DS.
+    - Extract the .nds ROM file from your cartridge. Instructions for how to extract a ROM file from the cartridge are not included in this repository.
+    - Rename and place this file into the `extract` directory. Supported cartridges and expected names are detailed in the [extract](extract/README.md) directory.
+
+2. **Initialize the Build Configuration**:
+    - Run `python tools/configure.py`
+    - This initializes the project for its first usage. After configuring once, the build command `ninja` will re-configure the project if needed.
+
+3. **Build the Project**:
+    - Run `ninja`
+    - When first performed, any missing required executables will be downloaded, as listed in the [tools](tools/download_tool.py) directory. This includes [dsd](https://github.com/AetiasHax/ds-decomp), [wibo](https://github.com/decompals/wibo), and the compilers used to build a matching executable.
+
+After the build completes, the final executable will be found in the [build](build) directory.
 
 ## Contributing
 
-Contributions are welcome! Please ensure that any proposed changes or additions comply with the repository's [guidelines](docs/CONTRIBUTING.md) and do not include any copyrighted material.
+Contributions are welcome! Please ensure that any proposed changes or additions comply with the repository's guidelines and do not include any copyrighted material.
 
 ## Disclaimer
 

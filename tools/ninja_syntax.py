@@ -26,8 +26,10 @@ import textwrap
 from io import TextIOWrapper
 from typing import Dict, List, Match, Optional, Tuple, Union
 
-def escape_path(word: str) -> str:
-    return word.replace('$ ', '$$ ').replace(' ', '$ ').replace(':', '$:')
+def escape_path(word) -> str:
+    # Convert Path objects to strings before escaping
+    word_str = str(word)
+    return word_str.replace('$ ', '$$ ').replace(' ', '$ ').replace(':', '$:')
 
 class Writer(object):
     def __init__(self, output: TextIOWrapper, width: int = 78) -> None:
