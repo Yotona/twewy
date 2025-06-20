@@ -25,18 +25,10 @@ jobs:
           mv /extract/* ./extract
           mv ./extract/arm7_bios.bin .
 
-      - name: Download dsd
-        run: |
-          python tools/download_tool.py dsd v0.7.0 --path dsd
-
-      - name: Download wibo
-        run: |
-          python tools/download_tool.py wibo 0.6.16 --path wibo
-
       - name: Build
         run: |
           python tools/configure.py --version ${{ matrix.version }} -w wibo --compiler /mwccarm --no-extract
-          ninja arm9 report check
+          ninja
 
       - name: Upload report
         uses: actions/upload-artifact@v4
