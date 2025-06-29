@@ -54,6 +54,10 @@ libs/CriWare/src/acsvhl.c:
     .text       start:0x02021184 end:0x02021534
     .data       start:0x020658EC end:0x020659BC
 
+src/SndMgr.c:
+    .text       start:0x02026978 end:0x02027294
+    .data       start:0x02065CB0 end:0x02065CD0
+
 src/cache.c:
 complete
     .text       start:0x02039784 end:0x020398B0

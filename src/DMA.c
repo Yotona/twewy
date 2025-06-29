@@ -3,8 +3,6 @@
 #include "common_data.h"
 #include "game.h"
 
-extern s32 data_0206a9a4;
-
 const char* data_020636e4 = "DMA_Init()";
 
 DMAFunc data_020636e8[16] = {
@@ -12,7 +10,8 @@ DMAFunc data_020636e8[16] = {
     func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980,
 };
 
-/* Nonmatching */
+// Nonmatching
+// Scratch: Nk6jl
 void func_02001760(s32 size) {
     char*      pcVar1;
     GameState* state;
@@ -37,7 +36,8 @@ void func_02001760(s32 size) {
     func_02001810();
 }
 
-/* Nonmatching */
+// Nonmatching
+// ScratcH: DRYhu
 void func_02001810(void) {
     data_02066a5c.data.unk_00 = 0;
     data_02066a5c.data.addr   = NULL;
@@ -120,7 +120,8 @@ void func_020019ac(void) {
     func_02001810();
 }
 
-/* Nonmatching */
+// Nonmatching
+// Scratch: DsIKK
 void func_020019f4(s32 funcIdx, u32 param_2, DMAStruct* data) {
     DMAStruct local_20;
 
@@ -169,7 +170,7 @@ void func_02001ae8(s32 funcIdx, u32* param_2, void* addr, u32 count) {
     data_020636e8[funcIdx](&data);
 }
 
-/* Nonmatching */
+// Nonmatching
 BOOL func_02001b44(s32 param_1, u32* param_2, DMAStruct* param_3, s32 param_4) {
     /* Not yet implemented*/
 }

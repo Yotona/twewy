@@ -3,14 +3,9 @@
 
 #include <types.h>
 
-extern s32 data_0205c9b0;
+extern s32 data_0206a9a4;  // Global memory allocator handle
 
-typedef struct {
-    /* 0x0 */ s8  unk_00;
-    /* 0x1 */ s8  unk_01;
-    /* 0x2 */ s16 unk_02;
-} UnkStruct_0205cb3c;
-extern UnkStruct_0205cb3c data_0205cb3c[1388];
+extern s32 data_0205c9b0;
 
 extern s32 data_0205e0f0;
 

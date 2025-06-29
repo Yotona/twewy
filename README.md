@@ -19,7 +19,7 @@ This repository contains a reverse-engineered codebase for *The World Ends With 
 3. Install Python dependencies: `python -m pip install -r tools/requirements.txt`
 4. Install pre-commit hooks: `pre-commit install`
 
-Note: For a byte-matching build, add a copy of the ARM7 bios files to the project root. See [contribution instructions](docs/CONTRIBUTING.md) for more details.
+Note: For a byte-matching build, add a copy of the [ARM7 BIOS](docs/CONTRIBUTING.md) files to the project root.
 
 ## Setup Instructions
 
@@ -40,7 +40,7 @@ After the build completes, the final executable will be found in the [build](bui
 
 ## Contributing
 
-Contributions are welcome! Please ensure that any proposed changes or additions comply with the repository's guidelines and do not include any copyrighted material.
+Contributions are welcome! You may review the repository's [contribution guidelines](docs/CONTRIBUTING.md) if you are interested in contributing.
 
 ## Disclaimer
 

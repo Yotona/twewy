@@ -190,9 +190,9 @@ void func_ov041_02082c04(void) {
     /* Not yet implemented */
 }
 
-/* Nonmatching */
 void func_ov041_02082f1c(s32 param_1, s32 param_2, s32 param_3, s32 param_4) {
-    if (-((data_02066a20 << 0x1f)) != 0) {
+    s32 val = data_02066a20 << 0x1f;
+    if ((u32)val >> 0x1f) {
         func_ov040_0209e91c();
         func_02006380();
         func_020019ac();

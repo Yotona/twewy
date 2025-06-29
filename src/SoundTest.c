@@ -1,4 +1,5 @@
 #include "OverlayManager.h"
+#include "SndMgr.h"
 #include "common_data.h"
 #include "game.h"
 #include <registers.h>
@@ -1660,8 +1661,8 @@ s32 func_ov029_02082ae0(GameState* state) {
             break;
         case 3:
             func_ov029_02082904(&state->sndTest.seIdx, 0x56c);
-            state->sndTest.seqArc      = data_0205cb3c[state->sndTest.seIdx].unk_00;
-            state->sndTest.se          = data_0205cb3c[state->sndTest.seIdx].unk_02;
+            state->sndTest.seqArc      = data_0205cb3c[state->sndTest.seIdx].seqArc;
+            state->sndTest.se          = data_0205cb3c[state->sndTest.seIdx].se;
             state->sndTest.seIdxVolume = func_02026cb4(state->sndTest.seIdx);
             break;
         case 4:
@@ -1766,9 +1767,9 @@ void func_ov029_02082fdc(void) {
     /* Not yet implemented */
 }
 
-// Nonmatching: If statement instructions incorrect
 void func_ov029_020832f4(void) {
-    if (-((data_02066a20 << 0x1f)) != 0) {
+    s32 val = data_02066a20 << 0x1f;
+    if ((u32)val >> 0x1f) {
         func_02006380();
         func_020019ac();
         DC_PurgeRange(&data_0206770c, 0x400);

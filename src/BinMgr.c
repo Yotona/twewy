@@ -1,8 +1,8 @@
 #include "BinMgr.h"
+#include "common_data.h"
 #include "game.h"
 
-extern s32 data_0206a9a4;  // Global memory allocator handle
-BinMgr*    g_activeBinMgr;     // Currently active binary manager instance
+BinMgr* g_activeBinMgr;     // Currently active binary manager instance
 
 Bin* BinMgr_AllocNode(Bin* freeListHead) {
     Bin* allocatedNode = freeListHead->next;
