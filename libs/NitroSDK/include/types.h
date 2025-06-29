@@ -39,4 +39,6 @@ typedef s32 BOOL;
     #endif
 #endif
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof((arr)[0]))
+
 #endif // TYPES_H

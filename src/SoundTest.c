@@ -1,3 +1,4 @@
+#include "CriSndMgr.h"
 #include "OverlayManager.h"
 #include "SndMgr.h"
 #include "common_data.h"
@@ -1431,7 +1432,7 @@ void func_ov029_02082544(GameState* param_1) {
 
     func_02010b84((int)&param_1->unk_215A0, 0, 0x10, 0x100, 0x50);
 
-    func_02010b18(&param_1->unk_215A0, 8, 0x10, data_0205e0f4[param_1->sndTest.adxIdx].adxFile);
+    func_02010b18(&param_1->unk_215A0, 8, 0x10, CriSndMgr_AdxData[param_1->sndTest.adxIdx].adxFile);
 
     pcVar1 = func_02006930("seqArc:%d", param_1->sndTest.seqArc);
     func_02010b18(&param_1->unk_215A0, 8, 0x18, pcVar1);
@@ -1651,7 +1652,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
     }
     switch (state->unk_219B0) {
         case 0:
-            func_ov029_02082904(&state->sndTest.adxIdx, data_0205e0f0);
+            func_ov029_02082904(&state->sndTest.adxIdx, CriSndMgr_AdxDataCount);
             break;
         case 1:
             func_ov029_02082904(&state->sndTest.seqArc, 0xff);

@@ -1439,6 +1439,10 @@ func_020271b8 kind:function(arm,size=0x48) addr:0x020271b8
 func_02027200 kind:function(arm,size=0x20) addr:0x02027200
 func_02027220 kind:function(arm,size=0x10) addr:0x02027220
 func_02027230 kind:function(arm,size=0x64) addr:0x02027230
+
+/////////////////////////////////////////////////////////////
+// src/CriSndMgr.c
+/////////////////////////////////////////////////////////////
 func_02027294 kind:function(arm,size=0x4) addr:0x02027294
 func_02027298 kind:function(arm,size=0x98) addr:0x02027298
 func_02027330 kind:function(arm,size=0xc) addr:0x02027330
@@ -1449,10 +1453,10 @@ func_020273c8 kind:function(arm,size=0x2c) addr:0x020273c8
 func_020273f4 kind:function(arm,size=0x1c) addr:0x020273f4
 func_02027410 kind:function(arm,size=0x18) addr:0x02027410
 func_02027428 kind:function(arm,size=0x1c) addr:0x02027428
-
-
 func_02027444 kind:function(arm,size=0x50) addr:0x02027444
 func_02027494 kind:function(arm,size=0x18) addr:0x02027494
+
+
 func_020274ac kind:function(arm,size=0x38) addr:0x020274ac
 func_020274e4 kind:function(arm,size=0x3c) addr:0x020274e4
 func_02027520 kind:function(arm,size=0x18) addr:0x02027520
@@ -2899,8 +2903,12 @@ data_0205cb1c kind:data(any) addr:0x0205cb1c
 data_0205cb2c kind:data(any) addr:0x0205cb2c
 data_0205cb3c kind:data(any) addr:0x0205cb3c
 data_0205e0ec kind:data(any) addr:0x0205e0ec
-data_0205e0f0 kind:data(any) addr:0x0205e0f0
-data_0205e0f4 kind:data(any) addr:0x0205e0f4
+CriSndMgr_AdxDataCount kind:data(any) addr:0x0205e0f0
+
+/////////////////////////////////////////////////////////////
+// src/CriSndMgr.c
+/////////////////////////////////////////////////////////////
+CriSndMgr_AdxData kind:data(any) addr:0x0205e0f4
 data_0205e324 kind:data(any) addr:0x0205e324
 data_0205e3b4 kind:data(any) addr:0x0205e3b4
 data_0205e3d4 kind:data(any) addr:0x0205e3d4
@@ -3302,78 +3310,81 @@ data_02065ca0 kind:data(any) addr:0x02065ca0
 @55 kind:data(any) addr:0x02065cb0 local
 @56 kind:data(any) addr:0x02065cb8 local
 
+/////////////////////////////////////////////////////////////
+// src/CriSndMgr.c
+/////////////////////////////////////////////////////////////
+@31 kind:data(any) addr:0x02065cd0 local
+@56 kind:data(any) addr:0x02065cd8 local
+@45 kind:data(any) addr:0x02065ce0 local
+@51 kind:data(any) addr:0x02065ce8 local
+@36 kind:data(any) addr:0x02065cf0 local
+@44 kind:data(any) addr:0x02065cf8 local
+@49 kind:data(any) addr:0x02065d00 local
+@52 kind:data(any) addr:0x02065d08 local
+@53 kind:data(any) addr:0x02065d10 local
+@59 kind:data(any) addr:0x02065d18 local
+@62 kind:data(any) addr:0x02065d20 local
+@30 kind:data(any) addr:0x02065d28 local
+@34 kind:data(any) addr:0x02065d30 local
+@33 kind:data(any) addr:0x02065d38 local
+@35 kind:data(any) addr:0x02065d40 local
+@32 kind:data(any) addr:0x02065d48 local
+@46 kind:data(any) addr:0x02065d50 local
+@47 kind:data(any) addr:0x02065d58 local
+@48 kind:data(any) addr:0x02065d60 local
+@55 kind:data(any) addr:0x02065d68 local
+@61 kind:data(any) addr:0x02065d70 local
+@54 kind:data(any) addr:0x02065d78 local
+@57 kind:data(any) addr:0x02065d80 local
+@58 kind:data(any) addr:0x02065d88 local
+@60 kind:data(any) addr:0x02065d90 local
+@50 kind:data(any) addr:0x02065d98 local
+@42 kind:data(byte[9]) addr:0x02065da4 local
+@38 kind:data(byte[9]) addr:0x02065db0 local
+@43 kind:data(any) addr:0x02065dbc local
+@37 kind:data(any) addr:0x02065dc8 local
+@39 kind:data(any) addr:0x02065dd4 local
+@40 kind:data(any) addr:0x02065de0 local
+@41 kind:data(any) addr:0x02065dec local
+@29 kind:data(any) addr:0x02065df8 local
+@63 kind:data(any) addr:0x02065e04 local
+@74 kind:data(any) addr:0x02065e10 local
+@75 kind:data(any) addr:0x02065e1c local
+@90 kind:data(any) addr:0x02065e28 local
+@76 kind:data(any) addr:0x02065e34 local
+@77 kind:data(any) addr:0x02065e40 local
+@91 kind:data(any) addr:0x02065e4c local
+@98 kind:data(any) addr:0x02065e58 local
+@78 kind:data(any) addr:0x02065e64 local
+@79 kind:data(any) addr:0x02065e70 local
+@92 kind:data(any) addr:0x02065e7c local
+@80 kind:data(any) addr:0x02065e88 local
+@81 kind:data(any) addr:0x02065e94 local
+@93 kind:data(any) addr:0x02065ea0 local
+@82 kind:data(any) addr:0x02065eac local
+@83 kind:data(any) addr:0x02065eb8 local
+@94 kind:data(any) addr:0x02065ec4 local
+@84 kind:data(any) addr:0x02065ed0 local
+@64 kind:data(any) addr:0x02065edc local
+@85 kind:data(any) addr:0x02065ee8 local
+@95 kind:data(any) addr:0x02065ef4 local
+@96 kind:data(any) addr:0x02065f00 local
+@86 kind:data(any) addr:0x02065f0c local
+@68 kind:data(any) addr:0x02065f18 local
+@69 kind:data(any) addr:0x02065f24 local
+@87 kind:data(any) addr:0x02065f30 local
+@70 kind:data(any) addr:0x02065f3c local
+@71 kind:data(any) addr:0x02065f48 local
+@88 kind:data(any) addr:0x02065f54 local
+@72 kind:data(any) addr:0x02065f60 local
+@73 kind:data(any) addr:0x02065f6c local
+@89 kind:data(any) addr:0x02065f78 local
+@97 kind:data(any) addr:0x02065f84 local
+@65 kind:data(any) addr:0x02065f90 local
+@66 kind:data(any) addr:0x02065fa0 local
+@67 kind:data(any) addr:0x02065fb0 local
+@249 kind:data(byte[10]) addr:0x02065fc0 local
 
-data_02065cd0 kind:data(any) addr:0x02065cd0
-data_02065cd8 kind:data(any) addr:0x02065cd8
-data_02065ce0 kind:data(any) addr:0x02065ce0
-data_02065ce8 kind:data(any) addr:0x02065ce8
-data_02065cf0 kind:data(any) addr:0x02065cf0
-data_02065cf8 kind:data(any) addr:0x02065cf8
-data_02065d00 kind:data(any) addr:0x02065d00
-data_02065d08 kind:data(any) addr:0x02065d08
-data_02065d10 kind:data(any) addr:0x02065d10
-data_02065d18 kind:data(any) addr:0x02065d18
-data_02065d20 kind:data(any) addr:0x02065d20
-data_02065d28 kind:data(any) addr:0x02065d28
-data_02065d30 kind:data(any) addr:0x02065d30
-data_02065d38 kind:data(any) addr:0x02065d38
-data_02065d40 kind:data(any) addr:0x02065d40
-data_02065d48 kind:data(any) addr:0x02065d48
-data_02065d50 kind:data(any) addr:0x02065d50
-data_02065d58 kind:data(any) addr:0x02065d58
-data_02065d60 kind:data(any) addr:0x02065d60
-data_02065d68 kind:data(any) addr:0x02065d68
-data_02065d70 kind:data(any) addr:0x02065d70
-data_02065d78 kind:data(any) addr:0x02065d78
-data_02065d80 kind:data(any) addr:0x02065d80
-data_02065d88 kind:data(any) addr:0x02065d88
-data_02065d90 kind:data(any) addr:0x02065d90
-data_02065d98 kind:data(any) addr:0x02065d98
-data_02065da4 kind:data(any) addr:0x02065da4
-data_02065db0 kind:data(any) addr:0x02065db0
-data_02065dbc kind:data(any) addr:0x02065dbc
-data_02065dc8 kind:data(any) addr:0x02065dc8
-data_02065dd4 kind:data(any) addr:0x02065dd4
-data_02065de0 kind:data(any) addr:0x02065de0
-data_02065dec kind:data(any) addr:0x02065dec
-data_02065df8 kind:data(any) addr:0x02065df8
-data_02065e04 kind:data(any) addr:0x02065e04
-data_02065e10 kind:data(any) addr:0x02065e10
-data_02065e1c kind:data(any) addr:0x02065e1c
-data_02065e28 kind:data(any) addr:0x02065e28
-data_02065e34 kind:data(any) addr:0x02065e34
-data_02065e40 kind:data(any) addr:0x02065e40
-data_02065e4c kind:data(any) addr:0x02065e4c
-data_02065e58 kind:data(any) addr:0x02065e58
-data_02065e64 kind:data(any) addr:0x02065e64
-data_02065e70 kind:data(any) addr:0x02065e70
-data_02065e7c kind:data(any) addr:0x02065e7c
-data_02065e88 kind:data(any) addr:0x02065e88
-data_02065e94 kind:data(any) addr:0x02065e94
-data_02065ea0 kind:data(any) addr:0x02065ea0
-data_02065eac kind:data(any) addr:0x02065eac
-data_02065eb8 kind:data(any) addr:0x02065eb8
-data_02065ec4 kind:data(any) addr:0x02065ec4
-data_02065ed0 kind:data(any) addr:0x02065ed0
-data_02065edc kind:data(any) addr:0x02065edc
-data_02065ee8 kind:data(any) addr:0x02065ee8
-data_02065ef4 kind:data(any) addr:0x02065ef4
-data_02065f00 kind:data(any) addr:0x02065f00
-data_02065f0c kind:data(any) addr:0x02065f0c
-data_02065f18 kind:data(any) addr:0x02065f18
-data_02065f24 kind:data(any) addr:0x02065f24
-data_02065f30 kind:data(any) addr:0x02065f30
-data_02065f3c kind:data(any) addr:0x02065f3c
-data_02065f48 kind:data(any) addr:0x02065f48
-data_02065f54 kind:data(any) addr:0x02065f54
-data_02065f60 kind:data(any) addr:0x02065f60
-data_02065f6c kind:data(any) addr:0x02065f6c
-data_02065f78 kind:data(any) addr:0x02065f78
-data_02065f84 kind:data(any) addr:0x02065f84
-data_02065f90 kind:data(any) addr:0x02065f90
-data_02065fa0 kind:data(any) addr:0x02065fa0
-data_02065fb0 kind:data(any) addr:0x02065fb0
-data_02065fc0 kind:data(any) addr:0x02065fc0
 data_02065fcc kind:data(any) addr:0x02065fcc
 data_02065fd0 kind:data(any) addr:0x02065fd0
 data_02065fd4 kind:data(any) addr:0x02065fd4
@@ -3808,9 +3819,13 @@ data_02075204 kind:bss addr:0x02075204
 data_02075214 kind:bss addr:0x02075214
 data_02075278 kind:bss addr:0x02075278
 data_02076854 kind:bss addr:0x02076854
-data_020768f0 kind:bss addr:0x020768f0
-data_020768f4 kind:bss addr:0x020768f4
-data_020768fc kind:bss addr:0x020768fc
+
+/////////////////////////////////////////////////////////////
+// src/CriSndMgr.c
+/////////////////////////////////////////////////////////////
+criSndMgr kind:bss addr:0x020768f0
+
+
 data_02076a14 kind:bss addr:0x02076a14
 data_02076a18 kind:bss addr:0x02076a18
 data_02076a24 kind:bss addr:0x02076a24
