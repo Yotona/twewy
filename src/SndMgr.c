@@ -120,53 +120,53 @@ void func_02026c04(void) {
     func_0203155c(data_02075214.unk_0004, 1);
 }
 
-s32 func_02026cb4(s32 param_1) {
-    return data_02075214.unk_0068[param_1];
+s32 func_02026cb4(s32 seIdx) {
+    return data_02075214.unk_0068[seIdx];
 }
 
-void func_02026cc4(s32 param_1, u8 param_2) {
-    data_02075214.unk_0068[param_1] = param_2;
-    if (data_0205cb3c[param_1].seqArc >= 0) {
-        func_0202fd24(&data_02075214.unk_1618[data_0205cb3c[param_1].unk_01].unk_04, param_2);
+void func_02026cc4(s32 seIdx, s32 seIdxVolume) {
+    data_02075214.unk_0068[seIdx] = seIdxVolume;
+    if (data_0205cb3c[seIdx].seqArc >= 0) {
+        func_0202fd24(&data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, seIdxVolume);
     }
 }
 
-void func_02026d0c(s32 param_1, s32 param_2) {
-    u32 uVar2 = data_0205cb3c[param_1].unk_01;
+void func_02026d0c(s32 seIdx, s32 sePan) {
+    u32 uVar2 = data_0205cb3c[seIdx].unk_01;
 
     if ((uVar2 + 0xfe & 0xff) <= 1) {
-        func_0202fd78(&data_02075214.unk_1618[uVar2].unk_04, 0xffff, func_02026d9c(param_2));
+        func_0202fd78(&data_02075214.unk_1618[uVar2].unk_04, 0xffff, SndMgr_ConvertPanToSigned(sePan));
         return;
     }
     if (uVar2 != 6) {
         return;
     }
-    func_020323fc(&data_02075278, 0, func_02026db8(param_2));
+    func_020323fc(&data_02075278, 0, SndMgr_ConvertPanToVolume(sePan));
 }
 
-void func_02026d7c(s32 seIdx, s32 param_2) {
+void func_02026d7c(s32 seIdx, s32 sePan) {
     func_02026b20(seIdx);
-    func_02026d0c(seIdx, param_2);
+    func_02026d0c(seIdx, sePan);
 }
 
-s32 func_02026d9c(s32 param_1) {
-    if (param_1 < 0) {
+s32 SndMgr_ConvertPanToSigned(s32 sePan) {
+    if (sePan < 0) {
         return -0x80;
     }
-    if (param_1 >= 0x100) {
+    if (sePan >= 0x100) {
         return 0x7f;
     }
-    return param_1 - 0x80;
+    return sePan - 0x80;
 }
 
-s32 func_02026db8(s32 param_1) {
-    if (param_1 < 0) {
+s32 SndMgr_ConvertPanToVolume(s32 sePan) {
+    if (sePan < 0) {
         return 0;
     }
-    if (param_1 >= 0x100) {
+    if (sePan >= 0x100) {
         return 0x7f;
     }
-    return param_1 / 2;
+    return sePan / 2;
 }
 
 void func_02026dd8(void) {
@@ -178,8 +178,8 @@ BOOL func_02026e00(s32 param_1) {
     return func_0203235c(&data_02075278, data_0205cb3c[param_1].se, 0);
 }
 
-BOOL func_02026e28(s32 param_1) {
-    return func_0203235c(&data_02075278, param_1, 0);
+BOOL func_02026e28(s32 se) {
+    return func_0203235c(&data_02075278, se, 0);
 }
 
 void func_02026e44(s32 param_1) {
@@ -330,9 +330,9 @@ void func_02027170(s32 param_1, s32 param_2) {
     }
 }
 
-void func_020271b8(s32 param_1, s32 param_2) {
-    if (data_0205cb3c[param_1].seqArc >= 0) {
-        func_0202fd58(&data_02075214.unk_1618[data_0205cb3c[param_1].unk_01].unk_04, 0xFFFF, param_2);
+void func_020271b8(s32 seIdx, s32 sePitch) {
+    if (data_0205cb3c[seIdx].seqArc >= 0) {
+        func_0202fd58(&data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, 0xFFFF, sePitch);
     }
 }
 

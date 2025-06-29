@@ -1574,16 +1574,16 @@ void func_ov029_02082954(GameState* state, s32 param_2, s32 param_3) {
 
 // Nonmatching: Unreachable code that exists in binary
 void func_ov029_02082a38(void) {
-    s32 iVar1 = 0;
+    s32 idx = 0;
 
     // Unreachable code left in original?
     if (FALSE) {
         return;
     }
 
-    while (iVar1 < 5) {
-        func_02026aa4(iVar1);
-        iVar1++;
+    while (idx < 5) {
+        func_02026aa4(idx);
+        idx++;
     };
 }
 
@@ -1612,7 +1612,7 @@ void func_ov029_02082abc(void) {
     func_ov029_02082a38();
 }
 
-s32 func_ov029_02082ae0(GameState* state) {
+BOOL func_ov029_02082ae0(GameState* state) {
     OverlayTag tag;
 
     if ((data_02066a24.unk_02 & 8) != 0) {

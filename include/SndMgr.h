@@ -27,33 +27,61 @@ extern struct {
 
 void SndMgr_Init(void);
 
+void func_02026a94(void);
+
+s32 func_02026aa4(s32 idx);
+
 void func_02026ae0(s32 param_1, s32 seqArc, s32 se);
 
 void func_02026b20(s32 seIdx);
 
 void func_02026b9c(s32 seIdx);
 
-u32 func_02027040(s32 param_1);
-
-BOOL func_02026e00(s32);
-
-void func_02026e44(s32);
-
-s32 func_02026db8(s32);
-
-s32 func_02026d9c(s32);
-
 void func_02026c04(void);
+
+s32 func_02026cb4(s32 seIdx);
+
+void func_02026cc4(s32 seIdx, s32 seIdxVolume);
+
+void func_02026d0c(s32 seIdx, s32 sePan);
 
 void func_02026dd8(void);
 
-void func_020273a8(s32 param_1, s32 param_2);
+BOOL func_02026e00(s32);
 
-void func_02027330(void);
+BOOL func_02026e28(s32 se);
 
-void func_02027298(void);
+void func_02026e44(s32);
 
-void func_020273c8(s32 param_1, s32 param_2);
+/**
+ * @brief Converts a pan value to a signed 8-bit range.
+ *
+ * - If sePan is less than 0, returns -0x80 (-128).
+ * - If sePan is greater than or equal to 0x100 (256), returns 0x7f (127).
+ * - Otherwise, returns sePan offset by -0x80.
+ *
+ * @param sePan The input pan value to convert.
+ * @return The signed 8-bit pan value in the range [-128, 127].
+ */
+s32 SndMgr_ConvertPanToSigned(s32 sePan);
+
+/**
+ * @brief Converts a pan value to a corresponding appropriate volume adjustment for sound playback.
+ *
+ * @param sePan The pan value to convert.
+ * @return The calculated volume value corresponding to the given pan.
+ */
+s32 SndMgr_ConvertPanToVolume(s32 sePan);
+
+u32 func_02027040(s32 param_1);
+
+void func_020270e4(void);
+
+BOOL func_02027124(s32 seIdx);
+
+void func_020271b8(s32 seIdx, s32 sePitch);
+
+void func_02027200(u32 param_1);
 
 void func_02027220(s32 param_1);
 
