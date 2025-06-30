@@ -1498,9 +1498,9 @@ void func_ov029_02082838(GameState* state) {
     state->sndTest.unk_219D0       = 0;
     state->sndTest.unk_219E8       = 0;
     state->sndTest.noiseNoWaveLoad = FALSE;
-    state->sndTest.seIdxVolume     = func_02026cb4(state->sndTest.seIdx);
+    state->sndTest.seIdxVolume     = SndMgr_GetSeIdxVolume(state->sndTest.seIdx);
     state->sndTest.sePan           = 128;
-    state->sndTest.adxVolume       = -func_020273f4(state->sndTest.adxIdx);
+    state->sndTest.adxVolume       = -CriSndMgr_GetAdxIdxVolume(state->sndTest.adxIdx);
     state->sndTest.sePitch         = 0;
     state->sndTest.adxLoopEnabled  = TRUE;
     func_ov029_020824a0(state);
@@ -1540,13 +1540,13 @@ void func_ov029_02082904(int* param_1, int param_2) {
     }
 }
 
-void func_ov029_02082954(GameState* state, s32 param_2, s32 param_3) {
+void func_ov029_02082954(GameState* state) {
     if (state->unk_219B0 < 1) {
         state->sndTest.unk_219CC = 0;
     }
     switch (state->unk_219B0) {
         case 0:
-            func_0202733c(state->sndTest.adxIdx, state->unk_219B0, param_3);
+            func_0202733c(state->sndTest.adxIdx);
             return;
         case 1:
         case 2:
@@ -1608,8 +1608,8 @@ void func_ov029_02082a60(GameState* state) {
 
 void func_ov029_02082abc(void) {
     func_02027388(0);
-    func_02027388(0x46);
-    func_02027388(0x4e);
+    func_02027388(70);
+    func_02027388(78);
     func_ov029_02082a38();
 }
 
@@ -1620,7 +1620,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
         state->sndTest.unk_219E8 ^= 1;
         func_02027200(state->sndTest.unk_219E8);
     } else if ((data_02066a24.unk_02 & 1) != 0) {
-        func_ov029_02082954(state, &data_02066a24, data_02066a24.unk_02);
+        func_ov029_02082954(state);
     } else if ((data_02066a24.unk_02 & 2) != 0) {
         func_ov029_02082a60(state);
     } else if ((data_02066a24.unk_02 & 0x800) != 0) {
@@ -1631,9 +1631,9 @@ BOOL func_ov029_02082ae0(GameState* state) {
     } else if ((data_02066a24.unk_02 & 4) != 0) {
         func_02007174(&tag);
     } else if (data_02066a24.unk_04 == 0x40) {
-        state->unk_219B0 = state->unk_219B0 + -1;
+        state->unk_219B0--;
     } else if (data_02066a24.unk_04 == 0x80) {
-        state->unk_219B0 = state->unk_219B0 + 1;
+        state->unk_219B0++;
     }
     if ((data_02066a24.unk_02 & 0x200) != 0) {
         if (state->sndTest.seqArc >= 0) {
@@ -1664,7 +1664,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
             func_ov029_02082904(&state->sndTest.seIdx, 0x56c);
             state->sndTest.seqArc      = data_0205cb3c[state->sndTest.seIdx].seqArc;
             state->sndTest.se          = data_0205cb3c[state->sndTest.seIdx].se;
-            state->sndTest.seIdxVolume = func_02026cb4(state->sndTest.seIdx);
+            state->sndTest.seIdxVolume = SndMgr_GetSeIdxVolume(state->sndTest.seIdx);
             break;
         case 4:
             func_ov029_02082904(&state->sndTest.seIdxVolume, 0x80);
@@ -1676,7 +1676,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
             break;
         case 6:
             func_ov029_02082904(&state->sndTest.adxVolume, 0x3c1);
-            func_020273c8(state->sndTest.adxIdx, -state->sndTest.adxVolume);
+            CriSndMgr_SetAdxIdxVolume(state->sndTest.adxIdx, -state->sndTest.adxVolume);
             break;
         case 7:
             if ((data_02066a24.unk_00 & 0x10)) {
@@ -1701,7 +1701,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
             }
     }
     if ((data_02066a24.unk_04 & 0xf1) != 0) {
-        state->sndTest.adxVolume = -func_020273f4(state->sndTest.adxIdx);
+        state->sndTest.adxVolume = -CriSndMgr_GetAdxIdxVolume(state->sndTest.adxIdx);
         func_ov029_02082544(state);
     }
     return func_02027124(state->sndTest.seIdx);

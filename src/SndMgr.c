@@ -46,7 +46,7 @@ void SndMgr_Init(void) {
     func_02026dd8();
     func_02031510(data_02075214.unk_0004);
     func_02026c04();
-    func_02027298();
+    CriSndMgr_Init();
 }
 
 void func_02026a94(void) {
@@ -76,7 +76,7 @@ void func_02026b20(s32 seIdx) {
     func_02027040(uVar1);
     s32* psVar2 = &data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04;
     func_02031fd0(psVar2, uVar1, data_0205cb3c[seIdx].se);
-    func_0202fd24(psVar2, data_02075214.unk_0068[seIdx]);
+    func_0202fd24(psVar2, data_02075214.seIdxVolume[seIdx]);
 }
 
 void func_02026b9c(s32 seIdx) {
@@ -104,28 +104,28 @@ static u8 func_02026bec(u32 param_1, u32 param_2) {
 void func_02026c04(void) {
     u32 uVar2 = -1;
 
-    for (s32 iVar4 = 0; iVar4 < 0x56C; iVar4++) {
-        s32 uVar3 = data_0205cb3c[iVar4].seqArc;
+    for (s32 seIdx = 0; seIdx < 0x56C; seIdx++) {
+        s32 uVar3 = data_0205cb3c[seIdx].seqArc;
         if (uVar3 < 0) {
-            data_02075214.unk_0068[iVar4] = func_02026bdc(data_0205cb3c[iVar4].se);
+            data_02075214.seIdxVolume[seIdx] = func_02026bdc(data_0205cb3c[seIdx].se);
         } else {
             if (uVar2 != uVar3) {
                 func_0203155c(data_02075214.unk_0004, 1);
                 func_02027040(uVar3);
                 uVar2 = uVar3;
             }
-            data_02075214.unk_0068[iVar4] = func_02026bec(uVar3, data_0205cb3c[iVar4].se);
+            data_02075214.seIdxVolume[seIdx] = func_02026bec(uVar3, data_0205cb3c[seIdx].se);
         }
     }
     func_0203155c(data_02075214.unk_0004, 1);
 }
 
-s32 func_02026cb4(s32 seIdx) {
-    return data_02075214.unk_0068[seIdx];
+s32 SndMgr_GetSeIdxVolume(s32 seIdx) {
+    return data_02075214.seIdxVolume[seIdx];
 }
 
 void func_02026cc4(s32 seIdx, s32 seIdxVolume) {
-    data_02075214.unk_0068[seIdx] = seIdxVolume;
+    data_02075214.seIdxVolume[seIdx] = seIdxVolume;
     if (data_0205cb3c[seIdx].seqArc >= 0) {
         func_0202fd24(&data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, seIdxVolume);
     }

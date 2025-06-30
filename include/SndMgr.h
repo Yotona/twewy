@@ -14,7 +14,7 @@ extern struct {
     /* 0x0000 */ GameState* state;
     /* 0x0004 */ s32        unk_0004;
     /* 0x0008 */ char       unk_0008[0x60];
-    /* 0x0068 */ s32        unk_0068[1388];
+    /* 0x0068 */ s32        seIdxVolume[1388];
     /* 0x1614 */ struct {
         /* 0x000 */ s32 unk_00;
         /* 0x004 */ s32 unk_04;
@@ -39,7 +39,7 @@ void func_02026b9c(s32 seIdx);
 
 void func_02026c04(void);
 
-s32 func_02026cb4(s32 seIdx);
+s32 SndMgr_GetSeIdxVolume(s32 seIdx);
 
 void func_02026cc4(s32 seIdx, s32 seIdxVolume);
 
