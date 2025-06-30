@@ -1426,61 +1426,60 @@ void func_ov029_020824a0(GameState* state) {
     func_02010b18(&state->unk_215A0, 0, 0x98, func_02014608());
 }
 
-void func_ov029_02082544(GameState* param_1) {
+void func_ov029_02082544(GameState* state) {
     char* pcVar1;
     int   iVar3;
 
-    func_02010b84((int)&param_1->unk_215A0, 0, 0x10, 0x100, 0x50);
+    func_02010b84((int)&state->unk_215A0, 0, 0x10, 0x100, 0x50);
 
-    func_02010b18(&param_1->unk_215A0, 8, 0x10, CriSndMgr_AdxData[param_1->sndTest.adxIdx].adxFile);
+    func_02010b18(&state->unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->sndTest.adxIdx].adxFile);
 
-    pcVar1 = func_02006930("seqArc:%d", param_1->sndTest.seqArc);
-    func_02010b18(&param_1->unk_215A0, 8, 0x18, pcVar1);
+    pcVar1 = func_02006930("seqArc:%d", state->sndTest.seqArc);
+    func_02010b18(&state->unk_215A0, 8, 0x18, pcVar1);
 
-    pcVar1 = func_02006930("se:%d", param_1->sndTest.se);
-    func_02010b18(&param_1->unk_215A0, 8, 0x20, pcVar1);
+    pcVar1 = func_02006930("se:%d", state->sndTest.se);
+    func_02010b18(&state->unk_215A0, 8, 0x20, pcVar1);
 
-    pcVar1 = func_02006930("seIdx %d:%s", param_1->sndTest.seIdx, soundEffects[param_1->sndTest.seIdx]);
-    func_02010b18(&param_1->unk_215A0, 8, 0x28, pcVar1);
+    pcVar1 = func_02006930("seIdx %d:%s", state->sndTest.seIdx, soundEffects[state->sndTest.seIdx]);
+    func_02010b18(&state->unk_215A0, 8, 0x28, pcVar1);
 
-    pcVar1 = func_02006930("seIdx Volume:%d", param_1->sndTest.seIdxVolume);
-    func_02010b18(&param_1->unk_215A0, 8, 0x30, pcVar1);
+    pcVar1 = func_02006930("seIdx Volume:%d", state->sndTest.seIdxVolume);
+    func_02010b18(&state->unk_215A0, 8, 0x30, pcVar1);
 
-    pcVar1 = func_02006930("sePan :%d", param_1->sndTest.sePan);
-    func_02010b18(&param_1->unk_215A0, 8, 0x38, pcVar1);
+    pcVar1 = func_02006930("sePan :%d", state->sndTest.sePan);
+    func_02010b18(&state->unk_215A0, 8, 0x38, pcVar1);
 
-    if (param_1->sndTest.adxVolume <= 0) {
+    if (state->sndTest.adxVolume <= 0) {
         pcVar1 = func_02006930("adx volume :0(0.0dB)");
-        func_02010b18(&param_1->unk_215A0, 8, 0x40, pcVar1);
+        func_02010b18(&state->unk_215A0, 8, 0x40, pcVar1);
     } else {
-        iVar3 = param_1->sndTest.adxVolume % 10;
+        iVar3 = state->sndTest.adxVolume % 10;
         if (iVar3 < 0) {
             iVar3 = -iVar3;
         }
-        pcVar1 =
-            func_02006930("adx volume :-%d(-%d.%ddB)", param_1->sndTest.adxVolume, param_1->sndTest.adxVolume / 10, iVar3);
-        func_02010b18(&param_1->unk_215A0, 8, 0x40, pcVar1);
+        pcVar1 = func_02006930("adx volume :-%d(-%d.%ddB)", state->sndTest.adxVolume, state->sndTest.adxVolume / 10, iVar3);
+        func_02010b18(&state->unk_215A0, 8, 0x40, pcVar1);
     }
 
-    if (param_1->sndTest.adxLoopEnabled) {
+    if (state->sndTest.adxLoopEnabled) {
         pcVar1 = func_02006930("adx loop on");
-        func_02010b18(&param_1->unk_215A0, 8, 0x48, pcVar1);
+        func_02010b18(&state->unk_215A0, 8, 0x48, pcVar1);
     } else {
         pcVar1 = func_02006930("adx loop off");
-        func_02010b18(&param_1->unk_215A0, 8, 0x48, pcVar1);
+        func_02010b18(&state->unk_215A0, 8, 0x48, pcVar1);
     }
 
-    pcVar1 = func_02006930("sePitch :%d", param_1->sndTest.sePitch);
-    func_02010b18(&param_1->unk_215A0, 8, 0x50, pcVar1);
+    pcVar1 = func_02006930("sePitch :%d", state->sndTest.sePitch);
+    func_02010b18(&state->unk_215A0, 8, 0x50, pcVar1);
 
-    if (param_1->sndTest.noiseNoWaveLoad) {
+    if (state->sndTest.noiseNoWaveLoad) {
         pcVar1 = func_02006930("NoiseNoWaveLoad :ON ");
-        func_02010b18(&param_1->unk_215A0, 8, 0x58, pcVar1);
+        func_02010b18(&state->unk_215A0, 8, 0x58, pcVar1);
     } else {
         pcVar1 = func_02006930("NoiseNoWaveLoad :OFF");
-        func_02010b18(&param_1->unk_215A0, 8, 0x58, pcVar1);
+        func_02010b18(&state->unk_215A0, 8, 0x58, pcVar1);
     }
-    func_02010b18(&param_1->unk_215A0, 0, *(int*)&param_1->unk_219B0 * 8 + 0x10, ">");
+    func_02010b18(&state->unk_215A0, 0, *(int*)&state->unk_219B0 * 8 + 0x10, ">");
 }
 
 void func_ov029_02082824(GameState* state) {
@@ -1668,7 +1667,7 @@ BOOL func_ov029_02082ae0(GameState* state) {
             break;
         case 4:
             func_ov029_02082904(&state->sndTest.seIdxVolume, 0x80);
-            func_02026cc4(state->sndTest.seIdx, state->sndTest.seIdxVolume);
+            SndMgr_SetSeIdxVolume(state->sndTest.seIdx, state->sndTest.seIdxVolume);
             break;
         case 5:
             func_ov029_02082904(&state->sndTest.sePan, 0x100);

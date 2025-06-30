@@ -36,7 +36,7 @@ void func_ov041_02082730(GameState* state) {
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
     func_02025b68(&state->unk_21594, &local_30);
-    func_02010b18(&state->unk_215A0, 0, 0, "ï¿½ï¿½ï¿½ê‚¿ï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½vï¿½ï¿½"); // "StreetPass Sample"
+    func_02010b18(&state->unk_215A0, 0, 0, "‚·‚ê‚¿‚ª‚¢ƒTƒ“ƒvƒ‹"); // "StreetPass Sample"
 }
 
 void func_ov041_020827b8(GameState* state) {
@@ -113,7 +113,7 @@ void func_ov041_0208290c(GameState* state) {
             }
             puVar2++;
         }
-        func_02010b18(&state->unk_215A0, 8, (state->unk_22088 + 1) * 8, "ï¿½fï¿½[ï¿½^ï¿½ï¿½M"); // "Data Received"
+        func_02010b18(&state->unk_215A0, 8, (state->unk_22088 + 1) * 8, "ƒf[ƒ^óM"); // "Data Received"
         state->unk_22088++;
     }
 

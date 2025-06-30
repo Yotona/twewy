@@ -1,7 +1,6 @@
 #include "SndMgr.h"
+#include "CriSndMgr.h"
 #include "common_data.h"
-
-extern void func_02026928(s16);
 
 typedef struct UnkStruct_usedby_020310e8 {
     /* 0x00 */ s32 unk_00;
@@ -15,12 +14,27 @@ typedef struct {
 } UnkStruct_usedby_02030f78;
 extern UnkStruct_usedby_02030f78* func_02030f78(u32 param_1, u32 param_2);
 
-extern s32 data_02075278;
-extern s32 data_020768fc[70];
+static void func_020268f0(void) {
+    sndMgr.unk_16DA = 0;
+    for (u32 i = 0; i < 3; i++) {
+        sndMgr.unk_16D4[i] = -1;
+    }
+}
 
-extern s32 data_02076854;
+static BOOL func_02026928(s16 param_1) {
+    if ((param_1 < 7) || (param_1 > 37)) {
+        return TRUE;
+    }
 
-// Nonmatching: Expects a second data reference to data_02075214
+    for (u32 i = 0; i < 3; i++) {
+        if (param_1 == sndMgr.unk_16D4[i]) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+// Nonmatching: Expects a second data reference to sndMgr
 // Scratch: vxtj5
 void SndMgr_Init(void) {
     GameState* state;
@@ -29,22 +43,22 @@ void SndMgr_Init(void) {
     state = func_02004618(&data_0206a9a4, 0x40000);
     func_020049a8(&data_0206a9a4, state, "SndMgr");
     func_0203b2d0(0, state, func_0200498c(&data_0206a9a4, state));
-    data_02075214.state = state;
+    sndMgr.state = state;
     func_020268f0();
     func_0202f8a0();
-    data_02075214.unk_0004 = func_02031364(data_02075214.state, 0x40000);
-    func_02030cec(&data_02076854, "/Sound/sound_data.sdat", data_02075214.unk_0004, 0);
-    func_02031f34(data_02075214.unk_0004);
-    func_020316d0(0, data_02075214.unk_0004);
-    func_020316fc(0, data_02075214.unk_0004);
+    sndMgr.unk_0004 = func_02031364(sndMgr.state, 0x40000);
+    func_02030cec(&sndMgr.unk_1640, "/Sound/sound_data.sdat", sndMgr.unk_0004, 0);
+    func_02031f34(sndMgr.unk_0004);
+    func_020316d0(0, sndMgr.unk_0004);
+    func_020316fc(0, sndMgr.unk_0004);
 
     for (s32 i = 0; i < 5; i++) {
-        data_02075214.unk_1618[i].unk_00 = -1;
-        func_0202fc84(&data_02075214.unk_1618[i].unk_04);
+        sndMgr.unk_1618[i].unk_00 = -1;
+        func_0202fc84(&sndMgr.unk_1618[i].unk_04);
     }
 
     func_02026dd8();
-    func_02031510(data_02075214.unk_0004);
+    func_02031510(sndMgr.unk_0004);
     func_02026c04();
     CriSndMgr_Init();
 }
@@ -55,28 +69,28 @@ void func_02026a94(void) {
 }
 
 s32 func_02026aa4(s32 idx) {
-    s32 sVar1 = data_02075214.unk_1618[idx].unk_00;
-    func_0202fb80(&data_02075214.unk_1618[idx].unk_04, 1);
-    data_02075214.unk_1618[idx].unk_00 = -1;
+    s32 sVar1 = sndMgr.unk_1618[idx].unk_00;
+    func_0202fb80(&sndMgr.unk_1618[idx].unk_04, 1);
+    sndMgr.unk_1618[idx].unk_00 = -1;
     return sVar1;
 }
 
 void func_02026ae0(s32 arg0, s32 seqArc, s32 se) {
     func_02027040(data_0205cb3c[se].seqArc);
-    func_02031fd0(&data_02075214.unk_1618[arg0].unk_04, seqArc, se);
+    func_02031fd0(&sndMgr.unk_1618[arg0].unk_04, seqArc, se);
 }
 
 void func_02026b20(s32 seIdx) {
-    s32 uVar1 = data_0205cb3c[seIdx].seqArc;
-    if (uVar1 < 0) {
+    s32 seqArc = data_0205cb3c[seIdx].seqArc;
+    if (seqArc < 0) {
         func_02026e00(seIdx);
         return;
     }
 
-    func_02027040(uVar1);
-    s32* psVar2 = &data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04;
-    func_02031fd0(psVar2, uVar1, data_0205cb3c[seIdx].se);
-    func_0202fd24(psVar2, data_02075214.seIdxVolume[seIdx]);
+    func_02027040(seqArc);
+    s32* psVar2 = &sndMgr.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04;
+    func_02031fd0(psVar2, seqArc, data_0205cb3c[seIdx].se);
+    func_0202fd24(psVar2, sndMgr.seIdxVolume[seIdx]);
 }
 
 void func_02026b9c(s32 seIdx) {
@@ -99,35 +113,35 @@ static u8 func_02026bec(u32 param_1, u32 param_2) {
     return iVar2->unk_02;
 }
 
-// Nonmatching: Not allocating properly, expects a second data reference to data_02075214
+// Nonmatching: Not allocating properly, expects a second data reference to sndMgr
 // Scratch: NP1mJ
 void func_02026c04(void) {
     u32 uVar2 = -1;
 
     for (s32 seIdx = 0; seIdx < 0x56C; seIdx++) {
-        s32 uVar3 = data_0205cb3c[seIdx].seqArc;
-        if (uVar3 < 0) {
-            data_02075214.seIdxVolume[seIdx] = func_02026bdc(data_0205cb3c[seIdx].se);
+        s32 seqArc = data_0205cb3c[seIdx].seqArc;
+        if (seqArc < 0) {
+            sndMgr.seIdxVolume[seIdx] = func_02026bdc(data_0205cb3c[seIdx].se);
         } else {
-            if (uVar2 != uVar3) {
-                func_0203155c(data_02075214.unk_0004, 1);
-                func_02027040(uVar3);
-                uVar2 = uVar3;
+            if (uVar2 != seqArc) {
+                func_0203155c(sndMgr.unk_0004, 1);
+                func_02027040(seqArc);
+                uVar2 = seqArc;
             }
-            data_02075214.seIdxVolume[seIdx] = func_02026bec(uVar3, data_0205cb3c[seIdx].se);
+            sndMgr.seIdxVolume[seIdx] = func_02026bec(seqArc, data_0205cb3c[seIdx].se);
         }
     }
-    func_0203155c(data_02075214.unk_0004, 1);
+    func_0203155c(sndMgr.unk_0004, 1);
 }
 
 s32 SndMgr_GetSeIdxVolume(s32 seIdx) {
-    return data_02075214.seIdxVolume[seIdx];
+    return sndMgr.seIdxVolume[seIdx];
 }
 
-void func_02026cc4(s32 seIdx, s32 seIdxVolume) {
-    data_02075214.seIdxVolume[seIdx] = seIdxVolume;
+void SndMgr_SetSeIdxVolume(s32 seIdx, s32 seIdxVolume) {
+    sndMgr.seIdxVolume[seIdx] = seIdxVolume;
     if (data_0205cb3c[seIdx].seqArc >= 0) {
-        func_0202fd24(&data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, seIdxVolume);
+        func_0202fd24(&sndMgr.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, seIdxVolume);
     }
 }
 
@@ -135,13 +149,10 @@ void func_02026d0c(s32 seIdx, s32 sePan) {
     u32 uVar2 = data_0205cb3c[seIdx].unk_01;
 
     if ((uVar2 + 0xfe & 0xff) <= 1) {
-        func_0202fd78(&data_02075214.unk_1618[uVar2].unk_04, 0xffff, SndMgr_ConvertPanToSigned(sePan));
-        return;
+        func_0202fd78(&sndMgr.unk_1618[uVar2].unk_04, 0xffff, SndMgr_ConvertPanToSigned(sePan));
+    } else if (uVar2 == 6) {
+        func_020323fc(&sndMgr.unk_0064, 0, SndMgr_ConvertPanToVolume(sePan));
     }
-    if (uVar2 != 6) {
-        return;
-    }
-    func_020323fc(&data_02075278, 0, SndMgr_ConvertPanToVolume(sePan));
 }
 
 void func_02026d7c(s32 seIdx, s32 sePan) {
@@ -170,16 +181,16 @@ s32 SndMgr_ConvertPanToVolume(s32 sePan) {
 }
 
 void func_02026dd8(void) {
-    func_02032114(10, data_02075214.unk_0004);
-    func_02032418(&data_02075278);
+    func_02032114(10, sndMgr.unk_0004);
+    func_02032418(&sndMgr.unk_0064);
 }
 
 BOOL func_02026e00(s32 param_1) {
-    return func_0203235c(&data_02075278, data_0205cb3c[param_1].se, 0);
+    return func_0203235c(&sndMgr.unk_0064, data_0205cb3c[param_1].se, 0);
 }
 
 BOOL func_02026e28(s32 se) {
-    return func_0203235c(&data_02075278, se, 0);
+    return func_0203235c(&sndMgr.unk_0064, se, 0);
 }
 
 void func_02026e44(s32 param_1) {
@@ -187,8 +198,8 @@ void func_02026e44(s32 param_1) {
 }
 
 void func_02026e50(s32 param_1) {
-    func_020323c8(&data_02075278, param_1, 0);
-    func_020323c8(&data_02075278, param_1, 0);
+    func_020323c8(&sndMgr.unk_0064, param_1, 0);
+    func_020323c8(&sndMgr.unk_0064, param_1, 0);
 }
 
 s32 func_02026e80(s32 param_1) {
@@ -271,39 +282,39 @@ s32 func_02026e80(s32 param_1) {
     }
 }
 
-u32 func_02027040(s32 param_1) {
-    func_02026928(param_1);
+u32 func_02027040(s32 seqArc) {
+    func_02026928(seqArc);
 
-    s32* data  = func_02030fbc(param_1);
+    s32* data  = func_02030fbc(seqArc);
     s32  uVar3 = func_020312fc(*data);
 
     if (uVar3 != 0) {
         return uVar3;
     }
-    func_020316d0(param_1, data_02075214.unk_0004);
+    func_020316d0(seqArc, sndMgr.unk_0004);
 
-    uVar3 = func_02026e80(param_1);
+    uVar3 = func_02026e80(seqArc);
     if (uVar3 >= 0) {
-        if ((uVar3 >= 3) && (data_02075214.unk_16D0 != 0)) {
-            uVar3 = func_02031728(uVar3, 2, data_02075214.unk_0004);
+        if ((uVar3 >= 3) && (sndMgr.unk_16D0 != 0)) {
+            uVar3 = func_02031728(uVar3, 2, sndMgr.unk_0004);
         } else {
-            uVar3 = func_020316fc(uVar3, data_02075214.unk_0004);
+            uVar3 = func_020316fc(uVar3, sndMgr.unk_0004);
         }
     }
-    if (param_1 != 1) {
+    if (seqArc != 1) {
         return uVar3;
     }
 
-    return func_02031510(data_02075214.unk_0004);
+    return func_02031510(sndMgr.unk_0004);
 }
 
 void func_020270e4(void) {
-    func_0203155c(data_02075214.unk_0004, 1);
+    func_0203155c(sndMgr.unk_0004, 1);
     func_020268f0();
 }
 
 void func_02027104(void) {
-    func_0203155c(data_02075214.unk_0004, 2);
+    func_0203155c(sndMgr.unk_0004, 2);
     func_020268f0();
 }
 
@@ -311,7 +322,7 @@ BOOL func_02027124(s32 param_1) {
     BOOL result;
 
     if (data_0205cb3c[param_1].seqArc < 0) {
-        result = func_0203243c(&data_02075278);
+        result = func_0203243c(&sndMgr.unk_0064);
     } else {
         result = func_0202fcb0(data_0205cb3c[param_1].seqArc, data_0205cb3c[param_1].se);
     }
@@ -326,13 +337,13 @@ void func_02027170(s32 param_1, s32 param_2) {
     if (data_0205cb3c[param_1].seqArc < 0) {
         func_02026e50(param_2);
     } else {
-        func_0202fd10(&data_02075214.unk_1618[data_0205cb3c[param_1].unk_01].unk_04, param_2);
+        func_0202fd10(&sndMgr.unk_1618[data_0205cb3c[param_1].unk_01].unk_04, param_2);
     }
 }
 
 void func_020271b8(s32 seIdx, s32 sePitch) {
     if (data_0205cb3c[seIdx].seqArc >= 0) {
-        func_0202fd58(&data_02075214.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, 0xFFFF, sePitch);
+        func_0202fd58(&sndMgr.unk_1618[data_0205cb3c[seIdx].unk_01].unk_04, 0xFFFF, sePitch);
     }
 }
 
@@ -344,17 +355,17 @@ void func_02027200(u32 param_1) {
 }
 
 void func_02027220(s32 param_1) {
-    data_02075214.unk_16D0 = param_1;
+    sndMgr.unk_16D0 = param_1;
 }
 
 void func_02027230(s32 param_1) {
     for (u32 i = 0; i < 3; i++) {
-        if (data_02075214.unk_16D4[i] == param_1) {
+        if (sndMgr.unk_16D4[i] == param_1) {
             return;
         }
-        if (data_02075214.unk_16D4[i] < 0) {
-            data_02075214.unk_16D4[i] = param_1;
-            data_02075214.unk_16DA++;
+        if (sndMgr.unk_16D4[i] < 0) {
+            sndMgr.unk_16D4[i] = param_1;
+            sndMgr.unk_16DA++;
             return;
         }
     }

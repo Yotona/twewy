@@ -1403,12 +1403,12 @@ func_020266b0 kind:function(arm,size=0xac) addr:0x020266b0
 func_0202675c kind:function(arm,size=0x84) addr:0x0202675c
 func_020267e0 kind:function(arm,size=0xac) addr:0x020267e0
 func_0202688c kind:function(arm,size=0x64) addr:0x0202688c
-func_020268f0 kind:function(arm,size=0x38) addr:0x020268f0
-func_02026928 kind:function(arm,size=0x50) addr:0x02026928
 
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
 /////////////////////////////////////////////////////////////
+func_020268f0 kind:function(arm,size=0x38) addr:0x020268f0 local
+func_02026928 kind:function(arm,size=0x50) addr:0x02026928 local
 SndMgr_Init kind:function(arm,size=0x11c) addr:0x02026978
 func_02026a94 kind:function(arm,size=0x10) addr:0x02026a94
 func_02026aa4 kind:function(arm,size=0x3c) addr:0x02026aa4
@@ -1419,7 +1419,7 @@ func_02026bdc kind:function(arm,size=0x10) addr:0x02026bdc local
 func_02026bec kind:function(arm,size=0x18) addr:0x02026bec local
 func_02026c04 kind:function(arm,size=0xb0) addr:0x02026c04
 SndMgr_GetSeIdxVolume kind:function(arm,size=0x10) addr:0x02026cb4
-func_02026cc4 kind:function(arm,size=0x48) addr:0x02026cc4
+SndMgr_SetSeIdxVolume kind:function(arm,size=0x48) addr:0x02026cc4
 func_02026d0c kind:function(arm,size=0x70) addr:0x02026d0c
 func_02026d7c kind:function(arm,size=0x20) addr:0x02026d7c
 SndMgr_ConvertPanToSigned kind:function(arm,size=0x1c) addr:0x02026d9c
@@ -3816,9 +3816,11 @@ data_02075168 kind:bss addr:0x02075168
 data_020751dc kind:bss addr:0x020751dc
 data_020751f0 kind:bss addr:0x020751f0
 data_02075204 kind:bss addr:0x02075204
-data_02075214 kind:bss addr:0x02075214
-data_02075278 kind:bss addr:0x02075278
-data_02076854 kind:bss addr:0x02076854
+
+/////////////////////////////////////////////////////////////
+// src/SndMgr.c
+/////////////////////////////////////////////////////////////
+sndMgr kind:bss addr:0x02075214
 
 /////////////////////////////////////////////////////////////
 // src/CriSndMgr.c
