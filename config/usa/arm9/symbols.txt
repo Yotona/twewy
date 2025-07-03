@@ -695,7 +695,7 @@ ADXT_GetStat kind:function(arm,size=0x24) addr:0x02017140
 adxt_GetStat kind:function(arm,size=0x24) addr:0x02017164 local
 func_02017188 kind:function(arm,size=0xa0) addr:0x02017188
 adxt_GetTime kind:function(arm,size=0x27c) addr:0x02017228
-func_020174a4 kind:function(arm,size=0x24) addr:0x020174a4
+ADXT_Play kind:function(arm,size=0x24) addr:0x020174a4
 func_020174c8 kind:function(arm,size=0x50) addr:0x020174c8
 ADXT_GetNumChan kind:function(arm,size=0x24) addr:0x02017518
 adxt_GetNumChan kind:function(arm,size=0x3c) addr:0x0201753c
@@ -1238,21 +1238,25 @@ func_02021698 kind:function(arm,size=0x1c) addr:0x02021698
 func_020216b4 kind:function(arm,size=0x6c) addr:0x020216b4
 func_02021720 kind:function(arm,size=0x4) addr:0x02021720
 func_02021724 kind:function(arm,size=0x4) addr:0x02021724
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/src/criss.c
+////////////////////////////////////////////////////////////
 func_02021728 kind:function(arm,size=0x14) addr:0x02021728
-func_0202173c kind:function(arm,size=0x1b0) addr:0x0202173c
+cri_ss_initialize kind:function(arm,size=0x1b0) addr:0x0202173c
 func_020218ec kind:function(arm,size=0x20) addr:0x020218ec
 func_0202190c kind:function(arm,size=0x2c) addr:0x0202190c
 func_02021938 kind:function(arm,size=0x28) addr:0x02021938
 func_02021960 kind:function(arm,size=0x10) addr:0x02021960
-func_02021970 kind:function(arm,size=0x244) addr:0x02021970
+criSsPly_Create kind:function(arm,size=0x244) addr:0x02021970
 func_02021bb4 kind:function(arm,size=0x14) addr:0x02021bb4
 func_02021bc8 kind:function(arm,size=0x88) addr:0x02021bc8
-func_02021c50 kind:function(arm,size=0x5c) addr:0x02021c50
-func_02021cac kind:function(arm,size=0x64) addr:0x02021cac
-func_02021d10 kind:function(arm,size=0x64) addr:0x02021d10
-func_02021d74 kind:function(arm,size=0xbc) addr:0x02021d74
-func_02021e30 kind:function(arm,size=0x60) addr:0x02021e30
-func_02021e90 kind:function(arm,size=0x64) addr:0x02021e90
+criSsPly_Stop kind:function(arm,size=0x5c) addr:0x02021c50
+criSsPly_Pause kind:function(arm,size=0x64) addr:0x02021cac
+criSsPly_SetVolume kind:function(arm,size=0x64) addr:0x02021d10
+criSsPly_SetFadeTime kind:function(arm,size=0xbc) addr:0x02021d74
+criSsPly_Play kind:function(arm,size=0x60) addr:0x02021e30
+criSsPly_SetLpFlg kind:function(arm,size=0x64) addr:0x02021e90
 func_02021ef4 kind:function(arm,size=0x58) addr:0x02021ef4
 func_02021f4c kind:function(arm,size=0x28) addr:0x02021f4c
 func_02021f74 kind:function(arm,size=0x1c) addr:0x02021f74
@@ -1280,6 +1284,8 @@ func_02022640 kind:function(arm,size=0xbc) addr:0x02022640
 func_020226fc kind:function(arm,size=0x270) addr:0x020226fc
 func_0202296c kind:function(arm,size=0x68) addr:0x0202296c
 func_020229d4 kind:function(arm,size=0x44) addr:0x020229d4
+
+
 func_02022a18 kind:function(arm,size=0x134) addr:0x02022a18
 func_02022b4c kind:function(arm,size=0x150) addr:0x02022b4c
 func_02022c9c kind:function(arm,size=0x6c) addr:0x02022c9c
@@ -1452,7 +1458,7 @@ func_020273a8 kind:function(arm,size=0x20) addr:0x020273a8
 CriSndMgr_SetAdxIdxVolume kind:function(arm,size=0x2c) addr:0x020273c8
 CriSndMgr_GetAdxIdxVolume kind:function(arm,size=0x1c) addr:0x020273f4
 func_02027410 kind:function(arm,size=0x18) addr:0x02027410
-func_02027428 kind:function(arm,size=0x1c) addr:0x02027428
+CriSndMgr_SetLpFlg kind:function(arm,size=0x1c) addr:0x02027428
 CriSndMgr_Create kind:function(arm,size=0x50) addr:0x02027444
 CriSndMgr_Exec kind:function(arm,size=0x18) addr:0x02027494
 
@@ -2088,7 +2094,7 @@ func_0203973c kind:function(arm,size=0x24) addr:0x0203973c
 func_02039760 kind:function(arm,size=0x24) addr:0x02039760
 
 /////////////////////////////////////////////////////////////
-// src/datacache.c
+// src/cache.c
 /////////////////////////////////////////////////////////////
 DC_Enable kind:function(arm,size=0x18) addr:0x02039784
 DC_InvalidateAll kind:function(arm,size=0xc) addr:0x0203979c
@@ -2903,11 +2909,11 @@ data_0205cb1c kind:data(any) addr:0x0205cb1c
 data_0205cb2c kind:data(any) addr:0x0205cb2c
 data_0205cb3c kind:data(any) addr:0x0205cb3c
 data_0205e0ec kind:data(any) addr:0x0205e0ec
-CriSndMgr_AdxDataCount kind:data(any) addr:0x0205e0f0
 
 /////////////////////////////////////////////////////////////
 // src/CriSndMgr.c
 /////////////////////////////////////////////////////////////
+CriSndMgr_AdxDataCount kind:data(any) addr:0x0205e0f0
 CriSndMgr_AdxData kind:data(any) addr:0x0205e0f4
 data_0205e324 kind:data(any) addr:0x0205e324
 data_0205e3b4 kind:data(any) addr:0x0205e3b4
@@ -3253,9 +3259,9 @@ data_02065810 kind:data(any) addr:0x02065810
 /////////////////////////////////////////////////////////////
 // libs/CriWare/src/acssbadx.c
 /////////////////////////////////////////////////////////////
-@136 kind:data(any) addr:0x02065844 local
-@137 kind:data(any) addr:0x02065878 local
-@162 kind:data(any) addr:0x020658b0 local
+@137 kind:data(any) addr:0x02065844 local
+@138 kind:data(any) addr:0x02065878 local
+@163 kind:data(any) addr:0x020658b0 local
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/src/acsvhl.c

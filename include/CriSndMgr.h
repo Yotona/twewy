@@ -2,6 +2,7 @@
 #define CRISNDMGR_H
 
 #include "game.h"
+#include <criss.h>
 #include <types.h>
 
 typedef struct {
@@ -15,7 +16,7 @@ extern const AdxData CriSndMgr_AdxData[70];
 extern const s32 CriSndMgr_AdxDataCount;
 
 typedef struct {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ CRISS* criss;
     /* 0x04 */ GameState* (*createFunc)(s32);
     /* 0x08 */ void (*execFunc)(GameState*);
     /* 0x0C */ s32 volume[70];
@@ -36,7 +37,7 @@ void CriSndMgr_SetAdxIdxVolume(s32 adxIdx, s32 adxVolume);
 
 s32 CriSndMgr_GetAdxIdxVolume(s32 adxIdx);
 
-void func_02027428(s32 param_1);
+void CriSndMgr_SetLpFlg(s32 lpFlg);
 
 GameState* CriSndMgr_Create(s32 param_1);
 

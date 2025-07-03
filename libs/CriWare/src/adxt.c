@@ -304,7 +304,7 @@ void adxt_GetTime(ADXT* adxt, s32* count, s32* frequency) {
     /* NYI */
 }
 
-s32 func_020174a4(ADXT* adxt) {
+s32 ADXT_Play(ADXT* adxt) {
     s32 val;
 
     func_02012f88();

@@ -105,7 +105,8 @@ void ADXT_Stop(ADXT* adxt);
 
 s32 ADXT_GetStat(ADXT* adxt);
 
-s32 func_020174a4();
+s32 ADXT_Play(ADXT* adxt);
+
 s32 func_020174c8();
 
 s32 ADXT_GetNumChan();

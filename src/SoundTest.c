@@ -1680,10 +1680,10 @@ BOOL func_ov029_02082ae0(GameState* state) {
         case 7:
             if ((data_02066a24.unk_00 & 0x10)) {
                 state->sndTest.adxLoopEnabled = TRUE;
-                func_02027428(1);
+                CriSndMgr_SetLpFlg(1);
             } else if ((data_02066a24.unk_00 & 0x20) != 0) {
                 state->sndTest.adxLoopEnabled = FALSE;
-                func_02027428(0);
+                CriSndMgr_SetLpFlg(0);
             }
             break;
         case 8:

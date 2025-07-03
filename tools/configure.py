@@ -88,6 +88,7 @@ LD_FLAGS = " ".join(
         "-map closure,unused",  # Generate map file
         "-msgstyle gcc",  # Use GCC-like messages (some IDEs will make file names clickable)
         "-nodead",  # Do not strip unused code
+        "-nostdlib",  # Do not link to MWLibraries
     ]
 )
 
