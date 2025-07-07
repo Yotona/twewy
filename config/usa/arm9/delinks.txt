@@ -73,3 +73,8 @@ src/CriSndMgr.c:
 src/cache.c:
 complete
     .text       start:0x02039784 end:0x020398B0
+
+libs/NitroSDK/src/fs_overlay.c:
+    .text       start:0x0203ED24 end:0x0203F350
+    .rodata     start:0x0206314C end:0x0206318C
+    .data       start:0x0206627C end:0x02066284

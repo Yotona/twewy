@@ -2337,18 +2337,24 @@ func_0203ebac kind:function(arm,size=0x8) addr:0x0203ebac
 func_0203ebb4 kind:function(arm,size=0x8) addr:0x0203ebb4
 func_0203ebbc kind:function(arm,size=0x148) addr:0x0203ebbc
 func_0203ed04 kind:function(arm,size=0x20) addr:0x0203ed04
-func_0203ed24 kind:function(arm,size=0x1c) addr:0x0203ed24
-func_0203ed40 kind:function(arm,size=0x3c) addr:0x0203ed40
-func_0203ed7c kind:function(arm,size=0x28) addr:0x0203ed7c
-func_0203eda4 kind:function(arm,size=0xf8) addr:0x0203eda4
-func_0203ee9c kind:function(arm,size=0xfc) addr:0x0203ee9c
-func_0203ef98 kind:function(arm,size=0x90) addr:0x0203ef98
-func_0203f028 kind:function(arm,size=0x94) addr:0x0203f028
-func_0203f0bc kind:function(arm,size=0xf4) addr:0x0203f0bc
-func_0203f1b0 kind:function(arm,size=0xf0) addr:0x0203f1b0
-func_0203f2a0 kind:function(arm,size=0x10) addr:0x0203f2a0
-func_0203f2b0 kind:function(arm,size=0x54) addr:0x0203f2b0
-func_0203f304 kind:function(arm,size=0x4c) addr:0x0203f304
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/src/fs_overlay.c
+/////////////////////////////////////////////////////////////
+FS_GetOverlayRamSize kind:function(arm,size=0x1c) addr:0x0203ed24
+FS_InvalidateOverlay kind:function(arm,size=0x3c) addr:0x0203ed40
+FS_GetOverlayInfoChunk kind:function(arm,size=0x28) addr:0x0203ed7c
+FS_LoadVerifyOverlay kind:function(arm,size=0xf8) addr:0x0203eda4
+FS_LoadOverlayInfo kind:function(arm,size=0xfc) addr:0x0203ee9c
+FS_LoadOverlayFile kind:function(arm,size=0x90) addr:0x0203ef98
+FS_ValidateOverlay kind:function(arm,size=0x94) addr:0x0203f028
+FS_StartOverlay kind:function(arm,size=0xf4) addr:0x0203f0bc
+FS_DestroyOverlay kind:function(arm,size=0xf0) addr:0x0203f1b0
+FS_UnloadOverlayFile kind:function(arm,size=0x10) addr:0x0203f2a0
+FS_LoadOverlay kind:function(arm,size=0x54) addr:0x0203f2b0
+FS_UnloadOverlay kind:function(arm,size=0x4c) addr:0x0203f304
+
+
 func_0203f350 kind:function(arm,size=0x50) addr:0x0203f350
 func_0203f3a0 kind:function(arm,size=0x154) addr:0x0203f3a0
 func_0203f4f4 kind:function(arm,size=0x1fc) addr:0x0203f4f4
@@ -2937,7 +2943,13 @@ data_020625f8 kind:data(any) addr:0x020625f8
 data_02062754 kind:data(any) addr:0x02062754
 data_02062e54 kind:data(any) addr:0x02062e54
 data_02063128 kind:data(any) addr:0x02063128
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/src/fs_overlay.c
+/////////////////////////////////////////////////////////////
 data_0206314c kind:data(any) addr:0x0206314c
+
+
 data_0206318c kind:data(any) addr:0x0206318c
 data_020631e0 kind:data(any) addr:0x020631e0
 data_020631f4 kind:data(any) addr:0x020631f4
@@ -3435,7 +3447,13 @@ data_02066260 kind:data(any) addr:0x02066260
 data_02066270 kind:data(any) addr:0x02066270
 data_02066274 kind:data(any) addr:0x02066274
 data_02066278 kind:data(any) addr:0x02066278
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/src/fs_overlay.c
+/////////////////////////////////////////////////////////////
 data_0206627c kind:data(any) addr:0x0206627c
+data_02066280 kind:data(any) addr:0x02066280
+
 data_02066284 kind:data(any) addr:0x02066284
 data_02066288 kind:data(any) addr:0x02066288
 data_020662bc kind:data(any) addr:0x020662bc
@@ -4011,4 +4029,4 @@ data_02082464 kind:bss addr:0x02082464
 data_02082480 kind:bss addr:0x02082480
 data_02082488 kind:bss addr:0x02082488
 data_02082490 kind:bss addr:0x02082490
-data_02082494 kind:bss addr:0x02082494
+__global_destructor_chain kind:bss addr:0x02082494
