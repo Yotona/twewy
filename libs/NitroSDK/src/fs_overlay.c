@@ -260,7 +260,7 @@ void FS_DestroyOverlay(OverlayInfo* info) {
     }
 }
 
-BOOL FS_UnloadOverlayFile(OverlayInfo* info) {
+BOOL FS_StopOverlay(OverlayInfo* info) {
     FS_DestroyOverlay(info);
     return TRUE;
 }
@@ -279,7 +279,7 @@ BOOL FS_LoadOverlay(u32 param_1, u32 overlayID) {
 BOOL FS_UnloadOverlay(u32 param_1, u32 overlayID) {
     OverlayInfo info;
 
-    if (FS_LoadOverlayInfo(&info, param_1, overlayID) == FALSE || FS_UnloadOverlayFile(&info) == FALSE) {
+    if (FS_LoadOverlayInfo(&info, param_1, overlayID) == FALSE || FS_StopOverlay(&info) == FALSE) {
         return FALSE;
     }
     return TRUE;

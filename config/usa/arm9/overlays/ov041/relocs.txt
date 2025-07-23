@@ -36,7 +36,7 @@ from:0x02082aa8 kind:arm_call to:0x02082ff0 module:overlay(41)
 from:0x02082ab0 kind:arm_call to:0x0200cef0 module:main
 from:0x02082ae0 kind:arm_call to:0x020827cc module:overlay(41)
 from:0x02082ae4 kind:arm_call to:0x020072a4 module:main
-from:0x02082aec kind:overlay_id to:0x28 module:none
+from:0x02082aec kind:overlay_id to:40 module:none
 from:0x02082af0 kind:load to:0x02083020 module:overlay(41)
 from:0x02082af4 kind:load to:0x0206a9b0 module:main
 from:0x02082afc kind:load to:0x02066aec module:main

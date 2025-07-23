@@ -51,7 +51,7 @@ args = parser.parse_args()
 
 # Config
 GAME = "twewy"
-DSD_VERSION = "v0.9.1"
+DSD_VERSION = "v0.10.2"
 WIBO_VERSION = "0.6.16"
 OBJDIFF_VERSION = "v2.7.1"
 MWCC_VERSION = "2.0/sp1p5"
@@ -210,10 +210,11 @@ class Project:
         return self.game_build / "build" / "rom_config.yaml"
 
     def source_object_files(self) -> list[str]:
-        return [
-            str(self.game_build / source_file.with_suffix(".o"))
-            for source_file in get_c_cpp_files([src_path, libs_path])
-        ]
+        files: list[str] = []
+        for source_file in get_c_cpp_files([src_path, libs_path]):
+            src_obj_path = self.game_build / source_file
+            files.append(str(src_obj_path.with_suffix(".o")))
+        return files
 
     def arm9_o(self) -> Path:
         return self.game_build / "arm9.o"
@@ -224,29 +225,24 @@ class Project:
     def objdiff_report(self) -> Path:
         return self.game_build / "report.json"
 
-    def modules(self) -> list[Any]:
+    def files(self) -> list[dict[str, str]]:
         if self.delinks_json is None:
             return []
-        return self.delinks_json["modules"]
+        return self.delinks_json["files"]
 
     def delink_files(self) -> list[str]:
-        if self.delinks_json is None:
-            return []
-        return [
-            file["delink_file"]
-            for module in self.delinks_json["modules"]
-            for file in module["files"]
-        ]
+        delink_files = [file['delink_file'] for file in self.files()]
+        return list(set(delink_files))
 
     def arm9_lcf_file(self) -> str:
         if self.delinks_json is None:
             return ""
         return self.delinks_json["arm9_lcf_file"]
 
-    def module_lcf_files(self) -> list[str]:
+    def arm9_objects_file(self) -> str:
         if self.delinks_json is None:
-            return []
-        return [module["lcf_file"] for module in self.delinks_json["modules"]]
+            return ""
+        return self.delinks_json["arm9_objects_file"]
 
 
 def can_run_dsd() -> bool:
@@ -372,7 +368,7 @@ def main():
         n.newline()
 
         n.rule(
-            name="mwld", command=f'{WINE} "{LD}" {LD_FLAGS} $extra_ld_flags $in -o $out'
+            name="mwld", command=f'{WINE} "{LD}" {LD_FLAGS} $extra_ld_flags @$objects_file $lcf_file -o $out'
         )
         n.newline()
 
@@ -551,34 +547,22 @@ def add_extract_build(n: ninja_syntax.Writer, project: Project):
 
 
 def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
-    n.comment("Link each module separately")
-    for module in project.modules():
-        lcf_file = module["lcf_file"]
-        objects_to_link = [file["object_to_link"] for file in module["files"]]
-        elf_file = module["elf_file"]
-        n.build(
-            inputs=objects_to_link + [lcf_file],
-            implicit=LD,
-            rule="mwld",
-            outputs=elf_file,
-            variables={
-                "extra_ld_flags": MODULE_LD_FLAGS,
-            },
-        )
-    n.newline()
-
-    n.comment("Link all modules together")
-    module_elf_files = [module["elf_file"] for module in project.modules()]
+    n.comment("Run linker")
+    objects_to_link = [file['object_to_link'] for file in project.files()]
     elf_file = str(project.arm9_o())
     lcf_file = project.arm9_lcf_file()
-    if len(module_elf_files) > 0:
+    objects_file = project.arm9_objects_file()
+
+    if len(objects_to_link) > 0:
         n.build(
-            inputs=module_elf_files + [lcf_file],
+            inputs=[*objects_to_link, lcf_file, objects_file],
             implicit=LD,
             rule="mwld",
             outputs=elf_file,
             variables={
                 "extra_ld_flags": ARM9_LD_FLAGS,
+                'lcf_file': str(lcf_file),
+                'objects_file': str(objects_file),
             },
         )
         n.newline()
@@ -650,7 +634,7 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
         n.newline()
 
         extension = source_file.suffix
-        ctx_file = str(project.game_build / source_file.with_suffix(f".ctx{extension}"))
+        ctx_file = str(src_obj_path.with_suffix(f".ctx{extension}"))
         n.build(
             inputs=str(source_file),
             rule="m2ctx",
@@ -695,18 +679,18 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
         n.build(inputs=delink_files, rule="phony", outputs="delink")
         n.newline()
 
-    lcf_files = project.module_lcf_files() + [project.arm9_lcf_file()]
-    if len(lcf_files) > 1:
-        n.build(
-            inputs=project.delinks_files + [str(rom_config)],
-            implicit=DSD,
-            rule="lcf",
-            outputs=lcf_files,
-            variables={
-                "config_path": str(project.arm9_config_yaml()),
-            },
-        )
-        n.newline()
+    lcf_file = project.arm9_lcf_file()
+    objects_file = project.arm9_objects_file()
+    n.build(
+        inputs=project.delinks_files + [str(rom_config)],
+        implicit=DSD,
+        rule="lcf",
+        outputs=[lcf_file, objects_file],
+        variables={
+            "config_path": str(project.arm9_config_yaml()),
+        },
+    )
+    n.newline()
 
 
 def add_disassemble_builds(n: ninja_syntax.Writer, project: Project):
@@ -772,9 +756,7 @@ def add_objdiff_builds(n: ninja_syntax.Writer, project: Project):
     )
     n.newline()
 
-    delink_files = [
-        file["delink_file"] for module in project.modules() for file in module["files"]
-    ]
+    delink_files = project.delink_files()
     n.build(
         inputs=["objdiff.json"],
         implicit=[OBJDIFF] + delink_files + project.source_object_files(),

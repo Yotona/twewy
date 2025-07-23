@@ -2350,7 +2350,7 @@ FS_LoadOverlayFile kind:function(arm,size=0x90) addr:0x0203ef98
 FS_ValidateOverlay kind:function(arm,size=0x94) addr:0x0203f028
 FS_StartOverlay kind:function(arm,size=0xf4) addr:0x0203f0bc
 FS_DestroyOverlay kind:function(arm,size=0xf0) addr:0x0203f1b0
-FS_UnloadOverlayFile kind:function(arm,size=0x10) addr:0x0203f2a0
+FS_StopOverlay kind:function(arm,size=0x10) addr:0x0203f2a0
 FS_LoadOverlay kind:function(arm,size=0x54) addr:0x0203f2b0
 FS_UnloadOverlay kind:function(arm,size=0x4c) addr:0x0203f304
 

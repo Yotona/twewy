@@ -57,7 +57,7 @@ libs/CriWare/src/acsvhl.c:
 libs/CriWare/src/criss.c:
     .text       start:0x02021728 end:0x02022A18
     .data       start:0x020659E0 end:0x02065B74
-    .bss        start:0x02071B00 end:0x02071CEC
+    .bss        start:0x02071B00 end:0x02071CF0
 
 src/SndMgr.c:
     .text       start:0x020268F0 end:0x02027294
