@@ -640,8 +640,7 @@ func_02015e5c kind:function(arm,size=0x6c) addr:0x02015e5c
 func_02015ec8 kind:function(arm,size=0x1c) addr:0x02015ec8
 func_02015ee4 kind:function(arm,size=0x30) addr:0x02015ee4
 func_02015f14 kind:function(arm,size=0x1c) addr:0x02015f14
-func_02015f30 kind:function(arm,size=0x28) addr:0x02015f30
-func_02015f58 kind:function(arm,size=0x4) addr:0x02015f58
+func_02015f30 kind:function(arm,size=0x2c) addr:0x02015f30
 func_02015f5c kind:function(arm,size=0x24) addr:0x02015f5c
 func_02015f80 kind:function(arm,size=0x8) addr:0x02015f80
 func_02015f88 kind:function(arm,size=0x2c) addr:0x02015f88
@@ -652,8 +651,7 @@ func_0201602c kind:function(arm,size=0x2c) addr:0x0201602c
 func_02016058 kind:function(arm,size=0x1c) addr:0x02016058
 func_02016074 kind:function(arm,size=0x48) addr:0x02016074
 func_020160bc kind:function(arm,size=0x1c) addr:0x020160bc
-func_020160d8 kind:function(arm,size=0x28) addr:0x020160d8
-func_02016100 kind:function(arm,size=0x4) addr:0x02016100
+func_020160d8 kind:function(arm,size=0x2c) addr:0x020160d8
 func_02016104 kind:function(arm,size=0x2c) addr:0x02016104
 func_02016130 kind:function(arm,size=0xc) addr:0x02016130
 func_0201613c kind:function(arm,size=0x24) addr:0x0201613c
@@ -2863,7 +2861,12 @@ data_0205bf54 kind:data(any) addr:0x0205bf54
 data_0205bf94 kind:data(any) addr:0x0205bf94
 data_0205bfd8 kind:data(any) addr:0x0205bfd8
 data_0205bfe8 kind:data(any) addr:0x0205bfe8
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/src/cvFs.c
+/////////////////////////////////////////////////////////////
 data_0205bff8 kind:data(any) addr:0x0205bff8
+
 data_0205bffc kind:data(any) addr:0x0205bffc
 data_0205c000 kind:data(any) addr:0x0205c000
 data_0205c044 kind:data(any) addr:0x0205c044
@@ -3160,20 +3163,24 @@ data_0206488c kind:data(any) addr:0x0206488c
 data_02064894 kind:data(any) addr:0x02064894
 data_020648b8 kind:data(any) addr:0x020648b8
 data_020648dc kind:data(any) addr:0x020648dc
-data_02064900 kind:data(any) addr:0x02064900
-data_02064928 kind:data(any) addr:0x02064928
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/src/cvFs.c
+/////////////////////////////////////////////////////////////
+@45 kind:data(any) addr:0x02064900 local
+@46 kind:data(any) addr:0x02064928 local
 data_02064950 kind:data(any) addr:0x02064950
 data_02064970 kind:data(any) addr:0x02064970
 data_02064990 kind:data(any) addr:0x02064990
 data_020649b4 kind:data(any) addr:0x020649b4
 data_020649d4 kind:data(any) addr:0x020649d4
 data_020649ec kind:data(any) addr:0x020649ec
-data_02064a0c kind:data(any) addr:0x02064a0c
-data_02064a28 kind:data(any) addr:0x02064a28
-data_02064a40 kind:data(any) addr:0x02064a40
-data_02064a5c kind:data(any) addr:0x02064a5c
-data_02064a74 kind:data(any) addr:0x02064a74
-data_02064a90 kind:data(any) addr:0x02064a90
+@72 kind:data(any) addr:0x02064a0c local
+@73 kind:data(any) addr:0x02064a28 local
+@91 kind:data(any) addr:0x02064a40 local
+@92 kind:data(any) addr:0x02064a5c local
+@110 kind:data(any) addr:0x02064a74 local
+@111 kind:data(any) addr:0x02064a90 local
 data_02064aa8 kind:data(any) addr:0x02064aa8
 data_02064ac4 kind:data(any) addr:0x02064ac4
 data_02064adc kind:data(any) addr:0x02064adc
@@ -3191,8 +3198,9 @@ data_02064c80 kind:data(any) addr:0x02064c80
 data_02064ca8 kind:data(any) addr:0x02064ca8
 data_02064ccc kind:data(any) addr:0x02064ccc
 data_02064cd4 kind:data(any) addr:0x02064cd4
-data_02064ce8 kind:data(any) addr:0x02064ce8
-data_02064cec kind:data(any) addr:0x02064cec
+@118 kind:data(any) addr:0x02064ce8 local
+@119 kind:data(any) addr:0x02064cec local
+
 data_02064cf4 kind:data(any) addr:0x02064cf4
 data_02064cf8 kind:data(any) addr:0x02064cf8
 data_02064d28 kind:data(any) addr:0x02064d28
@@ -3240,12 +3248,18 @@ data_02065298 kind:data(any) addr:0x02065298
 data_020652b0 kind:data(any) addr:0x020652b0
 data_020652b4 kind:data(any) addr:0x020652b4
 data_020652b8 kind:data(any) addr:0x020652b8
-data_020652ec kind:data(any) addr:0x020652ec
-data_020652fc kind:data(any) addr:0x020652fc
-data_02065330 kind:data(any) addr:0x02065330
-data_02065368 kind:data(any) addr:0x02065368
-data_02065398 kind:data(any) addr:0x02065398
-data_020653d4 kind:data(any) addr:0x020653d4
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/src/acssvr.c
+/////////////////////////////////////////////////////////////
+@42 kind:data(any) addr:0x020652ec local
+@43 kind:data(any) addr:0x020652fc local
+@73 kind:data(any) addr:0x02065330 local
+@107 kind:data(any) addr:0x02065368 local
+@108 kind:data(any) addr:0x02065398 local
+@109 kind:data(any) addr:0x020653d4 local
+
+
 data_0206540c kind:data(any) addr:0x0206540c
 data_02065440 kind:data(any) addr:0x02065440
 data_02065474 kind:data(any) addr:0x02065474

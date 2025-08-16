@@ -10,28 +10,23 @@ DMAFunc data_020636e8[16] = {
     func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980,
 };
 
-// Nonmatching
-// Scratch: Nk6jl
 void func_02001760(s32 size) {
-    char*      pcVar1;
-    GameState* state;
-
     if (size == 0) {
         size = 0x100;
     }
-    if ((char*)func_020049c0(&data_0206a9a4, data_02066a5c.data.unk_0C) == data_020636e4) {
+    if ((char*)func_020049c0(&data_0206a9a4, data_02066a5c->unk_0C) == data_020636e4) {
         func_020019ac();
-        if (data_02066a5c.data.size != size) {
-            func_020048b4(&data_0206a9a4, data_02066a5c.data.unk_0C);
-            data_02066a5c.data.unk_0C = NULL;
+        if (data_02066a5c->size != size) {
+            func_020048b4(&data_0206a9a4, data_02066a5c->unk_0C);
+            data_02066a5c->unk_0C = 0;
         }
     }
-
-    data_02066a5c.data.size = size;
-    if (data_02066a5c.data.unk_0C == 0) {
-        state = (GameState*)func_02004618(&data_0206a9a4, size * 16);
-        func_020049a8(&data_0206a9a4, state, data_020636e4);
-        data_02066a5c.data.unk_0C = state;
+    data_02066a5c->size = size;
+    if (data_02066a5c->unk_0C == 0) {
+        char* funcName = data_020636e4;
+        u32   buffer   = func_02004618(&data_0206a9a4, size * 0x10);
+        func_020049a8(&data_0206a9a4, buffer, funcName);
+        data_02066a5c->unk_0C = buffer;
     }
     func_02001810();
 }
@@ -39,11 +34,10 @@ void func_02001760(s32 size) {
 // Nonmatching
 // ScratcH: DRYhu
 void func_02001810(void) {
-    data_02066a5c.data.unk_00 = 0;
-    data_02066a5c.data.addr   = NULL;
-
-    for (s32 idx = 0; idx < 0x10; idx++) {
-        data_02066a5c.unk_10[idx] = 0;
+    data_02066a5c->unk_00 = 0;
+    data_02066a5c->addr   = NULL;
+    for (int i = 0; i < 0x10; i++) {
+        (&data_02066a5c[1].unk_00)[i] = 0;
     }
 }
 
@@ -109,15 +103,18 @@ void func_02001980(DMAStruct* data) {
 }
 
 void func_020019ac(void) {
+    int iVar1;
+
     DC_PurgeAll();
-
-    for (s32 idx = 0; idx < 0x10; idx++) {
-        if (data_02066a5c.unk_10[idx] != 0) {
-            data_020636e8[idx](data_02066a5c.unk_10[idx]);
+    iVar1 = 0;
+    do {
+        if ((u32*)(&data_02066a5c[1].unk_00)[iVar1] != NULL) {
+            (*data_020636e8[iVar1])((u32*)(&data_02066a5c[1].unk_00)[iVar1]);
         }
-    }
-
+        iVar1 = iVar1 + 1;
+    } while (iVar1 < 0x10);
     func_02001810();
+    return;
 }
 
 // Nonmatching
@@ -131,7 +128,7 @@ void func_020019f4(s32 funcIdx, u32 param_2, DMAStruct* data) {
     }
 
     local_20.unk_0C = 0;
-    local_20.size   = data->unk_00 / 256;
+    local_20.size   = (u32)(data->unk_00 & ~0xFF) >> 8;
 
     if ((data->unk_00 & 0xf0) == 0) {
         local_20.size -= 4;
@@ -142,7 +139,7 @@ void func_020019f4(s32 funcIdx, u32 param_2, DMAStruct* data) {
     if ((data->unk_00 & 0xf0) == 0) {
         local_20.addr = data->addr;
         DC_PurgeRange(local_20.addr, local_20.size);
-        data_020636e8[funcIdx](&local_20.unk_00);
+        data_020636e8[funcIdx](&local_20);
         return;
     }
 

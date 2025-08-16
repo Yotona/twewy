@@ -48,39 +48,34 @@ void ACSSVR_Finish(ACSSVR* svr) {
     }
 }
 
-ACSSND* ACSSVR_CreatSnd(ACSSVR* svr, s32* param_2, ACSSND* snd, u32 workSize) {
-    s32 sndCount;
-
-    ACSSND* snd_00 = NULL;
+// Nonmatching
+ACSSND* ACSSVR_CreatSnd(ACSSVR* svr, s32* param_2, ACSSND* work, u32 workSize) {
+    s32     sndCount;
+    ACSSND* snd = NULL;
 
     if (func_0201f520(svr) == FALSE) {
         func_0201f55c("E2003053002 ACSSVR_CreatSnd : Not initialized.");
         return NULL;
     }
-
-    sndCount = 0;
-    while (sndCount < 4) {
+    for (sndCount = 0; sndCount < 4; sndCount++) {
         if (svr->snd[sndCount] == NULL) {
-            svr->snd[sndCount] = snd_00 = ACSSND_Create(snd, workSize);
-            snd++;
+            svr->snd[sndCount] = snd = ACSSND_Create(work, workSize);
+            work++;
             workSize -= sizeof(ACSSND);
             break;
         }
-        sndCount++;
     }
-
     if (sndCount == 4) {
         func_0201f55c("E2003053003 ACSSVR_CreatSnd : Can\'t create sound any more.");
-        func_0201f18c(svr, snd_00);
+        func_0201f18c(svr, snd);
         return NULL;
     }
-
-    if (ACSSND_Init(snd_00, param_2, snd, workSize) == FALSE) {
-        func_0201f55c("E2003053004 ACSSVR_CreatSnd : Failed to create sound.");
-        func_0201f18c(svr, snd_00);
-        return NULL;
+    if (ACSSND_Init(snd, param_2, work, workSize) != 0) {
+        return snd;
     }
-    return snd_00;
+    func_0201f55c("E2003053004 ACSSVR_CreatSnd : Failed to create sound.");
+    func_0201f18c(svr, snd);
+    return NULL;
 }
 
 void func_0201f18c(ACSSVR* svr, ACSSND* snd) {

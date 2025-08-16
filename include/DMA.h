@@ -10,11 +10,7 @@ typedef struct {
     /* 0x0C */ u32   unk_0C;
 } DMAStruct;
 
-typedef struct {
-    /* 0x00 */ DMAStruct data;
-    /* 0x10 */ s32       unk_10[0x10];
-} UnkStruct_02066a5c;
-extern UnkStruct_02066a5c data_02066a5c;
+extern DMAStruct data_02066a5c[5];
 
 void func_02001810(void);
 void func_02001848(DMAStruct* data);

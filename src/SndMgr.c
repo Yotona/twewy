@@ -124,9 +124,9 @@ void func_02026c04(void) {
             sndMgr.seIdxVolume[seIdx] = func_02026bdc(data_0205cb3c[seIdx].se);
         } else {
             if (uVar2 != seqArc) {
+                uVar2 = seqArc;
                 func_0203155c(sndMgr.unk_0004, 1);
                 func_02027040(seqArc);
-                uVar2 = seqArc;
             }
             sndMgr.seIdxVolume[seIdx] = func_02026bec(seqArc, data_0205cb3c[seIdx].se);
         }

@@ -59,18 +59,15 @@ s32 func_020212a0(ACSVHL* vhl) {
 }
 
 void func_020212b0(ACSVHL* vhl, s32 param_2) {
-    vhl->svr = param_2;
+    vhl->snd = param_2;
 }
 
 void func_020212b8(ACSVHL* vhl, s32 param_2) {
-    BOOL    bVar1;
-    s32     idx;
-    ACSSND* snd;
-
-    bVar1 = FALSE;
+    s32  idx;
+    BOOL bVar1 = FALSE;
 
     for (idx = 0; idx < 4; idx++) {
-        snd = vhl->svr->snd[idx];
+        ACSSND* snd = vhl->snd[idx];
         if (snd != NULL && func_0201f9b4(snd) != 0 && func_0201fb58(snd) == 2) {
             switch (ACSSND_GetStat(snd)) {
                 case 1:
@@ -124,7 +121,7 @@ void func_020212b8(ACSVHL* vhl, s32 param_2) {
 }
 
 void func_02021488(ACSVHL* vhl) {
-    vhl->svr    = NULL;
+    vhl->snd    = NULL;
     vhl->unk_04 = NULL;
     func_02049118(&vhl->fdr, 0, sizeof(ACSFDR));
     vhl->unk_4C = 0;

@@ -33,10 +33,13 @@ libs/CriWare/src/adxt.c:
 
 libs/CriWare/src/cvFs.c:
     .text       start:0x0201AD70 end:0x0201B8DC
+    .rodata     start:0x0205BFF8 end:0x0205BFFC
+    .data       start:0x02064900 end:0x02064CF4
     .bss        start:0x020703E0 end:0x02070774
 
 libs/CriWare/src/acssvr.c:
     .text       start:0x0201EF48 end:0x0201f568
+    .data       start:0x020652EC end:0x0206540C
 
 libs/CriWare/src/acssnd.c:
     .text       start:0x0201F568 end:0x02020754
@@ -51,6 +54,7 @@ complete
     .data       start:0x02065844 end:0x020658EC
 
 libs/CriWare/src/acsvhl.c:
+complete
     .text       start:0x02021184 end:0x02021534
     .data       start:0x020658EC end:0x020659BC
 

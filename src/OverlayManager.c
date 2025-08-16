@@ -19,7 +19,6 @@ void func_02006f54(Overlay* overlay) {
     func_02006f78(overlay, -0x7fffffff, func_02006f50, NULL, 0);
 }
 
-/* Nonmatching: Registers are not preserved correctly (scratch: 8OwUZ) */
 void func_02006f78(Overlay* overlay, s32 overlayId, OverlayCB callback, GameState* state, s32 param_5) {
     OverlayData* currentData = &overlay->unk_14[overlay->unk_10];
 
@@ -28,7 +27,8 @@ void func_02006f78(Overlay* overlay, s32 overlayId, OverlayCB callback, GameStat
     currentData->gState = state;
     currentData->unk_0C = param_5;
 
-    overlay->data   = &overlay->unk_14[overlay->unk_10];
+    currentData     = &overlay->unk_14[overlay->unk_10];
+    overlay->data   = currentData;
     overlay->cb     = currentData->tag.cb;
     overlay->gState = currentData->gState;
     overlay->unk_10++;
@@ -53,7 +53,7 @@ void func_02006fc4(OverlayTag* tag, Overlay* overlay) {
     overlay->gState = previousData->gState;
 
     if (overlay->unk_10 == 0) {
-        func_02006f78(overlay, -0x7fffffff, func_02006f50, NULL, 0);
+        func_02006f78(overlay, 0x80000001, func_02006f50, NULL, 0);
     }
 }
 

@@ -24,7 +24,7 @@ BOOL ACSSVR_Init(ACSSVR* svr);
 
 void ACSSVR_Finish(ACSSVR* svr);
 
-ACSSND* ACSSVR_CreatSnd(ACSSVR* svr, s32* param_2, ACSSND* snd, u32 workSize);
+ACSSND* ACSSVR_CreatSnd(ACSSVR* svr, s32* param_2, ACSSND* work, u32 workSize);
 
 void func_0201f18c(ACSSVR* svr, ACSSND* snd);
 

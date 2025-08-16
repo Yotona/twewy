@@ -52,8 +52,8 @@ args = parser.parse_args()
 # Config
 GAME = "twewy"
 DSD_VERSION = "v0.10.2"
-WIBO_VERSION = "0.6.16"
-OBJDIFF_VERSION = "v2.7.1"
+WIBO_VERSION = "0.7.0"
+OBJDIFF_VERSION = "v3.0.0"
 MWCC_VERSION = "2.0/sp1p5"
 DECOMP_ME_COMPILER = "mwcc_30_131"
 
@@ -62,7 +62,7 @@ CC_FLAGS = " ".join(
         "-O4,p",  # Optimize maximally for performance
         "-enum int",  # Use int-sized enums
         "-char signed",  # Char type is signed
-        "-str noreuse",  # Equivalent strings are different objects
+        "-str reuse",  # Equivalent strings are the same objects
         "-proc arm946e",  # Target processor
         "-gccext,on",  # Enable GCC extensions
         "-fp soft",  # Compute float operations in software
@@ -245,7 +245,7 @@ class Project:
         return self.delinks_json["arm9_objects_file"]
 
 
-def can_run_dsd() -> bool:
+def check_can_run_dsd() -> bool:
     try:
         output = subprocess.run(
             [DSD, "--version"], capture_output=True, text=True, check=True
@@ -255,34 +255,11 @@ def can_run_dsd() -> bool:
             version = "v" + version
 
         # If it's not the correct version, Ninja will download it and then rerun this script
-        return version == DSD_VERSION
+        return version == DSD_VERSION or args.dsd is not None
     except subprocess.CalledProcessError:
         return False
     except FileNotFoundError:
         return False
-
-
-def can_run_all_tools() -> bool:
-    """Check if all required tools are available and can be executed."""
-    # Check dsd
-    if not can_run_dsd():
-        return False
-
-    # Check compiler tools if not provided by user
-    if args.compiler is None:
-        if not Path(CC).exists() or not Path(LD).exists():
-            return False
-
-    # Check objdiff
-    if not Path(OBJDIFF).exists():
-        return False
-
-    # Check wibo/wine on non-Windows platforms
-    if platform.system != "windows":
-        if not Path(WINE).exists():
-            return False
-
-    return True
 
 
 def main():
@@ -290,27 +267,24 @@ def main():
         return
 
     delinks_json = None
-    all_tools_available = can_run_all_tools()
-
-    if all_tools_available:
-        try:
-            out = subprocess.run(
-                [
-                    DSD,
-                    "--force-color",
-                    "json",
-                    "delinks",
-                    "--config-path",
-                    config_path / args.version / "arm9" / "config.yaml",
-                ],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-            delinks_json = json.loads(out.stdout)
-        except subprocess.CalledProcessError as e:
-            print(f"Warning: Failed to run dsd for delinks.json: {e}")
-            all_tools_available = False
+    can_run_dsd = check_can_run_dsd()
+    if can_run_dsd:
+        out = subprocess.run(
+            [
+                DSD,
+                "--force-color",
+                "json",
+                "delinks",
+                "--config-path",
+                config_path / args.version / "arm9" / "config.yaml",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if out.returncode != 0:
+            print(f"Error running dsd:\n{out.stderr.strip()}")
+            return
+        delinks_json = json.loads(out.stdout)
 
     project = Project(args.version, platform=platform, delinks_json=delinks_json)
 
@@ -356,7 +330,8 @@ def main():
             transform_dep = "tools/transform_dep.py"
             mwcc_cmd += f" && $python {transform_dep} $basefile.d $basefile.d"
             mwcc_implicit.append(transform_dep)
-            mwcc_implicit.append(WINE)
+            if WINE == DEFAULT_WIBO_PATH:
+                mwcc_implicit.append(WINE)
         n.rule(
             name="mwcc",
             command=mwcc_cmd,
@@ -425,18 +400,11 @@ def main():
         )
         n.newline()
 
-        n.rule(
-            name="configure_and_build",
-            command=f"{PYTHON} tools/configure.py {configure_cmdline} && ninja",
-            generator=True,
-        )
-        n.newline()
+        add_download_tool_builds(n, project)
+        add_configure_build(n, project)
 
-        tool_targets = add_download_tool_builds(n, project)
-        add_extract_build(n, project)
-
-        # Only generate full build targets if we have complete project information
-        if project.delinks_json is not None:
+        if can_run_dsd:
+            add_extract_build(n, project)
             add_delink_and_lcf_builds(n, project)
             add_disassemble_builds(n, project)
             add_mwcc_builds(n, project, mwcc_implicit)
@@ -445,34 +413,16 @@ def main():
             add_objdiff_builds(n, project)
             add_apply_build(n, project)
 
-            # Full build defaults
             n.default(["objdiff", "check", "sha1", "report"])
         else:
-            # Minimal configuration - set up automatic workflow
-            # When tools are missing, default to a target that downloads tools, reconfigures, and builds
-            if tool_targets:
-                n.build(
-                    inputs=tool_targets,
-                    implicit=[str(Path(__file__).resolve())],
-                    rule="configure_and_build",
-                    outputs="auto-setup-and-build",
-                )
-                n.comment("Automatic tool download, reconfiguration, and build")
-                n.newline()
-
-                # Default to auto-setup-and-build, which will download tools, regenerate config, and build
-                n.default(["auto-setup-and-build"])
-            else:
-                # No tools to download, just reconfigure
-                n.default([])
-
-        add_configure_build(n, project)
+            n.default(["download_tools"])
 
 
-def add_download_tool_builds(n: ninja_syntax.Writer, project: Project) -> list[str]:
-    tool_targets = []
+def add_download_tool_builds(n: ninja_syntax.Writer, project: Project):
+    downloads: list[str] = []
 
     if args.dsd is None:
+        downloads.append(DSD)
         n.build(
             rule="download_tool",
             outputs=DSD,
@@ -482,9 +432,9 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project) -> list[s
                 "path": DSD,
             },
         )
-        tool_targets.append(DSD)
         n.newline()
 
+    downloads.append(OBJDIFF)
     n.build(
         rule="download_tool",
         outputs=OBJDIFF,
@@ -494,10 +444,10 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project) -> list[s
             "path": OBJDIFF,
         },
     )
-    tool_targets.append(OBJDIFF)
     n.newline()
 
     if args.compiler is None:
+        downloads.extend([CC, LD])
         n.build(
             rule="download_tool",
             outputs=[CC, LD],
@@ -507,10 +457,10 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project) -> list[s
                 "path": str(tools_path),
             },
         )
-        tool_targets.extend([CC, LD])
         n.newline()
 
     if project.platform.system != "windows" and WINE == DEFAULT_WIBO_PATH:
+        downloads.append(WINE)
         n.build(
             rule="download_tool",
             outputs=WINE,
@@ -520,18 +470,14 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project) -> list[s
                 "path": WINE,
             },
         )
-        tool_targets.append(WINE)
         n.newline()
 
-    if tool_targets:
-        n.build(
-            inputs=tool_targets,
-            rule="phony",
-            outputs="setup",
-        )
-        n.newline()
-
-    return tool_targets
+    n.build(
+        inputs=downloads,
+        rule="phony",
+        outputs="download_tools",
+    )
+    n.newline
 
 
 def add_extract_build(n: ninja_syntax.Writer, project: Project):
@@ -775,26 +721,15 @@ def add_objdiff_builds(n: ninja_syntax.Writer, project: Project):
 
 def add_configure_build(n: ninja_syntax.Writer, project: Project):
     this_file = str(Path(__file__).resolve())
-
-    # Build implicit dependencies list
-    implicit_deps = [this_file]
-
-    # Add DSD config files if they exist
-    if project.delinks_json is not None:
-        implicit_deps.extend(project.dsd_configs())
-
-    # Only add DSD as a dependency if we expect it to be available
-    if args.dsd is not None:  # User provided DSD path
-        implicit_deps.append(DSD)
-    elif can_run_dsd():  # DSD is already available and correct version
-        implicit_deps.append(DSD)
-    # If DSD will be downloaded, don't add it as implicit dependency
-    # to avoid forcing configure to wait for DSD download initially
-
     n.build(
         outputs="build.ninja",
         rule="configure",
-        implicit=implicit_deps,
+        implicit=[
+            this_file,
+            # Require dsd to exist when rerunning configure.py
+            DSD,
+            *project.dsd_configs(),
+        ],
     )
 
 
