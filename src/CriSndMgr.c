@@ -1,7 +1,7 @@
 #include "CriSndMgr.h"
-#include "adxt.h"
 #include "common_data.h"
-#include <criss.h>
+#include <CriWare/adxt.h>
+#include <CriWare/criss.h>
 
 CriSndMgr criSndMgr;
 

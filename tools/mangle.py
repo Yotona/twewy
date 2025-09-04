@@ -13,8 +13,7 @@ cc_path = tools_dir / "mwccarm" / "2.0" / "sp1p5" / "mwccarm.exe"
 root_dir = tools_dir.parent
 include_dir = root_dir / "include"
 libs_dir = root_dir / "libs"
-libnitrosdk_include_dir = libs_dir / "NitroSDK" / "include"
-libcriware_include_dir = libs_dir / "CriWare" / "include"
+libs_include_dir = libs_dir / "include"
 
 if platform.system() == "Windows":
     cc = [str(cc_path)]
@@ -49,9 +48,7 @@ cc.extend(
         "-i",
         include_dir,
         "-i",
-        libnitrosdk_include_dir,
-        "-i",
-        libcriware_include_dir,
+        libs_include_dir,
         args.file,
     ]
 )

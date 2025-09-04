@@ -19,46 +19,46 @@ src/BinMgr.c:
     .data       start:0x020637C0 end:0x020637E4
     .bss        start:0x0206B3B8 end:0x0206B3BC
 
-libs/CriWare/src/adxsjd.c:
+libs/CriWare/adxsjd.c:
     .text       start:0x020148DC end:0x02015AAC
 
-libs/CriWare/src/adxstm.c:
+libs/CriWare/adxstm.c:
     .text       start:0x02015E10 end:0x020168F4
     .data       start:0x02063A90 end:0x02063AE8
     .bss        start:0x0206C398 end:0x0206C798
 
-libs/CriWare/src/adxt.c:
+libs/CriWare/adxt.c:
     .text       start:0x020168F4 end:0x02018CDC
     .data       start:0x02063AF0 end:0x02063F74
 
-libs/CriWare/src/cvFs.c:
+libs/CriWare/cvFs.c:
     .text       start:0x0201AD70 end:0x0201B8DC
     .rodata     start:0x0205BFF8 end:0x0205BFFC
     .data       start:0x02064900 end:0x02064CF4
     .bss        start:0x020703E0 end:0x02070774
 
-libs/CriWare/src/acssvr.c:
+libs/CriWare/acssvr.c:
     .text       start:0x0201EF48 end:0x0201f568
     .data       start:0x020652EC end:0x0206540C
 
-libs/CriWare/src/acssnd.c:
+libs/CriWare/acssnd.c:
     .text       start:0x0201F568 end:0x02020754
 
-libs/CriWare/src/acsfdr.c:
+libs/CriWare/acsfdr.c:
     .text       start:0x02020754 end:0x02020F1C
 
-libs/CriWare/src/acssbadx.c:
+libs/CriWare/acssbadx.c:
 complete
     .text       start:0x02020F1C end:0x02021184
     .rodata     start:0x0205C094 end:0x0205C0D8
     .data       start:0x02065844 end:0x020658EC
 
-libs/CriWare/src/acsvhl.c:
+libs/CriWare/acsvhl.c:
 complete
     .text       start:0x02021184 end:0x02021534
     .data       start:0x020658EC end:0x020659BC
 
-libs/CriWare/src/criss.c:
+libs/CriWare/criss.c:
     .text       start:0x02021728 end:0x02022A18
     .data       start:0x020659E0 end:0x02065B74
     .bss        start:0x02071B00 end:0x02071CF0
@@ -78,7 +78,29 @@ src/cache.c:
 complete
     .text       start:0x02039784 end:0x020398B0
 
-libs/NitroSDK/src/fs_overlay.c:
+libs/NitroSDK/fs/overlay.c:
     .text       start:0x0203ED24 end:0x0203F350
     .rodata     start:0x0206314C end:0x0206318C
     .data       start:0x0206627C end:0x02066284
+
+libs/MSL/Common/ansi_files.c:
+complete
+    .text       start:0x02048DF0 end:0x02048E58
+    .data       start:0x020663D8 end:0x020664BC
+    .bss        start:0x02082160 end:0x02082460
+
+libs/MSL/Common/buffer_io.c:
+complete
+    .text       start:0x02048E58 end:0x02048F14
+
+libs/MSL/Common/file_io.c:
+    .text       start:0x02048F14 end:0x02048FFC
+
+libs/MSL/Runtime/console_io.c:
+complete
+    .text       start:0x02057034 end:0x020570F8
+
+libs/MSL/Runtime/StaticInitializers.cpp:
+complete
+    .text       start:0x02058734 end:0x020587A4
+    .bss        start:0x02082494 end:0x020824a0

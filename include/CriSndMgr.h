@@ -2,7 +2,7 @@
 #define CRISNDMGR_H
 
 #include "game.h"
-#include <criss.h>
+#include <CriWare/criss.h>
 #include <types.h>
 
 typedef struct {

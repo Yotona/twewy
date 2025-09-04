@@ -20,8 +20,7 @@ args = parser.parse_args()
 CXX_FLAGS = [
     '-nostdinc',
     '-Iinclude',
-    '-Ilibs/NitroSDK/include',
-    '-Ilibs/CriWare/include',
+    '-Ilibs/include',
 ]
 
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))
