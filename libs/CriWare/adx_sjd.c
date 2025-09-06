@@ -3,10 +3,14 @@
 BOOL    data_0206c0c0;
 ADXSJD* data_0206c0c8;
 
+ADXSJD adxsjd_obj[16] = {0};
+
 void func_0201575c(ADXSJD* sjd);
 void func_0201562c(ADXSJD* sjd);
 
 s32 func_02015aa4(ADXSJD* sjd);
+
+void* adxsjd_get_wr(ADXSJD sjd, s32* arg1, s32* arg2, s32* arg3);
 
 void ADXSJD_Init(void) {}
 
@@ -26,42 +30,91 @@ void ADXSJD_Clear(ADXSJD* sjd) {
     sjd->unk_AC = 0;
 }
 
-ADXSJD* ADXSJD_Create() {}
+ADXSJD* ADXSJD_Create(SJ* sj, s32 maxChans, SJ** sjo) {
+    ADXSJD* sjd;
+    SJ*     out;
+    void*   buf_ptr;
+    s32     i;
+    s32     j;
+    s32     buf_size;
+    s32     xtr_size;
+
+    out = sjo[0];
+
+    for (i = 0; i < 4; i++) {
+        if (adxsjd_obj[i].used == FALSE) {
+            break;
+        }
+    }
+    if (i == 4) {
+        return NULL;
+    }
+
+    sjd      = &adxsjd_obj[i];
+    buf_ptr  = SJRBF_GetBufPtr(out);
+    buf_size = SJRBF_GetBufSize(out) / 2;
+    xtr_size = SJRBF_GetXtrSize(out) / 2;
+
+    sjd->adxb = ADXB_Create(maxChans, buf_ptr, buf_size, buf_size + xtr_size);
+    if (sjd->adxb == NULL) {
+        return NULL;
+    }
+
+    ADXB_EntryGetWrFunc(sjd->adxb, adxsjd_get_wr, sjd);
+
+    sjd->sji    = sj;
+    sjd->maxnch = maxChans;
+
+    for (j = 0; j < maxChans; j++) {
+        sjd->sjo[i] = sjo[i];
+    }
+
+    sjd->state = 0;
+    ADXSJD_Clear(sjd);
+    sjd->unk_48 = 0;
+    sjd->unk_4C = 0;
+    sjd->unk_50 = 0;
+    sjd->unk_54 = 0;
+    sjd->used   = TRUE;
+    return sjd;
+}
 
 void ADXSJD_Destroy(ADXSJD* sjd) {
-    void* puVar1;
-
     if (sjd == NULL) {
         return;
     }
-    puVar1 = sjd->unk_04;
-    if (puVar1 != NULL) {
-        sjd->unk_04 = NULL;
-        func_02012408(puVar1);
+
+    ADXB* adxb = sjd->adxb;
+    if (adxb != NULL) {
+        sjd->adxb = NULL;
+        ADXB_Destroy(adxb);
     }
     ADXCRS_Lock();
-    func_02049118(sjd, 0, sizeof(ADXSJD));
+    memset(sjd, 0, sizeof(ADXSJD));
     ADXCRS_Unlock();
 }
 
-s8 func_02014b20(ADXSJD* sjd) {
-    return sjd->unk_01;
+s8 ADXSJD_GetStat(ADXSJD* sjd) {
+    return sjd->state;
 }
 
-void func_02014b28(ADXSJD* sjd, SJ* sj) {}
+void ADXSJD_SetInSj(ADXSJD* sjd, SJ* sj) {
+    sjd->sji = sj;
+    ADXB_SetAhxInSj(sjd->adxb, sj);
+}
 
 void func_02014b3c() {}
 
 void func_02014b50() {}
 
-void func_02014b60(ADXSJD* sjd) {
+void ADXSJD_Start(ADXSJD* sjd) {
     ADXSJD_Clear(sjd);
-    sjd->unk_01 = 1;
+    sjd->state = 1;
 }
 
-void func_02014b78(ADXSJD* sjd) {
-    func_02012ac8(sjd->unk_04);
-    sjd->unk_01 = 0;
+void ADXSJD_Stop(ADXSJD* sjd) {
+    ADXB_Stop(sjd->adxb);
+    sjd->state = 0;
 }
 
 void func_02014b94(ADXSJD* sjd) {}
@@ -73,7 +126,7 @@ void func_02014f44() {}
 void func_02015344() {}
 
 void func_020154f0(ADXSJD* sjd) {
-    void* pvVar4 = sjd->unk_04;
+    void* pvVar4 = sjd->adxb;
     s32   iVar1  = func_020128a8(pvVar4);
     s32   iVar2  = func_02012b10(pvVar4);
     s32   iVar3  = func_02012b18(pvVar4);
@@ -96,9 +149,9 @@ void func_020155c0(ADXSJD* sjd) {
         func_0201562c(sjd);
         ADXCRS_Unlock();
     }
-    if (sjd->unk_01 == 2) {
+    if (sjd->state == 2) {
         func_02015554(sjd);
-    } else if (sjd->unk_01 == 1) {
+    } else if (sjd->state == 1) {
         func_02014b94(sjd);
     }
     if (sjd->unk_AC > 0) {
@@ -126,7 +179,7 @@ void func_020158f4(ADXSJD* sjd, s32 param_2) {
     sjd->unk_34 = param_2;
 }
 
-void func_020158fc(ADXSJD* sjd, s32 param_2) {
+void ADXSJD_SetLnkSw(ADXSJD* sjd, s32 param_2) {
     sjd->unk_A4 = param_2;
 }
 
@@ -149,15 +202,15 @@ void func_02015920(ADXSJD* sjd, s32 param_2) {
 
 void func_02015928() {}
 
-void func_02015938() {}
+void ADXSJD_GetSfreq() {}
 
 void func_02015948() {}
 
-s32 func_02015958(ADXSJD* sjd) {}
+s32 ADXSJD_GetOutBps(ADXSJD* sjd) {}
 
 void func_02015968() {}
 
-void func_02015978() {}
+void ADXSJD_GetTotalNumSmpl() {}
 
 void func_02015988() {}
 
@@ -165,7 +218,7 @@ void func_02015998() {}
 
 s32 func_020159a8(ADXSJD* sjd) {
     if (sjd != NULL) {
-        return func_020128c0(sjd->unk_04);
+        return func_020128c0(sjd->adxb);
     }
     return 0;
 }
@@ -174,7 +227,12 @@ void func_020159c4() {}
 
 void func_020159d4() {}
 
-void func_020159e4() {}
+s32 ADXSJD_GetDefOutVol(ADXSJD* sjd) {
+    if (ADXB_GetAinfLen(sjd->adxb) > 0 && ((u32)sjd->state - 2) <= 1) {
+        return ADXB_GetDefOutVol(sjd->adxb);
+    }
+    return 0;
+}
 
 void func_02015a2c() {}
 

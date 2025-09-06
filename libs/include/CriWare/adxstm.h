@@ -57,7 +57,7 @@ typedef struct {
 
 void func_02015e5c(ADXSTM* stm, const char* filename, s32, s32, s32, s32);
 
-s32 func_0201688c(ADXSTM* stm, s32 param_2, s32 param_3);
+s32 ADXSTM_SetBufSize(ADXSTM* stm, s32 param_2, s32 param_3);
 
 void func_020168d0(void);
 

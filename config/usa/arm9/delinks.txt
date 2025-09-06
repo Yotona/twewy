@@ -19,7 +19,17 @@ src/BinMgr.c:
     .data       start:0x020637C0 end:0x020637E4
     .bss        start:0x0206B3B8 end:0x0206B3BC
 
-libs/CriWare/adxsjd.c:
+libs/CriWare/adx_crs.c:
+complete
+    .text       start:0x02012F70 end:0x02012F88
+
+libs/CriWare/adx_errs.c:
+complete
+    .text       start:0x020142DC end:0x02014528
+    .data       start:0x020638E4 end:0x020638F8
+    .bss        start:0x0206BC3C end:0x0206BD64
+
+libs/CriWare/adx_sjd.c:
     .text       start:0x020148DC end:0x02015AAC
 
 libs/CriWare/adxstm.c:
@@ -27,9 +37,14 @@ libs/CriWare/adxstm.c:
     .data       start:0x02063A90 end:0x02063AE8
     .bss        start:0x0206C398 end:0x0206C798
 
-libs/CriWare/adxt.c:
-    .text       start:0x020168F4 end:0x02018CDC
-    .data       start:0x02063AF0 end:0x02063F74
+libs/CriWare/adx_tlk.c:
+    .text       start:0x020168F4 end:0x02017BC0
+    .data       start:0x02063AE8 end:0x02063DA8
+
+libs/CriWare/adx_tlk2.c:
+complete
+    .text       start:0x02017BC0 end:0x02017F80
+    .data       start:0x02063DA8 end:0x02063EDC
 
 libs/CriWare/cvFs.c:
     .text       start:0x0201AD70 end:0x0201B8DC

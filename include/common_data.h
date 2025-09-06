@@ -3,7 +3,7 @@
 
 #include <types.h>
 
-extern s32 data_0206a9a4;  // Global memory allocator handle
+extern s32 data_0206a9a4; // Global memory allocator handle
 
 extern s32 data_0205c9b0;
 

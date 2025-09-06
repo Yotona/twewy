@@ -162,7 +162,7 @@ void func_020209a8(ACSFDR* fdr) {
 s32 func_02020a40() {}
 
 s32 func_02020a88(ACSFDR* fdr, s32 param_2) {
-    u32 uVar1;
+    f32 uVar1;
     f32 fVar2;
     f32 fVar3;
     s64 lVar6;
@@ -177,42 +177,34 @@ s32 func_02020a88(ACSFDR* fdr, s32 param_2) {
         switch (fdr->unk_18) {
             case 0:
             default:
-                uVar1 = func_02055b38(func_02055fe8(param_2), 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                lVar6 = (f32)param_2 / 3238200;
                 uVar7 = func_0205308c(lVar6);
                 uVar7 = func_02054bfc(0, 3.640625f, uVar7);
                 fVar2 = func_0205494c(uVar7);
                 break;
             case 1:
-                uVar1 = func_02055b38(func_02055fe8(param_2), 3238200);
-                uVar1 = func_02056078(960.0f, uVar1);
+                uVar1 = 960.0f * ((f32)param_2 / 3238200);
                 fVar2 = func_020554c8(-960.0f, uVar1);
                 break;
             case 2:
-                uVar1 = func_02055fe8(param_2);
-                uVar1 = func_02056078(1.5707964f, uVar1);
-                uVar1 = func_02055b38(uVar1, 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                lVar6 = (1.5707964f * param_2) / 3238200;
                 uVar1 = func_02052f00(lVar6);
                 uVar1 = func_0205494c(uVar1);
-                uVar1 = func_02056078(3238200, uVar1);
-                uVar1 = func_02055b38(uVar1, 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                uVar1 = 3238200 * uVar1;
+                uVar1 /= 3238200;
+                lVar6 = uVar1;
                 uVar7 = func_0205308c(lVar6);
                 uVar7 = func_02054bfc(0, 3.640625f, uVar7);
                 fVar2 = func_0205494c(uVar7);
                 break;
             case 3:
-                uVar1 = func_02055fe8(param_2);
-                uVar1 = func_02056078(1.5707964f, uVar1);
-                uVar1 = func_02055b38(uVar1, 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                lVar6 = (1.5707964f * param_2) / 3238200;
                 uVar1 = func_020528a8(lVar6);
                 uVar1 = func_0205494c(uVar1);
                 uVar1 = func_02056264(1, uVar1);
-                uVar1 = func_02056078(3238200, uVar1);
-                uVar1 = func_02055b38(uVar1, 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                uVar1 = 3238200 * uVar1;
+                uVar1 /= 3238200;
+                lVar6 = uVar1;
                 uVar7 = func_0205308c(lVar6);
                 uVar7 = func_02054bfc(0, 3.640625f, uVar7);
                 fVar2 = (f32)func_0205494c(uVar7);
@@ -220,10 +212,10 @@ s32 func_02020a88(ACSFDR* fdr, s32 param_2) {
             case 4:
                 uVar7 = func_0205308c(0, 4.4375f);
                 fVar3 = (f32)func_0205494c(uVar7);
-                uVar1 = func_02055fe8(3238200 - param_2);
-                uVar1 = func_02056078(fVar3, uVar1);
-                uVar1 = func_02055b38(uVar1, 3238200);
-                lVar6 = func_02055ef0(uVar1);
+                uVar1 = (f32)(3238200 - param_2);
+                uVar1 = fVar3 * uVar1;
+                uVar1 /= 3238200;
+                lVar6 = uVar1;
                 uVar8 = func_02053098(0, 2.5625f, lVar6);
                 uVar1 = func_0205494c(uVar8);
                 fVar2 = (f32)func_02056264(0, uVar1);
@@ -236,7 +228,7 @@ s32 func_02020a88(ACSFDR* fdr, s32 param_2) {
         if (3 < fdr->unk_18) {
             fVar2 = 0.0f;
         }
-        return func_02055f74(fVar2);
+        return fVar2;
     }
     return 0;
 }

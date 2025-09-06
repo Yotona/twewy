@@ -11,4 +11,4 @@
 #define BIOS_FRAME_COUNTER *(u32*)0x027FFC3C
 #define BIOS_BOOT_MODE     *(u16*)0x027FFC40 // 1 = Normal Boot, 2 = Booted through DS Download Play via WiFi
 
-#endif // BIOS_H
+#endif                                       // BIOS_H

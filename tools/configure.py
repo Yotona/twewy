@@ -62,7 +62,7 @@ CC_FLAGS = " ".join(
         "-O4,p",  # Optimize maximally for performance
         "-enum int",  # Use int-sized enums
         "-char signed",  # Char type is signed
-        "-str reuse",  # Equivalent strings are the same objects
+        "-str noreuse",  # Equivalent strings are the same objects
         "-proc arm946e",  # Target processor
         "-gccext,on",  # Enable GCC extensions
         "-fp soft",  # Compute float operations in software

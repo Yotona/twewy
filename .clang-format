@@ -21,7 +21,9 @@ AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: LeftWithLastLine
-AlignTrailingComments: Leave
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 1
 
 # Line Breaks
 AllowShortBlocksOnASingleLine: Empty

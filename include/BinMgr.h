@@ -6,25 +6,25 @@
 extern struct GameState;
 
 typedef struct Bin {
-    /* 0x00000 */ struct Bin* next;         // Next node in linked list
-    /* 0x00004 */ u16         unk_04;       // Unknown field
-    /* 0x00006 */ u16         unk_06;       // Unknown field
-    /* 0x00008 */ u16         flags;        // Status flags: bit 0=allocated, bit 1=secondary data, bit 2=compressed
-    /* 0x0000A */ u16         refCount;     // Reference counter for memory management
-    /* 0x0000C */ u32         id;           // Unique resource identifier
-    /* 0x00010 */ u32         size;         // Size of resource data in bytes
-    /* 0x00014 */ void*       data;         // Pointer to primary resource data
+    /* 0x00000 */ struct Bin* next;          // Next node in linked list
+    /* 0x00004 */ u16         unk_04;        // Unknown field
+    /* 0x00006 */ u16         unk_06;        // Unknown field
+    /* 0x00008 */ u16         flags;         // Status flags: bit 0=allocated, bit 1=secondary data, bit 2=compressed
+    /* 0x0000A */ u16         refCount;      // Reference counter for memory management
+    /* 0x0000C */ u32         id;            // Unique resource identifier
+    /* 0x00010 */ u32         size;          // Size of resource data in bytes
+    /* 0x00014 */ void*       data;          // Pointer to primary resource data
     /* 0x00018 */ void*       secondaryData; // Pointer to secondary/auxiliary data
-    /* 0x0001C */ u32         unk_1C;       // Unknown field
+    /* 0x0001C */ u32         unk_1C;        // Unknown field
 } Bin;
 
 typedef struct BinMgr {
-    /* 0x00000 */ Bin   rootBin;       // Root bin node (head of allocation list)
-    /* 0x00020 */ Bin*  freeList;      // Head of free/available bins list
-    /* 0x00024 */ char  unk_24[0x1C];  // Unknown data
-    /* 0x00040 */ Bin*  listTail;      // Tail pointer for efficient list appending
-    /* 0x00044 */ s32   nodeCount;     // Total number of nodes in the pool
-    /* 0x00048 */ void* nodePool;      // Pool of pre-allocated memory for nodes
+    /* 0x00000 */ Bin   rootBin;      // Root bin node (head of allocation list)
+    /* 0x00020 */ Bin*  freeList;     // Head of free/available bins list
+    /* 0x00024 */ char  unk_24[0x1C]; // Unknown data
+    /* 0x00040 */ Bin*  listTail;     // Tail pointer for efficient list appending
+    /* 0x00044 */ s32   nodeCount;    // Total number of nodes in the pool
+    /* 0x00048 */ void* nodePool;     // Pool of pre-allocated memory for nodes
 } BinMgr;
 
 /**

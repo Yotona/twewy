@@ -123,7 +123,7 @@ void func_020212b8(ACSVHL* vhl, s32 param_2) {
 void func_02021488(ACSVHL* vhl) {
     vhl->snd    = NULL;
     vhl->unk_04 = NULL;
-    func_02049118(&vhl->fdr, 0, sizeof(ACSFDR));
+    memset(&vhl->fdr, 0, sizeof(ACSFDR));
     vhl->unk_4C = 0;
     vhl->unk_50 = 0;
     vhl->unk_54 = 30;
@@ -137,12 +137,12 @@ void func_020214d0(ACSVHL* vhl, s8 param_2) {
 
 s32 func_020214d8(ACSVHL* vhl) {
     s32 iVar2 = vhl->unk_54;
-    s32 uVar3 = func_020566e4(iVar2 * func_020207b8(vhl->unk_04), -vhl->unk_5C);
+    s32 uVar3 = _s32_div_f(iVar2 * func_020207b8(vhl->unk_04), -vhl->unk_5C);
     return iVar2 - uVar3;
 }
 
 s32 func_02021504(ACSVHL* vhl) {
     s32 iVar1 = func_020207b8(vhl->unk_04);
-    s32 uVar2 = func_020566e4(vhl->unk_58 * iVar1, -vhl->unk_5C);
+    s32 uVar2 = _s32_div_f(vhl->unk_58 * iVar1, -vhl->unk_5C);
     return vhl->unk_54 - uVar2;
 }

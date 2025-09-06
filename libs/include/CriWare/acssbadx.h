@@ -13,7 +13,7 @@
 
 typedef struct {
     /* 0x0 */ struct _acssbadx_vtable* vtable;
-    /* 0x4 */ ADXT*                    adxt;
+    /* 0x4 */ ADXT                     adxt;
     /* 0x8 */ s32                      unk_8;
 } ACSSBADX; // Size: 0xC
 
@@ -34,7 +34,7 @@ typedef struct _acssbadx_vtable {
     void (*SetOutVol2)(ACSSBADX* badx, s32, s16 vol);
     s32 (*GetOutVol2)(ACSSBADX* badx, s32);
     void (*SetLpFlg)(ACSSBADX* badx, s32 flag);
-    ADXT* (*GetAdxt)(ACSSBADX* badx);
+    ADXT (*GetAdxt)(ACSSBADX* badx);
 } _acssbadx_vtable;
 
 ACSSBADX* ACSSBADX_Create(ACSSBADX* badx, u16 workSize);
@@ -71,7 +71,7 @@ s32 ACSSBADX_GetOutVol2(ACSSBADX* badx, s32 param_1);
 
 void ACSSBADX_SetLpFlg(ACSSBADX* badx, s32 flag);
 
-ADXT* ACSSBADX_GetAdxt(ACSSBADX* badx);
+ADXT ACSSBADX_GetAdxt(ACSSBADX* badx);
 
 void func_02021168(ACSSBADX* badx);
 

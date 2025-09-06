@@ -2,7 +2,7 @@
 #include "common_data.h"
 #include "game.h"
 
-BinMgr* g_activeBinMgr;     // Currently active binary manager instance
+BinMgr* g_activeBinMgr; // Currently active binary manager instance
 
 Bin* BinMgr_AllocNode(Bin* freeListHead) {
     Bin* allocatedNode = freeListHead->next;
@@ -101,7 +101,7 @@ void* BinMgr_LoadRawData(Bin* targetBuffer, int* resourceDesc, int resourceId, i
     }
     *outSize = totalBytesToRead;
     func_0203ea60(fileHandle, offset, 0);
-    maxChunkSize = 0x6800;  // Max chunk size for reading (26KB)
+    maxChunkSize = 0x6800; // Max chunk size for reading (26KB)
     if (totalBytesToRead != 0) {
         currentReadBuffer = targetBuffer;
         do {
@@ -146,7 +146,7 @@ Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId,
     func_020049a8(&data_0206a9a4, compressedDataBuffer, "BinMgr_LoadComp()");
     decompressedSize = 0;
     func_0203ea60(fileHandle, offset, 0);
-    maxChunkSize = 0x6800;  // Max chunk size for reading (26KB)
+    maxChunkSize = 0x6800; // Max chunk size for reading (26KB)
     if (totalCompressedSize != 0) {
         currentReadBuffer = compressedDataBuffer;
         do {
@@ -196,9 +196,9 @@ Bin* BinMgr_LoadUncompressed(int* resourceDesc, u32 resourceId) {
         func_0203b3c0(bin, 0, 0x20);
     }
     // Set flag bits for BinMgr-managed uncompressed data
-    bin->flags = bin->flags & ~0x1 | 1;  // Set bit 0 (allocated by BinMgr)
-    bin->flags &= ~0x2;                  // Clear bit 1 (no secondary data)
-    bin->flags &= ~0x4;                  // Clear bit 2 (not compressed)
+    bin->flags = bin->flags & ~0x1 | 1; // Set bit 0 (allocated by BinMgr)
+    bin->flags &= ~0x2;                 // Clear bit 1 (no secondary data)
+    bin->flags &= ~0x4;                 // Clear bit 2 (not compressed)
     bin->refCount      = 1;
     bin->id            = resourceId;
     bin->size          = 0;
@@ -224,9 +224,9 @@ Bin* BinMgr_LoadResource(int* resourceDesc, u32 resourceId) {
         func_0203b3c0(newNode, 0, 0x20);
     }
     // Set flag bits for BinMgr-managed compressed data
-    newNode->flags = newNode->flags & ~0x1 | 1;  // Set bit 0 (allocated by BinMgr)
-    newNode->flags &= ~0x2;                      // Clear bit 1 (no secondary data)
-    newNode->flags |= 4;                         // Set bit 2 (compressed data)
+    newNode->flags = newNode->flags & ~0x1 | 1; // Set bit 0 (allocated by BinMgr)
+    newNode->flags &= ~0x2;                     // Clear bit 1 (no secondary data)
+    newNode->flags |= 4;                        // Set bit 2 (compressed data)
     newNode->refCount      = 1;
     newNode->id            = resourceId;
     newNode->size          = 0;
@@ -254,9 +254,9 @@ Bin* BinMgr_CreateFromData(u32 id, void* data, u32 size) {
         func_0203b3c0(bin, 0, sizeof(Bin));
     }
     // Clear all flag bits for external data (not managed by BinMgr)
-    bin->flags         = bin->flags &= ~0x1;  // Clear bit 0 (not allocated by BinMgr)
-    bin->flags         = bin->flags &= ~0x2;  // Clear bit 1 (no secondary data)
-    bin->flags         = bin->flags &= ~0x4;  // Clear bit 2 (not compressed)
+    bin->flags         = bin->flags &= ~0x1; // Clear bit 0 (not allocated by BinMgr)
+    bin->flags         = bin->flags &= ~0x2; // Clear bit 1 (no secondary data)
+    bin->flags         = bin->flags &= ~0x4; // Clear bit 2 (not compressed)
     bin->refCount      = 1;
     bin->id            = id;
     bin->size          = size;

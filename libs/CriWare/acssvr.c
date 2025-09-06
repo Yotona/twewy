@@ -178,5 +178,5 @@ s32 func_0201f534(ACSSVR* svr) {
 }
 
 void func_0201f55c(const char* error) {
-    func_0201433c(error);
+    ADXERR_CallErrFunc1(error);
 }

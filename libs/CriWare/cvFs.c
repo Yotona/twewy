@@ -34,7 +34,7 @@ void cvFsSetDefDev(char* devName) {
         cvFsError("cvFsSetDefDev #1:illegal device name");
         return;
     }
-    iVar1 = func_0204c814(devName);
+    iVar1 = strlen(devName);
     if (iVar1 == 0) {
         data_02070768 = 0;
         return;

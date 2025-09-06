@@ -1,6 +1,7 @@
 #ifndef ADXSJD_H
 #define ADXSJD_H
 
+#include <CriWare/private/adx_b.h>
 #include <CriWare/sj.h>
 #include <types.h>
 
@@ -8,13 +9,14 @@
  * @brief Stream Joint Decoder
  */
 typedef struct {
-    /* 0x00 */ s8    unk_00;
-    /* 0x01 */ s8    unk_01;
-    /* 0x02 */ s8    unk_02;
+    /* 0x00 */ s8    used;   // Decoder in use
+    /* 0x01 */ s8    state;
+    /* 0x02 */ s8    maxnch; // Max channels
     /* 0x03 */ s8    unk_03;
-    /* 0x04 */ void* unk_04; // something major to sjd
-    /* 0x08 */ SJ*   sj;
-    /* 0x0C */ char  unk_0C[0x20];
+    /* 0x04 */ ADXB* adxb;
+    /* 0x08 */ SJ*   sji;
+    /* 0x0C */ SJ*   sjo[2];
+    /* 0x14 */ char  unk_14[0x18];
     /* 0x2C */ u32   unk_2C;
     /* 0x30 */ u32   unk_30;
     /* 0x34 */ s32   unk_34;
@@ -24,7 +26,10 @@ typedef struct {
     /* 0x44 */ u32   unk_44;
     /* 0x48 */ u32   unk_48;
     /* 0x4C */ u32   unk_4C;
-    /* 0x50 */ char  unk_50[0x10];
+    /* 0x50 */ u32   unk_50;
+    /* 0x54 */ u32   unk_54;
+    /* 0x58 */ u32   unk_58;
+    /* 0x5C */ u32   unk_5C;
     /* 0x60 */ s32   unk_60;
     /* 0x64 */ char  unk_64[0x3C];
     /* 0xA0 */ s32   unk_A0;
@@ -36,8 +41,8 @@ typedef struct {
 
 void ADXSJD_Destroy(ADXSJD* sjd);
 
-s8 func_02014b20(ADXSJD* sjd);
+s8 ADXSJD_GetStat(ADXSJD* sjd);
 
-void func_02014b28(ADXSJD* sjd, SJ* sj);
+void ADXSJD_SetInSj(ADXSJD* sjd, SJ* sj);
 
 #endif // ADXSJD_H

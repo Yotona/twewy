@@ -132,8 +132,8 @@ void criSsPly_SetVolume(CRISS* criss, s32 volume) {
 void criSsPly_SetFadeTime(CRISS* criss, u32 param_2, u32 param_3) {}
 
 int criSsPly_Play(int param_1) {
-    ADXT* adxt;
-    int   iVar1;
+    ADXT adxt;
+    int  iVar1;
 
     if (data_02071b00.unk_00 == 0) {
         func_02021f94(data_020659e0.play, data_020659e0.notInitialized);
@@ -143,7 +143,7 @@ int criSsPly_Play(int param_1) {
         func_02021f94(data_020659e0.play, data_020659e0.handleNull);
         return 0;
     }
-    adxt  = (ADXT*)func_02021bb4(param_1);
+    adxt  = (ADXT)func_02021bb4(param_1);
     iVar1 = ADXT_Play(adxt);
     return iVar1;
 }

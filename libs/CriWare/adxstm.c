@@ -5,7 +5,7 @@ void func_02015f30(ADXSTM* stm);
 s32  func_02015f80(ADXSTM* stm);
 s32  func_02015fb4(ADXSTM* stm, s32 param_2);
 s32  func_0201602c(ADXSTM* stm);
-void func_02016058(ADXSTM* stm);
+void ADXSTM_StopNw(ADXSTM* stm);
 void func_02016074(ADXSTM* stm);
 void func_020160bc(ADXSTM* stm);
 void func_020160d8(ADXSTM* stm);
@@ -21,7 +21,7 @@ void func_0201687c(void);
 ADXSTMWork data_0206c398;
 ADXSTM     data_0206c3b0[10];
 
-void func_02015e10(ADXSTM* stm, s32 param_2, s32 param_3, s32 param_4, s32 param_5, int param_6) {
+void ADXSTM_BindFileNw(ADXSTM* stm, s32 param_2, s32 param_3, s32 param_4, s32 param_5, int param_6) {
     func_020168f4();
     func_02015e5c(stm, param_2, param_3, param_4, param_5, param_6);
     func_02016900();
@@ -39,14 +39,14 @@ void func_02015e5c(ADXSTM* stm, const char* filename, s32 param_3, s32 param_4, 
     func_020168dc();
 }
 
-void func_02015ec8(ADXSTM* stm) {
+void ADXSTM_ReleaseFileNw(ADXSTM* stm) {
     func_020168f4();
     func_02015ee4(stm);
     func_02016900();
 }
 
 void func_02015ee4(ADXSTM* stm) {
-    func_02016058(stm);
+    ADXSTM_StopNw(stm);
     func_020168d0();
     if (stm->unk_4D == 1) {
         stm->unk_4A = 1;
@@ -63,7 +63,7 @@ void func_02015f14(ADXSTM* stm) {
 
 void func_02015f30(ADXSTM* stm) {
     func_020160bc(stm);
-    func_02015ec8(stm);
+    ADXSTM_ReleaseFileNw(stm);
 
     while (TRUE) {
         if (stm->unk_4D == 0) {
@@ -86,7 +86,7 @@ s32 func_02015f80(ADXSTM* stm) {
     return stm->unk_01;
 }
 
-s32 func_02015f88(ADXSTM* stm, int param_2) {
+s32 ADXSTM_Seek(ADXSTM* stm, int param_2) {
     s32 val;
 
     func_020168f4();
@@ -114,7 +114,7 @@ void func_02015fcc(ADXSTM* stm) {
     stm->unk_4B        = 1;
 }
 
-s32 func_02016008(ADXSTM* stm) {
+s32 ADXSTM_Start(ADXSTM* stm) {
     s32 sVar1;
 
     func_020168f4();
@@ -131,7 +131,7 @@ s32 func_0201602c(ADXSTM* stm) {
     return 1;
 }
 
-void func_02016058(ADXSTM* stm) {
+void ADXSTM_StopNw(ADXSTM* stm) {
     func_020168f4();
     func_02016074(stm);
     func_02016900();
@@ -159,7 +159,7 @@ void func_020160bc(ADXSTM* stm) {
 }
 
 void func_020160d8(ADXSTM* stm) {
-    func_02016058(stm);
+    ADXSTM_StopNw(stm);
 
     while (TRUE) {
         if (stm->unk_01 == 1) {
@@ -171,7 +171,7 @@ void func_020160d8(ADXSTM* stm) {
     }
 }
 
-void func_02016104(ADXSTM* stm, s32 param_2, s32 param_3) {
+void ADXSTM_EntryEosFunc(ADXSTM* stm, s32 param_2, s32 param_3) {
     func_020168f4();
     func_02016130(stm, param_2, param_3);
     func_02016900();
@@ -182,7 +182,7 @@ void func_02016130(ADXSTM* stm, s32 param_2, s32 param_3) {
     stm->unk_40 = param_3;
 }
 
-void func_0201613c(ADXSTM* stm, int param_2) {
+void ADXSTM_SetEos(ADXSTM* stm, int param_2) {
     func_020168f4();
     func_02016160(stm, param_2);
     func_02016900();
@@ -368,7 +368,7 @@ void func_0201654c(ADXSTM* stm) {
                 if (stm->fileHndl == NULL) {
                     stm->fileHndl = cvFsOpen(stm->filename, stm->unk_58, 0);
                     if (stm->fileHndl == NULL) {
-                        func_02014398("E02110501 adxstmf_stat_exec: can\'t open ", stm->filename);
+                        ADXERR_CallErrFunc2("E02110501 adxstmf_stat_exec: can\'t open ", stm->filename);
                         stm->unk_01 = 4;
                         stm->unk_4D = 0;
                         stm->unk_49 = 0;
@@ -410,10 +410,10 @@ void func_0201654c(ADXSTM* stm) {
                     stm->unk_10 = stm->unk_18 * 0x800;
                     stm->unk_14 = uVar7 >> 0x15 | ((int)uVar7 >> 0x1f) << 0xb;
                 }
-                func_02015f88(stm, 0);
+                ADXSTM_Seek(stm, 0);
                 stm->unk_49 = 0;
                 if (cvFsGetStat(stm->fileHndl) == 3) {
-                    func_02014398("E05072801 adxstmf_stat_exec: can\'t open ", stm->filename);
+                    ADXERR_CallErrFunc2("E05072801 adxstmf_stat_exec: can\'t open ", stm->filename);
                     handle = stm->fileHndl;
                     if (handle != NULL) {
                         stm->fileHndl = NULL;
@@ -473,7 +473,7 @@ void func_02016888(void) {
     return;
 }
 
-s32 func_0201688c(ADXSTM* stm, s32 param_2, s32 param_3) {
+s32 ADXSTM_SetBufSize(ADXSTM* stm, s32 param_2, s32 param_3) {
     s32 sVar1;
 
     func_020168f4();

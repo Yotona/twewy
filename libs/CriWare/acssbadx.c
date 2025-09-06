@@ -128,7 +128,7 @@ void ACSSBADX_SetLpFlg(ACSSBADX* badx, s32 flag) {
     ADXT_SetLpFlg(badx->adxt, flag);
 }
 
-ADXT* ACSSBADX_GetAdxt(ACSSBADX* badx) {
+ADXT ACSSBADX_GetAdxt(ACSSBADX* badx) {
     return badx->adxt;
 }
 
