@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+typedef __typeof__(sizeof(0)) size_t;
+
 typedef signed char      s8;
 typedef signed short     s16;
 typedef signed long      s32;

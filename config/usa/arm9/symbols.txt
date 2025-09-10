@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .text                                   //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 SoftReset kind:function(thumb,size=0x4) addr:0x0200006e
 CpuSet kind:function(thumb,size=0x4) addr:0x020000de
 RLUnCompReadByCallbackWrite16bit kind:function(thumb,size=0x4) addr:0x0200015e
@@ -2102,10 +2107,10 @@ func_020393c0 kind:function(arm,size=0x94) addr:0x020393c0
 func_02039454 kind:function(arm,size=0xa4) addr:0x02039454
 func_020394f8 kind:function(arm,size=0x9c) addr:0x020394f8
 func_02039594 kind:function(arm,size=0x18) addr:0x02039594
-func_020395ac kind:function(arm,size=0x84) addr:0x020395ac
-func_02039630 kind:function(arm,size=0x5c) addr:0x02039630
+OS_LockMutex kind:function(arm,size=0x84) addr:0x020395ac
+OS_UnlockMutex kind:function(arm,size=0x5c) addr:0x02039630
 func_0203968c kind:function(arm,size=0x3c) addr:0x0203968c
-func_020396c8 kind:function(arm,size=0x74) addr:0x020396c8
+OS_TryLockMutex kind:function(arm,size=0x74) addr:0x020396c8
 func_0203973c kind:function(arm,size=0x24) addr:0x0203973c
 func_02039760 kind:function(arm,size=0x24) addr:0x02039760
 
@@ -2619,12 +2624,21 @@ func_0204823c kind:function(arm,size=0x30) addr:0x0204823c
 func_0204826c kind:function(arm,size=0x54) addr:0x0204826c
 func_020482c0 kind:function(arm,size=0x58) addr:0x020482c0
 func_02048318 kind:function(arm,size=0x8fc) addr:0x02048318
-func_02048c14 kind:function(arm,size=0x24) addr:0x02048c14
-func_02048c38 kind:function(arm,size=0x4c) addr:0x02048c38
-func_02048c84 kind:function(arm,size=0x128) addr:0x02048c84
-func_02048dac kind:function(arm,size=0x18) addr:0x02048dac
-func_02048dc4 kind:function(arm,size=0x18) addr:0x02048dc4
-func_02048ddc kind:function(arm,size=0x14) addr:0x02048ddc
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/ARM/abort_exit.c
+/////////////////////////////////////////////////////////////
+abort kind:function(arm,size=0x24) addr:0x02048c14
+exit kind:function(arm,size=0x4c) addr:0x02048c38
+__exit kind:function(arm,size=0x128) addr:0x02048c84
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/ARM/math.c
+/////////////////////////////////////////////////////////////
+nan kind:function(arm,size=0x18) addr:0x02048dac
+
+_Z6mallocm kind:function(arm,size=0x18) addr:0x02048dc4
+_Z4freePv kind:function(arm,size=0x14) addr:0x02048ddc
 
 /////////////////////////////////////////////////////////////
 // libs/MSL/Common/ansi_files.c
@@ -2643,46 +2657,82 @@ __flush_buffer kind:function(arm,size=0x88) addr:0x02048e8c
 /////////////////////////////////////////////////////////////
 fflush kind:function(arm,size=0xe8) addr:0x02048f14
 
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/mbstring.c
+/////////////////////////////////////////////////////////////
+mbtowc kind:function(arm,size=0x1c) addr:0x02048ffc
+__mbtowc_noconv kind:function(arm,size=0x38) addr:0x02049018
+__wctomb_noconv kind:function(arm,size=0x14) addr:0x02049050
+wctomb kind:function(arm,size=0x1c) addr:0x02049064
+wcstombs kind:function(arm,size=0x78) addr:0x02049080
 
-func_02048ffc kind:function(arm,size=0x1c) addr:0x02048ffc
-func_02049018 kind:function(arm,size=0x38) addr:0x02049018
-func_02049050 kind:function(arm,size=0x14) addr:0x02049050
-func_02049064 kind:function(arm,size=0x1c) addr:0x02049064
-func_02049080 kind:function(arm,size=0x78) addr:0x02049080
-func_020490f8 kind:function(arm,size=0x20) addr:0x020490f8
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/mem.c
+/////////////////////////////////////////////////////////////
+memcpy kind:function(arm,size=0x20) addr:0x020490f8
 memset kind:function(arm,size=0x14) addr:0x02049118
-func_0204912c kind:function(arm,size=0x2c) addr:0x0204912c
-func_02049158 kind:function(arm,size=0x40) addr:0x02049158
-func_02049198 kind:function(arm,size=0xb0) addr:0x02049198
-func_02049248 kind:function(arm,size=0x590) addr:0x02049248
-func_020497d8 kind:function(arm,size=0x24c) addr:0x020497d8
-func_02049a24 kind:function(arm,size=0x2fc) addr:0x02049a24
-func_02049d20 kind:function(arm,size=0x4dc) addr:0x02049d20
-func_0204a1fc kind:function(arm,size=0x124) addr:0x0204a1fc
-func_0204a320 kind:function(arm,size=0x764) addr:0x0204a320
-func_0204aa84 kind:function(arm,size=0x824) addr:0x0204aa84
-func_0204b2a8 kind:function(arm,size=0x44) addr:0x0204b2a8
-func_0204b2ec kind:function(arm,size=0x68) addr:0x0204b2ec
-func_0204b354 kind:function(arm,size=0x18) addr:0x0204b354
-func_0204b36c kind:function(arm,size=0x2c) addr:0x0204b36c
-func_0204b398 kind:function(arm,size=0x4f8) addr:0x0204b398
-func_0204b890 kind:function(arm,size=0xd54) addr:0x0204b890
-func_0204c5e4 kind:function(arm,size=0x84) addr:0x0204c5e4
-func_0204c668 kind:function(arm,size=0x54) addr:0x0204c668
-func_0204c6bc kind:function(arm,size=0x28) addr:0x0204c6bc
-func_0204c6e4 kind:function(arm,size=0x130) addr:0x0204c6e4
+memchr kind:function(arm,size=0x2c) addr:0x0204912c
+memcmp kind:function(arm,size=0x40) addr:0x02049158
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/mem_funcs.c
+/////////////////////////////////////////////////////////////
+__fill_mem kind:function(arm,size=0xb0) addr:0x02049198
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/printf.c
+/////////////////////////////////////////////////////////////
+parse_format kind:function(arm,size=0x590) addr:0x02049248 local
+long2str kind:function(arm,size=0x24c) addr:0x020497d8
+longlong2str kind:function(arm,size=0x2fc) addr:0x02049a24
+double2hex kind:function(arm,size=0x4dc) addr:0x02049d20
+round_decimal kind:function(arm,size=0x124) addr:0x0204a1fc
+float2str kind:function(arm,size=0x764) addr:0x0204a320
+__pformatter kind:function(arm,size=0x824) addr:0x0204aa84
+__StringWrite kind:function(arm,size=0x44) addr:0x0204b2a8
+vsnprintf kind:function(arm,size=0x68) addr:0x0204b2ec
+vsprintf kind:function(arm,size=0x18) addr:0x0204b354
+sprintf kind:function(arm,size=0x2c) addr:0x0204b36c
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/scanf.c
+/////////////////////////////////////////////////////////////
+parse_format kind:function(arm,size=0x4f8) addr:0x0204b398 local
+__sformatter kind:function(arm,size=0xd54) addr:0x0204b890
+__StringRead kind:function(arm,size=0x84) addr:0x0204c5e4
+vsscanf kind:function(arm,size=0x54) addr:0x0204c668
+sscanf kind:function(arm,size=0x28) addr:0x0204c6bc
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/signal.c
+/////////////////////////////////////////////////////////////
+raise kind:function(arm,size=0x130) addr:0x0204c6e4
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/string.c
+/////////////////////////////////////////////////////////////
 strlen kind:function(arm,size=0x1c) addr:0x0204c814
-func_0204c830 kind:function(arm,size=0xc8) addr:0x0204c830
-func_0204c8f8 kind:function(arm,size=0x50) addr:0x0204c8f8
-func_0204c948 kind:function(arm,size=0x30) addr:0x0204c948
-func_0204c978 kind:function(arm,size=0x50) addr:0x0204c978
-func_0204c9c8 kind:function(arm,size=0x114) addr:0x0204c9c8
-func_0204cadc kind:function(arm,size=0x34) addr:0x0204cadc
-func_0204cb10 kind:function(arm,size=0x3c) addr:0x0204cb10
-func_0204cb4c kind:function(arm,size=0x124c) addr:0x0204cb4c
-func_0204dd98 kind:function(arm,size=0x3e8) addr:0x0204dd98
-func_0204e180 kind:function(arm,size=0x46c) addr:0x0204e180
-func_0204e5ec kind:function(arm,size=0x98) addr:0x0204e5ec
+strcpy kind:function(arm,size=0xc8) addr:0x0204c830
+strncpy kind:function(arm,size=0x50) addr:0x0204c8f8
+strcat kind:function(arm,size=0x30) addr:0x0204c948
+strncat kind:function(arm,size=0x50) addr:0x0204c978
+strcmp kind:function(arm,size=0x114) addr:0x0204c9c8
+strncmp kind:function(arm,size=0x34) addr:0x0204cadc
+strchr kind:function(arm,size=0x3c) addr:0x0204cb10
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/strtold.c
+/////////////////////////////////////////////////////////////
+__strtold kind:function(arm,size=0x124c) addr:0x0204cb4c
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/strtoul.c
+/////////////////////////////////////////////////////////////
+__strtoul kind:function(arm,size=0x3e8) addr:0x0204dd98
+__strtoull kind:function(arm,size=0x46c) addr:0x0204e180
+strtoul kind:function(arm,size=0x98) addr:0x0204e5ec
+
+
 func_0204e684 kind:function(arm,size=0x7f8) addr:0x0204e684
 func_0204ee7c kind:function(arm,size=0x74c) addr:0x0204ee7c
 func_0204f5c8 kind:function(arm,size=0x738) addr:0x0204f5c8
@@ -2694,7 +2744,7 @@ func_02051a48 kind:function(arm,size=0xbbc) addr:0x02051a48
 func_02052604 kind:function(arm,size=0x27c) addr:0x02052604
 func_02052880 kind:function(arm,size=0x28) addr:0x02052880
 func_020528a8 kind:function(arm,size=0x170) addr:0x020528a8
-func_02052a18 kind:function(arm,size=0x20) addr:0x02052a18
+fabs kind:function(arm,size=0x20) addr:0x02052a18
 func_02052a38 kind:function(arm,size=0x1c0) addr:0x02052a38
 func_02052bf8 kind:function(arm,size=0xbc) addr:0x02052bf8
 func_02052cb4 kind:function(arm,size=0x24c) addr:0x02052cb4
@@ -2715,8 +2765,8 @@ func_02053810 kind:function(arm,size=0xe0) addr:0x02053810
 func_020538f0 kind:function(arm,size=0xe0) addr:0x020538f0
 func_020539d0 kind:function(arm,size=0x2a4) addr:0x020539d0
 func_02053c74 kind:function(arm,size=0x180) addr:0x02053c74
-func_02053df4 kind:function(arm,size=0xa8) addr:0x02053df4
-func_02053e9c kind:function(arm,size=0x624) addr:0x02053e9c
+__num2dec kind:function(arm,size=0xa8) addr:0x02053df4
+__dec2num kind:function(arm,size=0x624) addr:0x02053e9c
 func_020544c0 kind:function(arm,size=0x94) addr:0x020544c0
 func_02054554 kind:function(arm,size=0x14) addr:0x02054554
 func_02054568 kind:function(arm,size=0x70) addr:0x02054568
@@ -2724,7 +2774,7 @@ func_020545d8 kind:function(arm,size=0x2c) addr:0x020545d8
 func_02054604 kind:function(arm,size=0x18) addr:0x02054604
 func_0205461c kind:function(arm,size=0x18) addr:0x0205461c
 func_02054634 kind:function(arm,size=0x318) addr:0x02054634
-func_0205494c kind:function(arm,size=0x104) addr:0x0205494c
+_d2f kind:function(arm,size=0x104) addr:0x0205494c
 func_02054a50 kind:function(arm,size=0x4c) addr:0x02054a50
 func_02054a9c kind:function(arm,size=0x58) addr:0x02054a9c
 func_02054af4 kind:function(arm,size=0x8c) addr:0x02054af4
@@ -2732,38 +2782,36 @@ func_02054b80 kind:function(arm,size=0x40) addr:0x02054b80
 func_02054bc0 kind:function(arm,size=0x3c) addr:0x02054bc0
 func_02054bfc kind:function(arm,size=0x364) addr:0x02054bfc
 func_02054f60 kind:function(arm,size=0x19c) addr:0x02054f60
-func_02055114 kind:function(arm,size=0x3b4) addr:0x02055114
-
-
+_dsub kind:function(arm,size=0x3b4) addr:0x02055114
 func_020554c8 kind:function(arm,size=0x21c) addr:0x020554c8
 func_020556e4 kind:function(arm,size=0x8) addr:0x020556e4
 func_020556ec kind:function(arm,size=0x98) addr:0x020556ec
-func_02055784 kind:function(arm,size=0x98) addr:0x02055784
+_dgr kind:function(arm,size=0x98) addr:0x02055784
 func_0205581c kind:function(arm,size=0xa4) addr:0x0205581c
-func_020558c0 kind:function(arm,size=0x9c) addr:0x020558c0
-func_0205595c kind:function(arm,size=0x8c) addr:0x0205595c
-func_020559e8 kind:function(arm,size=0x8c) addr:0x020559e8
+_dls kind:function(arm,size=0x9c) addr:0x020558c0
+_deq kind:function(arm,size=0x8c) addr:0x0205595c
+_dneq kind:function(arm,size=0x8c) addr:0x020559e8
 func_02055a74 kind:function(arm,size=0x5c) addr:0x02055a74
 func_02055ad0 kind:function(arm,size=0x5c) addr:0x02055ad0
 _fdiv kind:function(arm,size=0x3b8) addr:0x02055b38
 .L_02055bec kind:label(arm) addr:0x02055bec
-func_02055ef0 kind:function(arm,size=0x84) addr:0x02055ef0
+_f2d kind:function(arm,size=0x84) addr:0x02055ef0
 _ffix kind:function(arm,size=0x34) addr:0x02055f74
 _ffixu kind:function(arm,size=0x40) addr:0x02055fa8
 _fflt kind:function(arm,size=0x48) addr:0x02055fe8
 func_02056030 kind:function(arm,size=0x48) addr:0x02056030
 _fmul kind:function(arm,size=0x1e0) addr:0x02056078
-func_02056264 kind:function(arm,size=0x278) addr:0x02056264
+_fsub kind:function(arm,size=0x278) addr:0x02056264
 func_020564dc kind:function(arm,size=0x10) addr:0x020564dc
 func_020564ec kind:function(arm,size=0x1b0) addr:0x020564ec
-func_0205669c kind:function(arm,size=0xc) addr:0x0205669c
-func_020566a8 kind:function(arm,size=0x3c) addr:0x020566a8
+_ll_udiv kind:function(arm,size=0xc) addr:0x0205669c
+_ull_mod kind:function(arm,size=0x3c) addr:0x020566a8
 _s32_div_f kind:function(arm,size=0x20c) addr:0x020566e4
-func_020568f0 kind:function(arm,size=0x1fc) addr:0x020568f0
+_u32_div_f kind:function(arm,size=0x1fc) addr:0x020568f0
 .L_020568f8 kind:label(arm) addr:0x020568f8
 func_02056aec kind:function(arm,size=0x544) addr:0x02056aec
 .L_02056c24 kind:label(arm) addr:0x02056c24
-func_02057030 kind:function(arm,size=0x4) addr:0x02057030
+_fp_init kind:function(arm,size=0x4) addr:0x02057030
 
 /////////////////////////////////////////////////////////////
 // libs/MSL/Runtime/console_io.c
@@ -2775,35 +2823,45 @@ __read_console kind:function(arm,size=0x50) addr:0x0205706c
 __write_console kind:function(arm,size=0x34) addr:0x020570bc
 __close_console kind:function(arm,size=0x8) addr:0x020570f0
 
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/CompressedNumbers.cpp
+/////////////////////////////////////////////////////////////
+_Z20__DecodeSignedNumberPcPl kind:function(arm,size=0x8c) addr:0x020570f8
+_Z22__DecodeUnsignedNumberPcPm kind:function(arm,size=0x8c) addr:0x02057184
 
-func_020570f8 kind:function(arm,size=0x8c) addr:0x020570f8
-func_02057184 kind:function(arm,size=0x8c) addr:0x02057184
-func_02057210 kind:function(arm,size=0x64) addr:0x02057210
-func_02057274 kind:function(arm,size=0x108) addr:0x02057274
-func_0205737c kind:function(arm,size=0x1c) addr:0x0205737c
-func_02057398 kind:function(arm,size=0x388) addr:0x02057398
-func_02057720 kind:function(arm,size=0x8a8) addr:0x02057720
-func_02057fc8 kind:function(arm,size=0x8) addr:0x02057fc8
-func_02057fd0 kind:function(arm,size=0x154) addr:0x02057fd0
-func_02058124 kind:function(arm,size=0x84) addr:0x02058124
-func_020581a8 kind:function(arm,size=0xa8) addr:0x020581a8
-func_02058250 kind:function(arm,size=0x4) addr:0x02058250
-func_02058254 kind:function(arm,size=0x60) addr:0x02058254
-func_020582b4 kind:function(arm,size=0x1dc) addr:0x020582b4
-func_02058490 kind:function(arm,size=0x5c) addr:0x02058490
-func_020584ec kind:function(arm,size=0xec) addr:0x020584ec
-func_020585d8 kind:function(arm,size=0x28) addr:0x020585d8
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/ExceptionHandler.cpp
+/////////////////////////////////////////////////////////////
+_Z12BinarySearchP19ExceptionTableIndexmPc kind:function(arm,size=0x64) addr:0x02057210
+_Z19FindExceptionRecordPcP13ExceptionInfo kind:function(arm,size=0x108) addr:0x02057274
+_Z13CurrentActionPK14ActionIterator kind:function(arm,size=0x1c) addr:0x0205737c
+_Z10NextActionP14ActionIterator kind:function(arm,size=0x388) addr:0x02057398
+_Z11UnwindStackP12ThrowContextP13ExceptionInfoPc kind:function(arm,size=0x8b0) addr:0x02057720
+_Z23FindMostRecentExceptionP12ThrowContextP13ExceptionInfo kind:function(arm,size=0x154) addr:0x02057fd0
+_Z17IsInSpecificationPcP16ex_specification kind:function(arm,size=0x84) addr:0x02058124
+_Z12__unexpectedP9CatchInfo kind:function(arm,size=0xa8) addr:0x020581a8
+_ZNSt13bad_exceptionD1Ev kind:function(arm,size=0x4) addr:0x02058250
+_Z16HandleUnexpectedP12ThrowContextP13ExceptionInfoP16ex_specificationPc kind:function(arm,size=0x60) addr:0x02058254
+_Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:function(arm,size=0x1dc) addr:0x020582b4
+_Z14SetupCatchInfoP12ThrowContextll kind:function(arm,size=0x5c) addr:0x02058490
+_Z14__ThrowHandlerP12ThrowContext kind:function(arm,size=0xec) addr:0x020584ec
+_Z11__end_catchP9CatchInfo kind:function(arm,size=0x28) addr:0x020585d8
+
+
 func_02058600 kind:function(arm,size=0x14) addr:0x02058600
 func_02058614 kind:function(arm,size=0xc) addr:0x02058614
-func_02058620 kind:function(arm,size=0x40) addr:0x02058620
-func_02058660 kind:function(arm,size=0x4) addr:0x02058660
-func_02058664 kind:function(arm,size=0x64) addr:0x02058664
-func_020586c8 kind:function(arm,size=0x14) addr:0x020586c8
-func_020586dc kind:function(arm,size=0x18) addr:0x020586dc
-func_020586f4 kind:function(arm,size=0x14) addr:0x020586f4
-func_02058708 kind:function(arm,size=0xc) addr:0x02058708
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/New.cpp
+/////////////////////////////////////////////////////////////
+_ZSt17__throw_bad_allocv kind:function(arm,size=0x40) addr:0x02058620
+_ZNSt9bad_allocD1Ev kind:function(arm,size=0x4) addr:0x02058660
+_Znwm kind:function(arm,size=0x64) addr:0x02058664
+_ZdlPv kind:function(arm,size=0x14) addr:0x020586c8
+_Znam kind:function(arm,size=0x2c) addr:0x020586dc
+_ZdaPv kind:function(arm,size=0xc) addr:0x02058708
 func_02058714 kind:function(arm,size=0x14) addr:0x02058714
-func_02058728 kind:function(arm,size=0xc) addr:0x02058728
+_ZNKSt9bad_alloc4whatEv kind:function(arm,size=0xc) addr:0x02058728
 
 /////////////////////////////////////////////////////////////
 // libs/MSL/Runtime/StaticInitializers.cpp
@@ -2811,53 +2869,184 @@ func_02058728 kind:function(arm,size=0xc) addr:0x02058728
 _Z26__call_static_initializersv kind:function(arm,size=0x2c) addr:0x02058734
 _Z22__destroy_global_chainv kind:function(arm,size=0x44) addr:0x02058760
 
-func_020587a4 kind:function(arm,size=0x48) addr:0x020587a4
-func_020587ec kind:function(arm,size=0x14) addr:0x020587ec
-func_02058800 kind:function(arm,size=0xb8) addr:0x02058800
-func_020588b8 kind:function(arm,size=0x48) addr:0x020588b8
-func_02058900 kind:function(arm,size=0x48) addr:0x02058900
-func_02058948 kind:function(arm,size=0x34) addr:0x02058948
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/cxxabi_alloc.cpp
+/////////////////////////////////////////////////////////////
+_Z17DestroyArrayRangePhS_mPFvPvE kind:function(arm,size=0x5c) addr:0x020587a4
+__cxa_vec_new kind:function(arm,size=0xb8) addr:0x02058800
+__cxa_vec_dtor kind:function(arm,size=0x90) addr:0x020588b8
+__cxa_vec_delete kind:function(arm,size=0x34) addr:0x02058948
+
+
 func_0205897c kind:function(arm,size=0x4) addr:0x0205897c
 func_02058980 kind:function(arm,size=0x14) addr:0x02058980
 func_02058994 kind:function(arm,size=0x1c) addr:0x02058994
 func_020589b0 kind:function(arm,size=0x14) addr:0x020589b0
 func_020589c4 kind:function(arm,size=0x14) addr:0x020589c4
 func_020589d8 kind:function(arm,size=0x1c) addr:0x020589d8
-func_020589f4 kind:function(arm,size=0xc) addr:0x020589f4
-func_02058a00 kind:function(arm,size=0xc) addr:0x02058a00
-func_02058a0c kind:function(arm,size=0x18) addr:0x02058a0c
-func_02058a24 kind:function(arm,size=0x18) addr:0x02058a24
-func_02058a3c kind:function(arm,size=0x1b0) addr:0x02058a3c
-func_02058bec kind:function(arm,size=0x5c) addr:0x02058bec
-func_02058c48 kind:function(arm,size=0xa0) addr:0x02058c48
-func_02058ce8 kind:function(arm,size=0x20) addr:0x02058ce8
-func_02058d08 kind:function(arm,size=0x30) addr:0x02058d08
-func_02058d38 kind:function(arm,size=0x30) addr:0x02058d38
-func_02058d68 kind:function(arm,size=0x48) addr:0x02058d68
-func_02058db0 kind:function(arm,size=0x4c) addr:0x02058db0
-func_02058dfc kind:function(arm,size=0xc) addr:0x02058dfc
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/MWException.cpp
+/////////////////////////////////////////////////////////////
+_ZSt9dthandlerv kind:function(arm,size=0xc) addr:0x020589f4
+_ZSt9duhandlerv kind:function(arm,size=0xc) addr:0x02058a00
+_ZSt9terminatev kind:function(arm,size=0x18) addr:0x02058a0c
+_ZSt10unexpectedv kind:function(arm,size=0x18) addr:0x02058a24
+_Z21__throw_catch_comparePKhS0_Pl kind:function(arm,size=0x1b0) addr:0x02058a3c
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/ExceptionHandlerTS.cpp
+/////////////////////////////////////////////////////////////
+_Z15__PopStackFrameP12ThrowContextP13ExceptionInfo kind:function(arm,size=0x5c) addr:0x02058bec
+_Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:function(arm,size=0xa0) addr:0x02058c48
+_Z20__FindExceptionTableP13ExceptionInfoPc kind:function(arm,size=0x20) addr:0x02058ce8
+_Z16__SkipUnwindInfoPc kind:function(arm,size=0x30) addr:0x02058d08
+_Z17__TransferControlP12ThrowContextP13ExceptionInfoPc kind:function(arm,size=0x30) addr:0x02058d38
+_Z7__throwPcPvS0_ kind:function(arm,size=0x48) addr:0x02058d68
+_Z9__rethrowv kind:function(arm,size=0x4c) addr:0x02058db0
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/__arm_eabi_init.c
+/////////////////////////////////////////////////////////////
+_ExitProcess kind:function(arm,size=0xc) addr:0x02058dfc
 
 
 
-data_02058e08 kind:data(any) addr:0x02058e08
-data_02058e10 kind:data(any) addr:0x02058e10
-data_02058e18 kind:data(any) addr:0x02058e18
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .exception                              //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+@ET@__pformatter kind:data(any) addr:0x02058e08
+@ET@__sformatter kind:data(any) addr:0x02058e10 local
+@ET@__strtold kind:data(any) addr:0x02058e18
 data_02058e20 kind:data(any) addr:0x02058e20
 data_02058e28 kind:data(any) addr:0x02058e28
 data_02058e30 kind:data(any) addr:0x02058e30
 data_02058e38 kind:data(any) addr:0x02058e38
-data_02058e40 kind:data(any) addr:0x02058e40
-data_02058e48 kind:data(any) addr:0x02058e48
-data_02058e58 kind:data(any) addr:0x02058e58
-data_02058e60 kind:data(any) addr:0x02058e60
-data_02058e74 kind:data(any) addr:0x02058e74
-data_02058e7c kind:data(any) addr:0x02058e7c
+@ET@_Z10NextActionP14ActionIterator kind:data(any) addr:0x02058e40
+@ET@_Z11UnwindStackP12ThrowContextP13ExceptionInfoPc kind:data(any) addr:0x02058e48
+@ET@_Z23FindMostRecentExceptionP12ThrowContextP13ExceptionInfo kind:data(any) addr:0x02058e58
+@ET@_Z12__unexpectedP9CatchInfo kind:data(any) addr:0x02058e60
+@ET@_Z16HandleUnexpectedP12ThrowContextP13ExceptionInfoP16ex_specificationPc kind:data(any) addr:0x02058e74
+@ET@_Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:data(any) addr:0x02058e7c
 data_02058e84 kind:data(any) addr:0x02058e84
 data_02058e9c kind:data(any) addr:0x02058e9c
-data_02058eb4 kind:data(any) addr:0x02058eb4
-data_02058ec8 kind:data(any) addr:0x02058ec8
-data_02058edc kind:data(any) addr:0x02058edc
-data_02058f04 kind:data(any) addr:0x02058f04
+
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .exceptix                               //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+@ET@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x02058eb4 local
+@ET@__cxa_vec_new kind:data(any) addr:0x02058ec8 local
+@ET@__cxa_vec_dtor kind:data(any) addr:0x02058edc local
+@EX@abort kind:data(any) addr:0x02058f04
+@EX@exit kind:data(any) addr:0x02058f10
+@EX@__exit kind:data(any) addr:0x02058f1c
+@EX@nan kind:data(any) addr:0x02058f28 local
+data_02058f34 kind:data(any) addr:0x02058f34
+data_02058f40 kind:data(any) addr:0x02058f40
+@EX@__flush_all kind:data(any) addr:0x02058f4c local
+@EX@__flush_buffer kind:data(any) addr:0x02058f58 local
+@EX@fflush kind:data(any) addr:0x02058f64 local
+@EX@mbtowc kind:data(any) addr:0x02058f70 local
+@EX@wctomb kind:data(any) addr:0x02058f7c local
+@EX@wcstombs kind:data(any) addr:0x02058f88 local
+@EX@memset kind:data(any) addr:0x02058f94 local
+@EX@long2str kind:data(any) addr:0x02058fa0
+@EX@longlong2str kind:data(any) addr:0x02058fac
+@EX@double2hex kind:data(any) addr:0x02058fb8
+@EX@float2str kind:data(any) addr:0x02058fc4
+@EX@__pformatter kind:data(any) addr:0x02058fd0
+@EX@__StringWrite kind:data(any) addr:0x02058fdc
+@EX@vsnprintf kind:data(any) addr:0x02058fe8
+@EX@vsprintf kind:data(any) addr:0x02058ff4
+@EX@sprintf kind:data(any) addr:0x02059000
+@EX@__sformatter kind:data(any) addr:0x0205900c local
+@EX@vsscanf kind:data(any) addr:0x02059018 local
+@EX@sscanf kind:data(any) addr:0x02059024 local
+@EX@raise kind:data(any) addr:0x02059030 local
+@EX@__strtold kind:data(any) addr:0x0205903c
+@EX@__strtoul kind:data(any) addr:0x02059048
+@EX@__strtoull kind:data(any) addr:0x02059054
+@EX@strtoul kind:data(any) addr:0x02059060
+data_0205906c kind:data(any) addr:0x0205906c
+data_02059078 kind:data(any) addr:0x02059078
+data_02059084 kind:data(any) addr:0x02059084
+data_02059090 kind:data(any) addr:0x02059090
+data_0205909c kind:data(any) addr:0x0205909c
+data_020590a8 kind:data(any) addr:0x020590a8
+data_020590b4 kind:data(any) addr:0x020590b4
+data_020590c0 kind:data(any) addr:0x020590c0
+data_020590cc kind:data(any) addr:0x020590cc
+data_020590d8 kind:data(any) addr:0x020590d8
+data_020590e4 kind:data(any) addr:0x020590e4
+data_020590f0 kind:data(any) addr:0x020590f0
+data_020590fc kind:data(any) addr:0x020590fc
+data_02059108 kind:data(any) addr:0x02059108
+data_02059114 kind:data(any) addr:0x02059114
+data_02059120 kind:data(any) addr:0x02059120
+data_0205912c kind:data(any) addr:0x0205912c
+data_02059138 kind:data(any) addr:0x02059138
+data_02059144 kind:data(any) addr:0x02059144
+data_02059150 kind:data(any) addr:0x02059150
+data_0205915c kind:data(any) addr:0x0205915c
+data_02059168 kind:data(any) addr:0x02059168
+data_02059174 kind:data(any) addr:0x02059174
+data_02059180 kind:data(any) addr:0x02059180
+data_0205918c kind:data(any) addr:0x0205918c
+data_02059198 kind:data(any) addr:0x02059198
+data_020591a4 kind:data(any) addr:0x020591a4
+data_020591b0 kind:data(any) addr:0x020591b0
+data_020591bc kind:data(any) addr:0x020591bc
+@EX@__read_console kind:data(any) addr:0x020591c8 local
+@EX@__write_console kind:data(any) addr:0x020591d4 local
+@EX@_Z19FindExceptionRecordPcP13ExceptionInfo kind:data(any) addr:0x020591e0
+@EX@_Z10NextActionP14ActionIterator kind:data(any) addr:0x020591ec
+@EX@_Z11UnwindStackP12ThrowContextP13ExceptionInfoPc kind:data(any) addr:0x020591f8
+@EX@_Z23FindMostRecentExceptionP12ThrowContextP13ExceptionInfo kind:data(any) addr:0x02059204
+@EX@_Z17IsInSpecificationPcP16ex_specification kind:data(any) addr:0x02059210
+@EX@_Z12__unexpectedP9CatchInfo kind:data(any) addr:0x0205921c
+@EX@_Z16HandleUnexpectedP12ThrowContextP13ExceptionInfoP16ex_specificationPc kind:data(any) addr:0x02059228
+@EX@_Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:data(any) addr:0x02059234
+@EX@_Z14__ThrowHandlerP12ThrowContext kind:data(any) addr:0x02059240
+@EX@_Z11__end_catchP9CatchInfo kind:data(any) addr:0x0205924c
+data_02059258 kind:data(any) addr:0x02059258
+data_02059264 kind:data(any) addr:0x02059264
+data_02059270 kind:data(any) addr:0x02059270
+data_0205927c kind:data(any) addr:0x0205927c
+data_02059288 kind:data(any) addr:0x02059288
+data_02059294 kind:data(any) addr:0x02059294
+data_020592a0 kind:data(any) addr:0x020592a0
+@EX@_Z26__call_static_initializersv kind:data(any) addr:0x020592ac local
+@EX@_Z22__destroy_global_chainv kind:data(any) addr:0x020592b8 local
+@EX@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x020592c4 local
+@EX@__cxa_vec_new kind:data(any) addr:0x020592d0 local
+@EX@__cxa_vec_dtor kind:data(any) addr:0x020592dc local
+@EX@__cxa_vec_delete kind:data(any) addr:0x020592e8 local
+data_020592f4 kind:data(any) addr:0x020592f4
+data_02059300 kind:data(any) addr:0x02059300
+data_0205930c kind:data(any) addr:0x0205930c
+data_02059318 kind:data(any) addr:0x02059318
+data_02059324 kind:data(any) addr:0x02059324
+@EX@_ZSt9dthandlerv kind:data(any) addr:0x02059330
+@EX@_ZSt9duhandlerv kind:data(any) addr:0x0205933c
+@EX@_ZSt9terminatev kind:data(any) addr:0x02059348
+@EX@_ZSt10unexpectedv kind:data(any) addr:0x02059354
+data_02059360 kind:data(any) addr:0x02059360
+data_0205936c kind:data(any) addr:0x0205936c
+@EX@_ExitProcess kind:data(any) addr:0x02059378 local
+
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .rodata                                 //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 data_02059384 kind:data(any) addr:0x02059384
 data_02059390 kind:data(any) addr:0x02059390
 data_0205939c kind:data(any) addr:0x0205939c
@@ -3002,11 +3191,25 @@ data_0206318c kind:data(any) addr:0x0206318c
 data_020631e0 kind:data(any) addr:0x020631e0
 data_020631f4 kind:data(any) addr:0x020631f4
 data_020631f8 kind:data(any) addr:0x020631f8
-data_020632c0 kind:data(any) addr:0x020632c0
-data_02063340 kind:data(any) addr:0x02063340
-data_02063440 kind:data(any) addr:0x02063440
-data_02063468 kind:data(any) addr:0x02063468
-data_0206346d kind:data(any) addr:0x0206346d
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/ctype.c
+/////////////////////////////////////////////////////////////
+__upper_mapC kind:data(any) addr:0x020632c0
+__ctype_mapC kind:data(any) addr:0x02063340
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/scanf.c
+/////////////////////////////////////////////////////////////
+@66 kind:data(any) addr:0x02063440 local
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/strtold.c
+/////////////////////////////////////////////////////////////
+@120 kind:data(any) addr:0x02063468 local
+@138 kind:data(any) addr:0x0206346d local
+
+
 data_02063478 kind:data(any) addr:0x02063478
 data_02063488 kind:data(any) addr:0x02063488
 data_02063498 kind:data(any) addr:0x02063498
@@ -3014,7 +3217,23 @@ data_020634a8 kind:data(any) addr:0x020634a8
 data_02063528 kind:data(any) addr:0x02063528
 data_02063630 kind:data(any) addr:0x02063630
 data_02063640 kind:data(any) addr:0x02063640
+
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .ctor                                   //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 __sinit__ kind:data(any) addr:0x02063680
+
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .data                                   //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 data_020636a0 kind:data(any) addr:0x020636a0
 data_020636b8 kind:data(any) addr:0x020636b8
 data_020636cc kind:data(any) addr:0x020636cc
@@ -3545,33 +3764,45 @@ data_020663d4 kind:data(any) addr:0x020663d4
 /////////////////////////////////////////////////////////////
 __files kind:data(any) addr:0x020663d8
 
-data_020664bc kind:data(any) addr:0x020664bc
-data_020664c0 kind:data(any) addr:0x020664c0
-data_020664c4 kind:data(any) addr:0x020664c4
-data_020664cc kind:data(any) addr:0x020664cc
-data_020664d0 kind:data(any) addr:0x020664d0
-data_020664d4 kind:data(any) addr:0x020664d4
-data_020664dc kind:data(any) addr:0x020664dc
-data_020664e4 kind:data(any) addr:0x020664e4
-data_020664f4 kind:data(any) addr:0x020664f4
-data_02066514 kind:data(any) addr:0x02066514
-data_020665d4 kind:data(any) addr:0x020665d4
-data_020665e0 kind:data(any) addr:0x020665e0
-data_020665ec kind:data(any) addr:0x020665ec
-data_020665f8 kind:data(any) addr:0x020665f8
-data_02066608 kind:data(any) addr:0x02066608
-data_02066660 kind:data(any) addr:0x02066660
-data_020666e8 kind:data(any) addr:0x020666e8
-data_020666f0 kind:data(any) addr:0x020666f0
-data_020666f8 kind:data(any) addr:0x020666f8
-data_02066700 kind:data(any) addr:0x02066700
-data_02066704 kind:data(any) addr:0x02066704
-data_02066708 kind:data(any) addr:0x02066708
-data_02066710 kind:data(any) addr:0x02066710
-data_02066718 kind:data(any) addr:0x02066718
-data_0206671c kind:data(any) addr:0x0206671c
-data_02066720 kind:data(any) addr:0x02066720
-data_02066724 kind:data(any) addr:0x02066724
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/float.c
+/////////////////////////////////////////////////////////////
+__float_huge kind:data(any) addr:0x020664bc
+__float_nan kind:data(any) addr:0x020664c0
+__double_huge kind:data(any) addr:0x020664c4
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/locale.c
+/////////////////////////////////////////////////////////////
+@13 kind:data(any) addr:0x020664cc local
+@10 kind:data(any) addr:0x020664d0 local
+@6 kind:data(any) addr:0x020664d4 local
+_loc_ctyp_C kind:data(any) addr:0x020664dc
+_loc_coll_C kind:data(any) addr:0x020664e4
+_loc_tim_C kind:data(any) addr:0x020664f4
+char_coll_tableC kind:data(any) addr:0x02066514
+@9 kind:data(any) addr:0x020665d4 local
+_current_locale kind:data(any) addr:0x020665e0
+@8 kind:data(any) addr:0x020665ec local
+@7 kind:data(any) addr:0x020665f8 local
+@11 kind:data(any) addr:0x02066608 local
+@12 kind:data(any) addr:0x02066660 local
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/printf.c
+/////////////////////////////////////////////////////////////
+@606 kind:data(any) addr:0x020666e8 local
+@607 kind:data(any) addr:0x020666f0 local
+@608 kind:data(any) addr:0x020666f8 local
+@609 kind:data(any) addr:0x02066700 local
+@610 kind:data(any) addr:0x02066704 local
+@611 kind:data(any) addr:0x02066708 local
+@612 kind:data(any) addr:0x02066710 local
+@613 kind:data(any) addr:0x02066718 local
+@614 kind:data(any) addr:0x0206671c local
+@1226 kind:data(any) addr:0x02066720 local
+@1227 kind:data(any) addr:0x02066724 local
+
 data_02066728 kind:data(any) addr:0x02066728
 data_02066768 kind:data(any) addr:0x02066768
 data_02066798 kind:data(any) addr:0x02066798
@@ -3603,12 +3834,18 @@ data_02066898 kind:data(any) addr:0x02066898
 data_020668b4 kind:data(any) addr:0x020668b4
 data_020668c0 kind:data(any) addr:0x020668c0
 data_020668d8 kind:data(any) addr:0x020668d8
-data_02066900 kind:data(any) addr:0x02066900
-data_02066904 kind:data(any) addr:0x02066904
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/New.cpp
+/////////////////////////////////////////////////////////////
+__throws_bad_alloc kind:data(any) addr:0x02066900
+_ZZNKSt9bad_alloc4whatEvEs kind:data(any) addr:0x02066904
 data_02066910 kind:data(any) addr:0x02066910
 data_0206691c kind:data(any) addr:0x0206691c
-data_02066948 kind:data(any) addr:0x02066948
-data_02066954 kind:data(any) addr:0x02066954
+_ZTVSt9bad_alloc kind:data(any) addr:0x02066948
+@114 kind:data(any) addr:0x02066954
+
+
 data_02066978 kind:data(any) addr:0x02066978
 data_02066980 kind:data(any) addr:0x02066980
 data_0206698c kind:data(any) addr:0x0206698c
@@ -3617,8 +3854,22 @@ data_020669b0 kind:data(any) addr:0x020669b0
 data_020669c0 kind:data(any) addr:0x020669c0
 data_020669c8 kind:data(any) addr:0x020669c8
 data_020669ec kind:data(any) addr:0x020669ec
-data_02066a14 kind:data(any) addr:0x02066a14
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/MWException.cpp
+/////////////////////////////////////////////////////////////
+_ZSt8thandler kind:data(any) addr:0x02066a14
+_ZSt8uhandler kind:data(any) addr:0x02066a18
+
 data_02066a1c kind:data(any) addr:0x02066a1c
+
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .bss                                    //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 data_02066a20 kind:bss addr:0x02066a20
 data_02066a24 kind:bss addr:0x02066a24
 data_02066a2c kind:bss addr:0x02066a2c
@@ -4020,7 +4271,7 @@ data_0207dcb0 kind:bss addr:0x0207dcb0
 data_0207dcb4 kind:bss addr:0x0207dcb4
 data_0207dcdc kind:bss addr:0x0207dcdc
 data_0207dce0 kind:bss addr:0x0207dce0
-data_0207dd04 kind:bss addr:0x0207dd04
+OS_ThreadInfo kind:bss addr:0x0207dd04
 data_0207dd08 kind:bss addr:0x0207dd08
 data_0207dd14 kind:bss addr:0x0207dd14
 data_0207ddd4 kind:bss addr:0x0207ddd4
@@ -4103,12 +4354,22 @@ data_02081964 kind:bss addr:0x02081964
 data_02081a20 kind:bss addr:0x02081a20
 data_02081b08 kind:bss addr:0x02081b08
 data_02081b0c kind:bss addr:0x02081b0c
-data_02081f30 kind:bss addr:0x02081f30
-data_02081f40 kind:bss addr:0x02081f40
-data_02082040 kind:bss addr:0x02082040
-data_02082064 kind:bss addr:0x02082064
-data_02082088 kind:bss addr:0x02082088
-data_02082130 kind:bss addr:0x02082130
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/ARM/critical_regions.c
+/////////////////////////////////////////////////////////////
+__console_exit kind:bss addr:0x02081f30
+__stdio_exit kind:bss addr:0x02081f34
+__atexit_curr_func kind:bss addr:0x02081f38
+__aborting kind:bss addr:0x02081f3c
+__atexit_funcs kind:bss addr:0x02081f40
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/ARM/critical_regions.c
+/////////////////////////////////////////////////////////////
+__cs_id kind:bss addr:0x02082040
+__cs_ref kind:bss addr:0x02082064
+__cs kind:bss addr:0x02082088
 
 /////////////////////////////////////////////////////////////
 // libs/MSL/Common/ansi_files.c
@@ -4117,13 +4378,26 @@ stderr_buff kind:bss addr:0x02082160 local
 stdout_buff kind:bss addr:0x02082260 local
 stdin_buff kind:bss addr:0x02082360 local
 
-data_02082460 kind:bss addr:0x02082460
-data_02082464 kind:bss addr:0x02082464
-data_02082480 kind:bss addr:0x02082480
-data_02082488 kind:bss addr:0x02082488
-data_02082490 kind:bss addr:0x02082490
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/errno.c
+/////////////////////////////////////////////////////////////
+errno kind:bss addr:0x02082460
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/StaticInitializers.cpp
+// libs/MSL/Common/signal.c
+/////////////////////////////////////////////////////////////
+signal_funcs kind:bss addr:0x02082464
+
+
+data_02082480 kind:bss addr:0x02082480
+data_02082488 kind:bss addr:0x02082488
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/New.cpp
+/////////////////////////////////////////////////////////////
+__new_handler kind:bss addr:0x02082490
+
+/////////////////////////////////////////////////////////////
+// libs/MSL/Runtime/StaticInitializers.cpp
 /////////////////////////////////////////////////////////////
 __global_destructor_chain kind:bss(size=4) addr:0x02082494

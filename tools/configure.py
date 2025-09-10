@@ -62,13 +62,10 @@ CC_FLAGS = " ".join(
         "-O4,p",  # Optimize maximally for performance
         "-enum int",  # Use int-sized enums
         "-char signed",  # Char type is signed
-        "-str noreuse",  # Equivalent strings are the same objects
         "-proc arm946e",  # Target processor
         "-gccext,on",  # Enable GCC extensions
         "-fp soft",  # Compute float operations in software
         "-inline noauto",  # Inline only functions marked with 'inline'
-        "-lang=c99",  # Set language to C99
-        "-Cpp_exceptions off",  # Disable C++ exceptions
         "-RTTI off",  # Disable runtime type information
         "-interworking",  # Enable ARM/Thumb interworking
         "-w off",  # Disable warnings
@@ -561,10 +558,25 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
         cc_flags: list[str] = []
+
+        # Language flag
         if is_cpp(source_file):
             cc_flags.append("-lang=c++")
         elif is_c(source_file):
-            cc_flags.append("-lang=c")
+            cc_flags.append("-lang=c99")
+
+        # MSL specific flags
+        if str(source_file).startswith(str(libs_path / "MSL")):
+            str_flag = "-str reuse"
+            exc_flag = "-Cpp_exceptions on"
+        else:
+            str_flag = "-str noreuse"
+            exc_flag = "-Cpp_exceptions off"
+        cc_flags.append(str_flag)
+        cc_flags.append(exc_flag)
+
+
+
         n.build(
             inputs=str(source_file),
             implicit=mwcc_implicit,

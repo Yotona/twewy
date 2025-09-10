@@ -41,7 +41,7 @@ void cvFsSetDefDev(char* devName) {
     }
     func_0201af08(devName);
     if (isExistDev(devName, iVar1) == TRUE) {
-        func_020490f8(&data_02070768, devName, iVar1 + 1);
+        memcpy(&data_02070768, devName, iVar1 + 1);
     } else {
         cvFsError("cvFsSetDefDev #2:unknown device name");
     }

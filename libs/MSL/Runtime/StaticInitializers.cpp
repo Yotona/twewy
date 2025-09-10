@@ -23,6 +23,6 @@ void __destroy_global_chain(void) {
 
     while ((gdc = __global_destructor_chain) != NULL) {
         __global_destructor_chain = gdc->next;
-        DTOR_CALL(gdc->dtor, gdc->object);
+        DTORCALL_COMPLETE(gdc->dtor, gdc->object);
     }
 }

@@ -53,6 +53,7 @@ typedef struct __file_state {
 } file_state;
 
 typedef struct _FILE FILE;
+extern FILE          __files[];
 
 typedef int (*__pos_proc)(u32 file, u32* position, s32 mode, void* ref);
 typedef int (*__io_proc)(u32 file, u8* buffer, s32* count, void* ref);
@@ -86,5 +87,9 @@ struct _FILE {
         (file)->state.error = 1; \
         (file)->buffer_len  = 0; \
     } while (FALSE)
+
+#define stdin  (&__files[0])
+#define stdout (&__files[1])
+#define stderr (&__files[2])
 
 #endif // COMMON_FILE_STRUCT_H

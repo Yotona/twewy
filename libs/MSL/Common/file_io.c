@@ -1,6 +1,6 @@
 #include <MSL/Common/file_struct.h>
 
-int fflush(FILE* file) {
+s32 fflush(FILE* file) {
     if (file == NULL) {
         return __flush_all();
     }
@@ -9,7 +9,7 @@ int fflush(FILE* file) {
         return -1;
     }
 
-    if (file->mode.io_mode == __read) {
+    if (file->mode.io_mode == __write) {
         return 0;
     }
 

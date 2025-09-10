@@ -7524,7 +7524,7 @@ from:0x0204c708 kind:arm_call to:0x020396c8 module:main
 from:0x0204c76c kind:arm_call to:0x020395ac module:main
 from:0x0204c7c0 kind:arm_call to:0x02039630 module:main
 from:0x0204c7ec kind:arm_call to:0x02048c38 module:main
-from:0x0204c800 kind:load to:0x02082130 module:main
+from:0x0204c800 kind:load to:0x02082088 add:0xA8 module:main
 from:0x0204c804 kind:load to:0x0207dd04 module:main
 from:0x0204c808 kind:load to:0x02082040 module:main
 from:0x0204c80c kind:load to:0x02082064 module:main

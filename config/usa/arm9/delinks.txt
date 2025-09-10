@@ -98,24 +98,138 @@ libs/NitroSDK/fs/overlay.c:
     .rodata     start:0x0206314C end:0x0206318C
     .data       start:0x0206627C end:0x02066284
 
+libs/MSL/ARM/abort_exit.c:
+    .text       start:0x02048C14 end:0x02048DAC
+    .exceptix   start:0x02058F04 end:0x02058F28
+    .bss        start:0x02081f30 end:0x02082040
+
+libs/MSL/ARM/critical_regions.c:
+complete
+    .bss        start:0x02082040 end:0x02082160
+
+libs/MSL/ARM/math.c:
+complete
+    .text       start:0x02048DAC end:0x02048DC4
+    .exceptix   start:0x02058F28 end:0x02058F34
+
 libs/MSL/Common/ansi_files.c:
 complete
     .text       start:0x02048DF0 end:0x02048E58
+    .exceptix   start:0x02058F4C end:0x02058F58
     .data       start:0x020663D8 end:0x020664BC
     .bss        start:0x02082160 end:0x02082460
 
 libs/MSL/Common/buffer_io.c:
 complete
     .text       start:0x02048E58 end:0x02048F14
+    .exceptix   start:0x02058F58 end:0x02058F64
 
 libs/MSL/Common/file_io.c:
+complete
     .text       start:0x02048F14 end:0x02048FFC
+    .exceptix   start:0x02058F64 end:0x02058F70
+
+libs/MSL/Common/float.c:
+complete
+    .data       start:0x020664BC end:0x020664CC
+
+libs/MSL/Common/locale.c:
+    .data       start:0x020664CC end:0x020666E8
+
+libs/MSL/Common/mbstring.c:
+complete
+    .text       start:0x02048FFC end:0x020490F8
+    .exceptix   start:0x02058F70 end:0x02058F94
+
+libs/MSL/Common/mem.c:
+complete
+    .text       start:0x020490F8 end:0x02049198
+    .exceptix   start:0x02058F94 end:0x02058FA0
+
+libs/MSL/Common/mem_funcs.c:
+complete
+    .text       start:0x02049198 end:0x02049248
+
+libs/MSL/Common/printf.c:
+    .text       start:0x02049248 end:0x0204B398
+    .exception  start:0x02058E08 end:0x02058E10
+    .exceptix   start:0x02058FA0 end:0x0205900C
+    .data       start:0x020666E8 end:0x02066728
+
+libs/MSL/Common/ctype.c:
+complete
+    .rodata     start:0x020632C0 end:0x02063440
+
+libs/MSL/Common/scanf.c:
+complete
+    .text       start:0x0204B398 end:0x0204C6E4
+    .exception  start:0x02058E10 end:0x02058E18
+    .exceptix   start:0x0205900C end:0x02059030
+    .rodata     start:0x02063440 end:0x02063468
+
+libs/MSL/Common/signal.c:
+complete
+    .text       start:0x0204C6E4 end:0x0204C814
+    .exceptix   start:0x02059030 end:0x0205903C
+    .bss        start:0x02082464 end:0x02082480
+
+libs/MSL/Common/string.c:
+complete
+    .text       start:0x0204C814 end:0x0204CB4C
+
+libs/MSL/Common/strtold.c:
+    .text       start:0x0204CB4C end:0x0204DD98
+    .exception  start:0x02058E18 end:0x02058E20
+    .exceptix   start:0x0205903C end:0x02059048
+    .rodata     start:0x02063468 end:0x02063478
+
+libs/MSL/Common/strtoul.c:
+    .text       start:0x0204DD98 end:0x0204E684
+    .exceptix   start:0x02059048 end:0x0205906C
 
 libs/MSL/Runtime/console_io.c:
 complete
     .text       start:0x02057034 end:0x020570F8
+    .exceptix   start:0x020591C8 end:0x020591E0
+
+libs/MSL/Runtime/CompressedNumbers.cpp:
+complete
+    .text       start:0x020570F8 end:0x02057210
+
+libs/MSL/Runtime/ExceptionHandler.cpp:
+    .text       start:0x02057210 end:0x02058620
+    .exception  start:0x02058E40 end:0x02058E84
+    .exceptix   start:0x020591E0 end:0x02059258
+
+libs/MSL/Common/errno.c:
+complete
+    .bss        start:0x02082460 end:0x02082464
+
+libs/MSL/Runtime/New.cpp:
+    .text       start:0x02058620 end:0x02058734
+    .data       start:0x02066900 end:0x02066978
+    .bss        start:0x02082490 end:0x02082494
 
 libs/MSL/Runtime/StaticInitializers.cpp:
 complete
     .text       start:0x02058734 end:0x020587A4
-    .bss        start:0x02082494 end:0x020824a0
+    .exceptix   start:0x020592AC end:0x020592C4
+    .bss        start:0x02082494 end:0x020824A0
+
+libs/MSL/Runtime/cxxabi_alloc.cpp:
+    .text       start:0x020587A4 end:0x0205897C
+    .exception  start:0x02058EB4 end:0x02058F04
+    .exceptix   start:0x020592C4 end:0x020592F4
+
+libs/MSL/Runtime/MWException.cpp:
+    .text       start:0x020589F4 end:0x02058BEC
+    .exceptix   start:0x02059330 end:0x02059360
+    .data       start:0x02066A14 end:0x02066A1C
+
+libs/MSL/Runtime/ExceptionHandlerTS.cpp:
+    .text       start:0x02058BEC end:0x02058DFC
+
+libs/MSL/Runtime/__arm_eabi_init.c:
+complete
+    .text       start:0x02058DFC end:0x02058E08
+    .exceptix   start:0x02059378 end:0x02059384
