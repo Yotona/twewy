@@ -8582,7 +8582,6 @@ from:0x02059a7c kind:load to:0x02003868 module:main
 from:0x02059a80 kind:load to:0x02003a2c module:main
 from:0x02059d14 kind:load to:0x02063750 module:main
 from:0x02059d18 kind:load to:0x02063748 module:main
-from:0x0205a930 kind:load to:0x02000800 module:main
 from:0x0205ad6c kind:load to:0x0200b09c module:main
 from:0x0205ad70 kind:load to:0x0200b198 module:main
 from:0x0205ad74 kind:load to:0x0200b29c module:main

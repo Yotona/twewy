@@ -135,9 +135,15 @@ func_02004c8c kind:function(arm,size=0x5c) addr:0x02004c8c
 func_02004ce8 kind:function(arm,size=0x78) addr:0x02004ce8
 func_02004d60 kind:function(arm,size=0xac) addr:0x02004d60
 func_02004e0c kind:function(arm,size=0x8c) addr:0x02004e0c
-func_02004e98 kind:function(arm,size=0x3c) addr:0x02004e98
-func_02004ed4 kind:function(arm,size=0x74) addr:0x02004ed4
-func_02004f48 kind:function(arm,size=0x104) addr:0x02004f48
+
+/////////////////////////////////////////////////////////////
+// src/Input.c
+/////////////////////////////////////////////////////////////
+Input_Init kind:function(arm,size=0x3c) addr:0x02004e98
+Input_PollState kind:function(arm,size=0x74) addr:0x02004ed4
+Input_UpdateRepeat kind:function(arm,size=0x104) addr:0x02004f48
+
+
 func_0200504c kind:function(arm,size=0x48) addr:0x0200504c
 func_02005094 kind:function(arm,size=0x20) addr:0x02005094
 func_020050b4 kind:function(arm,size=0x17c) addr:0x020050b4
@@ -3070,7 +3076,12 @@ data_02059d1c kind:data(any) addr:0x02059d1c
 data_02059d24 kind:data(any) addr:0x02059d24
 data_0205a124 kind:data(any) addr:0x0205a124
 data_0205a128 kind:data(any) addr:0x0205a128
-data_0205a928 kind:data(any) addr:0x0205a928
+
+/////////////////////////////////////////////////////////////
+// src/Input.c
+/////////////////////////////////////////////////////////////
+RepeatButtons kind:data(any) addr:0x0205a928 local
+
 data_0205a95c kind:data(any) addr:0x0205a95c
 data_0205ad5c kind:data(any) addr:0x0205ad5c
 data_0205ad64 kind:data(any) addr:0x0205ad64
