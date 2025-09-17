@@ -8,6 +8,10 @@
 
 #include "types.h"
 
+/// Interrupts
+
+#define BIOS_INTERRUPT_IRQCHECK *(vu32*)0x027E3FF8 // Nonmatching: Every usage seems to be an offset read from dtcm base
+
 /// System Control/Status
 
 #define BIOS_RESET         *(u32*)0x027FFC20

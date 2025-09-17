@@ -6,6 +6,12 @@
     .data       start:0x020636a0 end:0x02066a20 kind:data align:32
     .bss        start:0x02066a20 end:0x020824a0 kind:bss align:32
 
+src/main.c:
+    .text       start:0x02000BDC end:0x02001320
+
+src/Interrupts.c:
+    .text       start:0x02001320 end:0x02001760
+
 src/DMA.c:
     .text       start:0x02001760 end:0x02001C34
     .data       start:0x020636E4 end:0x02063744

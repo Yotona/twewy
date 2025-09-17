@@ -30,21 +30,27 @@ func_02000ab0 kind:function(arm,size=0xe8) addr:0x02000ab0
 func_02000b98 kind:function(arm,size=0x4) addr:0x02000b98
 func_02000b9c kind:function(arm,size=0x4) addr:0x02000b9c
 BuildInfo kind:data(any) addr:0x02000ba0
+
+
 main kind:function(arm,size=0x678) addr:0x02000bdc
 func_02001254 kind:function(arm,size=0xcc) addr:0x02001254
-func_02001320 kind:function(arm,size=0x6c) addr:0x02001320
-func_0200138c kind:function(arm,size=0xd0) addr:0x0200138c
-func_0200145c kind:function(arm,size=0x1c) addr:0x0200145c
-func_02001478 kind:function(arm,size=0x54) addr:0x02001478
-func_020014cc kind:function(arm,size=0xdc) addr:0x020014cc
-func_020015a8 kind:function(arm,size=0x4c) addr:0x020015a8
-func_020015f4 kind:function(arm,size=0x28) addr:0x020015f4
-func_0200161c kind:function(arm,size=0x4c) addr:0x0200161c
-func_02001668 kind:function(arm,size=0x30) addr:0x02001668
-func_02001698 kind:function(arm,size=0x40) addr:0x02001698
-func_020016d8 kind:function(arm,size=0x28) addr:0x020016d8
-func_02001700 kind:function(arm,size=0x14) addr:0x02001700
-func_02001714 kind:function(arm,size=0x4c) addr:0x02001714
+
+
+Interrupts_Init kind:function(arm,size=0x6c) addr:0x02001320
+Interrupts_HandleVBlank kind:function(arm,size=0xd0) addr:0x0200138c
+Interrupts_TriggerHBlank kind:function(arm,size=0x1c) addr:0x0200145c
+Interrupts_ForceVBlank kind:function(arm,size=0x54) addr:0x02001478
+HandleVBlank kind:function(arm,size=0xdc) addr:0x020014cc
+Interrupts_RegisterVBlankCallback kind:function(arm,size=0x4c) addr:0x020015a8
+Interrupts_SaveVBlankCallback kind:function(arm,size=0x28) addr:0x020015f4
+Interrupts_IsVBlankInterrupted kind:function(arm,size=0x4c) addr:0x0200161c
+HandleHBlank kind:function(arm,size=0x30) addr:0x02001668
+Interrupts_RegisterHBlankCallback kind:function(arm,size=0x40) addr:0x02001698
+Interrupts_SaveHBlankCallback kind:function(arm,size=0x28) addr:0x020016d8
+Interrupts_ResetHBlankCallback kind:function(arm,size=0x14) addr:0x02001700
+Interrupts_IsHBlankInterrupted kind:function(arm,size=0x4c) addr:0x02001714
+
+
 func_02001760 kind:function(arm,size=0xb0) addr:0x02001760
 func_02001810 kind:function(arm,size=0x38) addr:0x02001810
 func_02001848 kind:function(arm,size=0x2c) addr:0x02001848
@@ -3881,8 +3887,8 @@ data_02066a1c kind:data(any) addr:0x02066a1c
 ////// section: .bss                                    //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-data_02066a20 kind:bss addr:0x02066a20
-data_02066a24 kind:bss addr:0x02066a24
+SystemStatusFlags kind:bss addr:0x02066a20
+SysControl kind:bss addr:0x02066a24
 data_02066a2c kind:bss addr:0x02066a2c
 data_02066a58 kind:bss addr:0x02066a58
 data_02066a5c kind:bss addr:0x02066a5c

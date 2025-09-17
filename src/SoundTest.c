@@ -1,6 +1,7 @@
 #include "CriSndMgr.h"
 #include "OverlayManager.h"
 #include "SndMgr.h"
+#include "System.h"
 #include "common_data.h"
 #include "game.h"
 #include <registers.h>
@@ -1511,9 +1512,9 @@ void func_ov029_020828c0(GameState* state) {
 }
 
 void func_ov029_020828cc(int* param_1) {
-    if ((data_02066a24.unk_04 & 0x10) != 0) {
+    if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
         *param_1 += 0x40;
-    } else if ((data_02066a24.unk_04 & 0x20) != 0) {
+    } else if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
         *param_1 -= 0x40;
     }
 }
@@ -1521,7 +1522,7 @@ void func_ov029_020828cc(int* param_1) {
 void func_ov029_02082904(int* param_1, int param_2) {
     int iVar1;
 
-    if ((data_02066a24.unk_04 & 0x10) != 0) {
+    if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
         iVar1    = *param_1;
         *param_1 = iVar1 + 1;
         if (iVar1 + 1 >= param_2) {
@@ -1529,7 +1530,7 @@ void func_ov029_02082904(int* param_1, int param_2) {
         }
         return;
     }
-    if ((data_02066a24.unk_04 & 0x20) != 0) {
+    if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
         iVar1    = *param_1;
         *param_1 = iVar1 + -1;
         if (iVar1 + -1 < 0) {
@@ -1615,33 +1616,33 @@ void func_ov029_02082abc(void) {
 BOOL func_ov029_02082ae0(GameState* state) {
     OverlayTag tag;
 
-    if ((data_02066a24.unk_02 & 8) != 0) {
+    if (SysControl.pressedButtons & INPUT_BUTTON_START) {
         state->sndTest.unk_219E8 ^= 1;
         func_02027200(state->sndTest.unk_219E8);
-    } else if ((data_02066a24.unk_02 & 1) != 0) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_A) {
         func_ov029_02082954(state);
-    } else if ((data_02066a24.unk_02 & 2) != 0) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_B) {
         func_ov029_02082a60(state);
-    } else if ((data_02066a24.unk_02 & 0x800) != 0) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_Y) {
         func_ov029_02082abc();
-    } else if ((data_02066a24.unk_02 & 0x400) != 0) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_X) {
         func_020270e4();
         func_02026b20(3);
-    } else if ((data_02066a24.unk_02 & 4) != 0) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
         func_02007174(&tag);
-    } else if (data_02066a24.unk_04 == 0x40) {
+    } else if (SysControl.holdButtons == INPUT_BUTTON_UP) {
         state->unk_219B0--;
-    } else if (data_02066a24.unk_04 == 0x80) {
+    } else if (SysControl.holdButtons == INPUT_BUTTON_DOWN) {
         state->unk_219B0++;
     }
-    if ((data_02066a24.unk_02 & 0x200) != 0) {
+    if (SysControl.pressedButtons & INPUT_BUTTON_L) {
         if (state->sndTest.seqArc >= 0) {
             func_02026ae0(1, state->sndTest.seqArc, state->sndTest.se);
         } else {
             func_02026e28(state->sndTest.se);
         }
     }
-    if ((data_02066a24.unk_02 & 0x100) != 0) {
+    if (SysControl.pressedButtons & INPUT_BUTTON_R) {
         func_02026aa4(1);
     }
     if (state->unk_219B0 < 0) {
@@ -1678,10 +1679,10 @@ BOOL func_ov029_02082ae0(GameState* state) {
             CriSndMgr_SetAdxIdxVolume(state->sndTest.adxIdx, -state->sndTest.adxVolume);
             break;
         case 7:
-            if ((data_02066a24.unk_00 & 0x10)) {
+            if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
                 state->sndTest.adxLoopEnabled = TRUE;
                 CriSndMgr_SetLpFlg(1);
-            } else if ((data_02066a24.unk_00 & 0x20) != 0) {
+            } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
                 state->sndTest.adxLoopEnabled = FALSE;
                 CriSndMgr_SetLpFlg(0);
             }
@@ -1691,15 +1692,15 @@ BOOL func_ov029_02082ae0(GameState* state) {
             func_020271b8(state->sndTest.seIdx, state->sndTest.sePitch);
             break;
         case 9:
-            if ((data_02066a24.unk_00 & 0x10)) {
+            if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
                 state->sndTest.noiseNoWaveLoad = TRUE;
                 func_02027220(1);
-            } else if ((data_02066a24.unk_00 & 0x20) != 0) {
+            } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
                 state->sndTest.noiseNoWaveLoad = FALSE;
                 func_02027220(0);
             }
     }
-    if ((data_02066a24.unk_04 & 0xf1) != 0) {
+    if (SysControl.holdButtons & (INPUT_MASK_DPAD | INPUT_BUTTON_A)) {
         state->sndTest.adxVolume = -CriSndMgr_GetAdxIdxVolume(state->sndTest.adxIdx);
         func_ov029_02082544(state);
     }
@@ -1768,8 +1769,7 @@ void func_ov029_02082fdc(void) {
 }
 
 void func_ov029_020832f4(void) {
-    s32 val = data_02066a20 << 0x1f;
-    if ((u32)val >> 0x1f) {
+    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_02006380();
         func_020019ac();
         DC_PurgeRange(&data_0206770c, 0x400);
@@ -1787,5 +1787,5 @@ void func_ov029_020832f4(void) {
 
 void func_ov029_020833c4(void) {
     func_ov029_02082fdc();
-    func_020015a8(func_ov029_020832f4, 1);
+    Interrupts_RegisterVBlankCallback(func_ov029_020832f4, 1);
 }

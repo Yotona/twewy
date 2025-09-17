@@ -1,4 +1,5 @@
 #include "OverlayManager.h"
+#include "System.h"
 #include "cache.h"
 #include "common_data.h"
 #include "game.h"
@@ -86,18 +87,18 @@ void func_ov041_0208290c(GameState* state) {
     u8*        puVar2;
     OverlayTag tag;
 
-    switch (data_02066a24.unk_02) {
-        case 1:
+    switch (SysControl.pressedButtons) {
+        case INPUT_BUTTON_A:
             if (state->unk_21E60 == 0) {
                 func_ov040_0209e888(&state->unk_219B0);
             }
             break;
-        case 2:
+        case INPUT_BUTTON_B:
             if (state->unk_21E60 != 0) {
                 func_ov040_0209e900(&state->unk_219B0);
             }
             break;
-        case 0x400:
+        case INPUT_BUTTON_X:
             break;
     }
 
@@ -121,7 +122,7 @@ void func_ov041_0208290c(GameState* state) {
     if (state->unk_21E60 != 0) {
         return;
     }
-    if ((data_02066a24.unk_02 & 4) != 0) {
+    if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
         func_02007174(&tag);
     }
 }
@@ -191,8 +192,7 @@ void func_ov041_02082c04(void) {
 }
 
 void func_ov041_02082f1c(s32 param_1, s32 param_2, s32 param_3, s32 param_4) {
-    s32 val = data_02066a20 << 0x1f;
-    if ((u32)val >> 0x1f) {
+    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_ov040_0209e91c();
         func_02006380();
         func_020019ac();
@@ -211,5 +211,5 @@ void func_ov041_02082f1c(s32 param_1, s32 param_2, s32 param_3, s32 param_4) {
 
 void func_ov041_02082ff0(void) {
     func_ov041_02082c04();
-    func_020015a8(func_ov041_02082f1c, 1);
+    Interrupts_RegisterVBlankCallback(func_ov041_02082f1c, 1);
 }

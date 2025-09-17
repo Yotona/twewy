@@ -7,15 +7,6 @@ extern s32 data_0206a9a4; // Global memory allocator handle
 
 extern s32 data_0205c9b0;
 
-extern s32 data_02066a20;
-
-typedef struct {
-    /* 0x0 */ u16 unk_00;
-    /* 0x2 */ u16 unk_02;
-    /* 0x4 */ u16 unk_04;
-} UnkStruct_02066a24;
-extern UnkStruct_02066a24 data_02066a24;
-
 extern s32 data_02066aac[16];
 extern s16 data_02066aec;
 extern s32 data_02066cec;
