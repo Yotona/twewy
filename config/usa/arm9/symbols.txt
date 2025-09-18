@@ -31,11 +31,15 @@ func_02000b98 kind:function(arm,size=0x4) addr:0x02000b98
 func_02000b9c kind:function(arm,size=0x4) addr:0x02000b9c
 BuildInfo kind:data(any) addr:0x02000ba0
 
-
+/////////////////////////////////////////////////////////////
+// src/main.c
+/////////////////////////////////////////////////////////////
 main kind:function(arm,size=0x678) addr:0x02000bdc
 func_02001254 kind:function(arm,size=0xcc) addr:0x02001254
 
-
+/////////////////////////////////////////////////////////////
+// src/Interrupts.c
+/////////////////////////////////////////////////////////////
 Interrupts_Init kind:function(arm,size=0x6c) addr:0x02001320
 Interrupts_HandleVBlank kind:function(arm,size=0xd0) addr:0x0200138c
 Interrupts_TriggerHBlank kind:function(arm,size=0x1c) addr:0x0200145c
@@ -466,7 +470,7 @@ func_020109d0 kind:function(arm,size=0x40) addr:0x020109d0
 func_02010a10 kind:function(arm,size=0x6c) addr:0x02010a10
 func_02010a7c kind:function(arm,size=0x60) addr:0x02010a7c
 func_02010adc kind:function(arm,size=0x3c) addr:0x02010adc
-func_02010b18 kind:function(arm,size=0x38) addr:0x02010b18
+Text_RenderToScreen kind:function(arm,size=0x38) addr:0x02010b18
 func_02010b50 kind:function(arm,size=0x34) addr:0x02010b50
 func_02010b84 kind:function(arm,size=0x454) addr:0x02010b84
 func_02010fd8 kind:function(arm,size=0x218) addr:0x02010fd8
@@ -589,7 +593,7 @@ ADXERR_ItoA2 kind:function(arm,size=0x6c) addr:0x020144bc
 
 func_02014528 kind:function(arm,size=0x14) addr:0x02014528
 func_0201453c kind:function(arm,size=0xcc) addr:0x0201453c
-func_02014608 kind:function(arm,size=0xc) addr:0x02014608
+ADXT_GetVersionInfo kind:function(arm,size=0xc) addr:0x02014608
 func_02014614 kind:function(arm,size=0x10) addr:0x02014614
 func_02014624 kind:function(arm,size=0x10) addr:0x02014624
 func_02014634 kind:function(arm,size=0x10) addr:0x02014634
@@ -2127,7 +2131,7 @@ func_0203973c kind:function(arm,size=0x24) addr:0x0203973c
 func_02039760 kind:function(arm,size=0x24) addr:0x02039760
 
 /////////////////////////////////////////////////////////////
-// src/cache.c
+// libs/NitroSDK/os/cache.c
 /////////////////////////////////////////////////////////////
 DC_Enable kind:function(arm,size=0x18) addr:0x02039784
 DC_InvalidateAll kind:function(arm,size=0xc) addr:0x0203979c

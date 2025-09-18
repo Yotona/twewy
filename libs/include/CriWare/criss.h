@@ -16,7 +16,7 @@ void criSsPly_SetVolume(CRISS* criss, s32 volume);
 
 void criSsPly_SetFadeTime(CRISS* criss, u32 arg1, u32 arg2);
 
-CRISS* func_02021960(GameState* (**arg0)(s32), s32 arg1, s32 arg2);
+CRISS* func_02021960(void* (**arg0)(s32), s32 arg1, s32 arg2);
 
 void func_02021f4c(s32*);
 

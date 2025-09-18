@@ -4,13 +4,13 @@ func_ov041_02082730 kind:function(arm,size=0x88) addr:0x02082730
 func_ov041_020827b8 kind:function(arm,size=0x14) addr:0x020827b8
 func_ov041_020827cc kind:function(arm,size=0x124) addr:0x020827cc
 func_ov041_020828f0 kind:function(arm,size=0x1c) addr:0x020828f0
-func_ov041_0208290c kind:function(arm,size=0x150) addr:0x0208290c
+STSample_ControlMenu kind:function(arm,size=0x150) addr:0x0208290c
 func_ov041_02082a5c kind:function(arm,size=0xac) addr:0x02082a5c
 func_ov041_02082b08 kind:function(arm,size=0x80) addr:0x02082b08
 func_ov041_02082b88 kind:function(arm,size=0x3c) addr:0x02082b88
 func_ov041_02082bc4 kind:function(arm,size=0x40) addr:0x02082bc4
 func_ov041_02082c04 kind:function(arm,size=0x318) addr:0x02082c04
-func_ov041_02082f1c kind:function(arm,size=0xd4) addr:0x02082f1c
+STSample_InterruptCallback kind:function(arm,size=0xd4) addr:0x02082f1c
 func_ov041_02082ff0 kind:function(arm,size=0x1c) addr:0x02082ff0
 
 funcs$44 kind:data(any) addr:0x0208300c

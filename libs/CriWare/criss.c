@@ -56,7 +56,7 @@ void func_02021938(u32 param_1) {
     }
 }
 
-CRISS* func_02021960(GameState* (**arg0)(s32), s32 arg1, s32 arg2) {
+CRISS* func_02021960(void* (**arg0)(s32), s32 arg1, s32 arg2) {
     return criSsPly_Create(arg0, arg1, arg2, 0);
 }
 

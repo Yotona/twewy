@@ -2417,7 +2417,7 @@ from:0x0213681c kind:arm_call to:0x0213e2d4 module:overlay(17)
 from:0x02136834 kind:arm_call to:0x020cc354 module:overlay(3)
 from:0x02136844 kind:arm_call to:0x021377d4 module:overlay(17)
 from:0x02136868 kind:arm_call to:0x020cc784 module:overlay(3)
-from:0x0213687c kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x0213687c kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x02136904 kind:arm_call to:0x0200ea4c module:main
 from:0x02136960 kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,39,41,42,43,44,45,46)
 from:0x021369a4 kind:arm_call to:0x0200ea4c module:main
@@ -2649,7 +2649,7 @@ from:0x02138430 kind:arm_call to:0x0213e2d4 module:overlay(17)
 from:0x02138448 kind:arm_call to:0x020cc354 module:overlay(3)
 from:0x02138458 kind:arm_call to:0x02139550 module:overlay(17)
 from:0x0213847c kind:arm_call to:0x020cc784 module:overlay(3)
-from:0x02138488 kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x02138488 kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x021384d4 kind:arm_call to:0x020cc784 module:overlay(3)
 from:0x02138520 kind:arm_call to:0x0200ea4c module:main
 from:0x0213857c kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,39,41,42,43,44,45,46)
@@ -3154,7 +3154,7 @@ from:0x0213bc38 kind:arm_call to:0x020cc354 module:overlay(3)
 from:0x0213bc48 kind:arm_call to:0x0213d298 module:overlay(17)
 from:0x0213bc6c kind:arm_call to:0x020cc784 module:overlay(3)
 from:0x0213bc78 kind:arm_call to:0x02084694 module:overlay(3)
-from:0x0213bc84 kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x0213bc84 kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x0213bcd0 kind:arm_call to:0x020cc784 module:overlay(3)
 from:0x0213bd1c kind:arm_call to:0x0200ea4c module:main
 from:0x0213bd78 kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,39,41,42,43,44,45,46)
@@ -3721,7 +3721,7 @@ from:0x02140388 kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,
 from:0x02140390 kind:arm_call to:0x02027124 module:main
 from:0x021403a0 kind:arm_call to:0x02087ed8 module:overlay(3)
 from:0x021403a8 kind:arm_call to:0x0200ea4c module:main
-from:0x021403c4 kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x021403c4 kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x021403e4 kind:arm_call to:0x02083ca0 module:overlay(3)
 from:0x02140404 kind:arm_call to:0x02082b0c module:overlays(3,44)
 from:0x0214041c kind:load to:0x0205e4e0 module:main

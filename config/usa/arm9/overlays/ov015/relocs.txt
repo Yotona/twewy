@@ -311,7 +311,7 @@ from:0x02127c30 kind:arm_call to:0x020c37f8 module:overlays(3,30)
 from:0x02127c64 kind:load to:0x02128500 module:overlay(15)
 from:0x02127c84 kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,39,41,42,43,44,45,46)
 from:0x02127c9c kind:load to:0x02128500 module:overlay(15)
-from:0x02127d1c kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x02127d1c kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x02127d24 kind:arm_call to:0x020c37f8 module:overlays(3,30)
 from:0x02127d3c kind:arm_call to:0x02027124 module:main
 from:0x02127d4c kind:arm_call to:0x02026b9c module:main

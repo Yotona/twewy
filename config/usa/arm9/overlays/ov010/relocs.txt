@@ -205,12 +205,12 @@ from:0x021271d4 kind:arm_call to:0x0203b3c0 module:main
 from:0x02127204 kind:arm_call to:0x020c37f8 module:overlays(3,30)
 from:0x02127224 kind:arm_call to:0x020c5b0c module:overlay(3)
 from:0x02127248 kind:arm_call to:0x02084694 module:overlay(3)
-from:0x02127254 kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x02127254 kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x02127260 kind:arm_call to:0x021256d0 module:overlay(10)
 from:0x021272b4 kind:arm_call to:0x020067ec module:main
 from:0x021272c8 kind:arm_call to:0x020067ec module:main
 from:0x02127328 kind:arm_call to:0x020cbcb4 module:overlay(3)
-from:0x0212741c kind:arm_call to:0x02082f1c module:overlays(3,41,43)
+from:0x0212741c kind:arm_call to:0x02082f1c module:overlays(3,43)
 from:0x0212743c kind:arm_call to:0x020c4fc8 module:overlay(3)
 from:0x0212746c kind:arm_call to:0x020c427c module:overlay(3)
 from:0x021274a0 kind:arm_call to:0x020067ec module:main

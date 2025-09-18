@@ -1,9 +1,9 @@
 // #include "OverlayManager.h"
 #include "Interrupts.h"
 #include "System.h"
-#include "cache.h"
 #include "common_data.h"
 #include "game.h"
+#include <NitroSDK/os/cache.h>
 #include <bios.h>
 #include <registers.h>
 

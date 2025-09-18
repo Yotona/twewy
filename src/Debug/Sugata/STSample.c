@@ -1,8 +1,8 @@
+#include "Debug/STSample.h"
 #include "OverlayManager.h"
 #include "System.h"
-#include "cache.h"
 #include "common_data.h"
-#include "game.h"
+#include <NitroSDK/os/cache.h>
 
 extern s32 OVERLAY_40_ID;
 
@@ -11,24 +11,24 @@ extern s32 DAT_0206b3d0;
 
 char* data_ov041_02083020 = "Seq_STSample()";
 
-typedef void (*UnkFuncPtr)(GameState*);
+typedef void (*STSampleCb)(STSampleState*);
 
 void func_ov041_02082ff0(void);
 
-u32 func_ov041_020824a0(GameState* state, int param_2, u32 param_3) {
+u32 func_ov041_020824a0(STSampleState* state, int param_2, u32 param_3) {
     /* Not yet implemented */
 }
 
-void func_ov041_02082600(GameState* state, s32 param_2, u16* param_3, u32 param_4) {
+void func_ov041_02082600(STSampleState* state, s32 param_2, u16* param_3, u32 param_4) {
     /* Not yet implemented */
 }
 
-void func_ov041_02082730(GameState* state) {
+void func_ov041_02082730(STSampleState* state) {
     UnkStruct_usedby_02025b68 local_30;
 
     local_30.unk_00 = 1;
     local_30.unk_04 = 0;
-    local_30.unk_08 = state->unk_11584;
+    local_30.unk_08 = state->gameState.unk_11584;
     local_30.unk_0C = &data_0205c9b0;
     local_30.unk_10 = 0;
     local_30.unk_14 = NULL;
@@ -36,16 +36,16 @@ void func_ov041_02082730(GameState* state) {
     local_30.unk_1A = 0;
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
-    func_02025b68(&state->unk_21594, &local_30);
-    func_02010b18(&state->unk_215A0, 0, 0, "すれちがいサンプル"); // "StreetPass Sample"
+    func_02025b68(&state->gameState.unk_21594, &local_30);
+    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0, "すれちがいサンプル"); // "StreetPass Sample"
 }
 
-void func_ov041_020827b8(GameState* state) {
-    func_02025e30(&state->unk_21594);
+void func_ov041_020827b8(STSampleState* state) {
+    func_02025e30(&state->gameState.unk_21594);
 }
 
 /* Nonmatching */
-void func_ov041_020827cc(GameState* state) {
+void func_ov041_020827cc(STSampleState* state) {
     int iVar1;
     s8  abStack_5c[4];
     u16 auStack_58[11];
@@ -68,21 +68,21 @@ void func_ov041_020827cc(GameState* state) {
     func_0203b3c0(&state->unk_21F4C, 0, 0x36);
     func_ov040_0209da10(&state->unk_21F4C, auStack_40, local_a);
 
-    for (iVar1 = 0; iVar1 < 0x100; iVar1++) {
-        state->unk_21F82[iVar1] = (s8)iVar1;
+    for (s32 idx = 0; idx < 0x100; idx++) {
+        state->unk_21F82[idx] = idx;
     }
 
     func_0203b3c0(&state->unk_21E6C, 0xff, 0xc0);
     func_0203b3c0(&state->unk_2208C, 0, 0x152);
 }
 
-void func_ov041_020828f0(GameState* state) {
+void func_ov041_020828f0(STSampleState* state) {
     func_ov041_020827b8(state);
     func_ov040_0209e028(&state->unk_219B0);
 }
 
 /* Nonmatching */
-void func_ov041_0208290c(GameState* state) {
+void STSample_ControlMenu(STSampleState* state) {
     s32        idx;
     u8*        puVar2;
     OverlayTag tag;
@@ -107,14 +107,14 @@ void func_ov041_0208290c(GameState* state) {
     }
 
     if (state->unk_22084 > state->unk_22088) {
-        puVar2 = &state->unk_0004C[state->unk_22088 * 0x141];
+        puVar2 = &state->gameState.unk_0004C[state->unk_22088 * 0x141];
         for (idx = 0; idx < 0x100; idx++) {
             if ((idx & 0xff) != (u32)(u8)puVar2[0x220de]) {
                 break;
             }
             puVar2++;
         }
-        func_02010b18(&state->unk_215A0, 8, (state->unk_22088 + 1) * 8, "データ受信"); // "Data Received"
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, (state->unk_22088 + 1) * 8, "データ受信"); // "Data Received"
         state->unk_22088++;
     }
 
@@ -122,56 +122,58 @@ void func_ov041_0208290c(GameState* state) {
     if (state->unk_21E60 != 0) {
         return;
     }
+
+    // Return to main debug menu
     if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
         func_02007174(&tag);
     }
 }
 
 /* Nonmatching */
-void func_ov041_02082a5c(GameState* param) {
-    int        iVar1;
-    GameState* state;
-    GameState* sVar2;
+void func_ov041_02082a5c(STSampleState* param) {
+    int            iVar1;
+    STSampleState* state;
+    GameState*     sVar2;
 
     func_0200669c(3, OVERLAY_40_ID);
     iVar1 = data_ov041_02083020;
-    state = (GameState*)func_02004618(&data_0206a9b0, 0x22B1C);
+    state = func_02004618(&data_0206a9b0, sizeof(STSampleState));
     func_020049a8(&data_0206a9b0, state, iVar1);
-    sVar2 = func_02007260(state);
+    sVar2 = func_02007260(&state->gameState);
     func_02008e80();
-    state->unk_11584 = sVar2;
+    state->gameState.unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->unk_11580     = func_0200cef0(state);
-    data_02066aec        = 0;
-    data_0206aa80.unk_30 = 0;
-    data_0206aa80.unk_60 = 0;
-    data_02066eec        = 0;
+    state->gameState.unk_11580 = func_0200cef0(state);
+    data_02066aec              = 0;
+    data_0206aa80.unk_30       = 0;
+    data_0206aa80.unk_60       = 0;
+    data_02066eec              = 0;
     func_ov041_020827cc(state);
     func_020072a4();
 }
 
-void func_ov041_02082b08(GameState* state) {
+void func_ov041_02082b08(STSampleState* state) {
     func_0200283c(&data_020676ec, 0, 0);
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    func_ov041_0208290c(state);
+    STSample_ControlMenu(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
     func_0200bf60(data_0206b3cc.unk_00, 0);
     func_0200bf60(data_0206b3cc.unk_04, 0);
 }
 
-void func_ov041_02082b88(GameState* state) {
+void func_ov041_02082b88(STSampleState* state) {
     func_ov041_020828f0(state);
     func_0200cef0(NULL);
-    func_02008ebc(state->unk_11584);
+    func_02008ebc(state->gameState.unk_11584);
     func_020048b4(&data_0206a9b0, state);
     func_02006618(3);
 }
 
-void func_ov041_02082bc4(GameState* state) {
-    static const UnkFuncPtr funcs[] = {
+void func_ov041_02082bc4(STSampleState* state) {
+    static const STSampleCb funcs[] = {
         func_ov041_02082a5c,
         func_ov041_02082b08,
         func_ov041_02082b88,
@@ -191,7 +193,7 @@ void func_ov041_02082c04(void) {
     /* Not yet implemented */
 }
 
-void func_ov041_02082f1c(s32 param_1, s32 param_2, s32 param_3, s32 param_4) {
+void STSample_InterruptCallback(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_ov040_0209e91c();
         func_02006380();
@@ -211,5 +213,5 @@ void func_ov041_02082f1c(s32 param_1, s32 param_2, s32 param_3, s32 param_4) {
 
 void func_ov041_02082ff0(void) {
     func_ov041_02082c04();
-    Interrupts_RegisterVBlankCallback(func_ov041_02082f1c, 1);
+    Interrupts_RegisterVBlankCallback(STSample_InterruptCallback, 1);
 }

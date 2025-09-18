@@ -3,8 +3,8 @@
 // be written in assembly. Functions were named and documented by AI based on its
 // interpretation of their behavior, and may not be entirely accurate.
 
-#ifndef CACHING_H
-#define CACHING_H
+#ifndef NITROSDK_OS_CACHE_H
+#define NITROSDK_OS_CACHE_H
 
 #include <types.h>
 
@@ -103,4 +103,4 @@ void IC_InvalidateAll(void);
  */
 void IC_InvalidateRange(void* addr, u32 count);
 
-#endif // CACHING_H
+#endif // NITROSDK_OS_CACHE_H

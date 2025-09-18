@@ -146,15 +146,15 @@ s32 func_02027410(void) {
     criSsPly_Play(criSndMgr.criss);
 }
 
-void CriSndMgr_SetLpFlg(s32 lpFlg) {
+void CriSndMgr_SetLpFlg(BOOL lpFlg) {
     criSsPly_SetLpFlg(criSndMgr.criss, lpFlg);
 }
 
-GameState* CriSndMgr_Create(s32 param_1) {
-    GameState* state = func_02004618(&data_0206a9a4, param_1);
-    func_020049a8(&data_0206a9a4, state, "CriSndMgr");
-    func_0203b2d0(0, state, func_0200498c(&data_0206a9a4, state));
-    return state;
+void* CriSndMgr_Create(s32 size) {
+    void* mgr = func_02004618(&data_0206a9a4, size);
+    func_020049a8(&data_0206a9a4, mgr, "CriSndMgr");
+    func_0203b2d0(0, mgr, func_0200498c(&data_0206a9a4, mgr));
+    return mgr;
 }
 
 void CriSndMgr_Exec(GameState* state) {

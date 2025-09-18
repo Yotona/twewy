@@ -1,7 +1,7 @@
 #include "DMA.h"
-#include "cache.h"
 #include "common_data.h"
 #include "game.h"
+#include <NitroSDK/os/cache.h>
 
 const char* data_020636e4 = "DMA_Init()";
 

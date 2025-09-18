@@ -1,4 +1,11 @@
+/**
+ * @file Debug/Kitawaki/SoundTest.c
+ * @brief Debug Menu K-4 ~ Sound Test
+ */
+
+#include "Debug/SoundTest.h"
 #include "CriSndMgr.h"
+#include "Interrupts.h"
 #include "OverlayManager.h"
 #include "SndMgr.h"
 #include "System.h"
@@ -9,13 +16,9 @@
 
 void func_ov029_020833c4(void);
 
-void func_ov029_02082e40(GameState* state);
-void func_ov029_02082ee8(GameState* state);
-void func_ov029_02082f68(GameState* state);
-
 const char* data_ov029_02083400 = "Seq_SoundTest()";
 
-typedef void (*SoundEffectFunc)(GameState* state);
+typedef void (*SoundEffectFunc)(SoundTestState* state);
 
 // Nonmatching: Built order differs
 const char* soundEffects[1388] = {
@@ -1409,12 +1412,12 @@ const char* soundEffects[1388] = {
     "EV_strmse_reserve10",
 };
 
-void func_ov029_020824a0(GameState* state) {
+void func_ov029_020824a0(SoundTestState* state) {
     UnkStruct_usedby_02025b68 local_30;
 
     local_30.unk_00 = 1;
     local_30.unk_04 = 0;
-    local_30.unk_08 = state->unk_11584;
+    local_30.unk_08 = state->gameState.unk_11584;
     local_30.unk_0C = &data_0205c9b0;
     local_30.unk_10 = 0;
     local_30.unk_14 = NULL;
@@ -1422,153 +1425,137 @@ void func_ov029_020824a0(GameState* state) {
     local_30.unk_1A = 0;
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
-    func_02025b68(&state->unk_21594, &local_30);
-    func_02010b18(&state->unk_215A0, 0, 0, "SoundTest");
-    func_02010b18(&state->unk_215A0, 0, 0x98, func_02014608());
+    func_02025b68(&state->gameState.unk_21594, &local_30);
+    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0, "SoundTest");
+    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0x98, ADXT_GetVersionInfo());
 }
 
-void func_ov029_02082544(GameState* state) {
-    char* pcVar1;
-    int   iVar3;
+void SoundTest_DrawMenu(SoundTestState* state) {
+    func_02010b84(&state->gameState.unk_215A0, 0, 0x10, 0x100, 0x50);
 
-    func_02010b84((int)&state->unk_215A0, 0, 0x10, 0x100, 0x50);
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->adxIdx].adxFile);
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x18, func_02006930("seqArc:%d", state->seqArc));
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x20, func_02006930("se:%d", state->se));
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x28,
+                        func_02006930("seIdx %d:%s", state->seIdx, soundEffects[state->seIdx]));
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x30, func_02006930("seIdx Volume:%d", state->seIdxVolume));
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x38, func_02006930("sePan :%d", state->sePan));
 
-    func_02010b18(&state->unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->sndTest.adxIdx].adxFile);
-
-    pcVar1 = func_02006930("seqArc:%d", state->sndTest.seqArc);
-    func_02010b18(&state->unk_215A0, 8, 0x18, pcVar1);
-
-    pcVar1 = func_02006930("se:%d", state->sndTest.se);
-    func_02010b18(&state->unk_215A0, 8, 0x20, pcVar1);
-
-    pcVar1 = func_02006930("seIdx %d:%s", state->sndTest.seIdx, soundEffects[state->sndTest.seIdx]);
-    func_02010b18(&state->unk_215A0, 8, 0x28, pcVar1);
-
-    pcVar1 = func_02006930("seIdx Volume:%d", state->sndTest.seIdxVolume);
-    func_02010b18(&state->unk_215A0, 8, 0x30, pcVar1);
-
-    pcVar1 = func_02006930("sePan :%d", state->sndTest.sePan);
-    func_02010b18(&state->unk_215A0, 8, 0x38, pcVar1);
-
-    if (state->sndTest.adxVolume <= 0) {
-        pcVar1 = func_02006930("adx volume :0(0.0dB)");
-        func_02010b18(&state->unk_215A0, 8, 0x40, pcVar1);
+    if (state->adxVolume <= 0) {
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x40, func_02006930("adx volume :0(0.0dB)"));
     } else {
-        iVar3 = state->sndTest.adxVolume % 10;
-        if (iVar3 < 0) {
-            iVar3 = -iVar3;
+        s32 volFloat = state->adxVolume % 10;
+        if (volFloat < 0) {
+            volFloat = -volFloat;
         }
-        pcVar1 = func_02006930("adx volume :-%d(-%d.%ddB)", state->sndTest.adxVolume, state->sndTest.adxVolume / 10, iVar3);
-        func_02010b18(&state->unk_215A0, 8, 0x40, pcVar1);
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x40,
+                            func_02006930("adx volume :-%d(-%d.%ddB)", state->adxVolume, state->adxVolume / 10, volFloat));
     }
 
-    if (state->sndTest.adxLoopEnabled) {
-        pcVar1 = func_02006930("adx loop on");
-        func_02010b18(&state->unk_215A0, 8, 0x48, pcVar1);
+    if (state->adxLoopEnabled) {
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x48, func_02006930("adx loop on"));
     } else {
-        pcVar1 = func_02006930("adx loop off");
-        func_02010b18(&state->unk_215A0, 8, 0x48, pcVar1);
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x48, func_02006930("adx loop off"));
     }
 
-    pcVar1 = func_02006930("sePitch :%d", state->sndTest.sePitch);
-    func_02010b18(&state->unk_215A0, 8, 0x50, pcVar1);
+    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x50, func_02006930("sePitch :%d", state->sePitch));
 
-    if (state->sndTest.noiseNoWaveLoad) {
-        pcVar1 = func_02006930("NoiseNoWaveLoad :ON ");
-        func_02010b18(&state->unk_215A0, 8, 0x58, pcVar1);
+    if (state->noiseNoWaveLoad) {
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :ON "));
     } else {
-        pcVar1 = func_02006930("NoiseNoWaveLoad :OFF");
-        func_02010b18(&state->unk_215A0, 8, 0x58, pcVar1);
+        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :OFF"));
     }
-    func_02010b18(&state->unk_215A0, 0, *(int*)&state->unk_219B0 * 8 + 0x10, ">");
+
+    // Menu Cursor
+    Text_RenderToScreen(&state->gameState.unk_215A0, 0, state->menuCurrentRow * 8 + 0x10, ">");
 }
 
-void func_ov029_02082824(GameState* state) {
-    func_02025e30(&state->unk_21594);
+void func_ov029_02082824(SoundTestState* state) {
+    func_02025e30(&state->gameState.unk_21594);
 }
 
-void func_ov029_02082838(GameState* state) {
-    state->sndTest.adxIdx          = 0;
-    state->unk_219B4               = 0;
-    state->unk_219B8               = 0;
-    state->unk_219B0               = 0;
-    state->sndTest.seqArc          = 0;
-    state->sndTest.se              = 0;
-    state->sndTest.seIdx           = 0;
-    state->sndTest.unk_219D0       = 0;
-    state->sndTest.unk_219E8       = 0;
-    state->sndTest.noiseNoWaveLoad = FALSE;
-    state->sndTest.seIdxVolume     = SndMgr_GetSeIdxVolume(state->sndTest.seIdx);
-    state->sndTest.sePan           = 128;
-    state->sndTest.adxVolume       = -CriSndMgr_GetAdxIdxVolume(state->sndTest.adxIdx);
-    state->sndTest.sePitch         = 0;
-    state->sndTest.adxLoopEnabled  = TRUE;
+void func_ov029_02082838(SoundTestState* state) {
+    state->adxIdx          = 0;
+    state->unk_219B4       = 0;
+    state->unk_219B8       = 0;
+    state->menuCurrentRow  = 0;
+    state->seqArc          = 0;
+    state->se              = 0;
+    state->seIdx           = 0;
+    state->unk_219D0       = 0;
+    state->unk_219E8       = 0;
+    state->noiseNoWaveLoad = FALSE;
+    state->seIdxVolume     = SndMgr_GetSeIdxVolume(state->seIdx);
+    state->sePan           = 128;
+    state->adxVolume       = -CriSndMgr_GetAdxIdxVolume(state->adxIdx);
+    state->sePitch         = 0;
+    state->adxLoopEnabled  = TRUE;
     func_ov029_020824a0(state);
-    func_ov029_02082544(state);
+    SoundTest_DrawMenu(state);
 }
 
-void func_ov029_020828c0(GameState* state) {
+void func_ov029_020828c0(SoundTestState* state) {
     func_ov029_02082824(state);
 }
 
-void func_ov029_020828cc(int* param_1) {
+static void SoundTest_AdjustSePitch(s32* pitch) {
     if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
-        *param_1 += 0x40;
+        *pitch += 64;
     } else if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
-        *param_1 -= 0x40;
+        *pitch -= 64;
     }
 }
 
-void func_ov029_02082904(int* param_1, int param_2) {
-    int iVar1;
+static void SoundTest_AdjustCappedValue(s32* value, s32 upperLimit) {
+    s32 iVar1;
 
     if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
-        iVar1    = *param_1;
-        *param_1 = iVar1 + 1;
-        if (iVar1 + 1 >= param_2) {
-            *param_1 = 0;
+        iVar1  = *value;
+        *value = iVar1 + 1;
+        if (iVar1 + 1 >= upperLimit) {
+            *value = 0;
         }
         return;
     }
     if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
-        iVar1    = *param_1;
-        *param_1 = iVar1 + -1;
+        iVar1  = *value;
+        *value = iVar1 + -1;
         if (iVar1 + -1 < 0) {
-            *param_1 = param_2 + -1;
+            *value = upperLimit - 1;
         }
         return;
     }
 }
 
-void func_ov029_02082954(GameState* state) {
-    if (state->unk_219B0 < 1) {
-        state->sndTest.unk_219CC = 0;
+void SoundTest_PlaySelectedSoundType(SoundTestState* state) {
+    if (state->menuCurrentRow < 1) {
+        state->unk_219CC = 0;
     }
-    switch (state->unk_219B0) {
-        case 0:
-            func_0202733c(state->sndTest.adxIdx);
+    switch (state->menuCurrentRow) {
+        case MENU_ROW_ADX:
+            func_0202733c(state->adxIdx);
             return;
-        case 1:
-        case 2:
-            func_02026ae0(1, state->sndTest.seqArc, state->sndTest.se);
+        case MENU_ROW_SEQARC:
+        case MENU_ROW_SE:
+            func_02026ae0(1, state->seqArc, state->se);
             return;
-        case 3:
+        case MENU_ROW_SEIDX:
             func_020270e4();
-            func_02026b20(state->sndTest.seIdx);
+            func_02026b20(state->seIdx);
             return;
-        case 4:
+        case MENU_ROW_SEVOL:
             func_020270e4();
-            func_02026b20(state->sndTest.seIdx);
+            func_02026b20(state->seIdx);
             return;
-        case 5:
+        case MENU_ROW_SEPAN:
             func_020270e4();
-            func_02026b20(state->sndTest.seIdx);
-            func_02026d0c(state->sndTest.seIdx, state->sndTest.sePan);
+            func_02026b20(state->seIdx);
+            func_02026d0c(state->seIdx, state->sePan);
             return;
-        case 8:
+        case MENU_ROW_SEPITCH:
             func_020270e4();
-            func_02026b20(state->sndTest.seIdx);
-            func_020271b8(state->sndTest.seIdx, state->sndTest.sePitch);
+            func_02026b20(state->seIdx);
+            func_020271b8(state->seIdx, state->sePitch);
             return;
     }
 }
@@ -1588,166 +1575,169 @@ void func_ov029_02082a38(void) {
     };
 }
 
-void func_ov029_02082a60(GameState* state) {
-    if (state->unk_219B0 < 1) {
-        state->sndTest.unk_219CC = 0;
+void SoundTest_StopSelectedSoundType(SoundTestState* state) {
+    if (state->menuCurrentRow < 1) {
+        state->unk_219CC = 0;
     }
-    switch (state->unk_219B0) {
-        case 0:
+    switch (state->menuCurrentRow) {
+        case MENU_ROW_ADX:
             func_02027388(0);
             return;
-        case 1:
-        case 2:
+        case MENU_ROW_SEQARC:
+        case MENU_ROW_SE:
             func_ov029_02082a38();
             return;
-        case 3:
-            func_02026b9c(state->sndTest.seIdx);
+        case MENU_ROW_SEIDX:
+            func_02026b9c(state->seIdx);
             return;
     }
 }
 
-void func_ov029_02082abc(void) {
+void SoundTest_StopAllSounds(void) {
     func_02027388(0);
     func_02027388(70);
     func_02027388(78);
     func_ov029_02082a38();
 }
 
-BOOL func_ov029_02082ae0(GameState* state) {
+BOOL SoundTest_ControlMenu(SoundTestState* state) {
     OverlayTag tag;
 
     if (SysControl.pressedButtons & INPUT_BUTTON_START) {
-        state->sndTest.unk_219E8 ^= 1;
-        func_02027200(state->sndTest.unk_219E8);
+        state->unk_219E8 ^= 1;
+        func_02027200(state->unk_219E8);
     } else if (SysControl.pressedButtons & INPUT_BUTTON_A) {
-        func_ov029_02082954(state);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_B) {
-        func_ov029_02082a60(state);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_Y) {
-        func_ov029_02082abc();
+        SoundTest_PlaySelectedSoundType(state);
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_B) { // Stop music/sound effect depending on current menu selection
+        SoundTest_StopSelectedSoundType(state);
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_Y) { // Stop all active sounds
+        SoundTest_StopAllSounds();
     } else if (SysControl.pressedButtons & INPUT_BUTTON_X) {
         func_020270e4();
         func_02026b20(3);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
+    } else if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
         func_02007174(&tag);
-    } else if (SysControl.holdButtons == INPUT_BUTTON_UP) {
-        state->unk_219B0--;
-    } else if (SysControl.holdButtons == INPUT_BUTTON_DOWN) {
-        state->unk_219B0++;
+    } else if (SysControl.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up
+        state->menuCurrentRow--;
+    } else if (SysControl.holdButtons == INPUT_BUTTON_DOWN) {     // Scroll selection down
+        state->menuCurrentRow++;
     }
+
     if (SysControl.pressedButtons & INPUT_BUTTON_L) {
-        if (state->sndTest.seqArc >= 0) {
-            func_02026ae0(1, state->sndTest.seqArc, state->sndTest.se);
+        if (state->seqArc >= 0) {
+            func_02026ae0(1, state->seqArc, state->se);
         } else {
-            func_02026e28(state->sndTest.se);
+            func_02026e28(state->se);
         }
     }
     if (SysControl.pressedButtons & INPUT_BUTTON_R) {
         func_02026aa4(1);
     }
-    if (state->unk_219B0 < 0) {
-        state->unk_219B0 = 9;
-    } else if (10 <= state->unk_219B0) {
-        state->unk_219B0 = 0;
+
+    if (state->menuCurrentRow < 0) {
+        state->menuCurrentRow = 9;
+    } else if (state->menuCurrentRow >= 10) {
+        state->menuCurrentRow = 0;
     }
-    switch (state->unk_219B0) {
-        case 0:
-            func_ov029_02082904(&state->sndTest.adxIdx, CriSndMgr_AdxDataCount);
+
+    switch (state->menuCurrentRow) {
+        case MENU_ROW_ADX:
+            SoundTest_AdjustCappedValue(&state->adxIdx, CriSndMgr_AdxDataCount);
             break;
-        case 1:
-            func_ov029_02082904(&state->sndTest.seqArc, 0xff);
+        case MENU_ROW_SEQARC:
+            SoundTest_AdjustCappedValue(&state->seqArc, 255);
             break;
-        case 2:
-            func_ov029_02082904(&state->sndTest.se, 0xff);
+        case MENU_ROW_SE:
+            SoundTest_AdjustCappedValue(&state->se, 255);
             break;
-        case 3:
-            func_ov029_02082904(&state->sndTest.seIdx, 0x56c);
-            state->sndTest.seqArc      = data_0205cb3c[state->sndTest.seIdx].seqArc;
-            state->sndTest.se          = data_0205cb3c[state->sndTest.seIdx].se;
-            state->sndTest.seIdxVolume = SndMgr_GetSeIdxVolume(state->sndTest.seIdx);
+        case MENU_ROW_SEIDX:
+            SoundTest_AdjustCappedValue(&state->seIdx, 1388);
+            state->seqArc      = data_0205cb3c[state->seIdx].seqArc;
+            state->se          = data_0205cb3c[state->seIdx].se;
+            state->seIdxVolume = SndMgr_GetSeIdxVolume(state->seIdx);
             break;
-        case 4:
-            func_ov029_02082904(&state->sndTest.seIdxVolume, 0x80);
-            SndMgr_SetSeIdxVolume(state->sndTest.seIdx, state->sndTest.seIdxVolume);
+        case MENU_ROW_SEVOL:
+            SoundTest_AdjustCappedValue(&state->seIdxVolume, 128);
+            SndMgr_SetSeIdxVolume(state->seIdx, state->seIdxVolume);
             break;
-        case 5:
-            func_ov029_02082904(&state->sndTest.sePan, 0x100);
-            func_02026d0c(state->sndTest.seIdx, state->sndTest.sePan);
+        case MENU_ROW_SEPAN:
+            SoundTest_AdjustCappedValue(&state->sePan, 256);
+            func_02026d0c(state->seIdx, state->sePan);
             break;
-        case 6:
-            func_ov029_02082904(&state->sndTest.adxVolume, 0x3c1);
-            CriSndMgr_SetAdxIdxVolume(state->sndTest.adxIdx, -state->sndTest.adxVolume);
+        case MENU_ROW_ADXVOL:
+            SoundTest_AdjustCappedValue(&state->adxVolume, 961);
+            CriSndMgr_SetAdxIdxVolume(state->adxIdx, -state->adxVolume);
             break;
-        case 7:
+        case MENU_ROW_ADXLOOP:
             if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
-                state->sndTest.adxLoopEnabled = TRUE;
-                CriSndMgr_SetLpFlg(1);
+                state->adxLoopEnabled = TRUE;
+                CriSndMgr_SetLpFlg(TRUE);
             } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
-                state->sndTest.adxLoopEnabled = FALSE;
-                CriSndMgr_SetLpFlg(0);
+                state->adxLoopEnabled = FALSE;
+                CriSndMgr_SetLpFlg(FALSE);
             }
             break;
-        case 8:
-            func_ov029_020828cc(&state->sndTest.sePitch);
-            func_020271b8(state->sndTest.seIdx, state->sndTest.sePitch);
+        case MENU_ROW_SEPITCH:
+            SoundTest_AdjustSePitch(&state->sePitch);
+            func_020271b8(state->seIdx, state->sePitch);
             break;
-        case 9:
+        case MENU_ROW_NOISE:
             if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
-                state->sndTest.noiseNoWaveLoad = TRUE;
+                state->noiseNoWaveLoad = TRUE;
                 func_02027220(1);
             } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
-                state->sndTest.noiseNoWaveLoad = FALSE;
+                state->noiseNoWaveLoad = FALSE;
                 func_02027220(0);
             }
     }
     if (SysControl.holdButtons & (INPUT_MASK_DPAD | INPUT_BUTTON_A)) {
-        state->sndTest.adxVolume = -CriSndMgr_GetAdxIdxVolume(state->sndTest.adxIdx);
-        func_ov029_02082544(state);
+        state->adxVolume = -CriSndMgr_GetAdxIdxVolume(state->adxIdx);
+        SoundTest_DrawMenu(state);
     }
-    return func_02027124(state->sndTest.seIdx);
+    return func_02027124(state->seIdx);
 }
 
 // Nonmatching
-void func_ov029_02082e40(GameState* param) {
-    GameState* sVar2;
-    char*      name  = data_ov029_02083400;
-    GameState* state = (GameState*)func_02004618(&data_0206a9b0, 0x219F0);
+void func_ov029_02082e40(SoundTestState* param) {
+    GameState*      sVar2;
+    char*           name  = data_ov029_02083400;
+    SoundTestState* state = func_02004618(&data_0206a9b0, sizeof(SoundTestState));
 
     func_020049a8(&data_0206a9b0, state, name);
-    sVar2 = func_02007260(state);
+    sVar2 = func_02007260(&state->gameState);
     func_02008e80();
-    state->unk_11584 = sVar2;
+    state->gameState.unk_11584 = sVar2;
     func_ov029_020833c4();
-    data_0206aa80.unk_1C = 0;
-    state->unk_11580     = func_0200cef0(state, &data_0206aa80, 0);
-    data_02066aec        = 0;
-    data_0206aa80.unk_30 = 0;
-    data_02066eec        = 0;
-    data_0206aa80.unk_60 = 0;
+    data_0206aa80.unk_1C       = 0;
+    state->gameState.unk_11580 = func_0200cef0(state, &data_0206aa80, 0);
+    data_02066aec              = 0;
+    data_0206aa80.unk_30       = 0;
+    data_02066eec              = 0;
+    data_0206aa80.unk_60       = 0;
     func_ov029_02082838(state);
     func_020072a4();
 }
 
-void func_ov029_02082ee8(GameState* state) {
+void func_ov029_02082ee8(SoundTestState* state) {
     func_0200283c(&data_020676ec, 0, 0);
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    func_ov029_02082ae0(state);
+    SoundTest_ControlMenu(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
     func_0200bf60(data_0206b3cc.unk_00, 0);
     func_0200bf60(data_0206b3cc.unk_04, 0);
 }
 
-void func_ov029_02082f68(GameState* state) {
+void func_ov029_02082f68(SoundTestState* state) {
     func_ov029_020828c0(state);
     func_0200cef0(NULL);
-    func_02008ebc(state->unk_11584);
+    func_02008ebc(state->gameState.unk_11584);
     func_020048b4(&data_0206a9b0, state);
 }
 
-void func_ov029_02082f9c(GameState* state) {
+void func_ov029_02082f9c(SoundTestState* state) {
     static const SoundEffectFunc funcs[3] = {
         func_ov029_02082e40,
         func_ov029_02082ee8,
@@ -1768,7 +1758,7 @@ void func_ov029_02082fdc(void) {
     /* Not yet implemented */
 }
 
-void func_ov029_020832f4(void) {
+void SoundTest_InterruptCallback(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_02006380();
         func_020019ac();
@@ -1787,5 +1777,5 @@ void func_ov029_020832f4(void) {
 
 void func_ov029_020833c4(void) {
     func_ov029_02082fdc();
-    Interrupts_RegisterVBlankCallback(func_ov029_020832f4, 1);
+    Interrupts_RegisterVBlankCallback(SoundTest_InterruptCallback, TRUE);
 }

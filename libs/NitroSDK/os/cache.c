@@ -1,5 +1,4 @@
-
-#include "cache.h"
+#include <NitroSDK/os/cache.h>
 
 // clang-format off
 asm BOOL DC_Enable(void) {

@@ -1,6 +1,6 @@
-#include "cache.h"
 #include <MSL/Runtime/MWException.h>
 #include <NitroSDK/fs/overlay.h>
+#include <NitroSDK/os/cache.h>
 #include <bios.h>
 
 extern UnkOverlayDetails data_0207fca4;
