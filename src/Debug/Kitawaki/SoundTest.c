@@ -1699,17 +1699,15 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
 
 // Nonmatching
 void func_ov029_02082e40(SoundTestState* param) {
-    GameState*      sVar2;
     char*           name  = data_ov029_02083400;
     SoundTestState* state = func_02004618(&data_0206a9b0, sizeof(SoundTestState));
 
     func_020049a8(&data_0206a9b0, state, name);
-    sVar2 = func_02007260(&state->gameState);
-    func_02008e80();
-    state->gameState.unk_11584 = sVar2;
+    func_02007260(&state->gameState);
+    state->gameState.unk_11584 = func_02008e80();
     func_ov029_020833c4();
     data_0206aa80.unk_1C       = 0;
-    state->gameState.unk_11580 = func_0200cef0(state, &data_0206aa80, 0);
+    state->gameState.unk_11580 = func_0200cef0(state);
     data_02066aec              = 0;
     data_0206aa80.unk_30       = 0;
     data_02066eec              = 0;

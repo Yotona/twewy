@@ -4,3 +4,8 @@
     .data       start:0x02083fa0 end:0x02084840 kind:data align:32
     .bss        start:0x02084840 end:0x02084840 kind:bss align:32
 
+src/Debug/Launcher.c:
+    .text       start:0x020824a0 end:0x02083a34
+    .rodata     start:0x02083a34 end:0x02083f8c
+    .ctor       start:0x02083f8c end:0x02083f90
+    .data       start:0x02083fa0 end:0x02084840

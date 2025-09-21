@@ -28,7 +28,7 @@ typedef struct {
 
 void       func_02007174(OverlayTag* tag);
 void       func_020071f4(OverlayTag* tag, s32 overlayId, void* callback, GameState* state, s32 param_5);
-GameState* func_02007260(GameState* state);
+GameState* func_02007260(void* state);
 s32        func_02007278(void);
 void       func_020072a4(void);
 void       func_020072b8(void);

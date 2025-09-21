@@ -143,7 +143,7 @@ u32 func_02007240(void) {
     func_0200669c(1, &data_0206af24);
 }
 
-GameState* func_02007260(GameState* state) {
+GameState* func_02007260(void* state) {
     func_020070b8(&data_0206b294, state);
 }
 

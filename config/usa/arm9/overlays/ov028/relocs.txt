@@ -213,7 +213,7 @@ from:0x020e8b44 kind:load to:0x020676ec module:main
 from:0x020e8b48 kind:load to:0x02068778 module:main
 from:0x020e8b4c kind:load to:0x02069804 module:main
 from:0x020e8b54 kind:load to:0x0206b3cc module:main
-from:0x020e8b5c kind:load to:0x02084040 module:overlays(43,46)
+from:0x020e8b5c kind:load to:0x02084040 module:overlay(43)
 from:0x020e8b64 kind:load to:0x020ae92c module:overlays(30,38)
 from:0x020e8b80 kind:arm_call to:0x020e7f00 module:overlay(28)
 from:0x020e8b8c kind:arm_call to:0x0200f4f8 module:main

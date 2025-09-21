@@ -21,6 +21,8 @@ extern s32 data_02068798;
 
 extern s32 data_0206a9b0;
 
+extern s32 data_0205a128;
+
 typedef struct {
     s32 unk_00;
     s32 unk_04;
