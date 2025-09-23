@@ -129,7 +129,7 @@ const DebugLauncherOption Options_Fukuda[13] = {
     // "Feature: Font", "Description: Font list"
     {2,           "機能\:フォント",                   "説明:フォント一覧",          2, func_ov002_02086a0c},
     // "Feature: Title (?)", "Description: Data Deletion Screen"
-    {3,     "機能\:タイトル（？）",                                     v,          2, func_ov002_02086a4c},
+    {3,     "機能\:タイトル（？）",                 "説明:データ削除画面",          2, func_ov002_02086a4c},
     // "Feature: Title (?)", "Description: Data Corruption Screen"
     {4,     "機能\:タイトル（？）",                 "説明:データ破損画面",          2, func_ov002_02086a8c},
     // "Feature: BayBadge Menu", "Description: Single Player Entrance"
