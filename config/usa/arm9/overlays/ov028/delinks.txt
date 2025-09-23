@@ -4,3 +4,6 @@
     .data       start:0x020ed3e0 end:0x020ed520 kind:data align:32
     .bss        start:0x020ed520 end:0x020ed840 kind:bss align:32
 
+src/Debug/Horii/NoiseReport.c:
+    .text       start:0x020E82D0 end:0x020E8BB0
+    .rodata     start:0x020ECF24 end:0x020ECF30

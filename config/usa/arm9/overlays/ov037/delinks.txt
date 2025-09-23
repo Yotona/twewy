@@ -4,3 +4,9 @@
     .data       start:0x02083bc0 end:0x02083e00 kind:data align:32
     .bss        start:0x02083e00 end:0x02083e20 kind:bss align:32
 
+src/Debug/Bul/OpenEnd.c:
+    .text       start:0x020824A0 end:0x02083A74
+    .rodata     start:0x02083A74 end:0x02083BB0
+    .ctor       start:0x02083BB0 end:0x02083BB4
+    .data       start:0x02083BC0 end:0x02083E00
+    .bss        start:0x02083E00 end:0x02083E20

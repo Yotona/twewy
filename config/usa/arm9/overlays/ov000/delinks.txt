@@ -4,3 +4,8 @@
     .data       start:0x020831e0 end:0x02083280 kind:data align:32
     .bss        start:0x02083280 end:0x02083280 kind:bss align:32
 
+src/Debug/Abe/Mini108.c:
+    .text       start:0x020824a0 end:0x020831a8
+    .rodata     start:0x020831a8 end:0x020831d4
+    .ctor       start:0x020831d4 end:0x020831d8
+    .data       start:0x020831e0 end:0x02083280

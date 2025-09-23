@@ -4,3 +4,54 @@
     .data       start:0x020cb580 end:0x020cd280 kind:data align:32
     .bss        start:0x020cd280 end:0x020cd2a0 kind:bss align:32
 
+src/Debug/Takami/TakTest.c:
+    .text       start:0x020824A0 end:0x02082FD0
+    .rodata     start:0x020C7870 end:0x020C7908
+    .ctor       start:0x020CB56C end:0x020CB570
+    .data       start:0x020CB580 end:0x020CB5F4
+
+src/Debug/Takami/MenuTop.c:
+    .text       start:0x02082FD0 end:0x0208B854
+    .rodata     start:0x020C7908 end:0x020C82C8
+    .data       start:0x020CB5F4 end:0x020CB9C8
+
+src/Debug/Takami/MenuBadge.c:
+    .text       start:0x0208B854 end:0x0209ACA4
+    .rodata     start:0x020C82C8 end:0x020C90D4
+    .data       start:0x020CB9C8 end:0x020CBEC4
+    .bss        start:0x020CD280 end:0x020CD284
+
+src/Debug/Takami/MenuScena.c:
+    .text       start:0x0209ACA4 end:0x0209F320
+    .rodata     start:0x020C90D4 end:0x020C96E4
+    .data       start:0x020CBEC4 end:0x020CC134
+
+src/Debug/Takami/MenuEquip.c:
+    .text       start:0x0209F320 end:0x020AC5D8
+    .rodata     start:0x020C96E4 end:0x020CA18C
+    .data       start:0x020CC134 end:0x020CC5BC
+    .bss        start:0x020CD284 end:0x020CD288
+
+src/Debug/Takami/Shop.c:
+    .text       start:0x020AC5D8 end:0x020BCDB0
+    .rodata     start:0x020CA18C end:0x020CAD64
+    .data       start:0x020CC5BC end:0x020CCC48
+    .bss        start:0x020CD288 end:0x020CD28C
+
+src/Debug/Takami/Depart.c:
+    .text       start:0x020BCDB0 end:0x020BF250
+    .rodata     start:0x020CAD64 end:0x020CAF44
+    .data       start:0x020CCC48 end:0x020CCE74
+    .bss        start:0x020CD28C end:0x020CD290
+
+src/Debug/Takami/Save.c:
+    .text       start:0x020BF250 end:0x020C61E4
+    .rodata     start:0x020CAF44 end:0x020CB464
+    .data       start:0x020CCE74 end:0x020CD164
+    .bss        start:0x020CD290 end:0x020CD294
+
+src/Debug/Takami/NRep.c:
+    .text       start:0x020C61E4 end:0x020C7870
+    .rodata     start:0x020CB464 end:0x020CB56C
+    .data       start:0x020CD164 end:0x020CD280
+    .bss        start:0x020CD294 end:0x020CD2A0
