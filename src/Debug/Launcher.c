@@ -1,4 +1,5 @@
 #include "Debug/Launcher.h"
+#include "Input.h"
 #include "Interrupts.h"
 #include "OverlayManager.h"
 #include "System.h"
@@ -222,8 +223,6 @@ static const DebugLauncherFunc data_ov046_02083f7c[] = {
     func_ov046_020839d8,
 };
 
-extern InputState data_0206a9e0;
-
 void func_ov046_020824a0(void) {
     /* Not yet implemented */
 }
@@ -270,11 +269,11 @@ void func_ov046_0208284c(void) {
 }
 
 void func_ov046_020834c0(DebugLauncherState* state) {
-    u16 uVar1             = data_0206a9e0.pressedButtons;
-    state->currButtons    = data_0206a9e0.currButtons;
+    u16 uVar1             = InputStatus.pressedButtons;
+    state->currButtons    = InputStatus.currButtons;
     state->pressedButtons = uVar1;
-    uVar1                 = data_0206a9e0.prevButtons;
-    state->holdButtons    = data_0206a9e0.holdButtons;
+    uVar1                 = InputStatus.prevButtons;
+    state->holdButtons    = InputStatus.holdButtons;
     state->prevButtons    = uVar1;
 
     func_02006ba0();

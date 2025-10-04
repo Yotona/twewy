@@ -2,6 +2,8 @@
 #include "System.h"
 #include "common_data.h"
 #include "game.h"
+#include <NitroSDK/os/interrupt.h>
+#include <NitroSDK/os/region.h>
 
 extern vu32 data_02066a58;
 
@@ -9,40 +11,28 @@ extern s32 data_020636b8;
 extern s32 data_0206a9bc;
 extern s32 data_020636a0;
 
-extern InputState data_0206a9e0;
-
 extern void func_02001254();
 
-// Nonmatching: goto loops are bork
+// Nonmatching: Some data loads missing, outer loop jumps to wrong address
 void main(void) {
-    s32 sp18;
-    u32 sp14;
-    s32 sp10;
-    u32 spC;
-    s32 sp8;
-    u32 sp4;
-    s32 sp0;
-    s32 temp_r0;
-    s32 temp_r4;
+    OS_InitAllSystems();
+    OS_EnableFIQ();
+    OS_InitIRQQueue();
+    OS_EnableInterrupts(IRQ_IPC_RECEIVE);
+    OS_RestoreIME(TRUE);
 
-    func_020398d0();
-    func_0203a77c();
-    func_020383bc();
-    func_020385a4(0x40000);
+    void* ramTop    = OS_GetRegionTop(REGION_MAIN_ARM9);
+    void* ramBottom = OS_GetRegionBottom(REGION_MAIN_ARM9);
+    OS_SetRegionBottom(REGION_MAIN_ARM9, func_02039f5c(0, ramBottom, ramTop, 1));
 
-    REG_IME = 1;
+    void* memRegion = OS_AllocRegionMemory(REGION_MAIN_ARM9, 0x288000, 32);
+    func_02039f2c(0, func_0203a004(0, memRegion, memRegion + 0x288000));
 
-    temp_r4 = func_02039a88(0);
-    func_02039c50(0, func_02039f5c(0, func_02039a9c(0), temp_r4, 1));
-
-    temp_r0 = func_02039c64(0, 0x288000, 0x20);
-    func_02039f2c(0, func_0203a004(0, temp_r0, temp_r0 + 0x288000));
-
-    sp0 = func_02039dbc(0, -1, 0x280000);
+    s32 sp0 = func_02039dbc(0, -1, 0x280000);
     func_0203e59c(2);
 
-    s32 temp_r0_2 = func_0203ed04(0, 0);
-    func_0203ed04(func_02039dbc(0, -1, temp_r0_2), temp_r0_2);
+    s32 temp_r0 = func_0203ed04(0, 0);
+    func_0203ed04(func_02039dbc(0, -1, temp_r0), temp_r0);
 
     func_020065e0();
 
@@ -79,6 +69,8 @@ void main(void) {
         System_SetFlag(SYSFLAG_UNKNOWN_5);
         System_SetFlag(SYSFLAG_UNKNOWN_6);
 
+        u32 sp18;
+        u32 sp14;
         func_020410ac(&sp18, &sp14);
         if (sp18 == 1) {
             System_SetFlag(SYSFLAG_UNKNOWN_8);
@@ -123,7 +115,7 @@ void main(void) {
         func_02005250();
         Interrupts_ForceVBlank();
         func_02001760(0x100);
-        Input_Init(&data_0206a9e0, 8, 1, 2);
+        Input_Init(&InputStatus, 8, 1, 2);
         func_02007128();
         func_0200713c(0x80000001, &func_02001254, 0, 0);
 
@@ -140,17 +132,15 @@ void main(void) {
         func_020415a4();
         func_02025b1c();
 
-    loop_44:
-        if (System_CheckFlag(SYSFLAG_UNKNOWN_5) == 0) {
-        block_16:
+        do {
             func_02004c44(&data_0206a9bc);
 
-            Input_PollState(&data_0206a9e0);
-            Input_UpdateRepeat(&data_0206a9e0, INPUT_MASK_ALLBTNS);
-            SysControl.currButtons    = data_0206a9e0.currButtons;
-            SysControl.pressedButtons = data_0206a9e0.pressedButtons;
-            SysControl.holdButtons    = data_0206a9e0.holdButtons;
-            SysControl.prevButtons    = data_0206a9e0.prevButtons;
+            Input_PollState(&InputStatus);
+            Input_UpdateRepeat(&InputStatus, INPUT_MASK_ALLBTNS);
+            SysControl.currButtons    = InputStatus.currButtons;
+            SysControl.pressedButtons = InputStatus.pressedButtons;
+            SysControl.holdButtons    = InputStatus.holdButtons;
+            SysControl.prevButtons    = InputStatus.prevButtons;
 
             func_02007240();
             func_020072b8();
@@ -161,7 +151,7 @@ void main(void) {
             }
 
             // Trigger a soft reset when Start + Select + L + R are pressed
-            if ((data_0206a9e0.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {
+            if ((InputStatus.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {
                 System_SetFlag(SYSFLAG_RESET);
             }
 
@@ -176,6 +166,9 @@ void main(void) {
                             System_SetFlag(SYSFLAG_UNKNOWN_10);
                         }
                     } else {
+                        u32 sp10;
+                        u32 spC;
+
                         func_020410ac(&sp10, &spC);
                         if (System_CheckFlag(SYSFLAG_UNKNOWN_8) && sp10 == 0) {
                             func_02040f34(0, 1);
@@ -186,6 +179,8 @@ void main(void) {
                     }
                 }
             } else {
+                u32 sp8;
+                u32 sp4;
                 func_020410ac(&sp8, &sp4);
                 if (System_CheckFlag(SYSFLAG_UNKNOWN_8)) {
                     if (Input_IsSystemHingeClosed()) {
@@ -209,13 +204,10 @@ void main(void) {
 
             func_020235a8();
             Interrupts_ForceVBlank();
-            goto loop_44;
-        }
-        if (System_CheckFlag(SYSFLAG_UNKNOWN_7) == 0) {
-            goto block_16;
-        }
+        } while (System_CheckFlag(SYSFLAG_RESET) != 0 && System_CheckFlag(SYSFLAG_UNKNOWN_7) == 0);
+
         func_02006608();
-        func_0203a8b0(BIOS_RESET);
+        OS_SystemReset(BIOS_RESET);
     }
 }
 
@@ -241,8 +233,7 @@ void func_02001254(void) {
         func_02008158(temp_r0 + 0xC0, 0x100);
         func_020072a4();
         func_0200713c(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
-        return;
+    } else {
+        func_0200713c(OVERLAY_46_ID, &func_ov046_02083630, NULL, 0);
     }
-
-    func_0200713c(OVERLAY_46_ID, &func_ov046_02083630, NULL, 0);
 }

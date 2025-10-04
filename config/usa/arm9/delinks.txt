@@ -4,7 +4,7 @@
     .rodata     start:0x02059384 end:0x02063680 kind:rodata align:4
     .ctor       start:0x02063680 end:0x02063684 kind:rodata align:4
     .data       start:0x020636a0 end:0x02066a20 kind:data align:32
-    .bss        start:0x02066a20 end:0x020824a0 kind:bss align:32
+    .bss        start:0x02066a20 end:0x020824a0 kind:bss align:4
 
 src/main.c:
     .text       start:0x02000BDC end:0x02001320
@@ -100,9 +100,32 @@ src/CriSndMgr.c:
     .data       start:0x02065CD0 end:0x02065FCC
     .bss        start:0x020768F0 end:0x02076A14
 
+libs/NitroSDK/os/interrupt.c:
+    .text       start:0x020383BC end:0x02038664
+
 libs/NitroSDK/os/cache.c:
 complete
     .text       start:0x02039784 end:0x020398B0
+
+libs/NitroSDK/os/init.c:
+complete
+    .text       start:0x020398B0 end:0x02039918
+
+libs/NitroSDK/os/region.c:
+    .text       start:0x02039918 end:0x02039CD0
+    .bss        start:0x0207DF5C end:0x0207DF64
+
+libs/NitroSDK/os/valarm.c:
+complete
+    .text       start:0x0203A5E4 end:0x0203A73C
+    .bss        start:0x0207E054 end:0x0207E068
+
+libs/NitroSDK/os/cpustat.c:
+complete
+    .text       start:0x0203A73C end:0x0203A7FC
+
+libs/NitroSDK/os/reset.c:
+    .text       start:0x0203A7FC end:0x0203A96C
 
 libs/NitroSDK/fs/overlay.c:
     .text       start:0x0203ED24 end:0x0203F350
@@ -239,6 +262,7 @@ libs/MSL/Runtime/MWException.cpp:
 
 libs/MSL/Runtime/ExceptionHandlerTS.cpp:
     .text       start:0x02058BEC end:0x02058DFC
+    .exceptix   start:0x02059360 end:0x02059378
 
 libs/MSL/Runtime/__arm_eabi_init.c:
 complete

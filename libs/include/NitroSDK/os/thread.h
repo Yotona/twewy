@@ -8,6 +8,11 @@ typedef struct OSThread {
     /* 0x1C */ u32  id;
 } OSThread;
 
+typedef struct OSThreadQueue {
+    /* 0x00 */ OSThread* head;
+    /* 0x04 */ OSThread* tail;
+} OSThreadQueue;
+
 typedef struct OSThreadInfo {
     /* 0x00 */ char      unk_00[0x4];
     /* 0x10 */ OSThread* current;

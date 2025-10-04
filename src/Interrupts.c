@@ -4,6 +4,9 @@
 #include "common_data.h"
 #include "game.h"
 #include <NitroSDK/os/cache.h>
+#include <NitroSDK/os/interrupt.h>
+#include <NitroSDK/os/valarm.h>
+#include <NitroSDK/util.h>
 #include <bios.h>
 #include <registers.h>
 
@@ -17,22 +20,22 @@ IRQCallback Interrupts_SaveVBlankCallback(IRQCallback);
 IRQCallback Interrupts_SaveHBlankCallback(IRQCallback callback);
 
 void Interrupts_Init(void) {
-    s32 val = func_0203a750();
+    CRITICAL_SECTION_ENTER();
 
     Interrupts_RegisterVBlankCallback(NULL, TRUE);
-    func_020383d4(1, HandleVBlank);
+    OS_SetIRQCallback(IRQ_VBLANK, HandleVBlank);
 
     Interrupts_RegisterHBlankCallback(NULL, FALSE);
-    func_020383d4(2, HandleHBlank);
+    OS_SetIRQCallback(IRQ_HBLANK, HandleHBlank);
 
-    if (func_0203a654() == 1) {
-        func_0203a6e4();
-        func_0203a62c();
+    if (OS_IsVAlarmSystemActive() == TRUE) {
+        OS_StopAllVAlarms();
+        OS_VAlarmSystemHalt();
     } else {
-        func_0203a5e4();
+        OS_VAlarmSystemInit();
     }
 
-    func_0203a764(val);
+    CRITICAL_SECTION_LEAVE();
 }
 
 void Interrupts_HandleVBlank(void) {
@@ -69,11 +72,11 @@ void Interrupts_ForceVBlank(void) {
 static void HandleVBlank(void) {
     func_0202190c();
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
-        func_020385d4(2);
+        OS_DisableInterrupts(IRQ_HBLANK);
         func_0203538c(0);
-        func_020383d4(2, SysControl.hBlankCallback);
+        OS_SetIRQCallback(IRQ_HBLANK, SysControl.hBlankCallback);
         if (SysControl.hBlankCallback != Interrupts_TriggerHBlank) {
-            func_020385a4(2);
+            OS_EnableInterrupts(IRQ_HBLANK);
             func_0203538c(1);
         }
     } else {
@@ -93,10 +96,10 @@ IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, BOOL enable)
 
     IRQCallback prevCallback = Interrupts_SaveVBlankCallback(callback);
     if (enable == TRUE) {
-        func_020385a4(1);
+        OS_EnableInterrupts(IRQ_VBLANK);
         func_020353c0(1);
     } else {
-        func_020385d4(1);
+        OS_DisableInterrupts(IRQ_VBLANK);
         func_020353c0(0);
     }
     return prevCallback;
@@ -127,10 +130,10 @@ static void HandleHBlank(void) {
 IRQCallback Interrupts_RegisterHBlankCallback(IRQCallback callback, BOOL enable) {
     IRQCallback prevCallback = Interrupts_SaveHBlankCallback(callback);
     if (enable == TRUE) {
-        func_020385a4(2);
+        OS_EnableInterrupts(IRQ_HBLANK);
         func_0203538c(1);
     } else {
-        func_020385d4(2);
+        OS_DisableInterrupts(IRQ_HBLANK);
         func_0203538c(0);
     }
     return prevCallback;

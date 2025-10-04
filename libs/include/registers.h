@@ -10,6 +10,7 @@
 #define REG_EXMEM_CNT         (*(vu16*)0x04000204)
 #define REG_IME               (*(vu16*)0x04000208)
 #define REG_IE                (*(vu32*)0x04000210)
+#define REG_IF                (*(vu32*)0x04000214)
 #define REG_POWER_CNT         (*(vu16*)0x04000304)
 #define GFX_FIFO_MATRIX_STORE (*(vu32*)0x0400044C)
 #define GFX_FIFO_SWAP_BUFFERS (*(vu32*)0x04000540)

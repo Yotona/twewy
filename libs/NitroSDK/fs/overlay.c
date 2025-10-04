@@ -1,6 +1,7 @@
 #include <MSL/Runtime/MWException.h>
 #include <NitroSDK/fs/overlay.h>
 #include <NitroSDK/os/cache.h>
+#include <NitroSDK/util.h>
 #include <bios.h>
 
 extern UnkOverlayDetails data_0207fca4;
@@ -209,11 +210,10 @@ void FS_DestroyOverlay(OverlayInfo* info) {
         const u32 start = info->addr;
         const u32 end   = start + (info->sizeRam + info->sizeBss);
 
-        u32 val = func_0203a750();
+        CRITICAL_SECTION_ENTER();
 
-        DestructorChain* prev = NULL;
-        DestructorChain* base = __global_destructor_chain;
-
+        DestructorChain* prev    = NULL;
+        DestructorChain* base    = __global_destructor_chain;
         DestructorChain* current = base;
 
         while (current != NULL) {
@@ -244,7 +244,7 @@ void FS_DestroyOverlay(OverlayInfo* info) {
             current = next;
         }
 
-        func_0203a764(val);
+        CRITICAL_SECTION_LEAVE();
 
         if (head == NULL) {
             return;

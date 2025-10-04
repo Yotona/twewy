@@ -41,6 +41,8 @@ typedef struct InputState {
     /* 0x58 */ s32 repeatCounter[16];  // Counter for each button
 } InputState;
 
+extern InputState InputStatus;
+
 void Input_Init(InputState* input, s32 delayInit, s32 delayMin, s32 step);
 void Input_PollState(InputState* input);
 void Input_UpdateRepeat(InputState* state, u16 mask);

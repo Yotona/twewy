@@ -2059,16 +2059,22 @@ func_0203837c kind:function(arm,size=0x10) addr:0x0203837c
 func_0203838c kind:function(arm,size=0x10) addr:0x0203838c
 func_0203839c kind:function(arm,size=0x10) addr:0x0203839c
 func_020383ac kind:function(arm,size=0x10) addr:0x020383ac
-func_020383bc kind:function(arm,size=0x18) addr:0x020383bc
-func_020383d4 kind:function(arm,size=0x88) addr:0x020383d4
-func_0203845c kind:function(arm,size=0x8c) addr:0x0203845c
-func_020384e8 kind:function(arm,size=0x48) addr:0x020384e8
-func_02038530 kind:function(arm,size=0x48) addr:0x02038530
-func_02038578 kind:function(arm,size=0x2c) addr:0x02038578
-func_020385a4 kind:function(arm,size=0x30) addr:0x020385a4
-func_020385d4 kind:function(arm,size=0x30) addr:0x020385d4
-func_02038604 kind:function(arm,size=0x2c) addr:0x02038604
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/interrupts.c
+/////////////////////////////////////////////////////////////
+OS_InitIRQQueue kind:function(arm,size=0x18) addr:0x020383bc
+OS_SetIRQCallback kind:function(arm,size=0x88) addr:0x020383d4
+OS_GetIRQCallback kind:function(arm,size=0x8c) addr:0x0203845c
+OS_SetDMAInterruptCallback kind:function(arm,size=0x48) addr:0x020384e8
+OS_SetTimerInterruptCallback kind:function(arm,size=0x48) addr:0x02038530
+OS_SetIRQMask kind:function(arm,size=0x2c) addr:0x02038578
+OS_EnableInterrupts kind:function(arm,size=0x30) addr:0x020385a4
+OS_DisableInterrupts kind:function(arm,size=0x30) addr:0x020385d4
+OS_ResetIRQRequestFlags kind:function(arm,size=0x2c) addr:0x02038604
 func_02038630 kind:function(arm,size=0x34) addr:0x02038630
+
+
 func_02038664 kind:function(arm,size=0xcc) addr:0x02038664
 func_02038730 kind:function(arm,size=0x4c) addr:0x02038730
 func_0203877c kind:function(arm,size=0x10) addr:0x0203877c
@@ -2145,18 +2151,26 @@ IC_Enable kind:function(arm,size=0x18) addr:0x02039870
 IC_InvalidateAll kind:function(arm,size=0xc) addr:0x02039888
 IC_InvalidateRange kind:function(arm,size=0x1c) addr:0x02039894
 
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/init.c
+/////////////////////////////////////////////////////////////
+func_020398b0 kind:function(arm,size=0x20) addr:0x020398b0 local
+OS_InitAllSystems kind:function(arm,size=0x48) addr:0x020398d0
 
-func_020398b0 kind:function(arm,size=0x20) addr:0x020398b0
-func_020398d0 kind:function(arm,size=0x48) addr:0x020398d0
-func_02039918 kind:function(arm,size=0x104) addr:0x02039918
-func_02039a1c kind:function(arm,size=0x6c) addr:0x02039a1c
-func_02039a88 kind:function(arm,size=0x14) addr:0x02039a88
-func_02039a9c kind:function(arm,size=0x14) addr:0x02039a9c
-func_02039ab0 kind:function(arm,size=0xe4) addr:0x02039ab0
-func_02039b94 kind:function(arm,size=0xa8) addr:0x02039b94
-func_02039c3c kind:function(arm,size=0x14) addr:0x02039c3c
-func_02039c50 kind:function(arm,size=0x14) addr:0x02039c50
-func_02039c64 kind:function(arm,size=0x6c) addr:0x02039c64
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/region.c
+/////////////////////////////////////////////////////////////
+OS_RegionsInit kind:function(arm,size=0x104) addr:0x02039918
+OS_ExtendedRegionInit kind:function(arm,size=0x6c) addr:0x02039a1c
+OS_GetRegionTop kind:function(arm,size=0x14) addr:0x02039a88
+OS_GetRegionBottom kind:function(arm,size=0x14) addr:0x02039a9c
+OS_GetDefaultRegionTop kind:function(arm,size=0xe4) addr:0x02039ab0
+OS_GetDefaultRegionBottom kind:function(arm,size=0xa8) addr:0x02039b94
+OS_SetRegionTop kind:function(arm,size=0x14) addr:0x02039c3c
+OS_SetRegionBottom kind:function(arm,size=0x14) addr:0x02039c50
+OS_AllocRegionMemory kind:function(arm,size=0x6c) addr:0x02039c64
+
+
 func_02039cd0 kind:function(arm,size=0x1c) addr:0x02039cd0
 func_02039cec kind:function(arm,size=0x28) addr:0x02039cec
 func_02039d14 kind:function(arm,size=0xa8) addr:0x02039d14
@@ -2188,26 +2202,39 @@ func_0203a4e4 kind:function(arm,size=0x70) addr:0x0203a4e4
 func_0203a554 kind:function(arm,size=0x40) addr:0x0203a554
 func_0203a594 kind:function(arm,size=0x40) addr:0x0203a594
 func_0203a5d4 kind:function(arm,size=0x10) addr:0x0203a5d4
-func_0203a5e4 kind:function(arm,size=0x48) addr:0x0203a5e4
-func_0203a62c kind:function(arm,size=0x28) addr:0x0203a62c
-func_0203a654 kind:function(arm,size=0x10) addr:0x0203a654
-func_0203a664 kind:function(arm,size=0x38) addr:0x0203a664
-func_0203a69c kind:function(arm,size=0x48) addr:0x0203a69c
-func_0203a6e4 kind:function(arm,size=0x58) addr:0x0203a6e4
-func_0203a73c kind:function(arm,size=0x14) addr:0x0203a73c
-func_0203a750 kind:function(arm,size=0x14) addr:0x0203a750
-func_0203a764 kind:function(arm,size=0x18) addr:0x0203a764
-func_0203a77c kind:function(arm,size=0x14) addr:0x0203a77c
-func_0203a790 kind:function(arm,size=0x14) addr:0x0203a790
-func_0203a7a4 kind:function(arm,size=0x18) addr:0x0203a7a4
-func_0203a7bc kind:function(arm,size=0xc) addr:0x0203a7bc
-func_0203a7c8 kind:function(arm,size=0xc) addr:0x0203a7c8
-func_0203a7d4 kind:function(arm,size=0xc) addr:0x0203a7d4
-func_0203a7e0 kind:function(arm,size=0x1c) addr:0x0203a7e0
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/valarm.c
+/////////////////////////////////////////////////////////////
+OS_VAlarmSystemInit kind:function(arm,size=0x48) addr:0x0203a5e4
+OS_VAlarmSystemHalt kind:function(arm,size=0x28) addr:0x0203a62c
+OS_IsVAlarmSystemActive kind:function(arm,size=0x10) addr:0x0203a654
+OS_RemoveVAlarmFromQueue kind:function(arm,size=0x38) addr:0x0203a664 local
+OS_StopVAlarm kind:function(arm,size=0x48) addr:0x0203a69c local
+OS_StopAllVAlarms kind:function(arm,size=0x58) addr:0x0203a6e4
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/cpustat.c
+/////////////////////////////////////////////////////////////
+OS_EnableIRQ kind:function(arm,size=0x14) addr:0x0203a73c
+OS_DisableIRQ kind:function(arm,size=0x14) addr:0x0203a750
+OS_RestoreIRQ kind:function(arm,size=0x18) addr:0x0203a764
+OS_EnableFIQ kind:function(arm,size=0x14) addr:0x0203a77c
+OS_DisableFIQ kind:function(arm,size=0x14) addr:0x0203a790
+OS_RestoreFIQ kind:function(arm,size=0x18) addr:0x0203a7a4
+OS_GetIRQFlag kind:function(arm,size=0xc) addr:0x0203a7bc
+OS_GetCPUMode kind:function(arm,size=0xc) addr:0x0203a7c8
+OS_Delay kind:function(arm,size=0xc) addr:0x0203a7d4
+OS_Wait kind:function(arm,size=0x1c) addr:0x0203a7e0
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/reset.c
+/////////////////////////////////////////////////////////////
 func_0203a7fc kind:function(arm,size=0x54) addr:0x0203a7fc
 func_0203a850 kind:function(arm,size=0x34) addr:0x0203a850
 func_0203a884 kind:function(arm,size=0x2c) addr:0x0203a884
-func_0203a8b0 kind:function(arm,size=0xbc) addr:0x0203a8b0
+OS_SystemReset kind:function(arm,size=0xbc) addr:0x0203a8b0
+
 func_0203a96c kind:function(arm,size=0x1c) addr:0x0203a96c
 func_0203a988 kind:function(arm,size=0x84) addr:0x0203a988
 func_0203aa0c kind:function(arm,size=0x8) addr:0x0203aa0c
@@ -2240,6 +2267,8 @@ func_0203b31c kind:function(arm,size=0x38) addr:0x0203b31c
 func_0203b354 kind:function(arm,size=0x1c) addr:0x0203b354
 func_0203b370 kind:function(arm,size=0x24) addr:0x0203b370
 func_0203b394 kind:function(arm,size=0x2c) addr:0x0203b394
+
+
 func_0203b3c0 kind:function(arm,size=0x94) addr:0x0203b3c0
 func_0203b454 kind:function(arm,size=0x130) addr:0x0203b454
 func_0203b584 kind:function(thumb,size=0xe) addr:0x0203b584
@@ -3052,8 +3081,8 @@ data_02059324 kind:data(any) addr:0x02059324
 @EX@_ZSt9duhandlerv kind:data(any) addr:0x0205933c
 @EX@_ZSt9terminatev kind:data(any) addr:0x02059348
 @EX@_ZSt10unexpectedv kind:data(any) addr:0x02059354
-data_02059360 kind:data(any) addr:0x02059360
-data_0205936c kind:data(any) addr:0x0205936c
+@EX@_Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:data(any) addr:0x02059360
+@EX@_Z16__SkipUnwindInfoPc kind:data(any) addr:0x0205936c
 @EX@_ExitProcess kind:data(any) addr:0x02059378 local
 
 
@@ -3919,7 +3948,7 @@ data_0206a994 kind:bss addr:0x0206a994
 data_0206a9a4 kind:bss addr:0x0206a9a4
 data_0206a9b0 kind:bss addr:0x0206a9b0
 data_0206a9bc kind:bss addr:0x0206a9bc
-data_0206a9e0 kind:bss addr:0x0206a9e0
+InputStatus kind:bss addr:0x0206a9e0
 data_0206aa78 kind:bss addr:0x0206aa78
 data_0206aa7c kind:bss addr:0x0206aa7c
 data_0206aa80 kind:bss addr:0x0206aa80
@@ -4284,19 +4313,22 @@ data_0207dc3a kind:bss addr:0x0207dc3a
 data_0207dc3c kind:bss addr:0x0207dc3c
 data_0207dc40 kind:bss addr:0x0207dc40
 data_0207dc5c kind:bss addr:0x0207dc5c
-data_0207dc7c kind:bss addr:0x0207dc7c
-data_0207dc80 kind:bss addr:0x0207dc80
+
+IRQCallbackInfo kind:bss addr:0x0207dc7c
 data_0207dc84 kind:bss addr:0x0207dc84
-data_0207dcac kind:bss addr:0x0207dcac
-data_0207dcb0 kind:bss addr:0x0207dcb0
-data_0207dcb4 kind:bss addr:0x0207dcb4
 data_0207dcdc kind:bss addr:0x0207dcdc
 data_0207dce0 kind:bss addr:0x0207dce0
 OS_ThreadInfo kind:bss addr:0x0207dd04
 data_0207dd08 kind:bss addr:0x0207dd08
 data_0207dd14 kind:bss addr:0x0207dd14
 data_0207ddd4 kind:bss addr:0x0207ddd4
-data_0207df5c kind:bss addr:0x0207df5c
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/region.c
+/////////////////////////////////////////////////////////////
+RegionSystemInitialized kind:bss addr:0x0207df5c
+ExtendedRegionEnabled kind:bss addr:0x0207df60
+
 data_0207df64 kind:bss addr:0x0207df64
 data_0207df88 kind:bss addr:0x0207df88
 data_0207df8c kind:bss addr:0x0207df8c
@@ -4305,7 +4337,16 @@ data_0207dfb4 kind:bss addr:0x0207dfb4
 data_0207e034 kind:bss addr:0x0207e034
 data_0207e038 kind:bss addr:0x0207e038
 data_0207e048 kind:bss addr:0x0207e048
-data_0207e054 kind:bss addr:0x0207e054
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/os/valarm.c
+/////////////////////////////////////////////////////////////
+VAlarmSystemActive kind:bss(size=0x2) addr:0x0207e054 local
+data_0207e058 kind:bss addr:0x0207e058 local
+data_0207e05c kind:bss addr:0x0207e05c local
+VAlarmQueue kind:bss addr:0x0207e060 local
+
+
 data_0207e068 kind:bss addr:0x0207e068
 data_0207e06c kind:bss addr:0x0207e06c
 data_0207e070 kind:bss addr:0x0207e070
