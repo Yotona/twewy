@@ -3,6 +3,8 @@
 #include "Memory.h"
 #include "common_data.h"
 
+SndMgr sndMgr = {};
+
 typedef struct UnkStruct_usedby_020310e8 {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ u8  unk_04;
@@ -35,8 +37,6 @@ static BOOL func_02026928(s16 param_1) {
     return FALSE;
 }
 
-// Nonmatching: Expects a second data reference to sndMgr
-// Scratch: vxtj5
 void SndMgr_Init(void) {
     func_02027220(0);
     void* heap = Mem_AllocHeapTail(&gMainHeap, 0x40000);
@@ -112,13 +112,12 @@ static u8 func_02026bec(u32 param_1, u32 param_2) {
     return iVar2->unk_02;
 }
 
-// Nonmatching: Not allocating properly, expects a second data reference to sndMgr
-// Scratch: NP1mJ
 void func_02026c04(void) {
     u32 uVar2 = -1;
+    s8  seqArc;
 
     for (s32 seIdx = 0; seIdx < 0x56C; seIdx++) {
-        s32 seqArc = data_0205cb3c[seIdx].seqArc;
+        seqArc = data_0205cb3c[seIdx].seqArc;
         if (seqArc < 0) {
             sndMgr.seIdxVolume[seIdx] = func_02026bdc(data_0205cb3c[seIdx].se);
         } else {

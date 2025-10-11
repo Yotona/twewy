@@ -10,7 +10,7 @@ extern struct {
     /* 0x2 */ s16 se;
 } data_0205cb3c[1388];
 
-struct {
+typedef struct SndMgr {
     /* 0x0000 */ void* data;
     /* 0x0004 */ s32   unk_0004;
     /* 0x0008 */ char  unk_0008[0x5C];
@@ -24,7 +24,7 @@ struct {
     /* 0x16D0 */ s32  unk_16D0;
     /* 0x16D4 */ s16  unk_16D4[3];
     /* 0x16DA */ s8   unk_16DA;
-} sndMgr;
+} SndMgr;
 
 void SndMgr_Init(void);
 

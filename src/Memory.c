@@ -107,21 +107,18 @@ void* Mem_AllocHeapTail(MemPool* pool, s32 size) {
     return Mem_GetBlockWithoutHeader(allocBlock);
 }
 
-// Nonmatching: Register diffs
-// Scratch: b5W5p
 void* Mem_AllocHeapHead(MemPool* pool, s32 size) {
     size = (size + 0x3F) & ~0x1F;
 
-    MemBlock* head  = pool->head;
-    MemBlock* cur   = head->physMemNext;
     MemBlock* alloc = NULL;
+    MemBlock* head  = pool->head;
+    MemBlock* cur;
 
-    while (cur != head) {
+    for (cur = head->physMemNext; cur != head; cur = cur->physMemNext) {
         if (cur->state < 0 && cur->size >= size) {
             alloc = cur;
             break;
         }
-        cur = cur->physMemNext;
     }
 
     if (alloc == NULL) {
@@ -146,8 +143,8 @@ void* Mem_AllocHeapHead(MemPool* pool, s32 size) {
         alloc->physMemNext                = new_MemBlock;
     } else {
         alloc->state                      = 0;
-        alloc->freeListPrev->freeListNext = alloc->freeListNext;
-        alloc->freeListNext->freeListPrev = alloc->freeListPrev;
+        alloc->freeListPrev->freeListNext = cur->freeListNext;
+        alloc->freeListNext->freeListPrev = cur->freeListPrev;
     }
     return Mem_GetBlockWithoutHeader(alloc);
 }

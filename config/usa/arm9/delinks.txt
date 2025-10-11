@@ -97,6 +97,7 @@ libs/CriWare/criss.c:
     .bss        start:0x02071B00 end:0x02071CF0
 
 src/SndMgr.c:
+complete
     .text       start:0x020268F0 end:0x02027294
     .data       start:0x02065CB0 end:0x02065CD0
     .bss        start:0x02075214 end:0x020768F0
