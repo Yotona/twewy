@@ -4,10 +4,13 @@
 #include <types.h>
 
 typedef struct {
-    /* 0x00 */ u32   unk_00;
+    union {
+        /* 0x00 */ u32 unk_00;
+        /* 0x00 */ u8  unk_00_08;
+    };
     /* 0x04 */ void* addr;
     /* 0x08 */ s32   size;
-    /* 0x0C */ u32   unk_0C;
+    /* 0x0C */ void* data;
 } DMAStruct;
 
 extern DMAStruct data_02066a5c[5];

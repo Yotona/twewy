@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "Memory.h"
 #include "System.h"
 #include "common_data.h"
 #include "game.h"
@@ -101,13 +102,14 @@ void main(void) {
             data_02066a58 |= 0x10;
         }
 
-        func_02004590(&data_0206a9a4, sp0, 0x280000);
-        func_02004bbc(&data_0206a9bc, 0x20000, &data_020636a0);
+        Mem_InitializeHeap(&gMainHeap, sp0, 0x280000);
+        func_02004bbc(&data_0206a9bc, 0x20000, "TmpBuf extends FlushBuf");
 
-        s32 temp_r0_3 = func_02004618(&data_0206a9a4, 0x80000);
-        func_020049a8(&data_0206a9a4, temp_r0_3, &data_020636b8);
-        func_0203b2d0(0, temp_r0_3, func_0200498c(&data_0206a9a4, temp_r0_3));
-        func_02004590(&data_0206a9b0, temp_r0_3, 0x80000);
+        s32 temp_r0_3 = Mem_AllocHeapTail(&gMainHeap, 0x80000);
+        Mem_SetSequence(&gMainHeap, temp_r0_3, "SeqHeap(StdHeap)");
+        func_0203b2d0(0, temp_r0_3, Mem_GetBlockSize(&gMainHeap, temp_r0_3));
+
+        Mem_InitializeHeap(&gDebugHeap, temp_r0_3, 0x80000);
 
         SndMgr_Init();
         func_02006618(-1);
@@ -217,16 +219,16 @@ extern u32 OVERLAY_46_ID;
 extern void func_ov037_0208370c(GameState*);
 extern void func_ov046_02083630(GameState*);
 
-const char* data_020636cc = "Seq_Boot(void *)";
+static const char* data_020636cc = "Seq_Boot(void *)";
 
 // Nonmatching: Differences in overlay handling
 void func_02001254(void) {
     if (func_02007278() == 0) {
-        const char* temp_r5 = data_020636cc;
-        s32         temp_r0 = func_02004618(&data_0206a9b0, 0x304);
+        const char* seq     = data_020636cc;
+        s32         temp_r0 = Mem_AllocHeapTail(&gDebugHeap, 0x304);
 
-        func_020049a8(&data_0206a9b0, temp_r0, temp_r5);
-        func_0203b2d0(0, temp_r0, func_0200498c(&data_0206a9b0, temp_r0));
+        Mem_SetSequence(&gDebugHeap, temp_r0, seq);
+        func_0203b2d0(0, temp_r0, Mem_GetBlockSize(&gDebugHeap, temp_r0));
         func_02007260(temp_r0);
         BinMgr_Init(temp_r0, 8);
         func_02007b40(temp_r0 + 0x60, 0x20);

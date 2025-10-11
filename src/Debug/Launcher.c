@@ -1,6 +1,7 @@
 #include "Debug/Launcher.h"
 #include "Input.h"
 #include "Interrupts.h"
+#include "Memory.h"
 #include "OverlayManager.h"
 #include "System.h"
 #include "common_data.h"
@@ -302,12 +303,12 @@ void func_ov046_020834c0(DebugLauncherState* state) {
 void func_ov046_020835b4(DebugLauncherState* state) {
     if (state == NULL) {
         const char* seq = Sequence;
-        state           = func_02004618(&data_0206a9b0, sizeof(DebugLauncherState));
-        func_020049a8(&data_0206a9b0, state, seq);
+        state           = Mem_AllocHeapTail(&gDebugHeap, sizeof(DebugLauncherState));
+        Mem_SetSequence(&gDebugHeap, state, seq);
         func_02007260(state);
     }
 
-    func_0203b2d0(0, state, func_0200498c(&data_0206a9b0, state));
+    func_0203b2d0(0, state, Mem_GetBlockSize(&gDebugHeap, state));
     func_ov046_02082c78(state);
     func_ov046_02083368(state);
     func_020072a4();

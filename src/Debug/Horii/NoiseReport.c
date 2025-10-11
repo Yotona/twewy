@@ -1,3 +1,4 @@
+#include "Memory.h"
 #include "System.h"
 #include "common_data.h"
 #include "game.h"
@@ -94,5 +95,5 @@ void func_ov028_020e8b68(NoiseReportState* state) {
     func_0200f4f8(&state->unk_21590);
     func_0200cef0(NULL);
     func_ov028_020e87f4();
-    func_020048b4(&data_0206a9b0, state);
+    Mem_Free(&gDebugHeap, state);
 }

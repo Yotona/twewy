@@ -3,8 +3,6 @@
 
 #include <types.h>
 
-extern s32 data_0206a9a4; // Global memory allocator handle
-
 extern s32 data_0205c9b0;
 
 extern s32 data_02066aac[16];
@@ -18,8 +16,6 @@ extern s32 data_0206770c;
 
 extern s32 data_02068778;
 extern s32 data_02068798;
-
-extern s32 data_0206a9b0;
 
 extern s32 data_0205a128;
 

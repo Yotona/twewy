@@ -1,5 +1,6 @@
 #include "SndMgr.h"
 #include "CriSndMgr.h"
+#include "Memory.h"
 #include "common_data.h"
 
 typedef struct UnkStruct_usedby_020310e8 {
@@ -37,16 +38,14 @@ static BOOL func_02026928(s16 param_1) {
 // Nonmatching: Expects a second data reference to sndMgr
 // Scratch: vxtj5
 void SndMgr_Init(void) {
-    GameState* state;
-
     func_02027220(0);
-    state = func_02004618(&data_0206a9a4, 0x40000);
-    func_020049a8(&data_0206a9a4, state, "SndMgr");
-    func_0203b2d0(0, state, func_0200498c(&data_0206a9a4, state));
-    sndMgr.state = state;
+    void* heap = Mem_AllocHeapTail(&gMainHeap, 0x40000);
+    Mem_SetSequence(&gMainHeap, heap, "SndMgr");
+    func_0203b2d0(0, heap, Mem_GetBlockSize(&gMainHeap, heap));
+    sndMgr.data = heap;
     func_020268f0();
     func_0202f8a0();
-    sndMgr.unk_0004 = func_02031364(sndMgr.state, 0x40000);
+    sndMgr.unk_0004 = func_02031364(sndMgr.data, 0x40000);
     func_02030cec(&sndMgr.unk_1640, "/Sound/sound_data.sdat", sndMgr.unk_0004, 0);
     func_02031f34(sndMgr.unk_0004);
     func_020316d0(0, sndMgr.unk_0004);

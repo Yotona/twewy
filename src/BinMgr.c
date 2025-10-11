@@ -1,4 +1,5 @@
 #include "BinMgr.h"
+#include "Memory.h"
 #include "common_data.h"
 #include "game.h"
 
@@ -50,8 +51,8 @@ BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount) {
     binMgr->rootBin.next = NULL;
     binMgr->nodeCount    = nodeCount;
 
-    GameState* allocatedPool = func_02004618(&data_0206a9a4, nodeCount << 5);
-    func_020049a8(&data_0206a9a4, allocatedPool, "BinMgr_Init()");
+    GameState* allocatedPool = Mem_AllocHeapTail(&gMainHeap, nodeCount << 5);
+    Mem_SetSequence(&gMainHeap, allocatedPool, "BinMgr_Init()");
     binMgr->nodePool = &allocatedPool->binMgr.rootBin;
     binMgr->listTail = &allocatedPool->binMgr.rootBin;
 
@@ -96,8 +97,8 @@ void* BinMgr_LoadRawData(Bin* targetBuffer, int* resourceDesc, int resourceId, i
     }
     if (targetBuffer == NULL) {
         debugStr     = *(char**)(resourceId + 4);
-        targetBuffer = func_020047d0(&data_0206a9a4, totalBytesToRead);
-        func_020049a8(&data_0206a9a4, targetBuffer, debugStr);
+        targetBuffer = Mem_AllocBestFit(&gMainHeap, totalBytesToRead);
+        Mem_SetSequence(&gMainHeap, targetBuffer, debugStr);
     }
     *outSize = totalBytesToRead;
     func_0203ea60(fileHandle, offset, 0);
@@ -142,8 +143,8 @@ Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId,
     func_0203e5d4(fileHandle);
     func_0203e844(fileHandle, *resourceDesc, resourceDesc[1], currentReadOffset);
     totalCompressedSize  = (fileEndOffset - fileStartOffset) - offset;
-    compressedDataBuffer = func_020046e8(&data_0206a9a4, totalCompressedSize);
-    func_020049a8(&data_0206a9a4, compressedDataBuffer, "BinMgr_LoadComp()");
+    compressedDataBuffer = Mem_AllocHeapHead(&gMainHeap, totalCompressedSize);
+    Mem_SetSequence(&gMainHeap, compressedDataBuffer, "BinMgr_LoadComp()");
     decompressedSize = 0;
     func_0203ea60(fileHandle, offset, 0);
     maxChunkSize = 0x6800; // Max chunk size for reading (26KB)
@@ -175,11 +176,11 @@ Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId,
     outputBuffer = targetBuffer;
     if (targetBuffer == NULL) {
         debugStr     = *(char**)(resourceId + 4);
-        outputBuffer = func_020047d0(&data_0206a9a4);
-        func_020049a8(&data_0206a9a4, outputBuffer, debugStr);
+        outputBuffer = Mem_AllocBestFit(&gMainHeap, decompressedSize);
+        Mem_SetSequence(&gMainHeap, outputBuffer, debugStr);
     }
     func_02004d60(outputBuffer, compressedDataBuffer);
-    func_020048b4(&data_0206a9a4, compressedDataBuffer);
+    Mem_Free(&gMainHeap, compressedDataBuffer);
     return outputBuffer;
 }
 
@@ -279,12 +280,12 @@ BOOL BinMgr_ReleaseBin(Bin* bin) {
     }
     // Check if data was allocated by BinMgr (bit 0 set) and needs to be freed
     if ((int)((u32)bin->flags << 0x1f) < 0) {
-        func_020048b4(&data_0206a9a4, (GameState*)bin->data);
+        Mem_Free(&gMainHeap, bin->data);
     }
     // Check if secondary data (bit 1 set) needs to be freed
     if (((int)((u32)bin->flags << 0x1e) < 0) && ((int*)bin->secondaryData != NULL)) {
         func_02027a9c(bin->secondaryData);
-        func_020048b4(&data_0206a9a4, (GameState*)bin->secondaryData);
+        Mem_Free(&gMainHeap, bin->secondaryData);
     }
     BinMgr_RemoveFromFreeList(binMgr, bin);
     BinMgr_AppendNode(binMgr, bin);

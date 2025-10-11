@@ -18,7 +18,7 @@ extern const s32 CriSndMgr_AdxDataCount;
 typedef struct {
     /* 0x00 */ CRISS* criss;
     /* 0x04 */ void* (*createFunc)(s32);
-    /* 0x08 */ void (*execFunc)(GameState*);
+    /* 0x08 */ void (*deleteFunc)(void*);
     /* 0x0C */ s32 volume[70];
 } CriSndMgr;
 extern CriSndMgr criSndMgr;
@@ -41,6 +41,6 @@ void CriSndMgr_SetLpFlg(BOOL lpFlg);
 
 void* CriSndMgr_Create(s32 size);
 
-void CriSndMgr_Exec(GameState* param_1);
+void CriSndMgr_Free(void* data);
 
 #endif // CRISNDMGR_H

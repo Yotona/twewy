@@ -6,6 +6,7 @@
 #include "Debug/SoundTest.h"
 #include "CriSndMgr.h"
 #include "Interrupts.h"
+#include "Memory.h"
 #include "OverlayManager.h"
 #include "SndMgr.h"
 #include "System.h"
@@ -1700,9 +1701,8 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
 // Nonmatching
 void func_ov029_02082e40(SoundTestState* param) {
     char*           name  = data_ov029_02083400;
-    SoundTestState* state = func_02004618(&data_0206a9b0, sizeof(SoundTestState));
-
-    func_020049a8(&data_0206a9b0, state, name);
+    SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
+    Mem_SetSequence(&gDebugHeap, state, name);
     func_02007260(&state->gameState);
     state->gameState.unk_11584 = func_02008e80();
     func_ov029_020833c4();
@@ -1732,7 +1732,7 @@ void func_ov029_02082f68(SoundTestState* state) {
     func_ov029_020828c0(state);
     func_0200cef0(NULL);
     func_02008ebc(state->gameState.unk_11584);
-    func_020048b4(&data_0206a9b0, state);
+    Mem_Free(&gDebugHeap, state);
 }
 
 void func_ov029_02082f9c(SoundTestState* state) {

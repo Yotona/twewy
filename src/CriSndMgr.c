@@ -1,4 +1,5 @@
 #include "CriSndMgr.h"
+#include "Memory.h"
 #include "common_data.h"
 #include <CriWare/adxt.h>
 #include <CriWare/criss.h>
@@ -97,7 +98,7 @@ void CriSndMgr_Init(void) {
     }
 
     criSndMgr.createFunc = CriSndMgr_Create;
-    criSndMgr.execFunc   = CriSndMgr_Exec;
+    criSndMgr.deleteFunc = CriSndMgr_Free;
     func_02021728(&criSndMgr.createFunc, 2, &data_0205e0ec, CriSndMgr_DummyFunc);
     criSndMgr.criss = func_02021960(&criSndMgr.createFunc, 2, 0);
     criSsPly_SetFadeTime(criSndMgr.criss, 0, 0);
@@ -151,12 +152,12 @@ void CriSndMgr_SetLpFlg(BOOL lpFlg) {
 }
 
 void* CriSndMgr_Create(s32 size) {
-    void* mgr = func_02004618(&data_0206a9a4, size);
-    func_020049a8(&data_0206a9a4, mgr, "CriSndMgr");
-    func_0203b2d0(0, mgr, func_0200498c(&data_0206a9a4, mgr));
+    void* mgr = Mem_AllocHeapTail(&gMainHeap, size);
+    Mem_SetSequence(&gMainHeap, mgr, "CriSndMgr");
+    func_0203b2d0(0, mgr, Mem_GetBlockSize(&gMainHeap, mgr));
     return mgr;
 }
 
-void CriSndMgr_Exec(GameState* state) {
-    func_020048b4(&data_0206a9a4, state);
+void CriSndMgr_Free(void* data) {
+    Mem_Free(&gMainHeap, data);
 }

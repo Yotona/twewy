@@ -125,15 +125,21 @@ func_020043f4 kind:function(arm,size=0x18) addr:0x020043f4
 func_0200440c kind:function(arm,size=0x58) addr:0x0200440c
 func_02004464 kind:function(arm,size=0x6c) addr:0x02004464
 func_020044d0 kind:function(arm,size=0x6c) addr:0x020044d0
-func_0200453c kind:function(arm,size=0x54) addr:0x0200453c
-func_02004590 kind:function(arm,size=0x88) addr:0x02004590
-func_02004618 kind:function(arm,size=0xd0) addr:0x02004618
-func_020046e8 kind:function(arm,size=0xe8) addr:0x020046e8
-func_020047d0 kind:function(arm,size=0xe4) addr:0x020047d0
-func_020048b4 kind:function(arm,size=0xd8) addr:0x020048b4
-func_0200498c kind:function(arm,size=0x1c) addr:0x0200498c
-func_020049a8 kind:function(arm,size=0x18) addr:0x020049a8
-func_020049c0 kind:function(arm,size=0x1c) addr:0x020049c0
+
+/////////////////////////////////////////////////////////////
+// src/Memory.c
+/////////////////////////////////////////////////////////////
+Mem_FindBlockByPointer kind:function(arm,size=0x54) addr:0x0200453c local
+Mem_InitializeHeap kind:function(arm,size=0x88) addr:0x02004590
+Mem_AllocHeapTail kind:function(arm,size=0xd0) addr:0x02004618
+Mem_AllocHeapHead kind:function(arm,size=0xe8) addr:0x020046e8
+Mem_AllocBestFit kind:function(arm,size=0xe4) addr:0x020047d0
+Mem_Free kind:function(arm,size=0xd8) addr:0x020048b4
+Mem_GetBlockSize kind:function(arm,size=0x1c) addr:0x0200498c
+Mem_SetSequence kind:function(arm,size=0x18) addr:0x020049a8
+Mem_GetSequence kind:function(arm,size=0x1c) addr:0x020049c0
+
+
 func_020049dc kind:function(arm,size=0x8c) addr:0x020049dc
 func_02004a68 kind:function(arm,size=0x60) addr:0x02004a68
 func_02004ac8 kind:function(arm,size=0x54) addr:0x02004ac8
@@ -1497,7 +1503,7 @@ CriSndMgr_GetAdxIdxVolume kind:function(arm,size=0x1c) addr:0x020273f4
 func_02027410 kind:function(arm,size=0x18) addr:0x02027410
 CriSndMgr_SetLpFlg kind:function(arm,size=0x1c) addr:0x02027428
 CriSndMgr_Create kind:function(arm,size=0x50) addr:0x02027444
-CriSndMgr_Exec kind:function(arm,size=0x18) addr:0x02027494
+CriSndMgr_Free kind:function(arm,size=0x18) addr:0x02027494
 
 
 func_020274ac kind:function(arm,size=0x38) addr:0x020274ac
@@ -3110,7 +3116,14 @@ data_02059ab0 kind:data(any) addr:0x02059ab0
 data_02059ad4 kind:data(any) addr:0x02059ad4
 data_02059b14 kind:data(any) addr:0x02059b14
 data_02059b94 kind:data(any) addr:0x02059b94
-data_02059d14 kind:data(any) addr:0x02059d14
+
+/////////////////////////////////////////////////////////////
+// src/Memory.c
+/////////////////////////////////////////////////////////////
+memLabelHead kind:data(any) addr:0x02059d14
+memLabelList kind:data(any) addr:0x02059d18
+
+
 data_02059d1c kind:data(any) addr:0x02059d1c
 data_02059d24 kind:data(any) addr:0x02059d24
 data_0205a124 kind:data(any) addr:0x0205a124
@@ -3284,18 +3297,30 @@ __sinit__ kind:data(any) addr:0x02063680
 ////// section: .data                                   //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-data_020636a0 kind:data(any) addr:0x020636a0
-data_020636b8 kind:data(any) addr:0x020636b8
+
+/////////////////////////////////////////////////////////////
+// src/main.c
+/////////////////////////////////////////////////////////////
+@208 kind:data(any) addr:0x020636a0 local
+@209 kind:data(any) addr:0x020636b8 local
 data_020636cc kind:data(any) addr:0x020636cc
-data_020636d0 kind:data(any) addr:0x020636d0
+@210 kind:data(any) addr:0x020636d0 local
+
+
 data_020636e4 kind:data(any) addr:0x020636e4
 data_020636e8 kind:data(any) addr:0x020636e8
 @16 kind:data(any) addr:0x02063728 local
 @155 kind:data(any) addr:0x02063734 local
-data_02063744 kind:data(any) addr:0x02063744
-data_02063748 kind:data(any) addr:0x02063748
-data_02063750 kind:data(any) addr:0x02063750
-data_02063758 kind:data(any) addr:0x02063758
+
+/////////////////////////////////////////////////////////////
+// src/Memory.c
+/////////////////////////////////////////////////////////////
+memLabelFree kind:data(any) addr:0x02063744
+@51 kind:data(any) addr:0x02063748 local
+@50 kind:data(any) addr:0x02063750 local
+@160 kind:data(any) addr:0x02063758 local
+
+
 data_02063760 kind:data(any) addr:0x02063760
 data_02063764 kind:data(any) addr:0x02063764
 data_0206377c kind:data(any) addr:0x0206377c
@@ -3945,8 +3970,14 @@ data_02069c24 kind:bss addr:0x02069c24
 data_0206a890 kind:bss addr:0x0206a890
 data_0206a8a0 kind:bss addr:0x0206a8a0
 data_0206a994 kind:bss addr:0x0206a994
-data_0206a9a4 kind:bss addr:0x0206a9a4
-data_0206a9b0 kind:bss addr:0x0206a9b0
+
+/////////////////////////////////////////////////////////////
+// src/Memory.c
+/////////////////////////////////////////////////////////////
+gMainHeap kind:bss addr:0x0206a9a4
+gDebugHeap kind:bss addr:0x0206a9b0
+
+
 data_0206a9bc kind:bss addr:0x0206a9bc
 InputStatus kind:bss addr:0x0206a9e0
 data_0206aa78 kind:bss addr:0x0206aa78

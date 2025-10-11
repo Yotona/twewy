@@ -1,4 +1,5 @@
 #include "Debug/STSample.h"
+#include "Memory.h"
 #include "OverlayManager.h"
 #include "System.h"
 #include "common_data.h"
@@ -137,8 +138,8 @@ void func_ov041_02082a5c(STSampleState* param) {
 
     func_0200669c(3, OVERLAY_40_ID);
     iVar1 = data_ov041_02083020;
-    state = func_02004618(&data_0206a9b0, sizeof(STSampleState));
-    func_020049a8(&data_0206a9b0, state, iVar1);
+    state = Mem_AllocHeapTail(&gDebugHeap, sizeof(STSampleState));
+    Mem_SetSequence(&gDebugHeap, state, iVar1);
     sVar2 = func_02007260(&state->gameState);
     func_02008e80();
     state->gameState.unk_11584 = sVar2;
@@ -168,7 +169,7 @@ void func_ov041_02082b88(STSampleState* state) {
     func_ov041_020828f0(state);
     func_0200cef0(NULL);
     func_02008ebc(state->gameState.unk_11584);
-    func_020048b4(&data_0206a9b0, state);
+    Mem_Free(&gDebugHeap, state);
     func_02006618(3);
 }
 

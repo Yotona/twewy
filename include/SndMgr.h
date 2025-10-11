@@ -11,11 +11,11 @@ extern struct {
 } data_0205cb3c[1388];
 
 struct {
-    /* 0x0000 */ GameState* state;
-    /* 0x0004 */ s32        unk_0004;
-    /* 0x0008 */ char       unk_0008[0x5C];
-    /* 0x0064 */ s32        unk_0064;
-    /* 0x0068 */ s32        seIdxVolume[1388];
+    /* 0x0000 */ void* data;
+    /* 0x0004 */ s32   unk_0004;
+    /* 0x0008 */ char  unk_0008[0x5C];
+    /* 0x0064 */ s32   unk_0064;
+    /* 0x0068 */ s32   seIdxVolume[1388];
     /* 0x1618 */ struct {
         /* 0x00 */ s32 unk_00;
         /* 0x04 */ s32 unk_04;
