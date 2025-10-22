@@ -74,6 +74,7 @@ CC_FLAGS = " ".join(
         "-nolink",  # Do not link
         "-msgstyle gcc",  # Use GCC-like messages (some IDEs will make file names clickable)
         "-enc SJIS",  # Use Shift-JIS encoding
+        "-ipa file", # Use per-file interprocedural analysis optimizations
     ]
 )
 

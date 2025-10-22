@@ -20,7 +20,7 @@ IRQCallback Interrupts_SaveVBlankCallback(IRQCallback);
 IRQCallback Interrupts_SaveHBlankCallback(IRQCallback callback);
 
 void Interrupts_Init(void) {
-    CRITICAL_SECTION_ENTER();
+    ENTER_CRITICAL_SECTION();
 
     Interrupts_RegisterVBlankCallback(NULL, TRUE);
     OS_SetIRQCallback(IRQ_VBLANK, HandleVBlank);
@@ -35,7 +35,7 @@ void Interrupts_Init(void) {
         OS_VAlarmSystemInit();
     }
 
-    CRITICAL_SECTION_LEAVE();
+    LEAVE_CRITICAL_SECTION();
 }
 
 void Interrupts_HandleVBlank(void) {

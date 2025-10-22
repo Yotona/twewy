@@ -27,13 +27,13 @@ void OS_VAlarmSystemInit(void) {
 }
 
 void OS_VAlarmSystemHalt(void) {
-    CRITICAL_SECTION_ENTER();
+    ENTER_CRITICAL_SECTION();
 
     if (VAlarmSystemActive != 0) {
         VAlarmSystemActive = 0;
     }
 
-    CRITICAL_SECTION_LEAVE();
+    LEAVE_CRITICAL_SECTION();
 }
 
 BOOL OS_IsVAlarmSystemActive(void) {
@@ -62,23 +62,23 @@ static void OS_RemoveVAlarmFromQueue(VAlarm* alarm) {
 }
 
 static void OS_StopVAlarm(VAlarm* alarm) {
-    CRITICAL_SECTION_ENTER();
+    ENTER_CRITICAL_SECTION();
 
     alarm->unk_24 = 1;
 
     if (alarm->callback == NULL) {
-        CRITICAL_SECTION_LEAVE();
+        LEAVE_CRITICAL_SECTION();
         return;
     }
 
     OS_RemoveVAlarmFromQueue(alarm);
     alarm->callback = NULL;
 
-    CRITICAL_SECTION_LEAVE();
+    LEAVE_CRITICAL_SECTION();
 }
 
 void OS_StopAllVAlarms(void) {
-    CRITICAL_SECTION_ENTER();
+    ENTER_CRITICAL_SECTION();
 
     VAlarm* current;
     VAlarm* next;
@@ -89,5 +89,5 @@ void OS_StopAllVAlarms(void) {
         OS_StopVAlarm(current);
     }
 
-    CRITICAL_SECTION_LEAVE();
+    LEAVE_CRITICAL_SECTION();
 }

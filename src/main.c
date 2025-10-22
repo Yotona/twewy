@@ -1,5 +1,6 @@
 #include "Input.h"
 #include "Memory.h"
+#include "NitroSDK/fs.h"
 #include "System.h"
 #include "common_data.h"
 #include "game.h"
@@ -14,7 +15,6 @@ extern s32 data_020636a0;
 
 extern void func_02001254();
 
-// Nonmatching: Some data loads missing, outer loop jumps to wrong address
 void main(void) {
     OS_InitAllSystems();
     OS_EnableFIQ();
@@ -29,11 +29,11 @@ void main(void) {
     void* memRegion = OS_AllocRegionMemory(REGION_MAIN_ARM9, 0x288000, 32);
     func_02039f2c(0, func_0203a004(0, memRegion, memRegion + 0x288000));
 
-    s32 sp0 = func_02039dbc(0, -1, 0x280000);
-    func_0203e59c(2);
+    void* sp0 = func_02039dbc(0, -1, 0x280000);
+    FS_InitFileSystem(2);
 
-    s32 temp_r0 = func_0203ed04(0, 0);
-    func_0203ed04(func_02039dbc(0, -1, temp_r0), temp_r0);
+    u32 tableSize = FS_RomLoadDefaultTables(NULL, 0);
+    FS_RomLoadDefaultTables(func_02039dbc(0, -1, tableSize), tableSize);
 
     func_020065e0();
 
@@ -63,27 +63,35 @@ void main(void) {
 
         System_ClearFlag(SYSFLAG_UNKNOWN_0);
         System_ClearFlag(SYSFLAG_RESET);
+        SystemStatusFlags;
+
         System_SetFlag(SYSFLAG_UNKNOWN_7);
         System_ClearFlag(SYSFLAG_UNKNOWN_3);
         System_SetFlag(SYSFLAG_UNKNOWN_4);
         System_ClearFlag(SYSFLAG_UNKNOWN_10);
+        SystemStatusFlags;
         System_SetFlag(SYSFLAG_UNKNOWN_5);
+        SystemStatusFlags;
         System_SetFlag(SYSFLAG_UNKNOWN_6);
 
         u32 sp18;
         u32 sp14;
         func_020410ac(&sp18, &sp14);
         if (sp18 == 1) {
+            SystemStatusFlags;
             System_SetFlag(SYSFLAG_UNKNOWN_8);
         } else {
+            SystemStatusFlags;
             System_ClearFlag(SYSFLAG_UNKNOWN_8);
         }
         if (sp14 == 1) {
+            SystemStatusFlags;
             System_SetFlag(SYSFLAG_UNKNOWN_9);
         } else {
+            SystemStatusFlags;
             System_ClearFlag(SYSFLAG_UNKNOWN_9);
         }
-
+        SystemStatusFlags;
         System_SetFlag(SYSFLAG_UNKNOWN_7);
 
         data_02066a58 &= ~1;
@@ -105,11 +113,11 @@ void main(void) {
         Mem_InitializeHeap(&gMainHeap, sp0, 0x280000);
         func_02004bbc(&data_0206a9bc, 0x20000, "TmpBuf extends FlushBuf");
 
-        s32 temp_r0_3 = Mem_AllocHeapTail(&gMainHeap, 0x80000);
-        Mem_SetSequence(&gMainHeap, temp_r0_3, "SeqHeap(StdHeap)");
-        func_0203b2d0(0, temp_r0_3, Mem_GetBlockSize(&gMainHeap, temp_r0_3));
+        void* stdHeap = Mem_AllocHeapTail(&gMainHeap, 0x80000);
+        Mem_SetSequence(&gMainHeap, stdHeap, "SeqHeap(StdHeap)");
+        func_0203b2d0(0, stdHeap, Mem_GetBlockSize(&gMainHeap, stdHeap));
 
-        Mem_InitializeHeap(&gDebugHeap, temp_r0_3, 0x80000);
+        Mem_InitializeHeap(&gDebugHeap, stdHeap, 0x80000);
 
         SndMgr_Init();
         func_02006618(-1);
@@ -134,7 +142,7 @@ void main(void) {
         func_020415a4();
         func_02025b1c();
 
-        do {
+        while (System_CheckFlag(SYSFLAG_RESET) == 0 || System_CheckFlag(SYSFLAG_UNKNOWN_7) == 0) {
             func_02004c44(&data_0206a9bc);
 
             Input_PollState(&InputStatus);
@@ -170,7 +178,6 @@ void main(void) {
                     } else {
                         u32 sp10;
                         u32 spC;
-
                         func_020410ac(&sp10, &spC);
                         if (System_CheckFlag(SYSFLAG_UNKNOWN_8) && sp10 == 0) {
                             func_02040f34(0, 1);
@@ -206,7 +213,7 @@ void main(void) {
 
             func_020235a8();
             Interrupts_ForceVBlank();
-        } while (System_CheckFlag(SYSFLAG_RESET) != 0 && System_CheckFlag(SYSFLAG_UNKNOWN_7) == 0);
+        }
 
         func_02006608();
         OS_SystemReset(BIOS_RESET);
@@ -224,15 +231,16 @@ static const char* data_020636cc = "Seq_Boot(void *)";
 // Nonmatching: Differences in overlay handling
 void func_02001254(void) {
     if (func_02007278() == 0) {
-        const char* seq     = data_020636cc;
-        s32         temp_r0 = Mem_AllocHeapTail(&gDebugHeap, 0x304);
+        const char* seq = data_020636cc;
 
-        Mem_SetSequence(&gDebugHeap, temp_r0, seq);
-        func_0203b2d0(0, temp_r0, Mem_GetBlockSize(&gDebugHeap, temp_r0));
-        func_02007260(temp_r0);
-        BinMgr_Init(temp_r0, 8);
-        func_02007b40(temp_r0 + 0x60, 0x20);
-        func_02008158(temp_r0 + 0xC0, 0x100);
+        void* binData = Mem_AllocHeapTail(&gDebugHeap, 0x304);
+
+        Mem_SetSequence(&gDebugHeap, binData, seq);
+        func_0203b2d0(0, binData, Mem_GetBlockSize(&gDebugHeap, binData));
+        func_02007260(binData);
+        BinMgr_Init(binData, 8);
+        func_02007b40(binData + 0x60, 0x20);
+        func_02008158(binData + 0xC0, 0x100);
         func_020072a4();
         func_0200713c(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
     } else {

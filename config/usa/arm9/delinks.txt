@@ -111,6 +111,14 @@ src/CriSndMgr.c:
 libs/NitroSDK/os/interrupt.c:
     .text       start:0x020383BC end:0x02038664
 
+libs/NitroSDK/os/thread.c:
+    .text       start:0x020389FC end:0x0203927C
+    .bss        start:0x0207DCE0 end:0x0207DF5C
+
+libs/NitroSDK/os/mutex.c:
+complete
+    .text       start:0x02039594 end:0x02039784
+
 libs/NitroSDK/os/cache.c:
 complete
     .text       start:0x02039784 end:0x020398B0
@@ -134,6 +142,22 @@ complete
 
 libs/NitroSDK/os/reset.c:
     .text       start:0x0203A7FC end:0x0203A96C
+
+libs/NitroSDK/fs/record.c:
+complete
+    .text       start:0x0203DAB8 end:0x0203E59C
+    .bss        start:0x0207FC88 end:0x0207FC98
+
+libs/NitroSDK/fs/file.c:
+complete
+    .text       start:0x0203E59C end:0x0203EACC
+    .bss        start:0x0207FC98 end:0x0207FC9C
+
+libs/NitroSDK/fs/rom.c:
+complete
+    .text       start:0x0203EACC end:0x0203ED24
+    .data       start:0x02066278 end:0x0206627C
+    .bss        start:0x0207FC9C end:0x0207FD10
 
 libs/NitroSDK/fs/overlay.c:
     .text       start:0x0203ED24 end:0x0203F350

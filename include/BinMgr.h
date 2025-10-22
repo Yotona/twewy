@@ -1,6 +1,7 @@
 #ifndef BIN_MGR_H
 #define BIN_MGR_H
 
+#include <NitroSDK/fs/file.h>
 #include <types.h>
 
 extern struct GameState;
@@ -35,14 +36,6 @@ typedef struct BinMgr {
 Bin* BinMgr_AllocNode(Bin* freeListHead);
 
 /**
- * Initializes the Binary Manager system with a node pool
- * @param binMgr Pointer to the BinMgr structure to initialize
- * @param nodeCount Number of nodes to pre-allocate in the pool
- * @return Pointer to the previous BinMgr instance (for restoration)
- */
-BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount);
-
-/**
  * Appends a node to the end of the BinMgr's active list
  * @param binMgr Pointer to the BinMgr structure
  * @param node Pointer to the node to append to the tail
@@ -64,20 +57,50 @@ void BinMgr_AddToFreeList(BinMgr* binMgr, Bin* bin);
 void BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* bin);
 
 /**
+ * Initializes the Binary Manager system with a node pool
+ * @param binMgr Pointer to the BinMgr structure to initialize
+ * @param nodeCount Number of nodes to pre-allocate in the pool
+ * @return Pointer to the previous BinMgr instance
+ */
+BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount);
+
+/**
+ * Loads raw/uncompressed data from a resource without creating a bin
+ * @param targetBuffer Target buffer (can be NULL for auto-allocation)
+ * @param resIden Resource file identifier (can be NULL for auto-lookup)
+ * @param resourceId Resource details
+ * @param offset Byte offset to start reading from within the resource
+ * @param outSize Pointer to size variable (input: max size, output: actual size read)
+ * @return Pointer to loaded raw data
+ */
+void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize);
+
+/**
+ * Loads and decompresses data from a resource without creating a bin
+ * @param targetBuffer Target buffer (can be NULL for auto-allocation)
+ * @param resIden Resource file identifier (can be NULL for auto-lookup)
+ * @param resourceId Resource details
+ * @param offset Byte offset to start reading from within the resource
+ * @param outSize Pointer to size variable (input: max size, output: decompressed size)
+ * @return Pointer to decompressed data
+ */
+Bin* BinMgr_LoadCompressed(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize);
+
+/**
+ * Loads uncompressed/raw data into a new bin without decompression
+ * @param resIden Resource file identifier (can be NULL for auto-lookup)
+ * @param resourceId Resource details
+ * @return Pointer to the loaded bin containing raw data
+ */
+Bin* BinMgr_LoadUncompressed(FS_FileIdentifier* resIden, u32 resourceId);
+
+/**
  * Loads a compressed resource into a new bin with automatic decompression
  * @param resourceDesc Pointer to the resource descriptor (can be NULL for auto-lookup)
  * @param resourceId Identifier of the resource to load
  * @return Pointer to the loaded and decompressed resource bin
  */
-Bin* BinMgr_LoadResource(int* resourceDesc, u32 resourceId);
-
-/**
- * Loads uncompressed/raw data into a new bin without decompression
- * @param resourceDesc Pointer to the resource descriptor (can be NULL for auto-lookup)
- * @param resourceId Identifier of the resource to load
- * @return Pointer to the loaded bin containing raw data
- */
-Bin* BinMgr_LoadUncompressed(int* resourceDesc, u32 resourceId);
+Bin* BinMgr_LoadResource(FS_FileIdentifier* resIden, u32 resourceId);
 
 /**
  * Creates a bin wrapper around existing external data (does not copy data)
@@ -94,28 +117,6 @@ Bin* BinMgr_CreateFromData(u32 id, void* data, u32 size);
  * @return TRUE if bin was freed and moved to available list, FALSE if still referenced
  */
 BOOL BinMgr_ReleaseBin(Bin* bin);
-
-/**
- * Loads raw/uncompressed data from a resource without creating a bin
- * @param targetBuffer Target buffer (can be NULL for auto-allocation)
- * @param resourceDesc Resource descriptor (can be NULL for auto-lookup)
- * @param resourceId Resource identifier
- * @param offset Byte offset to start reading from within the resource
- * @param outSize Pointer to size variable (input: max size, output: actual size read)
- * @return Pointer to loaded raw data
- */
-void* BinMgr_LoadRawData(Bin* targetBuffer, int* resourceDesc, int resourceId, int offset, u32* outSize);
-
-/**
- * Loads and decompresses data from a resource without creating a bin
- * @param targetBuffer Target buffer (can be NULL for auto-allocation)
- * @param resourceDesc Resource descriptor (can be NULL for auto-lookup)
- * @param resourceId Resource identifier
- * @param offset Byte offset to start reading from within the resource
- * @param outSize Pointer to size variable (input: max size, output: decompressed size)
- * @return Pointer to decompressed data
- */
-Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId, int offset, u32* outSize);
 
 /**
  * Searches for a bin by its unique ID in the free/active bins list

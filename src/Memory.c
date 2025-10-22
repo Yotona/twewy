@@ -1,7 +1,7 @@
 #include "Memory.h"
 
-MemPool gMainHeap  = {};
 MemPool gDebugHeap = {};
+MemPool gMainHeap  = {};
 
 #define MEM_MAGIC 0x51342403
 

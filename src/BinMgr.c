@@ -1,7 +1,5 @@
 #include "BinMgr.h"
 #include "Memory.h"
-#include "common_data.h"
-#include "game.h"
 
 BinMgr* g_activeBinMgr; // Currently active binary manager instance
 
@@ -28,7 +26,8 @@ void BinMgr_AddToFreeList(BinMgr* binMgr, Bin* binToAdd) {
     }
 }
 
-/* Nonmatching */
+// Nonmatching: Reference incorrect, minor register differences
+// Scratch: 8FIX7
 void BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* binToRemove) {
     Bin* currentBin = binMgr->freeList;
     while (currentBin->next != NULL) {
@@ -40,132 +39,126 @@ void BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* binToRemove) {
     }
 }
 
-/* Nonmatching */
 BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount) {
-    BinMgr* previousMgr = g_activeBinMgr;
-    g_activeBinMgr      = binMgr;
+    BinMgr* prevMgr = g_activeBinMgr;
+    g_activeBinMgr  = binMgr;
     if (binMgr == NULL) {
-        return previousMgr;
+        return prevMgr;
     }
+
     binMgr->freeList     = NULL;
     binMgr->rootBin.next = NULL;
     binMgr->nodeCount    = nodeCount;
 
-    GameState* allocatedPool = Mem_AllocHeapTail(&gMainHeap, nodeCount << 5);
-    Mem_SetSequence(&gMainHeap, allocatedPool, "BinMgr_Init()");
-    binMgr->nodePool = &allocatedPool->binMgr.rootBin;
-    binMgr->listTail = &allocatedPool->binMgr.rootBin;
+    Bin* bin = Mem_AllocHeapTail(&gMainHeap, nodeCount * 32);
+    Mem_SetSequence(&gMainHeap, bin, "BinMgr_Init()");
+    binMgr->nodePool = bin;
+    binMgr->listTail = bin;
 
-    s16 nodeIndex = 0;
-    while (nodeIndex < binMgr->nodeCount) {
-        if (allocatedPool != NULL) {
-            func_0203b3c0(&allocatedPool->binMgr.rootBin, 0, sizeof(Bin));
-            allocatedPool->binMgr.rootBin.next = binMgr->rootBin.next;
-            binMgr->rootBin.next               = &allocatedPool->binMgr.rootBin;
-            allocatedPool->binMgr.rootBin.next = allocatedPool->binMgr.freeList;
-            nodeIndex++;
+    for (u16 i = 0; i < binMgr->nodeCount; i++) {
+        if (bin != NULL) {
+            func_0203b3c0(bin, 0, sizeof(Bin));
         }
+        bin->next            = binMgr->rootBin.next;
+        binMgr->rootBin.next = bin;
+        bin++;
     }
-    return previousMgr;
+    return prevMgr;
 }
 
-/* Nonmatching */
-void* BinMgr_LoadRawData(Bin* targetBuffer, int* resourceDesc, int resourceId, int offset, u32* outSize) {
-    u32   maxChunkSize;
-    int   currentReadOffset;
-    u32   totalBytesToRead;
-    char* debugStr;
-    Bin*  currentReadBuffer;
-    int   localResourceDesc[2];
-    int   fileHandle[9];
-    int   fileEndOffset;
-    int   fileStartOffset;
-    int   initialOffset;
+void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize) {
+    if (resIden == NULL) {
+        FS_FileIdentifier localResourceDesc;
 
-    currentReadOffset = offset;
-    initialOffset     = offset;
-    if (resourceDesc == NULL) {
-        func_0203e7bc((int)localResourceDesc, *(char**)(resourceId + 4), resourceId, offset);
-        resourceDesc = localResourceDesc;
+        FS_FilePathAsIden(&localResourceDesc, *(char**)(resourceId + 4));
+        resIden = &localResourceDesc;
     }
-    func_0203e5d4(fileHandle);
-    func_0203e844(fileHandle, *resourceDesc, resourceDesc[1], currentReadOffset);
-    maxChunkSize     = *outSize;
-    totalBytesToRead = (fileStartOffset - fileEndOffset) - offset;
-    if ((maxChunkSize != 0) && (maxChunkSize < totalBytesToRead)) {
+
+    FS_File file;
+
+    FS_FileInit(&file);
+    FS_FileOpenFromIden(&file, *resIden);
+
+    u32 totalBytesToRead = (file.endPosition - file.startPosition) - offset;
+    u32 maxChunkSize     = *outSize;
+
+    if ((maxChunkSize != 0) && (totalBytesToRead > maxChunkSize)) {
         totalBytesToRead = maxChunkSize;
     }
+
     if (targetBuffer == NULL) {
-        debugStr     = *(char**)(resourceId + 4);
-        targetBuffer = Mem_AllocBestFit(&gMainHeap, totalBytesToRead);
-        Mem_SetSequence(&gMainHeap, targetBuffer, debugStr);
+        char* sequence = *(char**)(resourceId + 4);
+        targetBuffer   = Mem_AllocBestFit(&gMainHeap, totalBytesToRead);
+        Mem_SetSequence(&gMainHeap, targetBuffer, sequence);
     }
+
     *outSize = totalBytesToRead;
-    func_0203ea60(fileHandle, offset, 0);
-    maxChunkSize = 0x6800; // Max chunk size for reading (26KB)
-    if (totalBytesToRead != 0) {
-        currentReadBuffer = targetBuffer;
-        do {
-            if (totalBytesToRead < maxChunkSize) {
-                maxChunkSize = totalBytesToRead;
-            }
-            if (func_0203ea50(fileHandle, currentReadBuffer, maxChunkSize) == 0xffffffff)
-                break;
-            currentReadBuffer = (Bin*)((char*)currentReadBuffer + maxChunkSize);
-            totalBytesToRead  = totalBytesToRead - maxChunkSize;
-        } while (totalBytesToRead != 0);
-    }
-    func_0203e8fc(fileHandle);
+    FS_FileSeek(&file, offset, 0);
+
+    void* currentReadBuffer = targetBuffer;
+    maxChunkSize            = 0x6800; // Max chunk size for reading (26KB)
+
+    while (totalBytesToRead != 0) {
+        if (totalBytesToRead < maxChunkSize) {
+            maxChunkSize = totalBytesToRead;
+        }
+        if (FS_FileRead(&file, currentReadBuffer, maxChunkSize) == -1) {
+            break;
+        }
+        currentReadBuffer = ((char*)currentReadBuffer + maxChunkSize);
+        totalBytesToRead -= maxChunkSize;
+    };
+
+    FS_FileClose(&file);
     return targetBuffer;
 }
 
 /* Nonmatching */
-Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId, int offset, u32* outSize) {
-    Bin*  compressedDataBuffer;
-    u32   currentChunkSize;
-    u32   decompressedSize;
-    int   currentReadOffset;
-    char* debugStr;
-    Bin*  currentReadBuffer;
+Bin* BinMgr_LoadCompressed(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize) {
+    void* currentReadBuffer;
     u32   totalCompressedSize;
     u32   maxChunkSize;
-    Bin*  outputBuffer;
-    int   localResourceDesc[2];
-    int   fileHandle[9];
-    int   fileStartOffset;
-    int   fileEndOffset;
 
-    currentReadOffset = offset;
-    if (resourceDesc == NULL) {
-        func_0203e7bc(localResourceDesc, *(char**)(resourceId + 4), resourceId, offset);
-        resourceDesc = localResourceDesc;
+    if (resIden == NULL) {
+        FS_FileIdentifier localResourceDesc;
+
+        FS_FilePathAsIden(&localResourceDesc, *(char**)(resourceId + 4));
+        resIden = &localResourceDesc;
     }
-    func_0203e5d4(fileHandle);
-    func_0203e844(fileHandle, *resourceDesc, resourceDesc[1], currentReadOffset);
-    totalCompressedSize  = (fileEndOffset - fileStartOffset) - offset;
-    compressedDataBuffer = Mem_AllocHeapHead(&gMainHeap, totalCompressedSize);
+
+    FS_File file;
+
+    FS_FileInit(&file);
+    FS_FileOpenFromIden(&file, *resIden);
+
+    totalCompressedSize = (file.endPosition - file.startPosition) - offset;
+
+    s32* compressedDataBuffer = Mem_AllocHeapHead(&gMainHeap, totalCompressedSize);
     Mem_SetSequence(&gMainHeap, compressedDataBuffer, "BinMgr_LoadComp()");
-    decompressedSize = 0;
-    func_0203ea60(fileHandle, offset, 0);
-    maxChunkSize = 0x6800; // Max chunk size for reading (26KB)
-    if (totalCompressedSize != 0) {
-        currentReadBuffer = compressedDataBuffer;
-        do {
-            if (totalCompressedSize < maxChunkSize) {
-                maxChunkSize = totalCompressedSize;
-            }
-            currentChunkSize = maxChunkSize;
-            if (func_0203ea50(fileHandle, currentReadBuffer, maxChunkSize) == 0xffffffff)
-                break;
-            currentReadBuffer   = (Bin*)((char*)currentReadBuffer + maxChunkSize);
-            totalCompressedSize = totalCompressedSize - maxChunkSize;
-        } while (totalCompressedSize != 0);
-    }
-    func_0203e8fc(fileHandle);
+
+    FS_FileSeek(&file, offset, 0);
+
+    maxChunkSize      = 0x6800; // Max chunk size for reading (26KB)
+    currentReadBuffer = compressedDataBuffer;
+
+    while (totalCompressedSize != 0) {
+        if (totalCompressedSize < maxChunkSize) {
+            maxChunkSize = totalCompressedSize;
+        }
+        if (FS_FileRead(&file, currentReadBuffer, maxChunkSize) == -1) {
+            break;
+        }
+
+        currentReadBuffer   = ((char*)currentReadBuffer + maxChunkSize);
+        totalCompressedSize = totalCompressedSize - maxChunkSize;
+    };
+
+    FS_FileClose(&file);
 
     // Extract decompressed size from compression header
-    decompressedSize = (u32)compressedDataBuffer->next >> 8;
-    if (((u32)compressedDataBuffer->next & 0xf0) == 0) {
+    u32 decompressedSize = (u32)(*compressedDataBuffer & ~0xFF) >> 8;
+
+    if ((*(u8*)compressedDataBuffer & 0xf0) == 0) {
         decompressedSize = decompressedSize - 4;
     }
     if (*outSize != 0) {
@@ -173,18 +166,18 @@ Bin* BinMgr_LoadCompressed(Bin* targetBuffer, int* resourceDesc, int resourceId,
     }
     *outSize = decompressedSize;
 
-    outputBuffer = targetBuffer;
+    void* outputBuffer = targetBuffer;
     if (targetBuffer == NULL) {
-        debugStr     = *(char**)(resourceId + 4);
-        outputBuffer = Mem_AllocBestFit(&gMainHeap, decompressedSize);
-        Mem_SetSequence(&gMainHeap, outputBuffer, debugStr);
+        char* sequence = *(char**)(resourceId + 4);
+        outputBuffer   = Mem_AllocBestFit(&gMainHeap, decompressedSize);
+        Mem_SetSequence(&gMainHeap, outputBuffer, sequence);
     }
     func_02004d60(outputBuffer, compressedDataBuffer);
     Mem_Free(&gMainHeap, compressedDataBuffer);
     return outputBuffer;
 }
 
-Bin* BinMgr_LoadUncompressed(int* resourceDesc, u32 resourceId) {
+Bin* BinMgr_LoadUncompressed(FS_FileIdentifier* resIden, u32 resourceId) {
     BinMgr* binMgr = g_activeBinMgr;
     Bin*    bin    = BinMgr_FindById(resourceId);
     if (bin != NULL) {
@@ -203,13 +196,13 @@ Bin* BinMgr_LoadUncompressed(int* resourceDesc, u32 resourceId) {
     bin->refCount      = 1;
     bin->id            = resourceId;
     bin->size          = 0;
-    bin->data          = BinMgr_LoadRawData(NULL, resourceDesc, resourceId, 0, &bin->size);
+    bin->data          = BinMgr_LoadRawData(NULL, resIden, resourceId, 0, &bin->size);
     bin->secondaryData = 0;
     BinMgr_AddToFreeList(binMgr, bin);
     return bin;
 }
 
-Bin* BinMgr_LoadResource(int* resourceDesc, u32 resourceId) {
+Bin* BinMgr_LoadResource(FS_FileIdentifier* resIden, u32 resourceId) {
     BinMgr* binMgr;
     Bin*    existingNode;
     Bin*    newNode;
@@ -231,7 +224,7 @@ Bin* BinMgr_LoadResource(int* resourceDesc, u32 resourceId) {
     newNode->refCount      = 1;
     newNode->id            = resourceId;
     newNode->size          = 0;
-    newNode->data          = BinMgr_LoadCompressed(NULL, resourceDesc, resourceId, 0, &newNode->size);
+    newNode->data          = BinMgr_LoadCompressed(NULL, resIden, resourceId, 0, &newNode->size);
     newNode->secondaryData = 0;
     BinMgr_AddToFreeList(binMgr, newNode);
     return newNode;
@@ -267,29 +260,29 @@ Bin* BinMgr_CreateFromData(u32 id, void* data, u32 size) {
     return bin;
 }
 
-/* Nonmatching */
 BOOL BinMgr_ReleaseBin(Bin* bin) {
-    BinMgr* binMgr = g_activeBinMgr;
+    BinMgr* activeMgr = g_activeBinMgr;
+    BinMgr* self      = (BinMgr*)bin;
 
-    if (g_activeBinMgr == NULL) {
-        return FALSE;
+    BOOL allReleased = FALSE;
+
+    if (activeMgr == NULL) {
+        return allReleased;
     }
-    bin->refCount = bin->refCount - 1;
-    if (bin->refCount != 0) {
-        return FALSE;
+    self->rootBin.refCount -= 1;
+    if (self->rootBin.refCount == 0) {
+        if (((u32)(self->rootBin.flags << 0x1F) >> 0x1F) == 1) {
+            Mem_Free(&gMainHeap, self->rootBin.data);
+        }
+        if ((((u32)(self->rootBin.flags << 0x1E) >> 0x1F) == 1) && (self->rootBin.secondaryData != NULL)) {
+            func_02027a9c();
+            Mem_Free(&gMainHeap, self->rootBin.secondaryData);
+        }
+        BinMgr_RemoveFromFreeList(activeMgr, &self->rootBin);
+        BinMgr_AppendNode(activeMgr, &self->rootBin);
+        allReleased = TRUE;
     }
-    // Check if data was allocated by BinMgr (bit 0 set) and needs to be freed
-    if ((int)((u32)bin->flags << 0x1f) < 0) {
-        Mem_Free(&gMainHeap, bin->data);
-    }
-    // Check if secondary data (bit 1 set) needs to be freed
-    if (((int)((u32)bin->flags << 0x1e) < 0) && ((int*)bin->secondaryData != NULL)) {
-        func_02027a9c(bin->secondaryData);
-        Mem_Free(&gMainHeap, bin->secondaryData);
-    }
-    BinMgr_RemoveFromFreeList(binMgr, bin);
-    BinMgr_AppendNode(binMgr, bin);
-    return TRUE;
+    return allReleased;
 }
 
 Bin* BinMgr_FindById(s32 id) {

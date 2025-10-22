@@ -25,7 +25,7 @@ void OS_InitAllSystems(void) {
     func_0203babc();
     OS_VAlarmSystemInit();
     func_0203aa14();
-    func_02038cb4();
+    OS_InitThread();
     func_0203a7fc();
     func_0204799c();
     func_02043134();

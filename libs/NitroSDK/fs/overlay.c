@@ -1,13 +1,8 @@
 #include <MSL/Runtime/MWException.h>
-#include <NitroSDK/fs/overlay.h>
+#include <NitroSDK/fs.h>
 #include <NitroSDK/os/cache.h>
 #include <NitroSDK/util.h>
 #include <bios.h>
-
-extern UnkOverlayDetails data_0207fca4;
-extern UnkOverlayDetails data_0207fcac;
-
-extern s32 data_0207fcb4;
 
 // Both are same address (0x02066A1C), uncertain how they are actually populated
 extern u8 ARM9_DATA_END[];
@@ -41,18 +36,18 @@ void FS_InvalidateOverlay(OverlayInfo* info) {
     func_0203b3c0(addr + ramSize, 0, totalSize - ramSize);
 }
 
-UnkInfoChunk FS_GetOverlayInfoChunk(OverlayInfo* info) {
-    UnkInfoChunk chunk;
+FS_FileIdentifier FS_GetOverlayIdentifier(OverlayInfo* info) {
+    FS_FileIdentifier chunk;
 
-    chunk.unk_00 = &data_0207fcb4;
-    chunk.unk_04 = info->unk_18;
+    chunk.record = &Rom_DefaultRecord;
+    chunk.fileID = info->unk_18;
     return chunk;
 }
 
 BOOL FS_LoadVerifyOverlay(OverlayInfo* info, u32 param_2, u32 id, void* param_4, u32 param_5, u32 param_6, u32 param_7,
                           u32 param_8) {
     UnkOverlayDetails pr[1];
-    UnkOverlayBlock   block[1];
+    FS_File           file[1];
 
     if (param_2 == 0) {
         pr->unk_00 = param_5;
@@ -67,85 +62,85 @@ BOOL FS_LoadVerifyOverlay(OverlayInfo* info, u32 param_2, u32 id, void* param_4,
         return FALSE;
     }
 
-    func_0203e5d4(block);
+    FS_FileInit(file);
 
-    if (func_0203e7fc(block, param_4, pr->unk_00 + pos, pr->unk_00 + pr->unk_04, -1) == FALSE) {
+    if (FS_FileOpenImmediate(file, param_4, pr->unk_00 + pos, pr->unk_00 + pr->unk_04, -1) == FALSE) {
         return FALSE;
     }
 
-    if (func_0203ea50(block, info, 0x20) != 0x20) {
-        func_0203e8fc(block);
+    if (FS_FileRead(file, info, 0x20) != 0x20) {
+        FS_FileClose(file);
         return FALSE;
     }
-    func_0203e8fc(block);
+    FS_FileClose(file);
     info->unk_20 = param_2;
 
-    if (func_0203e844(block, FS_GetOverlayInfoChunk(info)) == FALSE) {
+    if (FS_FileOpenFromIden(file, FS_GetOverlayIdentifier(info)) == FALSE) {
         return FALSE;
     }
 
-    info->unk_24.unk_00 = block->unk_24;
-    info->unk_24.unk_04 = block->unk_28 - block->unk_24;
-    func_0203e8fc(block);
+    info->unk_24.unk_00 = file->startPosition;
+    info->unk_24.unk_04 = file->endPosition - file->startPosition;
+    FS_FileClose(file);
 
     return TRUE;
 }
 
 BOOL FS_LoadOverlayInfo(OverlayInfo* info, s32 param_2, u32 id) {
-    const UnkOverlayDetails* details;
-    UnkOverlayBlock          block[1];
+    const CartridgeRegion* details;
+    FS_File                file[1];
 
     if (param_2 == 0) {
-        details = &data_0207fca4;
+        details = &Arm9OverlayTable;
     } else {
-        details = &data_0207fcac;
+        details = &Arm7OverlayTable;
     }
 
-    if (details->unk_00 != 0) {
+    if (details->offset != 0) {
         const u32 pos = id * 0x20;
-        if (pos >= details->unk_04) {
+        if (pos >= details->size) {
             return FALSE;
         }
 
-        func_0203b454((void*)(details->unk_00 + pos), info, 0x20);
+        func_0203b454((void*)(details->offset + pos), info, 0x20);
         info->unk_20 = param_2;
 
-        func_0203e5d4(block);
-        if (func_0203e844(block, FS_GetOverlayInfoChunk(info)) == FALSE) {
+        FS_FileInit(file);
+        if (FS_FileOpenFromIden(file, FS_GetOverlayIdentifier(info)) == FALSE) {
             return FALSE;
         } else {
-            info->unk_24.unk_00 = block->unk_24;
-            info->unk_24.unk_04 = block->unk_28 - block->unk_24;
-            func_0203e8fc(block);
+            info->unk_24.unk_00 = file->startPosition;
+            info->unk_24.unk_04 = file->endPosition - file->startPosition;
+            FS_FileClose(file);
         }
         return TRUE;
     }
 
     UnkOverlayDetails* unkDetail50 = (UnkOverlayDetails*)0x27FFE50;
     UnkOverlayDetails* unkDetail58 = (UnkOverlayDetails*)0x27FFE58;
-    return FS_LoadVerifyOverlay(info, param_2, id, &data_0207fcb4, unkDetail50->unk_00, unkDetail50->unk_04,
+    return FS_LoadVerifyOverlay(info, param_2, id, &Rom_DefaultRecord, unkDetail50->unk_00, unkDetail50->unk_04,
                                 unkDetail58->unk_00, unkDetail58->unk_04);
 }
 
 BOOL FS_LoadOverlayFile(OverlayInfo* info) {
-    UnkOverlayBlock block[1];
+    FS_File file[1];
 
-    func_0203e5d4(block);
+    FS_FileInit(file);
 
-    if (func_0203e844(block, FS_GetOverlayInfoChunk(info)) == FALSE) {
+    if (FS_FileOpenFromIden(file, FS_GetOverlayIdentifier(info)) == FALSE) {
         return FALSE;
     } else {
         s32 size = FS_GetOverlayRamSize(info);
 
         FS_InvalidateOverlay(info);
 
-        if (func_0203ea50(block, info->addr, size) != size) {
-            func_0203e8fc(block);
+        if (FS_FileRead(file, info->addr, size) != size) {
+            FS_FileClose(file);
             return FALSE;
         }
     }
 
-    func_0203e8fc(block);
+    FS_FileClose(file);
     return TRUE;
 }
 
@@ -210,7 +205,7 @@ void FS_DestroyOverlay(OverlayInfo* info) {
         const u32 start = info->addr;
         const u32 end   = start + (info->sizeRam + info->sizeBss);
 
-        CRITICAL_SECTION_ENTER();
+        ENTER_CRITICAL_SECTION();
 
         DestructorChain* prev    = NULL;
         DestructorChain* base    = __global_destructor_chain;
@@ -244,7 +239,7 @@ void FS_DestroyOverlay(OverlayInfo* info) {
             current = next;
         }
 
-        CRITICAL_SECTION_LEAVE();
+        LEAVE_CRITICAL_SECTION();
 
         if (head == NULL) {
             return;
