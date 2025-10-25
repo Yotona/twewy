@@ -4,7 +4,10 @@
 #include <NitroSDK/fs/file.h>
 #include <types.h>
 
-extern struct GameState;
+typedef struct BinIdentifier {
+    /* 0x00 */ u32   id;
+    /* 0x04 */ char* path;
+} BinIdentifier;
 
 typedef struct Bin {
     /* 0x00000 */ struct Bin* next;          // Next node in linked list
@@ -54,7 +57,7 @@ void BinMgr_AddToFreeList(BinMgr* binMgr, Bin* bin);
  * @param binMgr Pointer to the BinMgr structure
  * @param bin Pointer to the node to remove from the free list
  */
-void BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* bin);
+Bin* BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* bin);
 
 /**
  * Initializes the Binary Manager system with a node pool
@@ -68,12 +71,12 @@ BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount);
  * Loads raw/uncompressed data from a resource without creating a bin
  * @param targetBuffer Target buffer (can be NULL for auto-allocation)
  * @param resIden Resource file identifier (can be NULL for auto-lookup)
- * @param resourceId Resource details
+ * @param binIden Resource details
  * @param offset Byte offset to start reading from within the resource
  * @param outSize Pointer to size variable (input: max size, output: actual size read)
  * @return Pointer to loaded raw data
  */
-void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize);
+void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, BinIdentifier* binIden, int offset, u32* outSize);
 
 /**
  * Loads and decompresses data from a resource without creating a bin

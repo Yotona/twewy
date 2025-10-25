@@ -248,18 +248,22 @@ BinMgr_CreateFromData kind:function(arm,size=0xb4) addr:0x020078f0
 BinMgr_ReleaseBin kind:function(arm,size=0xac) addr:0x020079a4
 BinMgr_FindById kind:function(arm,size=0x4c) addr:0x02007a50
 
+/////////////////////////////////////////////////////////////
+// src/PacMgr.c
+/////////////////////////////////////////////////////////////
+PacMgr_DequeueFreePack kind:function(arm,size=0x18) addr:0x02007a9c
+PacMgr_EnqueueFreePack kind:function(arm,size=0x20) addr:0x02007ab4
+PacMgr_AddLoadedPack kind:function(arm,size=0x14) addr:0x02007ad4
+PacMgr_RemoveLoadedPack kind:function(arm,size=0x34) addr:0x02007ae8
+PacMgr_ResetPack kind:function(arm,size=0x24) addr:0x02007b1c
+PacMgr_Init kind:function(arm,size=0xac) addr:0x02007b40
+PacMgr_LoadPack kind:function(arm,size=0x1a4) addr:0x02007bec
+PacMgr_ReleasePack kind:function(arm,size=0x88) addr:0x02007d90
+PacMgr_LoadPackEntryData kind:function(arm,size=0x78) addr:0x02007e18
+PacMgr_GetPackEntryDataPtr kind:function(arm,size=0x1c) addr:0x02007e90
+PacMgr_GenPack kind:function(arm,size=0x1a8) addr:0x02007eac
 
-func_02007a9c kind:function(arm,size=0x18) addr:0x02007a9c
-func_02007ab4 kind:function(arm,size=0x20) addr:0x02007ab4
-func_02007ad4 kind:function(arm,size=0x14) addr:0x02007ad4
-func_02007ae8 kind:function(arm,size=0x34) addr:0x02007ae8
-func_02007b1c kind:function(arm,size=0x24) addr:0x02007b1c
-func_02007b40 kind:function(arm,size=0xac) addr:0x02007b40
-func_02007bec kind:function(arm,size=0x1a4) addr:0x02007bec
-func_02007d90 kind:function(arm,size=0x88) addr:0x02007d90
-func_02007e18 kind:function(arm,size=0x78) addr:0x02007e18
-func_02007e90 kind:function(arm,size=0x1c) addr:0x02007e90
-func_02007eac kind:function(arm,size=0x1a8) addr:0x02007eac
+
 func_02008054 kind:function(arm,size=0x18) addr:0x02008054
 func_0200806c kind:function(arm,size=0x24) addr:0x0200806c
 func_02008090 kind:function(arm,size=0x5c) addr:0x02008090
@@ -275,6 +279,8 @@ func_0200892c kind:function(arm,size=0x118) addr:0x0200892c
 func_02008a44 kind:function(arm,size=0x1cc) addr:0x02008a44
 func_02008c10 kind:function(arm,size=0x40) addr:0x02008c10
 func_02008c50 kind:function(arm,size=0x16c) addr:0x02008c50
+
+
 func_02008dbc kind:function(arm,size=0xc4) addr:0x02008dbc
 func_02008e80 kind:function(arm,size=0x3c) addr:0x02008e80
 func_02008ebc kind:function(arm,size=0x64) addr:0x02008ebc
@@ -3356,9 +3362,12 @@ data_020637b8 kind:data(any) addr:0x020637b8
 @99 kind:data(any) addr:0x020637c0 local
 @194 kind:data(any) addr:0x020637d0 local
 
+/////////////////////////////////////////////////////////////
+// src/PacMgr.c
+/////////////////////////////////////////////////////////////
+@399 kind:data(any) addr:0x020637e4 local
+@467 kind:data(any) addr:0x020637f4 local
 
-data_020637e4 kind:data(any) addr:0x020637e4
-data_020637f4 kind:data(any) addr:0x020637f4
 data_02063808 kind:data(any) addr:0x02063808
 data_02063818 kind:data(any) addr:0x02063818
 data_02063828 kind:data(any) addr:0x02063828
@@ -4067,8 +4076,12 @@ data_0206b294 kind:bss addr:0x0206b294
 /////////////////////////////////////////////////////////////
 g_activeBinMgr kind:bss addr:0x0206b3b8
 
+/////////////////////////////////////////////////////////////
+// src/PacMgr.c
+/////////////////////////////////////////////////////////////
+g_activePacMgr kind:bss addr:0x0206b3bc
 
-data_0206b3bc kind:bss addr:0x0206b3bc
+
 data_0206b3c0 kind:bss addr:0x0206b3c0
 data_0206b3c4 kind:bss addr:0x0206b3c4
 data_0206b3cc kind:bss addr:0x0206b3cc

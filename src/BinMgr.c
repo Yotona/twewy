@@ -26,17 +26,18 @@ void BinMgr_AddToFreeList(BinMgr* binMgr, Bin* binToAdd) {
     }
 }
 
-// Nonmatching: Reference incorrect, minor register differences
-// Scratch: 8FIX7
-void BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* binToRemove) {
-    Bin* currentBin = binMgr->freeList;
-    while (currentBin->next != NULL) {
-        if (currentBin->next == binToRemove) {
-            currentBin->next = binToRemove->next;
-            return;
+Bin* BinMgr_RemoveFromFreeList(BinMgr* binMgr, Bin* binToRemove) {
+    Bin** currentBin = &binMgr->freeList;
+
+    while (*currentBin != NULL) {
+        if (*currentBin == binToRemove) {
+            Bin* ret    = *currentBin;
+            *currentBin = ret->next;
+            return ret;
         }
-        currentBin = currentBin->next;
+        currentBin = &(*currentBin)->next;
     }
+    return *currentBin;
 }
 
 BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount) {
@@ -66,11 +67,11 @@ BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount) {
     return prevMgr;
 }
 
-void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, int resourceId, int offset, u32* outSize) {
+void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, BinIdentifier* binIden, int offset, u32* outSize) {
     if (resIden == NULL) {
         FS_FileIdentifier localResourceDesc;
 
-        FS_FilePathAsIden(&localResourceDesc, *(char**)(resourceId + 4));
+        FS_FilePathAsIden(&localResourceDesc, binIden->path);
         resIden = &localResourceDesc;
     }
 
@@ -87,7 +88,7 @@ void* BinMgr_LoadRawData(Bin* targetBuffer, FS_FileIdentifier* resIden, int reso
     }
 
     if (targetBuffer == NULL) {
-        char* sequence = *(char**)(resourceId + 4);
+        char* sequence = binIden->path;
         targetBuffer   = Mem_AllocBestFit(&gMainHeap, totalBytesToRead);
         Mem_SetSequence(&gMainHeap, targetBuffer, sequence);
     }

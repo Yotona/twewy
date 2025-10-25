@@ -239,7 +239,7 @@ void func_02001254(void) {
         func_0203b2d0(0, binData, Mem_GetBlockSize(&gDebugHeap, binData));
         func_02007260(binData);
         BinMgr_Init(binData, 8);
-        func_02007b40(binData + 0x60, 0x20);
+        PacMgr_Init(binData + 0x60, 0x20);
         func_02008158(binData + 0xC0, 0x100);
         func_020072a4();
         func_0200713c(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
