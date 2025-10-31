@@ -6,6 +6,7 @@ from pathlib import Path
 import argparse
 import sys
 import subprocess
+from dataclasses import dataclass
 from typing import Any
 
 import ninja_syntax
@@ -48,35 +49,58 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-
 # Config
 GAME = "twewy"
 DSD_VERSION = "v0.10.2"
 WIBO_VERSION = "1.0.0-alpha.3"
 OBJDIFF_VERSION = "v3.3.1"
-MWCC_VERSION = "2.0/sp1p5"
+MWCC_DEFAULT_VERSION = "2.0/sp1p5"
 DECOMP_ME_COMPILER = "mwcc_30_131"
 
-CC_FLAGS = " ".join(
-    [
-        "-O4,p",  # Optimize maximally for performance
-        "-enum int",  # Use int-sized enums
-        "-char signed",  # Char type is signed
-        "-proc arm946e",  # Target processor
-        "-gccext,on",  # Enable GCC extensions
-        "-fp soft",  # Compute float operations in software
-        "-inline noauto",  # Inline only functions marked with 'inline'
-        "-RTTI off",  # Disable runtime type information
-        "-interworking",  # Enable ARM/Thumb interworking
-        "-w off",  # Disable warnings
-        "-sym on",  # Debug info, including line numbers
-        "-gccinc",  # Interpret #include "..." and #include <...> equally
-        "-nolink",  # Do not link
-        "-msgstyle gcc",  # Use GCC-like messages (some IDEs will make file names clickable)
-        "-enc SJIS",  # Use Shift-JIS encoding
-        "-ipa file", # Use per-file interprocedural analysis optimizations
-    ]
+COMMON_CC_FLAGS = (
+    "-enum int",  # Use int-sized enums
+    "-char signed",  # Char type is signed
+    "-proc arm946e",  # Target processor
+    "-gccext,on",  # Enable GCC extensions
+    "-fp soft",  # Compute float operations in software
+    "-inline noauto",  # Inline only functions marked with 'inline'
+    "-RTTI off",  # Disable runtime type information
+    "-interworking",  # Enable ARM/Thumb interworking
+    "-w off",  # Disable warnings
+    "-sym on",  # Debug info, including line numbers
+    "-gccinc",  # Interpret #include "..." and #include <...> equally
+    "-nolink",  # Do not link
+    "-msgstyle gcc",  # Use GCC-like messages (some IDEs will make file names clickable)
+    "-enc SJIS",  # Use Shift-JIS encoding
 )
+
+DEFAULT_CC_FLAGS = " ".join(("-O4,p", *COMMON_CC_FLAGS, "-ipa file"))
+
+OLD_MWCC_CC_FLAGS = " ".join(("-O4,s", *COMMON_CC_FLAGS))
+
+
+@dataclass(frozen=True)
+class CompilerConfig:
+    version: str
+    flags: str
+
+
+DEFAULT_COMPILER_CONFIG = CompilerConfig(
+    version=MWCC_DEFAULT_VERSION,
+    flags=DEFAULT_CC_FLAGS,
+)
+
+OLD_MWCC_COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
+    # Map source files that must use the older MWCC toolchain variant.
+    Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
+        version="1.2/sp4",
+        flags=OLD_MWCC_CC_FLAGS,
+    ),
+}
+
+PER_SOURCE_COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
+    **OLD_MWCC_COMPILER_CONFIGS,
+}
 
 # Passed to all modules and final arm9.o link
 LD_FLAGS = " ".join(
@@ -107,7 +131,7 @@ DSD_OBJDIFF_ARGS = " ".join(
     [
         "--scratch",  # Metadata for creating decomp.me scratches
         f"--compiler {DECOMP_ME_COMPILER}",  # decomp.me compiler name
-        f'--c-flags "{CC_FLAGS}"',  # decomp.me compiler flags
+        f'--c-flags "{DEFAULT_CC_FLAGS}"',  # decomp.me compiler flags
         "--custom-make ninja",  # Command for rebuilding files
     ]
 )
@@ -130,7 +154,41 @@ libs_path = root_path / "libs"
 extract_path = root_path / "extract"
 tools_path = root_path / "tools"
 mwcc_root = args.compiler or tools_path / "mwccarm"
-mwcc_path = mwcc_root / MWCC_VERSION
+
+
+def compiler_version_path(version: str) -> Path:
+    return mwcc_root / Path(version)
+
+
+def compiler_executable_path(version: str) -> str:
+    return os.path.join(".", str(compiler_version_path(version) / "mwccarm.exe"))
+
+
+def linker_executable_path(version: str) -> str:
+    return os.path.join(".", str(compiler_version_path(version) / "mwldarm.exe"))
+
+
+def compiler_versions_in_use() -> list[str]:
+    versions: list[str] = [DEFAULT_COMPILER_CONFIG.version]
+    for config in PER_SOURCE_COMPILER_CONFIGS.values():
+        if config.version not in versions:
+            versions.append(config.version)
+    return versions
+
+
+def to_repo_relative(path: Path) -> Path:
+    try:
+        return path.relative_to(root_path)
+    except ValueError:
+        try:
+            return path.relative_to(root_path.resolve())
+        except ValueError:
+            return path
+
+
+def compiler_config_for_source(source_path: Path) -> CompilerConfig:
+    relative_path = to_repo_relative(source_path)
+    return PER_SOURCE_COMPILER_CONFIGS.get(relative_path, DEFAULT_COMPILER_CONFIG)
 
 
 # Includes
@@ -151,8 +209,7 @@ EXE = platform.exe
 WINE = args.wine if platform.system != "windows" else ""
 DSD = str(args.dsd or os.path.join(".", str(root_path / f"dsd{EXE}")))
 OBJDIFF = os.path.join(".", str(root_path / f"objdiff-cli{EXE}"))
-CC = os.path.join(".", str(mwcc_path / "mwccarm.exe"))
-LD = os.path.join(".", str(mwcc_path / "mwldarm.exe"))
+LD = linker_executable_path(DEFAULT_COMPILER_CONFIG.version)
 PYTHON = sys.executable
 
 
@@ -322,14 +379,18 @@ def main():
         n.newline()
 
         # -MMD excludes all includes instead of just system includes for some reason, so use -MD instead.
-        mwcc_cmd = f'{WINE} "{CC}" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
-        mwcc_implicit = [CC]
+        mwcc_prefix = f"{WINE} " if WINE else ""
+        mwcc_cmd = (
+            f'{mwcc_prefix}"$compiler" $common_cc_flags {CC_INCLUDES} $cc_flags '
+            "-d $game_version -MD -c $in -o $basedir"
+        )
+        mwcc_common_implicit: list[str] = []
         if platform.system != "windows":
             transform_dep = "tools/transform_dep.py"
             mwcc_cmd += f" && $python {transform_dep} $basefile.d $basefile.d"
-            mwcc_implicit.append(transform_dep)
+            mwcc_common_implicit.append(transform_dep)
             if WINE == DEFAULT_WIBO_PATH:
-                mwcc_implicit.append(WINE)
+                mwcc_common_implicit.append(WINE)
         n.rule(
             name="mwcc",
             command=mwcc_cmd,
@@ -405,7 +466,7 @@ def main():
             add_extract_build(n, project)
             add_delink_and_lcf_builds(n, project)
             add_disassemble_builds(n, project)
-            add_mwcc_builds(n, project, mwcc_implicit)
+            add_mwcc_builds(n, project, mwcc_common_implicit)
             add_mwld_and_rom_builds(n, project)
             add_check_builds(n, project)
             add_objdiff_builds(n, project)
@@ -445,10 +506,16 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
     if args.compiler is None:
-        downloads.extend([CC, LD])
+        compiler_outputs = [
+            compiler_executable_path(version) for version in compiler_versions_in_use()
+        ]
+        # Preserve order while removing duplicates
+        compiler_outputs = list(dict.fromkeys(compiler_outputs))
+        downloads.extend(compiler_outputs)
+        downloads.append(LD)
         n.build(
             rule="download_tool",
-            outputs=[CC, LD],
+            outputs=[*compiler_outputs, LD],
             variables={
                 "tool": "mwccarm",
                 "tag": "latest",
@@ -475,7 +542,7 @@ def add_download_tool_builds(n: ninja_syntax.Writer, project: Project):
         rule="phony",
         outputs="download_tools",
     )
-    n.newline
+    n.newline()
 
 
 def add_extract_build(n: ninja_syntax.Writer, project: Project):
@@ -555,7 +622,9 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
 
-def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: list[str]):
+def add_mwcc_builds(
+    n: ninja_syntax.Writer, project: Project, mwcc_common_implicit: list[str]
+):
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
         cc_flags: list[str] = []
@@ -576,11 +645,13 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
         cc_flags.append(str_flag)
         cc_flags.append(exc_flag)
 
-
+        compiler_config = compiler_config_for_source(source_file)
+        compiler_path = compiler_executable_path(compiler_config.version)
+        implicit_tools = [*mwcc_common_implicit, compiler_path]
 
         n.build(
             inputs=str(source_file),
-            implicit=mwcc_implicit,
+            implicit=implicit_tools,
             rule="mwcc",
             outputs=str(src_obj_path.with_suffix(".o")),
             variables={
@@ -588,6 +659,9 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
                 "cc_flags": " ".join(cc_flags),
                 "basedir": os.path.dirname(src_obj_path),
                 "basefile": str(src_obj_path.with_suffix("")),
+                "compiler": compiler_path,
+                "common_cc_flags": compiler_config.flags,
+                "python": PYTHON,
             },
         )
         n.newline()
