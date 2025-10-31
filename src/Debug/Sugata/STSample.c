@@ -198,7 +198,7 @@ void STSample_InterruptCallback(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_ov040_0209e91c();
         func_02006380();
-        func_020019ac();
+        DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
         func_02037264(&data_0206770c, 0, 0x400);
         DC_PurgeRange(&data_02068798, 0x400);

@@ -57,18 +57,18 @@ Interrupts_IsHBlankInterrupted kind:function(arm,size=0x4c) addr:0x02001714
 /////////////////////////////////////////////////////////////
 // src/DMA.c
 /////////////////////////////////////////////////////////////
-func_02001760 kind:function(arm,size=0xb0) addr:0x02001760
-func_02001810 kind:function(arm,size=0x38) addr:0x02001810
-func_02001848 kind:function(arm,size=0x2c) addr:0x02001848
-func_02001874 kind:function(arm,size=0x2c) addr:0x02001874
-func_020018a0 kind:function(arm,size=0x38) addr:0x020018a0
-func_020018d8 kind:function(arm,size=0x38) addr:0x020018d8
-func_02001910 kind:function(arm,size=0x38) addr:0x02001910
-func_02001948 kind:function(arm,size=0x38) addr:0x02001948
-func_02001980 kind:function(arm,size=0x2c) addr:0x02001980
-func_020019ac kind:function(arm,size=0x48) addr:0x020019ac
-func_020019f4 kind:function(arm,size=0xf4) addr:0x020019f4
-func_02001ae8 kind:function(arm,size=0x5c) addr:0x02001ae8
+DMA_Init kind:function(arm,size=0xb0) addr:0x02001760
+DMA_ResetState kind:function(arm,size=0x38) addr:0x02001810 local
+func_02001848 kind:function(arm,size=0x2c) addr:0x02001848 local
+func_02001874 kind:function(arm,size=0x2c) addr:0x02001874 local
+func_020018a0 kind:function(arm,size=0x38) addr:0x020018a0 local
+func_020018d8 kind:function(arm,size=0x38) addr:0x020018d8 local
+func_02001910 kind:function(arm,size=0x38) addr:0x02001910 local
+func_02001948 kind:function(arm,size=0x38) addr:0x02001948 local
+func_02001980 kind:function(arm,size=0x2c) addr:0x02001980 local
+DMA_Flush kind:function(arm,size=0x48) addr:0x020019ac
+DMA_Decode kind:function(arm,size=0xf4) addr:0x020019f4 local
+func_02001ae8 kind:function(arm,size=0x5c) addr:0x02001ae8 local
 func_02001b44 kind:function(arm,size=0xf0) addr:0x02001b44
 
 
@@ -3336,9 +3336,11 @@ __sinit__ kind:data(any) addr:0x02063680
 data_020636cc kind:data(any) addr:0x020636cc
 @210 kind:data(any) addr:0x020636d0 local
 
-
-data_020636e4 kind:data(any) addr:0x020636e4
-data_020636e8 kind:data(any) addr:0x020636e8
+/////////////////////////////////////////////////////////////
+// src/DMA.c
+/////////////////////////////////////////////////////////////
+funcName$180 kind:data(any) addr:0x020636e4 local
+DMA_OpHandlers kind:data(any) addr:0x020636e8 local
 @16 kind:data(any) addr:0x02063728 local
 @155 kind:data(any) addr:0x02063734 local
 
@@ -3986,9 +3988,13 @@ SystemStatusFlags kind:bss addr:0x02066a20
 SysControl kind:bss addr:0x02066a24
 data_02066a2c kind:bss addr:0x02066a2c
 data_02066a58 kind:bss addr:0x02066a58
+
+/////////////////////////////////////////////////////////////
+// src/DMA.c
+/////////////////////////////////////////////////////////////
 data_02066a5c kind:bss addr:0x02066a5c
-data_02066a6c kind:bss addr:0x02066a6c
 data_02066aac kind:bss addr:0x02066aac
+
 data_02066aec kind:bss addr:0x02066aec
 data_02066cec kind:bss addr:0x02066cec
 data_02066eec kind:bss addr:0x02066eec

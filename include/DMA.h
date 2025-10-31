@@ -11,20 +11,24 @@ typedef struct {
     /* 0x04 */ void* addr;
     /* 0x08 */ s32   size;
     /* 0x0C */ void* data;
-} DMAStruct;
+} DmaRequest;
 
-extern DMAStruct data_02066a5c[5];
+typedef struct {
+    /* 0x00 */ DmaRequest  active;
+    /* 0x10 */ DmaRequest* queue[16];
+} DmaMgr;
 
-void func_02001810(void);
-void func_02001848(DMAStruct* data);
-void func_02001874(DMAStruct* data);
-void func_020018a0(DMAStruct* data);
-void func_020018d8(DMAStruct* data);
-void func_02001910(DMAStruct* data);
-void func_02001948(DMAStruct* data);
-void func_02001980(DMAStruct* data);
-void func_020019ac(void);
+extern DmaMgr data_02066a5c;
 
-typedef void (*DMAFunc)();
+extern DmaRequest* data_02066aac[16];
+
+typedef void (*DMAFunc)(DmaRequest*);
+
+void DMA_Init(s32 size);
+
+/**
+ * @brief Purge data cache, process all active DMA operations, then reset DMA state.
+ */
+void DMA_Flush(void);
 
 #endif // DMA_H

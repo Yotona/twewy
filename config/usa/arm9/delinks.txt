@@ -16,6 +16,7 @@ src/Interrupts.c:
 src/DMA.c:
     .text       start:0x02001760 end:0x02001C34
     .data       start:0x020636E4 end:0x02063744
+    .bss        start:0x02066A5C end:0x02066AEC
 
 src/Memory.c:
     .text       start:0x0200453C end:0x020049DC

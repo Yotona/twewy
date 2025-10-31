@@ -237,7 +237,7 @@ from:0x02001b58 kind:arm_call to:0x0200161c module:main
 from:0x02001b88 kind:arm_call to:0x02001ae8 module:main
 from:0x02001ba8 kind:arm_call to:0x020019f4 module:main
 from:0x02001c28 kind:load to:0x02066a5c module:main
-from:0x02001c2c kind:load to:0x02066a6c module:main
+from:0x02001c2c kind:load to:0x02066a5c add:0x10 module:main
 from:0x02001c30 kind:load to:0x02066aac module:main
 from:0x02001c6c kind:arm_call to:0x0203b270 module:main
 from:0x020021cc kind:arm_call to:0x0203b270 module:main

@@ -124,7 +124,7 @@ void main(void) {
         Interrupts_Init();
         func_02005250();
         Interrupts_ForceVBlank();
-        func_02001760(0x100);
+        DMA_Init(0x100);
         Input_Init(&InputStatus, 8, 1, 2);
         func_02007128();
         func_0200713c(0x80000001, &func_02001254, 0, 0);

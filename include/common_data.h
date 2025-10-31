@@ -5,7 +5,6 @@
 
 extern s32 data_0205c9b0;
 
-extern s32 data_02066aac[16];
 extern s16 data_02066aec;
 extern s32 data_02066cec;
 extern s16 data_02066eec;
