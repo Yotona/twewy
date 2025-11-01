@@ -92,13 +92,14 @@ void func_ov000_020825c0(void) {
 typedef void (*func_ptr_t)(u32*);
 extern func_ptr_t data_ov000_020831c8[];
 
-void func_ov000_02082854(u32* state) {
-    int var1 = func_02007278(state);
+void func_ov000_02082854(GameState* state) {
+    u32* state_ptr = (u32*)state;
+    int  var1      = func_02007278(state_ptr);
     if (var1 == 0x7FFFFFFF) {
-        func_ov000_02082ac0(state);
+        func_ov000_02082ac0(state_ptr);
     } else {
         func_ptr_t target_function = data_ov000_020831c8[var1];
-        target_function(state);
+        target_function(state_ptr);
     }
 }
 
