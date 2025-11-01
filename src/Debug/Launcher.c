@@ -7,7 +7,7 @@
 #include "common_data.h"
 #include "game.h"
 
-extern void func_ov000_02082854(GameState* state);
+extern void func_ov000_02082854(u32* state);
 
 extern void func_ov001_02082b34(GameState* state);
 

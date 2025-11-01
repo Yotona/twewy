@@ -76,7 +76,7 @@ COMMON_CC_FLAGS = (
 
 DEFAULT_CC_FLAGS = " ".join(("-O4,p", *COMMON_CC_FLAGS, "-ipa file"))
 
-OLD_MWCC_CC_FLAGS = " ".join(("-O4,s", *COMMON_CC_FLAGS))
+OLD_MWCC_CC_FLAGS = " ".join(("-O4,p", *COMMON_CC_FLAGS))
 
 
 @dataclass(frozen=True)
