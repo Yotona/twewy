@@ -19,3 +19,6 @@ build/
 build.ninja
 .ninja_*
 /wibo
+ghidra_11.4.2_PUBLIC_20250826
+twewyghidra
+twewy.code-workspace

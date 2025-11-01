@@ -105,6 +105,7 @@ from:0x02082aa4 kind:load to:0x02068778 module:main
 from:0x02082aa8 kind:load to:0x02083238 module:overlay(0)
 from:0x02082aac kind:load to:0x02066a58 module:main
 from:0x02082ab0 kind:load to:0x02082854 module:overlay(0)
+from:0x02082ab4 kind:overlay_id to:0 module:none
 from:0x02082ab8 kind:load to:0x02083254 module:overlay(0)
 from:0x02082abc kind:load to:0x0206b3cc module:main
 from:0x02082ad0 kind:arm_call to:0x02008ebc module:main

@@ -41,25 +41,40 @@ includes = re.findall(INCLUDE_REGEX, contents, flags=re.MULTILINE)
 
 _, suffix = os.path.splitext(args.file)
 
-with tempfile.NamedTemporaryFile(delete=True, suffix=suffix) as tmp_file:
-    # Write includes
-    for include in includes:
-        tmp_file.write(f'#include {include}\n'.encode())
-    tmp_file.flush()
+try:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp_file:
+        # Write includes
+        for include in includes:
+            tmp_file.write(f'#include {include}\n'.encode())
+        tmp_file.flush()
 
-    # Run preprocessor
+        # Ensure the file is written to disk
+        os.fsync(tmp_file.fileno())
+
+        # Close the file so GCC can access it
+        tmp_file.close()
+
+        # Run preprocessor
+        try:
+            ctx: str = subprocess.check_output([
+                'gcc',
+                '-E', '-P', '-fworking-directory', '-undef', '-dD',
+                *CXX_FLAGS,
+                tmp_file.name
+            ], cwd=root_dir, encoding=args.encoding)
+        except subprocess.CalledProcessError as e:
+            eprint(f"Failed to preprocess '{args.file}'")
+            if args.verbose: eprint(e)
+            else: eprint("Use -v for more verbose error output")
+            exit(1)
+
+finally:
+    # Clean up the temporary file
     try:
-        ctx: str = subprocess.check_output([
-            'gcc',
-            '-E', '-P', '-fworking-directory', '-undef', '-dD',
-            *CXX_FLAGS,
-            tmp_file.name
-        ], cwd=root_dir, encoding=args.encoding)
-    except subprocess.CalledProcessError as e:
-        eprint(f"Failed to preprocess '{args.file}'")
-        if args.verbose: eprint(e)
-        else: eprint("Use -v for more verbose error output")
-        exit(1)
+        if 'tmp_file' in locals():
+            os.unlink(tmp_file.name)
+    except:
+        pass  # Ignore cleanup errors
 
 lines = ctx.splitlines(True)
 for i in reversed(range(len(lines))):
