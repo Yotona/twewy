@@ -2,6 +2,7 @@
 #define MINI_108_H
 #include "game.h"
 
+extern vu32 data_02066a58;
 typedef struct {
     u32 unk_00;
     u32 unk_04;
@@ -24,11 +25,12 @@ typedef struct {
 } UnkStruct_ov000_02082b1c;
 extern char* data_ov000_020831e0;
 extern u32   data_ov000_020831c0;
-extern u32   data_ov000_02083210;
-extern u32   data_02066a58;
-extern char* data_ov000_0208322c;
-extern u32   data_ov000_02083238;
-extern u32   data_ov000_02083254;
+extern char* data_ov000_020831e4 = "Seq_Mini108(void *) ";
+extern char* data_ov000_020831f8 = "Apl_Abe/Grp_Mini108.bin";
+extern char* data_ov000_02083210 = "Seq_Mini108(void *) enter   ";
+extern char* data_ov000_0208322c = "Score : %6d";
+extern char* data_ov000_02083238 = "Seq_Mini108(void *) reset   ";
+extern char* data_ov000_02083254 = "Seq_Mini108(void *) leave    ";
 
 void func_ov000_020825c0(void);
 void func_ov000_02082ac0(u32* state);
