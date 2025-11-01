@@ -13,11 +13,11 @@ func_ov000_020830bc kind:function(arm,size=0xec) addr:0x020830bc
 data_ov000_020831a8 kind:data(any) addr:0x020831a8
 data_ov000_020831b4 kind:data(any) addr:0x020831b4
 data_ov000_020831c0 kind:data(any) addr:0x020831c0
-data_ov000_020831c8 kind:data(any) addr:0x020831c8
+funcPtrs$340 kind:data(any) addr:0x020831c8 local
 data_ov000_020831e0 kind:data(any) addr:0x020831e0
-data_ov000_020831e4 kind:data(any) addr:0x020831e4
-data_ov000_020831f8 kind:data(any) addr:0x020831f8
-data_ov000_02083210 kind:data(any) addr:0x02083210
-data_ov000_0208322c kind:data(any) addr:0x0208322c
-data_ov000_02083238 kind:data(any) addr:0x02083238
-data_ov000_02083254 kind:data(any) addr:0x02083254
+@329 kind:data(any) addr:0x020831e4 local
+@210 kind:data(any) addr:0x020831f8 local
+@384 kind:data(any) addr:0x02083210 local
+@406 kind:data(any) addr:0x0208322c local
+@407 kind:data(any) addr:0x02083238 local
+@408 kind:data(any) addr:0x02083254 local
