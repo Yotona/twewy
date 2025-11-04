@@ -1,104 +1,103 @@
 #include "OverlayManager.h"
 
-Overlay data_0206b294;
-Overlay data_0206b170;
-Overlay data_0206b04c;
-Overlay data_0206af28;
-s32     data_0206af24;
-
-void func_02006f78(Overlay* overlay, s32 param_2, OverlayCB func, GameState* param_4, s32 param_5);
-s32  func_02007278(void);
-void func_0200728c(s32 param_1);
+OverlayManager data_0206b294; // Main Overlay manager. Handles loading/initializing and unloading overlays.
+OverlayManager data_0206b170; // Secondary manager? Possibly used for Debug launcher? Needs investigation.
+OverlayManager data_0206b04c; // Unknown manager. main() initializes this
+OverlayManager data_0206af28; // Unknown manager. main() initializes this
+s32*           data_0206af24;
 
 void func_02006f50(GameState*) {
     return;
 }
 
-void func_02006f54(Overlay* overlay) {
-    overlay->unk_10 = 0;
-    func_02006f78(overlay, -0x7fffffff, func_02006f50, NULL, 0);
+void func_02006f54(OverlayManager* overlayMgr) {
+    overlayMgr->unk_10 = 0;
+    func_02006f78(overlayMgr, -0x7fffffff, func_02006f50, NULL, 0);
 }
 
-void func_02006f78(Overlay* overlay, s32 overlayId, OverlayCB callback, GameState* state, s32 param_5) {
-    OverlayData* currentData = &overlay->unk_14[overlay->unk_10];
+void func_02006f78(OverlayManager* overlayMgr, s32 overlayId, OverlayCB callback, GameState* state, s32 param_5) {
+    OverlayData* currentData = &overlayMgr->unk_14[overlayMgr->unk_10];
 
     currentData->tag.id = overlayId;
     currentData->tag.cb = callback;
     currentData->gState = state;
     currentData->unk_0C = param_5;
 
-    currentData     = &overlay->unk_14[overlay->unk_10];
-    overlay->data   = currentData;
-    overlay->cb     = currentData->tag.cb;
-    overlay->gState = currentData->gState;
-    overlay->unk_10++;
+    currentData        = &overlayMgr->unk_14[overlayMgr->unk_10];
+    overlayMgr->data   = currentData;
+    overlayMgr->cb     = currentData->tag.cb;
+    overlayMgr->gState = currentData->gState;
+    overlayMgr->unk_10++;
 }
 
-/* Nonmatching */
-void func_02006fc4(OverlayTag* tag, Overlay* overlay) {
+/* Nonmatching: regalloc differences */
+/* Why is there stack usage? */
+void func_02006fc4(OverlayTag* tag, OverlayManager* overlayMgr) {
     OverlayData* previousData;
     OverlayData* currentData;
     int          currentIndex;
 
-    currentIndex = overlay->unk_10 - 1;
-    currentData  = &overlay->unk_14[currentIndex];
-    previousData = &overlay->unk_14[currentIndex - 1];
+    currentIndex = overlayMgr->unk_10 - 1;
+    currentData  = &overlayMgr->unk_14[currentIndex];
+    previousData = &overlayMgr->unk_14[currentIndex - 1];
 
     tag->id = currentData->tag.id;
     tag->cb = currentData->tag.cb;
 
-    overlay->unk_10--;
-    overlay->data   = previousData;
-    overlay->cb     = previousData->tag.cb;
-    overlay->gState = previousData->gState;
+    overlayMgr->unk_10--;
+    overlayMgr->data   = previousData;
+    overlayMgr->cb     = previousData->tag.cb;
+    overlayMgr->gState = previousData->gState;
 
-    if (overlay->unk_10 == 0) {
-        func_02006f78(overlay, 0x80000001, func_02006f50, NULL, 0);
+    if (overlayMgr->unk_10 == 0) {
+        func_02006f78(overlayMgr, 0x80000001, func_02006f50, NULL, 0);
     }
 }
 
-/* Nonmatching */
-void func_02007050(OverlayTag* tag, Overlay* overlay, s32 param_3, OverlayCB cb, GameState* state, s32 param_6) {
+/* Nonmatching: opcode reordering */
+void func_02007050(OverlayTag* tag, OverlayManager* overlayMgr, s32 param_3, OverlayCB cb, GameState* state, s32 param_6) {
     OverlayTag local;
 
-    func_02006fc4(&local, overlay);
-    func_02006f78(overlay, param_3, cb, state, param_6);
-    tag->id = local.id;
-    tag->cb = local.cb;
+    func_02006fc4(&local, overlayMgr);
+    func_02006f78(overlayMgr, param_3, cb, state, param_6);
+    s32 cbFunc = local.cb;
+    s32 id     = local.id;
+    tag->cb    = cbFunc;
+    tag->id    = id;
 }
 
-BOOL func_020070a4(Overlay* overlay) {
+BOOL func_020070a4(OverlayManager* overlayMgr) {
     BOOL ret = FALSE;
-    if (overlay->unk_10 <= 1) {
+    if (overlayMgr->unk_10 <= 1) {
         ret = TRUE;
     }
     return ret;
 }
 
-GameState* func_020070b8(Overlay* overlay, GameState* state) {
-    GameState* prevState  = overlay->gState;
-    overlay->data->gState = state;
-    overlay->gState       = state;
+GameState* func_020070b8(OverlayManager* overlayMgr, GameState* state) {
+    GameState* prevState     = overlayMgr->gState;
+    overlayMgr->data->gState = state;
+    overlayMgr->gState       = state;
     return prevState;
 }
 
-s32 func_020070d0(Overlay* overlay) {
-    return overlay->data->unk_0C;
+s32 func_020070d0(OverlayManager* overlayMgr) {
+    return overlayMgr->data->unk_0C;
 }
 
-void func_020070dc(Overlay* overlay, s32 param_2) {
-    overlay->data->unk_0C = param_2;
+void func_020070dc(OverlayManager* overlayMgr, s32 param_2) {
+    overlayMgr->data->unk_0C = param_2;
 }
 
-void func_020070e8(Overlay* overlay) {
-    overlay->data->unk_0C++;
+void func_020070e8(OverlayManager* overlayMgr) {
+    overlayMgr->data->unk_0C++;
 }
 
-void func_020070fc(Overlay* overlay) {
+void func_020070fc(OverlayManager* overlayMgr) {
     do {
-        overlay->unk_0C = 0;
-        overlay->cb(overlay->gState);
-    } while (overlay->unk_0C == 1);
+        overlayMgr->unk_0C = 0;
+        overlayMgr->cb(overlayMgr->gState);
+    } while (overlayMgr->unk_0C == 1);
 }
 
 void func_02007128(void) {
@@ -109,38 +108,45 @@ void func_0200713c(s32 overlayId, OverlayCB callback, GameState* state, int para
     func_02006f78(&data_0206b294, overlayId, callback, state, param_4);
 }
 
-/* Nonmatching */
+/* Nonmatching: Regalloc differences */
+/* Why is there stack usage? */
 void func_02007174(OverlayTag* tag) {
+    OverlayManager* overlay = &data_0206b294;
+    OverlayTag*     stack;
     if (func_02007278() != 0x7FFFFFFF) {
         func_0200728c(0x7FFFFFFF);
         func_020072b8();
     }
+    s32          idx          = overlay->unk_10;
+    OverlayData* currentData  = &overlay->unk_14[idx - 1];
+    OverlayData* previousData = &overlay->unk_14[idx - 2];
 
-    OverlayData* currentData  = &data_0206b294.unk_14[data_0206b294.unk_10 - 1];
-    OverlayData* previousData = &data_0206b294.unk_14[data_0206b294.unk_10 - 2];
-
-    data_0206b294.data   = previousData;
-    data_0206b294.cb     = previousData->tag.cb;
-    data_0206b294.gState = previousData->gState;
-    data_0206b294.unk_10--;
+    overlay->data   = previousData;
+    overlay->cb     = previousData->tag.cb;
+    stack->id       = currentData->tag.id;
+    overlay->gState = previousData->gState;
+    stack->cb       = currentData->tag.cb;
+    overlay->unk_10 = idx;
 
     tag->id = previousData->tag.id;
     tag->cb = currentData->tag.cb;
 }
 
-/* Nonmatching */
+/* Nonmatching: opcode reordering */
 void func_020071f4(OverlayTag* tag, s32 overlayId, void* callback, GameState* state, s32 param_5) {
     OverlayTag local;
 
     func_02007174(&local);
     func_0200713c(overlayId, callback, state, param_5);
-    tag->id = local.id;
-    tag->cb = local.cb;
+    s32 cbFunc = local.cb;
+    s32 id     = local.id;
+    tag->cb    = cbFunc;
+    tag->id    = id;
 }
 
-/* Nonmatching */
+/* Nonmatching: opcode reordering? maybe? */
 u32 func_02007240(void) {
-    func_0200669c(1, &data_0206af24);
+    func_0200669c(1, *(data_0206af24 + 0xDC));
 }
 
 GameState* func_02007260(void* state) {
@@ -159,10 +165,10 @@ void func_020072a4(void) {
     func_020070e8(&data_0206b294);
 }
 
-/* Nonmatching */
 void func_020072b8(void) {
+    OverlayManager* temp = &data_0206b294;
     if (func_020066fc(data_0206b294.data->tag.id) == 1) {
-        func_020070fc(&data_0206b294);
+        func_020070fc(temp);
     }
 }
 
