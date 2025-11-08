@@ -49,7 +49,7 @@ static FS_CommandResult func_0203ebb4(FS_File* file, u32 cmd) {
 
 void FS_RomInit(u32 param_1) {
     data_0207fca0           = param_1;
-    data_0207fc9c           = func_02038968();
+    data_0207fc9c           = OS_GetLockID();
     Arm9OverlayTable.offset = 0;
     Arm9OverlayTable.size   = 0;
     Arm7OverlayTable.offset = 0;

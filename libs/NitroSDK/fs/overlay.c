@@ -178,7 +178,7 @@ void FS_StartOverlay(OverlayInfo* info) {
         }
         if (valid == FALSE) {
             func_0203b3c0(info->addr, 0, size);
-            func_0203aad0();
+            OS_WaitForever();
             return;
         }
     }

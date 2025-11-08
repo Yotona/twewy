@@ -42,38 +42,38 @@ static void DMA_ResetState(void) {
     }
 }
 
-static void func_02001848(DmaRequest* request) {
+static void DMA_LoadTex(DmaRequest* request) {
     do {
-        func_02037d88();
-        func_02037de4(request->addr, request->unk_00, request->size);
-        func_02037f24();
+        GX_BeginLoadTex();
+        GX_LoadTex(request->addr, request->unk_00, request->size);
+        GX_EndLoadTex();
         request = request->data;
     } while (request != NULL);
 }
 
-static void func_02001874(DmaRequest* data) {
+static void DMA_LoadTexPltt(DmaRequest* data) {
     do {
-        func_02037f70();
-        func_02037fa4(data->addr, data->unk_00, data->size);
-        func_02038010();
+        GX_BeginLoadTexPltt();
+        GX_LoadTexPltt(data->addr, data->unk_00, data->size);
+        GX_EndLoadTexPltt();
         data = data->data;
     } while (data != NULL);
 }
 
-static void func_020018a0(DmaRequest* data) {
+static void DMA_LoadBgExtPltt(DmaRequest* data) {
     do {
-        func_020379c0();
-        func_02037a60(data->addr, data->unk_00 & 0x7fff, data->size);
-        func_02037ad0();
+        GX_BeginLoadBgExtPltt();
+        GX_LoadBgExtPltt(data->addr, data->unk_00 & 0x7fff, data->size);
+        GX_EndLoadBgExtPltt();
         data = data->data;
     } while (data != NULL);
 }
 
-static void func_020018d8(DmaRequest* data) {
+static void DMA_LoadObjExtPltt(DmaRequest* data) {
     do {
-        func_02037b18();
-        func_02037b60(data->addr, data->unk_00 & 0x1fff, data->size);
-        func_02037bcc();
+        GX_BeginLoadObjExtPltt();
+        GX_LoadObjExtPltt(data->addr, data->unk_00 & 0x1fff, data->size);
+        GX_EndLoadObjExtPltt();
         data = data->data;
     } while (data != NULL);
 }
@@ -104,8 +104,9 @@ static void func_02001980(DmaRequest* data) {
 }
 
 static DMAFunc DMA_OpHandlers[16] = {
-    func_02001980, func_02001848, func_02001874, func_020018a0, func_020018d8, func_02001910, func_02001948, func_02001980,
-    func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980, func_02001980,
+    func_02001980, DMA_LoadTex,   DMA_LoadTexPltt, DMA_LoadBgExtPltt, DMA_LoadObjExtPltt, func_02001910,
+    func_02001948, func_02001980, func_02001980,   func_02001980,     func_02001980,      func_02001980,
+    func_02001980, func_02001980, func_02001980,   func_02001980,
 };
 
 void DMA_Flush(void) {
