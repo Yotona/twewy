@@ -41,15 +41,15 @@ void func_ov028_020e8310(void) {
         func_02006380();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 1024);
-        func_02037264(&data_0206770c, 0, 0x400);
+        GX_LoadOam(&data_0206770c, 0, 0x400);
         DC_PurgeRange(&data_02068798, 1024);
-        func_020372b8(&data_02068798, 0, 0x400);
+        GXs_LoadOam(&data_02068798, 0, 0x400);
         DC_PurgeRange(&data_02066aec, 1024);
-        func_02037108(&data_02066aec, 0, 0x200);
-        func_020371b4(&data_02066cec, 0, 0x200);
+        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
+        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
         DC_PurgeRange(&data_02066eec, 1024);
-        func_0203715c(&data_02066eec, 0, 0x200);
-        func_0203720c(&data_020670ec, 0, 0x200);
+        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
+        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
         func_02001b44(2, NULL, &data_020672ec, 0x400);
     }
 }

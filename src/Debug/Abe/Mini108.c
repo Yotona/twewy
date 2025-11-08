@@ -82,7 +82,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     data_0206aa80.unk_04 = 1;
     data_0206aa80.unk_08 = 0;
     data_0206aa80.unk_0C = 0;
-    func_02035478(1, 0, 0);
+    GX_SetGraphicsMode(1, 0, 0);
     data_0206aae4.unk_00 = 0;
     data_0206aae4.unk_04 = 0;
     data_0206aae4.unk_1C = 0;
@@ -129,7 +129,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     bitmagic              = bitmagic | 1;
     data_0206aa80.unk_1C  = bitmagic;
     data_0206aa80.unk_38  = 0;
-    func_020354e0();
+    GXs_SetGraphicsMode();
     data_0206ad04.unk_00 = 0;
     data_0206ad04.unk_04 = 0;
     data_0206ad04.unk_1C = 0;
@@ -367,34 +367,34 @@ void func_ov000_02082854(void* state) {
 void func_ov000_020825c0(void) {
     Interrupts_Init();
     func_0200434c();
-    func_02035240();
-    func_02036b28();
-    func_02036cc8();
+    GX_Init();
+    G3X_Init();
+    G3X_InitMtxStack();
     DMA_Init(0x100);
     func_02005250();
     func_020364bc();
-    func_02036000(0x1ff);
-    func_02035c0c(1);
-    func_02035680(2);
-    func_02035910(0x10);
-    func_02035de4(0x20);
-    func_02035a60(0x40);
-    func_02036020(4);
-    func_020360c8(8);
-    func_02036138(0x80);
-    func_020361b8(0x100);
+    GX_SetBankForLcdc(0x1ff);
+    GX_SetBankForTex(1);
+    GX_SetBankForBg(2);
+    GX_SetBankForObj(0x10);
+    GX_SetBankForTexPltt(0x20);
+    GX_SetBankForBgExtPltt(0x40);
+    GX_SetBankForSubBg(4);
+    GX_SetBankForSubObj(8);
+    GX_SetBankForSubBgExtPltt(0x80);
+    GX_SetBankForSubObjExtPltt(0x100);
     REG_DISP3DCNT = REG_DISP3DCNT & 0xffffcffd;
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x08;
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x10;
-    func_02036e50(0, 0, 0x7fff, 0x3f, 0);
+    G3X_SetClearColor(0, 0, 0x7fff, 0x3f, 0);
     GFX_FIFO_VIEWPORT     = 0xbfff0000;
     GFX_FIFO_SWAP_BUFFERS = 0;
-    func_0203701c(0, 0xc0000, 0, 0x100000, 0 - 0x400000, 0x400000, 0x400000, 1, 0);
+    G3i_OrthoW(0, 0xc0000, 0, 0x100000, 0 - 0x400000, 0x400000, 0x400000, 1, 0);
 
     UnkStruct_Mini108_tuple unk_14 = {0, 0, 0};
     UnkStruct_Mini108_tuple unk_20 = data_ov000_020831a8;
     UnkStruct_Mini108_tuple unk_2C = data_ov000_020831b4;
-    func_02037080(&unk_14, &unk_20, &unk_2C, 1, 0);
+    G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
 
     GFX_FIFO_MATRIX_STORE = 0;
     data_0206aa80.unk_10  = 0x200010;
@@ -406,10 +406,10 @@ void func_ov000_020825c0(void) {
     func_0203b2d0(0, 0x6800000, 0xa4000);
     func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
-    func_02037264(&data_0206770c, 0, 0x400);
+    GX_LoadOam(&data_0206770c, 0, 0x400);
     func_0200283c(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
-    func_020372b8(&data_02068798, 0, 0x400);
+    GXs_LoadOam(&data_02068798, 0, 0x400);
 
     func_02001c34(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     func_02001c34(&data_02066eec, &data_0205a128, 0, 0x200, 1);
@@ -431,13 +431,13 @@ void func_ov000_020824a0(void) {
     func_02006380();
     DMA_Flush();
     DC_PurgeRange(&data_0206770c, 0x400);
-    func_02037264(&data_0206770c, 0, 0x400);
+    GX_LoadOam(&data_0206770c, 0, 0x400);
     DC_PurgeRange(&data_02068798, 0x400);
-    func_020372b8(&data_02068798, 0, 0x400);
+    GXs_LoadOam(&data_02068798, 0, 0x400);
     DC_PurgeRange(&data_02066aec, 0x400);
-    func_02037108(&data_02066aec, 0, 0x200);
-    func_020371b4(&data_02066cec, 0, 0x200);
+    GX_LoadBgPltt(&data_02066aec, 0, 0x200);
+    GX_LoadObjPltt(&data_02066cec, 0, 0x200);
     DC_PurgeRange(&data_02066eec, 0x400);
-    func_0203715c(&data_02066eec, 0, 0x200);
-    func_0203720c(&data_020670ec, 0, 0x200);
+    GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
+    GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
 }

@@ -45,7 +45,7 @@ void main(void) {
         func_0203a0ac();
         IC_Enable();
         DC_Enable();
-        func_02035240();
+        GX_Init();
         func_02041438(1);
 
         if (func_0203a3cc() == 0) {

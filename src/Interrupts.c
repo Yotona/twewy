@@ -38,20 +38,20 @@ void Interrupts_Init(void) {
     LEAVE_CRITICAL_SECTION();
 }
 
-void Interrupts_HandleVBlank(void) {
+void Interrupts_FlushCache(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_02006380();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
-        func_02037264(&data_0206770c, 0, 0x400);
+        GX_LoadOam(&data_0206770c, 0, 0x400);
         DC_PurgeRange(&data_02068798, 0x400);
-        func_020372b8(&data_02068798, 0, 0x400);
+        GXs_LoadOam(&data_02068798, 0, 0x400);
         DC_PurgeRange(&data_02066aec, 0x400);
-        func_02037108(&data_02066aec, 0, 0x200);
-        func_020371b4(&data_02066cec, 0, 0x200);
+        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
+        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
         DC_PurgeRange(&data_02066eec, 0x400);
-        func_0203715c(&data_02066eec, 0, 0x200);
-        func_0203720c(&data_020670ec, 0, 0x200);
+        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
+        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
     }
 }
 
@@ -73,11 +73,11 @@ static void HandleVBlank(void) {
     func_0202190c();
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         OS_DisableInterrupts(IRQ_HBLANK);
-        func_0203538c(0);
+        GX_HBlankIntr(0);
         OS_SetIRQCallback(IRQ_HBLANK, SysControl.hBlankCallback);
         if (SysControl.hBlankCallback != Interrupts_TriggerHBlank) {
             OS_EnableInterrupts(IRQ_HBLANK);
-            func_0203538c(1);
+            GX_HBlankIntr(1);
         }
     } else {
         SystemStatusFlags = SystemStatusFlags & ~8 | (u32)((1 - ((SystemStatusFlags << 0x1c) >> 0x1f)) * -0x80000000) >> 0x1c;
@@ -91,16 +91,16 @@ static void HandleVBlank(void) {
 
 IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, BOOL enable) {
     if (callback == NULL) {
-        callback = Interrupts_HandleVBlank;
+        callback = Interrupts_FlushCache;
     }
 
     IRQCallback prevCallback = Interrupts_SaveVBlankCallback(callback);
     if (enable == TRUE) {
         OS_EnableInterrupts(IRQ_VBLANK);
-        func_020353c0(1);
+        GX_VBlankIntr(1);
     } else {
         OS_DisableInterrupts(IRQ_VBLANK);
-        func_020353c0(0);
+        GX_VBlankIntr(0);
     }
     return prevCallback;
 }
@@ -108,7 +108,7 @@ IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, BOOL enable)
 IRQCallback Interrupts_SaveVBlankCallback(IRQCallback callback) {
     IRQCallback prevCallback = SysControl.vBlankCallback;
     if (callback == NULL) {
-        callback = Interrupts_HandleVBlank;
+        callback = Interrupts_FlushCache;
     }
     SysControl.vBlankCallback = callback;
     return prevCallback;
@@ -131,10 +131,10 @@ IRQCallback Interrupts_RegisterHBlankCallback(IRQCallback callback, BOOL enable)
     IRQCallback prevCallback = Interrupts_SaveHBlankCallback(callback);
     if (enable == TRUE) {
         OS_EnableInterrupts(IRQ_HBLANK);
-        func_0203538c(1);
+        GX_HBlankIntr(1);
     } else {
         OS_DisableInterrupts(IRQ_HBLANK);
-        func_0203538c(0);
+        GX_HBlankIntr(0);
     }
     return prevCallback;
 }

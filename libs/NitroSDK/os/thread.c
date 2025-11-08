@@ -327,7 +327,7 @@ static void OS_ExitAndDestroyThread(void) {
     OS_UnpauseThread(&thread->joinQueue);
     OS_DecreaseSchedulerSuspension();
     OS_TriggerThread();
-    func_0203aad0();
+    OS_WaitForever();
 }
 
 void OS_PauseThread(OSThreadQueue* queue) {
@@ -437,7 +437,7 @@ static void OS_IdleThreadProc(void*) {
     OS_EnableIRQ();
 
     while (TRUE) {
-        func_0203aae0();
+        OS_WaitForInterrupt();
     }
 }
 

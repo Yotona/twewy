@@ -26,7 +26,7 @@ void func_0203a850(u32 arg0, u32 arg1) {
     if ((u16)((arg1 & 0x7F00) >> 8) == 0x10) {
         data_0207e068 = TRUE;
     } else {
-        func_0203aad0();
+        OS_WaitForever();
     }
 }
 
@@ -39,10 +39,10 @@ void func_0203a884(u16 arg0) {
 // Nonmatching: Data not loading into constant pool properly
 void OS_SystemReset(u32 reset) {
     if (BIOS_IsDownloadPlay()) {
-        func_0203aad0();
+        OS_WaitForever();
     }
 
-    u16 val = func_02038968();
+    u16 val = OS_GetLockID();
     func_02042344(val);
 
     func_0203ae1c(0);
