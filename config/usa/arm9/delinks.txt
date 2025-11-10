@@ -115,6 +115,12 @@ src/CriSndMgr.c:
     .data       start:0x02065CD0 end:0x02065FCC
     .bss        start:0x020768F0 end:0x02076A14
 
+libs/NitroSDK/gx/gx.c:
+complete
+    .text       start:0x02035240 end:0x02035568
+    .data       start:0x02066258 end:0x02066260
+    .bss        start:0x0207DC20 end:0x0207DC24
+
 libs/NitroSDK/os/interrupt.c:
     .text       start:0x020383BC end:0x02038664
 

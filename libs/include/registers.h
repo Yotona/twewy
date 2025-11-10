@@ -3,12 +3,22 @@
 
 #include <types.h>
 
+#define REG_DISPCNT           (*(vu32*)0x04000000)
 #define REG_DISPSTAT          (*(vu16*)0x04000004)
 #define REG_BG0CNT            (*(vu16*)0x04000008)
 #define REG_BG1CNT            (*(vu16*)0x0400000A)
 #define REG_BG2CNT            (*(vu16*)0x0400000C)
 #define REG_BG3CNT            (*(vu16*)0x0400000E)
+#define REG_BG2PA             (*(vu16*)0x04000020)
+#define REG_BG2PB             (*(vu16*)0x04000022)
+#define REG_BG2PC             (*(vu16*)0x04000024)
+#define REG_BG2PD             (*(vu16*)0x04000026)
+#define REG_BG3PA             (*(vu16*)0x04000030)
+#define REG_BG3PB             (*(vu16*)0x04000032)
+#define REG_BG3PC             (*(vu16*)0x04000034)
+#define REG_BG3PD             (*(vu16*)0x04000036)
 #define REG_DISP3DCNT         (*(vu16*)0x04000060)
+#define REG_MASTER_BRIGHT     (*(vu16*)0x0400006C)
 #define REG_KEYINPUT          (*(vu16*)0x04000130)
 #define REG_EXMEM_CNT         (*(vu16*)0x04000204)
 #define REG_IME               (*(vu16*)0x04000208)
@@ -18,9 +28,14 @@
 #define GFX_FIFO_MATRIX_STORE (*(vu32*)0x0400044C)
 #define GFX_FIFO_SWAP_BUFFERS (*(vu32*)0x04000540)
 #define GFX_FIFO_VIEWPORT     (*(vu32*)0x04000580)
+#define REG_DISPCNT_SUB       (*(vu32*)0x04001000)
 #define REG_BG0CNT_SUB        (*(vu16*)0x04001008)
 #define REG_BG1CNT_SUB        (*(vu16*)0x0400100A)
 #define REG_BG2CNT_SUB        (*(vu16*)0x0400100C)
 #define REG_BG3CNT_SUB        (*(vu16*)0x0400100E)
+#define REG_BG2PA_SUB         (*(vu16*)0x04001020)
+#define REG_BG2PD_SUB         (*(vu16*)0x04001026)
+#define REG_BG3PA_SUB         (*(vu16*)0x04001030)
+#define REG_BG3PD_SUB         (*(vu16*)0x04001036)
 
 #endif // REGISTERS_H
