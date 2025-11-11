@@ -652,10 +652,10 @@ static u32 GetBankSize(u32 vram) {
     return size;
 }
 
-u32 GetSizeOfBg(void) {
+u32 GX_GetSizeOfBg(void) {
     return GetBankSize(GxState.bg);
 }
 
-u32 GetSizeOfSubBg(void) {
+u32 GX_GetSizeOfSubBg(void) {
     return GetBankSize(GxState.subBg);
 }
