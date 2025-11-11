@@ -3,6 +3,7 @@
 #include "System.h"
 #include "common_data.h"
 #include "game.h"
+#include <NitroSDK/gx/gx.h>
 #include <NitroSDK/os/cache.h>
 #include <NitroSDK/os/interrupt.h>
 #include <NitroSDK/os/valarm.h>
@@ -73,11 +74,11 @@ static void HandleVBlank(void) {
     func_0202190c();
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         OS_DisableInterrupts(IRQ_HBLANK);
-        GX_HBlankIntr(0);
+        GX_HBlankIntr(FALSE);
         OS_SetIRQCallback(IRQ_HBLANK, SysControl.hBlankCallback);
         if (SysControl.hBlankCallback != Interrupts_TriggerHBlank) {
             OS_EnableInterrupts(IRQ_HBLANK);
-            GX_HBlankIntr(1);
+            GX_HBlankIntr(TRUE);
         }
     } else {
         SystemStatusFlags = SystemStatusFlags & ~8 | (u32)((1 - ((SystemStatusFlags << 0x1c) >> 0x1f)) * -0x80000000) >> 0x1c;
@@ -97,10 +98,10 @@ IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, BOOL enable)
     IRQCallback prevCallback = Interrupts_SaveVBlankCallback(callback);
     if (enable == TRUE) {
         OS_EnableInterrupts(IRQ_VBLANK);
-        GX_VBlankIntr(1);
+        GX_VBlankIntr(TRUE);
     } else {
         OS_DisableInterrupts(IRQ_VBLANK);
-        GX_VBlankIntr(0);
+        GX_VBlankIntr(FALSE);
     }
     return prevCallback;
 }
@@ -131,10 +132,10 @@ IRQCallback Interrupts_RegisterHBlankCallback(IRQCallback callback, BOOL enable)
     IRQCallback prevCallback = Interrupts_SaveHBlankCallback(callback);
     if (enable == TRUE) {
         OS_EnableInterrupts(IRQ_HBLANK);
-        GX_HBlankIntr(1);
+        GX_HBlankIntr(TRUE);
     } else {
         OS_DisableInterrupts(IRQ_HBLANK);
-        GX_HBlankIntr(0);
+        GX_HBlankIntr(FALSE);
     }
     return prevCallback;
 }

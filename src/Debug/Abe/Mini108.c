@@ -5,6 +5,7 @@
 #include "System.h"
 #include "common_data.h"
 #include "registers.h"
+#include <NitroSDK/gx/gx.h>
 
 void func_ov000_020824a0(void);
 void func_ov000_0208257c(void);
@@ -82,7 +83,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     data_0206aa80.unk_04 = 1;
     data_0206aa80.unk_08 = 0;
     data_0206aa80.unk_0C = 0;
-    GX_SetGraphicsMode(1, 0, 0);
+    GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
     data_0206aae4.unk_00 = 0;
     data_0206aae4.unk_04 = 0;
     data_0206aae4.unk_1C = 0;
@@ -129,7 +130,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     bitmagic              = bitmagic | 1;
     data_0206aa80.unk_1C  = bitmagic;
     data_0206aa80.unk_38  = 0;
-    GXs_SetGraphicsMode();
+    GXs_SetGraphicsMode(GX_BGMODE_0);
     data_0206ad04.unk_00 = 0;
     data_0206ad04.unk_04 = 0;
     data_0206ad04.unk_1C = 0;

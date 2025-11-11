@@ -1926,6 +1926,10 @@ func_02034fbc kind:function(arm,size=0x5c) addr:0x02034fbc
 Vec_Distance kind:function(arm,size=0x7c) addr:0x02035018
 FX_Atan2Idx kind:function(arm,size=0x1a8) addr:0x02035094
 func_0203523c kind:function(arm,size=0x4) addr:0x0203523c
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/gx/gx.c
+/////////////////////////////////////////////////////////////
 GX_Init kind:function(arm,size=0x14c) addr:0x02035240
 GX_HBlankIntr kind:function(arm,size=0x34) addr:0x0203538c
 GX_VBlankIntr kind:function(arm,size=0x34) addr:0x020353c0
@@ -1935,6 +1939,8 @@ GX_SetGraphicsMode kind:function(arm,size=0x68) addr:0x02035478
 GXs_SetGraphicsMode kind:function(arm,size=0x1c) addr:0x020354e0
 GXx_SetMasterBrightness kind:function(arm,size=0x28) addr:0x020354fc
 GXx_GetMasterBrightness kind:function(arm,size=0x44) addr:0x02035524
+
+
 GX_InitGxState kind:function(arm,size=0x60) addr:0x02035568
 EnableVramBankInSetDontSave kind:function(arm,size=0xb8) addr:0x020355c8
 GX_SetBankForBg kind:function(arm,size=0x290) addr:0x02035680
@@ -3843,8 +3849,14 @@ data_02066178 kind:data(any) addr:0x02066178
 data_020661f8 kind:data(any) addr:0x020661f8
 data_02066218 kind:data(any) addr:0x02066218
 data_02066238 kind:data(any) addr:0x02066238
-data_02066258 kind:data(any) addr:0x02066258
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/gx/gx.c
+/////////////////////////////////////////////////////////////
+IsDisplayOn kind:data(short) addr:0x02066258 local
 data_0206625c kind:data(any) addr:0x0206625c
+
+
 data_02066260 kind:data(any) addr:0x02066260
 data_02066270 kind:data(any) addr:0x02066270
 data_02066274 kind:data(any) addr:0x02066274
@@ -4375,8 +4387,13 @@ data_0207d428 kind:bss addr:0x0207d428
 data_0207d440 kind:bss addr:0x0207d440
 data_0207d44c kind:bss addr:0x0207d44c
 data_0207da20 kind:bss addr:0x0207da20
-data_0207dc20 kind:bss addr:0x0207dc20
-data_0207dc22 kind:bss addr:0x0207dc22
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/gx/gx.c
+/////////////////////////////////////////////////////////////
+DisplayMode kind:bss addr:0x0207dc20 local
+GX_LockID kind:bss addr:0x0207dc22
+
 data_0207dc24 kind:bss addr:0x0207dc24
 data_0207dc26 kind:bss addr:0x0207dc26
 data_0207dc28 kind:bss addr:0x0207dc28
