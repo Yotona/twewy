@@ -1,5 +1,5 @@
-#ifndef GX_H_
-#define GX_H_
+#ifndef NITROSDK_GX_GX_H
+#define NITROSDK_GX_GX_H
 
 #include <types.h>
 
@@ -27,6 +27,8 @@ typedef enum {
     GX2D3D_MODE_2D = 0,
     GX2D3D_MODE_3D = 1,
 } GX2D3D;
+
+extern u16 GX_LockID;
 
 /**
  * @brief Initialize the graphics system.
@@ -95,4 +97,4 @@ void GXx_SetMasterBrightness(u16* arg0, s32 arg1);
  */
 s32 GXx_GetMasterBrightness(vu16* arg0);
 
-#endif // GX_H_
+#endif // NITROSDK_GX_GX_H

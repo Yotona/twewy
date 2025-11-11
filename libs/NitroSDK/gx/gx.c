@@ -1,4 +1,5 @@
 #include <NitroSDK/gx/gx.h>
+#include <NitroSDK/gx/gx_state.h>
 #include <registers.h>
 
 static u16 IsDisplayOn   = TRUE;
