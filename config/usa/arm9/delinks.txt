@@ -115,6 +115,27 @@ src/CriSndMgr.c:
     .data       start:0x02065CD0 end:0x02065FCC
     .bss        start:0x020768F0 end:0x02076A14
 
+libs/NitroSDK/fx/fx_matrix.c:
+complete
+    .text       start:0x020339F8 end:0x02034BBC
+
+libs/NitroSDK/fx/fx_division.c:
+complete
+    .text       start:0x02034BBC end:0x02034D1C
+
+libs/NitroSDK/fx/fx_vector.c:
+complete
+    .text       start:0x02034D1C end:0x02035094
+
+libs/NitroSDK/fx/fx_atan.c:
+complete
+    .text       start:0x02035094 end:0x0203523C
+    .rodata     start:0x020624E0 end:0x020625E4
+
+libs/NitroSDK/fx/fx_init.c:
+complete
+    .text       start:0x0203523C end:0x02035240
+
 libs/NitroSDK/gx/gx.c:
 complete
     .text       start:0x02035240 end:0x02035568
