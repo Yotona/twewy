@@ -5,7 +5,7 @@
 #include "System.h"
 #include "common_data.h"
 #include "registers.h"
-#include <NitroSDK/gx/gx.h>
+#include <NitroSDK/gx.h>
 
 void func_ov000_020824a0(void);
 void func_ov000_0208257c(void);
@@ -373,17 +373,17 @@ void func_ov000_020825c0(void) {
     G3X_InitMtxStack();
     DMA_Init(0x100);
     func_02005250();
-    func_020364bc();
-    GX_SetBankForLcdc(0x1ff);
-    GX_SetBankForTex(1);
-    GX_SetBankForBg(2);
-    GX_SetBankForObj(0x10);
-    GX_SetBankForTexPltt(0x20);
-    GX_SetBankForBgExtPltt(0x40);
-    GX_SetBankForSubBg(4);
-    GX_SetBankForSubObj(8);
-    GX_SetBankForSubBgExtPltt(0x80);
-    GX_SetBankForSubObjExtPltt(0x100);
+    GX_DisableBankForLcdc();
+    GX_SetBankForLcdc(GX_VRAM_ALL);
+    GX_SetBankForTex(GX_VRAM_A);
+    GX_SetBankForBg(GX_VRAM_B);
+    GX_SetBankForObj(GX_VRAM_E);
+    GX_SetBankForTexPltt(GX_VRAM_F);
+    GX_SetBankForBgExtPltt(GX_VRAM_G);
+    GX_SetBankForSubBg(GX_VRAM_C);
+    GX_SetBankForSubObj(GX_VRAM_D);
+    GX_SetBankForSubBgExtPltt(GX_VRAM_H);
+    GX_SetBankForSubObjExtPltt(GX_VRAM_I);
     REG_DISP3DCNT = REG_DISP3DCNT & 0xffffcffd;
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x08;
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x10;

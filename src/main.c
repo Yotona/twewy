@@ -58,7 +58,7 @@ void main(void) {
             func_0203a554();
         }
 
-        func_0203523c();
+        FX_Init();
         REG_EXMEM_CNT |= 0x8000;
 
         System_ClearFlag(SYSFLAG_UNKNOWN_0);

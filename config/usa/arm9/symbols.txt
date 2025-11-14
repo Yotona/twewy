@@ -1894,38 +1894,58 @@ func_0203396c kind:function(arm,size=0x28) addr:0x0203396c
 func_02033994 kind:function(arm,size=0x34) addr:0x02033994
 func_020339c8 kind:function(arm,size=0x18) addr:0x020339c8
 func_020339e0 kind:function(arm,size=0x18) addr:0x020339e0
-func_020339f8 kind:function(arm,size=0x24) addr:0x020339f8
-func_02033a1c kind:function(arm,size=0xc0) addr:0x02033a1c
-func_02033adc kind:function(thumb,size=0x1c) addr:0x02033adc
-func_02033af8 kind:function(arm,size=0x28) addr:0x02033af8
-func_02033b20 kind:function(arm,size=0x34) addr:0x02033b20
-func_02033b54 kind:function(arm,size=0x34) addr:0x02033b54
-func_02033b88 kind:function(arm,size=0x38c) addr:0x02033b88
-func_02033f14 kind:function(arm,size=0x2d4) addr:0x02033f14
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_matrix.c
+/////////////////////////////////////////////////////////////
+Mtx_Identity33 kind:function(arm,size=0x24) addr:0x020339f8
+Mtx_Scale33 kind:function(arm,size=0xc0) addr:0x02033a1c
+Mtx_YRot33 kind:function(thumb,size=0x1c) addr:0x02033adc
+Mtx_Identity43 kind:function(arm,size=0x28) addr:0x02033af8
+Mtx_Copy43To44 kind:function(arm,size=0x34) addr:0x02033b20
+Mtx_Scale43 kind:function(arm,size=0x34) addr:0x02033b54
+MTX_Inverse43 kind:function(arm,size=0x38c) addr:0x02033b88
+Mtx_Concat43 kind:function(arm,size=0x2d4) addr:0x02033f14
 Mtx_LookAt kind:function(arm,size=0x108) addr:0x020341e8
-func_020342f0 kind:function(arm,size=0x2c) addr:0x020342f0
-func_0203431c kind:function(arm,size=0x34) addr:0x0203431c
-func_02034350 kind:function(arm,size=0x664) addr:0x02034350
+Mtx_Identity44 kind:function(arm,size=0x2c) addr:0x020342f0
+Mtx_Copy44To43 kind:function(arm,size=0x34) addr:0x0203431c
+Mtx_Concat44 kind:function(arm,size=0x664) addr:0x02034350
 Mtx_OrthoW kind:function(arm,size=0x208) addr:0x020349b4
-func_02034bbc kind:function(arm,size=0x10) addr:0x02034bbc
-func_02034bcc kind:function(arm,size=0x2c) addr:0x02034bcc
-func_02034bf8 kind:function(arm,size=0x10) addr:0x02034bf8
-func_02034c08 kind:function(arm,size=0x34) addr:0x02034c08
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_division.c
+/////////////////////////////////////////////////////////////
+FX_Divide kind:function(arm,size=0x10) addr:0x02034bbc
+FX_Divide64 kind:function(arm,size=0x2c) addr:0x02034bcc
+FX_Inverse kind:function(arm,size=0x10) addr:0x02034bf8
+FX_Sqrt kind:function(arm,size=0x34) addr:0x02034c08
 FX_GetDivResultFx64c kind:function(arm,size=0x24) addr:0x02034c3c
 FX_GetDivResult kind:function(arm,size=0x38) addr:0x02034c60
 FX_InvAsync kind:function(arm,size=0x30) addr:0x02034c98
-func_02034cc8 kind:function(arm,size=0x2c) addr:0x02034cc8
+FX_GetSqrtResult kind:function(arm,size=0x2c) addr:0x02034cc8
 FX_DivAsync kind:function(arm,size=0x28) addr:0x02034cf4
-func_02034d1c kind:function(arm,size=0x34) addr:0x02034d1c
-func_02034d50 kind:function(arm,size=0x34) addr:0x02034d50
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_vector.c
+/////////////////////////////////////////////////////////////
+Vec_Add kind:function(arm,size=0x34) addr:0x02034d1c
+Vec_Sub kind:function(arm,size=0x34) addr:0x02034d50
 Vec_DotProduct kind:function(arm,size=0x3c) addr:0x02034d84
 Vec_CrossProduct kind:function(arm,size=0x84) addr:0x02034dc0
-func_02034e44 kind:function(arm,size=0x60) addr:0x02034e44
+Vec_Magnitude kind:function(arm,size=0x60) addr:0x02034e44
 Vec_Normalize kind:function(arm,size=0x118) addr:0x02034ea4
-func_02034fbc kind:function(arm,size=0x5c) addr:0x02034fbc
+Vec_MultAdd kind:function(arm,size=0x5c) addr:0x02034fbc
 Vec_Distance kind:function(arm,size=0x7c) addr:0x02035018
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_atan.c
+/////////////////////////////////////////////////////////////
 FX_Atan2Idx kind:function(arm,size=0x1a8) addr:0x02035094
-func_0203523c kind:function(arm,size=0x4) addr:0x0203523c
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_init.c
+/////////////////////////////////////////////////////////////
+FX_Init kind:function(arm,size=0x4) addr:0x0203523c
 
 /////////////////////////////////////////////////////////////
 // libs/NitroSDK/gx/gx.c
@@ -1940,9 +1960,11 @@ GXs_SetGraphicsMode kind:function(arm,size=0x1c) addr:0x020354e0
 GXx_SetMasterBrightness kind:function(arm,size=0x28) addr:0x020354fc
 GXx_GetMasterBrightness kind:function(arm,size=0x44) addr:0x02035524
 
-
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/gx/gx_state.c
+/////////////////////////////////////////////////////////////
 GX_InitGxState kind:function(arm,size=0x60) addr:0x02035568
-EnableVramBankInSetDontSave kind:function(arm,size=0xb8) addr:0x020355c8
+SetLCDC kind:function(arm,size=0xb8) addr:0x020355c8 local
 GX_SetBankForBg kind:function(arm,size=0x290) addr:0x02035680
 GX_SetBankForObj kind:function(arm,size=0x150) addr:0x02035910
 GX_SetBankForBgExtPltt kind:function(arm,size=0x100) addr:0x02035a60
@@ -1955,35 +1977,37 @@ GX_SetBankForSubBg kind:function(arm,size=0xa8) addr:0x02036020
 GX_SetBankForSubObj kind:function(arm,size=0x70) addr:0x020360c8
 GX_SetBankForSubBgExtPltt kind:function(arm,size=0x80) addr:0x02036138
 GX_SetBankForSubObjExtPltt kind:function(arm,size=0x80) addr:0x020361b8
-EnableVramBanksInSet kind:function(arm,size=0x34) addr:0x02036238
-func_0203626c kind:function(arm,size=0x24) addr:0x0203626c
-func_02036290 kind:function(arm,size=0x24) addr:0x02036290
-func_020362b4 kind:function(arm,size=0x14) addr:0x020362b4
-func_020362c8 kind:function(arm,size=0x14) addr:0x020362c8
-func_020362dc kind:function(arm,size=0x14) addr:0x020362dc
-func_020362f0 kind:function(arm,size=0x14) addr:0x020362f0
-func_02036304 kind:function(arm,size=0x14) addr:0x02036304
-func_02036318 kind:function(arm,size=0x28) addr:0x02036318
-func_02036340 kind:function(arm,size=0x28) addr:0x02036340
-DisableBankForX kind:function(arm,size=0xe0) addr:0x02036368
-func_02036448 kind:function(arm,size=0x14) addr:0x02036448
-func_0203645c kind:function(arm,size=0x14) addr:0x0203645c
-func_02036470 kind:function(arm,size=0x24) addr:0x02036470
-func_02036494 kind:function(arm,size=0x14) addr:0x02036494
-func_020364a8 kind:function(arm,size=0x14) addr:0x020364a8
-func_020364bc kind:function(arm,size=0x14) addr:0x020364bc
-func_020364d0 kind:function(arm,size=0x10) addr:0x020364d0
-func_020364e0 kind:function(arm,size=0x10) addr:0x020364e0
-func_020364f0 kind:function(arm,size=0x10) addr:0x020364f0
-func_02036500 kind:function(arm,size=0x10) addr:0x02036500
-func_02036510 kind:function(arm,size=0x10) addr:0x02036510
-func_02036520 kind:function(arm,size=0x10) addr:0x02036520
-func_02036530 kind:function(arm,size=0x10) addr:0x02036530
-func_02036540 kind:function(arm,size=0x10) addr:0x02036540
-func_02036550 kind:function(arm,size=0x10) addr:0x02036550
-func_02036560 kind:function(arm,size=0x54) addr:0x02036560
-func_020365b4 kind:function(arm,size=0x18) addr:0x020365b4
-func_020365cc kind:function(arm,size=0x18) addr:0x020365cc
+ResetBank kind:function(arm,size=0x34) addr:0x02036238
+GX_ResetBankForBgExtPltt kind:function(arm,size=0x24) addr:0x0203626c
+GX_ResetBankForObjExtPltt kind:function(arm,size=0x24) addr:0x02036290
+GX_ResetBankForTex kind:function(arm,size=0x14) addr:0x020362b4
+GX_ResetBankForTexPltt kind:function(arm,size=0x14) addr:0x020362c8
+GX_ResetBankForClearImage kind:function(arm,size=0x14) addr:0x020362dc
+GX_ResetBankForSubBg kind:function(arm,size=0x14) addr:0x020362f0
+GX_ResetBankForSubObj kind:function(arm,size=0x14) addr:0x02036304
+GX_ResetBankForSubBgExtPltt kind:function(arm,size=0x28) addr:0x02036318
+GX_ResetBankForSubObjExtPltt kind:function(arm,size=0x28) addr:0x02036340
+DisableBank kind:function(arm,size=0xe0) addr:0x02036368
+GX_DisableBankForBg kind:function(arm,size=0x14) addr:0x02036448
+GX_DisableBankForObj kind:function(arm,size=0x14) addr:0x0203645c
+GX_DisableBankForObjExtPltt kind:function(arm,size=0x24) addr:0x02036470
+GX_DisableBankForTex kind:function(arm,size=0x14) addr:0x02036494
+GX_DisableBankForTexPltt kind:function(arm,size=0x14) addr:0x020364a8
+GX_DisableBankForLcdc kind:function(arm,size=0x14) addr:0x020364bc
+GX_GetBankForBg kind:function(arm,size=0x10) addr:0x020364d0
+GX_GetBankForObj kind:function(arm,size=0x10) addr:0x020364e0
+GX_GetBankForBgExtPltt kind:function(arm,size=0x10) addr:0x020364f0
+GX_GetBankForObjExtPltt kind:function(arm,size=0x10) addr:0x02036500
+GX_GetBankForTex kind:function(arm,size=0x10) addr:0x02036510
+GX_GetBankForSubBg kind:function(arm,size=0x10) addr:0x02036520
+GX_GetBankForSubObj kind:function(arm,size=0x10) addr:0x02036530
+GX_GetBankForSubBgExtPltt kind:function(arm,size=0x10) addr:0x02036540
+GX_GetBankForSubObjExtPltt kind:function(arm,size=0x10) addr:0x02036550
+GetBankSize kind:function(arm,size=0x54) addr:0x02036560 local
+GX_GetSizeOfBg kind:function(arm,size=0x18) addr:0x020365b4
+GX_GetSizeOfSubBg kind:function(arm,size=0x18) addr:0x020365cc
+
+
 G2_GetBG0ScrPtr kind:function(arm,size=0x34) addr:0x020365e4
 G2S_GetBG0ScrPtr kind:function(arm,size=0x20) addr:0x02036618
 G2_GetBG1ScrPtr kind:function(arm,size=0x34) addr:0x02036638
@@ -2890,7 +2914,7 @@ func_02056030 kind:function(arm,size=0x48) addr:0x02056030
 _fmul kind:function(arm,size=0x1e0) addr:0x02056078
 _fsub kind:function(arm,size=0x278) addr:0x02056264
 func_020564dc kind:function(arm,size=0x10) addr:0x020564dc
-func_020564ec kind:function(arm,size=0x1b0) addr:0x020564ec
+_ll_sdiv kind:function(arm,size=0x1b0) addr:0x020564ec
 _ll_udiv kind:function(arm,size=0xc) addr:0x0205669c
 _ull_mod kind:function(arm,size=0x3c) addr:0x020566a8
 _s32_div_f kind:function(arm,size=0x20c) addr:0x020566e4
@@ -3271,7 +3295,12 @@ data_0205e41c kind:data(any) addr:0x0205e41c
 data_0205e42c kind:data(any) addr:0x0205e42c
 data_0205e4e0 kind:data(any) addr:0x0205e4e0
 data_02060206 kind:data(any) addr:0x02060206
-data_020624e0 kind:data(any) addr:0x020624e0
+
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/fx/fx_atan.c
+/////////////////////////////////////////////////////////////
+AtanTable kind:data(short[129]) addr:0x020624e0 local
+
 data_020625e4 kind:data(any) addr:0x020625e4
 data_020625f4 kind:data(any) addr:0x020625f4
 data_020625f6 kind:data(any) addr:0x020625f6
@@ -4394,18 +4423,11 @@ data_0207da20 kind:bss addr:0x0207da20
 DisplayMode kind:bss addr:0x0207dc20 local
 GX_LockID kind:bss addr:0x0207dc22
 
-data_0207dc24 kind:bss addr:0x0207dc24
-data_0207dc26 kind:bss addr:0x0207dc26
-data_0207dc28 kind:bss addr:0x0207dc28
-data_0207dc2c kind:bss addr:0x0207dc2c
-data_0207dc2e kind:bss addr:0x0207dc2e
-data_0207dc30 kind:bss addr:0x0207dc30
-data_0207dc32 kind:bss addr:0x0207dc32
-data_0207dc34 kind:bss addr:0x0207dc34
-data_0207dc36 kind:bss addr:0x0207dc36
-data_0207dc38 kind:bss addr:0x0207dc38
-data_0207dc3a kind:bss addr:0x0207dc3a
-data_0207dc3c kind:bss addr:0x0207dc3c
+/////////////////////////////////////////////////////////////
+// libs/NitroSDK/gx/gx_state.c
+/////////////////////////////////////////////////////////////
+GxState kind:bss addr:0x0207dc24
+
 data_0207dc40 kind:bss addr:0x0207dc40
 data_0207dc5c kind:bss addr:0x0207dc5c
 
