@@ -263,13 +263,15 @@ PacMgr_LoadPackEntryData kind:function(arm,size=0x78) addr:0x02007e18
 PacMgr_GetPackEntryDataPtr kind:function(arm,size=0x1c) addr:0x02007e90
 PacMgr_GenPack kind:function(arm,size=0x1a8) addr:0x02007eac
 
-
+/////////////////////////////////////////////////////////////
+// src/DatMgr.c
+/////////////////////////////////////////////////////////////
 func_02008054 kind:function(arm,size=0x18) addr:0x02008054
 func_0200806c kind:function(arm,size=0x24) addr:0x0200806c
 func_02008090 kind:function(arm,size=0x5c) addr:0x02008090
 func_020080ec kind:function(arm,size=0x4c) addr:0x020080ec
 func_02008138 kind:function(arm,size=0x20) addr:0x02008138
-func_02008158 kind:function(arm,size=0xe4) addr:0x02008158
+DatMgr_Init kind:function(arm,size=0xe4) addr:0x02008158
 func_0200823c kind:function(arm,size=0x150) addr:0x0200823c
 func_0200838c kind:function(arm,size=0x16c) addr:0x0200838c
 func_020084f8 kind:function(arm,size=0x158) addr:0x020084f8
@@ -279,20 +281,24 @@ func_0200892c kind:function(arm,size=0x118) addr:0x0200892c
 func_02008a44 kind:function(arm,size=0x1cc) addr:0x02008a44
 func_02008c10 kind:function(arm,size=0x40) addr:0x02008c10
 func_02008c50 kind:function(arm,size=0x16c) addr:0x02008c50
-
-
 func_02008dbc kind:function(arm,size=0xc4) addr:0x02008dbc
 func_02008e80 kind:function(arm,size=0x3c) addr:0x02008e80
 func_02008ebc kind:function(arm,size=0x64) addr:0x02008ebc
+
+/////////////////////////////////////////////////////////////
+// src/EasyList.c
+/////////////////////////////////////////////////////////////
 func_02008f20 kind:function(arm,size=0x18) addr:0x02008f20
 func_02008f38 kind:function(arm,size=0x10) addr:0x02008f38
 func_02008f48 kind:function(arm,size=0x4c) addr:0x02008f48
-func_02008f94 kind:function(arm,size=0x74) addr:0x02008f94
+EasyList_Init kind:function(arm,size=0x74) addr:0x02008f94
 func_02009008 kind:function(arm,size=0x60) addr:0x02009008
 func_02009068 kind:function(arm,size=0x5c) addr:0x02009068
 func_020090c4 kind:function(arm,size=0x7c) addr:0x020090c4
 func_02009140 kind:function(arm,size=0x80) addr:0x02009140
 func_020091c0 kind:function(arm,size=0xbc) addr:0x020091c0
+
+
 func_0200927c kind:function(arm,size=0x240) addr:0x0200927c
 func_020094bc kind:function(arm,size=0xf8) addr:0x020094bc
 func_020095b4 kind:function(arm,size=0x74) addr:0x020095b4

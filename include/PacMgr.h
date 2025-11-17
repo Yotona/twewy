@@ -35,4 +35,16 @@ typedef struct {
     /* 0x48 */ Pack* packPool; // Allocated pool of Pack structures
 } PacMgr;
 
+Pack*   PacMgr_DequeueFreePack(Pack* pac);
+void    PacMgr_EnqueueFreePack(PacMgr* mgr, Pack* pac);
+void    PacMgr_AddLoadedPack(PacMgr* pacMgr, Pack* pac);
+Pack*   PacMgr_RemoveLoadedPack(PacMgr* binMgr, Pack* pacToRemove);
+void    PacMgr_ResetPack(PacMgr* mgr, Pack* pac);
+PacMgr* PacMgr_Init(PacMgr* pacMgr, u32 nodeCount);
+Pack*   PacMgr_LoadPack(BinIdentifier* iden);
+BOOL    PacMgr_ReleasePack(Pack* pac);
+void    PacMgr_LoadPackEntryData(Pack* pac, Bin* bin, u32* outSize, s32 entryIndex, s32 compressed);
+s32     PacMgr_GetPackEntryDataPtr(Pack* pac, s32 arg1);
+void*   PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList);
+
 #endif // PACMGR_H
