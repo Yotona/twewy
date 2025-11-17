@@ -288,15 +288,15 @@ func_02008ebc kind:function(arm,size=0x64) addr:0x02008ebc
 /////////////////////////////////////////////////////////////
 // src/EasyList.c
 /////////////////////////////////////////////////////////////
-func_02008f20 kind:function(arm,size=0x18) addr:0x02008f20
-func_02008f38 kind:function(arm,size=0x10) addr:0x02008f38
-func_02008f48 kind:function(arm,size=0x4c) addr:0x02008f48
+EasyList_AllocateNode kind:function(arm,size=0x18) addr:0x02008f20
+EasyList_FreeNode kind:function(arm,size=0x10) addr:0x02008f38
+EasyList_Reset kind:function(arm,size=0x4c) addr:0x02008f48
 EasyList_Init kind:function(arm,size=0x74) addr:0x02008f94
-func_02009008 kind:function(arm,size=0x60) addr:0x02009008
-func_02009068 kind:function(arm,size=0x5c) addr:0x02009068
-func_020090c4 kind:function(arm,size=0x7c) addr:0x020090c4
-func_02009140 kind:function(arm,size=0x80) addr:0x02009140
-func_020091c0 kind:function(arm,size=0xbc) addr:0x020091c0
+EasyList_InsertFront kind:function(arm,size=0x60) addr:0x02009008
+EasyList_InsertBack kind:function(arm,size=0x5c) addr:0x02009068
+EasyList_InsertBefore kind:function(arm,size=0x7c) addr:0x020090c4
+EasyList_InsertSorted kind:function(arm,size=0x80) addr:0x02009140
+EasyList_RemoveNode kind:function(arm,size=0xbc) addr:0x020091c0
 
 
 func_0200927c kind:function(arm,size=0x240) addr:0x0200927c
@@ -3412,7 +3412,12 @@ data_020637b8 kind:data(any) addr:0x020637b8
 @467 kind:data(any) addr:0x020637f4 local
 
 data_02063808 kind:data(any) addr:0x02063808
-data_02063818 kind:data(any) addr:0x02063818
+
+/////////////////////////////////////////////////////////////
+// src/EasyList.c
+/////////////////////////////////////////////////////////////
+@130 kind:data(any) addr:0x02063818 local
+
 data_02063828 kind:data(any) addr:0x02063828
 data_0206382c kind:data(any) addr:0x0206382c
 data_02063834 kind:data(any) addr:0x02063834
