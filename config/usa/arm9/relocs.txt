@@ -514,10 +514,10 @@ from:0x02006614 kind:load to:0x02006618 module:main
 from:0x0200664c kind:arm_call to:0x0203f304 module:main
 from:0x0200667c kind:arm_call to:0x0203f304 module:main
 from:0x02006694 kind:load to:0x02066a24 module:main
-from:0x02006698 kind:load to:0x02066a2c module:main
+from:0x02006698 kind:load to:0x02066a24 add:0x8 module:main
 from:0x020066d4 kind:arm_call to:0x0203f304 module:main
 from:0x020066e0 kind:arm_call to:0x0203f2b0 module:main
-from:0x020066f4 kind:load to:0x02066a2c module:main
+from:0x020066f4 kind:load to:0x02066a24 add:0x8 module:main
 from:0x0200673c kind:load to:0x02066a24 module:main
 from:0x0200677c kind:arm_call to:0x020566e4 module:main
 from:0x020067a0 kind:arm_call to:0x020067d4 module:main

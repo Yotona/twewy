@@ -202,6 +202,10 @@ func_02006df0 kind:function(arm,size=0x68) addr:0x02006df0
 func_02006e58 kind:function(arm,size=0xc8) addr:0x02006e58
 func_02006f20 kind:function(arm,size=0x1c) addr:0x02006f20
 func_02006f3c kind:function(arm,size=0x14) addr:0x02006f3c
+
+/////////////////////////////////////////////////////////////
+// src/OverlayManager.c
+/////////////////////////////////////////////////////////////
 func_02006f50 kind:function(arm,size=0x4) addr:0x02006f50
 func_02006f54 kind:function(arm,size=0x24) addr:0x02006f54
 func_02006f78 kind:function(arm,size=0x4c) addr:0x02006f78
@@ -318,6 +322,8 @@ func_02009e90 kind:function(arm,size=0x88) addr:0x02009e90
 func_02009f18 kind:function(arm,size=0x114) addr:0x02009f18
 func_0200a02c kind:function(arm,size=0x74) addr:0x0200a02c
 func_0200a0a0 kind:function(arm,size=0x88) addr:0x0200a0a0
+
+
 func_0200a128 kind:function(arm,size=0x48) addr:0x0200a128
 func_0200a170 kind:function(arm,size=0xac) addr:0x0200a170
 func_0200a21c kind:function(arm,size=0x40) addr:0x0200a21c
@@ -338,6 +344,8 @@ func_0200a968 kind:function(arm,size=0x27c) addr:0x0200a968
 func_0200abe4 kind:function(arm,size=0x214) addr:0x0200abe4
 func_0200adf8 kind:function(arm,size=0x1f4) addr:0x0200adf8
 func_0200afec kind:function(arm,size=0xb0) addr:0x0200afec
+
+
 func_0200b09c kind:function(arm,size=0xfc) addr:0x0200b09c
 func_0200b198 kind:function(arm,size=0x104) addr:0x0200b198
 func_0200b29c kind:function(arm,size=0xf4) addr:0x0200b29c
@@ -2754,8 +2762,11 @@ __exit kind:function(arm,size=0x128) addr:0x02048c84
 /////////////////////////////////////////////////////////////
 nan kind:function(arm,size=0x18) addr:0x02048dac
 
-_Z6mallocm kind:function(arm,size=0x18) addr:0x02048dc4
-_Z4freePv kind:function(arm,size=0x14) addr:0x02048ddc
+/////////////////////////////////////////////////////////////
+// libs/MSL/Common/alloc.c
+/////////////////////////////////////////////////////////////
+malloc kind:function(arm,size=0x18) addr:0x02048dc4
+free kind:function(arm,size=0x14) addr:0x02048ddc
 
 /////////////////////////////////////////////////////////////
 // libs/MSL/Common/ansi_files.c
@@ -3064,8 +3075,8 @@ data_02058e9c kind:data(any) addr:0x02058e9c
 @EX@exit kind:data(any) addr:0x02058f10
 @EX@__exit kind:data(any) addr:0x02058f1c
 @EX@nan kind:data(any) addr:0x02058f28 local
-data_02058f34 kind:data(any) addr:0x02058f34
-data_02058f40 kind:data(any) addr:0x02058f40
+@EX@malloc kind:data(any) addr:0x02058f34 local
+@EX@free kind:data(any) addr:0x02058f40 local
 @EX@__flush_all kind:data(any) addr:0x02058f4c local
 @EX@__flush_buffer kind:data(any) addr:0x02058f58 local
 @EX@fflush kind:data(any) addr:0x02058f64 local
@@ -4036,9 +4047,9 @@ data_02066a1c kind:data(any) addr:0x02066a1c
 ////// section: .bss                                    //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
 SystemStatusFlags kind:bss addr:0x02066a20
 SysControl kind:bss addr:0x02066a24
-data_02066a2c kind:bss addr:0x02066a2c
 data_02066a58 kind:bss addr:0x02066a58
 
 /////////////////////////////////////////////////////////////
@@ -4074,7 +4085,13 @@ gDebugHeap kind:bss addr:0x0206a9b0
 
 
 data_0206a9bc kind:bss addr:0x0206a9bc
+
+/////////////////////////////////////////////////////////////
+// src/Input.c
+/////////////////////////////////////////////////////////////
 InputStatus kind:bss addr:0x0206a9e0
+
+
 data_0206aa78 kind:bss addr:0x0206aa78
 data_0206aa7c kind:bss addr:0x0206aa7c
 data_0206aa80 kind:bss addr:0x0206aa80

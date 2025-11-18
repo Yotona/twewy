@@ -135,9 +135,9 @@ void main(void) {
         func_020073a4();
         func_020073b8();
         func_02006798(0);
-        func_02008158(0, 0);
+        DatMgr_Init(0, 0);
         func_0200cef0(0);
-        SysControl.unk_20 = 0;
+        SysControl.frameCount = 0;
         func_02006ad8();
         func_020415a4();
         func_02025b1c();
@@ -240,7 +240,7 @@ void func_02001254(void) {
         func_02007260(binData);
         BinMgr_Init(binData, 8);
         PacMgr_Init(binData + 0x60, 0x20);
-        func_02008158(binData + 0xC0, 0x100);
+        DatMgr_Init(binData + 0xC0, 0x100);
         func_020072a4();
         func_0200713c(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
     } else {

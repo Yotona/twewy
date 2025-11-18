@@ -85,7 +85,7 @@ static void HandleVBlank(void) {
     }
 
     SysControl.vBlankCallback();
-    SysControl.unk_20++;
+    SysControl.frameCount++;
     System_ClearFlag(SYSFLAG_UNKNOWN_0);
     BIOS_INTERRUPT_IRQCHECK |= 1;
 }
