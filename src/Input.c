@@ -1,5 +1,7 @@
 #include "Input.h"
 
+InputState InputStatus;
+
 static const u16 RepeatButtons[26] = {
     INPUT_MASK_DPAD,    INPUT_BUTTON_A,     INPUT_BUTTON_B,     INPUT_BUTTON_X,      INPUT_BUTTON_Y,
     INPUT_BUTTON_L,     INPUT_BUTTON_R,     INPUT_BUTTON_START, INPUT_BUTTON_SELECT, 0,

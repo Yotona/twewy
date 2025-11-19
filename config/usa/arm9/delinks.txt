@@ -28,6 +28,7 @@ src/Input.c:
 complete
     .text       start:0x02004E98 end:0x0200504C
     .rodata     start:0x0205A928 end:0x0205a95C
+    .bss        start:0x0206A9E0 end:0x0206AA78
 
 src/OverlayManager.c:
     .text       start:0x02006F50 end:0x020073CC
@@ -43,6 +44,14 @@ src/PacMgr.c:
     .text       start:0x02007A9C end:0x02008054
     .data       start:0x020637E4 end:0x02063808
     .bss        start:0x0206B3BC end:0x0206B3C0
+
+src/DatMgr.c:
+    .text       start:0x02008054 end:0x02008F20
+
+src/EasyList.c:
+complete
+    .text       start:0x02008F20 end:0x0200927C
+    .data       start:0x02063818 end:0x02063828
 
 libs/CriWare/adx_crs.c:
 complete
@@ -216,6 +225,11 @@ complete
     .text       start:0x02048DAC end:0x02048DC4
     .exceptix   start:0x02058F28 end:0x02058F34
 
+libs/MSL/Common/alloc.c:
+complete
+    .text       start:0x02048DC4 end:0x02048DF0
+    .exceptix   start:0x02058F34 end:0x02058F4C
+
 libs/MSL/Common/ansi_files.c:
 complete
     .text       start:0x02048DF0 end:0x02048E58
@@ -238,6 +252,7 @@ complete
     .data       start:0x020664BC end:0x020664CC
 
 libs/MSL/Common/locale.c:
+complete
     .data       start:0x020664CC end:0x020666E8
 
 libs/MSL/Common/mbstring.c:
