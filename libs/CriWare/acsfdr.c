@@ -3,7 +3,7 @@
 void func_020209a8(ACSFDR* fdr);
 s32  func_02020a40();
 s32  func_02020cb8();
-f32  func_02020a88(ACSFDR* fdr, s32 param_2);
+s32  func_02020a88(ACSFDR* fdr, s32 param_2);
 void func_02020ec4();
 void func_02020ef0();
 
@@ -161,7 +161,7 @@ void func_020209a8(ACSFDR* fdr) {
 
 s32 func_02020a40() {}
 
-f32 func_02020a88(ACSFDR* fdr, s32 param_2) {
+s32 func_02020a88(ACSFDR* fdr, s32 param_2) {
     f32 uVar1;
     f32 fVar2;
     f32 fVar3;
@@ -173,63 +173,64 @@ f32 func_02020a88(ACSFDR* fdr, s32 param_2) {
         return -960.0f;
     }
 
-    if (param_2 != 3238200) {
-        switch (fdr->unk_18) {
-            case 0:
-            default:
-                lVar6 = (f32)param_2 / 3238200;
-                uVar7 = func_0205308c(lVar6);
-                uVar7 *= 3.640625f;
-                fVar2 = uVar7;
-                break;
-            case 1:
-                fVar2 = -960.0f + (960.0f * ((f32)param_2 / 3238200));
-                break;
-            case 2:
-                lVar6 = (1.5707964f * param_2) / 3238200;
-                lVar6 = func_02052f00(lVar6);
-                uVar1 = lVar6;
-                uVar1 = 3238200 * uVar1;
-                uVar1 /= 3238200;
-                lVar6 = uVar1;
-                uVar7 = func_0205308c(lVar6);
-                uVar7 *= 3.640625f;
-                fVar2 = uVar7;
-                break;
-            case 3:
-                lVar6 = (1.5707964f * param_2) / 3238200;
-                uVar1 = func_020528a8(lVar6);
-                uVar1 = func_0205494c(uVar1);
-                uVar1 -= 1.0f;
-                uVar1 = 3238200 * uVar1;
-                uVar1 /= 3238200;
-                lVar6 = uVar1;
-                uVar7 = func_0205308c(lVar6);
-                uVar7 *= 3.640625f;
-                fVar2 = uVar7;
-                break;
-            case 4:
-                uVar7 = func_0205308c(0, 4.4375f);
-                fVar3 = uVar7;
-                uVar1 = (f32)(3238200 - param_2);
-                uVar1 = fVar3 * uVar1;
-                uVar1 /= 3238200;
-                lVar6 = uVar1;
-                uVar8 = func_02053098(0, 2.5625f, lVar6);
-                uVar1 = uVar8;
-                fVar2 = (f32)func_02056264(0, uVar1);
-        }
-        func_02055a74(fVar2, -960.0f);
-        if (!((3 < fdr->unk_18) || (fdr->unk_18 == 4))) {
-            fVar2 = -960.f;
-        }
-        func_02055ad0(fVar2, 0.0f);
-        if (3 < fdr->unk_18) {
-            fVar2 = 0.0f;
-        }
-        return fVar2;
+    if (param_2 == 3238200) {
+        return 0;
     }
-    return 0;
+
+    switch (fdr->unk_18) {
+        case 0:
+        default:
+            lVar6 = (f32)param_2 / 3238200;
+            uVar7 = func_0205308c(lVar6);
+            uVar7 *= 3.640625f;
+            fVar2 = uVar7;
+            break;
+        case 1:
+            fVar2 = -960.0f + (960.0f * ((f32)param_2 / 3238200));
+            break;
+        case 2:
+            lVar6 = (1.5707964f * param_2) / 3238200;
+            lVar6 = func_02052f00(lVar6);
+            uVar1 = lVar6;
+            uVar1 = 3238200 * uVar1;
+            uVar1 /= 3238200;
+            lVar6 = uVar1;
+            uVar7 = func_0205308c(lVar6);
+            uVar7 *= 3.640625f;
+            fVar2 = uVar7;
+            break;
+        case 3:
+            lVar6 = (1.5707964f * param_2) / 3238200;
+            uVar1 = func_020528a8(lVar6);
+            uVar1 = func_0205494c(uVar1);
+            uVar1 -= 1.0f;
+            uVar1 = 3238200 * uVar1;
+            uVar1 /= 3238200;
+            lVar6 = uVar1;
+            uVar7 = func_0205308c(lVar6);
+            uVar7 *= 3.640625f;
+            fVar2 = uVar7;
+            break;
+        case 4:
+            uVar7 = func_0205308c(0, 4.4375f);
+            fVar3 = uVar7;
+            uVar1 = (f32)(3238200 - param_2);
+            uVar1 = fVar3 * uVar1;
+            uVar1 /= 3238200;
+            lVar6 = uVar1;
+            uVar8 = func_02053098(0, 2.5625f, lVar6);
+            uVar1 = uVar8;
+            fVar2 = (f32)func_02056264(0, uVar1);
+    }
+    func_02055a74(fVar2, -960.0f);
+    if (!((3 < fdr->unk_18) || (fdr->unk_18 == 4))) {
+        fVar2 = -960.f;
+    }
+    func_02055ad0(fVar2, 0.0f);
+    if (3 < fdr->unk_18) {
+        fVar2 = 0.0f;
+    }
+    return fVar2;
 }
 
 s32 func_02020cb8() {}

@@ -1,8 +1,8 @@
 #ifndef ADXT_H
 #define ADXT_H
 
-#include <CriWare/adxsjd.h>
-#include <CriWare/adxstm.h>
+#include <CriWare/adx_sjd.h>
+#include <CriWare/adx_stmc.h>
 #include <CriWare/private/adx_rna.h>
 #include <CriWare/sj.h>
 #include <types.h>
@@ -30,6 +30,8 @@
 
 #define ADXT_OBUF_DIST   0x0860
 #define ADXT_RNABUF_SIZE 0x0C00
+
+#define ADXT_MAX_OBJ 4
 
 #define ADXT_CALC_OBUFSIZE(numChan) ((ADXT_OBUF_DIST + ADXT_RNABUF_SIZE) * (numChan) * sizeof(s16))
 

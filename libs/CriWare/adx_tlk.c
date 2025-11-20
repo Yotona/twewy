@@ -608,24 +608,26 @@ void ADXT_SetExtraInfo(ADXT adxt, s8 flag) {
     adxt->extraInfoFlag = flag;
 }
 
-void func_02017788(s32 freq) {
+void adxt_SetDefSvrFreq(s32 freq);
+void ADXT_SetDefSvrFreq(s32 freq) {
     func_02012f88();
-    ADXT_SetDefSvrFreq(freq);
+    adxt_SetDefSvrFreq(freq);
     func_02012f8c();
 }
 
 // Nonmatching: Data differences
-void ADXT_SetDefSvrFreq(s32 freq) {
+void adxt_SetDefSvrFreq(s32 freq) {
     adxt_def_svrfreq = freq;
 }
 
-void func_020177b8() {
+void adxt_ExecServer();
+void ADXT_ExecServer() {
     func_02012f88();
-    ADXT_ExecServer();
+    adxt_ExecServer();
     func_02012f8c();
 }
 
-void ADXT_ExecServer() {
+void adxt_ExecServer() {
     /* NYI */
 }
 

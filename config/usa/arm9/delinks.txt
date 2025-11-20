@@ -53,9 +53,16 @@ complete
     .text       start:0x02008F20 end:0x0200927C
     .data       start:0x02063818 end:0x02063828
 
+
+libs/CriWare/adx_bsc.c:
+    .text       start:0x020120D4 end:0x02012F20
+    .rodata     start:0x0205B754 end:0x0205BF54
+    .data       start:0x0206386C end:0x020638E0
+    .bss        start:0x0206B864 end:0x0206BC30
+
 libs/CriWare/adx_crs.c:
-complete
-    .text       start:0x02012F70 end:0x02012F88
+    .text       start:0x02012F20 end:0x02012F88
+    .bss        start:0x0206BC30 end:0x0206BC3C
 
 libs/CriWare/adx_errs.c:
 complete
@@ -63,12 +70,15 @@ complete
     .data       start:0x020638E4 end:0x020638F8
     .bss        start:0x0206BC3C end:0x0206BD64
 
+libs/CriWare/adx_inis.c:
+    .text       start:0x02014528 end:0x020148DC
+
 libs/CriWare/adx_sjd.c:
     .text       start:0x020148DC end:0x02015AAC
 
-libs/CriWare/adxstm.c:
-    .text       start:0x02015E10 end:0x020168F4
-    .data       start:0x02063A90 end:0x02063AE8
+libs/CriWare/adx_stmc.c:
+    .text       start:0x02015AAC end:0x020168F4
+    .data       start:0x02063A84 end:0x02063AE8
     .bss        start:0x0206C398 end:0x0206C798
 
 libs/CriWare/adx_tlk.c:
@@ -80,10 +90,15 @@ complete
     .text       start:0x02017BC0 end:0x02017F80
     .data       start:0x02063DA8 end:0x02063EDC
 
-libs/CriWare/cvFs.c:
+libs/CriWare/svm.c:
+    .text       start:0x0201A6B4 end:0x0201AD70
+    .data       start:0x02064718 end:0x02064894
+    .bss        start:0x02070068 end:0x020703E0
+
+libs/CriWare/cri_cvfs.c:
     .text       start:0x0201AD70 end:0x0201B8DC
     .rodata     start:0x0205BFF8 end:0x0205BFFC
-    .data       start:0x02064900 end:0x02064CF4
+    .data       start:0x02064894 end:0x02064CF4
     .bss        start:0x020703E0 end:0x02070774
 
 libs/CriWare/acssvr.c:

@@ -4,7 +4,7 @@ BOOL ACSSVR_Init(ACSSVR* svr) {
     if (func_0201f520(svr) == 0 && svr->unk_78 == 0) {
         func_0201f4e8(svr);
         svr->unk_78 = 1;
-        func_02014664();
+        ADXT_Init();
         func_0201a9fc(2, 4, func_0201f534, svr, "adxcs_exec_svr");
         svr->vhl = ACSVHL_Create(&svr->unk_14, 0x60);
         if (ACSVHL_Init(svr->vhl) == FALSE) {
@@ -41,9 +41,9 @@ void ACSSVR_Finish(ACSSVR* svr) {
             func_020211cc(svr->vhl);
             svr->vhl = NULL;
         }
-        func_0201a94c(2, 4);
-        func_0201a94c(5, svr->unk_7C);
-        func_020147ac();
+        SVM_DelCbSvr(2, 4);
+        SVM_DelCbSvr(5, svr->unk_7C);
+        ADXT_Finish();
         svr->unk_78 = 0;
     }
 }
