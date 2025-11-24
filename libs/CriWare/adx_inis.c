@@ -1,50 +1,33 @@
-// #include "common.h"
-// #include <cri/private/libadxe/structs.h> // This import shouldn't be necessary, but right now it is
-
-// #include <cri/private/libadxe/adx_crs.h>
-// #include <cri/private/libadxe/adx_errs.h>
-// #include <cri/private/libadxe/adx_rnap.h>
-// #include <cri/private/libadxe/adx_sjd.h>
-// #include <cri/private/libadxe/adx_stmc.h>
-// #include <cri/private/libadxe/adx_tlk.h>
-// #include <cri/private/libadxe/dtx.h>
-// #include <cri/private/libadxe/lsc.h>
-// #include <cri/private/libadxe/lsc_err.h>
-// #include <cri/private/libadxe/lsc_ini.h>
-// #include <cri/private/libadxe/svm.h>
-
-// #include <cri/cri_adxt.h>
-// #include <cri/ee/cri_mw.h>
-
-// #include <string.h>
-
+#include <CriWare/lsc.h>
 #include <CriWare/private/adx_tlk.h>
-
-#include <types.h>
 
 extern s32 dtx_send_sw;
 
-extern void func_02014644();
-
-char* data_020638fc;
+const char data_0205bf94[] = "\nADXT/NITRO Ver.10.36 Build:Sep 28 2007 13:14:01\n\0Append: MW4020\n";
 
 // data
-char* volatile adxt_build       = "\nADXT/PS2EE Ver.9.00 Build:Sep 18 2003 10:00:00\n";
-char adxt_obj_mark[16]          = {'M', 'A', 'R', 'K', ':', 'a', 'd', 'x', 't', '_', 'o', 'b', 'j'};
-s32  adxt_init_cnt              = 0;
-s32  adxt_svr_id                = 0;
-s32  adxt_svr_main_id           = 0;
-s32  adxt_vsync_svr_flag        = 1;
-s32  adxt_svr_fs_id             = 0;
+char* volatile adxt_build       = "";
+s32 adxt_init_cnt               = 0;
+s32 adxt_svr_main_id            = 0;
+s32 adxt_svr_fs_id              = 0;
 s32 volatile adxt_vsync_cnt     = 0;
 ADX_TALK adxt_obj[ADXT_MAX_OBJ] = {0};
 
-// forward decls
-s32 adxt_exec_tsvr(void* object);
-s32 adxt_exec_fssvr(void* object);
+s32 data_0206bd7c = 0;
 
-void ADXT_ConfigVsyncSvr(s32 flag) {
-    adxt_vsync_svr_flag = flag;
+void (*data_0206c0a4)(s32) = NULL;
+s32 data_0206c0a8          = 0;
+void (*data_0206c0ac)(s32) = NULL;
+s32 data_0206c0b0          = 0;
+
+// forward decls
+s32  adxt_exec_tsvr(void* object);
+s32  adxt_exec_fssvr(void* object);
+void func_0201489c(void);
+void func_02014888(void);
+
+const char* ADXT_GetVersionInfo() {
+    return data_0205bf94;
 }
 
 void adxini_rnaerr_cbfn(void* object, char* msg) {
@@ -55,20 +38,8 @@ void adxini_lscerr_cbfn(void* object, char* msg) {
     ADXERR_CallErrFunc1(msg);
 }
 
-void ADXT_VsyncProc() {
-    adxt_vsync_cnt += 1;
-    ADXT_ExecServer();
-}
-
 s32 adxt_exec_main_thrd(void* object) {
-    LSC_ExecServer();
-    return 0;
-}
-
-s32 adxt_exec_main_nothrd(void* object) {
-    adxt_exec_tsvr(NULL);
-    adxt_exec_fssvr(NULL);
-    adxt_exec_main_thrd(NULL);
+    func_02014888();
     return 0;
 }
 
@@ -78,15 +49,12 @@ s32 adxt_exec_tsvr(void* object) {
 }
 
 s32 adxt_exec_fssvr(void* object) {
-    ADXT_ExecFsSvr();
+    func_02014528();
     return 0;
 }
 
 void ADXT_Init() {
-    BOOL is_thread_setup;
-    // adxt_build;
-
-    data_020638fc = "\nADXT/NITRO Ver.10.36 Build:Sep 28 2007 13:14:01\n";
+    adxt_build = data_0205bf94;
 
     func_020215fc();
 
@@ -100,35 +68,26 @@ void ADXT_Init() {
         ADXSTM_Init();
         ADXSJD_Init();
         ADXF_Init();
-
-#if defined(TARGET_PS2)
         ADXRNA_Init();
-#endif
-
         LSC_Init();
         SVM_Init();
         ADXRNA_EntryErrFunc(adxini_rnaerr_cbfn, NULL);
         LSC_EntryErrFunc(adxini_lscerr_cbfn, NULL);
-        memset(adxt_obj, 0, sizeof(adxt_obj));
 
-        func_0201a9fc(2, 1, func_02014644, 0, "adxt_exec_tsvr");
+        __builtin__clear(adxt_obj, sizeof(adxt_obj));
 
-        is_thread_setup = ADXM_IsSetupThrd();
+        func_0201a9fc(2, 1, adxt_exec_tsvr, 0, "adxt_exec_tsvr");
 
-        if ((is_thread_setup == 1) && (adxt_vsync_svr_flag == 1)) {
-            SVM_SetCbSvrId(2, 1, adxt_exec_tsvr, NULL);
-            adxt_svr_fs_id   = SVM_SetCbSvr(4, adxt_exec_fssvr, NULL);
-            adxt_svr_main_id = SVM_SetCbSvr(5, adxt_exec_main_thrd, NULL);
-        } else {
-            adxt_svr_main_id = SVM_SetCbSvr(5, adxt_exec_main_nothrd, NULL);
-        }
+        adxt_svr_fs_id   = SVM_SetCbSvrId(4, adxt_exec_fssvr, NULL, "adxt_exec_fssvr");
+        adxt_svr_main_id = SVM_SetCbSvrId(5, adxt_exec_main_thrd, NULL, "adxt_exec_main_thrd");
 
         adxt_vsync_cnt = 0;
+        data_0206bd7c  = 0;
         ADXT_SetDefSvrFreq(60);
         ADXCRS_Unlock();
     }
 
-    adxt_init_cnt += 1;
+    adxt_init_cnt++;
 }
 
 void ADXT_Finish() {
@@ -163,5 +122,21 @@ void ADXT_Finish() {
                 ADXT_Destroy(&adxt_obj[i]);
             }
         }
+    }
+}
+
+void func_02014888(void) {
+    func_02012f88();
+    func_0201489c();
+    func_02012f8c();
+}
+
+void func_0201489c(void) {
+    if (data_0206c0ac != NULL) {
+        data_0206c0ac(data_0206c0a8);
+    }
+    LSC_ExecServer();
+    if (data_0206c0a4 != NULL) {
+        data_0206c0a4(data_0206c0b0);
     }
 }

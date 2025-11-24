@@ -14,8 +14,8 @@ typedef struct {
     /* 0x02 */ s8   maxnch; // Max channels
     /* 0x03 */ s8   unk_03;
     /* 0x04 */ ADXB adxb;
-    /* 0x08 */ SJ*  sji;
-    /* 0x0C */ SJ*  sjo[2];
+    /* 0x08 */ SJ   sji;
+    /* 0x0C */ SJ   sjo[2];
     /* 0x14 */ char unk_14[0x18];
     /* 0x2C */ u32  unk_2C;
     /* 0x30 */ u32  unk_30;
@@ -43,6 +43,6 @@ void ADXSJD_Destroy(ADXSJD* sjd);
 
 s8 ADXSJD_GetStat(ADXSJD* sjd);
 
-void ADXSJD_SetInSj(ADXSJD* sjd, SJ* sj);
+void ADXSJD_SetInSj(ADXSJD* sjd, SJ sj);
 
 #endif // ADXSJD_H

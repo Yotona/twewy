@@ -77,9 +77,7 @@ s32 func_02012258(void) {
 void ADXB_Init() {
     ADXPD_Init();
     SKG_Init();
-
-    memset(adxb_obj, 0, sizeof(adxb_obj));
-
+    __builtin__clear(adxb_obj, sizeof(adxb_obj));
     func_02012248(0);
 }
 
@@ -231,7 +229,7 @@ s32 ADXB_DecodeHeaderAdx(ADXB adxb, void* header, s32 len) {
         ADXPD_SetDly(adxb->adxpd, &sp10, &sp20);
         ADX_DecodeInfoExLoop(header, len, &adxb->unk20, &adxb->loop_count, &adxb->unk26, &adxb->unk28, &adxb->unk2C,
                              &adxb->unk30, &adxb->unk34);
-        ADX_DecodeInfoAinf(header, len, &adxb->ainf_len, &adxb->unkCC, &adxb->def_out_vol, &adxb->def_pan);
+        ADX_DecodeInfoAinf(header, len, &adxb->ainf_len, &adxb->unkC4, &adxb->def_out_vol, &adxb->def_pan);
         adxb->format = 0;
     }
 
@@ -361,8 +359,8 @@ s16 ADXB_GetDefPan(ADXB adxb, s32 arg1) {
 }
 
 void func_020128fc(ADXB adxb) {
-    func_02018dfc(adxb->adxpd, &adxb->unkAC, &adxb->unkB0);
-    func_02018e30(adxb->adxpd, &adxb->unkA6, &adxb->unkA8, &adxb->unkAA);
+    ADXPD_GetDly(adxb->adxpd, &adxb->unkAC, &adxb->unkB0);
+    ADXPD_GetExtPrm(adxb->adxpd, &adxb->unkA6, &adxb->unkA8, &adxb->unkAA);
 }
 
 void func_0201292c(ADXB adxb) {
@@ -449,18 +447,18 @@ s32 ADXB_GetDecNumSmpl(ADXB adxb) {
 }
 
 // Nonmatching: Wrong instruction order
-void ADXB_EvokeExpandSte(ADXB arg0, s32 arg1) {
+void ADXB_EvokeExpandMono(ADXB arg0, s32 arg1) {
     ADXPD     temp_r4 = arg0->adxpd;
     ADXB_UNK* unk     = &arg0->unk48;
 
-    ADXPD_EntrySte(temp_r4, unk->unk0, arg1, unk->unk14 + (unk->unk20 * 2), 0);
+    ADXPD_EntryMono(temp_r4, unk->unk0, arg1, unk->unk14 + (unk->unk20 * 2), 0);
     ADXPD_Start(temp_r4);
 }
 
-void func_02012b60(ADXB arg0, s32 arg1) {
+void ADXB_EvokeExpandSte(ADXB arg0, s32 arg1) {
     ADXPD temp_r4 = arg0->adxpd;
 
-    func_02018ea8(temp_r4, arg0->unk48.unk0, arg1 * 2, arg0->unk48.unk14 + (arg0->unk48.unk20 * 2) + (arg0->unk48.unk1C * 2));
+    ADXPD_EntrySte(temp_r4, arg0->unk48.unk0, arg1 * 2, arg0->unk48.unk14 + (arg0->unk48.unk20 * 2) + (arg0->unk48.unk1C * 2));
     ADXPD_Start(temp_r4);
 }
 
@@ -508,9 +506,9 @@ void ADXB_EvokeDecode(ADXB adxb) {
     temp_lo = MIN(temp_lo, var_t3);
 
     if (unk->unk8 == 2) {
-        func_02012b60(adxb, temp_lo);
-    } else {
         ADXB_EvokeExpandSte(adxb, temp_lo);
+    } else {
+        ADXB_EvokeExpandMono(adxb, temp_lo);
     }
 }
 
@@ -600,7 +598,7 @@ void ADXB_ExecHndl(ADXB adxb) {
     if (adxb->format == 0) {
         ADXB_ExecOneAdx(adxb);
     } else if (adxb->format == 10) {
-        func_02012098(adxb);
+        ADXB_ExecOneAhx(adxb);
     }
 
     if (adxb->unkE4 != 0) {

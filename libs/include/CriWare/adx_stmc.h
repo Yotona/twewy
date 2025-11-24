@@ -13,7 +13,7 @@ typedef struct {
     /* 0x01 */ s8          unk_01;
     /* 0x02 */ s8          unk_02;
     /* 0x03 */ s8          unk_03;
-    /* 0x04 */ SJ*         sj;
+    /* 0x04 */ SJ          sj;
     /* 0x08 */ CVFSHandle* fileHndl;
     /* 0x0C */ s32         unk_0C;
     /* 0x10 */ u32         file_len;

@@ -281,22 +281,15 @@ s32 SVM_ExecSvrUsrIdle(void) {
     return SVM_ExecSvrFunc(7);
 }
 
-// Nonmatching: Doesn't compile as if using memset, expects direct assignments
-// Scratch: Vv5iL
 void svm_reset_variable(void) {
-    s32  i;
-    s32* exec_cnt_ptr;
+    __builtin__clear(svm_svr_exec_flag, sizeof(svm_svr_exec_flag));
+    __builtin__clear(&svm_lock_callback, sizeof(svm_lock_callback));
+    __builtin__clear(&svm_unlock_callback, sizeof(svm_unlock_callback));
+    __builtin__clear(&data_0207007c, sizeof(data_0207007c));
+    __builtin__clear(&data_02070074, sizeof(data_02070074));
 
-    memset(svm_svr_exec_flag, 0, sizeof(svm_svr_exec_flag));
-    memset(&svm_lock_callback, 0, sizeof(SVMLockCallback));
-    memset(&svm_unlock_callback, 0, sizeof(SVMLockCallback));
-    memset(&data_0207007c, 0, sizeof(SVM_UNK));
-    memset(&data_02070074, 0, sizeof(SVM_UNK));
-
-    exec_cnt_ptr = svm_exec_cnt;
-
-    for (i = 0; i < 6; i++) {
-        *exec_cnt_ptr++ = 0;
+    for (s32 i = 0; i < 6; i++) {
+        svm_exec_cnt[i] = 0;
     }
 
     svm_test_and_set_callback = NULL;

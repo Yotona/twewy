@@ -30,9 +30,9 @@ void ADXSJD_Clear(ADXSJD* sjd) {
     sjd->unk_AC = 0;
 }
 
-ADXSJD* ADXSJD_Create(SJ* sj, s32 maxChans, SJ** sjo) {
+ADXSJD* ADXSJD_Create(SJ sj, s32 maxChans, SJ* sjo) {
     ADXSJD* sjd;
-    SJ*     out;
+    SJ      out;
     void*   buf_ptr;
     s32     i;
     s32     j;
@@ -98,7 +98,7 @@ s8 ADXSJD_GetStat(ADXSJD* sjd) {
     return sjd->state;
 }
 
-void ADXSJD_SetInSj(ADXSJD* sjd, SJ* sj) {
+void ADXSJD_SetInSj(ADXSJD* sjd, SJ sj) {
     sjd->sji = sj;
     ADXB_SetAhxInSj(sjd->adxb, sj);
 }

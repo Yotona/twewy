@@ -1,36 +1,8 @@
 #ifndef CRIWARE_ADX_B_H
 #define CRIWARE_ADX_B_H
 
+#include <CriWare/private/adx_xpnd.h>
 #include <types.h>
-
-typedef struct {
-    /* 0x00 */ s16 unk0;
-    /* 0x02 */ s16 unk2;
-    /* 0x04 */ s16 unk4;
-    /* 0x06 */ s16 unk6;
-} ADXPD_OBJ_SUB;
-
-typedef struct {
-    /* 0x00 */ s32           used;
-    /* 0x04 */ s32           unk4;
-    /* 0x08 */ s32           mode;
-    /* 0x0C */ s32           stat;
-    /* 0x10 */ s32           num_blk;
-    /* 0x14 */ s32           unk14;
-    /* 0x18 */ s32           unk18;
-    /* 0x1C */ s32           unk1C;
-    /* 0x20 */ s32           unk20;
-    /* 0x24 */ s32           unk24;
-    /* 0x28 */ ADXPD_OBJ_SUB unk28;
-    /* 0x30 */ s16           unk30;
-    /* 0x32 */ s16           unk32;
-    /* 0x34 */ s16           unk34;
-    /* 0x36 */ s16           unk36;
-    /* 0x38 */ s16           unk38;
-    /* 0x3A */ s16           unk3A;
-} ADXPD_OBJ;
-
-typedef ADXPD_OBJ* ADXPD;
 
 typedef struct {
     char pad0[0x10];
@@ -101,14 +73,14 @@ typedef struct ADXB_OBJ {
     /* 0xB8 */ s32     unkB8;
     /* 0xBC */ s32     unkBC;
     /* 0xC0 */ s32     ainf_len;
-    /* 0xCC */ ADX_UNK unkCC;
+    /* 0xC4 */ ADX_UNK unkC4;
     /* 0xD4 */ s16     def_out_vol;
     /* 0xD6 */ s16     def_pan[2];
     /* 0xDA */ char    padDA[2];
     /* 0xDC */ s32     unkDC;
     /* 0xE0 */ s32     unkE0;
     /* 0xE4 */ s32     unkE4;
-    /* 0xE8 */ char    padE8[8];
+    /* 0xE8 */ char    padE8[4];
 } ADXB_OBJ; // Size: 0xEC
 
 typedef ADXB_OBJ* ADXB;

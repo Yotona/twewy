@@ -1,7 +1,7 @@
 #include <CriWare/adx_stmc.h>
 #include <CriWare/sj.h>
 
-ADXSTM* adxstm_Create(SJ* sj, s32 offset);
+ADXSTM* adxstm_Create(SJ sj, s32 offset);
 void    adxstm_Destroy(ADXSTM* stm);
 void    adxstm_ReleaseFileNw(ADXSTM* stm);
 void    func_02015f14(ADXSTM* stm);
@@ -45,32 +45,13 @@ void ADXSTM_Finish(void) {
     if (data_0206c3a4 != 0) {
         return;
     }
-    iVar2         = 31;
-    data_0206c3a4 = 0;
-    pAVar1        = adxstmf_obj;
-    do {
-        pAVar3           = pAVar1;
-        pAVar3->unk_00   = 0;
-        pAVar3->unk_01   = 0;
-        pAVar3->unk_02   = 0;
-        pAVar3->unk_03   = 0;
-        pAVar3->sj       = NULL;
-        pAVar3->fileHndl = NULL;
-        pAVar3->unk_0C   = 0;
-        pAVar3->file_len = 0;
-        pAVar3->unk_14   = 0;
-        pAVar3->unk_18   = 0;
-        pAVar3->unk_1C   = 0;
-        iVar2--;
-        pAVar1 = (ADXSTM*)&pAVar3->unk_20;
-    } while (iVar2 != 0);
-    pAVar3->unk_20 = 0;
-    pAVar3->unk_24 = 0;
+
+    __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
 }
 
-void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, s32 arg2, s32 file_len, SJ* sj) {}
+void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, s32 arg2, s32 file_len, SJ sj) {}
 
-static ADXSTM* ADXSTMF_CreateCvfsRt(s32 arg0, s32 offset, s32 file_len, SJ* sj) {
+static ADXSTM* ADXSTMF_CreateCvfsRt(s32 arg0, s32 offset, s32 file_len, SJ sj) {
     ADXSTM* stm = NULL;
     s32     i;
 
@@ -91,7 +72,7 @@ static ADXSTM* ADXSTMF_CreateCvfsRt(s32 arg0, s32 offset, s32 file_len, SJ* sj) 
     return stm;
 }
 
-static ADXSTM* ADXSTMF_CreateCvfs(s32 arg0, s32 offset, s32 file_len, SJ* sj) {
+static ADXSTM* ADXSTMF_CreateCvfs(s32 arg0, s32 offset, s32 file_len, SJ sj) {
     ADXSTM* stm = NULL;
     s32     i;
 
@@ -112,14 +93,14 @@ static ADXSTM* ADXSTMF_CreateCvfs(s32 arg0, s32 offset, s32 file_len, SJ* sj) {
     return stm;
 }
 
-ADXSTM* ADXSTM_Create(SJ* sj, s32 offset) {
+ADXSTM* ADXSTM_Create(SJ sj, s32 offset) {
     func_020168f4();
     ADXSTM* stm = adxstm_Create(sj, offset);
     func_02016900();
     return stm;
 }
 
-ADXSTM* adxstm_Create(SJ* sj, s32 offset) {
+ADXSTM* adxstm_Create(SJ sj, s32 offset) {
     ADXSTM* stm;
 
     if (offset < 0x100) {
@@ -333,7 +314,7 @@ void func_02016188(ADXSTM* stm) {
     SJCK        SStack_20;
     SJCK        SStack_28;
 
-    SJ* sj   = stm->sj;
+    SJ  sj   = stm->sj;
     s32 stat = cvFsGetStat(stm->fileHndl);
 
     func_020168d0();
