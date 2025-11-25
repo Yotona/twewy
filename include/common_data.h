@@ -4,8 +4,18 @@
 #include <types.h>
 
 extern s32 data_0205c9b0;
-
+extern s32 data_0205cb10;
+extern s32 data_0206aa90;
+extern s32 data_0206aa94;
 extern s32 data_0206aab0;
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+    s32 unk_10;
+} UnkStruct_0206b408;
+extern UnkStruct_0206b408 data_0206b408;
 // extern s32 data_02066aac[16];
 extern s16 data_02066aec;
 extern s32 data_02066cec;
@@ -260,5 +270,8 @@ typedef struct {
     /* 0x1E */ u16   unk_1E;
 } UnkStruct_usedby_02025b68;
 extern UnkStruct_usedby_02025b68 usedby_02025b68;
+
+extern s16  data_02073710;
+extern s32* data_02074d10;
 
 #endif // COMMON_DATA_H
