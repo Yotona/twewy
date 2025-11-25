@@ -99,7 +99,7 @@ void adxt_StartMem2(ADXT adxt, void* adxData, s32 dataLength) {
 
     ADXT_Stop(adxt);
     ADXCRS_Lock();
-    SJ* sj = SJMEM_Create(adxData, dataLength);
+    SJ sj = SJMEM_Create(adxData, dataLength);
     if (sj == NULL) {
         ADXCRS_Unlock();
         ADXERR_CallErrFunc1("E8101207: can\'t create sj (adxt_StartMem)");

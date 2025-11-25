@@ -530,85 +530,97 @@ func_02011f00 kind:function(arm,size=0x44) addr:0x02011f00
 func_02011f44 kind:function(arm,size=0xa0) addr:0x02011f44
 func_02011fe4 kind:function(arm,size=0x28) addr:0x02011fe4
 func_0201200c kind:function(arm,size=0x20) addr:0x0201200c
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_bahx.c
+/////////////////////////////////////////////////////////////
 ADXB_SetAhxInSj kind:function(arm,size=0x24) addr:0x0201202c
-func_02012050 kind:function(arm,size=0x48) addr:0x02012050
-func_02012098 kind:function(arm,size=0x18) addr:0x02012098
-func_020120b0 kind:function(arm,size=0x24) addr:0x020120b0
-func_020120d4 kind:function(arm,size=0x1c) addr:0x020120d4
-func_020120f0 kind:function(arm,size=0x158) addr:0x020120f0
+ADXB_SetAhxDecSmpl kind:function(arm,size=0x48) addr:0x02012050
+ADXB_ExecOneAhx kind:function(arm,size=0x18) addr:0x02012098
+ADXB_AhxTermSupply kind:function(arm,size=0x24) addr:0x020120b0
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_bsc.c
+/////////////////////////////////////////////////////////////
+SKG_Init kind:function(arm,size=0x1c) addr:0x020120d4
+SKG_GenerateKey kind:function(arm,size=0x158) addr:0x020120f0
 func_02012248 kind:function(arm,size=0x10) addr:0x02012248
 func_02012258 kind:function(arm,size=0x10) addr:0x02012258
-func_02012268 kind:function(arm,size=0x48) addr:0x02012268
-func_020122b0 kind:function(arm,size=0x30) addr:0x020122b0
-func_020122e0 kind:function(arm,size=0x1c) addr:0x020122e0
+ADXB_Init kind:function(arm,size=0x48) addr:0x02012268
+adxb_DefGetWr kind:function(arm,size=0x30) addr:0x020122b0
+adxb_DefAddWr kind:function(arm,size=0x1c) addr:0x020122e0
 func_020122fc kind:function(arm,size=0x40) addr:0x020122fc
 ADXB_Create kind:function(arm,size=0xcc) addr:0x0201233c
 ADXB_Destroy kind:function(arm,size=0x38) addr:0x02012408
-func_02012440 kind:function(arm,size=0x308) addr:0x02012440
+ADXB_DecodeHeaderAdx kind:function(arm,size=0x308) addr:0x02012440
 func_02012748 kind:function(arm,size=0xa4) addr:0x02012748
 func_020127ec kind:function(arm,size=0x5c) addr:0x020127ec
 ADXB_EntryGetWrFunc kind:function(arm,size=0xc) addr:0x02012848
-func_02012854 kind:function(arm,size=0x8) addr:0x02012854
-func_0201285c kind:function(arm,size=0x8) addr:0x0201285c
-func_02012864 kind:function(arm,size=0x8) addr:0x02012864
-func_0201286c kind:function(arm,size=0x24) addr:0x0201286c
-func_02012890 kind:function(arm,size=0x8) addr:0x02012890
-func_02012898 kind:function(arm,size=0x8) addr:0x02012898
-func_020128a0 kind:function(arm,size=0x8) addr:0x020128a0
-func_020128a8 kind:function(arm,size=0x8) addr:0x020128a8
-func_020128b0 kind:function(arm,size=0x8) addr:0x020128b0
+ADXB_GetPcmBuf kind:function(arm,size=0x8) addr:0x02012854
+ADXB_GetFormat kind:function(arm,size=0x8) addr:0x0201285c
+ADXB_GetSfreq kind:function(arm,size=0x8) addr:0x02012864
+ADXB_GetNumChan kind:function(arm,size=0x24) addr:0x0201286c
+ADXB_GetBitdepth kind:function(arm,size=0x8) addr:0x02012890
+ADXB_GetOutBps kind:function(arm,size=0x8) addr:0x02012898
+ADXB_GetBlkSmpl kind:function(arm,size=0x8) addr:0x020128a0
+ADXB_GetTotalNumSmpl kind:function(arm,size=0x8) addr:0x020128a8
+ADXB_GetNumLoop kind:function(arm,size=0x8) addr:0x020128b0
 func_020128b8 kind:function(arm,size=0x8) addr:0x020128b8
 func_020128c0 kind:function(arm,size=0x10) addr:0x020128c0
 func_020128d0 kind:function(arm,size=0x8) addr:0x020128d0
 func_020128d8 kind:function(arm,size=0x8) addr:0x020128d8
 ADXB_GetAinfLen kind:function(arm,size=0x8) addr:0x020128e0
 ADXB_GetDefOutVol kind:function(arm,size=0x8) addr:0x020128e8
-func_020128f0 kind:function(arm,size=0xc) addr:0x020128f0
+ADXB_GetDefPan kind:function(arm,size=0xc) addr:0x020128f0
 func_020128fc kind:function(arm,size=0x30) addr:0x020128fc
 func_0201292c kind:function(arm,size=0x30) addr:0x0201292c
-func_0201295c kind:function(arm,size=0xe4) addr:0x0201295c
-func_02012a40 kind:function(arm,size=0x8) addr:0x02012a40
-func_02012a48 kind:function(arm,size=0x6c) addr:0x02012a48
-func_02012ab4 kind:function(arm,size=0x14) addr:0x02012ab4
+adxb_get_key kind:function(arm,size=0xe4) addr:0x0201295c
+ADXB_GetStat kind:function(arm,size=0x8) addr:0x02012a40
+ADXB_EntryData kind:function(arm,size=0x6c) addr:0x02012a48
+ADXB_Start kind:function(arm,size=0x14) addr:0x02012ab4
 ADXB_Stop kind:function(arm,size=0x1c) addr:0x02012ac8
-func_02012ae4 kind:function(arm,size=0x2c) addr:0x02012ae4
-func_02012b10 kind:function(arm,size=0x8) addr:0x02012b10
-func_02012b18 kind:function(arm,size=0x8) addr:0x02012b18
-func_02012b20 kind:function(arm,size=0x40) addr:0x02012b20
-func_02012b60 kind:function(arm,size=0x48) addr:0x02012b60
-func_02012ba8 kind:function(arm,size=0x104) addr:0x02012ba8
-func_02012cac kind:function(arm,size=0x20) addr:0x02012cac
-func_02012ccc kind:function(arm,size=0x38) addr:0x02012ccc
-func_02012d04 kind:function(arm,size=0x14) addr:0x02012d04
-func_02012d18 kind:function(arm,size=0xe0) addr:0x02012d18
-func_02012df8 kind:function(arm,size=0xa0) addr:0x02012df8
-func_02012e98 kind:function(arm,size=0x40) addr:0x02012e98
+ADXB_Reset kind:function(arm,size=0x2c) addr:0x02012ae4
+ADXB_GetDecDtLen kind:function(arm,size=0x8) addr:0x02012b10
+ADXB_GetDecNumSmpl kind:function(arm,size=0x8) addr:0x02012b18
+ADXB_EvokeExpandMono kind:function(arm,size=0x40) addr:0x02012b20
+ADXB_EvokeExpandSte kind:function(arm,size=0x48) addr:0x02012b60
+ADXB_EvokeDecode kind:function(arm,size=0x104) addr:0x02012ba8
+memcpy2 kind:function(arm,size=0x20) addr:0x02012cac
+ADXB_CopyExtraBufSte kind:function(arm,size=0x38) addr:0x02012ccc
+ADXB_CopyExtraBufMono kind:function(arm,size=0x14) addr:0x02012d04
+ADXB_EndDecode kind:function(arm,size=0xe0) addr:0x02012d18
+ADXB_ExecOneAdx kind:function(arm,size=0xa0) addr:0x02012df8
+ADXB_ExecHndl kind:function(arm,size=0x40) addr:0x02012e98
 func_02012ed8 kind:function(arm,size=0x48) addr:0x02012ed8
-func_02012f20 kind:function(arm,size=0x28) addr:0x02012f20
-func_02012f48 kind:function(arm,size=0x28) addr:0x02012f48
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_crs.c
 /////////////////////////////////////////////////////////////
+ADXCRS_Init kind:function(arm,size=0x28) addr:0x02012f20
+func_02012f48 kind:function(arm,size=0x28) addr:0x02012f48
 ADXCRS_Lock kind:function(arm,size=0xc) addr:0x02012f70
 ADXCRS_Unlock kind:function(arm,size=0xc) addr:0x02012f7c
 
 
 func_02012f88 kind:function(arm,size=0x4) addr:0x02012f88
 func_02012f8c kind:function(arm,size=0x4) addr:0x02012f8c
-func_02012f90 kind:function(arm,size=0x14c) addr:0x02012f90
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_dcd.c
+/////////////////////////////////////////////////////////////
+ADX_GetCoefficient kind:function(arm,size=0x14c) addr:0x02012f90
 func_020130dc kind:function(arm,size=0x60) addr:0x020130dc
-func_0201313c kind:function(arm,size=0xf0) addr:0x0201313c
-func_0201322c kind:function(arm,size=0x90) addr:0x0201322c
-func_020132bc kind:function(arm,size=0x84) addr:0x020132bc
-func_02013340 kind:function(arm,size=0x134) addr:0x02013340
-func_02013474 kind:function(arm,size=0x1f8) addr:0x02013474
-func_0201366c kind:function(arm,size=0x1fc) addr:0x0201366c
+ADX_DecodeInfo kind:function(arm,size=0xf0) addr:0x0201313c
+ADX_DecodeInfoExADPCM2 kind:function(arm,size=0x90) addr:0x0201322c
+ADX_DecodeInfoExVer kind:function(arm,size=0x84) addr:0x020132bc
+ADX_DecodeInfoExIdly kind:function(arm,size=0x134) addr:0x02013340
+ADX_DecodeInfoExLoop kind:function(arm,size=0x1f8) addr:0x02013474
+ADX_DecodeInfoAinf kind:function(arm,size=0x1fc) addr:0x0201366c
 func_02013868 kind:function(arm,size=0x78) addr:0x02013868
-func_020138e0 kind:function(arm,size=0x1b0) addr:0x020138e0
+ADX_DecodeMono4 kind:function(arm,size=0x1b0) addr:0x020138e0
 func_02013a90 kind:function(arm,size=0x414) addr:0x02013a90
 func_02013ea4 kind:function(arm,size=0x394) addr:0x02013ea4
-func_02014238 kind:function(arm,size=0xa4) addr:0x02014238
+ADX_DecodeSte4 kind:function(arm,size=0xa4) addr:0x02014238
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_errs.c
@@ -620,17 +632,23 @@ ADXERR_CallErrFunc2 kind:function(arm,size=0x78) addr:0x02014398
 ADXERR_ItoA kind:function(arm,size=0xac) addr:0x02014410
 ADXERR_ItoA2 kind:function(arm,size=0x6c) addr:0x020144bc
 
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_fsvr.c
+/////////////////////////////////////////////////////////////
+ADXT_ExecFsSvr kind:function(arm,size=0x14) addr:0x02014528
+adxt_ExecFsSvr kind:function(arm,size=0xcc) addr:0x0201453c
 
-func_02014528 kind:function(arm,size=0x14) addr:0x02014528
-func_0201453c kind:function(arm,size=0xcc) addr:0x0201453c
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_inis.c
+/////////////////////////////////////////////////////////////
 ADXT_GetVersionInfo kind:function(arm,size=0xc) addr:0x02014608
-func_02014614 kind:function(arm,size=0x10) addr:0x02014614
-func_02014624 kind:function(arm,size=0x10) addr:0x02014624
-func_02014634 kind:function(arm,size=0x10) addr:0x02014634
-func_02014644 kind:function(arm,size=0x10) addr:0x02014644
-func_02014654 kind:function(arm,size=0x10) addr:0x02014654
-func_02014664 kind:function(arm,size=0x148) addr:0x02014664
-func_020147ac kind:function(arm,size=0xdc) addr:0x020147ac
+adxini_rnaerr_cbfn kind:function(arm,size=0x10) addr:0x02014614
+adxini_lscerr_cbfn kind:function(arm,size=0x10) addr:0x02014624
+adxt_exec_main_thrd kind:function(arm,size=0x10) addr:0x02014634
+adxt_exec_tsvr kind:function(arm,size=0x10) addr:0x02014644
+adxt_exec_fssvr kind:function(arm,size=0x10) addr:0x02014654
+ADXT_Init kind:function(arm,size=0x148) addr:0x02014664
+ADXT_Finish kind:function(arm,size=0xdc) addr:0x020147ac
 func_02014888 kind:function(arm,size=0x14) addr:0x02014888
 func_0201489c kind:function(arm,size=0x40) addr:0x0201489c
 
@@ -685,23 +703,22 @@ func_02015a94 kind:function(arm,size=0x10) addr:0x02015a94
 func_02015aa4 kind:function(arm,size=0x8) addr:0x02015aa4
 
 
-func_02015aac kind:function(arm,size=0x58) addr:0x02015aac
-func_02015b04 kind:function(arm,size=0x50) addr:0x02015b04
-func_02015b54 kind:function(arm,size=0xe4) addr:0x02015b54
-func_02015c38 kind:function(arm,size=0x9c) addr:0x02015c38
-func_02015cd4 kind:function(arm,size=0x94) addr:0x02015cd4
-
 /////////////////////////////////////////////////////////////
-// libs/CriWare/adxstm.c
+// libs/CriWare/adx_stmc.c
 /////////////////////////////////////////////////////////////
+ADXSTM_Init kind:function(arm,size=0x58) addr:0x02015aac
+ADXSTM_Finish kind:function(arm,size=0x50) addr:0x02015b04
+ADXSTMF_SetupHandleMember kind:function(arm,size=0xe4) addr:0x02015b54
+ADXSTMF_CreateCvfsRt kind:function(arm,size=0x9c) addr:0x02015c38
+ADXSTMF_CreateCvfs kind:function(arm,size=0x94) addr:0x02015cd4
 ADXSTM_Create kind:function(arm,size=0x2c) addr:0x02015d68
-func_02015d94 kind:function(arm,size=0x30) addr:0x02015d94
+adxstm_Create kind:function(arm,size=0x30) addr:0x02015d94
 ADXSTM_Destroy kind:function(arm,size=0x1c) addr:0x02015dc4
-func_02015de0 kind:function(arm,size=0x30) addr:0x02015de0
+adxstm_Destroy kind:function(arm,size=0x30) addr:0x02015de0
 ADXSTM_BindFileNw kind:function(arm,size=0x4c) addr:0x02015e10
-func_02015e5c kind:function(arm,size=0x6c) addr:0x02015e5c
+adxstm_BindFileNw kind:function(arm,size=0x6c) addr:0x02015e5c
 ADXSTM_ReleaseFileNw kind:function(arm,size=0x1c) addr:0x02015ec8
-func_02015ee4 kind:function(arm,size=0x30) addr:0x02015ee4
+adxstm_ReleaseFileNw kind:function(arm,size=0x30) addr:0x02015ee4
 func_02015f14 kind:function(arm,size=0x1c) addr:0x02015f14
 func_02015f30 kind:function(arm,size=0x2c) addr:0x02015f30
 func_02015f5c kind:function(arm,size=0x24) addr:0x02015f5c
@@ -712,18 +729,18 @@ func_02015fcc kind:function(arm,size=0x3c) addr:0x02015fcc
 ADXSTM_Start kind:function(arm,size=0x24) addr:0x02016008
 func_0201602c kind:function(arm,size=0x2c) addr:0x0201602c
 ADXSTM_StopNw kind:function(arm,size=0x1c) addr:0x02016058
-func_02016074 kind:function(arm,size=0x48) addr:0x02016074
+adxstm_StopNw kind:function(arm,size=0x48) addr:0x02016074
 func_020160bc kind:function(arm,size=0x1c) addr:0x020160bc
 func_020160d8 kind:function(arm,size=0x2c) addr:0x020160d8
 ADXSTM_EntryEosFunc kind:function(arm,size=0x2c) addr:0x02016104
 func_02016130 kind:function(arm,size=0xc) addr:0x02016130
 ADXSTM_SetEos kind:function(arm,size=0x24) addr:0x0201613c
 func_02016160 kind:function(arm,size=0x10) addr:0x02016160
-func_02016170 kind:function(arm,size=0x18) addr:0x02016170
+adxstm_sj_internal_error kind:function(arm,size=0x18) addr:0x02016170
 func_02016188 kind:function(arm,size=0x3c4) addr:0x02016188
 func_0201654c kind:function(arm,size=0x2ac) addr:0x0201654c
-func_020167f8 kind:function(arm,size=0x14) addr:0x020167f8
-func_0201680c kind:function(arm,size=0x5c) addr:0x0201680c
+ADXSTM_ExecServer kind:function(arm,size=0x14) addr:0x020167f8
+adxstm_ExecServer kind:function(arm,size=0x5c) addr:0x0201680c
 func_02016868 kind:function(arm,size=0x14) addr:0x02016868
 func_0201687c kind:function(arm,size=0xc) addr:0x0201687c
 func_02016888 kind:function(arm,size=0x4) addr:0x02016888
@@ -767,10 +784,10 @@ adxt_SetOutVol kind:function(arm,size=0x50) addr:0x020176e8 local
 ADXT_GetOutVol kind:function(arm,size=0x24) addr:0x02017738
 adxt_GetOutVol kind:function(arm,size=0x24) addr:0x0201775c
 ADXT_SetExtraInfo kind:function(arm,size=0x8) addr:0x02017780
-func_02017788 kind:function(arm,size=0x1c) addr:0x02017788
-ADXT_SetDefSvrFreq kind:function(arm,size=0x14) addr:0x020177a4
-func_020177b8 kind:function(arm,size=0x14) addr:0x020177b8
-ADXT_ExecServer kind:function(arm,size=0xe8) addr:0x020177cc
+ADXT_SetDefSvrFreq kind:function(arm,size=0x1c) addr:0x02017788
+adxt_SetDefSvrFreq kind:function(arm,size=0x14) addr:0x020177a4
+ADXT_ExecServer kind:function(arm,size=0x14) addr:0x020177b8
+adxt_ExecServer kind:function(arm,size=0xe8) addr:0x020177cc
 ADXT_SetLpFlg kind:function(arm,size=0x24) addr:0x020178b4
 adxt_SetLpFlg kind:function(arm,size=0xdc) addr:0x020178d8
 ADXT_Pause kind:function(arm,size=0x24) addr:0x020179b4
@@ -814,154 +831,176 @@ func_02018bd4 kind:function(arm,size=0x6c) addr:0x02018bd4
 func_02018c40 kind:function(arm,size=0x1c) addr:0x02018c40
 adxt_ExecHndl kind:function(arm,size=0x80) addr:0x02018c5c
 
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_xpnd.c
+/////////////////////////////////////////////////////////////
+ADXPD_Init kind:function(arm,size=0x38) addr:0x02018cdc
+ADXPD_Create kind:function(arm,size=0xa8) addr:0x02018d14
+ADXPD_SetCoef kind:function(arm,size=0x1c) addr:0x02018dbc
+ADXPD_SetDly kind:function(arm,size=0x24) addr:0x02018dd8
+ADXPD_GetDly kind:function(arm,size=0x24) addr:0x02018dfc
+ADXPD_SetExtPrm kind:function(arm,size=0x10) addr:0x02018e20
+ADXPD_GetExtPrm kind:function(arm,size=0x1c) addr:0x02018e30
+ADXPD_Destroy kind:function(arm,size=0x20) addr:0x02018e4c
+ADXPD_GetStat kind:function(arm,size=0x8) addr:0x02018e6c
+ADXPD_EntryMono kind:function(arm,size=0x34) addr:0x02018e74
+ADXPD_EntrySte kind:function(arm,size=0x34) addr:0x02018ea8
+ADXPD_Start kind:function(arm,size=0x20) addr:0x02018edc
+ADXPD_Stop kind:function(arm,size=0x2c) addr:0x02018efc
+ADXPD_Reset kind:function(arm,size=0x14) addr:0x02018f28
+ADXPD_GetNumBlk kind:function(arm,size=0x8) addr:0x02018f3c
+adxpd_error kind:function(arm,size=0x14) addr:0x02018f44
+ADXPD_ExecHndl kind:function(arm,size=0xf4) addr:0x02018f58
 
-func_02018cdc kind:function(arm,size=0x38) addr:0x02018cdc
-func_02018d14 kind:function(arm,size=0xa8) addr:0x02018d14
-func_02018dbc kind:function(arm,size=0x1c) addr:0x02018dbc
-func_02018dd8 kind:function(arm,size=0x24) addr:0x02018dd8
-func_02018dfc kind:function(arm,size=0x24) addr:0x02018dfc
-func_02018e20 kind:function(arm,size=0x10) addr:0x02018e20
-func_02018e30 kind:function(arm,size=0x1c) addr:0x02018e30
-func_02018e4c kind:function(arm,size=0x20) addr:0x02018e4c
-func_02018e6c kind:function(arm,size=0x8) addr:0x02018e6c
-func_02018e74 kind:function(arm,size=0x34) addr:0x02018e74
-func_02018ea8 kind:function(arm,size=0x34) addr:0x02018ea8
-func_02018edc kind:function(arm,size=0x20) addr:0x02018edc
-func_02018efc kind:function(arm,size=0x2c) addr:0x02018efc
-func_02018f28 kind:function(arm,size=0x14) addr:0x02018f28
-func_02018f3c kind:function(arm,size=0x8) addr:0x02018f3c
-func_02018f44 kind:function(arm,size=0x14) addr:0x02018f44
-func_02018f58 kind:function(arm,size=0xf4) addr:0x02018f58
-func_0201904c kind:function(arm,size=0x14) addr:0x0201904c
-func_02019060 kind:function(arm,size=0x3c) addr:0x02019060
-func_0201909c kind:function(arm,size=0x18) addr:0x0201909c
-func_020190b4 kind:function(arm,size=0x58) addr:0x020190b4
-func_0201910c kind:function(arm,size=0x18) addr:0x0201910c
-func_02019124 kind:function(arm,size=0x4c) addr:0x02019124
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_rbf.c
+/////////////////////////////////////////////////////////////
+SJRBF_Error kind:function(arm,size=0x14) addr:0x0201904c
+SJRBF_Log kind:function(arm,size=0x3c) addr:0x02019060
+SJRBF_Init kind:function(arm,size=0x18) addr:0x0201909c
+sjrbf_Init kind:function(arm,size=0x58) addr:0x020190b4 local
+SJRBF_Finish kind:function(arm,size=0x18) addr:0x0201910c
+sjrbf_Finish kind:function(arm,size=0x4c) addr:0x02019124 local
 SJRBF_Create kind:function(arm,size=0x34) addr:0x02019170
-func_020191a4 kind:function(arm,size=0xa0) addr:0x020191a4
-func_02019244 kind:function(arm,size=0x1c) addr:0x02019244
-func_02019260 kind:function(arm,size=0x60) addr:0x02019260
-func_020192c0 kind:function(arm,size=0x24) addr:0x020192c0
-func_020192e4 kind:function(arm,size=0x54) addr:0x020192e4
-func_02019338 kind:function(arm,size=0x2c) addr:0x02019338
-func_02019364 kind:function(arm,size=0x50) addr:0x02019364
-func_020193b4 kind:function(arm,size=0x1c) addr:0x020193b4
-func_020193d0 kind:function(arm,size=0x74) addr:0x020193d0
-func_02019444 kind:function(arm,size=0x2c) addr:0x02019444
-func_02019470 kind:function(arm,size=0x88) addr:0x02019470
-func_020194f8 kind:function(arm,size=0x34) addr:0x020194f8
-func_0201952c kind:function(arm,size=0x198) addr:0x0201952c
-func_020196c4 kind:function(arm,size=0xc) addr:0x020196c4
-func_020196d0 kind:function(arm,size=0x180) addr:0x020196d0
-func_02019850 kind:function(arm,size=0x2c) addr:0x02019850
-func_0201987c kind:function(arm,size=0x1a8) addr:0x0201987c
-func_02019a24 kind:function(arm,size=0x3c) addr:0x02019a24
-func_02019a60 kind:function(arm,size=0xf0) addr:0x02019a60
+sjrbf_Create kind:function(arm,size=0xa0) addr:0x020191a4 local
+SJRBF_Destroy kind:function(arm,size=0x1c) addr:0x02019244
+sjrbf_Destroy kind:function(arm,size=0x60) addr:0x02019260 local
+SJRBF_GetUuid kind:function(arm,size=0x24) addr:0x020192c0
+sjrbf_GetUuid kind:function(arm,size=0x54) addr:0x020192e4 local
+SJRBF_EntryErrFunc kind:function(arm,size=0x2c) addr:0x02019338
+sjrbf_EntryErrFunc kind:function(arm,size=0x50) addr:0x02019364 local
+SJRBF_Reset kind:function(arm,size=0x1c) addr:0x020193b4
+sjrbf_Reset kind:function(arm,size=0x74) addr:0x020193d0 local
+SJRBF_GetNumData kind:function(arm,size=0x2c) addr:0x02019444
+sjrbf_GetNumData kind:function(arm,size=0x88) addr:0x02019470 local
+SJRBF_GetChunk kind:function(arm,size=0x34) addr:0x020194f8
+sjrbf_GetChunk kind:function(arm,size=0x198) addr:0x0201952c local
+SJRBF_PutChunk kind:function(arm,size=0xc) addr:0x020196c4
+sjrbf_PutChunk kind:function(arm,size=0x180) addr:0x020196d0 local
+SJRBF_UngetChunk kind:function(arm,size=0x2c) addr:0x02019850
+sjrbf_UngetChunk kind:function(arm,size=0x1a8) addr:0x0201987c local
+SJRBF_IsGetChunk kind:function(arm,size=0x3c) addr:0x02019a24
+sjrbf_IsGetChunk kind:function(arm,size=0xf0) addr:0x02019a60 local
 SJRBF_GetBufPtr kind:function(arm,size=0x24) addr:0x02019b50
-func_02019b74 kind:function(arm,size=0x54) addr:0x02019b74
+sjrbf_GetBufPtr kind:function(arm,size=0x54) addr:0x02019b74 local
 SJRBF_GetBufSize kind:function(arm,size=0x24) addr:0x02019bc8
-func_02019bec kind:function(arm,size=0x54) addr:0x02019bec
+sjrbf_GetBufSize kind:function(arm,size=0x54) addr:0x02019bec local
 SJRBF_GetXtrSize kind:function(arm,size=0x24) addr:0x02019c40
-func_02019c64 kind:function(arm,size=0x54) addr:0x02019c64
-func_02019cb8 kind:function(arm,size=0xc) addr:0x02019cb8
-func_02019cc4 kind:function(arm,size=0x14) addr:0x02019cc4
-func_02019cd8 kind:function(arm,size=0x3c) addr:0x02019cd8
-func_02019d14 kind:function(arm,size=0x18) addr:0x02019d14
-func_02019d2c kind:function(arm,size=0x5c) addr:0x02019d2c
-func_02019d88 kind:function(arm,size=0x18) addr:0x02019d88
-func_02019da0 kind:function(arm,size=0x50) addr:0x02019da0
+sjrbf_GetXtrSize kind:function(arm,size=0x54) addr:0x02019c64 local
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_err.c
+/////////////////////////////////////////////////////////////
+SJERR_CallErr kind:function(arm,size=0xc) addr:0x02019cb8
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_mem.c
+/////////////////////////////////////////////////////////////
+SJMEM_Error kind:function(arm,size=0x14) addr:0x02019cc4
+SJMEM_Log kind:function(arm,size=0x3c) addr:0x02019cd8
+SJMEM_Init kind:function(arm,size=0x18) addr:0x02019d14
+sjmem_Init kind:function(arm,size=0x5c) addr:0x02019d2c local
+SJMEM_Finish kind:function(arm,size=0x18) addr:0x02019d88
+sjmem_Finish kind:function(arm,size=0x50) addr:0x02019da0 local
 SJMEM_Create kind:function(arm,size=0x2c) addr:0x02019df0
-func_02019e1c kind:function(arm,size=0x90) addr:0x02019e1c
-func_02019eac kind:function(arm,size=0x1c) addr:0x02019eac
-func_02019ec8 kind:function(arm,size=0x60) addr:0x02019ec8
-func_02019f28 kind:function(arm,size=0x24) addr:0x02019f28
-func_02019f4c kind:function(arm,size=0x54) addr:0x02019f4c
-func_02019fa0 kind:function(arm,size=0x2c) addr:0x02019fa0
-func_02019fcc kind:function(arm,size=0x50) addr:0x02019fcc
-func_0201a01c kind:function(arm,size=0x1c) addr:0x0201a01c
-func_0201a038 kind:function(arm,size=0x5c) addr:0x0201a038
-func_0201a094 kind:function(arm,size=0x2c) addr:0x0201a094
-func_0201a0c0 kind:function(arm,size=0x88) addr:0x0201a0c0
-func_0201a148 kind:function(arm,size=0x34) addr:0x0201a148
-func_0201a17c kind:function(arm,size=0xd4) addr:0x0201a17c
-func_0201a250 kind:function(arm,size=0x2c) addr:0x0201a250
-func_0201a27c kind:function(arm,size=0x94) addr:0x0201a27c
-func_0201a310 kind:function(arm,size=0x2c) addr:0x0201a310
-func_0201a33c kind:function(arm,size=0x110) addr:0x0201a33c
-func_0201a44c kind:function(arm,size=0x3c) addr:0x0201a44c
-func_0201a488 kind:function(arm,size=0xac) addr:0x0201a488
+sjmem_Create kind:function(arm,size=0x90) addr:0x02019e1c local
+SJMEM_Destroy kind:function(arm,size=0x1c) addr:0x02019eac
+sjmem_Destroy kind:function(arm,size=0x60) addr:0x02019ec8 local
+SJMEM_GetUuid kind:function(arm,size=0x24) addr:0x02019f28
+sjmem_GetUuid kind:function(arm,size=0x54) addr:0x02019f4c local
+SJMEM_EntryErrFunc kind:function(arm,size=0x2c) addr:0x02019fa0
+sjmem_EntryErrFunc kind:function(arm,size=0x50) addr:0x02019fcc local
+SJMEM_Reset kind:function(arm,size=0x1c) addr:0x0201a01c
+sjmem_Reset kind:function(arm,size=0x5c) addr:0x0201a038 local
+SJMEM_GetNumData kind:function(arm,size=0x2c) addr:0x0201a094
+sjmem_GetNumData kind:function(arm,size=0x88) addr:0x0201a0c0 local
+SJMEM_GetChunk kind:function(arm,size=0x34) addr:0x0201a148
+sjmem_GetChunk kind:function(arm,size=0xd4) addr:0x0201a17c local
+SJMEM_PutChunk kind:function(arm,size=0x2c) addr:0x0201a250
+sjmem_PutChunk kind:function(arm,size=0x94) addr:0x0201a27c local
+SJMEM_UngetChunk kind:function(arm,size=0x2c) addr:0x0201a310
+sjmem_UngetChunk kind:function(arm,size=0x110) addr:0x0201a33c local
+SJMEM_IsGetChunk kind:function(arm,size=0x3c) addr:0x0201a44c
+sjmem_IsGetChunk kind:function(arm,size=0xac) addr:0x0201a488 local
+
+
 func_0201a534 kind:function(arm,size=0x28) addr:0x0201a534
 func_0201a55c kind:function(arm,size=0x28) addr:0x0201a55c
-func_0201a584 kind:function(arm,size=0xc) addr:0x0201a584
-func_0201a590 kind:function(arm,size=0xc) addr:0x0201a590
-func_0201a59c kind:function(arm,size=0x18) addr:0x0201a59c
+SJCRS_Lock kind:function(arm,size=0xc) addr:0x0201a584
+SJCRS_Unlock kind:function(arm,size=0xc) addr:0x0201a590
+
+
+SJUNI_Init kind:function(arm,size=0x18) addr:0x0201a59c
 func_0201a5b4 kind:function(arm,size=0x58) addr:0x0201a5b4
-func_0201a60c kind:function(arm,size=0x18) addr:0x0201a60c
+SJUNI_Finish kind:function(arm,size=0x18) addr:0x0201a60c
 func_0201a624 kind:function(arm,size=0x4c) addr:0x0201a624
 func_0201a670 kind:function(arm,size=0x44) addr:0x0201a670
-func_0201a6b4 kind:function(arm,size=0x4c) addr:0x0201a6b4
-func_0201a700 kind:function(arm,size=0x78) addr:0x0201a700
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/svm.c
+/////////////////////////////////////////////////////////////
+svm_lock kind:function(arm,size=0x4c) addr:0x0201a6b4
+svm_unlock kind:function(arm,size=0x78) addr:0x0201a700
 SVM_Lock kind:function(arm,size=0x10) addr:0x0201a778
 SVM_Unlock kind:function(arm,size=0x10) addr:0x0201a788
 func_0201a798 kind:function(arm,size=0x10) addr:0x0201a798
 func_0201a7a8 kind:function(arm,size=0x10) addr:0x0201a7a8
 SVM_CallErr kind:function(arm,size=0x6c) addr:0x0201a7b8
-func_0201a824 kind:function(arm,size=0x5c) addr:0x0201a824
-func_0201a880 kind:function(arm,size=0x3c) addr:0x0201a880
-func_0201a8bc kind:function(arm,size=0x90) addr:0x0201a8bc
-func_0201a94c kind:function(arm,size=0x24) addr:0x0201a94c
-func_0201a970 kind:function(arm,size=0x8c) addr:0x0201a970
+SVM_CallErr1 kind:function(arm,size=0x5c) addr:0x0201a824
+SVM_SetCbSvrId kind:function(arm,size=0x3c) addr:0x0201a880
+svm_SetCbSvrId kind:function(arm,size=0x90) addr:0x0201a8bc
+SVM_DelCbSvr kind:function(arm,size=0x24) addr:0x0201a94c
+svm_DelCbSvr kind:function(arm,size=0x8c) addr:0x0201a970
 func_0201a9fc kind:function(arm,size=0x3c) addr:0x0201a9fc
 func_0201aa38 kind:function(arm,size=0xa4) addr:0x0201aa38
-func_0201aadc kind:function(arm,size=0x28) addr:0x0201aadc
-func_0201ab04 kind:function(arm,size=0x10) addr:0x0201ab04
-func_0201ab14 kind:function(arm,size=0x10) addr:0x0201ab14
-func_0201ab24 kind:function(arm,size=0x7c) addr:0x0201ab24
-func_0201aba0 kind:function(arm,size=0x10) addr:0x0201aba0
-func_0201abb0 kind:function(arm,size=0x10) addr:0x0201abb0
-func_0201abc0 kind:function(arm,size=0x10) addr:0x0201abc0
-func_0201abd0 kind:function(arm,size=0x10) addr:0x0201abd0
-func_0201abe0 kind:function(arm,size=0x10) addr:0x0201abe0
-func_0201abf0 kind:function(arm,size=0x10) addr:0x0201abf0
-func_0201ac00 kind:function(arm,size=0x10) addr:0x0201ac00
-func_0201ac10 kind:function(arm,size=0x10) addr:0x0201ac10
-func_0201ac20 kind:function(arm,size=0x90) addr:0x0201ac20
-func_0201acb0 kind:function(arm,size=0x30) addr:0x0201acb0
-func_0201ace0 kind:function(arm,size=0x40) addr:0x0201ace0
-func_0201ad20 kind:function(arm,size=0x50) addr:0x0201ad20
+SVM_SetCbErr kind:function(arm,size=0x28) addr:0x0201aadc
+SVM_SetCbLock kind:function(arm,size=0x10) addr:0x0201ab04
+SVM_SetCbUnlock kind:function(arm,size=0x10) addr:0x0201ab14
+SVM_ExecSvrFunc kind:function(arm,size=0x7c) addr:0x0201ab24
+SVM_ExecSvrVint kind:function(arm,size=0x10) addr:0x0201aba0
+SVM_ExecSvrUsrVsync kind:function(arm,size=0x10) addr:0x0201abb0
+SVM_ExecSvrVsync kind:function(arm,size=0x10) addr:0x0201abc0
+SVM_ExecSvrUhigh kind:function(arm,size=0x10) addr:0x0201abd0
+SVM_ExecSvrFs kind:function(arm,size=0x10) addr:0x0201abe0
+SVM_ExecSvrMain kind:function(arm,size=0x10) addr:0x0201abf0
+SVM_ExecSvrMwIdle kind:function(arm,size=0x10) addr:0x0201ac00
+SVM_ExecSvrUsrIdle kind:function(arm,size=0x10) addr:0x0201ac10
+svm_reset_variable kind:function(arm,size=0x90) addr:0x0201ac20
+SVM_Init kind:function(arm,size=0x30) addr:0x0201acb0
+SVM_Finish kind:function(arm,size=0x40) addr:0x0201ace0
+SVM_TestAndSet kind:function(arm,size=0x50) addr:0x0201ad20
 
 /////////////////////////////////////////////////////////////
-// libs/CriWare/cvFs.c
+// libs/CriWare/cri_cvfs.c
 /////////////////////////////////////////////////////////////
-cvFsCallUsrErrFn kind:function(arm,size=0x24) addr:0x0201ad70
-cvFsError kind:function(arm,size=0x1c) addr:0x0201ad94
+cvFsCallUsrErrFn kind:function(arm,size=0x24) addr:0x0201ad70 local
+cvFsError kind:function(arm,size=0x1c) addr:0x0201ad94 local
 cvFsAddDev kind:function(arm,size=0x70) addr:0x0201adb0
 addDevice kind:function(arm,size=0x94) addr:0x0201ae20
-func_0201aeb4 kind:function(arm,size=0x54) addr:0x0201aeb4
-func_0201af08 kind:function(arm,size=0x40) addr:0x0201af08
+getDevice kind:function(arm,size=0x54) addr:0x0201aeb4
+toUpperStr kind:function(arm,size=0x40) addr:0x0201af08
 cvFsSetDefDev kind:function(arm,size=0x7c) addr:0x0201af48
 isExistDev kind:function(arm,size=0x4c) addr:0x0201afc4
 cvFsGetDefDev kind:function(arm,size=0xc) addr:0x0201b010
-func_0201b01c kind:function(arm,size=0x84) addr:0x0201b01c
+variousProc kind:function(arm,size=0x84) addr:0x0201b01c
 cvFsOpen kind:function(arm,size=0x140) addr:0x0201b0a0
 allocCvFsHn kind:function(arm,size=0x3c) addr:0x0201b1e0
-func_0201b21c kind:function(arm,size=0x10) addr:0x0201b21c
-func_0201b22c kind:function(arm,size=0xdc) addr:0x0201b22c
-func_0201b308 kind:function(arm,size=0x40) addr:0x0201b308
+releaseCvFsHn kind:function(arm,size=0x10) addr:0x0201b21c
+getDevName kind:function(arm,size=0xdc) addr:0x0201b22c
+getDefDev kind:function(arm,size=0x40) addr:0x0201b308
 cvFsClose kind:function(arm,size=0x50) addr:0x0201b348
 cvFsTell kind:function(arm,size=0x58) addr:0x0201b398
 cvFsSeek kind:function(arm,size=0x58) addr:0x0201b3f0
 cvFsReqRd kind:function(arm,size=0x58) addr:0x0201b448
-func_0201b4a0 kind:function(arm,size=0x38) addr:0x0201b4a0
+cvFsExecServer kind:function(arm,size=0x38) addr:0x0201b4a0
 cvFsGetStat kind:function(arm,size=0x58) addr:0x0201b4d8
 cvFsGetFileSize kind:function(arm,size=0xbc) addr:0x0201b530
 cvFsGetFileSizeByHndl kind:function(arm,size=0x54) addr:0x0201b5ec
-func_0201b640 kind:function(arm,size=0x28) addr:0x0201b640
+cvFsEntryErrFunc kind:function(arm,size=0x28) addr:0x0201b640
 cvFsGetVolumeInfo kind:function(arm,size=0xc4) addr:0x0201b668
 cvFsSetDefVol kind:function(arm,size=0xac) addr:0x0201b72c
-func_0201b7d8 kind:function(arm,size=0x38) addr:0x0201b7d8
-func_0201b810 kind:function(arm,size=0x64) addr:0x0201b810
+isNeedDevName kind:function(arm,size=0x38) addr:0x0201b7d8
+addDevName kind:function(arm,size=0x64) addr:0x0201b810
 func_0201b874 kind:function(arm,size=0x10) addr:0x0201b874
 func_0201b884 kind:function(arm,size=0x58) addr:0x0201b884
 
@@ -985,11 +1024,11 @@ func_0201bdd0 kind:function(arm,size=0x14) addr:0x0201bdd0
 func_0201bde4 kind:function(arm,size=0x74) addr:0x0201bde4
 func_0201be58 kind:function(arm,size=0x24) addr:0x0201be58
 func_0201be7c kind:function(arm,size=0x24) addr:0x0201be7c
-func_0201bea0 kind:function(arm,size=0xc) addr:0x0201bea0
-func_0201beac kind:function(arm,size=0xc) addr:0x0201beac
-func_0201beb8 kind:function(arm,size=0xc) addr:0x0201beb8
 
 
+ADXRNA_Init kind:function(arm,size=0xc) addr:0x0201bea0
+ADXRNA_Finish kind:function(arm,size=0xc) addr:0x0201beac
+ADXRNA_EntryErrFunc kind:function(arm,size=0xc) addr:0x0201beb8
 ADXRNA_Create kind:function(arm,size=0xc) addr:0x0201bec4
 ADXRNA_Destroy kind:function(arm,size=0x18) addr:0x0201bed0
 ADXRNA_SetTransSw kind:function(arm,size=0xc) addr:0x0201bee8
@@ -1281,19 +1320,29 @@ ADXAMP_Start kind:function(arm,size=0x4) addr:0x020215b4
 ADXAMP_Stop kind:function(arm,size=0x4) addr:0x020215b8
 func_020215bc kind:function(arm,size=0x4) addr:0x020215bc
 ADXAMP_Destroy kind:function(arm,size=0x4) addr:0x020215c0
-func_020215c4 kind:function(arm,size=0x4) addr:0x020215c4
-func_020215c8 kind:function(arm,size=0x4) addr:0x020215c8
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_f.c
+/////////////////////////////////////////////////////////////
+ADXF_Init kind:function(arm,size=0x4) addr:0x020215c4
+ADXF_Finish kind:function(arm,size=0x4) addr:0x020215c8
 func_020215cc kind:function(arm,size=0x4) addr:0x020215cc
 ADXF_GetFnameRangeEx kind:function(arm,size=0x8) addr:0x020215d0
-func_020215d8 kind:function(arm,size=0x4) addr:0x020215d8
-func_020215dc kind:function(arm,size=0x4) addr:0x020215dc
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/lsc.c
+/////////////////////////////////////////////////////////////
+LSC_Init kind:function(arm,size=0x4) addr:0x020215d8
+LSC_Finish kind:function(arm,size=0x4) addr:0x020215dc
 LSC_Create kind:function(arm,size=0x4) addr:0x020215e0
 LSC_Destroy kind:function(arm,size=0x4) addr:0x020215e4
-func_020215e8 kind:function(arm,size=0x4) addr:0x020215e8
+LSC_EntryErrFunc kind:function(arm,size=0x4) addr:0x020215e8
 func_020215ec kind:function(arm,size=0x4) addr:0x020215ec
 LSC_SetStmHndl kind:function(arm,size=0x4) addr:0x020215f0
 LSC_Stop kind:function(arm,size=0x4) addr:0x020215f4
-func_020215f8 kind:function(arm,size=0x4) addr:0x020215f8
+LSC_ExecServer kind:function(arm,size=0x4) addr:0x020215f8
+
+
 func_020215fc kind:function(arm,size=0x18) addr:0x020215fc
 func_02021614 kind:function(arm,size=0x10) addr:0x02021614
 func_02021624 kind:function(arm,size=0x14) addr:0x02021624
@@ -1308,7 +1357,7 @@ func_02021724 kind:function(arm,size=0x4) addr:0x02021724
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/criss.c
-////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 func_02021728 kind:function(arm,size=0x14) addr:0x02021728
 cri_ss_initialize kind:function(arm,size=0x1b0) addr:0x0202173c
 func_020218ec kind:function(arm,size=0x20) addr:0x020218ec
@@ -2919,8 +2968,8 @@ func_0205581c kind:function(arm,size=0xa4) addr:0x0205581c
 _dls kind:function(arm,size=0x9c) addr:0x020558c0
 _deq kind:function(arm,size=0x8c) addr:0x0205595c
 _dneq kind:function(arm,size=0x8c) addr:0x020559e8
-func_02055a74 kind:function(arm,size=0x5c) addr:0x02055a74
-func_02055ad0 kind:function(arm,size=0x5c) addr:0x02055ad0
+_fgr kind:function(arm,size=0x5c) addr:0x02055a74
+_fls kind:function(arm,size=0x5c) addr:0x02055ad0
 _fdiv kind:function(arm,size=0x3b8) addr:0x02055b38
 .L_02055bec kind:label(arm) addr:0x02055bec
 _f2d kind:function(arm,size=0x84) addr:0x02055ef0
@@ -3227,17 +3276,34 @@ data_0205aea4 kind:data(any) addr:0x0205aea4
 data_0205aef4 kind:data(any) addr:0x0205aef4
 data_0205b0f4 kind:data(any) addr:0x0205b0f4
 data_0205b454 kind:data(any) addr:0x0205b454
-data_0205b754 kind:data(any) addr:0x0205b754
-data_0205b954 kind:data(any) addr:0x0205b954
-data_0205bb54 kind:data(any) addr:0x0205bb54
-data_0205bd54 kind:data(any) addr:0x0205bd54
-data_0205bf54 kind:data(any) addr:0x0205bf54
-data_0205bf94 kind:data(any) addr:0x0205bf94
-data_0205bfd8 kind:data(any) addr:0x0205bfd8
-data_0205bfe8 kind:data(any) addr:0x0205bfe8
 
 /////////////////////////////////////////////////////////////
-// libs/CriWare/cvFs.c
+// libs/CriWare/adx_bsc.c
+/////////////////////////////////////////////////////////////
+skg_prim_tbl kind:data(any) addr:0x0205b754
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_dcd.c
+/////////////////////////////////////////////////////////////
+data_0205bf54 kind:data(any) addr:0x0205bf54
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_inis.c
+/////////////////////////////////////////////////////////////
+data_0205bf94 kind:data(any) addr:0x0205bf94
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_rbf.c
+/////////////////////////////////////////////////////////////
+sjrbf_uuid kind:data(any) addr:0x0205bfd8
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_mem.c
+/////////////////////////////////////////////////////////////
+sjmem_uuid kind:data(any) addr:0x0205bfe8
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/cri_cvfs.c
 /////////////////////////////////////////////////////////////
 data_0205bff8 kind:data(any) addr:0x0205bff8
 
@@ -3422,6 +3488,9 @@ data_020637b8 kind:data(any) addr:0x020637b8
 @399 kind:data(any) addr:0x020637e4 local
 @467 kind:data(any) addr:0x020637f4 local
 
+/////////////////////////////////////////////////////////////
+// src/DatMgr.c
+/////////////////////////////////////////////////////////////
 data_02063808 kind:data(any) addr:0x02063808
 
 /////////////////////////////////////////////////////////////
@@ -3435,10 +3504,19 @@ data_02063834 kind:data(any) addr:0x02063834
 data_02063844 kind:data(any) addr:0x02063844
 data_02063858 kind:data(any) addr:0x02063858
 data_0206385c kind:data(any) addr:0x0206385c
-data_0206386c kind:data(any) addr:0x0206386c
-data_0206388c kind:data(any) addr:0x0206388c
-data_020638b0 kind:data(any) addr:0x020638b0
-data_020638d8 kind:data(any) addr:0x020638d8
+
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_bsc.c
+/////////////////////////////////////////////////////////////
+@456 kind:data(any) addr:0x0206386c local
+@457 kind:data(byte[35]) addr:0x0206388c local
+@482 kind:data(byte[38]) addr:0x020638b0 local
+@521 kind:data(byte[5]) addr:0x020638d8 local
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_dcd.c
+/////////////////////////////////////////////////////////////
 data_020638e0 kind:data(any) addr:0x020638e0
 
 /////////////////////////////////////////////////////////////
@@ -3448,24 +3526,34 @@ data_020638e0 kind:data(any) addr:0x020638e0
 @53 kind:data(any) addr:0x020638ec local
 @105 kind:data(any) addr:0x020638f4 local
 
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_inis.c
+/////////////////////////////////////////////////////////////
 data_020638f8 kind:data(any) addr:0x020638f8
-data_020638fc kind:data(any) addr:0x020638fc
-data_02063900 kind:data(any) addr:0x02063900
-data_02063910 kind:data(any) addr:0x02063910
-data_02063920 kind:data(any) addr:0x02063920
-data_02063934 kind:data(any) addr:0x02063934
-data_02063980 kind:data(any) addr:0x02063980
+adxt_build kind:data(any) addr:0x020638fc
+@168 kind:data(any) addr:0x02063900
+@169 kind:data(any) addr:0x02063910
+@170 kind:data(any) addr:0x02063920
+@182 kind:data(any) addr:0x02063934
+@183 kind:data(any) addr:0x02063980
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_sjd.c
+/////////////////////////////////////////////////////////////
 data_020639ac kind:data(any) addr:0x020639ac
 data_020639cc kind:data(any) addr:0x020639cc
 data_020639ec kind:data(any) addr:0x020639ec
 data_02063a0c kind:data(any) addr:0x02063a0c
 data_02063a30 kind:data(any) addr:0x02063a30
 data_02063a54 kind:data(any) addr:0x02063a54
-data_02063a84 kind:data(any) addr:0x02063a84
 
-
-@306 kind:data(any) addr:0x02063a90
-@307 kind:data(any) addr:0x02063abc
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_stmc.c
+/////////////////////////////////////////////////////////////
+adxstmf_nrml_num kind:data(any) addr:0x02063a84
+adxstmf_nrml_ofst kind:data(any) addr:0x02063a88
+@306 kind:data(any) addr:0x02063a90 local
+@307 kind:data(any) addr:0x02063abc local
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_tlk.c
@@ -3503,148 +3591,161 @@ data_02063d78 kind:data(any) addr:0x02063d78
 data_02063edc kind:data(any) addr:0x02063edc
 data_02063f08 kind:data(any) addr:0x02063f08
 data_02063f48 kind:data(any) addr:0x02063f48
-data_02063f74 kind:data(any) addr:0x02063f74
-data_02063fa4 kind:data(any) addr:0x02063fa4
-data_02063fb0 kind:data(any) addr:0x02063fb0
-data_02063fbc kind:data(any) addr:0x02063fbc
-data_02063fd8 kind:data(any) addr:0x02063fd8
-data_02063fe4 kind:data(any) addr:0x02063fe4
-data_02064004 kind:data(any) addr:0x02064004
-data_02064010 kind:data(any) addr:0x02064010
-data_0206402c kind:data(any) addr:0x0206402c
-data_02064038 kind:data(any) addr:0x02064038
-data_02064058 kind:data(any) addr:0x02064058
-data_02064064 kind:data(any) addr:0x02064064
-data_02064080 kind:data(any) addr:0x02064080
-data_0206408c kind:data(any) addr:0x0206408c
-data_020640ac kind:data(any) addr:0x020640ac
-data_020640b8 kind:data(any) addr:0x020640b8
-data_020640d4 kind:data(any) addr:0x020640d4
-data_020640e0 kind:data(any) addr:0x020640e0
-data_02064100 kind:data(any) addr:0x02064100
-data_0206410c kind:data(any) addr:0x0206410c
-data_02064128 kind:data(any) addr:0x02064128
-data_02064134 kind:data(any) addr:0x02064134
-data_02064154 kind:data(any) addr:0x02064154
-data_02064160 kind:data(any) addr:0x02064160
-data_0206417c kind:data(any) addr:0x0206417c
-data_02064188 kind:data(any) addr:0x02064188
-data_020641a8 kind:data(any) addr:0x020641a8
-data_020641b4 kind:data(any) addr:0x020641b4
-data_020641cc kind:data(any) addr:0x020641cc
-data_020641d8 kind:data(any) addr:0x020641d8
-data_020641f4 kind:data(any) addr:0x020641f4
-data_02064200 kind:data(any) addr:0x02064200
-data_02064220 kind:data(any) addr:0x02064220
-data_0206422c kind:data(any) addr:0x0206422c
-data_02064248 kind:data(any) addr:0x02064248
-data_02064254 kind:data(any) addr:0x02064254
-data_02064274 kind:data(any) addr:0x02064274
-data_02064280 kind:data(any) addr:0x02064280
-data_02064298 kind:data(any) addr:0x02064298
-data_020642a4 kind:data(any) addr:0x020642a4
-data_020642c0 kind:data(any) addr:0x020642c0
-data_020642cc kind:data(any) addr:0x020642cc
-data_020642ec kind:data(any) addr:0x020642ec
-data_020642f8 kind:data(any) addr:0x020642f8
-data_02064314 kind:data(any) addr:0x02064314
-data_02064320 kind:data(any) addr:0x02064320
-data_02064340 kind:data(any) addr:0x02064340
-data_0206434c kind:data(any) addr:0x0206434c
-data_02064368 kind:data(any) addr:0x02064368
-data_02064374 kind:data(any) addr:0x02064374
-data_02064394 kind:data(any) addr:0x02064394
-data_020643a0 kind:data(any) addr:0x020643a0
-data_020643bc kind:data(any) addr:0x020643bc
-data_020643c8 kind:data(any) addr:0x020643c8
-data_020643e8 kind:data(any) addr:0x020643e8
-data_02064418 kind:data(any) addr:0x02064418
-data_02064424 kind:data(any) addr:0x02064424
-data_02064430 kind:data(any) addr:0x02064430
-data_0206444c kind:data(any) addr:0x0206444c
-data_02064458 kind:data(any) addr:0x02064458
-data_02064478 kind:data(any) addr:0x02064478
-data_02064484 kind:data(any) addr:0x02064484
-data_020644a0 kind:data(any) addr:0x020644a0
-data_020644ac kind:data(any) addr:0x020644ac
-data_020644cc kind:data(any) addr:0x020644cc
-data_020644d8 kind:data(any) addr:0x020644d8
-data_020644f4 kind:data(any) addr:0x020644f4
-data_02064500 kind:data(any) addr:0x02064500
-data_02064520 kind:data(any) addr:0x02064520
-data_0206452c kind:data(any) addr:0x0206452c
-data_02064548 kind:data(any) addr:0x02064548
-data_02064554 kind:data(any) addr:0x02064554
-data_02064574 kind:data(any) addr:0x02064574
-data_02064580 kind:data(any) addr:0x02064580
-data_0206459c kind:data(any) addr:0x0206459c
-data_020645a8 kind:data(any) addr:0x020645a8
-data_020645c8 kind:data(any) addr:0x020645c8
-data_020645d4 kind:data(any) addr:0x020645d4
-data_020645f0 kind:data(any) addr:0x020645f0
-data_020645fc kind:data(any) addr:0x020645fc
-data_0206461c kind:data(any) addr:0x0206461c
-data_02064628 kind:data(any) addr:0x02064628
-data_02064644 kind:data(any) addr:0x02064644
-data_02064650 kind:data(any) addr:0x02064650
-data_02064670 kind:data(any) addr:0x02064670
-data_0206467c kind:data(any) addr:0x0206467c
-data_02064698 kind:data(any) addr:0x02064698
-data_020646a4 kind:data(any) addr:0x020646a4
-data_020646c4 kind:data(any) addr:0x020646c4
-data_020646d0 kind:data(any) addr:0x020646d0
-data_020646ec kind:data(any) addr:0x020646ec
-data_020646f8 kind:data(any) addr:0x020646f8
-data_02064718 kind:data(any) addr:0x02064718
-data_02064760 kind:data(any) addr:0x02064760
-data_02064788 kind:data(any) addr:0x02064788
-data_02064790 kind:data(any) addr:0x02064790
-data_020647c0 kind:data(any) addr:0x020647c0
-data_020647e0 kind:data(any) addr:0x020647e0
-data_02064808 kind:data(any) addr:0x02064808
-data_0206482c kind:data(any) addr:0x0206482c
-data_02064854 kind:data(any) addr:0x02064854
-data_0206488c kind:data(any) addr:0x0206488c
-data_02064894 kind:data(any) addr:0x02064894
-data_020648b8 kind:data(any) addr:0x020648b8
-data_020648dc kind:data(any) addr:0x020648dc
 
 /////////////////////////////////////////////////////////////
-// libs/CriWare/cvFs.c
+// libs/CriWare/sj_rbf.c
 /////////////////////////////////////////////////////////////
-@45 kind:data(any) addr:0x02064900 local
-@46 kind:data(any) addr:0x02064928 local
-data_02064950 kind:data(any) addr:0x02064950
-data_02064970 kind:data(any) addr:0x02064970
-data_02064990 kind:data(any) addr:0x02064990
-data_020649b4 kind:data(any) addr:0x020649b4
-data_020649d4 kind:data(any) addr:0x020649d4
-data_020649ec kind:data(any) addr:0x020649ec
-@72 kind:data(any) addr:0x02064a0c local
-@73 kind:data(any) addr:0x02064a28 local
-@91 kind:data(any) addr:0x02064a40 local
-@92 kind:data(any) addr:0x02064a5c local
-@110 kind:data(any) addr:0x02064a74 local
-@111 kind:data(any) addr:0x02064a90 local
-data_02064aa8 kind:data(any) addr:0x02064aa8
-data_02064ac4 kind:data(any) addr:0x02064ac4
-data_02064adc kind:data(any) addr:0x02064adc
-data_02064af8 kind:data(any) addr:0x02064af8
-data_02064b14 kind:data(any) addr:0x02064b14
-data_02064b3c kind:data(any) addr:0x02064b3c
-data_02064b64 kind:data(any) addr:0x02064b64
-data_02064b88 kind:data(any) addr:0x02064b88
-data_02064ba8 kind:data(any) addr:0x02064ba8
-data_02064bd8 kind:data(any) addr:0x02064bd8
-data_02064c04 kind:data(any) addr:0x02064c04
-data_02064c30 kind:data(any) addr:0x02064c30
-data_02064c58 kind:data(any) addr:0x02064c58
-data_02064c80 kind:data(any) addr:0x02064c80
-data_02064ca8 kind:data(any) addr:0x02064ca8
-data_02064ccc kind:data(any) addr:0x02064ccc
-data_02064cd4 kind:data(any) addr:0x02064cd4
-@118 kind:data(any) addr:0x02064ce8 local
-@119 kind:data(any) addr:0x02064cec local
+sjrbf_vtbl kind:data(any) addr:0x02063f74
+@477 kind:data(any) addr:0x02063fa4 local
+@506 kind:data(any) addr:0x02063fb0 local
+@507 kind:data(any) addr:0x02063fbc local
+@508 kind:data(any) addr:0x02063fd8 local
+@509 kind:data(any) addr:0x02063fe4 local
+@517 kind:data(any) addr:0x02064004 local
+@518 kind:data(any) addr:0x02064010 local
+@519 kind:data(any) addr:0x0206402c local
+@520 kind:data(any) addr:0x02064038 local
+@529 kind:data(any) addr:0x02064058 local
+@530 kind:data(any) addr:0x02064064 local
+@531 kind:data(any) addr:0x02064080 local
+@532 kind:data(any) addr:0x0206408c local
+@541 kind:data(any) addr:0x020640ac local
+@542 kind:data(any) addr:0x020640b8 local
+@543 kind:data(any) addr:0x020640d4 local
+@544 kind:data(any) addr:0x020640e0 local
+@557 kind:data(any) addr:0x02064100 local
+@558 kind:data(any) addr:0x0206410c local
+@559 kind:data(any) addr:0x02064128 local
+@560 kind:data(any) addr:0x02064134 local
+@588 kind:data(any) addr:0x02064154 local
+@589 kind:data(any) addr:0x02064160 local
+@590 kind:data(any) addr:0x0206417c local
+@591 kind:data(any) addr:0x02064188 local
+@592 kind:data(any) addr:0x020641a8 local
+@593 kind:data(any) addr:0x020641b4 local
+@648 kind:data(any) addr:0x020641cc local
+@649 kind:data(any) addr:0x020641d8 local
+@650 kind:data(any) addr:0x020641f4 local
+@651 kind:data(any) addr:0x02064200 local
+@698 kind:data(any) addr:0x02064220 local
+@699 kind:data(any) addr:0x0206422c local
+@700 kind:data(any) addr:0x02064248 local
+@701 kind:data(any) addr:0x02064254 local
+@702 kind:data(any) addr:0x02064274 local
+@703 kind:data(any) addr:0x02064280 local
+@783 kind:data(any) addr:0x02064298 local
+@784 kind:data(any) addr:0x020642a4 local
+@785 kind:data(any) addr:0x020642c0 local
+@786 kind:data(any) addr:0x020642cc local
+@795 kind:data(any) addr:0x020642ec local
+@796 kind:data(any) addr:0x020642f8 local
+@797 kind:data(any) addr:0x02064314 local
+@798 kind:data(any) addr:0x02064320 local
+@806 kind:data(any) addr:0x02064340 local
+@807 kind:data(any) addr:0x0206434c local
+@808 kind:data(any) addr:0x02064368 local
+@809 kind:data(any) addr:0x02064374 local
+@817 kind:data(any) addr:0x02064394 local
+@818 kind:data(any) addr:0x020643a0 local
+@819 kind:data(any) addr:0x020643bc local
+@820 kind:data(any) addr:0x020643c8 local
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_mem.c
+/////////////////////////////////////////////////////////////
+sjmem_vtbl kind:data(any) addr:0x020643e8
+@381 kind:data(any) addr:0x02064418 local
+@409 kind:data(any) addr:0x02064424 local
+@410 kind:data(any) addr:0x02064430 local
+@411 kind:data(any) addr:0x0206444c local
+@412 kind:data(any) addr:0x02064458 local
+@420 kind:data(any) addr:0x02064478 local
+@421 kind:data(any) addr:0x02064484 local
+@422 kind:data(any) addr:0x020644a0 local
+@423 kind:data(any) addr:0x020644ac local
+@432 kind:data(any) addr:0x020644cc local
+@433 kind:data(any) addr:0x020644d8 local
+@434 kind:data(any) addr:0x020644f4 local
+@435 kind:data(any) addr:0x02064500 local
+@444 kind:data(any) addr:0x02064520 local
+@445 kind:data(any) addr:0x0206452c local
+@446 kind:data(any) addr:0x02064548 local
+@447 kind:data(any) addr:0x02064554 local
+@460 kind:data(any) addr:0x02064574 local
+@461 kind:data(any) addr:0x02064580 local
+@462 kind:data(any) addr:0x0206459c local
+@463 kind:data(any) addr:0x020645a8 local
+@485 kind:data(any) addr:0x020645c8 local
+@486 kind:data(any) addr:0x020645d4 local
+@487 kind:data(any) addr:0x020645f0 local
+@488 kind:data(any) addr:0x020645fc local
+@506 kind:data(any) addr:0x0206461c local
+@507 kind:data(any) addr:0x02064628 local
+@508 kind:data(any) addr:0x02064644 local
+@509 kind:data(any) addr:0x02064650 local
+@539 kind:data(any) addr:0x02064670 local
+@540 kind:data(any) addr:0x0206467c local
+@541 kind:data(any) addr:0x02064698 local
+@542 kind:data(any) addr:0x020646a4 local
+@571 kind:data(any) addr:0x020646c4 local
+@572 kind:data(any) addr:0x020646d0 local
+@573 kind:data(any) addr:0x020646ec local
+@574 kind:data(any) addr:0x020646f8 local
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/svm.c
+/////////////////////////////////////////////////////////////
+@267 kind:data(any) addr:0x02064718 local
+@301 kind:data(any) addr:0x02064760 local
+@302 kind:data(any) addr:0x02064788 local
+@303 kind:data(any) addr:0x02064790 local
+@317 kind:data(any) addr:0x020647c0 local
+@318 kind:data(any) addr:0x020647e0 local
+@330 kind:data(any) addr:0x02064808 local
+@331 kind:data(any) addr:0x0206482c local
+@332 kind:data(any) addr:0x02064854 local
+@333 kind:data(any) addr:0x0206488c local
+
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/cri_cvfs.c
+/////////////////////////////////////////////////////////////
+@101 kind:data(any) addr:0x02064894 local
+@102 kind:data(any) addr:0x020648b8 local
+@103 kind:data(any) addr:0x020648dc local
+@195 kind:data(any) addr:0x02064900 local
+@196 kind:data(any) addr:0x02064928 local
+@272 kind:data(any) addr:0x02064950 local
+@273 kind:data(any) addr:0x02064970 local
+@274 kind:data(any) addr:0x02064990 local
+@275 kind:data(any) addr:0x020649b4 local
+@276 kind:data(any) addr:0x020649d4 local
+@277 kind:data(any) addr:0x020649ec local
+@372 kind:data(any) addr:0x02064a0c local
+@373 kind:data(any) addr:0x02064a28 local
+@391 kind:data(any) addr:0x02064a40 local
+@392 kind:data(any) addr:0x02064a5c local
+@412 kind:data(any) addr:0x02064a74 local
+@413 kind:data(any) addr:0x02064a90 local
+@433 kind:data(any) addr:0x02064aa8 local
+@434 kind:data(any) addr:0x02064ac4 local
+@471 kind:data(any) addr:0x02064adc local
+@472 kind:data(any) addr:0x02064af8 local
+@494 kind:data(any) addr:0x02064b14 local
+@495 kind:data(any) addr:0x02064b3c local
+@496 kind:data(any) addr:0x02064b64 local
+@497 kind:data(any) addr:0x02064b88 local
+@514 kind:data(any) addr:0x02064ba8 local
+@553 kind:data(any) addr:0x02064bd8 local
+@554 kind:data(any) addr:0x02064c04 local
+@555 kind:data(any) addr:0x02064c30 local
+@578 kind:data(any) addr:0x02064c58 local
+@579 kind:data(any) addr:0x02064c80 local
+@580 kind:data(any) addr:0x02064ca8 local
+@613 kind:data(any) addr:0x02064ccc local
+@623 kind:data(any) addr:0x02064cd4 local
+@628 kind:data(any) addr:0x02064ce8 local
+@629 kind:data(any) addr:0x02064cec local
 
 data_02064cf4 kind:data(any) addr:0x02064cf4
 data_02064cf8 kind:data(any) addr:0x02064cf8
@@ -4168,10 +4269,33 @@ data_0206b41c kind:bss addr:0x0206b41c
 data_0206b42c kind:bss addr:0x0206b42c
 data_0206b430 kind:bss addr:0x0206b430
 data_0206b830 kind:bss addr:0x0206b830
-data_0206b854 kind:bss addr:0x0206b854
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_bahx.c
+/////////////////////////////////////////////////////////////
+ahxtermsupplyfunc kind:bss addr:0x0206b854
+ahxsetdecsmplfunc kind:bss addr:0x0206b858
+ahxsetsjifunc kind:bss addr:0x0206b85c
+ahxexecfunc kind:bss addr:0x0206b860
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_bsc.c
+/////////////////////////////////////////////////////////////
 data_0206b864 kind:bss addr:0x0206b864
-data_0206b880 kind:bss addr:0x0206b880
+skg_init_count kind:bss addr:0x0206b86c
+ahxsetextfunc kind:bss addr:0x0206b870
+
+adxb_def_k0 kind:bss addr:0x0206b874
+adxb_def_km kind:bss addr:0x0206b876
+adxb_def_ka kind:bss addr:0x0206b878
+adxb_obj kind:bss addr:0x0206b880
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_crs.c
+/////////////////////////////////////////////////////////////
 data_0206bc30 kind:bss addr:0x0206bc30
+data_0206bc34 kind:bss addr:0x0206bc34
+data_0206bc38 kind:bss addr:0x0206bc38
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_errs.c
@@ -4181,19 +4305,41 @@ adxerr_obj kind:bss addr:0x0206bc40
 data_0206bc44 kind:bss addr:0x0206bc44
 adxerr_msg kind:bss addr:0x0206bc64
 
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_fsvr.c
+/////////////////////////////////////////////////////////////
 data_0206bd64 kind:bss addr:0x0206bd64
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_inis.c
+/////////////////////////////////////////////////////////////
 data_0206bd7c kind:bss addr:0x0206bd7c
 adxt_vsync_cnt kind:bss addr:0x0206bd80
+adxt_svr_main_id kind:bss addr:0x0206bd84
+adxt_init_cnt kind:bss addr:0x0206bd8c
+adxt_svr_fs_id kind:bss addr:0x0206bd90
 adxt_obj kind:bss addr:0x0206bd94
 data_0206c0a4 kind:bss addr:0x0206c0a4
+data_0206c0a8 kind:bss addr:0x0206c0a8
+data_0206c0ac kind:bss addr:0x0206c0ac
+data_0206c0b0 kind:bss addr:0x0206c0b0
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_sjd.c
+/////////////////////////////////////////////////////////////
 data_0206c0b4 kind:bss addr:0x0206c0b4
 data_0206c0c8 kind:bss addr:0x0206c0c8
 
 /////////////////////////////////////////////////////////////
-// libs/CriWare/adxstm.c
+// libs/CriWare/adx_stmc.c
 /////////////////////////////////////////////////////////////
 data_0206c398 kind:bss addr:0x0206c398
-data_0206c3b0 kind:bss addr:0x0206c3b0
+adxstmf_execsvr_flag kind:bss addr:0x0206c39c
+adxstmf_rtim_ofst kind:bss addr:0x0206c3a0
+data_0206c3a4 kind:bss addr:0x0206c3a4
+adxstmf_num_rtry kind:bss addr:0x0206c3a8
+adxstm_sj_internal_error_cnt kind:bss addr:0x0206c3ac
+adxstmf_obj kind:bss addr:0x0206c3b0
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_tlk.c
@@ -4203,41 +4349,64 @@ adxt_time_mode kind:bss addr:0x0206c7b8
 adxt_def_svrfreq kind:bss addr:0x0206c7c0
 data_0206c7e8 kind:bss addr:0x0206c7e8
 data_0206c7ec kind:bss addr:0x0206c7ec
+
+
 data_0206c7fc kind:bss addr:0x0206c7fc
 data_0206c800 kind:bss addr:0x0206c800
 data_0206c804 kind:bss addr:0x0206c804
 data_0206c808 kind:bss addr:0x0206c808
-data_0206c80c kind:bss addr:0x0206c80c
-data_0206c810 kind:bss addr:0x0206c810
-data_0206c900 kind:bss addr:0x0206c900
-data_0206c904 kind:bss addr:0x0206c904
-data_0206f604 kind:bss addr:0x0206f604
-data_0206f608 kind:bss addr:0x0206f608
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/adx_xpnd.c
+/////////////////////////////////////////////////////////////
+adxpd_internal_error kind:bss addr:0x0206c80c
+adxpd_obj kind:bss addr:0x0206c810
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_rbf.c
+/////////////////////////////////////////////////////////////
+sjrbf_init_cnt kind:bss addr:0x0206c900
+sjrbf_obj kind:bss addr:0x0206c904
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/sj_mem.c
+/////////////////////////////////////////////////////////////
+sjmem_init_cnt kind:bss addr:0x0206f604
+sjmem_obj kind:bss addr:0x0206f608
+
 data_0206f8d8 kind:bss addr:0x0206f8d8
 data_0206f8e4 kind:bss addr:0x0206f8e4
 data_0206f8e8 kind:bss addr:0x0206f8e8
 data_02070005 kind:bss addr:0x02070005
-data_02070068 kind:bss addr:0x02070068
-data_02070070 kind:bss addr:0x02070070
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/svm.c
+/////////////////////////////////////////////////////////////
+svm_locking_type kind:bss addr:0x02070068
+svm_init_level kind:bss addr:0x0207006c
+svm_lock_level kind:bss addr:0x02070070
 data_02070074 kind:bss addr:0x02070074
 data_0207007c kind:bss addr:0x0207007c
-data_02070084 kind:bss addr:0x02070084
-data_02070088 kind:bss addr:0x02070088
-data_02070090 kind:bss addr:0x02070090
-data_02070098 kind:bss addr:0x02070098
-data_020700e0 kind:bss addr:0x020700e0
-data_020700e4 kind:bss addr:0x020700e4
-data_020700e8 kind:bss addr:0x020700e8
-data_02070320 kind:bss addr:0x02070320
-data_02070340 kind:bss addr:0x02070340
-data_02070360 kind:bss addr:0x02070360
+svm_test_and_set_callback kind:bss addr:0x02070084
+svm_error_callback kind:bss addr:0x02070088
+svm_unlock_callback kind:bss addr:0x02070090
+svm_lock_callback kind:bss addr:0x02070098
+svm_svr_callbacks kind:bss addr:0x020700e0
+svm_svr_exec_flag kind:bss addr:0x02070320
+svm_exec_cnt kind:bss addr:0x02070340
+svmerr_msg kind:bss addr:0x02070360
+
+/////////////////////////////////////////////////////////////
+// libs/CriWare/cri_cvfs.c
+/////////////////////////////////////////////////////////////
 data_020703e0 kind:bss addr:0x020703e0
-data_020703e8 kind:bss addr:0x020703e8
-data_020703ec kind:bss addr:0x020703ec
-data_020705ec kind:bss addr:0x020705ec
+cvfs_errfn kind:bss addr:0x020703e4
+cvfs_errobj kind:bss addr:0x020703e8
+cvfs_named_devices kind:bss addr:0x020703ec
+cvfs_handles kind:bss addr:0x020705ec
 data_0207063c kind:bss addr:0x0207063c
-data_020706ff kind:bss addr:0x020706ff
-data_02070768 kind:bss addr:0x02070768
+def_dev kind:bss addr:0x02070768
+
 data_02070774 kind:bss addr:0x02070774
 data_02070790 kind:bss addr:0x02070790
 data_020707a4 kind:bss addr:0x020707a4

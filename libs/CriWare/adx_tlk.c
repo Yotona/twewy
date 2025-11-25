@@ -236,26 +236,26 @@ void adxt_Destroy(ADXT adxt) {
 
     ADXCRS_Lock();
 
-    SJ* sjf = adxt->sjf;
+    SJ sjf = adxt->sjf;
     if (sjf != NULL) {
         adxt->sjf = NULL;
         SJ_Destroy(sjf);
     }
 
     for (s32 channel = 0; channel < adxt->maxnch; channel++) {
-        SJ* sj = adxt->sjo[channel];
+        SJ sj = adxt->sjo[channel];
         if (sj != NULL) {
             adxt->sjo[channel] = NULL;
             SJ_Destroy(sj);
         }
 
-        SJ* ampsji = adxt->ampsji[channel];
+        SJ ampsji = adxt->ampsji[channel];
         if (ampsji != NULL) {
             adxt->ampsji[channel] = NULL;
             SJ_Destroy(ampsji);
         }
 
-        SJ* ampsjo = adxt->ampsjo[channel];
+        SJ ampsjo = adxt->ampsjo[channel];
         if (ampsjo != NULL) {
             adxt->ampsjo[channel] = NULL;
             SJ_Destroy(ampsjo);
@@ -289,7 +289,7 @@ void adxt_DestroyAll(void) {
     }
 }
 
-void adxt_start_sj(ADXT adxt, SJ* sj) {
+void adxt_start_sj(ADXT adxt, SJ sj) {
     s32 idx;
 
     for (idx = 0; idx < adxt->maxnch; idx++) {
@@ -331,7 +331,7 @@ void adxt_start_stm(ADXT adxt, const char* filename, void* dir, s32 arg3, s32 ar
 }
 
 void ADXT_StopWithoutLsc(ADXT adxt) {
-    SJ* sj;
+    SJ sj;
 
     ADXCRS_Lock();
     ADXRNA_SetTransSw(adxt->rna, 0);
@@ -362,7 +362,7 @@ void ADXT_Stop(ADXT adxt) {
 }
 
 void adxt_Stop(ADXT adxt) {
-    SJ* sj;
+    SJ sj;
 
     if (adxt == NULL) {
         ADXERR_CallErrFunc1("E02080813 adxt_Stop: parameter error");
@@ -608,24 +608,26 @@ void ADXT_SetExtraInfo(ADXT adxt, s8 flag) {
     adxt->extraInfoFlag = flag;
 }
 
-void func_02017788(s32 freq) {
+void adxt_SetDefSvrFreq(s32 freq);
+void ADXT_SetDefSvrFreq(s32 freq) {
     func_02012f88();
-    ADXT_SetDefSvrFreq(freq);
+    adxt_SetDefSvrFreq(freq);
     func_02012f8c();
 }
 
 // Nonmatching: Data differences
-void ADXT_SetDefSvrFreq(s32 freq) {
+void adxt_SetDefSvrFreq(s32 freq) {
     adxt_def_svrfreq = freq;
 }
 
-void func_020177b8() {
+void adxt_ExecServer();
+void ADXT_ExecServer() {
     func_02012f88();
-    ADXT_ExecServer();
+    adxt_ExecServer();
     func_02012f8c();
 }
 
-void ADXT_ExecServer() {
+void adxt_ExecServer() {
     /* NYI */
 }
 

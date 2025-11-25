@@ -1,8 +1,8 @@
 #ifndef ADXT_H
 #define ADXT_H
 
-#include <CriWare/adxsjd.h>
-#include <CriWare/adxstm.h>
+#include <CriWare/adx_sjd.h>
+#include <CriWare/adx_stmc.h>
 #include <CriWare/private/adx_rna.h>
 #include <CriWare/sj.h>
 #include <types.h>
@@ -31,6 +31,8 @@
 #define ADXT_OBUF_DIST   0x0860
 #define ADXT_RNABUF_SIZE 0x0C00
 
+#define ADXT_MAX_OBJ 4
+
 #define ADXT_CALC_OBUFSIZE(numChan) ((ADXT_OBUF_DIST + ADXT_RNABUF_SIZE) * (numChan) * sizeof(s16))
 
 typedef struct _adx_talk {
@@ -41,9 +43,9 @@ typedef struct _adx_talk {
     /* 0x04 */ ADXSJD* sjd;        // Stream Decoder
     /* 0x08 */ ADXSTM* stm;        // Stream Controller
     /* 0x0C */ ADXRNA  rna;        // Audio Renderer
-    /* 0x10 */ SJ*     sjf;        // File Input Stream
-    /* 0x14 */ SJ*     sji;        // Input Stream
-    /* 0x18 */ SJ*     sjo[2];     // Output Stream
+    /* 0x10 */ SJ      sjf;        // File Input Stream
+    /* 0x14 */ SJ      sji;        // Input Stream
+    /* 0x18 */ SJ      sjo[2];     // Output Stream
     /* 0x20 */ s8*     ibuf;       // Input buffer
     /* 0x24 */ s32     ibuflen;    // Input buffer length
     /* 0x28 */ s32     ibufxlen;   // Input buffer extra length
@@ -74,8 +76,8 @@ typedef struct _adx_talk {
     /* 0x71 */ s8      readyFlag;
     /* 0x72 */ s8      pause_flag; // Pause status flag
     /* 0x74 */ void*   amp;        // Amplifier
-    /* 0x78 */ SJ*     ampsji[2];  // Amp input stream
-    /* 0x80 */ SJ*     ampsjo[2];  // Amp output stream
+    /* 0x78 */ SJ      ampsji[2];  // Amp input stream
+    /* 0x80 */ SJ      ampsjo[2];  // Amp output stream
     /* 0x88 */ s32     time_ofst;  // Time offset
     /* 0x8C */ s32     lesct;      // Loop playback end sector
     /* 0x90 */ s32     trpnsmpl;   // Trap sample

@@ -1,4 +1,4 @@
-#include <CriWare/adxsjd.h>
+#include <CriWare/adx_sjd.h>
 
 BOOL    data_0206c0c0;
 ADXSJD* data_0206c0c8;
@@ -21,7 +21,7 @@ void ADXSJD_Clear(ADXSJD* sjd) {
     sjd->unk_2C = 0;
     sjd->unk_30 = 0;
     sjd->unk_34 = 0;
-    sjd->unk_38 = ~0x80000000;
+    sjd->unk_38 = 0x7FFFFFFF;
     sjd->unk_3C = -1;
     sjd->unk_40 = 0;
     sjd->unk_44 = 0;
@@ -30,9 +30,9 @@ void ADXSJD_Clear(ADXSJD* sjd) {
     sjd->unk_AC = 0;
 }
 
-ADXSJD* ADXSJD_Create(SJ* sj, s32 maxChans, SJ** sjo) {
+ADXSJD* ADXSJD_Create(SJ sj, s32 maxChans, SJ* sjo) {
     ADXSJD* sjd;
-    SJ*     out;
+    SJ      out;
     void*   buf_ptr;
     s32     i;
     s32     j;
@@ -84,7 +84,7 @@ void ADXSJD_Destroy(ADXSJD* sjd) {
         return;
     }
 
-    ADXB* adxb = sjd->adxb;
+    ADXB adxb = sjd->adxb;
     if (adxb != NULL) {
         sjd->adxb = NULL;
         ADXB_Destroy(adxb);
@@ -98,7 +98,7 @@ s8 ADXSJD_GetStat(ADXSJD* sjd) {
     return sjd->state;
 }
 
-void ADXSJD_SetInSj(ADXSJD* sjd, SJ* sj) {
+void ADXSJD_SetInSj(ADXSJD* sjd, SJ sj) {
     sjd->sji = sj;
     ADXB_SetAhxInSj(sjd->adxb, sj);
 }
@@ -126,19 +126,19 @@ void func_02014f44() {}
 void func_02015344() {}
 
 void func_020154f0(ADXSJD* sjd) {
-    void* pvVar4 = sjd->adxb;
-    s32   iVar1  = func_020128a8(pvVar4);
-    s32   iVar2  = func_02012b10(pvVar4);
-    s32   iVar3  = func_02012b18(pvVar4);
+    ADXB adxb        = sjd->adxb;
+    s32  total_nsmpl = ADXB_GetTotalNumSmpl(adxb);
+    s32  dlen        = ADXB_GetDecDtLen(adxb);
+    s32  ndecsmpl    = ADXB_GetDecNumSmpl(adxb);
 
-    iVar1 -= sjd->unk_34;
+    total_nsmpl -= sjd->unk_34;
 
-    if (iVar3 >= iVar1) {
-        iVar3 = iVar1;
+    if (ndecsmpl >= total_nsmpl) {
+        ndecsmpl = total_nsmpl;
     }
-    sjd->unk_2C += iVar3;
-    sjd->unk_30 += iVar2;
-    sjd->unk_34 += iVar3;
+    sjd->unk_2C += ndecsmpl;
+    sjd->unk_30 += dlen;
+    sjd->unk_34 += ndecsmpl;
 }
 
 void func_02015554(ADXSJD* sjd) {}
@@ -228,7 +228,7 @@ void func_020159c4() {}
 void func_020159d4() {}
 
 s32 ADXSJD_GetDefOutVol(ADXSJD* sjd) {
-    if (ADXB_GetAinfLen(sjd->adxb) > 0 && ((u32)sjd->state - 2) <= 1) {
+    if (ADXB_GetAinfLen(sjd->adxb) > 0 && ((u32)(((sjd->state - 2) << 0x18) >> 0x18) & 0xFF) <= 1) {
         return ADXB_GetDefOutVol(sjd->adxb);
     }
     return 0;
