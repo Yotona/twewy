@@ -4,7 +4,6 @@
 #include <types.h>
 
 extern s32 data_0205c9b0;
-extern s32 data_0205cb10;
 extern s32 data_0206aa90;
 extern s32 data_0206aa94;
 extern s32 data_0206aab0;

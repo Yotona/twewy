@@ -1,5 +1,7 @@
 #include "Debug/Launcher.h"
 
+extern TaskHandle data_0205cb10;
+
 void func_ov046_020824a0(void) {
     Interrupts_Init();
     func_0200434c();
@@ -141,12 +143,13 @@ void func_ov046_02082874(DebugLauncherState* state) {
         u32 selectedCell = (((stackframe[3] - 64) / 32) * 8) + (stackframe[2] / 32);
         if (selectedCell < state->unk_1C) {
             if (selectedCell != state->selectedCategoryIndex) {
-                func_ov046_02083670(func_0200f850(&state->unk_11650, state->unk_24[state->selectedCategoryIndex]), FALSE);
+                func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_24[state->selectedCategoryIndex]),
+                                    FALSE);
             }
-            func_ov046_02083670(func_0200f850(&state->unk_11650, state->unk_24[selectedCell]), TRUE);
+            func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_24[selectedCell]), TRUE);
             for (s32 i = 0; i < 0x18; i++) {
                 if (state->unk_6C[i] != 0xFFFFFFFF) {
-                    func_ov046_0208368c(func_0200f850(&state->unk_11650)); // unk_11650 is a DebugLauncherState pointer?
+                    func_ov046_0208368c(EasyTask_GetTaskData(&state->unk_11650, state->unk_6C[i]));
                     state->unk_6C[i] = 0xFFFFFFFF;
                     if (&Categories[selectedCell].options != NULL) {
                         if (((&Categories[selectedCell])->options)->unk_00 > 0) {
@@ -161,8 +164,8 @@ void func_ov046_02082874(DebugLauncherState* state) {
                                 stackframe[5] = option;            // huh
                                 stackframe[0] = 0;                 // NULL?
                                 // render option button?
-                                state->unk_6C[i] = func_0200f68c(&state->unk_11650, &data_ov046_02083f70, stackframe[0],
-                                                                 stackframe[0], stackframe[0], &stackframe[5]);
+                                state->unk_6C[i] = EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, stackframe[0],
+                                                                       stackframe[0], stackframe[0], &stackframe[5]);
                                 unkownIndex++;
                                 catIndex++;
                             } while (((&Categories[catIndex])->options)->unk_00 > 0);
@@ -188,9 +191,9 @@ void func_ov046_02082874(DebugLauncherState* state) {
     if (selectedCell >= state->unk_64 || selectedCell == state->selectedOptionIndex)
         return;
     if (state->selectedOptionIndex >= 0) {
-        func_ov046_02083670(func_0200f850(&state->unk_11650, state->unk_6C[state->selectedOptionIndex]), FALSE);
+        func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_6C[state->selectedOptionIndex]), FALSE);
     }
-    func_ov046_02083670(func_0200f850(&state->unk_11650, state->unk_6C[selectedCell]), TRUE);
+    func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_6C[selectedCell]), TRUE);
     func_02010b84(&state->unk_156E8, 0x0, 0x98, 0x100, 0x20);
     Text_RenderToScreen(&state->unk_156E8, 0x8, 0x98,
                         (&Categories[state->selectedCategoryIndex])->options[selectedCell].function);
@@ -212,7 +215,7 @@ void func_ov046_02082c0c(EasyListNode* list, BOOL unk_r1) {
                 func_02008dbc(list->data);
                 return;
             case 3:
-                func_0200f4f8(list->data);
+                EasyTask_DestroyPool(list->data);
                 return;
             case 4:
                 func_02025e30(list->data);
@@ -343,7 +346,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     */
 }
 
-/*Not implemented: Unclear stack frame, need to research func_0200f68c*/
+/*Not implemented: Unclear stack frame */
 void func_ov046_02083368(DebugLauncherState* state) {
     /*
     Stack frame:
@@ -354,12 +357,12 @@ void func_ov046_02083368(DebugLauncherState* state) {
     0x10 -> index modulus something?
     0x14 -> uhhhh TouchGridX?
     */
-    func_0200f68c(&state->unk_11650, &data_0205cb10, 0, 0, 0, 0);
+    EasyTask_CreateTask(&state->unk_11650, &data_0205cb10, 0, 0, 0, 0);
     // index = 0;
     // stack->0xC = Categories[index](.unk_00?);
     // stack->0x10 = (index << 0x1D) >> 0x18; // what? is this just "index % 8"?
     // stack->0x14 = (index / 8) * 32;
-    // func_0200f68c(&state->unk_11650, &data_ov046_02083f70, index, index, index, &stack->0x8);
+    // EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, index, index, index, &stack->0x8);
     // index++
     // state->unk_24[index] = result of last func-call
     //  Loop back if(Categories[index](.unk_00?) > 0)
@@ -368,7 +371,7 @@ void func_ov046_02083368(DebugLauncherState* state) {
     // stack->0x14 = 0x60
     // stack->0xC = 0x26
     // stack->0x10 = 0xe0
-    // state->unk_60 = func_0200f68c(&state->unk_11650, &data_ov046_02083f70, 0, 0, 0, &stack->0x8);
+    // state->unk_60 = EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, 0, 0, 0, &stack->0x8);
 }
 
 /*Nonmatching: The start of the loop is different in the assembly than in the code.*/
@@ -415,7 +418,7 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
         OverlayTag tag;
         func_020071f4(&tag, state->overlay, state->overlayCB, NULL, 0);
     } else {
-        func_0200f514(&state->unk_11650);
+        EasyTask_UpdatePool(&state->unk_11650);
         func_020034b0(&data_020676ec);
         func_020034b0(&data_02068778);
         func_0200bf60(data_0206b3cc.unk_00, 0);

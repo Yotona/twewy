@@ -2,6 +2,7 @@
 #define DEBUG_LAUNCHER_H
 
 #include "EasyList.h"
+#include "EasyTask.h"
 #include "Input.h"
 #include "Interrupts.h"
 #include "Memory.h"
@@ -48,8 +49,8 @@ typedef struct {
     /* 0x000CC */ s32       unk_CC;
     /* 0x000D0 */ char      unk_D0[0x1157C];
     /* 0x1164C */ s32       unk_1164C;
-    /* 0x11650 */ s32       unk_11650;
-    /* 0x11654 */ char      unk_11654[0x4094];
+    /* 0x11650 */ TaskPool  unk_11650;
+    /* 0x116D0 */ char      unk_116D0[0x4018];
     /* 0x156E8 */ s32       unk_156E8;
     /* 0x156EC */ char      unk_156EC[0x418];
     /* 0x15B04 */ s32       unk_15B04;
@@ -292,9 +293,9 @@ static const DebugLauncherFuncStruct data_ov046_02083f7c = {
     {func_ov046_020839a0, func_ov046_020839b4, func_ov046_020839c4, func_ov046_020839d8}
 };
 
-extern u32 data_ov046_02083f70;
-extern u32 data_ov046_02083a4c;
-u16        data_ov046_02084804 = 0x1280;
+extern TaskHandle data_ov046_02083f70;
+extern u32        data_ov046_02083a4c;
+u16               data_ov046_02084804 = 0x1280;
 
 void func_ov046_02083670(u16* unkptr, BOOL param_2);
 void func_ov046_0208368c(DebugLauncherState* state);

@@ -92,7 +92,7 @@ void func_ov028_020e89d0(NoiseReportState* state) {
 
 void func_ov028_020e8b68(NoiseReportState* state) {
     func_ov028_020e7f00(&state->unk_21590, &state->unk_21610);
-    func_0200f4f8(&state->unk_21590);
+    EasyTask_DestroyPool(&state->unk_21590);
     func_0200cef0(NULL);
     func_ov028_020e87f4();
     Mem_Free(&gDebugHeap, state);
