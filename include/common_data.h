@@ -270,7 +270,12 @@ typedef struct {
 } UnkStruct_usedby_02025b68;
 extern UnkStruct_usedby_02025b68 usedby_02025b68;
 
-extern s16  data_02073710;
-extern s32* data_02074d10;
+extern u16 data_02073710[];
+
+typedef struct {
+    /* 0x000 */ char unk_00[0x410];
+    /* 0x410 */ s32  unk_410;
+} UnkStruct_02074010;
+extern UnkStruct_02074010 data_02074d10;
 
 #endif // COMMON_DATA_H
