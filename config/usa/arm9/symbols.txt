@@ -86,6 +86,8 @@ func_02002398 kind:function(arm,size=0xc4) addr:0x02002398
 func_0200245c kind:function(arm,size=0xc4) addr:0x0200245c
 func_02002520 kind:function(arm,size=0xc4) addr:0x02002520
 func_020025e4 kind:function(arm,size=0xc4) addr:0x020025e4
+
+
 func_020026a8 kind:function(arm,size=0x64) addr:0x020026a8
 func_0200270c kind:function(arm,size=0x130) addr:0x0200270c
 func_0200283c kind:function(arm,size=0x20) addr:0x0200283c
@@ -463,10 +465,10 @@ EasyTask_UpdatePool kind:function(arm,size=0x18) addr:0x0200f514
 EasyTask_ProcessPendingTasks kind:function(arm,size=0x100) addr:0x0200f52c
 EasyTask_UpdateActiveTasks kind:function(arm,size=0x60) addr:0x0200f62c
 EasyTask_CreateTask kind:function(arm,size=0x114) addr:0x0200f68c
-func_0200f7a0 kind:function(arm,size=0x1c) addr:0x0200f7a0
-func_0200f7bc kind:function(arm,size=0x2c) addr:0x0200f7bc
-func_0200f7e8 kind:function(arm,size=0x44) addr:0x0200f7e8
-func_0200f82c kind:function(arm,size=0x24) addr:0x0200f82c
+EasyTask_DeleteTask kind:function(arm,size=0x1c) addr:0x0200f7a0
+EasyTask_ValidateTaskId kind:function(arm,size=0x2c) addr:0x0200f7bc
+EasyTask_GetTaskByIdUnchecked kind:function(arm,size=0x44) addr:0x0200f7e8
+EasyTask_GetTaskById kind:function(arm,size=0x24) addr:0x0200f82c
 EasyTask_GetTaskData kind:function(arm,size=0x1c) addr:0x0200f850
 
 
