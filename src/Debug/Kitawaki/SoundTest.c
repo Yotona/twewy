@@ -1704,7 +1704,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
     func_02007260(&state->gameState);
-    state->gameState.unk_11584 = func_02008e80();
+    state->gameState.unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     data_0206aa80.unk_1C       = 0;
     state->gameState.unk_11580 = func_0200cef0(state);
@@ -1731,7 +1731,7 @@ void func_ov029_02082ee8(SoundTestState* state) {
 void func_ov029_02082f68(SoundTestState* state) {
     func_ov029_020828c0(state);
     func_0200cef0(NULL);
-    func_02008ebc(state->gameState.unk_11584);
+    DatMgr_ClearSlot(state->gameState.unk_11584);
     Mem_Free(&gDebugHeap, state);
 }
 

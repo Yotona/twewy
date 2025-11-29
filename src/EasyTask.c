@@ -262,12 +262,10 @@ BOOL EasyTask_ValidateTaskId(TaskPool* taskPool, u32* arg1) {
     return success;
 }
 
-// Nonmatching: Missing a shift instruction
-// Scratch: PPLQK
 static void* EasyTask_GetTaskByIdUnchecked(TaskPool* taskPool, u32 arg1) {
     Task* task = NULL;
     if ((u16)arg1 < taskPool->maxTasks) {
-        task = taskPool->taskArray + (arg1 << 5);
+        task = taskPool->taskArray + ((u16)arg1 << 5);
         if (task->inUse == FALSE || task->markedForDel == TRUE) {
             task = NULL;
         }
@@ -275,11 +273,10 @@ static void* EasyTask_GetTaskByIdUnchecked(TaskPool* taskPool, u32 arg1) {
     return task;
 }
 
-// Nonmatching: Missing shift instructions
-// Scratch: U1mfd
 Task* EasyTask_GetTaskById(TaskPool* taskPool, u32 arg1) {
-    Task* task = EasyTask_GetTaskByIdUnchecked(taskPool, arg1);
-    if ((task != NULL) && (task->generation != (arg1 >> 0x10))) {
+    u16   upper = arg1 >> 0x10;
+    Task* task  = EasyTask_GetTaskByIdUnchecked(taskPool, arg1);
+    if ((task != NULL) && (task->generation != upper)) {
         task = NULL;
     }
     return task;

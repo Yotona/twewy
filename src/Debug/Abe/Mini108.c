@@ -175,7 +175,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     func_02006ad8();
     s32 temp                 = func_0200cef0(unk_r0 + 0x1234);
     *(s32*)(unk_r0 + 0x5794) = temp;
-    s32 temp1                = func_0200823c(2, 0, 0, &data_ov000_020831c0);
+    s32 temp1                = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
     unk_r0[0x213]            = temp1;
     data_02066aec            = 0x1f;
 
@@ -268,7 +268,7 @@ void func_ov000_02082ac0(u32* state) {
     if (state == NULL) {
         return;
     }
-    func_02008ebc(0x2);
+    DatMgr_ClearSlot(0x2);
     func_0200ef80(state + 0x214);
     func_02025e30(state + 0x5);
     func_02025e30(state + 0x10C);

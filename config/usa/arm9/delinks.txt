@@ -48,6 +48,7 @@ src/PacMgr.c:
 src/DatMgr.c:
     .text       start:0x02008054 end:0x02008F20
     .data       start:0x02063808 end:0x02063818
+    .bss        start:0x0206B3C0 end:0x0206B3C4
 
 src/EasyList.c:
 complete
@@ -55,6 +56,7 @@ complete
     .data       start:0x02063818 end:0x02063828
 
 src/EasyTask.c:
+complete
     .text       start:0x0200F198 end:0x0200F86C
     .data       start:0x02063828 end:0x02063844
 

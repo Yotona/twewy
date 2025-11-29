@@ -73,14 +73,14 @@ void func_ov037_02082b30(s32* r0, s32 r1, s32 r2, s32 r3) {
     s32 temp1 = r3 * 3;
     for (s32 idx = 0; idx < 3; idx++) {
         temp1++;
-        *(s32*)(r0 + idx) = func_0200823c(*(r0 + 3), 0, 0, &data_ov037_02083aa8 + (temp1 << 3));
+        *(s32*)(r0 + idx) = DatMgr_LoadRawData(*(r0 + 3), 0, 0, &data_ov037_02083aa8 + (temp1 << 3));
     }
     DC_PurgeAll();
     func_ov037_0208290c(r1, r2, *(s32*)(*(r0 + 2) + 2), 0, *(s32*)(*(r0 + 2) + 3));
     func_ov037_020829f4(r1, r2, *(s32*)(*r0 + 2), 0, *(s32*)(*(r0) + 3));
     func_ov037_02082adc(r1, *(s32*)(*(r0 + 1) + 2), r2 << 0xd, *(s32*)*(r0 + 1) + 3);
     for (s32 idx = 0; idx < 3; idx++) {
-        func_02008dbc(*(r0 + idx));
+        DatMgr_ReleaseData(*(r0 + idx));
     }
 }
 

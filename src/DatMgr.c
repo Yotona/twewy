@@ -1,135 +1,498 @@
 #include "DatMgr.h"
 
-DatMgr* data_0206b3c0;
+DatMgr* g_activeDatMgr;
 
-Data* func_02008054(DatMgr* mgr) {
-    Data* temp_r2 = mgr->unk_208;
-
-    if (temp_r2 != NULL) {
-        mgr->unk_208 = (Data*)temp_r2->unk_00;
-    }
-    return temp_r2;
-}
-
-void func_0200806c(DatMgr* mgr, s32 idx, Data* data) {
+static Data* DatMgr_AllocateDataEntry(DatMgr* mgr) {
+    Data* data = mgr->freeList.next;
     if (data != NULL) {
-        data->unk_00             = mgr->unk_028[idx].unk_00;
-        mgr->unk_028[idx].unk_00 = data;
+        mgr->freeList.next = data->next;
+    }
+    return data;
+}
+
+static void DatMgr_InsertDataEntry(DatMgr* mgr, s32 dataType, Data* data) {
+    if (data != NULL) {
+        data->next                    = mgr->dataLists[dataType].next;
+        mgr->dataLists[dataType].next = data;
     }
 }
 
-void func_02008090(DatMgr* datMgr, Data* data) {
-    if (data == NULL) {
-        return;
+static void DatMgr_ResetDataEntry(DatMgr* datMgr, Data* data) {
+    if (data != NULL) {
+        data->slotIndex    = 0;
+        data->dataType     = DAT_TYPE_RAW;
+        data->ownsData     = FALSE;
+        data->isCompressed = FALSE;
+        data->isLoaded     = FALSE;
+        data->refCount     = 0;
+        data->buffer       = 0;
+        data->dataSize     = 0;
+        data->unk_10       = 7;
+        data->binIden      = NULL;
+        data->offset       = 0;
+        data->bin          = 0;
+        data->pack         = 0;
+        data->packIndex    = 0;
     }
-
-    data->unk_04 &= ~0xF;
-    data->unk_04 &= ~0xF0;
-    data->unk_04 &= ~0x100;
-    data->unk_04 &= ~0x200;
-    data->unk_04 &= ~0x400;
-    data->unk_04  = (u16)data->unk_04;
-    data->unk_08  = 0;
-    data->unk_0C  = 0;
-    data->unk_10  = 7;
-    data->unk_14  = 0;
-    data->unk_18  = 0;
-    data->bin     = 0;
-    data->pac     = 0;
-    data->unk_024 = 0;
 }
 
-// Nonmatching
-void func_020080ec(DatMgr* mgr, Data* data) {
-    u32    index = data->unk_04 & 0xf;
-    Data** prev  = &mgr->unk_028[index].unk_00;
+// Nonmatching: Registers swapped
+// Scratch: 01q8W
+static void DatMgr_RemoveDataEntry(DatMgr* mgr, Data* data) {
+    u32    index = data->slotIndex;
+    Data** prev  = &mgr->dataLists[index].next;
     while (*prev != NULL) {
         if (*prev == data) {
-            *prev = data->unk_00;
+            *prev = data->next;
             return;
         }
-        prev = &(*prev)->unk_00;
+        prev = &(*prev)->next;
     }
 }
 
-void func_02008138(DatMgr* mgr, Data* data) {
+static void DatMgr_AddToFreeList(DatMgr* mgr, Data* data) {
     if (data != NULL) {
-        mgr->unk_238->unk_00 = data;
-        mgr->unk_238         = data;
-        data->unk_00         = NULL;
+        mgr->freeListTail->next = data;
+        mgr->freeListTail       = data;
+        data->next              = NULL;
     }
 }
 
-s32 DatMgr_Init(s32 arg0, s32 arg1) {}
+DatMgr* DatMgr_Init(DatMgr* mgr, s32 count) {
+    DatMgr* prevMgr = g_activeDatMgr;
+    g_activeDatMgr  = mgr;
 
-void* func_0200823c(s32 arg0, u32 arg1, u32 arg2, BinIdentifier* arg3) {}
+    if (mgr == NULL) {
+        return prevMgr;
+    }
 
-void* func_0200838c(s32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {}
+    for (u16 i = 0; i < ARRAY_COUNT(mgr->dataLists); i++) {
+        mgr->slotActive[i]     = FALSE;
+        mgr->dataLists[i].next = NULL;
+    }
 
-void* func_020084f8(s32 arg0, Bin* arg1, s32 arg2, s32 arg3) {}
+    mgr->freeList.next = NULL;
+    mgr->slotActive[0] = TRUE;
+    mgr->slotActive[1] = TRUE;
+    mgr->dataCount     = count;
 
-void* func_02008650(s32 arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4, s32 arg5) {}
+    Data* dataPool = Mem_AllocHeapTail(&gMainHeap, mgr->dataCount * sizeof(Data));
+    Mem_SetSequence(&gMainHeap, dataPool, "DatMgr_Init()");
 
-Data* func_02008814(u32 idx, u32 resourceId) {
-    Data* pDVar1;
-    Data* pGVar1;
-    Bin*  pBVar2;
-    u32   uVar3;
+    mgr->dataPool     = dataPool;
+    mgr->freeListTail = dataPool;
 
-    DatMgr* datMgr = data_0206b3c0;
+    for (u16 i = 0; i < mgr->dataCount; i++) {
+        DatMgr_ResetDataEntry(mgr, dataPool);
+        dataPool->next     = mgr->freeList.next;
+        mgr->freeList.next = dataPool;
+        dataPool++;
+    }
+
+    return prevMgr;
+}
+
+// Nonmatching: Registers swapped
+Data* DatMgr_LoadRawData(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden) {
+    DatMgr* datMgr = g_activeDatMgr;
     if (datMgr == NULL) {
         return NULL;
     }
 
-    for (pDVar1 = datMgr->unk_028[idx].unk_00; pDVar1 != NULL; pDVar1 = pDVar1->unk_00) {
-        uVar3 = (pDVar1->unk_04 << 0x18) >> 0x1c;
-        if (uVar3 == 3) {
-            uVar3 = pDVar1->unk_14;
-            if (uVar3 == resourceId) {
+    Data* data = datMgr->dataLists[dataType].next;
+
+    // Search for matching data entry
+    while (data != NULL) {
+        if (buffer == NULL && dataSize == 0 && data->dataType == DAT_TYPE_RAW && data->ownsData == TRUE &&
+            data->binIden == iden)
+        {
+            break;
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->isLoaded = TRUE;
+            data->refCount++;
+        }
+        return data;
+    }
+
+    // Allocate new data entry
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_RAW;
+    data->refCount  = 1;
+    data->binIden   = iden;
+    data->buffer    = buffer;
+    data->dataSize  = dataSize;
+
+    if (data->buffer == NULL) {
+        data->ownsData = TRUE;
+    }
+
+    data->buffer = BinMgr_LoadRawData(data->buffer, NULL, iden, 0, &data->dataSize);
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+
+    return data;
+}
+
+// Nonmatching: Unexpected stack usage
+Data* DatMgr_LoadRawDataWithOffset(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden, s32 offset) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (buffer == NULL && dataSize == 0 && data->dataType == DAT_TYPE_RAW && data->ownsData == TRUE &&
+            data->binIden == iden && data->offset == offset && data->dataSize == dataSize)
+        {
+            break;
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->isLoaded = TRUE;
+            data->refCount++;
+        }
+        return data;
+    }
+
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_RAW;
+    data->refCount  = 1;
+    data->binIden   = iden;
+    data->offset    = offset;
+    data->buffer    = buffer;
+    data->dataSize  = dataSize;
+
+    if (data->buffer == NULL) {
+        data->ownsData = TRUE;
+    }
+
+    data->buffer = BinMgr_LoadRawData(data->buffer, NULL, iden, data->offset, &data->dataSize);
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+
+    return data;
+}
+
+// Nonmatching: Registers swapped
+Data* DatMgr_LoadCompressedBin(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (buffer == NULL && dataSize == 0 && data->dataType == DAT_TYPE_COMPRESSED && data->ownsData == TRUE &&
+            data->binIden == iden)
+        {
+            break;
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->isLoaded = TRUE;
+            data->refCount++;
+        }
+        return data;
+    }
+
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_COMPRESSED;
+    data->refCount  = 1;
+
+    data->binIden  = iden;
+    data->buffer   = buffer;
+    data->dataSize = dataSize;
+
+    if (data->buffer == NULL) {
+        data->ownsData = TRUE;
+    }
+
+    data->buffer = BinMgr_LoadCompressed(data->buffer, NULL, iden, 0, &data->dataSize);
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+
+    return data;
+}
+
+// Nonmatching: Registers swapped
+Data* DatMgr_LoadPackEntry(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden, s32 packIndex, BOOL isCompressed) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (buffer == NULL && dataSize == 0) {
+            if (data->dataType == DAT_TYPE_PACK_ENTRY && data->ownsData == TRUE && data->binIden == iden &&
+                data->packIndex == packIndex)
+            {
                 break;
             }
         }
+        data = data->next;
     }
 
-    if (pDVar1 != NULL) {
-        uVar3 = pDVar1->unk_04 >> 0x10;
-        if (uVar3 == 0xffff) {
-            return pDVar1;
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->isLoaded = TRUE;
+            data->refCount++;
         }
-        pDVar1->unk_04 = (uVar3 + 1) * 0x10000 | pDVar1->unk_04 & 0xffff;
-        return pDVar1;
+        return data;
     }
 
-    pGVar1 = func_02008054(datMgr);
-    func_02008090(datMgr, pGVar1);
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
 
-    pGVar1->unk_04 &= ~0xF;
-    pGVar1->unk_04 |= idx & 0xF;
-    pGVar1->unk_04 &= ~0xF0;
-    pGVar1->unk_04 |= 0x30;
-    pGVar1->unk_04 |= 0x400;
-    pGVar1->unk_04 = (u16)pGVar1->unk_04;
-    pGVar1->unk_04 |= 0x10000;
+    data->slotIndex    = dataType;
+    data->dataType     = DAT_TYPE_PACK_ENTRY;
+    data->refCount     = 1;
+    data->isCompressed = isCompressed;
 
-    pGVar1->unk_14 = resourceId;
-    pBVar2         = BinMgr_LoadUncompressed(NULL, resourceId);
-    pGVar1->bin    = pBVar2;
-    pGVar1->unk_08 = pBVar2->data;
-    pGVar1->unk_0C = pGVar1->bin->size;
-    func_0200806c(datMgr, idx, pGVar1);
-    return pGVar1;
+    data->binIden   = iden;
+    data->pack      = PacMgr_LoadPack(iden);
+    data->packIndex = packIndex;
+    data->buffer    = buffer;
+    data->dataSize  = dataSize;
+
+    if (data->buffer == NULL) {
+        data->ownsData = TRUE;
+    }
+
+    if (isCompressed == FALSE) {
+        data->buffer = PacMgr_LoadPackEntryData(data->pack, (Bin*)data->buffer, (u32*)&data->dataSize, packIndex, FALSE);
+    } else {
+        data->buffer = PacMgr_LoadPackEntryData(data->pack, (Bin*)data->buffer, (u32*)&data->dataSize, packIndex, TRUE);
+    }
+
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+    return data;
 }
 
-void* func_0200892c(s32 arg0, u32 arg1) {}
+Data* DatMgr_LoadUncompressedBin(s32 dataType, BinIdentifier* iden) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
 
-void* func_02008a44(s32 arg0, u32 arg1, s32 arg2, s32 arg3) {}
+    Data* data = datMgr->dataLists[dataType].next;
 
-s32 func_02008c10(s32* arg1) {}
+    while (data != NULL) {
+        if (data->dataType == DAT_TYPE_UNCOMPRESSED_BIN && data->binIden == iden) {
+            break;
+        }
+        data = data->next;
+    }
 
-void* func_02008c50(s32 arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {}
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->refCount++;
+        }
+        return data;
+    }
 
-BOOL func_02008dbc(Data* data) {
-    DatMgr* local_datMgr = data_0206b3c0;
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_UNCOMPRESSED_BIN;
+    data->isLoaded  = TRUE;
+    data->refCount  = 1;
+    data->binIden   = iden;
+
+    data->bin      = BinMgr_LoadUncompressed(NULL, iden);
+    data->buffer   = data->bin->data;
+    data->dataSize = data->bin->size;
+
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+    return data;
+}
+
+Data* DatMgr_LoadResource(s32 dataType, BinIdentifier* iden) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (data->dataType == DAT_TYPE_RESOURCE && data->binIden == iden) {
+            break;
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->refCount++;
+        }
+        return data;
+    }
+
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_RESOURCE;
+    data->isLoaded  = TRUE;
+    data->refCount  = 1;
+    data->binIden   = iden;
+    data->bin       = BinMgr_LoadResource(NULL, iden);
+    data->buffer    = data->bin->data;
+    data->dataSize  = data->bin->size;
+
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+    return data;
+}
+
+// Nonmatching: Differences inside switch statement
+Data* DatMgr_LoadPackEntryDirect(s32 dataType, BinIdentifier* iden, s32 packIndex, s32 arg3) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (data->dataType == DAT_TYPE_PACK_ENTRY_DIRECT && data->binIden == iden && data->packIndex == packIndex) {
+            break;
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->refCount++;
+        }
+        return data;
+    }
+
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_PACK_ENTRY_DIRECT;
+    data->isLoaded  = TRUE;
+    data->refCount  = 1;
+
+    data->binIden   = iden;
+    data->bin       = BinMgr_LoadUncompressed(NULL, iden);
+    data->pack      = PacMgr_LoadPack(iden);
+    data->packIndex = packIndex;
+
+    switch (arg3) {
+        case 0:
+            data->buffer   = (void*)PacMgr_GetPackEntryDataPtr(data->pack, packIndex);
+            data->dataSize = data->pack->entries[packIndex].size;
+            break;
+        case 1: {
+            s32* ptr  = (s32*)PacMgr_GetPackEntryDataPtr(data->pack, packIndex);
+            u32  size = (*ptr & ~0xFF) >> 8;
+            if (!((u8)*ptr & 0xF0)) {
+                size -= 4;
+            }
+            data->dataSize = size;
+
+            void* mem = Mem_AllocHeapTail(&gMainHeap, size);
+            Mem_SetSequence(&gMainHeap, mem, iden->path);
+            data->buffer   = mem;
+            data->ownsData = TRUE;
+            func_02004d60(data->buffer, ptr);
+            break;
+        }
+    }
+
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+    return data;
+}
+
+// Nonmatching: Loop structure, early returns?
+static s32 func_02008c10(s32* arg1, s32* arg2) {
+    s32 count = *arg2;
+    s32 i;
+
+    for (i = 0; i <= count; i++) {
+        if (arg1[i] != arg2[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Nonmatching: Registers swapped, couple instructions out of order
+Data* DatMgr_GeneratePackedData(s32 dataType, void* buffer, void* arg2, BinIdentifier* iden, s32 arg4) {
+    DatMgr* datMgr = g_activeDatMgr;
+    if (datMgr == NULL) {
+        return NULL;
+    }
+
+    Data* data = datMgr->dataLists[dataType].next;
+
+    while (data != NULL) {
+        if (data->dataType == DAT_TYPE_GENERATED && data->binIden == iden) {
+            if (func_02008c10(data->packIndex, arg4) == 1) {
+                break;
+            }
+        }
+        data = data->next;
+    }
+
+    if (data != NULL) {
+        if (data->refCount != 0xFFFF) {
+            data->isLoaded = TRUE;
+            data->refCount++;
+        }
+        return data;
+    }
+
+    data = DatMgr_AllocateDataEntry(datMgr);
+    DatMgr_ResetDataEntry(datMgr, data);
+
+    data->slotIndex = dataType;
+    data->dataType  = DAT_TYPE_GENERATED;
+    data->refCount  = 1;
+
+    if (buffer == NULL) {
+        data->ownsData = TRUE;
+    }
+
+    data->binIden   = iden;
+    data->pack      = PacMgr_LoadPack(iden);
+    data->packIndex = arg4;
+
+    DatMgr_InsertDataEntry(datMgr, dataType, data);
+
+    data->buffer   = PacMgr_GenPack(data->pack, buffer, arg2, (s32*)arg4);
+    data->dataSize = Mem_GetBlockSize(&gMainHeap, data->buffer);
+
+    return data;
+}
+
+BOOL DatMgr_ReleaseData(Data* data) {
+    DatMgr* local_datMgr = g_activeDatMgr;
     BOOL    ret          = FALSE;
 
     if (local_datMgr == NULL) {
@@ -140,31 +503,56 @@ BOOL func_02008dbc(Data* data) {
         return ret;
     }
 
-    u32 uVar1    = (data->unk_04 >> 0x10) - 1;
-    data->unk_04 = uVar1 * 0x10000 | data->unk_04 & 0xffff;
+    data->refCount--;
 
-    if ((uVar1 & 0xffff) == 0) {
-        if (data->pac != NULL) {
-            PacMgr_ReleasePack(data->pac);
+    if (data->refCount == 0) {
+        if (data->pack != NULL) {
+            PacMgr_ReleasePack(data->pack);
         }
 
         if (data->bin != NULL) {
             BinMgr_ReleaseBin(data->bin);
         }
 
-        if (((u32)(data->unk_04 << 0x17) >> 0x1F) == 1 && data->unk_08 != NULL) {
-            Mem_Free(&gMainHeap, data->unk_08);
+        if (data->ownsData == TRUE && data->buffer != NULL) {
+            Mem_Free(&gMainHeap, data->buffer);
         }
 
-        func_020080ec(local_datMgr, data);
-        func_02008138(local_datMgr, data);
-        func_02008090(local_datMgr, data);
+        DatMgr_RemoveDataEntry(local_datMgr, data);
+        DatMgr_AddToFreeList(local_datMgr, data);
+        DatMgr_ResetDataEntry(local_datMgr, data);
         ret = TRUE;
     }
 
     return ret;
 }
 
-void func_02008e80(void) {}
+void DatMgr_AllocateSlot(void) {
+    s32     found = -1;
+    DatMgr* mgr   = g_activeDatMgr;
 
-void func_02008ebc(s32 arg0) {}
+    for (s32 i = 2; i < 10; i++) {
+        if (mgr->slotActive[i] == FALSE) {
+            found = i;
+            break;
+        }
+    }
+    mgr->slotActive[found] = TRUE;
+}
+
+void DatMgr_ClearSlot(s32 dataType) {
+    DatMgr* mgr = g_activeDatMgr;
+    if (mgr == NULL) {
+        return;
+    }
+
+    Data* data = mgr->dataLists[dataType].next;
+    while (data != NULL) {
+        while (data->refCount > 0) {
+            DatMgr_ReleaseData(data);
+        }
+        data = data->next;
+    }
+
+    mgr->slotActive[dataType] = FALSE;
+}

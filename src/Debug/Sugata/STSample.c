@@ -141,7 +141,7 @@ void func_ov041_02082a5c(STSampleState* param) {
     state = Mem_AllocHeapTail(&gDebugHeap, sizeof(STSampleState));
     Mem_SetSequence(&gDebugHeap, state, iVar1);
     sVar2 = func_02007260(&state->gameState);
-    func_02008e80();
+    DatMgr_AllocateSlot();
     state->gameState.unk_11584 = sVar2;
     func_ov041_02082ff0();
     state->gameState.unk_11580 = func_0200cef0(state);
@@ -168,7 +168,7 @@ void func_ov041_02082b08(STSampleState* state) {
 void func_ov041_02082b88(STSampleState* state) {
     func_ov041_020828f0(state);
     func_0200cef0(NULL);
-    func_02008ebc(state->gameState.unk_11584);
+    DatMgr_ClearSlot(state->gameState.unk_11584);
     Mem_Free(&gDebugHeap, state);
     func_02006618(3);
 }
