@@ -153,78 +153,78 @@ static const DebugLauncherFunc funcs[3] = {
 
 const DebugLauncherOption Options_Horii[2] = {
     // "Feature: Noise Report", "Description: Menu screen noise report"
-    {1, "ï¿½@ï¿½\\:ï¿½mï¿½Cï¿½Yï¿½ï¿½ï¿½|ï¿½[ï¿½g", "ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½ï¿½Ê‚Ìƒmï¿½Cï¿½Yï¿½ï¿½ï¿½|ï¿½[ï¿½g",         28, func_ov028_020e82d0},
-    {0,                   NULL,                           NULL, 0x80000000,                NULL},
+    {1, "‹@”\\:ƒmƒCƒYƒŒƒ|[ƒg", "à–¾:ƒƒjƒ…[‰æ–Ê‚ÌƒmƒCƒYƒŒƒ|[ƒg",         28, func_ov028_020e82d0},
+    {0,                   NULL,                                NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Suyama[2] = {
     // "Feature: Staff Roll", "Description: Staff roll screen"
-    {1, "ï¿½@ï¿½\\:ï¿½Xï¿½^ï¿½bï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½", "ï¿½ï¿½ï¿½:ï¿½Xï¿½^ï¿½bï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½",         42, func_ov042_020824a0},
-    {0,                   NULL,                    NULL, 0x80000000,                NULL},
+    {1, "‹@”\\:ƒXƒ^ƒbƒtƒ[ƒ‹", "à–¾:ƒXƒ^ƒbƒtƒ[ƒ‹‰æ–Ê",         42, func_ov042_020824a0},
+    {0,                   NULL,                      NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Takami[14] = {
     // "Feature: test2", "Description: test2"
-    {1,            "ï¿½@ï¿½\\:test2",                  "ï¿½ï¿½ï¿½:test2",         43, func_ov043_020826ac},
+    {1,            "‹@”\\:test2",                      "à–¾:test2",         43, func_ov043_020826ac},
     // "Feature: Menu Top", "Description: First screen of the menu"
-    {2,   "ï¿½@ï¿½\\:ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½gï¿½bï¿½v",         "ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½ÌÅï¿½ï¿½Ì‰ï¿½ï¿½",         43, func_ov043_02084040},
+    {2,   "‹@”\\:ƒƒjƒ…[ƒgƒbƒv",       "à–¾:ƒƒjƒ…[‚ÌÅ‰‚Ì‰æ–Ê",         43, func_ov043_02084040},
     // "Feature: Badge Select", "Description: Screen for organizing badges"
-    {3,   "ï¿½@ï¿½\\:ï¿½oï¿½bï¿½Wï¿½Zï¿½ï¿½ï¿½Nï¿½g",       "ï¿½ï¿½ï¿½:ï¿½oï¿½bï¿½Wï¿½ï¿½Òï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",         43, func_ov043_0208f44c},
+    {3,   "‹@”\\:ƒoƒbƒWƒZƒŒƒNƒg",       "à–¾:ƒoƒbƒW‚ğ•Ò¬‚·‚é‰æ–Ê",         43, func_ov043_0208f44c},
     // "Feature: Scenario Select", "Description: Scenario selection screen"
-    {4, "ï¿½@ï¿½\\:ï¿½Vï¿½iï¿½ï¿½ï¿½Iï¿½Zï¿½ï¿½ï¿½Nï¿½g",     "ï¿½ï¿½ï¿½:ï¿½Vï¿½iï¿½ï¿½ï¿½Iï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",         43, func_ov043_0209bce4},
+    {4, "‹@”\\:ƒVƒiƒŠƒIƒZƒŒƒNƒg",     "à–¾:ƒVƒiƒŠƒI‚ğ‘I‘ğ‚·‚é‰æ–Ê",         43, func_ov043_0209bce4},
     // "Feature: Equipment", "Description: Equipment selection screen"
-    {5,           "ï¿½@ï¿½\\:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",        "ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½ï¿½Ñ‚ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",         43, func_ov043_020a15e8},
+    {5,           "‹@”\\:‚»‚¤‚Ñ",       "à–¾:‚»‚¤‚Ñ‚ğ‘I‘ğ‚·‚é‰æ–Ê",         43, func_ov043_020a15e8},
     // "Feature: Result", "Description: Result screen after battle"
-    {6,         "ï¿½@ï¿½\\:ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½g", "ï¿½ï¿½ï¿½:ï¿½oï¿½gï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½ï¿½ï¿½",         44, func_ov044_02084a88},
+    {6,         "‹@”\\:ƒŠƒUƒ‹ƒg", "à–¾:ƒoƒgƒ‹I—¹Œã‚ÌƒŠƒUƒ‹ƒg‰æ–Ê",         44, func_ov044_02084a88},
     // "Feature: Shop", "Description: Shop screen"
-    {7,         "ï¿½@ï¿½\\:ï¿½Vï¿½ï¿½ï¿½bï¿½v",            "ï¿½ï¿½ï¿½:ï¿½Vï¿½ï¿½ï¿½bï¿½vï¿½ï¿½ï¿½",         43, func_ov043_020aeee0},
+    {7,         "‹@”\\:ƒVƒ‡ƒbƒv",               "à–¾:ƒVƒ‡ƒbƒv‰æ–Ê",         43, func_ov043_020aeee0},
     // "Feature: Department Store", "Description: Department store screen"
-    {8,         "ï¿½@ï¿½\\:ï¿½fï¿½pï¿½[ï¿½g",            "ï¿½ï¿½ï¿½:ï¿½fï¿½pï¿½[ï¿½gï¿½ï¿½ï¿½",         43, func_ov043_020bd414},
+    {8,         "‹@”\\:ƒfƒp[ƒg",               "à–¾:ƒfƒp[ƒg‰æ–Ê",         43, func_ov043_020bd414},
     // "Feature: Save", "Description: Save screen"
-    {9,           "ï¿½@ï¿½\\:ï¿½Zï¿½[ï¿½u",              "ï¿½ï¿½ï¿½:ï¿½Zï¿½[ï¿½uï¿½ï¿½ï¿½",         43, func_ov043_020c04f0},
+    {9,           "‹@”\\:ƒZ[ƒu",                 "à–¾:ƒZ[ƒu‰æ–Ê",         43, func_ov043_020c04f0},
     // "Feature: Test2", "Description: Test2"
-    {1,          "ï¿½@ï¿½\\:ï¿½eï¿½Xï¿½g2",                "ï¿½ï¿½ï¿½:ï¿½eï¿½Xï¿½g2",         43, func_ov043_020c6644},
+    {1,          "‹@”\\:ƒeƒXƒg2",                    "à–¾:ƒeƒXƒg2",         43, func_ov043_020c6644},
     // "Feature: Communication Menu", "Description: Communication menu screen"
-    {2,    "ï¿½@ï¿½\\:ï¿½ÊMï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",       "ï¿½ï¿½ï¿½:ï¿½ÊMï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½",         45, func_ov045_02083c78},
+    {2,   "‹@”\\:’ÊM’†ƒƒjƒ…[",         "à–¾:’ÊM’†ƒƒjƒ…[‰æ–Ê",         45, func_ov045_02083c78},
     // "Feature: Communication Setup", "Description: Communication setup screen"
-    {3,        "ï¿½@ï¿½\\:ï¿½ÊMï¿½Zï¿½bï¿½g",           "ï¿½ï¿½ï¿½:ï¿½ÊMï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½",         45, func_ov045_02088700},
+    {3,       "‹@”\\:’ÊMƒZƒbƒg",             "à–¾:’ÊMƒZƒbƒg‰æ–Ê",         45, func_ov045_02088700},
     // "Feature: Friend List", "Description: Friend list screen"
-    {4,   "ï¿½@ï¿½\\:ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Xï¿½g",      "ï¿½ï¿½ï¿½:ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½",         45, func_ov045_02091034},
-    {0,                     NULL,                         NULL, 0x80000000,                NULL},
+    {4,   "‹@”\\:ƒtƒŒƒ“ƒhƒŠƒXƒg",         "à–¾:ƒtƒŒƒ“ƒhƒŠƒXƒg‰æ–Ê",         45, func_ov045_02091034},
+    {0,                     NULL,                              NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Fukuda[13] = {
     // "Features: Font", "Description: Test"
-    {1,           "ï¿½@ï¿½\\:ï¿½tï¿½Hï¿½ï¿½ï¿½g",                    "ï¿½ï¿½ï¿½:ï¿½eï¿½Xï¿½g",          1, func_ov001_02082b34},
+    {1,           "‹@”\\:ƒtƒHƒ“ƒg",                         "à–¾:ƒeƒXƒg",          1, func_ov001_02082b34},
     // "Feature: Font", "Description: Font list"
-    {2,           "ï¿½@ï¿½\\:ï¿½tï¿½Hï¿½ï¿½ï¿½g",                "ï¿½ï¿½ï¿½:ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½ê——",          2, func_ov002_02086a0c},
+    {2,           "‹@”\\:ƒtƒHƒ“ƒg",                   "à–¾:ƒtƒHƒ“ƒgˆê——",          2, func_ov002_02086a0c},
     // "Feature: Title (?)", "Description: Data Deletion Screen"
-    {3,     "ï¿½@ï¿½\\:ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½iï¿½Hï¿½j",              "ï¿½ï¿½ï¿½:ï¿½fï¿½[ï¿½^ï¿½íœï¿½ï¿½ï¿½",          2, func_ov002_02086a4c},
+    {3,     "‹@”\\:ƒ^ƒCƒgƒ‹iHj",                 "à–¾:ƒf[ƒ^íœ‰æ–Ê",          2, func_ov002_02086a4c},
     // "Feature: Title (?)", "Description: Data Corruption Screen"
-    {4,     "ï¿½@ï¿½\\:ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½iï¿½Hï¿½j",             "ï¿½ï¿½ï¿½:ï¿½fï¿½[ï¿½^ï¿½jï¿½ï¿½ï¿½ï¿½ï¿½",          2, func_ov002_02086a8c},
+    {4,     "‹@”\\:ƒ^ƒCƒgƒ‹iHj",                 "à–¾:ƒf[ƒ^”j‘¹‰æ–Ê",          2, func_ov002_02086a8c},
     // "Feature: BayBadge Menu", "Description: Single Player Entrance"
-    {5, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",               "ï¿½ï¿½ï¿½:ï¿½Pï¿½lï¿½pï¿½Ì“ï¿½ï¿½ï¿½ï¿½",          2, func_ov002_0208688c},
+    {5, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[",                 "à–¾:‚Pl—p‚Ì“ü‚èŒû",          2, func_ov002_0208688c},
     // "Feature: BayBadge Menu", "Description: Single Player Return (Ranking)"
-    {6, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",    "ï¿½ï¿½ï¿½:ï¿½Pï¿½lï¿½pï¿½Ì–ß‚ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Oï¿½j",          2, func_ov002_0208694c},
+    {6, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[",     "à–¾:‚Pl—p‚Ì–ß‚èiƒ‰ƒ“ƒLƒ“ƒOj",          2, func_ov002_0208694c},
     // "Feature: BayBadge Menu", "Description: Gateway to online battles"
-    {7, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",                "ï¿½ï¿½ï¿½:ï¿½ÊMï¿½Îï¿½Ì“ï¿½ï¿½ï¿½ï¿½",          2, func_ov002_020868cc},
+    {7, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[",               "à–¾:’ÊM‘Îí‚Ì“ü‚èŒû",          2, func_ov002_020868cc},
     // "Feature: BayBadge Menu", "Description: Return from game (Ranking)"
-    {8, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[", "ï¿½ï¿½ï¿½:ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì–ß‚ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½Oï¿½j",          2, func_ov002_0208690c},
+    {8, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[", "à–¾:ƒQ[ƒ€‚©‚ç‚Ì–ß‚èiƒ‰ƒ“ƒLƒ“ƒOj",          2, func_ov002_0208690c},
     // "Feature: BayBadge Menu", "Description: Error entry point"
-    {9, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",             "ï¿½ï¿½ï¿½:ï¿½Gï¿½ï¿½ï¿½[ï¿½pï¿½Ì“ï¿½ï¿½ï¿½ï¿½",          2, func_ov002_0208698c},
+    {9, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[",               "à–¾:ƒGƒ‰[—p‚Ì“ü‚èŒû",          2, func_ov002_0208698c},
     // "Feature: Title (?)", "Description: Data Load Failure Screen"
-    {1,     "ï¿½@ï¿½\\:ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½iï¿½Hï¿½j",        "ï¿½ï¿½ï¿½:ï¿½fï¿½[ï¿½^ï¿½Ç‚İï¿½ï¿½İï¿½ï¿½sï¿½ï¿½ï¿½",          2, func_ov002_02086b0c},
+    {1,     "‹@”\\:ƒ^ƒCƒgƒ‹iHj",         "à–¾:ƒf[ƒ^“Ç‚İ‚İ¸”s‰æ–Ê",          2, func_ov002_02086b0c},
     // "Feature: Title (?)", "Description: Data Save Failure Screen"
-    {2,     "ï¿½@ï¿½\\:ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½iï¿½Hï¿½j",      "ï¿½ï¿½ï¿½:ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İï¿½ï¿½sï¿½ï¿½ï¿½",          2, func_ov002_02086b4c},
+    {2,     "‹@”\\:ƒ^ƒCƒgƒ‹iHj",         "à–¾:ƒf[ƒ^‘‚«‚İ¸”s‰æ–Ê",          2, func_ov002_02086b4c},
     // "Feature: BayBadge Menu", "Description: Role Selection Screen"
-    {3, "ï¿½@ï¿½\\:ï¿½xï¿½Cï¿½oï¿½bï¿½Wï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",                 "ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½",          2, func_ov002_020869cc},
-    {0,                       NULL,                            NULL, 0x80000000,                NULL},
+    {3, "‹@”\\:ƒxƒCƒoƒbƒWƒƒjƒ…[",                   "à–¾:–ğŠ„‘I‘ğ‰æ–Ê",          2, func_ov002_020869cc},
+    {0,                       NULL,                                  NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Bul[2] = {
     // "Feature: Opening and Title", "Description:"
-    {3, "ï¿½@ï¿½\\:ï¿½Iï¿½[ï¿½vï¿½jï¿½ï¿½ï¿½Oï¿½Æƒ^ï¿½Cï¿½gï¿½ï¿½", "ï¿½ï¿½ï¿½:",         37, func_ov037_0208370c},
-    {0,                          NULL,   NULL, 0x80000000,                NULL},
+    {3, "‹@”\\:ƒI[ƒvƒjƒ“ƒO‚Æƒ^ƒCƒgƒ‹", "à–¾:",         37, func_ov037_0208370c},
+    {0,                           NULL,    NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Abe[2] = {
@@ -234,50 +234,50 @@ const DebugLauncherOption Options_Abe[2] = {
 
 const DebugLauncherOption Options_Sugata[2] = {
     // "Feature: StreetPass Sample", "Description: StreetPass mode"
-    {3, "ï¿½@ï¿½\\:ï¿½ï¿½ï¿½ê‚¿ï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½vï¿½ï¿½", "ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ê‚¿ï¿½ï¿½ï¿½ï¿½ï¿½ÊMï¿½ï¿½ï¿½[ï¿½h",         41, func_ov041_02082bc4},
-    {0,                      NULL,                     NULL, 0x80000000,                NULL},
+    {3, "‹@”\\:‚·‚ê‚¿‚ª‚¢ƒTƒ“ƒvƒ‹", "à–¾:‚·‚ê‚¿‚ª‚¢’ÊMƒ‚[ƒh",         41, func_ov041_02082bc4},
+    {0,                       NULL,                        NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Kitawaki[9] = {
-    {1,   "ï¿½@ï¿½\\:ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½h<->ï¿½í“¬",    "ï¿½ï¿½ï¿½:ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½Åí“¬ï¿½Nï¿½ï¿½ï¿½ï¿½",         30, func_ov030_020b0fe8},
-    {2,     "ï¿½@ï¿½\\:Fld/ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½h",      "ï¿½ï¿½ï¿½:3Dï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½eï¿½Xï¿½g",         30, func_ov030_020b0e0c},
-    {3,                "ï¿½@ï¿½\\:imd",           "ï¿½ï¿½ï¿½:imd disp test",         30, func_ov030_020b6dec},
-    {4,         "ï¿½@ï¿½\\:sound test",                        "ï¿½ï¿½ï¿½:",         29, func_ov029_02082f9c},
-    {5,       "ï¿½@ï¿½\\:event select", "ï¿½ï¿½ï¿½:debugï¿½pï¿½ÌƒCï¿½xï¿½ï¿½ï¿½gï¿½Zï¿½ï¿½ï¿½Nï¿½g",         30, func_ov030_020b17b4},
-    {6,              "ï¿½@ï¿½\\:flash",            "ï¿½ï¿½ï¿½:flash select",         30, func_ov030_020d5370},
-    {7, "ï¿½@ï¿½\\:NPC message select",      "ï¿½ï¿½ï¿½:NPC message select",         30, func_ov030_020c9950},
-    {8,     "ï¿½@ï¿½\\:message select",          "ï¿½ï¿½ï¿½:message select",         30, func_ov030_020ca1b4},
-    {0,                       NULL,                          NULL, 0x80000000,                NULL},
+    {1,  "‹@”\\:ƒtƒB[ƒ‹ƒh<->í“¬",    "à–¾:ƒtƒB[ƒ‹ƒh‚Åí“¬‹N‚±‚é",         30, func_ov030_020b0fe8},
+    {2,     "‹@”\\:Fld/ƒtƒB[ƒ‹ƒh",        "à–¾:3DƒtƒB[ƒ‹ƒhƒeƒXƒg",         30, func_ov030_020b0e0c},
+    {3,                "‹@”\\:imd",             "à–¾:imd disp test",         30, func_ov030_020b6dec},
+    {4,         "‹@”\\:sound test",                          "à–¾:",         29, func_ov029_02082f9c},
+    {5,       "‹@”\\:event select", "à–¾:debug—p‚ÌƒCƒxƒ“ƒgƒZƒŒƒNƒg",         30, func_ov030_020b17b4},
+    {6,              "‹@”\\:flash",              "à–¾:flash select",         30, func_ov030_020d5370},
+    {7, "‹@”\\:NPC message select",        "à–¾:NPC message select",         30, func_ov030_020c9950},
+    {8,     "‹@”\\:message select",            "à–¾:message select",         30, func_ov030_020ca1b4},
+    {0,                       NULL,                             NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Furukawa[4] = {
-    {1,      "ï¿½@ï¿½\\:ChkBtl/ï¿½oï¿½gï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N",         "ï¿½ï¿½ï¿½:ï¿½oï¿½gï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N",         27, func_ov027_020e860c},
-    {2, "ï¿½@ï¿½\\:Continue/ï¿½Rï¿½ï¿½ï¿½eï¿½Bï¿½jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½:ï¿½Rï¿½ï¿½ï¿½eï¿½Bï¿½jï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½[",         25, func_ov025_020e82c8},
-    {3, "ï¿½@ï¿½\\:Tutorial/ï¿½`ï¿½ï¿½ï¿½[ï¿½gï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½",         "ï¿½ï¿½ï¿½:ï¿½`ï¿½ï¿½ï¿½[ï¿½gï¿½ï¿½ï¿½Aï¿½ï¿½",         26, func_ov026_020e7f98},
-    {0,                               NULL,                         NULL, 0x80000000,                NULL},
+    {1,       "‹@”\\:ChkBtl/ƒoƒgƒ‹ƒ`ƒFƒbƒN",         "à–¾:ƒoƒgƒ‹ƒ`ƒFƒbƒN",         27, func_ov027_020e860c},
+    {2, "‹@”\\:Continue/ƒRƒ“ƒeƒBƒjƒ…[‰æ–Ê", "à–¾:ƒRƒ“ƒeƒBƒjƒ…[ƒƒjƒ…[",         25, func_ov025_020e82c8},
+    {3, "‹@”\\:Tutorial/ƒ`ƒ…[ƒgƒŠƒAƒ‹‰æ–Ê",         "à–¾:ƒ`ƒ…[ƒgƒŠƒAƒ‹",         26, func_ov026_020e7f98},
+    {0,                                NULL,                          NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherOption Options_Mori[6] = {
-    {1,  "ï¿½@ï¿½\\:ï¿½Oï¿½ï¿½ï¿½tï¿½Bï¿½bï¿½Nï¿½`ï¿½Fï¿½bï¿½N",  "ï¿½ï¿½ï¿½:ï¿½nï¿½[ï¿½hï¿½Eï¿½Fï¿½Aï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g",         38, func_ov038_02085674},
-    {2,  "ï¿½@ï¿½\\:ï¿½Oï¿½ï¿½ï¿½tï¿½Bï¿½bï¿½Nï¿½`ï¿½Fï¿½bï¿½N", "ï¿½ï¿½ï¿½:ï¿½\\ï¿½tï¿½gï¿½Eï¿½Fï¿½Aï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g",         38, func_ov038_020856b4},
-    {3, "ï¿½@ï¿½\\:ChkBtl/ï¿½oï¿½gï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N",          "ï¿½ï¿½ï¿½:ï¿½oï¿½gï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N",         27, func_ov027_020e9670},
-    {4,          "ï¿½@ï¿½\\:ï¿½ï¿½ï¿½Pï¿½^ï¿½Cï¿½gï¿½ï¿½",                    "ï¿½ï¿½ï¿½:test",         30, func_ov030_020d2d6c},
-    {5, "ï¿½@ï¿½\\:ï¿½Iï¿½[ï¿½vï¿½jï¿½ï¿½ï¿½Oï¿½Æƒ^ï¿½Cï¿½gï¿½ï¿½",                        "ï¿½ï¿½ï¿½:",         37, func_ov037_0208370c},
-    {0,                          NULL,                          NULL, 0x80000000,                NULL},
+    {1,   "‹@”\\:ƒOƒ‰ƒtƒBƒbƒNƒ`ƒFƒbƒN",  "à–¾:ƒn[ƒhƒEƒFƒAƒXƒvƒ‰ƒCƒg",         38, func_ov038_02085674},
+    {2,   "‹@”\\:ƒOƒ‰ƒtƒBƒbƒNƒ`ƒFƒbƒN", "à–¾:ƒ\\ƒtƒgƒEƒFƒAƒXƒvƒ‰ƒCƒg",         38, func_ov038_020856b4},
+    {3,  "‹@”\\:ChkBtl/ƒoƒgƒ‹ƒ`ƒFƒbƒN",          "à–¾:ƒoƒgƒ‹ƒ`ƒFƒbƒN",         27, func_ov027_020e9670},
+    {4,           "‹@”\\:ƒƒPƒ^ƒCƒgƒ‹",                    "à–¾:test",         30, func_ov030_020d2d6c},
+    {5, "‹@”\\:ƒI[ƒvƒjƒ“ƒO‚Æƒ^ƒCƒgƒ‹",                        "à–¾:",         37, func_ov037_0208370c},
+    {0,                           NULL,                           NULL, 0x80000000,                NULL},
 };
 
 const DebugLauncherCategory Categories[11] = {
-    {21,     "ï¿½ì¬ï¿½Fï¿½kï¿½e", "ï¿½ï¿½ï¿½ï¿½FApl_Kitï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½", Options_Kitawaki},
-    {16,      "ï¿½ì¬ï¿½Fï¿½Ãï¿½", "ï¿½ï¿½ï¿½ï¿½FApl_Furï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½", Options_Furukawa},
-    {12, "ï¿½ì¬ï¿½Fï¿½oï¿½ï¿½ï¿½bï¿½g", "ï¿½ï¿½ï¿½ï¿½FApl_Bulï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",      Options_Bul},
-    {23,       "ï¿½ì¬ï¿½Fï¿½X", "ï¿½ï¿½ï¿½ï¿½FApl_Morï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",     Options_Mori},
-    {11,     "ï¿½ì¬ï¿½Fï¿½ï¿½ï¿½{", "ï¿½ï¿½ï¿½ï¿½FApl_Abeï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",      Options_Abe},
-    {30,     "ï¿½ì¬ï¿½Fï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½FApl_Takï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",   Options_Takami},
-    {29,     "ï¿½ì¬ï¿½Fï¿½ï¿½ï¿½c", "ï¿½ï¿½ï¿½ï¿½FApl_Sugï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",   Options_Sugata},
-    {16,     "ï¿½ì¬ï¿½Fï¿½ï¿½ï¿½c", "ï¿½ï¿½ï¿½ï¿½FApl_Fukï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",   Options_Fukuda},
-    {18,     "ï¿½ì¬ï¿½Fï¿½xï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½FApl_Horï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",    Options_Horii},
-    {29,     "ï¿½ì¬ï¿½Fï¿½{ï¿½R", "ï¿½ï¿½ï¿½ï¿½FApl_Suyï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½",   Options_Suyama},
-    { 0,            NULL,                       NULL,             NULL},
+    {21,     "ì¬F–k˜e", "à–¾FApl_KitƒfƒBƒŒƒNƒgƒŠ", Options_Kitawaki},
+    {16,     "ì¬FŒÃì", "à–¾FApl_FurƒfƒBƒŒƒNƒgƒŠ", Options_Furukawa},
+    {12, "ì¬FƒoƒŒƒbƒg", "à–¾FApl_BulƒfƒBƒŒƒNƒgƒŠ",      Options_Bul},
+    {23,       "ì¬FX", "à–¾FApl_MorƒfƒBƒŒƒNƒgƒŠ",     Options_Mori},
+    {11,     "ì¬FˆÀ”{", "à–¾FApl_AbeƒfƒBƒŒƒNƒgƒŠ",      Options_Abe},
+    {30,     "ì¬F‚Œ©", "à–¾FApl_TakƒfƒBƒŒƒNƒgƒŠ",   Options_Takami},
+    {29,     "ì¬F›“c", "à–¾FApl_SugƒfƒBƒŒƒNƒgƒŠ",   Options_Sugata},
+    {16,     "ì¬F•Ÿ“c", "à–¾FApl_FukƒfƒBƒŒƒNƒgƒŠ",   Options_Fukuda},
+    {18,     "ì¬F–x‹", "à–¾FApl_HorƒfƒBƒŒƒNƒgƒŠ",    Options_Horii},
+    {29,     "ì¬F{R", "à–¾FApl_SuyƒfƒBƒŒƒNƒgƒŠ",   Options_Suyama},
+    { 0,             NULL,                        NULL,             NULL},
 };
 
 static const char* Sequence = "Seq_Launcher(void *)";
