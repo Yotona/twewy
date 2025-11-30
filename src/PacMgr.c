@@ -182,21 +182,20 @@ BOOL PacMgr_ReleasePack(Pack* pac) {
     return allReleased;
 }
 
-void PacMgr_LoadPackEntryData(Pack* pac, Bin* bin, u32* outSize, s32 entryIndex, s32 compressed) {
-    if (compressed == 0) {
+void* PacMgr_LoadPackEntryData(Pack* pac, Bin* bin, u32* outSize, s32 entryIndex, BOOL compressed) {
+    if (compressed == FALSE) {
         if (*outSize == 0) {
             *outSize = pac->entries[entryIndex].size;
         }
 
-        BinMgr_LoadRawData(bin, &pac->fileIden, pac->binIden, pac->entries[entryIndex].offset + 0x20, outSize);
-        return;
+        return BinMgr_LoadRawData(bin, &pac->fileIden, pac->binIden, pac->entries[entryIndex].offset + 0x20, outSize);
     }
 
-    BinMgr_LoadCompressed(bin, &pac->fileIden, pac->binIden, pac->entries[entryIndex].offset + 0x20, outSize);
+    return BinMgr_LoadCompressed(bin, &pac->fileIden, pac->binIden, pac->entries[entryIndex].offset + 0x20, outSize);
 }
 
-s32 PacMgr_GetPackEntryDataPtr(Pack* pac, s32 arg1) {
-    return (s32)(pac->loadedBin->data + (pac->entries[arg1].offset + 0x20));
+s32 PacMgr_GetPackEntryDataPtr(Pack* pac, s32 packIndex) {
+    return (s32)(pac->loadedBin->data + (pac->entries[packIndex].offset + 0x20));
 }
 
 // Nonmatching: Several alignment differences

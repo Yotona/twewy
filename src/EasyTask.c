@@ -2,7 +2,7 @@
 
 void  EasyTask_ProcessPendingTasks(TaskPool* taskPool);
 void  EasyTask_UpdateActiveTasks(TaskPool* taskPool);
-Task* func_0200f82c(TaskPool* taskPool, s32 arg1);
+Task* EasyTask_GetTaskById(TaskPool* taskPool, u32 arg1);
 
 static s32 EasyTask_DummyUpdate(TaskPool* taskPool, Task* task, s32 arg2, s32 arg3) {
     return 1;
@@ -16,12 +16,12 @@ static BOOL EasyTask_RecycleTask(TaskPool* taskPool, Task* prev, Task* task) {
             if (current == task) {
                 prev->next = task->next;
 
-                task->flags &= ~1;
+                task->inUse = FALSE;
                 task->update(taskPool, task, 0, 3);
-                if (((u32)(task->flags << 0x1c) >> 0x1f) == 1) {
+                if (task->ownsData == TRUE) {
                     taskPool->free(taskPool, task->data);
                 }
-                task->flags &= ~8;
+                task->ownsData = FALSE;
 
                 task->generation++;
                 taskPool->lastFreedTask->next = task;
@@ -46,11 +46,11 @@ static Task* EasyTask_AllocateTask(TaskPool* taskPool, s32 priority) {
     if (task != NULL) {
         taskPool->freeList.next = task->next;
 
-        task->flags = (task->flags & ~1) | 1;
-        task->flags = (task->flags | 2) & ~4;
-        task->flags &= ~8;
-        task->flags &= ~0x10;
-
+        task->inUse            = TRUE;
+        task->isActive         = TRUE;
+        task->isPending        = FALSE;
+        task->ownsData         = FALSE;
+        task->markedForDel     = FALSE;
         task->childCount       = 0;
         task->parentId         = 0xFFFF;
         task->parentGeneration = 0;
@@ -83,7 +83,7 @@ static void EasyTask_InsertTask(TaskPool* taskPool, Task* task) {
         prev->next = task;
     }
 
-    task->flags &= ~2;
+    task->isActive = FALSE;
 }
 
 static void* EasyTask_Alloc(TaskPool* taskPool, s32 size, const char* sequence) {
@@ -119,11 +119,11 @@ BOOL EasyTask_InitializePool(TaskPool* taskPool, MemPool* memPool, u32 count, vo
     if (taskData != NULL) {
         taskPool->lastFreedTask = taskData;
         for (s32 i = 0; i < count; i++) {
-            taskData->flags &= ~1;
-            taskData->flags &= ~2;
-            taskData->flags &= ~4;
-            taskData->flags &= ~8;
-            taskData->flags &= ~0x10;
+            taskData->inUse            = FALSE;
+            taskData->isActive         = FALSE;
+            taskData->isPending        = FALSE;
+            taskData->ownsData         = FALSE;
+            taskData->markedForDel     = FALSE;
             taskData->childCount       = 0;
             taskData->id               = i;
             taskData->parentId         = 0xFFFF;
@@ -168,14 +168,12 @@ void EasyTask_UpdatePool(TaskPool* taskPool) {
     EasyTask_UpdateActiveTasks(taskPool);
 }
 
-// Nonmatching: Some flipped registers
-// Scratch: wbMqj
 void EasyTask_ProcessPendingTasks(TaskPool* taskPool) {
     Task* iter = taskPool->activeList.next;
     while (iter != NULL) {
         Task* nextPtr = iter->next;
-        if (((u32)(iter->flags << 0x1B) >> 0x1F) == 1) {
-            Task* temp = func_0200f82c(taskPool, (iter->parentGeneration << 0x10) | iter->parentId);
+        if (iter->markedForDel == TRUE) {
+            Task* temp = EasyTask_GetTaskById(taskPool, (iter->parentGeneration << 0x10) | iter->parentId);
             if (temp != NULL) {
                 temp->childCount--;
             }
@@ -194,22 +192,20 @@ void EasyTask_ProcessPendingTasks(TaskPool* taskPool) {
 
     iter = taskPool->activeList.next;
     while (iter != NULL) {
-        if (((u32)(iter->flags << 0x1D) >> 0x1F) == 0 && ((u32)(iter->flags << 0x1B) >> 0x1F) == 0) {
+        if (iter->isPending == FALSE && iter->markedForDel == FALSE) {
             if (iter->update(taskPool, iter, 0, 1) == 0) {
-                iter->flags |= (1 << 4);
+                iter->markedForDel = TRUE;
             }
         }
         iter = iter->next;
     }
 }
 
-// Nonmatching: Registers swapped
-// Scratch: NYhjL
 void EasyTask_UpdateActiveTasks(TaskPool* taskPool) {
     Task* iter = taskPool->activeList.next;
 
     while (iter != NULL) {
-        if (((u32)(iter->flags << 0x1D) >> 0x1F) == 0 && ((u32)(iter->flags << 0x1B) >> 0x1F) == 0) {
+        if (iter->isPending == FALSE && iter->markedForDel == FALSE) {
             iter->update(taskPool, iter, 0, 2);
         }
         iter = iter->next;
@@ -224,7 +220,7 @@ s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, 
     task->next                 = taskPool->pendingList.next;
     taskPool->pendingList.next = task;
     if (data == NULL && taskHandle->dataSize != 0) {
-        task->flags |= 8;
+        task->ownsData  = TRUE;
         void* allocated = taskPool->alloc(taskPool, taskHandle->dataSize, taskHandle->taskName);
         task->data      = allocated;
         if (allocated == NULL) {
@@ -232,8 +228,8 @@ s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, 
             return -1;
         }
     } else {
-        task->flags &= ~8;
-        task->data = data;
+        task->ownsData = FALSE;
+        task->data     = data;
     }
     task->name                                = taskHandle->taskName;
     s32 (*update)(TaskPool*, Task*, s32, s32) = taskHandle->taskFunc;
@@ -250,42 +246,37 @@ s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, 
     return (task->generation << 0x10) | task->id;
 }
 
-void func_0200f7a0(TaskPool* taskPool, u32 arg1) {
-    Task* task = func_0200f82c(taskPool, arg1);
+void EasyTask_DeleteTask(TaskPool* taskPool, u32 arg1) {
+    Task* task = EasyTask_GetTaskById(taskPool, arg1);
     if (task != NULL) {
-        task->flags |= 0x10;
+        task->markedForDel = TRUE;
     }
 }
 
-BOOL func_0200f7bc(TaskPool* taskPool, s32* arg1) {
+BOOL EasyTask_ValidateTaskId(TaskPool* taskPool, u32* arg1) {
     BOOL success = TRUE;
-    if (func_0200f82c(taskPool, *arg1) == 0) {
+    if (EasyTask_GetTaskById(taskPool, *arg1) == NULL) {
         *arg1   = -1;
         success = FALSE;
     }
     return success;
 }
 
-static void* func_0200f7e8(TaskPool* taskPool, u16 arg1) {
-    u16   temp_r0;
-    Task* var_r2;
-
-    var_r2 = NULL;
-    if (taskPool->maxTasks > arg1) {
-        var_r2  = taskPool->taskArray + (arg1 << 5);
-        temp_r0 = var_r2->flags;
-        if ((((u32)(temp_r0 << 0x1F) >> 0x1F) != 0) && (((u32)(temp_r0 << 0x1B) >> 0x1F) != 1)) {
-
-        } else {
-            var_r2 = NULL;
+static void* EasyTask_GetTaskByIdUnchecked(TaskPool* taskPool, u32 arg1) {
+    Task* task = NULL;
+    if ((u16)arg1 < taskPool->maxTasks) {
+        task = taskPool->taskArray + ((u16)arg1 << 5);
+        if (task->inUse == FALSE || task->markedForDel == TRUE) {
+            task = NULL;
         }
     }
-    return var_r2;
+    return task;
 }
 
-Task* func_0200f82c(TaskPool* taskPool, s32 arg1) {
-    Task* task = func_0200f7e8(taskPool, arg1);
-    if ((task != NULL) && (task->generation != (arg1 >> 0x10))) {
+Task* EasyTask_GetTaskById(TaskPool* taskPool, u32 arg1) {
+    u16   upper = arg1 >> 0x10;
+    Task* task  = EasyTask_GetTaskByIdUnchecked(taskPool, arg1);
+    if ((task != NULL) && (task->generation != upper)) {
         task = NULL;
     }
     return task;
@@ -294,7 +285,7 @@ Task* func_0200f82c(TaskPool* taskPool, s32 arg1) {
 void* EasyTask_GetTaskData(TaskPool* taskPool, u32 arg1) {
     void* data = NULL;
 
-    Task* task = func_0200f82c(taskPool, arg1);
+    Task* task = EasyTask_GetTaskById(taskPool, arg1);
     if (task != NULL) {
         data = task->data;
     }

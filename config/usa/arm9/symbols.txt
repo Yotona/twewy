@@ -71,7 +71,9 @@ DMA_Decode kind:function(arm,size=0xf4) addr:0x020019f4 local
 func_02001ae8 kind:function(arm,size=0x5c) addr:0x02001ae8 local
 func_02001b44 kind:function(arm,size=0xf0) addr:0x02001b44
 
-
+/////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////
 func_02001c34 kind:function(arm,size=0x40) addr:0x02001c34
 func_02001c74 kind:function(arm,size=0x6c) addr:0x02001c74
 func_02001ce0 kind:function(arm,size=0x74) addr:0x02001ce0
@@ -86,6 +88,10 @@ func_02002398 kind:function(arm,size=0xc4) addr:0x02002398
 func_0200245c kind:function(arm,size=0xc4) addr:0x0200245c
 func_02002520 kind:function(arm,size=0xc4) addr:0x02002520
 func_020025e4 kind:function(arm,size=0xc4) addr:0x020025e4
+
+/////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////
 func_020026a8 kind:function(arm,size=0x64) addr:0x020026a8
 func_0200270c kind:function(arm,size=0x130) addr:0x0200270c
 func_0200283c kind:function(arm,size=0x20) addr:0x0200283c
@@ -114,10 +120,18 @@ func_02003904 kind:function(arm,size=0x90) addr:0x02003904
 func_02003994 kind:function(arm,size=0x98) addr:0x02003994
 func_02003a2c kind:function(arm,size=0x7c) addr:0x02003a2c
 func_02003aa8 kind:function(arm,size=0x28) addr:0x02003aa8
+
+/////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////
 func_02003ad0 kind:function(arm,size=0x17c) addr:0x02003ad0
 func_02003c4c kind:function(arm,size=0x1c) addr:0x02003c4c
 func_02003c68 kind:function(arm,size=0x14) addr:0x02003c68
 func_02003c7c kind:function(arm,size=0x278) addr:0x02003c7c
+
+/////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////
 func_02003ef4 kind:function(arm,size=0x2c4) addr:0x02003ef4
 func_020041b8 kind:function(arm,size=0x64) addr:0x020041b8
 func_0200421c kind:function(arm,size=0x130) addr:0x0200421c
@@ -270,24 +284,24 @@ PacMgr_GenPack kind:function(arm,size=0x1a8) addr:0x02007eac
 /////////////////////////////////////////////////////////////
 // src/DatMgr.c
 /////////////////////////////////////////////////////////////
-func_02008054 kind:function(arm,size=0x18) addr:0x02008054
-func_0200806c kind:function(arm,size=0x24) addr:0x0200806c
-func_02008090 kind:function(arm,size=0x5c) addr:0x02008090
-func_020080ec kind:function(arm,size=0x4c) addr:0x020080ec
-func_02008138 kind:function(arm,size=0x20) addr:0x02008138
+DatMgr_AllocateDataEntry kind:function(arm,size=0x18) addr:0x02008054 local
+DatMgr_InsertDataEntry kind:function(arm,size=0x24) addr:0x0200806c
+DatMgr_ResetDataEntry kind:function(arm,size=0x5c) addr:0x02008090
+DatMgr_RemoveDataEntry kind:function(arm,size=0x4c) addr:0x020080ec
+DatMgr_AddToFreeList kind:function(arm,size=0x20) addr:0x02008138
 DatMgr_Init kind:function(arm,size=0xe4) addr:0x02008158
-func_0200823c kind:function(arm,size=0x150) addr:0x0200823c
-func_0200838c kind:function(arm,size=0x16c) addr:0x0200838c
-func_020084f8 kind:function(arm,size=0x158) addr:0x020084f8
-func_02008650 kind:function(arm,size=0x1c4) addr:0x02008650
-func_02008814 kind:function(arm,size=0x118) addr:0x02008814
-func_0200892c kind:function(arm,size=0x118) addr:0x0200892c
-func_02008a44 kind:function(arm,size=0x1cc) addr:0x02008a44
+DatMgr_LoadRawData kind:function(arm,size=0x150) addr:0x0200823c
+DatMgr_LoadRawDataWithOffset kind:function(arm,size=0x16c) addr:0x0200838c
+DatMgr_LoadCompressedBin kind:function(arm,size=0x158) addr:0x020084f8
+DatMgr_LoadPackEntry kind:function(arm,size=0x1c4) addr:0x02008650
+DatMgr_LoadUncompressedBin kind:function(arm,size=0x118) addr:0x02008814
+DatMgr_LoadResource kind:function(arm,size=0x118) addr:0x0200892c
+DatMgr_LoadPackEntryDirect kind:function(arm,size=0x1cc) addr:0x02008a44
 func_02008c10 kind:function(arm,size=0x40) addr:0x02008c10
-func_02008c50 kind:function(arm,size=0x16c) addr:0x02008c50
-func_02008dbc kind:function(arm,size=0xc4) addr:0x02008dbc
-func_02008e80 kind:function(arm,size=0x3c) addr:0x02008e80
-func_02008ebc kind:function(arm,size=0x64) addr:0x02008ebc
+DatMgr_GeneratePackedData kind:function(arm,size=0x16c) addr:0x02008c50
+DatMgr_ReleaseData kind:function(arm,size=0xc4) addr:0x02008dbc
+DatMgr_AllocateSlot kind:function(arm,size=0x3c) addr:0x02008e80
+DatMgr_ClearSlot kind:function(arm,size=0x64) addr:0x02008ebc
 
 /////////////////////////////////////////////////////////////
 // src/EasyList.c
@@ -450,12 +464,12 @@ func_0200f168 kind:function(arm,size=0x30) addr:0x0200f168
 /////////////////////////////////////////////////////////////
 // src/EasyTask.c
 /////////////////////////////////////////////////////////////
-EasyTask_DummyUpdate kind:function(arm,size=0x8) addr:0x0200f198
-EasyTask_RecycleTask kind:function(arm,size=0xbc) addr:0x0200f1a0
-EasyTask_AllocateTask kind:function(arm,size=0x94) addr:0x0200f25c
-EasyTask_InsertTask kind:function(arm,size=0x60) addr:0x0200f2f0
-EasyTask_Alloc kind:function(arm,size=0x30) addr:0x0200f350
-EasyTask_Free kind:function(arm,size=0x10) addr:0x0200f380
+EasyTask_DummyUpdate kind:function(arm,size=0x8) addr:0x0200f198 local
+EasyTask_RecycleTask kind:function(arm,size=0xbc) addr:0x0200f1a0 local
+EasyTask_AllocateTask kind:function(arm,size=0x94) addr:0x0200f25c local
+EasyTask_InsertTask kind:function(arm,size=0x60) addr:0x0200f2f0 local
+EasyTask_Alloc kind:function(arm,size=0x30) addr:0x0200f350 local
+EasyTask_Free kind:function(arm,size=0x10) addr:0x0200f380 local
 EasyTask_InitializePool kind:function(arm,size=0x10c) addr:0x0200f390
 EasyTask_CleanupAllTasks kind:function(arm,size=0x5c) addr:0x0200f49c
 EasyTask_DestroyPool kind:function(arm,size=0x1c) addr:0x0200f4f8
@@ -463,10 +477,10 @@ EasyTask_UpdatePool kind:function(arm,size=0x18) addr:0x0200f514
 EasyTask_ProcessPendingTasks kind:function(arm,size=0x100) addr:0x0200f52c
 EasyTask_UpdateActiveTasks kind:function(arm,size=0x60) addr:0x0200f62c
 EasyTask_CreateTask kind:function(arm,size=0x114) addr:0x0200f68c
-func_0200f7a0 kind:function(arm,size=0x1c) addr:0x0200f7a0
-func_0200f7bc kind:function(arm,size=0x2c) addr:0x0200f7bc
-func_0200f7e8 kind:function(arm,size=0x44) addr:0x0200f7e8
-func_0200f82c kind:function(arm,size=0x24) addr:0x0200f82c
+EasyTask_DeleteTask kind:function(arm,size=0x1c) addr:0x0200f7a0
+EasyTask_ValidateTaskId kind:function(arm,size=0x2c) addr:0x0200f7bc
+EasyTask_GetTaskByIdUnchecked kind:function(arm,size=0x44) addr:0x0200f7e8 local
+EasyTask_GetTaskById kind:function(arm,size=0x24) addr:0x0200f82c
 EasyTask_GetTaskData kind:function(arm,size=0x1c) addr:0x0200f850
 
 
@@ -3497,7 +3511,7 @@ data_020637b8 kind:data(any) addr:0x020637b8
 /////////////////////////////////////////////////////////////
 // src/DatMgr.c
 /////////////////////////////////////////////////////////////
-data_02063808 kind:data(any) addr:0x02063808
+@703 kind:data(any) addr:0x02063808 local
 
 /////////////////////////////////////////////////////////////
 // src/EasyList.c
@@ -4267,8 +4281,12 @@ g_activeBinMgr kind:bss addr:0x0206b3b8
 /////////////////////////////////////////////////////////////
 g_activePacMgr kind:bss addr:0x0206b3bc
 
+/////////////////////////////////////////////////////////////
+// src/DatMgr.c
+/////////////////////////////////////////////////////////////
+g_activeDatMgr kind:bss addr:0x0206b3c0
 
-data_0206b3c0 kind:bss addr:0x0206b3c0
+
 data_0206b3c4 kind:bss addr:0x0206b3c4
 data_0206b3cc kind:bss addr:0x0206b3cc
 data_0206b3d8 kind:bss addr:0x0206b3d8

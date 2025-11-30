@@ -43,7 +43,7 @@ void    PacMgr_ResetPack(PacMgr* mgr, Pack* pac);
 PacMgr* PacMgr_Init(PacMgr* pacMgr, u32 nodeCount);
 Pack*   PacMgr_LoadPack(BinIdentifier* iden);
 BOOL    PacMgr_ReleasePack(Pack* pac);
-void    PacMgr_LoadPackEntryData(Pack* pac, Bin* bin, u32* outSize, s32 entryIndex, s32 compressed);
+void*   PacMgr_LoadPackEntryData(Pack* pac, Bin* bin, u32* outSize, s32 entryIndex, BOOL compressed);
 s32     PacMgr_GetPackEntryDataPtr(Pack* pac, s32 arg1);
 void*   PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList);
 

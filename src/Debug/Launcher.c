@@ -209,10 +209,10 @@ void func_ov046_02082c0c(EasyListNode* list, BOOL unk_r1) {
                 func_0200cfe8(list->data);
                 return;
             case 1:
-                func_02008ebc(list->data);
+                DatMgr_ClearSlot(list->data);
                 return;
             case 2:
-                func_02008dbc(list->data);
+                DatMgr_ReleaseData(list->data);
                 return;
             case 3:
                 EasyTask_DestroyPool(list->data);
@@ -329,10 +329,10 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);
     state->unk_1164C = func_0200cef0(state->unk_CC);
     EasyList_InsertSorted(&state->unk_list_15F14, NULL, func_0200cef0(state->unk_CC)); // is it actually NULL?
-    state->unk_14 = func_02008e80();
+    state->unk_14 = DatMgr_AllocateSlot();
     // stackframe[0] = 0x1;
     // stackframe[1] = 0x0;
-    state->unk_18 = func_02008650(state->unk_14, 0, 0, &data_ov046_02083a4c);
+    state->unk_18 = DatMgr_LoadPackEntry(state->unk_14, 0, 0, &data_ov046_02083a4c);
     EasyList_InsertSorted(&state->unk_list_15F14, 1, state->unk_14);
     EasyList_InsertSorted(&state->unk_list_15F14, 2, state->unk_18);
     data_02066aec = 0x1F;
