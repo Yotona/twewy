@@ -1,7 +1,6 @@
 #include "DMA.h"
 #include "Memory.h"
 #include "common_data.h"
-#include "game.h"
 #include <NitroSDK/os/cache.h>
 
 static void DMA_ResetState(void);

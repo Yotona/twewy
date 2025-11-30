@@ -1,7 +1,7 @@
+#include "EasyTask.h"
 #include "Memory.h"
 #include "System.h"
 #include "common_data.h"
-#include "game.h"
 
 extern s32 data_020672ec;
 

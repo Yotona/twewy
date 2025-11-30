@@ -1,7 +1,6 @@
 #ifndef SNDMGR_H
 #define SNDMGR_H
 
-#include "game.h"
 #include <types.h>
 
 extern struct {

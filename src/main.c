@@ -3,7 +3,6 @@
 #include "NitroSDK/fs.h"
 #include "System.h"
 #include "common_data.h"
-#include "game.h"
 #include <NitroSDK/os/interrupt.h>
 #include <NitroSDK/os/region.h>
 
@@ -223,8 +222,8 @@ void main(void) {
 extern u32 OVERLAY_37_ID;
 extern u32 OVERLAY_46_ID;
 
-extern void func_ov037_0208370c(GameState*);
-extern void func_ov046_02083630(GameState*);
+extern void func_ov037_0208370c(void* state);
+extern void func_ov046_02083630(void* state);
 
 static const char* data_020636cc = "Seq_Boot(void *)";
 

@@ -9,7 +9,6 @@
 #include "OverlayManager.h"
 #include "System.h"
 #include "common_data.h"
-#include "game.h"
 #include <NitroSDK/gx.h>
 
 typedef struct {
@@ -75,70 +74,66 @@ typedef struct {
 const UnkStruct_DebugLauncher_tuple data_ov046_02083a34 = {0, 0x1000, 0};
 const UnkStruct_DebugLauncher_tuple data_ov046_02083a40 = {0, 0, 0xFFFFF000};
 
-extern void func_ov000_02082854(GameState* state);
+extern void func_ov000_02082854(void* state);
 
-extern void func_ov001_02082b34(GameState* state);
+extern void func_ov001_02082b34(void* state);
 
-extern void func_ov002_0208688c(GameState* state);
-extern void func_ov002_020868cc(GameState* state);
-extern void func_ov002_0208690c(GameState* state);
-extern void func_ov002_0208694c(GameState* state);
-extern void func_ov002_0208698c(GameState* state);
-extern void func_ov002_020869cc(GameState* state);
-extern void func_ov002_02086a0c(GameState* state);
-extern void func_ov002_02086a4c(GameState* state);
-extern void func_ov002_02086a8c(GameState* state);
-extern void func_ov002_02086b0c(GameState* state);
-extern void func_ov002_02086b4c(GameState* state);
+extern void func_ov002_0208688c(void* state);
+extern void func_ov002_020868cc(void* state);
+extern void func_ov002_0208690c(void* state);
+extern void func_ov002_0208694c(void* state);
+extern void func_ov002_0208698c(void* state);
+extern void func_ov002_020869cc(void* state);
+extern void func_ov002_02086a0c(void* state);
+extern void func_ov002_02086a4c(void* state);
+extern void func_ov002_02086a8c(void* state);
+extern void func_ov002_02086b0c(void* state);
+extern void func_ov002_02086b4c(void* state);
+extern void func_ov025_020e82c8(void* state);
 
-extern void func_ov025_020e82c8(GameState* state);
+extern void func_ov026_020e7f98(void* state);
 
-extern void func_ov026_020e7f98(GameState* state);
+extern void func_ov027_020e860c(void* state);
+extern void func_ov027_020e9670(void* state);
 
-extern void func_ov027_020e860c(GameState* state);
-extern void func_ov027_020e9670(GameState* state);
+extern void func_ov028_020e82d0(void* state);
 
-extern void func_ov028_020e82d0(GameState* state);
+extern void func_ov029_02082f9c(void* state);
 
-extern void func_ov029_02082f9c(GameState* state);
+extern void func_ov030_020b0fe8(void* state);
+extern void func_ov030_020b0e0c(void* state);
+extern void func_ov030_020b17b4(void* state);
+extern void func_ov030_020b6dec(void* state);
+extern void func_ov030_020c9950(void* state);
+extern void func_ov030_020ca1b4(void* state);
+extern void func_ov030_020d2d6c(void* state);
+extern void func_ov030_020d5370(void* state);
+extern void func_ov037_0208370c(void* state);
 
-extern void func_ov030_020b0fe8(GameState* state);
-extern void func_ov030_020b0e0c(GameState* state);
-extern void func_ov030_020b17b4(GameState* state);
-extern void func_ov030_020b6dec(GameState* state);
-extern void func_ov030_020c9950(GameState* state);
-extern void func_ov030_020ca1b4(GameState* state);
-extern void func_ov030_020d2d6c(GameState* state);
-extern void func_ov030_020d5370(GameState* state);
+extern void func_ov038_02085674(void* state);
+extern void func_ov038_020856b4(void* state);
+extern void func_ov041_02082bc4(void* state);
 
-extern void func_ov037_0208370c(GameState* state);
+extern void func_ov042_020824a0(void* state);
 
-extern void func_ov038_02085674(GameState* state);
-extern void func_ov038_020856b4(GameState* state);
+extern void func_ov043_020826ac(void* state);
+extern void func_ov043_02084040(void* state);
+extern void func_ov043_0208f44c(void* state);
+extern void func_ov043_0209bce4(void* state);
+extern void func_ov043_020a15e8(void* state);
+extern void func_ov043_020aeee0(void* state);
+extern void func_ov043_020bd414(void* state);
+extern void func_ov043_020c04f0(void* state);
+extern void func_ov043_020c6644(void* state);
 
-extern void func_ov041_02082bc4(GameState* state);
+extern void func_ov044_02084a88(void* state);
 
-extern void func_ov042_020824a0(GameState* state);
-
-extern void func_ov043_020826ac(GameState* state);
-extern void func_ov043_02084040(GameState* state);
-extern void func_ov043_0208f44c(GameState* state);
-extern void func_ov043_0209bce4(GameState* state);
-extern void func_ov043_020a15e8(GameState* state);
-extern void func_ov043_020aeee0(GameState* state);
-extern void func_ov043_020bd414(GameState* state);
-extern void func_ov043_020c04f0(GameState* state);
-extern void func_ov043_020c6644(GameState* state);
-
-extern void func_ov044_02084a88(GameState* state);
-
-extern void func_ov045_02083c78(GameState* state);
-extern void func_ov045_02088700(GameState* state);
-extern void func_ov045_02091034(GameState* state);
-
-void func_ov046_constructor_020835b4(DebugLauncherState* state);
-void func_ov046_main_020834c0(DebugLauncherState* state);
-void func_ov046_destructor_02083454(DebugLauncherState* state);
+extern void func_ov045_02083c78(void* state);
+extern void func_ov045_02088700(void* state);
+extern void func_ov045_02091034(void* state);
+void        func_ov046_constructor_020835b4(DebugLauncherState* state);
+void        func_ov046_main_020834c0(DebugLauncherState* state);
+void        func_ov046_destructor_02083454(DebugLauncherState* state);
 
 int func_ov046_020839a0(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839b4(s32 r1, DebugLauncherState* state, s32* r2);

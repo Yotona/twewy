@@ -1,8 +1,6 @@
-// #include "OverlayManager.h"
 #include "Interrupts.h"
 #include "System.h"
 #include "common_data.h"
-#include "game.h"
 #include <NitroSDK/gx/gx.h>
 #include <NitroSDK/os/cache.h>
 #include <NitroSDK/os/interrupt.h>

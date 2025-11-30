@@ -10,14 +10,11 @@
 void func_ov000_020824a0(void);
 void func_ov000_0208257c(void);
 void func_ov000_0208259c(void);
-void func_ov000_02082854(void* state);
+void func_ov000_02082854(Mini108State* state);
 
-typedef void (*func_ptr_t)(u32*);
+typedef void (*Mini108Func)(Mini108State*);
 
-const struct {
-    u32         unk_00;
-    const char* unk_04;
-} data_ov000_020831c0 = {0, "Apl_Abe/Grp_Mini108.bin"};
+BinIdentifier data_ov000_020831c0 = {0, "Apl_Abe/Grp_Mini108.bin"};
 
 typedef struct {
     u32 unk_00;
@@ -71,10 +68,9 @@ void func_ov000_020830b8() {
 }
 
 // Nonmatching: Data references, register allocation, and bitmagic operations that don't match (see below)
-// Scratch: MTTL7
-void func_ov000_02082b1c(u32* unk_r0) {
-    unk_r0[0] = 0;
-    unk_r0[4] = 0;
+void func_ov000_02082b1c(Mini108State* state) {
+    state->unk_00 = 0;
+    state->unk_10 = 0;
     func_ov000_0208259c();
     data_0206aa80.unk_30 = ~0xF;
     data_0206aa80.unk_60 = ~0xF;
@@ -173,30 +169,30 @@ void func_ov000_02082b1c(u32* unk_r0) {
     data_0206aa80.unk_370 = 0;
     data_0206aa80.unk_4C  = ((0 | 0x4) | 0x10) | 1;
     func_02006ad8();
-    s32 temp                 = func_0200cef0(unk_r0 + 0x1234);
-    *(s32*)(unk_r0 + 0x5794) = temp;
-    s32 temp1                = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
-    unk_r0[0x213]            = temp1;
-    data_02066aec            = 0x1f;
+    s32 temp         = func_0200cef0(&state->unk_48D0);
+    state->unk_15e50 = temp;
+    Data* temp1      = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
+    state->unk_84C   = temp1;
+    data_02066aec    = 0x1f;
 
-    u32 temp2 = unk_r0[0x213];
-    u32 temp_r1, temp_r6, temp_r5;
-    if (temp2 == 0) {
+    Data* temp2 = state->unk_84C;
+    u32   temp_r1, temp_r6, temp_r5;
+    if (temp2 == NULL) {
         temp_r1 = 0;
     } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
+        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
         temp_r1       = (s32)temp_ptr + *(temp_ptr + 0x02);
     }
-    if (temp2 == 0) {
+    if (temp2 == NULL) {
         temp_r6 = 0;
     } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
+        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
         temp_r6       = (s32)temp_ptr + *(temp_ptr + 0x06);
     }
-    if (temp2 == 0) {
+    if (temp2 == NULL) {
         temp_r5 = 0;
     } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
+        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
         temp_r5       = (s32)temp_ptr + *(temp_ptr + 0x08);
     }
 
@@ -208,7 +204,7 @@ void func_ov000_02082b1c(u32* unk_r0) {
     func_02009f18(data_0206b3c4.unk_00, temp_r6, data_0206aa80.unk_FC, data_0206aa80.unk_E0);
     func_0200adf8(data_0206b3cc.unk_00, temp_r5, 0, 0, 2);
     data_02066eec = 0x1F;
-    temp2         = unk_r0[0x213];
+    temp2         = state->unk_84C;
     if (temp2 == 0) {
         temp_r1 = 0;
     } else {
@@ -236,7 +232,10 @@ void func_ov000_02082b1c(u32* unk_r0) {
     func_02009f18(data_0206b3c4.unk_04, temp_r6, data_0206aa80.unk_31C[0], data_0206aa80.unk_300[0]);
     func_0200adf8(data_0206b3c4.unk_04, temp_r5, 0, 0, 2);
 
-    func_0200eed4(unk_r0 + 0x214, unk_r0 + 0x234, 0x4000, 0x100);
+    // func_0200eed4(&state->unk_84C->slotIndex, &state->unk_8D0, 0x4000, 0x100); is what this is. But it throws "IllegaL
+    // operand" error.
+    func_0200eed4(&state->unk_84C, &state->unk_8D0, 0x4000,
+                  0x100); // TODO: is it really using slotIndex or is it using another flag?
     UnkStruct_ov000_02082b1c s_04;
     s_04.unk_00 = 0;
     s_04.unk_04 = 0;
@@ -248,72 +247,71 @@ void func_ov000_02082b1c(u32* unk_r0) {
     s_04.unk_1A = 0;
     s_04.unk_1C = 0x20;
     s_04.unk_1E = 0x18;
-    func_02025b68(unk_r0 + 5, &s_04);
+    func_02025b68(&state->unk_14, &s_04);
     s_04.unk_00 = 1;
-    func_02025b68(unk_r0 + 0x10C, &s_04);
+    func_02025b68(&state->unk_430, &s_04);
     func_020072ec();
-    func_02007300(func_ov000_020830b8, unk_r0, 0);
-    func_02007300(func_ov000_020830bc, unk_r0, 0);
-    *(unk_r0 + 3) = 0;
-    if ((InputStatus.currButtons & 0x200) != 0) {
-        *(unk_r0 + 3) = 1;
+    func_02007300(func_ov000_020830b8, state, 0);
+    func_02007300(func_ov000_020830bc, state, 0);
+    state->unk_0C = 0;
+    if ((InputStatus.currButtons & INPUT_BUTTON_L) != 0) {
+        state->unk_0C = 1;
     }
 }
 
-void func_ov000_02082b18(u32* unk_r0) {
+void func_ov000_02082b18(Mini108State* unk_r0) {
     return;
 }
 
-void func_ov000_02082ac0(u32* state) {
+void func_ov000_02082ac0(Mini108State* state) {
     if (state == NULL) {
         return;
     }
     DatMgr_ClearSlot(0x2);
-    func_0200ef80(state + 0x214);
-    func_02025e30(state + 0x5);
-    func_02025e30(state + 0x10C);
+    func_0200ef80(&state->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
+    func_02025e30(&state->unk_14);
+    func_02025e30(&state->unk_430);
     func_ov000_0208257c();
-    func_0200cfe8(*((void**)(state + 0x5794)));
+    func_0200cfe8(state->unk_15e50);
     Mem_Free(&gDebugHeap, state);
     func_02007260(0);
 }
 
-// Nonmatching: Opcode order swap
-// Scratch: ueuE5
-void func_ov000_02082944(u32* stateptr) {
+// Nonmatching: Opcode order swap, Stack difference
+void func_ov000_02082944(Mini108State* stateptr) {
     u16 a, b;
 
-    b                       = InputStatus.currButtons;
-    a                       = InputStatus.pressedButtons;
-    *(u16*)(stateptr + 0x4) = b;
-    *(u16*)(stateptr + 0x6) = a;
+    b                        = InputStatus.currButtons;
+    a                        = InputStatus.pressedButtons;
+    stateptr->currButtons    = b;
+    stateptr->pressedButtons = a;
 
-    b                       = InputStatus.holdButtons;
-    a                       = InputStatus.prevButtons;
-    *(u16*)(stateptr + 0xa) = a;
-    *(u16*)(stateptr + 0x8) = b;
-    void* s_04[2];
-    void* s_0C[3];
+    b                     = InputStatus.holdButtons;
+    a                     = InputStatus.prevButtons;
+    stateptr->prevButtons = a;
+    stateptr->holdButtons = b;
+    OverlayTag* s_04;
+    OverlayTag* s_0C;
     func_02006ba0();
 
-    Text_RenderToScreen((s32*)(stateptr + 0x20), 0, 0xa, func_02006930("Score : %6d", *(s32*)(stateptr + 0x10)));
+    Text_RenderToScreen(stateptr->unk_80, 0, 0xa, func_02006930("Score : %6d", stateptr->unk_40));
     func_0200283c(&data_020676ec, 0, 0);
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
     func_02007390();
 
-    if ((*(u16*)(stateptr + 0x6) & 0x8) != 0) {
+    if ((stateptr->pressedButtons & INPUT_BUTTON_START) != 0) {
         u32 unk = func_02011f44("Seq_Mini108(void *) reset");
         if (unk == 1) {
             data_02066a58 = data_02066a58 | 2;
         }
-        func_020071f4(s_04, &OVERLAY_0_ID, &func_ov000_02082854, NULL, 0);
+        func_020071f4(s_04, (s32)&OVERLAY_0_ID, &func_ov000_02082854, NULL, 0);
         return;
-    } else if ((*(u16*)(stateptr + 0x6) & 0x4) != 0) {
-        *(u32*)(stateptr) = 1;
+    } else if ((stateptr->pressedButtons & INPUT_BUTTON_SELECT) != 0) {
+        stateptr->unk_00 = 1;
     }
-    if (*(u32*)(stateptr) == 1) {
+    if (stateptr->unk_00 == 1) {
         u32 var3 = func_02011f44("Seq_Mini108(void *) leave");
         if (var3 == 1) {
             data_02066a58 = data_02066a58 | 2;
@@ -321,7 +319,7 @@ void func_ov000_02082944(u32* stateptr) {
         func_02007174(s_0C);
         return;
     }
-    func_0200efdc(stateptr + 0x850);
+    func_0200efdc(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
 
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
@@ -331,7 +329,7 @@ void func_ov000_02082944(u32* stateptr) {
 
 const char* data_ov000_020831e0 = "Seq_Mini108(void *)";
 
-void func_ov000_02082894(u32* stateptr) {
+void func_ov000_02082894(Mini108State* stateptr) {
     if (func_02011f44("Seq_Mini108(void *) enter") == 1) {
         data_02066a58 = data_02066a58 | 2;
     }
@@ -348,20 +346,19 @@ void func_ov000_02082894(u32* stateptr) {
     func_020072b8();
 }
 
-void func_ov000_02082854(void* state) {
-    static const func_ptr_t funcPtrs[3] = {
+void func_ov000_02082854(Mini108State* state) {
+    static const Mini108Func funcPtrs[3] = {
         func_ov000_02082894,
         func_ov000_02082944,
         func_ov000_02082ac0,
     };
 
-    u32* state_ptr = (u32*)state;
-    int  var1      = func_02007278(state_ptr);
+    int var1 = func_02007278();
     if (var1 == 0x7FFFFFFF) {
-        func_ov000_02082ac0(state_ptr);
+        func_ov000_02082ac0(state);
     } else {
-        func_ptr_t target_function = funcPtrs[var1];
-        target_function(state_ptr);
+        Mini108Func target_function = funcPtrs[var1];
+        target_function(state);
     }
 }
 

@@ -1,7 +1,6 @@
 #ifndef CRISS_H
 #define CRISS_H
 
-#include "game.h"
 #include <CriWare/acssnd.h>
 #include <CriWare/adxt.h>
 #include <types.h>
