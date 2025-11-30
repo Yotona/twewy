@@ -6,9 +6,9 @@
 extern s32 data_020672ec;
 
 typedef struct {
-    /* 0x00000 */ char unk_00000[0x21590];
-    /* 0x21590 */ s32  unk_21590;
-    /* 0x21594 */ char unk_21594[0x7C];
+    /* 0x00000 */ char     unk_00000[0x21590];
+    /* 0x21590 */ TaskPool unk_21590;
+    ///* 0x21594 */ char unk_21594[0x7C];
     /* 0x21610 */ s32  unk_21610;
     /* 0x21614 */ char unk_21614[0x38];
     /* 0x2164C */ u16  unk_2164C;

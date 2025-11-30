@@ -12,37 +12,40 @@
 #define GAME_H
 
 #include "BinMgr.h"
+#include "EasyTask.h"
 #include <types.h>
 
 typedef struct {
-    /* 0x00000 */ BinMgr binMgr;
-    /* 0x0004C */ char   unk_0004C[0x11534];
-    /* 0x11580 */ s32    unk_11580;
-    /* 0x11584 */ s32    unk_11584;
-    /* 0x11588 */ char   pad_11588[0x6];
-    /* 0x11590 */ s32    unk_11590;
-    /* 0x11594 */ char   pad_11594[0x488];
-    /* 0x11A1C */ s16    unk_11A1C;
-    /* 0x11A1E */ s16    pad_11A1E;
-    /* 0x11A20 */ s16    unk_11A20;
-    /* 0x11A22 */ s16    pad_11A22;
-    /* 0x11A24 */ s32    unk_11A24;
-    /* 0x11A28 */ s32    unk_11A28;
-    /* 0x11A2C */ s32    unk_11A2C;
-    /* 0x11A30 */ s32    unk_11A30;
-    /* 0x11A34 */ s32    unk_11A34;
-    /* 0x11A38 */ u16    unk_11A38;
-    /* 0x11A3A */ s16    pad_11A3A;
-    /* 0x11A3C */ s32    unk_11A3C;
-    /* 0x11A40 */ s32    unk_11A40;
-    /* 0x11A44 */ s32    unk_11A44;
-    /* 0x11A48 */ s32    unk_11A48;
-    /* 0x11A4C */ char   pad_11A4C[0xFB48];
-    /* 0x21594 */ s32    unk_21594;
-    /* 0x21598 */ s32    unk_21598;
-    /* 0x2159C */ s32    unk_2159C;
-    /* 0x215A0 */ s32    unk_215A0;
-    /* 0x215A4 */ char   pad_215A4[0x40C];
+    /* 0x00000 */ BinMgr   binMgr;
+    /* 0x0004C */ char     unk_0004C[0x11534];
+    /* 0x11580 */ s32      unk_11580;
+    /* 0x11584 */ s32      unk_11584;
+    /* 0x11588 */ char     pad_11588[0x6];
+    /* 0x11590 */ TaskPool unk_11590;
+    /* 0x11610 */ MemPool  unk_11610;
+    /* 0x1161C */ void*    unk_1161C;
+    /* 0x11620 */ char     pad_11620[0x3FC];
+    /* 0x11A1C */ s16      unk_11A1C;
+    /* 0x11A1E */ s16      pad_11A1E;
+    /* 0x11A20 */ s16      unk_11A20;
+    /* 0x11A22 */ s16      pad_11A22;
+    /* 0x11A24 */ s32      unk_11A24;
+    /* 0x11A28 */ s32      unk_11A28;
+    /* 0x11A2C */ s32      unk_11A2C;
+    /* 0x11A30 */ s32      unk_11A30;
+    /* 0x11A34 */ s32      unk_11A34;
+    /* 0x11A38 */ u16      unk_11A38;
+    /* 0x11A3A */ s16      pad_11A3A;
+    /* 0x11A3C */ s32      unk_11A3C;
+    /* 0x11A40 */ s32      unk_11A40;
+    /* 0x11A44 */ s32      unk_11A44;
+    /* 0x11A48 */ s32      unk_11A48;
+    /* 0x11A4C */ char     pad_11A4C[0xFB48];
+    /* 0x21594 */ s32      unk_21594;
+    /* 0x21598 */ s32      unk_21598;
+    /* 0x2159C */ s32      unk_2159C;
+    /* 0x215A0 */ s32      unk_215A0;
+    /* 0x215A4 */ char     pad_215A4[0x40C];
 } GameState; // Size: 0x219B0
 
 #endif       // GAME_H

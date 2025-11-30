@@ -1,7 +1,88 @@
 #include "Debug/OpenEnd.h"
 
+/*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
 void func_ov037_020824a0() {
-    /*Not Implemented: function is too huge.*/
+    Interrupts_Init();
+    func_0200434c();
+    DMA_Init(0x100);
+    Interrupts_ForceVBlank();
+    GX_Init();
+    data_02066aec = 0;
+    data_02066eec = 0;
+    GXx_SetMasterBrightness(&REG_MASTER_BRIGHT, 0 - 0x10);
+    GXx_SetMasterBrightness(&REG_DISP_B_MASTER_BRIGHT, ~0xf);
+    GX_DispOn();
+    REG_DISPCNT_SUB |= 0x10000;
+    func_02005250();
+    GX_DisableBankForLcdc();
+    GX_SetBankForLcdc(0x1FF);
+    GX_SetBankForBg(0x1);
+    GX_SetBankForObj(0x2);
+    GX_SetBankForBgExtPltt(0x10);
+    GX_SetBankForSubBg(0x4);
+    GX_SetBankForSubObj(0x8);
+    GX_SetBankForSubBgExtPltt(0x80);
+    data_0206aa80.unk_00 = 0;
+    REG_POWER_CNT &= ~0x8000;
+    data_0206aa80.unk_00 = 1;
+    data_0206aa80.unk_04 = 0;
+    data_0206aa80.unk_0C = 0;
+    GX_SetGraphicsMode(1, 0, 0);
+    data_0206aae4.unk_00 = 0;
+    data_0206aae4.unk_04 = 0;
+    data_0206aae4.unk_20 = 0;
+    data_0206aae4.unk_2C = 0;
+    data_0206aae4.unk_1C = 1;
+    data_0206aae4.unk_28 = 2;
+    if (data_0206aa80.unk_0C == 0) {
+        REG_BG0CNT = (REG_BG0CNT & 0x43) | 0x88;
+    }
+    data_0206ab20.unk_20 = 2;
+    data_0206ab20.unk_28 = 4;
+    data_0206ab20.unk_00 = 0;
+    data_0206ab20.unk_04 = 0;
+    data_0206ab20.unk_2C = 0;
+    data_0206ab20.unk_1C = 1;
+    REG_BG1CNT           = (REG_BG1CNT & 0x43) | 0x290;
+    data_0206aa80.unk_1C = 2;
+    data_0206aa80.unk_38 = 0;
+    GXs_SetGraphicsMode(0);
+    data_0206ad04.unk_00 = 0;
+    data_0206ad04.unk_04 = 0;
+    data_0206ad04.unk_1C = 1;
+    data_0206ad04.unk_20 = 0;
+    data_0206ad04.unk_28 = 2;
+    data_0206ad04.unk_2C = 0;
+    REG_BG0CNT_SUB       = (REG_BG0CNT_SUB & 0x43) | 0x88;
+    data_0206ad40.unk_28 = 0x4;
+    data_0206ad40.unk_00 = 0;
+    data_0206ad40.unk_04 = 0;
+    data_0206ad40.unk_1C = 1;
+    data_0206ad40.unk_20 = 2;
+    data_0206ad40.unk_2C = 0;
+    REG_BG1CNT_SUB       = (REG_BG1CNT_SUB & 0x43) | 0x290;
+    data_0206aa80.unk_4C = 0 | 0x11;
+    data_0206aa80.unk_10 = 0x200010;
+    data_0206aa80.unk_40 = 0x200010;
+    func_0200270c(0, 0);
+    func_0200270c(1, 0);
+    func_0203b2d0(0x0, 0x6800000, 0xa4000);
+    func_0203b2d0(0x0, 0x6000000, 0x80000);
+    func_0203b2d0(0x0, 0x6200000, 0x20000);
+    func_0203b2d0(0x0, 0x6400000, 0x40000);
+    func_0203b2d0(0x0, 0x6600000, 0x20000);
+    func_0200270c(0, 0);
+    func_0200283c(0, &data_020676ec, 0);
+    DC_PurgeRange(&data_0206770c, 0x400);
+    GX_LoadOam(&data_0206770c, 0, 0x400);
+    func_0200270c(0, 1);
+    func_0200283c(0, &data_02068778, 0);
+    DC_PurgeRange(&data_02068798, 0x400);
+    GXs_LoadOam(&data_02068798, 0, 0x400);
+    func_02003440(&data_020676ec);
+    func_02003440(&data_02068778);
+    func_02001c34(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
+    func_02001c34(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
 }
 
 void func_ov037_0208280c(void) {
@@ -115,19 +196,18 @@ void func_ov037_02082adc(int r0, int r1, int r2, int r3) {
     return;
 }
 
-/* Nonmatching: if r0 isn't GameState* then what is it? Decompiling this TU won't be easy until we know for sure.*/
-void func_ov037_02082b30(s32* r0, s32 r1, s32 r2, s32 r3) {
-    s32 temp1 = r3 * 3;
+/* If r0 isn't GameState* then what is it?*/
+void func_ov037_02082b30(s32** r0, s32 r1, s32 r2, s32 r3) {
+    s32 temp1 = (r3 * 3);
     for (s32 idx = 0; idx < 3; idx++) {
-        temp1++;
-        *(s32*)(r0 + idx) = func_0200823c(*(r0 + 3), 0, 0, &data_ov037_02083aa8 + (temp1 << 3));
+        r0[idx] = func_0200823c(r0[3], 0, 0, &data_ov037_02083aa8[(r3 * 3) + 1 + idx]);
     }
     DC_PurgeAll();
-    func_ov037_0208290c(r1, r2, *(s32*)(*(r0 + 2) + 2), 0, *(s32*)(*(r0 + 2) + 3));
-    func_ov037_020829f4(r1, r2, *(s32*)(*r0 + 2), 0, *(s32*)(*(r0) + 3));
-    func_ov037_02082adc(r1, *(s32*)(*(r0 + 1) + 2), r2 << 0xd, *(s32*)*(r0 + 1) + 3);
+    func_ov037_0208290c(r1, r2, r0[2][2], 0, r0[2][3]);
+    func_ov037_020829f4(r1, r2, r0[0][2], 0, r0[0][3]);
+    func_ov037_02082adc(r1, r0[1][2], r2 << 0xd, r0[1][3]);
     for (s32 idx = 0; idx < 3; idx++) {
-        func_02008dbc(*(r0 + idx));
+        func_02008dbc(r0[idx]);
     }
 }
 
@@ -167,10 +247,10 @@ void func_ov037_02082c58(GameState* r0) {
 
 void func_ov037_02082cd4(GameState* r0) {
     func_ov037_02082c58(r0);
-    func_ov037_02082b30((s32*)r0, 1, 0, 0);
-    func_ov037_02082b30((s32*)r0, 0, 0, 1);
-    func_ov037_02082b30((s32*)r0, 1, 1, 2);
-    func_ov037_02082b30((s32*)r0, 0, 1, 3);
+    func_ov037_02082b30((s32**)r0, 1, 0, 0);
+    func_ov037_02082b30((s32**)r0, 0, 0, 1);
+    func_ov037_02082b30((s32**)r0, 1, 1, 2);
+    func_ov037_02082b30((s32**)r0, 0, 1, 3);
     r0->unk_11A1C = 0;
     r0->unk_11A30 = data_ov037_02083a7c[data_02074d10.unk_410];
     r0->unk_11A34 = data_ov037_02083a74[data_02074d10.unk_410];
@@ -247,8 +327,8 @@ void        func_ov037_02082f60(GameState* r0) {
     }
     data_0206aa80.unk_1C = (data_0206aa80.unk_1C | 0x1) & ~0x2;
     data_0206aa80.unk_4C = (data_0206aa80.unk_4C | 0x1) & ~0x2;
-    func_ov037_02082b30((s32*)r0, 0, 0, 5);
-    func_ov037_02082b30((s32*)r0, 1, 0, 4);
+    func_ov037_02082b30((s32**)r0, 0, 0, 5);
+    func_ov037_02082b30((s32**)r0, 1, 0, 4);
     func_ov037_02083a34(0);
     if (r0->unk_11A44 != 0) {
         func_ov037_02083a34(1);
@@ -273,11 +353,11 @@ void func_ov037_020830a8(GameState* r0) {
     switch (r0->unk_11A20) {
         case 0:
             if (r0->unk_11A24 <= 0x9e340) {
-                r0->unk_11A24 = 0x9e341;
+                r0->unk_11A24++;
             } else {
                 func_02027388(0);
                 r0->unk_11A24 = 0;
-                r0->unk_11A20 += 1;
+                r0->unk_11A20++;
             }
             break;
         case 1:
@@ -308,7 +388,7 @@ void        func_ov037_02083188(GameState* r0) {
     }
 }
 
-/*Nonmatching: data_02073710 has weird 0x100 offset, also the array accesses don't have the right index?*/
+/*Nonmatching: Compiler optimizes 0x100 out of index access for data_02073710*/
 extern void func_ov044_02084a88();
 extern void func_ov030_020ae92c();
 void        func_ov037_020831ec(GameState* r0) {
@@ -355,34 +435,40 @@ void func_ov037_020832dc(GameState* r0) {
     func_02007328();
 }
 
-/*Nonmatching: The data entries referenced here are likely struct arrays (funcpointer tables?) with each struct being 0xC in
- * size.*/
 void func_ov037_020833a8(GameState* r0) {
     func_020072ec();
-    func_02007300(data_ov037_02083a98[data_02074d10.unk_410], r0, 0);
+    func_02007300(data_ov037_02083a90[data_02074d10.unk_410][2], r0, 0);
     func_02007300(func_ov037_02082c2c, r0, 0);
-    func_02007300(data_ov037_02083a94[data_02074d10.unk_410], r0, 0);
+    func_02007300(data_ov037_02083a90[data_02074d10.unk_410][1], r0, 0);
     func_02007300(func_ov037_02082c00, r0, 0);
-    func_02007300(data_ov037_02083a90[data_02074d10.unk_410], r0, 0);
+    func_02007300(data_ov037_02083a90[data_02074d10.unk_410][0], r0, 0);
 }
 
+extern vu32        data_02066a58;
+extern TaskHandle  data_0205cb10;
+static const char* data_ov037_02083bc0 = "Seq_OpenEnd(void *)";
+/*Nomatching: regswaps*/
 void func_ov037_0208345c(GameState* r0) {
-    // Not Implemented: figure out .bss entry data_ov037_02083e00 first.
-    /*if(r0 == NULL){
-        void* unk = Mem_AllocHeapTail(&gDebugHeap, 0x11A4C);
-        Mem_SetSequence(0x11A4C, unk, "    ");
-        data_ov037_02083e00.unk_00 = unk;
+    if (r0 == NULL) {
+        char* SeqName = data_ov037_02083bc0;
+        void* unk     = Mem_AllocHeapTail(&gDebugHeap, 0x11A4C);
+        Mem_SetSequence(0x11A4C, unk, SeqName);
+        data_ov037_02083e00 = unk;
         func_02007260(unk);
     }
     func_0203b2d0(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
     func_ov037_020828dc();
     u32 temp = data_ov037_02083a7c[data_02074d10.unk_410];
-    if(data_ov037_02083a7c[data_02074d10.unk_410] <= 0x10 && data_ov037_02083a7c[data_02074d10.unk_410] <= ~0xf){
-        temp = ~0xf;
+    if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
+        temp = 0x10;
+    } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
+        temp = ~0xF;
     }
     data_0206aa80.unk_30 = temp;
-    if(data_ov037_02083a7c[data_02074d10.unk_410] <= 0x10 && data_ov037_02083a7c[data_02074d10.unk_410] <= ~0xf){
-        temp = ~0xf;
+    if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
+        temp = 0x10;
+    } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
+        temp = ~0xF;
     }
     data_0206aa80.unk_60 = temp;
     func_0200cef0(&(r0->binMgr.rootBin.size));
@@ -390,13 +476,13 @@ void func_ov037_0208345c(GameState* r0) {
     func_02006ad8();
     func_02006ba0();
     func_02025b1c();
-    data_02066a58.unk_00 &= ~0x8;
+    data_02066a58 &= ~0x8;
     r0->binMgr.rootBin.id = func_02008e80();
-    r0->unk_11A38 = 0;
+    r0->unk_11A38         = 0;
     Mem_InitializeHeap(&r0->unk_11610, &r0->unk_1161C, 0x400);
-    func_0200f390(&r0->unk_11590, &r0->unk_11610, 0x10, 0, 0);
-    data_ov037_02083e00.unk_08 = &r0->unk_11590;
-    func_0200f68c(&r0->unk_11590, &data_0205cb10, 0, 0, 0, 0);*/
+    EasyTask_InitializePool(&r0->unk_11590, &r0->unk_11610, 0x10, 0, 0);
+    data_ov037_02083e08 = &r0->unk_11590;
+    EasyTask_CreateTask(&r0->unk_11590, &data_0205cb10, 0, 0, 0, 0);
     func_ov037_020833a8(r0);
     func_020072a4();
 }
@@ -408,9 +494,9 @@ void func_ov037_02083604(GameState* r0) {
     func_02003440(&data_02068778);
     func_02006ba0();
     if (func_02006d4c() != 0) {
-        // data_ov037_02083e00.unk_04 = 0x1;
+        data_ov037_02083e04 = 0x1;
     }
-    func_0200f514(&r0->unk_11590);
+    EasyTask_UpdatePool(&r0->unk_11590);
     func_02007390();
     if (func_0200737c() != 0)
         return;
@@ -427,7 +513,7 @@ void func_ov037_020836b4(GameState* r0) {
     data_02074d10.unk_410 = 1;
     func_ov037_020828f8();
     func_02008ebc(r0->binMgr.rootBin.id);
-    func_0200f4f8(&r0->unk_11590);
+    EasyTask_DestroyPool(&r0->unk_11590);
     Mem_Free(&gDebugHeap, r0);
     func_02007260(0);
     func_02027388(0);
@@ -439,98 +525,129 @@ void func_ov037_0208370c(GameState* r0) {
         func_ov037_020836b4(r0);
         return;
     }
-    // data_ov037_02083a84(r0)[index];
+    data_ov037_02083a84[index](r0);
 }
 
-void func_ov037_0208374c(GameState* r0) {
-    /*
-    if(data_ov037_02083e00.unk_11A2C != 0)
+void func_ov037_0208374c(u32 r0) {
+
+    if (data_ov037_02083e00->unk_11A2C != 0)
         return;
-    data_ov037_02083e00.unk_11A28 = r0;
-    data_ov037_02083e00.unk_11A2C = 1;
-    */
+    data_ov037_02083e00->unk_11A28 = r0;
+    data_ov037_02083e00->unk_11A2C = 1;
+
     func_02026b20(2);
 }
 
-void func_ov037_0208378c(u32 r0, u32 r1, u32 r2) {
-    /*
-    load r3 and r12 from r0 struct;
-    return (((r1 - r3) ^ 2) + ((r2 - r12) ^ 2)) > ((r0->unk_08) ^ 2) ? 0 : 1;
-    */
+/*Nonmatching: r0 is definitely not a struct. What does this function do??*/
+int func_ov037_0208378c(s32* r0, s32 x, s32 y) {
+    s32 xx   = (x - r0[0]) * (x - r0[0]);
+    s32 yy   = (y - r0[1]) * (y - r0[1]);
+    s32 dSqr = xx + yy;
+    s32 maxD = r0[2] * r0[2];
+    return dSqr <= maxD;
 }
 
-void func_ov037_020837b8(void* r0, s16 r1, s16 r2, s16 r3, s32 s1) {
-    /*
-    Store the four members of data_ov037_02083b84 into r0
-    then do it again(?)
-    then do it again but only with the first three members (?)
-    r0->0x14 = data_ov037_02083aa8;
-    r0->0x1C = r1;
-    r0->0x26 = r2;
-    r0->0x28 = r3;
-    r0->0x2A = stack[0x20];
-    */
+void func_ov037_020837b8(UnkStruct_ov037_02083b84* r0, s16 r1, s16 r2, s16 r3, s16 s1) {
+    *r0        = data_ov037_02083b84;
+    r0->unk_14 = &data_ov037_02083aa8;
+    r0->unk_1c = r1;
+    r0->unk_26 = r2;
+    r0->unk_28 = r3;
+    r0->unk_2a = s1;
 }
 
-int func_ov037_02083814(void* unused_r0, void* r1, void* r2) {
-    u32* unk = *(u32*)(r1 + (0x18));
-    func_0203b3c0(*unk, 0, 0x84);
-    u32 unk2            = *(u32*)(r2 + 0x0);
-    *(u32*)(unk + 0x80) = unk2;
-    // func_ov037_020837b8(&stack[0x4], (s16)(unk2 * 3 + 2) , (s16)((unk2 + 1) * 3) , (s16)(unk2 * 3 + 4) , 1);
-    // func_0200e98c(unk->0x40, &stack[0x4]);
-    // stack[0x2E] = 2;
-    // func_0200e98c(unk, &stack[0x4]);
+typedef struct {
+    /* 0x00 */ char pad_00[0x0C];
+    /* 0x0C */ u16  unk_0C;
+    /* 0x0E */ u16  unk_0E;
+    /* 0x10 */ char pad_10[0x30];
+    /* 0x40 */ u32  unk_40;
+    /* 0x44 */ char pad_44[0x3C];
+    /* 0x80 */ u32  unk_80;
+} UnkTaskData;
+
+int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* _r1, s32 _r2) {
+    UnkStruct_ov037_02083b84 sp_struct;
+
+    // r1, r2 structs
+    // UnkStruct2* r1 = (UnkStruct2*)_r1;
+    u32* r2 = (u32*)_r2;
+
+    UnkTaskData* ptr = _r1->data;
+    func_0203b3c0(ptr, 0, 0x84);
+
+    u32 tmp     = *r2;
+    ptr->unk_80 = tmp;
+    func_ov037_020837b8(&sp_struct, (tmp * 3) + 2, (tmp * 3) + 3, (tmp * 3) + 4, 1);
+
+    func_0200e98c(&ptr->unk_40, &sp_struct);
+
+    sp_struct.unk_2a = 2;
+    func_0200e98c(ptr, &sp_struct);
+
     return 1;
 }
 
-int func_ov037_020838a4(void* unused_r0, void* r1, void* r2) {
-    u32* unk = *(u32*)(r1 + (0x18));
-    // func_02006df0(&stack[0x0]);
-    //&stack[0x8] = &stac[0x0];
-    //&stack[0xC] = &stack[0x4];
-    /*if(data_ov037_02083e04.unk_00 != 0){
-        if(func_02006d30() != 0){
-            if(func_ov037_0208378c(data_ov037_02083b5c[unk->0x80 * 0x14] , stack[0x8], stack[0xC]) != 0){
-                unk->0xC = 0x82;
-                unk->0xE = 0x62;
+const u32 data_ov037_02083b5c[][5] = {
+    {0x22, 0x1F, 0x19, 0x00, 0x00},
+    {0xD7, 0x1F, 0x19, 0x01, 0x01}
+};
+
+/*Nonmatching: Coords -> Coords2 copying doesn't produce matching assembly*/
+int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 r2) {
+    typedef struct {
+        s32 x;
+        s32 y;
+    } TouchCoords;
+    TouchCoords  coords, coords2;
+    UnkTaskData* unk = r1->data;
+    func_02006df0(&coords); // TODO: Confirm that this function is for TouchScreen info
+    u32 temp1 = coords.x;
+    u32 temp2 = coords.y;
+    coords2.x = temp1;
+    coords2.y = temp2;
+    if (data_ov037_02083e04 != 0) {
+        if (func_02006d30() != 0) {
+            if (func_ov037_0208378c(&data_ov037_02083b5c[unk->unk_80][0], coords2.x, coords2.y) != 0) {
+                unk->unk_0C = 0x82;
+                unk->unk_0E = 0x62;
             }
         }
-    }else{
-        unk->0xC = 0x82;
-        unk->0xE = 0x62;
+    } else {
+        unk->unk_0C = 0x80;
+        unk->unk_0E = 0x60;
     }
-    if(data_ov037_02083e04.unk_00 != 0 && func_02006d80() != 0){
-        if(func_ov037_0208378c(data_ov037_02083b5c[unk->0x80 * 0x14] , stack[0x8], stack[0xC]) != 0){
-            func_ov037_0208374c(data_ov037_02083b6c[unk->0x80 * 0x14]);
+    if (data_ov037_02083e04 != 0 && func_02006d80() != 0) {
+        if (func_ov037_0208378c(&data_ov037_02083b5c[unk->unk_80][0], coords2.x, coords2.y) != 0) {
+            func_ov037_0208374c(data_ov037_02083b5c[unk->unk_80][1]);
         }
-    }*/
+    }
     func_0200dd60(unk);
-    // func_0200dd60(&unk->0x40);
+    func_0200dd60(&unk->unk_40);
     return 1;
 }
 
-int func_ov037_020839ac(void* unused_r0, void* r1, void* r2) {
-    u32* unk = *(u32*)(r1 + (0x18));
-    func_0200e2c4(unk + 0x10);
+int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, s32 r2) {
+    UnkTaskData* unk = r1->data;
+    func_0200e2c4(&unk->unk_40);
     func_0200e2c4(unk);
     return 1;
 }
 
-int func_ov037_020839cc(void* unused_r0, void* r1, void* r2) {
-    u32* unk = *(u32*)(r1 + (0x18));
+int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, s32 r2) {
+    UnkTaskData* unk = r1->data;
     func_0200e998(unk);
-    func_0200e998(unk + 0x10);
+    func_0200e998(&unk->unk_40);
     return 1;
 }
 
-void func_ov037_020839ec(u32 r0, u32 r1, u32 r2, u32 index) {
-    /*
-    copy the four members of data_ov037_02083b4c to &stack[0x0]
-    &stack(r0, r1, r2)[index * 4];
-    */
+s32 func_ov037_020839ec(struct TaskPool* pool, struct Task* task, s32 r2, s32 index) {
+    OpenEndExportFuncTable functable = data_ov037_02083b4c;
+    functable.funcs[index](pool, task, r2);
 }
 
-void func_ov037_02083a34(u32 r0) {
-    func_0200f68c(data_ov037_02083e08, &data_ov037_02083b40, 0, 0, 0, &r0, r0);
+s32 func_ov037_02083a34(u32 r0) {
+    u32                     sp8                 = r0;
+    static const TaskHandle data_ov037_02083b40 = {"Tsk_OpenEnd_Badge", func_ov037_020839ec, 0x84};
+    return EasyTask_CreateTask(data_ov037_02083e08, &data_ov037_02083b40, 0, 0, 0, &sp8);
 }
