@@ -29,7 +29,7 @@ void func_ov041_02082730(STSampleState* state) {
 
     local_30.unk_00 = 1;
     local_30.unk_04 = 0;
-    local_30.unk_08 = state->gameState.unk_11584;
+    local_30.unk_08 = state->unk_11584;
     local_30.unk_0C = &data_0205c9b0;
     local_30.unk_10 = 0;
     local_30.unk_14 = NULL;
@@ -37,12 +37,12 @@ void func_ov041_02082730(STSampleState* state) {
     local_30.unk_1A = 0;
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
-    func_02025b68(&state->gameState.unk_21594, &local_30);
-    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0, "すれちがいサンプル"); // "StreetPass Sample"
+    func_02025b68(&state->unk_21594, &local_30);
+    Text_RenderToScreen(&state->unk_215A0, 0, 0, "すれちがいサンプル"); // "StreetPass Sample"
 }
 
 void func_ov041_020827b8(STSampleState* state) {
-    func_02025e30(&state->gameState.unk_21594);
+    func_02025e30(&state->unk_21594);
 }
 
 /* Nonmatching */
@@ -108,14 +108,14 @@ void STSample_ControlMenu(STSampleState* state) {
     }
 
     if (state->unk_22084 > state->unk_22088) {
-        puVar2 = &state->gameState.unk_0004C[state->unk_22088 * 0x141];
+        puVar2 = &state->unk_0004C[state->unk_22088 * 0x141];
         for (idx = 0; idx < 0x100; idx++) {
             if ((idx & 0xff) != (u32)(u8)puVar2[0x220de]) {
                 break;
             }
             puVar2++;
         }
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, (state->unk_22088 + 1) * 8, "データ受信"); // "Data Received"
+        Text_RenderToScreen(&state->unk_215A0, 8, (state->unk_22088 + 1) * 8, "デ拏タ受扨"); // "Data Received"
         state->unk_22088++;
     }
 
@@ -134,21 +134,21 @@ void STSample_ControlMenu(STSampleState* state) {
 void func_ov041_02082a5c(STSampleState* param) {
     int            iVar1;
     STSampleState* state;
-    GameState*     sVar2;
+    void*          sVar2;
 
     func_0200669c(3, OVERLAY_40_ID);
     iVar1 = data_ov041_02083020;
     state = Mem_AllocHeapTail(&gDebugHeap, sizeof(STSampleState));
     Mem_SetSequence(&gDebugHeap, state, iVar1);
-    sVar2 = func_02007260(&state->gameState);
+    sVar2 = func_02007260(&state);
     DatMgr_AllocateSlot();
-    state->gameState.unk_11584 = sVar2;
+    state->unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->gameState.unk_11580 = func_0200cef0(state);
-    data_02066aec              = 0;
-    data_0206aa80.unk_30       = 0;
-    data_0206aa80.unk_60       = 0;
-    data_02066eec              = 0;
+    state->unk_11580     = func_0200cef0(state);
+    data_02066aec        = 0;
+    data_0206aa80.unk_30 = 0;
+    data_0206aa80.unk_60 = 0;
+    data_02066eec        = 0;
     func_ov041_020827cc(state);
     func_020072a4();
 }
@@ -168,7 +168,7 @@ void func_ov041_02082b08(STSampleState* state) {
 void func_ov041_02082b88(STSampleState* state) {
     func_ov041_020828f0(state);
     func_0200cef0(NULL);
-    DatMgr_ClearSlot(state->gameState.unk_11584);
+    DatMgr_ClearSlot(state->unk_11584);
     Mem_Free(&gDebugHeap, state);
     func_02006618(3);
 }
