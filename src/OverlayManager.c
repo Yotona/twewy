@@ -6,7 +6,7 @@ OverlayManager data_0206b04c; // Unknown manager. main() initializes this
 OverlayManager data_0206af28; // Unknown manager. main() initializes this
 s32*           data_0206af24;
 
-void func_02006f50(GameState*) {
+void func_02006f50(void*) {
     return;
 }
 
@@ -15,7 +15,7 @@ void func_02006f54(OverlayManager* overlayMgr) {
     func_02006f78(overlayMgr, -0x7fffffff, func_02006f50, NULL, 0);
 }
 
-void func_02006f78(OverlayManager* overlayMgr, s32 overlayId, OverlayCB callback, GameState* state, s32 param_5) {
+void func_02006f78(OverlayManager* overlayMgr, s32 overlayId, OverlayCB callback, void* state, s32 param_5) {
     OverlayData* currentData = &overlayMgr->unk_14[overlayMgr->unk_10];
 
     currentData->tag.id = overlayId;
@@ -55,7 +55,7 @@ void func_02006fc4(OverlayTag* tag, OverlayManager* overlayMgr) {
 }
 
 /* Nonmatching: opcode reordering */
-void func_02007050(OverlayTag* tag, OverlayManager* overlayMgr, s32 param_3, OverlayCB cb, GameState* state, s32 param_6) {
+void func_02007050(OverlayTag* tag, OverlayManager* overlayMgr, s32 param_3, OverlayCB cb, void* state, s32 param_6) {
     OverlayTag local;
 
     func_02006fc4(&local, overlayMgr);
@@ -74,8 +74,8 @@ BOOL func_020070a4(OverlayManager* overlayMgr) {
     return ret;
 }
 
-GameState* func_020070b8(OverlayManager* overlayMgr, GameState* state) {
-    GameState* prevState     = overlayMgr->gState;
+void* func_020070b8(OverlayManager* overlayMgr, void* state) {
+    void* prevState          = overlayMgr->gState;
     overlayMgr->data->gState = state;
     overlayMgr->gState       = state;
     return prevState;
@@ -104,7 +104,7 @@ void func_02007128(void) {
     func_02006f54(&data_0206b294);
 }
 
-void func_0200713c(s32 overlayId, OverlayCB callback, GameState* state, int param_4) {
+void func_0200713c(s32 overlayId, OverlayCB callback, void* state, int param_4) {
     func_02006f78(&data_0206b294, overlayId, callback, state, param_4);
 }
 
@@ -133,7 +133,7 @@ void func_02007174(OverlayTag* tag) {
 }
 
 /* Nonmatching: opcode reordering */
-void func_020071f4(OverlayTag* tag, s32 overlayId, void* callback, GameState* state, s32 param_5) {
+void func_020071f4(OverlayTag* tag, s32 overlayId, void* callback, void* state, s32 param_5) {
     OverlayTag local;
 
     func_02007174(&local);
@@ -149,7 +149,7 @@ u32 func_02007240(void) {
     func_0200669c(1, *(data_0206af24 + 0xDC));
 }
 
-GameState* func_02007260(void* state) {
+void* func_02007260(void* state) {
     func_020070b8(&data_0206b294, state);
 }
 
@@ -176,7 +176,7 @@ void func_020072ec(void) {
     func_02006f54(&data_0206b170);
 }
 
-void func_02007300(OverlayCB callback, GameState* state, s32 param_3) {
+void func_02007300(OverlayCB callback, void* state, s32 param_3) {
     func_02006f78(&data_0206b170, 0, callback, state, param_3);
 }
 
@@ -187,7 +187,7 @@ s32 func_02007328(void) {
     return tag.cb;
 }
 
-s32 func_0200734c(OverlayCB callback, GameState* state, s32 param_3) {
+s32 func_0200734c(OverlayCB callback, void* state, s32 param_3) {
     OverlayTag tag;
 
     func_02007050(&tag, &data_0206b170, 0, callback, state, param_3);

@@ -1,7 +1,6 @@
 #ifndef CRISNDMGR_H
 #define CRISNDMGR_H
 
-#include "game.h"
 #include <CriWare/criss.h>
 #include <types.h>
 

@@ -11,7 +11,6 @@
 #include "SndMgr.h"
 #include "System.h"
 #include "common_data.h"
-#include "game.h"
 #include <registers.h>
 #include <types.h>
 
@@ -1418,7 +1417,7 @@ void func_ov029_020824a0(SoundTestState* state) {
 
     local_30.unk_00 = 1;
     local_30.unk_04 = 0;
-    local_30.unk_08 = state->gameState.unk_11584;
+    local_30.unk_08 = state->unk_11584;
     local_30.unk_0C = &data_0205c9b0;
     local_30.unk_10 = 0;
     local_30.unk_14 = NULL;
@@ -1426,53 +1425,52 @@ void func_ov029_020824a0(SoundTestState* state) {
     local_30.unk_1A = 0;
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
-    func_02025b68(&state->gameState.unk_21594, &local_30);
-    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0, "SoundTest");
-    Text_RenderToScreen(&state->gameState.unk_215A0, 0, 0x98, ADXT_GetVersionInfo());
+    func_02025b68(&state->unk_21594, &local_30);
+    Text_RenderToScreen(&state->unk_215A0, 0, 0, "SoundTest");
+    Text_RenderToScreen(&state->unk_215A0, 0, 0x98, ADXT_GetVersionInfo());
 }
 
 void SoundTest_DrawMenu(SoundTestState* state) {
-    func_02010b84(&state->gameState.unk_215A0, 0, 0x10, 0x100, 0x50);
+    func_02010b84(&state->unk_215A0, 0, 0x10, 0x100, 0x50);
 
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->adxIdx].adxFile);
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x18, func_02006930("seqArc:%d", state->seqArc));
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x20, func_02006930("se:%d", state->se));
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x28,
-                        func_02006930("seIdx %d:%s", state->seIdx, soundEffects[state->seIdx]));
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x30, func_02006930("seIdx Volume:%d", state->seIdxVolume));
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x38, func_02006930("sePan :%d", state->sePan));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->adxIdx].adxFile);
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x18, func_02006930("seqArc:%d", state->seqArc));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x20, func_02006930("se:%d", state->se));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x28, func_02006930("seIdx %d:%s", state->seIdx, soundEffects[state->seIdx]));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x30, func_02006930("seIdx Volume:%d", state->seIdxVolume));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x38, func_02006930("sePan :%d", state->sePan));
 
     if (state->adxVolume <= 0) {
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x40, func_02006930("adx volume :0(0.0dB)"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x40, func_02006930("adx volume :0(0.0dB)"));
     } else {
         s32 volFloat = state->adxVolume % 10;
         if (volFloat < 0) {
             volFloat = -volFloat;
         }
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x40,
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x40,
                             func_02006930("adx volume :-%d(-%d.%ddB)", state->adxVolume, state->adxVolume / 10, volFloat));
     }
 
     if (state->adxLoopEnabled) {
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x48, func_02006930("adx loop on"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, func_02006930("adx loop on"));
     } else {
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x48, func_02006930("adx loop off"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, func_02006930("adx loop off"));
     }
 
-    Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x50, func_02006930("sePitch :%d", state->sePitch));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x50, func_02006930("sePitch :%d", state->sePitch));
 
     if (state->noiseNoWaveLoad) {
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :ON "));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :ON "));
     } else {
-        Text_RenderToScreen(&state->gameState.unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :OFF"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :OFF"));
     }
 
     // Menu Cursor
-    Text_RenderToScreen(&state->gameState.unk_215A0, 0, state->menuCurrentRow * 8 + 0x10, ">");
+    Text_RenderToScreen(&state->unk_215A0, 0, state->menuCurrentRow * 8 + 0x10, ">");
 }
 
 void func_ov029_02082824(SoundTestState* state) {
-    func_02025e30(&state->gameState.unk_21594);
+    func_02025e30(&state->unk_21594);
 }
 
 void func_ov029_02082838(SoundTestState* state) {
@@ -1565,8 +1563,8 @@ void SoundTest_PlaySelectedSoundType(SoundTestState* state) {
 void func_ov029_02082a38(void) {
     s32 idx = 0;
 
-    // Unreachable code left in original?
-    if (FALSE) {
+    // Unreachable code left in original? Possibly a side effect of while loop compilation?
+    if (idx >= 5) {
         return;
     }
 
@@ -1703,15 +1701,15 @@ void func_ov029_02082e40(SoundTestState* param) {
     char*           name  = data_ov029_02083400;
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
-    func_02007260(&state->gameState);
-    state->gameState.unk_11584 = DatMgr_AllocateSlot();
+    func_02007260(&state);
+    state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
-    data_0206aa80.unk_1C       = 0;
-    state->gameState.unk_11580 = func_0200cef0(state);
-    data_02066aec              = 0;
-    data_0206aa80.unk_30       = 0;
-    data_02066eec              = 0;
-    data_0206aa80.unk_60       = 0;
+    data_0206aa80.unk_1C = 0;
+    state->unk_11580     = func_0200cef0(state);
+    data_02066aec        = 0;
+    data_0206aa80.unk_30 = 0;
+    data_02066eec        = 0;
+    data_0206aa80.unk_60 = 0;
     func_ov029_02082838(state);
     func_020072a4();
 }
@@ -1731,7 +1729,7 @@ void func_ov029_02082ee8(SoundTestState* state) {
 void func_ov029_02082f68(SoundTestState* state) {
     func_ov029_020828c0(state);
     func_0200cef0(NULL);
-    DatMgr_ClearSlot(state->gameState.unk_11584);
+    DatMgr_ClearSlot(state->unk_11584);
     Mem_Free(&gDebugHeap, state);
 }
 
