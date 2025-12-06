@@ -1,22 +1,20 @@
 #ifndef REGISTERS_H
 #define REGISTERS_H
 
-#include <types.h>
+#include <registers/reg_bgcnt.h>
+#include <registers/reg_dispcnt.h>
 
-#define REG_DISPCNT              (*(vu32*)0x04000000)
 #define REG_DISPSTAT             (*(vu16*)0x04000004)
-#define REG_BG0CNT               (*(vu16*)0x04000008)
-#define REG_BG1CNT               (*(vu16*)0x0400000A)
-#define REG_BG2CNT               (*(vu16*)0x0400000C)
-#define REG_BG3CNT               (*(vu16*)0x0400000E)
-#define REG_BG2PA                (*(vu16*)0x04000020)
-#define REG_BG2PB                (*(vu16*)0x04000022)
-#define REG_BG2PC                (*(vu16*)0x04000024)
-#define REG_BG2PD                (*(vu16*)0x04000026)
-#define REG_BG3PA                (*(vu16*)0x04000030)
-#define REG_BG3PB                (*(vu16*)0x04000032)
-#define REG_BG3PC                (*(vu16*)0x04000034)
-#define REG_BG3PD                (*(vu16*)0x04000036)
+#define REG_VCOUNT               (*(vu16*)0x04000006)
+#define REG_WIN0H                (*(vu16*)0x04000040)
+#define REG_WIN1H                (*(vu16*)0x04000042)
+#define REG_WIN0V                (*(vu16*)0x04000044)
+#define REG_WIN1V                (*(vu16*)0x04000046)
+#define REG_WININ                (*(vu16*)0x04000048)
+#define REG_WINOUT               (*(vu16*)0x0400004A)
+#define REG_MOSAIC_BG            (*(vu8*)0x0400004C)
+#define REG_MOSAIC_OBJ           (*(vu8*)0x0400004D)
+#define REG_BLDCNT               (*(vu16*)0x04000050)
 #define REG_DISP3DCNT            (*(vu16*)0x04000060)
 #define REG_MASTER_BRIGHT        (*(vu16*)0x0400006C)
 #define REG_DISP_B_MASTER_BRIGHT (*(vu16*)0x0400106C)
@@ -47,14 +45,16 @@
 #define GFX_FIFO_MATRIX_STORE    (*(vu32*)0x0400044C)
 #define GFX_FIFO_SWAP_BUFFERS    (*(vu32*)0x04000540)
 #define GFX_FIFO_VIEWPORT        (*(vu32*)0x04000580)
-#define REG_DISPCNT_SUB          (*(vu32*)0x04001000)
-#define REG_BG0CNT_SUB           (*(vu16*)0x04001008)
-#define REG_BG1CNT_SUB           (*(vu16*)0x0400100A)
-#define REG_BG2CNT_SUB           (*(vu16*)0x0400100C)
-#define REG_BG3CNT_SUB           (*(vu16*)0x0400100E)
-#define REG_BG2PA_SUB            (*(vu16*)0x04001020)
-#define REG_BG2PD_SUB            (*(vu16*)0x04001026)
-#define REG_BG3PA_SUB            (*(vu16*)0x04001030)
-#define REG_BG3PD_SUB            (*(vu16*)0x04001036)
+#define REG_WIN0H_SUB            (*(vu16*)0x04001040)
+#define REG_WIN1H_SUB            (*(vu16*)0x04001042)
+#define REG_WIN0V_SUB            (*(vu16*)0x04001044)
+#define REG_WIN1V_SUB            (*(vu16*)0x04001046)
+#define REG_WININ_SUB            (*(vu16*)0x04001048)
+#define REG_WINOUT_SUB           (*(vu16*)0x0400104A)
+#define REG_MOSAIC_BG_SUB        (*(vu8*)0x0400104C)
+#define REG_MOSAIC_OBJ_SUB       (*(vu8*)0x0400104D)
+#define REG_BLDCNT_SUB           (*(vu16*)0x04001050)
+
+#define REG_MASTER_BRIGHT_SUB (*(vu16*)0x0400106C)
 
 #endif // REGISTERS_H

@@ -30,6 +30,10 @@ complete
     .rodata     start:0x0205A928 end:0x0205a95C
     .bss        start:0x0206A9E0 end:0x0206AA78
 
+src/Display.c:
+    .text       start:0x0200504C end:0x020065E0
+    .bss        start:0x0206AA78 end:0x0206AF24
+
 src/OverlayManager.c:
     .text       start:0x02006F50 end:0x020073CC
     .bss        start:0x0206AF24 end:0x0206B3B8

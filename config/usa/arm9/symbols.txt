@@ -190,6 +190,8 @@ func_02006380 kind:function(arm,size=0x10) addr:0x02006380
 func_02006390 kind:function(arm,size=0x28) addr:0x02006390
 func_020063b8 kind:function(arm,size=0x114) addr:0x020063b8
 func_020064cc kind:function(arm,size=0x114) addr:0x020064cc
+
+
 func_020065e0 kind:function(arm,size=0x28) addr:0x020065e0
 func_02006608 kind:function(arm,size=0x10) addr:0x02006608
 func_02006618 kind:function(arm,size=0x84) addr:0x02006618
@@ -546,6 +548,8 @@ func_02011df8 kind:function(arm,size=0x60) addr:0x02011df8
 func_02011e58 kind:function(arm,size=0x3c) addr:0x02011e58
 func_02011e94 kind:function(arm,size=0x38) addr:0x02011e94
 func_02011ecc kind:function(arm,size=0x34) addr:0x02011ecc
+
+
 func_02011f00 kind:function(arm,size=0x44) addr:0x02011f00
 func_02011f44 kind:function(arm,size=0xa0) addr:0x02011f44
 func_02011fe4 kind:function(arm,size=0x28) addr:0x02011fe4

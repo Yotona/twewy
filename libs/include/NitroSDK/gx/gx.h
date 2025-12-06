@@ -1,7 +1,10 @@
 #ifndef NITROSDK_GX_GX_H
 #define NITROSDK_GX_GX_H
 
+#include <registers/reg_dispcnt.h>
 #include <types.h>
+
+/// MARK: Typedefs
 
 /**
  * @brief Graphical display mode, specifying the data feed to output
@@ -9,7 +12,7 @@
 typedef enum {
     GX_DISPMODE_OFF      = 0, // Blank white screen
     GX_DISPMODE_GRAPHICS = 1, // Normal BG and OBJ layers
-    GX_DISPMODE_VRAM     = 2, // VRAM display (bitmap from block selected in REG_DISPCNT bits 18-19)
+    GX_DISPMODE_VRAM     = 2, // VRAM display (bitmap from block selected in REG_DISPCNT.vramBlock)
     GX_DISPMODE_MMEM     = 3, // Main memory display (bitmap DMA transfer from main RAM)
 } GXDisplayMode;
 
@@ -28,7 +31,24 @@ typedef enum {
     GX2D3D_MODE_3D = 1,
 } GX2D3D;
 
+typedef enum {
+    GX_OBJTILEMODE_2D      = (0 << 4) | (0 << 20), // 2D mapping, max 32KB
+    GX_OBJTILEMODE_1D_32K  = (1 << 4) | (0 << 20), // 1D mapping, max 32KB
+    GX_OBJTILEMODE_1D_64K  = (1 << 4) | (1 << 20), // 1D mapping, max 64KB
+    GX_OBJTILEMODE_1D_128K = (1 << 4) | (2 << 20), // 1D mapping, max 128KB
+    GX_OBJTILEMODE_1D_256K = (1 << 4) | (3 << 20), // 1D mapping, max 256KB
+} GXOBJTileMode;
+
+typedef enum {
+    GX_OBJBMPMODE_2D_128K = (0 << 5) | (0 << 22), // 2D mapping, max 128KB
+    GX_OBJBMPMODE_2D_256K = (1 << 5) | (0 << 22), // 2D mapping, max 256KB
+    GX_OBJBMPMODE_1D_128K = (2 << 5) | (0 << 22), // 1D mapping, max 128KB
+    GX_OBJBMPMODE_1D_256K = (2 << 5) | (1 << 22), // 1D mapping, max 256KB
+} GXOBJBmpMode;
+
 extern u16 GX_LockID;
+
+/// MARK: Functions
 
 /**
  * @brief Initialize the graphics system.
@@ -96,5 +116,99 @@ void GXx_SetMasterBrightness(u16* arg0, s32 arg1);
  * This function reads the brightness value from the register and returns it as a signed integer.
  */
 s32 GXx_GetMasterBrightness(vu16* arg0);
+
+/// MARK: Inlines
+
+/**
+ * @brief Set visibility of BG/OBJ layers of main graphics engine
+ *
+ * @param layers Bits indicating which BG/OBJ layers to display
+ */
+static inline void GX_SetVisibleLayers(s32 layers) {
+    REG_DISPCNT = (REG_DISPCNT & ~0x1F00) | (layers << 8);
+}
+
+/**
+ * @brief Set window visibility of main graphics engine
+ *
+ * @param windows Bits indicating which windows to display
+ */
+static inline void GX_SetVisibleWindows(s32 windows) {
+    REG_DISPCNT = (REG_DISPCNT & ~0xE000) | (windows << 13);
+}
+
+/**
+ * @brief Set OBJ tile size and mode of main graphics engine
+ *
+ * @param mode Tile mode to set
+ */
+static inline void GX_SetOBJTileMode(GXOBJTileMode mode) {
+    REG_DISPCNT = (REG_DISPCNT & ~(0x300000 | 0x10)) | mode;
+}
+
+/**
+ * @brief Set OBJ bitmap size and mode of main graphics engine
+ *
+ * @param mode Bitmap mode to set
+ */
+static inline void GX_SetOBJBmpMode(GXOBJBmpMode mode) {
+    REG_DISPCNT = (REG_DISPCNT & ~(0x400000 | 0x60)) | mode;
+}
+
+/**
+ * @brief Sets the character base block for BG0-BG3.
+ *
+ * @param charBase The character base block number (0-3).
+ *                 Determines where character/tile data is located in VRAM.
+ */
+static inline void GX_SetCharBase(u32 screenBase) {
+    REG_DISPCNT = (REG_DISPCNT & ~0x07000000) | (screenBase << 24);
+}
+
+/**
+ * @brief Sets the screen base block for BG0-BG3.
+ *
+ * @param screenBase The screen base block number (0-31).
+ *                   Determines where screen/map data is located in VRAM.
+ */
+static inline void GX_SetScreenBase(u32 charBase) {
+    REG_DISPCNT = (REG_DISPCNT & ~0x38000000) | (charBase << 27);
+}
+
+/**
+ * @brief Set visibility of BG/OBJ layers of sub graphics engine
+ *
+ * @param layers Bits indicating which BG/OBJ layers to display
+ */
+static inline void GXs_SetVisibleLayers(s32 layers) {
+    REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x1F00) | (layers << 8);
+}
+
+/**
+ * @brief Set window visibility of sub graphics engine
+ *
+ * @param windows Bits indicating which windows to display
+ */
+static inline void GXs_SetVisibleWindows(s32 windows) {
+    REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0xE000) | (windows << 13);
+}
+
+/**
+ * @brief Set OBJ tile size and mode of sub graphics engine
+ *
+ * @param mode Tile mode to set
+ */
+static inline void GXs_SetOBJTileMode(GXOBJTileMode mode) {
+    REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~(0x300000 | 0x10)) | mode;
+}
+
+/**
+ * @brief Set OBJ bitmap size and mode of sub graphics engine
+ *
+ * @param mode Bitmap mode to set
+ */
+static inline void GXs_SetOBJBmpMode(GXOBJBmpMode mode) {
+    REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x60) | mode;
+}
 
 #endif // NITROSDK_GX_GX_H
