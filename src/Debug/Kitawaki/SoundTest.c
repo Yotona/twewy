@@ -5,6 +5,7 @@
 
 #include "Debug/SoundTest.h"
 #include "CriSndMgr.h"
+#include "Display.h"
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayManager.h"
@@ -1704,12 +1705,12 @@ void func_ov029_02082e40(SoundTestState* param) {
     func_02007260(&state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
-    data_0206aa80.unk_1C = 0;
-    state->unk_11580     = func_0200cef0(state);
-    data_02066aec        = 0;
-    data_0206aa80.unk_30 = 0;
-    data_02066eec        = 0;
-    data_0206aa80.unk_60 = 0;
+    data_0206aa80.mainControl.layers     = LAYER_NONE;
+    state->unk_11580                     = func_0200cef0(state);
+    data_02066aec                        = 0;
+    data_0206aa80.mainControl.brightness = 0;
+    data_02066eec                        = 0;
+    data_0206aa80.subControl.brightness  = 0;
     func_ov029_02082838(state);
     func_020072a4();
 }

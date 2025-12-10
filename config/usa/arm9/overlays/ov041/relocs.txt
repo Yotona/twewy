@@ -102,10 +102,10 @@ from:0x02082ec8 kind:arm_call to:0x02002890 module:main
 from:0x02082ed0 kind:arm_call to:0x02003440 module:main
 from:0x02082ed8 kind:arm_call to:0x02003440 module:main
 from:0x02082ee4 kind:load to:0x0206aa80 module:main
-from:0x02082ee8 kind:load to:0x0206ab20 module:main
+from:0x02082ee8 kind:load to:0x0206aa80 add:0xa0 module:main
 from:0x02082ef0 kind:load to:0x0206aa78 module:main
 from:0x02082ef4 kind:load to:0x0206aa7c module:main
-from:0x02082ef8 kind:load to:0x0206ad04 module:main
+from:0x02082ef8 kind:load to:0x0206aa80 add:0x284 module:main
 from:0x02082f08 kind:load to:0x020676ec module:main
 from:0x02082f0c kind:load to:0x0206770c module:main
 from:0x02082f10 kind:load to:0x02068778 module:main

@@ -111,14 +111,14 @@ from:0x020e7fc0 kind:arm_call to:0x02009a74 module:main
 from:0x020e8000 kind:arm_call to:0x0200adf8 module:main
 from:0x020e8008 kind:load to:0x02075164 module:main
 from:0x020e800c kind:load to:0x0206aa80 module:main
-from:0x020e8014 kind:load to:0x0206aae4 module:main
-from:0x020e8018 kind:load to:0x0206ab20 module:main
-from:0x020e8020 kind:load to:0x0206ab5c module:main
-from:0x020e8024 kind:load to:0x0206ab98 module:main
-from:0x020e8028 kind:load to:0x0206ad04 module:main
-from:0x020e8030 kind:load to:0x0206ad40 module:main
-from:0x020e8034 kind:load to:0x0206ad7c module:main
-from:0x020e8038 kind:load to:0x0206adb8 module:main
+from:0x020e8014 kind:load to:0x0206aa80 add:0x64 module:main
+from:0x020e8018 kind:load to:0x0206aa80 add:0xa0 module:main
+from:0x020e8020 kind:load to:0x0206aa80 add:0xdc module:main
+from:0x020e8024 kind:load to:0x0206aa80 add:0x118 module:main
+from:0x020e8028 kind:load to:0x0206aa80 add:0x284 module:main
+from:0x020e8030 kind:load to:0x0206aa80 add:0x2c0 module:main
+from:0x020e8034 kind:load to:0x0206aa80 add:0x2fc module:main
+from:0x020e8038 kind:load to:0x0206aa80 add:0x338 module:main
 from:0x020e803c kind:load to:0x0206a9e0 module:main
 from:0x020e8040 kind:load to:0x020e96b0 module:overlay(27)
 from:0x020e8044 kind:load to:0x02066aec module:main
@@ -321,14 +321,14 @@ from:0x020e9124 kind:arm_call to:0x02009a74 module:main
 from:0x020e9164 kind:arm_call to:0x0200adf8 module:main
 from:0x020e916c kind:load to:0x02075130 module:main
 from:0x020e9170 kind:load to:0x0206aa80 module:main
-from:0x020e9178 kind:load to:0x0206aae4 module:main
-from:0x020e917c kind:load to:0x0206ab20 module:main
-from:0x020e9184 kind:load to:0x0206ab5c module:main
-from:0x020e9188 kind:load to:0x0206ab98 module:main
-from:0x020e918c kind:load to:0x0206ad04 module:main
-from:0x020e9194 kind:load to:0x0206ad40 module:main
-from:0x020e9198 kind:load to:0x0206ad7c module:main
-from:0x020e919c kind:load to:0x0206adb8 module:main
+from:0x020e9178 kind:load to:0x0206aa80 add:0x64 module:main
+from:0x020e917c kind:load to:0x0206aa80 add:0xa0 module:main
+from:0x020e9184 kind:load to:0x0206aa80 add:0xdc module:main
+from:0x020e9188 kind:load to:0x0206aa80 add:0x118 module:main
+from:0x020e918c kind:load to:0x0206aa80 add:0x284 module:main
+from:0x020e9194 kind:load to:0x0206aa80 add:0x2c0 module:main
+from:0x020e9198 kind:load to:0x0206aa80 add:0x2fc module:main
+from:0x020e919c kind:load to:0x0206aa80 add:0x338 module:main
 from:0x020e91a0 kind:load to:0x0206a9e0 module:main
 from:0x020e91a4 kind:load to:0x020e96b0 module:overlay(27)
 from:0x020e91a8 kind:load to:0x02066aec module:main

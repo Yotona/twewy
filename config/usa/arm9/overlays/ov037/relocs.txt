@@ -39,10 +39,10 @@ from:0x020827ac kind:arm_call to:0x02001c34 module:main
 from:0x020827b8 kind:load to:0x02066aec module:main
 from:0x020827bc kind:load to:0x02066eec module:main
 from:0x020827d0 kind:load to:0x0206aa80 module:main
-from:0x020827d8 kind:load to:0x0206aae4 module:main
-from:0x020827e0 kind:load to:0x0206ab20 module:main
-from:0x020827e8 kind:load to:0x0206ad04 module:main
-from:0x020827f0 kind:load to:0x0206ad40 module:main
+from:0x020827d8 kind:load to:0x0206aa80 add:0x64 module:main
+from:0x020827e0 kind:load to:0x0206aa80 add:0xa0 module:main
+from:0x020827e8 kind:load to:0x0206aa80 add:0x284 module:main
+from:0x020827f0 kind:load to:0x0206aa80 add:0x2c0 module:main
 from:0x020827f8 kind:load to:0x020676ec module:main
 from:0x020827fc kind:load to:0x0206770c module:main
 from:0x02082800 kind:load to:0x02068778 module:main

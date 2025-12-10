@@ -32,8 +32,8 @@ from:0x020e74b0 kind:arm_call to:0x02006390 module:main
 from:0x020e74e0 kind:arm_call to:0x02035478 module:main
 from:0x020e7538 kind:arm_call to:0x020354e0 module:main
 from:0x020e7594 kind:load to:0x0206aa80 module:main
-from:0x020e759c kind:load to:0x0206ab20 module:main
-from:0x020e75a4 kind:load to:0x0206ad40 module:main
+from:0x020e759c kind:load to:0x0206aa80 add:0xa0 module:main
+from:0x020e75a4 kind:load to:0x0206aa80 add:0x2c0 module:main
 from:0x020e75c4 kind:arm_call to:0x02006380 module:main
 from:0x020e75c8 kind:arm_call to:0x020019ac module:main
 from:0x020e75d4 kind:arm_call to:0x02039840 module:main

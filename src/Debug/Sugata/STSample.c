@@ -1,4 +1,5 @@
 #include "Debug/STSample.h"
+#include "Display.h"
 #include "Memory.h"
 #include "OverlayManager.h"
 #include "System.h"
@@ -144,11 +145,11 @@ void func_ov041_02082a5c(STSampleState* param) {
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->unk_11580     = func_0200cef0(state);
-    data_02066aec        = 0;
-    data_0206aa80.unk_30 = 0;
-    data_0206aa80.unk_60 = 0;
-    data_02066eec        = 0;
+    state->unk_11580                     = func_0200cef0(state);
+    data_02066aec                        = 0;
+    data_0206aa80.mainControl.brightness = 0;
+    data_0206aa80.subControl.brightness  = 0;
+    data_02066eec                        = 0;
     func_ov041_020827cc(state);
     func_020072a4();
 }

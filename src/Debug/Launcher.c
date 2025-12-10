@@ -1,4 +1,5 @@
 #include "Debug/Launcher.h"
+#include "Display.h"
 
 extern TaskHandle data_0205cb10;
 
@@ -35,10 +36,10 @@ void func_ov046_020824a0(void) {
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
     GFX_FIFO_MATRIX_STORE = 0;
 
-    data_0206aa80.unk_10 = 0x200010;
-    data_0206aa80.unk_14 = 0x40;
-    data_0206aa80.unk_44 = 0x40;
-    data_0206aa80.unk_40 = 0x100010;
+    data_0206aa80.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
+    data_0206aa80.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    data_0206aa80.subControl.objTileMode  = GX_OBJTILEMODE_1D_64K;
+    data_0206aa80.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
 
     func_0200270c(0, 0);
     func_0200270c(0, 1);
@@ -237,94 +238,118 @@ void func_ov046_02082c78(DebugLauncherState* state) {
         state->unk_6C[i] = 0xFFFFFFFF;
     }
     func_ov046_020827f0();
-    data_0206aa80.unk_30 = ~0xf;
-    data_0206aa80.unk_60 = ~0xf;
+    data_0206aa80.mainControl.brightness = -16;
+    data_0206aa80.subControl.brightness  = -16;
     func_02006390();
-    data_0206aa80.unk_00 = 0;
-    REG_POWER_CNT        = REG_POWER_CNT & 0x7fff;
-    data_0206aa80.unk_04 = 1;
-    data_0206aa80.unk_08 = 0;
-    data_0206aa80.unk_0C = 0;
+    data_0206aa80.unk_000 = 0;
+    REG_POWER_CNT &= ~0x8000;
+
+    data_0206aa80.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
+    data_0206aa80.mainControl.bgMode    = GX_BGMODE_0;
+    data_0206aa80.mainControl.dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
-    data_0206aae4.unk_00 = 0;
-    data_0206aae4.unk_04 = 0;
-    data_0206aae4.unk_1C = 0;
-    data_0206aae4.unk_20 = 0;
-    data_0206aae4.unk_28 = 0;
-    data_0206aae4.unk_2C = 0;
-    if (data_0206aa80.unk_0C == 0) {
+
+    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
+    mainBg0->unk_00            = 0;
+    mainBg0->screenSize        = 0;
+    mainBg0->colorMode         = 0;
+    mainBg0->screenBase        = 0;
+    mainBg0->charBase          = 1;
+    mainBg0->extPlttSlot       = 1;
+    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = REG_BG0CNT & 0x43 | 0x2004;
     }
-    data_0206ab20.unk_00  = 0;
-    data_0206ab20.unk_04  = 0;
-    data_0206ab20.unk_1C  = 0;
-    data_0206ab20.unk_20  = 1;
-    data_0206ab20.unk_28  = 4;
-    data_0206ab20.unk_2C  = 1;
-    REG_BG1CNT            = REG_BG1CNT & 0x43 | 0x2110;
-    data_0206ab5c.unk_00  = 0;
-    data_0206ab5c.unk_04  = 0;
-    data_0206ab5c.unk_1C  = 0;
-    data_0206ab5c.unk_20  = 0;
-    data_0206ab5c.unk_28  = 1;
-    data_0206ab5c.unk_2C  = 1;
-    REG_BG2CNT            = REG_BG2CNT & 0x43 | 4;
-    data_0206ab98.unk_00  = 0;
-    data_0206ab98.unk_04  = 0;
-    data_0206ab98.unk_1C  = 0;
-    data_0206ab98.unk_20  = 0;
-    data_0206ab98.unk_28  = 1;
-    data_0206ab98.unk_2C  = 1;
-    REG_BG3CNT            = REG_BG3CNT & 0x43 | 4;
-    data_0206aa80.unk_98  = 0;
-    data_0206aa80.unk_D4  = 1;
-    data_0206aa80.unk_110 = 2;
-    data_0206aa80.unk_14C = 3;
-    data_0206aa80.unk_9C  = 0;
-    data_0206aa80.unk_D8  = 0;
-    data_0206aa80.unk_114 = 0;
-    data_0206aa80.unk_150 = 0;
-    data_0206aa80.unk_1C  = 0 | 0x13;
-    data_0206aa80.unk_38  = 0;
+
+    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
+    mainBg1->unk_00            = 0;
+    mainBg1->screenSize        = 0;
+    mainBg1->colorMode         = 0;
+    mainBg1->screenBase        = 1;
+    mainBg1->charBase          = 4;
+    mainBg1->extPlttSlot       = 1;
+    REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x2110;
+
+    DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
+    mainBg2->unk_00            = 0;
+    mainBg2->screenSize        = 0;
+    mainBg2->colorMode         = 0;
+    mainBg2->screenBase        = 0;
+    mainBg2->charBase          = 1;
+    mainBg2->extPlttSlot       = 0;
+    REG_BG2CNT                 = REG_BG2CNT & 0x43 | 4;
+
+    DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_MAIN);
+    mainBg3->unk_00            = 0;
+    mainBg3->screenSize        = 0;
+    mainBg3->colorMode         = 0;
+    mainBg3->screenBase        = 0;
+    mainBg3->charBase          = 1;
+    mainBg3->extPlttSlot       = 1;
+    REG_BG3CNT                 = REG_BG3CNT & 0x43 | 4;
+
+    data_0206aa80.unk_064[0].bgSettings[0].unk_34 = 0;
+    data_0206aa80.unk_064[0].bgSettings[1].unk_34 = 1;
+    data_0206aa80.unk_064[0].bgSettings[2].unk_34 = 2;
+    data_0206aa80.unk_064[0].bgSettings[3].unk_34 = 3;
+
+    data_0206aa80.unk_064[0].bgSettings[0].unk_38 = 0;
+    data_0206aa80.unk_064[0].bgSettings[1].unk_38 = 0;
+    data_0206aa80.unk_064[0].bgSettings[2].unk_38 = 0;
+    data_0206aa80.unk_064[0].bgSettings[3].unk_38 = 0;
+
+    data_0206aa80.mainControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
+
+    data_0206aa80.subControl.bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
-    data_0206ad04.unk_00  = 0;
-    data_0206ad04.unk_04  = 0;
-    data_0206ad04.unk_1C  = 0;
-    data_0206ad04.unk_20  = 0;
-    data_0206ad04.unk_28  = 1;
-    data_0206ad04.unk_2C  = 0;
-    REG_BG0CNT_SUB        = REG_BG0CNT_SUB & 0x43 | 4;
-    data_0206ad40.unk_28  = 4;
-    data_0206ad40.unk_00  = 0;
-    data_0206ad40.unk_04  = 0;
-    data_0206ad40.unk_1C  = 0;
-    data_0206ad40.unk_20  = 1;
-    data_0206ad40.unk_2C  = 0;
-    REG_BG1CNT_SUB        = REG_BG1CNT_SUB & 0x43 | 0x110;
-    data_0206ad7c.unk_00  = 0;
-    data_0206ad7c.unk_04  = 0;
-    data_0206ad7c.unk_1C  = 0;
-    data_0206ad7c.unk_20  = 0;
-    data_0206ad7c.unk_28  = 1;
-    data_0206ad7c.unk_2C  = 1;
-    REG_BG2CNT_SUB        = REG_BG2CNT_SUB & 0x43 | 4;
-    data_0206adb8.unk_00  = 0;
-    data_0206adb8.unk_04  = 0;
-    data_0206adb8.unk_1C  = 0;
-    data_0206adb8.unk_20  = 0;
-    data_0206adb8.unk_28  = 1;
-    data_0206adb8.unk_2C  = 1;
-    REG_BG3CNT_SUB        = REG_BG3CNT_SUB & 0x43 | 4;
-    data_0206aa80.unk_2B8 = 0;
-    data_0206aa80.unk_2F4 = 1;
-    data_0206aa80.unk_330 = 2;
-    data_0206aa80.unk_36C = 3;
-    data_0206aa80.unk_2BC = 0;
-    data_0206aa80.unk_2F8 = 0;
-    data_0206aa80.unk_334 = 0;
-    data_0206aa80.unk_370 = 0;
-    data_0206aa80.unk_4C  = 0x0 | 0x3;
-    data_0206aa80.unk_4C  = 0x0 | 0x3 | 0x4; // what
+
+    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
+    subBg0->unk_00            = 0;
+    subBg0->screenSize        = 0;
+    subBg0->colorMode         = 0;
+    subBg0->screenBase        = 0;
+    subBg0->charBase          = 1;
+    subBg0->extPlttSlot       = 0;
+    REG_BG0CNT_SUB            = REG_BG0CNT_SUB & 0x43 | 4;
+
+    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
+    subBg1->charBase          = 4;
+    subBg1->unk_00            = 0;
+    subBg1->screenSize        = 0;
+    subBg1->colorMode         = 0;
+    subBg1->screenBase        = 1;
+    subBg1->extPlttSlot       = 0;
+    REG_BG1CNT_SUB            = REG_BG1CNT_SUB & 0x43 | 0x110;
+
+    DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_SUB);
+    subBg2->unk_00            = 0;
+    subBg2->screenSize        = 0;
+    subBg2->colorMode         = 0;
+    subBg2->screenBase        = 0;
+    subBg2->charBase          = 1;
+    subBg2->extPlttSlot       = 1;
+    REG_BG2CNT_SUB            = REG_BG2CNT_SUB & 0x43 | 4;
+
+    DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_SUB);
+    subBg3->unk_00            = 0;
+    subBg3->screenSize        = 0;
+    subBg3->colorMode         = 0;
+    subBg3->screenBase        = 0;
+    subBg3->charBase          = 1;
+    subBg3->extPlttSlot       = 1;
+    REG_BG3CNT_SUB            = REG_BG3CNT_SUB & 0x43 | 4;
+
+    data_0206aa80.unk_064[1].bgSettings[0].unk_34 = 0;
+    data_0206aa80.unk_064[1].bgSettings[1].unk_34 = 1;
+    data_0206aa80.unk_064[1].bgSettings[2].unk_34 = 2;
+    data_0206aa80.unk_064[1].bgSettings[3].unk_34 = 3;
+
+    data_0206aa80.unk_064[1].bgSettings[0].unk_38 = 0;
+    data_0206aa80.unk_064[1].bgSettings[1].unk_38 = 0;
+    data_0206aa80.unk_064[1].bgSettings[2].unk_38 = 0;
+    data_0206aa80.unk_064[1].bgSettings[3].unk_38 = 0;
+
+    data_0206aa80.subControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
+
     func_02006ad8();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);
     state->unk_1164C = func_0200cef0(state->unk_CC);

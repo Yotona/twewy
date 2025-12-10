@@ -1,6 +1,13 @@
 #include "Display.h"
-#include <NitroSDK/gx/gx.h>
+#include <NitroSDK/fx.h>
 #include <registers.h>
+
+s32             data_0206aa78 = 0;
+s32             data_0206aa7c = 0;
+DisplaySettings data_0206aa80 = {0};
+
+static void func_020063b8(s32 arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7);
+static void func_020064cc(s32 arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7);
 
 extern vu32 data_02066a58;
 
@@ -20,8 +27,8 @@ static void func_0200504c(DisplayControlSettings* dispcnt) {
 }
 
 static void func_02005094(void) {
-    func_0200504c(&data_0206aa78.mainControl);
-    func_0200504c(&data_0206aa78.subControl);
+    func_0200504c(&data_0206aa80.mainControl);
+    func_0200504c(&data_0206aa80.subControl);
 }
 
 static void func_020050b4(UnkStruct_usedby_20050B4* arg0) {
@@ -33,6 +40,7 @@ static void func_020050b4(UnkStruct_usedby_20050B4* arg0) {
     arg0->bgSettings[0].extPlttSlot = 1;
     arg0->bgSettings[0].unk_34      = 0;
     arg0->bgSettings[0].unk_38      = 0;
+
     arg0->bgSettings[1].unk_00      = 0;
     arg0->bgSettings[1].screenSize  = 0;
     arg0->bgSettings[1].colorMode   = 0;
@@ -41,6 +49,7 @@ static void func_020050b4(UnkStruct_usedby_20050B4* arg0) {
     arg0->bgSettings[1].extPlttSlot = 1;
     arg0->bgSettings[1].unk_34      = 0;
     arg0->bgSettings[1].unk_38      = 0;
+
     arg0->bgSettings[2].unk_00      = 0;
     arg0->bgSettings[2].screenSize  = 0;
     arg0->bgSettings[2].colorMode   = 0;
@@ -49,6 +58,7 @@ static void func_020050b4(UnkStruct_usedby_20050B4* arg0) {
     arg0->bgSettings[2].extPlttSlot = 1;
     arg0->bgSettings[2].unk_34      = 0;
     arg0->bgSettings[2].unk_38      = 0;
+
     arg0->bgSettings[3].unk_00      = 0;
     arg0->bgSettings[3].screenSize  = 0;
     arg0->bgSettings[3].colorMode   = 0;
@@ -57,66 +67,72 @@ static void func_020050b4(UnkStruct_usedby_20050B4* arg0) {
     arg0->bgSettings[3].extPlttSlot = 1;
     arg0->bgSettings[3].unk_34      = 0;
     arg0->bgSettings[3].unk_38      = 0;
-    arg0->unk_0F0                   = 0;
-    arg0->unk_0F4                   = 0;
-    arg0->unk_0F8                   = 0;
-    arg0->unk_0FC                   = 0;
-    arg0->unk_100                   = 0;
-    arg0->unk_104                   = 0;
-    arg0->unk_168                   = 0x100;
-    arg0->unk_16A                   = 0;
-    arg0->unk_16C                   = 0;
-    arg0->unk_16E                   = 0x100;
-    arg0->unk_170                   = 0;
-    arg0->unk_174                   = 0;
-    arg0->unk_17C                   = 1;
-    arg0->unk_184                   = 0x1000;
-    arg0->unk_188                   = 0x1000;
-    arg0->unk_18C                   = 0;
-    arg0->unk_190                   = 0;
-    arg0->unk_108                   = 0;
-    arg0->unk_10C                   = 0;
-    arg0->unk_194                   = 0x100;
-    arg0->unk_196                   = 0;
-    arg0->unk_198                   = 0;
-    arg0->unk_19A                   = 0x100;
-    arg0->unk_19C                   = 0;
-    arg0->unk_1A0                   = 0;
-    arg0->unk_1A8                   = 1;
-    arg0->unk_1B0                   = 0x1000;
-    arg0->unk_1B4                   = 0x1000;
-    arg0->unk_1B8                   = 0;
-    arg0->unk_1BC                   = 0;
-    arg0->unk_1C0                   = 0;
-    arg0->unk_1C4                   = 0;
-    arg0->unk_1C8                   = 0;
-    arg0->unk_1CC                   = 0;
-    arg0->unk_1E0                   = 0;
-    arg0->unk_1E4                   = 0;
-    arg0->unk_1E8                   = 0;
-    arg0->unk_1EC                   = 0;
-    arg0->unk_1D0                   = 0;
-    arg0->unk_1D4                   = 0;
-    arg0->unk_1DC                   = 0;
-    arg0->unk_1D8                   = 0;
-    arg0->unk_1F0                   = 0;
-    arg0->unk_1F4                   = 0;
-    arg0->unk_1FC                   = 0;
-    arg0->unk_1F8                   = 0;
-    arg0->unk_200                   = 0;
-    arg0->unk_202                   = 0;
-    arg0->unk_204                   = 0;
-    arg0->unk_206                   = 0;
-    arg0->unk_208                   = 0;
-    arg0->unk_20C                   = 0;
-    arg0->unk_210                   = 0;
-    arg0->unk_218                   = 0;
-    arg0->unk_21C                   = 0;
+
+    arg0->unk_0F0 = 0;
+    arg0->unk_0F4 = 0;
+    arg0->unk_0F8 = 0;
+    arg0->unk_0FC = 0;
+    arg0->unk_100 = 0;
+    arg0->unk_104 = 0;
+    arg0->unk_168 = 0x100;
+    arg0->unk_16A = 0;
+    arg0->unk_16C = 0;
+    arg0->unk_16E = 0x100;
+    arg0->unk_170 = 0;
+    arg0->unk_174 = 0;
+    arg0->unk_17C = 1;
+    arg0->unk_184 = 0x1000;
+    arg0->unk_188 = 0x1000;
+    arg0->unk_18C = 0;
+    arg0->unk_190 = 0;
+    arg0->unk_108 = 0;
+    arg0->unk_10C = 0;
+    arg0->unk_194 = 0x100;
+    arg0->unk_196 = 0;
+    arg0->unk_198 = 0;
+    arg0->unk_19A = 0x100;
+    arg0->unk_19C = 0;
+    arg0->unk_1A0 = 0;
+    arg0->unk_1A8 = 1;
+    arg0->unk_1B0 = 0x1000;
+    arg0->unk_1B4 = 0x1000;
+    arg0->unk_1B8 = 0;
+    arg0->unk_1BC = 0;
+
+    arg0->window0        = 0;
+    arg0->window0Effects = FALSE;
+
+    arg0->windowOutside        = 0;
+    arg0->windowOutsideEffects = FALSE;
+
+    arg0->window1        = 0;
+    arg0->window1Effects = FALSE;
+
+    arg0->windowObj        = 0;
+    arg0->windowObjEffects = FALSE;
+
+    arg0->unk_1D0 = 0;
+    arg0->unk_1D4 = 0;
+    arg0->unk_1DC = 0;
+    arg0->unk_1D8 = 0;
+    arg0->unk_1F0 = 0;
+    arg0->unk_1F4 = 0;
+    arg0->unk_1FC = 0;
+    arg0->unk_1F8 = 0;
+    arg0->unk_200 = 0;
+    arg0->unk_202 = 0;
+    arg0->unk_204 = 0;
+    arg0->unk_206 = 0;
+    arg0->unk_208 = 0;
+    arg0->unk_20C = 0;
+    arg0->unk_210 = 0;
+    arg0->unk_218 = 0;
+    arg0->unk_21C = 0;
 }
 
 static void func_02005230(void) {
-    func_020050b4(&data_0206aa78.unk_06C[0]);
-    func_020050b4(&data_0206aa78.unk_06C[1]);
+    func_020050b4(&data_0206aa80.unk_064[0]);
+    func_020050b4(&data_0206aa80.unk_064[1]);
 }
 
 void func_02005250(void) {
@@ -206,7 +222,7 @@ void func_02005444(DisplayEngine engine, DisplayBGLayer layer) {
 
             switch (engine) {
                 case DISPLAY_ENGINE_MAIN:
-                    if (Display_GetMainControl()->dimension == GX2D3D_MODE_2D) {
+                    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
                         GX_SetBG0Control(screenSize, colorMode, screenBase, charBase, extPlttSlot);
                     }
                     return;
@@ -361,14 +377,14 @@ void func_02005444(DisplayEngine engine, DisplayBGLayer layer) {
 
                 case 5: {
                     if (engine == DISPLAY_ENGINE_MAIN) {
-                        DisplayBGSettings* bg2 = Display_GetBG2Settings(engine);
+                        DisplayBGSettings* bg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
 
                         s32 unk30 = bgSettings->unk_30;
                         s32 unk18 = bgSettings->unk_18;
 
                         bg2->unk_00 = 5;
-                        bg2->unk_18 = unk18;
                         bg2->unk_30 = unk30;
+                        bg2->unk_18 = unk18;
 
                         REG_BG2CNT = (REG_BG2CNT & 0x43) | (unk18 << 0xE) | (unk30 << 0xD);
                         return;
@@ -387,19 +403,10 @@ void func_02005444(DisplayEngine engine, DisplayBGLayer layer) {
 
 // Nonmatching: Work in progress, many stack and inlined bitshifting differences
 void func_02005908(void) {
-    u16 var_r1;
-    u16 var_r1_2;
-    u16 var_r1_3;
-    u16 var_r1_4;
-    u16 var_r1_5;
-    u16 var_r1_6;
-    u16 var_r2;
-    u16 var_r2_2;
-
     DisplayControlSettings*   mainControl = Display_GetMainControl();
     DisplayControlSettings*   subControl  = Display_GetSubControl();
-    UnkStruct_usedby_20050B4* mainState   = &data_0206aa78.unk_06C[DISPLAY_ENGINE_MAIN];
-    UnkStruct_usedby_20050B4* subState    = &data_0206aa78.unk_06C[DISPLAY_ENGINE_SUB];
+    UnkStruct_usedby_20050B4* mainState   = &data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN];
+    UnkStruct_usedby_20050B4* subState    = &data_0206aa80.unk_064[DISPLAY_ENGINE_SUB];
 
     REG_BG0CNT = (u16)((REG_BG0CNT & ~3) | mainState->bgSettings[DISPLAY_BG0].unk_34);
     REG_BG1CNT = (u16)((REG_BG1CNT & ~3) | mainState->bgSettings[DISPLAY_BG1].unk_34);
@@ -453,10 +460,10 @@ void func_02005908(void) {
         REG_BG3HOFS = (0x1FF & ((s32)mainState->unk_108 >> 0xC)) | (0x01FF0000 & (((s32)mainState->unk_10C >> 0xC) << 0x10));
     }
 
-    GX_SetWindow0Inside(mainState->unk_1C0, mainState->unk_1C4);
-    GX_SetWindow1Inside(mainState->unk_1E0, mainState->unk_1E4);
-    GX_SetWindowOutside(mainState->unk_1C8, mainState->unk_1CC);
-    GX_SetWindowObjInside(mainState->unk_1E8, mainState->unk_1EC);
+    GX_SetWindow0Inside(mainState->window0, mainState->window0Effects);
+    GX_SetWindow1Inside(mainState->window1, mainState->window1Effects);
+    GX_SetWindowOutside(mainState->windowOutside, mainState->windowOutsideEffects);
+    GX_SetWindowObjInside(mainState->windowObj, mainState->windowObjEffects);
 
     GX_SetWindow0Position(mainState->unk_1DC, mainState->unk_1D8, mainState->unk_1D0, mainState->unk_1D4);
 
@@ -554,13 +561,12 @@ void func_02005908(void) {
         REG_BG3HOFS_SUB = (0x1FF & ((s32)subState->unk_108 >> 0xC)) | (0x01FF0000 & (((s32)subState->unk_10C >> 0xC) << 0x10));
     }
 
-    GXs_SetWindow0Inside(subState->unk_1C0, subState->unk_1C4);
-    GXs_SetWindow1Inside(subState->unk_1E0, subState->unk_1E4);
-    GXs_SetWindowOutside(subState->unk_1C8, subState->unk_1CC);
-    GXs_SetWindowObjInside(subState->unk_1E8, subState->unk_1EC);
+    GXs_SetWindow0Inside(subState->window0, subState->window0Effects);
+    GXs_SetWindow1Inside(subState->window1, subState->window1Effects);
+    GXs_SetWindowOutside(subState->windowOutside, subState->windowOutsideEffects);
+    GXs_SetWindowObjInside(subState->windowObj, subState->windowObjEffects);
 
     GXs_SetWindow0Position(subState->unk_1DC, subState->unk_1D8, subState->unk_1D0, subState->unk_1D4);
-
     GXs_SetWindow1Position(subState->unk_1FC, subState->unk_1F8, subState->unk_1F0, subState->unk_1F4);
 
     REG_MOSAIC_BG_SUB  = (s8)(subState->unk_200 | (subState->unk_202 * 0x10));
@@ -619,3 +625,7 @@ void func_02006390(void) {
     } while (REG_VCOUNT < 0xC0);
     func_02006380();
 }
+
+void func_020063b8(s32 arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {}
+
+void func_020064cc(s32 arg0, u32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {}

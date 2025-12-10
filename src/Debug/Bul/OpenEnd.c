@@ -1,4 +1,5 @@
 #include "Debug/OpenEnd.h"
+#include "Display.h"
 
 /*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
 void func_ov037_020824a0(void) {
@@ -22,48 +23,61 @@ void func_ov037_020824a0(void) {
     GX_SetBankForSubBg(0x4);
     GX_SetBankForSubObj(0x8);
     GX_SetBankForSubBgExtPltt(0x80);
-    data_0206aa80.unk_00 = 0;
+    data_0206aa80.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
-    data_0206aa80.unk_00 = 1;
-    data_0206aa80.unk_04 = 0;
-    data_0206aa80.unk_0C = 0;
-    GX_SetGraphicsMode(1, 0, 0);
-    data_0206aae4.unk_00 = 0;
-    data_0206aae4.unk_04 = 0;
-    data_0206aae4.unk_20 = 0;
-    data_0206aae4.unk_2C = 0;
-    data_0206aae4.unk_1C = 1;
-    data_0206aae4.unk_28 = 2;
-    if (data_0206aa80.unk_0C == 0) {
+    data_0206aa80.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
+    data_0206aa80.mainControl.bgMode    = GX_BGMODE_0;
+    data_0206aa80.mainControl.dimension = GX2D3D_MODE_2D;
+    GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
+
+    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
+    mainBg0->unk_00            = 0;
+    mainBg0->screenSize        = 0;
+    mainBg0->screenBase        = 0;
+    mainBg0->extPlttSlot       = 0;
+    mainBg0->colorMode         = 1;
+    mainBg0->charBase          = 2;
+
+    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = (REG_BG0CNT & 0x43) | 0x88;
     }
-    data_0206ab20.unk_20 = 2;
-    data_0206ab20.unk_28 = 4;
-    data_0206ab20.unk_00 = 0;
-    data_0206ab20.unk_04 = 0;
-    data_0206ab20.unk_2C = 0;
-    data_0206ab20.unk_1C = 1;
-    REG_BG1CNT           = (REG_BG1CNT & 0x43) | 0x290;
-    data_0206aa80.unk_1C = 2;
-    data_0206aa80.unk_38 = 0;
+
+    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
+    mainBg1->colorMode         = 1;
+    mainBg1->screenBase        = 2;
+    mainBg1->unk_00            = 0;
+    mainBg1->screenSize        = 0;
+    mainBg1->extPlttSlot       = 0;
+    mainBg1->charBase          = 4;
+    REG_BG1CNT                 = (REG_BG1CNT & 0x43) | 0x290;
+
+    data_0206aa80.mainControl.layers = LAYER_BG0 | LAYER_OBJ;
+    data_0206aa80.subControl.bgMode  = GX_BGMODE_0;
+
     GXs_SetGraphicsMode(0);
-    data_0206ad04.unk_00 = 0;
-    data_0206ad04.unk_04 = 0;
-    data_0206ad04.unk_1C = 1;
-    data_0206ad04.unk_20 = 0;
-    data_0206ad04.unk_28 = 2;
-    data_0206ad04.unk_2C = 0;
-    REG_BG0CNT_SUB       = (REG_BG0CNT_SUB & 0x43) | 0x88;
-    data_0206ad40.unk_28 = 0x4;
-    data_0206ad40.unk_00 = 0;
-    data_0206ad40.unk_04 = 0;
-    data_0206ad40.unk_1C = 1;
-    data_0206ad40.unk_20 = 2;
-    data_0206ad40.unk_2C = 0;
-    REG_BG1CNT_SUB       = (REG_BG1CNT_SUB & 0x43) | 0x290;
-    data_0206aa80.unk_4C = 0 | 0x11;
-    data_0206aa80.unk_10 = 0x200010;
-    data_0206aa80.unk_40 = 0x200010;
+
+    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
+    subBg0->unk_00            = 0;
+    subBg0->screenSize        = 0;
+    subBg0->colorMode         = 1;
+    subBg0->screenBase        = 0;
+    subBg0->charBase          = 2;
+    subBg0->extPlttSlot       = 0;
+    REG_BG0CNT_SUB            = (REG_BG0CNT_SUB & 0x43) | 0x88;
+
+    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
+    subBg1->charBase          = 4;
+    subBg1->unk_00            = 0;
+    subBg1->screenSize        = 0;
+    subBg1->colorMode         = 1;
+    subBg1->screenBase        = 2;
+    subBg1->extPlttSlot       = 0;
+    REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 0x290;
+
+    data_0206aa80.subControl.layers       = 17;
+    data_0206aa80.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
+    data_0206aa80.subControl.objTileMode  = GX_OBJTILEMODE_1D_128K;
+
     func_0200270c(0, 0);
     func_0200270c(1, 0);
     func_0203b2d0(0x0, 0x6800000, 0xa4000);
@@ -276,8 +290,8 @@ void func_ov037_02082d7c(OpenEndState* r0) {
             break;
         case 2:
             if (r0->unk_11A1C == 0) {
-                data_0206aa80.unk_1C = data_0206aa80.unk_1C & ~0x1 | 0x2;
-                data_0206aa80.unk_4C = data_0206aa80.unk_4C & ~0x1 | 0x2;
+                data_0206aa80.mainControl.layers = data_0206aa80.mainControl.layers & ~0x1 | 0x2;
+                data_0206aa80.subControl.layers  = data_0206aa80.subControl.layers & ~0x1 | 0x2;
             }
             func_020261d4(0, 0, 0x333);
             func_02026208(0, 0, 0x333);
@@ -324,8 +338,8 @@ void        func_ov037_02082f60(OpenEndState* r0) {
         func_020072ec();
         return;
     }
-    data_0206aa80.unk_1C = (data_0206aa80.unk_1C | 0x1) & ~0x2;
-    data_0206aa80.unk_4C = (data_0206aa80.unk_4C | 0x1) & ~0x2;
+    data_0206aa80.mainControl.layers = (data_0206aa80.mainControl.layers | 0x1) & ~0x2;
+    data_0206aa80.subControl.layers  = (data_0206aa80.subControl.layers | 0x1) & ~0x2;
     func_ov037_02082b30(r0, 0, 0, 5);
     func_ov037_02082b30(r0, 1, 0, 4);
     OpenEnd_CreateBadgeTask(0);
@@ -463,13 +477,13 @@ void func_ov037_0208345c(OpenEndState* r0) {
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    data_0206aa80.unk_30 = temp;
+    data_0206aa80.mainControl.brightness = temp;
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
         temp = 0x10;
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    data_0206aa80.unk_60 = temp;
+    data_0206aa80.subControl.brightness = temp;
     func_0200cef0(&(r0->unk_10));
     Input_Init(&InputStatus, 8, 1, 2);
     func_02006ad8();

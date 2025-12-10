@@ -7,8 +7,8 @@ from:0x020e7450 kind:arm_call to:0x02083000 module:overlay(3)
 from:0x020e7458 kind:arm_call to:0x02083074 module:overlay(3)
 from:0x020e74a4 kind:arm_call to:0x0208b690 module:overlay(3)
 from:0x020e74d8 kind:load to:0x020e7a10 module:overlay(8)
-from:0x020e756c kind:load to:0x0206ad40 module:main
-from:0x020e7574 kind:load to:0x0206ad7c module:main
+from:0x020e756c kind:load to:0x0206aa80 add:0x2c0 module:main
+from:0x020e7574 kind:load to:0x0206aa80 add:0x2fc module:main
 from:0x020e757c kind:load to:0x0206aa80 module:main
 from:0x020e75f4 kind:load to:0x020e71b8 module:overlays(3,30)
 from:0x020e7614 kind:arm_call to:0x02082940 module:overlay(3)

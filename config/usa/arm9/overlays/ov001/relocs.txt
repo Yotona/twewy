@@ -123,10 +123,10 @@ from:0x02082e48 kind:arm_call to:0x02002890 module:main
 from:0x02082e50 kind:arm_call to:0x02003440 module:main
 from:0x02082e58 kind:arm_call to:0x02003440 module:main
 from:0x02082e64 kind:load to:0x0206aa80 module:main
-from:0x02082e68 kind:load to:0x0206ab20 module:main
+from:0x02082e68 kind:load to:0x0206aa80 add:0xa0 module:main
 from:0x02082e70 kind:load to:0x0206aa78 module:main
 from:0x02082e74 kind:load to:0x0206aa7c module:main
-from:0x02082e78 kind:load to:0x0206ad04 module:main
+from:0x02082e78 kind:load to:0x0206aa80 add:0x284 module:main
 from:0x02082e88 kind:load to:0x020676ec module:main
 from:0x02082e8c kind:load to:0x0206770c module:main
 from:0x02082e90 kind:load to:0x02068778 module:main

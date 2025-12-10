@@ -1,4 +1,5 @@
 #include "Debug/Mini108.h"
+#include "Display.h"
 #include "Input.h"
 #include "Interrupts.h"
 #include "Memory.h"
@@ -26,7 +27,7 @@ const UnkStruct_Mini108_tuple data_ov000_020831a8 = {0, 0x1000, 0};
 const UnkStruct_Mini108_tuple data_ov000_020831b4 = {0, 0, 0xFFFFF000};
 
 void func_ov000_020830bc() {
-    s32 val1 = data_0206aa80.unk_30;
+    s32 val1 = data_0206aa80.mainControl.brightness;
 
     if (val1 > 0) {
         val1 = val1 - 1;
@@ -34,30 +35,30 @@ void func_ov000_020830bc() {
             val1 = 16;
         else if (val1 < -16)
             val1 = -16;
-        data_0206aa80.unk_30 = val1;
+        data_0206aa80.mainControl.brightness = val1;
     } else if (val1 < 0) {
         val1 = val1 + 1;
         if (val1 > 16)
             val1 = 16;
         else if (val1 < -16)
             val1 = -16;
-        data_0206aa80.unk_30 = val1;
+        data_0206aa80.mainControl.brightness = val1;
     }
 
-    if (data_0206aa80.unk_60 > 0) {
-        val1 = data_0206aa80.unk_60 - 1;
+    if (data_0206aa80.subControl.brightness > 0) {
+        val1 = data_0206aa80.subControl.brightness - 1;
         if (val1 > 16)
             val1 = 16;
         else if (val1 < -16)
             val1 = -16;
-        data_0206aa80.unk_60 = val1;
-    } else if (data_0206aa80.unk_60 < 0) {
-        val1 = data_0206aa80.unk_60 + 1;
+        data_0206aa80.subControl.brightness = val1;
+    } else if (data_0206aa80.subControl.brightness < 0) {
+        val1 = data_0206aa80.subControl.brightness + 1;
         if (val1 > 16)
             val1 = 16;
         else if (val1 < -16)
             val1 = -16;
-        data_0206aa80.unk_60 = val1;
+        data_0206aa80.subControl.brightness = val1;
     } else {
         func_02007328();
     }
@@ -72,102 +73,119 @@ void func_ov000_02082b1c(Mini108State* state) {
     state->unk_00 = 0;
     state->unk_10 = 0;
     func_ov000_0208259c();
-    data_0206aa80.unk_30 = ~0xF;
-    data_0206aa80.unk_60 = ~0xF;
-    data_0206aa80.unk_00 = 1;
-    REG_POWER_CNT        = REG_POWER_CNT | 0x8000;
-    data_0206aa80.unk_04 = 1;
-    data_0206aa80.unk_08 = 0;
-    data_0206aa80.unk_0C = 0;
+
+    Display_SetMainBrightness(-16);
+    Display_SetSubBrightness(-16);
+
+    data_0206aa80.unk_000 = 1;
+    REG_POWER_CNT         = REG_POWER_CNT | 0x8000;
+
+    data_0206aa80.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
+    data_0206aa80.mainControl.bgMode    = GX_BGMODE_0;
+    data_0206aa80.mainControl.dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
-    data_0206aae4.unk_00 = 0;
-    data_0206aae4.unk_04 = 0;
-    data_0206aae4.unk_1C = 0;
-    data_0206aae4.unk_20 = 0;
-    data_0206aae4.unk_28 = 2;
-    data_0206aae4.unk_2C = 1;
-    if (data_0206aa80.unk_0C == 0) {
+
+    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
+    mainBg0->unk_00            = 0;
+    mainBg0->screenSize        = 0;
+    mainBg0->colorMode         = 0;
+    mainBg0->screenBase        = 0;
+    mainBg0->charBase          = 2;
+    mainBg0->extPlttSlot       = 1;
+
+    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = REG_BG0CNT & 0x43 | 0x2008;
     }
-    data_0206ab20.unk_00  = 0;
-    data_0206ab20.unk_04  = 0;
-    data_0206ab20.unk_1C  = 0;
-    data_0206ab20.unk_20  = 0;
-    data_0206ab20.unk_28  = 1;
-    data_0206ab20.unk_2C  = 1;
-    REG_BG1CNT            = REG_BG1CNT & 0x43 | 0x2004;
-    data_0206ab5c.unk_00  = 0;
-    data_0206ab5c.unk_04  = 0;
-    data_0206ab5c.unk_1C  = 0;
-    data_0206ab5c.unk_20  = 1;
-    data_0206ab5c.unk_28  = 1;
-    data_0206ab5c.unk_2C  = 1;
-    REG_BG2CNT            = REG_BG2CNT & 0x43 | 0x104;
-    data_0206ab98.unk_00  = 0;
-    data_0206ab98.unk_04  = 0;
-    data_0206ab98.unk_1C  = 0;
-    data_0206ab98.unk_20  = 0;
-    data_0206ab98.unk_28  = 1;
-    data_0206ab98.unk_2C  = 1;
-    REG_BG3CNT            = REG_BG3CNT & 0x43 | 4;
-    u32 bitmagic          = 0 | 4;
-    u32 bitmagic1         = bitmagic | 0x10;
-    data_0206aa80.unk_1C  = 0;
-    data_0206aa80.unk_1C  = bitmagic;
-    data_0206aa80.unk_1C  = bitmagic; // | 0x10;
-    data_0206aa80.unk_98  = 2;
-    data_0206aa80.unk_D4  = 1;
-    data_0206aa80.unk_110 = 2;
-    data_0206aa80.unk_14C = 3;
-    data_0206aa80.unk_9C  = 0;
-    data_0206aa80.unk_D8  = 0;
-    data_0206aa80.unk_114 = 0;
-    data_0206aa80.unk_150 = 0;
-    bitmagic              = bitmagic | 1;
-    data_0206aa80.unk_1C  = bitmagic;
-    data_0206aa80.unk_38  = 0;
-    GXs_SetGraphicsMode(GX_BGMODE_0);
-    data_0206ad04.unk_00 = 0;
-    data_0206ad04.unk_04 = 0;
-    data_0206ad04.unk_1C = 0;
-    data_0206ad04.unk_20 = 0;
-    data_0206ad04.unk_28 = 2;
-    data_0206ad04.unk_2C = 0;
-    REG_BG0CNT_SUB       = REG_BG0CNT_SUB & 0x43 | 8;
-    data_0206ad40.unk_00 = 0;
-    data_0206ad40.unk_04 = 0;
-    data_0206ad40.unk_1C = 0;
-    data_0206ad40.unk_20 = 0;
-    data_0206ad40.unk_28 = 1;
-    data_0206ad40.unk_2C = 0;
-    REG_BG1CNT_SUB       = REG_BG1CNT_SUB & 0x43 | 4;
-    data_0206ad7c.unk_00 = 0;
-    data_0206ad7c.unk_04 = 0;
-    data_0206ad7c.unk_1C = 0;
-    data_0206ad7c.unk_20 = 1;
-    data_0206ad7c.unk_28 = 1;
-    data_0206ad7c.unk_2C = 1;
-    REG_BG2CNT_SUB       = REG_BG2CNT_SUB & 0x43 | 0x104;
-    data_0206adb8.unk_00 = 0;
-    data_0206adb8.unk_04 = 0;
-    data_0206adb8.unk_1C = 0;
-    data_0206adb8.unk_20 = 0;
-    data_0206adb8.unk_28 = 1;
-    data_0206adb8.unk_2C = 1;
-    REG_BG3CNT_SUB       = REG_BG3CNT_SUB & 0x43 | 4;
-    data_0206aa80.unk_4C = 0;
-    data_0206aa80.unk_4C = 0 | 0x4;
-    data_0206aa80.unk_4C = (0 | 0x4) | 0x10;
 
-    data_0206aa80.unk_2B8 = 2;
-    data_0206aa80.unk_2F4 = 1;
-    data_0206aa80.unk_330 = 2;
-    data_0206aa80.unk_36C = 3;
-    data_0206aa80.unk_2BC = 0;
-    data_0206aa80.unk_2F8 = 0;
-    data_0206aa80.unk_334 = 0;
-    data_0206aa80.unk_370 = 0;
-    data_0206aa80.unk_4C  = ((0 | 0x4) | 0x10) | 1;
+    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
+    mainBg1->unk_00            = 0;
+    mainBg1->screenSize        = 0;
+    mainBg1->colorMode         = 0;
+    mainBg1->screenBase        = 0;
+    mainBg1->charBase          = 1;
+    mainBg1->extPlttSlot       = 1;
+    REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x2004;
+
+    DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
+    mainBg2->unk_00            = 0;
+    mainBg2->screenSize        = 0;
+    mainBg2->colorMode         = 0;
+    mainBg2->screenBase        = 1;
+    mainBg2->charBase          = 1;
+    mainBg2->extPlttSlot       = 1;
+    REG_BG2CNT                 = REG_BG2CNT & 0x43 | 0x104;
+
+    DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_MAIN);
+    mainBg3->unk_00            = 0;
+    mainBg3->screenSize        = 0;
+    mainBg3->colorMode         = 0;
+    mainBg3->screenBase        = 0;
+    mainBg3->charBase          = 1;
+    mainBg3->extPlttSlot       = 1;
+    REG_BG3CNT                 = REG_BG3CNT & 0x43 | 4;
+
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[0].unk_34 = 2;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[1].unk_34 = 1;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[2].unk_34 = 2;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[3].unk_34 = 3;
+
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[0].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[1].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[2].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_MAIN].bgSettings[3].unk_38 = 0;
+
+    data_0206aa80.mainControl.layers = LAYER_BG0 | LAYER_BG2 | LAYER_OBJ;
+    data_0206aa80.subControl.bgMode  = GX_BGMODE_0;
+    GXs_SetGraphicsMode(GX_BGMODE_0);
+
+    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
+    subBg0->unk_00            = 0;
+    subBg0->screenSize        = 0;
+    subBg0->colorMode         = 0;
+    subBg0->screenBase        = 0;
+    subBg0->charBase          = 2;
+    subBg0->extPlttSlot       = 0;
+    REG_BG0CNT_SUB            = (REG_BG0CNT_SUB & 0x43) | 8;
+
+    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
+    subBg1->unk_00            = 0;
+    subBg1->screenSize        = 0;
+    subBg1->colorMode         = 0;
+    subBg1->screenBase        = 0;
+    subBg1->charBase          = 1;
+    subBg1->extPlttSlot       = 0;
+    REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 4;
+
+    DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_SUB);
+    subBg2->unk_00            = 0;
+    subBg2->screenSize        = 0;
+    subBg2->colorMode         = 0;
+    subBg2->screenBase        = 1;
+    subBg2->charBase          = 1;
+    subBg2->extPlttSlot       = 1;
+    REG_BG2CNT_SUB            = REG_BG2CNT_SUB & 0x43 | 0x104;
+
+    DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_SUB);
+    subBg3->unk_00            = 0;
+    subBg3->screenSize        = 0;
+    subBg3->colorMode         = 0;
+    subBg3->screenBase        = 0;
+    subBg3->charBase          = 1;
+    subBg3->extPlttSlot       = 1;
+    REG_BG3CNT_SUB            = REG_BG3CNT_SUB & 0x43 | 4;
+
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[0].unk_34 = 2;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[1].unk_34 = 1;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[2].unk_34 = 2;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[3].unk_34 = 3;
+
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[0].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[1].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[2].unk_38 = 0;
+    data_0206aa80.unk_064[DISPLAY_ENGINE_SUB].bgSettings[3].unk_38 = 0;
+
+    data_0206aa80.subControl.layers = LAYER_BG0 | LAYER_BG2 | LAYER_OBJ;
+
     func_02006ad8();
     s32 temp         = func_0200cef0(&state->unk_48D0);
     state->unk_15e50 = temp;
@@ -200,8 +218,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
         r2_val -= 4;
     }
-    func_02009a74(data_0206b3c4.unk_00, temp_r1, data_0206aa80.unk_104, 0, r2_val);
-    func_02009f18(data_0206b3c4.unk_00, temp_r6, data_0206aa80.unk_FC, data_0206aa80.unk_E0);
+    func_02009a74(data_0206b3c4.unk_00, temp_r1, data_0206aa80.unk_064[0].bgSettings[2].charBase, 0, r2_val);
+    func_02009f18(data_0206b3c4.unk_00, temp_r6, data_0206aa80.unk_064[0].bgSettings[2].screenBase,
+                  data_0206aa80.unk_064[0].bgSettings[2].screenSize);
     func_0200adf8(data_0206b3cc.unk_00, temp_r5, 0, 0, 2);
     data_02066eec = 0x1F;
     temp2         = state->unk_84C;
@@ -228,8 +247,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
         r2_val -= 4;
     }
-    func_02009a74(data_0206b3c4.unk_04, temp_r1, data_0206aa80.unk_324, 0, r2_val);
-    func_02009f18(data_0206b3c4.unk_04, temp_r6, data_0206aa80.unk_31C[0], data_0206aa80.unk_300[0]);
+    func_02009a74(data_0206b3c4.unk_04, temp_r1, data_0206aa80.unk_064[1].bgSettings[2].charBase, 0, r2_val);
+    func_02009f18(data_0206b3c4.unk_04, temp_r6, data_0206aa80.unk_064[1].bgSettings[2].screenBase,
+                  data_0206aa80.unk_064[1].bgSettings[2].screenSize);
     func_0200adf8(data_0206b3c4.unk_04, temp_r5, 0, 0, 2);
 
     // func_0200eed4(&state->unk_84C->slotIndex, &state->unk_8D0, 0x4000, 0x100); is what this is. But it throws "IllegaL
@@ -395,10 +415,12 @@ void func_ov000_020825c0(void) {
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
 
     GFX_FIFO_MATRIX_STORE = 0;
-    data_0206aa80.unk_10  = 0x200010;
-    data_0206aa80.unk_14  = 0x40;
-    data_0206aa80.unk_44  = 0x40;
-    data_0206aa80.unk_40  = 0x100010;
+
+    data_0206aa80.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
+    data_0206aa80.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    data_0206aa80.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    data_0206aa80.subControl.objTileMode  = GX_OBJTILEMODE_1D_64K;
+
     func_0200270c(0, 0); // Might also use &data_0206aa80 as third parameter?
     func_0200270c(0, 1);
     func_0203b2d0(0, 0x6800000, 0xa4000);

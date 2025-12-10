@@ -1,5 +1,5 @@
-#ifndef RENDERING_H
-#define RENDERING_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #include <NitroSDK/gx.h>
 
@@ -38,11 +38,8 @@ typedef struct {
     /* 0x20 */ BOOL          hBlank;
     /* 0x24 */ u32           screenBase;
     /* 0x28 */ u32           charBase;
-    /* 0x2C */ u32           brightness;
+    /* 0x2C */ s32           brightness;
 } DisplayControlSettings; // Size: 0x30
-
-// extern DisplayControlSettings data_0206aa84;
-// extern DisplayControlSettings data_0206aab4;
 
 typedef struct {
     /* 0x00 */ u32 unk_00;
@@ -81,7 +78,7 @@ typedef struct {
     /* 0x174 */ u32               unk_174;
     /* 0x178 */ char              unk_178[0x4];
     /* 0x17C */ u32               unk_17C;
-    /* 0x180 */ char              unk_180[0x4];
+    /* 0x180 */ u32               unk_180;
     /* 0x184 */ u32               unk_184;
     /* 0x188 */ u32               unk_188;
     /* 0x18C */ u32               unk_18C;
@@ -94,27 +91,27 @@ typedef struct {
     /* 0x1A0 */ u32               unk_1A0;
     /* 0x1A4 */ char              unk_1A4[0x4];
     /* 0x1A8 */ u32               unk_1A8;
-    /* 0x1AC */ char              unk_1AC[0x4];
+    /* 0x1AC */ u32               unk_1AC;
     /* 0x1B0 */ u32               unk_1B0;
     /* 0x1B4 */ u32               unk_1B4;
     /* 0x1B8 */ u32               unk_1B8;
     /* 0x1BC */ u32               unk_1BC;
-    /* 0x1C0 */ u32               unk_1C0;
-    /* 0x1C4 */ u32               unk_1C4;
-    /* 0x1C8 */ u32               unk_1C8;
-    /* 0x1CC */ u32               unk_1CC;
-    /* 0x1D0 */ u32               unk_1D0;
-    /* 0x1D4 */ u32               unk_1D4;
-    /* 0x1D8 */ u32               unk_1D8;
-    /* 0x1DC */ u32               unk_1DC;
-    /* 0x1E0 */ u32               unk_1E0;
-    /* 0x1E4 */ u32               unk_1E4;
-    /* 0x1E8 */ u32               unk_1E8;
-    /* 0x1EC */ u32               unk_1EC;
-    /* 0x1F0 */ u32               unk_1F0;
-    /* 0x1F4 */ u32               unk_1F4;
-    /* 0x1F8 */ u32               unk_1F8;
-    /* 0x1FC */ u32               unk_1FC;
+    /* 0x1C0 */ u32               window0;              // Layers contained in window 0
+    /* 0x1C4 */ BOOL              window0Effects;       // Brightness/blending effects for window 0
+    /* 0x1C8 */ u32               windowOutside;        // Layers contained outside windows
+    /* 0x1CC */ BOOL              windowOutsideEffects; // Brightness/blending effects outside windows
+    /* 0x1D0 */ s32               unk_1D0;
+    /* 0x1D4 */ s32               unk_1D4;
+    /* 0x1D8 */ s32               unk_1D8;
+    /* 0x1DC */ s32               unk_1DC;
+    /* 0x1E0 */ u32               window1;          // Layers contained in window 1
+    /* 0x1E4 */ BOOL              window1Effects;   // Brightness/blending effects for window 1
+    /* 0x1E8 */ u32               windowObj;        // Layers contained in OBJ window
+    /* 0x1EC */ u32               windowObjEffects; // Brightness/blending effects for OBJ window
+    /* 0x1F0 */ s32               unk_1F0;
+    /* 0x1F4 */ s32               unk_1F4;
+    /* 0x1F8 */ s32               unk_1F8;
+    /* 0x1FC */ s32               unk_1FC;
     /* 0x200 */ u16               unk_200;
     /* 0x202 */ u16               unk_202;
     /* 0x204 */ u16               unk_204;
@@ -128,13 +125,15 @@ typedef struct {
 } UnkStruct_usedby_20050B4; // Size: 0x220
 
 typedef struct {
-    /* 0x000 */ char                     unk_000[0xC];
-    /* 0x00C */ DisplayControlSettings   mainControl;
-    /* 0x03C */ DisplayControlSettings   subControl;
-    /* 0x06C */ UnkStruct_usedby_20050B4 unk_06C[2];
+    /* 0x000 */ s32                      unk_000;
+    /* 0x004 */ DisplayControlSettings   mainControl;
+    /* 0x034 */ DisplayControlSettings   subControl;
+    /* 0x064 */ UnkStruct_usedby_20050B4 unk_064[2];
 } DisplaySettings;
 
-extern DisplaySettings data_0206aa78;
+extern s32             data_0206aa78;
+extern s32             data_0206aa7c;
+extern DisplaySettings data_0206aa80;
 
 /// MARK: Functions
 
@@ -143,39 +142,39 @@ void func_02005250(void);
 /// MARK: Inlines
 
 static inline DisplayControlSettings* Display_GetMainControl(void) {
-    return &data_0206aa78.mainControl;
+    return &data_0206aa80.mainControl;
 }
 
 static inline DisplayControlSettings* Display_GetSubControl(void) {
-    return &data_0206aa78.subControl;
+    return &data_0206aa80.subControl;
 }
 
 static inline DisplayBGSettings* Display_GetBGSettings(DisplayEngine engine, DisplayBGLayer layer) {
-    return &data_0206aa78.unk_06C[engine].bgSettings[layer];
+    return &data_0206aa80.unk_064[engine].bgSettings[layer];
 }
 
 static inline DisplayBGSettings* Display_GetBG0Settings(DisplayEngine engine) {
-    return &data_0206aa78.unk_06C[engine].bgSettings[DISPLAY_BG0];
+    return &data_0206aa80.unk_064[engine].bgSettings[DISPLAY_BG0];
 }
 
 static inline DisplayBGSettings* Display_GetBG1Settings(DisplayEngine engine) {
-    return &data_0206aa78.unk_06C[engine].bgSettings[DISPLAY_BG1];
+    return &data_0206aa80.unk_064[engine].bgSettings[DISPLAY_BG1];
 }
 
 static inline DisplayBGSettings* Display_GetBG2Settings(DisplayEngine engine) {
-    return &data_0206aa78.unk_06C[engine].bgSettings[DISPLAY_BG2];
+    return &data_0206aa80.unk_064[engine].bgSettings[DISPLAY_BG2];
 }
 
 static inline DisplayBGSettings* Display_GetBG3Settings(DisplayEngine engine) {
-    return &data_0206aa78.unk_06C[engine].bgSettings[DISPLAY_BG3];
+    return &data_0206aa80.unk_064[engine].bgSettings[DISPLAY_BG3];
 }
 
 static inline void Display_SetMainBrightness(u32 brightness) {
-    data_0206aa78.mainControl.brightness = brightness;
+    data_0206aa80.mainControl.brightness = brightness;
 }
 
 static inline void Display_SetSubBrightness(u32 brightness) {
-    data_0206aa78.subControl.brightness = brightness;
+    data_0206aa80.subControl.brightness = brightness;
 }
 
-#endif // RENDERING_H
+#endif // DISPLAY_H
