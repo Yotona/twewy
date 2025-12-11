@@ -145,11 +145,11 @@ void func_ov041_02082a5c(STSampleState* param) {
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->unk_11580                     = func_0200cef0(state);
-    data_02066aec                        = 0;
-    data_0206aa80.mainControl.brightness = 0;
-    data_0206aa80.subControl.brightness  = 0;
-    data_02066eec                        = 0;
+    state->unk_11580                         = func_0200cef0(state);
+    data_02066aec                            = 0;
+    g_DisplaySettings.mainControl.brightness = 0;
+    g_DisplaySettings.subControl.brightness  = 0;
+    data_02066eec                            = 0;
     func_ov041_020827cc(state);
     func_020072a4();
 }
@@ -198,7 +198,7 @@ void func_ov041_02082c04(void) {
 void STSample_InterruptCallback(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
         func_ov040_0209e91c();
-        func_02006380();
+        Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
         GX_LoadOam(&data_0206770c, 0, 0x400);

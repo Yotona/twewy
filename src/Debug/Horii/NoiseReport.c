@@ -37,7 +37,7 @@ void func_ov028_020e82d0(NoiseReportState* state) {
 
 void func_ov028_020e8310(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
-        func_02006380();
+        Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 1024);
         GX_LoadOam(&data_0206770c, 0, 0x400);

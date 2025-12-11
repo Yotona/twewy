@@ -14,7 +14,7 @@ void func_ov037_020824a0(void) {
     GXx_SetMasterBrightness(&REG_DISP_B_MASTER_BRIGHT, ~0xf);
     GX_DispOn();
     REG_DISPCNT_SUB |= 0x10000;
-    func_02005250();
+    Display_Init();
     GX_DisableBankForLcdc();
     GX_SetBankForLcdc(0x1FF);
     GX_SetBankForBg(0x1);
@@ -23,42 +23,42 @@ void func_ov037_020824a0(void) {
     GX_SetBankForSubBg(0x4);
     GX_SetBankForSubObj(0x8);
     GX_SetBankForSubBgExtPltt(0x80);
-    data_0206aa80.unk_000 = 0;
+    g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
-    data_0206aa80.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    data_0206aa80.mainControl.bgMode    = GX_BGMODE_0;
-    data_0206aa80.mainControl.dimension = GX2D3D_MODE_2D;
+    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
     DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
-    mainBg0->unk_00            = 0;
-    mainBg0->screenSize        = 0;
+    mainBg0->bgMode            = 0;
+    mainBg0->screenSizeText    = 0;
     mainBg0->screenBase        = 0;
     mainBg0->extPlttSlot       = 0;
     mainBg0->colorMode         = 1;
     mainBg0->charBase          = 2;
 
-    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
+    if (g_DisplaySettings.mainControl.dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = (REG_BG0CNT & 0x43) | 0x88;
     }
 
     DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
     mainBg1->colorMode         = 1;
     mainBg1->screenBase        = 2;
-    mainBg1->unk_00            = 0;
-    mainBg1->screenSize        = 0;
+    mainBg1->bgMode            = 0;
+    mainBg1->screenSizeText    = 0;
     mainBg1->extPlttSlot       = 0;
     mainBg1->charBase          = 4;
     REG_BG1CNT                 = (REG_BG1CNT & 0x43) | 0x290;
 
-    data_0206aa80.mainControl.layers = LAYER_BG0 | LAYER_OBJ;
-    data_0206aa80.subControl.bgMode  = GX_BGMODE_0;
+    g_DisplaySettings.mainControl.layers = LAYER_BG0 | LAYER_OBJ;
+    g_DisplaySettings.subControl.bgMode  = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
     DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
-    subBg0->unk_00            = 0;
-    subBg0->screenSize        = 0;
+    subBg0->bgMode            = 0;
+    subBg0->screenSizeText    = 0;
     subBg0->colorMode         = 1;
     subBg0->screenBase        = 0;
     subBg0->charBase          = 2;
@@ -67,16 +67,16 @@ void func_ov037_020824a0(void) {
 
     DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
     subBg1->charBase          = 4;
-    subBg1->unk_00            = 0;
-    subBg1->screenSize        = 0;
+    subBg1->bgMode            = 0;
+    subBg1->screenSizeText    = 0;
     subBg1->colorMode         = 1;
     subBg1->screenBase        = 2;
     subBg1->extPlttSlot       = 0;
     REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 0x290;
 
-    data_0206aa80.subControl.layers       = 17;
-    data_0206aa80.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    data_0206aa80.subControl.objTileMode  = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.subControl.layers       = 17;
+    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.subControl.objTileMode  = GX_OBJTILEMODE_1D_128K;
 
     func_0200270c(0, 0);
     func_0200270c(1, 0);
@@ -103,7 +103,7 @@ void func_ov037_0208280c(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0) == 0) {
         return;
     }
-    func_02006380();
+    Display_Commit();
     DMA_Flush();
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
@@ -290,8 +290,8 @@ void func_ov037_02082d7c(OpenEndState* r0) {
             break;
         case 2:
             if (r0->unk_11A1C == 0) {
-                data_0206aa80.mainControl.layers = data_0206aa80.mainControl.layers & ~0x1 | 0x2;
-                data_0206aa80.subControl.layers  = data_0206aa80.subControl.layers & ~0x1 | 0x2;
+                g_DisplaySettings.mainControl.layers = g_DisplaySettings.mainControl.layers & ~0x1 | 0x2;
+                g_DisplaySettings.subControl.layers  = g_DisplaySettings.subControl.layers & ~0x1 | 0x2;
             }
             func_020261d4(0, 0, 0x333);
             func_02026208(0, 0, 0x333);
@@ -338,8 +338,8 @@ void        func_ov037_02082f60(OpenEndState* r0) {
         func_020072ec();
         return;
     }
-    data_0206aa80.mainControl.layers = (data_0206aa80.mainControl.layers | 0x1) & ~0x2;
-    data_0206aa80.subControl.layers  = (data_0206aa80.subControl.layers | 0x1) & ~0x2;
+    g_DisplaySettings.mainControl.layers = (g_DisplaySettings.mainControl.layers | 0x1) & ~0x2;
+    g_DisplaySettings.subControl.layers  = (g_DisplaySettings.subControl.layers | 0x1) & ~0x2;
     func_ov037_02082b30(r0, 0, 0, 5);
     func_ov037_02082b30(r0, 1, 0, 4);
     OpenEnd_CreateBadgeTask(0);
@@ -477,13 +477,13 @@ void func_ov037_0208345c(OpenEndState* r0) {
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    data_0206aa80.mainControl.brightness = temp;
+    g_DisplaySettings.mainControl.brightness = temp;
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
         temp = 0x10;
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    data_0206aa80.subControl.brightness = temp;
+    g_DisplaySettings.subControl.brightness = temp;
     func_0200cef0(&(r0->unk_10));
     Input_Init(&InputStatus, 8, 1, 2);
     func_02006ad8();

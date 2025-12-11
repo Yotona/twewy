@@ -161,8 +161,8 @@ static inline void GX_SetOBJBmpMode(GXOBJBmpMode mode) {
  * @param charBase The character base block number (0-3).
  *                 Determines where character/tile data is located in VRAM.
  */
-static inline void GX_SetCharBase(u32 screenBase) {
-    REG_DISPCNT = (REG_DISPCNT & ~0x07000000) | (screenBase << 24);
+static inline void GX_SetCharBase(u32 charBase) {
+    REG_DISPCNT = (charBase << 24) | (REG_DISPCNT & ~0x07000000);
 }
 
 /**
@@ -171,8 +171,8 @@ static inline void GX_SetCharBase(u32 screenBase) {
  * @param screenBase The screen base block number (0-31).
  *                   Determines where screen/map data is located in VRAM.
  */
-static inline void GX_SetScreenBase(u32 charBase) {
-    REG_DISPCNT = (REG_DISPCNT & ~0x38000000) | (charBase << 27);
+static inline void GX_SetScreenBase(u32 screenBase) {
+    REG_DISPCNT = (screenBase << 27) | (REG_DISPCNT & ~0x38000000);
 }
 
 /**

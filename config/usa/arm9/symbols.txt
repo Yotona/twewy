@@ -180,16 +180,16 @@ Input_UpdateRepeat kind:function(arm,size=0x104) addr:0x02004f48
 /////////////////////////////////////////////////////////////
 // src/Display.c
 /////////////////////////////////////////////////////////////
-func_0200504c kind:function(arm,size=0x48) addr:0x0200504c
-func_02005094 kind:function(arm,size=0x20) addr:0x02005094
-func_020050b4 kind:function(arm,size=0x17c) addr:0x020050b4
-func_02005230 kind:function(arm,size=0x20) addr:0x02005230
-func_02005250 kind:function(arm,size=0x10) addr:0x02005250
-func_02005260 kind:function(arm,size=0x1e4) addr:0x02005260
-func_02005444 kind:function(arm,size=0x4c4) addr:0x02005444
-func_02005908 kind:function(arm,size=0xa78) addr:0x02005908
-func_02006380 kind:function(arm,size=0x10) addr:0x02006380
-func_02006390 kind:function(arm,size=0x28) addr:0x02006390
+Display_InitControlDefaults kind:function(arm,size=0x48) addr:0x0200504c
+Display_InitControls kind:function(arm,size=0x20) addr:0x02005094
+Display_InitEngineDefaults kind:function(arm,size=0x17c) addr:0x020050b4
+Display_InitEngines kind:function(arm,size=0x20) addr:0x02005230
+Display_Init kind:function(arm,size=0x10) addr:0x02005250
+Display_ApplyControls kind:function(arm,size=0x1e4) addr:0x02005260
+Display_ApplyBGLayer kind:function(arm,size=0x4c4) addr:0x02005444
+Display_ApplyRenderState kind:function(arm,size=0xa78) addr:0x02005908
+Display_Commit kind:function(arm,size=0x10) addr:0x02006380
+Display_CommitSynced kind:function(arm,size=0x28) addr:0x02006390
 func_020063b8 kind:function(arm,size=0x114) addr:0x020063b8
 func_020064cc kind:function(arm,size=0x114) addr:0x020064cc
 
@@ -4227,7 +4227,7 @@ InputStatus kind:bss addr:0x0206a9e0
 /////////////////////////////////////////////////////////////
 data_0206aa78 kind:bss addr:0x0206aa78
 data_0206aa7c kind:bss addr:0x0206aa7c
-data_0206aa80 kind:bss addr:0x0206aa80
+g_DisplaySettings kind:bss addr:0x0206aa80
 
 /////////////////////////////////////////////////////////////
 // src/OverlayManager.c

@@ -1705,12 +1705,12 @@ void func_ov029_02082e40(SoundTestState* param) {
     func_02007260(&state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
-    data_0206aa80.mainControl.layers     = LAYER_NONE;
-    state->unk_11580                     = func_0200cef0(state);
-    data_02066aec                        = 0;
-    data_0206aa80.mainControl.brightness = 0;
-    data_02066eec                        = 0;
-    data_0206aa80.subControl.brightness  = 0;
+    g_DisplaySettings.mainControl.layers     = LAYER_NONE;
+    state->unk_11580                         = func_0200cef0(state);
+    data_02066aec                            = 0;
+    g_DisplaySettings.mainControl.brightness = 0;
+    data_02066eec                            = 0;
+    g_DisplaySettings.subControl.brightness  = 0;
     func_ov029_02082838(state);
     func_020072a4();
 }
@@ -1757,7 +1757,7 @@ void func_ov029_02082fdc(void) {
 
 void SoundTest_InterruptCallback(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
-        func_02006380();
+        Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
         GX_LoadOam(&data_0206770c, 0, 0x400);

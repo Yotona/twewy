@@ -10,7 +10,7 @@ void func_ov046_020824a0(void) {
     G3X_Init();
     G3X_InitMtxStack();
     DMA_Init(0x100);
-    func_02005250();
+    Display_Init();
     GX_DisableBankForLcdc();
     GX_SetBankForLcdc(0x1ff);
     GX_SetBankForTex(1);
@@ -36,10 +36,10 @@ void func_ov046_020824a0(void) {
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
     GFX_FIFO_MATRIX_STORE = 0;
 
-    data_0206aa80.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    data_0206aa80.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    data_0206aa80.subControl.objTileMode  = GX_OBJTILEMODE_1D_64K;
-    data_0206aa80.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.subControl.objTileMode  = GX_OBJTILEMODE_1D_64K;
+    g_DisplaySettings.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
 
     func_0200270c(0, 0);
     func_0200270c(0, 1);
@@ -56,7 +56,7 @@ void func_ov046_020824a0(void) {
 
 void func_ov046_02082720(void) {
     if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
-        func_02006380();
+        Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
         GX_LoadOam(&data_0206770c, 0, 0x400);
@@ -238,31 +238,31 @@ void func_ov046_02082c78(DebugLauncherState* state) {
         state->unk_6C[i] = 0xFFFFFFFF;
     }
     func_ov046_020827f0();
-    data_0206aa80.mainControl.brightness = -16;
-    data_0206aa80.subControl.brightness  = -16;
-    func_02006390();
-    data_0206aa80.unk_000 = 0;
+    g_DisplaySettings.mainControl.brightness = -16;
+    g_DisplaySettings.subControl.brightness  = -16;
+    Display_CommitSynced();
+    g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
 
-    data_0206aa80.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    data_0206aa80.mainControl.bgMode    = GX_BGMODE_0;
-    data_0206aa80.mainControl.dimension = GX2D3D_MODE_2D;
+    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
     DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
-    mainBg0->unk_00            = 0;
-    mainBg0->screenSize        = 0;
+    mainBg0->bgMode            = 0;
+    mainBg0->screenSizeText    = 0;
     mainBg0->colorMode         = 0;
     mainBg0->screenBase        = 0;
     mainBg0->charBase          = 1;
     mainBg0->extPlttSlot       = 1;
-    if (data_0206aa80.mainControl.dimension == GX2D3D_MODE_2D) {
+    if (g_DisplaySettings.mainControl.dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = REG_BG0CNT & 0x43 | 0x2004;
     }
 
     DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
-    mainBg1->unk_00            = 0;
-    mainBg1->screenSize        = 0;
+    mainBg1->bgMode            = 0;
+    mainBg1->screenSizeText    = 0;
     mainBg1->colorMode         = 0;
     mainBg1->screenBase        = 1;
     mainBg1->charBase          = 4;
@@ -270,8 +270,8 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x2110;
 
     DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
-    mainBg2->unk_00            = 0;
-    mainBg2->screenSize        = 0;
+    mainBg2->bgMode            = 0;
+    mainBg2->screenSizeText    = 0;
     mainBg2->colorMode         = 0;
     mainBg2->screenBase        = 0;
     mainBg2->charBase          = 1;
@@ -279,32 +279,32 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     REG_BG2CNT                 = REG_BG2CNT & 0x43 | 4;
 
     DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_MAIN);
-    mainBg3->unk_00            = 0;
-    mainBg3->screenSize        = 0;
+    mainBg3->bgMode            = 0;
+    mainBg3->screenSizeText    = 0;
     mainBg3->colorMode         = 0;
     mainBg3->screenBase        = 0;
     mainBg3->charBase          = 1;
     mainBg3->extPlttSlot       = 1;
     REG_BG3CNT                 = REG_BG3CNT & 0x43 | 4;
 
-    data_0206aa80.unk_064[0].bgSettings[0].unk_34 = 0;
-    data_0206aa80.unk_064[0].bgSettings[1].unk_34 = 1;
-    data_0206aa80.unk_064[0].bgSettings[2].unk_34 = 2;
-    data_0206aa80.unk_064[0].bgSettings[3].unk_34 = 3;
+    g_DisplaySettings.engineState[0].bgSettings[0].priority = 0;
+    g_DisplaySettings.engineState[0].bgSettings[1].priority = 1;
+    g_DisplaySettings.engineState[0].bgSettings[2].priority = 2;
+    g_DisplaySettings.engineState[0].bgSettings[3].priority = 3;
 
-    data_0206aa80.unk_064[0].bgSettings[0].unk_38 = 0;
-    data_0206aa80.unk_064[0].bgSettings[1].unk_38 = 0;
-    data_0206aa80.unk_064[0].bgSettings[2].unk_38 = 0;
-    data_0206aa80.unk_064[0].bgSettings[3].unk_38 = 0;
+    g_DisplaySettings.engineState[0].bgSettings[0].mosaic = 0;
+    g_DisplaySettings.engineState[0].bgSettings[1].mosaic = 0;
+    g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
+    g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    data_0206aa80.mainControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
+    g_DisplaySettings.mainControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
 
-    data_0206aa80.subControl.bgMode = GX_BGMODE_0;
+    g_DisplaySettings.subControl.bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
     DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
-    subBg0->unk_00            = 0;
-    subBg0->screenSize        = 0;
+    subBg0->bgMode            = 0;
+    subBg0->screenSizeText    = 0;
     subBg0->colorMode         = 0;
     subBg0->screenBase        = 0;
     subBg0->charBase          = 1;
@@ -313,16 +313,16 @@ void func_ov046_02082c78(DebugLauncherState* state) {
 
     DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
     subBg1->charBase          = 4;
-    subBg1->unk_00            = 0;
-    subBg1->screenSize        = 0;
+    subBg1->bgMode            = 0;
+    subBg1->screenSizeText    = 0;
     subBg1->colorMode         = 0;
     subBg1->screenBase        = 1;
     subBg1->extPlttSlot       = 0;
     REG_BG1CNT_SUB            = REG_BG1CNT_SUB & 0x43 | 0x110;
 
     DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_SUB);
-    subBg2->unk_00            = 0;
-    subBg2->screenSize        = 0;
+    subBg2->bgMode            = 0;
+    subBg2->screenSizeText    = 0;
     subBg2->colorMode         = 0;
     subBg2->screenBase        = 0;
     subBg2->charBase          = 1;
@@ -330,25 +330,25 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     REG_BG2CNT_SUB            = REG_BG2CNT_SUB & 0x43 | 4;
 
     DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_SUB);
-    subBg3->unk_00            = 0;
-    subBg3->screenSize        = 0;
+    subBg3->bgMode            = 0;
+    subBg3->screenSizeText    = 0;
     subBg3->colorMode         = 0;
     subBg3->screenBase        = 0;
     subBg3->charBase          = 1;
     subBg3->extPlttSlot       = 1;
     REG_BG3CNT_SUB            = REG_BG3CNT_SUB & 0x43 | 4;
 
-    data_0206aa80.unk_064[1].bgSettings[0].unk_34 = 0;
-    data_0206aa80.unk_064[1].bgSettings[1].unk_34 = 1;
-    data_0206aa80.unk_064[1].bgSettings[2].unk_34 = 2;
-    data_0206aa80.unk_064[1].bgSettings[3].unk_34 = 3;
+    g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
+    g_DisplaySettings.engineState[1].bgSettings[1].priority = 1;
+    g_DisplaySettings.engineState[1].bgSettings[2].priority = 2;
+    g_DisplaySettings.engineState[1].bgSettings[3].priority = 3;
 
-    data_0206aa80.unk_064[1].bgSettings[0].unk_38 = 0;
-    data_0206aa80.unk_064[1].bgSettings[1].unk_38 = 0;
-    data_0206aa80.unk_064[1].bgSettings[2].unk_38 = 0;
-    data_0206aa80.unk_064[1].bgSettings[3].unk_38 = 0;
+    g_DisplaySettings.engineState[1].bgSettings[0].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[1].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    data_0206aa80.subControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
+    g_DisplaySettings.subControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
 
     func_02006ad8();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);

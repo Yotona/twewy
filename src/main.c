@@ -121,7 +121,7 @@ void main(void) {
         SndMgr_Init();
         func_02006618(-1);
         Interrupts_Init();
-        func_02005250();
+        Display_Init();
         Interrupts_ForceVBlank();
         DMA_Init(0x100);
         Input_Init(&InputStatus, 8, 1, 2);
