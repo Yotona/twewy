@@ -200,9 +200,15 @@ func_02006618 kind:function(arm,size=0x84) addr:0x02006618
 func_0200669c kind:function(arm,size=0x60) addr:0x0200669c
 func_020066fc kind:function(arm,size=0x44) addr:0x020066fc
 func_02006740 kind:function(arm,size=0x58) addr:0x02006740
-func_02006798 kind:function(arm,size=0x3c) addr:0x02006798
-func_020067d4 kind:function(arm,size=0x18) addr:0x020067d4
-func_020067ec kind:function(arm,size=0x50) addr:0x020067ec
+
+/////////////////////////////////////////////////////////////
+// src/Random.c
+/////////////////////////////////////////////////////////////
+RNG_SetSeed kind:function(arm,size=0x3c) addr:0x02006798
+RNG_GetSeed kind:function(arm,size=0x18) addr:0x020067d4
+RNG_Next kind:function(arm,size=0x50) addr:0x020067ec
+
+
 func_0200683c kind:function(arm,size=0x28) addr:0x0200683c
 func_02006864 kind:function(arm,size=0x30) addr:0x02006864
 func_02006894 kind:function(arm,size=0x9c) addr:0x02006894
@@ -3496,8 +3502,11 @@ memLabelFree kind:data(any) addr:0x02063744
 @46 kind:data(byte[6]) addr:0x02063750 local
 @125 kind:data(byte[7]) addr:0x02063758 local
 
+/////////////////////////////////////////////////////////////
+// src/Random.c
+/////////////////////////////////////////////////////////////
+RngSeed kind:data(any) addr:0x02063760 local
 
-data_02063760 kind:data(any) addr:0x02063760
 data_02063764 kind:data(any) addr:0x02063764
 data_0206377c kind:data(any) addr:0x0206377c
 data_020637b8 kind:data(any) addr:0x020637b8

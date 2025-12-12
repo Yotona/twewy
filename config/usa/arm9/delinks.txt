@@ -34,6 +34,11 @@ src/Display.c:
     .text       start:0x0200504C end:0x020065E0
     .bss        start:0x0206AA78 end:0x0206AF24
 
+src/Random.c:
+complete
+    .text       start:0x02006798 end:0x0200683C
+    .data       start:0x02063760 end:0x02063764
+
 src/OverlayManager.c:
     .text       start:0x02006F50 end:0x020073CC
     .bss        start:0x0206AF24 end:0x0206B3B8

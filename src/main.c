@@ -133,7 +133,7 @@ void main(void) {
         func_020072ec();
         func_020073a4();
         func_020073b8();
-        func_02006798(0);
+        RNG_SetSeed(0);
         DatMgr_Init(0, 0);
         func_0200cef0(0);
         SysControl.frameCount = 0;
