@@ -1,6 +1,7 @@
 #ifndef OVERLAYMANAGER_H
 #define OVERLAYMANAGER_H
 
+#include "OverlayManager.h"
 #include <types.h>
 
 // Function pointer type for overlay callbacks.
@@ -15,14 +16,14 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ OverlayTag tag;
-    /* 0x08 */ void*      gState;
+    /* 0x08 */ void*      cbArg;
     /* 0x0C */ s32        repeatCount;
 } OverlayData;
 
 typedef struct {
     /* 0x00 */ OverlayData* data;
     /* 0x04 */ OverlayCB    cb;
-    /* 0x08 */ void*        gState;
+    /* 0x08 */ void*        cbArg;
     /* 0x0C */ s32          unk_0C;
     /* 0x10 */ u32          stackDepth;
     /* 0x14 */ OverlayData  stack[17];
@@ -38,11 +39,13 @@ void MainOvlDisp_Init(void);
  *
  * @param overlayId The ID of the overlay the request is for.
  * @param callback The function to be called from the overlay.
+ * @param cbArg The argument to pass to the callback function.
+ * @param repeatCount The number of times the request has been repeated so far.
  */
-void MainOvlDisp_Push(s32 overlayId, OverlayCB callback, void* state, s32 repeatCount);
+void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, s32 repeatCount);
 
 /**
- * @brief Pop the top overlay dispatch request from the main overlay dispatcher's stack.
+ * @brief Pop the top overlay dispatch request from the main overlay dispatcher's stack. The popped request is executed.
  *
  * @param tag Pointer to an OverlayTag structure to receive the popped overlay tag.
  */
@@ -54,10 +57,18 @@ void MainOvlDisp_Pop(OverlayTag* tag);
  * @param tag Pointer to an OverlayTag structure to receive the replaced overlay tag.
  * @param overlayId The ID of the new overlay.
  * @param callback The function to be called from the new overlay.
+ * @param cbArg The argument to pass to the new callback function.
+ * @param repeatCount The number of times the new request has been repeated so far.
  */
-void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* state, s32 param_5);
+void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* cbArg, s32 repeatCount);
 
-void* MainOvlDisp_SetState(void* state);
+/**
+ * @brief Set the callback argument for the main overlay dispatcher.
+ *
+ * @param arg The new callback argument.
+ * @return The previous callback argument.
+ */
+void* MainOvlDisp_SetCbArg(void* cbArg);
 
 /**
  * @brief Get the count of times the current overlay dispatcher has repeated a request
@@ -83,13 +94,23 @@ void MainOvlDisp_IncrementRepeatCount(void);
  */
 void MainOvlDisp_Run(void);
 
+/**
+ * @brief Initialize the auxiliary overlay dispatcher.
+ */
 void DebugOvlDisp_Init(void);
 
-void DebugOvlDisp_Push(OverlayCB callback, void* state, s32 param_3);
+/**
+ * @brief Push a new overlay dispatch request onto the auxiliary overlay dispatcher's stack.
+ *
+ * @param callback The function to be called from the overlay.
+ * @param cbArg The argument to pass to the callback function.
+ * @param repeatCount The number of times the request has been repeated so far.
+ */
+void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, s32 repeatCount);
 
 s32 DebugOvlDisp_Pop(void);
 
-s32 DebugOvlDisp_ReplaceTop(OverlayCB callback, void* state, s32 param_3);
+s32 DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount);
 
 BOOL DebugOvlDisp_IsStackAtBase(void);
 

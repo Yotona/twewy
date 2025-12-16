@@ -294,7 +294,7 @@ void func_ov000_02082ac0(Mini108State* state) {
     func_ov000_0208257c();
     func_0200cfe8(state->unk_15e50);
     Mem_Free(&gDebugHeap, state);
-    MainOvlDisp_SetState(0);
+    MainOvlDisp_SetCbArg(0);
 }
 
 // Nonmatching: Opcode order swap, Stack difference
@@ -357,7 +357,7 @@ void func_ov000_02082894(Mini108State* stateptr) {
         const char* temp = data_ov000_020831e0;
         stateptr         = Mem_AllocHeapTail(&gDebugHeap, 0x15e54);
         Mem_SetSequence(&gDebugHeap, stateptr, temp);
-        MainOvlDisp_SetState(stateptr);
+        MainOvlDisp_SetCbArg(stateptr);
     }
     func_0203b2d0(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
     func_ov000_02082b1c(stateptr);

@@ -47,10 +47,6 @@ s32  OpenEnd_CreateBadgeTask(u32 r0);
 
 void func_ov037_0208280c(void);
 
-extern u32 OVERLAY_2_ID;
-extern u32 OVERLAY_30_ID;
-extern u32 OVERLAY_44_ID;
-
 int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
 int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
 int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, s32 r2);

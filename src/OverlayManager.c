@@ -6,7 +6,7 @@ void OvlMgr_UnloadOverlay(s32 idx);
 
 void OvlMgr_Init(void) {
     for (u32 i = 0; i < 6; i++) {
-        SysControl.loadedOverlays[i] = 0x80000001;
+        SysControl.loadedOverlays[i] = OVERLAY_ID_NONE;
     }
 }
 
@@ -25,14 +25,14 @@ void OvlMgr_UnloadOverlay(s32 slot) {
             if (currentOverlayId < 48) {
                 FS_UnloadOverlay(0, currentOverlayId);
             }
-            SysControl.loadedOverlays[i] = 0x80000000;
+            SysControl.loadedOverlays[i] = OVERLAY_ID_UNLOADED;
         }
     } else {
         currentOverlayId = SysControl.loadedOverlays[slot];
-        if (currentOverlayId < 0x80000000) {
+        if (currentOverlayId < OVERLAY_ID_UNLOADED) {
             FS_UnloadOverlay(0, currentOverlayId);
         }
-        SysControl.loadedOverlays[slot] = 0x80000001;
+        SysControl.loadedOverlays[slot] = OVERLAY_ID_NONE;
     }
 }
 
@@ -51,7 +51,7 @@ u32 OvlMgr_LoadOverlay(s32 slot, u32 newOverlay) {
 }
 
 BOOL OvlMgr_IsOverlayLoaded(u32 overlayID) {
-    if (overlayID >= 0x80000000) {
+    if (overlayID >= OVERLAY_ID_UNLOADED) {
         return TRUE;
     }
 

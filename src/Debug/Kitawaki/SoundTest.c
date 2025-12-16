@@ -1702,7 +1702,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     char*           name  = data_ov029_02083400;
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
-    MainOvlDisp_SetState(&state);
+    MainOvlDisp_SetCbArg(&state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     g_DisplaySettings.mainControl.layers     = LAYER_NONE;

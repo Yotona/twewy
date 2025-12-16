@@ -6,8 +6,6 @@
 
 extern vu32 data_02066a58;
 
-extern s32 OVERLAY_0_ID;
-
 typedef struct {
     /* 0x0*/ u32      unk_00;
     /* 0x4*/ u16      currButtons;

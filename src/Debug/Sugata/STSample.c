@@ -2,11 +2,10 @@
 #include "Display.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
+#include "OverlayManager.h"
 #include "System.h"
 #include "common_data.h"
 #include <NitroSDK/os/cache.h>
-
-extern s32 OVERLAY_40_ID;
 
 extern s32 DAT_0206aae0;
 extern s32 DAT_0206b3d0;
@@ -141,7 +140,7 @@ void func_ov041_02082a5c(STSampleState* param) {
     iVar1 = data_ov041_02083020;
     state = Mem_AllocHeapTail(&gDebugHeap, sizeof(STSampleState));
     Mem_SetSequence(&gDebugHeap, state, iVar1);
-    sVar2 = MainOvlDisp_SetState(&state);
+    sVar2 = MainOvlDisp_SetCbArg(&state);
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();

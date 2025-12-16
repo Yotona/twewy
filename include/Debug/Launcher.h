@@ -148,117 +148,117 @@ static const DebugLauncherFunc funcs[3] = {
 
 const DebugLauncherOption Options_Horii[2] = {
     // "Feature: Noise Report", "Description: Menu screen noise report"
-    {1, "機能\:ノイズレポート", "説明:メニュー画面のノイズレポート",         28, func_ov028_020e82d0},
-    {0,                   NULL,                                NULL, 0x80000000,                NULL},
+    {1, "機能\:ノイズレポート", "説明:メニュー画面のノイズレポート",                  28, func_ov028_020e82d0},
+    {0,                   NULL,                                NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Suyama[2] = {
     // "Feature: Staff Roll", "Description: Staff roll screen"
-    {1, "機能\:スタッフロール", "説明:スタッフロール画面",         42, func_ov042_020824a0},
-    {0,                   NULL,                      NULL, 0x80000000,                NULL},
+    {1, "機能\:スタッフロール", "説明:スタッフロール画面",                  42, func_ov042_020824a0},
+    {0,                   NULL,                      NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Takami[14] = {
     // "Feature: test2", "Description: test2"
-    {1,            "機能\:test2",                      "説明:test2",         43, func_ov043_020826ac},
+    {1,            "機能\:test2",                      "説明:test2",                  43, func_ov043_020826ac},
     // "Feature: Menu Top", "Description: First screen of the menu"
-    {2,   "機能\:メニュートップ",       "説明:メニューの最初の画面",         43, func_ov043_02084040},
+    {2,   "機能\:メニュートップ",       "説明:メニューの最初の画面",                  43, func_ov043_02084040},
     // "Feature: Badge Select", "Description: Screen for organizing badges"
-    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",         43, func_ov043_0208f44c},
+    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",                  43, func_ov043_0208f44c},
     // "Feature: Scenario Select", "Description: Scenario selection screen"
-    {4, "機能\:シナリオセレクト",     "説明:シナリオを選択する画面",         43, func_ov043_0209bce4},
+    {4, "機能\:シナリオセレクト",     "説明:シナリオを選択する画面",                  43, func_ov043_0209bce4},
     // "Feature: Equipment", "Description: Equipment selection screen"
-    {5,           "機能\:そうび",       "説明:そうびを選択する画面",         43, func_ov043_020a15e8},
+    {5,           "機能\:そうび",       "説明:そうびを選択する画面",                  43, func_ov043_020a15e8},
     // "Feature: Result", "Description: Result screen after battle"
-    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",         44, func_ov044_02084a88},
+    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",                  44, func_ov044_02084a88},
     // "Feature: Shop", "Description: Shop screen"
-    {7,         "機能\:ショップ",               "説明:ショップ画面",         43, func_ov043_020aeee0},
+    {7,         "機能\:ショップ",               "説明:ショップ画面",                  43, func_ov043_020aeee0},
     // "Feature: Department Store", "Description: Department store screen"
-    {8,         "機能\:デパート",               "説明:デパート画面",         43, func_ov043_020bd414},
+    {8,         "機能\:デパート",               "説明:デパート画面",                  43, func_ov043_020bd414},
     // "Feature: Save", "Description: Save screen"
-    {9,           "機能\:セーブ",                 "説明:セーブ画面",         43, func_ov043_020c04f0},
+    {9,           "機能\:セーブ",                 "説明:セーブ画面",                  43, func_ov043_020c04f0},
     // "Feature: Test2", "Description: Test2"
-    {1,          "機能\:テスト2",                    "説明:テスト2",         43, func_ov043_020c6644},
+    {1,          "機能\:テスト2",                    "説明:テスト2",                  43, func_ov043_020c6644},
     // "Feature: Communication Menu", "Description: Communication menu screen"
-    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",         45, func_ov045_02083c78},
+    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",                  45, func_ov045_02083c78},
     // "Feature: Communication Setup", "Description: Communication setup screen"
-    {3,       "機能\:通信セット",             "説明:通信セット画面",         45, func_ov045_02088700},
+    {3,       "機能\:通信セット",             "説明:通信セット画面",                  45, func_ov045_02088700},
     // "Feature: Friend List", "Description: Friend list screen"
-    {4,   "機能\:フレンドリスト",         "説明:フレンドリスト画面",         45, func_ov045_02091034},
-    {0,                     NULL,                              NULL, 0x80000000,                NULL},
+    {4,   "機能\:フレンドリスト",         "説明:フレンドリスト画面",                  45, func_ov045_02091034},
+    {0,                     NULL,                              NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Fukuda[13] = {
     // "Features: Font", "Description: Test"
-    {1,           "機能\:フォント",                         "説明:テスト",          1, func_ov001_02082b34},
+    {1,           "機能\:フォント",                         "説明:テスト",                   1, func_ov001_02082b34},
     // "Feature: Font", "Description: Font list"
-    {2,           "機能\:フォント",                   "説明:フォント一覧",          2, func_ov002_02086a0c},
+    {2,           "機能\:フォント",                   "説明:フォント一覧",                   2, func_ov002_02086a0c},
     // "Feature: Title (?)", "Description: Data Deletion Screen"
-    {3,     "機能\:タイトル（？）",                 "説明:データ削除画面",          2, func_ov002_02086a4c},
+    {3,     "機能\:タイトル（？）",                 "説明:データ削除画面",                   2, func_ov002_02086a4c},
     // "Feature: Title (?)", "Description: Data Corruption Screen"
-    {4,     "機能\:タイトル（？）",                 "説明:データ破損画面",          2, func_ov002_02086a8c},
+    {4,     "機能\:タイトル（？）",                 "説明:データ破損画面",                   2, func_ov002_02086a8c},
     // "Feature: BayBadge Menu", "Description: Single Player Entrance"
-    {5, "機能\:ベイバッジメニュー",                 "説明:１人用の入り口",          2, func_ov002_0208688c},
+    {5, "機能\:ベイバッジメニュー",                 "説明:１人用の入り口",                   2, func_ov002_0208688c},
     // "Feature: BayBadge Menu", "Description: Single Player Return (Ranking)"
-    {6, "機能\:ベイバッジメニュー",     "説明:１人用の戻り（ランキング）",          2, func_ov002_0208694c},
+    {6, "機能\:ベイバッジメニュー",     "説明:１人用の戻り（ランキング）",                   2, func_ov002_0208694c},
     // "Feature: BayBadge Menu", "Description: Gateway to online battles"
-    {7, "機能\:ベイバッジメニュー",               "説明:通信対戦の入り口",          2, func_ov002_020868cc},
+    {7, "機能\:ベイバッジメニュー",               "説明:通信対戦の入り口",                   2, func_ov002_020868cc},
     // "Feature: BayBadge Menu", "Description: Return from game (Ranking)"
-    {8, "機能\:ベイバッジメニュー", "説明:ゲームからの戻り（ランキング）",          2, func_ov002_0208690c},
+    {8, "機能\:ベイバッジメニュー", "説明:ゲームからの戻り（ランキング）",                   2, func_ov002_0208690c},
     // "Feature: BayBadge Menu", "Description: Error entry point"
-    {9, "機能\:ベイバッジメニュー",               "説明:エラー用の入り口",          2, func_ov002_0208698c},
+    {9, "機能\:ベイバッジメニュー",               "説明:エラー用の入り口",                   2, func_ov002_0208698c},
     // "Feature: Title (?)", "Description: Data Load Failure Screen"
-    {1,     "機能\:タイトル（？）",         "説明:データ読み込み失敗画面",          2, func_ov002_02086b0c},
+    {1,     "機能\:タイトル（？）",         "説明:データ読み込み失敗画面",                   2, func_ov002_02086b0c},
     // "Feature: Title (?)", "Description: Data Save Failure Screen"
-    {2,     "機能\:タイトル（？）",         "説明:データ書き込み失敗画面",          2, func_ov002_02086b4c},
+    {2,     "機能\:タイトル（？）",         "説明:データ書き込み失敗画面",                   2, func_ov002_02086b4c},
     // "Feature: BayBadge Menu", "Description: Role Selection Screen"
-    {3, "機能\:ベイバッジメニュー",                   "説明:役割選択画面",          2, func_ov002_020869cc},
-    {0,                       NULL,                                  NULL, 0x80000000,                NULL},
+    {3, "機能\:ベイバッジメニュー",                   "説明:役割選択画面",                   2, func_ov002_020869cc},
+    {0,                       NULL,                                  NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Bul[2] = {
     // "Feature: Opening and Title", "Description:"
-    {3, "機能\:オープニングとタイトル", "説明:",         37, func_ov037_0208370c},
-    {0,                           NULL,    NULL, 0x80000000,                NULL},
+    {3, "機能\:オープニングとタイトル", "説明:",                  37, func_ov037_0208370c},
+    {0,                           NULL,    NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Abe[2] = {
-    {1, "mini108", "\0",          0, func_ov000_02082854},
-    {0,      NULL, NULL, 0x80000000,                NULL},
+    {1, "mini108", "\0",                   0, func_ov000_02082854},
+    {0,      NULL, NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Sugata[2] = {
     // "Feature: StreetPass Sample", "Description: StreetPass mode"
-    {3, "機能\:すれちがいサンプル", "説明:すれちがい通信モード",         41, func_ov041_02082bc4},
-    {0,                       NULL,                        NULL, 0x80000000,                NULL},
+    {3, "機能\:すれちがいサンプル", "説明:すれちがい通信モード",                  41, func_ov041_02082bc4},
+    {0,                       NULL,                        NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Kitawaki[9] = {
-    {1,  "機能\:フィールド<->戦闘",    "説明:フィールドで戦闘起こる",         30, func_ov030_020b0fe8},
-    {2,     "機能\:Fld/フィールド",        "説明:3Dフィールドテスト",         30, func_ov030_020b0e0c},
-    {3,                "機能\:imd",             "説明:imd disp test",         30, func_ov030_020b6dec},
-    {4,         "機能\:sound test",                          "説明:",         29, func_ov029_02082f9c},
-    {5,       "機能\:event select", "説明:debug用のイベントセレクト",         30, func_ov030_020b17b4},
-    {6,              "機能\:flash",              "説明:flash select",         30, func_ov030_020d5370},
-    {7, "機能\:NPC message select",        "説明:NPC message select",         30, func_ov030_020c9950},
-    {8,     "機能\:message select",            "説明:message select",         30, func_ov030_020ca1b4},
-    {0,                       NULL,                             NULL, 0x80000000,                NULL},
+    {1,  "機能\:フィールド<->戦闘",    "説明:フィールドで戦闘起こる",                  30, func_ov030_020b0fe8},
+    {2,     "機能\:Fld/フィールド",        "説明:3Dフィールドテスト",                  30, func_ov030_020b0e0c},
+    {3,                "機能\:imd",             "説明:imd disp test",                  30, func_ov030_020b6dec},
+    {4,         "機能\:sound test",                          "説明:",                  29, func_ov029_02082f9c},
+    {5,       "機能\:event select", "説明:debug用のイベントセレクト",                  30, func_ov030_020b17b4},
+    {6,              "機能\:flash",              "説明:flash select",                  30, func_ov030_020d5370},
+    {7, "機能\:NPC message select",        "説明:NPC message select",                  30, func_ov030_020c9950},
+    {8,     "機能\:message select",            "説明:message select",                  30, func_ov030_020ca1b4},
+    {0,                       NULL,                             NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Furukawa[4] = {
-    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",         27, func_ov027_020e860c},
-    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",         25, func_ov025_020e82c8},
-    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",         26, func_ov026_020e7f98},
-    {0,                                NULL,                          NULL, 0x80000000,                NULL},
+    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27, func_ov027_020e860c},
+    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, func_ov025_020e82c8},
+    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26, func_ov026_020e7f98},
+    {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherOption Options_Mori[6] = {
-    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",         38, func_ov038_02085674},
-    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",         38, func_ov038_020856b4},
-    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",         27, func_ov027_020e9670},
-    {4,           "機能\:ロケタイトル",                    "説明:test",         30, func_ov030_020d2d6c},
-    {5, "機能\:オープニングとタイトル",                        "説明:",         37, func_ov037_0208370c},
-    {0,                           NULL,                           NULL, 0x80000000,                NULL},
+    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, func_ov038_02085674},
+    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, func_ov038_020856b4},
+    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27, func_ov027_020e9670},
+    {4,           "機能\:ロケタイトル",                    "説明:test",                  30, func_ov030_020d2d6c},
+    {5, "機能\:オープニングとタイトル",                        "説明:",                  37, func_ov037_0208370c},
+    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                NULL},
 };
 
 const DebugLauncherCategory Categories[11] = {

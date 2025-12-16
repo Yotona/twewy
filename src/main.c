@@ -129,7 +129,7 @@ void main(void) {
         DMA_Init(0x100);
         Input_Init(&InputStatus, 8, 1, 2);
         MainOvlDisp_Init();
-        MainOvlDisp_Push(0x80000001, &func_02001254, 0, 0);
+        MainOvlDisp_Push(OVERLAY_ID_NONE, &func_02001254, NULL, 0);
 
         System_SetFlag(SYSFLAG_UNKNOWN_2);
 
@@ -222,9 +222,6 @@ void main(void) {
     }
 }
 
-extern u32 OVERLAY_37_ID;
-extern u32 OVERLAY_46_ID;
-
 extern void func_ov037_0208370c(void* state);
 extern void func_ov046_02083630(void* state);
 
@@ -239,13 +236,13 @@ void func_02001254(void) {
 
         Mem_SetSequence(&gDebugHeap, binData, seq);
         func_0203b2d0(0, binData, Mem_GetBlockSize(&gDebugHeap, binData));
-        MainOvlDisp_SetState(binData);
+        MainOvlDisp_SetCbArg(binData);
         BinMgr_Init(binData, 8);
         PacMgr_Init(binData + 0x60, 0x20);
         DatMgr_Init(binData + 0xC0, 0x100);
         MainOvlDisp_IncrementRepeatCount();
-        MainOvlDisp_Push(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
+        MainOvlDisp_Push(OVERLAY_37_ID, func_ov037_0208370c, NULL, 0);
     } else {
-        MainOvlDisp_Push(OVERLAY_46_ID, &func_ov046_02083630, NULL, 0);
+        MainOvlDisp_Push(OVERLAY_46_ID, func_ov046_02083630, NULL, 0);
     }
 }

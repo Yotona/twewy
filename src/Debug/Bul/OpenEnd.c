@@ -467,7 +467,7 @@ void func_ov037_0208345c(OpenEndState* r0) {
         void* unk     = Mem_AllocHeapTail(&gDebugHeap, 0x11A4C);
         Mem_SetSequence(0x11A4C, unk, SeqName);
         data_ov037_02083e00 = unk;
-        MainOvlDisp_SetState(unk);
+        MainOvlDisp_SetCbArg(unk);
     }
     func_0203b2d0(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
     func_ov037_020828dc();
@@ -529,7 +529,7 @@ void func_ov037_020836b4(OpenEndState* r0) {
     DatMgr_ClearSlot(r0->dataType);
     EasyTask_DestroyPool(&r0->unk_11590);
     Mem_Free(&gDebugHeap, r0);
-    MainOvlDisp_SetState(0);
+    MainOvlDisp_SetCbArg(0);
     func_02027388(0);
 }
 

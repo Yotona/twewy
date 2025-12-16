@@ -242,7 +242,7 @@ OvlDisp_Push kind:function(arm,size=0x4c) addr:0x02006f78
 OvlDisp_Pop kind:function(arm,size=0x8c) addr:0x02006fc4
 OvlDisp_ReplaceTop kind:function(arm,size=0x54) addr:0x02007050
 OvlDisp_IsStackAtBase kind:function(arm,size=0x14) addr:0x020070a4
-OvlDisp_ReplaceState kind:function(arm,size=0x18) addr:0x020070b8
+OvlDisp_ReplaceArg kind:function(arm,size=0x18) addr:0x020070b8
 OvlDisp_GetRepeatCount kind:function(arm,size=0xc) addr:0x020070d0
 OvlDisp_SetRepeatCount kind:function(arm,size=0xc) addr:0x020070dc
 OvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020070e8
@@ -252,7 +252,7 @@ MainOvlDisp_Push kind:function(arm,size=0x38) addr:0x0200713c
 MainOvlDisp_Pop kind:function(arm,size=0x80) addr:0x02007174
 MainOvlDisp_ReplaceTop kind:function(arm,size=0x4c) addr:0x020071f4
 func_02007240 kind:function(arm,size=0x20) addr:0x02007240
-MainOvlDisp_SetState kind:function(arm,size=0x18) addr:0x02007260
+MainOvlDisp_SetCbArg kind:function(arm,size=0x18) addr:0x02007260
 MainOvlDisp_GetRepeatCount kind:function(arm,size=0x14) addr:0x02007278
 MainOvlDisp_SetRepeatCount kind:function(arm,size=0x18) addr:0x0200728c
 MainOvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020072a4
@@ -4250,7 +4250,7 @@ g_DisplaySettings kind:bss addr:0x0206aa80
 data_0206af24 kind:bss addr:0x0206af24
 UnusedDispatcher2 kind:bss addr:0x0206af28
 UnusedDispatcher1 kind:bss addr:0x0206b04c
-AuxOverlayDispatcher kind:bss addr:0x0206b170
+DebugOverlayDispatcher kind:bss addr:0x0206b170
 MainOverlayDispatcher kind:bss addr:0x0206b294
 
 /////////////////////////////////////////////////////////////

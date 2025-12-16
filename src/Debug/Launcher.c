@@ -416,7 +416,7 @@ void func_ov046_destructor_02083454(DebugLauncherState* state) {
     } while (finishedCleaning == FALSE);
     func_ov046_0208280c();
     Mem_Free(&gDebugHeap, state);
-    MainOvlDisp_SetState(NULL);
+    MainOvlDisp_SetCbArg(NULL);
 }
 
 /*Nonmatching: Opcode reordering in the first block of the function*/
@@ -456,7 +456,7 @@ void func_ov046_constructor_020835b4(DebugLauncherState* state) {
         const char* seq = Sequence;
         state           = Mem_AllocHeapTail(&gDebugHeap, sizeof(DebugLauncherState));
         Mem_SetSequence(&gDebugHeap, state, seq);
-        MainOvlDisp_SetState(state);
+        MainOvlDisp_SetCbArg(state);
     }
 
     func_0203b2d0(0, state, Mem_GetBlockSize(&gDebugHeap, state));

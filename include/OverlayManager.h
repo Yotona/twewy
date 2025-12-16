@@ -3,6 +3,16 @@
 
 #include <types.h>
 
+#define OVERLAY_ID_NONE     (-0x7FFFFFFF)
+#define OVERLAY_ID_UNLOADED 0x80000000
+extern s32 OVERLAY_0_ID;
+extern u32 OVERLAY_2_ID;
+extern u32 OVERLAY_30_ID;
+extern u32 OVERLAY_37_ID;
+extern s32 OVERLAY_40_ID;
+extern u32 OVERLAY_44_ID;
+extern u32 OVERLAY_46_ID;
+
 /**
  * @brief Initialize the overlay manager state.
  *
