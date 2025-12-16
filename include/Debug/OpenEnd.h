@@ -6,7 +6,7 @@
 #include "Input.h"
 #include "Interrupts.h"
 #include "Memory.h"
-#include "OverlayManager.h"
+#include "OverlayDispatcher.h"
 #include "System.h"
 #include "common_data.h"
 #include "registers.h"

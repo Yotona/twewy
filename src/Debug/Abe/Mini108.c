@@ -60,7 +60,7 @@ void func_ov000_020830bc() {
             val1 = -16;
         g_DisplaySettings.subControl.brightness = val1;
     } else {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 
@@ -270,9 +270,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     func_02025b68(&state->unk_14, &s_04);
     s_04.unk_00 = 1;
     func_02025b68(&state->unk_430, &s_04);
-    func_020072ec();
-    func_02007300(func_ov000_020830b8, state, 0);
-    func_02007300(func_ov000_020830bc, state, 0);
+    DebugOvlDisp_Init();
+    DebugOvlDisp_Push(func_ov000_020830b8, state, 0);
+    DebugOvlDisp_Push(func_ov000_020830bc, state, 0);
     state->unk_0C = 0;
     if ((InputStatus.currButtons & INPUT_BUTTON_L) != 0) {
         state->unk_0C = 1;
@@ -294,7 +294,7 @@ void func_ov000_02082ac0(Mini108State* state) {
     func_ov000_0208257c();
     func_0200cfe8(state->unk_15e50);
     Mem_Free(&gDebugHeap, state);
-    func_02007260(0);
+    MainOvlDisp_SetState(0);
 }
 
 // Nonmatching: Opcode order swap, Stack difference
@@ -319,14 +319,14 @@ void func_ov000_02082944(Mini108State* stateptr) {
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    func_02007390();
+    DebugOvlDisp_Run();
 
     if ((stateptr->pressedButtons & INPUT_BUTTON_START) != 0) {
         u32 unk = func_02011f44("Seq_Mini108(void *) reset");
         if (unk == 1) {
             data_02066a58 = data_02066a58 | 2;
         }
-        func_020071f4(s_04, (s32)&OVERLAY_0_ID, &func_ov000_02082854, NULL, 0);
+        MainOvlDisp_ReplaceTop(s_04, (s32)&OVERLAY_0_ID, &func_ov000_02082854, NULL, 0);
         return;
     } else if ((stateptr->pressedButtons & INPUT_BUTTON_SELECT) != 0) {
         stateptr->unk_00 = 1;
@@ -336,7 +336,7 @@ void func_ov000_02082944(Mini108State* stateptr) {
         if (var3 == 1) {
             data_02066a58 = data_02066a58 | 2;
         }
-        func_02007174(s_0C);
+        MainOvlDisp_Pop(s_0C);
         return;
     }
     func_0200efdc(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
@@ -357,13 +357,13 @@ void func_ov000_02082894(Mini108State* stateptr) {
         const char* temp = data_ov000_020831e0;
         stateptr         = Mem_AllocHeapTail(&gDebugHeap, 0x15e54);
         Mem_SetSequence(&gDebugHeap, stateptr, temp);
-        func_02007260(stateptr);
+        MainOvlDisp_SetState(stateptr);
     }
     func_0203b2d0(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
     func_ov000_02082b1c(stateptr);
     func_ov000_02082b18(stateptr);
-    func_020072a4();
-    func_020072b8();
+    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_Run();
 }
 
 void func_ov000_02082854(Mini108State* state) {
@@ -373,7 +373,7 @@ void func_ov000_02082854(Mini108State* state) {
         func_ov000_02082ac0,
     };
 
-    int var1 = func_02007278();
+    int var1 = MainOvlDisp_GetRepeatCount();
     if (var1 == 0x7FFFFFFF) {
         func_ov000_02082ac0(state);
     } else {

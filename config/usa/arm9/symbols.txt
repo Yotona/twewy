@@ -193,13 +193,19 @@ Display_CommitSynced kind:function(arm,size=0x28) addr:0x02006390
 func_020063b8 kind:function(arm,size=0x114) addr:0x020063b8
 func_020064cc kind:function(arm,size=0x114) addr:0x020064cc
 
+/////////////////////////////////////////////////////////////
+// src/OverlayManager.c
+/////////////////////////////////////////////////////////////
+OvlMgr_Init kind:function(arm,size=0x28) addr:0x020065e0
+OvlMgr_UnloadAllOverlays kind:function(arm,size=0x10) addr:0x02006608
+OvlMgr_UnloadOverlay kind:function(arm,size=0x84) addr:0x02006618
+OvlMgr_LoadOverlay kind:function(arm,size=0x60) addr:0x0200669c
+OvlMgr_IsOverlayLoaded kind:function(arm,size=0x44) addr:0x020066fc
 
-func_020065e0 kind:function(arm,size=0x28) addr:0x020065e0
-func_02006608 kind:function(arm,size=0x10) addr:0x02006608
-func_02006618 kind:function(arm,size=0x84) addr:0x02006618
-func_0200669c kind:function(arm,size=0x60) addr:0x0200669c
-func_020066fc kind:function(arm,size=0x44) addr:0x020066fc
-func_02006740 kind:function(arm,size=0x58) addr:0x02006740
+/////////////////////////////////////////////////////////////
+// src/Sqrt.c
+/////////////////////////////////////////////////////////////
+Sqrti kind:function(arm,size=0x58) addr:0x02006740
 
 /////////////////////////////////////////////////////////////
 // src/Random.c
@@ -228,37 +234,37 @@ func_02006f20 kind:function(arm,size=0x1c) addr:0x02006f20
 func_02006f3c kind:function(arm,size=0x14) addr:0x02006f3c
 
 /////////////////////////////////////////////////////////////
-// src/OverlayManager.c
+// src/OverlayDispatcher.c
 /////////////////////////////////////////////////////////////
-func_02006f50 kind:function(arm,size=0x4) addr:0x02006f50
-func_02006f54 kind:function(arm,size=0x24) addr:0x02006f54
-func_02006f78 kind:function(arm,size=0x4c) addr:0x02006f78
-func_02006fc4 kind:function(arm,size=0x8c) addr:0x02006fc4
-func_02007050 kind:function(arm,size=0x54) addr:0x02007050
-func_020070a4 kind:function(arm,size=0x14) addr:0x020070a4
-func_020070b8 kind:function(arm,size=0x18) addr:0x020070b8
-func_020070d0 kind:function(arm,size=0xc) addr:0x020070d0
-func_020070dc kind:function(arm,size=0xc) addr:0x020070dc
-func_020070e8 kind:function(arm,size=0x14) addr:0x020070e8
-func_020070fc kind:function(arm,size=0x2c) addr:0x020070fc
-func_02007128 kind:function(arm,size=0x14) addr:0x02007128
-func_0200713c kind:function(arm,size=0x38) addr:0x0200713c
-func_02007174 kind:function(arm,size=0x80) addr:0x02007174
-func_020071f4 kind:function(arm,size=0x4c) addr:0x020071f4
+OvlDisp_DummyCb kind:function(arm,size=0x4) addr:0x02006f50
+OvlDisp_Init kind:function(arm,size=0x24) addr:0x02006f54
+OvlDisp_Push kind:function(arm,size=0x4c) addr:0x02006f78
+OvlDisp_Pop kind:function(arm,size=0x8c) addr:0x02006fc4
+OvlDisp_ReplaceTop kind:function(arm,size=0x54) addr:0x02007050
+OvlDisp_IsStackAtBase kind:function(arm,size=0x14) addr:0x020070a4
+OvlDisp_ReplaceState kind:function(arm,size=0x18) addr:0x020070b8
+OvlDisp_GetRepeatCount kind:function(arm,size=0xc) addr:0x020070d0
+OvlDisp_SetRepeatCount kind:function(arm,size=0xc) addr:0x020070dc
+OvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020070e8
+OvlDisp_Run kind:function(arm,size=0x2c) addr:0x020070fc
+MainOvlDisp_Init kind:function(arm,size=0x14) addr:0x02007128
+MainOvlDisp_Push kind:function(arm,size=0x38) addr:0x0200713c
+MainOvlDisp_Pop kind:function(arm,size=0x80) addr:0x02007174
+MainOvlDisp_ReplaceTop kind:function(arm,size=0x4c) addr:0x020071f4
 func_02007240 kind:function(arm,size=0x20) addr:0x02007240
-func_02007260 kind:function(arm,size=0x18) addr:0x02007260
-func_02007278 kind:function(arm,size=0x14) addr:0x02007278
-func_0200728c kind:function(arm,size=0x18) addr:0x0200728c
-func_020072a4 kind:function(arm,size=0x14) addr:0x020072a4
-func_020072b8 kind:function(arm,size=0x34) addr:0x020072b8
-func_020072ec kind:function(arm,size=0x14) addr:0x020072ec
-func_02007300 kind:function(arm,size=0x28) addr:0x02007300
-func_02007328 kind:function(arm,size=0x24) addr:0x02007328
-func_0200734c kind:function(arm,size=0x30) addr:0x0200734c
-func_0200737c kind:function(arm,size=0x14) addr:0x0200737c
-func_02007390 kind:function(arm,size=0x14) addr:0x02007390
-func_020073a4 kind:function(arm,size=0x14) addr:0x020073a4
-func_020073b8 kind:function(arm,size=0x14) addr:0x020073b8
+MainOvlDisp_SetState kind:function(arm,size=0x18) addr:0x02007260
+MainOvlDisp_GetRepeatCount kind:function(arm,size=0x14) addr:0x02007278
+MainOvlDisp_SetRepeatCount kind:function(arm,size=0x18) addr:0x0200728c
+MainOvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020072a4
+MainOvlDisp_Run kind:function(arm,size=0x34) addr:0x020072b8
+DebugOvlDisp_Init kind:function(arm,size=0x14) addr:0x020072ec
+DebugOvlDisp_Push kind:function(arm,size=0x28) addr:0x02007300
+DebugOvlDisp_Pop kind:function(arm,size=0x24) addr:0x02007328
+DebugOvlDisp_ReplaceTop kind:function(arm,size=0x30) addr:0x0200734c
+DebugOvlDisp_IsStackAtBase kind:function(arm,size=0x14) addr:0x0200737c
+DebugOvlDisp_Run kind:function(arm,size=0x14) addr:0x02007390
+OvlDisp_InitUnused2 kind:function(arm,size=0x14) addr:0x020073a4
+OvlDisp_InitUnused1 kind:function(arm,size=0x14) addr:0x020073b8
 
 /////////////////////////////////////////////////////////////
 // src/BinMgr.c
@@ -4239,13 +4245,13 @@ data_0206aa7c kind:bss addr:0x0206aa7c
 g_DisplaySettings kind:bss addr:0x0206aa80
 
 /////////////////////////////////////////////////////////////
-// src/OverlayManager.c
+// src/OverlayDispatcher.c
 /////////////////////////////////////////////////////////////
 data_0206af24 kind:bss addr:0x0206af24
-data_0206af28 kind:bss addr:0x0206af28
-data_0206b04c kind:bss addr:0x0206b04c
-data_0206b170 kind:bss addr:0x0206b170
-data_0206b294 kind:bss addr:0x0206b294
+UnusedDispatcher2 kind:bss addr:0x0206af28
+UnusedDispatcher1 kind:bss addr:0x0206b04c
+AuxOverlayDispatcher kind:bss addr:0x0206b170
+MainOverlayDispatcher kind:bss addr:0x0206b294
 
 /////////////////////////////////////////////////////////////
 // src/BinMgr.c

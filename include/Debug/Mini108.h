@@ -1,7 +1,7 @@
 #ifndef MINI_108_H
 #define MINI_108_H
 #include "DatMgr.h"
-#include "OverlayManager.h"
+#include "OverlayDispatcher.h"
 #include <types.h>
 
 extern vu32 data_02066a58;

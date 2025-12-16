@@ -84,14 +84,14 @@ void func_ov046_0208280c(void) {
 void func_ov046_02082824(void) {
     func_02026180(0, 0, 0x800);
     if (func_0202623c() == FALSE) {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 
 void func_ov046_0208284c(void) {
     func_02026180(0, -0x20, 0x800);
     if (func_0202623c() == FALSE) {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 
@@ -120,7 +120,7 @@ void func_ov046_02082874(DebugLauncherState* state) {
             u32 selectedCell = (((stackframe[3] - 64) / 32) * 8) + (stackframe[2] / 32);
             if (selectedCell == 0xF) { // Why 0xF?
                 if (state->selectedCategoryIndex >= 0 && state->selectedOptionIndex >= 0) {
-                    func_02007328();
+                    DebugOvlDisp_Pop();
                     u32                          categoryIndex = state->selectedCategoryIndex;
                     u32                          optionIndex   = state->selectedOptionIndex;
                     const DebugLauncherCategory* category      = &Categories[categoryIndex];
@@ -416,7 +416,7 @@ void func_ov046_destructor_02083454(DebugLauncherState* state) {
     } while (finishedCleaning == FALSE);
     func_ov046_0208280c();
     Mem_Free(&gDebugHeap, state);
-    func_02007260(NULL);
+    MainOvlDisp_SetState(NULL);
 }
 
 /*Nonmatching: Opcode reordering in the first block of the function*/
@@ -433,15 +433,15 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    func_02007390();
+    DebugOvlDisp_Run();
 
-    if (func_0200737c() == TRUE) {
+    if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->active = TRUE;
     }
 
     if (state->active == TRUE) {
         OverlayTag tag;
-        func_020071f4(&tag, state->overlay, state->overlayCB, NULL, 0);
+        MainOvlDisp_ReplaceTop(&tag, state->overlay, state->overlayCB, NULL, 0);
     } else {
         EasyTask_UpdatePool(&state->unk_11650);
         func_020034b0(&data_020676ec);
@@ -456,19 +456,19 @@ void func_ov046_constructor_020835b4(DebugLauncherState* state) {
         const char* seq = Sequence;
         state           = Mem_AllocHeapTail(&gDebugHeap, sizeof(DebugLauncherState));
         Mem_SetSequence(&gDebugHeap, state, seq);
-        func_02007260(state);
+        MainOvlDisp_SetState(state);
     }
 
     func_0203b2d0(0, state, Mem_GetBlockSize(&gDebugHeap, state));
     func_ov046_02082c78(state);
     func_ov046_02083368(state);
-    func_020072a4();
+    MainOvlDisp_IncrementRepeatCount();
 }
 
 // Overlay Init function
 void func_ov046_02083630(DebugLauncherState* state) {
 
-    s32 sVar1 = func_02007278();
+    s32 sVar1 = MainOvlDisp_GetRepeatCount();
     if (sVar1 == 0x7fffffff) {
         func_ov046_destructor_02083454(state);
     } else {

@@ -1,47 +1,48 @@
-#ifndef OVERLAYMANAGER_H
-#define OVERLAYMANAGER_H
+#ifndef OVERLAY_MANAGER_H
+#define OVERLAY_MANAGER_H
 
 #include <types.h>
 
-// Function pointer type for overlay callbacks.
-// The callbacks call either an overlay init, overlay main(? verify this), or overlay exit function from the overlay function
-// pointer table.
-typedef void (*OverlayCB)(void*);
+/**
+ * @brief Initialize the overlay manager state.
+ *
+ * Sets all overlay slots to the sentinel value indicating they are unloaded.
+ */
+void OvlMgr_Init(void);
 
-typedef struct {
-    /* 0x00 */ s32       id;
-    /* 0x04 */ OverlayCB cb;
-} OverlayTag;
+/**
+ * @brief Unload every overlay tracked by the manager.
+ */
+void OvlMgr_UnloadAllOverlays(void);
 
-typedef struct {
-    /* 0x00 */ OverlayTag tag;
-    /* 0x08 */ void*      gState;
-    /* 0x0C */ s32 unk_0C; // Possibly the index to the overlay function pointer table? Why is it sometimes set to 0x7FFFFFFF?
-} OverlayData;
+/**
+ * @brief Unload a specific overlay slot, or all slots if a negative index is given.
+ *
+ * @param slot Overlay slot index. Pass a negative value to unload all slots.
+ */
+void OvlMgr_UnloadOverlay(s32 slot);
 
-typedef struct {
-    /* 0x00 */ OverlayData* data;
-    /* 0x04 */ OverlayCB    cb;         // TODO: Why is there a second cb here when OverlayData->tag also has one?
-    /* 0x08 */ void*        gState;     // TODO: Why is there a second gState pointer here when OverlayData also has one?
-    /* 0x0C */ s32          unk_0C;     // TODO: find more functions that set the value for this.
-    /* 0x10 */ u32          unk_10;     // Number of overlays currently loaded?
-    /* 0x14 */ OverlayData  unk_14[17]; // Stack of OverlayData for currently loaded overlays. TODO: Why 17?
-} OverlayManager;
+/**
+ * @brief Load an overlay into a slot.
+ *
+ * If the requested overlay differs from the current one and is in range, the
+ * previous overlay in the slot is unloaded, the new overlay is loaded, and the
+ * slot is updated.
+ *
+ * @param slot Overlay slot to use.
+ * @param newOverlay Overlay ID to load.
+ * @return The overlay ID that was previously in the slot.
+ */
+u32 OvlMgr_LoadOverlay(s32 slot, u32 newOverlay);
 
-void func_02006f78(OverlayManager* overlayMgr, s32 param_2, OverlayCB func, void* param_4, s32 param_5);
+/**
+ * @brief Check whether an overlay ID is marked as loaded.
+ *
+ * Searches all managed slots for the given overlay ID.
+ *
+ * @param overlayID Overlay ID to query.
+ * @return TRUE if the overlay is considered loaded; otherwise FALSE.
+ */
+BOOL OvlMgr_IsOverlayLoaded(u32 overlayID);
 
-void  func_02007174(OverlayTag* tag);
-void  func_020071f4(OverlayTag* tag, s32 overlayId, void* callback, void* state, s32 param_5);
-void* func_02007260(void* state);
-s32   func_02007278(void);
-void  func_0200728c(s32 param_1);
-void  func_020072a4(void);
-void  func_020072b8(void);
-void  func_020072ec(void);
-void  func_02007300(OverlayCB callback, void* state, s32 param_3);
-s32   func_02007328(void);
-s32   func_0200734c(OverlayCB callback, void* state, s32 param_3);
-BOOL  func_0200737c(void);
-void  func_02007390(void);
-
-#endif // OVERLAYMANAGER_H
+#endif

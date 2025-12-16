@@ -1,7 +1,7 @@
 #include "Debug/STSample.h"
 #include "Display.h"
 #include "Memory.h"
-#include "OverlayManager.h"
+#include "OverlayDispatcher.h"
 #include "System.h"
 #include "common_data.h"
 #include <NitroSDK/os/cache.h>
@@ -127,7 +127,7 @@ void STSample_ControlMenu(STSampleState* state) {
 
     // Return to main debug menu
     if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
-        func_02007174(&tag);
+        MainOvlDisp_Pop(&tag);
     }
 }
 
@@ -137,11 +137,11 @@ void func_ov041_02082a5c(STSampleState* param) {
     STSampleState* state;
     void*          sVar2;
 
-    func_0200669c(3, OVERLAY_40_ID);
+    OvlMgr_LoadOverlay(3, OVERLAY_40_ID);
     iVar1 = data_ov041_02083020;
     state = Mem_AllocHeapTail(&gDebugHeap, sizeof(STSampleState));
     Mem_SetSequence(&gDebugHeap, state, iVar1);
-    sVar2 = func_02007260(&state);
+    sVar2 = MainOvlDisp_SetState(&state);
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();
@@ -151,7 +151,7 @@ void func_ov041_02082a5c(STSampleState* param) {
     g_DisplaySettings.subControl.brightness  = 0;
     data_02066eec                            = 0;
     func_ov041_020827cc(state);
-    func_020072a4();
+    MainOvlDisp_IncrementRepeatCount();
 }
 
 void func_ov041_02082b08(STSampleState* state) {
@@ -171,7 +171,7 @@ void func_ov041_02082b88(STSampleState* state) {
     func_0200cef0(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     Mem_Free(&gDebugHeap, state);
-    func_02006618(3);
+    OvlMgr_UnloadOverlay(3);
 }
 
 void func_ov041_02082bc4(STSampleState* state) {
@@ -182,7 +182,7 @@ void func_ov041_02082bc4(STSampleState* state) {
     };
     s32 idx;
 
-    idx = func_02007278();
+    idx = MainOvlDisp_GetRepeatCount();
     if (idx == 0x7FFFFFFF) {
         func_ov041_02082b88(state);
         return;

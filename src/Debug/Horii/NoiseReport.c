@@ -27,7 +27,7 @@ const NoiseReportFunc data_ov028_020ecf24[3] = {
 };
 
 void func_ov028_020e82d0(NoiseReportState* state) {
-    s32 idx = func_02007278();
+    s32 idx = MainOvlDisp_GetRepeatCount();
     if (idx == 0x7fffffff) {
         func_ov028_020e8b68(state);
         return;
@@ -64,20 +64,20 @@ void func_ov028_020e87f4(void) {
 void func_ov028_020e8808(void) {
     func_02026180(0, 0, 0x1000);
     if (func_0202623c() == FALSE) {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 
 void func_ov028_020e8830(NoiseReportState* state) {
     if (state->unk_2164C != 0) {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 
 void func_ov028_020e8850(void) {
     func_02026180(0, 0x10, 0x1000);
     if (func_0202623c() == FALSE) {
-        func_02007328();
+        DebugOvlDisp_Pop();
     }
 }
 

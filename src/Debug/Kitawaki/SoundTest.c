@@ -8,7 +8,7 @@
 #include "Display.h"
 #include "Interrupts.h"
 #include "Memory.h"
-#include "OverlayManager.h"
+#include "OverlayDispatcher.h"
 #include "SndMgr.h"
 #include "System.h"
 #include "common_data.h"
@@ -1616,7 +1616,7 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
         func_020270e4();
         func_02026b20(3);
     } else if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
-        func_02007174(&tag);
+        MainOvlDisp_Pop(&tag);
     } else if (SysControl.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up
         state->menuCurrentRow--;
     } else if (SysControl.holdButtons == INPUT_BUTTON_DOWN) {     // Scroll selection down
@@ -1702,7 +1702,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     char*           name  = data_ov029_02083400;
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
-    func_02007260(&state);
+    MainOvlDisp_SetState(&state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     g_DisplaySettings.mainControl.layers     = LAYER_NONE;
@@ -1712,7 +1712,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     data_02066eec                            = 0;
     g_DisplaySettings.subControl.brightness  = 0;
     func_ov029_02082838(state);
-    func_020072a4();
+    MainOvlDisp_IncrementRepeatCount();
 }
 
 void func_ov029_02082ee8(SoundTestState* state) {
@@ -1741,7 +1741,7 @@ void func_ov029_02082f9c(SoundTestState* state) {
         func_ov029_02082f68,
     };
 
-    s32 idx = func_02007278();
+    s32 idx = MainOvlDisp_GetRepeatCount();
 
     if (idx == 0x7FFFFFFF) {
         func_ov029_02082f68(state);

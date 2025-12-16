@@ -1,6 +1,9 @@
 #include "Input.h"
 #include "Memory.h"
 #include "NitroSDK/fs.h"
+#include "OverlayDispatcher.h"
+#include "OverlayManager.h"
+#include "Random.h"
 #include "System.h"
 #include "common_data.h"
 #include <NitroSDK/os/interrupt.h>
@@ -34,7 +37,7 @@ void main(void) {
     u32 tableSize = FS_RomLoadDefaultTables(NULL, 0);
     FS_RomLoadDefaultTables(func_02039dbc(0, -1, tableSize), tableSize);
 
-    func_020065e0();
+    OvlMgr_Init();
 
     System_ClearFlag(SYSFLAG_UNKNOWN_2);
     System_SetFlag(SYSFLAG_UNKNOWN_4);
@@ -119,20 +122,20 @@ void main(void) {
         Mem_InitializeHeap(&gDebugHeap, stdHeap, 0x80000);
 
         SndMgr_Init();
-        func_02006618(-1);
+        OvlMgr_UnloadOverlay(-1);
         Interrupts_Init();
         Display_Init();
         Interrupts_ForceVBlank();
         DMA_Init(0x100);
         Input_Init(&InputStatus, 8, 1, 2);
-        func_02007128();
-        func_0200713c(0x80000001, &func_02001254, 0, 0);
+        MainOvlDisp_Init();
+        MainOvlDisp_Push(0x80000001, &func_02001254, 0, 0);
 
         System_SetFlag(SYSFLAG_UNKNOWN_2);
 
-        func_020072ec();
-        func_020073a4();
-        func_020073b8();
+        DebugOvlDisp_Init();
+        OvlDisp_InitUnused2();
+        OvlDisp_InitUnused1();
         RNG_SetSeed(0);
         DatMgr_Init(0, 0);
         func_0200cef0(0);
@@ -152,7 +155,7 @@ void main(void) {
             SysControl.prevButtons    = InputStatus.prevButtons;
 
             func_02007240();
-            func_020072b8();
+            MainOvlDisp_Run();
             func_02026a94();
 
             if (System_CheckFlag(SYSFLAG_UNKNOWN_3)) {
@@ -214,7 +217,7 @@ void main(void) {
             Interrupts_ForceVBlank();
         }
 
-        func_02006608();
+        OvlMgr_UnloadAllOverlays();
         OS_SystemReset(BIOS_RESET);
     }
 }
@@ -229,20 +232,20 @@ static const char* data_020636cc = "Seq_Boot(void *)";
 
 // Nonmatching: Differences in overlay handling
 void func_02001254(void) {
-    if (func_02007278() == 0) {
+    if (MainOvlDisp_GetRepeatCount() == 0) {
         const char* seq = data_020636cc;
 
         void* binData = Mem_AllocHeapTail(&gDebugHeap, 0x304);
 
         Mem_SetSequence(&gDebugHeap, binData, seq);
         func_0203b2d0(0, binData, Mem_GetBlockSize(&gDebugHeap, binData));
-        func_02007260(binData);
+        MainOvlDisp_SetState(binData);
         BinMgr_Init(binData, 8);
         PacMgr_Init(binData + 0x60, 0x20);
         DatMgr_Init(binData + 0xC0, 0x100);
-        func_020072a4();
-        func_0200713c(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
+        MainOvlDisp_IncrementRepeatCount();
+        MainOvlDisp_Push(OVERLAY_37_ID, &func_ov037_0208370c, NULL, 0);
     } else {
-        func_0200713c(OVERLAY_46_ID, &func_ov046_02083630, NULL, 0);
+        MainOvlDisp_Push(OVERLAY_46_ID, &func_ov046_02083630, NULL, 0);
     }
 }
