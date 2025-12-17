@@ -149,10 +149,7 @@ void main(void) {
 
             Input_PollState(&InputStatus);
             Input_UpdateRepeat(&InputStatus, INPUT_MASK_ALLBTNS);
-            SysControl.currButtons    = InputStatus.currButtons;
-            SysControl.pressedButtons = InputStatus.pressedButtons;
-            SysControl.holdButtons    = InputStatus.holdButtons;
-            SysControl.prevButtons    = InputStatus.prevButtons;
+            SysControl.buttonState = InputStatus.buttonState;
 
             func_02007240();
             MainOvlDisp_Run();
@@ -163,7 +160,7 @@ void main(void) {
             }
 
             // Trigger a soft reset when Start + Select + L + R are pressed
-            if ((InputStatus.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {
+            if ((InputStatus.buttonState.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {
                 System_SetFlag(SYSFLAG_RESET);
             }
 

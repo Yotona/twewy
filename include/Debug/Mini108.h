@@ -1,34 +1,33 @@
 #ifndef MINI_108_H
 #define MINI_108_H
+
 #include "DatMgr.h"
+#include "Input.h"
 #include "OverlayDispatcher.h"
 #include <types.h>
 
 extern vu32 data_02066a58;
 
 typedef struct {
-    /* 0x0*/ u32      unk_00;
-    /* 0x4*/ u16      currButtons;
-    /* 0x6*/ u16      pressedButtons;
-    /* 0x8*/ u16      holdButtons;
-    /* 0xa */ u16     prevButtons;
-    /* 0xC */ u32     unk_0C;
-    /* 0x10*/ u32     unk_10;
-    /* 0x14 */ u32    unk_14;
-    /* 0x18 */ char   pad_18[0x28];
-    /* 0x40 */ u32    unk_40;
-    /* 0x44 */ char   pad_44[0x3C];
-    /* 0x80 */ u32    unk_80;
-    /* 0x84 */ char   pad_84[0x3AC];
-    /* 0x430 */ u32   unk_430;
-    /* 0x434 */ char  pad_434[0x418];
-    /* 0x84C */ Data* unk_84C;
-    /* 0x854 */ char  pad_87C[0x4];
-    /* 0x8D0 */ u32   unk_8D0;
-    /* 0x8D4 */ char  pad_8D4[0x3FFC];
-    /* 0x48D0 */ u32  unk_48D0;
-    /* 0x48D4 */ char pad_48D4[0x1157C];
-    /* 0x15e50 */ u32 unk_15e50;
+    /* 0x00000 */ u32          unk_00;
+    /* 0x00004 */ InputButtons buttonState;
+    /* 0x0000C */ u32          unk_0C;
+    /* 0x00010*/ u32           unk_10;
+    /* 0x00014 */ u32          unk_14;
+    /* 0x00018 */ char         pad_18[0x28];
+    /* 0x00040 */ u32          unk_40;
+    /* 0x00044 */ char         pad_44[0x3C];
+    /* 0x00080 */ u32          unk_80;
+    /* 0x00084 */ char         pad_84[0x3AC];
+    /* 0x00430 */ u32          unk_430;
+    /* 0x00434 */ char         pad_434[0x418];
+    /* 0x0084C */ Data*        unk_84C;
+    /* 0x00854 */ char         pad_87C[0x4];
+    /* 0x008D0 */ u32          unk_8D0;
+    /* 0x008D4 */ char         pad_8D4[0x3FFC];
+    /* 0x048D0 */ u32          unk_48D0;
+    /* 0x048D4 */ char         pad_48D4[0x1157C];
+    /* 0x15e50 */ u32          unk_15e50;
 } Mini108State; // Size = 0x15e54
 
 typedef struct {

@@ -108,12 +108,34 @@ void DebugOvlDisp_Init(void);
  */
 void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, s32 repeatCount);
 
-s32 DebugOvlDisp_Pop(void);
+/**
+ * @brief Pop the top overlay dispatch request from the auxiliary overlay dispatcher's stack. The popped request is not
+ * executed.
+ *
+ * @return The callback ID of the popped overlay tag.
+ */
+OverlayCB DebugOvlDisp_Pop(void);
 
-s32 DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount);
+/**
+ * @brief Replace the top overlay dispatch request on the auxiliary overlay dispatcher's stack.
+ *
+ * @param callback The function to be called from the new overlay.
+ * @param cbArg The argument to pass to the new callback function.
+ * @param repeatCount The number of times the new request has been repeated so far.
+ * @return The callback of the replaced overlay tag.
+ */
+OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount);
 
+/**
+ * @brief Check if the auxiliary overlay dispatcher's stack is at its base (only one overlay request present).
+ *
+ * @return TRUE if the stack is at its base, FALSE otherwise.
+ */
 BOOL DebugOvlDisp_IsStackAtBase(void);
 
+/**
+ * @brief Run the auxiliary overlay dispatcher's current overlay request
+ */
 void DebugOvlDisp_Run(void);
 
 /**

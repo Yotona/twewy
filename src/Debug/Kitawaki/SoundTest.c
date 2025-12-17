@@ -1499,9 +1499,9 @@ void func_ov029_020828c0(SoundTestState* state) {
 }
 
 static void SoundTest_AdjustSePitch(s32* pitch) {
-    if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
+    if (SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) {
         *pitch += 64;
-    } else if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
+    } else if (SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT) {
         *pitch -= 64;
     }
 }
@@ -1509,7 +1509,7 @@ static void SoundTest_AdjustSePitch(s32* pitch) {
 static void SoundTest_AdjustCappedValue(s32* value, s32 upperLimit) {
     s32 iVar1;
 
-    if (SysControl.holdButtons & INPUT_BUTTON_RIGHT) {
+    if (SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) {
         iVar1  = *value;
         *value = iVar1 + 1;
         if (iVar1 + 1 >= upperLimit) {
@@ -1517,7 +1517,7 @@ static void SoundTest_AdjustCappedValue(s32* value, s32 upperLimit) {
         }
         return;
     }
-    if (SysControl.holdButtons & INPUT_BUTTON_LEFT) {
+    if (SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT) {
         iVar1  = *value;
         *value = iVar1 + -1;
         if (iVar1 + -1 < 0) {
@@ -1603,34 +1603,35 @@ void SoundTest_StopAllSounds(void) {
 BOOL SoundTest_ControlMenu(SoundTestState* state) {
     OverlayTag tag;
 
-    if (SysControl.pressedButtons & INPUT_BUTTON_START) {
+    if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_START) {
         state->unk_219E8 ^= 1;
         func_02027200(state->unk_219E8);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_A) {
+    } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
         SoundTest_PlaySelectedSoundType(state);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_B) { // Stop music/sound effect depending on current menu selection
+    } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_B)
+    { // Stop music/sound effect depending on current menu selection
         SoundTest_StopSelectedSoundType(state);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_Y) { // Stop all active sounds
+    } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_Y) { // Stop all active sounds
         SoundTest_StopAllSounds();
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_X) {
+    } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_X) {
         func_020270e4();
         func_02026b20(3);
-    } else if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
+    } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
         MainOvlDisp_Pop(&tag);
-    } else if (SysControl.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up
+    } else if (SysControl.buttonState.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up
         state->menuCurrentRow--;
-    } else if (SysControl.holdButtons == INPUT_BUTTON_DOWN) {     // Scroll selection down
+    } else if (SysControl.buttonState.holdButtons == INPUT_BUTTON_DOWN) {     // Scroll selection down
         state->menuCurrentRow++;
     }
 
-    if (SysControl.pressedButtons & INPUT_BUTTON_L) {
+    if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_L) {
         if (state->seqArc >= 0) {
             func_02026ae0(1, state->seqArc, state->se);
         } else {
             func_02026e28(state->se);
         }
     }
-    if (SysControl.pressedButtons & INPUT_BUTTON_R) {
+    if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_R) {
         func_02026aa4(1);
     }
 
@@ -1669,10 +1670,10 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
             CriSndMgr_SetAdxIdxVolume(state->adxIdx, -state->adxVolume);
             break;
         case MENU_ROW_ADXLOOP:
-            if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
+            if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT)) {
                 state->adxLoopEnabled = TRUE;
                 CriSndMgr_SetLpFlg(TRUE);
-            } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
+            } else if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT)) {
                 state->adxLoopEnabled = FALSE;
                 CriSndMgr_SetLpFlg(FALSE);
             }
@@ -1682,15 +1683,15 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
             func_020271b8(state->seIdx, state->sePitch);
             break;
         case MENU_ROW_NOISE:
-            if ((SysControl.currButtons & INPUT_BUTTON_RIGHT)) {
+            if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT)) {
                 state->noiseNoWaveLoad = TRUE;
                 func_02027220(1);
-            } else if ((SysControl.currButtons & INPUT_BUTTON_LEFT)) {
+            } else if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT)) {
                 state->noiseNoWaveLoad = FALSE;
                 func_02027220(0);
             }
     }
-    if (SysControl.holdButtons & (INPUT_MASK_DPAD | INPUT_BUTTON_A)) {
+    if (SysControl.buttonState.holdButtons & (INPUT_MASK_DPAD | INPUT_BUTTON_A)) {
         state->adxVolume = -CriSndMgr_GetAdxIdxVolume(state->adxIdx);
         SoundTest_DrawMenu(state);
     }
@@ -1702,7 +1703,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     char*           name  = data_ov029_02083400;
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
-    MainOvlDisp_SetCbArg(&state);
+    MainOvlDisp_SetCbArg(state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     g_DisplaySettings.mainControl.layers     = LAYER_NONE;

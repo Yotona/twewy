@@ -1,5 +1,6 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
+#include <NitroSDK/fx.h>
 
 extern TaskHandle data_0205cb10;
 
@@ -12,17 +13,17 @@ void func_ov046_020824a0(void) {
     DMA_Init(0x100);
     Display_Init();
     GX_DisableBankForLcdc();
-    GX_SetBankForLcdc(0x1ff);
-    GX_SetBankForTex(1);
-    GX_SetBankForBg(2);
-    GX_SetBankForObj(0x10);
-    GX_SetBankForTexPltt(0x20);
-    GX_SetBankForBgExtPltt(0x40);
-    GX_SetBankForSubBg(4);
-    GX_SetBankForSubObj(8);
-    GX_SetBankForSubBgExtPltt(0x80);
-    GX_SetBankForSubObjExtPltt(0x100);
-    REG_DISP3DCNT = REG_DISP3DCNT & 0xffffcffd;
+    GX_SetBankForLcdc(GX_VRAM_ALL);
+    GX_SetBankForTex(GX_VRAM_A);
+    GX_SetBankForBg(GX_VRAM_B);
+    GX_SetBankForObj(GX_VRAM_E);
+    GX_SetBankForTexPltt(GX_VRAM_F);
+    GX_SetBankForBgExtPltt(GX_VRAM_G);
+    GX_SetBankForSubBg(GX_VRAM_C);
+    GX_SetBankForSubObj(GX_VRAM_D);
+    GX_SetBankForSubBgExtPltt(GX_VRAM_H);
+    GX_SetBankForSubObjExtPltt(GX_VRAM_I);
+    REG_DISP3DCNT &= 0xffffcffd;
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x8;
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x10;
     G3X_SetClearColor(0, 0, 0x7fff, 0x3f, 0);
@@ -407,7 +408,7 @@ void func_ov046_destructor_02083454(DebugLauncherState* state) {
     }
     do {
         if (state->unk_list_15F14.tailSentinel.prev != NULL) {
-            EasyList_RemoveNode(&(state->unk_list_15F14), state->unk_list_15F14.tailSentinel.prev);
+            EasyList_RemoveNode(&state->unk_list_15F14, state->unk_list_15F14.tailSentinel.prev);
         }
         finishedCleaning = FALSE; // the assembly starts the loop from here
         if (state->unk_list_15F14.headSentinel.next == NULL) {
@@ -419,14 +420,8 @@ void func_ov046_destructor_02083454(DebugLauncherState* state) {
     MainOvlDisp_SetCbArg(NULL);
 }
 
-/*Nonmatching: Opcode reordering in the first block of the function*/
 void func_ov046_main_020834c0(DebugLauncherState* state) {
-    u16 uVar1             = InputStatus.pressedButtons;
-    state->currButtons    = InputStatus.currButtons;
-    state->pressedButtons = uVar1;
-    uVar1                 = InputStatus.prevButtons;
-    state->holdButtons    = InputStatus.holdButtons;
-    state->prevButtons    = uVar1;
+    state->buttonState = InputStatus.buttonState;
 
     func_02006ba0();
     func_0200283c(&data_020676ec, 0, 0);

@@ -22,12 +22,9 @@ typedef enum {
 } SysFlag;
 
 typedef struct {
-    /* 0x00 */ u16 currButtons;    // Current frame state
-    /* 0x02 */ u16 pressedButtons; // Newly pressed this frame
-    /* 0x04 */ u16 holdButtons;    // Still being held this frame
-    /* 0x06 */ u16 prevButtons;    // Previous frame state
-    /* 0x08 */ u32 loadedOverlays[6];
-    /* 0x20 */ u32 frameCount;
+    /* 0x00 */ InputButtons buttonState;
+    /* 0x08 */ u32          loadedOverlays[6];
+    /* 0x20 */ u32          frameCount;
     /* 0x24 */ void (*vBlankCallback)(void);
     /* 0x28 */ void (*hBlankCallback)(void);
 } SystemControl;

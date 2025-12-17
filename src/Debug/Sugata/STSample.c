@@ -88,7 +88,7 @@ void STSample_ControlMenu(STSampleState* state) {
     u8*        puVar2;
     OverlayTag tag;
 
-    switch (SysControl.pressedButtons) {
+    switch (SysControl.buttonState.pressedButtons) {
         case INPUT_BUTTON_A:
             if (state->unk_21E60 == 0) {
                 func_ov040_0209e888(&state->unk_219B0);
@@ -125,7 +125,7 @@ void STSample_ControlMenu(STSampleState* state) {
     }
 
     // Return to main debug menu
-    if (SysControl.pressedButtons & INPUT_BUTTON_SELECT) {
+    if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) {
         MainOvlDisp_Pop(&tag);
     }
 }

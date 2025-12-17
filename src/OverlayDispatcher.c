@@ -177,14 +177,14 @@ void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, s32 repeatCount) {
     OvlDisp_Push(&DebugOverlayDispatcher, 0, callback, cbArg, repeatCount);
 }
 
-s32 DebugOvlDisp_Pop(void) {
+OverlayCB DebugOvlDisp_Pop(void) {
     OverlayTag tag;
 
     OvlDisp_Pop(&tag, &DebugOverlayDispatcher);
     return tag.cb;
 }
 
-s32 DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount) {
+OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount) {
     OverlayTag tag;
 
     OvlDisp_ReplaceTop(&tag, &DebugOverlayDispatcher, 0, callback, cbArg, repeatCount);

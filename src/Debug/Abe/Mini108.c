@@ -274,7 +274,7 @@ void func_ov000_02082b1c(Mini108State* state) {
     DebugOvlDisp_Push(func_ov000_020830b8, state, 0);
     DebugOvlDisp_Push(func_ov000_020830bc, state, 0);
     state->unk_0C = 0;
-    if ((InputStatus.currButtons & INPUT_BUTTON_L) != 0) {
+    if ((InputStatus.buttonState.currButtons & INPUT_BUTTON_L) != 0) {
         state->unk_0C = 1;
     }
 }
@@ -299,17 +299,8 @@ void func_ov000_02082ac0(Mini108State* state) {
 
 // Nonmatching: Opcode order swap, Stack difference
 void func_ov000_02082944(Mini108State* stateptr) {
-    u16 a, b;
+    stateptr->buttonState = InputStatus.buttonState;
 
-    b                        = InputStatus.currButtons;
-    a                        = InputStatus.pressedButtons;
-    stateptr->currButtons    = b;
-    stateptr->pressedButtons = a;
-
-    b                     = InputStatus.holdButtons;
-    a                     = InputStatus.prevButtons;
-    stateptr->prevButtons = a;
-    stateptr->holdButtons = b;
     OverlayTag* s_04;
     OverlayTag* s_0C;
     func_02006ba0();
@@ -321,14 +312,14 @@ void func_ov000_02082944(Mini108State* stateptr) {
     func_02003440(&data_02068778);
     DebugOvlDisp_Run();
 
-    if ((stateptr->pressedButtons & INPUT_BUTTON_START) != 0) {
+    if ((stateptr->buttonState.pressedButtons & INPUT_BUTTON_START) != 0) {
         u32 unk = func_02011f44("Seq_Mini108(void *) reset");
         if (unk == 1) {
             data_02066a58 = data_02066a58 | 2;
         }
         MainOvlDisp_ReplaceTop(s_04, (s32)&OVERLAY_0_ID, &func_ov000_02082854, NULL, 0);
         return;
-    } else if ((stateptr->pressedButtons & INPUT_BUTTON_SELECT) != 0) {
+    } else if ((stateptr->buttonState.pressedButtons & INPUT_BUTTON_SELECT) != 0) {
         stateptr->unk_00 = 1;
     }
     if (stateptr->unk_00 == 1) {
