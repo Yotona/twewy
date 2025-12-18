@@ -57,7 +57,7 @@ void func_ov046_020824a0(void) {
 }
 
 void func_ov046_02082720(void) {
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
+    if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);

@@ -38,7 +38,7 @@ void Interrupts_Init(void) {
 }
 
 void Interrupts_FlushCache(void) {
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
+    if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
@@ -59,18 +59,18 @@ void Interrupts_TriggerHBlank(void) {
 }
 
 void Interrupts_ForceVBlank(void) {
-    System_ForceFlag(SYSFLAG_UNKNOWN_0);
+    SystemStatusFlags.vblank = TRUE;
     if (Interrupts_IsVBlankInterrupted() == TRUE) {
         func_02021938();
         return;
     }
     SysControl.vBlankCallback();
-    System_ClearFlag(SYSFLAG_UNKNOWN_0);
+    SystemStatusFlags.vblank = FALSE;
 }
 
 static void HandleVBlank(void) {
     func_0202190c();
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
+    if (SystemStatusFlags.vblank != FALSE) {
         OS_DisableInterrupts(IRQ_HBLANK);
         GX_HBlankIntr(FALSE);
         OS_SetIRQCallback(IRQ_HBLANK, SysControl.hBlankCallback);
@@ -79,12 +79,13 @@ static void HandleVBlank(void) {
             GX_HBlankIntr(TRUE);
         }
     } else {
-        SystemStatusFlags = SystemStatusFlags & ~8 | (u32)((1 - ((SystemStatusFlags << 0x1c) >> 0x1f)) * -0x80000000) >> 0x1c;
+        u32 val                  = 1 + SystemStatusFlags.unk_03;
+        SystemStatusFlags.unk_03 = val;
     }
 
     SysControl.vBlankCallback();
     SysControl.frameCount++;
-    System_ClearFlag(SYSFLAG_UNKNOWN_0);
+    SystemStatusFlags.vblank = FALSE;
     BIOS_INTERRUPT_IRQCHECK |= 1;
 }
 

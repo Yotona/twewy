@@ -1757,7 +1757,7 @@ void func_ov029_02082fdc(void) {
 }
 
 void SoundTest_InterruptCallback(void) {
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
+    if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);

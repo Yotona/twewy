@@ -195,7 +195,7 @@ void func_ov041_02082c04(void) {
 }
 
 void STSample_InterruptCallback(void) {
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0)) {
+    if (SystemStatusFlags.vblank != FALSE) {
         func_ov040_0209e91c();
         Display_Commit();
         DMA_Flush();

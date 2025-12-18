@@ -39,8 +39,8 @@ void main(void) {
 
     OvlMgr_Init();
 
-    System_ClearFlag(SYSFLAG_UNKNOWN_2);
-    System_SetFlag(SYSFLAG_UNKNOWN_4);
+    SystemStatusFlags.unk_02 = FALSE;
+    SystemStatusFlags.unk_04 = TRUE;
 
     while (TRUE) {
         func_0203a09c();
@@ -63,38 +63,43 @@ void main(void) {
         FX_Init();
         REG_EXMEM_CNT |= 0x8000;
 
-        System_ClearFlag(SYSFLAG_UNKNOWN_0);
-        System_ClearFlag(SYSFLAG_RESET);
+        SystemStatusFlags.vblank = FALSE;
+        SystemStatusFlags.reset  = FALSE;
         SystemStatusFlags;
 
-        System_SetFlag(SYSFLAG_UNKNOWN_7);
-        System_ClearFlag(SYSFLAG_UNKNOWN_3);
-        System_SetFlag(SYSFLAG_UNKNOWN_4);
-        System_ClearFlag(SYSFLAG_UNKNOWN_10);
+        SystemStatusFlags.unk_07 = TRUE;
+        SystemStatusFlags.unk_03 = FALSE;
+        SystemStatusFlags.unk_04 = TRUE;
+        SystemStatusFlags.unk_10 = FALSE;
         SystemStatusFlags;
-        System_SetFlag(SYSFLAG_UNKNOWN_5);
+
+        SystemStatusFlags.unk_05 = TRUE;
         SystemStatusFlags;
-        System_SetFlag(SYSFLAG_UNKNOWN_6);
+
+        SystemStatusFlags.unk_06 = TRUE;
 
         u32 sp18;
         u32 sp14;
         func_020410ac(&sp18, &sp14);
+
         if (sp18 == 1) {
             SystemStatusFlags;
-            System_SetFlag(SYSFLAG_UNKNOWN_8);
+            SystemStatusFlags.unk_08 = TRUE;
         } else {
             SystemStatusFlags;
-            System_ClearFlag(SYSFLAG_UNKNOWN_8);
+            SystemStatusFlags.unk_08 = FALSE;
         }
+
         if (sp14 == 1) {
             SystemStatusFlags;
-            System_SetFlag(SYSFLAG_UNKNOWN_9);
+            SystemStatusFlags.unk_09 = TRUE;
         } else {
             SystemStatusFlags;
-            System_ClearFlag(SYSFLAG_UNKNOWN_9);
+            SystemStatusFlags.unk_09 = FALSE;
         }
+
         SystemStatusFlags;
-        System_SetFlag(SYSFLAG_UNKNOWN_7);
+        SystemStatusFlags.unk_07 = TRUE;
 
         data_02066a58 &= ~1;
         data_02066a58 &= ~2;
@@ -131,7 +136,7 @@ void main(void) {
         MainOvlDisp_Init();
         MainOvlDisp_Push(OVERLAY_ID_NONE, &func_02001254, NULL, 0);
 
-        System_SetFlag(SYSFLAG_UNKNOWN_2);
+        SystemStatusFlags.unk_02 = TRUE;
 
         DebugOvlDisp_Init();
         OvlDisp_InitUnused2();
@@ -144,7 +149,7 @@ void main(void) {
         func_020415a4();
         func_02025b1c();
 
-        while (System_CheckFlag(SYSFLAG_RESET) == 0 || System_CheckFlag(SYSFLAG_UNKNOWN_7) == 0) {
+        while (SystemStatusFlags.reset == FALSE || SystemStatusFlags.unk_07 == FALSE) {
             func_02004c44(&data_0206a9bc);
 
             Input_PollState(&InputStatus);
@@ -155,33 +160,33 @@ void main(void) {
             MainOvlDisp_Run();
             func_02026a94();
 
-            if (System_CheckFlag(SYSFLAG_UNKNOWN_3)) {
+            if (SystemStatusFlags.unk_03 != FALSE) {
                 func_020218ec();
             }
 
             // Trigger a soft reset when Start + Select + L + R are pressed
             if ((InputStatus.buttonState.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {
-                System_SetFlag(SYSFLAG_RESET);
+                SystemStatusFlags.reset = TRUE;
             }
 
-            System_ClearFlag(SYSFLAG_UNKNOWN_10);
+            SystemStatusFlags.unk_10 = FALSE;
 
-            u32 var_r0 = System_CheckFlag(SYSFLAG_UNKNOWN_6);
-            if (var_r0) {
+            u32 var_r0 = SystemStatusFlags.unk_06;
+            if (var_r0 != FALSE) {
                 if (var_r0 == 1) {
                     if (Input_IsSystemHingeClosed()) {
-                        if (System_CheckFlag(SYSFLAG_UNKNOWN_5)) {
+                        if (SystemStatusFlags.unk_05 != FALSE) {
                             func_02041134(0xC, 0, 0);
-                            System_SetFlag(SYSFLAG_UNKNOWN_10);
+                            SystemStatusFlags.unk_10 = TRUE;
                         }
                     } else {
                         u32 sp10;
                         u32 spC;
                         func_020410ac(&sp10, &spC);
-                        if (System_CheckFlag(SYSFLAG_UNKNOWN_8) && sp10 == 0) {
+                        if (SystemStatusFlags.unk_08 != FALSE && sp10 == 0) {
                             func_02040f34(0, 1);
                         }
-                        if (System_CheckFlag(SYSFLAG_UNKNOWN_9) && spC == 0) {
+                        if (SystemStatusFlags.unk_09 != FALSE && spC == 0) {
                             func_02040f34(1, 1);
                         }
                     }
@@ -190,7 +195,7 @@ void main(void) {
                 u32 sp8;
                 u32 sp4;
                 func_020410ac(&sp8, &sp4);
-                if (System_CheckFlag(SYSFLAG_UNKNOWN_8)) {
+                if (SystemStatusFlags.unk_08 != FALSE) {
                     if (Input_IsSystemHingeClosed()) {
                         if (sp8 == 1) {
                             func_02040f34(0, 0);
@@ -199,7 +204,7 @@ void main(void) {
                         func_02040f34(0, 1);
                     }
                 }
-                if (System_CheckFlag(SYSFLAG_UNKNOWN_9)) {
+                if (SystemStatusFlags.unk_09 != FALSE) {
                     if (Input_IsSystemHingeClosed()) {
                         if (sp4 == 1) {
                             func_02040f34(1, 0);
@@ -216,30 +221,5 @@ void main(void) {
 
         OvlMgr_UnloadAllOverlays();
         OS_SystemReset(BIOS_RESET);
-    }
-}
-
-extern void func_ov037_0208370c(void* state);
-extern void func_ov046_02083630(void* state);
-
-static const char* data_020636cc = "Seq_Boot(void *)";
-
-// Nonmatching: Differences in overlay handling
-void func_02001254(void) {
-    if (MainOvlDisp_GetRepeatCount() == 0) {
-        const char* seq = data_020636cc;
-
-        void* binData = Mem_AllocHeapTail(&gDebugHeap, 0x304);
-
-        Mem_SetSequence(&gDebugHeap, binData, seq);
-        func_0203b2d0(0, binData, Mem_GetBlockSize(&gDebugHeap, binData));
-        MainOvlDisp_SetCbArg(binData);
-        BinMgr_Init(binData, 8);
-        PacMgr_Init(binData + 0x60, 0x20);
-        DatMgr_Init(binData + 0xC0, 0x100);
-        MainOvlDisp_IncrementRepeatCount();
-        MainOvlDisp_Push(OVERLAY_37_ID, func_ov037_0208370c, NULL, 0);
-    } else {
-        MainOvlDisp_Push(OVERLAY_46_ID, func_ov046_02083630, NULL, 0);
     }
 }

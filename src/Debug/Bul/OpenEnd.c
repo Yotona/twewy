@@ -101,22 +101,20 @@ void func_ov037_020824a0(void) {
 }
 
 void func_ov037_0208280c(void) {
-    if (System_CheckFlag(SYSFLAG_UNKNOWN_0) == 0) {
-        return;
+    if (SystemStatusFlags.vblank != FALSE) {
+        Display_Commit();
+        DMA_Flush();
+        DC_PurgeRange(&data_0206770c, 0x400);
+        GX_LoadOam(&data_0206770c, 0, 0x400);
+        DC_PurgeRange(&data_02068798, 0x400);
+        GXs_LoadOam(&data_02068798, 0, 0x400);
+        DC_PurgeRange(&data_02066aec, 0x400);
+        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
+        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
+        DC_PurgeRange(&data_02066eec, 0x400);
+        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
+        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
     }
-    Display_Commit();
-    DMA_Flush();
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
-    DC_PurgeRange(&data_02066aec, 0x400);
-    GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-    GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-    DC_PurgeRange(&data_02066eec, 0x400);
-    GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-    GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
-    return;
 }
 
 void func_ov037_020828dc(void) {
