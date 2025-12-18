@@ -1,13 +1,13 @@
+#include "DatMgr.h"
 #include "Input.h"
 #include "Memory.h"
-#include "NitroSDK/fs.h"
 #include "OverlayDispatcher.h"
 #include "OverlayManager.h"
 #include "Random.h"
 #include "System.h"
 #include "common_data.h"
-#include <NitroSDK/os/interrupt.h>
-#include <NitroSDK/os/region.h>
+#include <NitroSDK/fs.h>
+#include <NitroSDK/os.h>
 
 extern vu32 data_02066a58;
 
@@ -15,7 +15,7 @@ extern s32 data_020636b8;
 extern s32 data_0206a9bc;
 extern s32 data_020636a0;
 
-extern void func_02001254();
+extern void Boot(void*);
 
 void main(void) {
     OS_InitAllSystems();
@@ -134,7 +134,7 @@ void main(void) {
         DMA_Init(0x100);
         Input_Init(&InputStatus, 8, 1, 2);
         MainOvlDisp_Init();
-        MainOvlDisp_Push(OVERLAY_ID_NONE, &func_02001254, NULL, 0);
+        MainOvlDisp_Push(OVERLAY_ID_NONE, &Boot, NULL, 0);
 
         SystemStatusFlags.unk_02 = TRUE;
 
@@ -142,7 +142,7 @@ void main(void) {
         OvlDisp_InitUnused2();
         OvlDisp_InitUnused1();
         RNG_SetSeed(0);
-        DatMgr_Init(0, 0);
+        DatMgr_Init(NULL, 0);
         func_0200cef0(0);
         SysControl.frameCount = 0;
         TouchInput_Init();

@@ -1,3 +1,4 @@
+#include <NitroSDK/os/cpustat.h>
 #include <NitroSDK/os/mutex.h>
 #include <NitroSDK/os/thread.h>
 #include <NitroSDK/util.h>
