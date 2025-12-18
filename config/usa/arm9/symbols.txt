@@ -222,16 +222,20 @@ func_02006930 kind:function(arm,size=0x7c) addr:0x02006930
 func_020069ac kind:function(arm,size=0x9c) addr:0x020069ac
 func_02006a48 kind:function(arm,size=0x3c) addr:0x02006a48
 func_02006a84 kind:function(arm,size=0x54) addr:0x02006a84
-func_02006ad8 kind:function(arm,size=0xc8) addr:0x02006ad8
-func_02006ba0 kind:function(arm,size=0x190) addr:0x02006ba0
-func_02006d30 kind:function(arm,size=0x1c) addr:0x02006d30
-func_02006d4c kind:function(arm,size=0x34) addr:0x02006d4c
-func_02006d80 kind:function(arm,size=0x34) addr:0x02006d80
-func_02006db4 kind:function(arm,size=0x3c) addr:0x02006db4
-func_02006df0 kind:function(arm,size=0x68) addr:0x02006df0
-func_02006e58 kind:function(arm,size=0xc8) addr:0x02006e58
-func_02006f20 kind:function(arm,size=0x1c) addr:0x02006f20
-func_02006f3c kind:function(arm,size=0x14) addr:0x02006f3c
+
+/////////////////////////////////////////////////////////////
+// src/TouchInput.c
+/////////////////////////////////////////////////////////////
+TouchInput_Init kind:function(arm,size=0xc8) addr:0x02006ad8
+TouchInput_Update kind:function(arm,size=0x190) addr:0x02006ba0
+TouchInput_IsTouchActive kind:function(arm,size=0x1c) addr:0x02006d30
+TouchInput_WasTouchPressed kind:function(arm,size=0x34) addr:0x02006d4c
+TouchInput_WasTouchReleased kind:function(arm,size=0x34) addr:0x02006d80
+TouchInput_IsBeingHeld kind:function(arm,size=0x3c) addr:0x02006db4
+TouchInput_GetCoord kind:function(arm,size=0x68) addr:0x02006df0
+TouchInput_GetDelta kind:function(arm,size=0xc8) addr:0x02006e58
+TouchInput_GetHoldDuration kind:function(arm,size=0x1c) addr:0x02006f20
+TouchInput_SetHoldThreshold kind:function(arm,size=0x14) addr:0x02006f3c
 
 /////////////////////////////////////////////////////////////
 // src/OverlayDispatcher.c
@@ -3514,8 +3518,11 @@ memLabelFree kind:data(any) addr:0x02063744
 RngSeed kind:data(any) addr:0x02063760 local
 
 data_02063764 kind:data(any) addr:0x02063764
-data_0206377c kind:data(any) addr:0x0206377c
-data_020637b8 kind:data(any) addr:0x020637b8
+
+/////////////////////////////////////////////////////////////
+// src/TouchInput.c
+/////////////////////////////////////////////////////////////
+TouchState kind:data(any) addr:0x0206377c local
 
 /////////////////////////////////////////////////////////////
 // src/BinMgr.c

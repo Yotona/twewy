@@ -140,7 +140,7 @@ void main(void) {
         DatMgr_Init(0, 0);
         func_0200cef0(0);
         SysControl.frameCount = 0;
-        func_02006ad8();
+        TouchInput_Init();
         func_020415a4();
         func_02025b1c();
 

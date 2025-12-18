@@ -1,5 +1,6 @@
 #include "Debug/OpenEnd.h"
 #include "Display.h"
+#include "TouchInput.h"
 
 /*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
 void func_ov037_020824a0(void) {
@@ -357,12 +358,9 @@ void        func_ov037_02082f60(OpenEndState* r0) {
 
 /* Nonmatching: Opcode reordering*/
 void func_ov037_020830a8(OpenEndState* r0) {
-    typedef struct {
-        s32 x;
-        s32 y;
-    } TouchCoords;
-    TouchCoords coords;
-    func_02006df0(&coords); // TODO: Confirm that this function is for TouchScreen info
+    TouchCoord coords;
+
+    TouchInput_GetCoord(&coords);
     switch (r0->unk_11A20) {
         case 0:
             if (r0->unk_11A24 <= 0x9e340) {
@@ -486,8 +484,8 @@ void func_ov037_0208345c(OpenEndState* r0) {
     g_DisplaySettings.subControl.brightness = temp;
     func_0200cef0(&(r0->unk_10));
     Input_Init(&InputStatus, 8, 1, 2);
-    func_02006ad8();
-    func_02006ba0();
+    TouchInput_Init();
+    TouchInput_Update();
     func_02025b1c();
     data_02066a58 &= ~0x8;
     r0->dataType = &data_02066a58;
@@ -506,8 +504,8 @@ void func_ov037_02083604(OpenEndState* r0) {
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    func_02006ba0();
-    if (func_02006d4c() != 0) {
+    TouchInput_Update();
+    if (TouchInput_WasTouchPressed() != 0) {
         data_ov037_02083e04 = 0x1;
     }
     EasyTask_UpdatePool(&r0->unk_11590);
@@ -606,32 +604,26 @@ const u32 OpenEnd_TitleScreen_ButtonInfo[][5] = {
     {0xD7, 0x1F, 0x19, 0x01, 0x01}
 };
 
-/*Nonmatching: Coords -> Coords2 copying doesn't produce matching assembly*/
+// Nonmatching
 int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 taskParam) {
-    typedef struct {
-        s32 x;
-        s32 y;
-    } TouchCoords;
-    TouchCoords  coords, coords2;
+    TouchCoord   coords, coords2;
     UnkTaskData* unk = r1->data;
-    func_02006df0(&coords); // TODO: Confirm that this function is for TouchScreen info
-    u32 temp1 = coords.x;
-    u32 temp2 = coords.y;
-    coords2.x = temp1;
-    coords2.y = temp2;
-    if (data_ov037_02083e04 != 0) {
-        if (func_02006d30() != 0) {
-            if (OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords2.x, coords2.y) != FALSE) {
-                unk->unk_0C = 0x82;
-                unk->unk_0E = 0x62;
-            }
-        }
+    TouchInput_GetCoord(&coords2);
+
+    coords = coords2;
+
+    if (data_ov037_02083e04 != 0 && TouchInput_IsTouchActive() != FALSE &&
+        OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords.x, coords.y) != FALSE)
+    {
+        unk->unk_0C = 0x82;
+        unk->unk_0E = 0x62;
     } else {
         unk->unk_0C = 0x80;
         unk->unk_0E = 0x60;
     }
-    if (data_ov037_02083e04 != 0 && func_02006d80() != 0) {
-        if (OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords2.x, coords2.y) != FALSE) {
+
+    if (data_ov037_02083e04 != 0 && TouchInput_WasTouchReleased() != FALSE) {
+        if (OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords.x, coords.y) != FALSE) {
             func_ov037_0208374c(OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][1]);
         }
     }

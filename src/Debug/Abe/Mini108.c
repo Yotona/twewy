@@ -186,7 +186,7 @@ void func_ov000_02082b1c(Mini108State* state) {
 
     g_DisplaySettings.subControl.layers = LAYER_BG0 | LAYER_BG2 | LAYER_OBJ;
 
-    func_02006ad8();
+    TouchInput_Init();
     s32 temp         = func_0200cef0(&state->unk_48D0);
     state->unk_15e50 = temp;
     Data* temp1      = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
@@ -303,7 +303,7 @@ void func_ov000_02082944(Mini108State* stateptr) {
 
     OverlayTag* s_04;
     OverlayTag* s_0C;
-    func_02006ba0();
+    TouchInput_Update();
 
     Text_RenderToScreen(stateptr->unk_80, 0, 0xa, func_02006930("Score : %6d", stateptr->unk_40));
     func_0200283c(&data_020676ec, 0, 0);

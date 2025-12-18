@@ -1,5 +1,6 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
+#include "TouchInput.h"
 #include <NitroSDK/fx.h>
 
 extern TaskHandle data_0205cb10;
@@ -112,13 +113,15 @@ void func_ov046_02082874(DebugLauncherState* state) {
     0x18: u32 //gridX?
     0x1C: u32 //gridY?
     */
-    s32 stackframe[8];
+    s32 stackframe[6];
 
-    func_02006df0(stackframe[2]);  // populate touchscreen info?
+    TouchCoord touch;
 
-    if (func_02006d4c() == TRUE) { // if OK button pressed?
-        if (stackframe[3] < 64) {
-            u32 selectedCell = (((stackframe[3] - 64) / 32) * 8) + (stackframe[2] / 32);
+    TouchInput_GetCoord(&touch);
+
+    if (TouchInput_WasTouchPressed() == TRUE) {
+        if (touch.y < 64) {
+            u32 selectedCell = (((touch.y - 64) / 32) * 8) + (touch.x / 32);
             if (selectedCell == 0xF) { // Why 0xF?
                 if (state->selectedCategoryIndex >= 0 && state->selectedOptionIndex >= 0) {
                     DebugOvlDisp_Pop();
@@ -139,10 +142,12 @@ void func_ov046_02082874(DebugLauncherState* state) {
         }
     }
 
-    if (func_02006d30() != TRUE) // if Category button pressed, render option buttons?
+    if (TouchInput_IsTouchActive() != TRUE) {
         return;
-    if (stackframe[3] < 64) {
-        u32 selectedCell = (((stackframe[3] - 64) / 32) * 8) + (stackframe[2] / 32);
+    }
+
+    if (touch.y < 64) {
+        u32 selectedCell = (((touch.y - 64) / 32) * 8) + (touch.x / 32);
         if (selectedCell < state->unk_1C) {
             if (selectedCell != state->selectedCategoryIndex) {
                 func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_24[state->selectedCategoryIndex]),
@@ -351,7 +356,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
 
     g_DisplaySettings.subControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
 
-    func_02006ad8();
+    TouchInput_Init();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);
     state->unk_1164C = func_0200cef0(state->unk_CC);
     EasyList_InsertSorted(&state->unk_list_15F14, NULL, func_0200cef0(state->unk_CC)); // is it actually NULL?
@@ -423,7 +428,7 @@ void func_ov046_destructor_02083454(DebugLauncherState* state) {
 void func_ov046_main_020834c0(DebugLauncherState* state) {
     state->buttonState = InputStatus.buttonState;
 
-    func_02006ba0();
+    TouchInput_Update();
     func_0200283c(&data_020676ec, 0, 0);
     func_0200283c(&data_02068778, 0, 0);
     func_02003440(&data_020676ec);
