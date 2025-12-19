@@ -52,12 +52,13 @@ args = parser.parse_args()
 # Config
 GAME = "twewy"
 DSD_VERSION = "v0.10.2"
-WIBO_VERSION = "1.0.0-alpha.3"
-OBJDIFF_VERSION = "v3.3.1"
+WIBO_VERSION = "1.0.0"
+OBJDIFF_VERSION = "v3.4.5"
 MWCC_DEFAULT_VERSION = "2.0/sp1p5"
 DECOMP_ME_COMPILER = "mwcc_30_131"
 
 COMMON_CC_FLAGS = (
+    "-O4,p",  # Optimize heavily, prioritize speed
     "-enum int",  # Use int-sized enums
     "-char signed",  # Char type is signed
     "-proc arm946e",  # Target processor
@@ -74,9 +75,15 @@ COMMON_CC_FLAGS = (
     "-enc SJIS",  # Use Shift-JIS encoding
 )
 
-DEFAULT_CC_FLAGS = " ".join(("-O4,p", *COMMON_CC_FLAGS, "-ipa file"))
+DEFAULT_CC_FLAGS = " ".join(
+    (*COMMON_CC_FLAGS, "-ipa file", "-str noreuse", "-Cpp_exceptions off")
+)
 
-OLD_MWCC_CC_FLAGS = " ".join(("-O4,p", *COMMON_CC_FLAGS))
+OLD_MWCC_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
+
+MSL_CC_FLAGS = " ".join(
+    (*COMMON_CC_FLAGS, "-ipa file", "-str reuse", "-Cpp_exceptions on")
+)
 
 
 @dataclass(frozen=True)
@@ -90,16 +97,18 @@ DEFAULT_COMPILER_CONFIG = CompilerConfig(
     flags=DEFAULT_CC_FLAGS,
 )
 
-OLD_MWCC_COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
-    # Map source files that must use the older MWCC toolchain variant.
+MSL_COMPILER_CONFIG = CompilerConfig(
+    version=MWCC_DEFAULT_VERSION,
+    flags=MSL_CC_FLAGS,
+)
+
+# Configurations for when a file or directory needs different settings than the project default
+COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
         version="1.2/sp4",
         flags=OLD_MWCC_CC_FLAGS,
     ),
-}
-
-PER_SOURCE_COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
-    **OLD_MWCC_COMPILER_CONFIGS,
+    Path("libs/MSL"): MSL_COMPILER_CONFIG,
 }
 
 # Passed to all modules and final arm9.o link
@@ -170,7 +179,7 @@ def linker_executable_path(version: str) -> str:
 
 def compiler_versions_in_use() -> list[str]:
     versions: list[str] = [DEFAULT_COMPILER_CONFIG.version]
-    for config in PER_SOURCE_COMPILER_CONFIGS.values():
+    for config in COMPILER_CONFIGS.values():
         if config.version not in versions:
             versions.append(config.version)
     return versions
@@ -188,7 +197,13 @@ def to_repo_relative(path: Path) -> Path:
 
 def compiler_config_for_source(source_path: Path) -> CompilerConfig:
     relative_path = to_repo_relative(source_path)
-    return PER_SOURCE_COMPILER_CONFIGS.get(relative_path, DEFAULT_COMPILER_CONFIG)
+
+    # Check for exact file match first, then directory prefix match
+    for path, config in COMPILER_CONFIGS.items():
+        if relative_path == path or str(relative_path).startswith(str(path) + "/"):
+            return config
+
+    return DEFAULT_COMPILER_CONFIG
 
 
 # Includes
@@ -214,7 +229,9 @@ PYTHON = sys.executable
 
 
 class Project:
-    def __init__(self, game_version: str, *, platform: Platform, delinks_json: Any | None):
+    def __init__(
+        self, game_version: str, *, platform: Platform, delinks_json: Any | None
+    ):
         self.game_version = game_version
         """Version of the game"""
 
@@ -286,7 +303,7 @@ class Project:
         return self.delinks_json["files"]
 
     def delink_files(self) -> list[str]:
-        delink_files = [file['delink_file'] for file in self.files()]
+        delink_files = [file["delink_file"] for file in self.files()]
         return list(set(delink_files))
 
     def arm9_lcf_file(self) -> str:
@@ -402,7 +419,8 @@ def main():
         n.newline()
 
         n.rule(
-            name="mwld", command=f'{WINE} "{LD}" {LD_FLAGS} $extra_ld_flags @$objects_file $lcf_file -o $out'
+            name="mwld",
+            command=f'{WINE} "{LD}" {LD_FLAGS} $extra_ld_flags @$objects_file $lcf_file -o $out',
         )
         n.newline()
 
@@ -559,7 +577,7 @@ def add_extract_build(n: ninja_syntax.Writer, project: Project):
 
 def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.comment("Run linker")
-    objects_to_link = [file['object_to_link'] for file in project.files()]
+    objects_to_link = [file["object_to_link"] for file in project.files()]
     elf_file = str(project.arm9_o())
     lcf_file = project.arm9_lcf_file()
     objects_file = project.arm9_objects_file()
@@ -572,8 +590,8 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
             outputs=elf_file,
             variables={
                 "extra_ld_flags": ARM9_LD_FLAGS,
-                'lcf_file': str(lcf_file),
-                'objects_file': str(objects_file),
+                "lcf_file": str(lcf_file),
+                "objects_file": str(objects_file),
             },
         )
         n.newline()
@@ -634,16 +652,6 @@ def add_mwcc_builds(
             cc_flags.append("-lang=c++")
         elif is_c(source_file):
             cc_flags.append("-lang=c99")
-
-        # MSL specific flags
-        if str(source_file).startswith(str(libs_path / "MSL")):
-            str_flag = "-str reuse"
-            exc_flag = "-Cpp_exceptions on"
-        else:
-            str_flag = "-str noreuse"
-            exc_flag = "-Cpp_exceptions off"
-        cc_flags.append(str_flag)
-        cc_flags.append(exc_flag)
 
         compiler_config = compiler_config_for_source(source_file)
         compiler_path = compiler_executable_path(compiler_config.version)

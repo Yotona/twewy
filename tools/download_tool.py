@@ -30,7 +30,14 @@ def mwccarm_url(tag: str) -> str:
 
 
 def wibo_url(tag: str) -> str:
-    return f"https://github.com/decompals/wibo/releases/download/{tag}/wibo"
+    # Map platform to wibo binary name
+    if platform.system == "darwin":
+        binary = "wibo-macos"
+    elif platform.machine == "i686" or platform.machine == "i386":
+        binary = "wibo-i686"
+    else:  # x86_64
+        binary = "wibo-x86_64"
+    return f"https://github.com/decompals/wibo/releases/download/{tag}/{binary}"
 
 
 def objdiff_url(tag: str) -> str:
