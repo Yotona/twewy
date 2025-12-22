@@ -39,6 +39,12 @@ typedef struct {
 extern UnkStruct_0206b3cc data_0206b3cc;
 
 typedef struct {
+    /* 0x0 */ char pad_00[0x28];
+    /* 0x28 */ u16 unk_28;
+} UnkStruct_02074E10;
+extern UnkStruct_02074E10 data_02074e10;
+
+typedef struct {
     /* 0x00 */ s32   unk_00;
     /* 0x04 */ s32   unk_04;
     /* 0x08 */ s32   unk_08;
