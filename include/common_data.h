@@ -29,12 +29,6 @@ extern s32 data_0205a128;
 typedef struct {
     /* 0x0 */ s32 unk_00;
     /* 0x4 */ s32 unk_04;
-} UnkStruct_0206b3c4;
-extern UnkStruct_0206b3c4 data_0206b3c4;
-
-typedef struct {
-    /* 0x0 */ s32 unk_00;
-    /* 0x4 */ s32 unk_04;
 } UnkStruct_0206b3cc;
 extern UnkStruct_0206b3cc data_0206b3cc;
 

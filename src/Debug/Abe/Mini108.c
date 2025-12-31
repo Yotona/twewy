@@ -1,4 +1,5 @@
 #include "Debug/Mini108.h"
+#include "BgResMgr.h"
 #include "Display.h"
 #include "Input.h"
 #include "Interrupts.h"
@@ -218,9 +219,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
         r2_val -= 4;
     }
-    func_02009a74(data_0206b3c4.unk_00, temp_r1, g_DisplaySettings.engineState[0].bgSettings[2].charBase, 0, r2_val);
-    func_02009f18(data_0206b3c4.unk_00, temp_r6, g_DisplaySettings.engineState[0].bgSettings[2].screenBase,
-                  g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
+    BgResMgr_AllocChar32(g_BgResourceManagers[0], temp_r1, g_DisplaySettings.engineState[0].bgSettings[2].charBase, 0, r2_val);
+    BgResMgr_AllocScreen(g_BgResourceManagers[0], temp_r6, g_DisplaySettings.engineState[0].bgSettings[2].screenBase,
+                         g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
     func_0200adf8(data_0206b3cc.unk_00, temp_r5, 0, 0, 2);
     data_02066eec = 0x1F;
     temp2         = state->unk_84C;
@@ -247,11 +248,10 @@ void func_ov000_02082b1c(Mini108State* state) {
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
         r2_val -= 4;
     }
-    func_02009a74(data_0206b3c4.unk_04, temp_r1, g_DisplaySettings.engineState[1].bgSettings[2].charBase, 0, r2_val);
-    func_02009f18(data_0206b3c4.unk_04, temp_r6, g_DisplaySettings.engineState[1].bgSettings[2].screenBase,
-                  g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText);
-    func_0200adf8(data_0206b3c4.unk_04, temp_r5, 0, 0, 2);
-
+    BgResMgr_AllocChar32(g_BgResourceManagers[1], temp_r1, g_DisplaySettings.engineState[1].bgSettings[2].charBase, 0, r2_val);
+    BgResMgr_AllocScreen(g_BgResourceManagers[1], temp_r6, g_DisplaySettings.engineState[1].bgSettings[2].screenBase,
+                         g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText);
+    func_0200adf8(g_BgResourceManagers[1], temp_r5, 0, 0, 2);
     // func_0200eed4(&state->unk_84C->slotIndex, &state->unk_8D0, 0x4000, 0x100); is what this is. But it throws "IllegaL
     // operand" error.
     func_0200eed4(&state->unk_84C, &state->unk_8D0, 0x4000,

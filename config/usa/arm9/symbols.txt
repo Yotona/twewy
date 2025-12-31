@@ -340,26 +340,28 @@ EasyList_InsertBefore kind:function(arm,size=0x7c) addr:0x020090c4
 EasyList_InsertSorted kind:function(arm,size=0x80) addr:0x02009140
 EasyList_RemoveNode kind:function(arm,size=0xbc) addr:0x020091c0
 
-
+/////////////////////////////////////////////////////////////
+// src/BgResMgr.c
+/////////////////////////////////////////////////////////////
 func_0200927c kind:function(arm,size=0x240) addr:0x0200927c
-func_020094bc kind:function(arm,size=0xf8) addr:0x020094bc
-func_020095b4 kind:function(arm,size=0x74) addr:0x020095b4
-func_02009628 kind:function(arm,size=0xb8) addr:0x02009628
-func_020096e0 kind:function(arm,size=0x18) addr:0x020096e0
-func_020096f8 kind:function(arm,size=0x14) addr:0x020096f8
-func_0200970c kind:function(arm,size=0x44) addr:0x0200970c
-func_02009750 kind:function(arm,size=0x4c) addr:0x02009750
-func_0200979c kind:function(arm,size=0x20) addr:0x0200979c
-func_020097bc kind:function(arm,size=0x2b8) addr:0x020097bc
-func_02009a74 kind:function(arm,size=0xe0) addr:0x02009a74
-func_02009b54 kind:function(arm,size=0xf4) addr:0x02009b54
-func_02009c48 kind:function(arm,size=0xf4) addr:0x02009c48
-func_02009d3c kind:function(arm,size=0xe0) addr:0x02009d3c
-func_02009e1c kind:function(arm,size=0x74) addr:0x02009e1c
-func_02009e90 kind:function(arm,size=0x88) addr:0x02009e90
-func_02009f18 kind:function(arm,size=0x114) addr:0x02009f18
-func_0200a02c kind:function(arm,size=0x74) addr:0x0200a02c
-func_0200a0a0 kind:function(arm,size=0x88) addr:0x0200a0a0
+BgResMgr_AllocateVram kind:function(arm,size=0xf8) addr:0x020094bc
+BgResMgr_AllocateVramAligned kind:function(arm,size=0x74) addr:0x020095b4
+BgResMgr_FreeVram kind:function(arm,size=0xb8) addr:0x02009628
+BgResMgr_PopFree kind:function(arm,size=0x18) addr:0x020096e0
+BgResMgr_PushActive kind:function(arm,size=0x14) addr:0x020096f8
+BgResMgr_ResetResource kind:function(arm,size=0x44) addr:0x0200970c
+BgResMgr_RemoveActive kind:function(arm,size=0x4c) addr:0x02009750
+BgResMgr_RecycleResource kind:function(arm,size=0x20) addr:0x0200979c
+BgResMgr_Init kind:function(arm,size=0x2b8) addr:0x020097bc
+BgResMgr_AllocChar32 kind:function(arm,size=0xe0) addr:0x02009a74
+BgResMgr_AllocChar64 kind:function(arm,size=0xf4) addr:0x02009b54
+BgResMgr_AllocCharExtended kind:function(arm,size=0xf4) addr:0x02009c48
+BgResMgr_AllocCharAligned kind:function(arm,size=0xe0) addr:0x02009d3c
+BgResMgr_ReleaseChar kind:function(arm,size=0x74) addr:0x02009e1c
+BgResMgr_LoadCharToVram kind:function(arm,size=0x88) addr:0x02009e90
+BgResMgr_AllocScreen kind:function(arm,size=0x114) addr:0x02009f18
+BgResMgr_ReleaseScreen kind:function(arm,size=0x74) addr:0x0200a02c
+BgResMgr_LoadScreenToVram kind:function(arm,size=0x88) addr:0x0200a0a0
 
 
 func_0200a128 kind:function(arm,size=0x48) addr:0x0200a128
@@ -3307,7 +3309,7 @@ data_0205a128 kind:data(any) addr:0x0205a128
 RepeatButtons kind:data(any) addr:0x0205a928 local
 
 data_0205a95c kind:data(any) addr:0x0205a95c
-data_0205ad5c kind:data(any) addr:0x0205ad5c
+DefaultFlags kind:data(any) addr:0x0205ad5c
 data_0205ad64 kind:data(any) addr:0x0205ad64
 data_0205ad6c kind:data(any) addr:0x0205ad6c
 data_0205ad84 kind:data(any) addr:0x0205ad84
@@ -4283,8 +4285,11 @@ g_activePacMgr kind:bss addr:0x0206b3bc
 /////////////////////////////////////////////////////////////
 g_activeDatMgr kind:bss addr:0x0206b3c0
 
+/////////////////////////////////////////////////////////////
+// src/BgResMgr.c
+/////////////////////////////////////////////////////////////
+g_BgResourceManagers kind:bss addr:0x0206b3c4
 
-data_0206b3c4 kind:bss addr:0x0206b3c4
 data_0206b3cc kind:bss addr:0x0206b3cc
 data_0206b3d8 kind:bss addr:0x0206b3d8
 data_0206b3e4 kind:bss addr:0x0206b3e4

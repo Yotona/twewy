@@ -81,6 +81,11 @@ complete
     .text       start:0x02008F20 end:0x0200927C
     .data       start:0x02063818 end:0x02063828
 
+src/BgResMgr.c:
+    .text       start:0x0200927C end:0x0200A128
+    .rodata     start:0x0205AD5C end:0x0205AD64
+    .bss        start:0x0206B3C4 end:0x0206B3CC
+
 src/EasyTask.c:
 complete
     .text       start:0x0200F198 end:0x0200F86C
