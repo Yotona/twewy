@@ -516,6 +516,10 @@ func_0200f8c0 kind:function(arm,size=0x38) addr:0x0200f8c0
 func_0200f8f8 kind:function(arm,size=0x20) addr:0x0200f8f8
 func_0200f918 kind:function(arm,size=0x24) addr:0x0200f918
 func_0200f93c kind:function(arm,size=0x10) addr:0x0200f93c
+
+/////////////////////////////////////////////////////////////
+// src/Text.c
+/////////////////////////////////////////////////////////////
 func_0200f94c kind:function(arm,size=0x14) addr:0x0200f94c
 func_0200f960 kind:function(arm,size=0x80) addr:0x0200f960
 func_0200f9e0 kind:function(arm,size=0x30) addr:0x0200f9e0
@@ -540,8 +544,7 @@ func_02010808 kind:function(arm,size=0x68) addr:0x02010808
 func_02010870 kind:function(arm,size=0x18) addr:0x02010870
 func_02010888 kind:function(arm,size=0x18) addr:0x02010888
 func_020108a0 kind:function(arm,size=0x2c) addr:0x020108a0
-func_020108cc kind:function(arm,size=0x100) addr:0x020108cc
-func_020109cc kind:function(arm,size=0x4) addr:0x020109cc
+func_020108cc kind:function(arm,size=0x104) addr:0x020108cc
 func_020109d0 kind:function(arm,size=0x40) addr:0x020109d0
 func_02010a10 kind:function(arm,size=0x6c) addr:0x02010a10
 func_02010a7c kind:function(arm,size=0x60) addr:0x02010a7c
@@ -572,6 +575,7 @@ func_02011df8 kind:function(arm,size=0x60) addr:0x02011df8
 func_02011e58 kind:function(arm,size=0x3c) addr:0x02011e58
 func_02011e94 kind:function(arm,size=0x38) addr:0x02011e94
 func_02011ecc kind:function(arm,size=0x34) addr:0x02011ecc
+
 
 
 func_02011f00 kind:function(arm,size=0x44) addr:0x02011f00
@@ -3309,7 +3313,12 @@ data_0205a128 kind:data(any) addr:0x0205a128
 RepeatButtons kind:data(any) addr:0x0205a928 local
 
 data_0205a95c kind:data(any) addr:0x0205a95c
-DefaultFlags kind:data(any) addr:0x0205ad5c
+
+/////////////////////////////////////////////////////////////
+// src/BgResMgr.c
+/////////////////////////////////////////////////////////////
+DefaultFlags kind:data(any) addr:0x0205ad5c local
+
 data_0205ad64 kind:data(any) addr:0x0205ad64
 data_0205ad6c kind:data(any) addr:0x0205ad6c
 data_0205ad84 kind:data(any) addr:0x0205ad84
@@ -3321,7 +3330,13 @@ data_0205ae00 kind:data(any) addr:0x0205ae00
 data_0205ae24 kind:data(any) addr:0x0205ae24
 data_0205ae64 kind:data(any) addr:0x0205ae64
 data_0205aea4 kind:data(any) addr:0x0205aea4
+
+/////////////////////////////////////////////////////////////
+// src/Text.c
+/////////////////////////////////////////////////////////////
 data_0205aef4 kind:data(any) addr:0x0205aef4
+
+
 data_0205b0f4 kind:data(any) addr:0x0205b0f4
 data_0205b454 kind:data(any) addr:0x0205b454
 
