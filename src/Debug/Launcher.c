@@ -3,7 +3,7 @@
 #include "TouchInput.h"
 #include <NitroSDK/fx.h>
 
-extern TaskHandle data_0205cb10;
+extern TaskHandle Task_EasyFade;
 
 void func_ov046_020824a0(void) {
     Interrupts_Init();
@@ -388,7 +388,7 @@ void func_ov046_02083368(DebugLauncherState* state) {
     0x10 -> index modulus something?
     0x14 -> uhhhh TouchGridX?
     */
-    EasyTask_CreateTask(&state->unk_11650, &data_0205cb10, 0, 0, 0, 0);
+    EasyTask_CreateTask(&state->unk_11650, &Task_EasyFade, 0, 0, 0, 0);
     // index = 0;
     // stack->0xC = Categories[index](.unk_00?);
     // stack->0x10 = (index << 0x1D) >> 0x18; // what? is this just "index % 8"?

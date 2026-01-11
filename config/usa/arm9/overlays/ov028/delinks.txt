@@ -5,5 +5,8 @@
     .bss        start:0x020ed520 end:0x020ed840 kind:bss align:32
 
 src/Debug/Horii/NoiseReport.c:
-    .text       start:0x020E82D0 end:0x020E8BB0
-    .rodata     start:0x020ECF24 end:0x020ECF30
+    .text       start:0x020E7360 end:0x020ECD58
+    .rodata     start:0x020ECD58 end:0x020ED3D4
+    .ctor       start:0x020ED3D4 end:0x020ED3D8
+    .data       start:0x020ED3E0 end:0x020ED520
+    .bss        start:0x020ED520 end:0x020ED840

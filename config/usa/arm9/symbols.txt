@@ -3416,7 +3416,13 @@ data_0205ca88 kind:data(any) addr:0x0205ca88
 data_0205ca94 kind:data(any) addr:0x0205ca94
 data_0205caa4 kind:data(any) addr:0x0205caa4
 data_0205cac4 kind:data(any) addr:0x0205cac4
-data_0205cb10 kind:data(any) addr:0x0205cb10
+
+/////////////////////////////////////////////////////////////
+// src/EasyFade.c
+/////////////////////////////////////////////////////////////
+Task_EasyFade kind:data(any) addr:0x0205cb10
+
+
 data_0205cb1c kind:data(any) addr:0x0205cb1c
 data_0205cb2c kind:data(any) addr:0x0205cb2c
 data_0205cb3c kind:data(any) addr:0x0205cb3c

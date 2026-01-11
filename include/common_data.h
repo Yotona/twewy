@@ -3,6 +3,13 @@
 
 #include <types.h>
 
+extern s32 data_02069804;
+
+extern struct {
+    /* 0x00 */ char unk_00[0xC];
+    /* 0x0C */ s32  unk_0C;
+} data_0206a890;
+
 extern s32 data_0205c9b0;
 typedef struct {
     s32 unk_00;
@@ -29,6 +36,7 @@ extern s32 data_0205a128;
 typedef struct {
     /* 0x0 */ s32 unk_00;
     /* 0x4 */ s32 unk_04;
+    /* 0x8 */ s32 unk_08;
 } UnkStruct_0206b3cc;
 extern UnkStruct_0206b3cc data_0206b3cc;
 

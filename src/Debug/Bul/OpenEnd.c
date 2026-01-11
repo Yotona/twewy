@@ -454,7 +454,7 @@ void func_ov037_020833a8(OpenEndState* r0) {
 }
 
 extern vu32        data_02066a58;
-extern TaskHandle  data_0205cb10;
+extern TaskHandle  Task_EasyFade;
 static const char* seq_OpenEnd = "Seq_OpenEnd(void *)";
 /*Nomatching: regswaps*/
 void func_ov037_0208345c(OpenEndState* r0) {
@@ -492,7 +492,7 @@ void func_ov037_0208345c(OpenEndState* r0) {
     Mem_InitializeHeap(&r0->unk_11610, &r0->unk_1161C, 0x400);
     EasyTask_InitializePool(&r0->unk_11590, &r0->unk_11610, 0x10, 0, 0);
     data_ov037_02083e08 = &r0->unk_11590;
-    EasyTask_CreateTask(&r0->unk_11590, &data_0205cb10, 0, 0, 0, 0);
+    EasyTask_CreateTask(&r0->unk_11590, &Task_EasyFade, 0, 0, 0, 0);
     func_ov037_020833a8(r0);
     MainOvlDisp_IncrementRepeatCount();
 }

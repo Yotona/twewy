@@ -145,13 +145,13 @@ data_ov028_020ed24c kind:data(any) addr:0x020ed24c
 data_ov028_020ed254 kind:data(any) addr:0x020ed254
 data_ov028_020ed260 kind:data(any) addr:0x020ed260
 data_ov028_020ed318 kind:data(any) addr:0x020ed318
-data_ov028_020ed320 kind:data(any) addr:0x020ed320
+Tsk_NrepInterU$880 kind:data(any) addr:0x020ed320
 data_ov028_020ed32c kind:data(any) addr:0x020ed32c
 data_ov028_020ed3a4 kind:data(any) addr:0x020ed3a4
 data_ov028_020ed3ac kind:data(any) addr:0x020ed3ac
-data_ov028_020ed3b4 kind:data(any) addr:0x020ed3b4
+Tsk_NrepPreview$954 kind:data(any) addr:0x020ed3b4
 data_ov028_020ed3c0 kind:data(any) addr:0x020ed3c0
-data_ov028_020ed3c8 kind:data(any) addr:0x020ed3c8
+Tsk_NrepSeal kind:data(any) addr:0x020ed3c8
 data_ov028_020ed3e0 kind:data(any) addr:0x020ed3e0
 data_ov028_020ed3e4 kind:data(any) addr:0x020ed3e4
 data_ov028_020ed3e8 kind:data(any) addr:0x020ed3e8
@@ -163,7 +163,7 @@ data_ov028_020ed448 kind:data(any) addr:0x020ed448
 data_ov028_020ed458 kind:data(any) addr:0x020ed458
 data_ov028_020ed474 kind:data(any) addr:0x020ed474
 data_ov028_020ed484 kind:data(any) addr:0x020ed484
-data_ov028_020ed4a0 kind:data(any) addr:0x020ed4a0
+@881 kind:data(any) addr:0x020ed4a0 local
 data_ov028_020ed4b0 kind:data(any) addr:0x020ed4b0
 data_ov028_020ed4cc kind:data(any) addr:0x020ed4cc
 data_ov028_020ed4dc kind:data(any) addr:0x020ed4dc
