@@ -8,6 +8,7 @@
 extern s32 OVERLAY_0_ID;
 extern u32 OVERLAY_2_ID;
 extern u32 OVERLAY_30_ID;
+extern u32 OVERLAY_31_ID;
 extern u32 OVERLAY_37_ID;
 extern s32 OVERLAY_40_ID;
 extern u32 OVERLAY_43_ID;

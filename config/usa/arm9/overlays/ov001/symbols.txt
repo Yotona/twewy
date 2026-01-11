@@ -19,6 +19,6 @@ data_ov001_02082f98 kind:data(any) addr:0x02082f98
 data_ov001_02082fa0 kind:data(any) addr:0x02082fa0
 data_ov001_02082ff0 kind:data(any) addr:0x02082ff0
 data_ov001_02083020 kind:data(any) addr:0x02083020
-data_ov001_02083024 kind:data(any) addr:0x02083024
-data_ov001_02083030 kind:data(any) addr:0x02083030
-data_ov001_02083048 kind:data(any) addr:0x02083048
+@758 kind:data(any) addr:0x02083024 local
+@760 kind:data(any) addr:0x02083030 local
+@759 kind:data(any) addr:0x02083048 local
