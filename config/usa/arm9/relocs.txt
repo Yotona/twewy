@@ -4103,7 +4103,7 @@ from:0x020260e4 kind:arm_call to:0x02026014 module:main
 from:0x020260f8 kind:arm_call to:0x02026064 module:main
 from:0x02026148 kind:load to:0x0205ca94 module:main
 from:0x02026178 kind:load to:0x020751dc module:main
-from:0x0202617c kind:load to:0x020751f0 module:main
+from:0x0202617c kind:load to:0x020751dc add:0x14 module:main
 from:0x02026194 kind:arm_call to:0x0202614c module:main
 from:0x020261a8 kind:arm_call to:0x0202614c module:main
 from:0x020261d0 kind:load to:0x020751dc module:main

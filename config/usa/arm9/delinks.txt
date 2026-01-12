@@ -220,8 +220,10 @@ libs/CriWare/criss.c:
     .bss        start:0x02071B00 end:0x02071CF0
 
 src/EasyFade.c:
-    .rodata     start:0x0205CB10 end:0x0205CB2C
+    .text       start:0x0202614C end:0x02026528
+    .rodata     start:0x0205CB10 end:0x0205CB3C
     .data       start:0x02065C94 end:0x02065CA0
+    .bss        start:0x020751DC end:0x02075204
 
 src/SndMgr.c:
 complete

@@ -144,11 +144,11 @@ void func_ov041_02082a5c(STSampleState* param) {
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->unk_11580                         = func_0200cef0(state);
-    data_02066aec                            = 0;
-    g_DisplaySettings.mainControl.brightness = 0;
-    g_DisplaySettings.subControl.brightness  = 0;
-    data_02066eec                            = 0;
+    state->unk_11580                                    = func_0200cef0(state);
+    data_02066aec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
+    data_02066eec                                       = 0;
     func_ov041_020827cc(state);
     MainOvlDisp_IncrementRepeatCount();
 }

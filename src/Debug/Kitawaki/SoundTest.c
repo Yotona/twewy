@@ -1706,12 +1706,12 @@ void func_ov029_02082e40(SoundTestState* param) {
     MainOvlDisp_SetCbArg(state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
-    g_DisplaySettings.mainControl.layers     = LAYER_NONE;
-    state->unk_11580                         = func_0200cef0(state);
-    data_02066aec                            = 0;
-    g_DisplaySettings.mainControl.brightness = 0;
-    data_02066eec                            = 0;
-    g_DisplaySettings.subControl.brightness  = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers     = LAYER_NONE;
+    state->unk_11580                                    = func_0200cef0(state);
+    data_02066aec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    data_02066eec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov029_02082838(state);
     MainOvlDisp_IncrementRepeatCount();
 }

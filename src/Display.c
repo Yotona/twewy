@@ -27,8 +27,8 @@ static void Display_InitControlDefaults(DisplayControlSettings* dispcnt) {
 }
 
 static void Display_InitControls(void) {
-    Display_InitControlDefaults(&g_DisplaySettings.mainControl);
-    Display_InitControlDefaults(&g_DisplaySettings.subControl);
+    Display_InitControlDefaults(&g_DisplaySettings.controls[DISPLAY_MAIN]);
+    Display_InitControlDefaults(&g_DisplaySettings.controls[DISPLAY_SUB]);
 }
 
 static void Display_InitEngineDefaults(DisplayEngineState* engineState) {
@@ -134,8 +134,8 @@ static void Display_InitEngineDefaults(DisplayEngineState* engineState) {
 }
 
 static void Display_InitEngines(void) {
-    Display_InitEngineDefaults(&g_DisplaySettings.engineState[DISPLAY_ENGINE_MAIN]);
-    Display_InitEngineDefaults(&g_DisplaySettings.engineState[DISPLAY_ENGINE_SUB]);
+    Display_InitEngineDefaults(&g_DisplaySettings.engineState[DISPLAY_MAIN]);
+    Display_InitEngineDefaults(&g_DisplaySettings.engineState[DISPLAY_SUB]);
 }
 
 void Display_Init(void) {
@@ -144,7 +144,7 @@ void Display_Init(void) {
 }
 
 static void Display_ApplyControls(void) {
-    DisplayControlSettings* mainSettings = Display_GetMainControl();
+    DisplayControlSettings* mainSettings = Display_GetMainControls();
 
     if (mainSettings->displaying == TRUE) {
         GX_DispOn();
@@ -174,7 +174,7 @@ static void Display_ApplyControls(void) {
 
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT, mainSettings->brightness);
 
-    DisplayControlSettings* subSettings = Display_GetSubControl();
+    DisplayControlSettings* subSettings = Display_GetSubControls();
 
     if (subSettings->displaying == TRUE) {
         REG_DISPCNT_SUB_GET()->dispMode = GX_DISPMODE_GRAPHICS;
@@ -224,12 +224,12 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
             bg0->extPlttSlot    = extPlttSlot;
 
             switch (engine) {
-                case DISPLAY_ENGINE_MAIN:
-                    if (g_DisplaySettings.mainControl.dimension == GX2D3D_MODE_2D) {
+                case DISPLAY_MAIN:
+                    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
                         GX_SetBG0Control(screenSize, colorMode, screenBase, charBase, extPlttSlot);
                     }
                     return;
-                case DISPLAY_ENGINE_SUB:
+                case DISPLAY_SUB:
                     GXs_SetBG0Control(screenSize, colorMode, screenBase, charBase, extPlttSlot);
                     return;
             }
@@ -251,10 +251,10 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
             bg1->extPlttSlot    = extPlttSlot;
 
             switch (engine) {
-                case DISPLAY_ENGINE_MAIN:
+                case DISPLAY_MAIN:
                     GX_SetBG1Control(screenSize, colorMode, screenBase, charBase, extPlttSlot);
                     return;
-                case DISPLAY_ENGINE_SUB:
+                case DISPLAY_SUB:
                     GXs_SetBG1Control(screenSize, colorMode, screenBase, charBase, extPlttSlot);
                     return;
             }
@@ -277,10 +277,10 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
                     bg2->extPlttSlot    = 1;
 
                     switch (engine) {
-                        case DISPLAY_ENGINE_MAIN:
+                        case DISPLAY_MAIN:
                             GX_SetBG2ControlText(screenSize, colorMode, screenBase, charBase);
                             return;
-                        case DISPLAY_ENGINE_SUB:
+                        case DISPLAY_SUB:
                             GXs_SetBG2ControlText(screenSize, colorMode, screenBase, charBase);
                             return;
                     }
@@ -300,10 +300,10 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
                     bg2->charBase         = charBase;
 
                     switch (engine) {
-                        case DISPLAY_ENGINE_MAIN:
+                        case DISPLAY_MAIN:
                             GX_SetBG2ControlAffine(screenSize, overflow, screenBase, charBase);
                             return;
-                        case DISPLAY_ENGINE_SUB:
+                        case DISPLAY_SUB:
                             GXs_SetBG2ControlAffine(screenSize, overflow, screenBase, charBase);
                             return;
                     }
@@ -324,10 +324,10 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
                     bg2->extPlttSlot    = 1;
 
                     switch (engine) {
-                        case DISPLAY_ENGINE_MAIN:
+                        case DISPLAY_MAIN:
                             GX_SetBG2ControlPltt(screenSize, overflow, screenBase, charBase);
                             return;
-                        case DISPLAY_ENGINE_SUB:
+                        case DISPLAY_SUB:
                             GXs_SetBG2ControlPltt(screenSize, overflow, screenBase, charBase);
                             return;
                     }
@@ -345,10 +345,10 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
                     bg2->screenBaseBmp    = screenBase;
 
                     switch (engine) {
-                        case DISPLAY_ENGINE_MAIN:
+                        case DISPLAY_MAIN:
                             GX_SetBG2ControlBmp256(screenSize, overflow, screenBase);
                             return;
-                        case DISPLAY_ENGINE_SUB:
+                        case DISPLAY_SUB:
                             GXs_SetBG2ControlBmp256(screenSize, overflow, screenBase);
                             return;
                     }
@@ -366,18 +366,18 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
                     bg2->screenBaseBmp       = screenBase;
 
                     switch (engine) {
-                        case DISPLAY_ENGINE_MAIN:
+                        case DISPLAY_MAIN:
                             GX_SetBG2ControlBmpDirect(screenSize, overflow, screenBase);
                             return;
-                        case DISPLAY_ENGINE_SUB:
+                        case DISPLAY_SUB:
                             GXs_SetBG2ControlBmpDirect(screenSize, overflow, screenBase);
                             return;
                     }
                 } break;
 
                 case DISPLAY_BGMODE_BMPLARGE: {
-                    if (engine == DISPLAY_ENGINE_MAIN) {
-                        DisplayBGSettings* bg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
+                    if (engine == DISPLAY_MAIN) {
+                        DisplayBGSettings* bg2 = Display_GetBG2Settings(DISPLAY_MAIN);
 
                         GXBGOverflow           overflow   = bgSettings->overflow;
                         GXBGScreenSizeBmpLarge screenSize = bgSettings->screenSizeBmpLarge;
@@ -399,43 +399,43 @@ static void Display_ApplyBGLayer(DisplayEngine engine, DisplayBGLayer layer) {
 
 // Nonmatching: Work in progress, many stack and inlined bitshifting differences
 static void Display_ApplyRenderState(void) {
-    DisplayControlSettings* mainControl = Display_GetMainControl();
-    DisplayEngineState*     mainState   = &g_DisplaySettings.engineState[DISPLAY_ENGINE_MAIN];
+    DisplayControlSettings* controls  = Display_GetMainControls();
+    DisplayEngineState*     mainState = &g_DisplaySettings.engineState[DISPLAY_MAIN];
 
     GX_SetBG0Priority(mainState->bgSettings[DISPLAY_BG0].priority);
     GX_SetBG1Priority(mainState->bgSettings[DISPLAY_BG1].priority);
     GX_SetBG2Priority(mainState->bgSettings[DISPLAY_BG2].priority);
     GX_SetBG3Priority(mainState->bgSettings[DISPLAY_BG3].priority);
 
-    Display_ApplyBGLayer(DISPLAY_ENGINE_MAIN, DISPLAY_BG0);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_MAIN, DISPLAY_BG1);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_MAIN, DISPLAY_BG2);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_MAIN, DISPLAY_BG3);
+    Display_ApplyBGLayer(DISPLAY_MAIN, DISPLAY_BG0);
+    Display_ApplyBGLayer(DISPLAY_MAIN, DISPLAY_BG1);
+    Display_ApplyBGLayer(DISPLAY_MAIN, DISPLAY_BG2);
+    Display_ApplyBGLayer(DISPLAY_MAIN, DISPLAY_BG3);
 
     GX_SetBG0Mosaic(mainState->bgSettings[DISPLAY_BG0].mosaic);
     GX_SetBG1Mosaic(mainState->bgSettings[DISPLAY_BG1].mosaic);
     GX_SetBG2Mosaic(mainState->bgSettings[DISPLAY_BG2].mosaic);
     GX_SetBG3Mosaic(mainState->bgSettings[DISPLAY_BG3].mosaic);
 
-    if (mainControl->layers & LAYER_BG0) {
+    if (controls->layers & LAYER_BG0) {
 
         // TODO: This if statement compiles as though being accessed via 0x0206aa78
-        if (Display_GetMainControl()->dimension == GX2D3D_MODE_2D) {
+        if (Display_GetMainControls()->dimension == GX2D3D_MODE_2D) {
             GX_SetBG0Offset(mainState->bg0hOffset >> 0xC, mainState->bg0vOffset >> 0xC);
         } else {
             func_02036f78(mainState->bg0hOffset >> 0xC);
         }
     }
 
-    if (mainControl->layers & LAYER_BG1) {
+    if (controls->layers & LAYER_BG1) {
         GX_SetBG1Offset(mainState->bg1hOffset >> 0xC, mainState->bg1vOffset >> 0xC);
     }
 
-    if ((mainControl->layers & LAYER_BG2) && (mainState->bgSettings[DISPLAY_BG2].bgMode == DISPLAY_BGMODE_TEXT)) {
+    if ((controls->layers & LAYER_BG2) && (mainState->bgSettings[DISPLAY_BG2].bgMode == DISPLAY_BGMODE_TEXT)) {
         GX_SetBG2Offset(mainState->bg2hOffset >> 0xC, mainState->bg2vOffset >> 0xC);
     }
 
-    if ((mainControl->layers & LAYER_BG3) && (mainState->bgSettings[DISPLAY_BG3].bgMode == DISPLAY_BGMODE_TEXT)) {
+    if ((controls->layers & LAYER_BG3) && (mainState->bgSettings[DISPLAY_BG3].bgMode == DISPLAY_BGMODE_TEXT)) {
         GX_SetBG3Offset(mainState->bg3hOffset >> 0xC, mainState->bg3vOffset >> 0xC);
     }
 
@@ -470,7 +470,7 @@ static void Display_ApplyRenderState(void) {
 
     if (mainState->unk_17C == 1) {
         mainState->unk_17C = 0;
-        func_020063b8(DISPLAY_ENGINE_MAIN, mainState->unk_180, mainState->unk_184, mainState->unk_188, mainState->unk_18C,
+        func_020063b8(DISPLAY_MAIN, mainState->unk_180, mainState->unk_184, mainState->unk_188, mainState->unk_18C,
                       mainState->unk_190, mainState->bg2hOffset, mainState->bg2vOffset);
     }
 
@@ -484,7 +484,7 @@ static void Display_ApplyRenderState(void) {
 
     if (mainState->unk_1A8 == 1) {
         mainState->unk_1A8 = 0;
-        func_020064cc(DISPLAY_ENGINE_MAIN, mainState->unk_1AC, mainState->unk_1B0, mainState->unk_1B4, mainState->unk_1B8,
+        func_020064cc(DISPLAY_MAIN, mainState->unk_1AC, mainState->unk_1B0, mainState->unk_1B4, mainState->unk_1B8,
                       mainState->unk_1BC, mainState->bg3hOffset, mainState->bg3vOffset);
     }
     REG_BG3PA = mainState->bg3dx;
@@ -495,37 +495,37 @@ static void Display_ApplyRenderState(void) {
     REG_BG3X = mainState->bg3posX;
     REG_BG3Y = mainState->bg3posY;
 
-    DisplayControlSettings* subControl = Display_GetSubControl();
-    DisplayEngineState*     subState   = &g_DisplaySettings.engineState[DISPLAY_ENGINE_SUB];
+    controls                     = Display_GetSubControls();
+    DisplayEngineState* subState = &g_DisplaySettings.engineState[DISPLAY_SUB];
 
     GXs_SetBG0Priority(subState->bgSettings[DISPLAY_BG0].priority);
     GXs_SetBG1Priority(subState->bgSettings[DISPLAY_BG1].priority);
     GXs_SetBG2Priority(subState->bgSettings[DISPLAY_BG2].priority);
     GXs_SetBG3Priority(subState->bgSettings[DISPLAY_BG3].priority);
 
-    Display_ApplyBGLayer(DISPLAY_ENGINE_SUB, DISPLAY_BG0);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_SUB, DISPLAY_BG1);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_SUB, DISPLAY_BG2);
-    Display_ApplyBGLayer(DISPLAY_ENGINE_SUB, DISPLAY_BG3);
+    Display_ApplyBGLayer(DISPLAY_SUB, DISPLAY_BG0);
+    Display_ApplyBGLayer(DISPLAY_SUB, DISPLAY_BG1);
+    Display_ApplyBGLayer(DISPLAY_SUB, DISPLAY_BG2);
+    Display_ApplyBGLayer(DISPLAY_SUB, DISPLAY_BG3);
 
     GXs_SetBG0Mosaic(subState->bgSettings[DISPLAY_BG0].mosaic);
     GXs_SetBG1Mosaic(subState->bgSettings[DISPLAY_BG1].mosaic);
     GXs_SetBG2Mosaic(subState->bgSettings[DISPLAY_BG2].mosaic);
     GXs_SetBG3Mosaic(subState->bgSettings[DISPLAY_BG3].mosaic);
 
-    if (subControl->layers & 1) {
+    if (controls->layers & 1) {
         GXs_SetBG0Offset(subState->bg0hOffset >> 0xC, subState->bg0vOffset >> 0xC);
     }
 
-    if (subControl->layers & 2) {
+    if (controls->layers & 2) {
         GXs_SetBG1Offset(subState->bg1hOffset >> 0xC, subState->bg1vOffset >> 0xC);
     }
 
-    if ((subControl->layers & 4) && (subState->bgSettings[2].bgMode == 0)) {
+    if ((controls->layers & 4) && (subState->bgSettings[2].bgMode == 0)) {
         GXs_SetBG2Offset(subState->bg2hOffset >> 0xC, subState->bg2vOffset >> 0xC);
     }
 
-    if ((subControl->layers & 8) && (subState->bgSettings[3].bgMode == 0)) {
+    if ((controls->layers & 8) && (subState->bgSettings[3].bgMode == 0)) {
         GXs_SetBG3Offset(subState->bg3hOffset >> 0xC, subState->bg3vOffset >> 0xC);
     }
 
@@ -561,7 +561,7 @@ static void Display_ApplyRenderState(void) {
     }
     if (subState->unk_17C == 1) {
         subState->unk_17C = 0;
-        func_020063b8(DISPLAY_ENGINE_SUB, subState->unk_180, subState->unk_184, subState->unk_188, subState->unk_18C,
+        func_020063b8(DISPLAY_SUB, subState->unk_180, subState->unk_184, subState->unk_188, subState->unk_18C,
                       subState->unk_190, subState->bg2hOffset, subState->bg2vOffset);
     }
 
@@ -574,7 +574,7 @@ static void Display_ApplyRenderState(void) {
 
     if (subState->unk_1A8 == 1) {
         subState->unk_1A8 = 0;
-        func_020064cc(DISPLAY_ENGINE_SUB, subState->unk_1AC, subState->unk_1B0, subState->unk_1B4, subState->unk_1B8,
+        func_020064cc(DISPLAY_SUB, subState->unk_1AC, subState->unk_1B0, subState->unk_1B4, subState->unk_1B8,
                       subState->unk_1BC, subState->bg3hOffset, subState->bg3vOffset);
     }
 

@@ -196,7 +196,7 @@ void BgResMgr_Init(BgResMgr* mgr, DisplayEngine engine) {
         mgr->freeList.next = resource;
     }
 
-    if (engine == DISPLAY_ENGINE_MAIN) {
+    if (engine == DISPLAY_MAIN) {
         s32 bank = GX_GetBankForBg();
         switch (bank) {
             case GX_VRAM_NONE:
@@ -324,8 +324,8 @@ void* BgResMgr_AllocChar32(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
     BgResMgr_ResetResource(arg0, temp_r0);
 
     s32 var_r5 = 0;
-    if (arg0->engine == DISPLAY_ENGINE_MAIN) {
-        var_r5 = g_DisplaySettings.mainControl.charBase << 0x10;
+    if (arg0->engine == DISPLAY_MAIN) {
+        var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
 
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 5));
@@ -365,8 +365,8 @@ void* BgResMgr_AllocChar64(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
     BgResMgr_ResetResource(arg0, temp_r0);
 
     s32 var_r5 = 0;
-    if (arg0->engine == DISPLAY_ENGINE_MAIN) {
-        var_r5 = g_DisplaySettings.mainControl.charBase << 0x10;
+    if (arg0->engine == DISPLAY_MAIN) {
+        var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
 
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
@@ -406,8 +406,8 @@ void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3,
     BgResMgr_ResetResource(arg0, temp_r0);
 
     s32 var_r5 = 0;
-    if (arg0->engine == DISPLAY_ENGINE_MAIN) {
-        var_r5 = g_DisplaySettings.mainControl.charBase << 0x10;
+    if (arg0->engine == DISPLAY_MAIN) {
+        var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
 
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
@@ -444,8 +444,8 @@ BgResource* BgResMgr_AllocCharAligned(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1
     BgResMgr_ResetResource(mgr, resource);
 
     s32 var_r5 = 0;
-    if (mgr->engine == DISPLAY_ENGINE_MAIN) {
-        var_r5 = g_DisplaySettings.mainControl.charBase << 0x10;
+    if (mgr->engine == DISPLAY_MAIN) {
+        var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
 
     s32 offset = var_r5 + (arg2 << 0xE);
@@ -550,8 +550,8 @@ BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1, s32
     BgResMgr_ResetResource(mgr, resource);
 
     s32 var_r6 = 0;
-    if (mgr->engine == DISPLAY_ENGINE_MAIN) {
-        var_r6 = g_DisplaySettings.mainControl.screenBase << 0x10;
+    if (mgr->engine == DISPLAY_MAIN) {
+        var_r6 = g_DisplaySettings.controls[DISPLAY_MAIN].screenBase << 0x10;
     }
     s32 offset = var_r6 + (screenBase << 0xB);
 

@@ -27,8 +27,8 @@ typedef struct {
     /* 0x11A24 */ s32      unk_11A24;
     /* 0x11A28 */ s32      unk_11A28;
     /* 0x11A2C */ s32      unk_11A2C;
-    /* 0x11A30 */ s32      unk_11A30;
-    /* 0x11A34 */ s32      unk_11A34;
+    /* 0x11A30 */ s32      fadeBrightness;
+    /* 0x11A34 */ s32      fadeRate;
     /* 0x11A38 */ u16      unk_11A38;
     /* 0x11A3A */ s16      pad_11A3A;
     /* 0x11A3C */ s32      unk_11A3C;

@@ -106,11 +106,11 @@ void func_ov001_020829c0(FontState* arg0) {
     DatMgr_AllocateSlot();
     arg0->unk_11584 = prevCbArg;
     func_ov001_02082f6c();
-    arg0->unk_11580                          = func_0200cef0(NULL);
-    data_02066aec                            = 0;
-    g_DisplaySettings.mainControl.brightness = 0;
-    data_02066eec                            = 0;
-    g_DisplaySettings.subControl.brightness  = 0;
+    arg0->unk_11580                                     = func_0200cef0(NULL);
+    data_02066aec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    data_02066eec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov001_0208288c(arg0);
     MainOvlDisp_IncrementRepeatCount();
 }
@@ -188,9 +188,9 @@ void func_ov001_02082b74(void) {
     func_0203b2d0(0, 0x6800000, 0xa4000);
     Display_CommitSynced();
 
-    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
-    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_3D;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.controls[DISPLAY_MAIN].bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
     DisplayBGSettings* mainBg1 = &g_DisplaySettings.engineState[0].bgSettings[1];
@@ -212,14 +212,14 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_32K;
-    g_DisplaySettings.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.subControl.objTileMode  = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.mainControl.layers      = 17;
-    data_0206aa78                             = 0x300010;
-    data_0206aa7c                             = 0x400040;
-    g_DisplaySettings.subControl.bgMode       = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_32K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers      = 17;
+    data_0206aa78                                        = 0x300010;
+    data_0206aa7c                                        = 0x400040;
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode       = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
@@ -240,9 +240,9 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic   = 0;
-    g_DisplaySettings.subControl.objTileMode                = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.subControl.objBmpMode                 = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.subControl.layers                     = 17;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode     = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode      = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers          = 17;
     REG_POWER_CNT &= ~0x8000;
     func_02003ad0();
     g_DisplaySettings.engineState[0].blendMode   = 1;

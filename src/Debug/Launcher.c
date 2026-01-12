@@ -1,9 +1,8 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
+#include "EasyFade.h"
 #include "TouchInput.h"
 #include <NitroSDK/fx.h>
-
-extern TaskHandle Task_EasyFade;
 
 void func_ov046_020824a0(void) {
     Interrupts_Init();
@@ -38,10 +37,10 @@ void func_ov046_020824a0(void) {
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
     GFX_FIFO_MATRIX_STORE = 0;
 
-    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.subControl.objTileMode  = GX_OBJTILEMODE_1D_64K;
-    g_DisplaySettings.subControl.objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_64K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
 
     func_0200270c(0, 0);
     func_0200270c(0, 1);
@@ -84,15 +83,15 @@ void func_ov046_0208280c(void) {
 }
 
 void func_ov046_02082824(void) {
-    func_02026180(0, 0, 0x800);
-    if (func_0202623c() == FALSE) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x800);
+    if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
     }
 }
 
 void func_ov046_0208284c(void) {
-    func_02026180(0, -0x20, 0x800);
-    if (func_0202623c() == FALSE) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, -32, 0x800);
+    if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
     }
 }
@@ -244,29 +243,29 @@ void func_ov046_02082c78(DebugLauncherState* state) {
         state->unk_6C[i] = 0xFFFFFFFF;
     }
     func_ov046_020827f0();
-    g_DisplaySettings.mainControl.brightness = -16;
-    g_DisplaySettings.subControl.brightness  = -16;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = -16;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = -16;
     Display_CommitSynced();
     g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
 
-    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
-    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_2D;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.controls[DISPLAY_MAIN].bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
-    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_MAIN);
     mainBg0->bgMode            = 0;
     mainBg0->screenSizeText    = 0;
     mainBg0->colorMode         = 0;
     mainBg0->screenBase        = 0;
     mainBg0->charBase          = 1;
     mainBg0->extPlttSlot       = 1;
-    if (g_DisplaySettings.mainControl.dimension == GX2D3D_MODE_2D) {
+    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = REG_BG0CNT & 0x43 | 0x2004;
     }
 
-    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
     mainBg1->bgMode            = 0;
     mainBg1->screenSizeText    = 0;
     mainBg1->colorMode         = 0;
@@ -275,7 +274,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     mainBg1->extPlttSlot       = 1;
     REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x2110;
 
-    DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_MAIN);
     mainBg2->bgMode            = 0;
     mainBg2->screenSizeText    = 0;
     mainBg2->colorMode         = 0;
@@ -284,7 +283,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     mainBg2->extPlttSlot       = 0;
     REG_BG2CNT                 = REG_BG2CNT & 0x43 | 4;
 
-    DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_MAIN);
     mainBg3->bgMode            = 0;
     mainBg3->screenSizeText    = 0;
     mainBg3->colorMode         = 0;
@@ -303,12 +302,12 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.mainControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
 
-    g_DisplaySettings.subControl.bgMode = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
     subBg0->bgMode            = 0;
     subBg0->screenSizeText    = 0;
     subBg0->colorMode         = 0;
@@ -317,7 +316,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     subBg0->extPlttSlot       = 0;
     REG_BG0CNT_SUB            = REG_BG0CNT_SUB & 0x43 | 4;
 
-    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_SUB);
     subBg1->charBase          = 4;
     subBg1->bgMode            = 0;
     subBg1->screenSizeText    = 0;
@@ -326,7 +325,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     subBg1->extPlttSlot       = 0;
     REG_BG1CNT_SUB            = REG_BG1CNT_SUB & 0x43 | 0x110;
 
-    DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_SUB);
     subBg2->bgMode            = 0;
     subBg2->screenSizeText    = 0;
     subBg2->colorMode         = 0;
@@ -335,7 +334,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     subBg2->extPlttSlot       = 1;
     REG_BG2CNT_SUB            = REG_BG2CNT_SUB & 0x43 | 4;
 
-    DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_SUB);
     subBg3->bgMode            = 0;
     subBg3->screenSizeText    = 0;
     subBg3->colorMode         = 0;
@@ -354,7 +353,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.subControl.layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers = LAYER_BG0 | LAYER_BG1 | LAYER_BG2;
 
     TouchInput_Init();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);

@@ -31,8 +31,8 @@ enum {
  * Display engine identifiers for main and sub screens.
  */
 typedef enum {
-    DISPLAY_ENGINE_MAIN = 0,
-    DISPLAY_ENGINE_SUB  = 1,
+    DISPLAY_MAIN = 0,
+    DISPLAY_SUB  = 1,
 } DisplayEngine;
 
 /**
@@ -183,8 +183,7 @@ typedef struct {
  */
 typedef struct {
     /* 0x000 */ s32                    unk_000;
-    /* 0x004 */ DisplayControlSettings mainControl;
-    /* 0x034 */ DisplayControlSettings subControl;
+    /* 0x004 */ DisplayControlSettings controls[2];
     /* 0x064 */ DisplayEngineState     engineState[2];
 } DisplaySettings;
 
@@ -211,12 +210,12 @@ void Display_CommitSynced(void);
 
 /// MARK: Inlines
 
-static inline DisplayControlSettings* Display_GetMainControl(void) {
-    return &g_DisplaySettings.mainControl;
+static inline DisplayControlSettings* Display_GetMainControls(void) {
+    return &g_DisplaySettings.controls[DISPLAY_MAIN];
 }
 
-static inline DisplayControlSettings* Display_GetSubControl(void) {
-    return &g_DisplaySettings.subControl;
+static inline DisplayControlSettings* Display_GetSubControls(void) {
+    return &g_DisplaySettings.controls[DISPLAY_SUB];
 }
 
 static inline DisplayBGSettings* Display_GetBGSettings(DisplayEngine engine, DisplayBGLayer layer) {
@@ -240,11 +239,11 @@ static inline DisplayBGSettings* Display_GetBG3Settings(DisplayEngine engine) {
 }
 
 static inline void Display_SetMainBrightness(u32 brightness) {
-    g_DisplaySettings.mainControl.brightness = brightness;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = brightness;
 }
 
 static inline void Display_SetSubBrightness(u32 brightness) {
-    g_DisplaySettings.subControl.brightness = brightness;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
 }
 
 #endif // DISPLAY_H

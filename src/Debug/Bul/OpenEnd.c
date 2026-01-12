@@ -1,5 +1,6 @@
 #include "Debug/OpenEnd.h"
 #include "Display.h"
+#include "EasyFade.h"
 #include "TouchInput.h"
 
 /*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
@@ -26,12 +27,12 @@ void func_ov037_020824a0(void) {
     GX_SetBankForSubBgExtPltt(0x80);
     g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
-    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
-    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_2D;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.controls[DISPLAY_MAIN].bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
-    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_MAIN);
     mainBg0->bgMode            = 0;
     mainBg0->screenSizeText    = 0;
     mainBg0->screenBase        = 0;
@@ -39,11 +40,11 @@ void func_ov037_020824a0(void) {
     mainBg0->colorMode         = 1;
     mainBg0->charBase          = 2;
 
-    if (g_DisplaySettings.mainControl.dimension == GX2D3D_MODE_2D) {
+    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
         REG_BG0CNT = (REG_BG0CNT & 0x43) | 0x88;
     }
 
-    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_MAIN);
+    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
     mainBg1->colorMode         = 1;
     mainBg1->screenBase        = 2;
     mainBg1->bgMode            = 0;
@@ -52,12 +53,12 @@ void func_ov037_020824a0(void) {
     mainBg1->charBase          = 4;
     REG_BG1CNT                 = (REG_BG1CNT & 0x43) | 0x290;
 
-    g_DisplaySettings.mainControl.layers = LAYER_BG0 | LAYER_OBJ;
-    g_DisplaySettings.subControl.bgMode  = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers = LAYER_BG0 | LAYER_OBJ;
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode  = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
     subBg0->bgMode            = 0;
     subBg0->screenSizeText    = 0;
     subBg0->colorMode         = 1;
@@ -66,7 +67,7 @@ void func_ov037_020824a0(void) {
     subBg0->extPlttSlot       = 0;
     REG_BG0CNT_SUB            = (REG_BG0CNT_SUB & 0x43) | 0x88;
 
-    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_ENGINE_SUB);
+    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_SUB);
     subBg1->charBase          = 4;
     subBg1->bgMode            = 0;
     subBg1->screenSizeText    = 0;
@@ -75,9 +76,9 @@ void func_ov037_020824a0(void) {
     subBg1->extPlttSlot       = 0;
     REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 0x290;
 
-    g_DisplaySettings.subControl.layers       = 17;
-    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.subControl.objTileMode  = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers       = 17;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
 
     func_0200270c(0, 0);
     func_0200270c(1, 0);
@@ -224,15 +225,15 @@ void func_ov037_02082b30(OpenEndState* r0, s32 r1, s32 r2, s32 r3) {
 }
 
 void func_ov037_02082c00(OpenEndState* r0) {
-    func_02026180(0, NULL, r0->unk_11A34);
-    if (func_0202623c() == 0) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, 0, r0->fadeRate);
+    if (EasyFade_IsFading() == 0) {
         DebugOvlDisp_Pop();
     }
 }
 
 void func_ov037_02082c2c(OpenEndState* r0) {
-    func_02026180(0, r0->unk_11A30, r0->unk_11A34);
-    if (func_0202623c() == 0) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, r0->fadeBrightness, r0->fadeRate);
+    if (EasyFade_IsFading() == 0) {
         DebugOvlDisp_Pop();
     }
 }
@@ -263,9 +264,9 @@ void func_ov037_02082cd4(OpenEndState* r0) {
     func_ov037_02082b30(r0, 0, 0, 1);
     func_ov037_02082b30(r0, 1, 1, 2);
     func_ov037_02082b30(r0, 0, 1, 3);
-    r0->unk_11A1C = 0;
-    r0->unk_11A30 = data_ov037_02083a7c[data_02074d10.unk_410];
-    r0->unk_11A34 = data_ov037_02083a74[data_02074d10.unk_410];
+    r0->unk_11A1C      = 0;
+    r0->fadeBrightness = data_ov037_02083a7c[data_02074d10.unk_410];
+    r0->fadeRate       = data_ov037_02083a74[data_02074d10.unk_410];
     DebugOvlDisp_Pop();
 }
 
@@ -280,21 +281,21 @@ void func_ov037_02082d7c(OpenEndState* r0) {
             r0->unk_11A1C++;
             break;
         case 1:
-            func_020261d4(0, -0x10, 0x333);
-            func_02026208(0, -0x10, 0x333);
-            if (func_0202623c() != 0)
+            EasyFade_FadeMainDisplay(FADER_LINEAR, -16, 0x333);
+            EasyFade_FadeSubDisplay(FADER_LINEAR, -16, 0x333);
+            if (EasyFade_IsFading() != 0)
                 break;
             r0->unk_11A1C = 0;
             r0->unk_11A20++;
             break;
         case 2:
             if (r0->unk_11A1C == 0) {
-                g_DisplaySettings.mainControl.layers = g_DisplaySettings.mainControl.layers & ~0x1 | 0x2;
-                g_DisplaySettings.subControl.layers  = g_DisplaySettings.subControl.layers & ~0x1 | 0x2;
+                g_DisplaySettings.controls[DISPLAY_MAIN].layers = g_DisplaySettings.controls[DISPLAY_MAIN].layers & ~0x1 | 0x2;
+                g_DisplaySettings.controls[DISPLAY_SUB].layers  = g_DisplaySettings.controls[DISPLAY_SUB].layers & ~0x1 | 0x2;
             }
-            func_020261d4(0, 0, 0x333);
-            func_02026208(0, 0, 0x333);
-            if (func_0202623c() == 0) {
+            EasyFade_FadeMainDisplay(FADER_LINEAR, 0, 0x333);
+            EasyFade_FadeSubDisplay(FADER_LINEAR, 0, 0x333);
+            if (EasyFade_IsFading() == 0) {
                 r0->unk_11A1C = 0;
                 r0->unk_11A20++;
                 break;
@@ -337,19 +338,19 @@ void        func_ov037_02082f60(OpenEndState* r0) {
         DebugOvlDisp_Init();
         return;
     }
-    g_DisplaySettings.mainControl.layers = (g_DisplaySettings.mainControl.layers | 0x1) & ~0x2;
-    g_DisplaySettings.subControl.layers  = (g_DisplaySettings.subControl.layers | 0x1) & ~0x2;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 0x1) & ~0x2;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers  = (g_DisplaySettings.controls[DISPLAY_SUB].layers | 0x1) & ~0x2;
     func_ov037_02082b30(r0, 0, 0, 5);
     func_ov037_02082b30(r0, 1, 0, 4);
     OpenEnd_CreateBadgeTask(0);
     if (r0->unk_11A44 != 0) {
         OpenEnd_CreateBadgeTask(1);
     }
-    r0->unk_11A20 = 0;
-    r0->unk_11A24 = 0;
-    r0->unk_11A30 = data_ov037_02083a7c[data_02074d10.unk_410]; // Regswap here
-    r0->unk_11A34 = data_ov037_02083a74[data_02074d10.unk_410]; // and here
-    r0->unk_11A2C = 0;
+    r0->unk_11A20      = 0;
+    r0->unk_11A24      = 0;
+    r0->fadeBrightness = data_ov037_02083a7c[data_02074d10.unk_410]; // Regswap here
+    r0->fadeRate       = data_ov037_02083a74[data_02074d10.unk_410]; // and here
+    r0->unk_11A2C      = 0;
     func_0202733c();
     DebugOvlDisp_Pop();
 }
@@ -381,8 +382,8 @@ void func_ov037_020830a8(OpenEndState* r0) {
     }
     if (r0->unk_11A2C == 0)
         return;
-    r0->unk_11A30 = ~0xF;
-    r0->unk_11A34 = 0x800;
+    r0->fadeBrightness = -16;
+    r0->fadeRate       = 0x800;
     DebugOvlDisp_Pop();
 }
 
@@ -454,7 +455,6 @@ void func_ov037_020833a8(OpenEndState* r0) {
 }
 
 extern vu32        data_02066a58;
-extern TaskHandle  Task_EasyFade;
 static const char* seq_OpenEnd = "Seq_OpenEnd(void *)";
 /*Nomatching: regswaps*/
 void func_ov037_0208345c(OpenEndState* r0) {
@@ -473,13 +473,13 @@ void func_ov037_0208345c(OpenEndState* r0) {
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    g_DisplaySettings.mainControl.brightness = temp;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = temp;
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
         temp = 0x10;
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
         temp = ~0xF;
     }
-    g_DisplaySettings.subControl.brightness = temp;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness = temp;
     func_0200cef0(&(r0->unk_10));
     Input_Init(&InputStatus, 8, 1, 2);
     TouchInput_Init();

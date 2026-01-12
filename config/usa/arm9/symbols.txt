@@ -1551,21 +1551,27 @@ func_020260cc kind:function(arm,size=0x10) addr:0x020260cc
 func_020260dc kind:function(arm,size=0x14) addr:0x020260dc
 func_020260f0 kind:function(arm,size=0x14) addr:0x020260f0
 func_02026104 kind:function(arm,size=0x48) addr:0x02026104
-func_0202614c kind:function(arm,size=0x34) addr:0x0202614c
-func_02026180 kind:function(arm,size=0x54) addr:0x02026180
-func_020261d4 kind:function(arm,size=0x34) addr:0x020261d4
-func_02026208 kind:function(arm,size=0x34) addr:0x02026208
-func_0202623c kind:function(arm,size=0x40) addr:0x0202623c
-func_0202627c kind:function(arm,size=0x3c) addr:0x0202627c
-func_020262b8 kind:function(arm,size=0x40) addr:0x020262b8
-func_020262f8 kind:function(arm,size=0x60) addr:0x020262f8
-func_02026358 kind:function(arm,size=0x68) addr:0x02026358
-func_020263c0 kind:function(arm,size=0x88) addr:0x020263c0
-func_02026448 kind:function(arm,size=0x40) addr:0x02026448
-func_02026488 kind:function(arm,size=0x58) addr:0x02026488
+
+/////////////////////////////////////////////////////////////
+// src/EasyFade.c
+/////////////////////////////////////////////////////////////
+EasyFade_Setup kind:function(arm,size=0x34) addr:0x0202614c
+EasyFade_FadeBothDisplays kind:function(arm,size=0x54) addr:0x02026180
+EasyFade_FadeMainDisplay kind:function(arm,size=0x34) addr:0x020261d4
+EasyFade_FadeSubDisplay kind:function(arm,size=0x34) addr:0x02026208
+EasyFade_IsFading kind:function(arm,size=0x40) addr:0x0202623c
+EasyFade_CalculateInterpolation kind:function(arm,size=0x3c) addr:0x0202627c
+EasyFade_Initialize kind:function(arm,size=0x40) addr:0x020262b8
+EasyFade_UpdateLinear kind:function(arm,size=0x60) addr:0x020262f8
+EasyFade_UpdateInterpolated kind:function(arm,size=0x68) addr:0x02026358
+EasyFade_UpdateSmooth kind:function(arm,size=0x88) addr:0x020263c0
+EasyFade_UpdateInstant kind:function(arm,size=0x40) addr:0x02026448
+EasyFade_Update kind:function(arm,size=0x58) addr:0x02026488
 func_020264e0 kind:function(arm,size=0x8) addr:0x020264e0
 func_020264e8 kind:function(arm,size=0x8) addr:0x020264e8
-func_020264f0 kind:function(arm,size=0x38) addr:0x020264f0
+EasyFade_TaskHandler kind:function(arm,size=0x38) addr:0x020264f0
+
+
 func_02026528 kind:function(arm,size=0x3c) addr:0x02026528
 func_02026564 kind:function(arm,size=0x2c) addr:0x02026564
 func_02026590 kind:function(arm,size=0x30) addr:0x02026590
@@ -3421,10 +3427,10 @@ data_0205cac4 kind:data(any) addr:0x0205cac4
 // src/EasyFade.c
 /////////////////////////////////////////////////////////////
 Task_EasyFade kind:data(any) addr:0x0205cb10
+FaderTaskHandlerDispatchFuncs kind:data(any) addr:0x0205cb1c
+FaderUpdateDispatchFuncs kind:data(any) addr:0x0205cb2c
 
 
-data_0205cb1c kind:data(any) addr:0x0205cb1c
-data_0205cb2c kind:data(any) addr:0x0205cb2c
 data_0205cb3c kind:data(any) addr:0x0205cb3c
 data_0205e0ec kind:data(any) addr:0x0205e0ec
 
@@ -3962,7 +3968,13 @@ data_02065c08 kind:data(any) addr:0x02065c08
 data_02065c24 kind:data(any) addr:0x02065c24
 data_02065c74 kind:data(any) addr:0x02065c74
 data_02065c84 kind:data(any) addr:0x02065c84
-data_02065c94 kind:data(any) addr:0x02065c94
+
+/////////////////////////////////////////////////////////////
+// src/EasyFade.c
+/////////////////////////////////////////////////////////////
+@536 kind:data(any) addr:0x02065c94 local
+
+
 data_02065ca0 kind:data(any) addr:0x02065ca0
 
 /////////////////////////////////////////////////////////////
@@ -4593,8 +4605,13 @@ data_02075130 kind:bss addr:0x02075130
 data_02075134 kind:bss addr:0x02075134
 data_02075164 kind:bss addr:0x02075164
 data_02075168 kind:bss addr:0x02075168
-data_020751dc kind:bss addr:0x020751dc
-data_020751f0 kind:bss addr:0x020751f0
+
+/////////////////////////////////////////////////////////////
+// src/EasyFade.c
+/////////////////////////////////////////////////////////////
+gFaders kind:bss addr:0x020751dc
+
+
 data_02075204 kind:bss addr:0x02075204
 
 /////////////////////////////////////////////////////////////

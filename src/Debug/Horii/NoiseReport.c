@@ -214,9 +214,9 @@ void func_ov028_020e83f8(void) {
     REG_POWER_CNT &= ~0x8000;
     Display_CommitSynced();
 
-    g_DisplaySettings.mainControl.dispMode  = GX_DISPMODE_GRAPHICS;
-    g_DisplaySettings.mainControl.bgMode    = GX_BGMODE_0;
-    g_DisplaySettings.mainControl.dimension = GX2D3D_MODE_3D;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dispMode  = GX_DISPMODE_GRAPHICS;
+    g_DisplaySettings.controls[DISPLAY_MAIN].bgMode    = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
     DisplayBGSettings* mainBg1 = &g_DisplaySettings.engineState[0].bgSettings[1];
@@ -256,23 +256,23 @@ void func_ov028_020e83f8(void) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.mainControl.objTileMode = GX_OBJTILEMODE_1D_32K;
-    g_DisplaySettings.mainControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_32K;
+    g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
 
-    g_DisplaySettings.subControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.subControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
 
     data_0206aa78 = 0x300010;
     data_0206aa7c = 0x400040;
 
-    g_DisplaySettings.mainControl.layers         = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
-    g_DisplaySettings.mainControl.brightness     = 16;
-    g_DisplaySettings.engineState[0].blendMode   = 1;
-    g_DisplaySettings.engineState[0].blendLayer0 = 1;
-    g_DisplaySettings.engineState[0].blendLayer1 = 62;
-    g_DisplaySettings.engineState[0].blendCoeff0 = 6;
-    g_DisplaySettings.engineState[0].blendCoeff1 = 10;
-    g_DisplaySettings.subControl.bgMode          = GX_BGMODE_0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers     = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 16;
+    g_DisplaySettings.engineState[0].blendMode          = 1;
+    g_DisplaySettings.engineState[0].blendLayer0        = 1;
+    g_DisplaySettings.engineState[0].blendLayer1        = 62;
+    g_DisplaySettings.engineState[0].blendCoeff0        = 6;
+    g_DisplaySettings.engineState[0].blendCoeff1        = 10;
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode      = GX_BGMODE_0;
     GXs_SetGraphicsMode(0);
 
     DisplayBGSettings* subBg1 = &g_DisplaySettings.engineState[1].bgSettings[1];
@@ -311,10 +311,10 @@ void func_ov028_020e83f8(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic   = 0;
 
-    g_DisplaySettings.subControl.objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.subControl.objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.subControl.layers      = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
-    g_DisplaySettings.subControl.brightness  = 16;
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 16;
 
     func_02003ad0();
     func_02003c68();
@@ -337,8 +337,8 @@ void func_ov028_020e87f4(void) {
 }
 
 void func_ov028_020e8808(void* unused) {
-    func_02026180(0, 0, 0x1000);
-    if (func_0202623c() == FALSE) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x1000);
+    if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
     }
 }
@@ -350,8 +350,8 @@ void func_ov028_020e8830(void* state) {
 }
 
 void func_ov028_020e8850(void* unused) {
-    func_02026180(0, 0x10, 0x1000);
-    if (func_0202623c() == FALSE) {
+    EasyFade_FadeBothDisplays(FADER_LINEAR, 16, 0x1000);
+    if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
     }
 }
@@ -375,7 +375,7 @@ void func_ov028_020e8878(NoiseReportState* state) {
     data_02066aec = 0;
     data_02066eec = 0;
     EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, 0);
-    func_02026180(2, 0x10, 0x1000);
+    EasyFade_FadeBothDisplays(FADER_SMOOTH, 16, 0x1000);
     func_ov028_020e7d08(&state->taskPool, &state->unk_21610);
     DebugOvlDisp_Init();
     DebugOvlDisp_Push(func_ov028_020e8850, state, 0);
