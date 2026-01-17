@@ -47,11 +47,11 @@ s32  OpenEnd_CreateBadgeTask(u32 r0);
 
 void func_ov037_0208280c(void);
 
-int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
-int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
-int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
-int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, s32 r2);
-typedef int (*OpenEndExportFunc)(struct TaskPool*, struct Task*, s32);
+int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* r2);
+int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, void* r2);
+int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, void* r2);
+int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, void* r2);
+typedef int (*OpenEndExportFunc)(struct TaskPool*, struct Task*, void*);
 typedef struct {
     OpenEndExportFunc funcs[4];
 } OpenEndExportFuncTable;
@@ -100,7 +100,7 @@ OpenEndFunc              data_ov037_02083a90[2][3] = {
     {func_ov037_02082cd4, func_ov037_02082d7c, func_ov037_02082f04},
     {func_ov037_02082f60, func_ov037_020830a8, func_ov037_020832dc}
 };
-s32 func_ov037_020839ec(struct TaskPool* pool, struct Task* task, s32 taskParam, s32 index);
+s32 func_ov037_020839ec(struct TaskPool* pool, struct Task* task, void* taskParam, s32 index);
 
 typedef struct {
     u32   unk_00;

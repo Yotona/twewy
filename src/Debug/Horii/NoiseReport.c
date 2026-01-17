@@ -9,20 +9,19 @@
 #include "TouchInput.h"
 #include "common_data.h"
 
-s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020ec4a8(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020ecd08(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020eb760(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020ea6ac(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020ea21c(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
-s32 func_ov028_020e8d50(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
+s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020ec4a8(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020ecd08(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020eb760(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020ea6ac(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020ea21c(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32 func_ov028_020e8d50(TaskPool* pool, Task* task, void* arg2, s32 arg3);
 
 NoiseReport* data_ov028_020ed3e0 = NULL;
 
 s16 data_ov028_020ed3a4[4] = {21, 95, 96, 0};
 
-extern s32 data_020672ec;
-s32        data_ov028_020ed3ac;
+s32 data_ov028_020ed3ac;
 
 extern void func_ov043_02084040(void* state);
 extern void func_ov030_020ae92c();
@@ -124,7 +123,7 @@ func_ov028_020e7fc8(u16*, s32, s32, s32, s32, s32, s32, s32) {
     // Not yet implemented
 }
 
-func_ov028_020e80a0(s32*, s32, s32, s32, s32) {
+func_ov028_020e80a0(UnkStruct_0200e998*, s32, s32, s32, s32) {
     // Not yet implemented
 }
 
@@ -139,7 +138,7 @@ func_ov028_020e8194() {
     // Not yet implemented
 }
 
-func_ov028_020e81fc(u32*, s16) {
+func_ov028_020e81fc(UnkStruct_0200e998*, s16) {
     // Not yet implemented
 }
 
@@ -466,7 +465,7 @@ s32 func_ov028_020e8d24(void* arg0) {
     return 1;
 }
 
-s32 func_ov028_020e8d50(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020e8d50(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     void* data = task->data;
     switch (arg3) {
         case 0:
@@ -593,7 +592,7 @@ func_ov028_020ea1a8(void*) {
     // Not yet implemented
 }
 
-s32 func_ov028_020ea21c(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020ea21c(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     void* data = task->data;
     switch (arg3) {
         case 0:
@@ -643,7 +642,7 @@ func_ov028_020ea680() {
     // Not yet implemented
 }
 
-s32 func_ov028_020ea6ac(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020ea6ac(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     // Not yet implemented
 }
 
@@ -709,7 +708,7 @@ func_ov028_020eb718(u32* param_1) {
     // Not yet implemented
 }
 
-s32 func_ov028_020eb760(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020eb760(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     u32* puVar1 = task->data;
     switch (arg3) {
         case 0:
@@ -731,11 +730,11 @@ void func_ov028_020eb7b0(void) {
     EasyTask_CreateTask(data_ov028_020ed3e0->pool, &Tsk_NrepInterU, NULL, 0, NULL, 0);
 }
 
-func_ov028_020eb7ec(UnkStruct_020eb9dc* param_1, s32 param_2, s32 param_3, s32 param_4) {
+func_ov028_020eb7ec(void* param_1, s32 param_2, s32 param_3, s32 param_4) {
     // Not yet implemented
 }
 
-func_ov028_020eb8ec(UnkStruct_020eb9dc* arg0) {
+func_ov028_020eb8ec(UnkStruct_0200e998* arg0) {
     for (s32 i = 0; i < 15; i++) {
         func_0200dd60(arg0);
         arg0++;
@@ -743,11 +742,11 @@ func_ov028_020eb8ec(UnkStruct_020eb9dc* arg0) {
     return 1;
 }
 
-func_ov028_020eb918(UnkStruct_020eb9dc* param_1) {
+func_ov028_020eb918(void* param_1) {
     // Not yet implemented
 }
 
-s32 func_ov028_020eb9b0(UnkStruct_020eb9dc* arg0) {
+s32 func_ov028_020eb9b0(UnkStruct_0200e998* arg0) {
     for (s32 i = 0; i < 15; i++) {
         func_0200e998(arg0);
         arg0++;
@@ -755,8 +754,8 @@ s32 func_ov028_020eb9b0(UnkStruct_020eb9dc* arg0) {
     return 1;
 }
 
-s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
-    UnkStruct_020eb9dc* puVar1 = (UnkStruct_020eb9dc*)task->data;
+s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
+    void* puVar1 = (void*)task->data;
     switch (arg3) {
         case 0:
             return func_ov028_020eb7ec(puVar1, arg2, arg2, arg3);
@@ -780,14 +779,14 @@ void func_ov028_020eba2c(s32 arg0) {
     EasyTask_CreateTask(data_ov028_020ed3e0->pool, &Tsk_NrepPreview, NULL, 0, NULL, &stack);
 }
 
-func_ov028_020eba84(NrepPreview* arg0, s32* arg1, s32* arg2) {
+func_ov028_020eba84(NrepPreview* arg0, UnkStruct_0200e998* arg1, s32* arg2) {
     // Not yet implemented
 }
 
 void func_ov028_020ebe9c(NrepPreview* arg0) {
-    u32* puVar5 = &arg0->unk_084;
-    s16  iVar6  = data_ov028_020ed3e0->unk_16;
-    s32  iVar4  = 0x1d;
+    UnkStruct_0200e998* puVar5 = &arg0->unk_084;
+    s16                 iVar6  = data_ov028_020ed3e0->unk_16;
+    s32                 iVar4  = 29;
 
     if ((iVar6 >= 0x60) || (arg0->unk_000 == 0)) {
         func_ov028_020e80a0(&arg0->unk_084, 13, 0, 5, 0);
@@ -842,33 +841,33 @@ void func_ov028_020ebe9c(NrepPreview* arg0) {
     do {
         func_0200dd60(puVar5);
         iVar4--;
-        puVar5 = puVar5 + 0x10;
+        puVar5++;
     } while (0 < iVar4);
 }
 
 void func_ov028_020ec16c(NrepPreview* arg0) {
-    int  iVar1;
-    u32* puVar2;
+    int                 iVar1;
+    UnkStruct_0200e998* puVar2;
 
     puVar2 = &arg0->unk_084;
     iVar1  = 29;
     do {
         func_0200e2c4(puVar2);
         iVar1--;
-        puVar2 = puVar2 + 0x10;
+        puVar2++;
     } while (0 < iVar1);
 }
 
 void func_ov028_020ec194(NrepPreview* arg0) {
-    int  iVar1;
-    u32* puVar2;
+    int                 iVar1;
+    UnkStruct_0200e998* puVar2;
 
     puVar2 = &arg0->unk_084;
     iVar1  = 29;
     do {
         func_0200e998(puVar2);
         iVar1--;
-        puVar2 = puVar2 + 0x10;
+        puVar2++;
     } while (0 < iVar1);
 }
 
@@ -896,10 +895,10 @@ void func_ov028_020ec204(NrepPreview* arg0) {
     }
 
     arg0->unk_7C4 = data_ov028_020ed3e0->unk_16;
-    if (arg0->unk_02C != 0) {
+    if (arg0->unk_004.unk_28 != 0) {
         func_0200e998(&arg0->unk_004);
     }
-    if (arg0->unk_06C != 0) {
+    if (arg0->unk_044.unk_28 != 0) {
         func_0200e998(&arg0->unk_044);
     }
     func_ov028_020e7fc8(auStack_38, 1, *(int*)data_ov028_020ed3e0, &data_ov028_020ed3ac, 1, 2, 3, 4);
@@ -907,15 +906,15 @@ void func_ov028_020ec204(NrepPreview* arg0) {
     if (sStack_1e < 0x61) {
         func_0200ecdc(&arg0->unk_004, auStack_38);
         func_ov028_020e81fc(&arg0->unk_004, 1);
-        arg0->unk_010 = 0xbe;
-        arg0->unk_012 = 0x58;
-        arg0->unk_00E = arg0->unk_00E & ~0xC00 | 0x800;
+        arg0->unk_004.unk_0C = 0xbe;
+        arg0->unk_004.unk_0E = 0x58;
+        arg0->unk_004.unk_0A = arg0->unk_004.unk_0A & ~0xC00 | 0x800;
         if (func_ov028_020ec1bc()) {
             func_0200ecdc(&arg0->unk_044, auStack_38);
             func_ov028_020e81fc(&arg0->unk_044, 2);
-            arg0->unk_050 = 0xbe;
-            arg0->unk_052 = 0x58;
-            arg0->unk_04E = arg0->unk_04E & ~0xC00 | 0x800;
+            arg0->unk_044.unk_0C = 0xbe;
+            arg0->unk_044.unk_0E = 0x58;
+            arg0->unk_044.unk_0A = arg0->unk_044.unk_0A & ~0xC00 | 0x800;
         }
     }
 }
@@ -935,10 +934,10 @@ s32 func_ov028_020ec3a0(NrepPreview* arg0) {
     func_ov028_020ec204(arg0);
     func_ov028_020ebe9c(arg0);
     if (arg0->unk_000 != 0) {
-        if (arg0->unk_02C != 0) {
+        if (arg0->unk_004.unk_28 != 0) {
             func_0200dd60(&arg0->unk_004);
         }
-        if (arg0->unk_06C != 0) {
+        if (arg0->unk_044.unk_28 != 0) {
             func_0200dd60(&arg0->unk_044);
         }
     }
@@ -948,10 +947,10 @@ s32 func_ov028_020ec3a0(NrepPreview* arg0) {
 s32 func_ov028_020ec424(NrepPreview* arg0) {
     func_ov028_020ec16c(arg0);
     if (arg0->unk_000 != 0) {
-        if (arg0->unk_02C != 0) {
+        if (arg0->unk_004.unk_28 != 0) {
             func_0200e2c4(&arg0->unk_004);
         }
-        if (arg0->unk_06C != 0) {
+        if (arg0->unk_044.unk_28 != 0) {
             func_0200e2c4(&arg0->unk_044);
         }
     }
@@ -960,16 +959,16 @@ s32 func_ov028_020ec424(NrepPreview* arg0) {
 
 s32 func_ov028_020ec46c(NrepPreview* arg0) {
     func_ov028_020ec194(arg0);
-    if (arg0->unk_02C != 0) {
+    if (arg0->unk_004.unk_28 != 0) {
         func_0200e998(&arg0->unk_004);
     }
-    if (arg0->unk_06C != 0) {
+    if (arg0->unk_044.unk_28 != 0) {
         func_0200e998(&arg0->unk_044);
     }
     return 1;
 }
 
-s32 func_ov028_020ec4a8(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020ec4a8(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     NrepPreview* puVar1 = (NrepPreview*)task->data;
     switch (arg3) {
         case 0:
@@ -1083,7 +1082,7 @@ s32 func_ov028_020ecc9c(NrepSeal* arg0) {
     return 1;
 }
 
-s32 func_ov028_020ecd08(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+s32 func_ov028_020ecd08(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     NrepSeal* seal = (NrepSeal*)task->data;
 
     switch (arg3) {

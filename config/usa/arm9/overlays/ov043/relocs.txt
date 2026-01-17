@@ -140,6 +140,7 @@ from:0x02082d90 kind:arm_call to:0x0200afec module:main
 from:0x02082d9c kind:arm_call to:0x0203f304 module:main
 from:0x02082da8 kind:load to:0x0206b3c4 module:main
 from:0x02082dac kind:load to:0x0206b3cc module:main
+from:0x02082db0 kind:overlay_id to:31 module:none
 from:0x02082df8 kind:load to:0x020c7894 module:overlay(43)
 from:0x02082e94 kind:load to:0x0206b408 module:main
 from:0x02082ef4 kind:arm_call to:0x0200ecdc module:main

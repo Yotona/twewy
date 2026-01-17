@@ -1,3 +1,12 @@
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .text                                   //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/TakTest.c
+/////////////////////////////////////////////////////////////
 func_ov043_020824a0 kind:function(arm,size=0x4) addr:0x020824a0
 func_ov043_020824a4 kind:function(arm,size=0x14) addr:0x020824a4
 func_ov043_020824b8 kind:function(arm,size=0x14) addr:0x020824b8
@@ -21,6 +30,10 @@ func_ov043_02082f30 kind:function(arm,size=0x14) addr:0x02082f30
 func_ov043_02082f44 kind:function(arm,size=0x14) addr:0x02082f44
 func_ov043_02082f58 kind:function(arm,size=0x48) addr:0x02082f58
 func_ov043_02082fa0 kind:function(arm,size=0x30) addr:0x02082fa0
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuTop.c
+/////////////////////////////////////////////////////////////
 func_ov043_02082fd0 kind:function(arm,size=0x7c) addr:0x02082fd0
 func_ov043_0208304c kind:function(arm,size=0x4bc) addr:0x0208304c
 func_ov043_02083508 kind:function(arm,size=0x6c) addr:0x02083508
@@ -286,6 +299,10 @@ func_ov043_0208b768 kind:function(arm,size=0x40) addr:0x0208b768
 func_ov043_0208b7a8 kind:function(arm,size=0x30) addr:0x0208b7a8
 func_ov043_0208b7d8 kind:function(arm,size=0x48) addr:0x0208b7d8
 func_ov043_0208b820 kind:function(arm,size=0x34) addr:0x0208b820
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuBadge.c
+/////////////////////////////////////////////////////////////
 func_ov043_0208b854 kind:function(arm,size=0xe0) addr:0x0208b854
 func_ov043_0208b934 kind:function(arm,size=0x130) addr:0x0208b934
 func_ov043_0208ba64 kind:function(arm,size=0x64) addr:0x0208ba64
@@ -682,6 +699,10 @@ func_ov043_0209abf4 kind:function(arm,size=0x20) addr:0x0209abf4
 func_ov043_0209ac14 kind:function(arm,size=0x14) addr:0x0209ac14
 func_ov043_0209ac28 kind:function(arm,size=0x48) addr:0x0209ac28
 func_ov043_0209ac70 kind:function(arm,size=0x34) addr:0x0209ac70
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuScena.c
+/////////////////////////////////////////////////////////////
 func_ov043_0209aca4 kind:function(arm,size=0x84) addr:0x0209aca4
 func_ov043_0209ad28 kind:function(arm,size=0x18c) addr:0x0209ad28
 func_ov043_0209aeb4 kind:function(arm,size=0x58) addr:0x0209aeb4
@@ -805,6 +826,10 @@ func_ov043_0209f228 kind:function(arm,size=0x48) addr:0x0209f228
 func_ov043_0209f270 kind:function(arm,size=0x34) addr:0x0209f270
 func_ov043_0209f2a4 kind:function(arm,size=0x48) addr:0x0209f2a4
 func_ov043_0209f2ec kind:function(arm,size=0x34) addr:0x0209f2ec
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuEquip.c
+/////////////////////////////////////////////////////////////
 func_ov043_0209f320 kind:function(arm,size=0xe4) addr:0x0209f320
 func_ov043_0209f404 kind:function(arm,size=0x3e8) addr:0x0209f404
 func_ov043_0209f7ec kind:function(arm,size=0x84) addr:0x0209f7ec
@@ -1151,6 +1176,10 @@ func_ov043_020ac4ec kind:function(arm,size=0x40) addr:0x020ac4ec
 func_ov043_020ac52c kind:function(arm,size=0x30) addr:0x020ac52c
 func_ov043_020ac55c kind:function(arm,size=0x48) addr:0x020ac55c
 func_ov043_020ac5a4 kind:function(arm,size=0x34) addr:0x020ac5a4
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Shop.c
+/////////////////////////////////////////////////////////////
 func_ov043_020ac5d8 kind:function(arm,size=0xc8) addr:0x020ac5d8
 func_ov043_020ac6a0 kind:function(arm,size=0x54) addr:0x020ac6a0
 func_ov043_020ac6f4 kind:function(arm,size=0x414) addr:0x020ac6f4
@@ -1578,6 +1607,10 @@ func_ov043_020bccf4 kind:function(arm,size=0x20) addr:0x020bccf4
 func_ov043_020bcd14 kind:function(arm,size=0x14) addr:0x020bcd14
 func_ov043_020bcd28 kind:function(arm,size=0x48) addr:0x020bcd28
 func_ov043_020bcd70 kind:function(arm,size=0x40) addr:0x020bcd70
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Depart.c
+/////////////////////////////////////////////////////////////
 func_ov043_020bcdb0 kind:function(arm,size=0x4c) addr:0x020bcdb0
 func_ov043_020bcdfc kind:function(arm,size=0x140) addr:0x020bcdfc
 func_ov043_020bcf3c kind:function(arm,size=0x28) addr:0x020bcf3c
@@ -1658,6 +1691,10 @@ func_ov043_020bf1a0 kind:function(arm,size=0x20) addr:0x020bf1a0
 func_ov043_020bf1c0 kind:function(arm,size=0x14) addr:0x020bf1c0
 func_ov043_020bf1d4 kind:function(arm,size=0x48) addr:0x020bf1d4
 func_ov043_020bf21c kind:function(arm,size=0x34) addr:0x020bf21c
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Save.c
+/////////////////////////////////////////////////////////////
 func_ov043_020bf250 kind:function(arm,size=0x90) addr:0x020bf250
 func_ov043_020bf2e0 kind:function(arm,size=0x1f4) addr:0x020bf2e0
 func_ov043_020bf4d4 kind:function(arm,size=0x2c4) addr:0x020bf4d4
@@ -1828,6 +1865,10 @@ func_ov043_020c60f8 kind:function(arm,size=0x40) addr:0x020c60f8
 func_ov043_020c6138 kind:function(arm,size=0x30) addr:0x020c6138
 func_ov043_020c6168 kind:function(arm,size=0x48) addr:0x020c6168
 func_ov043_020c61b0 kind:function(arm,size=0x34) addr:0x020c61b0
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/NRep.c
+/////////////////////////////////////////////////////////////
 func_ov043_020c61e4 kind:function(arm,size=0x54) addr:0x020c61e4
 func_ov043_020c6238 kind:function(arm,size=0xcc) addr:0x020c6238
 func_ov043_020c6304 kind:function(arm,size=0x28) addr:0x020c6304
@@ -1877,6 +1918,16 @@ func_ov043_020c77bc kind:function(arm,size=0x20) addr:0x020c77bc
 func_ov043_020c77dc kind:function(arm,size=0x14) addr:0x020c77dc
 func_ov043_020c77f0 kind:function(arm,size=0x48) addr:0x020c77f0
 func_ov043_020c7838 kind:function(arm,size=0x38) addr:0x020c7838
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .rodata                                 //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/TakTest.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c7870 kind:data(any) addr:0x020c7870
 data_ov043_020c787c kind:data(any) addr:0x020c787c
 data_ov043_020c7894 kind:data(any) addr:0x020c7894
@@ -1885,6 +1936,10 @@ data_ov043_020c78b0 kind:data(any) addr:0x020c78b0
 data_ov043_020c78bc kind:data(any) addr:0x020c78bc
 data_ov043_020c78d4 kind:data(any) addr:0x020c78d4
 data_ov043_020c78dc kind:data(any) addr:0x020c78dc
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuTop.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c7908 kind:data(any) addr:0x020c7908
 data_ov043_020c7914 kind:data(any) addr:0x020c7914
 data_ov043_020c7916 kind:data(any) addr:0x020c7916
@@ -1994,6 +2049,10 @@ data_ov043_020c8254 kind:data(any) addr:0x020c8254
 data_ov043_020c8280 kind:data(any) addr:0x020c8280
 data_ov043_020c828c kind:data(any) addr:0x020c828c
 data_ov043_020c829c kind:data(any) addr:0x020c829c
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuBadge.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c82c8 kind:data(any) addr:0x020c82c8
 data_ov043_020c82d4 kind:data(any) addr:0x020c82d4
 data_ov043_020c82e4 kind:data(any) addr:0x020c82e4
@@ -2120,6 +2179,10 @@ data_ov043_020c9060 kind:data(any) addr:0x020c9060
 data_ov043_020c908c kind:data(any) addr:0x020c908c
 data_ov043_020c9098 kind:data(any) addr:0x020c9098
 data_ov043_020c90a8 kind:data(any) addr:0x020c90a8
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuScena.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c90d4 kind:data(any) addr:0x020c90d4
 data_ov043_020c90e0 kind:data(any) addr:0x020c90e0
 data_ov043_020c90f8 kind:data(any) addr:0x020c90f8
@@ -2163,6 +2226,10 @@ data_ov043_020c9694 kind:data(any) addr:0x020c9694
 data_ov043_020c969c kind:data(any) addr:0x020c969c
 data_ov043_020c96a8 kind:data(any) addr:0x020c96a8
 data_ov043_020c96b8 kind:data(any) addr:0x020c96b8
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuEquip.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c96e4 kind:data(any) addr:0x020c96e4
 data_ov043_020c96f0 kind:data(any) addr:0x020c96f0
 data_ov043_020c96f2 kind:data(any) addr:0x020c96f2
@@ -2272,6 +2339,10 @@ data_ov043_020ca118 kind:data(any) addr:0x020ca118
 data_ov043_020ca144 kind:data(any) addr:0x020ca144
 data_ov043_020ca150 kind:data(any) addr:0x020ca150
 data_ov043_020ca160 kind:data(any) addr:0x020ca160
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Shop.c
+/////////////////////////////////////////////////////////////
 data_ov043_020ca18c kind:data(any) addr:0x020ca18c
 data_ov043_020ca198 kind:data(any) addr:0x020ca198
 data_ov043_020ca1b0 kind:data(any) addr:0x020ca1b0
@@ -2406,6 +2477,10 @@ data_ov043_020cacf0 kind:data(any) addr:0x020cacf0
 data_ov043_020cad1c kind:data(any) addr:0x020cad1c
 data_ov043_020cad28 kind:data(any) addr:0x020cad28
 data_ov043_020cad38 kind:data(any) addr:0x020cad38
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Depart.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cad64 kind:data(any) addr:0x020cad64
 data_ov043_020cad70 kind:data(any) addr:0x020cad70
 data_ov043_020cad88 kind:data(any) addr:0x020cad88
@@ -2432,6 +2507,10 @@ data_ov043_020caeec kind:data(any) addr:0x020caeec
 data_ov043_020caefc kind:data(any) addr:0x020caefc
 data_ov043_020caf08 kind:data(any) addr:0x020caf08
 data_ov043_020caf18 kind:data(any) addr:0x020caf18
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Save.c
+/////////////////////////////////////////////////////////////
 data_ov043_020caf44 kind:data(any) addr:0x020caf44
 data_ov043_020caf50 kind:data(any) addr:0x020caf50
 data_ov043_020caf68 kind:data(any) addr:0x020caf68
@@ -2493,6 +2572,10 @@ data_ov043_020cb3f0 kind:data(any) addr:0x020cb3f0
 data_ov043_020cb41c kind:data(any) addr:0x020cb41c
 data_ov043_020cb428 kind:data(any) addr:0x020cb428
 data_ov043_020cb438 kind:data(any) addr:0x020cb438
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/NRep.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cb464 kind:data(any) addr:0x020cb464
 data_ov043_020cb470 kind:data(any) addr:0x020cb470
 data_ov043_020cb498 kind:data(any) addr:0x020cb498 ambiguous
@@ -2508,12 +2591,26 @@ data_ov043_020cb514 kind:data(any) addr:0x020cb514
 data_ov043_020cb524 kind:data(any) addr:0x020cb524
 data_ov043_020cb530 kind:data(any) addr:0x020cb530
 data_ov043_020cb540 kind:data(any) addr:0x020cb540
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .data                                   //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/TakTest.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cb580 kind:data(any) addr:0x020cb580
 data_ov043_020cb584 kind:data(any) addr:0x020cb584
 data_ov043_020cb594 kind:data(any) addr:0x020cb594
 data_ov043_020cb5a4 kind:data(any) addr:0x020cb5a4
 data_ov043_020cb5c4 kind:data(any) addr:0x020cb5c4
 data_ov043_020cb5d4 kind:data(any) addr:0x020cb5d4
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuTop.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cb5f4 kind:data(any) addr:0x020cb5f4
 data_ov043_020cb5f8 kind:data(any) addr:0x020cb5f8
 data_ov043_020cb608 kind:data(any) addr:0x020cb608
@@ -2555,6 +2652,10 @@ data_ov043_020cb970 kind:data(any) addr:0x020cb970
 data_ov043_020cb988 kind:data(any) addr:0x020cb988
 data_ov043_020cb99c kind:data(any) addr:0x020cb99c
 data_ov043_020cb9b0 kind:data(any) addr:0x020cb9b0
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuBadge.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cb9c8 kind:data(any) addr:0x020cb9c8
 data_ov043_020cb9cc kind:data(any) addr:0x020cb9cc
 data_ov043_020cb9dc kind:data(any) addr:0x020cb9dc
@@ -2607,6 +2708,10 @@ data_ov043_020cbe64 kind:data(any) addr:0x020cbe64
 data_ov043_020cbe7c kind:data(any) addr:0x020cbe7c
 data_ov043_020cbe94 kind:data(any) addr:0x020cbe94
 data_ov043_020cbeac kind:data(any) addr:0x020cbeac
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuScena.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cbec4 kind:data(any) addr:0x020cbec4
 data_ov043_020cbec8 kind:data(any) addr:0x020cbec8
 data_ov043_020cbed8 kind:data(any) addr:0x020cbed8
@@ -2631,6 +2736,10 @@ data_ov043_020cc0d4 kind:data(any) addr:0x020cc0d4
 data_ov043_020cc0ec kind:data(any) addr:0x020cc0ec
 data_ov043_020cc104 kind:data(any) addr:0x020cc104
 data_ov043_020cc11c kind:data(any) addr:0x020cc11c
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuEquip.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cc134 kind:data(any) addr:0x020cc134
 data_ov043_020cc138 kind:data(any) addr:0x020cc138
 data_ov043_020cc148 kind:data(any) addr:0x020cc148
@@ -2680,6 +2789,10 @@ data_ov043_020cc55c kind:data(any) addr:0x020cc55c
 data_ov043_020cc574 kind:data(any) addr:0x020cc574
 data_ov043_020cc588 kind:data(any) addr:0x020cc588
 data_ov043_020cc5a4 kind:data(any) addr:0x020cc5a4
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Shop.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cc5bc kind:data(any) addr:0x020cc5bc
 data_ov043_020cc5c0 kind:data(any) addr:0x020cc5c0
 data_ov043_020cc5cc kind:data(any) addr:0x020cc5cc
@@ -2748,6 +2861,10 @@ data_ov043_020ccc00 kind:data(any) addr:0x020ccc00
 data_ov043_020ccc14 kind:data(any) addr:0x020ccc14
 data_ov043_020ccc28 kind:data(any) addr:0x020ccc28
 data_ov043_020ccc38 kind:data(any) addr:0x020ccc38
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Depart.c
+/////////////////////////////////////////////////////////////
 data_ov043_020ccc48 kind:data(any) addr:0x020ccc48
 data_ov043_020ccc4c kind:data(any) addr:0x020ccc4c
 data_ov043_020ccc5c kind:data(any) addr:0x020ccc5c
@@ -2772,6 +2889,10 @@ data_ov043_020cce28 kind:data(any) addr:0x020cce28
 data_ov043_020cce3c kind:data(any) addr:0x020cce3c
 data_ov043_020cce50 kind:data(any) addr:0x020cce50
 data_ov043_020cce64 kind:data(any) addr:0x020cce64
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Save.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cce74 kind:data(any) addr:0x020cce74
 data_ov043_020cce78 kind:data(any) addr:0x020cce78
 data_ov043_020cce84 kind:data(any) addr:0x020cce84
@@ -2808,6 +2929,10 @@ data_ov043_020cd11c kind:data(any) addr:0x020cd11c
 data_ov043_020cd12c kind:data(any) addr:0x020cd12c
 data_ov043_020cd13c kind:data(any) addr:0x020cd13c
 data_ov043_020cd150 kind:data(any) addr:0x020cd150
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/NRep.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd164 kind:data(any) addr:0x020cd164
 data_ov043_020cd168 kind:data(any) addr:0x020cd168
 data_ov043_020cd174 kind:data(any) addr:0x020cd174
@@ -2820,9 +2945,39 @@ data_ov043_020cd218 kind:data(any) addr:0x020cd218
 data_ov043_020cd238 kind:data(any) addr:0x020cd238
 data_ov043_020cd248 kind:data(any) addr:0x020cd248
 data_ov043_020cd25c kind:data(any) addr:0x020cd25c
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+////// section: .bss                                    //////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuBadge.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd280 kind:bss addr:0x020cd280
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/MenuEquip.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd284 kind:bss addr:0x020cd284
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Shop.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd288 kind:bss addr:0x020cd288
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Depart.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd28c kind:bss addr:0x020cd28c
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/Save.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd290 kind:bss addr:0x020cd290
+
+/////////////////////////////////////////////////////////////
+// src/Debug/Takami/NRep.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cd294 kind:bss addr:0x020cd294

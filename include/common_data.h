@@ -25,6 +25,7 @@ extern s32 data_02066cec;
 extern s16 data_02066eec;
 
 extern s32 data_020670ec;
+extern s32 data_020672ec;
 extern s32 data_020676ec;
 extern s32 data_0206770c;
 
@@ -61,5 +62,19 @@ typedef struct {
     /* 0x410 */ s32  unk_410;
 } UnkStruct_02074010;
 extern UnkStruct_02074010 data_02074d10;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0xA];
+    /* 0x0A */ u16  unk_0A;
+    /* 0x0C */ u16  unk_0C;
+    /* 0x0E */ u16  unk_0E;
+    /* 0x10 */ char unk_10[0x18];
+    /* 0x28 */ u32  unk_28;
+    /* 0x2C */ char unk_2C[0x14];
+} UnkStruct_0200e998; // Size: 0x40
+extern void func_0200dd60(UnkStruct_0200e998*);
+extern void func_0200e2c4(UnkStruct_0200e998*);
+extern void func_0200ec7c(UnkStruct_0200e998*, s32, s32, s32);
+extern void func_0200e998(UnkStruct_0200e998*);
 
 #endif // COMMON_DATA_H

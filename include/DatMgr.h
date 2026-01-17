@@ -168,8 +168,9 @@ BOOL DatMgr_ReleaseData(Data* data);
  * @brief Activates a new slot in the Data Manager.
  *
  * Searches for the first inactive slot starting from index 2 and marks it as active.
+ * @return The index of the allocated slot, or -1 if no slots are available.
  */
-void DatMgr_AllocateSlot(void);
+s32 DatMgr_AllocateSlot(void);
 
 /**
  * @brief Clears all data in a specific slot and deactivates it.

@@ -1,7 +1,7 @@
 #include "EasyFade.h"
 #include "Display.h"
 
-s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, s32 arg2, s32 arg3);
+s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, void* arg2, s32 arg3);
 
 const TaskHandle Task_EasyFade = {"EasyFade", EasyFade_TaskHandler, 0};
 
@@ -179,7 +179,7 @@ const struct FaderTaskHandlerDispatch {
     {EasyFade_Initialize, EasyFade_Update, func_020264e0, func_020264e8}
 };
 
-static s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, s32 arg2, s32 arg3) {
+static s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
     const struct FaderTaskHandlerDispatch funcTable = FaderTaskHandlerDispatchFuncs;
     return funcTable.entries[arg3](&gFaders);
 }

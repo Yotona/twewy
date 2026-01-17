@@ -34,7 +34,7 @@ typedef struct Task {
     /* 0x0C */ u16 generation;
     /* 0x0E */ u16 parentGeneration;
     /* 0x10 */ s32 priority;
-    /* 0x14 */ s32 (*update)(struct TaskPool*, struct Task*, s32, s32);
+    /* 0x14 */ s32 (*update)(struct TaskPool*, struct Task*, void*, s32);
     /* 0x18 */ void*       data;
     /* 0x1C */ const char* name;
 } Task; // Size: 0x20
@@ -45,7 +45,7 @@ typedef struct Task {
  */
 typedef struct TaskHandle {
     /* 0x00 */ const char* taskName;
-    /* 0x04 */ s32 (*taskFunc)(struct TaskPool*, struct Task*, s32, s32);
+    /* 0x04 */ s32 (*taskFunc)(struct TaskPool*, struct Task*, void*, s32);
     /* 0x08 */ u32 dataSize;
 } TaskHandle;
 
@@ -119,7 +119,7 @@ void EasyTask_UpdateActiveTasks(TaskPool* taskPool);
  * @param param Parameter passed to the task's update function during initialization.
  * @return Task ID if successful, -1 otherwise.
  */
-s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, s32 param);
+s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, void* param);
 
 /**
  * @brief Marks a task for deletion.

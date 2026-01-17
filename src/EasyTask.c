@@ -4,7 +4,7 @@ void  EasyTask_ProcessPendingTasks(TaskPool* taskPool);
 void  EasyTask_UpdateActiveTasks(TaskPool* taskPool);
 Task* EasyTask_GetTaskById(TaskPool* taskPool, u32 arg1);
 
-static s32 EasyTask_DummyUpdate(TaskPool* taskPool, Task* task, s32 arg2, s32 arg3) {
+static s32 EasyTask_DummyUpdate(TaskPool* taskPool, Task* task, void* arg2, s32 arg3) {
     return 1;
 }
 
@@ -37,8 +37,6 @@ static BOOL EasyTask_RecycleTask(TaskPool* taskPool, Task* prev, Task* task) {
     return FALSE;
 }
 
-// Nonmatching: Two instructions swapped
-// Scratch: nG1sP
 static Task* EasyTask_AllocateTask(TaskPool* taskPool, s32 priority) {
     static const char* taskName = "no name";
 
@@ -212,7 +210,7 @@ void EasyTask_UpdateActiveTasks(TaskPool* taskPool) {
     };
 }
 
-s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, s32 param) {
+s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, void* param) {
     Task* task = EasyTask_AllocateTask(taskPool, arg3);
     if (task == NULL) {
         return -1;
@@ -231,9 +229,9 @@ s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, 
         task->ownsData = FALSE;
         task->data     = data;
     }
-    task->name                                = taskHandle->taskName;
-    s32 (*update)(TaskPool*, Task*, s32, s32) = taskHandle->taskFunc;
-    task->update                              = update;
+    task->name                                  = taskHandle->taskName;
+    s32 (*update)(TaskPool*, Task*, void*, s32) = taskHandle->taskFunc;
+    task->update                                = update;
     if (update(taskPool, task, param, 0) == 0) {
         EasyTask_RecycleTask(taskPool, &taskPool->pendingList, task);
         return -1;

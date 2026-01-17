@@ -527,7 +527,7 @@ BOOL DatMgr_ReleaseData(Data* data) {
     return ret;
 }
 
-void DatMgr_AllocateSlot(void) {
+s32 DatMgr_AllocateSlot(void) {
     s32     found = -1;
     DatMgr* mgr   = g_activeDatMgr;
 
@@ -538,6 +538,7 @@ void DatMgr_AllocateSlot(void) {
         }
     }
     mgr->slotActive[found] = TRUE;
+    return found;
 }
 
 void DatMgr_ClearSlot(s32 dataType) {

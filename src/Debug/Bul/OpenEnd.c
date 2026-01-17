@@ -566,16 +566,12 @@ void func_ov037_020837b8(UnkStruct_ov037_02083b84* r0, s16 r1, s16 r2, s16 r3, s
 }
 
 typedef struct {
-    /* 0x00 */ char pad_00[0x0C];
-    /* 0x0C */ u16  unk_0C;
-    /* 0x0E */ u16  unk_0E;
-    /* 0x10 */ char pad_10[0x30];
-    /* 0x40 */ u32  unk_40;
-    /* 0x44 */ char pad_44[0x3C];
-    /* 0x80 */ u32  unk_80;
+    /* 0x00 */ UnkStruct_0200e998 unk_00;
+    /* 0x40 */ UnkStruct_0200e998 unk_40;
+    /* 0x80 */ u32                unk_80;
 } UnkTaskData;
 
-int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, s32 taskParam) {
+int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     UnkStruct_ov037_02083b84 sp_struct;
 
     // r1, r2 structs
@@ -603,7 +599,7 @@ const u32 OpenEnd_TitleScreen_ButtonInfo[][5] = {
 };
 
 // Nonmatching
-int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 taskParam) {
+int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     TouchCoord   coords, coords2;
     UnkTaskData* unk = r1->data;
     TouchInput_GetCoord(&coords2);
@@ -613,11 +609,11 @@ int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 taskPar
     if (data_ov037_02083e04 != 0 && TouchInput_IsTouchActive() != FALSE &&
         OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords.x, coords.y) != FALSE)
     {
-        unk->unk_0C = 0x82;
-        unk->unk_0E = 0x62;
+        unk->unk_00.unk_0C = 0x82;
+        unk->unk_00.unk_0E = 0x62;
     } else {
-        unk->unk_0C = 0x80;
-        unk->unk_0E = 0x60;
+        unk->unk_00.unk_0C = 0x80;
+        unk->unk_00.unk_0E = 0x60;
     }
 
     if (data_ov037_02083e04 != 0 && TouchInput_WasTouchReleased() != FALSE) {
@@ -625,32 +621,32 @@ int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, s32 taskPar
             func_ov037_0208374c(OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][1]);
         }
     }
-    func_0200dd60(unk);
+    func_0200dd60(&unk->unk_00);
     func_0200dd60(&unk->unk_40);
     return 1;
 }
 
-int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, s32 taskParam) {
+int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     UnkTaskData* unk = r1->data;
     func_0200e2c4(&unk->unk_40);
-    func_0200e2c4(unk);
+    func_0200e2c4(&unk->unk_00);
     return 1;
 }
 
-int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, s32 taskParam) {
+int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     UnkTaskData* unk = r1->data;
-    func_0200e998(unk);
+    func_0200e998(&unk->unk_00);
     func_0200e998(&unk->unk_40);
     return 1;
 }
 
-s32 func_ov037_020839ec(struct TaskPool* pool, struct Task* task, s32 taskParam, s32 index) {
+s32 func_ov037_020839ec(struct TaskPool* pool, struct Task* task, void* taskParam, s32 index) {
     OpenEndExportFuncTable functable = data_ov037_02083b4c;
     functable.funcs[index](pool, task, taskParam);
 }
 
 s32 OpenEnd_CreateBadgeTask(u32 r0) {
-    u32                     sp8                      = r0;
     static const TaskHandle TaskHandle_OpenEnd_Badge = {"Tsk_OpenEnd_Badge", func_ov037_020839ec, 0x84};
+    u32                     sp8                      = r0;
     return EasyTask_CreateTask(data_ov037_02083e08, &TaskHandle_OpenEnd_Badge, NULL, 0, 0, &sp8);
 }
