@@ -119,11 +119,11 @@ func_ov028_020e7f2c() {
     // Not yet implemented
 }
 
-func_ov028_020e7fc8(u16*, s32, s32, s32, s32, s32, s32, s32) {
+func_ov028_020e7fc8(SpriteAnimation*, s32, s32, s32, s32, s32, s32, s32) {
     // Not yet implemented
 }
 
-func_ov028_020e80a0(UnkStruct_0200e998*, s32, s32, s32, s32) {
+func_ov028_020e80a0(Sprite*, s32, s32, s32, s32) {
     // Not yet implemented
 }
 
@@ -138,7 +138,7 @@ func_ov028_020e8194() {
     // Not yet implemented
 }
 
-func_ov028_020e81fc(UnkStruct_0200e998*, s16) {
+func_ov028_020e81fc(Sprite*, s16) {
     // Not yet implemented
 }
 
@@ -734,9 +734,9 @@ func_ov028_020eb7ec(void* param_1, s32 param_2, s32 param_3, s32 param_4) {
     // Not yet implemented
 }
 
-func_ov028_020eb8ec(UnkStruct_0200e998* arg0) {
+func_ov028_020eb8ec(Sprite* arg0) {
     for (s32 i = 0; i < 15; i++) {
-        func_0200dd60(arg0);
+        Sprite_Update(arg0);
         arg0++;
     }
     return 1;
@@ -746,9 +746,9 @@ func_ov028_020eb918(void* param_1) {
     // Not yet implemented
 }
 
-s32 func_ov028_020eb9b0(UnkStruct_0200e998* arg0) {
+s32 func_ov028_020eb9b0(Sprite* arg0) {
     for (s32 i = 0; i < 15; i++) {
-        func_0200e998(arg0);
+        Sprite_Release(arg0);
         arg0++;
     }
     return 1;
@@ -779,14 +779,14 @@ void func_ov028_020eba2c(s32 arg0) {
     EasyTask_CreateTask(data_ov028_020ed3e0->pool, &Tsk_NrepPreview, NULL, 0, NULL, &stack);
 }
 
-func_ov028_020eba84(NrepPreview* arg0, UnkStruct_0200e998* arg1, s32* arg2) {
+func_ov028_020eba84(NrepPreview* arg0, Sprite* arg1, s32* arg2) {
     // Not yet implemented
 }
 
 void func_ov028_020ebe9c(NrepPreview* arg0) {
-    UnkStruct_0200e998* puVar5 = &arg0->unk_084;
-    s16                 iVar6  = data_ov028_020ed3e0->unk_16;
-    s32                 iVar4  = 29;
+    Sprite* puVar5 = &arg0->unk_084;
+    s16     iVar6  = data_ov028_020ed3e0->unk_16;
+    s32     iVar4  = 29;
 
     if ((iVar6 >= 0x60) || (arg0->unk_000 == 0)) {
         func_ov028_020e80a0(&arg0->unk_084, 13, 0, 5, 0);
@@ -839,33 +839,33 @@ void func_ov028_020ebe9c(NrepPreview* arg0) {
     }
 
     do {
-        func_0200dd60(puVar5);
+        Sprite_Update(puVar5);
         iVar4--;
         puVar5++;
     } while (0 < iVar4);
 }
 
 void func_ov028_020ec16c(NrepPreview* arg0) {
-    int                 iVar1;
-    UnkStruct_0200e998* puVar2;
+    int     iVar1;
+    Sprite* puVar2;
 
     puVar2 = &arg0->unk_084;
     iVar1  = 29;
     do {
-        func_0200e2c4(puVar2);
+        Sprite_RenderFrame(puVar2);
         iVar1--;
         puVar2++;
     } while (0 < iVar1);
 }
 
 void func_ov028_020ec194(NrepPreview* arg0) {
-    int                 iVar1;
-    UnkStruct_0200e998* puVar2;
+    int     iVar1;
+    Sprite* puVar2;
 
     puVar2 = &arg0->unk_084;
     iVar1  = 29;
     do {
-        func_0200e998(puVar2);
+        Sprite_Release(puVar2);
         iVar1--;
         puVar2++;
     } while (0 < iVar1);
@@ -887,33 +887,33 @@ s32 func_ov028_020ec1bc(void) {
 }
 
 void func_ov028_020ec204(NrepPreview* arg0) {
-    u16   auStack_38[22];
-    short sStack_1e;
+    SpriteAnimation anim;
+    short           sStack_1e;
 
     if (arg0->unk_7C4 == data_ov028_020ed3e0->unk_16) {
         return;
     }
 
     arg0->unk_7C4 = data_ov028_020ed3e0->unk_16;
-    if (arg0->unk_004.unk_28 != 0) {
-        func_0200e998(&arg0->unk_004);
+    if (arg0->unk_004.resourceData != NULL) {
+        Sprite_Release(&arg0->unk_004);
     }
-    if (arg0->unk_044.unk_28 != 0) {
-        func_0200e998(&arg0->unk_044);
+    if (arg0->unk_044.resourceData != NULL) {
+        Sprite_Release(&arg0->unk_044);
     }
-    func_ov028_020e7fc8(auStack_38, 1, *(int*)data_ov028_020ed3e0, &data_ov028_020ed3ac, 1, 2, 3, 4);
+    func_ov028_020e7fc8(&anim, 1, data_ov028_020ed3e0->unk_00, &data_ov028_020ed3ac, 1, 2, 3, 4);
     sStack_1e = data_ov028_020ed3e0->unk_16 + 1;
     if (sStack_1e < 0x61) {
-        func_0200ecdc(&arg0->unk_004, auStack_38);
+        _Sprite_Load(&arg0->unk_004, &anim);
         func_ov028_020e81fc(&arg0->unk_004, 1);
-        arg0->unk_004.unk_0C = 0xbe;
-        arg0->unk_004.unk_0E = 0x58;
+        arg0->unk_004.posX   = 190;
+        arg0->unk_004.posY   = 88;
         arg0->unk_004.unk_0A = arg0->unk_004.unk_0A & ~0xC00 | 0x800;
         if (func_ov028_020ec1bc()) {
-            func_0200ecdc(&arg0->unk_044, auStack_38);
+            _Sprite_Load(&arg0->unk_044, &anim);
             func_ov028_020e81fc(&arg0->unk_044, 2);
-            arg0->unk_044.unk_0C = 0xbe;
-            arg0->unk_044.unk_0E = 0x58;
+            arg0->unk_044.posX   = 190;
+            arg0->unk_044.posY   = 88;
             arg0->unk_044.unk_0A = arg0->unk_044.unk_0A & ~0xC00 | 0x800;
         }
     }
@@ -934,11 +934,11 @@ s32 func_ov028_020ec3a0(NrepPreview* arg0) {
     func_ov028_020ec204(arg0);
     func_ov028_020ebe9c(arg0);
     if (arg0->unk_000 != 0) {
-        if (arg0->unk_004.unk_28 != 0) {
-            func_0200dd60(&arg0->unk_004);
+        if (arg0->unk_004.resourceData != NULL) {
+            Sprite_Update(&arg0->unk_004);
         }
-        if (arg0->unk_044.unk_28 != 0) {
-            func_0200dd60(&arg0->unk_044);
+        if (arg0->unk_044.resourceData != NULL) {
+            Sprite_Update(&arg0->unk_044);
         }
     }
     return 1;
@@ -947,11 +947,11 @@ s32 func_ov028_020ec3a0(NrepPreview* arg0) {
 s32 func_ov028_020ec424(NrepPreview* arg0) {
     func_ov028_020ec16c(arg0);
     if (arg0->unk_000 != 0) {
-        if (arg0->unk_004.unk_28 != 0) {
-            func_0200e2c4(&arg0->unk_004);
+        if (arg0->unk_004.resourceData != NULL) {
+            Sprite_RenderFrame(&arg0->unk_004);
         }
-        if (arg0->unk_044.unk_28 != 0) {
-            func_0200e2c4(&arg0->unk_044);
+        if (arg0->unk_044.resourceData != NULL) {
+            Sprite_RenderFrame(&arg0->unk_044);
         }
     }
     return 1;
@@ -959,11 +959,11 @@ s32 func_ov028_020ec424(NrepPreview* arg0) {
 
 s32 func_ov028_020ec46c(NrepPreview* arg0) {
     func_ov028_020ec194(arg0);
-    if (arg0->unk_004.unk_28 != 0) {
-        func_0200e998(&arg0->unk_004);
+    if (arg0->unk_004.resourceData != NULL) {
+        Sprite_Release(&arg0->unk_004);
     }
-    if (arg0->unk_044.unk_28 != 0) {
-        func_0200e998(&arg0->unk_044);
+    if (arg0->unk_044.resourceData != NULL) {
+        Sprite_Release(&arg0->unk_044);
     }
     return 1;
 }
@@ -1031,15 +1031,15 @@ s32 func_ov028_020eca54(NrepSeal* arg0) {
             func_ov028_020e80a0(&arg0->unk_184, 2, *pcVar2, 3, 0);
         }
 
-        func_0200dd60(&arg0->unk_004);
-        func_0200dd60(&arg0->unk_044);
-        func_0200dd60(&arg0->unk_084);
-        func_0200dd60(&arg0->unk_0C4);
-        func_0200dd60(&arg0->unk_104);
-        func_0200dd60(&arg0->unk_144);
-        func_0200dd60(&arg0->unk_184);
-        func_0200dd60(&arg0->unk_1C4);
-        func_0200dd60(&arg0->unk_204);
+        Sprite_Update(&arg0->unk_004);
+        Sprite_Update(&arg0->unk_044);
+        Sprite_Update(&arg0->unk_084);
+        Sprite_Update(&arg0->unk_0C4);
+        Sprite_Update(&arg0->unk_104);
+        Sprite_Update(&arg0->unk_144);
+        Sprite_Update(&arg0->unk_184);
+        Sprite_Update(&arg0->unk_1C4);
+        Sprite_Update(&arg0->unk_204);
         arg0++;
     }
 
@@ -1051,15 +1051,15 @@ s32 func_ov028_020ecbf0(NrepSeal* arg0) {
         if (arg0->unk_000 != 0) {
             data_0206a890.unk_0C = (data_ov028_020ed3e0->unk_0C != 0) ? 0xF : 0x1F;
             data_0206a890.unk_0C &= 0x1F;
-            func_0200e2c4(&arg0->unk_004);
-            func_0200e2c4(&arg0->unk_044);
-            func_0200e2c4(&arg0->unk_084);
-            func_0200e2c4(&arg0->unk_0C4);
-            func_0200e2c4(&arg0->unk_104);
-            func_0200e2c4(&arg0->unk_144);
-            func_0200e2c4(&arg0->unk_184);
-            func_0200e2c4(&arg0->unk_1C4);
-            func_0200e2c4(&arg0->unk_204);
+            Sprite_RenderFrame(&arg0->unk_004);
+            Sprite_RenderFrame(&arg0->unk_044);
+            Sprite_RenderFrame(&arg0->unk_084);
+            Sprite_RenderFrame(&arg0->unk_0C4);
+            Sprite_RenderFrame(&arg0->unk_104);
+            Sprite_RenderFrame(&arg0->unk_144);
+            Sprite_RenderFrame(&arg0->unk_184);
+            Sprite_RenderFrame(&arg0->unk_1C4);
+            Sprite_RenderFrame(&arg0->unk_204);
         }
         arg0++;
     }
@@ -1068,15 +1068,15 @@ s32 func_ov028_020ecbf0(NrepSeal* arg0) {
 
 s32 func_ov028_020ecc9c(NrepSeal* arg0) {
     for (s32 i = 0; i < 24; i++) {
-        func_0200e998(&arg0->unk_004);
-        func_0200e998(&arg0->unk_044);
-        func_0200e998(&arg0->unk_084);
-        func_0200e998(&arg0->unk_0C4);
-        func_0200e998(&arg0->unk_104);
-        func_0200e998(&arg0->unk_144);
-        func_0200e998(&arg0->unk_184);
-        func_0200e998(&arg0->unk_1C4);
-        func_0200e998(&arg0->unk_204);
+        Sprite_Release(&arg0->unk_004);
+        Sprite_Release(&arg0->unk_044);
+        Sprite_Release(&arg0->unk_084);
+        Sprite_Release(&arg0->unk_0C4);
+        Sprite_Release(&arg0->unk_104);
+        Sprite_Release(&arg0->unk_144);
+        Sprite_Release(&arg0->unk_184);
+        Sprite_Release(&arg0->unk_1C4);
+        Sprite_Release(&arg0->unk_204);
         arg0++;
     }
     return 1;

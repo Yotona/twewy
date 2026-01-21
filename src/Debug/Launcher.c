@@ -543,7 +543,7 @@ s32 func_ov046_020837f8(s32* r0, s32* r1) {
         *(u16*)(&data_ov046_02084804 + 0x13) = 8;
         *(u16*)(&data_ov046_02084804 + 0x14) = 9;
     }
-    func_0200ecdc(r0 + 0x04, &data_ov046_02084804);
+    _Sprite_Load(r0 + 0x04, &data_ov046_02084804);
     return 1;
 }
 
@@ -574,16 +574,16 @@ BOOL func_ov046_020838ec(void* unkptr) {
             break;
     }
     if (result == TRUE) {
-        func_0200ece8(unkptr + 0x10);
+        Sprite_UpdateAndCheck(unkptr + 0x10);
     }
     return result;
 }
 
 void func_ov046_02083980(s32 r0) {
-    func_0200ed10(r0 + 0x10);
+    Sprite_Render(r0 + 0x10);
 }
 void func_ov046_02083990(s32 r0) {
-    func_0200ed24(r0 + 0x10);
+    Sprite_Destroy(r0 + 0x10);
 }
 
 int func_ov046_020839a0(s32 r0, DebugLauncherState* state, s32* r2) {

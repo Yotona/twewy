@@ -86,6 +86,10 @@ src/BgResMgr.c:
     .rodata     start:0x0205AD5C end:0x0205AD64
     .bss        start:0x0206B3C4 end:0x0206B3CC
 
+src/SpriteMgr.c:
+    .text       start:0x0200D96C end:0x0200EDAC
+    .rodata     start:0x0205ADCC end:0x0205ADF8
+
 src/EasyTask.c:
 complete
     .text       start:0x0200F198 end:0x0200F86C

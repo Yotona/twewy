@@ -438,47 +438,49 @@ func_0200d898 kind:function(arm,size=0x58) addr:0x0200d898
 func_0200d8f0 kind:function(arm,size=0x1c) addr:0x0200d8f0
 func_0200d90c kind:function(arm,size=0x48) addr:0x0200d90c
 func_0200d954 kind:function(arm,size=0x18) addr:0x0200d954
-func_0200d96c kind:function(arm,size=0xac) addr:0x0200d96c
-func_0200da18 kind:function(arm,size=0x4c) addr:0x0200da18
-func_0200da64 kind:function(arm,size=0x8) addr:0x0200da64
-func_0200da6c kind:function(arm,size=0x80) addr:0x0200da6c
-func_0200daec kind:function(arm,size=0x6c) addr:0x0200daec
-func_0200db58 kind:function(arm,size=0x58) addr:0x0200db58
-func_0200dbb0 kind:function(arm,size=0x1c) addr:0x0200dbb0
-func_0200dbcc kind:function(arm,size=0x18) addr:0x0200dbcc
-func_0200dbe4 kind:function(arm,size=0x3c) addr:0x0200dbe4
-func_0200dc20 kind:function(arm,size=0x4c) addr:0x0200dc20
-func_0200dc6c kind:function(arm,size=0x5c) addr:0x0200dc6c
-func_0200dcc8 kind:function(arm,size=0x4c) addr:0x0200dcc8
-func_0200dd14 kind:function(arm,size=0x4c) addr:0x0200dd14
 
-
-func_0200dd60 kind:function(arm,size=0x88) addr:0x0200dd60
+/////////////////////////////////////////////////////////////
+// src/SpriteMgr.c
+/////////////////////////////////////////////////////////////
+Sprite_GetFrameInfo kind:function(arm,size=0xac) addr:0x0200d96c
+AnimCmd_Start kind:function(arm,size=0x4c) addr:0x0200da18
+AnimCmd_Nop kind:function(arm,size=0x8) addr:0x0200da64
+AnimCmd_PlayFrame kind:function(arm,size=0x80) addr:0x0200da6c
+AnimCmd_Wait kind:function(arm,size=0x6c) addr:0x0200daec
+AnimCmd_Skip kind:function(arm,size=0x58) addr:0x0200db58
+AnimCmd_SetLoopFrame kind:function(arm,size=0x1c) addr:0x0200dbb0
+AnimCmd_Loop kind:function(arm,size=0x18) addr:0x0200dbcc
+AnimCmd_Jump kind:function(arm,size=0x3c) addr:0x0200dbe4
+AnimCmd_SetPosition kind:function(arm,size=0x4c) addr:0x0200dc20
+AnimCmd_AddPosition kind:function(arm,size=0x5c) addr:0x0200dc6c
+AnimCmd_SetScale kind:function(arm,size=0x4c) addr:0x0200dcc8
+Sprite_Init kind:function(arm,size=0x4c) addr:0x0200dd14
+Sprite_Update kind:function(arm,size=0x88) addr:0x0200dd60
 func_0200dde8 kind:function(arm,size=0x24c) addr:0x0200dde8
 func_0200e034 kind:function(arm,size=0x290) addr:0x0200e034
-func_0200e2c4 kind:function(arm,size=0x108) addr:0x0200e2c4
-func_0200e3cc kind:function(arm,size=0x5c0) addr:0x0200e3cc
-func_0200e98c kind:function(arm,size=0xc) addr:0x0200e98c
-func_0200e998 kind:function(arm,size=0xa0) addr:0x0200e998
-
-
-func_0200ea38 kind:function(arm,size=0x14) addr:0x0200ea38
+Sprite_RenderFrame kind:function(arm,size=0x108) addr:0x0200e2c4
+Sprite_LoadFromData kind:function(arm,size=0x5c0) addr:0x0200e3cc
+Sprite_Load kind:function(arm,size=0xc) addr:0x0200e98c
+Sprite_Release kind:function(arm,size=0xa0) addr:0x0200e998
+Sprite_HasAnimation kind:function(arm,size=0x14) addr:0x0200ea38
 func_0200ea4c kind:function(arm,size=0x4c) addr:0x0200ea4c
 func_0200ea98 kind:function(arm,size=0x50) addr:0x0200ea98
-func_0200eae8 kind:function(arm,size=0x68) addr:0x0200eae8
-func_0200eb50 kind:function(arm,size=0x30) addr:0x0200eb50
-func_0200eb80 kind:function(arm,size=0x4c) addr:0x0200eb80
-func_0200ebcc kind:function(arm,size=0x78) addr:0x0200ebcc
-func_0200ec44 kind:function(arm,size=0x38) addr:0x0200ec44
-func_0200ec7c kind:function(arm,size=0x60) addr:0x0200ec7c
-func_0200ecdc kind:function(arm,size=0xc) addr:0x0200ecdc
-func_0200ece8 kind:function(arm,size=0x28) addr:0x0200ece8
-func_0200ed10 kind:function(arm,size=0x14) addr:0x0200ed10
-func_0200ed24 kind:function(arm,size=0x14) addr:0x0200ed24
+Sprite_SetAnimation kind:function(arm,size=0x68) addr:0x0200eae8
+Sprite_ChangeAnimation kind:function(arm,size=0x30) addr:0x0200eb50
+Sprite_SetStaticCell kind:function(arm,size=0x4c) addr:0x0200eb80
+Sprite_ChangePalette kind:function(arm,size=0x78) addr:0x0200ebcc
+Sprite_Restart kind:function(arm,size=0x38) addr:0x0200ec44
+Sprite_RenderAltPalette kind:function(arm,size=0x60) addr:0x0200ec7c
+_Sprite_Load kind:function(arm,size=0xc) addr:0x0200ecdc
+Sprite_UpdateAndCheck kind:function(arm,size=0x28) addr:0x0200ece8
+Sprite_Render kind:function(arm,size=0x14) addr:0x0200ed10
+Sprite_Destroy kind:function(arm,size=0x14) addr:0x0200ed24
 func_0200ed38 kind:function(arm,size=0x14) addr:0x0200ed38
 func_0200ed4c kind:function(arm,size=0x28) addr:0x0200ed4c
 func_0200ed74 kind:function(arm,size=0x1c) addr:0x0200ed74
 func_0200ed90 kind:function(arm,size=0x1c) addr:0x0200ed90
+
+
 func_0200edac kind:function(arm,size=0x10) addr:0x0200edac
 func_0200edbc kind:function(arm,size=0xb0) addr:0x0200edbc
 func_0200ee6c kind:function(arm,size=0x54) addr:0x0200ee6c
@@ -3334,7 +3336,10 @@ data_0205ad6c kind:data(any) addr:0x0205ad6c
 data_0205ad84 kind:data(any) addr:0x0205ad84
 data_0205ad9c kind:data(any) addr:0x0205ad9c
 data_0205adb4 kind:data(any) addr:0x0205adb4
+
+
 data_0205adcc kind:data(any) addr:0x0205adcc
+
 data_0205adf8 kind:data(any) addr:0x0205adf8
 data_0205ae00 kind:data(any) addr:0x0205ae00
 data_0205ae24 kind:data(any) addr:0x0205ae24

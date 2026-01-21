@@ -4,6 +4,7 @@
 #include "Display.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
+#include "SpriteMgr.h"
 #include "System.h"
 #include "common_data.h"
 
@@ -257,22 +258,30 @@ void func_ov043_02082e98(s32 arg0, s32* arg1) {
 }
 
 s32 func_ov043_02082f04(TaskPool* pool, Task* task, void* arg2) {
-    func_ov043_02082e98(task->data, arg2);
+    Sprite* sprite = task->data;
+
+    func_ov043_02082e98(sprite, arg2);
     return 1;
 }
 
 s32 func_ov043_02082f1c(TaskPool* pool, Task* task, void* arg2) {
-    func_0200dd60(task->data);
+    Sprite* sprite = task->data;
+
+    Sprite_Update(sprite);
     return 1;
 }
 
 s32 func_ov043_02082f30(TaskPool* pool, Task* task, void* arg2) {
-    func_0200e2c4(task->data);
+    Sprite* sprite = task->data;
+
+    Sprite_RenderFrame(sprite);
     return 1;
 }
 
 s32 func_ov043_02082f44(TaskPool* pool, Task* task, void* arg2) {
-    func_0200e998(task->data);
+    Sprite* sprite = task->data;
+
+    Sprite_Release(sprite);
     return 1;
 }
 

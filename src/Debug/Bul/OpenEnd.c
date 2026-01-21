@@ -2,6 +2,7 @@
 #include "Display.h"
 #include "EasyFade.h"
 #include "TouchInput.h"
+#include "common_data.h"
 
 /*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
 void func_ov037_020824a0(void) {
@@ -556,23 +557,23 @@ BOOL OpenEnd_IsInCircle(s32* r0, s32 x, s32 y) {
     return dSqr <= maxD;
 }
 
-void func_ov037_020837b8(UnkStruct_ov037_02083b84* r0, s16 r1, s16 r2, s16 r3, s16 s1) {
-    *r0           = data_ov037_02083b84;
-    r0->file_List = &OpenEnd_FileList;
-    r0->unk_1c    = r1;
-    r0->unk_26    = r2;
-    r0->unk_28    = r3;
-    r0->unk_2a    = s1;
+void func_ov037_020837b8(SpriteAnimation* anim, s16 r1, s16 r2, s16 r3, s16 s1) {
+    *anim         = data_ov037_02083b84;
+    anim->binIden = OpenEnd_FileList;
+    anim->unk_1C  = r1;
+    anim->unk_26  = r2;
+    anim->unk_28  = r3;
+    anim->unk_2A  = s1;
 }
 
 typedef struct {
-    /* 0x00 */ UnkStruct_0200e998 unk_00;
-    /* 0x40 */ UnkStruct_0200e998 unk_40;
-    /* 0x80 */ u32                unk_80;
+    /* 0x00 */ Sprite unk_00;
+    /* 0x40 */ Sprite unk_40;
+    /* 0x80 */ u32    unk_80;
 } UnkTaskData;
 
 int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
-    UnkStruct_ov037_02083b84 sp_struct;
+    SpriteAnimation anim;
 
     // r1, r2 structs
     // UnkStruct2* r1 = (UnkStruct2*)_r1;
@@ -583,12 +584,12 @@ int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* taskP
 
     u32 tmp     = *r2;
     ptr->unk_80 = tmp;
-    func_ov037_020837b8(&sp_struct, (tmp * 3) + 2, (tmp * 3) + 3, (tmp * 3) + 4, 1);
+    func_ov037_020837b8(&anim, (tmp * 3) + 2, (tmp * 3) + 3, (tmp * 3) + 4, 1);
 
-    func_0200e98c(&ptr->unk_40, &sp_struct);
+    Sprite_Load(&ptr->unk_40, &anim);
 
-    sp_struct.unk_2a = 2;
-    func_0200e98c(ptr, &sp_struct);
+    anim.unk_2A = 2;
+    Sprite_Load(&ptr->unk_00, &anim);
 
     return 1;
 }
@@ -609,11 +610,11 @@ int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, void* taskP
     if (data_ov037_02083e04 != 0 && TouchInput_IsTouchActive() != FALSE &&
         OpenEnd_IsInCircle(&OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][0], coords.x, coords.y) != FALSE)
     {
-        unk->unk_00.unk_0C = 0x82;
-        unk->unk_00.unk_0E = 0x62;
+        unk->unk_00.posX = 130;
+        unk->unk_00.posY = 98;
     } else {
-        unk->unk_00.unk_0C = 0x80;
-        unk->unk_00.unk_0E = 0x60;
+        unk->unk_00.posX = 128;
+        unk->unk_00.posY = 96;
     }
 
     if (data_ov037_02083e04 != 0 && TouchInput_WasTouchReleased() != FALSE) {
@@ -621,22 +622,22 @@ int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, void* taskP
             func_ov037_0208374c(OpenEnd_TitleScreen_ButtonInfo[unk->unk_80][1]);
         }
     }
-    func_0200dd60(&unk->unk_00);
-    func_0200dd60(&unk->unk_40);
+    Sprite_Update(&unk->unk_00);
+    Sprite_Update(&unk->unk_40);
     return 1;
 }
 
 int func_ov037_020839ac(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     UnkTaskData* unk = r1->data;
-    func_0200e2c4(&unk->unk_40);
-    func_0200e2c4(&unk->unk_00);
+    Sprite_RenderFrame(&unk->unk_40);
+    Sprite_RenderFrame(&unk->unk_00);
     return 1;
 }
 
 int func_ov037_020839cc(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
     UnkTaskData* unk = r1->data;
-    func_0200e998(&unk->unk_00);
-    func_0200e998(&unk->unk_40);
+    Sprite_Release(&unk->unk_00);
+    Sprite_Release(&unk->unk_40);
     return 1;
 }
 

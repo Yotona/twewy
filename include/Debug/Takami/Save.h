@@ -2,12 +2,12 @@
 #define DEBUG_TAKAMI_SAVE_H
 
 #include "EasyTask.h"
-#include "common_data.h"
+#include "SpriteMgr.h"
 
 typedef struct {
-    /* 0x00 */ UnkStruct_0200e998 unk_00;
-    /* 0x40 */ s32                unk_40;
-    /* 0x44 */ void*              unk_44;
+    /* 0x00 */ Sprite sprite;
+    /* 0x40 */ s32    unk_40;
+    /* 0x44 */ void*  unk_44;
 } SaveSlotCoverU; // Size: 0x48
 
 typedef struct {
@@ -17,9 +17,9 @@ typedef struct {
 } SlotCoverUArgs;
 
 typedef struct {
-    /* 0x00 */ UnkStruct_0200e998 unk_00[2];
-    /* 0x80 */ s32                unk_80[2];
-    /* 0x88 */ s32                unk_88;
+    /* 0x00 */ Sprite sprites[2];
+    /* 0x80 */ s32    unk_80[2];
+    /* 0x88 */ s32    unk_88;
 } SaveHelpCurU; // Size: 0x8C
 
 typedef struct {

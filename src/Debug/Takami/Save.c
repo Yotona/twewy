@@ -5,6 +5,7 @@
 #include "OverlayDispatcher.h"
 #include "System.h"
 #include "TouchInput.h"
+#include "common_data.h"
 #include <NitroSDK/fx.h>
 
 s32 func_ov043_020c61b0(TaskPool* pool, s32 arg1, void* arg2);
@@ -790,7 +791,9 @@ void func_ov043_020c5324(TaskPool* arg0, s32 arg1, u16 arg2, void* arg3) {
 }
 
 void func_ov043_020c538c(TaskPool* arg0, u32 arg1) {
-    func_0200e998(EasyTask_GetTaskData(arg0, arg1) + 0x44);
+    Sprite* sprite = EasyTask_GetTaskData(arg0, arg1) + 0x44;
+
+    Sprite_Release(sprite);
 }
 
 void func_ov043_020c53a0(void* arg1, s32* arg2, s32 arg3) {
@@ -830,7 +833,9 @@ void func_ov043_020c5c04(TaskPool* arg0, s32 arg1, u16 arg2, s32 arg3) {
 }
 
 void func_ov043_020c5c98(TaskPool* pool, u32 taskId) {
-    func_0200e998(EasyTask_GetTaskData(pool, taskId) + 0x1C4);
+    Sprite* sprite = EasyTask_GetTaskData(pool, taskId) + 0x1C4;
+
+    Sprite_Release(sprite);
 }
 
 void* func_ov043_020c5cac(void* arg0, s32 arg2) {
@@ -853,7 +858,7 @@ s32 func_ov043_020c5e38(TaskPool* pool, Task* task, void* args) {
 s32 func_ov043_020c5e58(TaskPool* pool, Task* task, void* args) {
     SaveSlotCoverU* slotCoverU = task->data;
 
-    func_0200dd60(&slotCoverU->unk_00);
+    Sprite_Update(&slotCoverU->sprite);
     return 1;
 }
 
@@ -861,7 +866,7 @@ s32 func_ov043_020c5e6c(TaskPool* pool, Task* task, void* args) {
     SaveSlotCoverU* slotCoverU = task->data;
 
     if (slotCoverU->unk_40 != 0) {
-        func_0200e2c4(&slotCoverU->unk_00);
+        Sprite_RenderFrame(&slotCoverU->sprite);
     }
     return 1;
 }
@@ -869,7 +874,7 @@ s32 func_ov043_020c5e6c(TaskPool* pool, Task* task, void* args) {
 s32 func_ov043_020c5e8c(TaskPool* pool, Task* task, void* args) {
     SaveSlotCoverU* slotCoverU = task->data;
 
-    func_0200e998(&slotCoverU->unk_00);
+    Sprite_Release(&slotCoverU->sprite);
     return 1;
 }
 
@@ -921,7 +926,7 @@ s32 func_ov043_020c60f8(TaskPool* pool, Task* task, void* args) {
     SaveHelpCurU* helpCurU = task->data;
     for (u16 i = 0; i < 2; i++) {
         if (helpCurU->unk_80[i] != 0) {
-            func_0200e2c4(&helpCurU->unk_00[i]);
+            Sprite_RenderFrame(&helpCurU->sprites[i]);
         }
     }
     return 1;
@@ -930,7 +935,7 @@ s32 func_ov043_020c60f8(TaskPool* pool, Task* task, void* args) {
 s32 func_ov043_020c6138(TaskPool* pool, Task* task, void* args) {
     SaveHelpCurU* helpCurU = task->data;
     for (u16 i = 0; i < 2; i++) {
-        func_0200e998(&helpCurU->unk_00[i]);
+        Sprite_Release(&helpCurU->sprites[i]);
     }
     return 1;
 }

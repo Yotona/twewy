@@ -4,30 +4,31 @@
 #include "Memory.h"
 #include "OverlayDispatcher.h"
 #include "OverlayManager.h"
+#include "SpriteMgr.h"
 #include "System.h"
 #include "TouchInput.h"
 #include "common_data.h"
 #include <types.h>
 
 typedef struct {
-    /* 0x00000 */ s32                unk_00000;
-    /* 0x00004 */ char               unk_00004[0x1157C];
-    /* 0x11580 */ s32                unk_11580;
-    /* 0x11584 */ s32                unk_11584;
-    /* 0x11588 */ char               unk_11588[0x10428];
-    /* 0x219B0 */ u32                unk_219B0;
-    /* 0x219B4 */ char               unk_219B4[0x58];
-    /* 0x21A0C */ s16                unk_21A0C;
-    /* 0x21A0E */ char               unk_21A0E[0x1E];
-    /* 0x21A2C */ s32                unk_21A2C;
-    /* 0x21A30 */ char               unk_21A30[0x78];
-    /* 0x21AA8 */ void*              unk_21AA8;
-    /* 0x21AAC */ s32                unk_21AAC;
-    /* 0x21AB0 */ UnkStruct_0200e998 unk_21AB0;
-    /* 0x21AF0 */ UnkStruct_0200e998 unk_21AF0;
-    /* 0x21B30 */ char               unk_21B30[0xC];
-    /* 0x21B3C */ s32                unk_21B3C;
-    /* 0x21B40 */ s32                unk_21B40;
+    /* 0x00000 */ s32    unk_00000;
+    /* 0x00004 */ char   unk_00004[0x1157C];
+    /* 0x11580 */ s32    unk_11580;
+    /* 0x11584 */ s32    unk_11584;
+    /* 0x11588 */ char   unk_11588[0x10428];
+    /* 0x219B0 */ u32    unk_219B0;
+    /* 0x219B4 */ char   unk_219B4[0x58];
+    /* 0x21A0C */ s16    unk_21A0C;
+    /* 0x21A0E */ char   unk_21A0E[0x1E];
+    /* 0x21A2C */ s32    unk_21A2C;
+    /* 0x21A30 */ char   unk_21A30[0x78];
+    /* 0x21AA8 */ void*  unk_21AA8;
+    /* 0x21AAC */ s32    unk_21AAC;
+    /* 0x21AB0 */ Sprite unk_21AB0;
+    /* 0x21AF0 */ Sprite unk_21AF0;
+    /* 0x21B30 */ char   unk_21B30[0xC];
+    /* 0x21B3C */ s32    unk_21B3C;
+    /* 0x21B40 */ s32    unk_21B40;
 } FontState; // Size: 0x21B44
 
 typedef void (*FuncPtr)(FontState*);
@@ -71,10 +72,10 @@ void func_ov001_0208288c(FontState* arg0) {
     FS_LoadOverlay(0, &OVERLAY_31_ID);
     func_ov001_0208262c(arg0);
     func_ov001_02082780(arg0);
-    func_0200dd60(&arg0->unk_21AB0);
-    func_0200e2c4(&arg0->unk_21AB0);
-    func_0200dd60(&arg0->unk_21AF0);
-    func_0200ec7c(&arg0->unk_21AF0, 0, 0, 2);
+    Sprite_Update(&arg0->unk_21AB0);
+    Sprite_RenderFrame(&arg0->unk_21AB0);
+    Sprite_Update(&arg0->unk_21AF0);
+    Sprite_RenderAltPalette(&arg0->unk_21AF0, 0, 0, 2);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     func_ov001_020824a0(arg0);
@@ -92,8 +93,8 @@ void func_ov001_0208288c(FontState* arg0) {
 
 func_ov001_02082984(FontState* arg0) {
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
-    func_0200e998(&arg0->unk_21AB0);
-    func_0200e998(&arg0->unk_21AF0);
+    Sprite_Release(&arg0->unk_21AB0);
+    Sprite_Release(&arg0->unk_21AF0);
     func_ov001_020825f4(arg0);
 }
 

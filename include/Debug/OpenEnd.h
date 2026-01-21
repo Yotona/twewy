@@ -7,8 +7,8 @@
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
+#include "SpriteMgr.h"
 #include "System.h"
-#include "common_data.h"
 #include "registers.h"
 
 typedef struct {
@@ -119,7 +119,7 @@ typedef struct {
     u16   unk_2a;
 } UnkStruct_ov037_02083b84; // Size = 0x2C
 
-extern UnkStruct_ov037_02083b84 data_ov037_02083b84;
+extern SpriteAnimation data_ov037_02083b84;
 
 TaskPool*     data_ov037_02083e08;
 s32           data_ov037_02083e04;
