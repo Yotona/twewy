@@ -98,6 +98,27 @@ typedef struct {
     /* 0x38 */ BOOL                   mosaic;
 } DisplayBGSettings; // Size: 0x3C
 
+typedef struct {
+    /* 0x00 */ s32 hOffset;
+    /* 0x04 */ s32 vOffset;
+} BgOffsets; // Size: 0x8
+
+typedef struct {
+    /* 0x00 */ u16 dx;
+    /* 0x02 */ u16 dmx;
+    /* 0x04 */ u16 dy;
+    /* 0x06 */ u16 dmy;
+    /* 0x08 */ u32 posX;
+    /* 0x0C */ u32 posY;
+    /* 0x10 */ u32 unk_10;
+    /* 0x14 */ u32 unk_14;
+    /* 0x18 */ u32 unk_18;
+    /* 0x1C */ u32 unk_1C;
+    /* 0x20 */ u32 unk_20;
+    /* 0x24 */ u32 unk_24;
+    /* 0x28 */ u32 unk_28;
+} BgAffine; // Size: 0x2C
+
 /**
  * Complete state for a single display engine.
  * Contains all background layer settings, offsets, affine parameters,
@@ -105,46 +126,8 @@ typedef struct {
  */
 typedef struct {
     /* 0x000 */ DisplayBGSettings bgSettings[4];
-
-    /* 0x0F0 */ s32  bg0hOffset;
-    /* 0x0F4 */ s32  bg0vOffset;
-    /* 0x0F8 */ s32  bg1hOffset;
-    /* 0x0FC */ s32  bg1vOffset;
-    /* 0x100 */ s32  bg2hOffset;
-    /* 0x104 */ s32  bg2vOffset;
-    /* 0x108 */ s32  bg3hOffset;
-    /* 0x10C */ s32  bg3vOffset;
-    /* 0x110 */ char unk_110[0x58];
-
-    /* 0x168 */ u16 bg2dx;
-    /* 0x16A */ u16 bg2dmx;
-    /* 0x16C */ u16 bg2dy;
-    /* 0x16E */ u16 bg2dmy;
-    /* 0x170 */ u32 bg2posX;
-    /* 0x174 */ u32 bg2posY;
-
-    /* 0x178 */ char unk_178[0x4];
-    /* 0x17C */ u32  unk_17C;
-    /* 0x180 */ u32  unk_180;
-    /* 0x184 */ u32  unk_184;
-    /* 0x188 */ u32  unk_188;
-    /* 0x18C */ u32  unk_18C;
-    /* 0x190 */ u32  unk_190;
-
-    /* 0x194 */ u16 bg3dx;
-    /* 0x196 */ u16 bg3dmx;
-    /* 0x198 */ u16 bg3dy;
-    /* 0x19A */ u16 bg3dmy;
-    /* 0x19C */ u32 bg3posX;
-    /* 0x1A0 */ u32 bg3posY;
-
-    /* 0x1A4 */ char unk_1A4[0x4];
-    /* 0x1A8 */ u32  unk_1A8;
-    /* 0x1AC */ u32  unk_1AC;
-    /* 0x1B0 */ u32  unk_1B0;
-    /* 0x1B4 */ u32  unk_1B4;
-    /* 0x1B8 */ u32  unk_1B8;
-    /* 0x1BC */ u32  unk_1BC;
+    /* 0x0F0 */ BgOffsets         bgOffsets[4];
+    /* 0x110 */ BgAffine          bgAffines[4];
 
     /* 0x1C0 */ u32  window0;              // Layers contained in window 0
     /* 0x1C4 */ BOOL window0Effects;       // Brightness/blending effects for window 0

@@ -56,7 +56,7 @@ void func_ov001_0208254c(FontState* arg0) {
 }
 
 void func_ov001_020825f4(FontState* arg0) {
-    func_0200afec(data_0206b3cc.unk_04, arg0->unk_21AAC);
+    func_0200afec(data_0206b3cc[1], arg0->unk_21AAC);
     Mem_Free(&gDebugHeap, arg0->unk_21AA8);
 }
 
@@ -87,8 +87,8 @@ void func_ov001_0208288c(FontState* arg0) {
     val = arg0->unk_21B40 + 4;
     func_0203ab7c(3, val, G2S_GetBG0CharPtr(), 0x8000);
 
-    func_0200bf60(data_0206b3cc.unk_00, 0);
-    func_0200bf60(data_0206b3cc.unk_04, 0);
+    func_0200bf60(data_0206b3cc[0], 0);
+    func_0200bf60(data_0206b3cc[1], 0);
 }
 
 func_ov001_02082984(FontState* arg0) {

@@ -34,12 +34,13 @@ extern s32 data_02068798;
 
 extern s32 data_0205a128;
 
+extern s32 data_0206b3cc[3];
+
 typedef struct {
-    /* 0x0 */ s32 unk_00;
-    /* 0x4 */ s32 unk_04;
-    /* 0x8 */ s32 unk_08;
-} UnkStruct_0206b3cc;
-extern UnkStruct_0206b3cc data_0206b3cc;
+    /* 0x0 */ char pad_00[0x28];
+    /* 0x28 */ u16 unk_28;
+} UnkStruct_02074E10;
+extern UnkStruct_02074E10 data_02074e10;
 
 typedef struct {
     /* 0x00 */ s32   unk_00;

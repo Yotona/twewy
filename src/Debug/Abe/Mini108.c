@@ -222,7 +222,7 @@ void func_ov000_02082b1c(Mini108State* state) {
     BgResMgr_AllocChar32(g_BgResourceManagers[0], temp_r1, g_DisplaySettings.engineState[0].bgSettings[2].charBase, 0, r2_val);
     BgResMgr_AllocScreen(g_BgResourceManagers[0], temp_r6, g_DisplaySettings.engineState[0].bgSettings[2].screenBase,
                          g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
-    func_0200adf8(data_0206b3cc.unk_00, temp_r5, 0, 0, 2);
+    func_0200adf8(data_0206b3cc[0], temp_r5, 0, 0, 2);
     data_02066eec = 0x1F;
     temp2         = state->unk_84C;
     if (temp2 == 0) {
@@ -334,8 +334,8 @@ void func_ov000_02082944(Mini108State* stateptr) {
 
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc.unk_00, 0);
-    func_0200bf60(data_0206b3cc.unk_04, 0);
+    func_0200bf60(data_0206b3cc[0], 0);
+    func_0200bf60(data_0206b3cc[1], 0);
 }
 
 const char* data_ov000_020831e0 = "Seq_Mini108(void *)";

@@ -1724,8 +1724,8 @@ void func_ov029_02082ee8(SoundTestState* state) {
     SoundTest_ControlMenu(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc.unk_00, 0);
-    func_0200bf60(data_0206b3cc.unk_04, 0);
+    func_0200bf60(data_0206b3cc[0], 0);
+    func_0200bf60(data_0206b3cc[1], 0);
 }
 
 void func_ov029_02082f68(SoundTestState* state) {

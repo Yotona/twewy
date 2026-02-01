@@ -58,8 +58,8 @@ void func_ov043_020825ec(TakTestState* state) {
     func_ov043_020824a4(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc.unk_00, 0);
-    func_0200bf60(data_0206b3cc.unk_04, 0);
+    func_0200bf60(data_0206b3cc[0], 0);
+    func_0200bf60(data_0206b3cc[1], 0);
 }
 
 void func_ov043_0208266c(TakTestState* state) {
@@ -236,7 +236,7 @@ s32 func_ov043_02082d5c(TaskPool* pool, Task* task, s32 arg2) {
     TakTestUnknown* unk = task->data;
     BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_SUB], unk->resChar);
     BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], unk->resScreen);
-    func_0200afec(data_0206b3cc.unk_04, unk->unk_08);
+    func_0200afec(data_0206b3cc[1], unk->unk_08);
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
     return 1;
 }

@@ -67,36 +67,42 @@ static void Display_InitEngineDefaults(DisplayEngineState* engineState) {
     engineState->bgSettings[3].extPlttSlot    = 1;
     engineState->bgSettings[3].priority       = 0;
     engineState->bgSettings[3].mosaic         = FALSE;
-    engineState->bg0hOffset                   = 0;
-    engineState->bg0vOffset                   = 0;
-    engineState->bg1hOffset                   = 0;
-    engineState->bg1vOffset                   = 0;
-    engineState->bg2hOffset                   = 0;
-    engineState->bg2vOffset                   = 0;
-    engineState->bg2dx                        = 0x100;
-    engineState->bg2dmx                       = 0;
-    engineState->bg2dy                        = 0;
-    engineState->bg2dmy                       = 0x100;
-    engineState->bg2posX                      = 0;
-    engineState->bg2posY                      = 0;
-    engineState->unk_17C                      = 1;
-    engineState->unk_184                      = 0x1000;
-    engineState->unk_188                      = 0x1000;
-    engineState->unk_18C                      = 0;
-    engineState->unk_190                      = 0;
-    engineState->bg3hOffset                   = 0;
-    engineState->bg3vOffset                   = 0;
-    engineState->bg3dx                        = 0x100;
-    engineState->bg3dmx                       = 0;
-    engineState->bg3dy                        = 0;
-    engineState->bg3dmy                       = 0x100;
-    engineState->bg3posX                      = 0;
-    engineState->bg3posY                      = 0;
-    engineState->unk_1A8                      = 1;
-    engineState->unk_1B0                      = 0x1000;
-    engineState->unk_1B4                      = 0x1000;
-    engineState->unk_1B8                      = 0;
-    engineState->unk_1BC                      = 0;
+
+    engineState->bgOffsets[DISPLAY_BG0].hOffset = 0;
+    engineState->bgOffsets[DISPLAY_BG0].vOffset = 0;
+
+    engineState->bgOffsets[DISPLAY_BG1].hOffset = 0;
+    engineState->bgOffsets[DISPLAY_BG1].vOffset = 0;
+
+    engineState->bgOffsets[DISPLAY_BG2].hOffset = 0;
+    engineState->bgOffsets[DISPLAY_BG2].vOffset = 0;
+
+    engineState->bgAffines[DISPLAY_BG2].dx     = 0x100;
+    engineState->bgAffines[DISPLAY_BG2].dmx    = 0;
+    engineState->bgAffines[DISPLAY_BG2].dy     = 0;
+    engineState->bgAffines[DISPLAY_BG2].dmy    = 0x100;
+    engineState->bgAffines[DISPLAY_BG2].posX   = 0;
+    engineState->bgAffines[DISPLAY_BG2].posY   = 0;
+    engineState->bgAffines[DISPLAY_BG2].unk_14 = 1;
+    engineState->bgAffines[DISPLAY_BG2].unk_1C = 0x1000;
+    engineState->bgAffines[DISPLAY_BG2].unk_20 = 0x1000;
+    engineState->bgAffines[DISPLAY_BG2].unk_24 = 0;
+    engineState->bgAffines[DISPLAY_BG2].unk_28 = 0;
+
+    engineState->bgOffsets[DISPLAY_BG3].hOffset = 0;
+    engineState->bgOffsets[DISPLAY_BG3].vOffset = 0;
+
+    engineState->bgAffines[DISPLAY_BG3].dx     = 0x100;
+    engineState->bgAffines[DISPLAY_BG3].dmx    = 0;
+    engineState->bgAffines[DISPLAY_BG3].dy     = 0;
+    engineState->bgAffines[DISPLAY_BG3].dmy    = 0x100;
+    engineState->bgAffines[DISPLAY_BG3].posX   = 0;
+    engineState->bgAffines[DISPLAY_BG3].posY   = 0;
+    engineState->bgAffines[DISPLAY_BG3].unk_14 = 1;
+    engineState->bgAffines[DISPLAY_BG3].unk_1C = 0x1000;
+    engineState->bgAffines[DISPLAY_BG3].unk_20 = 0x1000;
+    engineState->bgAffines[DISPLAY_BG3].unk_24 = 0;
+    engineState->bgAffines[DISPLAY_BG3].unk_28 = 0;
 
     engineState->window0        = 0;
     engineState->window0Effects = FALSE;
@@ -421,22 +427,23 @@ static void Display_ApplyRenderState(void) {
 
         // TODO: This if statement compiles as though being accessed via 0x0206aa78
         if (Display_GetMainControls()->dimension == GX2D3D_MODE_2D) {
-            GX_SetBG0Offset(mainState->bg0hOffset >> 0xC, mainState->bg0vOffset >> 0xC);
+            GX_SetBG0Offset(mainState->bgOffsets[DISPLAY_BG0].hOffset >> 0xC,
+                            mainState->bgOffsets[DISPLAY_BG0].vOffset >> 0xC);
         } else {
-            func_02036f78(mainState->bg0hOffset >> 0xC);
+            func_02036f78(mainState->bgOffsets[DISPLAY_BG0].hOffset >> 0xC);
         }
     }
 
     if (controls->layers & LAYER_BG1) {
-        GX_SetBG1Offset(mainState->bg1hOffset >> 0xC, mainState->bg1vOffset >> 0xC);
+        GX_SetBG1Offset(mainState->bgOffsets[DISPLAY_BG1].hOffset >> 0xC, mainState->bgOffsets[DISPLAY_BG1].vOffset >> 0xC);
     }
 
     if ((controls->layers & LAYER_BG2) && (mainState->bgSettings[DISPLAY_BG2].bgMode == DISPLAY_BGMODE_TEXT)) {
-        GX_SetBG2Offset(mainState->bg2hOffset >> 0xC, mainState->bg2vOffset >> 0xC);
+        GX_SetBG2Offset(mainState->bgOffsets[DISPLAY_BG2].hOffset >> 0xC, mainState->bgOffsets[DISPLAY_BG2].vOffset >> 0xC);
     }
 
     if ((controls->layers & LAYER_BG3) && (mainState->bgSettings[DISPLAY_BG3].bgMode == DISPLAY_BGMODE_TEXT)) {
-        GX_SetBG3Offset(mainState->bg3hOffset >> 0xC, mainState->bg3vOffset >> 0xC);
+        GX_SetBG3Offset(mainState->bgOffsets[DISPLAY_BG3].hOffset >> 0xC, mainState->bgOffsets[DISPLAY_BG3].vOffset >> 0xC);
     }
 
     GX_SetWindow0Inside(mainState->window0, mainState->window0Effects);
@@ -468,32 +475,36 @@ static void Display_ApplyRenderState(void) {
             break;
     }
 
-    if (mainState->unk_17C == 1) {
-        mainState->unk_17C = 0;
-        func_020063b8(DISPLAY_MAIN, mainState->unk_180, mainState->unk_184, mainState->unk_188, mainState->unk_18C,
-                      mainState->unk_190, mainState->bg2hOffset, mainState->bg2vOffset);
+    if (mainState->bgAffines[DISPLAY_BG2].unk_14 == 1) {
+        mainState->bgAffines[DISPLAY_BG2].unk_14 = 0;
+        func_020063b8(DISPLAY_MAIN, mainState->bgAffines[DISPLAY_BG2].unk_18, mainState->bgAffines[DISPLAY_BG2].unk_1C,
+                      mainState->bgAffines[DISPLAY_BG2].unk_20, mainState->bgAffines[DISPLAY_BG2].unk_24,
+                      mainState->bgAffines[DISPLAY_BG2].unk_28, mainState->bgOffsets[DISPLAY_BG2].hOffset,
+                      mainState->bgOffsets[DISPLAY_BG2].vOffset);
     }
 
-    REG_BG2PA = mainState->bg2dx;
-    REG_BG2PB = mainState->bg2dmx;
-    REG_BG2PC = mainState->bg2dy;
-    REG_BG2PD = mainState->bg2dmy;
+    REG_BG2PA = mainState->bgAffines[DISPLAY_BG2].dx;
+    REG_BG2PB = mainState->bgAffines[DISPLAY_BG2].dmx;
+    REG_BG2PC = mainState->bgAffines[DISPLAY_BG2].dy;
+    REG_BG2PD = mainState->bgAffines[DISPLAY_BG2].dmy;
 
-    REG_BG2X = mainState->bg2posX;
-    REG_BG2Y = mainState->bg2posY;
+    REG_BG2X = mainState->bgAffines[DISPLAY_BG2].posX;
+    REG_BG2Y = mainState->bgAffines[DISPLAY_BG2].posY;
 
-    if (mainState->unk_1A8 == 1) {
-        mainState->unk_1A8 = 0;
-        func_020064cc(DISPLAY_MAIN, mainState->unk_1AC, mainState->unk_1B0, mainState->unk_1B4, mainState->unk_1B8,
-                      mainState->unk_1BC, mainState->bg3hOffset, mainState->bg3vOffset);
+    if (mainState->bgAffines[DISPLAY_BG3].unk_14 == 1) {
+        mainState->bgAffines[DISPLAY_BG3].unk_14 = 0;
+        func_020064cc(DISPLAY_MAIN, mainState->bgAffines[DISPLAY_BG3].unk_18, mainState->bgAffines[DISPLAY_BG3].unk_1C,
+                      mainState->bgAffines[DISPLAY_BG3].unk_20, mainState->bgAffines[DISPLAY_BG3].unk_24,
+                      mainState->bgAffines[DISPLAY_BG3].unk_28, mainState->bgOffsets[DISPLAY_BG3].hOffset,
+                      mainState->bgOffsets[DISPLAY_BG3].vOffset);
     }
-    REG_BG3PA = mainState->bg3dx;
-    REG_BG3PB = mainState->bg3dmx;
-    REG_BG3PC = mainState->bg3dy;
-    REG_BG3PD = mainState->bg3dmy;
+    REG_BG3PA = mainState->bgAffines[DISPLAY_BG3].dx;
+    REG_BG3PB = mainState->bgAffines[DISPLAY_BG3].dmx;
+    REG_BG3PC = mainState->bgAffines[DISPLAY_BG3].dy;
+    REG_BG3PD = mainState->bgAffines[DISPLAY_BG3].dmy;
 
-    REG_BG3X = mainState->bg3posX;
-    REG_BG3Y = mainState->bg3posY;
+    REG_BG3X = mainState->bgAffines[DISPLAY_BG3].posX;
+    REG_BG3Y = mainState->bgAffines[DISPLAY_BG3].posY;
 
     controls                     = Display_GetSubControls();
     DisplayEngineState* subState = &g_DisplaySettings.engineState[DISPLAY_SUB];
@@ -514,19 +525,19 @@ static void Display_ApplyRenderState(void) {
     GXs_SetBG3Mosaic(subState->bgSettings[DISPLAY_BG3].mosaic);
 
     if (controls->layers & 1) {
-        GXs_SetBG0Offset(subState->bg0hOffset >> 0xC, subState->bg0vOffset >> 0xC);
+        GXs_SetBG0Offset(subState->bgOffsets[DISPLAY_BG0].hOffset >> 0xC, subState->bgOffsets[DISPLAY_BG0].vOffset >> 0xC);
     }
 
     if (controls->layers & 2) {
-        GXs_SetBG1Offset(subState->bg1hOffset >> 0xC, subState->bg1vOffset >> 0xC);
+        GXs_SetBG1Offset(subState->bgOffsets[DISPLAY_BG1].hOffset >> 0xC, subState->bgOffsets[DISPLAY_BG1].vOffset >> 0xC);
     }
 
     if ((controls->layers & 4) && (subState->bgSettings[2].bgMode == 0)) {
-        GXs_SetBG2Offset(subState->bg2hOffset >> 0xC, subState->bg2vOffset >> 0xC);
+        GXs_SetBG2Offset(subState->bgOffsets[DISPLAY_BG2].hOffset >> 0xC, subState->bgOffsets[DISPLAY_BG2].vOffset >> 0xC);
     }
 
     if ((controls->layers & 8) && (subState->bgSettings[3].bgMode == 0)) {
-        GXs_SetBG3Offset(subState->bg3hOffset >> 0xC, subState->bg3vOffset >> 0xC);
+        GXs_SetBG3Offset(subState->bgOffsets[DISPLAY_BG3].hOffset >> 0xC, subState->bgOffsets[DISPLAY_BG3].vOffset >> 0xC);
     }
 
     GXs_SetWindow0Inside(subState->window0, subState->window0Effects);
@@ -559,31 +570,35 @@ static void Display_ApplyRenderState(void) {
                           subState->blendCoeff1, 0 - subState->blendBrightness);
             break;
     }
-    if (subState->unk_17C == 1) {
-        subState->unk_17C = 0;
-        func_020063b8(DISPLAY_SUB, subState->unk_180, subState->unk_184, subState->unk_188, subState->unk_18C,
-                      subState->unk_190, subState->bg2hOffset, subState->bg2vOffset);
+    if (subState->bgAffines[DISPLAY_BG2].unk_14 == 1) {
+        subState->bgAffines[DISPLAY_BG2].unk_14 = 0;
+        func_020063b8(DISPLAY_SUB, subState->bgAffines[DISPLAY_BG2].unk_18, subState->bgAffines[DISPLAY_BG2].unk_1C,
+                      subState->bgAffines[DISPLAY_BG2].unk_20, subState->bgAffines[DISPLAY_BG2].unk_24,
+                      subState->bgAffines[DISPLAY_BG2].unk_28, subState->bgOffsets[DISPLAY_BG2].hOffset,
+                      subState->bgOffsets[DISPLAY_BG2].vOffset);
     }
 
-    REG_BG2PA_SUB = subState->bg2dx;
-    REG_BG2PB_SUB = subState->bg2dmx;
-    REG_BG2PC_SUB = subState->bg2dy;
-    REG_BG2PD_SUB = subState->bg2dmy;
-    REG_BG2X_SUB  = subState->bg2posX;
-    REG_BG2Y_SUB  = subState->bg2posY;
+    REG_BG2PA_SUB = subState->bgAffines[DISPLAY_BG2].dx;
+    REG_BG2PB_SUB = subState->bgAffines[DISPLAY_BG2].dmx;
+    REG_BG2PC_SUB = subState->bgAffines[DISPLAY_BG2].dy;
+    REG_BG2PD_SUB = subState->bgAffines[DISPLAY_BG2].dmy;
+    REG_BG2X_SUB  = subState->bgAffines[DISPLAY_BG2].posX;
+    REG_BG2Y_SUB  = subState->bgAffines[DISPLAY_BG2].posY;
 
-    if (subState->unk_1A8 == 1) {
-        subState->unk_1A8 = 0;
-        func_020064cc(DISPLAY_SUB, subState->unk_1AC, subState->unk_1B0, subState->unk_1B4, subState->unk_1B8,
-                      subState->unk_1BC, subState->bg3hOffset, subState->bg3vOffset);
+    if (subState->bgAffines[DISPLAY_BG3].unk_14 == 1) {
+        subState->bgAffines[DISPLAY_BG3].unk_14 = 0;
+        func_020064cc(DISPLAY_SUB, subState->bgAffines[DISPLAY_BG3].unk_18, subState->bgAffines[DISPLAY_BG3].unk_1C,
+                      subState->bgAffines[DISPLAY_BG3].unk_20, subState->bgAffines[DISPLAY_BG3].unk_24,
+                      subState->bgAffines[DISPLAY_BG3].unk_28, subState->bgOffsets[DISPLAY_BG3].hOffset,
+                      subState->bgOffsets[DISPLAY_BG3].vOffset);
     }
 
-    REG_BG3PA_SUB = subState->bg3dx;
-    REG_BG3PB_SUB = subState->bg3dmx;
-    REG_BG3PC_SUB = subState->bg3dy;
-    REG_BG3PD_SUB = subState->bg3dmy;
-    REG_BG3X_SUB  = subState->bg3posX;
-    REG_BG3Y_SUB  = subState->bg3posY;
+    REG_BG3PA_SUB = subState->bgAffines[DISPLAY_BG3].dx;
+    REG_BG3PB_SUB = subState->bgAffines[DISPLAY_BG3].dmx;
+    REG_BG3PC_SUB = subState->bgAffines[DISPLAY_BG3].dy;
+    REG_BG3PD_SUB = subState->bgAffines[DISPLAY_BG3].dmy;
+    REG_BG3X_SUB  = subState->bgAffines[DISPLAY_BG3].posX;
+    REG_BG3Y_SUB  = subState->bgAffines[DISPLAY_BG3].posY;
 }
 
 void Display_Commit(void) {
