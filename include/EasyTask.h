@@ -67,6 +67,16 @@ typedef struct TaskPool {
     /* 0x60 */ Task pendingList; // Head of pending task list
 } TaskPool;
 
+typedef union {
+    struct {
+        s32 (*initialize)();
+        s32 (*update)();
+        s32 (*render)();
+        s32 (*cleanup)();
+    };
+    s32 (*iter[4])();
+} TaskStages;
+
 /**
  * @brief Initializes the task pool with the given memory pool and maximum task count.
  * @param taskPool Pointer to the TaskPool to initialize.

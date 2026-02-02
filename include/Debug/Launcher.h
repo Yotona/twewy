@@ -7,6 +7,7 @@
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
+#include "SpriteMgr.h"
 #include "System.h"
 #include "common_data.h"
 #include <NitroSDK/gx.h>
@@ -285,9 +286,9 @@ static const DebugLauncherFuncStruct data_ov046_02083f7c = {
     {func_ov046_020839a0, func_ov046_020839b4, func_ov046_020839c4, func_ov046_020839d8}
 };
 
-extern TaskHandle data_ov046_02083f70;
-extern u32        data_ov046_02083a4c;
-u16               data_ov046_02084804 = 0x1280;
+extern TaskHandle    data_ov046_02083f70;
+extern BinIdentifier data_ov046_02083a4c;
+u16                  data_ov046_02084804 = 0x1280;
 
 void func_ov046_02083670(u16* unkptr, BOOL param_2);
 void func_ov046_0208368c(DebugLauncherState* state);

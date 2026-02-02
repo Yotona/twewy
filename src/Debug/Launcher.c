@@ -362,7 +362,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     state->unk_14 = DatMgr_AllocateSlot();
     // stackframe[0] = 0x1;
     // stackframe[1] = 0x0;
-    state->unk_18 = DatMgr_LoadPackEntry(state->unk_14, 0, 0, &data_ov046_02083a4c);
+    state->unk_18 = DatMgr_LoadPackEntry(state->unk_14, 0, 0, &data_ov046_02083a4c, 0, 0);
     EasyList_InsertSorted(&state->unk_list_15F14, 1, state->unk_14);
     EasyList_InsertSorted(&state->unk_list_15F14, 2, state->unk_18);
     data_02066aec = 0x1F;
@@ -518,33 +518,33 @@ void func_ov046_02083698(void* unkptr, s32 unused_r1, s32 r2) {
 }
 
 s32 func_ov046_020837f8(s32* r0, s32* r1) {
-    r0[0x0]                              = 0;
-    r0[0x1]                              = 0;
-    r0[0x2]                              = 0;
-    r0[0x3]                              = 0;
-    data_ov046_02084804                  = data_ov046_02084804 & ~0x3c | ((u32)((u16)(r1[0]) << 0x1c) >> 0x1a);
-    *(u16*)(&data_ov046_02084804 + 0x2)  = r1[2] + 0x10;
-    *(u16*)(&data_ov046_02084804 + 0x3)  = r1[3] + 0x10;
-    *(u32*)(&data_ov046_02084804 + 0x08) = r0;
-    *(u16*)(&data_ov046_02084804 + 0x0D) = 2;
-    if (r1[1] < 0x0A) {
-        *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] + 1;
-        *(u16*)(&data_ov046_02084804 + 0x0E) = 4;
-        *(u16*)(&data_ov046_02084804 + 0x13) = 5;
-        *(u16*)(&data_ov046_02084804 + 0x14) = 6;
-    } else if (r1[1] < 0x25) {
-        *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0xA;
-        *(u16*)(&data_ov046_02084804 + 0x0E) = 1;
-        *(u16*)(&data_ov046_02084804 + 0x13) = 2;
-        *(u16*)(&data_ov046_02084804 + 0x14) = 3;
-    } else {
-        *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0x25;
-        *(u16*)(&data_ov046_02084804 + 0x0E) = 7;
-        *(u16*)(&data_ov046_02084804 + 0x13) = 8;
-        *(u16*)(&data_ov046_02084804 + 0x14) = 9;
-    }
-    _Sprite_Load(r0 + 0x04, &data_ov046_02084804);
-    return 1;
+    // r0[0x0]                              = 0;
+    // r0[0x1]                              = 0;
+    // r0[0x2]                              = 0;
+    // r0[0x3]                              = 0;
+    // data_ov046_02084804                  = data_ov046_02084804 & ~0x3c | ((u32)((u16)(r1[0]) << 0x1c) >> 0x1a);
+    // *(u16*)(&data_ov046_02084804 + 0x2)  = r1[2] + 0x10;
+    // *(u16*)(&data_ov046_02084804 + 0x3)  = r1[3] + 0x10;
+    // *(u32*)(&data_ov046_02084804 + 0x08) = r0;
+    // *(u16*)(&data_ov046_02084804 + 0x0D) = 2;
+    // if (r1[1] < 0x0A) {
+    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] + 1;
+    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 4;
+    //     *(u16*)(&data_ov046_02084804 + 0x13) = 5;
+    //     *(u16*)(&data_ov046_02084804 + 0x14) = 6;
+    // } else if (r1[1] < 0x25) {
+    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0xA;
+    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 1;
+    //     *(u16*)(&data_ov046_02084804 + 0x13) = 2;
+    //     *(u16*)(&data_ov046_02084804 + 0x14) = 3;
+    // } else {
+    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0x25;
+    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 7;
+    //     *(u16*)(&data_ov046_02084804 + 0x13) = 8;
+    //     *(u16*)(&data_ov046_02084804 + 0x14) = 9;
+    // }
+    // _Sprite_Load(r0 + 0x04, &data_ov046_02084804);
+    // return 1;
 }
 
 BOOL func_ov046_020838ec(void* unkptr) {

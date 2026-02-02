@@ -16,6 +16,7 @@ typedef struct {
     s32 unk_0C;
     s32 unk_10;
 } SpriteFrameInfo;
+extern SpriteFrameInfo data_0206b408;
 
 typedef struct UnkSmallInternal {
     /* 0x00 */ char                     unk_00[0x6];
@@ -26,6 +27,13 @@ typedef struct UnkSmallInternal {
     /* 0x12 */ char                     unk_12[0x6];
     /* 0x18 */ struct UnkSmallInternal* unk_18;
 } UnkSmallInternal;
+
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 unk_06;
+} SpriteFrameData;
 
 typedef struct Sprite {
     /* 0x00 */ struct {
@@ -45,18 +53,18 @@ typedef struct Sprite {
         u32 bits_26_29    : 4;
         u32 bits_30_31    : 2;
     };
-    /* 0x04 */ u16   currentFrame;
-    /* 0x06 */ u16   loopFrame;
-    /* 0x08 */ s16   frameTimer;
-    /* 0x0A */ u16   unk_0A;
-    /* 0x0C */ s16   posX;
-    /* 0x0E */ s16   posY;
-    /* 0x10 */ u16   scaleX;
-    /* 0x12 */ u16   scaleY;
-    /* 0x14 */ s16   animIndex;
-    /* 0x16 */ s16   unk16;
-    /* 0x18 */ s16*  animData;
-    /* 0x1C */ void* unk1C;
+    /* 0x04 */ u16              currentFrame;
+    /* 0x06 */ u16              loopFrame;
+    /* 0x08 */ s16              frameTimer;
+    /* 0x0A */ u16              unk_0A;
+    /* 0x0C */ s16              posX;
+    /* 0x0E */ s16              posY;
+    /* 0x10 */ u16              scaleX;
+    /* 0x12 */ u16              scaleY;
+    /* 0x14 */ s16              animIndex;
+    /* 0x16 */ s16              unk16;
+    /* 0x18 */ s16*             animData;
+    /* 0x1C */ SpriteFrameData* unk1C;
     /* 0x20 */ SpriteFrameInfo* (*unk_20)(struct Sprite*, s32, s32);
     /* 0x24 */ s32               unk24;
     /* 0x28 */ Data*             resourceData;

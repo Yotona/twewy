@@ -11,14 +11,6 @@ extern struct {
 } data_0206a890;
 
 extern s32 data_0205c9b0;
-typedef struct {
-    s32 unk_00;
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0C;
-    s32 unk_10;
-} UnkStruct_0206b408;
-extern UnkStruct_0206b408 data_0206b408;
 
 extern s16 data_02066aec;
 extern s32 data_02066cec;
