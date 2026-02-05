@@ -450,16 +450,16 @@ void func_ov042_02082f94(StaffRoll_CallbackStruct* state) {
         DebugOvlDisp_Pop();
 }
 
-BOOL func_ov042_02082fc4(FontRollInternal* arg0) {
+BOOL func_ov042_02082fc4(UnkOv31Struct* arg0) {
     return arg0->unk_14 != NULL;
 }
 
 // Nonmatching
-void func_ov042_02082fd8(FontRollInternal* state, s32 r1) {
+void func_ov042_02082fd8(UnkOv31Struct* arg0, s32 r1) {
     u16* in_lr;
 
-    if (state != NULL) {
-        in_lr = state->unk_14;
+    if (arg0 != NULL) {
+        in_lr = arg0->unk_14;
     }
 
     if (in_lr != NULL) {
@@ -865,7 +865,7 @@ s32 func_ov042_02083c78(FontRoll* fontRoll) {
     if (fontRoll->unk_E98 == -1) {
         return 0;
     }
-    FontRollInternal* temp_r4 = &fontRoll->unk_010[fontRoll->unk_E98];
+    UnkOv31Struct* temp_r4 = &fontRoll->unk_010[fontRoll->unk_E98];
     if (func_ov042_02082fc4(temp_r4) == 0) {
         return 0;
     }
@@ -930,8 +930,8 @@ s32 func_ov042_02083df8(FontRoll* fontRoll) {
         return 0;
     }
 
-    FontRollInternal* temp_r4 = &fontRoll->unk_010[temp_r5];
-    s32               temp    = temp_r4->unk_70;
+    UnkOv31Struct* temp_r4 = &fontRoll->unk_010[temp_r5];
+    s32            temp    = temp_r4->unk_70;
 
     u8 var_r3 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
     if (var_r3 < temp) {
@@ -957,8 +957,8 @@ void func_ov042_02083e8c(FontRoll* fontRoll) {
     }
     fontRoll->unk_E9C = var_r4;
 
-    FontRollInternal* temp_r7 = fontRoll->unk_010;
-    u32               temp_r9 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
+    UnkOv31Struct* temp_r7 = fontRoll->unk_010;
+    u32            temp_r9 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
 
     StaffRollUnkA* temp_r11 = &fontRoll->unk_000->unk_10[fontRoll->engine].group1[fontRoll->bgLayer];
     StaffRollUnkB* temp_r4  = &fontRoll->unk_000->unk_10[fontRoll->engine].group2[fontRoll->bgLayer];

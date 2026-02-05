@@ -4,6 +4,7 @@
 #include "DatMgr.h"
 #include "Display.h"
 #include "EasyTask.h"
+#include "common_data.h"
 
 typedef struct {
     /* 0x00 */ Data* data;
@@ -37,20 +38,12 @@ typedef struct {
 } StaffRoll_CallbackStruct; // Size: 0x108
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x14];
-    /* 0x14 */ s16* unk_14;
-    /* 0x18 */ char unk_18[0x58];
-    /* 0x70 */ s32  unk_70;
-    /* 0x74 */ char unk_74[0x8];
-} FontRollInternal; // Size: 0x7C
-
-typedef struct {
     /* 0x000 */ StaffRoll_CallbackStruct* unk_000;
     /* 0x004 */ DisplayEngine             engine;
     /* 0x008 */ DisplayBGLayer            bgLayer;
     /* 0x00C */ u16                       unk_00C;
     /* 0x00E */ s16                       unk_00E;
-    /* 0x010 */ FontRollInternal          unk_010[30];
+    /* 0x010 */ UnkOv31Struct             unk_010[30];
     /* 0xE98 */ s32                       unk_E98;
     /* 0xE9C */ s32                       unk_E9C;
     /* 0xEA0 */ s32                       unk_EA0;
@@ -164,8 +157,7 @@ typedef struct {
     /* 0x21590 */ char                     unk_21590[0x4];
     /* 0x21594 */ TaskPool                 taskPool;
     /* 0x21614 */ StaffRoll_CallbackStruct unk_21614;
-    /* 0x2171C */ void*                    unk_2171C;
-    /* 0x21720 */ char                     pad_21720[0x78];
+    /* 0x2171C */ UnkOv31Struct            unk_2171C;
 } StaffRollState; // Size: 0x21798
 
 #endif            // DEBUG_SUYAMA_STAFFROLL_H

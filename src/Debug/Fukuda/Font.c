@@ -11,24 +11,21 @@
 #include <types.h>
 
 typedef struct {
-    /* 0x00000 */ s32    unk_00000;
-    /* 0x00004 */ char   unk_00004[0x1157C];
-    /* 0x11580 */ s32    unk_11580;
-    /* 0x11584 */ s32    unk_11584;
-    /* 0x11588 */ char   unk_11588[0x10428];
-    /* 0x219B0 */ u32    unk_219B0;
-    /* 0x219B4 */ char   unk_219B4[0x58];
-    /* 0x21A0C */ s16    unk_21A0C;
-    /* 0x21A0E */ char   unk_21A0E[0x1E];
-    /* 0x21A2C */ s32    unk_21A2C;
-    /* 0x21A30 */ char   unk_21A30[0x78];
-    /* 0x21AA8 */ void*  unk_21AA8;
-    /* 0x21AAC */ s32    unk_21AAC;
-    /* 0x21AB0 */ Sprite unk_21AB0;
-    /* 0x21AF0 */ Sprite unk_21AF0;
-    /* 0x21B30 */ char   unk_21B30[0xC];
-    /* 0x21B3C */ s32    unk_21B3C;
-    /* 0x21B40 */ s32    unk_21B40;
+    /* 0x00000 */ s32           unk_00000;
+    /* 0x00004 */ char          unk_00004[0x1157C];
+    /* 0x11580 */ s32           unk_11580;
+    /* 0x11584 */ s32           unk_11584;
+    /* 0x11588 */ char          unk_11588[0x10428];
+    /* 0x219B0 */ UnkOv31Struct unk_219B0;
+    /* 0x21A2C */ s32           unk_21A2C;
+    /* 0x21A30 */ char          unk_21A30[0x78];
+    /* 0x21AA8 */ void*         unk_21AA8;
+    /* 0x21AAC */ s32           unk_21AAC;
+    /* 0x21AB0 */ Sprite        unk_21AB0;
+    /* 0x21AF0 */ Sprite        unk_21AF0;
+    /* 0x21B30 */ char          unk_21B30[0xC];
+    /* 0x21B3C */ s32           unk_21B3C;
+    /* 0x21B40 */ s32           unk_21B40;
 } FontState; // Size: 0x21B44
 
 typedef void (*FuncPtr)(FontState*);
@@ -44,7 +41,7 @@ void func_ov001_020824a0(FontState* arg0) {
     data_02066eec = 0;
     func_ov031_0210aaac(&arg0->unk_219B0, 1, 1);
     func_ov031_0210ab28(&arg0->unk_219B0, 0, 0);
-    arg0->unk_21A0C = 1;
+    arg0->unk_219B0.unk_5C = 1;
     func_ov031_0210ab28(&arg0->unk_219B0, 0, 0);
     func_ov031_0210b630(&arg0->unk_219B0, 8334);
     func_ov031_0210be18(&arg0->unk_219B0, arg0->unk_21B3C + 4, arg0->unk_21B40 + 4, 0);

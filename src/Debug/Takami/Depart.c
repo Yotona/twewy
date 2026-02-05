@@ -967,13 +967,9 @@ s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, s32 arg3) {
 /// MARK: DepartTextScr
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x7C];
-} DepartTextScrUnk; // Size: 0x7C
-
-typedef struct {
-    /* 0x000 */ s32              unk_000;
-    /* 0x004 */ DepartTextScrUnk unk_004[5];
-    /* 0x270 */ DepartTextScrUnk unk_270[5];
+    /* 0x000 */ s32           unk_000;
+    /* 0x004 */ UnkOv31Struct unk_004[5];
+    /* 0x270 */ UnkOv31Struct unk_270[5];
 } DepartTextScr; // Size: 0x4DC
 
 typedef struct {
@@ -1057,8 +1053,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ DepartTextScrUUnk* unk_00;
-    /* 0x04 */ s32                unk_04;
-    /* 0x08 */ char               unk_08[0x78];
+    /* 0x04 */ UnkOv31Struct      unk_04;
 } DepartTextScrU; // Size: 0x80
 
 typedef struct {

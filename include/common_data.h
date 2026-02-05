@@ -56,4 +56,17 @@ typedef struct {
 } UnkStruct_02074010;
 extern UnkStruct_02074010 data_02074d10;
 
+typedef struct {
+    /* 0x00 */ char  unk_00[0x14];
+    /* 0x14 */ void* unk_14;
+    /* 0x18 */ char  unk_18[0x44];
+    /* 0x5C */ s16   unk_5C;
+    /* 0x5E */ char  unk_5E[0x10];
+    /* 0x70 */ s32   unk_70;
+    /* 0x74 */ char  unk_74[0x8];
+} UnkOv31Struct; // Size: 0x7C
+extern void func_ov031_0210aa94(UnkOv31Struct*);
+extern void func_ov031_0210aabc(UnkOv31Struct*);
+extern void func_ov031_0210ab34(UnkOv31Struct*, s32);
+
 #endif // COMMON_DATA_H
