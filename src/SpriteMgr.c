@@ -563,8 +563,9 @@ void Sprite_RenderAltPalette(Sprite* arg0, UnkSmallInternal* arg1, UnkSmallInter
     }
 }
 
-void _Sprite_Load(Sprite* sprite, SpriteAnimation* anim) {
+s32 _Sprite_Load(Sprite* sprite, SpriteAnimation* anim) {
     Sprite_Load(sprite, anim);
+    return 1;
 }
 
 BOOL Sprite_UpdateAndCheck(Sprite* sprite) {

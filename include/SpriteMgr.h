@@ -130,7 +130,7 @@ void Sprite_Restart(Sprite* sprite);
 
 void Sprite_RenderAltPalette(Sprite* sprite, UnkSmallInternal*, UnkSmallInternal*, s16);
 
-void _Sprite_Load(Sprite* sprite, SpriteAnimation* anim);
+s32 _Sprite_Load(Sprite* sprite, SpriteAnimation* anim);
 
 BOOL Sprite_UpdateAndCheck(Sprite* sprite);
 
