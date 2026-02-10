@@ -4,3 +4,9 @@
     .data       start:0x02092b00 end:0x020934e0 kind:data align:32
     .bss        start:0x020934e0 end:0x02093680 kind:bss align:32
 
+src/ov002.c:
+    .text       start:0x020824a0 end:0x02091aa4
+    .rodata     start:0x02091aa4 end:0x02092ae4
+    .ctor       start:0x02092ae4 end:0x02092ae8
+    .data       start:0x02092b00 end:0x020934e0
+    .bss        start:0x020934e0 end:0x02093680
