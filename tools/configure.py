@@ -200,8 +200,14 @@ def compiler_config_for_source(source_path: Path) -> CompilerConfig:
 
     # Check for exact file match first, then directory prefix match
     for path, config in COMPILER_CONFIGS.items():
-        if relative_path == path or str(relative_path).startswith(str(path) + "/"):
+        if relative_path == path:
             return config
+        try:
+            if relative_path.is_relative_to(path):
+                return config
+        except AttributeError:
+            if path in relative_path.parents:
+                return config
 
     return DEFAULT_COMPILER_CONFIG
 
