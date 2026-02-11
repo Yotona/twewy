@@ -1,6 +1,6 @@
 # Debug Menu
 
-The debug menu is a hidden portion of *The World Ends With You* comprised of a massive  collection of overlays that together can be used to test, tweak, and access many parts of the game, notably:
+The debug menu is a hidden portion of *The World Ends With You* comprised of a massive collection of overlays that together can be used to test, tweak, and access many parts of the game, notably:
 
 - **Field Testing:** Jump to specific maps, edit details like NPC/Noise density, top brands, etc.
 - **Audio/Visual Testing:** Play music/sound effects and view sprites/animations.
