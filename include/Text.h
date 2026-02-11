@@ -82,4 +82,6 @@ typedef struct {
     /* 0x100 */ u32   unk_110;
 } TextObject;
 
+void Text_RenderToScreen(TextObject* textObj, s32 x, s32 y, const char* string);
+
 #endif

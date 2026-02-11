@@ -108,8 +108,8 @@ extern void func_ov030_020d2d6c(void* state);
 extern void func_ov030_020d5370(void* state);
 extern void func_ov037_0208370c(void* state);
 
-extern void func_ov038_02085674(void* state);
-extern void func_ov038_020856b4(void* state);
+extern void ProcessOverlay_GrpCheckHwSprites(void* state);
+extern void ProcessOverlay_GrpCheckSwSprites(void* state);
 extern void func_ov041_02082bc4(void* state);
 
 extern void func_ov042_020824a0(void* state);
@@ -251,12 +251,14 @@ const DebugLauncherOption Options_Furukawa[4] = {
 };
 
 const DebugLauncherOption Options_Mori[6] = {
-    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, func_ov038_02085674},
-    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, func_ov038_020856b4},
-    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27, func_ov027_020e9670},
-    {4,           "機能\:ロケタイトル",                    "説明:test",                  30, func_ov030_020d2d6c},
-    {5, "機能\:オープニングとタイトル",                        "説明:",                  37, func_ov037_0208370c},
-    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                NULL},
+    // "Function: Graphic Check", "Description: Hardware Sprites"
+    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, ProcessOverlay_GrpCheckHwSprites},
+    // "Function: Graphic Check", "Description: Software Sprites"
+    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheckSwSprites},
+    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,              func_ov027_020e9670},
+    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,              func_ov030_020d2d6c},
+    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,              func_ov037_0208370c},
+    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                             NULL},
 };
 
 const DebugLauncherCategory Categories[11] = {

@@ -399,7 +399,7 @@ func_02010adc() {
     // Not yet implemented
 }
 
-void Text_RenderToScreen(TextObject* obj, s32 xOffset, s32 yOffset, char* string) {
+void Text_RenderToScreen(TextObject* obj, s32 xOffset, s32 yOffset, const char* string) {
     func_02010a7c(obj);
     obj->xOffset = xOffset;
     obj->yOffset = yOffset;

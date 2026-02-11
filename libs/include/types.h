@@ -41,6 +41,20 @@ typedef s32 BOOL;
     #endif
 #endif
 
+// Returns the number of elements in an array
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof((arr)[0]))
+
+#ifndef FIXED_POINT
+    #define FIXED_POINT
+
+    #define FIXED_SHIFT 12
+
+    // Convert integer to 12-bit fixed point
+    #define I2F(i) ((i) << FIXED_SHIFT)
+
+    // Convert 12-bit fixed point to integer (rounding towards zero)
+    #define F2I(f) ((f) >> FIXED_SHIFT)
+
+#endif
 
 #endif // TYPES_H
