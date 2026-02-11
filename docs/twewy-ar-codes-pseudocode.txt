@@ -1,0 +1,178 @@
+** Debug Menu (Hold Select, press Start) **
+// Conditional check: if [0x020AE5F0] == 0x00000AB1 (game state check)
+if (memory[0x020AE5F0] == 0x00000AB1) {
+    // Store original instruction for restoration
+    memory[0x020AE5F4] = 0xE5910630  // ldr r0, [r1, #0x630]
+}
+// Button check: if (buttons_held != SELECT)
+if (!(buttons & SELECT)) {
+    if (memory[0x020AE5F0] == 0x00000AB1) {
+        // Replace with: mov r0, #8 (force debug menu state)
+        memory[0x020AE5F4] = 0xE3A00008
+    }
+}
+
+** Max Exp **
+// Direct write: Set experience to maximum
+memory[0x020737B8] = 0xFFFF  // 65,535 experience points
+
+** Show stylus collision hitboxes **
+// Enable debug visualization mode
+memory[0x0207516C] = 0x02  // Debug flag: show hitboxes
+
+** 9,999,999 Yen in any wallet **
+// Conditional: if [0x020848EC] == 0x0000FF82 (shop/wallet context active)
+if (memory[0x020848EC] == 0x0000FF82) {
+    // Patch multiple wallet check functions to return wallet level 3 (unlimited)
+    memory[0x0208470C] = 0xE3A00003  // mov r0, #3
+    memory[0x02084720] = 0xE3A00003  // mov r0, #3
+    memory[0x02084738] = 0xE3A00003  // mov r0, #3
+    memory[0x0208FEC8] = 0xE3A00003  // mov r0, #3
+    memory[0x0208FEB0] = 0xE3A00003  // mov r0, #3
+    memory[0x0208FE9C] = 0xE3A00003  // mov r0, #3
+}
+
+** Infinite Yen **
+// Direct write to player money in MainData structure
+MainData.money = 9999999  // memory[0x02071D1C] = 0x0098967F
+
+** Access Full Map **
+// Button activation: if (buttons_pressed == R)
+if (buttons_just_pressed == R) {
+    // Conditional: if [0x020B8408] == 0x000004F8
+    if (memory[0x020B8408] == 0x000004F8) {
+        // Patch map visibility checks
+        memory[0x020B8548] = 0xE3A02004  // mov r2, #4 (all areas visible)
+        memory[0x020B8408] = 0xE3A00004  // mov r0, #4 (all areas unlocked)
+    }
+}
+
+** Pins always evolve **
+// Conditional: if [0x02085484] == 0x00001034 (pin evolution check active)
+if (memory[0x02085484] == 0x00001034) {
+    // Patch evolution requirement checks to always return success
+    memory[0x020854C4] = 0xE3A00000  // mov r0, #0 (evolution check 1: pass)
+    memory[0x020854D8] = 0xE3A00000  // mov r0, #0 (evolution check 2: pass)
+    memory[0x020854EC] = 0xE3A00000  // mov r0, #0 (evolution check 3: pass)
+    memory[0x02085500] = 0xE3A00000  // mov r0, #0 (evolution check 4: pass)
+    memory[0x02085514] = 0xE3A00000  // mov r0, #0 (evolution check 5: pass)
+}
+
+** No limit on pin usage **
+// Conditional: if [0x020A79EC] == 0x000004F4
+if (memory[0x020A79EC] == 0x000004F4) {
+    // Patch pin cooldown/reboot timer
+    memory[0x020A79EC] = 0xE1C414B4  // strh r1, [r4, #0x4B4] - modified store
+    memory[0x020A79F4] = 0xEA000009  // b +0x24 (skip cooldown logic)
+}
+
+** Unlock all pin slots **
+// Conditional: if [0x0209018E] == 0x000083A0 (pin slot check)
+if (memory[0x0209018E] == 0x000083A0) {
+    // Force maximum pin slots
+    memory[0x0209018C] = 0xE3A00006  // mov r0, #6 (max slots)
+}
+
+** Unlock all pins (press L+R) **
+// Button activation: if (buttons == L+R)
+if (buttons_pressed == (L | R)) {
+    // Initialize loop at pin collection start
+    base_address = 0x020727C0
+    memory[base_address] = 0x0000      // Clear initial entry
+    memory[base_address + 2] = 0x63    // Set count to 99
+
+    // Loop through all 302 (0x12E) pin entries
+    for (i = 0; i < 302; i++) {
+        current_address = base_address + (i * 4)
+        // Write 99 to each pin's quantity field
+        memory[current_address + 4] = 0x63  // 99 of each pin
+        // Advance to next pin entry
+    }
+}
+
+** Unlock all item abilities **
+// Conditional: if [0x02393850] == 0x000035F8
+if (memory[0x02393850] == 0x000035F8) {
+    // Fill ability array with pattern 0x01010101 (all abilities unlocked)
+    base_address = 0x02073BC0
+    fill_value = 0x01010101
+    // Loop 70 (0x46) times to fill ability flags
+    for (i = 0; i < 70; i++) {
+        memory[base_address + (i * 4)] = fill_value
+    }
+}
+
+** 999 ATK **
+MainData.attack = 999  // memory[0x02071D20] = 0x03E7
+
+** 999 DEF **
+MainData.defense = 999  // memory[0x02071D22] = 0x03E7
+
+** 999 Bravery **
+MainData.bravery = 999  // memory[0x02071D26] = 0x03E7
+
+** Level 255 **
+MainData.level = 255  // memory[0x02071D16] = 0xFF
+
+** All difficulties unlocked **
+// Conditional: if [0x020848AE] == 0x000013A0
+if (memory[0x020848AE] == 0x000013A0) {
+    // Patch difficulty check to return "all unlocked"
+    memory[0x020848A4] = 0xE3A00003  // mov r0, #3 (all 4 difficulties)
+}
+
+** Equip any clothing **
+// Conditional: if [0x02393850] == 0x000035F8
+if (memory[0x02393850] == 0x000035F8) {
+    // Override clothing stat requirements (bravery thresholds)
+    memory[0x023A3570] = 0x03E7  // Hat requirement = 999 (always met)
+    memory[0x023A3584] = 0x03E7  // Top requirement = 999 (always met)
+    memory[0x023A3598] = 0x03E7  // Bottom requirement = 999 (always met)
+    memory[0x023A35AC] = 0x03E7  // Footwear requirement = 999 (always met)
+}
+
+** 100% Drop Rate **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Set drop rate multiplier to maximum
+    BattleData.dropRateMultiplier = 999  // memory[0x02074E76] = 0x03E7
+}
+
+** Auto-win battles **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Force battle state to "Victory"
+    BattleData.battleState = 2  // memory[0x02074E52] = 0x02 (WIN)
+}
+
+** God mode **
+// Button toggle: R+B held = invincible ON, L+B held = invincible OFF
+if (buttons_held == (R | B)) {
+    // Enable invincibility
+    BattleData.invincible = 1  // memory[0x02074E40] = 0x01
+}
+if (buttons_held == (L | B)) {
+    // Disable invincibility
+    BattleData.invincible = 0  // memory[0x02074E40] = 0x00
+}
+
+** No damage bonus **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Clear "no damage taken" bonus flag
+    BattleData.noDamageBonus = 0  // memory[0x02074E9F] = 0x00
+}
+
+** 100 Pass Puck Rally Bonus **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Set puck rally counter to maximum
+    BattleData.puckRallyCount = 100  // memory[0x02074E8C] = 0x64
+}
+
+** 100 Hits Bonus **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Set hit combo counter to maximum
+    BattleData.hitComboCount = 100  // memory[0x02074E9C] = 0x64
+}
