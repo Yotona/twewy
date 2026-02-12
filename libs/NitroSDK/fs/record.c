@@ -27,17 +27,17 @@ static u32 FS_RecordCondenseName(const char* name, s32 nameLen) {
 }
 
 static FS_CommandResult FS_RecordCommandReadCB(FS_Record* record, void* dest, u32 pos, u32 size) {
-    func_0203b454(record->baseOffset + pos, dest, size);
+    MI_CpuCopyU8(record->baseOffset + pos, dest, size);
     return FS_RESULT_SUCCESS;
 }
 
 static FS_CommandResult FS_RecordCommandWriteCB(FS_Record* record, const void* src, u32 pos, u32 size) {
-    func_0203b454(src, record->baseOffset + pos, size);
+    MI_CpuCopyU8(src, record->baseOffset + pos, size);
     return FS_RESULT_SUCCESS;
 }
 
 static FS_CommandResult FS_RecordCommandRead(FS_Record* record, void* dest, u32 pos, u32 size) {
-    func_0203b454(pos, dest, size);
+    MI_CpuCopyU8(pos, dest, size);
     return FS_RESULT_SUCCESS;
 }
 
@@ -198,7 +198,7 @@ BOOL FS_RecordCommandSend(FS_File* file, u32 command) {
 }
 
 void FS_RecordInit(FS_Record* record) {
-    func_0203b3c0(record, 0, sizeof(FS_Record));
+    MI_CpuSet(record, 0, sizeof(FS_Record));
     record->unk_0C = record->unk_10 = 0;
     record->unk_14 = record->unk_18 = 0;
 }
@@ -326,7 +326,7 @@ u32 FS_RecordLoadTable(FS_Record* record, void* buffer, u32 max_size) {
         FS_FileInit(&tmp);
         if (FS_FileOpenImmediate(&tmp, record, record->fatOffset, record->fatOffset + record->fatSize, -1)) {
             if (FS_FileRead(&tmp, cache, record->fatSize) < 0) {
-                func_0203b3c0(cache, 0, record->fatSize);
+                MI_CpuSet(cache, 0, record->fatSize);
             }
             FS_FileClose(&tmp);
         }
@@ -334,7 +334,7 @@ u32 FS_RecordLoadTable(FS_Record* record, void* buffer, u32 max_size) {
         cache += record->fatSize;
         if (FS_FileOpenImmediate(&tmp, record, record->fntOffset, record->fntOffset + record->fntSize, -1)) {
             if (FS_FileRead(&tmp, cache, record->fntSize) < 0) {
-                func_0203b3c0(cache, 0, record->fntSize);
+                MI_CpuSet(cache, 0, record->fntSize);
             }
             FS_FileClose(&tmp);
         }

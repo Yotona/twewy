@@ -83,11 +83,11 @@ void func_ov037_020824a0(void) {
 
     func_0200270c(0, 0);
     func_0200270c(1, 0);
-    func_0203b2d0(0x0, 0x6800000, 0xa4000);
-    func_0203b2d0(0x0, 0x6000000, 0x80000);
-    func_0203b2d0(0x0, 0x6200000, 0x20000);
-    func_0203b2d0(0x0, 0x6400000, 0x40000);
-    func_0203b2d0(0x0, 0x6600000, 0x20000);
+    MI_CpuFill(0x0, 0x6800000, 0xa4000);
+    MI_CpuFill(0x0, 0x6000000, 0x80000);
+    MI_CpuFill(0x0, 0x6200000, 0x20000);
+    MI_CpuFill(0x0, 0x6400000, 0x40000);
+    MI_CpuFill(0x0, 0x6600000, 0x20000);
     func_0200270c(0, 0);
     func_0200283c(0, &data_020676ec, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
@@ -466,7 +466,7 @@ void func_ov037_0208345c(OpenEndState* r0) {
         data_ov037_02083e00 = unk;
         MainOvlDisp_SetCbArg(unk);
     }
-    func_0203b2d0(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
+    MI_CpuFill(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
     func_ov037_020828dc();
     u32 temp = data_ov037_02083a7c[data_02074d10.unk_410];
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
@@ -580,7 +580,7 @@ int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* taskP
     u32* r2 = (u32*)taskParam;
 
     UnkTaskData* ptr = r1->data;
-    func_0203b3c0(ptr, 0, 0x84);
+    MI_CpuSet(ptr, 0, 0x84);
 
     u32 tmp     = *r2;
     ptr->unk_80 = tmp;

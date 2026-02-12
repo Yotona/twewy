@@ -707,7 +707,7 @@ void GrpCheck_InitOverlay(GrpCheckState* state) {
         Mem_SetSequence(&gDebugHeap, state, sequence);
         MainOvlDisp_SetCbArg(state);
     }
-    func_0203b2d0(0, state, Mem_GetBlockSize(&gDebugHeap, state));
+    MI_CpuFill(0, state, Mem_GetBlockSize(&gDebugHeap, state));
     GrpCheck_RegisterVBlank();
 
     u16 stack[4];
@@ -910,11 +910,11 @@ void func_ov038_020856f4(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
 
-    func_0203b2d0(0, 0x06800000, 0xA4000);
-    func_0203b2d0(0, 0x06000000, 0x80000);
-    func_0203b2d0(0, 0x06200000, 0x20000);
-    func_0203b2d0(0, 0x06400000, 0x40000);
-    func_0203b2d0(0, 0x06600000, 0x20000);
+    MI_CpuFill(0, 0x06800000, 0xA4000);
+    MI_CpuFill(0, 0x06000000, 0x80000);
+    MI_CpuFill(0, 0x06200000, 0x20000);
+    MI_CpuFill(0, 0x06400000, 0x40000);
+    MI_CpuFill(0, 0x06600000, 0x20000);
     func_0200270c(0, 0);
     func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);

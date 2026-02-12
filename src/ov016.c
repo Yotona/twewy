@@ -264,7 +264,7 @@ void                func_0200afec(s32, s32);                                    
 s32                 func_0200ea4c(void*);                                                              /* extern */
 void                func_02026590(void*, s32, u16);                                                    /* extern */
 void                func_020265d4(void*, s32, u16);                                                    /* extern */
-void                func_0203b3c0(void*, s32, s32);                                                    /* extern */
+void                MI_CpuSet(void*, s32, s32);                                                        /* extern */
 void                func_ov000_020824a0(void*, u16, s32);                                              /* extern */
 void                func_ov003_020826c8(void*, s32);                                                   /* extern */
 void                func_ov003_02082724(void*, s16, s16);                                              /* extern */
@@ -555,7 +555,7 @@ s32 func_ov016_021257a0(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     temp_r4 = arg1->unk18;
     args    = (Ov016InitArgs4*)arg2;
-    func_0203b3c0(temp_r4, 0, 0x80);
+    MI_CpuSet(temp_r4, 0, 0x80);
     temp_r5        = (s32*)((u8*)temp_r4 + 0x60);
     temp_r4->unk60 = (s32)args->unk0;
     temp_r5[1]     = (s32)args->unk4;
@@ -937,7 +937,7 @@ s32 func_ov016_021260d0(void* arg0, Ov016Task* arg1, void* arg2) {
 
     (void)arg0;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x1E0);
+    MI_CpuSet(temp_r4, 0, 0x1E0);
     func_ov003_020c3efc(temp_r4, arg2);
     func_ov016_021256c0(&subroutine, 1, 0);
     func_ov003_02082998((u8*)temp_r4 + 0x84, &subroutine);
@@ -1551,7 +1551,7 @@ s32 func_ov016_021270a8(void* arg0, Ov016Task* arg1, void* arg2) {
 
     (void)arg0;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x1F4);
+    MI_CpuSet(temp_r4, 0, 0x1F4);
     temp_r0 = data_ov003_020e71b8->unk3D350;
     if (temp_r0 == NULL) {
         var_r1 = NULL;
@@ -1692,7 +1692,7 @@ s32 func_ov016_0212751c(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     (void)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x8C);
+    MI_CpuSet(temp_r4, 0, 0x8C);
     func_ov003_02082a04(1, temp_r4, &data_ov016_02128f98, &data_ov016_02129010, RNG_Next(2), 4, 4);
     func_ov016_021273bc(temp_r4);
     if (RNG_Next((s32)data_ov003_020e71b8->unk3D824 >> 0xC) != 0) {
@@ -1822,7 +1822,7 @@ s32 func_ov016_02127900(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     (void)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x80);
+    MI_CpuSet(temp_r4, 0, 0x80);
     func_ov003_02082a04(0, temp_r4, &data_ov016_02128f98, &data_ov016_0212903c, 0, 4, 4);
     func_ov016_0212784c((Ov016Vec3*)((u8*)temp_r4 + 0x60));
     return 1;
@@ -1992,7 +1992,7 @@ s32 func_ov016_02127ce8(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     (void)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x70);
+    MI_CpuSet(temp_r4, 0, 0x70);
     func_ov003_02082a04(1, temp_r4, &data_ov016_02128f98, &data_ov016_02129054, 0, 4, 0x3E);
     temp_r1        = data_ov003_020e71b8->unk3D824;
     temp_r4->unk60 = (s32)((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1);
@@ -2064,7 +2064,7 @@ s32 func_ov016_02127eb8(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     (void)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x78);
+    MI_CpuSet(temp_r4, 0, 0x78);
     func_ov003_02082a04(0, temp_r4, &data_ov016_02128f98, &data_ov016_02129078, 0, 4, 0xC);
     temp_r0        = data_ov003_020e71b8->unk3D7CC;
     temp_r4->unk60 = (s32)((s32)(temp_r0 + (temp_r0 >> 0x1F)) >> 1);
@@ -2138,7 +2138,7 @@ s32 func_ov016_02128088(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     args    = (Ov016SpawnArgs*)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x84);
+    MI_CpuSet(temp_r4, 0, 0x84);
     temp_r3        = (s32*)((u8*)temp_r4 + 0x60);
     temp_r4->unk60 = (s32)args->unk0;
     temp_r3[1]     = (s32)args->unk4;
@@ -2268,7 +2268,7 @@ s32 func_ov016_02128374(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     args    = (Ov016SpawnArgs*)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x78);
+    MI_CpuSet(temp_r4, 0, 0x78);
     temp_r4->unk60 = (s32)args->unk0;
     temp_r4->unk64 = (s32)args->unk4;
     temp_r4->unk68 = (s32)args->unk8;
@@ -2471,7 +2471,7 @@ s32 func_ov016_02128850(void* arg0, Ov016Task* arg1, void* arg2) {
 
     (void)arg0;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x198);
+    MI_CpuSet(temp_r4, 0, 0x198);
     temp_r4->unk184 = (s32) * (s32*)arg2;
     temp_r4->unk190 = 1;
     temp_r4->unk194 = 1;
@@ -2653,7 +2653,7 @@ s32 func_ov016_02128d48(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     args    = (Ov016BossSpawnArgs*)arg2;
     temp_r4 = arg1->unk18;
-    func_0203b3c0(temp_r4, 0, 0x298);
+    MI_CpuSet(temp_r4, 0, 0x298);
     temp_lr         = args->unkC;
     temp_r4->unk284 = (u16)temp_lr->unk0;
     temp_r4->unk286 = (u16)temp_lr->unk2;

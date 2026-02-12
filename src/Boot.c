@@ -26,7 +26,7 @@ void Boot(void* unused) {
         BootHeap* heap = Mem_AllocHeapTail(&gDebugHeap, sizeof(BootHeap));
 
         Mem_SetSequence(&gDebugHeap, heap, seq);
-        func_0203b2d0(0, heap, Mem_GetBlockSize(&gDebugHeap, heap));
+        MI_CpuFill(0, heap, Mem_GetBlockSize(&gDebugHeap, heap));
         MainOvlDisp_SetCbArg(heap);
         BinMgr_Init(&heap->binMgr, 8);
         PacMgr_Init(&heap->pacMgr, 32);

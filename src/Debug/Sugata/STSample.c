@@ -64,17 +64,17 @@ void func_ov041_020827cc(STSampleState* state) {
     state->unk_21E64 = 0;
     func_0203a96c(&state->unk_21F30);
     GetDsFirmwareUserSettings(abStack_5c);
-    func_0203b3c0(&state->unk_21F36, 0, 0x16);
+    MI_CpuSet(&state->unk_21F36, 0, 0x16);
     func_ov040_0209da10(&state->unk_21F36, auStack_58, local_42);
-    func_0203b3c0(&state->unk_21F4C, 0, 0x36);
+    MI_CpuSet(&state->unk_21F4C, 0, 0x36);
     func_ov040_0209da10(&state->unk_21F4C, auStack_40, local_a);
 
     for (s32 idx = 0; idx < 0x100; idx++) {
         state->unk_21F82[idx] = idx;
     }
 
-    func_0203b3c0(&state->unk_21E6C, 0xff, 0xc0);
-    func_0203b3c0(&state->unk_2208C, 0, 0x152);
+    MI_CpuSet(&state->unk_21E6C, 0xff, 0xc0);
+    MI_CpuSet(&state->unk_2208C, 0, 0x152);
 }
 
 void func_ov041_020828f0(STSampleState* state) {

@@ -129,7 +129,7 @@ s32 MTX_Inverse43(const Mtx43* src, Mtx43* dest) {
     mtx->_32 = -(s32)(((s64)mtx->_02 * src->_30 + (s64)mtx->_12 * src->_31 + (s64)mtx->_22 * src->_32) >> 12);
 
     if (mtx == &temp) {
-        func_0203b370(&temp, dest);
+        MI_CpuCopy48(&temp, dest);
     }
     return 0;
 }

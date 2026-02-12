@@ -58,7 +58,7 @@ BinMgr* BinMgr_Init(BinMgr* binMgr, u32 nodeCount) {
 
     for (u16 i = 0; i < binMgr->nodeCount; i++) {
         if (bin != NULL) {
-            func_0203b3c0(bin, 0, sizeof(Bin));
+            MI_CpuSet(bin, 0, sizeof(Bin));
         }
         bin->next            = binMgr->rootBin.next;
         binMgr->rootBin.next = bin;
@@ -188,7 +188,7 @@ Bin* BinMgr_LoadUncompressed(FS_FileIdentifier* resIden, u32 resourceId) {
 
     bin = BinMgr_AllocNode(&binMgr->rootBin);
     if (bin != NULL) {
-        func_0203b3c0(bin, 0, 0x20);
+        MI_CpuSet(bin, 0, 0x20);
     }
     // Set flag bits for BinMgr-managed uncompressed data
     bin->flags = bin->flags & ~0x1 | 1; // Set bit 0 (allocated by BinMgr)
@@ -216,7 +216,7 @@ Bin* BinMgr_LoadResource(FS_FileIdentifier* resIden, u32 resourceId) {
     }
     newNode = BinMgr_AllocNode(&binMgr->rootBin);
     if (newNode != NULL) {
-        func_0203b3c0(newNode, 0, 0x20);
+        MI_CpuSet(newNode, 0, 0x20);
     }
     // Set flag bits for BinMgr-managed compressed data
     newNode->flags = newNode->flags & ~0x1 | 1; // Set bit 0 (allocated by BinMgr)
@@ -246,7 +246,7 @@ Bin* BinMgr_CreateFromData(u32 id, void* data, u32 size) {
 
     bin = BinMgr_AllocNode(&binMgr->rootBin);
     if (bin != NULL) {
-        func_0203b3c0(bin, 0, sizeof(Bin));
+        MI_CpuSet(bin, 0, sizeof(Bin));
     }
     // Clear all flag bits for external data (not managed by BinMgr)
     bin->flags         = bin->flags &= ~0x1; // Clear bit 0 (not allocated by BinMgr)

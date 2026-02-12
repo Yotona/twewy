@@ -122,7 +122,7 @@ void main(void) {
 
         void* stdHeap = Mem_AllocHeapTail(&gMainHeap, 0x80000);
         Mem_SetSequence(&gMainHeap, stdHeap, "SeqHeap(StdHeap)");
-        func_0203b2d0(0, stdHeap, Mem_GetBlockSize(&gMainHeap, stdHeap));
+        MI_CpuFill(0, stdHeap, Mem_GetBlockSize(&gMainHeap, stdHeap));
 
         Mem_InitializeHeap(&gDebugHeap, stdHeap, 0x80000);
 

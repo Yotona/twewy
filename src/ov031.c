@@ -155,11 +155,11 @@ void  DC_PurgeAll(void);                                                        
 void  GetDsFirmwareUserSettings(void*);                                                                  /* extern */
 void  OS_WaitForever(void);                                                                              /* extern */
 void* func_02002c18(void*);                                                                              /* extern */
-void  func_0203b270(const void* src, void* dst, s32 size);                                               /* extern */
-void  func_0203b28c(s32 arg0, void* dst, s32 size);                                                      /* extern */
-void  func_0203b2d0(s32 arg0, void* dst, s32 size);                                                      /* extern */
-void  func_0203b31c(const void* src, void* dst, s32 size);                                               /* extern */
-void  func_0203b454(const void* src, void* dst, s32 size);                                               /* extern */
+void  MI_CpuCopyU16(const void* src, void* dst, s32 size);                                               /* extern */
+void  MI_CpuFillU32(s32 arg0, void* dst, s32 size);                                                      /* extern */
+void  MI_CpuFill(s32 arg0, void* dst, s32 size);                                                         /* extern */
+void  MI_CpuCopy(const void* src, void* dst, s32 size);                                                  /* extern */
+void  MI_CpuCopyU8(const void* src, void* dst, s32 size);                                                /* extern */
 u16   func_ov031_0210a5fc(s16* arg0, const u16* arg1, s32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6); /* static */
 s32   func_ov031_0210a7e0(u16 arg0);                                                                     /* static */
 void  func_ov031_0210a808(UnkOv31Struct* arg0, s32 arg1, s32 arg2, s32 arg3);                            /* static */
@@ -679,7 +679,7 @@ void* func_ov031_0210ab68(s32 arg0) {
     }
     temp_r0 = Mem_AllocHeapTail(&gDebugHeap, 0x20);
     Mem_SetSequence(&gDebugHeap, temp_r0, data_ov031_0210daa0);
-    func_0203b31c(var_r6, temp_r0, 0x20);
+    MI_CpuCopy(var_r6, temp_r0, 0x20);
     DatMgr_ReleaseData(temp_r0_2);
     return temp_r0;
 }
@@ -1115,7 +1115,7 @@ loop_3:
                 *dst = out;
                 goto block_22;
             }
-            func_0203b454(&temp_byte, dst, 1);
+            MI_CpuCopyU8(&temp_byte, dst, 1);
             goto block_22;
         }
     block_22:
@@ -1186,7 +1186,7 @@ void* func_ov031_0210b698(UnkOv31Struct* arg0, s32 arg1) {
     temp_r6 = var_r5 * 2;
     temp_r0 = Mem_AllocHeapTail(&gDebugHeap, temp_r6);
     Mem_SetSequence(&gDebugHeap, temp_r0, data_ov031_0210dab4);
-    func_0203b270(temp_r0_3->buffer, temp_r0, temp_r6);
+    MI_CpuCopyU16(temp_r0_3->buffer, temp_r0, temp_r6);
     DatMgr_ReleaseData(temp_r0_3);
     return temp_r0;
 }
@@ -1867,7 +1867,7 @@ void func_ov031_0210c94c(Ov031MenuState* arg0, s8* arg1, s32 arg2) {
     Mem_SetSequence(&gMainHeap, temp_r0, arg1);
     arg0->unk0   = temp_r0;
     arg0->unk1B8 = 1;
-    func_0203b28c(0, arg0->unk0, arg2);
+    MI_CpuFillU32(0, arg0->unk0, arg2);
 }
 
 void func_ov031_0210c9a8(Ov031MenuState* arg0, void* arg1) {
@@ -2071,7 +2071,7 @@ void func_ov031_0210cdfc(Ov031MenuState* arg0, u16 arg1) {
     temp_r0    = Mem_AllocHeapTail(&gMainHeap, arg0->unk0 * 4);
     Mem_SetSequence(&gMainHeap, temp_r0, data_ov031_0210db10);
     arg0->unk4 = temp_r0;
-    func_0203b2d0(0, temp_r0, arg0->unk0 * 4);
+    MI_CpuFill(0, temp_r0, arg0->unk0 * 4);
 }
 
 u16 func_ov031_0210ce50(Ov031MenuState* arg0, s32 arg1) {
