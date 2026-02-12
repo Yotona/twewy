@@ -74,7 +74,7 @@ void func_ov042_020824e0(StaffRollState* state) {
         state = Mem_AllocHeapTail(&gDebugHeap, sizeof(StaffRollState));
         Mem_SetSequence(&gDebugHeap, state, "Seq_Staff()");
         MainOvlDisp_SetCbArg(state);
-        func_0203b3c0(state, 0, sizeof(StaffRollState));
+        MI_CpuSet(state, 0, sizeof(StaffRollState));
     }
     FS_LoadOverlay(0, &OVERLAY_31_ID);
     func_ov031_0210aa94(&state->unk_2171C);
@@ -704,7 +704,7 @@ s32 func_ov042_020836d0(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 // Nonmatching: Regswaps, incorrect instructions for DisplayEngineState access
 s32 func_ov042_02083708(BgScroll* scroll, BgScrollArgs* args) {
-    func_0203b3c0(scroll, 0, sizeof(BgScroll));
+    MI_CpuSet(scroll, 0, sizeof(BgScroll));
     scroll->unk_00 = args->unk_00;
     scroll->unk_04 = args->unk_04;
     scroll->unk_08 = args->unk_08;
@@ -1027,7 +1027,7 @@ s32 func_ov042_02084064(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
 const BinIdentifier data_ov042_02084814 = {42, "Apl_Suy/staff_font.bin"};
 
 s32 func_ov042_020840ac(FontRoll* fontRoll, FontRollArgs* args) {
-    func_0203b3c0(fontRoll, 0, sizeof(FontRoll));
+    MI_CpuSet(fontRoll, 0, sizeof(FontRoll));
     fontRoll->unk_000 = args->unk_00;
     fontRoll->engine  = args->unk_04;
     fontRoll->bgLayer = args->unk_08;
@@ -1212,9 +1212,9 @@ void func_ov042_020842e4(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    func_0203b2d0(0, 0x06800000, 0xA4000);
-    func_0203b2d0(0, 0x06000000, 0x80000);
-    func_0203b2d0(0, 0x06200000, 0x20000);
+    MI_CpuFill(0, 0x06800000, 0xA4000);
+    MI_CpuFill(0, 0x06000000, 0x80000);
+    MI_CpuFill(0, 0x06200000, 0x20000);
     func_0200270c(0, 0);
     func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);

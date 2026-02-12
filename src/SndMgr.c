@@ -41,7 +41,7 @@ void SndMgr_Init(void) {
     func_02027220(0);
     void* heap = Mem_AllocHeapTail(&gMainHeap, 0x40000);
     Mem_SetSequence(&gMainHeap, heap, "SndMgr");
-    func_0203b2d0(0, heap, Mem_GetBlockSize(&gMainHeap, heap));
+    MI_CpuFill(0, heap, Mem_GetBlockSize(&gMainHeap, heap));
     sndMgr.data = heap;
     func_020268f0();
     func_0202f8a0();

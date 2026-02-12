@@ -69,7 +69,7 @@ void TouchInput_Init(void) {
 // Nonmatching: Minor instruction reordering
 // Scratch: kj9VF
 u16* TouchInput_Update(void) {
-    func_0203b3c0(TouchState.rawInput, 0, 8);
+    MI_CpuSet(TouchState.rawInput, 0, 8);
     if (TouchState.isTouchEnabled == FALSE) {
         return NULL;
     }

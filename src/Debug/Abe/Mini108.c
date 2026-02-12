@@ -350,7 +350,7 @@ void func_ov000_02082894(Mini108State* stateptr) {
         Mem_SetSequence(&gDebugHeap, stateptr, temp);
         MainOvlDisp_SetCbArg(stateptr);
     }
-    func_0203b2d0(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
+    MI_CpuFill(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
     func_ov000_02082b1c(stateptr);
     func_ov000_02082b18(stateptr);
     MainOvlDisp_IncrementRepeatCount();
@@ -414,7 +414,7 @@ void func_ov000_020825c0(void) {
 
     func_0200270c(0, 0); // Might also use &g_DisplaySettings as third parameter?
     func_0200270c(0, 1);
-    func_0203b2d0(0, 0x6800000, 0xa4000);
+    MI_CpuFill(0, 0x6800000, 0xa4000);
     func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);

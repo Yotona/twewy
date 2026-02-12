@@ -214,11 +214,11 @@ void func_ov043_020c6684(void) {
     GX_SetBankForSubObj(8);
     GX_SetBankForSubBgExtPltt(0);
     GX_SetBankForSubObjExtPltt(0);
-    func_0203b2d0(0, 0x06800000, 0xA4000);
-    func_0203b2d0(0, 0x06000000, 0x80000);
-    func_0203b2d0(0, 0x06200000, 0x20000);
-    func_0203b2d0(0, 0x06400000, 0x40000);
-    func_0203b2d0(0, 0x06600000, 0x20000);
+    MI_CpuFill(0, 0x06800000, 0xA4000);
+    MI_CpuFill(0, 0x06000000, 0x80000);
+    MI_CpuFill(0, 0x06200000, 0x20000);
+    MI_CpuFill(0, 0x06400000, 0x40000);
+    MI_CpuFill(0, 0x06600000, 0x20000);
     REG_POWER_CNT &= ~0x8000;
     Display_CommitSynced();
 

@@ -213,11 +213,11 @@ void func_02010414(TextObject* obj) {
 
     if (iVar3 != 0) {
         for (i = 0; i < obj->unk_18[1]; i++) {
-            func_0203b258(obj->unk_34, iVar3, obj->unk_18[0] << 1);
+            MI_CpuFillU16(obj->unk_34, iVar3, obj->unk_18[0] << 1);
             iVar3 += obj->unk_04 * 2;
         }
     } else {
-        func_0203b2d0(obj->unk_30, func_02010808(obj, 0, 0), obj->unk_18[0] * obj->unk_18[1] * 0x20);
+        MI_CpuFill(obj->unk_30, func_02010808(obj, 0, 0), obj->unk_18[0] * obj->unk_18[1] * 0x20);
     }
 }
 

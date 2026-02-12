@@ -124,7 +124,7 @@ void                            func_0200cef0(void*);                           
 void                            func_0200d120(s32);                                                    /* extern */
 void                            func_020265d4(void*, void*, u16);                                      /* extern */
 void                            func_02026b20(s32 seIdx);                                              /* extern */
-void                            func_0203b2d0(void*, void*, s32);                                      /* extern */
+void                            MI_CpuFill(void*, void*, s32);                                         /* extern */
 void                            func_ov003_020825b8(s32, void*, void*);                                /* extern */
 void                            func_ov003_02082724(void*, s16, s16);                                  /* extern */
 void                            func_ov003_02082a90(void*, void*, BinIdentifier*, s32, s32, s32, s32); /* extern */
@@ -170,7 +170,7 @@ void func_ov025_020e7360(void) {
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
     func_0200270c(0, 0);
     func_0200270c(0, 1);
-    func_0203b2d0(0, (void*)0x0680000, 0xA4000);
+    MI_CpuFill(0, (void*)0x0680000, 0xA4000);
     func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
@@ -560,7 +560,7 @@ void func_ov025_020e8078(void* arg0) {
         Mem_SetSequence(&gDebugHeap, var_r4, temp_r5);
         MainOvlDisp_SetCbArg(var_r4);
     }
-    func_0203b2d0(0, var_r4, Mem_GetBlockSize(&gDebugHeap, var_r4));
+    MI_CpuFill(0, var_r4, Mem_GetBlockSize(&gDebugHeap, var_r4));
     OvlMgr_LoadOverlay(3, 3);
     Mem_InitializeHeap(var_r4 + 0x800, var_r4, 0x800U);
     EasyTask_InitializePool(var_r4 + 0x80C, var_r4 + 0x800, 8U, NULL, NULL);

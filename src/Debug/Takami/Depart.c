@@ -212,11 +212,11 @@ void func_ov043_020bd454(void) {
     GX_SetBankForSubObj(GX_VRAM_D);
     GX_SetBankForSubBgExtPltt(GX_VRAM_NONE);
     GX_SetBankForSubObjExtPltt(GX_VRAM_NONE);
-    func_0203b2d0(0, 0x06800000, 0xA4000);
-    func_0203b2d0(0, 0x06000000, 0x80000);
-    func_0203b2d0(0, 0x06200000, 0x20000);
-    func_0203b2d0(0, 0x06400000, 0x40000);
-    func_0203b2d0(0, 0x06600000, 0x20000);
+    MI_CpuFill(0, 0x06800000, 0xA4000);
+    MI_CpuFill(0, 0x06000000, 0x80000);
+    MI_CpuFill(0, 0x06200000, 0x20000);
+    MI_CpuFill(0, 0x06400000, 0x40000);
+    MI_CpuFill(0, 0x06600000, 0x20000);
     *(u16*)0x04000304 &= ~0x8000;
     Display_CommitSynced();
     g_DisplaySettings.controls[0].dispMode  = GX_DISPMODE_GRAPHICS;

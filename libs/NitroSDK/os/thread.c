@@ -263,7 +263,7 @@ void OS_CreateThread(OSThread* thread, void (*func)(void*), void* arg, void* sta
     thread->context.r[0] = (u32)arg;
     thread->context.lr   = (u32)OS_ExitThread;
 
-    func_0203b28c(0, stack - stackSize + 4, stackSize - 8);
+    MI_CpuFillU32(0, stack - stackSize + 4, stackSize - 8);
 
     thread->mutex           = NULL;
     thread->mutexQueue.head = NULL;
@@ -276,7 +276,7 @@ void OS_CreateThread(OSThread* thread, void (*func)(void*), void* arg, void* sta
     thread->list.next = NULL;
     thread->list.prev = NULL;
 
-    func_0203b28c(0, thread->unk_A4, 0xC);
+    MI_CpuFillU32(0, thread->unk_A4, 0xC);
 
     thread->unk_B0 = NULL;
 

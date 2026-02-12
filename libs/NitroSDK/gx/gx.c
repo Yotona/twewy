@@ -31,9 +31,9 @@ void GX_Init(void) {
         REG_MASTER_BRIGHT = 0;
         func_0203aafc(data_0206625c, &REG_DISPCNT_SUB, 0, 0x70);
     } else {
-        func_0203b28c(0, &REG_BG0CNT, 0x60);
+        MI_CpuFillU32(0, &REG_BG0CNT, 0x60);
         REG_MASTER_BRIGHT = 0;
-        func_0203b28c(0, &REG_DISPCNT_SUB, 0x70);
+        MI_CpuFillU32(0, &REG_DISPCNT_SUB, 0x70);
     }
 
     REG_BG2PA     = 0x100;

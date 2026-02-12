@@ -240,8 +240,8 @@ extern Data* DatMgr_LoadRawDataWithOffset(s32, void*, s32, BinIdentifier*, s32);
 extern BOOL  DatMgr_ReleaseData(Data*);
 extern Data* DatMgr_LoadRawData(s32, void*, s32, BinIdentifier*);
 
-extern s32 func_0203b2d0(s32, void*, s32, s32, s32, s32);
-extern s32 func_0203b3c0(void*, s32, s32);
+extern s32 MI_CpuFill(s32, void*, s32, s32, s32, s32);
+extern s32 MI_CpuSet(void*, s32, s32);
 extern s64 func_0203a444(void);
 
 extern s32  func_02042330(void);
@@ -1839,7 +1839,7 @@ void func_02024c20(void) {
 
     temp_r0 = Mem_AllocHeapTail(&gMainHeap, 0x2008);
     Mem_SetSequence(&gMainHeap, temp_r0, data_02065bf4);
-    func_0203b2d0(0, temp_r0, Mem_GetBlockSize(&gMainHeap, temp_r0), 0, 0, 0);
+    MI_CpuFill(0, temp_r0, Mem_GetBlockSize(&gMainHeap, temp_r0), 0, 0, 0);
     data_02071cf0.globalFriendData = (s32)temp_r0;
     func_02024b08((s32)temp_r0);
 }
@@ -1900,7 +1900,7 @@ s32 func_02024d48(void) {
     void* temp_r2;
     void* var_ip;
 
-    func_0203b3c0((void*)data_02071cf0.backupData1, 0, 0x3444);
+    MI_CpuSet((void*)data_02071cf0.backupData1, 0, 0x3444);
     var_ip = (void*)data_02071cf0.backupData1;
     var_r1 = 0;
     do {
@@ -1957,7 +1957,7 @@ s32 func_02024e04(void* arg0) {
     void* var_r4;
 
     var_r4 = arg0;
-    func_0203b3c0((void*)data_02071cf0.backupData2, 0, 0x202C);
+    MI_CpuSet((void*)data_02071cf0.backupData2, 0, 0x202C);
     var_ip = (void*)data_02071cf0.backupData2;
     var_r1 = 0;
     do {

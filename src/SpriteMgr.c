@@ -165,7 +165,7 @@ s32 AnimCmd_SetScale(Sprite* sprite) {
 }
 
 void Sprite_Init(Sprite* sprite) {
-    func_0203b3c0(sprite, 0, sizeof(Sprite));
+    MI_CpuSet(sprite, 0, sizeof(Sprite));
     sprite->bits_3_4      = 0;
     sprite->bits_0_1      = 0;
     sprite->animationMode = ANIM_MODE_STATIC;

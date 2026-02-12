@@ -1605,15 +1605,15 @@ s32 func_ov002_0208266c(void* arg0, void* arg1) {
 s32 func_ov002_02082698(void* arg0, void* arg1) {
     u8* mgr = (u8*)arg1;
 
-    func_0203b454(mgr + 0x41862, &data_020750fc, 6);
-    func_0203b454(mgr + 0x41862, mgr + 0x41FB6, 6);
+    MI_CpuCopyU8(mgr + 0x41862, &data_020750fc, 6);
+    MI_CpuCopyU8(mgr + 0x41862, mgr + 0x41FB6, 6);
     func_ov002_02082d44(arg1);
 
     ((u8*)&data_02074d10)[0x40B] = *(u16*)(mgr + 0x4198A);
     ((u8*)&data_02074d10)[0x40C] = *(u16*)(mgr + 0x4196C);
 
     for (int i = 0; i < 4; i++) {
-        func_0203b454(mgr + 0x41862 + i * 0x30, (u8*)&data_02075102 + i * 6, 6);
+        MI_CpuCopyU8(mgr + 0x41862 + i * 0x30, (u8*)&data_02075102 + i * 6, 6);
     }
 
     func_ov031_0210cdac(arg0);
@@ -1625,19 +1625,19 @@ s32 func_ov002_0208275c(void* arg0, void* arg1) {
     s32 paletteData;
 
     func_ov002_020824a0();
-    func_0203b454(&data_020750fc, mgr + 0x41862, 6);
+    MI_CpuCopyU8(&data_020750fc, mgr + 0x41862, 6);
 
     *(u16*)(mgr + 0x4198A) = ((u8*)&data_02074d10)[0x40B];
     *(u16*)(mgr + 0x4196C) = ((u8*)&data_02074d10)[0x40C];
 
     for (int i = 0; i < 4; i++) {
-        func_0203b258(0xFFFF, (u8*)mgr + 0x41838 + i * 0x30, 0x16);
+        MI_CpuFillU16(0xFFFF, (u8*)mgr + 0x41838 + i * 0x30, 0x16);
     }
 
     paletteData = func_ov031_0210c7c4();
-    func_0203b454((void*)paletteData, mgr + 0x4196E, 0x16);
-    func_0203b454((void*)paletteData, (u8*)mgr + 0x41838 + (((u8*)&data_02074d10)[0x40A] * 0x30), 0x16);
-    func_0203b454((void*)paletteData, mgr + 0x4181C, 0x16);
+    MI_CpuCopyU8((void*)paletteData, mgr + 0x4196E, 0x16);
+    MI_CpuCopyU8((void*)paletteData, (u8*)mgr + 0x41838 + (((u8*)&data_02074d10)[0x40A] * 0x30), 0x16);
+    MI_CpuCopyU8((void*)paletteData, mgr + 0x4181C, 0x16);
 
     *(u8*)(mgr + 0x41832) = ((u8*)&data_02074d10)[0x40A];
     Mem_Free(&gDebugHeap, paletteData);
@@ -1757,8 +1757,8 @@ void func_ov002_02082ab4(void* arg0) {
     temp_values[2] = data_ov002_02091aac.unk8[2];
     temp_values[3] = data_ov002_02091aac.unk8[3];
 
-    func_0203b258(0, mgr + 0x41FF4, 0x2800, temp_values[0], temp_values[1], temp_values[2], temp_values[3]);
-    func_0203b258(0, data_ov002_020934e4, 0x16);
+    MI_CpuFillU16(0, mgr + 0x41FF4, 0x2800, temp_values[0], temp_values[1], temp_values[2], temp_values[3]);
+    MI_CpuFillU16(0, data_ov002_020934e4, 0x16);
 
     for (i = 0; i < 4; i++) {
         if ((*(u16*)(mgr + 0x41834) & (1 << i)) == 0) {
@@ -1821,7 +1821,7 @@ void func_ov002_02082d44(void* arg0) {
         if ((*(u16*)(mgr + 0x41834) & (1 << i)) == 0) {
             continue;
         }
-        func_0203b454(mgr + 0x41FB6 + (i * 6), mgr + 0x41862 + (write_index * 0x30), 6);
+        MI_CpuCopyU8(mgr + 0x41FB6 + (i * 6), mgr + 0x41862 + (write_index * 0x30), 6);
         write_index++;
     }
 }
@@ -3049,7 +3049,7 @@ void* func_ov002_02085c44(void) {
     FS_LoadOverlay(0, 0x1F);
     temp_r0 = Mem_AllocHeapTail(&gMainHeap, 0x48068);
     Mem_SetSequence(&gMainHeap, temp_r0, data_ov002_02092be4);
-    func_0203b2d0(0, temp_r0, 0x48068);
+    MI_CpuFill(0, temp_r0, 0x48068);
     MainOvlDisp_SetCbArg(temp_r0);
     Mem_InitializeHeap((MemPool*)(temp_r0 + 0x11590), temp_r0 + 0x1159C, 0x30000);
     *(u32*)(temp_r0 + 0x11584) = DatMgr_AllocateSlot();
@@ -4109,7 +4109,7 @@ void func_ov002_02087aa8(void* arg0) {
             pack_base = Ov002_GetPackBase(pack);
             var_ip    = pack_base + *(u32*)(pack_base + 0x28);
         }
-        func_0203b270((s32)(var_ip + (table_pairs[temp_r4][0] << 5)), var_r4_2 + 0x20, 0x20);
+        MI_CpuCopyU16((s32)(var_ip + (table_pairs[temp_r4][0] << 5)), var_r4_2 + 0x20, 0x20);
         if (res->unk340 != NULL) {
             func_0200afec(data_0206b3cc.unk4);
         }
@@ -4382,8 +4382,8 @@ s32 func_ov002_0208825c(void* arg0, void* arg1) {
     if ((u32)entry_index >= 4U) {
         return 0;
     }
-    func_0203b454((s32)(entry + 0x14), (s16*)((slot_index * 0x30) + (mgr + 0x41838)), 0x16);
-    func_0203b454((s32)(entry + 0xA), (s16*)((slot_index * 0x30) + (mgr + 0x41862)), 6);
+    MI_CpuCopyU8((s32)(entry + 0x14), (s16*)((slot_index * 0x30) + (mgr + 0x41838)), 0x16);
+    MI_CpuCopyU8((s32)(entry + 0xA), (s16*)((slot_index * 0x30) + (mgr + 0x41862)), 6);
     OVMGR_U16(mgr, 0x41834)                    = (u16)(OVMGR_U16(mgr, 0x41834) | (1 << entry_index));
     OVMGR_U16(mgr, 0x41836)                    = (u16)(OVMGR_U16(mgr, 0x41836) | (1 << entry_index));
     *(u16*)(mgr + 0x4195A + (entry_index * 2)) = 0;
@@ -4468,8 +4468,8 @@ s32 func_ov002_0208847c(void* arg0, void* arg1) {
     OVMGR_U16(mgr, 0x41950) = 0;
     OVMGR_U16(mgr, 0x41954) = 0;
     OVMGR_U16(mgr, 0x41958) = 0;
-    func_0203b3c0(mgr + 0x4195A, 0, 8);
-    func_0203b3c0(mgr + 0x41962, 0, 8);
+    MI_CpuSet(mgr + 0x4195A, 0, 8);
+    MI_CpuSet(mgr + 0x41962, 0, 8);
     OVMGR_U16(mgr, 0x4196A) = 0;
     OVMGR_U16(mgr, 0x4198A) = 1;
     OVMGR_U16(mgr, 0x41834) = 1;
@@ -4605,8 +4605,8 @@ s32 func_ov002_020886ec(void* arg0, void* arg1) {
                             goto loop_28;
                         }
                     }
-                    func_0203b454((var_r9_2 * 0x30) + (s32)(mgr + 0x41838),
-                                  (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
+                    MI_CpuCopyU8((var_r9_2 * 0x30) + (s32)(mgr + 0x41838),
+                                 (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
                 }
                 var_r9_2 += 1;
                 goto loop_31;
@@ -4756,7 +4756,7 @@ void func_ov002_02088d00(void* arg1, void* arg2, void* arg3) {
             var_r4 = 0;
             do {
                 if (msg->unk2 & (1 << var_r4)) {
-                    func_0203b454((s32)var_r6, var_r5, 0x16);
+                    MI_CpuCopyU8((s32)var_r6, var_r5, 0x16);
                 }
                 var_r4 += 1;
                 var_r5 += 0x30;
@@ -5319,8 +5319,8 @@ s32 func_ov002_02089bd8(void* arg0, void* arg1) {
     if ((u32)temp_r2 >= 4U) {
         return 0;
     }
-    func_0203b454((s32)((u8*)msg + 0x14), (s16*)((temp_r2 * 0x30) + ((u8*)mgr + 0x41838)), 0x16);
-    func_0203b454((s32)((u8*)msg + 0x0A), (s16*)((msg->unk10 * 0x30) + ((u8*)mgr + 0x41862)), 6);
+    MI_CpuCopyU8((s32)((u8*)msg + 0x14), (s16*)((temp_r2 * 0x30) + ((u8*)mgr + 0x41838)), 0x16);
+    MI_CpuCopyU8((s32)((u8*)msg + 0x0A), (s16*)((msg->unk10 * 0x30) + ((u8*)mgr + 0x41862)), 6);
     mgr->unk41834                                  = (u16)(mgr->unk41834 | (1 << msg->unk10));
     mgr->unk41836                                  = (u16)(mgr->unk41836 | (1 << msg->unk10));
     *(u16*)((u8*)mgr + 0x4195A + (msg->unk10 * 2)) = 0;
@@ -5368,7 +5368,7 @@ void func_ov002_02089ce0(s32 arg0, void* arg1, void* arg2, s32 arg3) {
     temp_r5                         = (u8*)arg3 + (arg0 * 2);
     *(u16*)((u8*)temp_r5 + 0x4195A) = (u16)msg->unk0;
     *(u16*)((u8*)temp_r5 + 0x41962) = (u16)msg->unk2;
-    func_0203b454((s32)((u8*)msg + 4), (s16*)((arg0 * 6) + ((u8*)arg3 + 0x41FB6)));
+    MI_CpuCopyU8((s32)((u8*)msg + 4), (s16*)((arg0 * 6) + ((u8*)arg3 + 0x41FB6)));
 }
 
 s32 func_ov002_02089d40(void* arg0, void* arg1) {
@@ -5384,14 +5384,14 @@ s32 func_ov002_02089d40(void* arg0, void* arg1) {
     mgr->unk41950 = 0;
     mgr->unk41954 = 0;
     mgr->unk41958 = 0;
-    func_0203b3c0((u8*)mgr + 0x4195A, 0, 8);
-    func_0203b3c0((u8*)mgr + 0x41962, 0, 8);
+    MI_CpuSet((u8*)mgr + 0x4195A, 0, 8);
+    MI_CpuSet((u8*)mgr + 0x41962, 0, 8);
     mgr->unk4196A = 0;
     mgr->unk4198A = 1;
     mgr->unk41834 = 1;
     temp_r0       = func_ov031_0210c7c4();
-    func_0203b454(temp_r0, (u8*)mgr + 0x4196E, 0x16);
-    func_0203b454(temp_r0, (u8*)mgr + 0x41838, 0x16);
+    MI_CpuCopyU8(temp_r0, (u8*)mgr + 0x4196E, 0x16);
+    MI_CpuCopyU8(temp_r0, (u8*)mgr + 0x41838, 0x16);
     Mem_Free(&gDebugHeap, temp_r0);
     func_0203a96c((u8*)mgr + 0x41862);
     func_ov031_0210cdac(arg0);
@@ -5515,7 +5515,7 @@ void func_ov002_0208a0f8(void* arg0) {
     var_r8                        = (u8*)mgr + 0x41838;
     do {
         if (temp_r9 & (1 << var_r6)) {
-            func_0203b454((s32)var_r8, var_r7, 0x16);
+            MI_CpuCopyU8((s32)var_r8, var_r7, 0x16);
         }
         var_r6 += 1;
         var_r7 += 0x30;
@@ -5714,10 +5714,10 @@ s32 func_ov002_0208a250(void* arg0, void* arg1) {
             loop_56:
                 if (var_r9_2 < 4) {
                     if (OVMGR_U16(mgr_bytes, 0x41834) & (1 << var_r9_2)) {
-                        func_0203b454((var_r9_2 * 0x30) + (s32)((u8*)mgr + 0x41838),
-                                      (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
-                        func_0203b454((var_r9_2 * 0x30) + (s32)((u8*)mgr + 0x41862),
-                                      (s16*)((var_r9_2 * 6) + (s32)&data_ov002_020935e0[0x2E]), 6);
+                        MI_CpuCopyU8((var_r9_2 * 0x30) + (s32)((u8*)mgr + 0x41838),
+                                     (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
+                        MI_CpuCopyU8((var_r9_2 * 0x30) + (s32)((u8*)mgr + 0x41862),
+                                     (s16*)((var_r9_2 * 6) + (s32)&data_ov002_020935e0[0x2E]), 6);
                     }
                     var_r9_2 += 1;
                     goto loop_56;
@@ -5754,14 +5754,14 @@ void func_ov002_0208a780(void* arg0) {
     u16 var_r9;
     u32 temp_r1;
 
-    func_0203b258(0, arg0 + 0x41FF4, 0x3000);
-    func_0203b258(0, (s32)data_ov002_02093664, 0x16);
+    MI_CpuFillU16(0, arg0 + 0x41FF4, 0x3000);
+    MI_CpuFillU16(0, (s32)data_ov002_02093664, 0x16);
     var_r9 = 0;
     do {
         if (!(OVMGR_U16(mgr, 0x41998) & (1 << var_r9))) {
             *data_ov002_02093664 = 0xFFFF;
         } else {
-            func_0203b454((var_r9 * 0x1E) + (arg0 + 0x41E38), data_ov002_02093664, 0x16);
+            MI_CpuCopyU8((var_r9 * 0x1E) + (arg0 + 0x41E38), data_ov002_02093664, 0x16);
         }
         func_ov031_0210b5fc(arg0 + 0x45FF4, (s32)data_ov002_02093664);
         func_ov031_0210ab28(arg0 + 0x45FF4, 0U, 5U);
@@ -6138,8 +6138,8 @@ void func_ov002_0208afc4(void* arg1, void* arg2, void* arg3) {
             var_r4 = 0;
             do {
                 if (msg->unk2 & (1 << var_r4)) {
-                    func_0203b454((s32)var_r6, var_r5, 0x16);
-                    func_0203b454((s32)var_r8, var_r7, 6);
+                    MI_CpuCopyU8((s32)var_r6, var_r5, 0x16);
+                    MI_CpuCopyU8((s32)var_r8, var_r7, 6);
                 }
                 var_r4 += 1;
                 var_r5 += 0x30;
@@ -6179,7 +6179,7 @@ s32 func_ov002_0208b0a4(void* arg0, void* arg1) {
     OVMGR_U16(arg1, 0x46086) = 0xC8;
     func_ov002_02082f18(arg1, 0x18, 0x16, subroutine_arg0);
     temp_r0_2 = func_ov031_0210c7c4();
-    func_0203b454(temp_r0_2, arg1 + 0x4181C, 0x16);
+    MI_CpuCopyU8(temp_r0_2, arg1 + 0x4181C, 0x16);
     Mem_Free(&gDebugHeap, temp_r0_2);
     func_ov031_0210cdac(arg0);
     return 2;
@@ -6193,8 +6193,8 @@ s32 func_ov002_0208b154(void* arg0, void* arg1) {
         case 0:
             break;
         case 1:
-            func_0203b454(arg1 + 0x41EF4, arg1 + 0x41FB0, 6);
-            func_0203b454(arg1 + 0x41EF4, arg1 + 0x41862, 6);
+            MI_CpuCopyU8(arg1 + 0x41EF4, arg1 + 0x41FB0, 6);
+            MI_CpuCopyU8(arg1 + 0x41EF4, arg1 + 0x41862, 6);
             func_ov040_0209d818(3, 0, 0x78, 0xA, 1);
             func_ov040_0209d848(0);
             func_ov040_0209cabc(arg1 + 0x4181C, 0x18);
@@ -6286,7 +6286,7 @@ block_10:
         if (var_r8 < 4) {
             if (temp_r4 & temp_r5_2 & (1 << var_r8)) {
                 temp_r1_2 = var_r8 * 0x30;
-                func_0203b454((s32)(arg1 + 0x41838 + temp_r1_2), sp1E + temp_r1_2, 0x16);
+                MI_CpuCopyU8((s32)(arg1 + 0x41838 + temp_r1_2), sp1E + temp_r1_2, 0x16);
             }
             var_r8 += 1;
             goto loop_15;
@@ -6485,12 +6485,12 @@ void func_ov002_0208b860(void) {
     GX_SetBankForObj(2);
     GX_SetBankForSubBg(4);
     GX_SetBankForSubObj(8);
-    func_0203b2d0(0, (void*)0x06800000, 0xA4000);
-    func_0203b2d0(0, (void*)0x06000000, 0x80000);
+    MI_CpuFill(0, (void*)0x06800000, 0xA4000);
+    MI_CpuFill(0, (void*)0x06000000, 0x80000);
     Interrupts_ForceVBlank();
-    func_0203b2d0(0, (void*)0x06200000, 0x20000);
-    func_0203b2d0(0, (void*)0x06400000, 0x40000);
-    func_0203b2d0(0, (void*)0x06600000, 0x20000);
+    MI_CpuFill(0, (void*)0x06200000, 0x20000);
+    MI_CpuFill(0, (void*)0x06400000, 0x40000);
+    MI_CpuFill(0, (void*)0x06600000, 0x20000);
     Interrupts_ForceVBlank();
     g_DisplaySettings.unk10 = 0x200010;
     g_DisplaySettings.unk14 = 0x40;
@@ -6662,12 +6662,12 @@ void func_ov002_0208bd40(void) {
     GX_SetBankForObj(2);
     GX_SetBankForSubBg(4);
     GX_SetBankForSubObj(8);
-    func_0203b2d0(0, (void*)0x06800000, 0xA4000);
-    func_0203b2d0(0, (void*)0x06000000, 0x80000);
+    MI_CpuFill(0, (void*)0x06800000, 0xA4000);
+    MI_CpuFill(0, (void*)0x06000000, 0x80000);
     Interrupts_ForceVBlank();
-    func_0203b2d0(0, (void*)0x06200000, 0x20000);
-    func_0203b2d0(0, (void*)0x06400000, 0x40000);
-    func_0203b2d0(0, (void*)0x06600000, 0x20000);
+    MI_CpuFill(0, (void*)0x06200000, 0x20000);
+    MI_CpuFill(0, (void*)0x06400000, 0x40000);
+    MI_CpuFill(0, (void*)0x06600000, 0x20000);
     Interrupts_ForceVBlank();
     g_DisplaySettings.unk10 = 0x200010;
     g_DisplaySettings.unk14 = 0x40;
@@ -6838,12 +6838,12 @@ void func_ov002_0208c228(void) {
     GX_SetBankForObj(2);
     GX_SetBankForSubBg(4);
     GX_SetBankForSubObj(8);
-    func_0203b2d0(0, (void*)0x06800000, 0xA4000);
-    func_0203b2d0(0, (void*)0x06000000, 0x80000);
+    MI_CpuFill(0, (void*)0x06800000, 0xA4000);
+    MI_CpuFill(0, (void*)0x06000000, 0x80000);
     Interrupts_ForceVBlank();
-    func_0203b2d0(0, (void*)0x06200000, 0x20000);
-    func_0203b2d0(0, (void*)0x06400000, 0x40000);
-    func_0203b2d0(0, (void*)0x06600000, 0x20000);
+    MI_CpuFill(0, (void*)0x06200000, 0x20000);
+    MI_CpuFill(0, (void*)0x06400000, 0x40000);
+    MI_CpuFill(0, (void*)0x06600000, 0x20000);
     Interrupts_ForceVBlank();
     g_DisplaySettings.unk10 = 0x200010;
     g_DisplaySettings.unk14 = 0x40;
@@ -7466,8 +7466,8 @@ s32 func_ov002_0208d2b4(void* arg0, void* arg1) {
     if ((u32)msg_unk10 >= 4U) {
         return 0;
     }
-    func_0203b454((s32)(msg + 0x14), (s16*)(mgr + 0x41838 + (msg_unk2a * 0x30)), 0x16);
-    func_0203b454((s32)(msg + 0xA), (s16*)(mgr + 0x41862 + (msg_unk10 * 0x30)), 6);
+    MI_CpuCopyU8((s32)(msg + 0x14), (s16*)(mgr + 0x41838 + (msg_unk2a * 0x30)), 0x16);
+    MI_CpuCopyU8((s32)(msg + 0xA), (s16*)(mgr + 0x41862 + (msg_unk10 * 0x30)), 6);
     OVMGR_U16(mgr, 0x41834)                  = (u16)(OVMGR_U16(mgr, 0x41834) | (1 << msg_unk10));
     OVMGR_U16(mgr, 0x41836)                  = (u16)(OVMGR_U16(mgr, 0x41836) | (1 << msg_unk10));
     *(u16*)(mgr + 0x4195A + (msg_unk10 * 2)) = 0;
@@ -7545,8 +7545,8 @@ s32 func_ov002_0208d4cc(void* arg0, void* arg1) {
     OVMGR_U16(mgr, 0x41950) = 0;
     OVMGR_U16(mgr, 0x41954) = 0;
     OVMGR_U16(mgr, 0x41958) = 0;
-    func_0203b3c0(mgr + 0x4195A, 0, 8);
-    func_0203b3c0(mgr + 0x41962, 0, 8);
+    MI_CpuSet(mgr + 0x4195A, 0, 8);
+    MI_CpuSet(mgr + 0x41962, 0, 8);
     OVMGR_U16(mgr, 0x4196A) = 0;
     OVMGR_U16(mgr, 0x4198A) = 1;
     OVMGR_U16(mgr, 0x41834) = 1;
@@ -7681,8 +7681,8 @@ s32 func_ov002_0208d778(void* arg0, void* arg1) {
                             goto loop_28;
                         }
                     }
-                    func_0203b454((var_r9_2 * 0x30) + (s32)(mgr + 0x41838),
-                                  (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
+                    MI_CpuCopyU8((var_r9_2 * 0x30) + (s32)(mgr + 0x41838),
+                                 (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]), 0x16);
                 }
                 var_r9_2 += 1;
                 goto loop_31;
@@ -7857,7 +7857,7 @@ void func_ov002_0208dda4(void* arg1, void* arg2, void* arg3) {
             var_r4 = 0;
             do {
                 if (msg->unk2 & (1 << var_r4)) {
-                    func_0203b454((s32)var_r6, var_r5, 0x16);
+                    MI_CpuCopyU8((s32)var_r6, var_r5, 0x16);
                 }
                 var_r4 += 1;
                 var_r5 += 0x30;
@@ -8048,7 +8048,7 @@ s32 func_ov002_0208e348(void* arg0, void* arg1) {
 loop_1:
     if (((const u16*)&data_ov002_0209228e[data_02074d10.unk41C])[var_r9] != 0xFFFF) {
         temp_r0 = func_ov031_0210b698(arg1 + 0x45FF4);
-        func_0203b270(temp_r0, (var_r9 * 0x30) + (s32)(arg1 + 0x41838), 0x2A);
+        MI_CpuCopyU16(temp_r0, (var_r9 * 0x30) + (s32)(arg1 + 0x41838), 0x2A);
         Mem_Free(&gDebugHeap, temp_r0);
         var_r9 += 1;
         OVMGR_S32(arg1, 0x41FD0) = (s32)(OVMGR_S32(arg1, 0x41FD0) + 1);

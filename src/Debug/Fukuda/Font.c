@@ -177,12 +177,12 @@ void func_ov001_02082b74(void) {
     GX_SetBankForSubObj(8);
     GX_SetBankForSubBgExtPltt(0x80);
     GX_SetBankForSubObjExtPltt(0x100);
-    func_0203b2d0(0, 0x6800000, 0xa4000);
-    func_0203b2d0(0, 0x6000000, 0x80000);
-    func_0203b2d0(0, 0x6200000, 0x20000);
-    func_0203b2d0(0, 0x6400000, 0x40000);
-    func_0203b2d0(0, 0x6600000, 0x20000);
-    func_0203b2d0(0, 0x6800000, 0xa4000);
+    MI_CpuFill(0, 0x6800000, 0xa4000);
+    MI_CpuFill(0, 0x6000000, 0x80000);
+    MI_CpuFill(0, 0x6200000, 0x20000);
+    MI_CpuFill(0, 0x6400000, 0x40000);
+    MI_CpuFill(0, 0x6600000, 0x20000);
+    MI_CpuFill(0, 0x6800000, 0xa4000);
     Display_CommitSynced();
 
     g_DisplaySettings.controls[DISPLAY_MAIN].dispMode  = GX_DISPMODE_GRAPHICS;

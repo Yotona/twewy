@@ -205,11 +205,11 @@ void func_ov028_020e83f8(void) {
     GX_SetBankForSubObj(8);
     GX_SetBankForSubBgExtPltt(0);
     GX_SetBankForSubObjExtPltt(0);
-    func_0203b2d0(0, 0x06800000, 0xa4000);
-    func_0203b2d0(0, 0x6000000, 0x80000);
-    func_0203b2d0(0, 0x06200000, 0x20000);
-    func_0203b2d0(0, 0x06400000, 0x40000);
-    func_0203b2d0(0, 0x06600000, 0x20000);
+    MI_CpuFill(0, 0x06800000, 0xa4000);
+    MI_CpuFill(0, 0x6000000, 0x80000);
+    MI_CpuFill(0, 0x06200000, 0x20000);
+    MI_CpuFill(0, 0x06400000, 0x40000);
+    MI_CpuFill(0, 0x06600000, 0x20000);
     REG_POWER_CNT &= ~0x8000;
     Display_CommitSynced();
 
@@ -774,7 +774,7 @@ void func_ov028_020eba2c(s32 arg0) {
     s32                     stack[1];
     static const TaskHandle Tsk_NrepPreview = {"Tsk_NrepPreview", func_ov028_020ec4a8, 1992};
 
-    func_0203b3c0(&stack, 0, 4);
+    MI_CpuSet(&stack, 0, 4);
     stack[0] = arg0;
     EasyTask_CreateTask(data_ov028_020ed3e0->pool, &Tsk_NrepPreview, NULL, 0, NULL, &stack);
 }
@@ -920,7 +920,7 @@ void func_ov028_020ec204(NrepPreview* arg0) {
 }
 
 s32 func_ov028_020ec358(NrepPreview* arg0, s32* arg1) {
-    func_0203b3c0(arg0, 0, sizeof(NrepPreview));
+    MI_CpuSet(arg0, 0, sizeof(NrepPreview));
     arg0->unk_7C4 = -1;
     func_ov028_020eba84(arg0, &arg0->unk_084, arg1);
     func_ov028_020ec204(arg0);
@@ -988,7 +988,7 @@ void func_ov028_020ec4f8(s32 arg0) {
     s32                     stack[1];
     static const TaskHandle Tsk_NrepSeal = {"Tsk_NrepSeal", func_ov028_020ecd08, 0x3664};
 
-    func_0203b3c0(&stack, 0, 4);
+    MI_CpuSet(&stack, 0, 4);
     stack[0] = arg0;
     EasyTask_CreateTask(data_ov028_020ed3e0->pool, &Tsk_NrepSeal, NULL, 0, NULL, &stack);
 }

@@ -33,7 +33,7 @@ void FS_InvalidateOverlay(OverlayInfo* info) {
 
     IC_InvalidateRange(addr, totalSize);
     DC_InvalidateRange(addr, totalSize);
-    func_0203b3c0(addr + ramSize, 0, totalSize - ramSize);
+    MI_CpuSet(addr + ramSize, 0, totalSize - ramSize);
 }
 
 FS_FileIdentifier FS_GetOverlayIdentifier(OverlayInfo* info) {
@@ -102,7 +102,7 @@ BOOL FS_LoadOverlayInfo(OverlayInfo* info, s32 param_2, u32 id) {
             return FALSE;
         }
 
-        func_0203b454((void*)(details->offset + pos), info, 0x20);
+        MI_CpuCopyU8((void*)(details->offset + pos), info, 0x20);
         info->unk_20 = param_2;
 
         FS_FileInit(file);
@@ -149,8 +149,8 @@ static BOOL FS_ValidateOverlay(const u8* query, void* src, s32 size) {
     u8  array[20];
     u8  key[64];
 
-    func_0203b3c0(array, 0, sizeof(array));
-    func_0203b454(data_0206627c, key, data_02066280);
+    MI_CpuSet(array, 0, sizeof(array));
+    MI_CpuCopyU8(data_0206627c, key, data_02066280);
     func_0203f6f0(array, src, size, key, data_02066280);
 
     for (i = 0; i < sizeof(array); i += sizeof(u32)) {
@@ -177,7 +177,7 @@ void FS_StartOverlay(OverlayInfo* info) {
             }
         }
         if (valid == FALSE) {
-            func_0203b3c0(info->addr, 0, size);
+            MI_CpuSet(info->addr, 0, size);
             OS_WaitForever();
             return;
         }

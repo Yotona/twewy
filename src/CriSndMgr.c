@@ -154,7 +154,7 @@ void CriSndMgr_SetLpFlg(BOOL lpFlg) {
 void* CriSndMgr_Create(s32 size) {
     void* mgr = Mem_AllocHeapTail(&gMainHeap, size);
     Mem_SetSequence(&gMainHeap, mgr, "CriSndMgr");
-    func_0203b2d0(0, mgr, Mem_GetBlockSize(&gMainHeap, mgr));
+    MI_CpuFill(0, mgr, Mem_GetBlockSize(&gMainHeap, mgr));
     return mgr;
 }
 

@@ -232,7 +232,7 @@ void* PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList) {
     entryTable[0].offset = orderTableOffset;
     entryTable[0].size   = orderTableSize;
 
-    func_0203b2a0(entryList, packBuffer + orderTableOffset, orderTableSize);
+    MI_CpuCopyU32(entryList, packBuffer + orderTableOffset, orderTableSize);
 
     u32 currentWriteOffset = orderTableOffset + entryTable[0].size;
 
