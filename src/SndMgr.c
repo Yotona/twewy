@@ -76,7 +76,7 @@ s32 SndMgr_StopPlaybackForTrack(s32 idx) { // Stops playback of one of the 5 pla
 
 void SndMgr_StartPlayingSeqWithCustomSeqArc(s32 currentSeIdx, s32 seqArc, s32 se) {
     SndMgr_LoadSeqArc(g_SequenceDataTable[se].seqArc);
-    func_02031fd0(sndMgr.playbackSlots[currentSeIdx].handle, seqArc, se);
+    func_02031fd0(&sndMgr.playbackSlots[currentSeIdx].handle, seqArc, se);
 }
 
 void SndMgr_StartPlayingSE(s32 seIdx) {
@@ -87,7 +87,7 @@ void SndMgr_StartPlayingSE(s32 seIdx) {
     }
 
     SndMgr_LoadSeqArc(seqArc);
-    s32* psVar2 = sndMgr.playbackSlots[g_SequenceDataTable[seIdx].playbackSlot].handle;
+    s32** psVar2 = &sndMgr.playbackSlots[g_SequenceDataTable[seIdx].playbackSlot].handle;
     func_02031fd0(psVar2, seqArc, g_SequenceDataTable[seIdx].se);
     func_0202fd24(psVar2, sndMgr.seIdxVolume[seIdx]);
 }
