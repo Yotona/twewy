@@ -3488,11 +3488,11 @@ void func_ov002_02086b8c(void* arg1) {
 void func_ov002_02086bac(void) {}
 
 void func_ov002_02086bb0(void) {
-    func_02026b9c(0x55C);
+    SndMgr_StopPlayingSE(0x55C);
 }
 
 void func_ov002_02086bc4(void* arg1) {
-    func_02026b9c(0x55C);
+    SndMgr_StopPlayingSE(0x55C);
     func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x474E8);
     func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x476D0);
     func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x478B8);
@@ -3855,7 +3855,7 @@ s32 func_ov002_020870c8(void* arg0, void* arg1) {
     *(s32*)(entry_base_8 + 0xF0) = 0;
     *(s32*)(entry_base_8 + 0xF4) = 0x100000;
     OVMGR_U16(arg1, 0x474C8)     = 0xF0;
-    func_02026b20(0x55C);
+    SndMgr_StartPlayingSE(0x55C);
     func_ov031_0210cdac(arg0);
     return 0;
 }
@@ -3863,7 +3863,7 @@ s32 func_ov002_020870c8(void* arg0, void* arg1) {
 s32 func_ov002_0208749c(void* arg0, void* arg1) {
     OVMGR_U16(arg1, 0x474C8) = (u16)(OVMGR_U16(arg1, 0x474C8) - 1);
     if (TouchInput_WasTouchPressed() != 0) {
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (OVMGR_U16(arg1, 0x474C8) == 0)) {
         func_ov031_0210cdac(arg0);
@@ -3965,7 +3965,7 @@ s32 func_ov002_02087728(void* arg0, void* arg1) {
                 /* Duplicate return node #26. Try simplifying control flow for better match */
                 return 0;
             case 0: /* switch 1 */
-                func_02026b20(0x348);
+                SndMgr_StartPlayingSE(0x348);
                 func_ov031_0210cdac(arg0);
                 return 0;
             case 1: /* switch 1 */
@@ -3973,7 +3973,7 @@ s32 func_ov002_02087728(void* arg0, void* arg1) {
             case 3: /* switch 1 */
                 OVMGR_U16(mgr_bytes, 0x460CC) = 0x80;
                 OVMGR_U16(mgr_bytes, 0x460CE) = 0x60;
-                func_02026b20(0x347);
+                SndMgr_StartPlayingSE(0x347);
                 func_ov031_0210cdac(arg0);
                 return 0;
         }
@@ -3981,7 +3981,7 @@ s32 func_ov002_02087728(void* arg0, void* arg1) {
         u16 anim_index = (u16)(temp_r0_3 * 3);
 
         OVMGR_U16(mgr_bytes, 0x474C8) = temp_r0_3;
-        func_02026b20(0x346);
+        SndMgr_StartPlayingSE(0x346);
         switch (temp_r0_3) { /* switch 2 */
             default:         /* switch 2 */
                 return 0;
@@ -4703,11 +4703,11 @@ s32 func_ov002_02088b28(void* arg0, void* arg1) {
         func_ov002_0208800c(mgr);
     } else if (OVMGR_U16(mgr_bytes, 0x4196C) == temp_r4) {
         OVMGR_U16(mgr_bytes, 0x4196A) = 6;
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
     } else {
         u16 anim_index = (u16)(temp_r4 * 3);
 
-        func_02026b20(0x346);
+        SndMgr_StartPlayingSE(0x346);
         OVMGR_U16(mgr_bytes, 0x4196C) = temp_r4;
         OVMGR_U16(mgr_bytes, 0x46084) = table_sp0[anim_index + 1];
         OVMGR_U16(mgr_bytes, 0x46086) = table_sp0[anim_index + 2];
@@ -4926,7 +4926,7 @@ s32 func_ov002_0208920c(void* arg0, void* arg1) {
             OVMGR_U16(mgr_bytes, 0x4196A) = 5U;
             func_ov002_0208800c(mgr);
         } else if (OVMGR_U16(mgr_bytes, 0x474CA) != temp_r3) {
-            func_02026b20(0x346);
+            SndMgr_StartPlayingSE(0x346);
             OVMGR_U16(mgr_bytes, 0x474CA) = OVMGR_U16(mgr_bytes, 0x4196C);
             temp_r7                       = (u16)(OVMGR_U16(mgr_bytes, 0x4196C) * 3);
             OVMGR_U16(mgr_bytes, 0x46084) = table_sp0[temp_r7 + 1];
@@ -4937,7 +4937,7 @@ s32 func_ov002_0208920c(void* arg0, void* arg1) {
         }
     }
     if (OVMGR_U16(mgr_bytes, 0x4196A) == 6) {
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
         func_ov031_0210cdac(arg0);
     }
     return 0;
@@ -5220,7 +5220,7 @@ s32 func_ov002_02089920(void* arg0, void* arg1) {
         if (temp_r0_2 == 0) {
             OVMGR_U16(mgr_bytes, 0x46084) = 0U;
             OVMGR_U16(mgr_bytes, 0x46086) = 0xD2U;
-            func_02026b20(0x347);
+            SndMgr_StartPlayingSE(0x347);
             func_ov031_0210cdac(arg0);
             return 0;
         }
@@ -5228,7 +5228,7 @@ s32 func_ov002_02089920(void* arg0, void* arg1) {
         return 0;
     }
     OVMGR_U16(mgr_bytes, 0x474C8) = temp_r0_2;
-    func_02026b20(0x346);
+    SndMgr_StartPlayingSE(0x346);
     if (temp_r0_2 == 0) {
         temp_ip                       = temp_r0_2 * 6;
         OVMGR_U16(mgr_bytes, 0x46084) = (u16) * (&sp2 + temp_ip);
@@ -5242,7 +5242,7 @@ s32 func_ov002_02089920(void* arg0, void* arg1) {
 
 s32 func_ov002_02089a94(void* arg0) {
     if (SysControl.unk2 & 1) {
-        func_02026b20(0x348);
+        SndMgr_StartPlayingSE(0x348);
         func_ov031_0210cdac(arg0);
     }
     return 0;
@@ -5619,7 +5619,7 @@ s32 func_ov002_0208a250(void* arg0, void* arg1) {
         if (OVMGR_U16(mgr_bytes, 0x474C8) == var_r4_2) {
             switch (var_r4_2) { /* irregular */
                 case 0:
-                    func_02026b20(0x348);
+                    SndMgr_StartPlayingSE(0x348);
                     func_ov031_0210cc84(sp0, &data_ov002_02092c9c, NULL);
                     OVMGR_U16(mgr_bytes, 0x460CC) = 0;
                     OVMGR_U16(mgr_bytes, 0x460CE) = 0xC8;
@@ -5628,7 +5628,7 @@ s32 func_ov002_0208a250(void* arg0, void* arg1) {
                     return 0;
                 case 1:
                     temp_r4 = OS_DisableIRQ();
-                    func_02026b20(0x347);
+                    SndMgr_StartPlayingSE(0x347);
                     if (((u32)func_02047e84(OVMGR_U16(mgr_bytes, 0x41834)) >= 2U) && (OVMGR_U16(mgr_bytes, 0x41950) == 0)) {
                         var_r0 = 1;
                     loop_25:
@@ -5656,7 +5656,7 @@ s32 func_ov002_0208a250(void* arg0, void* arg1) {
             }
         } else {
             OVMGR_U16(mgr_bytes, 0x474C8) = var_r4_2;
-            func_02026b20(0x346);
+            SndMgr_StartPlayingSE(0x346);
             if ((var_r4_2 != 0) && (var_r4_2 != 1)) {
 
             } else {
@@ -5961,7 +5961,7 @@ s32 func_ov002_0208ab58(void* arg0, void* arg1) {
                 default:         /* switch 2 */
                     goto block_36;
                 case 0:          /* switch 2 */
-                    func_02026b20(0x348);
+                    SndMgr_StartPlayingSE(0x348);
                     func_ov031_0210cc84(arg0, &data_ov002_02092c9c, NULL);
                     OVMGR_U16(mgr_bytes, 0x460CC) = 0;
                     OVMGR_U16(mgr_bytes, 0x460CE) = 0xC8;
@@ -5971,7 +5971,7 @@ s32 func_ov002_0208ab58(void* arg0, void* arg1) {
                 case 1: /* switch 2 */
                 case 2: /* switch 2 */
                 case 3: /* switch 2 */
-                    func_02026b20(0x347);
+                    SndMgr_StartPlayingSE(0x347);
                     if (OVMGR_U16(mgr_bytes, 0x41998) & (1 << OVMGR_U16(mgr_bytes, 0x41EEC))) {
                         temp_r9  = OS_DisableIRQ();
                         var_r8   = mgr_bytes + 0x419A0 + (OVMGR_U16(mgr_bytes, 0x41EEC) * 0xC4);
@@ -5997,7 +5997,7 @@ s32 func_ov002_0208ab58(void* arg0, void* arg1) {
                     goto block_36;
             }
         } else {
-            func_02026b20(0x346);
+            SndMgr_StartPlayingSE(0x346);
             OVMGR_U16(mgr_bytes, 0x474C8) = temp_r0_3;
             if (temp_r0_3 != 0) {
                 OVMGR_U16(mgr_bytes, 0x41EEC) = (u16)(temp_r0_3 - 1);
@@ -6255,7 +6255,7 @@ s32 func_ov002_0208b270(void* arg0, void* arg1) {
     if (var_r4_2 != 0xFFFF) {
         if (OVMGR_U16(mgr, 0x474C8) == var_r4_2) {
             if (var_r4_2 == 0) {
-                func_02026b20(0x348);
+                SndMgr_StartPlayingSE(0x348);
                 func_ov031_0210cc84(arg0, &data_ov002_02092f44, NULL);
                 func_ov031_0210cd48(arg0, &data_ov002_02092f30);
                 func_ov031_0210cd48(arg0, &data_ov002_02092b00);
@@ -6265,7 +6265,7 @@ s32 func_ov002_0208b270(void* arg0, void* arg1) {
         }
         OVMGR_U16(mgr, 0x474C8) = var_r4_2;
         if (var_r4_2 == 0) {
-            func_02026b20(0x348);
+            SndMgr_StartPlayingSE(0x348);
             temp_r5 = var_r4_2 * 6;
             (void)temp_r5;
             OVMGR_U16(mgr, 0x46084) = sp6;
@@ -6313,7 +6313,7 @@ block_10:
             func_ov031_0210cd48(arg0, &data_ov002_02092f30);
         }
     } else {
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
         OVMGR_S32(mgr, 0x41FD0) = (s32)func_02047e84(OVMGR_U16(mgr, 0x41834));
         func_ov031_0210cdac(arg0);
     }
@@ -7787,16 +7787,16 @@ s32 func_ov002_0208db58(void* arg0, void* arg1) {
     if (OVMGR_U16(mgr, 0x4196C) == temp_r4) {
         switch (temp_r4) { /* switch 1; irregular */
             case 0:        /* switch 1 */
-                func_02026b20(0x347);
+                SndMgr_StartPlayingSE(0x347);
                 OVMGR_U16(mgr, 0x4196A) = 7U;
                 break;
             case 1: /* switch 1 */
-                func_02026b20(0x347);
+                SndMgr_StartPlayingSE(0x347);
                 OVMGR_U16(mgr, 0x4196A) = 8U;
                 break;
         }
     } else {
-        func_02026b20(0x346);
+        SndMgr_StartPlayingSE(0x346);
         temp_ip                 = temp_r4 * 6;
         OVMGR_U16(mgr, 0x4196C) = temp_r4;
         temp_r1_2               = subroutine_arg0 + temp_ip;
@@ -8122,11 +8122,11 @@ s32 func_ov002_0208e514(void* arg0, void* arg1) {
     }
     if (OVMGR_U16(arg1, 0x4196C) == temp_r0_2) {
         if (temp_r0_2 == 0) {
-            func_02026b20(0x347);
+            SndMgr_StartPlayingSE(0x347);
             func_ov031_0210cdac(arg0);
         }
     } else {
-        func_02026b20(0x346);
+        SndMgr_StartPlayingSE(0x346);
         temp_ip                  = temp_r0_2 * 3;
         OVMGR_U16(arg1, 0x4196C) = temp_r0_2;
         OVMGR_U16(arg1, 0x46084) = table_sp6[temp_ip + 1];
@@ -8837,7 +8837,7 @@ s32 func_ov002_0208f89c(void* arg0) {
         (SysControl.unk2 & 0x800) || (SysControl.unk2 & 0x40) || (SysControl.unk2 & 0x80) || (SysControl.unk2 & 0x20) ||
         (SysControl.unk2 & 0x10))
     {
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
         func_ov031_0210cdac(arg0);
     }
     return 0;
@@ -8853,7 +8853,7 @@ s32 func_ov002_0208f92c(void* arg0, s32 arg1) {
         (SysControl.unk2 & 0x800) || (SysControl.unk2 & 0x40) || (SysControl.unk2 & 0x80) || (SysControl.unk2 & 0x20) ||
         (SysControl.unk2 & 0x10))
     {
-        func_02026b20(0x347);
+        SndMgr_StartPlayingSE(0x347);
         func_ov031_0210cc84(arg1 + 0x4161C, &data_ov002_02092c58, NULL);
         func_ov031_0210cd48(arg0, &data_ov002_02092b0c);
     }
@@ -9396,7 +9396,7 @@ s32 func_ov002_0209095c(void* arg0, void* arg1) {
         return 0;
     }
     if (OVMGR_U16(arg1, 0x474C8) == temp_r0_2) {
-        func_02026b20(0x11C);
+        SndMgr_StartPlayingSE(0x11C);
         switch (temp_r0_2) { /* irregular */
             case 0:
                 func_ov031_0210cdac(arg0);
@@ -9411,7 +9411,7 @@ s32 func_ov002_0209095c(void* arg0, void* arg1) {
         }
     } else {
         OVMGR_U16(arg1, 0x474C8) = temp_r0_2;
-        func_02026b20(0x11A);
+        SndMgr_StartPlayingSE(0x11A);
         if ((temp_r0_2 != 0) && (temp_r0_2 != 1)) {
             return 2;
         }
@@ -9530,7 +9530,7 @@ s32 func_ov002_02090f4c(void* arg0, s32 arg1) {
         temp_r4 = func_020258ac();
         func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x476D0);
         if (temp_r4 == 0) {
-            func_02026b20(0x140);
+            SndMgr_StartPlayingSE(0x140);
             func_ov031_0210cdac(arg0);
         } else if (temp_r4 & 2) {
             func_ov031_0210cc84(arg0, &data_ov002_02093310);
@@ -9561,7 +9561,7 @@ s32 func_ov002_02090fd8(void* arg0, void* arg1) {
 
 s32 func_ov002_020910b0(void* arg0, void* arg1) {
     if (TouchInput_WasTouchPressed() != 0) {
-        func_02026b20(0x11C);
+        SndMgr_StartPlayingSE(0x11C);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (OVMGR_U16(arg1, 0x474C8) == 0)) {
         func_ov031_0210cdac(arg0);
@@ -9646,7 +9646,7 @@ s32 func_ov002_020913d8(void* arg0, void* arg1) {
 
 s32 func_ov002_020914b0(void* arg0, void* arg1) {
     if (TouchInput_WasTouchPressed() != 0) {
-        func_02026b20(0x11C);
+        SndMgr_StartPlayingSE(0x11C);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (OVMGR_U16(arg1, 0x474C8) == 0)) {
         func_ov031_0210cdac(arg0);

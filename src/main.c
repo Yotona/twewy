@@ -158,7 +158,7 @@ void main(void) {
 
             func_02007240();
             MainOvlDisp_Run();
-            func_02026a94();
+            SndMgr_Finalize();
 
             if (SystemStatusFlags.unk_03 != FALSE) {
                 func_020218ec();

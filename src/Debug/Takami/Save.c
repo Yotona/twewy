@@ -50,8 +50,8 @@ void func_ov043_020bfd70(SaveState* state) {
     if (state->unk_21698 > 0) {
         state->unk_21698--;
     } else {
-        func_02026b20(283);
-        func_02026b20(279);
+        SndMgr_StartPlayingSE(283);
+        SndMgr_StartPlayingSE(279);
         DebugOvlDisp_Pop();
     }
 }

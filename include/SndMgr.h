@@ -4,54 +4,54 @@
 #include <types.h>
 
 extern struct {
-    /* 0x0 */ s8  seqArc;
-    /* 0x1 */ u8  unk_01;
-    /* 0x2 */ s16 se;
-} data_0205cb3c[1388];
+    /* 0x0 */ s8  seqArc;       // Sequence Archive Index
+    /* 0x1 */ u8  playbackSlot; // Playback slot index the Sequence uses.
+    /* 0x2 */ s16 se;           // Sequence ID in the .sdat (or .SSAR?) file.
+} g_SequenceDataTable[1388];
 
 typedef struct SndMgr {
-    /* 0x0000 */ void* data;
-    /* 0x0004 */ s32   unk_0004;
-    /* 0x0008 */ char  unk_0008[0x5C];
-    /* 0x0064 */ s32   unk_0064;
-    /* 0x0068 */ s32   seIdxVolume[1388];
+    /* 0x0000 */ void* heapPointer;       // Pointer to the sound heap memory buffer
+    /* 0x0004 */ s32   heapHandle;        // Handle for managing the sound data heap
+    /* 0x0008 */ char  unk_0008[0x5C];    // Padding or unknown internal field
+    /* 0x0064 */ s32   streamHandle;      // Direct audio channel handle
+    /* 0x0068 */ s32   seIdxVolume[1388]; // Cached volume levels for each sound effect index
     /* 0x1618 */ struct {
-        /* 0x00 */ s32 unk_00;
-        /* 0x04 */ s32 unk_04;
-    } unk_1618[5];
-    /* 0x1640 */ char unk_1640[0x90];
-    /* 0x16D0 */ s32  unk_16D0;
-    /* 0x16D4 */ s16  unk_16D4[3];
-    /* 0x16DA */ s8   unk_16DA;
+        /* 0x00 */ s32  index;
+        /* 0x04 */ s32* handle;
+    } playbackSlots[5];
+    /* 0x1640 */ char sdatInfo[0x90];      // SDAT management information block
+    /* 0x16D0 */ s32  priorityFlag;        // Priority flag for sound resource loading
+    /* 0x16D4 */ s16  trackedSeqArcs[3];   // Tracked sequence archive indices
+    /* 0x16DA */ s8   trackedSeqArcsCount; // Count of tracked sequence archives
 } SndMgr;
 
 void SndMgr_Init(void);
 
-void func_02026a94(void);
+void SndMgr_Finalize(void);
 
-s32 func_02026aa4(s32 idx);
+s32 SndMgr_StopPlaybackForTrack(s32 idx);
 
-void func_02026ae0(s32 param_1, s32 seqArc, s32 se);
+void SndMgr_StartPlayingSeqWithCustomSeqArc(s32 param_1, s32 seqArc, s32 se);
 
-void func_02026b20(s32 seIdx);
+void SndMgr_StartPlayingSE(s32 seIdx);
 
-void func_02026b9c(s32 seIdx);
+void SndMgr_StopPlayingSE(s32 seIdx);
 
-void func_02026c04(void);
+void SndMgr_LoadSEVolumes(void);
 
 s32 SndMgr_GetSeIdxVolume(s32 seIdx);
 
 void SndMgr_SetSeIdxVolume(s32 seIdx, s32 seIdxVolume);
 
-void func_02026d0c(s32 seIdx, s32 sePan);
+void SndMgr_UpdateSEPan(s32 seIdx, s32 sePan);
 
-void func_02026dd8(void);
+void SndMgr_InitStreamHandle(void);
 
-BOOL func_02026e00(s32);
+BOOL SndMgr_PlayStreamSequence(s32);
 
-BOOL func_02026e28(s32 se);
+BOOL SndMgr_PlayStreamSequenceWithSeqID(s32 se);
 
-void func_02026e44(s32);
+void SndMgr_StopStreamPlayback(s32);
 
 /**
  * @brief Converts a pan value to a signed 8-bit range.
@@ -73,16 +73,16 @@ s32 SndMgr_ConvertPanToSigned(s32 sePan);
  */
 s32 SndMgr_ConvertPanToVolume(s32 sePan);
 
-u32 func_02027040(s32 seqArc);
+u32 SndMgr_LoadSeqArc(s32 seqArc);
 
-void func_020270e4(void);
+void SndMgr_ResetSequenceHeap(void);
 
-BOOL func_02027124(s32 seIdx);
+BOOL SndMgr_IsSEPlaying(s32 seIdx);
 
-void func_020271b8(s32 seIdx, s32 sePitch);
+void SndMgr_SetSequenceSoundPitch(s32 seIdx, s32 sePitch);
 
 void func_02027200(u32 param_1);
 
-void func_02027220(s32 param_1);
+void SndMgr_SetPriorityLoadFlag(s32 param_1);
 
 #endif // SNDMGR_H

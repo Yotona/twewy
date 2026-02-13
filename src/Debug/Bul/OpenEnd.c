@@ -546,7 +546,7 @@ void func_ov037_0208374c(u32 r0) {
     data_ov037_02083e00->unk_11A28 = r0;
     data_ov037_02083e00->unk_11A2C = 1;
 
-    func_02026b20(2);
+    SndMgr_StartPlayingSE(2);
 }
 
 BOOL OpenEnd_IsInCircle(s32* r0, s32 x, s32 y) {
