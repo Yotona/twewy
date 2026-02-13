@@ -123,7 +123,7 @@ void                            func_0200bf60(s32, void*);                      
 void                            func_0200cef0(void*);                                                  /* extern */
 void                            func_0200d120(s32);                                                    /* extern */
 void                            func_020265d4(void*, void*, u16);                                      /* extern */
-void                            func_02026b20(s32 seIdx);                                              /* extern */
+void                            SndMgr_StartPlayingSE(s32 seIdx);                                      /* extern */
 void                            MI_CpuFill(void*, void*, s32);                                         /* extern */
 void                            func_ov003_020825b8(s32, void*, void*);                                /* extern */
 void                            func_ov003_02082724(void*, s16, s16);                                  /* extern */
@@ -389,7 +389,7 @@ void func_ov025_020e7a20(Ov025MainStruct* arg0) {
     temp_r1 = arg0->unk120D0;
     if (temp_r0 != temp_r1) {
         if (temp_r0 != 0xFFFF) {
-            func_02026b20(0x2A);
+            SndMgr_StartPlayingSE(0x2A);
         }
         func_ov025_020e78c8(arg0, (u16)temp_r0);
         return;
@@ -397,7 +397,7 @@ void func_ov025_020e7a20(Ov025MainStruct* arg0) {
     if (temp_r1 == 0xFFFF) {
         return;
     }
-    func_02026b20(0x2B);
+    SndMgr_StartPlayingSE(0x2B);
     arg0->unk120DC = 0;
     arg0->unk120DE = 0;
     DebugOvlDisp_ReplaceTop(func_ov025_020e7f90, (void*)arg0);

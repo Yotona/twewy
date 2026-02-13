@@ -546,12 +546,12 @@ s32 NRepMenu_Update(TaskPool* pool, Task* task, void* args) {
 
             if (hitboxIdx == 1) {
                 state->unk0 |= 0x1000;
-                func_02026b20(0x11B);
-                func_02026b20(0x117);
+                SndMgr_StartPlayingSE(0x11B);
+                SndMgr_StartPlayingSE(0x117);
                 state->unk3 = 0;
                 DebugOvlDisp_Pop();
             } else {
-                func_02026b20(0x11A);
+                SndMgr_StartPlayingSE(0x11A);
             }
         }
     }

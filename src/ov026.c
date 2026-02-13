@@ -29,7 +29,7 @@ extern void func_020034b0(void*);
 extern void func_0200adf8(void*, void*, s32, s32, s32);
 extern void func_0200bf60(void*, s32);
 extern void func_0200d120(void*);
-extern void func_02026b20(s32);
+extern void SndMgr_StartPlayingSE(s32);
 extern void func_ov003_02082724(void*, s32, s32);
 extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
 extern void func_ov003_02082998(void*, u16*);
@@ -377,7 +377,7 @@ static void func_ov026_020e7cec(void* arg0) {
     if (!(InputStatus.buttonState.pressedButtons & 4)) {
         return;
     }
-    func_02026b20(0);
+    SndMgr_StartPlayingSE(0);
     state->unk11E74 = 0;
     state->unk11E76 = 0;
     DebugOvlDisp_ReplaceTop(func_ov026_020e7c9c, state, 0);
