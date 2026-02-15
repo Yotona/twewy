@@ -51,7 +51,7 @@ asm void MI_CpuFillFromSrc(register const u32* src, register u32* dest, register
     bx      lr
 }
 
-asm void MI_CpuFill(register u32 value, register u32* dest, register u32 count) {
+asm void MI_CpuFill(register u32 value, register void* dest, register u32 count) {
     stmdb   sp!, {r4, r5, r6, r7, r8, r9}
     add     r9, r1, r2
     mov     ip, r2, lsr #0x5
