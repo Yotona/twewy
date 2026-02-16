@@ -1,3 +1,4 @@
+#include "DatMgr.h"
 #include "EasyTask.h"
 #include "common_data.h"
 #include <types.h>
@@ -58,12 +59,6 @@ typedef struct {
     /* 0x00 */ u8  pad_0[0x8];
     /* 0x08 */ u8* unk8;
 } Ov003ActorRoot;
-
-/* Actor header with size/offset metadata to locate attached data. */
-typedef struct {
-    /* 0x00 */ u8   pad_0[0x210];
-    /* 0x210 */ u32 unk210;
-} Ov003ActorHeader;
 
 /* Global overlay state block for ov003 (shared world state). */
 typedef struct {
@@ -1018,29 +1013,25 @@ s32 func_ov016_02126290(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 /* Render a shadow/secondary sprite using actor header data. */
 void func_ov016_021262d8(Ov016Obj* arg0) {
-    s16               temp_r7;
-    s32               temp_r2;
-    s32               temp_r4;
-    s32               temp_r6;
-    u16               temp_r1_2;
-    u16               var_r0;
-    u32               temp_r0_2;
-    u32               temp_r0_3;
-    Ov003ActorRoot*   temp_r0;
-    Ov003ActorHeader* temp_r1;
-    void*             temp_r5;
-    void*             var_r8;
+    s16             temp_r7;
+    s32             temp_r2;
+    s32             temp_r4;
+    s32             temp_r6;
+    u16             temp_r1_2;
+    u16             var_r0;
+    u32             temp_r0_2;
+    u32             temp_r0_3;
+    Ov003ActorRoot* temp_r0;
+    void*           temp_r5;
+    void*           var_r8;
 
     if (func_ov003_02088130() == 0) {
         return;
     }
     temp_r0 = data_ov003_020e71b8->unk3D350;
-    if (temp_r0 == NULL) {
-        var_r8 = NULL;
-    } else {
-        temp_r1 = (Ov003ActorHeader*)(temp_r0->unk8 + 0x20);
-        var_r8  = (u8*)temp_r1 + temp_r1->unk210;
-    }
+
+    var_r8 = Data_GetPackEntryData((Data*)temp_r0, 66);
+
     temp_r4 = arg0->unk1D8;
     temp_r2 = arg0->unk1DC;
     if (arg0->unkCA & 1) {
@@ -1543,22 +1534,17 @@ void func_ov016_02126ff0(Ov016Obj* arg0) {
 
 /* Task stage 0: initialize boss controller and intro state. */
 s32 func_ov016_021270a8(void* arg0, Ov016Task* arg1, void* arg2) {
-    Ov016Sprite       subroutine;
-    Ov003ActorRoot*   temp_r0;
-    Ov003ActorHeader* temp_r1;
-    Ov016Obj*         temp_r4;
-    void*             var_r1;
+    Ov016Sprite     subroutine;
+    Ov003ActorRoot* temp_r0;
+    Ov016Obj*       temp_r4;
+    void*           var_r1;
 
     (void)arg0;
     temp_r4 = arg1->unk18;
     MI_CpuSet(temp_r4, 0, 0x1F4);
     temp_r0 = data_ov003_020e71b8->unk3D350;
-    if (temp_r0 == NULL) {
-        var_r1 = NULL;
-    } else {
-        temp_r1 = (Ov003ActorHeader*)(temp_r0->unk8 + 0x20);
-        var_r1  = (u8*)temp_r1 + temp_r1->unk210;
-    }
+    var_r1  = Data_GetPackEntryData((Data*)(temp_r0), 66);
+
     temp_r4->unk1D8 = func_0200a968(data_0206b3cc[2], var_r1, 5, 1);
     func_ov003_020c3efc(temp_r4, arg2);
     func_ov016_021256c0(&subroutine, 2, 0);

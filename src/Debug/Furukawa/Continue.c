@@ -44,21 +44,6 @@ typedef struct {
     /* 0xB4 */ s16  unkB4;
 } UnkStruct_02074110_local;
 
-typedef struct {
-    /* 0x00 */ char pad0[0x8];
-    /* 0x08 */ u32  unk8;
-    /* 0x0C */ char padC[0x4];
-    /* 0x10 */ u32  unk10;
-    /* 0x14 */ char pad14[0x4];
-    /* 0x18 */ u32  unk18;
-    /* 0x1C */ char pad1C[0x4];
-    /* 0x20 */ u32  unk20;
-    /* 0x24 */ char pad24[0x4];
-    /* 0x28 */ u32  unk28;
-    /* 0x2C */ char pad2C[0x4];
-    /* 0x30 */ u32  unk30;
-} DataHeader;
-
 extern void func_02001c34(s16*, s32*, void*, void*, s32);
 extern void func_0200270c(void*, void*);
 extern void func_0200283c(s32*, void*, void*);
@@ -178,69 +163,21 @@ static void Continue_ReleaseVBlank(void) {
 }
 
 void func_ov025_020e76b4(ContinueObject* arg0) {
-    Data*       temp_r0;
-    Data*       temp_r3_2;
-    DataHeader* temp_r1;
-    DataHeader* temp_r2;
-    DataHeader* temp_r2_2;
-    DataHeader* temp_r2_3;
-    DataHeader* temp_r2_4;
-    DataHeader* temp_r3;
-    void*       var_r1;
-    void*       var_r1_2;
-    void*       var_r4;
-    void*       var_r4_2;
-    void*       var_r5;
-    void*       var_r5_2;
+    arg0->unk_11E0C = DatMgr_LoadRawData(1, NULL, 0, &data_ov025_020e8308);
 
-    temp_r0 = DatMgr_LoadRawData(1, NULL, 0, &data_ov025_020e8308);
-
-    arg0->unk_11E0C = temp_r0;
-
-    if (temp_r0 == NULL) {
-        var_r1 = NULL;
-    } else {
-        temp_r2 = (DataHeader*)(temp_r0->buffer + 0x20);
-        var_r1  = (u8*)temp_r2 + temp_r2->unk8;
-    }
-
-    if (temp_r0 == NULL) {
-        var_r4 = NULL;
-    } else {
-        temp_r3 = (DataHeader*)(temp_r0->buffer + 0x20);
-        var_r4  = (u8*)temp_r3 + temp_r3->unk10;
-    }
-
-    if (temp_r0 == NULL) {
-        var_r5 = NULL;
-    } else {
-        temp_r2_2 = (DataHeader*)(temp_r0->buffer + 0x20);
-        var_r5    = (u8*)temp_r2_2 + temp_r2_2->unk18;
-    }
+    void* var_r1 = Data_GetPackEntryData(arg0->unk_11E0C, 1);
+    void* var_r4 = Data_GetPackEntryData(arg0->unk_11E0C, 2);
+    void* var_r5 = Data_GetPackEntryData(arg0->unk_11E0C, 3);
 
     BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r1, g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x6000);
     BgResMgr_AllocScreen(g_BgResourceManagers[1], var_r4, g_DisplaySettings.engineState[1].bgSettings[1].screenBase,
                          g_DisplaySettings.engineState[1].bgSettings[1].screenSizeText);
     func_0200adf8(data_0206b3cc[1], var_r5, 0, 0, 7);
-    temp_r3_2 = arg0->unk_11E0C;
-    if (temp_r3_2 == NULL) {
-        var_r1_2 = NULL;
-    } else {
-        temp_r1  = (DataHeader*)(temp_r3_2->buffer + 0x20);
-        var_r1_2 = (u8*)temp_r1 + temp_r1->unk20;
-    }
-    if (temp_r3_2 == NULL) {
-        var_r5_2 = NULL;
-    } else {
-        temp_r2_3 = (DataHeader*)(temp_r3_2->buffer + 0x20);
-        var_r5_2  = (u8*)temp_r2_3 + temp_r2_3->unk28;
-    }
-    if (temp_r3_2 == NULL) {
-        var_r4_2 = NULL;
-    } else {
-        temp_r2_4 = (DataHeader*)(temp_r3_2->buffer + 0x20);
-        var_r4_2  = (u8*)temp_r2_4 + temp_r2_4->unk30;
-    }
+
+    void* var_r1_2 = Data_GetPackEntryData(arg0->unk_11E0C, 4);
+    void* var_r5_2 = Data_GetPackEntryData(arg0->unk_11E0C, 5);
+    void* var_r4_2 = Data_GetPackEntryData(arg0->unk_11E0C, 6);
+
     BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r1_2, g_DisplaySettings.engineState[0].bgSettings[1].charBase, 0,
                          0x6000);
     BgResMgr_AllocScreen(g_BgResourceManagers[0], var_r5_2, g_DisplaySettings.engineState[0].bgSettings[1].screenBase,

@@ -234,15 +234,8 @@ void func_ov042_0208293c(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
         var->unk_04 = NULL;
     }
 
-    Data* var2 = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp3], tmp4, FALSE);
-    u8*   param;
-    if (var2 != NULL) {
-        param = (u8*)var2->buffer;
-        param += 0x20;
-        param += ((u32*)param)[2];
-    } else {
-        param = NULL;
-    }
+    Data* var2  = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp3], tmp4, FALSE);
+    u8*   param = Data_GetPackEntryData(var2, 1);
 
     void* temp_04 = BgResMgr_AllocChar32(g_BgResourceManagers[tmp], param,
                                          g_DisplaySettings.engineState[tmp].bgSettings[tmp2].charBase, 0, tmp5);
@@ -269,15 +262,8 @@ void func_ov042_02082a30(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
         var->unk_04 = NULL;
     }
 
-    Data* var2 = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp3], tmp4, FALSE);
-    u8*   param;
-    if (var2 != NULL) {
-        param = (u8*)var2->buffer;
-        param += 0x20;
-        param += ((u32*)param)[2];
-    } else {
-        param = NULL;
-    }
+    Data* var2  = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp3], tmp4, FALSE);
+    u8*   param = Data_GetPackEntryData(var2, 1);
 
     void* temp_04 =
         BgResMgr_AllocScreen(g_BgResourceManagers[tmp], param, g_DisplaySettings.engineState[tmp].bgSettings[tmp2].screenBase,
@@ -307,14 +293,8 @@ void func_ov042_02082b20(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
         var->unk_04 = NULL;
     }
 
-    Data* var2 = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp5], tmp6, FALSE);
-    u8*   param;
-    if (var2 != NULL) {
-        param = (u8*)var2->buffer;
-        param += 0x20;
-        param += ((u32*)param)[2];
-    } else
-        param = NULL;
+    Data* var2  = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp5], tmp6, FALSE);
+    u8*   param = Data_GetPackEntryData(var2, 1);
 
     void* temp_04 = func_0200adf8(data_0206b3cc[tmp], param, 0, tmp3, tmp4);
     var->data     = var2;
@@ -322,24 +302,15 @@ void func_ov042_02082b20(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
 }
 
 void func_ov042_02082bf4(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
-    CommandUnk04* r2 = (CommandUnk04*)args;
 
-    s16            tmp  = r2->unk_00;
-    s16            tmp2 = r2->unk_02;
+    s16            tmp  = args->unk_00;
+    s16            tmp2 = args->unk_02;
     StaffRollUnkA* var  = &cbArg->unk_10[tmp].group1[tmp2];
     if (var->unk_04 != NULL) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[tmp], var->unk_04);
         var->unk_04 = NULL;
     }
-    u8*   param;
-    Data* var2 = var->data;
-    if (var2 != NULL) {
-        param = (u8*)var2->buffer;
-        param += 0x20;
-        param += ((u32*)param)[2];
-    } else {
-        param = NULL;
-    }
+    u8* param = Data_GetPackEntryData(var->data, 1);
 
     var->unk_04 = BgResMgr_AllocChar32(g_BgResourceManagers[tmp], param,
                                        g_DisplaySettings.engineState[tmp].bgSettings[tmp2].charBase, 0, var->unk_0C);
@@ -897,25 +868,8 @@ void func_ov042_02083cf0(FontRoll* fontRoll) {
     func_ov031_0210ab34(&fontRoll->unk_010[temp_r3], 8);
     func_ov042_02082fd8(&fontRoll->unk_010[temp_r3], 8);
 
-    Data* grp2data = temp_r9->data;
-    u8*   var_r2;
-    if (grp2data == NULL) {
-        var_r2 = NULL;
-    } else {
-        var_r2 = (u8*)grp2data->buffer;
-        var_r2 += 0x20;
-        var_r2 += ((u32*)var_r2)[2];
-    }
-
-    Data* grp1data = temp_r4->data;
-    u8*   var_r3;
-    if (grp1data == NULL) {
-        var_r3 = NULL;
-    } else {
-        var_r3 = (u8*)grp1data->buffer;
-        var_r3 += 0x20;
-        var_r3 += ((u32*)var_r3)[2];
-    }
+    u8* var_r2 = Data_GetPackEntryData(temp_r9->data, 1);
+    u8* var_r3 = Data_GetPackEntryData(temp_r4->data, 1);
 
     func_ov031_0210be18(&fontRoll->unk_010[temp_r3], var_r2 + 4, var_r3 + 4, 0);
     func_ov031_0210aabc(&fontRoll->unk_010[temp_r3]);
@@ -987,25 +941,8 @@ void func_ov042_02083e8c(FontRoll* fontRoll) {
     func_ov031_0210ab54(&temp_r7[var_r4], 1, 0);
     func_ov031_0210ab28(&temp_r7[var_r4], 0x64, (u8)temp_r9);
 
-    Data* temp_r0_3 = temp_r4->data;
-    u8*   var_r2;
-    if (temp_r0_3 == NULL) {
-        var_r2 = NULL;
-    } else {
-        var_r2 = (u8*)temp_r0_3->buffer;
-        var_r2 += 0x20;
-        var_r2 += ((u32*)var_r2)[2];
-    }
-
-    Data* temp_r0_4 = temp_r11->data;
-    u8*   var_r3;
-    if (temp_r0_4 == NULL) {
-        var_r3 = NULL;
-    } else {
-        var_r3 = (u8*)temp_r0_4->buffer;
-        var_r3 += 0x20;
-        var_r3 += ((u32*)var_r3)[2];
-    }
+    u8* var_r2 = Data_GetPackEntryData(temp_r4->data, 1);
+    u8* var_r3 = Data_GetPackEntryData(temp_r11->data, 1);
 
     func_ov031_0210be18(&temp_r7[var_r4], var_r2 + 4, var_r3 + 4, 0);
     func_ov042_02083bb8(fontRoll);

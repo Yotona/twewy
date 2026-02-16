@@ -294,57 +294,24 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
         } break;
     }
 
-    void* var_r1;
-    if ((sprite->resourceData == NULL) || (sp8[4] <= 0)) {
-        var_r1 = NULL;
-    } else {
-        void* temp_r1 = sprite->resourceData->buffer + 0x20;
-        var_r1        = temp_r1 + (s32) * (u32*)((u8*)temp_r1 + (sp8[4] * 8));
-    }
-
-    void* var_r4;
-    if ((sprite->resourceData == NULL) || (sp8[3] <= 0)) {
-        var_r4 = NULL;
-    } else {
-        void* temp_r2_4 = sprite->resourceData->buffer + 0x20;
-        var_r4          = temp_r2_4 + (s32) * (u32*)((u8*)temp_r2_4 + (sp8[3] * 8));
-    }
+    void* var_r1 = Data_GetPackEntryData(sprite->resourceData, sp8[4]);
+    void* var_r4 = Data_GetPackEntryData(sprite->resourceData, sp8[3]);
 
     Sprite_ChangeAnimation(sprite, var_r1, arg1->unk_2A, var_r4);
     void* var_r1_2 = NULL;
     void* var_r6   = NULL;
     switch (sprite->bits_3_4) {
         case 0: {
-            if ((sprite->resourceData == NULL) || (sp8[1] <= 0)) {
-                var_r1_2 = NULL;
-            } else {
-                void* temp_r1_2 = sprite->resourceData->buffer + 0x20;
-                var_r1_2        = temp_r1_2 + (s32) * (u32*)((u8*)temp_r1_2 + (sp8[1] * 8));
-            }
-            if ((sprite->resourceData == NULL) || (sp8[2] <= 0)) {
-                var_r6 = NULL;
-            } else {
-                void* temp_r2_5 = sprite->resourceData->buffer + 0x20;
-                var_r6          = temp_r2_5 + (s32) * (u32*)((u8*)temp_r2_5 + (sp8[2] * 8));
-            }
+            var_r1_2 = Data_GetPackEntryData(sprite->resourceData, sp8[1]);
+            var_r6   = Data_GetPackEntryData(sprite->resourceData, sp8[2]);
         } break;
 
         case 1: {
-            if ((sprite->resourceData == NULL) || (sp8[2] <= 0)) {
-                var_r6 = NULL;
-            } else {
-                void* temp_r2_6 = sprite->resourceData->buffer + 0x20;
-                var_r6          = temp_r2_6 + (s32) * (u32*)((u8*)temp_r2_6 + (sp8[2] * 8));
-            }
+            var_r6 = Data_GetPackEntryData(sprite->resourceData, sp8[2]);
         } break;
 
         case 2: {
-            if ((sprite->resourceData == NULL) || (sp8[1] <= 0)) {
-                var_r1_2 = NULL;
-            } else {
-                void* temp_r1_3 = sprite->resourceData->buffer + 0x20;
-                var_r1_2        = temp_r1_3 + (s32) * (u32*)((u8*)temp_r1_3 + (sp8[1] * 8));
-            }
+            var_r1_2 = Data_GetPackEntryData(sprite->resourceData, sp8[1]);
         } break;
     }
 
@@ -359,14 +326,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     if (sp8[1] > 0) {
         sprite->charData = func_0200cb4c(data_0206b3d8[temp_r4_4], var_r1_2, arg1->unk_1E, temp_r6_4);
 
-        void* var_r0_5;
-        if ((sprite->resourceData == NULL) || (sp8[1] <= 0)) {
-            var_r0_5 = NULL;
-        } else {
-            void* temp_r1_4 = sprite->resourceData->buffer + 0x20;
-            var_r0_5        = temp_r1_4 + *(u32*)(temp_r1_4 + (sp8[1] * 8));
-        }
-        sprite->unk34  = var_r0_5;
+        sprite->unk34  = Data_GetPackEntryData(sprite->resourceData, sp8[1]);
         sprite->bit_13 = 1;
     }
 
@@ -384,14 +344,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
             sprite->paletteData = func_0200abe4(data_0206b3cc[temp_r4_4], var_r6, temp_r5_6, var_r3);
         }
 
-        UnkSmallInternal* var_r0_6;
-        if ((sprite->resourceData == NULL) || (sp8[2] <= 0)) {
-            var_r0_6 = NULL;
-        } else {
-            void* temp_r1_6 = sprite->resourceData->buffer + 0x20;
-            var_r0_6        = temp_r1_6 + *(u32*)(temp_r1_6 + (sp8[2] * 8));
-        }
-        sprite->unk3C = var_r0_6;
+        sprite->unk3C = Data_GetPackEntryData(sprite->resourceData, sp8[2]);
 
         sprite->bit_14 = 1;
     }

@@ -249,14 +249,6 @@ static s32 func_ov026_020e77bc(void) {
     }
 }
 
-static void* GetPackEntryData(Data* data, u8 index) {
-    if (data == NULL || index <= 0) {
-        return NULL;
-    }
-    void* base = (u8*)data->buffer + 0x20;
-    return (u8*)base + ((u32*)base)[index];
-}
-
 static void func_ov026_020e7838(Ov026State* state) {
     s32                   index  = func_ov026_020e77bc();
     const TutorialConfig* config = &data_ov026_020e7fec[index];
@@ -264,58 +256,42 @@ static void func_ov026_020e7838(Ov026State* state) {
     state->unk11E0C = DatMgr_LoadPackEntry(1, NULL, 0, (BinIdentifier*)&data_ov026_020e7fd8, config->unk0, 0);
     state->unk11E10 = DatMgr_LoadPackEntry(1, NULL, 0, (BinIdentifier*)&data_ov026_020e7fd8, 1, 0);
 
-    void* char2Data   = GetPackEntryData(state->unk11E0C, config->unk2);
-    void* screen1Data = NULL;
-    if (state->unk11E10 != NULL) {
-        void* base  = (u8*)state->unk11E10->buffer + 0x20;
-        screen1Data = (u8*)base + ((u32*)base)[1];
-    }
+    void* char2Data   = Data_GetPackEntryData(state->unk11E0C, config->unk2);
+    void* screen1Data = Data_GetPackEntryData(state->unk11E10, 1);
 
     BgResMgr_AllocCharExtended(g_BgResourceManagers[1], char2Data, g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0,
                                config->unk4);
     BgResMgr_AllocScreen(g_BgResourceManagers[1], screen1Data, g_DisplaySettings.engineState[1].bgSettings[1].screenBase,
                          g_DisplaySettings.engineState[1].bgSettings[1].screenSizeText);
 
-    void* char3Data   = GetPackEntryData(state->unk11E0C, config->unk3);
-    void* screen2Data = NULL;
-    if (state->unk11E10 != NULL) {
-        void* base  = (u8*)state->unk11E10->buffer + 0x20;
-        screen2Data = (u8*)base + ((u32*)base)[2];
-    }
+    void* char3Data   = Data_GetPackEntryData(state->unk11E0C, config->unk3);
+    void* screen2Data = Data_GetPackEntryData(state->unk11E10, 2);
 
     BgResMgr_AllocCharExtended(g_BgResourceManagers[1], char3Data, g_DisplaySettings.engineState[1].bgSettings[2].charBase, 0,
                                config->unk6);
     BgResMgr_AllocScreen(g_BgResourceManagers[1], screen2Data, g_DisplaySettings.engineState[1].bgSettings[2].screenBase,
                          g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText);
 
-    void* char1Data = GetPackEntryData(state->unk11E0C, config->unk1);
+    void* char1Data = Data_GetPackEntryData(state->unk11E0C, config->unk1);
     func_0200adf8(data_0206b3cc[1], char1Data, 0, 0, 0x10);
 
-    void* char9Data   = GetPackEntryData(state->unk11E0C, config->unk9);
-    void* screen3Data = NULL;
-    if (state->unk11E10 != NULL) {
-        void* base  = (u8*)state->unk11E10->buffer + 0x20;
-        screen3Data = (u8*)base + ((u32*)base)[1];
-    }
+    void* char9Data   = Data_GetPackEntryData(state->unk11E0C, config->unk9);
+    void* screen3Data = Data_GetPackEntryData(state->unk11E10, 1);
 
     BgResMgr_AllocCharExtended(g_BgResourceManagers[0], char9Data, g_DisplaySettings.engineState[0].bgSettings[1].charBase, 0,
                                config->unkC);
     BgResMgr_AllocScreen(g_BgResourceManagers[0], screen3Data, g_DisplaySettings.engineState[0].bgSettings[1].screenBase,
                          g_DisplaySettings.engineState[0].bgSettings[1].screenSizeText);
 
-    void* charAData   = GetPackEntryData(state->unk11E0C, config->unkA);
-    void* screen4Data = NULL;
-    if (state->unk11E10 != NULL) {
-        void* base  = (u8*)state->unk11E10->buffer + 0x20;
-        screen4Data = (u8*)base + ((u32*)base)[2];
-    }
+    void* charAData   = Data_GetPackEntryData(state->unk11E0C, config->unkA);
+    void* screen4Data = Data_GetPackEntryData(state->unk11E10, 2);
 
     BgResMgr_AllocCharExtended(g_BgResourceManagers[0], charAData, g_DisplaySettings.engineState[0].bgSettings[2].charBase, 0,
                                config->unkE);
     BgResMgr_AllocScreen(g_BgResourceManagers[0], screen4Data, g_DisplaySettings.engineState[0].bgSettings[2].screenBase,
                          g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
 
-    void* char8Data = GetPackEntryData(state->unk11E0C, config->unk8);
+    void* char8Data = Data_GetPackEntryData(state->unk11E0C, config->unk8);
     func_0200adf8(data_0206b3cc[0], char8Data, 0, 0, 0x10);
 }
 

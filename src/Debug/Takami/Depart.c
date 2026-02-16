@@ -361,25 +361,8 @@ s32 func_ov043_020bd8fc(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s16 arg4, s16 ar
 }
 
 void func_ov043_020bd938(Sprite* sprite, s16 arg1) {
-    Data* resourceData = sprite->resourceData;
-
-    u8* param0;
-    if (resourceData == NULL) {
-        param0 = NULL;
-    } else {
-        param0 = (u32*)resourceData->buffer;
-        param0 += 0x20;
-        param0 = param0 + *((u32*)(param0 + 0x18));
-    }
-
-    u8* param1;
-    if (resourceData == NULL) {
-        param1 = NULL;
-    } else {
-        param1 = (u32*)resourceData->buffer;
-        param1 += 0x20;
-        param1 = param1 + *((u32*)(param1 + 0x10));
-    }
+    u8* param0 = Data_GetPackEntryData(sprite->resourceData, 3);
+    u8* param1 = Data_GetPackEntryData(sprite->resourceData, 2);
 
     Sprite_ChangeAnimation(sprite, param0, arg1, param1);
 }
@@ -571,33 +554,9 @@ const BinIdentifier data_ov043_020cad70[3] = {
 void func_ov043_020bdd9c(DepartResources* resources, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     resources->data = DatMgr_LoadRawData(1, NULL, 0, &data_ov043_020cad70[arg3]);
 
-    u32* param;
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[2]);
-    }
-    resources->unk_10 = param;
-
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[4]);
-    }
-    resources->unk_14 = (u8*)param;
-
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[6]);
-    }
-    resources->unk_18 = (u8*)param;
+    resources->unk_10 = Data_GetPackEntryData(resources->data, 1);
+    resources->unk_14 = (u8*)Data_GetPackEntryData(resources->data, 2);
+    resources->unk_18 = (u8*)Data_GetPackEntryData(resources->data, 3);
 
     if (arg1 == 0) {
         u32 var_r2 = (*resources->unk_10 & ~0xFF) >> 8;
@@ -630,33 +589,9 @@ void func_ov043_020bdd9c(DepartResources* resources, s32 arg1, s32 arg2, s32 arg
 void func_ov043_020bdf9c(DepartResources* resources, s32 arg1, s32 arg2, s32 arg3, u16 arg4, s32 arg5, s32 arg6) {
     resources->data = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov043_020cad70[arg3], arg4, FALSE);
 
-    u32* param;
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[2]);
-    }
-    resources->unk_10 = param;
-
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[4]);
-    }
-    resources->unk_14 = (u8*)param;
-
-    if (resources->data == NULL) {
-        param = NULL;
-    } else {
-        param = (u32*)resources->data->buffer;
-        param = (u32*)((u8*)param + 0x20);
-        param = (u32*)((u8*)param + param[6]);
-    }
-    resources->unk_18 = (u8*)param;
+    resources->unk_10 = Data_GetPackEntryData(resources->data, 1);
+    resources->unk_14 = Data_GetPackEntryData(resources->data, 2);
+    resources->unk_18 = Data_GetPackEntryData(resources->data, 3);
 
     if (arg1 == 0) {
         u32 var_r2 = (*resources->unk_10 & ~0xFF) >> 8;
