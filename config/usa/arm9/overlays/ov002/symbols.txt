@@ -339,7 +339,7 @@ OverlayProcs_OtosuMenu_DataDeletion kind:data(any) addr:0x02091aec
 OverlayProcs_OtosuMenu_ConnectionError kind:data(any) addr:0x02091af8
 OverlayProcs_OtosuMenu_DataCorrupted kind:data(any) addr:0x02091b04
 data_ov002_02091b10 kind:data(any) addr:0x02091b10
-OverlayProcs_OtosuMenu_SinglePlayerEnter kind:data(any) addr:0x02091b1c
+OvlProc_OtosuMenu_SinglePlayerEnter kind:data(any) addr:0x02091b1c
 OverlayProcs_OtosuMenu_MultiplayerEnter kind:data(any) addr:0x02091b28
 OverlayProcs_OtosuMenu_DataLoadFailure kind:data(any) addr:0x02091b34
 OverlayProcs_OtosuMenu_MultiplayerRanking kind:data(any) addr:0x02091b40

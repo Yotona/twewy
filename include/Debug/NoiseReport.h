@@ -65,6 +65,4 @@ typedef struct {
     /* 0x204 */ Sprite unk_204;
 } NrepSeal; // Size: 0x244
 
-typedef void (*NoiseReportFunc)(NoiseReportState* state);
-
-#endif // DEBUG_NOISEREPORT_H
+#endif      // DEBUG_NOISEREPORT_H

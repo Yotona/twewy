@@ -9,15 +9,30 @@
 // pointer table.
 typedef void (*OverlayCB)(void*);
 
+typedef enum {
+    PROCESS_STAGE_INIT,
+    PROCESS_STAGE_MAIN,
+    PROCESS_STAGE_EXIT = 0x7FFFFFFF,
+} OverlayProcessStage;
+
+typedef union {
+    struct {
+        void (*init)();
+        void (*main)();
+        void (*exit)();
+    };
+    void (*funcs[3])();
+} OverlayProcess;
+
 typedef struct {
     /* 0x00 */ s32       id;
     /* 0x04 */ OverlayCB cb;
 } OverlayTag;
 
 typedef struct {
-    /* 0x00 */ OverlayTag tag;
-    /* 0x08 */ void*      cbArg;
-    /* 0x0C */ s32        repeatCount;
+    /* 0x00 */ OverlayTag          tag;
+    /* 0x08 */ void*               cbArg;
+    /* 0x0C */ OverlayProcessStage processStage;
 } OverlayData;
 
 typedef struct {
@@ -40,9 +55,9 @@ void MainOvlDisp_Init(void);
  * @param overlayId The ID of the overlay the request is for.
  * @param callback The function to be called from the overlay.
  * @param cbArg The argument to pass to the callback function.
- * @param repeatCount The number of times the request has been repeated so far.
+ * @param stage The process stage to start the overlay at.
  */
-void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, s32 repeatCount);
+void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, OverlayProcessStage stage);
 
 /**
  * @brief Pop the top overlay dispatch request from the main overlay dispatcher's stack. The popped request is executed.
@@ -58,9 +73,9 @@ void MainOvlDisp_Pop(OverlayTag* tag);
  * @param overlayId The ID of the new overlay.
  * @param callback The function to be called from the new overlay.
  * @param cbArg The argument to pass to the new callback function.
- * @param repeatCount The number of times the new request has been repeated so far.
+ * @param stage The process stage to start the new overlay at.
  */
-void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* cbArg, s32 repeatCount);
+void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* cbArg, OverlayProcessStage stage);
 
 /**
  * @brief Set the callback argument for the main overlay dispatcher.
@@ -71,23 +86,23 @@ void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void
 void* MainOvlDisp_SetCbArg(void* cbArg);
 
 /**
- * @brief Get the count of times the current overlay dispatcher has repeated a request
+ * @brief Get the current process stage of the main overlay dispatcher.
  *
- * @return The repeat count
+ * @return The current process stage.
  */
-s32 MainOvlDisp_GetRepeatCount(void);
+OverlayProcessStage MainOvlDisp_GetProcessStage(void);
 
 /**
- * @brief Set the count of times the current overlay dispatcher has repeated a request
+ * @brief Set the current process stage of the main overlay dispatcher.
  *
- * @param repeatCount The new repeat count
+ * @param stage The new process stage
  */
-void MainOvlDisp_SetRepeatCount(s32 repeatCount);
+void MainOvlDisp_SetProcessStage(OverlayProcessStage stage);
 
 /**
- * @brief Increment the count of how many times main overlay dispatcher's current overlay request has been repeated
+ * @brief Transition the main overlay dispatcher to the next process stage.
  */
-void MainOvlDisp_IncrementRepeatCount(void);
+void MainOvlDisp_NextProcessStage(void);
 
 /**
  * @brief Run the main overlay dispatcher's current overlay request
@@ -104,9 +119,9 @@ void DebugOvlDisp_Init(void);
  *
  * @param callback The function to be called from the overlay.
  * @param cbArg The argument to pass to the callback function.
- * @param repeatCount The number of times the request has been repeated so far.
+ * @param stage The process stage to start the overlay at.
  */
-void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, s32 repeatCount);
+void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, OverlayProcessStage stage);
 
 /**
  * @brief Pop the top overlay dispatch request from the auxiliary overlay dispatcher's stack. The popped request is not
@@ -121,10 +136,10 @@ OverlayCB DebugOvlDisp_Pop(void);
  *
  * @param callback The function to be called from the new overlay.
  * @param cbArg The argument to pass to the new callback function.
- * @param repeatCount The number of times the new request has been repeated so far.
+ * @param stage The process stage to start the new overlay at.
  * @return The callback of the replaced overlay tag.
  */
-OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount);
+OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, OverlayProcessStage stage);
 
 /**
  * @brief Check if the auxiliary overlay dispatcher's stack is at its base (only one overlay request present).

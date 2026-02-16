@@ -119,7 +119,7 @@ void func_ov043_020bd0ac(DepartState* state) {
     DebugOvlDisp_Push((OverlayCB)func_ov043_020bd084, state, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov043_020bcf64, state, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov043_020bcf3c, state, 0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
     func_0202733c((temp->unk_08 % 3) + 31);
 }
 
@@ -180,15 +180,18 @@ void func_ov043_020bd388(DepartState* state) {
     func_02004a68(&gDebugHeap);
 }
 
-typedef void (*FuncPtr)(DepartState*);
-const FuncPtr data_ov043_020cad64[3] = {func_ov043_020bd0ac, func_ov043_020bd224, func_ov043_020bd388};
+const OverlayProcess data_ov043_020cad64 = {
+    .init = func_ov043_020bd0ac,
+    .main = func_ov043_020bd224,
+    .exit = func_ov043_020bd388,
+};
 
 void func_ov043_020bd414(void* arg0) {
-    s32 stage = MainOvlDisp_GetRepeatCount();
-    if (stage == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov043_020bd388(arg0);
     } else {
-        data_ov043_020cad64[stage](arg0);
+        data_ov043_020cad64.funcs[stage](arg0);
     }
 }
 

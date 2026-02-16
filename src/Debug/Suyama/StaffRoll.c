@@ -57,15 +57,18 @@ s32 func_ov042_020836d0(TaskPool* pool, Task* task, void* args, s32 stage);
 s32 func_ov042_02084064(TaskPool* pool, Task* task, void* args, s32 stage);
 s32 StaffBg_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-typedef void (*StaffRollFunc)(StaffRollState*);
-const StaffRollFunc data_ov042_020847b4[3] = {func_ov042_020824e0, func_ov042_02082620, func_ov042_02082700};
+const OverlayProcess OvlProc_StaffRoll = {
+    .init = func_ov042_020824e0,
+    .main = func_ov042_02082620,
+    .exit = func_ov042_02082700,
+};
 
 void func_ov042_020824a0(StaffRollState* state) {
-    s32 index = MainOvlDisp_GetRepeatCount();
-    if (index == ~0x80000000) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov042_02082700(state);
     } else {
-        data_ov042_020847b4[index](state);
+        OvlProc_StaffRoll.funcs[stage](state);
     }
 }
 
@@ -89,7 +92,7 @@ void func_ov042_020824e0(StaffRollState* state) {
     DebugOvlDisp_Push((OverlayCB)func_ov042_02082f94, &state->unk_21614, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov042_02082ed8, &state->unk_21614, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov042_02082e9c, &state->unk_21614, 0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov042_02082620(StaffRollState* state) {

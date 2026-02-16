@@ -18,7 +18,7 @@ func_ov029_02082fdc kind:function(arm,size=0x318) addr:0x02082fdc
 SoundTest_InterruptCallback kind:function(arm,size=0xd0) addr:0x020832f4
 func_ov029_020833c4 kind:function(arm,size=0x1c) addr:0x020833c4
 
-funcs$1704 kind:data(any) addr:0x020833e0
+OvlProc_SoundTest kind:data(any) addr:0x020833e0
 
 data_ov029_02083400 kind:data(any) addr:0x02083400
 soundEffects kind:data(any) addr:0x02083404

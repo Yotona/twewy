@@ -13,7 +13,7 @@ func_ov000_020830bc kind:function(arm,size=0xec) addr:0x020830bc
 data_ov000_020831a8 kind:data(any) addr:0x020831a8
 data_ov000_020831b4 kind:data(any) addr:0x020831b4
 data_ov000_020831c0 kind:data(any) addr:0x020831c0
-funcPtrs$340 kind:data(any) addr:0x020831c8 local
+OvlProc_Mini108 kind:data(any) addr:0x020831c8 local
 data_ov000_020831e0 kind:data(any) addr:0x020831e0
 @329 kind:data(any) addr:0x020831e4 local
 @210 kind:data(any) addr:0x020831f8 local

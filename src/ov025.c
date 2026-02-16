@@ -9,7 +9,7 @@
 #include "Input.h"
 #include "Interrupts.h"
 #include "Memory.h"
-#include "OverlayManager.h"
+#include "OverlayDispatcher.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 #include "Text.h"
@@ -78,21 +78,10 @@ typedef struct {
     /* 0x30 */ u32  unk30;
 } DataHeader;
 
-void func_ov030_020ae92c(void*, s32);                                                                  /* extern */
-void BgResMgr_AllocChar32(s32, void*, u32, void*, s32);                                                /* extern */
-void BgResMgr_AllocScreen(s32, void*, u32, s32);                                                       /* extern */
-void DC_PurgeRange(s32*, void*);                                                                       /* extern */
-void DMA_Flush();                                                                                      /* extern */
-void DMA_Init(s32 size);                                                                               /* extern */
-void DebugOvlDisp_Init();                                                                              /* extern */
-s32  DebugOvlDisp_IsStackAtBase();                                                                     /* extern */
-void DebugOvlDisp_Pop();                                                                               /* extern */
-void DebugOvlDisp_Push(void (*)(void*), void*, void*);                                                 /* extern */
-void DebugOvlDisp_ReplaceTop(void (*)(void*), void*);                                                  /* extern */
-void DebugOvlDisp_Run();                                                                               /* extern */
-void EasyFade_FadeBothDisplays(FaderMode mode, s32 brightness, s32 rate);                              /* extern */
-s32  EasyFade_IsFading();                                                                              /* extern *
-                                                   void GX_LoadBgPltt(s16 *, void *, void *);                       /* extern */
+void                            func_ov030_020ae92c(void*, s32);                                       /* extern */
+void                            DC_PurgeRange(s32*, void*);                                            /* extern */
+void                            DMA_Flush();                                                           /* extern */
+void                            DMA_Init(s32 size);                                                    /* extern */
 void                            GX_LoadOam(s32*, void*, void*);                                        /* extern */
 void                            GX_LoadObjPltt(s32*, void*, void*);                                    /* extern */
 void                            GXs_LoadBgPltt(s16*, void*, void*);                                    /* extern */
@@ -101,13 +90,6 @@ u32                             GXs_LoadObjPltt(s32*, void*, void*);            
 void                            Input_Init(InputState* input, s32 delayInit, s32 delayMin, s32 step);  /* extern */
 void                            Interrupts_Init();                                                     /* extern */
 IRQCallback                     Interrupts_RegisterVBlankCallback(IRQCallback callback, s32 param_2);  /* extern */
-s32                             MainOvlDisp_GetRepeatCount();                                          /* extern */
-void                            MainOvlDisp_IncrementRepeatCount();                                    /* extern */
-void                            MainOvlDisp_ReplaceTop(void*, s32, void*, s32);                        /* extern */
-void                            MainOvlDisp_Run();                                                     /* extern */
-void                            MainOvlDisp_SetCbArg(void*);                                           /* extern */
-u32                             OvlMgr_LoadOverlay(s32 slot, u32 newOverlay);                          /* extern */
-void                            OvlMgr_UnloadOverlay(s32 slot);                                        /* extern */
 void                            TouchInput_GetCoord(TouchCoord* out);                                  /* extern */
 void                            TouchInput_Init();                                                     /* extern */
 u16*                            TouchInput_Update(void);                                               /* extern */
@@ -400,7 +382,7 @@ void func_ov025_020e7a20(Ov025MainStruct* arg0) {
     SndMgr_StartPlayingSE(0x2B);
     arg0->unk120DC = 0;
     arg0->unk120DE = 0;
-    DebugOvlDisp_ReplaceTop(func_ov025_020e7f90, (void*)arg0);
+    DebugOvlDisp_ReplaceTop(func_ov025_020e7f90, (void*)arg0, PROCESS_STAGE_INIT);
 }
 
 void func_ov025_020e7aac(Ov025MainStruct* arg0) {
@@ -462,33 +444,33 @@ void func_ov025_020e7d70(Ov025MainStruct* arg0) {
 }
 
 void func_ov025_020e7dd0(Ov025MainStruct* arg0) {
-    void* sp24;
-    void* sp1C;
-    void* sp14;
-    void* spC;
-    void* sp4;
-    u16   temp_r0;
+    OverlayTag sp24;
+    OverlayTag sp1C;
+    OverlayTag sp14;
+    OverlayTag spC;
+    OverlayTag sp4;
+    u16        temp_r0;
 
     temp_r0 = arg0->unk120D0;
     switch (temp_r0) {
         default:
         case 3:
             if (((UnkStruct_020740d10_local*)&data_02074d10)->unk130 == 3) {
-                MainOvlDisp_ReplaceTop(&spC, 0x1B, &func_ov027_020e860c, 0);
+                MainOvlDisp_ReplaceTop(&spC, 0x1B, &func_ov027_020e860c, NULL, PROCESS_STAGE_INIT);
                 return;
             }
-            MainOvlDisp_ReplaceTop(&sp4, 0x25, &func_ov037_0208370c, 0);
+            MainOvlDisp_ReplaceTop(&sp4, 0x25, &func_ov037_0208370c, NULL, PROCESS_STAGE_INIT);
             return;
         case 0:
             ((UnkStruct_02074e10_local*)&data_02074e10)->unk42 = 0;
             ((UnkStruct_020740d10_local*)&data_02074d10)->unk141 =
                 (s8)((u32)(((UnkStruct_02071d10_local*)&data_02071d10)->unk19 << 0x1E) >> 0x1E);
-            MainOvlDisp_ReplaceTop(&sp24, 3, &func_ov003_0208ec74, 0);
+            MainOvlDisp_ReplaceTop(&sp24, 3, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
             return;
         case 1:
             ((UnkStruct_02074e10_local*)&data_02074e10)->unk42   = 0;
             ((UnkStruct_020740d10_local*)&data_02074d10)->unk141 = 0;
-            MainOvlDisp_ReplaceTop(&sp1C, 3, &func_ov003_0208ec74, 0);
+            MainOvlDisp_ReplaceTop(&sp1C, 3, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
             return;
         case 2:
             if (((UnkStruct_020740d10_local*)&data_02074d10)->unk140 & 2) {
@@ -496,7 +478,7 @@ void func_ov025_020e7dd0(Ov025MainStruct* arg0) {
                 return;
             }
             data_02074110.unkB4 = 3;
-            MainOvlDisp_ReplaceTop(&sp14, 0x1E, NULL, 0);
+            MainOvlDisp_ReplaceTop(&sp14, 0x1E, NULL, NULL, PROCESS_STAGE_INIT);
             return;
     }
 }
@@ -512,7 +494,7 @@ void func_ov025_020e7f28(void* arg0) {
     }
     mainStruct->unk120DC = 0;
     mainStruct->unk120DE = 0;
-    DebugOvlDisp_ReplaceTop(func_ov025_020e7fdc, arg0);
+    DebugOvlDisp_ReplaceTop(func_ov025_020e7fdc, arg0, PROCESS_STAGE_INIT);
 }
 
 void func_ov025_020e7f90(void* arg0) {
@@ -614,13 +596,17 @@ void func_ov025_020e826c(void* arg0) {
     OvlMgr_UnloadOverlay(3);
 }
 
-void func_ov025_020e82c8(void* arg0) {
-    s32 temp_r0;
+const OverlayProcess OvlProc_Continue = {
+    .init = func_ov025_020e8078,
+    .main = func_ov025_020e81b8,
+    .exit = func_ov025_020e826c,
+};
 
-    temp_r0 = MainOvlDisp_GetRepeatCount();
-    if (temp_r0 == 0x7FFFFFFF) {
-        func_ov025_020e826c(arg0);
-        return;
+void func_ov025_020e82c8(void* object) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
+        func_ov025_020e826c(object);
+    } else {
+        OvlProc_Continue.funcs[stage](object);
     }
-    data_ov025_020e8310[temp_r0](arg0);
 }

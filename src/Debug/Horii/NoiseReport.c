@@ -30,12 +30,6 @@ void func_ov028_020e8878(NoiseReportState*);
 void func_ov028_020e89d0(NoiseReportState*);
 void func_ov028_020e8b68(NoiseReportState*);
 
-const NoiseReportFunc data_ov028_020ecf24[3] = {
-    func_ov028_020e8878,
-    func_ov028_020e89d0,
-    func_ov028_020e8b68,
-};
-
 s16 func_ov028_020e7360(s16) {
     // Not yet implemented
 }
@@ -158,13 +152,19 @@ func_ov028_020e8278() {
     // Not yet implemented
 }
 
+const OverlayProcess OvlProc_NoiseReport = {
+    .init = func_ov028_020e8878,
+    .main = func_ov028_020e89d0,
+    .exit = func_ov028_020e8b68,
+};
+
 void func_ov028_020e82d0(NoiseReportState* state) {
-    s32 idx = MainOvlDisp_GetRepeatCount();
-    if (idx == 0x7fffffff) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov028_020e8b68(state);
         return;
     }
-    data_ov028_020ecf24[idx](state);
+    OvlProc_NoiseReport.funcs[stage](state);
 }
 
 void func_ov028_020e8310(void) {
@@ -380,7 +380,7 @@ void func_ov028_020e8878(NoiseReportState* state) {
     DebugOvlDisp_Push(func_ov028_020e8850, state, 0);
     DebugOvlDisp_Push(func_ov028_020e8830, state, 0);
     DebugOvlDisp_Push(func_ov028_020e8808, state, 0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 
     state->unk_2164C = 0;
 }

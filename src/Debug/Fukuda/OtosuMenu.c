@@ -2870,7 +2870,7 @@ static void OtosuMenu_InitForSinglePlayerEnter(OtosuMenuObj* menuObj) {
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093268, NULL);
     menuObj->unk_41FE9 = 0;
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 static void OtosuMenu_InitForMultiplayerEnter(OtosuMenuObj* menuObj) {
@@ -2883,7 +2883,7 @@ static void OtosuMenu_InitForMultiplayerEnter(OtosuMenuObj* menuObj) {
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093254, NULL);
     menuObj->unk_41FE9 = 0;
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
@@ -2905,7 +2905,7 @@ void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
     }
     func_ov002_02085a44(menuObj);
     func_0202733c(0x19);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForSinglePlayerRankings(OtosuMenuObj* menuObj) {
@@ -2917,7 +2917,7 @@ void OtosuMenu_InitForSinglePlayerRankings(OtosuMenuObj* menuObj) {
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093048, NULL);
     func_ov002_02085a44(menuObj);
     func_0202733c(0x19);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForConnectionError(OtosuMenuObj* menuObj) {
@@ -2932,7 +2932,7 @@ void OtosuMenu_InitForConnectionError(OtosuMenuObj* menuObj) {
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     func_ov002_02085a44(menuObj);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForRoleSelection(OtosuMenuObj* menuObj) {
@@ -2945,7 +2945,7 @@ void OtosuMenu_InitForRoleSelection(OtosuMenuObj* menuObj) {
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092c9c, NULL);
     func_ov002_02085a44(menuObj);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForFontList(OtosuMenuObj* menuObj) {
@@ -2957,7 +2957,7 @@ void OtosuMenu_InitForFontList(OtosuMenuObj* menuObj) {
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_020932b8, NULL);
     func_ov002_02085a44(menuObj);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForDataDeletion(OtosuMenuObj* menuObj) {
@@ -2969,7 +2969,7 @@ void OtosuMenu_InitForDataDeletion(OtosuMenuObj* menuObj) {
     func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_0209344c, NULL);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForDataCorrupted(OtosuMenuObj* menuObj) {
@@ -2981,7 +2981,7 @@ void OtosuMenu_InitForDataCorrupted(OtosuMenuObj* menuObj) {
     func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093460, NULL);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov002_02086290(OtosuMenuObj* menuObj) {
@@ -2993,7 +2993,7 @@ void func_ov002_02086290(OtosuMenuObj* menuObj) {
     func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093438, NULL);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForDataLoadFailure(OtosuMenuObj* menuObj) {
@@ -3005,7 +3005,7 @@ void OtosuMenu_InitForDataLoadFailure(OtosuMenuObj* menuObj) {
     func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093310, NULL);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForDataSaveFailure(OtosuMenuObj* menuObj) {
@@ -3017,7 +3017,7 @@ void OtosuMenu_InitForDataSaveFailure(OtosuMenuObj* menuObj) {
     func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
     func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
     func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093324, NULL);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
@@ -3143,183 +3143,183 @@ void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
     func_02004a68(&gDebugHeap);
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_SinglePlayerEnter[3] = {
-    OtosuMenu_InitForSinglePlayerEnter,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_SinglePlayerEnter = {
+    .init = OtosuMenu_InitForSinglePlayerEnter,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_SinglePlayerEnter(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_SinglePlayerEnter[count](menuObj);
+        OvlProc_OtosuMenu_SinglePlayerEnter.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_MultiplayerEnter[3] = {
-    OtosuMenu_InitForMultiplayerEnter,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_MultiplayerEnter = {
+    .init = OtosuMenu_InitForMultiplayerEnter,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_MultiplayerEnter(void* arg0) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(arg0);
     } else {
-        OverlayProcs_OtosuMenu_MultiplayerEnter[count](arg0);
+        OvlProc_OtosuMenu_MultiplayerEnter.funcs[stage](arg0);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_MultiplayerRanking[3] = {
-    OtosuMenu_InitForMultiplayerRankings,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_MultiplayerRanking = {
+    .init = OtosuMenu_InitForMultiplayerRankings,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_MultiplayerRanking(void* arg0) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(arg0);
     } else {
-        OverlayProcs_OtosuMenu_MultiplayerRanking[count](arg0);
+        OvlProc_OtosuMenu_MultiplayerRanking.funcs[stage](arg0);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_SinglePlayerRanking[3] = {
-    OtosuMenu_InitForSinglePlayerRankings,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_SinglePlayerRanking = {
+    .init = OtosuMenu_InitForSinglePlayerRankings,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_SinglePlayerRanking(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_SinglePlayerRanking[count](menuObj);
+        OvlProc_OtosuMenu_SinglePlayerRanking.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_ConnectionError[3] = {
-    OtosuMenu_InitForConnectionError,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_ConnectionError = {
+    .init = OtosuMenu_InitForConnectionError,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_ConnectionError(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_ConnectionError[count](menuObj);
+        OvlProc_OtosuMenu_ConnectionError.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_RoleSelection[3] = {
-    OtosuMenu_InitForRoleSelection,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_RoleSelection = {
+    .init = OtosuMenu_InitForRoleSelection,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_RoleSelection(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_RoleSelection[count](menuObj);
+        OvlProc_OtosuMenu_RoleSelection.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_FontList[3] = {
-    OtosuMenu_InitForFontList,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_FontList = {
+    .init = OtosuMenu_InitForFontList,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_FontList(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_FontList[count](menuObj);
+        OvlProc_OtosuMenu_FontList.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_DataDeletion[3] = {
-    OtosuMenu_InitForDataDeletion,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_DataDeletion = {
+    .init = OtosuMenu_InitForDataDeletion,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_DataDeletion(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_DataDeletion[count](menuObj);
+        OvlProc_OtosuMenu_DataDeletion.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_DataCorrupted[3] = {
-    OtosuMenu_InitForDataCorrupted,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_DataCorrupted = {
+    .init = OtosuMenu_InitForDataCorrupted,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_DataCorrupted(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_DataCorrupted[count](menuObj);
+        OvlProc_OtosuMenu_DataCorrupted.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc data_ov002_02091b10[3] = {
-    func_ov002_02086290,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess data_ov002_02091b10 = {
+    .init = func_ov002_02086290,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void func_ov002_02086acc(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        data_ov002_02091b10[count](menuObj);
+        data_ov002_02091b10.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc OverlayProcs_OtosuMenu_DataLoadFailure[3] = {
-    OtosuMenu_InitForDataLoadFailure,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_DataLoadFailure = {
+    .init = OtosuMenu_InitForDataLoadFailure,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_DataLoadFailure(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        OverlayProcs_OtosuMenu_DataLoadFailure[count](menuObj);
+        OvlProc_OtosuMenu_DataLoadFailure.funcs[stage](menuObj);
     }
 }
 
-static const OtosuMenuAccessorFunc data_ov002_02091b4c[3] = {
-    OtosuMenu_InitForDataSaveFailure,
-    OtosuMenu_Update,
-    OtosuMenu_Destroy,
+static const OverlayProcess OvlProc_OtosuMenu_DataSaveFailure = {
+    .init = OtosuMenu_InitForDataSaveFailure,
+    .main = OtosuMenu_Update,
+    .exit = OtosuMenu_Destroy,
 };
 
 void ProcessOverlay_OtosuMenu_DataSaveFailure(void* menuObj) {
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         OtosuMenu_Destroy(menuObj);
     } else {
-        data_ov002_02091b4c[count](menuObj);
+        OvlProc_OtosuMenu_DataSaveFailure.funcs[stage](menuObj);
     }
 }
 

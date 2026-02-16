@@ -353,23 +353,23 @@ void func_ov000_02082894(Mini108State* stateptr) {
     MI_CpuFill(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
     func_ov000_02082b1c(stateptr);
     func_ov000_02082b18(stateptr);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
     MainOvlDisp_Run();
 }
 
-void func_ov000_02082854(Mini108State* state) {
-    static const Mini108Func funcPtrs[3] = {
-        func_ov000_02082894,
-        func_ov000_02082944,
-        func_ov000_02082ac0,
-    };
+static const OverlayProcess OvlProc_Mini108 = {
+    .init = func_ov000_02082894,
+    .main = func_ov000_02082944,
+    .exit = func_ov000_02082ac0,
+};
 
-    int var1 = MainOvlDisp_GetRepeatCount();
-    if (var1 == 0x7FFFFFFF) {
+void func_ov000_02082854(Mini108State* state) {
+
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov000_02082ac0(state);
     } else {
-        Mini108Func target_function = funcPtrs[var1];
-        target_function(state);
+        OvlProc_Mini108.funcs[stage](state);
     }
 }
 

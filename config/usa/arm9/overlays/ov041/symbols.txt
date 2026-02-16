@@ -13,7 +13,7 @@ func_ov041_02082c04 kind:function(arm,size=0x318) addr:0x02082c04
 STSample_InterruptCallback kind:function(arm,size=0xd4) addr:0x02082f1c
 func_ov041_02082ff0 kind:function(arm,size=0x1c) addr:0x02082ff0
 
-funcs$44 kind:data(any) addr:0x0208300c
+OvlProc_STSample kind:data(any) addr:0x0208300c
 data_ov041_02083020 kind:data(any) addr:0x02083020
 @1 kind:data(any) addr:0x02083024
 @23 kind:data(any) addr:0x02083034

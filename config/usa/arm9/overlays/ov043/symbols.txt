@@ -1928,7 +1928,7 @@ NRepCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c7838
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/TakTest.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c7870 kind:data(any) addr:0x020c7870
+OvlProc_TakTest kind:data(any) addr:0x020c7870
 data_ov043_020c787c kind:data(any) addr:0x020c787c
 data_ov043_020c7894 kind:data(any) addr:0x020c7894
 data_ov043_020c78a4 kind:data(any) addr:0x020c78a4
@@ -2511,7 +2511,7 @@ data_ov043_020caf18 kind:data(any) addr:0x020caf18
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
 /////////////////////////////////////////////////////////////
-data_ov043_020caf44 kind:data(any) addr:0x020caf44
+OvlProc_Save kind:data(any) addr:0x020caf44
 data_ov043_020caf50 kind:data(any) addr:0x020caf50
 data_ov043_020caf68 kind:data(any) addr:0x020caf68
 data_ov043_020caf70 kind:data(any) addr:0x020caf70
@@ -2576,7 +2576,7 @@ data_ov043_020cb438 kind:data(any) addr:0x020cb438
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb464 kind:data(any) addr:0x020cb464
+OvlProc_NRep kind:data(any) addr:0x020cb464
 data_ov043_020cb470 kind:data(any) addr:0x020cb470
 data_ov043_020cb498 kind:data(any) addr:0x020cb498 ambiguous
 data_ov043_020cb4a0 kind:data(any) addr:0x020cb4a0

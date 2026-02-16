@@ -49,7 +49,7 @@ func_ov042_0208429c kind:function(arm,size=0x48) addr:0x0208429c
 func_ov042_020842e4 kind:function(arm,size=0x3ec) addr:0x020842e4
 func_ov042_020846d0 kind:function(arm,size=0x14) addr:0x020846d0
 func_ov042_020846e4 kind:function(arm,size=0xd0) addr:0x020846e4
-data_ov042_020847b4 kind:data(any) addr:0x020847b4
+OvlProc_StaffRoll kind:data(any) addr:0x020847b4
 data_ov042_020847c0 kind:data(any) addr:0x020847c0
 data_ov042_020847e0 kind:data(any) addr:0x020847e0
 data_ov042_020847e8 kind:data(any) addr:0x020847e8

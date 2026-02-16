@@ -93,8 +93,6 @@ static void func_ov026_020e7d3c(void* arg0);
 static void func_ov026_020e7e7c(void* arg0);
 static void func_ov026_020e7f30(void* arg0);
 
-static const OverlayCB data_ov026_020e7fe0[3] = {func_ov026_020e7d3c, func_ov026_020e7e7c, func_ov026_020e7f30};
-
 // Function implementations
 
 static void func_ov026_020e7360(void) {
@@ -406,7 +404,7 @@ static void func_ov026_020e7d3c(void* arg0) {
     func_ov026_020e7ba0(state);
     DebugOvlDisp_Init();
     DebugOvlDisp_Push(func_ov026_020e7c2c, state, 0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
     MainOvlDisp_Run();
 }
 
@@ -452,13 +450,17 @@ static void func_ov026_020e7f30(void* arg0) {
     OvlMgr_UnloadOverlay(3);
 }
 
+static const OverlayProcess OvlProc_Tutorial = {
+    .init = func_ov026_020e7d3c,
+    .main = func_ov026_020e7e7c,
+    .exit = func_ov026_020e7f30,
+};
+
 void func_ov026_020e7f98(void* arg0) {
-    s32 repeatCount = MainOvlDisp_GetRepeatCount();
-
-    if (repeatCount == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == 0x7FFFFFFF) {
         func_ov026_020e7f30(arg0);
-        return;
+    } else {
+        OvlProc_Tutorial.funcs[stage](arg0);
     }
-
-    data_ov026_020e7fe0[repeatCount](arg0);
 }

@@ -518,7 +518,7 @@ void GrpCheck_TogglePause(GrpCheckState* state) {
 }
 
 void GrpCheck_Exit(GrpCheckState* state) {
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void GrpCheck_MoveCursorUp(GrpCheckState* state) {
@@ -733,7 +733,7 @@ void GrpCheck_InitOverlay(GrpCheckState* state) {
     data_02066aec = 0;
     data_02066eec = (state->bgA << 15) | (state->bgB << 10) | (state->bgG << 5) | state->bgR;
     DebugOvlDisp_Init();
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void GrpCheck_InitOverlayForHwSprites(GrpCheckState* state) {
@@ -784,39 +784,37 @@ void GrpCheck_TerminateOverlay(GrpCheckState* state) {
     DatMgr_ClearSlot(state->unk_00000);
     DatMgr_ReleaseData(state->unk_00008);
     Mem_Free(&gDebugHeap, state);
-    MainOvlDisp_SetRepeatCount(0x7FFFFFFF);
+    MainOvlDisp_SetProcessStage(PROCESS_STAGE_EXIT);
     MainOvlDisp_Pop(&tag);
 }
 
-typedef void (*GrpCheckFunc)(GrpCheckState*);
-
-const GrpCheckFunc data_ov038_02085b58[3] = {
-    GrpCheck_InitOverlayForHwSprites,
-    GrpCheck_RunOverlay,
-    GrpCheck_TerminateOverlay,
+static const OverlayProcess OvlProc_GrpCheck_HwSprites = {
+    .init = GrpCheck_InitOverlayForHwSprites,
+    .main = GrpCheck_RunOverlay,
+    .exit = GrpCheck_TerminateOverlay,
 };
 
-const GrpCheckFunc data_ov038_02085b64[3] = {
-    GrpCheck_InitOverlayForSwSprites,
-    GrpCheck_RunOverlay,
-    GrpCheck_TerminateOverlay,
+static const OverlayProcess OvlProc_GrpCheck_SwSprites = {
+    .init = GrpCheck_InitOverlayForSwSprites,
+    .main = GrpCheck_RunOverlay,
+    .exit = GrpCheck_TerminateOverlay,
 };
 
-void ProcessOverlay_GrpCheckHwSprites(void* state) {
-    s32 step = MainOvlDisp_GetRepeatCount();
-    if (step == 0x7FFFFFFF) {
+void ProcessOverlay_GrpCheck_HwSprites(void* state) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         GrpCheck_TerminateOverlay(state);
     } else {
-        data_ov038_02085b58[step](state);
+        OvlProc_GrpCheck_HwSprites.funcs[stage](state);
     }
 }
 
-void ProcessOverlay_GrpCheckSwSprites(void* state) {
-    s32 step = MainOvlDisp_GetRepeatCount();
-    if (step == 0x7FFFFFFF) {
+void ProcessOverlay_GrpCheck_SwSprites(void* state) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         GrpCheck_TerminateOverlay(state);
     } else {
-        data_ov038_02085b64[step](state);
+        OvlProc_GrpCheck_SwSprites.funcs[stage](state);
     }
 }
 

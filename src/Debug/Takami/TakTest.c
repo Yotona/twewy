@@ -47,7 +47,7 @@ void func_ov043_020824cc(TakTestState* state) {
     EasyTask_CreateTask(&state->taskPool, &data_ov043_020c78a4, 0, 0, 0, NULL);
 
     state->unk_21618 = func_ov043_02082fa0(&state->taskPool, state->unk_11588);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov043_020825ec(TakTestState* state) {
@@ -70,19 +70,18 @@ void func_ov043_0208266c(TakTestState* state) {
     Mem_Free(&gDebugHeap, state);
 }
 
-typedef void (*TakTestCb)(TakTestState*);
-static const TakTestCb data_ov043_020c7870[3] = {
-    func_ov043_020824cc,
-    func_ov043_020825ec,
-    func_ov043_0208266c,
+static const OverlayProcess OvlProc_TakTest = {
+    .init = func_ov043_020824cc,
+    .main = func_ov043_020825ec,
+    .exit = func_ov043_0208266c,
 };
 
 void func_ov043_020826ac(TakTestState* state) {
-    s32 step = MainOvlDisp_GetRepeatCount();
-    if (step == 0x7FFFFFFF) {
+    s32 step = MainOvlDisp_GetProcessStage();
+    if (step == PROCESS_STAGE_EXIT) {
         func_ov043_0208266c(state);
     } else {
-        data_ov043_020c7870[step](state);
+        OvlProc_TakTest.funcs[step](state);
     }
 }
 

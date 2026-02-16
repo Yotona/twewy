@@ -19,8 +19,6 @@ void func_ov029_020833c4(void);
 
 const char* data_ov029_02083400 = "Seq_SoundTest()";
 
-typedef void (*SoundEffectFunc)(SoundTestState* state);
-
 // Nonmatching: Built order differs
 const char* soundEffects[1388] = {
     "SE_battle_in",
@@ -1713,7 +1711,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     data_02066eec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov029_02082838(state);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov029_02082ee8(SoundTestState* state) {
@@ -1735,20 +1733,20 @@ void func_ov029_02082f68(SoundTestState* state) {
     Mem_Free(&gDebugHeap, state);
 }
 
+static const OverlayProcess OvlProc_SoundTest = {
+    .init = func_ov029_02082e40,
+    .main = func_ov029_02082ee8,
+    .exit = func_ov029_02082f68,
+};
+
 void func_ov029_02082f9c(SoundTestState* state) {
-    static const SoundEffectFunc funcs[3] = {
-        func_ov029_02082e40,
-        func_ov029_02082ee8,
-        func_ov029_02082f68,
-    };
 
-    s32 idx = MainOvlDisp_GetRepeatCount();
-
-    if (idx == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov029_02082f68(state);
         return;
     }
-    funcs[idx](state);
+    OvlProc_SoundTest.funcs[stage](state);
 }
 
 /* Nonmatching */

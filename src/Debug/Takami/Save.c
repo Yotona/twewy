@@ -80,15 +80,18 @@ void func_ov043_020c0468(SaveState* state) {
     // Not yet implemented
 }
 
-typedef void (*SaveDispatch)(SaveState*);
-static const SaveDispatch data_ov043_020caf44[3] = {func_ov043_020c0048, func_ov043_020c0248, func_ov043_020c0468};
+static const OverlayProcess OvlProc_Save = {
+    .init = func_ov043_020c0048,
+    .main = func_ov043_020c0248,
+    .exit = func_ov043_020c0468,
+};
 
 void func_ov043_020c04f0(SaveState* state) {
-    s32 step = MainOvlDisp_GetRepeatCount();
-    if (step == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov043_020c0468(state);
     } else {
-        data_ov043_020caf44[step](state);
+        OvlProc_Save.funcs[stage](state);
     }
 }
 

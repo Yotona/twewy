@@ -495,7 +495,7 @@ void func_ov037_0208345c(OpenEndState* r0) {
     data_ov037_02083e08 = &r0->unk_11590;
     EasyTask_CreateTask(&r0->unk_11590, &Task_EasyFade, 0, 0, 0, 0);
     func_ov037_020833a8(r0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov037_02083604(OpenEndState* r0) {
@@ -530,13 +530,19 @@ void func_ov037_020836b4(OpenEndState* r0) {
     func_02027388(0);
 }
 
-void func_ov037_0208370c(OpenEndState* r0) {
-    u32 index = MainOvlDisp_GetRepeatCount();
-    if (index == ~0x80000000) {
-        func_ov037_020836b4(r0);
-        return;
+static const OverlayProcess data_ov037_02083a84 = {
+    .init = func_ov037_0208345c,
+    .main = func_ov037_02083604,
+    .exit = func_ov037_020836b4,
+};
+
+void func_ov037_0208370c(OpenEndState* state) {
+    u32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
+        func_ov037_020836b4(state);
+    } else {
+        data_ov037_02083a84.funcs[stage](state);
     }
-    data_ov037_02083a84[index](r0);
 }
 
 void func_ov037_0208374c(u32 r0) {

@@ -158,8 +158,6 @@ typedef struct {
     /* 0x48058 */ s32         unk_48058;
 } OtosuMenuObj; // Size: 0x48068
 
-typedef void (*OtosuMenuAccessorFunc)(OtosuMenuObj* menuObj);
-
 /**
  * @brief Launcher for displaying a test screen that shows pin symbols
  * and a cyclable text field containing either battle tutorials or generic samples

@@ -87,7 +87,7 @@ extern void ProcessOverlay_OtosuMenu_DataDeletion(void* state);
 extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
 extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
 extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
-extern void func_ov025_020e82c8(void* state);
+extern void ProcessOverlay_Continue(void* state);
 
 extern void func_ov026_020e7f98(void* state);
 
@@ -108,8 +108,8 @@ extern void func_ov030_020d2d6c(void* state);
 extern void func_ov030_020d5370(void* state);
 extern void func_ov037_0208370c(void* state);
 
-extern void ProcessOverlay_GrpCheckHwSprites(void* state);
-extern void ProcessOverlay_GrpCheckSwSprites(void* state);
+extern void ProcessOverlay_GrpCheck_HwSprites(void* state);
+extern void ProcessOverlay_GrpCheck_SwSprites(void* state);
 extern void func_ov041_02082bc4(void* state);
 
 extern void func_ov042_020824a0(void* state);
@@ -129,20 +129,11 @@ extern void func_ov044_02084a88(void* state);
 extern void func_ov045_02083c78(void* state);
 extern void func_ov045_02088700(void* state);
 extern void func_ov045_02091034(void* state);
-void        func_ov046_constructor_020835b4(DebugLauncherState* state);
-void        func_ov046_main_020834c0(DebugLauncherState* state);
-void        func_ov046_destructor_02083454(DebugLauncherState* state);
 
 int func_ov046_020839a0(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839b4(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839c4(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839d8(s32 r1, DebugLauncherState* state, s32* r2);
-
-static const DebugLauncherFunc funcs[3] = {
-    func_ov046_constructor_020835b4,
-    func_ov046_main_020834c0,
-    func_ov046_destructor_02083454,
-};
 
 const DebugLauncherOption Options_Horii[2] = {
     // "Feature: Noise Report", "Description: Menu screen noise report"
@@ -244,21 +235,21 @@ const DebugLauncherOption Options_Kitawaki[9] = {
 };
 
 const DebugLauncherOption Options_Furukawa[4] = {
-    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27, func_ov027_020e860c},
-    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, func_ov025_020e82c8},
-    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26, func_ov026_020e7f98},
-    {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                NULL},
+    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27,     func_ov027_020e860c},
+    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, ProcessOverlay_Continue},
+    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26,     func_ov026_020e7f98},
+    {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                    NULL},
 };
 
 const DebugLauncherOption Options_Mori[6] = {
     // "Function: Graphic Check", "Description: Hardware Sprites"
-    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, ProcessOverlay_GrpCheckHwSprites},
+    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, ProcessOverlay_GrpCheck_HwSprites},
     // "Function: Graphic Check", "Description: Software Sprites"
-    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheckSwSprites},
-    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,              func_ov027_020e9670},
-    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,              func_ov030_020d2d6c},
-    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,              func_ov037_0208370c},
-    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                             NULL},
+    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheck_SwSprites},
+    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,               func_ov027_020e9670},
+    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,               func_ov030_020d2d6c},
+    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,               func_ov037_0208370c},
+    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                              NULL},
 };
 
 const DebugLauncherCategory Categories[11] = {
