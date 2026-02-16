@@ -229,4 +229,28 @@ static inline void Display_SetSubBrightness(u32 brightness) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
 }
 
+static inline void Display_InitMainBG1(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                       u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg1Settings = Display_GetBG1Settings(DISPLAY_MAIN);
+    bg1Settings->bgMode            = bgMode;
+    bg1Settings->screenSizeText    = screenSizeText;
+    bg1Settings->colorMode         = colorMode;
+    bg1Settings->screenBase        = screenBase;
+    bg1Settings->charBase          = charBase;
+    bg1Settings->extPlttSlot       = extPlttSlot;
+    REG_BG1CNT                     = (REG_BG1CNT & 0x43) | regMask;
+}
+
+static inline void Display_InitSubBG1(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                      u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg1Settings = Display_GetBG1Settings(DISPLAY_SUB);
+    bg1Settings->bgMode            = bgMode;
+    bg1Settings->screenSizeText    = screenSizeText;
+    bg1Settings->colorMode         = colorMode;
+    bg1Settings->screenBase        = screenBase;
+    bg1Settings->charBase          = charBase;
+    bg1Settings->extPlttSlot       = extPlttSlot;
+    REG_BG1CNT_SUB                 = (REG_BG1CNT_SUB & 0x43) | regMask;
+}
+
 #endif // DISPLAY_H
