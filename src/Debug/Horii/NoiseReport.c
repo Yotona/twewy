@@ -906,15 +906,15 @@ void func_ov028_020ec204(NrepPreview* arg0) {
     if (sStack_1e < 0x61) {
         _Sprite_Load(&arg0->unk_004, &anim);
         func_ov028_020e81fc(&arg0->unk_004, 1);
-        arg0->unk_004.posX   = 190;
-        arg0->unk_004.posY   = 88;
-        arg0->unk_004.unk_0A = arg0->unk_004.unk_0A & ~0xC00 | 0x800;
+        arg0->unk_004.posX       = 190;
+        arg0->unk_004.posY       = 88;
+        arg0->unk_004.unk_0A.raw = arg0->unk_004.unk_0A.raw & ~0xC00 | 0x800;
         if (func_ov028_020ec1bc()) {
             _Sprite_Load(&arg0->unk_044, &anim);
             func_ov028_020e81fc(&arg0->unk_044, 2);
-            arg0->unk_044.posX   = 190;
-            arg0->unk_044.posY   = 88;
-            arg0->unk_044.unk_0A = arg0->unk_044.unk_0A & ~0xC00 | 0x800;
+            arg0->unk_044.posX       = 190;
+            arg0->unk_044.posY       = 88;
+            arg0->unk_044.unk_0A.raw = arg0->unk_044.unk_0A.raw & ~0xC00 | 0x800;
         }
     }
 }

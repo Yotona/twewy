@@ -311,9 +311,9 @@ static inline SpriteFrameInfo* Ov002_GetSpriteFrameInfo(Sprite* sprite) {
     data_0206b408.unk_08 = 0;
     data_0206b408.unk_0C = 0;
     data_0206b408.unk_10 = -1;
-    if ((sprite->animData != NULL) && (sprite->unk1C != NULL) && (sprite->unk16 >= 0)) {
+    if ((sprite->animData != NULL) && (sprite->frameDataTable != NULL) && (sprite->unk16 >= 0)) {
         frame_index          = sprite->unk16;
-        frame_data           = sprite->unk1C;
+        frame_data           = sprite->frameDataTable;
         data_0206b408.unk_04 = frame_data[frame_index].unk_02;
         data_0206b408.unk_08 = (s32)((u16*)frame_data + frame_data[frame_index].unk_00);
     }
@@ -1265,9 +1265,10 @@ static SpriteFrameInfo* func_ov002_020824ac(Sprite* sprite, s32 arg1, s32 mode) 
             data_0206b408.unk_0C = 0;
             data_0206b408.unk_10 = -1;
 
-            if (sprite->animData != NULL && sprite->unk1C != NULL && sprite->unk16 >= 0) {
-                data_0206b408.unk_04 = *((u16*)sprite->unk1C + (sprite->unk16 * 4 + 1));
-                data_0206b408.unk_08 = (s32)((u16*)sprite->unk1C + *((u16*)((u8*)sprite->unk1C + (sprite->unk16 * 8))));
+            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
+                data_0206b408.unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                data_0206b408.unk_08 =
+                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
             }
             info = &data_0206b408;
         } break;
@@ -3605,7 +3606,7 @@ s32 func_ov002_02087728(void* arg0, OtosuMenuObj* menuObj) {
                 menuObj->unk_46078.posX = table_sp0[anim_index + 1];
                 menuObj->unk_46078.posY = table_sp0[anim_index + 2];
                 Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[anim_index],
-                                       menuObj->unk_46078.unk1C);
+                                       menuObj->unk_46078.frameDataTable);
                 return 0;
         }
     }
@@ -4282,7 +4283,7 @@ s32 func_ov002_02088b28(void* arg0, OtosuMenuObj* menuObj) {
         menuObj->unk_46078.posX     = table_sp0[anim_index + 1];
         menuObj->unk_46078.posY     = table_sp0[anim_index + 2];
         Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[anim_index],
-                               menuObj->unk_46078.unk1C);
+                               menuObj->unk_46078.frameDataTable);
         menuObj->unk_4196A = 5;
         func_ov002_0208800c(menuObj);
     }
@@ -4487,7 +4488,7 @@ s32 func_ov002_0208920c(void* arg0, OtosuMenuObj* menuObj) {
             menuObj->unk_46078.posX = table_sp0[temp_r7 + 1];
             menuObj->unk_46078.posY = table_sp0[temp_r7 + 2];
             Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[temp_r7],
-                                   menuObj->unk_46078.unk1C);
+                                   menuObj->unk_46078.frameDataTable);
             func_ov002_0208800c(menuObj);
         }
     }
@@ -4774,7 +4775,8 @@ s32 func_ov002_02089920(void* arg0, OtosuMenuObj* menuObj) {
         temp_ip                 = temp_r0_2 * 6;
         menuObj->unk_46078.posX = (u16) * (&sp2 + temp_ip);
         menuObj->unk_46078.posY = (u16) * (&sp4 + temp_ip);
-        Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp6[0], menuObj->unk_46078.unk1C);
+        Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp6[0],
+                               menuObj->unk_46078.frameDataTable);
         return 0;
     }
     return 0;
@@ -5184,7 +5186,7 @@ s32 func_ov002_0208a250(void* arg0, OtosuMenuObj* menuObj) {
                 menuObj->unk_46078.posX = (u16) * (((u16*)temp_r1_2) + 1);
                 menuObj->unk_46078.posY = (u16) * (((u16*)temp_r1_2) + 2);
                 Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16) * (((u16*)temp_r1_2) + 0),
-                                       menuObj->unk_46078.unk1C);
+                                       menuObj->unk_46078.frameDataTable);
             }
             goto block_33;
         }
@@ -5529,7 +5531,7 @@ s32 func_ov002_0208ab58(void* arg0, OtosuMenuObj* menuObj) {
                     menuObj->unk_46078.posX = table_anim[temp_r6 + 1];
                     menuObj->unk_46078.posY = table_anim[temp_r6 + 2];
                     Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_anim[temp_r6],
-                                           menuObj->unk_46078.unk1C);
+                                           menuObj->unk_46078.frameDataTable);
                     break;
             }
             goto block_36;
@@ -5784,7 +5786,8 @@ s32 func_ov002_0208b270(void* arg0, OtosuMenuObj* menuObj) {
             (void)temp_r5;
             menuObj->unk_46078.posX = sp6;
             menuObj->unk_46078.posY = sp8;
-            Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)sp4, menuObj->unk_46078.unk1C);
+            Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)sp4,
+                                   menuObj->unk_46078.frameDataTable);
         }
         goto block_10;
     }
@@ -6558,7 +6561,7 @@ s32 func_ov002_0208c8b0(OtosuMenuObj* menuObj) {
         OS_WaitForever();
     }
     Sprite_ChangeAnimation(&menuObj->unk_460C0, menuObj->unk_460C0.animData, (s16)subroutine_arg0[temp_r0],
-                           menuObj->unk_460C0.unk1C);
+                           menuObj->unk_460C0.frameDataTable);
     return 0;
 }
 
@@ -7292,7 +7295,8 @@ s32 func_ov002_0208db58(void* arg0, OtosuMenuObj* menuObj) {
         temp_r1_2                   = subroutine_arg0 + temp_ip;
         menuObj->unk_46078.posX     = temp_r1_2[1];
         menuObj->unk_46078.posY     = temp_r1_2[2];
-        Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)temp_r1_2[0], menuObj->unk_46078.unk1C);
+        Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)temp_r1_2[0],
+                               menuObj->unk_46078.frameDataTable);
     }
     temp_r5                = OS_DisableIRQ();
     data_ov002_020935e0[0] = menuObj->unk_4196A;
@@ -8131,25 +8135,25 @@ void func_ov002_0208f0bc(void* arg1, void* arg2) {
     anim.unk_26   = 0x1E;
     anim.unk_28   = 0x1F;
 
-    anim.unk_04 = 0x80;
-    anim.unk_06 = (s16)table_48[OVMGR_U8(arg1, 0x10)] + 0x60;
-    anim.unk_02 = (u16)((anim.unk_02 & ~0xC00) | 0x800);
-    anim.unk_2A = (OVMGR_S32(arg1, 0xC) != 0) ? 2 : 1;
+    anim.unk_04     = 0x80;
+    anim.unk_06     = (s16)table_48[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x800);
+    anim.unk_2A     = (OVMGR_S32(arg1, 0xC) != 0) ? 2 : 1;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x20), &anim) == 0) {
         OS_WaitForever();
     }
 
-    anim.unk_04 = 0x80;
-    anim.unk_06 = (s16)table_40[OVMGR_U8(arg1, 0x10)] + 0x60;
-    anim.unk_02 = (u16)((anim.unk_02 & ~0xC00) | 0x400);
-    anim.unk_2A = (OVMGR_S32(arg1, 0xC) != 0) ? 3 : table_38[OVMGR_U8(arg1, 0x11)];
+    anim.unk_04     = 0x80;
+    anim.unk_06     = (s16)table_40[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x400);
+    anim.unk_2A     = (OVMGR_S32(arg1, 0xC) != 0) ? 3 : table_38[OVMGR_U8(arg1, 0x11)];
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x60), &anim) == 0) {
         OS_WaitForever();
     }
 
-    anim.unk_04 = 0x8C;
-    anim.unk_06 = (s16)table_30[OVMGR_U8(arg1, 0x10)] + 0x60;
-    anim.unk_02 = (u16)((anim.unk_02 & ~0xC00) | 0x400);
+    anim.unk_04     = 0x8C;
+    anim.unk_06     = (s16)table_30[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x400);
     if (OVMGR_S32(arg1, 0xC) == 0) {
         anim.unk_2A = table_20[OVMGR_U8(arg1, 0x12)];
     } else {
@@ -8192,8 +8196,8 @@ void func_ov002_0208f0bc(void* arg1, void* arg2) {
         table_50[var_r4 * 2]     = src[var_r4].unk0;
         table_50[var_r4 * 2 + 1] = src[var_r4].unk2;
     }
-    var_r9      = 0;
-    anim.unk_02 = (u16)((anim.unk_02 & ~0xC00) | 0x400);
+    var_r9          = 0;
+    anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x400);
     if ((u32)OVMGR_U16(arg1, 0x18) <= 0U) {
         return;
     }
@@ -8649,7 +8653,7 @@ void func_ov002_0209023c(OtosuMenuObj* menuObj) {
     SpriteAnimation anim = data_ov002_02092a20;
 
     _Sprite_Load(&menuObj->unk_46078, &anim);
-    Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, 3, menuObj->unk_46078.unk1C);
+    Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, 3, menuObj->unk_46078.frameDataTable);
 }
 
 void func_ov002_020902a4(s32 arg0, OtosuMenuObj* menuObj) {
@@ -9199,9 +9203,10 @@ SpriteFrameInfo* func_ov002_02091760(Sprite* sprite, s32 arg1, s32 mode) {
             data_0206b408.unk_0C = 0;
             data_0206b408.unk_10 = -1;
 
-            if (sprite->animData != NULL && sprite->unk1C != NULL && sprite->unk16 >= 0) {
-                data_0206b408.unk_04 = *((u16*)sprite->unk1C + (sprite->unk16 * 4 + 1));
-                data_0206b408.unk_08 = (s32)((u16*)sprite->unk1C + *((u16*)((u8*)sprite->unk1C + (sprite->unk16 * 8))));
+            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
+                data_0206b408.unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                data_0206b408.unk_08 =
+                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
             }
             info = &data_0206b408;
         } break;
@@ -9304,9 +9309,10 @@ SpriteFrameInfo* func_ov002_02091978(Sprite* sprite, s32 arg1, s32 mode) {
             data_0206b408.unk_0C = 0;
             data_0206b408.unk_10 = -1;
 
-            if (sprite->animData != NULL && sprite->unk1C != NULL && sprite->unk16 >= 0) {
-                data_0206b408.unk_04 = *((u16*)sprite->unk1C + (sprite->unk16 * 4 + 1));
-                data_0206b408.unk_08 = (s32)((u16*)sprite->unk1C + *((u16*)((u8*)sprite->unk1C + (sprite->unk16 * 8))));
+            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
+                data_0206b408.unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                data_0206b408.unk_08 =
+                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
             }
             info = &data_0206b408;
         } break;

@@ -1,0 +1,2197 @@
+? ._m2c_cc2_10();                                   /* extern */
+? ._m2c_cc2_2(void *, s32);                         /* extern */
+? *._m2c_cc2_21();                                  /* extern */
+s32 ._m2c_cc2_4(?);                                 /* extern */
+s32 ._m2c_cc2_5(s32 *, ? *, void *);                /* extern */
+? ._m2c_cc2_56();                                   /* extern */
+? ._m2c_cc2_7(void *, s32);                         /* extern */
+? ._m2c_cc2_8();                                    /* extern */
+? BgResMgr_Init(void *, ?);                         /* extern */
+? BgResMgr_ReleaseChar(s32);                        /* extern */
+? BgResMgr_ReleaseScreen(s32);                      /* extern */
+? MI_CpuFillU16(?, void *, ?);                      /* extern */
+? MI_CpuSet(struct _struct_data_0206b3e8_0x10 *, ?, ?); /* extern */
+? func_02001b44(s32, s32, s32, s32);                /* extern */
+? func_02002180(s32, s32 *, s32, s32, u32, u32, s32); /* extern */
+? func_02002254(s32, s32, s32, u32, u32, u32, s32, s32); /* extern */
+? func_02002398(s32, s32, s32, u32, u32, s32, s32); /* extern */
+? func_0200245c(s32, s32, s32, u32, u32, s32, s32); /* extern */
+? func_02002520(s32, s32, s32, u32, u32, s32, s32); /* extern */
+? func_020025e4(s32, s32, s32, u32, u32, s32, s32); /* extern */
+s32 func_02004ce8(? *, s32);                        /* extern */
+void func_0200b09c(void *arg0, s32 arg1, s32 arg2, s32 arg3); /* static */
+void func_0200b198(void *arg0, s32 arg1, s32 arg2, u32 arg3); /* static */
+void func_0200b29c(void *arg0, s32 arg1, s32 arg2, s32 arg3); /* static */
+void func_0200b390(void *arg0, s32 arg1, s32 arg2, s32 arg3); /* static */
+void func_0200b484(void *arg0, s32 arg1, s32 arg2, s32 arg3); /* static */
+void func_0200b578(void *arg0, s32 arg1, s32 arg2, s32 arg3); /* static */
+void func_0200b66c(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200b7b8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200b91c(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200ba64(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200bbac(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200bcf4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4); /* static */
+void func_0200bfb4(s32 *arg0, ? *arg1, s32 arg2);   /* static */
+void func_0200c658(s32 arg0, s32 arg1);             /* static */
+void func_0200c7cc(s32 arg0, s32 arg1);             /* static */
+s32 func_0200c818(s32 arg1, s32 arg2, s32);         /* static */
+void func_0200cdbc(s32 *arg0, ? *arg1, s32 *arg2, ? arg3); /* static */
+void func_0200d858(void *arg0, s32 arg1, s32 arg2, s32 *arg3); /* static */
+extern ? data_02059d24;
+extern ? data_020676f4;
+extern ? data_02067700;
+extern ? data_0206a9bc;
+extern ? g_BgResourceManagers;
+s32 data_0206b3cc[3];
+static void *data_0206b3d8[3];
+static void *data_0206b3e4;
+static struct _struct_data_0206b3e8_0x10 data_0206b3e8[2];
+static u16 data_0205ad64[4] = { 0x20, 0x40, 0x60, 0x60 }; /* const */
+static u16 data_0205ad9c[0xC];                      /* unable to generate initializer: cannot parse func_0200ed38 as integer; const */
+
+void func_0200a128(s32 arg0) {
+    s32 temp_r3;
+    s32 var_r5;
+    s32 var_r6;
+    void *temp_r1;
+
+    var_r5 = 0;
+    do {
+        var_r6 = 0;
+        temp_r3 = arg0 + (var_r5 << 7);
+loop_2:
+        temp_r1 = temp_r3 + (var_r6 * 8);
+        *((var_r6 * 8) + temp_r3) = -1;
+        var_r6 += 1;
+        temp_r1->unk2 = 0;
+        if (var_r6 < 0x10) {
+            goto loop_2;
+        }
+        var_r5 += 1;
+    } while (var_r5 < 7);
+}
+
+s16 func_0200a170(s32 arg0, s32 arg1) {
+    s16 var_lr;
+    s16 var_r2;
+    s32 temp_ip;
+    s32 var_r5;
+    s32 var_r5_2;
+    void *temp_r0;
+
+    var_lr = -1;
+    var_r2 = 0;
+    if (arg1 <= 0x10) {
+loop_2:
+        var_r5 = 0;
+        if (arg1 > 0) {
+loop_4:
+            if ((s32) *((var_r5 * 8) + (arg0 + (var_r2 * 8))) >= 0) {
+                var_r2 += var_r5 + 1;
+            } else {
+                var_r5 += 1;
+                if (var_r5 < arg1) {
+                    goto loop_4;
+                }
+            }
+        }
+        if (var_r5 == arg1) {
+            var_r5_2 = 0;
+            if (arg1 > 0) {
+                temp_ip = arg0 + (var_r2 * 8);
+                do {
+                    temp_r0 = temp_ip + (var_r5_2 * 8);
+                    *((var_r5_2 * 8) + temp_ip) = var_r2;
+                    var_r5_2 += 1;
+                    temp_r0->unk2 = 0xFFFF;
+                } while (var_r5_2 < arg1);
+            }
+            var_lr = var_r2;
+        } else if ((s32) (var_r2 + arg1) <= 0x10) {
+            goto loop_2;
+        }
+    }
+    return var_lr;
+}
+
+void func_0200a21c(s16 *arg0, s32 *arg1, u16 arg2, s32 arg3) {
+    s16 sp2;
+    s16 sp0;
+
+    sp0 = func_0200a170(arg1 + (arg2 << 7), arg3);
+    sp2 = 0xFFFF;
+    arg0->unk0 = (s32) sp0;
+    arg0->unk4 = sp4;
+}
+
+s16 func_0200a25c(void *arg0, s16 arg1) {
+    s16 var_ip;
+    s16 var_ip_2;
+    s16 var_r3;
+    u16 temp_r2;
+    void *var_lr;
+    void *var_r0;
+
+    var_r0 = arg0;
+    var_lr = var_r0;
+    var_r3 = -1;
+    var_ip = 0;
+loop_1:
+    temp_r2 = var_lr->unk2;
+    if ((temp_r2 != 0) && !(temp_r2 & arg1)) {
+        var_lr->unk0 = var_ip;
+        var_r3 = var_ip;
+        var_lr->unk2 = (u16) (var_lr->unk2 | arg1);
+    } else {
+        var_ip += 1;
+        var_lr += 8;
+        if ((s32) var_ip < 0x10) {
+            goto loop_1;
+        }
+    }
+    if ((s32) var_r3 < 0) {
+        var_ip_2 = 0;
+loop_7:
+        if (!(var_r0->unk2 & arg1)) {
+            var_r0->unk0 = var_ip_2;
+            var_r3 = var_ip_2;
+            var_r0->unk2 = (u16) (var_r0->unk2 | arg1);
+        } else {
+            var_ip_2 += 1;
+            var_r0 += 8;
+            if ((s32) var_ip_2 < 0x10) {
+                goto loop_7;
+            }
+        }
+    }
+    return var_r3;
+}
+
+void func_0200a2f0(s16 *arg0, s32 *arg1, u16 arg2, s16 arg3) {
+    s16 sp2;
+    s16 sp0;
+
+    sp0 = func_0200a25c(arg1 + (arg2 << 7), arg3);
+    sp2 = arg3;
+    arg0->unk0 = (s32) sp0;
+    arg0->unk4 = sp4;
+}
+
+s16 func_0200a32c(s32 arg0, s16 arg1, s32 arg2) {
+    s16 var_ip;
+    s32 temp_ip;
+    s32 var_lr;
+    s32 var_r5;
+    void *temp_r0;
+
+    var_ip = -1;
+    if ((s32) (arg1 + arg2) <= 0x10) {
+        var_lr = 0;
+        if (arg2 > 0) {
+loop_3:
+            if ((s32) *((var_lr * 8) + (arg0 + (arg1 * 8))) < 0) {
+                var_lr += 1;
+                if (var_lr < arg2) {
+                    goto loop_3;
+                }
+            }
+        }
+        if (var_lr == arg2) {
+            var_r5 = 0;
+            if (arg2 > 0) {
+                temp_ip = arg0 + (arg1 * 8);
+                do {
+                    temp_r0 = temp_ip + (var_r5 * 8);
+                    *((var_r5 * 8) + temp_ip) = arg1;
+                    var_r5 += 1;
+                    temp_r0->unk2 = 0xFFFF;
+                } while (var_r5 < arg2);
+            }
+            var_ip = arg1;
+        }
+    }
+    return var_ip;
+}
+
+void func_0200a3b8(s16 *arg0, s32 *arg1, u16 arg2, s16 arg3, s32 arg4) {
+    s16 sp2;
+    s16 sp0;
+
+    sp0 = func_0200a32c(arg1 + (arg2 << 7), arg3, arg4);
+    sp2 = 0xFFFF;
+    arg0->unk0 = (s32) sp0;
+    arg0->unk4 = sp4;
+}
+
+void func_0200a3fc(s32 arg0, u32 arg1, ? *arg2) {
+    s16 var_lr;
+    u16 temp_ip;
+    void *var_r4;
+
+    var_lr = arg2->unk0;
+    if ((s32) var_lr < 0) {
+        return;
+    }
+    temp_ip = arg2->unk2;
+    var_r4 = arg0 + (arg1 << 7) + (var_lr * 8);
+    if (temp_ip == 0xFFFF) {
+loop_5:
+        if ((s32) var_lr >= 0x10) {
+            return;
+        }
+        if (var_r4->unk0 != arg2->unk0) {
+            return;
+        }
+        var_r4->unk0 = -1;
+        var_r4->unk2 = 0;
+        var_r4 += 8;
+        var_lr += 1;
+        goto loop_5;
+    }
+    var_r4->unk2 = (u16) (var_r4->unk2 & ~temp_ip);
+    if (var_r4->unk2 == 0) {
+        var_r4->unk0 = -1;
+    }
+}
+
+void func_0200a484(void) {
+
+}
+
+void func_0200a488(s32 arg0) {
+    func_0200a484();
+    func_0200a484(arg0 + 0x280);
+    func_0200a484(arg0 + 0x300);
+}
+
+? *func_0200a4a8(s32 *arg0) {
+    ? *temp_r2;
+
+    temp_r2 = arg0->unk40;
+    if (temp_r2 != NULL) {
+        arg0->unk40 = (? *) *temp_r2;
+    }
+    return temp_r2;
+}
+
+void func_0200a4c0(s32 *arg0, ? *arg1) {
+    if (arg1 != NULL) {
+        *arg1 = arg0->unk20;
+        arg0->unk20 = arg1;
+    }
+}
+
+void func_0200a4d4(s32 *arg0, ? *arg1) {
+    arg1->unk4 = (s16) (data_0205ad64[*arg0] | 0xF07);
+    arg1->unk6 = 0;
+    arg1->unk8 = 0x80000000;
+    arg1->unkC = (s32) (arg1->unkC & ~7 & ~0xF8 & ~0x1F00 & ~0x7E000);
+    arg1->unk10 = -1;
+    arg1->unk12 = 0;
+    arg1->unk16 = 0;
+    arg1->unk14 = 0;
+    arg1->unk18 = 0;
+    arg1->unk1C = &data_0205a128;
+}
+
+s32 func_0200a544(s32 *arg0, ? *arg1) {
+    s32 var_r3;
+
+    var_r3 = 0;
+    if (arg1 != NULL) {
+        if (arg1->unk4 & 0x10) {
+            var_r3 = arg0->unk20;
+            if (var_r3 != 0) {
+                return ._m2c_cc2_5(arg0, arg1, arg0 + 0x20);
+            }
+        }
+        /* Duplicate return node #8. Try simplifying control flow for better match */
+        return var_r3;
+    }
+    return var_r3;
+}
+
+void func_0200a590(s32 *arg0, ? *arg1) {
+    if (arg1 == NULL) {
+        return;
+    }
+    if (arg1->unk4 & 0x10) {
+        arg1->unk0 = arg0->unk40;
+        arg0->unk40 = arg1;
+    }
+}
+
+void func_0200a5b0(s32 arg0, s32 arg1) {
+    s16 sp4C;
+    s16 sp44;
+    s16 sp3C;
+    s16 sp34;
+    s16 sp2C;
+    s16 sp24;
+    s16 sp1C;
+    s16 sp14;
+    s16 spC;
+    s16 sp4;
+    ? *var_r1;
+    s32 var_r0;
+    s32 var_r6;
+    u32 var_r2;
+    void *temp_r0;
+
+    data_0206b3cc[arg1] = arg0;
+    if (arg0 == 0) {
+        return;
+    }
+    arg0->unk0 = arg1;
+    var_r2 = 0;
+    arg0->unk20 = 0;
+    arg0->unk40 = NULL;
+    var_r1 = arg0 + 0x60;
+    do {
+        var_r2 += 1;
+        *var_r1 = arg0->unk40;
+        arg0->unk40 = var_r1;
+        var_r1 += 0x20;
+    } while (var_r2 < 0xA8U);
+    func_0200a128(arg0 + 0x1560);
+    var_r6 = GX_VRAM_NONE;
+    switch (arg1) {                                 /* switch 1; irregular */
+    case 0:                                         /* switch 1 */
+        arg0->unk4 = (void *) (&data_02066aec + (arg1 << 0xA));
+        var_r6 = GX_GetBankForBgExtPltt();
+        break;
+    case 1:                                         /* switch 1 */
+        arg0->unk4 = (void *) (&data_02066aec + (arg1 << 0xA));
+        var_r6 = GX_GetBankForSubBgExtPltt();
+        break;
+    case 2:                                         /* switch 1 */
+        arg0->unk4 = (void *) (&data_02066aec + (arg1 << 0xA));
+        func_0200a3b8(&sp4C, arg0 + 0x1560, 0U, 0, 0x10);
+        break;
+    }
+    arg0->unk8 = 0;
+    arg0->unkC = 0;
+    arg0->unk10 = 0;
+    arg0->unk14 = 0;
+    switch (var_r6) {                               /* switch 2; irregular */
+    case GX_VRAM_F:                                 /* switch 2 */
+        arg0->unk8 = 0x06890000;
+        arg0->unkC = 0x06892000;
+        func_0200a3b8(&sp44, arg0 + 0x1560, 3U, 0x10);
+        func_0200a3b8(&sp3C, arg0 + 0x1560, 4U, 0, 0x10);
+        break;
+    case GX_VRAM_G:                                 /* switch 2 */
+        arg0->unk10 = 0x06894000;
+        arg0->unk14 = 0x06896000;
+        func_0200a3b8(&sp34, arg0 + 0x1560, 1U, 0x10);
+        func_0200a3b8(&sp2C, arg0 + 0x1560, 2U, 0, 0x10);
+        break;
+    case GX_VRAM_E:                                 /* switch 2 */
+        arg0->unk8 = 0x06880000;
+        arg0->unkC = 0x06882000;
+        arg0->unk10 = 0x06884000;
+        arg0->unk14 = 0x06886000;
+        break;
+    case GX_VRAM_FG:                                /* switch 2 */
+        arg0->unk8 = 0x06890000;
+        arg0->unkC = 0x06892000;
+        arg0->unk10 = 0x06894000;
+        arg0->unk14 = 0x06896000;
+        break;
+    case GX_VRAM_H:                                 /* switch 2 */
+        arg0->unk8 = 0x06898000;
+        arg0->unkC = 0x0689A000;
+        arg0->unk10 = 0x0689C000;
+        arg0->unk14 = 0x0689E000;
+        break;
+    default:                                        /* switch 2 */
+        func_0200a3b8(&sp24, arg0 + 0x1560, 1U, 0, 0x10);
+        func_0200a3b8(&sp1C, arg0 + 0x1560, 2U, 0, 0x10);
+        func_0200a3b8(&sp14, arg0 + 0x1560, 3U, 0, 0x10);
+        func_0200a3b8(&spC, arg0 + 0x1560, 4U, 0, 0x10);
+        break;
+    }
+    var_r0 = GX_VRAM_NONE;
+    arg0->unk1C = NULL;
+    switch (arg1) {                                 /* switch 3; irregular */
+    case 2:                                         /* switch 3 */
+        temp_r0 = &data_02066aec + (arg1 << 0xA);
+        arg0->unk18 = temp_r0;
+        arg0->unk1C = (void *) (temp_r0 + 0x200);
+        return;
+    case 0:                                         /* switch 3 */
+        arg0->unk18 = (void *) (&data_02066aec + (arg1 << 0xA) + 0x200);
+        var_r0 = GX_GetBankForObjExtPltt();
+    default:                                        /* switch 3 */
+block_36:
+        switch (var_r0) {                           /* switch 4; irregular */
+        case GX_VRAM_F:                             /* switch 4 */
+            arg0->unk1C = (void *)0x06890000;
+            return;
+        case GX_VRAM_G:                             /* switch 4 */
+            arg0->unk1C = (void *)0x06894000;
+            return;
+        case GX_VRAM_I:                             /* switch 4 */
+            arg0->unk1C = (void *)0x068A0000;
+            return;
+        default:                                    /* switch 4 */
+            func_0200a3b8(&sp4, arg0 + 0x1560, 6U, 0, 0x10);
+            return;
+        }
+        break;
+    case 1:                                         /* switch 3 */
+        arg0->unk18 = (void *) (&data_02066aec + (arg1 << 0xA) + 0x200);
+        var_r0 = GX_GetBankForSubObjExtPltt();
+        goto block_36;
+    }
+}
+
+? *func_0200a968(s32 *arg0, s32 arg1, u16 arg2, u16 arg3) {
+    s16 sp0;
+    ? *temp_r0;
+    ? *var_r0;
+    u16 temp_r2;
+
+    if (arg0 == NULL) {
+        return NULL;
+    }
+    if (arg1 != 0) {
+        var_r0 = arg0->unk20;
+        if (var_r0 != NULL) {
+loop_5:
+            if ((var_r0->unk6 != 0) && (var_r0->unk18 == arg1) && (((u32) (var_r0->unkC << 0x13) >> 0x1B) == arg3) && (var_r0->unk12 == 0xFFFF)) {
+
+            } else {
+                var_r0 = var_r0->unk0;
+                if (var_r0 != NULL) {
+                    goto loop_5;
+                }
+            }
+        }
+        if (var_r0 != NULL) {
+            temp_r2 = var_r0->unk6;
+            if (temp_r2 != 0xFFFF) {
+                var_r0->unk6 = (u16) (temp_r2 + 1);
+            }
+            return var_r0;
+        }
+        goto block_15;
+    }
+block_15:
+    temp_r0 = func_0200a4a8(arg0);
+    if (temp_r0 == NULL) {
+        return NULL;
+    }
+    func_0200a4d4(arg0, temp_r0);
+    func_0200a21c(&sp0, arg0 + 0x1560, arg2, (s32) arg3);
+    if ((s32) sp0 < 0) {
+        func_0200a590(arg0, temp_r0);
+        return NULL;
+    }
+    temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x10);
+    if (arg1 != 0) {
+        temp_r0->unk6 = 1;
+    }
+    temp_r0->unkC = (s32) ((temp_r0->unkC & ~7) | (arg2 & 7));
+    temp_r0->unk10 = sp0;
+    temp_r0->unk12 = 0xFFFF;
+    temp_r0->unk14 = 0;
+    switch (arg2) {
+    default:
+        break;
+    case 0:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 8) & ~0x1F00) | ((u32) (arg3 << 0x1B) >> 0x13));
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 0x80) & ~0x1F00) | ((u32) (arg3 << 0x1B) >> 0x13));
+        break;
+    case 6:
+        if (arg0->unk0 != 2) {
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 0x80) & ~0x1F00) | ((u32) (arg3 << 0x1B) >> 0x13));
+        } else {
+        case 5:
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 8) & ~0x1F00) | ((u32) (arg3 << 0x1B) >> 0x13));
+        }
+        break;
+    }
+    func_0200a4c0(arg0, (? *) temp_r0);
+    func_0200bfb4(arg0, temp_r0, arg1);
+    return temp_r0;
+}
+
+? *func_0200abe4(s32 *arg0, s32 arg1, u16 arg2, s16 arg3) {
+    s16 sp0;
+    ? *temp_r0;
+    ? *var_r0;
+    u16 temp_r2;
+
+    if (arg0 == NULL) {
+        return NULL;
+    }
+    if (arg1 != 0) {
+        var_r0 = arg0->unk20;
+        if (var_r0 != NULL) {
+loop_4:
+            if ((var_r0->unk6 != 0) && (var_r0->unk18 == arg1) && (var_r0->unk12 == arg3)) {
+
+            } else {
+                var_r0 = var_r0->unk0;
+                if (var_r0 != NULL) {
+                    goto loop_4;
+                }
+            }
+        }
+        if (var_r0 != NULL) {
+            temp_r2 = var_r0->unk6;
+            if (temp_r2 != 0xFFFF) {
+                var_r0->unk6 = (u16) (temp_r2 + 1);
+            }
+            return var_r0;
+        }
+        goto block_13;
+    }
+block_13:
+    temp_r0 = func_0200a4a8(arg0);
+    if (temp_r0 == NULL) {
+        return NULL;
+    }
+    func_0200a4d4(arg0, temp_r0);
+    func_0200a2f0(&sp0, arg0 + 0x1560, arg2, arg3);
+    if ((s32) sp0 < 0) {
+        func_0200a590(arg0, temp_r0);
+        return NULL;
+    }
+    temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x10);
+    if (arg1 != 0) {
+        temp_r0->unk6 = 1;
+    }
+    temp_r0->unkC = (s32) (((temp_r0->unkC & ~7) | (arg2 & 7)) & ~0x1F00);
+    temp_r0->unk10 = sp0;
+    temp_r0->unk12 = sp2;
+    temp_r0->unk14 = 0;
+    switch (arg2) {
+    default:
+        break;
+    case 0:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((temp_r0->unkC & ~0xF8) | 8);
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((temp_r0->unkC & ~0xF8) | 0x80);
+        break;
+    case 6:
+        if (arg0->unk0 != 2) {
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((temp_r0->unkC & ~0xF8) | 0x80);
+        } else {
+        case 5:
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((temp_r0->unkC & ~0xF8) | 8);
+        }
+        break;
+    }
+    func_0200a4c0(arg0, (? *) temp_r0);
+    func_0200bfb4(arg0, temp_r0, arg1);
+    return temp_r0;
+}
+
+? *func_0200adf8(s32 *arg0, s32 arg1, u16 arg2, s16 arg3, s32 arg4) {
+    s16 sp4;
+    ? *temp_r0;
+
+    if (arg0 == NULL) {
+        return NULL;
+    }
+    temp_r0 = func_0200a4a8();
+    if (temp_r0 == NULL) {
+        return NULL;
+    }
+    func_0200a4d4(arg0, temp_r0);
+    func_0200a3b8(&sp4, arg0 + 0x1560, arg2, arg3, arg4);
+    if ((s32) sp4 < 0) {
+        func_0200a590(arg0, temp_r0);
+        return NULL;
+    }
+    temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x10);
+    temp_r0->unkC = (s32) ((temp_r0->unkC & ~7) | (arg2 & 7));
+    temp_r0->unk10 = sp4;
+    temp_r0->unk12 = 0xFFFF;
+    temp_r0->unk14 = 0;
+    switch (arg2) {
+    default:
+        break;
+    case 0:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 8) & ~0x1F00) | ((u32) ((u16) arg4 << 0x1B) >> 0x13));
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x2000);
+        temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 0x80) & ~0x1F00) | ((u32) ((u16) arg4 << 0x1B) >> 0x13));
+        break;
+    case 6:
+        if (*arg0 != 2) {
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 0x80) & ~0x1F00) | ((u32) ((u16) arg4 << 0x1B) >> 0x13));
+        } else {
+        case 5:
+            temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x1000);
+            temp_r0->unkC = (s32) ((((temp_r0->unkC & ~0xF8) | 8) & ~0x1F00) | ((u32) ((u16) arg4 << 0x1B) >> 0x13));
+        }
+        break;
+    }
+    func_0200a4c0(arg0, (? *) temp_r0);
+    func_0200bfb4(arg0, temp_r0, arg1);
+    return temp_r0;
+}
+
+s32 func_0200afec(s32 *arg0, ? *arg1) {
+    u16 temp_r1;
+
+    if (arg0 == NULL) {
+        return 0;
+    }
+    if ((arg1 == NULL) || ((arg1->unk4 & 0x10) != 0x10)) {
+        return 0;
+    }
+    temp_r1 = arg1->unk6;
+    if (temp_r1 != 0) {
+        arg1->unk6 = (u16) (temp_r1 - 1);
+    }
+    if (arg1->unk6 != 0) {
+        return 0;
+    }
+    func_0200a3fc(arg0 + 0x1560, (u32) (arg1->unkC << 0x1D) >> 0x1D, &subroutine_arg0, arg1->unk10, arg1->unk12);
+    func_0200a544(arg0, arg1);
+    func_0200a590(arg0, arg1);
+    return 1;
+}
+
+void func_0200b09c(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s16 temp_r6;
+    s32 *var_r4;
+    s32 temp_r1;
+    s32 var_r5;
+    s32 var_r7;
+    s32 var_r8;
+    u32 temp_r0;
+    u32 temp_r6_2;
+
+    temp_r6 = arg0->unk14;
+    var_r8 = arg2;
+    var_r7 = arg3;
+    if ((s32) temp_r6 >= 0) {
+        ._m2c_cc2_7();
+        return;
+    }
+    var_r4 = &data_0205a128;
+    temp_r6_2 = 0 - temp_r6;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r1 = arg0->unkC;
+        func_02002180(arg1, &data_0205a128, var_r8, var_r7, ((u32) (temp_r1 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r1 << 0x13) >> 0x1B), temp_r6_2, 1);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            func_02002180(arg1, var_r4, var_r8, var_r7, (u32) (arg0->unkC << 0x18) >> 0x1B, temp_r6_2, 1);
+            temp_r0 = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r4 += temp_r0 * 2;
+            var_r8 += temp_r0 * 2;
+        }
+        var_r5 -= 1;
+        var_r7 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r5 >= 0);
+}
+
+void func_0200b198(void *arg0, s32 arg1, s32 arg2, u32 arg3) {
+    s32 temp_r1;
+    s32 var_r10;
+    s32 var_r5;
+    s32 var_r9;
+    u32 temp_r0;
+    u32 var_r4;
+
+    var_r5 = arg2;
+    var_r4 = arg3;
+    var_r9 = arg0->unk1C;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r1 = arg0->unkC;
+        func_02002254(arg1, var_r9, ((u32) (temp_r1 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r1 << 0x13) >> 0x1B), (u32) (arg0->unkC << 0xD) >> 0x1A, (u32) arg0->unk14, 1U);
+        return;
+    }
+    var_r10 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r10)) {
+            func_02002254(arg1, var_r9, var_r5, var_r4, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+            temp_r0 = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r9 += temp_r0 * 2;
+            var_r5 += temp_r0 * 2;
+        }
+        var_r10 -= 1;
+        var_r4 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r10 >= 0);
+}
+
+void func_0200b29c(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_r3;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+
+    var_r7 = arg2;
+    var_r6 = arg3;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r3 = arg0->unkC;
+        func_02002398(arg1, var_r7, var_r6, ((u32) (temp_r3 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r3 << 0x13) >> 0x1B), (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            func_02002398(arg1, var_r7, var_r6, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+            var_r7 += ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2;
+        }
+        var_r5 -= 1;
+        var_r6 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r5 >= 0);
+}
+
+void func_0200b390(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_r3;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+
+    var_r7 = arg2;
+    var_r6 = arg3;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r3 = arg0->unkC;
+        func_0200245c(arg1, var_r7, var_r6, ((u32) (temp_r3 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r3 << 0x13) >> 0x1B), (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            func_0200245c(arg1, var_r7, var_r6, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+            var_r7 += ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2;
+        }
+        var_r5 -= 1;
+        var_r6 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r5 >= 0);
+}
+
+void func_0200b484(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_r3;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+
+    var_r7 = arg2;
+    var_r6 = arg3;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r3 = arg0->unkC;
+        func_02002520(arg1, var_r7, var_r6, ((u32) (temp_r3 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r3 << 0x13) >> 0x1B), (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            func_02002520(arg1, var_r7, var_r6, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+            var_r7 += ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2;
+        }
+        var_r5 -= 1;
+        var_r6 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r5 >= 0);
+}
+
+void func_0200b578(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_r3;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+
+    var_r7 = arg2;
+    var_r6 = arg3;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r3 = arg0->unkC;
+        func_020025e4(arg1, var_r7, var_r6, ((u32) (temp_r3 << 0x18) >> 0x1B) * 0x10 * ((u32) (temp_r3 << 0x13) >> 0x1B), (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            func_020025e4(arg1, var_r7, var_r6, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 1);
+            var_r7 += ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2;
+        }
+        var_r5 -= 1;
+        var_r6 += (u32) (arg0->unkC << 0x18) >> 0x1B;
+    } while (var_r5 >= 0);
+}
+
+void func_0200b66c(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 spC;
+    s16 temp_r7;
+    s32 *var_r5;
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 temp_r4;
+    s32 temp_r6;
+    s32 var_r6;
+    s32 var_r8;
+    s32 var_r9;
+    u32 temp_r7_2;
+    u32 var_r1;
+
+    temp_r0 = arg0->unkC;
+    spC = arg1;
+    temp_r7 = arg0->unk14;
+    var_r1 = (u32) (temp_r0 << 0x18) >> 0x1B;
+    var_r9 = arg3;
+    temp_r4 = var_r1 * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r8 = arg4;
+    if ((s32) temp_r7 >= 0) {
+        ._m2c_cc2_10();
+        return;
+    }
+    var_r5 = &data_0205a128;
+    temp_r7_2 = 0 - temp_r7;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r6 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, temp_r6);
+        func_02002180(temp_r0_2, &data_0205a128, var_r9, temp_r4, temp_r7_2, 0U);
+        func_02001b44(spC, arg2 + (var_r8 * 2), temp_r0_2, temp_r6);
+        return;
+    }
+    var_r6 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r6)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_r1 * 2);
+            func_02002180(temp_r0_3, var_r5, var_r9, 0, (u32) (arg0->unkC << 0x18) >> 0x1B, temp_r7_2, 0);
+            func_02001b44(spC, arg2 + (var_r8 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_r1 = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r5 += var_r1 * 2;
+            var_r9 += var_r1 * 2;
+        }
+        var_r8 += var_r1;
+        var_r6 -= 1;
+    } while (var_r6 >= 0);
+}
+
+void func_0200b7b8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 sp10;
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    s32 var_r8;
+    u32 temp_r4;
+    u32 var_ip;
+
+    temp_r0 = arg0->unkC;
+    var_ip = (u32) (temp_r0 << 0x18) >> 0x1B;
+    temp_r4 = var_ip * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r8 = arg3;
+    var_r7 = arg4;
+    var_r5 = arg0->unk1C;
+    if (arg0->unk12 == 0xFFFF) {
+        sp10 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, sp10);
+        func_02002254(temp_r0_2, var_r5, var_r8, temp_r4, (u32) (arg0->unkC << 0xD) >> 0x1A, (u32) arg0->unk14, 0);
+        func_02001b44(arg1, arg2 + (var_r7 * 2), temp_r0_2, sp10);
+        return;
+    }
+    var_r6 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r6)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_ip * 2);
+            func_02002254(temp_r0_3, var_r5, var_r8, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (u32) arg0->unk14, 0);
+            func_02001b44(arg1, arg2 + (var_r7 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_ip = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r5 += var_ip * 2;
+            var_r8 += var_ip * 2;
+        }
+        var_r7 += var_ip;
+        var_r6 -= 1;
+    } while (var_r6 >= 0);
+}
+
+void func_0200b91c(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 temp_r5;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u32 temp_r4;
+    u32 var_ip;
+
+    temp_r0 = arg0->unkC;
+    var_ip = (u32) (temp_r0 << 0x18) >> 0x1B;
+    temp_r4 = var_ip * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r7 = arg3;
+    var_r6 = arg4;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r5 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, temp_r5);
+        func_02002398(temp_r0_2, var_r7, 0, temp_r4, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+        func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_2, temp_r5);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_ip * 2);
+            func_02002398(temp_r0_3, var_r7, 0, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+            func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_ip = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r7 += var_ip * 2;
+        }
+        var_r6 += var_ip;
+        var_r5 -= 1;
+    } while (var_r5 >= 0);
+}
+
+void func_0200ba64(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 temp_r5;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u32 temp_r4;
+    u32 var_ip;
+
+    temp_r0 = arg0->unkC;
+    var_ip = (u32) (temp_r0 << 0x18) >> 0x1B;
+    temp_r4 = var_ip * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r7 = arg3;
+    var_r6 = arg4;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r5 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, temp_r5);
+        func_0200245c(temp_r0_2, var_r7, 0, temp_r4, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+        func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_2, temp_r5);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_ip * 2);
+            func_0200245c(temp_r0_3, var_r7, 0, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+            func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_ip = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r7 += var_ip * 2;
+        }
+        var_r6 += var_ip;
+        var_r5 -= 1;
+    } while (var_r5 >= 0);
+}
+
+void func_0200bbac(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 temp_r5;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u32 temp_r4;
+    u32 var_ip;
+
+    temp_r0 = arg0->unkC;
+    var_ip = (u32) (temp_r0 << 0x18) >> 0x1B;
+    temp_r4 = var_ip * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r7 = arg3;
+    var_r6 = arg4;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r5 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, temp_r5);
+        func_02002520(temp_r0_2, var_r7, 0, temp_r4, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+        func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_2, temp_r5);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_ip * 2);
+            func_02002520(temp_r0_3, var_r7, 0, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+            func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_ip = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r7 += var_ip * 2;
+        }
+        var_r6 += var_ip;
+        var_r5 -= 1;
+    } while (var_r5 >= 0);
+}
+
+void func_0200bcf4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 temp_r0;
+    s32 temp_r0_2;
+    s32 temp_r0_3;
+    s32 temp_r5;
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u32 temp_r4;
+    u32 var_ip;
+
+    temp_r0 = arg0->unkC;
+    var_ip = (u32) (temp_r0 << 0x18) >> 0x1B;
+    temp_r4 = var_ip * 0x10 * ((u32) (temp_r0 << 0x13) >> 0x1B);
+    var_r7 = arg3;
+    var_r6 = arg4;
+    if (arg0->unk12 == 0xFFFF) {
+        temp_r5 = temp_r4 * 2;
+        temp_r0_2 = func_02004ce8(&data_0206a9bc, temp_r5);
+        func_020025e4(temp_r0_2, var_r7, 0, temp_r4, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+        func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_2, temp_r5);
+        return;
+    }
+    var_r5 = 0xF;
+    do {
+        if (arg0->unk12 & (1 << var_r5)) {
+            temp_r0_3 = func_02004ce8(&data_0206a9bc, var_ip * 2);
+            func_020025e4(temp_r0_3, var_r7, 0, (u32) (arg0->unkC << 0x18) >> 0x1B, (u32) (arg0->unkC << 0xD) >> 0x1A, (s32) arg0->unk14, 0);
+            func_02001b44(arg1, arg2 + (var_r6 * 2), temp_r0_3, ((u32) (arg0->unkC << 0x18) >> 0x1B) * 2);
+            var_ip = (u32) (arg0->unkC << 0x18) >> 0x1B;
+            var_r7 += var_ip * 2;
+        }
+        var_r6 += var_ip;
+        var_r5 -= 1;
+    } while (var_r5 >= 0);
+}
+
+void func_0200be3c(void *arg1) {
+    if ((arg1->unk4 & 0x8000) && (arg1->unk18 != 0)) {
+        ._m2c_cc2_4();
+    }
+}
+
+void func_0200bf60(void *arg0, void *arg1) {
+    ? *var_r4;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    if (arg1 != NULL) {
+        arg1->unk4 = (u16) (arg1->unk4 | 0x8000);
+        func_0200be3c();
+        return;
+    }
+    var_r4 = arg0->unk20;
+    if (var_r4 == NULL) {
+        return;
+    }
+    do {
+        func_0200be3c(arg0, var_r4);
+        var_r4 = *var_r4;
+    } while (var_r4 != NULL);
+}
+
+void func_0200bfb4(s32 *arg0, ? *arg1, s32 arg2) {
+    if ((arg0 != NULL) && (arg1->unk18 != arg2)) {
+        arg1->unk18 = arg2;
+        if (arg2 != 0) {
+            arg1->unk4 = (u16) (arg1->unk4 | 0x8000);
+        }
+    }
+}
+
+void func_0200bfd8(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 *arg4) {
+    s32 *var_r5;
+    s32 var_ip;
+    s32 var_r2;
+    s32 var_r9;
+    u16 temp_r7;
+    void *var_r1;
+
+    var_r1 = arg1;
+    var_r2 = arg2;
+    var_r5 = arg4;
+    if (arg0 == NULL) {
+        return;
+    }
+    if (var_r2 == 0) {
+        var_r2 = 0x3F00;
+    }
+    if (var_r5 == NULL) {
+        var_r5 = &data_0205a128;
+    }
+    var_ip = 0;
+    if (var_r1 == NULL) {
+        var_r1 = arg0->unk20;
+        var_ip = 1;
+    }
+    if (var_r1 == NULL) {
+        return;
+    }
+loop_11:
+    temp_r7 = var_r1->unk4;
+    var_r9 = 0;
+    if ((temp_r7 & (var_r2 & 0x3000)) && (temp_r7 & (var_r2 & 0xF00))) {
+        var_r9 = 1;
+    }
+    if (var_r9 == 1) {
+        if ((var_r1->unk16 == 1) && (arg3 == ((u32) (var_r1->unkC << 0xD) >> 0x1A)) && (var_r1->unk1C == var_r5)) {
+
+        } else {
+            var_r1->unk4 = (u16) (var_r1->unk4 | 0x8000);
+            var_r1->unk16 = 1U;
+            var_r1->unkC = (s32) ((var_r1->unkC & ~0x7E000) | ((u32) (arg3 << 0x1A) >> 0xD));
+            var_r1->unk1C = var_r5;
+        }
+    }
+    var_r1 = var_r1->unk0;
+    if ((var_ip != 0) && (var_r1 != NULL)) {
+        goto loop_11;
+    }
+}
+
+void func_0200c0a4(void *arg0, void *arg1, s32 arg2, u16 arg3, s32 arg4) {
+    s32 var_ip;
+    s32 var_r2;
+    s32 var_r9;
+    u16 temp_r7;
+    void *var_r1;
+
+    var_r1 = arg1;
+    var_r2 = arg2;
+    if (arg0 == NULL) {
+        return;
+    }
+    if (var_r2 == 0) {
+        var_r2 = 0x3F00;
+    }
+    var_ip = 0;
+    if (var_r1 == NULL) {
+        var_r1 = arg0->unk20;
+        var_ip = 1;
+    }
+    if (var_r1 == NULL) {
+        return;
+    }
+loop_9:
+    temp_r7 = var_r1->unk4;
+    var_r9 = 0;
+    if ((temp_r7 & (var_r2 & 0x3000)) && (temp_r7 & (var_r2 & 0xF00))) {
+        var_r9 = 1;
+    }
+    if ((var_r9 == 1) && ((var_r1->unk16 != arg3) || (((u32) (var_r1->unkC << 0xD) >> 0x1A) != arg4))) {
+        var_r1->unk4 = (u16) (var_r1->unk4 | 0x8000);
+        var_r1->unk16 = arg3;
+        var_r1->unkC = (s32) ((var_r1->unkC & ~0x7E000) | ((u32) (arg4 << 0x1A) >> 0xD));
+    }
+    var_r1 = var_r1->unk0;
+    if ((var_ip != 0) && (var_r1 != NULL)) {
+        goto loop_9;
+    }
+}
+
+void func_0200c164(void *arg0, void *arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg5) {
+    if (arg3 == 1) {
+        func_0200bfd8(arg0, arg1, arg2, arg4, arg5);
+        return;
+    }
+    func_0200c0a4((void *) arg4);
+}
+
+void func_0200c194(void *arg0, void *arg1, s32 arg2, s16 arg3) {
+    s32 var_r2;
+    s32 var_r4;
+    s32 var_r5;
+    u16 temp_r2;
+    void *var_r1;
+
+    var_r1 = arg1;
+    var_r2 = arg2;
+    if (arg0 == NULL) {
+        return;
+    }
+    if (var_r2 == 0) {
+        var_r2 = 0x3F00;
+    }
+    var_r4 = 0;
+    if (var_r1 == NULL) {
+        var_r1 = arg0->unk20;
+        var_r4 = 1;
+    }
+    if (var_r1 == NULL) {
+        return;
+    }
+loop_9:
+    temp_r2 = var_r1->unk4;
+    var_r5 = 0;
+    if ((temp_r2 & (var_r2 & 0x3000)) && (temp_r2 & (var_r2 & 0xF00))) {
+        var_r5 = 1;
+    }
+    if ((var_r5 == 1) && (var_r1->unk14 != arg3)) {
+        var_r1->unk4 = (u16) (var_r1->unk4 | 0x8000);
+        var_r1->unk14 = arg3;
+    }
+    var_r1 = var_r1->unk0;
+    if ((var_r4 != 0) && (var_r1 != NULL)) {
+        goto loop_9;
+    }
+}
+
+void func_0200c228(void *arg0) {
+    ? *var_r0;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    func_0200a488(arg0 + 0x1560);
+    var_r0 = arg0->unk20;
+    if (var_r0 == NULL) {
+        return;
+    }
+    do {
+        var_r0 = *var_r0;
+    } while (var_r0 != NULL);
+}
+
+void func_0200c25c(void *arg0, u32 arg1) {
+    s16 temp_r1;
+    s16 temp_r2;
+    s16 var_r3;
+    void *temp_r0;
+
+    MI_CpuFillU16(0, arg0, 0x2040);
+    arg0->unk0 = arg1;
+    switch (arg1) {
+    default:
+    case 0:
+        var_r3 = 0x40;
+        break;
+    case 1:
+        var_r3 = 0x80;
+        break;
+    case 2:
+        var_r3 = 0x100;
+        break;
+    case 3:
+        var_r3 = 0x200;
+        break;
+    case 4:
+        var_r3 = 0x300;
+        break;
+    case 5:
+        var_r3 = 0x400;
+        break;
+    case 6:
+        var_r3 = 0x800;
+        break;
+    }
+    temp_r2 = var_r3;
+    temp_r1 = 0 - (0x800 - var_r3);
+    arg0->unk20 = temp_r2;
+    temp_r0 = arg0 + (var_r3 * 4);
+    temp_r0->unk20 = temp_r1;
+    temp_r0->unk22 = temp_r2;
+    if (var_r3 != 0x800) {
+        arg0->unk2022 = temp_r1;
+    }
+}
+
+s16 func_0200c310(s16 *arg0, s32 arg1, s32 arg2) {
+    s16 temp_r1;
+    s16 temp_r3;
+    s16 temp_r3_2;
+    s16 temp_r3_3;
+    s16 temp_r3_4;
+    s16 temp_r5;
+    s16 temp_r7_2;
+    s16 temp_r9;
+    s16 var_lr;
+    s16 var_r3;
+    s16 var_r4;
+    s16 var_r6;
+    s32 temp_r6;
+    s32 temp_r7;
+    s32 temp_r7_3;
+
+    var_r6 = *arg0;
+    temp_r5 = 0 - arg1;
+    var_lr = -1;
+    var_r4 = 0;
+    if (var_r6 != 0) {
+loop_2:
+        temp_r7 = var_r4 & arg2;
+        if ((s32) var_r6 >= (s32) (arg1 + temp_r7)) {
+            if (temp_r7 != 0) {
+                temp_r3 = (arg2 + 1) - temp_r7;
+                temp_r3_2 = var_r4 + temp_r3;
+                temp_r9 = temp_r3;
+                *(arg0 + (var_r4 * 4)) = temp_r9;
+                (arg0 + (temp_r3_2 * 4))->unk2 = temp_r9;
+                temp_r7_2 = var_r6 - temp_r3;
+                *(arg0 + (temp_r3_2 * 4)) = temp_r7_2;
+                (arg0 + ((var_r4 + var_r6) * 4))->unk2 = temp_r7_2;
+                var_r4 = temp_r3_2;
+            }
+            temp_r7_3 = var_r4 * 4;
+            temp_r3_3 = *(arg0 + temp_r7_3);
+            if (temp_r3_3 == arg1) {
+                *(arg0 + temp_r7_3) = temp_r5;
+                var_lr = var_r4;
+                (arg0 + ((var_r4 + arg1) * 4))->unk2 = temp_r5;
+            } else if ((s32) temp_r3_3 > arg1) {
+                temp_r6 = var_r4 + arg1;
+                temp_r1 = temp_r3_3 + temp_r5;
+                *(arg0 + temp_r7_3) = temp_r5;
+                (arg0 + (temp_r6 * 4))->unk2 = temp_r5;
+                temp_r3_4 = temp_r1;
+                *(arg0 + (temp_r6 * 4)) = temp_r3_4;
+                var_lr = var_r4;
+                (arg0 + ((temp_r6 + temp_r1) * 4))->unk2 = temp_r3_4;
+            } else {
+                goto block_9;
+            }
+        } else {
+block_9:
+            var_r3 = *(arg0 + (var_r4 * 4));
+            if ((s32) var_r3 < 0) {
+                var_r3 = 0 - var_r3;
+            }
+            var_r4 += var_r3;
+            var_r6 = *(arg0 + (var_r4 * 4));
+            if (var_r6 != 0) {
+                goto loop_2;
+            }
+        }
+    }
+    return var_lr;
+}
+
+s32 func_0200c430(void *arg0, s32 arg1, s32 arg2) {
+    s16 temp_r1;
+    s16 temp_r3;
+    s16 temp_r4;
+    s16 temp_r5;
+    s16 temp_r6;
+    s16 temp_r6_2;
+    s16 temp_r8;
+    s16 temp_r9;
+    s16 var_r3;
+    s16 var_r4;
+    s16 var_r7;
+    s32 temp_r7;
+    s32 temp_r7_2;
+    s32 temp_r8_2;
+    s32 var_lr;
+    void *temp_ip;
+    void *temp_r3_2;
+
+    var_r7 = arg0->unk2002;
+    temp_r5 = 0 - arg1;
+    var_lr = -1;
+    var_r4 = 0x800;
+    if (var_r7 != 0) {
+loop_1:
+        temp_r6 = var_r4 & arg2;
+        if ((s32) var_r7 >= (s32) (arg1 + temp_r6)) {
+            if (temp_r6 != 0) {
+                temp_ip = arg0 + (var_r4 * 4);
+                temp_r8 = temp_ip->unk2;
+                temp_r3 = var_r4 - temp_r6;
+                temp_r7 = (temp_r8 - temp_r6) << 0x10;
+                temp_r8_2 = var_r4 - temp_r8;
+                temp_r9 = temp_r6;
+                *(arg0 + (temp_r3 * 4)) = temp_r9;
+                temp_ip->unk2 = temp_r9;
+                temp_r7_2 = temp_r7 >> 0x10;
+                *(arg0 + (temp_r8_2 * 4)) = (s16) temp_r7_2;
+                (arg0 + (temp_r3 * 4))->unk2 = (s16) temp_r7_2;
+                var_r4 = temp_r3;
+            }
+            temp_r3_2 = arg0 + (var_r4 * 4);
+            temp_r6_2 = temp_r3_2->unk2;
+            if (temp_r6_2 == arg1) {
+                var_lr = var_r4 + temp_r5;
+                *(arg0 + (var_lr * 4)) = temp_r5;
+                temp_r3_2->unk2 = temp_r5;
+            } else if ((s32) temp_r6_2 > arg1) {
+                temp_r1 = temp_r6_2 + temp_r5;
+                var_lr = var_r4 + temp_r5;
+                temp_r4 = temp_r1;
+                *(arg0 + ((var_lr - temp_r1) * 4)) = temp_r4;
+                (arg0 + (var_lr * 4))->unk2 = temp_r4;
+                *(arg0 + (var_lr * 4)) = temp_r5;
+                temp_r3_2->unk2 = temp_r5;
+            } else {
+                goto block_8;
+            }
+        } else {
+block_8:
+            var_r3 = (arg0 + (var_r4 * 4))->unk2;
+            if ((s32) var_r3 < 0) {
+                var_r3 = 0 - var_r3;
+            }
+            var_r4 -= var_r3;
+            var_r7 = (arg0 + (var_r4 * 4))->unk2;
+            if (var_r7 != 0) {
+                goto loop_1;
+            }
+        }
+    }
+    return var_lr;
+}
+
+s32 func_0200c548(s32 arg0, u32 arg1, s32 arg2) {
+    s16 var_r7;
+    s32 temp_r2;
+    s32 var_r2;
+
+    var_r2 = 1 << arg2;
+    if (var_r2 < 4) {
+        var_r2 = 4;
+    }
+    temp_r2 = var_r2 - 1;
+    var_r7 = func_0200c310(arg0 + 0x20, (s32) ((~temp_r2 & (temp_r2 + (arg1 >> 5))) << 0xE) >> 0x10, (s32) (temp_r2 + ((u32) (temp_r2 >> 1) >> 0x1E)) >> 2);
+    if ((s32) var_r7 >= 0) {
+        var_r7 <<= 7;
+        if (func_0200c818(arg0, arg1 + var_r7, arg2) >= 0x400) {
+            func_0200c7cc(arg0, (s32) var_r7);
+            var_r7 = -1;
+        }
+    }
+    return (s32) var_r7;
+}
+
+s32 func_0200c5d0(s32 arg0, u32 arg1, s32 arg2) {
+    s32 temp_r2;
+    s32 var_r2;
+    s32 var_r7;
+
+    var_r2 = 1 << arg2;
+    if (var_r2 < 4) {
+        var_r2 = 4;
+    }
+    temp_r2 = var_r2 - 1;
+    var_r7 = func_0200c430(arg0 + 0x20, (s32) ((~temp_r2 & (temp_r2 + (arg1 >> 5))) << 0xE) >> 0x10, (s32) (temp_r2 + ((u32) (temp_r2 >> 1) >> 0x1E)) >> 2);
+    if (var_r7 >= 0) {
+        var_r7 <<= 7;
+        if (func_0200c818(arg0, arg1 + var_r7, arg2) >= 0x400) {
+            func_0200c7cc(arg0, var_r7);
+            var_r7 = -1;
+        }
+    }
+    return var_r7;
+}
+
+void func_0200c658(s32 arg0, s32 arg1) {
+    if (arg1 < 0) {
+        return;
+    }
+    if ((arg1 < 0x800) && ((s32) *(arg0 + (arg1 * 4)) < 0)) {
+        ._m2c_cc2_4();
+    }
+}
+
+void func_0200c7cc(s32 arg0, s32 arg1) {
+    func_0200c658(arg0 + 0x20, (s32) (arg1 + ((u32) (arg1 >> 6) >> 0x19)) >> 7);
+}
+
+s32 func_0200c7e8(s32 *arg0, s32 arg1) {
+    s32 var_r2;
+
+    var_r2 = 0;
+    if (arg1 >= 0) {
+        var_r2 = (0 - (arg0 + (((s32) (arg1 + ((u32) (arg1 >> 6) >> 0x19)) >> 7) * 4))->unk20) << 7;
+    }
+    return var_r2;
+}
+
+s32 func_0200c818(s32 arg1, s32 arg2) {
+    s32 var_r0;
+
+    var_r0 = -1;
+    if (arg1 >= 0) {
+        var_r0 = arg1 >> (arg2 + 5);
+    }
+    return var_r0;
+}
+
+? *func_0200c82c(s32 *arg0) {
+    ? *temp_r2;
+
+    temp_r2 = arg0->unk40;
+    if (temp_r2 != NULL) {
+        arg0->unk40 = (? *) *temp_r2;
+    }
+    return temp_r2;
+}
+
+void func_0200c844(s32 *arg0, ? *arg1) {
+    if (arg1 != NULL) {
+        *arg1 = arg0->unk20;
+        arg0->unk20 = arg1;
+    }
+}
+
+void func_0200c858(s32 *arg0, ? *arg1) {
+    arg1->unk4 = (s16) (data_0205ad9c[*arg0] | 6);
+    arg1->unk6 = 0;
+    arg1->unk8 = (u16) (arg1->unk8 & ~1);
+    arg1->unk8 = (u16) (arg1->unk8 & ~2);
+    arg1->unk8 = (u16) (arg1->unk8 & ~4);
+    arg1->unk8 = (u16) (arg1->unk8 & ~8);
+    arg1->unkC = 0;
+    arg1->unkA = 0;
+    arg1->unk10 = -1;
+    arg1->unk12 = -1;
+    arg1->unk14 = -1;
+    arg1->unk18 = 0;
+    arg1->unk1C = 0;
+}
+
+s32 func_0200c8d0(s32 *arg0, ? *arg1) {
+    s32 var_r3;
+
+    var_r3 = 0;
+    if (arg1 != NULL) {
+        if (arg1->unk4 & 0x10) {
+            var_r3 = arg0->unk20;
+            if (var_r3 != 0) {
+                return ._m2c_cc2_5(arg0, arg1, arg0 + 0x20);
+            }
+        }
+        /* Duplicate return node #8. Try simplifying control flow for better match */
+        return var_r3;
+    }
+    return var_r3;
+}
+
+void func_0200c91c(s32 *arg0, ? *arg1) {
+    if (arg1 == NULL) {
+        return;
+    }
+    if (arg1->unk4 & 0x10) {
+        arg1->unk0 = arg0->unk40;
+        arg0->unk40 = arg1;
+    }
+}
+
+void func_0200c93c(void *arg0, s32 arg1) {
+    ? *var_r3;
+    s32 temp_r0;
+    s32 temp_r0_2;
+    u32 temp_r0_3;
+    u32 var_r2;
+    u32 var_r4;
+
+    var_r4 = saved_reg_r4;
+    data_0206b3d8[arg1] = arg0;
+    if (arg0 == NULL) {
+        return;
+    }
+    arg0->unk0 = arg1;
+    var_r2 = 0;
+    arg0->unk20 = 0;
+    arg0->unk40 = NULL;
+    var_r3 = arg0 + 0x60;
+    do {
+        var_r2 += 1;
+        *var_r3 = arg0->unk40;
+        arg0->unk40 = var_r3;
+        var_r3 += 0x20;
+    } while (var_r2 < 0x80U);
+    switch (arg1) {                                 /* switch 1; irregular */
+    case 0:                                         /* switch 1 */
+        temp_r0 = GX_GetBankForObj();
+        switch (temp_r0) {                          /* switch 2; irregular */
+        case GX_VRAM_F:                             /* switch 2 */
+            var_r4 = 1;
+            break;
+        case GX_VRAM_G:                             /* switch 2 */
+            var_r4 = 1;
+            break;
+        case GX_VRAM_FG:                            /* switch 2 */
+            var_r4 = 2;
+            break;
+        case GX_VRAM_EG:                            /* switch 2 */
+            var_r4 = 3;
+            break;
+        case GX_VRAM_EFG:                           /* switch 2 */
+            var_r4 = 4;
+            break;
+        case GX_VRAM_A:                             /* switch 2 */
+            var_r4 = 5;
+            break;
+        case GX_VRAM_B:                             /* switch 2 */
+            var_r4 = 5;
+            break;
+        case GX_VRAM_AB:                            /* switch 2 */
+            var_r4 = 6;
+            break;
+        default:                                    /* switch 2 */
+            var_r4 = 0;
+            break;
+        }
+        arg0->unk4 = 7;
+        arg0->unk8 = 0x06400000;
+        break;
+    case 1:                                         /* switch 1 */
+        temp_r0_2 = GX_GetBankForSubObj();
+        switch (temp_r0_2) {                        /* switch 3; irregular */
+        case GX_VRAM_D:                             /* switch 3 */
+            var_r4 = 5;
+            break;
+        case GX_VRAM_I:                             /* switch 3 */
+            var_r4 = 1;
+            break;
+        default:                                    /* switch 3 */
+            var_r4 = 0;
+            break;
+        }
+        arg0->unk4 = 7;
+        arg0->unk8 = 0x06600000;
+        break;
+    case 2:                                         /* switch 1 */
+        temp_r0_3 = (u32) GX_GetBankForTex();
+        switch (temp_r0_3) {                        /* switch 4 */
+        default:                                    /* switch 4 */
+            break;
+        case 0:                                     /* switch 4 */
+            var_r4 = 0;
+            break;
+        case 1:                                     /* switch 4 */
+        case 2:                                     /* switch 4 */
+        case 4:                                     /* switch 4 */
+        case 8:                                     /* switch 4 */
+            var_r4 = 5;
+            break;
+        case 3:                                     /* switch 4 */
+        case 6:                                     /* switch 4 */
+        case 7:                                     /* switch 4 */
+        case 12:                                    /* switch 4 */
+        case 14:                                    /* switch 4 */
+        case 15:                                    /* switch 4 */
+            var_r4 = 6;
+            break;
+        case 5:                                     /* switch 4 */
+        case 9:                                     /* switch 4 */
+        case 10:                                    /* switch 4 */
+        case 11:                                    /* switch 4 */
+        case 13:                                    /* switch 4 */
+            var_r4 = 5;
+            break;
+        }
+        arg0->unk4 = 1;
+        arg0->unk8 = 0;
+        break;
+    }
+    func_0200c25c(arg0 + 0x1060, var_r4);
+}
+
+? *func_0200cb4c(s32 *arg0, s32 *arg1, u32 arg2, u16 arg3) {
+    ? *temp_r0;
+    u32 var_r6;
+
+    var_r6 = arg2;
+    if (arg0 == NULL) {
+        return NULL;
+    }
+    if ((arg1 == NULL) && (var_r6 == 0)) {
+        return NULL;
+    }
+    if (var_r6 == 0) {
+        var_r6 = (u32) (*arg1 & ~0xFF) >> 8;
+        if (!((u8) *arg1 & 0xF0)) {
+            var_r6 -= 4;
+        }
+    }
+    if ((arg1 != NULL) && (arg0->unk20 != 0)) {
+        return ._m2c_cc2_21();
+    }
+    temp_r0 = func_0200c82c(arg0);
+    if (temp_r0 == NULL) {
+        return NULL;
+    }
+    func_0200c858(arg0, temp_r0);
+    temp_r0->unk8 = (u16) ((temp_r0->unk8 & ~1) | (arg3 & 1));
+    switch (arg3) {                                 /* irregular */
+    case 0:
+        temp_r0->unk10 = (s16) (func_0200c548((s32) (arg0 + 0x1060), var_r6, (*(&data_020676f4 + (arg0->unk0 * 0x108C)))->unk8) >> 5);
+        break;
+    case 1:
+        temp_r0->unk10 = (s16) (func_0200c5d0((s32) (arg0 + 0x1060), var_r6, (*(&data_02067700 + (arg0->unk0 * 0x108C)))->unk8) >> 5);
+        break;
+    }
+    if ((s32) temp_r0->unk10 < 0) {
+        func_0200c91c(arg0, temp_r0);
+        return NULL;
+    }
+    if (arg1 != NULL) {
+        temp_r0->unk8 = (u16) (temp_r0->unk8 | 8);
+    }
+    temp_r0->unk6 = 1;
+    temp_r0->unk4 = (u16) (temp_r0->unk4 | 0x10);
+    temp_r0->unk14 = func_0200c7e8(arg0 + 0x1060, temp_r0->unk10 << 5);
+    func_0200c844(arg0, (? *) temp_r0);
+    func_0200cdbc(arg0, temp_r0, arg1, 0);
+    return temp_r0;
+}
+
+s32 func_0200cd44(void *arg0, s32 arg1) {
+    if ((arg0 != NULL) && (arg1 != 0)) {
+        return ._m2c_cc2_4(0);
+    }
+    return 0;
+}
+
+void func_0200cdbc(s32 *arg0, ? *arg1, s32 *arg2, ? arg3) {
+    if ((arg0 != NULL) && (arg2 != NULL)) {
+        ._m2c_cc2_5();
+    }
+}
+
+void *func_0200cef0(void *arg0) {
+    void *temp_r4;
+
+    temp_r4 = data_0206b3e4;
+    data_0206b3e4 = arg0;
+    if (arg0 == NULL) {
+        BgResMgr_Init(NULL, 0);
+        BgResMgr_Init(NULL, 1);
+        func_0200c93c(NULL, 0);
+        func_0200c93c(NULL, 1);
+        func_0200c93c(NULL, 2);
+        func_0200a5b0(0, 0);
+        func_0200a5b0(0, 1);
+        func_0200a5b0(0, 2);
+    } else {
+        BgResMgr_Init(arg0, 0);
+        BgResMgr_Init(arg0 + 0x1C80, 1);
+        func_0200c93c(arg0 + 0x3900, 0);
+        func_0200c93c(arg0 + 0x69A0, 1);
+        func_0200c93c(arg0 + 0x9A40, 2);
+        func_0200a5b0((s32) (arg0 + 0xCAE0), 0);
+        func_0200a5b0((s32) (arg0 + 0xE3C0), 1);
+        func_0200a5b0((s32) (arg0 + 0xFCA0), 2);
+    }
+    return temp_r4;
+}
+
+void *func_0200cfe8(void *arg0) {
+    void *temp_r4;
+
+    temp_r4 = data_0206b3e4;
+    if (arg0 == temp_r4) {
+        return temp_r4;
+    }
+    data_0206b3e4 = arg0;
+    if (arg0 == NULL) {
+        BgResMgr_Init(NULL, 0);
+        BgResMgr_Init(NULL, 1);
+        func_0200c93c(NULL, 0);
+        func_0200c93c(NULL, 1);
+        func_0200c93c(NULL, 2);
+        func_0200a5b0(0, 0);
+        func_0200a5b0(0, 1);
+        func_0200a5b0(0, 2);
+    } else {
+        *(&g_BgResourceManagers + (arg0->unk0 * 4)) = arg0;
+        *(&g_BgResourceManagers + (arg0->unk1C80 * 4)) = arg0 + 0x1C80;
+        data_0206b3d8[arg0->unk3900] = arg0 + 0x3900;
+        data_0206b3d8[arg0->unk69A0] = arg0 + 0x69A0;
+        data_0206b3d8[arg0->unk9A40] = arg0 + 0x9A40;
+        data_0206b3cc[arg0->unkCAE0] = (s32) (arg0 + 0xCAE0);
+        data_0206b3cc[arg0->unkE3C0] = (s32) (arg0 + 0xE3C0);
+        data_0206b3cc[arg0->unkFCA0] = (s32) (arg0 + 0xFCA0);
+    }
+    return temp_r4;
+}
+
+void func_0200d120(void *arg0) {
+    s32 temp_r0;
+    s32 var_r2;
+    u16 temp_r3;
+    u32 temp_r0_2;
+
+    temp_r3 = arg0->unk4;
+    temp_r0 = temp_r3 & 0x60;
+    switch (temp_r0) {                              /* switch 1; irregular */
+    case 0x20:                                      /* switch 1 */
+        var_r2 = 0;
+        break;
+    case 0x40:                                      /* switch 1 */
+        var_r2 = 1;
+        break;
+    default:                                        /* switch 1 */
+        var_r2 = 2;
+        break;
+    }
+    temp_r0_2 = temp_r3 & 7;
+    switch (temp_r0_2) {                            /* switch 2 */
+    default:                                        /* switch 2 */
+        return;
+    case 4:                                         /* switch 2 */
+        BgResMgr_ReleaseChar(*(&g_BgResourceManagers + (var_r2 * 4)));
+        return;
+    case 5:                                         /* switch 2 */
+        BgResMgr_ReleaseScreen(*(&g_BgResourceManagers + (var_r2 * 4)));
+        return;
+    case 6:                                         /* switch 2 */
+        func_0200cd44(data_0206b3d8[var_r2]);
+        return;
+    case 7:                                         /* switch 2 */
+        func_0200afec((s32 *) data_0206b3cc[var_r2]);
+        return;
+        return;
+    }
+}
+
+s32 func_0200d1d8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    s32 temp_r4;
+    struct _struct_data_0206b3e8_0x10 *temp_r5;
+
+    temp_r5 = &data_0206b3e8[arg1];
+    temp_r4 = *(temp_r5 + (arg2 * 4));
+    *(temp_r5 + (arg2 * 4)) = arg0;
+    arg0->unk0 = arg1;
+    arg0->unk4 = arg2;
+    arg0->unk8 = (s32) (arg0->unk8 | 2);
+    arg0->unkC = 0;
+    arg0->unk10 = 0;
+    arg0->unk14 = arg3;
+    arg0->unk1C = arg5;
+    arg0->unk20 = arg6;
+    arg0->unk24 = arg4;
+    func_0200d858(arg0, 1, 1, &data_0205a128);
+    return temp_r4;
+}
+
+s32 func_0200d244(void *arg0) {
+    s32 temp_r0;
+    s32 temp_r4;
+    s32 temp_r6;
+    s32 var_r5;
+    s32 var_r6;
+    u32 temp_r1;
+    void *temp_r1_2;
+
+    var_r5 = 1;
+    if (((u32) (arg0->unk8 << 0x1D) >> 0x1F) == 0) {
+        var_r5 = 0;
+    }
+    var_r6 = 1;
+    if (((u32) (arg0->unk8 << 0x1C) >> 0x1F) == 0) {
+        var_r6 = 0;
+    }
+    temp_r4 = func_0200d1d8(arg0, arg0->unk0, arg0->unk4, arg0->unk14);
+    func_0200d858(arg0, var_r5, var_r6, arg0->unk18);
+    temp_r0 = arg0->unk4;
+    temp_r6 = (arg0->unk0 * 0x220) + (s32) g_DisplaySettings.engineState;
+    temp_r1 = *(temp_r6 + (temp_r0 * 0x3C));
+    switch (temp_r1) {
+    default:
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        ((temp_r0 * 0x2C) + temp_r6)->unk124 = 1;
+        break;
+    }
+    temp_r1_2 = temp_r6 + (temp_r0 * 8);
+    temp_r1_2->unkF0 = (s32) arg0->unkC;
+    temp_r1_2->unkF4 = (s32) arg0->unk10;
+    return temp_r4;
+}
+
+void func_0200d330(s32 arg4, s32 arg5, s32 arg6) {
+    if ((arg5 > 0) && (arg6 > 0)) {
+        ._m2c_cc2_5();
+    }
+}
+
+u32 func_0200d3e4(void *arg0, void *arg1, s32 arg2, s32 arg3) {
+    s32 temp_r1;
+    s32 temp_r1_2;
+    u32 temp_r0;
+    u32 temp_r0_2;
+    u32 temp_r0_3;
+    u32 temp_r4;
+    u32 temp_r5;
+    u32 var_r0;
+    u32 var_r1;
+    u32 var_r2;
+    u32 var_r6;
+
+    temp_r4 = arg0->unk1C;
+    var_r6 = (u32) (arg2 >> 5) % temp_r4;
+    temp_r5 = arg0->unk20;
+    if ((s32) var_r6 < 0) {
+        var_r6 += temp_r4;
+    }
+    var_r1 = (u32) (arg3 >> 5) % temp_r5;
+    if ((s32) var_r1 < 0) {
+        var_r1 += temp_r5;
+    }
+    var_r0 = var_r6 + 1;
+    if (var_r0 >= temp_r4) {
+        var_r0 -= temp_r4;
+    }
+    var_r2 = var_r1 + 1;
+    arg1->unk0 = (u32) *(arg0->unk24 + (((var_r1 * temp_r4) + var_r6) * 4));
+    if (var_r2 >= temp_r5) {
+        var_r2 -= temp_r5;
+    }
+    arg1->unk4 = (u32) *(arg0->unk24 + (((var_r1 * arg0->unk1C) + var_r0) * 4));
+    arg1->unk8 = (u32) *(arg0->unk24 + (((var_r2 * arg0->unk1C) + var_r6) * 4));
+    arg1->unkC = (u32) *(arg0->unk24 + (((var_r2 * arg0->unk1C) + var_r0) * 4));
+    if (((u32) (arg0->unk8 << 0x1D) >> 0x1F) == 0) {
+        if ((arg2 < 0) || ((u32) arg2 >= (u32) (arg0->unk1C << 5))) {
+            arg1->unk0 = (u32) arg0->unk18;
+            arg1->unk8 = (u32) arg0->unk18;
+        }
+        temp_r1 = arg2 + 0x20;
+        if ((temp_r1 < 0) || ((u32) temp_r1 >= (u32) (arg0->unk1C << 5))) {
+            arg1->unk4 = (u32) arg0->unk18;
+            arg1->unkC = (u32) arg0->unk18;
+        }
+    }
+    temp_r0_3 = (u32) (arg0->unk8 << 0x1C) >> 0x1F;
+    if (temp_r0_3 != 0) {
+        return temp_r0_3;
+    }
+    if ((arg3 < 0) || ((u32) arg3 >= (u32) (arg0->unk20 << 5))) {
+        arg1->unk0 = (u32) arg0->unk18;
+        arg1->unk4 = (u32) arg0->unk18;
+    }
+    temp_r1_2 = arg3 + 0x20;
+    if (temp_r1_2 >= 0) {
+        temp_r0_2 = arg0->unk20;
+        if ((u32) temp_r1_2 < (u32) (temp_r0_2 << 5)) {
+            return temp_r0_2;
+        }
+    }
+    arg1->unk8 = (u32) arg0->unk18;
+    temp_r0 = arg0->unk18;
+    arg1->unkC = temp_r0;
+    return temp_r0;
+}
+
+void func_0200d540(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    if ((arg4 > 0) && (arg5 > 0)) {
+        ._m2c_cc2_8();
+    }
+}
+
+void func_0200d64c(void *arg0, s32 arg2) {
+    s32 temp_r11;
+    s32 temp_r1;
+    s32 temp_r2;
+    s32 temp_r3;
+    s32 temp_r3_2;
+    s32 temp_r3_3;
+    s32 temp_r4;
+    s32 temp_r5;
+    s32 temp_r5_2;
+    s32 temp_r6;
+    s32 temp_r6_2;
+    s32 temp_r6_3;
+    s32 var_ip;
+    s32 var_r0;
+    s32 var_r11;
+    s32 var_r1;
+    s32 var_r2;
+    s32 var_r4;
+    s32 var_r4_2;
+    s32 var_r7;
+    s32 var_r8;
+    s32 var_r9;
+
+    var_r7 = saved_reg_r7;
+    var_r8 = saved_reg_r8;
+    var_r2 = arg2;
+    if (arg0 == NULL) {
+        return;
+    }
+    temp_r3 = arg0->unk0 * 0x220;
+    temp_r5 = arg0->unkC;
+    temp_r4 = arg0->unk10;
+    temp_r6 = arg0->unk4;
+    temp_r1 = *(g_DisplaySettings.engineState[0].bgOffsets + temp_r3 + (temp_r6 * 8));
+    temp_r6_2 = *(&g_DisplaySettings.engineState[0].bgOffsets[0].vOffset + temp_r3 + (temp_r6 * 8));
+    arg0->unkC = temp_r1;
+    arg0->unk10 = temp_r6_2;
+    var_r0 = temp_r5 >> 0xF;
+    var_r4 = temp_r4 >> 0xF;
+    temp_r5_2 = temp_r1 >> 0xF;
+    temp_r6_3 = temp_r6_2 >> 0xF;
+    if (((u32) (arg0->unk8 << 0x1E) >> 0x1F) == 0) {
+        var_r1 = temp_r5_2 - var_r0;
+        if (var_r1 < 0) {
+            var_r1 = 0 - var_r1;
+        }
+        var_r9 = temp_r6_3 - var_r4;
+        if (var_r9 < 0) {
+            var_r9 = 0 - var_r9;
+        }
+    } else {
+        var_r0 = temp_r5_2 + 0x400;
+        var_r4 = temp_r6_3 + 0x400;
+        var_r1 = 0x21;
+        var_r9 = 0x19;
+    }
+    if ((var_r1 == 0) && (var_r9 == 0)) {
+        return;
+    }
+    temp_r11 = arg0->unk0;
+    if ((var_r1 < 0x20) && (var_r9 < 0x18)) {
+        ._m2c_cc2_56();
+        return;
+    }
+    temp_r3_2 = *((arg0->unk4 * 0x3C) + ((temp_r11 * 0x220) + (s32) &g_DisplaySettings.engineState[0].bgSettings[0].screenBase)) << 0xB;
+    switch (temp_r11) {                             /* irregular */
+    case 1:
+        var_r7 = temp_r3_2 + 0x06200000;
+        break;
+    case 0:
+        var_r7 = temp_r3_2 + (g_DisplaySettings.controls[0].screenBase << 0x10) + 0x06000000;
+        break;
+    }
+    temp_r3_3 = arg0->unk14;
+    var_r11 = temp_r3_3;
+    if (temp_r3_3 == 0) {
+        var_r11 = var_r7;
+    }
+    if ((0x21 >= 1) && (0x19 < 0x19)) {
+        if (var_r0 > temp_r5_2) {
+            var_r2 = temp_r5_2;
+        } else if (var_r0 < temp_r5_2) {
+            var_r2 = var_r0 + 0x21;
+        }
+        var_r8 = temp_r6_3;
+        if ((temp_r3_3 == 0) && (0x19 >= 8)) {
+            var_ip = 1;
+        } else {
+            var_ip = 0;
+        }
+        func_0200d540(arg0, var_r11, var_r2, temp_r6_3, 0x21, 0x19, var_ip);
+    }
+    if (0x19 >= 1) {
+        if (var_r4 > temp_r6_3) {
+            var_r8 = temp_r6_3;
+        } else if (var_r4 < temp_r6_3) {
+            var_r8 = var_r4 + 0x19;
+        }
+        if ((arg0->unk14 == 0) && (0x19 >= 8)) {
+            var_r4_2 = 1;
+        } else {
+            var_r4_2 = 0;
+        }
+        func_0200d540(arg0, var_r11, temp_r5_2, var_r8, 0x21, 0x19, var_r4_2);
+    }
+    temp_r2 = arg0->unk14;
+    if (temp_r2 != 0) {
+        func_02001b44(7, var_r7, temp_r2, 0x1000);
+    }
+    arg0->unk8 = (s32) (arg0->unk8 & ~2);
+}
+
+void func_0200d858(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_r1;
+    s32 temp_r1_2;
+    s32 var_r1;
+
+    temp_r1 = arg0->unk8;
+    if (arg1 == 1) {
+        ._m2c_cc2_2(arg0, temp_r1 | 4);
+        return;
+    }
+    arg0->unk8 = (s32) (temp_r1 & ~4);
+    temp_r1_2 = arg0->unk8;
+    if (arg2 == 1) {
+        ._m2c_cc2_7(arg0, temp_r1_2 | 8);
+        return;
+    }
+    var_r1 = temp_r1_2 & ~8;
+    arg0->unk8 = var_r1;
+    if (arg3 == 0) {
+        var_r1 = (s32) &data_0205a128;
+    }
+    arg0->unk18 = arg3;
+    if (arg3 == 0) {
+        arg0->unk18 = var_r1;
+    }
+}
+
+void func_0200d898(s32 arg0, s32 arg1, u32 arg2, u32 arg3) {
+    s32 var_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u32 var_lr;
+    u32 var_r4;
+
+    var_r4 = 0;
+    if (arg3 <= 0U) {
+        return;
+    }
+    var_r6 = 0;
+    do {
+        var_r5 = var_r6;
+        var_lr = 0;
+        if (arg2 > 0U) {
+            var_r7 = arg1 + (var_r6 << 0xB);
+            do {
+                var_lr += 1;
+                *(arg0 + (var_r5 * 4)) = var_r7;
+                var_r7 += 0x800;
+                var_r5 += 1;
+            } while (var_lr < arg2);
+        }
+        var_r4 += 1;
+        var_r6 += arg2;
+    } while (var_r4 < arg3);
+}
+
+void func_0200d8f0(void) {
+    MI_CpuSet(data_0206b3e8, 0, 0x20);
+}
+
+void func_0200d90c(void) {
+    s32 var_r7;
+    s32 var_r8;
+
+    var_r7 = 0;
+    do {
+        var_r8 = 0;
+loop_2:
+        if (*(&data_0206b3e8[var_r7] + (var_r8 * 4)) != 0) {
+            func_0200d64c();
+        }
+        var_r8 += 1;
+        if (var_r8 < 4) {
+            goto loop_2;
+        }
+        var_r7 += 1;
+    } while (var_r7 < 2);
+}
+
+void func_0200d954(s32 arg0, s32 arg1) {
+    *(&data_0206b3e8[arg0] + (arg1 * 4)) = 0;
+}
+

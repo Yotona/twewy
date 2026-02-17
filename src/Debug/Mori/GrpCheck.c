@@ -373,12 +373,13 @@ void func_ov038_0208476c(GrpCheckState* state) {
 
 void func_ov038_02084874(GrpCheckState* state) {
     if (state->hasSprite) {
-        Sprite_ChangeAnimation(&state->unk_11674, state->unk_11674.animData, state->unk_11B90, state->unk_11674.unk1C);
+        Sprite_ChangeAnimation(&state->unk_11674, state->unk_11674.animData, state->unk_11B90,
+                               state->unk_11674.frameDataTable);
     }
 
     if (func_ov038_020846f4(state) != 0) {
         Sprite* sprite = &state->unk_116C0[state->unk_11B80].sprite;
-        Sprite_ChangeAnimation(sprite, sprite->animData, state->unk_11B90, sprite->unk1C);
+        Sprite_ChangeAnimation(sprite, sprite->animData, state->unk_11B90, sprite->frameDataTable);
     }
 
     GrpCheck_PrintSpritePath(state);
