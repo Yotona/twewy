@@ -131,7 +131,7 @@ void func_ov043_020c6358(NRepState* state) {
     DebugOvlDisp_Push((OverlayCB)func_ov043_020c6330, state, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov043_020c632c, state, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov043_020c6304, state, 0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov043_020c64a4(NRepState* state) {
@@ -182,16 +182,18 @@ void func_ov043_020c65d4(NRepState* state) {
     Mem_Free(&gDebugHeap, state);
 }
 
-typedef void (*NRepFunc)(NRepState*);
-const NRepFunc data_ov043_020cb464[3] = {func_ov043_020c6358, func_ov043_020c64a4, func_ov043_020c65d4};
+const OverlayProcess OvlProc_NRep = {
+    .init = func_ov043_020c6358,
+    .main = func_ov043_020c64a4,
+    .exit = func_ov043_020c65d4,
+};
 
 void func_ov043_020c6644(NRepState* state) {
-    s32 step = MainOvlDisp_GetRepeatCount();
-
-    if (step == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov043_020c65d4(state);
     } else {
-        data_ov043_020cb464[step](state);
+        OvlProc_NRep.funcs[stage](state);
     }
 }
 
@@ -546,12 +548,12 @@ s32 NRepMenu_Update(TaskPool* pool, Task* task, void* args) {
 
             if (hitboxIdx == 1) {
                 state->unk0 |= 0x1000;
-                func_02026b20(0x11B);
-                func_02026b20(0x117);
+                SndMgr_StartPlayingSE(0x11B);
+                SndMgr_StartPlayingSE(0x117);
                 state->unk3 = 0;
                 DebugOvlDisp_Pop();
             } else {
-                func_02026b20(0x11A);
+                SndMgr_StartPlayingSE(0x11A);
             }
         }
     }

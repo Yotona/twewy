@@ -12,8 +12,6 @@ extern s32 DAT_0206b3d0;
 
 char* data_ov041_02083020 = "Seq_STSample()";
 
-typedef void (*STSampleCb)(STSampleState*);
-
 void func_ov041_02082ff0(void);
 
 u32 func_ov041_020824a0(STSampleState* state, int param_2, u32 param_3) {
@@ -150,7 +148,7 @@ void func_ov041_02082a5c(STSampleState* param) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     data_02066eec                                       = 0;
     func_ov041_020827cc(state);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov041_02082b08(STSampleState* state) {
@@ -173,20 +171,19 @@ void func_ov041_02082b88(STSampleState* state) {
     OvlMgr_UnloadOverlay(3);
 }
 
-void func_ov041_02082bc4(STSampleState* state) {
-    static const STSampleCb funcs[] = {
-        func_ov041_02082a5c,
-        func_ov041_02082b08,
-        func_ov041_02082b88,
-    };
-    s32 idx;
+static const OverlayProcess OvlProc_STSample = {
+    .init = func_ov041_02082a5c,
+    .main = func_ov041_02082b08,
+    .exit = func_ov041_02082b88,
+};
 
-    idx = MainOvlDisp_GetRepeatCount();
-    if (idx == 0x7FFFFFFF) {
+void func_ov041_02082bc4(STSampleState* state) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov041_02082b88(state);
         return;
     }
-    funcs[idx](state);
+    OvlProc_STSample.funcs[stage](state);
 }
 
 /* Nonmatching */

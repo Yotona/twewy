@@ -542,13 +542,8 @@ void func_ov031_0210a808(UnkOv31Struct* arg0, s32 arg1, s32 arg2, s32 arg3) {
             if ((arg2 == 0) && ((var_r1 == 1) || (var_r1 == 2) || (var_r1 == 3))) {
                 goto block_19;
             }
-            temp_r3 = arg0->unk8;
-            if ((temp_r3 == NULL) || ((s32)temp_lr <= 0)) {
-                var_r7 = NULL;
-            } else {
-                const u8* pack_base = (const u8*)temp_r3->buffer + 0x20;
-                var_r7              = (void*)(pack_base + *(const u32*)(pack_base + (temp_lr * 8)));
-            }
+            temp_r3             = arg0->unk8;
+            var_r7              = Data_GetPackEntryData(temp_r3, (s32)temp_lr);
             arg0->unk20[var_r1] = (s32)var_r7;
             goto block_19;
         }
@@ -581,13 +576,8 @@ loop_27:
         if ((arg2 == 0) && ((var_r0_4 == 1) || (var_r0_4 == 2) || (var_r0_4 == 3))) {
             goto block_39;
         }
-        temp_r2 = arg0->unkC;
-        if ((temp_r2 == NULL) || ((s32)temp_ip <= 0)) {
-            var_r3_2 = NULL;
-        } else {
-            const u8* pack_base = (const u8*)temp_r2->buffer + 0x20;
-            var_r3_2            = (void*)(pack_base + *(const u32*)(pack_base + (temp_ip * 8)));
-        }
+        temp_r2               = arg0->unkC;
+        var_r3_2              = Data_GetPackEntryData(temp_r2, (s32)temp_ip);
         arg0->unk34[var_r0_4] = (s32)var_r3_2;
         goto block_39;
     }
@@ -671,13 +661,8 @@ void* func_ov031_0210ab68(s32 arg0) {
 
     temp_r0_2 = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov031_0210d128, 4, 1);
     temp_r2   = data_ov031_0210d160[arg0];
-    if ((temp_r0_2 == NULL) || ((s32)temp_r2 <= 0)) {
-        var_r6 = NULL;
-    } else {
-        const u8* pack_base = (const u8*)temp_r0_2->buffer + 0x20;
-        var_r6              = (void*)(pack_base + *(const u32*)(pack_base + (temp_r2 * 8)));
-    }
-    temp_r0 = Mem_AllocHeapTail(&gDebugHeap, 0x20);
+    var_r6    = Data_GetPackEntryData(temp_r0_2, (s32)temp_r2);
+    temp_r0   = Mem_AllocHeapTail(&gDebugHeap, 0x20);
     Mem_SetSequence(&gDebugHeap, temp_r0, data_ov031_0210daa0);
     MI_CpuCopy(var_r6, temp_r0, 0x20);
     DatMgr_ReleaseData(temp_r0_2);

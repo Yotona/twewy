@@ -251,9 +251,9 @@ OvlDisp_Pop kind:function(arm,size=0x8c) addr:0x02006fc4
 OvlDisp_ReplaceTop kind:function(arm,size=0x54) addr:0x02007050
 OvlDisp_IsStackAtBase kind:function(arm,size=0x14) addr:0x020070a4
 OvlDisp_ReplaceArg kind:function(arm,size=0x18) addr:0x020070b8
-OvlDisp_GetRepeatCount kind:function(arm,size=0xc) addr:0x020070d0
-OvlDisp_SetRepeatCount kind:function(arm,size=0xc) addr:0x020070dc
-OvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020070e8
+OvlDisp_GetProcessStage kind:function(arm,size=0xc) addr:0x020070d0
+OvlDisp_SetProcessStage kind:function(arm,size=0xc) addr:0x020070dc
+OvlDisp_NextProcessStage kind:function(arm,size=0x14) addr:0x020070e8
 OvlDisp_Run kind:function(arm,size=0x2c) addr:0x020070fc
 MainOvlDisp_Init kind:function(arm,size=0x14) addr:0x02007128
 MainOvlDisp_Push kind:function(arm,size=0x38) addr:0x0200713c
@@ -261,9 +261,9 @@ MainOvlDisp_Pop kind:function(arm,size=0x80) addr:0x02007174
 MainOvlDisp_ReplaceTop kind:function(arm,size=0x4c) addr:0x020071f4
 func_02007240 kind:function(arm,size=0x20) addr:0x02007240
 MainOvlDisp_SetCbArg kind:function(arm,size=0x18) addr:0x02007260
-MainOvlDisp_GetRepeatCount kind:function(arm,size=0x14) addr:0x02007278
-MainOvlDisp_SetRepeatCount kind:function(arm,size=0x18) addr:0x0200728c
-MainOvlDisp_IncrementRepeatCount kind:function(arm,size=0x14) addr:0x020072a4
+MainOvlDisp_GetProcessStage kind:function(arm,size=0x14) addr:0x02007278
+MainOvlDisp_SetProcessStage kind:function(arm,size=0x18) addr:0x0200728c
+MainOvlDisp_NextProcessStage kind:function(arm,size=0x14) addr:0x020072a4
 MainOvlDisp_Run kind:function(arm,size=0x34) addr:0x020072b8
 DebugOvlDisp_Init kind:function(arm,size=0x14) addr:0x020072ec
 DebugOvlDisp_Push kind:function(arm,size=0x28) addr:0x02007300
@@ -1593,38 +1593,38 @@ func_0202688c kind:function(arm,size=0x64) addr:0x0202688c
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
 /////////////////////////////////////////////////////////////
-func_020268f0 kind:function(arm,size=0x38) addr:0x020268f0 local
-func_02026928 kind:function(arm,size=0x50) addr:0x02026928 local
+SndMgr_ClearSeqArcTracking kind:function(arm,size=0x38) addr:0x020268f0 local
+SndMgr_IsSeqArcAlreadyTracked kind:function(arm,size=0x50) addr:0x02026928 local
 SndMgr_Init kind:function(arm,size=0x11c) addr:0x02026978
-func_02026a94 kind:function(arm,size=0x10) addr:0x02026a94
-func_02026aa4 kind:function(arm,size=0x3c) addr:0x02026aa4
-func_02026ae0 kind:function(arm,size=0x40) addr:0x02026ae0
-func_02026b20 kind:function(arm,size=0x7c) addr:0x02026b20
-func_02026b9c kind:function(arm,size=0x40) addr:0x02026b9c
-func_02026bdc kind:function(arm,size=0x10) addr:0x02026bdc local
-func_02026bec kind:function(arm,size=0x18) addr:0x02026bec local
-func_02026c04 kind:function(arm,size=0xb0) addr:0x02026c04
+SndMgr_Finalize kind:function(arm,size=0x10) addr:0x02026a94
+SndMgr_StopPlaybackForTrack kind:function(arm,size=0x3c) addr:0x02026aa4
+SndMgr_StartPlayingSeqWithCustomSeqArc kind:function(arm,size=0x40) addr:0x02026ae0
+SndMgr_StartPlayingSE kind:function(arm,size=0x7c) addr:0x02026b20
+SndMgr_StopPlayingSE kind:function(arm,size=0x40) addr:0x02026b9c
+SndMgr_GetDefaultSEVolume kind:function(arm,size=0x10) addr:0x02026bdc local
+SndMgr_GetSeIdxVolumeFromFile kind:function(arm,size=0x18) addr:0x02026bec local
+SndMgr_LoadSEVolumes kind:function(arm,size=0xb0) addr:0x02026c04
 SndMgr_GetSeIdxVolume kind:function(arm,size=0x10) addr:0x02026cb4
 SndMgr_SetSeIdxVolume kind:function(arm,size=0x48) addr:0x02026cc4
-func_02026d0c kind:function(arm,size=0x70) addr:0x02026d0c
-func_02026d7c kind:function(arm,size=0x20) addr:0x02026d7c
+SndMgr_UpdateSEPan kind:function(arm,size=0x70) addr:0x02026d0c
+SndMgr_PlaySEWithPan kind:function(arm,size=0x20) addr:0x02026d7c
 SndMgr_ConvertPanToSigned kind:function(arm,size=0x1c) addr:0x02026d9c
 SndMgr_ConvertPanToVolume kind:function(arm,size=0x20) addr:0x02026db8
-func_02026dd8 kind:function(arm,size=0x28) addr:0x02026dd8
-func_02026e00 kind:function(arm,size=0x28) addr:0x02026e00
-func_02026e28 kind:function(arm,size=0x1c) addr:0x02026e28
-func_02026e44 kind:function(arm,size=0xc) addr:0x02026e44
+SndMgr_InitStreamHandle kind:function(arm,size=0x28) addr:0x02026dd8
+SndMgr_PlayStreamSequence kind:function(arm,size=0x28) addr:0x02026e00
+SndMgr_PlayStreamSequenceWithSeqID kind:function(arm,size=0x1c) addr:0x02026e28
+SndMgr_StopStreamPlayback kind:function(arm,size=0xc) addr:0x02026e44
 func_02026e50 kind:function(arm,size=0x30) addr:0x02026e50
-func_02026e80 kind:function(arm,size=0x1c0) addr:0x02026e80
-func_02027040 kind:function(arm,size=0xa4) addr:0x02027040
-func_020270e4 kind:function(arm,size=0x20) addr:0x020270e4
-func_02027104 kind:function(arm,size=0x20) addr:0x02027104
-func_02027124 kind:function(arm,size=0x4c) addr:0x02027124
+SndMgr_GetBankForSeqArc kind:function(arm,size=0x1c0) addr:0x02026e80
+SndMgr_LoadSeqArc kind:function(arm,size=0xa4) addr:0x02027040
+SndMgr_ResetSequenceHeap kind:function(arm,size=0x20) addr:0x020270e4
+SndMgr_DeepResetSequenceHeap kind:function(arm,size=0x20) addr:0x02027104
+SndMgr_IsSEPlaying kind:function(arm,size=0x4c) addr:0x02027124
 func_02027170 kind:function(arm,size=0x48) addr:0x02027170
-func_020271b8 kind:function(arm,size=0x48) addr:0x020271b8
+SndMgr_SetSequenceSoundPitch kind:function(arm,size=0x48) addr:0x020271b8
 func_02027200 kind:function(arm,size=0x20) addr:0x02027200
-func_02027220 kind:function(arm,size=0x10) addr:0x02027220
-func_02027230 kind:function(arm,size=0x64) addr:0x02027230
+SndMgr_SetPriorityLoadFlag kind:function(arm,size=0x10) addr:0x02027220
+SndMgr_TrackSeqArc kind:function(arm,size=0x64) addr:0x02027230
 
 /////////////////////////////////////////////////////////////
 // src/CriSndMgr.c
@@ -1924,7 +1924,7 @@ func_02030a90 kind:function(arm,size=0x88) addr:0x02030a90
 func_02030b18 kind:function(arm,size=0xf0) addr:0x02030b18
 func_02030c08 kind:function(arm,size=0x60) addr:0x02030c08
 func_02030c68 kind:function(arm,size=0x84) addr:0x02030c68
-func_02030cec kind:function(arm,size=0x8c) addr:0x02030cec
+snd_initSdatFile kind:function(arm,size=0x8c) addr:0x02030cec
 func_02030d78 kind:function(arm,size=0x1d8) addr:0x02030d78
 func_02030f50 kind:function(arm,size=0x18) addr:0x02030f50
 func_02030f68 kind:function(arm,size=0x10) addr:0x02030f68
@@ -1944,7 +1944,7 @@ func_02031324 kind:function(arm,size=0x1c) addr:0x02031324
 func_02031340 kind:function(arm,size=0xc) addr:0x02031340
 func_0203134c kind:function(arm,size=0xc) addr:0x0203134c
 func_02031358 kind:function(arm,size=0xc) addr:0x02031358
-func_02031364 kind:function(arm,size=0x70) addr:0x02031364
+snd_initHeapHandle kind:function(arm,size=0x70) addr:0x02031364
 func_020313d4 kind:function(arm,size=0x18) addr:0x020313d4
 func_020313ec kind:function(arm,size=0xbc) addr:0x020313ec
 func_020314a8 kind:function(arm,size=0x68) addr:0x020314a8
@@ -3440,7 +3440,7 @@ FaderTaskHandlerDispatchFuncs kind:data(any) addr:0x0205cb1c
 FaderUpdateDispatchFuncs kind:data(any) addr:0x0205cb2c
 
 
-data_0205cb3c kind:data(any) addr:0x0205cb3c
+g_SequenceDataTable kind:data(any) addr:0x0205cb3c
 data_0205e0ec kind:data(any) addr:0x0205e0ec
 
 /////////////////////////////////////////////////////////////

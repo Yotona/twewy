@@ -119,7 +119,7 @@ data_ov028_020ecd5c kind:data(any) addr:0x020ecd5c
 data_ov028_020ecdc0 kind:data(any) addr:0x020ecdc0
 data_ov028_020ecdc4 kind:data(any) addr:0x020ecdc4
 data_ov028_020ecef8 kind:data(any) addr:0x020ecef8
-data_ov028_020ecf24 kind:data(any) addr:0x020ecf24
+OvlProc_NoiseReport kind:data(any) addr:0x020ecf24
 data_ov028_020ecf30 kind:data(any) addr:0x020ecf30
 data_ov028_020ecf38 kind:data(any) addr:0x020ecf38
 data_ov028_020ecf44 kind:data(any) addr:0x020ecf44

@@ -181,4 +181,24 @@ s32 DatMgr_AllocateSlot(void);
  */
 void DatMgr_ClearSlot(s32 dataType);
 
+/**
+ * @brief Gets a pointer to packed entry data within a Data buffer.
+ *
+ * The buffer is expected to start with a PackHeader (0x20 bytes), followed by
+ * an array of PackEntry structs. This function looks up the entry at the given
+ * index and returns a pointer to the data at the entry's offset (relative to
+ * the start of the entry table).
+ *
+ * @param data Pointer to the Data entry containing the packed buffer.
+ * @param entryIndex Index into the PackEntry array. Must be > 0.
+ * @return Pointer to the entry's data, or NULL if data is NULL or entryIndex <= 0.
+ */
+static inline void* Data_GetPackEntryData(Data* data, s32 entryIndex) {
+    if (data == NULL || entryIndex <= 0) {
+        return NULL;
+    }
+    PackEntry* entries = (PackEntry*)((u8*)data->buffer + sizeof(PackHeader));
+    return (u8*)entries + entries[entryIndex].offset;
+}
+
 #endif // DATMGR_H

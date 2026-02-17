@@ -20,7 +20,7 @@ typedef struct {
 static const char* BootSequence = "Seq_Boot(void *)";
 
 void Boot(void* unused) {
-    if (MainOvlDisp_GetRepeatCount() == 0) {
+    if (MainOvlDisp_GetProcessStage() == PROCESS_STAGE_INIT) {
         const char* seq = BootSequence;
 
         BootHeap* heap = Mem_AllocHeapTail(&gDebugHeap, sizeof(BootHeap));
@@ -31,7 +31,7 @@ void Boot(void* unused) {
         BinMgr_Init(&heap->binMgr, 8);
         PacMgr_Init(&heap->pacMgr, 32);
         DatMgr_Init(&heap->datMgr, 0x100);
-        MainOvlDisp_IncrementRepeatCount();
+        MainOvlDisp_NextProcessStage();
         MainOvlDisp_Push(&OVERLAY_37_ID, func_ov037_0208370c, NULL, 0);
     } else {
         MainOvlDisp_Push(&OVERLAY_46_ID, func_ov046_02083630, NULL, 0);

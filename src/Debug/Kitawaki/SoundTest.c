@@ -19,8 +19,6 @@ void func_ov029_020833c4(void);
 
 const char* data_ov029_02083400 = "Seq_SoundTest()";
 
-typedef void (*SoundEffectFunc)(SoundTestState* state);
-
 // Nonmatching: Built order differs
 const char* soundEffects[1388] = {
     "SE_battle_in",
@@ -1537,25 +1535,25 @@ void SoundTest_PlaySelectedSoundType(SoundTestState* state) {
             return;
         case MENU_ROW_SEQARC:
         case MENU_ROW_SE:
-            func_02026ae0(1, state->seqArc, state->se);
+            SndMgr_StartPlayingSeqWithCustomSeqArc(1, state->seqArc, state->se);
             return;
         case MENU_ROW_SEIDX:
-            func_020270e4();
-            func_02026b20(state->seIdx);
+            SndMgr_ResetSequenceHeap();
+            SndMgr_StartPlayingSE(state->seIdx);
             return;
         case MENU_ROW_SEVOL:
-            func_020270e4();
-            func_02026b20(state->seIdx);
+            SndMgr_ResetSequenceHeap();
+            SndMgr_StartPlayingSE(state->seIdx);
             return;
         case MENU_ROW_SEPAN:
-            func_020270e4();
-            func_02026b20(state->seIdx);
-            func_02026d0c(state->seIdx, state->sePan);
+            SndMgr_ResetSequenceHeap();
+            SndMgr_StartPlayingSE(state->seIdx);
+            SndMgr_UpdateSEPan(state->seIdx, state->sePan);
             return;
         case MENU_ROW_SEPITCH:
-            func_020270e4();
-            func_02026b20(state->seIdx);
-            func_020271b8(state->seIdx, state->sePitch);
+            SndMgr_ResetSequenceHeap();
+            SndMgr_StartPlayingSE(state->seIdx);
+            SndMgr_SetSequenceSoundPitch(state->seIdx, state->sePitch);
             return;
     }
 }
@@ -1570,7 +1568,7 @@ void func_ov029_02082a38(void) {
     }
 
     while (idx < 5) {
-        func_02026aa4(idx);
+        SndMgr_StopPlaybackForTrack(idx);
         idx++;
     };
 }
@@ -1588,7 +1586,7 @@ void SoundTest_StopSelectedSoundType(SoundTestState* state) {
             func_ov029_02082a38();
             return;
         case MENU_ROW_SEIDX:
-            func_02026b9c(state->seIdx);
+            SndMgr_StopPlayingSE(state->seIdx);
             return;
     }
 }
@@ -1614,8 +1612,8 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_Y) { // Stop all active sounds
         SoundTest_StopAllSounds();
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_X) {
-        func_020270e4();
-        func_02026b20(3);
+        SndMgr_ResetSequenceHeap();
+        SndMgr_StartPlayingSE(3);
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
         MainOvlDisp_Pop(&tag);
     } else if (SysControl.buttonState.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up
@@ -1626,13 +1624,13 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_L) {
         if (state->seqArc >= 0) {
-            func_02026ae0(1, state->seqArc, state->se);
+            SndMgr_StartPlayingSeqWithCustomSeqArc(1, state->seqArc, state->se);
         } else {
-            func_02026e28(state->se);
+            SndMgr_PlayStreamSequenceWithSeqID(state->se);
         }
     }
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_R) {
-        func_02026aa4(1);
+        SndMgr_StopPlaybackForTrack(1);
     }
 
     if (state->menuCurrentRow < 0) {
@@ -1653,8 +1651,8 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
             break;
         case MENU_ROW_SEIDX:
             SoundTest_AdjustCappedValue(&state->seIdx, 1388);
-            state->seqArc      = data_0205cb3c[state->seIdx].seqArc;
-            state->se          = data_0205cb3c[state->seIdx].se;
+            state->seqArc      = g_SequenceDataTable[state->seIdx].seqArc;
+            state->se          = g_SequenceDataTable[state->seIdx].se;
             state->seIdxVolume = SndMgr_GetSeIdxVolume(state->seIdx);
             break;
         case MENU_ROW_SEVOL:
@@ -1663,7 +1661,7 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
             break;
         case MENU_ROW_SEPAN:
             SoundTest_AdjustCappedValue(&state->sePan, 256);
-            func_02026d0c(state->seIdx, state->sePan);
+            SndMgr_UpdateSEPan(state->seIdx, state->sePan);
             break;
         case MENU_ROW_ADXVOL:
             SoundTest_AdjustCappedValue(&state->adxVolume, 961);
@@ -1680,22 +1678,22 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
             break;
         case MENU_ROW_SEPITCH:
             SoundTest_AdjustSePitch(&state->sePitch);
-            func_020271b8(state->seIdx, state->sePitch);
+            SndMgr_SetSequenceSoundPitch(state->seIdx, state->sePitch);
             break;
         case MENU_ROW_NOISE:
             if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT)) {
                 state->noiseNoWaveLoad = TRUE;
-                func_02027220(1);
+                SndMgr_SetPriorityLoadFlag(1);
             } else if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT)) {
                 state->noiseNoWaveLoad = FALSE;
-                func_02027220(0);
+                SndMgr_SetPriorityLoadFlag(0);
             }
     }
     if (SysControl.buttonState.holdButtons & (INPUT_MASK_DPAD | INPUT_BUTTON_A)) {
         state->adxVolume = -CriSndMgr_GetAdxIdxVolume(state->adxIdx);
         SoundTest_DrawMenu(state);
     }
-    return func_02027124(state->seIdx);
+    return SndMgr_IsSEPlaying(state->seIdx);
 }
 
 // Nonmatching
@@ -1713,7 +1711,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     data_02066eec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov029_02082838(state);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov029_02082ee8(SoundTestState* state) {
@@ -1735,20 +1733,20 @@ void func_ov029_02082f68(SoundTestState* state) {
     Mem_Free(&gDebugHeap, state);
 }
 
+static const OverlayProcess OvlProc_SoundTest = {
+    .init = func_ov029_02082e40,
+    .main = func_ov029_02082ee8,
+    .exit = func_ov029_02082f68,
+};
+
 void func_ov029_02082f9c(SoundTestState* state) {
-    static const SoundEffectFunc funcs[3] = {
-        func_ov029_02082e40,
-        func_ov029_02082ee8,
-        func_ov029_02082f68,
-    };
 
-    s32 idx = MainOvlDisp_GetRepeatCount();
-
-    if (idx == 0x7FFFFFFF) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov029_02082f68(state);
         return;
     }
-    funcs[idx](state);
+    OvlProc_SoundTest.funcs[stage](state);
 }
 
 /* Nonmatching */

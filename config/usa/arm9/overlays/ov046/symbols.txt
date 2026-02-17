@@ -38,7 +38,7 @@ func_ov046_020839ec kind:function(arm,size=0x48) addr:0x020839ec
 data_ov046_02083a34 kind:data(any) addr:0x02083a34
 data_ov046_02083a40 kind:data(any) addr:0x02083a40
 data_ov046_02083a4c kind:data(any) addr:0x02083a4c
-funcs kind:data(any) addr:0x02083a54 local
+OvlProc_DebugLauncher kind:data(any) addr:0x02083a54 local
 Options_Horii kind:data(any) addr:0x02083a60
 Options_Suyama kind:data(any) addr:0x02083a88
 Options_Sugata kind:data(any) addr:0x02083ab0

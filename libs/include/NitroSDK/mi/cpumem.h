@@ -19,7 +19,7 @@ void MI_CpuCopyU32(register const u32* src, register u32* dest, register u32 cou
 void MI_CpuFillFromSrc(register const u32* src, register u32* dest, register u32 count);
 
 // Fill memory with a 32-bit value
-void MI_CpuFill(register u32 value, register u32* dest, register u32 count);
+void MI_CpuFill(register u32 value, register void* dest, register u32 count);
 
 // Copy 32-bit values from source to destination
 void MI_CpuCopy(register const u32* src, register u32* dest, register u32 count);

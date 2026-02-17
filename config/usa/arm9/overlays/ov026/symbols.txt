@@ -19,7 +19,7 @@ func_ov026_020e7e7c kind:function(arm,size=0xb4) addr:0x020e7e7c
 func_ov026_020e7f30 kind:function(arm,size=0x68) addr:0x020e7f30
 func_ov026_020e7f98 kind:function(arm,size=0x40) addr:0x020e7f98
 data_ov026_020e7fd8 kind:data(any) addr:0x020e7fd8
-data_ov026_020e7fe0 kind:data(any) addr:0x020e7fe0
+OvlProc_Tutorial kind:data(any) addr:0x020e7fe0
 data_ov026_020e7fec kind:data(any) addr:0x020e7fec
 data_ov026_020e8060 kind:data(any) addr:0x020e8060
 data_ov026_020e8064 kind:data(any) addr:0x020e8064

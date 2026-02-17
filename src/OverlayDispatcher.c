@@ -7,7 +7,8 @@ static OverlayDispatcher UnusedDispatcher2;
 static OverlayDispatcher UnusedDispatcher1;
 s32*                     data_0206af24;
 
-static void OvlDisp_Push(OverlayDispatcher* dispatcher, s32 overlayId, OverlayCB callback, void* arg, s32 repeatCount);
+static void OvlDisp_Push(OverlayDispatcher* dispatcher, s32 overlayId, OverlayCB callback, void* arg,
+                         OverlayProcessStage stage);
 
 /**
  * @brief A dummy callback that does nothing.
@@ -23,15 +24,16 @@ static void OvlDisp_DummyCb(void*) {
  */
 static void OvlDisp_Init(OverlayDispatcher* dispatcher) {
     dispatcher->stackDepth = 0;
-    OvlDisp_Push(dispatcher, OVERLAY_ID_NONE, OvlDisp_DummyCb, NULL, 0);
+    OvlDisp_Push(dispatcher, OVERLAY_ID_NONE, OvlDisp_DummyCb, NULL, PROCESS_STAGE_INIT);
 }
 
-static void OvlDisp_Push(OverlayDispatcher* dispatcher, s32 overlayId, OverlayCB callback, void* arg, s32 repeatCount) {
-    OverlayData* currentData = &dispatcher->stack[dispatcher->stackDepth];
-    currentData->tag.id      = overlayId;
-    currentData->tag.cb      = callback;
-    currentData->cbArg       = arg;
-    currentData->repeatCount = repeatCount;
+static void OvlDisp_Push(OverlayDispatcher* dispatcher, s32 overlayId, OverlayCB callback, void* arg,
+                         OverlayProcessStage stage) {
+    OverlayData* currentData  = &dispatcher->stack[dispatcher->stackDepth];
+    currentData->tag.id       = overlayId;
+    currentData->tag.cb       = callback;
+    currentData->cbArg        = arg;
+    currentData->processStage = stage;
 
     currentData       = &dispatcher->stack[dispatcher->stackDepth];
     dispatcher->data  = currentData;
@@ -52,7 +54,7 @@ static void OvlDisp_Pop(OverlayTag* tag, OverlayDispatcher* dispatcher) {
     dispatcher->cbArg = dispatcher->stack[currentIndex - 1].cbArg;
 
     if (dispatcher->stackDepth == 0) {
-        OvlDisp_Push(dispatcher, OVERLAY_ID_NONE, OvlDisp_DummyCb, NULL, 0);
+        OvlDisp_Push(dispatcher, OVERLAY_ID_NONE, OvlDisp_DummyCb, NULL, PROCESS_STAGE_INIT);
     }
 
     *tag = currTag;
@@ -82,16 +84,16 @@ static void* OvlDisp_ReplaceArg(OverlayDispatcher* dispatcher, void* cbArg) {
     return prevArg;
 }
 
-static s32 OvlDisp_GetRepeatCount(OverlayDispatcher* dispatcher) {
-    return dispatcher->data->repeatCount;
+static OverlayProcessStage OvlDisp_GetProcessStage(OverlayDispatcher* dispatcher) {
+    return dispatcher->data->processStage;
 }
 
-static void OvlDisp_SetRepeatCount(OverlayDispatcher* dispatcher, s32 repeatCount) {
-    dispatcher->data->repeatCount = repeatCount;
+static void OvlDisp_SetProcessStage(OverlayDispatcher* dispatcher, OverlayProcessStage stage) {
+    dispatcher->data->processStage = stage;
 }
 
-static void OvlDisp_IncrementRepeatCount(OverlayDispatcher* dispatcher) {
-    dispatcher->data->repeatCount++;
+static void OvlDisp_NextProcessStage(OverlayDispatcher* dispatcher) {
+    dispatcher->data->processStage++;
 }
 
 static void OvlDisp_Run(OverlayDispatcher* dispatcher) {
@@ -105,8 +107,8 @@ void MainOvlDisp_Init(void) {
     OvlDisp_Init(&MainOverlayDispatcher);
 }
 
-void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, s32 repeatCount) {
-    OvlDisp_Push(&MainOverlayDispatcher, overlayId, callback, cbArg, repeatCount);
+void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, OverlayProcessStage stage) {
+    OvlDisp_Push(&MainOverlayDispatcher, overlayId, callback, cbArg, stage);
 }
 
 // Nonmatching: Some data movement differences
@@ -114,8 +116,8 @@ void MainOvlDisp_Push(u32 overlayId, OverlayCB callback, void* cbArg, s32 repeat
 void MainOvlDisp_Pop(OverlayTag* tag) {
     OverlayDispatcher* dispatcher = &MainOverlayDispatcher;
 
-    if (MainOvlDisp_GetRepeatCount() != 0x7FFFFFFF) {
-        MainOvlDisp_SetRepeatCount(0x7FFFFFFF);
+    if (MainOvlDisp_GetProcessStage() != PROCESS_STAGE_EXIT) {
+        MainOvlDisp_SetProcessStage(PROCESS_STAGE_EXIT);
         MainOvlDisp_Run();
     }
 
@@ -132,11 +134,11 @@ void MainOvlDisp_Pop(OverlayTag* tag) {
     *tag = currTag;
 }
 
-void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* cbArg, s32 repeatCount) {
+void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void* cbArg, OverlayProcessStage stage) {
     OverlayTag local;
 
     MainOvlDisp_Pop(&local);
-    MainOvlDisp_Push(overlayId, callback, cbArg, repeatCount);
+    MainOvlDisp_Push(overlayId, callback, cbArg, stage);
     *tag = local;
 }
 
@@ -149,16 +151,16 @@ void* MainOvlDisp_SetCbArg(void* arg) {
     OvlDisp_ReplaceArg(&MainOverlayDispatcher, arg);
 }
 
-s32 MainOvlDisp_GetRepeatCount(void) {
-    return OvlDisp_GetRepeatCount(&MainOverlayDispatcher);
+OverlayProcessStage MainOvlDisp_GetProcessStage(void) {
+    return OvlDisp_GetProcessStage(&MainOverlayDispatcher);
 }
 
-void MainOvlDisp_SetRepeatCount(s32 repeatCount) {
-    OvlDisp_SetRepeatCount(&MainOverlayDispatcher, repeatCount);
+void MainOvlDisp_SetProcessStage(OverlayProcessStage stage) {
+    OvlDisp_SetProcessStage(&MainOverlayDispatcher, stage);
 }
 
-void MainOvlDisp_IncrementRepeatCount(void) {
-    OvlDisp_IncrementRepeatCount(&MainOverlayDispatcher);
+void MainOvlDisp_NextProcessStage(void) {
+    OvlDisp_NextProcessStage(&MainOverlayDispatcher);
 }
 
 void MainOvlDisp_Run(void) {
@@ -173,8 +175,8 @@ void DebugOvlDisp_Init(void) {
     OvlDisp_Init(&DebugOverlayDispatcher);
 }
 
-void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, s32 repeatCount) {
-    OvlDisp_Push(&DebugOverlayDispatcher, 0, callback, cbArg, repeatCount);
+void DebugOvlDisp_Push(OverlayCB callback, void* cbArg, OverlayProcessStage stage) {
+    OvlDisp_Push(&DebugOverlayDispatcher, 0, callback, cbArg, stage);
 }
 
 OverlayCB DebugOvlDisp_Pop(void) {
@@ -184,10 +186,10 @@ OverlayCB DebugOvlDisp_Pop(void) {
     return tag.cb;
 }
 
-OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, s32 repeatCount) {
+OverlayCB DebugOvlDisp_ReplaceTop(OverlayCB callback, void* cbArg, OverlayProcessStage stage) {
     OverlayTag tag;
 
-    OvlDisp_ReplaceTop(&tag, &DebugOverlayDispatcher, 0, callback, cbArg, repeatCount);
+    OvlDisp_ReplaceTop(&tag, &DebugOverlayDispatcher, 0, callback, cbArg, stage);
     return tag.cb;
 }
 

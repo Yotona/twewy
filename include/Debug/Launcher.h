@@ -76,18 +76,18 @@ extern void func_ov000_02082854(void* state);
 
 extern void func_ov001_02082b34(void* state);
 
-extern void func_ov002_0208688c(void* state);
-extern void func_ov002_020868cc(void* state);
-extern void func_ov002_0208690c(void* state);
-extern void func_ov002_0208694c(void* state);
-extern void func_ov002_0208698c(void* state);
-extern void func_ov002_020869cc(void* state);
-extern void func_ov002_02086a0c(void* state);
-extern void func_ov002_02086a4c(void* state);
-extern void func_ov002_02086a8c(void* state);
-extern void func_ov002_02086b0c(void* state);
-extern void func_ov002_02086b4c(void* state);
-extern void func_ov025_020e82c8(void* state);
+extern void ProcessOverlay_OtosuMenu_SinglePlayerEnter(void* state);
+extern void ProcessOverlay_OtosuMenu_MultiplayerEnter(void* state);
+extern void ProcessOverlay_OtosuMenu_MultiplayerRanking(void* state);
+extern void ProcessOverlay_OtosuMenu_SinglePlayerRanking(void* state);
+extern void ProcessOverlay_OtosuMenu_ConnectionError(void* state);
+extern void ProcessOverlay_OtosuMenu_RoleSelection(void* state);
+extern void ProcessOverlay_OtosuMenu_FontList(void* state);
+extern void ProcessOverlay_OtosuMenu_DataDeletion(void* state);
+extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
+extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
+extern void ProcessOverlay_Continue(void* state);
 
 extern void func_ov026_020e7f98(void* state);
 
@@ -108,8 +108,8 @@ extern void func_ov030_020d2d6c(void* state);
 extern void func_ov030_020d5370(void* state);
 extern void func_ov037_0208370c(void* state);
 
-extern void ProcessOverlay_GrpCheckHwSprites(void* state);
-extern void ProcessOverlay_GrpCheckSwSprites(void* state);
+extern void ProcessOverlay_GrpCheck_HwSprites(void* state);
+extern void ProcessOverlay_GrpCheck_SwSprites(void* state);
 extern void func_ov041_02082bc4(void* state);
 
 extern void func_ov042_020824a0(void* state);
@@ -129,20 +129,11 @@ extern void func_ov044_02084a88(void* state);
 extern void func_ov045_02083c78(void* state);
 extern void func_ov045_02088700(void* state);
 extern void func_ov045_02091034(void* state);
-void        func_ov046_constructor_020835b4(DebugLauncherState* state);
-void        func_ov046_main_020834c0(DebugLauncherState* state);
-void        func_ov046_destructor_02083454(DebugLauncherState* state);
 
 int func_ov046_020839a0(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839b4(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839c4(s32 r1, DebugLauncherState* state, s32* r2);
 int func_ov046_020839d8(s32 r1, DebugLauncherState* state, s32* r2);
-
-static const DebugLauncherFunc funcs[3] = {
-    func_ov046_constructor_020835b4,
-    func_ov046_main_020834c0,
-    func_ov046_destructor_02083454,
-};
 
 const DebugLauncherOption Options_Horii[2] = {
     // "Feature: Noise Report", "Description: Menu screen noise report"
@@ -188,30 +179,30 @@ const DebugLauncherOption Options_Takami[14] = {
 
 const DebugLauncherOption Options_Fukuda[13] = {
     // "Features: Font", "Description: Test"
-    {1,           "機能\:フォント",                         "説明:テスト",                   1, func_ov001_02082b34},
+    {1,           "機能\:フォント",                         "説明:テスト",                   1,                          func_ov001_02082b34},
     // "Feature: Font", "Description: Font list"
-    {2,           "機能\:フォント",                   "説明:フォント一覧",                   2, func_ov002_02086a0c},
+    {2,           "機能\:フォント",                   "説明:フォント一覧",                   2,            ProcessOverlay_OtosuMenu_FontList},
     // "Feature: Title (?)", "Description: Data Deletion Screen"
-    {3,     "機能\:タイトル（？）",                 "説明:データ削除画面",                   2, func_ov002_02086a4c},
+    {3,     "機能\:タイトル（？）",                 "説明:データ削除画面",                   2,        ProcessOverlay_OtosuMenu_DataDeletion},
     // "Feature: Title (?)", "Description: Data Corruption Screen"
-    {4,     "機能\:タイトル（？）",                 "説明:データ破損画面",                   2, func_ov002_02086a8c},
+    {4,     "機能\:タイトル（？）",                 "説明:データ破損画面",                   2,       ProcessOverlay_OtosuMenu_DataCorrupted},
     // "Feature: BayBadge Menu", "Description: Single Player Entrance"
-    {5, "機能\:ベイバッジメニュー",                 "説明:１人用の入り口",                   2, func_ov002_0208688c},
+    {5, "機能\:ベイバッジメニュー",                 "説明:１人用の入り口",                   2,   ProcessOverlay_OtosuMenu_SinglePlayerEnter},
     // "Feature: BayBadge Menu", "Description: Single Player Return (Ranking)"
-    {6, "機能\:ベイバッジメニュー",     "説明:１人用の戻り（ランキング）",                   2, func_ov002_0208694c},
+    {6, "機能\:ベイバッジメニュー",     "説明:１人用の戻り（ランキング）",                   2, ProcessOverlay_OtosuMenu_SinglePlayerRanking},
     // "Feature: BayBadge Menu", "Description: Gateway to online battles"
-    {7, "機能\:ベイバッジメニュー",               "説明:通信対戦の入り口",                   2, func_ov002_020868cc},
+    {7, "機能\:ベイバッジメニュー",               "説明:通信対戦の入り口",                   2,    ProcessOverlay_OtosuMenu_MultiplayerEnter},
     // "Feature: BayBadge Menu", "Description: Return from game (Ranking)"
-    {8, "機能\:ベイバッジメニュー", "説明:ゲームからの戻り（ランキング）",                   2, func_ov002_0208690c},
+    {8, "機能\:ベイバッジメニュー", "説明:ゲームからの戻り（ランキング）",                   2,  ProcessOverlay_OtosuMenu_MultiplayerRanking},
     // "Feature: BayBadge Menu", "Description: Error entry point"
-    {9, "機能\:ベイバッジメニュー",               "説明:エラー用の入り口",                   2, func_ov002_0208698c},
+    {9, "機能\:ベイバッジメニュー",               "説明:エラー用の入り口",                   2,     ProcessOverlay_OtosuMenu_ConnectionError},
     // "Feature: Title (?)", "Description: Data Load Failure Screen"
-    {1,     "機能\:タイトル（？）",         "説明:データ読み込み失敗画面",                   2, func_ov002_02086b0c},
+    {1,     "機能\:タイトル（？）",         "説明:データ読み込み失敗画面",                   2,     ProcessOverlay_OtosuMenu_DataLoadFailure},
     // "Feature: Title (?)", "Description: Data Save Failure Screen"
-    {2,     "機能\:タイトル（？）",         "説明:データ書き込み失敗画面",                   2, func_ov002_02086b4c},
+    {2,     "機能\:タイトル（？）",         "説明:データ書き込み失敗画面",                   2,     ProcessOverlay_OtosuMenu_DataSaveFailure},
     // "Feature: BayBadge Menu", "Description: Role Selection Screen"
-    {3, "機能\:ベイバッジメニュー",                   "説明:役割選択画面",                   2, func_ov002_020869cc},
-    {0,                       NULL,                                  NULL, OVERLAY_ID_UNLOADED,                NULL},
+    {3, "機能\:ベイバッジメニュー",                   "説明:役割選択画面",                   2,       ProcessOverlay_OtosuMenu_RoleSelection},
+    {0,                       NULL,                                  NULL, OVERLAY_ID_UNLOADED,                                         NULL},
 };
 
 const DebugLauncherOption Options_Bul[2] = {
@@ -244,21 +235,21 @@ const DebugLauncherOption Options_Kitawaki[9] = {
 };
 
 const DebugLauncherOption Options_Furukawa[4] = {
-    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27, func_ov027_020e860c},
-    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, func_ov025_020e82c8},
-    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26, func_ov026_020e7f98},
-    {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                NULL},
+    {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27,     func_ov027_020e860c},
+    {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, ProcessOverlay_Continue},
+    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26,     func_ov026_020e7f98},
+    {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                    NULL},
 };
 
 const DebugLauncherOption Options_Mori[6] = {
     // "Function: Graphic Check", "Description: Hardware Sprites"
-    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, ProcessOverlay_GrpCheckHwSprites},
+    {1,   "機能\:グラフィックチェック",  "説明:ハードウェアスプライト",                  38, ProcessOverlay_GrpCheck_HwSprites},
     // "Function: Graphic Check", "Description: Software Sprites"
-    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheckSwSprites},
-    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,              func_ov027_020e9670},
-    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,              func_ov030_020d2d6c},
-    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,              func_ov037_0208370c},
-    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                             NULL},
+    {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheck_SwSprites},
+    {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,               func_ov027_020e9670},
+    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,               func_ov030_020d2d6c},
+    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,               func_ov037_0208370c},
+    {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                              NULL},
 };
 
 const DebugLauncherCategory Categories[11] = {

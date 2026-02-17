@@ -1,8 +1,8 @@
 func_ov025_020e7360 kind:function(arm,size=0x13c) addr:0x020e7360
 func_ov025_020e749c kind:function(arm,size=0x110) addr:0x020e749c
-func_ov025_020e75ac kind:function(arm,size=0xd0) addr:0x020e75ac
-func_ov025_020e767c kind:function(arm,size=0x20) addr:0x020e767c
-func_ov025_020e769c kind:function(arm,size=0x18) addr:0x020e769c
+Continue_VBlank kind:function(arm,size=0xd0) addr:0x020e75ac
+Continue_RegisterVBlank kind:function(arm,size=0x20) addr:0x020e767c
+Continue_ReleaseVBlank kind:function(arm,size=0x18) addr:0x020e769c
 func_ov025_020e76b4 kind:function(arm,size=0x1a8) addr:0x020e76b4
 func_ov025_020e785c kind:function(arm,size=0x6c) addr:0x020e785c
 func_ov025_020e78c8 kind:function(arm,size=0xb4) addr:0x020e78c8
@@ -16,12 +16,12 @@ func_ov025_020e7dd0 kind:function(arm,size=0x158) addr:0x020e7dd0
 func_ov025_020e7f28 kind:function(arm,size=0x68) addr:0x020e7f28
 func_ov025_020e7f90 kind:function(arm,size=0x4c) addr:0x020e7f90
 func_ov025_020e7fdc kind:function(arm,size=0x9c) addr:0x020e7fdc
-func_ov025_020e8078 kind:function(arm,size=0x140) addr:0x020e8078
-func_ov025_020e81b8 kind:function(arm,size=0xb4) addr:0x020e81b8
-func_ov025_020e826c kind:function(arm,size=0x5c) addr:0x020e826c
-func_ov025_020e82c8 kind:function(arm,size=0x40) addr:0x020e82c8
+Continue_Init kind:function(arm,size=0x140) addr:0x020e8078
+Continue_Update kind:function(arm,size=0xb4) addr:0x020e81b8
+Continue_Destroy kind:function(arm,size=0x5c) addr:0x020e826c
+ProcessOverlay_Continue kind:function(arm,size=0x40) addr:0x020e82c8
 data_ov025_020e8308 kind:data(any) addr:0x020e8308
-data_ov025_020e8310 kind:data(any) addr:0x020e8310
+OvlProc_Continue kind:data(any) addr:0x020e8310 local
 data_ov025_020e8320 kind:data(any) addr:0x020e8320
 data_ov025_020e8324 kind:data(any) addr:0x020e8324
 data_ov025_020e8334 kind:data(any) addr:0x020e8334

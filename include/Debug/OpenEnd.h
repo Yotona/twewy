@@ -87,16 +87,15 @@ void func_ov037_0208345c(OpenEndState* r0);
 void func_ov037_02083604(OpenEndState* r0);
 void func_ov037_020836b4(OpenEndState* r0);
 typedef void (*OpenEndFunc)(OpenEndState*);
-static const OpenEndFunc data_ov037_02083a84[3] = {func_ov037_0208345c, func_ov037_02083604, func_ov037_020836b4};
-void                     func_ov037_02082cd4(OpenEndState* r0);
-void                     func_ov037_02082d7c(OpenEndState* r0);
-void                     func_ov037_02082f04(OpenEndState* r0);
-void                     func_ov037_02082f60(OpenEndState* r0);
-void                     func_ov037_020830a8(OpenEndState* r0);
-void                     func_ov037_020832dc(OpenEndState* r0);
-void                     func_ov037_02082c00(OpenEndState* r0);
-void                     func_ov037_02082c2c(OpenEndState* r0);
-OpenEndFunc              data_ov037_02083a90[2][3] = {
+void        func_ov037_02082cd4(OpenEndState* r0);
+void        func_ov037_02082d7c(OpenEndState* r0);
+void        func_ov037_02082f04(OpenEndState* r0);
+void        func_ov037_02082f60(OpenEndState* r0);
+void        func_ov037_020830a8(OpenEndState* r0);
+void        func_ov037_020832dc(OpenEndState* r0);
+void        func_ov037_02082c00(OpenEndState* r0);
+void        func_ov037_02082c2c(OpenEndState* r0);
+OpenEndFunc data_ov037_02083a90[2][3] = {
     {func_ov037_02082cd4, func_ov037_02082d7c, func_ov037_02082f04},
     {func_ov037_02082f60, func_ov037_020830a8, func_ov037_020832dc}
 };

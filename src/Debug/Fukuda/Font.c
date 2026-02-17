@@ -28,8 +28,6 @@ typedef struct {
     /* 0x21B40 */ s32           unk_21B40;
 } FontState; // Size: 0x21B44
 
-typedef void (*FuncPtr)(FontState*);
-
 static const char* data_ov001_02083020 = "Seq_Text()";
 
 const BinIdentifier data_ov001_02082f98 = {1, "Apl_Fuk/Grp_FldMessWin.bin"};
@@ -109,7 +107,7 @@ void func_ov001_020829c0(FontState* arg0) {
     data_02066eec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov001_0208288c(arg0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov001_02082a5c(FontState* arg0) {
@@ -143,18 +141,18 @@ void func_ov001_02082b00(FontState* arg0) {
     Mem_Free(&gDebugHeap, arg0);
 }
 
-void func_ov001_02082b34(FontState* arg0) {
-    static const FuncPtr data_ov001_02082fa0[3] = {
-        func_ov001_020829c0,
-        func_ov001_02082a5c,
-        func_ov001_02082b00,
-    };
+static const OverlayProcess data_ov001_02082fa0 = {
+    .init = func_ov001_020829c0,
+    .main = func_ov001_02082a5c,
+    .exit = func_ov001_02082b00,
+};
 
-    s32 count = MainOvlDisp_GetRepeatCount();
-    if (count == 0x7FFFFFFF) {
+void func_ov001_02082b34(FontState* arg0) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov001_02082b00(arg0);
     } else {
-        data_ov001_02082fa0[count](arg0);
+        data_ov001_02082fa0.funcs[stage](arg0);
     }
 }
 

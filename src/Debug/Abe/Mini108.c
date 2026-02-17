@@ -1,5 +1,6 @@
 #include "Debug/Mini108.h"
 #include "BgResMgr.h"
+#include "DatMgr.h"
 #include "Display.h"
 #include "Input.h"
 #include "Interrupts.h"
@@ -195,25 +196,10 @@ void func_ov000_02082b1c(Mini108State* state) {
     data_02066aec    = 0x1f;
 
     Data* temp2 = state->unk_84C;
-    u32   temp_r1, temp_r6, temp_r5;
-    if (temp2 == NULL) {
-        temp_r1 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
-        temp_r1       = (s32)temp_ptr + *(temp_ptr + 0x02);
-    }
-    if (temp2 == NULL) {
-        temp_r6 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
-        temp_r6       = (s32)temp_ptr + *(temp_ptr + 0x06);
-    }
-    if (temp2 == NULL) {
-        temp_r5 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(temp2->buffer) + 0x08;
-        temp_r5       = (s32)temp_ptr + *(temp_ptr + 0x08);
-    }
+    u8 *  temp_r1, *temp_r6, *temp_r5;
+    temp_r1 = Data_GetPackEntryData(temp2, 1);
+    temp_r6 = Data_GetPackEntryData(temp2, 3);
+    temp_r5 = Data_GetPackEntryData(temp2, 4);
 
     u32 r2_val = (*(u32*)temp_r1 & ~0xFF) >> 8;
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
@@ -225,24 +211,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     func_0200adf8(data_0206b3cc[0], temp_r5, 0, 0, 2);
     data_02066eec = 0x1F;
     temp2         = state->unk_84C;
-    if (temp2 == 0) {
-        temp_r1 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
-        temp_r1       = (s32)temp_ptr + *(temp_ptr + 0x02);
-    }
-    if (temp2 == 0) {
-        temp_r6 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
-        temp_r6       = (s32)temp_ptr + *(temp_ptr + 0x04);
-    }
-    if (temp2 == 0) {
-        temp_r5 = 0;
-    } else {
-        s32* temp_ptr = (s32*)(*(s32*)(temp2 + 0x08)) + 0x08;
-        temp_r5       = (s32)temp_ptr + *(temp_ptr + 0x08);
-    }
+    temp_r1       = Data_GetPackEntryData(temp2, 1);
+    temp_r6       = Data_GetPackEntryData(temp2, 2);
+    temp_r5       = Data_GetPackEntryData(temp2, 4);
 
     r2_val = (*(u32*)temp_r1 & ~0xFF) >> 8;
     if (((*(u8*)temp_r1) & 0xF0) == 0) {
@@ -353,23 +324,23 @@ void func_ov000_02082894(Mini108State* stateptr) {
     MI_CpuFill(0, stateptr, Mem_GetBlockSize(&gDebugHeap, stateptr));
     func_ov000_02082b1c(stateptr);
     func_ov000_02082b18(stateptr);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
     MainOvlDisp_Run();
 }
 
-void func_ov000_02082854(Mini108State* state) {
-    static const Mini108Func funcPtrs[3] = {
-        func_ov000_02082894,
-        func_ov000_02082944,
-        func_ov000_02082ac0,
-    };
+static const OverlayProcess OvlProc_Mini108 = {
+    .init = func_ov000_02082894,
+    .main = func_ov000_02082944,
+    .exit = func_ov000_02082ac0,
+};
 
-    int var1 = MainOvlDisp_GetRepeatCount();
-    if (var1 == 0x7FFFFFFF) {
+void func_ov000_02082854(Mini108State* state) {
+
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov000_02082ac0(state);
     } else {
-        Mini108Func target_function = funcPtrs[var1];
-        target_function(state);
+        OvlProc_Mini108.funcs[stage](state);
     }
 }
 

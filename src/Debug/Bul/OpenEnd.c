@@ -325,16 +325,16 @@ void        func_ov037_02082f04(OpenEndState* r0) {
 }
 
 /*Nonmatching: regswap */
-extern void func_ov002_02086a8c(void* state);
-extern void func_ov002_02086b0c(void* state);
+extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
+extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
 void        func_ov037_02082f60(OpenEndState* r0) {
     OverlayTag tag, tag2;
     func_ov037_02082c58(r0);
     if (r0->unk_11A48 != 0) {
         if (r0->unk_11A38 == 2) {
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, func_ov002_02086b0c, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataLoadFailure, 0, 0);
         } else {
-            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_2_ID, func_ov002_02086a8c, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, 0, 0);
         }
         DebugOvlDisp_Init();
         return;
@@ -388,12 +388,12 @@ void func_ov037_020830a8(OpenEndState* r0) {
     DebugOvlDisp_Pop();
 }
 
-extern void func_ov002_02086a4c(void* r0);
+extern void ProcessOverlay_OtosuMenu_DataDeletion(void* r0);
 extern void func_ov030_020b0fe8(void* r0);
 void        func_ov037_02083188(OpenEndState* r0) {
     OverlayTag tag, tag2;
     if (r0->unk_11A44 != 0) {
-        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, func_ov002_02086a4c, NULL, 0);
+        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataDeletion, NULL, 0);
     } else {
         MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, NULL, 0);
     }
@@ -418,7 +418,7 @@ void        func_ov037_020831ec(OpenEndState* r0) {
         MainOvlDisp_ReplaceTop(&tag3, &OVERLAY_30_ID, func_ov030_020ae92c, 0, 0);
         return;
     }
-    MainOvlDisp_ReplaceTop(&tag4, &OVERLAY_2_ID, func_ov002_02086a8c, 0, 0);
+    MainOvlDisp_ReplaceTop(&tag4, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, 0, 0);
 }
 
 void func_ov037_020832dc(OpenEndState* r0) {
@@ -427,9 +427,9 @@ void func_ov037_020832dc(OpenEndState* r0) {
     func_ov037_02082c58(r0);
     if (r0->unk_11A48 != 0) {
         if (r0->unk_11A38 == 2) {
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, func_ov002_02086b0c, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataLoadFailure, 0, 0);
         } else {
-            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_2_ID, func_ov002_02086a8c, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, 0, 0);
         }
         DebugOvlDisp_Init();
         return;
@@ -495,7 +495,7 @@ void func_ov037_0208345c(OpenEndState* r0) {
     data_ov037_02083e08 = &r0->unk_11590;
     EasyTask_CreateTask(&r0->unk_11590, &Task_EasyFade, 0, 0, 0, 0);
     func_ov037_020833a8(r0);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
 
 void func_ov037_02083604(OpenEndState* r0) {
@@ -530,13 +530,19 @@ void func_ov037_020836b4(OpenEndState* r0) {
     func_02027388(0);
 }
 
-void func_ov037_0208370c(OpenEndState* r0) {
-    u32 index = MainOvlDisp_GetRepeatCount();
-    if (index == ~0x80000000) {
-        func_ov037_020836b4(r0);
-        return;
+static const OverlayProcess data_ov037_02083a84 = {
+    .init = func_ov037_0208345c,
+    .main = func_ov037_02083604,
+    .exit = func_ov037_020836b4,
+};
+
+void func_ov037_0208370c(OpenEndState* state) {
+    u32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
+        func_ov037_020836b4(state);
+    } else {
+        data_ov037_02083a84.funcs[stage](state);
     }
-    data_ov037_02083a84[index](r0);
 }
 
 void func_ov037_0208374c(u32 r0) {
@@ -546,7 +552,7 @@ void func_ov037_0208374c(u32 r0) {
     data_ov037_02083e00->unk_11A28 = r0;
     data_ov037_02083e00->unk_11A2C = 1;
 
-    func_02026b20(2);
+    SndMgr_StartPlayingSE(2);
 }
 
 BOOL OpenEnd_IsInCircle(s32* r0, s32 x, s32 y) {

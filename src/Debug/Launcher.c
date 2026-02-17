@@ -461,17 +461,22 @@ void func_ov046_constructor_020835b4(DebugLauncherState* state) {
     MI_CpuFill(0, state, Mem_GetBlockSize(&gDebugHeap, state));
     func_ov046_02082c78(state);
     func_ov046_02083368(state);
-    MainOvlDisp_IncrementRepeatCount();
+    MainOvlDisp_NextProcessStage();
 }
+
+static const OverlayProcess OvlProc_DebugLauncher = {
+    .init = func_ov046_constructor_020835b4,
+    .main = func_ov046_main_020834c0,
+    .exit = func_ov046_destructor_02083454,
+};
 
 // Overlay Init function
 void func_ov046_02083630(DebugLauncherState* state) {
-
-    s32 sVar1 = MainOvlDisp_GetRepeatCount();
-    if (sVar1 == 0x7fffffff) {
+    s32 stage = MainOvlDisp_GetProcessStage();
+    if (stage == PROCESS_STAGE_EXIT) {
         func_ov046_destructor_02083454(state);
     } else {
-        funcs[sVar1](state);
+        OvlProc_DebugLauncher.funcs[stage](state);
     }
 }
 
