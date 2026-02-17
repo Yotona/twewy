@@ -1562,7 +1562,7 @@ void SoundTest_PlaySelectedSoundType(SoundTestState* state) {
 void func_ov029_02082a38(void) {
     s32 idx = 0;
 
-    // Unreachable code left in original? Possibly a side effect of while loop compilation?
+    /*// Unreachable code left in original? Possibly a side effect of while loop compilation?
     if (idx >= 5) {
         return;
     }
@@ -1570,7 +1570,14 @@ void func_ov029_02082a38(void) {
     while (idx < 5) {
         SndMgr_StopPlaybackForTrack(idx);
         idx++;
-    };
+    };*/
+    while (idx < 5) {
+        if (idx >= 5) {
+            break;
+        }
+        SndMgr_StopPlaybackForTrack(idx);
+        idx++;
+    }
 }
 
 void SoundTest_StopSelectedSoundType(SoundTestState* state) {
