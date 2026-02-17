@@ -4,6 +4,7 @@
 #include "BgResMgr.h"
 #include "EasyTask.h"
 #include "Memory.h"
+#include "PrcMaster.h"
 #include "SpriteMgr.h"
 
 typedef struct {
@@ -15,10 +16,8 @@ typedef struct {
     /* 0x11590 */ MemPool     memPool;
     /* 0x1159C */ u8          memPoolBuffer[0x30000];
     /* 0x4159C */ TaskPool    taskPool;
-    /* 0x4161C */ s32         unk_4161C;
-    /* 0x41620 */ char        unk_41620[0x41804 - 0x41620];
-    /* 0x41804 */ s32         unk_41804;
-    /* 0x41808 */ s32         unk_41808;
+    /* 0x4161C */ PrcCtx      unk_4161C;
+    /* 0x41804 */ PrcMaster   prcMaster;
     /* 0x4180C */ s32         unk_4180C;
     /* 0x41810 */ s32         unk_41810;
     /* 0x41814 */ s32         unk_41814;
@@ -74,8 +73,8 @@ typedef struct {
     /* 0x460B8 */ s32         unk_460B8;
     /* 0x460BC */ s32         unk_460BC;
     /* 0x460C0 */ Sprite      unk_460C0;
-    /* 0x46100 */ s32         unk_46100;
-    /* 0x46104 */ char        unk_46104[0x462E8 - 0x46104];
+    /* 0x46100 */ PrcCtx      unk_46100;
+    /* 0x462E2 */ char        unk_46104[0x462E8 - 0x462E2];
     /* 0x462E8 */ s32         unk_462E8;
     /* 0x462EC */ s32         unk_462EC;
     /* 0x462F0 */ Data*       unk_462F0;
@@ -145,16 +144,12 @@ typedef struct {
     /* 0x474DC */ s32         unk_474DC;
     /* 0x474E0 */ s32         unk_474E0;
     /* 0x474E4 */ s32         unk_474E4;
-    /* 0x474E8 */ s32         unk_474E8;
-    /* 0x474EC */ char        unk_474EC[0x476D0 - 0x474EC];
-    /* 0x476D0 */ s32         unk_476D0;
-    /* 0x476D4 */ char        unk_476D4[0x478B8 - 0x476D4];
-    /* 0x478B8 */ s32         unk_478B8;
-    /* 0x478BC */ char        unk_478BC[0x47AA0 - 0x478BC];
-    /* 0x47AA0 */ s32         unk_47AA0;
-    /* 0x47AA4 */ char        unk_47AA4[0x47C88 - 0x47AA4];
-    /* 0x47C88 */ s32         unk_47C88;
-    /* 0x47C8C */ char        unk_47C8C[0x48058 - 0x47C8C];
+    /* 0x474E8 */ PrcCtx      unk_474E8;
+    /* 0x476D0 */ PrcCtx      unk_476D0;
+    /* 0x478B8 */ PrcCtx      unk_478B8;
+    /* 0x47AA0 */ PrcCtx      unk_47AA0;
+    /* 0x47C88 */ PrcCtx      unk_47C88;
+    /* 0x47E70 */ char        unk_47E70[0x48058 - 0x47E70];
     /* 0x48058 */ s32         unk_48058;
 } OtosuMenuObj; // Size: 0x48068
 

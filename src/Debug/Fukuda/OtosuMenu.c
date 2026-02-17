@@ -376,11 +376,11 @@ static void             func_ov002_02087a18(OtosuMenuObj* menuObj);
 static void             func_ov002_02087a40(OtosuMenuObj* menuObj);
 static void             func_ov002_02087c80(OtosuMenuObj* menuObj);
 static void             func_ov002_02087ca0(void);
-extern s32              func_ov031_0210d0b0(void* arg0);
-extern s32              func_ov031_0210d0cc(void* arg0);
-extern s32              func_ov031_0210d0fc(void* arg0);
-extern s32              func_ov031_0210d10c(void* arg0);
-extern s32              func_ov031_0210d114(void* arg0);
+extern s32              PrcStep_StartDelay(void* arg0);
+extern s32              PrcStep_TickDelay(void* arg0);
+extern s32              PrcStep_Advance(void* arg0);
+extern s32              PrcStep_PopFrame(void* arg0);
+extern s32              PrcStep_Continue(void* arg0);
 extern void             func_ov030_020ae92c(void);
 static s32              func_ov002_020879f8(void* arg0, void* arg1);
 static s32              func_ov002_020880a0(void* arg0);
@@ -561,18 +561,18 @@ static SpriteFrameInfo* func_ov002_0208f6f8(Sprite* arg0, s32 arg1, s32 arg2);
 static SpriteFrameInfo* func_ov002_02091760(Sprite* arg0, s32 arg1, s32 arg2);
 static void*            data_ov002_02092d24[];
 static void*            data_ov002_02092d88[];
-static void*      data_ov002_02092b00[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov031_0210d10c};
-static void*      data_ov002_02092b0c[] = {(void*)func_ov002_020828ec, (void*)func_ov002_0208293c, (void*)func_ov031_0210d10c};
-static void*      data_ov002_02092b18[] = {(void*)func_ov002_02082914, (void*)func_ov002_0208293c, (void*)func_ov031_0210d10c};
+static void*      data_ov002_02092b00[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)PrcStep_PopFrame};
+static void*      data_ov002_02092b0c[] = {(void*)func_ov002_020828ec, (void*)func_ov002_0208293c, (void*)PrcStep_PopFrame};
+static void*      data_ov002_02092b18[] = {(void*)func_ov002_02082914, (void*)func_ov002_0208293c, (void*)PrcStep_PopFrame};
 static char       data_ov002_02092be4[] = "OtosuMenuObj";
 static void*      data_ov002_02092c08[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_020870c8,
                                            (void*)func_ov002_020829f8, (void*)func_ov002_02082a20, (void*)func_ov002_0208749c,
                                            (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02087508,
-                                           (void*)func_ov031_0210d10c};
+                                           (void*)PrcStep_PopFrame};
 static void*      data_ov002_02092c30[] = {(void*)func_ov002_02086cec, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4,
                                            (void*)func_ov002_02086c64, (void*)func_ov002_02086c84, (void*)func_ov002_02086e4c,
                                            (void*)func_ov002_02086eb4, (void*)func_ov002_02086ee8, (void*)func_ov002_020870ac,
-                                           (void*)func_ov031_0210d10c};
+                                           (void*)PrcStep_PopFrame};
 static void*      data_ov002_02092c58[] = {(void*)func_ov002_02086b8c, (void*)data_ov002_02092c30, (void*)func_ov002_02086c5c,
                                            (void*)func_ov002_02086c60, (void*)func_ov002_02086bb0};
 static void*      data_ov002_02092bf4[] = {(void*)func_ov002_02086bac, (void*)data_ov002_02092c08, (void*)func_ov002_02086c5c,
@@ -581,7 +581,7 @@ static const char data_ov002_02092c6c[] = "OtosuMenu_TitleEnmObj";
 static const char data_ov002_02092c84[] = "OtosuMenu_TitleBossObj";
 static void*      data_ov002_02092cb0[] = {(void*)func_ov002_020875c8, (void*)func_ov002_02082960, (void*)func_ov002_02082988,
                                            (void*)func_ov002_02087728, (void*)func_ov002_02082878, (void*)func_ov002_020828c8,
-                                           (void*)func_ov002_020878f8, (void*)func_ov031_0210d10c};
+                                           (void*)func_ov002_020878f8, (void*)PrcStep_PopFrame};
 static void*      data_ov002_02092c9c[] = {(void*)func_ov002_02087524, (void*)data_ov002_02092cb0, (void*)func_ov002_020875c0,
                                            (void*)func_ov002_020875c4, (void*)func_ov002_0208757c};
 static const char data_ov002_02092cd0[] = "OtosuMenu_Icon";
@@ -590,19 +590,19 @@ static void*      data_ov002_02092ce0[] = {(void*)func_ov002_02087a18, (void*)da
 static void*      data_ov002_02092cf4[] = {(void*)func_ov002_02087a18, (void*)data_ov002_02092d88, (void*)func_ov002_02087c80,
                                            (void*)func_ov002_02087ca0, (void*)func_ov002_02087a40};
 static const char data_ov002_02092d08[] = "data/BeBadge_MapData.bin";
-static void*      data_ov002_02092d24[] = {(void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc, (void*)func_ov002_02082878,
+static void*      data_ov002_02092d24[] = {(void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,   (void*)func_ov002_02082878,
                                            (void*)func_ov002_020828c8, (void*)func_ov002_020890f8, (void*)func_ov002_02082960,
                                            (void*)func_ov002_02082988, (void*)func_ov002_0208920c, (void*)func_ov002_02082878,
                                            (void*)func_ov002_020828c8, (void*)func_ov002_02089364, (void*)func_ov002_02082698,
-                                           (void*)func_ov002_02088230, (void*)func_ov031_0210d10c};
+                                           (void*)func_ov002_02088230, (void*)PrcStep_PopFrame};
 static void*      data_ov002_02092d88[] = {
     (void*)func_ov002_020880a0, (void*)func_ov002_0208275c, (void*)func_ov002_0208847c, (void*)func_ov002_02088524,
     (void*)func_ov002_02088610, (void*)func_ov002_02082960, (void*)func_ov002_020879f8, (void*)func_ov002_02082988,
-    (void*)func_ov002_020886ec, (void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc, (void*)func_ov031_0210d0b0,
-    (void*)func_ov031_0210d0cc, (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02088998,
+    (void*)func_ov002_020886ec, (void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,   (void*)PrcStep_StartDelay,
+    (void*)PrcStep_TickDelay,   (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02088998,
     (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_02088b28, (void*)func_ov002_02082878,
     (void*)func_ov002_020828c8, (void*)func_ov002_020893b8, (void*)func_ov002_020893d8, (void*)func_ov002_02089498,
-    (void*)func_ov002_02082698, (void*)func_ov002_02088230, (void*)func_ov031_0210d10c};
+    (void*)func_ov002_02082698, (void*)func_ov002_02088230, (void*)PrcStep_PopFrame};
 static char data_ov002_02092df4[] = "OtosuMenu_Icon2";
 static char data_ov002_02092e04[] = "OtosuMenu_DaizaObj";
 
@@ -631,23 +631,23 @@ static void* data_ov002_02092e68[] = {(void*)func_ov002_02082878, (void*)func_ov
 static void* data_ov002_02092e98[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02089514,
                                       (void*)func_ov002_0208958c, (void*)func_ov002_02089860, (void*)func_ov002_02082960,
                                       (void*)func_ov002_02082988, (void*)func_ov002_02089920, (void*)func_ov002_02082878,
-                                      (void*)func_ov002_020828c8, (void*)func_ov002_02089adc, (void*)func_ov031_0210d10c};
+                                      (void*)func_ov002_020828c8, (void*)func_ov002_02089adc, (void*)PrcStep_PopFrame};
 
 static void* data_ov002_02092ec8[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02089514,
                                       (void*)func_ov002_0208958c, (void*)func_ov002_020895c8, (void*)func_ov002_02089798,
                                       (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_02089920,
                                       (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02089b1c,
-                                      (void*)func_ov031_0210d10c};
+                                      (void*)PrcStep_PopFrame};
 
 static void* data_ov002_02092efc[] = {(void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02089514,
                                       (void*)func_ov002_0208958c, (void*)func_ov002_020895c8, (void*)func_ov002_02089624,
                                       (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_02089920,
                                       (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_02089af0,
-                                      (void*)func_ov031_0210d10c};
+                                      (void*)PrcStep_PopFrame};
 
-static void* data_ov002_02092f30[] = {(void*)func_ov002_0208b570, (void*)func_ov031_0210d10c};
+static void* data_ov002_02092f30[] = {(void*)func_ov002_0208b570, (void*)PrcStep_PopFrame};
 
-static void* data_ov002_02092f38[] = {(void*)func_ov002_0208b610, (void*)func_ov002_0208b6d0, (void*)func_ov031_0210d10c};
+static void* data_ov002_02092f38[] = {(void*)func_ov002_0208b610, (void*)func_ov002_0208b6d0, (void*)PrcStep_PopFrame};
 static void* data_ov002_02092f58[];
 static void* data_ov002_02092f98[];
 static void* data_ov002_02093004[];
@@ -675,14 +675,14 @@ static void* data_ov002_02092f58[] = {
     (void*)func_ov002_02089bb0, (void*)func_ov002_02089d40, (void*)func_ov002_02089e3c, (void*)func_ov002_0208a070,
     (void*)func_ov002_0208a050, (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0208a250,
     (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_0208266c, (void*)func_ov002_02082698,
-    (void*)func_ov002_0208b670, (void*)func_ov002_0208b734, (void*)func_ov002_0208a748, (void*)func_ov031_0210d10c};
+    (void*)func_ov002_0208b670, (void*)func_ov002_0208b734, (void*)func_ov002_0208a748, (void*)PrcStep_PopFrame};
 static void* data_ov002_02092f98[] = {
     (void*)func_ov002_02089bb0, (void*)func_ov002_0208aa4c, (void*)func_ov002_0208aabc, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_0208ab58, (void*)func_ov002_02082878, (void*)func_ov002_020828c8,
     (void*)func_ov002_0208af78, (void*)func_ov002_0208b0a4, (void*)func_ov002_0208b154, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_0208b240, (void*)func_ov002_0208b270, (void*)func_ov002_0208266c,
     (void*)func_ov002_02082698, (void*)func_ov002_0208b5c4, (void*)func_ov002_02082878, (void*)func_ov002_020828c8,
-    (void*)func_ov002_0208a764, (void*)func_ov031_0210d10c};
+    (void*)func_ov002_0208a764, (void*)PrcStep_PopFrame};
 static void* data_ov002_02092ff0[] = {(void*)func_ov002_02089b3c, (void*)data_ov002_02092f58, (void*)func_ov002_02089ba8,
                                       (void*)func_ov002_02089bac, (void*)func_ov002_02089b80};
 static void* data_ov002_02093004[] = {(void*)func_ov002_0208c8b0};
@@ -701,35 +701,35 @@ static void* data_ov002_02093070[] = {(void*)func_ov002_0208d144, (void*)func_ov
                                       (void*)func_ov002_0208e410, (void*)func_ov002_02082960, (void*)func_ov002_02082988,
                                       (void*)func_ov002_0208e514, (void*)func_ov002_02082878, (void*)func_ov002_020828c8,
                                       (void*)func_ov002_0208d010, (void*)func_ov002_02082698, (void*)func_ov002_0208d290,
-                                      (void*)func_ov031_0210d10c};
+                                      (void*)PrcStep_PopFrame};
 static void* data_ov002_020930a4[] = {
     (void*)func_ov002_0208d144, (void*)func_ov002_0208275c, (void*)func_ov002_0208de64, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_0208df6c, (void*)func_ov002_0208e080, (void*)func_ov002_0208e0b8,
-    (void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc, (void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc,
+    (void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,   (void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,
     (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_0208e200, (void*)func_ov002_0208d010,
     (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0208e30c, (void*)func_ov002_02082878,
     (void*)func_ov002_020828c8, (void*)func_ov002_0208e6ac, (void*)func_ov002_02082698, (void*)func_ov002_0208d09c,
     (void*)func_ov002_0208d154, (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0208e658,
     (void*)func_ov002_0208d22c, (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_0208d27c,
-    (void*)func_ov031_0210d10c};
+    (void*)PrcStep_PopFrame};
 static void* data_ov002_02093128[] = {
     (void*)func_ov002_0208d144, (void*)func_ov002_0208275c, (void*)func_ov002_0208d6bc, (void*)func_ov002_0208d4cc,
     (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0208d5c0, (void*)func_ov002_0208d778,
-    (void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc, (void*)func_ov031_0210d0b0, (void*)func_ov031_0210d0cc,
+    (void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,   (void*)PrcStep_StartDelay,  (void*)PrcStep_TickDelay,
     (void*)func_ov002_02082878, (void*)func_ov002_020828c8, (void*)func_ov002_0208da24, (void*)func_ov002_0208d010,
     (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0208db58, (void*)func_ov002_02082878,
     (void*)func_ov002_020828c8, (void*)func_ov002_0208e6f8, (void*)func_ov002_0208e750, (void*)func_ov002_0208e838,
     (void*)func_ov002_02082698, (void*)func_ov002_0208d09c, (void*)func_ov002_0208d154, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_0208e7d8, (void*)func_ov002_0208d22c, (void*)func_ov002_02082878,
-    (void*)func_ov002_020828c8, (void*)func_ov002_0208d27c, (void*)func_ov031_0210d10c};
+    (void*)func_ov002_020828c8, (void*)func_ov002_0208d27c, (void*)PrcStep_PopFrame};
 static char  data_ov002_020931cc[] = "OtosuMenu_Icon2";
-static void* data_ov002_020931dc[] = {(void*)func_ov002_0208ec1c, (void*)func_ov002_0208ec34, (void*)func_ov031_0210d114};
+static void* data_ov002_020931dc[] = {(void*)func_ov002_0208ec1c, (void*)func_ov002_0208ec34, (void*)PrcStep_Continue};
 static void* data_ov002_020931e8[] = {(void*)func_ov002_0208e92c, (void*)data_ov002_020931dc, (void*)func_ov002_0208eb3c,
                                       (void*)func_ov002_0208ebe4, (void*)func_ov002_0208eb04};
-static void* data_ov002_020931fc[] = {(void*)func_ov002_0208ee9c, (void*)func_ov002_0208eeac, (void*)func_ov031_0210d114};
+static void* data_ov002_020931fc[] = {(void*)func_ov002_0208ee9c, (void*)func_ov002_0208eeac, (void*)PrcStep_Continue};
 static void* data_ov002_02093208[] = {(void*)func_ov002_0208ed78, (void*)data_ov002_020931fc, (void*)func_ov002_0208edb0,
                                       (void*)func_ov002_0208ee98, (void*)func_ov002_0208edac};
-static void* data_ov002_0209321c[] = {(void*)func_ov002_0208f6e0, (void*)func_ov002_0208f6f0, (void*)func_ov031_0210d114};
+static void* data_ov002_0209321c[] = {(void*)func_ov002_0208f6e0, (void*)func_ov002_0208f6f0, (void*)PrcStep_Continue};
 static void* data_ov002_02093228[] = {(void*)func_ov002_0208f0bc, (void*)data_ov002_0209321c, (void*)func_ov002_0208f630,
                                       (void*)func_ov002_0208f688, (void*)func_ov002_0208f5d8};
 static void* data_ov002_0209323c[] = {(void*)func_ov002_0208f858};
@@ -741,16 +741,16 @@ static void* data_ov002_02093268[] = {(void*)func_ov002_0208f860, (void*)data_ov
                                       (void*)func_ov002_0208f878, (void*)func_ov002_0208f864};
 static void* data_ov002_0209327c[] = {(void*)func_ov002_0208f87c, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4,
                                       (void*)func_ov002_0208f92c, (void*)func_ov002_020828ec, (void*)func_ov002_0208293c,
-                                      (void*)func_ov031_0210d10c};
+                                      (void*)PrcStep_PopFrame};
 static void* data_ov002_02093298[] = {(void*)func_ov002_0208f87c, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4,
                                       (void*)func_ov002_0208f89c, (void*)func_ov002_020828ec, (void*)func_ov002_0208293c,
-                                      (void*)func_ov002_0208f918, (void*)func_ov031_0210d10c};
+                                      (void*)func_ov002_0208f918, (void*)PrcStep_PopFrame};
 static void* data_ov002_020932b8[] = {(void*)func_ov002_0208f9d0, (void*)data_ov002_020932cc, (void*)func_ov002_0208f9e4,
                                       (void*)func_ov002_0208f9e8, (void*)func_ov002_0208f9d4};
 static void* data_ov002_020932cc[] = {(void*)func_ov002_0208ffac, (void*)func_ov002_02082960, (void*)func_ov002_02082988,
                                       (void*)func_ov002_02090014, (void*)func_ov002_02082878, (void*)func_ov002_020828c8,
-                                      (void*)func_ov031_0210d10c};
-static void* data_ov002_020932e8[] = {(void*)func_ov002_02091720, (void*)func_ov031_0210d10c};
+                                      (void*)PrcStep_PopFrame};
+static void* data_ov002_020932e8[] = {(void*)func_ov002_02091720, (void*)PrcStep_PopFrame};
 static void* data_ov002_020932f0[] = {(void*)func_ov002_02091510, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4,
                                       (void*)func_ov002_02091710};
 static void* data_ov002_02093300[] = {(void*)func_ov002_02091608, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4,
@@ -771,14 +771,14 @@ static void* data_ov002_02093370[] = {(void*)func_ov002_02091208, (void*)func_ov
                                       (void*)func_ov002_0208293c, (void*)func_ov002_02091720};
 static void* data_ov002_020933a8[] = {
     (void*)func_ov002_02090b44, (void*)func_ov002_020829ac, (void*)func_ov002_020829d4, (void*)func_ov002_0209095c,
-    (void*)func_ov031_0210d0fc, (void*)func_ov002_020828a0, (void*)func_ov002_020828c8, (void*)func_ov002_02090c28,
-    (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0209095c, (void*)func_ov031_0210d0fc,
+    (void*)PrcStep_Advance,     (void*)func_ov002_020828a0, (void*)func_ov002_020828c8, (void*)func_ov002_02090c28,
+    (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_0209095c, (void*)PrcStep_Advance,
     (void*)func_ov002_020828a0, (void*)func_ov002_020828c8, (void*)func_ov002_02090d0c, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_0209095c, (void*)func_ov002_02090b30, (void*)func_ov002_020828a0,
     (void*)func_ov002_020828c8, (void*)func_ov002_02090ee8, (void*)func_ov002_02090df0, (void*)func_ov002_02082960,
     (void*)func_ov002_02082988, (void*)func_ov002_02090f4c, (void*)func_ov002_020828a0, (void*)func_ov002_020828c8,
     (void*)func_ov002_02090fd8, (void*)func_ov002_02082960, (void*)func_ov002_02082988, (void*)func_ov002_020910b0,
-    (void*)func_ov002_02082914, (void*)func_ov002_0208293c, (void*)func_ov002_02091720, (void*)func_ov031_0210d10c};
+    (void*)func_ov002_02082914, (void*)func_ov002_0208293c, (void*)func_ov002_02091720, (void*)PrcStep_PopFrame};
 static void*     data_ov002_02093438[] = {(void*)func_ov002_020902a4, (void*)data_ov002_02093370, (void*)func_ov002_0209034c,
                                           (void*)func_ov002_02090350, (void*)func_ov002_02090310};
 static void*     data_ov002_0209344c[] = {(void*)func_ov002_020902a4, (void*)data_ov002_020933a8, (void*)func_ov002_0209034c,
@@ -1328,7 +1328,7 @@ void func_ov002_02082548(OtosuMenuObj* menuObj) {
 void func_ov002_02082610(OtosuMenuObj* menuObj) {
     menuObj->unk_460B8 = 0;
     Sprite_Destroy(&menuObj->unk_46078);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_46100);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_46100);
 }
 
 void func_ov002_0208264c(OtosuMenuObj* menuObj) {
@@ -1338,7 +1338,7 @@ void func_ov002_0208264c(OtosuMenuObj* menuObj) {
 
 s32 func_ov002_0208266c(void* arg0, void* arg1) {
     ((u8*)&data_02074d10)[0x40A] = func_ov002_02082bec(arg1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -1354,7 +1354,7 @@ s32 func_ov002_02082698(void* arg0, OtosuMenuObj* menuObj) {
         MI_CpuCopyU8(&menuObj->unk_41862 + i * 0x30, (u8*)&data_02075102 + i * 6, 6);
     }
 
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -1379,83 +1379,83 @@ s32 func_ov002_0208275c(void* arg0, OtosuMenuObj* menuObj) {
     *(u8*)(menuObj->unk_41832) = ((u8*)&data_02074d10)[0x40A];
     Mem_Free(&gDebugHeap, paletteData);
 
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
 s32 func_ov002_02082878(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, 16, 1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_020828a0(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, -16, 1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_020828c8(void* arg0) {
     if (EasyFade_IsFading() == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
 
 s32 func_ov002_020828ec(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, 16, 8);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_02082914(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, -16, 8);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_0208293c(void* arg0) {
     if (EasyFade_IsFading() == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
 
 s32 func_ov002_02082960(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, 0, 8);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_02082988(void* arg0) {
     if (EasyFade_IsFading() == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
 
 s32 func_ov002_020829ac(void* arg0) {
     EasyFade_FadeBothDisplays(3, 0, 8);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_020829d4(void* arg0) {
     if (EasyFade_IsFading() == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
 
 s32 func_ov002_020829f8(void* arg0) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, 0, 40);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_02082a20(void* arg0) {
     if (EasyFade_IsFading() == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -2554,11 +2554,11 @@ u16 func_ov002_0208597c(u16* arg0) {
 
 void func_ov002_02085a44(OtosuMenuObj* menuObj) {
     func_ov002_02082548(menuObj);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_46100);
-    func_ov031_0210c94c(&menuObj->unk_46100, "OtosuMenuLinklevel", 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_46100, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_46100, &data_ov002_02093008, NULL);
-    func_ov031_0210ce50(&menuObj->unk_41804, &menuObj->unk_46100);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_46100);
+    PrcCtx_Init(&menuObj->unk_46100, "OtosuMenuLinklevel", 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_46100, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_46100, &data_ov002_02093008, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_46100);
 }
 
 void func_ov002_02085ac4(OtosuMenuObj* menuObj) {
@@ -2570,23 +2570,23 @@ void func_ov002_02085ac4(OtosuMenuObj* menuObj) {
         menuObj->unk_462E8 = 1;
     }
 
-    void* currentTable = func_ov031_0210cde4(&menuObj->unk_4161C);
+    void* currentTable = PrcCtx_GetStepTable(&menuObj->unk_4161C);
 
     if (currentTable != (void*)&data_ov002_02092efc && currentTable != (void*)&data_ov002_02092e68 &&
         currentTable != (void*)&data_ov002_02092ec8 && currentTable != (void*)&data_ov002_02092e98)
     {
         if (result == 10) {
-            func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e40, NULL);
+            PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e40, NULL);
         } else if (result == 8 || result == 9) {
             switch (menuObj->unk_41FE9) {
                 case 0:
-                    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e54, NULL);
+                    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e54, NULL);
                     break;
                 case 1:
-                    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+                    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
                     break;
                 case 2:
-                    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e2c, NULL);
+                    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e2c, NULL);
                     break;
             }
         }
@@ -2612,7 +2612,7 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     func_ov031_0210ab60(&obj->unk_45FF4, 3);
     func_ov031_0210ab54(&obj->unk_45FF4, 1, 0);
     func_ov031_0210ab34(&obj->unk_45FF4, 12);
-    func_ov031_0210cdfc(&obj->unk_41804, 30);
+    PrcMaster_Init(&obj->prcMaster, 30);
     EasyTask_InitializePool(&obj->taskPool, &obj->memPool, 0x100, NULL, NULL);
     EasyTask_CreateTask(&obj->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     func_0200d8f0();
@@ -2635,9 +2635,9 @@ OtosuMenuObj* func_ov002_02085df8(void) {
 static void OtosuMenu_InitForSinglePlayerEnter(OtosuMenuObj* menuObj) {
     func_ov002_0208b860();
     menuObj = func_ov002_02085df8();
-    func_ov031_0210c94c(&menuObj->unk_4161C, data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093268, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093268, NULL);
     menuObj->unk_41FE9 = 0;
     MainOvlDisp_NextProcessStage();
 }
@@ -2648,9 +2648,9 @@ static void OtosuMenu_InitForMultiplayerEnter(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     menuObj->unk_460BC = 1;
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093254, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093254, NULL);
     menuObj->unk_41FE9 = 0;
     MainOvlDisp_NextProcessStage();
 }
@@ -2664,13 +2664,13 @@ void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
     func_ov040_0209d990();
     menuObj->unk_41FF0 = 1;
     menuObj->unk_460BC = 1;
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
     menuObj->unk_462EC = 0;
     if (data_02074d10.unk40A == 0) {
-        func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093034);
+        PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093034);
     } else {
-        func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_0209305c);
+        PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_0209305c);
     }
     func_ov002_02085a44(menuObj);
     func_0202733c(0x19);
@@ -2680,10 +2680,10 @@ void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
 void OtosuMenu_InitForSinglePlayerRankings(OtosuMenuObj* menuObj) {
     func_ov002_0208bd40();
     menuObj = func_ov002_02085df8();
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
     menuObj->unk_462EC = 1;
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093048, NULL);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093048, NULL);
     func_ov002_02085a44(menuObj);
     func_0202733c(0x19);
     MainOvlDisp_NextProcessStage();
@@ -2697,9 +2697,9 @@ void OtosuMenu_InitForConnectionError(OtosuMenuObj* menuObj) {
 
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags.unk_07 = 1;
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     func_ov002_02085a44(menuObj);
     MainOvlDisp_NextProcessStage();
 }
@@ -2710,9 +2710,9 @@ void OtosuMenu_InitForRoleSelection(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     menuObj->unk_460BC = 1;
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02092c9c, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092c9c, NULL);
     func_ov002_02085a44(menuObj);
     MainOvlDisp_NextProcessStage();
 }
@@ -2722,9 +2722,9 @@ void OtosuMenu_InitForFontList(OtosuMenuObj* menuObj) {
 
     menuObj = func_ov002_02085df8();
 
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_020932b8, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_020932b8, NULL);
     func_ov002_02085a44(menuObj);
     MainOvlDisp_NextProcessStage();
 }
@@ -2735,9 +2735,9 @@ void OtosuMenu_InitForDataDeletion(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     func_ov002_02085a44(menuObj);
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_0209344c, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_0209344c, NULL);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -2747,9 +2747,9 @@ void OtosuMenu_InitForDataCorrupted(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     func_ov002_02085a44(menuObj);
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093460, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093460, NULL);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -2759,9 +2759,9 @@ void func_ov002_02086290(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     func_ov002_02085a44(menuObj);
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093438, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093438, NULL);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -2771,9 +2771,9 @@ void OtosuMenu_InitForDataLoadFailure(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     func_ov002_02085a44(menuObj);
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093310, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093310, NULL);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -2783,15 +2783,15 @@ void OtosuMenu_InitForDataSaveFailure(OtosuMenuObj* menuObj) {
     menuObj = func_ov002_02085df8();
 
     func_ov002_02085a44(menuObj);
-    func_ov031_0210c94c(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
-    func_ov031_0210c9a8(&menuObj->unk_4161C, menuObj);
-    func_ov031_0210cc84(&menuObj->unk_4161C, &data_ov002_02093324, NULL);
+    PrcCtx_Init(&menuObj->unk_4161C, &data_ov002_02092be4, 0x48068);
+    PrcCtx_SetWorkObject(&menuObj->unk_4161C, menuObj);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093324, NULL);
     MainOvlDisp_NextProcessStage();
 }
 
 static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
     if (SystemStatusFlags.reset && menuObj->unk_460BC) {
-        func_ov031_0210cd14(&menuObj->unk_4161C, func_ov002_02082a44);
+        PrcCtx_ReplaceCurrentUpdateCallback(&menuObj->unk_4161C, func_ov002_02082a44);
     }
 
     TouchInput_Update();
@@ -2801,9 +2801,9 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
     func_02003440(&data_02068778);
 
     if (SystemStatusFlags.reset || (menuObj->unk_460BC == 0)) {
-        func_ov031_0210cea0(&menuObj->unk_41804);
+        PrcMaster_RunAllCtxSteps(&menuObj->prcMaster);
         EasyTask_ProcessPendingTasks(&menuObj->taskPool);
-        if (func_ov031_0210ca80(&menuObj->unk_4161C) == 0) {
+        if (PrcCtx_RunSteps(&menuObj->unk_4161C) == 0) {
             OverlayTag tag;
             MainOvlDisp_Pop(&tag);
             return;
@@ -2813,8 +2813,8 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
         }
     }
 
-    func_ov031_0210cf08(&menuObj->unk_41804);
-    func_ov031_0210cb68(&menuObj->unk_4161C);
+    PrcMaster_UpdateAllContexts(&menuObj->prcMaster);
+    PrcCtx_Update(&menuObj->unk_4161C);
 
     switch (menuObj->unk_46074) {
 
@@ -2870,9 +2870,9 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
             OS_WaitForever();
 
         case 0: {
-            func_ov031_0210cf50(&menuObj->unk_41804);
+            PrcMaster_RenderAllContexts(&menuObj->prcMaster);
             EasyTask_UpdateActiveTasks(&menuObj->taskPool);
-            func_ov031_0210cbc4(&menuObj->unk_4161C);
+            PrcCtx_Render(&menuObj->unk_4161C);
             if (menuObj->unk_460B8 != 0) {
                 Sprite_Render(&menuObj->unk_46078);
             }
@@ -2894,8 +2894,8 @@ void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
         func_ov002_0208264c(menuObj);
     }
     EasyTask_DestroyPool(&menuObj->taskPool);
-    func_ov031_0210ca38(&menuObj->unk_4161C);
-    func_ov031_0210d044(&menuObj->unk_41804);
+    PrcCtx_Destroy(&menuObj->unk_4161C);
+    PrcMaster_Destroy(&menuObj->prcMaster);
     func_0200cef0(NULL);
     DatMgr_ClearSlot(menuObj->unk_11584);
     DatMgr_ClearSlot(menuObj->unk_1158C);
@@ -3105,11 +3105,11 @@ void func_ov002_02086bb0(void) {
 
 void func_ov002_02086bc4(s32 arg0, OtosuMenuObj* menuObj) {
     SndMgr_StopPlayingSE(0x55C);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_476D0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_478B8);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_47AA0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_47C88);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_476D0);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_478B8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47AA0);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     func_ov002_0208bd40();
     func_ov002_02085710(menuObj);
 }
@@ -3124,17 +3124,17 @@ void func_ov002_02086c60(void) {
 
 s32 func_ov002_02086c64(s32 arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474CC = 30;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
 s32 func_ov002_02086c84(s32 arg0, OtosuMenuObj* menuObj) {
     if (TouchInput_WasTouchPressed() != 0) {
-        func_ov031_0210cc84(arg0, &data_ov002_02092bf4, NULL);
+        PrcCtx_ReplaceFrame(arg0, &data_ov002_02092bf4, NULL);
         return 0;
     }
     if (menuObj->unk_474CC == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     menuObj->unk_474CC--;
     return 0;
@@ -3155,40 +3155,40 @@ s32 func_ov002_02086cec(void* arg0, OtosuMenuObj* menuObj) {
     void* temp_r9;
 
     sp0  = arg0;
-    sp14 = menuObj->unk_474E8;
-    sp18 = menuObj->unk_476D0;
-    sp1C = menuObj->unk_478B8;
-    sp20 = menuObj->unk_47AA0;
+    sp14 = &menuObj->unk_474E8;
+    sp18 = &menuObj->unk_476D0;
+    sp1C = &menuObj->unk_478B8;
+    sp20 = &menuObj->unk_47AA0;
     func_ov002_02083a74(menuObj);
     var_r8 = 0;
     do {
         temp_r9 = (&sp14)[var_r8];
         sp4     = 3 - var_r8;
         sp6     = 0x78;
-        func_ov031_0210c94c(temp_r9, &data_ov002_02092c6c, 0x114);
-        func_ov031_0210cc84(temp_r9, &data_ov002_020931e8, &sp4);
-        func_ov031_0210ce50(&menuObj->unk_41804, temp_r9);
+        PrcCtx_Init(temp_r9, &data_ov002_02092c6c, 0x114);
+        PrcCtx_ReplaceFrame(temp_r9, &data_ov002_020931e8, &sp4);
+        PrcMaster_RegisterContext(&menuObj->prcMaster, temp_r9);
         var_r8 += 1;
     } while ((u32)var_r8 < 4U);
     spC  = menuObj->unk_47398;
     sp10 = menuObj->unk_47438;
     sp8  = 0x78;
-    func_ov031_0210c94c(&menuObj->unk_47C88, &data_ov002_02092c84, 0x118);
-    func_ov031_0210cc84(&menuObj->unk_47C88, &data_ov002_02093208, &sp8);
-    func_ov031_0210ce50(&menuObj->unk_41804, &menuObj->unk_47C88);
+    PrcCtx_Init(&menuObj->unk_47C88, &data_ov002_02092c84, 0x118);
+    PrcCtx_ReplaceFrame(&menuObj->unk_47C88, &data_ov002_02093208, &sp8);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     menuObj->unk_474C8 = 0x78;
     menuObj->unk_474D8 = -0x200000;
-    func_ov031_0210cdac(sp0);
+    PrcCtx_AdvanceStep(sp0);
     return 0;
 }
 
 s32 func_ov002_02086e4c(void* arg0, OtosuMenuObj* menuObj) {
     if (TouchInput_WasTouchPressed() != 0) {
-        func_ov031_0210cc84(arg0, &data_ov002_02092bf4, NULL);
+        PrcCtx_ReplaceFrame(arg0, &data_ov002_02092bf4, NULL);
         return 0;
     }
     if (menuObj->unk_474C8 == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     return 0;
@@ -3198,7 +3198,7 @@ s32 func_ov002_02086eb4(s32 arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474C8 = 0x14;
     menuObj->unk_474D8 = 0x100000;
     menuObj->unk_474DC = -0x100000;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -3220,7 +3220,7 @@ s32 func_ov002_02086ee8(void* arg0, OtosuMenuObj* menuObj) {
     u8* entry_base_3;
 
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     func_020265d4((u8*)menuObj->unk_474D8, 0);
@@ -3281,7 +3281,7 @@ s32 func_ov002_02086ee8(void* arg0, OtosuMenuObj* menuObj) {
 }
 
 s32 func_ov002_020870ac(void* arg0) {
-    func_ov031_0210cc84(arg0, &data_ov002_02092bf4, NULL);
+    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092bf4, NULL);
     return 0;
 }
 
@@ -3472,7 +3472,7 @@ s32 func_ov002_020870c8(void* arg0, OtosuMenuObj* menuObj) {
     *(s32*)(entry_base_8 + 0xF4) = 0x100000;
     menuObj->unk_474C8           = 0xF0;
     SndMgr_StartPlayingSE(0x55C);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -3482,14 +3482,14 @@ s32 func_ov002_0208749c(void* arg0, OtosuMenuObj* menuObj) {
         SndMgr_StartPlayingSE(0x347);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     return 0;
 }
 
 s32 func_ov002_02087508(void* arg0) {
-    func_ov031_0210cc84(arg0, &data_ov002_02092c9c, NULL);
+    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092c9c, NULL);
     return 0;
 }
 
@@ -3511,8 +3511,8 @@ void func_ov002_02087524(OtosuMenuObj* menuObj) {
 
 void func_ov002_0208757c(void* arg1) {
     func_ov002_02085710(arg1);
-    func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x474E8);
-    func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x476D0);
+    PrcMaster_UnregisterContext(arg1 + 0x41804, arg1 + 0x474E8);
+    PrcMaster_UnregisterContext(arg1 + 0x41804, arg1 + 0x476D0);
 }
 
 void func_ov002_020875c0(void) {}
@@ -3537,15 +3537,15 @@ s32 func_ov002_020875c8(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_02082f18(menuObj, 0x15, 0x14, sp2);
     func_0202733c(0x19);
     menuObj->unk_474C8 = 0xFFFF;
-    func_ov031_0210c94c(menuObj->unk_474E8, &data_ov002_02092cd0, 0x48068, 0x60);
-    func_ov031_0210cc84(menuObj->unk_474E8, &data_ov002_02093020, subroutine_arg0);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_474E8);
-    func_ov031_0210c94c(menuObj->unk_476D0, &data_ov002_02092cd0, 0x48068, 0x88);
-    func_ov031_0210cc84(menuObj->unk_476D0, &data_ov002_02093020, subroutine_arg0);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_476D0);
+    PrcCtx_Init(menuObj->unk_474E8, &data_ov002_02092cd0, 0x48068, 0x60);
+    PrcCtx_ReplaceFrame(menuObj->unk_474E8, &data_ov002_02093020, subroutine_arg0);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
+    PrcCtx_Init(menuObj->unk_476D0, &data_ov002_02092cd0, 0x48068, 0x88);
+    PrcCtx_ReplaceFrame(menuObj->unk_476D0, &data_ov002_02093020, subroutine_arg0);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_476D0);
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags.unk_07 = 1;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -3580,7 +3580,7 @@ s32 func_ov002_02087728(void* arg0, OtosuMenuObj* menuObj) {
                 return 0;
             case 0: /* switch 1 */
                 SndMgr_StartPlayingSE(0x348);
-                func_ov031_0210cdac(arg0);
+                PrcCtx_AdvanceStep(arg0);
                 return 0;
             case 1: /* switch 1 */
             case 2: /* switch 1 */
@@ -3588,7 +3588,7 @@ s32 func_ov002_02087728(void* arg0, OtosuMenuObj* menuObj) {
                 menuObj->unk_460C0.posX = 0x80;
                 menuObj->unk_460C0.posY = 0x60;
                 SndMgr_StartPlayingSE(0x347);
-                func_ov031_0210cdac(arg0);
+                PrcCtx_AdvanceStep(arg0);
                 return 0;
         }
     } else {
@@ -3627,14 +3627,14 @@ s32 func_ov002_020878f8(void* arg0, OtosuMenuObj* menuObj) {
             SystemStatusFlags.unk_06 = 0;
             menuObj->unk_46070       = (s16)(temp_ip >> 0x1F);
             SystemStatusFlags.unk_07 = 0;
-            func_ov031_0210cc84(arg0, &data_ov002_02092ff0, 0);
+            PrcCtx_ReplaceFrame(arg0, &data_ov002_02092ff0, 0);
             return 0;
         case 2:
             temp_ip_2                = (*(u32*)&SystemStatusFlags) << 0x19;
             SystemStatusFlags.unk_06 = 0;
             menuObj->unk_46070       = (s16)(temp_ip_2 >> 0x1F);
             SystemStatusFlags.unk_07 = 0;
-            func_ov031_0210cc84(arg0, &data_ov002_02092f44, 0);
+            PrcCtx_ReplaceFrame(arg0, &data_ov002_02092f44, 0);
             return 0;
         case 3:
             data_02074d10.unk41C = 0x1F;
@@ -3646,7 +3646,7 @@ s32 func_ov002_020878f8(void* arg0, OtosuMenuObj* menuObj) {
 
 s32 func_ov002_020879f8(void* arg0, void* arg1) {
     func_ov002_02082ab4(arg1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -3662,8 +3662,8 @@ void func_ov002_02087a40(OtosuMenuObj* menuObj) {
     func_ov002_02085710(menuObj);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_474E8);
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_47C88);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
 }
 
 void func_ov002_02087aa8(OtosuMenuObj* menuObj) {
@@ -3946,7 +3946,7 @@ s32 func_ov002_020880a0(void* arg0) {
     g_DisplaySettings.engineState[0].bgSettings[3].extPlttSlot    = 1;
     REG_BG3CNT                                                    = REG_BG3CNT & 0x43 | 0x460c;
     Display_Commit();
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4050,7 +4050,7 @@ s32 func_ov002_0208847c(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_4196A          = 0;
     OVMGR_U16(menuObj, 0x4198A) = 1;
     menuObj->unk_41834          = 1;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4084,7 +4084,7 @@ s32 func_ov002_02088524(void* arg0, void* arg1) {
             func_ov040_0209d0a8(0, temp_r4, temp_r5);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     return 0;
@@ -4098,14 +4098,14 @@ s32 func_ov002_02088610(void* arg0, OtosuMenuObj* menuObj) {
         table_sp0[i * 2]     = data_ov002_02091d10[i].unk0;
         table_sp0[i * 2 + 1] = data_ov002_02091d10[i].unk2;
     }
-    func_ov031_0210c94c(menuObj->unk_47C88, &data_ov002_02092df4, 0x40);
-    func_ov031_0210cc84(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_47C88);
+    PrcCtx_Init(menuObj->unk_47C88, &data_ov002_02092df4, 0x40);
+    PrcCtx_ReplaceFrame(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
     func_ov002_02082f18(menuObj, 0xFFFF, 0x16, table_sp0);
     menuObj->unk_474C8 = 0x258;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4195,11 +4195,11 @@ s32 func_ov002_020886ec(void* arg0, OtosuMenuObj* menuObj) {
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     if (menuObj->unk_474C8 == 0) {
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
     if (menuObj->unk_4196A == 4) {
-        func_ov031_0210cdac(sp0);
+        PrcCtx_AdvanceStep(sp0);
     }
     return 0;
 }
@@ -4212,16 +4212,16 @@ s32 func_ov002_02088998(void* arg0, OtosuMenuObj* menuObj) {
         table_sp0[i * 2]     = data_ov002_02091ce8[i].unk0;
         table_sp0[i * 2 + 1] = data_ov002_02091ce8[i].unk2;
     }
-    func_ov031_0210cff0((u8*)menuObj->unk_41804, (u8*)menuObj->unk_47C88);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     func_ov002_02084494(menuObj, data_02074d10.unk40A, table_sp0);
     menuObj->unk_46300 = 1;
-    func_ov031_0210c94c((u8*)menuObj->unk_474E8, &data_ov002_02092e04, 0x40);
-    func_ov031_0210cc84((u8*)menuObj->unk_474E8, &data_ov002_02093240, NULL);
-    func_ov031_0210ce50((u8*)menuObj->unk_41804, (u8*)menuObj->unk_474E8);
+    PrcCtx_Init(&menuObj->unk_474E8, &data_ov002_02092e04, 0x40);
+    PrcCtx_ReplaceFrame(&menuObj->unk_474E8, &data_ov002_02093240, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     OVMGR_U16(menuObj, 0x4196C) = 0xFFFF;
     menuObj->unk_474C8          = 0xFFFF;
     menuObj->unk_474CA          = menuObj->unk_41834;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4237,7 +4237,7 @@ void func_ov002_02088aa4(void* arg0, void* arg1) {
             data_ov002_020935e0[0x3B] = OVMGR_U16(arg1, 0x4196C);
             break;
         case 6:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     OS_RestoreIRQ(temp_r5);
@@ -4259,7 +4259,7 @@ s32 func_ov002_02088b28(void* arg0, OtosuMenuObj* menuObj) {
 
     temp_r4 = func_ov002_0208597c(table_sp36);
     if (menuObj->unk_474CA != func_ov040_0209cb68()) {
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
     if (temp_r4 == 0xFFFF) {
@@ -4347,14 +4347,14 @@ s32 func_ov002_02088dc0(void* arg0, OtosuMenuObj* menuObj) {
         table_sp0[i * 2]     = data_ov002_02091cfc[i].unk0;
         table_sp0[i * 2 + 1] = data_ov002_02091cfc[i].unk2;
     }
-    func_ov031_0210c94c(menuObj->unk_47C88, &data_ov002_02092df4, 0x40);
-    func_ov031_0210cc84(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(menuObj->unk_41804, (u8*)menuObj->unk_47C88);
+    PrcCtx_Init(menuObj->unk_47C88, &data_ov002_02092df4, 0x40);
+    PrcCtx_ReplaceFrame(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
     func_ov002_02082f18(menuObj, 0xFFFF, 0x16, table_sp0);
     menuObj->unk_474C8 = 0x258;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4375,14 +4375,14 @@ s32 func_ov002_02088e9c(void* arg0, OtosuMenuObj* menuObj) {
             func_ov003_0209d434((void (*)(s32, void*, void*, s32))func_ov002_02088d00, menuObj);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     if (menuObj->unk_474C8 != 0) {
         return 0;
     }
-    func_ov031_0210cc84((u8*)menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+    PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     return 0;
 }
 
@@ -4394,7 +4394,7 @@ s32 func_ov002_02088fa0(OtosuMenuObj* menuObj) {
     menuObj->unk_474C8 = 0xFFFF;
     menuObj->unk_474CA = 0;
     menuObj->unk_474CC = 0;
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 0;
 }
 
@@ -4415,7 +4415,7 @@ s32 func_ov002_02088fd8(void* arg0, OtosuMenuObj* menuObj) {
         }
     }
     if (menuObj->unk_4196A == 4) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -4451,16 +4451,16 @@ s32 func_ov002_020890f8(void* arg0, OtosuMenuObj* menuObj) {
         table_sp0[i * 2]     = data_ov002_02091cd4[i].unk0;
         table_sp0[i * 2 + 1] = data_ov002_02091cd4[i].unk2;
     }
-    func_ov031_0210cff0((u8*)menuObj->unk_41804, (u8*)menuObj->unk_47C88);
-    func_ov031_0210c94c((u8*)menuObj->unk_474E8, &data_ov002_02092e04, 0x40);
-    func_ov031_0210cc84((u8*)menuObj->unk_474E8, &data_ov002_02093240, NULL);
-    func_ov031_0210ce50((u8*)menuObj->unk_41804, (u8*)menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
+    PrcCtx_Init(&menuObj->unk_474E8, &data_ov002_02092e04, 0x40);
+    PrcCtx_ReplaceFrame(&menuObj->unk_474E8, &data_ov002_02093240, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46300 = 1;
     menuObj->unk_474C8 = 0xFFFF;
     func_ov002_02084494(menuObj, data_02074d10.unk40A, table_sp0);
     menuObj->unk_474CA = OVMGR_U16(menuObj, 0x4196C);
     func_ov003_0209d434((void (*)(s32, void*, void*, s32))func_ov002_020890c0, menuObj);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -4494,7 +4494,7 @@ s32 func_ov002_0208920c(void* arg0, OtosuMenuObj* menuObj) {
     }
     if (menuObj->unk_4196A == 6) {
         SndMgr_StartPlayingSE(0x347);
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -4510,7 +4510,7 @@ s32 func_ov002_02089364(void* arg0) {
             OS_WaitForever();
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             func_ov040_0209d588();
@@ -4524,25 +4524,25 @@ s32 func_ov002_02089364(void* arg0) {
 
 s32 func_ov002_020893b8(OtosuMenuObj* menuObj) {
     menuObj->unk_474C8 = 0;
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 0;
 }
 
 s32 func_ov002_020893d8(void* arg0, OtosuMenuObj* menuObj) {
     if (func_ov040_0209cb68() == 1) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OS_DisableIRQ();
     *data_ov002_020935e0 = 6;
     OS_RestoreIRQ();
     if (func_ov040_0209d48c(data_ov002_020935e0, 0x78, func_ov002_0208824c, menuObj) == 0) {
-        func_ov031_0210cc84((u8*)menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 + 1);
     if (menuObj->unk_474C8 == 0xB4) {
-        func_ov031_0210cc84((u8*)menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     }
     return 0;
 }
@@ -4560,7 +4560,7 @@ s32 func_ov002_02089498(void* arg0) {
             OS_WaitForever();
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             if (func_ov040_0209cb68() == 1) {
@@ -4582,11 +4582,11 @@ void func_ov002_0208950c(void) {}
 void func_ov002_02089510(void) {}
 
 s32 func_ov002_02089514(void* arg0, OtosuMenuObj* menuObj) {
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_474E8);
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_476D0);
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_478B8);
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_47AA0);
-    func_ov031_0210cdac(arg0);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_476D0);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_478B8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47AA0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -4596,7 +4596,7 @@ s32 func_ov002_0208958c(void* arg0) {
     g_DisplaySettings.engineState[0].windowOutside        = 31;
     g_DisplaySettings.engineState[0].windowOutsideEffects = TRUE;
     Display_Commit();
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4609,7 +4609,7 @@ s32 func_ov002_020895c8(void* arg0) {
             break;
         case 10:
         case 0:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
             func_ov040_0209d6cc();
@@ -4647,7 +4647,7 @@ s32 func_ov002_02089624(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4666,7 +4666,7 @@ s32 func_ov002_020896e4(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_0208bd40();
     func_ov002_02083484(menuObj, table_sp0);
     menuObj->unk_474C8 = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4698,7 +4698,7 @@ s32 func_ov002_02089798(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_460C0.posX = 0;
     menuObj->unk_460C0.posY = 0xC8;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4728,7 +4728,7 @@ s32 func_ov002_02089860(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_02082f18(menuObj, 0x18, 0x1B, subroutine_arg0);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4763,7 +4763,7 @@ s32 func_ov002_02089920(void* arg0, OtosuMenuObj* menuObj) {
             menuObj->unk_46078.posX = 0U;
             menuObj->unk_46078.posY = 0xD2U;
             SndMgr_StartPlayingSE(0x347);
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             return 0;
         }
         /* Duplicate return node #11. Try simplifying control flow for better match */
@@ -4785,7 +4785,7 @@ s32 func_ov002_02089920(void* arg0, OtosuMenuObj* menuObj) {
 s32 func_ov002_02089a94(void* arg0) {
     if (SysControl.buttonState.pressedButtons & 1) {
         SndMgr_StartPlayingSE(0x348);
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -4802,13 +4802,13 @@ s32 func_ov002_02089adc(void* arg1) {
 
 s32 func_ov002_02089af0(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_02085710(menuObj);
-    func_ov031_0210cc84(arg0, &data_ov002_02092c9c, NULL);
+    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092c9c, NULL);
     return 0;
 }
 
 s32 func_ov002_02089b1c(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_02085710(menuObj);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4836,7 +4836,7 @@ void func_ov002_02089ba8(void) {}
 void func_ov002_02089bac(void) {}
 
 s32 func_ov002_02089bb0(void) {
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 0;
 }
 
@@ -4934,7 +4934,7 @@ s32 func_ov002_02089d40(void* arg0, OtosuMenuObj* menuObj) {
     MI_CpuCopyU8(temp_r0, (u8*)menuObj->unk_41838, 0x16);
     Mem_Free(&gDebugHeap, temp_r0);
     func_0203a96c((u8*)menuObj->unk_41862);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -4966,7 +4966,7 @@ s32 func_ov002_02089e3c(void* arg0, void* arg1) {
             func_ov040_0209d0a8(0, temp_r4, temp_r5);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     return 0;
@@ -5005,7 +5005,7 @@ void func_ov002_02089f3c(OtosuMenuObj* menuObj, s32 arg1) {
 
 s32 func_ov002_0208a050(void* arg0, void* arg1) {
     func_ov002_02082ab4(arg1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -5019,7 +5019,7 @@ s32 func_ov002_0208a070(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_02082f18(menuObj, 0x18, 0x16, table_sp0);
     func_ov002_02089f3c(menuObj, 0);
     menuObj->unk_474C8 = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -5141,11 +5141,11 @@ s32 func_ov002_0208a250(void* arg0, OtosuMenuObj* menuObj) {
             switch (var_r4_2) { /* irregular */
                 case 0:
                     SndMgr_StartPlayingSE(0x348);
-                    func_ov031_0210cc84(sp0, &data_ov002_02092c9c, NULL);
+                    PrcCtx_ReplaceFrame(sp0, &data_ov002_02092c9c, NULL);
                     menuObj->unk_460C0.posX = 0;
                     menuObj->unk_460C0.posY = 0xC8;
-                    func_ov031_0210cd48(sp0, &data_ov002_02092f38);
-                    func_ov031_0210cd48(sp0, &data_ov002_02092b00);
+                    PrcCtx_PushStepTable(sp0, &data_ov002_02092f38);
+                    PrcCtx_PushStepTable(sp0, &data_ov002_02092b00);
                     return 0;
                 case 1:
                     temp_r4 = OS_DisableIRQ();
@@ -5252,19 +5252,19 @@ s32 func_ov002_0208a250(void* arg0, OtosuMenuObj* menuObj) {
         }
         if (menuObj->unk_4196A == 2) {
             OVMGR_S32(menuObj, 0x41FD0) = (s32)func_02047e84(menuObj->unk_41834);
-            func_ov031_0210cdac(sp0);
+            PrcCtx_AdvanceStep(sp0);
         }
         return 0;
     }
 }
 
 s32 func_ov002_0208a748(void* arg0) {
-    func_ov031_0210cc84(arg0, &data_ov002_02092cf4, NULL);
+    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092cf4, NULL);
     return 0;
 }
 
 s32 func_ov002_0208a764(void* arg0) {
-    func_ov031_0210cc84(arg0, &data_ov002_02092ce0, NULL);
+    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092ce0, NULL);
     return 0;
 }
 
@@ -5390,7 +5390,7 @@ s32 func_ov002_0208aa4c(void* arg0, void* arg1) {
             func_ov040_0209ba04(func_ov002_0208a8d4, arg1, &data_ov002_02092160, 0);
             break;
         case 2:
-            func_ov031_0210cdac((void*)temp_r0);
+            PrcCtx_AdvanceStep((void*)temp_r0);
             break;
     }
     return 0;
@@ -5420,7 +5420,7 @@ s32 func_ov002_0208aabc(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474C8          = 0xFFFF;
     OVMGR_U16(menuObj, 0x41EEC) = 0xFFFF;
     OVMGR_U16(menuObj, 0x41998) = 0;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -5480,11 +5480,11 @@ s32 func_ov002_0208ab58(void* arg0, OtosuMenuObj* menuObj) {
                     goto block_36;
                 case 0:          /* switch 2 */
                     SndMgr_StartPlayingSE(0x348);
-                    func_ov031_0210cc84(arg0, &data_ov002_02092c9c, NULL);
+                    PrcCtx_ReplaceFrame(arg0, &data_ov002_02092c9c, NULL);
                     menuObj->unk_460C0.posX = 0;
                     menuObj->unk_460C0.posY = 0xC8;
-                    func_ov031_0210cd48(arg0, &data_ov002_02092f30);
-                    func_ov031_0210cd48(arg0, &data_ov002_02092b00);
+                    PrcCtx_PushStepTable(arg0, &data_ov002_02092f30);
+                    PrcCtx_PushStepTable(arg0, &data_ov002_02092b00);
                     return 0;
                 case 1: /* switch 2 */
                 case 2: /* switch 2 */
@@ -5510,7 +5510,7 @@ s32 func_ov002_0208ab58(void* arg0, OtosuMenuObj* menuObj) {
                         } while (var_r5_2 != 0);
                         OS_RestoreIRQ(temp_r9);
                         menuObj->unk_41810 = 1;
-                        func_ov031_0210cdac(arg0);
+                        PrcCtx_AdvanceStep(arg0);
                     }
                     goto block_36;
             }
@@ -5605,10 +5605,10 @@ s32 func_ov002_0208af78(void* arg0) {
     temp_r0 = func_ov040_0209cb78();
     switch (temp_r0) { /* irregular */
         case 0:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 2:
             func_ov040_0209c158();
@@ -5698,7 +5698,7 @@ s32 func_ov002_0208b0a4(void* arg0, void* arg1) {
     temp_r0_2 = func_ov031_0210c7c4();
     MI_CpuCopyU8(temp_r0_2, arg1 + 0x4181C, 0x16);
     Mem_Free(&gDebugHeap, temp_r0_2);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -5719,7 +5719,7 @@ s32 func_ov002_0208b154(void* arg0, void* arg1) {
             func_ov040_0209d290(1, arg1 + 0x41EF0);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     return 0;
@@ -5732,7 +5732,7 @@ void func_ov002_0208b230(void* arg1) {
 s32 func_ov002_0208b240(OtosuMenuObj* menuObj) {
     menuObj->unk_474C8          = 0xFFFF;
     OVMGR_U16(menuObj, 0x41950) = 0;
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 2;
 }
 
@@ -5772,9 +5772,9 @@ s32 func_ov002_0208b270(void* arg0, OtosuMenuObj* menuObj) {
         if (menuObj->unk_474C8 == var_r4_2) {
             if (var_r4_2 == 0) {
                 SndMgr_StartPlayingSE(0x348);
-                func_ov031_0210cc84(arg0, &data_ov002_02092f44, NULL);
-                func_ov031_0210cd48(arg0, &data_ov002_02092f30);
-                func_ov031_0210cd48(arg0, &data_ov002_02092b00);
+                PrcCtx_ReplaceFrame(arg0, &data_ov002_02092f44, NULL);
+                PrcCtx_PushStepTable(arg0, &data_ov002_02092f30);
+                PrcCtx_PushStepTable(arg0, &data_ov002_02092b00);
                 return 0;
             }
             goto block_10;
@@ -5825,14 +5825,14 @@ block_10:
     temp_r0_3 = menuObj->unk_4196A;
     if (temp_r0_3 != 2) {
         if (temp_r0_3 == 3) {
-            func_ov031_0210cc84(arg0, &data_ov002_02092c9c, NULL);
-            func_ov031_0210cd48(arg0, &data_ov002_02092ec8);
-            func_ov031_0210cd48(arg0, &data_ov002_02092f30);
+            PrcCtx_ReplaceFrame(arg0, &data_ov002_02092c9c, NULL);
+            PrcCtx_PushStepTable(arg0, &data_ov002_02092ec8);
+            PrcCtx_PushStepTable(arg0, &data_ov002_02092f30);
         }
     } else {
         SndMgr_StartPlayingSE(0x347);
         OVMGR_S32(menuObj, 0x41FD0) = (s32)func_02047e84(menuObj->unk_41834);
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -5845,7 +5845,7 @@ s32 func_ov002_0208b570(void* arg0) {
         default:
             break;
         case 0:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
             func_ov040_0209d6cc();
@@ -5871,7 +5871,7 @@ s32 func_ov002_0208b5c4(void* arg0) {
         default:
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             func_ov040_0209d588();
@@ -5885,7 +5885,7 @@ s32 func_ov002_0208b5c4(void* arg0) {
 
 s32 func_ov002_0208b610(void* arg0, void* arg1) {
     if (func_ov040_0209cb68() == 1) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OS_DisableIRQ();
@@ -5897,7 +5897,7 @@ s32 func_ov002_0208b610(void* arg0, void* arg1) {
 
 s32 func_ov002_0208b670(void* arg0, void* arg1) {
     if (func_ov040_0209cb68() == 1) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OS_DisableIRQ();
@@ -5918,7 +5918,7 @@ s32 func_ov002_0208b6d0(void* arg0) {
             break;
         case 0:
             func_ov002_02089b54();
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
             func_ov040_0209d6cc();
@@ -5946,7 +5946,7 @@ s32 func_ov002_0208b734(void* arg0) {
             break;
         case 1:
             func_ov002_02089b54();
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             if (func_ov040_0209cb68() == 1) {
@@ -6613,21 +6613,27 @@ s32 func_ov002_0208caa0(void) {
     return 0;
 }
 
-void func_ov002_0208caa8(void* arg0) {
+void func_ov002_0208caa8(OtosuMenuObj* menuObj) {
     u16 temp_r0_2;
     u16 var_r8;
     u32 temp_r0;
 
+    PrcCtx* options[4];
+    options[0] = &menuObj->unk_474E8;
+    options[1] = &menuObj->unk_476D0;
+    options[2] = &menuObj->unk_478B8;
+    options[3] = &menuObj->unk_47AA0;
+
     var_r8 = 0;
     if ((s32)data_02074d10.unk40B > 0) {
         do {
-            func_ov031_0210cff0((u8*)arg0 + 0x41804, (u8*)arg0 + subroutine_arg0[var_r8]);
+            PrcMaster_UnregisterContext(&menuObj->prcMaster, options[var_r8]);
             temp_r0_2 = var_r8 + 1;
             temp_r0   = temp_r0_2 << 0x10;
             var_r8    = temp_r0_2;
         } while ((s32)data_02074d10.unk40B > (s32)(temp_r0 >> 0x10));
     }
-    func_ov031_0210cff0(arg0 + 0x41804, arg0 + 0x47C88);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
 }
 
 void func_ov002_0208cb50(void* arg0) {
@@ -6785,20 +6791,20 @@ void func_ov002_0208ce00(OtosuMenuObj* menuObj) {
         u8  unk7;
         u16 unk8;
     } sp0;
-    void* menu_ptrs[4];
-    u32   var_r0;
-    s8    var_r8;
-    u16   temp_r0_2;
-    u32   temp_r0_3;
-    u8    temp_r1;
-    u8*   temp_r0;
-    u8*   temp_r9;
-    u8*   data_base = (u8*)&data_02071d10;
+    PrcCtx* menu_ptrs[4];
+    u32     var_r0;
+    s8      var_r8;
+    u16     temp_r0_2;
+    u32     temp_r0_3;
+    u8      temp_r1;
+    u8*     temp_r0;
+    PrcCtx* temp_r9;
+    u8*     data_base = (u8*)&data_02071d10;
 
-    menu_ptrs[0] = (u8*)menuObj->unk_474E8;
-    menu_ptrs[1] = (u8*)menuObj->unk_476D0;
-    menu_ptrs[2] = (u8*)menuObj->unk_478B8;
-    menu_ptrs[3] = (u8*)menuObj->unk_47AA0;
+    menu_ptrs[0] = &menuObj->unk_474E8;
+    menu_ptrs[1] = &menuObj->unk_476D0;
+    menu_ptrs[2] = &menuObj->unk_478B8;
+    menu_ptrs[3] = &menuObj->unk_47AA0;
     var_r8       = 0;
     if ((s32)data_02074d10.unk40B <= 0) {
         return;
@@ -6812,16 +6818,16 @@ loop_3:
         var_r0 = 0;
     }
     temp_r9 = menu_ptrs[var_r8];
-    func_ov031_0210c94c(temp_r9, "OtosuMenu_RankBoardObj", 0x220, var_r0, var_r8, *(u8*)(temp_r0 + 0x41FD9), temp_r1,
-                        *(u16*)(data_base + 0x3414 + (temp_r1 * 2)));
+    PrcCtx_Init(temp_r9, "OtosuMenu_RankBoardObj", 0x220, var_r0, var_r8, *(u8*)(temp_r0 + 0x41FD9), temp_r1,
+                *(u16*)(data_base + 0x3414 + (temp_r1 * 2)));
     sp0.unk0 = var_r0;
     sp0.unk4 = (u8)var_r8;
     sp0.unk5 = *(u8*)(temp_r0 + 0x41FD9);
     sp0.unk6 = temp_r1;
     sp0.unk7 = 0;
     sp0.unk8 = *(u16*)(data_base + 0x3414 + (temp_r1 * 2));
-    func_ov031_0210cc84(temp_r9, &data_ov002_02093228, &sp0);
-    func_ov031_0210ce50((u8*)menuObj->unk_41804, temp_r9);
+    PrcCtx_ReplaceFrame(temp_r9, &data_ov002_02093228, &sp0);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, temp_r9);
     if ((OVMGR_U8(menuObj, 0x41FE4) != 0) && (*(u8*)(menuObj->unk_41FDD + data_02074d10.unk40A) == 0)) {
         OVMGR_U8(menuObj, 0x41FE8) = 2;
         goto block_16;
@@ -6883,7 +6889,7 @@ s32 func_ov002_0208d010(OtosuMenuObj* menuObj) {
     if (temp_r3 > 0x270FU) {
         data_02072d10.unkD88 = 0x270FU;
     }
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 2;
 }
 
@@ -6899,13 +6905,13 @@ s32 func_ov002_0208d09c(OtosuMenuObj* menuObj) {
             func_ov002_0208bd40();
             func_ov002_02085a44(menuObj);
             if (data_02074d10.unk40A == 0) {
-                func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092cf4);
+                PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092cf4);
             } else {
-                func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092ce0);
+                PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092ce0);
             }
             break;
         case 8:
-            func_ov031_0210cdac();
+            PrcCtx_AdvanceStep();
             break;
         default:
             OS_WaitForever();
@@ -6915,7 +6921,7 @@ s32 func_ov002_0208d09c(OtosuMenuObj* menuObj) {
 }
 
 s32 func_ov002_0208d144(void) {
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 0;
 }
 
@@ -6931,19 +6937,19 @@ s32 func_ov002_0208d154(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posY = 0xC8;
     func_ov002_0208caa8(menuObj);
     func_ov002_02084c84(menuObj, table_sp0);
-    func_ov031_0210c94c(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
-    func_ov031_0210cc84(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_47C88);
+    PrcCtx_Init(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
+    PrcCtx_ReplaceFrame(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     menuObj->unk_474C8 = 0x3C;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_0208d22c(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     if (menuObj->unk_474C8 == 0) {
-        func_ov031_0210cf98(menuObj->unk_41804, menuObj->unk_47C88);
-        func_ov031_0210cdac(arg0);
+        PrcMaster_UnregisterContextOrPanic(&menuObj->prcMaster, &menuObj->unk_47C88);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -7048,10 +7054,10 @@ s32 func_ov002_0208d4cc(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_4196A          = 0;
     OVMGR_U16(menuObj, 0x4198A) = 1;
     menuObj->unk_41834          = 1;
-    func_ov031_0210c94c(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
-    func_ov031_0210cc84(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_47C88);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_Init(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
+    PrcCtx_ReplaceFrame(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -7082,7 +7088,7 @@ s32 func_ov002_0208d5c0(void* arg0, void* arg1) {
             func_ov040_0209d0a8(0, temp_r4, temp_r5);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     return 0;
@@ -7105,7 +7111,7 @@ s32 func_ov002_0208d6bc(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46070       = (s16)(temp_r3 >> 0x1F);
     SystemStatusFlags.unk_07 = 0;
     menuObj->unk_474C8       = 0x258;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -7192,11 +7198,11 @@ s32 func_ov002_0208d778(void* arg0, OtosuMenuObj* menuObj) {
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     if (menuObj->unk_474C8 == 0) {
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
     if (menuObj->unk_4196A == 4) {
-        func_ov031_0210cdac(sp0);
+        PrcCtx_AdvanceStep(sp0);
     }
     return 0;
 }
@@ -7217,7 +7223,7 @@ s32 func_ov002_0208da24(void* arg0, OtosuMenuObj* menuObj) {
     sp24[2] = 0;
     sp24[3] = 0;
     sp24[4] = 0;
-    func_ov031_0210cff0(menuObj->unk_41804, menuObj->unk_47C88);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     func_ov002_0208cb50(menuObj);
     var_r5 = 0;
     if ((s32)data_02074d10.unk40B > 0) {
@@ -7233,7 +7239,7 @@ s32 func_ov002_0208da24(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_0208ce00(menuObj);
     OVMGR_U16(menuObj, 0x4196C) = 0xFFFF;
     menuObj->unk_474CA          = menuObj->unk_41834;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -7265,7 +7271,7 @@ s32 func_ov002_0208db58(void* arg0, OtosuMenuObj* menuObj) {
     *var_r4 = *var_r3;
     temp_r4 = func_ov002_0208597c(&spC);
     if (menuObj->unk_474CA != func_ov040_0209cb68()) {
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
     if (temp_r4 == 0xFFFF) {
@@ -7304,11 +7310,11 @@ s32 func_ov002_0208db58(void* arg0, OtosuMenuObj* menuObj) {
     switch (temp_r0_2) { /* switch 2; irregular */
         case 7:          /* switch 2 */
             data_ov002_020935e0[0x3B] = OVMGR_U16(menuObj, 0x4196C);
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 8: /* switch 2 */
             data_ov002_020935e0[0x3B] = OVMGR_U16(menuObj, 0x4196C);
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     OS_RestoreIRQ(temp_r5);
@@ -7379,11 +7385,11 @@ s32 func_ov002_0208de64(void* arg0, OtosuMenuObj* menuObj) {
     SystemStatusFlags.unk_06 = 0;
     menuObj->unk_46070       = (s16)(temp_r1_2 >> 0x1F);
     SystemStatusFlags.unk_07 = 0;
-    func_ov031_0210c94c(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
-    func_ov031_0210cc84(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(menuObj->unk_41804, menuObj->unk_47C88);
+    PrcCtx_Init(menuObj->unk_47C88, &data_ov002_020931cc, 0x40);
+    PrcCtx_ReplaceFrame(menuObj->unk_47C88, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_47C88);
     menuObj->unk_474C8 = 0x258;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -7408,14 +7414,14 @@ s32 func_ov002_0208df6c(void* arg0, OtosuMenuObj* menuObj) {
             func_ov003_0209d434((void (*)(s32, void*, void*, s32))func_ov002_0208dda4, menuObj);
             break;
         case 4:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     if (menuObj->unk_474C8 != 0) {
         return 0;
     }
-    func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+    PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     return 0;
 }
 
@@ -7427,7 +7433,7 @@ s32 func_ov002_0208e080(OtosuMenuObj* menuObj) {
     menuObj->unk_474C8 = 0xFFFF;
     menuObj->unk_474CA = 0;
     menuObj->unk_474CC = 0;
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 0;
 }
 
@@ -7447,7 +7453,7 @@ s32 func_ov002_0208e0b8(void* arg0, OtosuMenuObj* menuObj) {
         }
     }
     if (menuObj->unk_4196A == 4) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -7509,7 +7515,7 @@ s32 func_ov002_0208e200(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_0208ce00(menuObj);
     menuObj->unk_474C8 = 0xFFFF;
     func_ov003_0209d434((void (*)(s32, void*, void*, s32))func_ov002_0208e194, menuObj);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
@@ -7520,10 +7526,10 @@ s32 func_ov002_0208e30c(void* arg1) {
     switch (temp_r1) { /* irregular */
         case 3:
         case 8:
-            func_ov031_0210cdac();
+            PrcCtx_AdvanceStep();
             break;
         case 7:
-            func_ov031_0210cdac();
+            PrcCtx_AdvanceStep();
             break;
     }
     return 0;
@@ -7549,7 +7555,7 @@ loop_1:
         }
     }
     data_02074d10.unk40B = (s8)var_r9;
-    func_ov031_0210cdac(sp0);
+    PrcCtx_AdvanceStep(sp0);
     return 0;
 }
 
@@ -7584,7 +7590,7 @@ s32 func_ov002_0208e410(void* arg0, OtosuMenuObj* menuObj) {
     func_ov002_0208ce00(menuObj);
     menuObj->unk_474C8          = 0xFFFF;
     OVMGR_U16(menuObj, 0x4196C) = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -7615,7 +7621,7 @@ s32 func_ov002_0208e514(void* arg0, void* arg1) {
     if (OVMGR_U16(arg1, 0x4196C) == temp_r0_2) {
         if (temp_r0_2 == 0) {
             SndMgr_StartPlayingSE(0x347);
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
         }
     } else {
         SndMgr_StartPlayingSE(0x346);
@@ -7637,7 +7643,7 @@ s32 func_ov002_0208e658(void* arg0) {
         default:
             break;
         case 0:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
             func_ov040_0209d6cc();
@@ -7663,7 +7669,7 @@ s32 func_ov002_0208e6ac(void* arg0) {
         default:
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             func_ov040_0209d588();
@@ -7677,16 +7683,16 @@ s32 func_ov002_0208e6ac(void* arg0) {
 
 s32 func_ov002_0208e6f8(void* arg0, OtosuMenuObj* menuObj) {
     if (menuObj->unk_474CA != func_ov040_0209cb68()) {
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
         return 0;
     }
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 2;
 }
 
 s32 func_ov002_0208e750(void* arg0, OtosuMenuObj* menuObj) {
     if (func_ov040_0209cb68() == 1) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OS_DisableIRQ();
@@ -7695,7 +7701,7 @@ s32 func_ov002_0208e750(void* arg0, OtosuMenuObj* menuObj) {
     if (func_ov040_0209d48c(data_ov002_020935e0, 0xA, func_ov002_0208e070, menuObj) != 0) {
         return 0;
     }
-    func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
+    PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092e18, NULL);
     return 0;
 }
 
@@ -7709,7 +7715,7 @@ s32 func_ov002_0208e7d8(void* arg0) {
             func_ov040_0209d588();
             break;
         case 0:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 1:
             func_ov040_0209d6cc();
@@ -7736,7 +7742,7 @@ s32 func_ov002_0208e838(void* arg0) {
             func_ov040_0209d588();
             break;
         case 1:
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
             break;
         case 4:
             if (func_ov040_0209cb68() == 1) {
@@ -7867,7 +7873,7 @@ void func_ov002_0208ebe4(s32 arg1) {
 
 s32 func_ov002_0208ec1c(void* arg1) {
     OVMGR_S32(arg1, 0x10C) = 0;
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 2;
 }
 
@@ -7891,7 +7897,7 @@ s32 func_ov002_0208ec34(void* arg0, void* arg1) {
     func_020265d4(arg1 + 0x10C, 0x10000, OVMGR_U16(arg1, 0x112));
     temp_r2 = OVMGR_U16(arg1, 0x112);
     if (temp_r2 == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     if (data_ov002_02093660 == 1) {
@@ -7903,7 +7909,7 @@ s32 func_ov002_0208ec34(void* arg0, void* arg1) {
             var_r0_2 = (f32)temp_r0_3 - 0.5f;
         }
         OVMGR_S32(arg1, 0x108) = (s32)var_r0_2;
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OVMGR_U16(arg1, 0x112) = (u16)(temp_r2 - 1);
@@ -7973,7 +7979,7 @@ void func_ov002_0208edb0(void* arg1) {
 void func_ov002_0208ee98(void) {}
 
 s32 func_ov002_0208ee9c(void) {
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 2;
 }
 
@@ -7995,7 +8001,7 @@ s32 func_ov002_0208eeac(void* arg0, void* arg1) {
     func_020265d4(arg1 + 0x110, 0, OVMGR_U16(arg1, 0x116));
     temp_r2 = OVMGR_U16(arg1, 0x116);
     if (temp_r2 == 0) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     if (data_ov002_02093660 == 1) {
@@ -8040,7 +8046,7 @@ s32 func_ov002_0208eeac(void* arg0, void* arg1) {
         OVMGR_S32(temp_r2_2, 0x8) = (s32)(OVMGR_S32(temp_r2_2, 0x8) | 2);
         temp_r2_3                 = OVMGR_PTR(arg1, 0x108);
         OVMGR_S32(temp_r2_3, 0x8) = (s32)(OVMGR_S32(temp_r2_3, 0x8) | 2);
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
         return 0;
     }
     OVMGR_U16(arg1, 0x116) = (u16)(temp_r2 - 1);
@@ -8283,7 +8289,7 @@ void func_ov002_0208f688(void* arg1) {
 }
 
 s32 func_ov002_0208f6e0(void) {
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     return 2;
 }
 
@@ -8349,7 +8355,7 @@ void func_ov002_0208f878(void) {}
 
 s32 func_ov002_0208f87c(void* arg0, void* arg1) {
     func_ov002_02083694(arg1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -8361,7 +8367,7 @@ s32 func_ov002_0208f89c(void* arg0) {
         (SysControl.buttonState.pressedButtons & 0x10))
     {
         SndMgr_StartPlayingSE(0x347);
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     return 0;
 }
@@ -8379,8 +8385,8 @@ s32 func_ov002_0208f92c(void* arg0, OtosuMenuObj* menuObj) {
         (SysControl.buttonState.pressedButtons & 0x10))
     {
         SndMgr_StartPlayingSE(0x347);
-        func_ov031_0210cc84(menuObj->unk_4161C, &data_ov002_02092c58, NULL);
-        func_ov031_0210cd48(arg0, &data_ov002_02092b0c);
+        PrcCtx_ReplaceFrame(menuObj->unk_4161C, &data_ov002_02092c58, NULL);
+        PrcCtx_PushStepTable(arg0, &data_ov002_02092b0c);
     }
     return 0;
 }
@@ -8551,7 +8557,7 @@ s32 func_ov002_0208ffac(void* arg0, void* arg1) {
     Display_Commit();
     func_ov002_0208ff6c(arg1);
     func_ov002_0208fbf4(arg1);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -8630,7 +8636,7 @@ s32 func_ov002_02090014(void* arg0, OtosuMenuObj* menuObj) {
     }
 
     if (SysControl.buttonState.pressedButtons & 8) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
 
     return 0;
@@ -8657,16 +8663,16 @@ void func_ov002_0209023c(OtosuMenuObj* menuObj) {
 }
 
 void func_ov002_020902a4(s32 arg0, OtosuMenuObj* menuObj) {
-    func_ov031_0210c94c(&menuObj->unk_474E8, "DelData_WinObj", 0x100);
-    func_ov031_0210cc84(&menuObj->unk_474E8, &data_ov002_02093498, NULL);
-    func_ov031_0210ce50(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcCtx_Init(&menuObj->unk_474E8, "DelData_WinObj", 0x100);
+    PrcCtx_ReplaceFrame(&menuObj->unk_474E8, &data_ov002_02093498, NULL);
+    PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     Sprite_Destroy(&menuObj->unk_46078);
     func_ov002_0209023c(menuObj);
 }
 
 void func_ov002_02090310(s32 arg0, OtosuMenuObj* menuObj) {
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_476D0);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_476D0);
 }
 
 void func_ov002_0209034c(void) {
@@ -8877,14 +8883,14 @@ s32 func_ov002_0209095c(void* arg0, OtosuMenuObj* menuObj) {
         SndMgr_StartPlayingSE(0x11C);
         switch (temp_r0_2) { /* irregular */
             case 0:
-                func_ov031_0210cdac(arg0);
+                PrcCtx_AdvanceStep(arg0);
                 return 0;
             case 1:
-                func_ov031_0210cc20(arg0, &data_ov002_020932e8);
+                PrcCtx_ReplaceStepTable(arg0, &data_ov002_020932e8);
                 func_ov002_02090354(menuObj);
                 menuObj->unk_46078.posX = 0U;
                 menuObj->unk_46078.posY = 0xD2U;
-                func_ov031_0210cd48(arg0, &data_ov002_02092b18);
+                PrcCtx_PushStepTable(arg0, &data_ov002_02092b18);
                 return 0;
         }
     } else {
@@ -8903,7 +8909,7 @@ s32 func_ov002_0209095c(void* arg0, OtosuMenuObj* menuObj) {
 }
 
 s32 func_ov002_02090b30(void) {
-    func_ov031_0210cdac();
+    PrcCtx_AdvanceStep();
     func_02024d04();
     return 0;
 }
@@ -8926,7 +8932,7 @@ s32 func_ov002_02090b44(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -8948,7 +8954,7 @@ s32 func_ov002_02090c28(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474C8      = 0xFFFF;
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -8970,7 +8976,7 @@ s32 func_ov002_02090d0c(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_474C8      = 0xFFFF;
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -8985,19 +8991,19 @@ s32 func_ov002_02090df0(void* arg0, OtosuMenuObj* menuObj) {
     g_DisplaySettings.controls[1].layers = 0x14;
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
 s32 func_ov002_02090ee8(void* arg0, s32 arg1) {
-    func_ov031_0210c94c(arg1 + 0x476D0, &data_ov002_02093484, 0x40);
-    func_ov031_0210cc84(arg1 + 0x476D0, &data_ov002_020934b0, NULL);
-    func_ov031_0210ce50(arg1 + 0x41804, arg1 + 0x476D0);
-    func_ov031_0210cdac(arg0);
+    PrcCtx_Init(arg1 + 0x476D0, &data_ov002_02093484, 0x40);
+    PrcCtx_ReplaceFrame(arg1 + 0x476D0, &data_ov002_020934b0, NULL);
+    PrcMaster_RegisterContext(arg1 + 0x41804, arg1 + 0x476D0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9006,14 +9012,14 @@ s32 func_ov002_02090f4c(void* arg0, s32 arg1) {
 
     if (func_02025444() == 1) {
         temp_r4 = func_020258ac();
-        func_ov031_0210cff0(arg1 + 0x41804, arg1 + 0x476D0);
+        PrcMaster_UnregisterContext(arg1 + 0x41804, arg1 + 0x476D0);
         if (temp_r4 == 0) {
             SndMgr_StartPlayingSE(0x140);
-            func_ov031_0210cdac(arg0);
+            PrcCtx_AdvanceStep(arg0);
         } else if (temp_r4 & 2) {
-            func_ov031_0210cc84(arg0, &data_ov002_02093310, 0);
+            PrcCtx_ReplaceFrame(arg0, &data_ov002_02093310, 0);
         } else {
-            func_ov031_0210cc84(arg0, &data_ov002_02093324, 0);
+            PrcCtx_ReplaceFrame(arg0, &data_ov002_02093324, 0);
         }
     }
     return 0;
@@ -9033,7 +9039,7 @@ s32 func_ov002_02090fd8(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xF0;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9042,7 +9048,7 @@ s32 func_ov002_020910b0(void* arg0, OtosuMenuObj* menuObj) {
         SndMgr_StartPlayingSE(0x11C);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     return 0;
@@ -9059,11 +9065,11 @@ s32 func_ov002_02091110(void* arg0, OtosuMenuObj* menuObj) {
     g_DisplaySettings.controls[1].layers = 0x14;
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9078,11 +9084,11 @@ s32 func_ov002_02091208(void* arg0, OtosuMenuObj* menuObj) {
     g_DisplaySettings.controls[1].layers = 0x14;
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9100,7 +9106,7 @@ s32 func_ov002_02091300(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xF0;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9118,7 +9124,7 @@ s32 func_ov002_020913d8(void* arg0, OtosuMenuObj* menuObj) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xD2;
     menuObj->unk_474C8      = 0xF0;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9127,7 +9133,7 @@ s32 func_ov002_020914b0(void* arg0, OtosuMenuObj* menuObj) {
         SndMgr_StartPlayingSE(0x11C);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
-        func_ov031_0210cdac(arg0);
+        PrcCtx_AdvanceStep(arg0);
     }
     menuObj->unk_474C8 = (u16)(menuObj->unk_474C8 - 1);
     return 0;
@@ -9144,11 +9150,11 @@ s32 func_ov002_02091510(void* arg0, OtosuMenuObj* menuObj) {
     g_DisplaySettings.controls[1].layers = 0x14;
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 210;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9163,11 +9169,11 @@ s32 func_ov002_02091608(void* arg0, OtosuMenuObj* menuObj) {
     g_DisplaySettings.controls[1].layers = 0x14;
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 210;
     menuObj->unk_474C8      = 0xFFFF;
-    func_ov031_0210cdac(arg0);
+    PrcCtx_AdvanceStep(arg0);
     return 0;
 }
 
@@ -9182,7 +9188,7 @@ s32 func_ov002_02091710(void) {
 }
 
 s32 func_ov002_02091720(s32 arg0, OtosuMenuObj* menuObj) {
-    func_ov031_0210cff0(&menuObj->unk_41804, &menuObj->unk_474E8);
+    PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     func_ov002_02085710(menuObj);
     menuObj->unk_46074 = 6;
     return 0;
