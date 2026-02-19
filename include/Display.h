@@ -229,6 +229,20 @@ static inline void Display_SetSubBrightness(u32 brightness) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
 }
 
+static inline void Display_InitMainBG0(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                       u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg0Settings = Display_GetBG0Settings(DISPLAY_MAIN);
+    bg0Settings->bgMode            = bgMode;
+    bg0Settings->screenSizeText    = screenSizeText;
+    bg0Settings->colorMode         = colorMode;
+    bg0Settings->screenBase        = screenBase;
+    bg0Settings->charBase          = charBase;
+    bg0Settings->extPlttSlot       = extPlttSlot;
+    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
+        REG_BG0CNT = (REG_BG0CNT & 0x43) | regMask;
+    }
+}
+
 static inline void Display_InitMainBG1(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
                                        u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
     DisplayBGSettings* bg1Settings = Display_GetBG1Settings(DISPLAY_MAIN);
@@ -241,6 +255,42 @@ static inline void Display_InitMainBG1(DisplayBGMode bgMode, GXBGScreenSizeText 
     REG_BG1CNT                     = (REG_BG1CNT & 0x43) | regMask;
 }
 
+static inline void Display_InitMainBG2(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                       u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg2Settings = Display_GetBG2Settings(DISPLAY_MAIN);
+    bg2Settings->bgMode            = bgMode;
+    bg2Settings->screenSizeText    = screenSizeText;
+    bg2Settings->colorMode         = colorMode;
+    bg2Settings->screenBase        = screenBase;
+    bg2Settings->charBase          = charBase;
+    bg2Settings->extPlttSlot       = extPlttSlot;
+    REG_BG2CNT                     = (REG_BG2CNT & 0x43) | regMask;
+}
+
+static inline void Display_InitMainBG3(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                       u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg3Settings = Display_GetBG3Settings(DISPLAY_MAIN);
+    bg3Settings->bgMode            = bgMode;
+    bg3Settings->screenSizeText    = screenSizeText;
+    bg3Settings->colorMode         = colorMode;
+    bg3Settings->screenBase        = screenBase;
+    bg3Settings->charBase          = charBase;
+    bg3Settings->extPlttSlot       = extPlttSlot;
+    REG_BG3CNT                     = (REG_BG3CNT & 0x43) | regMask;
+}
+
+static inline void Display_InitSubBG0(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                      u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg0Settings = Display_GetBG0Settings(DISPLAY_SUB);
+    bg0Settings->bgMode            = bgMode;
+    bg0Settings->screenSizeText    = screenSizeText;
+    bg0Settings->colorMode         = colorMode;
+    bg0Settings->screenBase        = screenBase;
+    bg0Settings->charBase          = charBase;
+    bg0Settings->extPlttSlot       = extPlttSlot;
+    REG_BG0CNT_SUB                 = (REG_BG0CNT_SUB & 0x43) | regMask;
+}
+
 static inline void Display_InitSubBG1(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
                                       u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
     DisplayBGSettings* bg1Settings = Display_GetBG1Settings(DISPLAY_SUB);
@@ -251,6 +301,30 @@ static inline void Display_InitSubBG1(DisplayBGMode bgMode, GXBGScreenSizeText s
     bg1Settings->charBase          = charBase;
     bg1Settings->extPlttSlot       = extPlttSlot;
     REG_BG1CNT_SUB                 = (REG_BG1CNT_SUB & 0x43) | regMask;
+}
+
+static inline void Display_InitSubBG2(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                      u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg2Settings = Display_GetBG2Settings(DISPLAY_SUB);
+    bg2Settings->bgMode            = bgMode;
+    bg2Settings->screenSizeText    = screenSizeText;
+    bg2Settings->colorMode         = colorMode;
+    bg2Settings->screenBase        = screenBase;
+    bg2Settings->charBase          = charBase;
+    bg2Settings->extPlttSlot       = extPlttSlot;
+    REG_BG2CNT_SUB                 = (REG_BG2CNT_SUB & 0x43) | regMask;
+}
+
+static inline void Display_InitSubBG3(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
+                                      u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
+    DisplayBGSettings* bg3Settings = Display_GetBG3Settings(DISPLAY_SUB);
+    bg3Settings->bgMode            = bgMode;
+    bg3Settings->screenSizeText    = screenSizeText;
+    bg3Settings->colorMode         = colorMode;
+    bg3Settings->screenBase        = screenBase;
+    bg3Settings->charBase          = charBase;
+    bg3Settings->extPlttSlot       = extPlttSlot;
+    REG_BG3CNT_SUB                 = (REG_BG3CNT_SUB & 0x43) | regMask;
 }
 
 #endif // DISPLAY_H

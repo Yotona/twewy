@@ -289,13 +289,13 @@ void PrcMaster_Destroy(PrcMaster* master) {
     master->contexts = NULL;
 }
 
-PrcStepResult PrcStep_StartDelay(PrcCtx* ctx) {
+PrcStepResult PrcStep_StartDelay(PrcCtx* ctx, void* unused) {
     ctx->delayCounter = 10;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_REPEAT;
 }
 
-PrcStepResult PrcStep_TickDelay(PrcCtx* ctx) {
+PrcStepResult PrcStep_TickDelay(PrcCtx* ctx, void* unused) {
     if (ctx->delayCounter != 0) {
         ctx->delayCounter--;
     } else {
@@ -305,15 +305,15 @@ PrcStepResult PrcStep_TickDelay(PrcCtx* ctx) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult PrcStep_Advance(PrcCtx* ctx) {
+PrcStepResult PrcStep_Advance(PrcCtx* ctx, void* unused) {
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult PrcStep_PopFrame(PrcCtx* ctx) {
+PrcStepResult PrcStep_PopFrame(PrcCtx* ctx, void* unused) {
     return PRC_STEP_POP_FRAME;
 }
 
-PrcStepResult PrcStep_Continue(PrcCtx* ctx) {
+PrcStepResult PrcStep_Continue(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
