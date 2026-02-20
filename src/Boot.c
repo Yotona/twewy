@@ -31,9 +31,9 @@ void Boot(void* unused) {
         BinMgr_Init(&heap->binMgr, 8);
         PacMgr_Init(&heap->pacMgr, 32);
         DatMgr_Init(&heap->datMgr, 0x100);
-        MainOvlDisp_IncrementRepeatCount();
-        MainOvlDisp_Push(&OVERLAY_37_ID, func_ov037_0208370c, NULL, 0);
+        MainOvlDisp_NextProcessStage();
+        MainOvlDisp_Push(&OVERLAY_37_ID, func_ov037_0208370c, NULL, 0); //<-- Jump to OpenEnd menu
     } else {
-        MainOvlDisp_Push(&OVERLAY_46_ID, func_ov046_02083630, NULL, 0);
+        MainOvlDisp_Push(&OVERLAY_46_ID, func_ov046_02083630, NULL, 0); //<-- Jump to Debug launcher
     }
 }

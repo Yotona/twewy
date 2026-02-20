@@ -25,7 +25,7 @@ typedef struct {
     /* 0x11A20 */ s16      unk_11A20;
     /* 0x11A22 */ s16      pad_11A22;
     /* 0x11A24 */ s32      unk_11A24;
-    /* 0x11A28 */ s32      unk_11A28;
+    /* 0x11A28 */ s32      selectedOption;
     /* 0x11A2C */ s32      unk_11A2C;
     /* 0x11A30 */ s32      fadeBrightness;
     /* 0x11A34 */ s32      fadeRate;
@@ -33,19 +33,19 @@ typedef struct {
     /* 0x11A3A */ s16      pad_11A3A;
     /* 0x11A3C */ s32      unk_11A3C;
     /* 0x11A40 */ s32      unk_11A40;
-    /* 0x11A44 */ s32      unk_11A44;
+    /* 0x11A44 */ s32      isThereExistingSaveData;
     /* 0x11A48 */ s32      unk_11A48;
 } OpenEndState; // Size: 0x11A4C
 
-void func_ov037_020829f4(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize);
+void OpenEnd_LoadScreenCharacterData(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize);
 void func_ov037_02082c58(OpenEndState* r0);
-void func_ov037_02082b30(OpenEndState* r0, s32 r1, s32 r2, s32 r3);
-void func_ov037_02082adc(s32 r0, void* buffer, s32 r2, s32 dataSize);
-void func_ov037_0208290c(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize);
+void OpenEnd_LoadScreenAssets(OpenEndState* r0, s32 r1, s32 r2, s32 r3);
+void OpenEnd_LoadScreenPaletteData(s32 r0, void* buffer, s32 r2, s32 dataSize);
+void OpenEnd_LoadScreenSpriteData(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize);
 void func_ov037_020833a8(OpenEndState* r0);
 s32  OpenEnd_CreateBadgeTask(u32 r0);
 
-void func_ov037_0208280c(void);
+void OpenEnd_VBlankHandler(void);
 
 int func_ov037_02083814(struct TaskPool* unused_r0, struct Task* r1, void* r2);
 int func_ov037_020838a4(struct TaskPool* unused_r0, struct Task* r1, void* r2);
@@ -60,10 +60,10 @@ static const OpenEndExportFuncTable data_ov037_02083b4c = {func_ov037_02083814, 
 
 const BinIdentifier OpenEnd_FileList[] = {
     {0x25,          "Apl_Mor/Grp_Title.bin"},
-    {0x25,        "Apl_Mor/COPY_RG_SE.nbfc"},
+    {0x25,        "Apl_Mor/COPY_RG_SE.nbfc"}, //   SE = Square Enix
     {0x25,        "Apl_Mor/COPY_RG_SE.nbfp"},
     {0x25,        "Apl_Mor/COPY_RG_SE.nbfs"},
-    {0x25,        "Apl_Mor/COPY_UG_JP.nbfc"},
+    {0x25,        "Apl_Mor/COPY_UG_JP.nbfc"}, //   JP = Jupiter
     {0x25,        "Apl_Mor/COPY_UG_JP.nbfp"},
     {0x25,        "Apl_Mor/COPY_UG_JP.nbfs"},
     {0x25,     "Apl_Mor/N_COPY_RG_NIN.nbfc"},

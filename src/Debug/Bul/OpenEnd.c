@@ -5,7 +5,7 @@
 #include "common_data.h"
 
 /*Nonmatching: Regswaps, Opcode reorder, likely inlines not defined yet*/
-void func_ov037_020824a0(void) {
+void OpenEnd_InitHardware(void) {
     Interrupts_Init();
     func_0200434c();
     DMA_Init(0x100);
@@ -102,7 +102,7 @@ void func_ov037_020824a0(void) {
     func_02001c34(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
 }
 
-void func_ov037_0208280c(void) {
+void OpenEnd_VBlankHandler(void) {
     if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
@@ -119,17 +119,17 @@ void func_ov037_0208280c(void) {
     }
 }
 
-void func_ov037_020828dc(void) {
-    func_ov037_020824a0();
-    Interrupts_RegisterVBlankCallback(func_ov037_0208280c, TRUE);
+void OpenEnd_InitWithVBlank(void) {
+    OpenEnd_InitHardware();
+    Interrupts_RegisterVBlankCallback(OpenEnd_VBlankHandler, TRUE);
 }
 
-void func_ov037_020828f8(void) {
+void OpenEnd_ReleaseVBlank(void) {
     Interrupts_RegisterVBlankCallback(NULL, TRUE);
 }
 
 // Load/Use .nbfs file
-void func_ov037_0208290c(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
+void OpenEnd_LoadScreenSpriteData(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
     if (r0 == 0) {
         if (r1 == 0) {
             func_020373c0(buffer, r3, dataSize);
@@ -163,7 +163,7 @@ void func_ov037_0208290c(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
 }
 
 // Load/Use .nbfc file
-void func_ov037_020829f4(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
+void OpenEnd_LoadScreenCharacterData(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
     if (r0 == 0) {
         if (r1 == 0) {
             func_020376c0(buffer, r3, dataSize);
@@ -197,7 +197,7 @@ void func_ov037_020829f4(s32 r0, s32 r1, void* buffer, s32 r3, s32 dataSize) {
 }
 
 // Load/Use .nbfp file
-void func_ov037_02082adc(s32 r0, void* buffer, s32 r2, s32 dataSize) {
+void OpenEnd_LoadScreenPaletteData(s32 r0, void* buffer, s32 r2, s32 dataSize) {
     if (r0 == 0) {
         GX_BeginLoadBgExtPltt();
         GX_LoadBgExtPltt(buffer, r2, dataSize);
@@ -212,27 +212,27 @@ void func_ov037_02082adc(s32 r0, void* buffer, s32 r2, s32 dataSize) {
     return;
 }
 
-void func_ov037_02082b30(OpenEndState* r0, s32 r1, s32 r2, s32 r3) {
+void OpenEnd_LoadScreenAssets(OpenEndState* r0, s32 r1, s32 r2, s32 screenIndex) {
     for (s32 idx = 0; idx < 3; idx++) {
-        r0->dataList[idx] = DatMgr_LoadRawData(r0->dataType, 0, 0, &OpenEnd_FileList[(r3 * 3) + 1 + idx]);
+        r0->dataList[idx] = DatMgr_LoadRawData(r0->dataType, 0, 0, &OpenEnd_FileList[(screenIndex * 3) + 1 + idx]);
     }
     DC_PurgeAll();
-    func_ov037_0208290c(r1, r2, r0->dataList[2]->buffer, 0, r0->dataList[2]->dataSize);
-    func_ov037_020829f4(r1, r2, r0->dataList[0]->buffer, 0, r0->dataList[0]->dataSize);
-    func_ov037_02082adc(r1, r0->dataList[1]->buffer, r2 << 0xd, r0->dataList[1]->dataSize);
+    OpenEnd_LoadScreenSpriteData(r1, r2, r0->dataList[2]->buffer, 0, r0->dataList[2]->dataSize);
+    OpenEnd_LoadScreenCharacterData(r1, r2, r0->dataList[0]->buffer, 0, r0->dataList[0]->dataSize);
+    OpenEnd_LoadScreenPaletteData(r1, r0->dataList[1]->buffer, r2 << 0xd, r0->dataList[1]->dataSize);
     for (s32 idx = 0; idx < 3; idx++) {
         DatMgr_ReleaseData(r0->dataList[idx]);
     }
 }
 
-void func_ov037_02082c00(OpenEndState* r0) {
+void OpenEnd_FadeToBlack(OpenEndState* r0) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, r0->fadeRate);
     if (EasyFade_IsFading() == 0) {
         DebugOvlDisp_Pop();
     }
 }
 
-void func_ov037_02082c2c(OpenEndState* r0) {
+void OpenEnd_FadeFromBlack(OpenEndState* r0) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, r0->fadeBrightness, r0->fadeRate);
     if (EasyFade_IsFading() == 0) {
         DebugOvlDisp_Pop();
@@ -248,7 +248,7 @@ void func_ov037_02082c58(OpenEndState* r0) {
     r0->unk_11A40 = 0;
     if (temp == 0) {
         if (((data_02073710[0x5B]) & 1) != 0) {
-            r0->unk_11A44 = 1;
+            r0->isThereExistingSaveData = 1;
         }
         return;
     } else if (temp != 1) {
@@ -261,10 +261,10 @@ void func_ov037_02082c58(OpenEndState* r0) {
 
 void func_ov037_02082cd4(OpenEndState* r0) {
     func_ov037_02082c58(r0);
-    func_ov037_02082b30(r0, 1, 0, 0);
-    func_ov037_02082b30(r0, 0, 0, 1);
-    func_ov037_02082b30(r0, 1, 1, 2);
-    func_ov037_02082b30(r0, 0, 1, 3);
+    OpenEnd_LoadScreenAssets(r0, 1, 0, 0); // RG_SE
+    OpenEnd_LoadScreenAssets(r0, 0, 0, 1); // UG_JP
+    OpenEnd_LoadScreenAssets(r0, 1, 1, 2); // RG_NIN
+    OpenEnd_LoadScreenAssets(r0, 0, 1, 3); // UG_CRI
     r0->unk_11A1C      = 0;
     r0->fadeBrightness = data_ov037_02083a7c[data_02074d10.unk_410];
     r0->fadeRate       = data_ov037_02083a74[data_02074d10.unk_410];
@@ -341,10 +341,10 @@ void        func_ov037_02082f60(OpenEndState* r0) {
     }
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 0x1) & ~0x2;
     g_DisplaySettings.controls[DISPLAY_SUB].layers  = (g_DisplaySettings.controls[DISPLAY_SUB].layers | 0x1) & ~0x2;
-    func_ov037_02082b30(r0, 0, 0, 5);
-    func_ov037_02082b30(r0, 1, 0, 4);
-    OpenEnd_CreateBadgeTask(0);
-    if (r0->unk_11A44 != 0) {
+    OpenEnd_LoadScreenAssets(r0, 0, 0, 5);
+    OpenEnd_LoadScreenAssets(r0, 1, 0, 4);
+    OpenEnd_CreateBadgeTask(0);                 // = BADGE_NEWGAME
+    if (r0->isThereExistingSaveData != FALSE) { //= BADGE_CONTINUE
         OpenEnd_CreateBadgeTask(1);
     }
     r0->unk_11A20      = 0;
@@ -390,10 +390,10 @@ void func_ov037_020830a8(OpenEndState* r0) {
 
 extern void func_ov002_02086a4c(void* r0);
 extern void func_ov030_020b0fe8(void* r0);
-void        func_ov037_02083188(OpenEndState* r0) {
+void        OpenEnd_StartNewGame(OpenEndState* r0) {
     OverlayTag tag, tag2;
-    if (r0->unk_11A44 != 0) {
-        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, func_ov002_02086a4c, NULL, 0);
+    if (r0->isThereExistingSaveData != FALSE) {
+        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataDeletion, NULL, 0);
     } else {
         MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, NULL, 0);
     }
@@ -402,20 +402,20 @@ void        func_ov037_02083188(OpenEndState* r0) {
 /*Nonmatching: Compiler optimizes 0x100 out of index access for data_02073710*/
 extern void func_ov044_02084a88();
 extern void func_ov030_020ae92c();
-void        func_ov037_020831ec(OpenEndState* r0) {
+void        OpenEnd_ContinueGame(OpenEndState* r0) {
     OverlayTag tag, tag2, tag3, tag4;
     if (func_020256bc() == 0) {
         if (func_02023010(0x2AB) != 0) {
             data_02073710[0xB4] |= 0x10;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0); //<-- Overlay44 -> Shutdown PP Gain screen
             return;
         }
         if ((data_02073710[0xB4] & 0x2) != 0) {
             data_02073710[0xB4] &= ~0x2;
-            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, 0, 0);
+            MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, 0, 0); // Load game
             return;
         }
-        MainOvlDisp_ReplaceTop(&tag3, &OVERLAY_30_ID, func_ov030_020ae92c, 0, 0);
+        MainOvlDisp_ReplaceTop(&tag3, &OVERLAY_30_ID, func_ov030_020ae92c, 0, 0); // Load game
         return;
     }
     MainOvlDisp_ReplaceTop(&tag4, &OVERLAY_2_ID, func_ov002_02086a8c, 0, 0);
@@ -435,12 +435,12 @@ void func_ov037_020832dc(OpenEndState* r0) {
         return;
     }
     func_02027388(0);
-    switch (r0->unk_11A28) {
+    switch (r0->selectedOption) {
         case 0:
-            func_ov037_02083188(r0);
+            OpenEnd_StartNewGame(r0);
             break;
         case 1:
-            func_ov037_020831ec(r0);
+            OpenEnd_ContinueGame(r0);
             break;
     }
     DebugOvlDisp_Pop();
@@ -449,9 +449,9 @@ void func_ov037_020832dc(OpenEndState* r0) {
 void func_ov037_020833a8(OpenEndState* r0) {
     DebugOvlDisp_Init();
     DebugOvlDisp_Push((OverlayCB)data_ov037_02083a90[data_02074d10.unk_410][2], r0, 0);
-    DebugOvlDisp_Push((OverlayCB)func_ov037_02082c2c, r0, 0);
+    DebugOvlDisp_Push((OverlayCB)OpenEnd_FadeFromBlack, r0, 0);
     DebugOvlDisp_Push((OverlayCB)data_ov037_02083a90[data_02074d10.unk_410][1], r0, 0);
-    DebugOvlDisp_Push((OverlayCB)func_ov037_02082c00, r0, 0);
+    DebugOvlDisp_Push((OverlayCB)OpenEnd_FadeToBlack, r0, 0);
     DebugOvlDisp_Push((OverlayCB)data_ov037_02083a90[data_02074d10.unk_410][0], r0, 0);
 }
 
@@ -461,26 +461,26 @@ static const char* seq_OpenEnd = "Seq_OpenEnd(void *)";
 void func_ov037_0208345c(OpenEndState* r0) {
     if (r0 == NULL) {
         char* SeqName = seq_OpenEnd;
-        void* unk     = Mem_AllocHeapTail(&gDebugHeap, 0x11A4C);
-        Mem_SetSequence(0x11A4C, unk, SeqName);
+        void* unk     = Mem_AllocHeapTail(&gDebugHeap, sizeof(OpenEndState));
+        Mem_SetSequence(sizeof(OpenEndState), unk, SeqName);
         data_ov037_02083e00 = unk;
         MainOvlDisp_SetCbArg(unk);
     }
-    func_0203b2d0(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
-    func_ov037_020828dc();
-    u32 temp = data_ov037_02083a7c[data_02074d10.unk_410];
+    MI_CpuFill(0, r0, Mem_GetBlockSize(&gDebugHeap, r0));
+    OpenEnd_InitWithVBlank();
+    u32 brightness = data_ov037_02083a7c[data_02074d10.unk_410];
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
-        temp = 0x10;
+        brightness = 0x10;
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
-        temp = ~0xF;
+        brightness = ~0xF;
     }
-    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = temp;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = brightness;
     if (data_ov037_02083a7c[data_02074d10.unk_410] > 0x10) {
-        temp = 0x10;
+        brightness = 0x10;
     } else if (data_ov037_02083a7c[data_02074d10.unk_410] < ~0xf) {
-        temp = ~0xF;
+        brightness = ~0xF;
     }
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness = temp;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
     func_0200cef0(&(r0->unk_10));
     Input_Init(&InputStatus, 8, 1, 2);
     TouchInput_Init();
@@ -522,7 +522,7 @@ void func_ov037_020836b4(OpenEndState* r0) {
         return;
     }
     data_02074d10.unk_410 = 1;
-    func_ov037_020828f8();
+    OpenEnd_ReleaseVBlank();
     DatMgr_ClearSlot(r0->dataType);
     EasyTask_DestroyPool(&r0->unk_11590);
     Mem_Free(&gDebugHeap, r0);
@@ -543,8 +543,8 @@ void func_ov037_0208374c(u32 r0) {
 
     if (data_ov037_02083e00->unk_11A2C != 0)
         return;
-    data_ov037_02083e00->unk_11A28 = r0;
-    data_ov037_02083e00->unk_11A2C = 1;
+    data_ov037_02083e00->selectedOption = r0;
+    data_ov037_02083e00->unk_11A2C      = 1;
 
     func_02026b20(2);
 }
