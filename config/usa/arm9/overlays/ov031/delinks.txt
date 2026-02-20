@@ -5,9 +5,14 @@
     .bss        start:0x0210db20 end:0x0210db40 kind:bss align:32
 
 src/ov031.c:
-    .text       start:0x0210a220 end:0x0210d11c
+    .text       start:0x0210a220 end:0x0210C8B8
     .rodata     start:0x0210d11c end:0x0210d148
     .ctor       start:0x0210d148 end:0x0210d14c
-    .data       start:0x0210d160 end:0x0210db20
+    .data       start:0x0210d160 end:0x0210DB10
     .bss        start:0x0210db20 end:0x0210db40
+
+src/PrcMaster.c:
+complete
+    .text       start:0x0210C8B8 end:0x0210D11C
+    .data       start:0x0210DB10 end:0x0210db20
 

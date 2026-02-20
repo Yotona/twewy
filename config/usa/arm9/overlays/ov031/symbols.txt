@@ -61,34 +61,36 @@ func_ov031_0210c774 kind:function(arm,size=0x50) addr:0x0210c774
 func_ov031_0210c7c4 kind:function(arm,size=0x24) addr:0x0210c7c4
 func_ov031_0210c7e8 kind:function(arm,size=0x24) addr:0x0210c7e8
 func_ov031_0210c80c kind:function(arm,size=0xac) addr:0x0210c80c
-func_ov031_0210c8b8 kind:function(arm,size=0x94) addr:0x0210c8b8
-func_ov031_0210c94c kind:function(arm,size=0x5c) addr:0x0210c94c
-func_ov031_0210c9a8 kind:function(arm,size=0x34) addr:0x0210c9a8
-func_ov031_0210c9dc kind:function(arm,size=0x2c) addr:0x0210c9dc
-func_ov031_0210ca08 kind:function(arm,size=0x30) addr:0x0210ca08
-func_ov031_0210ca38 kind:function(arm,size=0x48) addr:0x0210ca38
-func_ov031_0210ca80 kind:function(arm,size=0xe8) addr:0x0210ca80
-func_ov031_0210cb68 kind:function(arm,size=0x5c) addr:0x0210cb68
-func_ov031_0210cbc4 kind:function(arm,size=0x5c) addr:0x0210cbc4
-func_ov031_0210cc20 kind:function(arm,size=0x64) addr:0x0210cc20
-func_ov031_0210cc84 kind:function(arm,size=0x90) addr:0x0210cc84
-func_ov031_0210cd14 kind:function(arm,size=0x34) addr:0x0210cd14
-func_ov031_0210cd48 kind:function(arm,size=0x64) addr:0x0210cd48
-func_ov031_0210cdac kind:function(arm,size=0x38) addr:0x0210cdac
-func_ov031_0210cde4 kind:function(arm,size=0x18) addr:0x0210cde4
-func_ov031_0210cdfc kind:function(arm,size=0x54) addr:0x0210cdfc
-func_ov031_0210ce50 kind:function(arm,size=0x50) addr:0x0210ce50
-func_ov031_0210cea0 kind:function(arm,size=0x68) addr:0x0210cea0
-func_ov031_0210cf08 kind:function(arm,size=0x48) addr:0x0210cf08
-func_ov031_0210cf50 kind:function(arm,size=0x48) addr:0x0210cf50
-func_ov031_0210cf98 kind:function(arm,size=0x58) addr:0x0210cf98
-func_ov031_0210cff0 kind:function(arm,size=0x54) addr:0x0210cff0
-func_ov031_0210d044 kind:function(arm,size=0x6c) addr:0x0210d044
-func_ov031_0210d0b0 kind:function(arm,size=0x1c) addr:0x0210d0b0
-func_ov031_0210d0cc kind:function(arm,size=0x30) addr:0x0210d0cc
-func_ov031_0210d0fc kind:function(arm,size=0x10) addr:0x0210d0fc
-func_ov031_0210d10c kind:function(arm,size=0x8) addr:0x0210d10c
-func_ov031_0210d114 kind:function(arm,size=0x8) addr:0x0210d114
+
+
+PrcCtx_Reset kind:function(arm,size=0x94) addr:0x0210c8b8 local
+PrcCtx_Init kind:function(arm,size=0x5c) addr:0x0210c94c
+PrcCtx_SetWorkObject kind:function(arm,size=0x34) addr:0x0210c9a8
+PrcCtx_CallEnter kind:function(arm,size=0x2c) addr:0x0210c9dc local
+PrcCtx_CallExit kind:function(arm,size=0x30) addr:0x0210ca08 local
+PrcCtx_Destroy kind:function(arm,size=0x48) addr:0x0210ca38
+PrcCtx_RunSteps kind:function(arm,size=0xe8) addr:0x0210ca80
+PrcCtx_Update kind:function(arm,size=0x5c) addr:0x0210cb68
+PrcCtx_Render kind:function(arm,size=0x5c) addr:0x0210cbc4
+PrcCtx_ReplaceStepTable kind:function(arm,size=0x64) addr:0x0210cc20
+PrcCtx_ReplaceFrame kind:function(arm,size=0x90) addr:0x0210cc84
+PrcCtx_ReplaceCurrentUpdateCallback kind:function(arm,size=0x34) addr:0x0210cd14
+PrcCtx_PushStepTable kind:function(arm,size=0x64) addr:0x0210cd48
+PrcCtx_AdvanceStep kind:function(arm,size=0x38) addr:0x0210cdac
+PrcCtx_GetStepTable kind:function(arm,size=0x18) addr:0x0210cde4
+PrcMaster_Init kind:function(arm,size=0x54) addr:0x0210cdfc
+PrcMaster_RegisterContext kind:function(arm,size=0x50) addr:0x0210ce50
+PrcMaster_RunAllCtxSteps kind:function(arm,size=0x68) addr:0x0210cea0
+PrcMaster_UpdateAllContexts kind:function(arm,size=0x48) addr:0x0210cf08
+PrcMaster_RenderAllContexts kind:function(arm,size=0x48) addr:0x0210cf50
+PrcMaster_UnregisterContextOrPanic kind:function(arm,size=0x58) addr:0x0210cf98
+PrcMaster_UnregisterContext kind:function(arm,size=0x54) addr:0x0210cff0
+PrcMaster_Destroy kind:function(arm,size=0x6c) addr:0x0210d044
+PrcStep_StartDelay kind:function(arm,size=0x1c) addr:0x0210d0b0
+PrcStep_TickDelay kind:function(arm,size=0x30) addr:0x0210d0cc
+PrcStep_Advance kind:function(arm,size=0x10) addr:0x0210d0fc
+PrcStep_PopFrame kind:function(arm,size=0x8) addr:0x0210d10c
+PrcStep_Continue kind:function(arm,size=0x8) addr:0x0210d114
 data_ov031_0210d11c kind:data(any) addr:0x0210d11c
 data_ov031_0210d120 kind:data(any) addr:0x0210d120
 data_ov031_0210d128 kind:data(any) addr:0x0210d128
@@ -107,5 +109,7 @@ data_ov031_0210daa0 kind:data(any) addr:0x0210daa0
 data_ov031_0210dab4 kind:data(any) addr:0x0210dab4
 data_ov031_0210dac8 kind:data(any) addr:0x0210dac8
 data_ov031_0210daec kind:data(any) addr:0x0210daec
-data_ov031_0210db10 kind:data(any) addr:0x0210db10
+
+@476 kind:data(byte[10]) addr:0x0210db10 local
+
 data_ov031_0210db20 kind:bss addr:0x0210db20

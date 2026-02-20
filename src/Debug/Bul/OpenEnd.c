@@ -247,7 +247,7 @@ void func_ov037_02082c58(OpenEndState* r0) {
     r0->unk_11A3C = 1;
     r0->unk_11A40 = 0;
     if (temp == 0) {
-        if (((data_02073710[0x5B]) & 1) != 0) {
+        if ((data_02073710.unk_B6 & 1) != 0) {
             r0->unk_11A44 = 1;
         }
         return;
@@ -399,19 +399,19 @@ void        func_ov037_02083188(OpenEndState* r0) {
     }
 }
 
-/*Nonmatching: Compiler optimizes 0x100 out of index access for data_02073710*/
 extern void func_ov044_02084a88();
 extern void func_ov030_020ae92c();
-void        func_ov037_020831ec(OpenEndState* r0) {
+
+void func_ov037_020831ec(OpenEndState* r0) {
     OverlayTag tag, tag2, tag3, tag4;
     if (func_020256bc() == 0) {
         if (func_02023010(0x2AB) != 0) {
-            data_02073710[0xB4] |= 0x10;
+            data_02073710.unk_B4 |= 0x10;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0);
             return;
         }
-        if ((data_02073710[0xB4] & 0x2) != 0) {
-            data_02073710[0xB4] &= ~0x2;
+        if ((data_02073710.unk_B4 & 0x2) != 0) {
+            data_02073710.unk_B4 &= ~0x2;
             MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, 0, 0);
             return;
         }

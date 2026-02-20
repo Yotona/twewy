@@ -256,7 +256,7 @@ s32                 RNG_Next(s32);                                              
 u16                 func_02002bc4(const void*, s32, s32, s32, s32);                                    /* extern */
 s32                 func_0200a968(s32, void*, s32, s32);                                               /* extern */
 void                func_0200afec(s32, s32);                                                           /* extern */
-s32                 func_0200ea4c(void*);                                                              /* extern */
+s32                 SpriteMgr_IsAnimationFinished(void*);                                              /* extern */
 void                func_02026590(void*, s32, u16);                                                    /* extern */
 void                func_020265d4(void*, s32, u16);                                                    /* extern */
 void                MI_CpuSet(void*, s32, s32);                                                        /* extern */
@@ -2174,7 +2174,7 @@ s32 func_ov016_0212812c(void* arg0, Ov016Task* arg1, void* arg2) {
                 temp_r4->unk78 = func_ov003_020c5bc4((u16)temp_r4->unk74, (u8*)temp_r4 + 0x6C, temp_r4->unk60, temp_r4->unk64,
                                                      temp_r4->unk68);
             }
-            if (func_0200ea4c(temp_r4) == 0) {
+            if (SpriteMgr_IsAnimationFinished(temp_r4) == 0) {
                 temp_r4->unk7E = (s16)(temp_r4->unk7E + 1);
             } else {
                 var_r5 = 0;

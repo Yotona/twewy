@@ -364,7 +364,7 @@ void func_ov043_020bd938(Sprite* sprite, s16 arg1) {
     u8* param0 = Data_GetPackEntryData(sprite->resourceData, 3);
     u8* param1 = Data_GetPackEntryData(sprite->resourceData, 2);
 
-    Sprite_ChangeAnimation(sprite, param0, arg1, param1);
+    Sprite_ChangeAnimation(sprite, param0, arg1, (SpriteFrameData*)param1);
 }
 
 const BinIdentifier data_ov043_020cadc0 = {43, "Apl_Tak/ItemData.bin"};
