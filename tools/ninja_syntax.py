@@ -26,10 +26,17 @@ import textwrap
 from io import TextIOWrapper
 from typing import Dict, List, Match, Optional, Tuple, Union
 
+
 def escape_path(word) -> str:
     # Convert Path objects to strings before escaping
     word_str = str(word)
-    return word_str.replace('$ ', '$$ ').replace(' ', '$ ').replace(':', '$:')
+    return (
+        word_str.replace("$ ", "$$ ")
+        .replace(" ", "$ ")
+        .replace(":", "$:")
+        .replace("gap$", "gap$$")
+    )
+
 
 class Writer(object):
     def __init__(self, output: TextIOWrapper, width: int = 78) -> None:
@@ -37,12 +44,13 @@ class Writer(object):
         self.width = width
 
     def newline(self) -> None:
-        self.output.write('\n')
+        self.output.write("\n")
 
     def comment(self, text: str) -> None:
-        for line in textwrap.wrap(text, self.width - 2, break_long_words=False,
-                                  break_on_hyphens=False):
-            self.output.write('# ' + line + '\n')
+        for line in textwrap.wrap(
+            text, self.width - 2, break_long_words=False, break_on_hyphens=False
+        ):
+            self.output.write("# " + line + "\n")
 
     def variable(
         self,
@@ -53,12 +61,12 @@ class Writer(object):
         if value is None:
             return
         if isinstance(value, list):
-            value = ' '.join(filter(None, value))  # Filter out empty strings.
-        self._line('%s = %s' % (key, value), indent)
+            value = " ".join(filter(None, value))  # Filter out empty strings.
+        self._line("%s = %s" % (key, value), indent)
 
     def pool(self, name: str, depth: int) -> None:
-        self._line('pool %s' % name)
-        self.variable('depth', depth, indent=1)
+        self._line("pool %s" % name)
+        self.variable("depth", depth, indent=1)
 
     def rule(
         self,
@@ -73,24 +81,24 @@ class Writer(object):
         rspfile_content: Optional[str] = None,
         deps: Optional[Union[str, List[str]]] = None,
     ) -> None:
-        self._line('rule %s' % name)
-        self.variable('command', command, indent=1)
+        self._line("rule %s" % name)
+        self.variable("command", command, indent=1)
         if description:
-            self.variable('description', description, indent=1)
+            self.variable("description", description, indent=1)
         if depfile:
-            self.variable('depfile', depfile, indent=1)
+            self.variable("depfile", depfile, indent=1)
         if generator:
-            self.variable('generator', '1', indent=1)
+            self.variable("generator", "1", indent=1)
         if pool:
-            self.variable('pool', pool, indent=1)
+            self.variable("pool", pool, indent=1)
         if restat:
-            self.variable('restat', '1', indent=1)
+            self.variable("restat", "1", indent=1)
         if rspfile:
-            self.variable('rspfile', rspfile, indent=1)
+            self.variable("rspfile", rspfile, indent=1)
         if rspfile_content:
-            self.variable('rspfile_content', rspfile_content, indent=1)
+            self.variable("rspfile_content", rspfile_content, indent=1)
         if deps:
-            self.variable('deps', deps, indent=1)
+            self.variable("deps", deps, indent=1)
 
     def build(
         self,
@@ -115,24 +123,24 @@ class Writer(object):
 
         if implicit:
             implicit = [escape_path(x) for x in as_list(implicit)]
-            all_inputs.append('|')
+            all_inputs.append("|")
             all_inputs.extend(implicit)
         if order_only:
             order_only = [escape_path(x) for x in as_list(order_only)]
-            all_inputs.append('||')
+            all_inputs.append("||")
             all_inputs.extend(order_only)
         if implicit_outputs:
-            implicit_outputs = [escape_path(x)
-                                for x in as_list(implicit_outputs)]
-            out_outputs.append('|')
+            implicit_outputs = [escape_path(x) for x in as_list(implicit_outputs)]
+            out_outputs.append("|")
             out_outputs.extend(implicit_outputs)
 
-        self._line('build %s: %s' % (' '.join(out_outputs),
-                                     ' '.join([rule] + all_inputs)))
+        self._line(
+            "build %s: %s" % (" ".join(out_outputs), " ".join([rule] + all_inputs))
+        )
         if pool is not None:
-            self._line('  pool = %s' % pool)
+            self._line("  pool = %s" % pool)
         if dyndep is not None:
-            self._line('  dyndep = %s' % dyndep)
+            self._line("  dyndep = %s" % dyndep)
 
         if variables:
             if isinstance(variables, dict):
@@ -146,58 +154,59 @@ class Writer(object):
         return outputs
 
     def include(self, path: str) -> None:
-        self._line('include %s' % path)
+        self._line("include %s" % path)
 
     def subninja(self, path: str) -> None:
-        self._line('subninja %s' % path)
+        self._line("subninja %s" % path)
 
     def default(self, paths: Union[str, List[str]]) -> None:
-        self._line('default %s' % ' '.join(as_list(paths)))
+        self._line("default %s" % " ".join(as_list(paths)))
 
     def _count_dollars_before_index(self, s: str, i: int) -> int:
         """Returns the number of '$' characters right in front of s[i]."""
         dollar_count = 0
         dollar_index = i - 1
-        while dollar_index > 0 and s[dollar_index] == '$':
+        while dollar_index > 0 and s[dollar_index] == "$":
             dollar_count += 1
             dollar_index -= 1
         return dollar_count
 
     def _line(self, text: str, indent: int = 0) -> None:
         """Write 'text' word-wrapped at self.width characters."""
-        leading_space = '  ' * indent
+        leading_space = "  " * indent
         while len(leading_space) + len(text) > self.width:
             # The text is too wide; wrap if possible.
 
             # Find the rightmost space that would obey our width constraint and
             # that's not an escaped space.
-            available_space = self.width - len(leading_space) - len(' $')
+            available_space = self.width - len(leading_space) - len(" $")
             space = available_space
             while True:
-                space = text.rfind(' ', 0, space)
-                if (space < 0 or
-                    self._count_dollars_before_index(text, space) % 2 == 0):
+                space = text.rfind(" ", 0, space)
+                if space < 0 or self._count_dollars_before_index(text, space) % 2 == 0:
                     break
 
             if space < 0:
                 # No such space; just use the first unescaped space we can find.
                 space = available_space - 1
                 while True:
-                    space = text.find(' ', space + 1)
-                    if (space < 0 or
-                        self._count_dollars_before_index(text, space) % 2 == 0):
+                    space = text.find(" ", space + 1)
+                    if (
+                        space < 0
+                        or self._count_dollars_before_index(text, space) % 2 == 0
+                    ):
                         break
             if space < 0:
                 # Give up on breaking.
                 break
 
-            self.output.write(leading_space + text[0:space] + ' $\n')
-            text = text[space+1:]
+            self.output.write(leading_space + text[0:space] + " $\n")
+            text = text[space + 1 :]
 
             # Subsequent lines are continuations, so indent them.
-            leading_space = '  ' * (indent+2)
+            leading_space = "  " * (indent + 2)
 
-        self.output.write(leading_space + text + '\n')
+        self.output.write(leading_space + text + "\n")
 
     def close(self) -> None:
         self.output.close()
@@ -214,9 +223,9 @@ def as_list(input: Optional[Union[str, List[str]]]) -> List[str]:
 def escape(string: str) -> str:
     """Escape a string such that it can be embedded into a Ninja file without
     further interpretation."""
-    assert '\n' not in string, 'Ninja syntax does not allow newlines'
+    assert "\n" not in string, "Ninja syntax does not allow newlines"
     # We only have one special metacharacter: '$'.
-    return string.replace('$', '$$')
+    return string.replace("$", "$$")
 
 
 def expand(string: str, vars: Dict[str, str], local_vars: Dict[str, str] = {}) -> str:
@@ -225,9 +234,11 @@ def expand(string: str, vars: Dict[str, str], local_vars: Dict[str, str] = {}) -
     Note: doesn't handle the full Ninja variable syntax, but it's enough
     to make configure.py's use of it work.
     """
+
     def exp(m: Match[str]) -> str:
         var = m.group(1)
-        if var == '$':
-            return '$'
-        return local_vars.get(var, vars.get(var, ''))
-    return re.sub(r'\$(\$|\w*)', exp, string)
+        if var == "$":
+            return "$"
+        return local_vars.get(var, vars.get(var, ""))
+
+    return re.sub(r"\$(\$|\w*)", exp, string)

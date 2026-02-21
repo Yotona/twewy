@@ -4872,4 +4872,4 @@ __new_handler kind:bss addr:0x02082490
 /////////////////////////////////////////////////////////////
 // libs/MSL/Runtime/StaticInitializers.cpp
 /////////////////////////////////////////////////////////////
-__global_destructor_chain kind:bss(size=4) addr:0x02082494
+__global_destructor_chain kind:bss(size=0x4) addr:0x02082494

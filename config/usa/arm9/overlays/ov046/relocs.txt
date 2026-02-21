@@ -92,7 +92,7 @@ from:0x02082b70 kind:arm_call to:0x02083670 module:overlay(46)
 from:0x02082b90 kind:arm_call to:0x02010b84 module:main
 from:0x02082bc0 kind:arm_call to:0x02010b18 module:main
 from:0x02082be8 kind:arm_call to:0x02010b18 module:main
-from:0x02082bf8 kind:load to:0x02083bf0 add:0xC module:overlay(46)
+from:0x02082bf8 kind:load to:0x02083bf0 add:0xc module:overlay(46)
 from:0x02082bfc kind:load to:0x02083bf0 module:overlay(46)
 from:0x02082c00 kind:load to:0x02083f70 module:overlay(46)
 from:0x02082c04 kind:load to:0x02083bf0 add:0x4 module:overlay(46)

@@ -7,449 +7,449 @@
     .bss        start:0x02066a20 end:0x020824a0 kind:bss align:4
 
 src/main.c:
-complete
-    .text       start:0x02000BDC end:0x02001254
-    .data       start:0x020636A0 end:0x020636CC
+    complete
+    .text       start:0x02000bdc end:0x02001254
+    .data       start:0x020636a0 end:0x020636cc
 
 src/Boot.c:
-complete
+    complete
     .text       start:0x02001254 end:0x02001320
-    .data       start:0x020636CC end:0x020636E4
+    .data       start:0x020636cc end:0x020636e4
 
 src/Interrupts.c:
     .text       start:0x02001320 end:0x02001760
 
 src/DMA.c:
-    .text       start:0x02001760 end:0x02001C34
-    .data       start:0x020636E4 end:0x02063744
-    .bss        start:0x02066A5C end:0x02066AEC
+    .text       start:0x02001760 end:0x02001c34
+    .data       start:0x020636e4 end:0x02063744
+    .bss        start:0x02066a5c end:0x02066aec
 
 src/Memory.c:
-    .text       start:0x0200453C end:0x020049DC
-    .rodata     start:0x02059D14 end:0x02059D1C
+    .text       start:0x0200453c end:0x020049dc
+    .rodata     start:0x02059d14 end:0x02059d1c
     .data       start:0x02063744 end:0x02063760
-    .bss        start:0x0206A9A4 end:0x0206A9BC
+    .bss        start:0x0206a9a4 end:0x0206a9bc
 
 src/Input.c:
-complete
-    .text       start:0x02004E98 end:0x0200504C
-    .rodata     start:0x0205A928 end:0x0205a95C
-    .bss        start:0x0206A9E0 end:0x0206AA78
+    complete
+    .text       start:0x02004e98 end:0x0200504c
+    .rodata     start:0x0205a928 end:0x0205a95c
+    .bss        start:0x0206a9e0 end:0x0206aa78
 
 src/Display.c:
-    .text       start:0x0200504C end:0x020065E0
-    .bss        start:0x0206AA78 end:0x0206AF24
+    .text       start:0x0200504c end:0x020065e0
+    .bss        start:0x0206aa78 end:0x0206af24
 
 src/OverlayManager.c:
-    .text       start:0x020065E0 end:0x02006740
+    .text       start:0x020065e0 end:0x02006740
 
 src/Sqrt.c:
-complete
+    complete
     .text       start:0x02006740 end:0x02006798
 
 src/Random.c:
-complete
-    .text       start:0x02006798 end:0x0200683C
+    complete
+    .text       start:0x02006798 end:0x0200683c
     .data       start:0x02063760 end:0x02063764
 
 src/TouchInput.c:
-    .text       start:0x02006AD8 end:0x02006F50
-    .data       start:0x0206377C end:0x020637C0
+    .text       start:0x02006ad8 end:0x02006f50
+    .data       start:0x0206377c end:0x020637c0
 
 src/OverlayDispatcher.c:
-    .text       start:0x02006F50 end:0x020073CC
-    .bss        start:0x0206AF24 end:0x0206B3B8
+    .text       start:0x02006f50 end:0x020073cc
+    .bss        start:0x0206af24 end:0x0206b3b8
 
 src/BinMgr.c:
-complete
-    .text       start:0x020073CC end:0x02007A9C
-    .data       start:0x020637C0 end:0x020637E4
-    .bss        start:0x0206B3B8 end:0x0206B3BC
+    complete
+    .text       start:0x020073cc end:0x02007a9c
+    .data       start:0x020637c0 end:0x020637e4
+    .bss        start:0x0206b3b8 end:0x0206b3bc
 
 src/PacMgr.c:
-    .text       start:0x02007A9C end:0x02008054
-    .data       start:0x020637E4 end:0x02063808
-    .bss        start:0x0206B3BC end:0x0206B3C0
+    .text       start:0x02007a9c end:0x02008054
+    .data       start:0x020637e4 end:0x02063808
+    .bss        start:0x0206b3bc end:0x0206b3c0
 
 src/DatMgr.c:
-    .text       start:0x02008054 end:0x02008F20
+    .text       start:0x02008054 end:0x02008f20
     .data       start:0x02063808 end:0x02063818
-    .bss        start:0x0206B3C0 end:0x0206B3C4
+    .bss        start:0x0206b3c0 end:0x0206b3c4
 
 src/EasyList.c:
-complete
-    .text       start:0x02008F20 end:0x0200927C
+    complete
+    .text       start:0x02008f20 end:0x0200927c
     .data       start:0x02063818 end:0x02063828
 
 src/BgResMgr.c:
-    .text       start:0x0200927C end:0x0200A128
-    .rodata     start:0x0205AD5C end:0x0205AD64
-    .bss        start:0x0206B3C4 end:0x0206B3CC
+    .text       start:0x0200927c end:0x0200a128
+    .rodata     start:0x0205ad5c end:0x0205ad64
+    .bss        start:0x0206b3c4 end:0x0206b3cc
 
 src/SpriteMgr.c:
-    .text       start:0x0200D96C end:0x0200EDAC
-    .rodata     start:0x0205ADCC end:0x0205ADF8
+    .text       start:0x0200d96c end:0x0200edac
+    .rodata     start:0x0205adcc end:0x0205adf8
 
 src/EasyTask.c:
-complete
-    .text       start:0x0200F198 end:0x0200F86C
+    complete
+    .text       start:0x0200f198 end:0x0200f86c
     .data       start:0x02063828 end:0x02063844
 
 src/Text.c:
-    .text       start:0x0200F94C end:0x02011F00
-    .rodata     start:0x0205AE64 end:0x0205B754
+    .text       start:0x0200f94c end:0x02011f00
+    .rodata     start:0x0205ae64 end:0x0205b754
+
+libs/CriWare/adx_bahx.c:
+    complete
+    .text       start:0x0201202c end:0x020120d4
+    .bss        start:0x0206b854 end:0x0206b864
+
+libs/CriWare/adx_bsc.c:
+    .text       start:0x020120d4 end:0x02012f20
+    .rodata     start:0x0205b754 end:0x0205bf54
+    .data       start:0x0206386c end:0x020638e0
+    .bss        start:0x0206b864 end:0x0206bc30
+
+libs/CriWare/adx_crs.c:
+    .text       start:0x02012f20 end:0x02012f88
+    .bss        start:0x0206bc30 end:0x0206bc3c
+
+libs/CriWare/adx_dcd.c:
+    .text       start:0x02012f90 end:0x020142dc
+    .rodata     start:0x0205bf54 end:0x0205bf94
+    .data       start:0x020638e0 end:0x020638e4
+
+libs/CriWare/adx_errs.c:
+    complete
+    .text       start:0x020142dc end:0x02014528
+    .data       start:0x020638e4 end:0x020638f8
+    .bss        start:0x0206bc3c end:0x0206bd64
+
+libs/CriWare/adx_fsvr.c:
+    .text       start:0x02014528 end:0x02014608
+    .bss        start:0x0206bd64 end:0x0206bd7c
+
+libs/CriWare/adx_inis.c:
+    .text       start:0x02014608 end:0x020148dc
+    .rodata     start:0x0205bf94 end:0x0205bfd8
+    .data       start:0x020638f8 end:0x020639ac
+    .bss        start:0x0206bd7c end:0x0206c0b4
+
+libs/CriWare/adx_sjd.c:
+    .text       start:0x020148dc end:0x02015aac
+    .data       start:0x020639ac end:0x02063a84
+    .bss        start:0x0206c0b4 end:0x0206c398
+
+libs/CriWare/adx_stmc.c:
+    .text       start:0x02015aac end:0x020168f4
+    .data       start:0x02063a84 end:0x02063ae8
+    .bss        start:0x0206c398 end:0x0206c798
+
+libs/CriWare/adx_tlk.c:
+    .text       start:0x020168f4 end:0x02017bc0
+    .data       start:0x02063ae8 end:0x02063da8
+    .bss        start:0x0206c798 end:0x0206c7fc
+
+libs/CriWare/adx_tlk2.c:
+    complete
+    .text       start:0x02017bc0 end:0x02017f80
+    .data       start:0x02063da8 end:0x02063edc
+
+libs/CriWare/adx_xpnd.c:
+    complete
+    .text       start:0x02018cdc end:0x0201904c
+    .bss        start:0x0206c80c end:0x0206c900
+
+libs/CriWare/sj_rbf.c:
+    complete
+    .text       start:0x0201904c end:0x02019cb8
+    .rodata     start:0x0205bfd8 end:0x0205bfe8
+    .data       start:0x02063f74 end:0x020643e8
+    .bss        start:0x0206c900 end:0x0206f604
+
+libs/CriWare/sj_err.c:
+    complete
+    .text       start:0x02019cb8 end:0x02019cc4
+
+libs/CriWare/sj_mem.c:
+    complete
+    .text       start:0x02019cc4 end:0x0201a534
+    .rodata     start:0x0205bfe8 end:0x0205bff8
+    .data       start:0x020643e8 end:0x02064718
+    .bss        start:0x0206f604 end:0x0206f8d8
+
+libs/CriWare/svm.c:
+    .text       start:0x0201a6b4 end:0x0201ad70
+    .data       start:0x02064718 end:0x02064894
+    .bss        start:0x02070068 end:0x020703e0
+
+libs/CriWare/cri_cvfs.c:
+    .text       start:0x0201ad70 end:0x0201b8dc
+    .rodata     start:0x0205bff8 end:0x0205bffc
+    .data       start:0x02064894 end:0x02064cf4
+    .bss        start:0x020703e0 end:0x02070774
+
+libs/CriWare/acssvr.c:
+    .text       start:0x0201ef48 end:0x0201f568
+    .data       start:0x020652ec end:0x0206540c
+
+libs/CriWare/acssnd.c:
+    .text       start:0x0201f568 end:0x02020754
+
+libs/CriWare/acsfdr.c:
+    .text       start:0x02020754 end:0x02020f1c
+
+libs/CriWare/acssbadx.c:
+    complete
+    .text       start:0x02020f1c end:0x02021184
+    .rodata     start:0x0205c094 end:0x0205c0d8
+    .data       start:0x02065844 end:0x020658ec
+
+libs/CriWare/acsvhl.c:
+    complete
+    .text       start:0x02021184 end:0x02021534
+    .data       start:0x020658ec end:0x020659bc
+
+libs/CriWare/adx_f.c:
+    complete
+    .text       start:0x020215c4 end:0x020215d8
+
+libs/CriWare/lsc.c:
+    complete
+    .text       start:0x020215d8 end:0x020215fc
+
+libs/CriWare/criss.c:
+    .text       start:0x02021728 end:0x02022a18
+    .data       start:0x020659e0 end:0x02065b74
+    .bss        start:0x02071b00 end:0x02071cf0
 
 src/main_36.c:
     .text       start:0x02022a18 end:0x0202614c
 
-libs/CriWare/adx_bahx.c:
-complete
-    .text       start:0x0201202C end:0x020120D4
-    .bss        start:0x0206B854 end:0x0206B864
-
-libs/CriWare/adx_bsc.c:
-    .text       start:0x020120D4 end:0x02012F20
-    .rodata     start:0x0205B754 end:0x0205BF54
-    .data       start:0x0206386C end:0x020638E0
-    .bss        start:0x0206B864 end:0x0206BC30
-
-libs/CriWare/adx_crs.c:
-    .text       start:0x02012F20 end:0x02012F88
-    .bss        start:0x0206BC30 end:0x0206BC3C
-
-libs/CriWare/adx_dcd.c:
-    .text       start:0x02012F90 end:0x020142DC
-    .rodata     start:0x0205BF54 end:0x0205BF94
-    .data       start:0x020638E0 end:0x020638E4
-
-libs/CriWare/adx_errs.c:
-complete
-    .text       start:0x020142DC end:0x02014528
-    .data       start:0x020638E4 end:0x020638F8
-    .bss        start:0x0206BC3C end:0x0206BD64
-
-libs/CriWare/adx_fsvr.c:
-    .text       start:0x02014528 end:0x02014608
-    .bss        start:0x0206BD64 end:0x0206BD7C
-
-libs/CriWare/adx_inis.c:
-    .text       start:0x02014608 end:0x020148DC
-    .rodata     start:0x0205BF94 end:0x0205BFD8
-    .data       start:0x020638F8 end:0x020639AC
-    .bss        start:0x0206BD7C end:0x0206C0B4
-
-libs/CriWare/adx_sjd.c:
-    .text       start:0x020148DC end:0x02015AAC
-    .data       start:0x020639AC end:0x02063A84
-    .bss        start:0x0206C0B4 end:0x0206C398
-
-libs/CriWare/adx_stmc.c:
-    .text       start:0x02015AAC end:0x020168F4
-    .data       start:0x02063A84 end:0x02063AE8
-    .bss        start:0x0206C398 end:0x0206C798
-
-libs/CriWare/adx_tlk.c:
-    .text       start:0x020168F4 end:0x02017BC0
-    .data       start:0x02063AE8 end:0x02063DA8
-    .bss        start:0x0206C798 end:0x0206C7FC
-
-libs/CriWare/adx_tlk2.c:
-complete
-    .text       start:0x02017BC0 end:0x02017F80
-    .data       start:0x02063DA8 end:0x02063EDC
-
-libs/CriWare/adx_xpnd.c:
-complete
-    .text       start:0x02018CDC end:0x0201904C
-    .bss        start:0x0206C80C end:0x0206C900
-
-libs/CriWare/sj_rbf.c:
-complete
-    .text       start:0x0201904C end:0x02019CB8
-    .rodata     start:0x0205BFD8 end:0x0205BFE8
-    .data       start:0x02063F74 end:0x020643E8
-    .bss        start:0x0206C900 end:0x0206F604
-
-libs/CriWare/sj_err.c:
-complete
-    .text       start:0x02019CB8 end:0x02019CC4
-
-libs/CriWare/sj_mem.c:
-complete
-    .text       start:0x02019CC4 end:0x0201A534
-    .rodata     start:0x0205BFE8 end:0x0205BFF8
-    .data       start:0x020643E8 end:0x02064718
-    .bss        start:0x0206F604 end:0x0206F8D8
-
-libs/CriWare/svm.c:
-    .text       start:0x0201A6B4 end:0x0201AD70
-    .data       start:0x02064718 end:0x02064894
-    .bss        start:0x02070068 end:0x020703E0
-
-libs/CriWare/cri_cvfs.c:
-    .text       start:0x0201AD70 end:0x0201B8DC
-    .rodata     start:0x0205BFF8 end:0x0205BFFC
-    .data       start:0x02064894 end:0x02064CF4
-    .bss        start:0x020703E0 end:0x02070774
-
-libs/CriWare/acssvr.c:
-    .text       start:0x0201EF48 end:0x0201f568
-    .data       start:0x020652EC end:0x0206540C
-
-libs/CriWare/acssnd.c:
-    .text       start:0x0201F568 end:0x02020754
-
-libs/CriWare/acsfdr.c:
-    .text       start:0x02020754 end:0x02020F1C
-
-libs/CriWare/acssbadx.c:
-complete
-    .text       start:0x02020F1C end:0x02021184
-    .rodata     start:0x0205C094 end:0x0205C0D8
-    .data       start:0x02065844 end:0x020658EC
-
-libs/CriWare/acsvhl.c:
-complete
-    .text       start:0x02021184 end:0x02021534
-    .data       start:0x020658EC end:0x020659BC
-
-libs/CriWare/adx_f.c:
-complete
-    .text       start:0x020215C4 end:0x020215D8
-
-libs/CriWare/lsc.c:
-complete
-    .text       start:0x020215D8 end:0x020215FC
-
-libs/CriWare/criss.c:
-    .text       start:0x02021728 end:0x02022A18
-    .data       start:0x020659E0 end:0x02065B74
-    .bss        start:0x02071B00 end:0x02071CF0
-
 src/EasyFade.c:
-    .text       start:0x0202614C end:0x02026528
-    .rodata     start:0x0205CB10 end:0x0205CB3C
-    .data       start:0x02065C94 end:0x02065CA0
-    .bss        start:0x020751DC end:0x02075204
+    .text       start:0x0202614c end:0x02026528
+    .rodata     start:0x0205cb10 end:0x0205cb3c
+    .data       start:0x02065c94 end:0x02065ca0
+    .bss        start:0x020751dc end:0x02075204
 
 src/SndMgr.c:
-complete
-    .text       start:0x020268F0 end:0x02027294
-    .data       start:0x02065CB0 end:0x02065CD0
-    .bss        start:0x02075214 end:0x020768F0
+    complete
+    .text       start:0x020268f0 end:0x02027294
+    .data       start:0x02065cb0 end:0x02065cd0
+    .bss        start:0x02075214 end:0x020768f0
 
 src/CriSndMgr.c:
-    .text       start:0x02027294 end:0x020274AC
-    .rodata     start:0x0205E0EC end:0x0205E324
-    .data       start:0x02065CD0 end:0x02065FCC
-    .bss        start:0x020768F0 end:0x02076A14
+    .text       start:0x02027294 end:0x020274ac
+    .rodata     start:0x0205e0ec end:0x0205e324
+    .data       start:0x02065cd0 end:0x02065fcc
+    .bss        start:0x020768f0 end:0x02076a14
 
 src/main_44.c:
-    .text       start:0x020274AC end:0x020339E0
-    .data       start:0x02065FCC end:0x02066238
+    .text       start:0x020274ac end:0x020339e0
+    .data       start:0x02065fcc end:0x02066238
 
 libs/NitroSDK/fx/fx_matrix.c:
-complete
-    .text       start:0x020339F8 end:0x02034BBC
+    complete
+    .text       start:0x020339f8 end:0x02034bbc
 
 libs/NitroSDK/fx/fx_division.c:
-complete
-    .text       start:0x02034BBC end:0x02034D1C
+    complete
+    .text       start:0x02034bbc end:0x02034d1c
 
 libs/NitroSDK/fx/fx_vector.c:
-complete
-    .text       start:0x02034D1C end:0x02035094
+    complete
+    .text       start:0x02034d1c end:0x02035094
 
 libs/NitroSDK/fx/fx_atan.c:
-complete
-    .text       start:0x02035094 end:0x0203523C
-    .rodata     start:0x020624E0 end:0x020625E4
+    complete
+    .text       start:0x02035094 end:0x0203523c
+    .rodata     start:0x020624e0 end:0x020625e4
 
 libs/NitroSDK/fx/fx_init.c:
-complete
-    .text       start:0x0203523C end:0x02035240
+    complete
+    .text       start:0x0203523c end:0x02035240
 
 libs/NitroSDK/gx/gx.c:
-complete
+    complete
     .text       start:0x02035240 end:0x02035568
     .data       start:0x02066258 end:0x02066260
-    .bss        start:0x0207DC20 end:0x0207DC24
+    .bss        start:0x0207dc20 end:0x0207dc24
 
 libs/NitroSDK/gx/gx_state.c:
-    .text       start:0x02035568 end:0x020365E4
-    .bss        start:0x0207DC24 end:0x0207DC40
+    .text       start:0x02035568 end:0x020365e4
+    .bss        start:0x0207dc24 end:0x0207dc40
 
 libs/NitroSDK/os/interrupt.c:
-    .text       start:0x020383BC end:0x02038664
+    .text       start:0x020383bc end:0x02038664
 
 libs/NitroSDK/os/thread.c:
-    .text       start:0x020389FC end:0x0203927C
-    .bss        start:0x0207DCE0 end:0x0207DF5C
+    .text       start:0x020389fc end:0x0203927c
+    .bss        start:0x0207dce0 end:0x0207df5c
 
 libs/NitroSDK/os/mutex.c:
-complete
+    complete
     .text       start:0x02039594 end:0x02039784
 
 libs/NitroSDK/os/cache.c:
-complete
-    .text       start:0x02039784 end:0x020398B0
+    complete
+    .text       start:0x02039784 end:0x020398b0
 
 libs/NitroSDK/os/init.c:
-complete
-    .text       start:0x020398B0 end:0x02039918
+    complete
+    .text       start:0x020398b0 end:0x02039918
 
 libs/NitroSDK/os/region.c:
-    .text       start:0x02039918 end:0x02039CD0
-    .bss        start:0x0207DF5C end:0x0207DF64
+    .text       start:0x02039918 end:0x02039cd0
+    .bss        start:0x0207df5c end:0x0207df64
 
 libs/NitroSDK/os/valarm.c:
-complete
-    .text       start:0x0203A5E4 end:0x0203A73C
-    .bss        start:0x0207E054 end:0x0207E068
+    complete
+    .text       start:0x0203a5e4 end:0x0203a73c
+    .bss        start:0x0207e054 end:0x0207e068
 
 libs/NitroSDK/os/cpustat.c:
-complete
-    .text       start:0x0203A73C end:0x0203A7FC
+    complete
+    .text       start:0x0203a73c end:0x0203a7fc
 
 libs/NitroSDK/os/reset.c:
-    .text       start:0x0203A7FC end:0x0203A96C
-
-libs/NitroSDK/fs/record.c:
-complete
-    .text       start:0x0203DAB8 end:0x0203E59C
-    .bss        start:0x0207FC88 end:0x0207FC98
-
-libs/NitroSDK/fs/file.c:
-complete
-    .text       start:0x0203E59C end:0x0203EACC
-    .bss        start:0x0207FC98 end:0x0207FC9C
-
-libs/NitroSDK/fs/rom.c:
-complete
-    .text       start:0x0203EACC end:0x0203ED24
-    .data       start:0x02066278 end:0x0206627C
-    .bss        start:0x0207FC9C end:0x0207FD10
-
-libs/NitroSDK/fs/overlay.c:
-    .text       start:0x0203ED24 end:0x0203F350
-    .rodata     start:0x0206314C end:0x0206318C
-    .data       start:0x0206627C end:0x02066284
+    .text       start:0x0203a7fc end:0x0203a96c
 
 libs/NitroSDK/mi/cpumem.c:
     .text       start:0x0203b258 end:0x0203b59c
 
+libs/NitroSDK/fs/record.c:
+    complete
+    .text       start:0x0203dab8 end:0x0203e59c
+    .bss        start:0x0207fc88 end:0x0207fc98
+
+libs/NitroSDK/fs/file.c:
+    complete
+    .text       start:0x0203e59c end:0x0203eacc
+    .bss        start:0x0207fc98 end:0x0207fc9c
+
+libs/NitroSDK/fs/rom.c:
+    complete
+    .text       start:0x0203eacc end:0x0203ed24
+    .data       start:0x02066278 end:0x0206627c
+    .bss        start:0x0207fc9c end:0x0207fd10
+
+libs/NitroSDK/fs/overlay.c:
+    .text       start:0x0203ed24 end:0x0203f350
+    .rodata     start:0x0206314c end:0x0206318c
+    .data       start:0x0206627c end:0x02066284
+
 libs/MSL/ARM/abort_exit.c:
-    .text       start:0x02048C14 end:0x02048DAC
-    .exceptix   start:0x02058F04 end:0x02058F28
+    .text       start:0x02048c14 end:0x02048dac
+    .exceptix   start:0x02058f04 end:0x02058f28
     .bss        start:0x02081f30 end:0x02082040
 
 libs/MSL/ARM/critical_regions.c:
-complete
+    complete
     .bss        start:0x02082040 end:0x02082160
 
 libs/MSL/ARM/math.c:
-complete
-    .text       start:0x02048DAC end:0x02048DC4
-    .exceptix   start:0x02058F28 end:0x02058F34
+    complete
+    .text       start:0x02048dac end:0x02048dc4
+    .exceptix   start:0x02058f28 end:0x02058f34
 
 libs/MSL/Common/alloc.c:
-complete
-    .text       start:0x02048DC4 end:0x02048DF0
-    .exceptix   start:0x02058F34 end:0x02058F4C
+    complete
+    .text       start:0x02048dc4 end:0x02048df0
+    .exceptix   start:0x02058f34 end:0x02058f4c
 
 libs/MSL/Common/ansi_files.c:
-complete
-    .text       start:0x02048DF0 end:0x02048E58
-    .exceptix   start:0x02058F4C end:0x02058F58
-    .data       start:0x020663D8 end:0x020664BC
+    complete
+    .text       start:0x02048df0 end:0x02048e58
+    .exceptix   start:0x02058f4c end:0x02058f58
+    .data       start:0x020663d8 end:0x020664bc
     .bss        start:0x02082160 end:0x02082460
 
 libs/MSL/Common/buffer_io.c:
-complete
-    .text       start:0x02048E58 end:0x02048F14
-    .exceptix   start:0x02058F58 end:0x02058F64
+    complete
+    .text       start:0x02048e58 end:0x02048f14
+    .exceptix   start:0x02058f58 end:0x02058f64
 
 libs/MSL/Common/file_io.c:
-complete
-    .text       start:0x02048F14 end:0x02048FFC
-    .exceptix   start:0x02058F64 end:0x02058F70
-
-libs/MSL/Common/float.c:
-complete
-    .data       start:0x020664BC end:0x020664CC
-
-libs/MSL/Common/locale.c:
-complete
-    .data       start:0x020664CC end:0x020666E8
+    complete
+    .text       start:0x02048f14 end:0x02048ffc
+    .exceptix   start:0x02058f64 end:0x02058f70
 
 libs/MSL/Common/mbstring.c:
-complete
-    .text       start:0x02048FFC end:0x020490F8
-    .exceptix   start:0x02058F70 end:0x02058F94
+    complete
+    .text       start:0x02048ffc end:0x020490f8
+    .exceptix   start:0x02058f70 end:0x02058f94
 
 libs/MSL/Common/mem.c:
-complete
-    .text       start:0x020490F8 end:0x02049198
-    .exceptix   start:0x02058F94 end:0x02058FA0
+    complete
+    .text       start:0x020490f8 end:0x02049198
+    .exceptix   start:0x02058f94 end:0x02058fa0
 
 libs/MSL/Common/mem_funcs.c:
-complete
+    complete
     .text       start:0x02049198 end:0x02049248
 
+libs/MSL/Common/float.c:
+    complete
+    .data       start:0x020664bc end:0x020664cc
+
+libs/MSL/Common/locale.c:
+    complete
+    .data       start:0x020664cc end:0x020666e8
+
 libs/MSL/Common/printf.c:
-    .text       start:0x02049248 end:0x0204B398
-    .exception  start:0x02058E08 end:0x02058E10
-    .exceptix   start:0x02058FA0 end:0x0205900C
-    .data       start:0x020666E8 end:0x02066728
+    .text       start:0x02049248 end:0x0204b398
+    .exception  start:0x02058e08 end:0x02058e10
+    .exceptix   start:0x02058fa0 end:0x0205900c
+    .data       start:0x020666e8 end:0x02066728
+
+libs/MSL/Common/errno.c:
+    complete
+    .bss        start:0x02082460 end:0x02082464
 
 libs/MSL/Common/ctype.c:
-complete
-    .rodata     start:0x020632C0 end:0x02063440
+    complete
+    .rodata     start:0x020632c0 end:0x02063440
 
 libs/MSL/Common/scanf.c:
-complete
-    .text       start:0x0204B398 end:0x0204C6E4
-    .exception  start:0x02058E10 end:0x02058E18
-    .exceptix   start:0x0205900C end:0x02059030
+    complete
+    .text       start:0x0204b398 end:0x0204c6e4
+    .exception  start:0x02058e10 end:0x02058e18
+    .exceptix   start:0x0205900c end:0x02059030
     .rodata     start:0x02063440 end:0x02063468
 
 libs/MSL/Common/signal.c:
-complete
-    .text       start:0x0204C6E4 end:0x0204C814
-    .exceptix   start:0x02059030 end:0x0205903C
+    complete
+    .text       start:0x0204c6e4 end:0x0204c814
+    .exceptix   start:0x02059030 end:0x0205903c
     .bss        start:0x02082464 end:0x02082480
 
 libs/MSL/Common/string.c:
-complete
-    .text       start:0x0204C814 end:0x0204CB4C
+    complete
+    .text       start:0x0204c814 end:0x0204cb4c
 
 libs/MSL/Common/strtold.c:
-    .text       start:0x0204CB4C end:0x0204DD98
-    .exception  start:0x02058E18 end:0x02058E20
-    .exceptix   start:0x0205903C end:0x02059048
+    .text       start:0x0204cb4c end:0x0204dd98
+    .exception  start:0x02058e18 end:0x02058e20
+    .exceptix   start:0x0205903c end:0x02059048
     .rodata     start:0x02063468 end:0x02063478
 
 libs/MSL/Common/strtoul.c:
-    .text       start:0x0204DD98 end:0x0204E684
-    .exceptix   start:0x02059048 end:0x0205906C
+    .text       start:0x0204dd98 end:0x0204e684
+    .exceptix   start:0x02059048 end:0x0205906c
 
 libs/MSL/Runtime/console_io.c:
-complete
-    .text       start:0x02057034 end:0x020570F8
-    .exceptix   start:0x020591C8 end:0x020591E0
+    complete
+    .text       start:0x02057034 end:0x020570f8
+    .exceptix   start:0x020591c8 end:0x020591e0
 
 libs/MSL/Runtime/CompressedNumbers.cpp:
-complete
-    .text       start:0x020570F8 end:0x02057210
+    complete
+    .text       start:0x020570f8 end:0x02057210
 
 libs/MSL/Runtime/ExceptionHandler.cpp:
     .text       start:0x02057210 end:0x02058620
-    .exception  start:0x02058E40 end:0x02058E84
-    .exceptix   start:0x020591E0 end:0x02059258
-
-libs/MSL/Common/errno.c:
-complete
-    .bss        start:0x02082460 end:0x02082464
+    .exception  start:0x02058e40 end:0x02058e84
+    .exceptix   start:0x020591e0 end:0x02059258
 
 libs/MSL/Runtime/New.cpp:
     .text       start:0x02058620 end:0x02058734
@@ -457,26 +457,26 @@ libs/MSL/Runtime/New.cpp:
     .bss        start:0x02082490 end:0x02082494
 
 libs/MSL/Runtime/StaticInitializers.cpp:
-complete
-    .text       start:0x02058734 end:0x020587A4
-    .exceptix   start:0x020592AC end:0x020592C4
-    .bss        start:0x02082494 end:0x020824A0
+    complete
+    .text       start:0x02058734 end:0x020587a4
+    .exceptix   start:0x020592ac end:0x020592c4
+    .bss        start:0x02082494 end:0x020824a0
 
 libs/MSL/Runtime/cxxabi_alloc.cpp:
-    .text       start:0x020587A4 end:0x0205897C
-    .exception  start:0x02058EB4 end:0x02058F04
-    .exceptix   start:0x020592C4 end:0x020592F4
+    .text       start:0x020587a4 end:0x0205897c
+    .exception  start:0x02058eb4 end:0x02058f04
+    .exceptix   start:0x020592c4 end:0x020592f4
 
 libs/MSL/Runtime/MWException.cpp:
-    .text       start:0x020589F4 end:0x02058BEC
+    .text       start:0x020589f4 end:0x02058bec
     .exceptix   start:0x02059330 end:0x02059360
-    .data       start:0x02066A14 end:0x02066A1C
+    .data       start:0x02066a14 end:0x02066a1c
 
 libs/MSL/Runtime/ExceptionHandlerTS.cpp:
-    .text       start:0x02058BEC end:0x02058DFC
+    .text       start:0x02058bec end:0x02058dfc
     .exceptix   start:0x02059360 end:0x02059378
 
 libs/MSL/Runtime/__arm_eabi_init.c:
-complete
-    .text       start:0x02058DFC end:0x02058E08
+    complete
+    .text       start:0x02058dfc end:0x02058e08
     .exceptix   start:0x02059378 end:0x02059384
