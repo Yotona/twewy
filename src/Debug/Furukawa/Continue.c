@@ -64,7 +64,7 @@ extern void func_ov003_02082d04(void*);
 extern void func_ov003_0208ec74(void);
 extern void func_ov027_020e860c(void);
 extern void func_ov030_020ae92c(void*, s32);
-extern void func_ov037_0208370c(void);
+extern void ProcessOverlay_OpenEnd(void);
 
 void func_ov025_020e7f90(ContinueObject* contObj);
 void func_ov025_020e7fdc(ContinueObject* contObj);
@@ -356,7 +356,7 @@ void func_ov025_020e7dd0(ContinueObject* contObj) {
                 MainOvlDisp_ReplaceTop(&tag, &OVERLAY_27_ID, &func_ov027_020e860c, NULL, PROCESS_STAGE_INIT);
             } else {
                 OverlayTag tag;
-                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_37_ID, &func_ov037_0208370c, NULL, PROCESS_STAGE_INIT);
+                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_37_ID, &ProcessOverlay_OpenEnd, NULL, PROCESS_STAGE_INIT);
             }
         } break;
     }

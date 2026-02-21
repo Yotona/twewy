@@ -166,7 +166,7 @@ void func_ov043_020bd224(DepartState* state) {
 
 // Nonmatching
 void func_ov043_020bd388(DepartState* state) {
-    func_02027388(0);
+    CriSndMgr_Stop(0);
     func_ov043_020bdc6c(&state->unk_2165C);
     func_ov043_020be32c(&state->unk_2165C);
     EasyTask_DestroyPool(&state->taskPool);

@@ -103,7 +103,7 @@ func_ov028_020e7dbc(TaskPool* pool, NoiseReport* arg1) {
 }
 
 void func_ov028_020e7f00(TaskPool* pool, NoiseReport* arg1) {
-    func_02027388(0);
+    CriSndMgr_Stop(0);
     DatMgr_ClearSlot(arg1->unk_00);
     OvlMgr_UnloadOverlay(4);
     OvlMgr_UnloadOverlay(3);

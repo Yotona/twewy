@@ -116,7 +116,7 @@ void func_0202733c(s32 adxIdx) {
     }
 }
 
-void func_02027388(s32 param_1) {
+void CriSndMgr_Stop(s32 param_1) {
     if (param_1 < ARRAY_COUNT(criSndMgr.volume)) {
         criSsPly_Stop(criSndMgr.criss);
     }

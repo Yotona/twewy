@@ -28,7 +28,7 @@ void func_02027330(void);
 
 void func_0202733c(s32 adxIdx);
 
-void func_02027388(s32 param_1);
+void CriSndMgr_Stop(s32 param_1);
 
 void func_020273a8(s32 param_1, s32 param_2);
 

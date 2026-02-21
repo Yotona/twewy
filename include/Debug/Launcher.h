@@ -106,7 +106,7 @@ extern void func_ov030_020c9950(void* state);
 extern void func_ov030_020ca1b4(void* state);
 extern void func_ov030_020d2d6c(void* state);
 extern void func_ov030_020d5370(void* state);
-extern void func_ov037_0208370c(void* state);
+extern void ProcessOverlay_OpenEnd(void* state);
 
 extern void ProcessOverlay_GrpCheck_HwSprites(void* state);
 extern void ProcessOverlay_GrpCheck_SwSprites(void* state);
@@ -207,8 +207,8 @@ const DebugLauncherOption Options_Fukuda[13] = {
 
 const DebugLauncherOption Options_Bul[2] = {
     // "Feature: Opening and Title", "Description:"
-    {3, "機能\:オープニングとタイトル", "説明:",                  37, func_ov037_0208370c},
-    {0,                           NULL,    NULL, OVERLAY_ID_UNLOADED,                NULL},
+    {3, "機能\:オープニングとタイトル", "説明:",                  37, ProcessOverlay_OpenEnd},
+    {0,                           NULL,    NULL, OVERLAY_ID_UNLOADED,                   NULL},
 };
 
 const DebugLauncherOption Options_Abe[2] = {
@@ -248,7 +248,7 @@ const DebugLauncherOption Options_Mori[6] = {
     {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheck_SwSprites},
     {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,               func_ov027_020e9670},
     {4,           "機能\:ロケタイトル",                    "説明:test",                  30,               func_ov030_020d2d6c},
-    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,               func_ov037_0208370c},
+    {5, "機能\:オープニングとタイトル",                        "説明:",                  37,            ProcessOverlay_OpenEnd},
     {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                              NULL},
 };
 
