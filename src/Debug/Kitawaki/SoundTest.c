@@ -1586,7 +1586,7 @@ void SoundTest_StopSelectedSoundType(SoundTestState* state) {
     }
     switch (state->menuCurrentRow) {
         case MENU_ROW_ADX:
-            func_02027388(0);
+            CriSndMgr_Stop(0);
             return;
         case MENU_ROW_SEQARC:
         case MENU_ROW_SE:
@@ -1599,9 +1599,9 @@ void SoundTest_StopSelectedSoundType(SoundTestState* state) {
 }
 
 void SoundTest_StopAllSounds(void) {
-    func_02027388(0);
-    func_02027388(70);
-    func_02027388(78);
+    CriSndMgr_Stop(0);
+    CriSndMgr_Stop(70);
+    CriSndMgr_Stop(78);
     func_ov029_02082a38();
 }
 

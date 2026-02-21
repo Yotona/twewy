@@ -418,7 +418,7 @@ void func_ov042_02082ed8(StaffRoll_CallbackStruct* cbArg) {
 
 void func_ov042_02082f94(StaffRoll_CallbackStruct* state) {
     DatMgr_ReleaseData(state->commandlist);
-    func_02027388(0x22);
+    CriSndMgr_Stop(0x22);
     CriSndMgr_SetLpFlg(TRUE);
     if (DebugOvlDisp_IsStackAtBase() == FALSE)
         DebugOvlDisp_Pop();

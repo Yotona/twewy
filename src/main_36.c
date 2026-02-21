@@ -1768,12 +1768,12 @@ s32 func_02024aa4(void) {
     s32 temp_r0;
     s32 temp_r4;
 
-    SystemStatusFlags &= ~0x20;
-    SystemStatusFlags &= ~0x80;
+    SystemStatusFlags &= ~0x20; // unk_05 == 0
+    SystemStatusFlags &= ~0x80; // unk_07 == 0
     temp_r4 = func_020247f4();
     temp_r0 = temp_r4 | func_0202499c();
-    SystemStatusFlags |= 0x20;
-    SystemStatusFlags |= 0x80;
+    SystemStatusFlags |= 0x20; // unk_05 == 1
+    SystemStatusFlags |= 0x80; // unk_07 == 1
     return temp_r0;
 }
 
