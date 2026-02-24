@@ -176,3 +176,109 @@ if (memory[0x020BB570] == 0xE59FC004) {
     // Set hit combo counter to maximum
     BattleData.hitComboCount = 100  // memory[0x02074E9C] = 0x64
 }
+** Infinite Health **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    // Write max HP value to current HP, prevent death
+    memory[0x023918B0] = 0x75307530  // HP pair: ~30000 | ~30000
+    memory[0x023918B4] = 0x00000000
+    // If HP drops below 0x0400, restore to safe value
+    if (memory[0x023918B0] < 0x00000400) {
+        memory[0x023918B0] = 0x75306530
+    }
+}
+
+** 0'00"00 Time / Low Time Bonus **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    BattleData.battleTimer = 0  // memory[0x02074E98] = 0x0000
+}
+
+** Instant DUO Combo **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    BattleData.duoComboGauge = 99  // memory[0x02074E8A] = 0x63
+}
+
+** Instant and Infinite Duo Attack (Level 1/2/3) **
+// Conditional: if battle active AND Duo level indicator is active
+if (memory[0x020BB570] == 0xE59FC004) {
+    if (memory[0x023918C8] != 0) {
+        // Force Duo attack state to desired level (1, 2, or 3)
+        memory[0x023918C9] = 1  // or 2 or 3
+    }
+}
+
+** 1000 Base PP After Battle **
+// Conditional: if [0x020BB570] == 0xE59FC004
+if (memory[0x020BB570] == 0xE59FC004) {
+    BattleData.basePP = 1000  // memory[0x02074E92] = 0x03E8
+}
+
+** 1000 Total PP (Shutdown, Mingle, Battle) **
+// Conditional: if PP award system is active
+if (memory[0x02066A30] == 0x0000002C) {
+    memory[0x023A2BD8] = 1000  // cumulative PP counter
+}
+
+** Quick Exp. Gain **
+// Write exp threshold = 1 (if current value > 1, force to 1, then write unconditionally)
+if (memory[0x02071D18] > 1) {
+    memory[0x02071D18] = 1
+}
+memory[0x02071D18] = 1  // experience threshold/floor = 1
+
+** 1 Fight to Digest Food **
+// Conditional: if food/digestion overlay is active
+if (memory[0x0208599E] == 0x0000E047) {
+    memory[0x0208599C] = 0xE3A00000  // mov r0, #0 (digestion counter = 0)
+    memory[0x02085A34] = 0xE3A03000  // mov r3, #0 (digestion progress = 0)
+}
+
+** Digestion Doesn't Decrease Food Slots **
+// Conditional: if digestion update function is active
+if (memory[0x020A374C] == 0x00002AB0) {
+    memory[0x020A376C] = 0xE3A01018  // mov r1, #24 (force slot count = 24)
+    memory[0x020A37D0] = 0xE3A04018  // mov r4, #24
+}
+
+** Foods Always Require Only 1 Byte **
+// Conditional: if item data is loaded
+if (memory[0x02393850] == 0x000035F8) {
+    memory[0x02395CA6] = 0x01  // food[0] byte cost = 1
+    memory[0x02395D6E] = 0x01  // food[1] byte cost = 1
+    memory[0x02395E36] = 0x01  // food[2] byte cost = 1
+    memory[0x02395EFE] = 0x01  // food[3] byte cost = 1
+}
+
+** Drop Rate 999 **
+MainData.dropRate = 999  // memory[0x02071D24] = 0x03E7
+
+** Partner Modifier **
+MainData.partnerID = 0  // memory[0x02071D28] = 0x00 (0=Shiki, 1=Joshua, 2=Beat)
+
+** Shiki 999 ATK / DEF / Bravery, Sync 100% **
+ShikiData.attack  = 999   // memory[0x02071D3C] = 0x03E7
+ShikiData.defense = 999   // memory[0x02071D3E] = 0x03E7
+ShikiData.sync    = 1000  // memory[0x02071D40] = 0x03E8  (100.0%)
+ShikiData.bravery = 999   // memory[0x02071D42] = 0x03E7
+
+** Joshua 999 ATK / DEF / Bravery, Sync 100% **
+JoshuaData.attack  = 999   // memory[0x02071D54] = 0x03E7
+JoshuaData.defense = 999   // memory[0x02071D56] = 0x03E7
+JoshuaData.sync    = 1000  // memory[0x02071D58] = 0x03E8
+JoshuaData.bravery = 999   // memory[0x02071D5A] = 0x03E7
+
+** Beat 999 ATK / DEF / Bravery, Sync 100% **
+BeatData.attack  = 999   // memory[0x02071D6C] = 0x03E7
+BeatData.defense = 999   // memory[0x02071D6E] = 0x03E7
+BeatData.sync    = 1000  // memory[0x02071D70] = 0x03E8
+BeatData.bravery = 999   // memory[0x02071D72] = 0x03E7
+
+** Pin Slot 1 (999 ATK, infinite use) **
+// Conditional: if [0x02372D80] == 0x02373024 (slot 1 data present)
+if (memory[0x02372D80] == 0x02373024) {
+    memory[0x02372DA2] = 0x03E7  // slot 1 pin ATK = 999
+    memory[0x02372DA6] = 0x00    // slot 1 reboot timer = 0 (infinite use)
+}
+// (Slots 2-6 follow the same pattern at offsets -0x420 per slot)

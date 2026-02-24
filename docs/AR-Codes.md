@@ -279,7 +279,9 @@ The MainData structure begins at `0x02071D10` and contains player progression da
 - `0x02071D1C` (+0x0C): Money (32-bit)
 - `0x02071D20` (+0x10): Attack (16-bit)
 - `0x02071D22` (+0x12): Defense (16-bit)
+- `0x02071D24` (+0x14): Drop Rate (16-bit)
 - `0x02071D26` (+0x16): Bravery (16-bit)
+- `0x02071D28` (+0x18): Partner ID (8-bit, 0=Shiki, 1=Joshua, 2=Beat)
 
 **Complete structure** (28 bytes total, confirmed from `.space 0x1c`):
 ```c
@@ -290,9 +292,10 @@ struct MainData {  // data_02071d10
     u32 money;          // +0x0C (0x02071D1C) - VERIFIED
     u16 attack;         // +0x10 (0x02071D20) - VERIFIED
     u16 defense;        // +0x12 (0x02071D22) - VERIFIED
-    u8  unk14[2];       // +0x14 to +0x15 (2 bytes - UNKNOWN contents)
+    u16 dropRate;       // +0x14 (0x02071D24) - VERIFIED
     u16 bravery;        // +0x16 (0x02071D26) - VERIFIED
-    u8  unk18[4];       // +0x18 to +0x1B (4 bytes - ends at 0x02071D2B)
+    u8  partnerID;      // +0x18 (0x02071D28) - VERIFIED (0=Shiki, 1=Joshua, 2=Beat)
+    u8  unk19[3];       // +0x19 to +0x1B (3 bytes - ends at 0x02071D2B)
 };  // Total: 28 bytes (0x1C)
 ```
 
@@ -302,7 +305,57 @@ struct MainData {  // data_02071d10
 
 **Note on C Source**: `src/main_36.c` contains a struct definition for `MainData`, but **there is a size/layout mismatch**. The disassembly's `.space 0x1c` directive (28 bytes) is the confirmed ground truth, while the C struct appears much larger and may combine multiple separate data sections. The AR code evidence (which successfully modifies game behavior) confirms the actual memory layout matches the disassembly, not the C struct.
 
-**Accurate Structure** (use this - verified by disassembly + AR codes):
+**Accurate Structure** (confirmed by disassembly + AR codes):
+```c
+struct MainData {  // data_02071d10
+    u8  unk00[6];       // +0x00 to +0x05 (6 bytes - UNKNOWN contents)
+    u16 level;          // +0x06 (0x02071D16) - VERIFIED
+    u8  unk08[4];       // +0x08 to +0x0B (4 bytes - UNKNOWN contents)
+    u32 money;          // +0x0C (0x02071D1C) - VERIFIED
+    u16 attack;         // +0x10 (0x02071D20) - VERIFIED
+    u16 defense;        // +0x12 (0x02071D22) - VERIFIED
+    u16 dropRate;       // +0x14 (0x02071D24) - VERIFIED
+    u16 bravery;        // +0x16 (0x02071D26) - VERIFIED
+    u8  partnerID;      // +0x18 (0x02071D28) - VERIFIED (0=Shiki, 1=Joshua, 2=Beat)
+    u8  unk19[3];       // +0x19 to +0x1B (3 bytes - ends at 0x02071D2B)
+};  // Total: 28 bytes (0x1C)
+```
+
+## 12a. Partner Data Structures
+Following `MainData` (which ends at `0x02071D2B`), there is a 16-byte gap at `0x02071D2C`?`0x02071D3B`, then per-partner stat blocks for each of Neku's partners. Each partner block occupies `0x18` bytes (8 bytes of known stats + 16 unknown bytes), with blocks spaced exactly 0x18 bytes apart.
+
+The active partner is selected by writing to `MainData.partnerID` (`0x02071D28`).
+
+### Shiki (`0x02071D3C`)
+- `0x02071D3C` (+0x00): Attack (16-bit)
+- `0x02071D3E` (+0x02): Defense (16-bit)
+- `0x02071D40` (+0x04): Sync % (16-bit, max 1000 = 100.0%)
+- `0x02071D42` (+0x06): Bravery (16-bit)
+
+### Joshua (`0x02071D54`)
+- `0x02071D54` (+0x00): Attack (16-bit)
+- `0x02071D56` (+0x02): Defense (16-bit)
+- `0x02071D58` (+0x04): Sync % (16-bit, max 1000 = 100.0%)
+- `0x02071D5A` (+0x06): Bravery (16-bit)
+
+### Beat (`0x02071D6C`)
+- `0x02071D6C` (+0x00): Attack (16-bit)
+- `0x02071D6E` (+0x02): Defense (16-bit)
+- `0x02071D70` (+0x04): Sync % (16-bit, max 1000 = 100.0%)
+- `0x02071D72` (+0x06): Bravery (16-bit)
+
+```c
+struct PartnerData {  // one instance per partner
+    u16 attack;         // +0x00 - VERIFIED
+    u16 defense;        // +0x02 - VERIFIED
+    u16 sync;           // +0x04 (max 1000 = 100.0%) - VERIFIED
+    u16 bravery;        // +0x06 - VERIFIED
+    u8  unk08[16];      // +0x08 to +0x17 (UNKNOWN)
+};  // Total: 24 bytes (0x18)
+// data_02071d3c: Shiki's PartnerData
+// data_02071d54: Joshua's PartnerData
+// data_02071d6c: Beat's PartnerData
+```
 
 ## 13. All Difficulties Unlocked
 **AR Code:**
@@ -441,7 +494,10 @@ Battle data spans multiple separate data sections:
 - `0x02074E40`: Invincible flag (8-bit) - within `data_02074e34`
 - `0x02074E52`: Battle state (8-bit, values 0/1/2) - within `data_02074e34`
 - `0x02074E76`: Drop rate multiplier (16-bit) - within `data_02074e56`
+- `0x02074E8A`: Duo combo gauge (8-bit, 99 = full charge) - within `data_02074e56`
 - `0x02074E8C`: Puck rally count (8-bit) - within `data_02074e56`
+- `0x02074E92`: Base PP earned (16-bit) - within `data_02074e56`
+- `0x02074E98`: Battle timer (16-bit, 0 = best time bonus) - within `data_02074e56`
 - `0x02074E9C`: Hit combo count (8-bit) - within `data_02074e56`
 - `0x02074E9F`: No damage bonus flag (8-bit) - within `data_02074e56`
 
@@ -460,9 +516,15 @@ struct BattleData_Part1 {
 struct BattleData_Part2 {
     u8  unk56[32];          // +0x00 to +0x1F (0x02074E56-0x02074E75)
     u16 dropRateMultiplier; // +0x20 (0x02074E76) - VERIFIED
-    u8  unk78[20];          // +0x22 to +0x35 (0x02074E78-0x02074E8B)
+    u8  unk78[18];          // +0x22 to +0x33 (0x02074E78-0x02074E89)
+    u8  duoComboGauge;      // +0x34 (0x02074E8A) - VERIFIED (99 = full charge)
+    u8  unk8b;              // +0x35 (0x02074E8B)
     u8  puckRallyCount;     // +0x36 (0x02074E8C) - VERIFIED
-    u8  unk8d[15];          // +0x37 to +0x45 (0x02074E8D-0x02074E9B)
+    u8  unk8d[5];           // +0x37 to +0x3B (0x02074E8D-0x02074E91)
+    u16 basePP;             // +0x3C (0x02074E92) - VERIFIED
+    u8  unk94[4];           // +0x3E to +0x41 (0x02074E94-0x02074E97)
+    u16 battleTimer;        // +0x42 (0x02074E98) - VERIFIED (0 = best time bonus)
+    u8  unk9a[2];           // +0x44 to +0x45 (0x02074E9A-0x02074E9B)
     u8  hitComboCount;      // +0x46 (0x02074E9C) - VERIFIED
     u8  unk9d[2];           // +0x47 to +0x48 (0x02074E9D-0x02074E9E)
     u8  noDamageBonus;      // +0x49 (0x02074E9F) - VERIFIED
@@ -471,6 +533,144 @@ struct BattleData_Part2 {
 ```
 
 **Note**: These may be separate global variables rather than a single contiguous structure. The disassembly shows them as distinct `.space` allocations.
+
+---
+
+## 16. PP Codes
+**PP (Player Points)** are earned through battle, shutdown, and mingle. The following codes target different PP reward sources.
+
+### 1000 Base PP After Battle
+**AR Code:**
+```
+520bb570 e59fc004  // If [0x020BB570] == 0xE59FC004 (battle active)
+12074e92 000003e8  // Write 1000 to 0x02074E92
+d2000000 00000000  // End conditional
+```
+- **Address:** `0x02074E92` (within `data_02074e56`, +0x3C) ? `BattleData.basePP`
+- Awards 1000 PP to the player on battle victory regardless of performance.
+
+### 1000 Total PP from Shutdown, Mingle, and Battle
+**AR Code:**
+```
+92066a30 0000002c  // If [0x02066A30] == 0x0000002C (PP award system active)
+123a2bd8 000003e8  // Write 1000 to 0x023A2BD8
+d2000000 00000000  // End conditional
+```
+- **Address:** `0x023A2BD8` ? cumulative PP counter for all sources.
+
+### 1000 Total PP from Shutdown Only
+**AR Code:**
+```
+9227abfa 0000ffff  // If [0x0227ABFA] == 0x0000FFFF (shutdown context)
+123a2bd8 000003e8  // Write 1000 to 0x023A2BD8
+d2000000 00000000  // End conditional
+```
+
+---
+
+## 17. Food and Digestion Codes
+Food items in TWEWY occupy "bytes" in the player's stomach. These codes modify digestion and food slot behavior.
+
+### 1 Fight to Digest Food
+**AR Code:**
+```
+9208599e 0000e047  // If [0x0208599E] == 0x0000E047 (food/digestion overlay)
+0208599c e3a00000  // mov r0, #0 at 0x0208599C
+02085a34 e3a03000  // mov r3, #0 at 0x02085A34
+d2000000 00000000  // End conditional
+```
+- Patches two instructions in the digestion update function to clear their counters.
+- Result: any food fully digests after a single battle.
+
+### Digestion Doesn't Decrease Food Slots
+**AR Code:**
+```
+920a374c 00002ab0  // If [0x020A374C] == 0x00002AB0
+020a376c e3a01018  // mov r1, #0x18 at 0x020A376C
+020a37d0 e3a04018  // mov r4, #0x18 at 0x020A37D0
+d2000000 00000000  // End conditional
+```
+- Hardcodes food slot count to 24 (0x18); eating food never reduces available slots.
+
+### Foods Always Require Only 1 Byte
+**AR Code (context-activated):**
+```
+92393850 000035f8  // If item data is loaded
+22395ca6 00000001  // Set food byte cost to 1 (x4 addresses)
+22395d6e 00000001
+22395e36 00000001
+22395efe 00000001
+d2000000 00000000
+```
+- Sets the byte-cost for all four food category slots to 1.
+- Every food item fits regardless of how full the stomach is.
+
+### Food Always Full 24 Bytes
+**AR Code:**
+```
+92393850 000035f8  // If item data is loaded
+223a357b 00000018  // Set food capacity to 24 (x4 partner slots)
+223a358f 00000018
+223a35a3 00000018
+223a35b7 00000018
+d2000000 00000000
+```
+- Forces all four partner food-capacity values to 24, ensuring maximum food stat bonuses are always active.
+
+---
+
+## 18. Duo Attack Codes
+Duo attacks are powerful joint moves triggered when the puck gauge is fully charged. These codes instantly charge or maintain the Duo gauge.
+
+### Instant DUO Combo
+**AR Code:**
+```
+520bb570 e59fc004  // If [0x020BB570] == 0xE59FC004 (battle active)
+22074e8a 00000063  // Write 99 to 0x02074E8A
+d2000000 00000000  // End conditional
+```
+- **Address:** `0x02074E8A` ? `BattleData.duoComboGauge`
+- 99 = full charge; triggers availability of Duo attack immediately.
+
+### Instant and Infinite Duo Attack Levels
+**AR Code (Level 3 example):**
+```
+520bb570 e59fc004  // If [0x020BB570] == 0xE59FC004 (battle active)
+623918c8 00000000  // If [0x023918C8] != 0
+b23918c8 00000000  // If 16-bit [0x023918C8] >= 0
+20000001 00000003  // Write 3 (Level 3 Duo) to offset 0x23918C9
+d2000000 00000000
+```
+- **Address:** `0x023918C8` ? battle combat data: Duo attack level indicator.
+- Write `0x01`, `0x02`, or `0x03` for Duo Levels 1, 2, 3 respectively.
+- Code continually refreshes the Duo level for infinite use.
+
+---
+
+## 19. Pin Slot Modifier Codes
+These codes modify equipped pin stats directly in the active battle pin slot data structures.
+
+### Pin Slots 1?6 (999 ATK, Infinite Use)
+**AR Code (Slot 1 example):**
+```
+52372d80 02373024  // If [0x02372D80] == 0x02373024 (Slot 1 active)
+22372da2 000003e7  // Write 999 to 0x02372DA2 (ATK)
+22372da6 00000000  // Write 0 to 0x02372DA6 (reboot timer = infinite use)
+d2000000 00000000
+```
+
+**Pin slot base addresses (battle):**
+| Slot | Base Address | ATK Addr     | Reboot Timer |
+|------|--------------|-------------|---------------|
+| 1    | `0x02372D80` | `0x02372DA2` | `0x02372DA6` |
+| 2    | `0x02372960` | `0x02372982` | `0x02372986` |
+| 3    | `0x02372540` | `0x02372562` | `0x02372566` |
+| 4    | `0x02372120` | `0x02372142` | `0x02372146` |
+| 5    | `0x02371D00` | `0x02371D22` | `0x02371D26` |
+| 6    | `0x02371840` | `0x02371862` | `0x02371866` |
+
+- ATK field is 8-bit at +0x22 relative to each slot's base.
+- Reboot timer is 8-bit at +0x26; setting to 0 makes the pin usable again immediately after each use.
 
 ---
 
@@ -722,7 +922,7 @@ By cross-referencing AR code addresses with the game's disassembly in `build/usa
 - **Confirmed Size**: Exactly 28 bytes (0x1C)
 - **Confirmed Range**: 0x02071D10 to 0x02071D2B
 - **Usage**: Referenced by `func_02022a18` and many other functions
-- **Purpose**: Player stats and progression data (level, money, attack, defense, bravery)
+- **Purpose**: Player stats and progression data (level, money, attack, defense, drop rate, bravery, partner ID)
 
 #### Pin Collection Data
 - **File**: `build/usa/asm/main_36.s` lines 4293-4295
@@ -832,8 +1032,10 @@ grep -r "020bb570" build/usa/asm/**/*.s
 1. **Unknown Field Contents**:
    - MainData bytes 0x00-0x05 (before level)
    - MainData bytes 0x08-0x0B (between level and money)
-   - MainData bytes 0x14-0x15 (between defense and bravery)
-   - MainData bytes 0x18-0x1B (after bravery)
+   - MainData bytes 0x19-0x1B (padding after partnerID)
+   - Partner data 16-byte gap at 0x02071D2C?0x02071D3B (between MainData and Shiki's block)
+   - PartnerData bytes +0x08 to +0x17 (the 16 unknown bytes in each partner block)
+   - BattleData_Part2 unknown fields: unk78 (18 bytes), unk8b, unk8d (5 bytes), unk94 (4 bytes), unk9a (2 bytes), unka0 (4 bytes)
 
 2. **Pin Entry Structure**:
    - Exact layout of the ~4-byte pin entries in `data_020727c3`
@@ -843,12 +1045,13 @@ grep -r "020bb570" build/usa/asm/**/*.s
 3. **Battle Data Relationships**:
    - Why battle data is split into `data_02074e34` and `data_02074e56`
    - Whether these are separate globals or part of a larger system
-   - What the unknown bytes in each section contain
+   - What addresses 0x023918B0?0x023918C8 (HP / Duo level area) belong to
 
 4. **Function Behavior**:
    - Complete reverse engineering of functions like `func_02022a18`
    - How pin evolution logic actually works (before AR code patches it)
    - Wallet upgrade system and its relationship to the wallet ID checks
+   - PP accumulation logic (addresses 0x023A2BD8 and 0x02066A30)
 
 ### Next Steps for Complete Reverse Engineering
 
@@ -905,17 +1108,18 @@ grep -r "0208470" build/usa/asm/**/*.s
 - **Memory Dumps**: Capture RAM during gameplay to see runtime values
 
 ### What We Know For Certain:
-1. **Specific Memory Addresses**: Exact locations of player stats, battle variables, and pin collection (from AR codes)
+1. **Specific Memory Addresses**: Exact locations of player stats, battle variables, pin collection, partner stats, and PP data (from AR codes)
 2. **Data Types**: Size of each field (8-bit, 16-bit, 32-bit) from AR code types
 3. **Structure Sizes**: Confirmed from disassembly `.space` directives:
    - MainData: Exactly 28 bytes (0x1C)
    - data_02074e34: 34 bytes (0x22)
    - data_02074e56: 78 bytes (0x4E)
    - Pin array: 1213 bytes (0x4BD) for 302 pins
-4. **Value Ranges**: Valid values (e.g., difficulty 0-3, wallet ID 0-3, battleState 0/1/2)
+4. **Value Ranges**: Valid values (e.g., difficulty 0-3, wallet ID 0-3, battleState 0/1/2, partnerID 0-2=Shiki/Joshua/Beat, Sync max 1000)
 5. **Pin Count**: 302 total pins (0x12E iterations in unlock code)
 6. **Overlay Architecture**: Multiple overlays handle different systems (confirmed in `build/usa/asm/ov00X_*.s`)
 7. **Function References**: Which functions access these structures (from `.word` directives in assembly)
+8. **Partner Data Structures**: Three 24-byte partner blocks at 0x02071D3C / 0x02071D54 / 0x02071D6C (Shiki / Joshua / Beat)
 
 ### What Requires Further Validation:
 1. **Structure Start/End Addresses**: AR codes only write to specific fields, not entire structures
