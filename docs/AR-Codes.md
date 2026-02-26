@@ -300,7 +300,7 @@ struct MainData {  // data_02071d10
 ```
 
 **Referenced by functions**:
-- `func_02022a18` in `main_36.s` (loads and processes this data)
+- `Inventory_GetOpenPinStockpileCapacity` in `main_36.s` (loads and processes this data)
 - Multiple functions across the codebase reference this structure
 
 **Note on C Source**: `src/main_36.c` contains a struct definition for `MainData`, but **there is a size/layout mismatch**. The disassembly's `.space 0x1c` directive (28 bytes) is the confirmed ground truth, while the C struct appears much larger and may combine multiple separate data sections. The AR code evidence (which successfully modifies game behavior) confirms the actual memory layout matches the disassembly, not the C struct.
@@ -921,7 +921,7 @@ By cross-referencing AR code addresses with the game's disassembly in `build/usa
 - **Definition**: `data_02071d10: .space 0x1c`
 - **Confirmed Size**: Exactly 28 bytes (0x1C)
 - **Confirmed Range**: 0x02071D10 to 0x02071D2B
-- **Usage**: Referenced by `func_02022a18` and many other functions
+- **Usage**: Referenced by `Inventory_GetOpenPinStockpileCapacity` and many other functions
 - **Purpose**: Player stats and progression data (level, money, attack, defense, drop rate, bravery, partner ID)
 
 #### Pin Collection Data
@@ -963,10 +963,10 @@ grep -r "data_02071d10" build/usa/asm/**/*.s
 # Find which functions load/use a specific data structure
 grep "\.word data_02071d10" build/usa/asm/**/*.s
 ```
-Result: `.L_02022b3c: .word data_02071d10` in `func_02022a18`
+Result: `.L_02022b3c: .word data_02071d10` in `Inventory_GetOpenPinStockpileCapacity`
 
 **3. Examine Function Code**
-Open `build/usa/asm/main_36.s` and read `func_02022a18` to see how MainData is accessed:
+Open `build/usa/asm/main_36.s` and read `Inventory_GetOpenPinStockpileCapacity` to see how MainData is accessed:
 - Which offsets are read/written
 - What operations are performed
 - How the data relates to game logic
@@ -1048,14 +1048,14 @@ grep -r "020bb570" build/usa/asm/**/*.s
    - What addresses 0x023918B0?0x023918C8 (HP / Duo level area) belong to
 
 4. **Function Behavior**:
-   - Complete reverse engineering of functions like `func_02022a18`
+   - Complete reverse engineering of functions like `Inventory_GetOpenPinStockpileCapacity`
    - How pin evolution logic actually works (before AR code patches it)
    - Wallet upgrade system and its relationship to the wallet ID checks
    - PP accumulation logic (addresses 0x023A2BD8 and 0x02066A30)
 
 ### Next Steps for Complete Reverse Engineering
 
-1. **Annotate MainData Fields**: Read `func_02022a18` and related functions to identify what the unknown bytes represent
+1. **Annotate MainData Fields**: Read `Inventory_GetOpenPinStockpileCapacity` and related functions to identify what the unknown bytes represent
 2. **Map Pin Structure**: Analyze `data_020727c3` usage in Shop.s, MenuBadge.s to understand pin entry format
 3. **Document Evolution Logic**: Reverse the original pin evolution functions in ov002_4.s before AR patches
 4. **Identify Patched Functions**: Find function names for addresses 0x0208470C, 0x020A79EC, 0x020B8408, etc.

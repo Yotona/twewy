@@ -1436,15 +1436,19 @@ func_02021f4c kind:function(arm,size=0x28) addr:0x02021f4c
 func_02021f74 kind:function(arm,size=0x1c) addr:0x02021f74
 func_02021f90 kind:function(arm,size=0x4) addr:0x02021f90
 func_02021f94 kind:function(arm,size=0x38) addr:0x02021f94
-func_02021fcc kind:function(arm,size=0xdc) addr:0x02021fcc
-func_020220a8 kind:function(arm,size=0x98) addr:0x020220a8
-func_02022140 kind:function(arm,size=0x54) addr:0x02022140
-func_02022194 kind:function(arm,size=0x50) addr:0x02022194
-func_020221e4 kind:function(arm,size=0x58) addr:0x020221e4
-func_0202223c kind:function(arm,size=0x48) addr:0x0202223c
+
+/////////////////////////////////////////////////////////////
+// src/Inventory.c
+/////////////////////////////////////////////////////////////
+Stats_ResetPlayerStats kind:function(arm,size=0xdc) addr:0x02021fcc
+Stats_ResetFriendStats kind:function(arm,size=0x98) addr:0x020220a8
+Inventory_ResetEquippedPins kind:function(arm,size=0x54) addr:0x02022140
+Inventory_ResetStockpilePins kind:function(arm,size=0x50) addr:0x02022194
+Inventory_ResetMasteredPins kind:function(arm,size=0x58) addr:0x020221e4
+Inventory_ResetStoredItems kind:function(arm,size=0x48) addr:0x0202223c
 func_02022284 kind:function(arm,size=0x1a0) addr:0x02022284
 func_02022424 kind:function(arm,size=0x1c) addr:0x02022424
-func_02022440 kind:function(arm,size=0x48) addr:0x02022440
+Stats_ResetExperience kind:function(arm,size=0x48) addr:0x02022440
 func_02022488 kind:function(arm,size=0x6c) addr:0x02022488
 func_020224f4 kind:function(arm,size=0x40) addr:0x020224f4
 func_02022534 kind:function(arm,size=0x18) addr:0x02022534
@@ -1453,19 +1457,17 @@ func_0202255c kind:function(arm,size=0x30) addr:0x0202255c
 func_0202258c kind:function(arm,size=0x38) addr:0x0202258c
 func_020225c4 kind:function(arm,size=0x28) addr:0x020225c4
 func_020225ec kind:function(arm,size=0x1c) addr:0x020225ec
-func_02022608 kind:function(arm,size=0x38) addr:0x02022608
+Progress_ResetSecretReports kind:function(arm,size=0x38) addr:0x02022608
 func_02022640 kind:function(arm,size=0xbc) addr:0x02022640
-func_020226fc kind:function(arm,size=0x270) addr:0x020226fc
-func_0202296c kind:function(arm,size=0x68) addr:0x0202296c
-func_020229d4 kind:function(arm,size=0x44) addr:0x020229d4
-
-
-func_02022a18 kind:function(arm,size=0x134) addr:0x02022a18
-func_02022b4c kind:function(arm,size=0x150) addr:0x02022b4c
-func_02022c9c kind:function(arm,size=0x6c) addr:0x02022c9c
-func_02022d08 kind:function(arm,size=0x58) addr:0x02022d08
-func_02022d60 kind:function(arm,size=0x78) addr:0x02022d60
-func_02022dd8 kind:function(arm,size=0x238) addr:0x02022dd8
+Savefile_ResetAllGameplay kind:function(arm,size=0x270) addr:0x020226fc
+Inventory_GetCategorizedIndex kind:function(arm,size=0x68) addr:0x0202296c
+Inventory_GetCategory kind:function(arm,size=0x44) addr:0x020229d4
+Inventory_GetOpenPinStockpileCapacity kind:function(arm,size=0x134) addr:0x02022a18
+Inventory_CanAddPin kind:function(arm,size=0x150) addr:0x02022b4c
+Inventory_AddStockpiledPin kind:function(arm,size=0x6c) addr:0x02022c9c
+Inventory_AddMasteredPin kind:function(arm,size=0x58) addr:0x02022d08
+Inventory_AddStockItem kind:function(arm,size=0x78) addr:0x02022d60
+Inventory_AddItem kind:function(arm,size=0x238) addr:0x02022dd8
 func_02023010 kind:function(arm,size=0x1f8) addr:0x02023010
 func_02023208 kind:function(arm,size=0x278) addr:0x02023208
 func_02023480 kind:function(arm,size=0xbc) addr:0x02023480
@@ -1478,9 +1480,9 @@ func_020235fc kind:function(arm,size=0x34) addr:0x020235fc
 func_02023630 kind:function(arm,size=0x3c) addr:0x02023630
 func_0202366c kind:function(arm,size=0x34) addr:0x0202366c
 func_020236a0 kind:function(arm,size=0x40) addr:0x020236a0
-func_020236e0 kind:function(arm,size=0x1e0) addr:0x020236e0
-func_020238c0 kind:function(arm,size=0x180) addr:0x020238c0
-func_02023a40 kind:function(arm,size=0x13c) addr:0x02023a40
+Stats_GetEffectiveValue kind:function(arm,size=0x1e0) addr:0x020236e0
+Stats_GetMaxHealth kind:function(arm,size=0x180) addr:0x020238c0
+Stats_GetEffectiveFriendValue kind:function(arm,size=0x13c) addr:0x02023a40
 func_02023b7c kind:function(arm,size=0x6c) addr:0x02023b7c
 func_02023be8 kind:function(arm,size=0x118) addr:0x02023be8
 func_02023d00 kind:function(arm,size=0x1c) addr:0x02023d00
@@ -1495,13 +1497,17 @@ func_020240e0 kind:function(arm,size=0xd0) addr:0x020240e0
 func_020241b0 kind:function(arm,size=0x94) addr:0x020241b0
 func_02024244 kind:function(arm,size=0x68) addr:0x02024244
 func_020242ac kind:function(arm,size=0x4c) addr:0x020242ac
-func_020242f8 kind:function(arm,size=0xb4) addr:0x020242f8
-func_020243ac kind:function(arm,size=0x28) addr:0x020243ac
+Progress_HasAcquiredAllSecretReports kind:function(arm,size=0xb4) addr:0x020242f8
+Stats_AddExperience kind:function(arm,size=0x28) addr:0x020243ac
 func_020243d4 kind:function(arm,size=0x60) addr:0x020243d4
 func_02024434 kind:function(arm,size=0x124) addr:0x02024434
 func_02024558 kind:function(arm,size=0xd4) addr:0x02024558
-func_0202462c kind:function(arm,size=0x60) addr:0x0202462c
-func_0202468c kind:function(arm,size=0x48) addr:0x0202468c
+Inventory_SetStarterPins kind:function(arm,size=0x60) addr:0x0202462c
+Inventory_AreAllEquippedPinSlotsEmpty kind:function(arm,size=0x48) addr:0x0202468c
+
+/////////////////////////////////////////////////////////////
+// src/Savefile.c
+/////////////////////////////////////////////////////////////
 func_020246d4 kind:function(arm,size=0x38) addr:0x020246d4
 func_0202470c kind:function(arm,size=0x18) addr:0x0202470c
 func_02024724 kind:function(arm,size=0xd0) addr:0x02024724
@@ -1546,17 +1552,21 @@ func_020259e4 kind:function(arm,size=0x48) addr:0x020259e4
 func_02025a2c kind:function(arm,size=0x98) addr:0x02025a2c
 func_02025ac4 kind:function(arm,size=0x58) addr:0x02025ac4
 func_02025b1c kind:function(arm,size=0x4c) addr:0x02025b1c
+
+/////////////////////////////////////////////////////////////
+// src/CellText.c
+/////////////////////////////////////////////////////////////
 func_02025b68 kind:function(arm,size=0x2c8) addr:0x02025b68
 func_02025e30 kind:function(arm,size=0x44) addr:0x02025e30
 func_02025e74 kind:function(arm,size=0x198) addr:0x02025e74
 func_0202600c kind:function(arm,size=0x8) addr:0x0202600c
-func_02026014 kind:function(arm,size=0x50) addr:0x02026014
-func_02026064 kind:function(arm,size=0x54) addr:0x02026064
-func_020260b8 kind:function(arm,size=0x14) addr:0x020260b8
-func_020260cc kind:function(arm,size=0x10) addr:0x020260cc
-func_020260dc kind:function(arm,size=0x14) addr:0x020260dc
-func_020260f0 kind:function(arm,size=0x14) addr:0x020260f0
-func_02026104 kind:function(arm,size=0x48) addr:0x02026104
+CellText_Draw kind:function(arm,size=0x50) addr:0x02026014
+CellText_Free kind:function(arm,size=0x54) addr:0x02026064
+CellText_Init kind:function(arm,size=0x14) addr:0x020260b8
+CellText_Update kind:function(arm,size=0x10) addr:0x020260cc
+CellText_Render kind:function(arm,size=0x14) addr:0x020260dc
+CellText_Destroy kind:function(arm,size=0x14) addr:0x020260f0
+CellText_RunTask kind:function(arm,size=0x48) addr:0x02026104
 
 /////////////////////////////////////////////////////////////
 // src/EasyFade.c
@@ -3415,7 +3425,7 @@ data_0205c188 kind:data(any) addr:0x0205c188
 data_0205c190 kind:data(any) addr:0x0205c190
 data_0205c19d kind:data(any) addr:0x0205c19d
 data_0205c1e4 kind:data(any) addr:0x0205c1e4
-data_0205c210 kind:data(any) addr:0x0205c210
+SecretReportStarRequirements kind:data(any) addr:0x0205c210
 data_0205c23c kind:data(any) addr:0x0205c23c
 data_0205c270 kind:data(any) addr:0x0205c270
 data_0205c2a4 kind:data(any) addr:0x0205c2a4
@@ -4510,55 +4520,29 @@ data_02071b00 kind:bss addr:0x02071b00
 data_02071b04 kind:bss addr:0x02071b04
 data_02071b08 kind:bss addr:0x02071b08
 data_02071cac kind:bss addr:0x02071cac
+
 data_02071cf0 kind:bss addr:0x02071cf0
-data_02071d10 kind:bss addr:0x02071d10
-data_02071d2c kind:bss addr:0x02071d2c
-data_02071d3c kind:bss addr:0x02071d3c
-data_02071d3e kind:bss addr:0x02071d3e
-data_02071d40 kind:bss addr:0x02071d40
-data_02071d42 kind:bss addr:0x02071d42
-data_02071d44 kind:bss addr:0x02071d44
-data_02071d50 kind:bss addr:0x02071d50
-data_02071d52 kind:bss addr:0x02071d52
-data_02071d53 kind:bss addr:0x02071d53
-data_02071d84 kind:bss addr:0x02071d84
+
 data_02071d8d kind:bss addr:0x02071d8d
-data_02071dc0 kind:bss addr:0x02071dc0
-data_02071dc2 kind:bss addr:0x02071dc2
-data_02071dc4 kind:bss addr:0x02071dc4
-data_02071dc6 kind:bss addr:0x02071dc6
-data_02071dc8 kind:bss addr:0x02071dc8
-data_020727c0 kind:bss addr:0x020727c0
-data_020727c2 kind:bss addr:0x020727c2
-data_020727c3 kind:bss addr:0x020727c3
 data_02072c80 kind:bss addr:0x02072c80
-data_02072c82 kind:bss addr:0x02072c82
-data_02072cf0 kind:bss addr:0x02072cf0
 data_02072d10 kind:bss addr:0x02072d10
 data_020733e0 kind:bss addr:0x020733e0
 data_020733fa kind:bss addr:0x020733fa
 data_020733fb kind:bss addr:0x020733fb
-data_020736f0 kind:bss addr:0x020736f0
 data_02073710 kind:bss addr:0x02073710
 data_02073728 kind:bss addr:0x02073728
 data_020737b4 kind:bss addr:0x020737b4
 data_020737c0 kind:bss addr:0x020737c0
-data_020737ca kind:bss addr:0x020737ca
 data_020737d2 kind:bss addr:0x020737d2
 data_02073802 kind:bss addr:0x02073802
 data_02073834 kind:bss addr:0x02073834
 data_0207383c kind:bss addr:0x0207383c
 data_02073a10 kind:bss addr:0x02073a10
-data_02073aa8 kind:bss addr:0x02073aa8
 data_02073adb kind:bss addr:0x02073adb
-data_02073bc2 kind:bss addr:0x02073bc2
 data_02073cda kind:bss addr:0x02073cda
-data_02073cf0 kind:bss addr:0x02073cf0
 data_02073d10 kind:bss addr:0x02073d10
 data_02073e5c kind:bss addr:0x02073e5c
-data_02073ff0 kind:bss addr:0x02073ff0
 data_02074010 kind:bss addr:0x02074010
-data_02074036 kind:bss addr:0x02074036
 data_02074058 kind:bss addr:0x02074058
 data_0207406e kind:bss addr:0x0207406e
 data_02074074 kind:bss addr:0x02074074
@@ -4569,8 +4553,6 @@ data_0207415c kind:bss addr:0x0207415c
 data_02074160 kind:bss addr:0x02074160
 data_02074168 kind:bss addr:0x02074168
 data_0207416c kind:bss addr:0x0207416c
-data_02074184 kind:bss addr:0x02074184
-data_0207418c kind:bss addr:0x0207418c
 data_0207419c kind:bss addr:0x0207419c
 data_020741a0 kind:bss addr:0x020741a0
 data_020741a4 kind:bss addr:0x020741a4
@@ -4591,7 +4573,6 @@ data_02074410 kind:bss addr:0x02074410
 data_02074412 kind:bss addr:0x02074412
 data_02074414 kind:bss addr:0x02074414
 data_02074418 kind:bss addr:0x02074418
-data_02074cf0 kind:bss addr:0x02074cf0
 data_02074d10 kind:bss addr:0x02074d10
 data_02074e10 kind:bss addr:0x02074e10
 data_02074e20 kind:bss addr:0x02074e20
@@ -4601,6 +4582,8 @@ data_02074ea4 kind:bss addr:0x02074ea4
 data_02074ea6 kind:bss addr:0x02074ea6
 data_02074f10 kind:bss addr:0x02074f10
 data_02074f4e kind:bss addr:0x02074f4e
+
+
 data_02074f55 kind:bss addr:0x02074f55
 data_02074f5c kind:bss addr:0x02074f5c
 data_02074f7a kind:bss addr:0x02074f7a

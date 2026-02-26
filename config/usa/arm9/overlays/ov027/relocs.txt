@@ -155,10 +155,10 @@ from:0x020e839c kind:arm_call to:0x020071f4 module:main
 from:0x020e83bc kind:arm_call to:0x020071f4 module:main
 from:0x020e83e8 kind:arm_call to:0x02007328 module:main
 from:0x020e83f4 kind:load to:0x02075164 module:main
-from:0x020e83f8 kind:load to:0x02071d10 module:main
+from:0x020e83f8 kind:load to:0x02071cf0 add:0x20 module:main
 from:0x020e83fc kind:load to:0x02074e10 module:main
 from:0x020e8400 kind:load to:0x02074d10 module:main
-from:0x020e8404 kind:load to:0x02071d40 module:main
+from:0x020e8404 kind:load to:0x02071cf0 add:0x50 module:main
 from:0x020e840c kind:load to:0x0208f44c module:overlays(38,43,44)
 from:0x020e8414 kind:load to:0x020e9670 module:overlay(27)
 from:0x020e841c kind:load to:0x0208ec74 module:overlays(3,38,44)

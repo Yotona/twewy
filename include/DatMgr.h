@@ -201,4 +201,28 @@ static inline void* Data_GetPackEntryData(Data* data, s32 entryIndex) {
     return (u8*)entries + entries[entryIndex].offset;
 }
 
+/**
+ * @brief Load indexed data into a buffer.
+ *
+ * @param dataType The slot index (bucket) to load the data from.
+ * @param bufferVar The variable to load the data into.
+ * @param iden Identifier for the binary file.
+ * @param index The index of the data to load (used for calculating offset).
+ * @return Pointer to the loaded Data entry.
+ */
+#define Data_Load(dataType, bufferVar, iden, index)                                                                  \
+    DatMgr_LoadRawDataWithOffset((dataType), &(bufferVar), sizeof(bufferVar), (iden), ((index) * sizeof(bufferVar)))
+
+/**
+ * @brief Load indexed data into a buffer and then release the Data entry.
+ *
+ * @param dataType The slot index (bucket) to load the data from.
+ * @param bufferVar The variable to load the data into.
+ * @param iden Identifier for the binary file.
+ * @param index The index of the data to load (used for calculating offset).
+ */
+#define Data_LoadToBuffer(dataType, bufferVar, iden, index)                                                               \
+    DatMgr_ReleaseData(                                                                                                   \
+        DatMgr_LoadRawDataWithOffset((dataType), &(bufferVar), sizeof(bufferVar), (iden), ((index) * sizeof(bufferVar))))
+
 #endif // DATMGR_H

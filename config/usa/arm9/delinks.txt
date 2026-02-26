@@ -219,12 +219,21 @@ libs/CriWare/lsc.c:
     .text       start:0x020215d8 end:0x020215fc
 
 libs/CriWare/criss.c:
-    .text       start:0x02021728 end:0x02022a18
+    .text       start:0x02021728 end:0x02021fcc
     .data       start:0x020659e0 end:0x02065b74
     .bss        start:0x02071b00 end:0x02071cf0
 
-src/main_36.c:
-    .text       start:0x02022a18 end:0x0202614c
+src/Inventory.c:
+    .text       start:0x02021fcc end:0x020246d4
+
+src/Savefile.c:
+    .text       start:0x020246d4 end:0x02025b68
+
+src/UnkResourceHandler.c:
+    .text       start:0x02025b68 end:0x02025e74
+
+src/CellText.c:
+    .text       start:0x02025e74 end:0x0202614c
 
 src/EasyFade.c:
     .text       start:0x0202614c end:0x02026528
