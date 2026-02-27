@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
+#include "SndMgrSeIdx.h"
 #include "SpriteMgr.h"
 #include "System.h"
 #include "TouchInput.h"
@@ -548,12 +549,12 @@ s32 NRepMenu_Update(TaskPool* pool, Task* task, void* args) {
 
             if (hitboxIdx == 1) {
                 state->unk0 |= 0x1000;
-                SndMgr_StartPlayingSE(0x11B);
-                SndMgr_StartPlayingSE(0x117);
+                SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_RETURN);
+                SndMgr_StartPlayingSE(SEIDX_MENU_MEXIT);
                 state->unk3 = 0;
                 DebugOvlDisp_Pop();
             } else {
-                SndMgr_StartPlayingSE(0x11A);
+                SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
             }
         }
     }

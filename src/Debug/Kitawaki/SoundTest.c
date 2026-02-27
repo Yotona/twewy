@@ -1531,7 +1531,7 @@ void SoundTest_PlaySelectedSoundType(SoundTestState* state) {
     }
     switch (state->menuCurrentRow) {
         case MENU_ROW_ADX:
-            func_0202733c(state->adxIdx);
+            CriSndMgr_PlayFile(state->adxIdx);
             return;
         case MENU_ROW_SEQARC:
         case MENU_ROW_SE:
@@ -1586,7 +1586,7 @@ void SoundTest_StopSelectedSoundType(SoundTestState* state) {
     }
     switch (state->menuCurrentRow) {
         case MENU_ROW_ADX:
-            CriSndMgr_Stop(0);
+            CriSndMgr_Stop(ADX_TITLE);
             return;
         case MENU_ROW_SEQARC:
         case MENU_ROW_SE:
@@ -1599,8 +1599,8 @@ void SoundTest_StopSelectedSoundType(SoundTestState* state) {
 }
 
 void SoundTest_StopAllSounds(void) {
-    CriSndMgr_Stop(0);
-    CriSndMgr_Stop(70);
+    CriSndMgr_Stop(ADX_TITLE);
+    CriSndMgr_Stop(ADX_COUNT);
     CriSndMgr_Stop(78);
     func_ov029_02082a38();
 }
@@ -1620,7 +1620,7 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
         SoundTest_StopAllSounds();
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_X) {
         SndMgr_ResetSequenceHeap();
-        SndMgr_StartPlayingSE(3);
+        SndMgr_StartPlayingSE(SEIDX_SE_FOOT01);
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) { // Return to main debug menu
         MainOvlDisp_Pop(&tag);
     } else if (SysControl.buttonState.holdButtons == INPUT_BUTTON_UP) {       // Scroll selection up

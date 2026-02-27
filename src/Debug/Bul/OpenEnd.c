@@ -1,6 +1,8 @@
 #include "Debug/OpenEnd.h"
+#include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "SndMgrSeIdx.h"
 #include "TouchInput.h"
 #include "common_data.h"
 
@@ -355,7 +357,7 @@ void        OpenEnd_TitleScreen_Init(OpenEndState* state) {
     state->fadeBrightness  = data_ov037_02083a7c[data_02074d10.unk_410]; // Regswap here
     state->fadeRate        = data_ov037_02083a74[data_02074d10.unk_410]; // and here
     state->alreadySelected = 0;
-    func_0202733c();
+    CriSndMgr_PlayFile(ADX_TITLE);
     DebugOvlDisp_Pop();
 }
 
@@ -369,7 +371,7 @@ void OpenEnd_TitleScreen_Update(OpenEndState* state) {
             if (state->titleFrameCount <= 648000) {
                 state->titleFrameCount++;
             } else {
-                CriSndMgr_Stop(0);
+                CriSndMgr_Stop(ADX_TITLE);
                 state->titleFrameCount = 0;
                 state->sequenceStep++;
             }
@@ -378,7 +380,7 @@ void OpenEnd_TitleScreen_Update(OpenEndState* state) {
             if (state->titleFrameCount <= 10) {
                 state->titleFrameCount++;
             } else {
-                func_0202733c(0);
+                CriSndMgr_PlayFile(ADX_TITLE);
                 state->sequenceStep    = 0;
                 state->titleFrameCount = 0;
             }
@@ -436,7 +438,7 @@ void OpenEnd_TitleScreen_Destroy(OpenEndState* state) {
         DebugOvlDisp_Init();
         return;
     }
-    CriSndMgr_Stop(0);
+    CriSndMgr_Stop(ADX_TITLE);
     switch (state->selectedOption) {
         case BADGE_NEWGAME:
             OpenEnd_StartNewGame(state);
@@ -528,7 +530,7 @@ void OpenEnd_Destroy(OpenEndState* state) {
     EasyTask_DestroyPool(&state->taskPool);
     Mem_Free(&gDebugHeap, state);
     MainOvlDisp_SetCbArg(NULL);
-    CriSndMgr_Stop(0);
+    CriSndMgr_Stop(ADX_TITLE);
 }
 
 static const OverlayProcess OvlProc_OpenEnd = {
@@ -553,7 +555,7 @@ void OpenEnd_OnButtonSelect(u32 r0) {
     g_OpenEndstate->selectedOption  = r0;
     g_OpenEndstate->alreadySelected = 1;
 
-    SndMgr_StartPlayingSE(2); // SE_pause
+    SndMgr_StartPlayingSE(SEIDX_SE_PAUSE); // SE_pause
 }
 
 BOOL OpenEnd_IsInCircle(s32* coords, s32 x, s32 y) {

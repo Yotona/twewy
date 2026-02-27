@@ -1,4 +1,5 @@
 #include "Debug/Takami/Depart.h"
+#include "CriSndMgr.h"
 #include "EasyFade.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
@@ -120,7 +121,7 @@ void func_ov043_020bd0ac(DepartState* state) {
     DebugOvlDisp_Push((OverlayCB)func_ov043_020bcf64, state, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov043_020bcf3c, state, 0);
     MainOvlDisp_NextProcessStage();
-    func_0202733c((temp->unk_08 % 3) + 31);
+    CriSndMgr_PlayFile((temp->unk_08 % 3) + ADX_S01);
 }
 
 void func_ov043_020bd224(DepartState* state) {
@@ -166,7 +167,7 @@ void func_ov043_020bd224(DepartState* state) {
 
 // Nonmatching
 void func_ov043_020bd388(DepartState* state) {
-    CriSndMgr_Stop(0);
+    CriSndMgr_Stop(ADX_TITLE);
     func_ov043_020bdc6c(&state->unk_2165C);
     func_ov043_020be32c(&state->unk_2165C);
     EasyTask_DestroyPool(&state->taskPool);

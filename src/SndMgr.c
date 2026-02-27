@@ -79,7 +79,7 @@ void SndMgr_StartPlayingSeqWithCustomSeqArc(s32 currentSeIdx, s32 seqArc, s32 se
     func_02031fd0(&sndMgr.playbackSlots[currentSeIdx].handle, seqArc, se);
 }
 
-void SndMgr_StartPlayingSE(s32 seIdx) {
+void SndMgr_StartPlayingSE(SndMgrSeIdx seIdx) {
     s32 seqArc = g_SequenceDataTable[seIdx].seqArc;
     if (seqArc < 0) {
         SndMgr_PlayStreamSequence(seIdx);
@@ -92,7 +92,7 @@ void SndMgr_StartPlayingSE(s32 seIdx) {
     func_0202fd24(psVar2, sndMgr.seIdxVolume[seIdx]);
 }
 
-void SndMgr_StopPlayingSE(s32 seIdx) {
+void SndMgr_StopPlayingSE(SndMgrSeIdx seIdx) {
     if (g_SequenceDataTable[seIdx].seqArc < 0) {
         SndMgr_StopStreamPlayback(0);
     } else {
@@ -116,7 +116,7 @@ void SndMgr_LoadSEVolumes(void) {
     u32 uVar2 = -1;
     s8  seqArc;
 
-    for (s32 seIdx = 0; seIdx < 0x56C; seIdx++) {
+    for (s32 seIdx = 0; seIdx < SEIDX_COUNT; seIdx++) {
         seqArc = g_SequenceDataTable[seIdx].seqArc;
         if (seqArc < 0) {
             sndMgr.seIdxVolume[seIdx] = SndMgr_GetDefaultSEVolume(g_SequenceDataTable[seIdx].se);
@@ -132,18 +132,18 @@ void SndMgr_LoadSEVolumes(void) {
     func_0203155c(sndMgr.heapHandle, 1);
 }
 
-s32 SndMgr_GetSeIdxVolume(s32 seIdx) {
+s32 SndMgr_GetSeIdxVolume(SndMgrSeIdx seIdx) {
     return sndMgr.seIdxVolume[seIdx];
 }
 
-void SndMgr_SetSeIdxVolume(s32 seIdx, s32 seIdxVolume) {
+void SndMgr_SetSeIdxVolume(SndMgrSeIdx seIdx, s32 seIdxVolume) {
     sndMgr.seIdxVolume[seIdx] = seIdxVolume;
     if (g_SequenceDataTable[seIdx].seqArc >= 0) {
         func_0202fd24(&sndMgr.playbackSlots[g_SequenceDataTable[seIdx].playbackSlot].handle, seIdxVolume);
     }
 }
 
-void SndMgr_UpdateSEPan(s32 seIdx, s32 sePan) {
+void SndMgr_UpdateSEPan(SndMgrSeIdx seIdx, s32 sePan) {
     u32 uVar2 = g_SequenceDataTable[seIdx].playbackSlot;
 
     if ((uVar2 + 0xfe & 0xff) <= 1) {
@@ -153,7 +153,7 @@ void SndMgr_UpdateSEPan(s32 seIdx, s32 sePan) {
     }
 }
 
-void SndMgr_PlaySEWithPan(s32 seIdx, s32 sePan) {
+void SndMgr_PlaySEWithPan(SndMgrSeIdx seIdx, s32 sePan) {
     SndMgr_StartPlayingSE(seIdx);
     SndMgr_UpdateSEPan(seIdx, sePan);
 }
@@ -183,7 +183,7 @@ void SndMgr_InitStreamHandle(void) {
     func_02032418(&sndMgr.streamHandle);
 }
 
-BOOL SndMgr_PlayStreamSequence(s32 seIdx) {
+BOOL SndMgr_PlayStreamSequence(SndMgrSeIdx seIdx) {
     return func_0203235c(&sndMgr.streamHandle, g_SequenceDataTable[seIdx].se, 0);
 }
 
@@ -316,7 +316,7 @@ void SndMgr_DeepResetSequenceHeap(void) {
     SndMgr_ClearSeqArcTracking();
 }
 
-BOOL SndMgr_IsSEPlaying(s32 seIdx) {
+BOOL SndMgr_IsSEPlaying(SndMgrSeIdx seIdx) {
     BOOL result;
 
     if (g_SequenceDataTable[seIdx].seqArc < 0) {
@@ -339,7 +339,7 @@ void func_02027170(s32 param_1, s32 param_2) {
     }
 }
 
-void SndMgr_SetSequenceSoundPitch(s32 seIdx, s32 sePitch) {
+void SndMgr_SetSequenceSoundPitch(SndMgrSeIdx seIdx, s32 sePitch) {
     if (g_SequenceDataTable[seIdx].seqArc >= 0) {
         func_0202fd58(&sndMgr.playbackSlots[g_SequenceDataTable[seIdx].playbackSlot].handle, 0xFFFF, sePitch);
     }

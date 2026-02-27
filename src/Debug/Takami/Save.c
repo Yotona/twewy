@@ -3,6 +3,7 @@
 #include "Display.h"
 #include "EasyFade.h"
 #include "OverlayDispatcher.h"
+#include "SndMgrSeIdx.h"
 #include "System.h"
 #include "TouchInput.h"
 #include "common_data.h"
@@ -50,8 +51,8 @@ void func_ov043_020bfd70(SaveState* state) {
     if (state->unk_21698 > 0) {
         state->unk_21698--;
     } else {
-        SndMgr_StartPlayingSE(283);
-        SndMgr_StartPlayingSE(279);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_RETURN);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MEXIT);
         DebugOvlDisp_Pop();
     }
 }
