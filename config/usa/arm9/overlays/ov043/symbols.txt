@@ -1616,9 +1616,9 @@ func_ov043_020bcdfc kind:function(arm,size=0x140) addr:0x020bcdfc
 func_ov043_020bcf3c kind:function(arm,size=0x28) addr:0x020bcf3c
 func_ov043_020bcf64 kind:function(arm,size=0x120) addr:0x020bcf64
 func_ov043_020bd084 kind:function(arm,size=0x28) addr:0x020bd084
-func_ov043_020bd0ac kind:function(arm,size=0x178) addr:0x020bd0ac
-func_ov043_020bd224 kind:function(arm,size=0x164) addr:0x020bd224
-func_ov043_020bd388 kind:function(arm,size=0x8c) addr:0x020bd388
+Depart_Init kind:function(arm,size=0x178) addr:0x020bd0ac
+Depart_Update kind:function(arm,size=0x164) addr:0x020bd224
+Depart_Destroy kind:function(arm,size=0x8c) addr:0x020bd388
 func_ov043_020bd414 kind:function(arm,size=0x40) addr:0x020bd414
 func_ov043_020bd454 kind:function(arm,size=0x390) addr:0x020bd454
 func_ov043_020bd7e4 kind:function(arm,size=0xe8) addr:0x020bd7e4
@@ -2481,7 +2481,7 @@ data_ov043_020cad38 kind:data(any) addr:0x020cad38
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Depart.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cad64 kind:data(any) addr:0x020cad64
+OvlProc_Depart kind:data(any) addr:0x020cad64
 data_ov043_020cad70 kind:data(any) addr:0x020cad70
 data_ov043_020cad88 kind:data(any) addr:0x020cad88
 data_ov043_020cad90 kind:data(any) addr:0x020cad90

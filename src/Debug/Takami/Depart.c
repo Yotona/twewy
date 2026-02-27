@@ -3,6 +3,7 @@
 #include "EasyFade.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
+#include "Player/Inventory.h"
 #include "SpriteMgr.h"
 #include "System.h"
 #include "TouchInput.h"
@@ -35,7 +36,7 @@ void func_ov043_020be32c(DepartUnk*);
 
 s32 DepartExit_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
 s32 DepartPanel_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, void* arg3);
-s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, s32 arg3);
+s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, DepartUnk* arg3);
 s32 DepartCur_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
 s32 DepartTextScr_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
 s32 DepartTextScrU_CreateTask(TaskPool* pool, s32 arg1, s32 arg2);
@@ -92,7 +93,7 @@ void func_ov043_020bd084(DepartState* state) {
 
 const char* data_ov043_020ccc48 = "Seq_Depart()";
 
-void func_ov043_020bd0ac(DepartState* state) {
+void Depart_Init(DepartState* state) {
     if (state == NULL) {
         char* sequence = data_ov043_020ccc48;
         state          = Mem_AllocHeapTail(&gDebugHeap, sizeof(DepartState));
@@ -124,7 +125,7 @@ void func_ov043_020bd0ac(DepartState* state) {
     CriSndMgr_PlayFile((temp->unk_08 % 3) + ADX_S01);
 }
 
-void func_ov043_020bd224(DepartState* state) {
+void Depart_Update(DepartState* state) {
     DepartUnk* temp_r4 = &state->unk_2165C;
 
     TouchInput_Update();
@@ -137,7 +138,7 @@ void func_ov043_020bd224(DepartState* state) {
     func_ov043_020be328(temp_r4);
     DebugOvlDisp_Run();
     EasyTask_UpdatePool(&state->taskPool);
-    if (DebugOvlDisp_IsStackAtBase() == 1) {
+    if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->unk_21650 = 1;
     }
     func_02003c68();
@@ -146,30 +147,30 @@ void func_ov043_020bd224(DepartState* state) {
     func_0200bf60(data_0206b3cc[0], 0);
     func_0200bf60(data_0206b3cc[1], 0);
     func_0200bf60(data_0206b3cc[2], 0);
-    if (state->unk_21650 == 0) {
-        return;
-    }
-    switch (temp_r4->unk_03) {
-        case 0: {
-            OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020ae92c, NULL, 0);
-        } break;
-        case 1: {
-            OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, func_ov043_020aeee0, NULL, 0);
-        } break;
-        default: {
-            OverlayTag tag;
-            MainOvlDisp_Pop(&tag);
-        } break;
+    if (state->unk_21650 != 0) {
+        switch (temp_r4->unk_03) {
+            case 0: {
+                OverlayTag tag;
+                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
+            } break;
+            case 1: {
+                OverlayTag tag;
+                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, func_ov043_020aeee0, NULL, PROCESS_STAGE_INIT);
+            } break;
+            default: {
+                OverlayTag tag;
+                MainOvlDisp_Pop(&tag);
+            } break;
+        }
     }
 }
 
-// Nonmatching
-void func_ov043_020bd388(DepartState* state) {
+void Depart_Destroy(DepartState* state) {
+    DepartUnk* temp = &state->unk_2165C;
+
     CriSndMgr_Stop(ADX_TITLE);
-    func_ov043_020bdc6c(&state->unk_2165C);
-    func_ov043_020be32c(&state->unk_2165C);
+    func_ov043_020bdc6c(temp);
+    func_ov043_020be32c(temp);
     EasyTask_DestroyPool(&state->taskPool);
     func_0200cef0(NULL);
     DatMgr_ClearSlot(state->unk_11584);
@@ -181,18 +182,18 @@ void func_ov043_020bd388(DepartState* state) {
     func_02004a68(&gDebugHeap);
 }
 
-const OverlayProcess data_ov043_020cad64 = {
-    .init = func_ov043_020bd0ac,
-    .main = func_ov043_020bd224,
-    .exit = func_ov043_020bd388,
+const OverlayProcess OvlProc_Depart = {
+    .init = Depart_Init,
+    .main = Depart_Update,
+    .exit = Depart_Destroy,
 };
 
-void func_ov043_020bd414(void* arg0) {
+void func_ov043_020bd414(void* object) {
     s32 stage = MainOvlDisp_GetProcessStage();
     if (stage == PROCESS_STAGE_EXIT) {
-        func_ov043_020bd388(arg0);
+        Depart_Destroy(object);
     } else {
-        data_ov043_020cad64.funcs[stage](arg0);
+        OvlProc_Depart.funcs[stage](object);
     }
 }
 
@@ -221,39 +222,16 @@ void func_ov043_020bd454(void) {
     MI_CpuFill(0, 0x06200000, 0x20000);
     MI_CpuFill(0, 0x06400000, 0x40000);
     MI_CpuFill(0, 0x06600000, 0x20000);
-    *(u16*)0x04000304 &= ~0x8000;
+    REG_POWER_CNT &= ~0x8000;
     Display_CommitSynced();
     g_DisplaySettings.controls[0].dispMode  = GX_DISPMODE_GRAPHICS;
     g_DisplaySettings.controls[0].bgMode    = GX_BGMODE_0;
     g_DisplaySettings.controls[0].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
-    DisplayBGSettings* mainBg1 = &g_DisplaySettings.engineState[0].bgSettings[1];
-    mainBg1->bgMode            = DISPLAY_BGMODE_TEXT;
-    mainBg1->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    mainBg1->colorMode         = GX_BG_COLORS_16;
-    mainBg1->screenBase        = 0;
-    mainBg1->charBase          = 1;
-    mainBg1->extPlttSlot       = 0;
-    REG_BG1CNT                 = ((REG_BG1CNT & 0x43) | 4);
-
-    DisplayBGSettings* mainBg2 = &g_DisplaySettings.engineState[0].bgSettings[2];
-    mainBg2->bgMode            = DISPLAY_BGMODE_TEXT;
-    mainBg2->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    mainBg2->colorMode         = GX_BG_COLORS_16;
-    mainBg2->screenBase        = 1;
-    mainBg2->charBase          = 3;
-    mainBg2->extPlttSlot       = 1;
-    REG_BG2CNT                 = ((REG_BG2CNT & 0x43) | 0x10C);
-
-    DisplayBGSettings* mainBg3 = &g_DisplaySettings.engineState[0].bgSettings[3];
-    mainBg3->bgMode            = DISPLAY_BGMODE_TEXT;
-    mainBg3->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    mainBg3->colorMode         = GX_BG_COLORS_16;
-    mainBg3->screenBase        = 2;
-    mainBg3->charBase          = 5;
-    mainBg3->extPlttSlot       = 1;
-    REG_BG3CNT                 = ((REG_BG3CNT & 0x43) | 0x214);
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 4);
+    Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 1, 3, 1, 0x10C);
+    Display_InitMainBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 2, 5, 1, 0x214);
 
     g_DisplaySettings.engineState[0].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 1;
@@ -279,23 +257,8 @@ void func_ov043_020bd454(void) {
 
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
-    DisplayBGSettings* subBg2 = &g_DisplaySettings.engineState[1].bgSettings[2];
-    subBg2->bgMode            = DISPLAY_BGMODE_TEXT;
-    subBg2->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    subBg2->colorMode         = GX_BG_COLORS_16;
-    subBg2->screenBase        = 0;
-    subBg2->charBase          = 1;
-    subBg2->extPlttSlot       = 1;
-    REG_BG2CNT_SUB            = ((REG_BG2CNT_SUB & 0x43) | 4);
-
-    DisplayBGSettings* subBg3 = &g_DisplaySettings.engineState[1].bgSettings[3];
-    subBg3->bgMode            = DISPLAY_BGMODE_TEXT;
-    subBg3->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    subBg3->colorMode         = GX_BG_COLORS_16;
-    subBg3->screenBase        = 1;
-    subBg3->charBase          = 3;
-    subBg3->extPlttSlot       = 1;
-    REG_BG3CNT_SUB            = ((REG_BG3CNT_SUB & 0x43) | 0x10C);
+    Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 1, 4);
+    Display_InitSubBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 1, 3, 1, 0x10C);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 1;
@@ -370,26 +333,26 @@ void func_ov043_020bd938(Sprite* sprite, s16 arg1) {
 
 const BinIdentifier data_ov043_020cadc0 = {43, "Apl_Tak/ItemData.bin"};
 
-void func_ov043_020bd984(u16* arg0, s32 arg1) {
-    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, arg0, 0x18, &data_ov043_020cadc0, arg1 * 0x18));
+void func_ov043_020bd984(RawItemData* itemData, u16 itemID) {
+    Data_LoadToBuffer(1, *itemData, &data_ov043_020cadc0, itemID);
 }
 
 const BinIdentifier data_ov043_020cadc8 = {43, "Apl_Tak/FoodData.bin"};
 
-void func_ov043_020bd9b0(u16* arg0, s32 arg1) {
-    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, arg0, 0x14, &data_ov043_020cadc8, arg1 * 0x14));
+void func_ov043_020bd9b0(RawFoodData* foodData, u16 itemID) {
+    Data_LoadToBuffer(1, *foodData, &data_ov043_020cadc8, itemID);
 }
 
 const BinIdentifier data_ov043_020cadd0 = {43, "Apl_Tak/TreasureData.bin"};
 
-void func_ov043_020bd9dc(u16* arg0, s32 arg1) {
-    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, arg0, 8, &data_ov043_020cadd0, arg1 * 8));
+void func_ov043_020bd9dc(RawTreasureData* treasureData, u16 itemID) {
+    Data_LoadToBuffer(1, *treasureData, &data_ov043_020cadd0, itemID);
 }
 
 const BinIdentifier data_ov043_020cadd8 = {43, "Apl_Tak/ShopData.bin"};
 
-void func_ov043_020bda08(u16* arg0, u16 arg1) {
-    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, arg0, 0xC, &data_ov043_020cadd8, arg1 * 0xC));
+void func_ov043_020bda08(RawShopData* shopData, u16 arg0) {
+    Data_LoadToBuffer(1, *shopData, &data_ov043_020cadd8, arg0);
 }
 
 u16 func_ov043_020bda34(s32 arg0) {
@@ -837,8 +800,11 @@ typedef struct {
 } DepartBoard; // Size: 0x8C
 
 typedef struct {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ u32        unk_00;
+    /* 0x04 */ DepartUnk* unk_04;
+    /* 0x08 */ u16        unk_08;
+    /* 0x0A */ u16        itemID;
+    /* 0x0C */ u16        unk_0C;
 } DepartBoardArgs;
 
 SpriteFrameInfo* func_ov043_020be7dc(void* arg0, s32 arg2) {
@@ -899,8 +865,30 @@ s32 DepartBoard_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 const TaskHandle data_ov043_020cae7c = {"Tsk_Depart_board", DepartBoard_RunTask, sizeof(DepartBoard)};
 
-s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, s32 arg3) {
-    // Not yet implemented
+s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, DepartUnk* arg3) {
+    DepartBoardArgs args;
+
+    args.unk_00 = arg1;
+    args.unk_04 = arg3;
+    args.unk_08 = arg2;
+    args.itemID = arg3->unk_10[arg2].itemID;
+
+    ItemCategory category = Inventory_GetCategory(args.itemID);
+
+    if (category == ITEM_CATEGORY_THREAD) {
+        RawItemData itemData;
+        func_ov043_020bd984(&itemData, Inventory_GetCategorizedIndex(args.itemID));
+        args.unk_0C = itemData.unk_00;
+    } else if (category == ITEM_CATEGORY_FOOD) {
+        RawFoodData foodData;
+        func_ov043_020bd9b0(&foodData, Inventory_GetCategorizedIndex(args.itemID));
+        args.unk_0C = foodData.unk_00;
+    } else {
+        RawTreasureData treasureData;
+        func_ov043_020bd9dc(&treasureData, Inventory_GetCategorizedIndex(args.itemID));
+        args.unk_0C = treasureData.unk_00;
+    }
+    EasyTask_CreateTask(pool, &data_ov043_020cae7c, NULL, 0, NULL, &args);
 }
 
 /// MARK: DepartTextScr

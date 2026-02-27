@@ -7,7 +7,7 @@
  * @brief Item information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ char unk_00[0x2];
+    /* 0x00 */ u16  unk_00;
     /* 0x02 */ u8   unk_02;
     /* 0x03 */ u8   unk_03;
     /* 0x04 */ u32  unk_04;
@@ -22,15 +22,21 @@ typedef struct {
  * @brief Food information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ char unk_00[0x4];
+    /* 0x00 */ u16  unk_00;
+    /* 0x02 */ char unk_02[0x2];
     /* 0x04 */ s32  unk_04;
     /* 0x08 */ char unk_08[0x14 - 0x08];
 } RawFoodData; // Size: 0x14
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x4];
+    /* 0x00 */ u16  unk_00;
+    /* 0x02 */ char unk_02[0x2];
     /* 0x04 */ s32  unk_04;
 } RawTreasureData; // Size: 0x8
+
+typedef struct {
+    /* 0x00 */ char unk_00[0xC];
+} RawShopData; // Size: 0xC
 
 typedef struct {
     /* 0x0 */ u16 itemID;

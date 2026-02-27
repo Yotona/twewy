@@ -16,6 +16,11 @@ typedef struct {
 } DepartResources; // Size: 0x1C
 
 typedef struct {
+    /* 0x0 */ u16  itemID;
+    /* 0x2 */ char unk_2[0x4];
+} DepartUnkSmall;
+
+typedef struct {
     /* 0x00 */ u16             unk_00;
     /* 0x02 */ u8              unk_02;
     /* 0x03 */ u8              unk_03;
@@ -24,7 +29,9 @@ typedef struct {
     /* 0x08 */ u16             unk_08;
     /* 0x0A */ char            unk_0A[0x2];
     /* 0x0C */ u16             unk_0C;
-    /* 0x0E */ char            unk_0E[0x22];
+    /* 0x0E */ char            unk_0E[0x2];
+    /* 0x10 */ DepartUnkSmall  unk_10[2];
+    /* 0x1C */ char            unk_1C[0x14];
     /* 0x30 */ u8              unk_30;
     /* 0x31 */ u8              unk_31;
     /* 0x32 */ char            unk_32[0x2];
