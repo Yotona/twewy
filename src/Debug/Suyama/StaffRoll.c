@@ -1,5 +1,6 @@
 #include "Debug/Suyama/StaffRoll.h"
 #include "BgResMgr.h"
+#include "CriSndMgr.h"
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
