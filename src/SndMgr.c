@@ -116,7 +116,7 @@ void SndMgr_LoadSEVolumes(void) {
     u32 uVar2 = -1;
     s8  seqArc;
 
-    for (SndMgrSeIdx seIdx = 0; seIdx < SEIDX_COUNT; seIdx++) {
+    for (s32 seIdx = 0; seIdx < SEIDX_COUNT; seIdx++) {
         seqArc = g_SequenceDataTable[seIdx].seqArc;
         if (seqArc < 0) {
             sndMgr.seIdxVolume[seIdx] = SndMgr_GetDefaultSEVolume(g_SequenceDataTable[seIdx].se);
