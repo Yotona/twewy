@@ -1,4 +1,5 @@
 #include "OtosuMenu.h"
+#include "CriSndMgr.h"
 #include "DatMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
@@ -2683,7 +2684,7 @@ void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
         PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_0209305c, NULL);
     }
     func_ov002_02085a44(menuObj);
-    func_0202733c(0x19);
+    CriSndMgr_PlayFile(ADX_B11);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -2695,13 +2696,13 @@ void OtosuMenu_InitForSinglePlayerRankings(OtosuMenuObj* menuObj) {
     menuObj->unk_462EC = 1;
     PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02093048, NULL);
     func_ov002_02085a44(menuObj);
-    func_0202733c(0x19);
+    CriSndMgr_PlayFile(ADX_B11);
     MainOvlDisp_NextProcessStage();
 }
 
 void OtosuMenu_InitForConnectionError(OtosuMenuObj* menuObj) {
     func_ov002_0208bd40();
-    func_020273a8(0x19, 1);
+    CriSndMgr_Pause(ADX_B11, 1);
 
     menuObj = func_ov002_02085df8();
 
@@ -2899,7 +2900,7 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
 }
 
 void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
-    func_020273a8(0x19, 1);
+    CriSndMgr_Pause(ADX_B11, 1);
     if (menuObj->unk_460B8 != 0) {
         func_ov002_0208264c(menuObj);
     }
@@ -3112,11 +3113,11 @@ void func_ov002_02086bac(void) {
 }
 
 void func_ov002_02086bb0(void) {
-    SndMgr_StopPlayingSE(0x55C);
+    SndMgr_StopPlayingSE(SEIDX_MC_01);
 }
 
 void func_ov002_02086bc4(s32 arg0, OtosuMenuObj* menuObj) {
-    SndMgr_StopPlayingSE(0x55C);
+    SndMgr_StopPlayingSE(SEIDX_MC_01);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_476D0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_478B8);
@@ -3481,7 +3482,7 @@ PrcStepResult func_ov002_020870c8(PrcCtx* ctx, void* object) {
     *(s32*)(entry_base_8 + 0xF0) = 0;
     *(s32*)(entry_base_8 + 0xF4) = 0x100000;
     menuObj->unk_474C8           = 240;
-    SndMgr_StartPlayingSE(0x55C);
+    SndMgr_StartPlayingSE(SEIDX_MC_01);
     PrcCtx_AdvanceStep(ctx);
     return 0;
 }
@@ -3491,7 +3492,7 @@ PrcStepResult func_ov002_0208749c(PrcCtx* ctx, void* object) {
 
     menuObj->unk_474C8--;
     if (TouchInput_WasTouchPressed() != 0) {
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
         PrcCtx_AdvanceStep(ctx);
@@ -3548,7 +3549,7 @@ PrcStepResult func_ov002_020875c8(PrcCtx* ctx, void* object) {
     } while (var_r2 != 0);
     func_ov031_0210ab54(&menuObj->unk_45FF4, 1, 0);
     func_ov002_02082f18(menuObj, 0x15, 0x14, sp2);
-    func_0202733c(0x19);
+    CriSndMgr_PlayFile(ADX_B11);
     menuObj->unk_474C8 = 0xFFFF;
     PrcCtx_Init(&menuObj->unk_474E8, data_ov002_02092cd0, sizeof(OtosuMenuObj));
     PrcCtx_ReplaceFrame(&menuObj->unk_474E8, &data_ov002_02093020, subroutine_arg0);
@@ -3593,7 +3594,7 @@ PrcStepResult func_ov002_02087728(PrcCtx* ctx, void* object) {
                 /* Duplicate return node #26. Try simplifying control flow for better match */
                 return 0;
             case 0: /* switch 1 */
-                SndMgr_StartPlayingSE(0x348);
+                SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                 PrcCtx_AdvanceStep(ctx);
                 return PRC_STEP_CONTINUE;
             case 1: /* switch 1 */
@@ -3601,7 +3602,7 @@ PrcStepResult func_ov002_02087728(PrcCtx* ctx, void* object) {
             case 3: /* switch 1 */
                 menuObj->unk_460C0.posX = 0x80;
                 menuObj->unk_460C0.posY = 0x60;
-                SndMgr_StartPlayingSE(0x347);
+                SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
                 PrcCtx_AdvanceStep(ctx);
                 return PRC_STEP_CONTINUE;
         }
@@ -3609,7 +3610,7 @@ PrcStepResult func_ov002_02087728(PrcCtx* ctx, void* object) {
         u16 anim_index = (u16)(temp_r0_3 * 3);
 
         menuObj->unk_474C8 = temp_r0_3;
-        SndMgr_StartPlayingSE(0x346);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
         switch (temp_r0_3) { /* switch 2 */
             default:         /* switch 2 */
                 return PRC_STEP_CONTINUE;
@@ -4275,11 +4276,11 @@ PrcStepResult func_ov002_02088b28(PrcCtx* ctx, void* object) {
         func_ov002_0208800c(menuObj);
     } else if (menuObj->unk_4196C == temp_r4) {
         menuObj->unk_4196A = 6;
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
     } else {
         u16 anim_index = (u16)(temp_r4 * 3);
 
-        SndMgr_StartPlayingSE(0x346);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
         menuObj->unk_4196C      = temp_r4;
         menuObj->unk_46078.posX = table_sp0[anim_index + 1];
         menuObj->unk_46078.posY = table_sp0[anim_index + 2];
@@ -4487,7 +4488,7 @@ PrcStepResult func_ov002_0208920c(PrcCtx* ctx, void* object) {
             menuObj->unk_4196A      = 5U;
             func_ov002_0208800c(menuObj);
         } else if (menuObj->unk_474CA != temp_r3) {
-            SndMgr_StartPlayingSE(0x346);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
             menuObj->unk_474CA      = menuObj->unk_4196C;
             temp_r7                 = (u16)(menuObj->unk_4196C * 3);
             menuObj->unk_46078.posX = table_sp0[temp_r7 + 1];
@@ -4498,7 +4499,7 @@ PrcStepResult func_ov002_0208920c(PrcCtx* ctx, void* object) {
         }
     }
     if (menuObj->unk_4196A == 6) {
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
         PrcCtx_AdvanceStep(ctx);
     }
     return PRC_STEP_CONTINUE;
@@ -4671,7 +4672,7 @@ PrcStepResult func_ov002_020896e4(PrcCtx* ctx, void* object) {
         table_sp0[i * 2]     = data_ov002_02091fe6[i].unk0;
         table_sp0[i * 2 + 1] = data_ov002_02091fe6[i].unk2;
     }
-    func_020273a8(0x19, 1);
+    CriSndMgr_Pause(0x19, 1);
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags.unk_07 = 1;
     func_ov002_02085710(menuObj);
@@ -4780,7 +4781,7 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
         if (temp_r0_2 == 0) {
             menuObj->unk_46078.posX = 0U;
             menuObj->unk_46078.posY = 0xD2U;
-            SndMgr_StartPlayingSE(0x347);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
             PrcCtx_AdvanceStep(ctx);
             return PRC_STEP_CONTINUE;
         }
@@ -4788,7 +4789,7 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
         return PRC_STEP_CONTINUE;
     }
     menuObj->unk_474C8 = temp_r0_2;
-    SndMgr_StartPlayingSE(0x346);
+    SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
     if (temp_r0_2 == 0) {
         temp_ip                 = temp_r0_2 * 6;
         menuObj->unk_46078.posX = (u16) * (&sp2 + temp_ip);
@@ -4802,7 +4803,7 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
 
 PrcStepResult func_ov002_02089a94(PrcCtx* ctx, void* unused) {
     if (SysControl.buttonState.pressedButtons & 1) {
-        SndMgr_StartPlayingSE(0x348);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
         PrcCtx_AdvanceStep(ctx);
     }
     return PRC_STEP_CONTINUE;
@@ -5174,7 +5175,7 @@ PrcStepResult func_ov002_0208a250(PrcCtx* ctx, void* object) {
         if (menuObj->unk_474C8 == var_r4_2) {
             switch (var_r4_2) { /* irregular */
                 case 0:
-                    SndMgr_StartPlayingSE(0x348);
+                    SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                     PrcCtx_ReplaceFrame(ctx, &data_ov002_02092c9c, NULL);
                     menuObj->unk_460C0.posX = 0;
                     menuObj->unk_460C0.posY = 0xC8;
@@ -5183,7 +5184,7 @@ PrcStepResult func_ov002_0208a250(PrcCtx* ctx, void* object) {
                     return 0;
                 case 1:
                     temp_r4 = OS_DisableIRQ();
-                    SndMgr_StartPlayingSE(0x347);
+                    SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
                     if (((u32)func_02047e84(menuObj->unk_41834) >= 2U) && (menuObj->unk_41950 == 0)) {
                         var_r0 = 1;
                     loop_25:
@@ -5211,7 +5212,7 @@ PrcStepResult func_ov002_0208a250(PrcCtx* ctx, void* object) {
             }
         } else {
             menuObj->unk_474C8 = var_r4_2;
-            SndMgr_StartPlayingSE(0x346);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
             if ((var_r4_2 != 0) && (var_r4_2 != 1)) {
 
             } else {
@@ -5516,7 +5517,7 @@ PrcStepResult func_ov002_0208ab58(PrcCtx* ctx, void* object) {
                 default:         /* switch 2 */
                     goto block_36;
                 case 0:          /* switch 2 */
-                    SndMgr_StartPlayingSE(0x348);
+                    SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                     PrcCtx_ReplaceFrame(ctx, &data_ov002_02092c9c, NULL);
                     menuObj->unk_460C0.posX = 0;
                     menuObj->unk_460C0.posY = 0xC8;
@@ -5526,7 +5527,7 @@ PrcStepResult func_ov002_0208ab58(PrcCtx* ctx, void* object) {
                 case 1: /* switch 2 */
                 case 2: /* switch 2 */
                 case 3: /* switch 2 */
-                    SndMgr_StartPlayingSE(0x347);
+                    SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
                     if (menuObj->unk_41998 & (1 << menuObj->unk_41EEC)) {
                         temp_r9  = OS_DisableIRQ();
                         var_r8   = (u8*)menuObj->unk_419A0 + (menuObj->unk_41EEC * 0xC4);
@@ -5552,7 +5553,7 @@ PrcStepResult func_ov002_0208ab58(PrcCtx* ctx, void* object) {
                     goto block_36;
             }
         } else {
-            SndMgr_StartPlayingSE(0x346);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
             menuObj->unk_474C8 = temp_r0_3;
             if (temp_r0_3 != 0) {
                 menuObj->unk_41EEC = (u16)(temp_r0_3 - 1);
@@ -5814,7 +5815,7 @@ PrcStepResult func_ov002_0208b270(PrcCtx* ctx, void* object) {
     if (var_r4_2 != 0xFFFF) {
         if (menuObj->unk_474C8 == var_r4_2) {
             if (var_r4_2 == 0) {
-                SndMgr_StartPlayingSE(0x348);
+                SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                 PrcCtx_ReplaceFrame(ctx, &data_ov002_02092f44, NULL);
                 PrcCtx_PushStepTable(ctx, data_ov002_02092f30);
                 PrcCtx_PushStepTable(ctx, PrcSteps_FadeBrightImmediate);
@@ -5824,7 +5825,7 @@ PrcStepResult func_ov002_0208b270(PrcCtx* ctx, void* object) {
         }
         menuObj->unk_474C8 = var_r4_2;
         if (var_r4_2 == 0) {
-            SndMgr_StartPlayingSE(0x348);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
             temp_r5 = var_r4_2 * 6;
             (void)temp_r5;
             menuObj->unk_46078.posX = sp6;
@@ -5873,7 +5874,7 @@ block_10:
             PrcCtx_PushStepTable(ctx, data_ov002_02092f30);
         }
     } else {
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
         menuObj->unk_41FD0 = (s32)func_02047e84(menuObj->unk_41834);
         PrcCtx_AdvanceStep(ctx);
     }
@@ -7240,16 +7241,16 @@ PrcStepResult func_ov002_0208db58(PrcCtx* ctx, void* object) {
     if (menuObj->unk_4196C == temp_r4) {
         switch (temp_r4) { /* switch 1; irregular */
             case 0:        /* switch 1 */
-                SndMgr_StartPlayingSE(0x347);
+                SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
                 menuObj->unk_4196A = 7U;
                 break;
             case 1: /* switch 1 */
-                SndMgr_StartPlayingSE(0x347);
+                SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
                 menuObj->unk_4196A = 8U;
                 break;
         }
     } else {
-        SndMgr_StartPlayingSE(0x346);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
         temp_ip                 = temp_r4 * 6;
         menuObj->unk_4196C      = temp_r4;
         temp_r1_2               = subroutine_arg0 + temp_ip;
@@ -7587,11 +7588,11 @@ PrcStepResult func_ov002_0208e514(PrcCtx* ctx, void* object) {
     }
     if (menuObj->unk_4196C == temp_r0_2) {
         if (temp_r0_2 == 0) {
-            SndMgr_StartPlayingSE(0x347);
+            SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
             PrcCtx_AdvanceStep(ctx);
         }
     } else {
-        SndMgr_StartPlayingSE(0x346);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
         temp_ip                 = temp_r0_2 * 3;
         menuObj->unk_4196C      = temp_r0_2;
         menuObj->unk_46078.posX = table_sp6[temp_ip + 1];
@@ -8436,7 +8437,7 @@ PrcStepResult func_ov002_0208f89c(PrcCtx* ctx, void* arg0) {
         (SysControl.buttonState.pressedButtons & 0x80) || (SysControl.buttonState.pressedButtons & 0x20) ||
         (SysControl.buttonState.pressedButtons & 0x10))
     {
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
         PrcCtx_AdvanceStep(ctx);
     }
     return PRC_STEP_CONTINUE;
@@ -8458,7 +8459,7 @@ PrcStepResult func_ov002_0208f92c(PrcCtx* ctx, void* object) {
         (SysControl.buttonState.pressedButtons & 0x80) || (SysControl.buttonState.pressedButtons & 0x20) ||
         (SysControl.buttonState.pressedButtons & 0x10))
     {
-        SndMgr_StartPlayingSE(0x347);
+        SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
         PrcCtx_ReplaceFrame(&menuObj->unk_4161C, &data_ov002_02092c58, NULL);
         PrcCtx_PushStepTable(ctx, PrcSteps_FadeBright);
     }
@@ -8956,7 +8957,7 @@ PrcStepResult func_ov002_0209095c(PrcCtx* ctx, void* arg1) {
         return 0;
     }
     if (menuObj->unk_474C8 == temp_r0_2) {
-        SndMgr_StartPlayingSE(0x11C);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
         switch (temp_r0_2) { /* irregular */
             case 0:
                 PrcCtx_AdvanceStep(ctx);
@@ -8971,7 +8972,7 @@ PrcStepResult func_ov002_0209095c(PrcCtx* ctx, void* arg1) {
         }
     } else {
         menuObj->unk_474C8 = temp_r0_2;
-        SndMgr_StartPlayingSE(0x11A);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
         if ((temp_r0_2 != 0) && (temp_r0_2 != 1)) {
             return 2;
         }
@@ -9096,7 +9097,7 @@ PrcStepResult func_ov002_02090f4c(PrcCtx* ctx, void* arg1) {
         temp_r4 = func_020258ac();
         PrcMaster_UnregisterContext(arg1 + 0x41804, arg1 + 0x476D0);
         if (temp_r4 == 0) {
-            SndMgr_StartPlayingSE(0x140);
+            SndMgr_StartPlayingSE(SEIDX_MENU_SAVE);
             PrcCtx_AdvanceStep(ctx);
         } else if (temp_r4 & 2) {
             PrcCtx_ReplaceFrame(ctx, &data_ov002_02093310, 0);
@@ -9129,7 +9130,7 @@ PrcStepResult func_ov002_02090fd8(PrcCtx* ctx, void* arg1) {
 PrcStepResult func_ov002_020910b0(PrcCtx* ctx, void* arg1) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
     if (TouchInput_WasTouchPressed() != 0) {
-        SndMgr_StartPlayingSE(0x11C);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
         PrcCtx_AdvanceStep(ctx);
@@ -9219,7 +9220,7 @@ PrcStepResult func_ov002_020913d8(PrcCtx* ctx, void* arg1) {
 PrcStepResult func_ov002_020914b0(PrcCtx* ctx, void* arg1) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
     if (TouchInput_WasTouchPressed() != 0) {
-        SndMgr_StartPlayingSE(0x11C);
+        SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     }
     if ((TouchInput_WasTouchPressed() != 0) || (menuObj->unk_474C8 == 0)) {
         PrcCtx_AdvanceStep(ctx);

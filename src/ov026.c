@@ -9,6 +9,7 @@
 #include "Memory.h"
 #include "OverlayDispatcher.h"
 #include "OverlayManager.h"
+#include "SndMgrSeIdx.h"
 #include "System.h"
 #include "TouchInput.h"
 #include "common_data.h"
@@ -351,7 +352,7 @@ static void func_ov026_020e7cec(void* arg0) {
     if (!(InputStatus.buttonState.pressedButtons & 4)) {
         return;
     }
-    SndMgr_StartPlayingSE(0);
+    SndMgr_StartPlayingSE(SEIDX_SE_BATTLE_IN);
     state->unk11E74 = 0;
     state->unk11E76 = 0;
     DebugOvlDisp_ReplaceTop(func_ov026_020e7c9c, state, 0);

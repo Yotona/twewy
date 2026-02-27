@@ -1,4 +1,5 @@
 #include "Debug/NoiseReport.h"
+#include "CriSndMgr.h"
 #include "DatMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
@@ -103,7 +104,7 @@ func_ov028_020e7dbc(TaskPool* pool, NoiseReport* arg1) {
 }
 
 void func_ov028_020e7f00(TaskPool* pool, NoiseReport* arg1) {
-    CriSndMgr_Stop(0);
+    CriSndMgr_Stop(ADX_TITLE);
     DatMgr_ClearSlot(arg1->unk_00);
     OvlMgr_UnloadOverlay(4);
     OvlMgr_UnloadOverlay(3);

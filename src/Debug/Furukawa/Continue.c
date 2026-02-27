@@ -253,11 +253,11 @@ void func_ov025_020e7a20(ContinueObject* arg0) {
 
     if (temp_r0 != arg0->unk_120D0) {
         if (temp_r0 != 0xFFFF) {
-            SndMgr_StartPlayingSE(0x2A);
+            SndMgr_StartPlayingSE(SEIDX_BTL_SYSTEM_CURSOR);
         }
         func_ov025_020e78c8(arg0, temp_r0);
     } else if (arg0->unk_120D0 != 0xFFFF) {
-        SndMgr_StartPlayingSE(0x2B);
+        SndMgr_StartPlayingSE(SEIDX_BTL_SYSTEM_EXECUTE);
         arg0->unk_120DC = 0;
         arg0->unk_120DE = 0;
         DebugOvlDisp_ReplaceTop((OverlayCB)func_ov025_020e7f90, arg0, PROCESS_STAGE_INIT);

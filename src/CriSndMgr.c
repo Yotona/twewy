@@ -8,7 +8,7 @@ CriSndMgr criSndMgr;
 
 const s32 data_0205e0ec = 1284;
 
-const s32 CriSndMgr_AdxDataCount = 70;
+const s32 CriSndMgr_AdxDataCount = ADX_COUNT;
 
 const AdxData CriSndMgr_AdxData[70] = {
     {   "title.adx",  -30},
@@ -93,7 +93,7 @@ void CriSndMgr_DummyFunc(void) {
 // Scratch: 5JLuF
 void CriSndMgr_Init(void) {
     s32* volume = criSndMgr.volume;
-    for (s32 idx = 0; idx < 70; idx++) {
+    for (CriSndMgrAdxId idx = 0; idx < ADX_COUNT; idx++) {
         volume[idx] = CriSndMgr_AdxData[idx].volume;
     }
 
@@ -108,34 +108,34 @@ void func_02027330(void) {
     func_020218ec();
 }
 
-void func_0202733c(s32 adxIdx) {
+void CriSndMgr_PlayFile(CriSndMgrAdxId adxIdx) {
     if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
-        func_020273a8(adxIdx, 0);
+        CriSndMgr_Pause(adxIdx, 0);
         CriSndMgr_SetAdxIdxVolume(adxIdx, criSndMgr.volume[adxIdx]);
         func_02021bc8(criSndMgr.criss, CriSndMgr_AdxData[adxIdx].adxFile);
     }
 }
 
-void CriSndMgr_Stop(s32 param_1) {
-    if (param_1 < ARRAY_COUNT(criSndMgr.volume)) {
+void CriSndMgr_Stop(CriSndMgrAdxId adxIdx) {
+    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
         criSsPly_Stop(criSndMgr.criss);
     }
 }
 
-void func_020273a8(s32 param_1, s32 param_2) {
-    if (param_1 < ARRAY_COUNT(criSndMgr.volume)) {
-        criSsPly_Pause(criSndMgr.criss, param_2);
+void CriSndMgr_Pause(CriSndMgrAdxId adxIdx, s32 pauseFlag) {
+    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+        criSsPly_Pause(criSndMgr.criss, pauseFlag);
     }
 }
 
-void CriSndMgr_SetAdxIdxVolume(s32 adxIdx, s32 adxVolume) {
+void CriSndMgr_SetAdxIdxVolume(CriSndMgrAdxId adxIdx, s32 adxVolume) {
     if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
         criSndMgr.volume[adxIdx] = adxVolume;
         criSsPly_SetVolume(criSndMgr.criss, adxVolume);
     }
 }
 
-s32 CriSndMgr_GetAdxIdxVolume(s32 adxIdx) {
+s32 CriSndMgr_GetAdxIdxVolume(CriSndMgrAdxId adxIdx) {
     s32 volume = 0;
     if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
         volume = criSndMgr.volume[adxIdx];
@@ -143,7 +143,7 @@ s32 CriSndMgr_GetAdxIdxVolume(s32 adxIdx) {
     return volume;
 }
 
-s32 func_02027410(void) {
+s32 CriSndMgr_Play(void) {
     criSsPly_Play(criSndMgr.criss);
 }
 
