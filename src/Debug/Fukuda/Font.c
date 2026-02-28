@@ -28,12 +28,10 @@ typedef struct {
     /* 0x21B40 */ s32           unk_21B40;
 } FontState; // Size: 0x21B44
 
-static const char* data_ov001_02083020 = "Seq_Text()";
-
 const BinIdentifier data_ov001_02082f98 = {1, "Apl_Fuk/Grp_FldMessWin.bin"};
 const BinIdentifier data_ov001_02082f90 = {1, "Apl_Fuk/Grp_ForTest.bin"};
 
-void func_ov001_02082f6c(void);
+void FontTest_RegisterVBlank(void);
 
 void func_ov001_020824a0(FontState* arg0) {
     data_02066eec = 0;
@@ -93,24 +91,28 @@ func_ov001_02082984(FontState* arg0) {
     func_ov001_020825f4(arg0);
 }
 
-void func_ov001_020829c0(FontState* arg0) {
+static const char* data_ov001_02083020 = "Seq_Text()";
+
+void FontTest_Init(FontState* arg0) {
     char* sequence = data_ov001_02083020;
-    void* data     = Mem_AllocHeapTail(&gDebugHeap, sizeof(FontState));
-    Mem_SetSequence(&gDebugHeap, data, sequence);
-    void* prevCbArg = MainOvlDisp_SetCbArg(data);
-    DatMgr_AllocateSlot();
-    arg0->unk_11584 = prevCbArg;
-    func_ov001_02082f6c();
-    arg0->unk_11580                                     = func_0200cef0(NULL);
+    arg0           = Mem_AllocHeapTail(&gDebugHeap, sizeof(FontState));
+    Mem_SetSequence(&gDebugHeap, arg0, sequence);
+    MainOvlDisp_SetCbArg(arg0);
+
+    arg0->unk_11584 = DatMgr_AllocateSlot();
+    FontTest_RegisterVBlank();
+    arg0->unk_11580 = func_0200cef0(arg0);
+
     data_02066aec                                       = 0;
-    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     data_02066eec                                       = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
+
     func_ov001_0208288c(arg0);
     MainOvlDisp_NextProcessStage();
 }
 
-void func_ov001_02082a5c(FontState* arg0) {
+void FontTest_Update(FontState* arg0) {
     TouchInput_Update();
     Input_PollState(&InputStatus);
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
@@ -134,25 +136,25 @@ void func_ov001_02082a5c(FontState* arg0) {
     }
 }
 
-void func_ov001_02082b00(FontState* arg0) {
+void FontTest_Destroy(FontState* arg0) {
     func_ov001_02082984(arg0);
     func_0200cef0(NULL);
     DatMgr_ClearSlot(arg0->unk_11584);
     Mem_Free(&gDebugHeap, arg0);
 }
 
-static const OverlayProcess data_ov001_02082fa0 = {
-    .init = func_ov001_020829c0,
-    .main = func_ov001_02082a5c,
-    .exit = func_ov001_02082b00,
+static const OverlayProcess OvlProc_FontTest = {
+    .init = FontTest_Init,
+    .main = FontTest_Update,
+    .exit = FontTest_Destroy,
 };
 
-void func_ov001_02082b34(FontState* arg0) {
+void ProcessOverlay_FontTest(FontState* arg0) {
     s32 stage = MainOvlDisp_GetProcessStage();
     if (stage == PROCESS_STAGE_EXIT) {
-        func_ov001_02082b00(arg0);
+        FontTest_Destroy(arg0);
     } else {
-        data_ov001_02082fa0.funcs[stage](arg0);
+        OvlProc_FontTest.funcs[stage](arg0);
     }
 }
 
@@ -188,14 +190,7 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
-    DisplayBGSettings* mainBg1 = &g_DisplaySettings.engineState[0].bgSettings[1];
-    mainBg1->bgMode            = 0;
-    mainBg1->screenSizeText    = 0;
-    mainBg1->colorMode         = 0;
-    mainBg1->screenBase        = 16;
-    mainBg1->charBase          = 0;
-    mainBg1->extPlttSlot       = 0;
-    REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x1000;
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 16, 0, 0, 0x1000);
 
     g_DisplaySettings.engineState[0].bgSettings[0].priority = 1;
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 1;
@@ -218,26 +213,21 @@ void func_ov001_02082b74(void) {
 
     GXs_SetGraphicsMode(0);
 
-    DisplayBGSettings* subBg0 = &g_DisplaySettings.engineState[1].bgSettings[0];
-    subBg0->bgMode            = 0;
-    subBg0->screenSizeText    = 0;
-    subBg0->colorMode         = 0;
-    subBg0->screenBase        = 0;
-    subBg0->charBase          = 1;
-    subBg0->extPlttSlot       = 0;
-    REG_BG0CNT_SUB            = REG_BG0CNT_SUB & 0x43 | 4;
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 3;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 3;
     g_DisplaySettings.engineState[1].bgSettings[2].priority = 3;
     g_DisplaySettings.engineState[1].bgSettings[3].priority = 3;
-    g_DisplaySettings.engineState[1].bgSettings[0].mosaic   = 0;
-    g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
-    g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
-    g_DisplaySettings.engineState[1].bgSettings[3].mosaic   = 0;
-    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode     = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode      = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_SUB].layers          = 17;
+
+    g_DisplaySettings.engineState[1].bgSettings[0].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[1].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
+    g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
+
+    g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers      = 17;
     REG_POWER_CNT &= ~0x8000;
     func_02003ad0();
     g_DisplaySettings.engineState[0].blendMode   = 1;
@@ -257,11 +247,10 @@ void func_ov001_02082b74(void) {
     func_02002890(&data_02069804, 0);
     func_02003440(&data_020676ec);
     func_02003440(&data_02068778);
-    return;
 }
 
-void func_ov001_02082e9c(void) {
-    if (SystemStatusFlags.vblank != FALSE) {
+void FontTest_VBlank(void) {
+    if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
         DC_PurgeRange(&data_0206770c, 0x400);
@@ -277,7 +266,7 @@ void func_ov001_02082e9c(void) {
     }
 }
 
-void func_ov001_02082f6c(void) {
+void FontTest_RegisterVBlank(void) {
     func_ov001_02082b74();
-    Interrupts_RegisterVBlankCallback(func_ov001_02082e9c, TRUE);
+    Interrupts_RegisterVBlankCallback(FontTest_VBlank, TRUE);
 }

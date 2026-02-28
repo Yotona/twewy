@@ -36,70 +36,34 @@ void OpenEnd_InitHardware(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
-    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_MAIN);
-    mainBg0->bgMode            = 0;
-    mainBg0->screenSizeText    = 0;
-    mainBg0->screenBase        = 0;
-    mainBg0->extPlttSlot       = 0;
-    mainBg0->colorMode         = 1;
-    mainBg0->charBase          = 2;
-
-    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
-        REG_BG0CNT = (REG_BG0CNT & 0x43) | 0x88;
-    }
-
-    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
-    mainBg1->colorMode         = 1;
-    mainBg1->screenBase        = 2;
-    mainBg1->bgMode            = 0;
-    mainBg1->screenSizeText    = 0;
-    mainBg1->extPlttSlot       = 0;
-    mainBg1->charBase          = 4;
-    REG_BG1CNT                 = (REG_BG1CNT & 0x43) | 0x290;
-    // Display_InitMainBG1(0, 0, 1, 2, 4, 0, 0x290); reduces matching %
+    Display_InitMainBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 0, 2, 0, 0x88);
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 0, 0x290);
 
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = LAYER_BG0 | LAYER_OBJ;
     g_DisplaySettings.controls[DISPLAY_SUB].bgMode  = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
-    subBg0->bgMode            = 0;
-    subBg0->screenSizeText    = 0;
-    subBg0->colorMode         = 1;
-    subBg0->screenBase        = 0;
-    subBg0->charBase          = 2;
-    subBg0->extPlttSlot       = 0;
-    REG_BG0CNT_SUB            = (REG_BG0CNT_SUB & 0x43) | 0x88;
-    // Display_InitSubBG0(0, 0, 0, 0, 2, 0, 0x88); reduces matching %
-
-    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_SUB);
-    subBg1->charBase          = 4;
-    subBg1->bgMode            = 0;
-    subBg1->screenSizeText    = 0;
-    subBg1->colorMode         = 1;
-    subBg1->screenBase        = 2;
-    subBg1->extPlttSlot       = 0;
-    REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 0x290;
-    // Display_InitSubBG1(4, 0, 0, 1, 2, 0, 0x290); reduces matching %
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 0, 2, 0, 0x88);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 0, 0x290);
 
     g_DisplaySettings.controls[DISPLAY_SUB].layers       = 17;
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
 
     func_0200270c(0, 0);
-    func_0200270c(1, 0);
+    func_0200270c(0, 1);
     MI_CpuFill(0x0, 0x6800000, 0xa4000);
     MI_CpuFill(0x0, 0x6000000, 0x80000);
     MI_CpuFill(0x0, 0x6200000, 0x20000);
     MI_CpuFill(0x0, 0x6400000, 0x40000);
     MI_CpuFill(0x0, 0x6600000, 0x20000);
     func_0200270c(0, 0);
-    func_0200283c(0, &data_020676ec, 0);
+    func_0200283c(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     func_0200270c(0, 1);
-    func_0200283c(0, &data_02068778, 0);
+    func_0200283c(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     func_02003440(&data_020676ec);

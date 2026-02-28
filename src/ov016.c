@@ -260,7 +260,7 @@ s32                 SpriteMgr_IsAnimationFinished(void*);                       
 void                func_02026590(void*, s32, u16);                                                    /* extern */
 void                func_020265d4(void*, s32, u16);                                                    /* extern */
 void                MI_CpuSet(void*, s32, s32);                                                        /* extern */
-void                func_ov000_020824a0(void*, u16, s32);                                              /* extern */
+void                Mini108_VBlank(void*, u16, s32);                                                   /* extern */
 void                func_ov003_020826c8(void*, s32);                                                   /* extern */
 void                func_ov003_02082724(void*, s16, s16);                                              /* extern */
 void                func_ov003_02082730(void*, s32);                                                   /* extern */
@@ -1842,7 +1842,7 @@ s32 func_ov016_02127960(void* arg0, Ov016Task* arg1, void* arg2) {
             return 1;
         case 0:
             if (temp_r4->unk78 == 0) {
-                func_ov000_020824a0(temp_r4, (u16)(RNG_Next(2) + 1), 0);
+                Mini108_VBlank(temp_r4, (u16)(RNG_Next(2) + 1), 0);
                 temp_r4->unk7A = (s16)(RNG_Next(0x12D) + 0x12C);
             }
             temp_r1 = temp_r4->unk78;
@@ -1857,7 +1857,7 @@ s32 func_ov016_02127960(void* arg0, Ov016Task* arg1, void* arg2) {
             return 1;
         case 1:
             if (temp_r4->unk78 == 0) {
-                func_ov000_020824a0(temp_r4, 0U, 0);
+                Mini108_VBlank(temp_r4, 0U, 0);
                 var_r1 = 0x1000;
                 if (RNG_Next(2) == 0) {
                     var_r1 = -0x1000;
@@ -2167,7 +2167,7 @@ s32 func_ov016_0212812c(void* arg0, Ov016Task* arg1, void* arg2) {
             return var_r5;
         case 1:
             if (temp_r4->unk7E == 0) {
-                func_ov000_020824a0(temp_r4, 0U, 1);
+                Mini108_VBlank(temp_r4, 0U, 1);
                 func_ov003_02087f28(0x1F5, temp_r4->unk60);
             }
             if (temp_r4->unk78 == 0) {
@@ -2408,7 +2408,7 @@ void func_ov016_02128728(Ov016Obj* arg0) {
     if ((*data_ov016_021292c0 == 2) && (arg0->unk14C == arg0->unkEC)) {
         arg0->unk74 = 0x3C;
         arg0->unk76 = 0x64;
-        func_ov000_020824a0((u8*)arg0 + 0xC4, 2U, 0);
+        Mini108_VBlank((u8*)arg0 + 0xC4, 2U, 0);
         func_ov003_020826c8((u8*)arg0 + 0xC4, 0xB);
         func_ov003_02082cc4((u8*)arg0 + 0x124);
         func_ov003_020880e4(0, (u8*)arg0 + 0x124, (u8*)arg0 + 4);
@@ -2472,8 +2472,8 @@ s32 func_ov016_02128850(void* arg0, Ov016Task* arg1, void* arg2) {
     temp_r4->unk4C = 0xE66;
     func_ov003_02082a04(0, (u8*)temp_r4 + 0xC4, &data_ov016_021290fc, &data_ov016_02129120, 0, 0xA, 0x180);
     func_ov003_02082a04(0, (u8*)temp_r4 + 0x124, &data_ov016_021290fc, &data_ov016_02129120, 1, 0xA, 0);
-    func_ov000_020824a0((u8*)temp_r4 + 0xC4, 0U, 0);
-    func_ov000_020824a0((u8*)temp_r4 + 0x124, 1U, 0);
+    Mini108_VBlank((u8*)temp_r4 + 0xC4, 0U, 0);
+    Mini108_VBlank((u8*)temp_r4 + 0x124, 1U, 0);
     func_ov016_02128710(temp_r4, func_ov016_021287a4);
     return 1;
 }
@@ -2613,7 +2613,7 @@ void func_ov016_02128ca8(Ov016Obj* arg0) {
     temp_r5 = data_ov003_020e71b8->unk3D89C;
     if (arg0->unk292 == 0) {
         if (arg0->unk1C2 == 0) {
-            func_ov000_020824a0((u8*)arg0 + 0x84, 1U, 0);
+            Mini108_VBlank((u8*)arg0 + 0x84, 1U, 0);
         }
         var_r0 = 0x5000;
         if ((s32)arg0->unk28 < (s32)temp_r5->unk28) {

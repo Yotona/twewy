@@ -5,7 +5,7 @@
 
 #define OVERLAY_ID_NONE     (-0x7FFFFFFF)
 #define OVERLAY_ID_UNLOADED 0x80000000
-extern s32 OVERLAY_0_ID;
+extern u32 OVERLAY_0_ID;
 extern u32 OVERLAY_2_ID;
 extern u32 OVERLAY_3_ID;
 extern u32 OVERLAY_27_ID;

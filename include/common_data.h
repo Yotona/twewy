@@ -12,9 +12,9 @@ extern struct {
 
 extern s32 data_0205c9b0;
 
-extern s16 data_02066aec;
-extern s32 data_02066cec;
-extern s16 data_02066eec;
+extern vs16 data_02066aec;
+extern s32  data_02066cec;
+extern vs16 data_02066eec;
 
 extern s32 data_020670ec;
 extern s32 data_020672ec;

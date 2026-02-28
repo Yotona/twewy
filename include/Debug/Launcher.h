@@ -74,7 +74,7 @@ const UnkStruct_DebugLauncher_tuple data_ov046_02083a40 = {0, 0, 0xFFFFF000};
 
 extern void func_ov000_02082854(void* state);
 
-extern void func_ov001_02082b34(void* state);
+extern void ProcessOverlay_FontTest(void* state);
 
 extern void ProcessOverlay_OtosuMenu_SinglePlayerEnter(void* state);
 extern void ProcessOverlay_OtosuMenu_MultiplayerEnter(void* state);
@@ -179,7 +179,7 @@ const DebugLauncherOption Options_Takami[14] = {
 
 const DebugLauncherOption Options_Fukuda[13] = {
     // "Features: Font", "Description: Test"
-    {1,           "機能\:フォント",                         "説明:テスト",                   1,                          func_ov001_02082b34},
+    {1,           "機能\:フォント",                         "説明:テスト",                   1,                      ProcessOverlay_FontTest},
     // "Feature: Font", "Description: Font list"
     {2,           "機能\:フォント",                   "説明:フォント一覧",                   2,            ProcessOverlay_OtosuMenu_FontList},
     // "Feature: Title (?)", "Description: Data Deletion Screen"

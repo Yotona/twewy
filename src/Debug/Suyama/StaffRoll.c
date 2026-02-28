@@ -379,7 +379,7 @@ const BinIdentifier data_ov042_020847e0 = {42, "Apl_Suy/staff_cmdlist.bin"};
 
 void func_ov042_02082e9c(StaffRoll_CallbackStruct* state) {
     CriSndMgr_SetLpFlg(FALSE);
-    func_0202733c(0x22);
+    CriSndMgr_PlayFile(ADX_ENDING);
     state->commandlist = DatMgr_LoadRawData(1, NULL, 0, &data_ov042_020847e0);
     DebugOvlDisp_Pop();
 }

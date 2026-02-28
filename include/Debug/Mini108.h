@@ -22,6 +22,7 @@ typedef struct {
     /* 0x00430 */ u32          unk_430;
     /* 0x00434 */ char         pad_434[0x418];
     /* 0x0084C */ Data*        unk_84C;
+    /* 0x00850 */ s32          unk_850;
     /* 0x00854 */ char         pad_87C[0x4];
     /* 0x008D0 */ u32          unk_8D0;
     /* 0x008D4 */ char         pad_8D4[0x3FFC];
@@ -44,7 +45,6 @@ typedef struct {
 } UnkStruct_ov000_02082b1c;
 
 void func_ov000_020825c0(void);
-void func_ov000_02082ac0(Mini108State* state);
 void func_ov000_02082b18(Mini108State* unk_r0);
 void func_ov000_02082b1c(Mini108State* unk_r0);
 void func_ov000_020830b8();

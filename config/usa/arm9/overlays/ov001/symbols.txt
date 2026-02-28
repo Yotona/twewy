@@ -6,17 +6,17 @@ func_ov001_020826e4 kind:function(arm,size=0x9c) addr:0x020826e4
 func_ov001_02082780 kind:function(arm,size=0x10c) addr:0x02082780
 func_ov001_0208288c kind:function(arm,size=0xf8) addr:0x0208288c
 func_ov001_02082984 kind:function(arm,size=0x3c) addr:0x02082984
-func_ov001_020829c0 kind:function(arm,size=0x9c) addr:0x020829c0
-func_ov001_02082a5c kind:function(arm,size=0xa4) addr:0x02082a5c
-func_ov001_02082b00 kind:function(arm,size=0x34) addr:0x02082b00
-func_ov001_02082b34 kind:function(arm,size=0x40) addr:0x02082b34
+FontTest_Init kind:function(arm,size=0x9c) addr:0x020829c0
+FontTest_Update kind:function(arm,size=0xa4) addr:0x02082a5c
+FontTest_Destroy kind:function(arm,size=0x34) addr:0x02082b00
+ProcessOverlay_FontTest kind:function(arm,size=0x40) addr:0x02082b34
 func_ov001_02082b74 kind:function(arm,size=0x328) addr:0x02082b74
-func_ov001_02082e9c kind:function(arm,size=0xd0) addr:0x02082e9c
-func_ov001_02082f6c kind:function(arm,size=0x1c) addr:0x02082f6c
+FontTest_VBlank kind:function(arm,size=0xd0) addr:0x02082e9c
+FontTest_RegisterVBlank kind:function(arm,size=0x1c) addr:0x02082f6c
 data_ov001_02082f88 kind:data(any) addr:0x02082f88
 data_ov001_02082f90 kind:data(any) addr:0x02082f90
 data_ov001_02082f98 kind:data(any) addr:0x02082f98
-data_ov001_02082fa0 kind:data(any) addr:0x02082fa0
+OvlProc_FontTest kind:data(any) addr:0x02082fa0
 data_ov001_02082ff0 kind:data(any) addr:0x02082ff0
 data_ov001_02083020 kind:data(any) addr:0x02083020
 @758 kind:data(any) addr:0x02083024 local

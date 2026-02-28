@@ -1,11 +1,11 @@
-func_ov000_020824a0 kind:function(arm,size=0xdc) addr:0x020824a0
-func_ov000_0208257c kind:function(arm,size=0x20) addr:0x0208257c
-func_ov000_0208259c kind:function(arm,size=0x24) addr:0x0208259c
+Mini108_VBlank kind:function(arm,size=0xdc) addr:0x020824a0
+Mini108_UnregisterVBlank kind:function(arm,size=0x20) addr:0x0208257c
+Mini108_RegisterVBlank kind:function(arm,size=0x24) addr:0x0208259c
 func_ov000_020825c0 kind:function(arm,size=0x294) addr:0x020825c0
 func_ov000_02082854 kind:function(arm,size=0x40) addr:0x02082854
-func_ov000_02082894 kind:function(arm,size=0xb0) addr:0x02082894
-func_ov000_02082944 kind:function(arm,size=0x17c) addr:0x02082944
-func_ov000_02082ac0 kind:function(arm,size=0x58) addr:0x02082ac0
+Mini108_Init kind:function(arm,size=0xb0) addr:0x02082894
+Mini108_Update kind:function(arm,size=0x17c) addr:0x02082944
+Mini108_Exit kind:function(arm,size=0x58) addr:0x02082ac0
 func_ov000_02082b18 kind:function(arm,size=0x4) addr:0x02082b18
 func_ov000_02082b1c kind:function(arm,size=0x59c) addr:0x02082b1c
 func_ov000_020830b8 kind:function(arm,size=0x4) addr:0x020830b8
