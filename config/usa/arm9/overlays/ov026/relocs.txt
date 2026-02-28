@@ -65,7 +65,7 @@ from:0x020e7744 kind:arm_call to:0x02082940 module:overlay(3)
 from:0x020e779c kind:arm_call to:0x02082998 module:overlay(3)
 from:0x020e77ac kind:arm_call to:0x02082724 module:overlays(3,39)
 from:0x020e77b8 kind:load to:0x020e7fd8 module:overlay(26)
-from:0x020e7834 kind:load to:0x02074d10 module:main
+from:0x020e7834 kind:load to:0x02071cf0 add:0x3020 module:main
 from:0x020e7844 kind:arm_call to:0x020e77bc module:overlay(26)
 from:0x020e786c kind:arm_call to:0x02008650 module:main
 from:0x020e788c kind:arm_call to:0x02008650 module:main

@@ -17,7 +17,7 @@ from:0x0212583c kind:arm_call to:0x020c72b4 module:overlay(3)
 from:0x02125850 kind:arm_call to:0x02125768 module:overlay(12)
 from:0x021258e4 kind:load to:0x020e71b8 module:overlays(3,30)
 from:0x0212594c kind:load to:0x020e71b8 module:overlays(3,30)
-from:0x02125950 kind:load to:0x02074d10 module:main
+from:0x02125950 kind:load to:0x02071cf0 add:0x3020 module:main
 from:0x02125998 kind:arm_call to:0x021256f0 module:overlay(12)
 from:0x021259a4 kind:arm_call to:0x020c4cc4 module:overlay(3)
 from:0x021259d4 kind:arm_call to:0x0203b3c0 module:main

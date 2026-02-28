@@ -4,6 +4,7 @@
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
+#include "Save.h"
 #include "System.h"
 #include "common_data.h"
 #include <NitroSDK/fx.h>
@@ -106,7 +107,7 @@ void func_ov042_02082620(StaffRollState* state) {
     EasyTask_UpdateActiveTasks(&state->taskPool);
     if (DebugOvlDisp_IsStackAtBase() != FALSE) {
         OverlayTag tag;
-        data_02074e10.unk_28 = 2;
+        data_02071cf0.unk_20.unk_3128 = 2;
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, 0);
         return;
     }

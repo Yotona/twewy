@@ -49,13 +49,6 @@ typedef struct {
 extern UnkStruct_usedby_02025b68 usedby_02025b68;
 
 typedef struct {
-    /* 0x00 */ char unk_00[0xB4];
-    /* 0xB4 */ u16  unk_B4;
-    /* 0xB6 */ u16  unk_B6;
-} Data_02073710;
-extern Data_02073710 data_02073710;
-
-typedef struct {
     /* 0x000 */ char unk_00[0x40A];
     /* 0x40A */ u8   unk_40A;
     /* 0x40B */ u8   unk_40B;
@@ -64,8 +57,8 @@ typedef struct {
     /* 0x410 */ s32  unk_410;
     /* 0x414 */ char unk_414[0x41C - 0x414];
     /* 0x41C */ s8   unk_41C;
-} UnkStruct_02074010;
-extern UnkStruct_02074010 data_02074d10;
+} UnkStruct_02074D10;
+extern UnkStruct_02074D10 data_02074d10;
 
 typedef struct {
     /* 0x00 */ s32         unk0;

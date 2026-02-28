@@ -2,6 +2,7 @@
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "TouchInput.h"
 #include "common_data.h"
@@ -252,7 +253,7 @@ void OpenEnd_ValidateSaveData(OpenEndState* state) {
     state->isSaveValid = 1;
     state->unk_11A40   = 0;
     if (saveStatus == 0) {
-        if ((data_02073710.unk_B6 & 1) != FALSE) {
+        if ((data_02071cf0.unk_20.unk_1AB6 & 1) != FALSE) {
             state->isThereExistingSaveData = 1;
         }
         return;
@@ -406,16 +407,18 @@ void        OpenEnd_StartNewGame(OpenEndState* state) {
 
 extern void func_ov044_02084a88();
 extern void func_ov030_020ae92c();
-void        OpenEnd_ContinueGame(OpenEndState* state) {
+
+void OpenEnd_ContinueGame(OpenEndState* state) {
+
     OverlayTag tag, tag2, tag3, tag4;
     if (func_020256bc() == 0) {
         if (func_02023010(0x2AB) != 0) {
-            data_02073710.unk_B4 |= 0x10;
+            data_02071cf0.unk_20.unk_1AB4 |= 0x10;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0); //<-- Overlay44 -> Shutdown PP Gain screen
             return;
         }
-        if ((data_02073710.unk_B4 & 0x2) != 0) {
-            data_02073710.unk_B4 &= ~0x2;
+        if ((data_02071cf0.unk_20.unk_1AB4 & 0x2) != 0) {
+            data_02071cf0.unk_20.unk_1AB4 &= ~0x2;
             MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, 0, 0); // Load game ?
             return;
         }

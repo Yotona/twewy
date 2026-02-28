@@ -3702,7 +3702,7 @@ from:0x02022968 kind:load to:0x02071cf0 add:0x2300 module:main
 from:0x02022a90 kind:arm_call to:0x0200838c module:main
 from:0x02022a94 kind:arm_call to:0x02008dbc module:main
 from:0x02022b3c kind:load to:0x02071cf0 add:0x20 module:main
-from:0x02022b40 kind:load to:0x02073adb module:main
+from:0x02022b40 kind:load to:0x02071cf0 add:0x1deb module:main
 from:0x02022b48 kind:load to:0x0205c188 module:main
 from:0x02022b5c kind:arm_call to:0x020229d4 module:main
 from:0x02022b94 kind:arm_call to:0x0200838c module:main
@@ -3720,7 +3720,7 @@ from:0x02022d04 kind:load to:0x02071cf0 add:0xd8 module:main
 from:0x02022d54 kind:load to:0x02071cf0 add:0xad0 module:main
 from:0x02022d58 kind:load to:0x02071cf0 add:0xad3 module:main
 from:0x02022d5c kind:load to:0x02071cf0 add:0xad2 module:main
-from:0x02022dd0 kind:load to:0x02072c80 module:main
+from:0x02022dd0 kind:load to:0x02071cf0 add:0xf90 module:main
 from:0x02022dd4 kind:load to:0x02071cf0 add:0xf92 module:main
 from:0x02022de8 kind:arm_call to:0x020229d4 module:main
 from:0x02022e20 kind:arm_call to:0x0200838c module:main
@@ -3738,7 +3738,7 @@ from:0x020231fc kind:load to:0x02071cf0 add:0x20 module:main
 from:0x02023200 kind:load to:0x02071cf0 add:0xad2 module:main
 from:0x02023204 kind:load to:0x02071cf0 add:0xf92 module:main
 from:0x02023218 kind:arm_call to:0x020229d4 module:main
-from:0x02023468 kind:load to:0x02073adb module:main
+from:0x02023468 kind:load to:0x02071cf0 add:0x1deb module:main
 from:0x0202346c kind:load to:0x02071cf0 add:0x20 module:main
 from:0x02023470 kind:load to:0x02071cf0 add:0xd8 module:main
 from:0x02023474 kind:load to:0x02071cf0 add:0xad3 module:main
@@ -3835,7 +3835,7 @@ from:0x02024074 kind:load to:0x02071cf0 add:0x20 module:main
 from:0x0202407c kind:load to:0x0205c148 module:main
 from:0x020240d8 kind:load to:0x02071cf0 add:0x20 module:main
 from:0x020240dc kind:load to:0x02071cf0 add:0x1a00 module:main
-from:0x020241a8 kind:load to:0x02073adb module:main
+from:0x020241a8 kind:load to:0x02071cf0 add:0x1deb module:main
 from:0x020241ac kind:load to:0x02071cf0 add:0x20 module:main
 from:0x020241c0 kind:arm_call to:0x02004618 module:main
 from:0x020241d4 kind:arm_call to:0x020049a8 module:main

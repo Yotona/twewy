@@ -1,5 +1,5 @@
 from:0x020e7368 kind:arm_call to:0x02023010 module:main
-from:0x020e7394 kind:load to:0x02074d10 module:main
+from:0x020e7394 kind:load to:0x02071cf0 add:0x3020 module:main
 from:0x020e7398 kind:load to:0x020f0068 module:overlay(4)
 from:0x020e73ac kind:arm_call to:0x020e737c module:overlay(4)
 from:0x020e73b8 kind:arm_call to:0x02086c04 module:overlay(3)

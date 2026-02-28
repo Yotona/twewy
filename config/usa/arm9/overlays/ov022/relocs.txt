@@ -1,5 +1,5 @@
 from:0x020f10e4 kind:load to:0x020e71b8 module:overlays(3,30)
-from:0x020f10e8 kind:load to:0x02074d10 module:main
+from:0x020f10e8 kind:load to:0x02071cf0 add:0x3020 module:main
 from:0x020f111c kind:arm_call to:0x0203b3c0 module:main
 from:0x020f115c kind:arm_call to:0x02082a04 module:overlays(3,30)
 from:0x020f116c kind:arm_call to:0x020824a0 module:overlays(0,1,2,3,29,30,37,38,39,41,42,43,44,45,46)

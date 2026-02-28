@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
+#include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 #include "System.h"
@@ -16,33 +17,6 @@
 #include "common_data.h"
 
 #include <NitroSDK/mi/cpumem.h>
-
-typedef struct {
-    /* 0x000 */ char pad0[0x130];
-    /* 0x130 */ s32  unk130;        /* inferred */
-    /* 0x134 */ char pad134[0xC];   /* maybe part of unk130[4]? */
-    /* 0x140 */ u8   unk140;        /* inferred */
-    /* 0x141 */ s8   unk141;        /* inferred */
-    /* 0x142 */ char pad142[0x2CE]; /* maybe part of unk141[0x2CF]? */
-    /* 0x410 */ s32  unk_410;
-} UnkStruct_020740d10_local;        /* size = 0x414 */
-
-typedef struct {
-    /* 0x00 */ char pad_00[0x28];
-    /* 0x28 */ u16  unk_28;
-    /* 0x2A */ char pad_2A[0x18];
-    /* 0x42 */ u16  unk42;
-} UnkStruct_02074e10_local;
-
-typedef struct {
-    /* 0x00 */ char pad_00[0x19];
-    /* 0x19 */ u8   unk19;
-} UnkStruct_02071d10_local;
-
-typedef struct {
-    /* 0x00 */ char pad_00[0xB4];
-    /* 0xB4 */ s16  unkB4;
-} UnkStruct_02074110_local;
 
 extern void func_02001c34(s16*, s32*, void*, void*, s32);
 extern void func_0200270c(void*, void*);
@@ -68,9 +42,6 @@ extern void ProcessOverlay_OpenEnd(void);
 
 void func_ov025_020e7f90(ContinueObject* contObj);
 void func_ov025_020e7fdc(ContinueObject* contObj);
-
-extern UnkStruct_02071d10_local data_02071d10;
-extern UnkStruct_02074110_local data_02074110;
 
 static const char* data_ov025_020e8320 = "Seq_Continue( )";
 
@@ -237,7 +208,7 @@ s32 func_ov025_020e797c(ContinueObject* arg0) {
         }
     }
 
-    if ((result == 2) && (((UnkStruct_020740d10_local*)&data_02074d10)->unk140 & 1)) {
+    if ((result == 2) && (data_02071cf0.unk_20.unk_3140 & 1)) {
         result = 0xFFFF;
     }
 
@@ -269,7 +240,7 @@ void func_ov025_020e7aac(ContinueObject* contObj) {
     func_ov025_020e785c(&contObj->unk_11E10[0], 0, 1, 0x80, 0x56);
     func_ov025_020e785c(&contObj->unk_11E10[1], 1, 2, 0x80, 0x6B);
     func_ov025_020e785c(&contObj->unk_11E10[3], 3, 3, 0x80, 0x95);
-    if (((UnkStruct_020740d10_local*)&data_02074d10)->unk140 & 1) {
+    if (data_02071cf0.unk_20.unk_3140 & 1) {
         func_ov025_020e785c(&contObj->unk_11E10[2], 2, 5, 0x80, 0x80);
     } else {
         func_ov025_020e785c(&contObj->unk_11E10[2], 2, 4, 0x80, 0x80);
@@ -322,27 +293,26 @@ void func_ov025_020e7d70(ContinueObject* contObj) {
 void func_ov025_020e7dd0(ContinueObject* contObj) {
     switch (contObj->unk_120D0) {
         case 0: {
-            ((UnkStruct_02074e10_local*)&data_02074e10)->unk42 = 0;
-            ((UnkStruct_020740d10_local*)&data_02074d10)->unk141 =
-                (s8)((u32)(((UnkStruct_02071d10_local*)&data_02071d10)->unk19 << 0x1E) >> 0x1E);
+            data_02071cf0.unk_20.unk_3142 = 0;
+            data_02071cf0.unk_20.unk_3141 = data_02071cf0.unk_20.playerStats.unk_19_0;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
         } break;
 
         case 1: {
-            ((UnkStruct_02074e10_local*)&data_02074e10)->unk42   = 0;
-            ((UnkStruct_020740d10_local*)&data_02074d10)->unk141 = 0;
+            data_02071cf0.unk_20.unk_3142 = 0;
+            data_02071cf0.unk_20.unk_3141 = 0;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
         } break;
 
         case 2: {
-            if (((UnkStruct_020740d10_local*)&data_02074d10)->unk140 & 2) {
-                data_02074110.unkB4 = 5;
+            if (data_02071cf0.unk_20.unk_3140 & 2) {
+                data_02071cf0.unk_20.unk_24B4 = 5;
             } else {
-                data_02074110.unkB4 = 3;
+                data_02071cf0.unk_20.unk_24B4 = 3;
             }
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, &func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
@@ -351,7 +321,7 @@ void func_ov025_020e7dd0(ContinueObject* contObj) {
         default:
         case 3: {
 
-            if (((UnkStruct_020740d10_local*)&data_02074d10)->unk130 == 3) {
+            if (data_02071cf0.unk_20.unk_3130 == 3) {
                 OverlayTag tag;
                 MainOvlDisp_ReplaceTop(&tag, &OVERLAY_27_ID, &func_ov027_020e860c, NULL, PROCESS_STAGE_INIT);
             } else {

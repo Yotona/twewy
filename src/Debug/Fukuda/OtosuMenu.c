@@ -6,6 +6,7 @@
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
+#include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 #include "System.h"
@@ -2859,9 +2860,9 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
 
         case 3: {
             if (menuObj->unk_462EC != 0) {
-                data_02073710.unk_B4 |= 0x20;
+                data_02071cf0.unk_20.unk_1AB4 |= 0x20;
             } else {
-                data_02073710.unk_B4 |= 0x40;
+                data_02071cf0.unk_20.unk_1AB4 |= 0x40;
             }
             SystemStatusFlags.unk_06 = 1;
             SystemStatusFlags.unk_07 = 1;

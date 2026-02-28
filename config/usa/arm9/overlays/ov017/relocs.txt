@@ -829,7 +829,7 @@ from:0x0212afcc kind:arm_call to:0x0212a888 module:overlay(17)
 from:0x0212afe4 kind:load to:0x0212ac58 module:overlay(17)
 from:0x0212b038 kind:arm_call to:0x020bb48c module:overlay(3)
 from:0x0212b05c kind:arm_call to:0x0200f7a0 module:main
-from:0x0212b07c kind:load to:0x02074d10 module:main
+from:0x0212b07c kind:load to:0x02071cf0 add:0x3020 module:main
 from:0x0212b084 kind:load to:0x020e71b8 module:overlays(3,30)
 from:0x0212b0a0 kind:arm_call to:0x0203b3c0 module:main
 from:0x0212b0ac kind:arm_call to:0x020c3efc module:overlay(3)

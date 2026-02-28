@@ -35,8 +35,6 @@ const u16 SecretReportStarRequirements[22] = {
 const s32 data_0205c270[13];
 const s32 data_0205c2dc;
 
-extern u8 data_02073adb[0xE7];
-
 static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->unk_00         = 0;
     stats->baseHealth     = 0;
@@ -329,7 +327,7 @@ u16 Inventory_GetOpenPinStockpileCapacity(void) {
 
             if (pinID != 0xFFFF) {
                 Data_LoadToBuffer(1, pinData, &data_0205c188, pinID);
-                if (pinData.unk_25 != ((data_02073adb[deckOff + slotOff] << 0x19) >> 0x19)) {
+                if (pinData.unk_25 != data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level) {
                     var_r7 += 1;
                 }
             }
@@ -576,7 +574,7 @@ s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
                 u32 slotOff = slot * 0xA;
 
                 if ((data_02071cf0.unk_20.pinLayouts[deck][slot].pinID == arg0) &&
-                    (arg2 <= (data_02073adb[deckOff + slotOff] << 0x19) >> 0x19))
+                    (arg2 <= data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level))
                 {
                     owned = (owned + 1) & 0xFFFF;
                 }
@@ -1080,7 +1078,7 @@ s32 func_020240e0(u16 arg0, void* arg1) {
             u32 slotOff = slot * 0xA;
 
             if ((arg0 == data_02071cf0.unk_20.pinLayouts[deck][slot].pinID) &&
-                (*(u8*)((u32)arg1 + 0x25) == ((data_02073adb[deckOff + slotOff] << 0x19) >> 0x19)))
+                (*(u8*)((u32)arg1 + 0x25) == data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level))
             {
                 return 1;
             }
