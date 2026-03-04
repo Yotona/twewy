@@ -89,7 +89,7 @@ extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
 extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
 extern void ProcessOverlay_Continue(void* state);
 
-extern void func_ov026_020e7f98(void* state);
+extern void ProcessOverlay_Tutorial(void* state);
 
 extern void func_ov027_020e860c(void* state);
 extern void func_ov027_020e9670(void* state);
@@ -237,7 +237,7 @@ const DebugLauncherOption Options_Kitawaki[9] = {
 const DebugLauncherOption Options_Furukawa[4] = {
     {1,       "機能\:ChkBtl/バトルチェック",         "説明:バトルチェック",                  27,     func_ov027_020e860c},
     {2, "機能\:Continue/コンティニュー画面", "説明:コンティニューメニュー",                  25, ProcessOverlay_Continue},
-    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26,     func_ov026_020e7f98},
+    {3, "機能\:Tutorial/チュートリアル画面",         "説明:チュートリアル",                  26, ProcessOverlay_Tutorial},
     {0,                                NULL,                          NULL, OVERLAY_ID_UNLOADED,                    NULL},
 };
 
