@@ -1,6 +1,7 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "TouchInput.h"
 #include <NitroSDK/fx.h>
 
@@ -212,7 +213,7 @@ void func_ov046_02082c0c(EasyListNode* list, BOOL unk_r1) {
     if (unk_r1 == TRUE) {
         switch (list->priority) {
             case 0:
-                func_0200cfe8(list->data);
+                ResourceMgr_SetActiveManagers(list->data);
                 return;
             case 1:
                 DatMgr_ClearSlot(list->data);
@@ -357,8 +358,8 @@ void func_ov046_02082c78(DebugLauncherState* state) {
 
     TouchInput_Init();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);
-    state->unk_1164C = func_0200cef0(state->unk_CC);
-    EasyList_InsertSorted(&state->unk_list_15F14, NULL, func_0200cef0(state->unk_CC)); // is it actually NULL?
+    state->unk_1164C = ResourceMgr_ReinitManagers(state->unk_CC);
+    EasyList_InsertSorted(&state->unk_list_15F14, NULL, ResourceMgr_ReinitManagers(state->unk_CC)); // is it actually NULL?
     state->unk_14 = DatMgr_AllocateSlot();
     // stackframe[0] = 0x1;
     // stackframe[1] = 0x0;
@@ -445,8 +446,8 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
         EasyTask_UpdatePool(&state->unk_11650);
         func_020034b0(&data_020676ec);
         func_020034b0(&data_02068778);
-        func_0200bf60(data_0206b3cc[0], 0);
-        func_0200bf60(data_0206b3cc[1], 0);
+        PaletteMgr_Flush(g_PaletteManagers[0], 0);
+        PaletteMgr_Flush(g_PaletteManagers[1], 0);
     }
 }
 

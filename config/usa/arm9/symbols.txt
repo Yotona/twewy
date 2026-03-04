@@ -341,7 +341,7 @@ EasyList_InsertSorted kind:function(arm,size=0x80) addr:0x02009140
 EasyList_RemoveNode kind:function(arm,size=0xbc) addr:0x020091c0
 
 /////////////////////////////////////////////////////////////
-// src/BgResMgr.c
+// src/Engine/Resources/BgResMgr.c
 /////////////////////////////////////////////////////////////
 func_0200927c kind:function(arm,size=0x240) addr:0x0200927c
 BgResMgr_AllocateVram kind:function(arm,size=0xf8) addr:0x020094bc
@@ -363,10 +363,12 @@ BgResMgr_AllocScreen kind:function(arm,size=0x114) addr:0x02009f18
 BgResMgr_ReleaseScreen kind:function(arm,size=0x74) addr:0x0200a02c
 BgResMgr_LoadScreenToVram kind:function(arm,size=0x88) addr:0x0200a0a0
 
-
-func_0200a128 kind:function(arm,size=0x48) addr:0x0200a128
-func_0200a170 kind:function(arm,size=0xac) addr:0x0200a170
-func_0200a21c kind:function(arm,size=0x40) addr:0x0200a21c
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/PaletteMgr.c
+/////////////////////////////////////////////////////////////
+PalSlot_InitAll kind:function(arm,size=0x48) addr:0x0200a128
+PalSlot_AllocContiguous kind:function(arm,size=0xac) addr:0x0200a170
+PalSlot_AllocContiguousPacked kind:function(arm,size=0x40) addr:0x0200a21c
 func_0200a25c kind:function(arm,size=0x94) addr:0x0200a25c
 func_0200a2f0 kind:function(arm,size=0x3c) addr:0x0200a2f0
 func_0200a32c kind:function(arm,size=0x8c) addr:0x0200a32c
@@ -374,18 +376,16 @@ func_0200a3b8 kind:function(arm,size=0x44) addr:0x0200a3b8
 func_0200a3fc kind:function(arm,size=0x88) addr:0x0200a3fc
 func_0200a484 kind:function(arm,size=0x4) addr:0x0200a484
 func_0200a488 kind:function(arm,size=0x20) addr:0x0200a488
-func_0200a4a8 kind:function(arm,size=0x18) addr:0x0200a4a8
-func_0200a4c0 kind:function(arm,size=0x14) addr:0x0200a4c0
-func_0200a4d4 kind:function(arm,size=0x70) addr:0x0200a4d4
-func_0200a544 kind:function(arm,size=0x4c) addr:0x0200a544
-func_0200a590 kind:function(arm,size=0x20) addr:0x0200a590
-func_0200a5b0 kind:function(arm,size=0x3b8) addr:0x0200a5b0
-func_0200a968 kind:function(arm,size=0x27c) addr:0x0200a968
-func_0200abe4 kind:function(arm,size=0x214) addr:0x0200abe4
-func_0200adf8 kind:function(arm,size=0x1f4) addr:0x0200adf8
-func_0200afec kind:function(arm,size=0xb0) addr:0x0200afec
-
-
+PalRes_PopFree kind:function(arm,size=0x18) addr:0x0200a4a8
+PalRes_PushActive kind:function(arm,size=0x14) addr:0x0200a4c0
+PalRes_InitDefaults kind:function(arm,size=0x70) addr:0x0200a4d4
+PalRes_RemoveActive kind:function(arm,size=0x4c) addr:0x0200a544
+PalRes_PushFree kind:function(arm,size=0x20) addr:0x0200a590
+PaletteMgr_Init kind:function(arm,size=0x3b8) addr:0x0200a5b0
+PaletteMgr_AcquireContiguous kind:function(arm,size=0x27c) addr:0x0200a968
+PaletteMgr_AcquireMasked kind:function(arm,size=0x214) addr:0x0200abe4
+PaletteMgr_AllocPalette kind:function(arm,size=0x1f4) addr:0x0200adf8
+PaletteMgr_ReleaseResource kind:function(arm,size=0xb0) addr:0x0200afec
 func_0200b09c kind:function(arm,size=0xfc) addr:0x0200b09c
 func_0200b198 kind:function(arm,size=0x104) addr:0x0200b198
 func_0200b29c kind:function(arm,size=0xf4) addr:0x0200b29c
@@ -398,35 +398,47 @@ func_0200b91c kind:function(arm,size=0x148) addr:0x0200b91c
 func_0200ba64 kind:function(arm,size=0x148) addr:0x0200ba64
 func_0200bbac kind:function(arm,size=0x148) addr:0x0200bbac
 func_0200bcf4 kind:function(arm,size=0x148) addr:0x0200bcf4
-func_0200be3c kind:function(arm,size=0x124) addr:0x0200be3c
-func_0200bf60 kind:function(arm,size=0x54) addr:0x0200bf60
-func_0200bfb4 kind:function(arm,size=0x24) addr:0x0200bfb4
-func_0200bfd8 kind:function(arm,size=0xcc) addr:0x0200bfd8
-func_0200c0a4 kind:function(arm,size=0xc0) addr:0x0200c0a4
-func_0200c164 kind:function(arm,size=0x30) addr:0x0200c164
-func_0200c194 kind:function(arm,size=0x94) addr:0x0200c194
-func_0200c228 kind:function(arm,size=0x34) addr:0x0200c228
-func_0200c25c kind:function(arm,size=0xb4) addr:0x0200c25c
-func_0200c310 kind:function(arm,size=0x120) addr:0x0200c310
-func_0200c430 kind:function(arm,size=0x118) addr:0x0200c430
-func_0200c548 kind:function(arm,size=0x88) addr:0x0200c548
-func_0200c5d0 kind:function(arm,size=0x88) addr:0x0200c5d0
-func_0200c658 kind:function(arm,size=0x174) addr:0x0200c658
-func_0200c7cc kind:function(arm,size=0x1c) addr:0x0200c7cc
+PaletteMgr_CommitResourceIfDirty kind:function(arm,size=0x124) addr:0x0200be3c
+PaletteMgr_Flush kind:function(arm,size=0x54) addr:0x0200bf60
+PaletteMgr_SetSource kind:function(arm,size=0x24) addr:0x0200bfb4
+PaletteMgr_SetBlendProcess kind:function(arm,size=0xcc) addr:0x0200bfd8
+PaletteMgr_SetProcessMode kind:function(arm,size=0xc0) addr:0x0200c0a4
+PaletteMgr_SetProcess kind:function(arm,size=0x30) addr:0x0200c164
+PaletteMgr_SetColorBias kind:function(arm,size=0x94) addr:0x0200c194
+PaletteMgr_UnknownLoop kind:function(arm,size=0x34) addr:0x0200c228
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ObjResMgr.c
+/////////////////////////////////////////////////////////////
+ObjResMgr_InitBitmap kind:function(arm,size=0xb4) addr:0x0200c25c
+ObjResMgr_AllocBitmapFromStart kind:function(arm,size=0x120) addr:0x0200c310
+ObjResMgr_AllocBitmapFromEnd kind:function(arm,size=0x118) addr:0x0200c430
+ObjResMgr_AllocBitmapFromStartValidated kind:function(arm,size=0x88) addr:0x0200c548
+ObjResMgr_AllocBitmapFromEndValidated kind:function(arm,size=0x88) addr:0x0200c5d0
+ObjResMgr_FreeAndCoalesceBitmap kind:function(arm,size=0x174) addr:0x0200c658
+ObjResMgr_FreeBitmapByOffset kind:function(arm,size=0x1c) addr:0x0200c7cc
 func_0200c7e8 kind:function(arm,size=0x30) addr:0x0200c7e8
 func_0200c818 kind:function(arm,size=0x14) addr:0x0200c818
-func_0200c82c kind:function(arm,size=0x18) addr:0x0200c82c
-func_0200c844 kind:function(arm,size=0x14) addr:0x0200c844
-func_0200c858 kind:function(arm,size=0x78) addr:0x0200c858
-func_0200c8d0 kind:function(arm,size=0x4c) addr:0x0200c8d0
-func_0200c91c kind:function(arm,size=0x20) addr:0x0200c91c
-func_0200c93c kind:function(arm,size=0x210) addr:0x0200c93c
-func_0200cb4c kind:function(arm,size=0x1f8) addr:0x0200cb4c
-func_0200cd44 kind:function(arm,size=0x78) addr:0x0200cd44
-func_0200cdbc kind:function(arm,size=0x134) addr:0x0200cdbc
-func_0200cef0 kind:function(arm,size=0xf8) addr:0x0200cef0
-func_0200cfe8 kind:function(arm,size=0x138) addr:0x0200cfe8
-func_0200d120 kind:function(arm,size=0xb8) addr:0x0200d120
+ObjResMgr_PopFreeEntry kind:function(arm,size=0x18) addr:0x0200c82c
+ObjResMgr_PushActiveEntry kind:function(arm,size=0x14) addr:0x0200c844
+ObjResMgr_Reset kind:function(arm,size=0x78) addr:0x0200c858
+ObjResMgr_RemoveActiveEntry kind:function(arm,size=0x4c) addr:0x0200c8d0
+ObjResMgr_PushFreeEntry kind:function(arm,size=0x20) addr:0x0200c91c
+ObjResMgr_Init kind:function(arm,size=0x210) addr:0x0200c93c
+ObjResMgr_AllocResource kind:function(arm,size=0x1f8) addr:0x0200cb4c
+ObjResMgr_ReleaseResource kind:function(arm,size=0x78) addr:0x0200cd44
+ObjResMgr_LoadToVram kind:function(arm,size=0x134) addr:0x0200cdbc
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ResourceMgr.c
+/////////////////////////////////////////////////////////////
+ResourceMgr_ReinitManagers kind:function(arm,size=0xf8) addr:0x0200cef0
+ResourceMgr_SetActiveManagers kind:function(arm,size=0x138) addr:0x0200cfe8
+ResourceMgr_ReleaseResource kind:function(arm,size=0xb8) addr:0x0200d120
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ScreenMapper.c
+/////////////////////////////////////////////////////////////
 func_0200d1d8 kind:function(arm,size=0x6c) addr:0x0200d1d8
 func_0200d244 kind:function(arm,size=0xec) addr:0x0200d244
 func_0200d330 kind:function(arm,size=0xb4) addr:0x0200d330
@@ -3337,17 +3349,26 @@ RepeatButtons kind:data(any) addr:0x0205a928 local
 data_0205a95c kind:data(any) addr:0x0205a95c
 
 /////////////////////////////////////////////////////////////
-// src/BgResMgr.c
+// src/Engine/Resources/BgResMgr.c
 /////////////////////////////////////////////////////////////
 DefaultFlags kind:data(any) addr:0x0205ad5c local
 
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/PaletteMgr.c
+/////////////////////////////////////////////////////////////
 data_0205ad64 kind:data(any) addr:0x0205ad64
 data_0205ad6c kind:data(any) addr:0x0205ad6c
 data_0205ad84 kind:data(any) addr:0x0205ad84
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ObjResMgr.c
+/////////////////////////////////////////////////////////////
 data_0205ad9c kind:data(any) addr:0x0205ad9c
+
+/////////////////////////////////////////////////////////////
+// src/SpriteMgr.c
+/////////////////////////////////////////////////////////////
 data_0205adb4 kind:data(any) addr:0x0205adb4
-
-
 data_0205adcc kind:data(any) addr:0x0205adcc
 
 data_0205adf8 kind:data(any) addr:0x0205adf8
@@ -4338,13 +4359,26 @@ g_activePacMgr kind:bss addr:0x0206b3bc
 g_activeDatMgr kind:bss addr:0x0206b3c0
 
 /////////////////////////////////////////////////////////////
-// src/BgResMgr.c
+// src/Engine/Resources/BgResMgr.c
 /////////////////////////////////////////////////////////////
 g_BgResourceManagers kind:bss addr:0x0206b3c4
 
-data_0206b3cc kind:bss addr:0x0206b3cc
-data_0206b3d8 kind:bss addr:0x0206b3d8
-data_0206b3e4 kind:bss addr:0x0206b3e4
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/PaletteMgr.c
+/////////////////////////////////////////////////////////////
+g_PaletteManagers kind:bss addr:0x0206b3cc
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ObjResMgr.c
+/////////////////////////////////////////////////////////////
+g_ObjResourceManagers kind:bss addr:0x0206b3d8
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ResourceMgr.c
+/////////////////////////////////////////////////////////////
+ActiveResourceManager kind:bss addr:0x0206b3e4 local
+
+
 data_0206b3e8 kind:bss addr:0x0206b3e8
 data_0206b408 kind:bss addr:0x0206b408
 data_0206b41c kind:bss addr:0x0206b41c

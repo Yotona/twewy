@@ -1,7 +1,7 @@
 #include "Debug/Takami/TakTest.h"
-#include "BgResMgr.h"
 #include "DatMgr.h"
 #include "Display.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
 #include "SpriteMgr.h"
@@ -37,7 +37,7 @@ void func_ov043_020824cc(TakTestState* state) {
     state->unk_11584 = DatMgr_AllocateSlot();
     state->unk_11588 = DatMgr_AllocateSlot();
     func_ov043_02082af4();
-    state->unk_11580 = func_0200cef0(state);
+    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     Mem_InitializeHeap(&state->memPool, state->unk_11598, 0x10000);
     EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x80, NULL, NULL);
     data_02066aec = 0;
@@ -58,13 +58,13 @@ void func_ov043_020825ec(TakTestState* state) {
     func_ov043_020824a4(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
 void func_ov043_0208266c(TakTestState* state) {
     func_ov043_020824b8(state);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     DatMgr_ClearSlot(state->unk_11588);
     Mem_Free(&gDebugHeap, state);
@@ -235,7 +235,7 @@ s32 func_ov043_02082d5c(TaskPool* pool, Task* task, s32 arg2) {
     TakTestUnknown* unk = task->data;
     BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_SUB], unk->resChar);
     BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], unk->resScreen);
-    func_0200afec(data_0206b3cc[1], unk->unk_08);
+    PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], unk->resPal);
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
     return 1;
 }

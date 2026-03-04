@@ -2,6 +2,7 @@
 #define DEBUG_NOISEREPORT_H
 
 #include "EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
 
@@ -17,15 +18,15 @@ typedef struct {
 } NoiseReport; // Size: 0x3C
 
 typedef struct {
-    /* 0x00000 */ char        unk_00000[0x11580];
-    /* 0x11580 */ s32         unk_11580;
-    /* 0x11584 */ MemPool     memPool;
-    /* 0x11590 */ MemBlock    memBlock;
-    /* 0x115B0 */ char        unk_115B0[0xFFE0];
-    /* 0x21590 */ TaskPool    taskPool;
-    /* 0x21610 */ NoiseReport unk_21610;
-    /* 0x2164C */ u16         unk_2164C;
-    /* 0x2164E */ char        unk_2164E[2];
+    /* 0x00000 */ ResourceManager  unk_00000;
+    /* 0x11580 */ ResourceManager* unk_11580;
+    /* 0x11584 */ MemPool          memPool;
+    /* 0x11590 */ MemBlock         memBlock;
+    /* 0x115B0 */ char             unk_115B0[0xFFE0];
+    /* 0x21590 */ TaskPool         taskPool;
+    /* 0x21610 */ NoiseReport      unk_21610;
+    /* 0x2164C */ u16              unk_2164C;
+    /* 0x2164E */ char             unk_2164E[2];
 } NoiseReportState; // Size: 0x21650
 
 typedef struct {

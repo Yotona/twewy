@@ -1,5 +1,6 @@
 #include "Debug/STSample.h"
 #include "Display.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
 #include "OverlayManager.h"
@@ -83,7 +84,6 @@ void func_ov041_020828f0(STSampleState* state) {
 /* Nonmatching */
 void STSample_ControlMenu(STSampleState* state) {
     s32        idx;
-    u8*        puVar2;
     OverlayTag tag;
 
     switch (SysControl.buttonState.pressedButtons) {
@@ -106,13 +106,14 @@ void STSample_ControlMenu(STSampleState* state) {
     }
 
     if (state->unk_22084 > state->unk_22088) {
-        puVar2 = &state->unk_0004C[state->unk_22088 * 0x141];
-        for (idx = 0; idx < 0x100; idx++) {
-            if ((idx & 0xff) != (u32)(u8)puVar2[0x220de]) {
-                break;
-            }
-            puVar2++;
-        }
+        // TODO: Fix reference, "4C" should be part of ResourceManager
+        // u8* puVar2 = &state->unk_0004C[state->unk_22088 * 0x141];
+        // for (idx = 0; idx < 0x100; idx++) {
+        //     if ((idx & 0xff) != (u32)(u8)puVar2[0x220de]) {
+        //         break;
+        //     }
+        //     puVar2++;
+        // }
         Text_RenderToScreen(&state->unk_215A0, 8, (state->unk_22088 + 1) * 8, "ƒf[ƒ^ŽóM"); // "Data Received"
         state->unk_22088++;
     }
@@ -142,7 +143,7 @@ void func_ov041_02082a5c(STSampleState* param) {
     DatMgr_AllocateSlot();
     state->unk_11584 = sVar2;
     func_ov041_02082ff0();
-    state->unk_11580                                    = func_0200cef0(state);
+    state->unk_11580                                    = ResourceMgr_ReinitManagers(&state->unk_00000);
     data_02066aec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
@@ -159,13 +160,13 @@ void func_ov041_02082b08(STSampleState* state) {
     STSample_ControlMenu(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
 void func_ov041_02082b88(STSampleState* state) {
     func_ov041_020828f0(state);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     Mem_Free(&gDebugHeap, state);
     OvlMgr_UnloadOverlay(3);

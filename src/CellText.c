@@ -1,11 +1,8 @@
 #include "CellText.h"
-#include "BgResMgr.h"
+#include "Engine/Resources/ResourceMgr.h"
 
 extern s32 data_0205caa4;
 extern s32 data_0205cac4;
-
-extern s32   data_0206b3cc[];
-extern void* data_0206b3d8[];
 
 static s32 CellText_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
@@ -67,11 +64,11 @@ s32 func_02025e74(CellText* cellText, CellTextArgs* arg1) {
     cellText->unk_004 = temp_r7;
     sp20              = temp_r7;
     cellText->unk_000 = sp0;
-    cellText->unk_008 = func_0200cb4c(data_0206b3d8[sp0], 0, temp_r8, 0);
-    cellText->unk_00C = func_0200a968(data_0206b3cc[sp0], var_r4_2, 5, 1);
+    cellText->unk_008 = ObjResMgr_AllocResource(g_ObjResourceManagers[sp0], 0, temp_r8, 0);
+    cellText->unk_00C = PaletteMgr_AcquireContiguous(g_PaletteManagers[sp0], var_r4_2, 5, 1);
     cellText->unk_428 = sp10;
     cellText->unk_42C = sp12;
-    sp18              = ((s32*)data_0206b3d8[sp0])[2] + (*(s16*)((s32)cellText + 0x18) << 5);
+    sp18              = ((s32*)g_ObjResourceManagers[sp0])[2] + (*(s16*)((s32)cellText + 0x18) << 5);
     sp1C              = *(s32*)((s32)cellText + 0x1C);
     func_0201187c(&cellText->unk_010, &sp0);
     func_02011ecc(&cellText->unk_010);
@@ -87,13 +84,13 @@ s32 func_0202600c(CellText* cellText) {
 
 // Nonmatching
 void CellText_Draw(CellText* cellText) {
-    func_02002a10(data_0206b3d8[cellText->unk_000] + 0x108C, cellText->unk_428, cellText->unk_42C, cellText->unk_04C, 0,
-                  cellText->unk_008 + 0x10);
+    func_02002a10(g_ObjResourceManagers[cellText->unk_000] + 0x108C, cellText->unk_428, cellText->unk_42C, cellText->unk_04C,
+                  0, cellText->unk_008 + 0x10);
 }
 
 void CellText_Free(CellText* cellText) {
-    func_0200cd44(data_0206b3d8[cellText->unk_000], cellText->unk_008);
-    func_0200afec(data_0206b3cc[cellText->unk_000], cellText->unk_00C);
+    ObjResMgr_ReleaseResource(g_ObjResourceManagers[cellText->unk_000], cellText->unk_008);
+    PaletteMgr_ReleaseResource(g_PaletteManagers[cellText->unk_000], cellText->unk_00C);
     func_02011994(&cellText->unk_010);
     Mem_Free(&gMainHeap, cellText->unk_004);
 }

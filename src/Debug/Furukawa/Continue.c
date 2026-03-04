@@ -1,5 +1,4 @@
 #include "Debug/Furukawa/Continue.h"
-#include "BgResMgr.h"
 #include "CriSndMgr.h"
 #include "DMA.h"
 #include "Display.h"
@@ -24,10 +23,6 @@ extern void func_0200283c(s32*, void*, void*);
 extern void func_02003440(s32*);
 extern void func_020034b0(s32*);
 extern void func_0200434c();
-extern void func_0200adf8(s32, void*, void*, void*, s32);
-extern void func_0200bf60(s32, void*);
-extern void func_0200cef0(void*);
-extern void func_0200d120(s32);
 extern void func_020265d4(void*, void*, u16);
 extern void func_ov003_020825b8(s32, void*, void*);
 extern void func_ov003_02082724(void*, s32, s16);
@@ -140,20 +135,22 @@ void func_ov025_020e76b4(ContinueObject* arg0) {
     void* var_r4 = Data_GetPackEntryData(arg0->unk_11E0C, 2);
     void* var_r5 = Data_GetPackEntryData(arg0->unk_11E0C, 3);
 
-    BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r1, g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x6000);
-    BgResMgr_AllocScreen(g_BgResourceManagers[1], var_r4, g_DisplaySettings.engineState[1].bgSettings[1].screenBase,
+    BgResMgr_AllocChar32(g_BgResourceManagers[DISPLAY_SUB], var_r1, g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0,
+                         0x6000);
+    BgResMgr_AllocScreen(g_BgResourceManagers[DISPLAY_SUB], var_r4, g_DisplaySettings.engineState[1].bgSettings[1].screenBase,
                          g_DisplaySettings.engineState[1].bgSettings[1].screenSizeText);
-    func_0200adf8(data_0206b3cc[1], var_r5, 0, 0, 7);
+    PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_SUB], var_r5, 0, 0, 7);
 
     void* var_r1_2 = Data_GetPackEntryData(arg0->unk_11E0C, 4);
     void* var_r5_2 = Data_GetPackEntryData(arg0->unk_11E0C, 5);
     void* var_r4_2 = Data_GetPackEntryData(arg0->unk_11E0C, 6);
 
-    BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r1_2, g_DisplaySettings.engineState[0].bgSettings[1].charBase, 0,
-                         0x6000);
-    BgResMgr_AllocScreen(g_BgResourceManagers[0], var_r5_2, g_DisplaySettings.engineState[0].bgSettings[1].screenBase,
+    BgResMgr_AllocChar32(g_BgResourceManagers[DISPLAY_MAIN], var_r1_2, g_DisplaySettings.engineState[0].bgSettings[1].charBase,
+                         0, 0x6000);
+    BgResMgr_AllocScreen(g_BgResourceManagers[DISPLAY_MAIN], var_r5_2,
+                         g_DisplaySettings.engineState[0].bgSettings[1].screenBase,
                          g_DisplaySettings.engineState[0].bgSettings[1].screenSizeText);
-    func_0200adf8(data_0206b3cc[0], var_r4_2, 0, 0, 7);
+    PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], var_r4_2, 0, 0, 7);
 }
 
 void func_ov025_020e785c(ContinueUnkStruct* arg0, s16 arg1, s32 arg2, s16 arg3, s16 arg4) {
@@ -384,7 +381,7 @@ void Continue_Init(ContinueObject* contObj) {
     Mem_InitializeHeap(&contObj->memPool, contObj->memBuffer, sizeof(contObj->memBuffer));
     EasyTask_InitializePool(&contObj->taskPool, &contObj->memPool, 8, NULL, NULL);
     Continue_RegisterVBlank();
-    func_0200cef0(&contObj->unk_0088C);
+    ResourceMgr_ReinitManagers(&contObj->unk_0088C);
     data_02066aec = 0;
     data_02066eec = 0;
     Input_Init(&InputStatus, 12, 2, 1);
@@ -413,15 +410,16 @@ void Continue_Update(ContinueObject* contObj) {
         EasyTask_UpdatePool(&contObj->taskPool);
         func_020034b0(&data_020676ec);
         func_020034b0(&data_02068778);
-        func_0200bf60(data_0206b3cc[0], 0);
-        func_0200bf60(data_0206b3cc[1], 0);
+        PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+        PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
     }
 }
 
 void Continue_Destroy(ContinueObject* contObj) {
     if (contObj != NULL) {
         func_ov025_020e7d70(contObj);
-        func_0200d120(&contObj->unk_0088C);
+        ResourceMgr_ReleaseResource(
+            (Resource*)&contObj->unk_0088C); // BUG: Attempts to release the ResourceManager, not a Resource
         DatMgr_ReleaseData(contObj->unk_11E0C);
         Continue_ReleaseVBlank();
         EasyTask_DestroyPool(&contObj->taskPool);

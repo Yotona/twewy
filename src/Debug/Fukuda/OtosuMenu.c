@@ -1866,8 +1866,9 @@ void func_ov002_02082f18(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, void* arg3) 
     g_DisplaySettings.controls[0].layers = 29;
     g_DisplaySettings.controls[1].layers = 28;
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F0, 4), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F0, 4), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F0, 10),
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x6000);
@@ -1881,8 +1882,9 @@ void func_ov002_02082f18(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, void* arg3) 
     menuObj->unk_47498 = Data_GetPackEntryData(menuObj->unk_462F0, 14) + 4;
     func_0200d1d8(&menuObj->unk_47398, 1, 2, 0, &menuObj->unk_47498, 1, 1);
 
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], Data_GetPackEntryData(menuObj->unk_462F0, 3), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F0, 3), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
 
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F0, 16),
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
@@ -1928,8 +1930,9 @@ void func_ov002_02083484(OtosuMenuObj* menuObj, u16* arg1) {
     g_DisplaySettings.controls[0].layers = 0;
     g_DisplaySettings.controls[1].layers = 2;
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     void* table_ptr    = Data_GetPackEntryData(menuObj->unk_462F0, 5);
     menuObj->unk_47490 = Data_GetPackEntryData(menuObj->unk_462F0, 6) + 4;
@@ -1953,9 +1956,10 @@ void func_ov002_02083694(OtosuMenuObj* menuObj) {
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     menuObj->unk_462F4 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 2, 0);
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
 
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 4),
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x5800);
@@ -1969,8 +1973,9 @@ void func_ov002_02083694(OtosuMenuObj* menuObj) {
     menuObj->unk_47498 = Data_GetPackEntryData(menuObj->unk_462F4, 3) + 4;
     func_0200d1d8(&menuObj->unk_47398, 1, 2, 0, &menuObj->unk_47498, 1, 1);
 
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
 
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 9),
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
@@ -1995,8 +2000,9 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     menuObj->unk_462F4 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 3, 0);
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F0, 9),
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x6000);
@@ -2078,8 +2084,9 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     temp_r3->bgOffsets[bg].hOffset = 0x200000;
     temp_r3->bgOffsets[bg].vOffset = 0x200000;
 
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
 
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F0, 15),
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
@@ -2219,8 +2226,9 @@ void func_ov002_02084494(OtosuMenuObj* menuObj, u8 arg1, u16* arg2) {
     sp20        = data_ov002_02091aac.unk10[2];
     u16 temp_r2 = (&sp1C)[arg1];
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F4, temp_r2), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, temp_r2), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 6),
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x8000);
@@ -2257,8 +2265,9 @@ void func_ov002_02084494(OtosuMenuObj* menuObj, u8 arg1, u16* arg2) {
     sp10          = data_ov002_02091aac.unk10[6];
     u16 temp_r2_3 = (&spC)[arg1];
 
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], Data_GetPackEntryData(menuObj->unk_462F4, temp_r2_3), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, temp_r2_3), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
 
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 20),
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
@@ -2335,8 +2344,8 @@ void func_ov002_02084c84(OtosuMenuObj* menuObj, u16* arg1) {
     temp_r0            = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 5, 0);
     menuObj->unk_462F4 = temp_r0;
     var_r1             = Data_GetPackEntryData(temp_r0, 1);
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], var_r1, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 = PaletteMgr_AllocPalette(g_PaletteManagers[1], var_r1, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
     temp_r0_2          = menuObj->unk_462F4;
     var_r1_2           = Data_GetPackEntryData(temp_r0_2, 2);
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r1_2,
@@ -2351,8 +2360,8 @@ void func_ov002_02084c84(OtosuMenuObj* menuObj, u16* arg1) {
     if (temp_r0_4 != NULL) {
         var_r1_3 = Data_GetPackEntryData(temp_r0_4, 6);
     }
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], var_r1_3, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 = PaletteMgr_AllocPalette(g_PaletteManagers[0], var_r1_3, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
     temp_r0_5          = menuObj->unk_462F4;
     var_r1_4           = Data_GetPackEntryData(temp_r0_5, 7);
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r1_4,
@@ -2394,8 +2403,9 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     menuObj->unk_462F4 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 5, 0);
 
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
 
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 2),
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x6000);
@@ -2420,8 +2430,9 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
     g_DisplaySettings.controls[1].layers = 0x1E;
     g_DisplaySettings.controls[0].layers = 0;
 
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
 
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 7),
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
@@ -2459,7 +2470,7 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
 
 void func_ov002_02085710(OtosuMenuObj* menuObj) {
     if (menuObj->unk_47344 != NULL) {
-        func_0200afec(data_0206b3cc[0]);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[0], menuObj->unk_47344);
         menuObj->unk_47344 = NULL;
     }
     if (menuObj->unk_47330 != NULL) {
@@ -2480,7 +2491,7 @@ void func_ov002_02085710(OtosuMenuObj* menuObj) {
     }
 
     if (menuObj->unk_47340 != NULL) {
-        func_0200afec(data_0206b3cc[1]);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[1], menuObj->unk_47340);
         menuObj->unk_47340 = NULL;
     }
     if (menuObj->unk_47320 != NULL) {
@@ -2619,7 +2630,7 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     obj->unk_1158C      = DatMgr_AllocateSlot();
     obj->unk_11588      = DatMgr_AllocateSlot();
     data_ov002_020934e0 = 0;
-    obj->unk_11580      = func_0200cef0(obj);
+    obj->unk_11580      = ResourceMgr_ReinitManagers(&obj->unk_00000);
     func_ov031_0210aaac(&obj->unk_45FF4, 1, 1);
     func_ov031_0210ab60(&obj->unk_45FF4, 3);
     func_ov031_0210ab54(&obj->unk_45FF4, 1, 0);
@@ -2890,8 +2901,8 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
             }
             func_020034b0(&data_020676ec);
             func_020034b0(&data_02068778);
-            func_0200bf60(data_0206b3cc[0], 0);
-            func_0200bf60(data_0206b3cc[1], 0);
+            PaletteMgr_Flush(g_PaletteManagers[0], 0);
+            PaletteMgr_Flush(g_PaletteManagers[1], 0);
             func_0200d90c();
             if (menuObj->unk_460BC != 0) {
                 func_ov002_02085ac4(menuObj);
@@ -2908,7 +2919,7 @@ void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
     EasyTask_DestroyPool(&menuObj->taskPool);
     PrcCtx_Destroy(&menuObj->unk_4161C);
     PrcMaster_Destroy(&menuObj->prcMaster);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(menuObj->unk_11584);
     DatMgr_ClearSlot(menuObj->unk_1158C);
     DatMgr_ClearSlot(menuObj->unk_11588);
@@ -3727,10 +3738,10 @@ void func_ov002_02087aa8(OtosuMenuObj* menuObj) {
         }
         MI_CpuCopyU16((s32)(var_ip + (table_pairs[temp_r4][0] << 5)), var_r4_2 + 0x20, 0x20);
         if (menuObj->unk_47340 != NULL) {
-            func_0200afec(data_0206b3cc[1]);
+            PaletteMgr_ReleaseResource(g_PaletteManagers[1], menuObj->unk_47340);
         }
-        menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], var_r4_2, 0, 0, 0x10);
-        func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+        menuObj->unk_47340 = PaletteMgr_AllocPalette(g_PaletteManagers[1], var_r4_2, 0, 0, 0x10);
+        PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
         return;
     }
     menuObj->unk_474D2 = (u16)(temp_r0_2 - 1);
@@ -8569,8 +8580,8 @@ void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
     } while ((u32)var_ip < 0x10U);
     Mem_Free(&gDebugHeap, temp_r1);
     DC_PurgeAll();
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], var_r4, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 = PaletteMgr_AllocPalette(g_PaletteManagers[1], var_r4, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
     var_r4_2           = Data_GetPackEntryData(menuObj->unk_462F0, 5);
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r4_2,
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x6000);
@@ -8591,8 +8602,8 @@ void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
     } while ((u32)var_ip_2 < 0x10U);
     Mem_Free(&gDebugHeap, temp_r1_4);
     DC_PurgeAll();
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], var_r4_3, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 = PaletteMgr_AllocPalette(g_PaletteManagers[0], var_r4_3, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
     var_r4_4 = Data_GetPackEntryData(menuObj->unk_462F0, 7);
     if (menuObj->unk_462F0 == NULL) {
         var_r0_2 = NULL;
@@ -8846,8 +8857,8 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     if (temp_r0 != NULL) {
         var_r1 = Data_GetPackEntryData(temp_r0, 1);
     }
-    menuObj->unk_47340 = func_0200adf8(data_0206b3cc[1], var_r1, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[1], menuObj->unk_47340);
+    menuObj->unk_47340 = PaletteMgr_AllocPalette(g_PaletteManagers[1], var_r1, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
     temp_r2  = menuObj->unk_462F8;
     var_r1_2 = Data_GetPackEntryData((Data*)temp_r2, 1);
     if (temp_r2 == NULL) {
@@ -8873,8 +8884,8 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     func_0200d1d8(&menuObj->unk_47398, 1, 2, 0, &menuObj->unk_47498, 1, 1);
     temp_r0_2          = menuObj->unk_462F4;
     var_r1_4           = Data_GetPackEntryData(temp_r0_2, 1);
-    menuObj->unk_47344 = func_0200adf8(data_0206b3cc[0], var_r1_4, 0, 0, 0x10);
-    func_0200bf60(data_0206b3cc[0], menuObj->unk_47344);
+    menuObj->unk_47344 = PaletteMgr_AllocPalette(g_PaletteManagers[0], var_r1_4, 0, 0, 0x10);
+    PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
     temp_r2_4 = menuObj->unk_462FC;
     var_r1_5  = Data_GetPackEntryData((Data*)temp_r2_4, 1);
     if (temp_r2_4 == NULL) {

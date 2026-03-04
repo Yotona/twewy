@@ -2,9 +2,7 @@
 
 extern s32 data_020676ec;
 
-s16 data_0205adb4[12];
-s32 data_0206b3d8[];
-s32 data_0206b3cc[];
+const s16 data_0205adb4[12] = {1, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0};
 
 SpriteFrameInfo data_0206b408;
 
@@ -200,34 +198,34 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
     } else {
         endX = sprite->posX + sprite->scaleX;
     }
-    UnkSmallInternal* tempchar = sprite->charData;
-    if (tempchar->unk_10 != tempchar->unk_12) { // if currentFrame != maxFrame?
+    ObjResource* tempchar = sprite->charData;
+    if (tempchar->bitmapIndex != tempchar->unk_12) { // if currentFrame != maxFrame?
         isAnimating = TRUE;
     }
     if (isAnimating == TRUE) {
-        func_0200cdbc(data_0206b3d8[tempbit], tempchar, sprite->unk34, 0); // replace texture in VRAM?
+        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], tempchar, sprite->unk34, 0); // replace texture in VRAM?
     }
     if (tempbit == 2) {
-        UnkSmallInternal* tempPalette = sprite->paletteData;
-        u32               tempArg     = 0;
+        PaletteResource* tempPalette = sprite->paletteData;
+        u32              tempArg     = 0;
         switch (tempbit) {
             case 0:
-                tempArg = *(u32*)(data_0206b3cc[0] + (tempPalette->unk_0C_bits_0_2 * 4) + 4);
+                tempArg = *(u32*)(g_PaletteManagers[0] + (tempPalette->slotType * 4) + 4);
                 break;
             case 1:
-                tempArg = *(u32*)(data_0206b3cc[1] + (tempPalette->unk_0C_bits_0_2 * 4) + 4);
+                tempArg = *(u32*)(g_PaletteManagers[1] + (tempPalette->slotType * 4) + 4);
                 break;
             case 2:
-                if (tempPalette->unk_0C_bits_0_2 == 6) {
+                if (tempPalette->slotType == 6) {
                     tempArg = 0x200;
                 }
                 break;
         }
         func_02003ef4(arg1->unk_10, endX, sprite->posY + sprite->scaleY, arg1->unk_08, (s32)arg2.raw,
-                      sprite->charData->unk_10 * 32, tempArg, arg1->unk_0C);
+                      sprite->charData->bitmapIndex * 32, tempArg, arg1->unk_0C);
         return;
     }
-    s16 temp_lr = sprite->charData->unk_10;
+    s16 temp_lr = sprite->charData->bitmapIndex;
     s32 temp_08 = arg1->unk_08;
     s16 posY    = sprite->posY;
     s16 scaleY  = sprite->scaleY;
@@ -260,36 +258,37 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
     } else {
         endX = sprite->posX + sprite->scaleX;
     }
-    UnkSmallInternal* tempchar = sprite->charData;
-    if (tempchar->unk_10 != tempchar->unk_12) { // if currentFrame != maxFrame?
+    ObjResource* tempchar = sprite->charData;
+    if (tempchar->bitmapIndex != tempchar->unk_12) { // if currentFrame != maxFrame?
         isAnimating = TRUE;
     }
     if (isAnimating == TRUE || tempchar->unk_18 != sprite->unk34 || arg1->unk_08 != sprite->unk38) {
         sprite->unk38 = arg1->unk_08;
-        func_0200cdbc(data_0206b3d8[tempbit], tempchar, sprite->unk34, arg1->unk_08); // replace texture in VRAM?
+        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], tempchar, sprite->unk34,
+                             arg1->unk_08); // replace texture in VRAM?
     }
     if (tempbit == 2) {
-        arg1->unk_08                  = func_0200333c(0, arg1->unk_08);
-        UnkSmallInternal* tempPalette = sprite->paletteData;
-        u32               tempArg     = 0;
+        arg1->unk_08                 = func_0200333c(0, arg1->unk_08);
+        PaletteResource* tempPalette = sprite->paletteData;
+        u32              tempArg     = 0;
         switch (tempbit) {
             case 0:
-                tempArg = *(u32*)(data_0206b3cc[0] + (tempPalette->unk_0C_bits_0_2 * 4) + 4);
+                tempArg = *(u32*)(g_PaletteManagers[0] + (tempPalette->slotType * 4) + 4);
                 break;
             case 1:
-                tempArg = *(u32*)(data_0206b3cc[1] + (tempPalette->unk_0C_bits_0_2 * 4) + 4);
+                tempArg = *(u32*)(g_PaletteManagers[1] + (tempPalette->slotType * 4) + 4);
                 break;
             case 2:
-                if (tempPalette->unk_0C_bits_0_2 == 6) {
+                if (tempPalette->slotType == 6) {
                     tempArg = 0x200;
                 }
                 break;
         }
         func_02003ef4(arg1->unk_10, endX, sprite->posY + sprite->scaleY, arg1->unk_08, (s32)arg2.raw,
-                      sprite->charData->unk_10 * 32, tempArg, arg1->unk_0C);
+                      sprite->charData->bitmapIndex * 32, tempArg, arg1->unk_0C);
         return;
     }
-    s16 temp_lr = sprite->charData->unk_10;
+    s16 temp_lr = sprite->charData->bitmapIndex;
     s32 temp_08 = arg1->unk_08;
     s16 posY    = sprite->posY;
     s16 scaleY  = sprite->scaleY;
@@ -320,14 +319,14 @@ void Sprite_RenderFrame(Sprite* sprite) {
     u32 test2 = sprite->bits_0_1;
 
     if (sprite->bits_7 != 0 && sprite->charData != NULL && sprite->paletteData != NULL) {
-        UnkSmallInternal* pData = sprite->paletteData;
+        PaletteResource* pData = sprite->paletteData;
         if (renderData->unk_08 != 0) {
             // Compiler optimization: unk_0A is copied into a local variable. Stored onto the stack.
             // Normally Stack allocation would happen at the start of the function with a `sub sp, sp, 0xXX` instrunction
             // But in this function the stack allocation only happens when the local variable is needed for a function call
             // Thus we get `sub r3, sp, 0x04` right before the local variable is passed into the function calls below.
             Unk_Bitfield unk = sprite->unk_0A;
-            unk.unk_12 += pData->unk_10;
+            unk.unk_12 += pData->palIndex;
             switch (sprite->bits_3_4) {
                 case 0:
                 case 2:
@@ -342,8 +341,8 @@ void Sprite_RenderFrame(Sprite* sprite) {
             }
         }
 
-        if (sprite->paletteData->unk_18 != sprite->unk3C) {
-            func_0200bfb4(data_0206b3cc[test2], sprite->paletteData, sprite->unk3C);
+        if (sprite->paletteData->sourcePalette != sprite->unk3C) {
+            PaletteMgr_SetSource(g_PaletteManagers[test2], sprite->paletteData, sprite->unk3C);
         }
     }
 }
@@ -444,7 +443,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     u32 temp_r6_4 = arg1->bit_6;
 
     if (sp8[1] > 0) {
-        sprite->charData = func_0200cb4c(data_0206b3d8[temp_r4_4], var_r1_2, arg1->unk_1E, temp_r6_4);
+        sprite->charData = ObjResMgr_AllocResource(g_ObjResourceManagers[temp_r4_4], var_r1_2, arg1->unk_1E, temp_r6_4);
 
         sprite->unk34  = Data_GetPackEntryData(sprite->resourceData, sp8[1]);
         sprite->bit_13 = 1;
@@ -456,12 +455,12 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
             if (arg1->unk_22 == 0) {
                 var_r3 = ((((Sprite*)(sprite->resourceData->buffer + (sp8[2] * 8)))->unk24 + 0x1F) & ~0x1F) >> 5;
             }
-            sprite->paletteData = func_0200a968(data_0206b3cc[temp_r4_4], var_r6, temp_r5_6, var_r3);
+            sprite->paletteData = PaletteMgr_AcquireContiguous(g_PaletteManagers[temp_r4_4], var_r6, temp_r5_6, var_r3);
         } else {
             if (arg1->unk_22 == 0) {
                 var_r3 = 1;
             }
-            sprite->paletteData = func_0200abe4(data_0206b3cc[temp_r4_4], var_r6, temp_r5_6, var_r3);
+            sprite->paletteData = PaletteMgr_AcquireMasked(g_PaletteManagers[temp_r4_4], var_r6, temp_r5_6, var_r3);
         }
 
         sprite->unk3C = Data_GetPackEntryData(sprite->resourceData, sp8[2]);
@@ -500,10 +499,10 @@ void Sprite_Release(Sprite* sprite) {
     }
 
     if ((sprite->bit_13 == 1) && (sprite->charData != 0)) {
-        func_0200cd44(data_0206b3d8[temp_r4], sprite->charData);
+        ObjResMgr_ReleaseResource(g_ObjResourceManagers[temp_r4], sprite->charData);
     }
     if ((sprite->bit_14 == 1) && (sprite->paletteData != NULL)) {
-        func_0200afec(data_0206b3cc[temp_r4], sprite->paletteData);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[temp_r4], sprite->paletteData);
     }
     Sprite_Init(sprite);
 }
@@ -589,13 +588,13 @@ static void Sprite_SetStaticCell(Sprite* arg0, s32 arg1, s16 arg2) {
     arg0->frameDataTable = arg1;
 }
 
-s32 Sprite_ChangePalette(Sprite* sprite, s32 arg1, void* arg2, u32 arg3, u32 arg4) {
+s32 Sprite_ChangePalette(Sprite* sprite, s32 arg1, void* arg2, u16 arg3, u32 arg4) {
     if (sprite->paletteData != NULL) {
-        func_0200afec(data_0206b3cc[arg1], sprite->paletteData);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[arg1], sprite->paletteData);
         sprite->bit_14 = 0;
     }
 
-    void* palette = func_0200a968(data_0206b3cc[arg1], arg2, arg3, arg4);
+    PaletteResource* palette = PaletteMgr_AcquireContiguous(g_PaletteManagers[arg1], arg2, arg3, arg4);
     if (palette != NULL) {
         sprite->paletteData = palette;
         sprite->unk3C       = arg2;
@@ -612,7 +611,7 @@ void Sprite_Restart(Sprite* sprite) {
     }
 }
 
-void Sprite_RenderAltPalette(Sprite* arg0, UnkSmallInternal* arg1, UnkSmallInternal* arg2, s16 arg3) {
+void Sprite_RenderAltPalette(Sprite* arg0, PaletteResource* arg1, UnkSmallInternal* arg2, s16 arg3) {
     void* temp30;
     void* temp3C;
 
@@ -623,12 +622,12 @@ void Sprite_RenderAltPalette(Sprite* arg0, UnkSmallInternal* arg1, UnkSmallInter
         arg0->unk3C       = arg2;
     }
 
-    u32 temp                  = arg0->paletteData->unk_10 & 0xFF;
-    arg0->paletteData->unk_10 = temp + arg3;
+    u32 temp                    = arg0->paletteData->palIndex & 0xFF;
+    arg0->paletteData->palIndex = temp + arg3;
 
     Sprite_Render(arg0);
 
-    arg0->paletteData->unk_10 = temp;
+    arg0->paletteData->palIndex = temp;
     if ((arg1 != 0) && (arg2 != 0)) {
         arg0->paletteData = temp30;
         arg0->unk3C       = temp3C;
@@ -660,7 +659,7 @@ void Sprite_Destroy(Sprite* sprite) {
     }
 }
 
-// TODO: Appears to only be used by data_0205ad9c/func_0200c858, possibly just type Task
+// TODO: Appears to only be used by data_0205ad9c/ObjResMgr_Reset, possibly just type Task
 typedef struct {
     /* 0x00 */ char    unk_00[0x18];
     /* 0x18 */ Sprite* unk_18;

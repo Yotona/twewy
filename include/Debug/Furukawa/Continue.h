@@ -3,6 +3,7 @@
 
 #include "DatMgr.h"
 #include "EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Memory.h"
 
 // TODO: Most likely defined by overlay 3
@@ -23,8 +24,7 @@ typedef struct {
     /* 0x00000 */ u8                 memBuffer[0x800];
     /* 0x00800 */ MemPool            memPool;
     /* 0x0080C */ TaskPool           taskPool;
-    /* 0x0088C */ s32                unk_0088C;
-    /* 0x00890 */ char               unk_00890[0x1157C];
+    /* 0x0088C */ ResourceManager    unk_0088C;
     /* 0x11E0C */ Data*              unk_11E0C;
     /* 0x11E10 */ ContinueUnkStruct  unk_11E10[4];
     /* 0x11FB0 */ ContinueUnkStruct2 unk_11FB0;

@@ -1,5 +1,4 @@
 #include "Debug/Suyama/StaffRoll.h"
-#include "BgResMgr.h"
 #include "CriSndMgr.h"
 #include "Interrupts.h"
 #include "Memory.h"
@@ -84,7 +83,7 @@ void func_ov042_020824e0(StaffRollState* state) {
     FS_LoadOverlay(0, &OVERLAY_31_ID);
     func_ov031_0210aa94(&state->unk_2171C);
     func_ov042_020842e4();
-    state->unk_11580 = func_0200cef0(state);
+    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     Mem_InitializeHeap(&state->memPool, &state->memPoolBuffer, sizeof(state->memPoolBuffer));
     EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x200, NULL, NULL);
     state->unk_21614.pool = &state->taskPool;
@@ -113,15 +112,15 @@ void func_ov042_02082620(StaffRollState* state) {
     }
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
 // Nonmatching: Regswaps
 void func_ov042_02082700(StaffRollState* state) {
     EasyTask_DestroyPool(&state->taskPool);
     func_ov031_0210aabc(&state->unk_2171C);
-    func_0200cef0(0);
+    ResourceMgr_ReinitManagers(0);
 
     for (s32 engine = 0; engine < 2; engine++) {
         StaffRollUnkC* unkC = &state->unk_21614.unk_10[engine];
@@ -134,7 +133,7 @@ void func_ov042_02082700(StaffRollState* state) {
 
         for (s32 i = 0; i < 3; i++) {
             DatMgr_ReleaseData(unkC->group3[i].data);
-            func_0200afec(data_0206b3cc[i], unkC->group3[engine].unk_04);
+            PaletteMgr_ReleaseResource(g_PaletteManagers[i], unkC->group3[engine].unk_04);
         }
     }
     func_ov042_020846d0();
@@ -291,14 +290,14 @@ void func_ov042_02082b20(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
     }
 
     if (var->unk_04 != NULL) {
-        func_0200afec(data_0206b3cc[tmp], var->unk_04);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[tmp], var->unk_04);
         var->unk_04 = NULL;
     }
 
     Data* var2  = DatMgr_LoadPackEntry(1, NULL, 0, &data_ov042_020847c0[tmp5], tmp6, FALSE);
     u8*   param = Data_GetPackEntryData(var2, 1);
 
-    void* temp_04 = func_0200adf8(data_0206b3cc[tmp], param, 0, tmp3, tmp4);
+    void* temp_04 = PaletteMgr_AllocPalette(g_PaletteManagers[tmp], param, 0, tmp3, tmp4);
     var->data     = var2;
     var->unk_04   = temp_04;
 }
@@ -352,7 +351,7 @@ void func_ov042_02082d50(StaffRoll_CallbackStruct* cbArg, CommandUnk04* args) {
         var->data = NULL;
     }
     if (var->unk_04 != NULL) {
-        func_0200afec(data_0206b3cc[tmp], var->unk_04);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[tmp], var->unk_04);
         var->unk_04 = NULL;
     }
 }

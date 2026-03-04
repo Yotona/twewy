@@ -143,7 +143,7 @@ void main(void) {
         OvlDisp_InitUnused1();
         RNG_SetSeed(0);
         DatMgr_Init(NULL, 0);
-        func_0200cef0(0);
+        ResourceMgr_ReinitManagers(0);
         SysControl.frameCount = 0;
         TouchInput_Init();
         func_020415a4();

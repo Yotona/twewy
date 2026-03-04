@@ -31,8 +31,9 @@ enum {
  * Display engine identifiers for main and sub screens.
  */
 typedef enum {
-    DISPLAY_MAIN = 0,
-    DISPLAY_SUB  = 1,
+    DISPLAY_MAIN     = 0,
+    DISPLAY_SUB      = 1,
+    DISPLAY_EXTENDED = 2, ///< Extended resources (if applicable)
 } DisplayEngine;
 
 /**

@@ -1,5 +1,6 @@
 #include "DatMgr.h"
 #include "Display.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Interrupts.h"
 #include "Memory.h"
 #include "OverlayDispatcher.h"
@@ -11,21 +12,20 @@
 #include <types.h>
 
 typedef struct {
-    /* 0x00000 */ s32           unk_00000;
-    /* 0x00004 */ char          unk_00004[0x1157C];
-    /* 0x11580 */ s32           unk_11580;
-    /* 0x11584 */ s32           unk_11584;
-    /* 0x11588 */ char          unk_11588[0x10428];
-    /* 0x219B0 */ UnkOv31Struct unk_219B0;
-    /* 0x21A2C */ s32           unk_21A2C;
-    /* 0x21A30 */ char          unk_21A30[0x78];
-    /* 0x21AA8 */ void*         unk_21AA8;
-    /* 0x21AAC */ s32           unk_21AAC;
-    /* 0x21AB0 */ Sprite        unk_21AB0;
-    /* 0x21AF0 */ Sprite        unk_21AF0;
-    /* 0x21B30 */ char          unk_21B30[0xC];
-    /* 0x21B3C */ s32           unk_21B3C;
-    /* 0x21B40 */ s32           unk_21B40;
+    /* 0x00000 */ ResourceManager  unk_00000;
+    /* 0x11580 */ ResourceManager* unk_11580;
+    /* 0x11584 */ s32              unk_11584;
+    /* 0x11588 */ char             unk_11588[0x10428];
+    /* 0x219B0 */ UnkOv31Struct    unk_219B0;
+    /* 0x21A2C */ s32              unk_21A2C;
+    /* 0x21A30 */ char             unk_21A30[0x78];
+    /* 0x21AA8 */ void*            unk_21AA8;
+    /* 0x21AAC */ s32              unk_21AAC;
+    /* 0x21AB0 */ Sprite           unk_21AB0;
+    /* 0x21AF0 */ Sprite           unk_21AF0;
+    /* 0x21B30 */ char             unk_21B30[0xC];
+    /* 0x21B3C */ s32              unk_21B3C;
+    /* 0x21B40 */ s32              unk_21B40;
 } FontState; // Size: 0x21B44
 
 const BinIdentifier data_ov001_02082f98 = {1, "Apl_Fuk/Grp_FldMessWin.bin"};
@@ -49,7 +49,7 @@ void func_ov001_0208254c(FontState* arg0) {
 }
 
 void func_ov001_020825f4(FontState* arg0) {
-    func_0200afec(data_0206b3cc[1], arg0->unk_21AAC);
+    PaletteMgr_ReleaseResource(g_PaletteManagers[1], arg0->unk_21AAC);
     Mem_Free(&gDebugHeap, arg0->unk_21AA8);
 }
 
@@ -80,8 +80,8 @@ void func_ov001_0208288c(FontState* arg0) {
     val = arg0->unk_21B40 + 4;
     func_0203ab7c(3, val, G2S_GetBG0CharPtr(), 0x8000);
 
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[0], 0);
+    PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }
 
 func_ov001_02082984(FontState* arg0) {
@@ -101,7 +101,7 @@ void FontTest_Init(FontState* arg0) {
 
     arg0->unk_11584 = DatMgr_AllocateSlot();
     FontTest_RegisterVBlank();
-    arg0->unk_11580 = func_0200cef0(arg0);
+    arg0->unk_11580 = ResourceMgr_ReinitManagers(&arg0->unk_00000);
 
     data_02066aec                                       = 0;
     data_02066eec                                       = 0;
@@ -138,7 +138,7 @@ void FontTest_Update(FontState* arg0) {
 
 void FontTest_Destroy(FontState* arg0) {
     func_ov001_02082984(arg0);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(arg0->unk_11584);
     Mem_Free(&gDebugHeap, arg0);
 }

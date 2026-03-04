@@ -452,7 +452,7 @@ void OpenEnd_Init(OpenEndState* state) {
         brightness = ~0xF;
     }
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
-    func_0200cef0(&(state->unk_10));
+    ResourceMgr_ReinitManagers(&state->unk_10);
     Input_Init(&InputStatus, 8, 1, 2);
     TouchInput_Init();
     TouchInput_Update();
@@ -483,8 +483,8 @@ void OpenEnd_Update(OpenEndState* state) {
         return;
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[0], 0);
+    PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }
 
 void OpenEnd_Destroy(OpenEndState* state) {

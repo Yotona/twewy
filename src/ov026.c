@@ -1,9 +1,9 @@
-#include "BgResMgr.h"
 #include "DMA.h"
 #include "DatMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
 #include "EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Input.h"
 #include "Interrupts.h"
 #include "Memory.h"
@@ -24,12 +24,8 @@ extern void MI_CpuFill(s32, void*, s32);
 extern void func_0200283c(void*, s32, s32);
 extern void DC_PurgeRange(void*, u32);
 extern void func_02001c34(void*, void*, s32, s32, s32);
-extern void func_0200cef0(void*);
 extern void func_02003440(void*);
 extern void func_020034b0(void*);
-extern void func_0200adf8(void*, void*, s32, s32, s32);
-extern void func_0200bf60(void*, s32);
-extern void func_0200d120(void*);
 extern void SndMgr_StartPlayingSE(s32);
 extern void func_ov003_02082724(void*, s32, s32);
 extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
@@ -274,7 +270,7 @@ static void func_ov026_020e7838(Ov026State* state) {
                          g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText);
 
     void* char1Data = Data_GetPackEntryData(state->unk11E0C, config->unk1);
-    func_0200adf8(data_0206b3cc[1], char1Data, 0, 0, 0x10);
+    PaletteMgr_AllocPalette(g_PaletteManagers[1], char1Data, 0, 0, 0x10);
 
     void* char9Data   = Data_GetPackEntryData(state->unk11E0C, config->unk9);
     void* screen3Data = Data_GetPackEntryData(state->unk11E10, 1);
@@ -293,7 +289,7 @@ static void func_ov026_020e7838(Ov026State* state) {
                          g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
 
     void* char8Data = Data_GetPackEntryData(state->unk11E0C, config->unk8);
-    func_0200adf8(data_0206b3cc[0], char8Data, 0, 0, 0x10);
+    PaletteMgr_AllocPalette(g_PaletteManagers[0], char8Data, 0, 0, 0x10);
 }
 
 static void func_ov026_020e7ba0(Ov026State* state) {
@@ -372,7 +368,7 @@ static void func_ov026_020e7d3c(void* arg0) {
     Mem_InitializeHeap((MemPool*)((u8*)state + 0x800), state, 0x800);
     EasyTask_InitializePool((TaskPool*)((u8*)state + 0x80C), (MemPool*)((u8*)state + 0x800), 8, NULL, NULL);
     func_ov026_020e76f0();
-    func_0200cef0((u8*)state + 0x88C);
+    ResourceMgr_ReinitManagers((ResourceManager*)state + 0x88C);
     data_02066aec = 0;
     data_02066eec = 0;
     Input_Init(&InputStatus, 0xC, 2, 1);
@@ -405,8 +401,8 @@ static void func_ov026_020e7e7c(void* arg0) {
     EasyTask_UpdatePool((TaskPool*)((u8*)state + 0x80C));
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[0], 0);
+    PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }
 
 static void func_ov026_020e7f30(void* arg0) {
@@ -417,7 +413,7 @@ static void func_ov026_020e7f30(void* arg0) {
     }
 
     func_ov026_020e7be8(state);
-    func_0200d120((u8*)state + 0x88C);
+    ResourceMgr_ReleaseResource((Resource*)state + 0x88C);
     DatMgr_ReleaseData(state->unk11E0C);
     DatMgr_ReleaseData(state->unk11E10);
     func_ov026_020e7710();

@@ -1,5 +1,6 @@
 #include "DatMgr.h"
 #include "EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
 #include <types.h>
 
@@ -254,8 +255,6 @@ s32                 EasyFade_IsFading();                                        
 s32                 FX_Divide(s32, s32);                                                               /* extern */
 s32                 RNG_Next(s32);                                                                     /* extern */
 u16                 func_02002bc4(const void*, s32, s32, s32, s32);                                    /* extern */
-s32                 func_0200a968(s32, void*, s32, s32);                                               /* extern */
-void                func_0200afec(s32, s32);                                                           /* extern */
 s32                 SpriteMgr_IsAnimationFinished(void*);                                              /* extern */
 void                func_02026590(void*, s32, u16);                                                    /* extern */
 void                func_020265d4(void*, s32, u16);                                                    /* extern */
@@ -1545,7 +1544,7 @@ s32 func_ov016_021270a8(void* arg0, Ov016Task* arg1, void* arg2) {
     temp_r0 = data_ov003_020e71b8->unk3D350;
     var_r1  = Data_GetPackEntryData((Data*)(temp_r0), 66);
 
-    temp_r4->unk1D8 = func_0200a968(data_0206b3cc[2], var_r1, 5, 1);
+    temp_r4->unk1D8 = PaletteMgr_AcquireContiguous(g_PaletteManagers[2], var_r1, 5, 1);
     func_ov003_020c3efc(temp_r4, arg2);
     func_ov016_021256c0(&subroutine, 2, 0);
     func_ov003_02082998((u8*)temp_r4 + 0x84, &subroutine);
@@ -1626,7 +1625,7 @@ s32 func_ov016_02127340(void* arg0, Ov016Task* arg1, void* arg2) {
     (void)arg0;
     (void)arg2;
     temp_r4 = arg1->unk18;
-    func_0200afec(data_0206b3cc[2], temp_r4->unk1D8);
+    PaletteMgr_ReleaseResource(g_PaletteManagers[2], temp_r4->unk1D8);
     func_ov003_02082cc4((u8*)temp_r4 + 0x84);
     func_ov003_020c4a74(temp_r4);
     return 1;

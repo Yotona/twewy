@@ -1,4 +1,4 @@
-#include "BgResMgr.h"
+#include "Engine/Resources/ResourceMgr.h"
 
 void BgResMgr_LoadCharToVram(BgResMgr* arg0, BgResource* arg1, UnkSmallStruct_DispBG* arg2);
 void BgResMgr_LoadScreenToVram(BgResMgr* arg0, BgResource* arg1, UnkSmallStruct_DispBG* arg2);

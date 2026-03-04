@@ -368,7 +368,7 @@ void func_ov028_020e8878(NoiseReportState* state) {
 
     func_ov028_020e83f8();
 
-    state->unk_11580 = func_0200cef0(state);
+    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     TouchInput_Init();
     Mem_InitializeHeap(&state->memPool, &state->memBlock, 0x10000);
     EasyTask_InitializePool(&state->taskPool, &state->memPool, 512, NULL, NULL);
@@ -408,9 +408,9 @@ void func_ov028_020e89d0(NoiseReportState* state) {
     func_02003c68();
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
-    func_0200bf60(data_0206b3cc[2], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
 
     if (isAtBase) {
         switch (state->unk_2164C) {
@@ -435,7 +435,7 @@ void func_ov028_020e89d0(NoiseReportState* state) {
 void func_ov028_020e8b68(NoiseReportState* state) {
     func_ov028_020e7f00(&state->taskPool, &state->unk_21610);
     EasyTask_DestroyPool(&state->taskPool);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     func_ov028_020e87f4();
     Mem_Free(&gDebugHeap, state);
 }

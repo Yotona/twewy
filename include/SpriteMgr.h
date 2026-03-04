@@ -2,6 +2,7 @@
 #define UNK_TASK_THING_H
 
 #include "DatMgr.h"
+#include "Engine/Resources/ResourceMgr.h"
 
 enum {
     ANIM_MODE_STATIC = 0,
@@ -50,7 +51,7 @@ typedef union {
 
 typedef struct Sprite {
     /* 0x00 */             // struct {
-    u32 bits_0_1      : 2; // DisplayEngine? (Top vs Bottom screen) indexed into data_0206b3d8 and data_0206b3cc
+    u32 bits_0_1      : 2; // DisplayEngine? (Top vs Bottom screen) indexed into g_ObjResourceManagers and g_PaletteManagers
     u32 bit_2         : 1;
     u32 bits_3_4      : 2; // Rendering mode?
     u32 animationMode : 2;
@@ -83,8 +84,8 @@ typedef struct Sprite {
     /* 0x20 */ SpriteFrameInfo* (*frameInfoCallback)(struct Sprite*, s32, s32);
     /* 0x24 */ s32               unk24;
     /* 0x28 */ Data*             resourceData;
-    /* 0x2C */ UnkSmallInternal* charData;
-    /* 0x30 */ UnkSmallInternal* paletteData;
+    /* 0x2C */ ObjResource*      charData;
+    /* 0x30 */ PaletteResource*  paletteData;
     /* 0x34 */ void*             unk34; // charDataSource? Pack entry data for char info?
     /* 0x38 */ s32               unk38; // VRAM Offset for rendering?
     /* 0x3C */ UnkSmallInternal* unk3C; // paletteDataSource? Pack entry data for palette info?
@@ -139,11 +140,11 @@ void Sprite_SetAnimation(Sprite* sprite, s16* animData, s16 animFrame, SpriteFra
 
 s32 Sprite_ChangeAnimation(Sprite* sprite, void*, s16, SpriteFrameData* frameDataTable);
 
-s32 Sprite_ChangePalette(Sprite* sprite, s32, void*, u32, u32);
+s32 Sprite_ChangePalette(Sprite* sprite, s32, void*, u16, u32);
 
 void Sprite_Restart(Sprite* sprite);
 
-void Sprite_RenderAltPalette(Sprite* sprite, UnkSmallInternal*, UnkSmallInternal*, s16);
+void Sprite_RenderAltPalette(Sprite* sprite, PaletteResource*, UnkSmallInternal*, s16);
 
 s32 _Sprite_Load(Sprite* sprite, SpriteAnimation* anim);
 

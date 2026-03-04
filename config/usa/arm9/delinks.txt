@@ -81,14 +81,32 @@ src/EasyList.c:
     .text       start:0x02008f20 end:0x0200927c
     .data       start:0x02063818 end:0x02063828
 
-src/BgResMgr.c:
+src/Engine/Resources/BgResMgr.c:
     .text       start:0x0200927c end:0x0200a128
     .rodata     start:0x0205ad5c end:0x0205ad64
     .bss        start:0x0206b3c4 end:0x0206b3cc
 
+src/Engine/Resources/PaletteMgr.c:
+    .text       start:0x0200a128 end:0x0200c25c
+    .rodata     start:0x0205ad64 end:0x0205ad9c
+    .bss        start:0x0206b3cc end:0x0206b3d8
+
+src/Engine/Resources/ObjResMgr.c:
+    .text       start:0x0200c25c end:0x0200cef0
+    .rodata     start:0x0205ad9c end:0x0205adb4
+    .bss        start:0x0206b3d8 end:0x0206b3e4
+
+src/Engine/Resources/ResourceMgr.c:
+    complete
+    .text       start:0x0200cef0 end:0x0200d1d8
+    .bss        start:0x0206b3e4 end:0x0206b3e8
+
+src/Engine/Resources/ScreenMapper.c:
+    .text       start:0x0200d1d8 end:0x0200d96c
+
 src/SpriteMgr.c:
     .text       start:0x0200d96c end:0x0200edac
-    .rodata     start:0x0205adcc end:0x0205adf8
+    .rodata     start:0x0205adb4 end:0x0205adf8
 
 src/EasyTask.c:
     complete
@@ -253,7 +271,7 @@ src/CriSndMgr.c:
     .data       start:0x02065cd0 end:0x02065fcc
     .bss        start:0x020768f0 end:0x02076a14
 
-src/main_44.c:
+src/unk_main_44.c:
     .text       start:0x020274ac end:0x020339e0
     .data       start:0x02065fcc end:0x02066238
 

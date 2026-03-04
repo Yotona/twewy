@@ -1,9 +1,8 @@
-#ifndef BG_RES_MGR_H
-#define BG_RES_MGR_H
+#ifndef ENGINE_BGRESMGR_H
+#define ENGINE_BGRESMGR_H
 
 #include "DMA.h"
 #include "Display.h"
-#include <types.h>
 
 enum {
     RESTYPE_CHAR_SM = 0,
@@ -34,17 +33,18 @@ typedef struct BgResource {
  * @brief Background Resource Manager
  */
 typedef struct {
-    /* 0x000 */ s32        engine;
-    /* 0x004 */ s32        unk_04;
-    /* 0x008 */ s32        vramBase; // Base address of VRAM allocated for backgrounds
-    /* 0x00C */ s32        vramSize; // Total size in bytes of VRAM allocated for backgrounds
-    /* 0x010 */ s32        unk_10;
-    /* 0x014 */ char       unk_14[0xC];
-    /* 0x020 */ BgResource activeList; // Linked list of active allocated resources
-    /* 0x040 */ BgResource freeList;   // Linked list of available resource slots
-    /* 0x060 */ BgResource resourcePool[64];
-    /* 0x860 */ s32        unk_860;
-} BgResMgr;
+    /* 0x0000 */ s32        engine;
+    /* 0x0004 */ s32        unk_04;
+    /* 0x0008 */ s32        vramBase; // Base address of VRAM allocated for backgrounds
+    /* 0x000C */ s32        vramSize; // Total size in bytes of VRAM allocated for backgrounds
+    /* 0x0010 */ s32        unk_10;
+    /* 0x0014 */ char       unk_14[0xC];
+    /* 0x0020 */ BgResource activeList; // Linked list of active allocated resources
+    /* 0x0040 */ BgResource freeList;   // Linked list of available resource slots
+    /* 0x0060 */ BgResource resourcePool[64];
+    /* 0x0860 */ s32        unk_860;
+    /* 0x0864 */ char       unk_864[0x1C80 - 0x864];
+} BgResMgr; // Size: 0x1C80
 
 extern BgResMgr* g_BgResourceManagers[2];
 
@@ -54,4 +54,4 @@ BOOL BgResMgr_ReleaseChar(BgResMgr* mgr, BgResource* resource);
 
 BOOL BgResMgr_ReleaseScreen(BgResMgr* mgr, BgResource* resource);
 
-#endif // BG_RES_MGR_H
+#endif // ENGINE_BGRESMGR_H

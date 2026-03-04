@@ -1,6 +1,7 @@
 #include "Debug/Takami/Depart.h"
 #include "CriSndMgr.h"
 #include "EasyFade.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Interrupts.h"
 #include "OverlayDispatcher.h"
 #include "Player/Inventory.h"
@@ -107,7 +108,7 @@ void Depart_Init(DepartState* state) {
     state->unk_11584 = DatMgr_AllocateSlot();
     state->unk_11588 = DatMgr_AllocateSlot();
     func_ov043_020bd8cc();
-    state->unk_11580 = func_0200cef0(state);
+    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     TouchInput_Init();
     Mem_InitializeHeap(&state->memPool, state->memPoolBuffer, 0x10000U);
     FS_LoadOverlay(0, &OVERLAY_31_ID);
@@ -144,9 +145,9 @@ void Depart_Update(DepartState* state) {
     func_02003c68();
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
-    func_0200bf60(data_0206b3cc[2], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
     if (state->unk_21650 != 0) {
         switch (temp_r4->unk_03) {
             case 0: {
@@ -172,7 +173,7 @@ void Depart_Destroy(DepartState* state) {
     func_ov043_020bdc6c(temp);
     func_ov043_020be32c(temp);
     EasyTask_DestroyPool(&state->taskPool);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     DatMgr_ClearSlot(state->unk_11588);
     func_ov043_020bd8e8();
@@ -527,25 +528,25 @@ void func_ov043_020bdd9c(DepartResources* resources, s32 arg1, s32 arg2, s32 arg
         if ((*resources->unk_10 & 0xF0) == 0) {
             var_r2 -= 4;
         }
-        resources->charResource   = BgResMgr_AllocChar32(g_BgResourceManagers[0], (u8*)resources->unk_10,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].charBase, var_r2);
-        resources->screenResource = BgResMgr_AllocScreen(g_BgResourceManagers[0], resources->unk_14,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].screenBase,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].screenSizeText);
-        resources->unk_0C         = func_0200adf8(data_0206b3cc[0], resources->unk_18, 0, arg4, arg5);
-        func_0200bf60(data_0206b3cc[0], resources->unk_0C);
+        resources->charResource    = BgResMgr_AllocChar32(g_BgResourceManagers[0], (u8*)resources->unk_10,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].charBase, var_r2);
+        resources->screenResource  = BgResMgr_AllocScreen(g_BgResourceManagers[0], resources->unk_14,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].screenBase,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].screenSizeText);
+        resources->paletteResource = PaletteMgr_AllocPalette(g_PaletteManagers[0], resources->unk_18, 0, arg4, arg5);
+        PaletteMgr_Flush(g_PaletteManagers[0], resources->paletteResource);
     } else {
         u32 var_r2 = (*resources->unk_10 & ~0xFF) >> 8;
         if ((*resources->unk_10 & 0xF0) == 0) {
             var_r2 -= 4;
         }
-        resources->charResource   = BgResMgr_AllocChar32(g_BgResourceManagers[1], (u8*)resources->unk_10,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].charBase, var_r2);
-        resources->screenResource = BgResMgr_AllocScreen(g_BgResourceManagers[1], resources->unk_14,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].screenBase,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].screenSizeText);
-        resources->unk_0C         = func_0200adf8(data_0206b3cc[1], resources->unk_18, 0, arg4, arg5);
-        func_0200bf60(data_0206b3cc[1], resources->unk_0C);
+        resources->charResource    = BgResMgr_AllocChar32(g_BgResourceManagers[1], (u8*)resources->unk_10,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].charBase, var_r2);
+        resources->screenResource  = BgResMgr_AllocScreen(g_BgResourceManagers[1], resources->unk_14,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].screenBase,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].screenSizeText);
+        resources->paletteResource = PaletteMgr_AllocPalette(g_PaletteManagers[1], resources->unk_18, 0, arg4, arg5);
+        PaletteMgr_Flush(g_PaletteManagers[1], resources->paletteResource);
     }
 }
 
@@ -562,25 +563,25 @@ void func_ov043_020bdf9c(DepartResources* resources, s32 arg1, s32 arg2, s32 arg
         if ((*resources->unk_10 & 0xF0) == 0) {
             var_r2 -= 4;
         }
-        resources->charResource   = BgResMgr_AllocChar32(g_BgResourceManagers[0], (u8*)resources->unk_10,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].charBase, var_r2);
-        resources->screenResource = BgResMgr_AllocScreen(g_BgResourceManagers[0], resources->unk_14,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].screenBase,
-                                                         g_DisplaySettings.engineState[0].bgSettings[arg2].screenSizeText);
-        resources->unk_0C         = func_0200adf8(data_0206b3cc[0], resources->unk_18, 0, arg4, arg5);
-        func_0200bf60(data_0206b3cc[0], resources->unk_0C);
+        resources->charResource    = BgResMgr_AllocChar32(g_BgResourceManagers[0], (u8*)resources->unk_10,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].charBase, var_r2);
+        resources->screenResource  = BgResMgr_AllocScreen(g_BgResourceManagers[0], resources->unk_14,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].screenBase,
+                                                          g_DisplaySettings.engineState[0].bgSettings[arg2].screenSizeText);
+        resources->paletteResource = PaletteMgr_AllocPalette(g_PaletteManagers[0], resources->unk_18, 0, arg4, arg5);
+        PaletteMgr_Flush(g_PaletteManagers[0], resources->paletteResource);
     } else {
         u32 var_r2 = (*resources->unk_10 & ~0xFF) >> 8;
         if ((*resources->unk_10 & 0xF0) == 0) {
             var_r2 -= 4;
         }
-        resources->charResource   = BgResMgr_AllocChar32(g_BgResourceManagers[1], (u8*)resources->unk_10,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].charBase, var_r2);
-        resources->screenResource = BgResMgr_AllocScreen(g_BgResourceManagers[1], resources->unk_14,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].screenBase,
-                                                         g_DisplaySettings.engineState[1].bgSettings[arg2].screenSizeText);
-        resources->unk_0C         = func_0200adf8(data_0206b3cc[1], resources->unk_18, 0, arg4, arg5);
-        func_0200bf60(data_0206b3cc[1], resources->unk_0C);
+        resources->charResource    = BgResMgr_AllocChar32(g_BgResourceManagers[1], (u8*)resources->unk_10,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].charBase, var_r2);
+        resources->screenResource  = BgResMgr_AllocScreen(g_BgResourceManagers[1], resources->unk_14,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].screenBase,
+                                                          g_DisplaySettings.engineState[1].bgSettings[arg2].screenSizeText);
+        resources->paletteResource = PaletteMgr_AllocPalette(g_PaletteManagers[1], resources->unk_18, 0, arg4, arg5);
+        PaletteMgr_Flush(g_PaletteManagers[1], resources->paletteResource);
     }
 }
 
@@ -588,23 +589,23 @@ void func_ov043_020be1a8(DepartResources* resources, s32 arg1) {
     if (arg1 == 0) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[0], resources->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[0], resources->screenResource);
-        func_0200afec(data_0206b3cc[0], resources->unk_0C);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[0], resources->paletteResource);
     } else {
         BgResMgr_ReleaseChar(g_BgResourceManagers[1], resources->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[1], resources->screenResource);
-        func_0200afec(data_0206b3cc[1], resources->unk_0C);
+        PaletteMgr_ReleaseResource(g_PaletteManagers[1], resources->paletteResource);
     }
     DatMgr_ReleaseData(resources->data);
 }
 
 void func_ov043_020be230(DepartResources* arg0) {
-    arg0->data           = NULL;
-    arg0->screenResource = NULL;
-    arg0->charResource   = NULL;
-    arg0->unk_0C         = NULL;
-    arg0->unk_14         = NULL;
-    arg0->unk_10         = NULL;
-    arg0->unk_18         = NULL;
+    arg0->data            = NULL;
+    arg0->screenResource  = NULL;
+    arg0->charResource    = NULL;
+    arg0->paletteResource = NULL;
+    arg0->unk_14          = NULL;
+    arg0->unk_10          = NULL;
+    arg0->unk_18          = NULL;
 }
 
 void func_ov043_020be254(DepartUnk* arg0) {

@@ -1712,7 +1712,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     g_DisplaySettings.controls[DISPLAY_MAIN].layers     = LAYER_NONE;
-    state->unk_11580                                    = func_0200cef0(state);
+    state->unk_11580                                    = ResourceMgr_ReinitManagers(&state->unk_00000);
     data_02066aec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     data_02066eec                                       = 0;
@@ -1729,13 +1729,13 @@ void func_ov029_02082ee8(SoundTestState* state) {
     SoundTest_ControlMenu(state);
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
 void func_ov029_02082f68(SoundTestState* state) {
     func_ov029_020828c0(state);
-    func_0200cef0(NULL);
+    ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     Mem_Free(&gDebugHeap, state);
 }

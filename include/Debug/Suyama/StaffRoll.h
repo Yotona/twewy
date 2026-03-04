@@ -4,6 +4,7 @@
 #include "DatMgr.h"
 #include "Display.h"
 #include "EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
 
 typedef struct {
@@ -150,8 +151,8 @@ typedef struct {
 } Command; // Size = 0x14
 
 typedef struct {
-    /* 0x00000 */ char                     unk_00000[0x11580];
-    /* 0x11580 */ s32                      unk_11580;
+    /* 0x00000 */ ResourceManager          unk_00000;
+    /* 0x11580 */ ResourceManager*         unk_11580;
     /* 0x11584 */ MemPool                  memPool;
     /* 0x11590 */ u8                       memPoolBuffer[0x10000];
     /* 0x21590 */ char                     unk_21590[0x4];

@@ -26,8 +26,6 @@ extern s32 data_02068798;
 
 extern s32 data_0205a128;
 
-extern s32 data_0206b3cc[3];
-
 typedef struct {
     /* 0x0 */ char pad_00[0x28];
     /* 0x28 */ u16 unk_28;

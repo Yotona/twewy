@@ -1,5 +1,4 @@
 #include "Debug/Mori/GrpCheck.h"
-#include "BgResMgr.h"
 #include "DatMgr.h"
 #include "Display.h"
 #include "Interrupts.h"
@@ -718,7 +717,7 @@ void GrpCheck_InitOverlay(GrpCheckState* state) {
     func_0200d8f0();
     state->unk_00000 = DatMgr_AllocateSlot();
     state->unk_00004 = DatMgr_AllocateSlot();
-    state->unk_1158C = func_0200cef0(&state->unk_0000C);
+    state->unk_1158C = ResourceMgr_ReinitManagers(&state->unk_0000C);
     func_ov038_02085268(state);
     func_ov038_02083340(state);
     func_ov038_0208424c(state);
@@ -767,11 +766,11 @@ void GrpCheck_RunOverlay(GrpCheckState* state) {
     func_020034b0(&data_020676ec);
     func_020034b0(&data_02068778);
     if (data_ov038_020b7200.unk_4 == 2) {
-        func_0200bf60(data_0206b3cc[2], 0);
+        PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
         func_02001b44(2, 0, &data_020672ec, 0x400);
     }
-    func_0200bf60(data_0206b3cc[0], 0);
-    func_0200bf60(data_0206b3cc[1], 0);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+    PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
 void GrpCheck_TerminateOverlay(GrpCheckState* state) {
@@ -780,7 +779,7 @@ void GrpCheck_TerminateOverlay(GrpCheckState* state) {
     GrpCheck_ClearVBlank();
     func_ov038_020833a4(state);
     GrpCheck_DestroyAllSprites(state);
-    func_0200cfe8(state->unk_1158C);
+    ResourceMgr_SetActiveManagers(state->unk_1158C);
     DatMgr_ClearSlot(state->unk_00004);
     DatMgr_ClearSlot(state->unk_00000);
     DatMgr_ReleaseData(state->unk_00008);
