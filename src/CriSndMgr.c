@@ -1,5 +1,5 @@
 #include "CriSndMgr.h"
-#include "Memory.h"
+#include "Engine/Core/Memory.h"
 #include "common_data.h"
 #include <CriWare/adxt.h>
 #include <CriWare/criss.h>

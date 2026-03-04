@@ -1,10 +1,10 @@
 #include "Debug/Suyama/StaffRoll.h"
 #include "CriSndMgr.h"
-#include "Interrupts.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Save.h"
-#include "System.h"
 #include "common_data.h"
 #include <NitroSDK/fx.h>
 #include <types.h>

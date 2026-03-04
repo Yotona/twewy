@@ -1,11 +1,11 @@
 #include "Debug/Takami/TakTest.h"
-#include "DatMgr.h"
 #include "Display.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Interrupts.h"
-#include "OverlayDispatcher.h"
 #include "SpriteMgr.h"
-#include "System.h"
 #include "common_data.h"
 
 void func_ov043_02082af4(void);

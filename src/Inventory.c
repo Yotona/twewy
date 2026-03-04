@@ -1,5 +1,5 @@
-#include "DatMgr.h"
-#include "Memory.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/File/DatMgr.h"
 #include "Save.h"
 #include "common_data.h"
 #include <types.h>

@@ -1,5 +1,5 @@
-#include "TouchInput.h"
-#include "Input.h"
+#include "Engine/IO/TouchInput.h"
+#include "Engine/IO/Input.h"
 
 static struct {
     /* 0x00 */ BOOL       isTouchEnabled; // Whether touch input is enabled

@@ -1,8 +1,8 @@
 #ifndef ENGINE_BGRESMGR_H
 #define ENGINE_BGRESMGR_H
 
-#include "DMA.h"
 #include "Display.h"
+#include "Engine/Core/DMA.h"
 
 enum {
     RESTYPE_CHAR_SM = 0,

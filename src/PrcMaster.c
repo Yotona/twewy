@@ -1,6 +1,6 @@
 #include "PrcMaster.h"
-#include "Memory.h"
-#include "System.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
 
 static void PrcCtx_Reset(PrcCtx* arg0, const char* sequence, void* work) {
     arg0->sequence = sequence;

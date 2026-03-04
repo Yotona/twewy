@@ -6,11 +6,11 @@
 #include "Debug/SoundTest.h"
 #include "CriSndMgr.h"
 #include "Display.h"
-#include "Interrupts.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgr.h"
-#include "System.h"
 #include "common_data.h"
 #include <registers.h>
 #include <types.h>

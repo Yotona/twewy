@@ -1,9 +1,9 @@
 #ifndef DATMGR_H
 #define DATMGR_H
 
-#include "BinMgr.h"
-#include "Memory.h"
-#include "PacMgr.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/File/BinMgr.h"
+#include "Engine/File/PacMgr.h"
 #include <types.h>
 
 enum {

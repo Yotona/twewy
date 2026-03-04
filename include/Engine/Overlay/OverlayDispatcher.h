@@ -1,7 +1,7 @@
 #ifndef OVERLAYMANAGER_H
 #define OVERLAYMANAGER_H
 
-#include "OverlayManager.h"
+#include "Engine/Overlay/OverlayManager.h"
 #include <types.h>
 
 // Function pointer type for overlay callbacks.

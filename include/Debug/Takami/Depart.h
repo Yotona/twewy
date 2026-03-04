@@ -1,7 +1,7 @@
 #ifndef DEBUG_TAKAMI_DEPART_H
 #define DEBUG_TAKAMI_DEPART_H
 
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 

@@ -2,8 +2,8 @@
 #define DEBUG_MORI_GRPCHECK_H
 
 #include "Engine/Resources/ResourceMgr.h"
+#include "Engine/Text.h"
 #include "SpriteMgr.h"
-#include "Text.h"
 
 typedef enum {
     RGB_RED   = 0,

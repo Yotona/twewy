@@ -1,9 +1,9 @@
 #ifndef OTOSUMENU_H
 #define OTOSUMENU_H
 
-#include "EasyTask.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Memory.h"
 #include "PrcMaster.h"
 #include "SpriteMgr.h"
 

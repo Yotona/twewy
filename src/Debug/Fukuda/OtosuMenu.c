@@ -1,16 +1,16 @@
 #include "OtosuMenu.h"
 #include "CriSndMgr.h"
-#include "DatMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
-#include "Interrupts.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/IO/TouchInput.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
-#include "System.h"
-#include "TouchInput.h"
 
 #include <NitroSDK/mi/cpumem.h>
 

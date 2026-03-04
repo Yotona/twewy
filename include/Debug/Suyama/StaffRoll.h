@@ -1,9 +1,9 @@
 #ifndef DEBUG_SUYAMA_STAFFROLL_H
 #define DEBUG_SUYAMA_STAFFROLL_H
 
-#include "DatMgr.h"
 #include "Display.h"
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
+#include "Engine/File/DatMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
 

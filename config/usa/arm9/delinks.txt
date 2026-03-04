@@ -11,72 +11,72 @@ src/main.c:
     .text       start:0x02000bdc end:0x02001254
     .data       start:0x020636a0 end:0x020636cc
 
-src/Boot.c:
+src/Engine/Core/Boot.c:
     complete
     .text       start:0x02001254 end:0x02001320
     .data       start:0x020636cc end:0x020636e4
 
-src/Interrupts.c:
+src/Engine/Core/Interrupts.c:
     .text       start:0x02001320 end:0x02001760
 
-src/DMA.c:
+src/Engine/Core/DMA.c:
     .text       start:0x02001760 end:0x02001c34
     .data       start:0x020636e4 end:0x02063744
     .bss        start:0x02066a5c end:0x02066aec
 
-src/Memory.c:
+src/Engine/Core/Memory.c:
     .text       start:0x0200453c end:0x020049dc
     .rodata     start:0x02059d14 end:0x02059d1c
     .data       start:0x02063744 end:0x02063760
     .bss        start:0x0206a9a4 end:0x0206a9bc
 
-src/Input.c:
+src/Engine/IO/Input.c:
     complete
     .text       start:0x02004e98 end:0x0200504c
     .rodata     start:0x0205a928 end:0x0205a95c
     .bss        start:0x0206a9e0 end:0x0206aa78
 
-src/Display.c:
+src/Engine/IO/Display.c:
     .text       start:0x0200504c end:0x020065e0
     .bss        start:0x0206aa78 end:0x0206af24
 
-src/OverlayManager.c:
+src/Engine/Overlay/OverlayManager.c:
     .text       start:0x020065e0 end:0x02006740
 
-src/Sqrt.c:
+src/Engine/Math/Sqrt.c:
     complete
     .text       start:0x02006740 end:0x02006798
 
-src/Random.c:
+src/Engine/Math/Random.c:
     complete
     .text       start:0x02006798 end:0x0200683c
     .data       start:0x02063760 end:0x02063764
 
-src/TouchInput.c:
+src/Engine/IO/TouchInput.c:
     .text       start:0x02006ad8 end:0x02006f50
     .data       start:0x0206377c end:0x020637c0
 
-src/OverlayDispatcher.c:
+src/Engine/Overlay/OverlayDispatcher.c:
     .text       start:0x02006f50 end:0x020073cc
     .bss        start:0x0206af24 end:0x0206b3b8
 
-src/BinMgr.c:
+src/Engine/File/BinMgr.c:
     complete
     .text       start:0x020073cc end:0x02007a9c
     .data       start:0x020637c0 end:0x020637e4
     .bss        start:0x0206b3b8 end:0x0206b3bc
 
-src/PacMgr.c:
+src/Engine/File/PacMgr.c:
     .text       start:0x02007a9c end:0x02008054
     .data       start:0x020637e4 end:0x02063808
     .bss        start:0x0206b3bc end:0x0206b3c0
 
-src/DatMgr.c:
+src/Engine/File/DatMgr.c:
     .text       start:0x02008054 end:0x02008f20
     .data       start:0x02063808 end:0x02063818
     .bss        start:0x0206b3c0 end:0x0206b3c4
 
-src/EasyList.c:
+src/Engine/File/EasyList.c:
     complete
     .text       start:0x02008f20 end:0x0200927c
     .data       start:0x02063818 end:0x02063828
@@ -104,16 +104,16 @@ src/Engine/Resources/ResourceMgr.c:
 src/Engine/Resources/ScreenMapper.c:
     .text       start:0x0200d1d8 end:0x0200d96c
 
-src/SpriteMgr.c:
+src/Engine/Resources/SpriteMgr.c:
     .text       start:0x0200d96c end:0x0200edac
     .rodata     start:0x0205adb4 end:0x0205adf8
 
-src/EasyTask.c:
+src/Engine/EasyTask.c:
     complete
     .text       start:0x0200f198 end:0x0200f86c
     .data       start:0x02063828 end:0x02063844
 
-src/Text.c:
+src/Engine/Text.c:
     .text       start:0x0200f94c end:0x02011f00
     .rodata     start:0x0205ae64 end:0x0205b754
 

@@ -1,13 +1,13 @@
 #include "Debug/Takami/Depart.h"
 #include "CriSndMgr.h"
 #include "EasyFade.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/System.h"
+#include "Engine/IO/TouchInput.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Interrupts.h"
-#include "OverlayDispatcher.h"
 #include "Player/Inventory.h"
 #include "SpriteMgr.h"
-#include "System.h"
-#include "TouchInput.h"
 #include "common_data.h"
 
 extern void func_ov030_020ae92c();

@@ -1,8 +1,8 @@
-#include "BinMgr.h"
-#include "DatMgr.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
-#include "PacMgr.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/File/BinMgr.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/File/PacMgr.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include <types.h>
 
 extern void ProcessOverlay_OpenEnd(void* state);

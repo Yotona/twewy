@@ -2,9 +2,9 @@
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/IO/TouchInput.h"
 #include "Save.h"
 #include "SndMgrSeIdx.h"
-#include "TouchInput.h"
 #include "common_data.h"
 
 /*Nonmatching: Regswaps, Opcode reorder*/

@@ -1,8 +1,8 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/IO/TouchInput.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "TouchInput.h"
 #include <NitroSDK/fx.h>
 
 void func_ov046_020824a0(void) {

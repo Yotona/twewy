@@ -1,5 +1,5 @@
-#include "Interrupts.h"
-#include "System.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/System.h"
 #include "common_data.h"
 #include <NitroSDK/gx/gx.h>
 #include <NitroSDK/os/cache.h>

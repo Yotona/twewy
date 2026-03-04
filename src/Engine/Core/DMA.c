@@ -1,5 +1,5 @@
-#include "DMA.h"
-#include "Memory.h"
+#include "Engine/Core/DMA.h"
+#include "Engine/Core/Memory.h"
 #include "common_data.h"
 #include <NitroSDK/os/cache.h>
 

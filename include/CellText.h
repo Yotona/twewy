@@ -1,7 +1,7 @@
 #ifndef CELLTEXT_H
 #define CELLTEXT_H
 
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
 
 typedef struct {
     /* 0x00 */ s32   unk_00;

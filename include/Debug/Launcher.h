@@ -2,13 +2,13 @@
 #define DEBUG_LAUNCHER_H
 
 #include "EasyList.h"
-#include "EasyTask.h"
-#include "Input.h"
-#include "Interrupts.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/EasyTask.h"
+#include "Engine/IO/Input.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "SpriteMgr.h"
-#include "System.h"
 #include "common_data.h"
 #include <NitroSDK/gx.h>
 

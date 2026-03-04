@@ -1,11 +1,11 @@
 #include "Debug/Takami/Save.h"
-#include "DatMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
-#include "OverlayDispatcher.h"
+#include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/IO/TouchInput.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgrSeIdx.h"
-#include "System.h"
-#include "TouchInput.h"
 #include "common_data.h"
 #include <NitroSDK/fx.h>
 

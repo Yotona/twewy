@@ -1,10 +1,10 @@
 #ifndef DEBUG_TAKAMI_NREP_H
 #define DEBUG_TAKAMI_NREP_H
 
-#include "DatMgr.h"
-#include "EasyTask.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/EasyTask.h"
+#include "Engine/File/DatMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Memory.h"
 
 typedef struct {
     /* 0x00 */ Data*            data;

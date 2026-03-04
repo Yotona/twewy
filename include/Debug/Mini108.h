@@ -1,10 +1,10 @@
 #ifndef MINI_108_H
 #define MINI_108_H
 
-#include "DatMgr.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/IO/Input.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Input.h"
-#include "OverlayDispatcher.h"
 #include <types.h>
 
 extern vu32 data_02066a58;

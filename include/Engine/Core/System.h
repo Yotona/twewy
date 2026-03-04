@@ -1,7 +1,7 @@
 #ifndef SYSSTATE_H
 #define SYSSTATE_H
 
-#include "Input.h"
+#include "Engine/IO/Input.h"
 #include <types.h>
 
 extern volatile struct {

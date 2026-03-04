@@ -1,10 +1,10 @@
 #include "Debug/Mori/GrpCheck.h"
-#include "DatMgr.h"
 #include "Display.h"
-#include "Interrupts.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
-#include "System.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "common_data.h"
 
 void GrpCheck_RegisterVBlank(void);

@@ -1,5 +1,5 @@
-#include "OverlayManager.h"
-#include "System.h"
+#include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Core/System.h"
 #include <NitroSDK/fs/overlay.h>
 
 void OvlMgr_UnloadOverlay(s32 idx);

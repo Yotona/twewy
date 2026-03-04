@@ -1,10 +1,10 @@
-#include "DatMgr.h"
-#include "Input.h"
-#include "Memory.h"
-#include "OverlayDispatcher.h"
-#include "OverlayManager.h"
-#include "Random.h"
-#include "System.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
+#include "Engine/IO/Input.h"
+#include "Engine/Math/Random.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Overlay/OverlayManager.h"
 #include "common_data.h"
 #include <NitroSDK/fs.h>
 #include <NitroSDK/os.h>

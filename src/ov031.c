@@ -1,8 +1,8 @@
-#include "DatMgr.h"
 #include "Display.h"
-#include "EasyTask.h"
-#include "Memory.h"
-#include "System.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/Core/System.h"
+#include "Engine/EasyTask.h"
+#include "Engine/File/DatMgr.h"
 #include "common_data.h"
 #include <types.h>
 

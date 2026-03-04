@@ -1,5 +1,5 @@
-#include "OverlayDispatcher.h"
-#include "OverlayManager.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Overlay/OverlayManager.h"
 
 static OverlayDispatcher MainOverlayDispatcher;
 static OverlayDispatcher DebugOverlayDispatcher;

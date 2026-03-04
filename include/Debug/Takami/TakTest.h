@@ -1,9 +1,9 @@
 #ifndef DEBUG_TAKAMI_TAKTEST_H
 #define DEBUG_TAKAMI_TAKTEST_H
 
-#include "EasyTask.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Memory.h"
 
 typedef struct {
     /* 0x00 */ BgResource*      resScreen;

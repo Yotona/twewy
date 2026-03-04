@@ -1,5 +1,5 @@
-#include "BinMgr.h"
-#include "Memory.h"
+#include "Engine/File/BinMgr.h"
+#include "Engine/Core/Memory.h"
 
 BinMgr* g_activeBinMgr; // Currently active binary manager instance
 

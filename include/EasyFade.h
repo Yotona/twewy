@@ -9,7 +9,7 @@
 #ifndef EASYFADE_H
 #define EASYFADE_H
 
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
 
 /**
  * @enum FaderMode

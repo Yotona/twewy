@@ -1,10 +1,10 @@
 #ifndef DEBUG_FURUKAWA_CONTINUE_H
 #define DEBUG_FURUKAWA_CONTINUE_H
 
-#include "DatMgr.h"
-#include "EasyTask.h"
+#include "Engine/Core/Memory.h"
+#include "Engine/EasyTask.h"
+#include "Engine/File/DatMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Memory.h"
 
 // TODO: Most likely defined by overlay 3
 typedef struct {

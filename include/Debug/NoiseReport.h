@@ -1,7 +1,7 @@
 #ifndef DEBUG_NOISEREPORT_H
 #define DEBUG_NOISEREPORT_H
 
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"

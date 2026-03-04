@@ -1,5 +1,5 @@
-#include "PacMgr.h"
-#include "Memory.h"
+#include "Engine/File/PacMgr.h"
+#include "Engine/Core/Memory.h"
 
 #define PAC_PACK_HEADER_MAGIC 0x6b636170 // 'pack'
 #define PAC_PACK_HEADER_SIZE  0x20

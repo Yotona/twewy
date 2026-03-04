@@ -1,6 +1,6 @@
 #include "SndMgr.h"
 #include "CriSndMgr.h"
-#include "Memory.h"
+#include "Engine/Core/Memory.h"
 #include "common_data.h"
 
 SndMgr sndMgr = {};

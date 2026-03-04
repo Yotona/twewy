@@ -1,5 +1,5 @@
-#include "DatMgr.h"
-#include "EasyTask.h"
+#include "Engine/EasyTask.h"
+#include "Engine/File/DatMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
 #include <types.h>
