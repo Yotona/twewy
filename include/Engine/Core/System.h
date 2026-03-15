@@ -4,7 +4,7 @@
 #include "Engine/IO/Input.h"
 #include <types.h>
 
-extern volatile struct {
+typedef volatile struct {
     u32 vblank   : 1; // In VBlank period of the frame
     u32 reset    : 1; // The game is soft-resetting
     u32 unk_02   : 1;
@@ -17,7 +17,9 @@ extern volatile struct {
     u32 unk_09   : 1;
     u32 unk_10   : 1;
     u32 reserved : 21;
-} SystemStatusFlags;
+} SystemFlags;
+
+extern SystemFlags SystemStatusFlags;
 
 typedef struct {
     /* 0x00 */ InputButtons buttonState;
@@ -27,5 +29,7 @@ typedef struct {
     /* 0x28 */ void (*hBlankCallback)(void);
 } SystemControl;
 extern SystemControl SysControl;
+
+extern vu32 data_02066a58;
 
 #endif // SYSSTATE_H

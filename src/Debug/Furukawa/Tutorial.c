@@ -20,15 +20,15 @@
 #include "Debug/Furukawa/Tutorial.h"
 
 // Forward declarations of external functions
-extern void func_0200434c(void);
+extern void HBlank_Init(void);
 extern void GX_Init(void);
-extern void func_0200270c(s32, s32);
+extern void OamMgr_Init(s32, s32);
 extern void MI_CpuFill(s32, void*, s32);
-extern void func_0200283c(void*, s32, s32);
+extern void OamMgr_Reset(void*, s32, s32);
 extern void DC_PurgeRange(void*, u32);
-extern void func_02001c34(void*, void*, s32, s32, s32);
-extern void func_02003440(void*);
-extern void func_020034b0(void*);
+extern void Color_CopyRange(void*, void*, s32, s32, s32);
+extern void OamMgr_ResetCommandQueues(void*);
+extern void OamMgr_FlushCommands(void*);
 extern void SndMgr_StartPlayingSE(s32);
 extern void func_ov003_02082724(void*, s32, s32);
 extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
@@ -78,7 +78,7 @@ static void func_ov026_020e7cec(TutorialObject* object);
 
 static void Tutorial_InitHardware(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     DMA_Init(0x100);
     Display_Init();
@@ -90,17 +90,17 @@ static void Tutorial_InitHardware(void) {
     GX_SetBankForSubObj(GX_VRAM_D);
     g_DisplaySettings.controls[0].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
-    func_0200270c(0, 0);
-    func_0200270c(0, 1);
+    OamMgr_Init(0, 0);
+    OamMgr_Init(0, 1);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_02001c34(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    func_02001c34(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
 
 static void Tutorial_InitDisplay(void) {
@@ -335,10 +335,10 @@ static void Tutorial_Init(TutorialObject* object) {
 
 static void Tutorial_Update(TutorialObject* object) {
     TouchInput_Update();
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     func_ov026_020e7bc0(object);
     func_ov026_020e7bd4(object);
     DebugOvlDisp_Run();
@@ -349,8 +349,8 @@ static void Tutorial_Update(TutorialObject* object) {
     }
 
     EasyTask_UpdatePool(&object->taskPool);
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

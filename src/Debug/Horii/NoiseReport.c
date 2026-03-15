@@ -189,7 +189,7 @@ void func_ov028_020e8310(void) {
 // Nonmatching
 void func_ov028_020e83f8(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     func_0202b878();
     DMA_Init(256);
@@ -316,18 +316,18 @@ void func_ov028_020e83f8(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 16;
 
-    func_02003ad0();
-    func_02003c68();
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init3DSpritePipeline();
+    OamMgr_Swap3DBuffers();
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 1024);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 1024);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_0200270c(0, 2);
-    func_02002890(&data_02069804, 0);
+    OamMgr_Init(0, 2);
+    OamMgr_SetAffineCount(&data_02069804, 0);
     Interrupts_RegisterVBlankCallback(func_ov028_020e8310, TRUE);
     return;
 }
@@ -388,12 +388,12 @@ void func_ov028_020e8878(NoiseReportState* state) {
 
 void func_ov028_020e89d0(NoiseReportState* state) {
     TouchInput_Update();
-    func_02003c4c();
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02002890(&data_02069804, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset3DState();
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_SetAffineCount(&data_02069804, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     DebugOvlDisp_Run();
 
     if (state->unk_2164C == 0) {
@@ -405,9 +405,9 @@ void func_ov028_020e89d0(NoiseReportState* state) {
 
     BOOL isAtBase = DebugOvlDisp_IsStackAtBase();
 
-    func_02003c68();
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_Swap3DBuffers();
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);

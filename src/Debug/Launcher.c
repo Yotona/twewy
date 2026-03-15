@@ -7,7 +7,7 @@
 
 void func_ov046_020824a0(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     G3X_Init();
     G3X_InitMtxStack();
@@ -43,17 +43,17 @@ void func_ov046_020824a0(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_64K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
 
-    func_0200270c(0, 0);
-    func_0200270c(0, 1);
+    OamMgr_Init(0, 0);
+    OamMgr_Init(0, 1);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_02001c34(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    func_02001c34(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
 
 void func_ov046_02082720(void) {
@@ -429,10 +429,10 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
     state->buttonState = InputStatus.buttonState;
 
     TouchInput_Update();
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     DebugOvlDisp_Run();
 
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
@@ -444,8 +444,8 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
         MainOvlDisp_ReplaceTop(&tag, state->overlay, state->overlayCB, NULL, 0);
     } else {
         EasyTask_UpdatePool(&state->unk_11650);
-        func_020034b0(&data_020676ec);
-        func_020034b0(&data_02068778);
+        OamMgr_FlushCommands(&data_020676ec);
+        OamMgr_FlushCommands(&data_02068778);
         PaletteMgr_Flush(g_PaletteManagers[0], 0);
         PaletteMgr_Flush(g_PaletteManagers[1], 0);
     }
@@ -503,7 +503,7 @@ void func_ov046_02083698(void* unkptr, s32 unused_r1, s32 r2) {
         *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x1 | 1;
         *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x2;
         u8 thing = (*(u8*)(*(u16*)(temp + 0x0))) * 0x108 + data_020676ec; // Nonmatching: 0x108 is a global constant?
-        func_02002bc4(thing, 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
+        OamMgr_AllocAffineGroup(thing, 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
         *(u16*)(unkptr + 0xa) = (*(u16*)(unkptr + 0xa) & ~0x3E0) | ((u16)(thing << 0x1B) >> 0x16);
     } else {
         *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x1;

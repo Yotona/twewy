@@ -254,7 +254,7 @@ void                EasyFade_FadeBothDisplays(s32, s32, s32);                   
 s32                 EasyFade_IsFading();                                                               /* extern */
 s32                 FX_Divide(s32, s32);                                                               /* extern */
 s32                 RNG_Next(s32);                                                                     /* extern */
-u16                 func_02002bc4(const void*, s32, s32, s32, s32);                                    /* extern */
+u16                 OamMgr_AllocAffineGroup(const void*, s32, s32, s32, s32);                          /* extern */
 s32                 SpriteMgr_IsAnimationFinished(void*);                                              /* extern */
 void                func_02026590(void*, s32, u16);                                                    /* extern */
 void                func_020265d4(void*, s32, u16);                                                    /* extern */
@@ -1034,9 +1034,9 @@ void func_ov016_021262d8(Ov016Obj* arg0) {
     temp_r4 = arg0->unk1D8;
     temp_r2 = arg0->unk1DC;
     if (arg0->unkCA & 1) {
-        var_r0 = func_02002bc4(&data_02069804, 0, temp_r2, temp_r2, 1);
+        var_r0 = OamMgr_AllocAffineGroup(&data_02069804, 0, temp_r2, temp_r2, 1);
     } else {
-        var_r0 = func_02002bc4(&data_02069804, 0, temp_r2, temp_r2, 0);
+        var_r0 = OamMgr_AllocAffineGroup(&data_02069804, 0, temp_r2, temp_r2, 0);
     }
     arg0->unk8E = (u16)((arg0->unk8E & ~0x3E0) | ((u32)(var_r0 << 0x1B) >> 0x16));
     temp_r7     = arg0->unk96;

@@ -9,8 +9,6 @@
 #include <NitroSDK/fs.h>
 #include <NitroSDK/os.h>
 
-extern vu32 data_02066a58;
-
 extern s32 data_020636b8;
 extern s32 data_0206a9bc;
 extern s32 data_020636a0;

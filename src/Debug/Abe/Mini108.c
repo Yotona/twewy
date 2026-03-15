@@ -201,10 +201,10 @@ void Mini108_Update(Mini108State* stateptr) {
     TouchInput_Update();
 
     Text_RenderToScreen(stateptr->unk_80, 0, 0xa, func_02006930("Score : %6d", stateptr->unk_40));
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     DebugOvlDisp_Run();
 
     if ((stateptr->buttonState.pressedButtons & INPUT_BUTTON_START) != 0) {
@@ -228,8 +228,8 @@ void Mini108_Update(Mini108State* stateptr) {
     }
     func_0200efdc(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
 
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[0], 0);
     PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }
@@ -270,7 +270,7 @@ void func_ov000_02082854(Mini108State* state) {
 
 void func_ov000_020825c0(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     G3X_Init();
     G3X_InitMtxStack();
@@ -308,18 +308,18 @@ void func_ov000_020825c0(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_64K;
 
-    func_0200270c(0, 0); // Might also use &g_DisplaySettings as third parameter?
-    func_0200270c(0, 1);
+    OamMgr_Init(0, 0); // Might also use &g_DisplaySettings as third parameter?
+    OamMgr_Init(0, 1);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 
-    func_02001c34(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    func_02001c34(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
 
 void Mini108_RegisterVBlank(void) {

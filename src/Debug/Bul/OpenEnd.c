@@ -2,6 +2,7 @@
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Core/System.h"
 #include "Engine/IO/TouchInput.h"
 #include "Save.h"
 #include "SndMgrSeIdx.h"
@@ -10,7 +11,7 @@
 /*Nonmatching: Regswaps, Opcode reorder*/
 void OpenEnd_InitHardware(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     DMA_Init(0x100);
     Interrupts_ForceVBlank();
     GX_Init();
@@ -51,25 +52,25 @@ void OpenEnd_InitHardware(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
 
-    func_0200270c(0, 0);
-    func_0200270c(0, 1);
+    OamMgr_Init(0, 0);
+    OamMgr_Init(0, 1);
     MI_CpuFill(0x0, 0x6800000, 0xa4000);
     MI_CpuFill(0x0, 0x6000000, 0x80000);
     MI_CpuFill(0x0, 0x6200000, 0x20000);
     MI_CpuFill(0x0, 0x6400000, 0x40000);
     MI_CpuFill(0x0, 0x6600000, 0x20000);
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
-    func_02001c34(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
-    func_02001c34(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
 }
 
 void OpenEnd_VBlankHandler(void) {
@@ -426,7 +427,6 @@ void OpenEnd_PlayScreenSequence(OpenEndState* state) {
     DebugOvlDisp_Push((OverlayCB)screenFunctions[data_02074d10.unk_410][0], state, 0);
 }
 
-extern vu32        data_02066a58;
 static const char* seq_OpenEnd = "Seq_OpenEnd(void *)";
 /*Nomatching: regswaps*/
 void OpenEnd_Init(OpenEndState* state) {
@@ -469,10 +469,10 @@ void OpenEnd_Init(OpenEndState* state) {
 }
 
 void OpenEnd_Update(OpenEndState* state) {
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     TouchInput_Update();
     if (TouchInput_WasTouchPressed() != 0) {
         flag_screenTouched = TRUE;
@@ -481,8 +481,8 @@ void OpenEnd_Update(OpenEndState* state) {
     DebugOvlDisp_Run();
     if (DebugOvlDisp_IsStackAtBase() != 0)
         return;
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[0], 0);
     PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }

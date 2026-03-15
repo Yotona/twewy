@@ -2818,10 +2818,10 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
     }
 
     TouchInput_Update();
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
 
     if (SystemStatusFlags.reset || (menuObj->unk_460BC == 0)) {
         PrcMaster_RunAllCtxSteps(&menuObj->prcMaster);
@@ -2899,8 +2899,8 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
             if (menuObj->unk_460B8 != 0) {
                 Sprite_Render(&menuObj->unk_46078);
             }
-            func_020034b0(&data_020676ec);
-            func_020034b0(&data_02068778);
+            OamMgr_FlushCommands(&data_020676ec);
+            OamMgr_FlushCommands(&data_02068778);
             PaletteMgr_Flush(g_PaletteManagers[0], 0);
             PaletteMgr_Flush(g_PaletteManagers[1], 0);
             func_0200d90c();
@@ -6035,7 +6035,7 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.controls[0].brightness = 16;
     g_DisplaySettings.controls[1].brightness = 16;
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     DMA_Init(0x100);
     Display_Init();
@@ -6136,12 +6136,12 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.engineState[1].blendCoeff0          = 12;
     g_DisplaySettings.engineState[1].blendCoeff1          = 4;
     Display_Commit();
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }
@@ -6149,7 +6149,7 @@ void func_ov002_0208b860(void) {
 void func_ov002_0208bd40(void) {
     Interrupts_ForceVBlank();
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     DMA_Init(0x100);
     Display_Init();
@@ -6256,12 +6256,12 @@ void func_ov002_0208bd40(void) {
     Display_InitMainBG3(0, 1, 0, 6, 3, 1, 0x460C);
 
     Display_Commit();
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }
@@ -6270,7 +6270,7 @@ void func_ov002_0208c228(void) {
     Interrupts_ForceVBlank();
     Display_Init();
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     DMA_Init(0x100);
     Interrupts_RegisterHBlankCallback(0, 1);
     Interrupts_RegisterVBlankCallback(func_ov002_0208b790, 1);
@@ -6358,12 +6358,12 @@ void func_ov002_0208c228(void) {
     Display_InitMainBG3(0, 1, 0, 6, 3, 1, 0x460c);
 
     Display_Commit();
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }

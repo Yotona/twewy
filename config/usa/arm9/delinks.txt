@@ -11,6 +11,12 @@ src/main.c:
     .text       start:0x02000bdc end:0x02001254
     .data       start:0x020636a0 end:0x020636cc
 
+src/Engine/Core/System.c:
+    .bss        start:0x02066a20 end:0x02066a58
+
+src/Engine/Core/UnknownFlag.c:
+    .bss        start:0x02066a58 end:0x02066a5c
+
 src/Engine/Core/Boot.c:
     complete
     .text       start:0x02001254 end:0x02001320
@@ -23,6 +29,16 @@ src/Engine/Core/DMA.c:
     .text       start:0x02001760 end:0x02001c34
     .data       start:0x020636e4 end:0x02063744
     .bss        start:0x02066a5c end:0x02066aec
+
+src/Engine/Color.c:
+    .text       start:0x02001c34 end:0x020026a8
+
+src/Engine/Core/OamMgr.c:
+    .text       start:0x020026a8 end:0x020041b8
+
+src/Engine/Core/HBlank.c:
+    .text       start:0x020041b8 end:0x0200453c
+    .bss        start:0x0206a8a0 end:0x0206a9a4
 
 src/Engine/Core/Memory.c:
     .text       start:0x0200453c end:0x020049dc

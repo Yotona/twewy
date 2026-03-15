@@ -153,13 +153,13 @@ void func_ov041_02082a5c(STSampleState* param) {
 }
 
 void func_ov041_02082b08(STSampleState* state) {
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     STSample_ControlMenu(state);
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

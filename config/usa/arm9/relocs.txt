@@ -399,11 +399,11 @@ from:0x02004460 kind:load to:0x0206a8a0 module:main
 from:0x020044b8 kind:arm_call to:0x0200440c module:main
 from:0x020044c4 kind:load to:0x0206a8a0 module:main
 from:0x020044c8 kind:load to:0x0206a8a0 module:main
-from:0x020044cc kind:load to:0x0206a994 module:main
+from:0x020044cc kind:load to:0x0206a8a0 add:0xf4 module:main
 from:0x02004504 kind:arm_call to:0x0200161c module:main
 from:0x02004510 kind:arm_call to:0x02001714 module:main
 from:0x02004530 kind:load to:0x0206a8a0 module:main
-from:0x02004534 kind:load to:0x0206a994 module:main
+from:0x02004534 kind:load to:0x0206a8a0 add:0xf4 module:main
 from:0x02004538 kind:load to:0x0205a128 module:main
 from:0x02004614 kind:load to:0x02059d14 module:main
 from:0x020048bc kind:arm_call to:0x0200453c module:main

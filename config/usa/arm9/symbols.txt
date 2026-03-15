@@ -76,14 +76,14 @@ func_02001ae8 kind:function(arm,size=0x5c) addr:0x02001ae8 local
 func_02001b44 kind:function(arm,size=0xf0) addr:0x02001b44
 
 /////////////////////////////////////////////////////////////
-//
+// src/Engine/Color.c
 /////////////////////////////////////////////////////////////
-func_02001c34 kind:function(arm,size=0x40) addr:0x02001c34
+Color_CopyRange kind:function(arm,size=0x40) addr:0x02001c34
 func_02001c74 kind:function(arm,size=0x6c) addr:0x02001c74
 func_02001ce0 kind:function(arm,size=0x74) addr:0x02001ce0
 func_02001d54 kind:function(arm,size=0x70) addr:0x02001d54
 func_02001dc4 kind:function(arm,size=0x6c) addr:0x02001dc4
-func_02001e30 kind:function(arm,size=0x104) addr:0x02001e30
+Color_BlendToGreyscale kind:function(arm,size=0x104) addr:0x02001e30
 func_02001f34 kind:function(arm,size=0x118) addr:0x02001f34
 func_0200204c kind:function(arm,size=0x134) addr:0x0200204c
 func_02002180 kind:function(arm,size=0xd4) addr:0x02002180
@@ -94,59 +94,55 @@ func_02002520 kind:function(arm,size=0xc4) addr:0x02002520
 func_020025e4 kind:function(arm,size=0xc4) addr:0x020025e4
 
 /////////////////////////////////////////////////////////////
-//
+// src/Engine/Core/OamMgr.c
 /////////////////////////////////////////////////////////////
-func_020026a8 kind:function(arm,size=0x64) addr:0x020026a8
-func_0200270c kind:function(arm,size=0x130) addr:0x0200270c
-func_0200283c kind:function(arm,size=0x20) addr:0x0200283c
-func_0200285c kind:function(arm,size=0x34) addr:0x0200285c
-func_02002890 kind:function(arm,size=0x48) addr:0x02002890
-func_020028d8 kind:function(arm,size=0x138) addr:0x020028d8
-func_02002a10 kind:function(arm,size=0x54) addr:0x02002a10
-func_02002a64 kind:function(arm,size=0x88) addr:0x02002a64
-func_02002aec kind:function(arm,size=0xd8) addr:0x02002aec
-func_02002bc4 kind:function(arm,size=0x54) addr:0x02002bc4
-func_02002c18 kind:function(arm,size=0x34) addr:0x02002c18
-func_02002c4c kind:function(arm,size=0x294) addr:0x02002c4c
-func_02002ee0 kind:function(arm,size=0x3b4) addr:0x02002ee0
-func_02003294 kind:function(arm,size=0xa8) addr:0x02003294
-func_0200333c kind:function(arm,size=0x104) addr:0x0200333c
-func_02003440 kind:function(arm,size=0x54) addr:0x02003440
-func_02003494 kind:function(arm,size=0x1c) addr:0x02003494
-func_020034b0 kind:function(arm,size=0x1c) addr:0x020034b0
+OamMgr_InitCharBase kind:function(arm,size=0x64) addr:0x020026a8
+OamMgr_Init kind:function(arm,size=0x130) addr:0x0200270c
+OamMgr_Reset kind:function(arm,size=0x20) addr:0x0200283c
+OamMgr_SetOamCount kind:function(arm,size=0x34) addr:0x0200285c
+OamMgr_SetAffineCount kind:function(arm,size=0x48) addr:0x02002890
+OamMgr_AppendCellPieces kind:function(arm,size=0x138) addr:0x020028d8
+OamMgr_AddCellToOam kind:function(arm,size=0x54) addr:0x02002a10
+OamMgr_CopyCellPiecesToOam kind:function(arm,size=0x88) addr:0x02002a64
+OamMgr_SetAffineGroupParams kind:function(arm,size=0xd8) addr:0x02002aec
+OamMgr_AllocAffineGroup kind:function(arm,size=0x54) addr:0x02002bc4
+OamMgr_GetCellShape kind:function(arm,size=0x34) addr:0x02002c18
+OamMgr_BuildVisibleCellPieces kind:function(arm,size=0x294) addr:0x02002c4c
+OamMgr_BuildVisibleCellPiecesAffine kind:function(arm,size=0x3b4) addr:0x02002ee0
+OamMgr_QueueCellCharTransfers kind:function(arm,size=0xa8) addr:0x02003294
+OamMgr_CloneCellPieces kind:function(arm,size=0x104) addr:0x0200333c
+OamMgr_ResetCommandQueues kind:function(arm,size=0x54) addr:0x02003440
+OamMgr_SubmitCommand kind:function(arm,size=0x1c) addr:0x02003494
+OamMgr_FlushCommands kind:function(arm,size=0x1c) addr:0x020034b0
 func_020034cc kind:function(arm,size=0x50) addr:0x020034cc
 func_0200351c kind:function(arm,size=0x98) addr:0x0200351c
 func_020035b4 kind:function(arm,size=0x150) addr:0x020035b4
 func_02003704 kind:function(arm,size=0xcc) addr:0x02003704
 func_020037d0 kind:function(arm,size=0x98) addr:0x020037d0
-func_02003868 kind:function(arm,size=0x9c) addr:0x02003868
+OamMgr_FlushPriorityLists kind:function(arm,size=0x9c) addr:0x02003868
 func_02003904 kind:function(arm,size=0x90) addr:0x02003904
 func_02003994 kind:function(arm,size=0x98) addr:0x02003994
 func_02003a2c kind:function(arm,size=0x7c) addr:0x02003a2c
 func_02003aa8 kind:function(arm,size=0x28) addr:0x02003aa8
-
-/////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////
-func_02003ad0 kind:function(arm,size=0x17c) addr:0x02003ad0
-func_02003c4c kind:function(arm,size=0x1c) addr:0x02003c4c
-func_02003c68 kind:function(arm,size=0x14) addr:0x02003c68
+OamMgr_Init3DSpritePipeline kind:function(arm,size=0x17c) addr:0x02003ad0
+OamMgr_Reset3DState kind:function(arm,size=0x1c) addr:0x02003c4c
+OamMgr_Swap3DBuffers kind:function(arm,size=0x14) addr:0x02003c68
 func_02003c7c kind:function(arm,size=0x278) addr:0x02003c7c
+func_02003ef4 kind:function(arm,size=0x2c4) addr:0x02003ef4
 
 /////////////////////////////////////////////////////////////
-//
+// src/Engine/Core/HBlank.c
 /////////////////////////////////////////////////////////////
-func_02003ef4 kind:function(arm,size=0x2c4) addr:0x02003ef4
-func_020041b8 kind:function(arm,size=0x64) addr:0x020041b8
-func_0200421c kind:function(arm,size=0x130) addr:0x0200421c
-func_0200434c kind:function(arm,size=0x30) addr:0x0200434c
-func_0200437c kind:function(arm,size=0x38) addr:0x0200437c
-func_020043b4 kind:function(arm,size=0x28) addr:0x020043b4
-func_020043dc kind:function(arm,size=0x18) addr:0x020043dc
-func_020043f4 kind:function(arm,size=0x18) addr:0x020043f4
-func_0200440c kind:function(arm,size=0x58) addr:0x0200440c
-func_02004464 kind:function(arm,size=0x6c) addr:0x02004464
-func_020044d0 kind:function(arm,size=0x6c) addr:0x020044d0
+HBlank_RunScanlineWrites kind:function(arm,size=0x64) addr:0x020041b8
+HBlank_VBlankDispatch kind:function(arm,size=0x130) addr:0x0200421c local
+HBlank_Init kind:function(arm,size=0x30) addr:0x0200434c
+HBlank_InstallCallbacks kind:function(arm,size=0x38) addr:0x0200437c
+HBlank_RestoreCallbacks kind:function(arm,size=0x28) addr:0x020043b4
+HBlank_EnableInterrupt kind:function(arm,size=0x18) addr:0x020043dc
+HBlank_DisableInterrupt kind:function(arm,size=0x18) addr:0x020043f4 local
+HBlank_SetPendingEntry kind:function(arm,size=0x58) addr:0x0200440c local
+HBlank_AllocEntry kind:function(arm,size=0x6c) addr:0x02004464
+HBlank_ResetEntry kind:function(arm,size=0x6c) addr:0x020044d0
 
 /////////////////////////////////////////////////////////////
 // src/Memory.c
@@ -4284,12 +4280,19 @@ data_02066a1c kind:data(any) addr:0x02066a1c
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////
+// src/Engine/Core/System.c
+/////////////////////////////////////////////////////////////
 SystemStatusFlags kind:bss addr:0x02066a20
-SysControl kind:bss addr:0x02066a24
+SysControl kind:bss(size=0x2c) addr:0x02066a24
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Core/UnknownFlag.c
+/////////////////////////////////////////////////////////////
 data_02066a58 kind:bss addr:0x02066a58
 
 /////////////////////////////////////////////////////////////
-// src/DMA.c
+// src/Engine/Core/DMA.c
 /////////////////////////////////////////////////////////////
 data_02066a5c kind:bss addr:0x02066a5c
 data_02066aac kind:bss addr:0x02066aac
@@ -4310,11 +4313,14 @@ data_02068798 kind:bss addr:0x02068798
 data_02069804 kind:bss addr:0x02069804
 data_02069c24 kind:bss addr:0x02069c24
 data_0206a890 kind:bss addr:0x0206a890
-data_0206a8a0 kind:bss addr:0x0206a8a0
-data_0206a994 kind:bss addr:0x0206a994
 
 /////////////////////////////////////////////////////////////
-// src/Memory.c
+// src/Engine/Core/HBlank.c
+/////////////////////////////////////////////////////////////
+g_HBlankManager kind:bss addr:0x0206a8a0
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Core/Memory.c
 /////////////////////////////////////////////////////////////
 gMainHeap kind:bss addr:0x0206a9a4
 gDebugHeap kind:bss addr:0x0206a9b0

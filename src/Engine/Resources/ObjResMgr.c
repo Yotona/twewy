@@ -597,8 +597,8 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
     resource->unk_12 = resource->bitmapIndex;
     if (mode != 0) {
         if (!(*(u8*)data & 0xF0)) {
-            func_02003294((s32)((u8*)&data_020676ec + mgr->engine * 0x108C), (s32)mgr->vramBase, resource->bitmapIndex << 5,
-                          (void*)((u8*)data + 4), mode);
+            OamMgr_QueueCellCharTransfers((s32)((u8*)&data_020676ec + mgr->engine * 0x108C), (s32)mgr->vramBase,
+                                          resource->bitmapIndex << 5, (void*)((u8*)data + 4), mode);
         }
     } else {
         header   = *(s32*)data;

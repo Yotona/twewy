@@ -51,13 +51,13 @@ void func_ov043_020824cc(TakTestState* state) {
 }
 
 void func_ov043_020825ec(TakTestState* state) {
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     func_ov043_020824a4(state);
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
@@ -88,7 +88,7 @@ void func_ov043_020826ac(TakTestState* state) {
 // Nonmatching: Some data access differences
 void func_ov043_020826ec(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     func_0202b878();
     DMA_Init(0x100);
@@ -180,19 +180,19 @@ void func_ov043_020826ec(void) {
     g_DisplaySettings.controls[1].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[1].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
     g_DisplaySettings.controls[1].brightness  = 16;
-    func_02003ad0();
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init3DSpritePipeline();
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_0200270c(0, 2);
-    func_02002890(&data_02069804, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Init(0, 2);
+    OamMgr_SetAffineCount(&data_02069804, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
 }
 
 void func_ov043_02082a24(void) {

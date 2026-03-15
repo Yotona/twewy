@@ -1,8 +1,7 @@
 #include "Display.h"
+#include "Engine/Core/System.h"
 #include <NitroSDK/fx.h>
 #include <registers.h>
-
-extern vu32 data_02066a58;
 
 s32             data_0206aa78     = 0;
 s32             data_0206aa7c     = 0;

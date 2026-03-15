@@ -11,4 +11,7 @@ IRQCallback Interrupts_ResetHBlankCallback(void);
 BOOL        Interrupts_IsHBlankInterrupted(void);
 IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, s32 param_2);
 
+IRQCallback Interrupts_SaveVBlankCallback(IRQCallback callback);
+BOOL        Interrupts_IsVBlankInterrupted(void);
+
 #endif // BOOT_H

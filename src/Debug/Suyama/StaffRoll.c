@@ -97,10 +97,10 @@ void func_ov042_020824e0(StaffRollState* state) {
 }
 
 void func_ov042_02082620(StaffRollState* state) {
-    func_0200283c(&data_020676ec, 0, 0);
-    func_0200283c(&data_02068778, 0, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
     DebugOvlDisp_Run();
     EasyTask_ProcessPendingTasks(&state->taskPool);
     EasyTask_UpdateActiveTasks(&state->taskPool);
@@ -110,8 +110,8 @@ void func_ov042_02082620(StaffRollState* state) {
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, 0);
         return;
     }
-    func_020034b0(&data_020676ec);
-    func_020034b0(&data_02068778);
+    OamMgr_FlushCommands(&data_020676ec);
+    OamMgr_FlushCommands(&data_02068778);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
@@ -1031,7 +1031,7 @@ s32 func_ov042_0208429c(FontRoll* fontRoll) {
 
 void func_ov042_020842e4(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     do {
     } while (REG_VCOUNT < (s16)0xC0);
     GX_Init();
@@ -1156,16 +1156,16 @@ void func_ov042_020842e4(void) {
     MI_CpuFill(0, 0x06800000, 0xA4000);
     MI_CpuFill(0, 0x06000000, 0x80000);
     MI_CpuFill(0, 0x06200000, 0x20000);
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_02001c34(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    func_02001c34(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
     Interrupts_RegisterVBlankCallback(func_ov042_020846e4, 1);
 }
 

@@ -1,13 +1,12 @@
 #ifndef MINI_108_H
 #define MINI_108_H
 
+#include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include <types.h>
-
-extern vu32 data_02066a58;
 
 typedef struct {
     /* 0x00000 */ u32              unk_00;

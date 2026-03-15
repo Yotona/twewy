@@ -14,8 +14,6 @@ IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, s32 param_2)
 static void HandleVBlank(void);
 static void HandleHBlank(void);
 
-BOOL        Interrupts_IsVBlankInterrupted(void);
-IRQCallback Interrupts_SaveVBlankCallback(IRQCallback);
 IRQCallback Interrupts_SaveHBlankCallback(IRQCallback callback);
 
 void Interrupts_Init(void) {

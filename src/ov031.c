@@ -120,7 +120,7 @@ static inline u32 Ov031_MultHi(u32 a, u32 b) {
 void  DC_PurgeAll(void);                                                                                 /* extern */
 void  GetDsFirmwareUserSettings(void*);                                                                  /* extern */
 void  OS_WaitForever(void);                                                                              /* extern */
-void* func_02002c18(void*);                                                                              /* extern */
+void* OamMgr_GetCellShape(void*);                                                                        /* extern */
 void  MI_CpuCopyU16(const void* src, void* dst, s32 size);                                               /* extern */
 void  MI_CpuFillU32(s32 arg0, void* dst, s32 size);                                                      /* extern */
 void  MI_CpuFill(s32 arg0, void* dst, s32 size);                                                         /* extern */
@@ -248,7 +248,7 @@ void func_ov031_0210a220(void* arg0, s32* arg1, s32* arg2) {
         const s32 sign_extend_9 = -0x200;
         const s32 sign_extend_8 = -0x100;
         do {
-            func_02002c18((void*)entry);
+            OamMgr_GetCellShape((void*)entry);
             s32 raw_x = entry->unk4 & 0x1FF;
             s32 raw_y = entry->unk2 & 0xFF;
             entry++;
@@ -913,7 +913,7 @@ Ov031Db20* func_ov031_0210b1bc(Ov031Glyph* arg0, s32 arg1, s32 arg2, void* arg3,
 
     if (arg5 > 0U) {
         do {
-            const Ov031EntryBounds* bounds = (const Ov031EntryBounds*)func_02002c18((void*)entry);
+            const Ov031EntryBounds* bounds = (const Ov031EntryBounds*)OamMgr_GetCellShape((void*)entry);
             s32                     x      = entry->unk4 & 0x1FF;
             s32                     y      = entry->unk2 & 0xFF;
 
@@ -946,7 +946,7 @@ Ov031Db20* func_ov031_0210b1bc(Ov031Glyph* arg0, s32 arg1, s32 arg2, void* arg3,
         return &data_ov031_0210db20;
     }
 
-    const Ov031EntryBounds* bounds = (const Ov031EntryBounds*)func_02002c18((void*)hit);
+    const Ov031EntryBounds* bounds = (const Ov031EntryBounds*)OamMgr_GetCellShape((void*)hit);
     s32                     rel_x  = arg1 - hit_x;
     s32                     rel_y  = arg2 - hit_y;
 

@@ -160,7 +160,7 @@ void ProcessOverlay_FontTest(FontState* arg0) {
 
 void func_ov001_02082b74(void) {
     Interrupts_Init();
-    func_0200434c();
+    HBlank_Init();
     GX_Init();
     func_0202b878();
     DMA_Init(256);
@@ -229,24 +229,24 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].layers      = 17;
     REG_POWER_CNT &= ~0x8000;
-    func_02003ad0();
+    OamMgr_Init3DSpritePipeline();
     g_DisplaySettings.engineState[0].blendMode   = 1;
     g_DisplaySettings.engineState[0].blendLayer0 = 1;
     g_DisplaySettings.engineState[0].blendLayer1 = 63;
     g_DisplaySettings.engineState[0].blendCoeff0 = 10;
     g_DisplaySettings.engineState[0].blendCoeff1 = 6;
-    func_0200270c(0, 0);
-    func_0200283c(&data_020676ec, 0, 0);
+    OamMgr_Init(0, 0);
+    OamMgr_Reset(&data_020676ec, 0, 0);
     DC_PurgeRange(&data_0206770c, 1024);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    func_0200270c(0, 1);
-    func_0200283c(&data_02068778, 0, 0);
+    OamMgr_Init(0, 1);
+    OamMgr_Reset(&data_02068778, 0, 0);
     DC_PurgeRange(&data_02068798, 1024);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    func_0200270c(0, 2);
-    func_02002890(&data_02069804, 0);
-    func_02003440(&data_020676ec);
-    func_02003440(&data_02068778);
+    OamMgr_Init(0, 2);
+    OamMgr_SetAffineCount(&data_02069804, 0);
+    OamMgr_ResetCommandQueues(&data_020676ec);
+    OamMgr_ResetCommandQueues(&data_02068778);
 }
 
 void FontTest_VBlank(void) {

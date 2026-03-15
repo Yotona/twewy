@@ -6,8 +6,10 @@
 extern s32 data_02069804;
 
 extern struct {
-    /* 0x00 */ char unk_00[0xC];
-    /* 0x0C */ s32  unk_0C;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
 } data_0206a890;
 
 extern s32 data_0205c9b0;
