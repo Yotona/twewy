@@ -2,6 +2,7 @@
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
@@ -201,10 +202,10 @@ void Mini108_Update(Mini108State* stateptr) {
     TouchInput_Update();
 
     Text_RenderToScreen(stateptr->unk_80, 0, 0xa, func_02006930("Score : %6d", stateptr->unk_40));
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     DebugOvlDisp_Run();
 
     if ((stateptr->buttonState.pressedButtons & INPUT_BUTTON_START) != 0) {
@@ -228,8 +229,8 @@ void Mini108_Update(Mini108State* stateptr) {
     }
     func_0200efdc(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
 
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[0], 0);
     PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }
@@ -311,10 +312,10 @@ void func_ov000_020825c0(void) {
     OamMgr_Init(0, 0); // Might also use &g_DisplaySettings as third parameter?
     OamMgr_Init(0, 1);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 

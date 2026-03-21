@@ -2,6 +2,7 @@
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/IO/TouchInput.h"
 #include "Save.h"
@@ -60,15 +61,15 @@ void OpenEnd_InitHardware(void) {
     MI_CpuFill(0x0, 0x6400000, 0x40000);
     MI_CpuFill(0x0, 0x6600000, 0x20000);
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[0], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[1], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_ResetCommandQueues(&g_OamMgr[0]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[1]);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
 }
@@ -469,10 +470,10 @@ void OpenEnd_Init(OpenEndState* state) {
 }
 
 void OpenEnd_Update(OpenEndState* state) {
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[0], 0, 0);
+    OamMgr_Reset(&g_OamMgr[1], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[0]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[1]);
     TouchInput_Update();
     if (TouchInput_WasTouchPressed() != 0) {
         flag_screenTouched = TRUE;
@@ -481,8 +482,8 @@ void OpenEnd_Update(OpenEndState* state) {
     DebugOvlDisp_Run();
     if (DebugOvlDisp_IsStackAtBase() != 0)
         return;
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[0]);
+    OamMgr_FlushCommands(&g_OamMgr[1]);
     PaletteMgr_Flush(g_PaletteManagers[0], 0);
     PaletteMgr_Flush(g_PaletteManagers[1], 0);
 }

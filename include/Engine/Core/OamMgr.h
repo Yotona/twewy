@@ -161,6 +161,8 @@ typedef struct {
     /* 0x0E88 */ OamSpriteCmd*    sortBuffer[129]; ///< Sort/heap buffer (1-indexed)
 } OamManager;                                      // Size: 0x108C
 
+extern OamManager g_OamMgr[3];
+
 /**
  * @brief Initialize an engine-specific OAM manager configuration.
  *

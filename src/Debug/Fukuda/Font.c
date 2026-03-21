@@ -1,6 +1,7 @@
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/TouchInput.h"
@@ -236,17 +237,17 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.engineState[0].blendCoeff0 = 10;
     g_DisplaySettings.engineState[0].blendCoeff1 = 6;
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 1024);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 1024);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&data_02069804, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
 
 void FontTest_VBlank(void) {

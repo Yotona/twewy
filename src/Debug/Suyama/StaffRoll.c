@@ -2,6 +2,7 @@
 #include "CriSndMgr.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Save.h"
@@ -97,10 +98,10 @@ void func_ov042_020824e0(StaffRollState* state) {
 }
 
 void func_ov042_02082620(StaffRollState* state) {
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     DebugOvlDisp_Run();
     EasyTask_ProcessPendingTasks(&state->taskPool);
     EasyTask_UpdateActiveTasks(&state->taskPool);
@@ -110,8 +111,8 @@ void func_ov042_02082620(StaffRollState* state) {
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, 0);
         return;
     }
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
@@ -1157,11 +1158,11 @@ void func_ov042_020842e4(void) {
     MI_CpuFill(0, 0x06000000, 0x80000);
     MI_CpuFill(0, 0x06200000, 0x20000);
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);

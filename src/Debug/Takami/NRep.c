@@ -3,6 +3,7 @@
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/Interrupts.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/TouchInput.h"
@@ -141,11 +142,11 @@ void func_ov043_020c64a4(NRepState* state) {
 
     TouchInput_Update();
     OamMgr_Reset3DState();
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_SetAffineCount(&data_02069804, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     func_ov043_020c707c(ctx);
     DebugOvlDisp_Run();
     EasyTask_UpdatePool(&state->taskPool);
@@ -153,8 +154,8 @@ void func_ov043_020c64a4(NRepState* state) {
         state->unk_21680 = 1;
     }
     OamMgr_Swap3DBuffers();
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
@@ -324,15 +325,15 @@ void func_ov043_020c6684(void) {
     OamMgr_Init3DSpritePipeline();
     OamMgr_Swap3DBuffers();
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&data_02069804, 0);
+    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
 }
 
 void func_ov043_020c6a58(void) {

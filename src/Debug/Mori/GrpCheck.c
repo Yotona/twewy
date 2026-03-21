@@ -3,6 +3,7 @@
 #include "Engine/Color.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
@@ -748,14 +749,14 @@ void GrpCheck_InitOverlayForSwSprites(GrpCheckState* state) {
 }
 
 void GrpCheck_RunOverlay(GrpCheckState* state) {
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     if (data_ov038_020b7200.unk_4 == 2) {
         OamMgr_Reset3DState();
-        OamMgr_SetAffineCount(&data_02069804, 0);
+        OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
     }
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     GrpCheck_ProcessUserInput(state);
 
     if (data_ov038_02086fe4[state->unk_1165C].unk_18 != 0) {
@@ -764,8 +765,8 @@ void GrpCheck_RunOverlay(GrpCheckState* state) {
 
     DebugOvlDisp_Run();
     OamMgr_Swap3DBuffers();
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     if (data_ov038_020b7200.unk_4 == 2) {
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
         func_02001b44(2, 0, &data_020672ec, 0x400);
@@ -915,17 +916,17 @@ void func_ov038_020856f4(void) {
     MI_CpuFill(0, 0x06400000, 0x40000);
     MI_CpuFill(0, 0x06600000, 0x20000);
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&data_02069804, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }

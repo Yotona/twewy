@@ -60,7 +60,7 @@ extern s32 data_0206aa7c;
 static void OamMgr_InitCharBase(s32 arg0, DisplayEngine engine, s32 arg2, s32 arg3) {
     OamCharConfig* charCfg;
 
-    OamManager* mgr = (OamManager*)((u8*)&data_020676ec + engine * 0x108C);
+    OamManager* mgr = (OamManager*)((u8*)&g_OamMgr + engine * 0x108C);
     mgr->engine     = engine;
     switch (engine) {
         case 0:

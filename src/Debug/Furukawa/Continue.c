@@ -5,6 +5,7 @@
 #include "EasyList.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/Interrupts.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/TouchInput.h"
@@ -18,10 +19,6 @@
 #include <NitroSDK/mi/cpumem.h>
 
 extern void Color_CopyRange(s16*, s32*, void*, void*, s32);
-extern void OamMgr_Init(void*, void*);
-extern void OamMgr_Reset(s32*, void*, void*);
-extern void OamMgr_ResetCommandQueues(s32*);
-extern void OamMgr_FlushCommands(s32*);
 extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);
 extern void func_ov003_020825b8(s32, void*, void*);
@@ -59,10 +56,10 @@ void func_ov025_020e7360(void) {
     OamMgr_Init(0, 0);
     OamMgr_Init(0, 1);
     MI_CpuFill(0, 0x06800000, 0xA4000);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
@@ -396,10 +393,10 @@ void Continue_Init(ContinueObject* contObj) {
 
 void Continue_Update(ContinueObject* contObj) {
     TouchInput_Update();
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     func_ov025_020e7c40(contObj);
     func_ov025_020e7cb8(contObj);
     DebugOvlDisp_Run();
@@ -408,8 +405,8 @@ void Continue_Update(ContinueObject* contObj) {
         func_ov025_020e7dd0(contObj);
     } else {
         EasyTask_UpdatePool(&contObj->taskPool);
-        OamMgr_FlushCommands(&data_020676ec);
-        OamMgr_FlushCommands(&data_02068778);
+        OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+        OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
     }

@@ -52,7 +52,7 @@ from:0x02082b54 kind:arm_call to:0x020034b0 module:main
 from:0x02082b64 kind:arm_call to:0x0200bf60 module:main
 from:0x02082b74 kind:arm_call to:0x0200bf60 module:main
 from:0x02082b7c kind:load to:0x020676ec module:main
-from:0x02082b80 kind:load to:0x02068778 module:main
+from:0x02082b80 kind:load to:0x020676ec add:0x108c module:main
 from:0x02082b84 kind:load to:0x0206b3cc module:main
 from:0x02082b90 kind:arm_call to:0x020828f0 module:overlay(41)
 from:0x02082b98 kind:arm_call to:0x0200cef0 module:main
@@ -107,10 +107,10 @@ from:0x02082ef0 kind:load to:0x0206aa78 module:main
 from:0x02082ef4 kind:load to:0x0206aa7c module:main
 from:0x02082ef8 kind:load to:0x0206aa80 add:0x284 module:main
 from:0x02082f08 kind:load to:0x020676ec module:main
-from:0x02082f0c kind:load to:0x0206770c module:main
-from:0x02082f10 kind:load to:0x02068778 module:main
-from:0x02082f14 kind:load to:0x02068798 module:main
-from:0x02082f18 kind:load to:0x02069804 module:main
+from:0x02082f0c kind:load to:0x020676ec add:0x20 module:main
+from:0x02082f10 kind:load to:0x020676ec add:0x108c module:main
+from:0x02082f14 kind:load to:0x020676ec add:0x10ac module:main
+from:0x02082f18 kind:load to:0x020676ec add:0x2118 module:main
 from:0x02082f34 kind:arm_call to:0x0209e91c module:overlay(40)
 from:0x02082f38 kind:arm_call to:0x02006380 module:main
 from:0x02082f3c kind:arm_call to:0x020019ac module:main
@@ -125,8 +125,8 @@ from:0x02082fac kind:arm_call to:0x02039840 module:main
 from:0x02082fbc kind:arm_call to:0x0203715c module:main
 from:0x02082fcc kind:arm_call to:0x0203720c module:main
 from:0x02082fd4 kind:load to:0x02066a20 module:main
-from:0x02082fd8 kind:load to:0x0206770c module:main
-from:0x02082fdc kind:load to:0x02068798 module:main
+from:0x02082fd8 kind:load to:0x020676ec add:0x20 module:main
+from:0x02082fdc kind:load to:0x020676ec add:0x10ac module:main
 from:0x02082fe0 kind:load to:0x02066aec module:main
 from:0x02082fe4 kind:load to:0x02066cec module:main
 from:0x02082fe8 kind:load to:0x02066eec module:main

@@ -3,8 +3,6 @@
 
 #include <types.h>
 
-extern s32 data_02069804;
-
 extern struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -20,7 +18,6 @@ extern vs16 data_02066eec;
 
 extern s32 data_020670ec;
 extern s32 data_020672ec;
-extern s32 data_020676ec;
 extern s32 data_0206770c;
 
 extern s32 data_02068778;

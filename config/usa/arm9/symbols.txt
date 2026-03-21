@@ -4304,14 +4304,7 @@ data_02067000 kind:bss addr:0x02067000
 data_02067018 kind:bss addr:0x02067018
 data_020670ec kind:bss addr:0x020670ec
 data_020672ec kind:bss addr:0x020672ec
-data_020676ec kind:bss addr:0x020676ec
-data_020676f4 kind:bss addr:0x020676f4
-data_02067700 kind:bss addr:0x02067700
-data_0206770c kind:bss addr:0x0206770c
-data_02068778 kind:bss addr:0x02068778
-data_02068798 kind:bss addr:0x02068798
-data_02069804 kind:bss addr:0x02069804
-data_02069c24 kind:bss addr:0x02069c24
+g_OamMgr kind:bss addr:0x020676ec
 data_0206a890 kind:bss addr:0x0206a890
 
 /////////////////////////////////////////////////////////////

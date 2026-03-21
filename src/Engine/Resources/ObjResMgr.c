@@ -9,7 +9,7 @@ extern void func_0200ed4c(void);
 extern void func_0200ed74(void);
 extern void func_0200ed90(void);
 
-extern u8  data_020676ec;
+extern u8  g_OamMgr;
 extern u8  data_020676f4;
 extern u8  data_02067700;
 extern s32 data_0206a9bc;
@@ -597,7 +597,7 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
     resource->unk_12 = resource->bitmapIndex;
     if (mode != 0) {
         if (!(*(u8*)data & 0xF0)) {
-            OamMgr_QueueCellCharTransfers((s32)((u8*)&data_020676ec + mgr->engine * 0x108C), (s32)mgr->vramBase,
+            OamMgr_QueueCellCharTransfers((s32)((u8*)&g_OamMgr + mgr->engine * 0x108C), (s32)mgr->vramBase,
                                           resource->bitmapIndex << 5, (void*)((u8*)data + 4), mode);
         }
     } else {

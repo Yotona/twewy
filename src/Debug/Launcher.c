@@ -1,6 +1,7 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include <NitroSDK/fx.h>
@@ -46,10 +47,10 @@ void func_ov046_020824a0(void) {
     OamMgr_Init(0, 0);
     OamMgr_Init(0, 1);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
@@ -429,10 +430,10 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
     state->buttonState = InputStatus.buttonState;
 
     TouchInput_Update();
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     DebugOvlDisp_Run();
 
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
@@ -444,8 +445,8 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
         MainOvlDisp_ReplaceTop(&tag, state->overlay, state->overlayCB, NULL, 0);
     } else {
         EasyTask_UpdatePool(&state->unk_11650);
-        OamMgr_FlushCommands(&data_020676ec);
-        OamMgr_FlushCommands(&data_02068778);
+        OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+        OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
         PaletteMgr_Flush(g_PaletteManagers[0], 0);
         PaletteMgr_Flush(g_PaletteManagers[1], 0);
     }
@@ -502,7 +503,7 @@ void func_ov046_02083698(void* unkptr, s32 unused_r1, s32 r2) {
     if (*(s32*)(temp + 0x8) == 0x1000 && *(s32*)(temp + 0xC) == 0x1000) {
         *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x1 | 1;
         *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x2;
-        u8 thing = (*(u8*)(*(u16*)(temp + 0x0))) * 0x108 + data_020676ec; // Nonmatching: 0x108 is a global constant?
+        u8 thing              = (*(u8*)(*(u16*)(temp + 0x0))) * 0x108 + g_OamMgr; // Nonmatching: 0x108 is a global constant?
         OamMgr_AllocAffineGroup(thing, 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
         *(u16*)(unkptr + 0xa) = (*(u16*)(unkptr + 0xa) & ~0x3E0) | ((u16)(thing << 0x1B) >> 0x16);
     } else {

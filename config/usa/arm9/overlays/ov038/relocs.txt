@@ -394,9 +394,9 @@ from:0x020855c4 kind:arm_call to:0x02001b44 module:main
 from:0x020855d4 kind:arm_call to:0x0200bf60 module:main
 from:0x020855e4 kind:arm_call to:0x0200bf60 module:main
 from:0x020855ec kind:load to:0x020676ec module:main
-from:0x020855f0 kind:load to:0x02068778 module:main
+from:0x020855f0 kind:load to:0x020676ec add:0x108c module:main
 from:0x020855f4 kind:load to:0x020b7200 module:overlay(38)
-from:0x020855f8 kind:load to:0x02069804 module:main
+from:0x020855f8 kind:load to:0x020676ec add:0x2118 module:main
 from:0x020855fc kind:load to:0x02086ffc module:overlay(38)
 from:0x02085600 kind:load to:0x0206b3cc module:main
 from:0x02085604 kind:load to:0x020672ec module:main
@@ -464,10 +464,10 @@ from:0x02085a14 kind:load to:0x0206aa80 add:0xa0 module:main
 from:0x02085a20 kind:load to:0x0206aa80 add:0xdc module:main
 from:0x02085a28 kind:load to:0x0206aa80 add:0x284 module:main
 from:0x02085a30 kind:load to:0x020676ec module:main
-from:0x02085a34 kind:load to:0x0206770c module:main
-from:0x02085a38 kind:load to:0x02068778 module:main
-from:0x02085a3c kind:load to:0x02068798 module:main
-from:0x02085a40 kind:load to:0x02069804 module:main
+from:0x02085a34 kind:load to:0x020676ec add:0x20 module:main
+from:0x02085a38 kind:load to:0x020676ec add:0x108c module:main
+from:0x02085a3c kind:load to:0x020676ec add:0x10ac module:main
+from:0x02085a40 kind:load to:0x020676ec add:0x2118 module:main
 from:0x02085a44 kind:load to:0x02066aec module:main
 from:0x02085a48 kind:load to:0x0205a128 module:main
 from:0x02085a4c kind:load to:0x02066eec module:main
@@ -484,8 +484,8 @@ from:0x02085adc kind:arm_call to:0x02039840 module:main
 from:0x02085aec kind:arm_call to:0x0203715c module:main
 from:0x02085afc kind:arm_call to:0x0203720c module:main
 from:0x02085b04 kind:load to:0x02066a20 module:main
-from:0x02085b08 kind:load to:0x0206770c module:main
-from:0x02085b0c kind:load to:0x02068798 module:main
+from:0x02085b08 kind:load to:0x020676ec add:0x20 module:main
+from:0x02085b0c kind:load to:0x020676ec add:0x10ac module:main
 from:0x02085b10 kind:load to:0x02066aec module:main
 from:0x02085b14 kind:load to:0x02066cec module:main
 from:0x02085b18 kind:load to:0x02066eec module:main

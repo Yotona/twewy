@@ -8,6 +8,7 @@
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgr.h"
@@ -1722,13 +1723,13 @@ void func_ov029_02082e40(SoundTestState* param) {
 }
 
 void func_ov029_02082ee8(SoundTestState* state) {
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     SoundTest_ControlMenu(state);
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

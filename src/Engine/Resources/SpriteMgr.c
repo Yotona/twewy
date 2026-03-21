@@ -1,6 +1,6 @@
 #include "SpriteMgr.h"
 
-extern s32 data_020676ec;
+extern s32 g_OamMgr;
 
 const s16 data_0205adb4[12] = {1, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0};
 
@@ -233,20 +233,20 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         Unk_Bitfield temp_arg2 = arg2;
         if (temp_arg2.unk_00 == 1) {
             temp_08 = OamMgr_BuildVisibleCellPiecesAffine(
-                &data_020676ec + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
-                &data_020676ec + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
+                &g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
+                &g_OamMgr + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
         } else {
-            temp_08 = OamMgr_BuildVisibleCellPieces(&data_020676ec + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
+            temp_08 = OamMgr_BuildVisibleCellPieces(&g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
                                                     (s32)arg2.raw, temp_lr);
         }
     }
     arg1->unk_08 = temp_08;
     s32 temp_10  = arg1->unk_10;
     if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&data_020676ec + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
+        OamMgr_SubmitCommand(&g_OamMgr + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&data_020676ec + (tempbit * (0x108C / 4)), arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr + (tempbit * (0x108C / 4)), arg1->unk_08);
 }
 
 static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield arg2) { // Render sprite, version 2
@@ -296,10 +296,10 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         Unk_Bitfield temp_arg2 = arg2;
         if (temp_arg2.unk_00 == 1) {
             temp_08 = OamMgr_BuildVisibleCellPiecesAffine(
-                &data_020676ec + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
-                &data_020676ec + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
+                &g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
+                &g_OamMgr + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
         } else {
-            temp_08 = OamMgr_BuildVisibleCellPieces(&data_020676ec + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
+            temp_08 = OamMgr_BuildVisibleCellPieces(&g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
                                                     (s32)arg2.raw, temp_lr);
         }
     }
@@ -307,10 +307,10 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
     arg1->unk_08 = OamMgr_CloneCellPieces(arg1->unk_08, arg1->unk_08);
     s32 temp_10  = arg1->unk_10;
     if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&data_020676ec + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
+        OamMgr_SubmitCommand(&g_OamMgr + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&data_020676ec + (tempbit * (0x108C / 4)), arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr + (tempbit * (0x108C / 4)), arg1->unk_08);
 }
 
 void Sprite_RenderFrame(Sprite* sprite) {

@@ -2,15 +2,13 @@
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/Interrupts.h"
-
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
-
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
-
 #include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
@@ -22,13 +20,9 @@
 // Forward declarations of external functions
 extern void HBlank_Init(void);
 extern void GX_Init(void);
-extern void OamMgr_Init(s32, s32);
 extern void MI_CpuFill(s32, void*, s32);
-extern void OamMgr_Reset(void*, s32, s32);
 extern void DC_PurgeRange(void*, u32);
 extern void Color_CopyRange(void*, void*, s32, s32, s32);
-extern void OamMgr_ResetCommandQueues(void*);
-extern void OamMgr_FlushCommands(void*);
 extern void SndMgr_StartPlayingSE(s32);
 extern void func_ov003_02082724(void*, s32, s32);
 extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
@@ -93,10 +87,10 @@ static void Tutorial_InitHardware(void) {
     OamMgr_Init(0, 0);
     OamMgr_Init(0, 1);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
@@ -335,10 +329,10 @@ static void Tutorial_Init(TutorialObject* object) {
 
 static void Tutorial_Update(TutorialObject* object) {
     TouchInput_Update();
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     func_ov026_020e7bc0(object);
     func_ov026_020e7bd4(object);
     DebugOvlDisp_Run();
@@ -349,8 +343,8 @@ static void Tutorial_Update(TutorialObject* object) {
     }
 
     EasyTask_UpdatePool(&object->taskPool);
-    OamMgr_FlushCommands(&data_020676ec);
-    OamMgr_FlushCommands(&data_02068778);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

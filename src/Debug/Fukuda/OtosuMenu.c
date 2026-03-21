@@ -4,6 +4,7 @@
 #include "EasyFade.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/TouchInput.h"
@@ -2818,10 +2819,10 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
     }
 
     TouchInput_Update();
-    OamMgr_Reset(&data_020676ec, 0, 0);
-    OamMgr_Reset(&data_02068778, 0, 0);
-    OamMgr_ResetCommandQueues(&data_020676ec);
-    OamMgr_ResetCommandQueues(&data_02068778);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 
     if (SystemStatusFlags.reset || (menuObj->unk_460BC == 0)) {
         PrcMaster_RunAllCtxSteps(&menuObj->prcMaster);
@@ -2899,8 +2900,8 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
             if (menuObj->unk_460B8 != 0) {
                 Sprite_Render(&menuObj->unk_46078);
             }
-            OamMgr_FlushCommands(&data_020676ec);
-            OamMgr_FlushCommands(&data_02068778);
+            OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+            OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
             PaletteMgr_Flush(g_PaletteManagers[0], 0);
             PaletteMgr_Flush(g_PaletteManagers[1], 0);
             func_0200d90c();
@@ -6137,11 +6138,11 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.engineState[1].blendCoeff1          = 4;
     Display_Commit();
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }
@@ -6257,11 +6258,11 @@ void func_ov002_0208bd40(void) {
 
     Display_Commit();
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }
@@ -6359,11 +6360,11 @@ void func_ov002_0208c228(void) {
 
     Display_Commit();
     OamMgr_Init(0, 0);
-    OamMgr_Reset(&data_020676ec, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     DC_PurgeRange(&data_0206770c, 0x400);
     GX_LoadOam(&data_0206770c, 0, 0x400);
     OamMgr_Init(0, 1);
-    OamMgr_Reset(&data_02068778, 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     DC_PurgeRange(&data_02068798, 0x400);
     GXs_LoadOam(&data_02068798, 0, 0x400);
 }
