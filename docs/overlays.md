@@ -4,7 +4,7 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 
 - [00 - Mini108](#overlay-00---mini108)
 - [01 - Font](#overlay-01---font)
-- [02](#overlay-02)
+- [02 - OtosuMenu](#overlay-02---otosu-menu)
 - [03](#overlay-03)
 - [04](#overlay-04)
 - [05](#overlay-05)
@@ -18,7 +18,7 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [13](#overlay-13)
 - [14](#overlay-14)
 - [15](#overlay-15)
-- [16](#overlay-16)
+- [16 - Boss01](#overlay-16---boss01)
 - [17](#overlay-17)
 - [18](#overlay-18)
 - [19](#overlay-19)
@@ -27,13 +27,13 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [22](#overlay-22)
 - [23](#overlay-23)
 - [24](#overlay-24)
-- [25](#overlay-25)
-- [26](#overlay-26)
+- [25 - Continue](#overlay-25---continue)
+- [26 - Tutorial](#overlay-26---tutorial)
 - [27](#overlay-27)
 - [28 - Noise Report](#overlay-28---noise-report)
 - [29 - Sound Tests](#overlay-29---sound-tests)
 - [30](#overlay-30)
-- [31 - Font Rendering](#overlay-31---font-rendering)
+- [31 - Font / PRC](#overlay-31---font--prc)
 - [32](#overlay-32)
 - [33](#overlay-33)
 - [34](#overlay-34)
@@ -53,8 +53,6 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 
 ## Overlay 00 - Mini108
 
-**Category:** Debugging Menu
-
 **Files:**
 [Mini108](../src/Debug/Abe/Mini108.c)
 
@@ -62,18 +60,17 @@ TODO: Document
 
 ## Overlay 01 - Font
 
-**Category:** Debugging Menu
-
 **Files:**
 [Font](../src/Debug/Fukuda/Font.c)
 
 TODO: Document
 
-## Overlay 02
+## Overlay 02 - Otosu Menu
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[OtosuMenu](../src/Debug/Fukuda/OtosuMenu.c)
 
-TODO: Decompile and document
+TODO: Document
 
 ## Overlay 03
 
@@ -179,11 +176,12 @@ TODO: Decompile and document
 
 Speculated purpose: Noise
 
-## Overlay 16
+## Overlay 16 - Boss01
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[Boss01](../src/Combat/Noise/Boss01.c)
 
-TODO: Decompile and document
+Contains logic for "Boss01". TODO: Determine which boss this is and document its functionality.
 
 ## Overlay 17
 
@@ -249,21 +247,19 @@ TODO: Decompile and document
 
 Speculated purpose: Boss fight
 
-## Overlay 25
+## Overlay 25 - Continue
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[Continue](../src/Debug/Furukawa/Continue.c)
 
-TODO: Decompile and document
+TODO: Document
 
-Speculated purpose: game over screen
+## Overlay 26 - Tutorial
 
-## Overlay 26
+**Files:**
+[Tutorial](../src/Debug/Furukawa/Tutorial.c)
 
-**Files:** N/A (Not yet decompiled)
-
-TODO: Decompile and document
-
-Speculated purpose: tutorial/help screen
+TODO: Document
 
 ## Overlay 27
 
@@ -275,16 +271,12 @@ Speculated purpose: battle selection menu for chain battles and encounter select
 
 ## Overlay 28 - Noise Report
 
-**Category:** Debugging Menu, UI
-
 **Files:**
 [NoiseReport](../src/Debug/Horii/NoiseReport.c)
 
 The Noise Report screen, which displays the Noise enemies and various statistics about them including their item drops and drop chances at various difficulties.
 
 ## Overlay 29 - Sound Tests
-
-**Category:** Debugging Menu
 
 **Files:**
 [SoundTest](../src/Debug/Kitawaki/SoundTest.c)
@@ -299,11 +291,10 @@ TODO: Decompile and document
 
 Speculated purpose: field exploration, various debugging menus, brand and region information, etc. Extremely large and varied in functionality.
 
-## Overlay 31 - Font Rendering
+## Overlay 31 - Font / PRC
 
-**Category:** Core System
-
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[PrcMaster](../src/PrcMaster.c)
 
 TODO: Document
 
