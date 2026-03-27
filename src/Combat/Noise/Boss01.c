@@ -1,4 +1,5 @@
 #include "Combat/Noise/Boss01.h"
+#include "Combat/Core/Combat.h"
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"
@@ -7,7 +8,6 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
-#include <types.h>
 
 #include <NitroSDK/fx.h>
 #include <NitroSDK/mi/cpumem.h>
@@ -50,29 +50,6 @@ typedef struct {
     /* 0x14 */ u16                      unk14;
     /* 0x16 */ u16                      unk16;
 } Ov016AnimConfig;
-
-/* Global overlay state block for ov003 (shared world state). */
-typedef struct {
-    /* 0x00000 */ TaskPool unk_00000;
-    /* 0x00080 */ u8       unk_00080[0x808C - 0x80];
-    /* 0x0808C */ TaskPool taskPool;
-    /* 0x0810C */ char     unk_0810C[0x3D350 - 0x810C];
-    /* 0x3D350 */ Data*    unk3D350;
-    /* 0x3D354 */ u8       pad_3D7CC[0x478];
-    /* 0x3D7CC */ s32      unk3D7CC;
-    /* 0x3D7D0 */ u8       pad_3D824[0x54];
-    /* 0x3D824 */ s32      unk3D824;
-    /* 0x3D828 */ u8       pad_3D878[0x50];
-    /* 0x3D878 */ u32      unk3D878;
-    /* 0x3D87C */ u8       pad_3D898[0x1C];
-    /* 0x3D898 */ void*    unk3D898;
-    /* 0x3D89C */ void*    unk3D89C;
-    /* 0x3D8A0 */ void*    unk3D8A0;
-    /* 0x3D8A4 */ u8       pad_3D8AC[0x8];
-    /* 0x3D8AC */ void*    unk3D8AC;
-    /* 0x3D8B0 */ u8       pad_3D8B4[0x4];
-    /* 0x3D8B4 */ void*    unk3D8B4;
-} Ov003Global;
 
 /* Simple quad of u16 values, often used for dimensions or indices. */
 typedef struct {
@@ -212,7 +189,6 @@ void      func_ov003_02082a04(s32, void*, const BinIdentifier*, const void*, s32
 void      func_ov003_02082a90(s16, void*, const void*, s32, s32, s32, s32, s32);             /* extern */
 void      func_ov003_02082b0c(void*);                                                        /* extern */
 void      func_ov003_02082b64(void*);                                                        /* extern */
-void      func_ov003_02082cc4(void*);                                                        /* extern */
 void      func_ov003_02082f1c(void*, s32);                                                   /* extern */
 s32       func_ov003_02082f2c(void*);                                                        /* extern */
 void      func_ov003_02083000(s32, void*);                                                   /* extern */
@@ -294,9 +270,8 @@ void  Boss01s_FlyUG_CreateTask(void);                                           
 void  Boss01s_LandRG_CreateTask(void);                                                       /* static */
 void  Boss01s_LandUG_CreateTask(void);                                                       /* static */
 
-extern Ov003Global* data_ov003_020e71b8;
-extern void*        data_ov009_021234cc;
-extern void*        data_ov009_02123540;
+extern void* data_ov009_021234cc;
+extern void* data_ov009_02123540;
 
 /* Resource table entries used by animations/sprites. */
 static const BinIdentifier data_ov016_02128f88 = {3, "Apl_Mor/Grp_Boss01b.bin"};
