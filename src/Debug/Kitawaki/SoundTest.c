@@ -1766,10 +1766,7 @@ void SoundTest_InterruptCallback(void) {
     if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

@@ -12,18 +12,12 @@ extern struct {
 
 extern s32 data_0205c9b0;
 
-extern vs16 data_02066aec;
-extern s32  data_02066cec;
-extern vs16 data_02066eec;
+extern u16 data_02066aec;
+extern s32 data_02066cec;
+extern u16 data_02066eec;
 
 extern s32 data_020670ec;
 extern s32 data_020672ec;
-extern s32 data_0206770c;
-
-extern s32 data_02068778;
-extern s32 data_02068798;
-
-extern s32 data_0205a128;
 
 typedef struct {
     /* 0x0 */ char pad_00[0x28];

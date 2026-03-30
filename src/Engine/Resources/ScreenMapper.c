@@ -1,4 +1,5 @@
 #include "Display.h"
+#include "Engine/Color.h"
 #include "common_data.h"
 
 typedef struct ScreenMapEntry {

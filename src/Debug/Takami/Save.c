@@ -1,6 +1,7 @@
 #include "Debug/Takami/Save.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/TouchInput.h"
@@ -104,10 +105,7 @@ void func_ov043_020c09e8(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

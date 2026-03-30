@@ -97,7 +97,7 @@ func_020025e4 kind:function(arm,size=0xc4) addr:0x020025e4
 // src/Engine/Core/OamMgr.c
 /////////////////////////////////////////////////////////////
 OamMgr_InitCharBase kind:function(arm,size=0x64) addr:0x020026a8
-OamMgr_Init kind:function(arm,size=0x130) addr:0x0200270c
+OamMgr_InitEngine kind:function(arm,size=0x130) addr:0x0200270c
 OamMgr_Reset kind:function(arm,size=0x20) addr:0x0200283c
 OamMgr_SetOamCount kind:function(arm,size=0x34) addr:0x0200285c
 OamMgr_SetAffineCount kind:function(arm,size=0x48) addr:0x02002890

@@ -886,14 +886,7 @@ void func_ov038_020856f4(void) {
 
     GXs_SetGraphicsMode(0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
-    subBg0->bgMode            = 0;
-    subBg0->screenSizeText    = 0;
-    subBg0->colorMode         = 0;
-    subBg0->screenBase        = 0;
-    subBg0->charBase          = 1;
-    subBg0->extPlttSlot       = 0;
-    REG_BG0CNT_SUB            = REG_BG0CNT_SUB & 0x43 | 4;
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 1;
@@ -915,16 +908,7 @@ void func_ov038_020856f4(void) {
     MI_CpuFill(0, 0x06200000, 0x20000);
     MI_CpuFill(0, 0x06400000, 0x40000);
     MI_CpuFill(0, 0x06600000, 0x20000);
-    OamMgr_Init(0, 0);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Init(0, 1);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
-    OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_InitExtended();
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
@@ -935,10 +919,7 @@ void GrpCheck_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

@@ -2,6 +2,7 @@
 #define ENGINE_RESOURCES_PALETTEMGR_H
 
 #include "Display.h"
+#include "Engine/Color.h"
 
 /**
  * @brief Palette slot allocation metadata.

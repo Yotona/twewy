@@ -117,6 +117,24 @@ void GXx_SetMasterBrightness(u16* arg0, s32 arg1);
  */
 s32 GXx_GetMasterBrightness(vu16* arg0);
 
+/**
+ * @brief DMA-copy a buffer to main engine hardware OAM.
+ *
+ * @param src    Source buffer.
+ * @param offset Byte offset within hardware OAM to write to.
+ * @param size   Number of bytes to copy.
+ */
+void GX_LoadOam(const void* src, u32 offset, u32 size);
+
+/**
+ * @brief DMA-copy a buffer to sub engine hardware OAM.
+ *
+ * @param src    Source buffer.
+ * @param offset Byte offset within hardware OAM to write to.
+ * @param size   Number of bytes to copy.
+ */
+void GXs_LoadOam(const void* src, u32 offset, u32 size);
+
 /// MARK: Inlines
 
 /**

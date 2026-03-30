@@ -78,7 +78,7 @@ static void OamMgr_InitCharBase(s32 arg0, DisplayEngine engine, s32 arg2, s32 ar
     mgr->charBases[3] = &data_02059400[arg3];
 }
 
-void OamMgr_Init(s32 unused, DisplayEngine engine) {
+void OamMgr_InitEngine(s32 unused, DisplayEngine engine) {
     GXOBJTileMode tileMode;
     switch (engine) {
         case DISPLAY_MAIN:

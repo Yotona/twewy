@@ -309,16 +309,10 @@ void func_ov000_020825c0(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_64K;
 
-    OamMgr_Init(0, 0); // Might also use &g_DisplaySettings as third parameter?
-    OamMgr_Init(0, 1);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
-
+    OamMgr_ResetAndCommit();
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
@@ -337,10 +331,7 @@ void Mini108_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

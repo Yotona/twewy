@@ -44,15 +44,10 @@ void func_ov046_020824a0(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_64K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
 
-    OamMgr_Init(0, 0);
-    OamMgr_Init(0, 1);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, 0x6800000, 0xa4000);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
+    OamMgr_ResetAndCommit();
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
@@ -61,10 +56,7 @@ void func_ov046_02082720(void) {
     if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);
@@ -256,43 +248,10 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_2D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_2D);
 
-    DisplayBGSettings* mainBg0 = Display_GetBG0Settings(DISPLAY_MAIN);
-    mainBg0->bgMode            = 0;
-    mainBg0->screenSizeText    = 0;
-    mainBg0->colorMode         = 0;
-    mainBg0->screenBase        = 0;
-    mainBg0->charBase          = 1;
-    mainBg0->extPlttSlot       = 1;
-    if (g_DisplaySettings.controls[DISPLAY_MAIN].dimension == GX2D3D_MODE_2D) {
-        REG_BG0CNT = REG_BG0CNT & 0x43 | 0x2004;
-    }
-
-    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
-    mainBg1->bgMode            = 0;
-    mainBg1->screenSizeText    = 0;
-    mainBg1->colorMode         = 0;
-    mainBg1->screenBase        = 1;
-    mainBg1->charBase          = 4;
-    mainBg1->extPlttSlot       = 1;
-    REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x2110;
-
-    DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_MAIN);
-    mainBg2->bgMode            = 0;
-    mainBg2->screenSizeText    = 0;
-    mainBg2->colorMode         = 0;
-    mainBg2->screenBase        = 0;
-    mainBg2->charBase          = 1;
-    mainBg2->extPlttSlot       = 0;
-    REG_BG2CNT                 = REG_BG2CNT & 0x43 | 4;
-
-    DisplayBGSettings* mainBg3 = Display_GetBG3Settings(DISPLAY_MAIN);
-    mainBg3->bgMode            = 0;
-    mainBg3->screenSizeText    = 0;
-    mainBg3->colorMode         = 0;
-    mainBg3->screenBase        = 0;
-    mainBg3->charBase          = 1;
-    mainBg3->extPlttSlot       = 1;
-    REG_BG3CNT                 = REG_BG3CNT & 0x43 | 4;
+    Display_InitMainBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 1, 0x2004);
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 1, 4, 1, 0x2110);
+    Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
+    Display_InitMainBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 1, 0x4);
 
     g_DisplaySettings.engineState[0].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 1;
@@ -309,41 +268,10 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
-    subBg0->bgMode            = 0;
-    subBg0->screenSizeText    = 0;
-    subBg0->colorMode         = 0;
-    subBg0->screenBase        = 0;
-    subBg0->charBase          = 1;
-    subBg0->extPlttSlot       = 0;
-    REG_BG0CNT_SUB            = REG_BG0CNT_SUB & 0x43 | 4;
-
-    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_SUB);
-    subBg1->charBase          = 4;
-    subBg1->bgMode            = 0;
-    subBg1->screenSizeText    = 0;
-    subBg1->colorMode         = 0;
-    subBg1->screenBase        = 1;
-    subBg1->extPlttSlot       = 0;
-    REG_BG1CNT_SUB            = REG_BG1CNT_SUB & 0x43 | 0x110;
-
-    DisplayBGSettings* subBg2 = Display_GetBG2Settings(DISPLAY_SUB);
-    subBg2->bgMode            = 0;
-    subBg2->screenSizeText    = 0;
-    subBg2->colorMode         = 0;
-    subBg2->screenBase        = 0;
-    subBg2->charBase          = 1;
-    subBg2->extPlttSlot       = 1;
-    REG_BG2CNT_SUB            = REG_BG2CNT_SUB & 0x43 | 4;
-
-    DisplayBGSettings* subBg3 = Display_GetBG3Settings(DISPLAY_SUB);
-    subBg3->bgMode            = 0;
-    subBg3->screenSizeText    = 0;
-    subBg3->colorMode         = 0;
-    subBg3->screenBase        = 0;
-    subBg3->charBase          = 1;
-    subBg3->extPlttSlot       = 1;
-    REG_BG3CNT_SUB            = REG_BG3CNT_SUB & 0x43 | 4;
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 1, 4, 0, 0x110);
+    Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 1, 0x4);
+    Display_InitSubBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 1, 0x4);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 1;

@@ -149,23 +149,8 @@ void func_ov043_020826ec(void) {
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
-    DisplayBGSettings* subBg0 = Display_GetBG0Settings(DISPLAY_SUB);
-    subBg0->bgMode            = DISPLAY_BGMODE_TEXT;
-    subBg0->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    subBg0->colorMode         = GX_BG_COLORS_16;
-    subBg0->screenBase        = 0;
-    subBg0->charBase          = 1;
-    subBg0->extPlttSlot       = 0;
-    REG_BG0CNT_SUB            = (REG_BG0CNT_SUB & 0x43) | 4;
-
-    DisplayBGSettings* subBg1 = Display_GetBG1Settings(DISPLAY_SUB);
-    subBg1->bgMode            = DISPLAY_BGMODE_TEXT;
-    subBg1->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    subBg1->colorMode         = GX_BG_COLORS_16;
-    subBg1->screenBase        = 0;
-    subBg1->charBase          = 1;
-    subBg1->extPlttSlot       = 0;
-    REG_BG1CNT_SUB            = (REG_BG1CNT_SUB & 0x43) | 4;
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 1;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 0;
@@ -182,16 +167,7 @@ void func_ov043_020826ec(void) {
     g_DisplaySettings.controls[1].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
     g_DisplaySettings.controls[1].brightness  = 16;
     OamMgr_Init3DSpritePipeline();
-    OamMgr_Init(0, 0);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Init(0, 1);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
-    OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_InitExtended();
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
@@ -200,10 +176,7 @@ void func_ov043_02082a24(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

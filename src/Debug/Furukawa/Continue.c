@@ -18,7 +18,6 @@
 
 #include <NitroSDK/mi/cpumem.h>
 
-extern void Color_CopyRange(s16*, s32*, void*, void*, s32);
 extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);
 extern void func_ov003_020825b8(s32, void*, void*);
@@ -53,15 +52,10 @@ void func_ov025_020e7360(void) {
     GX_SetBankForSubObj(GX_VRAM_D);
     g_DisplaySettings.controls[0].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
-    OamMgr_Init(0, 0);
-    OamMgr_Init(0, 1);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, 0x06800000, 0xA4000);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
+    OamMgr_ResetAndCommit();
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
@@ -101,14 +95,11 @@ static void Continue_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
-        DC_PurgeRange((s32*)&data_02066aec, 0x400);
+        OamMgr_Commit();
+        DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange((s32*)&data_02066eec, 0x400);
+        DC_PurgeRange(&data_02066eec, 0x400);
         GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
         GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
     }

@@ -4,7 +4,6 @@
 #include <NitroSDK/mi/cpumem.h>
 
 extern u16 data_02059d24;
-extern u16 data_0205a128;
 extern u8  data_02066aec;
 extern s32 data_0206a9bc;
 

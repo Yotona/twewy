@@ -2,7 +2,10 @@
 #define ENGINE_CORE_OAMMANAGER_H
 
 #include "Display.h"
+#include <NitroSDK/os/cache.h>
 #include <types.h>
+
+/// MARK: Types
 
 /**
  * @brief 2D vertex with s16 x/y coordinates.
@@ -163,6 +166,8 @@ typedef struct {
 
 extern OamManager g_OamMgr[3];
 
+/// MARK: Functions
+
 /**
  * @brief Initialize an engine-specific OAM manager configuration.
  *
@@ -172,7 +177,7 @@ extern OamManager g_OamMgr[3];
  * @param unused  Unused parameter (artifact from original calling convention).
  * @param engine  Display engine to initialize (DISPLAY_MAIN, DISPLAY_SUB, or DISPLAY_EXTENDED).
  */
-void OamMgr_Init(s32 unused, DisplayEngine engine);
+void OamMgr_InitEngine(s32 unused, DisplayEngine engine);
 
 /**
  * @brief Reset OAM and affine usage counters for a manager.
@@ -349,5 +354,89 @@ void OamMgr_Reset3DState(void);
  * @brief Request buffer swap for the 3D engine.
  */
 void OamMgr_Swap3DBuffers(void);
+
+/// MARK: Inline Functions
+
+/**
+ * @brief Flush the CPU data cache for the main engine OAM buffer and DMA-copy it to hardware OAM.
+ */
+static inline void OamMgr_CommitMain(void) {
+    DC_PurgeRange(g_OamMgr[DISPLAY_MAIN].oam, 0x400);
+    GX_LoadOam(g_OamMgr[DISPLAY_MAIN].oam, 0, 0x400);
+}
+
+/**
+ * @brief Reset the main engine OAM manager and commit the cleared buffer to hardware.
+ */
+static inline void OamMgr_ResetAndCommitMain(void) {
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_CommitMain();
+}
+
+/**
+ * @brief Initialize the main engine OAM manager and commit the cleared buffer to hardware.
+ */
+static inline void OamMgr_InitMain(void) {
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_ResetAndCommitMain();
+}
+
+/**
+ * @brief Flush the CPU data cache for the sub engine OAM buffer and DMA-copy it to hardware OAM.
+ */
+static inline void OamMgr_CommitSub(void) {
+    DC_PurgeRange(g_OamMgr[DISPLAY_SUB].oam, 0x400);
+    GXs_LoadOam(g_OamMgr[DISPLAY_SUB].oam, 0, 0x400);
+}
+
+/**
+ * @brief Reset the sub engine OAM manager and commit the cleared buffer to hardware.
+ */
+static inline void OamMgr_ResetAndCommitSub(void) {
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
+    OamMgr_CommitSub();
+}
+
+/**
+ * @brief Initialize the sub engine OAM manager and commit the cleared buffer to hardware.
+ */
+static inline void OamMgr_InitSub(void) {
+    OamMgr_InitEngine(0, DISPLAY_SUB);
+    OamMgr_ResetAndCommitSub();
+}
+
+/**
+ * @brief Commit the OAM buffers of both display engines to hardware.
+ */
+static inline void OamMgr_Commit(void) {
+    OamMgr_CommitMain();
+    OamMgr_CommitSub();
+}
+
+/**
+ * @brief Reset the OAM managers for both display engines and commit the cleared buffers to hardware.
+ */
+static inline void OamMgr_ResetAndCommit(void) {
+    OamMgr_ResetAndCommitMain();
+    OamMgr_ResetAndCommitSub();
+}
+
+/**
+ * @brief Initialize the OAM managers for both display engines and commit cleared buffers to hardware.
+ */
+static inline void OamMgr_Init(void) {
+    OamMgr_InitMain();
+    OamMgr_InitSub();
+}
+
+/**
+ * @brief Initialize the OAM managers for both display engines, configure the extended engine,
+ * and commit the cleared buffer to hardware.
+ */
+static inline void OamMgr_InitExtended(void) {
+    OamMgr_Init();
+    OamMgr_InitEngine(0, DISPLAY_EXTENDED);
+    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+}
 
 #endif // ENGINE_CORE_OAMMANAGER_H

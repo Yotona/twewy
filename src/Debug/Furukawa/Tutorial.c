@@ -21,8 +21,6 @@
 extern void HBlank_Init(void);
 extern void GX_Init(void);
 extern void MI_CpuFill(s32, void*, s32);
-extern void DC_PurgeRange(void*, u32);
-extern void Color_CopyRange(void*, void*, s32, s32, s32);
 extern void SndMgr_StartPlayingSE(s32);
 extern void func_ov003_02082724(void*, s32, s32);
 extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
@@ -84,15 +82,10 @@ static void Tutorial_InitHardware(void) {
     GX_SetBankForSubObj(GX_VRAM_D);
     g_DisplaySettings.controls[0].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
-    OamMgr_Init(0, 0);
-    OamMgr_Init(0, 1);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
+    OamMgr_ResetAndCommit();
     Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
     Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
 }
@@ -133,10 +126,7 @@ static void Tutorial_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

@@ -53,21 +53,14 @@ void OpenEnd_InitHardware(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
 
-    OamMgr_Init(0, 0);
-    OamMgr_Init(0, 1);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0x0, 0x6800000, 0xa4000);
     MI_CpuFill(0x0, 0x6000000, 0x80000);
     MI_CpuFill(0x0, 0x6200000, 0x20000);
     MI_CpuFill(0x0, 0x6400000, 0x40000);
     MI_CpuFill(0x0, 0x6600000, 0x20000);
-    OamMgr_Init(0, 0);
-    OamMgr_Reset(&g_OamMgr[0], 0, 0);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Init(0, 1);
-    OamMgr_Reset(&g_OamMgr[1], 0, 0);
-    DC_PurgeRange(&data_02068798, 0x400);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
+    OamMgr_Init();
     OamMgr_ResetCommandQueues(&g_OamMgr[0]);
     OamMgr_ResetCommandQueues(&g_OamMgr[1]);
     Color_CopyRange(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
@@ -78,10 +71,7 @@ void OpenEnd_VBlankHandler(void) {
     if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);

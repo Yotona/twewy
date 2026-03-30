@@ -3,6 +3,8 @@
 
 #include <types.h>
 
+extern u16 data_0205a128;
+
 #define RED_SHIFT   00
 #define GREEN_SHIFT 05
 #define BLUE_SHIFT  10

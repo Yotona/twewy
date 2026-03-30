@@ -70,8 +70,7 @@ void func_ov001_0208288c(FontState* arg0) {
     Sprite_RenderFrame(&arg0->unk_21AB0);
     Sprite_Update(&arg0->unk_21AF0);
     Sprite_RenderAltPalette(&arg0->unk_21AF0, 0, 0, 2);
-    DC_PurgeRange(&data_0206770c, 0x400);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
+    OamMgr_CommitMain();
     func_ov001_020824a0(arg0);
     DC_PurgeAll();
 
@@ -236,16 +235,7 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.engineState[0].blendLayer1 = 63;
     g_DisplaySettings.engineState[0].blendCoeff0 = 10;
     g_DisplaySettings.engineState[0].blendCoeff1 = 6;
-    OamMgr_Init(0, 0);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(&data_0206770c, 1024);
-    GX_LoadOam(&data_0206770c, 0, 0x400);
-    OamMgr_Init(0, 1);
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(&data_02068798, 1024);
-    GXs_LoadOam(&data_02068798, 0, 0x400);
-    OamMgr_Init(0, 2);
-    OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
+    OamMgr_InitExtended();
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
@@ -254,10 +244,7 @@ void FontTest_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
-        DC_PurgeRange(&data_0206770c, 0x400);
-        GX_LoadOam(&data_0206770c, 0, 0x400);
-        DC_PurgeRange(&data_02068798, 0x400);
-        GXs_LoadOam(&data_02068798, 0, 0x400);
+        OamMgr_Commit();
         DC_PurgeRange(&data_02066aec, 0x400);
         GX_LoadBgPltt(&data_02066aec, 0, 0x200);
         GX_LoadObjPltt(&data_02066cec, 0, 0x200);
