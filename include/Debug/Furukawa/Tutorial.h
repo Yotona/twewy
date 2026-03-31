@@ -1,6 +1,7 @@
 #ifndef DEBUG_FURUKAWA_TUTORIAL_H
 #define DEBUG_FURUKAWA_TUTORIAL_H
 
+#include "Combat/Core/CombatSprite.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
@@ -12,7 +13,7 @@ typedef struct {
     /* 0x0088C */ ResourceManager resMgr;
     /* 0x11E0C */ s32             unk_11E0C;
     /* 0x11E10 */ s32             unk_11E10;
-    /* 0x11E14 */ char            unk_11E14[0x60];
+    /* 0x11E14 */ CombatSprite    sprite;
     /* 0x11E74 */ s16             unk_11E74;
     /* 0x11E76 */ s16             unk_11E76;
 } TutorialObject; // Size: 0x11E78

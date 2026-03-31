@@ -41,7 +41,9 @@ typedef struct {
 typedef union {
     struct {
         u16 unk_00 : 1;
-        u16 unk_01 : 4;
+        u16 unk_01 : 1;
+        u16 unk_02 : 2;
+        u16 unk_04 : 1;
         u16 unk_05 : 5; // Flip flags?
         u16 unk_10 : 2;
         u16 unk_12 : 4; // palette Index?

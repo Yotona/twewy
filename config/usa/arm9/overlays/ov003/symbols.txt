@@ -1,23 +1,26 @@
-func_ov003_020824a0 kind:function(arm,size=0x118) addr:0x020824a0
-func_ov003_020825b8 kind:function(arm,size=0x54) addr:0x020825b8
-func_ov003_0208260c kind:function(arm,size=0xbc) addr:0x0208260c
-func_ov003_020826c8 kind:function(arm,size=0x5c) addr:0x020826c8
-func_ov003_02082724 kind:function(arm,size=0xc) addr:0x02082724
+CombatSprite_SetAnimFromTable kind:function(arm,size=0x118) addr:0x020824a0
+CombatSprite_SetAnim kind:function(arm,size=0x54) addr:0x020825b8
+CombatSprite_SetAffineTransform kind:function(arm,size=0xbc) addr:0x0208260c
+CombatSprite_SetPaletteSource kind:function(arm,size=0x5c) addr:0x020826c8
+CombatSprite_SetPosition kind:function(arm,size=0xc) addr:0x02082724
 func_ov003_02082730 kind:function(arm,size=0x8) addr:0x02082730
 func_ov003_02082738 kind:function(arm,size=0x18) addr:0x02082738
-func_ov003_02082750 kind:function(arm,size=0x70) addr:0x02082750
-func_ov003_020827c0 kind:function(arm,size=0x88) addr:0x020827c0
-func_ov003_02082848 kind:function(arm,size=0x4c) addr:0x02082848
-func_ov003_02082894 kind:function(arm,size=0xac) addr:0x02082894
-func_ov003_02082940 kind:function(arm,size=0x58) addr:0x02082940
-func_ov003_02082998 kind:function(arm,size=0x6c) addr:0x02082998
-func_ov003_02082a04 kind:function(arm,size=0x8c) addr:0x02082a04
-func_ov003_02082a90 kind:function(arm,size=0x70) addr:0x02082a90
-func_ov003_02082b00 kind:function(arm,size=0xc) addr:0x02082b00
-func_ov003_02082b0c kind:function(arm,size=0x58) addr:0x02082b0c
-func_ov003_02082b64 kind:function(arm,size=0x160) addr:0x02082b64
-func_ov003_02082cc4 kind:function(arm,size=0x40) addr:0x02082cc4
-func_ov003_02082d04 kind:function(arm,size=0xc) addr:0x02082d04
+CombatSprite_SetFlip kind:function(arm,size=0x70) addr:0x02082750
+CombatSprite_SetPaletteMode kind:function(arm,size=0x88) addr:0x020827c0
+CombatSprite_RenderWithPalette kind:function(arm,size=0x4c) addr:0x02082848
+CombatSprite_GetFrameInfo kind:function(arm,size=0xac) addr:0x02082894
+CombatSprite_InitAnim kind:function(arm,size=0x58) addr:0x02082940
+CombatSprite_Load kind:function(arm,size=0x6c) addr:0x02082998
+CombatSprite_LoadFromTable kind:function(arm,size=0x8c) addr:0x02082a04
+CombatSprite_LoadDirect kind:function(arm,size=0x70) addr:0x02082a90
+CombatSprite_Init kind:function(arm,size=0xc) addr:0x02082b00
+CombatSprite_Update kind:function(arm,size=0x58) addr:0x02082b0c
+CombatSprite_Render kind:function(arm,size=0x160) addr:0x02082b64
+CombatSprite_Release kind:function(arm,size=0x40) addr:0x02082cc4
+CombatSprite_Restart kind:function(arm,size=0xc) addr:0x02082d04
+
+
+
 func_ov003_02082d10 kind:function(arm,size=0x18) addr:0x02082d10
 func_ov003_02082d28 kind:function(arm,size=0xdc) addr:0x02082d28
 func_ov003_02082e04 kind:function(arm,size=0x118) addr:0x02082e04

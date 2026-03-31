@@ -55,6 +55,8 @@ typedef s32 BOOL;
     // Convert 12-bit fixed point to integer (rounding towards zero)
     #define F2I(f) ((f) >> FIXED_SHIFT)
 
+    #define I2F_RND(i) (i > 0) ? (I2F(i) + 0.5f) : (I2F(i) - 0.5f)
+
 #endif
 
 #endif // TYPES_H

@@ -1,5 +1,6 @@
 #include "Combat/Noise/Boss01.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatSprite.h"
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"
@@ -174,101 +175,84 @@ struct Ov016Obj {
     /* 0x294 */ s32 unk294;
 };
 
-void func_02026590(void*, s32, u16);                                                         /* extern */
-void func_020265d4(void*, s32, u16);                                                         /* extern */
+void func_02026590(void*, s32, u16);                                                        /* extern */
+void func_020265d4(void*, s32, u16);                                                        /* extern */
 
-void      func_ov003_020824a0(void*, u16, s32);                                              /* extern */
-void      func_ov003_020826c8(void*, s32);                                                   /* extern */
-void      func_ov003_02082724(void*, s16, s16);                                              /* extern */
-void      func_ov003_02082730(void*, s32);                                                   /* extern */
-void      func_ov003_02082750(void*, s32);                                                   /* extern */
-void      func_ov003_02082848(void*, s32);                                                   /* extern */
-void      func_ov003_02082940(void*, s32, const void*);                                      /* extern */
-void      func_ov003_02082998(void*, void*);                                                 /* extern */
-void      func_ov003_02082a04(s32, void*, const BinIdentifier*, const void*, s32, s32, s32); /* extern */
-void      func_ov003_02082a90(s16, void*, const void*, s32, s32, s32, s32, s32);             /* extern */
-void      func_ov003_02082b0c(void*);                                                        /* extern */
-void      func_ov003_02082b64(void*);                                                        /* extern */
-void      func_ov003_02082f1c(void*, s32);                                                   /* extern */
-s32       func_ov003_02082f2c(void*);                                                        /* extern */
-void      func_ov003_02083000(s32, void*);                                                   /* extern */
-void      func_ov003_02083074(void*);                                                        /* extern */
-void      func_ov003_02083118(void*, s32);                                                   /* extern */
-void      func_ov003_020831e4(s32, s32);                                                     /* extern */
-void      func_ov003_02083bfc(void*, s32, s32);                                              /* extern */
-void      func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);                               /* extern */
-s16       func_ov003_020843b0(s32, s32);                                                     /* extern */
-u16       func_ov003_020843ec(s32, s32, s32);                                                /* extern */
-void*     func_ov003_0208495c(void*);                                                        /* extern */
-void*     func_ov003_02084984(void*);                                                        /* extern */
-void      func_ov003_02086404(s32, void*, u16);                                              /* extern */
-void      func_ov003_020864dc(void*, u16);                                                   /* extern */
-s32       func_ov003_0208656c();                                                             /* extern */
-void      func_ov003_02086654();                                                             /* extern */
-void      func_ov003_02087f28(s32, s32);                                                     /* extern */
-void      func_ov003_020880e4(s32, void*, void*);                                            /* extern */
-void      func_ov003_0208810c(void*, void*);                                                 /* extern */
-s32       func_ov003_02088130();                                                             /* extern */
-s32       func_ov003_020c37f8(void*);                                                        /* extern */
-void      func_ov003_020c38e8(void*);                                                        /* extern */
-s32       func_ov003_020c3908(void*);                                                        /* extern */
-s32       func_ov003_020c3960(s32*, s32);                                                    /* extern */
-TaskPool* func_ov003_020c3a10();                                                             /* extern */
-s32       func_ov003_020c3aac(s32);                                                          /* extern */
-s32       func_ov003_020c3bf0(void*);                                                        /* extern */
-s32       func_ov003_020c3c28();                                                             /* extern */
-void      func_ov003_020c3c44(void*, s32, s32);                                              /* extern */
-void*     func_ov003_020c3ca4(void*);                                                        /* extern */
-void      func_ov003_020c3cec(void*, void*, void*, void*);                                   /* extern */
-void      func_ov003_020c3ec0(void*);                                                        /* extern */
-void      func_ov003_020c3efc(void*, void*);                                                 /* extern */
-void      func_ov003_020c427c();                                                             /* extern */
-void      func_ov003_020c4988(void*);                                                        /* extern */
-void      func_ov003_020c49c8(void*);                                                        /* extern */
-void      func_ov003_020c4a34(void*);                                                        /* extern */
-void      func_ov003_020c4a74(void*);                                                        /* extern */
-void      func_ov003_020c4c1c(void*);                                                        /* extern */
-void      func_ov003_020c4c5c(void*);                                                        /* extern */
-void      func_ov003_020c4cc4(void*, s32);                                                   /* extern */
-void      func_ov003_020c4ff4();                                                             /* extern */
-void      func_ov003_020c50bc();                                                             /* extern */
-void      func_ov003_020c5a00(void*);                                                        /* extern */
-s32       func_ov003_020c5a28(void*, void*);                                                 /* extern */
-void      func_ov003_020c5ac0(void*, s32, void*, s32);                                       /* extern */
-void      func_ov003_020c5b0c(s32, void*);                                                   /* extern */
-s32       func_ov003_020c5b2c(s32, void*, s32, s32, s32);                                    /* extern */
-s32       func_ov003_020c5bc4(u16, void*, s32, s32, s32);                                    /* extern */
-s32       func_ov003_020c6f40();                                                             /* extern */
-s32       func_ov003_020c9008();                                                             /* extern */
-void      func_ov003_020c9064(void*);                                                        /* extern */
-s32       func_ov003_020c9338(void*);                                                        /* extern */
-s32       func_ov003_020cb3c4(s32, s32);                                                     /* extern */
-s32       func_ov003_020cc5fc(s32, s32);                                                     /* extern */
-s32       func_ov009_020fa71c(void*);                                                        /* extern */
+void       func_ov003_02082f1c(void*, s32);                                                 /* extern */
+s32        func_ov003_02082f2c(void*);                                                      /* extern */
+void       func_ov003_02083000(s32, void*);                                                 /* extern */
+void       func_ov003_02083074(void*);                                                      /* extern */
+void       func_ov003_02083118(void*, s32);                                                 /* extern */
+void       func_ov003_020831e4(s32, s32);                                                   /* extern */
+void       func_ov003_02083bfc(void*, s32, s32);                                            /* extern */
+void       func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);                             /* extern */
+s16        func_ov003_020843b0(s32, s32);                                                   /* extern */
+extern s16 func_ov003_020843ec(s32, s32, s32);
+void*      func_ov003_0208495c(void*);                                                      /* extern */
+void*      func_ov003_02084984(void*);                                                      /* extern */
+void       func_ov003_02086404(s32, void*, u16);                                            /* extern */
+void       func_ov003_020864dc(void*, u16);                                                 /* extern */
+s32        func_ov003_0208656c();                                                           /* extern */
+void       func_ov003_02086654();                                                           /* extern */
+void       func_ov003_02087f28(s32, s32);                                                   /* extern */
+void       func_ov003_020880e4(s32, void*, void*);                                          /* extern */
+void       func_ov003_0208810c(void*, void*);                                               /* extern */
+s32        func_ov003_02088130();                                                           /* extern */
+s32        func_ov003_020c37f8(void*);                                                      /* extern */
+void       func_ov003_020c38e8(void*);                                                      /* extern */
+s32        func_ov003_020c3908(void*);                                                      /* extern */
+s32        func_ov003_020c3960(s32*, s32);                                                  /* extern */
+TaskPool*  func_ov003_020c3a10();                                                           /* extern */
+s32        func_ov003_020c3aac(s32);                                                        /* extern */
+s32        func_ov003_020c3bf0(void*);                                                      /* extern */
+s32        func_ov003_020c3c28();                                                           /* extern */
+void       func_ov003_020c3c44(void*, s32, s32);                                            /* extern */
+void*      func_ov003_020c3ca4(void*);                                                      /* extern */
+void       func_ov003_020c3cec(void*, void*, void*, void*);                                 /* extern */
+void       func_ov003_020c3ec0(void*);                                                      /* extern */
+void       func_ov003_020c3efc(void*, void*);                                               /* extern */
+void       func_ov003_020c427c();                                                           /* extern */
+void       func_ov003_020c4988(void*);                                                      /* extern */
+void       func_ov003_020c49c8(void*);                                                      /* extern */
+void       func_ov003_020c4a34(void*);                                                      /* extern */
+void       func_ov003_020c4a74(void*);                                                      /* extern */
+void       func_ov003_020c4c1c(void*);                                                      /* extern */
+void       func_ov003_020c4c5c(void*);                                                      /* extern */
+void       func_ov003_020c4cc4(void*, s32);                                                 /* extern */
+void       func_ov003_020c4ff4();                                                           /* extern */
+void       func_ov003_020c50bc();                                                           /* extern */
+void       func_ov003_020c5a00(void*);                                                      /* extern */
+s32        func_ov003_020c5a28(void*, void*);                                               /* extern */
+void       func_ov003_020c5ac0(void*, s32, void*, s32);                                     /* extern */
+void       func_ov003_020c5b0c(s32, void*);                                                 /* extern */
+s32        func_ov003_020c5b2c(s32, void*, s32, s32, s32);                                  /* extern */
+s32        func_ov003_020c5bc4(u16, void*, s32, s32, s32);                                  /* extern */
+s32        func_ov003_020c6f40();                                                           /* extern */
+s32        func_ov003_020c9008();                                                           /* extern */
+void       func_ov003_020c9064(void*);                                                      /* extern */
+s32        func_ov003_020c9338(void*);                                                      /* extern */
+s32        func_ov003_020cb3c4(s32, s32);                                                   /* extern */
+s32        func_ov003_020cc5fc(s32, s32);                                                   /* extern */
+s32        func_ov009_020fa71c(void*);                                                      /* extern */
 
-s32   Boss01_Eff_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                 /* static */
-void  Boss01_MoveState_FlyAcross(Boss01* boss);                                              /* static */
-s32   Boss01_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                  /* static */
-void  func_ov016_021266f4(Boss01* boss);                                                     /* static */
-void  func_ov016_02126854(Boss01* boss);                                                     /* static */
-void  func_ov016_02126c24(Boss01* boss);                                                     /* static */
-void  func_ov016_02126d38(Boss01* boss);                                                     /* static */
-s32   Boss01_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                  /* static */
-s32   Boss01s_FlyRG_Curve_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);        /* static */
-s32   Boss01s_FlyUG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);              /* static */
-s32   Boss01s_LandRG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);             /* static */
-s32   Boss01s_LandUG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);             /* static */
-s32   BtlEff_Bomb_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                /* static */
-void  BtlEff_Bomb_CreateTask(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);  /* static */
-s32   BtlEff_Fall_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                /* static */
-void  BtlEff_Fall_CreateTask(UnkStruct_Boss01* arg0, Boss01* arg1, s32 arg2);                /* static */
-s32   BtlObs_Bus_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                 /* static */
+s32   Boss01_Eff_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                /* static */
+s32   Boss01_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                 /* static */
+s32   Boss01_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                 /* static */
+s32   Boss01s_FlyRG_Curve_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);       /* static */
+s32   Boss01s_FlyUG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);             /* static */
+s32   Boss01s_LandRG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);            /* static */
+s32   Boss01s_LandUG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);            /* static */
+s32   BtlEff_Bomb_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);               /* static */
+void  BtlEff_Bomb_CreateTask(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5); /* static */
+s32   BtlEff_Fall_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);               /* static */
+void  BtlEff_Fall_CreateTask(UnkStruct_Boss01* arg0, Boss01* arg1, s32 arg2);               /* static */
+s32   BtlObs_Bus_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);                /* static */
 void* BtlObs_Bus_CreateTask(void* bossUG);
-s32   BtlObs_RG_CreateTask(u16 arg0, void* arg1);                                            /* static */
-void  Boss01s_FlyRG_Curve_CreateTask(void);                                                  /* static */
-void  Boss01s_FlyUG_CreateTask(void);                                                        /* static */
-void  Boss01s_LandRG_CreateTask(void);                                                       /* static */
-void  Boss01s_LandUG_CreateTask(void);                                                       /* static */
+s32   BtlObs_RG_CreateTask(u16 arg0, void* arg1);                                           /* static */
+void  Boss01s_FlyRG_Curve_CreateTask(void);                                                 /* static */
+void  Boss01s_FlyUG_CreateTask(void);                                                       /* static */
+void  Boss01s_LandRG_CreateTask(void);                                                      /* static */
+void  Boss01s_LandUG_CreateTask(void);                                                      /* static */
 
 extern void* data_ov009_021234cc;
 extern void* data_ov009_02123540;
@@ -286,17 +270,17 @@ static const Ov016AnimConfig data_ov016_02128f70 = {
 };
 
 /* Frame/animation parameter tables. */
-static const u16 data_ov016_02129010[] = {1, 3, 2, 0, 1, 3, 2, 3};
+static const SpriteAnimEntry data_ov016_02129010[] = {1, 3, 2, 0, 1, 3, 2, 3};
 
-static const u16 data_ov016_0212903c[] = {1, 3, 2, 4, 1, 3, 2, 5, 1, 3, 2, 6};
+static const SpriteAnimEntry data_ov016_0212903c[] = {1, 3, 2, 4, 1, 3, 2, 5, 1, 3, 2, 6};
 
-static const u16 data_ov016_02129054[] = {1, 3, 2, 1};
-static const u16 data_ov016_02129078[] = {1, 3, 2, 2};
-static const u16 data_ov016_021290a4[] = {4, 6, 5, 0};
+static const SpriteAnimEntry data_ov016_02129054 = {1, 3, 2, 1};
+static const SpriteAnimEntry data_ov016_02129078 = {1, 3, 2, 2};
+static const SpriteAnimEntry data_ov016_021290a4 = {4, 6, 5, 0};
 
-static const u16 data_ov016_021290e4[] = {1, 3, 2, 0, 1, 3, 2, 1, 1, 3, 2, 2};
+static const SpriteAnimEntry data_ov016_021290e4[] = {1, 3, 2, 0, 1, 3, 2, 1, 1, 3, 2, 2};
 
-static const u16 data_ov016_02129120[] = {1, 3, 2, 0, 4, 6, 5, 0, 7, 9, 8, 0, 0x5000, 0};
+static const SpriteAnimEntry data_ov016_02129120[] = {1, 3, 2, 0, 4, 6, 5, 0, 7, 9, 8, 0, 0x5000, 0};
 
 /* Boss resource selection by index. */
 static const BinIdentifier* data_ov016_021291ac[3] = {&data_ov016_02128f88, &data_ov016_02128f88, &data_ov016_02128f90};
@@ -305,37 +289,34 @@ static const BinIdentifier* data_ov016_021291ac[3] = {&data_ov016_02128f88, &dat
 static s32 data_ov016_021291d8 = 1;
 static s32 data_ov016_021292c0[8];
 
-/* Configure a sprite instance for a boss animation variant. */
-void func_ov016_021256c0(Ov016Sprite* arg0, s32 arg1, s32 arg2) {
-    u16                      sp0;
-    u16                      temp_r2;
-    u16                      var_r1;
-    const Ov016SpriteParams* temp_r6;
-
-    temp_r6 = data_ov016_02128f70.unkC;
-    if (arg1 == 2) {
-        func_ov003_02082940(arg0, arg1, &data_ov016_02128f90);
+// Nonmatching: Significant variation, needs rewritten
+void func_ov016_021256c0(SpriteAnimationEx* arg0, s32 arg1, s32 arg2) {
+    if (arg1 != 2) {
+        CombatSprite_InitAnim(&arg0->anim, arg1, &data_ov016_02128f90);
     } else {
-        func_ov003_02082940(arg0, arg1, &data_ov016_02128f88);
+        CombatSprite_InitAnim(&arg0->anim, arg1, &data_ov016_02128f88);
     }
-    arg0->unk0  = (u16)(arg0->unk0 & ~0xC00);
-    arg0->unk1C = (u16)temp_r6->unk0;
-    arg0->unk26 = (u16)temp_r6->unk4;
-    arg0->unk28 = (u16)temp_r6->unk2;
-    arg0->unk20 = 4;
-    arg0->unk2A = (s16)(temp_r6->unk6 + 1);
-    arg0->unk2C = 0;
-    arg0->unk4  = 0x80;
-    arg0->unk6  = 0x60;
-    sp0         = arg0->unk2;
-    temp_r2     = sp0;
+
+    const Ov016SpriteParams* temp_r6 = data_ov016_02128f70.unkC;
+    arg0->anim.bits_10_11            = 0;
+    arg0->anim.unk_1C                = temp_r6->unk0;
+    arg0->anim.unk_26                = temp_r6->unk4;
+    arg0->anim.unk_28                = temp_r6->unk2;
+    arg0->anim.unk_20                = 4;
+    arg0->anim.unk_2A                = (temp_r6->unk6 + 1);
+    arg0->unk_2C                     = 0;
+    arg0->anim.unk_04                = 0x80;
+    arg0->anim.unk_06                = 0x60;
+
+    u16 temp_r2 = arg0->anim.unk_02.raw;
+
+    u16 var_r1;
     if (arg2 != 1) {
         var_r1 = ((u32)(temp_r2 << 0x16) >> 0x1B) & ~8;
     } else {
         var_r1 = ((u32)(temp_r2 << 0x16) >> 0x1B) | 8;
     }
-    sp0        = (temp_r2 & ~0x3E0) | ((u32)(var_r1 << 0x1B) >> 0x16);
-    arg0->unk2 = sp0;
+    arg0->anim.unk_02.raw = (temp_r2 & ~0x3E0) | ((u32)(var_r1 << 0x1B) >> 0x16);
 }
 
 /// MARK: Boss01_Eff
@@ -347,7 +328,7 @@ typedef struct {
 } Boss01_Eff_Args;
 
 typedef struct {
-    /* 0x00 */ char            unk_00[0x60];
+    /* 0x00 */ CombatSprite    sprite;
     /* 0x60 */ Boss01_Eff_Args unk_60;
     /* 0x70 */ s32             unk_70;
     /* 0x74 */ s32             unk_74;
@@ -357,76 +338,77 @@ typedef struct {
 
 static const TaskHandle Tsk_Boss01_Eff = {"Tsk_Boss01_Eff", Boss01_Eff_RunTask, 0x80};
 
-s32 Boss01_Eff_Init(TaskPool* pool, Task* task, void* targs) {
-    Boss01_Eff*      temp_r4 = task->data;
-    Boss01_Eff_Args* args    = (Boss01_Eff_Args*)targs;
+s32 Boss01_Eff_Init(TaskPool* pool, Task* task, void* args) {
+    Boss01_Eff*      eff     = task->data;
+    Boss01_Eff_Args* effArgs = args;
 
-    MI_CpuSet(temp_r4, 0, 0x80);
+    MI_CpuSet(eff, 0, 0x80);
 
-    temp_r4->unk_60 = *args;
+    eff->unk_60 = *effArgs;
 
-    func_ov003_02082a90(temp_r4->unk_60.unk_C, temp_r4, data_ov016_021291ac[temp_r4->unk_60.unk_C], 1, 3, 2, 4,
-                        (s32)(u16)(RNG_Next(5) + 1));
-    func_ov003_02082750(temp_r4, RNG_Next(2));
-    temp_r4->unk_7C = (RNG_Next(1) + 0x1666);
-    temp_r4->unk_78 = -(RNG_Next(0x219B) + 0x666);
+    CombatSprite_LoadDirect(eff->unk_60.unk_C, &eff->sprite, data_ov016_021291ac[eff->unk_60.unk_C], 1, 3, 2, 4,
+                            (RNG_Next(5) + 1));
+    CombatSprite_SetFlip(&eff->sprite, RNG_Next(2));
+    eff->unk_7C = (RNG_Next(1) + 0x1666);
+    eff->unk_78 = -(RNG_Next(0x219B) + 0x666);
     return 1;
 }
 
+// Nonmatching: eff->unk_70 access differs
 s32 Boss01_Eff_Update(TaskPool* pool, Task* task, void* args) {
-    Boss01_Eff* temp_r4 = task->data;
+    Boss01_Eff* eff = task->data;
 
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
-    switch (temp_r4->unk_74) {
+    switch (eff->unk_74) {
         case 0:
-            temp_r4->unk_60.unk_0.x += temp_r4->unk_7C;
-            temp_r4->unk_60.unk_0.z += temp_r4->unk_78;
-            temp_r4->unk_78 += 286;
+            eff->unk_60.unk_0.x += eff->unk_7C;
+            eff->unk_60.unk_0.z += eff->unk_78;
+            eff->unk_78 += 286;
 
-            if (temp_r4->unk_78 > 737) {
-                temp_r4->unk_70++;
+            if (eff->unk_78 > 737) {
+                eff->unk_70++;
             } else {
-                temp_r4->unk_70 = 0;
-                temp_r4->unk_74++;
+                eff->unk_70 = 0;
+                eff->unk_74++;
             }
 
         case 1:
-            temp_r4->unk_60.unk_0.x += temp_r4->unk_7C;
-            temp_r4->unk_60.unk_0.z += temp_r4->unk_78;
+            eff->unk_60.unk_0.x += eff->unk_7C;
+            eff->unk_60.unk_0.z += eff->unk_78;
 
-            temp_r4->unk_78 -= 205;
-            if (temp_r4->unk_78 < 0) {
-                temp_r4->unk_78 = (RNG_Next(0xB35) + 0xCCC);
-                if (temp_r4->unk_7C > 0) {
-                    temp_r4->unk_7C = -(RNG_Next(0x1001) + 0x800);
+            eff->unk_78 -= 205;
+            if (eff->unk_78 < 0) {
+                eff->unk_78 = (RNG_Next(0xB35) + 0xCCC);
+                if (eff->unk_7C > 0) {
+                    eff->unk_7C = -(RNG_Next(0x1001) + 0x800);
                 } else {
-                    temp_r4->unk_7C = (RNG_Next(0x1001) + 0x800);
+                    eff->unk_7C = (RNG_Next(0x1001) + 0x800);
                 }
             }
-            if (temp_r4->unk_60.unk_0.z >= 0) {
+            if (eff->unk_60.unk_0.z >= 0) {
                 return 0;
             }
 
         default:
-            func_ov003_02082b0c(temp_r4);
+            CombatSprite_Update(&eff->sprite);
             return 1;
     }
 }
 
 s32 Boss01_Eff_Render(TaskPool* pool, Task* task, void* args) {
-    s16       spA, sp8;
-    Ov016Obj* temp_r4 = task->data;
+    s16         spA, sp8;
+    Boss01_Eff* eff = task->data;
 
-    func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk60, temp_r4->unk64, temp_r4->unk68);
-    func_ov003_02082724(temp_r4, spA, sp8);
-    func_ov003_02082b64(temp_r4);
+    func_ov003_02084348(func_ov003_020c3908(eff), &spA, &sp8, eff->unk_60.unk_0.x, eff->unk_60.unk_0.y, eff->unk_60.unk_0.z);
+    CombatSprite_SetPosition(&eff->sprite, spA, sp8);
+    CombatSprite_Render(&eff->sprite);
     return 1;
 }
 
 s32 Boss01_Eff_Destroy(TaskPool* pool, Task* task, void* args) {
-    func_ov003_02082cc4(task->data);
+    CombatSprite_Release(task->data);
     return 1;
 }
 
@@ -444,7 +426,7 @@ void Boss01_Eff_CreateTask(Boss01* boss) {
     Boss01_Eff_Args args;
 
     if (boss->unk_1A4 > boss->unk_1A6) {
-        u32 temp_r4 = (boss->unk_84 << 0x1E) >> 0x1E;
+        u32 temp_r4 = (u32)(boss->unk_84 << 0x1E) >> 0x1E;
         if (boss->unk_24 == 0) {
             args.unk_0.x = boss->unk_28 + ((RNG_Next(25) + 24) << 0xC);
         } else {
@@ -461,114 +443,148 @@ void Boss01_Eff_CreateTask(Boss01* boss) {
     boss->unk_1A4++;
 }
 
-s32 Boss01_RG_IsInBounds(Boss01* boss) {
+/// MARK: Boss01_RG
+
+typedef struct Boss01_RG {
+    /* 0x000 */ char         unk_000[0x24];
+    /* 0x024 */ s32          unk_24;
+    /* 0x028 */ s32          unk_28;
+    /* 0x02C */ s32          unk_2C;
+    /* 0x030 */ s32          unk_30;
+    /* 0x034 */ s16          unk_34;
+    /* 0x036 */ s16          unk_36;
+    /* 0x038 */ char         unk_38[0x3C - 0x38];
+    /* 0x03C */ s32          unk_3C;
+    /* 0x040 */ char         unk_40[0x54 - 0x40];
+    /* 0x054 */ s32          unk_54;
+    /* 0x058 */ char         unk_58[0x7C - 0x58];
+    /* 0x07C */ s32          unk_7C;
+    /* 0x080 */ char         unk_80[0x84 - 0x80];
+    /* 0x084 */ CombatSprite unk_84;
+    /* 0x0E4 */ char         unk_E4[0x178 - 0xE4];
+    /* 0x178 */ s32          unk_178;
+    /* 0x17C */ s32          unk_17C;
+    /* 0x180 */ s32          unk_180;
+    /* 0x184 */ void*        unk_184;
+    /* 0x188 */ void*        unk_188;
+    /* 0x18C */ u16          unk_18C;
+    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
+    /* 0x1C0 */ s16          unk_1C0;
+    /* 0x1C2 */ char         unk_1C2[0x1C8 - 0x1C2];
+    /* 0x1C8 */ s16          unk_1C8;
+    /* 0x1CA */ char         unk_1CA[0x1CC - 0x1CA];
+    /* 0x1CC */ void (*unk_1CC)(struct Boss01_RG*);
+    /* 0x1D0 */ s32 unk_1D0;
+    /* 0x1D4 */ s32 unk_1D4;
+    /* 0x1D8 */ s32 unk_1D8;
+    /* 0x1DC */ s32 unk_1DC;
+} Boss01_RG; // Size: 0x1E0
+
+static const TaskHandle Tsk_Boss01_RG = {"Tsk_Boss01_RG", Boss01_RG_RunTask, sizeof(Boss01_RG)};
+
+void Boss01_MoveState_FlyAcross(Boss01_RG* rg);
+
+// Nonmatching: One branch points to wrong address
+s32 Boss01_RG_IsInBounds(Boss01_RG* rg) {
     BOOL var_r3 = TRUE;
-    BOOL var_ip = ((boss->unk_24 == 0) && (boss->unk_28 < -0x80000));
+    BOOL var_ip = (rg->unk_24 == 0) && (rg->unk_28 < -0x80000);
 
     if (var_ip == FALSE) {
-        BOOL var_ip_2 = ((boss->unk_24 != 0) && (boss->unk_28 > (data_ov003_020e71b8->unk3D824 + 0x80000)));
-
-        if (var_ip_2 == FALSE) {
-            var_r3 = FALSE;
+        var_ip = FALSE;
+        if ((rg->unk_24 != 0) && (rg->unk_28 > (data_ov003_020e71b8->unk3D824 + 0x80000))) {
+            var_ip = TRUE;
         }
     }
+
+    if (var_ip == FALSE) {
+        var_r3 = FALSE;
+    }
+
     return var_r3;
 }
 
-void func_ov016_02125bb8(Boss01* boss) {
-    boss->unk_1D4 = (boss->unk_24 != 0) ? 0x4000 : -0x4000;
+void func_ov016_02125bb8(Boss01_RG* rg) {
+    rg->unk_1D4 = (rg->unk_24 != 0) ? 0x4000 : -0x4000;
 }
 
-void Boss01_SetMoveState(Boss01* boss, void (*arg1)(Boss01*)) {
+void Boss01_RG_SetState(Boss01_RG* rg, void (*callback)(Boss01_RG*)) {
     func_ov003_020c427c();
-    boss->unk_1CC = arg1;
-    boss->unk_1C8 = 0;
-    boss->unk_1C0 = 0;
+    rg->unk_1CC = callback;
+    rg->unk_1C8 = 0;
+    rg->unk_1C0 = 0;
 }
 
-void Boss01_MoveState_WaitToFly(Boss01* boss) {
+void Boss01_MoveState_WaitToFly(Boss01_RG* rg) {
     if (*data_ov016_021292c0 == 5) {
-        Boss01_SetMoveState(boss, Boss01_MoveState_FlyAcross);
+        Boss01_RG_SetState(rg, Boss01_MoveState_FlyAcross);
     }
 }
 
-void func_ov016_02125c20(Boss01* boss, s32 arg1) {
-    s32       temp_r0;
-    s32       temp_r0_2;
-    s32       temp_r0_3;
-    s32       temp_r0_4;
-    Ov016Obj* var_r4;
+void func_ov016_02125c20(Boss01_RG* rg, s32 arg1) {
+    if ((rg->unk_1D8 != 0 && arg1 != 0) || (rg->unk_1D8 == 0 && arg1 == 0)) {
+        return;
+    }
+    rg->unk_1D8 = arg1;
 
-    temp_r0 = boss->unk_1D8;
-    if ((temp_r0 != 0) && (arg1 != 0)) {
-        return;
-    }
-    if ((temp_r0 == 0) && (arg1 == 0)) {
-        return;
-    }
-    boss->unk_1D8 = arg1;
-    var_r4        = func_ov003_0208495c(OV003_LIST_3D8AC);
-    if (var_r4 == NULL) {
-        return;
-    }
-    do {
-        temp_r0_2 = var_r4->unk7C;
-        switch (temp_r0_2) {
+    Boss01_RG* var_r4 = func_ov003_0208495c(OV003_LIST_3D8AC);
+    while (var_r4 != NULL) {
+        switch (var_r4->unk_7C) {
             case 7:
-                temp_r0_3 = var_r4->unk54;
                 if (arg1 != 0) {
-                    var_r4->unk54 = (s32)(temp_r0_3 | 0x30);
+                    var_r4->unk_54 |= 0x30;
                 } else {
-                    var_r4->unk54 = (s32)(temp_r0_3 & ~0x10 & ~0x20);
+                    var_r4->unk_54 &= ~0x10;
+                    var_r4->unk_54 &= ~0x20;
                 }
                 break;
+
             case 34:
-                temp_r0_4 = var_r4->unk54;
                 if (arg1 == 0) {
-                    var_r4->unk54 = (s32)(temp_r0_4 | 0x30);
+                    var_r4->unk_54 |= 0x30;
                 } else {
-                    var_r4->unk54 = (s32)(temp_r0_4 & ~0x10 & ~0x20);
+                    var_r4->unk_54 &= ~0x10;
+                    var_r4->unk_54 &= ~0x20;
                 }
                 break;
+
             default:
-                if (arg1 == 0) {
-                    var_r4->unk54 = (s32)(var_r4->unk54 | 0x30);
+                if (arg1 != 0) {
+                    data_ov003_020e71b8->unk3D8A0 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, rg->unk_1DC);
+                    var_r4->unk_54 &= ~0x10;
+                    var_r4->unk_54 &= ~0x20;
                 } else {
-                    data_ov003_020e71b8->unk3D8A0 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, boss->unk_1DC);
-                    var_r4->unk54                 = (s32)(var_r4->unk54 & ~0x10 & ~0x20);
+                    var_r4->unk_54 |= 0x30;
                 }
                 break;
         }
-        var_r4 = func_ov003_02084984((u8*)var_r4 + 0x178);
-    } while (var_r4 != NULL);
+        var_r4 = func_ov003_02084984(&var_r4->unk_178);
+    }
 }
 
-void Boss01_MoveState_FlyAcross(Boss01* boss) {
-    void*   temp_r4 = data_ov003_020e71b8->unk3D89C;
-    Boss01* temp_r6 = boss->unk_184;
-    Boss01* temp_r5 = temp_r6->unk_188;
+void Boss01_MoveState_FlyAcross(Boss01_RG* rg) {
+    Boss01_RG* temp_r4 = data_ov003_020e71b8->unk3D89C;
+    Boss01*    temp_r6 = rg->unk_184;
+    Boss01*    temp_r5 = temp_r6->unk_188;
 
-    if (boss->unk_1C0 == 0) {
+    if (rg->unk_1C0 == 0) {
         if (temp_r6->unk_28 < 0) {
-            boss->unk_28  = -0x80000;
-            boss->unk_1D4 = 0x4000;
+            rg->unk_28  = -0x80000;
+            rg->unk_1D4 = 0x4000;
         } else {
-            boss->unk_28  = (data_ov003_020e71b8->unk3D824 + 0x80000);
-            boss->unk_1D4 = -0x4000;
+            rg->unk_28  = (data_ov003_020e71b8->unk3D824 + 0x80000);
+            rg->unk_1D4 = -0x4000;
         }
 
-        boss->unk_2C = (s32)((u8*)temp_r4 + 0x2C);
-        boss->unk_30 = -0x40000;
-        func_ov003_020c4c1c(boss);
-        func_ov003_020c4988(boss);
+        rg->unk_2C = temp_r4->unk_2C;
+        rg->unk_30 = -0x40000;
+        func_ov003_020c4c1c(rg);
+        func_ov003_020c4988(rg);
         if (temp_r5 != NULL) {
-            boss->unk_1DC = BtlObs_RG_CreateTask(temp_r5->unk_002, (u8*)data_ov003_020e71b8->unk3D89C + 4);
-            s32 temp_r9   = I2F(temp_r5->unk_76);
-
-            s32 var_r0_2 = (temp_r5->unk_76 > 0) ? temp_r9 + 0.5f : temp_r9 - 0.5f;
+            rg->unk_1DC  = BtlObs_RG_CreateTask(temp_r5->unk_002, (u8*)data_ov003_020e71b8->unk3D89C + 4);
+            s32 var_r0_2 = I2F_RND(temp_r5->unk_76);
             if (var_r0_2 > 0x80000) {
-                f32 var_r0_3 = (temp_r5->unk_76 > 0) ? (temp_r9 + 0.5f) : (temp_r9 - 0.5f);
-                boss->unk_30 = ((-(s32)var_r0_3) - 0x40000);
+                f32 var_r0_3 = I2F_RND(temp_r5->unk_76);
+                rg->unk_30   = ((-(s32)var_r0_3) - 0x40000);
             }
 
             s32 temp_r2 = temp_r5->unk_76 * (temp_r5->unk_74 << 0xD);
@@ -577,40 +593,40 @@ void Boss01_MoveState_FlyAcross(Boss01* boss) {
             if (var_r1 > 0x2000) {
                 var_r1 = 0x2000;
             }
-            if (boss->unk_24 == 0) {
-                boss->unk_1D4 += var_r1;
+            if (rg->unk_24 == 0) {
+                rg->unk_1D4 += var_r1;
             } else {
-                boss->unk_1D4 -= var_r1;
+                rg->unk_1D4 -= var_r1;
             }
         }
     }
-    boss->unk_28 += boss->unk_1D4;
-    s32 var_r0_4 = ((u8*)temp_r4 + 0x28) - boss->unk_28;
+    rg->unk_28 += rg->unk_1D4;
+    s32 var_r0_4 = temp_r4->unk_28 - rg->unk_28;
     if (var_r0_4 < 0) {
-        var_r0_4 = 0 - var_r0_4;
+        var_r0_4 = -var_r0_4;
     }
     if (var_r0_4 < 0x80000) {
-        func_ov016_02125c20(boss, 1);
+        func_ov016_02125c20(rg, 1);
     } else {
-        func_ov016_02125c20(boss, 0);
+        func_ov016_02125c20(rg, 0);
     }
-    if (EasyTask_ValidateTaskId(&data_ov003_020e71b8->taskPool, &boss->unk_1DC) != 0) {
-        Boss01* temp_r0_2 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, boss->unk_1DC);
+    if (EasyTask_ValidateTaskId(&data_ov003_020e71b8->taskPool, &rg->unk_1DC) != 0) {
+        Boss01* temp_r0_2 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, rg->unk_1DC);
         if (!(temp_r0_2->unk_54 & 2)) {
-            temp_r0_2->unk_28 = boss->unk_28;
-            temp_r0_2->unk_2C = boss->unk_2C;
+            temp_r0_2->unk_28 = rg->unk_28;
+            temp_r0_2->unk_2C = rg->unk_2C;
 
-            s32 var_r0_5      = (temp_r0_2->unk_72 > 0) ? I2F(temp_r0_2->unk_72) + 0.5f : I2F(temp_r0_2->unk_72) - 0.5f;
-            temp_r0_2->unk_30 = (s32)(boss->unk_30 + var_r0_5);
+            s32 var_r0_5      = I2F_RND(temp_r0_2->unk_72);
+            temp_r0_2->unk_30 = rg->unk_30 + var_r0_5;
         } else {
-            func_ov016_02125bb8(boss);
+            func_ov016_02125bb8(rg);
         }
     } else {
-        func_ov016_02125bb8(boss);
+        func_ov016_02125bb8(rg);
     }
 
-    s32 var_r1_2 = boss->unk_1D4;
-    s32 var_r0_6 = ((u8*)temp_r4 + 0x28) - boss->unk_28;
+    s32 var_r1_2 = rg->unk_1D4;
+    s32 var_r0_6 = temp_r4->unk_28 - rg->unk_28;
     if (var_r0_6 < 0) {
         var_r0_6 = -var_r0_6;
     }
@@ -618,72 +634,46 @@ void Boss01_MoveState_FlyAcross(Boss01* boss) {
         var_r1_2 = -var_r1_2;
     }
     if (var_r0_6 < var_r1_2) {
-        func_ov003_020c5b0c(232, boss);
+        func_ov003_020c5b0c(232, rg);
     }
-    Boss01_Eff_CreateTask(boss);
-    if (Boss01_RG_IsInBounds(boss) != 0) {
-        func_ov003_020c4a34(boss);
-        if (EasyTask_ValidateTaskId(&data_ov003_020e71b8->taskPool, &boss->unk_1DC) != 0) {
-            Boss01* temp_r0_5 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, boss->unk_1DC);
+    Boss01_Eff_CreateTask((Boss01*)rg);
+    if (Boss01_RG_IsInBounds(rg) != 0) {
+        func_ov003_020c4a34(rg);
+        if (EasyTask_ValidateTaskId(&data_ov003_020e71b8->taskPool, &rg->unk_1DC) != 0) {
+            Boss01* temp_r0_5 = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, rg->unk_1DC);
             if (temp_r0_5->unk_54 & 2) {
-                boss->unk_188 = NULL;
+                rg->unk_188 = NULL;
             } else {
                 temp_r0_5->unk_18C |= 0x1000;
                 func_ov003_020c4ff4();
             }
         } else {
-            boss->unk_188 = NULL;
+            rg->unk_188 = NULL;
         }
 
-        boss->unk_28 = (boss->unk_28 < 0) ? -0x80000 : (data_ov003_020e71b8->unk3D7CC + 0x80000);
+        rg->unk_28 = (rg->unk_28 < 0) ? -0x80000 : (data_ov003_020e71b8->unk3D7CC + 0x80000);
 
         *data_ov016_021292c0 = 2;
-        Boss01_SetMoveState(boss, Boss01_MoveState_WaitToFly);
+        Boss01_RG_SetState(rg, Boss01_MoveState_WaitToFly);
         return;
     }
-    boss->unk_1C0++;
+    rg->unk_1C0++;
 }
 
-/// MARK: Boss01_RG
-
-typedef struct {
-    /* 0x000 */ char unk_000[0x28];
-    /* 0x028 */ s32  unk_28;
-    /* 0x02C */ s32  unk_2C;
-    /* 0x030 */ s32  unk_30;
-    /* 0x034 */ s16  unk_34;
-    /* 0x036 */ s16  unk_36;
-    /* 0x038 */ char unk_38[0x3C - 0x38];
-    /* 0x03C */ s32  unk_3C;
-    /* 0x040 */ char unk_40[0x54 - 0x40];
-    /* 0x054 */ s32  unk_54;
-    /* 0x058 */ char unk_58[0x84 - 0x58];
-    /* 0x084 */ s32  unk_84;
-    /* 0x088 */ char unk_88[0x18C - 0x88];
-    /* 0x18C */ u16  unk_18C;
-    /* 0x18E */ char unk_18E[0x1CC - 0x18E];
-    /* 0x1CC */ void (*unk_1CC)(void*);
-    /* 0x1D0 */ s32  unk_1D0;
-    /* 0x1D4 */ char unk_1D4[0x1DC - 0x1D4];
-    /* 0x1DC */ s32  unk_1DC;
-} Boss01_RG; // Size: 0x1E0
-
-static const TaskHandle Tsk_Boss01_RG = {"Tsk_Boss01_RG", Boss01_RG_RunTask, sizeof(Boss01_RG)};
-
-void func_ov016_021260b4(Boss01* boss) {
+void func_ov016_021260b4(Boss01_RG* bossRG) {
     if (func_ov003_020c6f40() == 0) {
-        boss->unk_1D0 = 0;
+        bossRG->unk_1D0 = 0;
     }
 }
 
 s32 Boss01_RG_Init(TaskPool* pool, Task* task, void* args) {
-    Ov016Sprite subroutine;
-    Boss01_RG*  bossRG = task->data;
+    SpriteAnimationEx anim;
+    Boss01_RG*        bossRG = task->data;
 
     MI_CpuSet(bossRG, 0, sizeof(Boss01_RG));
     func_ov003_020c3efc(bossRG, args);
-    func_ov016_021256c0(&subroutine, 1, 0);
-    func_ov003_02082998(&bossRG->unk_84, &subroutine);
+    func_ov016_021256c0(&anim, 1, 0);
+    CombatSprite_Load(&bossRG->unk_84, &anim);
     func_ov003_020c4c1c(bossRG);
     bossRG->unk_54 |= 0x10000000;
     bossRG->unk_3C  = 0;
@@ -692,7 +682,7 @@ s32 Boss01_RG_Init(TaskPool* pool, Task* task, void* args) {
     bossRG->unk_30  = -0x40000;
     bossRG->unk_1DC = -1;
     bossRG->unk_1D0 = 1;
-    Boss01_SetMoveState((Boss01*)bossRG, Boss01_MoveState_WaitToFly);
+    Boss01_RG_SetState(bossRG, Boss01_MoveState_WaitToFly);
     return 1;
 }
 
@@ -705,13 +695,13 @@ s32 Boss01_RG_Update(TaskPool* pool, Task* task, void* args) {
 
     s32 temp_r0 = func_ov003_02082f2c(bossRG);
     if ((temp_r0 != 1) && (temp_r0 == 3)) {
-        Boss01_SetMoveState((Boss01*)bossRG, func_ov016_021260b4);
+        Boss01_RG_SetState(bossRG, func_ov016_021260b4);
     }
     if (bossRG->unk_1CC != NULL) {
         bossRG->unk_1CC(bossRG);
     }
     func_ov003_02083000(1, bossRG);
-    func_ov003_02082b0c(&bossRG->unk_84);
+    CombatSprite_Update(&bossRG->unk_84);
     return bossRG->unk_1D0;
 }
 
@@ -721,9 +711,9 @@ s32 Boss01_RG_Render(TaskPool* pool, Task* task, void* args) {
 
     if (!(bossRG->unk_18C & 1)) {
         func_ov003_02084348(1, &spA, &sp8, bossRG->unk_28, bossRG->unk_2C, bossRG->unk_30);
-        func_ov003_02082724(&bossRG->unk_84, spA, sp8);
+        CombatSprite_SetPosition(&bossRG->unk_84, spA, sp8);
         func_ov003_02082730(&bossRG->unk_84, 0x7FF3FFFF);
-        func_ov003_02082b64(&bossRG->unk_84);
+        CombatSprite_Render(&bossRG->unk_84);
         bossRG->unk_34 = spA;
         bossRG->unk_36 = sp8 + 80;
     }
@@ -733,7 +723,7 @@ s32 Boss01_RG_Render(TaskPool* pool, Task* task, void* args) {
 s32 Boss01_RG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01_RG* bossRG = task->data;
 
-    func_ov003_02082cc4(&bossRG->unk_84);
+    CombatSprite_Release(&bossRG->unk_84);
     func_ov003_020c4a34(bossRG);
     return 1;
 }
@@ -748,74 +738,125 @@ s32 Boss01_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return data_ov016_02128fc8.iter[stage](pool, task, args);
 }
 
-/* Render a shadow/secondary sprite using actor header data. */
-void func_ov016_021262d8(Ov016Obj* arg0) {
-    s16   temp_r7;
-    s32   temp_r4;
-    s32   temp_r6;
-    u16   temp_r1_2;
-    u16   var_r0;
-    u32   temp_r0_2;
-    u32   temp_r0_3;
-    void* temp_r5;
+/// MARK: Boss01_UG
 
+typedef struct Boss01_UG {
+    /* 0x000 */ char         unk_000[0x24];
+    /* 0x024 */ s32          unk_24;
+    /* 0x028 */ s32          unk_28;
+    /* 0x02C */ s32          unk_2C;
+    /* 0x030 */ s32          unk_30;
+    /* 0x034 */ s16          unk_34;
+    /* 0x036 */ s16          unk_36;
+    /* 0x038 */ s16          unk_38;
+    /* 0x03A */ s16          unk_3A;
+    /* 0x03C */ s32          unk_3C;
+    /* 0x040 */ char         unk_040[0x44 - 0x40];
+    /* 0x044 */ s32          unk_44;
+    /* 0x048 */ s32          unk_48;
+    /* 0x04C */ s32          unk_4C;
+    /* 0x050 */ char         unk_50[0x54 - 0x50];
+    /* 0x054 */ s32          unk_54;
+    /* 0x058 */ char         unk_58[0x5C - 0x58];
+    /* 0x5C */ s32           unk_5C;
+    /* 0x060 */ char         unk_60[0x6C - 0x60];
+    /* 0x06C */ s16          unk_6C;
+    /* 0x06E */ s16          unk_6E;
+    /* 0x070 */ s32          unk_70;
+    /* 0x074 */ s16          unk_74;
+    /* 0x076 */ s16          unk_76;
+    /* 0x078 */ char         unk_78[0x84 - 0x78];
+    /* 0x084 */ CombatSprite sprite;
+    /* 0x0E4 */ char         unk_E4[0x188 - 0xE4];
+    /* 0x188 */ void*        unk_188;
+    /* 0x18C */ u16          unk_18C;
+    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
+    /* 0x1C0 */ s16          unk_1C0;
+    /* 0x1C2 */ char         unk_1C2[0x1C4 - 0x1C2];
+    /* 0x1C4 */ s16          unk_1C4;
+    /* 0x1C6 */ s16          unk_1C6;
+    /* 0x1C8 */ void (*unk_1C8)(struct Boss01_UG*);
+    /* 0x1CC */ s32               unk_1CC;
+    /* 0x1D0 */ s32               unk_1D0;
+    /* 0x1D4 */ s32               unk_1D4;
+    /* 0x1D8 */ PaletteResource*  unk_1D8;
+    /* 0x1DC */ s32               unk_1DC;
+    /* 0x1E0 */ struct Boss01_UG* unk_1E0;
+    /* 0x1E4 */ void*             unk_1E4;
+    /* 0x1E8 */ void*             unk_1E8;
+    /* 0x1EC */ s32               unk_1EC;
+    /* 0x1F0 */ s32               unk_1F0;
+} Boss01_UG; // Size: 0x1F4
+
+void func_ov016_021266f4(Boss01_UG* bossUG);
+void func_ov016_02126c24(Boss01_UG* bossUG);
+void func_ov016_02126854(Boss01_UG* bossUG);
+void func_ov016_02126d38(Boss01_UG* bossUG);
+
+static const TaskHandle Tsk_Boss01_UG = {"Tsk_Boss01_UG", Boss01_UG_RunTask, 0x1F4};
+
+void func_ov016_021262d8(Boss01_UG* bossUG) {
     if (func_ov003_02088130() == 0) {
         return;
     }
+
     Data* temp_r0 = data_ov003_020e71b8->unk3D350;
+    void* var_r8  = Data_GetPackEntryData(temp_r0, 66);
 
-    void* var_r8 = Data_GetPackEntryData(temp_r0, 66);
+    PaletteResource* temp_r4 = bossUG->unk_1D8;
 
-    temp_r4 = arg0->unk1D8;
-
-    if (arg0->unkCA & 1) {
-        var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, arg0->unk1DC, arg0->unk1DC, 1);
+    u16 var_r0;
+    if (bossUG->sprite.flags46 & 1) {
+        var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, bossUG->unk_1DC, bossUG->unk_1DC, 1);
     } else {
-        var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, arg0->unk1DC, arg0->unk1DC, 0);
+        var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, bossUG->unk_1DC, bossUG->unk_1DC, 0);
     }
 
-    arg0->unk8E = (u16)((arg0->unk8E & ~0x3E0) | ((u32)(var_r0 << 0x1B) >> 0x16));
-    temp_r7     = arg0->unk96;
-    temp_r6     = arg0->unkB4;
-    temp_r5     = arg0->unkC0;
-    temp_r0_2   = 0 - temp_r7;
-    arg0->unkB4 = temp_r4;
-    arg0->unkC0 = var_r8;
-    arg0->unk96 = (s16)((s32)(temp_r0_2 + (temp_r0_2 >> 0x1F)) >> 1);
-    arg0->unk8E = (u16)((arg0->unk8E & ~1) | 1);
-    arg0->unk8E = (u16)(arg0->unk8E & ~2);
-    arg0->unk8E = (u16)((arg0->unk8E & ~0xC) | 4);
-    func_ov003_02082848(arg0 + 0x84, 8);
-    arg0->unkB4 = temp_r6;
-    arg0->unkC0 = temp_r5;
-    arg0->unk96 = temp_r7;
-    arg0->unk8E = (u16)(arg0->unk8E & ~1);
-    arg0->unk8E = (u16)(arg0->unk8E & ~2);
-    arg0->unk8E = (u16)(arg0->unk8E & ~0xC);
-    temp_r1_2   = arg0->unk8E;
-    temp_r0_3   = temp_r1_2 << 0x16;
-    if (arg0->unkCA & 1) {
-        arg0->unk8E = (u16)((temp_r1_2 & ~0x3E0) | ((u32)((u16)((temp_r0_3 >> 0x1B) | 8) << 0x1B) >> 0x16));
-        return;
+    bossUG->sprite.sprite.unk_0A.raw  = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) | ((u32)(var_r0 << 0x1B) >> 0x16));
+    s16               temp_r7         = bossUG->sprite.sprite.scaleY;
+    PaletteResource*  temp_r6         = bossUG->sprite.sprite.paletteData;
+    UnkSmallInternal* temp_r5         = bossUG->sprite.sprite.unk3C;
+    u32               temp_r0_2       = -temp_r7;
+    bossUG->sprite.sprite.paletteData = temp_r4;
+    bossUG->sprite.sprite.unk3C       = var_r8;
+    bossUG->sprite.sprite.scaleY      = (s16)((s32)(-temp_r7 + (-temp_r7 >> 0x1F)) >> 1);
+    bossUG->sprite.sprite.unk_0A.raw  = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~1) | 1);
+    bossUG->sprite.sprite.unk_0A.raw &= ~2;
+    bossUG->sprite.sprite.unk_0A.raw = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0xC) | 4);
+    CombatSprite_RenderWithPalette(&bossUG->sprite, 8);
+    bossUG->sprite.sprite.paletteData   = temp_r6;
+    bossUG->sprite.sprite.unk3C         = temp_r5;
+    bossUG->sprite.sprite.scaleY        = temp_r7;
+    bossUG->sprite.sprite.unk_0A.unk_00 = 0;
+    bossUG->sprite.sprite.unk_0A.unk_01 = 0;
+    bossUG->sprite.sprite.unk_0A.unk_02 = 0;
+
+    if (bossUG->sprite.flags46 & 1) {
+        bossUG->sprite.sprite.unk_0A.raw =
+            (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) |
+                  ((u32)((u16)((bossUG->sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) | 8) << 0x1B) >> 0x16));
+    } else {
+        bossUG->sprite.sprite.unk_0A.raw =
+            (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) |
+                  ((u32)((u16)((bossUG->sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) & ~8) << 0x1B) >> 0x16));
     }
-    arg0->unk8E = (u16)((temp_r1_2 & ~0x3E0) | ((u32)((u16)((temp_r0_3 >> 0x1B) & ~8) << 0x1B) >> 0x16));
 }
 
-s32 func_ov016_02126468(Boss01* boss) {
+s32 func_ov016_02126468(Boss01_UG* bossUG) {
     s32 temp_lr;
     s32 var_ip;
     s32 var_ip_2;
     s32 var_r3;
 
-    temp_lr = boss->unk_24;
+    temp_lr = bossUG->unk_24;
     var_r3  = 1;
     var_ip  = 0;
-    if ((temp_lr == 0) && ((s32)boss->unk_28 < -0x80000)) {
+    if ((temp_lr == 0) && ((s32)bossUG->unk_28 < -0x80000)) {
         var_ip = 1;
     }
     if (var_ip == 0) {
         var_ip_2 = 0;
-        if ((temp_lr != 0) && ((s32)boss->unk_28 > (s32)(data_ov003_020e71b8->unk3D7CC + 0x80000))) {
+        if ((temp_lr != 0) && ((s32)bossUG->unk_28 > (s32)(data_ov003_020e71b8->unk3D7CC + 0x80000))) {
             var_ip_2 = 1;
         }
         if (var_ip_2 == 0) {
@@ -825,7 +866,6 @@ s32 func_ov016_02126468(Boss01* boss) {
     return var_r3;
 }
 
-/* Spawn an obstacle effect sequence. */
 void func_ov016_021264d8(void*) {
     u8 subroutine[0x14];
 
@@ -833,69 +873,52 @@ void func_ov016_021264d8(void*) {
     func_ov003_020c3cec(&data_ov009_02123540, &data_ov009_021234cc, subroutine, subroutine);
 }
 
-/* Validate potential target based on collision and status flags. */
-s32 func_ov016_02126514(Boss01* boss, UnkStruct_Boss01* arg1) {
-    if ((func_ov003_020c5a28(boss, (u8*)arg1 + 4) != 0) && (arg1->unk_44 == 0) && (arg1->unk_48 == 0) && (arg1->unk_34 == 0)) {
+s32 func_ov016_02126514(Boss01_UG* bossUG, Boss01_UG* arg1) {
+    if ((func_ov003_020c5a28(bossUG, (u8*)arg1 + 4) != 0) && (arg1->unk_44 == 0) && (arg1->unk_48 == 0) && (arg1->unk_34 == 0))
+    {
         return 1;
     }
     return 0;
 }
 
-/* Validate target based on grounded/airborne state. */
-s32 func_ov016_02126554(Boss01* boss, UnkStruct_Boss01* arg1, s32 arg2) {
+s32 func_ov016_02126554(Boss01_UG* bossUG, Boss01_UG* arg1, s32 arg2) {
     if ((arg2 != 0) && (func_ov009_020fa71c(arg1) == 0)) {
         return 0;
     }
     if ((arg2 == 0) && (func_ov009_020fa71c(arg1) != 0)) {
         return 0;
     }
-    return func_ov016_02126514(boss, arg1);
+    return func_ov016_02126514(bossUG, arg1);
 }
 
-/* Pick a random eligible target from the active list. */
-UnkStruct_Boss01* func_ov016_021265a8(Boss01* boss, s32 arg1) {
-    s32               temp_r5;
-    s32               var_r9;
-    UnkStruct_Boss01* var_r4;
-    UnkStruct_Boss01* var_r8;
+Boss01_UG* func_ov016_021265a8(Boss01_UG* bossUG, s32 arg1) {
+    Boss01_UG* var_r4  = NULL;
+    s32        temp_r5 = RNG_Next(func_ov003_020cc5fc(0, 0x19));
+    Boss01_UG* var_r8  = func_ov003_0208495c(OV003_LIST_3D8B4);
 
-    var_r4  = NULL;
-    temp_r5 = RNG_Next(func_ov003_020cc5fc(0, 0x19));
-    var_r8  = func_ov003_0208495c(OV003_LIST_3D8B4);
-    var_r9  = 0;
-    if (var_r8 != NULL) {
-    loop_1:
-        if (func_ov016_02126554(boss, var_r8, arg1) != 0) {
+    for (s32 var_r9 = 0; var_r8 != NULL; var_r9++) {
+        if (func_ov016_02126554(bossUG, var_r8, arg1) != 0) {
             if (var_r9 < temp_r5) {
                 var_r4 = var_r8;
-                goto block_5;
+                break;
             }
-            return var_r8;
         }
-    block_5:
         var_r8 = func_ov003_02084984((u8*)var_r8 + 0xB8);
-        var_r9 += 1;
-        if (var_r8 == NULL) {
-            /* Duplicate return node #6. Try simplifying control flow for better match */
-            return var_r4;
-        }
-        goto loop_1;
     }
     return var_r4;
 }
 
-/* Select a preferred target, favoring a previous selection. */
-UnkStruct_Boss01* func_ov016_02126638(Boss01* boss) {
-    s16               temp_r1_2;
-    UnkStruct_Boss01* temp_r1;
-    UnkStruct_Boss01* temp_r4;
-    UnkStruct_Boss01* var_r0;
+Boss01_UG* func_ov016_02126638(Boss01_UG* bossUG) {
+    s16        temp_r1_2;
+    Boss01_UG* temp_r1;
+    Boss01_UG* temp_r4;
+    Boss01_UG* var_r0;
 
-    temp_r4   = func_ov016_021265a8(boss, 0);
-    var_r0    = func_ov016_021265a8(boss, 1);
-    temp_r1_2 = boss->unk_6E;
-    if ((s32)boss->unk_6C <= (s32)((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1)) {
-        temp_r1 = boss->unk_1E4;
+    temp_r4   = func_ov016_021265a8(bossUG, 0);
+    var_r0    = func_ov016_021265a8(bossUG, 1);
+    temp_r1_2 = bossUG->unk_6E;
+    if ((s32)bossUG->unk_6C <= (s32)((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1)) {
+        temp_r1 = bossUG->unk_1E4;
         if (temp_r1 != NULL) {
             return temp_r1;
         }
@@ -906,381 +929,331 @@ UnkStruct_Boss01* func_ov016_02126638(Boss01* boss) {
     return var_r0;
 }
 
-void Boss01_SetAiState(Boss01* boss, void (*arg1)(Boss01*)) {
+void Boss01_UG_SetState(Boss01_UG* bossUG, void (*arg1)(Boss01_UG*)) {
     func_ov003_020c427c();
-    boss->unk_1C8 = arg1;
-    boss->unk_1C4 = 0;
-    boss->unk_1C0 = 0;
-    boss->unk_1EC = 0;
+    bossUG->unk_1C8 = arg1;
+    bossUG->unk_1C4 = 0;
+    bossUG->unk_1C0 = 0;
+    bossUG->unk_1EC = 0;
 }
 
-void func_ov016_021266b4(Boss01* boss) {
+void func_ov016_021266b4(Boss01_UG* bossUG) {
     if (func_ov003_020cb3c4(0, 7) == 0) {
         *data_ov016_021292c0 = 1;
-        Boss01_SetAiState(boss, func_ov016_021266f4);
+        Boss01_UG_SetState(bossUG, func_ov016_021266f4);
     }
 }
 
-void func_ov016_021266f4(Boss01* boss) {
-    switch (boss->unk_1C4) {
+void func_ov016_021266f4(Boss01_UG* bossUG) {
+    switch (bossUG->unk_1C4) {
         case 0: {
-            if (boss->unk_1C0 <= 180) {
-                boss->unk_1C0++;
+            if (bossUG->unk_1C0 <= 180) {
+                bossUG->unk_1C0++;
             } else {
-                boss->unk_1C0 = 0;
-                boss->unk_1C4++;
+                bossUG->unk_1C0 = 0;
+                bossUG->unk_1C4++;
             }
         } break;
 
         case 1: {
-            boss->unk_1C4++;
+            bossUG->unk_1C4++;
         } break;
 
         case 2: {
-            Boss01_SetAiState(boss, func_ov016_02126c24);
+            Boss01_UG_SetState(bossUG, func_ov016_02126c24);
         } break;
 
         case 3: {
             EasyFade_FadeBothDisplays(FADER_LINEAR, -16, 0x400);
             if (EasyFade_IsFading() == FALSE) {
-                boss->unk_1C4++;
+                bossUG->unk_1C4++;
             }
         } break;
 
         case 4: {
-            if (boss->unk_1C0 == 0) {
+            if (bossUG->unk_1C0 == 0) {
                 EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x400);
-                func_ov003_020c3ec0(boss);
+                func_ov003_020c3ec0(bossUG);
                 Boss01s_LandRG_CreateTask();
                 Boss01s_LandUG_CreateTask();
                 Boss01s_FlyRG_Curve_CreateTask();
                 Boss01s_FlyUG_CreateTask();
                 for (s32 i = 0; i < 4; i++) {
-                    func_ov016_021264d8(boss);
+                    func_ov016_021264d8(bossUG);
                 }
             }
             if (EasyFade_IsFading() == FALSE) {
                 *data_ov016_021292c0 = 2;
-                Boss01_SetAiState(boss, func_ov016_02126854);
+                Boss01_UG_SetState(bossUG, func_ov016_02126854);
             } else {
-                boss->unk_1C0++;
+                bossUG->unk_1C0++;
             }
         } break;
     }
 }
 
-void func_ov016_0212682c(Boss01* boss) {
+void func_ov016_0212682c(Boss01_UG* bossUG) {
     if (*data_ov016_021292c0 == 2) {
-        Boss01_SetAiState(boss, func_ov016_02126854);
+        Boss01_UG_SetState(bossUG, func_ov016_02126854);
     }
 }
 
-void func_ov016_02126854(Boss01* boss) {
-    s32               sp8;
-    s32               var_r3;
-    s16               temp_r1_2;
-    s32               temp_r3;
-    s32               temp_r3_2;
-    s32               var_r0;
-    u32               temp_r1;
-    UnkStruct_Boss01* temp_r0_2;
-    Ov016Obj*         temp_r4;
+void func_ov016_02126854(Boss01_UG* bossUG) {
+    s32        sp8;
+    s16        temp_r1_2;
+    s32        temp_r3;
+    s32        temp_r3_2;
+    u32        temp_r1;
+    Boss01_UG* temp_r4 = data_ov003_020e71b8->unk3D898;
 
-    temp_r4 = data_ov003_020e71b8->unk3D898;
-    if (boss->unk_1C0 == 0) {
-        func_ov003_020c4c5c(boss);
-        boss->unk_54  = (s32)(boss->unk_54 | 0x10);
-        boss->unk_1DC = 0x666;
-        boss->unk_2C  = (s32)temp_r4->unk2C;
-        boss->unk_30  = -0x200000;
-        var_r0        = 0x3000;
-        if (boss->unk_24 == 0) {
-            var_r0 = -0x3000;
-        }
-        boss->unk_1D0 = var_r0;
-        if ((boss->unk_188 == 0) && (boss->unk_1E0 != NULL)) {
+    if (bossUG->unk_1C0 == 0) {
+        func_ov003_020c4c5c(bossUG);
+        bossUG->unk_54  = (s32)(bossUG->unk_54 | 0x10);
+        bossUG->unk_1DC = 0x666;
+        bossUG->unk_2C  = temp_r4->unk_2C;
+        bossUG->unk_30  = -0x200000;
+        bossUG->unk_1D0 = (bossUG->unk_24 != 0) ? 0x3000 : -0x3000;
+
+        if ((bossUG->unk_188 == 0) && (bossUG->unk_1E0 != NULL)) {
             func_ov003_02086654();
-            boss->unk_1E8 = 0;
-            boss->unk_1E0 = NULL;
+            bossUG->unk_1E8 = 0;
+            bossUG->unk_1E0 = NULL;
         }
-        if (boss->unk_1E8 != 0) {
-            boss->unk_1EC = (RNG_Next(2) == 0) ? 1 : 0;
-            if (boss->unk_1EC != 0) {
-                temp_r3       = FX_Divide(0x2800, boss->unk_1E0->unk_4C) >> 0xC;
-                temp_r1       = temp_r3 * (boss->unk_1E0->unk_4C * temp_r3);
-                boss->unk_1F0 = (s32)((temp_r3 * 0x2800) - ((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1));
+        if (bossUG->unk_1E8 != 0) {
+            bossUG->unk_1EC = (RNG_Next(2) == 0) ? 1 : 0;
+            if (bossUG->unk_1EC != 0) {
+                temp_r3         = FX_Divide(0x2800, bossUG->unk_1E0->unk_4C) >> 0xC;
+                temp_r1         = temp_r3 * (bossUG->unk_1E0->unk_4C * temp_r3);
+                bossUG->unk_1F0 = (s32)((temp_r3 * 0x2800) - ((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1));
             }
         }
     }
-    boss->unk_28 = (s32)(boss->unk_28 + boss->unk_1D0);
-    if (boss->unk_1E8 != 0) {
-        sp8       = boss->unk_28;
-        temp_r1_2 = boss->unk_1E0->unk_74;
-        func_ov003_02083bfc((u8*)boss + 0x2C, ((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1) << 0xC, boss->unk_28);
-        boss->unk_1E0->unk_2C = boss->unk_28;
-        boss->unk_1E0->unk_30 = boss->unk_2C;
-        boss->unk_1E0->unk_34 = boss->unk_30;
-        if ((boss->unk_1EC != 0) &&
-            (((temp_r3_2 = boss->unk_1D0, (temp_r3_2 > 0)) && ((s32)boss->unk_28 > (s32)(temp_r4->unk28 - boss->unk_1F0))) ||
-             ((temp_r3_2 < 0) && ((s32)boss->unk_28 < (s32)(temp_r4->unk28 + boss->unk_1F0)))) &&
-            (func_ov003_020c3960(&sp8, boss->unk_1E0->unk_74 << 0xC) == 0))
+    bossUG->unk_28 += bossUG->unk_1D0;
+    if (bossUG->unk_1E8 != 0) {
+        sp8       = bossUG->unk_28;
+        temp_r1_2 = bossUG->unk_1E0->unk_74;
+        func_ov003_02083bfc((u8*)bossUG + 0x2C, ((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1) << 0xC, bossUG->unk_28);
+        bossUG->unk_1E0->unk_2C = bossUG->unk_28;
+        bossUG->unk_1E0->unk_30 = bossUG->unk_2C;
+        bossUG->unk_1E0->unk_34 = bossUG->unk_30;
+        if ((bossUG->unk_1EC != 0) &&
+            (((temp_r3_2 = bossUG->unk_1D0, (temp_r3_2 > 0)) &&
+              ((s32)bossUG->unk_28 > (s32)(temp_r4->unk_28 - bossUG->unk_1F0))) ||
+             ((temp_r3_2 < 0) && ((s32)bossUG->unk_28 < (s32)(temp_r4->unk_28 + bossUG->unk_1F0)))) &&
+            (func_ov003_020c3960(&sp8, bossUG->unk_1E0->unk_74 << 0xC) == 0))
         {
-            var_r3 = 0x2800;
-            if (boss->unk_24 == 0) {
-                var_r3 = -0x2800;
-            }
-            func_ov003_020c5ac0(boss, 0xE5, (u8*)boss->unk_1E0 + 4, var_r3);
+            s32 var_r3 = (bossUG->unk_24 != 0) ? 0x2800 : -0x2800;
+            func_ov003_020c5ac0(bossUG, 0xE5, (u8*)bossUG->unk_1E0 + 4, var_r3);
 
-            if (boss->unk_1E0 == boss->unk_1E4) {
-                BtlEff_Fall_CreateTask(boss->unk_1E0, boss, 231);
-                boss->unk_1E0->unk_34 = -0x120000;
-                boss->unk_1E4         = 0;
+            if (bossUG->unk_1E0 == bossUG->unk_1E4) {
+                BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 231);
+                bossUG->unk_1E0->unk_34 = -0x120000;
+                bossUG->unk_1E4         = 0;
             } else {
-                temp_r0_2 = boss->unk_1E0;
-                if (func_ov009_020fa71c(temp_r0_2) != 0) {
-                    BtlEff_Fall_CreateTask(temp_r0_2, boss, 230);
+                if (func_ov009_020fa71c((UnkStruct_Boss01*)bossUG->unk_1E0) != 0) {
+                    BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 230);
                 } else {
-                    BtlEff_Fall_CreateTask(temp_r0_2, boss, 401);
+                    BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 401);
                 }
             }
-            boss->unk_1E0 = NULL;
-            boss->unk_188 = 0;
-            boss->unk_1E8 = 0;
+            bossUG->unk_1E0 = NULL;
+            bossUG->unk_188 = 0;
+            bossUG->unk_1E8 = 0;
         }
     }
-    if (func_ov016_02126468(boss) != 0) {
-        UnkStruct_Boss01* temp_r0_3 = func_ov016_02126638(boss);
-        if (boss->unk_1E8 != 0) {
+    if (func_ov016_02126468(bossUG) != 0) {
+        Boss01_UG* temp_r0_3 = func_ov016_02126638(bossUG);
+        if (bossUG->unk_1E8 != 0) {
             *data_ov016_021292c0 = 2;
-            Boss01_SetAiState(boss, func_ov016_02126854);
+            Boss01_UG_SetState(bossUG, func_ov016_02126854);
             return;
         }
-        if ((temp_r0_3 == boss->unk_1E4) && (temp_r0_3 != NULL)) {
-            if ((s32)boss->unk_28 < 0) {
+        if ((temp_r0_3 == bossUG->unk_1E4) && (temp_r0_3 != NULL)) {
+            if ((s32)bossUG->unk_28 < 0) {
                 *data_ov016_021292c0 = 2;
-                Boss01_SetAiState(boss, func_ov016_02126854);
+                Boss01_UG_SetState(bossUG, func_ov016_02126854);
                 return;
             }
             *data_ov016_021292c0 = 3;
-            Boss01_SetAiState(boss, func_ov016_02126c24);
+            Boss01_UG_SetState(bossUG, func_ov016_02126c24);
             return;
         }
         if (func_ov003_0208495c(OV003_LIST_3D8B4) != NULL) {
             *data_ov016_021292c0 = 3;
-            Boss01_SetAiState(boss, func_ov016_02126c24);
+            Boss01_UG_SetState(bossUG, func_ov016_02126c24);
             return;
         }
         if (RNG_Next(2) != 0) {
             *data_ov016_021292c0 = 2;
-            Boss01_SetAiState(boss, func_ov016_02126854);
+            Boss01_UG_SetState(bossUG, func_ov016_02126854);
             return;
         }
         *data_ov016_021292c0 = 3;
-        Boss01_SetAiState(boss, func_ov016_02126c24);
+        Boss01_UG_SetState(bossUG, func_ov016_02126c24);
         return;
     }
-    boss->unk_1C0++;
+    bossUG->unk_1C0++;
 }
 
-void func_ov016_02126c24(Boss01* boss) {
+void func_ov016_02126c24(Boss01_UG* bossUG) {
     Ov016Obj* temp_r5 = data_ov003_020e71b8->unk3D898;
 
-    if (boss->unk_1C0 == 0) {
-        func_ov003_020c4c5c(boss);
-        boss->unk_54  = (s32)(boss->unk_54 | 0x10);
-        boss->unk_1DC = 0xCCD;
-        boss->unk_2C  = (s32)temp_r5->unk2C;
-        boss->unk_30  = -0x12C000;
-        if (boss->unk_24 == 0) {
-            boss->unk_1D0 = -0x4000;
+    if (bossUG->unk_1C0 == 0) {
+        func_ov003_020c4c5c(bossUG);
+        bossUG->unk_54  = (s32)(bossUG->unk_54 | 0x10);
+        bossUG->unk_1DC = 0xCCD;
+        bossUG->unk_2C  = (s32)temp_r5->unk2C;
+        bossUG->unk_30  = -0x12C000;
+        if (bossUG->unk_24 == 0) {
+            bossUG->unk_1D0 = -0x4000;
         } else {
-            boss->unk_1D0 = 0x4000;
+            bossUG->unk_1D0 = 0x4000;
         }
         if (*data_ov016_021292c0 == 1) {
-            func_ov003_020c4cc4(boss, 498);
+            func_ov003_020c4cc4(bossUG, 498);
         }
     }
-    boss->unk_28 += boss->unk_1D0;
-    if (func_ov016_02126468(boss) != 0) {
+    bossUG->unk_28 += bossUG->unk_1D0;
+    if (func_ov016_02126468(bossUG) != 0) {
         if (*data_ov016_021292c0 == 1) {
-            Boss01_SetAiState(boss, func_ov016_021266f4);
-            boss->unk_1C4 = 3;
+            Boss01_UG_SetState(bossUG, func_ov016_021266f4);
+            bossUG->unk_1C4 = 3;
             return;
         }
         *data_ov016_021292c0 = 4;
-        Boss01_SetAiState(boss, func_ov016_02126d38);
+        Boss01_UG_SetState(bossUG, func_ov016_02126d38);
         return;
     }
-    boss->unk_1C0++;
+    bossUG->unk_1C0++;
 }
 
-void func_ov016_02126d38(Boss01* boss) {
+void func_ov016_02126d38(Boss01_UG* bossUG) {
     UnkStruct_Boss01* temp_r4 = data_ov003_020e71b8->unk3D898;
 
-    if (boss->unk_1C0 == 0) {
-        boss->unk_1E0 = func_ov016_02126638(boss);
-        func_ov003_020c4c5c(boss);
-        boss->unk_54 &= ~0x10;
-        boss->unk_1DC = 0x1000;
-        boss->unk_1D4 = 0;
-        if (boss->unk_1E0 != NULL) {
-            boss->unk_2C  = (s32)boss->unk_1E0->unk_30;
-            s32 temp_r0_3 = boss->unk_1E0->unk_76 << 0xC;
+    if (bossUG->unk_1C0 == 0) {
+        bossUG->unk_1E0 = func_ov016_02126638(bossUG);
+        func_ov003_020c4c5c(bossUG);
+        bossUG->unk_54 &= ~0x10;
+        bossUG->unk_1DC = 0x1000;
+        bossUG->unk_1D4 = 0;
+        if (bossUG->unk_1E0 != NULL) {
+            bossUG->unk_2C = (s32)bossUG->unk_1E0->unk_30;
+            s32 temp_r0_3  = bossUG->unk_1E0->unk_76 << 0xC;
 
             f32 var_r0;
-            if ((s32)boss->unk_1E0->unk_76 > 0) {
+            if ((s32)bossUG->unk_1E0->unk_76 > 0) {
                 var_r0 = (f32)temp_r0_3 + 0.5f;
             } else {
                 var_r0 = (f32)temp_r0_3 - 0.5f;
             }
-            boss->unk_30 = -(s32)var_r0 - 0x8000;
+            bossUG->unk_30 = -(s32)var_r0 - 0x8000;
         } else {
-            boss->unk_2C = (s32)temp_r4->unk_2C;
-            boss->unk_30 = -0x40000;
+            bossUG->unk_2C = (s32)temp_r4->unk_2C;
+            bossUG->unk_30 = -0x40000;
         }
 
-        s32 val = -0x4000;
-        if (boss->unk_24 != 0) {
-            val = 0x4000;
-        }
+        bossUG->unk_1D0 = (bossUG->unk_24 != 0) ? 0x4000 : -0x4000;
 
-        boss->unk_1D0 = val;
-
-        func_ov003_020c4cc4(boss, 0x1F2);
+        func_ov003_020c4cc4(bossUG, 0x1F2);
     }
-    boss->unk_28 = (s32)(boss->unk_28 + boss->unk_1D0);
-    if (boss->unk_1E0 != NULL) {
-        if (boss->unk_1E8 != 0) {
-            boss->unk_1E0->unk_2C = (s32)boss->unk_28;
-            boss->unk_1E0->unk_30 = (s32)boss->unk_2C;
-            boss->unk_1E0->unk_34 = -0x8000;
+    bossUG->unk_28 += bossUG->unk_1D0;
+    if (bossUG->unk_1E0 != NULL) {
+        if (bossUG->unk_1E8 != 0) {
+            bossUG->unk_1E0->unk_2C = (s32)bossUG->unk_28;
+            bossUG->unk_1E0->unk_30 = (s32)bossUG->unk_2C;
+            bossUG->unk_1E0->unk_34 = -0x8000;
         }
 
-        if ((boss->unk_28 >= (s32)(boss->unk_1E0->unk_2C - 0x4000)) &&
-            (boss->unk_28 < (s32)(boss->unk_1E0->unk_2C + 0x4000)) && (func_ov016_02126514(boss, boss->unk_1E0) != 0))
+        if ((bossUG->unk_28 >= (s32)(bossUG->unk_1E0->unk_2C - 0x4000)) &&
+            (bossUG->unk_28 < (s32)(bossUG->unk_1E0->unk_2C + 0x4000)) && (func_ov016_02126514(bossUG, bossUG->unk_1E0) != 0))
         {
-            func_ov003_020c5a00((u8*)boss->unk_1E0 + 4);
-            boss->unk_1E0->unk_5C = 6;
-            boss->unk_1E8         = 1;
-            boss->unk_188         = (void*)boss->unk_1E0;
-            func_ov003_020c4cc4(boss, 0x1F3);
+            func_ov003_020c5a00((u8*)bossUG->unk_1E0 + 4);
+            bossUG->unk_1E0->unk_5C = 6;
+            bossUG->unk_1E8         = 1;
+            bossUG->unk_188         = (void*)bossUG->unk_1E0;
+            func_ov003_020c4cc4(bossUG, 0x1F3);
 
-            s32 temp_r2_3 = boss->unk_1E0->unk_76 * (boss->unk_1E0->unk_74 << 0xD);
+            s32 temp_r2_3 = bossUG->unk_1E0->unk_76 * (bossUG->unk_1E0->unk_74 << 0xD);
             s32 temp_r1_2 = (s32)(temp_r2_3 + ((u32)(temp_r2_3 >> 5) >> 0x1A)) >> 6;
             s32 var_r1    = (s32)(temp_r1_2 + ((u32)(temp_r1_2 >> 4) >> 0x1B)) >> 5;
 
             if (var_r1 > 0x2000) {
                 var_r1 = 0x2000;
             }
-            if (boss->unk_24 == 0) {
-                boss->unk_1D0 += var_r1;
+            if (bossUG->unk_24 == 0) {
+                bossUG->unk_1D0 += var_r1;
             } else {
-                boss->unk_1D0 -= var_r1;
+                bossUG->unk_1D0 -= var_r1;
             }
         }
     }
-    if (boss->unk_1D4 == 0) {
-        boss->unk_1D4 = func_ov003_020c5b2c(0xE4, boss, boss->unk_28, boss->unk_2C, boss->unk_30);
+    if (bossUG->unk_1D4 == 0) {
+        bossUG->unk_1D4 = func_ov003_020c5b2c(0xE4, bossUG, bossUG->unk_28, bossUG->unk_2C, bossUG->unk_30);
     }
-    Boss01_Eff_CreateTask(boss);
-    if (func_ov016_02126468(boss) != 0) {
-        boss->unk_54 |= 0x10;
-        if (boss->unk_1E8 == 0) {
-            boss->unk_1E0 = NULL;
+    Boss01_Eff_CreateTask((Boss01*)bossUG);
+    if (func_ov016_02126468(bossUG) != 0) {
+        bossUG->unk_54 |= 0x10;
+        if (bossUG->unk_1E8 == 0) {
+            bossUG->unk_1E0 = NULL;
         }
-        if ((boss->unk_1E4 != 0) && (boss->unk_1E0 == boss->unk_1E4)) {
+        if ((bossUG->unk_1E4 != 0) && (bossUG->unk_1E0 == bossUG->unk_1E4)) {
             *data_ov016_021292c0 = 2;
-            Boss01_SetAiState(boss, func_ov016_0212682c);
+            Boss01_UG_SetState(bossUG, func_ov016_0212682c);
             return;
         }
         *data_ov016_021292c0 = 5;
-        Boss01_SetAiState(boss, func_ov016_0212682c);
+        Boss01_UG_SetState(bossUG, func_ov016_0212682c);
         return;
     }
-    boss->unk_1C0++;
+    bossUG->unk_1C0++;
 }
 
-/// MARK: Boss01_UG
+void func_ov016_02126ff0(Boss01_UG* bossUG) {
+    SpriteAnimationEx subroutine;
 
-typedef struct {
-    /* 0x000 */ char unk_000[0x28];
-    /* 0x028 */ s32  unk_28;
-    /* 0x02C */ s32  unk_2C;
-    /* 0x030 */ s32  unk_30;
-    /* 0x034 */ s16  unk_34;
-    /* 0x036 */ s16  unk_36;
-    /* 0x038 */ s16  unk_38;
-    /* 0x03A */ s16  unk_3A;
-    /* 0x03C */ s32  unk_3C;
-    /* 0x040 */ char unk_040[0x54 - 0x40];
-    /* 0x054 */ s32  unk_54;
-    /* 0x058 */ char unk_58[0x84 - 0x58];
-    /* 0x084 */ s32  unk_84;
-    /* 0x088 */ char unk_88[0xCA - 0x88];
-    /* 0x0CA */ u16  unk_CA;
-    /* 0x0CC */ char unk_CC[0x18C - 0xCC];
-    /* 0x18C */ u16  unk_18C;
-    /* 0x18E */ char unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ s16  unk_1C0;
-    /* 0x1C2 */ char unk_1C2[0x1C8 - 0x1C2];
-    /* 0x1C8 */ void (*unk_1C8)(void*);
-    /* 0x1CC */ s32              unk_1CC;
-    /* 0x1D0 */ char             unk_1D0[0x1D8 - 0x1D0];
-    /* 0x1D8 */ PaletteResource* unk_1D8;
-    /* 0x1DC */ s32              unk_1DC;
-    /* 0x1E0 */ char             unk_1E0[0x1E4 - 0x1E0];
-    /* 0x1E4 */ void*            unk_1E4;
-} Boss01_UG; // Size: 0x1F4
-
-static const TaskHandle Tsk_Boss01_UG = {"Tsk_Boss01_UG", Boss01_UG_RunTask, 0x1F4};
-
-void func_ov016_02126ff0(Boss01* boss) {
-    Ov016Sprite subroutine;
-    s32         temp_r5;
-
-    if (boss->unk_1C0 == 0) {
-        func_ov016_021256c0(&subroutine, 0, boss->unk_CA & 1);
+    if (bossUG->unk_1C0 == 0) {
+        func_ov016_021256c0(&subroutine, 0, bossUG->sprite.flags46 & 1);
         func_ov003_020c9064(&subroutine);
     }
-    temp_r5 = func_ov003_020c9338(boss);
+    s32 temp_r5 = func_ov003_020c9338(bossUG);
     if ((func_ov003_020c9008() != 0) && (data_ov016_021291d8 != 0)) {
-        func_ov003_02082cc4((u8*)boss + 0x84);
+        CombatSprite_Release(&bossUG->sprite);
         data_ov016_021291d8 = 0;
     }
     if (temp_r5 == 0) {
         func_ov003_020c50bc();
     }
     if ((temp_r5 == 0) && (EasyFade_IsFading() == 0)) {
-        boss->unk_1CC = NULL;
+        bossUG->unk_1CC = NULL;
         return;
     }
-    boss->unk_1C0++;
+    bossUG->unk_1C0++;
 }
 
 s32 Boss01_UG_Init(TaskPool* pool, Task* task, void* args) {
-    Ov016Sprite subroutine;
-    Boss01_UG*  boss = task->data;
+    SpriteAnimationEx subroutine;
+    Boss01_UG*        bossUG = task->data;
 
-    MI_CpuSet(boss, 0, 0x1F4);
+    MI_CpuSet(bossUG, 0, 0x1F4);
 
-    void* src     = Data_GetPackEntryData(data_ov003_020e71b8->unk3D350, 66);
-    boss->unk_1D8 = PaletteMgr_AcquireContiguous(g_PaletteManagers[DISPLAY_EXTENDED], src, 5, 1);
+    void* src       = Data_GetPackEntryData(data_ov003_020e71b8->unk3D350, 66);
+    bossUG->unk_1D8 = PaletteMgr_AcquireContiguous(g_PaletteManagers[DISPLAY_EXTENDED], src, 5, 1);
 
-    func_ov003_020c3efc(boss, args);
+    func_ov003_020c3efc(bossUG, args);
     func_ov016_021256c0(&subroutine, 2, 0);
-    func_ov003_02082998(&boss->unk_84, &subroutine);
-    func_ov003_020c49c8(boss);
-    func_ov003_020c4c5c(boss);
-    boss->unk_54 |= 0x10000010;
-    boss->unk_3C         = 0;
-    boss->unk_28         = -0x80000;
-    boss->unk_2C         = 0;
-    boss->unk_30         = -0x40000;
-    boss->unk_1DC        = 0x1000;
-    boss->unk_1CC        = 1;
-    boss->unk_1E4        = BtlObs_Bus_CreateTask(boss);
+    CombatSprite_Load(&bossUG->sprite, &subroutine);
+    func_ov003_020c49c8(bossUG);
+    func_ov003_020c4c5c(bossUG);
+    bossUG->unk_54 |= 0x10000010;
+    bossUG->unk_3C       = 0;
+    bossUG->unk_28       = -0x80000;
+    bossUG->unk_2C       = 0;
+    bossUG->unk_30       = -0x40000;
+    bossUG->unk_1DC      = 0x1000;
+    bossUG->unk_1CC      = 1;
+    bossUG->unk_1E4      = BtlObs_Bus_CreateTask(bossUG);
     *data_ov016_021292c0 = 0;
-    Boss01_SetAiState((Boss01*)boss, func_ov016_021266b4);
+    Boss01_UG_SetState(bossUG, func_ov016_021266b4);
     return 1;
 }
 
@@ -1293,7 +1266,7 @@ s32 Boss01_UG_Update(TaskPool* pool, Task* task, void* args) {
 
     s32 temp_r0 = func_ov003_02082f2c(bossUG);
     if ((temp_r0 != 1) && (temp_r0 == 3)) {
-        Boss01_SetAiState((Boss01*)bossUG, func_ov016_02126ff0);
+        Boss01_UG_SetState(bossUG, func_ov016_02126ff0);
     }
 
     if (bossUG->unk_1C8 != NULL) {
@@ -1304,7 +1277,7 @@ s32 Boss01_UG_Update(TaskPool* pool, Task* task, void* args) {
         func_ov016_021264d8(bossUG);
     }
     func_ov003_02083000(0, bossUG);
-    func_ov003_02082b0c(&bossUG->unk_84);
+    CombatSprite_Update(&bossUG->sprite);
     return bossUG->unk_1CC;
 }
 
@@ -1318,13 +1291,13 @@ s32 Boss01_UG_Render(TaskPool* pool, Task* task, void* args) {
 
     if (!(bossUG->unk_18C & 1)) {
         func_ov003_02084348(0, &spA, &sp8, bossUG->unk_28, bossUG->unk_2C, bossUG->unk_30);
-        func_ov003_02082724(&bossUG->unk_84, spA, sp8);
-        func_ov003_02082b64(&bossUG->unk_84);
+        CombatSprite_SetPosition(&bossUG->sprite, spA, sp8);
+        CombatSprite_Render(&bossUG->sprite);
         bossUG->unk_34 = spA;
         bossUG->unk_36 = sp8 + 80;
         func_ov003_02084348(0, &spA, &sp8, bossUG->unk_28, bossUG->unk_2C, 0);
-        func_ov003_02082724(&bossUG->unk_84, spA, sp8);
-        func_ov016_021262d8((Ov016Obj*)bossUG);
+        CombatSprite_SetPosition(&bossUG->sprite, spA, sp8);
+        func_ov016_021262d8(bossUG);
     }
     return 1;
 }
@@ -1333,7 +1306,7 @@ s32 Boss01_UG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01_UG* bossUG = task->data;
 
     PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_EXTENDED], bossUG->unk_1D8);
-    func_ov003_02082cc4(&bossUG->unk_84);
+    CombatSprite_Release(&bossUG->sprite);
     func_ov003_020c4a74(bossUG);
     return 1;
 }
@@ -1351,17 +1324,17 @@ s32 Boss01_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 /// MARK: Boss01s_FlyRG_Curve
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x60];
-    /* 0x60 */ Vec  unk_60;
-    /* 0x6C */ s32  unk_6C;
-    /* 0x70 */ s32  unk_70;
-    /* 0x74 */ s32  unk_74;
-    /* 0x78 */ s32  unk_78;
-    /* 0x7C */ s32  unk_7C;
-    /* 0x80 */ s32  unk_80;
-    /* 0x84 */ s16  unk_84;
-    /* 0x86 */ s16  unk_86;
-    /* 0x88 */ s16  unk_88;
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ Vec          unk_60;
+    /* 0x6C */ s32          unk_6C;
+    /* 0x70 */ s32          unk_70;
+    /* 0x74 */ s32          unk_74;
+    /* 0x78 */ s32          unk_78;
+    /* 0x7C */ s32          unk_7C;
+    /* 0x80 */ s32          unk_80;
+    /* 0x84 */ s16          unk_84;
+    /* 0x86 */ s16          unk_86;
+    /* 0x88 */ s16          unk_88;
 } Boss01s_FlyRG_Curve; // Size: 0x8C
 
 static const TaskHandle Tsk_Boss01s_FlyRG_Curve = {"Tsk_Boss01s_FlyRG_Curve", Boss01s_FlyRG_Curve_RunTask, 0x8C};
@@ -1397,7 +1370,7 @@ s32 Boss01s_FlyRG_Curve_Init(TaskPool* pool, Task* task, void* args) {
     Boss01s_FlyRG_Curve* curve = task->data;
 
     MI_CpuSet(curve, 0, sizeof(Boss01s_FlyRG_Curve));
-    func_ov003_02082a04(1, curve, &data_ov016_02128f98, &data_ov016_02129010, RNG_Next(2), 4, 4);
+    CombatSprite_LoadFromTable(1, &curve->sprite, &data_ov016_02128f98, data_ov016_02129010, RNG_Next(2), 4, 4);
     Boss02s_FlyRG_Curve_Randomize(curve);
 
     f32 var_r0;
@@ -1444,7 +1417,7 @@ s32 Boss01s_FlyRG_Curve_Update(TaskPool* pool, Task* task, void* args) {
             }
             break;
     }
-    func_ov003_02082b0c(curve);
+    CombatSprite_Update(&curve->sprite);
     return 1;
 }
 
@@ -1456,15 +1429,15 @@ s32 Boss01s_FlyRG_Curve_Render(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
     func_ov003_02084348(func_ov003_020c3908(curve), &spA, &sp8, curve->unk_60.x, curve->unk_60.y, curve->unk_60.z);
-    func_ov003_02082724(curve, spA, sp8);
-    func_ov003_02082730(curve, 0x7FFFFFFF);
-    func_ov003_02082b64(curve);
+    CombatSprite_SetPosition(&curve->sprite, spA, sp8);
+    func_ov003_02082730(&curve->sprite, 0x7FFFFFFF);
+    CombatSprite_Render(&curve->sprite);
     return 1;
 }
 
 s32 Boss01s_FlyRG_Curve_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01s_FlyRG_Curve* curve = task->data;
-    func_ov003_02082cc4(curve);
+    CombatSprite_Release(&curve->sprite);
     return 1;
 }
 
@@ -1487,12 +1460,12 @@ void Boss01s_FlyRG_Curve_CreateTask(void) {
 /// MARK: Boss01s_FlyUG
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x60];
-    /* 0x60 */ Vec  unk_60;
-    /* 0x6C */ Vec  unk_6C;
-    /* 0x78 */ s16  unk_78;
-    /* 0x7A */ s16  unk_7A;
-    /* 0x7C */ s16  unk_7C;
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ Vec          unk_60;
+    /* 0x6C */ Vec          unk_6C;
+    /* 0x78 */ s16          unk_78;
+    /* 0x7A */ s16          unk_7A;
+    /* 0x7C */ s16          unk_7C;
 } Boss01s_FlyUG; // Size: 0x80
 
 static const TaskHandle Tsk_Boss01s_FlyUG = {"Tsk_Boss01s_FlyUG", Boss01s_FlyUG_RunTask, sizeof(Boss01s_FlyUG)};
@@ -1515,7 +1488,7 @@ s32 Boss01s_FlyUG_Init(TaskPool* pool, Task* task, void* args) {
     Boss01s_FlyUG* flyUG = task->data;
 
     MI_CpuSet(flyUG, 0, sizeof(Boss01s_FlyUG));
-    func_ov003_02082a04(0, flyUG, &data_ov016_02128f98, &data_ov016_0212903c, 0, 4, 4);
+    CombatSprite_LoadFromTable(0, &flyUG->sprite, &data_ov016_02128f98, data_ov016_0212903c, 0, 4, 4);
     Boss01s_FlyUG_GetSpawnPos(flyUG, &flyUG->unk_60);
     return 1;
 }
@@ -1532,7 +1505,7 @@ s32 Boss01s_FlyUG_Update(TaskPool* pool, Task* task, void* args) {
     switch (flyUG->unk_7C) {
         case 0:
             if (flyUG->unk_78 == 0) {
-                func_ov003_020824a0(flyUG, (RNG_Next(2) + 1), 0);
+                CombatSprite_SetAnimFromTable(&flyUG->sprite, (RNG_Next(2) + 1), 0);
                 flyUG->unk_7A = (RNG_Next(301) + 300);
             }
             if (flyUG->unk_78 <= flyUG->unk_7A) {
@@ -1544,7 +1517,7 @@ s32 Boss01s_FlyUG_Update(TaskPool* pool, Task* task, void* args) {
             break;
         case 1:
             if (flyUG->unk_78 == 0) {
-                func_ov003_020824a0(flyUG, 0, 0);
+                CombatSprite_SetAnimFromTable(&flyUG->sprite, 0, 0);
                 flyUG->unk_6C.x = (RNG_Next(2) == 0) ? -0x1000 : 0x1000;
                 flyUG->unk_6C.z = -0x2000;
             }
@@ -1600,7 +1573,7 @@ s32 Boss01s_FlyUG_Update(TaskPool* pool, Task* task, void* args) {
             }
             break;
     }
-    func_ov003_02082b0c(flyUG);
+    CombatSprite_Update(&flyUG->sprite);
     return 1;
 }
 
@@ -1612,16 +1585,16 @@ s32 Boss01s_FlyUG_Render(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
     func_ov003_02084348(func_ov003_020c3908(flyUG), &spA, &sp8, flyUG->unk_60.x, flyUG->unk_60.y, flyUG->unk_60.z);
-    func_ov003_02082724(flyUG, spA, sp8);
-    func_ov003_02082730(flyUG, 0x7FFFFFFF);
-    func_ov003_02082b64(flyUG);
+    CombatSprite_SetPosition(&flyUG->sprite, spA, sp8);
+    func_ov003_02082730(&flyUG->sprite, 0x7FFFFFFF);
+    CombatSprite_Render(&flyUG->sprite);
     return 1;
 }
 
 s32 Boss01s_FlyUG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01s_FlyUG* flyUG = task->data;
 
-    func_ov003_02082cc4(flyUG);
+    CombatSprite_Release(&flyUG->sprite);
     return 1;
 }
 
@@ -1651,7 +1624,7 @@ s32 Boss01s_LandRG_Init(TaskPool* pool, Task* task, void* args) {
     Ov016Obj* temp_r4 = task->data;
 
     MI_CpuSet(temp_r4, 0, 0x70);
-    func_ov003_02082a04(1, temp_r4, &data_ov016_02128f98, &data_ov016_02129054, 0, 4, 0x3E);
+    CombatSprite_LoadFromTable(1, (CombatSprite*)temp_r4, &data_ov016_02128f98, &data_ov016_02129054, 0, 4, 0x3E);
     temp_r1        = data_ov003_020e71b8->unk3D824;
     temp_r4->unk60 = (s32)((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1);
     temp_r4->unk64 = 0;
@@ -1669,7 +1642,7 @@ s32 Boss01s_LandRG_Update(TaskPool* pool, Task* task, void* args) {
     if (func_ov003_020c3c28() != 0) {
         return 1;
     }
-    func_ov003_02082b0c(temp_r4);
+    CombatSprite_Update((CombatSprite*)temp_r4);
     return 1;
 }
 
@@ -1681,14 +1654,14 @@ s32 Boss01s_LandRG_Render(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
     func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk60, temp_r4->unk64, temp_r4->unk68);
-    func_ov003_02082724(temp_r4, spA, sp8);
-    func_ov003_02082730(temp_r4, 0x7FFFFFFF);
-    func_ov003_02082b64(temp_r4);
+    CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
+    func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFFFFF);
+    CombatSprite_Render((CombatSprite*)temp_r4);
     return 1;
 }
 
 s32 Boss01s_LandRG_Destroy(TaskPool* pool, Task* task, void* args) {
-    func_ov003_02082cc4(task->data);
+    CombatSprite_Release((CombatSprite*)task->data);
     return 1;
 }
 
@@ -1709,11 +1682,11 @@ void Boss01s_LandRG_CreateTask(void) {
 /// MARK: Boss01s_LandUG
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x60];
-    /* 0x60 */ s32  unk_60;
-    /* 0x64 */ s32  unk_64;
-    /* 0x68 */ s32  unk_68;
-    /* 0x6C */ char unk_6C[0x78 - 0x6C];
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ s32          unk_60;
+    /* 0x64 */ s32          unk_64;
+    /* 0x68 */ s32          unk_68;
+    /* 0x6C */ char         unk_6C[0x78 - 0x6C];
 } Boss01s_LandUG; // Size: 0x78
 
 static const TaskHandle Tsk_Boss01s_LandUG = {"Tsk_Boss01s_LandUG", Boss01s_LandUG_RunTask, 0x78};
@@ -1722,7 +1695,7 @@ s32 Boss01s_LandUG_Init(TaskPool* pool, Task* task, void* args) {
     Boss01s_LandUG* landUG = task->data;
 
     MI_CpuSet(landUG, 0, sizeof(Boss01s_LandUG));
-    func_ov003_02082a04(0, landUG, &data_ov016_02128f98, &data_ov016_02129078, 0, 4, 0xC);
+    CombatSprite_LoadFromTable(0, &landUG->sprite, &data_ov016_02128f98, &data_ov016_02129078, 0, 4, 0xC);
 
     u32 temp_r0    = data_ov003_020e71b8->unk3D7CC;
     landUG->unk_60 = (s32)((s32)(temp_r0 + (temp_r0 >> 0x1F)) >> 1);
@@ -1740,7 +1713,7 @@ s32 Boss01s_LandUG_Update(TaskPool* pool, Task* task, void* args) {
     if (func_ov003_020c3c28() != 0) {
         return 1;
     }
-    func_ov003_02082b0c(landUG);
+    CombatSprite_Update(&landUG->sprite);
     return 1;
 }
 
@@ -1752,15 +1725,15 @@ s32 Boss01s_LandUG_Render(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
     func_ov003_02084348(func_ov003_020c3908(landUG), &spA, &sp8, landUG->unk_60, landUG->unk_64, landUG->unk_68);
-    func_ov003_02082724(landUG, spA, sp8);
-    func_ov003_02082730(landUG, 0x7FFFFFFF);
-    func_ov003_02082b64(landUG);
+    CombatSprite_SetPosition(&landUG->sprite, spA, sp8);
+    func_ov003_02082730(&landUG->sprite, 0x7FFFFFFF);
+    CombatSprite_Render(&landUG->sprite);
     return 1;
 }
 
 s32 Boss01s_LandUG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01s_LandUG* landUG = task->data;
-    func_ov003_02082cc4(landUG);
+    CombatSprite_Release(&landUG->sprite);
     return 1;
 }
 
@@ -1788,15 +1761,14 @@ typedef struct {
 } BtlEff_Bomb_Args;
 
 typedef struct {
-    /* 0x00 */ Sprite sprite;
-    /* 0x40 */ char   unk_40[0x20];
-    /* 0x60 */ Vec    unk_60;
-    /* 0x6C */ Quad   unk_6C;
-    /* 0x74 */ s32    unk_74;
-    /* 0x78 */ s32    unk_78;
-    /* 0x7C */ s16    unk_7C;
-    /* 0x7E */ s16    unk_7E;
-    /* 0x80 */ s16    unk_80;
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ Vec          unk_60;
+    /* 0x6C */ Quad         unk_6C;
+    /* 0x74 */ s32          unk_74;
+    /* 0x78 */ s32          unk_78;
+    /* 0x7C */ s16          unk_7C;
+    /* 0x7E */ s16          unk_7E;
+    /* 0x80 */ s16          unk_80;
 } BtlEff_Bomb; // Size: 0x84
 
 static const TaskHandle Task_BtlEff_Bomb = {"Task_BtlEff_Bomb", BtlEff_Bomb_RunTask, 0x84};
@@ -1812,7 +1784,8 @@ s32 BtlEff_Bomb_Init(TaskPool* pool, Task* task, void* args) {
     eff->unk_7C = bombArgs->unk_14;
     eff->unk_6C = *bombArgs->unk_0C;
 
-    func_ov003_02082a04(func_ov003_020c3aac(eff->unk_74), eff, &data_ov016_0212909c, &data_ov016_021290a4, 0, 7, 0);
+    CombatSprite_LoadFromTable(func_ov003_020c3aac(eff->unk_74), &eff->sprite, &data_ov016_0212909c, &data_ov016_021290a4, 0,
+                               7, 0);
     func_ov003_020c38e8(eff);
     return 1;
 }
@@ -1833,20 +1806,20 @@ s32 BtlEff_Bomb_Update(TaskPool* pool, Task* task, void* args) {
 
         case 1:
             if (eff->unk_7E == 0) {
-                func_ov003_020824a0(eff, 0, 1);
+                CombatSprite_SetAnimFromTable(&eff->sprite, 0, 1);
                 func_ov003_02087f28(501, eff->unk_60.x);
             }
             if (eff->unk_78 == 0) {
                 eff->unk_78 = func_ov003_020c5bc4(eff->unk_74, &eff->unk_6C, eff->unk_60.x, eff->unk_60.y, eff->unk_60.z);
             }
-            if (SpriteMgr_IsAnimationFinished(&eff->sprite) != 0) {
+            if (SpriteMgr_IsAnimationFinished(&eff->sprite.sprite) != 0) {
                 var_r5 = 0;
             } else {
                 eff->unk_7E++;
             }
     }
 
-    func_ov003_02082b0c(eff);
+    CombatSprite_Update(&eff->sprite);
     return var_r5;
 }
 
@@ -1858,18 +1831,18 @@ s32 BtlEff_Bomb_Render(TaskPool* pool, Task* task, void* args) {
 
     temp_r4 = task->data;
     func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk60, temp_r4->unk64, temp_r4->unk68);
-    func_ov003_02082724(temp_r4, spA, sp8);
+    CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
     if (func_ov003_020c37f8(temp_r4) != 0) {
-        func_ov003_02082730(temp_r4, 0x7FDFFFFF);
+        func_ov003_02082730((CombatSprite*)temp_r4, 0x7FDFFFFF);
     } else {
-        func_ov003_02082730(temp_r4, 0x7FFFDFFF - temp_r4->unk64);
+        func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFDFFF - temp_r4->unk64);
     }
-    func_ov003_02082b64(temp_r4);
+    CombatSprite_Render((CombatSprite*)temp_r4);
     return 1;
 }
 
 s32 BtlEff_Bomb_Destroy(TaskPool* pool, Task* task, void* args) {
-    func_ov003_02082cc4(task->data);
+    CombatSprite_Release(task->data);
     return 1;
 }
 
@@ -1949,11 +1922,11 @@ s32 BtlEff_Fall_Init(TaskPool* pool, Task* task, void* args) {
     temp_r4->unk_6C         = temp_r7->unk_4;
 
     temp_r4->unk_74 = spawn_args->unk_C;
-    func_ov003_02082a04(0, temp_r4, &data_ov016_0212909c, &data_ov016_021290e4, 0, 7, 0);
+    CombatSprite_LoadFromTable(0, (CombatSprite*)temp_r4, &data_ov016_0212909c, data_ov016_021290e4, 0, 7, 0);
 
     s32 temp_r1 = ((Ov016SpriteParams*)temp_r4->unk_60)->unk2;
     if (temp_r1 <= 14) {
-        switch ((s32)temp_r1 - 10) {
+        switch (temp_r1 - 10) {
             case 0:
             case 1:
             case 2:
@@ -2009,7 +1982,7 @@ s32 BtlEff_Fall_Update(TaskPool* pool, Task* task, void* args) {
             }
         }
     }
-    func_ov003_02082b0c(eff);
+    CombatSprite_Update((CombatSprite*)eff);
     return var_r5;
 }
 
@@ -2019,9 +1992,9 @@ s32 BtlEff_Fall_Render(TaskPool* pool, Task* task, void* args) {
 
     func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk_64->unk_28, temp_r4->unk_64->unk_2C,
                         temp_r4->unk_64->unk_30);
-    func_ov003_02082724(temp_r4, spA, sp8);
-    func_ov003_02082730(temp_r4, 0x7FFFEFFF - temp_r4->unk_64->unk_2C);
-    func_ov003_02082b64(temp_r4);
+    CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
+    func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFEFFF - temp_r4->unk_64->unk_2C);
+    CombatSprite_Render((CombatSprite*)temp_r4);
     return 1;
 }
 
@@ -2029,7 +2002,7 @@ s32 BtlEff_Fall_Destroy(TaskPool* pool, Task* task, void* args) {
     BtlEff_Fall* temp_r4 = task->data;
 
     if (temp_r4->unk_20 != 0) {
-        func_ov003_02082cc4(temp_r4);
+        CombatSprite_Release((CombatSprite*)temp_r4);
     }
     return 1;
 }
@@ -2056,34 +2029,26 @@ void BtlEff_Fall_CreateTask(UnkStruct_Boss01* arg0, Boss01* arg1, s32 arg2) {
 /// MARK: BtlObs_Bus
 
 typedef struct BtlObs_Bus {
-    /* 0x000 */ char unk_000[0x2];
-    /* 0x002 */ s16  unk_002;
-    /* 0x004 */ u32  unk_004;
-    /* 0x008 */ char unk_008[0x2C - 0x8];
-    /* 0x02C */ s32  unk_02C;
-    /* 0x030 */ s32  unk_030;
-    /* 0x034 */ s32  unk_034;
-    /* 0x038 */ char unk_038[0x40 - 0x38];
-    /* 0x040 */ s32  unk_040;
-    /* 0x044 */ char unk_044[0x4C - 0x44];
-    /* 0x04C */ s32  unk_04C;
-    /* 0x050 */ char unk_050[0x58 - 0x50];
-    /* 0x058 */ u32  unk_058;
-    /* 0x05C */ char unk_05C[0x74 - 0x5C];
-    /* 0x074 */ s16  unk_074;
-    /* 0x076 */ s16  unk_076;
-    /* 0x078 */ char unk_078[0xC4 - 0x78];
-    /* 0x0C4 */ u32  unk_0C4;
-    /* 0x0C8 */ char unk_0C8[0xEC - 0xC8];
-    /* 0x0EC */ s32  unk_0EC;
-    /* 0x0F0 */ char unk_0F0[0x108 - 0xF0];
-    /* 0x108 */ s16  unk_108;
-    /* 0x10C */ char unk_10C[0x124 - 0x10A];
-    /* 0x124 */ u32  unk_124;
-    /* 0x128 */ char unk_128[0x14C - 0x128];
-    /* 0x14C */ s32  unk_14C;
-    /* 0x150 */ char unk_150[0x184 - 0x150];
-    /* 0x184 */ s32  unk_184;
+    /* 0x000 */ char         unk_000[0x2];
+    /* 0x002 */ s16          unk_002;
+    /* 0x004 */ u32          unk_004;
+    /* 0x008 */ char         unk_008[0x2C - 0x8];
+    /* 0x02C */ s32          unk_02C;
+    /* 0x030 */ s32          unk_030;
+    /* 0x034 */ s32          unk_034;
+    /* 0x038 */ char         unk_038[0x40 - 0x38];
+    /* 0x040 */ s32          unk_040;
+    /* 0x044 */ char         unk_044[0x4C - 0x44];
+    /* 0x04C */ s32          unk_04C;
+    /* 0x050 */ char         unk_050[0x58 - 0x50];
+    /* 0x058 */ u32          unk_058;
+    /* 0x05C */ char         unk_05C[0x74 - 0x5C];
+    /* 0x074 */ s16          unk_074;
+    /* 0x076 */ s16          unk_076;
+    /* 0x078 */ char         unk_078[0xC4 - 0x78];
+    /* 0x0C4 */ CombatSprite unk_0C4;
+    /* 0x124 */ CombatSprite unk_124;
+    /* 0x184 */ s32          unk_184;
     /* 0x188 */ void (*unk_188)(struct BtlObs_Bus*);
     /* 0x18C */ s16 unk_18C;
     /* 0x18E */ s16 unk_18E;
@@ -2107,12 +2072,12 @@ void BtlObs_Bus_OnPhaseStart(BtlObs_Bus* obs) {
     if ((obs->unk_058 & 0x200) == 0) {
         return;
     }
-    if ((*data_ov016_021292c0 == 2) && (obs->unk_14C == obs->unk_0EC)) {
+    if ((*data_ov016_021292c0 == 2) && (obs->unk_124.sprite.resourceData == obs->unk_0C4.sprite.resourceData)) {
         obs->unk_074 = 60;
         obs->unk_076 = 100;
-        func_ov003_020824a0(&obs->unk_0C4, 2, 0);
-        func_ov003_020826c8(&obs->unk_0C4, 11);
-        func_ov003_02082cc4(&obs->unk_124);
+        CombatSprite_SetAnimFromTable(&obs->unk_0C4, 2, 0);
+        CombatSprite_SetPaletteSource(&obs->unk_0C4, 11);
+        CombatSprite_Release(&obs->unk_124);
         func_ov003_020880e4(0, &obs->unk_124, &obs->unk_004);
     }
 }
@@ -2167,10 +2132,10 @@ s32 BtlObs_Bus_Init(TaskPool* pool, Task* task, void* args) {
     obs->unk_076 = 0x64;
     obs->unk_040 = 0xCD;
     obs->unk_04C = 0xE66;
-    func_ov003_02082a04(0, &obs->unk_0C4, &data_ov016_021290fc, &data_ov016_02129120, 0, 10, 0x180);
-    func_ov003_02082a04(0, &obs->unk_124, &data_ov016_021290fc, &data_ov016_02129120, 1, 10, 0);
-    func_ov003_020824a0(&obs->unk_0C4, 0, 0);
-    func_ov003_020824a0(&obs->unk_124, 1, 0);
+    CombatSprite_LoadFromTable(0, &obs->unk_0C4, &data_ov016_021290fc, data_ov016_02129120, 0, 10, 0x180);
+    CombatSprite_LoadFromTable(0, &obs->unk_124, &data_ov016_021290fc, data_ov016_02129120, 1, 10, 0);
+    CombatSprite_SetAnimFromTable(&obs->unk_0C4, 0, 0);
+    CombatSprite_SetAnimFromTable(&obs->unk_124, 1, 0);
     BtlObs_Bus_SetState(obs, BtlObs_Bus_StateIdle);
     return 1;
 }
@@ -2197,8 +2162,8 @@ s32 BtlObs_Bus_Update(TaskPool* pool, Task* task, void* args) {
     }
     func_ov003_02083074(&obs->unk_004);
     BtlObs_Bus_OnPhaseStart(obs);
-    func_ov003_02082b0c(&obs->unk_0C4);
-    func_ov003_02082b0c(&obs->unk_124);
+    CombatSprite_Update(&obs->unk_0C4);
+    CombatSprite_Update(&obs->unk_124);
     return obs->unk_194;
 }
 
@@ -2213,19 +2178,19 @@ s32 BtlObs_Bus_Render(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
 
-    s16 temp_r4 = func_ov003_020843b0(0, obs->unk_02C);
-    u32 temp_r6 = func_ov003_020843ec(0, obs->unk_030, obs->unk_034);
-    if (obs->unk_108 == 0) {
-        func_ov003_02082724(&obs->unk_124, temp_r4, temp_r6 + 8);
+    s16 posX = func_ov003_020843b0(0, obs->unk_02C);
+    s16 posY = func_ov003_020843ec(0, obs->unk_030, obs->unk_034);
+    if (obs->unk_0C4.animTableIndex == 0) {
+        CombatSprite_SetPosition(&obs->unk_124, posX, posY + 8);
         func_ov003_02082730(&obs->unk_124, 0x7FFFEFFF);
-        func_ov003_02082b64(&obs->unk_124);
-        func_ov003_02082724(&obs->unk_0C4, temp_r4, temp_r6);
+        CombatSprite_Render(&obs->unk_124);
+        CombatSprite_SetPosition(&obs->unk_0C4, posX, posY);
         func_ov003_02082730(&obs->unk_0C4, 0x7FFFEFFF);
-        func_ov003_02082b64(&obs->unk_0C4);
+        CombatSprite_Render(&obs->unk_0C4);
     } else {
-        func_ov003_02082724(&obs->unk_0C4, temp_r4, temp_r6);
+        CombatSprite_SetPosition(&obs->unk_0C4, posX, posY);
         func_ov003_02082730(&obs->unk_0C4, 0x7FFFFFFF - obs->unk_030);
-        func_ov003_02082b64(&obs->unk_0C4);
+        CombatSprite_Render(&obs->unk_0C4);
         func_ov003_0208810c(&obs->unk_124, &obs->unk_004);
     }
     return 1;
@@ -2234,8 +2199,8 @@ s32 BtlObs_Bus_Render(TaskPool* pool, Task* task, void* args) {
 s32 BtlObs_Bus_Destroy(TaskPool* pool, Task* task, void* args) {
     BtlObs_Bus* obs = task->data;
 
-    func_ov003_02082cc4(&obs->unk_0C4);
-    func_ov003_02082cc4(&obs->unk_124);
+    CombatSprite_Release(&obs->unk_0C4);
+    CombatSprite_Release(&obs->unk_124);
     return 1;
 }
 
@@ -2261,26 +2226,26 @@ void* BtlObs_Bus_CreateTask(void* bossUG) {
 /// MARK: BtlObs_RG
 
 typedef struct BtlObs_RG {
-    /* 0x000 */ char unk_000[0x28];
-    /* 0x028 */ s32  unk_028;
-    /* 0x02C */ u32  unk_02C;
-    /* 0x030 */ u32  unk_030;
-    /* 0x034 */ char unk_34[0x38 - 0x34];
-    /* 0x038 */ s32  unk_038;
-    /* 0x03C */ char unk_03C[0x40 - 0x3C];
-    /* 0x040 */ s32  unk_040;
-    /* 0x044 */ s32  unk_044;
-    /* 0x048 */ char unk_048[0x54 - 0x48];
-    /* 0x054 */ s32  unk_054;
-    /* 0x058 */ char unk_058[0x84 - 0x58];
-    /* 0x084 */ s32  unk_084;
-    /* 0x088 */ char unk_088[0x18C - 0x88];
-    /* 0x18C */ u16  unk_18C;
-    /* 0x18E */ char unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ u16  unk_1C0;
-    /* 0x1C2 */ u16  unk_1C2;
-    /* 0x1C4 */ char unk_1C4[0x284 - 0x1C4];
-    /* 0x284 */ Quad unk_284;
+    /* 0x000 */ char         unk_000[0x28];
+    /* 0x028 */ s32          unk_028;
+    /* 0x02C */ u32          unk_02C;
+    /* 0x030 */ u32          unk_030;
+    /* 0x034 */ char         unk_34[0x38 - 0x34];
+    /* 0x038 */ s32          unk_038;
+    /* 0x03C */ char         unk_03C[0x40 - 0x3C];
+    /* 0x040 */ s32          unk_040;
+    /* 0x044 */ s32          unk_044;
+    /* 0x048 */ char         unk_048[0x54 - 0x48];
+    /* 0x054 */ s32          unk_054;
+    /* 0x058 */ char         unk_058[0x84 - 0x58];
+    /* 0x084 */ CombatSprite unk_084;
+    /* 0x0E4 */ char         unk_0E4[0x18C - 0xE4];
+    /* 0x18C */ u16          unk_18C;
+    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
+    /* 0x1C0 */ u16          unk_1C0;
+    /* 0x1C2 */ u16          unk_1C2;
+    /* 0x1C4 */ char         unk_1C4[0x284 - 0x1C4];
+    /* 0x284 */ Quad         unk_284;
     /* 0x28C */ void (*unk_28C)(struct BtlObs_RG*); // function pointer for boss sub-state
     /* 0x290 */ u16 unk_290;
     /* 0x292 */ s16 unk_292;
@@ -2336,7 +2301,7 @@ static void BtlObs_RG_StateFall(BtlObs_RG* obs) {
 
     if (obs->unk_292 == 0) {
         if (obs->unk_1C2 == 0) {
-            func_ov003_020824a0(&obs->unk_084, 1, 0);
+            CombatSprite_SetAnimFromTable(&obs->unk_084, 1, 0);
         }
 
         obs->unk_040 = (obs->unk_028 >= temp_r5->unk_028) ? 0x5000 : -0x5000;
@@ -2363,7 +2328,7 @@ s32 BtlObs_RG_Init(TaskPool* pool, Task* task, void* args) {
     obs->unk_1C2 = spawnArgs->unk_2;
 
     if (RNG_Next(2) != 0) {
-        func_ov003_02082750(&obs->unk_084, 1);
+        CombatSprite_SetFlip(&obs->unk_084, 1);
     }
 
     func_ov003_020c4988(obs);
@@ -2389,7 +2354,7 @@ s32 BtlObs_RG_Update(TaskPool* pool, Task* task, void* args) {
     }
 
     func_ov003_02083074(obs);
-    func_ov003_02082b0c(&obs->unk_084);
+    CombatSprite_Update(&obs->unk_084);
     return obs->unk_294;
 }
 
@@ -2406,7 +2371,7 @@ s32 BtlObs_RG_Render(TaskPool* pool, Task* task, void* args) {
 s32 BtlObs_RG_Destroy(TaskPool* pool, Task* task, void* args) {
     BtlObs_RG* obs = task->data;
 
-    func_ov003_02082cc4(&obs->unk_084);
+    CombatSprite_Release(&obs->unk_084);
     func_ov003_020c4a34(obs);
     if (data_ov003_020e71b8->unk3D8A0 == obs) {
         data_ov003_020e71b8->unk3D8A0 = NULL;

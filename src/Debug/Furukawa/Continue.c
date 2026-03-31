@@ -20,12 +20,6 @@
 
 extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);
-extern void func_ov003_020825b8(s32, void*, void*);
-extern void func_ov003_02082724(void*, s32, s16);
-extern void func_ov003_02082b0c(void*);
-extern void func_ov003_02082b64(void*);
-extern void func_ov003_02082cc4(s32);
-extern void func_ov003_02082d04(void*);
 extern void func_ov003_0208ec74(void);
 extern void func_ov027_020e860c(void);
 extern void func_ov030_020ae92c(void*, s32);
@@ -141,12 +135,12 @@ void func_ov025_020e76b4(ContinueObject* arg0) {
     PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], var_r4_2, 0, 0, 7);
 }
 
-void func_ov025_020e785c(ContinueUnkStruct* arg0, s16 arg1, s32 arg2, s16 arg3, s16 arg4) {
+void func_ov025_020e785c(ContinueUnkStruct* arg0, s16 arg1, s32 arg2, s16 posX, s16 posY) {
     arg0->unk_60 = arg1;
-    arg0->unk_62 = arg3;
-    arg0->unk_64 = arg4;
-    func_ov003_02082a90(0, arg0, &data_ov025_020e8308, 7, 9, 8, 10, arg2);
-    func_ov003_02082724(arg0, arg3, arg4);
+    arg0->unk_62 = posX;
+    arg0->unk_64 = posY;
+    CombatSprite_LoadDirect(0, &arg0->sprite, &data_ov025_020e8308, 7, 9, 8, 10, arg2);
+    CombatSprite_SetPosition(&arg0->sprite, posX, posY);
 }
 
 // Nonmatching: Unreachable branch?
@@ -160,19 +154,19 @@ static void func_ov025_020e78c8(ContinueObject* contObj, u32 arg1) {
         }
         switch (contObj->unk_120D0) {
             case 0:
-                func_ov003_02082724(&contObj->unk_11FB0, 0x80, 0x56);
+                CombatSprite_SetPosition(&contObj->unk_11FB0, 0x80, 0x56);
                 break;
             case 1:
-                func_ov003_02082724(&contObj->unk_11FB0, 0x80, 0x6B);
+                CombatSprite_SetPosition(&contObj->unk_11FB0, 0x80, 0x6B);
                 break;
             case 2:
-                func_ov003_02082724(&contObj->unk_11FB0, 0x80, 0x80);
+                CombatSprite_SetPosition(&contObj->unk_11FB0, 0x80, 0x80);
                 break;
             case 3:
-                func_ov003_02082724(&contObj->unk_11FB0, 0x80, 0x95);
+                CombatSprite_SetPosition(&contObj->unk_11FB0, 0x80, 0x95);
                 break;
         }
-        func_ov003_02082d04(&contObj->unk_11FB0);
+        CombatSprite_Restart(&contObj->unk_11FB0);
     }
 }
 
@@ -230,49 +224,49 @@ void func_ov025_020e7aac(ContinueObject* contObj) {
     } else {
         func_ov025_020e785c(&contObj->unk_11E10[2], 2, 4, 0x80, 0x80);
     }
-    func_ov003_02082a90(0, &contObj->unk_11FB0, &data_ov025_020e8308, 7, 9, 8, 10, 0);
-    func_ov003_020825b8(&contObj->unk_11FB0, 0, 1);
+    CombatSprite_LoadDirect(0, &contObj->unk_11FB0, &data_ov025_020e8308, 7, 9, 8, 10, 0);
+    CombatSprite_SetAnim(&contObj->unk_11FB0, 0, 1);
     func_ov025_020e78c8(contObj, 0xFFFF);
-    func_ov003_02082a90(0, &contObj->unk_12010, &data_ov025_020e8308, 7, 9, 8, 10, 6);
-    func_ov003_02082a90(0, &contObj->unk_12070, &data_ov025_020e8308, 7, 9, 8, 10, 7);
+    CombatSprite_LoadDirect(0, &contObj->unk_12010, &data_ov025_020e8308, 7, 9, 8, 10, 6);
+    CombatSprite_LoadDirect(0, &contObj->unk_12070, &data_ov025_020e8308, 7, 9, 8, 10, 7);
     contObj->unk_120D4 = 0x148000;
     contObj->unk_120D8 = -0x48000;
 }
 
 void func_ov025_020e7c40(ContinueObject* contObj) {
     if (contObj->unk_120D0 != 0xFFFF) {
-        func_ov003_02082b0c(&contObj->unk_11FB0);
+        CombatSprite_Update(&contObj->unk_11FB0);
     }
-    func_ov003_02082b0c(&contObj->unk_11E10[0]);
-    func_ov003_02082b0c(&contObj->unk_11E10[1]);
-    func_ov003_02082b0c(&contObj->unk_11E10[2]);
-    func_ov003_02082b0c(&contObj->unk_11E10[3]);
-    func_ov003_02082b0c(&contObj->unk_12010);
-    func_ov003_02082b0c(&contObj->unk_12070);
+    CombatSprite_Update(&contObj->unk_11E10[0].sprite);
+    CombatSprite_Update(&contObj->unk_11E10[1].sprite);
+    CombatSprite_Update(&contObj->unk_11E10[2].sprite);
+    CombatSprite_Update(&contObj->unk_11E10[3].sprite);
+    CombatSprite_Update(&contObj->unk_12010);
+    CombatSprite_Update(&contObj->unk_12070);
 }
 
 void func_ov025_020e7cb8(ContinueObject* contObj) {
     if (contObj->unk_120D0 != 0xFFFF) {
-        func_ov003_02082b64(&contObj->unk_11FB0);
+        CombatSprite_Render(&contObj->unk_11FB0);
     }
-    func_ov003_02082b64(&contObj->unk_11E10[0]);
-    func_ov003_02082b64(&contObj->unk_11E10[1]);
-    func_ov003_02082b64(&contObj->unk_11E10[2]);
-    func_ov003_02082b64(&contObj->unk_11E10[3]);
-    func_ov003_02082724(&contObj->unk_12010, ((contObj->unk_120D4 * 16) >> 0x10), 0x60);
-    func_ov003_02082724(&contObj->unk_12070, ((contObj->unk_120D8 * 16) >> 0x10), 0x60);
-    func_ov003_02082b64(&contObj->unk_12010);
-    func_ov003_02082b64(&contObj->unk_12070);
+    CombatSprite_Render(&contObj->unk_11E10[0].sprite);
+    CombatSprite_Render(&contObj->unk_11E10[1].sprite);
+    CombatSprite_Render(&contObj->unk_11E10[2].sprite);
+    CombatSprite_Render(&contObj->unk_11E10[3].sprite);
+    CombatSprite_SetPosition(&contObj->unk_12010, contObj->unk_120D4, 0x60);
+    CombatSprite_SetPosition(&contObj->unk_12070, contObj->unk_120D8, 0x60);
+    CombatSprite_Render(&contObj->unk_12010);
+    CombatSprite_Render(&contObj->unk_12070);
 }
 
 void func_ov025_020e7d70(ContinueObject* contObj) {
-    func_ov003_02082cc4(&contObj->unk_11FB0);
-    func_ov003_02082cc4(&contObj->unk_11E10[0]);
-    func_ov003_02082cc4(&contObj->unk_11E10[1]);
-    func_ov003_02082cc4(&contObj->unk_11E10[2]);
-    func_ov003_02082cc4(&contObj->unk_11E10[3]);
-    func_ov003_02082cc4(&contObj->unk_12010);
-    func_ov003_02082cc4(&contObj->unk_12070);
+    CombatSprite_Release(&contObj->unk_11FB0);
+    CombatSprite_Release(&contObj->unk_11E10[0].sprite);
+    CombatSprite_Release(&contObj->unk_11E10[1].sprite);
+    CombatSprite_Release(&contObj->unk_11E10[2].sprite);
+    CombatSprite_Release(&contObj->unk_11E10[3].sprite);
+    CombatSprite_Release(&contObj->unk_12010);
+    CombatSprite_Release(&contObj->unk_12070);
 }
 
 void func_ov025_020e7dd0(ContinueObject* contObj) {

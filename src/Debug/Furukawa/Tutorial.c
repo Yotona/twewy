@@ -1,3 +1,4 @@
+#include "Debug/Furukawa/Tutorial.h"
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
@@ -15,19 +16,11 @@
 #include <NitroSDK/gx.h>
 #include <types.h>
 
-#include "Debug/Furukawa/Tutorial.h"
-
 // Forward declarations of external functions
 extern void HBlank_Init(void);
 extern void GX_Init(void);
 extern void MI_CpuFill(s32, void*, s32);
 extern void SndMgr_StartPlayingSE(s32);
-extern void func_ov003_02082724(void*, s32, s32);
-extern void func_ov003_02082940(u16*, s32, BinIdentifier*);
-extern void func_ov003_02082998(void*, u16*);
-extern void func_ov003_02082b0c(void*);
-extern void func_ov003_02082b64(void*);
-extern void func_ov003_02082cc4(void*);
 
 extern InputState InputStatus;
 extern void*      func_ov003_0208ec74;
@@ -147,29 +140,21 @@ static void Tutorial_UnregisterVBlank(void) {
     Interrupts_RegisterVBlankCallback(NULL, 1);
 }
 
-static void func_ov026_020e7728(void* state, s32 arg1) {
-    u16 sp0;
-    s16 sp18;
-    s16 sp1A;
-    s16 sp1C;
-    s16 sp20;
-    s16 sp26;
-    s16 sp28;
-    s16 sp2A;
-    s32 sp2C;
+static void func_ov026_020e7728(void* state, s16 arg1) {
+    SpriteAnimationEx anim;
 
-    func_ov003_02082940(&sp0, 0, &data_ov026_020e7fd8);
-    sp18 = 2;
-    sp1A = 1;
-    sp0 &= ~0xC00;
-    sp1C = 3;
-    sp26 = 4;
-    sp28 = 5;
-    sp20 = 6;
-    sp2A = arg1 + 1;
-    sp2C = 0;
-    func_ov003_02082998(state, &sp0);
-    func_ov003_02082724(state, 0x80, 0x60);
+    CombatSprite_InitAnim(&anim.anim, 0, &data_ov026_020e7fd8);
+    anim.anim.unk_18     = 2;
+    anim.anim.packIndex  = 1;
+    anim.anim.bits_10_11 = 0;
+    anim.anim.unk_1C     = 3;
+    anim.anim.unk_26     = 4;
+    anim.anim.unk_28     = 5;
+    anim.anim.unk_20     = 6;
+    anim.anim.unk_2A     = 0;
+    anim.unk_2C          = arg1 + 1;
+    CombatSprite_Load(state, &anim);
+    CombatSprite_SetPosition(state, 0x80, 0x60);
 }
 
 static s32 func_ov026_020e77bc(void) {
@@ -240,19 +225,19 @@ static void Tutorial_LoadResources(TutorialObject* object) {
 
 static void func_ov026_020e7ba0(TutorialObject* object) {
     Tutorial_LoadResources(object);
-    func_ov026_020e7728((u8*)object + 0x11E14, 0);
+    func_ov026_020e7728(&object->sprite, 0);
 }
 
 static void func_ov026_020e7bc0(TutorialObject* object) {
-    func_ov003_02082b0c((u8*)object + 0x11E14);
+    CombatSprite_Update(&object->sprite);
 }
 
 static void func_ov026_020e7bd4(TutorialObject* object) {
-    func_ov003_02082b64((u8*)object + 0x11E14);
+    CombatSprite_Render(&object->sprite);
 }
 
 static void func_ov026_020e7be8(TutorialObject* object) {
-    func_ov003_02082cc4((u8*)object + 0x11E14);
+    CombatSprite_Release(&object->sprite);
 }
 
 static void func_ov026_020e7bfc(TutorialObject* object) {
