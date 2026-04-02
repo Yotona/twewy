@@ -4,9 +4,76 @@
     .data       start:0x02129160 end:0x021292c0 kind:data align:32
     .bss        start:0x021292c0 end:0x021292e0 kind:bss align:32
 
-src/Combat/Noise/Boss01.c:
-    .text       start:0x021256c0 end:0x02128f70
-    .rodata     start:0x02128f70 end:0x02129158
+src/Combat/Noise/Boss01/Boss01_Anim.c:
+    .text       start:0x021256c0 end:0x021257a0
+    .rodata     start:0x02128f70 end:0x02128fa0
     .ctor       start:0x02129158 end:0x0212915c
-    .data       start:0x02129160 end:0x021292c0
+    .data       start:0x02129160 end:0x021291ac
+
+src/Combat/Noise/Boss01/Boss01_Eff.c:
+    .text       start:0x021257a0 end:0x02125b48
+    .rodata     start:0x02128fa0 end:0x02128fbc
+    .data       start:0x021291ac end:0x021291c8
+
+src/Combat/Noise/Boss01/Boss01_RG.c:
+    .text       start:0x02125b48 end:0x021262d8
+    .rodata     start:0x02128fbc end:0x02128fd8
+    .data       start:0x021291c8 end:0x021291d8
     .bss        start:0x021292c0 end:0x021292e0
+
+src/Combat/Noise/Boss01/Boss01_UG.c:
+    .text       start:0x021262d8 end:0x021273bc
+    .rodata     start:0x02128fd8 end:0x02128ff4
+    .data       start:0x021291d8 end:0x021291ec
+
+src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c:
+    complete
+    .text       start:0x021273bc end:0x0212784c
+    .rodata     start:0x02128ff4 end:0x02129020
+    .data       start:0x021291ec end:0x02129204
+
+src/Combat/Noise/Boss01/Boss01s_FlyUG.c:
+    complete
+    .text       start:0x0212784c end:0x02127ce8
+    .rodata     start:0x02129020 end:0x02129054
+    .data       start:0x02129204 end:0x02129218
+
+src/Combat/Noise/Boss01/Boss01s_LandRG.c:
+    complete
+    .text       start:0x02127ce8 end:0x02127eb8
+    .rodata     start:0x02129054 end:0x02129078
+    .data       start:0x02129218 end:0x0212922c
+
+src/Combat/Noise/Boss01/Boss01s_LandUG.c:
+    complete
+    .text       start:0x02127eb8 end:0x02128088
+    .rodata     start:0x02129078 end:0x0212909c
+    .data       start:0x0212922c end:0x02129240
+
+src/Combat/Noise/Boss01/Boss01_BtlEff_Obs.c:
+    complete
+    .rodata     start:0x0212909c end:0x021290a4
+    .data       start:0x02129240 end:0x0212925c
+
+src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c:
+    complete
+    .text       start:0x02128088 end:0x02128374
+    .rodata     start:0x021290a4 end:0x021290c8
+    .data       start:0x0212925c end:0x02129270
+
+src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c:
+    .text       start:0x02128374 end:0x02128710
+    .rodata     start:0x021290c8 end:0x021290fc
+    .data       start:0x02129270 end:0x02129284
+
+src/Combat/Noise/Boss01/Boss01_BtlObs_Bus.c:
+    complete
+    .text       start:0x02128710 end:0x02128be0
+    .rodata     start:0x021290fc end:0x0212913c
+    .data       start:0x02129284 end:0x021292b0
+
+src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c:
+    complete
+    .text       start:0x02128be0 end:0x02128f70
+    .rodata     start:0x0212913c end:0x02129158
+    .data       start:0x021292b0 end:0x021292c0

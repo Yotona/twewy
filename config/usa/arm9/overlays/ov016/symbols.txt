@@ -1,10 +1,21 @@
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Anim.c
+//////////////////////////////////////////////////////////////////////
 func_ov016_021256c0 kind:function(arm,size=0xe0) addr:0x021256c0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Eff.c
+//////////////////////////////////////////////////////////////////////
 Boss01_Eff_Init kind:function(arm,size=0xcc) addr:0x021257a0
 Boss01_Eff_Update kind:function(arm,size=0x134) addr:0x0212586c
 Boss01_Eff_Render kind:function(arm,size=0x58) addr:0x021259a0
 Boss01_Eff_Destroy kind:function(arm,size=0x14) addr:0x021259f8
 Boss01_Eff_RunTask kind:function(arm,size=0x48) addr:0x02125a0c
 Boss01_Eff_CreateTask kind:function(arm,size=0xf4) addr:0x02125a54
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_RG.c
+//////////////////////////////////////////////////////////////////////
 Boss01_RG_IsInBounds kind:function(arm,size=0x70) addr:0x02125b48
 func_ov016_02125bb8 kind:function(arm,size=0x18) addr:0x02125bb8
 Boss01_RG_SetState kind:function(arm,size=0x28) addr:0x02125bd0
@@ -17,6 +28,10 @@ Boss01_RG_Update kind:function(arm,size=0x74) addr:0x02126174
 Boss01_RG_Render kind:function(arm,size=0x88) addr:0x021261e8
 Boss01_RG_Destroy kind:function(arm,size=0x20) addr:0x02126270
 Boss01_RG_RunTask kind:function(arm,size=0x48) addr:0x02126290
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov016_021262d8 kind:function(arm,size=0x190) addr:0x021262d8
 func_ov016_02126468 kind:function(arm,size=0x70) addr:0x02126468
 func_ov016_021264d8 kind:function(arm,size=0x3c) addr:0x021264d8
@@ -37,13 +52,21 @@ Boss01_UG_Update kind:function(arm,size=0xc0) addr:0x021271c0
 Boss01_UG_Render kind:function(arm,size=0xc0) addr:0x02127280
 Boss01_UG_Destroy kind:function(arm,size=0x34) addr:0x02127340
 Boss01_UG_RunTask kind:function(arm,size=0x48) addr:0x02127374
-Boss02s_FlyRG_Curve_Randomize kind:function(arm,size=0x160) addr:0x021273bc
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c
+//////////////////////////////////////////////////////////////////////
+Boss01s_FlyRG_Curve_Randomize kind:function(arm,size=0x160) addr:0x021273bc
 Boss01s_FlyRG_Curve_Init kind:function(arm,size=0xe8) addr:0x0212751c
 Boss01s_FlyRG_Curve_Update kind:function(arm,size=0x11c) addr:0x02127604
 Boss01s_FlyRG_Curve_Render kind:function(arm,size=0x78) addr:0x02127720
 Boss01s_FlyRG_Curve_Destroy kind:function(arm,size=0x14) addr:0x02127798
 Boss01s_FlyRG_Curve_RunTask kind:function(arm,size=0x48) addr:0x021277ac
 Boss01s_FlyRG_Curve_CreateTask kind:function(arm,size=0x58) addr:0x021277f4
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyUG.c
+//////////////////////////////////////////////////////////////////////
 Boss01s_FlyUG_GetSpawnPos kind:function(arm,size=0xb4) addr:0x0212784c
 Boss01s_FlyUG_Init kind:function(arm,size=0x60) addr:0x02127900
 Boss01s_FlyUG_Update kind:function(arm,size=0x264) addr:0x02127960
@@ -51,18 +74,30 @@ Boss01s_FlyUG_Render kind:function(arm,size=0x78) addr:0x02127bc4
 Boss01s_FlyUG_Destroy kind:function(arm,size=0x14) addr:0x02127c3c
 Boss01s_FlyUG_RunTask kind:function(arm,size=0x48) addr:0x02127c50
 Boss01s_FlyUG_CreateTask kind:function(arm,size=0x50) addr:0x02127c98
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandRG.c
+//////////////////////////////////////////////////////////////////////
 Boss01s_LandRG_Init kind:function(arm,size=0x8c) addr:0x02127ce8
 Boss01s_LandRG_Update kind:function(arm,size=0x38) addr:0x02127d74
 Boss01s_LandRG_Render kind:function(arm,size=0x78) addr:0x02127dac
 Boss01s_LandRG_Destroy kind:function(arm,size=0x14) addr:0x02127e24
 Boss01s_LandRG_RunTask kind:function(arm,size=0x48) addr:0x02127e38
 Boss01s_LandRG_CreateTask kind:function(arm,size=0x38) addr:0x02127e80
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandUG.c
+//////////////////////////////////////////////////////////////////////
 Boss01s_LandUG_Init kind:function(arm,size=0x8c) addr:0x02127eb8
 Boss01s_LandUG_Update kind:function(arm,size=0x38) addr:0x02127f44
 Boss01s_LandUG_Render kind:function(arm,size=0x78) addr:0x02127f7c
 Boss01s_LandUG_Destroy kind:function(arm,size=0x14) addr:0x02127ff4
 Boss01s_LandUG_RunTask kind:function(arm,size=0x48) addr:0x02128008
 Boss01s_LandUG_CreateTask kind:function(arm,size=0x38) addr:0x02128050
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c
+//////////////////////////////////////////////////////////////////////
 BtlEff_Bomb_Init kind:function(arm,size=0xa4) addr:0x02128088
 BtlEff_Bomb_Update kind:function(arm,size=0xe0) addr:0x0212812c
 BtlEff_Bomb_Render kind:function(arm,size=0x94) addr:0x0212820c
@@ -70,12 +105,20 @@ BtlEff_Bomb_Destroy kind:function(arm,size=0x14) addr:0x021282a0
 BtlEff_Bomb_RunTask kind:function(arm,size=0x48) addr:0x021282b4
 BtlEff_Bomb_CreateTaskDefault kind:function(arm,size=0x24) addr:0x021282fc
 BtlEff_Bomb_CreateTask kind:function(arm,size=0x54) addr:0x02128320
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c
+//////////////////////////////////////////////////////////////////////
 BtlEff_Fall_Init kind:function(arm,size=0xe8) addr:0x02128374
 BtlEff_Fall_Update kind:function(arm,size=0x184) addr:0x0212845c
 BtlEff_Fall_Render kind:function(arm,size=0x78) addr:0x021285e0
 BtlEff_Fall_Destroy kind:function(arm,size=0x20) addr:0x02128658
 BtlEff_Fall_RunTask kind:function(arm,size=0x48) addr:0x02128678
 BtlEff_Fall_CreateTask kind:function(arm,size=0x50) addr:0x021286c0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_Bus.c
+//////////////////////////////////////////////////////////////////////
 BtlObs_Bus_SetState kind:function(arm,size=0x18) addr:0x02128710
 BtlObs_Bus_OnPhaseStart kind:function(arm,size=0x7c) addr:0x02128728
 BtlObs_Bus_StateIdle kind:function(arm,size=0x4) addr:0x021287a4
@@ -88,69 +131,177 @@ BtlObs_Bus_Render kind:function(arm,size=0x108) addr:0x02128a20
 BtlObs_Bus_Destroy kind:function(arm,size=0x20) addr:0x02128b28
 BtlObs_Bus_RunTask kind:function(arm,size=0x48) addr:0x02128b48
 BtlObs_Bus_CreateTask kind:function(arm,size=0x50) addr:0x02128b90
-BtlObs_RG_SetState kind:function(arm,size=0x18) addr:0x02128be0
-BtlObs_RG_StateIdle kind:function(arm,size=0x4) addr:0x02128bf8
-BtlObs_RG_StateHit kind:function(arm,size=0xac) addr:0x02128bfc
-BtlObs_RG_StateFall kind:function(arm,size=0xa0) addr:0x02128ca8
-BtlObs_RG_Init kind:function(arm,size=0xb0) addr:0x02128d48
-BtlObs_RG_Update kind:function(arm,size=0x78) addr:0x02128df8
-BtlObs_RG_Render kind:function(arm,size=0x2c) addr:0x02128e70
-BtlObs_RG_Destroy kind:function(arm,size=0x40) addr:0x02128e9c
-BtlObs_RG_RunTask kind:function(arm,size=0x48) addr:0x02128edc
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c
+//////////////////////////////////////////////////////////////////////
+BtlObs_RG_SetState kind:function(arm,size=0x18) addr:0x02128be0 local
+BtlObs_RG_StateIdle kind:function(arm,size=0x4) addr:0x02128bf8 local
+BtlObs_RG_StateHit kind:function(arm,size=0xac) addr:0x02128bfc local
+BtlObs_RG_StateFall kind:function(arm,size=0xa0) addr:0x02128ca8 local
+BtlObs_RG_Init kind:function(arm,size=0xb0) addr:0x02128d48 local
+BtlObs_RG_Update kind:function(arm,size=0x78) addr:0x02128df8 local
+BtlObs_RG_Render kind:function(arm,size=0x2c) addr:0x02128e70 local
+BtlObs_RG_Destroy kind:function(arm,size=0x40) addr:0x02128e9c local
+BtlObs_RG_RunTask kind:function(arm,size=0x48) addr:0x02128edc local
 BtlObs_RG_CreateTask kind:function(arm,size=0x4c) addr:0x02128f24
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Anim.c
+//////////////////////////////////////////////////////////////////////
 data_ov016_02128f70 kind:data(any) addr:0x02128f70
 data_ov016_02128f78 kind:data(any) addr:0x02128f78
 data_ov016_02128f88 kind:data(any) addr:0x02128f88
 data_ov016_02128f90 kind:data(any) addr:0x02128f90
 data_ov016_02128f98 kind:data(any) addr:0x02128f98
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Eff.c
+//////////////////////////////////////////////////////////////////////
 Tsk_Boss01_Eff kind:data(any) addr:0x02128fa0
-data_ov016_02128fac kind:data(any) addr:0x02128fac
+@1251 kind:data(any) addr:0x02128fac local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_RG.c
+//////////////////////////////////////////////////////////////////////
 Tsk_Boss01_RG kind:data(any) addr:0x02128fbc ambiguous
-data_ov016_02128fc8 kind:data(any) addr:0x02128fc8
+@1367 kind:data(any) addr:0x02128fc8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_UG.c
+//////////////////////////////////////////////////////////////////////
 Tsk_Boss01_UG kind:data(any) addr:0x02128fd8 ambiguous
-data_ov016_02128fe4 kind:data(any) addr:0x02128fe4
-Tsk_Boss01s_FlyRG_Curve kind:data(any) addr:0x02128ff4
-data_ov016_02129000 kind:data(any) addr:0x02129000
-data_ov016_02129010 kind:data(any) addr:0x02129010
-Tsk_Boss01s_FlyUG kind:data(any) addr:0x02129020
-data_ov016_0212902c kind:data(any) addr:0x0212902c
-data_ov016_0212903c kind:data(any) addr:0x0212903c
-data_ov016_02129054 kind:data(any) addr:0x02129054
-Tsk_Boss01s_LandRG kind:data(any) addr:0x0212905c
-data_ov016_02129068 kind:data(any) addr:0x02129068
-data_ov016_02129078 kind:data(any) addr:0x02129078
-Tsk_Boss01s_LandUG kind:data(any) addr:0x02129080
-data_ov016_0212908c kind:data(any) addr:0x0212908c
+@1519 kind:data(any) addr:0x02128fe4 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Boss01s_FlyRG_Curve kind:data(any) addr:0x02128ff4 local
+@1177 kind:data(any) addr:0x02129000 local
+data_ov016_02129010 kind:data(any) addr:0x02129010 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyUG.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Boss01s_FlyUG kind:data(any) addr:0x02129020 local
+@1186 kind:data(any) addr:0x0212902c local
+data_ov016_0212903c kind:data(any) addr:0x0212903c local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandRG.c
+//////////////////////////////////////////////////////////////////////
+data_ov016_02129054 kind:data(any) addr:0x02129054 local
+Tsk_Boss01s_LandRG kind:data(any) addr:0x0212905c local
+@1064 kind:data(any) addr:0x02129068 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandUG.c
+//////////////////////////////////////////////////////////////////////
+LandUG_Anim kind:data(any) addr:0x02129078 local
+Tsk_Boss01s_LandUG kind:data(any) addr:0x02129080 local
+@1065 kind:data(any) addr:0x0212908c local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c
+//////////////////////////////////////////////////////////////////////
 data_ov016_0212909c kind:data(any) addr:0x0212909c
-data_ov016_021290a4 kind:data(any) addr:0x021290a4
-Task_BtlEff_Bomb kind:data(any) addr:0x021290ac
-data_ov016_021290b8 kind:data(any) addr:0x021290b8
+data_ov016_021290a4 kind:data(any) addr:0x021290a4 local
+Task_BtlEff_Bomb kind:data(any) addr:0x021290ac local
+@1163 kind:data(any) addr:0x021290b8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c
+//////////////////////////////////////////////////////////////////////
 Task_BtlEff_Fall kind:data(any) addr:0x021290c8
-data_ov016_021290d4 kind:data(any) addr:0x021290d4
+@1089 kind:data(any) addr:0x021290d4 local
 data_ov016_021290e4 kind:data(any) addr:0x021290e4
-data_ov016_021290fc kind:data(any) addr:0x021290fc
-Tsk_BtlObs_Bus kind:data(any) addr:0x02129104
-data_ov016_02129110 kind:data(any) addr:0x02129110
-data_ov016_02129120 kind:data(any) addr:0x02129120
-Tsk_BtlObs_RG kind:data(any) addr:0x0212913c
-data_ov016_02129148 kind:data(any) addr:0x02129148
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_Bus.c
+//////////////////////////////////////////////////////////////////////
+Iden_BtlObs_Bus kind:data(any) addr:0x021290fc local
+Tsk_BtlObs_Bus kind:data(any) addr:0x02129104 local
+@1116 kind:data(any) addr:0x02129110 local
+data_ov016_02129120 kind:data(short[14]) addr:0x02129120 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c
+//////////////////////////////////////////////////////////////////////
+Tsk_BtlObs_RG kind:data(any) addr:0x0212913c local
+@1104 kind:data(any) addr:0x02129148 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Anim.c
+//////////////////////////////////////////////////////////////////////
 data_ov016_02129160 kind:data(any) addr:0x02129160 ambiguous
 data_ov016_02129164 kind:data(any) addr:0x02129164
 data_ov016_0212917c kind:data(any) addr:0x0212917c
 data_ov016_02129194 kind:data(any) addr:0x02129194
-data_ov016_021291ac kind:data(any) addr:0x021291ac
-data_ov016_021291b8 kind:data(any) addr:0x021291b8
-data_ov016_021291c8 kind:data(any) addr:0x021291c8
-data_ov016_021291d8 kind:data(any) addr:0x021291d8
-data_ov016_021291dc kind:data(any) addr:0x021291dc
-data_ov016_021291ec kind:data(any) addr:0x021291ec
-data_ov016_02129204 kind:data(any) addr:0x02129204
-data_ov016_02129218 kind:data(any) addr:0x02129218
-data_ov016_0212922c kind:data(any) addr:0x0212922c
-data_ov016_02129240 kind:data(any) addr:0x02129240
-data_ov016_0212925c kind:data(any) addr:0x0212925c
-data_ov016_02129270 kind:data(any) addr:0x02129270
-data_ov016_02129284 kind:data(any) addr:0x02129284
-data_ov016_02129294 kind:data(any) addr:0x02129294
-data_ov016_021292b0 kind:data(any) addr:0x021292b0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_Eff.c
+//////////////////////////////////////////////////////////////////////
+data_ov016_021291ac kind:data(any) addr:0x021291ac local
+@1196 kind:data(any) addr:0x021291b8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_RG.c
+//////////////////////////////////////////////////////////////////////
+@1196 kind:data(any) addr:0x021291c8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_UG.c
+//////////////////////////////////////////////////////////////////////
+data_ov016_021291d8 kind:data(any) addr:0x021291d8 local
+@1200 kind:data(any) addr:0x021291dc
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c
+//////////////////////////////////////////////////////////////////////
+@1102 kind:data(any) addr:0x021291ec local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_FlyUG.c
+//////////////////////////////////////////////////////////////////////
+@1100 kind:data(any) addr:0x02129204 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandRG.c
+//////////////////////////////////////////////////////////////////////
+@1019 kind:data(any) addr:0x02129218 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01s_LandUG.c
+//////////////////////////////////////////////////////////////////////
+@1019 kind:data(any) addr:0x0212922c local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Obs.c
+//////////////////////////////////////////////////////////////////////
+@147 kind:data(any) addr:0x02129240 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c
+//////////////////////////////////////////////////////////////////////
+@1106 kind:data(any) addr:0x0212925c local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c
+//////////////////////////////////////////////////////////////////////
+@1019 kind:data(any) addr:0x02129270 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_Bus.c
+//////////////////////////////////////////////////////////////////////
+@1020 kind:data(any) addr:0x02129284 local
+@1019 kind:data(any) addr:0x02129294 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c
+//////////////////////////////////////////////////////////////////////
+@1020 kind:data(byte[14]) addr:0x021292b0 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss01/Boss01_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov016_021292c0 kind:bss addr:0x021292c0
