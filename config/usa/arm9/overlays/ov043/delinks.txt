@@ -1,13 +1,13 @@
+    categories: UI, Debug Menu
     .text       start:0x020824a0 end:0x020c7870 kind:code align:32
     .rodata     start:0x020c7870 end:0x020cb56c kind:rodata align:4
-    .ctor       start:0x020cb56c end:0x020cb570 kind:rodata align:4
+    .ctor       start:0x020cb56c end:0x020cb56c kind:rodata align:4
     .data       start:0x020cb580 end:0x020cd280 kind:data align:32
     .bss        start:0x020cd280 end:0x020cd2a0 kind:bss align:32
 
 src/Debug/Takami/TakTest.c:
     .text       start:0x020824a0 end:0x02082fd0
     .rodata     start:0x020c7870 end:0x020c7908
-    .ctor       start:0x020cb56c end:0x020cb570
     .data       start:0x020cb580 end:0x020cb5f4
 
 src/Debug/Takami/MenuTop.c:

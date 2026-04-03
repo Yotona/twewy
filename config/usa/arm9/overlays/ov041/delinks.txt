@@ -1,11 +1,11 @@
+    categories: Debug Menu
     .text       start:0x020824a0 end:0x0208300c kind:code align:32
     .rodata     start:0x0208300c end:0x02083018 kind:rodata align:4
-    .ctor       start:0x02083018 end:0x0208301c kind:rodata align:4
+    .ctor       start:0x02083018 end:0x02083018 kind:rodata align:4
     .data       start:0x02083020 end:0x02083060 kind:data align:32
     .bss        start:0x02083060 end:0x02083060 kind:bss align:32
 
 src/Debug/Sugata/STSample.c:
     .text       start:0x020824a0 end:0x0208300c
     .rodata     start:0x0208300c end:0x02083018
-    .ctor       start:0x02083018 end:0x0208301c
     .data       start:0x02083020 end:0x02083060

@@ -1,5 +1,6 @@
+    categories: Combat
     .text       start:0x020e7360 end:0x020f0068 kind:code align:32
     .rodata     start:0x020f0068 end:0x020f06c0 kind:rodata align:4
-    .ctor       start:0x020f06c0 end:0x020f06c4 kind:rodata align:4
+    .ctor       start:0x020f06c0 end:0x020f06c0 kind:rodata align:4
     .data       start:0x020f06e0 end:0x020f08e0 kind:data align:32
     .bss        start:0x020f08e0 end:0x020f08e0 kind:bss align:32

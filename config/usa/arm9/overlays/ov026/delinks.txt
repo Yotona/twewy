@@ -1,11 +1,11 @@
+    categories: UI, Debug Menu
     .text       start:0x020e7360 end:0x020e7fd8 kind:code align:32
     .rodata     start:0x020e7fd8 end:0x020e804c kind:rodata align:4
-    .ctor       start:0x020e804c end:0x020e8050 kind:rodata align:4
+    .ctor       start:0x020e804c end:0x020e804c kind:rodata align:4
     .data       start:0x020e8060 end:0x020e80a0 kind:data align:32
     .bss        start:0x020e80a0 end:0x020e80a0 kind:bss align:32
 
 src/Debug/Furukawa/Tutorial.c:
     .text       start:0x020e7360 end:0x020e7fd8
     .rodata     start:0x020e7fd8 end:0x020e804c
-    .ctor       start:0x020e804c end:0x020e8050
     .data       start:0x020e8060 end:0x020e80a0

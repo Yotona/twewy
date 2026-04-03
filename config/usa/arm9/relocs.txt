@@ -115,9 +115,9 @@ from:0x020012e8 kind:arm_call to:0x0200713c module:main
 from:0x02001300 kind:arm_call to:0x0200713c module:main
 from:0x02001308 kind:load to:0x020636cc module:main
 from:0x0200130c kind:load to:0x0206a9b0 module:main
-from:0x02001310 kind:overlay_id to:37 module:none
+from:0x02001310 kind:overlay_id to:37
 from:0x02001314 kind:load to:0x0208370c module:overlay(37)
-from:0x02001318 kind:overlay_id to:46 module:none
+from:0x02001318 kind:overlay_id to:46
 from:0x0200131c kind:load to:0x02083630 module:overlay(46)
 from:0x02001324 kind:arm_call to:0x0203a750 module:main
 from:0x02001334 kind:arm_call to:0x020015a8 module:main
@@ -513,11 +513,13 @@ from:0x02006604 kind:load to:0x02066a24 module:main
 from:0x02006614 kind:load to:0x02006618 module:main
 from:0x0200664c kind:arm_call to:0x0203f304 module:main
 from:0x0200667c kind:arm_call to:0x0203f304 module:main
+from:0x02006690 kind:link_time_const(__OVERLAY_COUNT)
 from:0x02006694 kind:load to:0x02066a24 module:main
 from:0x02006698 kind:load to:0x02066a24 add:0x8 module:main
 from:0x020066d4 kind:arm_call to:0x0203f304 module:main
 from:0x020066e0 kind:arm_call to:0x0203f2b0 module:main
 from:0x020066f4 kind:load to:0x02066a24 add:0x8 module:main
+from:0x020066f8 kind:link_time_const(__OVERLAY_COUNT)
 from:0x0200673c kind:load to:0x02066a24 module:main
 from:0x0200677c kind:arm_call to:0x020566e4 module:main
 from:0x020067a0 kind:arm_call to:0x020067d4 module:main
@@ -4041,7 +4043,7 @@ from:0x0202589c kind:load to:0x02071cf0 module:main
 from:0x020258b8 kind:load to:0x02071cf0 module:main
 from:0x020259e0 kind:load to:0x02071cf0 add:0x2000 module:main
 from:0x02025a24 kind:load to:0x02071cf0 add:0x2494 module:main
-from:0x02025a28 kind:load to:0x02071cf0 add:0x249C module:main
+from:0x02025a28 kind:load to:0x02071cf0 add:0x249c module:main
 from:0x02025a6c kind:arm_call to:0x02023208 module:main
 from:0x02025a90 kind:arm_call to:0x020259e4 module:main
 from:0x02025abc kind:load to:0x0205c5be module:main
@@ -8409,7 +8411,7 @@ from:0x020586f8 kind:arm_call to:0x020581a8 module:main
 from:0x02058710 kind:load to:0x020586c8 module:main
 from:0x0205871c kind:arm_call to:0x020586c8 module:main
 from:0x02058730 kind:load to:0x02066904 module:main
-from:0x0205875c kind:load to:0x02063680 module:main
+from:0x0205875c kind:link_time_const(ARM9_CTOR_START)
 from:0x020587a0 kind:load to:0x02082494 module:main
 from:0x020587ec kind:arm_call to:0x02058a0c module:main
 from:0x020587f4 kind:arm_call to:0x020585d8 module:main

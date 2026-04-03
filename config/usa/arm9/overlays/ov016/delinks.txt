@@ -1,13 +1,13 @@
+    categories: Combat
     .text       start:0x021256c0 end:0x02128f70 kind:code align:32
     .rodata     start:0x02128f70 end:0x02129158 kind:rodata align:4
-    .ctor       start:0x02129158 end:0x0212915c kind:rodata align:4
+    .ctor       start:0x02129158 end:0x02129158 kind:rodata align:4
     .data       start:0x02129160 end:0x021292c0 kind:data align:32
     .bss        start:0x021292c0 end:0x021292e0 kind:bss align:32
 
 src/Combat/Noise/Boss01/Boss01_Anim.c:
     .text       start:0x021256c0 end:0x021257a0
     .rodata     start:0x02128f70 end:0x02128fa0
-    .ctor       start:0x02129158 end:0x0212915c
     .data       start:0x02129160 end:0x021291ac
 
 src/Combat/Noise/Boss01/Boss01_Eff.c:

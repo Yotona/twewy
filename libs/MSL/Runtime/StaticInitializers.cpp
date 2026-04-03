@@ -1,5 +1,8 @@
 #include <MSL/Runtime/MWException.h>
 
+// TODO: Hack around linker generated symbol reference
+#define __sinit__ ARM9_CTOR_START
+
 typedef void (*StaticInitializer)(void);
 
 extern StaticInitializer __sinit__[];

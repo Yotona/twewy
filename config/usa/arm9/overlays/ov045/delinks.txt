@@ -1,13 +1,13 @@
+    categories: UI, Debug Menu
     .text       start:0x020824a0 end:0x0209869c kind:code align:32
     .rodata     start:0x0209869c end:0x020997ac kind:rodata align:4
-    .ctor       start:0x020997ac end:0x020997b0 kind:rodata align:4
+    .ctor       start:0x020997ac end:0x020997ac kind:rodata align:4
     .data       start:0x020997c0 end:0x0209a200 kind:data align:32
     .bss        start:0x0209a200 end:0x0209a240 kind:bss align:32
 
 src/Debug/Takami/Tusin.c:
     .text       start:0x020824a0 end:0x02087198
     .rodata     start:0x0209869c end:0x0209898c
-    .ctor       start:0x020997ac end:0x020997b0
     .data       start:0x020997c0 end:0x02099a2c
     .bss        start:0x0209a200 end:0x0209a21c
 

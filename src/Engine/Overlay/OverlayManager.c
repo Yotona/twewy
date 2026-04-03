@@ -14,34 +14,28 @@ void OvlMgr_UnloadAllOverlays(void) {
     OvlMgr_UnloadOverlay(-1);
 }
 
-// Nonmatching: Unresolvable overlay ID constant
-// Scratch: D0ztp
 void OvlMgr_UnloadOverlay(s32 slot) {
-    u32 currentOverlayId;
-
     if (slot < 0) {
+        u32 maxOverlay = (u32)__OVERLAY_COUNT;
+
         for (u32 i = 0; i < 6; i++) {
-            currentOverlayId = SysControl.loadedOverlays[i];
-            if (currentOverlayId < 48) {
-                FS_UnloadOverlay(0, currentOverlayId);
+            if (SysControl.loadedOverlays[i] < maxOverlay) {
+                FS_UnloadOverlay(0, SysControl.loadedOverlays[i]);
             }
             SysControl.loadedOverlays[i] = OVERLAY_ID_UNLOADED;
         }
     } else {
-        currentOverlayId = SysControl.loadedOverlays[slot];
-        if (currentOverlayId < OVERLAY_ID_UNLOADED) {
-            FS_UnloadOverlay(0, currentOverlayId);
+        if (SysControl.loadedOverlays[slot] < OVERLAY_ID_UNLOADED) {
+            FS_UnloadOverlay(0, SysControl.loadedOverlays[slot]);
         }
         SysControl.loadedOverlays[slot] = OVERLAY_ID_NONE;
     }
 }
 
-// Nonmatching: Unresolvable overlay ID constant
-// Scratch: vak4k
 u32 OvlMgr_LoadOverlay(s32 slot, u32 newOverlay) {
     u32 currOverlay = SysControl.loadedOverlays[slot];
-    if ((newOverlay < 48) && (newOverlay != currOverlay)) {
-        if (currOverlay < 48) {
+    if ((newOverlay < (u32)__OVERLAY_COUNT) && (newOverlay != currOverlay)) {
+        if (currOverlay < (u32)__OVERLAY_COUNT) {
             FS_UnloadOverlay(0, currOverlay);
         }
         FS_LoadOverlay(0, newOverlay);

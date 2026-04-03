@@ -3,6 +3,8 @@
 
 #include <types.h>
 
+extern void __OVERLAY_COUNT(void);
+
 #define OVERLAY_ID_NONE     (-0x7FFFFFFF)
 #define OVERLAY_ID_UNLOADED 0x80000000
 extern u32 OVERLAY_0_ID;
