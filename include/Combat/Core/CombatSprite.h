@@ -47,13 +47,13 @@ typedef struct {
 
 s32 CombatSprite_SetAnimFromTable(CombatSprite* cSprite, u16 animTableIndex, s32 arg2);
 
-s32 CombatSprite_SetAnim(CombatSprite* cSprite, s16 animTableIndex, s32 arg2);
+s32 CombatSprite_SetAnim(CombatSprite* cSprite, u16 animTableIndex, s32 arg2);
 
 void CombatSprite_SetAffineTransform(CombatSprite* cSprite, u32 rotation, s32 scaleX, s32 scaleY, s32 arg4);
 
 void CombatSprite_SetPaletteSource(CombatSprite* cSprite, s32 arg1);
 
-void CombatSprite_SetPosition(CombatSprite* cSprite, s16 posX, s16 posY);
+void CombatSprite_SetPosition(CombatSprite* cSprite, s32 posX, s32 posY);
 
 void func_ov003_02082730(CombatSprite* cSprite, s32 arg1);
 

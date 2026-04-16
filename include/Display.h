@@ -328,4 +328,21 @@ static inline void Display_InitSubBG3(DisplayBGMode bgMode, GXBGScreenSizeText s
     REG_BG3CNT_SUB                 = (REG_BG3CNT_SUB & 0x43) | regMask;
 }
 
+static inline void Display_SetBGOffset(DisplayEngine engine, DisplayBGLayer layer, s32 hOffset, s32 vOffset) {
+    DisplayEngineState* engineState = &g_DisplaySettings.engineState[engine];
+
+    switch (engineState->bgSettings[layer].bgMode) {
+        case DISPLAY_BGMODE_AFFINE:
+        case DISPLAY_BGMODE_PLTT:
+        case DISPLAY_BGMODE_BMP256:
+        case DISPLAY_BGMODE_BMPDIRECT:
+        case DISPLAY_BGMODE_BMPLARGE:
+            engineState->bgAffines[layer].unk_14 = 1;
+            break;
+    }
+
+    engineState->bgOffsets[layer].hOffset = hOffset;
+    engineState->bgOffsets[layer].vOffset = vOffset;
+}
+
 #endif // DISPLAY_H

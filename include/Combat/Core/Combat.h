@@ -12,7 +12,9 @@ typedef struct {
     /* 0x0808C */ TaskPool         taskPool;
     /* 0x0810C */ char             unk_0810C[0x10118 - 0x810C];
     /* 0x10118 */ TaskPool         unk_10118;
-    /* 0x10198 */ char             unk_10198[0x3D348 - 0x10198];
+    /* 0x10198 */ char             unk_10198[0x34230 - 0x10198];
+    /* 0x34230 */ TaskPool         unk_34230;
+    /* 0x342B0 */ char             unk_342B0[0x3D348 - 0x342B0];
     /* 0x3D348 */ PaletteResource* unk3D348[2];
     /* 0x3D350 */ Data*            unk3D350;
     /* 0x3D354 */ u8               unk_3D354[0x3D7C2 - 0x3D354];
@@ -38,15 +40,19 @@ typedef struct {
     /* 0x3D898 */ void*            unk3D898;
     /* 0x3D89C */ void*            unk3D89C;
     /* 0x3D8A0 */ void*            unk3D8A0;
-    /* 0x3D8A4 */ u8               pad_3D8AC[0x8];
+    /* 0x3D8A4 */ void*            unk3D8A4;
+    /* 0x3D8A8 */ void*            unk3D8A8;
     /* 0x3D8AC */ void*            unk3D8AC;
     /* 0x3D8B0 */ u8               pad_3D8B4[0x4];
     /* 0x3D8B4 */ void*            unk3D8B4;
-    /* 0x3D8B8 */ char             unk_3D8B8[0x3D8D8 - 0x3D8B8];
+    /* 0x3D8B8 */ char             unk_3D8B8[0x3D8D4 - 0x3D8B8];
+    /* 0x3D8D4 */ s16              unk3D8D4;
+    /* 0x3D8D6 */ s16              unk3D8D6;
     /* 0x3D8D8 */ s16              unk3D8D8;
     /* 0x3D8DA */ s16              unk3D8DA;
     /* 0x3D8DC */ s16              unk3D8DC;
     /* 0x3D8DE */ s16              unk3D8DE;
+    /* 0x3D8E0 */ s32              unk3D8E0;
 } Ov003Global;
 
 extern Ov003Global* data_ov003_020e71b8;

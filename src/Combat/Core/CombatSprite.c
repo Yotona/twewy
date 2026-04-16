@@ -55,7 +55,7 @@ s32 CombatSprite_SetAnimFromTable(CombatSprite* cSprite, u16 animTableIndex, s32
     return 0;
 }
 
-s32 CombatSprite_SetAnim(CombatSprite* cSprite, s16 animTableIndex, s32 arg2) {
+s32 CombatSprite_SetAnim(CombatSprite* cSprite, u16 animTableIndex, s32 arg2) {
     if (animTableIndex == cSprite->animTableIndex) {
         return 1;
     }
@@ -103,7 +103,7 @@ void CombatSprite_SetPaletteSource(CombatSprite* cSprite, s32 arg1) {
     PaletteMgr_SetSource(g_PaletteManagers[cSprite->sprite.bits_0_1], cSprite->sprite.paletteData, cSprite->sprite.unk3C);
 }
 
-void CombatSprite_SetPosition(CombatSprite* cSprite, s16 posX, s16 posY) {
+void CombatSprite_SetPosition(CombatSprite* cSprite, s32 posX, s32 posY) {
     cSprite->sprite.posX = posX;
     cSprite->sprite.posY = posY;
 }

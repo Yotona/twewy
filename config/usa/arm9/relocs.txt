@@ -8709,7 +8709,7 @@ from:0x0205c2cc kind:load to:0x0202533c module:main
 from:0x0205c2d0 kind:load to:0x020253cc module:main
 from:0x0205c2d4 kind:load to:0x02025180 module:main
 from:0x0205c2d8 kind:load to:0x02024ccc module:main
-from:0x0205c508 kind:load to:0x020f0847 module:overlays(4,5,30)
+from:0x0205c508 kind:load to:0x020f0847 module:overlays(5,30)
 from:0x0205c574 kind:load to:0x021201d5 module:overlays(32,33,35)
 from:0x0205c98c kind:load to:0x02065c08 module:main
 from:0x0205c9b0 kind:load to:0x0205c988 module:main

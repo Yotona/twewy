@@ -4,3 +4,74 @@
     .ctor       start:0x020f06c0 end:0x020f06c0 kind:rodata align:4
     .data       start:0x020f06e0 end:0x020f08e0 kind:data align:32
     .bss        start:0x020f08e0 end:0x020f08e0 kind:bss align:32
+
+src/Combat/Friend/Shiki/BtlPlayer01.c:
+    .text       start:0x020e7360 end:0x020e927c
+    .rodata     start:0x020f0068 end:0x020f01b4
+    .data       start:0x020f06e0 end:0x020f06f0
+
+src/Combat/Friend/Shiki/BtlArm_Doll.c:
+    .text       start:0x020e927c end:0x020ea634
+    .rodata     start:0x020f01b4 end:0x020f0258
+    .data       start:0x020f06f0 end:0x020f0700
+
+src/Combat/Friend/Shiki/BtlCmd_Esp.c:
+    complete
+    .text       start:0x020ea634 end:0x020eac00
+    .rodata     start:0x020f0258 end:0x020f0274
+    .data       start:0x020f0700 end:0x020f0710
+
+src/Combat/Friend/Shiki/BtlCard_Esp.c:
+    complete
+    .text       start:0x020eac00 end:0x020eb2b4
+    .rodata     start:0x020f0274 end:0x020f0358
+    .data       start:0x020f0710 end:0x020f0720
+
+src/Combat/Friend/Shiki/BtlEff_Doll.c:
+    complete
+    .text       start:0x020eb2b4 end:0x020eb4bc
+    .rodata     start:0x020f0358 end:0x020f039c
+    .data       start:0x020f0720 end:0x020f0730
+
+src/Combat/Friend/Shiki/BtlFeat00.c:
+    .text       start:0x020eb4bc end:0x020ebc2c
+    .rodata     start:0x020f039c end:0x020f03e4
+    .data       start:0x020f0730 end:0x020f0744
+
+src/Combat/Friend/Shiki/BtlFeat00_Multi.c:
+    complete
+    .text       start:0x020ebc2c end:0x020ec138
+    .rodata     start:0x020f03e4 end:0x020f0430
+    .data       start:0x020f0744 end:0x020f0758
+
+src/Combat/Friend/Shiki/Feat00_Sword.c:
+    complete
+    .text       start:0x020ec138 end:0x020ec324
+    .rodata     start:0x020f0430 end:0x020f0464
+    .data       start:0x020f0758 end:0x020f076c
+
+src/Combat/Friend/Shiki/Feat00_EffDoll.c:
+    complete
+    .text       start:0x020ec324 end:0x020ec510
+    .rodata     start:0x020f0464 end:0x020f0498
+    .data       start:0x020f076c end:0x020f0780
+
+src/Combat/Friend/Shiki/BtlFeat01.c:
+    .text       start:0x020ec510 end:0x020ed1f8
+    .rodata     start:0x020f0498 end:0x020f04b4
+    .data       start:0x020f0780 end:0x020f07f0
+
+src/Combat/Friend/Shiki/BtlFeat01_Multi.c:
+    .text       start:0x020ed1f8 end:0x020ed674
+    .rodata     start:0x020f04b4 end:0x020f04e8
+    .data       start:0x020f07f0 end:0x020f0804
+
+src/Combat/Friend/Shiki/BtlFeat01_BigMulti.c:
+    .text       start:0x020ed674 end:0x020edbd8
+    .rodata     start:0x020f04e8 end:0x020f051c
+    .data       start:0x020f0804 end:0x020f0850
+
+src/Combat/Friend/Shiki/BtlFeat02.c:
+    .text       start:0x020edbd8 end:0x020f0068
+    .rodata     start:0x020f051c end:0x020f06c0
+    .data       start:0x020f0850 end:0x020f08e0
