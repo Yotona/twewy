@@ -1,20 +1,21 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Private/Boss01.h"
 
 typedef struct BtlEff_Fall {
-    /* 0x00 */ char                unk_00[0x20];
-    /* 0x20 */ s32                 unk_20;
-    /* 0x24 */ char                unk_24[0x28 - 0x24];
-    /* 0x28 */ s32                 unk_28;
-    /* 0x2C */ s32                 unk_2C;
-    /* 0x30 */ s32                 unk_30;
-    /* 0x34 */ char                unk_34[0x60 - 0x34];
-    /* 0x60 */ void*               unk_60;
-    /* 0x64 */ struct BtlEff_Fall* unk_64;
-    /* 0x68 */ s32                 unk_68;
-    /* 0x6C */ Quad                unk_6C;
-    /* 0x74 */ u32                 unk_74;
+    /* 0x00 */ char         unk_00[0x20];
+    /* 0x20 */ s32          unk_20;
+    /* 0x24 */ char         unk_24[0x28 - 0x24];
+    /* 0x28 */ s32          unk_28;
+    /* 0x2C */ s32          unk_2C;
+    /* 0x30 */ s32          unk_30;
+    /* 0x34 */ char         unk_34[0x60 - 0x34];
+    /* 0x60 */ void*        unk_60;
+    /* 0x64 */ CombatActor* unk_64;
+    /* 0x68 */ s32          unk_68;
+    /* 0x6C */ Quad         unk_6C;
+    /* 0x74 */ u32          unk_74;
 } BtlEff_Fall; // Size: 0x78;
 
 /* Spawn metadata for effects/obstacles (dimensions and timing). */
@@ -83,33 +84,33 @@ s32 BtlEff_Fall_Update(TaskPool* pool, Task* task, void* args) {
     BtlEff_Fall* eff    = task->data;
     s32          var_r5 = 1;
 
-    if (eff->unk_64->unk_30 >= 0) {
+    if (eff->unk_64->position.z >= 0) {
         var_r5 = 0;
         if (eff->unk_74 != 0x191) {
             if (eff->unk_74 == 0xE6) {
-                BtlEff_Bomb_CreateTaskDefault(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28, eff->unk_64->unk_2C,
-                                              eff->unk_64->unk_30);
+                BtlEff_Bomb_CreateTaskDefault(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x, eff->unk_64->position.y,
+                                              eff->unk_64->position.z);
             } else {
-                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28, eff->unk_64->unk_2C,
-                                       eff->unk_64->unk_30, 0);
+                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x, eff->unk_64->position.y,
+                                       eff->unk_64->position.z, 0);
 
-                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28 + 0x20000, eff->unk_64->unk_2C,
-                                       eff->unk_64->unk_30 - 0x10000, 4);
+                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x + 0x20000, eff->unk_64->position.y,
+                                       eff->unk_64->position.z - 0x10000, 4);
 
-                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28 - 0x28000, eff->unk_64->unk_2C,
-                                       eff->unk_64->unk_30 - 0x30000, 7);
+                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x - 0x28000, eff->unk_64->position.y,
+                                       eff->unk_64->position.z - 0x30000, 7);
 
-                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28 + 0x18000, eff->unk_64->unk_2C,
-                                       eff->unk_64->unk_30 - 0x40000, 14);
+                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x + 0x18000, eff->unk_64->position.y,
+                                       eff->unk_64->position.z - 0x40000, 14);
 
-                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->unk_28 - 0x10000, eff->unk_64->unk_2C,
-                                       eff->unk_64->unk_30 - 0x68000, 14);
+                BtlEff_Bomb_CreateTask(eff->unk_74, &eff->unk_6C, eff->unk_64->position.x - 0x10000, eff->unk_64->position.y,
+                                       eff->unk_64->position.z - 0x68000, 14);
             }
 
             if (eff->unk_60 == NULL) {
-                func_ov003_02082f1c(eff->unk_64, 3);
+                CombatActor_SetPendingCommand(eff->unk_64, 3);
             } else if (((Ov016SpriteParams*)eff->unk_60)->unk2 == 0x19) {
-                func_ov003_02082f1c((u8*)eff->unk_60 + 4, 1);
+                CombatActor_SetPendingCommand((CombatActor*)eff->unk_60 + 4, 1);
             } else {
                 func_ov003_02086654(eff->unk_60);
             }
@@ -123,10 +124,10 @@ s32 BtlEff_Fall_Render(TaskPool* pool, Task* task, void* args) {
     BtlEff_Fall* temp_r4 = task->data;
     s16          spA, sp8;
 
-    func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk_64->unk_28, temp_r4->unk_64->unk_2C,
-                        temp_r4->unk_64->unk_30);
+    func_ov003_02084348(func_ov003_020c3908(temp_r4), &spA, &sp8, temp_r4->unk_64->position.x, temp_r4->unk_64->position.y,
+                        temp_r4->unk_64->position.z);
     CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
-    func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFEFFF - temp_r4->unk_64->unk_2C);
+    func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFEFFF - temp_r4->unk_64->position.y);
     CombatSprite_Render((CombatSprite*)temp_r4);
     return 1;
 }

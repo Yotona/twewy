@@ -1,20 +1,11 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Private/Boss01.h"
 
 typedef struct BtlObs_RG {
-    /* 0x000 */ char         unk_000[0x28];
-    /* 0x028 */ s32          unk_028;
-    /* 0x02C */ u32          unk_02C;
-    /* 0x030 */ u32          unk_030;
-    /* 0x034 */ char         unk_34[0x38 - 0x34];
-    /* 0x038 */ s32          unk_038;
-    /* 0x03C */ char         unk_03C[0x40 - 0x3C];
-    /* 0x040 */ s32          unk_040;
-    /* 0x044 */ s32          unk_044;
-    /* 0x048 */ char         unk_048[0x54 - 0x48];
-    /* 0x054 */ s32          unk_054;
-    /* 0x058 */ char         unk_058[0x84 - 0x58];
+    /* 0x000 */ CombatActor  actor;
+    /* 0x07C */ char         unk_07C[0x84 - 0x7C];
     /* 0x084 */ CombatSprite unk_084;
     /* 0x0E4 */ char         unk_0E4[0x18C - 0xE4];
     /* 0x18C */ u16          unk_18C;
@@ -23,7 +14,7 @@ typedef struct BtlObs_RG {
     /* 0x1C2 */ u16          unk_1C2;
     /* 0x1C4 */ char         unk_1C4[0x284 - 0x1C4];
     /* 0x284 */ Quad         unk_284;
-    /* 0x28C */ void (*unk_28C)(struct BtlObs_RG*); // function pointer for boss sub-state
+    /* 0x28C */ void (*unk_28C)(struct BtlObs_RG*);
     /* 0x290 */ u16 unk_290;
     /* 0x292 */ s16 unk_292;
     /* 0x294 */ u32 unk_294;
@@ -53,7 +44,7 @@ static void BtlObs_RG_StateIdle(BtlObs_RG* obs) {
 }
 
 static void BtlObs_RG_StateHit(BtlObs_RG* obs) {
-    obs->unk_054 |= 6;
+    obs->actor.flags |= 6;
     func_ov003_020c4a34(obs);
 
     if (data_ov003_020e71b8->unk3D8A0 == obs) {
@@ -66,7 +57,7 @@ static void BtlObs_RG_StateHit(BtlObs_RG* obs) {
     }
 
     if (func_ov009_020fa71c(&obs->unk_1C0) != 0) {
-        BtlEff_Bomb_CreateTaskDefault(233, &obs->unk_284, obs->unk_028, obs->unk_02C, obs->unk_030);
+        BtlEff_Bomb_CreateTaskDefault(233, &obs->unk_284, obs->actor.position.x, obs->actor.position.y, obs->actor.position.z);
         obs->unk_294 = 0;
     } else {
         BtlObs_RG_SetState(obs, BtlObs_RG_StateFall);
@@ -81,15 +72,15 @@ static void BtlObs_RG_StateFall(BtlObs_RG* obs) {
             CombatSprite_SetAnimFromTable(&obs->unk_084, 1, 0);
         }
 
-        obs->unk_040 = (obs->unk_028 >= temp_r5->unk_028) ? 0x5000 : -0x5000;
-        obs->unk_044 = 0;
-        obs->unk_038 = 0;
+        obs->actor.xVelocity = (obs->actor.position.x >= temp_r5->actor.position.x) ? 0x5000 : -0x5000;
+        obs->actor.yVelocity = 0;
+        obs->actor.zVelocity = 0;
     }
-    if ((obs->unk_030 == 0) && (obs->unk_038 == 0)) {
+    if ((obs->actor.position.z == 0) && (obs->actor.zVelocity == 0)) {
         obs->unk_294 = 0;
-        return;
+    } else {
+        obs->unk_292++;
     }
-    obs->unk_292++;
 }
 
 static s32 BtlObs_RG_Init(TaskPool* pool, Task* task, void* args) {
@@ -121,7 +112,7 @@ static s32 BtlObs_RG_Update(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
 
-    s32 temp = func_ov003_02082f2c(obs);
+    s32 temp = CombatActor_PopPendingCommand(&obs->actor);
     if ((temp == 1) || (temp == 3)) {
         BtlObs_RG_SetState(obs, BtlObs_RG_StateHit);
     }
@@ -130,7 +121,7 @@ static s32 BtlObs_RG_Update(TaskPool* pool, Task* task, void* args) {
         obs->unk_28C(obs);
     }
 
-    func_ov003_02083074(obs);
+    CombatActor_UpdatePhysics(&obs->actor);
     CombatSprite_Update(&obs->unk_084);
     return obs->unk_294;
 }
@@ -141,7 +132,7 @@ static s32 BtlObs_RG_Render(TaskPool* pool, Task* task, void* args) {
     if (func_ov003_0208656c() == 0) {
         return 1;
     }
-    func_ov003_020831e4(obs, &obs->unk_084);
+    CombatActor_Render(&obs->actor, &obs->unk_084);
     return 1;
 }
 

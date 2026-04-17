@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss03.h"
 #include "SpriteMgr.h"
@@ -555,7 +556,7 @@ s32 func_ov017_021261f4(void* arg1) {
         data_ov003_020e71b8->unk3D878 = (s32)(data_ov003_020e71b8->unk3D878 | 0x20000000);
         func_ov017_021301e0();
     }
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand(temp_r4);
     ((Boss03*)temp_r4)->unk250 = temp_r0;
     switch (temp_r0) {
         default:
@@ -2017,7 +2018,7 @@ s32 func_ov017_02128924(void* arg1) {
         data_ov003_020e71b8->unk3D878 = (s32)(data_ov003_020e71b8->unk3D878 | 0x20000000);
         func_ov017_021301e0();
     }
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand(temp_r4);
     ((Boss03*)temp_r4)->unk294 = temp_r0;
     switch (temp_r0) {
         default:
@@ -2422,7 +2423,7 @@ s32 func_ov017_0212952c(void* arg1) {
     {
         ((Boss03*)temp_r4)->unk20 = 3;
     }
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1DC = temp_r0;
     switch (temp_r0) {
         default:
@@ -3057,7 +3058,7 @@ s32 func_ov017_0212a6a4(void* arg1) {
         ((Boss03*)temp_r4)->unk54 = (s32)(((Boss03*)temp_r4)->unk54 | 0x10);
         func_ov017_021301e0();
     }
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk294 = temp_r0;
     switch (temp_r0) {
         case 0:
@@ -3418,7 +3419,7 @@ s32 func_ov017_0212b114(void* arg1) {
         ((Boss03*)temp_r4)->unk54     = (s32)(((Boss03*)temp_r4)->unk54 | 0x10);
         data_ov003_020e71b8->unk3D878 = (s32)(data_ov003_020e71b8->unk3D878 | 0x20000000);
     }
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1E0 = temp_r0;
     switch ((s32)temp_r0) { /* irregular */
         case 1:
@@ -4029,7 +4030,7 @@ s32 func_ov017_0212c20c(void* arg1) {
     void** temp_r4;
 
     temp_r4                    = ((Boss03*)arg1)->unk18;
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1D0 = temp_r0;
     switch (temp_r0) {
         case 0:
@@ -4288,7 +4289,7 @@ s32 func_ov017_0212c8a4(void* arg1) {
     void** temp_r4;
 
     temp_r4                    = ((Boss03*)arg1)->unk18;
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1D0 = temp_r0;
     switch (temp_r0) { /* irregular */
         case 1:
@@ -5374,7 +5375,7 @@ s32 func_ov017_0212e458(void* arg1) {
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
-    temp_r0 = (u32)func_ov003_02082f2c(temp_r4);
+    temp_r0 = (u32)CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     switch (temp_r0) {
         case 0:
         case 4:
@@ -5531,7 +5532,7 @@ s32 func_ov017_0212e7e0(void* arg1) {
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
-    func_ov003_02082f2c(temp_r4);
+    CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     temp_r1 = ((Boss03*)temp_r4)->unk1CC;
     if (temp_r1 != NULL) {
         temp_r1(temp_r4);
@@ -5739,7 +5740,7 @@ s32 func_ov017_0212ed18(void* arg1) {
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
-    temp_r0 = func_ov003_02082f2c(temp_r4);
+    temp_r0 = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     if (temp_r0 <= 0xB) {
         if ((temp_r0 < 0xB) && (temp_r0 <= 3) && (temp_r0 >= 1)) {
             if ((temp_r0 != 1) && (temp_r0 != 2)) {
@@ -6024,7 +6025,7 @@ s32 func_ov017_0212f4f0(void* arg1) {
 
     temp_r4 = ((Boss03*)arg1)->unk18;
     func_ov017_0212eff8(temp_r4);
-    temp_r0                    = func_ov003_02082f2c(temp_r4);
+    temp_r0                    = CombatActor_PopPendingCommand((CombatActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1D4 = temp_r0;
     switch (temp_r0) {
         default:

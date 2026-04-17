@@ -21,19 +21,21 @@ CombatSprite_Restart kind:function(arm,size=0xc) addr:0x02082d04
 
 
 
-func_ov003_02082d10 kind:function(arm,size=0x18) addr:0x02082d10
-func_ov003_02082d28 kind:function(arm,size=0xdc) addr:0x02082d28
-func_ov003_02082e04 kind:function(arm,size=0x118) addr:0x02082e04
-func_ov003_02082f1c kind:function(arm,size=0x10) addr:0x02082f1c
-func_ov003_02082f2c kind:function(arm,size=0x24) addr:0x02082f2c
-func_ov003_02082f50 kind:function(arm,size=0x2c) addr:0x02082f50
+func_ov003_02082d10 kind:function(arm,size=0x18) addr:0x02082d10 local
+CombatActor_ApplyPlanarDamping kind:function(arm,size=0xdc) addr:0x02082d28 local
+CombatActor_ApplyPeriodicEffectTick kind:function(arm,size=0x118) addr:0x02082e04 local
+CombatActor_SetPendingCommand kind:function(arm,size=0x10) addr:0x02082f1c
+CombatActor_PopPendingCommand kind:function(arm,size=0x24) addr:0x02082f2c
+CombatActor_ForceDefeat kind:function(arm,size=0x2c) addr:0x02082f50
 func_ov003_02082f7c kind:function(arm,size=0x44) addr:0x02082f7c
-func_ov003_02082fc0 kind:function(arm,size=0x20) addr:0x02082fc0
+CombatActor_ClearPeriodicEffect kind:function(arm,size=0x20) addr:0x02082fc0
 func_ov003_02082fe0 kind:function(arm,size=0x20) addr:0x02082fe0
-func_ov003_02083000 kind:function(arm,size=0x74) addr:0x02083000
-func_ov003_02083074 kind:function(arm,size=0xa4) addr:0x02083074
-func_ov003_02083118 kind:function(arm,size=0xcc) addr:0x02083118
-func_ov003_020831e4 kind:function(arm,size=0x11c) addr:0x020831e4
+CombatActor_UpdateEffects kind:function(arm,size=0x74) addr:0x02083000
+CombatActor_UpdatePhysics kind:function(arm,size=0xa4) addr:0x02083074
+CombatActor_Init kind:function(arm,size=0xcc) addr:0x02083118
+CombatActor_Render kind:function(arm,size=0x11c) addr:0x020831e4
+
+
 func_ov003_02083300 kind:function(arm,size=0x5c) addr:0x02083300
 func_ov003_0208335c kind:function(arm,size=0x34) addr:0x0208335c
 func_ov003_02083390 kind:function(arm,size=0x3c) addr:0x02083390
