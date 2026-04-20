@@ -499,6 +499,10 @@ func_ov009_0210aca0 kind:function(arm,size=0x10) addr:0x0210aca0
 func_ov009_0210acb0 kind:function(arm,size=0x48) addr:0x0210acb0
 func_ov009_0210acf8 kind:function(arm,size=0x2d0) addr:0x0210acf8
 func_ov009_0210afc8 kind:function(arm,size=0x190) addr:0x0210afc8
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm012/BtlEnm012_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0210b158 kind:function(arm,size=0x34) addr:0x0210b158
 func_ov009_0210b18c kind:function(arm,size=0x8c) addr:0x0210b18c
 func_ov009_0210b218 kind:function(arm,size=0x90) addr:0x0210b218
@@ -546,6 +550,10 @@ func_ov009_0210ec80 kind:function(arm,size=0x168) addr:0x0210ec80
 func_ov009_0210ede8 kind:function(arm,size=0x314) addr:0x0210ede8
 func_ov009_0210f0fc kind:function(arm,size=0x10) addr:0x0210f0fc
 func_ov009_0210f10c kind:function(arm,size=0x6c) addr:0x0210f10c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm012/BtlEnm012_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0210f178 kind:function(arm,size=0x28) addr:0x0210f178
 func_ov009_0210f1a0 kind:function(arm,size=0x14) addr:0x0210f1a0
 func_ov009_0210f1b4 kind:function(arm,size=0xc4) addr:0x0210f1b4
@@ -592,11 +600,19 @@ func_ov009_02111fe8 kind:function(arm,size=0x138) addr:0x02111fe8
 func_ov009_02112120 kind:function(arm,size=0x37c) addr:0x02112120
 func_ov009_0211249c kind:function(arm,size=0x10) addr:0x0211249c
 func_ov009_021124ac kind:function(arm,size=0x6c) addr:0x021124ac
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm019/BtlEnm019_Eff.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02112518 kind:function(arm,size=0x38c) addr:0x02112518
 func_ov009_021128a4 kind:function(arm,size=0x290) addr:0x021128a4
 func_ov009_02112b34 kind:function(arm,size=0x348) addr:0x02112b34
 func_ov009_02112e7c kind:function(arm,size=0x30) addr:0x02112e7c
 func_ov009_02112eac kind:function(arm,size=0x40) addr:0x02112eac
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm019/BtlEnm019_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02112eec kind:function(arm,size=0x28) addr:0x02112eec
 func_ov009_02112f14 kind:function(arm,size=0x128) addr:0x02112f14
 func_ov009_0211303c kind:function(arm,size=0x28) addr:0x0211303c
@@ -617,6 +633,10 @@ func_ov009_02114520 kind:function(arm,size=0x124) addr:0x02114520
 func_ov009_02114644 kind:function(arm,size=0x14) addr:0x02114644
 func_ov009_02114658 kind:function(arm,size=0x14) addr:0x02114658
 func_ov009_0211466c kind:function(arm,size=0x48) addr:0x0211466c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm019/BtlEnm019_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_021146b4 kind:function(arm,size=0x28) addr:0x021146b4
 func_ov009_021146dc kind:function(arm,size=0x40) addr:0x021146dc
 func_ov009_0211471c kind:function(arm,size=0x98) addr:0x0211471c
@@ -651,6 +671,10 @@ func_ov009_02116d20 kind:function(arm,size=0xe0) addr:0x02116d20
 func_ov009_02116e00 kind:function(arm,size=0x274) addr:0x02116e00
 func_ov009_02117074 kind:function(arm,size=0x10) addr:0x02117074
 func_ov009_02117084 kind:function(arm,size=0x10) addr:0x02117084
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm028/BtlEnm028_EffBack.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02117094 kind:function(arm,size=0x20) addr:0x02117094
 func_ov009_021170b4 kind:function(arm,size=0x20) addr:0x021170b4
 func_ov009_021170d4 kind:function(arm,size=0x74) addr:0x021170d4
@@ -659,6 +683,10 @@ func_ov009_02117198 kind:function(arm,size=0xa0) addr:0x02117198
 func_ov009_02117238 kind:function(arm,size=0x18c) addr:0x02117238
 func_ov009_021173c4 kind:function(arm,size=0xac) addr:0x021173c4
 func_ov009_02117470 kind:function(arm,size=0x14) addr:0x02117470
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm028/BtlEnm028_Intrude.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02117484 kind:function(arm,size=0x4c) addr:0x02117484
 func_ov009_021174d0 kind:function(arm,size=0x3c) addr:0x021174d0
 func_ov009_0211750c kind:function(arm,size=0x27c) addr:0x0211750c
@@ -666,6 +694,10 @@ func_ov009_02117788 kind:function(arm,size=0x44) addr:0x02117788
 func_ov009_021177cc kind:function(arm,size=0x24) addr:0x021177cc
 func_ov009_021177f0 kind:function(arm,size=0x16c) addr:0x021177f0
 func_ov009_0211795c kind:function(arm,size=0x8) addr:0x0211795c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm028/BtlEnm028_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02117964 kind:function(arm,size=0x28) addr:0x02117964
 func_ov009_0211798c kind:function(arm,size=0x14) addr:0x0211798c
 func_ov009_021179a0 kind:function(arm,size=0xa0) addr:0x021179a0
@@ -695,6 +727,10 @@ func_ov009_021190b4 kind:function(arm,size=0x178) addr:0x021190b4
 func_ov009_0211922c kind:function(arm,size=0x134) addr:0x0211922c
 func_ov009_02119360 kind:function(arm,size=0x88) addr:0x02119360
 func_ov009_021193e8 kind:function(arm,size=0x44) addr:0x021193e8
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm028/BtlEnm028_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211942c kind:function(arm,size=0x28) addr:0x0211942c
 func_ov009_02119454 kind:function(arm,size=0x14) addr:0x02119454
 func_ov009_02119468 kind:function(arm,size=0xa0) addr:0x02119468
@@ -726,12 +762,20 @@ func_ov009_0211ae48 kind:function(arm,size=0x10) addr:0x0211ae48
 func_ov009_0211ae58 kind:function(arm,size=0x6c) addr:0x0211ae58
 func_ov009_0211aec4 kind:function(arm,size=0x17c) addr:0x0211aec4
 func_ov009_0211b040 kind:function(arm,size=0x7c) addr:0x0211b040
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm044/BtlEnm044_EffBoom.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211b0bc kind:function(arm,size=0x5c) addr:0x0211b0bc
 func_ov009_0211b118 kind:function(arm,size=0x50) addr:0x0211b118
 func_ov009_0211b168 kind:function(arm,size=0x154) addr:0x0211b168
 func_ov009_0211b2bc kind:function(arm,size=0x470) addr:0x0211b2bc
 func_ov009_0211b72c kind:function(arm,size=0xb4) addr:0x0211b72c
 func_ov009_0211b7e0 kind:function(arm,size=0x14) addr:0x0211b7e0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm044/BtlEnm044_EffGuard.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211b7f4 kind:function(arm,size=0x5c) addr:0x0211b7f4
 func_ov009_0211b850 kind:function(arm,size=0x50) addr:0x0211b850
 func_ov009_0211b8a0 kind:function(arm,size=0x9c) addr:0x0211b8a0
@@ -739,6 +783,10 @@ func_ov009_0211b93c kind:function(arm,size=0x38) addr:0x0211b93c
 func_ov009_0211b974 kind:function(arm,size=0x80) addr:0x0211b974
 func_ov009_0211b9f4 kind:function(arm,size=0x14) addr:0x0211b9f4
 func_ov009_0211ba08 kind:function(arm,size=0x14) addr:0x0211ba08
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm044/BtlEnm044_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211ba1c kind:function(arm,size=0x28) addr:0x0211ba1c
 func_ov009_0211ba44 kind:function(arm,size=0x84) addr:0x0211ba44
 func_ov009_0211bac8 kind:function(arm,size=0x28) addr:0x0211bac8
@@ -776,10 +824,18 @@ func_ov009_0211dc88 kind:function(arm,size=0x150) addr:0x0211dc88
 func_ov009_0211ddd8 kind:function(arm,size=0x14) addr:0x0211ddd8
 func_ov009_0211ddec kind:function(arm,size=0x14) addr:0x0211ddec
 func_ov009_0211de00 kind:function(arm,size=0x48) addr:0x0211de00
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm044/BtlEnm044_Thrw.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211de48 kind:function(arm,size=0xfc) addr:0x0211de48
 func_ov009_0211df44 kind:function(arm,size=0x360) addr:0x0211df44
 func_ov009_0211e2a4 kind:function(arm,size=0x24) addr:0x0211e2a4
 func_ov009_0211e2c8 kind:function(arm,size=0x4c) addr:0x0211e2c8
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm044/BtlEnm044_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_0211e314 kind:function(arm,size=0x14) addr:0x0211e314
 func_ov009_0211e328 kind:function(arm,size=0x28) addr:0x0211e328
 func_ov009_0211e350 kind:function(arm,size=0x40) addr:0x0211e350
@@ -824,8 +880,16 @@ func_ov009_02120730 kind:function(arm,size=0x1e4) addr:0x02120730
 func_ov009_02120914 kind:function(arm,size=0x14) addr:0x02120914
 func_ov009_02120928 kind:function(arm,size=0x14) addr:0x02120928
 func_ov009_0212093c kind:function(arm,size=0x48) addr:0x0212093c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_Eff.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02120984 kind:function(arm,size=0x1d8) addr:0x02120984
 func_ov009_02120b5c kind:function(arm,size=0x38) addr:0x02120b5c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_02120b94 kind:function(arm,size=0x50) addr:0x02120b94
 func_ov009_02120be4 kind:function(arm,size=0x34) addr:0x02120be4
 func_ov009_02120c18 kind:function(arm,size=0x30) addr:0x02120c18
@@ -844,6 +908,10 @@ func_ov009_02121358 kind:function(arm,size=0xf0) addr:0x02121358
 func_ov009_02121448 kind:function(arm,size=0x14) addr:0x02121448
 func_ov009_0212145c kind:function(arm,size=0x14) addr:0x0212145c
 func_ov009_02121470 kind:function(arm,size=0x48) addr:0x02121470
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov009_021214b8 kind:function(arm,size=0x2c) addr:0x021214b8
 func_ov009_021214e4 kind:function(arm,size=0x50) addr:0x021214e4
 func_ov009_02121534 kind:function(arm,size=0x40) addr:0x02121534
@@ -851,7 +919,7 @@ func_ov009_02121574 kind:function(arm,size=0xc4) addr:0x02121574
 func_ov009_02121638 kind:function(arm,size=0x58) addr:0x02121638
 func_ov009_02121690 kind:function(arm,size=0x50) addr:0x02121690
 func_ov009_021216e0 kind:function(arm,size=0x5c) addr:0x021216e0
-func_ov009_0212173c kind:function(arm,size=0x34) addr:0x0212173c
+BtlEnm003_UG_SetState kind:function(arm,size=0x34) addr:0x0212173c
 func_ov009_02121770 kind:function(arm,size=0x30) addr:0x02121770
 func_ov009_021217a0 kind:function(arm,size=0x3c) addr:0x021217a0
 func_ov009_021217dc kind:function(arm,size=0x154) addr:0x021217dc
@@ -868,11 +936,13 @@ func_ov009_02122584 kind:function(arm,size=0x2c) addr:0x02122584
 func_ov009_021225b0 kind:function(arm,size=0x2c) addr:0x021225b0
 func_ov009_021225dc kind:function(arm,size=0x1c) addr:0x021225dc
 func_ov009_021225f8 kind:function(arm,size=0x30) addr:0x021225f8
-func_ov009_02122628 kind:function(arm,size=0x64) addr:0x02122628
-func_ov009_0212268c kind:function(arm,size=0x168) addr:0x0212268c
-func_ov009_021227f4 kind:function(arm,size=0x14) addr:0x021227f4
-func_ov009_02122808 kind:function(arm,size=0x14) addr:0x02122808
-func_ov009_0212281c kind:function(arm,size=0x48) addr:0x0212281c
+BtlEnm003_UG_Init kind:function(arm,size=0x64) addr:0x02122628
+BtlEnm003_UG_Update kind:function(arm,size=0x168) addr:0x0212268c
+BtlEnm003_UG_Render kind:function(arm,size=0x14) addr:0x021227f4
+BtlEnm003_UG_Destroy kind:function(arm,size=0x14) addr:0x02122808
+BtlEnm003_UG_RunTask kind:function(arm,size=0x48) addr:0x0212281c
+
+
 data_ov009_02122864 kind:data(any) addr:0x02122864
 data_ov009_02122874 kind:data(any) addr:0x02122874
 data_ov009_02122884 kind:data(any) addr:0x02122884
@@ -1208,10 +1278,16 @@ data_ov009_021247b4 kind:data(any) addr:0x021247b4
 data_ov009_021247bc kind:data(any) addr:0x021247bc
 data_ov009_021247cc kind:data(any) addr:0x021247cc
 data_ov009_021247e0 kind:data(any) addr:0x021247e0 ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov009_021247ec kind:data(any) addr:0x021247ec
-data_ov009_021247f4 kind:data(any) addr:0x021247f4
+@1584 kind:data(any) addr:0x021247f4
 data_ov009_02124804 kind:data(any) addr:0x02124804
-data_ov009_0212481c kind:data(any) addr:0x0212481c ambiguous
+Tsk_BtlEnm003_UG kind:data(any) addr:0x0212481c
+
+
 data_ov009_02124840 kind:data(any) addr:0x02124840 ambiguous
 data_ov009_0212484c kind:data(any) addr:0x0212484c
 data_ov009_02124868 kind:data(any) addr:0x02124868
@@ -1368,11 +1444,24 @@ data_ov009_02125564 kind:data(any) addr:0x02125564 ambiguous
 data_ov009_02125570 kind:data(any) addr:0x02125570
 data_ov009_0212558c kind:data(any) addr:0x0212558c
 data_ov009_021255a8 kind:data(any) addr:0x021255a8
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_Eff.c
+//////////////////////////////////////////////////////////////////////
 data_ov009_021255c4 kind:data(any) addr:0x021255c4
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov009_021255d8 kind:data(any) addr:0x021255d8
 data_ov009_021255e4 kind:data(any) addr:0x021255e4
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov009_021255f8 kind:data(any) addr:0x021255f8
-data_ov009_02125608 kind:data(any) addr:0x02125608
+@1174 kind:data(any) addr:0x02125608
+
 data_ov009_02125620 kind:bss addr:0x02125620
 data_ov009_02125624 kind:bss addr:0x02125624
 data_ov009_02125628 kind:bss addr:0x02125628

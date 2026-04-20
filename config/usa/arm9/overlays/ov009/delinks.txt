@@ -4,3 +4,58 @@
     .ctor       start:0x02124828 end:0x02124828 kind:rodata align:4
     .data       start:0x02124840 end:0x02125620 kind:data align:32
     .bss        start:0x02125620 end:0x021256c0 kind:bss align:32
+
+src/Combat/Noise/BtlEnm012/BtlEnm012_RG.c:
+    .text       start:0x0210b158 end:0x0210f178
+
+src/Combat/Noise/BtlEnm012/BtlEnm012_UG.c:
+    .text       start:0x0210f178 end:0x02112518
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_Eff.c:
+    .text       start:0x02112518 end:0x02112eec
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_RG.c:
+    .text       start:0x02112eec end:0x021146b4
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_UG.c:
+    .text       start:0x021146b4 end:0x02117094
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_EffBack.c:
+    .text       start:0x02117094 end:0x02117484
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_Intrude.c:
+    .text       start:0x02117484 end:0x02117964
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_RG.c:
+    .text       start:0x02117964 end:0x0211942c
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_UG.c:
+    .text       start:0x0211942c end:0x0211b0bc
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_EffBoom.c:
+    .text       start:0x0211b0bc end:0x0211b7f4
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_EffGuard.c:
+    .text       start:0x0211b7f4 end:0x0211ba1c
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_RG.c:
+    .text       start:0x0211ba1c end:0x0211de48
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_Thrw.c:
+    .text       start:0x0211de48 end:0x0211e314
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_UG.c:
+    .text       start:0x0211e314 end:0x02120984
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_Eff.c:
+    .text       start:0x02120984 end:0x02120b94
+    .data       start:0x021255c4 end:0x021255d8
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c:
+    .text       start:0x02120b94 end:0x021214b8
+    .data       start:0x021255d8 end:0x021255f8
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c:
+    .text       start:0x021214b8 end:0x02122864
+    .rodata     start:0x021247ec end:0x02124828
+    .data       start:0x021255f8 end:0x02125620
