@@ -1,5 +1,6 @@
 # Editor Configurations
 .vscode/
+*.code-workspace
 
 # Original ROM files
 twewy_*/
@@ -9,18 +10,16 @@ twewy_*/
 # Build Output
 build/
 *.sav
+*.mch
 *.xMAP
 
 # Tools
 /m2ctx
 /objdiff*
-/dsd
-/dsd.exe
+dsd*
 build.ninja
 .ninja_*
 /wibo
-ghidra_11.4.2_PUBLIC_20250826
-twewyghidra
-twewy.code-workspace
-updateYTCQJv
-extract/baserom_twewy_usa.mch
+*ghidra*
+update*
+/compile_commands.json

@@ -7,7 +7,7 @@ import argparse
 import sys
 import subprocess
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Generator
 
 import ninja_syntax
 from get_platform import Platform, get_platform
@@ -287,9 +287,12 @@ class Project:
     def build_rom_config(self) -> Path:
         return self.game_build / "build" / "rom_config.yaml"
 
+    def source_files(self) -> Generator[Path, None, None]:
+        yield from get_c_cpp_files([src_path, libs_path])
+
     def source_object_files(self) -> list[str]:
         files: list[str] = []
-        for source_file in get_c_cpp_files([src_path, libs_path]):
+        for source_file in self.source_files():
             src_obj_path = self.game_build / source_file
             files.append(str(src_obj_path.with_suffix(".o")))
         return files
@@ -483,6 +486,7 @@ def main():
         )
         n.newline()
 
+        create_compilation_database(project)
         add_download_tool_builds(n, project)
         add_configure_build(n, project)
 
@@ -855,6 +859,23 @@ def get_config_files(game_config: Path, name: str) -> list[str]:
         for file in files
         if file == name
     ]
+
+
+def create_compilation_database(project: Project):
+    db_path = root_path / "compile_commands.json"
+    db: list[dict] = []
+    abs_root_path = root_path.absolute()
+
+    for source_file in project.source_files():
+        db.append(
+            {
+                "directory": str(abs_root_path),
+                "arguments": ["#"],  # clangd ignores entries with empty arguments
+                "file": str(source_file),
+            }
+        )
+    with db_path.open("w") as f:
+        f.write(json.dumps(db))
 
 
 if __name__ == "__main__":

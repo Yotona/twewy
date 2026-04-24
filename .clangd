@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+  - -m32
+  - -nostdinc
+  - -Iinclude
+  - -Ilibs/include
