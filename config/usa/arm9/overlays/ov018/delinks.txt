@@ -4,3 +4,12 @@
     .ctor       start:0x020ff3ac end:0x020ff3ac kind:rodata align:4
     .data       start:0x020ff3c0 end:0x020ff640 kind:data align:32
     .bss        start:0x020ff640 end:0x020ff660 kind:bss align:32
+
+src/Combat/Noise/Boss00/Boss00Light_RG.c:
+    .text       start:0x020fdbf8 end:0x020fdeb8
+
+src/Combat/Noise/Boss00/Boss00OBJ.c:
+    .text       start:0x020fdeb8 end:0x020fe5d8
+
+src/Combat/Noise/Boss00/BtlObsBoss00.c:
+    .text       start:0x020fe5d8 end:0x020fea58

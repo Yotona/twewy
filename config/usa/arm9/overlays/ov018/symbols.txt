@@ -1,3 +1,6 @@
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov018_020f1080 kind:function(arm,size=0x98) addr:0x020f1080
 func_ov018_020f1118 kind:function(arm,size=0x5c8) addr:0x020f1118
 func_ov018_020f16e0 kind:function(arm,size=0x8c) addr:0x020f16e0
@@ -157,11 +160,19 @@ func_ov018_020fd7c8 kind:function(arm,size=0x48) addr:0x020fd7c8
 func_ov018_020fd810 kind:function(arm,size=0x48) addr:0x020fd810
 func_ov018_020fd858 kind:function(arm,size=0x148) addr:0x020fd858
 func_ov018_020fd9a0 kind:function(arm,size=0x258) addr:0x020fd9a0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss00/Boss00Light_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov018_020fdbf8 kind:function(arm,size=0x40) addr:0x020fdbf8
 func_ov018_020fdc38 kind:function(arm,size=0x218) addr:0x020fdc38
 func_ov018_020fde50 kind:function(arm,size=0x8) addr:0x020fde50
 func_ov018_020fde58 kind:function(arm,size=0x18) addr:0x020fde58
 func_ov018_020fde70 kind:function(arm,size=0x48) addr:0x020fde70
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss00/Boss00OBJ.c
+//////////////////////////////////////////////////////////////////////
 func_ov018_020fdeb8 kind:function(arm,size=0x14) addr:0x020fdeb8
 func_ov018_020fdecc kind:function(arm,size=0x1c4) addr:0x020fdecc
 func_ov018_020fe090 kind:function(arm,size=0xfc) addr:0x020fe090
@@ -173,6 +184,10 @@ func_ov018_020fe360 kind:function(arm,size=0x68) addr:0x020fe360
 func_ov018_020fe3c8 kind:function(arm,size=0x14) addr:0x020fe3c8
 func_ov018_020fe3dc kind:function(arm,size=0x48) addr:0x020fe3dc
 func_ov018_020fe424 kind:function(arm,size=0x1b4) addr:0x020fe424
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss00/BtlObsBoss00.c
+//////////////////////////////////////////////////////////////////////
 func_ov018_020fe5d8 kind:function(arm,size=0x28) addr:0x020fe5d8
 func_ov018_020fe600 kind:function(arm,size=0x2c) addr:0x020fe600
 func_ov018_020fe62c kind:function(arm,size=0x30) addr:0x020fe62c
@@ -185,6 +200,7 @@ func_ov018_020fe8b8 kind:function(arm,size=0xec) addr:0x020fe8b8
 func_ov018_020fe9a4 kind:function(arm,size=0x44) addr:0x020fe9a4
 func_ov018_020fe9e8 kind:function(arm,size=0x28) addr:0x020fe9e8
 func_ov018_020fea10 kind:function(arm,size=0x48) addr:0x020fea10
+
 data_ov018_020fea58 kind:data(any) addr:0x020fea58
 data_ov018_020fea60 kind:data(any) addr:0x020fea60
 data_ov018_020fea70 kind:data(any) addr:0x020fea70

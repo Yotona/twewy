@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
-// src/Combat/Noise/Boss02.c
+// src/Combat/Noise/Boss02/BtlBoss02_00_RG.c
 //////////////////////////////////////////////////////////////////////
-func_ov017_021256c0 kind:function(arm,size=0x24) addr:0x021256c0
+BtlBoss02_00_RG_SetState kind:function(arm,size=0x24) addr:0x021256c0
 func_ov017_021256e4 kind:function(arm,size=0x24) addr:0x021256e4
 func_ov017_02125708 kind:function(arm,size=0x8c) addr:0x02125708
 func_ov017_02125794 kind:function(arm,size=0xac) addr:0x02125794
@@ -20,11 +20,13 @@ func_ov017_02125e5c kind:function(arm,size=0xec) addr:0x02125e5c
 func_ov017_02125f48 kind:function(arm,size=0x6c) addr:0x02125f48
 func_ov017_02125fb4 kind:function(arm,size=0x78) addr:0x02125fb4
 func_ov017_0212602c kind:function(arm,size=0x68) addr:0x0212602c
-func_ov017_02126094 kind:function(arm,size=0x160) addr:0x02126094
-func_ov017_021261f4 kind:function(arm,size=0x160) addr:0x021261f4
-func_ov017_02126354 kind:function(arm,size=0x20) addr:0x02126354
-func_ov017_02126374 kind:function(arm,size=0x20) addr:0x02126374
-func_ov017_02126394 kind:function(arm,size=0x48) addr:0x02126394
+BtlBoss02_00_RG_Init kind:function(arm,size=0x160) addr:0x02126094
+BtlBoss02_00_RG_Update kind:function(arm,size=0x160) addr:0x021261f4
+BtlBoss02_00_RG_Render kind:function(arm,size=0x20) addr:0x02126354
+BtlBoss02_00_RG_Destroy kind:function(arm,size=0x20) addr:0x02126374
+BtlBoss02_00_RG_RunTask kind:function(arm,size=0x48) addr:0x02126394
+
+
 func_ov017_021263dc kind:function(arm,size=0x14) addr:0x021263dc
 func_ov017_021263f0 kind:function(arm,size=0xf4) addr:0x021263f0
 func_ov017_021264e4 kind:function(arm,size=0x100) addr:0x021264e4
@@ -643,20 +645,21 @@ BtlBoss03_ThrwBdge_Update kind:function(arm,size=0x40c) addr:0x02141064
 BtlBoss03_ThrwBdge_Render kind:function(arm,size=0x8c) addr:0x02141470
 BtlBoss03_ThrwBdge_Destroy kind:function(arm,size=0x14) addr:0x021414fc
 
-
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss02/BtlBoss02_00_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov017_02141510 kind:data(any) addr:0x02141510
 data_ov017_02141518 kind:data(any) addr:0x02141518
 data_ov017_02141520 kind:data(any) addr:0x02141520
 data_ov017_02141528 kind:data(any) addr:0x02141528
 data_ov017_02141530 kind:data(any) addr:0x02141530
 data_ov017_02141538 kind:data(any) addr:0x02141538
-data_ov017_0214153c kind:data(any) addr:0x0214153c
-data_ov017_02141540 kind:data(any) addr:0x02141540
 data_ov017_02141568 kind:data(any) addr:0x02141568
 data_ov017_021415a8 kind:data(any) addr:0x021415a8
 data_ov017_02141640 kind:data(any) addr:0x02141640
-data_ov017_02141650 kind:data(any) addr:0x02141650
+Tsk_BtlBoss02_00_RG kind:data(any) addr:0x02141650
 data_ov017_0214165c kind:data(any) addr:0x0214165c
+
 data_ov017_0214166c kind:data(any) addr:0x0214166c
 data_ov017_02141674 kind:data(any) addr:0x02141674
 data_ov017_02141684 kind:data(any) addr:0x02141684
@@ -865,6 +868,8 @@ data_ov017_02142c34 kind:data(any) addr:0x02142c34
 Tsk_BtlBoss03_ThrwBdge kind:data(any) addr:0x02142cbc
 data_ov017_02142cc8 kind:data(any) addr:0x02142cc8
 data_ov017_02142ccc kind:data(any) addr:0x02142ccc
+
+
 data_ov017_02142d00 kind:data(any) addr:0x02142d00
 data_ov017_02142d1c kind:data(any) addr:0x02142d1c
 data_ov017_02142d3c kind:data(any) addr:0x02142d3c
@@ -872,6 +877,8 @@ data_ov017_02142d5c kind:data(any) addr:0x02142d5c
 data_ov017_02142d7c kind:data(any) addr:0x02142d7c
 data_ov017_02142d9c kind:data(any) addr:0x02142d9c
 data_ov017_02142da0 kind:data(any) addr:0x02142da0
+
+
 data_ov017_02142db4 kind:data(any) addr:0x02142db4
 data_ov017_02142dd0 kind:data(any) addr:0x02142dd0
 data_ov017_02142df4 kind:data(any) addr:0x02142df4

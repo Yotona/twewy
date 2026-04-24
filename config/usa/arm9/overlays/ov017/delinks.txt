@@ -5,10 +5,15 @@
     .data       start:0x02142d00 end:0x02143980 kind:data align:32
     .bss        start:0x02143980 end:0x02143a80 kind:bss align:32
 
+src/Combat/Noise/Boss02/BtlBoss02_00_RG.c:
+    .text       start:0x021256c0 end:0x021263dc
+    .rodata     start:0x02141510 end:0x0214166c
+    .data       start:0x02142d00 end:0x02142db4
+
 src/Combat/Noise/Boss02.c:
-    .text       start:0x021256c0 end:0x0213029c
-    .rodata     start:0x02141510 end:0x02142040
-    .data       start:0x02142d00 end:0x02143164
+    .text       start:0x021263dc end:0x0213029c
+    .rodata     start:0x0214166c end:0x02142040
+    .data       start:0x02142db4 end:0x02143164
     .bss        start:0x02143980 end:0x02143a24
 
 src/Combat/Noise/Boss03.c:

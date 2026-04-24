@@ -6,12 +6,12 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [01 - Font](#overlay-01---font)
 - [02 - OtosuMenu](#overlay-02---otosu-menu)
 - [03](#overlay-03)
-- [04](#overlay-04)
+- [04 - Shiki](#overlay-04---shiki)
 - [05](#overlay-05)
 - [06](#overlay-06)
 - [07](#overlay-07)
 - [08](#overlay-08)
-- [09](#overlay-09)
+- [09 - Noise](#overlay-09---noise)
 - [10](#overlay-10)
 - [11](#overlay-11)
 - [12](#overlay-12)
@@ -19,14 +19,14 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [14](#overlay-14)
 - [15](#overlay-15)
 - [16 - Boss01](#overlay-16---boss01)
-- [17](#overlay-17)
-- [18](#overlay-18)
+- [17 - Boss02 and Boss03](#overlay-17---boss02-and-boss03)
+- [18 - Boss00](#overlay-18---boss00)
 - [19](#overlay-19)
 - [20](#overlay-20)
 - [21](#overlay-21)
 - [22](#overlay-22)
 - [23](#overlay-23)
-- [24](#overlay-24)
+- [24 - Boss15 and Boss16](#overlay-24---boss15-and-boss16)
 - [25 - Continue](#overlay-25---continue)
 - [26 - Tutorial](#overlay-26---tutorial)
 - [27](#overlay-27)
@@ -80,13 +80,12 @@ TODO: Decompile and document
 
 Speculated purpose: main battle system logic
 
-## Overlay 04
+## Overlay 04 - Shiki
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[Shiki](../src/Combat/Friend/Shiki/)
 
-TODO: Decompile and document
-
-Speculated purpose: Shiki
+TODO: Document
 
 ## Overlay 05
 
@@ -120,13 +119,16 @@ TODO: Decompile and document
 
 Speculated purpose: Tutorial battles
 
-## Overlay 09
+## Overlay 09 - Noise
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[BtlEnm003](../src/Combat/Noise/BtlEnm003),
+[BtlEnm012](../src/Combat/Noise/BtlEnm012),
+[BtlEnm019](../src/Combat/Noise/BtlEnm019),
+[BtlEnm028](../src/Combat/Noise/BtlEnm028),
+[BtlEnm044](../src/Combat/Noise/BtlEnm044),
 
 TODO: Decompile and document
-
-Speculated purpose: Noise
 
 ## Overlay 10
 
@@ -183,21 +185,20 @@ Speculated purpose: Noise
 
 Contains logic for "Boss01". TODO: Determine which boss this is and document its functionality.
 
-## Overlay 17
+## Overlay 17 - Boss02 and Boss03
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[Boss02](../src/Combat/Noise/Boss02.c),
+[Boss03](../src/Combat/Noise/Boss03.c)
+
+TODO: Document
+
+## Overlay 18 - Boss00
+
+**Files:**
+[Boss00](../src/Combat/Noise/Boss00/)
 
 TODO: Decompile and document
-
-Speculated purpose: Boss fight - Sho Minimimoto
-
-## Overlay 18
-
-**Files:** N/A (Not yet decompiled)
-
-TODO: Decompile and document
-
-Speculated purpose: Boss fight
 
 ## Overlay 19
 
@@ -239,13 +240,13 @@ TODO: Decompile and document
 
 Speculated purpose: Boss fight
 
-## Overlay 24
+## Overlay 24 - Boss15 and Boss16
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[Boss15](../src/Combat/Noise/Boss15),
+[Boss16](../src/Combat/Noise/Boss16)
 
 TODO: Decompile and document
-
-Speculated purpose: Boss fight
 
 ## Overlay 25 - Continue
 

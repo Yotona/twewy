@@ -1,3 +1,6 @@
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f1080 kind:function(arm,size=0x58) addr:0x020f1080
 func_ov024_020f10d8 kind:function(arm,size=0x14) addr:0x020f10d8
 func_ov024_020f10ec kind:function(arm,size=0x2c) addr:0x020f10ec
@@ -22,6 +25,10 @@ func_ov024_020f25ac kind:function(arm,size=0x270) addr:0x020f25ac
 func_ov024_020f281c kind:function(arm,size=0x14) addr:0x020f281c
 func_ov024_020f2830 kind:function(arm,size=0x14) addr:0x020f2830
 func_ov024_020f2844 kind:function(arm,size=0x48) addr:0x020f2844
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f288c kind:function(arm,size=0x68) addr:0x020f288c
 func_ov024_020f28f4 kind:function(arm,size=0x28) addr:0x020f28f4
 func_ov024_020f291c kind:function(arm,size=0x84) addr:0x020f291c
@@ -42,6 +49,10 @@ func_ov024_020f32dc kind:function(arm,size=0x2ac) addr:0x020f32dc
 func_ov024_020f3588 kind:function(arm,size=0x14) addr:0x020f3588
 func_ov024_020f359c kind:function(arm,size=0x14) addr:0x020f359c
 func_ov024_020f35b0 kind:function(arm,size=0x48) addr:0x020f35b0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_EffRecover.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f35f8 kind:function(arm,size=0x3c) addr:0x020f35f8
 func_ov024_020f3634 kind:function(arm,size=0x2b0) addr:0x020f3634
 func_ov024_020f38e4 kind:function(arm,size=0x258) addr:0x020f38e4
@@ -53,6 +64,10 @@ func_ov024_020f3f98 kind:function(arm,size=0x78) addr:0x020f3f98
 func_ov024_020f4010 kind:function(arm,size=0x14) addr:0x020f4010
 func_ov024_020f4024 kind:function(arm,size=0x48) addr:0x020f4024
 func_ov024_020f406c kind:function(arm,size=0x34) addr:0x020f406c
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_RG.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f40a0 kind:function(arm,size=0x28) addr:0x020f40a0
 func_ov024_020f40c8 kind:function(arm,size=0x28) addr:0x020f40c8
 func_ov024_020f40f0 kind:function(arm,size=0x174) addr:0x020f40f0
@@ -70,6 +85,10 @@ func_ov024_020f495c kind:function(arm,size=0x370) addr:0x020f495c
 func_ov024_020f4ccc kind:function(arm,size=0x14) addr:0x020f4ccc
 func_ov024_020f4ce0 kind:function(arm,size=0x14) addr:0x020f4ce0
 func_ov024_020f4cf4 kind:function(arm,size=0x48) addr:0x020f4cf4
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_UG.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f4d3c kind:function(arm,size=0x68) addr:0x020f4d3c
 func_ov024_020f4da4 kind:function(arm,size=0x28) addr:0x020f4da4
 func_ov024_020f4dcc kind:function(arm,size=0x40) addr:0x020f4dcc
@@ -88,6 +107,10 @@ func_ov024_020f54a8 kind:function(arm,size=0x278) addr:0x020f54a8
 func_ov024_020f5720 kind:function(arm,size=0x14) addr:0x020f5720
 func_ov024_020f5734 kind:function(arm,size=0x14) addr:0x020f5734
 func_ov024_020f5748 kind:function(arm,size=0x48) addr:0x020f5748
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlFeat30.c
+//////////////////////////////////////////////////////////////////////
 func_ov024_020f5790 kind:function(arm,size=0x2c) addr:0x020f5790
 func_ov024_020f57bc kind:function(arm,size=0xc) addr:0x020f57bc
 func_ov024_020f57c8 kind:function(arm,size=0x1bc) addr:0x020f57c8
@@ -112,6 +135,10 @@ func_ov024_020f6478 kind:function(arm,size=0x3c) addr:0x020f6478
 func_ov024_020f64b4 kind:function(arm,size=0x24) addr:0x020f64b4
 func_ov024_020f64d8 kind:function(arm,size=0x50) addr:0x020f64d8
 func_ov024_020f6528 kind:function(arm,size=0x48) addr:0x020f6528
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6570 kind:data(any) addr:0x020f6570
 data_ov024_020f6574 kind:data(any) addr:0x020f6574
 data_ov024_020f657a kind:data(any) addr:0x020f657a
@@ -124,10 +151,18 @@ data_ov024_020f66ec kind:data(any) addr:0x020f66ec
 data_ov024_020f66f4 kind:data(any) addr:0x020f66f4
 data_ov024_020f6700 kind:data(any) addr:0x020f6700
 data_ov024_020f6710 kind:data(any) addr:0x020f6710 ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6720 kind:data(any) addr:0x020f6720
 data_ov024_020f672c kind:data(any) addr:0x020f672c
 data_ov024_020f673c kind:data(any) addr:0x020f673c
 data_ov024_020f674c kind:data(any) addr:0x020f674c ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_EffRecover.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6758 kind:data(any) addr:0x020f6758
 data_ov024_020f6768 kind:data(any) addr:0x020f6768
 data_ov024_020f6778 kind:data(any) addr:0x020f6778
@@ -136,14 +171,26 @@ data_ov024_020f67a0 kind:data(any) addr:0x020f67a0
 data_ov024_020f6860 kind:data(any) addr:0x020f6860
 data_ov024_020f6868 kind:data(any) addr:0x020f6868
 data_ov024_020f6874 kind:data(any) addr:0x020f6874
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6884 kind:data(any) addr:0x020f6884
 data_ov024_020f688c kind:data(any) addr:0x020f688c
 data_ov024_020f6898 kind:data(any) addr:0x020f6898
 data_ov024_020f68a8 kind:data(any) addr:0x020f68a8 ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f68b4 kind:data(any) addr:0x020f68b4
 data_ov024_020f68bc kind:data(any) addr:0x020f68bc
 data_ov024_020f68c8 kind:data(any) addr:0x020f68c8
 data_ov024_020f68d8 kind:data(any) addr:0x020f68d8 ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlFeat30.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f68e4 kind:data(any) addr:0x020f68e4
 data_ov024_020f68f0 kind:data(any) addr:0x020f68f0
 data_ov024_020f68fc kind:data(any) addr:0x020f68fc
@@ -158,14 +205,42 @@ data_ov024_020f6abc kind:data(any) addr:0x020f6abc
 data_ov024_020f6abe kind:data(any) addr:0x020f6abe
 data_ov024_020f6ac0 kind:data(any) addr:0x020f6ac0
 data_ov024_020f6b7c kind:data(any) addr:0x020f6b7c ambiguous
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6ba0 kind:data(any) addr:0x020f6ba0 ambiguous
 data_ov024_020f6bac kind:data(any) addr:0x020f6bac
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss15/BtlBoss15_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6bc0 kind:data(any) addr:0x020f6bc0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_EffRecover.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6bd4 kind:data(any) addr:0x020f6bd4 ambiguous
 data_ov024_020f6be0 kind:data(any) addr:0x020f6be0
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6bfc kind:data(any) addr:0x020f6bfc
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_UG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6c10 kind:data(any) addr:0x020f6c10
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlFeat30.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6c24 kind:data(any) addr:0x020f6c24
 data_ov024_020f6c34 kind:data(any) addr:0x020f6c34
 data_ov024_020f6c60 kind:data(any) addr:0x020f6c60
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/Boss16/BtlBoss16_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov024_020f6c80 kind:bss addr:0x020f6c80

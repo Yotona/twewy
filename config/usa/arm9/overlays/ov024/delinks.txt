@@ -4,3 +4,35 @@
     .ctor       start:0x020f6b88 end:0x020f6b88 kind:rodata align:4
     .data       start:0x020f6ba0 end:0x020f6c80 kind:data align:32
     .bss        start:0x020f6c80 end:0x020f6ca0 kind:bss align:32
+
+
+src/Combat/Noise/Boss15/BtlBoss15_RG.c:
+    .text       start:0x020f1080 end:0x020f288c
+    .rodata     start:0x020f6570 end:0x020f6720
+    .data       start:0x020f6ba0 end:0x020f6bc0
+
+src/Combat/Noise/Boss15/BtlBoss15_UG.c:
+    .text       start:0x020f288c end:0x020f35f8
+    .rodata     start:0x020f6720 end:0x020f6758
+    .data       start:0x020f6bc0 end:0x020f6bd4
+
+src/Combat/Noise/Boss16/BtlBoss16_EffRecover.c:
+    .text       start:0x020f35f8 end:0x020f40a0
+    .rodata     start:0x020f6758 end:0x020f6884
+    .data       start:0x020f6bd4 end:0x020f6bfc
+
+src/Combat/Noise/Boss16/BtlBoss16_RG.c:
+    .text       start:0x020f40a0 end:0x020f4d3c
+    .rodata     start:0x020f6884 end:0x020f68b4
+    .data       start:0x020f6bfc end:0x020f6c10
+    .bss        start:0x020f6c80 end:0x020f6ca0
+
+src/Combat/Noise/Boss16/BtlBoss16_UG.c:
+    .text       start:0x020f4d3c end:0x020f5790
+    .rodata     start:0x020f68b4 end:0x020f68e4
+    .data       start:0x020f6c10 end:0x020f6c24
+
+src/Combat/Noise/Boss16/BtlFeat30.c:
+    .text       start:0x020f5790 end:0x020f6570
+    .rodata     start:0x020f68e4 end:0x020f6b88
+    .data       start:0x020f6c24 end:0x020f6c80

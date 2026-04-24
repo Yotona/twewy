@@ -6,7 +6,7 @@
 #include "Engine/EasyTask.h"
 #include "SndMgr.h"
 
-extern s32 func_ov003_0208a114(u16);
+extern Vec* func_ov003_0208a114(u16);
 
 extern BinIdentifier data_ov003_020d77e0;
 
@@ -206,25 +206,21 @@ void func_ov004_020e951c(BtlArm_Doll* doll) {
     }
 }
 
-// Nonmatching: "stack" assignment difference
 s32 func_ov004_020e95ec(BtlArm_Doll* doll, u16 arg1, s32 arg2, s32 arg3) {
-    s32 stack[3];
     s32 var_r5;
-
     if (doll->actor.isFlipped == 0) {
         var_r5 = doll->actor.position.x - (arg2 << 0xC);
     } else {
         var_r5 = doll->actor.position.x + (arg2 << 0xC);
     }
     s32 temp_r4 = doll->actor.position.z + (arg3 << 0xC);
-
-    *stack = func_ov003_0208a114(arg1);
+    Vec vec     = *func_ov003_0208a114(arg1);
 
     if (func_ov003_020a3330(0x21) != 0) {
-        stack[2] = (stack[2] & ~0xF80000) | ((u32)(func_ov003_020a3468(0x21) << 0x1B) >> 8);
+        vec.z = (vec.z & ~0xF80000) | ((u32)(func_ov003_020a3468(0x21) << 0x1B) >> 8);
     }
 
-    if (func_ov003_0208a164(&stack, data_ov003_020e71b8->unk3D89C + 4, var_r5, doll->actor.position.y, temp_r4) == 1) {
+    if (func_ov003_0208a164(&vec, data_ov003_020e71b8->unk3D89C + 4, var_r5, doll->actor.position.y, temp_r4) == 1) {
         return 1;
     }
     return 0;
