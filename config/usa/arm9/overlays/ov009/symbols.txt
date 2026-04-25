@@ -891,7 +891,7 @@ func_ov009_02120b5c kind:function(arm,size=0x38) addr:0x02120b5c
 // src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c
 //////////////////////////////////////////////////////////////////////
 func_ov009_02120b94 kind:function(arm,size=0x50) addr:0x02120b94
-func_ov009_02120be4 kind:function(arm,size=0x34) addr:0x02120be4
+BtlEnm003_RG_SetState kind:function(arm,size=0x34) addr:0x02120be4
 func_ov009_02120c18 kind:function(arm,size=0x30) addr:0x02120c18
 func_ov009_02120c48 kind:function(arm,size=0x28) addr:0x02120c48
 func_ov009_02120c70 kind:function(arm,size=0xa8) addr:0x02120c70
@@ -903,11 +903,11 @@ func_ov009_021210f8 kind:function(arm,size=0x184) addr:0x021210f8
 func_ov009_0212127c kind:function(arm,size=0x2c) addr:0x0212127c
 func_ov009_021212a8 kind:function(arm,size=0x1c) addr:0x021212a8
 func_ov009_021212c4 kind:function(arm,size=0x30) addr:0x021212c4
-func_ov009_021212f4 kind:function(arm,size=0x64) addr:0x021212f4
-func_ov009_02121358 kind:function(arm,size=0xf0) addr:0x02121358
-func_ov009_02121448 kind:function(arm,size=0x14) addr:0x02121448
-func_ov009_0212145c kind:function(arm,size=0x14) addr:0x0212145c
-func_ov009_02121470 kind:function(arm,size=0x48) addr:0x02121470
+BtlEnm003_RG_Init kind:function(arm,size=0x64) addr:0x021212f4
+BtlEnm003_RG_Update kind:function(arm,size=0xf0) addr:0x02121358
+BtlEnm003_RG_Render kind:function(arm,size=0x14) addr:0x02121448
+BtlEnm003_RG_Destroy kind:function(arm,size=0x14) addr:0x0212145c
+BtlEnm003_RG_RunTask kind:function(arm,size=0x48) addr:0x02121470
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c
@@ -1274,10 +1274,14 @@ data_ov009_0212477c kind:data(any) addr:0x0212477c ambiguous
 data_ov009_0212477e kind:data(any) addr:0x0212477e
 data_ov009_02124788 kind:data(any) addr:0x02124788
 data_ov009_02124794 kind:data(any) addr:0x02124794
+
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c
+//////////////////////////////////////////////////////////////////////
 data_ov009_021247b4 kind:data(any) addr:0x021247b4
-data_ov009_021247bc kind:data(any) addr:0x021247bc
+@1374 kind:data(any) addr:0x021247bc local
 data_ov009_021247cc kind:data(any) addr:0x021247cc
-data_ov009_021247e0 kind:data(any) addr:0x021247e0 ambiguous
+Tsk_BtlEnm003_RG kind:data(any) addr:0x021247e0 ambiguous
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c
@@ -1453,8 +1457,8 @@ data_ov009_021255c4 kind:data(any) addr:0x021255c4
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c
 //////////////////////////////////////////////////////////////////////
-data_ov009_021255d8 kind:data(any) addr:0x021255d8
-data_ov009_021255e4 kind:data(any) addr:0x021255e4
+data_ov009_021255d8 kind:data(any) addr:0x021255d8 local
+@1173 kind:data(any) addr:0x021255e4 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c

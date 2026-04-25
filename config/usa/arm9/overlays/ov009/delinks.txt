@@ -53,6 +53,7 @@ src/Combat/Noise/BtlEnm003/BtlEnm003_Eff.c:
 
 src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c:
     .text       start:0x02120b94 end:0x021214b8
+    .rodata     start:0x021247b4 end:0x021247ec
     .data       start:0x021255d8 end:0x021255f8
 
 src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c:
