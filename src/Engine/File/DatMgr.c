@@ -141,7 +141,7 @@ Data* DatMgr_LoadRawData(s32 dataType, void* buffer, s32 dataSize, BinIdentifier
 }
 
 // Nonmatching: Unexpected stack usage
-Data* DatMgr_LoadRawDataWithOffset(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden, s32 offset) {
+Data* DatMgr_LoadRawDataWithOffset(s32 dataType, void* buffer, s32 dataSize, const BinIdentifier* iden, s32 offset) {
     DatMgr* datMgr = g_activeDatMgr;
     if (datMgr == NULL) {
         return NULL;

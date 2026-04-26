@@ -82,7 +82,7 @@ Data* DatMgr_LoadRawData(s32 dataType, void* buffer, s32 dataSize, BinIdentifier
  * @param offset Offset into the file to start loading from.
  * @return Pointer to the loaded Data entry.
  */
-Data* DatMgr_LoadRawDataWithOffset(s32 dataType, void* buffer, s32 dataSize, BinIdentifier* iden, s32 offset);
+Data* DatMgr_LoadRawDataWithOffset(s32 dataType, void* buffer, s32 dataSize, const BinIdentifier* iden, s32 offset);
 
 /**
  * @brief Loads a compressed binary file.

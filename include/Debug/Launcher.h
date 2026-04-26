@@ -110,7 +110,7 @@ extern void func_ov041_02082bc4(void* state);
 
 extern void func_ov042_020824a0(void* state);
 
-extern void func_ov043_020826ac(void* state);
+extern void ProcessOverlay_TakTest(void* state);
 extern void func_ov043_02084040(void* state);
 extern void func_ov043_0208f44c(void* state);
 extern void func_ov043_0209bce4(void* state);
@@ -140,32 +140,32 @@ const DebugLauncherOption Options_Suyama[2] = {
 
 const DebugLauncherOption Options_Takami[14] = {
     // "Feature: test2", "Description: test2"
-    {1,            "機能\:test2",                      "説明:test2",                  43, func_ov043_020826ac},
+    {1,            "機能\:test2",                      "説明:test2",                  43, ProcessOverlay_TakTest},
     // "Feature: Menu Top", "Description: First screen of the menu"
-    {2,   "機能\:メニュートップ",       "説明:メニューの最初の画面",                  43, func_ov043_02084040},
+    {2,   "機能\:メニュートップ",       "説明:メニューの最初の画面",                  43,    func_ov043_02084040},
     // "Feature: Badge Select", "Description: Screen for organizing badges"
-    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",                  43, func_ov043_0208f44c},
+    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",                  43,    func_ov043_0208f44c},
     // "Feature: Scenario Select", "Description: Scenario selection screen"
-    {4, "機能\:シナリオセレクト",     "説明:シナリオを選択する画面",                  43, func_ov043_0209bce4},
+    {4, "機能\:シナリオセレクト",     "説明:シナリオを選択する画面",                  43,    func_ov043_0209bce4},
     // "Feature: Equipment", "Description: Equipment selection screen"
-    {5,           "機能\:そうび",       "説明:そうびを選択する画面",                  43, func_ov043_020a15e8},
+    {5,           "機能\:そうび",       "説明:そうびを選択する画面",                  43,    func_ov043_020a15e8},
     // "Feature: Result", "Description: Result screen after battle"
-    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",                  44, func_ov044_02084a88},
+    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",                  44,    func_ov044_02084a88},
     // "Feature: Shop", "Description: Shop screen"
-    {7,         "機能\:ショップ",               "説明:ショップ画面",                  43, func_ov043_020aeee0},
+    {7,         "機能\:ショップ",               "説明:ショップ画面",                  43,    func_ov043_020aeee0},
     // "Feature: Department Store", "Description: Department store screen"
-    {8,         "機能\:デパート",               "説明:デパート画面",                  43, func_ov043_020bd414},
+    {8,         "機能\:デパート",               "説明:デパート画面",                  43,    func_ov043_020bd414},
     // "Feature: Save", "Description: Save screen"
-    {9,           "機能\:セーブ",                 "説明:セーブ画面",                  43, func_ov043_020c04f0},
+    {9,           "機能\:セーブ",                 "説明:セーブ画面",                  43,    func_ov043_020c04f0},
     // "Feature: Test2", "Description: Test2"
-    {1,          "機能\:テスト2",                    "説明:テスト2",                  43, func_ov043_020c6644},
+    {1,          "機能\:テスト2",                    "説明:テスト2",                  43,    func_ov043_020c6644},
     // "Feature: Communication Menu", "Description: Communication menu screen"
-    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",                  45, func_ov045_02083c78},
+    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",                  45,    func_ov045_02083c78},
     // "Feature: Communication Setup", "Description: Communication setup screen"
-    {3,       "機能\:通信セット",             "説明:通信セット画面",                  45, func_ov045_02088700},
+    {3,       "機能\:通信セット",             "説明:通信セット画面",                  45,    func_ov045_02088700},
     // "Feature: Friend List", "Description: Friend list screen"
-    {4,   "機能\:フレンドリスト",         "説明:フレンドリスト画面",                  45, func_ov045_02091034},
-    {0,                     NULL,                              NULL, OVERLAY_ID_UNLOADED,                NULL},
+    {4,   "機能\:フレンドリスト",         "説明:フレンドリスト画面",                  45,    func_ov045_02091034},
+    {0,                     NULL,                              NULL, OVERLAY_ID_UNLOADED,                   NULL},
 };
 
 const DebugLauncherOption Options_Fukuda[13] = {

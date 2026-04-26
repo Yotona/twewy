@@ -8,28 +8,28 @@
 // src/Debug/Takami/TakTest.c
 /////////////////////////////////////////////////////////////
 func_ov043_020824a0 kind:function(arm,size=0x4) addr:0x020824a0
-func_ov043_020824a4 kind:function(arm,size=0x14) addr:0x020824a4
-func_ov043_020824b8 kind:function(arm,size=0x14) addr:0x020824b8
-func_ov043_020824cc kind:function(arm,size=0x120) addr:0x020824cc
-func_ov043_020825ec kind:function(arm,size=0x80) addr:0x020825ec
-func_ov043_0208266c kind:function(arm,size=0x40) addr:0x0208266c
-func_ov043_020826ac kind:function(arm,size=0x40) addr:0x020826ac
-func_ov043_020826ec kind:function(arm,size=0x338) addr:0x020826ec
-func_ov043_02082a24 kind:function(arm,size=0xd0) addr:0x02082a24
-func_ov043_02082af4 kind:function(arm,size=0x1c) addr:0x02082af4
-func_ov043_02082b10 kind:function(arm,size=0x1a8) addr:0x02082b10
-func_ov043_02082cb8 kind:function(arm,size=0x9c) addr:0x02082cb8
-func_ov043_02082d54 kind:function(arm,size=0x8) addr:0x02082d54
-func_ov043_02082d5c kind:function(arm,size=0x58) addr:0x02082d5c
-func_ov043_02082db4 kind:function(arm,size=0x48) addr:0x02082db4
-func_ov043_02082dfc kind:function(arm,size=0x9c) addr:0x02082dfc
-func_ov043_02082e98 kind:function(arm,size=0x6c) addr:0x02082e98
-func_ov043_02082f04 kind:function(arm,size=0x18) addr:0x02082f04
-func_ov043_02082f1c kind:function(arm,size=0x14) addr:0x02082f1c
-func_ov043_02082f30 kind:function(arm,size=0x14) addr:0x02082f30
-func_ov043_02082f44 kind:function(arm,size=0x14) addr:0x02082f44
-func_ov043_02082f58 kind:function(arm,size=0x48) addr:0x02082f58
-func_ov043_02082fa0 kind:function(arm,size=0x30) addr:0x02082fa0
+TakTest_UpdateTaskPool kind:function(arm,size=0x14) addr:0x020824a4
+TakTest_DestroyTaskPool kind:function(arm,size=0x14) addr:0x020824b8
+TakTest_Init kind:function(arm,size=0x120) addr:0x020824cc
+TakTest_Update kind:function(arm,size=0x80) addr:0x020825ec
+TakTest_Destroy kind:function(arm,size=0x40) addr:0x0208266c
+ProcessOverlay_TakTest kind:function(arm,size=0x40) addr:0x020826ac
+TakTest_InitSystems kind:function(arm,size=0x338) addr:0x020826ec
+TakTest_VBlank kind:function(arm,size=0xd0) addr:0x02082a24
+TakTest_RegisterVBlank kind:function(arm,size=0x1c) addr:0x02082af4
+TakTest_BG_Init kind:function(arm,size=0x1a8) addr:0x02082b10
+TakTest_BG_Update kind:function(arm,size=0x9c) addr:0x02082cb8
+TakTest_BG_Render kind:function(arm,size=0x8) addr:0x02082d54
+TakTest_BG_Destroy kind:function(arm,size=0x58) addr:0x02082d5c
+TakTest_BG_RunTask kind:function(arm,size=0x48) addr:0x02082db4
+TakTest_OBJ_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02082dfc
+TakTest_OBJ_Load kind:function(arm,size=0x6c) addr:0x02082e98
+TakTest_OBJ_Init kind:function(arm,size=0x18) addr:0x02082f04
+TakTest_OBJ_Update kind:function(arm,size=0x14) addr:0x02082f1c
+TakTest_OBJ_Render kind:function(arm,size=0x14) addr:0x02082f30
+TakTest_OBJ_Destroy kind:function(arm,size=0x14) addr:0x02082f44
+TakTest_OBJ_RunTask kind:function(arm,size=0x48) addr:0x02082f58
+TakTest_OBJ_CreateTask kind:function(arm,size=0x30) addr:0x02082fa0
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuTop.c
@@ -1931,8 +1931,8 @@ NRepCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c7838
 OvlProc_TakTest kind:data(any) addr:0x020c7870
 data_ov043_020c787c kind:data(any) addr:0x020c787c
 data_ov043_020c7894 kind:data(any) addr:0x020c7894
-data_ov043_020c78a4 kind:data(any) addr:0x020c78a4
-data_ov043_020c78b0 kind:data(any) addr:0x020c78b0
+Tsk_TakTest_BG kind:data(any) addr:0x020c78a4
+Tsk_TakTest_OBJ kind:data(any) addr:0x020c78b0
 data_ov043_020c78bc kind:data(any) addr:0x020c78bc
 data_ov043_020c78d4 kind:data(any) addr:0x020c78d4
 data_ov043_020c78dc kind:data(any) addr:0x020c78dc

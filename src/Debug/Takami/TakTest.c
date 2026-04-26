@@ -1,5 +1,6 @@
 #include "Debug/Takami/TakTest.h"
 #include "Display.h"
+#include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
@@ -8,27 +9,57 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
+#include <NitroSDK/mi/cpumem.h>
 
-void func_ov043_02082af4(void);
-s32  func_ov043_02082db4(TaskPool* pool, Task* task, void* arg2, s32 arg3);
-s32  func_ov043_02082fa0(TaskPool* pool, s32 arg1);
+void TakTest_RegisterVBlank(void);
+s32  TakTest_BG_RunTask(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+s32  TakTest_OBJ_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+s32  TakTest_OBJ_CreateTask(TaskPool* pool, s32 arg1);
+
+const char*           data_ov043_020cb580 = "Seq_TakTest()";
+const TaskHandle      Tsk_TakTest_BG      = {"Tsk_TakTest_BG", TakTest_BG_RunTask, 0x90};
+const TaskHandle      Tsk_TakTest_OBJ     = {"Tsk_TakTest_OBJ", TakTest_OBJ_RunTask, 0x90};
+const BinIdentifier   data_ov043_020c787c = {43, "Apl_Tak/Grp_MenuBadge_BGD00.bin"};
+const SpriteAnimation data_ov043_020c78dc = {
+    .bits_0_1   = 0,
+    .dataType   = 0,
+    .bit_6      = 0,
+    .bits_7_9   = 5,
+    .bits_10_11 = 0,
+    .bits_12_13 = 1,
+    .bits_14_15 = 0,
+    .unk_02     = 0,
+    .unk_04     = 0,
+    .unk_06     = 0,
+    .unk_08     = NULL,
+    .unk_0C     = 0,
+    .unk_10     = 0,
+    .binIden    = &data_ov043_020c787c,
+    .unk_18     = 2,
+    .packIndex  = 2,
+    .unk_1C     = 0,
+    .unk_1E     = 0,
+    .unk_20     = 10,
+    .unk_22     = 2,
+    .unk_24     = 0,
+    .unk_26     = 0,
+    .unk_28     = 0,
+    .unk_2A     = 1,
+};
 
 void func_ov043_020824a0(TakTestState* state) {
     return;
 }
 
-void func_ov043_020824a4(TakTestState* state) {
+void TakTest_UpdateTaskPool(TakTestState* state) {
     EasyTask_UpdatePool(&state->taskPool);
 }
 
-void func_ov043_020824b8(TakTestState* state) {
+void TakTest_DestroyTaskPool(TakTestState* state) {
     EasyTask_DestroyPool(&state->taskPool);
 }
 
-const char*      data_ov043_020cb580 = "Seq_TakTest()";
-const TaskHandle data_ov043_020c78a4 = {"Tsk_TakTest_BG", func_ov043_02082db4, 0x90};
-
-void func_ov043_020824cc(TakTestState* state) {
+void TakTest_Init(TakTestState* state) {
     if (state == NULL) {
         const char* sequence = data_ov043_020cb580;
         state                = Mem_AllocHeapTail(&gDebugHeap, 0x21A38);
@@ -37,34 +68,34 @@ void func_ov043_020824cc(TakTestState* state) {
     }
     state->unk_11584 = DatMgr_AllocateSlot();
     state->unk_11588 = DatMgr_AllocateSlot();
-    func_ov043_02082af4();
+    TakTest_RegisterVBlank();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
-    Mem_InitializeHeap(&state->memPool, state->unk_11598, 0x10000);
+    Mem_InitializeHeap(&state->memPool, state->memPoolBuffer, sizeof(state->memPoolBuffer));
     EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x80, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     func_ov043_020824a0(state);
 
-    EasyTask_CreateTask(&state->taskPool, &data_ov043_020c78a4, 0, 0, 0, NULL);
+    EasyTask_CreateTask(&state->taskPool, &Tsk_TakTest_BG, NULL, 0, NULL, NULL);
 
-    state->unk_21618 = func_ov043_02082fa0(&state->taskPool, state->unk_11588);
+    state->unk_21618 = TakTest_OBJ_CreateTask(&state->taskPool, state->unk_11588);
     MainOvlDisp_NextProcessStage();
 }
 
-void func_ov043_020825ec(TakTestState* state) {
+void TakTest_Update(TakTestState* state) {
     OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
-    func_ov043_020824a4(state);
+    TakTest_UpdateTaskPool(state);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
-void func_ov043_0208266c(TakTestState* state) {
-    func_ov043_020824b8(state);
+void TakTest_Destroy(TakTestState* state) {
+    TakTest_DestroyTaskPool(state);
     ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->unk_11584);
     DatMgr_ClearSlot(state->unk_11588);
@@ -72,22 +103,22 @@ void func_ov043_0208266c(TakTestState* state) {
 }
 
 static const OverlayProcess OvlProc_TakTest = {
-    .init = func_ov043_020824cc,
-    .main = func_ov043_020825ec,
-    .exit = func_ov043_0208266c,
+    .init = TakTest_Init,
+    .main = TakTest_Update,
+    .exit = TakTest_Destroy,
 };
 
-void func_ov043_020826ac(TakTestState* state) {
+void ProcessOverlay_TakTest(TakTestState* state) {
     s32 step = MainOvlDisp_GetProcessStage();
     if (step == PROCESS_STAGE_EXIT) {
-        func_ov043_0208266c(state);
+        TakTest_Destroy(state);
     } else {
         OvlProc_TakTest.funcs[step](state);
     }
 }
 
 // Nonmatching: Some data access differences
-void func_ov043_020826ec(void) {
+void TakTest_InitSystems(void) {
     Interrupts_Init();
     HBlank_Init();
     GX_Init();
@@ -118,14 +149,7 @@ void func_ov043_020826ec(void) {
     g_DisplaySettings.controls[0].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
-    DisplayBGSettings* mainBg0 = Display_GetBG1Settings(DISPLAY_MAIN);
-    mainBg0->bgMode            = DISPLAY_BGMODE_TEXT;
-    mainBg0->screenSizeText    = GX_BG_SIZE_TEXT_256x256;
-    mainBg0->colorMode         = GX_BG_COLORS_16;
-    mainBg0->screenBase        = 0;
-    mainBg0->charBase          = 1;
-    mainBg0->extPlttSlot       = 0;
-    REG_BG1CNT                 = (REG_BG1CNT & 0x43) | 4;
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4);
 
     g_DisplaySettings.engineState[0].bgSettings[0].priority = 1;
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 0;
@@ -172,7 +196,7 @@ void func_ov043_020826ec(void) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
 
-void func_ov043_02082a24(void) {
+void TakTest_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
@@ -186,89 +210,92 @@ void func_ov043_02082a24(void) {
     }
 }
 
-void func_ov043_02082af4(void) {
-    func_ov043_020826ec();
-    Interrupts_RegisterVBlankCallback(func_ov043_02082a24, 1);
+void TakTest_RegisterVBlank(void) {
+    TakTest_InitSystems();
+    Interrupts_RegisterVBlankCallback(TakTest_VBlank, 1);
 }
 
-const BinIdentifier data_ov043_020c787c = {43, "Apl_Tak/Grp_MenuBadge_BGD00.bin"};
-
-s32 func_ov043_02082b10(TaskPool* pool, Task* task, s32 arg2) {
+s32 TakTest_BG_Init(TaskPool* pool, Task* task, s32 arg2) {
     // Not yet implemented
 }
 
-s32 func_ov043_02082cb8(TaskPool* pool, Task* task, s32 arg2) {
+s32 TakTest_BG_Update(TaskPool* pool, Task* task, s32 arg2) {
     // Not yet implemented
 }
 
-s32 func_ov043_02082d54(TaskPool* pool, Task* task, s32 arg2) {
+s32 TakTest_BG_Render(TaskPool* pool, Task* task, s32 arg2) {
     return 1;
 }
 
-s32 func_ov043_02082d5c(TaskPool* pool, Task* task, s32 arg2) {
-    TakTestUnknown* unk = task->data;
-    BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_SUB], unk->resChar);
-    BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], unk->resScreen);
-    PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], unk->resPal);
+s32 TakTest_BG_Destroy(TaskPool* pool, Task* task, s32 arg2) {
+    TakTest_BG* bg = task->data;
+    BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_SUB], bg->resChar);
+    BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], bg->resScreen);
+    PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], bg->resPal);
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
     return 1;
 }
 
-s32 func_ov043_02082db4(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
-    struct TakTestBG {
-        s32 (*funcs[4])(TaskPool* pool, Task* task, s32 arg2);
-    } takTestBg = {func_ov043_02082b10, func_ov043_02082cb8, func_ov043_02082d54, func_ov043_02082d5c};
-
-    return takTestBg.funcs[arg3](pool, task, arg2);
+s32 TakTest_BG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = TakTest_BG_Init,
+        .update     = TakTest_BG_Update,
+        .render     = TakTest_BG_Render,
+        .cleanup    = TakTest_BG_Destroy,
+    };
+    return stages.iter[stage](pool, task, args);
 }
 
-void* func_ov043_02082dfc(void* arg0, s32 arg2) {
+void* TakTest_OBJ_GetFrameInfo(void* arg0, s32 arg2) {
     // Not yet implemented
 }
 
-void func_ov043_02082e98(s32 arg0, s32* arg1) {
-    // Not yet implemented
+void TakTest_OBJ_Load(TakTest_OBJ* obj, TakTest_OBJ_Args* args) {
+    SpriteAnimation anim = data_ov043_020c78dc;
+    anim.dataType        = args->dataType;
+    _Sprite_Load(&obj->sprite, &anim);
 }
 
-s32 func_ov043_02082f04(TaskPool* pool, Task* task, void* arg2) {
-    Sprite* sprite = task->data;
+s32 TakTest_OBJ_Init(TaskPool* pool, Task* task, void* args) {
+    TakTest_OBJ*      obj     = task->data;
+    TakTest_OBJ_Args* objArgs = args;
 
-    func_ov043_02082e98(sprite, arg2);
+    TakTest_OBJ_Load(obj, objArgs);
     return 1;
 }
 
-s32 func_ov043_02082f1c(TaskPool* pool, Task* task, void* arg2) {
-    Sprite* sprite = task->data;
+s32 TakTest_OBJ_Update(TaskPool* pool, Task* task, void* args) {
+    TakTest_OBJ* obj = task->data;
 
-    Sprite_Update(sprite);
+    Sprite_Update(&obj->sprite);
     return 1;
 }
 
-s32 func_ov043_02082f30(TaskPool* pool, Task* task, void* arg2) {
-    Sprite* sprite = task->data;
+s32 TakTest_OBJ_Render(TaskPool* pool, Task* task, void* args) {
+    TakTest_OBJ* obj = task->data;
 
-    Sprite_RenderFrame(sprite);
+    Sprite_RenderFrame(&obj->sprite);
     return 1;
 }
 
-s32 func_ov043_02082f44(TaskPool* pool, Task* task, void* arg2) {
-    Sprite* sprite = task->data;
+s32 TakTest_OBJ_Destroy(TaskPool* pool, Task* task, void* args) {
+    TakTest_OBJ* obj = task->data;
 
-    Sprite_Release(sprite);
+    Sprite_Release(&obj->sprite);
     return 1;
 }
 
-s32 func_ov043_02082f58(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
-    struct TakTestBG {
-        s32 (*funcs[4])(TaskPool* pool, Task* task, void* arg2);
-    } takTestObj = {func_ov043_02082f04, func_ov043_02082f1c, func_ov043_02082f30, func_ov043_02082f44};
-
-    return takTestObj.funcs[arg3](pool, task, arg2);
+s32 TakTest_OBJ_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = TakTest_OBJ_Init,
+        .update     = TakTest_OBJ_Update,
+        .render     = TakTest_OBJ_Render,
+        .cleanup    = TakTest_OBJ_Destroy,
+    };
+    return stages.iter[stage](pool, task, args);
 }
 
-const TaskHandle data_ov043_020c78b0 = {"Tsk_TakTest_OBJ", func_ov043_02082f58, 0x90};
-
-s32 func_ov043_02082fa0(TaskPool* pool, s32 arg1) {
+s32 TakTest_OBJ_CreateTask(TaskPool* pool, s32 arg1) {
     s32 sp8 = arg1;
-    EasyTask_CreateTask(pool, &data_ov043_020c78b0, 0, 0, 0, &sp8);
+    EasyTask_CreateTask(pool, &Tsk_TakTest_OBJ, 0, 0, 0, &sp8);
 }
