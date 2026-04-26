@@ -107,19 +107,19 @@ typedef struct {
     /* 0x04 */ s16          unk_04; // posX?
     /* 0x06 */ s16          unk_06; // posY?
     /* 0x08 */ SpriteFrameInfo* (*unk_08)(struct Sprite*, s32, s32);
-    /* 0x0C */ s32            unk_0C;
-    /* 0x10 */ s32            unk_10;
-    /* 0x14 */ BinIdentifier* binIden;
-    /* 0x18 */ u16            unk_18; // ResourceLoadType?
-    /* 0x1A */ s16            packIndex;
-    /* 0x1C */ s16            unk_1C; // charDataIndex?
-    /* 0x1E */ s16            unk_1E; // charDataFormat?
-    /* 0x20 */ s16            unk_20; // paletteDataIndex?
-    /* 0x22 */ s16            unk_22; // paletteSlots?
-    /* 0x24 */ u16            unk_24;
-    /* 0x26 */ s16            unk_26; // frameDataIndex?
-    /* 0x28 */ s16            unk_28; // animDataIndex?
-    /* 0x2A */ s16            unk_2A;
+    /* 0x0C */ s32                  unk_0C;
+    /* 0x10 */ s32                  unk_10;
+    /* 0x14 */ const BinIdentifier* binIden;
+    /* 0x18 */ u16                  unk_18; // ResourceLoadType?
+    /* 0x1A */ s16                  packIndex;
+    /* 0x1C */ s16                  unk_1C; // charDataIndex?
+    /* 0x1E */ s16                  unk_1E; // charDataFormat?
+    /* 0x20 */ s16                  unk_20; // paletteDataIndex?
+    /* 0x22 */ s16                  unk_22; // paletteSlots?
+    /* 0x24 */ u16                  unk_24;
+    /* 0x26 */ s16                  unk_26; // frameDataIndex?
+    /* 0x28 */ s16                  unk_28; // animDataIndex?
+    /* 0x2A */ s16                  unk_2A;
 } SpriteAnimation;
 
 void Sprite_Init(Sprite* sprite);

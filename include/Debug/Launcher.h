@@ -2,15 +2,27 @@
 #define DEBUG_LAUNCHER_H
 
 #include "EasyList.h"
-#include "Engine/Core/Interrupts.h"
-#include "Engine/Core/Memory.h"
-#include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Text.h"
 #include "SpriteMgr.h"
-#include "common_data.h"
 #include <NitroSDK/gx.h>
+
+typedef struct {
+    /* 0x00 */ s32    unk_00;
+    /* 0x04 */ s32    unk_04;
+    /* 0x08 */ s32    unk_08;
+    /* 0x0C */ s32    unk_0C;
+    /* 0x10 */ Sprite sprite;
+} LauncherIcon; // Size: 0x50
+
+typedef struct {
+    /* 0x0 */ s32 dataType;
+    /* 0x4 */ s32 unk_4;
+    /* 0x8 */ s32 unk_8;
+    /* 0xC */ s32 unk_C;
+} LauncherArgs; // Size: 0x10
 
 typedef struct {
     /* 0x00 */ s32         unk_00;
@@ -28,49 +40,33 @@ typedef struct {
 } DebugLauncherCategory; // Size: 0x10
 
 typedef struct {
-    /* 0x00000 */ BOOL         active;
-    /* 0x00004 */ s32          overlay;
-    /* 0x00008 */ OverlayCB    overlayCB;
-    /* 0x0000C */ InputButtons buttonState;
-    /* 0x00014 */ s32          unk_14;
-    /* 0x00018 */ s32          unk_18;
-    /* 0x0001C */ s32          unk_1C;
-    /* 0x00020 */ s32          selectedCategoryIndex;
-    /* 0x00024 */ u32*         unk_24;
-    /* 0x00028 */ char         unk_28[0x38];
-    /* 0x00060 */ s32          unk_60;
-    /* 0x00064 */ s32          unk_64;
-    /* 0x00068 */ s32          selectedOptionIndex;
-    /* 0x0006C */ u32*         unk_6C;
-    /* 0x00070 */ char         unk_70[0x5C];
-    /* 0x000CC */ s32          unk_CC;
-    /* 0x000D0 */ char         unk_D0[0x1157C];
-    /* 0x1164C */ s32          unk_1164C;
-    /* 0x11650 */ TaskPool     unk_11650;
-    /* 0x116D0 */ char         unk_116D0[0x4018];
-    /* 0x156E8 */ s32          unk_156E8;
-    /* 0x156EC */ char         unk_156EC[0x418];
-    /* 0x15B04 */ s32          unk_15B04;
-    /* 0x15B08 */ char         unk_15B08[0x40C];
-    /* 0x15F14 */ EasyList     unk_list_15F14;
-    /* 0x15F18 */     // char      unk_15F18[0x1C];
-    /* 0x15F34 */     // s32       unk_15F34; // unk_list_15F14->headSentinel(->next?)
-    /* 0x15F38 */     // char      unk_15F38[0x10];
-    /* 0x15F48 */     // EasyListNode* unk_15F48; // unk_list_15F14->tailSentinel.prev
-    /* 0x15F58 */ char unk_15F58[0x1FC];
+    /* 0x00000 */ BOOL            active;
+    /* 0x00004 */ s32             overlay;
+    /* 0x00008 */ OverlayCB       overlayCB;
+    /* 0x0000C */ InputButtons    buttonState;
+    /* 0x00014 */ s32             unk_14;
+    /* 0x00018 */ s32             unk_18;
+    /* 0x0001C */ s32             unk_1C;
+    /* 0x00020 */ s32             selectedCategoryIndex;
+    /* 0x00024 */ u32*            unk_24;
+    /* 0x00028 */ char            unk_28[0x38];
+    /* 0x00060 */ s32             unk_60;
+    /* 0x00064 */ s32             unk_64;
+    /* 0x00068 */ s32             selectedOptionIndex;
+    /* 0x0006C */ u32*            unk_6C;
+    /* 0x00070 */ char            unk_70[0x5C];
+    /* 0x000CC */ ResourceManager unk_CC;
+    // /* 0x000D0 */ char         unk_D0[0x1157C];
+    /* 0x1164C */ ResourceManager* unk_1164C;
+    /* 0x11650 */ TaskPool         unk_11650;
+    /* 0x116D0 */ char             unk_116D0[0x4018];
+    /* 0x156E8 */ TextObject       unk_156E8;
+    /* 0x156EC */ char             unk_156EC[0x418];
+    /* 0x15B04 */ s32              unk_15B04;
+    /* 0x15B08 */ char             unk_15B08[0x40C];
+    /* 0x15F14 */ EasyList         unk_list_15F14;
+    /* 0x15F58 */ char             unk_15F58[0x1FC];
 } DebugLauncherState; // Size: 0x16154
-
-typedef void (*DebugLauncherFunc)(DebugLauncherState*);
-typedef int (*DebugLauncherFunc2)(s32, DebugLauncherState*, s32*);
-
-typedef struct {
-    u32 unk_00;
-    u32 unk_04;
-    u32 unk_08;
-} UnkStruct_DebugLauncher_tuple;
-
-const UnkStruct_DebugLauncher_tuple data_ov046_02083a34 = {0, 0x1000, 0};
-const UnkStruct_DebugLauncher_tuple data_ov046_02083a40 = {0, 0, 0xFFFFF000};
 
 extern void func_ov000_02082854(void* state);
 
@@ -129,11 +125,6 @@ extern void func_ov044_02084a88(void* state);
 extern void func_ov045_02083c78(void* state);
 extern void func_ov045_02088700(void* state);
 extern void func_ov045_02091034(void* state);
-
-int func_ov046_020839a0(s32 r1, DebugLauncherState* state, s32* r2);
-int func_ov046_020839b4(s32 r1, DebugLauncherState* state, s32* r2);
-int func_ov046_020839c4(s32 r1, DebugLauncherState* state, s32* r2);
-int func_ov046_020839d8(s32 r1, DebugLauncherState* state, s32* r2);
 
 const DebugLauncherOption Options_Horii[2] = {
     // "Feature: Noise Report", "Description: Menu screen noise report"
@@ -266,22 +257,8 @@ const DebugLauncherCategory Categories[11] = {
     { 0,             NULL,                        NULL,             NULL},
 };
 
-static const char* Sequence = "Seq_Launcher(void *)";
-
 // const s32 data_ov046_02083a34[3] = {0, 0x1000, 0};
 // const s32 data_ov046_02083a40[3] = {0, 0, -0x1000};
-
-typedef struct {
-    DebugLauncherFunc2 entries[4];
-} DebugLauncherFuncStruct;
-
-static const DebugLauncherFuncStruct data_ov046_02083f7c = {
-    {func_ov046_020839a0, func_ov046_020839b4, func_ov046_020839c4, func_ov046_020839d8}
-};
-
-extern TaskHandle    data_ov046_02083f70;
-extern BinIdentifier data_ov046_02083a4c;
-u16                  data_ov046_02084804 = 0x1280;
 
 void func_ov046_02083670(u16* unkptr, BOOL param_2);
 void func_ov046_0208368c(DebugLauncherState* state);

@@ -3,19 +3,19 @@
 ////// section: .text                                   //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
-func_ov046_020824a0 kind:function(arm,size=0x280) addr:0x020824a0
-func_ov046_02082720 kind:function(arm,size=0xd0) addr:0x02082720
-func_ov046_020827f0 kind:function(arm,size=0x1c) addr:0x020827f0
-func_ov046_0208280c kind:function(arm,size=0x18) addr:0x0208280c
+Launcher_ResetDisplay kind:function(arm,size=0x280) addr:0x020824a0
+Launcher_VBlank kind:function(arm,size=0xd0) addr:0x02082720
+Launcher_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020827f0
+Launcher_UnregisterVBlank kind:function(arm,size=0x18) addr:0x0208280c
 func_ov046_02082824 kind:function(arm,size=0x28) addr:0x02082824
 func_ov046_0208284c kind:function(arm,size=0x28) addr:0x0208284c
 func_ov046_02082874 kind:function(arm,size=0x398) addr:0x02082874
 func_ov046_02082c0c kind:function(arm,size=0x6c) addr:0x02082c0c
 func_ov046_02082c78 kind:function(arm,size=0x6f0) addr:0x02082c78
 func_ov046_02083368 kind:function(arm,size=0xec) addr:0x02083368
-func_ov046_destructor_02083454 kind:function(arm,size=0x6c) addr:0x02083454
-func_ov046_main_020834c0 kind:function(arm,size=0xf4) addr:0x020834c0
-func_ov046_constructor_020835b4 kind:function(arm,size=0x7c) addr:0x020835b4
+Launcher_Destroy kind:function(arm,size=0x6c) addr:0x02083454
+Launcher_Update kind:function(arm,size=0xf4) addr:0x020834c0
+Launcher_Init kind:function(arm,size=0x7c) addr:0x020835b4
 func_ov046_02083630 kind:function(arm,size=0x40) addr:0x02083630
 func_ov046_02083670 kind:function(arm,size=0x1c) addr:0x02083670
 func_ov046_0208368c kind:function(arm,size=0xc) addr:0x0208368c
@@ -24,11 +24,11 @@ func_ov046_020837f8 kind:function(arm,size=0xf4) addr:0x020837f8
 func_ov046_020838ec kind:function(arm,size=0x94) addr:0x020838ec
 func_ov046_02083980 kind:function(arm,size=0x10) addr:0x02083980
 func_ov046_02083990 kind:function(arm,size=0x10) addr:0x02083990
-func_ov046_020839a0 kind:function(arm,size=0x14) addr:0x020839a0
-func_ov046_020839b4 kind:function(arm,size=0x10) addr:0x020839b4
-func_ov046_020839c4 kind:function(arm,size=0x14) addr:0x020839c4
-func_ov046_020839d8 kind:function(arm,size=0x14) addr:0x020839d8
-func_ov046_020839ec kind:function(arm,size=0x48) addr:0x020839ec
+LauncherIcon_Init kind:function(arm,size=0x14) addr:0x020839a0
+LauncherIcon_Update kind:function(arm,size=0x10) addr:0x020839b4
+LauncherIcon_Render kind:function(arm,size=0x14) addr:0x020839c4
+LauncherIcon_Destroy kind:function(arm,size=0x14) addr:0x020839d8
+LauncherIcon_RunTask kind:function(arm,size=0x48) addr:0x020839ec
 
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ Categories kind:data(any) addr:0x02083bf0
 Options_Kitawaki kind:data(any) addr:0x02083ca0
 Options_Fukuda kind:data(any) addr:0x02083d54
 Options_Takami kind:data(any) addr:0x02083e58
-data_ov046_02083f70 kind:data(any) addr:0x02083f70
+Tsk_LauncherIcon kind:data(any) addr:0x02083f70
 data_ov046_02083f7c kind:data(any) addr:0x02083f7c
 
 //////////////////////////////////////////////////////////////
@@ -161,4 +161,4 @@ data_ov046_0208477c kind:data(any) addr:0x0208477c
 data_ov046_020847c4 kind:data(any) addr:0x020847c4
 data_ov046_020847e8 kind:data(any) addr:0x020847e8
 data_ov046_020847f4 kind:data(any) addr:0x020847f4
-data_ov046_02084804 kind:data(any) addr:0x02084804
+data_ov046_02084804 kind:data(byte[44]) addr:0x02084804

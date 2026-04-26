@@ -1,12 +1,61 @@
 #include "Debug/Launcher.h"
 #include "Display.h"
 #include "EasyFade.h"
+#include "Engine/Core/HBlank.h"
+#include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
+#include "Engine/Core/System.h"
+#include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Engine/Text.h"
+#include "SpriteMgr.h"
+#include "common_data.h"
 #include <NitroSDK/fx.h>
+#include <NitroSDK/mi/cpumem.h>
 
-void func_ov046_020824a0(void) {
+SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 arg2);
+static s32       LauncherIcon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+
+static const char* Sequence = "Seq_Launcher(void *)";
+
+const BinIdentifier data_ov046_02083a4c = {46, "Apl_Usr/Grp_Launcher.bin"};
+
+const Vec data_ov046_02083a34 = {0, 0x1000, 0};
+const Vec data_ov046_02083a40 = {0, 0, 0xFFFFF000};
+
+SpriteAnimation data_ov046_02084804 = {
+    .bits_0_1   = 0,
+    .dataType   = 0,
+    .bit_6      = 0,
+    .bits_7_9   = 5,
+    .bits_10_11 = 0,
+    .bits_12_13 = 1,
+    .bits_14_15 = 0,
+    .unk_02     = 0,
+    .unk_04     = 0,
+    .unk_06     = 0,
+    .unk_08     = func_ov046_02083698,
+    .unk_0C     = 0,
+    .unk_10     = 0,
+    .binIden    = &data_ov046_02083a4c,
+    .unk_18     = 2,
+    .packIndex  = 2,
+    .unk_1C     = 0,
+    .unk_1E     = 0,
+    .unk_20     = 10,
+    .unk_22     = 2,
+    .unk_24     = 0,
+    .unk_26     = 0,
+    .unk_28     = 0,
+    .unk_2A     = 1,
+};
+
+const TaskHandle Tsk_LauncherIcon = {"LauncherIcon", LauncherIcon_RunTask, sizeof(LauncherIcon)};
+
+// Nonmatching: Major differences in REG_* assignments and G3i_* calls
+void Launcher_ResetDisplay(void) {
     Interrupts_Init();
     HBlank_Init();
     GX_Init();
@@ -25,17 +74,17 @@ void func_ov046_020824a0(void) {
     GX_SetBankForSubObj(GX_VRAM_D);
     GX_SetBankForSubBgExtPltt(GX_VRAM_H);
     GX_SetBankForSubObjExtPltt(GX_VRAM_I);
-    REG_DISP3DCNT &= 0xffffcffd;
+    REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x2;
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x8;
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x10;
     G3X_SetClearColor(0, 0, 0x7fff, 0x3f, 0);
     GFX_FIFO_VIEWPORT     = 0xbfff0000;
     GFX_FIFO_SWAP_BUFFERS = 0;
-    G3i_OrthoW(0, 0xc0000, 0, 0x100000, 0xffc00000, 0x400000, 0x400000, 1, 0);
 
-    s32                           unk_14[3] = {0, 0, 0};
-    UnkStruct_DebugLauncher_tuple unk_20    = data_ov046_02083a34;
-    UnkStruct_DebugLauncher_tuple unk_2C    = data_ov046_02083a40;
+    G3i_OrthoW(0, 0xc0000, 0, 0x100000, -0x400000, 0x400000, 0x400000, 1, 0);
+    Vec unk_14 = {0, 0, 0};
+    Vec unk_20 = data_ov046_02083a34;
+    Vec unk_2C = data_ov046_02083a40;
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
     GFX_FIFO_MATRIX_STORE = 0;
 
@@ -46,13 +95,13 @@ void func_ov046_020824a0(void) {
 
     OamMgr_InitEngine(0, DISPLAY_MAIN);
     OamMgr_InitEngine(0, DISPLAY_SUB);
-    MI_CpuFill(0, 0x6800000, 0xa4000);
+    MI_CpuFill(0, (void*)0x6800000, 0xa4000);
     OamMgr_ResetAndCommit();
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, TRUE);
+    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, TRUE);
 }
 
-void func_ov046_02082720(void) {
+void Launcher_VBlank(void) {
     if (SystemStatusFlags.vblank != FALSE) {
         Display_Commit();
         DMA_Flush();
@@ -66,13 +115,13 @@ void func_ov046_02082720(void) {
     }
 }
 
-void func_ov046_020827f0(void) {
-    func_ov046_020824a0();
-    Interrupts_RegisterVBlankCallback(func_ov046_02082720, TRUE);
+void Launcher_RegisterVBlank(void) {
+    Launcher_ResetDisplay();
+    Interrupts_RegisterVBlankCallback(Launcher_VBlank, TRUE);
 }
 
-void func_ov046_0208280c(void) {
-    func_ov046_020824a0();
+void Launcher_UnregisterVBlank(void) {
+    Launcher_ResetDisplay();
     Interrupts_RegisterVBlankCallback(NULL, TRUE);
 }
 
@@ -131,7 +180,6 @@ void func_ov046_02082874(DebugLauncherState* state) {
                     return;
                 }
             }
-            return;
         }
     }
 
@@ -147,7 +195,7 @@ void func_ov046_02082874(DebugLauncherState* state) {
                                     FALSE);
             }
             func_ov046_02083670(EasyTask_GetTaskData(&state->unk_11650, state->unk_24[selectedCell]), TRUE);
-            for (s32 i = 0; i < 0x18; i++) {
+            for (s32 i = 0; i < 24; i++) {
                 if (state->unk_6C[i] != 0xFFFFFFFF) {
                     func_ov046_0208368c(EasyTask_GetTaskData(&state->unk_11650, state->unk_6C[i]));
                     state->unk_6C[i] = 0xFFFFFFFF;
@@ -164,7 +212,7 @@ void func_ov046_02082874(DebugLauncherState* state) {
                                 stackframe[5] = option;            // huh
                                 stackframe[0] = 0;                 // NULL?
                                 // render option button?
-                                state->unk_6C[i] = EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, stackframe[0],
+                                state->unk_6C[i] = EasyTask_CreateTask(&state->unk_11650, &Tsk_LauncherIcon, stackframe[0],
                                                                        stackframe[0], stackframe[0], &stackframe[5]);
                                 unkownIndex++;
                                 catIndex++;
@@ -173,8 +221,8 @@ void func_ov046_02082874(DebugLauncherState* state) {
                         state->unk_64 = 0;
                     }
                     func_02010b84(&state->unk_156E8, 0x0, 0x80, 0x100, 0x0);
-                    Text_RenderToScreen(&state->unk_156E8, 0x8, 0x80, &Categories[selectedCell].creator);
-                    Text_RenderToScreen(&state->unk_156E8, 0x8, 0x80, &Categories[selectedCell].description);
+                    Text_RenderToScreen(&state->unk_156E8, 0x8, 0x80, Categories[selectedCell].creator);
+                    Text_RenderToScreen(&state->unk_156E8, 0x8, 0x88, Categories[selectedCell].description);
                     state->selectedCategoryIndex = selectedCell;
                     state->selectedOptionIndex   = 0xFFFFFFFF;
                     func_02010b84(&state->unk_15B04, 0x0, 0x60, 0x100, 0x20);
@@ -236,7 +284,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     for (u32 i = 0; i < 0x18; i++) {
         state->unk_6C[i] = 0xFFFFFFFF;
     }
-    func_ov046_020827f0();
+    Launcher_RegisterVBlank();
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = -16;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = -16;
     Display_CommitSynced();
@@ -287,8 +335,8 @@ void func_ov046_02082c78(DebugLauncherState* state) {
 
     TouchInput_Init();
     EasyList_Init(&state->unk_list_15F14, NULL, 32, func_ov046_02082c0c);
-    state->unk_1164C = ResourceMgr_ReinitManagers(state->unk_CC);
-    EasyList_InsertSorted(&state->unk_list_15F14, NULL, ResourceMgr_ReinitManagers(state->unk_CC)); // is it actually NULL?
+    state->unk_1164C = ResourceMgr_ReinitManagers(&state->unk_CC);
+    EasyList_InsertSorted(&state->unk_list_15F14, 0, ResourceMgr_ReinitManagers(&state->unk_CC));
     state->unk_14 = DatMgr_AllocateSlot();
     // stackframe[0] = 0x1;
     // stackframe[1] = 0x0;
@@ -322,7 +370,7 @@ void func_ov046_02083368(DebugLauncherState* state) {
     // stack->0xC = Categories[index](.unk_00?);
     // stack->0x10 = (index << 0x1D) >> 0x18; // what? is this just "index % 8"?
     // stack->0x14 = (index / 8) * 32;
-    // EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, index, index, index, &stack->0x8);
+    // EasyTask_CreateTask(&state->unk_11650, &Tsk_LauncherIcon, index, index, index, &stack->0x8);
     // index++
     // state->unk_24[index] = result of last func-call
     //  Loop back if(Categories[index](.unk_00?) > 0)
@@ -331,30 +379,29 @@ void func_ov046_02083368(DebugLauncherState* state) {
     // stack->0x14 = 0x60
     // stack->0xC = 0x26
     // stack->0x10 = 0xe0
-    // state->unk_60 = EasyTask_CreateTask(&state->unk_11650, &data_ov046_02083f70, 0, 0, 0, &stack->0x8);
+    // state->unk_60 = EasyTask_CreateTask(&state->unk_11650, &Tsk_LauncherIcon, 0, 0, 0, &stack->0x8);
 }
 
 /*Nonmatching: The start of the loop is different in the assembly than in the code.*/
-void func_ov046_destructor_02083454(DebugLauncherState* state) {
-    BOOL finishedCleaning;
-    if (state == NULL) {
-        return;
+void Launcher_Destroy(DebugLauncherState* state) {
+    BOOL finishedCleaning = FALSE;
+    if (state != NULL) {
+        while (finishedCleaning == FALSE) {
+            if (state->unk_list_15F14.tailSentinel.prev != NULL) {
+                EasyList_RemoveNode(&state->unk_list_15F14, state->unk_list_15F14.tailSentinel.prev);
+            }
+            finishedCleaning = FALSE;
+            if (state->unk_list_15F14.headSentinel.next == NULL) {
+                finishedCleaning = TRUE;
+            }
+        }
+        Launcher_UnregisterVBlank();
+        Mem_Free(&gDebugHeap, state);
+        MainOvlDisp_SetCbArg(NULL);
     }
-    do {
-        if (state->unk_list_15F14.tailSentinel.prev != NULL) {
-            EasyList_RemoveNode(&state->unk_list_15F14, state->unk_list_15F14.tailSentinel.prev);
-        }
-        finishedCleaning = FALSE; // the assembly starts the loop from here
-        if (state->unk_list_15F14.headSentinel.next == NULL) {
-            finishedCleaning = TRUE;
-        }
-    } while (finishedCleaning == FALSE);
-    func_ov046_0208280c();
-    Mem_Free(&gDebugHeap, state);
-    MainOvlDisp_SetCbArg(NULL);
 }
 
-void func_ov046_main_020834c0(DebugLauncherState* state) {
+void Launcher_Update(DebugLauncherState* state) {
     state->buttonState = InputStatus.buttonState;
 
     TouchInput_Update();
@@ -375,12 +422,12 @@ void func_ov046_main_020834c0(DebugLauncherState* state) {
         EasyTask_UpdatePool(&state->unk_11650);
         OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
         OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
-        PaletteMgr_Flush(g_PaletteManagers[0], 0);
-        PaletteMgr_Flush(g_PaletteManagers[1], 0);
+        PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
+        PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
     }
 }
 
-void func_ov046_constructor_020835b4(DebugLauncherState* state) {
+void Launcher_Init(DebugLauncherState* state) {
     if (state == NULL) {
         const char* seq = Sequence;
         state           = Mem_AllocHeapTail(&gDebugHeap, sizeof(DebugLauncherState));
@@ -395,16 +442,16 @@ void func_ov046_constructor_020835b4(DebugLauncherState* state) {
 }
 
 static const OverlayProcess OvlProc_DebugLauncher = {
-    .init = func_ov046_constructor_020835b4,
-    .main = func_ov046_main_020834c0,
-    .exit = func_ov046_destructor_02083454,
+    .init = Launcher_Init,
+    .main = Launcher_Update,
+    .exit = Launcher_Destroy,
 };
 
 // Overlay Init function
 void func_ov046_02083630(DebugLauncherState* state) {
     s32 stage = MainOvlDisp_GetProcessStage();
     if (stage == PROCESS_STAGE_EXIT) {
-        func_ov046_destructor_02083454(state);
+        Launcher_Destroy(state);
     } else {
         OvlProc_DebugLauncher.funcs[stage](state);
     }
@@ -418,128 +465,142 @@ void func_ov046_0208368c(DebugLauncherState* state) {
     state->active = TRUE;
 }
 
-/*Non-matching: Not even going to match this. Why is r1 unused? What *is* unkptr exactly? Why is this function only called
- * through a pointer?*/
-void func_ov046_02083698(void* unkptr, s32 unused_r1, s32 r2) {
-    void* temp = *(void**)(unkptr + 0x24);
-    if (r2 == 1) {
-        data_0206b408.unk_00 = 1;
-        return;
-    } else if (r2 != 2) {
-        return;
-    }
-    if (*(s32*)(temp + 0x8) == 0x1000 && *(s32*)(temp + 0xC) == 0x1000) {
-        *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x1 | 1;
-        *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x2;
-        u8 thing              = (*(u8*)(*(u16*)(temp + 0x0))) * 0x108 + g_OamMgr; // Nonmatching: 0x108 is a global constant?
-        OamMgr_AllocAffineGroup(thing, 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
-        *(u16*)(unkptr + 0xa) = (*(u16*)(unkptr + 0xa) & ~0x3E0) | ((u16)(thing << 0x1B) >> 0x16);
-    } else {
-        *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x1;
-        *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x2;
-        *(u16*)(unkptr + 0xa) = *(u16*)(unkptr + 0xa) & ~0x3E0;
-    }
-    data_0206b408.unk_04 = 0;
-    data_0206b408.unk_08 = 0;
-    data_0206b408.unk_0C = 0;
-    data_0206b408.unk_10 = -1;
-    if (*(s32*)(unkptr + 0x18) != 0 && *(s32*)(unkptr + 0x1C) != 0 && *(s16*)(unkptr + 0x16) >= 0) {
-        data_0206b408.unk_04 = *(u16*)(*(s32*)(unkptr + 0x1C) + (((*(s16*)(unkptr + 0x16) * 2) + 1) * 2));
-        data_0206b408.unk_08 = *(s32*)(unkptr + 0x1C) + (*(u16*)(*(s32*)(unkptr + 0x1C) + (*(s16*)(unkptr + 0x16) * 8)) * 2);
-    }
-    if (*(s32*)(temp + 0x8) != 0 && *(s32*)(temp + 0xC) == 0) { // Nonmatching: compiler reverses the condition
-        data_0206b408.unk_08 = 0;                               // nonmatching: data_0206b408 is referenced from r0?
-    }
-}
+// Non-matching: Significant differences
+SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 mode) {
+    void* temp = sprite->unk24;
 
-s32 func_ov046_020837f8(s32* r0, s32* r1) {
-    // r0[0x0]                              = 0;
-    // r0[0x1]                              = 0;
-    // r0[0x2]                              = 0;
-    // r0[0x3]                              = 0;
-    // data_ov046_02084804                  = data_ov046_02084804 & ~0x3c | ((u32)((u16)(r1[0]) << 0x1c) >> 0x1a);
-    // *(u16*)(&data_ov046_02084804 + 0x2)  = r1[2] + 0x10;
-    // *(u16*)(&data_ov046_02084804 + 0x3)  = r1[3] + 0x10;
-    // *(u32*)(&data_ov046_02084804 + 0x08) = r0;
-    // *(u16*)(&data_ov046_02084804 + 0x0D) = 2;
-    // if (r1[1] < 0x0A) {
-    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] + 1;
-    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 4;
-    //     *(u16*)(&data_ov046_02084804 + 0x13) = 5;
-    //     *(u16*)(&data_ov046_02084804 + 0x14) = 6;
-    // } else if (r1[1] < 0x25) {
-    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0xA;
-    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 1;
-    //     *(u16*)(&data_ov046_02084804 + 0x13) = 2;
-    //     *(u16*)(&data_ov046_02084804 + 0x14) = 3;
-    // } else {
-    //     *(u16*)(&data_ov046_02084804 + 0x15) = r1[1] - 0x25;
-    //     *(u16*)(&data_ov046_02084804 + 0x0E) = 7;
-    //     *(u16*)(&data_ov046_02084804 + 0x13) = 8;
-    //     *(u16*)(&data_ov046_02084804 + 0x14) = 9;
-    // }
-    // _Sprite_Load(r0 + 0x04, &data_ov046_02084804);
-    // return 1;
-}
+    switch (mode) {
+        case 1: {
+            data_0206b408.unk_00 = 1;
+        } break;
 
-BOOL func_ov046_020838ec(void* unkptr) {
-    BOOL result = TRUE;
-    switch (*(BOOL*)unkptr) {
-        case FALSE:
-            if (*(s32*)(unkptr + 0x4) < 8) {
-                *(s32*)(unkptr + 0x4) += 1;
+        case 2: {
+            if (*(s32*)(temp + 0x8) == 0x1000 && *(s32*)(temp + 0xC) != 0x1000) {
+                sprite->unk_0A.unk_00 = 1;
+                sprite->unk_0A.unk_01 = 0;
+                sprite->unk_0A.unk_05 =
+                    OamMgr_AllocAffineGroup(&g_OamMgr[sprite->bits_0_1], 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
             } else {
-                if (*(s32*)(unkptr + 0x8) < 0x1000) {
-                    *(s32*)(unkptr + 0x8) += 0x200;
-                    *(s32*)(unkptr + 0xc) += 0x200;
+                sprite->unk_0A.unk_00 = 0;
+                sprite->unk_0A.unk_01 = 0;
+                sprite->unk_0A.unk_05 = 0;
+            }
+            data_0206b408.unk_04 = 0;
+            data_0206b408.unk_08 = 0;
+            data_0206b408.unk_0C = 0;
+            data_0206b408.unk_10 = -1;
+            if (sprite->animData != NULL && sprite->frameDataTable != 0 && sprite->unk16 >= 0) {
+                data_0206b408.unk_04 = *(u16*)(sprite->frameDataTable + (((sprite->unk16 * 2) + 1) * 2));
+                data_0206b408.unk_08 = sprite->frameDataTable + (*(u16*)(sprite->frameDataTable + (sprite->unk16 * 8)) * 2);
+            }
+            if (*(s32*)(temp + 0x8) != 0 && *(s32*)(temp + 0xC) == 0) {
+                data_0206b408.unk_08 = 0;
+            }
+        } break;
+    }
+    return &data_0206b408;
+}
+
+s32 func_ov046_020837f8(LauncherIcon* icon, LauncherArgs* args) {
+    icon->unk_00                  = 0;
+    icon->unk_04                  = 0;
+    icon->unk_08                  = 0;
+    icon->unk_0C                  = 0;
+    data_ov046_02084804.dataType  = args->dataType;
+    data_ov046_02084804.unk_04    = args->unk_8 + 16;
+    data_ov046_02084804.unk_06    = args->unk_C + 16;
+    data_ov046_02084804.unk_10    = icon;
+    data_ov046_02084804.packIndex = 2;
+    if (args->unk_4 < 10) {
+        data_ov046_02084804.unk_2A = args->unk_4 + 1;
+        data_ov046_02084804.unk_1C = 4;
+        data_ov046_02084804.unk_26 = 5;
+        data_ov046_02084804.unk_28 = 6;
+    } else if (args->unk_4 < 37) {
+        data_ov046_02084804.unk_2A = args->unk_4 - 10;
+        data_ov046_02084804.unk_1C = 1;
+        data_ov046_02084804.unk_26 = 2;
+        data_ov046_02084804.unk_28 = 3;
+    } else {
+        data_ov046_02084804.unk_2A = args->unk_4 - 37;
+        data_ov046_02084804.unk_1C = 7;
+        data_ov046_02084804.unk_26 = 8;
+        data_ov046_02084804.unk_28 = 9;
+    }
+    _Sprite_Load(&icon->sprite, &data_ov046_02084804);
+    return 1;
+}
+
+BOOL func_ov046_020838ec(LauncherIcon* icon) {
+    BOOL result = TRUE;
+    switch (icon->unk_00) {
+        case 0:
+            if (icon->unk_04 < 8) {
+                icon->unk_04 += 1;
+            } else {
+                if (icon->unk_08 < 0x1000) {
+                    icon->unk_08 += 0x200;
+                    icon->unk_0C += 0x200;
                 }
             }
             break;
 
-        case TRUE:
-            if (*(s32*)(unkptr + 0x8) <= 0) {
+        case 1:
+            if (icon->unk_08 <= 0) {
                 result = FALSE;
             } else {
-                *(s32*)(unkptr + 0x8) -= 0x200;
-                *(s32*)(unkptr + 0xc) -= 0x200;
+                icon->unk_08 -= 0x200;
+                icon->unk_0C -= 0x200;
             }
             break;
-
-        default:
-            break;
     }
+
     if (result == TRUE) {
-        Sprite_UpdateAndCheck(unkptr + 0x10);
+        Sprite_UpdateAndCheck(&icon->sprite);
     }
     return result;
 }
 
-void func_ov046_02083980(s32 r0) {
-    Sprite_Render(r0 + 0x10);
-}
-void func_ov046_02083990(s32 r0) {
-    Sprite_Destroy(r0 + 0x10);
+void func_ov046_02083980(LauncherIcon* icon) {
+    Sprite_Render(&icon->sprite);
 }
 
-int func_ov046_020839a0(s32 r0, DebugLauncherState* state, s32* r2) {
-    return func_ov046_020837f8(state->unk_18, r2);
+void func_ov046_02083990(LauncherIcon* icon) {
+    Sprite_Destroy(&icon->sprite);
 }
 
-int func_ov046_020839b4(s32 r0, DebugLauncherState* state, s32* r2) {
-    return func_ov046_020838ec(state->unk_18);
+s32 LauncherIcon_Init(TaskPool* pool, Task* task, void* args) {
+    LauncherIcon* icon = task->data;
+
+    return func_ov046_020837f8(icon, args);
 }
 
-int func_ov046_020839c4(s32 r0, DebugLauncherState* state, s32* r2) {
-    func_ov046_02083980(state->unk_18);
+s32 LauncherIcon_Update(TaskPool* pool, Task* task, void* args) {
+    LauncherIcon* icon = task->data;
+
+    return func_ov046_020838ec(icon);
+}
+
+s32 LauncherIcon_Render(TaskPool* pool, Task* task, void* args) {
+    LauncherIcon* icon = task->data;
+
+    func_ov046_02083980(icon);
     return 1;
 }
 
-int func_ov046_020839d8(s32 r0, DebugLauncherState* state, s32* r2) {
-    func_ov046_02083990(state->unk_18);
+s32 LauncherIcon_Destroy(TaskPool* pool, Task* task, void* args) {
+    LauncherIcon* icon = task->data;
+
+    func_ov046_02083990(icon);
     return 1;
 }
 
-int func_ov046_020839ec(s32 r0, DebugLauncherState* state, s32* r2, s32 functionPointerIndex) {
-    DebugLauncherFuncStruct exportedFunctionTable = data_ov046_02083f7c;
-    return exportedFunctionTable.entries[functionPointerIndex](r0, state, r2);
+s32 LauncherIcon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = LauncherIcon_Init,
+        .update     = LauncherIcon_Update,
+        .render     = LauncherIcon_Render,
+        .cleanup    = LauncherIcon_Destroy,
+    };
+    return stages.iter[stage](pool, task, args);
 }

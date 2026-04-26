@@ -129,7 +129,7 @@ void EasyTask_UpdateActiveTasks(TaskPool* taskPool);
  * @param param Parameter passed to the task's update function during initialization.
  * @return Task ID if successful, -1 otherwise.
  */
-s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, void* param);
+s32 EasyTask_CreateTask(TaskPool* taskPool, const TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, void* param);
 
 /**
  * @brief Marks a task for deletion.

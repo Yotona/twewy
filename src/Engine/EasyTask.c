@@ -210,7 +210,8 @@ void EasyTask_UpdateActiveTasks(TaskPool* taskPool) {
     };
 }
 
-s32 EasyTask_CreateTask(TaskPool* taskPool, TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask, void* param) {
+s32 EasyTask_CreateTask(TaskPool* taskPool, const TaskHandle* taskHandle, void* data, s32 arg3, Task* parentTask,
+                        void* param) {
     Task* task = EasyTask_AllocateTask(taskPool, arg3);
     if (task == NULL) {
         return -1;
