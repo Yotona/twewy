@@ -3,3 +3,11 @@
     .ctor       start:0x020fde6c end:0x020fde6c kind:rodata align:4
     .data       start:0x020fde80 end:0x02109d60 kind:data align:32
     .bss        start:0x02109d60 end:0x0210a220 kind:bss align:32
+
+src/Player/ProgressRewardTable.c:
+    .text       start:0x02084a2c end:0x020a669c
+    .rodata     start:0x020da618 end:0x020da6c8
+
+src/Player/UnknownTables.c:
+    .text       start:0x020b891c end:0x020baa64
+    .rodata     start:0x020e4e98 end:0x020e4f48

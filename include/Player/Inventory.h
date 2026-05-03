@@ -53,11 +53,19 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1);
  */
 BOOL Inventory_AddItem(u16 itemID, s32 arg1);
 
+/**
+ * @brief Check if the inventory contains the required quantity of an item.
+ *
+ * @param itemID The global item ID of the item to check.
+ * @param reqQuantity The required quantity of the item.
+ * @param minPinLevel The minimum pin level required to count towards the quantity (only applicable for pins).
+ * @return The quantity of the item that the player has, or 0 if they do not have enough.
+ */
+s32 Inventory_HasRequiredQuantity(u16 itemID, u32 reqQuantity, s32 minPinLevel);
+
 // TODO: Below functions need named and organized into correct headers
 
 u32 func_02023010(u16 arg0);
-
-s32 func_02023208(u16 arg0, u32 arg1, s32 arg2);
 
 s32 func_02023480(u32 arg0, s32 arg1);
 

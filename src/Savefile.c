@@ -817,7 +817,7 @@ s32 func_02025a2c(s32 arg0) {
     for (u32 i = 0; i < 67; i++) {
         u16 flags = data_0205c5be[i * 7 + 6];
 
-        if ((flags & 2) || ((flags & 1) && func_02023208(686, 1, 0) == 0)) {
+        if ((flags & 2) || ((flags & 1) && Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == FALSE)) {
             continue;
         }
 

@@ -559,11 +559,11 @@ u32 func_02023010(u16 arg0) {
 }
 
 // Nonmatching: Some missing/reordered instructions, data access differences
-s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
-    ItemCategory category = Inventory_GetCategory(arg0);
+s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
+    ItemCategory category = Inventory_GetCategory(itemID);
     u32          owned    = 0;
 
-    if (arg0 > 776) {
+    if (itemID > 776) {
         return 0;
     }
 
@@ -573,7 +573,7 @@ s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
                 u32 deckOff = deck * 0x3C;
                 u32 slotOff = slot * 0xA;
 
-                if ((data_02071cf0.unk_20.pinLayouts[deck][slot].pinID == arg0) &&
+                if ((data_02071cf0.unk_20.pinLayouts[deck][slot].pinID == itemID) &&
                     (arg2 <= data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level))
                 {
                     owned = (owned + 1) & 0xFFFF;
@@ -582,7 +582,7 @@ s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
         }
 
         for (u16 i = 0; i < 256; i++) {
-            if ((data_02071cf0.unk_20.stockpilePins[i].pinID == arg0) &&
+            if ((data_02071cf0.unk_20.stockpilePins[i].pinID == itemID) &&
                 (arg2 <= data_02071cf0.unk_20.stockpilePins[i].flags.bits.level))
             {
                 owned = (owned + 1) & 0xFFFF;
@@ -590,7 +590,7 @@ s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
         }
 
         for (u16 i = 0; i < 304; i++) {
-            if ((data_02071cf0.unk_20.masteredPins[i].pinID == arg0) &&
+            if ((data_02071cf0.unk_20.masteredPins[i].pinID == itemID) &&
                 (data_02071cf0.unk_20.masteredPins[i].flags.bits.level >= arg2))
             {
                 owned = (owned + data_02071cf0.unk_20.masteredPins[i].count) & 0xFFFF;
@@ -599,21 +599,21 @@ s32 func_02023208(u16 arg0, u32 arg1, s32 arg2) {
         }
     } else {
         for (u16 i = 0; i < 4; i++) {
-            if (data_02071cf0.unk_20.playerStats.equippedThreads[i] == arg0) {
+            if (data_02071cf0.unk_20.playerStats.equippedThreads[i] == itemID) {
                 owned = (owned + 1) & 0xFFFF;
             }
         }
 
         for (u16 ch = 0; ch < 3; ch++) {
             for (u16 slot = 0; slot < 4; slot++) {
-                if (data_02071cf0.unk_20.friendStats[ch].equippedThreads[slot] == arg0) {
+                if (data_02071cf0.unk_20.friendStats[ch].equippedThreads[slot] == itemID) {
                     owned = (owned + 1) & 0xFFFF;
                 }
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            if (data_02071cf0.unk_20.inventoryItems[i].itemID == arg0) {
+            if (data_02071cf0.unk_20.inventoryItems[i].itemID == itemID) {
                 owned = (owned + ((u32)(data_02071cf0.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
                 break;
             }

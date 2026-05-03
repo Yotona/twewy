@@ -356,13 +356,17 @@ func_ov030_020a9e48 kind:function(arm,size=0x10c) addr:0x020a9e48
 func_ov030_020a9f54 kind:function(arm,size=0x174) addr:0x020a9f54
 func_ov030_020aa0c8 kind:function(arm,size=0x2c8) addr:0x020aa0c8
 func_ov030_020aa390 kind:function(arm,size=0x12c) addr:0x020aa390
+
+
 func_ov030_020aa4bc kind:function(arm,size=0x538) addr:0x020aa4bc
 func_ov030_020aa9f4 kind:function(arm,size=0xe4) addr:0x020aa9f4
 func_ov030_020aaad8 kind:function(arm,size=0x20) addr:0x020aaad8
 func_ov030_020aaaf8 kind:function(arm,size=0x78) addr:0x020aaaf8
-func_ov030_020aab70 kind:function(arm,size=0x5c) addr:0x020aab70
-func_ov030_020aabcc kind:function(arm,size=0x5c) addr:0x020aabcc
+ProgressReward_GrantItem kind:function(arm,size=0x5c) addr:0x020aab70
+ProgressReward_GrantPin kind:function(arm,size=0x5c) addr:0x020aabcc
 func_ov030_020aac28 kind:function(arm,size=0x5c) addr:0x020aac28
+
+
 func_ov030_020aac84 kind:function(arm,size=0x2c) addr:0x020aac84
 func_ov030_020aacb0 kind:function(arm,size=0x78) addr:0x020aacb0
 func_ov030_020aad28 kind:function(arm,size=0x18) addr:0x020aad28
@@ -727,51 +731,57 @@ func_ov030_020b85a8 kind:function(arm,size=0x114) addr:0x020b85a8
 func_ov030_020b86bc kind:function(arm,size=0x100) addr:0x020b86bc
 func_ov030_020b87bc kind:function(arm,size=0x12c) addr:0x020b87bc
 func_ov030_020b88e8 kind:function(arm,size=0x34) addr:0x020b88e8
-func_ov030_020b891c kind:function(arm,size=0x10) addr:0x020b891c
-func_ov030_020b892c kind:function(arm,size=0x50) addr:0x020b892c
-func_ov030_020b897c kind:function(arm,size=0x6c) addr:0x020b897c
-func_ov030_020b89e8 kind:function(arm,size=0x88) addr:0x020b89e8
-func_ov030_020b8a70 kind:function(arm,size=0x88) addr:0x020b8a70
-func_ov030_020b8af8 kind:function(arm,size=0x88) addr:0x020b8af8
-func_ov030_020b8b80 kind:function(arm,size=0xc0) addr:0x020b8b80
-func_ov030_020b8c40 kind:function(arm,size=0x88) addr:0x020b8c40
-func_ov030_020b8cc8 kind:function(arm,size=0x6c) addr:0x020b8cc8
-func_ov030_020b8d34 kind:function(arm,size=0x88) addr:0x020b8d34
-func_ov030_020b8dbc kind:function(arm,size=0x1e4) addr:0x020b8dbc
-func_ov030_020b8fa0 kind:function(arm,size=0x164) addr:0x020b8fa0
-func_ov030_020b9104 kind:function(arm,size=0xf8) addr:0x020b9104
-func_ov030_020b91fc kind:function(arm,size=0x98) addr:0x020b91fc
-func_ov030_020b9294 kind:function(arm,size=0x6c) addr:0x020b9294
-func_ov030_020b9300 kind:function(arm,size=0x50) addr:0x020b9300
-func_ov030_020b9350 kind:function(arm,size=0x50) addr:0x020b9350
-func_ov030_020b93a0 kind:function(arm,size=0xa4) addr:0x020b93a0
-func_ov030_020b9444 kind:function(arm,size=0x50) addr:0x020b9444
-func_ov030_020b9494 kind:function(arm,size=0x88) addr:0x020b9494
-func_ov030_020b951c kind:function(arm,size=0xf8) addr:0x020b951c
-func_ov030_020b9614 kind:function(arm,size=0x2b8) addr:0x020b9614
-func_ov030_020b98cc kind:function(arm,size=0xbe8) addr:0x020b98cc
-func_ov030_020ba4b4 kind:function(arm,size=0x50) addr:0x020ba4b4
-func_ov030_020ba504 kind:function(arm,size=0x34) addr:0x020ba504
-func_ov030_020ba538 kind:function(arm,size=0x6c) addr:0x020ba538
-func_ov030_020ba5a4 kind:function(arm,size=0x34) addr:0x020ba5a4
-func_ov030_020ba5d8 kind:function(arm,size=0x88) addr:0x020ba5d8
-func_ov030_020ba660 kind:function(arm,size=0x34) addr:0x020ba660
-func_ov030_020ba694 kind:function(arm,size=0x34) addr:0x020ba694
-func_ov030_020ba6c8 kind:function(arm,size=0x34) addr:0x020ba6c8
-func_ov030_020ba6fc kind:function(arm,size=0x34) addr:0x020ba6fc
-func_ov030_020ba730 kind:function(arm,size=0xc0) addr:0x020ba730
-func_ov030_020ba7f0 kind:function(arm,size=0x34) addr:0x020ba7f0
-func_ov030_020ba824 kind:function(arm,size=0x34) addr:0x020ba824
-func_ov030_020ba858 kind:function(arm,size=0x34) addr:0x020ba858
-func_ov030_020ba88c kind:function(arm,size=0x34) addr:0x020ba88c
-func_ov030_020ba8c0 kind:function(arm,size=0x34) addr:0x020ba8c0
-func_ov030_020ba8f4 kind:function(arm,size=0x34) addr:0x020ba8f4
-func_ov030_020ba928 kind:function(arm,size=0x34) addr:0x020ba928
-func_ov030_020ba95c kind:function(arm,size=0x34) addr:0x020ba95c
-func_ov030_020ba990 kind:function(arm,size=0x34) addr:0x020ba990
-func_ov030_020ba9c4 kind:function(arm,size=0x34) addr:0x020ba9c4
-func_ov030_020ba9f8 kind:function(arm,size=0x34) addr:0x020ba9f8
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/UnknownTables.c
+//////////////////////////////////////////////////////////////////////
+func_ov030_020b891c kind:function(arm,size=0x10) addr:0x020b891c local
+func_ov030_020b892c kind:function(arm,size=0x50) addr:0x020b892c local
+func_ov030_020b897c kind:function(arm,size=0x6c) addr:0x020b897c local
+func_ov030_020b89e8 kind:function(arm,size=0x88) addr:0x020b89e8 local
+func_ov030_020b8a70 kind:function(arm,size=0x88) addr:0x020b8a70 local
+func_ov030_020b8af8 kind:function(arm,size=0x88) addr:0x020b8af8 local
+func_ov030_020b8b80 kind:function(arm,size=0xc0) addr:0x020b8b80 local
+func_ov030_020b8c40 kind:function(arm,size=0x88) addr:0x020b8c40 local
+func_ov030_020b8cc8 kind:function(arm,size=0x6c) addr:0x020b8cc8 local
+func_ov030_020b8d34 kind:function(arm,size=0x88) addr:0x020b8d34 local
+func_ov030_020b8dbc kind:function(arm,size=0x1e4) addr:0x020b8dbc local
+func_ov030_020b8fa0 kind:function(arm,size=0x164) addr:0x020b8fa0 local
+func_ov030_020b9104 kind:function(arm,size=0xf8) addr:0x020b9104 local
+func_ov030_020b91fc kind:function(arm,size=0x98) addr:0x020b91fc local
+func_ov030_020b9294 kind:function(arm,size=0x6c) addr:0x020b9294 local
+func_ov030_020b9300 kind:function(arm,size=0x50) addr:0x020b9300 local
+func_ov030_020b9350 kind:function(arm,size=0x50) addr:0x020b9350 local
+func_ov030_020b93a0 kind:function(arm,size=0xa4) addr:0x020b93a0 local
+func_ov030_020b9444 kind:function(arm,size=0x50) addr:0x020b9444 local
+func_ov030_020b9494 kind:function(arm,size=0x88) addr:0x020b9494 local
+func_ov030_020b951c kind:function(arm,size=0xf8) addr:0x020b951c local
+func_ov030_020b9614 kind:function(arm,size=0x2b8) addr:0x020b9614 local
+func_ov030_020b98cc kind:function(arm,size=0xbe8) addr:0x020b98cc local
+func_ov030_020ba4b4 kind:function(arm,size=0x50) addr:0x020ba4b4 local
+func_ov030_020ba504 kind:function(arm,size=0x34) addr:0x020ba504 local
+func_ov030_020ba538 kind:function(arm,size=0x6c) addr:0x020ba538 local
+func_ov030_020ba5a4 kind:function(arm,size=0x34) addr:0x020ba5a4 local
+func_ov030_020ba5d8 kind:function(arm,size=0x88) addr:0x020ba5d8 local
+func_ov030_020ba660 kind:function(arm,size=0x34) addr:0x020ba660 local
+func_ov030_020ba694 kind:function(arm,size=0x34) addr:0x020ba694 local
+func_ov030_020ba6c8 kind:function(arm,size=0x34) addr:0x020ba6c8 local
+func_ov030_020ba6fc kind:function(arm,size=0x34) addr:0x020ba6fc local
+func_ov030_020ba730 kind:function(arm,size=0xc0) addr:0x020ba730 local
+func_ov030_020ba7f0 kind:function(arm,size=0x34) addr:0x020ba7f0 local
+func_ov030_020ba824 kind:function(arm,size=0x34) addr:0x020ba824 local
+func_ov030_020ba858 kind:function(arm,size=0x34) addr:0x020ba858 local
+func_ov030_020ba88c kind:function(arm,size=0x34) addr:0x020ba88c local
+func_ov030_020ba8c0 kind:function(arm,size=0x34) addr:0x020ba8c0 local
+func_ov030_020ba8f4 kind:function(arm,size=0x34) addr:0x020ba8f4 local
+func_ov030_020ba928 kind:function(arm,size=0x34) addr:0x020ba928 local
+func_ov030_020ba95c kind:function(arm,size=0x34) addr:0x020ba95c local
+func_ov030_020ba990 kind:function(arm,size=0x34) addr:0x020ba990 local
+func_ov030_020ba9c4 kind:function(arm,size=0x34) addr:0x020ba9c4 local
+func_ov030_020ba9f8 kind:function(arm,size=0x34) addr:0x020ba9f8 local
 func_ov030_020baa2c kind:function(arm,size=0x38) addr:0x020baa2c
+
+
 func_ov030_020baa64 kind:function(arm,size=0xa8) addr:0x020baa64
 func_ov030_020bab0c kind:function(arm,size=0x74) addr:0x020bab0c
 func_ov030_020bab80 kind:function(arm,size=0x58) addr:0x020bab80
@@ -1904,7 +1914,9 @@ data_ov030_020da382 kind:data(any) addr:0x020da382
 data_ov030_020da414 kind:data(any) addr:0x020da414
 data_ov030_020da4b8 kind:data(any) addr:0x020da4b8
 data_ov030_020da568 kind:data(any) addr:0x020da568
+
 data_ov030_020da618 kind:data(any) addr:0x020da618
+
 data_ov030_020da6c8 kind:data(any) addr:0x020da6c8
 data_ov030_020da778 kind:data(any) addr:0x020da778
 data_ov030_020da828 kind:data(any) addr:0x020da828
@@ -2145,6 +2157,10 @@ data_ov030_020e1d78 kind:data(any) addr:0x020e1d78
 data_ov030_020e1d7c kind:data(any) addr:0x020e1d7c
 data_ov030_020e1d7e kind:data(any) addr:0x020e1d7e
 data_ov030_020e1d82 kind:data(any) addr:0x020e1d82
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/UnknownTables.c
+//////////////////////////////////////////////////////////////////////
 data_ov030_020e2364 kind:data(any) addr:0x020e2364
 data_ov030_020e2380 kind:data(any) addr:0x020e2380
 data_ov030_020e239c kind:data(any) addr:0x020e239c
@@ -2333,7 +2349,12 @@ data_ov030_020e4bf8 kind:data(any) addr:0x020e4bf8
 data_ov030_020e4ca0 kind:data(any) addr:0x020e4ca0
 data_ov030_020e4d48 kind:data(any) addr:0x020e4d48
 data_ov030_020e4df0 kind:data(any) addr:0x020e4df0
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/UnknownTables.c
+//////////////////////////////////////////////////////////////////////
 data_ov030_020e4e98 kind:data(any) addr:0x020e4e98
+
 data_ov030_020e4f48 kind:data(any) addr:0x020e4f48
 data_ov030_020e500c kind:data(any) addr:0x020e500c
 data_ov030_020e50d0 kind:data(any) addr:0x020e50d0
