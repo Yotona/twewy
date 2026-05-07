@@ -46,6 +46,8 @@ void SndMgr_SetSeIdxVolume(SndMgrSeIdx seIdx, s32 seIdxVolume);
 
 void SndMgr_UpdateSEPan(SndMgrSeIdx seIdx, s32 sePan);
 
+void SndMgr_PlaySEWithPan(SndMgrSeIdx seIdx, s32 sePan);
+
 void SndMgr_InitStreamHandle(void);
 
 BOOL SndMgr_PlayStreamSequence(SndMgrSeIdx);

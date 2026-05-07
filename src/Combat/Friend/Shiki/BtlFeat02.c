@@ -683,7 +683,7 @@ s32 func_ov004_020eed18(BtlFeat02* feat, u16 arg1) {
         if (temp_r1_2 == 0xFFFF) {
             SndMgr_StartPlayingSE(SEIDX_SE_GIRL_SP_LV3_03);
         } else {
-            SndMgr_PlaySEWithPan(SEIDX_SE_GIRL_SP_LV3_02);
+            SndMgr_PlaySEWithPan(SEIDX_SE_GIRL_SP_LV3_02, temp_r1_2);
         }
     }
     feat->rapidFrameMainPackData =

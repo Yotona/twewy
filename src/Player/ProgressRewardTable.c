@@ -1,59 +1,21 @@
-#include "Engine/EasyTask.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Player/Progress.h"
 #include "Player/Stats.h"
 #include "Save.h"
 #include "types.h"
 
-typedef struct {
-    /* 0x00000 */ char     unk_00000[0x11584];
-    /* 0x11584 */ TaskPool taskPool;
-    /* 0x11604 */ char     unk_11604[0x21630 - 0x11604];
-    /* 0x21630 */ s32      unk_21630;
-    /* 0x21634 */ char     unk_21634[0x2176C - 0x21634];
-    /* 0x2176C */ u16      unk_2176C[2];
-    /* 0x21770 */ char     unk_21770[0x2177C - 0x21770];
-    /* 0x2177C */ s16      unk_2177C;
-    /* 0x2177E */ char     unk_2177E[0x21788 - 0x2177E];
-    /* 0x21788 */ u32      unk_21788[2];
-    /* 0x21790 */ char     unk_21790[0x21ACC - 0x21790];
-    /* 0x21ACC */ s32      unk_21ACC;
-    /* 0x21AD0 */ s32      unk_21AD0;
-    /* 0x21AD4 */ char     unk_21AD4[0x21AF0 - 0x21AD4];
-    /* 0x21AF0 */ s32      unk_21AF0;
-    /* 0x21AF4 */ s32      unk_21AF4;
-    /* 0x21AF8 */ char     unk_21AF8[0x21AFC - 0x21AF8];
-    /* 0x21AFC */ s16      unk_21AFC;
-    /* 0x21AFE */ char     unk_21AFE[0x21B00 - 0x21AFE];
-    /* 0x21B00 */ s32      unk_21B00;
-    /* 0x21B04 */ char     unk_21B04[0x21B08 - 0x21B04];
-    /* 0x21B08 */ s32      unk_21B08;
-    /* 0x21B0C */ s32      unk_21B0C;
-    /* 0x21B10 */ char     unk_21B10[0x21CF8 - 0x21B10];
-    /* 0x21CF8 */ s32      unk_21CF8;
-    /* 0x21CFC */ char     unk_21CFC[0x21D18 - 0x21CFC];
-    /* 0x21D18 */ s32      unk_21D18;
-    /* 0x21D1C */ s16      unk_21D1C;
-    /* 0x21D1E */ s16      unk_21D1E;
-    /* 0x21D20 */ s16      unk_21D20;
-    /* 0x21D22 */ s16      unk_21D22;
-    /* 0x21D24 */ void*    unk_21D24;
-    /* 0x21D28 */ s16      unk_21D28;
-} RewardTableObject;
+extern void func_ov030_020a9c54(ProgressObject*, ProgressEvent event, s32);
 
 extern s32  func_ov030_020aebb0(s32);
 extern void func_ov030_020aeb34(s32);
-extern void func_ov030_020a9c54(RewardTableObject*, s32, s32);
 extern s32  func_ov030_020aed9c(s32);
 extern void func_ov030_020ae96c(s32);
 extern void func_ov030_020c26bc(s32);
 extern s32  func_ov030_020848a4(s32, s32, s32, s32);
-extern s32  func_ov030_020848e4(RewardTableObject*, s32);
-extern void func_ov030_020a669c(s32); // param is NOT itemID, maybe story progress ID?
-extern void func_ov030_020a6738(RewardTableObject*);
-extern s32  func_ov030_02084978(RewardTableObject*);
-extern s32  func_ov030_020a75c0(RewardTableObject*);
-
+extern s32  func_ov030_020848e4(ProgressObject*, s32);
+extern void Progress_AdvanceEventScript(ProgressObject*);
+extern s32  func_ov030_02084978(ProgressObject*);
+extern s32  func_ov030_020a75c0(ProgressObject*);
 extern void func_ov030_020824a0(void*);
 extern void func_ov030_02082c04(void*);
 extern void func_ov030_02082bf0(void*);
@@ -73,7 +35,7 @@ extern s32 data_ov030_020d9b94;
 extern s32 data_ov030_020d9bbc;
 extern s32 data_ov030_020d9d34;
 
-s32 func_ov030_02084a2c(RewardTableObject* arg0) {
+s32 func_ov030_02084a2c(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if (func_ov030_020aebb0(0x20) == 0) {
             func_ov030_020aeb34(0x20);
@@ -163,24 +125,24 @@ s32 func_ov030_02084a2c(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02084eb4(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02084eb4(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x57:
             func_ov030_020aeb34(0x22);
             data_02071cf0.unk_20.unk_24BE = 0x67;
             func_ov030_020aec1c(10);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8058;
-            data_02071cf0.unk_20.unk_3124 = 3;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8058;
+            data_02071cf0.unk_20.unk_3124          = 3;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x58:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84BA;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84BA;
             func_ov030_020af364(2);
             return 1;
         case 0x59:
@@ -198,21 +160,21 @@ s32 func_ov030_02084eb4(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0xE1000;
             break;
         case 0x5B:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x805C;
-            data_02071cf0.unk_20.unk_3124 = 5;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x805C;
+            data_02071cf0.unk_20.unk_3124          = 5;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x5C:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x805D;
-            data_02071cf0.unk_20.unk_3124 = 6;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x805D;
+            data_02071cf0.unk_20.unk_3124          = 6;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x5D:
@@ -221,7 +183,7 @@ s32 func_ov030_02084eb4(RewardTableObject* arg0) {
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_SHIKI;
             data_02071cf0.unk_20.unk_24B4                 = 0;
             data_02071cf0.unk_20.unk_24B8                 = 1;
-            data_02071cf0.unk_20.unk_24BC                 = 0x84B6;
+            data_02071cf0.unk_20.currentStoryEvent        = 0x84B6;
             func_ov030_020af364(3);
             return 1;
         case 0x5E:
@@ -236,21 +198,21 @@ s32 func_ov030_02084eb4(RewardTableObject* arg0) {
             data_02071cf0.unk_20.unk_2648 = 4;
             break;
         case 0x60:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x4B7;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x4B7;
             func_ov030_020af364(4);
             return 1;
         case 0x61:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x4B8;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x4B8;
             func_ov030_020af364(5);
             return 1;
         case 0x62:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x4B9;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x4B9;
             func_ov030_020af364(6);
             return 1;
         case 0x63:
@@ -280,7 +242,7 @@ s32 func_ov030_02084eb4(RewardTableObject* arg0) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_CONTROLS_DRAG);
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_BOOT_REBOOT);
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_BOTTOM_SCREEN_COMBAT);
-                func_ov030_020aac28(arg0, 265);
+                func_ov030_020aac28(arg0, PIN_PYROKINESIS);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -327,15 +289,15 @@ void func_ov030_02085480(void) {
     }
     func_ov030_020ae96c(18);
     func_ov030_020c26bc(0);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x6A;
-    data_02071cf0.unk_20.unk_3124 = 56;
-    data_02071cf0.unk_20.unk_244C = 0x159000;
-    data_02071cf0.unk_20.unk_2450 = 0xD2000;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x6A;
+    data_02071cf0.unk_20.unk_3124          = 56;
+    data_02071cf0.unk_20.unk_244C          = 0x159000;
+    data_02071cf0.unk_20.unk_2450          = 0xD2000;
 }
 
-s32 func_ov030_02085508(RewardTableObject* arg0) {
+s32 func_ov030_02085508(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 18) {
         if ((func_ov030_020aebb0(0x20) == 0) && (func_ov030_020848a4(0, 0x96, 0x1E, 250) != 0)) {
             func_ov030_020aeb34(0x20);
@@ -433,73 +395,73 @@ s32 func_ov030_02085508(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02085b14(RewardTableObject* arg0) {
+s32 func_ov030_02085b14(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x35EF:
             if (func_ov030_020aebb0(0x23) == 0) {
                 func_ov030_020aeb34(0x23);
-                func_ov030_020a669c(0x70);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x70);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             } else {
-                func_ov030_020a669c(0x74);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x74);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
         case 0x35F0:
             func_ov030_020aeb34(0x24);
-            func_ov030_020a669c(0x71);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x71);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F1:
             func_ov030_020aeb34(37);
-            func_ov030_020a669c(0x72);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x72);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F3:
             func_ov030_020aeb34(38);
-            func_ov030_020a669c(0x73);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x73);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F2:
-            func_ov030_020a669c(0x75);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x75);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02085c24(RewardTableObject* arg0) {
+s32 func_ov030_02085c24(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x35F5:
-            func_ov030_020a669c(0x7C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F6:
-            func_ov030_020a669c(0x7D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F7:
             if (func_ov030_020aebb0(47) == 0) {
-                func_ov030_020a669c(0x7E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x80);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x80);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35F8:
-            func_ov030_020a669c(0x82);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x82);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02085cf8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02085cf8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x6A:
             data_02071cf0.unk_20.unk_24BE = 0x87;
             func_ov030_020aec1c(10);
@@ -529,8 +491,8 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x6F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x6F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x6F:
         case 0x70:
@@ -553,7 +515,7 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
         case 0x75:
             ProgressReward_GrantItem(arg0, ITEM_BOOK_WEARING_PINS);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_PHONE_MENU);
-            func_ov030_020aac28(arg0, 0x10B);
+            func_ov030_020aac28(arg0, PIN_CURE_DRINK);
             func_ov030_020aeb34(4);
             arg0->unk_21CF8 = 1;
             break;
@@ -561,8 +523,8 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x439);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x439);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x439:
             func_ov030_020c596c();
@@ -590,8 +552,8 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x86);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x86);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -635,8 +597,8 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
             DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
             return 1;
         case 0x3CF:
-            func_ov030_020a669c(0x81);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x81);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x81:
             func_ov030_020aeb34(47);
@@ -672,15 +634,15 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
             return 1;
         case 0x83:
             func_ov030_020aeb34(8);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x4C3;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x4C3;
             func_ov030_020af364(7);
             return 1;
         case 0x84:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84C4U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84C4U;
             func_ov030_020af364(8);
             return 1;
         case 0x85:
@@ -692,8 +654,8 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
         case 0x4C0:
             if (func_ov030_020aebb0(0) == 0) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_CONTROLS_TOUCH);
-                func_ov030_020aac28(arg0, 0x10C);
-                func_ov030_020aac28(arg0, 0x10E);
+                func_ov030_020aac28(arg0, PIN_FORCE_ROUNDS);
+                func_ov030_020aac28(arg0, PIN_THUNDERBOLT);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -701,7 +663,7 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
         case 0x4C1:
             if (func_ov030_020aebb0(0) == 0) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_USE_OBSTACLES);
-                func_ov030_020aac28(arg0, 0x10D);
+                func_ov030_020aac28(arg0, PIN_PSYCHOKINESIS);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -709,7 +671,7 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
         case 0x4C2:
             if (func_ov030_020aebb0(0) == 0) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_CONTROLS_SLASH);
-                func_ov030_020aac28(arg0, 0x10A);
+                func_ov030_020aac28(arg0, PIN_SHOCKWAVE);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -725,7 +687,7 @@ s32 func_ov030_02085cf8(RewardTableObject* arg0) {
         case 0x4C4:
             func_ov030_020aeb34(0x3C);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0);
+            func_ov030_020aac28(arg0, PIN_ICE_BLOW);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_SHIKI);
             break;
         case 0x86:
@@ -745,19 +707,19 @@ void func_ov030_02086700(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 2;
@@ -765,11 +727,11 @@ void func_ov030_02086700(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(23);
-    data_02071cf0.unk_20.unk_244C = 0x12C000;
-    data_02071cf0.unk_20.unk_2450 = 0x87000;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x808A;
+    data_02071cf0.unk_20.unk_244C          = 0x12C000;
+    data_02071cf0.unk_20.unk_2450          = 0x87000;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x808A;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_3124 = 0x39;
     func_ov030_020aec38(1);
@@ -918,255 +880,255 @@ s32 func_ov030_02086804(s32 arg0) {
 s32 func_ov030_02086f10(s32 arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x35F9:
-            func_ov030_020a669c(0x3E4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3E4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FA:
-            func_ov030_020a669c(0x3E5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3E5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FB:
-            func_ov030_020a669c(0x3E6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3E6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FC:
-            func_ov030_020a669c(0x3E7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3E7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x3E3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3E3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_02086fdc(RewardTableObject* arg0) {
+s32 func_ov030_02086fdc(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x35F9:
             if (func_ov030_020aebb0(38) != 0) {
-                func_ov030_020a669c(0x3EC);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3EC);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3EB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3EB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FA:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x3ED);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3ED);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FB:
             func_ov030_020aeb34(43);
-            func_ov030_020a669c(0x3EE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3EE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FC:
             func_ov030_020aeb34(0x2C);
-            func_ov030_020a669c(0x3EF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3EF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x3EA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3EA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_020870ec(RewardTableObject* arg0) {
+s32 func_ov030_020870ec(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x35F9:
-            func_ov030_020a669c(0x3F3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3F3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FA:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x3F4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3F4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FB:
             if (func_ov030_020aebb0(43) == 0) {
                 func_ov030_020aeb34(43);
                 func_ov030_020aeb34(13);
-                func_ov030_020a669c(0x3EE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3EE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3F5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3F5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FC:
             if (func_ov030_020aebb0(0x2C) == 0) {
                 func_ov030_020aeb34(0x2C);
                 func_ov030_020aeb34(13);
-                func_ov030_020a669c(0x3EF);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3EF);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3F6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3F6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x3F2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3F2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_02087238(RewardTableObject* arg0) {
+s32 func_ov030_02087238(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x35FE:
             func_ov030_020aeb34(47);
-            func_ov030_020a669c(0x93);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x93);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FF:
             func_ov030_020aeb34(0x30);
-            func_ov030_020a669c(0x94);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x94);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3600:
             func_ov030_020aeb34(0x31);
-            func_ov030_020a669c(0x95);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x95);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020872e8(RewardTableObject* arg0) {
+s32 func_ov030_020872e8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3602:
-            func_ov030_020a669c(0x97);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x97);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3603:
-            func_ov030_020a669c(0x98);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x98);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02087360(RewardTableObject* arg0) {
+s32 func_ov030_02087360(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3605:
             func_ov030_020aeb34(0x33);
-            func_ov030_020a669c(0x9C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x9C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3606:
             func_ov030_020aeb34(0x34);
-            func_ov030_020a669c(0x9D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x9D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3607:
             func_ov030_020aeb34(0x35);
-            func_ov030_020a669c(0x9E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x9E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02087414(RewardTableObject* arg0) {
+s32 func_ov030_02087414(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3609:
             func_ov030_020aeb34(0x36);
-            func_ov030_020a669c(0xA2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x360A:
             func_ov030_020aeb34(0x37);
-            func_ov030_020a669c(0xA3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x360B:
             func_ov030_020aeb34(56);
-            func_ov030_020a669c(0xA4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x360C:
             func_ov030_020aeb34(0x39);
-            func_ov030_020a669c(0xA6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x360D:
-            func_ov030_020a669c(0xA5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_020874fc(RewardTableObject* arg0) {
+s32 func_ov030_020874fc(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x360F:
-            func_ov030_020a669c(0xAA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xAA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3610:
-            func_ov030_020a669c(0xAB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xAB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02087574(RewardTableObject* arg0) {
+s32 func_ov030_02087574(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3612:
-            func_ov030_020a669c(0xAA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xAA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3613:
-            func_ov030_020a669c(0xAD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xAD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020875ec(RewardTableObject* arg0) {
+s32 func_ov030_020875ec(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3615:
-            func_ov030_020a669c(0x3D2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3616:
-            func_ov030_020a669c(0x3D3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3617:
-            func_ov030_020a669c(0x3D4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3618:
-            func_ov030_020a669c(0x3D5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3619:
-            func_ov030_020a669c(0x3D6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_020876c8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020876c8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x8A:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x808B;
-            data_02071cf0.unk_20.unk_3124 = 9;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x808B;
+            data_02071cf0.unk_20.unk_3124          = 9;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x8B:
@@ -1177,22 +1139,22 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x8D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x8D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x8D:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x8E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x8E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x8E:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x8F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x8F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x8F:
             data_02071cf0.unk_20.unk_24BE = 0xC1;
@@ -1210,8 +1172,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x43A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x43A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x43A:
             if ((func_ov030_020848e4(arg0, 0x49) != 0) || (func_ov030_020848e4(arg0, 0x4A) != 0)) {
@@ -1224,8 +1186,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x3D9);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3D9);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020848e4(arg0, 0x48) != 0) {
@@ -1233,8 +1195,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0xAE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0xAE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
         case 0x92:
@@ -1243,8 +1205,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
         case 0x94:
         case 0x95:
             if ((func_ov030_020aebb0(47) != 0) && (func_ov030_020aebb0(0x30) != 0) && (func_ov030_020aebb0(0x31) != 0)) {
-                func_ov030_020a669c(0x96);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x96);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020aebb0(0x30) != 0) {
@@ -1259,8 +1221,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             break;
         case 0x78B:
             if (func_ov030_020aebb0(5) != 0) {
-                func_ov030_020a669c(0x78C);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x78C);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -1269,23 +1231,23 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0xA0);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0xA0);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xA9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xA0:
             func_ov030_020aeb34(0x3F);
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xA1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xA1:
         case 0xA2:
@@ -1299,19 +1261,19 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             }
             return func_ov030_020a9f54(arg0, &func_ov030_02087414, 0x3608, 4, 0x3609, 0x360A, 0x360B, 0x360C);
         case 0xA5:
-            func_ov030_020a669c(0x4CA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4CA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xA8:
-            func_ov030_020a669c(0xA9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xA9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xA9:
             return func_ov030_020a9f54(arg0, &func_ov030_020874fc, 0x360E, 2, 0x360F, 0x3610);
         case 0xAA:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0xACU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0xACU;
             func_ov030_020af364(9);
             return 1;
         case 0xAC:
@@ -1320,8 +1282,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x78D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x78D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x78D:
             func_ov030_020aeb34(3);
@@ -1330,13 +1292,13 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             break;
         case 0x78E:
             if ((func_ov030_020aebb0(0x42) != 0) && (func_ov030_020aebb0(0x43) != 0)) {
-                func_ov030_020a669c(0x790);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x790);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020aebb0(0x41) != 0) {
-                func_ov030_020a669c(0x78F);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x78F);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -1362,8 +1324,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
         case 0x9E:
             if ((func_ov030_020aebb0(0x33) != 0) && (func_ov030_020aebb0(0x34) != 0) && (func_ov030_020aebb0(0x35) != 0)) {
                 func_ov030_020aa9f4(arg0, 0x35F9, 0x5DD1, 0);
-                func_ov030_020a669c(0x9F);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x9F);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020aebb0(0x33) != 0) {
@@ -1375,8 +1337,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x43C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x43C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x43C:
             ProgressReward_GrantItem(arg0, ITEM_BOOK_MEMES);
@@ -1399,34 +1361,34 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             if (func_ov030_020aebb0(37) == 0) {
                 if (func_ov030_020aebb0(58) == 0) {
                     func_ov030_020aeb34(58);
-                    func_ov030_020a669c(0x3D1);
-                    func_ov030_020a6738(arg0);
+                    Progress_SetCurrentEvent(0x3D1);
+                    Progress_AdvanceEventScript(arg0);
                     return 1;
                 }
-                func_ov030_020a669c(0x3D7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3D7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020aebb0(42) != 0) && (func_ov030_020aebb0(0x10) == 0)) {
                 func_ov030_020aeb34(0x10);
-                func_ov030_020a669c(0x3DE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3DE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020aebb0(0x2C) != 0) && (func_ov030_020aebb0(0x13) == 0)) {
                 func_ov030_020aeb34(0x13);
-                func_ov030_020a669c(0x3E0);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3E0);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020aebb0(58) == 0) {
                 func_ov030_020aeb34(58);
-                func_ov030_020a669c(0x3D1);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3D1);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3D7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3D7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3D1:
         case 0x3D2:
@@ -1494,8 +1456,8 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0xC0);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0xC0);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21CF8 = 1;
@@ -1518,51 +1480,51 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
             return;
         case 0xB6:
             func_ov030_020aeb34(15);
-            func_ov030_020aac28(arg0, 0x106);
+            func_ov030_020aac28(arg0, PIN_LUCKY_STAR);
             arg0->unk_21CF8 = 1;
             break;
         case 0xB9:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84CCU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84CC;
             func_ov030_020af364(10);
             return 1;
         case 0xBA:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x80BBU;
-            data_02071cf0.unk_20.unk_3124 = 10;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x80BB;
+            data_02071cf0.unk_20.unk_3124          = 10;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0xBB:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xBC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xBC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xBC:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xBD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xBD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xBD:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xBE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xBE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xBE:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xBF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xBF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xBF:
             data_02071cf0.unk_20.unk_3124 = 11;
@@ -1605,7 +1567,7 @@ s32 func_ov030_020876c8(RewardTableObject* arg0) {
         case 0x4CC:
             func_ov030_020aeb34(0x47);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x30);
+            func_ov030_020aac28(arg0, PIN_POISON_BONES);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_SHIKI);
             break;
         case 0xC0:
@@ -1625,19 +1587,19 @@ void func_ov030_02088a5c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -1645,19 +1607,19 @@ void func_ov030_02088a5c(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    data_02071cf0.unk_20.unk_264C = 0x1DA000;
-    data_02071cf0.unk_20.unk_2650 = 0xBE000;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_26B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x80C4;
-    data_02071cf0.unk_20.unk_3124 = 58;
+    data_02071cf0.unk_20.unk_264C          = 0x1DA000;
+    data_02071cf0.unk_20.unk_2650          = 0xBE000;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_26B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x80C4;
+    data_02071cf0.unk_20.unk_3124          = 58;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_26B8 = 0;
     data_02071cf0.unk_20.unk_2648 = 2;
     data_02071cf0.unk_20.unk_2666 = 2;
 }
 
-s32 func_ov030_02088b60(RewardTableObject* arg0) {
+s32 func_ov030_02088b60(ProgressObject* arg0) {
     if ((func_ov030_020aebb0(47) != 0) && (func_ov030_020aebb0(2) == 0)) {
         if (func_ov030_020aebb0(0x34) == 0) {
             if (Inventory_HasRequiredQuantity(PIN_1000_YEN, 2, 0) != 0) {
@@ -1743,12 +1705,12 @@ s32 func_ov030_02088b60(RewardTableObject* arg0) {
     } else if (data_02071cf0.unk_20.unk_2458 == 13) {
         if (func_ov030_020aebb0(41) == 0) {
             func_ov030_020aeb34(41);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x80D4;
-            data_02071cf0.unk_20.unk_3124 = 12;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x80D4;
+            data_02071cf0.unk_20.unk_3124          = 12;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         }
@@ -1765,81 +1727,81 @@ s32 func_ov030_02088b60(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020890c0(RewardTableObject* arg0) {
+s32 func_ov030_020890c0(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x361B:
             func_ov030_020aeb34(0x22);
-            func_ov030_020a669c(0xCA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361C:
             func_ov030_020aeb34(0x23);
-            func_ov030_020a669c(0xCB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02089148(RewardTableObject* arg0) {
+s32 func_ov030_02089148(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x361B:
             func_ov030_020aeb34(0x22);
-            func_ov030_020a669c(0xCA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361C:
             func_ov030_020aeb34(0x23);
-            func_ov030_020a669c(0xCB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361D:
             func_ov030_020aeb34(0x24);
-            func_ov030_020a669c(0xCC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361E:
             func_ov030_020aeb34(37);
-            func_ov030_020a669c(0xCD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02089214(RewardTableObject* arg0) {
+s32 func_ov030_02089214(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x361B:
             func_ov030_020aeb34(0x22);
-            func_ov030_020a669c(0xCA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361C:
             func_ov030_020aeb34(0x23);
-            func_ov030_020a669c(0xCB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361D:
             func_ov030_020aeb34(0x24);
-            func_ov030_020a669c(0xCC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361E:
             func_ov030_020aeb34(37);
-            func_ov030_020a669c(0xCD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xCD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x361F:
-            func_ov030_020a669c(0x43D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x43D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02089300(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02089300(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0xC4:
             arg0->unk_21AD0 = 1;
             arg0->unk_21ACC = 1;
@@ -1855,8 +1817,8 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xC8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xC8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xC6:
             func_ov030_020aeb34(4);
@@ -1876,8 +1838,8 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0xD7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0xD7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -1902,8 +1864,8 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0xCE:
-            func_ov030_020a669c(0x43E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x43E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x43E:
             ProgressReward_GrantItem(arg0, ITEM_BOOK_SHOP_QUESTS);
@@ -1917,8 +1879,8 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xD1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xD1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xD1:
             ProgressReward_GrantItem(arg0, ITEM_STICKER_BACKLASH);
@@ -1930,15 +1892,15 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0xD4:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84D4U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84D4U;
             func_ov030_020af364(12);
             return 1;
         case 0xD5:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84D5U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84D5U;
             func_ov030_020af364(11);
             return 1;
         case 0xD6:
@@ -1952,14 +1914,14 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x791:
-            func_ov030_020a669c(0x792);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x792);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x792:
             func_ov030_020aeb34(47);
             if (Inventory_HasRequiredQuantity(PIN_1000_YEN, 2, 0) != 0) {
-                func_ov030_020a669c(0x793);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x793);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -1973,14 +1935,14 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x794:
-            func_ov030_020a669c(0x795);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x795);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x795:
             func_ov030_020aeb34(0x30);
             if (Inventory_HasRequiredQuantity(PIN_500_YEN, 5, 0) != 0) {
-                func_ov030_020a669c(0x796);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x796);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -1995,12 +1957,12 @@ s32 func_ov030_02089300(RewardTableObject* arg0) {
             break;
         case 0x4D4:
             func_ov030_020aeb34(45);
-            func_ov030_020aac28(arg0, 0x3B);
+            func_ov030_020aac28(arg0, PIN_LIGHTNING_MOON);
             break;
         case 0x4D5:
             func_ov030_020aeb34(46);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x50);
+            func_ov030_020aac28(arg0, PIN_MASAMUNE);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_SHIKI);
             break;
         case 0xD7:
@@ -2020,19 +1982,19 @@ void func_ov030_02089a40(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -2041,11 +2003,11 @@ void func_ov030_02089a40(void) {
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(6);
     func_ov030_020c26bc(0);
-    data_02071cf0.unk_20.unk_2658 = 4;
-    data_02071cf0.unk_20.unk_3124 = 0x3B;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x80DB;
+    data_02071cf0.unk_20.unk_2658          = 4;
+    data_02071cf0.unk_20.unk_3124          = 0x3B;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x80DB;
 }
 
 s32 func_ov030_02089b28(s32 arg0) {
@@ -2158,52 +2120,52 @@ s32 func_ov030_02089b28(s32 arg0) {
     return 0;
 }
 
-s32 func_ov030_0208a028(RewardTableObject* arg0) {
+s32 func_ov030_0208a028(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3626:
-            func_ov030_020a669c(0xE7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xE7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3627:
-            func_ov030_020a669c(0xE8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xE8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208a0a0(RewardTableObject* arg0) {
+s32 func_ov030_0208a0a0(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3620:
-            func_ov030_020a669c(0x3FA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3FA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3621:
-            func_ov030_020a669c(0x3FB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3FB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208a120(RewardTableObject* arg0) {
+s32 func_ov030_0208a120(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3620:
-            func_ov030_020a669c(0x3FF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3FF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3621:
-            func_ov030_020a669c(0x400);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x400);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208a19c(RewardTableObject* arg0) {
+s32 func_ov030_0208a19c(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 12:
             if (func_ov030_020aebb0(0x2C) != 0) {
@@ -2213,53 +2175,53 @@ s32 func_ov030_0208a19c(RewardTableObject* arg0) {
             func_ov030_020a9db8(arg0, 0x45F);
             return 0;
         case 1:
-            func_ov030_020a669c(0x451);
+            Progress_SetCurrentEvent(0x451);
             return 1;
         case 0:
             if (func_ov030_020aebb0(47) == 0) {
                 func_ov030_020aeb34(47);
-                func_ov030_020a669c(0x44E);
+                Progress_SetCurrentEvent(0x44E);
                 return 1;
             }
             if (func_ov030_020aebb0(0x30) == 0) {
                 func_ov030_020aeb34(0x30);
-                func_ov030_020a669c(0x44F);
+                Progress_SetCurrentEvent(0x44F);
                 return 1;
             }
             func_ov030_020aeb70(0x30);
-            func_ov030_020a669c(0x450);
+            Progress_SetCurrentEvent(0x450);
             return 1;
         case 2:
             if (func_ov030_020aebb0(45) == 0) {
                 func_ov030_020aeb34(45);
-                func_ov030_020a669c(0x452);
+                Progress_SetCurrentEvent(0x452);
                 return 1;
             }
             if (func_ov030_020aebb0(46) == 0) {
                 func_ov030_020aeb34(46);
-                func_ov030_020a669c(0x453);
+                Progress_SetCurrentEvent(0x453);
                 return 1;
             }
             func_ov030_020aeb70(46);
-            func_ov030_020a669c(0x454);
+            Progress_SetCurrentEvent(0x454);
             return 1;
         case 3:
-            func_ov030_020a669c(0x455);
+            Progress_SetCurrentEvent(0x455);
             return 1;
         case 4:
-            func_ov030_020a669c(0x456);
+            Progress_SetCurrentEvent(0x456);
             return 1;
         case 5:
-            func_ov030_020a669c(0x457);
+            Progress_SetCurrentEvent(0x457);
             return 1;
         case 6:
-            func_ov030_020a669c(0x458);
+            Progress_SetCurrentEvent(0x458);
             return 1;
         case 7:
-            func_ov030_020a669c(0x459);
+            Progress_SetCurrentEvent(0x459);
             return 1;
         case 8:
-            func_ov030_020a669c(0x45A);
+            Progress_SetCurrentEvent(0x45A);
             return 1;
         case 9:
             func_ov030_020a9db8(arg0, 0x45B);
@@ -2277,7 +2239,7 @@ s32 func_ov030_0208a19c(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208a3f0(RewardTableObject* arg0) {
+s32 func_ov030_0208a3f0(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 12:
             if (func_ov030_020aebb0(0x31) != 0) {
@@ -2287,53 +2249,53 @@ s32 func_ov030_0208a3f0(RewardTableObject* arg0) {
             func_ov030_020a9db8(arg0, 0x475);
             return 0;
         case 1:
-            func_ov030_020a669c(0x467);
+            Progress_SetCurrentEvent(0x467);
             return 1;
         case 0:
             if (func_ov030_020aebb0(0x34) == 0) {
                 func_ov030_020aeb34(0x34);
-                func_ov030_020a669c(0x464);
+                Progress_SetCurrentEvent(0x464);
                 return 1;
             }
             if (func_ov030_020aebb0(0x35) == 0) {
                 func_ov030_020aeb34(0x35);
-                func_ov030_020a669c(0x465);
+                Progress_SetCurrentEvent(0x465);
                 return 1;
             }
             func_ov030_020aeb70(0x35);
-            func_ov030_020a669c(0x466);
+            Progress_SetCurrentEvent(0x466);
             return 1;
         case 2:
             if (func_ov030_020aebb0(0x32) == 0) {
                 func_ov030_020aeb34(0x32);
-                func_ov030_020a669c(0x468);
+                Progress_SetCurrentEvent(0x468);
                 return 1;
             }
             if (func_ov030_020aebb0(0x33) == 0) {
                 func_ov030_020aeb34(0x33);
-                func_ov030_020a669c(0x469);
+                Progress_SetCurrentEvent(0x469);
                 return 1;
             }
             func_ov030_020aeb70(0x33);
-            func_ov030_020a669c(0x46A);
+            Progress_SetCurrentEvent(0x46A);
             return 1;
         case 3:
-            func_ov030_020a669c(0x46B);
+            Progress_SetCurrentEvent(0x46B);
             return 1;
         case 4:
-            func_ov030_020a669c(0x46C);
+            Progress_SetCurrentEvent(0x46C);
             return 1;
         case 5:
-            func_ov030_020a669c(0x46D);
+            Progress_SetCurrentEvent(0x46D);
             return 1;
         case 6:
-            func_ov030_020a669c(0x46E);
+            Progress_SetCurrentEvent(0x46E);
             return 1;
         case 7:
-            func_ov030_020a669c(0x46F);
+            Progress_SetCurrentEvent(0x46F);
             return 1;
         case 8:
-            func_ov030_020a669c(0x470);
+            Progress_SetCurrentEvent(0x470);
             return 1;
         case 9:
             func_ov030_020a9db8(arg0, 0x471);
@@ -2351,7 +2313,7 @@ s32 func_ov030_0208a3f0(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208a648(RewardTableObject* arg0) {
+s32 func_ov030_0208a648(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 12:
             if (func_ov030_020aebb0(0x36) != 0) {
@@ -2361,53 +2323,53 @@ s32 func_ov030_0208a648(RewardTableObject* arg0) {
             func_ov030_020a9db8(arg0, 0x48A);
             return 0;
         case 1:
-            func_ov030_020a669c(0x47C);
+            Progress_SetCurrentEvent(0x47C);
             return 1;
         case 0:
             if (func_ov030_020aebb0(0x39) == 0) {
                 func_ov030_020aeb34(0x39);
-                func_ov030_020a669c(0x479);
+                Progress_SetCurrentEvent(0x479);
                 return 1;
             }
             if (func_ov030_020aebb0(58) == 0) {
                 func_ov030_020aeb34(58);
-                func_ov030_020a669c(0x47A);
+                Progress_SetCurrentEvent(0x47A);
                 return 1;
             }
             func_ov030_020aeb70(58);
-            func_ov030_020a669c(0x47B);
+            Progress_SetCurrentEvent(0x47B);
             return 1;
         case 2:
             if (func_ov030_020aebb0(0x37) == 0) {
                 func_ov030_020aeb34(0x37);
-                func_ov030_020a669c(0x47D);
+                Progress_SetCurrentEvent(0x47D);
                 return 1;
             }
             if (func_ov030_020aebb0(56) == 0) {
                 func_ov030_020aeb34(56);
-                func_ov030_020a669c(0x47E);
+                Progress_SetCurrentEvent(0x47E);
                 return 1;
             }
             func_ov030_020aeb70(56);
-            func_ov030_020a669c(0x47F);
+            Progress_SetCurrentEvent(0x47F);
             return 1;
         case 3:
-            func_ov030_020a669c(0x480);
+            Progress_SetCurrentEvent(0x480);
             return 1;
         case 4:
-            func_ov030_020a669c(0x481);
+            Progress_SetCurrentEvent(0x481);
             return 1;
         case 5:
-            func_ov030_020a669c(0x482);
+            Progress_SetCurrentEvent(0x482);
             return 1;
         case 6:
-            func_ov030_020a669c(0x483);
+            Progress_SetCurrentEvent(0x483);
             return 1;
         case 7:
-            func_ov030_020a669c(0x484);
+            Progress_SetCurrentEvent(0x484);
             return 1;
         case 8:
-            func_ov030_020a669c(0x485);
+            Progress_SetCurrentEvent(0x485);
             return 1;
         case 9:
             func_ov030_020a9db8(arg0, 0x486);
@@ -2425,7 +2387,7 @@ s32 func_ov030_0208a648(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208a8a0(RewardTableObject* arg0) {
+s32 func_ov030_0208a8a0(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 12:
             if (func_ov030_020aebb0(0x3B) != 0) {
@@ -2435,51 +2397,51 @@ s32 func_ov030_0208a8a0(RewardTableObject* arg0) {
             func_ov030_020a9db8(arg0, 0x49F);
             return 0;
         case 1:
-            func_ov030_020a669c(0x491);
+            Progress_SetCurrentEvent(0x491);
             return 1;
         case 0:
             if (func_ov030_020aebb0(0x3E) == 0) {
                 func_ov030_020aeb34(0x3E);
-                func_ov030_020a669c(0x48E);
+                Progress_SetCurrentEvent(0x48E);
                 return 1;
             } else if (func_ov030_020aebb0(0x3F) == 0) {
                 func_ov030_020aeb34(0x3F);
-                func_ov030_020a669c(0x48F);
+                Progress_SetCurrentEvent(0x48F);
                 return 1;
             }
             func_ov030_020aeb70(0x3F);
-            func_ov030_020a669c(0x490);
+            Progress_SetCurrentEvent(0x490);
             return 1;
         case 2:
             if (func_ov030_020aebb0(0x3C) == 0) {
                 func_ov030_020aeb34(0x3C);
-                func_ov030_020a669c(0x492);
+                Progress_SetCurrentEvent(0x492);
                 return 1;
             } else if (func_ov030_020aebb0(0x3D) == 0) {
                 func_ov030_020aeb34(0x3D);
-                func_ov030_020a669c(0x493);
+                Progress_SetCurrentEvent(0x493);
                 return 1;
             }
             func_ov030_020aeb70(0x3D);
-            func_ov030_020a669c(0x494);
+            Progress_SetCurrentEvent(0x494);
             return 1;
         case 3:
-            func_ov030_020a669c(0x495);
+            Progress_SetCurrentEvent(0x495);
             return 1;
         case 4:
-            func_ov030_020a669c(0x496);
+            Progress_SetCurrentEvent(0x496);
             return 1;
         case 5:
-            func_ov030_020a669c(0x497);
+            Progress_SetCurrentEvent(0x497);
             return 1;
         case 6:
-            func_ov030_020a669c(0x498);
+            Progress_SetCurrentEvent(0x498);
             return 1;
         case 7:
-            func_ov030_020a669c(0x499);
+            Progress_SetCurrentEvent(0x499);
             return 1;
         case 8:
-            func_ov030_020a669c(0x49A);
+            Progress_SetCurrentEvent(0x49A);
             return 1;
         case 9:
             func_ov030_020a9db8(arg0, 0x49B);
@@ -2497,8 +2459,8 @@ s32 func_ov030_0208a8a0(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0208aaf4(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0xDB:
             data_02071cf0.unk_20.unk_24BE = 0xEE;
             func_ov030_020aec1c(10);
@@ -2532,8 +2494,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0xE2:
-            func_ov030_020a669c(0xE3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xE3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x45F:
             func_ov030_020aeb34(0x2C);
@@ -2561,8 +2523,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x462);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x462);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x461:
             func_ov030_020aeb34(10);
@@ -2591,8 +2553,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x461);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x461);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x475:
             func_ov030_020aeb34(0x31);
@@ -2620,8 +2582,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x40);
         case 0x473:
         case 0x472:
-            func_ov030_020a669c(0x477);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x477);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x48A:
             func_ov030_020aeb34(0x36);
@@ -2648,8 +2610,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x41);
         case 0x488:
         case 0x487:
-            func_ov030_020a669c(0x48C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x48C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x49F:
             func_ov030_020aeb34(0x3B);
@@ -2678,8 +2640,8 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
         case 0x49D:
         case 0x49C:
             func_ov030_020aeb34(37);
-            func_ov030_020a669c(0x4A1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4A1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x4A1:
             arg0->unk_21CF8 = 1;
@@ -2695,16 +2657,16 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0xED);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0xED);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21CF8 = 1;
             break;
         case 0xEB:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84E0;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84E0;
             func_ov030_020af364(13);
             return 1;
         case 0xEC:
@@ -2715,12 +2677,12 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             return 0;
         case 0x797:
             if (func_ov030_020aebb0(0x44) != 0) {
-                func_ov030_020a669c(0x799);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x799);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x798);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x798);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x798:
             if (func_ov030_020aebb0(0x43) == 0) {
@@ -2736,17 +2698,17 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
             data_02071cf0.unk_20.unk_265A = 4;
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_DURABLE_LEATHER);
-            func_ov030_020aac28(arg0, 0x5C);
+            func_ov030_020aac28(arg0, PIN_MURASAME);
             arg0->unk_21CF8 = 1;
             break;
         case 0x79A:
-            func_ov030_020a669c(0x79B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x79B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x79B:
             if (Inventory_HasRequiredQuantity(ITEM_CD_TRACK01, 1, 0) != 0) {
-                func_ov030_020a669c(0x79C);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x79C);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -2770,7 +2732,7 @@ s32 func_ov030_0208aaf4(RewardTableObject* arg0) {
         case 0x4E0:
             func_ov030_020aeb34(0x47);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 5);
+            func_ov030_020aac28(arg0, PIN_SEXY_D);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_RETRY_BATTLES);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_SHIKI);
             break;
@@ -2799,19 +2761,19 @@ void func_ov030_0208b87c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -2819,10 +2781,10 @@ void func_ov030_0208b87c(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x80F1;
-    data_02071cf0.unk_20.unk_3124 = 0x3C;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x80F1;
+    data_02071cf0.unk_20.unk_3124          = 0x3C;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_2648 = 4;
     data_02071cf0.unk_20.unk_264E = 4;
@@ -3046,163 +3008,163 @@ s32 func_ov030_0208b97c(s32 arg0) {
     return 0;
 }
 
-s32 func_ov030_0208c3d8(RewardTableObject* arg0) {
+s32 func_ov030_0208c3d8(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3628:
-            func_ov030_020a669c(0x404);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x404);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3629:
-            func_ov030_020a669c(0x405);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x405);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362A:
-            func_ov030_020a669c(0x406);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x406);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c480(RewardTableObject* arg0) {
+s32 func_ov030_0208c480(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3628:
-            func_ov030_020a669c(0x40A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3629:
-            func_ov030_020a669c(0x40B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362A:
-            func_ov030_020a669c(0x40C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c528(RewardTableObject* arg0) {
+s32 func_ov030_0208c528(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3628:
-            func_ov030_020a669c(0x40A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3629:
-            func_ov030_020a669c(0x40E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362A:
-            func_ov030_020a669c(0x40C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x40C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c5d0(RewardTableObject* arg0) {
+s32 func_ov030_0208c5d0(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x3628:
-            func_ov030_020a669c(0x412);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x412);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3629:
-            func_ov030_020a669c(0x413);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x413);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362A:
-            func_ov030_020a669c(0x414);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x414);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c678(RewardTableObject* arg0) {
+s32 func_ov030_0208c678(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x362C:
             func_ov030_020aeb34(0x39);
-            func_ov030_020a669c(0x7A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362D:
             func_ov030_020aeb34(58);
-            func_ov030_020a669c(0x7A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362E:
             func_ov030_020aeb34(0x3B);
-            func_ov030_020a669c(0x7A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c730(RewardTableObject* arg0) {
+s32 func_ov030_0208c730(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3630:
             func_ov030_020aeb34(0x3C);
-            func_ov030_020a669c(0x7A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3631:
             func_ov030_020aeb34(61);
-            func_ov030_020a669c(0x7A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3632:
             func_ov030_020aeb34(0x3E);
-            func_ov030_020a669c(0x7A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c7e8(RewardTableObject* arg0) {
+s32 func_ov030_0208c7e8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3634:
             func_ov030_020aeb34(0x3F);
-            func_ov030_020a669c(0x7A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3635:
             func_ov030_020aeb34(0x40);
-            func_ov030_020a669c(0x7A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3636:
             func_ov030_020aeb34(0x41);
-            func_ov030_020a669c(0x7A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0208c8a0(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0xF1:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xF2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xF2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xF2:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0xF3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0xF3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0xF3:
             data_02071cf0.unk_20.unk_24BE = 0x10E;
@@ -3283,8 +3245,8 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             func_02023598(0);
             data_02071cf0.unk_20.unk_312C = 1;
             func_ov030_020aeb34(18);
-            func_ov030_020a669c(0x43F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x43F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x43F:
             ProgressReward_GrantItem(arg0, ITEM_BOOK_BE_A_TRENDSETTER);
@@ -3316,22 +3278,22 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x107);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x107);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x107:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x108);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x108);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x108:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x109);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x109);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x109:
             arg0->unk_21AD0 = 1;
@@ -3345,8 +3307,8 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x10B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x10B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x10B:
             func_ov030_020aec1c(1);
@@ -3367,39 +3329,39 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
         case 0x79D:
             if (func_ov030_020aebb0(46) == 0) {
                 func_ov030_020aeb34(46);
-                func_ov030_020a669c(0x79E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x79E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x79F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x79F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x79F:
-            func_ov030_020a669c(0x7A0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7A0:
             return func_ov030_020a9f54(arg0, &func_ov030_0208c678, 0x362B, 3, 0x362C, 0x362D, 0x362E);
         case 0x7A3:
-            func_ov030_020a669c(0x7A1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7A1:
             return func_ov030_020a9f54(arg0, &func_ov030_0208c730, 0x362F, 3, 0x3630, 0x3631, 0x3632);
         case 0x7A4:
-            func_ov030_020a669c(0x7A2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7A2:
             return func_ov030_020a9f54(arg0, &func_ov030_0208c7e8, 0x3633, 3, 0x3634, 0x3635, 0x3636);
         case 0x7A5:
             if ((func_ov030_020aebb0(0x3B) != 0) && (func_ov030_020aebb0(0x3C) != 0) && (func_ov030_020aebb0(0x41) != 0)) {
-                func_ov030_020a669c(0x7A6);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7A6);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7A7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7A7:
             func_ov030_020aeb70(0x39);
@@ -3422,14 +3384,14 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x7A8:
-            func_ov030_020a669c(0x7A9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7A9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7A9:
             func_ov030_020aeb34(47);
             if (Inventory_HasRequiredQuantity(0xFF, 3, 0) != 0) {
-                func_ov030_020a669c(0x7AA);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7AA);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -3444,22 +3406,22 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             break;
         case 0x7AB:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(7) != 0) && (func_ov030_020aebb0(0x30) == 0)) {
-                func_ov030_020a669c(0x7AF);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7AF);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(7) != 0)) {
-                func_ov030_020a669c(0x7AD);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7AD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(7) == 0)) {
-                func_ov030_020a669c(0x7AE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7AE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7AC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7AC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7AC:
             func_ov030_020aeb34(0x30);
@@ -3479,14 +3441,14 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x7B0:
-            func_ov030_020a669c(0x7B1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7B1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B1:
             func_ov030_020aeb34(0x31);
             if (Inventory_HasRequiredQuantity(0x5C, 1, 3) != 0) {
-                func_ov030_020a669c(0x7B2);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7B2);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -3518,7 +3480,7 @@ s32 func_ov030_0208c8a0(RewardTableObject* arg0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
             break;
-        case 0x10D:
+        case EVENT_SHIKI6_SECRET_BOX_CENTER_ST:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_SOLID_SLAMMER, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -3535,19 +3497,19 @@ void func_ov030_0208d708(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -3555,9 +3517,9 @@ void func_ov030_0208d708(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8111;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8111;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_3124 = 61;
     data_02071cf0.unk_20.unk_264C = 4;
@@ -3569,7 +3531,7 @@ void func_ov030_0208d708(void) {
     data_02071cf0.unk_20.unk_2652 = 4;
 }
 
-s32 func_ov030_0208d80c(RewardTableObject* arg0) {
+s32 func_ov030_0208d80c(ProgressObject* arg0) {
     if ((func_ov030_020aebb0(0x36) != 0) && (func_ov030_020aebb0(2) == 0)) {
         if (func_ov030_020aebb0(0x37) == 0) {
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_FUNKY_SHADES, 1, 0) != 0) {
@@ -3647,74 +3609,74 @@ s32 func_ov030_0208d80c(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208dbd8(RewardTableObject* arg0) {
+s32 func_ov030_0208dbd8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3638:
             func_ov030_020aeb34(45);
-            func_ov030_020a669c(0x7BC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3639:
             func_ov030_020aeb34(46);
-            func_ov030_020a669c(0x7BC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x363A:
             func_ov030_020aeb34(47);
-            func_ov030_020a669c(0x7BC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208dc90(RewardTableObject* arg0) {
+s32 func_ov030_0208dc90(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x363C:
             func_ov030_020aeb34(0x30);
-            func_ov030_020a669c(0x7BD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x363D:
             func_ov030_020aeb34(0x31);
-            func_ov030_020a669c(0x7BD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x363E:
             func_ov030_020aeb34(0x32);
-            func_ov030_020a669c(0x7BD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208dd48(RewardTableObject* arg0) {
+s32 func_ov030_0208dd48(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3640:
             func_ov030_020aeb34(0x33);
-            func_ov030_020a669c(0x7BE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3641:
             func_ov030_020aeb34(0x34);
-            func_ov030_020a669c(0x7BE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3642:
             func_ov030_020aeb34(0x35);
-            func_ov030_020a669c(0x7BE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0208ddfc(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x111:
             data_02071cf0.unk_20.unk_24BE = 0x11F;
             func_ov030_020aec1c(10);
@@ -3722,24 +3684,24 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x112);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x112);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x112:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x113);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x113);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7C7:
             if (func_ov030_020aebb0(0x2C) != 0) {
-                func_ov030_020a669c(0x7C9);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7C9);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7C8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7C8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7C8:
             if (func_ov030_020aebb0(43) == 0) {
@@ -3753,8 +3715,8 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x115);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x115);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x115:
             ProgressReward_GrantPin(arg0, PIN_5000_YEN);
@@ -3764,28 +3726,28 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
         case 0x116:
         case 0x117:
             func_ov030_020aeb34(6);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84F2;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84F2;
             func_ov030_020af364(15);
             return 1;
         case 0x118:
-            func_ov030_020a669c(0x119);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x119);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x11B:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8415U;
-            data_02071cf0.unk_20.unk_3124 = 0x10;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8415U;
+            data_02071cf0.unk_20.unk_3124          = 0x10;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x415:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84F3U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84F3U;
             func_ov030_020af364(0xE);
             return 1;
         case 0x11C:
@@ -3793,7 +3755,7 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
             data_02071cf0.unk_20.unk_24B4                 = 0;
             data_02071cf0.unk_20.unk_24B8                 = 1;
-            data_02071cf0.unk_20.unk_24BC                 = 0x811D;
+            data_02071cf0.unk_20.currentStoryEvent        = 0x811D;
             data_02071cf0.unk_20.unk_3124                 = 0x11;
             data_02071cf0.unk_20.unk_3128                 = 0;
             arg0->unk_21630                               = 4;
@@ -3808,17 +3770,17 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0xD6000;
             break;
         case 0x7BD:
-            func_ov030_020a669c(0x7BB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B4:
-            if (Inventory_HasRequiredQuantity(ITEM_THREAD_FUNKY_SHADES, 1, 0) != 0) {
-                func_ov030_020a669c(0x7B5);
-                func_ov030_020a6738(arg0);
+            if (Inventory_HasRequiredQuantity(ITEM_THREAD_FUNKY_SHADES, 1, 0) != FALSE) {
+                Progress_SetCurrentEvent(EVENT_SHIKI7_104_REAPER);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
-        case 0x7B5:
+        case EVENT_SHIKI7_104_REAPER:
             func_ov030_020aeb34(2);
             func_ov030_020aeb34(0x37);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_CHOICE_MEAT);
@@ -3829,39 +3791,39 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
         case 0x7B6:
             if (func_ov030_020aebb0(42) == 0) {
                 func_ov030_020aeb34(42);
-                func_ov030_020a669c(0x7B7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7B7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7B8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7B8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B3:
-            func_ov030_020a669c(0x7B4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7B4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B9:
             return func_ov030_020a9f54(arg0, func_ov030_0208dbd8, 0x3637, 3, 0x3638, 0x3639, 0x363A);
         case 0x7B7:
-            func_ov030_020a669c(0x7B9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7B9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7BA:
             return func_ov030_020a9f54(arg0, func_ov030_0208dc90, 0x363B, 3, 0x363C, 0x363D, 0x363E);
         case 0x7BC:
-            func_ov030_020a669c(0x7BA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7BA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7BB:
             return func_ov030_020a9f54(arg0, func_ov030_0208dd48, 0x363F, 3, 0x3640, 0x3641, 0x3642);
         case 0x7BE:
             if ((func_ov030_020aebb0(46) != 0) && (func_ov030_020aebb0(0x32) != 0) && (func_ov030_020aebb0(0x35) != 0)) {
-                func_ov030_020a669c(0x7BF);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_SHIKI7_SCRAMBLE_REAPER);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7C0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7C0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7C0:
             func_ov030_020aeb70(45);
@@ -3874,7 +3836,7 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             func_ov030_020aeb70(0x34);
             func_ov030_020aeb70(0x35);
             break;
-        case 0x7BF:
+        case EVENT_SHIKI7_SCRAMBLE_REAPER:
             func_ov030_020aeb34(3);
             func_ov030_020aeb34(0x3C);
             data_02071cf0.unk_20.unk_264A = 4;
@@ -3883,17 +3845,17 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x7B8:
-            func_ov030_020a669c(0x7B9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7B9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7C5:
-            if (Inventory_HasRequiredQuantity(12, 1, 0) != 0) {
-                func_ov030_020a669c(0x7C6);
-                func_ov030_020a6738(arg0);
+            if (Inventory_HasRequiredQuantity(PIN_NATURAL_MAGNUM, 1, 0) != FALSE) {
+                Progress_SetCurrentEvent(EVENT_SHIKI7_SCRAMBLE_MAGNUM);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
-        case 0x7C6:
+        case EVENT_SHIKI7_SCRAMBLE_MAGNUM:
             func_ov030_020aeb34(4);
             func_ov030_020aeb34(58);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_STUNNING_CRYSTALS);
@@ -3904,15 +3866,15 @@ s32 func_ov030_0208ddfc(RewardTableObject* arg0) {
             break;
         case 0x4F2:
             func_ov030_020aeb34(0x28);
-            func_ov030_020aac28(arg0, 39);
+            func_ov030_020aac28(arg0, PIN_METEOR_MAGNET);
             break;
         case 0x4F3:
             func_ov030_020aeb34(41);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_DEF_BOOST_SHIKI);
-            func_ov030_020aac28(arg0, 4);
+            func_ov030_020aac28(arg0, PIN_EARTHSHAKE);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
             break;
-        case 0x11E:
+        case EVENT_SHIKI7_SECRET_BOX_MOLCO:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_MR_MEW_SUIT, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -3929,19 +3891,19 @@ void func_ov030_0208e6e4(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -3955,11 +3917,11 @@ void func_ov030_0208e6e4(void) {
     data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
     data_02071cf0.unk_20.unk_24B4                 = 0;
     data_02071cf0.unk_20.unk_24B8                 = 1;
-    data_02071cf0.unk_20.unk_24BC                 = 0x8122;
+    data_02071cf0.unk_20.currentStoryEvent        = 0x8122;
     data_02071cf0.unk_20.unk_3124                 = 0x3E;
 }
 
-s32 func_ov030_0208e7e4(RewardTableObject* arg0) {
+s32 func_ov030_0208e7e4(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if ((func_ov030_020848e4(arg0, 2) != 0) && (func_ov030_020aebb0(0x20) == 0)) {
             func_ov030_020aeb34(0x20);
@@ -4010,13 +3972,13 @@ s32 func_ov030_0208e7e4(RewardTableObject* arg0) {
         }
         if ((func_ov030_020aebb0(0x23) == 0) && (func_ov030_020aed9c(0x3767) != 0)) {
             func_ov030_020aeb34(0x23);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8129;
-            data_02071cf0.unk_20.unk_264C = 4;
-            data_02071cf0.unk_20.unk_3124 = 0x13;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8129;
+            data_02071cf0.unk_20.unk_264C          = 4;
+            data_02071cf0.unk_20.unk_3124          = 0x13;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         } else if ((func_ov030_020aebb0(0x23) != 0) && (func_ov030_020aebb0(42) == 0)) {
@@ -4028,38 +3990,38 @@ s32 func_ov030_0208e7e4(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208eb40(RewardTableObject* arg0) {
+s32 func_ov030_0208eb40(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3644:
-            func_ov030_020a669c(0x12B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x12B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3645:
-            func_ov030_020a669c(0x12C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x12C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208ebbc(RewardTableObject* arg0) {
+s32 func_ov030_0208ebbc(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3647:
-            func_ov030_020a669c(0x12E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x12E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3648:
-            func_ov030_020a669c(0x12F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x12F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208ec3c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0208ec3c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x122:
             data_02071cf0.unk_20.unk_24BE = 0x133;
             func_ov030_020aec1c(10);
@@ -4074,18 +4036,18 @@ s32 func_ov030_0208ec3c(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0xE1000;
             break;
         case 0x124:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8125U;
-            data_02071cf0.unk_20.unk_3124 = 0x14;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8125U;
+            data_02071cf0.unk_20.unk_3124          = 0x14;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x125:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84FCU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84FCU;
             func_ov030_020af364(0x10);
             return 1;
         case 0x126:
@@ -4104,52 +4066,52 @@ s32 func_ov030_0208ec3c(RewardTableObject* arg0) {
             break;
         case 0x7CA:
             if (func_ov030_020aebb0(0x23) != 0) {
-                func_ov030_020a669c(0x7CB);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7CB);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
         case 0x7CB:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x12A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x12A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x12A:
             return func_ov030_020a9f54(arg0, func_ov030_0208eb40, 0x3643, 2, 0x3644, 0x3645);
         case 0x12B:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x812DU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x812DU;
             func_ov030_020af364(18);
             return 1;
         case 0x12D:
             return func_ov030_020a9f54(arg0, func_ov030_0208ebbc, 0x3646, 2, 0x3647, 0x3648);
         case 0x12E:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x12DU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x12DU;
             func_ov030_020af364(18);
             return 1;
         case 0x12F:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x7CC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7CC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7CC:
             func_ov030_020aeb34(3);
             data_02071cf0.unk_20.unk_2648 = 4;
             ProgressReward_GrantPin(arg0, PIN_5000_YEN);
-            func_ov030_020aac28(arg0, 0x68);
+            func_ov030_020aac28(arg0, PIN_LONG_LIVE_THE_ICE);
             ProgressReward_GrantItem(arg0, ITEM_BOOK_CONTROLS_PRESS);
             arg0->unk_21CF8 = 1;
             break;
         case 0x130:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x84FDU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x84FDU;
             func_ov030_020af364(0x11);
             return 1;
         case 0x131:
@@ -4168,7 +4130,7 @@ s32 func_ov030_0208ec3c(RewardTableObject* arg0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
             break;
-        case 0x4FD:
+        case EVENT_JOSHUA1_104:
             func_ov030_020aeb34(0x28);
             if (func_ov030_020aebb0(0) == 0) {
                 ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
@@ -4177,7 +4139,7 @@ s32 func_ov030_0208ec3c(RewardTableObject* arg0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
             break;
-        case 0x132:
+        case EVENT_JOSHUA1_SECRET_BOX_HACHIKO:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_POTTED_PLANT, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -4194,19 +4156,19 @@ void func_ov030_0208f160(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -4214,12 +4176,12 @@ void func_ov030_0208f160(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    data_02071cf0.unk_20.unk_264C = 0x15D000;
-    data_02071cf0.unk_20.unk_2650 = 0xD6000;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_26B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8136;
-    data_02071cf0.unk_20.unk_3124 = 0x3F;
+    data_02071cf0.unk_20.unk_264C          = 0x15D000;
+    data_02071cf0.unk_20.unk_2650          = 0xD6000;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_26B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8136;
+    data_02071cf0.unk_20.unk_3124          = 0x3F;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_264A = 2;
     data_02071cf0.unk_20.unk_264E = 2;
@@ -4231,7 +4193,7 @@ void func_ov030_0208f160(void) {
     data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
 }
 
-s32 func_ov030_0208f288(RewardTableObject* arg0) {
+s32 func_ov030_0208f288(ProgressObject* arg0) {
     if ((func_ov030_020aebb0(55) != 0) && (func_ov030_020aebb0(6) == 0)) {
         if (func_ov030_020aebb0(56) == 0) {
             if (Inventory_HasRequiredQuantity(ITEM_FOOD_DEFINITIVO_CHILI_DOG, 1, 0) != 0) {
@@ -4260,12 +4222,12 @@ s32 func_ov030_0208f288(RewardTableObject* arg0) {
         }
         if ((func_ov030_020aebb0(0x22) == 0) && (func_ov030_020aed9c(0x3777) != 0)) {
             func_ov030_020aeb34(0x22);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x813A;
-            data_02071cf0.unk_20.unk_3124 = 0x16;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x813A;
+            data_02071cf0.unk_20.unk_3124          = 0x16;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         }
@@ -4332,7 +4294,7 @@ s32 func_ov030_0208f288(RewardTableObject* arg0) {
         }
         if ((func_ov030_020aebb0(9) != 0) && (func_ov030_020aebb0(43) == 0)) {
             func_ov030_020aeb34(43);
-            func_ov030_020a9c54(arg0, 0x152, 0);
+            func_ov030_020a9c54(arg0, EVENT_JOSHUA2_TIN_PIN, 0);
             return 1;
         }
         if (((func_ov030_020848e4(arg0, 11) != 0) || (func_ov030_020848e4(arg0, 13) != 0)) && (func_ov030_020aebb0(43) != 0) &&
@@ -4365,12 +4327,12 @@ s32 func_ov030_0208f288(RewardTableObject* arg0) {
         }
         if ((func_ov030_020aebb0(0x2C) != 0) && (func_ov030_020aebb0(0x34) == 0)) {
             func_ov030_020aeb34(0x34);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8154;
-            data_02071cf0.unk_20.unk_3124 = 0x18;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8154;
+            data_02071cf0.unk_20.unk_3124          = 0x18;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         }
@@ -4378,23 +4340,23 @@ s32 func_ov030_0208f288(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0208fa28(RewardTableObject* arg0) {
+s32 func_ov030_0208fa28(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x364A:
-            func_ov030_020a669c(0x14A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x14A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x364B:
-            func_ov030_020a669c(0x14B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x14B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0208faa4(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0208faa4(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x136:
             arg0->unk_21AD0 = 1;
             arg0->unk_21ACC = 1;
@@ -4419,16 +4381,16 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x13C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x13C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x13C:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x813DU;
-            data_02071cf0.unk_20.unk_3124 = 23;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x813DU;
+            data_02071cf0.unk_20.unk_3124          = 23;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x13D:
@@ -4465,9 +4427,9 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0xFA000;
             break;
         case 0x141:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x506U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x506U;
             func_ov030_020af364(0x13);
             return 1;
         case 0x142:
@@ -4481,14 +4443,14 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x156);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA2_SECRET_BOX_SPAIN_HILL);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
         case 0x146:
-            func_ov030_020a669c(0x147);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x147);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x147:
             arg0->unk_21630               = 6;
@@ -4513,8 +4475,8 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x14C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x14C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x14C:
             arg0->unk_21630               = 6;
@@ -4529,15 +4491,15 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x14F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x14F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x14F:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x151);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x151);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x151:
             func_ov030_020aeb34(9);
@@ -4548,11 +4510,11 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             arg0->unk_21B08 = 0x168000;
             arg0->unk_21B0C = 0xFF000;
             break;
-        case 0x152:
+        case EVENT_JOSHUA2_TIN_PIN:
             data_02071cf0.unk_20.unk_26C4 = 4;
             ProgressReward_GrantItem(arg0, ITEM_BOOK_TIN_PIN_SLAMMER);
-            func_ov030_020aac28(arg0, 0xE6);
-            func_ov030_020aac28(arg0, 0xE5);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_CUSTOM);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_FIRE);
             break;
         case 0x153:
             arg0->unk_21AD0 = 1;
@@ -4566,8 +4528,8 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x155);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x155);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x155:
             arg0->unk_21AD0 = 1;
@@ -4582,12 +4544,12 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             break;
         case 0x7D0:
             if (func_ov030_020aebb0(46) != 0) {
-                func_ov030_020a669c(0x7D2);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7D2);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7D1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7D1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7D1:
             if (func_ov030_020aebb0(4) == 0) {
@@ -4603,19 +4565,19 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             break;
         case 0x7D3:
             if (func_ov030_020aebb0(0x22) != 0) {
-                func_ov030_020a669c(0x7D4);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7D4);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
         case 0x7D4:
             func_ov030_020aeb34(47);
             if (func_02023f60(1, 10) != 0) {
-                func_ov030_020a669c(0x7D5);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA2_SCRAMBLE_NP_JOSHUA);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
-        case 0x7D5:
+        case EVENT_JOSHUA2_SCRAMBLE_NP_JOSHUA:
             func_ov030_020aeb34(5);
             func_ov030_020aeb34(0x30);
             ProgressReward_GrantPin(arg0, PIN_1000_YEN);
@@ -4623,18 +4585,18 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x7D6:
-            func_ov030_020a669c(0x7D7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7D7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7D7:
             func_ov030_020aeb34(0x37);
             if (Inventory_HasRequiredQuantity(ITEM_FOOD_DEFINITIVO_CHILI_DOG, 1, 0) != 0) {
-                func_ov030_020a669c(0x7D8);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA2_MOLCO_REAPER);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
-        case 0x7D8:
+        case EVENT_JOSHUA2_MOLCO_REAPER:
             func_ov030_020aeb34(6);
             func_ov030_020aeb34(56);
             ProgressReward_GrantPin(arg0, PIN_1000_YEN);
@@ -4645,10 +4607,10 @@ s32 func_ov030_0208faa4(RewardTableObject* arg0) {
         case 0x506:
             func_ov030_020aeb34(0x31);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x56);
+            func_ov030_020aac28(arg0, PIN_ICHIMONJI);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_DEF_BOOST_JOSHUA);
             break;
-        case 0x156:
+        case EVENT_JOSHUA2_SECRET_BOX_SPAIN_HILL:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_SUPERMASKS_MASK, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -4665,29 +4627,29 @@ void func_ov030_0209041c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24BE = 0;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
-    data_02071cf0.unk_20.unk_26D4 = 2;
-    data_02071cf0.unk_20.unk_26D6 = 4;
-    data_02071cf0.unk_20.unk_26D8 = 0;
-    data_02071cf0.unk_20.unk_26DA = 4;
-    data_02071cf0.unk_20.unk_26DC = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24BE          = 0;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
+    data_02071cf0.unk_20.unk_26D4          = 2;
+    data_02071cf0.unk_20.unk_26D6          = 4;
+    data_02071cf0.unk_20.unk_26D8          = 0;
+    data_02071cf0.unk_20.unk_26DA          = 4;
+    data_02071cf0.unk_20.unk_26DC          = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x15A;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x15A;
     func_ov030_020c26bc(4);
     data_02071cf0.unk_20.unk_2648 = 0;
     data_02071cf0.unk_20.unk_264C = 0;
@@ -4701,7 +4663,7 @@ void func_ov030_0209041c(void) {
     data_02071cf0.unk_20.unk_3124 = 0x40;
 }
 
-s32 func_ov030_02090520(RewardTableObject* arg0) {
+s32 func_ov030_02090520(ProgressObject* arg0) {
     if ((func_ov030_020aebb0(0x59) != 0) && (func_ov030_020aebb0(4) == 0)) {
         if (func_ov030_020aebb0(0x5A) == 0) {
             if (func_ov030_020aaad8() == 10) {
@@ -5003,234 +4965,234 @@ s32 func_ov030_02090520(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0209147c(RewardTableObject* arg0) {
+s32 func_ov030_0209147c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3651:
             func_ov030_020aeb34(38);
-            func_ov030_020a669c(0x161);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x161);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3652:
             func_ov030_020aeb34(39);
-            func_ov030_020a669c(0x162);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x162);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3653:
             func_ov030_020aeb34(0x28);
-            func_ov030_020a669c(0x163);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x163);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3654:
             func_ov030_020aeb34(41);
-            func_ov030_020a669c(0x164);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x164);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02091554(RewardTableObject* arg0) {
+s32 func_ov030_02091554(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3651:
             func_ov030_020aeb34(38);
-            func_ov030_020a669c(0x161);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x161);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3652:
             func_ov030_020aeb34(39);
-            func_ov030_020a669c(0x162);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x162);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3653:
             func_ov030_020aeb34(0x28);
-            func_ov030_020a669c(0x163);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x163);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3654:
             func_ov030_020aeb34(41);
-            func_ov030_020a669c(0x164);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x164);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3655:
             if (func_ov030_020aebb0(42) == 0) {
                 func_ov030_020aeb34(42);
-                func_ov030_020a669c(0x165);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x165);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
     }
     return 0;
 }
 
-s32 func_ov030_02091664(RewardTableObject* arg0) {
+s32 func_ov030_02091664(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3657:
-            func_ov030_020a669c(0x16E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x16E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3658:
-            func_ov030_020a669c(0x16F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x16F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3659:
-            func_ov030_020a669c(0x170);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x170);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x365A:
-            func_ov030_020a669c(0x171);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x171);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_0209171c(RewardTableObject* arg0) {
+s32 func_ov030_0209171c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x365C:
-            func_ov030_020a669c(0x18E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x18E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x365D:
-            func_ov030_020a669c(0x18F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x18F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209179c(RewardTableObject* arg0) {
+s32 func_ov030_0209179c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x365F:
             func_ov030_020aeb34(0x4D);
-            func_ov030_020a669c(0x7ED);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7ED);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3660:
             func_ov030_020aeb34(0x4E);
-            func_ov030_020a669c(0x7ED);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7ED);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3661:
             func_ov030_020aeb34(0x4F);
-            func_ov030_020a669c(0x7ED);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7ED);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02091854(RewardTableObject* arg0) {
+s32 func_ov030_02091854(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3663:
             func_ov030_020aeb34(0x50);
-            func_ov030_020a669c(0x7EE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3664:
             func_ov030_020aeb34(0x51);
-            func_ov030_020a669c(0x7EE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3665:
             func_ov030_020aeb34(0x52);
-            func_ov030_020a669c(0x7EE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209190c(RewardTableObject* arg0) {
+s32 func_ov030_0209190c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3667:
             func_ov030_020aeb34(0x53);
-            func_ov030_020a669c(0x7EF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3668:
             func_ov030_020aeb34(0x54);
-            func_ov030_020a669c(0x7EF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3669:
             func_ov030_020aeb34(0x55);
-            func_ov030_020a669c(0x7EF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020919c4(RewardTableObject* arg0) {
+s32 func_ov030_020919c4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36EB:
-            func_ov030_020a669c(0x51);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x51);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36EC:
-            func_ov030_020a669c(0x52);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x52);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36ED:
-            func_ov030_020a669c(0x53);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x53);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36EE:
-            func_ov030_020a669c(0x54);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x54);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36EF:
-            func_ov030_020a669c(0x55);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x55);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02091a8c(RewardTableObject* arg0) {
+s32 func_ov030_02091a8c(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x362C:
             func_ov030_020aeb34(0x3F);
             func_ov030_020aeb34(0x42);
-            func_ov030_020a669c(0x419);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x419);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362D:
             if (func_ov030_020aebb0(0x40) == 0) {
                 func_ov030_020aeb34(0x40);
                 func_ov030_020aeb34(0x43);
-                func_ov030_020a669c(0x41A);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x41A);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x41C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x41C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362E:
             if (func_ov030_020aebb0(0x41) == 0) {
                 func_ov030_020aeb34(0x41);
                 func_ov030_020aeb34(0x44);
-                func_ov030_020a669c(0x41B);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x41B);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x41C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x41C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x362F:
-            func_ov030_020a669c(0x41C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x41C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02091bc8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02091bc8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x15A:
             func_ov030_020aeaa0(0x10, 4);
             break;
@@ -5243,8 +5205,8 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             func_ov030_020aeaa0(6, 2);
             func_ov030_020aeaa0(0, 2);
             func_ov030_020aeaa0(8, 2);
-            func_ov030_020a669c(0x160);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x160);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x161:
         case 0x162:
@@ -5260,9 +5222,9 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x45);
             break;
         case 0x166:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x510U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x510U;
             func_ov030_020af364(0x14);
             return 1;
         case 0x167:
@@ -5312,15 +5274,15 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x17A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x17A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x179:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x17B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x17B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x17A:
             func_ov030_020aeb34(0x35);
@@ -5342,17 +5304,17 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             func_ov030_020aeb70(0x11);
             if (func_ov030_020aebb0(58) == 0) {
                 func_ov030_020aeb34(58);
-                func_ov030_020a669c(0x181);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x181);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x182);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(EVENT_JOSHUA3_IMPRINT_YELLOW);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x182:
+        case EVENT_JOSHUA3_IMPRINT_YELLOW:
             if ((func_ov030_020aebb0(0x3B) != 0) && (func_ov030_020aebb0(0x61) == 0)) {
                 func_ov030_020aeb34(0x61);
-                func_ov030_020aac28(arg0, 0x110);
+                func_ov030_020aac28(arg0, PIN_I_LIVE_FOR_FOOD);
             }
             data_02071cf0.unk_20.unk_26D8 = 0;
             arg0->unk_21CF8               = 1;
@@ -5367,12 +5329,10 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             func_ov030_020aa9f4(arg0, 0x364F, 0x5DD1, 0);
             arg0->unk_21CF8 = 1;
             break;
-
         case 0x416:
             return func_ov030_020aa0c8(arg0, 0xA9, 0x417, 0x418, &func_ov030_02091a8c);
             // case 0x417:
             //     return func_ov030_020aa0c8(arg0, 0xA9, 0x417, 0x418, &func_ov030_02091a8c);
-
         case 0x419:
         case 0x41A:
         case 0x41B:
@@ -5409,7 +5369,7 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
         case 0x190:
             if (func_ov030_020aebb0(0x4A) == 0) {
                 func_ov030_020aeb34(0x4A);
-                func_ov030_020aac28(arg0, 0xE6);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_CUSTOM);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -5429,20 +5389,20 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             return func_ov030_020a9f54(arg0, &func_ov030_020919c4, 0x36EA, 5, 0x36EB, 0x36EC, 0x36ED, 0x36EE, 0x36EF);
         case 0x7D9:
             if (func_ov030_020aebb0(0x45) != 0) {
-                func_ov030_020a669c(0x7DA);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7DA);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
         case 0x7DA:
             func_ov030_020aeb34(0x59);
             if (func_ov030_020aaad8() == 10) {
-                func_ov030_020a669c(0x7DB);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA3_SCRAMBLE_NP_TREND);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
-        case 0x7DB:
+        case EVENT_JOSHUA3_SCRAMBLE_NP_TREND:
             func_ov030_020aeb34(4);
             func_ov030_020aeb34(0x5A);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_FLUFFY_COTTON);
@@ -5452,12 +5412,12 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             break;
         case 0x7DC:
             if (func_ov030_020aebb0(0x47) != 0) {
-                func_ov030_020a669c(0x7DE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7DE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7DD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7DD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7DD:
             if (func_ov030_020aebb0(0x46) == 0) {
@@ -5471,19 +5431,19 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
         case 0x7DE:
             func_ov030_020aeb34(5);
             ProgressReward_GrantPin(arg0, PIN_5000_YEN);
-            func_ov030_020aac28(arg0, 0x65);
+            func_ov030_020aac28(arg0, PIN_KONOHANA_SAKUYA);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_PHONE_CAMERA);
             data_02071cf0.unk_20.unk_2666 = 4;
             arg0->unk_21CF8               = 1;
         case 0x7DF:
-            func_ov030_020a669c(0x7E0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7E0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7E0:
             func_ov030_020aeb34(0x48);
             if (Inventory_HasRequiredQuantity(0x1C, 1, 0) != 0) {
-                func_ov030_020a669c(0x7E1);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7E1);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -5495,14 +5455,14 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x7E2:
-            func_ov030_020a669c(0x7E3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7E3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7E3:
             func_ov030_020aeb34(0x5E);
             if (Inventory_HasRequiredQuantity(56, 1, 0) != 0) {
-                func_ov030_020a669c(0x7E4);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7E4);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -5516,50 +5476,50 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             break;
         case 0x7E5:
             if (func_ov030_020aebb0(0x45) != 0) {
-                func_ov030_020a669c(0x7E7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7E7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7E6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7E6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7E7:
             if (func_ov030_020aebb0(0x4C) == 0) {
                 func_ov030_020aeb34(0x4C);
-                func_ov030_020a669c(0x7E8);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7E8);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7E9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7E9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7E9:
         case 0x7E8:
-            func_ov030_020a669c(0x7EA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7EA:
             return func_ov030_020a9f54(arg0, &func_ov030_0209179c, 0x365E, 3, 0x365F, 0x3660, 0x3661);
         case 0x7ED:
-            func_ov030_020a669c(0x7EB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7EB:
             return func_ov030_020a9f54(arg0, &func_ov030_02091854, 0x3662, 3, 0x3663, 0x3664, 0x3665);
         case 0x7EE:
-            func_ov030_020a669c(0x7EC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7EC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7EC:
             return func_ov030_020a9f54(arg0, &func_ov030_0209190c, 0x3666, 3, 0x3667, 0x3668, 0x3669);
         case 0x7EF:
             if ((func_ov030_020aebb0(0x4D) != 0) && (func_ov030_020aebb0(0x52) != 0) && (func_ov030_020aebb0(0x54) != 0)) {
-                func_ov030_020a669c(0x7F0);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA3_SCRAMBLE_REAPER);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7F1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7F1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7F1:
             func_ov030_020aeb70(0x4D);
@@ -5572,7 +5532,7 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
             func_ov030_020aeb70(0x54);
             func_ov030_020aeb70(0x55);
             break;
-        case 0x7F0:
+        case EVENT_JOSHUA3_SCRAMBLE_REAPER:
             func_ov030_020aeb34(8);
             func_ov030_020aeb34(0x62);
             data_02071cf0.unk_20.unk_264C = 4;
@@ -5583,11 +5543,11 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
         case 0x510:
             func_ov030_020aeb34(0x56);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
-            func_ov030_020aac28(arg0, 0x75);
+            func_ov030_020aac28(arg0, PIN_OCTO_SQUEEZE);
             break;
         case 0x511:
             func_ov030_020aeb34(0x57);
-            func_ov030_020aac28(arg0, 0x7B);
+            func_ov030_020aac28(arg0, PIN_CRACKLE_POP_BARRIER);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_JOSHUA);
             break;
         case 0x512:
@@ -5599,7 +5559,7 @@ s32 func_ov030_02091bc8(RewardTableObject* arg0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
             break;
-        case 0x193:
+        case EVENT_JOSHUA3_SECRET_BOX_CONCERT_STAGE:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_PIRATE_HAT, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -5616,20 +5576,20 @@ void func_ov030_02092c4c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24BE = 2;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24BE          = 2;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -5637,9 +5597,9 @@ void func_ov030_02092c4c(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8197;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8197;
     func_ov030_020c26bc(4);
     data_02071cf0.unk_20.unk_264E = 0;
     data_02071cf0.unk_20.unk_2656 = 0;
@@ -5650,7 +5610,7 @@ void func_ov030_02092c4c(void) {
     data_02071cf0.unk_20.unk_3124 = 0x41;
 }
 
-s32 func_ov030_02092d50(RewardTableObject* arg0) {
+s32 func_ov030_02092d50(ProgressObject* arg0) {
     s16 var_r0;
 
     if ((func_ov030_020aebb0(56) != 0) && (func_ov030_020aebb0(2) == 0)) {
@@ -5791,12 +5751,12 @@ s32 func_ov030_02092d50(RewardTableObject* arg0) {
         }
         if ((func_ov030_020aed9c(0x3797) != 0) && (func_ov030_020aebb0(8) == 0)) {
             func_ov030_020aeb34(8);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x81D7;
-            data_02071cf0.unk_20.unk_3124 = 0x1B;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x81D7;
+            data_02071cf0.unk_20.unk_3124          = 0x1B;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         }
@@ -5831,220 +5791,220 @@ s32 func_ov030_02092d50(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020936b8(RewardTableObject* arg0) {
+s32 func_ov030_020936b8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x366B:
-            func_ov030_020a669c(0x19D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x19D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x366C:
-            func_ov030_020a669c(0x19E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x19E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093738(RewardTableObject* arg0) {
+s32 func_ov030_02093738(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x366E:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x1A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x366F:
             func_ov030_020aeb34(43);
-            func_ov030_020a669c(0x1A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020937c4(RewardTableObject* arg0) {
+s32 func_ov030_020937c4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x366E:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x1A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x366F:
             func_ov030_020aeb34(43);
-            func_ov030_020a669c(0x1A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3670:
             func_ov030_020aeb34(0x2C);
-            func_ov030_020a669c(0x1A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093880(RewardTableObject* arg0) {
+s32 func_ov030_02093880(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x366E:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x1A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x366F:
             func_ov030_020aeb34(43);
-            func_ov030_020a669c(0x1A4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3670:
             func_ov030_020aeb34(0x2C);
-            func_ov030_020a669c(0x1A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3671:
             func_ov030_020aeb34(11);
-            func_ov030_020a669c(0x1A6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02093958(RewardTableObject* arg0) {
+s32 func_ov030_02093958(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3673:
-            func_ov030_020a669c(0x1A9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1A9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3674:
             if (func_ov030_020aebb0(0xE) != 0) {
                 func_ov030_020aeb34(12);
-                func_ov030_020a669c(0x1AB);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x1AB);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x1AA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1AA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093a0c(RewardTableObject* arg0) {
+s32 func_ov030_02093a0c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3676:
             func_ov030_020aeb34(0x30);
-            func_ov030_020a669c(0x1AF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1AF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3677:
             func_ov030_020aeb34(0x31);
-            func_ov030_020a669c(0x1B0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1B0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093a98(RewardTableObject* arg0) {
+s32 func_ov030_02093a98(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3679:
-            func_ov030_020a669c(0x1B5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1B5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x367A:
-            func_ov030_020a669c(0x1B6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1B6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x367B:
-            func_ov030_020a669c(0x1B7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1B7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093b40(RewardTableObject* arg0) {
+s32 func_ov030_02093b40(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x367E:
-            func_ov030_020a669c(0x1BB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x367F:
-            func_ov030_020a669c(0x1BC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3680:
-            func_ov030_020a669c(0x1BD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093be0(RewardTableObject* arg0) {
+s32 func_ov030_02093be0(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3682:
-            func_ov030_020a669c(0x1BF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3683:
-            func_ov030_020a669c(0x1C0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3684:
-            func_ov030_020a669c(0x1BF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093c80(RewardTableObject* arg0) {
+s32 func_ov030_02093c80(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3686:
-            func_ov030_020a669c(0x1C5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3687:
-            func_ov030_020a669c(0x1C5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3688:
-            func_ov030_020a669c(0x1C5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3689:
-            func_ov030_020a669c(0x1C6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02093d38(RewardTableObject* arg0) {
+s32 func_ov030_02093d38(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x368B:
-            func_ov030_020a669c(0x1D9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1D9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x368C:
-            func_ov030_020a669c(0x1DA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1DA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02093db8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02093db8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x197:
             func_ov030_020aeaa0(6, 2);
             func_ov030_020aeaa0(9, 2);
@@ -6052,15 +6012,15 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x198);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x198);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x198:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x199);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x199);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x199:
             func_ov030_020aeb34(0x20);
@@ -6116,8 +6076,8 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
         case 0x1AF:
         case 0x1B0:
             if ((func_ov030_020aebb0(0x30) != 0) && (func_ov030_020aebb0(0x31) != 0)) {
-                func_ov030_020a669c(0x1B1);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x1B1);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             return func_ov030_020a9f54(arg0, func_ov030_02093a0c, 0x3675, 2, 0x3676, 0x3677);
@@ -6126,7 +6086,7 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x1B2:
-            func_ov030_020aac28(arg0, 0xF3);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_GOLEM);
             break;
         case 0x1B3:
             func_ov030_020aeb34(0xE);
@@ -6140,15 +6100,15 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1BA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1BA:
             return func_ov030_020a9f54(arg0, func_ov030_02093b40, 0x367D, 3, 0x367E, 0x367F, 0x3680);
         case 0x1BD:
         case 0x1BF:
-            func_ov030_020a669c(0x1BF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1BF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1BE:
             return func_ov030_020a9f54(arg0, func_ov030_02093be0, 0x3681, 3, 0x3682, 0x3683, 0x3684);
@@ -6156,20 +6116,20 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1C1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C1:
-            func_ov030_020a669c(0x1C2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C2:
-            func_ov030_020a669c(0x1C3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C3:
-            func_ov030_020a669c(0x1C4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C4:
         case 0x1C5:
@@ -6178,27 +6138,27 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1C7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C7:
-            func_ov030_020a669c(0x1C8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C8:
-            func_ov030_020a669c(0x1C9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1C9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1C9:
-            func_ov030_020a669c(0x1CA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1CA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1CA:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1CB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1CB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1CB:
             func_ov030_020aeb34(15);
@@ -6206,9 +6166,9 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x1D0:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x851AU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x851AU;
             func_ov030_020af364(0x15);
             return 1;
         case 0x1D4:
@@ -6242,8 +6202,8 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x1DE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x1DE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -6272,7 +6232,7 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
         case 0x1DB:
             if (func_ov030_020aebb0(0x36) == 0) {
                 func_ov030_020aeb34(0x36);
-                func_ov030_020aac28(arg0, 0xE9);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_WHEEL);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -6286,14 +6246,14 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0xDA000;
             break;
         case 0x7F2:
-            func_ov030_020a669c(0x7F3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7F3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7F3:
             func_ov030_020aeb34(56);
             if (Inventory_HasRequiredQuantity(6, 1, 0) != 0) {
-                func_ov030_020a669c(0x7F4);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7F4);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -6306,12 +6266,12 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             break;
         case 0x7F5:
             if (func_ov030_020aebb0(58) != 0) {
-                func_ov030_020a669c(0x7F7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x7F7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7F6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7F6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7F6:
             if (func_ov030_020aebb0(0x39) == 0) {
@@ -6327,12 +6287,12 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
             break;
         case 0x7F8:
             if (func_ov030_020aebb0(0x3C) != 0) {
-                func_ov030_020a669c(0x7FA);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA4_HACHIKO_REAPER);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x7F9);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7F9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7F9:
             if (func_ov030_020aebb0(0x3B) == 0) {
@@ -6342,7 +6302,7 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
                 data_02071cf0.unk_20.unk_3100 = 5;
             }
             break;
-        case 0x7FA:
+        case EVENT_JOSHUA4_HACHIKO_REAPER:
             func_ov030_020aeb34(4);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_PRETTY_RIBBON);
             ProgressReward_GrantPin(arg0, PIN_1000_YEN);
@@ -6352,12 +6312,12 @@ s32 func_ov030_02093db8(RewardTableObject* arg0) {
         case 0x51A:
             func_ov030_020aeb34(0x34);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x9E);
+            func_ov030_020aac28(arg0, PIN_LIVE_SLOW_DIE_FAST);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_JOSHUA);
             break;
-        case 0x1DE:
+        case EVENT_JOSHUA4_SECRET_BOX_CAT_STREET:
             func_ov030_020aeb34(1);
-            if (Inventory_HasRequiredQuantity(0x233, 1, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(ITEM_THREAD_SAMURAI_WIG, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             } else {
                 ProgressReward_GrantItem(arg0, ITEM_THREAD_SAMURAI_WIG);
@@ -6372,20 +6332,20 @@ void func_ov030_02094b08(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24BE = 2;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24BE          = 2;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -6393,16 +6353,16 @@ void func_ov030_02094b08(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x81E2;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x81E2;
     func_ov030_020c26bc(4);
     data_02071cf0.unk_20.unk_2676 = 0;
     data_02071cf0.unk_20.unk_2670 = 0;
     data_02071cf0.unk_20.unk_3124 = 0x42;
 }
 
-s32 func_ov030_02094bfc(RewardTableObject* arg0) {
+s32 func_ov030_02094bfc(ProgressObject* arg0) {
     s16 var_r0;
 
     if ((func_ov030_020aebb0(0x2C) != 0) && (func_ov030_020aebb0(3) == 0)) {
@@ -6548,167 +6508,167 @@ s32 func_ov030_02094bfc(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02095364(RewardTableObject* arg0) {
+s32 func_ov030_02095364(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x368E:
             func_ov030_020aeb34(0x36);
-            func_ov030_020a669c(0x810);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x810);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x368F:
             func_ov030_020aeb34(0x37);
-            func_ov030_020a669c(0x810);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x810);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3690:
             func_ov030_020aeb34(56);
-            func_ov030_020a669c(0x810);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x810);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02095418(RewardTableObject* arg0) {
+s32 func_ov030_02095418(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3692:
             func_ov030_020aeb34(0x39);
-            func_ov030_020a669c(0x811);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x811);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3693:
             func_ov030_020aeb34(58);
-            func_ov030_020a669c(0x811);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x811);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3694:
             func_ov030_020aeb34(0x3B);
-            func_ov030_020a669c(0x811);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x811);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020954d0(RewardTableObject* arg0) {
+s32 func_ov030_020954d0(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3696:
             func_ov030_020aeb34(0x3C);
-            func_ov030_020a669c(0x812);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x812);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3697:
             func_ov030_020aeb34(61);
-            func_ov030_020a669c(0x812);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x812);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3698:
             func_ov030_020aeb34(0x3E);
-            func_ov030_020a669c(0x812);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x812);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02095588(RewardTableObject* arg0) {
+s32 func_ov030_02095588(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x369A:
-            func_ov030_020a669c(0x1F3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1F3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x369B:
-            func_ov030_020a669c(0x1F4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1F4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x369C:
-            func_ov030_020a669c(0x1F5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1F5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209562c(RewardTableObject* arg0) {
+s32 func_ov030_0209562c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x369E:
-            func_ov030_020a669c(0x4A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x369F:
-            func_ov030_020a669c(0x4A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36A0:
-            func_ov030_020a669c(0x4A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020956c8(RewardTableObject* arg0) {
+s32 func_ov030_020956c8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36A2:
-            func_ov030_020a669c(0x4E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36A3:
-            func_ov030_020a669c(0x4F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36A4:
-            func_ov030_020a669c(0x4F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x4F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02095764(RewardTableObject* arg0) {
+s32 func_ov030_02095764(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36A6:
-            func_ov030_020a669c(0x81A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x81A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36A7:
-            func_ov030_020a669c(0x81B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x81B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020957e0(RewardTableObject* arg0) {
+s32 func_ov030_020957e0(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36A9:
-            func_ov030_020a669c(0x820);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x820);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36AA:
-            func_ov030_020a669c(0x821);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x821);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209585c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209585c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x1E2:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1E3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1E3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
             break;
         case 0x1E4:
@@ -6723,21 +6683,21 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x7FE:
-            func_ov030_020a669c(0x7FF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x7FF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7FF:
             func_ov030_020aeb34(43);
             break;
         case 0x801:
-            func_ov030_020a669c(0x802);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x802);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x802:
             func_ov030_020aeb34(0x2C);
             if (func_ov030_020aaad8() == 1) {
-                func_ov030_020a669c(0x803);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x803);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -6749,27 +6709,27 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x804:
-            func_ov030_020a669c(0x805);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x805);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x805:
             func_ov030_020aeb34(45);
             if (Inventory_HasRequiredQuantity(ITEM_FOOD_SHIO_RAMEN, 1, 0) != 0) {
-                func_ov030_020a669c(0x806);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x806);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
         case 0x806:
             func_ov030_020aeb34(4);
             func_ov030_020aeb34(0x48);
-            func_ov030_020aac28(arg0, 0x4D);
+            func_ov030_020aac28(arg0, PIN_PSYCH_SUPPORT);
             data_02071cf0.unk_20.unk_2664 = 4;
             arg0->unk_21CF8               = 1;
             break;
         case 0x807:
-            func_ov030_020a669c(0x808);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x808);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x808:
             func_ov030_020aeb34(46);
@@ -6777,41 +6737,41 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
         case 0x80A:
             if (func_ov030_020aebb0(47) == 0) {
                 func_ov030_020aeb34(47);
-                func_ov030_020a669c(0x80B);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x80B);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x80C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x80C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x80B:
             func_ov030_020aeb34(47);
         case 0x80C:
-            func_ov030_020a669c(0x80D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x80D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x80D:
             return func_ov030_020a9f54(arg0, func_ov030_02095364, 0x368D, 3, 0x368E, 0x368F, 0x3690);
         case 0x810:
-            func_ov030_020a669c(0x80E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x80E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x80E:
             return func_ov030_020a9f54(arg0, func_ov030_02095418, 0x3691, 3, 0x3692, 0x3693, 0x3694);
         case 0x811:
-            func_ov030_020a669c(0x80F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x80F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x80F:
             return func_ov030_020a9f54(arg0, func_ov030_020954d0, 0x3695, 3, 0x3696, 0x3697, 0x3698);
         case 0x812:
             if ((func_ov030_020aebb0(0x36) != 0) && (func_ov030_020aebb0(0x3B) != 0) && (func_ov030_020aebb0(0x3C) != 0)) {
-                func_ov030_020a669c(0x813);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x813);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x814);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x814);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x814:
             func_ov030_020aeb70(0x36);
@@ -6839,14 +6799,14 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0x143000;
             break;
         case 0x815:
-            func_ov030_020a669c(0x815);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x815);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x816:
             func_ov030_020aeb34(0x30);
             if (func_02023e58(0) != 0) {
-                func_ov030_020a669c(0x817);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x817);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -6854,21 +6814,21 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             func_ov030_020aeb34(6);
             func_ov030_020aeb34(0x4A);
             data_02071cf0.unk_20.unk_2668 = 4;
-            func_ov030_020aac28(arg0, 0x2C);
+            func_ov030_020aac28(arg0, PIN_STRONG_BODY);
             arg0->unk_21CF8 = 1;
             break;
         case 0x6A9:
             if (func_02023e58(0) != 0) {
-                func_ov030_020a669c(0x6A7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x6A7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x69B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x69B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x818:
-            func_ov030_020a669c(0x818);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x818);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x819:
             func_ov030_020aeb34(0x31);
@@ -6882,7 +6842,7 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x81D:
-            func_ov030_020aac28(arg0, 0xEB);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_THRIFT);
             func_ov030_020aeb34(7);
             data_02071cf0.unk_20.unk_266A = 4;
             arg0->unk_21CF8               = 1;
@@ -6894,23 +6854,23 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x1FC);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA5_SECRET_BOX_MIYASHITA_UNDERPASS);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21CF8 = 1;
             break;
         case 0x81E:
-            func_ov030_020a669c(0x81F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x81F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x81F:
             func_ov030_020aeb34(0x32);
             return func_ov030_020a9f54(arg0, func_ov030_020957e0, 0x36A8, 2, 0x36A9, 0x36AA);
         case 0x820:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x822;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x822;
             func_ov030_020af364(0x18);
             return 1;
         case 0x822:
@@ -6919,8 +6879,8 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x1E5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x1E5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1E5:
             arg0->unk_21CF8 = 1;
@@ -6941,27 +6901,27 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             data_02071cf0.unk_20.unk_26D2 = 0;
             break;
         case 0x1EA:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8524U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8524U;
             func_ov030_020af364(0x16);
             return 1;
         case 0x1EB:
             func_ov030_020aeb34(37);
             break;
         case 0x1EF:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8525U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8525U;
             func_ov030_020af364(23);
             return 1;
         case 0x1F0:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x81F1U;
-            data_02071cf0.unk_20.unk_3124 = 0x1D;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x81F1U;
+            data_02071cf0.unk_20.unk_3124          = 0x1D;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x1F1:
@@ -7007,7 +6967,7 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x40);
             if ((func_ov030_020aebb0(0x40) != 0) && (func_ov030_020aebb0(0x41) != 0) && (func_ov030_020aebb0(0x42) == 0)) {
                 func_ov030_020aeb34(0x42);
-                func_ov030_020aac28(arg0, 0xEC);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_HELLFIRE);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -7022,7 +6982,7 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x41);
             if ((func_ov030_020aebb0(0x40) != 0) && (func_ov030_020aebb0(0x41) != 0) && (func_ov030_020aebb0(0x42) == 0)) {
                 func_ov030_020aeb34(0x42);
-                func_ov030_020aac28(arg0, 0xEC);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_HELLFIRE);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -7053,7 +7013,7 @@ s32 func_ov030_0209585c(RewardTableObject* arg0) {
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             break;
-        case 0x1FC:
+        case EVENT_JOSHUA5_SECRET_BOX_MIYASHITA_UNDERPASS:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_BIKER_GLOVES, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -7070,20 +7030,20 @@ void func_ov030_02096790(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24BE = 2;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24BE          = 2;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -7091,9 +7051,9 @@ void func_ov030_02096790(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8200;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8200;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_264A = 4;
     data_02071cf0.unk_20.unk_2654 = 4;
@@ -7103,7 +7063,7 @@ void func_ov030_02096790(void) {
     data_02071cf0.unk_20.unk_3124 = 0x43;
 }
 
-s32 func_ov030_02096888(RewardTableObject* arg0) {
+s32 func_ov030_02096888(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if (func_ov030_020aebb0(56) == 0) {
             func_ov030_020aeb34(56);
@@ -7230,77 +7190,77 @@ s32 func_ov030_02096888(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02096f2c(RewardTableObject* arg0) {
+s32 func_ov030_02096f2c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36AC:
-            func_ov030_020a669c(0x205);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x205);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36AD:
             func_ov030_020aeb34(0x24);
-            func_ov030_020a669c(0x206);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x206);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02096fb4(RewardTableObject* arg0) {
+s32 func_ov030_02096fb4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36AF:
-            func_ov030_020a669c(0x20A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x20A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36B0:
             func_ov030_020aeb34(0x28);
-            func_ov030_020a669c(0x20B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x20B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209703c(RewardTableObject* arg0) {
+s32 func_ov030_0209703c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36B2:
-            func_ov030_020a669c(0x20F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x20F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36B3:
-            func_ov030_020a669c(0x210);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x210);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020970b8(RewardTableObject* arg0) {
+s32 func_ov030_020970b8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36B5:
-            func_ov030_020a669c(0x216U);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x216U);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36B6:
-            func_ov030_020a669c(0x2177CU >> 8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2177CU >> 8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36B7:
-            func_ov030_020a669c(0x21FU);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x21FU);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36B8:
-            func_ov030_020a669c(0x218U);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x218U);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_0209716c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209716c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x200:
             data_02071cf0.unk_20.unk_24BE = 0x224;
             func_ov030_020aec1c(10);
@@ -7308,22 +7268,22 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
             ProgressReward_GrantItem(arg0, ITEM_BOOK_BLACK_NOISE_SYMBOLS);
             break;
         case 0x201:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x52EU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x52EU;
             func_ov030_020af364(0x19);
             return 1;
         case 0x204:
             return func_ov030_020a9f54(arg0, &func_ov030_02096f2c, 0x36AB, 2, 0x36AC, 0x36AD);
         case 0x205:
             func_ov030_020aeb34(2);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x52F;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x52F;
             func_ov030_020af364(0x1C);
             return 1;
         case 0x207:
-            func_ov030_020aac28(arg0, 0x91);
+            func_ov030_020aac28(arg0, PIN_LIVE);
             break;
         case 0x208:
             func_ov030_020aeb34(2);
@@ -7333,22 +7293,22 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
             return func_ov030_020a9f54(arg0, &func_ov030_02096fb4, 0x36AE, 2, 0x36AF, 0x36B0);
         case 0x20A:
         case 0x20B:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8530U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8530U;
             func_ov030_020af364(0x1A);
             return 1;
         case 0x20C:
             func_ov030_020aeb34(3);
-            func_ov030_020aac28(arg0, 0x8A);
+            func_ov030_020aac28(arg0, PIN_VELOCITY_ATTACK);
             arg0->unk_21CF8 = 1;
             break;
         case 0x20E:
             return func_ov030_020a9f54(arg0, &func_ov030_0209703c, 0x36B1, 2, 0x36B2, 0x36B3);
         case 0x20F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8531U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8531U;
             func_ov030_020af364(0x1D);
             return 1;
         case 0x210:
@@ -7359,8 +7319,8 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x223);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_JOSHUA6_SECRET_BOX_SHIBU_Q_HEADS);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21CF8 = 1;
@@ -7370,17 +7330,17 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x212:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8532U;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8532U;
             func_ov030_020af364(0x1B);
             return 1;
         case 0x213:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x214);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x214);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x214:
             data_02071cf0.unk_20.unk_3124 = 0x1F;
@@ -7411,8 +7371,8 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
         case 0x219:
             func_ov030_020aeb34(0x30);
             if ((func_ov030_020aebb0(0x30) != 0) && (func_ov030_020aebb0(0x31) != 0) && (func_ov030_020aebb0(46) == 0)) {
-                func_ov030_020a669c(0x21E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x21E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21AD0 = 1;
@@ -7425,8 +7385,8 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
         case 0x21B:
             func_ov030_020aeb34(0x31);
             if ((func_ov030_020aebb0(0x30) != 0) && (func_ov030_020aebb0(0x31) != 0) && (func_ov030_020aebb0(46) == 0)) {
-                func_ov030_020a669c(0x21E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x21E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             arg0->unk_21AD0 = 1;
@@ -7452,8 +7412,8 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
         case 0x220:
             if (func_ov030_020aebb0(0x32) == 0) {
                 func_ov030_020aeb34(0x32);
-                func_ov030_020aac28(arg0, 0xE7);
-                func_ov030_020aac28(arg0, 0xED);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_WIND);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_SUNSCORCH);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -7477,7 +7437,7 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
             break;
         case 0x52E:
             func_ov030_020aeb34(0x33);
-            func_ov030_020aac28(arg0, 45);
+            func_ov030_020aac28(arg0, PIN_STRONG_N_PROUD);
             break;
         case 0x52F:
             func_ov030_020aeb34(0x34);
@@ -7497,7 +7457,7 @@ s32 func_ov030_0209716c(RewardTableObject* arg0) {
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_JOSHUA);
             break;
-        case 0x223:
+        case EVENT_JOSHUA6_SECRET_BOX_SHIBU_Q_HEADS:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_NINJA_GARB, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -7514,19 +7474,19 @@ void func_ov030_020979d0(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -7534,9 +7494,9 @@ void func_ov030_020979d0(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8227;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8227;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_2648 = 4;
     data_02071cf0.unk_20.unk_2650 = 4;
@@ -7548,7 +7508,7 @@ void func_ov030_020979d0(void) {
     data_02071cf0.unk_20.unk_3124 = 0x44;
 }
 
-s32 func_ov030_02097acc(RewardTableObject* arg0) {
+s32 func_ov030_02097acc(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 2) != 0) ||
              (func_ov030_020848e4(arg0, 3) != 0)) &&
@@ -7639,8 +7599,8 @@ s32 func_ov030_02097acc(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02097f4c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02097f4c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x227:
             data_02071cf0.unk_20.unk_24BE = 0x238;
             func_ov030_020aec1c(10);
@@ -7661,27 +7621,27 @@ s32 func_ov030_02097f4c(RewardTableObject* arg0) {
             func_ov030_020aeb34(50);
             break;
         case 0x233:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8234;
-            data_02071cf0.unk_20.unk_3124 = 33;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8234;
+            data_02071cf0.unk_20.unk_3124          = 33;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x234:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x841F;
-            data_02071cf0.unk_20.unk_3124 = 0x20;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x841F;
+            data_02071cf0.unk_20.unk_3124          = 0x20;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x41F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8538;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8538;
             func_ov030_020af364(30);
             return 1;
         case 0x235:
@@ -7689,7 +7649,7 @@ s32 func_ov030_02097f4c(RewardTableObject* arg0) {
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
             data_02071cf0.unk_20.unk_24B4                 = 0;
             data_02071cf0.unk_20.unk_24B8                 = 1;
-            data_02071cf0.unk_20.unk_24BC                 = 0x8236;
+            data_02071cf0.unk_20.currentStoryEvent        = 0x8236;
             data_02071cf0.unk_20.unk_3124                 = 0x22;
             data_02071cf0.unk_20.unk_3128                 = 0;
             arg0->unk_21630                               = 4;
@@ -7713,20 +7673,20 @@ s32 func_ov030_02097f4c(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(567);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(567);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020aac28(arg0, 2);
+            func_ov030_020aac28(arg0, PIN_FROZEN_COOL);
             break;
         case 0x826:
             if ((func_ov030_020aebb0(0x28) != 0) && (func_ov030_020aebb0(41) != 0) && (func_ov030_020aebb0(42) != 0)) {
-                func_ov030_020a669c(0x828);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x828);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x827);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x827);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x827:
             if (func_ov030_020aebb0(3) == 0) {
@@ -7745,12 +7705,12 @@ s32 func_ov030_02097f4c(RewardTableObject* arg0) {
             break;
         case 0x829:
             if ((func_ov030_020aebb0(43) != 0) && (func_ov030_020aebb0(0x2C) != 0) && (func_ov030_020aebb0(45) != 0)) {
-                func_ov030_020a669c(0x82B);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x82B);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x82A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x82A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x82A:
             if (func_ov030_020aebb0(5) == 0) {
@@ -7771,11 +7731,11 @@ s32 func_ov030_02097f4c(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x34);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
-            func_ov030_020aac28(arg0, 0x45);
+            func_ov030_020aac28(arg0, PIN_CANDLE_SERVICE);
             break;
-        case 0x237:
+        case EVENT_JOSHUA7_SECRET_BOX_CONCERT_STAGE:
             func_ov030_020aeb34(1);
-            func_ov030_020aac28(arg0, 2);
+            func_ov030_020aac28(arg0, PIN_FROZEN_COOL);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_BOYS_UNIFORM_WITH_BLAZER, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             } else {
@@ -7791,19 +7751,19 @@ void func_ov030_02098500(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_24C0 = 4;
-    data_02071cf0.unk_20.unk_24C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_24C0          = 4;
+    data_02071cf0.unk_20.unk_24C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -7811,9 +7771,9 @@ void func_ov030_02098500(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x823B;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x823B;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_264C = 4;
     data_02071cf0.unk_20.unk_2656 = 4;
@@ -7823,7 +7783,7 @@ void func_ov030_02098500(void) {
     data_02071cf0.unk_20.unk_3124                 = 0x45;
 }
 
-s32 func_ov030_02098604(RewardTableObject* arg0) {
+s32 func_ov030_02098604(ProgressObject* arg0) {
     if ((data_02071cf0.unk_20.unk_2458 == 1) && (func_ov030_020848e4(arg0, 2) != 0) && (func_ov030_020aebb0(0x20) == 0)) {
         func_ov030_020aeb34(0x20);
         func_ov030_020a9c54(arg0, 0x823C, 0);
@@ -7882,38 +7842,38 @@ s32 func_ov030_02098604(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02098930(RewardTableObject* arg0) {
+s32 func_ov030_02098930(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36BA:
-            func_ov030_020a669c(0x24A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x24A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36BB:
-            func_ov030_020a669c(0x24B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x24B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020989b0(RewardTableObject* arg0) {
+s32 func_ov030_020989b0(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36BD:
-            func_ov030_020a669c(0x24D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x24D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36BE:
-            func_ov030_020a669c(0x24E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x24E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_02098a30(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02098a30(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x23B:
             data_02071cf0.unk_20.unk_24BE = 594;
             func_ov030_020aec1c(10);
@@ -7929,24 +7889,24 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
         case 0x23D:
             data_02071cf0.unk_20.unk_24BE = 0x253;
             func_ov030_020aec1c(10);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x823E;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x823E;
             func_ov030_020af364(0x1F);
             return 1;
         case 0x23E:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x823F;
-            data_02071cf0.unk_20.unk_3124 = 0x24;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x823F;
+            data_02071cf0.unk_20.unk_3124          = 0x24;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x23F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8542;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8542;
             func_ov030_020aec1c(4);
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_BEAT;
             func_ov030_020c596c();
@@ -7966,15 +7926,15 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x242);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x242);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x242:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x243);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x243);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x243:
             data_02071cf0.unk_20.unk_2656 = 2;
@@ -7992,8 +7952,8 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
             break;
         case 0x82C:
             if (func_ov030_020aebb0(39) != 0) {
-                func_ov030_020a669c(2093);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(2093);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -8001,45 +7961,45 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x249);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x249);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x249:
             return func_ov030_020a9f54(arg0, func_ov030_02098930, 0x36B9, 2, 0x36BA, 0x36BB);
         case 0x24A:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x24C;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x24C;
             func_ov030_020af364(33);
             return 1;
         case 0x24C:
             return func_ov030_020a9f54(arg0, func_ov030_020989b0, 0x36BC, 2, 0x36BD, 0x36BE);
         case 0x24D:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x24C;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x24C;
             func_ov030_020af364(33);
             return 1;
         case 0x24E:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x82E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x82E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x82E:
             func_ov030_020aeb34(1);
             data_02071cf0.unk_20.unk_2648 = 4;
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
-            func_ov030_020aac28(arg0, 0x6C);
+            func_ov030_020aac28(arg0, PIN_HOT_GAZE);
             arg0->unk_21CF8 = 1;
         case 0x24F:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x250);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x250);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x250:
             data_02071cf0.unk_20.unk_3124 = 37;
@@ -8047,7 +8007,7 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
             arg0->unk_21630               = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x542: // Beat, Day 1 (Hachiko)
+        case EVENT_BEAT1_HACHIKO:
             func_ov030_020aeb34(41);
             if (Inventory_HasRequiredQuantity(ITEM_STICKER_AIR_TIME, 1, 0) == FALSE) {
                 Inventory_AddItem(ITEM_STICKER_AIR_TIME, 0);
@@ -8056,7 +8016,7 @@ s32 func_ov030_02098a30(RewardTableObject* arg0) {
             ProgressReward_GrantItem(arg0, ITEM_STICKER_SUIT_CARDS);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_FUSION_BOOST_BEAT);
             break;
-        case 0x251: // Beat, Day 1 (Secret Box at Statue of Hachiko)
+        case EVENT_BEAT1_SECRET_BOX_HACHIKO:
             func_ov030_020aeb34(2);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_GIRLS_UNIFORM_WITH_BLAZER, 1, 0)) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -8073,19 +8033,19 @@ void func_ov030_02099010(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_26C0 = 4;
-    data_02071cf0.unk_20.unk_26C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_26C0          = 4;
+    data_02071cf0.unk_20.unk_26C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -8093,9 +8053,9 @@ void func_ov030_02099010(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8255;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8255;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_2648 = 4;
     data_02071cf0.unk_20.unk_264C = 4;
@@ -8107,7 +8067,7 @@ void func_ov030_02099010(void) {
     data_02071cf0.unk_20.unk_3124 = 0x46;
 }
 
-s32 func_ov030_0209910c(RewardTableObject* arg0) {
+s32 func_ov030_0209910c(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) && (func_ov030_020aebb0(0x20) == 0) &&
             (func_ov030_020aebb0(33) == 0))
@@ -8180,15 +8140,15 @@ s32 func_ov030_0209910c(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02099514(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_02099514(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x255:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8256U;
-            data_02071cf0.unk_20.unk_3124 = 38;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8256U;
+            data_02071cf0.unk_20.unk_3124          = 38;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x258:
@@ -8203,9 +8163,9 @@ s32 func_ov030_02099514(RewardTableObject* arg0) {
             arg0->unk_21B0C = 0x102000;
             break;
         case 0x25A:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x54CU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x54CU;
             func_ov030_020af364(0x22);
             return 1;
         case 0x25B:
@@ -8213,13 +8173,13 @@ s32 func_ov030_02099514(RewardTableObject* arg0) {
                 return 1;
             }
             data_02071cf0.unk_20.unk_3100 = 0x14;
-            func_ov030_020a669c(0x25C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x25C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x25F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x54DU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x54DU;
             func_ov030_020af364(0x23);
             return 1;
         case 0x261:
@@ -8227,9 +8187,9 @@ s32 func_ov030_02099514(RewardTableObject* arg0) {
             break;
         case 0x264:
             func_ov030_020aeb34(3);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x54E;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = EVENT_BEAT2_CONCERT_STAGE;
             func_ov030_020af364(0x24);
             return 1;
         case 0x265:
@@ -8241,21 +8201,21 @@ s32 func_ov030_02099514(RewardTableObject* arg0) {
         case 0x54C:
             func_ov030_020aeb34(42);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
-            func_ov030_020aac28(arg0, 0xC4);
+            func_ov030_020aac28(arg0, PIN_KEWL_LINE);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_BEAT);
             break;
         case 0x54D:
             func_ov030_020aeb34(43);
-            func_ov030_020aac28(arg0, 0x99);
+            func_ov030_020aac28(arg0, PIN_SELF_FOUND_OTHERS_LOST);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_DEF_BOOST_BEAT);
             break;
-        case 0x54E:
+        case EVENT_BEAT2_CONCERT_STAGE:
             func_ov030_020aeb34(0x2C);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0xC9);
+            func_ov030_020aac28(arg0, PIN_MICROCOSMIC_PULL);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_BLOCK_BEAT);
             break;
-        case 0x266:
+        case EVENT_BEAT2_SECRET_BOX_DOGENZAKA:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_FALSE_TEETH, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -8272,20 +8232,20 @@ void func_ov030_02099858(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_26BE = 2;
-    data_02071cf0.unk_20.unk_26C0 = 4;
-    data_02071cf0.unk_20.unk_26C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_26BE          = 2;
+    data_02071cf0.unk_20.unk_26C0          = 4;
+    data_02071cf0.unk_20.unk_26C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -8293,9 +8253,9 @@ void func_ov030_02099858(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x826A;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x826A;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_2648 = 2;
     data_02071cf0.unk_20.unk_264A = 2;
@@ -8315,7 +8275,7 @@ void func_ov030_02099858(void) {
     data_02071cf0.unk_20.unk_3100 = 0x14;
 }
 
-s32 func_ov030_02099990(RewardTableObject* arg0) {
+s32 func_ov030_02099990(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if ((func_ov030_02084860(0x157, 0xD6, 0x32) == 0) && (func_ov030_020aebb0(0x20) == 0)) {
             func_ov030_020aeb34(0x20);
@@ -8417,7 +8377,7 @@ s32 func_ov030_02099990(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_02099f8c(RewardTableObject* arg0) {
+s32 func_ov030_02099f8c(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 12:
             if (func_ov030_020aebb0(43) != 0) {
@@ -8427,53 +8387,53 @@ s32 func_ov030_02099f8c(RewardTableObject* arg0) {
             func_ov030_020a9db8(arg0, 0x4B4);
             return 0;
         case 1:
-            func_ov030_020a669c(0x4A6);
+            Progress_SetCurrentEvent(0x4A6);
             return 1;
         case 0:
             if (func_ov030_020aebb0(46) == 0) {
                 func_ov030_020aeb34(46);
-                func_ov030_020a669c(0x4A3);
+                Progress_SetCurrentEvent(0x4A3);
                 return 1;
             }
             if (func_ov030_020aebb0(47) == 0) {
                 func_ov030_020aeb34(47);
-                func_ov030_020a669c(0x4A4);
+                Progress_SetCurrentEvent(0x4A4);
                 return 1;
             }
             func_ov030_020aeb70(47);
-            func_ov030_020a669c(0x4A5);
+            Progress_SetCurrentEvent(0x4A5);
             return 1;
         case 2:
             if (func_ov030_020aebb0(0x2C) == 0) {
                 func_ov030_020aeb34(0x2C);
-                func_ov030_020a669c(0x4A7);
+                Progress_SetCurrentEvent(0x4A7);
                 return 1;
             }
             if (func_ov030_020aebb0(45) == 0) {
                 func_ov030_020aeb34(45);
-                func_ov030_020a669c(0x4A8);
+                Progress_SetCurrentEvent(0x4A8);
                 return 1;
             }
             func_ov030_020aeb70(45);
-            func_ov030_020a669c(0x4A9);
+            Progress_SetCurrentEvent(0x4A9);
             return 1;
         case 3:
-            func_ov030_020a669c(0x4AA);
+            Progress_SetCurrentEvent(0x4AA);
             return 1;
         case 4:
-            func_ov030_020a669c(0x4AB);
+            Progress_SetCurrentEvent(0x4AB);
             return 1;
         case 5:
-            func_ov030_020a669c(0x4AC);
+            Progress_SetCurrentEvent(0x4AC);
             return 1;
         case 6:
-            func_ov030_020a669c(0x4AD);
+            Progress_SetCurrentEvent(0x4AD);
             return 1;
         case 7:
-            func_ov030_020a669c(0x4AE);
+            Progress_SetCurrentEvent(0x4AE);
             return 1;
         case 8:
-            func_ov030_020a669c(0x4AF);
+            Progress_SetCurrentEvent(0x4AF);
             return 1;
         case 9:
             func_ov030_020a9db8(arg0, 0x4B0);
@@ -8491,120 +8451,120 @@ s32 func_ov030_02099f8c(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0209a1e4(RewardTableObject* arg0) {
+s32 func_ov030_0209a1e4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36C0:
             func_ov030_020aeb34(7);
-            func_ov030_020a669c(0x276);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x276);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36C1:
             func_ov030_020aeb34(8);
-            func_ov030_020a669c(0x27A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(EVENT_BEAT3_TIPSY_TOSE_HALL_REAPER_CREEPER);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209a270(RewardTableObject* arg0) {
+s32 func_ov030_0209a270(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36C6:
             func_ov030_020aeb34(0x31);
-            func_ov030_020a669c(0x835);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x835);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36C7:
             func_ov030_020aeb34(0x32);
-            func_ov030_020a669c(0x835);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x835);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36C8:
             func_ov030_020aeb34(0x33);
-            func_ov030_020a669c(0x835);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x835);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209a328(RewardTableObject* arg0) {
+s32 func_ov030_0209a328(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36CA:
             func_ov030_020aeb34(0x34);
-            func_ov030_020a669c(0x836);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x836);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36CB:
             func_ov030_020aeb34(0x35);
-            func_ov030_020a669c(0x836);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x836);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36CC:
             func_ov030_020aeb34(0x36);
-            func_ov030_020a669c(0x836);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x836);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36CD:
             func_ov030_020aeb34(0x37);
-            func_ov030_020a669c(0x836);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x836);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
 }
 
-s32 func_ov030_0209a3f8(RewardTableObject* arg0) {
+s32 func_ov030_0209a3f8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36CF:
             func_ov030_020aeb34(56);
-            func_ov030_020a669c(0x837);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x837);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D0:
             func_ov030_020aeb34(0x39);
-            func_ov030_020a669c(0x837);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x837);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D1:
             func_ov030_020aeb34(58);
-            func_ov030_020a669c(0x837);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x837);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D2:
             func_ov030_020aeb34(0x3B);
-            func_ov030_020a669c(0x837);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x837);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D3:
             func_ov030_020aeb34(0x3C);
-            func_ov030_020a669c(0x837);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x837);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209a4ec(RewardTableObject* arg0) {
+s32 func_ov030_0209a4ec(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36C3:
-            func_ov030_020a669c(0x283);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x283);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36C4:
-            func_ov030_020a669c(0x284);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x284);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209a564(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209a564(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x26E:
             func_ov030_020aeb34(3);
             data_02071cf0.unk_20.unk_2648 = 4;
@@ -8644,22 +8604,22 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x27D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x27D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x4B0:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x278);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x278);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x4B1:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x277);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x277);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x277:
             func_ov030_020aeb34(9);
@@ -8667,8 +8627,8 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x288);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_BEAT3_SECRET_BOX_TISPY_TOSE_HALL);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -8677,47 +8637,47 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
             func_ov030_020aeb34(9);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x27A:
+        case EVENT_BEAT3_TIPSY_TOSE_HALL_REAPER_CREEPER:
             func_ov030_020aeb34(9);
-            if (Inventory_HasRequiredQuantity(ITEM_BOOK_BLACK_CAT_ATLAS_VOL_10, 1, 0) == 0) {
+            if (Inventory_HasRequiredQuantity(ITEM_BOOK_BLACK_CAT_ATLAS_VOL_10, 1, 0) == FALSE) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_BLACK_CAT_ATLAS_VOL_10);
             }
             arg0->unk_21CF8 = 1;
             break;
         case 0x27B:
-            func_ov030_020a669c(0x27C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x27C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x27D:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x27E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x27E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x27E:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x27F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(EVENT_BEAT3_TIPSY_TOSE_HALL);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x4B2:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x279);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x279);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x27F:
+        case EVENT_BEAT3_TIPSY_TOSE_HALL:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_DEF_BOOST_BEAT);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_AIR_CANCEL);
             break;
         case 0x280:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8556;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8556;
             func_ov030_020af364(37);
             return 1;
         case 0x281:
@@ -8741,7 +8701,7 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
         case 0x285:
             if (func_ov030_020aebb0(0x3E) == 0) {
                 func_ov030_020aeb34(0x3E);
-                func_ov030_020aac28(arg0, 0xEF);
+                func_ov030_020aac28(arg0, PIN_TIN_PIN_ARTIST);
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
@@ -8757,41 +8717,41 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
         case 0x82F:
             if (func_ov030_020aebb0(0x30) == 0) {
                 func_ov030_020aeb34(0x30);
-                func_ov030_020a669c(0x830);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x830);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x831);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x831);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x830:
         case 0x831:
-            func_ov030_020a669c(0x832);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x832);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x832:
             return func_ov030_020a9f54(arg0, func_ov030_0209a270, 0x36C5, 3, 0x36C6, 0x36C7, 0x36C8);
         case 0x835:
-            func_ov030_020a669c(0x832);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x832);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x833:
             return func_ov030_020a9f54(arg0, func_ov030_0209a328, 0x36C9, 4, 0x36CA, 0x36CB, 0x36CC, 0x36CD);
         case 0x836:
-            func_ov030_020a669c(0x833);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x833);
+            Progress_AdvanceEventScript(arg0);
             return 1;
 
         case 0x834:
             return func_ov030_020a9f54(arg0, func_ov030_0209a3f8, 0x36CE, 5, 0x36CF, 0x36D0, 0x36D1, 0x36D2, 0x36D3);
         case 0x837:
             if ((func_ov030_020aebb0(0x31) != 0) && (func_ov030_020aebb0(0x35) != 0) && (func_ov030_020aebb0(0x39) != 0)) {
-                func_ov030_020a669c(0x838);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x838);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x839);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x839);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x839:
             func_ov030_020aeb70(0x31);
@@ -8818,10 +8778,10 @@ s32 func_ov030_0209a564(RewardTableObject* arg0) {
         case 0x556:
             func_ov030_020aeb34(0x40);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x1D);
+            func_ov030_020aac28(arg0, PIN_CASUAL_PENDULUM);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_BEAT);
             break;
-        case 0x288:
+        case EVENT_BEAT3_SECRET_BOX_TISPY_TOSE_HALL:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_BLACK_BOOK_BAG, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -8838,19 +8798,19 @@ void func_ov030_0209af50(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_26C0 = 4;
-    data_02071cf0.unk_20.unk_26C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_26C0          = 4;
+    data_02071cf0.unk_20.unk_26C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -8858,9 +8818,9 @@ void func_ov030_0209af50(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(15);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x828C;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x828C;
     func_ov030_020c26bc(0);
     data_02071cf0.unk_20.unk_3124 = 0x48;
     func_ov030_02084944(0xE, 0);
@@ -8996,80 +8956,80 @@ s32 func_ov030_0209b724(void) {
     return 0;
 }
 
-s32 func_ov030_0209b810(RewardTableObject* arg0) {
+s32 func_ov030_0209b810(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36D5:
             if ((func_ov030_020aebb0(47) != 0) && (func_ov030_020aebb0(0x31) != 0) && (func_ov030_020aebb0(46) == 0) &&
                 (func_ov030_020aebb0(0x30) == 0))
             {
-                func_ov030_020a669c(0x298);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x298);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x299);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x299);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D6:
-            func_ov030_020a669c(0x29A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x29A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209b8e8(RewardTableObject* arg0) {
+s32 func_ov030_0209b8e8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36D5:
             if ((func_ov030_020aebb0(0x32) != 0) && (func_ov030_020aebb0(0x35) != 0) && (func_ov030_020aebb0(56) != 0) &&
                 (func_ov030_020aebb0(0x3B) != 0))
             {
-                func_ov030_020a669c(0x2A5);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x2A5);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x2A6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2A6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D6:
-            func_ov030_020a669c(0x2A7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2A7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209b9c4(RewardTableObject* arg0) {
+s32 func_ov030_0209b9c4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36D5:
             if ((func_ov030_020aebb0(0x3C) == 0) && (func_ov030_020aebb0(61) != 0) && (func_ov030_020aebb0(0x3E) == 0) &&
                 (func_ov030_020aebb0(0x3F) == 0) && (func_ov030_020aebb0(0x40) != 0) && (func_ov030_020aebb0(0x41) != 0) &&
                 (func_ov030_020aebb0(0x42) == 0))
             {
-                func_ov030_020a669c(686);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(686);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x2AF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2AF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D6:
-            func_ov030_020a669c(0x2B0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2B0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209bacc(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC - 0x28C) {
-        case 4:
+s32 func_ov030_0209bacc(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
+        case 0x290:
             func_ov030_020aeb34(3);
             arg0->unk_21CF8 = 1;
             break;
-        case 6:
+        case 0x292:
             data_02071cf0.unk_20.unk_24BE = 0x2BF;
             func_ov030_020aec1c(10);
             data_02071cf0.unk_20.unk_310C = &data_ov030_020d9b94;
@@ -9077,9 +9037,9 @@ s32 func_ov030_0209bacc(RewardTableObject* arg0) {
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
-        case 11:
+        case 0x297:
             return func_ov030_020a9f54(arg0, func_ov030_0209b810, 0x36D4, 2, 0x36D5, 0x36D6);
-        case 13:
+        case 0x299:
             func_ov030_020aeb70(46);
             func_ov030_020aeb70(47);
             func_ov030_020aeb70(0x30);
@@ -9087,28 +9047,28 @@ s32 func_ov030_0209bacc(RewardTableObject* arg0) {
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             break;
-        case 12:
-            func_ov030_020a669c(0x29B);
-            func_ov030_020a6738(arg0);
+        case 0x298:
+            Progress_SetCurrentEvent(0x29B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 15:
+        case 0x29B:
             func_ov030_020aeb34(5);
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             break;
-        case 16:
+        case 0x29C:
             data_02071cf0.unk_20.unk_266A = 4;
             break;
-        case 19:
+        case 0x29F:
             func_ov030_020aeb34(6);
             data_02071cf0.unk_20.unk_310C = &data_ov030_020d9bbc;
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
-        case 24:
+        case 0x2A4:
             return func_ov030_020a9f54(arg0, func_ov030_0209b8e8, 0x36D4, 2, 0x36D5, 0x36D6);
-        case 26:
+        case 0x2A6:
             func_ov030_020aeb70(0x32);
             func_ov030_020aeb70(0x33);
             func_ov030_020aeb70(0x34);
@@ -9122,20 +9082,20 @@ s32 func_ov030_0209bacc(RewardTableObject* arg0) {
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             break;
-        case 25:
-            func_ov030_020a669c(0x2A8);
-            func_ov030_020a6738(arg0);
+        case 0x2A5:
+            Progress_SetCurrentEvent(0x2A8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 28:
+        case 0x2A8:
             func_ov030_020aeb34(7);
             data_02071cf0.unk_20.unk_310C = &data_ov030_020d9d34;
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
-        case 33:
+        case 0x2AD:
             return func_ov030_020a9f54(arg0, func_ov030_0209b9c4, 0x36D4, 2, 0x36D5, 0x36D6);
-        case 35:
+        case 0x2AF:
             func_ov030_020aeb70(0x3C);
             func_ov030_020aeb70(61);
             func_ov030_020aeb70(0x3E);
@@ -9146,63 +9106,63 @@ s32 func_ov030_0209bacc(RewardTableObject* arg0) {
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             break;
-        case 34:
-            func_ov030_020a669c(0x2B1);
-            func_ov030_020a6738(arg0);
+        case 0x2AE:
+            Progress_SetCurrentEvent(0x2B1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 37:
+        case 0x2B1:
             func_ov030_020aeb34(8);
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
-        case 39:
+        case 0x2B3:
             func_ov030_020aec38(1);
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
             arg0->unk_21CF8                               = 1;
             break;
-        case 40:
+        case 0x2B4:
             func_ov030_020aeb34(2);
             arg0->unk_21CF8 = 1;
             break;
-        case 41:
+        case 0x2B5:
             data_02071cf0.unk_20.unk_2668 = 4;
             break;
-        case 42:
+        case 0x2B6:
             func_ov030_020aec1c(9);
             arg0->unk_21CF8 = 1;
             break;
-        case 44:
-            func_ov030_020a669c(0x2B9);
-            func_ov030_020a6738(arg0);
+        case 0x2B8:
+            Progress_SetCurrentEvent(0x2B9);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 45:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8560;
+        case 0x2B9:
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8560;
             func_ov030_020af364(39);
             return 1;
-        case 46:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8561;
+        case 0x2BA:
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8561;
             func_ov030_020af364(38);
             return 1;
-        case 47:
+        case 0x2BB:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x2BC);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2BC);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 48:
+        case 0x2BC:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x2BD);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2BD);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 49:
+        case 0x2BD:
             data_02071cf0.unk_20.unk_3124 = 41;
             data_02071cf0.unk_20.unk_3128 = 1;
             arg0->unk_21630               = 4;
@@ -9216,10 +9176,10 @@ s32 func_ov030_0209bacc(RewardTableObject* arg0) {
         case 0x561:
             func_ov030_020aeb34(0x44);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
-            func_ov030_020aac28(arg0, 0x19);
+            func_ov030_020aac28(arg0, PIN_PLAYMATE_BEAM);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_DEF_BOOST_BEAT);
             break;
-        case 50:
+        case EVENT_BEAT4_SECRET_BOX_MIYASHITA_PARK:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_GAKURAN, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -9236,19 +9196,19 @@ void func_ov030_0209c0f4(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != 0) {
         func_ov030_020aeb34(0);
     }
-    data_02071cf0.unk_20.unk_26B8 = 4;
-    data_02071cf0.unk_20.unk_26BA = 4;
-    data_02071cf0.unk_20.unk_24BC = 4;
-    data_02071cf0.unk_20.unk_26C0 = 4;
-    data_02071cf0.unk_20.unk_26C2 = 4;
-    data_02071cf0.unk_20.unk_26C4 = 4;
-    data_02071cf0.unk_20.unk_26C6 = 4;
-    data_02071cf0.unk_20.unk_26C8 = 4;
-    data_02071cf0.unk_20.unk_26CA = 4;
-    data_02071cf0.unk_20.unk_26CC = 4;
-    data_02071cf0.unk_20.unk_26CE = 4;
-    data_02071cf0.unk_20.unk_26D0 = 4;
-    data_02071cf0.unk_20.unk_26D2 = 4;
+    data_02071cf0.unk_20.unk_26B8          = 4;
+    data_02071cf0.unk_20.unk_26BA          = 4;
+    data_02071cf0.unk_20.currentStoryEvent = 4;
+    data_02071cf0.unk_20.unk_26C0          = 4;
+    data_02071cf0.unk_20.unk_26C2          = 4;
+    data_02071cf0.unk_20.unk_26C4          = 4;
+    data_02071cf0.unk_20.unk_26C6          = 4;
+    data_02071cf0.unk_20.unk_26C8          = 4;
+    data_02071cf0.unk_20.unk_26CA          = 4;
+    data_02071cf0.unk_20.unk_26CC          = 4;
+    data_02071cf0.unk_20.unk_26CE          = 4;
+    data_02071cf0.unk_20.unk_26D0          = 4;
+    data_02071cf0.unk_20.unk_26D2          = 4;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.unk_26D4 = 0;
     data_02071cf0.unk_20.unk_26D6 = 4;
@@ -9256,9 +9216,9 @@ void func_ov030_0209c0f4(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x82C2;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x82C2;
     func_ov030_020c26bc(4);
     data_02071cf0.unk_20.unk_265C = 0;
     data_02071cf0.unk_20.unk_2660 = 2;
@@ -9327,44 +9287,44 @@ s32 func_ov030_0209c208(s32 arg0) {
     }
 }
 
-s32 func_ov030_0209c57c(RewardTableObject* arg0) {
+s32 func_ov030_0209c57c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36D8:
             if (func_ov030_020aebb0(39) == 0) {
                 func_ov030_020aeb34(39);
-                func_ov030_020a669c(0x2CF);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x2CF);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x2D0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2D0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36D9:
             if (func_ov030_020aebb0(0x28) == 0) {
                 func_ov030_020aeb34(0x28);
-                func_ov030_020a669c(0x2CF);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x2CF);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x2D0);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2D0);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36DA:
-            func_ov030_020a669c(0x2D1);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2D1);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209c680(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209c680(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x2C4:
             func_ov030_020aeb34(2);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x56A;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = EVENT_BEAT1_TIPSY_TOSE_HALL;
             func_ov030_020af364(41);
             return 1;
         case 0x2C5:
@@ -9386,15 +9346,15 @@ s32 func_ov030_0209c680(RewardTableObject* arg0) {
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
                 }
-                func_ov030_020a669c(0x2D6);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_BEAT5_SECRET_BOX_SHIBU_Q_HEADS);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
         case 0X2CA:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x56BU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x56BU;
             func_ov030_020af364(42);
             return 1;
         case 0x2CD:
@@ -9411,9 +9371,9 @@ s32 func_ov030_0209c680(RewardTableObject* arg0) {
             break;
         case 0x2D2:
             func_ov030_020aeb34(5);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x56C;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x56C;
             func_ov030_020af364(0x28);
             return 1;
         case 0x2D3:
@@ -9422,7 +9382,7 @@ s32 func_ov030_0209c680(RewardTableObject* arg0) {
             arg0->unk_21630               = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x56A:
+        case EVENT_BEAT1_TIPSY_TOSE_HALL:
             func_ov030_020aeb34(42);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_BEAT);
@@ -9437,9 +9397,9 @@ s32 func_ov030_0209c680(RewardTableObject* arg0) {
             func_ov030_020aeb34(0x2C);
             ProgressReward_GrantPin(arg0, PIN_SCARLETITE);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
-            func_ov030_020aac28(arg0, 0xC2);
+            func_ov030_020aac28(arg0, PIN_FLOWER_OF_FLAME);
             break;
-        case 0x2D6:
+        case EVENT_BEAT5_SECRET_BOX_SHIBU_Q_HEADS:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_HEAD_HONCHO, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -9482,10 +9442,10 @@ void func_ov030_0209ca24(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x82DA;
-    data_02071cf0.unk_20.unk_3124 = 0x4A;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x82DA;
+    data_02071cf0.unk_20.unk_3124          = 0x4A;
     func_ov030_020c26bc(4);
     data_02071cf0.unk_20.unk_2670 = 0;
     data_02071cf0.unk_20.unk_2676 = 0;
@@ -9566,11 +9526,11 @@ s32 func_ov030_0209cb70(s32 arg0) {
     return 0;
 }
 
-s32 func_ov030_0209cff0(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209cff0(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x2DD:
-            func_ov030_020a669c(0x2DE);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2DE);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x2DE:
             func_ov030_020aeb34(0x22);
@@ -9580,9 +9540,9 @@ s32 func_ov030_0209cff0(RewardTableObject* arg0) {
             break;
         case 0x2E1:
         case 0x2E2:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8574;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8574;
             func_ov030_020af364(43);
             return 1;
         case 0x2E3:
@@ -9605,7 +9565,7 @@ s32 func_ov030_0209cff0(RewardTableObject* arg0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
             break;
-        case 0x2E8:
+        case EVENT_BEAT6_SECRET_BOX_DOGENZAKA:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_LUCKY_MALLET, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -9646,10 +9606,10 @@ void func_ov030_0209d1d8(void) {
     data_02071cf0.unk_20.unk_26DA = 4;
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x82EC;
-    data_02071cf0.unk_20.unk_3124 = 0x4B;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x82EC;
+    data_02071cf0.unk_20.unk_3124          = 0x4B;
     func_ov030_020c26bc(4);
     func_ov030_020aec1c(5);
     data_02071cf0.unk_20.unk_2676 = 0;
@@ -9778,88 +9738,88 @@ s32 func_ov030_0209d318(s32 arg0) {
     }
 }
 
-s32 func_ov030_0209d974(RewardTableObject* arg0) {
+s32 func_ov030_0209d974(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36DC:
-            func_ov030_020a669c(0x2F5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2F5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36DD:
             func_ov030_020aeb34(0x23);
-            func_ov030_020a669c(0x2F6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2F6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209d9fc(RewardTableObject* arg0) {
+s32 func_ov030_0209d9fc(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36DF:
-            func_ov030_020a669c(0x304);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x304);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36E0:
-            func_ov030_020a669c(0x305);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x305);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209da78(RewardTableObject* arg0) {
+s32 func_ov030_0209da78(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36E2:
             func_ov030_020aeb34(46);
-            func_ov030_020a669c(775);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(775);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36E3:
-            func_ov030_020a669c(776);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(776);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209dafc(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209dafc(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x2EF:
             data_02071cf0.unk_20.unk_24BE = 0x313;
             func_ov030_020aec1c(10);
             break;
         case 0x2F0:
             func_ov030_020aeb34(2);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x82F1;
-            data_02071cf0.unk_20.unk_3124 = 0x2C;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x82F1;
+            data_02071cf0.unk_20.unk_3124          = 0x2C;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x2F1:
             func_ov030_020aeb34(3);
             func_ov030_020aec1c(6);
-            func_ov030_020a669c(0x2F2);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x2F2);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x2F2:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8420U;
-            data_02071cf0.unk_20.unk_3124 = 45;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8420U;
+            data_02071cf0.unk_20.unk_3124          = 45;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x70F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x857E;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x857E;
             func_ov030_020af364(0x2C);
             return 1;
         case 0x2F3:
@@ -9880,7 +9840,7 @@ s32 func_ov030_0209dafc(RewardTableObject* arg0) {
             arg0->unk_21B08               = 0x2A000;
             arg0->unk_21B0C               = 0xF6000;
             break;
-        case 0x2FA:
+        case EVENT_BEAT7_TRAIL_OF_THE_BYGONE:
             ProgressReward_GrantItem(arg0, ITEM_THREAD_PI_FACES_CAP);
             func_ov030_020aeb34(5);
             arg0->unk_21CF8 = 1;
@@ -9890,18 +9850,18 @@ s32 func_ov030_0209dafc(RewardTableObject* arg0) {
             break;
         case 0x2FE:
             func_ov030_020aeb34(6);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x857F;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x857F;
             func_ov030_020af364(45);
             return 1;
         case 0x2FF:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8300;
-            data_02071cf0.unk_20.unk_26B2 = 0;
-            data_02071cf0.unk_20.unk_26B4 = 4;
-            data_02071cf0.unk_20.unk_26B6 = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8300;
+            data_02071cf0.unk_20.unk_26B2          = 0;
+            data_02071cf0.unk_20.unk_26B4          = 4;
+            data_02071cf0.unk_20.unk_26B6          = 4;
             func_ov030_020aec38();
             data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_NONE;
             data_02071cf0.unk_20.unk_3124                 = 46;
@@ -9913,15 +9873,15 @@ s32 func_ov030_0209dafc(RewardTableObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_0209d9fc, 0x36DE, 2, 0x36DF, 0x36E0);
         case 0x304:
         case 0x305:
-            func_ov030_020a669c(0x306);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x306);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x306:
             return func_ov030_020a9f54(arg0, func_ov030_0209da78, 0x36E1, 2, 0x36E2, 0x36E3);
         case 0x307:
         case 0x308:
-            func_ov030_020a669c(0x309);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x309);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x309:
             data_02071cf0.unk_20.unk_3124 = 47;
@@ -9930,30 +9890,30 @@ s32 func_ov030_0209dafc(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x30A:
-            func_ov030_020a669c(0x30C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x30C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x30B:
             if (func_ov030_020aebb0(46) != 0) {
-                func_ov030_020a669c(0x30E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x30E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x30D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x30D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x30D:
         case 0x30E:
-            func_ov030_020a669c(0x30F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x30F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x30F:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x8310;
-            data_02071cf0.unk_20.unk_3124 = 0x32;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x8310;
+            data_02071cf0.unk_20.unk_3124          = 0x32;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x310:
@@ -9973,13 +9933,13 @@ s32 func_ov030_0209dafc(RewardTableObject* arg0) {
             break;
         case 0x57F:
             func_ov030_020aeb34(0x31);
-            func_ov030_020aac28(arg0, 0xBB);
+            func_ov030_020aac28(arg0, PIN_LIGHTNING_ROOK);
             break;
         case 0x312:
             arg0->unk_21630 = 5;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x311:
+        case EVENT_BEAT7_SECRET_BOX_DOGENZAKA:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_SAMURAI_HELM, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -10025,38 +9985,38 @@ void func_ov030_0209e16c(void) {
     data_02071cf0.unk_20.unk_26DC = 4;
     func_ov030_020ae96c(1);
     func_ov030_020c26bc(4);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x317;
-    data_02071cf0.unk_20.unk_2670 = 2;
-    data_02071cf0.unk_20.unk_2676 = 2;
-    data_02071cf0.unk_20.unk_267E = 0;
-    data_02071cf0.unk_20.unk_267C = 0;
-    data_02071cf0.unk_20.unk_2680 = 0;
-    data_02071cf0.unk_20.unk_2682 = 0;
-    data_02071cf0.unk_20.unk_2686 = 0;
-    data_02071cf0.unk_20.unk_268A = 0;
-    data_02071cf0.unk_20.unk_268E = 0;
-    data_02071cf0.unk_20.unk_2692 = 0;
-    data_02071cf0.unk_20.unk_2696 = 0;
-    data_02071cf0.unk_20.unk_269A = 0;
-    data_02071cf0.unk_20.unk_269E = 0;
-    data_02071cf0.unk_20.unk_26A2 = 0;
-    data_02071cf0.unk_20.unk_26A6 = 0;
-    data_02071cf0.unk_20.unk_26AA = 0;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x317;
+    data_02071cf0.unk_20.unk_2670          = 2;
+    data_02071cf0.unk_20.unk_2676          = 2;
+    data_02071cf0.unk_20.unk_267E          = 0;
+    data_02071cf0.unk_20.unk_267C          = 0;
+    data_02071cf0.unk_20.unk_2680          = 0;
+    data_02071cf0.unk_20.unk_2682          = 0;
+    data_02071cf0.unk_20.unk_2686          = 0;
+    data_02071cf0.unk_20.unk_268A          = 0;
+    data_02071cf0.unk_20.unk_268E          = 0;
+    data_02071cf0.unk_20.unk_2692          = 0;
+    data_02071cf0.unk_20.unk_2696          = 0;
+    data_02071cf0.unk_20.unk_269A          = 0;
+    data_02071cf0.unk_20.unk_269E          = 0;
+    data_02071cf0.unk_20.unk_26A2          = 0;
+    data_02071cf0.unk_20.unk_26A6          = 0;
+    data_02071cf0.unk_20.unk_26AA          = 0;
     func_ov030_020aec1c(6);
     if (func_ov030_020aebb0(0) == 0) {
         func_ov030_020aeb34(127);
         func_ov030_020c26bc(0);
         data_02071cf0.unk_20.unk_26BA = 0;
         func_ov030_020ae96c(43);
-        data_02071cf0.unk_20.unk_24B4 = 0;
-        data_02071cf0.unk_20.unk_24B8 = 1;
-        data_02071cf0.unk_20.unk_24BC = 0x588;
+        data_02071cf0.unk_20.unk_24B4          = 0;
+        data_02071cf0.unk_20.unk_24B8          = 1;
+        data_02071cf0.unk_20.currentStoryEvent = 0x588;
     }
 }
 
-s32 func_ov030_0209e314(RewardTableObject* arg0) {
+s32 func_ov030_0209e314(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 1) {
         if ((func_ov030_020aebb0(0x66) != 0) && (func_ov030_020aebb0(0x7B) == 0)) {
             func_ov030_020aeb34(0x7B);
@@ -10319,39 +10279,39 @@ s32 func_ov030_0209e314(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_0209efe4(RewardTableObject* arg0) {
+s32 func_ov030_0209efe4(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36E5:
-            func_ov030_020a669c(0x31A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x31A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36E6:
             func_ov030_020aeb34(0x32);
-            func_ov030_020a669c(0x31B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x31B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209f06c(RewardTableObject* arg0) {
+s32 func_ov030_0209f06c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x36E8:
-            func_ov030_020a669c(0x367);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x367);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x36E9:
-            func_ov030_020a669c(0x368);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x368);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_0209f0e8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x588:
             ProgressReward_GrantItem(arg0, ITEM_STICKER_GAME_CLEARED);
             break;
@@ -10367,12 +10327,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x54:
             return func_ov030_020a9f54(arg0, func_ov030_020919c4, 0x36EA, 5, 0x36EB, 0x36EC, 0x36ED, 0x36EE, 0x36EF);
         case 0x317:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x370;
-            data_02071cf0.unk_20.unk_3124 = 0x4C;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x370;
+            data_02071cf0.unk_20.unk_3124          = 0x4C;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x319:
@@ -10381,8 +10341,8 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x325);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x325);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x31A:
             func_ov030_020aeb70(0x7D);
@@ -10412,8 +10372,8 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x31E:
-            func_ov030_020a669c(0x320);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x320);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x320:
             arg0->unk_21630               = 6;
@@ -10427,15 +10387,15 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x323);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x323);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x326:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x324);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x324);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x325:
             func_ov030_020aeb34(3);
@@ -10451,8 +10411,8 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x327);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x327);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x327:
             func_ov030_020aeb34(4);
@@ -10465,12 +10425,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42F:
             if (func_ov030_020aebb0(6) == 0) {
                 func_ov030_020aeb34(6);
-                func_ov030_020a669c(0x329);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x329);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x32B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x32B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x329:
         case 0x32B:
@@ -10492,12 +10452,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x430:
             if (func_ov030_020aebb0(39) == 0) {
                 func_ov030_020aeb34(39);
-                func_ov030_020a669c(0x330);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x330);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x332);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x332);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x330:
         case 0x332:
@@ -10516,12 +10476,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x431:
             if (func_ov030_020aebb0(0x28) == 0) {
                 func_ov030_020aeb34(0x28);
-                func_ov030_020a669c(0x335);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x335);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x337);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x337);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x335:
         case 0x337:
@@ -10540,12 +10500,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x432:
             if (func_ov030_020aebb0(41) == 0) {
                 func_ov030_020aeb34(41);
-                func_ov030_020a669c(0x33A);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x33A);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x33C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x33C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x33A:
         case 0x33C:
@@ -10557,19 +10517,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x33D:
-            func_ov030_020aac28(arg0, 0xEE);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_ROCKER);
             func_ov030_020aeb34(0x24);
             arg0->unk_21CF8 = 1;
             break;
         case 0x433:
             if (func_ov030_020aebb0(42) == 0) {
                 func_ov030_020aeb34(42);
-                func_ov030_020a669c(0x33F);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x33F);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x341);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x341);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x33F:
         case 0x341:
@@ -10581,19 +10541,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x342:
-            func_ov030_020aac28(arg0, 0xF0);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_DEVIL);
             func_ov030_020aeb34(37);
             arg0->unk_21CF8 = 1;
             break;
         case 0x434:
             if (func_ov030_020aebb0(43) == 0) {
                 func_ov030_020aeb34(43);
-                func_ov030_020a669c(0x344);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x344);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x346);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x346);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x344:
         case 0x346:
@@ -10611,12 +10571,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x435:
             if (func_ov030_020aebb0(0x2C) == 0) {
                 func_ov030_020aeb34(0x2C);
-                func_ov030_020a669c(0x348);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x348);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x34A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x34A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x348:
         case 0x34A:
@@ -10628,7 +10588,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x34B:
-            func_ov030_020aac28(arg0, 0xF3);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_GOLEM);
             func_ov030_020aeb34(0x34);
             arg0->unk_21CF8 = 1;
             break;
@@ -10644,7 +10604,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x34F:
-            func_ov030_020aac28(arg0, 0xF1);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_IFRIT);
         case 0x350:
             func_ov030_020aeb34(45);
             arg0->unk_21CF8 = 1;
@@ -10652,12 +10612,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x436:
             if (func_ov030_020aebb0(46) == 0) {
                 func_ov030_020aeb34(46);
-                func_ov030_020a669c(0x351);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x351);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x353);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x353);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x351:
         case 0x353:
@@ -10668,8 +10628,8 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             SndMgr_StartPlayingSE(0);
             DebugOvlDisp_Pop();
             return 0;
-        case 0x354:
-            func_ov030_020aac28(arg0, 0xF4);
+        case EVENT_ANOTHERDAY_WIZARD_OF_SLAM:
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_BAHAMUT);
             ProgressReward_GrantItem(arg0, ITEM_THREAD_WIZARDS_GLASSES);
             func_ov030_020aeb34(47);
             data_02071cf0.unk_20.unk_2676 = 4;
@@ -10805,12 +10765,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x421:
             if (func_ov030_020aebb0(0x4E) == 0) {
                 func_ov030_020aeb34(0x4E);
-                func_ov030_020a669c(0x392);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x392);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x393);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x393);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x392:
         case 0x393:
@@ -10823,7 +10783,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x394:
             func_ov030_020aeb34(0x42);
-            func_ov030_020aac28(arg0, 0x86);
+            func_ov030_020aac28(arg0, PIN_SPARKLE_CHARGE);
             arg0->unk_21CF8 = 1;
         case 0x395:
             arg0->unk_21CF8 = 1;
@@ -10831,12 +10791,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x422:
             if (func_ov030_020aebb0(0x4F) == 0) {
                 func_ov030_020aeb34(0x4F);
-                func_ov030_020a669c(0x396);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x396);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x397);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x397);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x396:
         case 0x397:
@@ -10849,7 +10809,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x398:
             func_ov030_020aeb34(0x43);
-            func_ov030_020aac28(arg0, 0x92);
+            func_ov030_020aac28(arg0, PIN_PEACE_FULL);
             arg0->unk_21CF8 = 1;
         case 0x399:
             arg0->unk_21CF8 = 1;
@@ -10857,12 +10817,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x423:
             if (func_ov030_020aebb0(0x50) == 0) {
                 func_ov030_020aeb34(0x50);
-                func_ov030_020a669c(0x39A);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x39A);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x39B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x39B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x39A:
         case 0x39B:
@@ -10875,7 +10835,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x39C:
             func_ov030_020aeb34(0x44);
-            func_ov030_020aac28(arg0, 0x107);
+            func_ov030_020aac28(arg0, PIN_LADY_LUCK);
             arg0->unk_21CF8 = 1;
         case 0x39D:
             arg0->unk_21CF8 = 1;
@@ -10883,12 +10843,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x424:
             if (func_ov030_020aebb0(0x51) == 0) {
                 func_ov030_020aeb34(0x51);
-                func_ov030_020a669c(0x39E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x39E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x39F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x39F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x39E:
         case 0x39F:
@@ -10901,7 +10861,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3A0:
             func_ov030_020aeb34(0x45);
-            func_ov030_020aac28(arg0, 0xB0);
+            func_ov030_020aac28(arg0, PIN_LOLITA_SKULL);
             arg0->unk_21CF8 = 1;
         case 0x3A1:
             arg0->unk_21CF8 = 1;
@@ -10909,12 +10869,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x425:
             if (func_ov030_020aebb0(0x52) == 0) {
                 func_ov030_020aeb34(0x52);
-                func_ov030_020a669c(0x3A2);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3A2);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3A3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3A3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3A2:
         case 0x3A3:
@@ -10927,7 +10887,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3A4:
             func_ov030_020aeb34(0x46);
-            func_ov030_020aac28(arg0, 0x108);
+            func_ov030_020aac28(arg0, PIN_LUCKY_PANDA);
             arg0->unk_21CF8 = 1;
         case 0x3A5:
             arg0->unk_21CF8 = 1;
@@ -10935,12 +10895,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x426:
             if (func_ov030_020aebb0(0x53) == 0) {
                 func_ov030_020aeb34(0x53);
-                func_ov030_020a669c(0x3A6);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3A6);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3A7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3A7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3A6:
         case 0x3A7:
@@ -10953,7 +10913,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3A8:
             func_ov030_020aeb34(8);
-            func_ov030_020aac28(arg0, 0x97);
+            func_ov030_020aac28(arg0, PIN_ONE_STROKE_VAST_WEALTH);
             arg0->unk_21CF8 = 1;
         case 0x3A9:
             arg0->unk_21CF8 = 1;
@@ -10961,12 +10921,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x427:
             if (func_ov030_020aebb0(0x54) == 0) {
                 func_ov030_020aeb34(0x54);
-                func_ov030_020a669c(0x3AA);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3AA);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3AB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3AB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3AA:
         case 0x3AB:
@@ -10979,7 +10939,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3AC:
             func_ov030_020aeb34(0x47);
-            func_ov030_020aac28(arg0, 0x106);
+            func_ov030_020aac28(arg0, PIN_LUCKY_STAR);
             arg0->unk_21CF8 = 1;
         case 0x3AD:
             arg0->unk_21CF8 = 1;
@@ -10987,12 +10947,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x428:
             if (func_ov030_020aebb0(0x55) == 0) {
                 func_ov030_020aeb34(0x55);
-                func_ov030_020a669c(0x3AE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3AE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3AF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3AF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3AE:
         case 0x3AF:
@@ -11013,12 +10973,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x429:
             if (func_ov030_020aebb0(0x56) == 0) {
                 func_ov030_020aeb34(0x56);
-                func_ov030_020a669c(0x3B2);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3B2);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3B3);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3B3);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3B2:
         case 0x3B3:
@@ -11039,12 +10999,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42A:
             if (func_ov030_020aebb0(0x57) == 0) {
                 func_ov030_020aeb34(0x57);
-                func_ov030_020a669c(0x3B6);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3B6);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3B7);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3B7);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3B6:
         case 0x3B7:
@@ -11057,7 +11017,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3B8:
             func_ov030_020aeb34(0x4A);
-            func_ov030_020aac28(arg0, 0x67);
+            func_ov030_020aac28(arg0, PIN_LONG_LIVE_THE_ROCK);
             arg0->unk_21CF8 = 1;
         case 0x3B9:
             arg0->unk_21CF8 = 1;
@@ -11065,12 +11025,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42B:
             if (func_ov030_020aebb0(0x58) == 0) {
                 func_ov030_020aeb34(0x58);
-                func_ov030_020a669c(0x3BA);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3BA);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3BB);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3BB);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3BA:
         case 0x3BB:
@@ -11083,7 +11043,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3BC:
             func_ov030_020aeb34(0x4B);
-            func_ov030_020aac28(arg0, 0x89);
+            func_ov030_020aac28(arg0, PIN_DISTORTION);
             arg0->unk_21CF8 = 1;
         case 0x3BD:
             arg0->unk_21CF8 = 1;
@@ -11091,12 +11051,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42C:
             if (func_ov030_020aebb0(0x59) == 0) {
                 func_ov030_020aeb34(0x59);
-                func_ov030_020a669c(0x3BE);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3BE);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3BF);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3BF);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3BE:
         case 0x3BF:
@@ -11109,7 +11069,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3C0:
             func_ov030_020aeb34(0x4C);
-            func_ov030_020aac28(arg0, 0xF2);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_SHIVA);
             arg0->unk_21CF8 = 1;
         case 0x3C1:
             arg0->unk_21CF8 = 1;
@@ -11117,12 +11077,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42D:
             if (func_ov030_020aebb0(0x5B) == 0) {
                 func_ov030_020aeb34(0x5B);
-                func_ov030_020a669c(0x3C3);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3C3);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3C4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3C4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3C3:
         case 0x3C4:
@@ -11135,7 +11095,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3C5:
             func_ov030_020aeb34(9);
-            func_ov030_020aac28(arg0, 0xE8);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_BLADE);
             arg0->unk_21CF8 = 1;
         case 0x3C6:
             arg0->unk_21CF8 = 1;
@@ -11143,12 +11103,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
         case 0x42E:
             if (func_ov030_020aebb0(0x5C) == 0) {
                 func_ov030_020aeb34(0x5C);
-                func_ov030_020a669c(0x3C7);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x3C7);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x3C8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x3C8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3C7:
         case 0x3C8:
@@ -11161,7 +11121,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return 0;
         case 0x3C9:
             func_ov030_020aeb34(0x4D);
-            func_ov030_020aac28(arg0, 0xEA);
+            func_ov030_020aac28(arg0, PIN_TIN_PIN_DASH);
             arg0->unk_21CF8 = 1;
         case 0x3CA:
             arg0->unk_21CF8 = 1;
@@ -11175,18 +11135,18 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_0209efe4, 0x36E4, 2, 0x36E5, 0x36E6);
         case 0x367:
             if (func_ov030_020aebb0(0x6D) != 0) {
-                data_02071cf0.unk_20.unk_24B4 = 0;
-                data_02071cf0.unk_20.unk_24B8 = 1;
-                data_02071cf0.unk_20.unk_24BC = 0x36B;
+                data_02071cf0.unk_20.unk_24B4          = 0;
+                data_02071cf0.unk_20.unk_24B8          = 1;
+                data_02071cf0.unk_20.currentStoryEvent = 0x36B;
                 func_ov030_020af364(0x31);
                 return 1;
             }
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x369;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = EVENT_ANOTHERDAY_FINALTIMEATTACK_REWARD;
             func_ov030_020af364(0x31);
             return 1;
-        case 0x369:
+        case EVENT_ANOTHERDAY_FINALTIMEATTACK_REWARD:
             func_ov030_020aeb34(0x6D);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
@@ -11207,12 +11167,12 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             data_02071cf0.unk_20.unk_2676 = 4;
             break;
         case 0x35E:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x35FU;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = EVENT_ANOTHERDAY_PORKCITY_ROOF_LEVEL;
             func_ov030_020af364(0x30);
             return 1;
-        case 0x35F:
+        case EVENT_ANOTHERDAY_PORKCITY_ROOF_LEVEL:
             func_ov030_020aeb34(0x66);
             ProgressReward_GrantItem(arg0, ITEM_THREAD_MY_PHONES);
             data_02071cf0.unk_20.unk_26AA = 0;
@@ -11226,19 +11186,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x83A:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x6E) != 0)) {
-                func_ov030_020a669c(0x83C);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_1ST_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x6E) == 0)) {
-                func_ov030_020a669c(0x861);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x861);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x83B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x83B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x83C:
+        case EVENT_ANOTHERDAY_PORKCITY_1ST_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_HAMBURGER);
         case 0x861:
@@ -11249,19 +11209,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x83D:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x6F) != 0)) {
-                func_ov030_020a669c(0x83F);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_2ND_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x6F) == 0)) {
-                func_ov030_020a669c(0x862);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x862);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x83E);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x83E);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x83F:
+        case EVENT_ANOTHERDAY_PORKCITY_2ND_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_SPECIAL_DOG);
         case 0x862:
@@ -11271,19 +11231,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x840:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x70) != 0)) {
-                func_ov030_020a669c(0x842);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_3RD_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x70) == 0)) {
-                func_ov030_020a669c(0x863);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x863);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x841);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x841);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x842:
+        case EVENT_ANOTHERDAY_PORKCITY_3RD_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DONUTS);
         case 0x863:
@@ -11293,19 +11253,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x843:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x71) != 0)) {
-                func_ov030_020a669c(0x845);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_4TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x71) == 0)) {
-                func_ov030_020a669c(0x864);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x864);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x844);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x844);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x845:
+        case EVENT_ANOTHERDAY_PORKCITY_4TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_SHADOW_STEAK_RAMEN);
         case 0x864:
@@ -11315,19 +11275,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x846:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x72) != 0)) {
-                func_ov030_020a669c(0x848);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_5TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x72) == 0)) {
-                func_ov030_020a669c(0x865);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x865);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x847);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x847);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x848:
+        case EVENT_ANOTHERDAY_PORKCITY_5TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_ATK_CAPSULES);
         case 0x865:
@@ -11337,19 +11297,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x849:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x73) != 0)) {
-                func_ov030_020a669c(0x84B);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_6TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x73) == 0)) {
-                func_ov030_020a669c(0x866);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x866);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x84A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x84A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x84B:
+        case EVENT_ANOTHERDAY_PORKCITY_6TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DEF_MEDICINE);
         case 0x866:
@@ -11359,19 +11319,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x84C:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x74) != 0)) {
-                func_ov030_020a669c(0x84E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_7TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x74) == 0)) {
-                func_ov030_020a669c(0x867);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x867);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x84D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x84D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x84E:
+        case EVENT_ANOTHERDAY_PORKCITY_7TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_THE_TATSUMI_BURGER);
         case 0x867:
@@ -11381,19 +11341,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x84F:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x75) != 0)) {
-                func_ov030_020a669c(0x851);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_8TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x75) == 0)) {
-                func_ov030_020a669c(0x868);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x868);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x850);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x850);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x851:
+        case EVENT_ANOTHERDAY_PORKCITY_8TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DEFINITIVO_CHILI_DOG);
         case 0x868:
@@ -11403,19 +11363,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x852:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x76) != 0)) {
-                func_ov030_020a669c(0x854);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_9TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x76) == 0)) {
-                func_ov030_020a669c(0x869);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x869);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x853);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x853);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x854:
+        case EVENT_ANOTHERDAY_PORKCITY_9TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_MYSTIC_RAMEN);
         case 0x869:
@@ -11425,19 +11385,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x855:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x77) != 0)) {
-                func_ov030_020a669c(0x857);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_10TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x77) == 0)) {
-                func_ov030_020a669c(0x86A);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x86A);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x856);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x856);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x857:
+        case EVENT_ANOTHERDAY_PORKCITY_10TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_ABSOLUTE_SHADOW_RAMEN);
         case 0x86A:
@@ -11447,19 +11407,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x858:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x78) != 0)) {
-                func_ov030_020a669c(0x85A);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_11TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x78) == 0)) {
-                func_ov030_020a669c(0x86B);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x86B);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x859);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x859);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x85A:
+        case EVENT_ANOTHERDAY_PORKCITY_11TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_VIPER_DRINK);
         case 0x86B:
@@ -11469,19 +11429,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x85B:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x79) != 0)) {
-                func_ov030_020a669c(0x85D);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_12TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x79) == 0)) {
-                func_ov030_020a669c(0x86C);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x86C);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x85C);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x85C);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x85D:
+        case EVENT_ANOTHERDAY_PORKCITY_12TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_MAKO_SYNERGY);
         case 0x86C:
@@ -11491,19 +11451,19 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             break;
         case 0x85E:
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x7A) != 0)) {
-                func_ov030_020a669c(0x860);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(EVENT_ANOTHERDAY_PORKCITY_13TH_REWARD);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if ((func_ov030_020c1a9c() == 0) && (func_ov030_020aebb0(0x7A) == 0)) {
-                func_ov030_020a669c(0x86D);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x86D);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
-            func_ov030_020a669c(0x85F);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x85F);
+            Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x860:
+        case EVENT_ANOTHERDAY_PORKCITY_13TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_CURIOUS_MUSHROOMS);
         case 0x86D:
@@ -11511,7 +11471,7 @@ s32 func_ov030_0209f0e8(RewardTableObject* arg0) {
             data_02071cf0.unk_20.unk_26AA = 2;
             arg0->unk_21CF8               = 1;
             break;
-        case 0x36C:
+        case EVENT_ANOTHERDAY_SECRET_BOX_CONCERT_STAGE:
             func_ov030_020aeb34(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_GIRLS_UNIFORM_WITH_SWEATER, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -11530,7 +11490,7 @@ void func_ov030_020a1ea8(void) {
     data_02071cf0.unk_20.unk_3124 = 0x37;
 }
 
-s32 func_ov030_020a1ed0(RewardTableObject* arg0) {
+s32 func_ov030_020a1ed0(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 9) {
         if ((func_ov030_020aebb0(3) != 0) && (func_ov030_020aebb0(4) == 0)) {
             func_ov030_020aeb34(4);
@@ -11556,25 +11516,25 @@ s32 func_ov030_020a1ed0(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020a1fdc(RewardTableObject* arg0) {
+s32 func_ov030_020a1fdc(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x35EA:
-            func_ov030_020a669c(0x595);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x595);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35EB:
-            func_ov030_020a669c(0x596);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x596);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x598);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x598);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_020a206c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020a206c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x592:
             func_ov030_020aa9f4(arg0, 0x35EB, 0x5DD1, 0);
             break;
@@ -11594,7 +11554,7 @@ void func_ov030_020a20f8(void) {
     data_02071cf0.unk_20.unk_3124 = 56;
 }
 
-s32 func_ov030_020a2120(RewardTableObject* arg0) {
+s32 func_ov030_020a2120(ProgressObject* arg0) {
     if (data_02071cf0.unk_20.unk_2458 == 18) {
         if (func_ov030_020aebb0(0) != 0) {
             func_ov030_020aeb70(0);
@@ -11608,26 +11568,26 @@ s32 func_ov030_020a2120(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020a21a4(RewardTableObject* arg0) {
-    if (data_02071cf0.unk_20.unk_24BC == 0x59A) {
+s32 func_ov030_020a21a4(ProgressObject* arg0) {
+    if (data_02071cf0.unk_20.currentStoryEvent == 0x59A) {
         func_ov030_020b5d14(EasyTask_GetTaskById(&arg0->taskPool, arg0->unk_21788[data_02071cf0.unk_20.unk_24A4]), 1, 0x5DDB,
                             0x10000);
     }
     return 0;
 }
 
-void func_ov030_020a2208(RewardTableObject* arg0) {
+void func_ov030_020a2208(ProgressObject* arg0) {
     func_ov030_020ae96c(23);
-    data_02071cf0.unk_20.unk_244C = 0x12C000;
-    data_02071cf0.unk_20.unk_2450 = 0x87000;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x886E;
+    data_02071cf0.unk_20.unk_244C          = 0x12C000;
+    data_02071cf0.unk_20.unk_2450          = 0x87000;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x886E;
     func_ov030_020c26bc(arg0);
     data_02071cf0.unk_20.unk_267A = 4;
 }
 
-s32 func_ov030_020a2268(RewardTableObject* arg0) {
+s32 func_ov030_020a2268(ProgressObject* arg0) {
     s16 var_r0;
 
     if (data_02071cf0.unk_20.unk_2458 == 0x15) {
@@ -11668,78 +11628,78 @@ s32 func_ov030_020a2268(RewardTableObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020a240c(RewardTableObject* arg0) {
+s32 func_ov030_020a240c(ProgressObject* arg0) {
     switch (data_02071cf0.unk_20.unk_24C8[data_02071cf0.unk_20.unk_24C4]) {
         case 0x35F9:
             if (func_ov030_020aebb0(15) != 0) {
-                func_ov030_020a669c(0x87E);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x87E);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             func_ov030_020aeb34(5);
-            func_ov030_020a669c(0x87D);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x87D);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FA:
             func_ov030_020aeb34(42);
-            func_ov030_020a669c(0x888);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x888);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x887);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x887);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_020a24d8(RewardTableObject* arg0) {
+s32 func_ov030_020a24d8(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3605:
             func_ov030_020aeb34(9);
-            func_ov030_020a669c(0x879);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x879);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3606:
             func_ov030_020aeb34(10);
-            func_ov030_020a669c(0x87A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x87A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020a2568(RewardTableObject* arg0) {
+s32 func_ov030_020a2568(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x3605:
             func_ov030_020aeb34(9);
-            func_ov030_020a669c(0x879);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x879);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3606:
             func_ov030_020aeb34(10);
-            func_ov030_020a669c(0x87A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x87A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x3607:
             func_ov030_020aeb34(11);
-            func_ov030_020a669c(0x87B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x87B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
     }
 }
 
-s32 func_ov030_020a2628(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020a2628(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x86E:
-            func_ov030_020a669c(0x889);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x889);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x86F:
-            func_ov030_020a669c(0x88A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x88A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x88A:
             ProgressReward_GrantPin(arg0, PIN_PYROKINESIS);
@@ -11771,8 +11731,8 @@ s32 func_ov030_020a2628(RewardTableObject* arg0) {
         case 0x87A:
         case 0x87B:
             if ((func_ov030_020aebb0(9) != 0) && (func_ov030_020aebb0(10) != 0) && (func_ov030_020aebb0(11) != 0)) {
-                func_ov030_020a669c(0x87C);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(0x87C);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             if (func_ov030_020aebb0(9) != 0) {
@@ -11804,18 +11764,18 @@ s32 func_ov030_020a2628(RewardTableObject* arg0) {
             break;
         case 0x882:
             func_ov030_020aeb34(8);
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x883;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x883;
             func_ov030_020af364(10);
             return 1;
         case 0x883:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 0x884;
-            data_02071cf0.unk_20.unk_3124 = 10;
-            data_02071cf0.unk_20.unk_3128 = 0;
-            arg0->unk_21630               = 4;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 0x884;
+            data_02071cf0.unk_20.unk_3124          = 10;
+            data_02071cf0.unk_20.unk_3128          = 0;
+            arg0->unk_21630                        = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x884:
@@ -11840,10 +11800,10 @@ s32 func_ov030_020a2a84(void) {
     return 0;
 }
 
-s32 func_ov030_020a2a8c(RewardTableObject* arg0) {
+s32 func_ov030_020a2a8c(ProgressObject* arg0) {
     switch (arg0->unk_21D1C) {
         case 0:
-            func_ov030_020a669c(0x44E);
+            Progress_SetCurrentEvent(0x44E);
             return 1;
         case 1:
             if (func_ov030_020aebb0(2) != 0) {
@@ -11851,37 +11811,37 @@ s32 func_ov030_020a2a8c(RewardTableObject* arg0) {
                 return 0;
             }
             func_ov030_020aeb34(2);
-            func_ov030_020a669c(0x451);
+            Progress_SetCurrentEvent(0x451);
             return 1;
         case 2:
-            func_ov030_020a669c(0x452);
+            Progress_SetCurrentEvent(0x452);
             return 1;
         case 3:
-            func_ov030_020a669c(0x455);
+            Progress_SetCurrentEvent(0x455);
             return 1;
         case 4:
-            func_ov030_020a669c(0x456);
+            Progress_SetCurrentEvent(0x456);
             return 1;
         case 5:
-            func_ov030_020a669c(0x457);
+            Progress_SetCurrentEvent(0x457);
             return 1;
         case 6:
-            func_ov030_020a669c(0x458);
+            Progress_SetCurrentEvent(0x458);
             return 1;
         case 7:
-            func_ov030_020a669c(0x459);
+            Progress_SetCurrentEvent(0x459);
             return 1;
         case 8:
-            func_ov030_020a669c(0x45A);
+            Progress_SetCurrentEvent(0x45A);
             return 1;
         case 9:
-            func_ov030_020a669c(0x45B);
+            Progress_SetCurrentEvent(0x45B);
             return 1;
         case 10:
-            func_ov030_020a669c(0x45C);
+            Progress_SetCurrentEvent(0x45C);
             return 1;
         case 11:
-            func_ov030_020a669c(0x45D);
+            Progress_SetCurrentEvent(0x45D);
             return 1;
         case 13:
             func_ov030_020a9db8(arg0, 0x45E);
@@ -11892,8 +11852,8 @@ s32 func_ov030_020a2a8c(RewardTableObject* arg0) {
     }
 }
 
-s32 func_ov030_020a2c20(RewardTableObject* arg0) {
-    if ((data_02071cf0.unk_20.unk_24BC == 0xE3) || (data_02071cf0.unk_20.unk_24BC == 0x45F)) {
+s32 func_ov030_020a2c20(ProgressObject* arg0) {
+    if ((data_02071cf0.unk_20.currentStoryEvent == 0xE3) || (data_02071cf0.unk_20.currentStoryEvent == 0x45F)) {
         if (func_ov030_020a9d00(arg0, 0x44D) == 0) {
             return 1;
         }
@@ -11925,25 +11885,25 @@ s32 func_ov030_020a2d54(void) {
     return 0;
 }
 
-s32 func_ov030_020a2d5c(RewardTableObject* arg0) {
+s32 func_ov030_020a2d5c(ProgressObject* arg0) {
     switch (arg0->unk_2176C[arg0->unk_2177C]) {
         case 0x35FA:
-            func_ov030_020a669c(0x5A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x35FB:
-            func_ov030_020a669c(0x5A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
-            func_ov030_020a669c(0x5A5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5A5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
 }
 
-s32 func_ov030_020a2de8(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020a2de8(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x5A0:
             func_ov030_020aa9f4(arg0, 0x35F9, 0x5DD1, 0);
             break;
@@ -11963,15 +11923,15 @@ s32 func_ov030_020a2de8(RewardTableObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x5A8);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5A8);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x5A9:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            func_ov030_020a669c(0x5AA);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5AA);
+            Progress_AdvanceEventScript(arg0);
             return 1;
     }
     return 0;
@@ -11980,10 +11940,10 @@ s32 func_ov030_020a2de8(RewardTableObject* arg0) {
 void func_ov030_020a2f74(void) {
     func_ov030_020ae96c(18);
     func_ov030_020c26bc(0);
-    data_02071cf0.unk_20.unk_3124 = 0x3C;
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x8A;
+    data_02071cf0.unk_20.unk_3124          = 0x3C;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x8A;
 }
 
 // Nonmatching
@@ -12004,8 +11964,8 @@ s32 func_ov030_020a2fc4(void) {
     return 0;
 }
 
-s32 func_ov030_020a306c(RewardTableObject* arg0) {
-    if ((data_02071cf0.unk_20.unk_24BC == 0x8A) && (func_ov030_020aebb0(0) == 0)) {
+s32 func_ov030_020a306c(ProgressObject* arg0) {
+    if ((data_02071cf0.unk_20.currentStoryEvent == 0x8A) && (func_ov030_020aebb0(0) == 0)) {
         func_ov030_020aeb34(0);
     }
     return 0;
@@ -12017,23 +11977,23 @@ void func_ov030_020a30a4(void) {
     data_02071cf0.unk_20.unk_3124 = 61;
 }
 
-s32 func_ov030_020a30cc(RewardTableObject* arg0) {
+s32 func_ov030_020a30cc(ProgressObject* arg0) {
     return 0;
 }
 
-s32 func_ov030_020a30d4(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020a30d4(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x5B3:
-            func_ov030_020a669c(0x5B4);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5B4);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x5B4:
-            func_ov030_020a669c(0x5B5);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5B5);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x5B5:
-            func_ov030_020a669c(0x5B6);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x5B6);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         default:
             return 0;
@@ -12049,7 +12009,7 @@ s32 func_ov030_020a3174(void) {
     return 0;
 }
 
-s32 func_ov030_020a317c(RewardTableObject* arg0) {
+s32 func_ov030_020a317c(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12064,16 +12024,16 @@ s32 func_ov030_020a31b4(void) {
     return 0;
 }
 
-s32 func_ov030_020a31bc(RewardTableObject* arg0) {
+s32 func_ov030_020a31bc(ProgressObject* arg0) {
     return 0;
 }
 
 void func_ov030_020a31c4(void) {
     func_ov030_020ae96c(1);
     func_ov030_020c26bc(0);
-    data_02071cf0.unk_20.unk_24B4 = 0;
-    data_02071cf0.unk_20.unk_24B8 = 1;
-    data_02071cf0.unk_20.unk_24BC = 0x88B;
+    data_02071cf0.unk_20.unk_24B4          = 0;
+    data_02071cf0.unk_20.unk_24B8          = 1;
+    data_02071cf0.unk_20.currentStoryEvent = 0x88B;
     func_ov030_020aec1c(4);
     data_02071cf0.unk_20.playerStats.activeFriend = FRIEND_JOSHUA;
 }
@@ -12098,12 +12058,12 @@ s32 func_ov030_020a321c(s32 arg0) {
     }
 }
 
-s32 func_ov030_020a333c(RewardTableObject* arg0) {
-    switch (data_02071cf0.unk_20.unk_24BC) {
+s32 func_ov030_020a333c(ProgressObject* arg0) {
+    switch (data_02071cf0.unk_20.currentStoryEvent) {
         case 0x88C:
             func_ov030_020aeb34(0);
-            func_ov030_020a669c(0x89A);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x89A);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x89A:
             ProgressReward_GrantPin(arg0, PIN_LOVELY_BEAM);
@@ -12115,9 +12075,9 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x88E:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 2189;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 2189;
             func_ov030_020af364(0x39);
             return 1;
         case 0x88D:
@@ -12126,13 +12086,13 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x88F:
-            func_ov030_020a669c(0x89B);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(0x89B);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x89B:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 2192;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 2192;
             func_ov030_020af364(0x35);
             return 1;
         case 0x890:
@@ -12141,13 +12101,13 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x891:
-            func_ov030_020a669c(2204);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(2204);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x89C:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 2194;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 2194;
             func_ov030_020af364(54);
             return 1;
         case 0x892:
@@ -12156,16 +12116,16 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x893:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 2196;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 2196;
             func_ov030_020af364(55);
             return 1;
         case 0x894:
             func_ov030_020aeb34(5);
             data_02071cf0.unk_20.unk_2668 = 4;
-            func_ov030_020a669c(2205);
-            func_ov030_020a6738(arg0);
+            Progress_SetCurrentEvent(2205);
+            Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x89D:
             arg0->unk_21CF8 = 1;
@@ -12176,8 +12136,8 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
                 data_02071cf0.unk_20.unk_310C = &data_ov030_020d9be4;
                 func_ov030_020c1960();
                 func_ov030_020acfc4(arg0);
-                func_ov030_020a669c(2206);
-                func_ov030_020a6738(arg0);
+                Progress_SetCurrentEvent(2206);
+                Progress_AdvanceEventScript(arg0);
                 return 1;
             }
             break;
@@ -12190,9 +12150,9 @@ s32 func_ov030_020a333c(RewardTableObject* arg0) {
             arg0->unk_21CF8               = 1;
             break;
         case 0x897:
-            data_02071cf0.unk_20.unk_24B4 = 0;
-            data_02071cf0.unk_20.unk_24B8 = 1;
-            data_02071cf0.unk_20.unk_24BC = 2200;
+            data_02071cf0.unk_20.unk_24B4          = 0;
+            data_02071cf0.unk_20.unk_24B8          = 1;
+            data_02071cf0.unk_20.currentStoryEvent = 2200;
             func_ov030_020af364(56);
             return 1;
         case 0x898:
@@ -12222,7 +12182,7 @@ s32 func_ov030_020a36f0(s32 arg0) {
     return 0;
 }
 
-s32 func_ov030_020a3718(RewardTableObject* arg0) {
+s32 func_ov030_020a3718(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12236,7 +12196,7 @@ s32 func_ov030_020a3748(void) {
     return 0;
 }
 
-s32 func_ov030_020a3750(RewardTableObject* arg0) {
+s32 func_ov030_020a3750(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12250,7 +12210,7 @@ s32 func_ov030_020a3780(void) {
     return 0;
 }
 
-s32 func_ov030_020a3788(RewardTableObject* arg0) {
+s32 func_ov030_020a3788(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12264,7 +12224,7 @@ s32 func_ov030_020a37b8(void) {
     return 0;
 }
 
-s32 func_ov030_020a37c0(RewardTableObject* arg0) {
+s32 func_ov030_020a37c0(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12278,7 +12238,7 @@ s32 func_ov030_020a37f0(void) {
     return 0;
 }
 
-s32 func_ov030_020a37f8(RewardTableObject* arg0) {
+s32 func_ov030_020a37f8(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12292,7 +12252,7 @@ s32 func_ov030_020a3828(void) {
     return 0;
 }
 
-s32 func_ov030_020a3830(RewardTableObject* arg0) {
+s32 func_ov030_020a3830(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12305,7 +12265,7 @@ s32 func_ov030_020a3850(void) {
     return 0;
 }
 
-s32 func_ov030_020a3858(RewardTableObject* arg0) {
+s32 func_ov030_020a3858(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12319,7 +12279,7 @@ s32 func_ov030_020a3888(void) {
     return 0;
 }
 
-s32 func_ov030_020a3890(RewardTableObject* arg0) {
+s32 func_ov030_020a3890(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12333,7 +12293,7 @@ s32 func_ov030_020a38c0(void) {
     return 0;
 }
 
-s32 func_ov030_020a38c8(RewardTableObject* arg0) {
+s32 func_ov030_020a38c8(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12347,7 +12307,7 @@ s32 func_ov030_020a38f8(void) {
     return 0;
 }
 
-s32 func_ov030_020a3900(RewardTableObject* arg0) {
+s32 func_ov030_020a3900(ProgressObject* arg0) {
     return 0;
 }
 
@@ -12361,7 +12321,7 @@ s32 func_ov030_020a3930(void) {
     return 0;
 }
 
-s32 func_ov030_020a3938(RewardTableObject* arg0) {
+s32 func_ov030_020a3938(ProgressObject* arg0) {
     return 0;
 }
 
@@ -13181,9 +13141,7 @@ s32 func_ov030_020a65f4(void) {
     }
 }
 
-typedef s32 (*ProgressRewardFunc)(RewardTableObject*);
-
-const ProgressRewardFunc data_ov030_020da618[] = {
+const ProgressRewardFunc data_ov030_020da618[44] = {
     func_ov030_02084eb4, func_ov030_02085cf8, func_ov030_020876c8, func_ov030_02089300, func_ov030_0208aaf4,
     func_ov030_0208c8a0, func_ov030_0208ddfc, func_ov030_0208ec3c, func_ov030_0208faa4, func_ov030_02091bc8,
     func_ov030_02093db8, func_ov030_0209585c, func_ov030_0209716c, func_ov030_02097f4c, func_ov030_02098a30,

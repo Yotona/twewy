@@ -18,7 +18,9 @@ typedef struct MainData {
     /* 0x0AB0 */ MasteredPin    masteredPins[304];
     /* 0x0F70 */ InventoryItem  inventoryItems[472];
     /* 0x16D0 */ s32            unk_16D0;
-    /* 0x16D4 */ char           unk_16D4[0x1A18 - 0x16D4];
+    /* 0x16D4 */ char           unk_16D4[0x16EA - 0x16D4];
+    /* 0x16EA */ u8             unk_16EA[160];
+    /* 0x178A */ char           unk_178A[0x1A18 - 0x178A];
     /* 0x1A18 */ s32            unk_1A18[35];
     /* 0x1AA4 */ Experience     experience;
     /* 0x1AB0 */ u8             unk_1AB0;
@@ -78,21 +80,29 @@ typedef struct MainData {
     /* 0x247C */ u32            unk_247C;
     /* 0x2480 */ u32            unk_2480;
     /* 0x2484 */ u32            unk_2484;
-    /* 0x2488 */ char           unk_2488[0x24A4 - 0x2488];
+    /* 0x2488 */ u32            unk_2488;
+    /* 0x248C */ char           unk_248C[0x2498 - 0x248C];
+    /* 0x2498 */ s32            unk_2498;
+    /* 0x249C */ s32            unk_249C;
+    /* 0x24A0 */ s16*           unk_24A0;
     /* 0x24A4 */ u16            unk_24A4;
-    /* 0x24A6 */ char           unk_24A6[0x24B4 - 0x24A6];
+    /* 0x24A6 */ char           unk_24A6[0x24A8 - 0x24A6];
+    /* 0x24A8 */ u16            unk_24A8;
+    /* 0x24AA */ char           unk_24AA[0x24AC - 0x24AA];
+    /* 0x24AC */ u32            unk_24AC;
+    /* 0x24B0 */ s16*           unk_24B0;
     /* 0x24B4 */ u16            unk_24B4;
     /* 0x24B6 */ u16            unk_24B6;
     /* 0x24B8 */ u32            unk_24B8;
-    /* 0x24BC */ u16            unk_24BC;
+    /* 0x24BC */ u16            currentStoryEvent; // Most recently completed story event, for progress gating and rewards
     /* 0x24BE */ u16            unk_24BE;
     /* 0x24C0 */ u16            unk_24C0;
     /* 0x24C2 */ u16            unk_24C2;
     /* 0x24C4 */ u32            unk_24C4;
     /* 0x24C8 */ s32            unk_24C8[2];
-    /* 0x24D0 */ char           unk_24D0[0x24E8 - 0x24D0];
-    /* 0x24E8 */ u16            unk_24E8;
-    /* 0x24EA */ char           unk_24EA[0x2648 - 0x24EA];
+    /* 0x24D0 */ char           unk_24D0[0x2548 - 0x24D0];
+    /* 0x2548 */ s16            unk_2548[2];
+    /* 0x254C */ char           unk_254C[0x2648 - 0x254C];
     /* 0x2648 */ s16            unk_2648;
     /* 0x264A */ s16            unk_264A;
     /* 0x264C */ s16            unk_264C;
@@ -225,5 +235,7 @@ extern struct SystemState data_02071cf0;
  * equipment, all story progress, and all collections.
  */
 void Savefile_ResetAllGameplay(MainData* arg0);
+
+// 676 - 1494
 
 #endif // SAVE_H

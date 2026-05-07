@@ -306,9 +306,11 @@ func_ov030_020a61f0 kind:function(arm,size=0x14c) addr:0x020a61f0
 func_ov030_020a633c kind:function(arm,size=0x38) addr:0x020a633c
 func_ov030_020a6374 kind:function(arm,size=0x280) addr:0x020a6374
 func_ov030_020a65f4 kind:function(arm,size=0xa8) addr:0x020a65f4
-func_ov030_020a669c kind:function(arm,size=0x4c) addr:0x020a669c
+
+
+Progress_SetCurrentEvent kind:function(arm,size=0x4c) addr:0x020a669c
 func_ov030_020a66e8 kind:function(arm,size=0x50) addr:0x020a66e8
-func_ov030_020a6738 kind:function(arm,size=0x170) addr:0x020a6738
+Progress_AdvanceEventScript kind:function(arm,size=0x170) addr:0x020a6738
 func_ov030_020a68a8 kind:function(arm,size=0x4c) addr:0x020a68a8
 func_ov030_020a68f4 kind:function(arm,size=0x6c) addr:0x020a68f4
 func_ov030_020a6960 kind:function(arm,size=0x4c) addr:0x020a6960
@@ -326,7 +328,7 @@ func_ov030_020a6d20 kind:function(arm,size=0x14) addr:0x020a6d20
 func_ov030_020a6d34 kind:function(arm,size=0x4c) addr:0x020a6d34
 func_ov030_020a6d80 kind:function(arm,size=0x14) addr:0x020a6d80
 func_ov030_020a6d94 kind:function(arm,size=0x14) addr:0x020a6d94
-func_ov030_020a6da8 kind:function(arm,size=0xa8) addr:0x020a6da8
+Progress_InitState kind:function(arm,size=0xa8) addr:0x020a6da8
 func_ov030_020a6e50 kind:function(arm,size=0x14) addr:0x020a6e50
 func_ov030_020a6e64 kind:function(arm,size=0x48) addr:0x020a6e64
 func_ov030_020a6eac kind:function(arm,size=0xe4) addr:0x020a6eac
@@ -356,8 +358,6 @@ func_ov030_020a9e48 kind:function(arm,size=0x10c) addr:0x020a9e48
 func_ov030_020a9f54 kind:function(arm,size=0x174) addr:0x020a9f54
 func_ov030_020aa0c8 kind:function(arm,size=0x2c8) addr:0x020aa0c8
 func_ov030_020aa390 kind:function(arm,size=0x12c) addr:0x020aa390
-
-
 func_ov030_020aa4bc kind:function(arm,size=0x538) addr:0x020aa4bc
 func_ov030_020aa9f4 kind:function(arm,size=0xe4) addr:0x020aa9f4
 func_ov030_020aaad8 kind:function(arm,size=0x20) addr:0x020aaad8
@@ -4376,7 +4376,9 @@ data_ov030_020fde54 kind:data(any) addr:0x020fde54
 data_ov030_020fde60 kind:data(any) addr:0x020fde60
 data_ov030_020fde80 kind:data(any) addr:0x020fde80
 data_ov030_020fde84 kind:data(any) addr:0x020fde84
-data_ov030_020fdeb8 kind:data(any) addr:0x020fdeb8
+
+EventScripts kind:data(any) addr:0x020fdeb8
+
 data_ov030_020feb70 kind:data(any) addr:0x020feb70 ambiguous
 data_ov030_020fec54 kind:data(any) addr:0x020fec54 ambiguous
 data_ov030_020fec90 kind:data(any) addr:0x020fec90 ambiguous
