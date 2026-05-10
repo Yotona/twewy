@@ -72,7 +72,7 @@ typedef struct MainData {
     /* 0x2450 */ s32            unk_2450;
     /* 0x2454 */ s32            unk_2454;
     /* 0x2458 */ s16            unk_2458;
-    /* 0x245C */ char           unk_245C[0x246C - 0x245C];
+    /* 0x245C */ u32            progressFlags[4]; // 128 flags
     /* 0x246C */ u32            unk_246C;
     /* 0x2470 */ char           unk_2470[0x2474 - 0x2470];
     /* 0x2474 */ u32            unk_2474;
@@ -81,12 +81,13 @@ typedef struct MainData {
     /* 0x2480 */ u32            unk_2480;
     /* 0x2484 */ u32            unk_2484;
     /* 0x2488 */ u32            unk_2488;
-    /* 0x248C */ char           unk_248C[0x2498 - 0x248C];
+    /* 0x248C */ s32            unk_248C;
+    /* 0x2490 */ char           unk_2490[4];
+    /* 0x2494 */ s32            unk_2494;
     /* 0x2498 */ s32            unk_2498;
     /* 0x249C */ s32            unk_249C;
     /* 0x24A0 */ s16*           unk_24A0;
-    /* 0x24A4 */ u16            unk_24A4;
-    /* 0x24A6 */ char           unk_24A6[0x24A8 - 0x24A6];
+    /* 0x24A4 */ u32            unk_24A4;
     /* 0x24A8 */ u16            unk_24A8;
     /* 0x24AA */ char           unk_24AA[0x24AC - 0x24AA];
     /* 0x24AC */ u32            unk_24AC;

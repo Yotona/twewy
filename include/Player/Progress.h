@@ -2,6 +2,7 @@
 #define PLAYER_PROGRESS_H
 
 #include "Engine/EasyTask.h"
+#include "Player/Progress/ProgressFlags.h"
 #include <types.h>
 
 typedef struct ProgressObject {
@@ -118,7 +119,7 @@ typedef struct ProgressObject {
 } ProgressObject;
 
 typedef s32 (*ProgressRewardFunc)(ProgressObject*);
-const ProgressRewardFunc data_ov030_020da618[44];
+extern const ProgressRewardFunc data_ov030_020da618[44];
 
 typedef struct {
     /* 0x0 */ u8 completedStars[4];
@@ -237,6 +238,12 @@ void ProgressReward_GrantItem(ProgressObject* arg0, u16 itemID);
 
 void ProgressReward_GrantPin(ProgressObject* arg0, u16 itemID);
 
+void Progress_BeginScriptedEvent(ProgressObject* progress, ProgressEvent event, s32 arg2);
+
 void func_ov030_020aac28(ProgressObject* arg0, u16 itemID);
+
+void func_ov030_020aec38(s32 arg0);
+
+s32 func_ov030_020aeca4(s32 arg0);
 
 #endif // PLAYER_PROGRESS_H

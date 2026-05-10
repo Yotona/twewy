@@ -48,9 +48,6 @@ extern void func_ov030_020ac95c(ProgressObject*);
 extern void func_ov030_020ad044(ProgressObject*);
 extern void func_ov030_020ad1ac(ProgressObject*);
 extern void func_ov030_020ad428(ProgressObject*);
-extern void func_ov030_020aeb34(s32);
-extern void func_ov030_020aec1c(u32);
-extern void func_ov030_020aec38(u32);
 extern void func_ov030_020af364(s32);
 extern BOOL func_ov030_020b0454(void);
 extern void func_ov030_020b3034(Task*);
@@ -816,7 +813,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x12:
-            func_ov030_020aeb34(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+            Progress_SetGate(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
 
@@ -1507,36 +1504,32 @@ void func_ov030_020a7b50(ProgressObject* progress) {
 }
 
 // Nonmatching
-void func_ov030_020a9c54(ProgressObject* progress, s32 arg1, s32 arg2) {
-    s32 eventId = arg1;
-
-    if (data_02071cf0.unk_20.unk_2498 != 0) {
+void Progress_BeginScriptedEvent(ProgressObject* progress, ProgressEvent event, s32 arg2) {
+    if (data_02071cf0.unk_20.unk_2498 != FALSE) {
         return;
     }
 
     Progress_InitState(progress);
-    data_02071cf0.unk_20.unk_2498 = 1;
+    data_02071cf0.unk_20.unk_2498 = TRUE;
 
-    // Extract flags from eventId
-    if (eventId >= 0x8000) {
-        eventId -= 0x8000;
+    if (event >= 0x8000) {
+        event -= 0x8000;
     }
 
-    data_02071cf0.unk_20.unk_24A4 = arg2;
     data_02071cf0.unk_20.unk_249C = 0;
-    progress->unk_21D0C           = 0;
-    progress->unk_21CF4           = 0;
+    data_02071cf0.unk_20.unk_24A4 = arg2;
+    progress->unk_21D0C           = FALSE;
+    progress->unk_21CF4           = FALSE;
 
-    // Check for special flags
-    if (eventId >= 0x4000) {
-        progress->unk_21D0C = 1;
-        eventId -= 0x4000;
-    } else if (eventId >= 0x2000) {
-        progress->unk_21CF4 = 1;
-        eventId -= 0x2000;
+    if (event >= 0x4000) {
+        progress->unk_21D0C = TRUE;
+        event -= 0x4000;
+    } else if (event >= 0x2000) {
+        progress->unk_21CF4 = TRUE;
+        event -= 0x2000;
     }
 
-    Progress_SetCurrentEvent(eventId);
+    Progress_SetCurrentEvent(event);
     func_ov030_020b3034(EasyTask_GetTaskById(&progress->taskPool, progress->unk_216D4));
 }
 
