@@ -28,6 +28,9 @@ typedef struct {
     /* 0x08 */ char unk_08[0x14 - 0x08];
 } RawFoodData; // Size: 0x14
 
+/**
+ * @brief Swag information as stored from within an external binary data file.
+ */
 typedef struct {
     /* 0x00 */ u16  unk_00;
     /* 0x02 */ char unk_02[0x2];

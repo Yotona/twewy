@@ -36,4 +36,6 @@ void Progress_ClearGate(ProgressGate gate);
  */
 BOOL Progress_Check(ProgressGate gate);
 
+void func_ov030_020aec1c(s32 arg0);
+
 #endif // PLAYER_PROGRESS_PROGRESSFLAGS_H

@@ -17,3 +17,53 @@ src/Player/ProgressFlags.c:
 src/Player/UnknownTables.c:
     .text       start:0x020b891c end:0x020baa64
     .rodata     start:0x020e4e98 end:0x020e4f48
+
+src/Field/Fld_TalkEventStringPlate.c:
+    categories: Field
+    .text       start:0x020c3948 end:0x020c3d5c
+    .rodata     start:0x020e71b4 end:0x020e71fc
+    .data       start:0x02107598 end:0x021075b8
+
+src/Field/Fld_TalkEventKeywordMenu.c:
+    categories: Field
+    .text       start:0x020c3d5c end:0x020c420c
+    .rodata     start:0x020e71fc end:0x020e7218
+    .data       start:0x021075b8 end:0x021075d8
+
+src/Field/Fld_GetMess.c:
+    categories: Field
+    complete
+    .text       start:0x020c71b0 end:0x020c7524
+    .rodata     start:0x020ec8d4 end:0x020ec91c
+    .data       start:0x021084b8 end:0x021084c8
+
+src/Field/Fld_WhichArrow.c:
+    categories: Field
+    complete
+    .text       start:0x020c7524 end:0x020c7804
+    .rodata     start:0x020ec91c end:0x020ec964
+    .data       start:0x021084c8 end:0x021084dc
+
+src/Field/Fld_GetBase.c:
+    categories: Field
+    .text       start:0x020c7804 end:0x020c7a74
+    .rodata     start:0x020ec964 end:0x020ec9ac
+    .data       start:0x021084dc end:0x021084ec
+
+src/Field/Fld_GetItem.c:
+    categories: Field
+    .text       start:0x020c7a74 end:0x020c7fcc
+    .rodata     start:0x020ec9ac end:0x020eca2c
+    .data       start:0x021084ec end:0x021085a8
+
+src/Field/Fld_Choice.c:
+    categories: Field
+    .text       start:0x020c7fcc end:0x020c83f4
+    .rodata     start:0x020eca2c end:0x020eca48
+    .data       start:0x021085a8 end:0x021085b8
+
+src/Field/Fld_UGFade.c:
+    categories: Field
+    .text       start:0x020c83f4 end:0x020c85a4
+    .rodata     start:0x020eca48 end:0x020eca64
+    .data       start:0x021085b8 end:0x021085c8

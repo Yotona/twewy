@@ -15,7 +15,8 @@ typedef union {
  * @brief Pin information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ char unk_00[0x8];
+    /* 0x00 */ u16  unk_00;
+    /* 0x02 */ char unk_02[0x8 - 0x2];
     /* 0x08 */ u32  unk_08;
     /* 0x0C */ s16  unk_0C;
     /* 0x0E */ char unk_0E[0x25 - 0x0E];

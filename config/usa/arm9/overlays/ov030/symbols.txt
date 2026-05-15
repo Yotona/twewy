@@ -1099,26 +1099,36 @@ func_ov030_020c3898 kind:function(arm,size=0x14) addr:0x020c3898
 func_ov030_020c38ac kind:function(arm,size=0x14) addr:0x020c38ac
 func_ov030_020c38c0 kind:function(arm,size=0x48) addr:0x020c38c0
 func_ov030_020c3908 kind:function(arm,size=0x40) addr:0x020c3908
-func_ov030_020c3948 kind:function(arm,size=0x104) addr:0x020c3948
-func_ov030_020c3a4c kind:function(arm,size=0xbc) addr:0x020c3a4c
-func_ov030_020c3b08 kind:function(arm,size=0xec) addr:0x020c3b08
-func_ov030_020c3bf4 kind:function(arm,size=0x78) addr:0x020c3bf4
-func_ov030_020c3c6c kind:function(arm,size=0x1c) addr:0x020c3c6c
-func_ov030_020c3c88 kind:function(arm,size=0x3c) addr:0x020c3c88
-func_ov030_020c3cc4 kind:function(arm,size=0x48) addr:0x020c3cc4
-func_ov030_020c3d0c kind:function(arm,size=0x50) addr:0x020c3d0c
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventStringPlate.c
+//////////////////////////////////////////////////////////////////////
+Fld_TalkEventStringPlate_GetFrameInfo kind:function(arm,size=0x104) addr:0x020c3948
+Fld_TalkEventStringPlate_Load kind:function(arm,size=0xbc) addr:0x020c3a4c
+Fld_TalkEventStringPlate_Init kind:function(arm,size=0xec) addr:0x020c3b08
+Fld_TalkEventStringPlate_Update kind:function(arm,size=0x78) addr:0x020c3bf4
+Fld_TalkEventStringPlate_Render kind:function(arm,size=0x1c) addr:0x020c3c6c
+Fld_TalkEventStringPlate_Destroy kind:function(arm,size=0x3c) addr:0x020c3c88
+Fld_TalkEventStringPlate_RunTask kind:function(arm,size=0x48) addr:0x020c3cc4
+Fld_TalkEventStringPlate_CreateTask kind:function(arm,size=0x50) addr:0x020c3d0c
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventKeywordMenu.c
+//////////////////////////////////////////////////////////////////////
 func_ov030_020c3d5c kind:function(arm,size=0x20) addr:0x020c3d5c
 func_ov030_020c3d7c kind:function(arm,size=0x60) addr:0x020c3d7c
 func_ov030_020c3ddc kind:function(arm,size=0x54) addr:0x020c3ddc
 func_ov030_020c3e30 kind:function(arm,size=0x154) addr:0x020c3e30
 func_ov030_020c3f84 kind:function(arm,size=0x7c) addr:0x020c3f84
 func_ov030_020c4000 kind:function(arm,size=0x74) addr:0x020c4000
-func_ov030_020c4074 kind:function(arm,size=0x50) addr:0x020c4074
-func_ov030_020c40c4 kind:function(arm,size=0x20) addr:0x020c40c4
-func_ov030_020c40e4 kind:function(arm,size=0x8) addr:0x020c40e4
-func_ov030_020c40ec kind:function(arm,size=0xa4) addr:0x020c40ec
-func_ov030_020c4190 kind:function(arm,size=0x48) addr:0x020c4190
-func_ov030_020c41d8 kind:function(arm,size=0x34) addr:0x020c41d8
+Fld_TalkEventKeywordMenu_Init kind:function(arm,size=0x50) addr:0x020c4074
+Fld_TalkEventKeywordMenu_Update kind:function(arm,size=0x20) addr:0x020c40c4
+Fld_TalkEventKeywordMenu_Render kind:function(arm,size=0x8) addr:0x020c40e4
+Fld_TalkEventKeywordMenu_Destroy kind:function(arm,size=0xa4) addr:0x020c40ec
+Fld_TalkEventKeywordMenu_RunTask kind:function(arm,size=0x48) addr:0x020c4190
+Fld_TalkEventKeywordMenu_CreateTask kind:function(arm,size=0x34) addr:0x020c41d8
+
+
 func_ov030_020c420c kind:function(arm,size=0xdc) addr:0x020c420c
 func_ov030_020c42e8 kind:function(arm,size=0xa4) addr:0x020c42e8
 func_ov030_020c438c kind:function(arm,size=0xf8) addr:0x020c438c
@@ -1225,62 +1235,88 @@ func_ov030_020c70c0 kind:function(arm,size=0x60) addr:0x020c70c0
 func_ov030_020c7120 kind:function(arm,size=0x14) addr:0x020c7120
 func_ov030_020c7134 kind:function(arm,size=0x48) addr:0x020c7134
 func_ov030_020c717c kind:function(arm,size=0x34) addr:0x020c717c
-func_ov030_020c71b0 kind:function(arm,size=0x9c) addr:0x020c71b0
-func_ov030_020c724c kind:function(arm,size=0x6c) addr:0x020c724c
-func_ov030_020c72b8 kind:function(arm,size=0x10c) addr:0x020c72b8
-func_ov030_020c73c4 kind:function(arm,size=0x40) addr:0x020c73c4
-func_ov030_020c7404 kind:function(arm,size=0x68) addr:0x020c7404
-func_ov030_020c746c kind:function(arm,size=0x38) addr:0x020c746c
-func_ov030_020c74a4 kind:function(arm,size=0x48) addr:0x020c74a4
-func_ov030_020c74ec kind:function(arm,size=0x38) addr:0x020c74ec
-func_ov030_020c7524 kind:function(arm,size=0x9c) addr:0x020c7524
-func_ov030_020c75c0 kind:function(arm,size=0xa8) addr:0x020c75c0
-func_ov030_020c7668 kind:function(arm,size=0xa4) addr:0x020c7668
-func_ov030_020c770c kind:function(arm,size=0x48) addr:0x020c770c
-func_ov030_020c7754 kind:function(arm,size=0x14) addr:0x020c7754
-func_ov030_020c7768 kind:function(arm,size=0x14) addr:0x020c7768
-func_ov030_020c777c kind:function(arm,size=0x48) addr:0x020c777c
-func_ov030_020c77c4 kind:function(arm,size=0x40) addr:0x020c77c4
-func_ov030_020c7804 kind:function(arm,size=0xe0) addr:0x020c7804
-func_ov030_020c78e4 kind:function(arm,size=0x80) addr:0x020c78e4
-func_ov030_020c7964 kind:function(arm,size=0x30) addr:0x020c7964
-func_ov030_020c7994 kind:function(arm,size=0x3c) addr:0x020c7994
-func_ov030_020c79d0 kind:function(arm,size=0x14) addr:0x020c79d0
-func_ov030_020c79e4 kind:function(arm,size=0x14) addr:0x020c79e4
-func_ov030_020c79f8 kind:function(arm,size=0x48) addr:0x020c79f8
-func_ov030_020c7a40 kind:function(arm,size=0x34) addr:0x020c7a40
-func_ov030_020c7a74 kind:function(arm,size=0x2c) addr:0x020c7a74
-func_ov030_020c7aa0 kind:function(arm,size=0x2c) addr:0x020c7aa0
-func_ov030_020c7acc kind:function(arm,size=0x2c) addr:0x020c7acc
-func_ov030_020c7af8 kind:function(arm,size=0x2c) addr:0x020c7af8
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetMess.c
+//////////////////////////////////////////////////////////////////////
+Fld_GetMess_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c71b0
+Fld_GetMess_Load kind:function(arm,size=0x6c) addr:0x020c724c
+Fld_GetMess_Init kind:function(arm,size=0x10c) addr:0x020c72b8
+Fld_GetMess_Update kind:function(arm,size=0x40) addr:0x020c73c4
+Fld_GetMess_Render kind:function(arm,size=0x68) addr:0x020c7404
+Fld_GetMess_Destroy kind:function(arm,size=0x38) addr:0x020c746c
+Fld_GetMess_RunTask kind:function(arm,size=0x48) addr:0x020c74a4
+Fld_GetMess_CreateTask kind:function(arm,size=0x38) addr:0x020c74ec
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_WhichArrow.c
+//////////////////////////////////////////////////////////////////////
+Fld_WhichArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c7524
+Fld_WhichArrow_Load kind:function(arm,size=0xa8) addr:0x020c75c0
+Fld_WhichArrow_Init kind:function(arm,size=0xa4) addr:0x020c7668
+Fld_WhichArrow_Update kind:function(arm,size=0x48) addr:0x020c770c
+Fld_WhichArrow_Render kind:function(arm,size=0x14) addr:0x020c7754
+Fld_WhichArrow_Destroy kind:function(arm,size=0x14) addr:0x020c7768
+Fld_WhichArrow_RunTask kind:function(arm,size=0x48) addr:0x020c777c
+Fld_WhichArrow_CreateTask kind:function(arm,size=0x40) addr:0x020c77c4
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetBase.c
+//////////////////////////////////////////////////////////////////////
+Fld_GetBase_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7804
+Fld_GetBase_Load kind:function(arm,size=0x80) addr:0x020c78e4
+Fld_GetBase_Init kind:function(arm,size=0x30) addr:0x020c7964
+Fld_GetBase_Update kind:function(arm,size=0x3c) addr:0x020c7994
+Fld_GetBase_Render kind:function(arm,size=0x14) addr:0x020c79d0
+Fld_GetBase_Destroy kind:function(arm,size=0x14) addr:0x020c79e4
+Fld_GetBase_RunTask kind:function(arm,size=0x48) addr:0x020c79f8
+Fld_GetBase_CreateTask kind:function(arm,size=0x34) addr:0x020c7a40
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetItem.c
+//////////////////////////////////////////////////////////////////////
+Fld_GetItem_LoadThreadData kind:function(arm,size=0x2c) addr:0x020c7a74
+Fld_GetItem_LoadFoodData kind:function(arm,size=0x2c) addr:0x020c7aa0
+Fld_GetItem_LoadTreasureData kind:function(arm,size=0x2c) addr:0x020c7acc
+Fld_GetItem_LoadPinData kind:function(arm,size=0x2c) addr:0x020c7af8
 func_ov030_020c7b24 kind:function(arm,size=0x9c) addr:0x020c7b24
 func_ov030_020c7bc0 kind:function(arm,size=0x160) addr:0x020c7bc0
 func_ov030_020c7d20 kind:function(arm,size=0xe0) addr:0x020c7d20
 func_ov030_020c7e00 kind:function(arm,size=0xbc) addr:0x020c7e00
-func_ov030_020c7ebc kind:function(arm,size=0x30) addr:0x020c7ebc
-func_ov030_020c7eec kind:function(arm,size=0x3c) addr:0x020c7eec
-func_ov030_020c7f28 kind:function(arm,size=0x14) addr:0x020c7f28
-func_ov030_020c7f3c kind:function(arm,size=0x14) addr:0x020c7f3c
-func_ov030_020c7f50 kind:function(arm,size=0x48) addr:0x020c7f50
-func_ov030_020c7f98 kind:function(arm,size=0x34) addr:0x020c7f98
+Fld_GetItem_Init kind:function(arm,size=0x30) addr:0x020c7ebc
+Fld_GetItem_Update kind:function(arm,size=0x3c) addr:0x020c7eec
+Fld_GetItem_Render kind:function(arm,size=0x14) addr:0x020c7f28
+Fld_GetItem_Destroy kind:function(arm,size=0x14) addr:0x020c7f3c
+Fld_GetItem_RunTask kind:function(arm,size=0x48) addr:0x020c7f50
+Fld_GetItem_CreateTask kind:function(arm,size=0x34) addr:0x020c7f98
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_Choice.c
+//////////////////////////////////////////////////////////////////////
 func_ov030_020c7fcc kind:function(arm,size=0x4) addr:0x020c7fcc
 func_ov030_020c7fd0 kind:function(arm,size=0x94) addr:0x020c7fd0
 func_ov030_020c8064 kind:function(arm,size=0x68) addr:0x020c8064
 func_ov030_020c80cc kind:function(arm,size=0x100) addr:0x020c80cc
-func_ov030_020c81cc kind:function(arm,size=0x50) addr:0x020c81cc
-func_ov030_020c821c kind:function(arm,size=0x20) addr:0x020c821c
-func_ov030_020c823c kind:function(arm,size=0x8) addr:0x020c823c
-func_ov030_020c8244 kind:function(arm,size=0x7c) addr:0x020c8244
-func_ov030_020c82c0 kind:function(arm,size=0x48) addr:0x020c82c0
-func_ov030_020c8308 kind:function(arm,size=0x38) addr:0x020c8308
+Fld_Choice_Init kind:function(arm,size=0x50) addr:0x020c81cc
+Fld_Choice_Update kind:function(arm,size=0x20) addr:0x020c821c
+Fld_Choice_Render kind:function(arm,size=0x8) addr:0x020c823c
+Fld_Choice_Destroy kind:function(arm,size=0x7c) addr:0x020c8244
+Fld_Choice_RunTask kind:function(arm,size=0x48) addr:0x020c82c0
+Fld_Choice_CreateTask kind:function(arm,size=0x38) addr:0x020c8308
 func_ov030_020c8340 kind:function(arm,size=0xa8) addr:0x020c8340
 func_ov030_020c83e8 kind:function(arm,size=0xc) addr:0x020c83e8
-func_ov030_020c83f4 kind:function(arm,size=0xac) addr:0x020c83f4
-func_ov030_020c84a0 kind:function(arm,size=0x74) addr:0x020c84a0
-func_ov030_020c8514 kind:function(arm,size=0x8) addr:0x020c8514
-func_ov030_020c851c kind:function(arm,size=0x8) addr:0x020c851c
-func_ov030_020c8524 kind:function(arm,size=0x48) addr:0x020c8524
-func_ov030_020c856c kind:function(arm,size=0x38) addr:0x020c856c
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_UGFade.c
+//////////////////////////////////////////////////////////////////////
+Fld_UGFade_Init kind:function(arm,size=0xac) addr:0x020c83f4
+Fld_UGFade_Update kind:function(arm,size=0x74) addr:0x020c84a0
+Fld_UGFade_Render kind:function(arm,size=0x8) addr:0x020c8514
+Fld_UGFade_Destroy kind:function(arm,size=0x8) addr:0x020c851c
+Fld_UGFade_RunTask kind:function(arm,size=0x48) addr:0x020c8524
+Fld_UGFade_CreateTask kind:function(arm,size=0x38) addr:0x020c856c
+
+
 func_ov030_020c85a4 kind:function(arm,size=0xe4) addr:0x020c85a4
 func_ov030_020c8688 kind:function(arm,size=0xe0) addr:0x020c8688
 func_ov030_020c8768 kind:function(arm,size=0x2c) addr:0x020c8768
@@ -2472,14 +2508,21 @@ data_ov030_020e7140 kind:data(any) addr:0x020e7140
 data_ov030_020e716c kind:data(any) addr:0x020e716c
 data_ov030_020e7178 kind:data(any) addr:0x020e7178
 data_ov030_020e7188 kind:data(any) addr:0x020e7188
-data_ov030_020e71b4 kind:data(any) addr:0x020e71b4
-data_ov030_020e71b8 kind:data(any) addr:0x020e71b8 ambiguous
-data_ov030_020e71c0 kind:data(any) addr:0x020e71c0
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventStringPlate.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_TalkEventStringPlate kind:data(any) addr:0x020e71b4
+@1135 kind:data(any) addr:0x020e71c0
 data_ov030_020e71d0 kind:data(any) addr:0x020e71d0
-data_ov030_020e71d9 kind:data(any) addr:0x020e71d9 ambiguous
-data_ov030_020e71e0 kind:data(any) addr:0x020e71e0 ambiguous
-data_ov030_020e71fc kind:data(any) addr:0x020e71fc
-data_ov030_020e7208 kind:data(any) addr:0x020e7208
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventKeywordMenu.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc
+@259 kind:data(any) addr:0x020e7208 local
+
+
 data_ov030_020e7218 kind:data(any) addr:0x020e7218
 data_ov030_020e7224 kind:data(any) addr:0x020e7224
 data_ov030_020e7234 kind:data(any) addr:0x020e7234
@@ -3498,28 +3541,49 @@ data_ov030_020ec860 kind:data(any) addr:0x020ec860
 data_ov030_020ec88c kind:data(any) addr:0x020ec88c
 data_ov030_020ec898 kind:data(any) addr:0x020ec898
 data_ov030_020ec8a8 kind:data(any) addr:0x020ec8a8
-data_ov030_020ec8d4 kind:data(any) addr:0x020ec8d4
-data_ov030_020ec8e0 kind:data(any) addr:0x020ec8e0
-data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0
-data_ov030_020ec91c kind:data(any) addr:0x020ec91c
-data_ov030_020ec928 kind:data(any) addr:0x020ec928
-data_ov030_020ec938 kind:data(any) addr:0x020ec938
-data_ov030_020ec964 kind:data(any) addr:0x020ec964
-data_ov030_020ec970 kind:data(any) addr:0x020ec970
-data_ov030_020ec980 kind:data(any) addr:0x020ec980
-data_ov030_020ec9ac kind:data(any) addr:0x020ec9ac
-data_ov030_020ec9b8 kind:data(any) addr:0x020ec9b8
-data_ov030_020ec9c8 kind:data(any) addr:0x020ec9c8
-data_ov030_020ec9f4 kind:data(any) addr:0x020ec9f4
-data_ov030_020ec9fc kind:data(any) addr:0x020ec9fc
-data_ov030_020eca04 kind:data(any) addr:0x020eca04
-data_ov030_020eca0c kind:data(any) addr:0x020eca0c
-data_ov030_020eca14 kind:data(any) addr:0x020eca14
-data_ov030_020eca1c kind:data(any) addr:0x020eca1c
-data_ov030_020eca2c kind:data(any) addr:0x020eca2c
-data_ov030_020eca38 kind:data(any) addr:0x020eca38
-data_ov030_020eca48 kind:data(any) addr:0x020eca48
-data_ov030_020eca54 kind:data(any) addr:0x020eca54
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetMess.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_GetMess kind:data(any) addr:0x020ec8d4 local
+@1070 kind:data(any) addr:0x020ec8e0 local
+data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_WhichArrow.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_WhichArrow kind:data(any) addr:0x020ec91c local
+@1090 kind:data(any) addr:0x020ec928 local
+data_ov030_020ec938 kind:data(any) addr:0x020ec938 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetBase.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_GetBase kind:data(any) addr:0x020ec964 local
+@1052 kind:data(any) addr:0x020ec970 local
+data_ov030_020ec980 kind:data(any) addr:0x020ec980 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetItem.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_GetItem kind:data(any) addr:0x020ec9ac local
+@1296 kind:data(any) addr:0x020ec9b8 local
+data_ov030_020ec9c8 kind:data(any) addr:0x020ec9c8 local
+data_ov030_020ec9f4 kind:data(any) addr:0x020ec9f4 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_Choice.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_Choice kind:data(any) addr:0x020eca2c local
+@267 kind:data(any) addr:0x020eca38 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_UGFade.c
+//////////////////////////////////////////////////////////////////////
+Tsk_Fld_UGFade kind:data(any) addr:0x020eca48 local
+@690 kind:data(any) addr:0x020eca54 local
+
+
 data_ov030_020eca64 kind:data(any) addr:0x020eca64
 data_ov030_020eca6c kind:data(any) addr:0x020eca6c
 data_ov030_020eca78 kind:data(any) addr:0x020eca78
@@ -6417,8 +6481,19 @@ data_ov030_02107558 kind:data(any) addr:0x02107558
 data_ov030_02107560 kind:data(any) addr:0x02107560
 data_ov030_02107568 kind:data(any) addr:0x02107568
 data_ov030_02107580 kind:data(any) addr:0x02107580
-data_ov030_02107598 kind:data(any) addr:0x02107598
-data_ov030_021075b8 kind:data(any) addr:0x021075b8
+
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventStringPlate.c
+//////////////////////////////////////////////////////////////////////
+@1066 kind:data(any) addr:0x02107598 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_TalkEventKeywordMenu.c
+//////////////////////////////////////////////////////////////////////
+@145 kind:data(any) addr:0x021075b8 local
+
+
 data_ov030_021075d8 kind:data(any) addr:0x021075d8
 data_ov030_021075f0 kind:data(any) addr:0x021075f0
 data_ov030_02107608 kind:data(any) addr:0x02107608
@@ -6491,19 +6566,45 @@ data_ov030_02108464 kind:data(any) addr:0x02108464
 data_ov030_02108474 kind:data(any) addr:0x02108474
 data_ov030_02108490 kind:data(any) addr:0x02108490
 data_ov030_021084a4 kind:data(any) addr:0x021084a4
-data_ov030_021084b8 kind:data(any) addr:0x021084b8
-data_ov030_021084c8 kind:data(any) addr:0x021084c8
-data_ov030_021084dc kind:data(any) addr:0x021084dc
-data_ov030_021084ec kind:data(any) addr:0x021084ec
-data_ov030_021084fc kind:data(any) addr:0x021084fc
-data_ov030_02108510 kind:data(any) addr:0x02108510
-data_ov030_02108528 kind:data(any) addr:0x02108528
-data_ov030_02108540 kind:data(any) addr:0x02108540
-data_ov030_02108558 kind:data(any) addr:0x02108558
-data_ov030_02108570 kind:data(any) addr:0x02108570
-data_ov030_0210858c kind:data(any) addr:0x0210858c
-data_ov030_021085a8 kind:data(any) addr:0x021085a8
-data_ov030_021085b8 kind:data(any) addr:0x021085b8
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetMess.c
+//////////////////////////////////////////////////////////////////////
+@997 kind:data(any) addr:0x021084b8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_WhichArrow.c
+//////////////////////////////////////////////////////////////////////
+@1011 kind:data(any) addr:0x021084c8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetBase.c
+//////////////////////////////////////////////////////////////////////
+@998 kind:data(any) addr:0x021084dc local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_GetItem.c
+//////////////////////////////////////////////////////////////////////
+@1145 kind:data(any) addr:0x021084ec local
+@1150 kind:data(any) addr:0x021084fc local
+@1147 kind:data(any) addr:0x02108510 local
+@1148 kind:data(any) addr:0x02108528 local
+@1146 kind:data(any) addr:0x02108540 local
+@1152 kind:data(any) addr:0x02108558 local
+@1149 kind:data(any) addr:0x02108570 local
+@1151 kind:data(any) addr:0x0210858c local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_Choice.c
+//////////////////////////////////////////////////////////////////////
+@179 kind:data(any) addr:0x021085a8 local
+
+//////////////////////////////////////////////////////////////////////
+// src/Field/Fld_UGFade.c
+//////////////////////////////////////////////////////////////////////
+@644 kind:data(any) addr:0x021085b8 local
+
+
 data_ov030_021085c8 kind:data(any) addr:0x021085c8
 data_ov030_021085dc kind:data(any) addr:0x021085dc
 data_ov030_021085f0 kind:data(any) addr:0x021085f0

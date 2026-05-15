@@ -6,6 +6,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Field/FieldTasks.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
@@ -87,7 +88,6 @@ extern void func_ov030_020c2de8(void);
 extern void func_ov030_020c2e28(void);
 extern void func_ov030_020c2fc0(s32);
 extern s32  func_ov030_020c3654(TaskPool*, s32, s32, s16);
-extern s32  func_ov030_020c3d0c(TaskPool*, s32, s16, s16, u16, s16, s16);
 extern s32  func_ov030_020c420c(TaskPool*, Task*);
 extern s32  func_ov030_020c47d0(TaskPool*, s32, s32, s32);
 extern s32  func_ov030_020c4a48(TaskPool*, s32);
@@ -95,13 +95,7 @@ extern void func_ov030_020c6150(s32*);
 extern void func_ov030_020c6300(void);
 extern s32  func_ov030_020c6e5c(TaskPool*, s32, s32);
 extern s32  func_ov030_020c717c(TaskPool*, s32, s32);
-extern s32  func_ov030_020c74ec(TaskPool*, s32, s16, s16);
-extern s32  func_ov030_020c77c4(TaskPool*, s32, s16, s16, s16);
-extern s32  func_ov030_020c7a40(TaskPool*, s32, s32);
-extern s32  func_ov030_020c7f98(TaskPool*, s32, u16);
-extern s32  func_ov030_020c8308(TaskPool*, s32, s16, u16*);
 extern s32  func_ov030_020c83e8(TaskPool*, Task*);
-extern s32  func_ov030_020c856c(TaskPool*, u16, s32, s32*);
 
 extern s32 func_ov031_0210c060(u16);
 
@@ -297,14 +291,14 @@ void func_ov030_020a6c38(ProgressObject* progress, s32 arg1) {
 }
 
 void func_ov030_020a6c4c(ProgressObject* progress, s32 arg1, s32 arg2, s32 arg3) {
-    for (s32 var_r8 = arg2; var_r8 < arg3; var_r8++) {
-        if (progress->unk_21C48[var_r8] != -1) {
+    for (s32 i = arg2; i < arg3; i++) {
+        if (progress->unk_21C48[i] != -1) {
             if (func_ov030_020b0454() != 0) {
-                EasyTask_DeleteTask(&progress->taskPool, progress->unk_21C48[var_r8]);
-                progress->unk_21C48[var_r8] = -1;
+                EasyTask_DeleteTask(&progress->taskPool, progress->unk_21C48[i]);
+                progress->unk_21C48[i] = -1;
             } else {
-                func_ov030_020b4060(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[var_r8]), arg1);
-                func_ov030_020b400c(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[var_r8]), 2);
+                func_ov030_020b4060(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[i]), arg1);
+                func_ov030_020b400c(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[i]), 2);
             }
         }
     }
@@ -324,10 +318,10 @@ void func_ov030_020a6d20(ProgressObject* progress, s32 arg1) {
 
 // Nonmatching
 s32 func_ov030_020a6d34(ProgressObject* progress, s32 arg1, s32 arg2) {
-    for (s32 var_r1 = arg1; var_r1 < arg2; var_r1++) {
-        if (progress->unk_21C48[var_r1] == -1) {
-            progress->unk_21CD4 = var_r1;
-            return progress->unk_21C48[var_r1];
+    for (s32 i = arg1; i < arg2; i++) {
+        if (progress->unk_21C48[i] == -1) {
+            progress->unk_21CD4 = i;
+            return progress->unk_21C48[i];
         }
     }
     return 0;
@@ -402,7 +396,8 @@ void func_ov030_020a6f90(ProgressObject* progress) {
 }
 
 s32 func_ov030_020a701c(ProgressObject* progress) {
-    s32 temp_r0 = func_ov030_020c420c(&progress->taskPool, EasyTask_GetTaskById(&progress->taskPool, progress->unk_216B8));
+    s32 temp_r0 =
+        func_ov030_020c420c(&progress->taskPool, EasyTask_GetTaskById(&progress->taskPool, progress->taskId_KeywordMenu));
 
     if (temp_r0 >= 0) {
         if (temp_r0 != progress->unk_21D2A) {
@@ -415,8 +410,8 @@ s32 func_ov030_020a701c(ProgressObject* progress) {
 
             s32 temp_r4                   = func_ov030_020b3cc8(task);
             data_02071cf0.unk_20.unk_24C4 = progress->unk_21D2A;
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_216B8);
-            progress->unk_216B8 = -1;
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_KeywordMenu);
+            progress->taskId_KeywordMenu = -1;
             g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~8;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer0 = 0;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer1 = 0;
@@ -445,7 +440,7 @@ s32 func_ov030_020a71a8(ProgressObject* progress) {
         }
         return 0;
     }
-    if (progress->unk_216B8 == -1) {
+    if (progress->taskId_KeywordMenu == -1) {
         return 1;
     }
     return func_ov030_020a701c(progress);
@@ -522,10 +517,11 @@ void func_ov030_020a737c(ProgressObject* progress) {
 
 void func_ov030_020a7468(ProgressObject* progress) {
     EasyFade_FadeMainDisplay(FADER_INSTANT, 0, progress->unk_21D12);
-    if (progress->unk_216DC == -1) {
+    if (progress->taskId_UGFade == -1) {
         g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff0 = 0;
         g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff1 = 0x10;
-        progress->unk_216DC = func_ov030_020c856c(&progress->taskPool, (u16)progress->unk_21D12, 0, &progress->unk_216DC);
+        progress->taskId_UGFade =
+            Fld_UGFade_CreateTask(&progress->taskPool, (u16)progress->unk_21D12, 0, &progress->taskId_UGFade);
     }
     if (progress->unk_21A5C != 2) {
         if (progress->targetBrightness != g_DisplaySettings.controls[DISPLAY_SUB].brightness) {
@@ -580,13 +576,13 @@ s32 func_ov030_020a75d8(ProgressObject* progress, s16 arg1) {
             func_ov030_0208434c(progress, 3, arg1);
             if (progress->unk_21AC4 != 0) {
                 EasyFade_FadeMainDisplay(FADER_INSTANT, 0, progress->unk_21D12);
-                if (progress->unk_216DC == -1) {
+                if (progress->taskId_UGFade == -1) {
                     if (arg1 == data_02071cf0.unk_20.unk_2458) {
-                        progress->unk_216DC =
-                            func_ov030_020c856c(&progress->taskPool, (u16)progress->unk_21D12, 0, &progress->unk_216DC);
+                        progress->taskId_UGFade =
+                            Fld_UGFade_CreateTask(&progress->taskPool, (u16)progress->unk_21D12, 0, &progress->taskId_UGFade);
                     } else {
-                        progress->unk_216DC =
-                            func_ov030_020c856c(&progress->taskPool, (u16)progress->unk_21D12, 1, &progress->unk_216DC);
+                        progress->taskId_UGFade =
+                            Fld_UGFade_CreateTask(&progress->taskPool, (u16)progress->unk_21D12, 1, &progress->taskId_UGFade);
                     }
                 }
             }
@@ -1173,32 +1169,32 @@ void func_ov030_020a7b50(ProgressObject* progress) {
                 progress->unk_21704 = func_ov030_020c717c(&progress->taskPool, progress->unk_21614, 24016);
             }
 
-            progress->unk_21708 =
-                func_ov030_020c74ec(&progress->taskPool, progress->unk_21614, progress->unk_21728[progress->unk_21758],
-                                    progress->unk_21738[progress->unk_21758]);
-            progress->unk_2170C =
-                func_ov030_020c3d0c(&progress->taskPool, progress->unk_21614, 0x88, 0x60,
-                                    progress->unk_21748[progress->unk_21758], progress->unk_21718[progress->unk_21758], 0);
+            progress->taskId_Mess =
+                Fld_GetMess_CreateTask(&progress->taskPool, progress->unk_21614, progress->unk_21728[progress->unk_21758],
+                                       progress->unk_21738[progress->unk_21758]);
+            progress->taskId_Plate = Fld_TalkEventStringPlate_CreateTask(&progress->taskPool, progress->unk_21614, 0x88, 0x60,
+                                                                         progress->unk_21748[progress->unk_21758],
+                                                                         progress->unk_21718[progress->unk_21758], 0);
 
             if (progress->unk_21748[progress->unk_21758] == 0) {
-                progress->unk_21710 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 4, 1);
-                progress->unk_21714 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 5, 1);
+                progress->taskId_Item  = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 4, 1);
+                progress->taskId_Arrow = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 5, 1);
             } else if (progress->unk_21748[progress->unk_21758] == 1) {
-                progress->unk_21710 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 7, 1);
-                progress->unk_21714 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 8, 1);
+                progress->taskId_Item  = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 7, 1);
+                progress->taskId_Arrow = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 8, 1);
             } else {
-                progress->unk_21710 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 0xA, 1);
-                progress->unk_21714 = func_ov030_020c77c4(&progress->taskPool, progress->unk_21614, 0x60, 0xB, 1);
+                progress->taskId_Item  = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 0xA, 1);
+                progress->taskId_Arrow = Fld_WhichArrow_CreateTask(&progress->taskPool, progress->unk_21614, 0x60, 0xB, 1);
             }
             SndMgr_StartPlayingSE(SEIDX_SE_GET_KEYWORD);
             Progress_AdvanceEventScript(progress);
             return;
         case 0x44:
             EasyTask_DeleteTask(&progress->taskPool, progress->unk_21704);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21708);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_2170C);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21710);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21714);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Mess);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Plate);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Item);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Arrow);
             Progress_AdvanceEventScript(progress);
             return;
 
@@ -1208,21 +1204,21 @@ void func_ov030_020a7b50(ProgressObject* progress) {
 
             progress->unk_2176A--;
 
-            s32 temp_r4_2       = func_ov030_020a775c(progress->unk_2175A[progress->unk_2176A], &sp22, &sp20);
-            progress->unk_21704 = func_ov030_020c717c(&progress->taskPool, progress->unk_21614, sp22);
-            progress->unk_21708 = func_ov030_020c74ec(&progress->taskPool, progress->unk_21614, sp20, 0xFFFF);
-            progress->unk_2170C = func_ov030_020c7a40(&progress->taskPool, progress->unk_21614, temp_r4_2);
-            progress->unk_21710 =
-                func_ov030_020c7f98(&progress->taskPool, progress->unk_21614, progress->unk_2175A[progress->unk_2176A]);
+            s32 temp_r4_2          = func_ov030_020a775c(progress->unk_2175A[progress->unk_2176A], &sp22, &sp20);
+            progress->unk_21704    = func_ov030_020c717c(&progress->taskPool, progress->unk_21614, sp22);
+            progress->taskId_Mess  = Fld_GetMess_CreateTask(&progress->taskPool, progress->unk_21614, sp20, 0xFFFF);
+            progress->taskId_Plate = Fld_GetBase_CreateTask(&progress->taskPool, progress->unk_21614, temp_r4_2);
+            progress->taskId_Item =
+                Fld_GetItem_CreateTask(&progress->taskPool, progress->unk_21614, progress->unk_2175A[progress->unk_2176A]);
             SndMgr_StartPlayingSE(SEIDX_SE_GET_ITEM);
             Progress_AdvanceEventScript(progress);
         } break;
 
         case 0x46:
             EasyTask_DeleteTask(&progress->taskPool, progress->unk_21704);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21708);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_2170C);
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21710);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Mess);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Plate);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Item);
             Progress_AdvanceEventScript(progress);
             return;
         case 0x47:
@@ -1582,16 +1578,16 @@ void func_ov030_020a9e48(ProgressObject* progress) {
     progress->unk_216C4 = func_ov030_020c3654(&progress->taskPool, progress->unk_21614, temp_r0, 0x78);
     progress->unk_21D2A = -1;
     func_ov030_020a6d20(progress, 0x44);
-    if (progress->unk_216B8 != -1) {
-        EasyTask_DeleteTask(&progress->taskPool, progress->unk_216B8);
-        progress->unk_216B8 = -1;
+    if (progress->taskId_KeywordMenu != -1) {
+        EasyTask_DeleteTask(&progress->taskPool, progress->taskId_KeywordMenu);
+        progress->taskId_KeywordMenu = -1;
     }
     func_ov030_020a7890(progress);
 }
 
 // Nonmatching
 s32 func_ov030_020a9f54(ProgressObject* progress, s32 (*callback)(void*), s32 arg2) {
-    if (progress->unk_21780 == -1) {
+    if (progress->taskId_Choice == -1) {
         func_ov030_020a6a1c(progress);
 
         u16 count;
@@ -1607,14 +1603,15 @@ s32 func_ov030_020a9f54(ProgressObject* progress, s32 (*callback)(void*), s32 ar
         }
 
         progress->unk_21784 = func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614, 0x80, 0x60, arg2, 2, 0, 0, 0, 0);
-        progress->unk_21780 = func_ov030_020c8308(&progress->taskPool, progress->unk_21614, (s16)count, progress->unk_2176C);
+        progress->taskId_Choice =
+            Fld_Choice_CreateTask(&progress->taskPool, progress->unk_21614, (s16)count, progress->unk_2176C);
     } else {
         progress->unk_2177C =
-            func_ov030_020c83e8(&progress->taskPool, EasyTask_GetTaskById(&progress->taskPool, progress->unk_21780));
+            func_ov030_020c83e8(&progress->taskPool, EasyTask_GetTaskById(&progress->taskPool, progress->taskId_Choice));
         if (progress->unk_2177C >= 0) {
-            EasyTask_DeleteTask(&progress->taskPool, progress->unk_21780);
+            EasyTask_DeleteTask(&progress->taskPool, progress->taskId_Choice);
             EasyTask_DeleteTask(&progress->taskPool, progress->unk_21784);
-            progress->unk_21780 = -1;
+            progress->taskId_Choice = -1;
             callback(progress);
         }
     }
@@ -1652,7 +1649,8 @@ s32 func_ov030_020aa0c8(ProgressObject* progress, s32 arg1, s16 arg2, s16 arg3, 
                 temp_r4 = func_ov030_020b3cc8(temp_r0);
                 func_ov030_020b400c(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[progress->unk_21CD4]), 2);
                 if ((progress->unk_21D08 != 0) && (func_ov030_020b0418() != 0)) {
-                    progress->unk_216B8 = func_ov030_020c41d8(&progress->taskPool, progress->unk_21614, temp_r4);
+                    progress->taskId_KeywordMenu =
+                        Fld_TalkEventKeywordMenu_CreateTask(&progress->taskPool, progress->unk_21614, temp_r4);
                 }
                 func_ov030_02083940(progress, 1);
                 func_ov030_020a7810(progress);

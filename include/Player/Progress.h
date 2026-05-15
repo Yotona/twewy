@@ -15,7 +15,7 @@ typedef struct ProgressObject {
     /* 0x21634 */ char     unk_21634[0x216B0 - 0x21634];
     /* 0x216B0 */ s32      unk_216B0;
     /* 0x216B4 */ s32      unk_216B4;
-    /* 0x216B8 */ s32      unk_216B8;
+    /* 0x216B8 */ s32      taskId_KeywordMenu;
     /* 0x216BC */ s32      unk_216BC;
     /* 0x216C0 */ u32      unk_216C0;
     /* 0x216C4 */ s32      unk_216C4;
@@ -24,13 +24,13 @@ typedef struct ProgressObject {
     /* 0x216D0 */ char     unk_216D0[0x216D4 - 0x216D0];
     /* 0x216D4 */ s32      unk_216D4;
     /* 0x216D8 */ char     unk_216D8[0x216DC - 0x216D8];
-    /* 0x216DC */ s32      unk_216DC;
+    /* 0x216DC */ s32      taskId_UGFade;
     /* 0x216E0 */ char     unk_216E0[0x21704 - 0x216E0];
     /* 0x21704 */ s32      unk_21704;
-    /* 0x21708 */ s32      unk_21708;
-    /* 0x2170C */ s32      unk_2170C;
-    /* 0x21710 */ s32      unk_21710;
-    /* 0x21714 */ s32      unk_21714;
+    /* 0x21708 */ s32      taskId_Mess;  // Task ID for message
+    /* 0x2170C */ s32      taskId_Plate; // Task ID for string plate
+    /* 0x21710 */ s32      taskId_Item;  // Task ID for items
+    /* 0x21714 */ s32      taskId_Arrow; // Task ID for which arrow
     /* 0x21718 */ s16*     unk_21718;
     /* 0x2171C */ char     unk_2171C[0x21728 - 0x2171C];
     /* 0x21728 */ s16*     unk_21728;
@@ -47,7 +47,7 @@ typedef struct ProgressObject {
     /* 0x21770 */ char     unk_21770[0x2177C - 0x21770];
     /* 0x2177C */ s16      unk_2177C;
     /* 0x2177E */ char     unk_2177E[0x21780 - 0x2177E];
-    /* 0x21780 */ s32      unk_21780;
+    /* 0x21780 */ u32      taskId_Choice;
     /* 0x21784 */ s32      unk_21784;
     /* 0x21788 */ u32      unk_21788[2];
     /* 0x21790 */ char     unk_21790[0x21918 - 0x21790];
