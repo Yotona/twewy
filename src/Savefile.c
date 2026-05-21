@@ -1,547 +1,450 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
+#include "NitroSDK/mi/cpumem.h"
 #include "Save.h"
+#include "Save/FriendData.h"
+#include "Save/MainData.h"
+#include "types.h"
 
 extern void func_020389c0(u16);
 extern s64  func_0203a444(void);
 extern s32  func_02042330(void);
 extern void func_0204237c(u16);
 extern void func_0204238c(u16);
-extern void func_0204285c(u32, u16, u16, s32, s32, s32, s32, s32, s32);
 extern u8   func_02042944(void);
 extern void func_0204296c(s32);
 extern void func_02042aa4(void);
 extern s32  func_02042ab0(void);
 
-void func_02025b1c(void);
-s32  func_020258bc(u8*, const u8*, s32, s32);
-u16  func_0202593c(u16*, s16);
+void        Savefile_InitNewGameDefaults(void);
+static BOOL SaveIO_HasValidFooter(u8* buffer, const u8* magic, s32 magicLength, s32 arg3);
+static u16  SaveIO_GetChecksum16(void*, s16);
 
 extern s32 data_0205c23c;
 extern u16 data_0205c5be[];
 
-const char data_0205c96c[27] = "SubarAsikiKonosEkai070613b";
+/**
+ * Magic string used to validate the save file footer.
+ */
+const u8 SaveFooterSignature[27] = "SubarAsikiKonosEkai070613b";
 
-u16* func_020246d4(s32 arg0) {
-    u16* backupData = Mem_AllocHeapTail(&gMainHeap, (arg0 + 7) & ~7);
+/**
+ * @param size Size of the buffer to allocate, in bytes.
+ * @returns Pointer to allocated temporary backup data buffer, aligned to 8 bytes.
+ */
+static void* SaveIO_AllocTempAlignedBuffer(s32 size) {
+    void* backupData = Mem_AllocHeapTail(&gMainHeap, (size + 7) & ~7);
     Mem_SetSequence(&gMainHeap, backupData, "BackUpData_Tmp");
     return backupData;
 }
 
-void func_0202470c(u16* arg0) {
-    Mem_Free(&gMainHeap, arg0);
+/**
+ * @param buffer Pointer to the temporary backup data buffer to free.
+ */
+static void SaveIO_FreeTempBuffer(void* buffer) {
+    Mem_Free(&gMainHeap, buffer);
 }
 
-s32 func_02024724(u16 arg0) {
-    s32 var_r5;
+static s32 Savefile_ValidMainSlotAtOffset(u16 offset) {
+    s32 result;
 
-    u16* temp_r0 = func_020246d4(0x3444);
+    MainSaveImage* image = SaveIO_AllocTempAlignedBuffer(sizeof(MainSaveImage));
 
-    func_0204285c(arg0, temp_r0, 0x3444, 0, 0, 1, 6, 1, 0);
+    func_0204285c(offset, image, sizeof(MainSaveImage), 0, 0, 1, 6, 1, 0);
     func_02042aa4();
     func_02042330();
-    if (func_020258bc(temp_r0 + 0x3420 / 2, data_0205c96c, 0x1B, 0x3420) != 0) {
-        if (func_0202593c(temp_r0, 0x3444) != 0) {
-            var_r5 = 8;
+    if (SaveIO_HasValidFooter(image->footer.magic, SaveFooterSignature, sizeof(SaveFooterSignature), sizeof(MainData))) {
+        if (SaveIO_GetChecksum16(image, sizeof(MainSaveImage)) != 0) {
+            result = 8;
         } else {
-            var_r5                        = 0;
-            data_02071cf0.unk_20.unk_1AB6 = temp_r0[0x1AB6 / 2];
+            result                     = 0;
+            gSaveState.unk_20.unk_1AB6 = image->mainData.unk_1AB6;
         }
     } else {
-        var_r5 = 1;
+        result = 1;
     }
-    Mem_Free(&gMainHeap, temp_r0);
-    return var_r5;
+    Mem_Free(&gMainHeap, image);
+    return result;
 }
 
-s32 func_020247f4(void) {
-    s32 var_r4;
+s32 Savefile_ValidateMainSlots(void) {
+    s32 result;
 
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
         OS_WaitForever();
     }
-    func_0204237c(data_02071cf0.lockID);
+    func_0204237c(gSaveState.lockID);
 
     func_0204296c(0x1001);
     if (func_02042330() != 0) {
-        var_r4 = 2;
+        result = 2;
     } else if ((func_02042944() & 0xFF) == 1) {
-        s32 temp_r0_2 = func_02024724(0);
-        if (temp_r0_2 != 0) {
+        s32 slot0Status = Savefile_ValidMainSlotAtOffset(0);
+        if (slot0Status != 0) {
 
-            s32 temp_r0_3 = func_02024724(0x5470);
-            if (temp_r0_3 != 0) {
-                if ((temp_r0_2 == 1) && (temp_r0_3 == 1)) {
-                    var_r4 = 1;
-                } else if ((temp_r0_2 == 2) || (temp_r0_3 == 2)) {
-                    var_r4 = 2;
+            s32 slot1Status = Savefile_ValidMainSlotAtOffset(0x5470);
+            if (slot1Status != 0) {
+                if ((slot0Status == 1) && (slot1Status == 1)) {
+                    result = 1;
+                } else if ((slot0Status == 2) || (slot1Status == 2)) {
+                    result = 2;
                 } else {
-                    var_r4 = 8;
+                    result = 8;
                 }
             } else {
-                var_r4 = 0;
+                result = 0;
             }
         } else {
-            var_r4 = 0;
+            result = 0;
         }
     } else {
-        var_r4 = 2;
+        result = 2;
     }
 
-    func_0204238c(data_02071cf0.lockID);
-    func_020389c0(data_02071cf0.lockID);
-    return var_r4;
+    func_0204238c(gSaveState.lockID);
+    func_020389c0(gSaveState.lockID);
+    return result;
 }
 
-s32 func_020248e4(s32 arg0) {
-    s32  var_r5;
-    u16* temp_r0;
+s32 Savefile_ValidateFriendSlotAtOffset(s32 arg0) {
+    FriendSaveImage* friendImage = SaveIO_AllocTempAlignedBuffer(sizeof(FriendSaveImage));
 
-    temp_r0 = func_020246d4(0x202C);
-    func_0204285c(arg0, temp_r0, 0x202C, 0, 1, 6, 1, 0, 0);
+    func_0204285c(arg0, friendImage, sizeof(FriendSaveImage), 0, 0, 1, 6, 1, 0);
     func_02042aa4();
     func_02042330();
-    if (func_020258bc(temp_r0 + 0x2008 / 2, data_0205c96c, 0x1B, 0x2008) != 0) {
-        if (func_0202593c(temp_r0, 0x202C) == 0) {
-            var_r5 = 0;
+    s32 result;
+    if (SaveIO_HasValidFooter(friendImage->footer.magic, SaveFooterSignature, sizeof(SaveFooterSignature),
+                              sizeof(GlobalFriendData)))
+    {
+        if (SaveIO_GetChecksum16(friendImage, sizeof(FriendSaveImage)) == 0) {
+            result = 0;
         } else {
-            var_r5 = 8;
+            result = 8;
         }
     } else {
-        var_r5 = 1;
+        result = 1;
     }
-    Mem_Free(&gMainHeap, temp_r0);
-    return var_r5;
+    Mem_Free(&gMainHeap, friendImage);
+    return result;
 }
 
-s32 func_0202499c(void) {
-    s32 var_r4;
+s32 Savefile_ValidateFriendSlots(void) {
+    s32 result;
 
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
         OS_WaitForever();
     }
-    func_0204237c(data_02071cf0.lockID);
+    func_0204237c(gSaveState.lockID);
 
     func_0204296c(0x1001);
     if (func_02042330() != 0) {
-        var_r4 = 2;
+        result = 2;
     } else if ((func_02042944() & 0xFF) == 1) {
-        s32 temp_r0_2 = func_020248e4(0x3444);
-        if (temp_r0_2 != 0) {
-            s32 temp_r0_3 = func_020248e4(0x88B4);
-            if (temp_r0_3 != 0) {
-                if ((temp_r0_2 == 1) && (temp_r0_3 == 1)) {
-                    var_r4 = 1;
-                } else if ((temp_r0_2 == 2) || (temp_r0_3 == 2)) {
-                    var_r4 = 2;
+        s32 slot1Status = Savefile_ValidateFriendSlotAtOffset(sizeof(MainSaveImage));
+        if (slot1Status != 0) {
+            s32 slot2Status = Savefile_ValidateFriendSlotAtOffset(0x88B4);
+            if (slot2Status != 0) {
+                if ((slot1Status == 1) && (slot2Status == 1)) {
+                    result = 1;
+                } else if ((slot1Status == 2) || (slot2Status == 2)) {
+                    result = 2;
                 } else {
-                    var_r4 = 8;
+                    result = 8;
                 }
-            } else if (!(data_02071cf0.unk_20.unk_1AB6 & 1)) {
-                var_r4 = 8;
+            } else if (!(gSaveState.unk_20.unk_1AB6 & 1)) {
+                result = 8;
             } else {
-                var_r4 = 0;
+                result = 0;
             }
         } else {
-            var_r4 = 0;
+            result = 0;
         }
     } else {
-        var_r4 = 2;
+        result = 2;
     }
-    func_0204238c(data_02071cf0.lockID);
-    func_020389c0(data_02071cf0.lockID);
-    return var_r4;
+    func_0204238c(gSaveState.lockID);
+    func_020389c0(gSaveState.lockID);
+    return result;
 }
 
-s32 func_02024aa4(void) {
+s32 Savefile_ValidateAllSlots(void) {
     SystemStatusFlags;
     SystemStatusFlags.unk_05 = 0;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 0;
 
-    s32 temp_r0 = func_020247f4() | func_0202499c();
+    s32 validation = 0;
+    validation |= Savefile_ValidateMainSlots();
+    validation |= Savefile_ValidateFriendSlots();
 
     SystemStatusFlags;
     SystemStatusFlags.unk_05 = 1;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 1;
 
-    return temp_r0;
+    return validation;
 }
 
-s32 func_02024b08(s32 arg0) {
-    u16 var_r4 = 0;
-    do {
-        s32 temp_r5 = (var_r4 * 0x98) + arg0;
+static s32 FriendData_InitAllEntriesEmpty(GlobalFriendData* friendData) {
+    u16 i, j;
+    for (i = 0; i < 50; i++) {
+        for (j = 0; j < 6; j++) {
+            friendData->unk_0000[i].unk_00[j] = -1;
+        }
 
-        u16 var_r7 = 0;
-        do {
-            *(u8*)(temp_r5 + var_r7) = 0xFF;
-            var_r7 += 1;
-        } while (var_r7 < 6);
+        friendData->unk_0000[i].unk_6A = -1;
 
-        s32 temp_r8             = (var_r4 * 0x98) + arg0;
-        *(u16*)(temp_r8 + 0x6A) = 0xFFFF;
+        for (j = 0; j < 6; j++) {
+            friendData->unk_0000[i].unk_6C[j] = 0xFFFF;
+        }
 
-        u16 var_r9 = 0;
-        do {
-            *(u16*)(temp_r8 + (var_r9 * 2) + 0x6C) = 0xFFFF;
-            var_r9 += 1;
-        } while (var_r9 < 6);
+        for (j = 0; j < 16; j++) {
+            friendData->unk_0000[i].unk_78[j] = 0xFFFF;
+        }
+    }
 
-        u16 var_r8 = 0;
-        do {
-            *(u16*)(temp_r5 + (var_r8 * 2) + 0x78) = 0xFFFF;
-            var_r8 += 1;
-        } while (var_r8 < 0x10);
-
-        var_r4 += 1;
-    } while (var_r4 < 0x32);
-
-    u16 var_r8_2 = 0;
-    do {
-        u16 var_r2 = 0;
-        do {
-            *(u8*)((var_r8_2 * 0xC) + arg0 + var_r2 + 0x1DB0) = 0xFF;
-            var_r2 += 1;
-        } while (var_r2 < 6);
-        var_r8_2 += 1;
-    } while (var_r8_2 < 0x32);
+    for (i = 0; i < 50; i++) {
+        for (j = 0; j < 6; j++) {
+            friendData->unk_1DB0[i].unk_0[j] = 0xFF;
+        }
+    }
     return 0;
 }
 
-void func_02024c00(void) {
-    func_02025b1c();
-    data_02071cf0.unk_20.unk_1AB6 &= ~1;
+void Savefile_InitNewGameMainData(void) {
+    Savefile_InitNewGameDefaults();
+    gSaveState.unk_20.unk_1AB6 &= ~1;
 }
 
-void func_02024c20(void) {
-    void* globalFriendData = Mem_AllocHeapTail(&gMainHeap, 0x2008);
+static void FriendData_Alloc(void) {
+    GlobalFriendData* globalFriendData = Mem_AllocHeapTail(&gMainHeap, sizeof(GlobalFriendData));
     Mem_SetSequence(&gMainHeap, globalFriendData, "GlobalFriendData");
     MI_CpuFill(0, globalFriendData, Mem_GetBlockSize(&gMainHeap, globalFriendData));
-    data_02071cf0.globalFriendData = globalFriendData;
-    func_02024b08(globalFriendData);
+    gSaveState.globalFriendData = globalFriendData;
+    FriendData_InitAllEntriesEmpty(globalFriendData);
 }
 
-void func_02024c84(void) {
-    Mem_Free(&gMainHeap, data_02071cf0.globalFriendData);
+static void FriendData_Free(void) {
+    Mem_Free(&gMainHeap, gSaveState.globalFriendData);
 }
 
-s32 func_02024ca4(void) {
-    func_02024c00();
-    func_02024c20();
-    data_02071cf0.unk_00++;
+s32 SavePipeline_PrepareNewGame(void) {
+    Savefile_InitNewGameMainData();
+    FriendData_Alloc();
+    gSaveState.savePipelineStepIndex++;
     return 0;
 }
 
-BOOL func_02024ccc(void) {
-    func_02024c84();
+s32 SavePipeline_FreeFriendData(void) {
+    FriendData_Free();
     SystemStatusFlags;
     SystemStatusFlags.unk_05 = TRUE;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = TRUE;
-    return TRUE;
+    return 1;
 }
 
-void func_02024d04(void) {
-    data_02071cf0.unk_00 = 0;
-    data_02071cf0.unk_02 = 0;
-    data_02071cf0.unk_08 = 0;
+// Nonmatching
+void Savefile_ResetIOPipeline(void) {
+    gSaveState.savePipelineStepIndex = 0;
+    gSaveState.saveIoErrorFlags      = 0;
+    gSaveState.unk_08                = 0;
     SystemStatusFlags;
     SystemStatusFlags.unk_05 = 0;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 0;
 }
 
-s32 func_02024d48(void) {
-    s32*  var_r4;
-    s32   temp_lr;
-    s32   temp_r0_2;
-    s32   temp_r1;
-    s32   temp_r2_2;
-    s32   temp_r3_2;
-    s32   var_lr;
-    u16   var_r1;
-    u16   var_r5;
-    u32   temp_r4;
-    u8    temp_r3;
-    void* temp_r0;
-    void* temp_r2;
-    void* var_ip;
+s32 Savefile_BuildMainSaveImage(void) {
+    MI_CpuSet(gSaveState.mainImage, 0, sizeof(MainSaveImage));
 
-    MI_CpuSet((void*)data_02071cf0.unk_10, 0, 0x3444);
-    var_ip = (void*)data_02071cf0.unk_10;
-    var_r1 = 0;
-    do {
-        temp_r3 = data_0205c96c[var_r1];
-        temp_r0 = var_ip + var_r1 + 0x3420;
-        var_r1 += 1;
-        *(u8*)temp_r0 = temp_r3;
-    } while (var_r1 < 0x1B);
-    var_r5 = 0;
-    do {
-        temp_lr = var_r5 * 4;
-        temp_r4 = 0x3420 & (0xF << temp_lr);
-        temp_r2 = var_ip + var_r5 + 0x343B;
-        var_r5 += 1;
-        *(u8*)temp_r2 = (s8)(temp_r4 >> temp_lr);
-    } while (var_r5 < 4);
-    var_r4 = (s32*)&data_02071cf0.unk_20;
-    var_lr = 0x342;
-    do {
-        temp_r0_2 = var_r4[0];
-        temp_r1   = var_r4[1];
-        temp_r2_2 = var_r4[2];
-        temp_r3_2 = var_r4[3];
-        var_r4 += 4;
-        *(s32*)((s32)var_ip + 0)  = temp_r0_2;
-        *(s32*)((s32)var_ip + 4)  = temp_r1;
-        *(s32*)((s32)var_ip + 8)  = temp_r2_2;
-        *(s32*)((s32)var_ip + 12) = temp_r3_2;
-        var_ip                    = (void*)((s32)var_ip + 0x10);
-        var_lr -= 1;
-    } while (var_lr != 0);
+    MainSaveImage* image = gSaveState.mainImage;
+    for (u16 i = 0; i < 27; ++i) {
+        image->footer.magic[i] = SaveFooterSignature[i];
+    }
+
+    for (u16 i = 0; i < 4; ++i) {
+        image->footer.nibbles[i] = (u8)((s8)((u32)(0x3420 & (0xF << (i * 4))) >> (i * 4)));
+    }
+
+    image->mainData = gSaveState.unk_20;
     return 0;
 }
 
-s32 func_02024e04(void* arg0) {
-    s32   temp_r0_2;
-    s32   temp_r1;
-    s32   temp_r2_2;
-    s32   temp_r3_2;
-    s32   temp_r5;
-    s32   var_lr;
-    u16   var_r1;
-    u16   var_r6;
-    u32   temp_lr;
-    u8    temp_r3;
-    void* temp_r0;
-    void* temp_r2;
-    void* var_ip;
-    void* var_r4;
+s32 Savefile_BuildFriendSaveImage(GlobalFriendData* friendData) {
+    MI_CpuSet(gSaveState.friendImage, 0, sizeof(FriendSaveImage));
 
-    var_r4 = arg0;
-    MI_CpuSet((void*)data_02071cf0.unk_14, 0, 0x202C);
-    var_ip = (void*)data_02071cf0.unk_14;
-    var_r1 = 0;
-    do {
-        temp_r3 = data_0205c96c[var_r1];
-        temp_r0 = var_ip + var_r1 + 0x2008;
-        var_r1 += 1;
-        *(u8*)temp_r0 = temp_r3;
-    } while (var_r1 < 0x1B);
-    var_r6 = 0;
-    do {
-        temp_r5 = var_r6 * 4;
-        temp_lr = 0x2008 & (0xF << temp_r5);
-        temp_r2 = var_ip + var_r6 + 0x2023;
-        var_r6 += 1;
-        *(u8*)temp_r2 = (s8)(temp_lr >> temp_r5);
-    } while (var_r6 < 4);
-    var_lr = 0x200;
-    do {
-        temp_r0_2                 = *(s32*)((s32)var_r4 + 0);
-        temp_r1                   = *(s32*)((s32)var_r4 + 4);
-        temp_r2_2                 = *(s32*)((s32)var_r4 + 8);
-        temp_r3_2                 = *(s32*)((s32)var_r4 + 12);
-        var_r4                    = (void*)((s32)var_r4 + 0x10);
-        *(s32*)((s32)var_ip + 0)  = temp_r0_2;
-        *(s32*)((s32)var_ip + 4)  = temp_r1;
-        *(s32*)((s32)var_ip + 8)  = temp_r2_2;
-        *(s32*)((s32)var_ip + 12) = temp_r3_2;
-        var_ip                    = (void*)((s32)var_ip + 0x10);
-        var_lr -= 1;
-    } while (var_lr != 0);
-    *(s32*)((s32)var_ip + 0) = *(s32*)((s32)var_r4 + 0);
-    *(s32*)((s32)var_ip + 4) = *(s32*)((s32)var_r4 + 4);
+    FriendSaveImage* image = gSaveState.friendImage;
+
+    for (u16 i = 0; i < 27; ++i) {
+        image->footer.magic[i] = SaveFooterSignature[i];
+    }
+
+    for (u16 i = 0; i < 4; ++i) {
+        image->footer.nibbles[i] = (u8)((s8)((u32)(0x2008 & (0xF << (i * 4))) >> (i * 4)));
+    }
+
+    image->friendData = *friendData;
+
     return 0;
 }
 
-void func_02024ec0(u16* arg0) {
-    func_0204238c(data_02071cf0.lockID);
-    func_020389c0(data_02071cf0.lockID);
-    func_0202470c(arg0);
+void Savefile_ReleaseLockAndFree(void* buffer) {
+    func_0204238c(gSaveState.lockID);
+    func_020389c0(gSaveState.lockID);
+    SaveIO_FreeTempBuffer(buffer);
 }
 
-s32 func_02024f00(void) {
-    u16* temp_r0 = func_020246d4(0x3444);
+static s32 SavePipeline_PrepareMainImageWrite(void) {
+    MainSaveImage* image = SaveIO_AllocTempAlignedBuffer(sizeof(MainSaveImage));
 
-    data_02071cf0.unk_14 = (s32)temp_r0;
-    func_02024d48();
-    *(u16*)((s32)temp_r0 + 0x3440) = 0;
-    *(u16*)((s32)temp_r0 + 0x3440) = func_0202593c(temp_r0, 0x3444);
+    gSaveState.mainImage = image;
+    Savefile_BuildMainSaveImage();
 
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
+    image->footer.checksum = 0;
+    image->footer.checksum = SaveIO_GetChecksum16(image, sizeof(MainSaveImage));
+
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
         OS_WaitForever();
     }
-    func_0204237c(data_02071cf0.lockID);
+    func_0204237c(gSaveState.lockID);
 
     func_0204296c(0x1001);
 
     if (func_02042330() != 0) {
-        data_02071cf0.unk_02 = 4;
-        func_02024ec0(data_02071cf0.unk_14);
+        gSaveState.saveIoErrorFlags = 4;
+        Savefile_ReleaseLockAndFree(gSaveState.mainImage);
         return 1;
     }
 
-    data_02071cf0.unk_00++;
+    gSaveState.savePipelineStepIndex++;
     return 0;
 }
 
-s32 func_02024fc0(void) {
-    s32 temp_r1;
-    s32 temp_r4;
-    s64 temp_ret;
+s32 SavePipeline_StartPrimaryMainImageWrite(void) {
+    MainSaveImage* image = gSaveState.mainImage;
 
-    temp_r4              = data_02071cf0.unk_10;
-    data_02071cf0.unk_08 = 0;
-    if (func_02042944() == 1) {
-        temp_ret             = func_0203a444();
-        temp_r1              = (s32)(temp_ret >> 32);
-        data_02071cf0.unk_18 = (s32)temp_ret;
-        data_02071cf0.unk_1C = temp_r1;
-        func_0204285c(temp_r4, NULL, 0x3444, 0, 0, 1, 8, 0xA, 2);
-    } else {
-        OS_WaitForever();
-    }
-    data_02071cf0.unk_00 += 1;
-    return 0;
-}
-
-s32 func_02025058(void) {
-    s32 temp_r4;
-
-    temp_r4              = data_02071cf0.unk_10;
-    data_02071cf0.unk_08 = 0;
-    if (func_02042944() == 1) {
-        func_0204285c(temp_r4, 0x5470, 0x3444, 0, 1, 8, 0xA, 2, 0);
-    } else {
-        OS_WaitForever();
-    }
-    data_02071cf0.unk_00 += 1;
-    return 0;
-}
-
-s32 func_020250e8(void) {
-    u16 var_r1;
-
-    if (func_02042ab0() != 0) {
-        if (func_02042330() == 0) {
-            var_r1 = 0;
-        } else {
-            var_r1 = data_02071cf0.unk_02 | 4;
-        }
-        data_02071cf0.unk_02 = var_r1;
-        data_02071cf0.unk_00 += 1;
-    }
-    return 0;
-}
-
-s32 func_02025138(void) {
-    s32 temp_r1;
-    s64 temp_ret;
-    u32 temp_r0;
-
-    func_02024ec0((u16*)data_02071cf0.unk_10);
-    temp_ret             = func_0203a444();
-    temp_r1              = (s32)(temp_ret >> 32);
-    temp_r0              = (s32)temp_ret - data_02071cf0.unk_18;
-    data_02071cf0.unk_18 = temp_r0;
-    data_02071cf0.unk_1C = (s32)((temp_r1 - data_02071cf0.unk_1C) + ((s64)temp_r0 < 0));
-    data_02071cf0.unk_00 += 1;
-    return 0;
-}
-
-s32 func_02025180(void) {
-    func_02024ec0(data_02071cf0.unk_10);
-
-    s64 temp_ret = func_0203a444();
-
-    s32 temp_r1 = temp_ret < data_02071cf0.unk_18;
-
-    data_02071cf0.unk_18 = temp_ret - data_02071cf0.unk_18;
-    data_02071cf0.unk_1C = ((temp_ret >> 32) - data_02071cf0.unk_1C);
-    data_02071cf0.unk_00++;
-    return 0;
-}
-
-void func_020251c8(void* globalFriendData) {
-    data_02071cf0.globalFriendData = globalFriendData;
-}
-
-s32 func_020251d8(void) {
-    s32  temp_r0_2;
-    u16* temp_r0;
-
-    temp_r0              = func_020246d4(0x202C);
-    data_02071cf0.unk_10 = temp_r0;
-
-    func_02024e04(data_02071cf0.globalFriendData);
-
-    *(u16*)((s32)temp_r0 + 0x2028) = 0;
-    *(u16*)((s32)temp_r0 + 0x2028) = func_0202593c(temp_r0, 0x202C);
-
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
-        OS_WaitForever();
-    }
-    func_0204237c(data_02071cf0.lockID);
-
-    func_0204296c(0x1001);
-    if (func_02042330() != 0) {
-        data_02071cf0.unk_02 = 4;
-        func_02024ec0(data_02071cf0.unk_10);
-        return 1;
-    }
-    data_02071cf0.unk_00++;
-    return 0;
-}
-
-s32 func_0202529c(void) {
-    s32 temp_r4 = data_02071cf0.unk_10;
-
-    data_02071cf0.unk_08 = 0;
-
+    gSaveState.unk_08 = 0;
     if ((func_02042944() & 0xFF) == 1) {
-        s64 temp = func_0203a444();
-
-        data_02071cf0.unk_18 = temp;
-        data_02071cf0.unk_1C = (temp >> 32);
-        func_0204285c(temp_r4, 0x3444, 0x202C, 0, 0, 1, 8, 0xA, 2);
+        gSaveState.unk_18 = func_0203a444();
+        func_0204285c(image, 0, sizeof(MainSaveImage), 0, 0, 1, 8, 10, 2);
     } else {
         OS_WaitForever();
     }
-
-    data_02071cf0.unk_00++;
+    gSaveState.savePipelineStepIndex++;
     return 0;
 }
 
-s32 func_0202533c(void) {
-    s32 temp_r4 = data_02071cf0.unk_10;
+s32 SavePipeline_StartBackupMainImageWrite(void) {
+    MainSaveImage* image = gSaveState.mainImage;
 
-    data_02071cf0.unk_08 = 0;
-
+    gSaveState.unk_08 = 0;
     if ((func_02042944() & 0xFF) == 1) {
-        func_0204285c(temp_r4, 0x88B4, 0x202C, 0, 0, 1, 8, 0xA, 2);
+        func_0204285c(image, 0x5470, sizeof(MainSaveImage), 0, 0, 1, 8, 10, 2);
     } else {
         OS_WaitForever();
     }
-
-    data_02071cf0.unk_00++;
+    gSaveState.savePipelineStepIndex++;
     return 0;
 }
 
-s32 func_020253cc(void) {
+s32 SavePipeline_PollMainImageWriteCompletion(void) {
     if (func_02042ab0() != 0) {
         if (func_02042330() != 0) {
-            data_02071cf0.unk_02 = 4;
+            gSaveState.saveIoErrorFlags |= 4;
         } else {
-            data_02071cf0.unk_02 = 0;
+            gSaveState.saveIoErrorFlags = 0;
         }
-        data_02071cf0.unk_00++;
+        gSaveState.savePipelineStepIndex++;
+    }
+    return 0;
+}
+
+s32 SavePipeline_FinalizeMainImageWrite(void) {
+    Savefile_ReleaseLockAndFree(gSaveState.mainImage);
+    gSaveState.unk_18 = func_0203a444() - gSaveState.unk_18;
+    gSaveState.savePipelineStepIndex++;
+    return 0;
+}
+
+s32 SavePipeline_FinalizeFriendImageWrite(void) {
+    Savefile_ReleaseLockAndFree(gSaveState.friendImage);
+    gSaveState.unk_18 = func_0203a444() - gSaveState.unk_18;
+    gSaveState.savePipelineStepIndex++;
+    return 0;
+}
+
+void FriendData_Set(GlobalFriendData* globalFriendData) {
+    gSaveState.globalFriendData = globalFriendData;
+}
+
+s32 SavePipeline_PrepareFriendImageWrite(void) {
+    s32 ioStatus;
+
+    FriendSaveImage* image = SaveIO_AllocTempAlignedBuffer(sizeof(FriendSaveImage));
+    gSaveState.friendImage = image;
+
+    Savefile_BuildFriendSaveImage(gSaveState.globalFriendData);
+
+    image->footer.checksum = 0;
+    image->footer.checksum = SaveIO_GetChecksum16(image, sizeof(FriendSaveImage));
+
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
+        OS_WaitForever();
+    }
+    func_0204237c(gSaveState.lockID);
+
+    func_0204296c(0x1001);
+    if (func_02042330() != 0) {
+        gSaveState.saveIoErrorFlags = 4;
+        Savefile_ReleaseLockAndFree(gSaveState.friendImage);
+        return 1;
+    }
+    gSaveState.savePipelineStepIndex++;
+    return 0;
+}
+
+s32 SavePipeline_StartPrimaryFriendImageWrite(void) {
+    FriendSaveImage* image = gSaveState.friendImage;
+
+    gSaveState.unk_08 = 0;
+    if ((func_02042944() & 0xFF) == 1) {
+        gSaveState.unk_18 = func_0203a444();
+        func_0204285c(image, 0x3444, sizeof(FriendSaveImage), 0, 0, 1, 8, 10, 2);
+    } else {
+        OS_WaitForever();
+    }
+
+    gSaveState.savePipelineStepIndex++;
+    return 0;
+}
+
+s32 SavePipeline_StartBackupFriendImageWrite(void) {
+    FriendSaveImage* image = gSaveState.friendImage;
+
+    gSaveState.unk_08 = 0;
+    if ((func_02042944() & 0xFF) == 1) {
+        func_0204285c(image, 0x88B4, sizeof(FriendSaveImage), 0, 0, 1, 8, 0xA, 2);
+    } else {
+        OS_WaitForever();
+    }
+
+    gSaveState.savePipelineStepIndex++;
+    return 0;
+}
+
+s32 SavePipeline_PollFriendImageWriteCompletion(void) {
+    if (func_02042ab0() != 0) {
+        if (func_02042330() != 0) {
+            gSaveState.saveIoErrorFlags = 4;
+        } else {
+            gSaveState.saveIoErrorFlags = 0;
+        }
+        gSaveState.savePipelineStepIndex++;
     }
     return 0;
 }
@@ -554,55 +457,56 @@ s32 func_02025414(void) {
     return 1;
 }
 
-static s32 (*data_0205c2a4[13])() = {
-    func_02024ca4, func_02024f00, func_02024fc0, func_020250e8, func_02025058, func_020250e8, func_02025138,
-    func_020251d8, func_0202529c, func_0202533c, func_020253cc, func_02025180, func_02024ccc,
-};
-void func_02025444(void) {
-    s32 (**funcs)() = data_0205c2a4;
-    funcs[data_02071cf0.unk_00]();
+typedef s32 (*SavePipelineFunc)(void);
+
+s32 Savefile_RunSavePipelineStep(void) {
+    const SavePipelineFunc steps[14] = {
+        SavePipeline_PrepareNewGame,
+        SavePipeline_PrepareMainImageWrite,
+        SavePipeline_StartPrimaryMainImageWrite,
+        SavePipeline_PollMainImageWriteCompletion,
+        SavePipeline_StartBackupMainImageWrite,
+        SavePipeline_PollMainImageWriteCompletion,
+        SavePipeline_FinalizeMainImageWrite,
+        SavePipeline_PrepareFriendImageWrite,
+        SavePipeline_StartPrimaryFriendImageWrite,
+        SavePipeline_StartBackupFriendImageWrite,
+        SavePipeline_PollFriendImageWriteCompletion,
+        SavePipeline_FinalizeFriendImageWrite,
+        SavePipeline_FreeFriendData,
+    };
+    return steps[gSaveState.savePipelineStepIndex]();
 }
 
-void func_02025498(void) {
-    s32 sp0[13];
-    s32 var_r3;
-
-    for (var_r3 = 0; var_r3 < 13; var_r3++) {
-        sp0[var_r3] = *(s32*)((s32)&data_0205c23c + var_r3 * 4);
-    }
-    ((void (*)(void))sp0[data_02071cf0.unk_00])();
+s32 Savefile_RunAlternatePipelineStep(void) {
+    const SavePipelineFunc steps[13] = {
+        SavePipeline_PrepareMainImageWrite,
+        SavePipeline_StartPrimaryMainImageWrite,
+        SavePipeline_PollMainImageWriteCompletion,
+        SavePipeline_StartBackupMainImageWrite,
+        SavePipeline_PollMainImageWriteCompletion,
+        SavePipeline_FinalizeMainImageWrite,
+        SavePipeline_PrepareFriendImageWrite,
+        SavePipeline_StartPrimaryFriendImageWrite,
+        SavePipeline_PollFriendImageWriteCompletion,
+        SavePipeline_StartBackupFriendImageWrite,
+        SavePipeline_PollFriendImageWriteCompletion,
+        SavePipeline_FinalizeFriendImageWrite,
+        func_02025414,
+    };
+    return steps[gSaveState.savePipelineStepIndex]();
 }
 
-s32 func_020254ec(s32 arg0) {
-    s32* var_lr;
-    s32  temp_r0;
-    s32  temp_r1;
-    s32  temp_r2;
-    s32  temp_r3;
-    s32  var_ip;
-    u16* var_r4;
-
-    func_0204285c(arg0, (u16*)data_02071cf0.unk_10, 0x3444, 0, 1, 6, 1, 0, 0);
+s32 Savefile_TryLoadMainImage(s32 saveSlot) {
+    func_0204285c(saveSlot, gSaveState.mainImage, sizeof(MainSaveImage), 0, 0, 1, 6, 1, 0);
     func_02042aa4();
     func_02042330();
-    var_r4 = (u16*)data_02071cf0.unk_10;
-    if (func_020258bc(var_r4 + 0x3420 / 2, data_0205c96c, 0x1B, 0x3420) != 0) {
-        if (func_0202593c(var_r4, 0x3444) == 0) {
-            var_lr = (s32*)&data_02071cf0.unk_20;
-            var_ip = 0x342;
-            do {
-                temp_r0 = *(s32*)((s32)var_r4 + 0);
-                temp_r1 = *(s32*)((s32)var_r4 + 4);
-                temp_r2 = *(s32*)((s32)var_r4 + 8);
-                temp_r3 = *(s32*)((s32)var_r4 + 12);
-                var_r4 += 8;
-                var_lr[0] = temp_r0;
-                var_lr[1] = temp_r1;
-                var_lr[2] = temp_r2;
-                var_lr[3] = temp_r3;
-                var_lr += 4;
-                var_ip -= 1;
-            } while (var_ip != 0);
+
+    MainSaveImage* image = gSaveState.mainImage;
+
+    if (SaveIO_HasValidFooter(image->footer.magic, SaveFooterSignature, sizeof(SaveFooterSignature), sizeof(MainData))) {
+        if (SaveIO_GetChecksum16(image, sizeof(MainSaveImage)) == 0) {
+            gSaveState.unk_20 = image->mainData;
             return 0;
         }
         return 8;
@@ -610,92 +514,61 @@ s32 func_020254ec(s32 arg0) {
     return 1;
 }
 
-// ============ func_020255bc ============
-// Loads primary save data (checks both slots 0 and 0x5470)
-// Returns: 0=success, 2=error, 8=data corrupt
-s32 func_020255bc(void) {
-    s32 temp_r0_2;
-    s32 temp_r0_3;
-    s32 var_r4;
+s32 Savefile_LoadMainImage(void) {
+    s32 slot0Status;
+    s32 slot1Status;
+    s32 loadResult;
 
-    data_02071cf0.unk_14 = func_020246d4(0x3444);
+    gSaveState.mainImage = SaveIO_AllocTempAlignedBuffer(sizeof(MainSaveImage));
 
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
         OS_WaitForever();
     }
-    func_0204237c(data_02071cf0.lockID);
+    func_0204237c(gSaveState.lockID);
 
     func_0204296c(0x1001);
     if (func_02042330() != 0) {
-        var_r4 = 2;
+        loadResult = 2;
     } else if ((func_02042944() & 0xFF) == 1) {
-        temp_r0_2 = func_020254ec(0);
-        if (temp_r0_2 != 0) {
-            temp_r0_3 = func_020254ec(0x5470);
-            if (temp_r0_3 != 0) {
-                if ((temp_r0_2 == 2) || (temp_r0_3 == 2)) {
-                    var_r4 = 2;
+        slot0Status = Savefile_TryLoadMainImage(0);
+        if (slot0Status != 0) {
+            slot1Status = Savefile_TryLoadMainImage(0x5470);
+            if (slot1Status != 0) {
+                if ((slot0Status == 2) || (slot1Status == 2)) {
+                    loadResult = 2;
                 } else {
-                    var_r4 = 8;
+                    loadResult = 8;
                 }
             } else {
-                var_r4 = 0;
+                loadResult = 0;
             }
         } else {
-            var_r4 = 0;
+            loadResult = 0;
         }
     } else {
-        var_r4 = 2;
+        loadResult = 2;
     }
-    func_0204238c(data_02071cf0.lockID);
-    func_020389c0(data_02071cf0.lockID);
-    func_0202470c(data_02071cf0.unk_14);
-    return var_r4;
+    func_0204238c(gSaveState.lockID);
+    func_020389c0(gSaveState.lockID);
+    SaveIO_FreeTempBuffer(gSaveState.mainImage);
+    return loadResult;
 }
 
-// ============ func_020256bc ============
-// Wrapper function to load save data
-void func_020256bc(void) {
-    func_020255bc();
+s32 Savefile_Load(void) {
+    return Savefile_LoadMainImage();
 }
 
-// ============ func_020256c8 ============
-// Loads backup save data from a specific slot into buffer
-// arg0: destination buffer, arg1: slot offset (0x3444 or 0x88B4)
-// Returns: 0=success, 1=checksum fail, 8=data corrupt
-s32 func_020256c8(void* arg0, s32 arg1) {
-    s32   temp_r0;
-    s32   temp_r1;
-    s32   temp_r2;
-    s32   temp_r3;
-    s32   var_ip;
-    u16*  var_r4;
-    void* var_r5;
-
-    var_r5 = arg0;
-    func_0204285c(arg1, data_02071cf0.unk_14, 0x202C, 0, 1, 6, 1, 0, 0);
+s32 Savefile_TryLoadFriendImage(GlobalFriendData* outputBuffer, s32 saveSlot) {
+    func_0204285c(saveSlot, gSaveState.friendImage, sizeof(FriendSaveImage), 0, 0, 1, 6, 1, 0);
     func_02042aa4();
     func_02042330();
-    var_r4 = (u16*)data_02071cf0.unk_14;
-    if (func_020258bc(var_r4 + 0x2008 / 2, data_0205c96c, 0x1B, 0x2008) != 0) {
-        if (func_0202593c(var_r4, 0x202C) == 0) {
-            var_ip = 0x200;
-            do {
-                temp_r0 = *(s32*)((s32)var_r4 + 0);
-                temp_r1 = *(s32*)((s32)var_r4 + 4);
-                temp_r2 = *(s32*)((s32)var_r4 + 8);
-                temp_r3 = *(s32*)((s32)var_r4 + 12);
-                var_r4 += 8;
-                *(s32*)((s32)var_r5 + 0)  = temp_r0;
-                *(s32*)((s32)var_r5 + 4)  = temp_r1;
-                *(s32*)((s32)var_r5 + 8)  = temp_r2;
-                *(s32*)((s32)var_r5 + 12) = temp_r3;
-                var_r5                    = (void*)((s32)var_r5 + 0x10);
-                var_ip -= 1;
-            } while (var_ip != 0);
-            *(s32*)((s32)var_r5 + 0) = *(s32*)((s32)var_r4 + 0);
-            *(s32*)((s32)var_r5 + 4) = *(s32*)((s32)var_r4 + 4);
+
+    FriendSaveImage* image = gSaveState.friendImage;
+    if (SaveIO_HasValidFooter(image->footer.magic, SaveFooterSignature, sizeof(SaveFooterSignature), sizeof(GlobalFriendData)))
+    {
+        if (SaveIO_GetChecksum16(image, sizeof(FriendSaveImage)) == 0) {
+            *outputBuffer = image->friendData;
             return 0;
         }
         return 8;
@@ -703,84 +576,92 @@ s32 func_020256c8(void* arg0, s32 arg1) {
     return 1;
 }
 
-// ============ func_0202579c ============
-// Loads backup save data (checks both slots 0x3444 and 0x88B4)
-// arg0: destination buffer for friend data
-// Returns: 0=success, 2=error, 8=data corrupt
-s32 func_0202579c(void* arg0) {
-    s32 var_r4;
+s32 Savefile_LoadFriendImage(GlobalFriendData* outputBuffer) {
+    s32 loadResult;
 
-    data_02071cf0.unk_10 = func_020246d4(0x202C);
+    gSaveState.friendImage = SaveIO_AllocTempAlignedBuffer(sizeof(FriendSaveImage));
 
-    data_02071cf0.lockID = OS_GetLockID();
-    if (data_02071cf0.lockID == -3) {
+    gSaveState.lockID = OS_GetLockID();
+    if (gSaveState.lockID == -3) {
         OS_WaitForever();
     }
-    func_0204237c(data_02071cf0.lockID);
+    func_0204237c(gSaveState.lockID);
 
     func_0204296c(0x1001);
     if (func_02042330() != 0) {
-        var_r4 = 2;
+        loadResult = 2;
     } else if ((func_02042944() & 0xFF) == 1) {
-        s32 temp_r0_2 = func_020256c8(arg0, 0x3444);
-        if (temp_r0_2 != 0) {
-            s32 temp_r0_3 = func_020256c8(arg0, 0x88B4);
-            if (temp_r0_3 != 0) {
-                if ((temp_r0_2 == 2) || (temp_r0_3 == 2)) {
-                    var_r4 = 2;
+        s32 slot1Status = Savefile_TryLoadFriendImage(outputBuffer, sizeof(MainSaveImage));
+        if (slot1Status != 0) {
+            s32 slot2Status = Savefile_TryLoadFriendImage(outputBuffer, 0x88B4);
+            if (slot2Status != 0) {
+                if ((slot1Status == 2) || (slot2Status == 2)) {
+                    loadResult = 2;
                 } else {
-                    var_r4 = 8;
+                    loadResult = 8;
                 }
             } else {
-                var_r4 = 0;
+                loadResult = 0;
             }
         } else {
-            var_r4 = 0;
+            loadResult = 0;
         }
     } else {
-        var_r4 = 2;
+        loadResult = 2;
     }
-    func_0204238c(data_02071cf0.lockID);
-    func_020389c0(data_02071cf0.lockID);
-    func_0202470c(data_02071cf0.unk_10);
-    return var_r4;
+    func_0204238c(gSaveState.lockID);
+    func_020389c0(gSaveState.lockID);
+    SaveIO_FreeTempBuffer(gSaveState.friendImage);
+    return loadResult;
 }
 
-u16 func_020258ac(void) {
-    return data_02071cf0.unk_02;
+u16 Savefile_GetWriteErrorFlags(void) {
+    return gSaveState.saveIoErrorFlags;
 }
 
-s32 func_020258bc(u8* arg0, const u8* arg1, s32 arg2, s32 arg3) {
+static BOOL SaveIO_HasValidFooter(u8* buffer, const u8* magic, s32 magicLength, s32 expectedSize) {
     // Verify checksums match
-    for (u16 i = 0; i < arg2; i++) {
-        if (arg0[i] != arg1[i]) {
-            return 0;
+    for (u16 i = 0; i < magicLength; i++) {
+        if (buffer[i] != magic[i]) {
+            return FALSE;
         }
     }
 
     // Verify nibble flags match
+    u32 mask = 0xF;
+
     for (u16 i = 0; i < 4; i++) {
-        u8 actual   = *(u8*)(arg0[i] + 27);
-        u8 expected = (u8)((arg3 >> (i * 4)) & 0xFF);
-        if (expected != actual) {
-            return 0;
+        u32 shift    = i * 4;
+        u32 expected = expectedSize & (mask << shift);
+        u8  actual   = buffer[i + 27];
+
+        expected >>= shift;
+        if ((expected & 0xFF) != actual) {
+            return FALSE;
         }
     }
 
-    return 1;
+    return TRUE;
 }
 
-u16 func_0202593c(u16* arg0, s16 arg1) {
-    u32 checksum = 0;
+/**
+ * @brief Calculates the 16-bit ones-complement checksum for the given data.
+ * @param data Pointer to the data
+ * @param size Size of the data in bytes
+ * @return 16-bit checksum
+ */
+static u16 SaveIO_GetChecksum16(void* data, s16 size) {
+    u32  checksum = 0;
+    u16* ptr      = (u16*)data;
 
-    while (arg1 > 1) {
-        checksum += *arg0;
-        arg0++;
-        arg1 -= 2;
+    while (size > 1) {
+        checksum += *ptr;
+        ptr++;
+        size -= 2;
     }
 
-    if (arg1 > 0) {
-        checksum += (u8)*arg0;
+    if (size > 0) {
+        checksum += (u8)*ptr;
     }
 
     checksum = (checksum & 0xFFFF) + (checksum >> 16);
@@ -789,48 +670,46 @@ u16 func_0202593c(u16* arg0, s16 arg1) {
     return ~checksum;
 }
 
-s32 func_0202599c(s32 arg0) {
-    return (data_02071cf0.unk_20.unk_246C & (1LL << arg0)) != 0;
+s32 func_0202599c(s32 flagIndex) {
+    return (gSaveState.unk_20.unk_246C & (1LL << flagIndex)) != 0;
 }
 
-// Nonmatching
-// Scratch: vuc2a
-s32 func_020259e4(s32 arg0) {
-    s32  var_r3 = (arg0 + ((u32)(arg0 >> 4) >> 0x1B)) >> 5;
-    u32* var_r1 = &data_02071cf0.unk_20.unk_2474;
+s32 func_020259e4(s32 itemId) {
+    s32  addressOffset = (itemId + ((u32)(itemId >> 4) >> 0x1B)) >> 5;
+    u32* flagPtr       = &gSaveState.unk_20.unk_2474;
 
-    if (var_r3 > 1) {
-        var_r1 = &data_02071cf0.unk_20.unk_247C;
-        var_r3 -= 2;
+    if (addressOffset > 1) {
+        flagPtr = &gSaveState.unk_20.unk_247C;
+        addressOffset -= 2;
     }
 
-    if (var_r3 != 0) {
-        var_r1 += 1;
+    if (addressOffset != 0) {
+        flagPtr += 1;
     }
 
-    return *var_r1 & (1 << ((arg0 >> 0x1F) + (((arg0 << 0x1B) - (arg0 >> 0x1F)) >> 0x1B)));
+    return *flagPtr & (1 << ((itemId >> 0x1F) + (((itemId << 0x1B) - (itemId >> 0x1F)) >> 0x1B)));
 }
 
-s32 func_02025a2c(s32 arg0) {
-    s16 retval = 0;
+s32 func_02025a2c(s32 playTime) {
+    s16 unlockedCount = 0;
 
-    for (u32 i = 0; i < 67; i++) {
-        u16 flags = data_0205c5be[i * 7 + 6];
+    for (u32 itemIndex = 0; itemIndex < 67; itemIndex++) {
+        u16 flags = data_0205c5be[itemIndex * 7 + 6];
 
         if ((flags & 2) || ((flags & 1) && Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == FALSE)) {
             continue;
         }
 
-        if (*(s16*)(data_0205c5be + i * 7 + 0) <= arg0) {
-            if (arg0 <= *(s16*)(data_0205c5be + i * 7 + 1)) {
-                if (func_020259e4(i) == 0) {
-                    retval += 1;
+        if (*(s16*)(data_0205c5be + itemIndex * 7 + 0) <= playTime) {
+            if (playTime <= *(s16*)(data_0205c5be + itemIndex * 7 + 1)) {
+                if (func_020259e4(itemIndex) == 0) {
+                    unlockedCount += 1;
                 }
             }
         }
     }
 
-    return retval;
+    return unlockedCount;
 }
 
 void func_02025ac4(MainData* arg0) {
@@ -851,12 +730,12 @@ void func_02025ac4(MainData* arg0) {
     arg0->unk_312C = 1;
 }
 
-void func_02025b1c(void) {
-    data_02071cf0.unk_20.unk_2484 = 1;
-    data_02071cf0.unk_20.unk_3130 = 0;
-    data_02071cf0.unk_20.unk_3238 = 127;
-    data_02071cf0.unk_20.unk_3234 = 0;
-    data_02071cf0.unk_20.unk_313C = 0;
-    Savefile_ResetAllGameplay(&data_02071cf0.unk_20);
-    func_02025ac4(&data_02071cf0.unk_20);
+void Savefile_InitNewGameDefaults(void) {
+    gSaveState.unk_20.unk_2484 = 1;
+    gSaveState.unk_20.unk_3130 = 0;
+    gSaveState.unk_20.unk_3238 = 127;
+    gSaveState.unk_20.unk_3234 = 0;
+    gSaveState.unk_20.unk_313C = 0;
+    Savefile_ResetAllGameplay(&gSaveState.unk_20);
+    func_02025ac4(&gSaveState.unk_20);
 }

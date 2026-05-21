@@ -2872,9 +2872,9 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
 
         case 3: {
             if (menuObj->unk_462EC != 0) {
-                data_02071cf0.unk_20.unk_1AB4 |= 0x20;
+                gSaveState.unk_20.unk_1AB4 |= 0x20;
             } else {
-                data_02071cf0.unk_20.unk_1AB4 |= 0x40;
+                gSaveState.unk_20.unk_1AB4 |= 0x40;
             }
             SystemStatusFlags.unk_06 = 1;
             SystemStatusFlags.unk_07 = 1;
@@ -8976,7 +8976,7 @@ PrcStepResult func_ov002_0209095c(PrcCtx* ctx, void* arg1) {
 
 PrcStepResult func_ov002_02090b30(PrcCtx* ctx, void*) {
     PrcCtx_AdvanceStep(ctx);
-    func_02024d04();
+    Savefile_ResetIOPipeline();
     return PRC_STEP_CONTINUE;
 }
 
@@ -9082,8 +9082,8 @@ PrcStepResult func_ov002_02090ee8(PrcCtx* ctx, void* arg1) {
 PrcStepResult func_ov002_02090f4c(PrcCtx* ctx, void* arg1) {
     s32 temp_r4;
 
-    if (func_02025444() == 1) {
-        temp_r4 = func_020258ac();
+    if (Savefile_RunSavePipelineStep() == 1) {
+        temp_r4 = Savefile_GetWriteErrorFlags();
         PrcMaster_UnregisterContext(arg1 + 0x41804, arg1 + 0x476D0);
         if (temp_r4 == 0) {
             SndMgr_StartPlayingSE(SEIDX_MENU_SAVE);

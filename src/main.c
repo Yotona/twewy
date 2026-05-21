@@ -145,7 +145,7 @@ void main(void) {
         SysControl.frameCount = 0;
         TouchInput_Init();
         func_020415a4();
-        func_02025b1c();
+        Savefile_InitNewGameDefaults();
 
         while (SystemStatusFlags.reset == FALSE || SystemStatusFlags.unk_07 == FALSE) {
             func_02004c44(&data_0206a9bc);

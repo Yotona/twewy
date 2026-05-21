@@ -204,12 +204,12 @@ void OpenEnd_FadeFromBlack(OpenEndState* state) {
 void OpenEnd_ValidateSaveData(OpenEndState* state) {
     if (state->isSaveValid != 0)
         return;
-    s32 saveStatus     = func_02024aa4();
+    s32 saveStatus     = Savefile_ValidateAllSlots();
     state->unk_11A38   = saveStatus;
     state->isSaveValid = 1;
     state->unk_11A40   = 0;
     if (saveStatus == 0) {
-        if ((data_02071cf0.unk_20.unk_1AB6 & 1) != FALSE) {
+        if ((gSaveState.unk_20.unk_1AB6 & 1) != FALSE) {
             state->isThereExistingSaveData = 1;
         }
         return;
@@ -217,7 +217,7 @@ void OpenEnd_ValidateSaveData(OpenEndState* state) {
         state->unk_11A48 = 1;
         return;
     }
-    func_02024d04();
+    Savefile_ResetIOPipeline();
     state->unk_11A40 = 1;
 }
 
@@ -367,14 +367,14 @@ extern void func_ov030_020ae92c();
 void OpenEnd_ContinueGame(OpenEndState* state) {
 
     OverlayTag tag, tag2, tag3, tag4;
-    if (func_020256bc() == 0) {
+    if (Savefile_Load() == 0) {
         if (func_02023010(0x2AB) != 0) {
-            data_02071cf0.unk_20.unk_1AB4 |= 0x10;
+            gSaveState.unk_20.unk_1AB4 |= 0x10;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0); //<-- Overlay44 -> Shutdown PP Gain screen
             return;
         }
-        if ((data_02071cf0.unk_20.unk_1AB4 & 0x2) != 0) {
-            data_02071cf0.unk_20.unk_1AB4 &= ~0x2;
+        if ((gSaveState.unk_20.unk_1AB4 & 0x2) != 0) {
+            gSaveState.unk_20.unk_1AB4 &= ~0x2;
             MainOvlDisp_ReplaceTop(&tag2, &OVERLAY_30_ID, func_ov030_020b0fe8, 0, 0); // Load game ?
             return;
         }
@@ -447,7 +447,7 @@ void OpenEnd_Init(OpenEndState* state) {
     Input_Init(&InputStatus, 8, 1, 2);
     TouchInput_Init();
     TouchInput_Update();
-    func_02025b1c();
+    Savefile_InitNewGameDefaults();
     data_02066a58 &= ~0x8; // data_02066a58.bit_3 = 0
     state->dataType  = DatMgr_AllocateSlot();
     state->unk_11A38 = 0;

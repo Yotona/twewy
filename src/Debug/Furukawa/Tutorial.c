@@ -159,7 +159,7 @@ static void func_ov026_020e7728(void* state, s16 arg1) {
 
 static s32 func_ov026_020e77bc(void) {
     s32 val = 0;
-    switch (data_02071cf0.unk_20.unk_3134) {
+    switch (gSaveState.unk_20.unk_3134) {
         case 2:
             return 0;
         case 4:

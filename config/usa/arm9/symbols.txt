@@ -1516,50 +1516,50 @@ Inventory_AreAllEquippedPinSlotsEmpty kind:function(arm,size=0x48) addr:0x020246
 /////////////////////////////////////////////////////////////
 // src/Savefile.c
 /////////////////////////////////////////////////////////////
-func_020246d4 kind:function(arm,size=0x38) addr:0x020246d4
-func_0202470c kind:function(arm,size=0x18) addr:0x0202470c
-func_02024724 kind:function(arm,size=0xd0) addr:0x02024724
-func_020247f4 kind:function(arm,size=0xf0) addr:0x020247f4
-func_020248e4 kind:function(arm,size=0xb8) addr:0x020248e4
-func_0202499c kind:function(arm,size=0x108) addr:0x0202499c
-func_02024aa4 kind:function(arm,size=0x64) addr:0x02024aa4
-func_02024b08 kind:function(arm,size=0xf8) addr:0x02024b08
-func_02024c00 kind:function(arm,size=0x20) addr:0x02024c00
-func_02024c20 kind:function(arm,size=0x64) addr:0x02024c20
-func_02024c84 kind:function(arm,size=0x20) addr:0x02024c84
-func_02024ca4 kind:function(arm,size=0x28) addr:0x02024ca4
-func_02024ccc kind:function(arm,size=0x38) addr:0x02024ccc
-func_02024d04 kind:function(arm,size=0x44) addr:0x02024d04
-func_02024d48 kind:function(arm,size=0xbc) addr:0x02024d48
-func_02024e04 kind:function(arm,size=0xbc) addr:0x02024e04
-func_02024ec0 kind:function(arm,size=0x40) addr:0x02024ec0
-func_02024f00 kind:function(arm,size=0xc0) addr:0x02024f00
-func_02024fc0 kind:function(arm,size=0x98) addr:0x02024fc0
-func_02025058 kind:function(arm,size=0x90) addr:0x02025058
-func_020250e8 kind:function(arm,size=0x50) addr:0x020250e8
-func_02025138 kind:function(arm,size=0x48) addr:0x02025138
-func_02025180 kind:function(arm,size=0x48) addr:0x02025180
-func_020251c8 kind:function(arm,size=0x10) addr:0x020251c8
-func_020251d8 kind:function(arm,size=0xc4) addr:0x020251d8
-func_0202529c kind:function(arm,size=0xa0) addr:0x0202529c
-func_0202533c kind:function(arm,size=0x90) addr:0x0202533c
-func_020253cc kind:function(arm,size=0x48) addr:0x020253cc
+SaveIO_AllocTempAlignedBuffer kind:function(arm,size=0x38) addr:0x020246d4
+SaveIO_FreeTempBuffer kind:function(arm,size=0x18) addr:0x0202470c
+Savefile_ValidMainSlotAtOffset kind:function(arm,size=0xd0) addr:0x02024724
+Savefile_ValidateMainSlots kind:function(arm,size=0xf0) addr:0x020247f4
+Savefile_ValidateFriendSlotAtOffset kind:function(arm,size=0xb8) addr:0x020248e4
+Savefile_ValidateFriendSlots kind:function(arm,size=0x108) addr:0x0202499c
+Savefile_ValidateAllSlots kind:function(arm,size=0x64) addr:0x02024aa4
+FriendData_InitAllEntriesEmpty kind:function(arm,size=0xf8) addr:0x02024b08
+Savefile_InitNewGameMainData kind:function(arm,size=0x20) addr:0x02024c00
+FriendData_Alloc kind:function(arm,size=0x64) addr:0x02024c20
+FriendData_Free kind:function(arm,size=0x20) addr:0x02024c84
+SavePipeline_PrepareNewGame kind:function(arm,size=0x28) addr:0x02024ca4
+SavePipeline_FreeFriendData kind:function(arm,size=0x38) addr:0x02024ccc
+Savefile_ResetIOPipeline kind:function(arm,size=0x44) addr:0x02024d04
+Savefile_BuildMainSaveImage kind:function(arm,size=0xbc) addr:0x02024d48
+Savefile_BuildFriendSaveImage kind:function(arm,size=0xbc) addr:0x02024e04
+Savefile_ReleaseLockAndFree kind:function(arm,size=0x40) addr:0x02024ec0
+SavePipeline_PrepareMainImageWrite kind:function(arm,size=0xc0) addr:0x02024f00
+SavePipeline_StartPrimaryMainImageWrite kind:function(arm,size=0x98) addr:0x02024fc0
+SavePipeline_StartBackupMainImageWrite kind:function(arm,size=0x90) addr:0x02025058
+SavePipeline_PollMainImageWriteCompletion kind:function(arm,size=0x50) addr:0x020250e8
+SavePipeline_FinalizeMainImageWrite kind:function(arm,size=0x48) addr:0x02025138
+SavePipeline_FinalizeFriendImageWrite kind:function(arm,size=0x48) addr:0x02025180
+FriendData_Set kind:function(arm,size=0x10) addr:0x020251c8
+SavePipeline_PrepareFriendImageWrite kind:function(arm,size=0xc4) addr:0x020251d8
+SavePipeline_StartPrimaryFriendImageWrite kind:function(arm,size=0xa0) addr:0x0202529c
+SavePipeline_StartBackupFriendImageWrite kind:function(arm,size=0x90) addr:0x0202533c
+SavePipeline_PollFriendImageWriteCompletion kind:function(arm,size=0x48) addr:0x020253cc
 func_02025414 kind:function(arm,size=0x30) addr:0x02025414
-func_02025444 kind:function(arm,size=0x54) addr:0x02025444
-func_02025498 kind:function(arm,size=0x54) addr:0x02025498
-func_020254ec kind:function(arm,size=0xd0) addr:0x020254ec
-func_020255bc kind:function(arm,size=0x100) addr:0x020255bc
-func_020256bc kind:function(arm,size=0xc) addr:0x020256bc
-func_020256c8 kind:function(arm,size=0xd4) addr:0x020256c8
-func_0202579c kind:function(arm,size=0x110) addr:0x0202579c
-func_020258ac kind:function(arm,size=0x10) addr:0x020258ac
-func_020258bc kind:function(arm,size=0x80) addr:0x020258bc
-func_0202593c kind:function(arm,size=0x60) addr:0x0202593c
+Savefile_RunSavePipelineStep kind:function(arm,size=0x54) addr:0x02025444
+Savefile_RunAlternatePipelineStep kind:function(arm,size=0x54) addr:0x02025498
+Savefile_TryLoadMainImage kind:function(arm,size=0xd0) addr:0x020254ec
+Savefile_LoadMainImage kind:function(arm,size=0x100) addr:0x020255bc
+Savefile_Load kind:function(arm,size=0xc) addr:0x020256bc
+Savefile_TryLoadFriendImage kind:function(arm,size=0xd4) addr:0x020256c8
+Savefile_LoadFriendImage kind:function(arm,size=0x110) addr:0x0202579c
+Savefile_GetWriteErrorFlags kind:function(arm,size=0x10) addr:0x020258ac
+SaveIO_HasValidFooter kind:function(arm,size=0x80) addr:0x020258bc
+SaveIO_GetChecksum16 kind:function(arm,size=0x60) addr:0x0202593c
 func_0202599c kind:function(arm,size=0x48) addr:0x0202599c
 func_020259e4 kind:function(arm,size=0x48) addr:0x020259e4
 func_02025a2c kind:function(arm,size=0x98) addr:0x02025a2c
 func_02025ac4 kind:function(arm,size=0x58) addr:0x02025ac4
-func_02025b1c kind:function(arm,size=0x4c) addr:0x02025b1c
+Savefile_InitNewGameDefaults kind:function(arm,size=0x4c) addr:0x02025b1c
 
 /////////////////////////////////////////////////////////////
 // src/CellText.c
@@ -3445,12 +3445,16 @@ data_0205c1e4 kind:data(any) addr:0x0205c1e4
 SecretReportStarRequirements kind:data(any) addr:0x0205c210
 data_0205c23c kind:data(any) addr:0x0205c23c
 data_0205c270 kind:data(any) addr:0x0205c270
+
+
 data_0205c2a4 kind:data(any) addr:0x0205c2a4
 data_0205c2dc kind:data(any) addr:0x0205c2dc
 data_0205c39c kind:data(any) addr:0x0205c39c
 data_0205c5be kind:data(any) addr:0x0205c5be
 data_0205c968 kind:data(any) addr:0x0205c968
-data_0205c96c kind:data(any) addr:0x0205c96c
+SaveFooterSignature kind:data(any) addr:0x0205c96c
+
+
 data_0205c988 kind:data(any) addr:0x0205c988
 data_0205c990 kind:data(any) addr:0x0205c990
 data_0205c9b0 kind:data(any) addr:0x0205c9b0
@@ -3989,8 +3993,14 @@ data_02065b8c kind:data(any) addr:0x02065b8c
 data_02065ba4 kind:data(any) addr:0x02065ba4
 data_02065bbc kind:data(any) addr:0x02065bbc
 data_02065bd8 kind:data(any) addr:0x02065bd8
-data_02065be4 kind:data(any) addr:0x02065be4
-data_02065bf4 kind:data(any) addr:0x02065bf4
+
+/////////////////////////////////////////////////////////////
+// src/Savefile.c
+/////////////////////////////////////////////////////////////
+@907 kind:data(byte[15]) addr:0x02065be4 local
+@1037 kind:data(byte[17]) addr:0x02065bf4 local
+
+
 data_02065c08 kind:data(any) addr:0x02065c08
 data_02065c24 kind:data(any) addr:0x02065c24
 data_02065c74 kind:data(any) addr:0x02065c74
@@ -4545,7 +4555,7 @@ data_02071b04 kind:bss addr:0x02071b04
 data_02071b08 kind:bss addr:0x02071b08
 data_02071cac kind:bss addr:0x02071cac
 
-data_02071cf0 kind:bss addr:0x02071cf0
+gSaveState kind:bss addr:0x02071cf0
 
 /////////////////////////////////////////////////////////////
 // src/EasyFade.c

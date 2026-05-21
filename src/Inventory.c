@@ -10,7 +10,7 @@
 extern s32 func_02053098(f64, f64);
 extern s32 func_02054a9c(f64);
 
-struct SystemState data_02071cf0 = {0};
+struct SaveState gSaveState = {0};
 
 const s32           data_0205c120;
 const BinIdentifier data_0205c128 = {30, "Apl_Tak/ItemData.bin"};
@@ -260,7 +260,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     func_020225ec(&arg0->unk_214C);
     Progress_ResetSecretReports(arg0->secretReports);
 
-    data_02071cf0.unk_20.unk_2324 = 0;
+    gSaveState.unk_20.unk_2324 = 0;
 
     for (u16 i = 0; i < ARRAY_COUNT(arg0->unk_2326); i++) {
         arg0->unk_2326[i] = 0;
@@ -313,7 +313,7 @@ ItemCategory Inventory_GetCategory(u16 itemIndex) {
 
 // Nonmatching: Regswaps
 u16 Inventory_GetOpenPinStockpileCapacity(void) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     RawPinData pinData;
 
@@ -327,14 +327,14 @@ u16 Inventory_GetOpenPinStockpileCapacity(void) {
 
             if (pinID != 0xFFFF) {
                 Data_LoadToBuffer(1, pinData, &data_0205c188, pinID);
-                if (pinData.unk_25 != data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level) {
+                if (pinData.unk_25 != gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level) {
                     var_r7 += 1;
                 }
             }
         }
     }
 
-    mainData = &data_02071cf0.unk_20;
+    mainData = &gSaveState.unk_20;
     for (u16 i = 0; i < 256; i++) {
         if (mainData->stockpilePins[i].pinID != 0xFFFF) {
             var_r7++;
@@ -371,14 +371,14 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
             }
         } else if (arg1 == 2) {
             for (u16 i = 0; i < 304; i++) {
-                mainData = &data_02071cf0.unk_20;
+                mainData = &gSaveState.unk_20;
                 if (itemID == mainData->masteredPins[i].pinID) {
-                    return data_02071cf0.unk_20.masteredPins[i].count < 99;
+                    return gSaveState.unk_20.masteredPins[i].count < 99;
                 }
             }
 
             for (u16 i = 0; i < 304; i++) {
-                mainData = &data_02071cf0.unk_20;
+                mainData = &gSaveState.unk_20;
                 if (mainData->masteredPins[i].pinID == 0xFFFF) {
                     return TRUE;
                 }
@@ -392,38 +392,38 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 static void Inventory_AddStockpiledPin(u16 pinIdx, s32 pinID, u32 flag) {
-    data_02071cf0.unk_20.stockpilePins[pinIdx].pinID            = pinID;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].battlePP         = 0;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].minglePP         = 0;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].shutdownPP       = 0;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].flags.bits.level = 1;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].flags.raw &= ~0x80;
-    data_02071cf0.unk_20.stockpilePins[pinIdx].flags.raw |= (flag >> 0x18);
+    gSaveState.unk_20.stockpilePins[pinIdx].pinID            = pinID;
+    gSaveState.unk_20.stockpilePins[pinIdx].battlePP         = 0;
+    gSaveState.unk_20.stockpilePins[pinIdx].minglePP         = 0;
+    gSaveState.unk_20.stockpilePins[pinIdx].shutdownPP       = 0;
+    gSaveState.unk_20.stockpilePins[pinIdx].flags.bits.level = 1;
+    gSaveState.unk_20.stockpilePins[pinIdx].flags.raw &= ~0x80;
+    gSaveState.unk_20.stockpilePins[pinIdx].flags.raw |= (flag >> 0x18);
 }
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 static void Inventory_AddMasteredPin(u16 pinIdx, s32 pinID, u32 flag) {
-    data_02071cf0.unk_20.masteredPins[pinIdx].pinID = pinID;
+    gSaveState.unk_20.masteredPins[pinIdx].pinID = pinID;
 
-    data_02071cf0.unk_20.masteredPins[pinIdx].flags.raw &= ~0x80;
-    data_02071cf0.unk_20.masteredPins[pinIdx].flags.raw |= ((flag << 0x1f) >> 0x18);
+    gSaveState.unk_20.masteredPins[pinIdx].flags.raw &= ~0x80;
+    gSaveState.unk_20.masteredPins[pinIdx].flags.raw |= ((flag << 0x1f) >> 0x18);
 
-    data_02071cf0.unk_20.masteredPins[pinIdx].count++;
-    if (data_02071cf0.unk_20.masteredPins[pinIdx].count > 99) {
-        data_02071cf0.unk_20.masteredPins[pinIdx].count = 99;
+    gSaveState.unk_20.masteredPins[pinIdx].count++;
+    if (gSaveState.unk_20.masteredPins[pinIdx].count > 99) {
+        gSaveState.unk_20.masteredPins[pinIdx].count = 99;
     }
 }
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 void Inventory_AddStockItem(u16 arg0, s32 arg1, s32 arg2) {
-    data_02071cf0.unk_20.inventoryItems[arg0].itemID = arg1;
+    gSaveState.unk_20.inventoryItems[arg0].itemID = arg1;
 
-    u8 temp_r1 = ((data_02071cf0.unk_20.inventoryItems[arg0].flags & ~0x10) | ((u32)(arg2 << 0x1F) >> 0x1B)) & ~0x20;
+    u8 temp_r1 = ((gSaveState.unk_20.inventoryItems[arg0].flags & ~0x10) | ((u32)(arg2 << 0x1F) >> 0x1B)) & ~0x20;
 
-    data_02071cf0.unk_20.inventoryItems[arg0].flags = (temp_r1 & ~0xF) | (((temp_r1 & 0xF) + 1) & 0xF);
+    gSaveState.unk_20.inventoryItems[arg0].flags = (temp_r1 & ~0xF) | (((temp_r1 & 0xF) + 1) & 0xF);
 
-    if (((u32)(data_02071cf0.unk_20.inventoryItems[arg0].flags << 0x1C) >> 0x1C) > 9) {
-        data_02071cf0.unk_20.inventoryItems[arg0].flags = (data_02071cf0.unk_20.inventoryItems[arg0].flags & ~0xF) | 9;
+    if (((u32)(gSaveState.unk_20.inventoryItems[arg0].flags << 0x1C) >> 0x1C) > 9) {
+        gSaveState.unk_20.inventoryItems[arg0].flags = (gSaveState.unk_20.inventoryItems[arg0].flags & ~0xF) | 9;
     }
 }
 
@@ -455,21 +455,21 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
                 return FALSE;
             }
             for (u16 i = 0; i < 256; i++) {
-                if (data_02071cf0.unk_20.stockpilePins[i].pinID == 0xFFFF) {
+                if (gSaveState.unk_20.stockpilePins[i].pinID == 0xFFFF) {
                     Inventory_AddStockpiledPin(i, itemID, arg1);
                     return TRUE;
                 }
             }
         } else if (temp_r0_2 == 2) {
             for (u16 i = 0; i < 304; i++) {
-                if (itemID == data_02071cf0.unk_20.masteredPins[i].pinID) {
+                if (itemID == gSaveState.unk_20.masteredPins[i].pinID) {
                     Inventory_AddMasteredPin(i, itemID, arg1);
                     return TRUE;
                 }
             }
 
             for (u16 i = 0; i < 304; i++) {
-                if (data_02071cf0.unk_20.masteredPins[i].pinID == 0xFFFF) {
+                if (gSaveState.unk_20.masteredPins[i].pinID == 0xFFFF) {
                     Inventory_AddMasteredPin(i, itemID, arg1);
                     return TRUE;
                 }
@@ -478,14 +478,14 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
         return FALSE;
     } else {
         for (u16 i = 0; i < 472; i++) {
-            if (itemID == data_02071cf0.unk_20.inventoryItems[i].itemID) {
+            if (itemID == gSaveState.unk_20.inventoryItems[i].itemID) {
                 Inventory_AddStockItem(i, itemID, arg1);
                 return TRUE;
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            if (data_02071cf0.unk_20.inventoryItems[i].itemID == 0xFFFF) {
+            if (gSaveState.unk_20.inventoryItems[i].itemID == 0xFFFF) {
                 Inventory_AddStockItem(i, itemID, arg1);
                 return TRUE;
             }
@@ -509,7 +509,7 @@ u32 func_02023010(u16 arg0) {
     if (category == ITEM_CATEGORY_PIN) {
         for (u16 deck = 0; deck < 4; deck++) {
             for (u16 slot = 0; slot < 6; slot++) {
-                mainData = &data_02071cf0.unk_20;
+                mainData = &gSaveState.unk_20;
                 if (arg0 == mainData->pinLayouts[deck][slot].pinID) {
                     var_r3++;
                 }
@@ -517,22 +517,22 @@ u32 func_02023010(u16 arg0) {
         }
 
         for (u16 i = 0; i < 256; i++) {
-            mainData = &data_02071cf0.unk_20;
+            mainData = &gSaveState.unk_20;
             if (arg0 == mainData->stockpilePins[i].pinID) {
                 var_r3++;
             }
         }
 
         for (u16 i = 0; i < 304; i++) {
-            mainData = &data_02071cf0.unk_20;
+            mainData = &gSaveState.unk_20;
             if (arg0 == mainData->masteredPins[i].pinID) {
-                var_r3 += data_02071cf0.unk_20.masteredPins[i].count;
+                var_r3 += gSaveState.unk_20.masteredPins[i].count;
                 break;
             }
         }
     } else {
         for (u16 i = 0; i < 4; i++) {
-            mainData = &data_02071cf0.unk_20;
+            mainData = &gSaveState.unk_20;
             if (arg0 == mainData->playerStats.equippedThreads[i]) {
                 var_r3 += 1;
             }
@@ -540,7 +540,7 @@ u32 func_02023010(u16 arg0) {
 
         for (u16 friendIdx = 0; friendIdx < 3; friendIdx++) {
             for (u16 slot = 0; slot < 4; slot++) {
-                mainData = &data_02071cf0.unk_20;
+                mainData = &gSaveState.unk_20;
                 if (arg0 == mainData->friendStats[friendIdx].equippedThreads[slot]) {
                     var_r3++;
                 }
@@ -548,9 +548,9 @@ u32 func_02023010(u16 arg0) {
         }
 
         for (u16 i = 0; i < 472; i++) {
-            mainData = &data_02071cf0.unk_20;
+            mainData = &gSaveState.unk_20;
             if (arg0 == mainData->inventoryItems[i].itemID) {
-                var_r3 += ((u32)(data_02071cf0.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C);
+                var_r3 += ((u32)(gSaveState.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C);
                 break;
             }
         }
@@ -573,8 +573,8 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
                 u32 deckOff = deck * 0x3C;
                 u32 slotOff = slot * 0xA;
 
-                if ((data_02071cf0.unk_20.pinLayouts[deck][slot].pinID == itemID) &&
-                    (arg2 <= data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level))
+                if ((gSaveState.unk_20.pinLayouts[deck][slot].pinID == itemID) &&
+                    (arg2 <= gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level))
                 {
                     owned = (owned + 1) & 0xFFFF;
                 }
@@ -582,39 +582,39 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
         }
 
         for (u16 i = 0; i < 256; i++) {
-            if ((data_02071cf0.unk_20.stockpilePins[i].pinID == itemID) &&
-                (arg2 <= data_02071cf0.unk_20.stockpilePins[i].flags.bits.level))
+            if ((gSaveState.unk_20.stockpilePins[i].pinID == itemID) &&
+                (arg2 <= gSaveState.unk_20.stockpilePins[i].flags.bits.level))
             {
                 owned = (owned + 1) & 0xFFFF;
             }
         }
 
         for (u16 i = 0; i < 304; i++) {
-            if ((data_02071cf0.unk_20.masteredPins[i].pinID == itemID) &&
-                (data_02071cf0.unk_20.masteredPins[i].flags.bits.level >= arg2))
+            if ((gSaveState.unk_20.masteredPins[i].pinID == itemID) &&
+                (gSaveState.unk_20.masteredPins[i].flags.bits.level >= arg2))
             {
-                owned = (owned + data_02071cf0.unk_20.masteredPins[i].count) & 0xFFFF;
+                owned = (owned + gSaveState.unk_20.masteredPins[i].count) & 0xFFFF;
                 break;
             }
         }
     } else {
         for (u16 i = 0; i < 4; i++) {
-            if (data_02071cf0.unk_20.playerStats.equippedThreads[i] == itemID) {
+            if (gSaveState.unk_20.playerStats.equippedThreads[i] == itemID) {
                 owned = (owned + 1) & 0xFFFF;
             }
         }
 
         for (u16 ch = 0; ch < 3; ch++) {
             for (u16 slot = 0; slot < 4; slot++) {
-                if (data_02071cf0.unk_20.friendStats[ch].equippedThreads[slot] == itemID) {
+                if (gSaveState.unk_20.friendStats[ch].equippedThreads[slot] == itemID) {
                     owned = (owned + 1) & 0xFFFF;
                 }
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            if (data_02071cf0.unk_20.inventoryItems[i].itemID == itemID) {
-                owned = (owned + ((u32)(data_02071cf0.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
+            if (gSaveState.unk_20.inventoryItems[i].itemID == itemID) {
+                owned = (owned + ((u32)(gSaveState.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
                 break;
             }
         }
@@ -675,20 +675,20 @@ s32 func_0202353c(u16 arg0) {
         OS_WaitForever();
     }
 
-    return (data_02071cf0.unk_20.unk_1ABA[arg0] & (1 << temp_r5)) != 0;
+    return (gSaveState.unk_20.unk_1ABA[arg0] & (1 << temp_r5)) != 0;
 }
 
 u16 func_02023588(void) {
-    return data_02071cf0.unk_20.unk_1AC0;
+    return gSaveState.unk_20.unk_1AC0;
 }
 
 void func_02023598(s16 arg0) {
-    data_02071cf0.unk_20.unk_1AC0 = arg0;
+    gSaveState.unk_20.unk_1AC0 = arg0;
 }
 
 void func_020235a8(void) {
-    if (data_02071cf0.unk_20.unk_1D94 < 216000000) {
-        data_02071cf0.unk_20.unk_1D94++;
+    if (gSaveState.unk_20.unk_1D94 < 216000000) {
+        gSaveState.unk_20.unk_1D94++;
     }
 }
 
@@ -696,18 +696,18 @@ void func_020235cc(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    data_02071cf0.unk_20.unk_1D98[arg0] |= arg1;
+    gSaveState.unk_20.unk_1D98[arg0] |= arg1;
 }
 
 void func_020235fc(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    data_02071cf0.unk_20.unk_1D98[arg0] &= ~arg1;
+    gSaveState.unk_20.unk_1D98[arg0] &= ~arg1;
 }
 
 void func_02023630(s32 arg0) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     for (u16 i = 0; i < 41; i++) {
         mainData->unk_1D98[i] &= ~arg0;
@@ -718,14 +718,14 @@ s32 func_0202366c(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    if (arg1 & data_02071cf0.unk_20.unk_1D98[arg0]) {
+    if (arg1 & gSaveState.unk_20.unk_1D98[arg0]) {
         return 1;
     }
     return 0;
 }
 
 s32 func_020236a0(void) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     for (u16 i = 0; i < 41; i++) {
         if ((mainData->unk_1D98[i] & 0x6) != 0) {
@@ -744,16 +744,16 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
     s16 stat = 0;
 
     if (statType == STAT_ATTACK) {
-        stat += data_02071cf0.unk_20.playerStats.attack;
+        stat += gSaveState.unk_20.playerStats.attack;
     } else if (statType == STAT_DEFENSE) {
-        stat += data_02071cf0.unk_20.playerStats.defense;
+        stat += gSaveState.unk_20.playerStats.defense;
     } else {
-        stat += data_02071cf0.unk_20.playerStats.baseHealth;
+        stat += gSaveState.unk_20.playerStats.baseHealth;
     }
 
     u16 i;
     for (i = 0; i < 4; i++) {
-        mainData     = &data_02071cf0.unk_20;
+        mainData     = &gSaveState.unk_20;
         itemID       = mainData->playerStats.equippedThreads[i];
         itemCategory = Inventory_GetCategory(itemID);
 
@@ -772,7 +772,7 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
 
     if ((statType == STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
         for (i = 0; i < 4; i++) {
-            mainData     = &data_02071cf0.unk_20;
+            mainData     = &gSaveState.unk_20;
             itemID       = mainData->friendStats[activeFriend].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
 
@@ -792,10 +792,10 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
 u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
     RawItemData itemData;
 
-    u16 health = (((playerLevel - 1) * 50) + 200 + data_02071cf0.unk_20.playerStats.baseHealth);
+    u16 health = (((playerLevel - 1) * 50) + 200 + gSaveState.unk_20.playerStats.baseHealth);
 
     for (u16 i = 0; i < 4; i++) {
-        u16          itemID       = data_02071cf0.unk_20.playerStats.equippedThreads[i];
+        u16          itemID       = gSaveState.unk_20.playerStats.equippedThreads[i];
         ItemCategory itemCategory = Inventory_GetCategory(itemID);
         if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
             Data_LoadToBuffer(1, itemData, &data_0205c180, Inventory_GetCategorizedIndex(itemID));
@@ -805,7 +805,7 @@ u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
 
     if (activeFriend != FRIEND_NONE) {
         for (u16 i = 0; i < 4; i++) {
-            u16          itemID       = data_02071cf0.unk_20.friendStats[activeFriend].equippedThreads[i];
+            u16          itemID       = gSaveState.unk_20.friendStats[activeFriend].equippedThreads[i];
             ItemCategory itemCategory = Inventory_GetCategory(itemID);
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
                 Data_LoadToBuffer(1, itemData, &data_0205c180, Inventory_GetCategorizedIndex(itemID));
@@ -829,12 +829,12 @@ s16 Stats_GetEffectiveFriendValue(ActiveFriend activeFriend, StatType statType) 
 
     if ((statType != STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
         if (statType == STAT_ATTACK) {
-            stat += data_02071cf0.unk_20.friendStats[activeFriend].attack;
+            stat += gSaveState.unk_20.friendStats[activeFriend].attack;
         } else if (statType == STAT_DEFENSE) {
-            stat += data_02071cf0.unk_20.friendStats[activeFriend].defense;
+            stat += gSaveState.unk_20.friendStats[activeFriend].defense;
         }
 
-        mainData = &data_02071cf0.unk_20;
+        mainData = &gSaveState.unk_20;
         for (u16 i = 0; i < 4; i++) {
             itemID       = mainData->friendStats[activeFriend].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
@@ -866,7 +866,7 @@ s32 func_02023b7c(u16 itemID) {
     if (itemIdx > 279) {
         return 0;
     }
-    return (((u32)(data_02071cf0.unk_20.unk_1EB2[itemIdx] << 0x1F) >> 0x1F) != 0);
+    return (((u32)(gSaveState.unk_20.unk_1EB2[itemIdx] << 0x1F) >> 0x1F) != 0);
 }
 
 s32 func_02023be8(u16 itemID, s32 arg1) {
@@ -915,12 +915,12 @@ s32 func_02023be8(u16 itemID, s32 arg1) {
 }
 
 void func_02023d00(s32 arg0) {
-    data_02071cf0.unk_20.unk_2324 |= (1 << arg0);
+    gSaveState.unk_20.unk_2324 |= (1 << arg0);
 }
 
 s32 func_02023d1c(s32 arg0) {
     s32 var_r2 = 1;
-    if ((data_02071cf0.unk_20.unk_2324 & (1 << arg0)) == 0) {
+    if ((gSaveState.unk_20.unk_2324 & (1 << arg0)) == 0) {
         var_r2 = 0;
     }
     return var_r2;
@@ -938,7 +938,7 @@ void func_02023d3c(u32 arg0) {
     if (arg0 >= 0x100) {
         OS_WaitForever();
     }
-    data_02071cf0.unk_20.unk_2326[temp_r4] |= (1 << temp_r5);
+    gSaveState.unk_20.unk_2326[temp_r4] |= (1 << temp_r5);
 }
 
 // Nonmatching: Arithmetic differences
@@ -953,14 +953,14 @@ s32 func_02023d88(u32 arg0) {
         OS_WaitForever();
     }
     var_r0 = 1;
-    if (!(data_02071cf0.unk_20.unk_2326[(arg0 << 0xC) >> 0x10] & (1 << temp_r5))) {
+    if (!(gSaveState.unk_20.unk_2326[(arg0 << 0xC) >> 0x10] & (1 << temp_r5))) {
         var_r0 = 0;
     }
     return var_r0;
 }
 
 BOOL func_02023dd4(u32 arg0) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
     u16       i;
 
     // Check if all player equipped slots are empty
@@ -984,7 +984,7 @@ BOOL func_02023dd4(u32 arg0) {
 
 // Nonmatching: Unknown local stack object differences
 s32 func_02023e58(u32 arg0) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     RawItemData itemData;
 
@@ -1035,7 +1035,7 @@ s32 func_02023f60(u32 arg0, u32 arg1) {
     }
 
     for (u16 i = 0; i < 4; i++) {
-        u16          equippedID   = data_02071cf0.unk_20.friendStats[arg0].equippedThreads[i];
+        u16          equippedID   = gSaveState.unk_20.friendStats[arg0].equippedThreads[i];
         u32          itemIdx      = Inventory_GetCategorizedIndex(equippedID);
         ItemCategory itemCategory = Inventory_GetCategory(equippedID);
 
@@ -1054,7 +1054,7 @@ s32 func_02023f60(u32 arg0, u32 arg1) {
 }
 
 u32 func_02024080(void) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     u32 var_r0 = 0;
     for (u16 i = 0; i < 96; i++) {
@@ -1063,7 +1063,7 @@ u32 func_02024080(void) {
         }
     }
 
-    u32 temp_r1 = data_02071cf0.unk_20.experience.unk_0 << 0x19;
+    u32 temp_r1 = gSaveState.unk_20.experience.unk_0 << 0x19;
     if (var_r0 <= (temp_r1 >> 0x19)) {
         var_r0 = temp_r1 >> 0x19;
     }
@@ -1077,8 +1077,8 @@ s32 func_020240e0(u16 arg0, void* arg1) {
             u32 deckOff = deck * 0x3C;
             u32 slotOff = slot * 0xA;
 
-            if ((arg0 == data_02071cf0.unk_20.pinLayouts[deck][slot].pinID) &&
-                (*(u8*)((u32)arg1 + 0x25) == data_02071cf0.unk_20.pinLayouts[deck][slot].flags.bits.level))
+            if ((arg0 == gSaveState.unk_20.pinLayouts[deck][slot].pinID) &&
+                (*(u8*)((u32)arg1 + 0x25) == gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level))
             {
                 return 1;
             }
@@ -1086,7 +1086,7 @@ s32 func_020240e0(u16 arg0, void* arg1) {
     }
 
     for (u16 i = 0; i < 304; i++) {
-        if (arg0 == data_02071cf0.unk_20.masteredPins[i].pinID) {
+        if (arg0 == gSaveState.unk_20.masteredPins[i].pinID) {
             return 1;
         }
     }
@@ -1117,7 +1117,7 @@ u16 func_020241b0(void) {
 u32 func_02024244(void) {
     u32 var_r0 = 0;
 
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     for (u16 i = 0; i < 472; i++) {
         if (mainData->inventoryItems[i].itemID != 0xFFFF) {
@@ -1125,7 +1125,7 @@ u32 func_02024244(void) {
         }
     }
 
-    u32 temp_r1 = data_02071cf0.unk_20.experience.unk_2 << 0x17;
+    u32 temp_r1 = gSaveState.unk_20.experience.unk_2 << 0x17;
     if (var_r0 <= (temp_r1 >> 0x17)) {
         var_r0 = (temp_r1 >> 0x17);
     }
@@ -1151,7 +1151,7 @@ BOOL Progress_HasAcquiredAllSecretReports(void) {
     u16 starsRequired[22];
     starsRequired = SecretReportStarRequirements;
 
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     for (u16 reportIdx = 0; reportIdx < 22; reportIdx++) {
         for (u16 starIdx = 0; starIdx < starsRequired[reportIdx]; starIdx++) {
@@ -1165,9 +1165,9 @@ BOOL Progress_HasAcquiredAllSecretReports(void) {
 }
 
 void Stats_AddExperience(s32 exp) {
-    data_02071cf0.unk_20.experience.current += exp;
-    if (data_02071cf0.unk_20.experience.current > 65535) {
-        data_02071cf0.unk_20.experience.current = 65535;
+    gSaveState.unk_20.experience.current += exp;
+    if (gSaveState.unk_20.experience.current > 65535) {
+        gSaveState.unk_20.experience.current = 65535;
     }
 }
 
@@ -1228,28 +1228,28 @@ void func_02024558(void) {
             continue;
         }
 
-        data_02071cf0.unk_20.inventoryItems[i].itemID = 0xFFFF;
-        data_02071cf0.unk_20.inventoryItems[i].flags  = ((data_02071cf0.unk_20.inventoryItems[i].flags & ~0xF) | 0x10) & ~0x20;
+        gSaveState.unk_20.inventoryItems[i].itemID = 0xFFFF;
+        gSaveState.unk_20.inventoryItems[i].flags  = ((gSaveState.unk_20.inventoryItems[i].flags & ~0xF) | 0x10) & ~0x20;
     }
 }
 
 void Inventory_SetStarterPins(void) {
-    data_02071cf0.unk_20.equippedPins[0].pinID  = PIN_PYROKINESIS;
-    data_02071cf0.unk_20.equippedPins[0].unk_08 = 0;
-    data_02071cf0.unk_20.equippedPins[1].pinID  = PIN_SHOCKWAVE;
-    data_02071cf0.unk_20.equippedPins[1].unk_08 = 0;
-    data_02071cf0.unk_20.equippedPins[2].pinID  = PIN_CURE_DRINK;
-    data_02071cf0.unk_20.equippedPins[2].unk_08 = 0;
-    data_02071cf0.unk_20.equippedPins[3].pinID  = PIN_FORCE_ROUNDS;
-    data_02071cf0.unk_20.equippedPins[3].unk_08 = 0;
-    data_02071cf0.unk_20.equippedPins[4].pinID  = PIN_PSYCHOKINESIS;
-    data_02071cf0.unk_20.equippedPins[4].unk_08 = 1;
-    data_02071cf0.unk_20.equippedPins[5].pinID  = PIN_THUNDERBOLT;
-    data_02071cf0.unk_20.equippedPins[5].unk_08 = 1;
+    gSaveState.unk_20.equippedPins[0].pinID  = PIN_PYROKINESIS;
+    gSaveState.unk_20.equippedPins[0].unk_08 = 0;
+    gSaveState.unk_20.equippedPins[1].pinID  = PIN_SHOCKWAVE;
+    gSaveState.unk_20.equippedPins[1].unk_08 = 0;
+    gSaveState.unk_20.equippedPins[2].pinID  = PIN_CURE_DRINK;
+    gSaveState.unk_20.equippedPins[2].unk_08 = 0;
+    gSaveState.unk_20.equippedPins[3].pinID  = PIN_FORCE_ROUNDS;
+    gSaveState.unk_20.equippedPins[3].unk_08 = 0;
+    gSaveState.unk_20.equippedPins[4].pinID  = PIN_PSYCHOKINESIS;
+    gSaveState.unk_20.equippedPins[4].unk_08 = 1;
+    gSaveState.unk_20.equippedPins[5].pinID  = PIN_THUNDERBOLT;
+    gSaveState.unk_20.equippedPins[5].unk_08 = 1;
 }
 
 BOOL Inventory_AreAllEquippedPinSlotsEmpty(void) {
-    MainData* mainData = &data_02071cf0.unk_20;
+    MainData* mainData = &gSaveState.unk_20;
 
     for (u16 i = 0; i < 6; i++) {
         if (mainData->equippedPins[i].pinID != 0xFFFF) {

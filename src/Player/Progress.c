@@ -101,15 +101,15 @@ extern s32 func_ov031_0210c060(u16);
 
 // Nonmatching
 void Progress_SetCurrentEvent(ProgressEvent event) {
-    s32 var_lr                             = (event >= 2207) ? event - 2207 : event;
-    data_02071cf0.unk_20.unk_249C          = 0;
-    data_02071cf0.unk_20.currentStoryEvent = event;
-    data_02071cf0.unk_20.unk_24A0          = EventScripts[var_lr];
+    s32 var_lr                          = (event >= 2207) ? event - 2207 : event;
+    gSaveState.unk_20.unk_249C          = 0;
+    gSaveState.unk_20.currentStoryEvent = event;
+    gSaveState.unk_20.unk_24A0          = EventScripts[var_lr];
 }
 
 s32 func_ov030_020a66e8(ProgressObject* object) {
-    if (data_02071cf0.unk_20.unk_2488 == 0) {
-        if ((data_02071cf0.unk_20.currentStoryEvent >= 5) && (data_02071cf0.unk_20.currentStoryEvent <= 39)) {
+    if (gSaveState.unk_20.unk_2488 == 0) {
+        if ((gSaveState.unk_20.currentStoryEvent >= 5) && (gSaveState.unk_20.currentStoryEvent <= 39)) {
             return 1;
         }
     }
@@ -121,10 +121,10 @@ s32 func_ov030_020a66e8(ProgressObject* object) {
 
 // Nonmatching
 void Progress_AdvanceEventScript(ProgressObject* progress) {
-    data_02071cf0.unk_20.unk_249C += data_ov030_020dbdd8[data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C]];
+    gSaveState.unk_20.unk_249C += data_ov030_020dbdd8[gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C]];
     if (progress->unk_21ADC != 0 && func_ov030_020a66e8(progress) == 0 && progress->unk_21AE0 != 0) {
         while (TRUE) {
-            switch (data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C]) {
+            switch (gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C]) {
                 case 0x00:
                 case 0x01:
                 case 0x02:
@@ -147,7 +147,7 @@ void Progress_AdvanceEventScript(ProgressObject* progress) {
                 case 0x56:
                     return;
                 default:
-                    data_02071cf0.unk_20.unk_249C += data_ov030_020dbdd8[data_02071cf0.unk_20.unk_249C];
+                    gSaveState.unk_20.unk_249C += data_ov030_020dbdd8[gSaveState.unk_20.unk_249C];
             }
         }
     }
@@ -408,8 +408,8 @@ s32 func_ov030_020a701c(ProgressObject* progress) {
             Task* task = EasyTask_GetTaskById(&progress->taskPool, func_ov030_020a6960(progress, progress->unk_21D00));
             func_ov030_020b3cd4(task, 1);
 
-            s32 temp_r4                   = func_ov030_020b3cc8(task);
-            data_02071cf0.unk_20.unk_24C4 = progress->unk_21D2A;
+            s32 temp_r4                = func_ov030_020b3cc8(task);
+            gSaveState.unk_20.unk_24C4 = progress->unk_21D2A;
             EasyTask_DeleteTask(&progress->taskPool, progress->taskId_KeywordMenu);
             progress->taskId_KeywordMenu = -1;
             g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~8;
@@ -571,13 +571,13 @@ s32 func_ov030_020a75d8(ProgressObject* progress, s16 arg1) {
                 return 1;
             }
             if (arg1 == 0x49) {
-                arg1 = data_02071cf0.unk_20.unk_2458;
+                arg1 = gSaveState.unk_20.unk_2458;
             }
             func_ov030_0208434c(progress, 3, arg1);
             if (progress->unk_21AC4 != 0) {
                 EasyFade_FadeMainDisplay(FADER_INSTANT, 0, progress->unk_21D12);
                 if (progress->taskId_UGFade == -1) {
-                    if (arg1 == data_02071cf0.unk_20.unk_2458) {
+                    if (arg1 == gSaveState.unk_20.unk_2458) {
                         progress->taskId_UGFade =
                             Fld_UGFade_CreateTask(&progress->taskPool, (u16)progress->unk_21D12, 0, &progress->taskId_UGFade);
                     } else {
@@ -591,7 +591,7 @@ s32 func_ov030_020a75d8(ProgressObject* progress, s16 arg1) {
         return 1;
     }
 
-    progress->unk_21A5C = (arg1 == data_02071cf0.unk_20.unk_2458) ? 2 : 9;
+    progress->unk_21A5C = (arg1 == gSaveState.unk_20.unk_2458) ? 2 : 9;
     return 0;
 }
 
@@ -710,23 +710,23 @@ void func_ov030_020a7aa0(u32 arg0, ProgressObject* progress, u32 arg2) {
             progress->unk_21CEA = 0;
             Progress_AdvanceEventScript(progress);
         } else {
-            data_02071cf0.unk_20.unk_24AC = data_02071cf0.unk_20.unk_249C;
-            data_02071cf0.unk_20.unk_24B0 = data_02071cf0.unk_20.unk_24A0;
-            data_02071cf0.unk_20.unk_24A0 = data_ov030_020d958a;
-            data_02071cf0.unk_20.unk_249C = 0;
+            gSaveState.unk_20.unk_24AC = gSaveState.unk_20.unk_249C;
+            gSaveState.unk_20.unk_24B0 = gSaveState.unk_20.unk_24A0;
+            gSaveState.unk_20.unk_24A0 = data_ov030_020d958a;
+            gSaveState.unk_20.unk_249C = 0;
         }
     } else {
         func_ov030_020a6cf8(progress, 0x120);
-        data_02071cf0.unk_20.unk_24AC = data_02071cf0.unk_20.unk_249C;
-        data_02071cf0.unk_20.unk_24B0 = data_02071cf0.unk_20.unk_24A0;
-        data_02071cf0.unk_20.unk_24A0 = data_ov030_020d9588;
-        data_02071cf0.unk_20.unk_249C = 0;
+        gSaveState.unk_20.unk_24AC = gSaveState.unk_20.unk_249C;
+        gSaveState.unk_20.unk_24B0 = gSaveState.unk_20.unk_24A0;
+        gSaveState.unk_20.unk_24A0 = data_ov030_020d9588;
+        gSaveState.unk_20.unk_249C = 0;
     }
 }
 
 void func_ov030_020a7b50(ProgressObject* progress) {
     func_ov030_020a6ab4(progress);
-    switch (data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C]) {
+    switch (gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C]) {
         case 0x0:
         case 0x2:
             progress->targetBrightness = -0x10;
@@ -735,7 +735,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x4:
             progress->targetBrightness = -0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             func_ov030_020a78d0(progress);
             return;
         case 0x1:
@@ -745,52 +745,52 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x3:
             progress->targetBrightness = 0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             func_ov030_020a78d0(progress);
             return;
         case 0x9:
             progress->targetBrightness = 0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             Progress_AdvanceEventScript(progress);
             return;
         case 0xA:
             progress->targetBrightness = -0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             Progress_AdvanceEventScript(progress);
             return;
         case 0xB:
-            func_ov030_020a6eac(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0x14,
-                                -0x3F3, -0x3F1, -0x3F6, -0x3F1);
+            func_ov030_020a6eac(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0x14, -0x3F3,
+                                -0x3F1, -0x3F6, -0x3F1);
             Progress_AdvanceEventScript(progress);
             func_ov030_020aac84(progress);
             return;
         case 0xC:
-            func_ov030_020a6eac(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0x14,
-                                -0x3FD, -0x3F1, -0x3FA, -0x3F1);
+            func_ov030_020a6eac(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0x14, -0x3FD,
+                                -0x3F1, -0x3FA, -0x3F1);
             Progress_AdvanceEventScript(progress);
             func_ov030_020aac84(progress);
             return;
         case 0xD:
-            func_ov030_020a6eac(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)), -0x3F3, -0x3F1,
-                                -0x3F6, -0x3F1);
+            func_ov030_020a6eac(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)), -0x3F3, -0x3F1, -0x3F6,
+                                -0x3F1);
             Progress_AdvanceEventScript(progress);
             func_ov030_020aac84(progress);
             return;
         case 0xE:
-            func_ov030_020a6eac(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)), -0x3FD, -0x3F1,
-                                -0x3FA, -0x3F1);
+            func_ov030_020a6eac(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)), -0x3FD, -0x3F1, -0x3FA,
+                                -0x3F1);
             Progress_AdvanceEventScript(progress);
             func_ov030_020aac84(progress);
             return;
         case 0xF:
-            func_ov030_020a6eac(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)),
-                                (s16)(s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)),
-                                (s16)(s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 5) * 2)),
-                                (s16)(s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 6) * 2)));
+            func_ov030_020a6eac(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)),
+                                (s16)(s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)),
+                                (s16)(s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 5) * 2)),
+                                (s16)(s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 6) * 2)));
             Progress_AdvanceEventScript(progress);
             func_ov030_020aac84(progress);
             return;
@@ -803,13 +803,13 @@ void func_ov030_020a7b50(ProgressObject* progress) {
         case 0x11:
             if (progress->unk_21C48[progress->unk_21CD4] != -1) {
                 func_ov030_020b40ac(EasyTask_GetTaskById(&progress->taskPool, progress->unk_21C48[progress->unk_21CD4]),
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             }
             Progress_AdvanceEventScript(progress);
             return;
         case 0x12:
-            Progress_SetGate(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+            Progress_SetGate(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
 
@@ -817,165 +817,159 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             u32* temp_r6 = (u32*)func_ov030_020a6d80(progress);
             *temp_r6 =
                 func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    (s16)(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)) - 0x40),
-                                    0x40, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 8, 8,
-                                    1, (s32)progress->unk_21CEA);
+                                    (s16)(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)) - 0x40), 0x40,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 8, 8, 1,
+                                    (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r6, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x1B: {
             u32* temp_r7 = (u32*)func_ov030_020a6d80(progress);
-            *temp_r7 =
-                func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    (s16)(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)) - 0x40),
-                                    0x40, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 8,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)), 1,
-                                    (s32)progress->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7, progress,
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+            *temp_r7     = func_ov030_020b3fbc(
+                &progress->taskPool, &progress->unk_21614,
+                (s16)(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)) - 0x40), 0x40,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 8,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)), 1, (s32)progress->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7, progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x1C:
             func_ov030_020a6a1c(progress);
             u32* temp_r6_2 = (u32*)func_ov030_020a6d80(progress);
-            *temp_r6_2 =
-                func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0x80,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 2, 0,
-                                    0, progress->unk_21CEA);
+            *temp_r6_2     = func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
+                                                 *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0x80,
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 2,
+                                                 0, 0, progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r6_2, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
             return;
 
         case 0x1D: {
             u32* temp_r7_2 = (u32*)func_ov030_020a6d80(progress);
             *temp_r7_2 =
                 func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 0xC,
-                                    8, 1, (s32)progress->unk_21CEA);
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 0xC, 8, 1,
+                                    (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_2, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x1E: {
             u32* temp_r7_3 = (u32*)func_ov030_020a6d80(progress);
-            *temp_r7_3 =
-                func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 0xC,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)), 1,
-                                    (s32)progress->unk_21CEA);
+            *temp_r7_3     = func_ov030_020b3fbc(
+                &progress->taskPool, &progress->unk_21614,
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 0xC,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)), 1, (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_3, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x1F: {
             u32* temp_r7_4 = (u32*)func_ov030_020a6d80(progress);
             *temp_r7_4 =
                 func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 0xE,
-                                    8, 1, (s32)progress->unk_21CEA);
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 0xE, 8, 1,
+                                    (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_4, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x20: {
             u32* temp_r7_5 = (u32*)func_ov030_020a6d80(progress);
             *temp_r7_5 =
                 func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 0xA,
-                                    8, 1, (s32)progress->unk_21CEA);
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 0xA, 8, 1,
+                                    (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_5, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x21: {
             u32* temp_r7_6 = (u32*)func_ov030_020a6d80(progress);
-            *temp_r7_6 =
-                func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)), 0xA,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)), 1,
-                                    (s32)progress->unk_21CEA);
+            *temp_r7_6     = func_ov030_020b3fbc(
+                &progress->taskPool, &progress->unk_21614,
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)), 0xA,
+                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)), 1, (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_6, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x22: {
             u32* temp_r8_3 = (u32*)func_ov030_020a6d80(progress);
-            *temp_r8_3 =
-                func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 5) * 2)),
-                                    (s32)(u8) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 6) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 7) * 2)),
-                                    (s32)(u8) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 8) * 2)),
-                                    (s32)progress->unk_21CEA);
+            *temp_r8_3     = func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
+                                                 *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)),
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)),
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 5) * 2)),
+                                                 (s32)(u8) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 6) * 2)),
+                                                 (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 7) * 2)),
+                                                 (s32)(u8) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 8) * 2)),
+                                                 (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r8_3, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 5) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 5) * 2)));
         } break;
 
         case 0x23: {
             u32* temp_r7_7 = (u32*)func_ov030_020a6d94(progress);
-            u8   var_r6    = (u8) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 6) * 2));
-            s16  var_r0    = *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2));
-            s16  var_r2    = *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2));
+            u8   var_r6    = (u8) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 6) * 2));
+            s16  var_r0    = *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2));
+            s16  var_r2    = *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2));
             if (var_r6 != 2) {
                 var_r6 = 0x5D;
                 var_r0 = func_ov030_020b3cc8(
                     EasyTask_GetTaskById(&progress->taskPool, *(u32*)func_ov030_020a6960(progress, progress->unk_21D00)));
                 var_r2 = var_r0;
             }
-            *temp_r7_7 = func_ov030_020b3d88(
-                &progress->taskPool, progress->unk_21614, var_r2, 0xD0,
-                (s16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 5) * 2)), (s32)var_r6,
-                (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 7) * 2)), 0, 0,
-                (s32)progress->unk_21CEA, 0, 0);
+            *temp_r7_7 =
+                func_ov030_020b3d88(&progress->taskPool, progress->unk_21614, var_r2, 0xD0,
+                                    (s16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 5) * 2)), (s32)var_r6,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 7) * 2)), 0, 0,
+                                    (s32)progress->unk_21CEA, 0, 0);
             func_ov030_020a7aa0(*temp_r7_7, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 5) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 5) * 2)));
         } break;
 
         case 0x24: {
             u32* temp_r7_8 = (u32*)func_ov030_020a6d80(progress);
             *temp_r7_8 =
                 func_ov030_020b3fbc(&progress->taskPool, &progress->unk_21614,
-                                    *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                    (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)),
-                                    (s32)(u8) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)), 8,
-                                    1, (s32)progress->unk_21CEA);
+                                    *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 0xFFFFFC02,
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                    (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)),
+                                    (s32)(u8) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)), 8, 1,
+                                    (s32)progress->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_8, progress,
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
         } break;
 
         case 0x25:
             if (func_ov030_020a6ab4(progress) != 0) {
                 return;
             }
-            data_02071cf0.unk_20.unk_249C = data_02071cf0.unk_20.unk_24AC;
-            data_02071cf0.unk_20.unk_24A0 = data_02071cf0.unk_20.unk_24B0;
+            gSaveState.unk_20.unk_249C = gSaveState.unk_20.unk_24AC;
+            gSaveState.unk_20.unk_24A0 = gSaveState.unk_20.unk_24B0;
             return;
         case 0x26:
             if (func_ov030_020a7994(progress) == 0) {
                 return;
             }
-            progress->unk_21CEA           = (u16)(progress->unk_21CEA + 1);
-            data_02071cf0.unk_20.unk_249C = data_02071cf0.unk_20.unk_24AC;
-            data_02071cf0.unk_20.unk_24A0 = data_02071cf0.unk_20.unk_24B0;
+            progress->unk_21CEA        = (u16)(progress->unk_21CEA + 1);
+            gSaveState.unk_20.unk_249C = gSaveState.unk_20.unk_24AC;
+            gSaveState.unk_20.unk_24A0 = gSaveState.unk_20.unk_24B0;
             return;
         case 0x13:
             func_ov030_020a6c24(progress, 0x44);
@@ -1009,7 +1003,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x2D:
-            func_ov030_020af364(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+            func_ov030_020af364(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x2E:
@@ -1022,8 +1016,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x30:
-            data_02071cf0.unk_20.unk_24C4 =
-                (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2));
+            gSaveState.unk_20.unk_24C4 = (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x31:
@@ -1035,14 +1028,14 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x33:
-            func_ov030_020a7928(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                (u16) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)));
+            func_ov030_020a7928(progress, (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                                (u16) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x34:
-            func_ov030_020a7928(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)), 0x14U);
+            func_ov030_020a7928(progress, (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)), 0x14U);
             Progress_AdvanceEventScript(progress);
             return;
         case 0x35:
@@ -1072,7 +1065,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
 
         case 0x36: {
             u32 temp_r1_14 = *(u32*)func_ov030_020a6960(
-                progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+                progress, (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)));
             if (temp_r1_14 != -1) {
                 func_ov030_020b3cd4(EasyTask_GetTaskById(&progress->taskPool, temp_r1_14), 0);
             }
@@ -1083,16 +1076,15 @@ void func_ov030_020a7b50(ProgressObject* progress) {
 
         case 0x37:
             func_ov030_020a7890(progress);
-            data_02071cf0.unk_20.unk_24AC = data_02071cf0.unk_20.unk_249C;
-            data_02071cf0.unk_20.unk_24B0 = data_02071cf0.unk_20.unk_24A0;
-            data_02071cf0.unk_20.unk_24A0 = data_ov030_020d9586;
-            data_02071cf0.unk_20.unk_249C = 0;
+            gSaveState.unk_20.unk_24AC = gSaveState.unk_20.unk_249C;
+            gSaveState.unk_20.unk_24B0 = gSaveState.unk_20.unk_24A0;
+            gSaveState.unk_20.unk_24A0 = data_ov030_020d9586;
+            gSaveState.unk_20.unk_249C = 0;
             return;
         case 0x38:
-            data_02071cf0.unk_20.unk_249C = data_02071cf0.unk_20.unk_24AC;
-            data_02071cf0.unk_20.unk_24A0 = data_02071cf0.unk_20.unk_24B0;
-            u32 temp_r1_16 =
-                *(u32*)func_ov030_020a6960(progress, data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_24AC]);
+            gSaveState.unk_20.unk_249C = gSaveState.unk_20.unk_24AC;
+            gSaveState.unk_20.unk_24A0 = gSaveState.unk_20.unk_24B0;
+            u32 temp_r1_16 = *(u32*)func_ov030_020a6960(progress, gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_24AC]);
             if (temp_r1_16 != -1) {
                 func_ov030_020b3cd4(EasyTask_GetTaskById(&progress->taskPool, temp_r1_16), 1);
             }
@@ -1105,25 +1097,24 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3A:
-            SndMgr_StartPlayingSE((enum SndMgrSeIdx) *
-                                  (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+            SndMgr_StartPlayingSE((enum SndMgrSeIdx) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3B:
-            SndMgr_PlaySEWithPan(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                 *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            SndMgr_PlaySEWithPan(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                 *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3C:
             func_ov030_020b4570(EasyTask_GetTaskById(&progress->taskPool, progress->unk_216B0),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3D:
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3E:
-            func_ov030_020c2fc0(*(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)));
+            func_ov030_020c2fc0(*(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x3F:
@@ -1131,14 +1122,12 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x40:
-            data_02071cf0.unk_20.unk_24A8 = 0;
+            gSaveState.unk_20.unk_24A8 = 0;
             Progress_AdvanceEventScript(progress);
             /* fallthrough */
         case 0x41:
-            data_02071cf0.unk_20.unk_24A8 = data_02071cf0.unk_20.unk_24A8 + 1;
-            if (data_02071cf0.unk_20.unk_24A8 <
-                (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)))
-            {
+            gSaveState.unk_20.unk_24A8 = gSaveState.unk_20.unk_24A8 + 1;
+            if (gSaveState.unk_20.unk_24A8 < (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2))) {
                 if (progress->unk_21ADC == 0) {
                     return;
                 }
@@ -1226,7 +1215,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             if (func_ov030_020b38d4(EasyTask_GetTaskById(
                     &progress->taskPool,
                     *(u32*)func_ov030_020a6960(
-                        progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2))))) == 0)
+                        progress, (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2))))) == 0)
             {
                 return;
             }
@@ -1234,67 +1223,65 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x48:
             func_ov030_020b3948(EasyTask_GetTaskById(
-                &progress->taskPool,
-                *(u32*)func_ov030_020a6960(
-                    progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)))));
+                &progress->taskPool, *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x49:
-            func_ov030_020b38f8(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020b38f8(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x4A:
-            func_ov030_020b3934(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020b3934(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x4B:
-            func_ov030_020b3b64(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020b3b64(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x4C:
-            func_ov030_020b3b70(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 3) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 4) * 2)));
+            func_ov030_020b3b70(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 3) * 2)),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 4) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x4F:
-            func_ov030_020a7284(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 1,
-                                (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020a7284(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 1,
+                                (s32) * (gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             return;
         case 0x4D:
-            func_ov030_020a72fc(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)), 1);
+            func_ov030_020a72fc(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)), 1);
             return;
         case 0x4E:
-            func_ov030_020a72fc(progress, *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020a72fc(progress, *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 1) * 2)),
+                                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             return;
         case 0x50:
             func_ov030_020b3ca0(EasyTask_GetTaskById(
-                &progress->taskPool,
-                *(u32*)func_ov030_020a6960(
-                    progress, (s32) * (data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 1) * 2)))));
+                &progress->taskPool, *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x28:
             if (func_ov030_020a69ac(&progress->taskPool,
-                                    (u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                 ((data_02071cf0.unk_20.unk_249C + 1) * 2))),
+                                    (u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                 ((gSaveState.unk_20.unk_249C + 1) * 2))),
                                     1) == 0)
             {
                 return;
@@ -1311,8 +1298,8 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x2A:
             if (func_ov030_020a69ac(&progress->taskPool,
-                                    (u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                 ((data_02071cf0.unk_20.unk_249C + 1) * 2))),
+                                    (u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                 ((gSaveState.unk_20.unk_249C + 1) * 2))),
                                     0) == 0)
             {
                 return;
@@ -1321,23 +1308,23 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             func_ov030_020a7b50(progress);
             return;
         case 0x2B:
-            func_ov030_020b37cc(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)), 1);
+            func_ov030_020b37cc(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)), 1);
             Progress_AdvanceEventScript(progress);
             return;
         case 0x2C:
-            func_ov030_020b3b3c(EasyTask_GetTaskById(
-                                    &progress->taskPool,
-                                    *(u32*)func_ov030_020a6960(progress, (s32) * (data_02071cf0.unk_20.unk_24A0 +
-                                                                                  ((data_02071cf0.unk_20.unk_249C + 1) * 2)))),
-                                *(data_02071cf0.unk_20.unk_24A0 + ((data_02071cf0.unk_20.unk_249C + 2) * 2)));
+            func_ov030_020b3b3c(
+                EasyTask_GetTaskById(&progress->taskPool,
+                                     *(u32*)func_ov030_020a6960(progress, (s32) * (gSaveState.unk_20.unk_24A0 +
+                                                                                   ((gSaveState.unk_20.unk_249C + 1) * 2)))),
+                *(gSaveState.unk_20.unk_24A0 + ((gSaveState.unk_20.unk_249C + 2) * 2)));
             Progress_AdvanceEventScript(progress);
             return;
         case 0x51:
-            progress->unk_21D14 = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D14 = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             if ((GXx_GetMasterBrightness(&REG_MASTER_BRIGHT) != 0x10) &&
                 (GXx_GetMasterBrightness(&REG_MASTER_BRIGHT) != -0x10))
             {
@@ -1370,7 +1357,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             Progress_AdvanceEventScript(progress);
             return;
         case 0x53:
-            if (func_ov030_020a75d8(progress, data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C]) != 0) {
+            if (func_ov030_020a75d8(progress, gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C]) != 0) {
                 return;
             }
             Progress_AdvanceEventScript(progress);
@@ -1385,7 +1372,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x7:
             progress->targetBrightness = 0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             Progress_AdvanceEventScript(progress);
             return;
         case 0x6:
@@ -1395,7 +1382,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             return;
         case 0x8:
             progress->targetBrightness = -0x10;
-            progress->unk_21D12        = data_02071cf0.unk_20.unk_24A0[data_02071cf0.unk_20.unk_249C];
+            progress->unk_21D12        = gSaveState.unk_20.unk_24A0[gSaveState.unk_20.unk_249C];
             Progress_AdvanceEventScript(progress);
             return;
         case 0x55:
@@ -1414,7 +1401,7 @@ void func_ov030_020a7b50(ProgressObject* progress) {
                 Progress_SetCurrentEvent(2);
                 return;
             }
-            if (data_02071cf0.unk_20.unk_24B8 != 0) {
+            if (gSaveState.unk_20.unk_24B8 != 0) {
                 return;
             }
             Progress_SetCurrentEvent(3);
@@ -1486,10 +1473,10 @@ void func_ov030_020a7b50(ProgressObject* progress) {
             g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff0 = 0xA;
             g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff1 = 6;
             func_ov030_020b4598(EasyTask_GetTaskById(&progress->taskPool, progress->unk_216B0), 0);
-            data_02071cf0.unk_20.unk_2498 = 0;
+            gSaveState.unk_20.unk_2498 = 0;
             SndMgr_StartPlayingSE(SEIDX_EV_SE_LOOP_STOP);
             func_ov030_020c2de8();
-            func_ov030_020c2d50(data_02071cf0.unk_20.unk_2548[data_02071cf0.unk_20.unk_2458]);
+            func_ov030_020c2d50(gSaveState.unk_20.unk_2548[gSaveState.unk_20.unk_2458]);
             func_ov030_020ad428(progress);
             if (progress->unk_21D0C != 0) {
                 func_ov030_020c2e28();
@@ -1501,21 +1488,21 @@ void func_ov030_020a7b50(ProgressObject* progress) {
 
 // Nonmatching
 void Progress_BeginScriptedEvent(ProgressObject* progress, ProgressEvent event, s32 arg2) {
-    if (data_02071cf0.unk_20.unk_2498 != FALSE) {
+    if (gSaveState.unk_20.unk_2498 != FALSE) {
         return;
     }
 
     Progress_InitState(progress);
-    data_02071cf0.unk_20.unk_2498 = TRUE;
+    gSaveState.unk_20.unk_2498 = TRUE;
 
     if (event >= 0x8000) {
         event -= 0x8000;
     }
 
-    data_02071cf0.unk_20.unk_249C = 0;
-    data_02071cf0.unk_20.unk_24A4 = arg2;
-    progress->unk_21D0C           = FALSE;
-    progress->unk_21CF4           = FALSE;
+    gSaveState.unk_20.unk_249C = 0;
+    gSaveState.unk_20.unk_24A4 = arg2;
+    progress->unk_21D0C        = FALSE;
+    progress->unk_21CF4        = FALSE;
 
     if (event >= 0x4000) {
         progress->unk_21D0C = TRUE;
@@ -1721,35 +1708,35 @@ s32 func_ov030_020aa390(ProgressObject* progress) {
 }
 
 s32 func_ov030_020aa4bc(ProgressObject* progress) {
-    if (data_02071cf0.unk_20.unk_24B8 != 0) {
+    if (gSaveState.unk_20.unk_24B8 != 0) {
         return 0;
     }
-    if (data_02071cf0.unk_20.unk_1AB0 >= 44) {
-        data_02071cf0.unk_20.unk_1AB0 = 0;
+    if (gSaveState.unk_20.unk_1AB0 >= 44) {
+        gSaveState.unk_20.unk_1AB0 = 0;
     }
-    if (data_ov030_020da618[data_02071cf0.unk_20.unk_1AB0](progress) != 0) {
+    if (data_ov030_020da618[gSaveState.unk_20.unk_1AB0](progress) != 0) {
         return 1;
     }
-    if (func_ov030_020ab3b8(data_02071cf0.unk_20.currentStoryEvent) != 0) {
-        s16 temp_r0_2                          = func_ov030_020ab420(data_02071cf0.unk_20.currentStoryEvent);
-        data_02071cf0.unk_20.unk_24B4          = 0;
-        data_02071cf0.unk_20.unk_24B8          = 1;
-        data_02071cf0.unk_20.currentStoryEvent = temp_r0_2;
+    if (func_ov030_020ab3b8(gSaveState.unk_20.currentStoryEvent) != 0) {
+        s16 temp_r0_2                       = func_ov030_020ab420(gSaveState.unk_20.currentStoryEvent);
+        gSaveState.unk_20.unk_24B4          = 0;
+        gSaveState.unk_20.unk_24B8          = 1;
+        gSaveState.unk_20.currentStoryEvent = temp_r0_2;
         func_ov030_020af364(-2);
         return 1;
     }
-    if (func_ov030_020ab3ec(data_02071cf0.unk_20.currentStoryEvent) != 0) {
+    if (func_ov030_020ab3ec(gSaveState.unk_20.currentStoryEvent) != 0) {
         ProgressReward_GrantPin(progress, 0xFBU);
         return 0;
     }
 
-    if (data_02071cf0.unk_20.currentStoryEvent == 0x30A) {
-        data_02071cf0.unk_20.unk_3124 = 0x30;
-        data_02071cf0.unk_20.unk_3128 = 0;
-        progress->unk_21630           = 4;
+    if (gSaveState.unk_20.currentStoryEvent == 0x30A) {
+        gSaveState.unk_20.unk_3124 = 0x30;
+        gSaveState.unk_20.unk_3128 = 0;
+        progress->unk_21630        = 4;
         DebugOvlDisp_Pop();
         return 0;
-    } else if (data_02071cf0.unk_20.currentStoryEvent == 0x36) {
+    } else if (gSaveState.unk_20.currentStoryEvent == 0x36) {
         if (func_ov030_020a9d00(progress, 5) == 0) {
             return 1;
         }
@@ -1763,7 +1750,7 @@ s32 func_ov030_020aa4bc(ProgressObject* progress) {
         DebugOvlDisp_Push(func_ov030_02082c68, progress, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082534, progress, PROCESS_STAGE_INIT);
         return 1;
-    } else if (data_02071cf0.unk_20.currentStoryEvent == 0x34) {
+    } else if (gSaveState.unk_20.currentStoryEvent == 0x34) {
         if (func_ov030_020a9d00(progress, 5) == 0) {
             return 1;
         }
@@ -1793,7 +1780,7 @@ s32 func_ov030_020aa4bc(ProgressObject* progress) {
         DebugOvlDisp_Push(func_ov030_02082c68, progress, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082534, progress, PROCESS_STAGE_INIT);
         return 1;
-    } else if (data_02071cf0.unk_20.currentStoryEvent == 0x35) {
+    } else if (gSaveState.unk_20.currentStoryEvent == 0x35) {
         if (func_ov030_020a9d00(progress, 5) == 0) {
             return 1;
         }
@@ -1860,12 +1847,12 @@ s32 func_ov030_020aa4bc(ProgressObject* progress) {
 // Nonmatching
 void func_ov030_020aa9f4(ProgressObject* progress, s16 arg1, s16 arg2, s16 arg3) {
     for (s32 i = 0; i < 0x10; i++) {
-        if (arg1 == data_02071cf0.unk_20.unk_24C8[i]) {
+        if (arg1 == gSaveState.unk_20.unk_24C8[i]) {
             return;
         }
-        if (data_02071cf0.unk_20.unk_24C8[i] == -1) {
-            data_02071cf0.unk_20.unk_24C8[i]        = arg1;
-            data_02071cf0.unk_20.unk_24C8[i + 0x10] = arg3;
+        if (gSaveState.unk_20.unk_24C8[i] == -1) {
+            gSaveState.unk_20.unk_24C8[i]        = arg1;
+            gSaveState.unk_20.unk_24C8[i + 0x10] = arg3;
             if (progress->unk_21758 >= 8) {
                 return;
             }
@@ -1884,7 +1871,7 @@ void func_ov030_020aa9f4(ProgressObject* progress, s16 arg1, s16 arg2, s16 arg3)
 }
 
 u8 func_ov030_020aaad8(void) {
-    return data_02071cf0.unk_20.unk_16EA[func_ov030_020af350() * 0x28];
+    return gSaveState.unk_20.unk_16EA[func_ov030_020af350() * 0x28];
 }
 
 s32 func_ov030_020aaaf8(u16 itemID, s32 arg1) {

@@ -57,7 +57,7 @@ void func_ov017_0213021c(void*);
 void func_ov017_02130280(void*);
 
 extern s32 data_0205e4e0;
-extern s32 data_02071cf0;
+extern s32 gSaveState;
 
 extern s32 data_ov003_020e68d0;
 
@@ -2768,7 +2768,7 @@ void func_ov017_0212aaa0(void* arg0) {
         func_ov017_02130178(0, 0x4EB, 0x56C, ((Boss03*)arg0)->unk28);
         temp_r2 = data_ov003_020e71b8->unk3D7CC;
         func_ov003_020c3acc(0, 0x303, (s32)(temp_r2 + (temp_r2 >> 0x1F)) >> 1);
-        var_r8 = &data_02071cf0 + 0x20;
+        var_r8 = &gSaveState + 0x20;
         var_r7 = 0;
         do {
             if (((Boss03*)var_r8)->unk74 != 0xFFFF) {
@@ -2915,7 +2915,7 @@ void func_ov017_0212af5c(void* arg0) {
 void func_ov017_0212afe8(void* arg0) {
     if (((Boss03*)arg0)->unk1C0 == 0) {
         ((Boss03*)arg0)->unk18C = (u16)(((Boss03*)arg0)->unk18C | 1);
-        func_ov003_020bb48c(0, *(s32*)((u8*)&data_02071cf0 + 0x3020 + 0x141), 0x105, ((Boss03*)arg0)->unk28,
+        func_ov003_020bb48c(0, *(s32*)((u8*)&gSaveState + 0x3020 + 0x141), 0x105, ((Boss03*)arg0)->unk28,
                             ((Boss03*)arg0)->unk2C, ((Boss03*)arg0)->unk30, 0);
         if (((Boss03*)arg0)->unk1D0 != -1) {
             EasyTask_DeleteTask(&data_ov003_020e71b8->unk_10118, ((Boss03*)arg0)->unk1D0);
@@ -4501,7 +4501,7 @@ void func_ov017_0212d8e0(void* arg0) {
     }
     if (((Boss03*)arg0)->unk1C0 == 1) {
         var_r8 = 0;
-        var_r9 = &data_02071cf0 + 0x20;
+        var_r9 = &gSaveState + 0x20;
         do {
             if (((Boss03*)var_r9)->unk74 != 0xFFFF) {
                 temp_r7 = (((Boss03*)data_ov003_020e71b8->unk3D898)->unk28 + (RNG_Next(0x80) << 0xC)) - 0x40000;
