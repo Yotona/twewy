@@ -45,10 +45,16 @@ src/Debug/Takami/Depart.c:
     .bss        start:0x020cd28c end:0x020cd290
 
 src/Debug/Takami/Save.c:
-    .text       start:0x020bf250 end:0x020c61e4
-    .rodata     start:0x020caf44 end:0x020cb464
-    .data       start:0x020cce74 end:0x020cd164
+    .text       start:0x020bf250 end:0x020c5f20
+    .rodata     start:0x020caf44 end:0x020cb41c
+    .data       start:0x020cce74 end:0x020cd150
     .bss        start:0x020cd290 end:0x020cd294
+
+src/Interface/Menu/Save/Save_HelpCurU.c:
+    complete
+    .text       start:0x020c5f20 end:0x020c61e4
+    .rodata     start:0x020cb41c end:0x020cb464
+    .data       start:0x020cd150 end:0x020cd164
 
 src/Debug/Takami/NRep.c:
     .text       start:0x020c61e4 end:0x020c7870

@@ -10,8 +10,6 @@
 #include "common_data.h"
 #include <NitroSDK/fx.h>
 
-s32 func_ov043_020c61b0(TaskPool* pool, s32 arg1, void* arg2);
-
 void func_ov043_020bf250(SaveState* state) {
     // Not yet implemented
 }
@@ -901,65 +899,4 @@ void func_ov043_020c5ee8(TaskPool* pool, s32 arg1, u16 arg2, void* arg3) {
     args.unk_08 = arg2;
     args.unk_04 = arg3;
     EasyTask_CreateTask(pool, &data_ov043_020cb3bc, NULL, 0, NULL, &args);
-}
-
-void* func_ov043_020c5f20(void* arg0, s32 arg2) {
-    // Not yet implemented
-}
-
-void func_ov043_020c5fbc(SaveHelpCurU* helpCurU, HelpCurUArgs* args) {
-    // Not yet implemented
-}
-
-s32 func_ov043_020c6064(TaskPool* pool, Task* task, void* args) {
-    SaveHelpCurU* helpCurU = task->data;
-    HelpCurUArgs* curUArgs = args;
-
-    helpCurU->unk_88 = curUArgs->unk_04;
-    func_ov043_020c5fbc(helpCurU, curUArgs);
-    return 1;
-}
-
-s32 func_ov043_020c6084(TaskPool* pool, Task* task, void* args) {
-    // Not yet implemented
-}
-
-s32 func_ov043_020c60f8(TaskPool* pool, Task* task, void* args) {
-    SaveHelpCurU* helpCurU = task->data;
-    for (u16 i = 0; i < 2; i++) {
-        if (helpCurU->unk_80[i] != 0) {
-            Sprite_RenderFrame(&helpCurU->sprites[i]);
-        }
-    }
-    return 1;
-}
-
-s32 func_ov043_020c6138(TaskPool* pool, Task* task, void* args) {
-    SaveHelpCurU* helpCurU = task->data;
-    for (u16 i = 0; i < 2; i++) {
-        Sprite_Release(&helpCurU->sprites[i]);
-    }
-    return 1;
-}
-
-s32 func_ov043_020c6168(TaskPool* pool, Task* task, void* args, s32 method) {
-    const struct DispatchFuncs {
-        s32 (*funcs[4])(TaskPool* pool, Task* task, void* args);
-    } HelpCurUFuncs = {
-        func_ov043_020c6064,
-        func_ov043_020c6084,
-        func_ov043_020c60f8,
-        func_ov043_020c6138,
-    };
-
-    return HelpCurUFuncs.funcs[method](pool, task, args);
-}
-
-s32 func_ov043_020c61b0(TaskPool* pool, s32 arg1, void* arg2) {
-    static const TaskHandle data_ov043_020cb41c = {"Tsk_Save_helpCurU", func_ov043_020c6168, sizeof(SaveHelpCurU)};
-
-    HelpCurUArgs args;
-    args.unk_00 = arg1;
-    args.unk_04 = arg2;
-    return EasyTask_CreateTask(pool, &data_ov043_020cb41c, NULL, 0, NULL, &args);
 }

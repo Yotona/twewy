@@ -1857,14 +1857,18 @@ func_ov043_020c5e6c kind:function(arm,size=0x20) addr:0x020c5e6c
 func_ov043_020c5e8c kind:function(arm,size=0x14) addr:0x020c5e8c
 func_ov043_020c5ea0 kind:function(arm,size=0x48) addr:0x020c5ea0
 func_ov043_020c5ee8 kind:function(arm,size=0x38) addr:0x020c5ee8
-func_ov043_020c5f20 kind:function(arm,size=0x9c) addr:0x020c5f20
-func_ov043_020c5fbc kind:function(arm,size=0xa8) addr:0x020c5fbc
-func_ov043_020c6064 kind:function(arm,size=0x20) addr:0x020c6064
-func_ov043_020c6084 kind:function(arm,size=0x74) addr:0x020c6084
-func_ov043_020c60f8 kind:function(arm,size=0x40) addr:0x020c60f8
-func_ov043_020c6138 kind:function(arm,size=0x30) addr:0x020c6138
-func_ov043_020c6168 kind:function(arm,size=0x48) addr:0x020c6168
-func_ov043_020c61b0 kind:function(arm,size=0x34) addr:0x020c61b0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Save/Save_HelpCurU.c
+/////////////////////////////////////////////////////////////
+Save_HelpCurU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5f20
+Save_HelpCurU_Load kind:function(arm,size=0xa8) addr:0x020c5fbc
+Save_HelpCurU_Init kind:function(arm,size=0x20) addr:0x020c6064
+Save_HelpCurU_Update kind:function(arm,size=0x74) addr:0x020c6084
+Save_HelpCurU_Render kind:function(arm,size=0x40) addr:0x020c60f8
+Save_HelpCurU_Destroy kind:function(arm,size=0x30) addr:0x020c6138
+Save_HelpCurU_RunTask kind:function(arm,size=0x48) addr:0x020c6168
+Save_HelpCurU_CreateTask kind:function(arm,size=0x34) addr:0x020c61b0
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
@@ -2569,9 +2573,13 @@ data_ov043_020cb3bc kind:data(any) addr:0x020cb3bc
 data_ov043_020cb3c8 kind:data(any) addr:0x020cb3c8
 data_ov043_020cb3d8 kind:data(any) addr:0x020cb3d8
 data_ov043_020cb3f0 kind:data(any) addr:0x020cb3f0
-data_ov043_020cb41c kind:data(any) addr:0x020cb41c
-data_ov043_020cb428 kind:data(any) addr:0x020cb428
-data_ov043_020cb438 kind:data(any) addr:0x020cb438
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Save/Save_HelpCurU.c
+/////////////////////////////////////////////////////////////
+Tsk_Save_helpCurU kind:data(any) addr:0x020cb41c local
+@1066 kind:data(any) addr:0x020cb428 local
+Save_HelpCurU_Animation kind:data(any) addr:0x020cb438 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
@@ -2927,7 +2935,11 @@ data_ov043_020cd108 kind:data(any) addr:0x020cd108
 data_ov043_020cd11c kind:data(any) addr:0x020cd11c
 data_ov043_020cd12c kind:data(any) addr:0x020cd12c
 data_ov043_020cd13c kind:data(any) addr:0x020cd13c
-data_ov043_020cd150 kind:data(any) addr:0x020cd150
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Save/Save_HelpCurU.c
+/////////////////////////////////////////////////////////////
+@981 kind:data(byte[18]) addr:0x020cd150 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
