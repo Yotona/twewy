@@ -253,7 +253,7 @@ void func_ov043_020bd454(void) {
     data_0206aa78 = 0x300010;
     data_0206aa7c = 0x400040;
 
-    g_DisplaySettings.controls[0].layers     = 0x1D;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     g_DisplaySettings.controls[0].brightness = 0x10;
     g_DisplaySettings.controls[1].bgMode     = GX_BGMODE_0;
 
@@ -275,7 +275,7 @@ void func_ov043_020bd454(void) {
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objBmpMode  = GX_OBJBMPMODE_1D_128K;
 
-    g_DisplaySettings.controls[1].layers     = 0x1C;
+    Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     g_DisplaySettings.controls[1].brightness = 0x10;
 
     OamMgr_Init3DSpritePipeline();

@@ -41,15 +41,15 @@ void OpenEnd_InitHardware(void) {
     Display_InitMainBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 0, 2, 0, 0x88);
     Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 0, 0x290);
 
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers = LAYER_BG0 | LAYER_OBJ;
-    g_DisplaySettings.controls[DISPLAY_SUB].bgMode  = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
     Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 0, 2, 0, 0x88);
     Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 0, 0x290);
 
-    g_DisplaySettings.controls[DISPLAY_SUB].layers       = 17;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_OBJ);
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
 

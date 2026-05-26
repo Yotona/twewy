@@ -149,7 +149,7 @@ s32 func_ov004_020ec790(BtlFeat01* feat) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[0].layers = 0x1F;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
@@ -169,7 +169,7 @@ s32 func_ov004_020ec790(BtlFeat01* feat) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[1].layers = 0x1E;
+    Display_SetSubLayers(LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.engineState[0].blendMode   = 1;
     g_DisplaySettings.engineState[0].blendLayer0 = 1;

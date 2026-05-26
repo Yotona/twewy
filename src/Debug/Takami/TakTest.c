@@ -165,8 +165,8 @@ void TakTest_InitSystems(void) {
     g_DisplaySettings.controls[0].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[0].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
-    g_DisplaySettings.controls[0].brightness  = 16;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_OBJ);
+    g_DisplaySettings.controls[0].brightness = 16;
 
     data_0206aa78                        = 0x300010;
     data_0206aa7c                        = 0x400040;
@@ -188,8 +188,8 @@ void TakTest_InitSystems(void) {
 
     g_DisplaySettings.controls[1].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[1].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[1].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
-    g_DisplaySettings.controls[1].brightness  = 16;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_OBJ);
+    g_DisplaySettings.controls[1].brightness = 16;
     OamMgr_Init3DSpritePipeline();
     OamMgr_InitExtended();
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);

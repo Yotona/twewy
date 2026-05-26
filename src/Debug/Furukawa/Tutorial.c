@@ -101,8 +101,8 @@ static void Tutorial_InitDisplay(void) {
     g_DisplaySettings.engineState[0].bgSettings[2].priority = 2;
     g_DisplaySettings.engineState[0].bgSettings[1].mosaic   = 0;
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic   = 0;
-    g_DisplaySettings.controls[0].layers                    = 0x16;
-    g_DisplaySettings.controls[1].bgMode                    = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG1 | LAYER_BG2 | LAYER_OBJ);
+    g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
     Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 0, 1, 0, 0x84);
@@ -112,7 +112,7 @@ static void Tutorial_InitDisplay(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].priority = 2;
     g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
-    g_DisplaySettings.controls[1].layers                    = 6;
+    Display_SetSubLayers(LAYER_BG1 | LAYER_BG2);
 }
 
 static void Tutorial_VBlank(void) {

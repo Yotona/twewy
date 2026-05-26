@@ -1864,8 +1864,8 @@ void func_ov002_02082f18(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, void* arg3) 
 
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
 
-    g_DisplaySettings.controls[0].layers = 29;
-    g_DisplaySettings.controls[1].layers = 28;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     menuObj->unk_47340 =
         PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F0, 4), 0, 0, 0x10);
@@ -1928,8 +1928,8 @@ void func_ov002_02083484(OtosuMenuObj* menuObj, u16* arg1) {
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     menuObj->unk_462F4 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 5, 0);
 
-    g_DisplaySettings.controls[0].layers = 0;
-    g_DisplaySettings.controls[1].layers = 2;
+    Display_SetMainLayers(LAYER_NONE);
+    Display_SetSubLayers(LAYER_BG1);
 
     menuObj->unk_47340 =
         PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
@@ -1990,8 +1990,8 @@ void func_ov002_02083694(OtosuMenuObj* menuObj) {
     menuObj->unk_474B8 = Data_GetPackEntryData(menuObj->unk_462F4, 8) + 4;
     func_0200d1d8(&menuObj->unk_47438, 0, 2, 0, &menuObj->unk_474B8, 1, 1);
 
-    g_DisplaySettings.controls[0].layers = 0x1C;
-    g_DisplaySettings.controls[1].layers = 0x1C;
+    Display_SetMainLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     Display_Commit();
 }
 
@@ -2020,22 +2020,7 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_47398, 1, 2, 0, &menuObj->unk_47498, 1, 2);
     func_0200d858(&menuObj->unk_47398, 0, 0, 0);
 
-    s32                 bg        = menuObj->unk_4739C;
-    DisplayEngineState* temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_47398];
-    DisplayBGSettings*  temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_4739C];
-
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_4739C].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
+    Display_SetBGOffset(menuObj->unk_47398, menuObj->unk_4739C, 0x200000, 0x200000);
 
     menuObj->unk_47324 = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F0, 11),
                                               g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x4D20);
@@ -2044,22 +2029,7 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_47370, 1, 1, 0, &menuObj->unk_47490, 1, 1);
     func_0200d858(&menuObj->unk_47370, 0, 0, 0);
 
-    bg        = menuObj->unk_47374;
-    temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_47370];
-    temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_47374];
-
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_47374].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
+    Display_SetBGOffset(menuObj->unk_47370, menuObj->unk_47374, 0x200000, 0x200000);
 
     void* var_r1_5     = Data_GetPackEntryData(menuObj->unk_462F4, 2);
     menuObj->unk_47488 = Data_GetPackEntryData(menuObj->unk_462F4, 4) + 4;
@@ -2068,22 +2038,7 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_47348, 1, 0, 0, &menuObj->unk_47488, 1, 1);
     func_0200d858(&menuObj->unk_47348, 0, 0, 0);
 
-    bg        = menuObj->unk_47378;
-    temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_47378];
-    temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_4737C];
-
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_4737C].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
+    Display_SetBGOffset(menuObj->unk_47348, menuObj->unk_4734C, 0x200000, 0x200000);
 
     menuObj->unk_47344 =
         PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
@@ -2103,22 +2058,7 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_47438, 0, 2, 0, &menuObj->unk_474B8, 1, 2);
     func_0200d858(&menuObj->unk_47438, 0, 0, 0);
 
-    bg        = menuObj->unk_47378;
-    temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_47378];
-    temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_4737C];
-
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_4737C].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
+    Display_SetBGOffset(menuObj->unk_47438, menuObj->unk_4743C, 0x200000, 0x200000);
 
     menuObj->unk_47334 = BgResMgr_AllocChar32(g_BgResourceManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 8),
                                               g_DisplaySettings.engineState[0].bgSettings[1].charBase, 0, 0x3EA0);
@@ -2127,22 +2067,7 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_47410, 0, 1, 0, &menuObj->unk_474B0, 1, 1);
     func_0200d858(&menuObj->unk_47410, 0, 0, 0);
 
-    bg        = menuObj->unk_47414;
-    temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_47410];
-    temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_47414];
-
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_47414].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
+    Display_SetBGOffset(menuObj->unk_47410, menuObj->unk_47414, 0x200000, 0x200000);
 
     void* var_r1_10 = Data_GetPackEntryData(menuObj->unk_462F4, 7);
 
@@ -2154,25 +2079,10 @@ void func_ov002_02083a74(OtosuMenuObj* menuObj) {
     func_0200d1d8(&menuObj->unk_473E8, 0, 0, 0, &menuObj->unk_474A8, 2, 1);
     func_0200d858(&menuObj->unk_473E8, 0, 0, 0);
 
-    bg        = menuObj->unk_473EC;
-    temp_r3   = &g_DisplaySettings.engineState[menuObj->unk_473E8];
-    temp_r1_7 = &temp_r3->bgSettings[menuObj->unk_473EC];
+    Display_SetBGOffset(menuObj->unk_473E8, menuObj->unk_473EC, 0x200000, 0x200000);
 
-    switch (temp_r1_7->bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r3->bgAffines[menuObj->unk_473EC].unk_14 = 1;
-            break;
-    }
-
-    temp_r3->bgOffsets[bg].hOffset = 0x200000;
-    temp_r3->bgOffsets[bg].vOffset = 0x200000;
-
-    g_DisplaySettings.controls[0].layers = 0x1F;
-    g_DisplaySettings.controls[1].layers = 0x1F;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     Display_Commit();
 }
@@ -2258,7 +2168,7 @@ void func_ov002_02084494(OtosuMenuObj* menuObj, u8 arg1, u16* arg2) {
     menuObj->unk_47320 = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 8),
                                               g_DisplaySettings.engineState[1].bgSettings[0].charBase, 0, 0x200);
 
-    g_DisplaySettings.controls[1].layers = 0x1F;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     sp12          = data_ov002_02091aac.unk10[7];
     spC           = data_ov002_02091aac.unk10[4];
@@ -2301,7 +2211,7 @@ void func_ov002_02084494(OtosuMenuObj* menuObj, u8 arg1, u16* arg2) {
     menuObj->unk_47330 = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r4,
                                               g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
     func_0200d1d8(menuObj->unk_473E8, 0, 0, 0, menuObj->unk_474A8, 1, 1);
-    g_DisplaySettings.controls[0].layers = 0x1F;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     Display_Commit();
 }
 
@@ -2355,9 +2265,9 @@ void func_ov002_02084c84(OtosuMenuObj* menuObj, u16* arg1) {
     var_r0             = Data_GetPackEntryData(temp_r0_3, 4);
     menuObj->unk_474A0 = (void*)(var_r0 + 4);
     func_0200d1d8(&menuObj->unk_473C0, 1, 3, 0, &menuObj->unk_474A0, 1, 1);
-    var_r1_3                             = NULL;
-    g_DisplaySettings.controls[1].layers = 0x18;
-    temp_r0_4                            = menuObj->unk_462F4;
+    var_r1_3 = NULL;
+    Display_SetSubLayers(LAYER_BG3 | LAYER_OBJ);
+    temp_r0_4 = menuObj->unk_462F4;
     if (temp_r0_4 != NULL) {
         var_r1_3 = Data_GetPackEntryData(temp_r0_4, 6);
     }
@@ -2394,7 +2304,7 @@ void func_ov002_02084c84(OtosuMenuObj* menuObj, u16* arg1) {
     menuObj->unk_47330 = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r4,
                                               g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
     func_0200d1d8(&menuObj->unk_473E8, 0, 0, 0, &menuObj->unk_474A8, 1, 1);
-    g_DisplaySettings.controls[0].layers = 0x1D;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     Display_Commit();
 }
 
@@ -2428,8 +2338,8 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
     func_ov002_02082e70(&menuObj->unk_45FF4, arg3, menuObj->unk_47490 + 4, menuObj->unk_47490);
     func_0200d1d8(&menuObj->unk_47370, 1, 1, 0, &menuObj->unk_47490, 1, 1);
 
-    g_DisplaySettings.controls[1].layers = 0x1E;
-    g_DisplaySettings.controls[0].layers = 0;
+    Display_SetSubLayers(LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    Display_SetMainLayers(LAYER_NONE);
 
     menuObj->unk_47344 =
         PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(menuObj->unk_462F4, 6), 0, 0, 0x10);
@@ -6076,7 +5986,7 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers = 31;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(0);
@@ -6096,7 +6006,8 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[1].layers         = 31;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+
     g_DisplaySettings.engineState[0].blendMode   = 1;
     g_DisplaySettings.engineState[0].blendLayer0 = 1;
     g_DisplaySettings.engineState[0].blendLayer1 = 62;
@@ -6179,8 +6090,8 @@ void func_ov002_0208bd40(void) {
     g_DisplaySettings.engineState[0].bgSettings[1].mosaic   = 0;
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic   = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic   = 0;
-    g_DisplaySettings.controls[0].layers                    = 31;
-    g_DisplaySettings.controls[1].bgMode                    = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(0);
 
     Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 7, 0, 0x401C);
@@ -6198,7 +6109,7 @@ void func_ov002_0208bd40(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[1].layers = 31;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.engineState[0].blendMode   = 1;
     g_DisplaySettings.engineState[0].blendLayer0 = 1;
@@ -6294,7 +6205,7 @@ void func_ov002_0208c228(void) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[0].layers = 31;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(0);
 
@@ -6313,7 +6224,7 @@ void func_ov002_0208c228(void) {
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[1].layers = 31;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.controls[1].windows |= 4;
 
@@ -8543,12 +8454,12 @@ void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
     void* var_r4_4;
 
     func_ov002_02085710(menuObj);
-    menuObj->unk_462F0                   = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
-    g_DisplaySettings.controls[0].layers = 1;
-    g_DisplaySettings.controls[1].layers = 8;
-    temp_r1                              = func_ov031_0210ab68();
-    var_r4                               = Data_GetPackEntryData(menuObj->unk_462F0, 4);
-    var_ip                               = 0;
+    menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
+    Display_SetMainLayers(LAYER_BG0);
+    Display_SetSubLayers(LAYER_BG3);
+    temp_r1 = func_ov031_0210ab68();
+    var_r4  = Data_GetPackEntryData(menuObj->unk_462F0, 4);
+    var_ip  = 0;
     do {
         temp_r3   = var_ip * 2;
         temp_r2_3 = var_r4 + (var_ip * 2);
@@ -8614,8 +8525,8 @@ PrcStepResult func_ov002_0208ffac(PrcCtx* ctx, void* object) {
     menuObj->unk_48058 = &menuObj->unk_45FF4;
     func_ov031_0210ab34(&menuObj->unk_45FF4, 14);
 
-    g_DisplaySettings.controls[0].layers = 1;
-    g_DisplaySettings.controls[1].layers = 4;
+    Display_SetMainLayers(LAYER_BG0);
+    Display_SetSubLayers(LAYER_BG2);
     Display_Commit();
     func_ov002_0208ff6c(menuObj);
     func_ov002_0208fbf4(menuObj);
@@ -8794,9 +8705,7 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     u16   var_ip;
     u16   var_r2;
     u16   var_r3;
-    void* temp_r0;
     void* temp_r0_2;
-    void* temp_r0_3;
     void* temp_r1;
     void* temp_r1_2;
     void* temp_r1_3;
@@ -8804,56 +8713,41 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     void* temp_r1_5;
     void* temp_r1_6;
     void* temp_r1_7;
-    void* temp_r2;
     void* temp_r2_2;
-    void* temp_r2_3;
-    void* temp_r2_4;
     void* temp_r2_5;
     void* temp_r9;
     void* var_r0;
     void* var_r0_2;
-    void* var_r1;
     void* var_r1_2;
     void* var_r1_3;
     void* var_r1_4;
     void* var_r1_5;
     void* var_r4;
-    void* var_r4_2;
 
     func_ov002_02085710(menuObj);
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     menuObj->unk_462F4 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091c1c, 1, 0);
     menuObj->unk_462F8 = DatMgr_LoadRawData(1, 0, 0, &data_ov002_02091c2c);
     menuObj->unk_462FC = DatMgr_LoadRawData(1, 0, 0, &data_ov002_02091c24);
-    var_r1             = NULL;
 
-    g_DisplaySettings.controls[0].layers = 0x19;
-    g_DisplaySettings.controls[1].layers = 0x1C;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG3 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
-    temp_r0 = menuObj->unk_462F4;
-    if (temp_r0 != NULL) {
-        var_r1 = Data_GetPackEntryData(temp_r0, 1);
-    }
-    menuObj->unk_47340 = PaletteMgr_AllocPalette(g_PaletteManagers[1], var_r1, 0, 0, 0x10);
+    menuObj->unk_47340 =
+        PaletteMgr_AllocPalette(g_PaletteManagers[1], Data_GetPackEntryData(menuObj->unk_462F4, 1), 0, 0, 0x10);
     PaletteMgr_Flush(g_PaletteManagers[1], menuObj->unk_47340);
-    temp_r2  = menuObj->unk_462F8;
-    var_r1_2 = Data_GetPackEntryData((Data*)temp_r2, 1);
-    if (temp_r2 == NULL) {
-        var_r0 = NULL;
-    } else {
-        var_r0 = Data_GetPackEntryData((Data*)temp_r2, 2);
-    }
+
+    var_r1_2 = Data_GetPackEntryData(menuObj->unk_462F8, 1);
+    var_r0   = Data_GetPackEntryData(menuObj->unk_462F8, 2);
+
     menuObj->unk_474A0 = (void*)(var_r0 + 4);
     menuObj->unk_4732C = BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r1_2,
                                               g_DisplaySettings.engineState[1].bgSettings[3].charBase, 0, 0x6000);
     func_0200d1d8(&menuObj->unk_473C0, 1, 3, 0, &menuObj->unk_474A0, 1, 1);
-    temp_r2_3 = menuObj->unk_462F4;
-    var_r4    = Data_GetPackEntryData(temp_r2_3, 2);
-    if (temp_r2_3 == NULL) {
-        var_r1_3 = NULL;
-    } else {
-        var_r1_3 = Data_GetPackEntryData(temp_r2_3, 3);
-    }
+
+    var_r4   = Data_GetPackEntryData(menuObj->unk_462F4, 2);
+    var_r1_3 = Data_GetPackEntryData(menuObj->unk_462F4, 3);
+
     menuObj->unk_47498 = (void*)(var_r1_3 + 4);
     func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg1, var_r4 + 4, menuObj->unk_47498);
     menuObj->unk_47328 = BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r4,
@@ -8863,19 +8757,16 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     var_r1_4           = Data_GetPackEntryData(temp_r0_2, 1);
     menuObj->unk_47344 = PaletteMgr_AllocPalette(g_PaletteManagers[0], var_r1_4, 0, 0, 0x10);
     PaletteMgr_Flush(g_PaletteManagers[0], menuObj->unk_47344);
-    temp_r2_4 = menuObj->unk_462FC;
-    var_r1_5  = Data_GetPackEntryData((Data*)temp_r2_4, 1);
-    if (temp_r2_4 == NULL) {
-        var_r0_2 = NULL;
-    } else {
-        var_r0_2 = Data_GetPackEntryData((Data*)temp_r2_4, 2);
-    }
+
+    var_r1_5 = Data_GetPackEntryData(menuObj->unk_462FC, 1);
+    var_r0_2 = Data_GetPackEntryData(menuObj->unk_462FC, 2);
+
     menuObj->unk_474C0 = (void*)(var_r0_2 + 4);
     menuObj->unk_4733C = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r1_5,
                                               g_DisplaySettings.engineState[0].bgSettings[3].charBase, 0, 0x6000);
     func_0200d1d8(&menuObj->unk_47460, 0, 3, 0, &menuObj->unk_474C0, 1, 1);
-    temp_r0_3 = menuObj->unk_462F0;
-    var_r4_2  = Data_GetPackEntryData(temp_r0_3, 7);
+
+    void* var_r4_2 = Data_GetPackEntryData(menuObj->unk_462F0, 7);
 
     var_ip = 0;
     var_r3 = 0;
@@ -8992,8 +8883,8 @@ PrcStepResult func_ov002_02090b44(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xF; i++) {
         table_sub[i] = data_ov002_02092a02[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_sp1E, table_sub);
     menuObj->unk_46078.posX = 0;
@@ -9015,8 +8906,8 @@ PrcStepResult func_ov002_02090c28(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xF; i++) {
         table_sub[i] = data_ov002_020929a8[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_sp1E, table_sub);
     menuObj->unk_474C8      = 0xFFFF;
@@ -9038,8 +8929,8 @@ PrcStepResult func_ov002_02090d0c(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xF; i++) {
         table_sub[i] = data_ov002_020929c6[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_sp1E, table_sub);
     menuObj->unk_474C8      = 0xFFFF;
@@ -9057,8 +8948,8 @@ PrcStepResult func_ov002_02090df0(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_0209296c)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
@@ -9105,8 +8996,8 @@ PrcStepResult func_ov002_02090fd8(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_02092908)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     menuObj->unk_46078.posX = 0;
@@ -9136,8 +9027,8 @@ PrcStepResult func_ov002_02091110(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_02092944)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
@@ -9156,8 +9047,8 @@ PrcStepResult func_ov002_02091208(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_02092930)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
@@ -9176,8 +9067,8 @@ PrcStepResult func_ov002_02091300(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_02092958)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     menuObj->unk_46078.posX = 0;
@@ -9195,8 +9086,8 @@ PrcStepResult func_ov002_020913d8(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_02092980)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     menuObj->unk_46078.posX = 0;
@@ -9226,8 +9117,8 @@ PrcStepResult func_ov002_02091510(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 0xA; i++) {
         table_spA[i] = ((const u16*)&data_ov002_0209291c)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);
@@ -9246,8 +9137,8 @@ PrcStepResult func_ov002_02091608(PrcCtx* ctx, void* arg1) {
     for (i = 0; i < 10; i++) {
         table_spA[i] = ((const u16*)&data_ov002_020928f4)[i];
     }
-    g_DisplaySettings.controls[0].layers = 0x11;
-    g_DisplaySettings.controls[1].layers = 0x14;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    Display_SetSubLayers(LAYER_BG2 | LAYER_OBJ);
     Display_Commit();
     func_ov002_020904cc(menuObj, table_spA, subroutine_arg0);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->unk_474E8);

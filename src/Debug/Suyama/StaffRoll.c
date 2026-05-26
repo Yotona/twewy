@@ -1058,7 +1058,7 @@ void func_ov042_020842e4(void) {
     Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 1, 0x290);
     Display_InitMainBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 3, 6, 1, 0x398);
 
-    g_DisplaySettings.controls[0].layers = 0;
+    Display_SetMainLayers(LAYER_NONE);
 
     g_DisplaySettings.engineState[0].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 1;
@@ -1078,7 +1078,7 @@ void func_ov042_020842e4(void) {
     Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 2, 4, 1, 0x290);
     Display_InitSubBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 3, 6, 1, 0x398);
 
-    g_DisplaySettings.controls[1].layers = 0;
+    Display_SetSubLayers(LAYER_NONE);
 
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 1;

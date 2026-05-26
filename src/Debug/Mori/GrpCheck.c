@@ -852,14 +852,16 @@ void func_ov038_020856f4(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
 
-    DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
-    mainBg1->bgMode            = 0;
-    mainBg1->screenSizeText    = 1;
-    mainBg1->colorMode         = 0;
-    mainBg1->screenBase        = 0;
-    mainBg1->charBase          = 1;
-    mainBg1->extPlttSlot       = 0;
-    REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x4004;
+    // DisplayBGSettings* mainBg1 = Display_GetBG1Settings(DISPLAY_MAIN);
+    // mainBg1->bgMode            = 0;
+    // mainBg1->screenSizeText    = 1;
+    // mainBg1->colorMode         = 0;
+    // mainBg1->screenBase        = 0;
+    // mainBg1->charBase          = 1;
+    // mainBg1->extPlttSlot       = 0;
+    // REG_BG1CNT                 = REG_BG1CNT & 0x43 | 0x4004;
+
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 1, 0, 0x4004);
 
     DisplayBGSettings* mainBg2 = Display_GetBG2Settings(DISPLAY_MAIN);
     mainBg2->bgMode            = 0;
@@ -881,8 +883,8 @@ void func_ov038_020856f4(void) {
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers      = 23;
-    g_DisplaySettings.controls[DISPLAY_SUB].bgMode       = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_OBJ);
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
@@ -899,7 +901,7 @@ void func_ov038_020856f4(void) {
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
 
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_SUB].layers      = 17;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_OBJ);
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
 

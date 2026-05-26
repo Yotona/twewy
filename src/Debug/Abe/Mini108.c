@@ -100,8 +100,8 @@ void func_ov000_02082b1c(Mini108State* state) {
     g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers = LAYER_BG0 | LAYER_BG2 | LAYER_OBJ;
-    g_DisplaySettings.controls[DISPLAY_SUB].bgMode  = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG2 | LAYER_OBJ);
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
 
     Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 2, 0, 0x8);
@@ -119,7 +119,7 @@ void func_ov000_02082b1c(Mini108State* state) {
     g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[DISPLAY_SUB].layers = LAYER_BG0 | LAYER_BG2 | LAYER_OBJ;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG2 | LAYER_OBJ);
 
     TouchInput_Init();
 

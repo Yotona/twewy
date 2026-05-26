@@ -72,7 +72,7 @@ void func_ov025_020e749c(void) {
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 2;
     g_DisplaySettings.engineState[0].bgSettings[1].mosaic   = 0;
 
-    g_DisplaySettings.controls[0].layers = 0x12;
+    Display_SetMainLayers(LAYER_BG1 | LAYER_OBJ);
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(GX_BGMODE_0);
@@ -82,7 +82,7 @@ void func_ov025_020e749c(void) {
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 2;
     g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
 
-    g_DisplaySettings.controls[1].layers = 2;
+    Display_SetSubLayers(LAYER_BG1);
 }
 
 static void Continue_VBlank(void) {

@@ -1712,7 +1712,7 @@ void func_ov029_02082e40(SoundTestState* param) {
     MainOvlDisp_SetCbArg(state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers     = LAYER_NONE;
+    Display_SetMainLayers(LAYER_NONE);
     state->unk_11580                                    = ResourceMgr_ReinitManagers(&state->unk_00000);
     data_02066aec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;

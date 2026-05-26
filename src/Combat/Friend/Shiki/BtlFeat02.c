@@ -424,7 +424,7 @@ s32 BtlFeat02_Step_RestoreDisplay(BtlFeat02* feat) {
     g_DisplaySettings.engineState[0].bgSettings[1].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
-    g_DisplaySettings.controls[0].layers                  = 0x1F;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
@@ -442,7 +442,7 @@ s32 BtlFeat02_Step_RestoreDisplay(BtlFeat02* feat) {
     g_DisplaySettings.engineState[1].bgSettings[1].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic = 0;
-    g_DisplaySettings.controls[1].layers                  = 0x1E;
+    Display_SetSubLayers(LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.engineState[0].blendMode   = 1;
     g_DisplaySettings.engineState[0].blendLayer0 = 1;
@@ -492,7 +492,7 @@ s32 BtlFeat02_Step_SetupDisplay(BtlFeat02* feat) {
     g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
     g_DisplaySettings.engineState[1].bgSettings[3].mosaic   = 0;
-    g_DisplaySettings.controls[1].layers                    = 28;
+    Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 0, 3, 0, 0xC);
     Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 2, 3, 1, 0x420C);
@@ -508,7 +508,7 @@ s32 BtlFeat02_Step_SetupDisplay(BtlFeat02* feat) {
     g_DisplaySettings.engineState[0].bgSettings[2].mosaic = 0;
     g_DisplaySettings.engineState[0].bgSettings[3].mosaic = 0;
 
-    g_DisplaySettings.controls[0].layers = 29;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
 
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.engineState[0].windowObj            = 8;

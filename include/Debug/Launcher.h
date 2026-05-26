@@ -10,21 +10,6 @@
 #include <NitroSDK/gx.h>
 
 typedef struct {
-    /* 0x00 */ s32    unk_00;
-    /* 0x04 */ s32    unk_04;
-    /* 0x08 */ s32    unk_08;
-    /* 0x0C */ s32    unk_0C;
-    /* 0x10 */ Sprite sprite;
-} LauncherIcon; // Size: 0x50
-
-typedef struct {
-    /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 unk_4;
-    /* 0x8 */ s32 unk_8;
-    /* 0xC */ s32 unk_C;
-} LauncherArgs; // Size: 0x10
-
-typedef struct {
     /* 0x00 */ s32         unk_00;
     /* 0x04 */ const char* function;
     /* 0x08 */ const char* description;
@@ -40,32 +25,31 @@ typedef struct {
 } DebugLauncherCategory; // Size: 0x10
 
 typedef struct {
-    /* 0x00000 */ BOOL            active;
-    /* 0x00004 */ s32             overlay;
-    /* 0x00008 */ OverlayCB       overlayCB;
-    /* 0x0000C */ InputButtons    buttonState;
-    /* 0x00014 */ s32             unk_14;
-    /* 0x00018 */ s32             unk_18;
-    /* 0x0001C */ s32             unk_1C;
-    /* 0x00020 */ s32             selectedCategoryIndex;
-    /* 0x00024 */ u32*            unk_24;
-    /* 0x00028 */ char            unk_28[0x38];
-    /* 0x00060 */ s32             unk_60;
-    /* 0x00064 */ s32             unk_64;
-    /* 0x00068 */ s32             selectedOptionIndex;
-    /* 0x0006C */ u32*            unk_6C;
-    /* 0x00070 */ char            unk_70[0x5C];
-    /* 0x000CC */ ResourceManager unk_CC;
-    // /* 0x000D0 */ char         unk_D0[0x1157C];
+    /* 0x00000 */ BOOL             active;
+    /* 0x00004 */ s32              overlay;
+    /* 0x00008 */ OverlayCB        overlayCB;
+    /* 0x0000C */ InputButtons     buttonState;
+    /* 0x00014 */ s32              unk_14;
+    /* 0x00018 */ s32              unk_18;
+    /* 0x0001C */ s32              unk_1C;
+    /* 0x00020 */ s32              selectedCategoryIndex;
+    /* 0x00024 */ u32*             unk_24;
+    /* 0x00028 */ char             unk_28[0x38];
+    /* 0x00060 */ s32              unk_60;
+    /* 0x00064 */ s32              unk_64;
+    /* 0x00068 */ s32              selectedOptionIndex;
+    /* 0x0006C */ u32*             unk_6C;
+    /* 0x00070 */ char             unk_70[0x5C];
+    /* 0x000CC */ ResourceManager  unk_CC;
     /* 0x1164C */ ResourceManager* unk_1164C;
-    /* 0x11650 */ TaskPool         unk_11650;
+    /* 0x11650 */ TaskPool         taskPool;
     /* 0x116D0 */ char             unk_116D0[0x4018];
     /* 0x156E8 */ TextObject       unk_156E8;
-    /* 0x156EC */ char             unk_156EC[0x418];
+    /* 0x157FC */ char             unk_157FC[0x15B04 - 0x157FC];
     /* 0x15B04 */ s32              unk_15B04;
     /* 0x15B08 */ char             unk_15B08[0x40C];
     /* 0x15F14 */ EasyList         unk_list_15F14;
-    /* 0x15F58 */ char             unk_15F58[0x1FC];
+    /* 0x15F54 */ char             unk_15F54[0x200];
 } DebugLauncherState; // Size: 0x16154
 
 extern void func_ov000_02082854(void* state);

@@ -230,6 +230,16 @@ static inline void Display_SetSubBrightness(u32 brightness) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = brightness;
 }
 
+static inline void Display_SetMainLayers(u32 mask) {
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers |= mask;
+}
+
+static inline void Display_SetSubLayers(u32 mask) {
+    g_DisplaySettings.controls[DISPLAY_SUB].layers = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].layers |= mask;
+}
+
 static inline void Display_InitMainBG0(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
                                        u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
     DisplayBGSettings* bg0Settings = Display_GetBG0Settings(DISPLAY_MAIN);

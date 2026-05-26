@@ -3,6 +3,7 @@
 ////// section: .text                                   //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
 Launcher_ResetDisplay kind:function(arm,size=0x280) addr:0x020824a0
 Launcher_VBlank kind:function(arm,size=0xd0) addr:0x02082720
 Launcher_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020827f0
@@ -16,9 +17,13 @@ func_ov046_02083368 kind:function(arm,size=0xec) addr:0x02083368
 Launcher_Destroy kind:function(arm,size=0x6c) addr:0x02083454
 Launcher_Update kind:function(arm,size=0xf4) addr:0x020834c0
 Launcher_Init kind:function(arm,size=0x7c) addr:0x020835b4
-func_ov046_02083630 kind:function(arm,size=0x40) addr:0x02083630
+ProcessOverlay_Launcher kind:function(arm,size=0x40) addr:0x02083630
 func_ov046_02083670 kind:function(arm,size=0x1c) addr:0x02083670
 func_ov046_0208368c kind:function(arm,size=0xc) addr:0x0208368c
+
+//////////////////////////////////////////////////////////////
+// src/Interface/Menu/Launcher/LauncherIcon.c:
+//////////////////////////////////////////////////////////////
 func_ov046_02083698 kind:function(arm,size=0x160) addr:0x02083698
 func_ov046_020837f8 kind:function(arm,size=0xf4) addr:0x020837f8
 func_ov046_020838ec kind:function(arm,size=0x94) addr:0x020838ec
@@ -35,6 +40,7 @@ LauncherIcon_RunTask kind:function(arm,size=0x48) addr:0x020839ec
 ////// section: .rodata                                 //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
 data_ov046_02083a34 kind:data(any) addr:0x02083a34
 data_ov046_02083a40 kind:data(any) addr:0x02083a40
 data_ov046_02083a4c kind:data(any) addr:0x02083a4c
@@ -50,14 +56,19 @@ Categories kind:data(any) addr:0x02083bf0
 Options_Kitawaki kind:data(any) addr:0x02083ca0
 Options_Fukuda kind:data(any) addr:0x02083d54
 Options_Takami kind:data(any) addr:0x02083e58
+
+//////////////////////////////////////////////////////////////
+// src/Interface/Menu/Launcher/LauncherIcon.c:
+//////////////////////////////////////////////////////////////
 Tsk_LauncherIcon kind:data(any) addr:0x02083f70
-data_ov046_02083f7c kind:data(any) addr:0x02083f7c
+@1168 kind:data(any) addr:0x02083f7c local
 
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 ////// section: .data                                   //////
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
 data_ov046_02083fa0 kind:data(any) addr:0x02083fa0
 Sequence kind:data(any) addr:0x02083fa4 local
 @174 kind:data(any) addr:0x02083fa8 local
@@ -160,5 +171,9 @@ data_ov046_0208477c kind:data(any) addr:0x0208477c
 @118 kind:data(any) addr:0x020847a0 local
 data_ov046_020847c4 kind:data(any) addr:0x020847c4
 data_ov046_020847e8 kind:data(any) addr:0x020847e8
-data_ov046_020847f4 kind:data(any) addr:0x020847f4
+
+//////////////////////////////////////////////////////////////
+// src/Interface/Menu/Launcher/LauncherIcon.c:
+//////////////////////////////////////////////////////////////
+@1073 kind:data(any) addr:0x020847f4 local
 data_ov046_02084804 kind:data(byte[44]) addr:0x02084804

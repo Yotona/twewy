@@ -206,10 +206,10 @@ void func_ov001_02082b74(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers      = 17;
-    data_0206aa78                                        = 0x300010;
-    data_0206aa7c                                        = 0x400040;
-    g_DisplaySettings.controls[DISPLAY_SUB].bgMode       = GX_BGMODE_0;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_OBJ);
+    data_0206aa78                                  = 0x300010;
+    data_0206aa7c                                  = 0x400040;
+    g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
 
     GXs_SetGraphicsMode(0);
 
@@ -227,7 +227,9 @@ void func_ov001_02082b74(void) {
 
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_SUB].layers      = 17;
+
+    Display_SetSubLayers(LAYER_BG0 | LAYER_OBJ);
+
     REG_POWER_CNT &= ~0x8000;
     OamMgr_Init3DSpritePipeline();
     g_DisplaySettings.engineState[0].blendMode   = 1;

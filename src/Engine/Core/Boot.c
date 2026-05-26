@@ -6,7 +6,7 @@
 #include <types.h>
 
 extern void ProcessOverlay_OpenEnd(void* state);
-extern void func_ov046_02083630(void* state);
+extern void ProcessOverlay_Launcher(void* state);
 
 // TODO: Padding suggests these structs might be slightly wrong
 typedef struct {
@@ -32,8 +32,8 @@ void Boot(void* unused) {
         PacMgr_Init(&heap->pacMgr, 32);
         DatMgr_Init(&heap->datMgr, 0x100);
         MainOvlDisp_NextProcessStage();
-        MainOvlDisp_Push(&OVERLAY_37_ID, ProcessOverlay_OpenEnd, NULL, 0); //<-- Jump to OpenEnd menu
+        MainOvlDisp_Push(&OVERLAY_37_ID, ProcessOverlay_OpenEnd, NULL, 0);  //<-- Jump to OpenEnd menu
     } else {
-        MainOvlDisp_Push(&OVERLAY_46_ID, func_ov046_02083630, NULL, 0);    //<-- Jump to Debug launcher
+        MainOvlDisp_Push(&OVERLAY_46_ID, ProcessOverlay_Launcher, NULL, 0); //<-- Jump to Debug launcher
     }
 }

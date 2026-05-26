@@ -271,8 +271,8 @@ void func_ov043_020c6684(void) {
 
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_32K;
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ;
-    g_DisplaySettings.controls[DISPLAY_MAIN].brightness  = 16;
+    Display_SetMainLayers(LAYER_BG0 | LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 16;
 
     data_0206aa78 = 0x300010;
     data_0206aa7c = 0x400040;
@@ -319,8 +319,8 @@ void func_ov043_020c6684(void) {
 
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_SUB].layers      = LAYER_BG0 | LAYER_BG1 | LAYER_OBJ;
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 16;
+    Display_SetSubLayers(LAYER_BG0 | LAYER_BG1 | LAYER_OBJ);
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness = 16;
 
     OamMgr_Init3DSpritePipeline();
     OamMgr_Swap3DBuffers();
