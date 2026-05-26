@@ -1839,24 +1839,32 @@ func_ov043_020c52a8 kind:function(arm,size=0x34) addr:0x020c52a8
 func_ov043_020c52dc kind:function(arm,size=0x48) addr:0x020c52dc
 func_ov043_020c5324 kind:function(arm,size=0x68) addr:0x020c5324
 func_ov043_020c538c kind:function(arm,size=0x14) addr:0x020c538c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Save/Save_BdgU.c
+/////////////////////////////////////////////////////////////
 func_ov043_020c53a0 kind:function(arm,size=0x14c) addr:0x020c53a0
-func_ov043_020c54ec kind:function(arm,size=0xa0) addr:0x020c54ec
-func_ov043_020c558c kind:function(arm,size=0x55c) addr:0x020c558c
-func_ov043_020c5ae8 kind:function(arm,size=0x28) addr:0x020c5ae8
-func_ov043_020c5b10 kind:function(arm,size=0x34) addr:0x020c5b10
-func_ov043_020c5b44 kind:function(arm,size=0x44) addr:0x020c5b44
-func_ov043_020c5b88 kind:function(arm,size=0x34) addr:0x020c5b88
-func_ov043_020c5bbc kind:function(arm,size=0x48) addr:0x020c5bbc
-func_ov043_020c5c04 kind:function(arm,size=0x94) addr:0x020c5c04
+Save_BdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020c54ec
+Save_BdgU_Load kind:function(arm,size=0x55c) addr:0x020c558c
+Save_BdgU_Init kind:function(arm,size=0x28) addr:0x020c5ae8
+Save_BdgU_Update kind:function(arm,size=0x34) addr:0x020c5b10
+Save_BdgU_Render kind:function(arm,size=0x44) addr:0x020c5b44
+Save_BdgU_Destroy kind:function(arm,size=0x34) addr:0x020c5b88
+Save_BdgU_RunTask kind:function(arm,size=0x48) addr:0x020c5bbc
+Save_BdgU_CreateTask kind:function(arm,size=0x94) addr:0x020c5c04
 func_ov043_020c5c98 kind:function(arm,size=0x14) addr:0x020c5c98
-func_ov043_020c5cac kind:function(arm,size=0x9c) addr:0x020c5cac
-func_ov043_020c5d48 kind:function(arm,size=0xf0) addr:0x020c5d48
-func_ov043_020c5e38 kind:function(arm,size=0x20) addr:0x020c5e38
-func_ov043_020c5e58 kind:function(arm,size=0x14) addr:0x020c5e58
-func_ov043_020c5e6c kind:function(arm,size=0x20) addr:0x020c5e6c
-func_ov043_020c5e8c kind:function(arm,size=0x14) addr:0x020c5e8c
-func_ov043_020c5ea0 kind:function(arm,size=0x48) addr:0x020c5ea0
-func_ov043_020c5ee8 kind:function(arm,size=0x38) addr:0x020c5ee8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Save/Save_SlotCoverU.c
+/////////////////////////////////////////////////////////////
+Save_SlotCoverU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5cac
+Save_SlotCoverU_Load kind:function(arm,size=0xf0) addr:0x020c5d48
+Save_SlotCoverU_Init kind:function(arm,size=0x20) addr:0x020c5e38
+Save_SlotCoverU_Update kind:function(arm,size=0x14) addr:0x020c5e58
+Save_SlotCoverU_Render kind:function(arm,size=0x20) addr:0x020c5e6c
+Save_SlotCoverU_Destroy kind:function(arm,size=0x14) addr:0x020c5e8c
+Save_SlotCoverU_RunTask kind:function(arm,size=0x48) addr:0x020c5ea0
+Save_SlotCoverU_CreateTask kind:function(arm,size=0x38) addr:0x020c5ee8
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Save/Save_HelpCurU.c
@@ -2565,11 +2573,11 @@ data_ov043_020cb2f8 kind:data(any) addr:0x020cb2f8
 data_ov043_020cb308 kind:data(any) addr:0x020cb308
 data_ov043_020cb32c kind:data(any) addr:0x020cb32c
 data_ov043_020cb358 kind:data(any) addr:0x020cb358
-data_ov043_020cb35c kind:data(any) addr:0x020cb35c
+Tsk_Save_bdgU kind:data(any) addr:0x020cb35c
 data_ov043_020cb368 kind:data(any) addr:0x020cb368
 data_ov043_020cb378 kind:data(any) addr:0x020cb378
 data_ov043_020cb390 kind:data(any) addr:0x020cb390
-data_ov043_020cb3bc kind:data(any) addr:0x020cb3bc
+Tsk_Save_slotCoverU kind:data(any) addr:0x020cb3bc
 data_ov043_020cb3c8 kind:data(any) addr:0x020cb3c8
 data_ov043_020cb3d8 kind:data(any) addr:0x020cb3d8
 data_ov043_020cb3f0 kind:data(any) addr:0x020cb3f0
