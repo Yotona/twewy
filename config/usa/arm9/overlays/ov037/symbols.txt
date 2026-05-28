@@ -22,6 +22,8 @@ OpenEnd_Init kind:function(arm,size=0x1a8) addr:0x0208345c
 OpenEnd_Update kind:function(arm,size=0xb0) addr:0x02083604
 OpenEnd_Destroy kind:function(arm,size=0x58) addr:0x020836b4
 ProcessOverlay_OpenEnd kind:function(arm,size=0x40) addr:0x0208370c
+
+
 OpenEnd_OnButtonSelect kind:function(arm,size=0x40) addr:0x0208374c
 OpenEnd_IsInCircle kind:function(arm,size=0x2c) addr:0x0208378c
 OpenEnd_InitBadgeAnim kind:function(arm,size=0x5c) addr:0x020837b8
@@ -31,6 +33,8 @@ OpenEnd_TaskBadge_Render kind:function(arm,size=0x20) addr:0x020839ac
 OpenEnd_TaskBadge_CleanUp kind:function(arm,size=0x20) addr:0x020839cc
 OpenEnd_TaskBadge_RunTask kind:function(arm,size=0x48) addr:0x020839ec
 OpenEnd_CreateBadgeTask kind:function(arm,size=0x40) addr:0x02083a34
+
+
 data_ov037_02083a74 kind:data(any) addr:0x02083a74
 data_ov037_02083a7c kind:data(any) addr:0x02083a7c
 OvlProc_OpenEnd kind:data(any) addr:0x02083a84
@@ -39,7 +43,7 @@ OpenEnd_FileList kind:data(any) addr:0x02083aa8
 TaskHandle_OpenEnd_Badge kind:data(any) addr:0x02083b40
 data_ov037_02083b4c kind:data(any) addr:0x02083b4c
 OpenEnd_TitleScreen_ButtonInfo kind:data(any) addr:0x02083b5c
-g_BadgeAnim kind:data(any) addr:0x02083b84
+OpenEnd_Badge_Anim kind:data(any) addr:0x02083b84
 seq_OpenEnd kind:data(any) addr:0x02083bc0
 @1227 kind:data(any) addr:0x02083bc4
 @379 kind:data(any) addr:0x02083bd8
@@ -62,6 +66,8 @@ seq_OpenEnd kind:data(any) addr:0x02083bc0
 @396 kind:data(any) addr:0x02083d9c
 @397 kind:data(any) addr:0x02083dbc
 @1350 kind:data(any) addr:0x02083ddc
+
+
 g_OpenEndstate kind:bss addr:0x02083e00
 flag_screenTouched kind:bss addr:0x02083e04
 g_taskPool kind:bss addr:0x02083e08

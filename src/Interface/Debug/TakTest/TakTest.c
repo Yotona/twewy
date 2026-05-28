@@ -1,4 +1,4 @@
-#include "Debug/Takami/TakTest.h"
+#include "Interface/Debug/TakTest.h"
 #include "Display.h"
 #include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
@@ -13,39 +13,9 @@
 
 void TakTest_RegisterVBlank(void);
 s32  TakTest_BG_RunTask(TaskPool* pool, Task* task, void* arg2, s32 arg3);
-s32  TakTest_OBJ_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 s32  TakTest_OBJ_CreateTask(TaskPool* pool, s32 arg1);
 
-const char*           data_ov043_020cb580 = "Seq_TakTest()";
-const TaskHandle      Tsk_TakTest_BG      = {"Tsk_TakTest_BG", TakTest_BG_RunTask, 0x90};
-const TaskHandle      Tsk_TakTest_OBJ     = {"Tsk_TakTest_OBJ", TakTest_OBJ_RunTask, 0x90};
-const BinIdentifier   data_ov043_020c787c = {43, "Apl_Tak/Grp_MenuBadge_BGD00.bin"};
-const SpriteAnimation data_ov043_020c78dc = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 0,
-    .unk_06     = 0,
-    .unk_08     = NULL,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c787c,
-    .unk_18     = 2,
-    .packIndex  = 2,
-    .unk_1C     = 0,
-    .unk_1E     = 0,
-    .unk_20     = 10,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 0,
-    .unk_28     = 0,
-    .unk_2A     = 1,
-};
+const char* data_ov043_020cb580 = "Seq_TakTest()";
 
 void func_ov043_020824a0(TakTestState* state) {
     return;
@@ -213,89 +183,4 @@ void TakTest_VBlank(void) {
 void TakTest_RegisterVBlank(void) {
     TakTest_InitSystems();
     Interrupts_RegisterVBlankCallback(TakTest_VBlank, 1);
-}
-
-s32 TakTest_BG_Init(TaskPool* pool, Task* task, s32 arg2) {
-    // Not yet implemented
-}
-
-s32 TakTest_BG_Update(TaskPool* pool, Task* task, s32 arg2) {
-    // Not yet implemented
-}
-
-s32 TakTest_BG_Render(TaskPool* pool, Task* task, s32 arg2) {
-    return 1;
-}
-
-s32 TakTest_BG_Destroy(TaskPool* pool, Task* task, s32 arg2) {
-    TakTest_BG* bg = task->data;
-    BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_SUB], bg->resChar);
-    BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], bg->resScreen);
-    PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], bg->resPal);
-    FS_UnloadOverlay(0, &OVERLAY_31_ID);
-    return 1;
-}
-
-s32 TakTest_BG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages stages = {
-        .initialize = TakTest_BG_Init,
-        .update     = TakTest_BG_Update,
-        .render     = TakTest_BG_Render,
-        .cleanup    = TakTest_BG_Destroy,
-    };
-    return stages.iter[stage](pool, task, args);
-}
-
-void* TakTest_OBJ_GetFrameInfo(void* arg0, s32 arg2) {
-    // Not yet implemented
-}
-
-void TakTest_OBJ_Load(TakTest_OBJ* obj, TakTest_OBJ_Args* args) {
-    SpriteAnimation anim = data_ov043_020c78dc;
-    anim.dataType        = args->dataType;
-    _Sprite_Load(&obj->sprite, &anim);
-}
-
-s32 TakTest_OBJ_Init(TaskPool* pool, Task* task, void* args) {
-    TakTest_OBJ*      obj     = task->data;
-    TakTest_OBJ_Args* objArgs = args;
-
-    TakTest_OBJ_Load(obj, objArgs);
-    return 1;
-}
-
-s32 TakTest_OBJ_Update(TaskPool* pool, Task* task, void* args) {
-    TakTest_OBJ* obj = task->data;
-
-    Sprite_Update(&obj->sprite);
-    return 1;
-}
-
-s32 TakTest_OBJ_Render(TaskPool* pool, Task* task, void* args) {
-    TakTest_OBJ* obj = task->data;
-
-    Sprite_RenderFrame(&obj->sprite);
-    return 1;
-}
-
-s32 TakTest_OBJ_Destroy(TaskPool* pool, Task* task, void* args) {
-    TakTest_OBJ* obj = task->data;
-
-    Sprite_Release(&obj->sprite);
-    return 1;
-}
-
-s32 TakTest_OBJ_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages stages = {
-        .initialize = TakTest_OBJ_Init,
-        .update     = TakTest_OBJ_Update,
-        .render     = TakTest_OBJ_Render,
-        .cleanup    = TakTest_OBJ_Destroy,
-    };
-    return stages.iter[stage](pool, task, args);
-}
-
-s32 TakTest_OBJ_CreateTask(TaskPool* pool, s32 arg1) {
-    s32 sp8 = arg1;
-    EasyTask_CreateTask(pool, &Tsk_TakTest_OBJ, 0, 0, 0, &sp8);
 }

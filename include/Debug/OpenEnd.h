@@ -168,25 +168,25 @@ s32 OpenEnd_TaskBadge_Render(struct TaskPool* unused_r0, struct Task* r1, void* 
 s32 OpenEnd_TaskBadge_CleanUp(struct TaskPool* unused_r0, struct Task* r1, void* r2);
 
 const BinIdentifier OpenEnd_FileList[] = {
-    {0x25,          "Apl_Mor/Grp_Title.bin"},
-    {0x25,        "Apl_Mor/COPY_RG_SE.nbfc"}, //"Square Enix"
-    {0x25,        "Apl_Mor/COPY_RG_SE.nbfp"},
-    {0x25,        "Apl_Mor/COPY_RG_SE.nbfs"},
-    {0x25,        "Apl_Mor/COPY_UG_JP.nbfc"}, //"Jupiter"
-    {0x25,        "Apl_Mor/COPY_UG_JP.nbfp"},
-    {0x25,        "Apl_Mor/COPY_UG_JP.nbfs"},
-    {0x25,     "Apl_Mor/N_COPY_RG_NIN.nbfc"}, //"LICENSED BY NINTENDO"
-    {0x25,     "Apl_Mor/N_COPY_RG_NIN.nbfp"},
-    {0x25,     "Apl_Mor/N_COPY_RG_NIN.nbfs"},
-    {0x25,       "Apl_Mor/COPY_UG_CRI.nbfc"}, // "CRIWARE (Technology by ADX, SofDec)"
-    {0x25,       "Apl_Mor/COPY_UG_CRI.nbfp"},
-    {0x25,       "Apl_Mor/COPY_UG_CRI.nbfs"},
-    {0x25,      "Apl_Mor/OpeningBG_RG.nbfc"}, // Title screen (Main display)
-    {0x25,      "Apl_Mor/OpeningBG_RG.nbfp"},
-    {0x25,      "Apl_Mor/OpeningBG_RG.nbfs"},
-    {0x25, "Apl_Mor/OpeningBG_UGstart.nbfc"}, // Title screen (Sub display)
-    {0x25, "Apl_Mor/OpeningBG_UGstart.nbfp"},
-    {0x25, "Apl_Mor/OpeningBG_UGstart.nbfs"},
+    {37,          "Apl_Mor/Grp_Title.bin"},
+    {37,        "Apl_Mor/COPY_RG_SE.nbfc"}, //"Square Enix"
+    {37,        "Apl_Mor/COPY_RG_SE.nbfp"},
+    {37,        "Apl_Mor/COPY_RG_SE.nbfs"},
+    {37,        "Apl_Mor/COPY_UG_JP.nbfc"}, //"Jupiter"
+    {37,        "Apl_Mor/COPY_UG_JP.nbfp"},
+    {37,        "Apl_Mor/COPY_UG_JP.nbfs"},
+    {37,     "Apl_Mor/N_COPY_RG_NIN.nbfc"}, //"LICENSED BY NINTENDO"
+    {37,     "Apl_Mor/N_COPY_RG_NIN.nbfp"},
+    {37,     "Apl_Mor/N_COPY_RG_NIN.nbfs"},
+    {37,       "Apl_Mor/COPY_UG_CRI.nbfc"}, // "CRIWARE (Technology by ADX, SofDec)"
+    {37,       "Apl_Mor/COPY_UG_CRI.nbfp"},
+    {37,       "Apl_Mor/COPY_UG_CRI.nbfs"},
+    {37,      "Apl_Mor/OpeningBG_RG.nbfc"}, // Title screen (Main display)
+    {37,      "Apl_Mor/OpeningBG_RG.nbfp"},
+    {37,      "Apl_Mor/OpeningBG_RG.nbfs"},
+    {37, "Apl_Mor/OpeningBG_UGstart.nbfc"}, // Title screen (Sub display)
+    {37, "Apl_Mor/OpeningBG_UGstart.nbfp"},
+    {37, "Apl_Mor/OpeningBG_UGstart.nbfs"},
 };
 
 extern s32 data_ov037_02083a74[];
@@ -305,20 +305,6 @@ const OpenEndFunc screenFunctions[2][3] = {
     {OpenEnd_TitleScreen_Init, OpenEnd_TitleScreen_Update, OpenEnd_TitleScreen_Destroy}
 };
 
-/**
- * @brief Dispatches a badge task to the appropriate callback.
- *
- * Selects the init, update, render, or cleanup callback from the badge
- * task jump table based on @p index and invokes it.
- *
- * @param pool      Pointer to the owning TaskPool.
- * @param task      Pointer to the Task to dispatch.
- * @param taskParam Pointer to the task parameter data.
- * @param index     Callback index (0=Init, 1=Update, 2=Render, 3=CleanUp).
- * @return          Return value from the dispatched callback.
- */
-s32 OpenEnd_TaskBadge_RunTask(struct TaskPool* pool, struct Task* task, void* taskParam, s32 index);
-
 enum {
     BADGE_NEWGAME,
     BADGE_CONTINUE,
@@ -326,7 +312,7 @@ enum {
 
 extern SpriteAnimation g_BadgeAnim;
 
-TaskPool*     g_taskPool;
-s32           flag_screenTouched;
-OpenEndState* g_OpenEndstate;
+extern TaskPool*     g_taskPool;
+extern s32           flag_screenTouched;
+extern OpenEndState* g_OpenEndstate;
 #endif // OPENEND_H

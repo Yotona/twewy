@@ -17,11 +17,19 @@ ProcessOverlay_TakTest kind:function(arm,size=0x40) addr:0x020826ac
 TakTest_InitSystems kind:function(arm,size=0x338) addr:0x020826ec
 TakTest_VBlank kind:function(arm,size=0xd0) addr:0x02082a24
 TakTest_RegisterVBlank kind:function(arm,size=0x1c) addr:0x02082af4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_BG.c
+/////////////////////////////////////////////////////////////
 TakTest_BG_Init kind:function(arm,size=0x1a8) addr:0x02082b10
 TakTest_BG_Update kind:function(arm,size=0x9c) addr:0x02082cb8
 TakTest_BG_Render kind:function(arm,size=0x8) addr:0x02082d54
 TakTest_BG_Destroy kind:function(arm,size=0x58) addr:0x02082d5c
 TakTest_BG_RunTask kind:function(arm,size=0x48) addr:0x02082db4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_OBJ.c
+/////////////////////////////////////////////////////////////
 TakTest_OBJ_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02082dfc
 TakTest_OBJ_Load kind:function(arm,size=0x6c) addr:0x02082e98
 TakTest_OBJ_Init kind:function(arm,size=0x18) addr:0x02082f04
@@ -1938,14 +1946,25 @@ NRepCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c7838
 //////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/TakTest.c
+// src/Interface/Debug/TakTest/TakTest.c
 /////////////////////////////////////////////////////////////
-OvlProc_TakTest kind:data(any) addr:0x020c7870
-data_ov043_020c787c kind:data(any) addr:0x020c787c
-data_ov043_020c7894 kind:data(any) addr:0x020c7894
+OvlProc_TakTest kind:data(any) addr:0x020c7870 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_BG.c
+/////////////////////////////////////////////////////////////
+data_ov043_020c787c kind:data(any) addr:0x020c787c local
+data_ov043_020c7884 kind:data(any) addr:0x020c7884 local
+data_ov043_020c788c kind:data(any) addr:0x020c788c local
+@1057 kind:data(any) addr:0x020c7894 local
 Tsk_TakTest_BG kind:data(any) addr:0x020c78a4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_OBJ.c
+/////////////////////////////////////////////////////////////
 Tsk_TakTest_OBJ kind:data(any) addr:0x020c78b0
-data_ov043_020c78bc kind:data(any) addr:0x020c78bc
+@1048 kind:data(any) addr:0x020c78bc local
+data_ov043_020c78cc kind:data(any) addr:0x020c78cc
 data_ov043_020c78d4 kind:data(any) addr:0x020c78d4
 data_ov043_020c78dc kind:data(any) addr:0x020c78dc
 
@@ -2615,14 +2634,22 @@ data_ov043_020cb540 kind:data(any) addr:0x020cb540
 //////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/TakTest.c
+// src/Interface/Debug/TakTest/TakTest.c
 /////////////////////////////////////////////////////////////
 data_ov043_020cb580 kind:data(any) addr:0x020cb580
-data_ov043_020cb584 kind:data(any) addr:0x020cb584
-data_ov043_020cb594 kind:data(any) addr:0x020cb594
-data_ov043_020cb5a4 kind:data(any) addr:0x020cb5a4
-data_ov043_020cb5c4 kind:data(any) addr:0x020cb5c4
-data_ov043_020cb5d4 kind:data(any) addr:0x020cb5d4
+@1172 kind:data(any) addr:0x020cb584 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_BG.c
+/////////////////////////////////////////////////////////////
+@1013 kind:data(any) addr:0x020cb594 local
+@1014 kind:data(any) addr:0x020cb5a4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Debug/TakTest/TakTest_OBJ.c
+/////////////////////////////////////////////////////////////
+@989 kind:data(any) addr:0x020cb5c4 local
+data_ov043_020cb5d4 kind:data(any) addr:0x020cb5d4 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuTop.c
