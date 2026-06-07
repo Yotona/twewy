@@ -3,7 +3,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/File/PacMgr.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include <types.h>
+#include <nitro/types.h>
 
 extern void ProcessOverlay_OpenEnd(void* state);
 extern void ProcessOverlay_Launcher(void* state);

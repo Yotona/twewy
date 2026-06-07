@@ -1,7 +1,7 @@
 #ifndef PRCMASTER_H
 #define PRCMASTER_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 /** @brief Process context state object. */
 typedef struct PrcCtx PrcCtx;

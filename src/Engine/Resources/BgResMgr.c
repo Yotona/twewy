@@ -189,7 +189,7 @@ void BgResMgr_Init(BgResMgr* mgr, DisplayEngine engine) {
     mgr->activeList.next = NULL;
     mgr->freeList.next   = NULL;
 
-    for (u32 idx = 0; idx < ARRAY_COUNT(mgr->resourcePool); idx++) {
+    for (u32 idx = 0; idx < ARRAY_LEN(mgr->resourcePool); idx++) {
         BgResource* resource = &mgr->resourcePool[idx];
 
         resource->next     = mgr->freeList.next;

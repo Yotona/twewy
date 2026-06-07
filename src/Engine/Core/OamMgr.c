@@ -3,13 +3,12 @@
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/System.h"
 #include "common_data.h"
-#include <NitroSDK/fx.h>
-#include <NitroSDK/gx.h>
-#include <NitroSDK/mi/cpumem.h>
-#include <NitroSDK/os/cache.h>
-#include <NitroSDK/os/interrupt.h>
-#include <registers.h>
-#include <types.h>
+#include <nitro/fx.h>
+#include <nitro/gx.h>
+#include <nitro/mi/cpumem.h>
+#include <nitro/os.h>
+#include <nitro/reg.h>
+#include <nitro/types.h>
 
 // Forward declarations for functions without headers
 extern void G3X_SetClearColor(s32, s32, s32, s32, s32);
@@ -818,10 +817,10 @@ void OamMgr_Init3DSpritePipeline(void) {
     Vec vec1 = data_02059aa4;
     Vec vec2 = data_02059a8c;
 
-    GFX_FIFO_VIEWPORT = 0xBFFF0000;
+    REG_GFX_FIFO_VIEWPORT = 0xBFFF0000;
     G3i_OrthoW(0, 0xC0000, 0, 0x100000, 0xBFFF0000 << 6, 0x400000, 0x400000, 1, 0);
-    GFX_FIFO_MATRIX_STORE = 0;
-    GFX_FIFO_MATRIX_MODE  = 1;
+    REG_GFX_FIFO_MATRIX_STORE = 0;
+    REG_GFX_FIFO_MATRIX_MODE  = 1;
     G3i_LookAt(&vec0, &vec1, &vec2, 1, 0);
     g_DisplaySettings.engineState[DISPLAY_MAIN].blendLayer0 = 1;
     g_DisplaySettings.engineState[DISPLAY_MAIN].blendLayer1 = 62;
@@ -830,13 +829,13 @@ void OamMgr_Init3DSpritePipeline(void) {
     REG_DISP3DCNT &= 0xCFEF;
     G3X_SetClearColor(0, 0, 0x7FFF, 0, 0);
     OamMgr_Reset3DState();
-    data_0206a890.unk_0C                = 0x1F;
-    data_0206a890.unk_08                = 0;
-    data_0206a890.unk_04                = 0;
-    GFX_FIFO_LIGHT_DIRECTION            = 0x2D8B6127;
-    GFX_FIFO_LIGHT_COLOR                = 0x7FFF;
-    GFX_FIFO_MATERIAL_DIFFUSE_AMBIENT   = 0x4210FFFF;
-    GFX_FIFO_MATERIAL_SPECULAR_EMISSION = 0x4210;
+    data_0206a890.unk_0C                    = 0x1F;
+    data_0206a890.unk_08                    = 0;
+    data_0206a890.unk_04                    = 0;
+    REG_GFX_FIFO_LIGHT_DIRECTION            = 0x2D8B6127;
+    REG_GFX_FIFO_LIGHT_COLOR                = 0x7FFF;
+    REG_GFX_FIFO_MATERIAL_DIFFUSE_AMBIENT   = 0x4210FFFF;
+    REG_GFX_FIFO_MATERIAL_SPECULAR_EMISSION = 0x4210;
 }
 
 void OamMgr_Reset3DState(void) {
@@ -845,7 +844,7 @@ void OamMgr_Reset3DState(void) {
 }
 
 void OamMgr_Swap3DBuffers(void) {
-    GFX_FIFO_SWAP_BUFFERS = 1;
+    REG_GFX_FIFO_SWAP_BUFFERS = 1;
 }
 
 // Struct that represents the render command passed to func_02003c7c
@@ -867,19 +866,19 @@ void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
     OamCellFrame* frame   = arg3->cellFrame;
     u8*           temp_r5 = arg3->unk_1C;
 
-    GFX_FIFO_MATRIX_PUSH      = 0;
-    GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg0 + (frame->centerX >> 1));
-    GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg1 + (frame->centerY >> 1));
-    GFX_FIFO_MATRIX_TRANSLATE = arg2;
+    REG_GFX_FIFO_MATRIX_PUSH      = 0;
+    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg0 + (frame->centerX >> 1));
+    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg1 + (frame->centerY >> 1));
+    REG_GFX_FIFO_MATRIX_TRANSLATE = arg2;
 
     s32 temp_r1 = ((s32) * (u16*)temp_r5 >> 4) * 2;
     func_020370cc(data_0205e4e0[temp_r1], data_0205e4e0[temp_r1 + 1]);
 
-    GFX_FIFO_MATRIX_SCALE  = (s32)(frame->width * *(s32*)(temp_r5 + 4));
-    GFX_FIFO_MATRIX_SCALE  = (s32)(frame->height * *(s32*)(temp_r5 + 8));
-    GFX_FIFO_MATRIX_SCALE  = 0x1000;
-    GFX_FIFO_TEXTURE_PARAM = (s32)((arg3->unk_04 << 0x1A) | ((u32)arg3->unk_08 >> 3) | 0x40000000 | (frame->texSizeS << 0x14) |
-                                   (frame->texSizeT << 0x17) | 0x20000000);
+    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frame->width * *(s32*)(temp_r5 + 4));
+    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frame->height * *(s32*)(temp_r5 + 8));
+    REG_GFX_FIFO_MATRIX_SCALE  = 0x1000;
+    REG_GFX_FIFO_TEXTURE_PARAM = (s32)((arg3->unk_04 << 0x1A) | ((u32)arg3->unk_08 >> 3) | 0x40000000 |
+                                       (frame->texSizeS << 0x14) | (frame->texSizeT << 0x17) | 0x20000000);
 
     s32 var_r0;
     if (arg3->unk_04 == 2) {
@@ -887,13 +886,13 @@ void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
     } else {
         var_r0 = 0;
     }
-    GFX_FIFO_TEXTURE_PALETTE = (u32)(arg3->unk_0C >> (4 - var_r0));
-    GFX_FIFO_POLYGON_ATTR    = (s32)((arg3->unk_10 << 0x18) | 0xC0 | (arg3->unk_12 << 0x10));
+    REG_GFX_FIFO_TEXTURE_PALETTE = (u32)(arg3->unk_0C >> (4 - var_r0));
+    REG_GFX_FIFO_POLYGON_ATTR    = (s32)((arg3->unk_10 << 0x18) | 0xC0 | (arg3->unk_12 << 0x10));
 
     VtxXY*        quadVtx   = arg3->quadVertices;
     TexCoordQuad* texCoords = &data_02059b14[arg3->unk_14];
 
-    GFX_FIFO_POLYGONS_BEGIN = 1;
+    REG_GFX_FIFO_POLYGONS_BEGIN = 1;
     GX_TexCoord(texCoords->vtx[0].s * frame->width, texCoords->vtx[0].t * frame->height);
     GX_Vtx16(quadVtx[0].x, quadVtx[0].y, 0);
 
@@ -905,9 +904,9 @@ void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
 
     GX_TexCoord(texCoords->vtx[3].s * frame->width, texCoords->vtx[3].t * frame->height);
     GX_Vtx16(quadVtx[3].x, quadVtx[3].y, 0);
-    GFX_FIFO_POLYGONS_END = 0;
+    REG_GFX_FIFO_POLYGONS_END = 0;
 
-    GFX_FIFO_MATRIX_POP = 1;
+    REG_GFX_FIFO_MATRIX_POP = 1;
 }
 
 u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s32 arg5, s32 arg6, void* arg7) {

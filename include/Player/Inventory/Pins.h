@@ -1,7 +1,7 @@
 #ifndef INVENTORY_PIN_H
 #define INVENTORY_PIN_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef union {
     struct {

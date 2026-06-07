@@ -4,7 +4,7 @@
 #include <CriWare/acsfdr.h>
 #include <CriWare/acssnd.h>
 #include <CriWare/acsvhl.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct ACSSVR {
     /* 0x00 */ ACSSND** snd;

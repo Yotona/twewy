@@ -3,7 +3,7 @@
 #include "Field/FieldTasks.h"
 #include "Save.h"
 #include "SndMgr.h"
-#include "types.h"
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ s32 unk_00;

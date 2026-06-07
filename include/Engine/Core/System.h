@@ -2,7 +2,7 @@
 #define SYSSTATE_H
 
 #include "Engine/IO/Input.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef volatile struct {
     u32 vblank   : 1; // In VBlank period of the frame

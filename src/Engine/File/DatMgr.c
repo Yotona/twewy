@@ -66,7 +66,7 @@ DatMgr* DatMgr_Init(DatMgr* mgr, s32 count) {
         return prevMgr;
     }
 
-    for (u16 i = 0; i < ARRAY_COUNT(mgr->dataLists); i++) {
+    for (u16 i = 0; i < ARRAY_LEN(mgr->dataLists); i++) {
         mgr->slotActive[i]     = FALSE;
         mgr->dataLists[i].next = NULL;
     }

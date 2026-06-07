@@ -2,7 +2,7 @@
 #define COMBAT_CORE_COMBATACTOR_H
 
 #include "Combat/Core/CombatSprite.h"
-#include <NitroSDK/fx.h>
+#include <nitro/fx.h>
 
 typedef struct {
     /* 0x00 */ s32  unk_00;

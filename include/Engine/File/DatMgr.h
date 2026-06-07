@@ -4,7 +4,7 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/File/BinMgr.h"
 #include "Engine/File/PacMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 enum {
     DAT_TYPE_RAW               = 0,

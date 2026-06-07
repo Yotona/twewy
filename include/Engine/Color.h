@@ -1,7 +1,7 @@
 #ifndef ENGINE_COLOR_H
 #define ENGINE_COLOR_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 extern u16 data_0205a128;
 

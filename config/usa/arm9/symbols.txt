@@ -2041,7 +2041,7 @@ func_020339c8 kind:function(arm,size=0x18) addr:0x020339c8
 func_020339e0 kind:function(arm,size=0x18) addr:0x020339e0
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_matrix.c
+// libs/nitro/fx/fx_matrix.c
 /////////////////////////////////////////////////////////////
 Mtx_Identity33 kind:function(arm,size=0x24) addr:0x020339f8
 Mtx_Scale33 kind:function(arm,size=0xc0) addr:0x02033a1c
@@ -2058,7 +2058,7 @@ Mtx_Concat44 kind:function(arm,size=0x664) addr:0x02034350
 Mtx_OrthoW kind:function(arm,size=0x208) addr:0x020349b4
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_division.c
+// libs/nitro/fx/fx_division.c
 /////////////////////////////////////////////////////////////
 FX_Divide kind:function(arm,size=0x10) addr:0x02034bbc
 FX_Divide64 kind:function(arm,size=0x2c) addr:0x02034bcc
@@ -2071,7 +2071,7 @@ FX_GetSqrtResult kind:function(arm,size=0x2c) addr:0x02034cc8
 FX_DivAsync kind:function(arm,size=0x28) addr:0x02034cf4
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_vector.c
+// libs/nitro/fx/fx_vector.c
 /////////////////////////////////////////////////////////////
 Vec_Add kind:function(arm,size=0x34) addr:0x02034d1c
 Vec_Sub kind:function(arm,size=0x34) addr:0x02034d50
@@ -2083,17 +2083,17 @@ Vec_MultAdd kind:function(arm,size=0x5c) addr:0x02034fbc
 Vec_Distance kind:function(arm,size=0x7c) addr:0x02035018
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_atan.c
+// libs/nitro/fx/fx_atan.c
 /////////////////////////////////////////////////////////////
 FX_Atan2Idx kind:function(arm,size=0x1a8) addr:0x02035094
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_init.c
+// libs/nitro/fx/fx_init.c
 /////////////////////////////////////////////////////////////
 FX_Init kind:function(arm,size=0x4) addr:0x0203523c
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/gx/gx.c
+// libs/nitro/gx/gx.c
 /////////////////////////////////////////////////////////////
 GX_Init kind:function(arm,size=0x14c) addr:0x02035240
 GX_HBlankIntr kind:function(arm,size=0x34) addr:0x0203538c
@@ -2106,7 +2106,7 @@ GXx_SetMasterBrightness kind:function(arm,size=0x28) addr:0x020354fc
 GXx_GetMasterBrightness kind:function(arm,size=0x44) addr:0x02035524
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/gx/gx_state.c
+// libs/nitro/gx/gx_state.c
 /////////////////////////////////////////////////////////////
 GX_InitGxState kind:function(arm,size=0x60) addr:0x02035568
 SetLCDC kind:function(arm,size=0xb8) addr:0x020355c8 local
@@ -2252,7 +2252,7 @@ func_0203839c kind:function(arm,size=0x10) addr:0x0203839c
 func_020383ac kind:function(arm,size=0x10) addr:0x020383ac
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/interrupts.c
+// libs/nitro/os/interrupts.c
 /////////////////////////////////////////////////////////////
 OS_InitIRQQueue kind:function(arm,size=0x18) addr:0x020383bc
 OS_SetIRQCallback kind:function(arm,size=0x88) addr:0x020383d4
@@ -2287,7 +2287,7 @@ func_020389c0 kind:function(arm,size=0x30) addr:0x020389c0
 func_020389f0 kind:function(arm,size=0xc) addr:0x020389f0
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/thread.c
+// libs/nitro/os/thread.c
 /////////////////////////////////////////////////////////////
 OS_GetNextFreeThread kind:function(arm,size=0x18) addr:0x020389fc local
 OS_PushThreadToQueue kind:function(arm,size=0x78) addr:0x02038a14 local
@@ -2327,7 +2327,7 @@ func_02039454 kind:function(arm,size=0xa4) addr:0x02039454
 func_020394f8 kind:function(arm,size=0x9c) addr:0x020394f8
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/mutex.c
+// libs/nitro/os/mutex.c
 /////////////////////////////////////////////////////////////
 OS_InitMutex kind:function(arm,size=0x18) addr:0x02039594
 OS_LockMutex kind:function(arm,size=0x84) addr:0x020395ac
@@ -2338,7 +2338,7 @@ OS_PushThreadMutex kind:function(arm,size=0x24) addr:0x0203973c local
 OS_RemoveThreadMutex kind:function(arm,size=0x24) addr:0x02039760 local
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/cache.c
+// libs/nitro/os/cache.c
 /////////////////////////////////////////////////////////////
 DC_Enable kind:function(arm,size=0x18) addr:0x02039784
 DC_InvalidateAll kind:function(arm,size=0xc) addr:0x0203979c
@@ -2353,13 +2353,13 @@ IC_InvalidateAll kind:function(arm,size=0xc) addr:0x02039888
 IC_InvalidateRange kind:function(arm,size=0x1c) addr:0x02039894
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/init.c
+// libs/nitro/os/init.c
 /////////////////////////////////////////////////////////////
 func_020398b0 kind:function(arm,size=0x20) addr:0x020398b0 local
 OS_InitAllSystems kind:function(arm,size=0x48) addr:0x020398d0
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/region.c
+// libs/nitro/os/region.c
 /////////////////////////////////////////////////////////////
 OS_RegionsInit kind:function(arm,size=0x104) addr:0x02039918
 OS_ExtendedRegionInit kind:function(arm,size=0x6c) addr:0x02039a1c
@@ -2375,8 +2375,8 @@ OS_AllocRegionMemory kind:function(arm,size=0x6c) addr:0x02039c64
 func_02039cd0 kind:function(arm,size=0x1c) addr:0x02039cd0
 func_02039cec kind:function(arm,size=0x28) addr:0x02039cec
 func_02039d14 kind:function(arm,size=0xa8) addr:0x02039d14
-func_02039dbc kind:function(arm,size=0x108) addr:0x02039dbc
-func_02039ec4 kind:function(arm,size=0x68) addr:0x02039ec4
+OS_Malloc kind:function(arm,size=0x108) addr:0x02039dbc
+OS_Free kind:function(arm,size=0x68) addr:0x02039ec4
 func_02039f2c kind:function(arm,size=0x30) addr:0x02039f2c
 func_02039f5c kind:function(arm,size=0xa8) addr:0x02039f5c
 func_0203a004 kind:function(arm,size=0x98) addr:0x0203a004
@@ -2405,7 +2405,7 @@ func_0203a594 kind:function(arm,size=0x40) addr:0x0203a594
 func_0203a5d4 kind:function(arm,size=0x10) addr:0x0203a5d4
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/valarm.c
+// libs/nitro/os/valarm.c
 /////////////////////////////////////////////////////////////
 OS_VAlarmSystemInit kind:function(arm,size=0x48) addr:0x0203a5e4
 OS_VAlarmSystemHalt kind:function(arm,size=0x28) addr:0x0203a62c
@@ -2415,7 +2415,7 @@ OS_StopVAlarm kind:function(arm,size=0x48) addr:0x0203a69c local
 OS_StopAllVAlarms kind:function(arm,size=0x58) addr:0x0203a6e4
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/cpustat.c
+// libs/nitro/os/cpustat.c
 /////////////////////////////////////////////////////////////
 OS_EnableIRQ kind:function(arm,size=0x14) addr:0x0203a73c
 OS_DisableIRQ kind:function(arm,size=0x14) addr:0x0203a750
@@ -2429,7 +2429,7 @@ OS_Delay kind:function(arm,size=0xc) addr:0x0203a7d4
 OS_Wait kind:function(arm,size=0x1c) addr:0x0203a7e0
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/reset.c
+// libs/nitro/os/reset.c
 /////////////////////////////////////////////////////////////
 func_0203a7fc kind:function(arm,size=0x54) addr:0x0203a7fc
 func_0203a850 kind:function(arm,size=0x34) addr:0x0203a850
@@ -2562,7 +2562,7 @@ func_0203da88 kind:function(arm,size=0x28) addr:0x0203da88
 func_0203dab0 kind:function(arm,size=0x8) addr:0x0203dab0
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/record.c
+// libs/nitro/fs/record.c
 /////////////////////////////////////////////////////////////
 FS_RecordCondenseName kind:function(arm,size=0x58) addr:0x0203dab8 local
 FS_RecordCommandReadCB kind:function(arm,size=0x1c) addr:0x0203db10 local
@@ -2585,7 +2585,7 @@ FS_RecordSetMethod kind:function(arm,size=0x20) addr:0x0203e4f8
 FS_RecordNotifyEnd kind:function(arm,size=0x84) addr:0x0203e518
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/file.c
+// libs/nitro/fs/file.c
 /////////////////////////////////////////////////////////////
 FS_InitFileSystem kind:function(arm,size=0x28) addr:0x0203e59c
 FS_GetFileSystemStatus kind:function(arm,size=0x10) addr:0x0203e5c4
@@ -2604,7 +2604,7 @@ FS_FileRead kind:function(arm,size=0x10) addr:0x0203ea50
 FS_FileSeek kind:function(arm,size=0x6c) addr:0x0203ea60
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/rom.c
+// libs/nitro/fs/rom.c
 /////////////////////////////////////////////////////////////
 func_0203eacc kind:function(arm,size=0x24) addr:0x0203eacc local
 func_0203eaf0 kind:function(arm,size=0x48) addr:0x0203eaf0 local
@@ -2616,7 +2616,7 @@ FS_RomInit kind:function(arm,size=0x148) addr:0x0203ebbc
 FS_RomLoadDefaultTables kind:function(arm,size=0x20) addr:0x0203ed04
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/overlay.c
+// libs/nitro/fs/overlay.c
 /////////////////////////////////////////////////////////////
 FS_GetOverlayRamSize kind:function(arm,size=0x1c) addr:0x0203ed24
 FS_InvalidateOverlay kind:function(arm,size=0x3c) addr:0x0203ed40
@@ -2882,42 +2882,42 @@ func_020482c0 kind:function(arm,size=0x58) addr:0x020482c0
 func_02048318 kind:function(arm,size=0x8fc) addr:0x02048318
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/ARM/abort_exit.c
+// libs/c/src/abort_exit_arm_eabi.c
 /////////////////////////////////////////////////////////////
 abort kind:function(arm,size=0x24) addr:0x02048c14
 exit kind:function(arm,size=0x4c) addr:0x02048c38
 __exit kind:function(arm,size=0x128) addr:0x02048c84
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/ARM/math.c
+// libs/c/src/math.c
 /////////////////////////////////////////////////////////////
 nan kind:function(arm,size=0x18) addr:0x02048dac
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/alloc.c
+// libs/c/src/alloc.c
 /////////////////////////////////////////////////////////////
 malloc kind:function(arm,size=0x18) addr:0x02048dc4
 free kind:function(arm,size=0x14) addr:0x02048ddc
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/ansi_files.c
+// libs/c/src/ansi_files.c
 /////////////////////////////////////////////////////////////
 __flush_all kind:function(arm,size=0x68) addr:0x02048df0
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/buffer_io.c
+// libs/c/src/buffer_io.c
 /////////////////////////////////////////////////////////////
 __convert_from_newlines kind:function(arm,size=0x4) addr:0x02048e58
 __prep_buffer kind:function(arm,size=0x30) addr:0x02048e5c
 __flush_buffer kind:function(arm,size=0x88) addr:0x02048e8c
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/file_io.c
+// libs/c/src/file_io.c
 /////////////////////////////////////////////////////////////
 fflush kind:function(arm,size=0xe8) addr:0x02048f14
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/mbstring.c
+// libs/c/src/mbstring.c
 /////////////////////////////////////////////////////////////
 mbtowc kind:function(arm,size=0x1c) addr:0x02048ffc
 __mbtowc_noconv kind:function(arm,size=0x38) addr:0x02049018
@@ -2926,7 +2926,7 @@ wctomb kind:function(arm,size=0x1c) addr:0x02049064
 wcstombs kind:function(arm,size=0x78) addr:0x02049080
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/mem.c
+// libs/c/src/mem.c
 /////////////////////////////////////////////////////////////
 memcpy kind:function(arm,size=0x20) addr:0x020490f8
 memset kind:function(arm,size=0x14) addr:0x02049118
@@ -2934,12 +2934,12 @@ memchr kind:function(arm,size=0x2c) addr:0x0204912c
 memcmp kind:function(arm,size=0x40) addr:0x02049158
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/mem_funcs.c
+// libs/c/src/mem_funcs.c
 /////////////////////////////////////////////////////////////
 __fill_mem kind:function(arm,size=0xb0) addr:0x02049198
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/printf.c
+// libs/c/src/printf.c
 /////////////////////////////////////////////////////////////
 parse_format kind:function(arm,size=0x590) addr:0x02049248 local
 long2str kind:function(arm,size=0x24c) addr:0x020497d8
@@ -2954,7 +2954,7 @@ vsprintf kind:function(arm,size=0x18) addr:0x0204b354
 sprintf kind:function(arm,size=0x2c) addr:0x0204b36c
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/scanf.c
+// libs/c/src/scanf.c
 /////////////////////////////////////////////////////////////
 parse_format kind:function(arm,size=0x4f8) addr:0x0204b398 local
 __sformatter kind:function(arm,size=0xd54) addr:0x0204b890
@@ -2963,12 +2963,12 @@ vsscanf kind:function(arm,size=0x54) addr:0x0204c668
 sscanf kind:function(arm,size=0x28) addr:0x0204c6bc
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/signal.c
+// libs/c/src/signal.c
 /////////////////////////////////////////////////////////////
 raise kind:function(arm,size=0x130) addr:0x0204c6e4
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/string.c
+// libs/c/src/string.c
 /////////////////////////////////////////////////////////////
 strlen kind:function(arm,size=0x1c) addr:0x0204c814
 strcpy kind:function(arm,size=0xc8) addr:0x0204c830
@@ -2980,12 +2980,12 @@ strncmp kind:function(arm,size=0x34) addr:0x0204cadc
 strchr kind:function(arm,size=0x3c) addr:0x0204cb10
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/strtold.c
+// libs/c/src/strtold.c
 /////////////////////////////////////////////////////////////
 __strtold kind:function(arm,size=0x124c) addr:0x0204cb4c
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/strtoul.c
+// libs/c/src/strtoul.c
 /////////////////////////////////////////////////////////////
 __strtoul kind:function(arm,size=0x3e8) addr:0x0204dd98
 __strtoull kind:function(arm,size=0x46c) addr:0x0204e180
@@ -3003,7 +3003,12 @@ func_02051a48 kind:function(arm,size=0xbbc) addr:0x02051a48
 func_02052604 kind:function(arm,size=0x27c) addr:0x02052604
 func_02052880 kind:function(arm,size=0x28) addr:0x02052880
 func_020528a8 kind:function(arm,size=0x170) addr:0x020528a8
+
+/////////////////////////////////////////////////////////////
+// libs/c/src/math/s_fabs.c
+/////////////////////////////////////////////////////////////
 fabs kind:function(arm,size=0x20) addr:0x02052a18
+
 func_02052a38 kind:function(arm,size=0x1c0) addr:0x02052a38
 func_02052bf8 kind:function(arm,size=0xbc) addr:0x02052bf8
 func_02052cb4 kind:function(arm,size=0x24c) addr:0x02052cb4
@@ -3030,8 +3035,13 @@ func_020544c0 kind:function(arm,size=0x94) addr:0x020544c0
 func_02054554 kind:function(arm,size=0x14) addr:0x02054554
 func_02054568 kind:function(arm,size=0x70) addr:0x02054568
 func_020545d8 kind:function(arm,size=0x2c) addr:0x020545d8
-func_02054604 kind:function(arm,size=0x18) addr:0x02054604
-func_0205461c kind:function(arm,size=0x18) addr:0x0205461c
+
+/////////////////////////////////////////////////////////////
+// libs/c/src/pool_alloc.c
+/////////////////////////////////////////////////////////////
+__sys_alloc kind:function(arm,size=0x18) addr:0x02054604
+__sys_free kind:function(arm,size=0x18) addr:0x0205461c
+
 _dadd kind:function(arm,size=0x318) addr:0x02054634
 _d2f kind:function(arm,size=0x104) addr:0x0205494c
 func_02054a50 kind:function(arm,size=0x4c) addr:0x02054a50
@@ -3073,7 +3083,7 @@ _ddiv kind:function(arm,size=0x544) addr:0x02056aec
 _fp_init kind:function(arm,size=0x4) addr:0x02057030
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/console_io.c
+// libs/runtime/src/console_io.c
 /////////////////////////////////////////////////////////////
 sys_WriteChar kind:function(arm,size=0x14) addr:0x02057034 local
 sys_ReadChar kind:function(arm,size=0x14) addr:0x02057048 local
@@ -3083,13 +3093,13 @@ __write_console kind:function(arm,size=0x34) addr:0x020570bc
 __close_console kind:function(arm,size=0x8) addr:0x020570f0
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/CompressedNumbers.cpp
+// libs/runtime/src/CompressedNumbers.cpp
 /////////////////////////////////////////////////////////////
 _Z20__DecodeSignedNumberPcPl kind:function(arm,size=0x8c) addr:0x020570f8
 _Z22__DecodeUnsignedNumberPcPm kind:function(arm,size=0x8c) addr:0x02057184
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/ExceptionHandler.cpp
+// libs/runtime/src/ExceptionHandler.cpp
 /////////////////////////////////////////////////////////////
 _Z12BinarySearchP19ExceptionTableIndexmPc kind:function(arm,size=0x64) addr:0x02057210
 _Z19FindExceptionRecordPcP13ExceptionInfo kind:function(arm,size=0x108) addr:0x02057274
@@ -3104,14 +3114,14 @@ _Z16HandleUnexpectedP12ThrowContextP13ExceptionInfoP16ex_specificationPc kind:fu
 _Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:function(arm,size=0x1dc) addr:0x020582b4
 _Z14SetupCatchInfoP12ThrowContextll kind:function(arm,size=0x5c) addr:0x02058490
 _Z14__ThrowHandlerP12ThrowContext kind:function(arm,size=0xec) addr:0x020584ec
-_Z11__end_catchP9CatchInfo kind:function(arm,size=0x28) addr:0x020585d8
+__end_catch kind:function(arm,size=0x28) addr:0x020585d8
 
 
 func_02058600 kind:function(arm,size=0x14) addr:0x02058600
 func_02058614 kind:function(arm,size=0xc) addr:0x02058614
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/New.cpp
+// libs/runtime/src/New.cpp
 /////////////////////////////////////////////////////////////
 _ZSt17__throw_bad_allocv kind:function(arm,size=0x40) addr:0x02058620
 _ZNSt9bad_allocD1Ev kind:function(arm,size=0x4) addr:0x02058660
@@ -3123,13 +3133,13 @@ func_02058714 kind:function(arm,size=0x14) addr:0x02058714
 _ZNKSt9bad_alloc4whatEv kind:function(arm,size=0xc) addr:0x02058728
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/StaticInitializers.cpp
+// libs/runtime/src/StaticInitializers.cpp
 /////////////////////////////////////////////////////////////
-_Z26__call_static_initializersv kind:function(arm,size=0x2c) addr:0x02058734
-_Z22__destroy_global_chainv kind:function(arm,size=0x44) addr:0x02058760
+__call_static_initializers kind:function(arm,size=0x2c) addr:0x02058734
+__destroy_global_chain kind:function(arm,size=0x44) addr:0x02058760
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/cxxabi_alloc.cpp
+// libs/runtime/src/cxxabi_alloc.cpp
 /////////////////////////////////////////////////////////////
 _Z17DestroyArrayRangePhS_mPFvPvE kind:function(arm,size=0x5c) addr:0x020587a4
 __cxa_vec_new kind:function(arm,size=0xb8) addr:0x02058800
@@ -3145,27 +3155,27 @@ func_020589c4 kind:function(arm,size=0x14) addr:0x020589c4
 func_020589d8 kind:function(arm,size=0x1c) addr:0x020589d8
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/MWException.cpp
+// libs/runtime/src/MWException.cpp
 /////////////////////////////////////////////////////////////
-_ZSt9dthandlerv kind:function(arm,size=0xc) addr:0x020589f4
-_ZSt9duhandlerv kind:function(arm,size=0xc) addr:0x02058a00
+_ZSt9dthandlerv kind:function(arm,size=0xc) addr:0x020589f4 local
+_ZSt9duhandlerv kind:function(arm,size=0xc) addr:0x02058a00 local
 _ZSt9terminatev kind:function(arm,size=0x18) addr:0x02058a0c
 _ZSt10unexpectedv kind:function(arm,size=0x18) addr:0x02058a24
-_Z21__throw_catch_comparePKhS0_Pl kind:function(arm,size=0x1b0) addr:0x02058a3c
+__throw_catch_compare kind:function(arm,size=0x1b0) addr:0x02058a3c
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/ExceptionHandlerTS.cpp
+// libs/runtime/src/ExceptionHandlerTS.cpp
 /////////////////////////////////////////////////////////////
 _Z15__PopStackFrameP12ThrowContextP13ExceptionInfo kind:function(arm,size=0x5c) addr:0x02058bec
 _Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:function(arm,size=0xa0) addr:0x02058c48
 _Z20__FindExceptionTableP13ExceptionInfoPc kind:function(arm,size=0x20) addr:0x02058ce8
 _Z16__SkipUnwindInfoPc kind:function(arm,size=0x30) addr:0x02058d08
 _Z17__TransferControlP12ThrowContextP13ExceptionInfoPc kind:function(arm,size=0x30) addr:0x02058d38
-_Z7__throwPcPvS0_ kind:function(arm,size=0x48) addr:0x02058d68
-_Z9__rethrowv kind:function(arm,size=0x4c) addr:0x02058db0
+__throw kind:function(arm,size=0x48) addr:0x02058d68
+__rethrow kind:function(arm,size=0x4c) addr:0x02058db0
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/__arm_eabi_init.c
+// libs/runtime/src/__arm_eabi_init.c
 /////////////////////////////////////////////////////////////
 _ExitProcess kind:function(arm,size=0xc) addr:0x02058dfc
 
@@ -3178,7 +3188,7 @@ _ExitProcess kind:function(arm,size=0xc) addr:0x02058dfc
 //////////////////////////////////////////////////////////////
 @ET@__pformatter kind:data(any) addr:0x02058e08
 @ET@__sformatter kind:data(any) addr:0x02058e10 local
-@ET@__strtold kind:data(any) addr:0x02058e18
+@ET@__strtold kind:data(any) addr:0x02058e18 local
 data_02058e20 kind:data(any) addr:0x02058e20
 data_02058e28 kind:data(any) addr:0x02058e28
 data_02058e30 kind:data(any) addr:0x02058e30
@@ -3202,9 +3212,9 @@ data_02058e9c kind:data(any) addr:0x02058e9c
 @ET@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x02058eb4 local
 @ET@__cxa_vec_new kind:data(any) addr:0x02058ec8 local
 @ET@__cxa_vec_dtor kind:data(any) addr:0x02058edc local
-@EX@abort kind:data(any) addr:0x02058f04
-@EX@exit kind:data(any) addr:0x02058f10
-@EX@__exit kind:data(any) addr:0x02058f1c
+@EX@abort kind:data(any) addr:0x02058f04 // TODO: local, needs dsd support for exception table address link-time constants
+@EX@exit kind:data(any) addr:0x02058f10 local
+@EX@__exit kind:data(any) addr:0x02058f1c local
 @EX@nan kind:data(any) addr:0x02058f28 local
 @EX@malloc kind:data(any) addr:0x02058f34 local
 @EX@free kind:data(any) addr:0x02058f40 local
@@ -3228,10 +3238,10 @@ data_02058e9c kind:data(any) addr:0x02058e9c
 @EX@vsscanf kind:data(any) addr:0x02059018 local
 @EX@sscanf kind:data(any) addr:0x02059024 local
 @EX@raise kind:data(any) addr:0x02059030 local
-@EX@__strtold kind:data(any) addr:0x0205903c
-@EX@__strtoul kind:data(any) addr:0x02059048
-@EX@__strtoull kind:data(any) addr:0x02059054
-@EX@strtoul kind:data(any) addr:0x02059060
+@EX@__strtold kind:data(any) addr:0x0205903c local
+@EX@__strtoul kind:data(any) addr:0x02059048 local
+@EX@__strtoull kind:data(any) addr:0x02059054 local
+@EX@strtoul kind:data(any) addr:0x02059060 local
 data_0205906c kind:data(any) addr:0x0205906c
 data_02059078 kind:data(any) addr:0x02059078
 data_02059084 kind:data(any) addr:0x02059084
@@ -3259,8 +3269,8 @@ data_02059180 kind:data(any) addr:0x02059180
 data_0205918c kind:data(any) addr:0x0205918c
 data_02059198 kind:data(any) addr:0x02059198
 data_020591a4 kind:data(any) addr:0x020591a4
-data_020591b0 kind:data(any) addr:0x020591b0
-data_020591bc kind:data(any) addr:0x020591bc
+@EX@__sys_alloc kind:data(any) addr:0x020591b0 local
+@EX@__sys_free kind:data(any) addr:0x020591bc local
 @EX@__read_console kind:data(any) addr:0x020591c8 local
 @EX@__write_console kind:data(any) addr:0x020591d4 local
 @EX@_Z19FindExceptionRecordPcP13ExceptionInfo kind:data(any) addr:0x020591e0
@@ -3280,8 +3290,8 @@ data_0205927c kind:data(any) addr:0x0205927c
 data_02059288 kind:data(any) addr:0x02059288
 data_02059294 kind:data(any) addr:0x02059294
 data_020592a0 kind:data(any) addr:0x020592a0
-@EX@_Z26__call_static_initializersv kind:data(any) addr:0x020592ac local
-@EX@_Z22__destroy_global_chainv kind:data(any) addr:0x020592b8 local
+@EX@__call_static_initializers kind:data(any) addr:0x020592ac local
+@EX@__destroy_global_chain kind:data(any) addr:0x020592b8 local
 @EX@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x020592c4 local
 @EX@__cxa_vec_new kind:data(any) addr:0x020592d0 local
 @EX@__cxa_vec_dtor kind:data(any) addr:0x020592dc local
@@ -3291,10 +3301,10 @@ data_02059300 kind:data(any) addr:0x02059300
 data_0205930c kind:data(any) addr:0x0205930c
 data_02059318 kind:data(any) addr:0x02059318
 data_02059324 kind:data(any) addr:0x02059324
-@EX@_ZSt9dthandlerv kind:data(any) addr:0x02059330
-@EX@_ZSt9duhandlerv kind:data(any) addr:0x0205933c
-@EX@_ZSt9terminatev kind:data(any) addr:0x02059348
-@EX@_ZSt10unexpectedv kind:data(any) addr:0x02059354
+@EX@_ZSt9dthandlerv kind:data(any) addr:0x02059330 local
+@EX@_ZSt9duhandlerv kind:data(any) addr:0x0205933c local
+@EX@_ZSt9terminatev kind:data(any) addr:0x02059348 local
+@EX@_ZSt10unexpectedv kind:data(any) addr:0x02059354 local
 @EX@_Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:data(any) addr:0x02059360
 @EX@_Z16__SkipUnwindInfoPc kind:data(any) addr:0x0205936c
 @EX@_ExitProcess kind:data(any) addr:0x02059378 local
@@ -3495,7 +3505,7 @@ data_0205e4e0 kind:data(any) addr:0x0205e4e0
 data_02060206 kind:data(any) addr:0x02060206
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fx/fx_atan.c
+// libs/nitro/fx/fx_atan.c
 /////////////////////////////////////////////////////////////
 AtanTable kind:data(short[129]) addr:0x020624e0 local
 
@@ -3508,7 +3518,7 @@ data_02062e54 kind:data(any) addr:0x02062e54
 data_02063128 kind:data(any) addr:0x02063128
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/overlay.c
+// libs/nitro/fs/overlay.c
 /////////////////////////////////////////////////////////////
 data_0206314c kind:data(any) addr:0x0206314c
 
@@ -3519,18 +3529,18 @@ data_020631f4 kind:data(any) addr:0x020631f4
 data_020631f8 kind:data(any) addr:0x020631f8
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/ctype.c
+// libs/c/src/ctype.c
 /////////////////////////////////////////////////////////////
 __upper_mapC kind:data(any) addr:0x020632c0
 __ctype_mapC kind:data(any) addr:0x02063340
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/scanf.c
+// libs/c/src/scanf.c
 /////////////////////////////////////////////////////////////
 @66 kind:data(any) addr:0x02063440 local
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/strtold.c
+// libs/c/src/strtold.c
 /////////////////////////////////////////////////////////////
 @120 kind:data(any) addr:0x02063468 local
 @138 kind:data(any) addr:0x0206346d local
@@ -4135,7 +4145,7 @@ data_02066218 kind:data(any) addr:0x02066218
 data_02066238 kind:data(any) addr:0x02066238
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/gx/gx.c
+// libs/nitro/gx/gx.c
 /////////////////////////////////////////////////////////////
 IsDisplayOn kind:data(short) addr:0x02066258 local
 data_0206625c kind:data(any) addr:0x0206625c
@@ -4146,12 +4156,12 @@ data_02066270 kind:data(any) addr:0x02066270
 data_02066274 kind:data(any) addr:0x02066274
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/rom.c
+// libs/nitro/fs/rom.c
 /////////////////////////////////////////////////////////////
 @237 kind:data(any) addr:0x02066278 local
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/overlay.c
+// libs/nitro/fs/overlay.c
 /////////////////////////////////////////////////////////////
 data_0206627c kind:data(any) addr:0x0206627c
 data_02066280 kind:data(any) addr:0x02066280
@@ -4170,36 +4180,36 @@ data_020663d0 kind:data(any) addr:0x020663d0
 data_020663d4 kind:data(any) addr:0x020663d4
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/ansi_files.c
+// libs/c/src/ansi_files.c
 /////////////////////////////////////////////////////////////
 __files kind:data(any) addr:0x020663d8
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/float.c
+// libs/c/src/float.c
 /////////////////////////////////////////////////////////////
 __float_huge kind:data(any) addr:0x020664bc
 __float_nan kind:data(any) addr:0x020664c0
 __double_huge kind:data(any) addr:0x020664c4
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/locale.c
+// libs/c/src/locale.c
 /////////////////////////////////////////////////////////////
-@13 kind:data(any) addr:0x020664cc local
-@10 kind:data(any) addr:0x020664d0 local
-@6 kind:data(any) addr:0x020664d4 local
-_loc_ctyp_C kind:data(any) addr:0x020664dc
-_loc_coll_C kind:data(any) addr:0x020664e4
-_loc_tim_C kind:data(any) addr:0x020664f4
-char_coll_tableC kind:data(any) addr:0x02066514
-@9 kind:data(any) addr:0x020665d4 local
+@19 kind:data(byte) addr:0x020664cc local
+@16 kind:data(byte[3]) addr:0x020664d0 local
+@12 kind:data(byte[6]) addr:0x020664d4 local
+__ctype_cmpt kind:data(any) addr:0x020664dc
+__coll_cmpt kind:data(any) addr:0x020664e4
+__time_cmpt kind:data(any) addr:0x020664f4
+char_coll_table kind:data(any) addr:0x02066514
+@15 kind:data(byte[9]) addr:0x020665d4 local
 _current_locale kind:data(any) addr:0x020665e0
-@8 kind:data(any) addr:0x020665ec local
-@7 kind:data(any) addr:0x020665f8 local
-@11 kind:data(any) addr:0x02066608 local
-@12 kind:data(any) addr:0x02066660 local
+@14 kind:data(any) addr:0x020665ec local
+@13 kind:data(byte[15]) addr:0x020665f8 local
+@17 kind:data(byte[85]) addr:0x02066608 local
+@18 kind:data(byte[134]) addr:0x02066660 local
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/printf.c
+// libs/c/src/printf.c
 /////////////////////////////////////////////////////////////
 @606 kind:data(any) addr:0x020666e8 local
 @607 kind:data(any) addr:0x020666f0 local
@@ -4246,7 +4256,7 @@ data_020668c0 kind:data(any) addr:0x020668c0
 data_020668d8 kind:data(any) addr:0x020668d8
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/New.cpp
+// libs/runtime/src/New.cpp
 /////////////////////////////////////////////////////////////
 __throws_bad_alloc kind:data(any) addr:0x02066900
 _ZZNKSt9bad_alloc4whatEvEs kind:data(any) addr:0x02066904
@@ -4266,10 +4276,10 @@ data_020669c8 kind:data(any) addr:0x020669c8
 data_020669ec kind:data(any) addr:0x020669ec
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/MWException.cpp
+// libs/runtime/src/MWException.cpp
 /////////////////////////////////////////////////////////////
-_ZSt8thandler kind:data(any) addr:0x02066a14
-_ZSt8uhandler kind:data(any) addr:0x02066a18
+_ZSt8thandler kind:data(any) addr:0x02066a14 local
+_ZSt8uhandler kind:data(any) addr:0x02066a18 local
 
 data_02066a1c kind:data(any) addr:0x02066a1c
 
@@ -4634,13 +4644,13 @@ data_0207d44c kind:bss addr:0x0207d44c
 data_0207da20 kind:bss addr:0x0207da20
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/gx/gx.c
+// libs/nitro/gx/gx.c
 /////////////////////////////////////////////////////////////
 DisplayMode kind:bss addr:0x0207dc20 local
 GX_LockID kind:bss addr:0x0207dc22
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/gx/gx_state.c
+// libs/nitro/gx/gx_state.c
 /////////////////////////////////////////////////////////////
 GxState kind:bss addr:0x0207dc24
 
@@ -4652,7 +4662,7 @@ data_0207dc84 kind:bss addr:0x0207dc84
 data_0207dcdc kind:bss addr:0x0207dcdc
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/thread.c
+// libs/nitro/os/thread.c
 /////////////////////////////////////////////////////////////
 ThreadSwitchCallback kind:bss addr:0x0207dce0
 ThreadSchedulerCount kind:bss addr:0x0207dce4
@@ -4676,7 +4686,7 @@ data_0207e038 kind:bss addr:0x0207e038
 data_0207e048 kind:bss addr:0x0207e048
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/os/valarm.c
+// libs/nitro/os/valarm.c
 /////////////////////////////////////////////////////////////
 VAlarmSystemActive kind:bss(size=0x2) addr:0x0207e054 local
 data_0207e058 kind:bss addr:0x0207e058 local
@@ -4702,18 +4712,18 @@ data_0207fc04 kind:bss addr:0x0207fc04
 data_0207fc08 kind:bss addr:0x0207fc08
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/record.c
+// libs/nitro/fs/record.c
 /////////////////////////////////////////////////////////////
 Record_List kind:bss addr:0x0207fc88 local
 Record_Position kind:bss addr:0x0207fc8c
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/file.c
+// libs/nitro/fs/file.c
 /////////////////////////////////////////////////////////////
 FS_IsFileSystemActive kind:bss addr:0x0207fc98 local
 
 /////////////////////////////////////////////////////////////
-// libs/NitroSDK/fs/rom.c
+// libs/nitro/fs/rom.c
 /////////////////////////////////////////////////////////////
 data_0207fc9c kind:bss addr:0x0207fc9c
 data_0207fca0 kind:bss addr:0x0207fca0 local
@@ -4770,35 +4780,35 @@ data_02081b08 kind:bss addr:0x02081b08
 data_02081b0c kind:bss addr:0x02081b0c
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/ARM/critical_regions.c
+// libs/c/src/abort_exit_arm_eabi.c
 /////////////////////////////////////////////////////////////
 __console_exit kind:bss addr:0x02081f30
 __stdio_exit kind:bss addr:0x02081f34
-__atexit_curr_func kind:bss addr:0x02081f38
+__atexit_curr_func kind:bss addr:0x02081f38 local
 __aborting kind:bss addr:0x02081f3c
-__atexit_funcs kind:bss addr:0x02081f40
+__atexit_funcs kind:bss addr:0x02081f40 local
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/ARM/critical_regions.c
+// libs/c/src/critical_regions.c
 /////////////////////////////////////////////////////////////
 __cs_id kind:bss addr:0x02082040
 __cs_ref kind:bss addr:0x02082064
 __cs kind:bss addr:0x02082088
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/ansi_files.c
+// libs/c/src/ansi_files.c
 /////////////////////////////////////////////////////////////
 stderr_buff kind:bss addr:0x02082160 local
 stdout_buff kind:bss addr:0x02082260 local
 stdin_buff kind:bss addr:0x02082360 local
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/errno.c
+// libs/c/src/errno.c
 /////////////////////////////////////////////////////////////
 errno kind:bss addr:0x02082460
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Common/signal.c
+// libs/c/src/signal.c
 /////////////////////////////////////////////////////////////
 signal_funcs kind:bss addr:0x02082464
 
@@ -4807,11 +4817,11 @@ data_02082480 kind:bss addr:0x02082480
 data_02082488 kind:bss addr:0x02082488
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/New.cpp
+// libs/runtime/src/New.cpp
 /////////////////////////////////////////////////////////////
 __new_handler kind:bss addr:0x02082490
 
 /////////////////////////////////////////////////////////////
-// libs/MSL/Runtime/StaticInitializers.cpp
+// libs/runtime/src/StaticInitializers.cpp
 /////////////////////////////////////////////////////////////
 __global_destructor_chain kind:bss(size=0x4) addr:0x02082494

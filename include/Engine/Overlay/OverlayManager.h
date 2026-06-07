@@ -1,7 +1,7 @@
 #ifndef OVERLAY_MANAGER_H
 #define OVERLAY_MANAGER_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 extern void __OVERLAY_COUNT(void);
 

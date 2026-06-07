@@ -2,7 +2,7 @@
 #define OVERLAYMANAGER_H
 
 #include "Engine/Overlay/OverlayManager.h"
-#include <types.h>
+#include <nitro/types.h>
 
 // Function pointer type for overlay callbacks.
 // The callbacks call either an overlay init, overlay main(? verify this), or overlay exit function from the overlay function

@@ -1,8 +1,8 @@
 #ifndef CRIWARE_LSC_H
 #define CRIWARE_LSC_H
 
-#include "types.h"
 #include <CriWare/sj.h>
+#include <nitro/types.h>
 
 typedef struct LSC_OBJ LSC_OBJ;
 typedef LSC_OBJ*       LSC;

@@ -1,4 +1,4 @@
-    categories: UI, Debug Menu
+    categories: Debug Menu, UI
     .text       start:0x020e7360 end:0x020e8308 kind:code align:32
     .rodata     start:0x020e8308 end:0x020e831c kind:rodata align:4
     .ctor       start:0x020e831c end:0x020e831c kind:rodata align:4

@@ -2,8 +2,8 @@
 #define ENGINE_CORE_OAMMANAGER_H
 
 #include "Display.h"
-#include <NitroSDK/os/cache.h>
-#include <types.h>
+#include <nitro/os/cache.h>
+#include <nitro/types.h>
 
 /// MARK: Types
 

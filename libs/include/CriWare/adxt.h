@@ -5,7 +5,7 @@
 #include <CriWare/adx_stmc.h>
 #include <CriWare/private/adx_rna.h>
 #include <CriWare/sj.h>
-#include <types.h>
+#include <nitro/types.h>
 
 /* Status Codes */
 #define ADXT_STAT_STOPPED  0 // Standby

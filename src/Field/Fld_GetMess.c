@@ -3,7 +3,7 @@
 #include "Field/FieldTasks.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
-#include "types.h"
+#include <nitro/types.h>
 
 extern BinIdentifier data_ov030_020d9944;
 

@@ -1,7 +1,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Header for a block of memory in the heap allocator.

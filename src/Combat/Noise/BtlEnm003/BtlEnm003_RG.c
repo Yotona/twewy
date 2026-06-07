@@ -2,7 +2,7 @@
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm003_RG {
     /* 0x000 */ CombatActor          actor;

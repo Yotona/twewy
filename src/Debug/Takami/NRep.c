@@ -12,10 +12,10 @@
 #include "SndMgrSeIdx.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
-#include <NitroSDK/fs/overlay.h>
-#include <NitroSDK/os/cache.h>
-#include <registers.h>
-#include <types.h>
+#include <nitro/fs/overlay.h>
+#include <nitro/os/cache.h>
+#include <nitro/reg.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
@@ -83,7 +83,7 @@ void func_ov043_020c6238(NRepState* state) {
     state->taskId_Menu = NRepMenu_CreateTask(&state->taskPool, state->unk_11588, context);
     state->taskId_Text = NRepText_CreateTask(&state->taskPool, state->unk_11588, context);
 
-    for (u16 index = 0; index < ARRAY_COUNT(state->taskIds_Cursor); index++) {
+    for (u16 index = 0; index < ARRAY_LEN(state->taskIds_Cursor); index++) {
         state->taskIds_Cursor[index] = NRepCursor_CreateTask(&state->taskPool, state->unk_11588, index, context);
     }
 }

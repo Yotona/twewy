@@ -1,10 +1,10 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
-#include "NitroSDK/mi/cpumem.h"
 #include "Save.h"
 #include "Save/FriendData.h"
 #include "Save/MainData.h"
-#include "types.h"
+#include "nitro/mi/cpumem.h"
+#include <nitro/types.h>
 
 extern void func_020389c0(u16);
 extern s64  func_0203a444(void);

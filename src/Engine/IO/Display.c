@@ -1,7 +1,7 @@
 #include "Display.h"
 #include "Engine/Core/System.h"
-#include <NitroSDK/fx.h>
-#include <registers.h>
+#include <nitro/fx.h>
+#include <nitro/reg.h>
 
 s32             data_0206aa78     = 0;
 s32             data_0206aa7c     = 0;
@@ -169,9 +169,9 @@ static void Display_ApplyControls(void) {
     GX_SetVisibleWindows(mainSettings->windows);
 
     if (mainSettings->hBlank != 0) {
-        REG_DISPCNT_GET()->hblankProcess = TRUE;
+        REG_DISPCNT = REG_DISPCNT | 0x00400000;
     } else {
-        REG_DISPCNT_GET()->hblankProcess = FALSE;
+        REG_DISPCNT = REG_DISPCNT & ~0x00400000;
     }
 
     GX_SetScreenBase(mainSettings->screenBase);
@@ -182,9 +182,9 @@ static void Display_ApplyControls(void) {
     DisplayControlSettings* subSettings = Display_GetSubControls();
 
     if (subSettings->displaying == TRUE) {
-        REG_DISPCNT_SUB_GET()->dispMode = GX_DISPMODE_GRAPHICS;
+        REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x00010000) | (GX_DISPMODE_GRAPHICS << 16);
     } else {
-        REG_DISPCNT_SUB_GET()->dispMode = GX_DISPMODE_OFF;
+        REG_DISPCNT_SUB = REG_DISPCNT_SUB & ~0x00010000;
     }
 
     layers = subSettings->layers;
@@ -199,9 +199,9 @@ static void Display_ApplyControls(void) {
     GXs_SetVisibleWindows(subSettings->windows);
 
     if (subSettings->hBlank != 0) {
-        REG_DISPCNT_SUB_GET()->hblankProcess = TRUE;
+        REG_DISPCNT_SUB = REG_DISPCNT_SUB | 0x00800000;
     } else {
-        REG_DISPCNT_SUB_GET()->hblankProcess = FALSE;
+        REG_DISPCNT_SUB = REG_DISPCNT_SUB & ~0x00800000;
     }
 
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT_SUB, subSettings->brightness);

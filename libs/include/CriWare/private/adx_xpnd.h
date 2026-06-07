@@ -1,7 +1,7 @@
 #ifndef ADX_XPND_H
 #define ADX_XPND_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ s16 unk0;

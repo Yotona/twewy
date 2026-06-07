@@ -1,4 +1,4 @@
-#include <types.h>
+#include <nitro/types.h>
 
 s32 adxt_fssvr_enter_cnt = 0;
 

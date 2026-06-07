@@ -20,7 +20,7 @@ void Input_Init(InputState* input, s32 delayInit, s32 delayMin, s32 step) {
     input->repeatMinDelay             = delayMin;
     input->repeatStep                 = step;
 
-    for (u32 i = 0; i < ARRAY_COUNT(input->repeatDelay); i++) {
+    for (u32 i = 0; i < ARRAY_LEN(input->repeatDelay); i++) {
         input->repeatDelay[i]   = delayInit;
         input->repeatCounter[i] = delayInit;
     }

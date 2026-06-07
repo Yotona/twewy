@@ -1,7 +1,7 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ s32 x;

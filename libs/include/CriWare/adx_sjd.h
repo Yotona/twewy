@@ -3,7 +3,7 @@
 
 #include <CriWare/private/adx_b.h>
 #include <CriWare/sj.h>
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Stream Joint Decoder

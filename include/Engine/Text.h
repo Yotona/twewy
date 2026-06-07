@@ -2,7 +2,7 @@
 #define TEXT_H
 
 #include "Engine/File/DatMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ char unk_00[0x8];

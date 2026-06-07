@@ -3,7 +3,7 @@
 
 #include <CriWare/acssnd.h>
 #include <CriWare/adxt.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct CRISS {
     /* 0x00 */ u8   unk_00;

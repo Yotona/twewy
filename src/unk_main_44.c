@@ -1,4 +1,4 @@
-#include <types.h>
+#include <nitro/types.h>
 
 void func_020274ac(void) {}
 void func_020274e4(void) {}

@@ -5,7 +5,6 @@
     .data       start:0x020f6ba0 end:0x020f6c80 kind:data align:32
     .bss        start:0x020f6c80 end:0x020f6ca0 kind:bss align:32
 
-
 src/Combat/Noise/Boss15/BtlBoss15_RG.c:
     .text       start:0x020f1080 end:0x020f288c
     .rodata     start:0x020f6570 end:0x020f6720

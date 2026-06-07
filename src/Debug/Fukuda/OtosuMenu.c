@@ -13,7 +13,7 @@
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 extern void func_ov031_0210aaac(void*, s32, s32);
 extern void func_ov031_0210ab60(void*, s16);

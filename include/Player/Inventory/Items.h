@@ -1,7 +1,7 @@
 #ifndef INVENTORY_ITEMS_H
 #define INVENTORY_ITEMS_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Item information as stored from within an external binary data file.

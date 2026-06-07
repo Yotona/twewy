@@ -3,8 +3,8 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "common_data.h"
-#include <NitroSDK/os.h>
-#include <registers.h>
+#include <nitro/os.h>
+#include <nitro/reg.h>
 
 typedef struct {
     /* 0x00 */ s32   mode;        // 0 = u16, 1 = s32

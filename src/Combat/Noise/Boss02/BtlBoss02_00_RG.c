@@ -4,7 +4,7 @@
 #include "Combat/Noise/Boss03.h"
 #include "Engine/Math/Random.h"
 #include "SpriteMgr.h"
-#include "types.h"
+#include <nitro/types.h>
 
 typedef struct BtlBoss02_00_RG {
     /* 0x000 */ CombatActor  actor;

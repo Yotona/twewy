@@ -6,7 +6,7 @@
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Math/Random.h"
-#include <NitroSDK/fx.h>
+#include <nitro/fx.h>
 
 /// MARK: Boss01_UG
 

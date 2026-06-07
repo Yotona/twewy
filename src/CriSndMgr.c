@@ -109,7 +109,7 @@ void func_02027330(void) {
 }
 
 void CriSndMgr_PlayFile(CriSndMgrAdxId adxIdx) {
-    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+    if (adxIdx < ARRAY_LEN(criSndMgr.volume)) {
         CriSndMgr_Pause(adxIdx, 0);
         CriSndMgr_SetAdxIdxVolume(adxIdx, criSndMgr.volume[adxIdx]);
         func_02021bc8(criSndMgr.criss, CriSndMgr_AdxData[adxIdx].adxFile);
@@ -117,19 +117,19 @@ void CriSndMgr_PlayFile(CriSndMgrAdxId adxIdx) {
 }
 
 void CriSndMgr_Stop(CriSndMgrAdxId adxIdx) {
-    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+    if (adxIdx < ARRAY_LEN(criSndMgr.volume)) {
         criSsPly_Stop(criSndMgr.criss);
     }
 }
 
 void CriSndMgr_Pause(CriSndMgrAdxId adxIdx, s32 pauseFlag) {
-    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+    if (adxIdx < ARRAY_LEN(criSndMgr.volume)) {
         criSsPly_Pause(criSndMgr.criss, pauseFlag);
     }
 }
 
 void CriSndMgr_SetAdxIdxVolume(CriSndMgrAdxId adxIdx, s32 adxVolume) {
-    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+    if (adxIdx < ARRAY_LEN(criSndMgr.volume)) {
         criSndMgr.volume[adxIdx] = adxVolume;
         criSsPly_SetVolume(criSndMgr.criss, adxVolume);
     }
@@ -137,7 +137,7 @@ void CriSndMgr_SetAdxIdxVolume(CriSndMgrAdxId adxIdx, s32 adxVolume) {
 
 s32 CriSndMgr_GetAdxIdxVolume(CriSndMgrAdxId adxIdx) {
     s32 volume = 0;
-    if (adxIdx < ARRAY_COUNT(criSndMgr.volume)) {
+    if (adxIdx < ARRAY_LEN(criSndMgr.volume)) {
         volume = criSndMgr.volume[adxIdx];
     }
     return volume;

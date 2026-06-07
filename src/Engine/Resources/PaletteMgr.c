@@ -1,7 +1,7 @@
 
 #include "Engine/Resources/PaletteMgr.h"
 #include "Display.h"
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 extern u16 data_02059d24;
 extern u8  data_02066aec;

@@ -1,7 +1,7 @@
 #ifndef COMMON_DATA_H
 #define COMMON_DATA_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 extern struct {
     /* 0x00 */ s32 unk_00;

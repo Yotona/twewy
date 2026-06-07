@@ -2,7 +2,7 @@
 #define SNDMGR_H
 
 #include "SndMgrSeIdx.h"
-#include <types.h>
+#include <nitro/types.h>
 
 extern struct {
     /* 0x0 */ s8  seqArc;       // Sequence Archive Index

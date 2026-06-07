@@ -19,7 +19,7 @@ void OpenEnd_InitHardware(void) {
     data_02066aec = 0;
     data_02066eec = 0;
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT, 0 - 0x10);
-    GXx_SetMasterBrightness(&REG_DISP_B_MASTER_BRIGHT, ~0xf);
+    GXx_SetMasterBrightness(&REG_MASTER_BRIGHT_SUB, ~0xf);
     GX_DispOn();
     REG_DISPCNT_SUB |= 0x10000;
     Display_Init();

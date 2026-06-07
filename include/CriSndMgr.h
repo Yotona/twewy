@@ -2,7 +2,7 @@
 #define CRISNDMGR_H
 
 #include <CriWare/criss.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x0 */ const char* adxFile;

@@ -1,7 +1,7 @@
 #ifndef SJ_H
 #define SJ_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct UUID {
     u32 data1;

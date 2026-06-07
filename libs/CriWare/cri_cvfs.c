@@ -1,5 +1,5 @@
 #include <CriWare/cri_cvfs.h>
-#include <MSL/Common/string.h>
+#include <string.h>
 
 #define CVFS_DEVICE_MAX      32
 #define CVFS_HANDLE_MAX      10
@@ -528,7 +528,7 @@ void func_0201b874(void* func, const char* error) {
     ADXERR_CallErrFunc1(error);
 }
 
-static char* const data_0205bff8 = "\nADXNITROSDK Ver.";
+static char* const data_0205bff8 = "\nADX_NITRO Ver.";
 
 void func_0201b884(void) {
     func_0201bfac(data_0205bff8);

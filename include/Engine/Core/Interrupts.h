@@ -1,7 +1,7 @@
 #ifndef BOOT_H
 #define BOOT_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef void (*IRQCallback)(void);
 

@@ -1,7 +1,7 @@
 #ifndef EASYLIST_H
 #define EASYLIST_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct EasyListNode {
     /* 0x00 */ struct EasyListNode* next;

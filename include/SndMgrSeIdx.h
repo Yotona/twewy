@@ -1,7 +1,7 @@
 #ifndef SNDMGRSEIDX_H
 #define SNDMGRSEIDX_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef enum SndMgrSeIdx {
     SEIDX_SE_BATTLE_IN                    = 0,

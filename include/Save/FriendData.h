@@ -1,7 +1,7 @@
 #ifndef SAVE_FRIENDDATA_H
 #define SAVE_FRIENDDATA_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x0 */ u8   unk_0[6];

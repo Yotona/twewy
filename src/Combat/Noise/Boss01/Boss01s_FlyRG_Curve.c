@@ -2,7 +2,7 @@
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss01.h"
 #include "Engine/Math/Random.h"
-#include <NitroSDK/fx.h>
+#include <nitro/fx.h>
 
 typedef struct {
     /* 0x00 */ CombatSprite sprite;

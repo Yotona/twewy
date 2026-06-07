@@ -1,7 +1,7 @@
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/Memory.h"
 #include "common_data.h"
-#include <NitroSDK/os/cache.h>
+#include <nitro/os/cache.h>
 
 static void DMA_ResetState(void);
 
@@ -36,7 +36,7 @@ void DMA_Init(s32 size) {
 static void DMA_ResetState(void) {
     data_02066a5c.active.unk_00 = 0;
     data_02066a5c.active.addr   = NULL;
-    for (s32 i = 0; i < ARRAY_COUNT(data_02066a5c.queue); i++) {
+    for (s32 i = 0; i < ARRAY_LEN(data_02066a5c.queue); i++) {
         data_02066a5c.queue[i] = NULL;
     }
 }

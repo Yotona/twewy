@@ -3,7 +3,7 @@
 
 #include <CriWare/cri_cvfs.h>
 #include <CriWare/sj.h>
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Stream Controller

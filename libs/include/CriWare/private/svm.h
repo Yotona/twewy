@@ -1,7 +1,7 @@
 #ifndef CRIWARE_SVM_H
 #define CRIWARE_SVM_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 void SVM_Init();
 void SVM_Lock();

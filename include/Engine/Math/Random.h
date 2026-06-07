@@ -6,7 +6,7 @@
  * @brief Random number generator functions.
  */
 
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Sets the random number generator seed.

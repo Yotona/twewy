@@ -2,13 +2,12 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "common_data.h"
-#include <NitroSDK/gx/gx.h>
-#include <NitroSDK/os/cache.h>
-#include <NitroSDK/os/interrupt.h>
-#include <NitroSDK/os/valarm.h>
-#include <NitroSDK/util.h>
-#include <bios.h>
-#include <registers.h>
+#include <nitro/gx/gx.h>
+#include <nitro/os/cache.h>
+#include <nitro/os/cpustat.h>
+#include <nitro/os/interrupt.h>
+#include <nitro/os/valarm.h>
+#include <nitro/reg.h>
 
 IRQCallback Interrupts_RegisterVBlankCallback(IRQCallback callback, s32 param_2);
 

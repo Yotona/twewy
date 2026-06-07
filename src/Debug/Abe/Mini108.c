@@ -7,8 +7,8 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "common_data.h"
-#include "registers.h"
-#include <NitroSDK/gx.h>
+#include "nitro/reg.h"
+#include <nitro/gx.h>
 
 void Mini108_VBlank(void);
 void Mini108_UnregisterVBlank(void);
@@ -293,8 +293,8 @@ void func_ov000_020825c0(void) {
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x08;
     REG_DISP3DCNT = REG_DISP3DCNT & ~0x3000 | 0x10;
     G3X_SetClearColor(0, 0, 0x7fff, 0x3f, 0);
-    GFX_FIFO_VIEWPORT     = 0xbfff0000;
-    GFX_FIFO_SWAP_BUFFERS = 0;
+    REG_GFX_FIFO_VIEWPORT     = 0xbfff0000;
+    REG_GFX_FIFO_SWAP_BUFFERS = 0;
     G3i_OrthoW(0, 0xc0000, 0, 0x100000, -0x400000, 0x400000, 0x400000, 1, 0);
 
     UnkStruct_Mini108_tuple unk_14 = {0, 0, 0};
@@ -302,7 +302,7 @@ void func_ov000_020825c0(void) {
     UnkStruct_Mini108_tuple unk_2C = data_ov000_020831b4;
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
 
-    GFX_FIFO_MATRIX_STORE = 0;
+    REG_GFX_FIFO_MATRIX_STORE = 0;
 
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
