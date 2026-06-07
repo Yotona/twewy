@@ -7,7 +7,7 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
-#include <NitroSDK/os/cache.h>
+#include <nitro/os/cache.h>
 
 extern s32 DAT_0206aae0;
 extern s32 DAT_0206b3d0;

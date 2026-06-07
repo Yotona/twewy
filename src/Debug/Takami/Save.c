@@ -8,7 +8,7 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
-#include <NitroSDK/fx.h>
+#include <nitro/fx.h>
 
 void func_ov043_020bf250(SaveState* state) {
     // Not yet implemented

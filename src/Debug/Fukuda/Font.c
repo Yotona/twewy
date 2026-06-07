@@ -10,7 +10,7 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00000 */ ResourceManager  unk_00000;

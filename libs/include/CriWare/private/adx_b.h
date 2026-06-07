@@ -2,7 +2,7 @@
 #define CRIWARE_ADX_B_H
 
 #include <CriWare/private/adx_xpnd.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     char pad0[0x10];

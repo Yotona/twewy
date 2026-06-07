@@ -1,0 +1,10 @@
+#pragma once
+
+namespace std {
+    template <class T> class vector {
+    public:
+        T*  elements;
+        int size;
+        int capacity;
+    };
+} // namespace std

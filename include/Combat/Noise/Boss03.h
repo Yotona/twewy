@@ -3,7 +3,7 @@
 
 #include "SndMgr.h"
 #include "SpriteMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x000 */ char unk_000[0x1A4];

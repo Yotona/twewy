@@ -10,7 +10,7 @@
  */
 
 #include "Engine/Core/Memory.h"
-#include <types.h>
+#include <nitro/types.h>
 
 struct TaskPool;
 

@@ -2,7 +2,7 @@
 #define DEBUG_STSAMPLE_H
 
 #include "Engine/Resources/ResourceMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00000 */ ResourceManager  unk_00000;

@@ -10,7 +10,7 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
-#include "registers.h"
+#include "nitro/reg.h"
 
 typedef struct {
     /* 0x00000 */ Data*           dataList[3];

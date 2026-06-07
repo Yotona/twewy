@@ -7,8 +7,8 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Save.h"
 #include "common_data.h"
-#include <NitroSDK/fx.h>
-#include <types.h>
+#include <nitro/fx.h>
+#include <nitro/types.h>
 
 #define round(value) ((value) > 0 ? (f32)(value << 0xC) + 0.5f : (f32)(value << 0xC) - 0.5f)
 

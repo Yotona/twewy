@@ -5,8 +5,8 @@
 #include "Engine/Math/Random.h"
 #include "SpriteMgr.h"
 
-#include <NitroSDK/fx.h>
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/fx.h>
+#include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm003_UG {
     /* 0x000 */ CombatActor          actor;

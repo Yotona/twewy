@@ -2,7 +2,7 @@
 #include "Player/Progress.h"
 #include "Player/Stats.h"
 #include "Save.h"
-#include "types.h"
+#include <nitro/types.h>
 
 extern s32  func_ov030_020aed9c(s32);
 extern void func_ov030_020ae96c(s32);

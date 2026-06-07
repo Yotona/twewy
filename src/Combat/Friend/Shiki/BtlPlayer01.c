@@ -9,7 +9,7 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "Save.h"
 #include "SndMgr.h"
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 extern BinIdentifier data_ov003_020d77e0;
 

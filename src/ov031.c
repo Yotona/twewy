@@ -4,7 +4,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/File/DatMgr.h"
 #include "common_data.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     u16 unk0;

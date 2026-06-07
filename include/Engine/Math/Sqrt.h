@@ -2,7 +2,7 @@
 #ifndef SQRT_H
 #define SQRT_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 /**
  * @brief Calculates the integer square root of a number using Newton's method.

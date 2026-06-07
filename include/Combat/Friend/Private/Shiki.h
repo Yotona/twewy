@@ -1,7 +1,7 @@
 #ifndef COMBAT_FRIEND_PRIVATE_SHIKI_H
 #define COMBAT_FRIEND_PRIVATE_SHIKI_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 extern s32 func_ov003_0208b690(u16);
 

@@ -2,7 +2,7 @@
 #define ACSSBADX_H
 
 #include <CriWare/adxt.h>
-#include <types.h>
+#include <nitro/types.h>
 
 /* Operation Status */
 #define ACSSBADX_STAT_STOPPED 0 // Standby

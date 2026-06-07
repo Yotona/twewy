@@ -2,10 +2,10 @@
 #include "Engine/File/DatMgr.h"
 #include "Save.h"
 #include "common_data.h"
-#include <types.h>
+#include <nitro/types.h>
 
-#include <NitroSDK/mi/cpumem.h>
-#include <NitroSDK/os.h>
+#include <nitro/mi/cpumem.h>
+#include <nitro/os.h>
 
 extern s32 func_02053098(f64, f64);
 extern s32 func_02054a9c(f64);
@@ -225,7 +225,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     arg0->unk_1AB6 = 0;
     arg0->unk_1AB8 = 0;
 
-    for (u16 i = 0; i < ARRAY_COUNT(arg0->unk_1ABA); i++) {
+    for (u16 i = 0; i < ARRAY_LEN(arg0->unk_1ABA); i++) {
         arg0->unk_1ABA[i] = -1;
     }
 
@@ -239,7 +239,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
 
     arg0->unk_1D94 = 0;
 
-    for (u16 i = 0; i < ARRAY_COUNT(arg0->unk_1D98); i++) {
+    for (u16 i = 0; i < ARRAY_LEN(arg0->unk_1D98); i++) {
         arg0->unk_1D98[i] = 0;
     }
 
@@ -262,7 +262,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
 
     gSaveState.unk_20.unk_2324 = 0;
 
-    for (u16 i = 0; i < ARRAY_COUNT(arg0->unk_2326); i++) {
+    for (u16 i = 0; i < ARRAY_LEN(arg0->unk_2326); i++) {
         arg0->unk_2326[i] = 0;
     }
 

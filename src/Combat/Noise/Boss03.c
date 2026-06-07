@@ -11,8 +11,8 @@
 #include "Engine/Math/Random.h"
 #include "Engine/Resources/ResourceMgr.h"
 
-#include <NitroSDK/fx.h>
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/fx.h>
+#include <nitro/mi/cpumem.h>
 
 extern s32 func_02047e84(u16);
 

@@ -2,7 +2,7 @@
 #define ACSVHL_H
 
 #include <CriWare/acsfdr.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct ACSSVR ACSSVR;
 

@@ -1,5 +1,5 @@
 #include <CriWare/criss.h>
-#include <types.h>
+#include <nitro/types.h>
 
 static CRISS* criSsPly_Create(s32, s32, s32, s32);
 

@@ -7,7 +7,7 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Text.h"
 #include "SpriteMgr.h"
-#include <NitroSDK/gx.h>
+#include <nitro/gx.h>
 
 typedef struct {
     /* 0x00 */ s32         unk_00;

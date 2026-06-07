@@ -1,7 +1,7 @@
 #ifndef ADX_DCD_H
 #define ADX_DCD_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     union {

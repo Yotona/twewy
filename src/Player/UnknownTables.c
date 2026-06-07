@@ -1,6 +1,6 @@
 #include "Player/Progress.h"
 #include "Save.h"
-#include <types.h>
+#include <nitro/types.h>
 
 s32 data_ov030_020e2364;
 s32 data_ov030_020e2380;

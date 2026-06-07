@@ -1,7 +1,7 @@
 #ifndef PLAYER_PROGRESS_PROGRESSFLAGS_H
 #define PLAYER_PROGRESS_PROGRESSFLAGS_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef enum {
     GATE_GAME_CLEARED = 0, /**< The main storyline has been completed. */

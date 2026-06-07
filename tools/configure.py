@@ -85,6 +85,8 @@ MSL_CC_FLAGS = " ".join(
     (*COMMON_CC_FLAGS, "-ipa file", "-str reuse", "-Cpp_exceptions on")
 )
 
+MSL_RUNTIME_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-char unsigned"))
+
 
 @dataclass(frozen=True)
 class CompilerConfig:
@@ -102,13 +104,20 @@ MSL_COMPILER_CONFIG = CompilerConfig(
     flags=MSL_CC_FLAGS,
 )
 
+MSL_RUNTIME_COMPILER_CONFIG = CompilerConfig(
+    version=MWCC_DEFAULT_VERSION,
+    flags=MSL_RUNTIME_CC_FLAGS,
+)
+
 # Configurations for when a file or directory needs different settings than the project default
 COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
         version="1.2/sp4",
         flags=OLD_MWCC_CC_FLAGS,
     ),
-    Path("libs/MSL"): MSL_COMPILER_CONFIG,
+    Path("libs/c"): MSL_COMPILER_CONFIG,
+    Path("libs/cpp"): MSL_COMPILER_CONFIG,
+    Path("libs/runtime"): MSL_RUNTIME_COMPILER_CONFIG,
 }
 
 # Passed to all modules and final arm9.o link

@@ -1,7 +1,7 @@
 #ifndef CVFS_H
 #define CVFS_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ void (*ExecServer)();

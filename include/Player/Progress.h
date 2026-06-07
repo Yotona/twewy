@@ -3,7 +3,7 @@
 
 #include "Engine/EasyTask.h"
 #include "Player/Progress/ProgressFlags.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct ProgressObject {
     /* 0x00000 */ char     unk_00000[0x11584];

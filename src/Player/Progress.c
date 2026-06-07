@@ -10,8 +10,8 @@
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
-#include "registers.h"
-#include "types.h"
+#include "nitro/reg.h"
+#include <nitro/types.h>
 
 extern s16 data_ov030_020d9586[];
 extern s16 data_ov030_020d9588[];

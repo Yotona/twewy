@@ -13,8 +13,8 @@
 #include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
-#include <NitroSDK/gx.h>
-#include <types.h>
+#include <nitro/gx.h>
+#include <nitro/types.h>
 
 // Forward declarations of external functions
 extern void HBlank_Init(void);

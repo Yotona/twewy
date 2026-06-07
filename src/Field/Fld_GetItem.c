@@ -6,7 +6,7 @@
 #include "Player/Inventory/Items.h"
 #include "Player/Inventory/Pins.h"
 #include "SpriteMgr.h"
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 typedef struct {
     /* 0x00 */ Sprite sprite;

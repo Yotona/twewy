@@ -1,8 +1,8 @@
 #ifndef BIN_MGR_H
 #define BIN_MGR_H
 
-#include <NitroSDK/fs/file.h>
-#include <types.h>
+#include <nitro/fs/file.h>
+#include <nitro/types.h>
 
 typedef struct BinIdentifier {
     /* 0x00 */ u32   id;

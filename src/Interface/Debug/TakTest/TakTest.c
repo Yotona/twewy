@@ -9,7 +9,7 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 void TakTest_RegisterVBlank(void);
 s32  TakTest_BG_RunTask(TaskPool* pool, Task* task, void* arg2, s32 arg3);

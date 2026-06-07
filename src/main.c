@@ -6,8 +6,8 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
 #include "common_data.h"
-#include <NitroSDK/fs.h>
-#include <NitroSDK/os.h>
+#include <nitro/fs.h>
+#include <nitro/os.h>
 
 extern s32 data_020636b8;
 extern s32 data_0206a9bc;
@@ -29,11 +29,11 @@ void main(void) {
     void* memRegion = OS_AllocRegionMemory(REGION_MAIN_ARM9, 0x288000, 32);
     func_02039f2c(0, func_0203a004(0, memRegion, memRegion + 0x288000));
 
-    void* sp0 = func_02039dbc(0, -1, 0x280000);
+    void* sp0 = OS_Malloc(0, -1, 0x280000);
     FS_InitFileSystem(2);
 
     u32 tableSize = FS_RomLoadDefaultTables(NULL, 0);
-    FS_RomLoadDefaultTables(func_02039dbc(0, -1, tableSize), tableSize);
+    FS_RomLoadDefaultTables(OS_Malloc(0, -1, tableSize), tableSize);
 
     OvlMgr_Init();
 
@@ -218,6 +218,6 @@ void main(void) {
         }
 
         OvlMgr_UnloadAllOverlays();
-        OS_SystemReset(BIOS_RESET);
+        OS_SystemReset(REG_SYSTEM_RESET);
     }
 }

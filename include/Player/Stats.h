@@ -1,7 +1,7 @@
 #ifndef PLAYER_STATS_H
 #define PLAYER_STATS_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef enum {
     STAT_ATTACK  = 0,

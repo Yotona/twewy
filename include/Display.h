@@ -10,7 +10,8 @@
  * windows, blending, and various rendering effects.
  */
 
-#include <NitroSDK/gx.h>
+#include "FixedPoint.h"
+#include <nitro/gx.h>
 
 /// MARK: Defines
 

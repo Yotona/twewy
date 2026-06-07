@@ -20,7 +20,12 @@ args = parser.parse_args()
 CXX_FLAGS = [
     '-nostdinc',
     '-Iinclude',
-    '-Ilibs/include',
+    '-Ilibs/c/include',
+    '-Ilibs/cpp/include',
+    '-Ilibs/cri/include',
+    '-Ilibs/nds/include',
+    '-Ilibs/nitro/include',
+    '-Ilibs/runtime/include',
 ]
 
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))

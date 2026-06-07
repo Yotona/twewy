@@ -13,8 +13,8 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgr.h"
 #include "common_data.h"
-#include <registers.h>
-#include <types.h>
+#include <nitro/reg.h>
+#include <nitro/types.h>
 
 void func_ov029_020833c4(void);
 

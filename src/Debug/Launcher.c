@@ -11,8 +11,8 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
 #include "common_data.h"
-#include <NitroSDK/fx.h>
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/fx.h>
+#include <nitro/mi/cpumem.h>
 
 extern const TaskHandle Tsk_LauncherIcon;
 
@@ -47,15 +47,15 @@ void Launcher_ResetDisplay(void) {
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x8;
     REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x10;
     G3X_SetClearColor(0, 0, 0x7fff, 0x3f, 0);
-    GFX_FIFO_VIEWPORT     = 0xbfff0000;
-    GFX_FIFO_SWAP_BUFFERS = 0;
+    REG_GFX_FIFO_VIEWPORT     = 0xbfff0000;
+    REG_GFX_FIFO_SWAP_BUFFERS = 0;
 
     G3i_OrthoW(0, 0xc0000, 0, 0x100000, -0x400000, 0x400000, 0x400000, 1, 0);
     Vec unk_14 = {0, 0, 0};
     Vec unk_20 = data_ov046_02083a34;
     Vec unk_2C = data_ov046_02083a40;
     G3i_LookAt(&unk_14, &unk_20, &unk_2C, 1, 0);
-    GFX_FIFO_MATRIX_STORE = 0;
+    REG_GFX_FIFO_MATRIX_STORE = 0;
 
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;

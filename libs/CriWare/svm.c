@@ -1,6 +1,7 @@
-#include <MSL/ARM/stdarg.h>
-#include <MSL/Common/mem_funcs.h>
-#include <types.h>
+#include <mem.h>
+#include <mem_funcs.h>
+#include <nitro/types.h>
+#include <stdarg.h>
 
 typedef struct {
     void (*func)(void*);

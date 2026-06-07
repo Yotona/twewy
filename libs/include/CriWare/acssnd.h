@@ -2,7 +2,7 @@
 #define ACSSND_H
 
 #include <CriWare/acsfdr.h>
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00 */ char           unk_00[0x0C];

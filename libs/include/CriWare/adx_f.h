@@ -1,7 +1,7 @@
 #ifndef _ADX_F_H_
 #define _ADX_F_H_
 
-#include <types.h>
+#include <nitro/types.h>
 
 void ADXF_Init(void);
 void ADXF_Finish(void);

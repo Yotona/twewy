@@ -1,7 +1,7 @@
 #ifndef DMA_H
 #define DMA_H
 
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     union {

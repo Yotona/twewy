@@ -2,7 +2,7 @@
 #define DEBUG_SOUNDTEST_H
 
 #include "Engine/Resources/ResourceMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 #define MENU_ROW_ADX     0
 #define MENU_ROW_SEQARC  1

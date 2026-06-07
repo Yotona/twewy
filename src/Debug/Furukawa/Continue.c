@@ -16,7 +16,7 @@
 #include "SpriteMgr.h"
 #include "common_data.h"
 
-#include <NitroSDK/mi/cpumem.h>
+#include <nitro/mi/cpumem.h>
 
 extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);

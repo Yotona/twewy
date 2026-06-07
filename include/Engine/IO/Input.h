@@ -1,9 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <bios.h>
-#include <registers.h>
-#include <types.h>
+#include <nitro/reg.h>
+#include <nitro/types.h>
 
 #define INPUT_MASK_DPAD    0x00F0
 #define INPUT_MASK_ABXY    0x2F0F
@@ -53,11 +52,11 @@ void Input_PollState(InputState* input);
 void Input_UpdateRepeat(InputState* state, u16 mask);
 
 static inline BOOL Input_IsSystemHingeClosed(void) {
-    return (BIOS_EXTRA_BUTTONS & INPUT_MASK_HINGE) >> 15;
+    return (REG_EXTRA_BUTTONS & INPUT_MASK_HINGE) >> 15;
 }
 
 static inline u16 Input_ReadState(void) {
-    return ((REG_KEYINPUT | BIOS_EXTRA_BUTTONS) ^ INPUT_MASK_ALLBTNS) & INPUT_MASK_ALLBTNS;
+    return ((REG_KEYINPUT | REG_EXTRA_BUTTONS) ^ INPUT_MASK_ALLBTNS) & INPUT_MASK_ALLBTNS;
 }
 
 #endif // INPUT_H

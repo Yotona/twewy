@@ -1,7 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss01.h"
-#include <NitroSDK/fx.h>
+#include <nitro/fx.h>
 
 /// MARK: Boss01s_FlyUG
 

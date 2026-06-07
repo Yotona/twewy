@@ -6,7 +6,7 @@
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include <types.h>
+#include <nitro/types.h>
 
 typedef struct {
     /* 0x00000 */ u32              unk_00;
