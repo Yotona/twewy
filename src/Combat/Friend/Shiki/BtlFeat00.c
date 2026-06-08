@@ -32,6 +32,7 @@ typedef struct BtlFeat00 {
     /* 0x38 */ s16 unk_38;
     /* 0x3A */ u16 unk_3A;
     /* 0x3C */ s32 unk_3C;
+    /* 0x40 */ s32 unk_40;
 } BtlFeat00; // Size: 0x44
 
 s32 BtlFeat00_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);

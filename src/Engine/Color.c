@@ -1,5 +1,4 @@
 #include "Engine/Color.h"
-#include "common_data.h"
 #include <nitro/mi/cpumem.h>
 
 extern u16 data_02059d24;

@@ -1,4 +1,5 @@
 #include "CellText.h"
+#include "Engine/Core/OamMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 
 extern s32 data_0205caa4;
@@ -84,8 +85,8 @@ s32 func_0202600c(CellText* cellText) {
 
 // Nonmatching
 void CellText_Draw(CellText* cellText) {
-    OamMgr_AddCellToOam(g_ObjResourceManagers[cellText->unk_000] + 0x108C, cellText->unk_428, cellText->unk_42C,
-                        cellText->unk_04C, 0, cellText->unk_008 + 0x10);
+    OamMgr_AddCellToOam(&g_OamMgr[cellText->unk_000], cellText->unk_428, cellText->unk_42C, cellText->unk_04C, 0,
+                        cellText->unk_008 + 0x10);
 }
 
 void CellText_Free(CellText* cellText) {
