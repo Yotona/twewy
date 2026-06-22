@@ -22,10 +22,149 @@ src/Interface/Debug/TakTest/TakTest_OBJ.c:
     .rodata     start:0x020c78b0 end:0x020c7908
     .data       start:0x020cb5c4 end:0x020cb5f4
 
-src/Debug/Takami/MenuTop.c:
-    .text       start:0x02082fd0 end:0x0208b854
-    .rodata     start:0x020c7908 end:0x020c82c8
-    .data       start:0x020cb5f4 end:0x020cb9c8
+src/Interface/Menu/Top.c:
+    .text       start:0x02082fd0 end:0x020858a8
+    .rodata     start:0x020c7908 end:0x020c7aa8
+    .data       start:0x020cb5f4 end:0x020cb794
+
+src/Interface/Menu/Top/MenuTop_select.c:
+    .text       start:0x020858a8 end:0x02085b78
+    .rodata     start:0x020c7aa8 end:0x020c7b20
+    .data       start:0x020cb794 end:0x020cb7a8
+
+src/Interface/Menu/Top/MenuTop_icon.c:
+    .text       start:0x02085b78 end:0x02085e94
+    .rodata     start:0x020c7b20 end:0x020c7b6c
+    .data       start:0x020cb7a8 end:0x020cb7bc
+
+src/Interface/Menu/Top/MenuTop_lvGauge.c:
+    .text       start:0x02085e94 end:0x02086544
+    .rodata     start:0x020c7b6c end:0x020c7bb4
+    .data       start:0x020cb7bc end:0x020cb7d0
+
+src/Interface/Menu/Top/MenuTop_luckNum.c:
+    .text       start:0x02086544 end:0x02086a94
+    .rodata     start:0x020c7bb4 end:0x020c7bfc
+    .data       start:0x020cb7d0 end:0x020cb7e4
+
+src/Interface/Menu/Top/MenuTop_luckStar.c:
+    complete
+    .text       start:0x02086a94 end:0x02086c7c
+    .rodata     start:0x020c7bfc end:0x020c7c44
+    .data       start:0x020cb7e4 end:0x020cb7fc
+
+src/Interface/Menu/Top/MenuTop_nameD.c:
+    .text       start:0x02086c7c end:0x02086f6c
+    .rodata     start:0x020c7c44 end:0x020c7cbc
+    .data       start:0x020cb7fc end:0x020cb810
+
+src/Interface/Menu/Top/MenuTop_nameU.c:
+    .text       start:0x02086f6c end:0x0208725c
+    .rodata     start:0x020c7cbc end:0x020c7d24
+    .data       start:0x020cb810 end:0x020cb824
+
+src/Interface/Menu/Top/MenuTop_rankNumU.c:
+    .text       start:0x0208725c end:0x020875cc
+    .rodata     start:0x020c7d24 end:0x020c7d7c
+    .data       start:0x020cb824 end:0x020cb83c
+
+src/Interface/Menu/Top/MenuTop_numLV.c:
+    .text       start:0x020875cc end:0x02087b10
+    .rodata     start:0x020c7d7c end:0x020c7dd0
+    .data       start:0x020cb83c end:0x020cb850
+
+src/Interface/Menu/Top/MenuTop_numExpNext.c:
+    .text       start:0x02087b10 end:0x02087ea4
+    .rodata     start:0x020c7dd0 end:0x020c7e18
+    .data       start:0x020cb850 end:0x020cb868
+
+src/Interface/Menu/Top/MenuTop_numHP.c:
+    .text       start:0x02087ea4 end:0x02088400
+    .rodata     start:0x020c7e18 end:0x020c7e60
+    .data       start:0x020cb868 end:0x020cb87c
+
+src/Interface/Menu/Top/MenuTop_numMoney.c:
+    .text       start:0x02088400 end:0x020888fc
+    .rodata     start:0x020c7e60 end:0x020c7ebc
+    .data       start:0x020cb87c end:0x020cb894
+
+src/Interface/Menu/Top/MenuTop_drawDiff.c:
+    complete
+    .text       start:0x020888fc end:0x02088b80
+    .rodata     start:0x020c7ebc end:0x020c7f0c
+    .data       start:0x020cb894 end:0x020cb8ac
+
+src/Interface/Menu/Top/MenuTop_drawPtrAI.c:
+    complete
+    .text       start:0x02088b80 end:0x02088e04
+    .rodata     start:0x020c7f0c end:0x020c7f5c
+    .data       start:0x020cb8ac end:0x020cb8c4
+
+src/Interface/Menu/Top/MenuTop_selDiff.c:
+    .text       start:0x02088e04 end:0x02089374
+    .rodata     start:0x020c7f5c end:0x020c7fac
+    .data       start:0x020cb8c4 end:0x020cb8d8
+
+src/Interface/Menu/Top/MenuTop_selPtrAI.c:
+    complete
+    .text       start:0x02089374 end:0x020898d4
+    .rodata     start:0x020c7fac end:0x020c7ffc
+    .data       start:0x020cb8d8 end:0x020cb8f0
+
+src/Interface/Menu/Top/MenuTop_textScr.c:
+    .text       start:0x020898d4 end:0x02089b18
+    .rodata     start:0x020c7ffc end:0x020c8038
+    .data       start:0x020cb8f0 end:0x020cb904
+
+src/Interface/Menu/Top/MenuTop_mapTipU.c:
+    .text       start:0x02089b18 end:0x02089dfc
+    .rodata     start:0x020c8038 end:0x020c8080
+    .data       start:0x020cb904 end:0x020cb918
+
+src/Interface/Menu/Top/MenuTop_mapTipBrdU.c:
+    .text       start:0x02089dfc end:0x0208a054
+    .rodata     start:0x020c8080 end:0x020c80c8
+    .data       start:0x020cb918 end:0x020cb930
+
+src/Interface/Menu/Top/MenuTop_helpCur.c:
+    .text       start:0x0208a054 end:0x0208a3f8
+    .rodata     start:0x020c80c8 end:0x020c8110
+    .data       start:0x020cb930 end:0x020cb944
+
+src/Interface/Menu/Top/MenuTop_pointer.c:
+    complete
+    .text       start:0x0208a3f8 end:0x0208a630
+    .rodata     start:0x020c8110 end:0x020c8158
+    .data       start:0x020cb944 end:0x020cb958
+
+src/Interface/Menu/Top/MenuTop_textScrU.c:
+    .text       start:0x0208a630 end:0x0208ae20
+    .rodata     start:0x020c8158 end:0x020c81a8
+    .data       start:0x020cb958 end:0x020cb970
+
+src/Interface/Menu/Top/MenuTop_brdLogoU.c:
+    complete
+    .text       start:0x0208ae20 end:0x0208b058
+    .rodata     start:0x020c81a8 end:0x020c81f0
+    .data       start:0x020cb970 end:0x020cb988
+
+src/Interface/Menu/Top/MenuTop_nekuU.c:
+    complete
+    .text       start:0x0208b058 end:0x0208b2d0
+    .rodata     start:0x020c81f0 end:0x020c8238
+    .data       start:0x020cb988 end:0x020cb99c
+
+src/Interface/Menu/Top/MenuTop_iconU.c:
+    complete
+    .text       start:0x0208b2d0 end:0x0208b590
+    .rodata     start:0x020c8238 end:0x020c8280
+    .data       start:0x020cb99c end:0x020cb9b0
+
+src/Interface/Menu/Top/MenuTop_helpCurU.c:
+    complete
+    .text       start:0x0208b590 end:0x0208b854
+    .rodata     start:0x020c8280 end:0x020c82c8
+    .data       start:0x020cb9b0 end:0x020cb9c8
 
 src/Debug/Takami/MenuBadge.c:
     .text       start:0x0208b854 end:0x0209aca4

@@ -69,12 +69,12 @@ typedef struct TaskPool {
 
 typedef union {
     struct {
-        s32 (*initialize)();
-        s32 (*update)();
-        s32 (*render)();
-        s32 (*cleanup)();
+        s32 (*initialize)(TaskPool*, Task*, void*);
+        s32 (*update)(TaskPool*, Task*, void*);
+        s32 (*render)(TaskPool*, Task*, void*);
+        s32 (*cleanup)(TaskPool*, Task*, void*);
     };
-    s32 (*iter[4])();
+    s32 (*iter[4])(TaskPool*, Task*, void*);
 } TaskStages;
 
 /**

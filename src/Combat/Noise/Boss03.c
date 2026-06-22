@@ -3394,15 +3394,16 @@ s32 func_ov017_021355a0(void* arg0, s16* arg1, s32 arg2, s16 arg3) {
     }
 }
 
-s32 BtlBoss03_01_UG_Init(void* arg1, void* arg2) {
+s32 BtlBoss03_01_UG_Init(TaskPool* pool, Task* task, void* args) {
     s32   var_r6;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = task->data;
+
     func_ov003_020cb744(0);
     func_ov003_020cb7a4(0);
     MI_CpuSet(temp_r4, 0, 0x228);
-    if (((Boss03*)arg2)->unk4 == 0) {
+    if (((Boss03*)args)->unk4 == 0) {
         if (data_ov003_020e71b8->unk3D874 == 0) {
             BtlBoss03_KindanMgr_CreateTask();
             func_ov017_0213df24(0);
@@ -3414,7 +3415,7 @@ s32 BtlBoss03_01_UG_Init(void* arg1, void* arg2) {
         func_ov017_0213e088(0xF, 0);
         func_ov017_0213e088(0x10, 0);
     }
-    func_ov003_020c3efc(temp_r4, arg2);
+    func_ov003_020c3efc(temp_r4, args);
     func_ov003_020c4520(temp_r4);
     func_ov003_020c4b5c(temp_r4);
     ((Boss03*)temp_r4)->unk188 = (void*)(temp_r4 + 0x1E8);
@@ -3428,7 +3429,7 @@ s32 BtlBoss03_01_UG_Init(void* arg1, void* arg2) {
     ((Boss03*)temp_r4)->unk1CC = 1;
     ((Boss03*)temp_r4)->unk224 = (u16)(((Boss03*)temp_r4)->unk224 & ~1);
     ((Boss03*)temp_r4)->unk224 = (u16)(((Boss03*)temp_r4)->unk224 & ~2);
-    if (((Boss03*)arg2)->unk4 == 0) {
+    if (((Boss03*)args)->unk4 == 0) {
         func_ov017_02135868(temp_r4);
     } else {
         func_ov017_02135a38(temp_r4);
@@ -3490,7 +3491,7 @@ void func_ov017_02135a38(void* arg0) {
     ((Boss03*)arg0)->unk224 = (u16)(((Boss03*)arg0)->unk224 | 2);
 }
 
-s32 BtlBoss03_01_UG_Update(void* arg1) {
+s32 BtlBoss03_01_UG_Update(TaskPool* pool, Task* task, void* args) {
     void (*temp_r1_2)(void*);
     s16   temp_r1;
     s32   temp_r0;
@@ -3499,7 +3500,7 @@ s32 BtlBoss03_01_UG_Update(void* arg1) {
     void* temp_r4;
     void* temp_r5;
 
-    temp_r4                                       = ((Boss03*)arg1)->unk18;
+    temp_r4                                       = task->data;
     temp_r5                                       = temp_r4 + 0x1E8;
     ((Boss03*)((Boss03*)temp_r4)->unk184)->unk188 = temp_r5;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
@@ -3569,15 +3570,15 @@ s32 BtlBoss03_01_UG_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 BtlBoss03_01_UG_Render(void* arg1) {
-    func_ov003_020c48b0(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_01_UG_Render(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c48b0(((Boss03*)task->data)->unk18);
     return 1;
 }
 
-s32 BtlBoss03_01_UG_Destroy(void* arg1) {
+s32 BtlBoss03_01_UG_Destroy(TaskPool* pool, Task* task, void* args) {
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     func_ov003_020c492c(temp_r4);
     if ((((Boss03*)temp_r4)->unk80 == 0) && (((Boss03*)temp_r4)->unk208 == 0)) {
         func_ov017_0213e074();
@@ -4567,14 +4568,14 @@ s32 func_ov017_021378e4(void) {
     return 0;
 }
 
-s32 func_ov017_02137914(void* arg1, s32 arg2) {
+s32 func_ov017_02137914(TaskPool* pool, Task* task, void* args) {
     void* temp_r4;
     void* temp_r5;
 
-    temp_r5 = ((Boss03*)arg1)->unk18;
+    temp_r5 = task->data;
     temp_r4 = func_ov003_020cb42c(1, 0x2C, 0);
     MI_CpuSet(temp_r5, 0, 0x204);
-    func_ov003_020c3efc(temp_r5, arg2);
+    func_ov003_020c3efc(temp_r5, args);
     func_ov003_020c44ac(temp_r5);
     func_ov003_020c4b1c(temp_r5);
     ((Boss03*)temp_r5)->unk54 = (s32)(((Boss03*)temp_r5)->unk54 | 0x20);
@@ -4610,7 +4611,7 @@ s32 func_ov017_02137914(void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 func_ov017_02137aa0(void* arg1) {
+s32 func_ov017_02137aa0(TaskPool* pool, Task* task, void* args) {
     void (*temp_r1_2)(void*);
     s16   temp_r1;
     s16*  temp_r5;
@@ -4618,7 +4619,7 @@ s32 func_ov017_02137aa0(void* arg1) {
     s32   temp_r0_2;
     void* temp_r4;
 
-    temp_r4                    = ((Boss03*)arg1)->unk18;
+    temp_r4                    = task->data;
     temp_r5                    = ((Boss03*)((Boss03*)temp_r4)->unk184)->unk188;
     ((Boss03*)temp_r4)->unk188 = temp_r5;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
@@ -4651,13 +4652,13 @@ s32 func_ov017_02137aa0(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 func_ov017_02137ba8(void* arg1) {
-    func_ov003_020c4878(((Boss03*)arg1)->unk18);
+s32 func_ov017_02137ba8(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c4878(((Boss03*)task->data)->unk18);
     return 1;
 }
 
-s32 func_ov017_02137bbc(void* arg1) {
-    func_ov003_020c48fc(((Boss03*)arg1)->unk18);
+s32 func_ov017_02137bbc(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c48fc(((Boss03*)task->data)->unk18);
     return 1;
 }
 
@@ -5521,12 +5522,12 @@ s32 BtlBoss03_02_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle Tsk_BtlBoss03_02_UG = {"Tsk_BtlBoss03_02_UG", BtlBoss03_02_UG_RunTask, 0x218};
 
-s32 BtlBoss03_02_UG_Init(void* arg1, s32 arg2) {
+s32 BtlBoss03_02_UG_Init(TaskPool* pool, Task* task, void* args) {
     u8    temp_r1;
     void* temp_r4;
     void* temp_r5;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = task->data;
     temp_r5 = func_ov003_020cb42c(0, 0x2C, 0);
     MI_CpuSet(temp_r4, 0, 0x218);
     if (data_ov003_020e71b8->unk3D874 == 0) {
@@ -5537,7 +5538,7 @@ s32 BtlBoss03_02_UG_Init(void* arg1, s32 arg2) {
     func_ov017_0213e17c(0x10, 0);
     func_ov017_0213e088(8, 0);
     func_ov017_0213f20c(1);
-    func_ov003_020c3efc(temp_r4, arg2);
+    func_ov003_020c3efc(temp_r4, args);
     func_ov003_020c4520(temp_r4);
     func_ov003_020c4b5c(temp_r4);
     ((Boss03*)temp_r4)->unk54  = (s32)(((Boss03*)temp_r4)->unk54 | 0x40000020);
@@ -5578,7 +5579,7 @@ s32 BtlBoss03_02_UG_Init(void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 BtlBoss03_02_UG_Update(void* arg1) {
+s32 BtlBoss03_02_UG_Update(TaskPool* pool, Task* task, void* args) {
     void (*temp_r1_2)(void*);
     s16   temp_r1;
     s16*  temp_r5;
@@ -5586,7 +5587,7 @@ s32 BtlBoss03_02_UG_Update(void* arg1) {
     s32   temp_r0_2;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     temp_r5 = ((Boss03*)temp_r4)->unk188;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
         if (((Boss03*)temp_r4)->unk20 == 6) {
@@ -5635,12 +5636,12 @@ s32 BtlBoss03_02_UG_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 BtlBoss03_02_UG_Render(void* arg1) {
+s32 BtlBoss03_02_UG_Render(TaskPool* pool, Task* task, void* args) {
     s32   temp_r1;
     s32   var_z;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     temp_r1 = ((Boss03*)temp_r4)->unk210;
     var_z   = temp_r1 == -1;
     if (temp_r1 != -1) {
@@ -5655,10 +5656,10 @@ s32 BtlBoss03_02_UG_Render(void* arg1) {
     return 1;
 }
 
-s32 BtlBoss03_02_UG_Destroy(void* arg1) {
+s32 BtlBoss03_02_UG_Destroy(TaskPool* pool, Task* task, void* args) {
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     func_ov003_020c492c(temp_r4);
     if (((Boss03*)temp_r4)->unk1FC == 0) {
         func_ov017_0213e074();
@@ -6359,15 +6360,15 @@ s32 func_ov017_0213ada0(void) {
     return 0;
 }
 
-s32 BtlBoss03_03_RG_Init(void* arg1, s32 arg2) {
+s32 BtlBoss03_03_RG_Init(TaskPool* pool, Task* task, void* args) {
     s32   var_r4;
     void* temp_r4;
     void* temp_r5;
 
-    temp_r5 = ((Boss03*)arg1)->unk18;
+    temp_r5 = ((Boss03*)task->data)->unk18;
     temp_r4 = func_ov003_020cb42c(1, 0x2C, 0);
     MI_CpuSet(temp_r5, 0, 0x1FC);
-    func_ov003_020c3efc(temp_r5, arg2);
+    func_ov003_020c3efc(temp_r5, args);
     func_ov003_020c44ac(temp_r5);
     func_ov003_020c4b1c(temp_r5);
     func_ov017_0213ed98((s32)func_ov017_0213ad7c, (s32)temp_r5);
@@ -6394,7 +6395,7 @@ s32 BtlBoss03_03_RG_Init(void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 BtlBoss03_03_RG_Update(void* arg1) {
+s32 BtlBoss03_03_RG_Update(TaskPool* pool, Task* task, void* args) {
     void (*temp_r1_2)(void*);
     s16   temp_r0_4;
     s32   temp_r0;
@@ -6404,7 +6405,7 @@ s32 BtlBoss03_03_RG_Update(void* arg1) {
     u8    temp_r1;
     void* temp_r4;
 
-    temp_r4                    = ((Boss03*)arg1)->unk18;
+    temp_r4                    = ((Boss03*)task->data)->unk18;
     ((Boss03*)temp_r4)->unk188 = ((Boss03*)((Boss03*)temp_r4)->unk184)->unk188;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
         if (((Boss03*)temp_r4)->unk20 == 6) {
@@ -6490,13 +6491,13 @@ s32 BtlBoss03_03_RG_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 BtlBoss03_03_RG_Render(void* arg1) {
-    func_ov003_020c48b0(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_03_RG_Render(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c48b0(((Boss03*)task->data)->unk18);
     return 1;
 }
 
-s32 BtlBoss03_03_RG_Destroy(void* arg1) {
-    func_ov003_020c48fc(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_03_RG_Destroy(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c48fc(((Boss03*)task->data)->unk18);
     return 1;
 }
 
@@ -6514,11 +6515,11 @@ s32 BtlBoss03_03_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return data_ov017_02142780.iter[stage](pool, task, args);
 }
 
-s32 BtlBoss03_03_UG_Init(void* arg1, s32 arg2) {
+s32 BtlBoss03_03_UG_Init(TaskPool* pool, Task* task, void* args) {
     void* temp_r4;
     void* temp_r5;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     temp_r5 = func_ov003_020cb42c(0, 0x2C, 0);
     MI_CpuSet(temp_r4, 0, 0x1DC);
     ((Boss03*)temp_r4)->unk188 = (void*)(temp_r4 + 0x1D4);
@@ -6530,7 +6531,7 @@ s32 BtlBoss03_03_UG_Init(void* arg1, s32 arg2) {
     func_ov017_0213e17c(0xF, 0);
     func_ov017_0213e17c(0x10, 0);
     func_ov017_0213f20c(1);
-    func_ov003_020c3efc(temp_r4, arg2);
+    func_ov003_020c3efc(temp_r4, args);
     func_ov003_020c4520(temp_r4);
     ((Boss03*)temp_r4)->unk54 = (s32)(((Boss03*)temp_r4)->unk54 | 0x20);
     if (data_ov003_020e71b8->unk3D874 != 0) {
@@ -6543,11 +6544,11 @@ s32 BtlBoss03_03_UG_Init(void* arg1, s32 arg2) {
     ((Boss03*)temp_r4)->unk1CC = 1;
 }
 
-s32 BtlBoss03_03_UG_Update(void* arg1) {
+s32 BtlBoss03_03_UG_Update(TaskPool* pool, Task* task, void* args) {
     void* temp_r4;
     void* temp_r5;
 
-    temp_r4                                       = ((Boss03*)arg1)->unk18;
+    temp_r4                                       = ((Boss03*)task->data)->unk18;
     temp_r5                                       = temp_r4 + 0x1D4;
     ((Boss03*)((Boss03*)temp_r4)->unk184)->unk188 = temp_r5;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
@@ -6568,12 +6569,12 @@ s32 BtlBoss03_03_UG_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 BtlBoss03_03_UG_Render(void) {
+s32 BtlBoss03_03_UG_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 BtlBoss03_03_UG_Destroy(void* arg1) {
-    func_ov003_020c492c(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_03_UG_Destroy(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c492c(((Boss03*)task->data)->unk18);
     func_ov017_0213e074();
     return 1;
 }
@@ -7634,14 +7635,14 @@ s32 BtlBoss03_04_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle data_ov017_021427ac = {"Tsk_BtlBoss03_04_UG", BtlBoss03_04_UG_RunTask, 524};
 
-s32 BtlBoss03_04_UG_Init(void* arg1, s32 arg2) {
+s32 BtlBoss03_04_UG_Init(TaskPool* pool, Task* task, void* args) {
     void** temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     MI_CpuSet(temp_r4, 0, 0x20C);
     func_ov017_0213df24(1);
     func_ov017_0213e088(8U, 1);
-    func_ov003_020c3efc(temp_r4, arg2);
+    func_ov003_020c3efc(temp_r4, args);
     func_ov003_020c4520(temp_r4);
     func_ov003_020c4b5c(temp_r4);
     ((Boss03*)temp_r4)->unk1CC = 1;
@@ -7654,13 +7655,13 @@ s32 BtlBoss03_04_UG_Init(void* arg1, s32 arg2) {
     return 1;
 }
 
-s32 BtlBoss03_04_UG_Update(void* arg1) {
+s32 BtlBoss03_04_UG_Update(TaskPool* pool, Task* task, void* args) {
     void (*temp_r1)(void*);
     s32    temp_r0;
     s32    temp_r0_2;
     void** temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     if (func_ov003_020c3bf0(temp_r4) != 0) {
         if (((Boss03*)temp_r4)->unk20 == 6) {
             CombatActor_PopPendingCommand((CombatActor*)temp_r4);
@@ -7709,13 +7710,13 @@ s32 BtlBoss03_04_UG_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
-s32 BtlBoss03_04_UG_Render(void* arg1) {
-    func_ov003_020c48b0(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_04_UG_Render(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c48b0(((Boss03*)task->data)->unk18);
     return 1;
 }
 
-s32 BtlBoss03_04_UG_Destroy(void* arg1) {
-    func_ov003_020c492c(((Boss03*)arg1)->unk18);
+s32 BtlBoss03_04_UG_Destroy(TaskPool* pool, Task* task, void* args) {
+    func_ov003_020c492c(((Boss03*)task->data)->unk18);
     func_ov017_0213e074();
     return 1;
 }
@@ -9589,7 +9590,7 @@ s32 BtlBoss03_NoisAttk_Init(TaskPool* pool, Task* task, void* args) {
     ((Boss03*)temp_r4)->unkE8 = 1;
 }
 
-s32 BtlBoss03_NoisAttk_Update(void* arg1) {
+s32 BtlBoss03_NoisAttk_Update(TaskPool* pool, Task* task, void* args) {
     s32   var_r0_2;
     s16   temp_ip;
     s16   temp_lr;
@@ -9617,7 +9618,7 @@ s32 BtlBoss03_NoisAttk_Update(void* arg1) {
     void* temp_r3;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
@@ -9773,13 +9774,13 @@ s32 BtlBoss03_NoisAttk_Update(void* arg1) {
     return ((Boss03*)temp_r4)->unkE8;
 }
 
-s32 BtlBoss03_NoisAttk_Render(void* arg1) {
+s32 BtlBoss03_NoisAttk_Render(TaskPool* pool, Task* task, void* args) {
     s16   spA;
     s16   sp8;
     s32   var_r0;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     if (func_ov003_020c3c28() != 0) {
         return 1;
     }
@@ -9797,7 +9798,7 @@ s32 BtlBoss03_NoisAttk_Render(void* arg1) {
     return 1;
 }
 
-s32 BtlBoss03_NoisAttk_Destroy(void* arg1) {
+s32 BtlBoss03_NoisAttk_Destroy(TaskPool* pool, Task* task, void* args) {
     void* temp_r0;
     void* temp_r1;
     void* temp_r1_2;
@@ -9805,7 +9806,7 @@ s32 BtlBoss03_NoisAttk_Destroy(void* arg1) {
     void* temp_r1_4;
     void* temp_r4;
 
-    temp_r4 = ((Boss03*)arg1)->unk18;
+    temp_r4 = ((Boss03*)task->data)->unk18;
     temp_r1 = ((Boss03*)temp_r4)->unkDC;
     if (!(((Boss03*)temp_r1)->unk54 & 4)) {
         ((Boss03*)temp_r1)->unk28                    = (s32)((Boss03*)temp_r4)->unk88;
