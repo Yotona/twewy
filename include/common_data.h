@@ -81,8 +81,12 @@ typedef struct {
     /* 0x74 */ s32         unk74;
     /* 0x78 */ s32         unk78;
 } UnkOv31Struct; // Size: 0x7C
-extern void func_ov031_0210aa94(UnkOv31Struct*);
-extern void func_ov031_0210aabc(UnkOv31Struct*);
-extern void func_ov031_0210ab34(UnkOv31Struct*, s32);
+extern void  func_ov031_0210aa94(UnkOv31Struct*);
+extern void  func_ov031_0210aabc(UnkOv31Struct*);
+extern void  func_ov031_0210ab28(UnkOv31Struct*, s16, s16);
+extern void  func_ov031_0210ab34(UnkOv31Struct*, s32);
+extern void  func_ov031_0210b630(UnkOv31Struct*, u16);
+extern void  func_ov031_0210ab3c(UnkOv31Struct*, s32, s32);
+extern void* func_ov031_0210b698(UnkOv31Struct*, u16);
 
 #endif // COMMON_DATA_H

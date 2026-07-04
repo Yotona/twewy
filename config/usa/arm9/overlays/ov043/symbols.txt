@@ -1410,6 +1410,10 @@ func_ov043_020b2910 kind:function(arm,size=0x24) addr:0x020b2910
 func_ov043_020b2934 kind:function(arm,size=0x1bc) addr:0x020b2934
 func_ov043_020b2af0 kind:function(arm,size=0x4) addr:0x020b2af0
 func_ov043_020b2af4 kind:function(arm,size=0x54) addr:0x020b2af4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_nameD.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b2b48 kind:function(arm,size=0x328) addr:0x020b2b48
 func_ov043_020b2e70 kind:function(arm,size=0x9c) addr:0x020b2e70
 func_ov043_020b2f0c kind:function(arm,size=0x20c) addr:0x020b2f0c
@@ -1419,14 +1423,22 @@ func_ov043_020b3174 kind:function(arm,size=0x48) addr:0x020b3174
 func_ov043_020b31bc kind:function(arm,size=0x34) addr:0x020b31bc
 func_ov043_020b31f0 kind:function(arm,size=0x48) addr:0x020b31f0
 func_ov043_020b3238 kind:function(arm,size=0x34) addr:0x020b3238
-func_ov043_020b326c kind:function(arm,size=0x9c) addr:0x020b326c
-func_ov043_020b3308 kind:function(arm,size=0x74) addr:0x020b3308
-func_ov043_020b337c kind:function(arm,size=0x28) addr:0x020b337c
-func_ov043_020b33a4 kind:function(arm,size=0x58) addr:0x020b33a4
-func_ov043_020b33fc kind:function(arm,size=0x14) addr:0x020b33fc
-func_ov043_020b3410 kind:function(arm,size=0x14) addr:0x020b3410
-func_ov043_020b3424 kind:function(arm,size=0x48) addr:0x020b3424
-func_ov043_020b346c kind:function(arm,size=0x34) addr:0x020b346c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_exit.c
+/////////////////////////////////////////////////////////////
+Shop_exit_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b326c local
+Shop_exit_Load kind:function(arm,size=0x74) addr:0x020b3308 local
+Shop_exit_Init kind:function(arm,size=0x28) addr:0x020b337c local
+Shop_exit_Update kind:function(arm,size=0x58) addr:0x020b33a4 local
+Shop_exit_Render kind:function(arm,size=0x14) addr:0x020b33fc local
+Shop_exit_Destroy kind:function(arm,size=0x14) addr:0x020b3410 local
+Shop_exit_RunTask kind:function(arm,size=0x48) addr:0x020b3424 local
+Shop_exit_CreateTask kind:function(arm,size=0x34) addr:0x020b346c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numMoneyNek.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b34a0 kind:function(arm,size=0x188) addr:0x020b34a0
 func_ov043_020b3628 kind:function(arm,size=0x5c) addr:0x020b3628
 func_ov043_020b3684 kind:function(arm,size=0x9c) addr:0x020b3684
@@ -1437,34 +1449,50 @@ func_ov043_020b38e0 kind:function(arm,size=0x40) addr:0x020b38e0
 func_ov043_020b3920 kind:function(arm,size=0x2c) addr:0x020b3920
 func_ov043_020b394c kind:function(arm,size=0x48) addr:0x020b394c
 func_ov043_020b3994 kind:function(arm,size=0x3c) addr:0x020b3994
-func_ov043_020b39d0 kind:function(arm,size=0x204) addr:0x020b39d0
-func_ov043_020b3bd4 kind:function(arm,size=0x54) addr:0x020b3bd4
-func_ov043_020b3c28 kind:function(arm,size=0x9c) addr:0x020b3c28
-func_ov043_020b3cc4 kind:function(arm,size=0x168) addr:0x020b3cc4
-func_ov043_020b3e2c kind:function(arm,size=0x20) addr:0x020b3e2c
-func_ov043_020b3e4c kind:function(arm,size=0x34) addr:0x020b3e4c
-func_ov043_020b3e80 kind:function(arm,size=0x40) addr:0x020b3e80
-func_ov043_020b3ec0 kind:function(arm,size=0x2c) addr:0x020b3ec0
-func_ov043_020b3eec kind:function(arm,size=0x48) addr:0x020b3eec
-func_ov043_020b3f34 kind:function(arm,size=0x34) addr:0x020b3f34
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numMoneyBdg.c
+/////////////////////////////////////////////////////////////
+Shop_numMoneyBdg_CalcDigits kind:function(arm,size=0x204) addr:0x020b39d0 local
+Shop_numMoneyBdg_UpdateDigits kind:function(arm,size=0x54) addr:0x020b3bd4 local
+Shop_numMoneyBdg_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b3c28 local
+Shop_numMoneyBdg_Load kind:function(arm,size=0x168) addr:0x020b3cc4 local
+Shop_numMoneyBdg_Init kind:function(arm,size=0x20) addr:0x020b3e2c local
+Shop_numMoneyBdg_Update kind:function(arm,size=0x34) addr:0x020b3e4c local
+Shop_numMoneyBdg_Render kind:function(arm,size=0x40) addr:0x020b3e80 local
+Shop_numMoneyBdg_Destroy kind:function(arm,size=0x2c) addr:0x020b3ec0 local
+Shop_numMoneyBdg_RunTask kind:function(arm,size=0x48) addr:0x020b3eec local
+Shop_numMoneyBdg_CreateTask kind:function(arm,size=0x34) addr:0x020b3f34
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_sbar.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b3f68 kind:function(arm,size=0x64) addr:0x020b3f68
 func_ov043_020b3fcc kind:function(arm,size=0x48) addr:0x020b3fcc
-func_ov043_020b4014 kind:function(arm,size=0x9c) addr:0x020b4014
-func_ov043_020b40b0 kind:function(arm,size=0xcc) addr:0x020b40b0
-func_ov043_020b417c kind:function(arm,size=0x2c) addr:0x020b417c
-func_ov043_020b41a8 kind:function(arm,size=0x328) addr:0x020b41a8
-func_ov043_020b44d0 kind:function(arm,size=0x2c) addr:0x020b44d0
-func_ov043_020b44fc kind:function(arm,size=0x2c) addr:0x020b44fc
-func_ov043_020b4528 kind:function(arm,size=0x48) addr:0x020b4528
-func_ov043_020b4570 kind:function(arm,size=0x34) addr:0x020b4570
-func_ov043_020b45a4 kind:function(arm,size=0x9c) addr:0x020b45a4
-func_ov043_020b4640 kind:function(arm,size=0xcc) addr:0x020b4640
-func_ov043_020b470c kind:function(arm,size=0x2c) addr:0x020b470c
-func_ov043_020b4738 kind:function(arm,size=0x2c) addr:0x020b4738
-func_ov043_020b4764 kind:function(arm,size=0x2c) addr:0x020b4764
-func_ov043_020b4790 kind:function(arm,size=0x2c) addr:0x020b4790
-func_ov043_020b47bc kind:function(arm,size=0x48) addr:0x020b47bc
-func_ov043_020b4804 kind:function(arm,size=0x34) addr:0x020b4804
+Shop_sbar_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b4014
+Shop_sbar_Load kind:function(arm,size=0xcc) addr:0x020b40b0
+Shop_sbar_Init kind:function(arm,size=0x2c) addr:0x020b417c
+Shop_sbar_Update kind:function(arm,size=0x328) addr:0x020b41a8
+Shop_sbar_Render kind:function(arm,size=0x2c) addr:0x020b44d0
+Shop_sbar_Destroy kind:function(arm,size=0x2c) addr:0x020b44fc
+Shop_sbar_RunTask kind:function(arm,size=0x48) addr:0x020b4528
+Shop_sbar_CreateTask kind:function(arm,size=0x34) addr:0x020b4570
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_sbar2.c
+/////////////////////////////////////////////////////////////
+Shop_sbar2_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b45a4 local
+Shop_sbar2_Load kind:function(arm,size=0xcc) addr:0x020b4640 local
+Shop_sbar2_Init kind:function(arm,size=0x2c) addr:0x020b470c local
+Shop_sbar2_Update kind:function(arm,size=0x2c) addr:0x020b4738 local
+Shop_sbar2_Render kind:function(arm,size=0x2c) addr:0x020b4764 local
+Shop_sbar2_Destroy kind:function(arm,size=0x2c) addr:0x020b4790 local
+Shop_sbar2_RunTask kind:function(arm,size=0x48) addr:0x020b47bc local
+Shop_sbar2_CreateTask kind:function(arm,size=0x34) addr:0x020b4804
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_check.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b4838 kind:function(arm,size=0x9c) addr:0x020b4838
 func_ov043_020b48d4 kind:function(arm,size=0x90) addr:0x020b48d4
 func_ov043_020b4964 kind:function(arm,size=0x20) addr:0x020b4964
@@ -1473,6 +1501,10 @@ func_ov043_020b4a48 kind:function(arm,size=0x20) addr:0x020b4a48
 func_ov043_020b4a68 kind:function(arm,size=0x14) addr:0x020b4a68
 func_ov043_020b4a7c kind:function(arm,size=0x48) addr:0x020b4a7c
 func_ov043_020b4ac4 kind:function(arm,size=0x34) addr:0x020b4ac4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_tab.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b4af8 kind:function(arm,size=0x88) addr:0x020b4af8
 func_ov043_020b4b80 kind:function(arm,size=0x48) addr:0x020b4b80
 func_ov043_020b4bc8 kind:function(arm,size=0x9c) addr:0x020b4bc8
@@ -1483,6 +1515,10 @@ func_ov043_020b50b0 kind:function(arm,size=0x40) addr:0x020b50b0
 func_ov043_020b50f0 kind:function(arm,size=0x2c) addr:0x020b50f0
 func_ov043_020b511c kind:function(arm,size=0x48) addr:0x020b511c
 func_ov043_020b5164 kind:function(arm,size=0x34) addr:0x020b5164
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_textScr.c
+/////////////////////////////////////////////////////////////
 func_ov043_020b5198 kind:function(arm,size=0x14) addr:0x020b5198
 func_ov043_020b51ac kind:function(arm,size=0x14) addr:0x020b51ac
 func_ov043_020b51c0 kind:function(arm,size=0x9c) addr:0x020b51c0
@@ -1499,226 +1535,326 @@ func_ov043_020b68e8 kind:function(arm,size=0x8) addr:0x020b68e8
 func_ov043_020b68f0 kind:function(arm,size=0x30) addr:0x020b68f0
 func_ov043_020b6920 kind:function(arm,size=0x48) addr:0x020b6920
 func_ov043_020b6968 kind:function(arm,size=0x34) addr:0x020b6968
-func_ov043_020b699c kind:function(arm,size=0xac) addr:0x020b699c
-func_ov043_020b6a48 kind:function(arm,size=0x220) addr:0x020b6a48
-func_ov043_020b6c68 kind:function(arm,size=0x20) addr:0x020b6c68
-func_ov043_020b6c88 kind:function(arm,size=0x2c) addr:0x020b6c88
-func_ov043_020b6cb4 kind:function(arm,size=0x40) addr:0x020b6cb4
-func_ov043_020b6cf4 kind:function(arm,size=0x2c) addr:0x020b6cf4
-func_ov043_020b6d20 kind:function(arm,size=0x48) addr:0x020b6d20
-func_ov043_020b6d68 kind:function(arm,size=0x60) addr:0x020b6d68
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_item.c
+/////////////////////////////////////////////////////////////
+Shop_item_GetFrameInfo kind:function(arm,size=0xac) addr:0x020b699c
+Shop_item_Load kind:function(arm,size=0x220) addr:0x020b6a48
+Shop_item_Init kind:function(arm,size=0x20) addr:0x020b6c68
+Shop_item_Update kind:function(arm,size=0x2c) addr:0x020b6c88
+Shop_item_Render kind:function(arm,size=0x40) addr:0x020b6cb4
+Shop_item_Destroy kind:function(arm,size=0x2c) addr:0x020b6cf4
+Shop_item_RunTask kind:function(arm,size=0x48) addr:0x020b6d20
+Shop_item_CreateTask kind:function(arm,size=0x60) addr:0x020b6d68
 func_ov043_020b6dc8 kind:function(arm,size=0x1c) addr:0x020b6dc8
-func_ov043_020b6de4 kind:function(arm,size=0x9c) addr:0x020b6de4
-func_ov043_020b6e80 kind:function(arm,size=0x154) addr:0x020b6e80
-func_ov043_020b6fd4 kind:function(arm,size=0x240) addr:0x020b6fd4
-func_ov043_020b7214 kind:function(arm,size=0x20) addr:0x020b7214
-func_ov043_020b7234 kind:function(arm,size=0xd0) addr:0x020b7234
-func_ov043_020b7304 kind:function(arm,size=0x88) addr:0x020b7304
-func_ov043_020b738c kind:function(arm,size=0x2c) addr:0x020b738c
-func_ov043_020b73b8 kind:function(arm,size=0x48) addr:0x020b73b8
-func_ov043_020b7400 kind:function(arm,size=0xe0) addr:0x020b7400
-func_ov043_020b74e0 kind:function(arm,size=0xa8) addr:0x020b74e0
-func_ov043_020b7588 kind:function(arm,size=0x104) addr:0x020b7588
-func_ov043_020b768c kind:function(arm,size=0x20) addr:0x020b768c
-func_ov043_020b76ac kind:function(arm,size=0x14) addr:0x020b76ac
-func_ov043_020b76c0 kind:function(arm,size=0x20) addr:0x020b76c0
-func_ov043_020b76e0 kind:function(arm,size=0x14) addr:0x020b76e0
-func_ov043_020b76f4 kind:function(arm,size=0x48) addr:0x020b76f4
-func_ov043_020b773c kind:function(arm,size=0x60) addr:0x020b773c
-func_ov043_020b779c kind:function(arm,size=0xa8) addr:0x020b779c
-func_ov043_020b7844 kind:function(arm,size=0x98) addr:0x020b7844
-func_ov043_020b78dc kind:function(arm,size=0x20) addr:0x020b78dc
-func_ov043_020b78fc kind:function(arm,size=0x98) addr:0x020b78fc
-func_ov043_020b7994 kind:function(arm,size=0x20) addr:0x020b7994
-func_ov043_020b79b4 kind:function(arm,size=0x14) addr:0x020b79b4
-func_ov043_020b79c8 kind:function(arm,size=0x48) addr:0x020b79c8
-func_ov043_020b7a10 kind:function(arm,size=0x34) addr:0x020b7a10
-func_ov043_020b7a44 kind:function(arm,size=0xa8) addr:0x020b7a44
-func_ov043_020b7aec kind:function(arm,size=0x314) addr:0x020b7aec
-func_ov043_020b7e00 kind:function(arm,size=0x28) addr:0x020b7e00
-func_ov043_020b7e28 kind:function(arm,size=0x2c) addr:0x020b7e28
-func_ov043_020b7e54 kind:function(arm,size=0x40) addr:0x020b7e54
-func_ov043_020b7e94 kind:function(arm,size=0x2c) addr:0x020b7e94
-func_ov043_020b7ec0 kind:function(arm,size=0x48) addr:0x020b7ec0
-func_ov043_020b7f08 kind:function(arm,size=0x6c) addr:0x020b7f08
-func_ov043_020b7f74 kind:function(arm,size=0xac) addr:0x020b7f74
-func_ov043_020b8020 kind:function(arm,size=0x110) addr:0x020b8020
-func_ov043_020b8130 kind:function(arm,size=0x20) addr:0x020b8130
-func_ov043_020b8150 kind:function(arm,size=0x50) addr:0x020b8150
-func_ov043_020b81a0 kind:function(arm,size=0x40) addr:0x020b81a0
-func_ov043_020b81e0 kind:function(arm,size=0x2c) addr:0x020b81e0
-func_ov043_020b820c kind:function(arm,size=0x48) addr:0x020b820c
-func_ov043_020b8254 kind:function(arm,size=0x38) addr:0x020b8254
-func_ov043_020b828c kind:function(arm,size=0xac) addr:0x020b828c
-func_ov043_020b8338 kind:function(arm,size=0x124) addr:0x020b8338
-func_ov043_020b845c kind:function(arm,size=0x20) addr:0x020b845c
-func_ov043_020b847c kind:function(arm,size=0x34) addr:0x020b847c
-func_ov043_020b84b0 kind:function(arm,size=0x20) addr:0x020b84b0
-func_ov043_020b84d0 kind:function(arm,size=0x14) addr:0x020b84d0
-func_ov043_020b84e4 kind:function(arm,size=0x48) addr:0x020b84e4
-func_ov043_020b852c kind:function(arm,size=0x48) addr:0x020b852c
-func_ov043_020b8574 kind:function(arm,size=0xac) addr:0x020b8574
-func_ov043_020b8620 kind:function(arm,size=0x1a8) addr:0x020b8620
-func_ov043_020b87c8 kind:function(arm,size=0x20) addr:0x020b87c8
-func_ov043_020b87e8 kind:function(arm,size=0x2c) addr:0x020b87e8
-func_ov043_020b8814 kind:function(arm,size=0x40) addr:0x020b8814
-func_ov043_020b8854 kind:function(arm,size=0x2c) addr:0x020b8854
-func_ov043_020b8880 kind:function(arm,size=0x48) addr:0x020b8880
-func_ov043_020b88c8 kind:function(arm,size=0x6c) addr:0x020b88c8
-func_ov043_020b8934 kind:function(arm,size=0xc8) addr:0x020b8934
-func_ov043_020b89fc kind:function(arm,size=0xa8) addr:0x020b89fc
-func_ov043_020b8aa4 kind:function(arm,size=0x108) addr:0x020b8aa4
-func_ov043_020b8bac kind:function(arm,size=0x20) addr:0x020b8bac
-func_ov043_020b8bcc kind:function(arm,size=0x2c) addr:0x020b8bcc
-func_ov043_020b8bf8 kind:function(arm,size=0x40) addr:0x020b8bf8
-func_ov043_020b8c38 kind:function(arm,size=0x2c) addr:0x020b8c38
-func_ov043_020b8c64 kind:function(arm,size=0x48) addr:0x020b8c64
-func_ov043_020b8cac kind:function(arm,size=0x34) addr:0x020b8cac
-func_ov043_020b8ce0 kind:function(arm,size=0xa8) addr:0x020b8ce0
-func_ov043_020b8d88 kind:function(arm,size=0x108) addr:0x020b8d88
-func_ov043_020b8e90 kind:function(arm,size=0x20) addr:0x020b8e90
-func_ov043_020b8eb0 kind:function(arm,size=0x54) addr:0x020b8eb0
-func_ov043_020b8f04 kind:function(arm,size=0x20) addr:0x020b8f04
-func_ov043_020b8f24 kind:function(arm,size=0x14) addr:0x020b8f24
-func_ov043_020b8f38 kind:function(arm,size=0x48) addr:0x020b8f38
-func_ov043_020b8f80 kind:function(arm,size=0x38) addr:0x020b8f80
-func_ov043_020b8fb8 kind:function(arm,size=0xa8) addr:0x020b8fb8
-func_ov043_020b9060 kind:function(arm,size=0x188) addr:0x020b9060
-func_ov043_020b91e8 kind:function(arm,size=0x20) addr:0x020b91e8
-func_ov043_020b9208 kind:function(arm,size=0x4c) addr:0x020b9208
-func_ov043_020b9254 kind:function(arm,size=0x40) addr:0x020b9254
-func_ov043_020b9294 kind:function(arm,size=0x2c) addr:0x020b9294
-func_ov043_020b92c0 kind:function(arm,size=0x48) addr:0x020b92c0
-func_ov043_020b9308 kind:function(arm,size=0x5c) addr:0x020b9308
-func_ov043_020b9364 kind:function(arm,size=0xa8) addr:0x020b9364
-func_ov043_020b940c kind:function(arm,size=0xc0) addr:0x020b940c
-func_ov043_020b94cc kind:function(arm,size=0x20) addr:0x020b94cc
-func_ov043_020b94ec kind:function(arm,size=0x34) addr:0x020b94ec
-func_ov043_020b9520 kind:function(arm,size=0x20) addr:0x020b9520
-func_ov043_020b9540 kind:function(arm,size=0x14) addr:0x020b9540
-func_ov043_020b9554 kind:function(arm,size=0x48) addr:0x020b9554
-func_ov043_020b959c kind:function(arm,size=0x34) addr:0x020b959c
-func_ov043_020b95d0 kind:function(arm,size=0x9c) addr:0x020b95d0
-func_ov043_020b966c kind:function(arm,size=0x3c) addr:0x020b966c
-func_ov043_020b96a8 kind:function(arm,size=0xc4) addr:0x020b96a8
-func_ov043_020b976c kind:function(arm,size=0x20) addr:0x020b976c
-func_ov043_020b978c kind:function(arm,size=0x30) addr:0x020b978c
-func_ov043_020b97bc kind:function(arm,size=0x2c) addr:0x020b97bc
-func_ov043_020b97e8 kind:function(arm,size=0x14) addr:0x020b97e8
-func_ov043_020b97fc kind:function(arm,size=0x48) addr:0x020b97fc
-func_ov043_020b9844 kind:function(arm,size=0x34) addr:0x020b9844
-func_ov043_020b9878 kind:function(arm,size=0xa8) addr:0x020b9878
-func_ov043_020b9920 kind:function(arm,size=0x9c) addr:0x020b9920
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_item2.c
+/////////////////////////////////////////////////////////////
+Shop_item2_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b6de4 local
+func_ov043_020b6e80 kind:function(arm,size=0x154) addr:0x020b6e80 local
+Shop_item2_Load kind:function(arm,size=0x240) addr:0x020b6fd4 local
+Shop_item2_Init kind:function(arm,size=0x20) addr:0x020b7214 local
+Shop_item2_Update kind:function(arm,size=0xd0) addr:0x020b7234 local
+Shop_item2_Render kind:function(arm,size=0x88) addr:0x020b7304 local
+Shop_item2_Destroy kind:function(arm,size=0x2c) addr:0x020b738c local
+Shop_item2_RunTask kind:function(arm,size=0x48) addr:0x020b73b8 local
+Shop_item2_CreateTask kind:function(arm,size=0xe0) addr:0x020b7400
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemPlate.c
+/////////////////////////////////////////////////////////////
+Shop_itemPlate_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b74e0 local
+Shop_itemPlate_Load kind:function(arm,size=0x104) addr:0x020b7588 local
+Shop_itemPlate_Init kind:function(arm,size=0x20) addr:0x020b768c local
+Shop_itemPlate_Update kind:function(arm,size=0x14) addr:0x020b76ac local
+Shop_itemPlate_Render kind:function(arm,size=0x20) addr:0x020b76c0 local
+Shop_itemPlate_Destroy kind:function(arm,size=0x14) addr:0x020b76e0 local
+Shop_itemPlate_RunTask kind:function(arm,size=0x48) addr:0x020b76f4 local
+Shop_itemPlate_CreateTask kind:function(arm,size=0x60) addr:0x020b773c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemCur.c
+/////////////////////////////////////////////////////////////
+Shop_itemCur_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b779c local
+Shop_itemCur_Load kind:function(arm,size=0x98) addr:0x020b7844 local
+Shop_itemCur_Init kind:function(arm,size=0x20) addr:0x020b78dc local
+Shop_itemCur_Update kind:function(arm,size=0x98) addr:0x020b78fc local
+Shop_itemCur_Render kind:function(arm,size=0x20) addr:0x020b7994 local
+Shop_itemCur_Destroy kind:function(arm,size=0x14) addr:0x020b79b4 local
+Shop_itemCur_RunTask kind:function(arm,size=0x48) addr:0x020b79c8 local
+Shop_itemCur_CreateTask kind:function(arm,size=0x34) addr:0x020b7a10
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemPrice.c
+/////////////////////////////////////////////////////////////
+Shop_itemPrice_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b7a44
+Shop_itemPrice_Load kind:function(arm,size=0x314) addr:0x020b7aec
+Shop_itemPrice_Init kind:function(arm,size=0x28) addr:0x020b7e00
+Shop_itemPrice_Update kind:function(arm,size=0x2c) addr:0x020b7e28
+Shop_itemPrice_Render kind:function(arm,size=0x40) addr:0x020b7e54
+Shop_itemPrice_Destroy kind:function(arm,size=0x2c) addr:0x020b7e94
+Shop_itemPrice_RunTask kind:function(arm,size=0x48) addr:0x020b7ec0
+Shop_itemPrice_CreateTask kind:function(arm,size=0x6c) addr:0x020b7f08
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemAbl.c
+/////////////////////////////////////////////////////////////
+Shop_itemAbl_GetFrameInfo kind:function(arm,size=0xac) addr:0x020b7f74 local
+Shop_itemAbl_Load kind:function(arm,size=0x110) addr:0x020b8020 local
+Shop_itemAbl_Init kind:function(arm,size=0x20) addr:0x020b8130 local
+Shop_itemAbl_Update kind:function(arm,size=0x50) addr:0x020b8150 local
+Shop_itemAbl_Render kind:function(arm,size=0x40) addr:0x020b81a0 local
+Shop_itemAbl_Destroy kind:function(arm,size=0x2c) addr:0x020b81e0 local
+Shop_itemAbl_RunTask kind:function(arm,size=0x48) addr:0x020b820c local
+Shop_itemAbl_CreateTask kind:function(arm,size=0x38) addr:0x020b8254
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemMask.c
+/////////////////////////////////////////////////////////////
+Shop_itemMask_GetFrameInfo kind:function(arm,size=0xac) addr:0x020b828c local
+Shop_itemMask_Load kind:function(arm,size=0x124) addr:0x020b8338 local
+Shop_itemMask_Init kind:function(arm,size=0x20) addr:0x020b845c local
+Shop_itemMask_Update kind:function(arm,size=0x34) addr:0x020b847c local
+Shop_itemMask_Render kind:function(arm,size=0x20) addr:0x020b84b0 local
+Shop_itemMask_Destroy kind:function(arm,size=0x14) addr:0x020b84d0 local
+Shop_itemMask_RunTask kind:function(arm,size=0x48) addr:0x020b84e4 local
+Shop_itemMask_CreateTask kind:function(arm,size=0x48) addr:0x020b852c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotal.c
+/////////////////////////////////////////////////////////////
+Shop_itemTotal_GetFrameInfo kind:function(arm,size=0xac) addr:0x020b8574 local
+Shop_itemTotal_Load kind:function(arm,size=0x1a8) addr:0x020b8620 local
+Shop_itemTotal_Init kind:function(arm,size=0x20) addr:0x020b87c8 local
+Shop_itemTotal_Update kind:function(arm,size=0x2c) addr:0x020b87e8 local
+Shop_itemTotal_Render kind:function(arm,size=0x40) addr:0x020b8814 local
+Shop_itemTotal_Destroy kind:function(arm,size=0x2c) addr:0x020b8854 local
+Shop_itemTotal_RunTask kind:function(arm,size=0x48) addr:0x020b8880 local
+Shop_itemTotal_CreateTask kind:function(arm,size=0x6c) addr:0x020b88c8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotalNum.c
+/////////////////////////////////////////////////////////////
+Shop_itemTotalNum_CalcDigits kind:function(arm,size=0xc8) addr:0x020b8934 local
+Shop_itemTotalNum_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b89fc local
+Shop_itemTotalNum_Load kind:function(arm,size=0x108) addr:0x020b8aa4 local
+Shop_itemTotalNum_Init kind:function(arm,size=0x20) addr:0x020b8bac local
+Shop_itemTotalNum_Update kind:function(arm,size=0x2c) addr:0x020b8bcc local
+Shop_itemTotalNum_Render kind:function(arm,size=0x40) addr:0x020b8bf8 local
+Shop_itemTotalNum_Destroy kind:function(arm,size=0x2c) addr:0x020b8c38 local
+Shop_itemTotalNum_RunTask kind:function(arm,size=0x48) addr:0x020b8c64 local
+Shop_itemTotalNum_CreateTask kind:function(arm,size=0x34) addr:0x020b8cac
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemStar.c
+/////////////////////////////////////////////////////////////
+Shop_itemStar_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b8ce0 local
+Shop_itemStar_Load kind:function(arm,size=0x108) addr:0x020b8d88 local
+Shop_itemStar_Init kind:function(arm,size=0x20) addr:0x020b8e90 local
+Shop_itemStar_Update kind:function(arm,size=0x54) addr:0x020b8eb0 local
+Shop_itemStar_Render kind:function(arm,size=0x20) addr:0x020b8f04 local
+Shop_itemStar_Destroy kind:function(arm,size=0x14) addr:0x020b8f24 local
+Shop_itemStar_RunTask kind:function(arm,size=0x48) addr:0x020b8f38 local
+Shop_itemStar_CreateTask kind:function(arm,size=0x38) addr:0x020b8f80
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_mov.c
+/////////////////////////////////////////////////////////////
+Shop_mov_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b8fb8 local
+Shop_mov_Load kind:function(arm,size=0x188) addr:0x020b9060 local
+Shop_mov_Init kind:function(arm,size=0x20) addr:0x020b91e8 local
+Shop_mov_Update kind:function(arm,size=0x4c) addr:0x020b9208 local
+Shop_mov_Render kind:function(arm,size=0x40) addr:0x020b9254 local
+Shop_mov_Destroy kind:function(arm,size=0x2c) addr:0x020b9294 local
+Shop_mov_RunTask kind:function(arm,size=0x48) addr:0x020b92c0 local
+Shop_mov_CreateTask kind:function(arm,size=0x5c) addr:0x020b9308
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_movShadow.c
+/////////////////////////////////////////////////////////////
+Shop_movShadow_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b9364 local
+Shop_movShadow_Load kind:function(arm,size=0xc0) addr:0x020b940c local
+Shop_movShadow_Init kind:function(arm,size=0x20) addr:0x020b94cc local
+Shop_movShadow_Update kind:function(arm,size=0x34) addr:0x020b94ec local
+Shop_movShadow_Render kind:function(arm,size=0x20) addr:0x020b9520 local
+Shop_movShadow_Destroy kind:function(arm,size=0x14) addr:0x020b9540 local
+Shop_movShadow_RunTask kind:function(arm,size=0x48) addr:0x020b9554 local
+Shop_movShadow_CreateTask kind:function(arm,size=0x34) addr:0x020b959c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_brdLogo.c
+/////////////////////////////////////////////////////////////
+Shop_brdLogo_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b95d0 local
+Shop_brdLogo_ShouldRender kind:function(arm,size=0x3c) addr:0x020b966c local
+Shop_brdLogo_Load kind:function(arm,size=0xc4) addr:0x020b96a8 local
+Shop_brdLogo_Init kind:function(arm,size=0x20) addr:0x020b976c local
+Shop_brdLogo_Update kind:function(arm,size=0x30) addr:0x020b978c local
+Shop_brdLogo_Render kind:function(arm,size=0x2c) addr:0x020b97bc local
+Shop_brdLogo_Destroy kind:function(arm,size=0x14) addr:0x020b97e8 local
+Shop_brdLogo_RunTask kind:function(arm,size=0x48) addr:0x020b97fc local
+Shop_brdLogo_CreateTask kind:function(arm,size=0x34) addr:0x020b9844
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_window0.c
+/////////////////////////////////////////////////////////////
+Shop_window0_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b9878
+Shop_window0_Load kind:function(arm,size=0x9c) addr:0x020b9920
 func_ov043_020b99bc kind:function(arm,size=0x3c) addr:0x020b99bc
 func_ov043_020b99f8 kind:function(arm,size=0x1d4) addr:0x020b99f8
 func_ov043_020b9bcc kind:function(arm,size=0x170) addr:0x020b9bcc
 func_ov043_020b9d3c kind:function(arm,size=0x170) addr:0x020b9d3c
 func_ov043_020b9eac kind:function(arm,size=0xd4) addr:0x020b9eac
 func_ov043_020b9f80 kind:function(arm,size=0x7c) addr:0x020b9f80
-func_ov043_020b9ffc kind:function(arm,size=0x84) addr:0x020b9ffc
-func_ov043_020ba080 kind:function(arm,size=0x14) addr:0x020ba080
-func_ov043_020ba094 kind:function(arm,size=0x2c) addr:0x020ba094
-func_ov043_020ba0c0 kind:function(arm,size=0x28) addr:0x020ba0c0
-func_ov043_020ba0e8 kind:function(arm,size=0x48) addr:0x020ba0e8
-func_ov043_020ba130 kind:function(arm,size=0x34) addr:0x020ba130
-func_ov043_020ba164 kind:function(arm,size=0xa8) addr:0x020ba164
-func_ov043_020ba20c kind:function(arm,size=0xe4) addr:0x020ba20c
+Shop_window0_Init kind:function(arm,size=0x84) addr:0x020b9ffc
+Shop_window0_Update kind:function(arm,size=0x14) addr:0x020ba080
+Shop_window0_Render kind:function(arm,size=0x2c) addr:0x020ba094
+Shop_window0_Destroy kind:function(arm,size=0x28) addr:0x020ba0c0
+Shop_window0_RunTask kind:function(arm,size=0x48) addr:0x020ba0e8
+Shop_window0_CreateTask kind:function(arm,size=0x34) addr:0x020ba130
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_window1.c
+/////////////////////////////////////////////////////////////
+Shop_window1_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020ba164
+Shop_window1_Load kind:function(arm,size=0xe4) addr:0x020ba20c
 func_ov043_020ba2f0 kind:function(arm,size=0x4c) addr:0x020ba2f0
 func_ov043_020ba33c kind:function(arm,size=0x398) addr:0x020ba33c
 func_ov043_020ba6d4 kind:function(arm,size=0x60) addr:0x020ba6d4
-func_ov043_020ba734 kind:function(arm,size=0x34) addr:0x020ba734
-func_ov043_020ba768 kind:function(arm,size=0xb8) addr:0x020ba768
-func_ov043_020ba820 kind:function(arm,size=0x44) addr:0x020ba820
-func_ov043_020ba864 kind:function(arm,size=0x48) addr:0x020ba864
-func_ov043_020ba8ac kind:function(arm,size=0x48) addr:0x020ba8ac
-func_ov043_020ba8f4 kind:function(arm,size=0x34) addr:0x020ba8f4
-func_ov043_020ba928 kind:function(arm,size=0x9c) addr:0x020ba928
-func_ov043_020ba9c4 kind:function(arm,size=0x74) addr:0x020ba9c4
-func_ov043_020baa38 kind:function(arm,size=0x28) addr:0x020baa38
-func_ov043_020baa60 kind:function(arm,size=0x50) addr:0x020baa60
-func_ov043_020baab0 kind:function(arm,size=0x20) addr:0x020baab0
-func_ov043_020baad0 kind:function(arm,size=0x14) addr:0x020baad0
-func_ov043_020baae4 kind:function(arm,size=0x48) addr:0x020baae4
-func_ov043_020bab2c kind:function(arm,size=0x34) addr:0x020bab2c
-func_ov043_020bab60 kind:function(arm,size=0x9c) addr:0x020bab60
-func_ov043_020babfc kind:function(arm,size=0x11c) addr:0x020babfc
-func_ov043_020bad18 kind:function(arm,size=0x28) addr:0x020bad18
-func_ov043_020bad40 kind:function(arm,size=0x34) addr:0x020bad40
-func_ov043_020bad74 kind:function(arm,size=0x34) addr:0x020bad74
-func_ov043_020bada8 kind:function(arm,size=0x34) addr:0x020bada8
-func_ov043_020baddc kind:function(arm,size=0x48) addr:0x020baddc
-func_ov043_020bae24 kind:function(arm,size=0x34) addr:0x020bae24
-func_ov043_020bae58 kind:function(arm,size=0xe8) addr:0x020bae58
-func_ov043_020baf40 kind:function(arm,size=0x9c) addr:0x020baf40
-func_ov043_020bafdc kind:function(arm,size=0x130) addr:0x020bafdc
-func_ov043_020bb10c kind:function(arm,size=0x20) addr:0x020bb10c
-func_ov043_020bb12c kind:function(arm,size=0x34) addr:0x020bb12c
-func_ov043_020bb160 kind:function(arm,size=0x40) addr:0x020bb160
-func_ov043_020bb1a0 kind:function(arm,size=0x2c) addr:0x020bb1a0
-func_ov043_020bb1cc kind:function(arm,size=0x48) addr:0x020bb1cc
-func_ov043_020bb214 kind:function(arm,size=0x40) addr:0x020bb214
-func_ov043_020bb254 kind:function(arm,size=0x9c) addr:0x020bb254
+Shop_window1_Init kind:function(arm,size=0x34) addr:0x020ba734
+Shop_window1_Update kind:function(arm,size=0xb8) addr:0x020ba768
+Shop_window1_Render kind:function(arm,size=0x44) addr:0x020ba820
+Shop_window1_Destroy kind:function(arm,size=0x48) addr:0x020ba864
+Shop_window1_RunTask kind:function(arm,size=0x48) addr:0x020ba8ac
+Shop_window1_CreateTask kind:function(arm,size=0x34) addr:0x020ba8f4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_pointer.c
+/////////////////////////////////////////////////////////////
+Shop_pointer_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020ba928
+Shop_pointer_Load kind:function(arm,size=0x74) addr:0x020ba9c4
+Shop_pointer_Init kind:function(arm,size=0x28) addr:0x020baa38
+Shop_pointer_Update kind:function(arm,size=0x50) addr:0x020baa60
+Shop_pointer_Render kind:function(arm,size=0x20) addr:0x020baab0
+Shop_pointer_Destroy kind:function(arm,size=0x14) addr:0x020baad0
+Shop_pointer_RunTask kind:function(arm,size=0x48) addr:0x020baae4
+Shop_pointer_CreateTask kind:function(arm,size=0x34) addr:0x020bab2c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_nameU.c
+/////////////////////////////////////////////////////////////
+Shop_nameU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bab60 local
+Shop_nameU_Load kind:function(arm,size=0x11c) addr:0x020babfc local
+Shop_nameU_Init kind:function(arm,size=0x28) addr:0x020bad18 local
+Shop_nameU_Update kind:function(arm,size=0x34) addr:0x020bad40 local
+Shop_nameU_Render kind:function(arm,size=0x34) addr:0x020bad74 local
+Shop_nameU_Destroy kind:function(arm,size=0x34) addr:0x020bada8 local
+Shop_nameU_RunTask kind:function(arm,size=0x48) addr:0x020baddc local
+Shop_nameU_CreateTask kind:function(arm,size=0x34) addr:0x020bae24
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numLvU.c
+/////////////////////////////////////////////////////////////
+func_ov043_020bae58 kind:function(arm,size=0xe8) addr:0x020bae58 local
+Shop_numLvU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020baf40 local
+Shop_numLvU_Load kind:function(arm,size=0x130) addr:0x020bafdc local
+Shop_numLvU_Init kind:function(arm,size=0x20) addr:0x020bb10c local
+Shop_numLvU_Update kind:function(arm,size=0x34) addr:0x020bb12c local
+Shop_numLvU_Render kind:function(arm,size=0x40) addr:0x020bb160 local
+Shop_numLvU_Destroy kind:function(arm,size=0x2c) addr:0x020bb1a0 local
+Shop_numLvU_RunTask kind:function(arm,size=0x48) addr:0x020bb1cc local
+Shop_numLvU_CreateTask kind:function(arm,size=0x40) addr:0x020bb214
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numAblU.c
+/////////////////////////////////////////////////////////////
+Shop_numAblU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bb254
 func_ov043_020bb2f0 kind:function(arm,size=0x1a8) addr:0x020bb2f0
-func_ov043_020bb498 kind:function(arm,size=0x200) addr:0x020bb498
-func_ov043_020bb698 kind:function(arm,size=0x20) addr:0x020bb698
-func_ov043_020bb6b8 kind:function(arm,size=0x34) addr:0x020bb6b8
-func_ov043_020bb6ec kind:function(arm,size=0x40) addr:0x020bb6ec
-func_ov043_020bb72c kind:function(arm,size=0x2c) addr:0x020bb72c
-func_ov043_020bb758 kind:function(arm,size=0x48) addr:0x020bb758
-func_ov043_020bb7a0 kind:function(arm,size=0x34) addr:0x020bb7a0
+Shop_numAblU_Load kind:function(arm,size=0x200) addr:0x020bb498
+Shop_numAblU_Init kind:function(arm,size=0x20) addr:0x020bb698
+Shop_numAblU_Update kind:function(arm,size=0x34) addr:0x020bb6b8
+Shop_numAblU_Render kind:function(arm,size=0x40) addr:0x020bb6ec
+Shop_numAblU_Destroy kind:function(arm,size=0x2c) addr:0x020bb72c
+Shop_numAblU_RunTask kind:function(arm,size=0x48) addr:0x020bb758
+Shop_numAblU_CreateTask kind:function(arm,size=0x34) addr:0x020bb7a0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numFsgU.c
+/////////////////////////////////////////////////////////////
 func_ov043_020bb7d4 kind:function(arm,size=0x9c) addr:0x020bb7d4
 func_ov043_020bb870 kind:function(arm,size=0x140) addr:0x020bb870
 func_ov043_020bb9b0 kind:function(arm,size=0x1d0) addr:0x020bb9b0
-func_ov043_020bbb80 kind:function(arm,size=0x20) addr:0x020bbb80
-func_ov043_020bbba0 kind:function(arm,size=0x34) addr:0x020bbba0
-func_ov043_020bbbd4 kind:function(arm,size=0x40) addr:0x020bbbd4
-func_ov043_020bbc14 kind:function(arm,size=0x2c) addr:0x020bbc14
-func_ov043_020bbc40 kind:function(arm,size=0x48) addr:0x020bbc40
-func_ov043_020bbc88 kind:function(arm,size=0x40) addr:0x020bbc88
+Shop_numFsgU_Init kind:function(arm,size=0x20) addr:0x020bbb80
+Shop_numFsgU_Update kind:function(arm,size=0x34) addr:0x020bbba0
+Shop_numFsgU_Render kind:function(arm,size=0x40) addr:0x020bbbd4
+Shop_numFsgU_Destroy kind:function(arm,size=0x2c) addr:0x020bbc14
+Shop_numFsgU_RunTask kind:function(arm,size=0x48) addr:0x020bbc40
+Shop_numFsgU_CreateTask kind:function(arm,size=0x40) addr:0x020bbc88
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_fsgGaugeU.c
+/////////////////////////////////////////////////////////////
 func_ov043_020bbcc8 kind:function(arm,size=0x4c) addr:0x020bbcc8
-func_ov043_020bbd14 kind:function(arm,size=0x9c) addr:0x020bbd14
-func_ov043_020bbdb0 kind:function(arm,size=0x128) addr:0x020bbdb0
-func_ov043_020bbed8 kind:function(arm,size=0x20) addr:0x020bbed8
-func_ov043_020bbef8 kind:function(arm,size=0x58) addr:0x020bbef8
-func_ov043_020bbf50 kind:function(arm,size=0xa0) addr:0x020bbf50
-func_ov043_020bbff0 kind:function(arm,size=0x2c) addr:0x020bbff0
-func_ov043_020bc01c kind:function(arm,size=0x48) addr:0x020bc01c
-func_ov043_020bc064 kind:function(arm,size=0x34) addr:0x020bc064
-func_ov043_020bc098 kind:function(arm,size=0x40) addr:0x020bc098
-func_ov043_020bc0d8 kind:function(arm,size=0x154) addr:0x020bc0d8
-func_ov043_020bc22c kind:function(arm,size=0x28) addr:0x020bc22c
-func_ov043_020bc254 kind:function(arm,size=0x8) addr:0x020bc254
-func_ov043_020bc25c kind:function(arm,size=0x8) addr:0x020bc25c
-func_ov043_020bc264 kind:function(arm,size=0x30) addr:0x020bc264
-func_ov043_020bc294 kind:function(arm,size=0x48) addr:0x020bc294
-func_ov043_020bc2dc kind:function(arm,size=0x34) addr:0x020bc2dc
-func_ov043_020bc310 kind:function(arm,size=0x9c) addr:0x020bc310
-func_ov043_020bc3ac kind:function(arm,size=0x2c) addr:0x020bc3ac
-func_ov043_020bc3d8 kind:function(arm,size=0x94) addr:0x020bc3d8
-func_ov043_020bc46c kind:function(arm,size=0x12c) addr:0x020bc46c
-func_ov043_020bc598 kind:function(arm,size=0x4c) addr:0x020bc598
-func_ov043_020bc5e4 kind:function(arm,size=0x2c) addr:0x020bc5e4
-func_ov043_020bc610 kind:function(arm,size=0x50) addr:0x020bc610
-func_ov043_020bc660 kind:function(arm,size=0x5c) addr:0x020bc660
-func_ov043_020bc6bc kind:function(arm,size=0x48) addr:0x020bc6bc
-func_ov043_020bc704 kind:function(arm,size=0x38) addr:0x020bc704
-func_ov043_020bc73c kind:function(arm,size=0x9c) addr:0x020bc73c
-func_ov043_020bc7d8 kind:function(arm,size=0xbc) addr:0x020bc7d8
-func_ov043_020bc894 kind:function(arm,size=0x20) addr:0x020bc894
-func_ov043_020bc8b4 kind:function(arm,size=0x48) addr:0x020bc8b4
-func_ov043_020bc8fc kind:function(arm,size=0x20) addr:0x020bc8fc
-func_ov043_020bc91c kind:function(arm,size=0x14) addr:0x020bc91c
-func_ov043_020bc930 kind:function(arm,size=0x48) addr:0x020bc930
-func_ov043_020bc978 kind:function(arm,size=0x3c) addr:0x020bc978
-func_ov043_020bc9b4 kind:function(arm,size=0x9c) addr:0x020bc9b4
-func_ov043_020bca50 kind:function(arm,size=0x14c) addr:0x020bca50
-func_ov043_020bcb9c kind:function(arm,size=0x124) addr:0x020bcb9c
-func_ov043_020bccc0 kind:function(arm,size=0x20) addr:0x020bccc0
-func_ov043_020bcce0 kind:function(arm,size=0x14) addr:0x020bcce0
-func_ov043_020bccf4 kind:function(arm,size=0x20) addr:0x020bccf4
-func_ov043_020bcd14 kind:function(arm,size=0x14) addr:0x020bcd14
-func_ov043_020bcd28 kind:function(arm,size=0x48) addr:0x020bcd28
-func_ov043_020bcd70 kind:function(arm,size=0x40) addr:0x020bcd70
+Shop_fsgGaugeU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bbd14
+Shop_fsgGaugeU_Load kind:function(arm,size=0x128) addr:0x020bbdb0
+Shop_fsgGaugeU_Init kind:function(arm,size=0x20) addr:0x020bbed8
+Shop_fsgGaugeU_Update kind:function(arm,size=0x58) addr:0x020bbef8
+Shop_fsgGaugeU_Render kind:function(arm,size=0xa0) addr:0x020bbf50
+Shop_fsgGaugeU_Destroy kind:function(arm,size=0x2c) addr:0x020bbff0
+Shop_fsgGaugeU_RunTask kind:function(arm,size=0x48) addr:0x020bc01c
+Shop_fsgGaugeU_CreateTask kind:function(arm,size=0x34) addr:0x020bc064
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_textScrU.c
+/////////////////////////////////////////////////////////////
+func_ov043_020bc098 kind:function(arm,size=0x40) addr:0x020bc098 local
+func_ov043_020bc0d8 kind:function(arm,size=0x154) addr:0x020bc0d8 local
+Shop_textScrU_Init kind:function(arm,size=0x28) addr:0x020bc22c local
+Shop_textScrU_Update kind:function(arm,size=0x8) addr:0x020bc254 local
+Shop_textScrU_Render kind:function(arm,size=0x8) addr:0x020bc25c local
+Shop_textScrU_Destroy kind:function(arm,size=0x30) addr:0x020bc264 local
+Shop_textScrU_RunTask kind:function(arm,size=0x48) addr:0x020bc294 local
+Shop_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x020bc2dc
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_windowU.c
+/////////////////////////////////////////////////////////////
+Shop_windowU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bc310 local
+func_ov043_020bc3ac kind:function(arm,size=0x2c) addr:0x020bc3ac local
+func_ov043_020bc3d8 kind:function(arm,size=0x94) addr:0x020bc3d8 local
+Shop_windowU_Load kind:function(arm,size=0x12c) addr:0x020bc46c local
+Shop_windowU_Init kind:function(arm,size=0x4c) addr:0x020bc598 local
+Shop_windowU_Update kind:function(arm,size=0x2c) addr:0x020bc5e4 local
+Shop_windowU_Render kind:function(arm,size=0x50) addr:0x020bc610 local
+Shop_windowU_Destroy kind:function(arm,size=0x5c) addr:0x020bc660 local
+Shop_windowU_RunTask kind:function(arm,size=0x48) addr:0x020bc6bc local
+Shop_windowU_CreateTask kind:function(arm,size=0x38) addr:0x020bc704
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_castU.c
+/////////////////////////////////////////////////////////////
+Shop_castU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bc73c local
+Shop_castU_Load kind:function(arm,size=0xbc) addr:0x020bc7d8 local
+Shop_castU_Init kind:function(arm,size=0x20) addr:0x020bc894 local
+Shop_castU_Update kind:function(arm,size=0x48) addr:0x020bc8b4 local
+Shop_castU_Render kind:function(arm,size=0x20) addr:0x020bc8fc local
+Shop_castU_Destroy kind:function(arm,size=0x14) addr:0x020bc91c local
+Shop_castU_RunTask kind:function(arm,size=0x48) addr:0x020bc930 local
+Shop_castU_CreateTask kind:function(arm,size=0x3c) addr:0x020bc978
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_boardU.c
+/////////////////////////////////////////////////////////////
+Shop_boardU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bc9b4 local
+func_ov043_020bca50 kind:function(arm,size=0x14c) addr:0x020bca50 local
+Shop_boardU_Load kind:function(arm,size=0x124) addr:0x020bcb9c local
+Shop_boardU_Init kind:function(arm,size=0x20) addr:0x020bccc0 local
+Shop_boardU_Update kind:function(arm,size=0x14) addr:0x020bcce0 local
+Shop_boardU_Render kind:function(arm,size=0x20) addr:0x020bccf4 local
+Shop_boardU_Destroy kind:function(arm,size=0x14) addr:0x020bcd14 local
+Shop_boardU_RunTask kind:function(arm,size=0x48) addr:0x020bcd28 local
+Shop_boardU_CreateTask kind:function(arm,size=0x40) addr:0x020bcd70
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Depart.c
@@ -2612,26 +2748,48 @@ data_ov043_020ca360 kind:data(any) addr:0x020ca360
 data_ov043_020ca36c kind:data(any) addr:0x020ca36c
 data_ov043_020ca37c kind:data(any) addr:0x020ca37c
 data_ov043_020ca39c kind:data(any) addr:0x020ca39c
-data_ov043_020ca3c8 kind:data(any) addr:0x020ca3c8
-data_ov043_020ca3d4 kind:data(any) addr:0x020ca3d4
-data_ov043_020ca3e4 kind:data(any) addr:0x020ca3e4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_exit.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_exit kind:data(any) addr:0x020ca3c8 local
+@1340 kind:data(any) addr:0x020ca3d4 local
+data_ov043_020ca3e4 kind:data(any) addr:0x020ca3e4 local
+
+
 data_ov043_020ca410 kind:data(any) addr:0x020ca410
 data_ov043_020ca41c kind:data(any) addr:0x020ca41c
 data_ov043_020ca42c kind:data(any) addr:0x020ca42c
 data_ov043_020ca440 kind:data(any) addr:0x020ca440
-data_ov043_020ca46c kind:data(any) addr:0x020ca46c
-data_ov043_020ca478 kind:data(any) addr:0x020ca478
-data_ov043_020ca488 kind:data(any) addr:0x020ca488
-data_ov043_020ca49c kind:data(any) addr:0x020ca49c
-data_ov043_020ca4c8 kind:data(any) addr:0x020ca4c8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numMoneyBdg.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_numMoneyBdg kind:data(any) addr:0x020ca46c local
+@1449 kind:data(any) addr:0x020ca478 local
+@1385 kind:data(any) addr:0x020ca488 local
+Shop_numMoneyBdg_Anim kind:data(any) addr:0x020ca49c local
+
+
+Tsk_Shop_sbar kind:data(any) addr:0x020ca4c8
 data_ov043_020ca4d4 kind:data(any) addr:0x020ca4d4
 data_ov043_020ca4e4 kind:data(any) addr:0x020ca4e4
-data_ov043_020ca510 kind:data(any) addr:0x020ca510
-data_ov043_020ca51c kind:data(any) addr:0x020ca51c
-data_ov043_020ca52c kind:data(any) addr:0x020ca52c
-data_ov043_020ca558 kind:data(any) addr:0x020ca558
-data_ov043_020ca564 kind:data(any) addr:0x020ca564
-data_ov043_020ca574 kind:data(any) addr:0x020ca574
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_sbar2.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_sbar2 kind:data(any) addr:0x020ca510 local
+@1387 kind:data(any) addr:0x020ca51c local
+Shop_sbar2_Anim kind:data(any) addr:0x020ca52c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_check.c
+/////////////////////////////////////////////////////////////
+data_ov043_020ca558 kind:data(any) addr:0x020ca558 local
+@1375 kind:data(any) addr:0x020ca564 local
+data_ov043_020ca574 kind:data(any) addr:0x020ca574 local
+
+
 data_ov043_020ca5a0 kind:data(any) addr:0x020ca5a0
 data_ov043_020ca5ac kind:data(any) addr:0x020ca5ac
 data_ov043_020ca5b8 kind:data(any) addr:0x020ca5b8
@@ -2639,83 +2797,170 @@ data_ov043_020ca5c8 kind:data(any) addr:0x020ca5c8
 data_ov043_020ca5f4 kind:data(any) addr:0x020ca5f4
 data_ov043_020ca610 kind:data(any) addr:0x020ca610
 data_ov043_020ca61c kind:data(any) addr:0x020ca61c
-data_ov043_020ca62c kind:data(any) addr:0x020ca62c
+Tsk_Shop_item kind:data(any) addr:0x020ca62c
 data_ov043_020ca638 kind:data(any) addr:0x020ca638
 data_ov043_020ca648 kind:data(any) addr:0x020ca648
-data_ov043_020ca674 kind:data(any) addr:0x020ca674
-data_ov043_020ca680 kind:data(any) addr:0x020ca680
-data_ov043_020ca690 kind:data(any) addr:0x020ca690
-data_ov043_020ca6bc kind:data(any) addr:0x020ca6bc
-data_ov043_020ca6c8 kind:data(any) addr:0x020ca6c8
-data_ov043_020ca6d8 kind:data(any) addr:0x020ca6d8
-data_ov043_020ca704 kind:data(any) addr:0x020ca704
-data_ov043_020ca710 kind:data(any) addr:0x020ca710
-data_ov043_020ca720 kind:data(any) addr:0x020ca720
-data_ov043_020ca74c kind:data(any) addr:0x020ca74c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_item2.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_item2 kind:data(any) addr:0x020ca674 local
+@1603 kind:data(any) addr:0x020ca680 local
+data_ov043_020ca690 kind:data(any) addr:0x020ca690 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemPlate.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemPlate kind:data(any) addr:0x020ca6bc local
+@1380 kind:data(any) addr:0x020ca6c8 local
+Shop_itemPlate_Anim kind:data(any) addr:0x020ca6d8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemCur.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemCur kind:data(any) addr:0x020ca704 local
+@1372 kind:data(any) addr:0x020ca710 local
+Shop_itemCur_Anim kind:data(any) addr:0x020ca720 local
+
+Tsk_Shop_itemPrice kind:data(any) addr:0x020ca74c
 data_ov043_020ca758 kind:data(any) addr:0x020ca758
 data_ov043_020ca768 kind:data(any) addr:0x020ca768
-data_ov043_020ca794 kind:data(any) addr:0x020ca794
-data_ov043_020ca7a0 kind:data(any) addr:0x020ca7a0
-data_ov043_020ca7b0 kind:data(any) addr:0x020ca7b0
-data_ov043_020ca7dc kind:data(any) addr:0x020ca7dc
-data_ov043_020ca7e8 kind:data(any) addr:0x020ca7e8
-data_ov043_020ca7f8 kind:data(any) addr:0x020ca7f8
-data_ov043_020ca824 kind:data(any) addr:0x020ca824
-data_ov043_020ca830 kind:data(any) addr:0x020ca830
-data_ov043_020ca840 kind:data(any) addr:0x020ca840
-data_ov043_020ca86c kind:data(any) addr:0x020ca86c
-data_ov043_020ca878 kind:data(any) addr:0x020ca878
-data_ov043_020ca888 kind:data(any) addr:0x020ca888
-data_ov043_020ca8b4 kind:data(any) addr:0x020ca8b4
-data_ov043_020ca8c0 kind:data(any) addr:0x020ca8c0
-data_ov043_020ca8d0 kind:data(any) addr:0x020ca8d0
-data_ov043_020ca8fc kind:data(any) addr:0x020ca8fc
-data_ov043_020ca908 kind:data(any) addr:0x020ca908
-data_ov043_020ca918 kind:data(any) addr:0x020ca918
-data_ov043_020ca944 kind:data(any) addr:0x020ca944
-data_ov043_020ca950 kind:data(any) addr:0x020ca950
-data_ov043_020ca960 kind:data(any) addr:0x020ca960
-data_ov043_020ca98c kind:data(any) addr:0x020ca98c
-data_ov043_020ca998 kind:data(any) addr:0x020ca998
-data_ov043_020ca9a8 kind:data(any) addr:0x020ca9a8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemAbl.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemAbl kind:data(any) addr:0x020ca794 local
+@1387 kind:data(any) addr:0x020ca7a0 local
+Shop_itemAbl_Anim kind:data(any) addr:0x020ca7b0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemMask.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemMask kind:data(any) addr:0x020ca7dc local
+@1398 kind:data(any) addr:0x020ca7e8 local
+Shop_itemMask_Anim kind:data(any) addr:0x020ca7f8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotal.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemTotal kind:data(any) addr:0x020ca824 local
+@1392 kind:data(any) addr:0x020ca830 local
+data_ov043_020ca840 kind:data(any) addr:0x020ca840 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotalNum.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemTotalNum kind:data(any) addr:0x020ca86c local
+@1420 kind:data(any) addr:0x020ca878 local
+Shop_itemTotalNum_Anim kind:data(any) addr:0x020ca888 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemStar.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_itemStar kind:data(any) addr:0x020ca8b4 local
+@1372 kind:data(any) addr:0x020ca8c0 local
+Shop_itemStar_Anim kind:data(any) addr:0x020ca8d0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_mov.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_mov kind:data(any) addr:0x020ca8fc local
+@1379 kind:data(any) addr:0x020ca908 local
+data_ov043_020ca918 kind:data(any) addr:0x020ca918 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_movShadow.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_movShadow kind:data(any) addr:0x020ca944 local
+@1372 kind:data(any) addr:0x020ca950 local
+data_ov043_020ca960 kind:data(any) addr:0x020ca960 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_brdLogo.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_brdLogo kind:data(any) addr:0x020ca98c local
+@1391 kind:data(any) addr:0x020ca998 local
+data_ov043_020ca9a8 kind:data(any) addr:0x020ca9a8 local
+
 data_ov043_020ca9d4 kind:data(any) addr:0x020ca9d4
-data_ov043_020ca9f4 kind:data(any) addr:0x020ca9f4
+Tsk_Shop_window0 kind:data(any) addr:0x020ca9f4
 data_ov043_020caa00 kind:data(any) addr:0x020caa00
 data_ov043_020caa10 kind:data(any) addr:0x020caa10
-data_ov043_020caa3c kind:data(any) addr:0x020caa3c
+Tsk_Shop_window1 kind:data(any) addr:0x020caa3c
 data_ov043_020caa54 kind:data(any) addr:0x020caa54
 data_ov043_020caa64 kind:data(any) addr:0x020caa64
-data_ov043_020caa90 kind:data(any) addr:0x020caa90
-data_ov043_020caa9c kind:data(any) addr:0x020caa9c
-data_ov043_020caaac kind:data(any) addr:0x020caaac
-data_ov043_020caad8 kind:data(any) addr:0x020caad8
-data_ov043_020caae4 kind:data(any) addr:0x020caae4
-data_ov043_020caaf0 kind:data(any) addr:0x020caaf0
-data_ov043_020cab00 kind:data(any) addr:0x020cab00
-data_ov043_020cab18 kind:data(any) addr:0x020cab18
-data_ov043_020cab44 kind:data(any) addr:0x020cab44
-data_ov043_020cab50 kind:data(any) addr:0x020cab50
-data_ov043_020cab60 kind:data(any) addr:0x020cab60
-data_ov043_020cab8c kind:data(any) addr:0x020cab8c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_pointer.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_pointer kind:data(any) addr:0x020caa90 local
+@1344 kind:data(any) addr:0x020caa9c local
+data_ov043_020caaac kind:data(any) addr:0x020caaac local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_nameU.c
+/////////////////////////////////////////////////////////////
+data_ov043_020caad8 kind:data(any) addr:0x020caad8 local
+Tsk_Shop_nameU kind:data(any) addr:0x020caae4 local
+@1369 kind:data(any) addr:0x020caaf0 local
+data_ov043_020cab00 kind:data(any) addr:0x020cab00 local
+data_ov043_020cab18 kind:data(any) addr:0x020cab18 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numLvU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_numLvU kind:data(any) addr:0x020cab44 local
+@1404 kind:data(any) addr:0x020cab50 local
+data_ov043_020cab60 kind:data(any) addr:0x020cab60 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numAblU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_numAblU kind:data(any) addr:0x020cab8c
 data_ov043_020cab98 kind:data(any) addr:0x020cab98
 data_ov043_020caba8 kind:data(any) addr:0x020caba8
-data_ov043_020cabd4 kind:data(any) addr:0x020cabd4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numFsgU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_numFsgU kind:data(any) addr:0x020cabd4
 data_ov043_020cabe0 kind:data(any) addr:0x020cabe0
 data_ov043_020cabf0 kind:data(any) addr:0x020cabf0
-data_ov043_020cac1c kind:data(any) addr:0x020cac1c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_fsgGaugeU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_fsgGaugeU kind:data(any) addr:0x020cac1c
 data_ov043_020cac28 kind:data(any) addr:0x020cac28
 data_ov043_020cac38 kind:data(any) addr:0x020cac38
-data_ov043_020cac64 kind:data(any) addr:0x020cac64
-data_ov043_020cac7c kind:data(any) addr:0x020cac7c
-data_ov043_020cac8c kind:data(any) addr:0x020cac8c
-data_ov043_020cac98 kind:data(any) addr:0x020cac98
-data_ov043_020caca8 kind:data(any) addr:0x020caca8
-data_ov043_020cacd4 kind:data(any) addr:0x020cacd4
-data_ov043_020cace0 kind:data(any) addr:0x020cace0
-data_ov043_020cacf0 kind:data(any) addr:0x020cacf0
-data_ov043_020cad1c kind:data(any) addr:0x020cad1c
-data_ov043_020cad28 kind:data(any) addr:0x020cad28
-data_ov043_020cad38 kind:data(any) addr:0x020cad38
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_textScrU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_textScrU kind:data(any) addr:0x020cac64
+data_ov043_020cac70 kind:data(any) addr:0x020cac70
+@1317 kind:data(any) addr:0x020cac7c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_windowU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_windowU kind:data(any) addr:0x020cac8c local
+@1347 kind:data(any) addr:0x020cac98 local
+data_ov043_020caca8 kind:data(any) addr:0x020caca8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_castU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_castU kind:data(any) addr:0x020cacd4 local
+@1323 kind:data(any) addr:0x020cace0 local
+Shop_castU_Anim kind:data(any) addr:0x020cacf0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_boardU.c
+/////////////////////////////////////////////////////////////
+Tsk_Shop_boardU kind:data(any) addr:0x020cad1c local
+@1357 kind:data(any) addr:0x020cad28 local
+data_ov043_020cad38 kind:data(any) addr:0x020cad38 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Depart.c
@@ -3181,41 +3426,148 @@ data_ov043_020cc860 kind:data(any) addr:0x020cc860
 data_ov043_020cc870 kind:data(any) addr:0x020cc870
 data_ov043_020cc880 kind:data(any) addr:0x020cc880
 data_ov043_020cc890 kind:data(any) addr:0x020cc890
-data_ov043_020cc8a0 kind:data(any) addr:0x020cc8a0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_exit.c
+/////////////////////////////////////////////////////////////
+@1273 kind:data(any) addr:0x020cc8a0 local
+
 data_ov043_020cc8b0 kind:data(any) addr:0x020cc8b0
-data_ov043_020cc8c8 kind:data(any) addr:0x020cc8c8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numMoneyBdg.c
+/////////////////////////////////////////////////////////////
+@1311 kind:data(any) addr:0x020cc8c8 local
+
 data_ov043_020cc8e0 kind:data(any) addr:0x020cc8e0
-data_ov043_020cc8f0 kind:data(any) addr:0x020cc8f0
-data_ov043_020cc900 kind:data(any) addr:0x020cc900
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_sbar2.c
+/////////////////////////////////////////////////////////////
+@1309 kind:data(any) addr:0x020cc8f0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_check.c
+/////////////////////////////////////////////////////////////
+@1301 kind:data(any) addr:0x020cc900 local
+
 data_ov043_020cc910 kind:data(any) addr:0x020cc910
 data_ov043_020cc920 kind:data(any) addr:0x020cc920
+
+
 data_ov043_020cc948 kind:data(any) addr:0x020cc948
 data_ov043_020cc95c kind:data(any) addr:0x020cc95c
 data_ov043_020cca6c kind:data(any) addr:0x020cca6c
-data_ov043_020cca7c kind:data(any) addr:0x020cca7c
-data_ov043_020cca8c kind:data(any) addr:0x020cca8c
-data_ov043_020ccaa0 kind:data(any) addr:0x020ccaa0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_item2.c
+/////////////////////////////////////////////////////////////
+@1463 kind:data(any) addr:0x020cca7c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemPlate.c
+/////////////////////////////////////////////////////////////
+@1309 kind:data(any) addr:0x020cca8c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemCur.c
+/////////////////////////////////////////////////////////////
+@1303 kind:data(any) addr:0x020ccaa0 local
+
 data_ov043_020ccab4 kind:data(any) addr:0x020ccab4
-data_ov043_020ccac8 kind:data(any) addr:0x020ccac8
-data_ov043_020ccadc kind:data(any) addr:0x020ccadc
-data_ov043_020ccaf0 kind:data(any) addr:0x020ccaf0
-data_ov043_020ccb04 kind:data(any) addr:0x020ccb04
-data_ov043_020ccb1c kind:data(any) addr:0x020ccb1c
-data_ov043_020ccb30 kind:data(any) addr:0x020ccb30
-data_ov043_020ccb40 kind:data(any) addr:0x020ccb40
-data_ov043_020ccb54 kind:data(any) addr:0x020ccb54
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemAbl.c
+/////////////////////////////////////////////////////////////
+@1300 kind:data(any) addr:0x020ccac8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemMask.c
+/////////////////////////////////////////////////////////////
+@1326 kind:data(any) addr:0x020ccadc local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotal.c
+/////////////////////////////////////////////////////////////
+@1309 kind:data(any) addr:0x020ccaf0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemTotalNum.c
+/////////////////////////////////////////////////////////////
+@1309 kind:data(any) addr:0x020ccb04 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_itemStar.c
+/////////////////////////////////////////////////////////////
+@1296 kind:data(any) addr:0x020ccb1c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_mov.c
+/////////////////////////////////////////////////////////////
+@1292 kind:data(any) addr:0x020ccb30 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_movShadow.c
+/////////////////////////////////////////////////////////////
+@1307 kind:data(any) addr:0x020ccb40 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_brdLogo.c
+/////////////////////////////////////////////////////////////
+@1308 kind:data(any) addr:0x020ccb54 local
+
 data_ov043_020ccb68 kind:data(any) addr:0x020ccb68
 data_ov043_020ccb7c kind:data(any) addr:0x020ccb7c
-data_ov043_020ccb90 kind:data(any) addr:0x020ccb90
-data_ov043_020ccba4 kind:data(any) addr:0x020ccba4
-data_ov043_020ccbb4 kind:data(any) addr:0x020ccbb4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_pointer.c
+/////////////////////////////////////////////////////////////
+@1279 kind:data(any) addr:0x020ccb90 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_nameU.c
+/////////////////////////////////////////////////////////////
+@1286 kind:data(any) addr:0x020ccba4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numLvU.c
+/////////////////////////////////////////////////////////////
+@1285 kind:data(any) addr:0x020ccbb4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numAblU.c
+/////////////////////////////////////////////////////////////
 data_ov043_020ccbc4 kind:data(any) addr:0x020ccbc4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_numFsgU.c
+/////////////////////////////////////////////////////////////
 data_ov043_020ccbd8 kind:data(any) addr:0x020ccbd8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_fsgGaugeU.c
+/////////////////////////////////////////////////////////////
 data_ov043_020ccbec kind:data(any) addr:0x020ccbec
-data_ov043_020ccc00 kind:data(any) addr:0x020ccc00
-data_ov043_020ccc14 kind:data(any) addr:0x020ccc14
-data_ov043_020ccc28 kind:data(any) addr:0x020ccc28
-data_ov043_020ccc38 kind:data(any) addr:0x020ccc38
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_textScrU.c
+/////////////////////////////////////////////////////////////
+@1261 kind:data(any) addr:0x020ccc00 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_windowU.c
+/////////////////////////////////////////////////////////////
+@1257 kind:data(any) addr:0x020ccc14 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_castU.c
+/////////////////////////////////////////////////////////////
+@1257 kind:data(any) addr:0x020ccc28 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Shop/Shop_boardU.c
+/////////////////////////////////////////////////////////////
+@1274 kind:data(any) addr:0x020ccc38 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Depart.c

@@ -56,8 +56,8 @@ void func_ov043_0208ab0c(MenuTop_textScrU* textScrU) {
         func_ov031_0210ab54(&textScrU->unk_004[i], 1, 0);
     }
 
-    func_ov031_0210b630(&textScrU->unk_004, (u16)(temp_r6->unk_60 + 0x2A97));
-    func_ov031_0210ab3c(&textScrU->unk_004, 1, 0xE0);
+    func_ov031_0210b630(textScrU->unk_004, (u16)(temp_r6->unk_60 + 0x2A97));
+    func_ov031_0210ab3c(textScrU->unk_004, 1, 0xE0);
     func_ov031_0210ab48(&textScrU->unk_004, 3, 0xFFFF);
     func_ov031_0210be18(&textScrU->unk_004, temp_r8 + 4, temp_r9 + 4, 0);
 

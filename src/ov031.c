@@ -590,7 +590,7 @@ void func_ov031_0210aabc(UnkOv31Struct* arg0) {
     arg0->unk_14 = NULL;
 }
 
-void func_ov031_0210ab28(UnkOv31Struct* arg0, s32 arg1, s32 arg2) {
+void func_ov031_0210ab28(UnkOv31Struct* arg0, s16 arg1, s16 arg2) {
     arg0->unk6C  = arg1;
     arg0->unk_70 = arg2;
 }
@@ -599,7 +599,7 @@ void func_ov031_0210ab34(UnkOv31Struct* arg0, s32 arg1) {
     arg0->unk5A = (s8)arg1;
 }
 
-void func_ov031_0210ab3c(UnkOv31Struct* arg0, s32 arg1, s16 arg2) {
+void func_ov031_0210ab3c(UnkOv31Struct* arg0, s32 arg1, s32 arg2) {
     arg0->unk48 = arg1;
     arg0->unk4C = arg2;
 }
@@ -1098,7 +1098,7 @@ void func_ov031_0210b5fc(UnkOv31Struct* arg0, s32 arg1) {
     arg0->unk1C  = 1;
 }
 
-void func_ov031_0210b630(UnkOv31Struct* arg0, s32 arg1) {
+void func_ov031_0210b630(UnkOv31Struct* arg0, u16 arg1) {
     Data*                 temp_r0;
     Data*                 temp_r0_2;
     const Ov031PackEntry* entries;
@@ -1111,11 +1111,11 @@ void func_ov031_0210b630(UnkOv31Struct* arg0, s32 arg1) {
     entries      = (const Ov031PackEntry*)((Data*)arg0->unk18)->buffer;
     temp_r0_2    = DatMgr_LoadRawDataWithOffset(1, NULL, entries[arg1].unk4, data_ov031_0210d130, entries[arg1].unk0);
     arg0->unk10  = temp_r0_2;
-    arg0->unk_14 = (void*)temp_r0_2->buffer;
+    arg0->unk_14 = temp_r0_2->buffer;
     arg0->unk1C  = 1;
 }
 
-void* func_ov031_0210b698(UnkOv31Struct* arg0, s32 arg1) {
+void* func_ov031_0210b698(UnkOv31Struct* arg0, u16 arg1) {
     Data*                 temp_r0_3;
     const Ov031PackEntry* entries;
     s32                   temp_r6;

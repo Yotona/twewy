@@ -7402,7 +7402,7 @@ PrcStepResult func_ov002_0208e30c(PrcCtx* ctx, void* object) {
 PrcStepResult func_ov002_0208e348(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
     void*         sp0;
-    s32           temp_r0;
+    void*         temp_r0;
     u16           var_r9;
 
     sp0                = ctx;
@@ -7410,7 +7410,7 @@ PrcStepResult func_ov002_0208e348(PrcCtx* ctx, void* object) {
     menuObj->unk_41FD0 = 0;
 loop_1:
     if (((const u16*)&data_ov002_0209228e[data_02074d10.unk_41C])[var_r9] != 0xFFFF) {
-        temp_r0 = func_ov031_0210b698(menuObj + 0x45FF4);
+        temp_r0 = func_ov031_0210b698(&menuObj->unk_45FF4, 0);
         MI_CpuCopyU16(temp_r0, (var_r9 * 0x30) + (s32)(menuObj + 0x41838), 0x2A);
         Mem_Free(&gDebugHeap, temp_r0);
         var_r9 += 1;

@@ -183,11 +183,195 @@ src/Debug/Takami/MenuEquip.c:
     .data       start:0x020cc134 end:0x020cc5bc
     .bss        start:0x020cd284 end:0x020cd288
 
-src/Debug/Takami/Shop.c:
-    .text       start:0x020ac5d8 end:0x020bcdb0
-    .rodata     start:0x020ca18c end:0x020cad64
-    .data       start:0x020cc5bc end:0x020ccc48
+src/Interface/Menu/Shop.c:
+    .text       start:0x020ac5d8 end:0x020b2b48
+    .rodata     start:0x020ca18c end:0x020ca360
+    .data       start:0x020cc5bc end:0x020cc890
     .bss        start:0x020cd288 end:0x020cd28c
+
+src/Interface/Menu/Shop/Shop_nameD.c:
+    .text       start:0x020b2b48 end:0x020b326c
+    .rodata     start:0x020ca360 end:0x020ca3c8
+    .data       start:0x020cc890 end:0x020cc8a0
+
+src/Interface/Menu/Shop/Shop_exit.c:
+    complete
+    .text       start:0x020b326c end:0x020b34a0
+    .rodata     start:0x020ca3c8 end:0x020ca410
+    .data       start:0x020cc8a0 end:0x020cc8b0
+
+src/Interface/Menu/Shop/Shop_numMoneyNek.c:
+    .text       start:0x020b34a0 end:0x020b39d0
+    .rodata     start:0x020ca410 end:0x020ca46c
+    .data       start:0x020cc8b0 end:0x020cc8c8
+
+src/Interface/Menu/Shop/Shop_numMoneyBdg.c:
+    complete
+    .text       start:0x020b39d0 end:0x020b3f68
+    .rodata     start:0x020ca46c end:0x020ca4c8
+    .data       start:0x020cc8c8 end:0x020cc8e0
+
+src/Interface/Menu/Shop/Shop_sbar.c:
+    .text       start:0x020b3f68 end:0x020b45a4
+    .rodata     start:0x020ca4c8 end:0x020ca510
+    .data       start:0x020cc8e0 end:0x020cc8f0
+
+src/Interface/Menu/Shop/Shop_sbar2.c:
+    complete
+    .text       start:0x020b45a4 end:0x020b4838
+    .rodata     start:0x020ca510 end:0x020ca558
+    .data       start:0x020cc8f0 end:0x020cc900
+
+src/Interface/Menu/Shop/Shop_check.c:
+    .text       start:0x020b4838 end:0x020b4af8
+    .rodata     start:0x020ca558 end:0x020ca5a0
+    .data       start:0x020cc900 end:0x020cc910
+
+src/Interface/Menu/Shop/Shop_tab.c:
+    .text       start:0x020b4af8 end:0x020b5198
+    .rodata     start:0x020ca5a0 end:0x020ca5f4
+    .data       start:0x020cc910 end:0x020cc948
+
+src/Interface/Menu/Shop/Shop_textScr.c:
+    .text       start:0x020b5198 end:0x020b699c
+    .rodata     start:0x020ca5f4 end:0x020ca62c
+    .data       start:0x020cc948 end:0x020cca6c
+
+src/Interface/Menu/Shop/Shop_item.c:
+    .text       start:0x020b699c end:0x020b6de4
+    .rodata     start:0x020ca62c end:0x020ca674
+    .data       start:0x020cca6c end:0x020cca7c
+
+src/Interface/Menu/Shop/Shop_item2.c:
+    .text       start:0x020b6de4 end:0x020b74e0
+    .rodata     start:0x020ca674 end:0x020ca6bc
+    .data       start:0x020cca7c end:0x020cca8c
+
+src/Interface/Menu/Shop/Shop_itemPlate.c:
+    .text       start:0x020b74e0 end:0x020b779c
+    .rodata     start:0x020ca6bc end:0x020ca704
+    .data       start:0x020cca8c end:0x020ccaa0
+
+src/Interface/Menu/Shop/Shop_itemCur.c:
+    complete
+    .text       start:0x020b779c end:0x020b7a44
+    .rodata     start:0x020ca704 end:0x020ca74c
+    .data       start:0x020ccaa0 end:0x020ccab4
+
+src/Interface/Menu/Shop/Shop_itemPrice.c:
+    .text       start:0x020b7a44 end:0x020b7f74
+    .rodata     start:0x020ca74c end:0x020ca794
+    .data       start:0x020ccab4 end:0x020ccac8
+
+src/Interface/Menu/Shop/Shop_itemAbl.c:
+    complete
+    .text       start:0x020b7f74 end:0x020b828c
+    .rodata     start:0x020ca794 end:0x020ca7dc
+    .data       start:0x020ccac8 end:0x020ccadc
+
+src/Interface/Menu/Shop/Shop_itemMask.c:
+    complete
+    .text       start:0x020b828c end:0x020b8574
+    .rodata     start:0x020ca7dc end:0x020ca824
+    .data       start:0x020ccadc end:0x020ccaf0
+
+src/Interface/Menu/Shop/Shop_itemTotal.c:
+    complete
+    .text       start:0x020b8574 end:0x020b8934
+    .rodata     start:0x020ca824 end:0x020ca86c
+    .data       start:0x020ccaf0 end:0x020ccb04
+
+src/Interface/Menu/Shop/Shop_itemTotalNum.c:
+    complete
+    .text       start:0x020b8934 end:0x020b8ce0
+    .rodata     start:0x020ca86c end:0x020ca8b4
+    .data       start:0x020ccb04 end:0x020ccb1c
+
+src/Interface/Menu/Shop/Shop_itemStar.c:
+    complete
+    .text       start:0x020b8ce0 end:0x020b8fb8
+    .rodata     start:0x020ca8b4 end:0x020ca8fc
+    .data       start:0x020ccb1c end:0x020ccb30
+
+src/Interface/Menu/Shop/Shop_mov.c:
+    complete
+    .text       start:0x020b8fb8 end:0x020b9364
+    .rodata     start:0x020ca8fc end:0x020ca944
+    .data       start:0x020ccb30 end:0x020ccb40
+
+src/Interface/Menu/Shop/Shop_movShadow.c:
+    .text       start:0x020b9364 end:0x020b95d0
+    .rodata     start:0x020ca944 end:0x020ca98c
+    .data       start:0x020ccb40 end:0x020ccb54
+
+src/Interface/Menu/Shop/Shop_brdLogo.c:
+    complete
+    .text       start:0x020b95d0 end:0x020b9878
+    .rodata     start:0x020ca98c end:0x020ca9d4
+    .data       start:0x020ccb54 end:0x020ccb68
+
+src/Interface/Menu/Shop/Shop_window0.c:
+    .text       start:0x020b9878 end:0x020ba164
+    .rodata     start:0x020ca9d4 end:0x020caa3c
+    .data       start:0x020ccb68 end:0x020ccb7c
+
+src/Interface/Menu/Shop/Shop_window1.c:
+    .text       start:0x020ba164 end:0x020ba928
+    .rodata     start:0x020caa3c end:0x020caa90
+    .data       start:0x020ccb7c end:0x020ccb90
+
+src/Interface/Menu/Shop/Shop_pointer.c:
+    complete
+    .text       start:0x020ba928 end:0x020bab60
+    .rodata     start:0x020caa90 end:0x020caad8
+    .data       start:0x020ccb90 end:0x020ccba4
+
+src/Interface/Menu/Shop/Shop_nameU.c:
+    .text       start:0x020bab60 end:0x020bae58
+    .rodata     start:0x020caad8 end:0x020cab44
+    .data       start:0x020ccba4 end:0x020ccbb4
+
+src/Interface/Menu/Shop/Shop_numLvU.c:
+    complete
+    .text       start:0x020bae58 end:0x020bb254
+    .rodata     start:0x020cab44 end:0x020cab8c
+    .data       start:0x020ccbb4 end:0x020ccbc4
+
+src/Interface/Menu/Shop/Shop_numAblU.c:
+    .text       start:0x020bb254 end:0x020bb7d4
+    .rodata     start:0x020cab8c end:0x020cabd4
+    .data       start:0x020ccbc4 end:0x020ccbd8
+
+src/Interface/Menu/Shop/Shop_numFsgU.c:
+    .text       start:0x020bb7d4 end:0x020bbcc8
+    .rodata     start:0x020cabd4 end:0x020cac1c
+    .data       start:0x020ccbd8 end:0x020ccbec
+
+src/Interface/Menu/Shop/Shop_fsgGaugeU.c:
+    .text       start:0x020bbcc8 end:0x020bc098
+    .rodata     start:0x020cac1c end:0x020cac64
+    .data       start:0x020ccbec end:0x020ccc00
+
+src/Interface/Menu/Shop/Shop_textScrU.c:
+    .text       start:0x020bc098 end:0x020bc310
+    .rodata     start:0x020cac64 end:0x020cac8c
+    .data       start:0x020ccc00 end:0x020ccc14
+
+src/Interface/Menu/Shop/Shop_windowU.c:
+    .text       start:0x020bc310 end:0x020bc73c
+    .rodata     start:0x020cac8c end:0x020cacd4
+    .data       start:0x020ccc14 end:0x020ccc28
+
+src/Interface/Menu/Shop/Shop_castU.c:
+    complete
+    .text       start:0x020bc73c end:0x020bc9b4
+    .rodata     start:0x020cacd4 end:0x020cad1c
+    .data       start:0x020ccc28 end:0x020ccc38
+
+src/Interface/Menu/Shop/Shop_boardU.c:
+    .text       start:0x020bc9b4 end:0x020bcdb0
+    .rodata     start:0x020cad1c end:0x020cad64
+    .data       start:0x020ccc38 end:0x020ccc48
 
 src/Debug/Takami/Depart.c:
     .text       start:0x020bcdb0 end:0x020bf250
@@ -195,7 +379,7 @@ src/Debug/Takami/Depart.c:
     .data       start:0x020ccc48 end:0x020cce74
     .bss        start:0x020cd28c end:0x020cd290
 
-src/Debug/Takami/Save.c:
+src/Interface/Menu/Save.c:
     .text       start:0x020bf250 end:0x020c53a0
     .rodata     start:0x020caf44 end:0x020cb41c
     .data       start:0x020cce74 end:0x020cd150
