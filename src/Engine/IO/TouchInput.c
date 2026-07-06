@@ -66,8 +66,6 @@ void TouchInput_Init(void) {
     TouchState.prevCoord.y  = -0x80;
 }
 
-// Nonmatching: Minor instruction reordering
-// Scratch: kj9VF
 u16* TouchInput_Update(void) {
     MI_CpuSet(TouchState.rawInput, 0, 8);
     if (TouchState.isTouchEnabled == FALSE) {
@@ -78,14 +76,13 @@ u16* TouchInput_Update(void) {
         func_02040100();
         func_020401e0(TouchState.rawInput);
         TouchState.prevFrameTouch = TouchState.isTouchActive;
+        TouchState.prevCoord      = TouchState.touchCoord;
     } else {
         TouchState.rawInput[2]    = 0;
         TouchState.rawInput[3]    = 3;
         TouchState.prevFrameTouch = FALSE;
+        TouchState.prevCoord      = TouchState.touchCoord;
     }
-
-    TouchState.prevCoord = TouchState.touchCoord;
-
     if (TouchState.rawInput[2] == 1) {
         if (TouchState.rawInput[3] == 0) {
             TouchState.isTouchActive = TRUE;

@@ -53,14 +53,18 @@ const TaskHandle Tsk_LauncherIcon = {"LauncherIcon", LauncherIcon_RunTask, sizeo
 
 // Non-matching: Significant differences
 SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 mode) {
-    void* temp = sprite->unk24;
+    SpriteFrameInfo* info = &data_0206b408;
+    void*            temp = sprite->unk24;
 
     switch (mode) {
         case 1: {
-            data_0206b408.unk_00 = 1;
+            info->unk_00 = 1;
+            return info;
         } break;
 
         case 2: {
+            info = &data_0206b408;
+
             if (*(s32*)(temp + 0x8) == 0x1000 && *(s32*)(temp + 0xC) != 0x1000) {
                 sprite->unk_0A.unk_00 = 1;
                 sprite->unk_0A.unk_01 = 0;
@@ -71,20 +75,21 @@ SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 mode) {
                 sprite->unk_0A.unk_01 = 0;
                 sprite->unk_0A.unk_05 = 0;
             }
-            data_0206b408.unk_04 = 0;
-            data_0206b408.unk_08 = 0;
-            data_0206b408.unk_0C = 0;
-            data_0206b408.unk_10 = -1;
+            info->unk_04 = 0;
+            info->unk_08 = 0;
+            info->unk_0C = 0;
+            info->unk_10 = -1;
             if (sprite->animData != NULL && sprite->frameDataTable != 0 && sprite->unk16 >= 0) {
-                data_0206b408.unk_04 = *(u16*)(sprite->frameDataTable + (((sprite->unk16 * 2) + 1) * 2));
-                data_0206b408.unk_08 = sprite->frameDataTable + (*(u16*)(sprite->frameDataTable + (sprite->unk16 * 8)) * 2);
+                info->unk_04 = *(u16*)(sprite->frameDataTable + (((sprite->unk16 * 2) + 1) * 2));
+                info->unk_08 = sprite->frameDataTable + (*(u16*)(sprite->frameDataTable + (sprite->unk16 * 8)) * 2);
             }
             if (*(s32*)(temp + 0x8) != 0 && *(s32*)(temp + 0xC) == 0) {
-                data_0206b408.unk_08 = 0;
+                info->unk_08 = 0;
             }
         } break;
     }
-    return &data_0206b408;
+
+    return info;
 }
 
 s32 func_ov046_020837f8(LauncherIcon* icon, LauncherIcon_Args* args) {

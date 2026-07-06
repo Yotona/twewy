@@ -107,7 +107,7 @@ void func_ov042_02082620(StaffRollState* state) {
     EasyTask_UpdateActiveTasks(&state->taskPool);
     if (DebugOvlDisp_IsStackAtBase() != FALSE) {
         OverlayTag tag;
-        gSaveState.unk_20.unk_3128 = 2;
+        gSaveData.unk_3128 = 2;
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, 0);
         return;
     }

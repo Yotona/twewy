@@ -35,6 +35,7 @@ struct SaveState {
 };
 
 extern struct SaveState gSaveState;
+extern MainData         gSaveData;
 
 /**
  * @brief Execute the current step in the save pipeline.

@@ -269,7 +269,7 @@ s32 Savefile_BuildMainSaveImage(void) {
         image->footer.nibbles[i] = (u8)((s8)((u32)(0x3420 & (0xF << (i * 4))) >> (i * 4)));
     }
 
-    image->mainData = gSaveState.unk_20;
+    image->mainData = gSaveData;
     return 0;
 }
 
@@ -506,7 +506,7 @@ s32 Savefile_TryLoadMainImage(s32 saveSlot) {
 
     if (SaveIO_HasValidFooter(image->footer.magic, SaveFooterSignature, sizeof(SaveFooterSignature), sizeof(MainData))) {
         if (SaveIO_GetChecksum16(image, sizeof(MainSaveImage)) == 0) {
-            gSaveState.unk_20 = image->mainData;
+            gSaveData = image->mainData;
             return 0;
         }
         return 8;
@@ -674,34 +674,35 @@ s32 func_0202599c(s32 flagIndex) {
     return (gSaveState.unk_20.unk_246C & (1LL << flagIndex)) != 0;
 }
 
+// Nonmatching
 s32 func_020259e4(s32 itemId) {
     s32  addressOffset = (itemId + ((u32)(itemId >> 4) >> 0x1B)) >> 5;
-    u32* flagPtr       = &gSaveState.unk_20.unk_2474;
+    u32* flagPtr       = &gSaveData.unk_2474;
 
     if (addressOffset > 1) {
-        flagPtr = &gSaveState.unk_20.unk_247C;
+        flagPtr = &gSaveData.unk_247C;
         addressOffset -= 2;
     }
-
-    if (addressOffset != 0) {
-        flagPtr += 1;
+    {
+        s32 mask = 1 << (itemId % 32);
+        if (addressOffset != 0) {
+            flagPtr += addressOffset;
+        }
+        return (*flagPtr) & mask;
     }
-
-    return *flagPtr & (1 << ((itemId >> 0x1F) + (((itemId << 0x1B) - (itemId >> 0x1F)) >> 0x1B)));
 }
 
 s32 func_02025a2c(s32 playTime) {
     s16 unlockedCount = 0;
-
-    for (u32 itemIndex = 0; itemIndex < 67; itemIndex++) {
-        u16 flags = data_0205c5be[itemIndex * 7 + 6];
-
-        if ((flags & 2) || ((flags & 1) && Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == FALSE)) {
+    for (unsigned long itemIndex = 0; itemIndex < 67; itemIndex++) {
+        u16 flags = data_0205c5be[(itemIndex * 7) + 6];
+        if ((flags & 2) || ((flags & 1) && (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == 0))) {
             continue;
         }
-
-        if (*(s16*)(data_0205c5be + itemIndex * 7 + 0) <= playTime) {
-            if (playTime <= *(s16*)(data_0205c5be + itemIndex * 7 + 1)) {
+        if ((*((s16*)((data_0205c5be + (itemIndex * 7)) + 0))) <= playTime) {
+            do {
+            } while (0);
+            if (playTime <= (*((s16*)((data_0205c5be + (7 * itemIndex)) + 1)))) {
                 if (func_020259e4(itemIndex) == 0) {
                     unlockedCount += 1;
                 }

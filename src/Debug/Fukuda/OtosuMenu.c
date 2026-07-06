@@ -2782,9 +2782,9 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
 
         case 3: {
             if (menuObj->unk_462EC != 0) {
-                gSaveState.unk_20.unk_1AB4 |= 0x20;
+                gSaveData.unk_1AB4 |= 0x20;
             } else {
-                gSaveState.unk_20.unk_1AB4 |= 0x40;
+                gSaveData.unk_1AB4 |= 0x40;
             }
             SystemStatusFlags.unk_06 = 1;
             SystemStatusFlags.unk_07 = 1;

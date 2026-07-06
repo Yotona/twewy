@@ -15,6 +15,7 @@ void Color_CopyRange(u16* dest, u16* src, s32 destOffset, u32 count, BOOL skipFi
     MI_CpuCopyU16(src, dest + destOffset, count * sizeof(u16));
 }
 
+// Nonmatching
 static void func_02001c74(u16* arg0, u16* arg1, u32 arg2, s32 arg3) {
     s32 var_r3 = (arg3 < 0x20) ? (~arg3 & 0x1F) : 0x20;
 
@@ -31,6 +32,7 @@ static void func_02001c74(u16* arg0, u16* arg1, u32 arg2, s32 arg3) {
     }
 }
 
+// Nonmatching
 static void func_02001ce0(u16* arg0, u16* arg1, u32 arg2, s32 arg3) {
     if (arg3 < 32) {
         arg3 = ~arg3 & 0x1F;
@@ -52,40 +54,43 @@ static void func_02001ce0(u16* arg0, u16* arg1, u32 arg2, s32 arg3) {
     }
 }
 
+// Nonmatching
 void func_02001d54(u16* arg0, u16* arg1, u16* arg2, u32 arg3, u32 arg4) {
-    u32 var_r8;
-    s32 var_r7;
-    s32 temp_ip;
-    s32 temp_r10;
-
-    while (arg3-- != 0) {
-        var_r8 = 0;
-        var_r7 = 31;
-
+    u16* new_var2;
+    u32  new_var;
+    u32  var_r8;
+    s32  var_r7;
+    s32  temp_ip;
+    s32  temp_r10;
+    while ((arg3--) != 0) {
+        var_r8  = 0;
+        var_r7  = 31;
+        new_var = arg2[arg3];
         do {
-            temp_ip  = arg2[arg3] & var_r7;
-            temp_r10 = var_r7 & (temp_ip + ((s32)(arg4 * ((arg1[arg3] & var_r7) - temp_ip)) >> 5));
+            temp_ip  = new_var & var_r7;
+            new_var2 = &arg1[arg3];
+            temp_r10 = var_r7 & (temp_ip + (((s32)(arg4 * (((*new_var2) & var_r7) - temp_ip))) >> 5));
             var_r7 <<= 5;
             var_r8 |= temp_r10;
         } while ((var_r7 >> 0xF) == 0);
-
         arg0[arg3] = var_r8;
     }
 }
 
+// Nonmatching
 void func_02001dc4(u16* arg0, u16* arg1, u32 arg2, s32 arg3) {
-    while (arg2-- != 0) {
+    s32 new_var;
+    while ((arg2--) != 0) {
         u16 temp_r4 = arg1[arg2];
         u32 var_r7  = 0;
         s32 var_r6  = 31;
-
+        new_var     = temp_r4 & 0xFFFFFFFFFFFFFFFF;
         do {
-            s32 temp_r9 = temp_r4 & var_r6;
-            s32 temp_r8 = var_r6 & (temp_r9 + ((u32)(arg3 * ((~temp_r4 & var_r6) - temp_r9)) >> 5));
+            s32 temp_r9 = new_var & var_r6;
+            s32 temp_r8 = var_r6 & (temp_r9 + (((u32)(arg3 * (((~temp_r4) & var_r6) - temp_r9))) >> 5));
             var_r7 |= temp_r8;
             var_r6 <<= 5;
         } while ((var_r6 >> 0xF) == 0);
-
         arg0[arg2] = var_r7;
     }
 }
@@ -121,6 +126,7 @@ void Color_BlendToGreyscale(u16* dest, u16* src, u32 index, u32 blendStrength) {
     }
 }
 
+// Nonmatching
 void func_02001f34(u16* arg0, u16* arg1, u32 arg2, u32 arg3) {
     if (arg3 >= 32) {
         arg3 = 32;
@@ -143,6 +149,7 @@ void func_02001f34(u16* arg0, u16* arg1, u32 arg2, u32 arg3) {
                 arg0[arg2]   = gray_bit | (alpha << 15);
                 break;
             }
+
             default: {
                 s32 gray_component = (gray < 0x10000) ? 0 : 0x1F000;
                 u32 r              = Color_BlendChannel(red, gray_component, arg3);
@@ -155,6 +162,7 @@ void func_02001f34(u16* arg0, u16* arg1, u32 arg2, u32 arg3) {
     }
 }
 
+// Nonmatching
 void func_0200204c(u16* arg0, u16* arg1, u32 arg2, u32 blendStrength) {
     if (blendStrength >= 32) {
         blendStrength = 32;

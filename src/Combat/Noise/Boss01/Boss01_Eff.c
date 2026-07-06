@@ -6,8 +6,6 @@
 #include "Engine/Math/Random.h"
 #include <nitro/fx.h>
 
-/// MARK: Boss01_Eff
-
 typedef struct {
     /* 0x0 */ Vec unk_0;
     /* 0xC */ s16 unk_C;
@@ -50,7 +48,6 @@ s32 Boss01_Eff_Init(TaskPool* pool, Task* task, void* args) {
 // Nonmatching: eff->unk_70 access differs
 s32 Boss01_Eff_Update(TaskPool* pool, Task* task, void* args) {
     Boss01_Eff* eff = task->data;
-
     if (func_ov003_020c3c28() != 0) {
         return 0;
     }
@@ -63,8 +60,8 @@ s32 Boss01_Eff_Update(TaskPool* pool, Task* task, void* args) {
             if (eff->unk_78 > 737) {
                 eff->unk_70++;
             } else {
-                eff->unk_70 = 0;
                 eff->unk_74++;
+                eff->unk_70 = 0;
             }
 
         case 1:

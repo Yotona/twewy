@@ -23,3 +23,5 @@ build.ninja
 *ghidra*
 update*
 /compile_commands.json
+/nonmatchings
+ctx.c

@@ -56,7 +56,7 @@ void func_ov043_02087ea4(void* taskDataPtr) {
     u16            digits[4];
     u32            hp;
 
-    hp = gSaveState.unk_20.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
+    hp = gSaveData.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
     if (hp > 9999) {
         hp = 9999;
     }
@@ -121,7 +121,7 @@ void MenuTop_numHP_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
 
     anim.dataType = (u16)args->dataType;
 
-    hp = gSaveState.unk_20.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
+    hp = gSaveData.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
     if (hp > 9999) {
         hp = 9999;
     }

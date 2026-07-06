@@ -187,7 +187,7 @@ s32 func_ov025_020e797c(ContinueObject* arg0) {
         }
     }
 
-    if ((result == 2) && (gSaveState.unk_20.unk_3140 & 1)) {
+    if ((result == 2) && (gSaveData.unk_3140 & 1)) {
         result = 0xFFFF;
     }
 
@@ -219,7 +219,7 @@ void func_ov025_020e7aac(ContinueObject* contObj) {
     func_ov025_020e785c(&contObj->unk_11E10[0], 0, 1, 0x80, 0x56);
     func_ov025_020e785c(&contObj->unk_11E10[1], 1, 2, 0x80, 0x6B);
     func_ov025_020e785c(&contObj->unk_11E10[3], 3, 3, 0x80, 0x95);
-    if (gSaveState.unk_20.unk_3140 & 1) {
+    if (gSaveData.unk_3140 & 1) {
         func_ov025_020e785c(&contObj->unk_11E10[2], 2, 5, 0x80, 0x80);
     } else {
         func_ov025_020e785c(&contObj->unk_11E10[2], 2, 4, 0x80, 0x80);
@@ -272,26 +272,26 @@ void func_ov025_020e7d70(ContinueObject* contObj) {
 void func_ov025_020e7dd0(ContinueObject* contObj) {
     switch (contObj->unk_120D0) {
         case 0: {
-            gSaveState.unk_20.unk_3142 = 0;
-            gSaveState.unk_20.unk_3141 = gSaveState.unk_20.playerStats.unk_19_0;
+            gSaveData.unk_3142 = 0;
+            gSaveData.unk_3141 = gSaveData.playerStats.unk_19_0;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
         } break;
 
         case 1: {
-            gSaveState.unk_20.unk_3142 = 0;
-            gSaveState.unk_20.unk_3141 = 0;
+            gSaveData.unk_3142 = 0;
+            gSaveData.unk_3141 = 0;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
         } break;
 
         case 2: {
-            if (gSaveState.unk_20.unk_3140 & 2) {
-                gSaveState.unk_20.unk_24B4 = 5;
+            if (gSaveData.unk_3140 & 2) {
+                gSaveData.unk_24B4 = 5;
             } else {
-                gSaveState.unk_20.unk_24B4 = 3;
+                gSaveData.unk_24B4 = 3;
             }
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, &func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
@@ -300,7 +300,7 @@ void func_ov025_020e7dd0(ContinueObject* contObj) {
         default:
         case 3: {
 
-            if (gSaveState.unk_20.unk_3130 == 3) {
+            if (gSaveData.unk_3130 == 3) {
                 OverlayTag tag;
                 MainOvlDisp_ReplaceTop(&tag, &OVERLAY_27_ID, &func_ov027_020e860c, NULL, PROCESS_STAGE_INIT);
             } else {

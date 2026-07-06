@@ -590,7 +590,7 @@ void func_ov031_0210aabc(UnkOv31Struct* arg0) {
     arg0->unk_14 = NULL;
 }
 
-void func_ov031_0210ab28(UnkOv31Struct* arg0, s16 arg1, s16 arg2) {
+void func_ov031_0210ab28(UnkOv31Struct* arg0, u16 arg1, u16 arg2) {
     arg0->unk6C  = arg1;
     arg0->unk_70 = arg2;
 }

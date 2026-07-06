@@ -3,15 +3,21 @@
 #include "Combat/Friend/Private/Shiki.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
+#include "Engine/Math/Random.h"
 #include "SndMgr.h"
 
 extern BinIdentifier data_ov003_020dd7dc;
 extern BinIdentifier data_ov003_020dd7c4;
 
 typedef struct {
-    /* 0x0 */ u16 x;
-    /* 0x2 */ u16 y;
+    /* 0x0 */ s16 x;
+    /* 0x2 */ s16 y;
 } Coord;
+
+typedef struct {
+    /* 0x0 */ Coord min;
+    /* 0x4 */ Coord max;
+} CoordRange;
 
 typedef struct BtlFeat00 {
     /* 0x00 */ Data*            unk_00;
@@ -37,8 +43,8 @@ typedef struct BtlFeat00 {
 
 s32 BtlFeat00_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static u16         data_ov004_020f0730[2] = {0, 2};
-static const Coord data_ov004_020f03c4[8] = {};
+static u16              data_ov004_020f0730[2] = {0, 2};
+static const CoordRange data_ov004_020f03c4[4] = {};
 
 static const s16 data_ov004_020f03a8[6] = {0, 2, 3, 1, 2, 3};
 
@@ -103,43 +109,21 @@ void func_ov004_020eb7a4(BtlFeat00* feat) {
 }
 
 void func_ov004_020eb828(s32 arg0, s32 arg1) {
-    Coord**      ranges;
-    Coord*       var_r3;
-    const Coord* var_r4;
-    s16          x;
-    s16          temp;
-    s16          y;
-    s32          row;
-    s32          var_r2;
-    u16*         phase_slot;
-    u32          facing;
-    u32          side_offset;
+    CoordRange ranges[4];
+    ranges = data_ov004_020f03c4;
 
-    var_r3 = &ranges[0][0];
-
-    for (s32 i = 8; i != 0; i--) {
-        ranges[i]->x = data_ov004_020f03c4[i].x;
-        ranges[i]->y = data_ov004_020f03c4[i].y;
-    }
-
-    side_offset = (u32)(arg0 << 0x10) >> 0xF;
-    phase_slot  = &data_ov004_020f0730[side_offset];
+    u16* phase_slot = &data_ov004_020f0730[(u16)arg0];
     *phase_slot += 1;
     *phase_slot &= 3;
+    s32 row = *phase_slot;
 
-    row = ((s32)(*phase_slot) << 3) >> 1;
-
-    temp = ranges[0][row].x;
-    x    = temp + RNG_Next(ranges[0][row + 1].x - temp);
-
-    temp   = ranges[0][row].y;
-    y      = temp + RNG_Next(ranges[0][row + 1].y - temp);
-    facing = RNG_Next(2);
+    s16 x      = ranges[row].min.x + RNG_Next(ranges[row].max.x - ranges[row].min.x);
+    s16 y      = ranges[row].min.y + RNG_Next(ranges[row].max.y - ranges[row].min.y);
+    u32 facing = RNG_Next(2);
 
     if (arg1 >= 4) {
         OS_WaitForever();
     }
-
     BtlFeat00_Multi_CreateTask(arg0, arg1, x, y, facing, 1);
     SndMgr_PlaySEWithPan(0x1F, x);
 }

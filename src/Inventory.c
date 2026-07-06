@@ -7,8 +7,14 @@
 #include <nitro/mi/cpumem.h>
 #include <nitro/os.h>
 
-extern s32 func_02053098(f64, f64);
+extern f64 func_02053098(f64, f64);
 extern s32 func_02054a9c(f64);
+
+typedef struct {
+    f64 unk_00;
+    f64 unk_08;
+    f64 unk_10;
+} data_0205c2dc_t;
 
 struct SaveState gSaveState = {0};
 
@@ -32,8 +38,8 @@ const u16 SecretReportStarRequirements[22] = {
     1, 3, 4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 4, 4, 4, 4,
 };
 
-const s32 data_0205c270[13];
-const s32 data_0205c2dc;
+const s32             data_0205c270[13];
+const data_0205c2dc_t data_0205c2dc[8];
 
 static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->unk_00         = 0;
@@ -260,7 +266,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     func_020225ec(&arg0->unk_214C);
     Progress_ResetSecretReports(arg0->secretReports);
 
-    gSaveState.unk_20.unk_2324 = 0;
+    gSaveData.unk_2324 = 0;
 
     for (u16 i = 0; i < ARRAY_LEN(arg0->unk_2326); i++) {
         arg0->unk_2326[i] = 0;
@@ -313,30 +319,26 @@ ItemCategory Inventory_GetCategory(u16 itemIndex) {
 
 // Nonmatching: Regswaps
 u16 Inventory_GetOpenPinStockpileCapacity(void) {
-    MainData* mainData = &gSaveState.unk_20;
-
     RawPinData pinData;
 
     u16 var_r7 = 0;
-
     for (u16 deck = 0; deck < 4; deck++) {
         for (u16 slot = 0; slot < 6; slot++) {
             u32 deckOff = deck * 0x3C;
             u32 slotOff = slot * 0xA;
-            u16 pinID   = mainData->pinLayouts[deck][slot].pinID;
+            u16 pinID   = gSaveData.pinLayouts[deck][slot].pinID;
 
             if (pinID != 0xFFFF) {
                 Data_LoadToBuffer(1, pinData, &data_0205c188, pinID);
-                if (pinData.unk_25 != gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level) {
+                if (pinData.unk_25 != gSaveData.pinLayouts[deck][slot].flags.bits.level) {
                     var_r7 += 1;
                 }
             }
         }
     }
 
-    mainData = &gSaveState.unk_20;
     for (u16 i = 0; i < 256; i++) {
-        if (mainData->stockpilePins[i].pinID != 0xFFFF) {
+        if (gSaveData.stockpilePins[i].pinID != 0xFFFF) {
             var_r7++;
         }
     }
@@ -348,7 +350,6 @@ u16 Inventory_GetOpenPinStockpileCapacity(void) {
 }
 
 BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
-    MainData*  mainData;
     RawPinData pinData;
 
     ItemCategory category = Inventory_GetCategory(itemID);
@@ -371,15 +372,13 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
             }
         } else if (arg1 == 2) {
             for (u16 i = 0; i < 304; i++) {
-                mainData = &gSaveState.unk_20;
-                if (itemID == mainData->masteredPins[i].pinID) {
-                    return gSaveState.unk_20.masteredPins[i].count < 99;
+                if (itemID == gSaveData.masteredPins[i].pinID) {
+                    return gSaveData.masteredPins[i].count < 99;
                 }
             }
 
             for (u16 i = 0; i < 304; i++) {
-                mainData = &gSaveState.unk_20;
-                if (mainData->masteredPins[i].pinID == 0xFFFF) {
+                if (gSaveData.masteredPins[i].pinID == 0xFFFF) {
                     return TRUE;
                 }
             }
@@ -392,38 +391,38 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 static void Inventory_AddStockpiledPin(u16 pinIdx, s32 pinID, u32 flag) {
-    gSaveState.unk_20.stockpilePins[pinIdx].pinID            = pinID;
-    gSaveState.unk_20.stockpilePins[pinIdx].battlePP         = 0;
-    gSaveState.unk_20.stockpilePins[pinIdx].minglePP         = 0;
-    gSaveState.unk_20.stockpilePins[pinIdx].shutdownPP       = 0;
-    gSaveState.unk_20.stockpilePins[pinIdx].flags.bits.level = 1;
-    gSaveState.unk_20.stockpilePins[pinIdx].flags.raw &= ~0x80;
-    gSaveState.unk_20.stockpilePins[pinIdx].flags.raw |= (flag >> 0x18);
+    gSaveData.stockpilePins[pinIdx].pinID            = pinID;
+    gSaveData.stockpilePins[pinIdx].battlePP         = 0;
+    gSaveData.stockpilePins[pinIdx].minglePP         = 0;
+    gSaveData.stockpilePins[pinIdx].shutdownPP       = 0;
+    gSaveData.stockpilePins[pinIdx].flags.bits.level = 1;
+    gSaveData.stockpilePins[pinIdx].flags.raw &= ~0x80;
+    gSaveData.stockpilePins[pinIdx].flags.raw |= (flag >> 0x18);
 }
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 static void Inventory_AddMasteredPin(u16 pinIdx, s32 pinID, u32 flag) {
-    gSaveState.unk_20.masteredPins[pinIdx].pinID = pinID;
+    gSaveData.masteredPins[pinIdx].pinID = pinID;
 
-    gSaveState.unk_20.masteredPins[pinIdx].flags.raw &= ~0x80;
-    gSaveState.unk_20.masteredPins[pinIdx].flags.raw |= ((flag << 0x1f) >> 0x18);
+    gSaveData.masteredPins[pinIdx].flags.raw &= ~0x80;
+    gSaveData.masteredPins[pinIdx].flags.raw |= ((flag << 0x1f) >> 0x18);
 
-    gSaveState.unk_20.masteredPins[pinIdx].count++;
-    if (gSaveState.unk_20.masteredPins[pinIdx].count > 99) {
-        gSaveState.unk_20.masteredPins[pinIdx].count = 99;
+    gSaveData.masteredPins[pinIdx].count++;
+    if (gSaveData.masteredPins[pinIdx].count > 99) {
+        gSaveData.masteredPins[pinIdx].count = 99;
     }
 }
 
 // Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
 void Inventory_AddStockItem(u16 arg0, s32 arg1, s32 arg2) {
-    gSaveState.unk_20.inventoryItems[arg0].itemID = arg1;
+    gSaveData.inventoryItems[arg0].itemID = arg1;
 
-    u8 temp_r1 = ((gSaveState.unk_20.inventoryItems[arg0].flags & ~0x10) | ((u32)(arg2 << 0x1F) >> 0x1B)) & ~0x20;
+    u8 temp_r1 = ((gSaveData.inventoryItems[arg0].flags & ~0x10) | ((u32)(arg2 << 0x1F) >> 0x1B)) & ~0x20;
 
-    gSaveState.unk_20.inventoryItems[arg0].flags = (temp_r1 & ~0xF) | (((temp_r1 & 0xF) + 1) & 0xF);
+    gSaveData.inventoryItems[arg0].flags = (temp_r1 & ~0xF) | (((temp_r1 & 0xF) + 1) & 0xF);
 
-    if (((u32)(gSaveState.unk_20.inventoryItems[arg0].flags << 0x1C) >> 0x1C) > 9) {
-        gSaveState.unk_20.inventoryItems[arg0].flags = (gSaveState.unk_20.inventoryItems[arg0].flags & ~0xF) | 9;
+    if (((u32)(gSaveData.inventoryItems[arg0].flags << 0x1C) >> 0x1C) > 9) {
+        gSaveData.inventoryItems[arg0].flags = (gSaveData.inventoryItems[arg0].flags & ~0xF) | 9;
     }
 }
 
@@ -455,21 +454,21 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
                 return FALSE;
             }
             for (u16 i = 0; i < 256; i++) {
-                if (gSaveState.unk_20.stockpilePins[i].pinID == 0xFFFF) {
+                if (gSaveData.stockpilePins[i].pinID == 0xFFFF) {
                     Inventory_AddStockpiledPin(i, itemID, arg1);
                     return TRUE;
                 }
             }
         } else if (temp_r0_2 == 2) {
             for (u16 i = 0; i < 304; i++) {
-                if (itemID == gSaveState.unk_20.masteredPins[i].pinID) {
+                if (itemID == gSaveData.masteredPins[i].pinID) {
                     Inventory_AddMasteredPin(i, itemID, arg1);
                     return TRUE;
                 }
             }
 
             for (u16 i = 0; i < 304; i++) {
-                if (gSaveState.unk_20.masteredPins[i].pinID == 0xFFFF) {
+                if (gSaveData.masteredPins[i].pinID == 0xFFFF) {
                     Inventory_AddMasteredPin(i, itemID, arg1);
                     return TRUE;
                 }
@@ -478,14 +477,14 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
         return FALSE;
     } else {
         for (u16 i = 0; i < 472; i++) {
-            if (itemID == gSaveState.unk_20.inventoryItems[i].itemID) {
+            if (itemID == gSaveData.inventoryItems[i].itemID) {
                 Inventory_AddStockItem(i, itemID, arg1);
                 return TRUE;
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            if (gSaveState.unk_20.inventoryItems[i].itemID == 0xFFFF) {
+            if (gSaveData.inventoryItems[i].itemID == 0xFFFF) {
                 Inventory_AddStockItem(i, itemID, arg1);
                 return TRUE;
             }
@@ -494,9 +493,8 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
     }
 }
 
-// Nonmatching: Instruction reordering
+// Nonmatching: Regswaps
 u32 func_02023010(u16 arg0) {
-    MainData* mainData;
 
     ItemCategory category = Inventory_GetCategory(arg0);
 
@@ -509,48 +507,42 @@ u32 func_02023010(u16 arg0) {
     if (category == ITEM_CATEGORY_PIN) {
         for (u16 deck = 0; deck < 4; deck++) {
             for (u16 slot = 0; slot < 6; slot++) {
-                mainData = &gSaveState.unk_20;
-                if (arg0 == mainData->pinLayouts[deck][slot].pinID) {
+                if (arg0 == gSaveData.pinLayouts[deck][slot].pinID) {
                     var_r3++;
                 }
             }
         }
 
         for (u16 i = 0; i < 256; i++) {
-            mainData = &gSaveState.unk_20;
-            if (arg0 == mainData->stockpilePins[i].pinID) {
+            if (arg0 == gSaveData.stockpilePins[i].pinID) {
                 var_r3++;
             }
         }
 
         for (u16 i = 0; i < 304; i++) {
-            mainData = &gSaveState.unk_20;
-            if (arg0 == mainData->masteredPins[i].pinID) {
-                var_r3 += gSaveState.unk_20.masteredPins[i].count;
+            if (arg0 == gSaveData.masteredPins[i].pinID) {
+                var_r3 += gSaveData.masteredPins[i].count;
                 break;
             }
         }
     } else {
         for (u16 i = 0; i < 4; i++) {
-            mainData = &gSaveState.unk_20;
-            if (arg0 == mainData->playerStats.equippedThreads[i]) {
+            if (arg0 == gSaveData.playerStats.equippedThreads[i]) {
                 var_r3 += 1;
             }
         }
 
         for (u16 friendIdx = 0; friendIdx < 3; friendIdx++) {
             for (u16 slot = 0; slot < 4; slot++) {
-                mainData = &gSaveState.unk_20;
-                if (arg0 == mainData->friendStats[friendIdx].equippedThreads[slot]) {
+                if (arg0 == gSaveData.friendStats[friendIdx].equippedThreads[slot]) {
                     var_r3++;
                 }
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            mainData = &gSaveState.unk_20;
-            if (arg0 == mainData->inventoryItems[i].itemID) {
-                var_r3 += ((u32)(gSaveState.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C);
+            if (arg0 == gSaveData.inventoryItems[i].itemID) {
+                var_r3 += ((u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C);
                 break;
             }
         }
@@ -563,7 +555,7 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
     ItemCategory category = Inventory_GetCategory(itemID);
     u32          owned    = 0;
 
-    if (itemID > 776) {
+    if (itemID >= 776) {
         return 0;
     }
 
@@ -573,8 +565,8 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
                 u32 deckOff = deck * 0x3C;
                 u32 slotOff = slot * 0xA;
 
-                if ((gSaveState.unk_20.pinLayouts[deck][slot].pinID == itemID) &&
-                    (arg2 <= gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level))
+                if ((gSaveData.pinLayouts[deck][slot].pinID == itemID) &&
+                    (arg2 <= gSaveData.pinLayouts[deck][slot].flags.bits.level))
                 {
                     owned = (owned + 1) & 0xFFFF;
                 }
@@ -582,45 +574,43 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
         }
 
         for (u16 i = 0; i < 256; i++) {
-            if ((gSaveState.unk_20.stockpilePins[i].pinID == itemID) &&
-                (arg2 <= gSaveState.unk_20.stockpilePins[i].flags.bits.level))
-            {
+            if ((gSaveData.stockpilePins[i].pinID == itemID) && (arg2 <= gSaveData.stockpilePins[i].flags.bits.level)) {
                 owned = (owned + 1) & 0xFFFF;
             }
         }
 
         for (u16 i = 0; i < 304; i++) {
-            if ((gSaveState.unk_20.masteredPins[i].pinID == itemID) &&
-                (gSaveState.unk_20.masteredPins[i].flags.bits.level >= arg2))
-            {
-                owned = (owned + gSaveState.unk_20.masteredPins[i].count) & 0xFFFF;
+            if ((gSaveData.masteredPins[i].pinID == itemID) && (gSaveData.masteredPins[i].flags.bits.level >= arg2)) {
+                owned = (owned + gSaveData.masteredPins[i].count) & 0xFFFF;
                 break;
             }
         }
+
+        return owned >= arg1;
     } else {
         for (u16 i = 0; i < 4; i++) {
-            if (gSaveState.unk_20.playerStats.equippedThreads[i] == itemID) {
+            if (gSaveData.playerStats.equippedThreads[i] == itemID) {
                 owned = (owned + 1) & 0xFFFF;
             }
         }
 
         for (u16 ch = 0; ch < 3; ch++) {
             for (u16 slot = 0; slot < 4; slot++) {
-                if (gSaveState.unk_20.friendStats[ch].equippedThreads[slot] == itemID) {
+                if (gSaveData.friendStats[ch].equippedThreads[slot] == itemID) {
                     owned = (owned + 1) & 0xFFFF;
                 }
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
-            if (gSaveState.unk_20.inventoryItems[i].itemID == itemID) {
-                owned = (owned + ((u32)(gSaveState.unk_20.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
+            if (gSaveData.inventoryItems[i].itemID == itemID) {
+                owned = (owned + ((u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
                 break;
             }
         }
-    }
 
-    return (arg1 <= owned);
+        return owned >= arg1;
+    }
 }
 
 // Nonmatching: Significant differences, needs reworked
@@ -675,7 +665,7 @@ s32 func_0202353c(u16 arg0) {
         OS_WaitForever();
     }
 
-    return (gSaveState.unk_20.unk_1ABA[arg0] & (1 << temp_r5)) != 0;
+    return (gSaveData.unk_1ABA[arg0] & (1 << temp_r5)) != 0;
 }
 
 u16 func_02023588(void) {
@@ -696,21 +686,19 @@ void func_020235cc(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    gSaveState.unk_20.unk_1D98[arg0] |= arg1;
+    gSaveData.unk_1D98[arg0] |= arg1;
 }
 
 void func_020235fc(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    gSaveState.unk_20.unk_1D98[arg0] &= ~arg1;
+    gSaveData.unk_1D98[arg0] &= ~arg1;
 }
 
 void func_02023630(s32 arg0) {
-    MainData* mainData = &gSaveState.unk_20;
-
     for (u16 i = 0; i < 41; i++) {
-        mainData->unk_1D98[i] &= ~arg0;
+        gSaveData.unk_1D98[i] &= ~arg0;
     }
 }
 
@@ -718,17 +706,15 @@ s32 func_0202366c(u32 arg0, s32 arg1) {
     if (arg0 >= 41) {
         OS_WaitForever();
     }
-    if (arg1 & gSaveState.unk_20.unk_1D98[arg0]) {
+    if (arg1 & gSaveData.unk_1D98[arg0]) {
         return 1;
     }
     return 0;
 }
 
 s32 func_020236a0(void) {
-    MainData* mainData = &gSaveState.unk_20;
-
     for (u16 i = 0; i < 41; i++) {
-        if ((mainData->unk_1D98[i] & 0x6) != 0) {
+        if ((gSaveData.unk_1D98[i] & 0x6) != 0) {
             return 1;
         }
     }
@@ -736,7 +722,6 @@ s32 func_020236a0(void) {
 }
 
 s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
-    MainData*    mainData;
     RawItemData  itemData;
     u16          itemID;
     ItemCategory itemCategory;
@@ -744,17 +729,16 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
     s16 stat = 0;
 
     if (statType == STAT_ATTACK) {
-        stat += gSaveState.unk_20.playerStats.attack;
+        stat += gSaveData.playerStats.attack;
     } else if (statType == STAT_DEFENSE) {
-        stat += gSaveState.unk_20.playerStats.defense;
+        stat += gSaveData.playerStats.defense;
     } else {
-        stat += gSaveState.unk_20.playerStats.baseHealth;
+        stat += gSaveData.playerStats.baseHealth;
     }
 
     u16 i;
     for (i = 0; i < 4; i++) {
-        mainData     = &gSaveState.unk_20;
-        itemID       = mainData->playerStats.equippedThreads[i];
+        itemID       = gSaveData.playerStats.equippedThreads[i];
         itemCategory = Inventory_GetCategory(itemID);
 
         if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
@@ -772,8 +756,7 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
 
     if ((statType == STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
         for (i = 0; i < 4; i++) {
-            mainData     = &gSaveState.unk_20;
-            itemID       = mainData->friendStats[activeFriend].equippedThreads[i];
+            itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
 
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
@@ -792,10 +775,10 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
 u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
     RawItemData itemData;
 
-    u16 health = (((playerLevel - 1) * 50) + 200 + gSaveState.unk_20.playerStats.baseHealth);
+    u16 health = (((playerLevel - 1) * 50) + 200 + gSaveData.playerStats.baseHealth);
 
     for (u16 i = 0; i < 4; i++) {
-        u16          itemID       = gSaveState.unk_20.playerStats.equippedThreads[i];
+        u16          itemID       = gSaveData.playerStats.equippedThreads[i];
         ItemCategory itemCategory = Inventory_GetCategory(itemID);
         if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
             Data_LoadToBuffer(1, itemData, &data_0205c180, Inventory_GetCategorizedIndex(itemID));
@@ -805,7 +788,7 @@ u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
 
     if (activeFriend != FRIEND_NONE) {
         for (u16 i = 0; i < 4; i++) {
-            u16          itemID       = gSaveState.unk_20.friendStats[activeFriend].equippedThreads[i];
+            u16          itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
             ItemCategory itemCategory = Inventory_GetCategory(itemID);
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
                 Data_LoadToBuffer(1, itemData, &data_0205c180, Inventory_GetCategorizedIndex(itemID));
@@ -820,7 +803,6 @@ u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
 }
 
 s16 Stats_GetEffectiveFriendValue(ActiveFriend activeFriend, StatType statType) {
-    MainData*    mainData;
     RawItemData  itemData;
     u16          itemID;
     ItemCategory itemCategory;
@@ -829,14 +811,13 @@ s16 Stats_GetEffectiveFriendValue(ActiveFriend activeFriend, StatType statType) 
 
     if ((statType != STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
         if (statType == STAT_ATTACK) {
-            stat += gSaveState.unk_20.friendStats[activeFriend].attack;
+            stat += gSaveData.friendStats[activeFriend].attack;
         } else if (statType == STAT_DEFENSE) {
-            stat += gSaveState.unk_20.friendStats[activeFriend].defense;
+            stat += gSaveData.friendStats[activeFriend].defense;
         }
 
-        mainData = &gSaveState.unk_20;
         for (u16 i = 0; i < 4; i++) {
-            itemID       = mainData->friendStats[activeFriend].equippedThreads[i];
+            itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
 
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
@@ -866,7 +847,7 @@ s32 func_02023b7c(u16 itemID) {
     if (itemIdx > 279) {
         return 0;
     }
-    return (((u32)(gSaveState.unk_20.unk_1EB2[itemIdx] << 0x1F) >> 0x1F) != 0);
+    return (((u32)(gSaveData.unk_1EB2[itemIdx] << 0x1F) >> 0x1F) != 0);
 }
 
 s32 func_02023be8(u16 itemID, s32 arg1) {
@@ -928,44 +909,39 @@ s32 func_02023d1c(s32 arg0) {
 
 // Nonmatching: Arithmetic differences
 void func_02023d3c(u32 arg0) {
-    u16 temp_r5;
-    u32 temp_r2;
-    u32 temp_r4;
-
-    temp_r2 = arg0 >> 0x1F;
-    temp_r4 = (arg0 << 0xC) >> 0x10;
-    temp_r5 = (u16)(temp_r2 + (((arg0 << 0x1C) - temp_r2) >> 0x1C));
+    u32 temp_r2 = arg0 >> 0x1F;
+    u16 temp_r5 = temp_r5 >> 0x10;
+    u32 temp_r4 = temp_r5 = arg0 << 0xC;
+    temp_r5               = (temp_r2 + (((arg0 << 0x1C) - (s16)temp_r2) >> 0x1C));
     if (arg0 >= 0x100) {
         OS_WaitForever();
     }
-    gSaveState.unk_20.unk_2326[temp_r4] |= (1 << temp_r5);
+    gSaveData.unk_2326[temp_r4] |= (1 << temp_r5);
 }
 
 // Nonmatching: Arithmetic differences
 s32 func_02023d88(u32 arg0) {
-    s32 var_r0;
-    u16 temp_r5;
-    u32 temp_r2;
-
-    temp_r2 = arg0 >> 0x1F;
-    temp_r5 = (u16)(temp_r2 + (((arg0 << 0x1C) - temp_r2) >> 0x1C));
+    u32 temp_r2  = arg0 << 0x1C;
+    u32 new_var  = temp_r2;
+    temp_r2      = arg0 >> 0x1F;
+    u32 new_var2 = (arg0 << 0xC) >> 0x10;
+    u16 temp_r5  = (temp_r2 + ((new_var - temp_r2) >> 0x1C));
     if (arg0 >= 0x100) {
         OS_WaitForever();
     }
-    var_r0 = 1;
-    if (!(gSaveState.unk_20.unk_2326[(arg0 << 0xC) >> 0x10] & (1 << temp_r5))) {
+    s32 var_r0 = 1;
+    if (!(gSaveData.unk_2326[(arg0 << 0xC) >> 0x10] & (1 << temp_r5))) {
         var_r0 = 0;
     }
     return var_r0;
 }
 
 BOOL func_02023dd4(u32 arg0) {
-    MainData* mainData = &gSaveState.unk_20;
-    u16       i;
+    u16 i;
 
     // Check if all player equipped slots are empty
     for (i = 0; i < 4; i++) {
-        if (mainData->playerStats.equippedThreads[i] != 0xFFFF) {
+        if (gSaveData.playerStats.equippedThreads[i] != 0xFFFF) {
             return FALSE;
         }
     }
@@ -973,7 +949,7 @@ BOOL func_02023dd4(u32 arg0) {
     // If character index valid, check if all friend equipped slots are empty
     if (arg0 < 3) {
         for (i = 0; i < 4; i++) {
-            if (mainData->friendStats[arg0].equippedThreads[i] != 0xFFFF) {
+            if (gSaveData.friendStats[arg0].equippedThreads[i] != 0xFFFF) {
                 return FALSE;
             }
         }
@@ -984,22 +960,18 @@ BOOL func_02023dd4(u32 arg0) {
 
 // Nonmatching: Unknown local stack object differences
 s32 func_02023e58(u32 arg0) {
-    MainData* mainData = &gSaveState.unk_20;
-
     RawItemData itemData;
-
-    u8 sp4[4];
-    sp4[0] = *(u8*)((s32)&data_0205c120 + 4);
-    sp4[1] = *(u8*)((s32)&data_0205c120 + 5);
-    sp4[2] = *(u8*)((s32)&data_0205c120 + 6);
-    sp4[3] = *(u8*)((s32)&data_0205c120 + 7);
-
+    u8          sp4[4];
+    sp4[0] = *((u8*)(((s32)(&data_0205c120)) + 4));
+    sp4[1] = *((u8*)(((s32)(&data_0205c120)) + 5));
+    sp4[2] = *((u8*)(((s32)(&data_0205c120)) + 6));
+    sp4[3] = *((u8*)(((s32)(&data_0205c120)) + 7));
     if (arg0 >= 13) {
         return 0;
     }
 
     for (u16 i = 0; i < 4; i++) {
-        u16          equippedID   = mainData->playerStats.equippedThreads[i];
+        u16          equippedID   = gSaveData.playerStats.equippedThreads[i];
         u32          itemIdx      = Inventory_GetCategorizedIndex(equippedID);
         ItemCategory itemCategory = Inventory_GetCategory(equippedID);
 
@@ -1035,7 +1007,7 @@ s32 func_02023f60(u32 arg0, u32 arg1) {
     }
 
     for (u16 i = 0; i < 4; i++) {
-        u16          equippedID   = gSaveState.unk_20.friendStats[arg0].equippedThreads[i];
+        u16          equippedID   = gSaveData.friendStats[arg0].equippedThreads[i];
         u32          itemIdx      = Inventory_GetCategorizedIndex(equippedID);
         ItemCategory itemCategory = Inventory_GetCategory(equippedID);
 
@@ -1071,14 +1043,12 @@ u32 func_02024080(void) {
     return var_r0;
 }
 
+// Nonmatching
 s32 func_020240e0(u16 arg0, void* arg1) {
     for (u16 deck = 0; deck < 4; deck++) {
         for (u16 slot = 0; slot < 6; slot++) {
-            u32 deckOff = deck * 0x3C;
-            u32 slotOff = slot * 0xA;
-
-            if ((arg0 == gSaveState.unk_20.pinLayouts[deck][slot].pinID) &&
-                (*(u8*)((u32)arg1 + 0x25) == gSaveState.unk_20.pinLayouts[deck][slot].flags.bits.level))
+            if ((arg0 == gSaveData.pinLayouts[deck][slot].pinID) &&
+                (*(u8*)((u32)arg1 + 0x25) == gSaveData.pinLayouts[deck][slot].flags.bits.level))
             {
                 return 1;
             }
@@ -1086,7 +1056,7 @@ s32 func_020240e0(u16 arg0, void* arg1) {
     }
 
     for (u16 i = 0; i < 304; i++) {
-        if (arg0 == gSaveState.unk_20.masteredPins[i].pinID) {
+        if (arg0 == gSaveData.masteredPins[i].pinID) {
             return 1;
         }
     }
@@ -1113,7 +1083,6 @@ u16 func_020241b0(void) {
     return var_r5;
 }
 
-// Nonmatching: u16/u32 cast difference
 u32 func_02024244(void) {
     u32 var_r0 = 0;
 
@@ -1132,30 +1101,24 @@ u32 func_02024244(void) {
     return var_r0;
 }
 
-// ============ func_020242ac ============
-// Gets a value from data table by index
-// arg0: table index
-// Returns value from data_0205c1e4 table
+// Nonmatching
 u16 func_020242ac(s32 arg0) {
     u16 sp0[0x16];
-    s32 var_r3;
 
-    for (var_r3 = 0; var_r3 < 0x16; var_r3++) {
-        sp0[var_r3] = *(u16*)((s32)&data_0205c1e4 + var_r3 * 2);
+    for (s32 i = 0; i < 0x16; i++) {
+        sp0[i] = *((u16*)((s32)(&data_0205c1e4) + (i * 2)));
     }
-    return sp0[arg0];
+
+    return sp0[arg0 + 1];
 }
 
-// Nonmatching: Regswaps
 BOOL Progress_HasAcquiredAllSecretReports(void) {
     u16 starsRequired[22];
     starsRequired = SecretReportStarRequirements;
 
-    MainData* mainData = &gSaveState.unk_20;
-
     for (u16 reportIdx = 0; reportIdx < 22; reportIdx++) {
         for (u16 starIdx = 0; starIdx < starsRequired[reportIdx]; starIdx++) {
-            if (mainData->secretReports[reportIdx].completedStars[starIdx] == 0) {
+            if (gSaveData.secretReports[reportIdx].completedStars[starIdx] == 0) {
                 return FALSE;
             }
         }
@@ -1171,7 +1134,6 @@ void Stats_AddExperience(s32 exp) {
     }
 }
 
-// Nonmatching: Small instruction/data differences
 s32 func_020243d4(u32 arg0) {
     s32 sp0[13];
     sp0 = data_0205c270;
@@ -1189,47 +1151,49 @@ s32 func_02024434(s32 arg0) {
         case 226:
             val = 100;
             break;
+
         case 9:
         case 53:
-        case 129:
+        case 130:
             val = 70;
             break;
+
         case 100:
         case 127:
-        case 146:
+        case 147:
         case 175:
         case 267:
             val = 50;
             break;
-        case 101:
-        case 128:
-        case 130:
+
         case 131:
         case 132:
-        case 147:
+        case 133:
         case 176:
         case 272:
             val = 30;
             break;
-        case 133:
+
+        case 134:
             val = 10;
             break;
     }
+
     return val;
 }
 
-// Nonmatching: Significant differences, needs rework
+// Nonmatching: Instruction differences
 void func_02024558(void) {
     for (u16 i = 0; i < 472; i++) {
         u16 itemID = i + 304;
-
-        // Skip special item IDs
         if ((itemID == 690) || (itemID == 691) || (itemID == 698) || (itemID == 699)) {
-            continue;
+            gSaveData.inventoryItems[i].itemID = 0xFFFF;
+            gSaveData.inventoryItems[i].flags  = (~0xF) & gSaveData.inventoryItems[i].flags;
+            gSaveData.inventoryItems[i].flags  = (gSaveData.inventoryItems[i].flags | 0x10) & (~0x20);
+        } else {
+            gSaveData.inventoryItems[i].itemID = 0xFFFF;
+            gSaveData.inventoryItems[i].flags  = ((gSaveData.inventoryItems[i].flags & ~0xF) | 0x10) & ~0x20;
         }
-
-        gSaveState.unk_20.inventoryItems[i].itemID = 0xFFFF;
-        gSaveState.unk_20.inventoryItems[i].flags  = ((gSaveState.unk_20.inventoryItems[i].flags & ~0xF) | 0x10) & ~0x20;
     }
 }
 
@@ -1249,10 +1213,8 @@ void Inventory_SetStarterPins(void) {
 }
 
 BOOL Inventory_AreAllEquippedPinSlotsEmpty(void) {
-    MainData* mainData = &gSaveState.unk_20;
-
     for (u16 i = 0; i < 6; i++) {
-        if (mainData->equippedPins[i].pinID != 0xFFFF) {
+        if (gSaveData.equippedPins[i].pinID != 0xFFFF) {
             return FALSE;
         }
     }

@@ -84,18 +84,23 @@ void CombatSprite_SetAffineTransform(CombatSprite* cSprite, u32 rotation, s32 sc
         scaleY = -scaleY;
     }
 
-    s32 temp_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[cSprite->sprite.bits_0_1], rotation, scaleX, scaleY, flipFlags);
+    s32 val     = cSprite->sprite.bits_0_1;
+    s32 temp_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[val], rotation, scaleX, scaleY, flipFlags);
 
-    cSprite->sprite.unk_0A.raw = (u16)((cSprite->sprite.unk_0A.raw & ~0x3E0) | ((u32)((u16)temp_r0 << 0x1B) >> 0x16));
-    cSprite->sprite.unk_0A.raw = (u16)((cSprite->sprite.unk_0A.raw & ~1) | 1);
+    val = cSprite->sprite.unk_0A.raw & (~0x3E0);
+
+    cSprite->sprite.unk_0A.raw = (u16)(val | (((u32)(((u16)temp_r0) << 0x1B)) >> 0x16));
+
+    val = val;
+
+    cSprite->sprite.unk_0A.raw = (u16)((cSprite->sprite.unk_0A.raw & (~1)) | 1);
 
     if (arg4 != 0) {
         temp_r0 = 1;
     } else {
         temp_r0 = 0;
     }
-
-    cSprite->sprite.unk_0A.raw = ((cSprite->sprite.unk_0A.raw & ~2) | ((u32)((u16)temp_r0 << 0x1F) >> 0x1E));
+    cSprite->sprite.unk_0A.raw = (cSprite->sprite.unk_0A.raw & (~2)) | (((u32)(((u16)temp_r0) << 0x1F)) >> 0x1E);
 }
 
 void CombatSprite_SetPaletteSource(CombatSprite* cSprite, s32 arg1) {
@@ -159,31 +164,37 @@ void CombatSprite_RenderWithPalette(CombatSprite* cSprite, s32 arg1) {
     data_0206a890.unk_0C = (prev & 0x1F);
 }
 
-// Nonmatching: Structure differences
-SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2) {
-    switch (arg2) {
-        case 1:
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        case 2:
-            data_0206b408.unk_04 = 0;
-            data_0206b408.unk_08 = 0;
+SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
+    SpriteFrameInfo* info = &data_0206b408;
 
-            SpriteFrameSource* source = arg0->unk24;
-            data_0206b408.unk_0C      = source->unk_4C;
-            data_0206b408.unk_10      = source->unk_48;
-            if ((arg0->animData != NULL) && (arg0->frameDataTable != NULL)) {
-                u16* temp_r3 = (u16*)(void*)arg0->frameDataTable;
-                s16  temp_r2 = arg0->unk16;
-                if (temp_r2 >= 0) {
-                    data_0206b408.unk_04 = temp_r3[(temp_r2 * 4) + 1];
-                    data_0206b408.unk_08 = (temp_r3 + temp_r3[temp_r2 * 4]);
-                }
+    switch (mode) {
+        case 1: {
+            info->unk_00 = 1;
+            return info;
+        } break;
+
+        case 2: {
+            SpriteFrameInfo* temp = &data_0206b408;
+
+            temp->unk_04 = 0;
+            temp->unk_08 = 0;
+            temp->unk_0C = ((SpriteFrameSource*)sprite->unk24)->unk_4C;
+            temp->unk_10 = ((SpriteFrameSource*)sprite->unk24)->unk_48;
+
+            if ((sprite->animData != NULL) && (sprite->frameDataTable != NULL && sprite->unk16 >= 0)) {
+                u16* temp_r3 = (u16*)sprite->frameDataTable;
+
+                s16 temp_r2 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+
+                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                temp->unk_08 =
+                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
             }
-            return &data_0206b408;
-        default:
-            return NULL;
+            info = temp;
+            return info;
+        } break;
     }
+    return NULL;
 }
 
 void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier* iden) {

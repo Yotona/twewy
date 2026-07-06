@@ -169,9 +169,9 @@ static void Display_ApplyControls(void) {
     GX_SetVisibleWindows(mainSettings->windows);
 
     if (mainSettings->hBlank != 0) {
-        REG_DISPCNT = REG_DISPCNT | 0x00400000;
+        REG_DISPCNT |= 0x00400000;
     } else {
-        REG_DISPCNT = REG_DISPCNT & ~0x00400000;
+        REG_DISPCNT &= ~0x00400000;
     }
 
     GX_SetScreenBase(mainSettings->screenBase);
@@ -199,9 +199,9 @@ static void Display_ApplyControls(void) {
     GXs_SetVisibleWindows(subSettings->windows);
 
     if (subSettings->hBlank != 0) {
-        REG_DISPCNT_SUB = REG_DISPCNT_SUB | 0x00800000;
+        REG_DISPCNT_SUB |= 0x00800000;
     } else {
-        REG_DISPCNT_SUB = REG_DISPCNT_SUB & ~0x00800000;
+        REG_DISPCNT_SUB &= ~0x00800000;
     }
 
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT_SUB, subSettings->brightness);
@@ -606,8 +606,9 @@ void Display_Commit(void) {
 }
 
 void Display_CommitSynced(void) {
+    vs32 vcount;
     do {
-    } while (REG_VCOUNT < 0xC0);
+    } while ((vcount = REG_VCOUNT) < 0xC0);
     Display_Commit();
 }
 

@@ -312,36 +312,34 @@ void BgResMgr_Init(BgResMgr* mgr, DisplayEngine engine) {
 // Nonmatching: Register differences
 // Scratch: ZhVLR
 void* BgResMgr_AllocChar32(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4) {
-    if (arg0 == NULL) {
-        return NULL;
+    BgResMgr* new_var;
+    if (arg0 == 0) {
+        return 0;
     }
-    arg4 = (arg4 + 0xFF) & ~0xFF;
-
+    arg4                = (arg4 + 0xFF) & (~0xFF);
     BgResource* temp_r0 = BgResMgr_PopFree(arg0);
-    if (temp_r0 == NULL) {
-        return NULL;
+    if (temp_r0 == 0) {
+        return 0;
     }
     BgResMgr_ResetResource(arg0, temp_r0);
-
     s32 var_r5 = 0;
     if (arg0->engine == DISPLAY_MAIN) {
         var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
-
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 5));
     temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
-
     if (temp_r0->bitmapIndex < 0) {
-        BgResMgr_RecycleResource(arg0, temp_r0);
-        return NULL;
+        var_r5  = 0;
+        new_var = arg0;
+        BgResMgr_RecycleResource(new_var, temp_r0);
+        return var_r5;
     }
-
     temp_r0->flags |= 0x14;
-    temp_r0->refCount     = 0;
+    temp_r0->refCount     = var_r5;
     temp_r0->resourceType = RESTYPE_CHAR_SM;
     temp_r0->vramOffset   = temp_r5;
     temp_r0->size         = arg4;
-    BgResMgr_PushActive(arg0, temp_r0);
+    BgResMgr_PushActive(new_var, temp_r0);
     BgResMgr_LoadCharToVram(arg0, temp_r0, arg1);
     return temp_r0;
 }
@@ -349,75 +347,75 @@ void* BgResMgr_AllocChar32(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
 // Nonmatching: Register differences
 // Scratch: K9oVA
 void* BgResMgr_AllocChar64(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4) {
-    if (arg0 == NULL) {
-        return NULL;
+    DisplayControlSettings* new_var2;
+    BgResource*             new_var;
+    if (arg0 == 0) {
+        return 0;
     }
-    arg4 = (arg4 + 0xFF) & ~0xFF;
-
-    if (0x4000 < arg3 + arg4) {
-        return NULL;
+    arg4 = (arg4 + 0xFF) & (~0xFF);
+    if (0x4000 < (arg3 + arg4)) {
+        return 0;
     }
-
     BgResource* temp_r0 = BgResMgr_PopFree(arg0);
-    if (temp_r0 == NULL) {
-        return NULL;
+    if (temp_r0 == 0) {
+        return 0;
     }
     BgResMgr_ResetResource(arg0, temp_r0);
-
     s32 var_r5 = 0;
     if (arg0->engine == DISPLAY_MAIN) {
-        var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
+        new_var2 = g_DisplaySettings.controls;
+        var_r5   = new_var2[DISPLAY_MAIN].charBase << 0x10;
     }
-
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
+    new_var              = temp_r0;
     temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
-
     if (temp_r0->bitmapIndex < 0) {
-        BgResMgr_RecycleResource(arg0, temp_r0);
-        return NULL;
+        var_r5                = temp_r5;
+        new_var->resourceType = temp_r5;
+        BgResMgr_RecycleResource(arg0, new_var);
+        return 0;
     }
-
-    temp_r0->flags |= 0x14;
-    temp_r0->refCount     = 0;
-    temp_r0->resourceType = RESTYPE_CHAR_MD;
-    temp_r0->vramOffset   = temp_r5;
-    temp_r0->size         = arg4;
-    BgResMgr_PushActive(arg0, temp_r0);
-    BgResMgr_LoadCharToVram(arg0, temp_r0, arg1);
-    return temp_r0;
+    new_var->flags |= 0x14;
+    temp_r5               = RESTYPE_CHAR_MD & 0xFFFFFFFF;
+    new_var->refCount     = 0;
+    new_var->resourceType = temp_r5;
+    new_var->vramOffset   = var_r5;
+    new_var->size         = arg4;
+    BgResMgr_PushActive(arg0, new_var);
+    BgResMgr_LoadCharToVram(arg0, new_var, arg1);
+    return new_var;
 }
 
 // Nonmatching: Register differences
 // Scratch: t3XHS
 void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4) {
-    if (arg0 == NULL) {
-        return NULL;
+    int new_var;
+    if (arg0 == 0) {
+        new_var = 0;
+        return new_var;
     }
-    arg4 = (arg4 + 0xFF) & ~0xFF;
-
-    if (0x10000 < arg3 + arg4) {
-        return NULL;
+    arg4 = (arg4 + 0xFF) & (~0xFF);
+    if (0x10000 < (arg3 + arg4)) {
+        return 0;
     }
-
     BgResource* temp_r0 = BgResMgr_PopFree(arg0);
-    if (temp_r0 == NULL) {
-        return NULL;
+    if (temp_r0 == 0) {
+        return new_var;
+    }
+    if ((temp_r0 && temp_r0) && temp_r0) {
     }
     BgResMgr_ResetResource(arg0, temp_r0);
-
     s32 var_r5 = 0;
     if (arg0->engine == DISPLAY_MAIN) {
         var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
-
-    s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
+    new_var              = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
+    s32 temp_r5          = new_var;
     temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
-
     if (temp_r0->bitmapIndex < 0) {
         BgResMgr_RecycleResource(arg0, temp_r0);
-        return NULL;
+        return 0;
     }
-
     temp_r0->flags |= 0x14;
     temp_r0->refCount     = 0;
     temp_r0->resourceType = RESTYPE_CHAR_LG;
@@ -431,34 +429,32 @@ void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3,
 // Nonmatching: Unwanted stack allocation, register differences
 // Scratch: Vf480
 BgResource* BgResMgr_AllocCharAligned(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1, s32 arg2, u32 arg3, u32 arg4) {
-    if (mgr == NULL) {
-        return NULL;
+    s32* new_var;
+    s32  new_var2;
+    if (mgr == 0) {
+        return 0;
     }
-    arg4 = (arg4 + 0xFF) & ~0xFF;
-
+    arg4                 = (arg4 + 0xFF) & (~0xFF);
     BgResource* resource = BgResMgr_PopFree(mgr);
-    if (resource == NULL) {
-        return NULL;
+    if (resource == 0) {
+        return 0;
     }
-
     BgResMgr_ResetResource(mgr, resource);
-
     s32 var_r5 = 0;
     if (mgr->engine == DISPLAY_MAIN) {
         var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
-
-    s32 offset = var_r5 + (arg2 << 0xE);
-
+    new_var2   = var_r5;
+    s32 offset = var_r5   = new_var2 + (arg2 << 0xE);
     resource->bitmapIndex = BgResMgr_AllocateVramAligned(&mgr->unk_860, offset, arg4, 0x100, offset + 0x8000);
-
-    if (resource->bitmapIndex < 0) {
+    new_var               = &resource->bitmapIndex;
+    if ((*new_var) < 0) {
         BgResMgr_RecycleResource(mgr, resource);
-        return NULL;
+        var_r5 = 0;
+        return var_r5;
     }
-
     resource->flags |= 0x14;
-    resource->refCount     = 0;
+    resource->refCount     = var_r5;
     resource->resourceType = RESTYPE_CHAR_LG;
     resource->vramOffset   = offset;
     resource->size         = arg4;

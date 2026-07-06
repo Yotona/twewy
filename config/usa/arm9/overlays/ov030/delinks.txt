@@ -15,6 +15,7 @@ src/Player/ProgressFlags.c:
     .text       start:0x020aeb34 end:0x020aed54
 
 src/Player/UnknownTables.c:
+    complete
     .text       start:0x020b891c end:0x020baa64
     .rodata     start:0x020e4e98 end:0x020e4f48
 

@@ -4566,6 +4566,7 @@ data_02071b08 kind:bss addr:0x02071b08
 data_02071cac kind:bss addr:0x02071cac
 
 gSaveState kind:bss addr:0x02071cf0
+gSaveData kind:bss addr:0x02071d10
 
 /////////////////////////////////////////////////////////////
 // src/EasyFade.c

@@ -74,7 +74,7 @@ BOOL func_ov004_020e7360(void) {
 
 // Nonmatching: External data access differences
 u16 func_ov004_020e737c(void) {
-    return data_ov004_020f0068[gSaveState.unk_20.unk_3141];
+    return data_ov004_020f0068[gSaveData.unk_3141];
 }
 
 // Not yet implemented, unsure of correct structure being accessed
