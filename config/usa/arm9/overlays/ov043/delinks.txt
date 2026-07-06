@@ -373,11 +373,43 @@ src/Interface/Menu/Shop/Shop_boardU.c:
     .rodata     start:0x020cad1c end:0x020cad64
     .data       start:0x020ccc38 end:0x020ccc48
 
-src/Debug/Takami/Depart.c:
-    .text       start:0x020bcdb0 end:0x020bf250
-    .rodata     start:0x020cad64 end:0x020caf44
-    .data       start:0x020ccc48 end:0x020cce74
+src/Interface/Menu/Depart.c:
+    .text       start:0x020bcdb0 end:0x020be368
+    .rodata     start:0x020cad64 end:0x020cadec
+    .data       start:0x020ccc48 end:0x020cce04
     .bss        start:0x020cd28c end:0x020cd290
+
+src/Interface/Menu/Depart/Depart_exit.c:
+    complete
+    .text       start:0x020be368 end:0x020be59c
+    .rodata     start:0x020cadec end:0x020cae34
+    .data       start:0x020cce04 end:0x020cce14
+
+src/Interface/Menu/Depart/Depart_panel.c:
+    .text       start:0x020be59c end:0x020be7dc
+    .rodata     start:0x020cae34 end:0x020cae7c
+    .data       start:0x020cce14 end:0x020cce28
+
+src/Interface/Menu/Depart/Depart_board.c:
+    .text       start:0x020be7dc end:0x020beb44
+    .rodata     start:0x020cae7c end:0x020caec4
+    .data       start:0x020cce28 end:0x020cce3c
+
+src/Interface/Menu/Depart/Depart_textScr.c:
+    .text       start:0x020beb44 end:0x020bee2c
+    .rodata     start:0x020caec4 end:0x020caee0
+    .data       start:0x020cce3c end:0x020cce50
+
+src/Interface/Menu/Depart/Depart_textScrU.c:
+    complete
+    .text       start:0x020bee2c end:0x020bef90
+    .rodata     start:0x020caee0 end:0x020caefc
+    .data       start:0x020cce50 end:0x020cce64
+
+src/Interface/Menu/Depart/Depart_cur.c:
+    .text       start:0x020bef90 end:0x020bf250
+    .rodata     start:0x020caefc end:0x020caf44
+    .data       start:0x020cce64 end:0x020cce74
 
 src/Interface/Menu/Save.c:
     .text       start:0x020bf250 end:0x020c53a0

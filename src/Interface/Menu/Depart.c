@@ -1,4 +1,4 @@
-#include "Debug/Takami/Depart.h"
+#include "Interface/Menu/Depart.h"
 #include "CriSndMgr.h"
 #include "EasyFade.h"
 #include "Engine/Core/Interrupts.h"
@@ -14,10 +14,7 @@
 extern void func_ov030_020ae92c();
 extern void func_ov043_020aeee0();
 
-struct Position {
-    s16 x;
-    s16 y;
-} data_ov043_020ccd00[6] = {
+struct Position data_ov043_020ccd00[6] = {
     {  0,  0},
     {130, 98},
     {125, 79},
@@ -31,20 +28,13 @@ DepartState* data_ov043_020cd28c = NULL;
 void func_ov043_020bdb2c(void* arg0);
 void func_ov043_020bd8cc(void);
 void func_ov043_020bd8e8(void);
-void func_ov043_020be328(DepartUnk*);
-void func_ov043_020bdc6c(DepartUnk*);
-void func_ov043_020be254(DepartUnk*);
-void func_ov043_020be32c(DepartUnk*);
-
-s32 DepartExit_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
-s32 DepartPanel_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, void* arg3);
-s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, DepartUnk* arg3);
-s32 DepartCur_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
-s32 DepartTextScr_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
-s32 DepartTextScrU_CreateTask(TaskPool* pool, s32 arg1, s32 arg2);
+void func_ov043_020be328(DepartObject*);
+void func_ov043_020bdc6c(DepartObject*);
+void func_ov043_020be254(DepartObject*);
+void func_ov043_020be32c(DepartObject*);
 
 void func_ov043_020bcdb0(DepartState* state) {
-    DepartUnk* temp = &state->unk_2165C;
+    DepartObject* temp = &state->unk_2165C;
 
     state->unk_21650 = 0;
     state->unk_21654 = 0;
@@ -58,7 +48,7 @@ void func_ov043_020bcdb0(DepartState* state) {
 }
 
 void func_ov043_020bcdfc(DepartState* state) {
-    DepartUnk* temp_r5 = &state->unk_2165C;
+    DepartObject* temp_r5 = &state->unk_2165C;
 
     EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -16, 0x1000);
@@ -70,9 +60,9 @@ void func_ov043_020bcdfc(DepartState* state) {
         state->taskIds_Board[i] = DepartBoard_CreateTask(&state->taskPool, state->unk_11588, i, temp_r5);
     }
 
-    state->taskId_Cur      = DepartCur_CreateTask(&state->taskPool, state->unk_11588, temp_r5);
+    state->taskId_Cur      = Depart_cur_CreateTask(&state->taskPool, state->unk_11588, temp_r5);
     state->taskId_TextScr  = DepartTextScr_CreateTask(&state->taskPool, state->unk_11588, temp_r5);
-    state->taskId_TextScrU = DepartTextScrU_CreateTask(&state->taskPool, state->unk_11588, temp_r5);
+    state->taskId_TextScrU = Depart_textScrU_CreateTask(&state->taskPool, state->unk_11588, temp_r5);
 }
 
 void func_ov043_020bcf3c(DepartState* state) {
@@ -104,7 +94,7 @@ void Depart_Init(DepartState* state) {
         MainOvlDisp_SetCbArg(state);
     }
 
-    DepartUnk* temp = &state->unk_2165C;
+    DepartObject* temp = &state->unk_2165C;
 
     state->unk_11584 = DatMgr_AllocateSlot();
     state->unk_11588 = DatMgr_AllocateSlot();
@@ -128,7 +118,7 @@ void Depart_Init(DepartState* state) {
 }
 
 void Depart_Update(DepartState* state) {
-    DepartUnk* temp_r4 = &state->unk_2165C;
+    DepartObject* temp_r4 = &state->unk_2165C;
 
     TouchInput_Update();
     OamMgr_Reset3DState();
@@ -168,7 +158,7 @@ void Depart_Update(DepartState* state) {
 }
 
 void Depart_Destroy(DepartState* state) {
-    DepartUnk* temp = &state->unk_2165C;
+    DepartObject* temp = &state->unk_2165C;
 
     CriSndMgr_Stop(ADX_TITLE);
     func_ov043_020bdc6c(temp);
@@ -438,7 +428,7 @@ void func_ov043_020bdb2c(void* arg0) {
     // } while (temp_hi);
 }
 
-void func_ov043_020bdc6c(DepartUnk*) {
+void func_ov043_020bdc6c(DepartObject*) {
     return;
 }
 
@@ -597,534 +587,25 @@ void func_ov043_020be230(DepartResources* arg0) {
     arg0->unk_18          = NULL;
 }
 
-void func_ov043_020be254(DepartUnk* arg0) {
+void func_ov043_020be254(DepartObject* depart) {
     for (s32 i = 0; i < 4; i++) {
-        func_ov043_020be230(&arg0->unk_34[i]);
-        func_ov043_020be230(&arg0->unk_A4[i]);
+        func_ov043_020be230(&depart->unk_34[i]);
+        func_ov043_020be230(&depart->unk_A4[i]);
     }
 
-    func_ov043_020bdd9c(&arg0->unk_A4[2], 0, 2, 2, 0xF, 1);
-    func_ov043_020bdd9c(&arg0->unk_A4[3], 0, 3, 0, 0, 1);
-    func_ov043_020bdd9c(&arg0->unk_34[2], 1, 2, 6, 0xF, 1);
-    func_ov043_020bdf9c(&arg0->unk_34[3], 1, 3, 5, arg0->unk_06, 0, 0xE);
+    func_ov043_020bdd9c(&depart->unk_A4[2], 0, 2, 2, 0xF, 1);
+    func_ov043_020bdd9c(&depart->unk_A4[3], 0, 3, 0, 0, 1);
+    func_ov043_020bdd9c(&depart->unk_34[2], 1, 2, 6, 0xF, 1);
+    func_ov043_020bdf9c(&depart->unk_34[3], 1, 3, 5, depart->unk_06, 0, 0xE);
 }
 
-void func_ov043_020be328(DepartUnk*) {
+void func_ov043_020be328(DepartObject* depart) {
     return;
 }
 
-void func_ov043_020be32c(DepartUnk* arg0) {
-    func_ov043_020be1a8(&arg0->unk_A4[2], 0);
-    func_ov043_020be1a8(&arg0->unk_A4[3], 0);
-    func_ov043_020be1a8(&arg0->unk_34[2], 1);
-    func_ov043_020be1a8(&arg0->unk_34[3], 1);
-}
-
-/// MARK: DepartExit
-
-typedef struct {
-    /* 0x00 */ char unk_00[0x30];
-    /* 0x30 */ u8   unk_30;
-    /* 0x31 */ u8   unk_31;
-} DepartExitUnk;
-
-typedef struct {
-    /* 0x00 */ Sprite         sprite;
-    /* 0x40 */ s32            unk_40;
-    /* 0x44 */ DepartExitUnk* unk_44;
-} DepartExit; // Size: 0x48
-
-typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ s32 unk_4;
-} DepartExitArgs;
-
-SpriteFrameInfo* func_ov043_020be368(void* arg0, s32 arg2) {
-    // Not yet implemented
-}
-
-void func_ov043_020be404(void* arg1, void* arg2, void* arg3) {
-    // Not yet implemented
-}
-
-s32 DepartExit_Init(TaskPool* pool, Task* task, void* args) {
-    DepartExit*     departExit     = task->data;
-    DepartExitArgs* departExitArgs = args;
-
-    departExit->unk_40 = 1;
-    departExit->unk_44 = departExitArgs->unk_4;
-    func_ov043_020be404(departExit, departExit, departExitArgs);
-    return 1;
-}
-
-s32 DepartExit_Update(TaskPool* pool, Task* task, void* args) {
-    DepartExit*    departExit = task->data;
-    DepartExitUnk* iVar1      = departExit->unk_44;
-
-    if (iVar1->unk_30 == 1) {
-        func_ov043_020bd938(&departExit->sprite, 2);
-        if (iVar1->unk_31 != 0) {
-            iVar1->unk_31--;
-        } else {
-            iVar1->unk_30 = 0;
-        }
-    } else {
-        func_ov043_020bd938(&departExit->sprite, 1);
-    }
-    Sprite_Update(&departExit->sprite);
-    return 1;
-}
-
-s32 DepartExit_Render(TaskPool* pool, Task* task, void* args) {
-    DepartExit* departExit = task->data;
-
-    Sprite_RenderFrame(&departExit->sprite);
-    return 1;
-}
-
-s32 DepartExit_Release(TaskPool* pool, Task* task, void* args) {
-    DepartExit* departExit = task->data;
-
-    Sprite_Release(&departExit->sprite);
-    return 1;
-}
-
-s32 DepartExit_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020cadf8 = {
-        .initialize = DepartExit_Init,
-        .update     = DepartExit_Update,
-        .render     = DepartExit_Render,
-        .cleanup    = DepartExit_Release,
-    };
-    return data_ov043_020cadf8.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020cadec = {"Tsk_Depart_exit", DepartExit_RunTask, 0x48};
-
-s32 DepartExit_CreateTask(TaskPool* pool, s32 arg1, void* arg2) {
-    DepartExitArgs args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
-    EasyTask_CreateTask(pool, &data_ov043_020cadec, NULL, 0, NULL, &args);
-}
-
-/// MARK: DepartPanel
-
-typedef struct {
-    /* 0x00 */ Sprite sprite;
-    /* 0x40 */ s32    unk_40;
-    /* 0x44 */ s32    unk_44;
-} DepartPanel; // Size: 0x48
-
-typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ s32 unk_4;
-    /* 0x8 */ u16 unk_8;
-} DepartPanelArgs;
-
-SpriteFrameInfo* func_ov043_020be59c(void* arg0, s32 arg2) {
-    // Not yet implemented
-}
-
-void func_ov043_020be638(void* arg0, void* arg1, void* arg2) {
-    // Not yet implemented
-}
-
-s32 DepartPanel_Init(TaskPool* pool, Task* task, void* args) {
-    DepartPanel*     panel     = task->data;
-    DepartPanelArgs* panelArgs = args;
-
-    panel->unk_40 = 1;
-    panel->unk_44 = panelArgs->unk_4;
-    func_ov043_020be638(panel, panel, panelArgs);
-    return 1;
-}
-
-s32 DepartPanel_Update(TaskPool* pool, Task* task, void* args) {
-    DepartPanel* panel = task->data;
-
-    Sprite_Update(&panel->sprite);
-    return 1;
-}
-
-s32 DepartPanel_Render(TaskPool* pool, Task* task, void* args) {
-    DepartPanel* panel = task->data;
-
-    Sprite_RenderFrame(&panel->sprite);
-    return 1;
-}
-
-s32 DepartPanel_Release(TaskPool* pool, Task* task, void* args) {
-    DepartPanel* panel = task->data;
-
-    Sprite_Release(&panel->sprite);
-    return 1;
-}
-
-s32 DepartPanel_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020cae88 = {
-        .initialize = DepartPanel_Init,
-        .update     = DepartPanel_Update,
-        .render     = DepartPanel_Render,
-        .cleanup    = DepartPanel_Release,
-    };
-    return data_ov043_020cae88.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020cae34 = {"Tsk_Depart_panel", DepartPanel_RunTask, sizeof(DepartPanel)};
-
-s32 DepartPanel_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, void* arg3) {
-    DepartPanelArgs args;
-    args.unk_0 = arg1;
-    args.unk_8 = arg2;
-    args.unk_4 = arg3;
-    return EasyTask_CreateTask(pool, &data_ov043_020cae34, NULL, 0, NULL, &args);
-}
-
-/// MARK: DepartBoard
-
-typedef struct {
-    /* 0x00 */ Sprite sprites[2];
-    /* 0x80 */ s32    unk_80[2];
-    /* 0x88 */ s32    unk_88;
-} DepartBoard; // Size: 0x8C
-
-typedef struct {
-    /* 0x00 */ u32        unk_00;
-    /* 0x04 */ DepartUnk* unk_04;
-    /* 0x08 */ u16        unk_08;
-    /* 0x0A */ u16        itemID;
-    /* 0x0C */ u16        unk_0C;
-} DepartBoardArgs;
-
-SpriteFrameInfo* func_ov043_020be7dc(void* arg0, s32 arg2) {
-    // Not yet implemented
-}
-
-void func_ov043_020be888(DepartBoard* arg0, DepartBoard* arg1, void* arg2) {
-    // Not yet implemented
-}
-
-s32 DepartBoard_Init(TaskPool* pool, Task* task, void* args) {
-    DepartBoard*     board     = task->data;
-    DepartBoardArgs* boardArgs = args;
-
-    board->unk_88 = boardArgs->unk_04;
-    func_ov043_020be888(board, board, args);
-    return 1;
-}
-
-s32 DepartBoard_Update(TaskPool* pool, Task* task, void* args) {
-    DepartBoard* board = task->data;
-
-    for (s32 i = 0; i < 2; i++) {
-        Sprite_Update(&board->sprites[i]);
-    }
-    return 1;
-}
-
-s32 DepartBoard_Render(TaskPool* pool, Task* task, void* args) {
-    DepartBoard* board = task->data;
-
-    for (s32 i = 0; i < 2; i++) {
-        if (board->unk_80[i] != 0) {
-            Sprite_RenderFrame(&board->sprites[i]);
-        }
-    }
-    return 1;
-}
-
-s32 DepartBoard_Release(TaskPool* pool, Task* task, void* args) {
-    DepartBoard* board = task->data;
-
-    for (s32 i = 0; i < 2; i++) {
-        Sprite_Release(&board->sprites[i]);
-    }
-    return 1;
-}
-
-s32 DepartBoard_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020cae88 = {
-        .initialize = DepartBoard_Init,
-        .update     = DepartBoard_Update,
-        .render     = DepartBoard_Render,
-        .cleanup    = DepartBoard_Release,
-    };
-    return data_ov043_020cae88.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020cae7c = {"Tsk_Depart_board", DepartBoard_RunTask, sizeof(DepartBoard)};
-
-s32 DepartBoard_CreateTask(TaskPool* pool, s32 arg1, u16 arg2, DepartUnk* arg3) {
-    DepartBoardArgs args;
-
-    args.unk_00 = arg1;
-    args.unk_04 = arg3;
-    args.unk_08 = arg2;
-    args.itemID = arg3->unk_10[arg2].itemID;
-
-    ItemCategory category = Inventory_GetCategory(args.itemID);
-
-    if (category == ITEM_CATEGORY_THREAD) {
-        RawItemData itemData;
-        func_ov043_020bd984(&itemData, Inventory_GetCategorizedIndex(args.itemID));
-        args.unk_0C = itemData.unk_00;
-    } else if (category == ITEM_CATEGORY_FOOD) {
-        RawFoodData foodData;
-        func_ov043_020bd9b0(&foodData, Inventory_GetCategorizedIndex(args.itemID));
-        args.unk_0C = foodData.unk_00;
-    } else {
-        RawTreasureData treasureData;
-        func_ov043_020bd9dc(&treasureData, Inventory_GetCategorizedIndex(args.itemID));
-        args.unk_0C = treasureData.unk_00;
-    }
-    EasyTask_CreateTask(pool, &data_ov043_020cae7c, NULL, 0, NULL, &args);
-}
-
-/// MARK: DepartTextScr
-
-typedef struct {
-    /* 0x000 */ s32           unk_000;
-    /* 0x004 */ UnkOv31Struct unk_004[5];
-    /* 0x270 */ UnkOv31Struct unk_270[5];
-} DepartTextScr; // Size: 0x4DC
-
-typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ s32 unk_4;
-} DepartTextScrArgs;
-
-void func_ov043_020beb44(DepartTextScr* textScr) {
-    s32 i;
-    for (i = 0; i < 5; i++) {
-        func_ov031_0210aa94(&textScr->unk_004[i]);
-        func_ov031_0210aa94(&textScr->unk_270[i]);
-    }
-
-    for (i = 0; i < 5; i++) {
-        func_ov031_0210ab34(&textScr->unk_004[i], 14);
-        func_ov031_0210ab34(&textScr->unk_270[i], 14);
-    }
-}
-
-void func_ov043_020bebc0(DepartTextScr* textScr) {
-    // Not yet implemented
-}
-
-s32 DepartTextScr_Init(TaskPool* pool, Task* task, void* args) {
-    DepartTextScr*     textScr     = task->data;
-    DepartTextScrArgs* textScrArgs = args;
-
-    textScr->unk_000 = textScrArgs->unk_4;
-    func_ov043_020beb44(textScr);
-    func_ov043_020bebc0(textScr);
-    return 1;
-}
-
-s32 DepartTextScr_Update(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 DepartTextScr_Render(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 DepartTextScr_Release(TaskPool* pool, Task* task, void* args) {
-    DepartTextScr* textScr = task->data;
-
-    for (s32 i = 0; i < 5; i++) {
-        func_ov031_0210aabc(&textScr->unk_004[i]);
-        func_ov031_0210aabc(&textScr->unk_270[i]);
-    }
-    return 1;
-}
-
-s32 DepartTextScr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020caed0 = {
-        .initialize = DepartTextScr_Init,
-        .update     = DepartTextScr_Update,
-        .render     = DepartTextScr_Render,
-        .cleanup    = DepartTextScr_Release,
-    };
-    return data_ov043_020caed0.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020caec4 = {"Tsk_Depart_textScr", DepartTextScr_RunTask, sizeof(DepartTextScr)};
-
-s32 DepartTextScr_CreateTask(TaskPool* pool, s32 arg1, void* arg2) {
-    DepartTextScrArgs args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
-    return EasyTask_CreateTask(pool, &data_ov043_020caec4, NULL, 0, NULL, &args);
-}
-
-/// MARK: DepartTextScrU
-
-typedef struct {
-    /* 0x00 */ char unk_00[0xA];
-    /* 0x0A */ u16  unk_0A;
-    /* 0x0C */ char unk_0C[0x70];
-    /* 0x7C */ s32  unk_7C;
-    /* 0x80 */ s32  unk_80;
-} DepartTextScrUUnk;
-
-typedef struct {
-    /* 0x00 */ DepartTextScrUUnk* unk_00;
-    /* 0x04 */ UnkOv31Struct      unk_04;
-} DepartTextScrU; // Size: 0x80
-
-typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ s32 unk_4;
-} DepartTextScrUArgs;
-
-void func_ov043_020bee2c(DepartTextScrU* textScrU) {
-    func_ov031_0210aa94(&textScrU->unk_04);
-    func_ov031_0210ab34(&textScrU->unk_04, 8);
-}
-
-void func_ov043_020bee4c(DepartTextScrU* textScrU) {
-    DepartTextScrUUnk* temp_r7 = textScrU->unk_00;
-    s32                temp_r4 = temp_r7->unk_80;
-    s32                temp_r5 = temp_r7->unk_7C;
-
-    if ((temp_r4 == 0) || (temp_r5 == 0)) {
-        OS_WaitForever();
-    }
-
-    func_ov031_0210ab28(&textScrU->unk_04, 2, 6);
-    func_ov031_0210ab54(&textScrU->unk_04, 1, 0);
-    func_ov031_0210b630(&textScrU->unk_04, (u16)(temp_r7->unk_0A + 0x2FB8));
-    func_ov031_0210be18(&textScrU->unk_04, temp_r4 + 4, temp_r5 + 4, 0);
-}
-
-s32 DepartTextScrU_Init(TaskPool* pool, Task* task, void* args) {
-    DepartTextScrU*     textScrU     = task->data;
-    DepartTextScrUArgs* textScrUArgs = args;
-
-    textScrU->unk_00 = textScrUArgs->unk_4;
-    func_ov043_020bee2c(textScrU);
-    func_ov043_020bee4c(textScrU);
-    return 1;
-}
-
-s32 DepartTextScrU_Update(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 DepartTextScrU_Render(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 DepartTextScrU_Release(TaskPool* pool, Task* task, void* args) {
-    DepartTextScrU* textScrU = task->data;
-
-    func_ov031_0210aabc(&textScrU->unk_04);
-    return 1;
-}
-
-s32 DepartTextScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020caeec = {
-        .initialize = DepartTextScrU_Init,
-        .update     = DepartTextScrU_Update,
-        .render     = DepartTextScrU_Render,
-        .cleanup    = DepartTextScrU_Release,
-    };
-    return data_ov043_020caeec.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020caee0 = {"Tsk_Depart_textScrU", DepartTextScrU_RunTask, sizeof(DepartTextScrU)};
-
-s32 DepartTextScrU_CreateTask(TaskPool* pool, s32 arg1, s32 arg2) {
-    DepartTextScrUArgs args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
-    return EasyTask_CreateTask(pool, &data_ov043_020caee0, NULL, 0, NULL, &args);
-}
-
-/// MARK: DepartCur
-
-typedef struct {
-    /* 0x0 */ char unk_0[0x4];
-    /* 0x4 */ s16  unk_4;
-    /* 0x6 */ char unk_6[0x6];
-    /* 0xC */ u16  unk_C;
-} DepartCurUnk;
-
-typedef struct {
-    /* 0x00 */ Sprite        sprite;
-    /* 0x40 */ s32           unk_40;
-    /* 0x44 */ DepartCurUnk* unk_44;
-    /* 0x48 */ s16           unk_48;
-} DepartCur; // Size: 0x4C
-
-typedef struct {
-    /* 0x0 */ s32   unk_0;
-    /* 0x4 */ void* unk_4;
-} DepartCurArgs;
-
-SpriteFrameInfo* func_ov043_020bef90(Sprite* sprite, s32 arg1, s32 arg2) {
-    // Not yet implemented
-}
-
-void func_ov043_020bf038(DepartCur* arg0, DepartCur* arg1, s32* arg2) {
-    // Not yet implemented
-}
-
-s32 DepartCur_Init(TaskPool* pool, Task* task, void* args) {
-    DepartCur*     cur     = task->data;
-    DepartCurArgs* curArgs = args;
-
-    cur->unk_44 = curArgs->unk_4;
-    func_ov043_020bf038(cur, cur, args);
-    return 1;
-}
-
-// Nonmatching: Regalloc
-s32 DepartCur_Update(TaskPool* pool, Task* task, void* args) {
-    DepartCur*    cur    = task->data;
-    DepartCurUnk* pDVar1 = cur->unk_44;
-
-    if (pDVar1->unk_4 != cur->unk_48) {
-        cur->sprite.posX = pDVar1->unk_4 * 10 + data_ov043_020ccd00[pDVar1->unk_C].x;
-        cur->sprite.posY = pDVar1->unk_4 * 37 + data_ov043_020ccd00[pDVar1->unk_C].y;
-        cur->unk_48      = pDVar1->unk_4;
-    }
-    Sprite_Update(&cur->sprite);
-    return 1;
-}
-
-s32 DepartCur_Render(TaskPool* pool, Task* task, void* args) {
-    DepartCur* cur = task->data;
-
-    if (cur->unk_40 != 0) {
-        Sprite_RenderFrame(&cur->sprite);
-    }
-    return 1;
-}
-
-s32 DepartCur_Release(TaskPool* pool, Task* task, void* args) {
-    DepartCur* cur = task->data;
-
-    Sprite_Release(&cur->sprite);
-    return 1;
-}
-
-s32 DepartCur_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages data_ov043_020caf08 = {
-        .initialize = DepartCur_Init,
-        .update     = DepartCur_Update,
-        .render     = DepartCur_Render,
-        .cleanup    = DepartCur_Release,
-    };
-    return data_ov043_020caf08.iter[stage](pool, task, args);
-}
-
-const TaskHandle data_ov043_020caefc = {"Tsk_Depart_cur", DepartCur_RunTask, sizeof(DepartCur)};
-
-s32 DepartCur_CreateTask(TaskPool* pool, s32 arg1, void* arg2) {
-    DepartCurArgs args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
-    return EasyTask_CreateTask(pool, &data_ov043_020caefc, NULL, 0, NULL, &args);
+void func_ov043_020be32c(DepartObject* depart) {
+    func_ov043_020be1a8(&depart->unk_A4[2], 0);
+    func_ov043_020be1a8(&depart->unk_A4[3], 0);
+    func_ov043_020be1a8(&depart->unk_34[2], 1);
+    func_ov043_020be1a8(&depart->unk_34[3], 1);
 }

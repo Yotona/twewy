@@ -1891,30 +1891,46 @@ func_ov043_020be230 kind:function(arm,size=0x24) addr:0x020be230
 func_ov043_020be254 kind:function(arm,size=0xd4) addr:0x020be254
 func_ov043_020be328 kind:function(arm,size=0x4) addr:0x020be328
 func_ov043_020be32c kind:function(arm,size=0x3c) addr:0x020be32c
-func_ov043_020be368 kind:function(arm,size=0x9c) addr:0x020be368
-func_ov043_020be404 kind:function(arm,size=0x74) addr:0x020be404
-DepartExit_Init kind:function(arm,size=0x28) addr:0x020be478
-DepartExit_Update kind:function(arm,size=0x58) addr:0x020be4a0
-DepartExit_Render kind:function(arm,size=0x14) addr:0x020be4f8
-DepartExit_Release kind:function(arm,size=0x14) addr:0x020be50c
-DepartExit_RunTask kind:function(arm,size=0x48) addr:0x020be520
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_exit.c
+/////////////////////////////////////////////////////////////
+func_ov043_020be368 kind:function(arm,size=0x9c) addr:0x020be368 local
+func_ov043_020be404 kind:function(arm,size=0x74) addr:0x020be404 local
+DepartExit_Init kind:function(arm,size=0x28) addr:0x020be478 local
+DepartExit_Update kind:function(arm,size=0x58) addr:0x020be4a0 local
+DepartExit_Render kind:function(arm,size=0x14) addr:0x020be4f8 local
+DepartExit_Release kind:function(arm,size=0x14) addr:0x020be50c local
+DepartExit_RunTask kind:function(arm,size=0x48) addr:0x020be520 local
 DepartExit_CreateTask kind:function(arm,size=0x34) addr:0x020be568
-func_ov043_020be59c kind:function(arm,size=0x9c) addr:0x020be59c
-func_ov043_020be638 kind:function(arm,size=0xc0) addr:0x020be638
-DepartPanel_Init kind:function(arm,size=0x28) addr:0x020be6f8
-DepartPanel_Update kind:function(arm,size=0x14) addr:0x020be720
-DepartPanel_Render kind:function(arm,size=0x14) addr:0x020be734
-DepartPanel_Release kind:function(arm,size=0x14) addr:0x020be748
-DepartPanel_RunTask kind:function(arm,size=0x48) addr:0x020be75c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_panel.c
+/////////////////////////////////////////////////////////////
+func_ov043_020be59c kind:function(arm,size=0x9c) addr:0x020be59c local
+func_ov043_020be638 kind:function(arm,size=0xc0) addr:0x020be638 local
+DepartPanel_Init kind:function(arm,size=0x28) addr:0x020be6f8 local
+DepartPanel_Update kind:function(arm,size=0x14) addr:0x020be720 local
+DepartPanel_Render kind:function(arm,size=0x14) addr:0x020be734 local
+DepartPanel_Release kind:function(arm,size=0x14) addr:0x020be748 local
+DepartPanel_RunTask kind:function(arm,size=0x48) addr:0x020be75c local
 DepartPanel_CreateTask kind:function(arm,size=0x38) addr:0x020be7a4
-func_ov043_020be7dc kind:function(arm,size=0xac) addr:0x020be7dc
-func_ov043_020be888 kind:function(arm,size=0xf8) addr:0x020be888
-DepartBoard_Init kind:function(arm,size=0x20) addr:0x020be980
-DepartBoard_Update kind:function(arm,size=0x2c) addr:0x020be9a0
-DepartBoard_Render kind:function(arm,size=0x40) addr:0x020be9cc
-DepartBoard_Release kind:function(arm,size=0x2c) addr:0x020bea0c
-DepartBoard_RunTask kind:function(arm,size=0x48) addr:0x020bea38
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_board.c
+/////////////////////////////////////////////////////////////
+func_ov043_020be7dc kind:function(arm,size=0xac) addr:0x020be7dc local
+func_ov043_020be888 kind:function(arm,size=0xf8) addr:0x020be888 local
+DepartBoard_Init kind:function(arm,size=0x20) addr:0x020be980 local
+DepartBoard_Update kind:function(arm,size=0x2c) addr:0x020be9a0 local
+DepartBoard_Render kind:function(arm,size=0x40) addr:0x020be9cc local
+DepartBoard_Release kind:function(arm,size=0x2c) addr:0x020bea0c local
+DepartBoard_RunTask kind:function(arm,size=0x48) addr:0x020bea38 local
 DepartBoard_CreateTask kind:function(arm,size=0xc4) addr:0x020bea80
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScr.c
+/////////////////////////////////////////////////////////////
 func_ov043_020beb44 kind:function(arm,size=0x7c) addr:0x020beb44
 func_ov043_020bebc0 kind:function(arm,size=0x178) addr:0x020bebc0
 DepartTextScr_Init kind:function(arm,size=0x28) addr:0x020bed38
@@ -1923,22 +1939,30 @@ DepartTextScr_Render kind:function(arm,size=0x8) addr:0x020bed68
 DepartTextScr_Release kind:function(arm,size=0x40) addr:0x020bed70
 DepartTextScr_RunTask kind:function(arm,size=0x48) addr:0x020bedb0
 DepartTextScr_CreateTask kind:function(arm,size=0x34) addr:0x020bedf8
-func_ov043_020bee2c kind:function(arm,size=0x20) addr:0x020bee2c
-func_ov043_020bee4c kind:function(arm,size=0x78) addr:0x020bee4c
-DepartTextScrU_Init kind:function(arm,size=0x28) addr:0x020beec4
-DepartTextScrU_Update kind:function(arm,size=0x8) addr:0x020beeec
-DepartTextScrU_Render kind:function(arm,size=0x8) addr:0x020beef4
-DepartTextScrU_Release kind:function(arm,size=0x18) addr:0x020beefc
-DepartTextScrU_RunTask kind:function(arm,size=0x48) addr:0x020bef14
-DepartTextScrU_CreateTask kind:function(arm,size=0x34) addr:0x020bef5c
-func_ov043_020bef90 kind:function(arm,size=0xa8) addr:0x020bef90
-func_ov043_020bf038 kind:function(arm,size=0xd4) addr:0x020bf038
-DepartCur_Init kind:function(arm,size=0x20) addr:0x020bf10c
-DepartCur_Update kind:function(arm,size=0x74) addr:0x020bf12c
-DepartCur_Render kind:function(arm,size=0x20) addr:0x020bf1a0
-DepartCur_Release kind:function(arm,size=0x14) addr:0x020bf1c0
-DepartCur_RunTask kind:function(arm,size=0x48) addr:0x020bf1d4
-DepartCur_CreateTask kind:function(arm,size=0x34) addr:0x020bf21c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScrU.c
+/////////////////////////////////////////////////////////////
+func_ov043_020bee2c kind:function(arm,size=0x20) addr:0x020bee2c local
+func_ov043_020bee4c kind:function(arm,size=0x78) addr:0x020bee4c local
+Depart_textScrU_Init kind:function(arm,size=0x28) addr:0x020beec4 local
+Depart_textScrU_Update kind:function(arm,size=0x8) addr:0x020beeec local
+Depart_textScrU_Render kind:function(arm,size=0x8) addr:0x020beef4 local
+Depart_textScrU_Release kind:function(arm,size=0x18) addr:0x020beefc local
+Depart_textScrU_RunTask kind:function(arm,size=0x48) addr:0x020bef14 local
+Depart_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x020bef5c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_cur.c
+/////////////////////////////////////////////////////////////
+Depart_cur_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020bef90 local
+Depart_cur_Load kind:function(arm,size=0xd4) addr:0x020bf038 local
+Depart_cur_Init kind:function(arm,size=0x20) addr:0x020bf10c local
+Depart_cur_Update kind:function(arm,size=0x74) addr:0x020bf12c local
+Depart_cur_Render kind:function(arm,size=0x20) addr:0x020bf1a0 local
+Depart_cur_Release kind:function(arm,size=0x14) addr:0x020bf1c0 local
+Depart_cur_RunTask kind:function(arm,size=0x48) addr:0x020bf1d4 local
+Depart_cur_CreateTask kind:function(arm,size=0x34) addr:0x020bf21c
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
@@ -2963,7 +2987,7 @@ Tsk_Shop_boardU kind:data(any) addr:0x020cad1c local
 data_ov043_020cad38 kind:data(any) addr:0x020cad38 local
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/Depart.c
+// src/Interface/Menu/Depart.c
 /////////////////////////////////////////////////////////////
 OvlProc_Depart kind:data(any) addr:0x020cad64
 data_ov043_020cad70 kind:data(any) addr:0x020cad70
@@ -2975,22 +2999,46 @@ data_ov043_020cadc8 kind:data(any) addr:0x020cadc8
 data_ov043_020cadd0 kind:data(any) addr:0x020cadd0
 data_ov043_020cadd8 kind:data(any) addr:0x020cadd8
 data_ov043_020cade0 kind:data(any) addr:0x020cade0
-data_ov043_020cadec kind:data(any) addr:0x020cadec
-data_ov043_020cadf8 kind:data(any) addr:0x020cadf8
-data_ov043_020cae08 kind:data(any) addr:0x020cae08
-data_ov043_020cae34 kind:data(any) addr:0x020cae34
-data_ov043_020cae40 kind:data(any) addr:0x020cae40
-data_ov043_020cae50 kind:data(any) addr:0x020cae50
-data_ov043_020cae7c kind:data(any) addr:0x020cae7c
-data_ov043_020cae88 kind:data(any) addr:0x020cae88
-data_ov043_020cae98 kind:data(any) addr:0x020cae98
-data_ov043_020caec4 kind:data(any) addr:0x020caec4
-data_ov043_020caed0 kind:data(any) addr:0x020caed0
-data_ov043_020caee0 kind:data(any) addr:0x020caee0
-data_ov043_020caeec kind:data(any) addr:0x020caeec
-data_ov043_020caefc kind:data(any) addr:0x020caefc
-data_ov043_020caf08 kind:data(any) addr:0x020caf08
-data_ov043_020caf18 kind:data(any) addr:0x020caf18
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_exit.c
+/////////////////////////////////////////////////////////////
+data_ov043_020cadec kind:data(any) addr:0x020cadec local
+@1340 kind:data(any) addr:0x020cadf8 local
+data_ov043_020cae08 kind:data(any) addr:0x020cae08 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_panel.c
+/////////////////////////////////////////////////////////////
+data_ov043_020cae34 kind:data(any) addr:0x020cae34 local
+@1317 kind:data(any) addr:0x020cae40 local
+data_ov043_020cae50 kind:data(any) addr:0x020cae50 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_board.c
+/////////////////////////////////////////////////////////////
+data_ov043_020cae7c kind:data(any) addr:0x020cae7c local
+@1375 kind:data(any) addr:0x020cae88 local
+data_ov043_020cae98 kind:data(any) addr:0x020cae98 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScr.c
+/////////////////////////////////////////////////////////////
+data_ov043_020caec4 kind:data(any) addr:0x020caec4 local
+@1329 kind:data(any) addr:0x020caed0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScrU.c
+/////////////////////////////////////////////////////////////
+Tsk_Depart_textScrU kind:data(any) addr:0x020caee0 local
+@1318 kind:data(any) addr:0x020caeec local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_cur.c
+/////////////////////////////////////////////////////////////
+Tsk_Depart_cur kind:data(any) addr:0x020caefc local
+@1306 kind:data(any) addr:0x020caf08 local
+Depart_cur_Anim kind:data(any) addr:0x020caf18 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
@@ -3589,12 +3637,36 @@ data_ov043_020ccd70 kind:data(any) addr:0x020ccd70
 data_ov043_020ccd90 kind:data(any) addr:0x020ccd90
 data_ov043_020ccdb0 kind:data(any) addr:0x020ccdb0
 data_ov043_020ccdd0 kind:data(any) addr:0x020ccdd0
-data_ov043_020cce04 kind:data(any) addr:0x020cce04
-data_ov043_020cce14 kind:data(any) addr:0x020cce14
-data_ov043_020cce28 kind:data(any) addr:0x020cce28
-data_ov043_020cce3c kind:data(any) addr:0x020cce3c
-data_ov043_020cce50 kind:data(any) addr:0x020cce50
-data_ov043_020cce64 kind:data(any) addr:0x020cce64
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_exit.c
+/////////////////////////////////////////////////////////////
+@1271 kind:data(any) addr:0x020cce04 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_panel.c
+/////////////////////////////////////////////////////////////
+@1271 kind:data(any) addr:0x020cce14 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_board.c
+/////////////////////////////////////////////////////////////
+@1295 kind:data(any) addr:0x020cce28 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScr.c
+/////////////////////////////////////////////////////////////
+@1268 kind:data(any) addr:0x020cce3c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_textScrU.c
+/////////////////////////////////////////////////////////////
+@1268 kind:data(any) addr:0x020cce50 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/Depart/Depart_cur.c
+/////////////////////////////////////////////////////////////
+@1248 kind:data(any) addr:0x020cce64 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
