@@ -413,7 +413,7 @@ MenuTop_helpCurU_RunTask kind:function(arm,size=0x48) addr:0x0208b7d8 local
 MenuTop_helpCurU_CreateTask kind:function(arm,size=0x34) addr:0x0208b820
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/MenuBadge.c
+// src/Interface/Menu/MenuBadge.c
 /////////////////////////////////////////////////////////////
 func_ov043_0208b854 kind:function(arm,size=0xe0) addr:0x0208b854
 func_ov043_0208b934 kind:function(arm,size=0x130) addr:0x0208b934
@@ -521,164 +521,244 @@ func_ov043_02092208 kind:function(arm,size=0x24) addr:0x02092208
 func_ov043_0209222c kind:function(arm,size=0x144) addr:0x0209222c
 func_ov043_02092370 kind:function(arm,size=0x4) addr:0x02092370
 func_ov043_02092374 kind:function(arm,size=0x7c) addr:0x02092374
-func_ov043_020923f0 kind:function(arm,size=0x9c) addr:0x020923f0
-func_ov043_0209248c kind:function(arm,size=0xcc) addr:0x0209248c
-func_ov043_02092558 kind:function(arm,size=0x28) addr:0x02092558
-func_ov043_02092580 kind:function(arm,size=0xd4) addr:0x02092580
-func_ov043_02092654 kind:function(arm,size=0x2c) addr:0x02092654
-func_ov043_02092680 kind:function(arm,size=0x2c) addr:0x02092680
-func_ov043_020926ac kind:function(arm,size=0x48) addr:0x020926ac
-func_ov043_020926f4 kind:function(arm,size=0x34) addr:0x020926f4
-func_ov043_02092728 kind:function(arm,size=0xa8) addr:0x02092728
-func_ov043_020927d0 kind:function(arm,size=0x10c) addr:0x020927d0
-func_ov043_020928dc kind:function(arm,size=0x20) addr:0x020928dc
-func_ov043_020928fc kind:function(arm,size=0x14) addr:0x020928fc
-func_ov043_02092910 kind:function(arm,size=0x3c) addr:0x02092910
-func_ov043_0209294c kind:function(arm,size=0x14) addr:0x0209294c
-func_ov043_02092960 kind:function(arm,size=0x48) addr:0x02092960
-func_ov043_020929a8 kind:function(arm,size=0x64) addr:0x020929a8
-func_ov043_02092a0c kind:function(arm,size=0xc) addr:0x02092a0c
-func_ov043_02092a18 kind:function(arm,size=0xa8) addr:0x02092a18
-func_ov043_02092ac0 kind:function(arm,size=0xa4) addr:0x02092ac0
-func_ov043_02092b64 kind:function(arm,size=0x28) addr:0x02092b64
-func_ov043_02092b8c kind:function(arm,size=0x2c) addr:0x02092b8c
-func_ov043_02092bb8 kind:function(arm,size=0x20) addr:0x02092bb8
-func_ov043_02092bd8 kind:function(arm,size=0x14) addr:0x02092bd8
-func_ov043_02092bec kind:function(arm,size=0x48) addr:0x02092bec
-func_ov043_02092c34 kind:function(arm,size=0x48) addr:0x02092c34
-func_ov043_02092c7c kind:function(arm,size=0xac) addr:0x02092c7c
-func_ov043_02092d28 kind:function(arm,size=0xa4) addr:0x02092d28
-func_ov043_02092dcc kind:function(arm,size=0x2c) addr:0x02092dcc
-func_ov043_02092df8 kind:function(arm,size=0x34) addr:0x02092df8
-func_ov043_02092e2c kind:function(arm,size=0x20) addr:0x02092e2c
-func_ov043_02092e4c kind:function(arm,size=0x14) addr:0x02092e4c
-func_ov043_02092e60 kind:function(arm,size=0x48) addr:0x02092e60
-func_ov043_02092ea8 kind:function(arm,size=0x34) addr:0x02092ea8
-func_ov043_02092edc kind:function(arm,size=0xac) addr:0x02092edc
-func_ov043_02092f88 kind:function(arm,size=0x26c) addr:0x02092f88
-func_ov043_020931f4 kind:function(arm,size=0x20) addr:0x020931f4
-func_ov043_02093214 kind:function(arm,size=0x2c) addr:0x02093214
-func_ov043_02093240 kind:function(arm,size=0x5c) addr:0x02093240
-func_ov043_0209329c kind:function(arm,size=0x2c) addr:0x0209329c
-func_ov043_020932c8 kind:function(arm,size=0x48) addr:0x020932c8
-func_ov043_02093310 kind:function(arm,size=0x70) addr:0x02093310
-func_ov043_02093380 kind:function(arm,size=0xa8) addr:0x02093380
-func_ov043_02093428 kind:function(arm,size=0x158) addr:0x02093428
-func_ov043_02093580 kind:function(arm,size=0x28) addr:0x02093580
-func_ov043_020935a8 kind:function(arm,size=0x20) addr:0x020935a8
-func_ov043_020935c8 kind:function(arm,size=0x6c) addr:0x020935c8
-func_ov043_02093634 kind:function(arm,size=0x20) addr:0x02093634
-func_ov043_02093654 kind:function(arm,size=0x48) addr:0x02093654
-func_ov043_0209369c kind:function(arm,size=0x7c) addr:0x0209369c
-func_ov043_02093718 kind:function(arm,size=0xac) addr:0x02093718
-func_ov043_020937c4 kind:function(arm,size=0x14c) addr:0x020937c4
-func_ov043_02093910 kind:function(arm,size=0x20) addr:0x02093910
-func_ov043_02093930 kind:function(arm,size=0x14) addr:0x02093930
-func_ov043_02093944 kind:function(arm,size=0x3c) addr:0x02093944
-func_ov043_02093980 kind:function(arm,size=0x14) addr:0x02093980
-func_ov043_02093994 kind:function(arm,size=0x48) addr:0x02093994
-func_ov043_020939dc kind:function(arm,size=0x64) addr:0x020939dc
-func_ov043_02093a40 kind:function(arm,size=0xa8) addr:0x02093a40
-func_ov043_02093ae8 kind:function(arm,size=0xe0) addr:0x02093ae8
-func_ov043_02093bc8 kind:function(arm,size=0x28) addr:0x02093bc8
-func_ov043_02093bf0 kind:function(arm,size=0x14) addr:0x02093bf0
-func_ov043_02093c04 kind:function(arm,size=0x20) addr:0x02093c04
-func_ov043_02093c24 kind:function(arm,size=0x14) addr:0x02093c24
-func_ov043_02093c38 kind:function(arm,size=0x48) addr:0x02093c38
-func_ov043_02093c80 kind:function(arm,size=0x64) addr:0x02093c80
-func_ov043_02093ce4 kind:function(arm,size=0xac) addr:0x02093ce4
-func_ov043_02093d90 kind:function(arm,size=0x2c4) addr:0x02093d90
-func_ov043_02094054 kind:function(arm,size=0x34) addr:0x02094054
-func_ov043_02094088 kind:function(arm,size=0x34) addr:0x02094088
-func_ov043_020940bc kind:function(arm,size=0x74) addr:0x020940bc
-func_ov043_02094130 kind:function(arm,size=0x34) addr:0x02094130
-func_ov043_02094164 kind:function(arm,size=0x48) addr:0x02094164
-func_ov043_020941ac kind:function(arm,size=0x58) addr:0x020941ac
-func_ov043_02094204 kind:function(arm,size=0xa8) addr:0x02094204
-func_ov043_020942ac kind:function(arm,size=0x98) addr:0x020942ac
-func_ov043_02094344 kind:function(arm,size=0x20) addr:0x02094344
-func_ov043_02094364 kind:function(arm,size=0xec) addr:0x02094364
-func_ov043_02094450 kind:function(arm,size=0x20) addr:0x02094450
-func_ov043_02094470 kind:function(arm,size=0x14) addr:0x02094470
-func_ov043_02094484 kind:function(arm,size=0x48) addr:0x02094484
-func_ov043_020944cc kind:function(arm,size=0x34) addr:0x020944cc
-func_ov043_02094500 kind:function(arm,size=0x9c) addr:0x02094500
-func_ov043_0209459c kind:function(arm,size=0x74) addr:0x0209459c
-func_ov043_02094610 kind:function(arm,size=0x40) addr:0x02094610
-func_ov043_02094650 kind:function(arm,size=0xbc) addr:0x02094650
-func_ov043_0209470c kind:function(arm,size=0x20) addr:0x0209470c
-func_ov043_0209472c kind:function(arm,size=0x14) addr:0x0209472c
-func_ov043_02094740 kind:function(arm,size=0x48) addr:0x02094740
-func_ov043_02094788 kind:function(arm,size=0x34) addr:0x02094788
-func_ov043_020947bc kind:function(arm,size=0x5c) addr:0x020947bc
-func_ov043_02094818 kind:function(arm,size=0x3c) addr:0x02094818
-func_ov043_02094854 kind:function(arm,size=0x9c) addr:0x02094854
-func_ov043_020948f0 kind:function(arm,size=0xcc) addr:0x020948f0
-func_ov043_020949bc kind:function(arm,size=0x2c) addr:0x020949bc
-func_ov043_020949e8 kind:function(arm,size=0x338) addr:0x020949e8
-func_ov043_02094d20 kind:function(arm,size=0x2c) addr:0x02094d20
-func_ov043_02094d4c kind:function(arm,size=0x2c) addr:0x02094d4c
-func_ov043_02094d78 kind:function(arm,size=0x48) addr:0x02094d78
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_icon.c
+/////////////////////////////////////////////////////////////
+MenuBadge_icon_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020923f0 local
+MenuBadge_icon_Load kind:function(arm,size=0xcc) addr:0x0209248c local
+MenuBadge_icon_Init kind:function(arm,size=0x28) addr:0x02092558 local
+MenuBadge_icon_Update kind:function(arm,size=0xd4) addr:0x02092580 local
+MenuBadge_icon_Render kind:function(arm,size=0x2c) addr:0x02092654 local
+MenuBadge_icon_Release kind:function(arm,size=0x2c) addr:0x02092680 local
+MenuBadge_icon_RunTask kind:function(arm,size=0x48) addr:0x020926ac local
+MenuBadge_icon_CreateTask kind:function(arm,size=0x34) addr:0x020926f4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdg.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdg_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02092728 local
+MenuBadge_bdg_Load kind:function(arm,size=0x10c) addr:0x020927d0 local
+MenuBadge_bdg_Init kind:function(arm,size=0x20) addr:0x020928dc local
+MenuBadge_bdg_Update kind:function(arm,size=0x14) addr:0x020928fc local
+MenuBadge_bdg_Render kind:function(arm,size=0x3c) addr:0x02092910 local
+MenuBadge_bdg_Release kind:function(arm,size=0x14) addr:0x0209294c local
+MenuBadge_bdg_RunTask kind:function(arm,size=0x48) addr:0x02092960 local
+MenuBadge_bdg_CreateTask kind:function(arm,size=0x64) addr:0x020929a8
+MenuBadge_bdg_GetTaskData kind:function(arm,size=0xc) addr:0x02092a0c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mov.c
+/////////////////////////////////////////////////////////////
+MenuBadge_mov_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02092a18 local
+MenuBadge_mov_Load kind:function(arm,size=0xa4) addr:0x02092ac0 local
+MenuBadge_mov_Init kind:function(arm,size=0x28) addr:0x02092b64 local
+MenuBadge_mov_Update kind:function(arm,size=0x2c) addr:0x02092b8c local
+MenuBadge_mov_Render kind:function(arm,size=0x20) addr:0x02092bb8 local
+MenuBadge_mov_Release kind:function(arm,size=0x14) addr:0x02092bd8 local
+MenuBadge_mov_RunTask kind:function(arm,size=0x48) addr:0x02092bec local
+MenuBadge_mov_CreateTask kind:function(arm,size=0x48) addr:0x02092c34
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_shadow.c
+/////////////////////////////////////////////////////////////
+MenuBadge_shadow_GetFrameInfo kind:function(arm,size=0xac) addr:0x02092c7c local
+MenuBadge_shadow_Load kind:function(arm,size=0xa4) addr:0x02092d28 local
+MenuBadge_shadow_Init kind:function(arm,size=0x2c) addr:0x02092dcc local
+MenuBadge_shadow_Update kind:function(arm,size=0x34) addr:0x02092df8 local
+MenuBadge_shadow_Render kind:function(arm,size=0x20) addr:0x02092e2c local
+MenuBadge_shadow_Release kind:function(arm,size=0x14) addr:0x02092e4c local
+MenuBadge_shadow_RunTask kind:function(arm,size=0x48) addr:0x02092e60 local
+MenuBadge_shadow_CreateTask kind:function(arm,size=0x34) addr:0x02092ea8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgLV.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgLV_GetFrameInfo kind:function(arm,size=0xac) addr:0x02092edc
+MenuBadge_bdgLV_Load kind:function(arm,size=0x26c) addr:0x02092f88
+MenuBadge_bdgLV_Init kind:function(arm,size=0x20) addr:0x020931f4
+MenuBadge_bdgLV_Update kind:function(arm,size=0x2c) addr:0x02093214
+MenuBadge_bdgLV_Render kind:function(arm,size=0x5c) addr:0x02093240
+MenuBadge_bdgLV_Release kind:function(arm,size=0x2c) addr:0x0209329c
+MenuBadge_bdgLV_RunTask kind:function(arm,size=0x48) addr:0x020932c8
+MenuBadge_bdgLV_CreateTask kind:function(arm,size=0x70) addr:0x02093310
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgBP.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgBP_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02093380 local
+MenuBadge_bdgBP_Load kind:function(arm,size=0x158) addr:0x02093428 local
+MenuBadge_bdgBP_Init kind:function(arm,size=0x28) addr:0x02093580 local
+MenuBadge_bdgBP_Update kind:function(arm,size=0x20) addr:0x020935a8 local
+MenuBadge_bdgBP_Render kind:function(arm,size=0x6c) addr:0x020935c8 local
+MenuBadge_bdgBP_Release kind:function(arm,size=0x20) addr:0x02093634 local
+MenuBadge_bdgBP_RunTask kind:function(arm,size=0x48) addr:0x02093654 local
+MenuBadge_bdgBP_CreateTask kind:function(arm,size=0x7c) addr:0x0209369c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgSC.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgSC_GetFrameInfo kind:function(arm,size=0xac) addr:0x02093718 local
+MenuBadge_bdgSC_Load kind:function(arm,size=0x14c) addr:0x020937c4 local
+MenuBadge_bdgSC_Init kind:function(arm,size=0x20) addr:0x02093910 local
+MenuBadge_bdgSC_Update kind:function(arm,size=0x14) addr:0x02093930 local
+MenuBadge_bdgSC_Render kind:function(arm,size=0x3c) addr:0x02093944 local
+MenuBadge_bdgSC_Release kind:function(arm,size=0x14) addr:0x02093980 local
+MenuBadge_bdgSC_RunTask kind:function(arm,size=0x48) addr:0x02093994 local
+MenuBadge_bdgSC_CreateTask kind:function(arm,size=0x64) addr:0x020939dc
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgPRI.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgPRI_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02093a40 local
+MenuBadge_bdgPRI_Load kind:function(arm,size=0xe0) addr:0x02093ae8 local
+MenuBadge_bdgPRI_Init kind:function(arm,size=0x28) addr:0x02093bc8 local
+MenuBadge_bdgPRI_Update kind:function(arm,size=0x14) addr:0x02093bf0 local
+MenuBadge_bdgPRI_Render kind:function(arm,size=0x20) addr:0x02093c04 local
+MenuBadge_bdgPRI_Release kind:function(arm,size=0x14) addr:0x02093c24 local
+MenuBadge_bdgPRI_RunTask kind:function(arm,size=0x48) addr:0x02093c38 local
+MenuBadge_bdgPRI_CreateTask kind:function(arm,size=0x64) addr:0x02093c80
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgNum.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgNum_GetFrameInfo kind:function(arm,size=0xac) addr:0x02093ce4 local
+MenuBadge_bdgNum_Load kind:function(arm,size=0x2c4) addr:0x02093d90 local
+MenuBadge_bdgNum_Init kind:function(arm,size=0x34) addr:0x02094054 local
+MenuBadge_bdgNum_Update kind:function(arm,size=0x34) addr:0x02094088 local
+MenuBadge_bdgNum_Render kind:function(arm,size=0x74) addr:0x020940bc local
+MenuBadge_bdgNum_Release kind:function(arm,size=0x34) addr:0x02094130 local
+MenuBadge_bdgNum_RunTask kind:function(arm,size=0x48) addr:0x02094164 local
+MenuBadge_bdgNum_CreateTask kind:function(arm,size=0x58) addr:0x020941ac
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgCur.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgCur_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02094204 local
+MenuBadge_bdgCur_Load kind:function(arm,size=0x98) addr:0x020942ac local
+MenuBadge_bdgCur_Init kind:function(arm,size=0x20) addr:0x02094344 local
+MenuBadge_bdgCur_Update kind:function(arm,size=0xec) addr:0x02094364 local
+MenuBadge_bdgCur_Render kind:function(arm,size=0x20) addr:0x02094450 local
+MenuBadge_bdgCur_Release kind:function(arm,size=0x14) addr:0x02094470 local
+MenuBadge_bdgCur_RunTask kind:function(arm,size=0x48) addr:0x02094484 local
+MenuBadge_bdgCur_CreateTask kind:function(arm,size=0x34) addr:0x020944cc
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_gbgBox.c
+/////////////////////////////////////////////////////////////
+MenuBadge_gbgBox_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02094500 local
+MenuBadge_gbgBox_Load kind:function(arm,size=0x74) addr:0x0209459c local
+MenuBadge_gbgBox_Init kind:function(arm,size=0x40) addr:0x02094610 local
+MenuBadge_gbgBox_Update kind:function(arm,size=0xbc) addr:0x02094650 local
+MenuBadge_gbgBox_Render kind:function(arm,size=0x20) addr:0x0209470c local
+MenuBadge_gbgBox_Release kind:function(arm,size=0x14) addr:0x0209472c local
+MenuBadge_gbgBox_RunTask kind:function(arm,size=0x48) addr:0x02094740 local
+MenuBadge_gbgBox_CreateTask kind:function(arm,size=0x34) addr:0x02094788
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_sbar.c
+/////////////////////////////////////////////////////////////
+func_ov043_020947bc kind:function(arm,size=0x5c) addr:0x020947bc local
+func_ov043_02094818 kind:function(arm,size=0x3c) addr:0x02094818 local
+func_ov043_02094854 kind:function(arm,size=0x9c) addr:0x02094854 local
+func_ov043_020948f0 kind:function(arm,size=0xcc) addr:0x020948f0 local
+func_ov043_020949bc kind:function(arm,size=0x2c) addr:0x020949bc local
+func_ov043_020949e8 kind:function(arm,size=0x338) addr:0x020949e8 local
+func_ov043_02094d20 kind:function(arm,size=0x2c) addr:0x02094d20 local
+func_ov043_02094d4c kind:function(arm,size=0x2c) addr:0x02094d4c local
+func_ov043_02094d78 kind:function(arm,size=0x48) addr:0x02094d78 local
 func_ov043_02094dc0 kind:function(arm,size=0x34) addr:0x02094dc0
-func_ov043_02094df4 kind:function(arm,size=0x9c) addr:0x02094df4
-func_ov043_02094e90 kind:function(arm,size=0xcc) addr:0x02094e90
-func_ov043_02094f5c kind:function(arm,size=0x28) addr:0x02094f5c
-func_ov043_02094f84 kind:function(arm,size=0x154) addr:0x02094f84
-func_ov043_020950d8 kind:function(arm,size=0x2c) addr:0x020950d8
-func_ov043_02095104 kind:function(arm,size=0x2c) addr:0x02095104
-func_ov043_02095130 kind:function(arm,size=0x48) addr:0x02095130
-func_ov043_02095178 kind:function(arm,size=0x34) addr:0x02095178
-func_ov043_020951ac kind:function(arm,size=0x9c) addr:0x020951ac
-func_ov043_02095248 kind:function(arm,size=0xd0) addr:0x02095248
-func_ov043_02095318 kind:function(arm,size=0x28) addr:0x02095318
-func_ov043_02095340 kind:function(arm,size=0x30) addr:0x02095340
-func_ov043_02095370 kind:function(arm,size=0x30) addr:0x02095370
-func_ov043_020953a0 kind:function(arm,size=0x34) addr:0x020953a0
-func_ov043_020953d4 kind:function(arm,size=0x48) addr:0x020953d4
-func_ov043_0209541c kind:function(arm,size=0x34) addr:0x0209541c
-func_ov043_02095450 kind:function(arm,size=0x9c) addr:0x02095450
-func_ov043_020954ec kind:function(arm,size=0x118) addr:0x020954ec
-func_ov043_02095604 kind:function(arm,size=0x28) addr:0x02095604
-func_ov043_0209562c kind:function(arm,size=0xac) addr:0x0209562c
-func_ov043_020956d8 kind:function(arm,size=0x30) addr:0x020956d8
-func_ov043_02095708 kind:function(arm,size=0x34) addr:0x02095708
-func_ov043_0209573c kind:function(arm,size=0x48) addr:0x0209573c
-func_ov043_02095784 kind:function(arm,size=0x34) addr:0x02095784
-func_ov043_020957b8 kind:function(arm,size=0x188) addr:0x020957b8
-func_ov043_02095940 kind:function(arm,size=0xd8) addr:0x02095940
-func_ov043_02095a18 kind:function(arm,size=0x9c) addr:0x02095a18
-func_ov043_02095ab4 kind:function(arm,size=0x198) addr:0x02095ab4
-func_ov043_02095c4c kind:function(arm,size=0x20) addr:0x02095c4c
-func_ov043_02095c6c kind:function(arm,size=0x34) addr:0x02095c6c
-func_ov043_02095ca0 kind:function(arm,size=0x40) addr:0x02095ca0
-func_ov043_02095ce0 kind:function(arm,size=0x2c) addr:0x02095ce0
-func_ov043_02095d0c kind:function(arm,size=0x48) addr:0x02095d0c
-func_ov043_02095d54 kind:function(arm,size=0x40) addr:0x02095d54
-func_ov043_02095d94 kind:function(arm,size=0x9c) addr:0x02095d94
-func_ov043_02095e30 kind:function(arm,size=0x15c) addr:0x02095e30
-func_ov043_02095f8c kind:function(arm,size=0x20) addr:0x02095f8c
-func_ov043_02095fac kind:function(arm,size=0x178) addr:0x02095fac
-func_ov043_02096124 kind:function(arm,size=0x40) addr:0x02096124
-func_ov043_02096164 kind:function(arm,size=0x3c) addr:0x02096164
-func_ov043_020961a0 kind:function(arm,size=0x48) addr:0x020961a0
-func_ov043_020961e8 kind:function(arm,size=0x34) addr:0x020961e8
-func_ov043_0209621c kind:function(arm,size=0x9c) addr:0x0209621c
-func_ov043_020962b8 kind:function(arm,size=0x134) addr:0x020962b8
-func_ov043_020963ec kind:function(arm,size=0x3c) addr:0x020963ec
-func_ov043_02096428 kind:function(arm,size=0x20) addr:0x02096428
-func_ov043_02096448 kind:function(arm,size=0xd8) addr:0x02096448
-func_ov043_02096520 kind:function(arm,size=0x40) addr:0x02096520
-func_ov043_02096560 kind:function(arm,size=0x30) addr:0x02096560
-func_ov043_02096590 kind:function(arm,size=0x48) addr:0x02096590
-func_ov043_020965d8 kind:function(arm,size=0x34) addr:0x020965d8
-func_ov043_0209660c kind:function(arm,size=0x9c) addr:0x0209660c
-func_ov043_020966a8 kind:function(arm,size=0x84) addr:0x020966a8
-func_ov043_0209672c kind:function(arm,size=0x28) addr:0x0209672c
-func_ov043_02096754 kind:function(arm,size=0x14) addr:0x02096754
-func_ov043_02096768 kind:function(arm,size=0x20) addr:0x02096768
-func_ov043_02096788 kind:function(arm,size=0x14) addr:0x02096788
-func_ov043_0209679c kind:function(arm,size=0x48) addr:0x0209679c
-func_ov043_020967e4 kind:function(arm,size=0x34) addr:0x020967e4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tab.c
+/////////////////////////////////////////////////////////////
+MenuBadge_tab_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02094df4 local
+MenuBadge_tab_Load kind:function(arm,size=0xcc) addr:0x02094e90 local
+MenuBadge_tab_Init kind:function(arm,size=0x28) addr:0x02094f5c local
+MenuBadge_tab_Update kind:function(arm,size=0x154) addr:0x02094f84 local
+MenuBadge_tab_Render kind:function(arm,size=0x2c) addr:0x020950d8 local
+MenuBadge_tab_Release kind:function(arm,size=0x2c) addr:0x02095104 local
+MenuBadge_tab_RunTask kind:function(arm,size=0x48) addr:0x02095130 local
+MenuBadge_tab_CreateTask kind:function(arm,size=0x34) addr:0x02095178
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabBdgType.c
+/////////////////////////////////////////////////////////////
+MenuBadge_tabBdgType_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020951ac local
+MenuBadge_tabBdgType_Load kind:function(arm,size=0xd0) addr:0x02095248 local
+MenuBadge_tabBdgType_Init kind:function(arm,size=0x28) addr:0x02095318 local
+MenuBadge_tabBdgType_Update kind:function(arm,size=0x30) addr:0x02095340 local
+MenuBadge_tabBdgType_Render kind:function(arm,size=0x30) addr:0x02095370 local
+MenuBadge_tabBdgType_Release kind:function(arm,size=0x34) addr:0x020953a0 local
+MenuBadge_tabBdgType_RunTask kind:function(arm,size=0x48) addr:0x020953d4 local
+MenuBadge_tabBdgType_CreateTask kind:function(arm,size=0x34) addr:0x0209541c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabDeck.c
+/////////////////////////////////////////////////////////////
+MenuBadge_tabDeck_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02095450 local
+MenuBadge_tabDeck_Load kind:function(arm,size=0x118) addr:0x020954ec local
+MenuBadge_tabDeck_Init kind:function(arm,size=0x28) addr:0x02095604 local
+MenuBadge_tabDeck_Update kind:function(arm,size=0xac) addr:0x0209562c local
+MenuBadge_tabDeck_Render kind:function(arm,size=0x30) addr:0x020956d8 local
+MenuBadge_tabDeck_Release kind:function(arm,size=0x34) addr:0x02095708 local
+MenuBadge_tabDeck_RunTask kind:function(arm,size=0x48) addr:0x0209573c local
+MenuBadge_tabDeck_CreateTask kind:function(arm,size=0x34) addr:0x02095784
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numMoney.c
+/////////////////////////////////////////////////////////////
+func_ov043_020957b8 kind:function(arm,size=0x188) addr:0x020957b8 local
+func_ov043_02095940 kind:function(arm,size=0xd8) addr:0x02095940 local
+MenuBadge_numMoney_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02095a18 local
+MenuBadge_numMoney_Load kind:function(arm,size=0x198) addr:0x02095ab4 local
+MenuBadge_numMoney_Init kind:function(arm,size=0x20) addr:0x02095c4c local
+MenuBadge_numMoney_Update kind:function(arm,size=0x34) addr:0x02095c6c local
+MenuBadge_numMoney_Render kind:function(arm,size=0x40) addr:0x02095ca0 local
+MenuBadge_numMoney_Release kind:function(arm,size=0x2c) addr:0x02095ce0 local
+MenuBadge_numMoney_RunTask kind:function(arm,size=0x48) addr:0x02095d0c local
+MenuBadge_numMoney_CreateTask kind:function(arm,size=0x40) addr:0x02095d54
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window0.c
+/////////////////////////////////////////////////////////////
+MenuBadge_window0_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02095d94 local
+MenuBadge_window0_Load kind:function(arm,size=0x15c) addr:0x02095e30 local
+MenuBadge_window0_Init kind:function(arm,size=0x20) addr:0x02095f8c local
+MenuBadge_window0_Update kind:function(arm,size=0x178) addr:0x02095fac local
+MenuBadge_window0_Render kind:function(arm,size=0x40) addr:0x02096124 local
+MenuBadge_window0_Release kind:function(arm,size=0x3c) addr:0x02096164 local
+MenuBadge_window0_RunTask kind:function(arm,size=0x48) addr:0x020961a0 local
+MenuBadge_window0_CreateTask kind:function(arm,size=0x34) addr:0x020961e8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window1.c
+/////////////////////////////////////////////////////////////
+MenuBadge_window1_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209621c local
+MenuBadge_window1_Load kind:function(arm,size=0x134) addr:0x020962b8 local
+func_ov043_020963ec kind:function(arm,size=0x3c) addr:0x020963ec local
+MenuBadge_window1_Init kind:function(arm,size=0x20) addr:0x02096428 local
+MenuBadge_window1_Update kind:function(arm,size=0xd8) addr:0x02096448 local
+MenuBadge_window1_Render kind:function(arm,size=0x40) addr:0x02096520 local
+MenuBadge_window1_Release kind:function(arm,size=0x30) addr:0x02096560 local
+MenuBadge_window1_RunTask kind:function(arm,size=0x48) addr:0x02096590 local
+MenuBadge_window1_CreateTask kind:function(arm,size=0x34) addr:0x020965d8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window2.c
+/////////////////////////////////////////////////////////////
+MenuBadge_window2_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209660c local
+MenuBadge_window2_Load kind:function(arm,size=0x84) addr:0x020966a8 local
+MenuBadge_window2_Init kind:function(arm,size=0x28) addr:0x0209672c local
+MenuBadge_window2_Update kind:function(arm,size=0x14) addr:0x02096754 local
+MenuBadge_window2_Render kind:function(arm,size=0x20) addr:0x02096768 local
+MenuBadge_window2_Release kind:function(arm,size=0x14) addr:0x02096788 local
+MenuBadge_window2_RunTask kind:function(arm,size=0x48) addr:0x0209679c local
+MenuBadge_window2_CreateTask kind:function(arm,size=0x34) addr:0x020967e4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScr.c
+/////////////////////////////////////////////////////////////
 func_ov043_02096818 kind:function(arm,size=0x50) addr:0x02096818
 func_ov043_02096868 kind:function(arm,size=0x264) addr:0x02096868
 func_ov043_02096acc kind:function(arm,size=0x1e0) addr:0x02096acc
@@ -694,55 +774,83 @@ func_ov043_020973d8 kind:function(arm,size=0x8) addr:0x020973d8
 func_ov043_020973e0 kind:function(arm,size=0x30) addr:0x020973e0
 func_ov043_02097410 kind:function(arm,size=0x48) addr:0x02097410
 func_ov043_02097458 kind:function(arm,size=0x34) addr:0x02097458
-func_ov043_0209748c kind:function(arm,size=0x9c) addr:0x0209748c
-func_ov043_02097528 kind:function(arm,size=0xb0) addr:0x02097528
-func_ov043_020975d8 kind:function(arm,size=0x20) addr:0x020975d8
-func_ov043_020975f8 kind:function(arm,size=0x14) addr:0x020975f8
-func_ov043_0209760c kind:function(arm,size=0x14) addr:0x0209760c
-func_ov043_02097620 kind:function(arm,size=0x14) addr:0x02097620
-func_ov043_02097634 kind:function(arm,size=0x48) addr:0x02097634
-func_ov043_0209767c kind:function(arm,size=0x38) addr:0x0209767c
-func_ov043_020976b4 kind:function(arm,size=0x9c) addr:0x020976b4
-func_ov043_02097750 kind:function(arm,size=0x104) addr:0x02097750
-func_ov043_02097854 kind:function(arm,size=0x20) addr:0x02097854
-func_ov043_02097874 kind:function(arm,size=0x12c) addr:0x02097874
-func_ov043_020979a0 kind:function(arm,size=0x40) addr:0x020979a0
-func_ov043_020979e0 kind:function(arm,size=0x2c) addr:0x020979e0
-func_ov043_02097a0c kind:function(arm,size=0x48) addr:0x02097a0c
-func_ov043_02097a54 kind:function(arm,size=0x34) addr:0x02097a54
-func_ov043_02097a88 kind:function(arm,size=0x9c) addr:0x02097a88
-func_ov043_02097b24 kind:function(arm,size=0xf4) addr:0x02097b24
-func_ov043_02097c18 kind:function(arm,size=0x2c) addr:0x02097c18
-func_ov043_02097c44 kind:function(arm,size=0xbc) addr:0x02097c44
-func_ov043_02097d00 kind:function(arm,size=0x20) addr:0x02097d00
-func_ov043_02097d20 kind:function(arm,size=0x14) addr:0x02097d20
-func_ov043_02097d34 kind:function(arm,size=0x48) addr:0x02097d34
-func_ov043_02097d7c kind:function(arm,size=0x58) addr:0x02097d7c
-func_ov043_02097dd4 kind:function(arm,size=0x9c) addr:0x02097dd4
-func_ov043_02097e70 kind:function(arm,size=0x74) addr:0x02097e70
-func_ov043_02097ee4 kind:function(arm,size=0x28) addr:0x02097ee4
-func_ov043_02097f0c kind:function(arm,size=0x50) addr:0x02097f0c
-func_ov043_02097f5c kind:function(arm,size=0x20) addr:0x02097f5c
-func_ov043_02097f7c kind:function(arm,size=0x14) addr:0x02097f7c
-func_ov043_02097f90 kind:function(arm,size=0x48) addr:0x02097f90
-func_ov043_02097fd8 kind:function(arm,size=0x34) addr:0x02097fd8
-func_ov043_0209800c kind:function(arm,size=0x9c) addr:0x0209800c
-func_ov043_020980a8 kind:function(arm,size=0x134) addr:0x020980a8
-func_ov043_020981dc kind:function(arm,size=0x28) addr:0x020981dc
-func_ov043_02098204 kind:function(arm,size=0x6c) addr:0x02098204
-func_ov043_02098270 kind:function(arm,size=0x34) addr:0x02098270
-func_ov043_020982a4 kind:function(arm,size=0x34) addr:0x020982a4
-func_ov043_020982d8 kind:function(arm,size=0x48) addr:0x020982d8
-func_ov043_02098320 kind:function(arm,size=0x34) addr:0x02098320
-func_ov043_02098354 kind:function(arm,size=0x14c) addr:0x02098354
-func_ov043_020984a0 kind:function(arm,size=0xa0) addr:0x020984a0
-func_ov043_02098540 kind:function(arm,size=0xdc) addr:0x02098540
-func_ov043_0209861c kind:function(arm,size=0x28) addr:0x0209861c
-func_ov043_02098644 kind:function(arm,size=0x18) addr:0x02098644
-func_ov043_0209865c kind:function(arm,size=0x24) addr:0x0209865c
-func_ov043_02098680 kind:function(arm,size=0x18) addr:0x02098680
-func_ov043_02098698 kind:function(arm,size=0x48) addr:0x02098698
-func_ov043_020986e0 kind:function(arm,size=0x58) addr:0x020986e0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_slotCover.c
+/////////////////////////////////////////////////////////////
+MenuBadge_slotCover_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209748c local
+MenuBadge_slotCover_Load kind:function(arm,size=0xb0) addr:0x02097528 local
+MenuBadge_slotCover_Init kind:function(arm,size=0x20) addr:0x020975d8 local
+MenuBadge_slotCover_Update kind:function(arm,size=0x14) addr:0x020975f8 local
+MenuBadge_slotCover_Render kind:function(arm,size=0x14) addr:0x0209760c local
+MenuBadge_slotCover_Release kind:function(arm,size=0x14) addr:0x02097620 local
+MenuBadge_slotCover_RunTask kind:function(arm,size=0x48) addr:0x02097634 local
+MenuBadge_slotCover_CreateTask kind:function(arm,size=0x38) addr:0x0209767c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCur.c
+/////////////////////////////////////////////////////////////
+MenuBadge_helpCur_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020976b4 local
+MenuBadge_helpCur_Load kind:function(arm,size=0x104) addr:0x02097750 local
+MenuBadge_helpCur_Init kind:function(arm,size=0x20) addr:0x02097854 local
+MenuBadge_helpCur_Update kind:function(arm,size=0x12c) addr:0x02097874 local
+MenuBadge_helpCur_Render kind:function(arm,size=0x40) addr:0x020979a0 local
+MenuBadge_helpCur_Release kind:function(arm,size=0x2c) addr:0x020979e0 local
+MenuBadge_helpCur_RunTask kind:function(arm,size=0x48) addr:0x02097a0c local
+MenuBadge_helpCur_CreateTask kind:function(arm,size=0x34) addr:0x02097a54
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_stkmstIn.c
+/////////////////////////////////////////////////////////////
+MenuBadge_stkmstIn_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02097a88 local
+MenuBadge_stkmstIn_Load kind:function(arm,size=0xf4) addr:0x02097b24 local
+MenuBadge_stkmstIn_Init kind:function(arm,size=0x2c) addr:0x02097c18 local
+MenuBadge_stkmstIn_Update kind:function(arm,size=0xbc) addr:0x02097c44 local
+MenuBadge_stkmstIn_Render kind:function(arm,size=0x20) addr:0x02097d00 local
+MenuBadge_stkmstIn_Release kind:function(arm,size=0x14) addr:0x02097d20 local
+MenuBadge_stkmstIn_RunTask kind:function(arm,size=0x48) addr:0x02097d34 local
+MenuBadge_stkmstIn_CreateTask kind:function(arm,size=0x58) addr:0x02097d7c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_pointer.c
+/////////////////////////////////////////////////////////////
+MenuBadge_pointer_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02097dd4 local
+MenuBadge_pointer_Load kind:function(arm,size=0x74) addr:0x02097e70 local
+MenuBadge_pointer_Init kind:function(arm,size=0x28) addr:0x02097ee4 local
+MenuBadge_pointer_Update kind:function(arm,size=0x50) addr:0x02097f0c local
+MenuBadge_pointer_Render kind:function(arm,size=0x20) addr:0x02097f5c local
+MenuBadge_pointer_Release kind:function(arm,size=0x14) addr:0x02097f7c local
+MenuBadge_pointer_RunTask kind:function(arm,size=0x48) addr:0x02097f90 local
+MenuBadge_pointer_CreateTask kind:function(arm,size=0x34) addr:0x02097fd8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_nameU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_nameU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209800c local
+MenuBadge_nameU_Load kind:function(arm,size=0x134) addr:0x020980a8 local
+MenuBadge_nameU_Init kind:function(arm,size=0x28) addr:0x020981dc local
+MenuBadge_nameU_Update kind:function(arm,size=0x6c) addr:0x02098204 local
+MenuBadge_nameU_Render kind:function(arm,size=0x34) addr:0x02098270 local
+MenuBadge_nameU_Release kind:function(arm,size=0x34) addr:0x020982a4 local
+MenuBadge_nameU_RunTask kind:function(arm,size=0x48) addr:0x020982d8 local
+MenuBadge_nameU_CreateTask kind:function(arm,size=0x34) addr:0x02098320
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_bdgU_LoadPackedData kind:function(arm,size=0x14c) addr:0x02098354 local
+MenuBadge_bdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020984a0 local
+MenuBadge_bdgU_Load kind:function(arm,size=0xdc) addr:0x02098540 local
+MenuBadge_bdgU_Init kind:function(arm,size=0x28) addr:0x0209861c local
+MenuBadge_bdgU_Update kind:function(arm,size=0x18) addr:0x02098644 local
+MenuBadge_bdgU_Render kind:function(arm,size=0x24) addr:0x0209865c local
+MenuBadge_bdgU_Release kind:function(arm,size=0x18) addr:0x02098680 local
+MenuBadge_bdgU_RunTask kind:function(arm,size=0x48) addr:0x02098698 local
+MenuBadge_bdgU_CreateTask kind:function(arm,size=0x58) addr:0x020986e0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScrU.c
+/////////////////////////////////////////////////////////////
 func_ov043_02098738 kind:function(arm,size=0x14) addr:0x02098738
 func_ov043_0209874c kind:function(arm,size=0x14) addr:0x0209874c
 func_ov043_02098760 kind:function(arm,size=0x9c) addr:0x02098760
@@ -768,49 +876,69 @@ func_ov043_02099a74 kind:function(arm,size=0x8) addr:0x02099a74
 func_ov043_02099a7c kind:function(arm,size=0x30) addr:0x02099a7c
 func_ov043_02099aac kind:function(arm,size=0x48) addr:0x02099aac
 func_ov043_02099af4 kind:function(arm,size=0x34) addr:0x02099af4
-func_ov043_02099b28 kind:function(arm,size=0x9c) addr:0x02099b28
-func_ov043_02099bc4 kind:function(arm,size=0xc4) addr:0x02099bc4
-func_ov043_02099c88 kind:function(arm,size=0x20) addr:0x02099c88
-func_ov043_02099ca8 kind:function(arm,size=0x14) addr:0x02099ca8
-func_ov043_02099cbc kind:function(arm,size=0x20) addr:0x02099cbc
-func_ov043_02099cdc kind:function(arm,size=0x14) addr:0x02099cdc
-func_ov043_02099cf0 kind:function(arm,size=0x48) addr:0x02099cf0
-func_ov043_02099d38 kind:function(arm,size=0x4c) addr:0x02099d38
-func_ov043_02099d84 kind:function(arm,size=0x10c) addr:0x02099d84
-func_ov043_02099e90 kind:function(arm,size=0x9c) addr:0x02099e90
-func_ov043_02099f2c kind:function(arm,size=0x1c8) addr:0x02099f2c
-func_ov043_0209a0f4 kind:function(arm,size=0x20) addr:0x0209a0f4
-func_ov043_0209a114 kind:function(arm,size=0x40) addr:0x0209a114
-func_ov043_0209a154 kind:function(arm,size=0x40) addr:0x0209a154
-func_ov043_0209a194 kind:function(arm,size=0x2c) addr:0x0209a194
-func_ov043_0209a1c0 kind:function(arm,size=0x48) addr:0x0209a1c0
-func_ov043_0209a208 kind:function(arm,size=0x34) addr:0x0209a208
-func_ov043_0209a23c kind:function(arm,size=0x68) addr:0x0209a23c
-func_ov043_0209a2a4 kind:function(arm,size=0x124) addr:0x0209a2a4
-func_ov043_0209a3c8 kind:function(arm,size=0x9c) addr:0x0209a3c8
-func_ov043_0209a464 kind:function(arm,size=0x13c) addr:0x0209a464
-func_ov043_0209a5a0 kind:function(arm,size=0x20) addr:0x0209a5a0
-func_ov043_0209a5c0 kind:function(arm,size=0x34) addr:0x0209a5c0
-func_ov043_0209a5f4 kind:function(arm,size=0xa4) addr:0x0209a5f4
-func_ov043_0209a698 kind:function(arm,size=0x2c) addr:0x0209a698
-func_ov043_0209a6c4 kind:function(arm,size=0x48) addr:0x0209a6c4
-func_ov043_0209a70c kind:function(arm,size=0x34) addr:0x0209a70c
-func_ov043_0209a740 kind:function(arm,size=0x9c) addr:0x0209a740
-func_ov043_0209a7dc kind:function(arm,size=0xa8) addr:0x0209a7dc
-func_ov043_0209a884 kind:function(arm,size=0x20) addr:0x0209a884
-func_ov043_0209a8a4 kind:function(arm,size=0x78) addr:0x0209a8a4
-func_ov043_0209a91c kind:function(arm,size=0x40) addr:0x0209a91c
-func_ov043_0209a95c kind:function(arm,size=0x30) addr:0x0209a95c
-func_ov043_0209a98c kind:function(arm,size=0x48) addr:0x0209a98c
-func_ov043_0209a9d4 kind:function(arm,size=0x34) addr:0x0209a9d4
-func_ov043_0209aa08 kind:function(arm,size=0x9c) addr:0x0209aa08
-func_ov043_0209aaa4 kind:function(arm,size=0xd4) addr:0x0209aaa4
-func_ov043_0209ab78 kind:function(arm,size=0x20) addr:0x0209ab78
-func_ov043_0209ab98 kind:function(arm,size=0x5c) addr:0x0209ab98
-func_ov043_0209abf4 kind:function(arm,size=0x20) addr:0x0209abf4
-func_ov043_0209ac14 kind:function(arm,size=0x14) addr:0x0209ac14
-func_ov043_0209ac28 kind:function(arm,size=0x48) addr:0x0209ac28
-func_ov043_0209ac70 kind:function(arm,size=0x34) addr:0x0209ac70
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_brdLogoU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_brdLogoU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02099b28 local
+MenuBadge_brdLogoU_Load kind:function(arm,size=0xc4) addr:0x02099bc4 local
+MenuBadge_brdLogoU_Init kind:function(arm,size=0x20) addr:0x02099c88 local
+MenuBadge_brdLogoU_Update kind:function(arm,size=0x14) addr:0x02099ca8 local
+MenuBadge_brdLogoU_Render kind:function(arm,size=0x20) addr:0x02099cbc local
+MenuBadge_brdLogoU_Release kind:function(arm,size=0x14) addr:0x02099cdc local
+MenuBadge_brdLogoU_RunTask kind:function(arm,size=0x48) addr:0x02099cf0 local
+MenuBadge_brdLogoU_CreateTask kind:function(arm,size=0x4c) addr:0x02099d38
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numBdgIdU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_numBdgIdU_UpdateDigits kind:function(arm,size=0x10c) addr:0x02099d84 local
+MenuBadge_numBdgIdU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02099e90 local
+MenuBadge_numBdgIdU_Load kind:function(arm,size=0x1c8) addr:0x02099f2c local
+MenuBadge_numBdgIdU_Init kind:function(arm,size=0x20) addr:0x0209a0f4 local
+MenuBadge_numBdgIdU_Update kind:function(arm,size=0x40) addr:0x0209a114 local
+MenuBadge_numBdgIdU_Render kind:function(arm,size=0x40) addr:0x0209a154 local
+MenuBadge_numBdgIdU_Release kind:function(arm,size=0x2c) addr:0x0209a194 local
+MenuBadge_numBdgIdU_RunTask kind:function(arm,size=0x48) addr:0x0209a1c0 local
+MenuBadge_numBdgIdU_CreateTask kind:function(arm,size=0x34) addr:0x0209a208
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bpGaugeU.c
+/////////////////////////////////////////////////////////////
+func_ov043_0209a23c kind:function(arm,size=0x68) addr:0x0209a23c local
+func_ov043_0209a2a4 kind:function(arm,size=0x124) addr:0x0209a2a4 local
+MenuBadge_bpGaugeU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209a3c8 local
+MenuBadge_bpGaugeU_Load kind:function(arm,size=0x13c) addr:0x0209a464 local
+MenuBadge_bpGaugeU_Init kind:function(arm,size=0x20) addr:0x0209a5a0 local
+MenuBadge_bpGaugeU_Update kind:function(arm,size=0x34) addr:0x0209a5c0 local
+MenuBadge_bpGaugeU_Render kind:function(arm,size=0xa4) addr:0x0209a5f4 local
+MenuBadge_bpGaugeU_Release kind:function(arm,size=0x2c) addr:0x0209a698 local
+MenuBadge_bpGaugeU_RunTask kind:function(arm,size=0x48) addr:0x0209a6c4 local
+MenuBadge_bpGaugeU_CreateTask kind:function(arm,size=0x34) addr:0x0209a70c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCurU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_helpCurU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209a740 local
+MenuBadge_helpCurU_Load kind:function(arm,size=0xa8) addr:0x0209a7dc local
+MenuBadge_helpCurU_Init kind:function(arm,size=0x20) addr:0x0209a884 local
+MenuBadge_helpCurU_Update kind:function(arm,size=0x78) addr:0x0209a8a4 local
+MenuBadge_helpCurU_Render kind:function(arm,size=0x40) addr:0x0209a91c local
+MenuBadge_helpCurU_Release kind:function(arm,size=0x30) addr:0x0209a95c local
+MenuBadge_helpCurU_RunTask kind:function(arm,size=0x48) addr:0x0209a98c local
+MenuBadge_helpCurU_CreateTask kind:function(arm,size=0x34) addr:0x0209a9d4
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mstStarU.c
+/////////////////////////////////////////////////////////////
+MenuBadge_mstStarU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209aa08 local
+MenuBadge_mstStarU_Load kind:function(arm,size=0xd4) addr:0x0209aaa4 local
+MenuBadge_mstStarU_Init kind:function(arm,size=0x20) addr:0x0209ab78 local
+MenuBadge_mstStarU_Update kind:function(arm,size=0x5c) addr:0x0209ab98 local
+MenuBadge_mstStarU_Render kind:function(arm,size=0x20) addr:0x0209abf4 local
+MenuBadge_mstStarU_Release kind:function(arm,size=0x14) addr:0x0209ac14 local
+MenuBadge_mstStarU_RunTask kind:function(arm,size=0x48) addr:0x0209ac28 local
+MenuBadge_mstStarU_CreateTask kind:function(arm,size=0x34) addr:0x0209ac70
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuScena.c
@@ -2450,7 +2578,7 @@ Tsk_MenuTop_helpCurU kind:data(any) addr:0x020c8280 local
 MenuTop_helpCurU_Anim kind:data(any) addr:0x020c829c local
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/MenuBadge.c
+// src/Interface/Menu/MenuBadge.c
 /////////////////////////////////////////////////////////////
 data_ov043_020c82c8 kind:data(any) addr:0x020c82c8
 data_ov043_020c82d4 kind:data(any) addr:0x020c82d4
@@ -2462,74 +2590,153 @@ data_ov043_020c8334 kind:data(any) addr:0x020c8334
 data_ov043_020c833c kind:data(any) addr:0x020c833c
 data_ov043_020c8344 kind:data(any) addr:0x020c8344
 data_ov043_020c834c kind:data(any) addr:0x020c834c
-data_ov043_020c834e kind:data(any) addr:0x020c834e
 data_ov043_020c83c4 kind:data(any) addr:0x020c83c4
 data_ov043_020c845c kind:data(any) addr:0x020c845c
 data_ov043_020c846c kind:data(any) addr:0x020c846c
 data_ov043_020c847c kind:data(any) addr:0x020c847c
 data_ov043_020c84fe kind:data(any) addr:0x020c84fe
-data_ov043_020c86bc kind:data(any) addr:0x020c86bc
-data_ov043_020c86c8 kind:data(any) addr:0x020c86c8
-data_ov043_020c86d8 kind:data(any) addr:0x020c86d8
-data_ov043_020c8704 kind:data(any) addr:0x020c8704
-data_ov043_020c8710 kind:data(any) addr:0x020c8710
-data_ov043_020c8720 kind:data(any) addr:0x020c8720
-data_ov043_020c874c kind:data(any) addr:0x020c874c
-data_ov043_020c8758 kind:data(any) addr:0x020c8758
-data_ov043_020c8768 kind:data(any) addr:0x020c8768
-data_ov043_020c8794 kind:data(any) addr:0x020c8794
-data_ov043_020c87a0 kind:data(any) addr:0x020c87a0
-data_ov043_020c87b0 kind:data(any) addr:0x020c87b0
-data_ov043_020c87dc kind:data(any) addr:0x020c87dc
-data_ov043_020c87e0 kind:data(any) addr:0x020c87e0
-data_ov043_020c87ec kind:data(any) addr:0x020c87ec
-data_ov043_020c87fc kind:data(any) addr:0x020c87fc
-data_ov043_020c8828 kind:data(any) addr:0x020c8828
-data_ov043_020c8834 kind:data(any) addr:0x020c8834
-data_ov043_020c8844 kind:data(any) addr:0x020c8844
-data_ov043_020c8870 kind:data(any) addr:0x020c8870
-data_ov043_020c887c kind:data(any) addr:0x020c887c
-data_ov043_020c888c kind:data(any) addr:0x020c888c
-data_ov043_020c88b8 kind:data(any) addr:0x020c88b8
-data_ov043_020c88c4 kind:data(any) addr:0x020c88c4
-data_ov043_020c88d4 kind:data(any) addr:0x020c88d4
-data_ov043_020c8900 kind:data(any) addr:0x020c8900
-data_ov043_020c8904 kind:data(any) addr:0x020c8904
-data_ov043_020c8910 kind:data(any) addr:0x020c8910
-data_ov043_020c8920 kind:data(any) addr:0x020c8920
-data_ov043_020c894c kind:data(any) addr:0x020c894c
-data_ov043_020c8958 kind:data(any) addr:0x020c8958
-data_ov043_020c8968 kind:data(any) addr:0x020c8968
-data_ov043_020c8994 kind:data(any) addr:0x020c8994
-data_ov043_020c89a0 kind:data(any) addr:0x020c89a0
-data_ov043_020c89b0 kind:data(any) addr:0x020c89b0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_icon.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_icon kind:data(any) addr:0x020c86bc local
+@1371 kind:data(any) addr:0x020c86c8 local
+MenuBadge_icon_Anim kind:data(any) addr:0x020c86d8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdg.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdg kind:data(any) addr:0x020c8704 local
+@1346 kind:data(any) addr:0x020c8710 local
+data_ov043_020c8720 kind:data(any) addr:0x020c8720 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mov.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_mov kind:data(any) addr:0x020c874c local
+@1340 kind:data(any) addr:0x020c8758 local
+MenuBadge_mov_Anim kind:data(any) addr:0x020c8768 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_shadow.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_shadow kind:data(any) addr:0x020c8794 local
+@1337 kind:data(any) addr:0x020c87a0 local
+MenuBadge_shadow_Anim kind:data(any) addr:0x020c87b0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgLV.c
+/////////////////////////////////////////////////////////////
+data_ov043_020c87dc kind:data(any) addr:0x020c87dc local
+Tsk_MenuBadge_bdgLV kind:data(any) addr:0x020c87e0 local
+@1371 kind:data(any) addr:0x020c87ec local
+MenuBadge_bdgLV_Anim kind:data(any) addr:0x020c87fc local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgBP.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdgBP kind:data(any) addr:0x020c8828 local
+@1353 kind:data(any) addr:0x020c8834 local
+MenuBadge_bdgBP_Anim kind:data(any) addr:0x020c8844 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgSC.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdgSC kind:data(any) addr:0x020c8870 local
+@1347 kind:data(any) addr:0x020c887c local
+MenuBadge_bdgSC_Anim kind:data(any) addr:0x020c888c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgPRI.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdgPRI kind:data(any) addr:0x020c88b8 local
+@1339 kind:data(any) addr:0x020c88c4 local
+MenuBadge_bdgPRI_Anim kind:data(any) addr:0x020c88d4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgNum.c
+/////////////////////////////////////////////////////////////
+data_ov043_020c8900 kind:data(any) addr:0x020c8900 local
+Tsk_MenuBadge_bdgNum kind:data(any) addr:0x020c8904 local
+@1368 kind:data(any) addr:0x020c8910 local
+MenuBadge_bdgNum_Anim kind:data(any) addr:0x020c8920 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgCur.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdgCur kind:data(any) addr:0x020c894c local
+@1352 kind:data(any) addr:0x020c8958 local
+MenuBadge_bdgCur_Anim kind:data(any) addr:0x020c8968 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_gbgBox.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_gbgBox kind:data(any) addr:0x020c8994 local
+@1376 kind:data(any) addr:0x020c89a0 local
+data_ov043_020c89b0 kind:data(any) addr:0x020c89b0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_sbar.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c89dc kind:data(any) addr:0x020c89dc
 data_ov043_020c89e8 kind:data(any) addr:0x020c89e8
 data_ov043_020c89f8 kind:data(any) addr:0x020c89f8
-data_ov043_020c8a24 kind:data(any) addr:0x020c8a24
-data_ov043_020c8a30 kind:data(any) addr:0x020c8a30
-data_ov043_020c8a40 kind:data(any) addr:0x020c8a40
-data_ov043_020c8a6c kind:data(any) addr:0x020c8a6c
-data_ov043_020c8a74 kind:data(any) addr:0x020c8a74
-data_ov043_020c8a80 kind:data(any) addr:0x020c8a80
-data_ov043_020c8a90 kind:data(any) addr:0x020c8a90
-data_ov043_020c8abc kind:data(any) addr:0x020c8abc
-data_ov043_020c8ac8 kind:data(any) addr:0x020c8ac8
-data_ov043_020c8ad8 kind:data(any) addr:0x020c8ad8
-data_ov043_020c8ae8 kind:data(any) addr:0x020c8ae8
-data_ov043_020c8b14 kind:data(any) addr:0x020c8b14
-data_ov043_020c8b20 kind:data(any) addr:0x020c8b20
-data_ov043_020c8b30 kind:data(any) addr:0x020c8b30
-data_ov043_020c8b44 kind:data(any) addr:0x020c8b44
-data_ov043_020c8b70 kind:data(any) addr:0x020c8b70
-data_ov043_020c8b7c kind:data(any) addr:0x020c8b7c
-data_ov043_020c8b8c kind:data(any) addr:0x020c8b8c
-data_ov043_020c8bb8 kind:data(any) addr:0x020c8bb8
-data_ov043_020c8bc4 kind:data(any) addr:0x020c8bc4
-data_ov043_020c8bd4 kind:data(any) addr:0x020c8bd4
-data_ov043_020c8c00 kind:data(any) addr:0x020c8c00
-data_ov043_020c8c0c kind:data(any) addr:0x020c8c0c
-data_ov043_020c8c1c kind:data(any) addr:0x020c8c1c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tab.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_tab kind:data(any) addr:0x020c8a24 local
+@1395 kind:data(any) addr:0x020c8a30 local
+MenuBadge_tab_Anim kind:data(any) addr:0x020c8a40 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabBdgType.c
+/////////////////////////////////////////////////////////////
+@1299 kind:data(any) addr:0x020c8a6c local
+Tsk_MenuBadge_tabBdgType kind:data(any) addr:0x020c8a74 local
+@1355 kind:data(any) addr:0x020c8a80 local
+MenuBadge_tabBdgType_Anim kind:data(any) addr:0x020c8a90 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabDeck.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_tabDeck kind:data(any) addr:0x020c8abc local
+@1374 kind:data(any) addr:0x020c8ac8 local
+@1303 kind:data(any) addr:0x020c8ad8 local
+MenuBadge_tabDeck_Anim kind:data(any) addr:0x020c8ae8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numMoney.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_numMoney kind:data(any) addr:0x020c8b14 local
+@1415 kind:data(any) addr:0x020c8b20 local
+@1344 kind:data(any) addr:0x020c8b30 local
+MenuBadge_numMoney_Anim kind:data(any) addr:0x020c8b44 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window0.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_window0 kind:data(any) addr:0x020c8b70 local
+@1390 kind:data(any) addr:0x020c8b7c local
+MenuBadge_window0_Anim kind:data(any) addr:0x020c8b8c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window1.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_window1 kind:data(any) addr:0x020c8bb8 local
+@1383 kind:data(any) addr:0x020c8bc4 local
+MenuBadge_window1_Anim kind:data(any) addr:0x020c8bd4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window2.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_window2 kind:data(any) addr:0x020c8c00 local
+@1337 kind:data(any) addr:0x020c8c0c local
+MenuBadge_window2_Anim kind:data(any) addr:0x020c8c1c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScr.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c8c48 kind:data(any) addr:0x020c8c48
 data_ov043_020c8c50 kind:data(any) addr:0x020c8c50
 data_ov043_020c8c5c kind:data(any) addr:0x020c8c5c
@@ -2539,45 +2746,93 @@ data_ov043_020c8c94 kind:data(any) addr:0x020c8c94
 data_ov043_020c8ca8 kind:data(any) addr:0x020c8ca8
 data_ov043_020c8cbc kind:data(any) addr:0x020c8cbc
 data_ov043_020c8cd0 kind:data(any) addr:0x020c8cd0
-data_ov043_020c8ce4 kind:data(any) addr:0x020c8ce4
-data_ov043_020c8cf0 kind:data(any) addr:0x020c8cf0
-data_ov043_020c8d00 kind:data(any) addr:0x020c8d00
-data_ov043_020c8d2c kind:data(any) addr:0x020c8d2c
-data_ov043_020c8d38 kind:data(any) addr:0x020c8d38
-data_ov043_020c8d48 kind:data(any) addr:0x020c8d48
-data_ov043_020c8d74 kind:data(any) addr:0x020c8d74
-data_ov043_020c8d80 kind:data(any) addr:0x020c8d80
-data_ov043_020c8d90 kind:data(any) addr:0x020c8d90
-data_ov043_020c8dbc kind:data(any) addr:0x020c8dbc
-data_ov043_020c8dc8 kind:data(any) addr:0x020c8dc8
-data_ov043_020c8dd8 kind:data(any) addr:0x020c8dd8
-data_ov043_020c8e04 kind:data(any) addr:0x020c8e04
-data_ov043_020c8e10 kind:data(any) addr:0x020c8e10
-data_ov043_020c8e20 kind:data(any) addr:0x020c8e20
-data_ov043_020c8e4c kind:data(any) addr:0x020c8e4c
-data_ov043_020c8e80 kind:data(any) addr:0x020c8e80
-data_ov043_020c8e8c kind:data(any) addr:0x020c8e8c
-data_ov043_020c8e9c kind:data(any) addr:0x020c8e9c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_slotCover.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_slotCover kind:data(any) addr:0x020c8ce4 local
+@1336 kind:data(any) addr:0x020c8cf0 local
+MenuBadge_slotCover_Anim kind:data(any) addr:0x020c8d00 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCur.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_helpCur kind:data(any) addr:0x020c8d2c local
+@1388 kind:data(any) addr:0x020c8d38 local
+MenuBadge_helpCur_Anim kind:data(any) addr:0x020c8d48 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_stkmstIn.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_stkmstIn kind:data(any) addr:0x020c8d74 local
+@1364 kind:data(any) addr:0x020c8d80 local
+MenuBadge_stkmstIn_Anim kind:data(any) addr:0x020c8d90 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_pointer.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_pointer kind:data(any) addr:0x020c8dbc local
+@1344 kind:data(any) addr:0x020c8dc8 local
+data_ov043_020c8dd8 kind:data(any) addr:0x020c8dd8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_nameU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_nameU kind:data(any) addr:0x020c8e04 local
+@1380 kind:data(any) addr:0x020c8e10 local
+MenuBadge_nameU_Anim kind:data(any) addr:0x020c8e20 local
+data_ov043_020c8e4c kind:data(any) addr:0x020c8e4c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bdgU kind:data(any) addr:0x020c8e80 local
+@1415 kind:data(any) addr:0x020c8e8c local
+MenuBadge_bdgU_Anim kind:data(any) addr:0x020c8e9c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScrU.c
+/////////////////////////////////////////////////////////////
 data_ov043_020c8ec8 kind:data(any) addr:0x020c8ec8
 data_ov043_020c8ee4 kind:data(any) addr:0x020c8ee4
 data_ov043_020c8efc kind:data(any) addr:0x020c8efc
 data_ov043_020c8f0c kind:data(any) addr:0x020c8f0c
-data_ov043_020c8f64 kind:data(any) addr:0x020c8f64
-data_ov043_020c8f70 kind:data(any) addr:0x020c8f70
-data_ov043_020c8f80 kind:data(any) addr:0x020c8f80
-data_ov043_020c8fac kind:data(any) addr:0x020c8fac
-data_ov043_020c8fb4 kind:data(any) addr:0x020c8fb4
-data_ov043_020c8fc0 kind:data(any) addr:0x020c8fc0
-data_ov043_020c8fd0 kind:data(any) addr:0x020c8fd0
-data_ov043_020c8ffc kind:data(any) addr:0x020c8ffc
-data_ov043_020c9008 kind:data(any) addr:0x020c9008
-data_ov043_020c9018 kind:data(any) addr:0x020c9018
-data_ov043_020c9044 kind:data(any) addr:0x020c9044
-data_ov043_020c9050 kind:data(any) addr:0x020c9050
-data_ov043_020c9060 kind:data(any) addr:0x020c9060
-data_ov043_020c908c kind:data(any) addr:0x020c908c
-data_ov043_020c9098 kind:data(any) addr:0x020c9098
-data_ov043_020c90a8 kind:data(any) addr:0x020c90a8
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_brdLogoU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_brdLogoU kind:data(any) addr:0x020c8f64 local
+@1345 kind:data(any) addr:0x020c8f70 local
+data_ov043_020c8f80 kind:data(any) addr:0x020c8f80 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numBdgIdU.c
+/////////////////////////////////////////////////////////////
+@1332 kind:data(any) addr:0x020c8fac local
+Tsk_MenuBadge_numBdgIdU kind:data(any) addr:0x020c8fb4 local
+@1412 kind:data(any) addr:0x020c8fc0 local
+MenuBadge_numBdgIdU_Anim kind:data(any) addr:0x020c8fd0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bpGaugeU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_bpGaugeU kind:data(any) addr:0x020c8ffc local
+@1499 kind:data(any) addr:0x020c9008 local
+MenuBadge_bpGaugeU_Anim kind:data(any) addr:0x020c9018 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCurU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_helpCurU kind:data(any) addr:0x020c9044 local
+@1362 kind:data(any) addr:0x020c9050 local
+MenuBadge_helpCurU_Anim kind:data(any) addr:0x020c9060 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mstStarU.c
+/////////////////////////////////////////////////////////////
+Tsk_MenuBadge_mstStarU kind:data(any) addr:0x020c908c local
+@1354 kind:data(any) addr:0x020c9098 local
+MenuBadge_mstStarU_Anim kind:data(any) addr:0x020c90a8 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuScena.c
@@ -3302,7 +3557,7 @@ data_ov043_020cb958 kind:data(any) addr:0x020cb958
 @1251 kind:data(byte[21]) addr:0x020cb9b0 local
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/MenuBadge.c
+// src/Interface/Menu/MenuBadge.c
 /////////////////////////////////////////////////////////////
 data_ov043_020cb9c8 kind:data(any) addr:0x020cb9c8
 data_ov043_020cb9cc kind:data(any) addr:0x020cb9cc
@@ -3324,38 +3579,166 @@ data_ov043_020cbb6c kind:data(any) addr:0x020cbb6c
 data_ov043_020cbbb8 kind:data(any) addr:0x020cbbb8
 data_ov043_020cbbcc kind:data(any) addr:0x020cbbcc
 data_ov043_020cbbd8 kind:data(any) addr:0x020cbbd8
-data_ov043_020cbbe8 kind:data(any) addr:0x020cbbe8
-data_ov043_020cbbfc kind:data(any) addr:0x020cbbfc
-data_ov043_020cbc10 kind:data(any) addr:0x020cbc10
-data_ov043_020cbc24 kind:data(any) addr:0x020cbc24
-data_ov043_020cbc3c kind:data(any) addr:0x020cbc3c
-data_ov043_020cbc50 kind:data(any) addr:0x020cbc50
-data_ov043_020cbc64 kind:data(any) addr:0x020cbc64
-data_ov043_020cbc78 kind:data(any) addr:0x020cbc78
-data_ov043_020cbc90 kind:data(any) addr:0x020cbc90
-data_ov043_020cbca8 kind:data(any) addr:0x020cbca8
-data_ov043_020cbcc0 kind:data(any) addr:0x020cbcc0
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_icon.c
+/////////////////////////////////////////////////////////////
+@1279 kind:data(any) addr:0x020cbbe8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdg.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbbfc local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mov.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc10 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_shadow.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc24 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgLV.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc3c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgBP.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc50 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgSC.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc64 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgPRI.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc78 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgNum.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbc90 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgCur.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbca8 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_gbgBox.c
+/////////////////////////////////////////////////////////////
+@1301 kind:data(any) addr:0x020cbcc0 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_sbar.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cbcd8 kind:data(any) addr:0x020cbcd8
-data_ov043_020cbcec kind:data(any) addr:0x020cbcec
-data_ov043_020cbd00 kind:data(any) addr:0x020cbd00
-data_ov043_020cbd1c kind:data(any) addr:0x020cbd1c
-data_ov043_020cbd34 kind:data(any) addr:0x020cbd34
-data_ov043_020cbd4c kind:data(any) addr:0x020cbd4c
-data_ov043_020cbd64 kind:data(any) addr:0x020cbd64
-data_ov043_020cbd7c kind:data(any) addr:0x020cbd7c
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tab.c
+/////////////////////////////////////////////////////////////
+@1301 kind:data(any) addr:0x020cbcec local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabBdgType.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd00 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_tabDeck.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd1c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numMoney.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd34 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window0.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd4c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window1.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd64 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_window2.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbd7c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScr.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cbd94 kind:data(any) addr:0x020cbd94
-data_ov043_020cbdac kind:data(any) addr:0x020cbdac
-data_ov043_020cbdc4 kind:data(any) addr:0x020cbdc4
-data_ov043_020cbddc kind:data(any) addr:0x020cbddc
-data_ov043_020cbdf4 kind:data(any) addr:0x020cbdf4
-data_ov043_020cbe0c kind:data(any) addr:0x020cbe0c
-data_ov043_020cbe20 kind:data(any) addr:0x020cbe20
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_slotCover.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbdac local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCur.c
+/////////////////////////////////////////////////////////////
+@1277 kind:data(any) addr:0x020cbdc4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_stkmstIn.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbddc local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_pointer.c
+/////////////////////////////////////////////////////////////
+@1279 kind:data(any) addr:0x020cbdf4 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_nameU.c
+/////////////////////////////////////////////////////////////
+@1278 kind:data(any) addr:0x020cbe0c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c
+/////////////////////////////////////////////////////////////
+@1312 kind:data(any) addr:0x020cbe20 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_textScrU.c
+/////////////////////////////////////////////////////////////
 data_ov043_020cbe34 kind:data(any) addr:0x020cbe34
-data_ov043_020cbe4c kind:data(any) addr:0x020cbe4c
-data_ov043_020cbe64 kind:data(any) addr:0x020cbe64
-data_ov043_020cbe7c kind:data(any) addr:0x020cbe7c
-data_ov043_020cbe94 kind:data(any) addr:0x020cbe94
-data_ov043_020cbeac kind:data(any) addr:0x020cbeac
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_brdLogoU.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbe4c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_numBdgIdU.c
+/////////////////////////////////////////////////////////////
+@1278 kind:data(any) addr:0x020cbe64 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_bpGaugeU.c
+/////////////////////////////////////////////////////////////
+@1379 kind:data(any) addr:0x020cbe7c local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_helpCurU.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbe94 local
+
+/////////////////////////////////////////////////////////////
+// src/Interface/Menu/MenuBadge/MenuBadge_mstStarU.c
+/////////////////////////////////////////////////////////////
+@1276 kind:data(any) addr:0x020cbeac local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuScena.c
@@ -3735,7 +4118,7 @@ data_ov043_020cd25c kind:data(any) addr:0x020cd25c
 //////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////
-// src/Debug/Takami/MenuBadge.c
+// src/Interface/Menu/MenuBadge.c
 /////////////////////////////////////////////////////////////
 data_ov043_020cd280 kind:bss addr:0x020cd280
 
