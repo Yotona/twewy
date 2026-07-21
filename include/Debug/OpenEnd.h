@@ -17,7 +17,7 @@ typedef struct {
     /* 0x0000C */ s32             dataType;
     /* 0x00010 */ ResourceManager unk_10;
     /* 0x11590 */ TaskPool        taskPool;
-    /* 0x11610 */ MemPool         memPool;
+    /* 0x11610 */ Heap            heap;
     /* 0x1161C */ void*           unk_1161C;
     /* 0x11620 */ char            pad_11620[0x3FC];
     /* 0x11A1C */ s16             introFrameCount;

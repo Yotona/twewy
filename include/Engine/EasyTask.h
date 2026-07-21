@@ -54,10 +54,10 @@ typedef struct TaskHandle {
  * @brief Structure representing the task pool, managing free, active, and pending tasks.
  */
 typedef struct TaskPool {
-    /* 0x00 */ MemPool* memPool;
-    /* 0x04 */ u32      maxTasks;
-    /* 0x08 */ void*    taskArray;
-    /* 0x0C */ Task*    lastFreedTask;
+    /* 0x00 */ Heap* heap;
+    /* 0x04 */ u32   maxTasks;
+    /* 0x08 */ void* taskArray;
+    /* 0x0C */ Task* lastFreedTask;
     /* 0x10 */ void* (*alloc)(struct TaskPool*, s32, const char*);
     /* 0x14 */ void (*free)(struct TaskPool*, void*);
     /* 0x18 */ s32  unk_18;
@@ -80,13 +80,13 @@ typedef union {
 /**
  * @brief Initializes the task pool with the given memory pool and maximum task count.
  * @param taskPool Pointer to the TaskPool to initialize.
- * @param memPool Pointer to the memory pool to use for allocations.
+ * @param heap Pointer to the Heap to use for allocations.
  * @param count Maximum number of tasks the pool can hold.
  * @param alloc Custom allocation function, or NULL to use default.
  * @param free Custom free function, or NULL to use default.
  * @return TRUE if initialization succeeded, FALSE otherwise.
  */
-BOOL EasyTask_InitializePool(TaskPool* taskPool, MemPool* memPool, u32 count, void* (*alloc)(TaskPool*, s32, const char*),
+BOOL EasyTask_InitializePool(TaskPool* taskPool, Heap* heap, u32 count, void* (*alloc)(TaskPool*, s32, const char*),
                              void (*free)(TaskPool*, void*));
 
 /**

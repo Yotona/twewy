@@ -6,6 +6,7 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
+#include "Engine/IO/Str.h"
 #include "common_data.h"
 #include "nitro/reg.h"
 #include <nitro/gx.h>
@@ -201,7 +202,7 @@ void Mini108_Update(Mini108State* stateptr) {
 
     TouchInput_Update();
 
-    Text_RenderToScreen(stateptr->unk_80, 0, 0xa, func_02006930("Score : %6d", stateptr->unk_40));
+    Text_RenderToScreen(stateptr->unk_80, 0, 0xa, Str_SPrintf("Score : %6d", stateptr->unk_40));
     OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);

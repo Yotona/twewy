@@ -10,7 +10,6 @@
 #include <nitro/os.h>
 
 extern s32 data_020636b8;
-extern s32 data_0206a9bc;
 extern s32 data_020636a0;
 
 extern void Boot(void*);
@@ -116,7 +115,7 @@ void main(void) {
         }
 
         Mem_InitializeHeap(&gMainHeap, sp0, 0x280000);
-        func_02004bbc(&data_0206a9bc, 0x20000, "TmpBuf extends FlushBuf");
+        Mem_InitPool(&data_0206a9bc, 0x20000, "TmpBuf extends FlushBuf");
 
         void* stdHeap = Mem_AllocHeapTail(&gMainHeap, 0x80000);
         Mem_SetSequence(&gMainHeap, stdHeap, "SeqHeap(StdHeap)");
@@ -148,7 +147,7 @@ void main(void) {
         Savefile_InitNewGameDefaults();
 
         while (SystemStatusFlags.reset == FALSE || SystemStatusFlags.unk_07 == FALSE) {
-            func_02004c44(&data_0206a9bc);
+            Mem_ResetPool(&data_0206a9bc);
 
             Input_PollState(&InputStatus);
             Input_UpdateRepeat(&InputStatus, INPUT_MASK_ALLBTNS);

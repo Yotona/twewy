@@ -101,9 +101,9 @@ void Depart_Init(DepartState* state) {
     func_ov043_020bd8cc();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->memPool, state->memPoolBuffer, 0x10000U);
+    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
     FS_LoadOverlay(0, &OVERLAY_31_ID);
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x200U, NULL, NULL);
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x200, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     func_ov043_020bcdb0(state);
@@ -170,8 +170,8 @@ void Depart_Destroy(DepartState* state) {
     func_ov043_020bd8e8();
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
     Mem_Free(&gDebugHeap, state);
-    func_02004a68(&gMainHeap);
-    func_02004a68(&gDebugHeap);
+    Mem_ValidateSequences(&gMainHeap);
+    Mem_ValidateSequences(&gDebugHeap);
 }
 
 const OverlayProcess OvlProc_Depart = {

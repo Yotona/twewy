@@ -10,6 +10,7 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgr.h"
 #include "common_data.h"
@@ -1434,35 +1435,35 @@ void SoundTest_DrawMenu(SoundTestState* state) {
     func_02010b84(&state->unk_215A0, 0, 0x10, 0x100, 0x50);
 
     Text_RenderToScreen(&state->unk_215A0, 8, 0x10, CriSndMgr_AdxData[state->adxIdx].adxFile);
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x18, func_02006930("seqArc:%d", state->seqArc));
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x20, func_02006930("se:%d", state->se));
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x28, func_02006930("seIdx %d:%s", state->seIdx, soundEffects[state->seIdx]));
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x30, func_02006930("seIdx Volume:%d", state->seIdxVolume));
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x38, func_02006930("sePan :%d", state->sePan));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x18, Str_SPrintf("seqArc:%d", state->seqArc));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x20, Str_SPrintf("se:%d", state->se));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x28, Str_SPrintf("seIdx %d:%s", state->seIdx, soundEffects[state->seIdx]));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x30, Str_SPrintf("seIdx Volume:%d", state->seIdxVolume));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x38, Str_SPrintf("sePan :%d", state->sePan));
 
     if (state->adxVolume <= 0) {
-        Text_RenderToScreen(&state->unk_215A0, 8, 0x40, func_02006930("adx volume :0(0.0dB)"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x40, Str_SPrintf("adx volume :0(0.0dB)"));
     } else {
         s32 volFloat = state->adxVolume % 10;
         if (volFloat < 0) {
             volFloat = -volFloat;
         }
         Text_RenderToScreen(&state->unk_215A0, 8, 0x40,
-                            func_02006930("adx volume :-%d(-%d.%ddB)", state->adxVolume, state->adxVolume / 10, volFloat));
+                            Str_SPrintf("adx volume :-%d(-%d.%ddB)", state->adxVolume, state->adxVolume / 10, volFloat));
     }
 
     if (state->adxLoopEnabled) {
-        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, func_02006930("adx loop on"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, Str_SPrintf("adx loop on"));
     } else {
-        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, func_02006930("adx loop off"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x48, Str_SPrintf("adx loop off"));
     }
 
-    Text_RenderToScreen(&state->unk_215A0, 8, 0x50, func_02006930("sePitch :%d", state->sePitch));
+    Text_RenderToScreen(&state->unk_215A0, 8, 0x50, Str_SPrintf("sePitch :%d", state->sePitch));
 
     if (state->noiseNoWaveLoad) {
-        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :ON "));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, Str_SPrintf("NoiseNoWaveLoad :ON "));
     } else {
-        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, func_02006930("NoiseNoWaveLoad :OFF"));
+        Text_RenderToScreen(&state->unk_215A0, 8, 0x58, Str_SPrintf("NoiseNoWaveLoad :OFF"));
     }
 
     // Menu Cursor

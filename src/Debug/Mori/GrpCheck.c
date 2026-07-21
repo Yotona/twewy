@@ -6,6 +6,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
+#include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "common_data.h"
 
@@ -162,11 +163,11 @@ void GrpCheck_PrintSpritePath(GrpCheckState* state) {
 
     func_02010b84(&state->textObj, 8, 0, 0x100, 0x20);
     func_02010b84(&state->textObj, 8, 0x20, 0xA8, 8);
-    Text_RenderToScreen(&state->textObj, 8, 0, func_02006930("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_00));
-    Text_RenderToScreen(&state->textObj, 8, 8, func_02006930("„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_04));
-    Text_RenderToScreen(&state->textObj, 8, 0x10, func_02006930("@„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_08));
-    Text_RenderToScreen(&state->textObj, 8, 0x18, func_02006930("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_24));
-    Text_RenderToScreen(&state->textObj, 8, 0x20, func_02006930("anime:%d", temp_r4->sprite.animIndex));
+    Text_RenderToScreen(&state->textObj, 8, 0, Str_SPrintf("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_00));
+    Text_RenderToScreen(&state->textObj, 8, 8, Str_SPrintf("„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_04));
+    Text_RenderToScreen(&state->textObj, 8, 0x10, Str_SPrintf("@„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_08));
+    Text_RenderToScreen(&state->textObj, 8, 0x18, Str_SPrintf("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_24));
+    Text_RenderToScreen(&state->textObj, 8, 0x20, Str_SPrintf("anime:%d", temp_r4->sprite.animIndex));
 }
 
 // TODO: Fix encoding errors, contains multiple characters with 0x5c escapes which are not properly handled
@@ -177,7 +178,7 @@ void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 0x28, 0xA8, 0x58);
 
     if ((data_ov038_020b7200.unk_4 != 2) && (data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_0C == 2)) {
-        Text_RenderToScreen(&state->textObj, 8, 0x28, func_02006930(&data_ov038_020b6fe0));
+        Text_RenderToScreen(&state->textObj, 8, 0x28, Str_SPrintf(data_ov038_020b6fe0));
         return;
     }
 
@@ -203,18 +204,18 @@ void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
     }
     state->maxLineChr = var_r1_3;
 
-    Text_RenderToScreen(&state->textObj, 8, 0x28, func_02006930("MaxAtr:%d", state->maxAtr));
-    Text_RenderToScreen(&state->textObj, 8, 0x30, func_02006930("UseAtr:%d", useAtr));
-    Text_RenderToScreen(&state->textObj, 8, 0x38, func_02006930("MaxChr:%d", state->maxChr));
-    Text_RenderToScreen(&state->textObj, 8, 0x40, func_02006930("UseChr:%d", useChr));
-    Text_RenderToScreen(&state->textObj, 8, 0x48, func_02006930("MaxLineChr:%d", state->maxLineChr));
-    Text_RenderToScreen(&state->textObj, 8, 0x50, func_02006930("UseLineChr:%d", useLineChar));
-    Text_RenderToScreen(&state->textObj, 8, 0x58, func_02006930("pic:%d", temp_r4->sprite.unk16 - 1));
+    Text_RenderToScreen(&state->textObj, 8, 0x28, Str_SPrintf("MaxAtr:%d", state->maxAtr));
+    Text_RenderToScreen(&state->textObj, 8, 0x30, Str_SPrintf("UseAtr:%d", useAtr));
+    Text_RenderToScreen(&state->textObj, 8, 0x38, Str_SPrintf("MaxChr:%d", state->maxChr));
+    Text_RenderToScreen(&state->textObj, 8, 0x40, Str_SPrintf("UseChr:%d", useChr));
+    Text_RenderToScreen(&state->textObj, 8, 0x48, Str_SPrintf("MaxLineChr:%d", state->maxLineChr));
+    Text_RenderToScreen(&state->textObj, 8, 0x50, Str_SPrintf("UseLineChr:%d", useLineChar));
+    Text_RenderToScreen(&state->textObj, 8, 0x58, Str_SPrintf("pic:%d", temp_r4->sprite.unk16 - 1));
     Text_RenderToScreen(&state->textObj, 8, 0x60,
-                        func_02006930("aob:%d", temp_r4->sprite.currentFrame - temp_r4->sprite.loopFrame));
-    Text_RenderToScreen(&state->textObj, 8, 0x68, func_02006930("frame:%d", temp_r4->sprite.frameTimer));
-    Text_RenderToScreen(&state->textObj, 8, 0x70, func_02006930("cmd_ofs:%d", temp_r4->sprite.currentFrame));
-    Text_RenderToScreen(&state->textObj, 8, 0x78, func_02006930("cmd_lop:%d", temp_r4->sprite.loopFrame));
+                        Str_SPrintf("aob:%d", temp_r4->sprite.currentFrame - temp_r4->sprite.loopFrame));
+    Text_RenderToScreen(&state->textObj, 8, 0x68, Str_SPrintf("frame:%d", temp_r4->sprite.frameTimer));
+    Text_RenderToScreen(&state->textObj, 8, 0x70, Str_SPrintf("cmd_ofs:%d", temp_r4->sprite.currentFrame));
+    Text_RenderToScreen(&state->textObj, 8, 0x78, Str_SPrintf("cmd_lop:%d", temp_r4->sprite.loopFrame));
 }
 
 void GrpCheck_PrintScale(GrpCheckState* state) {
@@ -224,22 +225,22 @@ void GrpCheck_PrintScale(GrpCheckState* state) {
 
     func_02010b84(&state->textObj, 8, 0x80, 0xa8, 8);
 
-    Text_RenderToScreen(&state->textObj, 8, 128, func_02006930("scale:%d.%02d", integer, fractional));
+    Text_RenderToScreen(&state->textObj, 8, 128, Str_SPrintf("scale:%d.%02d", integer, fractional));
 }
 
 void GrpCheck_PrintColorChannels(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 136, 168, 24);
-    Text_RenderToScreen(&state->textObj, 8, 136, func_02006930("BG R:%d", state->bgR));
-    Text_RenderToScreen(&state->textObj, 8, 144, func_02006930("BG G:%d", state->bgG));
-    Text_RenderToScreen(&state->textObj, 8, 152, func_02006930("BG B:%d", state->bgB));
+    Text_RenderToScreen(&state->textObj, 8, 136, Str_SPrintf("BG R:%d", state->bgR));
+    Text_RenderToScreen(&state->textObj, 8, 144, Str_SPrintf("BG G:%d", state->bgG));
+    Text_RenderToScreen(&state->textObj, 8, 152, Str_SPrintf("BG B:%d", state->bgB));
 }
 
 void GrpCheck_PrintScreenPos(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 160, 256, 24);
-    Text_RenderToScreen(&state->textObj, 8, 160, func_02006930("%s", data_ov038_02086fe4[state->unk_1165C].unk_00));
-    Text_RenderToScreen(&state->textObj, 8, 168, func_02006930("„¤%s", data_ov038_02087004[state->unk_1165C].unk_00));
+    Text_RenderToScreen(&state->textObj, 8, 160, Str_SPrintf("%s", data_ov038_02086fe4[state->unk_1165C].unk_00));
+    Text_RenderToScreen(&state->textObj, 8, 168, Str_SPrintf("„¤%s", data_ov038_02087004[state->unk_1165C].unk_00));
     Text_RenderToScreen(&state->textObj, 8, 176,
-                        func_02006930("SCREEN POS %d %d", F2I(state->screenPosX), F2I(state->screenPosY)));
+                        Str_SPrintf("SCREEN POS %d %d", F2I(state->screenPosX), F2I(state->screenPosY)));
 }
 
 void GrpCheck_PrintWarnings(GrpCheckState* state) {

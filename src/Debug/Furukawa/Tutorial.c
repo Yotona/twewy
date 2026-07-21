@@ -24,7 +24,7 @@ extern void SndMgr_StartPlayingSE(s32);
 
 extern InputState InputStatus;
 extern void*      func_ov003_0208ec74;
-extern MemPool    gDebugHeap;
+extern Heap       gDebugHeap;
 
 // Local structures
 typedef struct {
@@ -286,8 +286,8 @@ static void Tutorial_Init(TutorialObject* object) {
 
     MI_CpuFill(0, object, Mem_GetBlockSize(&gDebugHeap, object));
     OvlMgr_LoadOverlay(3, &OVERLAY_3_ID);
-    Mem_InitializeHeap(&object->memPool, object->memBuffer, sizeof(object->memBuffer));
-    EasyTask_InitializePool(&object->taskPool, &object->memPool, 8, NULL, NULL);
+    Mem_InitializeHeap(&object->heap, object->memBuffer, sizeof(object->memBuffer));
+    EasyTask_InitializePool(&object->taskPool, &object->heap, 8, NULL, NULL);
     Tutorial_RegisterVBlank();
     ResourceMgr_ReinitManagers(&object->resMgr);
     data_02066aec = 0;

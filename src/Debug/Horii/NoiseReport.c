@@ -314,8 +314,8 @@ void func_ov028_020e8878(NoiseReportState* state) {
 
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->memPool, &state->memBlock, 0x10000);
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 512, NULL, NULL);
+    Mem_InitializeHeap(&state->heap, &state->memBlock, 0x10000);
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 512, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, 0);

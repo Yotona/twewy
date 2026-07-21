@@ -1,6 +1,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/Interrupts.h"
+#include "Engine/Core/Memory.h"
 #include "Engine/Core/System.h"
 #include "common_data.h"
 #include <nitro/fx.h>
@@ -51,7 +52,6 @@ extern OamCellFrame data_02059b94[];
 extern OamCellPiece data_02059d1c;
 extern s16          data_0205e4e0[];
 
-extern s32 data_0206a9bc;
 extern u8  data_02069c24[];
 extern s32 data_0206aa78;
 extern s32 data_0206aa7c;
@@ -276,7 +276,7 @@ OamCellPiece* OamMgr_BuildVisibleCellPieces(OamManager* mgr, s32 x, s32 y, OamCe
         return OamMgr_BuildVisibleCellPiecesAffine(mgr, x, y, cellPieces, attrs, charOffset, NULL);
     }
 
-    OamCellPiece* temp_r0 = func_02004c8c(&data_0206a9bc, 0x408);
+    OamCellPiece* temp_r0 = Mem_PeekPool(&data_0206a9bc, 0x408);
     if (temp_r0 == NULL) {
         return NULL;
     }
@@ -321,7 +321,7 @@ OamCellPiece* OamMgr_BuildVisibleCellPieces(OamManager* mgr, s32 x, s32 y, OamCe
     if (var_r5 <= 0) {
         temp_r0 = &data_02059d1c;
     } else {
-        func_02004ce8(&data_0206a9bc, (var_r5 + 1) * 8);
+        Mem_AllocPool(&data_0206a9bc, (var_r5 + 1) * 8);
     }
     return temp_r0;
 }
@@ -349,7 +349,7 @@ OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y,
         return OamMgr_BuildVisibleCellPieces(mgr, attrs, charOffset, 0, 0, 0);
     }
 
-    OamCellPiece* temp_r0 = func_02004c8c(&data_0206a9bc, 0x408);
+    OamCellPiece* temp_r0 = Mem_PeekPool(&data_0206a9bc, 0x408);
     if (temp_r0 == NULL) {
         return NULL;
     }
@@ -415,7 +415,7 @@ OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y,
 
     var_r4->charName = 0xFFFF;
     if (sp14 > 0) {
-        func_02004ce8(&data_0206a9bc, (sp14 + 1) * 8);
+        Mem_AllocPool(&data_0206a9bc, (sp14 + 1) * 8);
     } else {
         temp_r0 = &data_02059d1c;
     }
@@ -442,7 +442,7 @@ void OamMgr_QueueCellCharTransfers(OamManager* mgr, s32 transferBase, s32 charOf
 
 OamCellPiece* OamMgr_CloneCellPieces(OamCellPiece* dstCellPieces, OamCellPiece* srcCellPieces) {
     if (dstCellPieces == NULL) {
-        dstCellPieces = func_02004c8c(&data_0206a9bc, 0x408);
+        dstCellPieces = Mem_PeekPool(&data_0206a9bc, 0x408);
         if (dstCellPieces == NULL) {
             return NULL;
         }
@@ -460,7 +460,7 @@ OamCellPiece* OamMgr_CloneCellPieces(OamCellPiece* dstCellPieces, OamCellPiece* 
         if (var_r0 <= 0) {
             dstCellPieces = &data_02059d1c;
         } else {
-            func_02004ce8(&data_0206a9bc, (var_r0 + 1) * 8);
+            Mem_AllocPool(&data_0206a9bc, (var_r0 + 1) * 8);
         }
     } else {
         while ((u16)(srcCellPieces->charName + 1) != 0) {

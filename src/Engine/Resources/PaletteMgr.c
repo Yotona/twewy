@@ -1,11 +1,13 @@
 
 #include "Engine/Resources/PaletteMgr.h"
+#include "Engine/Core/Memory.h"
+
 #include "Display.h"
+
 #include <nitro/mi/cpumem.h>
 
 extern u16 data_02059d24;
 extern u8  data_02066aec;
-extern s32 data_0206a9bc;
 
 static void func_0200b09c(PaletteResource* arg0, void* arg1, s32 arg2, u32 arg3);
 static void func_0200b198(PaletteResource* arg0, void* arg1, s32 arg2, u32 arg3);
@@ -748,7 +750,7 @@ static void func_0200b66c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_02002180(buf, src, srcOffset, totalSize, adj, 0, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -756,7 +758,7 @@ static void func_0200b66c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_02002180(buf, src, srcOffset, 0U, entry->chunkSize, adj, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             src = (void*)((u8*)src + entry->chunkSize * 2);
@@ -776,7 +778,7 @@ static void func_0200b7b8(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_02002254(buf, src, srcOffset, totalSize, entry->colorParam, entry->colorBias, 0, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -784,7 +786,7 @@ static void func_0200b7b8(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_02002254(buf, src, srcOffset, entry->chunkSize, entry->colorParam, entry->colorBias, 0, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             src += entry->chunkSize * 2;
@@ -802,7 +804,7 @@ static void func_0200b91c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_02002398(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -810,7 +812,7 @@ static void func_0200b91c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_02002398(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -827,7 +829,7 @@ static void func_0200ba64(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_0200245c(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -835,7 +837,7 @@ static void func_0200ba64(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_0200245c(buf, srcOffset, 0U, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -852,7 +854,7 @@ static void func_0200bbac(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_02002520(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -860,7 +862,7 @@ static void func_0200bbac(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_02002520(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -877,7 +879,7 @@ static void func_0200bcf4(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = func_02004ce8(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
         func_020025e4(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -885,7 +887,7 @@ static void func_0200bcf4(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = func_02004ce8(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
             func_020025e4(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;

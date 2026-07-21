@@ -40,8 +40,8 @@ void TakTest_Init(TakTestState* state) {
     state->unk_11588 = DatMgr_AllocateSlot();
     TakTest_RegisterVBlank();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
-    Mem_InitializeHeap(&state->memPool, state->memPoolBuffer, sizeof(state->memPoolBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x80, NULL, NULL);
+    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x80, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     func_ov043_020824a0(state);

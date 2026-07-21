@@ -8,7 +8,7 @@
 
 typedef struct {
     /* 0x00000 */ u8              memBuffer[0x800];
-    /* 0x00800 */ MemPool         memPool;
+    /* 0x00800 */ Heap            heap;
     /* 0x0080C */ TaskPool        taskPool;
     /* 0x0088C */ ResourceManager resMgr;
     /* 0x11E0C */ s32             unk_11E0C;

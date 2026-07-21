@@ -20,7 +20,7 @@ typedef struct {
 typedef struct {
     /* 0x00000 */ ResourceManager  unk_00000;
     /* 0x11580 */ ResourceManager* unk_11580;
-    /* 0x11584 */ MemPool          memPool;
+    /* 0x11584 */ Heap             heap;
     /* 0x11590 */ MemBlock         memBlock;
     /* 0x115B0 */ char             unk_115B0[0xFFE0];
     /* 0x21590 */ TaskPool         taskPool;

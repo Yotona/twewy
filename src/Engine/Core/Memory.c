@@ -1,7 +1,13 @@
 #include "Engine/Core/Memory.h"
+#include "Engine/IO/Str.h"
 
-MemPool gDebugHeap = {};
-MemPool gMainHeap  = {};
+extern u32 func_0203b59c(const void* src, void* dest);
+extern u32 func_0203b708(const void* src, void* dest);
+extern u32 func_0203b7e0(const void* src, void* dest);
+
+Heap gDebugHeap    = {};
+Heap gMainHeap     = {};
+Pool data_0206a9bc = {};
 
 #define MEM_MAGIC 0x51342403
 
@@ -13,8 +19,8 @@ static inline void* Mem_GetBlockWithoutHeader(MemBlock* block) {
     return (void*)(block + 1);
 }
 
-static MemBlock* Mem_FindBlockByPointer(MemPool* pool, void* data) {
-    MemBlock* sentinelBlock = pool->head;
+static MemBlock* Mem_FindBlockByPointer(Heap* heap, void* data) {
+    MemBlock* sentinelBlock = heap->head;
     MemBlock* current       = sentinelBlock->physMemNext;
 
     while (current != sentinelBlock) {
@@ -33,7 +39,7 @@ static MemBlock* Mem_FindBlockByPointer(MemPool* pool, void* data) {
 const char* const memLabelHead = "_Head";
 const char* const memLabelList = "_List";
 
-BOOL Mem_InitializeHeap(MemPool* pool, void* data, u32 size) {
+BOOL Mem_InitializeHeap(Heap* heap, void* data, u32 size) {
     if (size < 0x60) {
         return FALSE;
     }
@@ -42,9 +48,9 @@ BOOL Mem_InitializeHeap(MemPool* pool, void* data, u32 size) {
     MemBlock* sentinelBlock    = data;
     MemBlock* initialFreeBlock = sentinelBlock + 1;
 
-    pool->base = sentinelBlock;
-    pool->size = size;
-    pool->head = sentinelBlock;
+    heap->base = sentinelBlock;
+    heap->size = size;
+    heap->head = sentinelBlock;
 
     initialFreeBlock->magic        = MEM_MAGIC;
     initialFreeBlock->sequence     = memLabelHead;
@@ -67,13 +73,13 @@ BOOL Mem_InitializeHeap(MemPool* pool, void* data, u32 size) {
     return TRUE;
 }
 
-void* Mem_AllocHeapTail(MemPool* pool, s32 size) {
+void* Mem_AllocHeapTail(Heap* heap, s32 size) {
     size = (size + 0x3F) & ~0x1F;
 
     MemBlock* allocBlock;
 
-    MemBlock* freeBlock = pool->head->physMemNext;
-    while (freeBlock != pool->head) {
+    MemBlock* freeBlock = heap->head->physMemNext;
+    while (freeBlock != heap->head) {
         if (freeBlock->state < 0 && freeBlock->size >= size) {
             break;
         }
@@ -107,11 +113,11 @@ void* Mem_AllocHeapTail(MemPool* pool, s32 size) {
     return Mem_GetBlockWithoutHeader(allocBlock);
 }
 
-void* Mem_AllocHeapHead(MemPool* pool, s32 size) {
+void* Mem_AllocHeapHead(Heap* heap, s32 size) {
     size = (size + 0x3F) & ~0x1F;
 
     MemBlock* alloc = NULL;
-    MemBlock* head  = pool->head;
+    MemBlock* head  = heap->head;
     MemBlock* cur;
 
     for (cur = head->physMemNext; cur != head; cur = cur->physMemNext) {
@@ -149,10 +155,10 @@ void* Mem_AllocHeapHead(MemPool* pool, s32 size) {
     return Mem_GetBlockWithoutHeader(alloc);
 }
 
-void* Mem_AllocBestFit(MemPool* pool, s32 size) {
+void* Mem_AllocBestFit(Heap* heap, s32 size) {
     size = (size + 0x3F) & ~0x1F;
 
-    MemBlock* head    = pool->head;
+    MemBlock* head    = heap->head;
     MemBlock* memPrev = head->physMemPrev;
 
     MemBlock* alloc = NULL;
@@ -197,13 +203,13 @@ void* Mem_AllocBestFit(MemPool* pool, s32 size) {
 
 const char* memLabelFree = "_free_";
 
-void Mem_Free(MemPool* pool, void* data) {
+void Mem_Free(Heap* heap, void* data) {
     MemBlock* temp_r1;
     MemBlock* temp_r1_3;
     u32       temp_r1_2;
-    MemPool*  cont;
+    Heap*     cont;
 
-    MemBlock* var_r0 = Mem_FindBlockByPointer(pool, data);
+    MemBlock* var_r0 = Mem_FindBlockByPointer(heap, data);
     if (var_r0 == NULL) {
         return;
     }
@@ -232,15 +238,15 @@ void Mem_Free(MemPool* pool, void* data) {
         temp_r3_2->freeListNext->freeListPrev = temp_r3_2->freeListPrev;
     }
 
-    MemBlock* temp_r2                   = pool->head;
+    MemBlock* temp_r2                   = heap->head;
     var_r0->freeListPrev                = temp_r2;
     var_r0->freeListNext                = temp_r2->freeListNext;
     temp_r2->freeListNext->freeListPrev = var_r0;
     temp_r2->freeListNext               = var_r0;
 }
 
-s32 Mem_GetBlockSize(MemPool* pool, void* data) {
-    MemBlock* block = Mem_FindBlockByPointer(pool, data);
+s32 Mem_GetBlockSize(Heap* heap, void* data) {
+    MemBlock* block = Mem_FindBlockByPointer(heap, data);
 
     if (block == NULL) {
         return 0;
@@ -248,20 +254,171 @@ s32 Mem_GetBlockSize(MemPool* pool, void* data) {
     return block->size - sizeof(MemBlock);
 }
 
-void Mem_SetSequence(MemPool* pool, void* data, const char* sequence) {
-    MemBlock* block = Mem_FindBlockByPointer(pool, data);
+void Mem_SetSequence(Heap* heap, void* data, const char* sequence) {
+    MemBlock* block = Mem_FindBlockByPointer(heap, data);
 
     if (block != NULL) {
         block->sequence = sequence;
     }
 }
 
-const char* Mem_GetSequence(MemPool* pool, void* data) {
-    MemBlock* block = Mem_FindBlockByPointer(pool, data);
+const char* Mem_GetSequence(Heap* heap, void* data) {
+    MemBlock* block = Mem_FindBlockByPointer(heap, data);
 
     char* sequence = NULL;
     if (block != NULL) {
         sequence = block->sequence;
     }
     return sequence;
+}
+
+static BOOL Mem_ValidateHeap(Heap* heap) {
+    MemBlock* block;
+    MemBlock* head = heap->head;
+    BOOL      ok   = TRUE;
+    s32       done;
+
+    for (block = head->freeListNext; block != head; block = block->freeListNext) {
+        if (block->state >= 0 || block->magic != MEM_MAGIC) {
+            ok = FALSE;
+            break;
+        }
+    }
+
+    block = head->physMemNext;
+    done  = (ok == FALSE);
+    for (; done == FALSE && block != head; block = block->physMemNext) {
+        if (block->magic != MEM_MAGIC) {
+            return FALSE;
+        }
+    }
+    return ok;
+}
+
+void Mem_ValidateSequences(Heap* heap) {
+    Mem_ValidateHeap(heap);
+    BOOL      running = TRUE;
+    MemBlock* start   = heap->head;
+    MemBlock* current = start;
+
+    do {
+        if (current->magic != MEM_MAGIC) {
+            return;
+        }
+        if (current->sequence != NULL) {
+            Str_Validate(current->sequence, 0x100);
+        }
+        current = current->physMemNext;
+        if (current == start) {
+            running = FALSE;
+        }
+    } while (running == TRUE);
+}
+
+void* Mem_AllocZeroed(s32 size, const char* sequence) {
+    void* block = Mem_AllocHeapTail(&gMainHeap, size);
+    Mem_SetSequence(&gMainHeap, block, sequence);
+    s32 blockSize = Mem_GetBlockSize(&gMainHeap, block);
+    MI_CpuFill(0, block, blockSize);
+    return block;
+}
+
+void Mem_FreeMainHeap(void* data) {
+    Mem_Free(&gMainHeap, data);
+}
+
+static PoolChunk* Mem_AddPoolChunk(Pool* pool, u32 minSize) {
+    if (minSize < 0x400) {
+        minSize = 0x400;
+    }
+    PoolChunk*  head   = pool->chunkHead;
+    const char* seqStr = pool->sequence;
+    PoolChunk*  chunk  = (PoolChunk*)Mem_AllocHeapHead(&gMainHeap, minSize + 0x20);
+    Mem_SetSequence(&gMainHeap, chunk, seqStr);
+    chunk->next     = head->next;
+    chunk->used     = (chunk->used & ~1) | 1;
+    chunk->heap     = &gMainHeap;
+    chunk->size     = Mem_GetBlockSize(&gMainHeap, chunk) - 0x20;
+    chunk->data     = (u8*)chunk + 0x20;
+    chunk->offset   = 0;
+    chunk->field_1C = 0;
+    head->next      = chunk;
+    return chunk;
+}
+
+s32 Mem_InitPool(Pool* pool, u32 size, const char* sequence) {
+    pool->sequence   = sequence;
+    PoolChunk* chunk = (PoolChunk*)Mem_AllocHeapTail(&gMainHeap, size + 0x20);
+    Mem_SetSequence(&gMainHeap, chunk, sequence);
+    pool->chunkHead = chunk;
+    if (chunk == NULL) {
+        return 0;
+    }
+    chunk->next     = NULL;
+    chunk->used     = chunk->used & ~1;
+    chunk->heap     = &gMainHeap;
+    chunk->size     = Mem_GetBlockSize(&gMainHeap, chunk) - 0x20;
+    chunk->data     = (u8*)chunk + 0x20;
+    chunk->offset   = 0;
+    chunk->field_1C = 0;
+    return 1;
+}
+
+void Mem_ResetPool(Pool* pool) {
+    PoolChunk* chunk = pool->chunkHead->next;
+    while (chunk != 0) {
+        PoolChunk* next = chunk->next;
+        Mem_Free(chunk->heap, chunk);
+        chunk = next;
+    }
+
+    PoolChunk* head = pool->chunkHead;
+    head->next      = NULL;
+    head->offset    = 0;
+    head->field_1C  = 0;
+}
+
+void* Mem_PeekPool(Pool* pool, u32 size) {
+    void* result = NULL;
+
+    PoolChunk* chunk       = pool->chunkHead;
+    u32        alignedSize = (size + 7) & ~7;
+
+    while (chunk != NULL) {
+        u32 free = chunk->size - chunk->offset;
+        if (free >= alignedSize) {
+            return (u8*)chunk->data + chunk->offset;
+        }
+        chunk = chunk->next;
+    }
+
+    if (result == NULL) {
+        chunk  = Mem_AddPoolChunk(pool, alignedSize);
+        result = chunk->data;
+    }
+    return result;
+}
+
+void* Mem_AllocPool(Pool* pool, u32 size) {
+    void*      result      = 0;
+    PoolChunk* chunk       = pool->chunkHead;
+    u32        alignedSize = (size + 7) & (~7);
+    while (chunk != 0) {
+        u32 free = chunk->size - chunk->offset;
+        if (free >= alignedSize) {
+            chunk->field_1C = chunk->offset;
+            u32 oldOffset   = chunk->offset;
+            result          = ((u8*)chunk->data) + oldOffset;
+            chunk->offset   = chunk->offset + alignedSize;
+            break;
+        }
+        chunk = chunk->next;
+    }
+
+    if (result == 0) {
+        chunk         = Mem_AddPoolChunk(pool, alignedSize);
+        result        = chunk->data;
+        chunk->offset = chunk->size;
+    }
+    return result;
 }

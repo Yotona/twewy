@@ -131,8 +131,8 @@ void FontTest_Update(FontState* arg0) {
     }
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_R) {
-        func_02004a68(&gDebugHeap);
-        func_02004a68(&gMainHeap);
+        Mem_ValidateSequences(&gDebugHeap);
+        Mem_ValidateSequences(&gMainHeap);
     }
 }
 

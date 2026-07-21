@@ -1,4 +1,5 @@
 #include "Engine/Resources/ObjResMgr.h"
+#include "Engine/Core/Memory.h"
 
 static void ObjResMgr_FreeBitmapByOffset(ObjResBitmap* bitmap, s32 offset);
 static s32  func_0200c818(ObjResBitmap* bitmap, s32 value, s32 shift);
@@ -9,10 +10,9 @@ extern void func_0200ed4c(void);
 extern void func_0200ed74(void);
 extern void func_0200ed90(void);
 
-extern u8  g_OamMgr;
-extern u8  data_020676f4;
-extern u8  data_02067700;
-extern s32 data_0206a9bc;
+extern u8 g_OamMgr;
+extern u8 data_020676f4;
+extern u8 data_02067700;
 
 typedef struct {
     u16 sizes[4];
@@ -614,7 +614,7 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
                           dataSize);
         } else if (dataSize <= resource->vramOffset) {
             if (mgr->engine == 2) {
-                void* buf = func_02004ce8(&data_0206a9bc, dataSize);
+                void* buf = Mem_AllocPool(&data_0206a9bc, dataSize);
                 func_02004d60(buf, data);
                 func_02001b44((void*)mgr->unk_04, (void*)(mgr->vramBase + (resource->bitmapIndex << 5)), buf, dataSize);
             } else {

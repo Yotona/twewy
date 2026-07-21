@@ -15,8 +15,8 @@ typedef struct {
     /* 0x11584 */ s32              unk_11584;
     /* 0x11588 */ s32              unk_11588;
     /* 0x1158C */ s32              unk_1158C;
-    /* 0x11590 */ MemPool          memPool;
-    /* 0x1159C */ u8               memPoolBuffer[0x30000];
+    /* 0x11590 */ Heap             heap;
+    /* 0x1159C */ u8               heapBuffer[0x30000];
     /* 0x4159C */ TaskPool         taskPool;
     /* 0x4161C */ PrcCtx           unk_4161C;
     /* 0x41804 */ PrcMaster        prcMaster;

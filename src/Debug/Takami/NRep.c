@@ -122,9 +122,9 @@ void func_ov043_020c6358(NRepState* state) {
     func_ov043_020c6b40();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->memPool, state->memPoolBuffer, sizeof(state->memPoolBuffer));
+    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
     FS_LoadOverlay(0, &OVERLAY_31_ID);
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x200, NULL, NULL);
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x200, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     func_ov043_020c61e4(state);

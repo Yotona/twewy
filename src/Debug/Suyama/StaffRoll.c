@@ -85,8 +85,8 @@ void func_ov042_020824e0(StaffRollState* state) {
     func_ov031_0210aa94(&state->unk_2171C);
     func_ov042_020842e4();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
-    Mem_InitializeHeap(&state->memPool, &state->memPoolBuffer, sizeof(state->memPoolBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x200, NULL, NULL);
+    Mem_InitializeHeap(&state->heap, &state->heapBuffer, sizeof(state->heapBuffer));
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x200, NULL, NULL);
     state->unk_21614.pool = &state->taskPool;
     data_02066aec         = 0;
     data_02066eec         = 0;

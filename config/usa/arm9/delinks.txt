@@ -50,10 +50,15 @@ src/Engine/Core/HBlank.c:
 
 src/Engine/Core/Memory.c:
     categories: Engine
-    .text       start:0x0200453c end:0x020049dc
+    .text       start:0x0200453c end:0x02004d60
     .rodata     start:0x02059d14 end:0x02059d1c
     .data       start:0x02063744 end:0x02063760
-    .bss        start:0x0206a9a4 end:0x0206a9bc
+    .bss        start:0x0206a9a4 end:0x0206a9e0
+
+src/Engine/Core/Decompress.c:
+    categories: Engine
+    complete
+    .text       start:0x02004d60 end:0x02004e98
 
 src/Engine/IO/Input.c:
     categories: Engine
@@ -82,6 +87,17 @@ src/Engine/Math/Random.c:
     complete
     .text       start:0x02006798 end:0x0200683c
     .data       start:0x02063760 end:0x02063764
+
+src/Engine/IO/Str.c:
+    categories: Engine
+    complete
+    .text       start:0x0200683c end:0x020069ac
+    .rodata     start:0x0205a95c end:0x0205ad5c
+    .data       start:0x02063764 end:0x0206377c
+
+src/Engine/Math/Rect.c:
+    categories: Engine
+    .text       start:0x020069ac end:0x02006ad8
 
 src/Engine/IO/TouchInput.c:
     categories: Engine

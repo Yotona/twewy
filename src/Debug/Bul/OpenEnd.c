@@ -451,8 +451,8 @@ void OpenEnd_Init(OpenEndState* state) {
     data_02066a58 &= ~0x8; // data_02066a58.bit_3 = 0
     state->dataType  = DatMgr_AllocateSlot();
     state->unk_11A38 = 0;
-    Mem_InitializeHeap(&state->memPool, &state->unk_1161C, 0x400);
-    EasyTask_InitializePool(&state->taskPool, &state->memPool, 0x10, 0, 0);
+    Mem_InitializeHeap(&state->heap, &state->unk_1161C, 0x400);
+    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x10, 0, 0);
     g_taskPool = &state->taskPool;
     EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, 0, 0, 0, 0);
     OpenEnd_PlayScreenSequence(state);

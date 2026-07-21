@@ -85,16 +85,16 @@ static void EasyTask_InsertTask(TaskPool* taskPool, Task* task) {
 }
 
 static void* EasyTask_Alloc(TaskPool* taskPool, s32 size, const char* sequence) {
-    void* data = Mem_AllocHeapTail(taskPool->memPool, size);
-    Mem_SetSequence(taskPool->memPool, data, sequence);
+    void* data = Mem_AllocHeapTail(taskPool->heap, size);
+    Mem_SetSequence(taskPool->heap, data, sequence);
     return data;
 }
 
 static void EasyTask_Free(TaskPool* taskPool, void* data) {
-    Mem_Free(taskPool->memPool, data);
+    Mem_Free(taskPool->heap, data);
 }
 
-BOOL EasyTask_InitializePool(TaskPool* taskPool, MemPool* memPool, u32 count, void* (*alloc)(TaskPool*, s32, const char*),
+BOOL EasyTask_InitializePool(TaskPool* taskPool, Heap* heap, u32 count, void* (*alloc)(TaskPool*, s32, const char*),
                              void (*free)(TaskPool*, void*)) {
     BOOL ret = FALSE;
     if (alloc == NULL) {
@@ -103,7 +103,7 @@ BOOL EasyTask_InitializePool(TaskPool* taskPool, MemPool* memPool, u32 count, vo
     if (free == NULL) {
         free = EasyTask_Free;
     }
-    taskPool->memPool   = memPool;
+    taskPool->heap      = heap;
     taskPool->alloc     = alloc;
     taskPool->free      = free;
     taskPool->maxTasks  = count;

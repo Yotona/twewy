@@ -2536,7 +2536,7 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     Mem_SetSequence(&gMainHeap, obj, data_ov002_02092be4);
     MI_CpuFill(0, obj, sizeof(OtosuMenuObj));
     MainOvlDisp_SetCbArg(obj);
-    Mem_InitializeHeap(&obj->memPool, obj->memPoolBuffer, sizeof(obj->memPoolBuffer));
+    Mem_InitializeHeap(&obj->heap, obj->heapBuffer, sizeof(obj->heapBuffer));
     obj->unk_11584      = DatMgr_AllocateSlot();
     obj->unk_1158C      = DatMgr_AllocateSlot();
     obj->unk_11588      = DatMgr_AllocateSlot();
@@ -2547,7 +2547,7 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     func_ov031_0210ab54(&obj->unk_45FF4, 1, 0);
     func_ov031_0210ab34(&obj->unk_45FF4, 12);
     PrcMaster_Init(&obj->prcMaster, 30);
-    EasyTask_InitializePool(&obj->taskPool, &obj->memPool, 0x100, NULL, NULL);
+    EasyTask_InitializePool(&obj->taskPool, &obj->heap, 0x100, NULL, NULL);
     EasyTask_CreateTask(&obj->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     func_0200d8f0();
     data_02066aec  = 0;
@@ -2590,8 +2590,8 @@ static void OtosuMenu_InitForMultiplayerEnter(OtosuMenuObj* menuObj) {
 }
 
 void OtosuMenu_InitForMultiplayerRankings(OtosuMenuObj* menuObj) {
-    func_02004a68(&gMainHeap);
-    func_02004a68(&gDebugHeap);
+    Mem_ValidateSequences(&gMainHeap);
+    Mem_ValidateSequences(&gDebugHeap);
     func_ov002_0208bd40();
 
     menuObj = OtosuMenu_Init();
@@ -2842,8 +2842,8 @@ void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
         OvlMgr_UnloadOverlay(3);
     }
     Mem_Free(&gMainHeap, menuObj);
-    func_02004a68(&gMainHeap);
-    func_02004a68(&gDebugHeap);
+    Mem_ValidateSequences(&gMainHeap);
+    Mem_ValidateSequences(&gDebugHeap);
 }
 
 static const OverlayProcess OvlProc_OtosuMenu_SinglePlayerEnter = {
@@ -3685,10 +3685,10 @@ void func_ov002_02087ca4(OtosuMenuObj* menuObj, s32 arg1) {
     DatMgr_ReleaseData(data);
     if (data_ov002_02091d9c[arg1] != 0) {
         if (menuObj->unk_46314 != NULL) {
-            Mem_Free(&menuObj->memPool, menuObj->unk_46314);
+            Mem_Free(&menuObj->heap, menuObj->unk_46314);
         }
         temp_r6            = data_ov002_02091d9c[arg1];
-        menuObj->unk_46314 = Mem_AllocHeapTail(&menuObj->memPool, temp_r6);
+        menuObj->unk_46314 = Mem_AllocHeapTail(&menuObj->heap, temp_r6);
         temp_r6_2          = DatMgr_LoadRawDataWithOffset(1, menuObj->unk_46314, temp_r6, &binId, data_ov002_02091dec[arg1]);
         if (menuObj->unk_46314 == NULL) {
             OS_WaitForever();
@@ -3699,10 +3699,10 @@ void func_ov002_02087ca4(OtosuMenuObj* menuObj, s32 arg1) {
     }
     if (data_ov002_02091e14[arg1] != 0) {
         if (menuObj->unk_46318 != NULL) {
-            Mem_Free(&menuObj->memPool, menuObj->unk_46318);
+            Mem_Free(&menuObj->heap, menuObj->unk_46318);
         }
         temp_r6_3          = data_ov002_02091e14[arg1];
-        menuObj->unk_46318 = Mem_AllocHeapTail(&menuObj->memPool, temp_r6_3);
+        menuObj->unk_46318 = Mem_AllocHeapTail(&menuObj->heap, temp_r6_3);
         data               = DatMgr_LoadRawDataWithOffset(1, menuObj->unk_46318, temp_r6_3, &binId, data_ov002_02091dc4[arg1]);
         DatMgr_ReleaseData(data);
     } else {
@@ -3710,10 +3710,10 @@ void func_ov002_02087ca4(OtosuMenuObj* menuObj, s32 arg1) {
     }
     if (data_ov002_02091d24[arg1] != 0) {
         if (menuObj->unk_4631C != NULL) {
-            Mem_Free(&menuObj->memPool, menuObj->unk_4631C);
+            Mem_Free(&menuObj->heap, menuObj->unk_4631C);
         }
         temp_r6_4          = data_ov002_02091d24[arg1];
-        menuObj->unk_4631C = Mem_AllocHeapTail(&menuObj->memPool, temp_r6_4);
+        menuObj->unk_4631C = Mem_AllocHeapTail(&menuObj->heap, temp_r6_4);
         data               = DatMgr_LoadRawDataWithOffset(1, menuObj->unk_4631C, temp_r6_4, &binId, data_ov002_02091d4c[arg1]);
         DatMgr_ReleaseData(data);
         return;

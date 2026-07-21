@@ -360,8 +360,8 @@ void Continue_Init(ContinueObject* contObj) {
     }
     MI_CpuFill(0, contObj, Mem_GetBlockSize(&gDebugHeap, contObj));
     OvlMgr_LoadOverlay(3, &OVERLAY_3_ID);
-    Mem_InitializeHeap(&contObj->memPool, contObj->memBuffer, sizeof(contObj->memBuffer));
-    EasyTask_InitializePool(&contObj->taskPool, &contObj->memPool, 8, NULL, NULL);
+    Mem_InitializeHeap(&contObj->heap, contObj->memBuffer, sizeof(contObj->memBuffer));
+    EasyTask_InitializePool(&contObj->taskPool, &contObj->heap, 8, NULL, NULL);
     Continue_RegisterVBlank();
     ResourceMgr_ReinitManagers(&contObj->unk_0088C);
     data_02066aec = 0;

@@ -153,8 +153,8 @@ typedef struct {
 typedef struct {
     /* 0x00000 */ ResourceManager          unk_00000;
     /* 0x11580 */ ResourceManager*         unk_11580;
-    /* 0x11584 */ MemPool                  memPool;
-    /* 0x11590 */ u8                       memPoolBuffer[0x10000];
+    /* 0x11584 */ Heap                     heap;
+    /* 0x11590 */ u8                       heapBuffer[0x10000];
     /* 0x21590 */ char                     unk_21590[0x4];
     /* 0x21594 */ TaskPool                 taskPool;
     /* 0x21614 */ StaffRoll_CallbackStruct unk_21614;
