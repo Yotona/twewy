@@ -195,7 +195,9 @@ typedef struct MainData {
     /* 0x3118 */ u16            unk_3118;
     /* 0x311A */ u16            unk_311A;
     /* 0x311C */ u16            unk_311C;
-    /* 0x311E */ char           unk_311E[0x3124 - 0x311E];
+    /* 0x311E */ char           unk_311E[0x3120 - 0x311E];
+    /* 0x3120 */ u16            unk_3120;
+    /* 0x3122 */ char           unk_3122[0x3124 - 0x3122];
     /* 0x3124 */ s32            unk_3124;
     /* 0x3128 */ s16            unk_3128;
     /* 0x312A */ char           unk_312A[0x312C - 0x312A];

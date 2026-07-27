@@ -71,8 +71,8 @@ typedef struct ProgressObject {
     /* 0x21AE0 */ s32      unk_21AE0;
     /* 0x21AE4 */ char     unk_21AE4[0x21AF0 - 0x21AE4];
     /* 0x21AF0 */ s32      unk_21AF0;
-    /* 0x21AF4 */ s32      unk_21AF4;
-    /* 0x21AF8 */ char     unk_21AF8[0x21AFC - 0x21AF8];
+    /* 0x21AF4 */ s16      unk_21AF4;
+    /* 0x21AF6 */ char     unk_21AF6[0x21AFC - 0x21AF6];
     /* 0x21AFC */ s16      unk_21AFC;
     /* 0x21AFE */ char     unk_21AFE[0x21B00 - 0x21AFE];
     /* 0x21B00 */ s32      unk_21B00;

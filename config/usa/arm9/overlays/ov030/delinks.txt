@@ -5,6 +5,7 @@
     .bss        start:0x02109d60 end:0x0210a220 kind:bss align:32
 
 src/Player/ProgressRewardTable.c:
+    complete
     .text       start:0x02084a2c end:0x020a669c
     .rodata     start:0x020da618 end:0x020da6c8
 

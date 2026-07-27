@@ -194,33 +194,33 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
             arg0->unk_21CF8    = 1;
             break;
 
-        case 0x5F:
+        case 0x61:
             arg0->unk_21CF8    = 1;
             gSaveData.unk_2648 = 4;
             break;
 
-        case 0x60:
+        case 0x62:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = 0x4B7;
             func_ov030_020af364(4);
             return 1;
 
-        case 0x61:
+        case 0x63:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = 0x4B8;
             func_ov030_020af364(5);
             return 1;
 
-        case 0x62:
+        case 0x64:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = 0x4B9;
             func_ov030_020af364(6);
             return 1;
 
-        case 0x63:
+        case 0x65:
             gSaveData.unk_3124 = 7;
             gSaveData.unk_3128 = 1;
             arg0->unk_21630    = 4;
@@ -255,7 +255,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
             }
             break;
 
-        default:
+        case 0x4B7:
             Progress_SetGate(0x30);
             if (Progress_Check(GATE_GAME_CLEARED) == 0) {
                 ProgressReward_GrantItem(arg0, ITEM_BOOK_TOP_SCREEN_COMBAT);
@@ -281,7 +281,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
             ProgressReward_GrantItem(arg0, ITEM_BOOK_SO_I_BEAT_THE_ENEMY);
             break;
 
-        case 0x64:
+        case 0x66:
             Progress_SetGate(1);
             if (Inventory_HasRequiredQuantity(ITEM_THREAD_NOSE_GLASSES, 1, 0) != 0) {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
@@ -289,7 +289,6 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
                 ProgressReward_GrantItem(arg0, ITEM_THREAD_NOSE_GLASSES);
             }
             arg0->unk_21CF8 = 1;
-            break;
     }
 
     return 0;
@@ -719,19 +718,19 @@ void func_ov030_02086700(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 2;
@@ -1209,6 +1208,7 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
                 Progress_AdvanceEventScript(arg0);
                 return 1;
             }
+            break;
         case 0x92:
             Progress_SetGate(5);
         case 0x93:
@@ -1355,10 +1355,9 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
 
-        case 0x3F0:
-        case 0x3F1:
-            return func_ov030_020aa0c8(arg0, 0xB0, 0x3F1, 0x3F2, &func_ov030_020870ec);
+        case 0x3E1:
         case 0x3E2:
+            return func_ov030_020aa0c8(arg0, 0xA2, 0x3E2, 0x3E3, &func_ov030_02086f10);
         case 0x3E7:
         case 0x3E6:
         case 0x3E5:
@@ -1431,6 +1430,7 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x3E8:
+        case 0x3E9:
             return func_ov030_020aa0c8(arg0, 0xB0, 0x3E9, 0x3EA, &func_ov030_02086fdc);
         case 0x3EF:
         case 0x3EE:
@@ -1477,8 +1477,9 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
             Progress_ClearGate(0xD);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x3E9:
-            return func_ov030_020aa0c8(arg0, 0xB0, 0x3E9, 0x3EA, &func_ov030_02086fdc);
+        case 0x3F0:
+        case 0x3F1:
+            return func_ov030_020aa0c8(arg0, 0xB0, 0x3F1, 0x3F2, &func_ov030_020870ec);
         case 0x3F4:
             Progress_SetGate(0xD);
             arg0->unk_21CF8 = 1;
@@ -1596,19 +1597,19 @@ void func_ov030_02088a5c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -1616,10 +1617,10 @@ void func_ov030_02088a5c(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    gSaveData.unk_264C          = (double)0x1DA000;
-    gSaveData.unk_2650          = 0xBE000;
+    gSaveData.unk_244C          = 0x1DA000;
+    gSaveData.unk_2450          = 0xBE000;
     gSaveData.unk_24B4          = 0;
-    gSaveData.unk_26B8          = 1;
+    gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x80C4;
     gSaveData.unk_3124          = 58;
     func_ov030_020c26bc(0);
@@ -1991,19 +1992,19 @@ void func_ov030_02089a40(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -2513,7 +2514,7 @@ s32 func_ov030_0208aaf4(ProgressObject* arg0) {
             Progress_ClearGate(45);
             Progress_ClearGate(46);
         case 0x45E:
-        case 8:
+        case 0xE3:
             if (func_ov030_020a9d00(arg0, 0x44D) == 0) {
                 return 1;
             }
@@ -2527,11 +2528,13 @@ s32 func_ov030_0208aaf4(ProgressObject* arg0) {
             DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
             DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
             return 1;
-        case 0xE7:
+        case 0x45B:
+        case 0x45C:
+        case 0x45D:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            Progress_SetCurrentEvent(0x462);
+            Progress_SetCurrentEvent(0x461);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x461:
@@ -2557,11 +2560,11 @@ s32 func_ov030_0208aaf4(ProgressObject* arg0) {
         case 0xE8:
             arg0->unk_21CF8 = 1;
             break;
-        case 0x45D:
+        case 0xE7:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            Progress_SetCurrentEvent(0x461);
+            Progress_SetCurrentEvent(0x462);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x475:
@@ -2600,6 +2603,7 @@ s32 func_ov030_0208aaf4(ProgressObject* arg0) {
             Progress_ClearGate(58);
             Progress_ClearGate(0x37);
             Progress_ClearGate(56);
+        case 0x477:
         case 0x489:
             if (func_ov030_020a9d00(arg0, 0x478) == 0) {
                 return 1;
@@ -2769,19 +2773,19 @@ void func_ov030_0208b87c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -2811,20 +2815,20 @@ s32 func_ov030_0208b97c(s32 arg0) {
 
     if ((Progress_Check(47) != 0) && (Progress_Check(4) == 0)) {
         if (Progress_Check(0x33) == 0) {
-            if (Inventory_HasRequiredQuantity(0, 0, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_RARE_METAL, 3, 0) != 0) {
                 Progress_SetGate(0x33);
             }
-        } else if (Inventory_HasRequiredQuantity(0, 0, 0) == 0) {
+        } else if (Inventory_HasRequiredQuantity(PIN_RARE_METAL, 3, 0) == 0) {
             Progress_SetGate(0x43);
             Progress_ClearGate(0x33);
         }
     }
     if ((Progress_Check(0x31) != 0) && (Progress_Check(6) == 0)) {
         if (Progress_Check(0x35) == 0) {
-            if (Inventory_HasRequiredQuantity(0, 0, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_MURASAME, 1, 3) != 0) {
                 Progress_SetGate(0x35);
             }
-        } else if (Inventory_HasRequiredQuantity(0, 0, 0) == 0) {
+        } else if (Inventory_HasRequiredQuantity(PIN_MURASAME, 1, 3) == 0) {
             Progress_SetGate(0x44);
             Progress_ClearGate(0x35);
         }
@@ -3199,13 +3203,12 @@ s32 func_ov030_0208c8a0(ProgressObject* arg0) {
         case 0x404:
             Progress_SetGate(8);
             break;
-        case 0x403:
+        case 0xF7:
             arg0->unk_21CF8 = 1;
             break;
         case 0x40F:
         case 0x410:
             return func_ov030_020aa0c8(arg0, 0xB7, 0x410, 0x411, &func_ov030_0208c5d0);
-        case 0x407:
         case 0x414:
             Progress_SetGate(10);
             arg0->unk_21CF8 = 1;
@@ -3213,11 +3216,12 @@ s32 func_ov030_0208c8a0(ProgressObject* arg0) {
         case 0x412:
             Progress_SetGate(0x45);
             break;
+        case 0x407:
+        case 0x408:
+            return func_ov030_020aa0c8(arg0, 0xB7, 0x408, 0x409, &func_ov030_0208c480);
         case 0x40B:
         case 0x40D:
             return func_ov030_020aa0c8(arg0, 0xB7, 0x40D, 0x409, &func_ov030_0208c528);
-        case 0x408:
-            return func_ov030_020aa0c8(arg0, 0xB7, 0x408, 0x409, &func_ov030_0208c480);
         case 0x40E:
             Progress_SetGate(9);
             arg0->unk_21CF8 = 1;
@@ -3344,6 +3348,7 @@ s32 func_ov030_0208c8a0(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x79F);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x79E:
         case 0x79F:
             Progress_SetCurrentEvent(0x7A0);
             Progress_AdvanceEventScript(arg0);
@@ -3397,7 +3402,7 @@ s32 func_ov030_0208c8a0(ProgressObject* arg0) {
             return 1;
         case 0x7A9:
             Progress_SetGate(47);
-            if (Inventory_HasRequiredQuantity(0xFF, 3, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_RARE_METAL, 3, 0) != 0) {
                 Progress_SetCurrentEvent(0x7AA);
                 Progress_AdvanceEventScript(arg0);
                 return 1;
@@ -3454,7 +3459,7 @@ s32 func_ov030_0208c8a0(ProgressObject* arg0) {
             return 1;
         case 0x7B1:
             Progress_SetGate(0x31);
-            if (Inventory_HasRequiredQuantity(0x5C, 1, 3) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_MURASAME, 1, 3) != 0) {
                 Progress_SetCurrentEvent(0x7B2);
                 Progress_AdvanceEventScript(arg0);
                 return 1;
@@ -3505,19 +3510,19 @@ void func_ov030_0208d708(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -3531,12 +3536,14 @@ void func_ov030_0208d708(void) {
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 61;
     gSaveData.unk_264C = 4;
-    gSaveData.unk_26CE = 4;
-    gSaveData.unk_2648 = 4;
-    gSaveData.unk_264A = 4;
-    gSaveData.unk_264E = 4;
-    gSaveData.unk_2650 = 4;
-    gSaveData.unk_2652 = 4;
+    gSaveData.unk_266E = 4;
+    gSaveData.unk_2654 = 4;
+    gSaveData.unk_2658 = 4;
+    gSaveData.unk_265A = 4;
+    gSaveData.unk_265E = 4;
+    gSaveData.unk_2664 = 4;
+    gSaveData.unk_2662 = 4;
+    gSaveData.unk_2666 = 4;
 }
 
 s32 func_ov030_0208d80c(ProgressObject* arg0) {
@@ -3702,6 +3709,8 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x113);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x113:
+            break;
         case 0x7C7:
             if (Progress_Check(0x2C) != 0) {
                 Progress_SetCurrentEvent(0x7C9);
@@ -3746,7 +3755,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
         case 0x11B:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8415U;
+            gSaveData.currentStoryEvent = 0x8415;
             gSaveData.unk_3124          = 0x10;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -3755,7 +3764,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
         case 0x415:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84F3U;
+            gSaveData.currentStoryEvent = 0x84F3;
             func_ov030_020af364(0xE);
             return 1;
         case 0x11C:
@@ -3777,8 +3786,8 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             arg0->unk_21B08 = 0x157000;
             arg0->unk_21B0C = 0xD6000;
             break;
-        case 0x7BD:
-            Progress_SetCurrentEvent(0x7BB);
+        case 0x7B3:
+            Progress_SetCurrentEvent(0x7B4);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B4:
@@ -3806,20 +3815,21 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x7B8);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x7B3:
-            Progress_SetCurrentEvent(0x7B4);
+        case 0x7B7:
+        case 0x7B8:
+            Progress_SetCurrentEvent(0x7B9);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7B9:
             return func_ov030_020a9f54(arg0, func_ov030_0208dbd8, 0x3637, 3, 0x3638, 0x3639, 0x363A);
-        case 0x7B7:
-            Progress_SetCurrentEvent(0x7B9);
+        case 0x7BC:
+            Progress_SetCurrentEvent(0x7BA);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7BA:
             return func_ov030_020a9f54(arg0, func_ov030_0208dc90, 0x363B, 3, 0x363C, 0x363D, 0x363E);
-        case 0x7BC:
-            Progress_SetCurrentEvent(0x7BA);
+        case 0x7BD:
+            Progress_SetCurrentEvent(0x7BB);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7BB:
@@ -3852,8 +3862,8 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             ProgressReward_GrantPin(arg0, PIN_1000_YEN);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x7B8:
-            Progress_SetCurrentEvent(0x7B9);
+        case 0x7C4:
+            Progress_SetCurrentEvent(0x7C5);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7C5:
@@ -3899,19 +3909,19 @@ void func_ov030_0208e6e4(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -4078,6 +4088,7 @@ s32 func_ov030_0208ec3c(ProgressObject* arg0) {
                 Progress_AdvanceEventScript(arg0);
                 return 1;
             }
+            break;
         case 0x7CB:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
@@ -4164,19 +4175,19 @@ void func_ov030_0208f160(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -4184,10 +4195,10 @@ void func_ov030_0208f160(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    gSaveData.unk_264C          = 0x15D000;
-    gSaveData.unk_2650          = 0xD6000;
+    gSaveData.unk_244C          = 0x15D000;
+    gSaveData.unk_2450          = 0xD6000;
     gSaveData.unk_24B4          = 0;
-    gSaveData.unk_26B8          = 1;
+    gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x8136;
     gSaveData.unk_3124          = 0x3F;
     func_ov030_020c26bc(0);
@@ -4491,7 +4502,7 @@ s32 func_ov030_0208faa4(ProgressObject* arg0) {
             gSaveData.unk_24C0 = 0x14D;
             gSaveData.unk_24C2 = 0x14E;
             gSaveData.unk_341C = 0;
-            SndMgr_StartPlayingSE();
+            SndMgr_StartPlayingSE(0);
             DebugOvlDisp_Pop();
             return 0;
         case 0x14D:
@@ -4577,6 +4588,7 @@ s32 func_ov030_0208faa4(ProgressObject* arg0) {
                 Progress_AdvanceEventScript(arg0);
                 return 1;
             }
+            break;
         case 0x7D4:
             Progress_SetGate(47);
             if (func_02023f60(1, 10) != 0) {
@@ -4635,25 +4647,25 @@ void func_ov030_0209041c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24BE          = 0;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
-    gSaveData.unk_26D4          = 2;
-    gSaveData.unk_26D6          = 4;
-    gSaveData.unk_26D8          = 0;
-    gSaveData.unk_26DA          = 4;
-    gSaveData.unk_26DC          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26BE = 0;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
+    gSaveData.unk_26D4 = 2;
+    gSaveData.unk_26D6 = 4;
+    gSaveData.unk_26D8 = 0;
+    gSaveData.unk_26DA = 4;
+    gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
@@ -5159,13 +5171,13 @@ s32 func_ov030_020919c4(ProgressObject* arg0) {
 
 s32 func_ov030_02091a8c(ProgressObject* arg0) {
     switch (gSaveData.unk_24C8[gSaveData.unk_24C4]) {
-        case 0x362C:
+        case 0x364C:
             Progress_SetGate(0x3F);
             Progress_SetGate(0x42);
             Progress_SetCurrentEvent(0x419);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x362D:
+        case 0x364D:
             if (Progress_Check(0x40) == 0) {
                 Progress_SetGate(0x40);
                 Progress_SetGate(0x43);
@@ -5176,7 +5188,7 @@ s32 func_ov030_02091a8c(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x41C);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x362E:
+        case 0x364E:
             if (Progress_Check(0x41) == 0) {
                 Progress_SetGate(0x41);
                 Progress_SetGate(0x44);
@@ -5187,7 +5199,7 @@ s32 func_ov030_02091a8c(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x41C);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x362F:
+        case 0x364F:
             Progress_SetCurrentEvent(0x41C);
             Progress_AdvanceEventScript(arg0);
             return 1;
@@ -5212,6 +5224,7 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x160);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x160:
         case 0x161:
         case 0x162:
         case 0x163:
@@ -5270,25 +5283,25 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             Progress_SetGate(11);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x177:
+        case 0x178:
             gSaveData.unk_26D8 = 2;
             arg0->unk_21CF8    = 1;
             break;
-        case 0x178:
+        case 0x179:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
             Progress_SetCurrentEvent(0x17A);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x179:
+        case 0x17A:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
             Progress_SetCurrentEvent(0x17B);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x17A:
+        case 0x17B:
             Progress_SetGate(0x35);
             gSaveData.unk_26D8 = 4;
             arg0->unk_21CF8    = 1;
@@ -5334,9 +5347,8 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x416:
+        case 0x417:
             return func_ov030_020aa0c8(arg0, 0xA9, 0x417, 0x418, &func_ov030_02091a8c);
-            // case 0x417:
-            //     return func_ov030_020aa0c8(arg0, 0xA9, 0x417, 0x418, &func_ov030_02091a8c);
         case 0x419:
         case 0x41A:
         case 0x41B:
@@ -5348,21 +5360,21 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             Progress_SetGate(15);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x18A:
+        case 0x189:
             func_ov030_020aa9f4(arg0, 0x364C, 0x5DD1, 0);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x18D:
+        case 0x18C:
             gSaveData.unk_3124 = 0x1A;
             gSaveData.unk_3128 = 1;
             arg0->unk_21630    = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x18E:
+        case 0x18D:
             Progress_SetGate(0x49);
         case 0x192:
             return func_ov030_020a9f54(arg0, &func_ov030_0209171c, 0x365B, 2, 0x365C, 0x365D);
-        case 0x18F:
+        case 0x18E:
             arg0->unk_21630    = 6;
             gSaveData.unk_24C0 = 0x190;
             gSaveData.unk_24C2 = 0x191;
@@ -5377,6 +5389,7 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             } else {
                 ProgressReward_GrantPin(arg0, PIN_500_YEN);
             }
+        case 0x18F:
         case 0x191:
             arg0->unk_21AD0 = 1;
             arg0->unk_21ACC = 0;
@@ -5439,13 +5452,14 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             ProgressReward_GrantItem(arg0, ITEM_STICKER_PHONE_CAMERA);
             gSaveData.unk_2666 = 4;
             arg0->unk_21CF8    = 1;
+            break;
         case 0x7DF:
             Progress_SetCurrentEvent(0x7E0);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x7E0:
             Progress_SetGate(0x48);
-            if (Inventory_HasRequiredQuantity(0x1C, 1, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_POP_PENDULUM, 1, 0) != 0) {
                 Progress_SetCurrentEvent(0x7E1);
                 Progress_AdvanceEventScript(arg0);
                 return 1;
@@ -5464,7 +5478,7 @@ s32 func_ov030_02091bc8(ProgressObject* arg0) {
             return 1;
         case 0x7E3:
             Progress_SetGate(0x5E);
-            if (Inventory_HasRequiredQuantity(56, 1, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_SUPPLY_FACTOR, 1, 0) != 0) {
                 Progress_SetCurrentEvent(0x7E4);
                 Progress_AdvanceEventScript(arg0);
                 return 1;
@@ -5580,20 +5594,20 @@ void func_ov030_02092c4c(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24BE          = 2;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26BE = 2;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -6057,7 +6071,7 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
             }
             return func_ov030_020a9f54(arg0, func_ov030_02093738, 0x366D, 2, 0x366E, 0x366F);
         case 0x1A6:
-            gSaveData.unk_2650 = 4;
+            gSaveData.unk_264E = 4;
             gSaveData.unk_2658 = 4;
             gSaveData.unk_265A = 4;
             break;
@@ -6107,7 +6121,7 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_02093b40, 0x367D, 3, 0x367E, 0x367F, 0x3680);
         case 0x1BD:
         case 0x1BF:
-            Progress_SetCurrentEvent(0x1BF);
+            Progress_SetCurrentEvent(0x1BE);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x1BE:
@@ -6223,8 +6237,8 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_02093d38, 0x368A, 2, 0x368B, 0x368C);
         case 0x1D9:
             arg0->unk_21630    = 6;
-            gSaveData.unk_26C0 = 0x1DB;
-            gSaveData.unk_26C2 = 0x1DC;
+            gSaveData.unk_24C0 = 0x1DB;
+            gSaveData.unk_24C2 = 0x1DC;
             gSaveData.unk_341C = 33;
             SndMgr_StartPlayingSE(0);
             DebugOvlDisp_Pop();
@@ -6251,7 +6265,7 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
             return 1;
         case 0x7F3:
             Progress_SetGate(56);
-            if (Inventory_HasRequiredQuantity(6, 1, 0) != 0) {
+            if (Inventory_HasRequiredQuantity(PIN_SEXY_PLUS, 1, 0) != 0) {
                 Progress_SetCurrentEvent(0x7F4);
                 Progress_AdvanceEventScript(arg0);
                 return 1;
@@ -6302,6 +6316,8 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
                 gSaveData.unk_3100 = 5;
             }
             break;
+        case 0x7FB:
+            break;
         case EVENT_JOSHUA4_HACHIKO_REAPER:
             Progress_SetGate(4);
             ProgressReward_GrantItem(arg0, ITEM_QUEST_PRETTY_RIBBON);
@@ -6332,20 +6348,20 @@ void func_ov030_02094b08(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24BE          = 2;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26BE = 2;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -6668,6 +6684,7 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x1E3);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x1E3:
             break;
         case 0x1E4:
             gSaveData.unk_264A = 0;
@@ -6797,7 +6814,7 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             arg0->unk_21B0C = 0x143000;
             break;
         case 0x815:
-            Progress_SetCurrentEvent(0x815);
+            Progress_SetCurrentEvent(0x816);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x816:
@@ -6825,7 +6842,7 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x818:
-            Progress_SetCurrentEvent(0x818);
+            Progress_SetCurrentEvent(0x819);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x819:
@@ -6833,8 +6850,8 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_02095764, 0x36A5, 2, 0x36A6, 0x36A7);
         case 0x81A:
             arg0->unk_21630    = 6;
-            gSaveData.unk_24C0 = 0x81C;
-            gSaveData.unk_24C2 = 0x81B;
+            gSaveData.unk_24C0 = 0x81D;
+            gSaveData.unk_24C2 = 0x81C;
             gSaveData.unk_341C = 43;
             SndMgr_StartPlayingSE(0);
             DebugOvlDisp_Pop();
@@ -6928,8 +6945,8 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             arg0->unk_21630    = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x1FA:
-            return func_ov030_020a9f54(arg0, func_ov030_02095588, 0x3699, 3, 0x369A, 0x369B, 0x369C);
+        case 0x49:
+            return func_ov030_020a9f54(arg0, func_ov030_0209562c, 0x369D, 3, 0x369E, 0x369F, 0x36A0);
         case 0x4A:
             Progress_SetGate(9);
             arg0->unk_21CF8 = 1;
@@ -6938,12 +6955,12 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
             Progress_SetGate(10);
             arg0->unk_21CF8 = 1;
             break;
-        case 0x49:
-            return func_ov030_020a9f54(arg0, func_ov030_0209562c, 0x369D, 3, 0x369E, 0x369F, 0x36A0);
-        case 0x1F2:
-            Progress_SetGate(0x3F);
         case 0x4D:
             return func_ov030_020a9f54(arg0, func_ov030_020956c8, 0x36A1, 3, 0x36A2, 0x36A3, 0x36A4);
+        case 0x1F2:
+            Progress_SetGate(0x3F);
+        case 0x1FA:
+            return func_ov030_020a9f54(arg0, func_ov030_02095588, 0x3699, 3, 0x369A, 0x369B, 0x369C);
 
         case 0x1F3:
             arg0->unk_21630    = 6;
@@ -7028,20 +7045,20 @@ void func_ov030_02096790(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24BE          = 2;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26BE = 2;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -7472,19 +7489,19 @@ void func_ov030_020979d0(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -7747,19 +7764,19 @@ void func_ov030_02098500(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_24C0          = 4;
-    gSaveData.unk_24C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -7902,7 +7919,7 @@ s32 func_ov030_02098a30(ProgressObject* arg0) {
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = 0x8542;
-            func_ov030_020aec1c(4);
+            func_ov030_020aec1c(1);
             gSaveData.playerStats.activeFriend = FRIEND_BEAT;
             func_ov030_020c596c();
             func_ov030_020c1960();
@@ -7989,6 +8006,7 @@ s32 func_ov030_02098a30(ProgressObject* arg0) {
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             func_ov030_020aac28(arg0, PIN_HOT_GAZE);
             arg0->unk_21CF8 = 1;
+            break;
         case 0x24F:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
@@ -8028,19 +8046,19 @@ void func_ov030_02099010(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_26C0          = 4;
-    gSaveData.unk_26C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -8169,7 +8187,7 @@ s32 func_ov030_02099514(ProgressObject* arg0) {
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            gSaveData.unk_3100 = 0x14;
+            gSaveData.unk_3120 = 0x14;
             Progress_SetCurrentEvent(0x25C);
             Progress_AdvanceEventScript(arg0);
             return 1;
@@ -8229,20 +8247,20 @@ void func_ov030_02099858(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_26BE          = 2;
-    gSaveData.unk_26C0          = 4;
-    gSaveData.unk_26C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26BE = 2;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -8269,7 +8287,7 @@ void func_ov030_02099858(void) {
     gSaveData.unk_265A = 4;
     gSaveData.unk_265E = 4;
     gSaveData.unk_3124 = 0x47;
-    gSaveData.unk_3100 = 0x14;
+    gSaveData.unk_3120 = 0x14;
 }
 
 s32 func_ov030_02099990(ProgressObject* arg0) {
@@ -8361,11 +8379,11 @@ s32 func_ov030_02099990(ProgressObject* arg0) {
     }
     if (gSaveData.unk_2458 == 37) {
         if (Progress_Check(61) == 0) {
-            Progress_SetGate(GATE_GAME_CLEARED);
+            Progress_SetGate(61);
             Progress_SetGate(0x3F);
             Progress_BeginScriptedEvent(arg0, 642, 0);
             return 1;
-        } else if ((Progress_Check(GATE_GAME_CLEARED) != 0) && (Progress_Check(0x3F) == 0)) {
+        } else if ((Progress_Check(61) != 0) && (Progress_Check(0x3F) == 0)) {
             Progress_SetGate(0x3F);
             Progress_BeginScriptedEvent(arg0, 0x287, 0);
             return 1;
@@ -8583,7 +8601,8 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
             Progress_ClearGate(47);
             Progress_ClearGate(0x2C);
             Progress_ClearGate(45);
-        case 8:
+        case 0x276:
+        case 0x4B3:
             if (func_ov030_020a9d00(arg0, 0x4A2) == 0) {
                 return 1;
             }
@@ -8597,11 +8616,11 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
             DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
             DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
             return 1;
-        case 0x27C:
+        case 0x4B1:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            Progress_SetCurrentEvent(0x27D);
+            Progress_SetCurrentEvent(0x277);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x4B0:
@@ -8611,11 +8630,11 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x278);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x4B1:
+        case 0x4B2:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            Progress_SetCurrentEvent(0x277);
+            Progress_SetCurrentEvent(0x279);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x277:
@@ -8645,6 +8664,13 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x27C);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x27C:
+            if (func_ov030_020a75c0(arg0) != 0) {
+                return 1;
+            }
+            Progress_SetCurrentEvent(0x27D);
+            Progress_AdvanceEventScript(arg0);
+            return 1;
         case 0x27D:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
@@ -8657,13 +8683,6 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
                 return 1;
             }
             Progress_SetCurrentEvent(EVENT_BEAT3_TIPSY_TOSE_HALL);
-            Progress_AdvanceEventScript(arg0);
-            return 1;
-        case 0x4B2:
-            if (func_ov030_020a75c0(arg0) != 0) {
-                return 1;
-            }
-            Progress_SetCurrentEvent(0x279);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case EVENT_BEAT3_TIPSY_TOSE_HALL:
@@ -8729,13 +8748,13 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
         case 0x832:
             return func_ov030_020a9f54(arg0, func_ov030_0209a270, 0x36C5, 3, 0x36C6, 0x36C7, 0x36C8);
         case 0x835:
-            Progress_SetCurrentEvent(0x832);
+            Progress_SetCurrentEvent(0x833);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x833:
             return func_ov030_020a9f54(arg0, func_ov030_0209a328, 0x36C9, 4, 0x36CA, 0x36CB, 0x36CC, 0x36CD);
         case 0x836:
-            Progress_SetCurrentEvent(0x833);
+            Progress_SetCurrentEvent(0x834);
             Progress_AdvanceEventScript(arg0);
             return 1;
 
@@ -8795,19 +8814,19 @@ void func_ov030_0209af50(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_26C0          = 4;
-    gSaveData.unk_26C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -9021,6 +9040,8 @@ s32 func_ov030_0209b9c4(ProgressObject* arg0) {
 
 s32 func_ov030_0209bacc(ProgressObject* arg0) {
     switch (gSaveData.currentStoryEvent) {
+        case 0x28C:
+            break;
         case 0x290:
             Progress_SetGate(3);
             arg0->unk_21CF8 = 1;
@@ -9192,19 +9213,19 @@ void func_ov030_0209c0f4(void) {
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
-    gSaveData.unk_26B8          = 4;
-    gSaveData.unk_26BA          = 4;
-    gSaveData.currentStoryEvent = 4;
-    gSaveData.unk_26C0          = 4;
-    gSaveData.unk_26C2          = 4;
-    gSaveData.unk_26C4          = 4;
-    gSaveData.unk_26C6          = 4;
-    gSaveData.unk_26C8          = 4;
-    gSaveData.unk_26CA          = 4;
-    gSaveData.unk_26CC          = 4;
-    gSaveData.unk_26CE          = 4;
-    gSaveData.unk_26D0          = 4;
-    gSaveData.unk_26D2          = 4;
+    gSaveData.unk_26B8 = 4;
+    gSaveData.unk_26BA = 4;
+    gSaveData.unk_26BC = 4;
+    gSaveData.unk_26C0 = 4;
+    gSaveData.unk_26C2 = 4;
+    gSaveData.unk_26C4 = 4;
+    gSaveData.unk_26C6 = 4;
+    gSaveData.unk_26C8 = 4;
+    gSaveData.unk_26CA = 4;
+    gSaveData.unk_26CC = 4;
+    gSaveData.unk_26CE = 4;
+    gSaveData.unk_26D0 = 4;
+    gSaveData.unk_26D2 = 4;
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     gSaveData.unk_26D6 = 4;
@@ -9215,15 +9236,17 @@ void func_ov030_0209c0f4(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x82C2;
+
+    u64 temp = 7;
     func_ov030_020c26bc(4);
     gSaveData.unk_265C = 0;
     gSaveData.unk_2660 = 2;
     gSaveData.unk_266C = 0;
     gSaveData.unk_2670 = 0;
     gSaveData.unk_2676 = 0;
-    func_ov030_02084944(7);
+    func_ov030_02084944(temp);
     gSaveData.unk_3124 = 0x49;
-    gSaveData.unk_3100 = 0x14;
+    gSaveData.unk_3120 = 0x14;
 }
 
 s32 func_ov030_0209c208(s32 arg0) {
@@ -9354,7 +9377,7 @@ s32 func_ov030_0209c680(ProgressObject* arg0) {
             func_ov030_020af364(42);
             return 1;
         case 0x2CD:
-            gSaveData.unk_26C0 = 4;
+            gSaveData.unk_2660 = 4;
             break;
         case 0x2CE:
         case 0x2CF:
@@ -9362,7 +9385,7 @@ s32 func_ov030_0209c680(ProgressObject* arg0) {
             return func_ov030_020a9f54(arg0, func_ov030_0209c57c, 0x36D7, 3, 0x36D8, 0x36D9, 0x36DA);
         case 0x2D1:
             Progress_SetGate(4);
-            gSaveData.unk_26C0 = 3;
+            gSaveData.unk_2660 = 3;
             arg0->unk_21CF8    = 1;
             break;
         case 0x2D2:
@@ -9446,7 +9469,7 @@ void func_ov030_0209ca24(void) {
     gSaveData.unk_2670 = 0;
     gSaveData.unk_2676 = 0;
     func_ov030_020aec1c(5);
-    gSaveData.unk_3100 = 0x14;
+    gSaveData.unk_3120 = 0x14;
     func_ov030_020aec1c(9);
 }
 
@@ -9612,7 +9635,7 @@ void func_ov030_0209d1d8(void) {
     gSaveData.unk_26B0 = 0;
     gSaveData.unk_26B2 = 2;
     gSaveData.unk_26B4 = 0;
-    gSaveData.unk_3100 = 0x14;
+    gSaveData.unk_3120 = 0x14;
 }
 
 s32 func_ov030_0209d318(s32 arg0) {
@@ -9639,7 +9662,7 @@ s32 func_ov030_0209d318(s32 arg0) {
     }
 
     if (gSaveData.unk_2458 == 18) {
-        gSaveData.unk_3100 = 20;
+        gSaveData.unk_3120 = 20;
         if ((func_ov030_020848e4(arg0, 20) != 0) && (Progress_Check(33) == 0)) {
             Progress_SetGate(33);
             Progress_BeginScriptedEvent(arg0, 0x2EE, 0);
@@ -9647,7 +9670,7 @@ s32 func_ov030_0209d318(s32 arg0) {
         }
     }
     if (gSaveData.unk_2458 == 38) {
-        gSaveData.unk_3100 = 0;
+        gSaveData.unk_3120 = 0;
         if (Progress_Check(0x32) == 0) {
             Progress_SetGate(0x32);
             Progress_BeginScriptedEvent(arg0, 0x2EF, 0);
@@ -9804,7 +9827,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
             arg0->unk_21630             = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x70F:
+        case 0x420:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = 0x857E;
@@ -9850,7 +9873,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
             gSaveData.unk_26B2          = 0;
             gSaveData.unk_26B4          = 4;
             gSaveData.unk_26B6          = 4;
-            func_ov030_020aec38(4);
+            func_ov030_020aec38(1);
             gSaveData.playerStats.activeFriend = FRIEND_NONE;
             gSaveData.unk_3124                 = 46;
             gSaveData.unk_3128                 = 0;
@@ -9877,11 +9900,11 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
             arg0->unk_21630    = 4;
             DebugOvlDisp_Pop();
             return 0;
-        case 0x30A:
+        case 0x30B:
             Progress_SetCurrentEvent(0x30C);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x30B:
+        case 0x30C:
             if (Progress_Check(46) != 0) {
                 Progress_SetCurrentEvent(0x30E);
                 Progress_AdvanceEventScript(arg0);
@@ -9941,8 +9964,6 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
 }
 
 void func_ov030_0209e16c(void) {
-    s16 var_r1;
-
     if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         Progress_SetGate(GATE_GAME_CLEARED);
     }
@@ -9961,12 +9982,11 @@ void func_ov030_0209e16c(void) {
     gSaveData.unk_26D2 = 4;
     if (Inventory_HasRequiredQuantity(ITEM_BOOK_BLACK_CAT_ATLAS_VOL_10, 1, 0) != 0) {
         Progress_SetGate(0x1F);
-        var_r1 = 2;
+        gSaveData.unk_26D4 = 2;
     } else {
         func_ov030_020aec1c(4);
-        var_r1 = 0;
+        gSaveData.unk_26D4 = 0;
     }
-    gSaveData.unk_26D4 = var_r1;
     gSaveData.unk_26D6 = 4;
     gSaveData.unk_26D8 = 4;
     gSaveData.unk_26DA = 4;
@@ -10320,15 +10340,18 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x319:
+        case 0x31C:
+        case 0x31F:
+        case 0x322:
             return func_ov030_020a9f54(arg0, func_ov030_0209efe4, 0x36E4, 2, 0x36E5, 0x36E6);
-        case 0x324:
+        case 0x31A:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
-            Progress_SetCurrentEvent(0x325);
+            Progress_SetCurrentEvent(0x31D);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x31A:
+        case 0x31B:
             Progress_ClearGate(0x7D);
             arg0->unk_21AD0 = 1;
             arg0->unk_21ACC = 0;
@@ -10337,15 +10360,6 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             arg0->unk_21B08 = 0x168000;
             arg0->unk_21B0C = 0xFF000;
             break;
-        // case 0x31B:
-        //     Progress_ClearGate(0x7D);
-        //     arg0->unk_21AD0 = 1;
-        //     arg0->unk_21ACC = 0;
-        //     arg0->unk_21AFC = 8;
-        //     arg0->unk_21B00 = 0x66;
-        //     arg0->unk_21B08 = 0x168000;
-        //     arg0->unk_21B0C = 0xFF000;
-        //     return 0;
         case 0x31D:
             Progress_SetGate(0x31);
             arg0->unk_21630    = 6;
@@ -10374,11 +10388,18 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x323);
             Progress_AdvanceEventScript(arg0);
             return 1;
-        case 0x326:
+        case 0x323:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
             Progress_SetCurrentEvent(0x324);
+            Progress_AdvanceEventScript(arg0);
+            return 1;
+        case 0x324:
+            if (func_ov030_020a75c0(arg0) != 0) {
+                return 1;
+            }
+            Progress_SetCurrentEvent(0x325);
             Progress_AdvanceEventScript(arg0);
             return 1;
         case 0x325:
@@ -10391,7 +10412,7 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             arg0->unk_21B08 = 0x168000;
             arg0->unk_21B0C = 0xFF000;
             break;
-        case 0x323:
+        case 0x326:
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
@@ -11113,10 +11134,9 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
         case 0x360:
             gSaveData.unk_2670 = 4;
             break;
-        case 0x31C:
-        case 0x31F:
-        case 0x322:
-            return func_ov030_020a9f54(arg0, func_ov030_0209efe4, 0x36E4, 2, 0x36E5, 0x36E6);
+        case 0x366:
+        case 0x36A:
+            return func_ov030_020a9f54(arg0, func_ov030_0209f06c, 0x36E7, 2, 0x36E8, 0x36E9);
         case 0x367:
             if (Progress_Check(0x6D) != 0) {
                 gSaveData.unk_24B4          = 0;
@@ -11182,6 +11202,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x83B);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x83B:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_1ST_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_HAMBURGER);
@@ -11205,6 +11227,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x83E);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x83E:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_2ND_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_SPECIAL_DOG);
@@ -11227,6 +11251,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x841);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x841:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_3RD_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DONUTS);
@@ -11249,6 +11275,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x844);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x844:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_4TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_SHADOW_STEAK_RAMEN);
@@ -11271,6 +11299,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x847);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x847:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_5TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_ATK_CAPSULES);
@@ -11293,6 +11323,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x84A);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x84A:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_6TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DEF_MEDICINE);
@@ -11315,6 +11347,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x84D);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x84D:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_7TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_THE_TATSUMI_BURGER);
@@ -11337,6 +11371,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x850);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x850:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_8TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_DEFINITIVO_CHILI_DOG);
@@ -11359,6 +11395,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x853);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x853:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_9TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_MYSTIC_RAMEN);
@@ -11381,6 +11419,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x856);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x856:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_10TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_ABSOLUTE_SHADOW_RAMEN);
@@ -11403,6 +11443,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x859);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x859:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_11TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_VIPER_DRINK);
@@ -11425,6 +11467,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x85C);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x85C:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_12TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_MAKO_SYNERGY);
@@ -11447,6 +11491,8 @@ s32 func_ov030_0209f0e8(ProgressObject* arg0) {
             Progress_SetCurrentEvent(0x85F);
             Progress_AdvanceEventScript(arg0);
             return 1;
+        case 0x85F:
+            break;
         case EVENT_ANOTHERDAY_PORKCITY_13TH_REWARD:
             ProgressReward_GrantPin(arg0, PIN_10000_YEN);
             ProgressReward_GrantItem(arg0, ITEM_FOOD_CURIOUS_MUSHROOMS);
@@ -11519,13 +11565,13 @@ s32 func_ov030_020a1fdc(ProgressObject* arg0) {
 
 s32 func_ov030_020a206c(ProgressObject* arg0) {
     switch (gSaveData.currentStoryEvent) {
-        case 0x592:
+        case 0x593:
             func_ov030_020aa9f4(arg0, 0x35EB, 0x5DD1, 0);
             break;
         case 0x594:
         case 0x598:
             return func_ov030_020aa0c8(arg0, 3, 0x598, 0x597, func_ov030_020a1fdc);
-        case 0x597:
+        case 0x592:
         default:
             break;
     }
@@ -11566,7 +11612,7 @@ void func_ov030_020a2208(ProgressObject* arg0) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x886E;
-    func_ov030_020c26bc(arg0);
+    func_ov030_020c26bc(0);
     gSaveData.unk_267A = 4;
 }
 
@@ -11697,9 +11743,10 @@ s32 func_ov030_020a2628(ProgressObject* arg0) {
             break;
         case 0x872:
             Progress_SetGate(2);
+            s16 temp           = gSaveData.unk_2458;
             gSaveData.unk_30FC = 0;
             gSaveData.unk_30FE = 39;
-            gSaveData.unk_3100 = gSaveData.unk_2458;
+            gSaveData.unk_3100 = temp;
             if (func_ov030_020a75c0(arg0) != 0) {
                 return 1;
             }
@@ -11929,7 +11976,6 @@ void func_ov030_020a2f74(void) {
     gSaveData.currentStoryEvent = 0x8A;
 }
 
-// Nonmatching
 s32 func_ov030_020a2fc4(void) {
     if (gSaveData.unk_2458 == 18) {
         if ((Progress_Check(15) != 0) && (Progress_Check(2) == 0)) {
@@ -12017,7 +12063,7 @@ void func_ov030_020a31c4(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x88B;
-    func_ov030_020aec1c(4);
+    func_ov030_020aec1c(1);
     gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
 }
 
