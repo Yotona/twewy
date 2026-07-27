@@ -76,7 +76,7 @@ BOOL Str_Validate(const char* str, s32 maxLen) {
 char* Str_SPrintf(const char* fmt, ...) {
     char* errorMsg = Str_Sprintf_ErrorMessage;
 
-    char* buffer = Mem_PeekPool(&data_0206a9bc, 0x400);
+    char* buffer = Mem_PeekPool(&TmpBuf, 0x400);
     if (buffer == 0) {
         return errorMsg;
     }
@@ -90,7 +90,7 @@ char* Str_SPrintf(const char* fmt, ...) {
     if (bufferLen > 0x400) {
         buffer = errorMsg;
     } else {
-        Mem_AllocPool(&data_0206a9bc, bufferLen);
+        Mem_AllocPool(&TmpBuf, bufferLen);
     }
     return buffer;
 }

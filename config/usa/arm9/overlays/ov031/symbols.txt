@@ -110,6 +110,6 @@ data_ov031_0210dab4 kind:data(any) addr:0x0210dab4
 data_ov031_0210dac8 kind:data(any) addr:0x0210dac8
 data_ov031_0210daec kind:data(any) addr:0x0210daec
 
-@476 kind:data(byte[10]) addr:0x0210db10 local
+@516 kind:data(byte[10]) addr:0x0210db10 local
 
 data_ov031_0210db20 kind:bss addr:0x0210db20

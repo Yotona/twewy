@@ -2,6 +2,7 @@
 #define ENGINE_CORE_OAMMANAGER_H
 
 #include "Display.h"
+#include <nitro/gx.h>
 #include <nitro/os/cache.h>
 #include <nitro/types.h>
 
@@ -43,10 +44,41 @@ typedef struct {
  */
 typedef struct {
     /* 0x0 */ u16 charName; ///< Character/tile index (0xFFFF = terminator)
-    /* 0x2 */ u16 attr0;    ///< Y position, shape, color mode
-    /* 0x4 */ u16 attr1;    ///< X position, size, flip flags
-    /* 0x6 */ u16 attr2;    ///< Palette number, priority
-} OamCellPiece;             // Size: 0x8
+    /* 0x2 */ union {       ///< Y position, shape, color mode
+        u16 attr0;
+        struct {
+            u16 yPos       : 8; ///< Y position
+            u16 affineMode : 2; ///< Bit 0 = affine enable, bit 1 = double size (affine) / disable
+            u16 objMode    : 2; ///< OBJ mode; also selects the OamManager::charBases entry
+            u16 mosaic     : 1; ///< Mosaic flag
+            u16 colorMode  : 1; ///< Color mode (16 or 256 colors)
+            u16 shape      : 2; ///< Shape, combined with size
+        };
+    };
+    /* 0x4 */ union { ///< X position, size, flip flags
+        u16 attr1;
+        struct {
+            u16 xPos        : 9; ///< X position
+            u16 affineParam : 5; ///< Affine parameter set index (affine sprites only)
+            u16 size        : 2; ///< Size, combined with shape
+        };
+        struct {
+            u16 _pad0        : 10;
+            u16 sortPriority : 2; ///< Render priority group (0-3); occupies unused affineParam bits
+            u16 flipH        : 1; ///< Horizontal flip (non-affine sprites only)
+            u16 flipV        : 1; ///< Vertical flip (non-affine sprites only)
+            u16 _pad1        : 2;
+        };
+    };
+    /* 0x6 */ union { ///< Default character name, priority, palette number
+        u16 attr2;
+        struct {
+            u16 baseCharName : 10; ///< Default character/tile index, before charName overrides it
+            u16 priority     : 2;  ///< BG priority
+            u16 colorParam   : 4;  ///< Palette number, or alpha in bitmap mode
+        };
+    };
+} OamCellPiece; // Size: 0x8
 
 /**
  * @brief Tile mapping configuration for OBJ character data.
@@ -94,26 +126,14 @@ typedef struct {
 } OamCellFrame;              // Size: 0x18
 
 /**
- * @brief NDS hardware OAM (Object Attribute Memory) entry.
- *
- * Each entry describes one hardware sprite. 128 entries exist per engine.
- * Affine parameters are interleaved at the affineParam field of every 4th entry group.
- */
-typedef struct {
-    /* 0x0 */ u16 attr0;       ///< Y position, OBJ mode, mosaic, color mode, shape
-    /* 0x2 */ u16 attr1;       ///< X position, flip flags or affine index, size
-    /* 0x4 */ u16 attr2;       ///< Tile index, priority, palette number
-    /* 0x6 */ s16 affineParam; ///< Rotation/scaling parameter (PA/PB/PC/PD interleaved)
-} OamAttr;                     // Size: 0x8
-
-/**
  * @brief Stored affine transformation parameters for one affine group.
  */
 typedef struct {
     /* 0x00 */ s32 rotation; ///< Rotation angle
     /* 0x04 */ s32 scaleX;   ///< Horizontal scale
     /* 0x08 */ s32 scaleY;   ///< Vertical scale
-    /* 0x0C */ s32 unk_0C;   ///< Unused / padding
+    /* 0x0C */ u16 unk_0C;   ///< Unused / padding
+    /* 0x0E */ u16 unk_0E;   ///< Unused / padding
 } OamAffineParam;            // Size: 0x10
 
 /**
@@ -155,7 +175,7 @@ typedef struct {
     /* 0x0008 */ OamCharConfig*   charBases[4];    ///< Character data base pointers
     /* 0x0018 */ s32              oamCount;        ///< Next free OAM entry index
     /* 0x001C */ s32              affineCount;     ///< Next free affine group index
-    /* 0x0020 */ OamAttr          oam[128];        ///< Hardware OAM attribute buffer
+    /* 0x0020 */ GXOamAttr        oam[128];        ///< Hardware OAM attribute buffer
     /* 0x0420 */ OamAffineParam   affine[32];      ///< Affine transformation storage
     /* 0x0620 */ s32              renderMode;      ///< Render dispatch table index
     /* 0x0624 */ s32              cmdCount;        ///< Active sprite render commands
@@ -243,7 +263,7 @@ OamCellShape* OamMgr_GetCellShape(OamCellPiece* piece);
  * @brief Build a temporary visible-only cell-piece list after 2D transform/cull.
  *
  * Iterates the source piece array, applies the position offset and flip flags,
- * culls pieces outside the screen (256~192), and writes survivors into a
+ * culls pieces outside the screen (256x192), and writes survivors into a
  * scratch-allocated output list.
  *
  * @param mgr        OAM manager providing char-base configuration.

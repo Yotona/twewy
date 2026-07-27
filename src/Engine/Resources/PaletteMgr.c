@@ -21,7 +21,7 @@ static void func_0200b91c(PaletteResource* arg0, void* arg1, u32 arg2, s32 arg3,
 static void func_0200ba64(PaletteResource* arg0, void* arg1, u32 arg2, s32 arg3, s32 arg4);
 static void func_0200bbac(PaletteResource* arg0, void* arg1, u32 arg2, s32 arg3, s32 arg4);
 static void func_0200bcf4(PaletteResource* arg0, void* arg1, u32 arg2, s32 arg3, s32 arg4);
-static void PaletteMgr_SetSource(PaletteMgr* mgr, PaletteResource* entry, void* dataPtr);
+void        PaletteMgr_SetSource(PaletteMgr* mgr, PaletteResource* entry, void* dataPtr);
 
 static const u16 data_0205ad64[4] = {0x20, 0x40, 0x60, 0x60};
 
@@ -78,10 +78,10 @@ static void PalSlot_AllocContiguousPacked(PalSlot* result, PalSlot slots[7][16],
     *result    = slot;
 }
 
-static s16 func_0200a25c(PalSlot* slots, u32 mask) {
-    PalSlot* cur;
-    s16      found;
+static s32 func_0200a25c(PalSlot* slots, u32 mask) {
+    s32      found;
     s32      i;
+    PalSlot* cur;
 
     cur   = slots;
     found = -1;
@@ -114,56 +114,59 @@ end:
     return found;
 }
 
-static void func_0200a2f0(PalSlot* result, PalSlot slots[7][16], u32 row, s16 mask) {
+static void func_0200a2f0(PalSlot* result, PalSlot slots[7][16], u32 row, s32 mask) {
     PalSlot slot;
     slot.index = func_0200a25c(slots[row], mask);
     slot.flags = mask;
     *result    = slot;
 }
 
-static s16 func_0200a32c(PalSlot* slots, s16 start, s32 count) {
-    if (start + count > 16) {
-        return -1;
-    }
+static s32 func_0200a32c(PalSlot* slots, s32 start, s32 count) {
+    s32 result = -1;
+    s32 i;
 
-    // Check if all slots are available
-    for (s32 i = 0; i < count; i++) {
-        if (slots[start + i].index >= 0) {
-            return -1;
+    if (start + count <= 16) {
+        // Check if all slots are available
+        for (i = 0; i < count; i++) {
+            if (slots[start + i].index >= 0) {
+                break;
+            }
+        }
+
+        if (i == count) {
+            // Mark all slots as occupied
+            for (s32 j = 0; j < count; j++) {
+                slots[start + j].index = start;
+                slots[start + j].flags = 0xFFFF;
+            }
+            result = start;
         }
     }
 
-    // Mark all slots as occupied
-    for (s32 j = 0; j < count; j++) {
-        slots[start + j].index = start;
-        slots[start + j].flags = 0xFFFF;
-    }
-
-    return start;
+    return result;
 }
 
 static void func_0200a3b8(PalSlot* result, PalSlot slots[7][16], u32 row, s16 start, s32 count) {
-    PalSlot* slot = result;
-    slot->index   = func_0200a32c(slots[row], start, count);
-    slot->flags   = 0xFFFF;
-    slot->pad     = 0; // Initialize pad to 0
+    PalSlot slot;
+    slot.index = func_0200a32c(slots[row], start, count);
+    slot.flags = 0xFFFF;
+    *result    = slot;
 }
 
 static void func_0200a3fc(PalSlot slots[7][16], u32 row, PalSlot* slotRef) {
-    if (slotRef->index < 0) {
+    s32 idx = slotRef->index;
+    if (idx < 0) {
         return;
     }
 
-    PalSlot* cur = &slots[row][slotRef->index];
+    PalSlot* cur = &slots[row][idx];
 
     if (slotRef->flags == 0xFFFF) {
-        for (s16 idx = slotRef->index; idx < 16; idx++) {
-            if (cur->index != slotRef->index) {
-                return;
-            }
+        while (idx < 16 && cur->index == slotRef->index) {
             cur->index = -1;
             cur->flags = 0;
             cur++;
+            idx++;
         }
     } else {
         cur->flags &= ~slotRef->flags;
@@ -366,8 +369,7 @@ void PaletteMgr_Init(PaletteMgr* mgr, DisplayEngine engine) {
     }
 }
 
-// Nonmatching: Significant instruction differences in "found" loop and switch table
-PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16 slotType, u32 count) {
+PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u32 slotType, u32 count) {
     PalSlot          slot;
     PaletteResource* found;
 
@@ -379,7 +381,7 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
 
         while (found != NULL) {
             if (found->refCount != 0) {
-                if (found->sourcePalette == source && found->chunkCount == count && found->unk_12 == 0xFFFF) {
+                if (found->sourcePalette == source && found->chunkCount == (u16)count && found->unk_12 == 0xFFFF) {
                     break;
                 }
             }
@@ -410,7 +412,7 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
     if (source != NULL) {
         resource->refCount = 1;
     }
-    resource->slotType  = slotType & 7;
+    resource->slotType  = (u16)slotType;
     resource->palIndex  = slot.index;
     resource->unk_12    = 0xFFFF;
     resource->colorBias = 0;
@@ -421,7 +423,7 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
         case 0:
             resource->flags |= 0x2000;
             resource->chunkSize  = 1;
-            resource->chunkCount = count;
+            resource->chunkCount = (u16)count;
             break;
         case 1:
         case 2:
@@ -429,23 +431,20 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
         case 4:
             resource->flags |= 0x2000;
             resource->chunkSize  = 16;
-            resource->chunkCount = count;
-            break;
-        case 5:
-            resource->flags |= 0x1000;
-            resource->chunkSize  = 1;
-            resource->chunkCount = count;
+            resource->chunkCount = (u16)count;
             break;
         case 6:
             if (mgr->engine != DISPLAY_EXTENDED) {
                 resource->flags |= 0x1000;
                 resource->chunkSize  = 16;
-                resource->chunkCount = count;
-            } else {
-                resource->flags |= 0x1000;
-                resource->chunkSize  = 1;
-                resource->chunkCount = count;
+                resource->chunkCount = (u16)count;
+                break;
             }
+            // fallthrough
+        case 5:
+            resource->flags |= 0x1000;
+            resource->chunkSize  = 1;
+            resource->chunkCount = (u16)count;
             break;
     }
 
@@ -454,7 +453,7 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
     return resource;
 }
 
-PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slotType, s16 mask) {
+PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u32 slotType, s32 mask) {
     PalSlot          slot;
     PaletteResource* found;
 
@@ -494,7 +493,7 @@ PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slo
     if (source != NULL) {
         entry->refCount = 1;
     }
-    entry->slotType   = slotType & 7;
+    entry->slotType   = (u16)slotType;
     entry->chunkCount = 0;
     entry->palIndex   = slot.index;
     entry->unk_12     = slot.flags;
@@ -514,18 +513,16 @@ PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slo
             entry->flags |= 0x2000;
             entry->chunkSize = 16;
             break;
-        case 5:
-            entry->flags |= 0x1000;
-            entry->chunkSize = 1;
-            break;
         case 6:
             if (mgr->engine != DISPLAY_EXTENDED) {
                 entry->flags |= 0x1000;
                 entry->chunkSize = 16;
-            } else {
-                entry->flags |= 0x1000;
-                entry->chunkSize = 1;
+                break;
             }
+            // fallthrough
+        case 5:
+            entry->flags |= 0x1000;
+            entry->chunkSize = 1;
             break;
     }
 
@@ -534,7 +531,7 @@ PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slo
     return entry;
 }
 
-PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u16 slotType, s16 start, s32 count) {
+PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u32 slotType, s16 start, u32 count) {
     PalSlot          slot;
     PaletteResource* resource;
 
@@ -553,7 +550,7 @@ PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u
     }
 
     resource->flags |= 0x10;
-    resource->slotType  = slotType & 7;
+    resource->slotType  = (u16)slotType;
     resource->palIndex  = slot.index;
     resource->unk_12    = 0xFFFF;
     resource->colorBias = 0;
@@ -564,7 +561,7 @@ PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u
         case 0:
             resource->flags |= 0x2000;
             resource->chunkSize  = 1;
-            resource->chunkCount = count;
+            resource->chunkCount = (u16)count;
             break;
         case 1:
         case 2:
@@ -572,23 +569,20 @@ PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u
         case 4:
             resource->flags |= 0x2000;
             resource->chunkSize  = 16;
-            resource->chunkCount = count;
-            break;
-        case 5:
-            resource->flags |= 0x1000;
-            resource->chunkSize  = 1;
-            resource->chunkCount = count;
+            resource->chunkCount = (u16)count;
             break;
         case 6:
             if (mgr->engine != DISPLAY_EXTENDED) {
                 resource->flags |= 0x1000;
                 resource->chunkSize  = 16;
-                resource->chunkCount = count;
-            } else {
-                resource->flags |= 0x1000;
-                resource->chunkSize  = 1;
-                resource->chunkCount = count;
+                resource->chunkCount = (u16)count;
+                break;
             }
+            // fallthrough
+        case 5:
+            resource->flags |= 0x1000;
+            resource->chunkSize  = 1;
+            resource->chunkCount = (u16)count;
             break;
     }
 
@@ -626,7 +620,7 @@ BOOL PaletteMgr_ReleaseResource(PaletteMgr* mgr, PaletteResource* resource) {
 static void func_0200b09c(PaletteResource* entry, void* dest, s32 offset, u32 palOffset) {
     void* src;
 
-    s16 adj = entry->colorBias;
+    s32 adj = entry->colorBias;
     if (adj >= 0) {
         src = &data_02059d24;
     } else {
@@ -635,7 +629,7 @@ static void func_0200b09c(PaletteResource* entry, void* dest, s32 offset, u32 pa
     }
 
     if (entry->unk_12 == 0xFFFF) {
-        func_02002180(dest, src, offset, palOffset, entry->chunkSize * 0x10 * entry->chunkCount, (u32)adj, 1);
+        func_02002180(dest, src, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, (u32)adj, 1);
         return;
     }
 
@@ -654,7 +648,7 @@ static void func_0200b198(PaletteResource* entry, void* dest, s32 offset, u32 pa
     s16 bias = entry->colorBias;
 
     if (entry->unk_12 == 0xFFFF) {
-        func_02002254(dest, (void*)src, offset, palOffset, entry->chunkSize * 0x10 * entry->chunkCount, entry->colorParam,
+        func_02002254(dest, (void*)src, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, entry->colorParam,
                       bias, 1);
         return;
     }
@@ -671,7 +665,7 @@ static void func_0200b198(PaletteResource* entry, void* dest, s32 offset, u32 pa
 
 static void func_0200b29c(PaletteResource* entry, void* dest, s32 offset, u32 palOffset) {
     if (entry->unk_12 == 0xFFFF) {
-        func_02002398(dest, offset, palOffset, entry->chunkSize * 0x10 * entry->chunkCount, entry->colorParam,
+        func_02002398(dest, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, entry->colorParam,
                       entry->colorBias, 1);
         return;
     }
@@ -687,7 +681,7 @@ static void func_0200b29c(PaletteResource* entry, void* dest, s32 offset, u32 pa
 
 static void func_0200b390(PaletteResource* entry, void* dest, s32 offset, u32 palOffset) {
     if (entry->unk_12 == 0xFFFF) {
-        func_0200245c(dest, offset, palOffset, entry->chunkSize * 0x10 * entry->chunkCount, entry->colorParam,
+        func_0200245c(dest, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, entry->colorParam,
                       entry->colorBias, 1);
         return;
     }
@@ -703,7 +697,7 @@ static void func_0200b390(PaletteResource* entry, void* dest, s32 offset, u32 pa
 
 static void func_0200b484(PaletteResource* entry, void* dest, s32 offset, u32 palOffset) {
     if (entry->unk_12 == 0xFFFF) {
-        func_02002520(dest, offset, palOffset, entry->chunkSize * 0x10 * entry->chunkCount, entry->colorParam,
+        func_02002520(dest, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, entry->colorParam,
                       entry->colorBias, 1);
         return;
     }
@@ -719,8 +713,8 @@ static void func_0200b484(PaletteResource* entry, void* dest, s32 offset, u32 pa
 
 static void func_0200b578(PaletteResource* entry, void* dest, s32 offset, u32 palOffset) {
     if (entry->unk_12 == 0xFFFF) {
-        func_020025e4(dest, offset, palOffset, entry->chunkSize * 16 * entry->chunkCount, entry->colorParam, entry->colorBias,
-                      1);
+        func_020025e4(dest, offset, palOffset, (entry->chunkSize << 4) * entry->chunkCount, entry->colorParam,
+                      entry->colorBias, 1);
         return;
     }
 
@@ -736,11 +730,9 @@ static void func_0200b578(PaletteResource* entry, void* dest, s32 offset, u32 pa
 static void func_0200b66c(PaletteResource* entry, void* channelDest, u32 baseOffset, s32 srcOffset, s32 dstOffset) {
     void* src;
     void* buf;
+    s32   i;
 
-    u32 totalSize = entry->chunkSize * 16;
-    totalSize *= entry->chunkCount;
-
-    s16 adj = entry->colorBias;
+    s32 adj = entry->colorBias;
     if (adj >= 0) {
         src = &data_02059d24;
     } else {
@@ -748,17 +740,20 @@ static void func_0200b66c(PaletteResource* entry, void* channelDest, u32 baseOff
         adj = -adj;
     }
 
+    u32 totalSize = entry->chunkSize * 16;
+    totalSize *= entry->chunkCount;
+
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
-        func_02002180(buf, src, srcOffset, totalSize, adj, 0, 0);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
+        func_02002180(buf, src, srcOffset, 0, totalSize, adj, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
     }
 
-    for (s32 i = 15; i >= 0; i--) {
+    for (i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
             func_02002180(buf, src, srcOffset, 0U, entry->chunkSize, adj, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             src = (void*)((u8*)src + entry->chunkSize * 2);
@@ -778,16 +773,16 @@ static void func_0200b7b8(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
-        func_02002254(buf, src, srcOffset, totalSize, entry->colorParam, entry->colorBias, 0, 0);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
+        func_02002254(buf, src, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
     }
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
-            func_02002254(buf, src, srcOffset, entry->chunkSize, entry->colorParam, entry->colorBias, 0, 0);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
+            func_02002254(buf, src, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             src += entry->chunkSize * 2;
             srcOffset += entry->chunkSize * 2;
@@ -804,7 +799,7 @@ static void func_0200b91c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
         func_02002398(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -812,7 +807,7 @@ static void func_0200b91c(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
             func_02002398(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -829,7 +824,7 @@ static void func_0200ba64(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
         func_0200245c(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -837,7 +832,7 @@ static void func_0200ba64(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
             func_0200245c(buf, srcOffset, 0U, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -854,7 +849,7 @@ static void func_0200bbac(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
         func_02002520(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -862,7 +857,7 @@ static void func_0200bbac(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
             func_02002520(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -879,7 +874,7 @@ static void func_0200bcf4(PaletteResource* entry, void* channelDest, u32 baseOff
 
     if (entry->unk_12 == 0xFFFF) {
         u32 bufSize = totalSize * 2;
-        buf         = Mem_AllocPool(&data_0206a9bc, bufSize);
+        buf         = Mem_AllocPool(&TmpBuf, bufSize);
         func_020025e4(buf, srcOffset, 0, totalSize, entry->colorParam, entry->colorBias, 0);
         func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, bufSize);
         return;
@@ -887,7 +882,7 @@ static void func_0200bcf4(PaletteResource* entry, void* channelDest, u32 baseOff
 
     for (s32 i = 15; i >= 0; i--) {
         if (entry->unk_12 & (1 << i)) {
-            buf = Mem_AllocPool(&data_0206a9bc, entry->chunkSize * 2);
+            buf = Mem_AllocPool(&TmpBuf, entry->chunkSize * 2);
             func_020025e4(buf, srcOffset, 0, entry->chunkSize, entry->colorParam, entry->colorBias, 0);
             func_02001b44(channelDest, (void*)(baseOffset + dstOffset * 2), buf, entry->chunkSize * 2);
             srcOffset += entry->chunkSize * 2;
@@ -958,7 +953,6 @@ static void PaletteMgr_CommitResourceIfDirty(PaletteMgr* mgr, PaletteResource* r
     resource->flags &= ~0x8000;
 }
 
-// Nonmatching: Missing instruction, related registers are misallocated
 void PaletteMgr_Flush(PaletteMgr* mgr, PaletteResource* resource) {
     if (mgr == NULL) {
         return;
@@ -970,8 +964,8 @@ void PaletteMgr_Flush(PaletteMgr* mgr, PaletteResource* resource) {
         return;
     }
 
-    for (PaletteResource* cur = mgr->activeList; cur != NULL; cur = cur->next) {
-        PaletteMgr_CommitResourceIfDirty(mgr, cur);
+    for (resource = mgr->activeList; resource != NULL; resource = resource->next) {
+        PaletteMgr_CommitResourceIfDirty(mgr, resource);
     }
 }
 
@@ -1060,7 +1054,7 @@ void PaletteMgr_SetProcess(PaletteMgr* mgr, PaletteResource* resource, s32 filte
     }
 }
 
-void PaletteMgr_SetColorBias(PaletteMgr* mgr, PaletteResource* resource, s32 filter, s16 colorBias) {
+void PaletteMgr_SetColorBias(PaletteMgr* mgr, PaletteResource* resource, s32 filter, s32 colorBias) {
     if (mgr == NULL) {
         return;
     }
@@ -1079,7 +1073,7 @@ void PaletteMgr_SetColorBias(PaletteMgr* mgr, PaletteResource* resource, s32 fil
             BOOL match = ((resource->flags & (filter & 0x3000)) && (resource->flags & (filter & 0xF00)));
             if (match == TRUE && resource->colorBias != colorBias) {
                 resource->flags |= 0x8000;
-                resource->colorBias = colorBias;
+                resource->colorBias = (s16)colorBias;
             }
             resource = resource->next;
         } while (allMode != FALSE && resource != NULL);

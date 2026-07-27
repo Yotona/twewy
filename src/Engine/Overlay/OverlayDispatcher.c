@@ -42,21 +42,20 @@ static void OvlDisp_Push(OverlayDispatcher* dispatcher, s32 overlayId, OverlayCB
     dispatcher->stackDepth++;
 }
 
-// Nonmatching: Some data movement differences
-// Scratch: 48XL1
 static void OvlDisp_Pop(OverlayTag* tag, OverlayDispatcher* dispatcher) {
-    s32        currentIndex = dispatcher->stackDepth - 1;
-    OverlayTag currTag      = dispatcher->stack[currentIndex].tag;
+    OverlayData* stack        = dispatcher->stack;
+    s32          currentIndex = dispatcher->stackDepth - 1;
+    OverlayTag   currTag      = stack[currentIndex].tag;
 
-    dispatcher->stackDepth--;
-    dispatcher->data  = &dispatcher->stack[currentIndex - 1];
-    dispatcher->cb    = dispatcher->stack[currentIndex - 1].tag.cb;
-    dispatcher->cbArg = dispatcher->stack[currentIndex - 1].cbArg;
+    dispatcher->stackDepth = currentIndex;
 
+    s32 adjustedDepth = dispatcher->stackDepth;
+    dispatcher->data  = &stack[adjustedDepth - 1];
+    dispatcher->cb    = stack[adjustedDepth - 1].tag.cb;
+    dispatcher->cbArg = stack[adjustedDepth - 1].cbArg;
     if (dispatcher->stackDepth == 0) {
         OvlDisp_Push(dispatcher, OVERLAY_ID_NONE, OvlDisp_DummyCb, NULL, PROCESS_STAGE_INIT);
     }
-
     *tag = currTag;
 }
 
@@ -121,15 +120,16 @@ void MainOvlDisp_Pop(OverlayTag* tag) {
         MainOvlDisp_Run();
     }
 
-    s32          idx          = dispatcher->stackDepth - 1;
-    OverlayData* currentData  = &dispatcher->stack[idx];
-    OverlayData* previousData = &dispatcher->stack[idx - 1];
-    OverlayTag   currTag      = currentData->tag;
+    OverlayData* stack   = dispatcher->stack;
+    s32          idx     = dispatcher->stackDepth - 1;
+    OverlayTag   currTag = stack[idx].tag;
 
     dispatcher->stackDepth = idx;
-    dispatcher->data       = previousData;
-    dispatcher->cb         = previousData->tag.cb;
-    dispatcher->cbArg      = previousData->cbArg;
+
+    s32 adjustedDepth = dispatcher->stackDepth;
+    dispatcher->data  = &stack[adjustedDepth - 1];
+    dispatcher->cb    = stack[adjustedDepth - 1].tag.cb;
+    dispatcher->cbArg = stack[adjustedDepth - 1].cbArg;
 
     *tag = currTag;
 }
@@ -142,9 +142,8 @@ void MainOvlDisp_ReplaceTop(OverlayTag* tag, s32 overlayId, void* callback, void
     *tag = local;
 }
 
-/* Nonmatching: opcode reordering? maybe? */
 u32 func_02007240(void) {
-    OvlMgr_LoadOverlay(1, *(data_0206af24 + 0xDC));
+    OvlMgr_LoadOverlay(1, MainOverlayDispatcher.data->tag.id);
 }
 
 void* MainOvlDisp_SetCbArg(void* arg) {

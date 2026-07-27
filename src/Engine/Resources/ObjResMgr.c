@@ -614,7 +614,7 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
                           dataSize);
         } else if (dataSize <= resource->vramOffset) {
             if (mgr->engine == 2) {
-                void* buf = Mem_AllocPool(&data_0206a9bc, dataSize);
+                void* buf = Mem_AllocPool(&TmpBuf, dataSize);
                 func_02004d60(buf, data);
                 func_02001b44((void*)mgr->unk_04, (void*)(mgr->vramBase + (resource->bitmapIndex << 5)), buf, dataSize);
             } else {

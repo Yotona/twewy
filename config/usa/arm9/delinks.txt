@@ -50,6 +50,7 @@ src/Engine/Core/HBlank.c:
 
 src/Engine/Core/Memory.c:
     categories: Engine
+    complete
     .text       start:0x0200453c end:0x02004d60
     .rodata     start:0x02059d14 end:0x02059d1c
     .data       start:0x02063744 end:0x02063760
@@ -119,6 +120,7 @@ src/Engine/File/BinMgr.c:
 
 src/Engine/File/PacMgr.c:
     categories: Engine
+    complete
     .text       start:0x02007a9c end:0x02008054
     .data       start:0x020637e4 end:0x02063808
     .bss        start:0x0206b3bc end:0x0206b3c0
@@ -143,6 +145,7 @@ src/Engine/Resources/BgResMgr.c:
 
 src/Engine/Resources/PaletteMgr.c:
     categories: Engine
+    complete
     .text       start:0x0200a128 end:0x0200c25c
     .rodata     start:0x0205ad64 end:0x0205ad9c
     .bss        start:0x0206b3cc end:0x0206b3d8
@@ -165,8 +168,10 @@ src/Engine/Resources/ScreenMapper.c:
 
 src/Engine/Resources/SpriteMgr.c:
     categories: Engine
+    complete
     .text       start:0x0200d96c end:0x0200edac
     .rodata     start:0x0205adb4 end:0x0205adf8
+    .bss        start:0x0206b408 end:0x0206b41c
 
 src/Engine/EasyTask.c:
     categories: Engine
@@ -343,6 +348,7 @@ src/CellText.c:
     .text       start:0x02025e74 end:0x0202614c
 
 src/EasyFade.c:
+    complete
     .text       start:0x0202614c end:0x02026528
     .rodata     start:0x0205cb10 end:0x0205cb3c
     .data       start:0x02065c94 end:0x02065ca0

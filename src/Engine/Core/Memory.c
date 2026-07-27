@@ -5,9 +5,9 @@ extern u32 func_0203b59c(const void* src, void* dest);
 extern u32 func_0203b708(const void* src, void* dest);
 extern u32 func_0203b7e0(const void* src, void* dest);
 
-Heap gDebugHeap    = {};
-Heap gMainHeap     = {};
-Pool data_0206a9bc = {};
+Heap gDebugHeap = {};
+Heap gMainHeap  = {};
+Pool TmpBuf     = {};
 
 #define MEM_MAGIC 0x51342403
 
@@ -36,8 +36,10 @@ static MemBlock* Mem_FindBlockByPointer(Heap* heap, void* data) {
     return NULL;
 }
 
-const char* const memLabelHead = "_Head";
-const char* const memLabelList = "_List";
+const struct {
+    const char* head;
+    const char* list;
+} memLabels = {.list = "_List", .head = "_Head"};
 
 BOOL Mem_InitializeHeap(Heap* heap, void* data, u32 size) {
     if (size < 0x60) {
@@ -53,7 +55,7 @@ BOOL Mem_InitializeHeap(Heap* heap, void* data, u32 size) {
     heap->head = sentinelBlock;
 
     initialFreeBlock->magic        = MEM_MAGIC;
-    initialFreeBlock->sequence     = memLabelHead;
+    initialFreeBlock->sequence     = memLabels.head;
     initialFreeBlock->size         = size - sizeof(MemBlock);
     initialFreeBlock->state        = -1;
     initialFreeBlock->freeListPrev = sentinelBlock;
@@ -62,7 +64,7 @@ BOOL Mem_InitializeHeap(Heap* heap, void* data, u32 size) {
     initialFreeBlock->physMemNext  = sentinelBlock;
 
     sentinelBlock->magic        = MEM_MAGIC;
-    sentinelBlock->sequence     = memLabelList;
+    sentinelBlock->sequence     = memLabels.list;
     sentinelBlock->size         = size;
     sentinelBlock->state        = 0;
     sentinelBlock->freeListPrev = initialFreeBlock;

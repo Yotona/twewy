@@ -209,12 +209,64 @@ typedef u32 GXVRamBG;
 typedef u32 GXVRamOBJ;
 
 typedef struct {
-    u32 attr01;
     union {
-        u16 attr2;
+        u32 attr01;
+        struct {
+            u16 attr0;
+            u16 attr1;
+        };
+        struct {
+            // attr0
+            u16 yPos       : 8; ///< Y position
+            u16 affineMode : 2; ///< Bit 0 = affine enable, bit 1 = double size (affine) / disable
+            u16 objMode    : 2; ///< OBJ mode (normal, blend, window, bitmap)
+            u16 mosaic     : 1; ///< Mosaic flag
+            u16 colorMode  : 1; ///< Color mode (16 or 256 colors)
+            u16 shape      : 2; ///< Shape, combined with size
+            // attr1
+            u16 xPos        : 9; ///< X position
+            u16 affineParam : 5; ///< Affine parameter set index (affine sprites only)
+            u16 size        : 2; ///< Size, combined with shape
+        };
+        struct {
+            u16 _pad0 : 16;
+            u16 _pad1 : 12;
+            u16 flipH : 1; ///< Horizontal flip (non-affine sprites only)
+            u16 flipV : 1; ///< Vertical flip (non-affine sprites only)
+            u16 _pad2 : 2;
+        };
+    };
+    union {
         u32 attr23;
+        struct {
+            u16 attr2;
+            u16 attr3;
+        };
+        struct {
+            // attr2
+            u16 charName   : 10; ///< Char (tile) name
+            u16 priority   : 2;  ///< BG priority
+            u16 colorParam : 4;  ///< Palette number, or alpha in bitmap mode
+        };
     };
 } GXOamAttr;
+
+/**
+ * @brief Affine parameter set, overlaid on every group of four OAM entries.
+ *
+ * The 32 parameter sets are interleaved with the 128 OAM entries: PA/PB/PC/PD
+ * live in the attr3 slot of entries 4n, 4n+1, 4n+2 and 4n+3 respectively.
+ */
+typedef struct {
+    u16 dmy0[3];
+    s16 PA;
+    u16 dmy1[3];
+    s16 PB;
+    u16 dmy2[3];
+    s16 PC;
+    u16 dmy3[3];
+    s16 PD;
+} GXOamAffine;
 
 typedef u32 GXOamMode;
 

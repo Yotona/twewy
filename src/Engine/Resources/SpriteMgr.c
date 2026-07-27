@@ -1,6 +1,7 @@
 #include "SpriteMgr.h"
+#include "Engine/Core/OamMgr.h"
 
-extern s32 g_OamMgr;
+#include <nitro/mi/cpumem.h>
 
 const s16 data_0205adb4[12] = {1, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0};
 
@@ -190,15 +191,17 @@ void Sprite_Update(Sprite* sprite) {
 }
 
 static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield arg2) { // Render sprite, version 1
-    u32  tempbit     = sprite->bits_0_1;
-    BOOL isAnimating = FALSE;
-    s16  endX        = 0;
+    u32 tempbit = sprite->bits_0_1;
+    s16 endX    = 0;
     if (sprite->unk_0A.unk_05 & 8) { //?is sprite flipped?
         endX = sprite->posX - sprite->scaleX;
     } else {
         endX = sprite->posX + sprite->scaleX;
     }
-    ObjResource* tempchar = sprite->charData;
+
+    BOOL         isAnimating = FALSE;
+    ObjResource* tempchar    = sprite->charData;
+
     if (tempchar->bitmapIndex != tempchar->unk_12) { // if currentFrame != maxFrame?
         isAnimating = TRUE;
     }
@@ -210,10 +213,10 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         u32              tempArg     = 0;
         switch (tempbit) {
             case 0:
-                tempArg = *(u32*)(g_PaletteManagers[0] + (tempPalette->slotType * 4) + 4);
+                tempArg = ((u32*)&g_PaletteManagers[0]->unk_04)[tempPalette->slotType];
                 break;
             case 1:
-                tempArg = *(u32*)(g_PaletteManagers[1] + (tempPalette->slotType * 4) + 4);
+                tempArg = ((u32*)&g_PaletteManagers[1]->unk_04)[tempPalette->slotType];
                 break;
             case 2:
                 if (tempPalette->slotType == 6) {
@@ -226,57 +229,62 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         return;
     }
     s16 temp_lr = sprite->charData->bitmapIndex;
+    u16 attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
     s32 temp_08 = arg1->unk_08;
     s16 posY    = sprite->posY;
     s16 scaleY  = sprite->scaleY;
     if (tempbit != 2) {
-        Unk_Bitfield temp_arg2 = arg2;
-        if (temp_arg2.unk_00 == 1) {
-            temp_08 = OamMgr_BuildVisibleCellPiecesAffine(
-                &g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
-                &g_OamMgr + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
+        Unk_Bitfield                 temp_arg2;
+        volatile Unk_Bitfield* const p = &temp_arg2;
+
+        temp_arg2.raw = attrs;
+        if (p->unk_00 == 1) {
+            temp_08 = (s32)OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
+                                                               attrs, temp_lr, &g_OamMgr[tempbit].affine[p->unk_05]);
         } else {
-            temp_08 = OamMgr_BuildVisibleCellPieces(&g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
-                                                    (s32)arg2.raw, temp_lr);
+            temp_08 = (s32)OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
+                                                         attrs, temp_lr);
         }
     }
     arg1->unk_08 = temp_08;
     s32 temp_10  = arg1->unk_10;
     if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&g_OamMgr + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
+        OamMgr_SubmitCommand(&g_OamMgr[tempbit], temp_10, (OamCellPiece*)arg1->unk_08);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&g_OamMgr + (tempbit * (0x108C / 4)), arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], (OamCellPiece*)arg1->unk_08);
 }
 
 static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield arg2) { // Render sprite, version 2
-    u32  tempbit     = sprite->bits_0_1;
-    BOOL isAnimating = FALSE;
-    s16  endX        = 0;
+    u32  tempbit = sprite->bits_0_1;
+    BOOL isAnimating;                // initialised below the endX branch, matching the original schedule
+    s16  endX = 0;
     if (sprite->unk_0A.unk_05 & 8) { //?is sprite flipped?
         endX = sprite->posX - sprite->scaleX;
     } else {
         endX = sprite->posX + sprite->scaleX;
     }
-    ObjResource* tempchar = sprite->charData;
-    if (tempchar->bitmapIndex != tempchar->unk_12) { // if currentFrame != maxFrame?
+    isAnimating   = FALSE;
+    void* charSrc = sprite->charData->unk_18;
+    if (sprite->charData->bitmapIndex != sprite->charData->unk_12) { // if currentFrame != maxFrame?
         isAnimating = TRUE;
     }
-    if (isAnimating == TRUE || tempchar->unk_18 != sprite->unk34 || arg1->unk_08 != sprite->unk38) {
-        sprite->unk38 = arg1->unk_08;
-        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], tempchar, sprite->unk34,
-                             arg1->unk_08); // replace texture in VRAM?
+    if (isAnimating == TRUE || charSrc != sprite->unk34 || arg1->unk_08 != sprite->unk38) {
+        s32 vramOffset = arg1->unk_08;
+        sprite->unk38  = vramOffset;
+        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], sprite->charData, sprite->unk34,
+                             vramOffset); // replace texture in VRAM?
     }
     if (tempbit == 2) {
-        arg1->unk_08                 = OamMgr_CloneCellPieces(0, arg1->unk_08);
+        arg1->unk_08                 = (s32)OamMgr_CloneCellPieces(NULL, (OamCellPiece*)arg1->unk_08);
         PaletteResource* tempPalette = sprite->paletteData;
         u32              tempArg     = 0;
         switch (tempbit) {
             case 0:
-                tempArg = *(u32*)(g_PaletteManagers[0] + (tempPalette->slotType * 4) + 4);
+                tempArg = ((u32*)&g_PaletteManagers[0]->unk_04)[tempPalette->slotType];
                 break;
             case 1:
-                tempArg = *(u32*)(g_PaletteManagers[1] + (tempPalette->slotType * 4) + 4);
+                tempArg = ((u32*)&g_PaletteManagers[1]->unk_04)[tempPalette->slotType];
                 break;
             case 2:
                 if (tempPalette->slotType == 6) {
@@ -289,28 +297,33 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         return;
     }
     s16 temp_lr = sprite->charData->bitmapIndex;
+    u16 attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
     s32 temp_08 = arg1->unk_08;
     s16 posY    = sprite->posY;
     s16 scaleY  = sprite->scaleY;
     if (tempbit != 2) {
-        Unk_Bitfield temp_arg2 = arg2;
-        if (temp_arg2.unk_00 == 1) {
-            temp_08 = OamMgr_BuildVisibleCellPiecesAffine(
-                &g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08, (s32)temp_arg2.raw, temp_lr,
-                &g_OamMgr + (tempbit * (0x108C / 4)) + 0x108 + (temp_arg2.unk_05 * 4));
+        // arg2 is copied to a stack home and re-read from it at the bit-0 test and again for
+        // the affine group index; volatile reproduces those reloads.
+        Unk_Bitfield                 temp_arg2;
+        volatile Unk_Bitfield* const p = &temp_arg2;
+
+        temp_arg2.raw = attrs;
+        if (p->unk_00 == 1) {
+            temp_08 = (s32)OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
+                                                               attrs, temp_lr, &g_OamMgr[tempbit].affine[p->unk_05]);
         } else {
-            temp_08 = OamMgr_BuildVisibleCellPieces(&g_OamMgr + (tempbit * (0x108C / 4)), endX, posY + scaleY, temp_08,
-                                                    (s32)arg2.raw, temp_lr);
+            temp_08 = (s32)OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
+                                                         attrs, temp_lr);
         }
     }
     arg1->unk_08 = temp_08;
-    arg1->unk_08 = OamMgr_CloneCellPieces(arg1->unk_08, arg1->unk_08);
+    arg1->unk_08 = (s32)OamMgr_CloneCellPieces((OamCellPiece*)arg1->unk_08, (OamCellPiece*)arg1->unk_08);
     s32 temp_10  = arg1->unk_10;
     if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&g_OamMgr + (tempbit * (0x108C / 4)), temp_10, arg1->unk_08);
+        OamMgr_SubmitCommand(&g_OamMgr[tempbit], temp_10, (OamCellPiece*)arg1->unk_08);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&g_OamMgr + (tempbit * (0x108C / 4)), arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], (OamCellPiece*)arg1->unk_08);
 }
 
 void Sprite_RenderFrame(Sprite* sprite) {
@@ -434,16 +447,17 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
         } break;
     }
 
-    if ((arg1->unk_1E == 0) && (var_r1_2 == NULL)) {
-        arg1->unk_1E = frameDataTable->unk_06;
+    s32 charFormat = arg1->unk_1E;
+    if ((charFormat == 0) && (var_r1_2 == NULL)) {
+        charFormat = frameDataTable->unk_06;
     }
 
     u32 temp_r4_4 = arg1->bits_0_1;
-    u32 temp_r5_6 = arg1->bits_7_9;
     u32 temp_r6_4 = arg1->bit_6;
+    u16 temp_r5_6 = arg1->bits_7_9;
 
     if (sp8[1] > 0) {
-        sprite->charData = ObjResMgr_AllocResource(g_ObjResourceManagers[temp_r4_4], var_r1_2, arg1->unk_1E, temp_r6_4);
+        sprite->charData = ObjResMgr_AllocResource(g_ObjResourceManagers[temp_r4_4], var_r1_2, charFormat, temp_r6_4);
 
         sprite->unk34  = Data_GetPackEntryData(sprite->resourceData, sp8[1]);
         sprite->bit_13 = 1;
@@ -453,7 +467,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     if (sp8[2] > 0) {
         if ((arg1->unk_24 == 0) || (arg1->unk_24 == 0xFFFF)) {
             if (arg1->unk_22 == 0) {
-                var_r3 = ((((Sprite*)(sprite->resourceData->buffer + (sp8[2] * 8)))->unk24 + 0x1F) & ~0x1F) >> 5;
+                var_r3 = (u32)((((Sprite*)(sprite->resourceData->buffer + (sp8[2] * 8)))->unk24 + 0x1F) & ~0x1F) >> 5;
             }
             sprite->paletteData = PaletteMgr_AcquireContiguous(g_PaletteManagers[temp_r4_4], var_r6, temp_r5_6, var_r3);
         } else {

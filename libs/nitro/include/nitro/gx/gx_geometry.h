@@ -14,7 +14,7 @@ static inline void GX_Vtx16(u16 x, u16 y, u16 z) {
 }
 
 static inline void GX_TexCoord(u32 s, u32 t) {
-    REG_GFX_FIFO_VERTEX_TEXCOORD = ((u16)(s >> 8)) | (((u16)(t >> 8)) << 16);
+    REG_GFX_FIFO_VERTEX_TEXCOORD = ((u16)(s16)(s >> 8)) | (((u16)(s16)(t >> 8)) << 16);
 }
 
 #ifdef __cplusplus

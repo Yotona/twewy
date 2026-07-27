@@ -46,7 +46,7 @@ typedef struct Pool {
     /* 0x00 */ const char* sequence;
     /* 0x04 */ PoolChunk*  chunkHead;
     /* 0x08 */ char*       label;
-    /* 0x0C */ void**      array;
+    /* 0x0C */ void*       array[6];
 } Pool; // Size: 0x14
 
 /** @brief Main heap pool used for general memory allocations */
@@ -55,7 +55,7 @@ extern Heap gMainHeap;
 /** @brief Debug heap pool used for debug-related memory allocations */
 extern Heap gDebugHeap;
 
-extern Pool data_0206a9bc;
+extern Pool TmpBuf;
 
 /**
  * @brief Initializes a heap with the given data buffer.

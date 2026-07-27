@@ -91,7 +91,7 @@ void PaletteMgr_Init(PaletteMgr* mgr, DisplayEngine engine);
  * @param count    Number of chunks to allocate.
  * @return         Allocated/reused resource, or NULL on failure.
  */
-PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16 slotType, u32 count);
+PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u32 slotType, u32 count);
 
 /**
  * @brief Acquire a resource using masked slot allocation.
@@ -105,7 +105,7 @@ PaletteResource* PaletteMgr_AcquireContiguous(PaletteMgr* mgr, void* source, u16
  * @param mask     16-bit slot mask for masked allocation.
  * @return         Allocated/reused resource, or NULL on failure.
  */
-PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slotType, s16 mask);
+PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u32 slotType, s32 mask);
 
 /**
  * @brief Allocate palette data in VRAM.
@@ -117,7 +117,7 @@ PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u16 slo
  * @param count         Number of palette entries to allocate
  * @return              Pointer to the allocated PaletteResource, or NULL on failure
  */
-PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u16 slotType, s16 start, s32 count);
+PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u32 slotType, s16 start, u32 count);
 
 /**
  * @brief Release a palette resource, freeing its slot and allowing reuse.
@@ -178,7 +178,7 @@ void PaletteMgr_SetProcess(PaletteMgr* mgr, PaletteResource* resource, s32 filte
  * @param filter    Filter mask selecting applicable resource classes (0 uses default mask).
  * @param colorBias Signed bias value.
  */
-void PaletteMgr_SetColorBias(PaletteMgr* mgr, PaletteResource* resource, s32 filter, s16 colorBias);
+void PaletteMgr_SetColorBias(PaletteMgr* mgr, PaletteResource* resource, s32 filter, s32 colorBias);
 
 /**
  * @brief Effectively does nothing. Only contains a call to an empty function and an empty loop.

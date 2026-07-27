@@ -2348,7 +2348,7 @@ OvlProc_TakTest kind:data(any) addr:0x020c7870 local
 data_ov043_020c787c kind:data(any) addr:0x020c787c local
 data_ov043_020c7884 kind:data(any) addr:0x020c7884 local
 data_ov043_020c788c kind:data(any) addr:0x020c788c local
-@1057 kind:data(any) addr:0x020c7894 local
+@1344 kind:data(any) addr:0x020c7894 local
 Tsk_TakTest_BG kind:data(any) addr:0x020c78a4
 
 /////////////////////////////////////////////////////////////
@@ -2415,7 +2415,7 @@ data_ov043_020c7bd0 kind:data(any) addr:0x020c7bd0
 // src/Interface/Menu/Top/MenuTop_luckStar.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_luckStar kind:data(any) addr:0x020c7bfc local
-@1324 kind:data(any) addr:0x020c7c08 local
+@1319 kind:data(any) addr:0x020c7c08 local
 data_ov043_020c7c18 kind:data(any) addr:0x020c7c18 local
 
 /////////////////////////////////////////////////////////////
@@ -2479,7 +2479,7 @@ data_ov043_020c7e90 kind:data(any) addr:0x020c7e90 local
 /////////////////////////////////////////////////////////////
 @1274 kind:data(any) addr:0x020c7ebc local
 Tsk_MenuTop_drawDiff kind:data(any) addr:0x020c7ec4 local
-@1338 kind:data(any) addr:0x020c7ed0 local
+@1333 kind:data(any) addr:0x020c7ed0 local
 data_ov043_020c7ee0 kind:data(any) addr:0x020c7ee0 local
 
 /////////////////////////////////////////////////////////////
@@ -2487,7 +2487,7 @@ data_ov043_020c7ee0 kind:data(any) addr:0x020c7ee0 local
 /////////////////////////////////////////////////////////////
 @1276 kind:data(any) addr:0x020c7f0c local
 Tsk_MenuTop_drawPtrAI kind:data(any) addr:0x020c7f14 local
-@1340 kind:data(any) addr:0x020c7f20 local
+@1334 kind:data(any) addr:0x020c7f20 local
 data_ov043_020c7f30 kind:data(any) addr:0x020c7f30 local
 
 /////////////////////////////////////////////////////////////
@@ -2503,7 +2503,7 @@ data_ov043_020c7f80 kind:data(any) addr:0x020c7f80 local
 /////////////////////////////////////////////////////////////
 @1284 kind:data(any) addr:0x020c7fac local
 Tsk_MenuTop_selPtrAI kind:data(any) addr:0x020c7fb4 local
-@1395 kind:data(any) addr:0x020c7fc0 local
+@1404 kind:data(any) addr:0x020c7fc0 local
 data_ov043_020c7fd0 kind:data(any) addr:0x020c7fd0 local
 
 /////////////////////////////////////////////////////////////
@@ -2538,7 +2538,7 @@ data_ov043_020c80e4 kind:data(any) addr:0x020c80e4
 // src/Interface/Menu/Top/MenuTop_pointer.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_pointer kind:data(any) addr:0x020c8110 local
-@1319 kind:data(any) addr:0x020c811c local
+@1328 kind:data(any) addr:0x020c811c local
 data_ov043_020c812c kind:data(any) addr:0x020c812c local
 
 /////////////////////////////////////////////////////////////
@@ -2553,28 +2553,28 @@ data_ov043_020c8180 kind:data(any) addr:0x020c8180
 // src/Interface/Menu/Top/MenuTop_brdLogoU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_brdLogoU kind:data(any) addr:0x020c81a8 local
-@1320 kind:data(any) addr:0x020c81b4 local
+@1329 kind:data(any) addr:0x020c81b4 local
 MenuTop_brdLogoU_Anim kind:data(any) addr:0x020c81c4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_nekuU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_nekuU kind:data(any) addr:0x020c81f0 local
-@1323 kind:data(any) addr:0x020c81fc local
+@1326 kind:data(any) addr:0x020c81fc local
 MenuTop_nekuU_Anim kind:data(any) addr:0x020c820c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_iconU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_iconU kind:data(any) addr:0x020c8238 local
-@1320 kind:data(any) addr:0x020c8244 local
+@1329 kind:data(any) addr:0x020c8244 local
 MenuTop_iconU_Anim kind:data(any) addr:0x020c8254 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_helpCurU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_helpCurU kind:data(any) addr:0x020c8280 local
-@1337 kind:data(any) addr:0x020c828c local
+@1346 kind:data(any) addr:0x020c828c local
 MenuTop_helpCurU_Anim kind:data(any) addr:0x020c829c local
 
 /////////////////////////////////////////////////////////////
@@ -2614,14 +2614,14 @@ data_ov043_020c8720 kind:data(any) addr:0x020c8720 local
 // src/Interface/Menu/MenuBadge/MenuBadge_mov.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_mov kind:data(any) addr:0x020c874c local
-@1340 kind:data(any) addr:0x020c8758 local
+@1349 kind:data(any) addr:0x020c8758 local
 MenuBadge_mov_Anim kind:data(any) addr:0x020c8768 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_shadow.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_shadow kind:data(any) addr:0x020c8794 local
-@1337 kind:data(any) addr:0x020c87a0 local
+@1346 kind:data(any) addr:0x020c87a0 local
 MenuBadge_shadow_Anim kind:data(any) addr:0x020c87b0 local
 
 /////////////////////////////////////////////////////////////
@@ -2636,21 +2636,21 @@ MenuBadge_bdgLV_Anim kind:data(any) addr:0x020c87fc local
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgBP.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_bdgBP kind:data(any) addr:0x020c8828 local
-@1353 kind:data(any) addr:0x020c8834 local
+@1362 kind:data(any) addr:0x020c8834 local
 MenuBadge_bdgBP_Anim kind:data(any) addr:0x020c8844 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgSC.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_bdgSC kind:data(any) addr:0x020c8870 local
-@1347 kind:data(any) addr:0x020c887c local
+@1356 kind:data(any) addr:0x020c887c local
 MenuBadge_bdgSC_Anim kind:data(any) addr:0x020c888c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgPRI.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_bdgPRI kind:data(any) addr:0x020c88b8 local
-@1339 kind:data(any) addr:0x020c88c4 local
+@1349 kind:data(any) addr:0x020c88c4 local
 MenuBadge_bdgPRI_Anim kind:data(any) addr:0x020c88d4 local
 
 /////////////////////////////////////////////////////////////
@@ -2672,7 +2672,7 @@ MenuBadge_bdgCur_Anim kind:data(any) addr:0x020c8968 local
 // src/Interface/Menu/MenuBadge/MenuBadge_gbgBox.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_gbgBox kind:data(any) addr:0x020c8994 local
-@1376 kind:data(any) addr:0x020c89a0 local
+@1385 kind:data(any) addr:0x020c89a0 local
 data_ov043_020c89b0 kind:data(any) addr:0x020c89b0 local
 
 /////////////////////////////////////////////////////////////
@@ -2686,7 +2686,7 @@ data_ov043_020c89f8 kind:data(any) addr:0x020c89f8
 // src/Interface/Menu/MenuBadge/MenuBadge_tab.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_tab kind:data(any) addr:0x020c8a24 local
-@1395 kind:data(any) addr:0x020c8a30 local
+@1404 kind:data(any) addr:0x020c8a30 local
 MenuBadge_tab_Anim kind:data(any) addr:0x020c8a40 local
 
 /////////////////////////////////////////////////////////////
@@ -2694,15 +2694,15 @@ MenuBadge_tab_Anim kind:data(any) addr:0x020c8a40 local
 /////////////////////////////////////////////////////////////
 @1299 kind:data(any) addr:0x020c8a6c local
 Tsk_MenuBadge_tabBdgType kind:data(any) addr:0x020c8a74 local
-@1355 kind:data(any) addr:0x020c8a80 local
+@1364 kind:data(any) addr:0x020c8a80 local
 MenuBadge_tabBdgType_Anim kind:data(any) addr:0x020c8a90 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_tabDeck.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_tabDeck kind:data(any) addr:0x020c8abc local
-@1374 kind:data(any) addr:0x020c8ac8 local
-@1303 kind:data(any) addr:0x020c8ad8 local
+@1383 kind:data(any) addr:0x020c8ac8 local
+@1312 kind:data(any) addr:0x020c8ad8 local
 MenuBadge_tabDeck_Anim kind:data(any) addr:0x020c8ae8 local
 
 /////////////////////////////////////////////////////////////
@@ -2731,7 +2731,7 @@ MenuBadge_window1_Anim kind:data(any) addr:0x020c8bd4 local
 // src/Interface/Menu/MenuBadge/MenuBadge_window2.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_window2 kind:data(any) addr:0x020c8c00 local
-@1337 kind:data(any) addr:0x020c8c0c local
+@1346 kind:data(any) addr:0x020c8c0c local
 MenuBadge_window2_Anim kind:data(any) addr:0x020c8c1c local
 
 /////////////////////////////////////////////////////////////
@@ -2751,7 +2751,7 @@ data_ov043_020c8cd0 kind:data(any) addr:0x020c8cd0
 // src/Interface/Menu/MenuBadge/MenuBadge_slotCover.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_slotCover kind:data(any) addr:0x020c8ce4 local
-@1336 kind:data(any) addr:0x020c8cf0 local
+@1345 kind:data(any) addr:0x020c8cf0 local
 MenuBadge_slotCover_Anim kind:data(any) addr:0x020c8d00 local
 
 /////////////////////////////////////////////////////////////
@@ -2772,14 +2772,14 @@ MenuBadge_stkmstIn_Anim kind:data(any) addr:0x020c8d90 local
 // src/Interface/Menu/MenuBadge/MenuBadge_pointer.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_pointer kind:data(any) addr:0x020c8dbc local
-@1344 kind:data(any) addr:0x020c8dc8 local
+@1353 kind:data(any) addr:0x020c8dc8 local
 data_ov043_020c8dd8 kind:data(any) addr:0x020c8dd8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_nameU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_nameU kind:data(any) addr:0x020c8e04 local
-@1380 kind:data(any) addr:0x020c8e10 local
+@1389 kind:data(any) addr:0x020c8e10 local
 MenuBadge_nameU_Anim kind:data(any) addr:0x020c8e20 local
 data_ov043_020c8e4c kind:data(any) addr:0x020c8e4c local
 
@@ -2787,7 +2787,7 @@ data_ov043_020c8e4c kind:data(any) addr:0x020c8e4c local
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_bdgU kind:data(any) addr:0x020c8e80 local
-@1415 kind:data(any) addr:0x020c8e8c local
+@1424 kind:data(any) addr:0x020c8e8c local
 MenuBadge_bdgU_Anim kind:data(any) addr:0x020c8e9c local
 
 /////////////////////////////////////////////////////////////
@@ -2802,7 +2802,7 @@ data_ov043_020c8f0c kind:data(any) addr:0x020c8f0c
 // src/Interface/Menu/MenuBadge/MenuBadge_brdLogoU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_brdLogoU kind:data(any) addr:0x020c8f64 local
-@1345 kind:data(any) addr:0x020c8f70 local
+@1354 kind:data(any) addr:0x020c8f70 local
 data_ov043_020c8f80 kind:data(any) addr:0x020c8f80 local
 
 /////////////////////////////////////////////////////////////
@@ -2824,14 +2824,14 @@ MenuBadge_bpGaugeU_Anim kind:data(any) addr:0x020c9018 local
 // src/Interface/Menu/MenuBadge/MenuBadge_helpCurU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_helpCurU kind:data(any) addr:0x020c9044 local
-@1362 kind:data(any) addr:0x020c9050 local
+@1371 kind:data(any) addr:0x020c9050 local
 MenuBadge_helpCurU_Anim kind:data(any) addr:0x020c9060 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_mstStarU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuBadge_mstStarU kind:data(any) addr:0x020c908c local
-@1354 kind:data(any) addr:0x020c9098 local
+@1363 kind:data(any) addr:0x020c9098 local
 MenuBadge_mstStarU_Anim kind:data(any) addr:0x020c90a8 local
 
 /////////////////////////////////////////////////////////////
@@ -3032,7 +3032,7 @@ data_ov043_020ca39c kind:data(any) addr:0x020ca39c
 // src/Interface/Shop/Shop_exit.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_exit kind:data(any) addr:0x020ca3c8 local
-@1340 kind:data(any) addr:0x020ca3d4 local
+@1385 kind:data(any) addr:0x020ca3d4 local
 data_ov043_020ca3e4 kind:data(any) addr:0x020ca3e4 local
 
 
@@ -3045,8 +3045,8 @@ data_ov043_020ca440 kind:data(any) addr:0x020ca440
 // src/Interface/Shop/Shop_numMoneyBdg.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_numMoneyBdg kind:data(any) addr:0x020ca46c local
-@1449 kind:data(any) addr:0x020ca478 local
-@1385 kind:data(any) addr:0x020ca488 local
+@1458 kind:data(any) addr:0x020ca478 local
+@1394 kind:data(any) addr:0x020ca488 local
 Shop_numMoneyBdg_Anim kind:data(any) addr:0x020ca49c local
 
 
@@ -3058,7 +3058,7 @@ data_ov043_020ca4e4 kind:data(any) addr:0x020ca4e4
 // src/Interface/Shop/Shop_sbar2.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_sbar2 kind:data(any) addr:0x020ca510 local
-@1387 kind:data(any) addr:0x020ca51c local
+@1396 kind:data(any) addr:0x020ca51c local
 Shop_sbar2_Anim kind:data(any) addr:0x020ca52c local
 
 /////////////////////////////////////////////////////////////
@@ -3098,7 +3098,7 @@ Shop_itemPlate_Anim kind:data(any) addr:0x020ca6d8 local
 // src/Interface/Shop/Shop_itemCur.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemCur kind:data(any) addr:0x020ca704 local
-@1372 kind:data(any) addr:0x020ca710 local
+@1387 kind:data(any) addr:0x020ca710 local
 Shop_itemCur_Anim kind:data(any) addr:0x020ca720 local
 
 Tsk_Shop_itemPrice kind:data(any) addr:0x020ca74c
@@ -3109,42 +3109,42 @@ data_ov043_020ca768 kind:data(any) addr:0x020ca768
 // src/Interface/Shop/Shop_itemAbl.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemAbl kind:data(any) addr:0x020ca794 local
-@1387 kind:data(any) addr:0x020ca7a0 local
+@1405 kind:data(any) addr:0x020ca7a0 local
 Shop_itemAbl_Anim kind:data(any) addr:0x020ca7b0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemMask.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemMask kind:data(any) addr:0x020ca7dc local
-@1398 kind:data(any) addr:0x020ca7e8 local
+@1392 kind:data(any) addr:0x020ca7e8 local
 Shop_itemMask_Anim kind:data(any) addr:0x020ca7f8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemTotal.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemTotal kind:data(any) addr:0x020ca824 local
-@1392 kind:data(any) addr:0x020ca830 local
+@1403 kind:data(any) addr:0x020ca830 local
 data_ov043_020ca840 kind:data(any) addr:0x020ca840 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemTotalNum.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemTotalNum kind:data(any) addr:0x020ca86c local
-@1420 kind:data(any) addr:0x020ca878 local
+@1429 kind:data(any) addr:0x020ca878 local
 Shop_itemTotalNum_Anim kind:data(any) addr:0x020ca888 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemStar.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_itemStar kind:data(any) addr:0x020ca8b4 local
-@1372 kind:data(any) addr:0x020ca8c0 local
+@1394 kind:data(any) addr:0x020ca8c0 local
 Shop_itemStar_Anim kind:data(any) addr:0x020ca8d0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_mov.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_mov kind:data(any) addr:0x020ca8fc local
-@1379 kind:data(any) addr:0x020ca908 local
+@1405 kind:data(any) addr:0x020ca908 local
 data_ov043_020ca918 kind:data(any) addr:0x020ca918 local
 
 /////////////////////////////////////////////////////////////
@@ -3158,7 +3158,7 @@ data_ov043_020ca960 kind:data(any) addr:0x020ca960 local
 // src/Interface/Shop/Shop_brdLogo.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_brdLogo kind:data(any) addr:0x020ca98c local
-@1391 kind:data(any) addr:0x020ca998 local
+@1417 kind:data(any) addr:0x020ca998 local
 data_ov043_020ca9a8 kind:data(any) addr:0x020ca9a8 local
 
 data_ov043_020ca9d4 kind:data(any) addr:0x020ca9d4
@@ -3173,7 +3173,7 @@ data_ov043_020caa64 kind:data(any) addr:0x020caa64
 // src/Interface/Shop/Shop_pointer.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_pointer kind:data(any) addr:0x020caa90 local
-@1344 kind:data(any) addr:0x020caa9c local
+@1386 kind:data(any) addr:0x020caa9c local
 data_ov043_020caaac kind:data(any) addr:0x020caaac local
 
 /////////////////////////////////////////////////////////////
@@ -3189,7 +3189,7 @@ data_ov043_020cab18 kind:data(any) addr:0x020cab18 local
 // src/Interface/Shop/Shop_numLvU.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_numLvU kind:data(any) addr:0x020cab44 local
-@1404 kind:data(any) addr:0x020cab50 local
+@1439 kind:data(any) addr:0x020cab50 local
 data_ov043_020cab60 kind:data(any) addr:0x020cab60 local
 
 /////////////////////////////////////////////////////////////
@@ -3231,7 +3231,7 @@ data_ov043_020caca8 kind:data(any) addr:0x020caca8 local
 // src/Interface/Shop/Shop_castU.c
 /////////////////////////////////////////////////////////////
 Tsk_Shop_castU kind:data(any) addr:0x020cacd4 local
-@1323 kind:data(any) addr:0x020cace0 local
+@1384 kind:data(any) addr:0x020cace0 local
 Shop_castU_Anim kind:data(any) addr:0x020cacf0 local
 
 /////////////////////////////////////////////////////////////
@@ -3259,7 +3259,7 @@ data_ov043_020cade0 kind:data(any) addr:0x020cade0
 // src/Interface/Menu/Depart/Depart_exit.c
 /////////////////////////////////////////////////////////////
 data_ov043_020cadec kind:data(any) addr:0x020cadec local
-@1340 kind:data(any) addr:0x020cadf8 local
+@1349 kind:data(any) addr:0x020cadf8 local
 data_ov043_020cae08 kind:data(any) addr:0x020cae08 local
 
 /////////////////////////////////////////////////////////////
@@ -3286,7 +3286,7 @@ data_ov043_020caec4 kind:data(any) addr:0x020caec4 local
 // src/Interface/Menu/Depart/Depart_textScrU.c
 /////////////////////////////////////////////////////////////
 Tsk_Depart_textScrU kind:data(any) addr:0x020caee0 local
-@1318 kind:data(any) addr:0x020caeec local
+@1329 kind:data(any) addr:0x020caeec local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_cur.c
@@ -3361,7 +3361,7 @@ data_ov043_020cb3f0 kind:data(any) addr:0x020cb3f0
 // src/Interface/Menu/Save/Save_HelpCurU.c
 /////////////////////////////////////////////////////////////
 Tsk_Save_helpCurU kind:data(any) addr:0x020cb41c local
-@1066 kind:data(any) addr:0x020cb428 local
+@1348 kind:data(any) addr:0x020cb428 local
 Save_HelpCurU_Animation kind:data(any) addr:0x020cb438 local
 
 /////////////////////////////////////////////////////////////
@@ -3393,13 +3393,13 @@ data_ov043_020cb540 kind:data(any) addr:0x020cb540
 // src/Interface/Debug/TakTest/TakTest.c
 /////////////////////////////////////////////////////////////
 data_ov043_020cb580 kind:data(any) addr:0x020cb580
-@1172 kind:data(any) addr:0x020cb584 local
+@1428 kind:data(any) addr:0x020cb584 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Debug/TakTest/TakTest_BG.c
 /////////////////////////////////////////////////////////////
-@1013 kind:data(any) addr:0x020cb594 local
-@1014 kind:data(any) addr:0x020cb5a4 local
+@1295 kind:data(any) addr:0x020cb594 local
+@1296 kind:data(any) addr:0x020cb5a4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Debug/TakTest/TakTest_OBJ.c
@@ -3449,7 +3449,7 @@ data_ov043_020cb7d0 kind:data(any) addr:0x020cb7d0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckStar.c
 /////////////////////////////////////////////////////////////
-@1265 kind:data(byte[21]) addr:0x020cb7e4 local
+@1260 kind:data(byte[21]) addr:0x020cb7e4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_nameD.c
@@ -3489,12 +3489,12 @@ data_ov043_020cb83c kind:data(any) addr:0x020cb83c
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawDiff.c
 /////////////////////////////////////////////////////////////
-@1268 kind:data(any) addr:0x020cb894 local
+@1262 kind:data(any) addr:0x020cb894 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawPtrAI.c
 /////////////////////////////////////////////////////////////
-@1269 kind:data(any) addr:0x020cb8ac local
+@1262 kind:data(any) addr:0x020cb8ac local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selDiff.c
@@ -3504,7 +3504,7 @@ data_ov043_020cb83c kind:data(any) addr:0x020cb83c
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selPtrAI.c
 /////////////////////////////////////////////////////////////
-@1278 kind:data(any) addr:0x020cb8d8 local
+@1287 kind:data(any) addr:0x020cb8d8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScr.c
@@ -3529,7 +3529,7 @@ data_ov043_020cb930 kind:data(any) addr:0x020cb930
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_pointer.c
 /////////////////////////////////////////////////////////////
-@1254 kind:data(any) addr:0x020cb944 local
+@1263 kind:data(any) addr:0x020cb944 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScrU.c
@@ -3539,22 +3539,22 @@ data_ov043_020cb958 kind:data(any) addr:0x020cb958
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_brdLogoU.c
 /////////////////////////////////////////////////////////////
-@1251 kind:data(byte[21]) addr:0x020cb970 local
+@1260 kind:data(byte[21]) addr:0x020cb970 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_nekuU.c
 /////////////////////////////////////////////////////////////
-@1257 kind:data(byte[18]) addr:0x020cb988 local
+@1260 kind:data(byte[18]) addr:0x020cb988 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_iconU.c
 /////////////////////////////////////////////////////////////
-@1252 kind:data(byte[18]) addr:0x020cb99c local
+@1261 kind:data(byte[18]) addr:0x020cb99c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_helpCurU.c
 /////////////////////////////////////////////////////////////
-@1251 kind:data(byte[21]) addr:0x020cb9b0 local
+@1260 kind:data(byte[21]) addr:0x020cb9b0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge.c
@@ -3593,12 +3593,12 @@ data_ov043_020cbbd8 kind:data(any) addr:0x020cbbd8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_mov.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbc10 local
+@1285 kind:data(any) addr:0x020cbc10 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_shadow.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbc24 local
+@1285 kind:data(any) addr:0x020cbc24 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgLV.c
@@ -3608,17 +3608,17 @@ data_ov043_020cbbd8 kind:data(any) addr:0x020cbbd8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgBP.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbc50 local
+@1285 kind:data(any) addr:0x020cbc50 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgSC.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbc64 local
+@1285 kind:data(any) addr:0x020cbc64 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgPRI.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbc78 local
+@1285 kind:data(any) addr:0x020cbc78 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgNum.c
@@ -3633,7 +3633,7 @@ data_ov043_020cbbd8 kind:data(any) addr:0x020cbbd8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_gbgBox.c
 /////////////////////////////////////////////////////////////
-@1301 kind:data(any) addr:0x020cbcc0 local
+@1310 kind:data(any) addr:0x020cbcc0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_sbar.c
@@ -3643,17 +3643,17 @@ data_ov043_020cbcd8 kind:data(any) addr:0x020cbcd8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_tab.c
 /////////////////////////////////////////////////////////////
-@1301 kind:data(any) addr:0x020cbcec local
+@1310 kind:data(any) addr:0x020cbcec local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_tabBdgType.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbd00 local
+@1285 kind:data(any) addr:0x020cbd00 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_tabDeck.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbd1c local
+@1285 kind:data(any) addr:0x020cbd1c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_numMoney.c
@@ -3673,7 +3673,7 @@ data_ov043_020cbcd8 kind:data(any) addr:0x020cbcd8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_window2.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbd7c local
+@1285 kind:data(any) addr:0x020cbd7c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_textScr.c
@@ -3683,7 +3683,7 @@ data_ov043_020cbd94 kind:data(any) addr:0x020cbd94
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_slotCover.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbdac local
+@1285 kind:data(any) addr:0x020cbdac local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_helpCur.c
@@ -3698,17 +3698,17 @@ data_ov043_020cbd94 kind:data(any) addr:0x020cbd94
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_pointer.c
 /////////////////////////////////////////////////////////////
-@1279 kind:data(any) addr:0x020cbdf4 local
+@1288 kind:data(any) addr:0x020cbdf4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_nameU.c
 /////////////////////////////////////////////////////////////
-@1278 kind:data(any) addr:0x020cbe0c local
+@1287 kind:data(any) addr:0x020cbe0c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c
 /////////////////////////////////////////////////////////////
-@1312 kind:data(any) addr:0x020cbe20 local
+@1321 kind:data(any) addr:0x020cbe20 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_textScrU.c
@@ -3718,7 +3718,7 @@ data_ov043_020cbe34 kind:data(any) addr:0x020cbe34
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_brdLogoU.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbe4c local
+@1285 kind:data(any) addr:0x020cbe4c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_numBdgIdU.c
@@ -3733,12 +3733,12 @@ data_ov043_020cbe34 kind:data(any) addr:0x020cbe34
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_helpCurU.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbe94 local
+@1285 kind:data(any) addr:0x020cbe94 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_mstStarU.c
 /////////////////////////////////////////////////////////////
-@1276 kind:data(any) addr:0x020cbeac local
+@1285 kind:data(any) addr:0x020cbeac local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuScena.c
@@ -3861,21 +3861,21 @@ data_ov043_020cc890 kind:data(any) addr:0x020cc890
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_exit.c
 /////////////////////////////////////////////////////////////
-@1273 kind:data(any) addr:0x020cc8a0 local
+@1318 kind:data(any) addr:0x020cc8a0 local
 
 data_ov043_020cc8b0 kind:data(any) addr:0x020cc8b0
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_numMoneyBdg.c
 /////////////////////////////////////////////////////////////
-@1311 kind:data(any) addr:0x020cc8c8 local
+@1320 kind:data(any) addr:0x020cc8c8 local
 
 data_ov043_020cc8e0 kind:data(any) addr:0x020cc8e0
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_sbar2.c
 /////////////////////////////////////////////////////////////
-@1309 kind:data(any) addr:0x020cc8f0 local
+@1318 kind:data(any) addr:0x020cc8f0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_check.c
@@ -3903,39 +3903,39 @@ data_ov043_020cca6c kind:data(any) addr:0x020cca6c
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemCur.c
 /////////////////////////////////////////////////////////////
-@1303 kind:data(any) addr:0x020ccaa0 local
+@1318 kind:data(any) addr:0x020ccaa0 local
 
 data_ov043_020ccab4 kind:data(any) addr:0x020ccab4
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemAbl.c
 /////////////////////////////////////////////////////////////
-@1300 kind:data(any) addr:0x020ccac8 local
+@1318 kind:data(any) addr:0x020ccac8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemMask.c
 /////////////////////////////////////////////////////////////
-@1326 kind:data(any) addr:0x020ccadc local
+@1320 kind:data(any) addr:0x020ccadc local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemTotal.c
 /////////////////////////////////////////////////////////////
-@1309 kind:data(any) addr:0x020ccaf0 local
+@1318 kind:data(any) addr:0x020ccaf0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemTotalNum.c
 /////////////////////////////////////////////////////////////
-@1309 kind:data(any) addr:0x020ccb04 local
+@1318 kind:data(any) addr:0x020ccb04 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_itemStar.c
 /////////////////////////////////////////////////////////////
-@1296 kind:data(any) addr:0x020ccb1c local
+@1318 kind:data(any) addr:0x020ccb1c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_mov.c
 /////////////////////////////////////////////////////////////
-@1292 kind:data(any) addr:0x020ccb30 local
+@1318 kind:data(any) addr:0x020ccb30 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_movShadow.c
@@ -3945,7 +3945,7 @@ data_ov043_020ccab4 kind:data(any) addr:0x020ccab4
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_brdLogo.c
 /////////////////////////////////////////////////////////////
-@1308 kind:data(any) addr:0x020ccb54 local
+@1334 kind:data(any) addr:0x020ccb54 local
 
 data_ov043_020ccb68 kind:data(any) addr:0x020ccb68
 data_ov043_020ccb7c kind:data(any) addr:0x020ccb7c
@@ -3953,7 +3953,7 @@ data_ov043_020ccb7c kind:data(any) addr:0x020ccb7c
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_pointer.c
 /////////////////////////////////////////////////////////////
-@1279 kind:data(any) addr:0x020ccb90 local
+@1321 kind:data(any) addr:0x020ccb90 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_nameU.c
@@ -3963,7 +3963,7 @@ data_ov043_020ccb7c kind:data(any) addr:0x020ccb7c
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_numLvU.c
 /////////////////////////////////////////////////////////////
-@1285 kind:data(any) addr:0x020ccbb4 local
+@1320 kind:data(any) addr:0x020ccbb4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_numAblU.c
@@ -3993,7 +3993,7 @@ data_ov043_020ccbec kind:data(any) addr:0x020ccbec
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_castU.c
 /////////////////////////////////////////////////////////////
-@1257 kind:data(any) addr:0x020ccc28 local
+@1318 kind:data(any) addr:0x020ccc28 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_boardU.c
@@ -4024,7 +4024,7 @@ data_ov043_020ccdd0 kind:data(any) addr:0x020ccdd0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_exit.c
 /////////////////////////////////////////////////////////////
-@1271 kind:data(any) addr:0x020cce04 local
+@1282 kind:data(any) addr:0x020cce04 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_panel.c
@@ -4044,7 +4044,7 @@ data_ov043_020ccdd0 kind:data(any) addr:0x020ccdd0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_textScrU.c
 /////////////////////////////////////////////////////////////
-@1268 kind:data(any) addr:0x020cce50 local
+@1279 kind:data(any) addr:0x020cce50 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_cur.c
@@ -4093,7 +4093,7 @@ data_ov043_020cd13c kind:data(any) addr:0x020cd13c
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Save/Save_HelpCurU.c
 /////////////////////////////////////////////////////////////
-@981 kind:data(byte[18]) addr:0x020cd150 local
+@1263 kind:data(byte[18]) addr:0x020cd150 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c

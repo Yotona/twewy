@@ -32,11 +32,11 @@ void OamMgr_FlushPriorityLists(OamManager* mgr);
 void func_02003a2c(OamManager* mgr);
 
 // Extern data declarations
-extern s32           data_02059384[];
-extern s32           data_02059390[];
-extern void*         data_0205939c;
-extern void*         data_020593c0[];
-extern OamCharConfig data_02059400[];
+extern s32            data_02059384[];
+extern s32            data_02059390[];
+extern OamAffineParam data_0205939c;
+extern void*          data_020593c0[];
+extern OamCharConfig  data_02059400[];
 
 void (*data_02059a6c[3])(OamManager*, u32, OamCellPiece*) = {func_020034cc, func_02003704, func_02003904};
 void (*data_02059a78[3])(OamManager*)                     = {func_020035b4, OamMgr_FlushPriorityLists, func_02003a2c};
@@ -144,16 +144,16 @@ void OamMgr_Reset(OamManager* mgr, u32 initialOamCount, u32 initialAffineCount) 
     OamMgr_SetAffineCount(mgr, initialAffineCount);
 }
 
-static void OamMgr_SetOamCount(OamManager* mgr, u32 arg1) {
-    mgr->oamCount = arg1;
-    if (arg1 & ~0x7F) {
+static void OamMgr_SetOamCount(OamManager* mgr, u32 count) {
+    mgr->oamCount = count;
+    if (count & ~0x7F) {
         return;
     }
 
-    OamAttr* entry = &mgr->oam[arg1];
+    GXOamAttr* entry = &mgr->oam[count];
 
-    while (arg1 < 128) {
-        arg1 += 1;
+    while (count < 128) {
+        count++;
         entry->attr0 = 0x1C0;
         entry++;
     }
@@ -165,26 +165,27 @@ void OamMgr_SetAffineCount(OamManager* mgr, u32 count) {
         return;
     }
 
-    OamAttr* var_r3 = &mgr->oam[count];
+    GXOamAffine* var_r3 = (GXOamAffine*)&mgr->oam[count];
     while (count < 32) {
-        var_r3[0].affineParam = 0x100;
-        var_r3[1].affineParam = 0;
-        var_r3[2].affineParam = 0;
+        var_r3->PA = 0x100;
+        var_r3->PB = 0;
+        var_r3->PC = 0;
         count += 1;
-        var_r3[3].affineParam = 0x100;
-        var_r3 += 4;
+        var_r3->PD = 0x100;
+        var_r3++;
     }
 }
 
+// Nonmatching: Regswaps, instruction reordering
 static s32 OamMgr_AppendCellPieces(OamManager* mgr, s32 arg1, s32 arg2, s32 arg3, OamCellPiece* arg4, u16 arg5, s32 arg6) {
-    OamCharConfig* charCfg = mgr->charBases[((s32)(arg4->attr0 >> 0xA) << 0x1E) >> 0x1C >> 2];
+    OamCharConfig* charCfg = *(OamCharConfig**)((u8*)mgr->charBases + ((((s32)arg4->attr0 >> 0xA) & 3) * 4));
     u32            sp0     = ((u32)(arg5 << 0x1B) >> 0x13) << 0x10;
-    OamAttr*       var_lr  = &mgr->oam[arg1];
+    GXOamAttr*     var_lr  = &mgr->oam[arg1];
 
     while (!(arg1 & ~0x7F) && ((u16)(arg4->charName + 1) != 0)) {
         arg1 += 1;
         var_lr->attr0 = (arg4->attr0 & 0xFF00);
-        var_lr->attr0 = (var_lr->attr0 | (arg4->attr0 + arg3));
+        var_lr->attr0 = (var_lr->attr0 | (u16)((arg4->attr0 + arg3) & 0xFF));
         var_lr->attr0 = (var_lr->attr0 | (sp0 >> 0x10));
         var_lr->attr1 = (arg4->attr1 & 0xFE00);
         var_lr->attr1 = (var_lr->attr1 | (u16)((arg4->attr1 + arg2) & 0x1FF));
@@ -209,7 +210,7 @@ void OamMgr_CopyCellPiecesToOam(OamManager* mgr, OamCellPiece* cellPieces) {
         return;
     }
 
-    OamAttr* entry = &mgr->oam[mgr->oamCount];
+    GXOamAttr* entry = &mgr->oam[mgr->oamCount];
 
     while ((mgr->oamCount & ~0x7F) == 0 && (u16)(cellPieces->charName + 1) != 0) {
         entry->attr0 = cellPieces->attr0;
@@ -222,7 +223,8 @@ void OamMgr_CopyCellPiecesToOam(OamManager* mgr, OamCellPiece* cellPieces) {
     }
 }
 
-static void OamMgr_SetAffineGroupParams(OamManager* mgr, s32 arg1, u16 arg2, s32 arg3, s32 arg4, s32 arg5) {
+// Nonmatching: Regswaps, instruction reordering
+static void OamMgr_SetAffineGroupParams(OamManager* mgr, s32 arg1, u32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     if (arg1 & ~0x1F) {
         return;
     }
@@ -230,26 +232,25 @@ static void OamMgr_SetAffineGroupParams(OamManager* mgr, s32 arg1, u16 arg2, s32
         arg3 = -arg3;
     }
 
-    s32 temp_r6 = ((s32)arg2 >> 4) * 2;
+    s32 temp_r6 = ((s32)(u16)arg2 >> 4) * 2;
 
     OamAffineParam* affine = &mgr->affine[arg1];
-    affine->rotation       = arg2;
+    affine->rotation       = (u16)arg2;
     affine->scaleX         = arg3;
     if (arg5 & 2) {
         arg4 = -arg4;
     }
-    s16 temp_r5    = data_0205e4e0[temp_r6];
+    s32 temp_r5    = data_0205e4e0[temp_r6];
     s32 temp_r6_2  = data_0205e4e0[temp_r6 + 1] << 0xC;
     affine->scaleY = arg4;
     affine->unk_0C = 0;
+    affine->unk_0E = 0;
 
-    *(s16*)((u8*)affine + 0xE - 0xC) = 0;
-
-    OamAttr* groupBase       = &mgr->oam[arg1];
-    groupBase[0].affineParam = (temp_r6_2 / arg3) >> 4;
-    groupBase[1].affineParam = ((temp_r5 << 0xC) / arg3) >> 4;
-    groupBase[2].affineParam = ((-temp_r5 << 0xC) / arg4) >> 4;
-    groupBase[3].affineParam = (temp_r6_2 / arg4) >> 4;
+    GXOamAffine* group = &((GXOamAffine*)mgr->oam)[arg1];
+    group->PA          = (temp_r6_2 / arg3) >> 4;
+    group->PB          = ((temp_r5 << 0xC) / arg3) >> 4;
+    group->PC          = ((-temp_r5 << 0xC) / arg4) >> 4;
+    group->PD          = (temp_r6_2 / arg4) >> 4;
 }
 
 s32 OamMgr_AllocAffineGroup(OamManager* mgr, u16 rotation, s32 scaleX, s32 scaleY, s32 flipFlags) {
@@ -266,27 +267,30 @@ s32 OamMgr_AllocAffineGroup(OamManager* mgr, u16 rotation, s32 scaleX, s32 scale
 }
 
 OamCellShape* OamMgr_GetCellShape(OamCellPiece* piece) {
-    return (OamCellShape*)((u8*)data_020593c0[((s32)(u16)(piece->attr0 * 4) >> 0xC)] +
-                           ((((s32)piece->attr1 >> 0xE) | (((s32)piece->attr0 >> 0xE) * 4)) << 5));
+    s32 shift = 0xE;
+    return (OamCellShape*)(((u8*)data_020593c0[((s32)((u16)(piece->attr0 * 4))) >> 0xC]) +
+                           (((((s32)piece->attr0 >> 0xE) * 4) | ((s32)piece->attr1 >> shift)) << 5));
 }
 
+// Nonmatching: Regswaps, swapped stack slot assignments
 OamCellPiece* OamMgr_BuildVisibleCellPieces(OamManager* mgr, s32 x, s32 y, OamCellPiece* cellPieces, u16 attrs,
                                             s32 charOffset) {
     if (attrs & 1) {
         return OamMgr_BuildVisibleCellPiecesAffine(mgr, x, y, cellPieces, attrs, charOffset, NULL);
     }
 
-    OamCellPiece* temp_r0 = Mem_PeekPool(&data_0206a9bc, 0x408);
+    OamCellPiece* temp_r0 = Mem_PeekPool(&TmpBuf, 0x408);
     if (temp_r0 == NULL) {
         return NULL;
     }
 
     OamCellPiece* var_r4 = temp_r0;
 
-    u32            sp1C    = ((attrs << 0x1B) >> 0x13) << 0x10;
-    u32            sp18    = (attrs & 0xFC00) << 0x10;
-    u16            temp_r7 = (attrs & 0x3E0) * 0x10;
-    OamCharConfig* charCfg = mgr->charBases[(((s32)(cellPieces->attr0 >> 0xA) << 0x1E) >> 0x1C) >> 2];
+    u32 sp1C    = ((u32)(attrs << 0x1B) >> 0x13) << 0x10;
+    u32 sp18    = (attrs & 0xFC00) << 0x10;
+    u16 temp_r7 = (attrs & 0x3E0) * 0x10;
+
+    OamCharConfig* charCfg = *(OamCharConfig**)((u8*)mgr->charBases + ((((s32)cellPieces->attr0 >> 0xA) & 3) * 4));
 
     s32 var_r5 = 0;
     if ((u16)(cellPieces->charName + 1) != 0) {
@@ -321,11 +325,12 @@ OamCellPiece* OamMgr_BuildVisibleCellPieces(OamManager* mgr, s32 x, s32 y, OamCe
     if (var_r5 <= 0) {
         temp_r0 = &data_02059d1c;
     } else {
-        Mem_AllocPool(&data_0206a9bc, (var_r5 + 1) * 8);
+        Mem_AllocPool(&TmpBuf, (var_r5 + 1) * 8);
     }
     return temp_r0;
 }
 
+// Nonmatching: Stack frame is 8 bytes short, regswaps, instruction reordering
 OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y, OamCellPiece* cellPieces, u16 attrs,
                                                   s32 charOffset, void* transform) {
     s32 sp3C;
@@ -345,54 +350,57 @@ OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y,
     s32 temp_r2_3;
     s32 temp_r3;
 
-    if (((u32)(attrs << 0x1F) >> 0x1F) == 0) {
-        return OamMgr_BuildVisibleCellPieces(mgr, attrs, charOffset, 0, 0, 0);
+    volatile u16* const pAttrs = &attrs;
+
+    if (((u32)(*pAttrs << 0x1F) >> 0x1F) == 0) {
+        return OamMgr_BuildVisibleCellPieces(mgr, x, y, cellPieces, attrs, charOffset);
     }
 
-    OamCellPiece* temp_r0 = Mem_PeekPool(&data_0206a9bc, 0x408);
+    OamCellPiece* temp_r0 = Mem_PeekPool(&TmpBuf, 0x408);
     if (temp_r0 == NULL) {
         return NULL;
     }
 
     u32 sp2C = ((u32)(attrs << 0x1B) >> 0x13) << 0x10;
-    u32 sp28 = (attrs & 0x3E0) << 0x14;
 
-    void* var_r11 = transform;
+    OamAffineParam* var_r11 = transform;
     if (var_r11 == NULL) {
         var_r11 = &data_0205939c;
     }
 
-    sp24                   = (attrs & 0xFC00) << 0x10;
-    OamCellPiece*  var_r4  = temp_r0;
-    OamCharConfig* charCfg = mgr->charBases[(((s32)(cellPieces->attr0 >> 0xA) << 0x1E) >> 0x1C) >> 2];
+    sp24                 = (attrs & 0xFC00) << 0x10;
+    OamCellPiece* var_r4 = temp_r0;
+    u32           sp28   = (attrs & 0x3E0) << 0x14;
+
+    OamCharConfig* charCfg = *(OamCharConfig**)((u8*)mgr->charBases + ((((s32)cellPieces->attr0 >> 0xA) & 3) * 4));
     sp14                   = 0;
 
     while ((u16)(cellPieces->charName + 1) != 0) {
         OamCellShape* cellShape = OamMgr_GetCellShape(cellPieces);
         s32           var_r8    = cellShape->width;
         s32           var_r9    = cellShape->height;
-        temp_lr                 = *(s32*)((u8*)var_r11 + 8);
+        temp_lr                 = var_r11->scaleY;
         temp_r3                 = cellPieces->attr1 & 0x1FF;
         s32 var_r3              = temp_r3 | data_02059390[((temp_r3 >> 8) * 2)];
         if (cellPieces->attr1 & 0x1000) {
             var_r3 = 0 - (var_r3 + var_r8);
         }
         s32 temp_r7   = var_r3 + (var_r8 >> 1);
-        s32 temp_r3_2 = *(s32*)((u8*)var_r11 + 4);
+        s32 temp_r3_2 = var_r11->scaleX;
         s32 var_r0    = (u8)cellPieces->attr0 | data_02059390[((s32)(u8)cellPieces->attr0 >> 7)];
         if (cellPieces->attr1 & 0x2000) {
             var_r0 = 0 - (var_r0 + var_r9);
         }
         s32 temp_r6 = var_r0 + (var_r9 >> 1);
-        temp_r2     = ((s32)(u16)(*(u16*)var_r11) >> 4) * 2;
+        temp_r2     = ((s32)(u16)var_r11->rotation >> 4) * 2;
         temp_ip     = data_0205e4e0[temp_r2];
         sp1C        = (s32)data_0205e4e0[temp_r2 + 1];
         sp3C        = temp_r7 * (s32)(((s64)sp1C * temp_r3_2 + 0x800) >> 12);
-        sp20        = (u32)(attrs << 0x1E) >> 0x1F;
-        temp_r0_6   = y + ((s32)((temp_r7 * (s32)(((s64)temp_ip * temp_r3_2 + 0x800) >> 12)) +
-                               (temp_r6 * (s32)(((s64)sp1C * temp_lr + 0x800) >> 12))) >>
-                         0xC);
-        temp_r2_2   = x + ((s32)(sp3C - (temp_r6 * (s32)(((s64)temp_ip * temp_lr + 0x800) >> 12))) >> 0xC);
+
+        volatile s32 temp_r6_2 = temp_r6 * (s32)(((s64)sp1C * temp_lr + 0x800) >> 12);
+        sp20                   = (u32)(*pAttrs << 0x1E) >> 0x1F;
+        temp_r0_6              = y + ((s32)((temp_r7 * (s32)(((s64)temp_ip * temp_r3_2 + 0x800) >> 12)) + temp_r6_2) >> 0xC);
+        temp_r2_2              = x + ((s32)(sp3C - (temp_r6 * (s32)(((s64)temp_ip * temp_lr + 0x800) >> 12))) >> 0xC);
         if (sp20 == 1) {
             var_r8 *= 2;
             var_r9 *= 2;
@@ -415,16 +423,17 @@ OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y,
 
     var_r4->charName = 0xFFFF;
     if (sp14 > 0) {
-        Mem_AllocPool(&data_0206a9bc, (sp14 + 1) * 8);
+        Mem_AllocPool(&TmpBuf, (sp14 + 1) * 8);
     } else {
         temp_r0 = &data_02059d1c;
     }
     return temp_r0;
 }
 
+// Nonmatching: Regswaps
 void OamMgr_QueueCellCharTransfers(OamManager* mgr, s32 transferBase, s32 charOffset, s32 charDataBase,
                                    OamCellPiece* cellPieces) {
-    s32 temp_r7 = mgr->charBases[((cellPieces->attr0 >> 0xA) << 0x1E)]->tileShift - 1;
+    s32 temp_r7 = (*(OamCharConfig**)((u8*)mgr->charBases + ((((s32)cellPieces->attr0 >> 0xA) & 3) * 4)))->unk_00 - 1;
 
     while ((u16)(cellPieces->charName + 1) != 0) {
         if (cellPieces->charName & 0x8000) {
@@ -441,12 +450,15 @@ void OamMgr_QueueCellCharTransfers(OamManager* mgr, s32 transferBase, s32 charOf
 }
 
 OamCellPiece* OamMgr_CloneCellPieces(OamCellPiece* dstCellPieces, OamCellPiece* srcCellPieces) {
+    OamCellPiece* result;
+
     if (dstCellPieces == NULL) {
-        dstCellPieces = Mem_PeekPool(&data_0206a9bc, 0x408);
+        dstCellPieces = Mem_PeekPool(&TmpBuf, 0x408);
         if (dstCellPieces == NULL) {
             return NULL;
         }
         s32 var_r0 = 0;
+        result     = dstCellPieces;
         while ((u16)(srcCellPieces->charName + 1) != 0) {
             var_r0 += 1;
             dstCellPieces->charName = srcCellPieces->attr2 & 0x3FF;
@@ -458,11 +470,12 @@ OamCellPiece* OamMgr_CloneCellPieces(OamCellPiece* dstCellPieces, OamCellPiece* 
         }
 
         if (var_r0 <= 0) {
-            dstCellPieces = &data_02059d1c;
+            result = &data_02059d1c;
         } else {
-            Mem_AllocPool(&data_0206a9bc, (var_r0 + 1) * 8);
+            Mem_AllocPool(&TmpBuf, (var_r0 + 1) * 8);
         }
     } else {
+        result = dstCellPieces;
         while ((u16)(srcCellPieces->charName + 1) != 0) {
             dstCellPieces->charName = srcCellPieces->attr2 & 0x3FF;
             dstCellPieces++;
@@ -470,13 +483,12 @@ OamCellPiece* OamMgr_CloneCellPieces(OamCellPiece* dstCellPieces, OamCellPiece* 
         }
     }
     dstCellPieces->charName = 0xFFFF;
-    return dstCellPieces;
+    return result;
 }
 
 void OamMgr_ResetCommandQueues(OamManager* mgr) {
-    mgr->cmdCount           = 0;
-    mgr->prioGroups[0].head = NULL;
-    // Empty-list sentinel points at its own storage for each priority group.
+    mgr->cmdCount                 = 0;
+    mgr->prioGroups[0].head       = NULL;
     mgr->prioGroups[0].sentinel   = (OamSpriteCmd*)&mgr->prioGroups[0].sentinel;
     mgr->prioGroups[1].head       = NULL;
     mgr->prioGroups[1].sentinel   = (OamSpriteCmd*)&mgr->prioGroups[1].sentinel;
@@ -498,6 +510,7 @@ void OamMgr_FlushCommands(OamManager* mgr) {
     data_02059a78[mgr->renderMode](mgr);
 }
 
+// Nonmatching: Regswaps
 static void func_020034cc(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
     if (arg2 == NULL || mgr->cmdCount & ~0x7F) {
         return;
@@ -511,42 +524,45 @@ static void func_020034cc(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
 }
 
 void func_0200351c(OamManager* mgr, s32 arg1, s32 arg2, s32 arg3, OamCellPiece* arg4, u16 arg5, s32 arg6) {
-    OamCellPiece* var_r0;
+    OamCellPiece*       var_r0;
+    u16                 spC = arg5;
+    volatile u16* const pC  = &spC;
 
-    if (((u32)(arg5 << 0x1F) >> 0x1F) == 1) {
+    if (((u32)(*pC << 0x1F) >> 0x1F) == 1) {
         var_r0 = OamMgr_BuildVisibleCellPiecesAffine(mgr, arg2, arg3, arg4, arg5, arg6,
-                                                     (u8*)&mgr->affine[((u32)(arg5 << 0x16) >> 0x1B)]);
+                                                     (u8*)&mgr->affine[((u32)(*pC << 0x16) >> 0x1B)]);
     } else {
         var_r0 = OamMgr_BuildVisibleCellPieces(mgr, arg2, arg3, arg4, arg5, arg6);
     }
     func_020034cc(mgr, arg1, var_r0);
 }
 
+// Nonmatching: Regswaps
 void func_020035b4(OamManager* mgr) {
-    s32 temp_r7;
-    u32 temp_r0;
-    u32 temp_r1;
-    u32 temp_r3;
-    u32 temp_r3_2;
-    u32 temp_r4;
-    u32 temp_r9;
-    u32 var_ip;
-    u32 var_lr;
-    u32 var_r0;
-    u32 var_r1;
-    u32 var_r2;
-    u32 var_r7;
-    u32 var_r7_2;
-    u8* temp_r10;
-    u8* temp_r10_2;
-    u8* temp_r5;
-    u8* temp_r9_2;
-    u8* temp_r9_3;
+    OamSpriteCmd*  temp_r7;
+    u32            temp_r0;
+    u32            temp_r1;
+    u32            temp_r3;
+    u32            temp_r3_2;
+    u32            temp_r4;
+    u32            temp_r9;
+    u32            var_ip;
+    u32            var_lr;
+    u32            var_r0;
+    u32            var_r1;
+    u32            var_r2;
+    u32            var_r7;
+    u32            var_r7_2;
+    OamSpriteCmd*  temp_r10;
+    OamSpriteCmd*  temp_r10_2;
+    OamSpriteCmd** temp_r5;
+    OamSpriteCmd*  temp_r9_2;
+    OamSpriteCmd*  temp_r9_3;
 
     temp_r4 = (u32)mgr->cmdCount;
     temp_r3 = temp_r4 >> 1;
     var_r0  = temp_r3;
-    temp_r5 = (u8*)mgr->sortBuffer;
+    temp_r5 = mgr->sortBuffer;
     if (temp_r3 != 0) {
         do {
             var_r1 = var_r0;
@@ -554,17 +570,15 @@ void func_020035b4(OamManager* mgr) {
             loop_2:
                 var_r2  = var_r1 * 2;
                 temp_r9 = var_r2 + 1;
-                if ((temp_r9 <= temp_r4) && ((u32) * (s32*)(*(u8**)(temp_r5 + var_r2 * 4) + 8) <=
-                                             (u32) * (s32*)(*(u8**)(temp_r5 + var_r2 * 4 + 4) + 8)))
-                {
+                if ((temp_r9 <= temp_r4) && (temp_r5[var_r2]->sortKey <= temp_r5[var_r2 + 1]->sortKey)) {
                     var_r2 = temp_r9;
                 }
-                temp_r10  = *(u8**)(temp_r5 + var_r2 * 4);
-                temp_r9_2 = *(u8**)(temp_r5 + var_r1 * 4);
-                if ((u32) * (s32*)(temp_r9_2 + 8) <= (u32) * (s32*)(temp_r10 + 8)) {
-                    *(void**)(temp_r5 + var_r1 * 4) = temp_r10;
-                    var_r1                          = var_r2;
-                    *(void**)(temp_r5 + var_r2 * 4) = temp_r9_2;
+                temp_r10  = temp_r5[var_r2];
+                temp_r9_2 = temp_r5[var_r1];
+                if (temp_r9_2->sortKey <= temp_r10->sortKey) {
+                    temp_r5[var_r1] = temp_r10;
+                    var_r1          = var_r2;
+                    temp_r5[var_r2] = temp_r9_2;
                     if (var_r2 <= temp_r3) {
                         goto loop_2;
                     }
@@ -576,27 +590,25 @@ void func_020035b4(OamManager* mgr) {
     var_ip = temp_r4;
     if (temp_r4 > 1U) {
         do {
-            temp_r7                       = *(s32*)(temp_r5 + 4);
-            temp_r1                       = var_ip - 1;
-            *(s32*)(temp_r5 + 4)          = *(s32*)(temp_r5 + var_ip * 4);
-            temp_r3_2                     = temp_r1 >> 1;
-            var_lr                        = 1;
-            *(s32*)(temp_r5 + var_ip * 4) = temp_r7;
+            temp_r7         = temp_r5[1];
+            temp_r1         = var_ip - 1;
+            temp_r5[1]      = temp_r5[var_ip];
+            temp_r3_2       = temp_r1 >> 1;
+            var_lr          = 1;
+            temp_r5[var_ip] = temp_r7;
             if (temp_r3_2 >= 1U) {
             loop_11:
                 var_r7  = var_lr * 2;
                 temp_r0 = var_r7 + 1;
-                if ((temp_r0 <= temp_r1) && ((u32) * (s32*)(*(u8**)(temp_r5 + var_r7 * 4) + 8) <=
-                                             (u32) * (s32*)(*(u8**)(temp_r5 + var_r7 * 4 + 4) + 8)))
-                {
+                if ((temp_r0 <= temp_r1) && (temp_r5[var_r7]->sortKey <= temp_r5[var_r7 + 1]->sortKey)) {
                     var_r7 = temp_r0;
                 }
-                temp_r10_2 = *(u8**)(temp_r5 + var_r7 * 4);
-                temp_r9_3  = *(u8**)(temp_r5 + var_lr * 4);
-                if ((u32) * (s32*)(temp_r9_3 + 8) <= (u32) * (s32*)(temp_r10_2 + 8)) {
-                    *(void**)(temp_r5 + var_lr * 4) = temp_r10_2;
-                    var_lr                          = var_r7;
-                    *(void**)(temp_r5 + var_r7 * 4) = temp_r9_3;
+                temp_r10_2 = temp_r5[var_r7];
+                temp_r9_3  = temp_r5[var_lr];
+                if (temp_r9_3->sortKey <= temp_r10_2->sortKey) {
+                    temp_r5[var_lr] = temp_r10_2;
+                    var_lr          = var_r7;
+                    temp_r5[var_r7] = temp_r9_3;
                     if (var_r7 <= temp_r3_2) {
                         goto loop_11;
                     }
@@ -610,12 +622,12 @@ void func_020035b4(OamManager* mgr) {
         return;
     }
     do {
-        OamSpriteCmd* cmd = *(OamSpriteCmd**)(temp_r5 + var_r7_2 * 4);
-        OamMgr_CopyCellPiecesToOam(mgr, cmd->spriteData);
+        OamMgr_CopyCellPiecesToOam(mgr, temp_r5[var_r7_2]->spriteData);
         var_r7_2 += 1;
     } while (var_r7_2 <= temp_r4);
 }
 
+// Nonmatching: Regswaps, instruction reordering
 void func_02003704(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
     OamSpriteCmd* cmd;
     OamSpriteCmd* next;
@@ -683,13 +695,13 @@ void func_02003704(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
 }
 
 void func_020037d0(OamManager* mgr, u32 arg1, s32 arg2, s32 arg3, OamCellPiece* arg4, u16 arg5, s32 arg6) {
-    u16           spC;
-    OamCellPiece* var_r0;
+    OamCellPiece*       var_r0;
+    u16                 spC = arg5;
+    volatile u16* const pC  = &spC;
 
-    spC = arg5;
-    if (((u32)(spC << 0x1F) >> 0x1F) == 1) {
+    if (((u32)(*pC << 0x1F) >> 0x1F) == 1) {
         var_r0 = OamMgr_BuildVisibleCellPiecesAffine(mgr, arg2, arg3, arg4, arg5, arg6,
-                                                     (u8*)&mgr->affine[((u32)(spC << 0x16) >> 0x1B)]);
+                                                     (u8*)&mgr->affine[((u32)(*pC << 0x16) >> 0x1B)]);
     } else {
         var_r0 = OamMgr_BuildVisibleCellPieces(mgr, arg2, arg3, arg4, arg5, arg6);
     }
@@ -752,10 +764,9 @@ void func_02003904(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
     ((OamSpriteCmd*)temp_ip)->spriteData = arg2;
     temp_r2                              = ((s32)(arg2->attr1 & 0xC00) >> 0xA) * 0x18;
     *(s32*)(temp_r5 + (temp_r3 * 0x10))  = 0;
-    var_r3                               = (u8*)&mgr->prioGroups[0].sortedRoot;
+    var_r3                               = (u8*)&mgr->prioGroups[0].sortedRoot + temp_r2;
     *(void**)(temp_ip + 4)               = NULL;
-    var_r0                               = *(u8**)(var_r3 + temp_r2);
-    var_r3                               = var_r3 + temp_r2;
+    var_r0                               = *(u8**)var_r3;
     if (var_r0 != NULL) {
         do {
             if ((u32) * (s32*)(var_r0 + 8) >= arg1) {
@@ -770,19 +781,20 @@ void func_02003904(OamManager* mgr, u32 arg1, OamCellPiece* arg2) {
 }
 
 void func_02003994(OamManager* mgr, u32 arg1, s32 arg2, s32 arg3, OamCellPiece* arg4, u16 arg5, s32 arg6) {
-    u16           spC;
-    OamCellPiece* var_r0;
+    OamCellPiece*       var_r0;
+    u16                 spC = arg5;
+    volatile u16* const pC  = &spC;
 
-    spC = arg5;
-    if (((u32)(spC << 0x1F) >> 0x1F) == 1) {
+    if (((u32)(*pC << 0x1F) >> 0x1F) == 1) {
         var_r0 = OamMgr_BuildVisibleCellPiecesAffine(mgr, arg2, arg3, arg4, arg5, arg6,
-                                                     (u8*)&mgr->affine[((u32)(spC << 0x16) >> 0x1B)]);
+                                                     (u8*)&mgr->affine[((u32)(*pC << 0x16) >> 0x1B)]);
     } else {
         var_r0 = OamMgr_BuildVisibleCellPieces(mgr, arg2, arg3, arg4, arg5, arg6);
     }
     func_02003904(mgr, arg1, var_r0);
 }
 
+// Nonmatching: Regswaps
 void func_02003a2c(OamManager* mgr) {
     OamSpriteCmd* cmd;
     OamSpriteCmd* node;
@@ -809,7 +821,8 @@ void func_02003a2c(OamManager* mgr) {
 }
 
 OamCellFrame* func_02003aa8(OamCellPiece* arg0) {
-    return &data_02059b94[((s32)arg0->attr1 >> 0xE) | (((s32)arg0->attr0 >> 0xE) * 4)];
+    s32 shift = 0xE;
+    return &data_02059b94[(((s32)arg0->attr0 >> 0xE) * 4) | ((s32)arg0->attr1 >> shift)];
 }
 
 void OamMgr_Init3DSpritePipeline(void) {
@@ -849,33 +862,43 @@ void OamMgr_Swap3DBuffers(void) {
 
 // Struct that represents the render command passed to func_02003c7c
 typedef struct {
-    /* 0x00 */ s32           unk_00;
-    /* 0x04 */ s32           unk_04;
-    /* 0x08 */ s32           unk_08;
-    /* 0x0C */ s32           unk_0C;
-    /* 0x10 */ u16           unk_10;
-    /* 0x12 */ u16           unk_12;
-    /* 0x14 */ u16           unk_14;
-    /* 0x16 */ u16           unk_16;
-    /* 0x18 */ OamCellFrame* cellFrame;
-    /* 0x1C */ void*         unk_1C;
-    /* 0x20 */ VtxXY*        quadVertices;
+    /* 0x00 */ s32             unk_00;
+    /* 0x04 */ s32             unk_04;
+    /* 0x08 */ s32             unk_08;
+    /* 0x0C */ u32             unk_0C;
+    /* 0x10 */ u16             unk_10;
+    /* 0x12 */ u16             unk_12;
+    /* 0x14 */ u16             unk_14;
+    /* 0x16 */ u16             unk_16;
+    /* 0x18 */ OamCellFrame*   cellFrame;
+    /* 0x1C */ OamAffineParam* unk_1C;
+    /* 0x20 */ VtxXY*          quadVertices;
 } RenderCmd;
 
+// Nonmatching: Regswaps, an ldmib load pair is not merged, literal pool ordering
 void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
-    OamCellFrame* frame   = arg3->cellFrame;
-    u8*           temp_r5 = arg3->unk_1C;
+    OamCellFrame*   frame   = arg3->cellFrame;
+    OamAffineParam* temp_r5 = arg3->unk_1C;
 
-    REG_GFX_FIFO_MATRIX_PUSH      = 0;
-    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg0 + (frame->centerX >> 1));
-    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg1 + (frame->centerY >> 1));
+    REG_GFX_FIFO_MATRIX_PUSH = 0;
+
+    s32 centerX = frame->centerX;
+    s32 centerY = frame->centerY;
+
+    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg0 + (centerX >> 1));
+    REG_GFX_FIFO_MATRIX_TRANSLATE = (s32)(arg1 + (centerY >> 1));
     REG_GFX_FIFO_MATRIX_TRANSLATE = arg2;
 
-    s32 temp_r1 = ((s32) * (u16*)temp_r5 >> 4) * 2;
+    s32 temp_r1 = (temp_r5->rotation >> 4) * 2;
     func_020370cc(data_0205e4e0[temp_r1], data_0205e4e0[temp_r1 + 1]);
 
-    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frame->width * *(s32*)(temp_r5 + 4));
-    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frame->height * *(s32*)(temp_r5 + 8));
+    s32 frameW = frame->width;
+    s32 frameH = frame->height;
+    s32 scaleX = temp_r5->scaleX;
+    s32 scaleY = temp_r5->scaleY;
+
+    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frameW * scaleX);
+    REG_GFX_FIFO_MATRIX_SCALE  = (s32)(frameH * scaleY);
     REG_GFX_FIFO_MATRIX_SCALE  = 0x1000;
     REG_GFX_FIFO_TEXTURE_PARAM = (s32)((arg3->unk_04 << 0x1A) | ((u32)arg3->unk_08 >> 3) | 0x40000000 |
                                        (frame->texSizeS << 0x14) | (frame->texSizeT << 0x17) | 0x20000000);
@@ -909,7 +932,9 @@ void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
     REG_GFX_FIFO_MATRIX_POP = 1;
 }
 
-u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s32 arg5, s32 arg6, void* arg7) {
+// Nonmatching: Regswaps, argument spills are ordered differently
+u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, volatile s32 arg5, volatile s32 arg6,
+                  void* arg7) {
     RenderCmd     rcmd;
     s32           sp10;
     s32           sp4;
@@ -938,13 +963,15 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s3
     u32           temp_r0_4;
     u8*           var_r4;
 
+    volatile u16* const pArg4 = &arg4;
+
     var_r6 = arg0;
     var_r4 = (u8*)arg7;
     sp0    = arg1;
     sp4    = arg2;
     var_r5 = arg3;
     if (var_r4 == NULL) {
-        temp_r0_3 = arg4;
+        temp_r0_3 = *pArg4;
         temp_r0_4 = (u32)temp_r0_3 << 0x16;
         if (((u32)(temp_r0_3 << 0x1F) >> 0x1F) == 1) {
             var_r4 = data_02069c24 + ((temp_r0_4 >> 0x1B) * 0x10);
@@ -955,7 +982,7 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s3
     rcmd.unk_10       = ((u16*)data_02059a84)[0];
     rcmd.unk_12       = ((u16*)data_02059a84)[1];
     rcmd.unk_14       = ((u16*)data_02059a84)[2];
-    rcmd.unk_1C       = var_r4;
+    rcmd.unk_1C       = (OamAffineParam*)var_r4;
     rcmd.quadVertices = data_02059ab0;
     rcmd.unk_16       = ((u16*)data_02059a84)[3];
     if (var_r5->attr0 & 0x2000) {
@@ -963,7 +990,7 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s3
     } else {
         rcmd.unk_04 = 3;
     }
-    if (((u32)(arg4 << 0x1C) >> 0x1E) == 1) {
+    if (((u32)(*pArg4 << 0x1C) >> 0x1E) == 1) {
         rcmd.unk_12 = (u16)data_0206a890.unk_0C;
     }
     var_r1    = var_r5->charName;
@@ -973,7 +1000,7 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s3
     }
     do {
         rcmd.unk_08    = arg5 + ((u32)(var_r1 << 0x13) >> 0xE);
-        rcmd.unk_0C    = arg6 + ((u32)((((u32)(arg4 << 0x10) >> 0x1C) + ((s32)var_r5->attr2 >> 0xC)) << 0x1C) >> 0x17);
+        rcmd.unk_0C    = arg6 + ((u32)((((u32)(*pArg4 << 0x10) >> 0x1C) + ((s32)var_r5->attr2 >> 0xC)) << 0x1C) >> 0x17);
         rcmd.unk_14    = (u16)(((s32)var_r5->attr1 >> 0xC) & 3);
         frame          = func_02003aa8(var_r5);
         rcmd.cellFrame = frame;
@@ -991,23 +1018,24 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, s3
         if (rcmd.unk_14 & 2) {
             var_r0 = 0 - (var_r0 + temp_r2);
         }
-        temp_r3   = var_r0 + (temp_r2 >> 1);
-        temp_r1_2 = sp4 - (temp_r2 >> 1);
-        sp10      = temp_r1_2;
-        temp_r2_2 = *(s32*)(var_r4 + 8);
-        temp_r8_2 = ((s32) * (u16*)var_r4 >> 4) * 2;
-        temp_r10  = data_0205e4e0[temp_r8_2];
-        temp_r1_3 = data_0205e4e0[temp_r8_2 + 1];
+        temp_r3         = var_r0 + (temp_r2 >> 1);
+        s32 temp_r0_5   = sp0 - (temp_r1 >> 1);
+        temp_r1_2       = sp4 - (temp_r2 >> 1);
+        sp10            = temp_r1_2;
+        temp_r8_2       = (*(s32*)var_r4 >> 4) * 2;
+        temp_r2_2       = *(s32*)(var_r4 + 8);
+        temp_r10        = data_0205e4e0[temp_r8_2];
+        temp_r1_3       = data_0205e4e0[temp_r8_2 + 1];
+        s32 temp_r0_arg = ((temp_ip * (s32)(((s64)temp_r1_3 * temp_r9 + 0x800) >> 12)) -
+                           (temp_r3 * (s32)(((s64)temp_r10 * temp_r2_2 + 0x800) >> 12))) +
+                          (temp_r0_5 << 0xC);
+        s32 temp_r1_arg = (temp_ip * (s32)(((s64)temp_r10 * temp_r9 + 0x800) >> 12)) +
+                          (temp_r3 * (s32)(((s64)temp_r1_3 * temp_r2_2 + 0x800) >> 12)) + (sp10 << 0xC);
         if (var_r6 < 0) {
             var_r6               = data_0206a890.unk_00 - 0x200;
             data_0206a890.unk_00 = var_r6;
         }
-        func_02003c7c(((temp_ip * (s32)(((s64)temp_r1_3 * temp_r9 + 0x800) >> 12)) -
-                       (temp_r3 * (s32)(((s64)temp_r10 * temp_r2_2 + 0x800) >> 12))) +
-                          ((sp0 - (temp_r1 >> 1)) << 0xC),
-                      (temp_ip * (s32)(((s64)temp_r10 * temp_r9 + 0x800) >> 12)) +
-                          (temp_r3 * (s32)(((s64)temp_r1_3 * temp_r2_2 + 0x800) >> 12)) + (temp_r1_2 << 0xC),
-                      var_r6, &rcmd);
+        func_02003c7c(temp_r0_arg, temp_r1_arg, var_r6, &rcmd);
         var_r5++;
         var_r1  = var_r5->charName;
         temp_r0 = var_r1 + 1;

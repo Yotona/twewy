@@ -11,7 +11,10 @@ enum {
 };
 
 typedef struct {
-    /* 0x00 */ u8         unk_00;
+    /* 0x00 */ union {
+        u32 raw;    // 0xFFFFFF00: size in bytes, 0x000000F0: format
+        u8  format; // Low byte of `raw`, accessed on its own
+    } header;
     /* 0x04 */ DmaRequest request;
 } UnkSmallStruct_DispBG;
 
@@ -42,8 +45,7 @@ typedef struct {
     /* 0x0020 */ BgResource activeList; // Linked list of active allocated resources
     /* 0x0040 */ BgResource freeList;   // Linked list of available resource slots
     /* 0x0060 */ BgResource resourcePool[64];
-    /* 0x0860 */ s32        unk_860;
-    /* 0x0864 */ char       unk_864[0x1C80 - 0x864];
+    /* 0x0860 */ s16        unk_860[(0x1C80 - 0x860) / 2];
 } BgResMgr; // Size: 0x1C80
 
 extern BgResMgr* g_BgResourceManagers[2];

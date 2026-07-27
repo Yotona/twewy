@@ -83,8 +83,7 @@ typedef enum {
     ADX_COUNT
 } CriSndMgrAdxId;
 
-// Nonmatching: .data section order differs, .rodata matches
-extern const AdxData CriSndMgr_AdxData[70];
+extern const AdxData CriSndMgr_AdxData[ADX_COUNT];
 
 extern const s32 CriSndMgr_AdxDataCount;
 

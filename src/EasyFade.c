@@ -1,9 +1,9 @@
 #include "EasyFade.h"
 #include "Display.h"
 
-s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, void* arg2, s32 arg3);
+static s32 EasyFade_RunTask(TaskPool* pool, Task* task, void* arg2, s32 arg3);
 
-const TaskHandle Task_EasyFade = {"EasyFade", EasyFade_TaskHandler, 0};
+const TaskHandle Task_EasyFade = {"EasyFade", EasyFade_RunTask, 0};
 
 Fader gFaders[2] = {0};
 
@@ -45,17 +45,15 @@ void EasyFade_FadeSubDisplay(FaderMode mode, s32 brightness, s32 rate) {
     gFaders[DISPLAY_SUB].rate             = rate;
 }
 
-// Nonmatching: Some instruction differences
-// Scratch: aTNjX
 BOOL EasyFade_IsFading(void) {
-    Fader* faderMain = &gFaders[DISPLAY_MAIN];
-    Fader* faderSub  = &gFaders[DISPLAY_SUB];
+    Fader* faderMain = gFaders;
+    Fader* faderSub  = gFaders;
 
     BOOL val = TRUE;
-    if ((faderMain->currentBrightness >> 0xC) != (faderMain->targetBrightness >> 0xC)) {
+    if (F2I(faderMain[DISPLAY_MAIN].currentBrightness) != F2I(faderMain[DISPLAY_MAIN].targetBrightness)) {
         return TRUE;
-    } else if ((faderSub->currentBrightness >> 0xC) != (faderSub->targetBrightness >> 0xC)) {
-        val = TRUE;
+    } else if (F2I(faderSub[DISPLAY_SUB].currentBrightness) == F2I(faderSub[DISPLAY_SUB].targetBrightness)) {
+        val = FALSE;
     }
     return val;
 }
@@ -155,7 +153,10 @@ static void EasyFade_UpdateInstant(DisplayEngine engine, Fader* fader) {
 const struct FaderUpdateDispatch {
     void (*entries[4])(DisplayEngine, Fader*);
 } FaderUpdateDispatchFuncs = {
-    {EasyFade_UpdateLinear, EasyFade_UpdateInterpolated, EasyFade_UpdateSmooth, EasyFade_UpdateInstant}
+    {
+     EasyFade_UpdateLinear, EasyFade_UpdateSmooth,
+     EasyFade_UpdateInstant, EasyFade_UpdateInterpolated,
+     }
 };
 
 static s32 EasyFade_Update(Fader* fader) {
@@ -165,21 +166,31 @@ static s32 EasyFade_Update(Fader* fader) {
     return 1;
 }
 
-static s32 func_020264e0() {
+static s32 EasyFade_Render(Fader* fader) {
     return 1;
 }
 
-static s32 func_020264e8() {
+static s32 EasyFade_Release(Fader* fader) {
     return 1;
 }
 
-const struct FaderTaskHandlerDispatch {
-    s32 (*entries[4])();
-} FaderTaskHandlerDispatchFuncs = {
-    {EasyFade_Initialize, EasyFade_Update, func_020264e0, func_020264e8}
-};
+// Identical behavior to TaskStages, except only parameter is Fader*
+typedef union {
+    struct {
+        s32 (*initialize)(Fader*);
+        s32 (*update)(Fader*);
+        s32 (*render)(Fader*);
+        s32 (*cleanup)(Fader*);
+    };
+    s32 (*iter[4])(Fader*);
+} FaderStages;
 
-static s32 EasyFade_TaskHandler(TaskPool* pool, Task* task, void* arg2, s32 arg3) {
-    const struct FaderTaskHandlerDispatch funcTable = FaderTaskHandlerDispatchFuncs;
-    return funcTable.entries[arg3](&gFaders);
+static s32 EasyFade_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    FaderStages stages = {
+        .initialize = EasyFade_Initialize,
+        .update     = EasyFade_Update,
+        .render     = EasyFade_Render,
+        .cleanup    = EasyFade_Release,
+    };
+    return stages.iter[stage](gFaders);
 }

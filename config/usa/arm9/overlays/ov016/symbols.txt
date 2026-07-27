@@ -177,14 +177,14 @@ Tsk_Boss01_UG kind:data(any) addr:0x02128fd8 ambiguous
 // src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Boss01s_FlyRG_Curve kind:data(any) addr:0x02128ff4 local
-@1177 kind:data(any) addr:0x02129000 local
+@1472 kind:data(any) addr:0x02129000 local
 data_ov016_02129010 kind:data(any) addr:0x02129010 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_FlyUG.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Boss01s_FlyUG kind:data(any) addr:0x02129020 local
-@1186 kind:data(any) addr:0x0212902c local
+@1480 kind:data(any) addr:0x0212902c local
 data_ov016_0212903c kind:data(any) addr:0x0212903c local
 
 //////////////////////////////////////////////////////////////////////
@@ -192,14 +192,14 @@ data_ov016_0212903c kind:data(any) addr:0x0212903c local
 //////////////////////////////////////////////////////////////////////
 data_ov016_02129054 kind:data(any) addr:0x02129054 local
 Tsk_Boss01s_LandRG kind:data(any) addr:0x0212905c local
-@1064 kind:data(any) addr:0x02129068 local
+@1357 kind:data(any) addr:0x02129068 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_LandUG.c
 //////////////////////////////////////////////////////////////////////
 LandUG_Anim kind:data(any) addr:0x02129078 local
 Tsk_Boss01s_LandUG kind:data(any) addr:0x02129080 local
-@1065 kind:data(any) addr:0x0212908c local
+@1357 kind:data(any) addr:0x0212908c local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c
@@ -207,7 +207,7 @@ Tsk_Boss01s_LandUG kind:data(any) addr:0x02129080 local
 data_ov016_0212909c kind:data(any) addr:0x0212909c
 data_ov016_021290a4 kind:data(any) addr:0x021290a4 local
 Task_BtlEff_Bomb kind:data(any) addr:0x021290ac local
-@1163 kind:data(any) addr:0x021290b8 local
+@1472 kind:data(any) addr:0x021290b8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c
@@ -221,14 +221,14 @@ data_ov016_021290e4 kind:data(any) addr:0x021290e4
 //////////////////////////////////////////////////////////////////////
 Iden_BtlObs_Bus kind:data(any) addr:0x021290fc local
 Tsk_BtlObs_Bus kind:data(any) addr:0x02129104 local
-@1116 kind:data(any) addr:0x02129110 local
+@1530 kind:data(any) addr:0x02129110 local
 data_ov016_02129120 kind:data(short[14]) addr:0x02129120 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c
 //////////////////////////////////////////////////////////////////////
 Tsk_BtlObs_RG kind:data(any) addr:0x0212913c local
-@1104 kind:data(any) addr:0x02129148 local
+@1517 kind:data(any) addr:0x02129148 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_Anim.c
@@ -258,32 +258,32 @@ data_ov016_021291d8 kind:data(any) addr:0x021291d8 local
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_FlyRG_Curve.c
 //////////////////////////////////////////////////////////////////////
-@1102 kind:data(any) addr:0x021291ec local
+@1397 kind:data(any) addr:0x021291ec local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_FlyUG.c
 //////////////////////////////////////////////////////////////////////
-@1100 kind:data(any) addr:0x02129204 local
+@1395 kind:data(any) addr:0x02129204 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_LandRG.c
 //////////////////////////////////////////////////////////////////////
-@1019 kind:data(any) addr:0x02129218 local
+@1312 kind:data(any) addr:0x02129218 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01s_LandUG.c
 //////////////////////////////////////////////////////////////////////
-@1019 kind:data(any) addr:0x0212922c local
+@1312 kind:data(any) addr:0x0212922c local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlEff_Obs.c
 //////////////////////////////////////////////////////////////////////
-@147 kind:data(any) addr:0x02129240 local
+@1328 kind:data(any) addr:0x02129240 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlEff_Bomb.c
 //////////////////////////////////////////////////////////////////////
-@1106 kind:data(any) addr:0x0212925c local
+@1416 kind:data(any) addr:0x0212925c local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlEff_Fall.c
@@ -293,13 +293,13 @@ data_ov016_021291d8 kind:data(any) addr:0x021291d8 local
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlObs_Bus.c
 //////////////////////////////////////////////////////////////////////
-@1020 kind:data(any) addr:0x02129284 local
-@1019 kind:data(any) addr:0x02129294 local
+@1432 kind:data(any) addr:0x02129284 local
+@1431 kind:data(any) addr:0x02129294 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_BtlObs_RG.c
 //////////////////////////////////////////////////////////////////////
-@1020 kind:data(byte[14]) addr:0x021292b0 local
+@1432 kind:data(byte[14]) addr:0x021292b0 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Noise/Boss01/Boss01_RG.c

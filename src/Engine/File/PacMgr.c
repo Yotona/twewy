@@ -198,27 +198,35 @@ s32 PacMgr_GetPackEntryDataPtr(Pack* pac, s32 packIndex) {
     return (s32)(pac->loadedBin->data + (pac->entries[packIndex].offset + 0x20));
 }
 
-// Nonmatching: Several alignment differences
-// Scratch: 03pF3
+static inline PackEntry* PacMgr_GetPackEntryTable(u8* packBuffer) {
+    return (PackEntry*)(packBuffer + PAC_PACK_HEADER_SIZE);
+}
+
 void* PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList) {
     s32 entryCount = entryList[0];
-    s32 tableCount = entryCount;
     u32 dataSize   = PAC_PACK_HEADER_SIZE;
+    s32 i;
 
-    for (s32 i = 1; i <= entryCount; ++i) {
+    for (i = 1; i <= entryCount; ++i) {
         PackEntry* entry = &pac->entries[entryList[i]];
         dataSize += ALIGN_TO_8(entry->size);
     }
 
-    u32 entryTableSize = ALIGN_TO_8((u32)tableCount * sizeof(PackEntry));
-    u32 orderTableSize = ALIGN_TO_8((u32)tableCount * sizeof(s32));
+    s32 tableCount = i;
 
-    u32 totalRequiredSize = dataSize + entryTableSize + orderTableSize;
+    u32 entryTableSize = ALIGN_TO_8((u32)tableCount * sizeof(PackEntry));
+    u32 orderTableSize;
+
+    dataSize += entryTableSize;
 
     u8* packBuffer = buffer;
+
+    u32 packEntryCount = (u32)tableCount;
+    orderTableSize     = ALIGN_TO_8(packEntryCount * sizeof(s32));
+
     if (packBuffer == NULL) {
-        packBuffer = Mem_AllocBestFit(&gMainHeap, totalRequiredSize);
-        Mem_SetSequence(&gMainHeap, packBuffer, "PacMgr_GenPack");
+        packBuffer = Mem_AllocBestFit(&gMainHeap, dataSize + orderTableSize);
+        Mem_SetSequence(&gMainHeap, packBuffer, "PacMgr_GenPack()");
     }
 
     FS_File file;
@@ -226,7 +234,7 @@ void* PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList) {
     FS_FileOpenFromIden(&file, pac->fileIden);
 
     PackHeader* header           = (PackHeader*)packBuffer;
-    PackEntry*  entryTable       = (PackEntry*)(packBuffer + PAC_PACK_HEADER_SIZE);
+    PackEntry*  entryTable       = PacMgr_GetPackEntryTable(packBuffer);
     u32         orderTableOffset = PAC_PACK_HEADER_SIZE + entryTableSize;
 
     entryTable[0].offset = orderTableOffset;
@@ -234,33 +242,27 @@ void* PacMgr_GenPack(Pack* pac, void* buffer, void* unused, s32* entryList) {
 
     MI_CpuCopyU32(entryList, packBuffer + orderTableOffset, orderTableSize);
 
-    u32 currentWriteOffset = orderTableOffset + entryTable[0].size;
+    u32 writeOffset = orderTableOffset + entryTable[0].size;
 
-    for (s32 i = 1; i < tableCount; ++i) {
-        s32        entryIndex = entryList[i];
-        PackEntry* dstEntry   = &entryTable[i];
+    for (i = 1; i < tableCount; ++i) {
+        if (entryList[i] <= 0) {
+            s32 referencedIndex = (entryList[i] < 0) ? -entryList[i] : entryList[i];
 
-        if (entryIndex <= 0) {
-            s32        referencedIndex = (entryIndex < 0) ? -entryIndex : entryIndex;
-            PackEntry* srcEntry        = &entryTable[referencedIndex];
-            dstEntry->offset           = srcEntry->offset;
-            dstEntry->size             = srcEntry->size;
+            entryTable[i] = entryTable[referencedIndex];
         } else {
-            PackEntry* srcEntry = &pac->entries[entryIndex];
+            entryTable[i].offset = writeOffset;
+            entryTable[i].size   = pac->entries[entryList[i]].size;
 
-            dstEntry->offset = currentWriteOffset;
-            dstEntry->size   = srcEntry->size;
+            FS_FileSeek(&file, (s32)(pac->entries[entryList[i]].offset + PAC_PACK_HEADER_SIZE), 0);
+            FS_FileRead(&file, packBuffer + writeOffset, (s32)entryTable[i].size);
 
-            FS_FileSeek(&file, (s32)(srcEntry->offset + PAC_PACK_HEADER_SIZE), 0);
-            FS_FileRead(&file, packBuffer + currentWriteOffset, (s32)dstEntry->size);
-
-            currentWriteOffset += ALIGN_TO_8(dstEntry->size);
+            writeOffset += ALIGN_TO_8(entryTable[i].size);
         }
     }
 
     header->magic      = PAC_PACK_HEADER_MAGIC;
-    header->entryCount = (u32)tableCount;
-    header->dataSize   = currentWriteOffset;
+    header->entryCount = packEntryCount;
+    header->dataSize   = writeOffset;
 
     FS_FileClose(&file);
     return packBuffer;

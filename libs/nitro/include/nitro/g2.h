@@ -287,12 +287,13 @@ inline void G2S_SetBlendAlpha(u32 srcPlane, u32 dstPlane, u32 srcAlpha, u32 dstA
 }
 
 inline void G2_GetOBJPosition(GXOamAttr* oam, u32* x, u32* y) {
-    *x = (oam->attr01 & 0x1ff0000) >> 16;
-    *y = oam->attr01 & 0xff;
+    *x = oam->attr1 & 0x1ff;
+    *y = oam->attr0 & 0xff;
 }
 
 inline void G2_SetOBJPosition(GXOamAttr* oam, u32 x, u32 y) {
-    oam->attr01 = (oam->attr01 & 0xfe00ff00) | (y & 0xff) | (x << 0x17 >> 0x7);
+    oam->attr0 = (oam->attr0 & 0xff00) | (y & 0xff);
+    oam->attr1 = (oam->attr1 & 0xfe00) | (x & 0x1ff);
 }
 
 inline u32 G2_GetOBJCharName(GXOamAttr* oam) {
@@ -308,14 +309,14 @@ inline u32 G2_GetOBJColorParam(GXOamAttr* oam) {
 }
 
 // Defined as macro as sometimes `oam` is volatile and other times not
-#define G2_GetOBJMode(oam) (GXOamMode)(((oam)->attr01 & 0xc00) >> 0xa)
+#define G2_GetOBJMode(oam) (GXOamMode)(((oam)->attr0 & 0xc00) >> 0xa)
 // inline GXOamMode G2_GetOBJMode(volatile GXOamAttr *oam) {
-//     return ((oam)->attr01 & 0xc00) >> 0xa;
+//     return ((oam)->attr0 & 0xc00) >> 0xa;
 // }
 
 inline void G2_SetOBJMode(GXOamAttr* oam, GXOamMode mode, u32 color) {
-    oam->attr01 = (oam->attr01 & ~0xc00) | (mode << 0xa);
-    oam->attr2  = (oam->attr2 & ~0xf000) | (color << 0xc);
+    oam->attr0 = (oam->attr0 & ~0xc00) | (mode << 0xa);
+    oam->attr2 = (oam->attr2 & ~0xf000) | (color << 0xc);
 }
 
 inline void G2_SetOBJPriority(GXOamAttr* oam, u32 prio) {
@@ -330,7 +331,8 @@ inline void G2_SetOBJAttr(GXOamAttr* oam, u32 x, u32 y, u32 param4, GXOamMode mo
     // 3 bits at 0x8
     // 4 bits at 0xc
     // 5 bits at 0x19
-    oam->attr01 = (y & 0xff) | (mode << 0xa) | (shape << 0x1e) | ((x << 0x17) >> 0x7);
+    oam->attr0 = (y & 0xff) | (mode << 0xa);
+    oam->attr1 = (x & 0x1ff) | (shape << 0xe);
     // f3ff
     // 2 bits at 0xa
     oam->attr2 = param10 | (color << 0xc);

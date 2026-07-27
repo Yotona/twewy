@@ -6,12 +6,110 @@ void BgResMgr_LoadScreenToVram(BgResMgr* arg0, BgResource* arg1, UnkSmallStruct_
 BgResMgr*        g_BgResourceManagers[2] = {NULL, NULL};
 static const u16 DefaultFlags[4]         = {0x20, 0x40, 0x60, 0x60};
 
-static void func_0200927c(s32*, s32) {
-    // Not yet implemented
+void func_0200927c(s16* arg0, u32 arg1) {
+    MI_CpuFillU16(0U, arg0, 0x1420U);
+    switch (arg1) {
+        default:
+            break;
+        case 1:
+            arg0[0] = 0x40;
+            break;
+        case 2:
+            arg0[0] = 0x80;
+            break;
+        case 3:
+            arg0[0] = 0xC0;
+            break;
+        case 5:
+            arg0[0] = 0x140;
+            break;
+        case 4:
+            arg0[0] = 0x100;
+            break;
+        case 6:
+            arg0[0] = 0x180;
+            break;
+        case 7:
+            arg0[0] = 0x200;
+            break;
+        case 8:
+            arg0[0] = 0x400;
+            break;
+        case 9:
+            arg0[0] = 0x600;
+            break;
+        case 10:
+            arg0[0] = 0x800;
+            break;
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+            arg0[0]       = 0x40;
+            arg0[arg0[0]] = 0x40 - 0x200;
+            break;
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+            arg0[0]       = 0x80;
+            arg0[arg0[0]] = 0x80 - 0x200;
+            break;
+        case 19:
+        case 20:
+        case 21:
+        case 22:
+            arg0[0]       = 0x100;
+            arg0[arg0[0]] = 0x100 - 0x200;
+            break;
+        case 23:
+        case 24:
+        case 25:
+        case 26:
+            arg0[0]       = 0x140;
+            arg0[arg0[0]] = 0x140 - 0x200;
+            break;
+        case 27:
+        case 28:
+        case 29:
+        case 30:
+            arg0[0]       = 0x180;
+            arg0[arg0[0]] = 0x180 - 0x200;
+            break;
+    }
+
+    switch (arg1 - 0xB) {
+        case 0:
+        case 4:
+        case 8:
+        case 12:
+        case 16:
+            arg0[512] = 0x200;
+            break;
+        case 1:
+        case 5:
+        case 9:
+        case 13:
+        case 17:
+            arg0[512] = 0x400;
+            break;
+        case 2:
+        case 6:
+        case 10:
+        case 14:
+        case 18:
+            arg0[512] = 0x600;
+            break;
+        case 3:
+        case 7:
+        case 11:
+        case 15:
+        case 19:
+            arg0[512] = 0x800;
+            break;
+    }
 }
 
-// Nonmatching: Several register differences
-// Scratch: iINBi
 static s32 BgResMgr_AllocateVram(s16* param_1, u32 param_2, u32 param_3) {
     s32 offset      = param_2 >> 8;
     s32 alloc_size  = param_3 >> 8;
@@ -45,7 +143,7 @@ static s32 BgResMgr_AllocateVram(s16* param_1, u32 param_2, u32 param_3) {
         if (current_val > 0 && (curr_idx - offset) >= alloc_size) {
             param_1[offset]   = -alloc_size;
             param_1[prev_idx] = offset - prev_idx;
-            if (curr_idx > alloc_size) {
+            if ((curr_idx - offset) > alloc_size) {
                 param_1[offset + alloc_size] = curr_idx - (offset + alloc_size);
             }
         } else {
@@ -306,7 +404,7 @@ void BgResMgr_Init(BgResMgr* mgr, DisplayEngine engine) {
         mgr->vramBase = 0x06200000;
         mgr->vramSize = GX_GetSizeOfSubBg();
     }
-    func_0200927c(&mgr->unk_860, var_r4);
+    func_0200927c(mgr->unk_860, var_r4);
 }
 
 // Nonmatching: Register differences
@@ -327,7 +425,7 @@ void* BgResMgr_AllocChar32(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
         var_r5 = g_DisplaySettings.controls[DISPLAY_MAIN].charBase << 0x10;
     }
     s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 5));
-    temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
+    temp_r0->bitmapIndex = BgResMgr_AllocateVram(arg0->unk_860, temp_r5, arg4);
     if (temp_r0->bitmapIndex < 0) {
         var_r5  = 0;
         new_var = arg0;
@@ -348,7 +446,6 @@ void* BgResMgr_AllocChar32(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
 // Scratch: K9oVA
 void* BgResMgr_AllocChar64(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4) {
     DisplayControlSettings* new_var2;
-    BgResource*             new_var;
     if (arg0 == 0) {
         return 0;
     }
@@ -366,24 +463,21 @@ void* BgResMgr_AllocChar64(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 a
         new_var2 = g_DisplaySettings.controls;
         var_r5   = new_var2[DISPLAY_MAIN].charBase << 0x10;
     }
-    s32 temp_r5          = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
-    new_var              = temp_r0;
-    temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
+
+    temp_r0->bitmapIndex = BgResMgr_AllocateVram(arg0->unk_860, var_r5 + ((arg2 << 0xE) + (arg3 << 6)), arg4);
     if (temp_r0->bitmapIndex < 0) {
-        var_r5                = temp_r5;
-        new_var->resourceType = temp_r5;
-        BgResMgr_RecycleResource(arg0, new_var);
+        BgResMgr_RecycleResource(arg0, temp_r0);
         return 0;
     }
-    new_var->flags |= 0x14;
-    temp_r5               = RESTYPE_CHAR_MD & 0xFFFFFFFF;
-    new_var->refCount     = 0;
-    new_var->resourceType = temp_r5;
-    new_var->vramOffset   = var_r5;
-    new_var->size         = arg4;
-    BgResMgr_PushActive(arg0, new_var);
-    BgResMgr_LoadCharToVram(arg0, new_var, arg1);
-    return new_var;
+    temp_r0->flags |= 0x14;
+    s32 temp_r5           = RESTYPE_CHAR_MD & 0xFFFFFFFF;
+    temp_r0->refCount     = 0;
+    temp_r0->resourceType = temp_r5;
+    temp_r0->vramOffset   = var_r5;
+    temp_r0->size         = arg4;
+    BgResMgr_PushActive(arg0, temp_r0);
+    BgResMgr_LoadCharToVram(arg0, temp_r0, arg1);
+    return temp_r0;
 }
 
 // Nonmatching: Register differences
@@ -411,7 +505,7 @@ void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3,
     }
     new_var              = var_r5 + ((arg2 << 0xE) + (arg3 << 6));
     s32 temp_r5          = new_var;
-    temp_r0->bitmapIndex = BgResMgr_AllocateVram(&arg0->unk_860, temp_r5, arg4);
+    temp_r0->bitmapIndex = BgResMgr_AllocateVram(arg0->unk_860, temp_r5, arg4);
     if (temp_r0->bitmapIndex < 0) {
         BgResMgr_RecycleResource(arg0, temp_r0);
         return 0;
@@ -446,7 +540,7 @@ BgResource* BgResMgr_AllocCharAligned(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1
     }
     new_var2   = var_r5;
     s32 offset = var_r5   = new_var2 + (arg2 << 0xE);
-    resource->bitmapIndex = BgResMgr_AllocateVramAligned(&mgr->unk_860, offset, arg4, 0x100, offset + 0x8000);
+    resource->bitmapIndex = BgResMgr_AllocateVramAligned(mgr->unk_860, offset, arg4, 0x100, offset + 0x8000);
     new_var               = &resource->bitmapIndex;
     if ((*new_var) < 0) {
         BgResMgr_RecycleResource(mgr, resource);
@@ -475,7 +569,7 @@ BOOL BgResMgr_ReleaseChar(BgResMgr* mgr, BgResource* resource) {
             resource->refCount--;
         }
         if (resource->refCount == 0) {
-            BgResMgr_FreeVram(&mgr->unk_860, resource->bitmapIndex);
+            BgResMgr_FreeVram(mgr->unk_860, resource->bitmapIndex);
             BgResMgr_RemoveActive(mgr, resource);
             BgResMgr_RecycleResource(mgr, resource);
             released = TRUE;
@@ -485,8 +579,6 @@ BOOL BgResMgr_ReleaseChar(BgResMgr* mgr, BgResource* resource) {
     return released;
 }
 
-// Nonmatching: Missing instruction, minor register differences
-// Scratch: 6yKTi
 static void BgResMgr_LoadCharToVram(BgResMgr* mgr, BgResource* resource, UnkSmallStruct_DispBG* arg2) {
     s32 temp_r1;
     u32 temp_r1_2;
@@ -495,9 +587,8 @@ static void BgResMgr_LoadCharToVram(BgResMgr* mgr, BgResource* resource, UnkSmal
         return;
     }
     if (arg2 != NULL) {
-        u8  val    = arg2->unk_00;
-        u32 var_r3 = (u32)(val & ~0xFF) >> 8;
-        temp_r1    = (u8)val & 0xF0;
+        u32 var_r3 = (arg2->header.raw & ~0xFF) >> 8;
+        temp_r1    = arg2->header.format & 0xF0;
         if (temp_r1 == 0) {
             var_r3 -= 4;
         }
@@ -545,13 +636,13 @@ BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1, s32
     }
     BgResMgr_ResetResource(mgr, resource);
 
-    s32 var_r6 = 0;
+    s32 offset = 0;
     if (mgr->engine == DISPLAY_MAIN) {
-        var_r6 = g_DisplaySettings.controls[DISPLAY_MAIN].screenBase << 0x10;
+        offset = g_DisplaySettings.controls[DISPLAY_MAIN].screenBase << 0x10;
     }
-    s32 offset = var_r6 + (screenBase << 0xB);
+    offset += screenBase << 0xB;
 
-    resource->bitmapIndex = BgResMgr_AllocateVram(&mgr->unk_860, offset, vramSize);
+    resource->bitmapIndex = BgResMgr_AllocateVram(mgr->unk_860, offset, vramSize);
     if (resource->bitmapIndex < 0) {
         BgResMgr_RecycleResource(mgr, resource);
         return NULL;
@@ -578,7 +669,7 @@ BOOL BgResMgr_ReleaseScreen(BgResMgr* mgr, BgResource* resource) {
             resource->refCount--;
         }
         if (resource->refCount == 0) {
-            BgResMgr_FreeVram(&mgr->unk_860, resource->bitmapIndex);
+            BgResMgr_FreeVram(mgr->unk_860, resource->bitmapIndex);
             BgResMgr_RemoveActive(mgr, resource);
             BgResMgr_RecycleResource(mgr, resource);
             released = TRUE;
@@ -588,16 +679,14 @@ BOOL BgResMgr_ReleaseScreen(BgResMgr* mgr, BgResource* resource) {
     return released;
 }
 
-// Nonmatching: Missing instruction, minor register differences
-// Scratch: Y9tAB
 static void BgResMgr_LoadScreenToVram(BgResMgr* mgr, BgResource* resource, UnkSmallStruct_DispBG* arg2) {
     if (mgr == NULL) {
         return;
     }
 
     if (arg2 != NULL) {
-        u32 var_r3  = (u32)(arg2->unk_00 & ~0xFF) >> 8;
-        u32 temp_r1 = (u8)arg2->unk_00 & 0xF0;
+        u32 var_r3  = (arg2->header.raw & ~0xFF) >> 8;
+        u32 temp_r1 = arg2->header.format & 0xF0;
         if (temp_r1 == 0) {
             var_r3 -= 4;
         }

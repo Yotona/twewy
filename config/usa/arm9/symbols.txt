@@ -366,43 +366,43 @@ BgResMgr_LoadScreenToVram kind:function(arm,size=0x88) addr:0x0200a0a0
 /////////////////////////////////////////////////////////////
 // src/Engine/Resources/PaletteMgr.c
 /////////////////////////////////////////////////////////////
-PalSlot_InitAll kind:function(arm,size=0x48) addr:0x0200a128
-PalSlot_AllocContiguous kind:function(arm,size=0xac) addr:0x0200a170
-PalSlot_AllocContiguousPacked kind:function(arm,size=0x40) addr:0x0200a21c
-func_0200a25c kind:function(arm,size=0x94) addr:0x0200a25c
-func_0200a2f0 kind:function(arm,size=0x3c) addr:0x0200a2f0
-func_0200a32c kind:function(arm,size=0x8c) addr:0x0200a32c
-func_0200a3b8 kind:function(arm,size=0x44) addr:0x0200a3b8
-func_0200a3fc kind:function(arm,size=0x88) addr:0x0200a3fc
-func_0200a484 kind:function(arm,size=0x4) addr:0x0200a484
-func_0200a488 kind:function(arm,size=0x20) addr:0x0200a488
-PalRes_PopFree kind:function(arm,size=0x18) addr:0x0200a4a8
-PalRes_PushActive kind:function(arm,size=0x14) addr:0x0200a4c0
-PalRes_InitDefaults kind:function(arm,size=0x70) addr:0x0200a4d4
-PalRes_RemoveActive kind:function(arm,size=0x4c) addr:0x0200a544
-PalRes_PushFree kind:function(arm,size=0x20) addr:0x0200a590
+PalSlot_InitAll kind:function(arm,size=0x48) addr:0x0200a128 local
+PalSlot_AllocContiguous kind:function(arm,size=0xac) addr:0x0200a170 local
+PalSlot_AllocContiguousPacked kind:function(arm,size=0x40) addr:0x0200a21c local
+func_0200a25c kind:function(arm,size=0x94) addr:0x0200a25c local
+func_0200a2f0 kind:function(arm,size=0x3c) addr:0x0200a2f0 local
+func_0200a32c kind:function(arm,size=0x8c) addr:0x0200a32c local
+func_0200a3b8 kind:function(arm,size=0x44) addr:0x0200a3b8 local
+func_0200a3fc kind:function(arm,size=0x88) addr:0x0200a3fc local
+func_0200a484 kind:function(arm,size=0x4) addr:0x0200a484 local
+func_0200a488 kind:function(arm,size=0x20) addr:0x0200a488 local
+PalRes_PopFree kind:function(arm,size=0x18) addr:0x0200a4a8 local
+PalRes_PushActive kind:function(arm,size=0x14) addr:0x0200a4c0 local
+PalRes_InitDefaults kind:function(arm,size=0x70) addr:0x0200a4d4 local
+PalRes_RemoveActive kind:function(arm,size=0x4c) addr:0x0200a544 local
+PalRes_PushFree kind:function(arm,size=0x20) addr:0x0200a590 local
 PaletteMgr_Init kind:function(arm,size=0x3b8) addr:0x0200a5b0
 PaletteMgr_AcquireContiguous kind:function(arm,size=0x27c) addr:0x0200a968
 PaletteMgr_AcquireMasked kind:function(arm,size=0x214) addr:0x0200abe4
 PaletteMgr_AllocPalette kind:function(arm,size=0x1f4) addr:0x0200adf8
 PaletteMgr_ReleaseResource kind:function(arm,size=0xb0) addr:0x0200afec
-func_0200b09c kind:function(arm,size=0xfc) addr:0x0200b09c
-func_0200b198 kind:function(arm,size=0x104) addr:0x0200b198
-func_0200b29c kind:function(arm,size=0xf4) addr:0x0200b29c
-func_0200b390 kind:function(arm,size=0xf4) addr:0x0200b390
-func_0200b484 kind:function(arm,size=0xf4) addr:0x0200b484
-func_0200b578 kind:function(arm,size=0xf4) addr:0x0200b578
-func_0200b66c kind:function(arm,size=0x14c) addr:0x0200b66c
-func_0200b7b8 kind:function(arm,size=0x164) addr:0x0200b7b8
-func_0200b91c kind:function(arm,size=0x148) addr:0x0200b91c
-func_0200ba64 kind:function(arm,size=0x148) addr:0x0200ba64
-func_0200bbac kind:function(arm,size=0x148) addr:0x0200bbac
-func_0200bcf4 kind:function(arm,size=0x148) addr:0x0200bcf4
-PaletteMgr_CommitResourceIfDirty kind:function(arm,size=0x124) addr:0x0200be3c
+func_0200b09c kind:function(arm,size=0xfc) addr:0x0200b09c local
+func_0200b198 kind:function(arm,size=0x104) addr:0x0200b198 local
+func_0200b29c kind:function(arm,size=0xf4) addr:0x0200b29c local
+func_0200b390 kind:function(arm,size=0xf4) addr:0x0200b390 local
+func_0200b484 kind:function(arm,size=0xf4) addr:0x0200b484 local
+func_0200b578 kind:function(arm,size=0xf4) addr:0x0200b578 local
+func_0200b66c kind:function(arm,size=0x14c) addr:0x0200b66c local
+func_0200b7b8 kind:function(arm,size=0x164) addr:0x0200b7b8 local
+func_0200b91c kind:function(arm,size=0x148) addr:0x0200b91c local
+func_0200ba64 kind:function(arm,size=0x148) addr:0x0200ba64 local
+func_0200bbac kind:function(arm,size=0x148) addr:0x0200bbac local
+func_0200bcf4 kind:function(arm,size=0x148) addr:0x0200bcf4 local
+PaletteMgr_CommitResourceIfDirty kind:function(arm,size=0x124) addr:0x0200be3c local
 PaletteMgr_Flush kind:function(arm,size=0x54) addr:0x0200bf60
 PaletteMgr_SetSource kind:function(arm,size=0x24) addr:0x0200bfb4
 PaletteMgr_SetBlendProcess kind:function(arm,size=0xcc) addr:0x0200bfd8
-PaletteMgr_SetProcessMode kind:function(arm,size=0xc0) addr:0x0200c0a4
+PaletteMgr_SetProcessMode kind:function(arm,size=0xc0) addr:0x0200c0a4 local
 PaletteMgr_SetProcess kind:function(arm,size=0x30) addr:0x0200c164
 PaletteMgr_SetColorBias kind:function(arm,size=0x94) addr:0x0200c194
 PaletteMgr_UnknownLoop kind:function(arm,size=0x34) addr:0x0200c228
@@ -454,24 +454,24 @@ func_0200d954 kind:function(arm,size=0x18) addr:0x0200d954
 /////////////////////////////////////////////////////////////
 // src/SpriteMgr.c
 /////////////////////////////////////////////////////////////
-Sprite_GetFrameInfo kind:function(arm,size=0xac) addr:0x0200d96c
-AnimCmd_Start kind:function(arm,size=0x4c) addr:0x0200da18
-AnimCmd_Nop kind:function(arm,size=0x8) addr:0x0200da64
-AnimCmd_PlayFrame kind:function(arm,size=0x80) addr:0x0200da6c
-AnimCmd_Wait kind:function(arm,size=0x6c) addr:0x0200daec
-AnimCmd_Skip kind:function(arm,size=0x58) addr:0x0200db58
-AnimCmd_SetLoopFrame kind:function(arm,size=0x1c) addr:0x0200dbb0
-AnimCmd_Loop kind:function(arm,size=0x18) addr:0x0200dbcc
-AnimCmd_Jump kind:function(arm,size=0x3c) addr:0x0200dbe4
-AnimCmd_SetPosition kind:function(arm,size=0x4c) addr:0x0200dc20
-AnimCmd_AddPosition kind:function(arm,size=0x5c) addr:0x0200dc6c
-AnimCmd_SetScale kind:function(arm,size=0x4c) addr:0x0200dcc8
+Sprite_GetFrameInfo kind:function(arm,size=0xac) addr:0x0200d96c local
+AnimCmd_Start kind:function(arm,size=0x4c) addr:0x0200da18 local
+AnimCmd_Nop kind:function(arm,size=0x8) addr:0x0200da64 local
+AnimCmd_PlayFrame kind:function(arm,size=0x80) addr:0x0200da6c local
+AnimCmd_Wait kind:function(arm,size=0x6c) addr:0x0200daec local
+AnimCmd_Skip kind:function(arm,size=0x58) addr:0x0200db58 local
+AnimCmd_SetLoopFrame kind:function(arm,size=0x1c) addr:0x0200dbb0 local
+AnimCmd_Loop kind:function(arm,size=0x18) addr:0x0200dbcc local
+AnimCmd_Jump kind:function(arm,size=0x3c) addr:0x0200dbe4 local
+AnimCmd_SetPosition kind:function(arm,size=0x4c) addr:0x0200dc20 local
+AnimCmd_AddPosition kind:function(arm,size=0x5c) addr:0x0200dc6c local
+AnimCmd_SetScale kind:function(arm,size=0x4c) addr:0x0200dcc8 local
 Sprite_Init kind:function(arm,size=0x4c) addr:0x0200dd14
 Sprite_Update kind:function(arm,size=0x88) addr:0x0200dd60
-func_0200dde8 kind:function(arm,size=0x24c) addr:0x0200dde8
-func_0200e034 kind:function(arm,size=0x290) addr:0x0200e034
+func_0200dde8 kind:function(arm,size=0x24c) addr:0x0200dde8 local
+func_0200e034 kind:function(arm,size=0x290) addr:0x0200e034 local
 Sprite_RenderFrame kind:function(arm,size=0x108) addr:0x0200e2c4
-Sprite_LoadFromData kind:function(arm,size=0x5c0) addr:0x0200e3cc
+Sprite_LoadFromData kind:function(arm,size=0x5c0) addr:0x0200e3cc local
 Sprite_Load kind:function(arm,size=0xc) addr:0x0200e98c
 Sprite_Release kind:function(arm,size=0xa0) addr:0x0200e998
 Sprite_HasAnimation kind:function(arm,size=0x14) addr:0x0200ea38
@@ -479,7 +479,7 @@ SpriteMgr_IsAnimationFinished kind:function(arm,size=0x4c) addr:0x0200ea4c
 SpriteMgr_IsFrameFinished kind:function(arm,size=0x50) addr:0x0200ea98
 Sprite_SetAnimation kind:function(arm,size=0x68) addr:0x0200eae8
 Sprite_ChangeAnimation kind:function(arm,size=0x30) addr:0x0200eb50
-Sprite_SetStaticCell kind:function(arm,size=0x4c) addr:0x0200eb80
+Sprite_SetStaticCell kind:function(arm,size=0x4c) addr:0x0200eb80 local
 Sprite_ChangePalette kind:function(arm,size=0x78) addr:0x0200ebcc
 Sprite_Restart kind:function(arm,size=0x38) addr:0x0200ec44
 Sprite_RenderAltPalette kind:function(arm,size=0x60) addr:0x0200ec7c
@@ -1583,21 +1583,21 @@ CellText_RunTask kind:function(arm,size=0x48) addr:0x02026104
 /////////////////////////////////////////////////////////////
 // src/EasyFade.c
 /////////////////////////////////////////////////////////////
-EasyFade_Setup kind:function(arm,size=0x34) addr:0x0202614c
+EasyFade_Setup kind:function(arm,size=0x34) addr:0x0202614c local
 EasyFade_FadeBothDisplays kind:function(arm,size=0x54) addr:0x02026180
 EasyFade_FadeMainDisplay kind:function(arm,size=0x34) addr:0x020261d4
 EasyFade_FadeSubDisplay kind:function(arm,size=0x34) addr:0x02026208
 EasyFade_IsFading kind:function(arm,size=0x40) addr:0x0202623c
-EasyFade_CalculateInterpolation kind:function(arm,size=0x3c) addr:0x0202627c
-EasyFade_Initialize kind:function(arm,size=0x40) addr:0x020262b8
-EasyFade_UpdateLinear kind:function(arm,size=0x60) addr:0x020262f8
-EasyFade_UpdateInterpolated kind:function(arm,size=0x68) addr:0x02026358
-EasyFade_UpdateSmooth kind:function(arm,size=0x88) addr:0x020263c0
-EasyFade_UpdateInstant kind:function(arm,size=0x40) addr:0x02026448
-EasyFade_Update kind:function(arm,size=0x58) addr:0x02026488
-func_020264e0 kind:function(arm,size=0x8) addr:0x020264e0
-func_020264e8 kind:function(arm,size=0x8) addr:0x020264e8
-EasyFade_TaskHandler kind:function(arm,size=0x38) addr:0x020264f0
+EasyFade_CalculateInterpolation kind:function(arm,size=0x3c) addr:0x0202627c local
+EasyFade_Initialize kind:function(arm,size=0x40) addr:0x020262b8 local
+EasyFade_UpdateLinear kind:function(arm,size=0x60) addr:0x020262f8 local
+EasyFade_UpdateInterpolated kind:function(arm,size=0x68) addr:0x02026358 local
+EasyFade_UpdateSmooth kind:function(arm,size=0x88) addr:0x020263c0 local
+EasyFade_UpdateInstant kind:function(arm,size=0x40) addr:0x02026448 local
+EasyFade_Update kind:function(arm,size=0x58) addr:0x02026488 local
+EasyFade_Render kind:function(arm,size=0x8) addr:0x020264e0 local
+EasyFade_Release kind:function(arm,size=0x8) addr:0x020264e8 local
+EasyFade_RunTask kind:function(arm,size=0x38) addr:0x020264f0 local
 
 
 func_02026528 kind:function(arm,size=0x3c) addr:0x02026528
@@ -3342,8 +3342,7 @@ data_02059b94 kind:data(any) addr:0x02059b94
 /////////////////////////////////////////////////////////////
 // src/Memory.c
 /////////////////////////////////////////////////////////////
-memLabelHead kind:data(any) addr:0x02059d14
-memLabelList kind:data(any) addr:0x02059d18
+memLabels kind:data(any) addr:0x02059d14
 
 
 data_02059d1c kind:data(any) addr:0x02059d1c
@@ -3369,9 +3368,9 @@ DefaultFlags kind:data(any) addr:0x0205ad5c local
 /////////////////////////////////////////////////////////////
 // src/Engine/Resources/PaletteMgr.c
 /////////////////////////////////////////////////////////////
-data_0205ad64 kind:data(any) addr:0x0205ad64
-data_0205ad6c kind:data(any) addr:0x0205ad6c
-data_0205ad84 kind:data(any) addr:0x0205ad84
+data_0205ad64 kind:data(any) addr:0x0205ad64 local
+data_0205ad6c kind:data(any) addr:0x0205ad6c local
+data_0205ad84 kind:data(any) addr:0x0205ad84 local
 
 /////////////////////////////////////////////////////////////
 // src/Engine/Resources/ObjResMgr.c
@@ -3484,7 +3483,7 @@ data_0205cac4 kind:data(any) addr:0x0205cac4
 // src/EasyFade.c
 /////////////////////////////////////////////////////////////
 Task_EasyFade kind:data(any) addr:0x0205cb10
-FaderTaskHandlerDispatchFuncs kind:data(any) addr:0x0205cb1c
+@1049 kind:data(any) addr:0x0205cb1c local
 FaderUpdateDispatchFuncs kind:data(any) addr:0x0205cb2c
 
 
@@ -3550,7 +3549,7 @@ __ctype_mapC kind:data(any) addr:0x02063340
 // libs/c/src/strtold.c
 /////////////////////////////////////////////////////////////
 @120 kind:data(any) addr:0x02063468 local
-@138 kind:data(any) addr:0x0206346d local
+@139 kind:data(any) addr:0x0206346d local
 
 
 data_02063478 kind:data(any) addr:0x02063478
@@ -3573,13 +3572,13 @@ data_02063640 kind:data(any) addr:0x02063640
 // src/main.c
 /////////////////////////////////////////////////////////////
 @433 kind:data(any) addr:0x020636a0 local
-@434 kind:data(byte[17]) addr:0x020636b8 local
+@730 kind:data(byte[17]) addr:0x020636b8 local
 
 /////////////////////////////////////////////////////////////
 // src/Boot.c
 /////////////////////////////////////////////////////////////
 BootSequence kind:data(any) addr:0x020636cc local
-@43 kind:data(byte[17]) addr:0x020636d0 local
+@295 kind:data(byte[17]) addr:0x020636d0 local
 
 /////////////////////////////////////////////////////////////
 // src/DMA.c
@@ -3593,9 +3592,9 @@ DMA_OpHandlers kind:data(any) addr:0x020636e8 local
 // src/Memory.c
 /////////////////////////////////////////////////////////////
 memLabelFree kind:data(any) addr:0x02063744
-@45 kind:data(byte[6]) addr:0x02063748 local
-@46 kind:data(byte[6]) addr:0x02063750 local
-@125 kind:data(byte[7]) addr:0x02063758 local
+@66 kind:data(byte[6]) addr:0x02063748 local
+@67 kind:data(byte[6]) addr:0x02063750 local
+@146 kind:data(byte[7]) addr:0x02063758 local
 
 /////////////////////////////////////////////////////////////
 // src/Random.c
@@ -3615,14 +3614,14 @@ TouchState kind:data(any) addr:0x0206377c local
 /////////////////////////////////////////////////////////////
 // src/BinMgr.c
 /////////////////////////////////////////////////////////////
-@99 kind:data(any) addr:0x020637c0 local
-@194 kind:data(any) addr:0x020637d0 local
+@441 kind:data(any) addr:0x020637c0 local
+@476 kind:data(any) addr:0x020637d0 local
 
 /////////////////////////////////////////////////////////////
 // src/PacMgr.c
 /////////////////////////////////////////////////////////////
-@399 kind:data(any) addr:0x020637e4 local
-@467 kind:data(any) addr:0x020637f4 local
+@457 kind:data(any) addr:0x020637e4 local
+@550 kind:data(any) addr:0x020637f4 local
 
 /////////////////////////////////////////////////////////////
 // src/DatMgr.c
@@ -3632,14 +3631,14 @@ TouchState kind:data(any) addr:0x0206377c local
 /////////////////////////////////////////////////////////////
 // src/EasyList.c
 /////////////////////////////////////////////////////////////
-@130 kind:data(any) addr:0x02063818 local
+@225 kind:data(any) addr:0x02063818 local
 
 /////////////////////////////////////////////////////////////
 // src/EasyTask.c
 /////////////////////////////////////////////////////////////
 taskName$38 kind:data(any) addr:0x02063828 local
-@49 kind:data(any) addr:0x0206382c local
-@199 kind:data(any) addr:0x02063834 local
+@88 kind:data(any) addr:0x0206382c local
+@398 kind:data(any) addr:0x02063834 local
 
 data_02063844 kind:data(any) addr:0x02063844
 data_02063858 kind:data(any) addr:0x02063858
@@ -3662,9 +3661,9 @@ data_020638e0 kind:data(any) addr:0x020638e0
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_errs.c
 /////////////////////////////////////////////////////////////
-@36 kind:data(any) addr:0x020638e4 local
-@53 kind:data(any) addr:0x020638ec local
-@105 kind:data(any) addr:0x020638f4 local
+@86 kind:data(any) addr:0x020638e4 local
+@96 kind:data(any) addr:0x020638ec local
+@129 kind:data(any) addr:0x020638f4 local
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_inis.c
@@ -3719,13 +3718,13 @@ data_02063d78 kind:data(any) addr:0x02063d78
 /////////////////////////////////////////////////////////////
 // libs/CriWare/adx_tlk2.c
 /////////////////////////////////////////////////////////////
-@118 kind:data(any) addr:0x02063da8 local
-@119 kind:data(any) addr:0x02063dd4 local
-@142 kind:data(any) addr:0x02063df8 local
-@185 kind:data(any) addr:0x02063e28 local
-@186 kind:data(any) addr:0x02063e54 local
-@209 kind:data(any) addr:0x02063e80 local
-@210 kind:data(any) addr:0x02063eac local
+@224 kind:data(any) addr:0x02063da8 local
+@225 kind:data(any) addr:0x02063dd4 local
+@233 kind:data(any) addr:0x02063df8 local
+@250 kind:data(any) addr:0x02063e28 local
+@251 kind:data(any) addr:0x02063e54 local
+@264 kind:data(any) addr:0x02063e80 local
+@265 kind:data(any) addr:0x02063eac local
 
 
 data_02063edc kind:data(any) addr:0x02063edc
@@ -3971,17 +3970,17 @@ data_02065810 kind:data(any) addr:0x02065810
 /////////////////////////////////////////////////////////////
 // libs/CriWare/acssbadx.c
 /////////////////////////////////////////////////////////////
-@137 kind:data(any) addr:0x02065844 local
-@138 kind:data(any) addr:0x02065878 local
-@163 kind:data(any) addr:0x020658b0 local
+@305 kind:data(any) addr:0x02065844 local
+@306 kind:data(any) addr:0x02065878 local
+@317 kind:data(any) addr:0x020658b0 local
 
 /////////////////////////////////////////////////////////////
 // libs/CriWare/acsvhl.c
 /////////////////////////////////////////////////////////////
-@25 kind:data(any) addr:0x020658ec local
-@26 kind:data(any) addr:0x02065920 local
-@48 kind:data(any) addr:0x02065954 local
-@49 kind:data(any) addr:0x02065984 local
+@165 kind:data(any) addr:0x020658ec local
+@166 kind:data(any) addr:0x02065920 local
+@177 kind:data(any) addr:0x02065954 local
+@178 kind:data(any) addr:0x02065984 local
 
 
 data_020659bc kind:data(any) addr:0x020659bc
@@ -4029,7 +4028,7 @@ data_02065c84 kind:data(any) addr:0x02065c84
 /////////////////////////////////////////////////////////////
 // src/EasyFade.c
 /////////////////////////////////////////////////////////////
-@536 kind:data(any) addr:0x02065c94 local
+@907 kind:data(any) addr:0x02065c94 local
 
 
 data_02065ca0 kind:data(any) addr:0x02065ca0
@@ -4037,8 +4036,8 @@ data_02065ca0 kind:data(any) addr:0x02065ca0
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
 /////////////////////////////////////////////////////////////
-@219 kind:data(byte[7]) addr:0x02065cb0 local
-@220 kind:data(byte[23]) addr:0x02065cb8 local
+@485 kind:data(byte[7]) addr:0x02065cb0 local
+@486 kind:data(byte[23]) addr:0x02065cb8 local
 
 /////////////////////////////////////////////////////////////
 // src/CriSndMgr.c
@@ -4168,7 +4167,7 @@ data_02066274 kind:data(any) addr:0x02066274
 /////////////////////////////////////////////////////////////
 // libs/nitro/fs/rom.c
 /////////////////////////////////////////////////////////////
-@237 kind:data(any) addr:0x02066278 local
+@479 kind:data(any) addr:0x02066278 local
 
 /////////////////////////////////////////////////////////////
 // libs/nitro/fs/overlay.c
@@ -4204,19 +4203,19 @@ __double_huge kind:data(any) addr:0x020664c4
 /////////////////////////////////////////////////////////////
 // libs/c/src/locale.c
 /////////////////////////////////////////////////////////////
-@19 kind:data(byte) addr:0x020664cc local
-@16 kind:data(byte[3]) addr:0x020664d0 local
-@12 kind:data(byte[6]) addr:0x020664d4 local
+@22 kind:data(byte) addr:0x020664cc local
+@19 kind:data(byte[3]) addr:0x020664d0 local
+@15 kind:data(byte[6]) addr:0x020664d4 local
 __ctype_cmpt kind:data(any) addr:0x020664dc
 __coll_cmpt kind:data(any) addr:0x020664e4
 __time_cmpt kind:data(any) addr:0x020664f4
 char_coll_table kind:data(any) addr:0x02066514
-@15 kind:data(byte[9]) addr:0x020665d4 local
+@18 kind:data(byte[9]) addr:0x020665d4 local
 _current_locale kind:data(any) addr:0x020665e0
-@14 kind:data(any) addr:0x020665ec local
-@13 kind:data(byte[15]) addr:0x020665f8 local
-@17 kind:data(byte[85]) addr:0x02066608 local
-@18 kind:data(byte[134]) addr:0x02066660 local
+@17 kind:data(any) addr:0x020665ec local
+@16 kind:data(byte[15]) addr:0x020665f8 local
+@20 kind:data(byte[85]) addr:0x02066608 local
+@21 kind:data(byte[134]) addr:0x02066660 local
 
 /////////////////////////////////////////////////////////////
 // libs/c/src/printf.c
@@ -4338,9 +4337,7 @@ g_HBlankManager kind:bss addr:0x0206a8a0
 /////////////////////////////////////////////////////////////
 gMainHeap kind:bss addr:0x0206a9a4
 gDebugHeap kind:bss addr:0x0206a9b0
-
-
-data_0206a9bc kind:bss addr:0x0206a9bc
+TmpBuf kind:bss addr:0x0206a9bc
 
 /////////////////////////////////////////////////////////////
 // src/Input.c
@@ -4398,9 +4395,16 @@ g_ObjResourceManagers kind:bss addr:0x0206b3d8
 /////////////////////////////////////////////////////////////
 ActiveResourceManager kind:bss addr:0x0206b3e4 local
 
-
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/ScreenMapper.c
+/////////////////////////////////////////////////////////////
 data_0206b3e8 kind:bss addr:0x0206b3e8
+
+/////////////////////////////////////////////////////////////
+// src/Engine/Resources/SpriteMgr.c
+/////////////////////////////////////////////////////////////
 data_0206b408 kind:bss addr:0x0206b408
+
 data_0206b41c kind:bss addr:0x0206b41c
 data_0206b42c kind:bss addr:0x0206b42c
 data_0206b430 kind:bss addr:0x0206b430
