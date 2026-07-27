@@ -112,7 +112,7 @@ s32 func_ov030_02084a2c(ProgressObject* arg0) {
     }
     if ((gSaveData.unk_2458 == 37) && (Progress_Check(0x23) != 0) && (Progress_Check(0x34) == 0)) {
         Progress_SetGate(0x34);
-        Progress_BeginScriptedEvent(arg0, 0x805A, 0);
+        Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x5A, 0);
         return 1;
     }
     return 0;
@@ -126,7 +126,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
             func_ov030_020aec1c(10);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8058;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x58;
             gSaveData.unk_3124          = 3;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -136,7 +136,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
         case 0x58:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84BA;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4BA;
             func_ov030_020af364(2);
             return 1;
 
@@ -159,7 +159,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
         case 0x5B:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x805C;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x5C;
             gSaveData.unk_3124          = 5;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -169,7 +169,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
         case 0x5C:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x805D;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x5D;
             gSaveData.unk_3124          = 6;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -182,7 +182,7 @@ s32 func_ov030_02084eb4(ProgressObject* arg0) {
             gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
             gSaveData.unk_24B4                 = 0;
             gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = 0x84B6;
+            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x4B6;
             func_ov030_020af364(3);
             return 1;
 
@@ -653,7 +653,7 @@ s32 func_ov030_02085cf8(ProgressObject* arg0) {
         case 0x84:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84C4U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4C4;
             func_ov030_020af364(8);
             return 1;
         case 0x85:
@@ -742,7 +742,7 @@ void func_ov030_02086700(void) {
     gSaveData.unk_2450          = 0x87000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x808A;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x8A;
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 0x39;
     func_ov030_020aec38(1);
@@ -756,22 +756,22 @@ s32 func_ov030_02086804(s32 arg0) {
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(0x24) == 0)) {
             if (Progress_Check(0x44) == 0) {
                 Progress_SetGate(0x44);
-                Progress_BeginScriptedEvent(arg0, 0x4091, 0);
+                Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x91, 0);
                 return 1;
             }
             Progress_SetGate(0x24);
-            Progress_BeginScriptedEvent(arg0, 0x40AE, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0xAE, 0);
             return 1;
         }
         if (func_ov030_020848e4(arg0, 0x47) != 0) {
             if (Progress_Check(0x3B) == 0) {
                 if (Progress_Check(0x44) == 0) {
                     Progress_SetGate(0x44);
-                    Progress_BeginScriptedEvent(arg0, 0x4091, 0);
+                    Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x91, 0);
                     return 1;
                 }
                 Progress_SetGate(0x3B);
-                Progress_BeginScriptedEvent(arg0, 0x43D9, 0);
+                Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x3D9, 0);
                 return 1;
             }
         } else {
@@ -799,7 +799,7 @@ s32 func_ov030_02086804(s32 arg0) {
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(18) != 0) && (Progress_Check(39) == 0)) {
             Progress_SetGate(39);
-            Progress_BeginScriptedEvent(arg0, 0x43DC, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x3DC, 0);
             return 1;
         } else if ((Progress_Check(0x28) == 0) && (func_ov030_020aed9c(0x371B) != 0)) {
             Progress_SetGate(0x28);
@@ -814,7 +814,7 @@ s32 func_ov030_02086804(s32 arg0) {
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(43) != 0) && (Progress_Check(41) == 0)) {
             Progress_SetGate(41);
-            Progress_BeginScriptedEvent(arg0, 0x43DF, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x3DF, 0);
             return 1;
         }
     }
@@ -826,7 +826,7 @@ s32 func_ov030_02086804(s32 arg0) {
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x49) != 0) && (Progress_Check(0x44) == 0)) {
             Progress_SetGate(0x44);
-            Progress_BeginScriptedEvent(arg0, 0x4091, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x91, 0);
             return 1;
         } else if ((Progress_Check(0x44) != 0) && (Progress_Check(0x48) == 0)) {
             Progress_SetGate(0x48);
@@ -1134,7 +1134,7 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
         case 0x8A:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x808B;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x8B;
             gSaveData.unk_3124          = 9;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -1496,13 +1496,13 @@ s32 func_ov030_020876c8(ProgressObject* arg0) {
         case 0xB9:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84CC;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4CC;
             func_ov030_020af364(10);
             return 1;
         case 0xBA:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x80BB;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xBB;
             gSaveData.unk_3124          = 10;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -1621,7 +1621,7 @@ void func_ov030_02088a5c(void) {
     gSaveData.unk_2450          = 0xBE000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x80C4;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xC4;
     gSaveData.unk_3124          = 58;
     func_ov030_020c26bc(0);
     gSaveData.unk_26B8 = 0;
@@ -1673,12 +1673,12 @@ s32 func_ov030_02088b60(ProgressObject* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 56) != 0) && (Progress_Check(4) != 0) && (Progress_Check(33) == 0)) {
             Progress_SetGate(33);
-            Progress_BeginScriptedEvent(arg0, 0x40C9, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0xC9, 0);
             return 1;
         }
         if ((Progress_Check(37) != 0) && (Progress_Check(38) == 0)) {
             Progress_SetGate(38);
-            Progress_BeginScriptedEvent(arg0, 0x80CE, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0xCE, 0);
             return 1;
         }
     }
@@ -1717,7 +1717,7 @@ s32 func_ov030_02088b60(ProgressObject* arg0) {
             Progress_SetGate(41);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x80D4;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xD4;
             gSaveData.unk_3124          = 12;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -1904,13 +1904,13 @@ s32 func_ov030_02089300(ProgressObject* arg0) {
         case 0xD4:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84D4U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4D4;
             func_ov030_020af364(12);
             return 1;
         case 0xD5:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84D5U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4D5;
             func_ov030_020af364(11);
             return 1;
         case 0xD6:
@@ -2017,7 +2017,7 @@ void func_ov030_02089a40(void) {
     gSaveData.unk_3124          = 0x3B;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x80DB;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xDB;
 }
 
 s32 func_ov030_02089b28(s32 arg0) {
@@ -2064,7 +2064,7 @@ s32 func_ov030_02089b28(s32 arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x3C) != 0) && (Progress_Check(33) == 0) && (Progress_Check(0x46) == 0)) {
             Progress_SetGate(33);
-            Progress_BeginScriptedEvent(arg0, 0x40DD, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0xDD, 0);
             return 1;
         }
         if ((gSaveData.unk_3102 >= 3) && (Progress_Check(0x48) != 0) && (Progress_Check(0x49) == 0)) {
@@ -2678,7 +2678,7 @@ s32 func_ov030_0208aaf4(ProgressObject* arg0) {
         case 0xEB:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84E0;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4E0;
             func_ov030_020af364(13);
             return 1;
         case 0xEC:
@@ -2795,7 +2795,7 @@ void func_ov030_0208b87c(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x80F1;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xF1;
     gSaveData.unk_3124          = 0x3C;
     func_ov030_020c26bc(0);
     gSaveData.unk_2648 = 4;
@@ -3532,7 +3532,7 @@ void func_ov030_0208d708(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8111;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x111;
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 61;
     gSaveData.unk_264C = 4;
@@ -3613,7 +3613,7 @@ s32 func_ov030_0208d80c(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 37) {
         if (Progress_Check(0x23) == 0) {
             Progress_SetGate(0x23);
-            Progress_BeginScriptedEvent(arg0, 0x811B, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x11B, 0);
             return 1;
         } else if ((Progress_Check(41) != 0) && (Progress_Check(0x24) == 0)) {
             Progress_SetGate(0x24);
@@ -3745,7 +3745,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             Progress_SetGate(6);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84F2;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4F2;
             func_ov030_020af364(15);
             return 1;
         case 0x118:
@@ -3755,7 +3755,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
         case 0x11B:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8415;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x415;
             gSaveData.unk_3124          = 0x10;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -3764,7 +3764,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
         case 0x415:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84F3;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4F3;
             func_ov030_020af364(0xE);
             return 1;
         case 0x11C:
@@ -3772,7 +3772,7 @@ s32 func_ov030_0208ddfc(ProgressObject* arg0) {
             gSaveData.playerStats.activeFriend = FRIEND_NONE;
             gSaveData.unk_24B4                 = 0;
             gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = 0x811D;
+            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x11D;
             gSaveData.unk_3124                 = 0x11;
             gSaveData.unk_3128                 = 0;
             arg0->unk_21630                    = 4;
@@ -3935,7 +3935,7 @@ void func_ov030_0208e6e4(void) {
     gSaveData.playerStats.activeFriend = FRIEND_NONE;
     gSaveData.unk_24B4                 = 0;
     gSaveData.unk_24B8                 = 1;
-    gSaveData.currentStoryEvent        = 0x8122;
+    gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x122;
     gSaveData.unk_3124                 = 0x3E;
 }
 
@@ -3943,7 +3943,7 @@ s32 func_ov030_0208e7e4(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 1) {
         if ((func_ov030_020848e4(arg0, 2) != 0) && (Progress_Check(0x20) == 0)) {
             Progress_SetGate(0x20);
-            Progress_BeginScriptedEvent(arg0, 0x8123, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x123, 0);
             return 1;
         } else if ((Progress_Check(3) != 0) && (Progress_Check(41) == 0)) {
             Progress_SetGate(41);
@@ -3955,7 +3955,7 @@ s32 func_ov030_0208e7e4(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 3) {
         if ((Progress_Check(37) == 0) && (Progress_Check(0x23) != 0)) {
             Progress_SetGate(37);
-            Progress_BeginScriptedEvent(arg0, 0x8130, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x130, 0);
             return 1;
         } else if ((Progress_Check(0x28) != 0) && (Progress_Check(38) == 0)) {
             Progress_SetGate(38);
@@ -3992,7 +3992,7 @@ s32 func_ov030_0208e7e4(ProgressObject* arg0) {
             Progress_SetGate(0x23);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8129;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x129;
             gSaveData.unk_264C          = 4;
             gSaveData.unk_3124          = 0x13;
             gSaveData.unk_3128          = 0;
@@ -4056,7 +4056,7 @@ s32 func_ov030_0208ec3c(ProgressObject* arg0) {
         case 0x124:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8125U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x125;
             gSaveData.unk_3124          = 0x14;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -4065,7 +4065,7 @@ s32 func_ov030_0208ec3c(ProgressObject* arg0) {
         case 0x125:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84FCU;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4FC;
             func_ov030_020af364(0x10);
             return 1;
         case 0x126:
@@ -4101,7 +4101,7 @@ s32 func_ov030_0208ec3c(ProgressObject* arg0) {
         case 0x12B:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x812DU;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x12D;
             func_ov030_020af364(18);
             return 1;
         case 0x12D:
@@ -4130,7 +4130,7 @@ s32 func_ov030_0208ec3c(ProgressObject* arg0) {
         case 0x130:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x84FDU;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4FD;
             func_ov030_020af364(0x11);
             return 1;
         case 0x131:
@@ -4199,7 +4199,7 @@ void func_ov030_0208f160(void) {
     gSaveData.unk_2450          = 0xD6000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8136;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x136;
     gSaveData.unk_3124          = 0x3F;
     func_ov030_020c26bc(0);
     gSaveData.unk_264A = 2;
@@ -4243,7 +4243,7 @@ s32 func_ov030_0208f288(ProgressObject* arg0) {
             Progress_SetGate(0x22);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x813A;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x13A;
             gSaveData.unk_3124          = 0x16;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -4267,7 +4267,7 @@ s32 func_ov030_0208f288(ProgressObject* arg0) {
         (Progress_Check(39) == 0))
     {
         Progress_SetGate(39);
-        Progress_BeginScriptedEvent(arg0, 0x4144, 0);
+        Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x144, 0);
         return 1;
     }
     if (gSaveData.unk_2458 == 11) {
@@ -4281,7 +4281,7 @@ s32 func_ov030_0208f288(ProgressObject* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0xE) != 0) && (Progress_Check(3) != 0) && (Progress_Check(0x24) == 0)) {
             Progress_SetGate(0x24);
-            Progress_BeginScriptedEvent(arg0, 0x8140, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x140, 0);
             return 1;
         }
     }
@@ -4348,7 +4348,7 @@ s32 func_ov030_0208f288(ProgressObject* arg0) {
             Progress_SetGate(0x34);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8154;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x154;
             gSaveData.unk_3124          = 0x18;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -4406,7 +4406,7 @@ s32 func_ov030_0208faa4(ProgressObject* arg0) {
         case 0x13C:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x813DU;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x13D;
             gSaveData.unk_3124          = 23;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -4822,14 +4822,14 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(47) != 0) && (Progress_Check(0x30) == 0)) {
             Progress_SetGate(0x30);
             Progress_SetGate(0x31);
-            Progress_BeginScriptedEvent(arg0, 0x4175, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x175, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(11) != 0) && (Progress_Check(0x31) == 0) &&
             (Progress_Check(0x35) == 0))
         {
             Progress_SetGate(0x31);
-            Progress_BeginScriptedEvent(arg0, 0x4177, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x177, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x46) == 0) && (Progress_Check(11) != 0) && (Progress_Check(0x35) == 0)) {
@@ -4852,12 +4852,12 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(0x32) != 0) && (Progress_Check(0x33) == 0)) {
             Progress_SetGate(0x33);
-            Progress_BeginScriptedEvent(arg0, 0x4179, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x179, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(0x32) != 0) && (Progress_Check(0x33) == 0)) {
             Progress_SetGate(0x33);
-            Progress_BeginScriptedEvent(arg0, 0x4179, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x179, 0);
             return 1;
         }
         if ((Progress_Check(0x35) != 0) && (Progress_Check(0x36) == 0)) {
@@ -4867,7 +4867,7 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(0x35) != 0) && (Progress_Check(12) == 0)) {
             Progress_SetGate(12);
-            Progress_BeginScriptedEvent(arg0, 0x417D, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x17D, 0);
             return 1;
         }
         if ((Progress_Check(12) != 0) && (Progress_Check(13) == 0)) {
@@ -4882,12 +4882,12 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
             (Progress_Check(56) == 0))
         {
             Progress_SetGate(56);
-            Progress_BeginScriptedEvent(arg0, 0x417F, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x17F, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(56) != 0) && (Progress_Check(0x31) == 0)) {
             Progress_SetGate(0x31);
-            Progress_BeginScriptedEvent(arg0, 0x4177, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x177, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x46) == 0) && (Progress_Check(56) != 0) && (Progress_Check(0x31) != 0)) {
@@ -4901,22 +4901,22 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(0x11) != 0)) {
             if ((Progress_Check(0x42) != 0) && (Progress_Check(0x3E) == 0)) {
                 Progress_SetGate(0x3E);
-                Progress_BeginScriptedEvent(arg0, 0x418B, 0);
+                Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x18B, 0);
                 return 1;
             }
             if ((Progress_Check(0x43) != 0) && (Progress_Check(0x39) == 0)) {
                 Progress_SetGate(0x39);
-                Progress_BeginScriptedEvent(arg0, 0x4180, 0);
+                Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x180, 0);
                 return 1;
             }
             if ((Progress_Check(0x44) != 0) && (Progress_Check(0x3B) == 0)) {
                 Progress_SetGate(0x3B);
-                Progress_BeginScriptedEvent(arg0, 0x4183, 0);
+                Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x183, 0);
                 return 1;
             }
         }
         if (Progress_Check(0x3E) != 0) {
-            Progress_BeginScriptedEvent(arg0, 0x818C, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x18C, 0);
             return 1;
         }
     }
@@ -4949,7 +4949,7 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x45) != 0) && (Progress_Check(0x23) == 0)) {
             Progress_SetGate(0x23);
-            Progress_BeginScriptedEvent(arg0, 0x415E, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x15E, 0);
             return 1;
         }
         if ((Progress_Check(0x23) != 0) && (Progress_Check(0x24) == 0)) {
@@ -4961,7 +4961,7 @@ s32 func_ov030_02090520(ProgressObject* arg0) {
             (Progress_Check(45) == 0))
         {
             Progress_SetGate(0x2C);
-            Progress_BeginScriptedEvent(arg0, 0x416C, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x16C, 0);
             return 1;
         }
     }
@@ -5617,7 +5617,7 @@ void func_ov030_02092c4c(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8197;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x197;
     func_ov030_020c26bc(4);
     gSaveData.unk_264E = 0;
     gSaveData.unk_2656 = 0;
@@ -5752,7 +5752,7 @@ s32 func_ov030_02092d50(ProgressObject* arg0) {
         }
         if ((func_ov030_020848a4(0x96, 0x15E, 0x190, 0x186) != 0) && (Progress_Check(37) != 0) && (Progress_Check(6) == 0)) {
             Progress_SetGate(6);
-            Progress_BeginScriptedEvent(arg0, 0x81D4, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x1D4, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 12) != 0) && (Progress_Check(7) != 0) && (Progress_Check(38) == 0)) {
@@ -5767,7 +5767,7 @@ s32 func_ov030_02092d50(ProgressObject* arg0) {
             Progress_SetGate(8);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x81D7;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x1D7;
             gSaveData.unk_3124          = 0x1B;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -5788,7 +5788,7 @@ s32 func_ov030_02092d50(ProgressObject* arg0) {
         (Progress_Check(0x33) == 0))
     {
         Progress_SetGate(0x33);
-        Progress_BeginScriptedEvent(arg0, 0x41CD, 0);
+        Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x1CD, 0);
         return 1;
     } else if (gSaveData.unk_2458 == 37) {
         if (Progress_Check(0x35) == 0) {
@@ -6182,7 +6182,7 @@ s32 func_ov030_02093db8(ProgressObject* arg0) {
         case 0x1D0:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x851AU;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x51A;
             func_ov030_020af364(0x15);
             return 1;
         case 0x1D4:
@@ -6371,7 +6371,7 @@ void func_ov030_02094b08(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x81E2;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x1E2;
     func_ov030_020c26bc(4);
     gSaveData.unk_2676 = 0;
     gSaveData.unk_2670 = 0;
@@ -6480,11 +6480,11 @@ s32 func_ov030_02094bfc(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 0x10) {
         if ((func_ov030_020848e4(arg0, 0x45) != 0) && (Progress_Check(0x22) == 0)) {
             Progress_SetGate(0x22);
-            Progress_BeginScriptedEvent(arg0, 0x41E8, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x1E8, 0);
             return 1;
         } else if ((Progress_Check(0x22) != 0) && (Progress_Check(0x23) == 0)) {
             Progress_SetGate(0x23);
-            Progress_BeginScriptedEvent(arg0, 0x81E9, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x1E9, 0);
             return 1;
         }
     }
@@ -6918,7 +6918,7 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
         case 0x1EA:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8524U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x524;
             func_ov030_020af364(0x16);
             return 1;
         case 0x1EB:
@@ -6927,13 +6927,13 @@ s32 func_ov030_0209585c(ProgressObject* arg0) {
         case 0x1EF:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8525U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x525;
             func_ov030_020af364(23);
             return 1;
         case 0x1F0:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x81F1U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x1F1;
             gSaveData.unk_3124          = 0x1D;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -7068,7 +7068,7 @@ void func_ov030_02096790(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8200;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x200;
     func_ov030_020c26bc(0);
     gSaveData.unk_264A = 4;
     gSaveData.unk_2654 = 4;
@@ -7117,7 +7117,7 @@ s32 func_ov030_02096888(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 6) {
         if (Progress_Check(39) == 0) {
             Progress_SetGate(39);
-            Progress_BeginScriptedEvent(arg0, 0x8209, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x209, 0);
             return 1;
         }
         if ((Progress_Check(0x35) != 0) && (Progress_Check(3) == 0)) {
@@ -7166,7 +7166,7 @@ s32 func_ov030_02096888(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 7) {
         if (Progress_Check(4) == 0) {
             Progress_SetGate(4);
-            Progress_BeginScriptedEvent(arg0, 0x820E, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x20E, 0);
             return 1;
         } else if ((Progress_Check(0x36) != 0) && (Progress_Check(5) == 0)) {
             Progress_SetGate(5);
@@ -7310,7 +7310,7 @@ s32 func_ov030_0209716c(ProgressObject* arg0) {
         case 0x20B:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8530U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x530;
             func_ov030_020af364(0x1A);
             return 1;
         case 0x20C:
@@ -7323,7 +7323,7 @@ s32 func_ov030_0209716c(ProgressObject* arg0) {
         case 0x20F:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8531U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x531;
             func_ov030_020af364(0x1D);
             return 1;
         case 0x210:
@@ -7347,7 +7347,7 @@ s32 func_ov030_0209716c(ProgressObject* arg0) {
         case 0x212:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8532U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x532;
             func_ov030_020af364(0x1B);
             return 1;
         case 0x213:
@@ -7511,7 +7511,7 @@ void func_ov030_020979d0(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8227;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x227;
     func_ov030_020c26bc(0);
     gSaveData.unk_2648 = 4;
     gSaveData.unk_2650 = 4;
@@ -7600,7 +7600,7 @@ s32 func_ov030_02097acc(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 37) {
         if (Progress_Check(0x23) == 0) {
             Progress_SetGate(0x23);
-            Progress_BeginScriptedEvent(arg0, 0x8233, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x233, 0);
             return 1;
         }
         if ((Progress_Check(0x34) != 0) && (Progress_Check(0x24) == 0)) {
@@ -7636,7 +7636,7 @@ s32 func_ov030_02097f4c(ProgressObject* arg0) {
         case 0x233:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8234;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x234;
             gSaveData.unk_3124          = 33;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -7645,7 +7645,7 @@ s32 func_ov030_02097f4c(ProgressObject* arg0) {
         case 0x234:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x841F;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x41F;
             gSaveData.unk_3124          = 0x20;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -7654,7 +7654,7 @@ s32 func_ov030_02097f4c(ProgressObject* arg0) {
         case 0x41F:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8538;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x538;
             func_ov030_020af364(30);
             return 1;
         case 0x235:
@@ -7662,7 +7662,7 @@ s32 func_ov030_02097f4c(ProgressObject* arg0) {
             gSaveData.playerStats.activeFriend = FRIEND_NONE;
             gSaveData.unk_24B4                 = 0;
             gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = 0x8236;
+            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x236;
             gSaveData.unk_3124                 = 0x22;
             gSaveData.unk_3128                 = 0;
             arg0->unk_21630                    = 4;
@@ -7786,7 +7786,7 @@ void func_ov030_02098500(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x823B;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x23B;
     func_ov030_020c26bc(0);
     gSaveData.unk_264C = 4;
     gSaveData.unk_2656 = 4;
@@ -7799,7 +7799,7 @@ void func_ov030_02098500(void) {
 s32 func_ov030_02098604(ProgressObject* arg0) {
     if ((gSaveData.unk_2458 == 1) && (func_ov030_020848e4(arg0, 2) != 0) && (Progress_Check(0x20) == 0)) {
         Progress_SetGate(0x20);
-        Progress_BeginScriptedEvent(arg0, 0x823C, 0);
+        Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x23C, 0);
         return 1;
     } else if ((gSaveData.unk_2458 == 3) && (Progress_Check(39) != 0) && (Progress_Check(40) == 0)) {
         Progress_SetGate(40);
@@ -7808,7 +7808,7 @@ s32 func_ov030_02098604(ProgressObject* arg0) {
     } else if (gSaveData.unk_2458 == 5) {
         if (Progress_Check(33) == 0) {
             Progress_SetGate(33);
-            Progress_BeginScriptedEvent(arg0, 0x823D, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x23D, 0);
             return 1;
         } else if ((Progress_Check(41) != 0) && (Progress_Check(34) == 0)) {
             Progress_SetGate(34);
@@ -7820,7 +7820,7 @@ s32 func_ov030_02098604(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 0x11) {
         if (Progress_Check(35) == 0) {
             Progress_SetGate(35);
-            Progress_BeginScriptedEvent(arg0, 0x8241, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x241, 0);
             return 1;
         } else if ((Progress_Check(35) != 0) && (Progress_Check(42) == 0)) {
             Progress_SetGate(42);
@@ -7847,7 +7847,7 @@ s32 func_ov030_02098604(ProgressObject* arg0) {
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x13) != 0) && (Progress_Check(38) != 0) && (Progress_Check(39) == 0)) {
             Progress_SetGate(39);
-            Progress_BeginScriptedEvent(arg0, 0x8248, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x248, 0);
             return 1;
         }
     }
@@ -7903,13 +7903,13 @@ s32 func_ov030_02098a30(ProgressObject* arg0) {
             func_ov030_020aec1c(10);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x823E;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x23E;
             func_ov030_020af364(0x1F);
             return 1;
         case 0x23E:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x823F;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x23F;
             gSaveData.unk_3124          = 0x24;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -7918,7 +7918,7 @@ s32 func_ov030_02098a30(ProgressObject* arg0) {
         case 0x23F:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8542;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x542;
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activeFriend = FRIEND_BEAT;
             func_ov030_020c596c();
@@ -8068,7 +8068,7 @@ void func_ov030_02099010(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x8255;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x255;
     func_ov030_020c26bc(0);
     gSaveData.unk_2648 = 4;
     gSaveData.unk_264C = 4;
@@ -8118,7 +8118,7 @@ s32 func_ov030_0209910c(ProgressObject* arg0) {
                    (Progress_Check(1) == 0))
         {
             Progress_SetGate(1);
-            Progress_BeginScriptedEvent(arg0, 0x4266, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x266, 0);
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x16) != 0) && (Progress_Check(37) == 0)) {
             Progress_SetGate(37);
@@ -8137,7 +8137,7 @@ s32 func_ov030_0209910c(ProgressObject* arg0) {
             return 1;
         } else if ((Progress_Check(43) != 0) && (Progress_Check(2) == 0)) {
             Progress_SetGate(2);
-            Progress_BeginScriptedEvent(arg0, 0x8261, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x261, 0);
             return 1;
         }
     }
@@ -8160,7 +8160,7 @@ s32 func_ov030_02099514(ProgressObject* arg0) {
         case 0x255:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8256U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x256;
             gSaveData.unk_3124          = 38;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -8270,7 +8270,7 @@ void func_ov030_02099858(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x826A;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x26A;
     func_ov030_020c26bc(0);
     gSaveData.unk_2648 = 2;
     gSaveData.unk_264A = 2;
@@ -8693,7 +8693,7 @@ s32 func_ov030_0209a564(ProgressObject* arg0) {
         case 0x280:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8556;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x556;
             func_ov030_020af364(37);
             return 1;
         case 0x281:
@@ -8836,7 +8836,7 @@ void func_ov030_0209af50(void) {
     func_ov030_020ae96c(15);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x828C;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x28C;
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 0x48;
     func_ov030_02084944(0xE, 0);
@@ -9156,13 +9156,13 @@ s32 func_ov030_0209bacc(ProgressObject* arg0) {
         case 0x2B9:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8560;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x560;
             func_ov030_020af364(39);
             return 1;
         case 0x2BA:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8561;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x561;
             func_ov030_020af364(38);
             return 1;
         case 0x2BB:
@@ -9235,7 +9235,7 @@ void func_ov030_0209c0f4(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x82C2;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2C2;
 
     u64 temp = 7;
     func_ov030_020c26bc(4);
@@ -9253,7 +9253,7 @@ s32 func_ov030_0209c208(s32 arg0) {
     if (gSaveData.unk_2458 == 6) {
         if (Progress_Check(0x20) == 0) {
             Progress_SetGate(0x20);
-            Progress_BeginScriptedEvent(arg0, 0x82C3, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x2C3, 0);
             return 1;
         } else if ((Progress_Check(42) != 0) && (Progress_Check(33) == 0)) {
             Progress_SetGate(33);
@@ -9463,7 +9463,7 @@ void func_ov030_0209ca24(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x82DA;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2DA;
     gSaveData.unk_3124          = 0x4A;
     func_ov030_020c26bc(4);
     gSaveData.unk_2670 = 0;
@@ -9500,7 +9500,7 @@ s32 func_ov030_0209cb70(s32 arg0) {
                    (Progress_Check(0x24) != 0) && (Progress_Check(39) == 0))
         {
             Progress_SetGate(39);
-            Progress_BeginScriptedEvent(arg0, 0x82E2, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x2E2, 0);
             return 1;
         } else if ((Progress_Check(0x28) != 0) && (Progress_Check(37) == 0)) {
             Progress_SetGate(37);
@@ -9517,7 +9517,7 @@ s32 func_ov030_0209cb70(s32 arg0) {
     } else if (gSaveData.unk_2458 == 0x13) {
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(2) != 0) && (Progress_Check(38) == 0)) {
             Progress_SetGate(38);
-            Progress_BeginScriptedEvent(arg0, 0x42E7, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x2E7, 0);
             return 1;
         } else if ((Progress_Check(38) != 0) && (Progress_Check(GATE_GAME_CLEARED) != 0) && (Progress_Check(1) == 0)) {
             Progress_SetGate(1);
@@ -9532,11 +9532,11 @@ s32 func_ov030_0209cb70(s32 arg0) {
     } else if (gSaveData.unk_2458 == 0x10) {
         if ((func_ov030_020848e4(arg0, 0x45) != 0) && (Progress_Check(3) == 0)) {
             Progress_SetGate(3);
-            Progress_BeginScriptedEvent(arg0, 0x42DD, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x2DD, 0);
             return 1;
         } else if (func_ov030_020848e4(arg0, 0x45) != 0 && Progress_Check(0x22) != 0 && Progress_Check(0x23) == 0) {
             Progress_SetGate(0x23);
-            Progress_BeginScriptedEvent(arg0, 0x42DF, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x2DF, 0);
             return 1;
         } else if (func_ov030_020848e4(arg0, 0x45) == 0 && Progress_Check(0x22) != 0 && Progress_Check(0x23) != 0) {
             Progress_ClearGate(0x23);
@@ -9561,7 +9561,7 @@ s32 func_ov030_0209cff0(ProgressObject* arg0) {
         case 0x2E2:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8574;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x574;
             func_ov030_020af364(43);
             return 1;
         case 0x2E3:
@@ -9627,7 +9627,7 @@ void func_ov030_0209d1d8(void) {
     func_ov030_020ae96c(1);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x82EC;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2EC;
     gSaveData.unk_3124          = 0x4B;
     func_ov030_020c26bc(4);
     func_ov030_020aec1c(5);
@@ -9642,7 +9642,7 @@ s32 func_ov030_0209d318(s32 arg0) {
     if (gSaveData.unk_2458 == 0x10) {
         if ((func_ov030_020848e4(arg0, 0x45) != 0) && (Progress_Check(0x20) == 0)) {
             Progress_SetGate(0x20);
-            Progress_BeginScriptedEvent(arg0, 0x42ED, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x2ED, 0);
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x45) == 0) && (Progress_Check(0x20) != 0)) {
             Progress_ClearGate(0x20);
@@ -9652,11 +9652,11 @@ s32 func_ov030_0209d318(s32 arg0) {
     if (gSaveData.unk_2458 == 0x13) {
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(47) == 0)) {
             Progress_SetGate(47);
-            Progress_BeginScriptedEvent(arg0, 0x4312, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x312, 0);
             return 1;
         } else if ((Progress_Check(47) != 0) && (Progress_Check(GATE_GAME_CLEARED) != 0) && (Progress_Check(1) == 0)) {
             Progress_SetGate(1);
-            Progress_BeginScriptedEvent(arg0, 0x4311, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x311, 0);
             return 1;
         }
     }
@@ -9721,7 +9721,7 @@ s32 func_ov030_0209d318(s32 arg0) {
     if (gSaveData.unk_2458 == 41) {
         if (Progress_Check(41) == 0) {
             Progress_SetGate(41);
-            Progress_BeginScriptedEvent(arg0, 0x82FD, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x2FD, 0);
             return 1;
         } else if ((Progress_Check(0x31) != 0) && (Progress_Check(42) == 0)) {
             Progress_SetGate(42);
@@ -9732,7 +9732,7 @@ s32 func_ov030_0209d318(s32 arg0) {
     if (gSaveData.unk_2458 == 42) {
         if ((func_ov030_020848a4(0x2A8, 0xB4, 0x2DA, 0x140) != 0) && (Progress_Check(43) == 0)) {
             Progress_SetGate(43);
-            Progress_BeginScriptedEvent(arg0, 0x8301, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x301, 0);
             return 1;
         } else if ((func_ov030_020848e4(arg0, 0x37) != 0) && (Progress_Check(0x2C) == 0)) {
             Progress_SetGate(0x2C);
@@ -9742,7 +9742,7 @@ s32 func_ov030_0209d318(s32 arg0) {
     }
     if ((gSaveData.unk_2458 == 43) && (func_ov030_020848a4(0, 0x96, 0x12C, 0xC8) != 0) && (Progress_Check(45) == 0)) {
         Progress_SetGate(45);
-        Progress_BeginScriptedEvent(arg0, 0x8303, 0);
+        Progress_BeginScriptedEvent(arg0, EVENTFLAG_NOBGM | 0x303, 0);
         return 1;
     } else {
         return 0;
@@ -9806,7 +9806,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
             Progress_SetGate(2);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x82F1;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2F1;
             gSaveData.unk_3124          = 0x2C;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -9821,7 +9821,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
         case 0x2F2:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8420U;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x420;
             gSaveData.unk_3124          = 45;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -9830,7 +9830,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
         case 0x420:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x857E;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x57E;
             func_ov030_020af364(0x2C);
             return 1;
         case 0x2F3:
@@ -9863,13 +9863,13 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
             Progress_SetGate(6);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x857F;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x57F;
             func_ov030_020af364(45);
             return 1;
         case 0x2FF:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8300;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x300;
             gSaveData.unk_26B2          = 0;
             gSaveData.unk_26B4          = 4;
             gSaveData.unk_26B6          = 4;
@@ -9921,7 +9921,7 @@ s32 func_ov030_0209dafc(ProgressObject* arg0) {
         case 0x30F:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x8310;
+            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x310;
             gSaveData.unk_3124          = 0x32;
             gSaveData.unk_3128          = 0;
             arg0->unk_21630             = 4;
@@ -10081,7 +10081,7 @@ s32 func_ov030_0209e314(ProgressObject* arg0) {
     if (gSaveData.unk_2458 == 0x13) {
         if ((func_ov030_020848e4(arg0, 0x46) != 0) && (Progress_Check(0x1F) != 0) && (Progress_Check(47) == 0)) {
             Progress_SetGate(0x1E);
-            Progress_BeginScriptedEvent(arg0, 0x4371, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x371, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x46) == 0) && (Progress_Check(0x1F) != 0) && (Progress_Check(47) == 0) &&
@@ -10093,17 +10093,17 @@ s32 func_ov030_0209e314(ProgressObject* arg0) {
             (Progress_Check(0x1D) == 0))
         {
             Progress_SetGate(0x1D);
-            Progress_BeginScriptedEvent(arg0, 0x4372, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x372, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(3) != 0) && (Progress_Check(0x33) == 0)) {
             Progress_SetGate(0x33);
-            Progress_BeginScriptedEvent(arg0, 0x4326, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x326, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x48) != 0) && (Progress_Check(7) != 0) && (Progress_Check(0x20) == 0)) {
             Progress_SetGate(0x20);
-            Progress_BeginScriptedEvent(arg0, 0x432E, 0);
+            Progress_BeginScriptedEvent(arg0, EVENTFLAG_SHOP | 0x32E, 0);
             return 1;
         }
         if ((Progress_Check(4) != 0) && (Progress_Check(47) == 0) && (func_ov030_020848e4(arg0, 23) != 0) &&
@@ -11611,7 +11611,7 @@ void func_ov030_020a2208(ProgressObject* arg0) {
     gSaveData.unk_2450          = 0x87000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
-    gSaveData.currentStoryEvent = 0x886E;
+    gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x86E;
     func_ov030_020c26bc(0);
     gSaveData.unk_267A = 4;
 }

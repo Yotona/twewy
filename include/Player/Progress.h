@@ -226,6 +226,11 @@ typedef enum {
     EVENT_ANOTHERDAY_PORKCITY_12TH_REWARD = 2141,       // Another Day, Pork City 12th Floor Reward
 
     EVENT_ANOTHERDAY_PORKCITY_13TH_REWARD = 2144,       // Another Day, Pork City 13th Floor Reward
+
+    // Optional flags that can be combined with story events to trigger specific behaviors
+    EVENTFLAG_TALK  = 0x2000, // TODO: Assumed from Solo Remix. View a conversation?
+    EVENTFLAG_SHOP  = 0x4000, // TODO: Assumed from Solo Remix. View a store?
+    EVENTFLAG_NOBGM = 0x8000, // TODO: Assumed from Solo Remix. Silence the background music?
 } ProgressEvent;
 
 void Progress_SetCurrentEvent(ProgressEvent event);
