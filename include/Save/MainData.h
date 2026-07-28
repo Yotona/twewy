@@ -1,8 +1,8 @@
 #ifndef SAVE_MAINDATA_H
 #define SAVE_MAINDATA_H
 
+#include "Field/Events.h"
 #include "Player/Inventory.h"
-#include "Player/Progress.h"
 #include "Player/Stats.h"
 
 typedef struct {

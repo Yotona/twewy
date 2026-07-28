@@ -1,11 +1,11 @@
-#ifndef PLAYER_PROGRESS_H
-#define PLAYER_PROGRESS_H
+#ifndef FIELD_EVENTS_H
+#define FIELD_EVENTS_H
 
 #include "Engine/EasyTask.h"
-#include "Player/Progress/ProgressFlags.h"
+#include "Field/EventFlags.h"
 #include <nitro/types.h>
 
-typedef struct ProgressObject {
+typedef struct FieldEventManager {
     /* 0x00000 */ char     unk_00000[0x11584];
     /* 0x11584 */ TaskPool taskPool;
     /* 0x11604 */ char     unk_11604[0x21614 - 0x11604];
@@ -109,23 +109,25 @@ typedef struct ProgressObject {
     /* 0x21D1E */ s16 unk_21D1E;
     /* 0x21D20 */ s16 unk_21D20;
     /* 0x21D22 */ s16 unk_21D22;
-    /* 0x21D24 */ s32 (*unk_21D24)(struct ProgressObject*);
+    /* 0x21D24 */ s32 (*unk_21D24)(struct FieldEventManager*);
     /* 0x21D28 */ s16  unk_21D28;
     /* 0x21D2A */ s16  unk_21D2A;
     /* 0x21D2C */ char unk_21D2C[0x21D30 - 0x21D2C];
     /* 0x21D30 */ s32  unk_21D30;
     /* 0x21D34 */ char unk_21D34[0x22E2C - 0x21D34];
     /* 0x22E2C */ s32  unk_22E2C;
-} ProgressObject;
+} FieldEventManager;
 
-typedef s32 (*ProgressRewardFunc)(ProgressObject*);
-extern const ProgressRewardFunc data_ov030_020da618[44];
+typedef s32 (*FieldEventRewardFunc)(FieldEventManager*);
+extern const FieldEventRewardFunc data_ov030_020da618[44];
 
 typedef struct {
     /* 0x0 */ u8 completedStars[4];
 } SecretReport;
 
 typedef enum {
+
+    EVENT_SHIKI1_SECRET_BOX_HACHIKO = 102,              // Shiki, Day 1, Secret Box at Statue of Hachiko
 
     EVENT_SHIKI6_SECRET_BOX_CENTER_ST = 269,            // Shiki, Day 6, Secret Box at Center Street
 
@@ -176,6 +178,12 @@ typedef enum {
     EVENT_ANOTHERDAY_FINALTIMEATTACK_REWARD = 873,      // Another Day, Final Time Attack, Reward for first time completion
 
     EVENT_ANOTHERDAY_SECRET_BOX_CONCERT_STAGE = 876,    // Another Day, Secret Box at Concert Stage
+
+    EVENT_SHIKI1_DRAG_AND_NEKU_COMBAT_TUTORIAL = 1206,  // Shiki, Day 1, Read the Drag and Neku Combat Tutorial
+    EVENT_SHIKI1_PARTNER_TUTORIAL              = 1207,  // Shiki, Day 1, Read the Partner Tutorial
+    EVENT_SHIKI1_GRIZZLY_BATTLE_REWARD_UNIQUE  = 1208,  // Shiki, Day 1, Win the Grizzly Battle
+    EVENT_SHIKI1_GRIZZLY_BATTLE_REWARD         = 1209,  // Shiki, Day 1, Win the Grizzly Battle
+    EVENT_SHIKI1_RUN_DASH_ESCAPE_TUTORIAL      = 1210,  // Shiki, Day 1, Run Dash & Escape Tutorial
 
     EVENT_JOSHUA1_104 = 1277,                           // Joshua, Day 1, 104 Building
 
@@ -231,24 +239,24 @@ typedef enum {
     EVENTFLAG_TALK  = 0x2000, // TODO: Assumed from Solo Remix. View a conversation?
     EVENTFLAG_SHOP  = 0x4000, // TODO: Assumed from Solo Remix. View a store?
     EVENTFLAG_NOBGM = 0x8000, // TODO: Assumed from Solo Remix. Silence the background music?
-} ProgressEvent;
+} FieldEvent;
 
-void Progress_SetCurrentEvent(ProgressEvent event);
+void FldEvent_SetCurrent(FieldEvent event);
 
-void Progress_AdvanceEventScript(ProgressObject* progress);
+void FldEvent_AdvanceScript(FieldEventManager* eventMgr);
 
-void Progress_InitState(ProgressObject* progress);
+void FldEvent_InitState(FieldEventManager* eventMgr);
 
-void ProgressReward_GrantItem(ProgressObject* arg0, u16 itemID);
+void FldEvent_GrantItem(FieldEventManager* eventMgr, u16 itemID);
 
-void ProgressReward_GrantPin(ProgressObject* arg0, u16 itemID);
+void FldEvent_GrantPin(FieldEventManager* eventMgr, u16 itemID);
 
-void Progress_BeginScriptedEvent(ProgressObject* progress, ProgressEvent event, s32 arg2);
+void FldEvent_BeginScript(FieldEventManager* eventMgr, FieldEvent event, s32 arg2);
 
-void func_ov030_020aac28(ProgressObject* arg0, u16 itemID);
+void func_ov030_020aac28(FieldEventManager* eventMgr, u16 itemID);
 
 void func_ov030_020aec38(s32 arg0);
 
 s32 func_ov030_020aeca4(s32 arg0);
 
-#endif // PLAYER_PROGRESS_H
+#endif // FIELD_EVENTS_H

@@ -308,9 +308,9 @@ func_ov030_020a6374 kind:function(arm,size=0x280) addr:0x020a6374
 func_ov030_020a65f4 kind:function(arm,size=0xa8) addr:0x020a65f4
 
 
-Progress_SetCurrentEvent kind:function(arm,size=0x4c) addr:0x020a669c
+FldEvent_SetCurrent kind:function(arm,size=0x4c) addr:0x020a669c
 func_ov030_020a66e8 kind:function(arm,size=0x50) addr:0x020a66e8
-Progress_AdvanceEventScript kind:function(arm,size=0x170) addr:0x020a6738
+FldEvent_AdvanceScript kind:function(arm,size=0x170) addr:0x020a6738
 func_ov030_020a68a8 kind:function(arm,size=0x4c) addr:0x020a68a8
 func_ov030_020a68f4 kind:function(arm,size=0x6c) addr:0x020a68f4
 func_ov030_020a6960 kind:function(arm,size=0x4c) addr:0x020a6960
@@ -328,7 +328,7 @@ func_ov030_020a6d20 kind:function(arm,size=0x14) addr:0x020a6d20
 func_ov030_020a6d34 kind:function(arm,size=0x4c) addr:0x020a6d34
 func_ov030_020a6d80 kind:function(arm,size=0x14) addr:0x020a6d80
 func_ov030_020a6d94 kind:function(arm,size=0x14) addr:0x020a6d94
-Progress_InitState kind:function(arm,size=0xa8) addr:0x020a6da8
+FldEvent_InitState kind:function(arm,size=0xa8) addr:0x020a6da8
 func_ov030_020a6e50 kind:function(arm,size=0x14) addr:0x020a6e50
 func_ov030_020a6e64 kind:function(arm,size=0x48) addr:0x020a6e64
 func_ov030_020a6eac kind:function(arm,size=0xe4) addr:0x020a6eac
@@ -351,7 +351,7 @@ func_ov030_020a7928 kind:function(arm,size=0x6c) addr:0x020a7928
 func_ov030_020a7994 kind:function(arm,size=0x10c) addr:0x020a7994
 func_ov030_020a7aa0 kind:function(arm,size=0xb0) addr:0x020a7aa0
 func_ov030_020a7b50 kind:function(arm,size=0x2104) addr:0x020a7b50
-Progress_BeginScriptedEvent kind:function(arm,size=0xac) addr:0x020a9c54
+FldEvent_BeginScript kind:function(arm,size=0xac) addr:0x020a9c54
 func_ov030_020a9d00 kind:function(arm,size=0xb8) addr:0x020a9d00
 func_ov030_020a9db8 kind:function(arm,size=0x90) addr:0x020a9db8
 func_ov030_020a9e48 kind:function(arm,size=0x10c) addr:0x020a9e48
@@ -362,8 +362,8 @@ func_ov030_020aa4bc kind:function(arm,size=0x538) addr:0x020aa4bc
 func_ov030_020aa9f4 kind:function(arm,size=0xe4) addr:0x020aa9f4
 func_ov030_020aaad8 kind:function(arm,size=0x20) addr:0x020aaad8
 func_ov030_020aaaf8 kind:function(arm,size=0x78) addr:0x020aaaf8
-ProgressReward_GrantItem kind:function(arm,size=0x5c) addr:0x020aab70
-ProgressReward_GrantPin kind:function(arm,size=0x5c) addr:0x020aabcc
+FldEvent_GrantItem kind:function(arm,size=0x5c) addr:0x020aab70
+FldEvent_GrantPin kind:function(arm,size=0x5c) addr:0x020aabcc
 func_ov030_020aac28 kind:function(arm,size=0x5c) addr:0x020aac28
 
 
@@ -442,9 +442,9 @@ func_ov030_020aeadc kind:function(arm,size=0x18) addr:0x020aeadc
 func_ov030_020aeaf4 kind:function(arm,size=0x40) addr:0x020aeaf4
 
 
-Progress_SetGate kind:function(arm,size=0x3c) addr:0x020aeb34
-Progress_ClearGate kind:function(arm,size=0x40) addr:0x020aeb70
-Progress_Check kind:function(arm,size=0x40) addr:0x020aebb0
+FldGate_Set kind:function(arm,size=0x3c) addr:0x020aeb34
+FldGate_Clear kind:function(arm,size=0x40) addr:0x020aeb70
+FldGate_Get kind:function(arm,size=0x40) addr:0x020aebb0
 func_ov030_020aebf0 kind:function(arm,size=0x18) addr:0x020aebf0
 func_ov030_020aec08 kind:function(arm,size=0x14) addr:0x020aec08
 func_ov030_020aec1c kind:function(arm,size=0x1c) addr:0x020aec1c

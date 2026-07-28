@@ -200,7 +200,7 @@ static void func_020225ec(void*) {
     // Not yet implemented
 }
 
-static void Progress_ResetSecretReports(SecretReport* report) {
+static void Savefile_ResetSecretReports(SecretReport* report) {
     for (s32 i = 0; i < 22; i++) {
         for (s32 j = 0; j < 4; j++) {
             report[i].completedStars[j] = 0;
@@ -264,7 +264,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     func_0202258c(&arg0->unk_323E);
     func_020225c4(&arg0->unk_1FCA);
     func_020225ec(&arg0->unk_214C);
-    Progress_ResetSecretReports(arg0->secretReports);
+    Savefile_ResetSecretReports(arg0->secretReports);
 
     gSaveData.unk_2324 = 0;
 
@@ -1112,7 +1112,7 @@ u16 func_020242ac(s32 arg0) {
     return sp0[arg0 + 1];
 }
 
-BOOL Progress_HasAcquiredAllSecretReports(void) {
+BOOL Savefile_AcquiredAllSecretReports(void) {
     u16 starsRequired[22];
     starsRequired = SecretReportStarRequirements;
 

@@ -1,10 +1,10 @@
-#include "Player/Progress/ProgressFlags.h"
+#include "Field/EventFlags.h"
 #include "Save.h"
 
 extern s32 func_ov030_020b7b40();
 extern s32 func_ov030_020b7b60();
 
-void Progress_SetGate(ProgressGate gate) {
+void FldGate_Set(EventGate gate) {
     s32 word_idx = gate / 32;
     s32 bit_idx  = gate % 32;
 
@@ -13,7 +13,7 @@ void Progress_SetGate(ProgressGate gate) {
     }
 }
 
-void Progress_ClearGate(ProgressGate gate) {
+void FldGate_Clear(EventGate gate) {
     s32 word_idx = gate / 32;
     s32 bit_idx  = gate % 32;
 
@@ -22,7 +22,7 @@ void Progress_ClearGate(ProgressGate gate) {
     }
 }
 
-BOOL Progress_Check(ProgressGate gate) {
+BOOL FldGate_Get(EventGate gate) {
     s32 word_idx = gate / 32;
     s32 bit_idx  = gate % 32;
 
