@@ -37,11 +37,11 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
         } else if ((FldGate_Get(33) == 0) && (func_ov030_020aed9c(-1) != 0)) {
             FldGate_Set(33);
             gSaveData.unk_264C = 4;
-            FldEvent_BeginScript(arg0, 0x57, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_USE_PLAYER_PIN, 0);
             return 1;
         } else if ((FldGate_Get(0x33) != 0) && (FldGate_Get(0x23) == 0)) {
             FldGate_Set(0x23);
-            FldEvent_BeginScript(arg0, 0x59, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_ESCAPE_FROGS, 0);
             return 1;
         }
 
@@ -55,14 +55,14 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
         }
         if ((FldGate_Get(37) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
-            FldEvent_BeginScript(arg0, 0x5F, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_BACK_IN_CROSSING, 0);
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 1) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(0x2C) == 0)) {
             FldGate_Set(0x2C);
             if (FldGate_Get(39) == 0) {
                 FldGate_Set(39);
-                FldEvent_BeginScript(arg0, 0x60, 0);
+                FldEvent_BeginScript(arg0, EVENT_SHIKI1_UNKNOWN_96, 0);
                 return 1;
             }
         }
@@ -70,232 +70,239 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
             FldGate_Set(45);
             if (FldGate_Get(39) == 0) {
                 FldGate_Set(39);
-                FldEvent_BeginScript(arg0, 0x60, 0);
+                FldEvent_BeginScript(arg0, EVENT_SHIKI1_UNKNOWN_96, 0);
                 return 1;
             }
         }
         if ((func_ov030_020848e4(arg0, 0) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(3);
-            FldEvent_BeginScript(arg0, 0x61, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_RUN_INTO_WALL, 0);
             return 1;
         }
     }
     if (gSaveData.unk_2458 == 3) {
         if (FldGate_Get(0x28) == 0) {
             FldGate_Set(0x28);
-            FldEvent_BeginScript(arg0, 0x62, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_GET_TO_104, 0);
             return 1;
         } else if ((FldGate_Get(0x30) != 0) && (FldGate_Get(41) == 0)) {
             FldGate_Set(41);
-            FldEvent_BeginScript(arg0, 0x63, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_BEAT_104_FROGS, 0);
             return 1;
         } else if ((FldGate_Get(0x31) != 0) && (FldGate_Get(42) == 0)) {
             FldGate_Set(42);
-            FldEvent_BeginScript(arg0, 0x64, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_BEAT_GRIZZLY, 0);
             return 1;
         } else if ((FldGate_Get(0x32) != 0) && (FldGate_Get(43) == 0)) {
             FldGate_Set(43);
-            FldEvent_BeginScript(arg0, 0x65, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_DAY_END, 0);
             return 1;
         }
     }
     if (gSaveData.unk_2458 == 5) {
         if (FldGate_Get(0x24) == 0) {
             FldGate_Set(0x24);
-            FldEvent_BeginScript(arg0, 0x5B, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_NOISE_BY_HACHIKO, 0);
             return 1;
         } else if ((FldGate_Get(47) != 0) && (FldGate_Get(37) == 0)) {
             FldGate_Set(37);
-            FldEvent_BeginScript(arg0, 0x5E, 0);
+            FldEvent_BeginScript(arg0, EVENT_SHIKI1_BEAT_HACHIKO_FROGS, 0);
             return 1;
         }
     }
     if ((gSaveData.unk_2458 == 37) && (FldGate_Get(0x23) != 0) && (FldGate_Get(0x34) == 0)) {
         FldGate_Set(0x34);
-        FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x5A, 0);
+        FldEvent_BeginScript(arg0, EVENT_SHIKI1_KARIYA_UZUKI_DIALOG | EVENTFLAG_NOBGM, 0);
         return 1;
     }
     return 0;
 }
 
-s32 func_ov030_02084eb4(FieldEventManager* arg0) {
+s32 func_ov030_02084eb4(FieldEventManager* eventMgr) {
     switch (gSaveData.currentStoryEvent) {
-        case 0x57:
+        case EVENT_SHIKI1_USE_PLAYER_PIN:
             FldGate_Set(0x22);
             gSaveData.unk_24BE = 0x67;
             func_ov030_020aec1c(10);
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x58;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_READ_MISSION_TEXT | EVENTFLAG_NOBGM;
             gSaveData.unk_3124          = 3;
             gSaveData.unk_3128          = 0;
-            arg0->unk_21630             = 4;
+            eventMgr->unk_21630         = 4;
             DebugOvlDisp_Pop();
             return 0;
 
-        case 0x58:
+        case EVENT_SHIKI1_READ_MISSION_TEXT:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x4BA;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_RUN_DASH_ESCAPE_TUTORIAL | EVENTFLAG_NOBGM;
             func_ov030_020af364(2);
             return 1;
 
-        case 0x59:
-            gSaveData.unk_3124 = 4;
-            gSaveData.unk_3128 = 0;
-            arg0->unk_21630    = 4;
+        case EVENT_SHIKI1_ESCAPE_FROGS:
+            gSaveData.unk_3124  = 4;
+            gSaveData.unk_3128  = 0;
+            eventMgr->unk_21630 = 4;
             DebugOvlDisp_Pop();
             return 0;
 
-        case 0x5A:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 5;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x139000;
-            arg0->unk_21B0C = 0xE1000;
+        case EVENT_SHIKI1_KARIYA_UZUKI_DIALOG:
+            eventMgr->unk_21AD0 = 1;
+            eventMgr->unk_21ACC = 1;
+            eventMgr->unk_21AFC = 5;
+            eventMgr->unk_21B00 = 0x66;
+            eventMgr->unk_21B08 = 0x139000;
+            eventMgr->unk_21B0C = 0xE1000;
             break;
 
-        case 0x5B:
+        case EVENT_SHIKI1_NOISE_BY_HACHIKO:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x5C;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_HACHIKO_FROGS | EVENTFLAG_NOBGM;
             gSaveData.unk_3124          = 5;
             gSaveData.unk_3128          = 0;
-            arg0->unk_21630             = 4;
+            eventMgr->unk_21630         = 4;
             DebugOvlDisp_Pop();
             return 0;
 
-        case 0x5C:
+        case EVENT_SHIKI1_HACHIKO_FROGS:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x5D;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_PACT_WITH_SHIKI | EVENTFLAG_NOBGM;
             gSaveData.unk_3124          = 6;
             gSaveData.unk_3128          = 0;
-            arg0->unk_21630             = 4;
+            eventMgr->unk_21630         = 4;
             DebugOvlDisp_Pop();
             return 0;
 
-        case 0x5D:
+        case EVENT_SHIKI1_PACT_WITH_SHIKI:
             FldGate_Set(2);
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
             gSaveData.unk_24B4                 = 0;
             gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x4B6;
+            gSaveData.currentStoryEvent        = EVENT_SHIKI1_DRAG_AND_NEKU_COMBAT_TUTORIAL | EVENTFLAG_NOBGM;
             func_ov030_020af364(3);
             return 1;
 
-        case 0x5E:
+        case EVENT_SHIKI1_BEAT_HACHIKO_FROGS:
             func_ov030_020aeaa0(3, 4);
-            gSaveData.unk_2648 = 0;
-            gSaveData.unk_264A = 0;
-            gSaveData.unk_264E = 0;
-            arg0->unk_21CF8    = 1;
+            gSaveData.unk_2648  = 0;
+            gSaveData.unk_264A  = 0;
+            gSaveData.unk_264E  = 0;
+            eventMgr->unk_21CF8 = 1;
             break;
 
-        case 0x61:
-            arg0->unk_21CF8    = 1;
-            gSaveData.unk_2648 = 4;
+        case EVENT_SHIKI1_RUN_INTO_WALL:
+            eventMgr->unk_21CF8 = 1;
+            gSaveData.unk_2648  = 4;
             break;
 
-        case 0x62:
+        case EVENT_SHIKI1_GET_TO_104:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x4B7;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_PARTNER_TUTORIAL;
             func_ov030_020af364(4);
             return 1;
 
-        case 0x63:
+        case EVENT_SHIKI1_BEAT_104_FROGS:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x4B8;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_104_FROG_REWARD;
             func_ov030_020af364(5);
             return 1;
 
-        case 0x64:
+        case EVENT_SHIKI1_BEAT_GRIZZLY:
             gSaveData.unk_24B4          = 0;
             gSaveData.unk_24B8          = 1;
-            gSaveData.currentStoryEvent = 0x4B9;
+            gSaveData.currentStoryEvent = EVENT_SHIKI1_GRIZZLY_BATTLE_REWARD;
             func_ov030_020af364(6);
             return 1;
 
-        case 0x65:
-            gSaveData.unk_3124 = 7;
-            gSaveData.unk_3128 = 1;
-            arg0->unk_21630    = 4;
+        case EVENT_SHIKI1_DAY_END:
+            gSaveData.unk_3124  = 7;
+            gSaveData.unk_3128  = 1;
+            eventMgr->unk_21630 = 4;
             DebugOvlDisp_Pop();
             return 0;
 
-        case 0x4BA:
-            FldGate_Set(0x33);
-            if (Inventory_HasRequiredQuantity(ITEM_WALLET_MY_FIRST_WALLET, 1, 0) == 0) {
+        case EVENT_SHIKI1_RUN_DASH_ESCAPE_TUTORIAL:
+            FldGate_Set(GATE_UNKNOWN51);
+            // First playthrough silently inserts the starter wallet into inventory after fleeing the very first (solo) battle
+            if (Inventory_HasRequiredQuantity(ITEM_WALLET_MY_FIRST_WALLET, 1, 0) == FALSE) {
                 Inventory_AddItem(ITEM_WALLET_MY_FIRST_WALLET, 0);
             }
-            if (Inventory_HasRequiredQuantity(ITEM_CD_TRACK31, 1, 0) == 0) {
+            // Track 31: "It's So Wonderful", also silently inserted into the inventory after this tutorial
+            if (Inventory_HasRequiredQuantity(ITEM_CD_TRACK31, 1, 0) == FALSE) {
                 Inventory_AddItem(ITEM_CD_TRACK31, 0);
             }
-            if (FldGate_Get(GATE_GAME_CLEARED) == 0) {
-                FldEvent_GrantItem(arg0, ITEM_BOOK_ESCAPING_FROM_BATTLE);
-                FldEvent_GrantItem(arg0, ITEM_STICKER_DASH);
+            // Book and sticker on first playthrough, 500 yen on replays
+            if (FldGate_Get(GATE_GAME_CLEARED) == FALSE) {
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_ESCAPING_FROM_BATTLE);
+                FldEvent_GrantItem(eventMgr, ITEM_STICKER_DASH);
             } else {
-                FldEvent_GrantPin(arg0, PIN_500_YEN);
+                FldEvent_GrantPin(eventMgr, PIN_500_YEN);
             }
             break;
 
-        case 0x4B6:
-            FldGate_Set(47);
-            if (FldGate_Get(GATE_GAME_CLEARED) == 0) {
-                FldEvent_GrantItem(arg0, ITEM_BOOK_CONTROLS_DRAG);
-                FldEvent_GrantItem(arg0, ITEM_BOOK_BOOT_REBOOT);
-                FldEvent_GrantItem(arg0, ITEM_BOOK_BOTTOM_SCREEN_COMBAT);
-                func_ov030_020aac28(arg0, PIN_PYROKINESIS);
+        case EVENT_SHIKI1_DRAG_AND_NEKU_COMBAT_TUTORIAL:
+            FldGate_Set(GATE_UNKNOWN47);
+            // Books and pin on first playthrough, 500 yen on replays
+            if (FldGate_Get(GATE_GAME_CLEARED) == FALSE) {
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_CONTROLS_DRAG);
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_BOOT_REBOOT);
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_BOTTOM_SCREEN_COMBAT);
+                func_ov030_020aac28(eventMgr, PIN_PYROKINESIS);
             } else {
-                FldEvent_GrantPin(arg0, PIN_500_YEN);
+                FldEvent_GrantPin(eventMgr, PIN_500_YEN);
             }
             break;
 
-        case 0x4B7:
-            FldGate_Set(0x30);
-            if (FldGate_Get(GATE_GAME_CLEARED) == 0) {
-                FldEvent_GrantItem(arg0, ITEM_BOOK_TOP_SCREEN_COMBAT);
+        case EVENT_SHIKI1_PARTNER_TUTORIAL:
+            FldGate_Set(GATE_UNKNOWN48);
+            // Book on first playthrough, 500 yen on replays
+            if (FldGate_Get(GATE_GAME_CLEARED) == FALSE) {
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_TOP_SCREEN_COMBAT);
             } else {
-                FldEvent_GrantPin(arg0, PIN_500_YEN);
+                FldEvent_GrantPin(eventMgr, PIN_500_YEN);
             }
             break;
 
-        case 0x4B8:
-            FldGate_Set(0x31);
-            if (FldGate_Get(GATE_GAME_CLEARED) == 0) {
-                FldEvent_GrantItem(arg0, ITEM_BOOK_FOLLOW_THAT_PUCK);
-                FldEvent_GrantItem(arg0, ITEM_BOOK_DUAL_SCREEN_COMBAT);
+        case EVENT_SHIKI1_104_FROG_REWARD:
+            FldGate_Set(GATE_UNKNOWN49);
+            // Books on first playthrough, 500 yen on replays
+            if (FldGate_Get(GATE_GAME_CLEARED) == FALSE) {
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_FOLLOW_THAT_PUCK);
+                FldEvent_GrantItem(eventMgr, ITEM_BOOK_DUAL_SCREEN_COMBAT);
             } else {
-                FldEvent_GrantPin(arg0, PIN_500_YEN);
+                FldEvent_GrantPin(eventMgr, PIN_500_YEN);
             }
             break;
 
-        case 0x4B9:
-            FldGate_Set(0x32);
-            FldEvent_GrantPin(arg0, PIN_SCARLETITE);
-            FldEvent_GrantPin(arg0, PIN_500_YEN);
-            FldEvent_GrantItem(arg0, ITEM_BOOK_SO_I_BEAT_THE_ENEMY);
+        case EVENT_SHIKI1_GRIZZLY_BATTLE_REWARD:
+            FldGate_Set(GATE_UNKNOWN50);
+            FldEvent_GrantPin(eventMgr, PIN_SCARLETITE);
+            FldEvent_GrantPin(eventMgr, PIN_500_YEN);
+            FldEvent_GrantItem(eventMgr, ITEM_BOOK_SO_I_BEAT_THE_ENEMY);
             break;
 
-        case 0x66:
-            FldGate_Set(1);
-            if (Inventory_HasRequiredQuantity(ITEM_THREAD_NOSE_GLASSES, 1, 0) != 0) {
-                FldEvent_GrantPin(arg0, PIN_500_YEN);
+        case EVENT_SHIKI1_SECRET_BOX_HACHIKO: // Only available on replays
+            FldGate_Set(GATE_UNKNOWN01);
+            // Thread the first time secret box is opened, 500 yen on replays
+            if (Inventory_HasRequiredQuantity(ITEM_THREAD_NOSE_GLASSES, 1, 0)) {
+                FldEvent_GrantPin(eventMgr, PIN_500_YEN);
             } else {
-                FldEvent_GrantItem(arg0, ITEM_THREAD_NOSE_GLASSES);
+                FldEvent_GrantItem(eventMgr, ITEM_THREAD_NOSE_GLASSES);
             }
-            arg0->unk_21CF8 = 1;
+            eventMgr->unk_21CF8 = 1;
     }
 
     return 0;
 }
 
 void func_ov030_02085480(void) {
-    if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) != FALSE) {
+    if (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0)) {
         FldGate_Set(GATE_GAME_CLEARED);
     }
     func_ov030_020ae96c(18);

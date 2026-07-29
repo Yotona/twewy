@@ -5,7 +5,13 @@
 
 typedef enum {
     GATE_GAME_CLEARED = 0, /**< The main storyline has been completed. */
+    GATE_UNKNOWN01    = 1,
 
+    GATE_UNKNOWN47 = 47,
+    GATE_UNKNOWN48 = 48,
+    GATE_UNKNOWN49 = 49,
+    GATE_UNKNOWN50 = 50,
+    GATE_UNKNOWN51 = 51,
 } EventGate;
 
 /**
