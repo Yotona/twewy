@@ -507,6 +507,11 @@ func_ov030_020afa58 kind:function(arm,size=0x60) addr:0x020afa58
 func_ov030_020afab8 kind:function(arm,size=0x960) addr:0x020afab8
 func_ov030_020b0418 kind:function(arm,size=0x3c) addr:0x020b0418
 func_ov030_020b0454 kind:function(arm,size=0x58) addr:0x020b0454
+
+
+//////////////////////////////////////////////////////////////////////
+// src/Interface/Debug/Field/FieldSelect.c
+//////////////////////////////////////////////////////////////////////
 func_ov030_020b04ac kind:function(arm,size=0x88) addr:0x020b04ac
 func_ov030_020b0534 kind:function(arm,size=0x10) addr:0x020b0534
 func_ov030_020b0544 kind:function(arm,size=0x2dc) addr:0x020b0544
@@ -528,6 +533,10 @@ func_ov030_020b0e4c kind:function(arm,size=0xc) addr:0x020b0e4c
 func_ov030_020b0e58 kind:function(arm,size=0x18c) addr:0x020b0e58
 func_ov030_020b0fe4 kind:function(arm,size=0x4) addr:0x020b0fe4
 func_ov030_020b0fe8 kind:function(arm,size=0x40) addr:0x020b0fe8
+
+//////////////////////////////////////////////////////////////////////
+// src/Interface/Debug/Field/EventSelect.c
+//////////////////////////////////////////////////////////////////////
 func_ov030_020b1028 kind:function(arm,size=0x88) addr:0x020b1028
 func_ov030_020b10b0 kind:function(arm,size=0x26c) addr:0x020b10b0
 func_ov030_020b131c kind:function(arm,size=0x14) addr:0x020b131c
@@ -547,6 +556,8 @@ func_ov030_020b1cc4 kind:function(arm,size=0x14) addr:0x020b1cc4
 func_ov030_020b1cd8 kind:function(arm,size=0x318) addr:0x020b1cd8
 func_ov030_020b1ff0 kind:function(arm,size=0xd0) addr:0x020b1ff0
 func_ov030_020b20c0 kind:function(arm,size=0x1c) addr:0x020b20c0
+
+
 func_ov030_020b20dc kind:function(arm,size=0x9c) addr:0x020b20dc
 func_ov030_020b2178 kind:function(arm,size=0x48) addr:0x020b2178
 func_ov030_020b21c0 kind:function(arm,size=0x14) addr:0x020b21c0
@@ -2005,6 +2016,8 @@ data_ov030_020dbdd8 kind:data(any) addr:0x020dbdd8
 data_ov030_020dbe30 kind:data(any) addr:0x020dbe30
 data_ov030_020dbee0 kind:data(any) addr:0x020dbee0
 data_ov030_020dbeec kind:data(any) addr:0x020dbeec
+
+
 data_ov030_020dbef8 kind:data(any) addr:0x020dbef8
 data_ov030_020dbf00 kind:data(any) addr:0x020dbf00
 data_ov030_020dbf08 kind:data(any) addr:0x020dbf08
@@ -2021,54 +2034,40 @@ data_ov030_020dc09c kind:data(any) addr:0x020dc09c
 data_ov030_020dc0dc kind:data(any) addr:0x020dc0dc
 data_ov030_020dc13c kind:data(any) addr:0x020dc13c
 data_ov030_020dc1b4 kind:data(any) addr:0x020dc1b4
-data_ov030_020dc234 kind:data(any) addr:0x020dc234
-data_ov030_020dc2bc kind:data(any) addr:0x020dc2bc
+EventSelect_Shiki_DaySeven kind:data(any) addr:0x020dc234
+EventSelect_Beat_DaySix kind:data(any) addr:0x020dc2bc
 data_ov030_020dc34c kind:data(any) addr:0x020dc34c
-data_ov030_020dc3e4 kind:data(any) addr:0x020dc3e4
-data_ov030_020dc484 kind:data(any) addr:0x020dc484
-data_ov030_020dc524 kind:data(any) addr:0x020dc524
-data_ov030_020dc5c4 kind:data(any) addr:0x020dc5c4
+EventSelect_Shiki_DayOne kind:data(any) addr:0x020dc3e4
+EventSelect_Joshua_DayOne kind:data(any) addr:0x020dc484
+EventSelect_Tutorial kind:data(any) addr:0x020dc524
+EventSelect_Joshua_DaySeven kind:data(any) addr:0x020dc5c4
 data_ov030_020dc664 kind:data(any) addr:0x020dc664
-data_ov030_020dc70c kind:data(any) addr:0x020dc70c
-data_ov030_020dc7b4 kind:data(any) addr:0x020dc7b4
-data_ov030_020dc864 kind:data(any) addr:0x020dc864
-data_ov030_020dc91c kind:data(any) addr:0x020dc91c
+EventSelect_Beat_DayTwo kind:data(any) addr:0x020dc70c
+EventSelect_Shiki_DayFive kind:data(any) addr:0x020dc7b4
+EventSelect_Shiki_DayFour kind:data(any) addr:0x020dc864
+EventSelect_Beat_DayFive kind:data(any) addr:0x020dc91c
 data_ov030_020dc9dc kind:data(any) addr:0x020dc9dc
-data_ov030_020dcaa4 kind:data(any) addr:0x020dcaa4
-data_ov030_020dcb74 kind:data(any) addr:0x020dcb74
-data_ov030_020dcc64 kind:data(any) addr:0x020dcc64
-data_ov030_020dcd5c kind:data(any) addr:0x020dcd5c
+EventSelect_Beat_DayOne kind:data(any) addr:0x020dcaa4
+EventSelect_Joshua_DayFive kind:data(any) addr:0x020dcb74
+EventSelect_AnotherDay_PartTwo kind:data(any) addr:0x020dcc64
+EventSelect_Miscellaneous kind:data(any) addr:0x020dcd5c
 data_ov030_020dce54 kind:data(any) addr:0x020dce54
-data_ov030_020dcf4c kind:data(any) addr:0x020dcf4c
-data_ov030_020dd04c kind:data(any) addr:0x020dd04c
-data_ov030_020dd14c kind:data(any) addr:0x020dd14c
+EventSelect_Shiki_DayTwo kind:data(any) addr:0x020dcf4c
+EventSelect_Shiki_DaySix kind:data(any) addr:0x020dd04c
+EventSelect_Beat_DayThree kind:data(any) addr:0x020dd14c
 data_ov030_020dd25c kind:data(any) addr:0x020dd25c
-data_ov030_020dd374 kind:data(any) addr:0x020dd374
-data_ov030_020dd494 kind:data(any) addr:0x020dd494
+EventSelect_Joshua_DayTwo kind:data(any) addr:0x020dd374
+EventSelect_Joshua_DaySix kind:data(any) addr:0x020dd494
 data_ov030_020dd5cc kind:data(any) addr:0x020dd5cc
-data_ov030_020dd70c kind:data(any) addr:0x020dd70c
-data_ov030_020dd77c kind:data(any) addr:0x020dd77c ambiguous
-data_ov030_020dd784 kind:data(any) addr:0x020dd784 ambiguous
-data_ov030_020dd78c kind:data(any) addr:0x020dd78c ambiguous
-data_ov030_020dd794 kind:data(any) addr:0x020dd794 ambiguous
-data_ov030_020dd79c kind:data(any) addr:0x020dd79c ambiguous
-data_ov030_020dd7a4 kind:data(any) addr:0x020dd7a4 ambiguous
-data_ov030_020dd7b4 kind:data(any) addr:0x020dd7b4 ambiguous
-data_ov030_020dd7bc kind:data(any) addr:0x020dd7bc ambiguous
-data_ov030_020dd7c4 kind:data(any) addr:0x020dd7c4 ambiguous
-data_ov030_020dd7cc kind:data(any) addr:0x020dd7cc ambiguous
-data_ov030_020dd7d4 kind:data(any) addr:0x020dd7d4 ambiguous
-data_ov030_020dd7dc kind:data(any) addr:0x020dd7dc ambiguous
+EventSelect_Beat_DaySeven kind:data(any) addr:0x020dd70c
 data_ov030_020dd85c kind:data(any) addr:0x020dd85c
-data_ov030_020dd9ac kind:data(any) addr:0x020dd9ac
-data_ov030_020ddb5c kind:data(any) addr:0x020ddb5c
-data_ov030_020ddd24 kind:data(any) addr:0x020ddd24
-data_ov030_020ddef4 kind:data(any) addr:0x020ddef4
-data_ov030_020de0dc kind:data(any) addr:0x020de0dc
+EventSelect_Beat_DayFour kind:data(any) addr:0x020dd9ac
+EventSelect_AnotherDay_PartThree kind:data(any) addr:0x020ddb5c
+EventSelect_Shiki_DayThree kind:data(any) addr:0x020ddd24
+EventSelect_Joshua_DayThree kind:data(any) addr:0x020ddef4
+EventSelect_Joshua_DayFour kind:data(any) addr:0x020de0dc
 data_ov030_020de334 kind:data(any) addr:0x020de334
-data_ov030_020de338 kind:data(any) addr:0x020de338
-data_ov030_020de33c kind:data(any) addr:0x020de33c
-data_ov030_020de598 kind:data(any) addr:0x020de598
+EventSelect_AnotherDay_PartOne kind:data(any) addr:0x020de598
 data_ov030_020de880 kind:data(any) addr:0x020de880
 data_ov030_020decb8 kind:data(any) addr:0x020decb8
 data_ov030_020df118 kind:data(any) addr:0x020df118
@@ -3546,14 +3545,14 @@ data_ov030_020ec8a8 kind:data(any) addr:0x020ec8a8
 // src/Field/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetMess kind:data(any) addr:0x020ec8d4 local
-@1359 kind:data(any) addr:0x020ec8e0 local
+@1365 kind:data(any) addr:0x020ec8e0 local
 data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_WhichArrow kind:data(any) addr:0x020ec91c local
-@1391 kind:data(any) addr:0x020ec928 local
+@1397 kind:data(any) addr:0x020ec928 local
 data_ov030_020ec938 kind:data(any) addr:0x020ec938 local
 
 //////////////////////////////////////////////////////////////////////
@@ -4484,68 +4483,68 @@ data_ov030_02100314 kind:data(any) addr:0x02100314
 data_ov030_02100328 kind:data(any) addr:0x02100328
 data_ov030_02100338 kind:data(any) addr:0x02100338
 data_ov030_0210033c kind:data(any) addr:0x0210033c
-data_ov030_021003fc kind:data(any) addr:0x021003fc
-data_ov030_02100400 kind:data(any) addr:0x02100400
-data_ov030_0210040c kind:data(any) addr:0x0210040c
-data_ov030_02100418 kind:data(any) addr:0x02100418
-data_ov030_02100424 kind:data(any) addr:0x02100424
-data_ov030_02100430 kind:data(any) addr:0x02100430
-data_ov030_02100440 kind:data(any) addr:0x02100440
-data_ov030_02100450 kind:data(any) addr:0x02100450
-data_ov030_02100460 kind:data(any) addr:0x02100460
-data_ov030_02100470 kind:data(any) addr:0x02100470
-data_ov030_02100480 kind:data(any) addr:0x02100480
-data_ov030_02100490 kind:data(any) addr:0x02100490
-data_ov030_021004a4 kind:data(any) addr:0x021004a4
-data_ov030_021004b8 kind:data(any) addr:0x021004b8
-data_ov030_021004cc kind:data(any) addr:0x021004cc
-data_ov030_021004e0 kind:data(any) addr:0x021004e0
-data_ov030_021004f4 kind:data(any) addr:0x021004f4
-data_ov030_02100508 kind:data(any) addr:0x02100508
-data_ov030_0210051c kind:data(any) addr:0x0210051c
-data_ov030_02100530 kind:data(any) addr:0x02100530
-data_ov030_02100544 kind:data(any) addr:0x02100544
-data_ov030_02100558 kind:data(any) addr:0x02100558
-data_ov030_0210056c kind:data(any) addr:0x0210056c
-data_ov030_02100580 kind:data(any) addr:0x02100580
-data_ov030_02100594 kind:data(any) addr:0x02100594
-data_ov030_021005ac kind:data(any) addr:0x021005ac
-data_ov030_021005c4 kind:data(any) addr:0x021005c4
-data_ov030_021005dc kind:data(any) addr:0x021005dc
-data_ov030_021005f4 kind:data(any) addr:0x021005f4
-data_ov030_0210060c kind:data(any) addr:0x0210060c
-data_ov030_02100624 kind:data(any) addr:0x02100624
-data_ov030_0210063c kind:data(any) addr:0x0210063c
-data_ov030_02100654 kind:data(any) addr:0x02100654
-data_ov030_0210066c kind:data(any) addr:0x0210066c
-data_ov030_02100684 kind:data(any) addr:0x02100684
-data_ov030_0210069c kind:data(any) addr:0x0210069c
-data_ov030_021006b4 kind:data(any) addr:0x021006b4
-data_ov030_021006cc kind:data(any) addr:0x021006cc
-data_ov030_021006e4 kind:data(any) addr:0x021006e4
-data_ov030_021006fc kind:data(any) addr:0x021006fc
-data_ov030_02100714 kind:data(any) addr:0x02100714
-data_ov030_0210072c kind:data(any) addr:0x0210072c
-data_ov030_02100744 kind:data(any) addr:0x02100744
-data_ov030_02100760 kind:data(any) addr:0x02100760
-data_ov030_0210077c kind:data(any) addr:0x0210077c
-data_ov030_02100798 kind:data(any) addr:0x02100798
-data_ov030_021007b4 kind:data(any) addr:0x021007b4
-data_ov030_021007d4 kind:data(any) addr:0x021007d4
-data_ov030_021007e4 kind:data(any) addr:0x021007e4
-data_ov030_021007f0 kind:data(any) addr:0x021007f0
-data_ov030_021007fc kind:data(any) addr:0x021007fc
-data_ov030_02100808 kind:data(any) addr:0x02100808
-data_ov030_02100820 kind:data(any) addr:0x02100820
-data_ov030_02100838 kind:data(any) addr:0x02100838
-data_ov030_02100840 kind:data(any) addr:0x02100840
-data_ov030_02100854 kind:data(any) addr:0x02100854
-data_ov030_02100868 kind:data(any) addr:0x02100868
-data_ov030_02100874 kind:data(any) addr:0x02100874
-data_ov030_02100880 kind:data(any) addr:0x02100880
-data_ov030_0210088c kind:data(any) addr:0x0210088c
-data_ov030_0210089c kind:data(any) addr:0x0210089c
-data_ov030_021008ac kind:data(any) addr:0x021008ac
+@10 kind:data(any) addr:0x021003fc local
+@11 kind:data(any) addr:0x02100400 local
+@12 kind:data(any) addr:0x0210040c local
+@13 kind:data(any) addr:0x02100418 local
+@14 kind:data(any) addr:0x02100424 local
+@15 kind:data(any) addr:0x02100430 local
+@16 kind:data(any) addr:0x02100440 local
+@17 kind:data(any) addr:0x02100450 local
+@18 kind:data(any) addr:0x02100460 local
+@19 kind:data(any) addr:0x02100470 local
+@20 kind:data(any) addr:0x02100480 local
+@21 kind:data(any) addr:0x02100490 local
+@22 kind:data(any) addr:0x021004a4 local
+@23 kind:data(any) addr:0x021004b8 local
+@24 kind:data(any) addr:0x021004cc local
+@25 kind:data(any) addr:0x021004e0 local
+@26 kind:data(any) addr:0x021004f4 local
+@27 kind:data(any) addr:0x02100508 local
+@28 kind:data(any) addr:0x0210051c local
+@29 kind:data(any) addr:0x02100530 local
+@30 kind:data(any) addr:0x02100544 local
+@31 kind:data(any) addr:0x02100558 local
+@32 kind:data(any) addr:0x0210056c local
+@33 kind:data(any) addr:0x02100580 local
+@34 kind:data(any) addr:0x02100594 local
+@35 kind:data(any) addr:0x021005ac local
+@36 kind:data(any) addr:0x021005c4 local
+@37 kind:data(any) addr:0x021005dc local
+@38 kind:data(any) addr:0x021005f4 local
+@39 kind:data(any) addr:0x0210060c local
+@40 kind:data(any) addr:0x02100624 local
+@41 kind:data(any) addr:0x0210063c local
+@42 kind:data(any) addr:0x02100654 local
+@43 kind:data(any) addr:0x0210066c local
+@44 kind:data(any) addr:0x02100684 local
+@45 kind:data(any) addr:0x0210069c local
+@46 kind:data(any) addr:0x021006b4 local
+@47 kind:data(any) addr:0x021006cc local
+@48 kind:data(any) addr:0x021006e4 local
+@49 kind:data(any) addr:0x021006fc local
+@50 kind:data(any) addr:0x02100714 local
+@51 kind:data(any) addr:0x0210072c local
+@52 kind:data(any) addr:0x02100744 local
+@53 kind:data(any) addr:0x02100760 local
+@54 kind:data(any) addr:0x0210077c local
+@55 kind:data(any) addr:0x02100798 local
+@56 kind:data(any) addr:0x021007b4 local
+@57 kind:data(any) addr:0x021007d4 local
+@58 kind:data(any) addr:0x021007e4 local
+@59 kind:data(any) addr:0x021007f0 local
+@60 kind:data(any) addr:0x021007fc local
+@61 kind:data(any) addr:0x02100808 local
+@62 kind:data(any) addr:0x02100820 local
+@63 kind:data(any) addr:0x02100838 local
+@64 kind:data(any) addr:0x02100840 local
+@65 kind:data(any) addr:0x02100854 local
+@66 kind:data(any) addr:0x02100868 local
+@67 kind:data(any) addr:0x02100874 local
+@68 kind:data(any) addr:0x02100880 local
+@69 kind:data(any) addr:0x0210088c local
+@70 kind:data(any) addr:0x0210089c local
+@71 kind:data(any) addr:0x021008ac local
 data_ov030_021008b0 kind:data(any) addr:0x021008b0
 data_ov030_021008b4 kind:data(any) addr:0x021008b4
 data_ov030_021008bc kind:data(any) addr:0x021008bc
@@ -6570,12 +6569,12 @@ data_ov030_021084a4 kind:data(any) addr:0x021084a4
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
-@1286 kind:data(any) addr:0x021084b8 local
+@1292 kind:data(any) addr:0x021084b8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
-@1312 kind:data(any) addr:0x021084c8 local
+@1318 kind:data(any) addr:0x021084c8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_GetBase.c

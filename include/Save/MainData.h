@@ -82,7 +82,7 @@ typedef struct MainData {
     /* 0x2484 */ u32            unk_2484;
     /* 0x2488 */ u32            unk_2488;
     /* 0x248C */ s32            unk_248C;
-    /* 0x2490 */ char           unk_2490[4];
+    /* 0x2490 */ s32            unk_2490;
     /* 0x2494 */ s32            unk_2494;
     /* 0x2498 */ s32            unk_2498;
     /* 0x249C */ s32            unk_249C;
@@ -102,8 +102,8 @@ typedef struct MainData {
     /* 0x24C4 */ u32            unk_24C4;
     /* 0x24C8 */ s32            unk_24C8[2];
     /* 0x24D0 */ char           unk_24D0[0x2548 - 0x24D0];
-    /* 0x2548 */ s16            unk_2548[2];
-    /* 0x254C */ char           unk_254C[0x2648 - 0x254C];
+    /* 0x2548 */ s16            unk_2548[44];
+    /* 0x25A0 */ char           unk_25A0[0x2648 - 0x25A0];
     /* 0x2648 */ s16            unk_2648;
     /* 0x264A */ s16            unk_264A;
     /* 0x264C */ s16            unk_264C;
@@ -178,7 +178,14 @@ typedef struct MainData {
     /* 0x26D8 */ u16            unk_26D8;
     /* 0x26DA */ u16            unk_26DA;
     /* 0x26DC */ u16            unk_26DC;
-    /* 0x26DE */ char           unk_26DE[0x30FC - 0x26DE];
+    /* 0x26DE */ char           unk_26DE[0x26E4 - 0x26DE];
+    /* 0x26E4 */ s16            unk_26E4;
+    /* 0x26E6 */ s16            unk_26E6;
+    /* 0x26E8 */ s16            unk_26E8;
+    /* 0x26EA */ char           unk_26EA[0x26EC - 0x26EA];
+    /* 0x26EC */ s32            unk_26EC;
+    /* 0x26F0 */ s32            unk_26F0;
+    /* 0x26F4 */ char           unk_26F4[0x30FC - 0x26F4];
     /* 0x30FC */ s16            unk_30FC;
     /* 0x30FE */ s16            unk_30FE;
     /* 0x3100 */ s16            unk_3100;
@@ -188,7 +195,7 @@ typedef struct MainData {
     /* 0x3108 */ s16            unk_3108;
     /* 0x310A */ char           unk_310A[0x310C - 0x310A];
     /* 0x310C */ void*          unk_310C;
-    /* 0x3110 */ char           unk_3110[0x3112 - 0x3110];
+    /* 0x3110 */ s16            unk_3110;
     /* 0x3112 */ u16            unk_3112;
     /* 0x3114 */ u16            unk_3114;
     /* 0x3116 */ u16            unk_3116;

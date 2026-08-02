@@ -79,6 +79,10 @@ DEFAULT_CC_FLAGS = " ".join(
     (*COMMON_CC_FLAGS, "-ipa file", "-str noreuse", "-Cpp_exceptions off")
 )
 
+STR_REUSE_CC_FLAGS = " ".join(
+    (*COMMON_CC_FLAGS, "-ipa file", "-str reuse", "-Cpp_exceptions off")
+)
+
 OLD_MWCC_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
 
 MSL_CC_FLAGS = " ".join(
@@ -114,6 +118,16 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
         version="1.2/sp4",
         flags=OLD_MWCC_CC_FLAGS,
+    ),
+    # The area name table shares one "tmp" literal between three of its slots, which
+    # only happens when duplicate string literals are pooled.
+    Path("src/Interface/Debug/Field/FieldSelect.c"): CompilerConfig(
+        version=MWCC_DEFAULT_VERSION,
+        flags=STR_REUSE_CC_FLAGS,
+    ),
+    Path("src/Interface/Debug/Field/EventSelect.c"): CompilerConfig(
+        version=MWCC_DEFAULT_VERSION,
+        flags=STR_REUSE_CC_FLAGS,
     ),
     Path("libs/c"): MSL_COMPILER_CONFIG,
     Path("libs/cpp"): MSL_COMPILER_CONFIG,

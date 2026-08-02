@@ -15,6 +15,19 @@ src/Field/EventManager.c:
 src/Field/EventFlags.c:
     .text       start:0x020aeb34 end:0x020aed54
 
+src/Interface/Debug/Field/FieldSelect.c:
+    .text       start:0x020b04ac end:0x020b1028
+    .rodata     start:0x020dbee0 end:0x020dbef8
+    .data       start:0x02100338 end:0x021008b0
+
+src/Interface/Debug/Field/EventSelect.c:
+    .text       start:0x020b1028 end:0x020b1cd8
+    .rodata     start:0x020dbef8 end:0x020df5a0
+    .data       start:0x021008b0 end:0x02106490
+
+src/Interface/Debug/Field/FieldVBlank.c:
+    .text       start:0x020b1cd8 end:0x020b20dc
+
 src/Field/UnknownTables.c:
     complete
     .text       start:0x020b891c end:0x020baa64
