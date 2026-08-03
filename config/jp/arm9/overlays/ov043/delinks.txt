@@ -1,0 +1,11 @@
+    .text       start:0x02082e80 end:0x0208f108 kind:code align:32
+    .rodata     start:0x0208f108 end:0x0208fab4 kind:rodata align:4
+    .ctor       start:0x0208fab4 end:0x0208fab4 kind:rodata align:4
+    .data       start:0x0208fac0 end:0x020902a0 kind:data align:32
+    .bss        start:0x020902a0 end:0x020902c0 kind:bss align:32
+
+src/Debug/Takami/Result.c:
+    .text       start:0x02082e80 end:0x0208f108
+    .rodata     start:0x0208f108 end:0x0208fab4
+    .data       start:0x0208fac0 end:0x020902a0
+    .bss        start:0x020902a0 end:0x020902c0

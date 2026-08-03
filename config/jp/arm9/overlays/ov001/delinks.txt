@@ -1,0 +1,10 @@
+    .text       start:0x02082e80 end:0x02083968 kind:code align:32
+    .rodata     start:0x02083968 end:0x020839fc kind:rodata align:4
+    .ctor       start:0x020839fc end:0x020839fc kind:rodata align:4
+    .data       start:0x02083a00 end:0x02083a60 kind:data align:32
+    .bss        start:0x02083a60 end:0x02083a60 kind:bss align:32
+
+src/Debug/Fukuda/Font.c:
+    .text       start:0x02082e80 end:0x02083968
+    .rodata     start:0x02083968 end:0x020839fc
+    .data       start:0x02083a00 end:0x02083a60

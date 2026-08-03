@@ -195,6 +195,7 @@ void Mtx_Concat43(const Mtx43* a, const Mtx43* b, Mtx43* dest) {
     }
 }
 
+#ifdef REGION_USA
 void Mtx_LookAt(const Vec* camPosition, const Vec* upDirection, const Vec* targetPosition, Mtx43* matrix) {
     Vec forward, right, up;
 
@@ -218,6 +219,7 @@ void Mtx_LookAt(const Vec* camPosition, const Vec* upDirection, const Vec* targe
     matrix->_31 = -Vec_DotProduct(camPosition, &up);
     matrix->_32 = -Vec_DotProduct(camPosition, &forward);
 }
+#endif
 
 // clang-format off
 asm void Mtx_Identity44(register Mtx44* matrix) {
@@ -328,6 +330,7 @@ static inline s32 FX_Mul_32x64(s32 a, s64 b) {
     return temp >> 32;
 }
 
+#ifdef REGION_USA
 void Mtx_OrthoW(s32 top, s32 bottom, s32 left, s32 right, s32 near, s32 far, s32 scale, Mtx44* mtx) {
     FX_InvAsync(right - left);
     mtx->_01 = 0;
@@ -364,3 +367,4 @@ void Mtx_OrthoW(s32 top, s32 bottom, s32 left, s32 right, s32 near, s32 far, s32
     mtx->_31 = FX_Mul_32x64(-top - bottom, topBottom);
     mtx->_32 = FX_Mul_32x64(far + near, nearFar);
 }
+#endif

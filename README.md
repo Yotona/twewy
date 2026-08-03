@@ -1,16 +1,27 @@
 # The World Ends With You (Nintendo DS)
 
-[decompdev-url]:https://decomp.dev/Yotona/twewy
-[progress-badge]:https://decomp.dev/Yotona/twewy.svg?mode=shield&label=Matched
+[decompdev-url-usa]:https://decomp.dev/Yotona/twewy/usa
+[decompdev-url-jp]:https://decomp.dev/Yotona/twewy/jp
 
-[![Matched][progress-badge]][decompdev-url]
+[perfect-usa-badge]:https://decomp.dev/Yotona/twewy/usa.svg?mode=shield&label=Perfect
+[fuzzy-usa-badge]:https://decomp.dev/Yotona/twewy/usa.svg?mode=shield&label=Fuzzy&color=%23a28c64&measure=fuzzy_match_percent
+[linked-usa-badge]:https://decomp.dev/Yotona/twewy/usa.svg?mode=shield&label=Linked&color=%2326a269&measure=complete_code_percent
+
+[perfect-jp-badge]:https://decomp.dev/Yotona/twewy/jp.svg?mode=shield&label=Perfect
+[fuzzy-jp-badge]:https://decomp.dev/Yotona/twewy/jp.svg?mode=shield&label=Fuzzy&color=%23a28c64&measure=fuzzy_match_percent
+[linked-jp-badge]:https://decomp.dev/Yotona/twewy/jp.svg?mode=shield&label=Linked&color=%2326a269&measure=complete_code_percent
 
 This repository contains a reverse-engineered codebase for *The World Ends With You* (TWEWY) for the Nintendo DS. The goal of this project is to study and understand the game's code and mechanics. All code is produced by individual contributors without the use of assets or files produced by their original creators. **No assets are included. This repository CANNOT build a functional ROM without the user supplying a legitimately obtained copy of the game.** No "ports" or modifications are planned or supported in any form by this repository, and such use cases will **never** be supported or considered.
+
+| Release                                                     | Serial Number | Progress                                                                                                                                           |
+|-------------------------------------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| *The World Ends With You* (North America)                   | NTR-AWLE-USA  | [![Fuzzy][fuzzy-usa-badge]][decompdev-url-usa] [![Perfect][perfect-usa-badge]][decompdev-url-usa] [![Linked][linked-usa-badge]][decompdev-url-usa] |
+| *Subarashiki Kono Sekai* (*It's a Wonderful World*) (Japan) | NTR-AWLJ-JPN  | [![Fuzzy][fuzzy-jp-badge]][decompdev-url-jp] [![Perfect][perfect-jp-badge]][decompdev-url-jp] [![Linked][linked-jp-badge]][decompdev-url-jp]       |
 
 ## Prerequisites
 
 1. This project supports the following operating systems:
-    - Windows (Recommended)
+    - Windows
     - Linux
 2. Install the following:
     - Python 3.11+ and pip
@@ -29,14 +40,14 @@ Note: For a byte-matching build, add a copy of the [ARM7 BIOS](docs/CONTRIBUTING
     - Rename and place this file into the `extract` directory. Supported cartridges and expected names are detailed in the [extract](extract/README.md) directory.
 
 2. **Initialize the Build Configuration**:
-    - Run `python tools/configure.py`
+    - Run `python tools/configure.py`. Optionally, specify the version to configure (e.g., `--version jp` for the Japanese version). If no version is specified, it defaults to the USA version.
     - This initializes the project for its first usage. After configuring once, the build command `ninja` will re-configure the project if needed.
 
 3. **Build the Project**:
     - Run `ninja`
     - When first performed, any missing required executables will be downloaded, as listed in the [tools](tools/download_tool.py) directory. This includes [dsd](https://github.com/AetiasHax/ds-decomp), [wibo](https://github.com/decompals/wibo), and the compilers used to build a matching executable.
 
-After the build completes, the final executable will be found in the [build](build) directory.
+After the build completes, the final executable will be found in the [build](build) directory, under the directory of the version that was configured.
 
 ## Contributing
 

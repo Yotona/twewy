@@ -1,0 +1,10 @@
+    .text       start:0x02082e80 end:0x02083b88 kind:code align:32
+    .rodata     start:0x02083b88 end:0x02083bb4 kind:rodata align:4
+    .ctor       start:0x02083bb4 end:0x02083bb4 kind:rodata align:4
+    .data       start:0x02083bc0 end:0x02083c60 kind:data align:32
+    .bss        start:0x02083c60 end:0x02083c60 kind:bss align:32
+
+src/Debug/Abe/Mini108.c:
+    .text       start:0x02082e80 end:0x02083b88
+    .rodata     start:0x02083b88 end:0x02083bb4
+    .data       start:0x02083bc0 end:0x02083c60

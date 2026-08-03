@@ -1,0 +1,11 @@
+    .text       start:0x02082e80 end:0x02091f0c kind:code align:32
+    .rodata     start:0x02091f0c end:0x02092efc kind:rodata align:4
+    .ctor       start:0x02092efc end:0x02092efc kind:rodata align:4
+    .data       start:0x02092f00 end:0x02093880 kind:data align:32
+    .bss        start:0x02093880 end:0x020939e0 kind:bss align:32
+
+src/Debug/Fukuda/OtosuMenu.c:
+    .text       start:0x02082e80 end:0x02091f0c
+    .rodata     start:0x02091f0c end:0x02092efc
+    .data       start:0x02092f00 end:0x02093880
+    .bss        start:0x02093880 end:0x020939e0

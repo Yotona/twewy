@@ -1,0 +1,11 @@
+func_01ff8000 kind:function(arm,size=0x58) addr:0x01ff8000
+func_01ff8058 kind:function(arm,size=0x15c) addr:0x01ff8058
+func_01ff81b4 kind:function(arm,size=0x34) addr:0x01ff81b4
+func_01ff81e8 kind:function(arm,size=0xcc) addr:0x01ff81e8
+func_01ff82b4 kind:function(arm,size=0x14) addr:0x01ff82b4
+func_01ff82c8 kind:function(arm,size=0xa8) addr:0x01ff82c8
+func_01ff8370 kind:function(arm,size=0xd8) addr:0x01ff8370
+func_01ff8448 kind:function(arm,size=0x40) addr:0x01ff8448
+func_01ff8488 kind:function(arm,size=0x70) addr:0x01ff8488
+func_01ff84f8 kind:function(arm,size=0x24) addr:0x01ff84f8
+func_01ff851c kind:function(arm,size=0x64) addr:0x01ff851c

@@ -1,0 +1,23 @@
+    .text       start:0x02082e80 end:0x0209749c kind:code align:32
+    .rodata     start:0x0209749c end:0x020984c0 kind:rodata align:4
+    .ctor       start:0x020984c0 end:0x020984c0 kind:rodata align:4
+    .data       start:0x020984e0 end:0x02098e60 kind:data align:32
+    .bss        start:0x02098e60 end:0x02098e80 kind:bss align:32
+
+src/Debug/Takami/Tusin.c:
+    .text       start:0x02082e80 end:0x02087458
+    .rodata     start:0x0209749c end:0x0209778c
+    .data       start:0x020984e0 end:0x020986dc
+    .bss        start:0x02098e60 end:0x02098e64
+
+src/Debug/Takami/TusinSet.c:
+    .text       start:0x02087458 end:0x0208ed2c
+    .rodata     start:0x0209778c end:0x02097ddc
+    .data       start:0x020986dc end:0x02098a4c
+    .bss        start:0x02098e64 end:0x02098e68
+
+src/Debug/Takami/FriendList.c:
+    .text       start:0x0208ed2c end:0x0209749c
+    .rodata     start:0x02097ddc end:0x020984c0
+    .data       start:0x02098a4c end:0x02098e60
+    .bss        start:0x02098e68 end:0x02098e80

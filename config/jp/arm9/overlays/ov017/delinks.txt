@@ -1,0 +1,22 @@
+    .text       start:0x021259e0 end:0x02141674 kind:code align:32
+    .rodata     start:0x02141674 end:0x02142e3c kind:rodata align:4
+    .ctor       start:0x02142e3c end:0x02142e3c kind:rodata align:4
+    .data       start:0x02142e40 end:0x02143ac0 kind:data align:32
+    .bss        start:0x02143ac0 end:0x02143bc0 kind:bss align:32
+
+src/Combat/Noise/Boss02/BtlBoss02_00_RG.c:
+    .text       start:0x021259e0 end:0x021266fc
+    .rodata     start:0x02141674 end:0x021417d0
+    .data       start:0x02142e40 end:0x02142ef4
+
+src/Combat/Noise/Boss02.c:
+    .text       start:0x021266fc end:0x02130548
+    .rodata     start:0x021417d0 end:0x02142194
+    .data       start:0x02142ef4 end:0x021432a4
+    .bss        start:0x02143ac0 end:0x02143b64
+
+src/Combat/Noise/Boss03.c:
+    .text       start:0x02130548 end:0x02141674
+    .rodata     start:0x02142194 end:0x02142e3c
+    .data       start:0x021432a4 end:0x02143ac0
+    .bss        start:0x02143b64 end:0x02143bc0

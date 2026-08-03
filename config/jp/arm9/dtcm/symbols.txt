@@ -1,0 +1,4 @@
+IRQCallbacks kind:data(any) addr:0x027e0000
+data_027e0021 kind:data(any) addr:0x027e0021
+IRQThreadQueue kind:bss addr:0x027e0060
+data_027e0070 kind:bss addr:0x027e0070

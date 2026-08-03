@@ -1,0 +1,10 @@
+    .text       start:0x02082e80 end:0x02085178 kind:code align:32
+    .rodata     start:0x02085178 end:0x020851ec kind:rodata align:4
+    .ctor       start:0x020851ec end:0x020851ec kind:rodata align:4
+    .data       start:0x02085200 end:0x02085320 kind:data align:32
+    .bss        start:0x02085320 end:0x02085320 kind:bss align:32
+
+src/Debug/Suyama/StaffRoll.c:
+    .text       start:0x02082e80 end:0x02085178
+    .rodata     start:0x02085178 end:0x020851ec
+    .data       start:0x02085200 end:0x02085320

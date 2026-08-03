@@ -1,0 +1,15 @@
+    .text       start:0x02082e80 end:0x02084414 kind:code align:32
+    .rodata     start:0x02084414 end:0x02084944 kind:rodata align:4
+    .ctor       start:0x02084944 end:0x02084944 kind:rodata align:4
+    .data       start:0x02084960 end:0x020851c0 kind:data align:32
+    .bss        start:0x020851c0 end:0x020851c0 kind:bss align:32
+
+src/Debug/Launcher.c:
+    .text       start:0x02082e80 end:0x02084078
+    .rodata     start:0x02084414 end:0x02084928
+    .data       start:0x02084960 end:0x0208516c
+
+src/Interface/Debug/Launcher/LauncherIcon.c:
+    .text       start:0x02084078 end:0x02084414
+    .rodata     start:0x02084928 end:0x02084944
+    .data       start:0x0208516c end:0x020851c0

@@ -1,0 +1,7 @@
+from:0x02118d94 kind:load to:0x027e0070 module:dtcm
+from:0x02125e40 kind:load to:0x02060070 module:main
+from:0x02125e60 kind:load to:0x02080070 module:main
+from:0x02125e94 kind:load to:0x020a0070 module:overlays(37,39)
+from:0x02125ee4 kind:load to:0x020e0082 module:overlays(3,30)
+from:0x02125f00 kind:load to:0x020f0060 module:overlay(30)
+from:0x02125f20 kind:load to:0x02110070 module:overlay(32)
