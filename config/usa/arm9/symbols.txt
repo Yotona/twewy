@@ -169,7 +169,7 @@ func_02004d60 kind:function(arm,size=0xac) addr:0x02004d60
 func_02004e0c kind:function(arm,size=0x8c) addr:0x02004e0c
 
 /////////////////////////////////////////////////////////////
-// src/Input.c
+// src/Engine/IO/Input.c
 /////////////////////////////////////////////////////////////
 Input_Init kind:function(arm,size=0x3c) addr:0x02004e98
 Input_PollState kind:function(arm,size=0x74) addr:0x02004ed4
@@ -3351,7 +3351,7 @@ data_0205a124 kind:data(any) addr:0x0205a124
 data_0205a128 kind:data(any) addr:0x0205a128
 
 /////////////////////////////////////////////////////////////
-// src/Input.c
+// src/Engine/IO/Input.c
 /////////////////////////////////////////////////////////////
 RepeatButtons kind:data(any) addr:0x0205a928 local
 

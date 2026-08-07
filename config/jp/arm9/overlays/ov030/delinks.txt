@@ -1,0 +1,80 @@
+    .text       start:0x02082e80 end:0x020d8974 kind:code align:32
+    .rodata     start:0x020d8974 end:0x020fcf68 kind:rodata align:4
+    .ctor       start:0x020fcf68 end:0x020fcf68 kind:rodata align:4
+    .data       start:0x020fcf80 end:0x02108b80 kind:data align:32
+    .bss        start:0x02108b80 end:0x02109040 kind:bss align:32
+
+src/Field/Events.c:
+    .text       start:0x0208540c end:0x020a7078
+    .rodata     start:0x020d9a04 end:0x020d9ab4
+
+src/Field/EventManager.c:
+    .text       start:0x020a7078 end:0x020ab420
+
+src/Field/EventFlags.c:
+    .text       start:0x020af230 end:0x020af450
+
+src/Interface/Debug/Field/FieldSelect.c:
+    .text       start:0x020b0bb4 end:0x020b1730
+    .rodata     start:0x020db2cc end:0x020db2e4
+    .data       start:0x020ff438 end:0x020ff9b0
+
+src/Interface/Debug/Field/EventSelect.c:
+    .text       start:0x020b1730 end:0x020b23dc
+    .rodata     start:0x020db2e4 end:0x020de98c
+    .data       start:0x020ff9b0 end:0x02105590
+
+src/Interface/Debug/Field/FieldVBlank.c:
+    .text       start:0x020b23dc end:0x020b27e0
+
+src/Field/UnknownTables.c:
+    .text       start:0x020b901c end:0x020bb110
+    .rodata     start:0x020e424c end:0x020e42fc
+
+src/Field/Fld_TalkEventStringPlate.c:
+    categories: Field
+    .text       start:0x020c3ebc end:0x020c42d0
+    .rodata     start:0x020e6488 end:0x020e64d0
+    .data       start:0x02106698 end:0x021066b8
+
+src/Field/Fld_TalkEventKeywordMenu.c:
+    categories: Field
+    .text       start:0x020c42d0 end:0x020c4780
+    .rodata     start:0x020e64d0 end:0x020e64ec
+    .data       start:0x021066b8 end:0x021066d8
+
+src/Field/Fld_GetMess.c:
+    categories: Field
+    .text       start:0x020c76c0 end:0x020c7a34
+    .rodata     start:0x020ebba8 end:0x020ebbf0
+    .data       start:0x021075b8 end:0x021075c8
+
+src/Field/Fld_WhichArrow.c:
+    categories: Field
+    .text       start:0x020c7a34 end:0x020c7d14
+    .rodata     start:0x020ebbf0 end:0x020ebc38
+    .data       start:0x021075c8 end:0x021075dc
+
+src/Field/Fld_GetBase.c:
+    categories: Field
+    .text       start:0x020c7d14 end:0x020c7f84
+    .rodata     start:0x020ebc38 end:0x020ebc80
+    .data       start:0x021075dc end:0x021075ec
+
+src/Field/Fld_GetItem.c:
+    categories: Field
+    .text       start:0x020c7f84 end:0x020c84dc
+    .rodata     start:0x020ebc80 end:0x020ebd00
+    .data       start:0x021075ec end:0x021076a8
+
+src/Field/Fld_Choice.c:
+    categories: Field
+    .text       start:0x020c84dc end:0x020c8904
+    .rodata     start:0x020ebd00 end:0x020ebd1c
+    .data       start:0x021076a8 end:0x021076b8
+
+src/Field/Fld_UGFade.c:
+    categories: Field
+    .text       start:0x020c8904 end:0x020c8ab4
+    .rodata     start:0x020ebd1c end:0x020ebd38
+    .data       start:0x021076b8 end:0x021076c8

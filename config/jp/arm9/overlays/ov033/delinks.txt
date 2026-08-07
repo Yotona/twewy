@@ -1,0 +1,3 @@
+    .rodata     start:0x0210c860 end:0x021280ec kind:rodata align:4
+    .ctor       start:0x021280ec end:0x021280ec kind:rodata align:4
+    .bss        start:0x02128100 end:0x02128100 kind:bss align:32

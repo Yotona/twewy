@@ -157,9 +157,11 @@ void main(void) {
             MainOvlDisp_Run();
             SndMgr_Finalize();
 
+#ifdef REGION_USA
             if (SystemStatusFlags.unk_03 != FALSE) {
                 func_020218ec();
             }
+#endif
 
             // Trigger a soft reset when Start + Select + L + R are pressed
             if ((InputStatus.buttonState.currButtons & INPUT_SOFT_RESET) == INPUT_SOFT_RESET) {

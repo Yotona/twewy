@@ -1,0 +1,61 @@
+    .text       start:0x020f1520 end:0x02122b94 kind:code align:32
+    .rodata     start:0x02122b94 end:0x02124b58 kind:rodata align:4
+    .ctor       start:0x02124b58 end:0x02124b58 kind:rodata align:4
+    .data       start:0x02124b60 end:0x02125940 kind:data align:32
+    .bss        start:0x02125940 end:0x021259e0 kind:bss align:32
+
+src/Combat/Noise/BtlEnm012/BtlEnm012_RG.c:
+    .text       start:0x0210b5f4 end:0x0210f558
+
+src/Combat/Noise/BtlEnm012/BtlEnm012_UG.c:
+    .text       start:0x0210f558 end:0x021128f8
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_Eff.c:
+    .text       start:0x021128f8 end:0x021132cc
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_RG.c:
+    .text       start:0x021132cc end:0x02114a20
+
+src/Combat/Noise/BtlEnm019/BtlEnm019_UG.c:
+    .text       start:0x02114a20 end:0x02117400
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_EffBack.c:
+    .text       start:0x02117400 end:0x021177f0
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_Intrude.c:
+    .text       start:0x021177f0 end:0x02117cbc
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_RG.c:
+    .text       start:0x02117cbc end:0x02119784
+
+src/Combat/Noise/BtlEnm028/BtlEnm028_UG.c:
+    .text       start:0x02119784 end:0x0211b414
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_EffBoom.c:
+    .text       start:0x0211b414 end:0x0211bb4c
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_EffGuard.c:
+    .text       start:0x0211bb4c end:0x0211bd74
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_RG.c:
+    .text       start:0x0211bd74 end:0x0211e180
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_Thrw.c:
+    .text       start:0x0211e180 end:0x0211e64c
+
+src/Combat/Noise/BtlEnm044/BtlEnm044_UG.c:
+    .text       start:0x0211e64c end:0x02120cb4
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_Eff.c:
+    .text       start:0x02120cb4 end:0x02120ec4
+    .data       start:0x021258e4 end:0x021258f8
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_RG.c:
+    .text       start:0x02120ec4 end:0x021217e8
+    .rodata     start:0x02124ae4 end:0x02124b1c
+    .data       start:0x021258f8 end:0x02125918
+
+src/Combat/Noise/BtlEnm003/BtlEnm003_UG.c:
+    .text       start:0x021217e8 end:0x02122b94
+    .rodata     start:0x02124b1c end:0x02124b58
+    .data       start:0x02125918 end:0x02125940

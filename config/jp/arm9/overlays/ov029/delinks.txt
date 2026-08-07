@@ -1,0 +1,10 @@
+    .text       start:0x02082e80 end:0x02083dc0 kind:code align:32
+    .rodata     start:0x02083dc0 end:0x02083dcc kind:rodata align:4
+    .ctor       start:0x02083dcc end:0x02083dcc kind:rodata align:4
+    .data       start:0x02083de0 end:0x0208c2e0 kind:data align:32
+    .bss        start:0x0208c2e0 end:0x0208c2e0 kind:bss align:32
+
+src/Debug/Kitawaki/SoundTest.c:
+    .text       start:0x02082e80 end:0x02083dc0
+    .rodata     start:0x02083dc0 end:0x02083dcc
+    .data       start:0x02083de0 end:0x0208c2e0

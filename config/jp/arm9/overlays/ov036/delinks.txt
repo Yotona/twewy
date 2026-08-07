@@ -1,0 +1,14 @@
+    .text       start:0x02082e80 end:0x02084320 kind:code align:32
+    .rodata     start:0x02084320 end:0x02084444 kind:rodata align:4
+    .ctor       start:0x02084444 end:0x02084444 kind:rodata align:4
+    .data       start:0x02084460 end:0x02084640 kind:data align:32
+    .bss        start:0x02084640 end:0x02084660 kind:bss align:32
+
+src/Debug/Bul/OpenEnd.c:
+    .text       start:0x02082e80 end:0x02083ff8
+    .rodata     start:0x02084320 end:0x02084444
+    .data       start:0x02084460 end:0x02084640
+    .bss        start:0x02084640 end:0x02084660
+
+src/Interface/Menu/OpenEnd/OpenEnd_Badge.c:
+    .text       start:0x02083ff8 end:0x02084320

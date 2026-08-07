@@ -1,0 +1,11 @@
+    .text       start:0x020e7800 end:0x020ed0e8 kind:code align:32
+    .rodata     start:0x020ed0e8 end:0x020ed750 kind:rodata align:4
+    .ctor       start:0x020ed750 end:0x020ed750 kind:rodata align:4
+    .data       start:0x020ed760 end:0x020ed8a0 kind:data align:32
+    .bss        start:0x020ed8a0 end:0x020edbc0 kind:bss align:32
+
+src/Debug/Horii/NoiseReport.c:
+    .text       start:0x020e7800 end:0x020ed0e8
+    .rodata     start:0x020ed0e8 end:0x020ed750
+    .data       start:0x020ed760 end:0x020ed8a0
+    .bss        start:0x020ed8a0 end:0x020edbc0

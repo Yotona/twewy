@@ -1,0 +1,10 @@
+    .text       start:0x02082e80 end:0x020839ec kind:code align:32
+    .rodata     start:0x020839ec end:0x020839f8 kind:rodata align:4
+    .ctor       start:0x020839f8 end:0x020839f8 kind:rodata align:4
+    .data       start:0x02083a00 end:0x02083a40 kind:data align:32
+    .bss        start:0x02083a40 end:0x02083a40 kind:bss align:32
+
+src/Debug/Sugata/STSample.c:
+    .text       start:0x02082e80 end:0x020839ec
+    .rodata     start:0x020839ec end:0x020839f8
+    .data       start:0x02083a00 end:0x02083a40

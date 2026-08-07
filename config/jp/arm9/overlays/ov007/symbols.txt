@@ -1,0 +1,32 @@
+func_ov007_020e7800 kind:function(arm,size=0x14) addr:0x020e7800
+func_ov007_020e7814 kind:function(arm,size=0x64) addr:0x020e7814
+func_ov007_020e7878 kind:function(arm,size=0xa0) addr:0x020e7878
+func_ov007_020e7918 kind:function(arm,size=0xbc) addr:0x020e7918
+func_ov007_020e79d4 kind:function(arm,size=0x38) addr:0x020e79d4
+func_ov007_020e7a0c kind:function(arm,size=0x8) addr:0x020e7a0c
+func_ov007_020e7a14 kind:function(arm,size=0x8) addr:0x020e7a14
+func_ov007_020e7a1c kind:function(arm,size=0x68) addr:0x020e7a1c
+func_ov007_020e7a84 kind:function(arm,size=0x18) addr:0x020e7a84
+func_ov007_020e7a9c kind:function(arm,size=0x50) addr:0x020e7a9c
+func_ov007_020e7aec kind:function(arm,size=0x50) addr:0x020e7aec
+func_ov007_020e7b3c kind:function(arm,size=0x40) addr:0x020e7b3c
+func_ov007_020e7b7c kind:function(arm,size=0x208) addr:0x020e7b7c
+func_ov007_020e7d84 kind:function(arm,size=0x38) addr:0x020e7d84
+func_ov007_020e7dbc kind:function(arm,size=0x54) addr:0x020e7dbc
+func_ov007_020e7e10 kind:function(arm,size=0x68) addr:0x020e7e10
+func_ov007_020e7e78 kind:function(arm,size=0x7c) addr:0x020e7e78
+func_ov007_020e7ef4 kind:function(arm,size=0x38) addr:0x020e7ef4
+func_ov007_020e7f2c kind:function(arm,size=0xc8) addr:0x020e7f2c
+func_ov007_020e7ff4 kind:function(arm,size=0x144) addr:0x020e7ff4
+func_ov007_020e8138 kind:function(arm,size=0xb0) addr:0x020e8138
+func_ov007_020e81e8 kind:function(arm,size=0x5c) addr:0x020e81e8
+func_ov007_020e8244 kind:function(arm,size=0x10c) addr:0x020e8244
+func_ov007_020e8350 kind:function(arm,size=0x30) addr:0x020e8350
+func_ov007_020e8380 kind:function(arm,size=0x68) addr:0x020e8380
+data_ov007_020e83e8 kind:data(any) addr:0x020e83e8 ambiguous
+data_ov007_020e83f4 kind:data(any) addr:0x020e83f4
+data_ov007_020e8404 kind:data(any) addr:0x020e8404 ambiguous
+data_ov007_020e8410 kind:data(any) addr:0x020e8410
+data_ov007_020e8420 kind:data(any) addr:0x020e8420
+data_ov007_020e8440 kind:data(any) addr:0x020e8440
+data_ov007_020e8454 kind:data(any) addr:0x020e8454

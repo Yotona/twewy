@@ -15,6 +15,7 @@ from get_platform import Platform, get_platform
 # Game Versions
 VERSIONS = [
     "usa",
+    "jp",
 ]
 DEFAULT_VERSION = VERSIONS.index("usa")
 
@@ -431,7 +432,7 @@ def main():
         mwcc_prefix = f"{WINE} " if WINE else ""
         mwcc_cmd = (
             f'{mwcc_prefix}"$compiler" $common_cc_flags {CC_INCLUDES} $cc_flags '
-            "-d $game_version -MD -c $in -o $basedir"
+            "-d $region_define -MD -c $in -o $basedir"
         )
         mwcc_common_implicit: list[str] = []
         if platform.system != "windows":
@@ -696,7 +697,7 @@ def add_mwcc_builds(
             rule="mwcc",
             outputs=str(src_obj_path.with_suffix(".o")),
             variables={
-                "game_version": project.game_version,
+                "region_define": f"REGION_{project.game_version.upper()}",
                 "cc_flags": " ".join(cc_flags),
                 "basedir": os.path.dirname(src_obj_path),
                 "basefile": str(src_obj_path.with_suffix("")),
