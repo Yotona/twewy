@@ -1,7 +1,7 @@
 from:0x0210db4c kind:load to:0x0210db9c module:overlay(36)
 from:0x0210db68 kind:arm_call to:0x0210db50 module:overlay(36)
 from:0x0210db88 kind:load to:0x0210db9c module:overlay(36)
-from:0x0210db98 kind:load to:0x0210dba0 module:overlay(36)
+from:0x0210db98 kind:load to:0x0210db9c add:0x4 module:overlay(36)
 from:0x0210dba0 kind:load to:0x0210ddd0 module:overlay(36)
 from:0x0210dba8 kind:load to:0x0210de60 module:overlay(36)
 from:0x0210dbb0 kind:load to:0x0210e06c module:overlay(36)
