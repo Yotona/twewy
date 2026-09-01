@@ -2728,53 +2728,125 @@ _ZSt10unexpectedv kind:function(arm,size=0x18) addr:0x020590b0
 __throw_catch_compare kind:function(arm,size=0x1b0) addr:0x020590c8
 _Z15__PopStackFrameP12ThrowContextP13ExceptionInfo kind:function(arm,size=0x5c) addr:0x02059278
 _Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:function(arm,size=0xa0) addr:0x020592d4
-_Z20__FindExceptionTableP13ExceptionInfoPc kind:function(arm,size=0x20) addr:0x02059374
+__FindExceptionTable kind:function(arm,size=0x20) addr:0x02059374
 _Z16__SkipUnwindInfoPc kind:function(arm,size=0x30) addr:0x02059394
 _Z17__TransferControlP12ThrowContextP13ExceptionInfoPc kind:function(arm,size=0x30) addr:0x020593c4
 __throw kind:function(arm,size=0x48) addr:0x020593f4
 __rethrow kind:function(arm,size=0x4c) addr:0x0205943c
 _ExitProcess kind:function(arm,size=0xc) addr:0x02059488
-data_02059494 kind:data(any) addr:0x02059494
-data_0205949c kind:data(any) addr:0x0205949c
+@ET@0204b130 kind:data(any) addr:0x02059494
+@ET@0204bf3c kind:data(any) addr:0x0205949c
 @ET@__strtold kind:data(any) addr:0x020594a4 local
-data_020594ac kind:data(any) addr:0x020594ac
-data_020594b4 kind:data(any) addr:0x020594b4
-data_020594bc kind:data(any) addr:0x020594bc
-data_020594c4 kind:data(any) addr:0x020594c4
-data_020594cc kind:data(any) addr:0x020594cc
-data_020594d4 kind:data(any) addr:0x020594d4
-data_020594e4 kind:data(any) addr:0x020594e4
-data_020594ec kind:data(any) addr:0x020594ec
-data_02059500 kind:data(any) addr:0x02059500
-data_02059508 kind:data(any) addr:0x02059508
-data_02059510 kind:data(any) addr:0x02059510
-data_02059528 kind:data(any) addr:0x02059528
-data_02059540 kind:data(any) addr:0x02059540
-data_02059554 kind:data(any) addr:0x02059554
-data_02059568 kind:data(any) addr:0x02059568
+@ET@02050564 kind:data(any) addr:0x020594ac
+@ET@020516ec kind:data(any) addr:0x020594b4
+@ET@020520d4 kind:data(any) addr:0x020594bc
+@ET@02054528 kind:data(any) addr:0x020594c4
+@ET@02057a24 kind:data(any) addr:0x020594cc
+@ET@02057dac kind:data(any) addr:0x020594d4
+@ET@0205865c kind:data(any) addr:0x020594e4
+@ET@02058834 kind:data(any) addr:0x020594ec
+@ET@020588e0 kind:data(any) addr:0x02059500
+@ET@02058940 kind:data(any) addr:0x02059508
+@ET@02058cf0 kind:data(any) addr:0x02059510
+@ET@02058d68 kind:data(any) addr:0x02059528
+@ET@02058e30 kind:data(any) addr:0x02059540
+@ET@02058e8c kind:data(any) addr:0x02059554
+@ET@02058f44 kind:data(any) addr:0x02059568
 @EX@abort kind:data(any) addr:0x02059590
+@EX@02049300 kind:data(word[3]) addr:0x0205959c
+@EX@0204934c kind:data(word[3]) addr:0x020595a8
 @EX@nan kind:data(any) addr:0x020595b4 local
 @EX@malloc kind:data(any) addr:0x020595c0 local
+@EX@020494a4 kind:data(word[3]) addr:0x020595cc
 @EX@__flush_all kind:data(any) addr:0x020595d8 local
 @EX@__flush_buffer kind:data(any) addr:0x020595e4 local
 @EX@fflush kind:data(any) addr:0x020595f0 local
 @EX@mbtowc kind:data(any) addr:0x020595fc local
+@EX@0204972c kind:data(word[3]) addr:0x02059608
+@EX@02049748 kind:data(word[3]) addr:0x02059614
 @EX@memset kind:data(any) addr:0x02059620 local
-data_0205962c kind:data(any) addr:0x0205962c
-data_02059698 kind:data(any) addr:0x02059698
+@EX@02049ea0 kind:data(word[3]) addr:0x0205962c
+@EX@0204a0ec kind:data(word[3]) addr:0x02059638
+@EX@0204a3cc kind:data(word[3]) addr:0x02059644
+@EX@0204a9cc kind:data(word[3]) addr:0x02059650
+@EX@0204b130 kind:data(word[3]) addr:0x0205965c
+@EX@0204b954 kind:data(word[3]) addr:0x02059668
+@EX@0204b998 kind:data(word[3]) addr:0x02059674
+@EX@0204ba00 kind:data(word[3]) addr:0x02059680
+@EX@0204ba18 kind:data(word[3]) addr:0x0205968c
+@EX@0204bf3c kind:data(word[3]) addr:0x02059698
+@EX@0204cd14 kind:data(word[3]) addr:0x020596a4
+@EX@0204cd68 kind:data(word[3]) addr:0x020596b0
 @EX@raise kind:data(any) addr:0x020596bc local
 @EX@__strtold kind:data(any) addr:0x020596c8 local
-data_020596d4 kind:data(any) addr:0x020596d4
-data_020596f8 kind:data(any) addr:0x020596f8
+@EX@0204e444 kind:data(word[3]) addr:0x020596d4
+@EX@0204e82c kind:data(word[3]) addr:0x020596e0
+@EX@0204ec78 kind:data(word[3]) addr:0x020596ec
+@EX@0204ed10 kind:data(word[3]) addr:0x020596f8
+@EX@0204f508 kind:data(word[3]) addr:0x02059704
+@EX@0204fc54 kind:data(word[3]) addr:0x02059710
+@EX@0205038c kind:data(word[3]) addr:0x0205971c
+@EX@02050564 kind:data(word[3]) addr:0x02059728
+@EX@020516ec kind:data(word[3]) addr:0x02059734
+@EX@02051db4 kind:data(word[3]) addr:0x02059740
+@EX@020520d4 kind:data(word[3]) addr:0x0205974c
+@EX@02052c90 kind:data(word[3]) addr:0x02059758
+@EX@02052f34 kind:data(word[3]) addr:0x02059764
+@EX@020530c4 kind:data(word[3]) addr:0x02059770
+@EX@02053284 kind:data(word[3]) addr:0x0205977c
+@EX@02053340 kind:data(word[3]) addr:0x02059788
+@EX@0205358c kind:data(word[3]) addr:0x02059794
+@EX@02053700 kind:data(word[3]) addr:0x020597a0
+@EX@0205370c kind:data(word[3]) addr:0x020597ac
+@EX@02053718 kind:data(word[3]) addr:0x020597b8
+@EX@02053724 kind:data(word[3]) addr:0x020597c4
+@EX@020537ec kind:data(word[3]) addr:0x020597d0
+@EX@0205382c kind:data(word[3]) addr:0x020597dc
+@EX@020538f8 kind:data(word[3]) addr:0x020597e8
+@EX@02053a7c kind:data(word[3]) addr:0x020597f4
+@EX@02053b18 kind:data(word[3]) addr:0x02059800
+@EX@02054300 kind:data(word[3]) addr:0x0205980c
+@EX@02054480 kind:data(word[3]) addr:0x02059818
+@EX@02054528 kind:data(word[3]) addr:0x02059824
+@EX@02054c64 kind:data(word[3]) addr:0x02059830
 @EX@__sys_alloc kind:data(any) addr:0x0205983c local
+@EX@02054ca8 kind:data(word[3]) addr:0x02059848
 @EX@__read_console kind:data(any) addr:0x02059854 local
-data_0205986c kind:data(any) addr:0x0205986c
-data_020598e4 kind:data(any) addr:0x020598e4
-data_02059938 kind:data(any) addr:0x02059938
-data_02059950 kind:data(any) addr:0x02059950
-data_02059980 kind:data(any) addr:0x02059980
+@EX@02057748 kind:data(word[3]) addr:0x02059860
+@EX@02057900 kind:data(word[3]) addr:0x0205986c
+@EX@02057a24 kind:data(word[3]) addr:0x02059878
+@EX@02057dac kind:data(word[3]) addr:0x02059884
+@EX@0205865c kind:data(word[3]) addr:0x02059890
+@EX@020587b0 kind:data(word[3]) addr:0x0205989c
+@EX@02058834 kind:data(word[3]) addr:0x020598a8
+@EX@020588e0 kind:data(word[3]) addr:0x020598b4
+@EX@02058940 kind:data(word[3]) addr:0x020598c0
+@EX@02058b78 kind:data(word[3]) addr:0x020598cc
+@EX@02058c64 kind:data(word[3]) addr:0x020598d8
+@EX@02058c8c kind:data(word[3]) addr:0x020598e4
+@EX@02058cac kind:data(word[3]) addr:0x020598f0
+@EX@02058cf0 kind:data(word[3]) addr:0x020598fc
+@EX@02058d54 kind:data(word[3]) addr:0x02059908
+@EX@02058d68 kind:data(word[3]) addr:0x02059914
+@EX@02058d94 kind:data(word[3]) addr:0x02059920
+@EX@02058da0 kind:data(word[3]) addr:0x0205992c
+@EX@02058dc0 kind:data(word[3]) addr:0x02059938
+@EX@02058dec kind:data(word[3]) addr:0x02059944
+@EX@02058e30 kind:data(word[3]) addr:0x02059950
+@EX@02058e8c kind:data(word[3]) addr:0x0205995c
+@EX@02058f44 kind:data(word[3]) addr:0x02059968
+@EX@02058fd4 kind:data(word[3]) addr:0x02059974
+@EX@0205900c kind:data(word[3]) addr:0x02059980
+@EX@02059020 kind:data(word[3]) addr:0x0205998c
+@EX@0205903c kind:data(word[3]) addr:0x02059998
+@EX@02059050 kind:data(word[3]) addr:0x020599a4
+@EX@02059064 kind:data(word[3]) addr:0x020599b0
 @EX@_ZSt9dthandlerv kind:data(any) addr:0x020599bc local
-data_020599ec kind:data(any) addr:0x020599ec
+@EX@0205908c kind:data(word[3]) addr:0x020599c8
+@EX@02059098 kind:data(word[3]) addr:0x020599d4
+@EX@020590b0 kind:data(word[3]) addr:0x020599e0
+@EX@020592d4 kind:data(word[3]) addr:0x020599ec
+@EX@02059394 kind:data(word[3]) addr:0x020599f8
 @EX@_ExitProcess kind:data(any) addr:0x02059a04 local
 data_02059a10 kind:data(any) addr:0x02059a10
 data_02059a1c kind:data(any) addr:0x02059a1c
@@ -3926,8 +3998,8 @@ __console_exit kind:bss addr:0x02082910
 __atexit_funcs kind:bss addr:0x02082920 local
 __cs_id kind:bss addr:0x02082a20
 __cs_ref kind:bss addr:0x02082a44
-data_02082b10 kind:bss addr:0x02082b10
 __cs kind:bss addr:0x02082a68
+data_02082b10 kind:bss addr:0x02082b10
 stderr_buff kind:bss addr:0x02082b40 local
 stdout_buff kind:bss addr:0x02082c40 local
 stdin_buff kind:bss addr:0x02082d40 local

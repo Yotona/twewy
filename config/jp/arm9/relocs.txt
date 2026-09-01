@@ -8586,8 +8586,8 @@ from:0x020590ac kind:load to:0x02067264 module:main
 from:0x020590c4 kind:load to:0x02067264 module:main
 from:0x02059334 kind:arm_call to:0x02057810 module:main
 from:0x02059344 kind:arm_call to:0x02057810 module:main
-from:0x0205938c kind:load to:0x02059590 module:main
-from:0x02059390 kind:load to:0x02059a10 module:main
+from:0x0205938c kind:link_time_const(__exception_table_start__)
+from:0x02059390 kind:link_time_const(__exception_table_end__)
 from:0x020593a4 kind:arm_call to:0x02057810 module:main
 from:0x020593b8 kind:arm_call to:0x02057810 module:main
 from:0x02059438 kind:arm_branch to:0x02058b78 module:main
