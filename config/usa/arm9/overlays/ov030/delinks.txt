@@ -82,3 +82,10 @@ src/Field/Fld_UGFade.c:
     .text       start:0x020c83f4 end:0x020c85a4
     .rodata     start:0x020eca48 end:0x020eca64
     .data       start:0x021085b8 end:0x021085c8
+
+src/Interface/Debug/Field/FieldMessageSelect.c:
+    categories: Field
+    complete
+    .text       start:0x020c9990 end:0x020ca1f4
+    .rodata     start:0x020ecd0c end:0x020ecda8
+    .data       start:0x0210882c end:0x021088ec

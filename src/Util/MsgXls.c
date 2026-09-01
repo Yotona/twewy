@@ -1,4 +1,4 @@
-#include <nitro/types.h>
+#include "Util/MsgXls.h"
 
 typedef struct {
     /* 0x0 */ s32         mesNum;

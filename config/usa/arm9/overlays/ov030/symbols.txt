@@ -1374,20 +1374,20 @@ func_ov030_020c975c kind:function(arm,size=0x114) addr:0x020c975c
 func_ov030_020c9870 kind:function(arm,size=0x8c) addr:0x020c9870
 func_ov030_020c98fc kind:function(arm,size=0x54) addr:0x020c98fc
 func_ov030_020c9950 kind:function(arm,size=0x40) addr:0x020c9950
-func_ov030_020c9990 kind:function(arm,size=0x88) addr:0x020c9990
-func_ov030_020c9a18 kind:function(arm,size=0x114) addr:0x020c9a18
-func_ov030_020c9b2c kind:function(arm,size=0x14) addr:0x020c9b2c
-func_ov030_020c9b40 kind:function(arm,size=0xec) addr:0x020c9b40
-func_ov030_020c9c2c kind:function(arm,size=0x30) addr:0x020c9c2c
-func_ov030_020c9c5c kind:function(arm,size=0x24) addr:0x020c9c5c
-func_ov030_020c9c80 kind:function(arm,size=0xf8) addr:0x020c9c80
-func_ov030_020c9d78 kind:function(arm,size=0xa4) addr:0x020c9d78
-func_ov030_020c9e1c kind:function(arm,size=0x5c) addr:0x020c9e1c
-func_ov030_020c9e78 kind:function(arm,size=0x128) addr:0x020c9e78
-func_ov030_020c9fa0 kind:function(arm,size=0x12c) addr:0x020c9fa0
-func_ov030_020ca0cc kind:function(arm,size=0x8c) addr:0x020ca0cc
-func_ov030_020ca158 kind:function(arm,size=0x5c) addr:0x020ca158
-func_ov030_020ca1b4 kind:function(arm,size=0x40) addr:0x020ca1b4
+FldMesSel_CreateTextView kind:function(arm,size=0x88) addr:0x020c9990
+FldMesSel_DrawMenu kind:function(arm,size=0x114) addr:0x020c9a18
+FldMesSel_DestroyTextView kind:function(arm,size=0x14) addr:0x020c9b2c
+FldMesSel_CreateMessageWindow kind:function(arm,size=0xec) addr:0x020c9b40
+FldMesSel_Open kind:function(arm,size=0x30) addr:0x020c9c2c
+FldMesSel_Close kind:function(arm,size=0x24) addr:0x020c9c5c
+FldMesSel_MoveMessage kind:function(arm,size=0xf8) addr:0x020c9c80
+FldMesSel_MoveXlsFile kind:function(arm,size=0xa4) addr:0x020c9d78
+FldMesSel_MoveWindowKind kind:function(arm,size=0x5c) addr:0x020c9e1c
+FldMesSel_HandleInput kind:function(arm,size=0x128) addr:0x020c9e78
+FldMesSel_Init kind:function(arm,size=0x12c) addr:0x020c9fa0
+FldMesSel_Update kind:function(arm,size=0x8c) addr:0x020ca0cc
+FldMesSel_Destroy kind:function(arm,size=0x5c) addr:0x020ca158
+ProcessOverlay_FldMesSel kind:function(arm,size=0x40) addr:0x020ca1b4
 func_ov030_020ca1f4 kind:function(arm,size=0xc) addr:0x020ca1f4
 func_ov030_020ca200 kind:function(arm,size=0x104) addr:0x020ca200
 func_ov030_020ca304 kind:function(arm,size=0x7c) addr:0x020ca304
@@ -3599,10 +3599,8 @@ data_ov030_020ecba4 kind:data(any) addr:0x020ecba4
 data_ov030_020ecbd0 kind:data(any) addr:0x020ecbd0
 data_ov030_020ecbdc kind:data(any) addr:0x020ecbdc
 data_ov030_020ecbe0 kind:data(any) addr:0x020ecbe0
-data_ov030_020ecd0c kind:data(any) addr:0x020ecd0c
-data_ov030_020ecd18 kind:data(any) addr:0x020ecd18
-data_ov030_020ecd1c kind:data(any) addr:0x020ecd1c
-data_ov030_020ecd20 kind:data(any) addr:0x020ecd20
+OvlProc_FldMesSel kind:data(any) addr:0x020ecd0c local
+FldMesWinKindTable kind:data(any) addr:0x020ecd18 local
 data_ov030_020ecda8 kind:data(any) addr:0x020ecda8
 data_ov030_020ecdb4 kind:data(any) addr:0x020ecdb4
 data_ov030_020ecdc4 kind:data(any) addr:0x020ecdc4
@@ -3617,7 +3615,7 @@ data_ov030_020ece80 kind:data(any) addr:0x020ece80
 data_ov030_020ece82 kind:data(any) addr:0x020ece82
 data_ov030_020eceba kind:data(any) addr:0x020eceba
 data_ov030_020ecfa4 kind:data(any) addr:0x020ecfa4
-data_ov030_020ed0d8 kind:data(any) addr:0x020ed0d8
+Task_Window kind:data(any) addr:0x020ed0d8
 data_ov030_020ed0e4 kind:data(any) addr:0x020ed0e4
 data_ov030_020ed0f0 kind:data(any) addr:0x020ed0f0
 data_ov030_020ed100 kind:data(any) addr:0x020ed100
@@ -6652,25 +6650,25 @@ data_ov030_02108800 kind:data(any) addr:0x02108800
 data_ov030_02108814 kind:data(any) addr:0x02108814
 data_ov030_02108818 kind:data(any) addr:0x02108818
 data_ov030_02108820 kind:data(any) addr:0x02108820
-data_ov030_0210882c kind:data(any) addr:0x0210882c
-data_ov030_02108830 kind:data(any) addr:0x02108830
-data_ov030_02108838 kind:data(any) addr:0x02108838
-data_ov030_02108840 kind:data(any) addr:0x02108840
-data_ov030_02108848 kind:data(any) addr:0x02108848
-data_ov030_02108850 kind:data(any) addr:0x02108850
-data_ov030_02108858 kind:data(any) addr:0x02108858
-data_ov030_02108860 kind:data(any) addr:0x02108860
-data_ov030_02108868 kind:data(any) addr:0x02108868
-data_ov030_02108870 kind:data(any) addr:0x02108870
-data_ov030_02108878 kind:data(any) addr:0x02108878
-data_ov030_02108884 kind:data(any) addr:0x02108884
-data_ov030_02108894 kind:data(any) addr:0x02108894
-data_ov030_021088a4 kind:data(any) addr:0x021088a4
-data_ov030_021088b4 kind:data(any) addr:0x021088b4
-data_ov030_021088c4 kind:data(any) addr:0x021088c4
-data_ov030_021088c8 kind:data(any) addr:0x021088c8
-data_ov030_021088dc kind:data(any) addr:0x021088dc
-data_ov030_021088e8 kind:data(any) addr:0x021088e8
+FldMesSelSequence kind:data(any) addr:0x0210882c local
+@1389 kind:data(byte[5]) addr:0x02108830 local
+@1388 kind:data(byte[5]) addr:0x02108838 local
+@1390 kind:data(byte[5]) addr:0x02108840 local
+@1387 kind:data(byte[5]) addr:0x02108848 local
+@1391 kind:data(byte[6]) addr:0x02108850 local
+@1393 kind:data(byte[7]) addr:0x02108858 local
+@1394 kind:data(byte[7]) addr:0x02108860 local
+@1392 kind:data(byte[7]) addr:0x02108868 local
+@1395 kind:data(byte[8]) addr:0x02108870 local
+@1396 kind:data(byte[11]) addr:0x02108878 local
+@1397 kind:data(byte[13]) addr:0x02108884 local
+@1398 kind:data(byte[15]) addr:0x02108894 local
+@1399 kind:data(byte[16]) addr:0x021088a4 local
+@1568 kind:data(byte[15]) addr:0x021088b4 local
+@1576 kind:data(byte[3]) addr:0x021088c4 local
+@1577 kind:data(byte[19]) addr:0x021088c8 local
+@1578 kind:data(byte[12]) addr:0x021088dc local
+@1579 kind:data(byte[2]) addr:0x021088e8 local
 data_ov030_021088ec kind:data(any) addr:0x021088ec
 data_ov030_021088f8 kind:data(any) addr:0x021088f8
 data_ov030_02108904 kind:data(any) addr:0x02108904

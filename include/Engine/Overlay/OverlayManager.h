@@ -13,6 +13,7 @@ extern u32 OVERLAY_3_ID;
 extern u32 OVERLAY_27_ID;
 extern u32 OVERLAY_30_ID;
 extern u32 OVERLAY_31_ID;
+extern u32 OVERLAY_36_ID;
 extern u32 OVERLAY_37_ID;
 extern u32 OVERLAY_39_ID;
 extern s32 OVERLAY_40_ID;
