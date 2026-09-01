@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
 import os
-from pathlib import Path
-import argparse
-import sys
 import subprocess
+import sys
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Any, Generator
+from pathlib import Path
+from typing import Any
 
 import ninja_syntax
 from get_platform import Platform, get_platform
@@ -52,9 +53,9 @@ args = parser.parse_args()
 
 # Config
 GAME = "twewy"
-DSD_VERSION = "v0.11.0"
-WIBO_VERSION = "1.1.0"
-OBJDIFF_VERSION = "v3.7.1"
+DSD_VERSION = "v0.12.0"
+WIBO_VERSION = "1.2.0"
+OBJDIFF_VERSION = "v3.8.1"
 MWCC_DEFAULT_VERSION = "2.0/sp1p5"
 DECOMP_ME_COMPILER = "mwcc_30_131"
 

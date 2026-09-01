@@ -3172,7 +3172,7 @@ __throw_catch_compare kind:function(arm,size=0x1b0) addr:0x02058a3c
 /////////////////////////////////////////////////////////////
 _Z15__PopStackFrameP12ThrowContextP13ExceptionInfo kind:function(arm,size=0x5c) addr:0x02058bec
 _Z16__SetupFrameInfoP12ThrowContextP13ExceptionInfo kind:function(arm,size=0xa0) addr:0x02058c48
-_Z20__FindExceptionTableP13ExceptionInfoPc kind:function(arm,size=0x20) addr:0x02058ce8
+__FindExceptionTable kind:function(arm,size=0x20) addr:0x02058ce8
 _Z16__SkipUnwindInfoPc kind:function(arm,size=0x30) addr:0x02058d08
 _Z17__TransferControlP12ThrowContextP13ExceptionInfoPc kind:function(arm,size=0x30) addr:0x02058d38
 __throw kind:function(arm,size=0x48) addr:0x02058d68
@@ -3193,18 +3193,18 @@ _ExitProcess kind:function(arm,size=0xc) addr:0x02058dfc
 @ET@__pformatter kind:data(any) addr:0x02058e08
 @ET@__sformatter kind:data(any) addr:0x02058e10 local
 @ET@__strtold kind:data(any) addr:0x02058e18 local
-data_02058e20 kind:data(any) addr:0x02058e20
-data_02058e28 kind:data(any) addr:0x02058e28
-data_02058e30 kind:data(any) addr:0x02058e30
-data_02058e38 kind:data(any) addr:0x02058e38
+@ET@0204fed8 kind:data(any) addr:0x02058e20
+@ET@02051060 kind:data(any) addr:0x02058e28
+@ET@02051a48 kind:data(any) addr:0x02058e30
+@ET@02053e9c kind:data(any) addr:0x02058e38
 @ET@_Z10NextActionP14ActionIterator kind:data(any) addr:0x02058e40
 @ET@_Z11UnwindStackP12ThrowContextP13ExceptionInfoPc kind:data(any) addr:0x02058e48
 @ET@_Z23FindMostRecentExceptionP12ThrowContextP13ExceptionInfo kind:data(any) addr:0x02058e58
 @ET@_Z12__unexpectedP9CatchInfo kind:data(any) addr:0x02058e60
 @ET@_Z16HandleUnexpectedP12ThrowContextP13ExceptionInfoP16ex_specificationPc kind:data(any) addr:0x02058e74
 @ET@_Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:data(any) addr:0x02058e7c
-data_02058e84 kind:data(any) addr:0x02058e84
-data_02058e9c kind:data(any) addr:0x02058e9c
+@ET@02058664 kind:data(any) addr:0x02058e84
+@ET@020586dc kind:data(any) addr:0x02058e9c
 
 
 
@@ -3216,7 +3216,7 @@ data_02058e9c kind:data(any) addr:0x02058e9c
 @ET@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x02058eb4 local
 @ET@__cxa_vec_new kind:data(any) addr:0x02058ec8 local
 @ET@__cxa_vec_dtor kind:data(any) addr:0x02058edc local
-@EX@abort kind:data(any) addr:0x02058f04 // TODO: local, needs dsd support for exception table address link-time constants
+@EX@abort kind:data(any) addr:0x02058f04 local
 @EX@exit kind:data(any) addr:0x02058f10 local
 @EX@__exit kind:data(any) addr:0x02058f1c local
 @EX@nan kind:data(any) addr:0x02058f28 local
@@ -3246,33 +3246,33 @@ data_02058e9c kind:data(any) addr:0x02058e9c
 @EX@__strtoul kind:data(any) addr:0x02059048 local
 @EX@__strtoull kind:data(any) addr:0x02059054 local
 @EX@strtoul kind:data(any) addr:0x02059060 local
-data_0205906c kind:data(any) addr:0x0205906c
-data_02059078 kind:data(any) addr:0x02059078
-data_02059084 kind:data(any) addr:0x02059084
-data_02059090 kind:data(any) addr:0x02059090
-data_0205909c kind:data(any) addr:0x0205909c
-data_020590a8 kind:data(any) addr:0x020590a8
-data_020590b4 kind:data(any) addr:0x020590b4
-data_020590c0 kind:data(any) addr:0x020590c0
-data_020590cc kind:data(any) addr:0x020590cc
-data_020590d8 kind:data(any) addr:0x020590d8
-data_020590e4 kind:data(any) addr:0x020590e4
-data_020590f0 kind:data(any) addr:0x020590f0
-data_020590fc kind:data(any) addr:0x020590fc
-data_02059108 kind:data(any) addr:0x02059108
-data_02059114 kind:data(any) addr:0x02059114
-data_02059120 kind:data(any) addr:0x02059120
-data_0205912c kind:data(any) addr:0x0205912c
-data_02059138 kind:data(any) addr:0x02059138
-data_02059144 kind:data(any) addr:0x02059144
-data_02059150 kind:data(any) addr:0x02059150
-data_0205915c kind:data(any) addr:0x0205915c
-data_02059168 kind:data(any) addr:0x02059168
-data_02059174 kind:data(any) addr:0x02059174
-data_02059180 kind:data(any) addr:0x02059180
-data_0205918c kind:data(any) addr:0x0205918c
-data_02059198 kind:data(any) addr:0x02059198
-data_020591a4 kind:data(any) addr:0x020591a4
+@EX@0204e684 kind:data(word[3]) addr:0x0205906c
+@EX@0204ee7c kind:data(word[3]) addr:0x02059078
+@EX@0204f5c8 kind:data(word[3]) addr:0x02059084
+@EX@0204fd00 kind:data(word[3]) addr:0x02059090
+@EX@0204fed8 kind:data(word[3]) addr:0x0205909c
+@EX@02051060 kind:data(word[3]) addr:0x020590a8
+@EX@02051728 kind:data(word[3]) addr:0x020590b4
+@EX@02051a48 kind:data(word[3]) addr:0x020590c0
+@EX@02052604 kind:data(word[3]) addr:0x020590cc
+@EX@020528a8 kind:data(word[3]) addr:0x020590d8
+@EX@02052a38 kind:data(word[3]) addr:0x020590e4
+@EX@02052bf8 kind:data(word[3]) addr:0x020590f0
+@EX@02052cb4 kind:data(word[3]) addr:0x020590fc
+@EX@02052f00 kind:data(word[3]) addr:0x02059108
+@EX@02053074 kind:data(word[3]) addr:0x02059114
+@EX@02053080 kind:data(word[3]) addr:0x02059120
+@EX@0205308c kind:data(word[3]) addr:0x0205912c
+@EX@02053098 kind:data(word[3]) addr:0x02059138
+@EX@02053160 kind:data(word[3]) addr:0x02059144
+@EX@020531a0 kind:data(word[3]) addr:0x02059150
+@EX@0205326c kind:data(word[3]) addr:0x0205915c
+@EX@020533f0 kind:data(word[3]) addr:0x02059168
+@EX@0205348c kind:data(word[3]) addr:0x02059174
+@EX@02053c74 kind:data(word[3]) addr:0x02059180
+@EX@02053df4 kind:data(word[3]) addr:0x0205918c
+@EX@02053e9c kind:data(word[3]) addr:0x02059198
+@EX@020545d8 kind:data(word[3]) addr:0x020591a4
 @EX@__sys_alloc kind:data(any) addr:0x020591b0 local
 @EX@__sys_free kind:data(any) addr:0x020591bc local
 @EX@__read_console kind:data(any) addr:0x020591c8 local
@@ -3287,24 +3287,24 @@ data_020591a4 kind:data(any) addr:0x020591a4
 @EX@_Z20FindExceptionHandlerP12ThrowContextP13ExceptionInfoPl kind:data(any) addr:0x02059234
 @EX@_Z14__ThrowHandlerP12ThrowContext kind:data(any) addr:0x02059240
 @EX@_Z11__end_catchP9CatchInfo kind:data(any) addr:0x0205924c
-data_02059258 kind:data(any) addr:0x02059258
-data_02059264 kind:data(any) addr:0x02059264
-data_02059270 kind:data(any) addr:0x02059270
-data_0205927c kind:data(any) addr:0x0205927c
-data_02059288 kind:data(any) addr:0x02059288
-data_02059294 kind:data(any) addr:0x02059294
-data_020592a0 kind:data(any) addr:0x020592a0
+@EX@02058600 kind:data(word[3]) addr:0x02059258
+@EX@02058620 kind:data(word[3]) addr:0x02059264
+@EX@02058664 kind:data(word[3]) addr:0x02059270
+@EX@020586c8 kind:data(word[3]) addr:0x0205927c
+@EX@020586dc kind:data(word[3]) addr:0x02059288
+@EX@02058708 kind:data(word[3]) addr:0x02059294
+@EX@02058714 kind:data(word[3]) addr:0x020592a0
 @EX@__call_static_initializers kind:data(any) addr:0x020592ac local
 @EX@__destroy_global_chain kind:data(any) addr:0x020592b8 local
 @EX@_Z17DestroyArrayRangePhS_mPFvPvE kind:data(any) addr:0x020592c4 local
 @EX@__cxa_vec_new kind:data(any) addr:0x020592d0 local
 @EX@__cxa_vec_dtor kind:data(any) addr:0x020592dc local
 @EX@__cxa_vec_delete kind:data(any) addr:0x020592e8 local
-data_020592f4 kind:data(any) addr:0x020592f4
-data_02059300 kind:data(any) addr:0x02059300
-data_0205930c kind:data(any) addr:0x0205930c
-data_02059318 kind:data(any) addr:0x02059318
-data_02059324 kind:data(any) addr:0x02059324
+@EX@02058980 kind:data(word[3]) addr:0x020592f4
+@EX@02058994 kind:data(word[3]) addr:0x02059300
+@EX@020589b0 kind:data(word[3]) addr:0x0205930c
+@EX@020589c4 kind:data(word[3]) addr:0x02059318
+@EX@020589d8 kind:data(word[3]) addr:0x02059324
 @EX@_ZSt9dthandlerv kind:data(any) addr:0x02059330 local
 @EX@_ZSt9duhandlerv kind:data(any) addr:0x0205933c local
 @EX@_ZSt9terminatev kind:data(any) addr:0x02059348 local

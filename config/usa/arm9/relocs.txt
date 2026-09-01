@@ -8439,8 +8439,8 @@ from:0x02058a20 kind:load to:0x02066a14 module:main
 from:0x02058a38 kind:load to:0x02066a14 module:main
 from:0x02058ca8 kind:arm_call to:0x02057184 module:main
 from:0x02058cb8 kind:arm_call to:0x02057184 module:main
-from:0x02058d00 kind:load to:0x02058f04 module:main
-from:0x02058d04 kind:load to:0x02059384 module:main
+from:0x02058d00 kind:link_time_const(__exception_table_start__)
+from:0x02058d04 kind:link_time_const(__exception_table_end__)
 from:0x02058d18 kind:arm_call to:0x02057184 module:main
 from:0x02058d2c kind:arm_call to:0x02057184 module:main
 from:0x02058e04 kind:load to:0x0205705c module:main
