@@ -37,7 +37,7 @@ void FontTest_RegisterVBlank(void);
 
 void func_ov001_020824a0(FontState* arg0) {
     data_02066eec = 0;
-    SysFont_InitWithFont(&arg0->font, 1, 1);
+    SysFont_InitWithFont(&arg0->font, 1, TRUE);
     SysFont_SetPos(&arg0->font, 0, 0);
     arg0->font.widthScale = 1;
     SysFont_SetPos(&arg0->font, 0, 0);

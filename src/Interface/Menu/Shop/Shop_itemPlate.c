@@ -8,16 +8,16 @@ typedef struct {
 } Shop_itemPlate; // Size: 0x48
 
 typedef struct {
-    /* 0x00 */ s32         unk_00;
+    /* 0x00 */ s32         dataType;
     /* 0x04 */ ShopObject* shop;
-    /* 0x08 */ u16         unk_08;
-    /* 0x0A */ u16         unk_0A;
+    /* 0x08 */ u16         itemIndex;
+    /* 0x0A */ u16         itemFrame;
     /* 0x0C */ u8          unk_0C;
     /* 0x0E */ s16         unk_0E;
     /* 0x10 */ s32         unk_10;
 } Shop_itemPlate_Args;
 
-static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode);
+static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
 static s32              Shop_itemPlate_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Shop_itemPlate = {"Tsk_Shop_itemPlate", Shop_itemPlate_RunTask, sizeof(Shop_itemPlate)};
@@ -49,7 +49,7 @@ static const SpriteAnimation Shop_itemPlate_Anim = {
     .unk_2A     = 1,
 };
 
-static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
+static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
     SpriteFrameInfo* frameInfo = &data_0206b408;
 
     switch (mode) {
@@ -83,11 +83,11 @@ static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 arg1, s3
 static void Shop_itemPlate_Load(Shop_itemPlate* itemPlate, Sprite* sprite, Shop_itemPlate_Args* args) {
     SpriteAnimation anim = Shop_itemPlate_Anim;
 
-    anim.dataType = args->unk_00;
-    anim.unk_04   = ((args->unk_08 % 6) * 33) + 22;
-    anim.unk_06   = ((args->unk_08 / 6) * 41) + 39;
+    anim.dataType = args->dataType;
+    anim.unk_04   = ((args->itemIndex % 6) * 33) + 22;
+    anim.unk_06   = ((args->itemIndex / 6) * 41) + 39;
 
-    if (args->unk_0A == 0xFFFF) {
+    if (args->itemFrame == 0xFFFF) {
         itemPlate->shouldRender = FALSE;
     } else {
         itemPlate->shouldRender = TRUE;
@@ -145,15 +145,15 @@ static s32 Shop_itemPlate_RunTask(TaskPool* pool, Task* task, void* args, s32 st
     return stages.iter[stage](pool, task, args);
 }
 
-s32 Shop_itemPlate_CreateTask(TaskPool* pool, s32 arg1, s16 arg2, ShopObject* shop) {
+s32 Shop_itemPlate_CreateTask(TaskPool* pool, s32 dataType, s16 itemIndex, ShopObject* shop) {
     Shop_itemPlate_Args args;
 
-    args.unk_00 = arg1;
-    args.shop   = shop;
-    args.unk_08 = arg2;
-    args.unk_0A = shop->unk_738[arg2]->unk_00;
-    args.unk_0C = shop->unk_738[arg2]->unk_0C;
-    args.unk_10 = shop->unk_738[arg2]->unk_10;
+    args.dataType  = dataType;
+    args.shop      = shop;
+    args.itemIndex = itemIndex;
+    args.itemFrame = shop->unk_738[itemIndex]->unk_00;
+    args.unk_0C    = shop->unk_738[itemIndex]->unk_0C;
+    args.unk_10    = shop->unk_738[itemIndex]->unk_10;
 
     return EasyTask_CreateTask(pool, &Tsk_Shop_itemPlate, NULL, 0, NULL, &args);
 }

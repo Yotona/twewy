@@ -928,22 +928,22 @@ void func_ov042_02083e8c(FontRoll* fontRoll) {
 
     SysFont_Init(&temp_r7[var_r4]);
     SysFont_SetMsg(&temp_r7[var_r4], &temp_r8[fontRoll->unk_EAC]);
-    SysFont_SetColor(&temp_r7[var_r4], 0xE);
+    SysFont_SetColor(&temp_r7[var_r4], 14);
 
     switch (sp0[1]) {
         case 0:
-            SysFont_SetHAlign(&temp_r7[var_r4], 1, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 1, 156);
             break;
         case 1:
-            SysFont_SetHAlign(&temp_r7[var_r4], 0, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 0, 156);
             break;
         case 2:
-            SysFont_SetHAlign(&temp_r7[var_r4], 2, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 2, 156);
             break;
     }
 
-    SysFont_SetSpacing(&temp_r7[var_r4], 1, 0);
-    SysFont_SetPos(&temp_r7[var_r4], 0x64, (u8)temp_r9);
+    SysFont_SetSpacing(&temp_r7[var_r4], TRUE, 0);
+    SysFont_SetPos(&temp_r7[var_r4], 100, (u8)temp_r9);
 
     u8* var_r2 = Data_GetPackEntryData(temp_r4->data, 1);
     u8* var_r3 = Data_GetPackEntryData(temp_r11->data, 1);

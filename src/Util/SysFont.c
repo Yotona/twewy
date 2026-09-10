@@ -49,8 +49,8 @@
 // One slot of the open-addressed DS-code -> system-font-code hash table
 // (SYSFONT_CODEMAP_SLOTS entries, probed by SysFont_FindDsCodeSlot). dsCode == 0 marks an empty slot.
 typedef struct {
-    u16 dsCode;
-    u16 sysCode;
+    u16     dsCode;
+    SysCode sysCode;
 } Ov031DsCodeMap;
 
 typedef struct {
@@ -692,43 +692,39 @@ void SysFont_GetCellBoundsMin(const Sprite* sprite, s32* minX, s32* minY) {
     *minY = min_y;
 }
 
-u32 SysFont_WriteU32(u16* dst, u32 value) {
+u16 SysFont_WriteU32(SysCode* dst, u32 value) {
     u16 digits = 0;
-    u32 work;
-    u16 i;
-
-    if (value == 0) {
-        dst[0] = SYSFONT_GLYPH_DIGIT_0;
-        return 1U;
-    }
-
-    work = value;
-    while (work != 0) {
-        work /= 10;
-        digits++;
-    }
-
-    work = value;
-    for (i = 0; i < digits; i++) {
-        dst[(digits - i) - 1] = (u16)((work % 10) + SYSFONT_GLYPH_DIGIT_0);
-        work /= 10;
-    }
-
-    return digits;
-}
-
-u16 SysFont_WriteS32(u16* dst, s32 value) {
-    u16  digits   = 0;
-    BOOL negative = value < 0;
-    s32  work;
-    u16  i;
 
     if (value == 0) {
         dst[0] = SYSFONT_GLYPH_DIGIT_0;
         return 1;
     }
 
+    u32 work = value;
+    while (work != 0) {
+        work /= 10;
+        digits++;
+    }
+
     work = value;
+    for (u16 i = 0; i < digits; i++) {
+        dst[(digits - i) - 1] = (work % 10) + SYSFONT_GLYPH_DIGIT_0;
+        work /= 10;
+    }
+
+    return digits;
+}
+
+u16 SysFont_WriteS32(SysCode* dst, s32 value) {
+    u16  digits   = 0;
+    BOOL negative = value < 0;
+
+    if (value == 0) {
+        dst[0] = SYSFONT_GLYPH_DIGIT_0;
+        return 1;
+    }
+
+    s32 work = value;
     while (work != 0) {
         work /= 10;
         digits++;
@@ -737,24 +733,24 @@ u16 SysFont_WriteS32(u16* dst, s32 value) {
     if (negative) {
         dst[0] = SYSFONT_GLYPH_MINUS;
         value  = -value;
-        for (i = 0; i < digits; i++) {
-            dst[digits - i] = (u16)((value % 10) + SYSFONT_GLYPH_DIGIT_0);
+        for (u16 i = 0; i < digits; i++) {
+            dst[digits - i] = (value % 10) + SYSFONT_GLYPH_DIGIT_0;
             value /= 10;
         }
-        return (u16)(digits + 1);
+        return digits + 1;
     }
 
-    for (i = 0; i < digits; i++) {
-        dst[(digits - i) - 1] = (u16)((value % 10) + SYSFONT_GLYPH_DIGIT_0);
+    for (u16 i = 0; i < digits; i++) {
+        dst[(digits - i) - 1] = (value % 10) + SYSFONT_GLYPH_DIGIT_0;
         value /= 10;
     }
 
     return digits;
 }
 
-u16 SysFont_WriteString(u16* dst, const u16* src) {
-    u16 value = *src;
-    u16 count = 0;
+u16 SysFont_WriteString(SysCode* dst, const SysCode* src) {
+    SysCode value = *src;
+    u16     count = 0;
 
     if (value != SYSFONT_CODE_STR_END) {
         do {
@@ -766,43 +762,34 @@ u16 SysFont_WriteString(u16* dst, const u16* src) {
     return count;
 }
 
-s32 SysFont_WriteChar(u16* dst, u16 code) {
+s32 SysFont_WriteChar(SysCode* dst, SysCode code) {
     *dst = code;
     return 1;
 }
 
-u16 SysFont_WriteFx32(u16* dst, s32 value, u16 fracDigits) {
+u16 SysFont_WriteFx32(SysCode* dst, s32 value, u16 fracDigits) {
     u16 prefix = 0;
-    s32 scaled;
 
     if (value & 0x80000000) {
         *dst = SYSFONT_GLYPH_MINUS;
         prefix++;
     }
 
-    scaled = value >> 0xC;
-
+    s32 scaled = F2I(value);
     if (fracDigits == 0) {
         u16 intFmt[2] = {SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
 
-        return (u16)(prefix + SysFont_Format(dst, intFmt, scaled));
+        return prefix + SysFont_Format(dst, intFmt, scaled);
     }
 
-    {
-        u32 frac = 0;
-        u16 i;
-
+    u32 frac = 0;
+    frac /= 10;
+    for (u16 i = 0; i < 4 - fracDigits; i++) {
         frac /= 10;
-        for (i = 0; i < 4 - fracDigits; i++) {
-            frac /= 10;
-        }
-
-        {
-            u16 fracFmt[4] = {SYSFONT_CODE_FMT_U32, SYSFONT_GLYPH_PERIOD, SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
-
-            return (u16)(prefix + SysFont_Format(dst, fracFmt, scaled, frac));
-        }
     }
+
+    SysCode fracFmt[4] = {SYSFONT_CODE_FMT_U32, SYSFONT_GLYPH_PERIOD, SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
+    return prefix + SysFont_Format(dst, fracFmt, scaled, frac);
 }
 
 // Nonmatching: r7/r8 are swapped between the format pointer and the va_list; the instruction
@@ -812,34 +799,30 @@ u16 SysFont_Format(SysCode* dst, const SysCode* fmt, ...) {
     u16        count = 0;
     va_list    args;
     va_start(args, fmt);
-    while (SysFont_IsTerminator(*src) == 0) {
-        u16 code = *src++;
+    while (SysFont_IsTerminator(*src) == FALSE) {
+        SysCode code = *src++;
         switch (code) {
-            case 0xFFD0:
+            case SYSFONT_CODE_FMT_U32:
                 count += SysFont_WriteU32(dst + count, va_arg(args, u32));
                 break;
 
-            case 0xFFD1:
+            case SYSFONT_CODE_FMT_S32:
                 count += SysFont_WriteS32(dst + count, va_arg(args, s32));
                 break;
 
-            case 0xFFD2:
+            case SYSFONT_CODE_FMT_STR:
                 count += SysFont_WriteString(dst + count, va_arg(args, const u16*));
                 break;
 
-            case 0xFFD3:
+            case SYSFONT_CODE_FMT_CHR:
                 count += SysFont_WriteChar(dst + count, va_arg(args, u16));
                 break;
 
-            case 0xFFC0:
-
-            case 0xFFC1:
-
-            case 0xFFC2:
-
-            case 0xFFC3:
-
-            case 0xFFC4:
+            case SYSFONT_CODE_FMT_FX0:
+            case SYSFONT_CODE_FMT_FX1:
+            case SYSFONT_CODE_FMT_FX2:
+            case SYSFONT_CODE_FMT_FX3:
+            case SYSFONT_CODE_FMT_FX4:
                 count += SysFont_WriteFx32(dst + count, va_arg(args, s32), (u16)(code % 10));
                 break;
 
@@ -864,25 +847,10 @@ BOOL SysFont_IsTerminator(SysCode code) {
 }
 
 // Nonmatching: r0/r1 are swapped between SysFontInfoTable[fontId] and the constant 1.
-void SysFont_InitEx(SysFont* font, s32 fontId, s32 extendedGlyphs, s32 loadGlyphBitmaps) {
-    const SysFontInfo* fontInfo;
-    Data*              widthData;
-    Data*              charData;
-    Data*              charPackData;
-    Data*              widthPackData;
-    u16                lineSpacing;
-    u16                widthPackIdForBank;
-    u16                charPackIdForBank;
-    u16                widthPackId;
-    u16                charPackId;
-    u16                widthBankIndex;
-    u16                glyphBankIndex;
-    u16                bankIndex;
-    void*              widthBankData;
-    void*              glyphBankData;
+void SysFont_InitEx(SysFont* font, s32 fontId, BOOL extendedGlyphs, BOOL loadGlyphBitmaps) {
+    font->fontId = fontId;
 
-    font->fontId        = fontId;
-    lineSpacing         = 1;
+    u16 lineSpacing     = 1;
     font->info          = SysFontInfoTable[fontId];
     font->letterSpacing = 1;
 #ifdef REGION_USA
@@ -892,12 +860,12 @@ void SysFont_InitEx(SysFont* font, s32 fontId, s32 extendedGlyphs, s32 loadGlyph
         lineSpacing = 2;
     }
     font->lineSpacing    = lineSpacing;
-    font->color          = 0xE;
+    font->color          = 14;
     font->extendedGlyphs = extendedGlyphs;
     font->widthScale     = 1;
     font->msgData        = NULL;
-    font->proportional   = 1;
-    font->hasMsg         = 0;
+    font->proportional   = TRUE;
+    font->hasMsg         = FALSE;
     font->x              = 0;
     font->clipRight      = 0x200;
     font->y              = 0;
@@ -905,89 +873,76 @@ void SysFont_InitEx(SysFont* font, s32 fontId, s32 extendedGlyphs, s32 loadGlyph
     font->hAlign         = 1;
     font->vAlign         = 3;
     font->mesTableData   = DatMgr_LoadRawData(1, NULL, 0, &MesTableBinId);
-    fontInfo             = SysFontInfoTable[fontId];
-    if (loadGlyphBitmaps != 0) {
-        charPackId = fontInfo->charPackId;
-        if (BinMgr_FindById((s32)&FontBinId) == NULL) {
-            charPackData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, charPackId, 1);
+
+    const SysFontInfo* fontInfo = SysFontInfoTable[fontId];
+    if (loadGlyphBitmaps) {
+        u16 charPackId = fontInfo->charPackId;
+
+        if (BinMgr_FindById((s32)&FontBinId.id) == NULL) {
+            font->charData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, charPackId, 1);
         } else {
-            charPackData = DatMgr_LoadPackEntryDirect(1, &FontBinId, charPackId, 1);
+            font->charData = DatMgr_LoadPackEntryDirect(1, &FontBinId, charPackId, 1);
         }
-        glyphBankIndex = 0;
-        font->charData = charPackData;
-        do {
-            charPackIdForBank                = ((const u16*)font->info)[glyphBankIndex + 1];
+
+        for (u16 glyphBankIndex = 0; glyphBankIndex < 5; glyphBankIndex++) {
+            u16 charPackIdForBank = font->info->charEntry[glyphBankIndex];
+
             font->glyphBanks[glyphBankIndex] = NULL;
             if (charPackIdForBank != SYSFONT_PACK_NONE) {
                 if ((extendedGlyphs != 0) || ((glyphBankIndex != 1) && (glyphBankIndex != 2) && (glyphBankIndex != 3))) {
-                    charData                         = font->charData;
-                    glyphBankData                    = Data_GetPackEntryData(charData, charPackIdForBank);
-                    font->glyphBanks[glyphBankIndex] = glyphBankData;
+                    font->glyphBanks[glyphBankIndex] = Data_GetPackEntryData(font->charData, charPackIdForBank);
                 }
             }
-            glyphBankIndex++;
-        } while (glyphBankIndex < 5U);
+        }
     } else {
-        bankIndex      = 0;
         font->charData = NULL;
-        do {
+        for (u16 bankIndex = 0; bankIndex < 5; bankIndex++) {
             font->glyphBanks[bankIndex] = NULL;
-            bankIndex++;
-        } while (bankIndex < 5U);
+        }
     }
-    widthPackId = fontInfo->widthPackId;
+
+    u16 widthPackId = fontInfo->widthPackId;
+
     if (BinMgr_FindById((s32)&FontBinId) == NULL) {
-        widthPackData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, widthPackId, 1);
+        font->widthData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, widthPackId, 1);
     } else {
-        widthPackData = DatMgr_LoadPackEntryDirect(1, &FontBinId, widthPackId, 1);
+        font->widthData = DatMgr_LoadPackEntryDirect(1, &FontBinId, widthPackId, 1);
     }
-    font->widthData = widthPackData;
-    widthBankIndex  = 0;
-    do {
-        widthPackIdForBank               = ((const u16*)font->info)[widthBankIndex + 7];
+
+    for (u16 widthBankIndex = 0; widthBankIndex < 5; widthBankIndex++) {
+        u16 widthPackIdForBank = font->info->widthEntry[widthBankIndex];
+
         font->widthBanks[widthBankIndex] = NULL;
         if (widthPackIdForBank != SYSFONT_PACK_NONE) {
             if ((extendedGlyphs != 0) || ((widthBankIndex != 1) && (widthBankIndex != 2) && (widthBankIndex != 3))) {
-                widthData                        = font->widthData;
-                widthBankData                    = Data_GetPackEntryData(widthData, widthPackIdForBank);
-                font->widthBanks[widthBankIndex] = widthBankData;
+                font->widthBanks[widthBankIndex] = Data_GetPackEntryData(font->widthData, widthPackIdForBank);
             }
         }
-        widthBankIndex++;
-    } while (widthBankIndex < 5U);
+    }
 }
 
 void SysFont_Init(SysFont* font) {
-    SysFont_InitEx(font, 1, 1, 1);
+    SysFont_InitEx(font, 1, TRUE, TRUE);
 }
 
-void SysFont_InitWithFont(SysFont* font, s32 fontId, s32 extendedGlyphs) {
-    SysFont_InitEx(font, fontId, extendedGlyphs, 1);
+void SysFont_InitWithFont(SysFont* font, s32 fontId, BOOL extendedGlyphs) {
+    SysFont_InitEx(font, fontId, extendedGlyphs, TRUE);
 }
 
 void SysFont_Destroy(SysFont* font) {
-    Data* mesTableData;
-    Data* charData;
-    Data* widthData;
-    Data* msgData;
-
-    mesTableData = font->mesTableData;
-    if (mesTableData != NULL) {
-        DatMgr_ReleaseData(mesTableData);
+    if (font->mesTableData != NULL) {
+        DatMgr_ReleaseData(font->mesTableData);
     }
-    charData = font->charData;
-    if (charData != NULL) {
-        DatMgr_ReleaseData(charData);
+    if (font->charData != NULL) {
+        DatMgr_ReleaseData(font->charData);
         font->charData = NULL;
     }
-    widthData = font->widthData;
-    if (widthData != NULL) {
-        DatMgr_ReleaseData(widthData);
+    if (font->widthData != NULL) {
+        DatMgr_ReleaseData(font->widthData);
         font->widthData = NULL;
     }
-    msgData = font->msgData;
-    if (msgData != NULL) {
-        DatMgr_ReleaseData(msgData);
+    if (font->msgData != NULL) {
+        DatMgr_ReleaseData(font->msgData);
         font->msgData = NULL;
     }
     font->msg = NULL;
@@ -1012,7 +967,7 @@ void SysFont_SetVAlign(SysFont* font, s32 align, u16 boxHeight) {
     font->boxHeight = boxHeight;
 }
 
-void SysFont_SetSpacing(SysFont* font, s32 proportional, u16 letterSpacing) {
+void SysFont_SetSpacing(SysFont* font, BOOL proportional, u16 letterSpacing) {
     font->proportional  = proportional;
     font->letterSpacing = letterSpacing;
 }
@@ -1022,15 +977,11 @@ void SysFont_SetLineSpacing(SysFont* font, u16 lineSpacing) {
 }
 
 void* SysFont_GetAllocPal(s32 paletteIndex) {
-    Data* fontPackData;
-    u16   paletteEntry;
-    void* dst;
-    void* src;
+    Data* fontPackData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, 4, 1);
+    u16   paletteEntry = PaletteEntryOrder[paletteIndex];
+    void* src          = Data_GetPackEntryData(fontPackData, paletteEntry);
+    void* dst          = Mem_AllocHeapTail(&gDebugHeap, 0x20);
 
-    fontPackData = DatMgr_LoadPackEntry(1, NULL, 0, &FontBinId, 4, 1);
-    paletteEntry = PaletteEntryOrder[paletteIndex];
-    src          = Data_GetPackEntryData(fontPackData, paletteEntry);
-    dst          = Mem_AllocHeapTail(&gDebugHeap, 0x20);
     Mem_SetSequence(&gDebugHeap, dst, "SysFont_GetAllocPal");
     MI_CpuCopy(src, dst, 0x20);
     DatMgr_ReleaseData(fontPackData);
@@ -1336,7 +1287,7 @@ void SysFont_BlitGlyphToScreen(SysFont* font, u8* glyph, u16* map, void* charDat
 
 // Nonmatching: regswaps
 SysFontPixelRef* SysFont_ResolveCellPixel(Sprite* sprite, s32 px, s32 py, const void* cellPieces, s32 bitmapIndexDiv4,
-                                          u32 pieceCount, s32 minX, s32 minY, s32 toVram) {
+                                          u32 pieceCount, s32 minX, s32 minY, BOOL toVram) {
     const OamCellPiece* entry = cellPieces;
     const OamCellPiece* hit;
 
@@ -1420,7 +1371,7 @@ SysFontPixelRef* SysFont_ResolveCellPixel(Sprite* sprite, s32 px, s32 py, const 
 // Nonmatching (both regions): instruction scheduling in the prologue, plus register allocation.
 // The frame size, every stack slot and the whole loop body now match.
 void SysFont_BlitGlyphToSprite(SysFont* font, u8* glyph, Sprite* sprite, s32 color, s32 skipTransparent, u16 dstX, u16 dstY,
-                               u16 scale, s32 toVram) {
+                               u16 scale, BOOL toVram) {
     s32         frameIndex;
     const u16*  table;
     s32         row;
@@ -1523,7 +1474,7 @@ void SysFont_SetMsg(SysFont* font, u16 msgIndex) {
     font->hasMsg     = TRUE;
 }
 
-void* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex) {
+SysCode* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex) {
     Data* msgData;
 
     u16                      length  = 1;
@@ -1536,7 +1487,7 @@ void* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex) {
         length++;
     }
 
-    void* dst = Mem_AllocHeapTail(&gDebugHeap, length * 2);
+    SysCode* dst = Mem_AllocHeapTail(&gDebugHeap, length * 2);
     Mem_SetSequence(&gDebugHeap, dst, "SysFont_GetMsgBuf");
     MI_CpuCopyU16(msgData->buffer, dst, length * 2);
     DatMgr_ReleaseData(msgData);
@@ -1545,7 +1496,7 @@ void* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex) {
 
 // Nonmatching
 s32 SysFont_DrawInternal(SysFont* font, SysCode* msg, void* charData, u16 widthTiles, u16 heightTiles, u16* map,
-                         void* screenCharData, u32 screenSize, Sprite* dstSprite, s32 toVram, u32 firstGlyph, u16 glyphCount,
+                         void* screenCharData, u32 screenSize, Sprite* dstSprite, BOOL toVram, u32 firstGlyph, u16 glyphCount,
                          s32 dstKind) {
     u8  glyphBits[SYSFONT_GLYPH_PITCH * SYSFONT_GLYPH_PITCH];
     u16 lineWidths[0x100];
@@ -1741,22 +1692,22 @@ s32 SysFont_DrawCurrentToScreen(SysFont* font, u16* map, void* charData, s32 scr
     return SysFont_DrawToScreen(font, font->msg, map, charData, screenSize);
 }
 
-s32 SysFont_DrawToSpriteRange(SysFont* font, SysCode* msg, Sprite* sprite, s32 toVram, u16 firstGlyph, u16 glyphCount) {
+s32 SysFont_DrawToSpriteRange(SysFont* font, SysCode* msg, Sprite* sprite, BOOL toVram, u16 firstGlyph, u16 glyphCount) {
     return SysFont_DrawInternal(font, msg, NULL, 0, 0, NULL, NULL, 0xFFFF, sprite, toVram, firstGlyph, glyphCount, 3);
 }
 
-s32 SysFont_DrawToSprite(SysFont* font, SysCode* msg, Sprite* sprite, s32 toVram) {
+s32 SysFont_DrawToSprite(SysFont* font, SysCode* msg, Sprite* sprite, BOOL toVram) {
     return SysFont_DrawToSpriteRange(font, msg, sprite, toVram, 0, SYSFONT_NO_LIMIT);
 }
 
-s32 SysFont_DrawCurrentToSprite(SysFont* font, Sprite* sprite, s32 toVram) {
+s32 SysFont_DrawCurrentToSprite(SysFont* font, Sprite* sprite, BOOL toVram) {
     if (font->msg == NULL) {
         OS_WaitForever();
     }
     return SysFont_DrawToSpriteRange(font, font->msg, sprite, toVram, 0, SYSFONT_NO_LIMIT);
 }
 
-s32 SysFont_DrawMsgToSprite(SysFont* font, s32 msgIndex, Sprite* sprite, s32 toVram) {
+s32 SysFont_DrawMsgToSprite(SysFont* font, s32 msgIndex, Sprite* sprite, BOOL toVram) {
     if (font->msg == NULL) {
         OS_WaitForever();
     }
@@ -1768,7 +1719,7 @@ s32 SysFont_DrawMsgToSprite(SysFont* font, s32 msgIndex, Sprite* sprite, s32 toV
     return SysFont_DrawToSpriteRange(font, msg, sprite, toVram, 0, SYSFONT_NO_LIMIT);
 }
 
-s32 SysFont_DrawMsgToSpriteRange(SysFont* font, s32 msgIndex, Sprite* sprite, s32 toVram, u16 firstGlyph, u16 glyphCount) {
+s32 SysFont_DrawMsgToSpriteRange(SysFont* font, s32 msgIndex, Sprite* sprite, BOOL toVram, u16 firstGlyph, u16 glyphCount) {
     if (font->msg == NULL) {
         OS_WaitForever();
     }
@@ -2010,7 +1961,7 @@ u32 SysFont_MeasureLineWidths(SysFont* font, SysCode* msg, u16* lineWidths) {
 }
 
 u32 SysFont_MeasureMsgLineWidths(SysFont* font, s32 msgIndex, u16* lineWidths) {
-    u16* msg = SysFont_GetMsgAt(font->msg, msgIndex);
+    SysCode* msg = SysFont_GetMsgAt(font->msg, msgIndex);
     if (msg == NULL) {
         return 0;
     }
@@ -2073,10 +2024,9 @@ u16 SysFont_MeasureMsgHeight(SysFont* font, s32 msgIndex) {
 
 #ifdef REGION_USA
 u16 SysFont_GetStrBufLen(s32 unused, SysCode* msg) {
-    SysCode* cursor = msg;
-    u16      count  = 0;
-    while (SysFont_IsTerminator(*cursor) == FALSE) {
-        cursor++;
+    u16 count = 0;
+    while (SysFont_IsTerminator(*msg) == FALSE) {
+        msg++;
         count++;
     }
     return count + 1;
@@ -2104,14 +2054,13 @@ static s32 SysFont_FindDsCodeSlot(u16 dsCode) {
     return SYSFONT_CODEMAP_NOT_FOUND;
 }
 
-static void SysFont_DsCodesToSysCodes(const u16* dsCodes, u16* sysCodes, s32 count) {
+static void SysFont_DsCodesToSysCodes(const u16* dsCodes, SysCode* sysCodes, s32 count) {
     for (s32 i = 0; i < count; i++) {
         s32 index = SysFont_FindDsCodeSlot(dsCodes[i]);
         if (index >= 0) {
 #ifdef REGION_USA
-            u16 value   = SysFontDsCodeMap[index].sysCode;
-            sysCodes[i] = value;
-            if (value == SYSFONT_SYSCODE_SUBST_FROM) {
+            sysCodes[i] = SysFontDsCodeMap[index].sysCode;
+            if (sysCodes[i] == SYSFONT_SYSCODE_SUBST_FROM) {
                 sysCodes[i] = SYSFONT_SYSCODE_SUBST_TO;
             }
 #else

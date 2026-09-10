@@ -177,7 +177,7 @@ s32 Shop_itemTotal_CreateTask(TaskPool* pool, s32 dataType, u16 arg2, ShopObject
 
     args.dataType = dataType;
     args.shop     = shop;
-    args.unk_08   = shop->slots[shop->unk_848].unk_00;
+    args.unk_08   = shop->slots[shop->unk_848].itemID;
     args.unk_0A   = shop->slots[shop->unk_848].unk_04;
     args.unk_0C   = shop->slots[shop->unk_848].unk_02;
     return EasyTask_CreateTask(pool, &Tsk_Shop_itemTotal, NULL, 0, NULL, &args);

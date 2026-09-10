@@ -11,6 +11,7 @@ src/Engine/Core/System.c:
     .bss        start:0x02066a20 end:0x02066a58
 
 src/Engine/Core/UnknownFlag.c:
+    complete
     categories: Engine
     .bss        start:0x02066a58 end:0x02066a5c
 

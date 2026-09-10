@@ -21,7 +21,7 @@ const u16 data_ov043_020cac70[6] = {36, 8, 36, 21, 36, 153};
 void func_ov043_020bc098(Shop_textScrU* textScr) {
     for (s32 i = 0; i < 3; i++) {
         SysFont_Init(&textScr->fonts[i]);
-        SysFont_SetSpacing(&textScr->fonts[i], 1, 0);
+        SysFont_SetSpacing(&textScr->fonts[i], TRUE, 0);
     }
 }
 

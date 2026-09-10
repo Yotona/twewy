@@ -24,7 +24,7 @@ typedef struct {
 } ShopItemTableEntry;
 
 typedef struct {
-    /* 0x00 */ u16 unk_00;
+    /* 0x00 */ u16 itemID;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
     /* 0x06 */ u16 unk_06;
@@ -32,12 +32,11 @@ typedef struct {
     /* 0x0C */ u8  unk_0C[0x04];
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ u16 unk_14;
-    /* 0x16 */ u16 itemID;
-    /* 0x18 */ u8  unk_18[0x04];
-    /* 0x1C */ u8  ownedCount;
-    /* 0x1D */ u8  unk_1D[0x03];
-    /* 0x20 */ u8  validFlag;
-    /* 0x21 */ u8  unk_21[0x03];
+    // Trade-in slots ask for these items instead of money.
+    /* 0x16 */ u16 tradeInItemIDs[3];
+    /* 0x1C */ u8  tradeInCounts[3];
+    /* 0x1F */ u8  unk_1F;
+    /* 0x20 */ s32 validFlag;
     /* 0x24 */ u16 unk_24;
     /* 0x26 */ u8  unk_26[0x06];
 } ShopItemSlot; // Size: 0x2C
@@ -82,8 +81,8 @@ typedef struct {
     /* 0x870 */ u16                 unk_870;
     /* 0x872 */ u16                 unk_872;
     /* 0x874 */ char                unk_874[0x910 - 0x874];
-    /* 0x910 */ u32                 unk_910;
-    /* 0x914 */ u32                 unk_914;
+    /* 0x910 */ u16*                unk_910; // BG char data
+    /* 0x914 */ u16*                unk_914; // BG screen map
     /* 0x918 */ char                unk_918[0x938 - 0x918];
     /* 0x938 */ u32                 unk_938;
 } ShopObject;
@@ -115,7 +114,7 @@ s32 Shop_fsgGaugeU_CreateTask(TaskPool* pool, s32 arg1, ShopObject* shop);
 s32 Shop_textScrU_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
 
 s32 Shop_window1_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
-s32 Shop_windowU_CreateTask(TaskPool* pool, s32 dataType, s16 arg2, s32 arg3);
+s32 Shop_windowU_CreateTask(TaskPool* pool, s32 dataType, s16 msgIndex, ShopObject* shop);
 
 s32 Shop_castU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_boardU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);

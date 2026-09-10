@@ -105,7 +105,7 @@ static void Shop_itemTotalNum_Load(Shop_itemTotalNum* totalNum, Sprite* arg1, Sh
 
     anim.dataType = arg2->dataType;
 
-    Shop_itemTotalNum_CalcDigits(totalNum, func_02023010(shop->slots[shop->unk_848].unk_00), digits);
+    Shop_itemTotalNum_CalcDigits(totalNum, func_02023010(shop->slots[shop->unk_848].itemID), digits);
 
     anim.unk_2A = 0x0C;
     anim.unk_04 = ((3 - totalNum->unk_114) * 4) + 0xEF;

@@ -59,7 +59,7 @@ s32 TakTest_BG_Init(TaskPool* pool, Task* task, void* args) {
 
     SysFont_Init(&bg->font);
     SysFont_SetMsgPtr(&bg->font, local_1c);
-    SysFont_SetPos(&bg->font, 0x32, 100);
+    SysFont_SetPos(&bg->font, 50, 100);
     SysFont_DrawCurrentToScreen(&bg->font, bg->unk_0C + 4, bg->unk_10 + 4, 0);
     SysFont_Destroy(&bg->font);
     return 1;
@@ -74,7 +74,7 @@ s32 TakTest_BG_Update(TaskPool* pool, Task* task, void* args) {
         local_10 = data_ov043_020c788c;
         SysFont_Init(&bg->font);
         SysFont_SetMsgPtr(&bg->font, local_10);
-        SysFont_SetPos(&bg->font, 0x32, 100);
+        SysFont_SetPos(&bg->font, 50, 100);
         SysFont_DrawCurrentToScreen(&bg->font, bg->unk_0C + 4, bg->unk_10 + 4, 0);
         SysFont_Destroy(&bg->font);
     }

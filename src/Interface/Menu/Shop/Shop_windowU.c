@@ -5,10 +5,10 @@
 typedef struct {
     /* 0x000 */ Sprite           sprites[2];
     /* 0x080 */ s32              unk_080;
-    /* 0x084 */ s32              unk_084;
+    /* 0x084 */ ShopObject*      shop;
     /* 0x088 */ SysFont          font;
     /* 0x104 */ BOOL             unk_104;
-    /* 0x108 */ u16              unk_108;
+    /* 0x108 */ u16              msgIndex;
     /* 0x10A */ char             unk_10A[2];
     /* 0x10C */ Data*            unk_10C;
     /* 0x110 */ void*            unk_110;
@@ -16,17 +16,17 @@ typedef struct {
 } Shop_windowU; // Size: 0x118
 
 typedef struct {
-    /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 unk_4;
-    /* 0x8 */ u16 unk_8;
+    /* 0x0 */ s32         dataType;
+    /* 0x4 */ ShopObject* shop;
+    /* 0x8 */ u16         msgIndex;
 } Shop_windowU_Args;
 
-static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode);
-s32                     Shop_windowU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
+static s32              Shop_windowU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Shop_windowU = {"Tsk_Shop_windowU", Shop_windowU_RunTask, sizeof(Shop_windowU)};
 
-static const SpriteAnimation data_ov043_020caca8 = {
+static const SpriteAnimation Shop_windowU_Anim = {
     .bits_0_1   = 1,
     .dataType   = 0,
     .bit_6      = 0,
@@ -53,7 +53,7 @@ static const SpriteAnimation data_ov043_020caca8 = {
     .unk_2A     = 1,
 };
 
-static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
+static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
     SpriteFrameInfo* info = NULL;
 
     switch (mode) {
@@ -63,56 +63,53 @@ static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 
         } break;
 
         case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
+            SpriteFrameInfo* frameInfo = &data_0206b408;
+            frameInfo->unk_04          = 0;
+            frameInfo->unk_08          = 0;
+            frameInfo->unk_0C          = 0;
+            frameInfo->unk_10          = -1;
 
             if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
+                frameInfo->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                frameInfo->unk_08 =
                     (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
             }
-            info = temp;
+            info = frameInfo;
         } break;
     }
 
     return info;
 }
 
-static void func_ov043_020bc3ac(Shop_windowU* window) {
-    SysFont_InitWithFont(&window->font, 3, 1);
-    SysFont_SetSpacing(&window->font, 1, 0);
+static void Shop_windowU_InitFont(Shop_windowU* window) {
+    SysFont_InitWithFont(&window->font, 3, TRUE);
+    SysFont_SetSpacing(&window->font, TRUE, 0);
 }
 
-static void func_ov043_020bc3d8(Shop_windowU* window) {
-    s32 sp4;
-    s32 sp0;
+// Centres the message on the window sprite.
+static void Shop_windowU_CenterMsg(Shop_windowU* window) {
+    s32 minX;
+    s32 minY;
 
-    SysFont_SetMsg(&window->font, window->unk_108);
-    SysFont_GetCellBoundsMin(window->sprites, &sp4, &sp0);
+    SysFont_SetMsg(&window->font, window->msgIndex);
+    SysFont_GetCellBoundsMin(window->sprites, &minX, &minY);
 
-    s32 offsetX = SysFont_MeasureCurrentWidth(&window->font);
-    s32 offsetY = SysFont_MeasureCurrentHeight(&window->font);
+    s32 width  = SysFont_MeasureCurrentWidth(&window->font);
+    s32 height = SysFont_MeasureCurrentHeight(&window->font);
 
-    SysFont_SetHAlign(&window->font, 0, offsetX);
-
-    s32 negOffsetX = -offsetX;
-    s32 negOffsetY = -offsetY;
-    SysFont_SetPos(&window->font, (u16)((negOffsetX / 2) - sp4), (u16)((negOffsetY / 2) - sp0));
+    SysFont_SetHAlign(&window->font, 0, width);
+    SysFont_SetPos(&window->font, (u16)((-width / 2) - minX), (u16)((-height / 2) - minY));
 }
 
-// Nonmatching: regswap
 static void Shop_windowU_Load(Shop_windowU* window, Sprite* sprite, Shop_windowU_Args* windowArgs) {
-    SpriteAnimation anim = data_ov043_020caca8;
+    SpriteAnimation anim = Shop_windowU_Anim;
 
     anim.dataType  = windowArgs->dataType;
+    anim.unk_2A    = 4;
     anim.packIndex = 10;
     anim.unk_20    = 1;
-    anim.unk_26    = 3;
     anim.unk_1C    = 2;
-    anim.unk_2A    = 4;
+    anim.unk_26    = 3;
     anim.unk_28    = 4;
     _Sprite_Load(&sprite[0], &anim);
 
@@ -131,14 +128,14 @@ static s32 Shop_windowU_Init(TaskPool* pool, Task* task, void* args) {
     Shop_windowU*      window     = task->data;
     Shop_windowU_Args* windowArgs = args;
 
-    window->unk_084 = windowArgs->unk_4;
-    window->unk_108 = windowArgs->unk_8;
-    window->unk_080 = 0;
-    window->unk_104 = FALSE;
+    window->shop     = windowArgs->shop;
+    window->msgIndex = windowArgs->msgIndex;
+    window->unk_080  = 0;
+    window->unk_104  = FALSE;
 
     Shop_windowU_Load(window, window->sprites, windowArgs);
-    func_ov043_020bc3ac(window);
-    func_ov043_020bc3d8(window);
+    Shop_windowU_InitFont(window);
+    Shop_windowU_CenterMsg(window);
     return 1;
 }
 
@@ -157,7 +154,7 @@ static s32 Shop_windowU_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_RenderFrame(&window->sprites[0]);
     Sprite_RenderAltPalette(&window->sprites[1], window->unk_114, window->unk_110, 0);
     if (window->unk_104 == FALSE) {
-        SysFont_DrawCurrentToSprite(&window->font, window->sprites, 0);
+        SysFont_DrawCurrentToSprite(&window->font, window->sprites, FALSE);
         window->unk_104 = TRUE;
     }
     return 1;
@@ -187,10 +184,10 @@ static s32 Shop_windowU_RunTask(TaskPool* pool, Task* task, void* args, s32 stag
     return stages.iter[stage](pool, task, args);
 }
 
-s32 Shop_windowU_CreateTask(TaskPool* arg0, s32 dataType, s16 arg2, s32 arg3) {
+s32 Shop_windowU_CreateTask(TaskPool* pool, s32 dataType, s16 msgIndex, ShopObject* shop) {
     Shop_windowU_Args args;
     args.dataType = dataType;
-    args.unk_8    = arg2;
-    args.unk_4    = arg3;
-    return EasyTask_CreateTask(arg0, &Tsk_Shop_windowU, NULL, 0, NULL, &args);
+    args.msgIndex = msgIndex;
+    args.shop     = shop;
+    return EasyTask_CreateTask(pool, &Tsk_Shop_windowU, NULL, 0, NULL, &args);
 }

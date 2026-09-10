@@ -22,19 +22,19 @@ static void func_ov043_020bee2c(DepartTextScrU* textScrU) {
 }
 
 static void func_ov043_020bee4c(DepartTextScrU* textScrU) {
-    DepartObject* temp_r7 = textScrU->unk_00;
+    DepartObject* depart = textScrU->unk_00;
 
-    u32* temp_r4 = temp_r7->unk_34[2].unk_14;
-    u32* temp_r5 = temp_r7->unk_34[2].unk_10;
+    u32* map      = depart->unk_34[2].unk_14;
+    u32* charData = depart->unk_34[2].unk_10;
 
-    if ((temp_r4 == 0) || (temp_r5 == 0)) {
+    if ((map == NULL) || (charData == NULL)) {
         OS_WaitForever();
     }
 
     SysFont_SetPos(&textScrU->font, 2, 6);
-    SysFont_SetSpacing(&textScrU->font, 1, 0);
-    SysFont_SetMsg(&textScrU->font, (u16)(temp_r7->unk_0A + 0x2FB8));
-    SysFont_DrawCurrentToScreen(&textScrU->font, temp_r4 + 1, temp_r5 + 1, 0);
+    SysFont_SetSpacing(&textScrU->font, TRUE, 0);
+    SysFont_SetMsg(&textScrU->font, depart->unk_0A + 12216); // "104 Building"...
+    SysFont_DrawCurrentToScreen(&textScrU->font, map + 1, charData + 1, 0);
 }
 
 static s32 Depart_textScrU_Init(TaskPool* pool, Task* task, void* args) {

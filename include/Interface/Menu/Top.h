@@ -27,7 +27,9 @@ typedef struct {
     /* 0x18 */ u32  unk_18;
     /* 0x1C */ u32  unk_1C;
     /* 0x20 */ u8   unk_20[4];
-    /* 0x24 */ char unk_24[0x4E - 0x24];
+    /* 0x24 */ char unk_24[0x2C - 0x24];
+    /* 0x2C */ u8   unk_2C;
+    /* 0x2D */ char unk_2D[0x4E - 0x2D];
     /* 0x4E */ u16  unk_4E;
     /* 0x50 */ char unk_50[0x52 - 0x50];
     /* 0x52 */ s16  unk_52;
@@ -41,8 +43,8 @@ typedef struct {
     /* 0x66 */ s16  unk_66;
     /* 0x68 */ s16  unk_68;
     /* 0x6A */ char unk_6A[0x78 - 0x6A];
-    /* 0x78 */ s32  unk_78;
-    /* 0x7A */ s32  unk_7C;
+    /* 0x78 */ u16* unk_78;
+    /* 0x7C */ u16* unk_7C;
 } UnkStruct_TopMenu;
 
 extern Point data_ov043_020c7914[];

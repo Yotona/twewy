@@ -41,10 +41,11 @@ typedef u16 SysCode;
 // 0xFFB1..0xFFBF: set the text colour to (code & 0xF).
 #define SYSFONT_CODE_COLOR_FIRST 0xFFB1
 #define SYSFONT_CODE_COLOR_LAST  0xFFBF
+#define SYSFONT_CODE_COLOR(n)    (0xFFB0 + (n)) // n is 1..15
 
-#define SYSFONT_NO_LIMIT      0xFFFF
-#define SYSFONT_PACK_NONE     0xFFFF // absent pack entry in a SysFontInfo
-#define SYSFONT_MSG_NOT_FOUND 0xFFFC // requested message index does not exist
+#define SYSFONT_NO_LIMIT      0xFFFF            // no length limit; also the box size when the alignment ignores it
+#define SYSFONT_PACK_NONE     0xFFFF            // absent pack entry in a SysFontInfo
+#define SYSFONT_MSG_NOT_FOUND 0xFFFC            // requested message index does not exist
 
 // Glyph indices in the font's own code space.
 #define SYSFONT_GLYPH_SPACE 0x000 // advances SYSFONT_SPACE_ADVANCE px
@@ -98,12 +99,12 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32                fontId;
     /* 0x04 */ const SysFontInfo* info;
-    /* 0x08 */ void*              charData;
-    /* 0x0C */ void*              widthData;
-    /* 0x10 */ void*              msgData;
-    /* 0x14 */ void*              msg;
+    /* 0x08 */ Data*              charData;
+    /* 0x0C */ Data*              widthData;
+    /* 0x10 */ Data*              msgData;
+    /* 0x14 */ SysCode*           msg;
     /* 0x18 */ Data*              mesTableData;
-    /* 0x1C */ s32                hasMsg;
+    /* 0x1C */ BOOL               hasMsg;
     /* 0x20 */ void*              glyphBanks[5];
     /* 0x34 */ void*              widthBanks[5];
     /* 0x48 */ s32                hAlign;
@@ -118,8 +119,8 @@ typedef struct {
     /* 0x5C */ u16                widthScale;
     /* 0x5E */ s16                unk5E;
     /* 0x60 */ s16                unk60;
-    /* 0x64 */ s32                extendedGlyphs;
-    /* 0x68 */ s32                proportional;
+    /* 0x64 */ BOOL               extendedGlyphs;
+    /* 0x68 */ BOOL               proportional;
     /* 0x6C */ s32                x;
     /* 0x70 */ s32                y;
     /* 0x74 */ s32                clipRight;
@@ -142,17 +143,17 @@ BOOL SysFont_IsTerminator(SysCode code);
 /**
  * @brief Initialises a SysFont in place: points it at SysFontInfoTable[fontId] and loads its
  *        advance widths and message table.
- * @param extendedGlyphs   0 leaves glyph banks 1..3 (the extended sheets) unloaded
- * @param loadGlyphBitmaps 0 skips loading the glyph bitmaps; widths still load, so measurement
- *                         keeps working
+ * @param extendedGlyphs   FALSE leaves glyph banks 1..3 (the extended sheets) unloaded
+ * @param loadGlyphBitmaps FALSE skips loading the glyph bitmaps; widths still load, so
+ *                         measurement keeps working
  */
-void SysFont_InitEx(SysFont* font, s32 fontId, s32 extendedGlyphs, s32 loadGlyphBitmaps);
+void SysFont_InitEx(SysFont* font, s32 fontId, BOOL extendedGlyphs, BOOL loadGlyphBitmaps);
 
-/// @brief SysFont_InitEx(font, 1, 1, 1) - the default font, fully loaded.
+/// @brief SysFont_InitEx(font, 1, TRUE, TRUE) - the default font, fully loaded.
 void SysFont_Init(SysFont* font);
 
-/// @brief SysFont_InitEx(font, fontId, extendedGlyphs, 1) - pick a variant, load the bitmaps.
-void SysFont_InitWithFont(SysFont* font, s32 fontId, s32 extendedGlyphs);
+/// @brief SysFont_InitEx(font, fontId, extendedGlyphs, TRUE) - pick a variant, load the bitmaps.
+void SysFont_InitWithFont(SysFont* font, s32 fontId, BOOL extendedGlyphs);
 
 /// @brief Releases everything the font owns and leaves the struct safe to discard.
 void SysFont_Destroy(SysFont* font);
@@ -177,10 +178,10 @@ void SysFont_SetVAlign(SysFont* font, s32 align, u16 boxHeight);
 
 /**
  * @brief Sets glyph spacing.
- * @param proportional 0 advances every glyph by the full cell width; non-zero uses the
+ * @param proportional FALSE advances every glyph by the full cell width; TRUE uses the
  *                     per-glyph widths
  */
-void SysFont_SetSpacing(SysFont* font, s32 proportional, u16 letterSpacing);
+void SysFont_SetSpacing(SysFont* font, BOOL proportional, u16 letterSpacing);
 
 /// @brief Extra pixels added to the cell height at each SYSFONT_CODE_LINEBREAK.
 void SysFont_SetLineSpacing(SysFont* font, u16 lineSpacing);
@@ -205,7 +206,7 @@ void SysFont_SetMsg(SysFont* font, u16 msgIndex);
  * @brief Copies message-table entry @p msgIndex into a fresh gDebugHeap block.
  * @return the copy; the caller frees it with Mem_Free
  */
-void* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex);
+SysCode* SysFont_GetMsgBuf(SysFont* font, u16 msgIndex);
 
 /**
  * @brief Draws into 4bpp OBJ/BG character data.
@@ -228,19 +229,19 @@ s32 SysFont_DrawCurrentToScreen(SysFont* font, u16* map, void* charData, s32 scr
 
 /**
  * @brief Draws into the sprite's current cell, resolving each pixel through its OamCellPieces.
- * @param toVram non-zero pokes OBJ VRAM directly; 0 edits the CPU-side char source and
+ * @param toVram TRUE pokes OBJ VRAM directly; FALSE edits the CPU-side char source and
  *               invalidates it so SpriteMgr re-uploads the edited data
  */
-s32 SysFont_DrawToSpriteRange(SysFont* font, SysCode* msg, Sprite* sprite, s32 toVram, u16 firstGlyph, u16 glyphCount);
-s32 SysFont_DrawToSprite(SysFont* font, SysCode* msg, Sprite* sprite, s32 toVram);
-s32 SysFont_DrawCurrentToSprite(SysFont* font, Sprite* sprite, s32 toVram);
+s32 SysFont_DrawToSpriteRange(SysFont* font, SysCode* msg, Sprite* sprite, BOOL toVram, u16 firstGlyph, u16 glyphCount);
+s32 SysFont_DrawToSprite(SysFont* font, SysCode* msg, Sprite* sprite, BOOL toVram);
+s32 SysFont_DrawCurrentToSprite(SysFont* font, Sprite* sprite, BOOL toVram);
 
 /**
  * @brief Draws message @p msgIndex of the current string into a sprite.
  * @return SYSFONT_MSG_NOT_FOUND if the string has no such message
  */
-s32 SysFont_DrawMsgToSprite(SysFont* font, s32 msgIndex, Sprite* sprite, s32 toVram);
-s32 SysFont_DrawMsgToSpriteRange(SysFont* font, s32 msgIndex, Sprite* sprite, s32 toVram, u16 firstGlyph, u16 glyphCount);
+s32 SysFont_DrawMsgToSprite(SysFont* font, s32 msgIndex, Sprite* sprite, BOOL toVram);
+s32 SysFont_DrawMsgToSpriteRange(SysFont* font, s32 msgIndex, Sprite* sprite, BOOL toVram, u16 firstGlyph, u16 glyphCount);
 
 /// @brief Number of messages in @p msg (SYSFONT_CODE_MSG_END separated); always at least 1.
 u16 SysFont_CountMsgs(SysCode* msg);

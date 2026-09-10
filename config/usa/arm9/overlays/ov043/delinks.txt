@@ -138,6 +138,7 @@ src/Interface/Menu/Top/MenuTop_pointer.c:
     .data       start:0x020cb944 end:0x020cb958
 
 src/Interface/Menu/Top/MenuTop_textScrU.c:
+    complete
     .text       start:0x0208a630 end:0x0208ae20
     .rodata     start:0x020c8158 end:0x020c81a8
     .data       start:0x020cb958 end:0x020cb970
@@ -425,6 +426,7 @@ src/Interface/Menu/Shop/Shop_item2.c:
     .data       start:0x020cca7c end:0x020cca8c
 
 src/Interface/Menu/Shop/Shop_itemPlate.c:
+    complete
     .text       start:0x020b74e0 end:0x020b779c
     .rodata     start:0x020ca6bc end:0x020ca704
     .data       start:0x020cca8c end:0x020ccaa0
@@ -488,6 +490,7 @@ src/Interface/Menu/Shop/Shop_brdLogo.c:
     .data       start:0x020ccb54 end:0x020ccb68
 
 src/Interface/Menu/Shop/Shop_window0.c:
+    complete
     .text       start:0x020b9878 end:0x020ba164
     .rodata     start:0x020ca9d4 end:0x020caa3c
     .data       start:0x020ccb68 end:0x020ccb7c
@@ -535,6 +538,7 @@ src/Interface/Menu/Shop/Shop_textScrU.c:
     .data       start:0x020ccc00 end:0x020ccc14
 
 src/Interface/Menu/Shop/Shop_windowU.c:
+    complete
     .text       start:0x020bc310 end:0x020bc73c
     .rodata     start:0x020cac8c end:0x020cacd4
     .data       start:0x020ccc14 end:0x020ccc28

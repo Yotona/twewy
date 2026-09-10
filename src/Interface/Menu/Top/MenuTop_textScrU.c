@@ -1,114 +1,211 @@
 #include "Interface/Menu/Top.h"
+#include "Player/Inventory.h"
+#include "Save.h"
 #include "Util/SysFont.h"
-#include "common_data.h"
+
+extern s32 func_020243d4(u32 arg0);
 
 typedef struct {
-    /* 0x000 */ UnkStruct_TopMenu* unk_000;
+    /* 0x000 */ UnkStruct_TopMenu* topMenu;
     /* 0x004 */ SysFont            fonts[10];
 } MenuTop_textScrU; // Size: 0x4DC
 
 typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ s32 unk_4;
+    /* 0x0 */ s32                dataType;
+    /* 0x4 */ UnkStruct_TopMenu* topMenu;
 } MenuTop_textScrU_Args;
 
-s32 MenuTop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static s32 MenuTop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const Point data_ov043_020c8164[3] = {
+static const TaskHandle Tsk_MenuTop_textScrU = {"Tsk_MenuTop_textScrU", MenuTop_textScrU_RunTask, 0x4DC};
+
+static const Point MenuTop_textScrU_HelpFontPos[3] = {
     {24, 11},
     {24, 10},
     {14, 27},
 };
 
-static const TaskHandle Tsk_MenuTop_textScrU = {"Tsk_MenuTop_textScrU", MenuTop_textScrU_RunTask, 0x4DC};
-
-// static const ? data_ov043_020c8180;
-
-void func_ov043_0208a630(MenuTop_textScrU* textScrU) {
+static void MenuTop_textScrU_InitFonts(MenuTop_textScrU* textScrU) {
     for (s32 i = 0; i < 10; i++) {
         SysFont_Init(&textScrU->fonts[i]);
         SysFont_SetColor(&textScrU->fonts[i], 14);
     }
 }
 
-void func_ov043_0208a668(MenuTop_textScrU* textScrU) {
-    // Not yet implemented
-}
+static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
+    UnkStruct_TopMenu* topMenu     = textScrU->topMenu;
+    const Point        fontPos[10] = {
+        {28,  91},
+        {28, 116},
+        {28, 141},
+        {28, 166},
+        {28, 103},
+        {28, 128},
+        {28, 153},
+        {28, 178},
+        { 8,   4},
+        { 8,   4}
+    };
 
-void func_ov043_0208ab08(MenuTop_textScrU* textScrU) {
-    return;
-}
+    SysCode text[180];
 
-// Nonmatching
-void func_ov043_0208ab0c(MenuTop_textScrU* textScrU) {
-    UnkStruct_TopMenu* temp_r6 = textScrU->unk_000;
-    Point              temp[3];
-
-    temp = data_ov043_020c8164;
-
-    s32 temp_r9 = temp_r6->unk_78;
-    s32 temp_r8 = temp_r6->unk_7C;
-    if ((temp_r8 == NULL) || (temp_r9 == NULL)) {
+    s32  i;
+    u16* map      = topMenu->unk_7C;
+    u16* charData = topMenu->unk_78;
+    if ((map == NULL) || (charData == NULL)) {
         OS_WaitForever();
     }
 
-    for (u16 i = 0; i < 3; i++) {
-        SysFont_SetPos(&textScrU->fonts[i], temp[i].x, temp[i].y);
-        SysFont_SetSpacing(&textScrU->fonts[i], 1, 0);
+    for (i = 0; i < 10; i++) {
+        SysFont_SetPos(&textScrU->fonts[i], fontPos[i].x, fontPos[i].y);
+        SysFont_SetSpacing(&textScrU->fonts[i], TRUE, 0);
     }
 
-    SysFont_SetMsg(&textScrU->fonts[0], (u16)(temp_r6->unk_60 + 0x2A97));
-    SysFont_SetHAlign(&textScrU->fonts[0], 1, 0xE0);
-    SysFont_SetVAlign(&textScrU->fonts[0], 3, 0xFFFF);
-    SysFont_DrawCurrentToScreen(&textScrU->fonts[0], temp_r8 + 4, temp_r9 + 4, 0);
+    if (topMenu->unk_4E < 21) {
+        SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_20[0] + 10785); // "Mus Rattus"...
+        SysFont_SetMsg(&textScrU->fonts[1], topMenu->unk_20[1] + 10785); // "Mus Rattus"...
+        SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_20[2] + 10785); // "Mus Rattus"...
+        SysFont_SetMsg(&textScrU->fonts[3], topMenu->unk_2C + 10785);    // "Mus Rattus"...
+        SysFont_SetMsg(&textScrU->fonts[4], 10800);                      // "Attack <cC>doubled"
+        SysFont_SetMsg(&textScrU->fonts[5], 10801);                      // "Attack <cC>+50%"
+        SysFont_SetMsg(&textScrU->fonts[6], 10802);                      // "Attack <cC>+20%"
+        SysFont_SetMsg(&textScrU->fonts[7], 10803);                      // "Attack <c6>halved"
 
-    SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[1], 0x333D);
-    SysCode  text[180];
+        for (i = 0; i < 8; i++) {
+            SysFont_SetColor(&textScrU->fonts[i], 14);
+            SysFont_SetHAlign(&textScrU->fonts[i], 0, 92);
+            SysFont_DrawCurrentToScreen(&textScrU->fonts[i], map + 2, charData + 2, 0);
+        }
+    } else if ((topMenu->unk_4E >= 22) && (topMenu->unk_4E <= 34)) {
+        SysFont_SetPos(&textScrU->fonts[0], 7, 24);
 
-    SysFont_Format(text, fmt, temp_r6->unk_60 + 1, 7);
-    SysFont_SetHAlign(&textScrU->fonts[1], 2, 0xDC);
-    SysFont_DrawToScreen(&textScrU->fonts[1], text, temp_r8 + 4, temp_r9 + 4, 0);
-    Mem_Free(&gDebugHeap, fmt);
+        SysCode* fmt      = SysFont_GetMsgBuf(&textScrU->fonts[0], 13342); // "A special force field\nsurrounds this ar"...
+        SysCode* areaName = SysFont_GetMsgBuf(&textScrU->fonts[0], func_020243d4(topMenu->unk_4E & 0xFF) + 10785);
 
-    SysFont_SetMsg(&textScrU->fonts[2], (u16)(temp_r6->unk_60 + 0x2A9E));
-    SysFont_SetHAlign(&textScrU->fonts[2], 1, 0xE0);
-    SysFont_DrawCurrentToScreen(&textScrU->fonts[2], temp_r8 + 4, temp_r9 + 4, 0);
+        SysFont_Format(text, fmt, areaName);
+        SysFont_SetColor(&textScrU->fonts[0], 14);
+        SysFont_SetHAlign(&textScrU->fonts[0], 0, 112);
+        SysFont_SetVAlign(&textScrU->fonts[0], 0, 160);
+        SysFont_DrawToScreen(&textScrU->fonts[0], text, map + 2, charData + 2, 0);
+        Mem_Free(&gDebugHeap, fmt);
+        Mem_Free(&gDebugHeap, areaName);
+    } else {
+        SysFont_SetPos(&textScrU->fonts[0], 7, 24);
+        SysFont_SetMsg(&textScrU->fonts[0], 13343); // "This area doesn't\nseem to be affected\n"...
+        SysFont_SetColor(&textScrU->fonts[0], 14);
+        SysFont_SetHAlign(&textScrU->fonts[0], 0, 112);
+        SysFont_SetVAlign(&textScrU->fonts[0], 0, 160);
+        SysFont_DrawCurrentToScreen(&textScrU->fonts[0], map + 2, charData + 2, 0);
+    }
+
+    u8  day = gSaveData.unk_1AB0;
+    u16 partnerMsg;
+    if (day <= 6) {
+        partnerMsg = 13087; // "Shiki"
+    } else if (day <= 13) {
+        partnerMsg = 13088; // "Joshua"
+    } else if (day <= 20) {
+        partnerMsg = 13089; // "Beat"
+    }
+
+    if (day <= 20) {
+        SysCode* fmt     = SysFont_GetMsgBuf(&textScrU->fonts[8], 13169); // "<str>, Day <u32>"
+        SysCode* partner = SysFont_GetMsgBuf(&textScrU->fonts[8], partnerMsg);
+
+        SysFont_Format(text, fmt, partner, day % 7 + 1);
+        SysFont_SetColor(&textScrU->fonts[8], 8);
+        SysFont_SetHAlign(&textScrU->fonts[8], 1, 240);
+        SysFont_DrawToScreen(&textScrU->fonts[8], text, map + 2, charData + 2, 0);
+        Mem_Free(&gDebugHeap, fmt);
+        Mem_Free(&gDebugHeap, partner);
+    } else {
+        SysFont_SetMsg(&textScrU->fonts[8], 13170); // ""Another Day""
+        SysFont_SetColor(&textScrU->fonts[8], 8);
+        SysFont_SetHAlign(&textScrU->fonts[8], 1, 240);
+        SysFont_DrawCurrentToScreen(&textScrU->fonts[8], map + 2, charData + 2, 0);
+    }
+
+    if (func_0202366c(topMenu->unk_4E & 0xFF, 1) == 1) {
+        SysFont_SetMsg(&textScrU->fonts[9], topMenu->unk_4E + 11564); // "Scramble Crossing"...
+    } else {
+        SysFont_SetMsg(&textScrU->fonts[9], 11606);                   // "? ? ?"
+    }
+
+    SysFont_SetColor(&textScrU->fonts[9], 8);
+    SysFont_SetHAlign(&textScrU->fonts[9], 2, 240);
+    SysFont_DrawCurrentToScreen(&textScrU->fonts[9], map + 2, charData + 2, 0);
 }
 
-s32 MenuTop_textScrU_Init(TaskPool* pool, Task* task, void* args) {
+static void MenuTop_textScrU_DrawEmptyPage(MenuTop_textScrU* textScrU) {
+    return;
+}
+
+static void MenuTop_textScrU_DrawHelpPage(MenuTop_textScrU* textScrU) {
+    UnkStruct_TopMenu* topMenu = textScrU->topMenu;
+    Point              fontPos[3];
+    fontPos = MenuTop_textScrU_HelpFontPos;
+    u16 i;
+
+    u16* map      = topMenu->unk_7C;
+    u16* charData = topMenu->unk_78;
+    if ((map == NULL) || (charData == NULL)) {
+        OS_WaitForever();
+    }
+    for (i = 0; i < 3; i++) {
+        SysFont_SetPos(&textScrU->fonts[i], fontPos[i].x, fontPos[i].y);
+        SysFont_SetSpacing(&textScrU->fonts[i], TRUE, 0);
+    }
+
+    SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_60 + 10903); // "THE PHONE MENU"...
+    SysFont_SetHAlign(&textScrU->fonts[0], 1, 224);
+    SysFont_SetVAlign(&textScrU->fonts[0], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScrU->fonts[0], map + 2, charData + 2, 0);
+    SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[1], 13117); // "<u32>/<u32>"
+
+    SysCode text[180];
+    SysFont_Format(text, fmt, topMenu->unk_60 + 1, 7);
+    SysFont_SetHAlign(&textScrU->fonts[1], 2, 220);
+    SysFont_DrawToScreen(&textScrU->fonts[1], text, map + 2, charData + 2, 0);
+    Mem_Free(&gDebugHeap, fmt);
+    SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_60 + 10910); // "Use the Phone Menu to"...
+    SysFont_SetHAlign(&textScrU->fonts[2], 1, 224);
+    SysFont_DrawCurrentToScreen(&textScrU->fonts[2], map + 2, charData + 2, 0);
+}
+
+static s32 MenuTop_textScrU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_textScrU*      textScrU     = task->data;
     MenuTop_textScrU_Args* textScrUArgs = args;
 
-    textScrU->unk_000 = textScrUArgs->unk_4;
-    func_ov043_0208a630(textScrU);
-    func_ov043_0208a668(textScrU);
+    textScrU->topMenu = textScrUArgs->topMenu;
+    MenuTop_textScrU_InitFonts(textScrU);
+    MenuTop_textScrU_DrawTrendPage(textScrU);
     return 1;
 }
 
-s32 MenuTop_textScrU_Update(TaskPool* pool, Task* task, void* args) {
+static s32 MenuTop_textScrU_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_textScrU*  textScrU = task->data;
-    UnkStruct_TopMenu* temp_r5  = textScrU->unk_000;
+    UnkStruct_TopMenu* topMenu  = textScrU->topMenu;
 
-    if (temp_r5->unk_00 & 2) {
-        temp_r5->unk_00 &= ~2;
-        func_ov043_02085670(&temp_r5->unk_68, 0, 0, 9, 15, 1);
+    if (topMenu->unk_00 & 2) {
+        topMenu->unk_00 &= ~2;
+        func_ov043_02085670(&topMenu->unk_68, 0, 0, 9, 15, 1);
 
-        if (temp_r5->unk_56 == 0) {
-            func_ov043_0208a668(textScrU);
-        } else if (temp_r5->unk_56 == 1) {
-            func_ov043_0208ab08(textScrU);
+        if (topMenu->unk_56 == 0) {
+            MenuTop_textScrU_DrawTrendPage(textScrU);
+        } else if (topMenu->unk_56 == 1) {
+            MenuTop_textScrU_DrawEmptyPage(textScrU);
         } else {
-            func_ov043_0208ab0c(textScrU);
+            MenuTop_textScrU_DrawHelpPage(textScrU);
         }
     }
     return 1;
 }
 
-s32 MenuTop_textScrU_Render(TaskPool* pool, Task* task, void* args) {
+static s32 MenuTop_textScrU_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 MenuTop_textScrU_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 MenuTop_textScrU_Destroy(TaskPool* pool, Task* task, void* args) {
     MenuTop_textScrU* textScrU = task->data;
 
     for (s32 i = 0; i < 10; i++) {
@@ -118,7 +215,7 @@ s32 MenuTop_textScrU_Destroy(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 MenuTop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 MenuTop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     TaskStages stages = {
         .initialize = MenuTop_textScrU_Init,
         .update     = MenuTop_textScrU_Update,
@@ -128,9 +225,9 @@ s32 MenuTop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) 
     return stages.iter[stage](pool, task, args);
 }
 
-void MenuTop_textScrU_CreateTask(TaskPool* pool, s32 arg1, s32 arg2) {
+void MenuTop_textScrU_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* topMenu) {
     MenuTop_textScrU_Args args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
+    args.dataType = dataType;
+    args.topMenu  = topMenu;
     EasyTask_CreateTask(pool, &Tsk_MenuTop_textScrU, NULL, 0, NULL, &args);
 }

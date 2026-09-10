@@ -353,10 +353,10 @@ MenuTop_pointer_CreateTask kind:function(arm,size=0x34) addr:0x0208a5fc
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScrU.c
 /////////////////////////////////////////////////////////////
-func_ov043_0208a630 kind:function(arm,size=0x38) addr:0x0208a630 local
-func_ov043_0208a668 kind:function(arm,size=0x4a0) addr:0x0208a668 local
-func_ov043_0208ab08 kind:function(arm,size=0x4) addr:0x0208ab08 local
-func_ov043_0208ab0c kind:function(arm,size=0x1b4) addr:0x0208ab0c local
+MenuTop_textScrU_InitFonts kind:function(arm,size=0x38) addr:0x0208a630 local
+MenuTop_textScrU_DrawTrendPage kind:function(arm,size=0x4a0) addr:0x0208a668 local
+MenuTop_textScrU_DrawEmptyPage kind:function(arm,size=0x4) addr:0x0208ab08 local
+MenuTop_textScrU_DrawHelpPage kind:function(arm,size=0x1b4) addr:0x0208ab0c local
 MenuTop_textScrU_Init kind:function(arm,size=0x28) addr:0x0208acc0 local
 MenuTop_textScrU_Update kind:function(arm,size=0x84) addr:0x0208ace8 local
 MenuTop_textScrU_Render kind:function(arm,size=0x8) addr:0x0208ad6c local
@@ -1829,12 +1829,12 @@ Shop_brdLogo_CreateTask kind:function(arm,size=0x34) addr:0x020b9844
 /////////////////////////////////////////////////////////////
 Shop_window0_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b9878
 Shop_window0_Load kind:function(arm,size=0x9c) addr:0x020b9920
-func_ov043_020b99bc kind:function(arm,size=0x3c) addr:0x020b99bc
-func_ov043_020b99f8 kind:function(arm,size=0x1d4) addr:0x020b99f8
-func_ov043_020b9bcc kind:function(arm,size=0x170) addr:0x020b9bcc
-func_ov043_020b9d3c kind:function(arm,size=0x170) addr:0x020b9d3c
-func_ov043_020b9eac kind:function(arm,size=0xd4) addr:0x020b9eac
-func_ov043_020b9f80 kind:function(arm,size=0x7c) addr:0x020b9f80
+Shop_window0_InitFonts kind:function(arm,size=0x3c) addr:0x020b99bc
+Shop_window0_SetupLevelUpText kind:function(arm,size=0x1d4) addr:0x020b99f8
+Shop_window0_SetupStyleAbilityText kind:function(arm,size=0x170) addr:0x020b9bcc
+Shop_window0_SetupBrowseAbilityText kind:function(arm,size=0x170) addr:0x020b9d3c
+Shop_window0_SetupBagFullText kind:function(arm,size=0xd4) addr:0x020b9eac
+Shop_window0_DrawTextDelayed kind:function(arm,size=0x7c) addr:0x020b9f80
 Shop_window0_Init kind:function(arm,size=0x84) addr:0x020b9ffc
 Shop_window0_Update kind:function(arm,size=0x14) addr:0x020ba080
 Shop_window0_Render kind:function(arm,size=0x2c) addr:0x020ba094
@@ -1949,8 +1949,8 @@ Shop_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x020bc2dc
 // src/Interface/Shop/Shop_windowU.c
 /////////////////////////////////////////////////////////////
 Shop_windowU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bc310 local
-func_ov043_020bc3ac kind:function(arm,size=0x2c) addr:0x020bc3ac local
-func_ov043_020bc3d8 kind:function(arm,size=0x94) addr:0x020bc3d8 local
+Shop_windowU_InitFont kind:function(arm,size=0x2c) addr:0x020bc3ac local
+Shop_windowU_CenterMsg kind:function(arm,size=0x94) addr:0x020bc3d8 local
 Shop_windowU_Load kind:function(arm,size=0x12c) addr:0x020bc46c local
 Shop_windowU_Init kind:function(arm,size=0x4c) addr:0x020bc598 local
 Shop_windowU_Update kind:function(arm,size=0x2c) addr:0x020bc5e4 local
@@ -2544,10 +2544,10 @@ data_ov043_020c812c kind:data(any) addr:0x020c812c local
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScrU.c
 /////////////////////////////////////////////////////////////
-Tsk_MenuTop_textScrU kind:data(any) addr:0x020c8158
-data_ov043_020c8164 kind:data(any) addr:0x020c8164
-data_ov043_020c8170 kind:data(any) addr:0x020c8170
-data_ov043_020c8180 kind:data(any) addr:0x020c8180
+Tsk_MenuTop_textScrU kind:data(any) addr:0x020c8158 local
+MenuTop_textScrU_HelpFontPos kind:data(any) addr:0x020c8164 local
+@1584 kind:data(any) addr:0x020c8170 local
+@1465 kind:data(any) addr:0x020c8180 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_brdLogoU.c
@@ -3161,11 +3161,15 @@ Tsk_Shop_brdLogo kind:data(any) addr:0x020ca98c local
 @1417 kind:data(any) addr:0x020ca998 local
 data_ov043_020ca9a8 kind:data(any) addr:0x020ca9a8 local
 
-data_ov043_020ca9d4 kind:data(any) addr:0x020ca9d4
-Tsk_Shop_window0 kind:data(any) addr:0x020ca9f4
-data_ov043_020caa00 kind:data(any) addr:0x020caa00
-data_ov043_020caa10 kind:data(any) addr:0x020caa10
+@1538 kind:data(any) addr:0x020ca9d4 local
+@1508 kind:data(any) addr:0x020ca9dc local
+@1583 kind:data(any) addr:0x020ca9e4 local
+@1561 kind:data(any) addr:0x020ca9ec local
+Tsk_Shop_window0 kind:data(any) addr:0x020ca9f4 local
+@1645 kind:data(any) addr:0x020caa00 local
+Shop_window0_Anim kind:data(any) addr:0x020caa10 local
 Tsk_Shop_window1 kind:data(any) addr:0x020caa3c
+data_ov043_020caa48 kind:data(any) addr:0x020caa48
 data_ov043_020caa54 kind:data(any) addr:0x020caa54
 data_ov043_020caa64 kind:data(any) addr:0x020caa64
 
@@ -3225,7 +3229,7 @@ data_ov043_020cac70 kind:data(any) addr:0x020cac70
 /////////////////////////////////////////////////////////////
 Tsk_Shop_windowU kind:data(any) addr:0x020cac8c local
 @1347 kind:data(any) addr:0x020cac98 local
-data_ov043_020caca8 kind:data(any) addr:0x020caca8 local
+Shop_windowU_Anim kind:data(any) addr:0x020caca8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_castU.c
@@ -3534,7 +3538,7 @@ data_ov043_020cb930 kind:data(any) addr:0x020cb930
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScrU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb958 kind:data(any) addr:0x020cb958
+@1447 kind:data(any) addr:0x020cb958 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_brdLogoU.c
@@ -3947,7 +3951,7 @@ data_ov043_020ccab4 kind:data(any) addr:0x020ccab4
 /////////////////////////////////////////////////////////////
 @1334 kind:data(any) addr:0x020ccb54 local
 
-data_ov043_020ccb68 kind:data(any) addr:0x020ccb68
+@1646 kind:data(any) addr:0x020ccb68 local
 data_ov043_020ccb7c kind:data(any) addr:0x020ccb7c
 
 /////////////////////////////////////////////////////////////

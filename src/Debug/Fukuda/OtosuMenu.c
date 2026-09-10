@@ -1764,11 +1764,11 @@ void func_ov002_02082ab4(OtosuMenuObj* menuObj) {
             continue;
         }
 
-        SysFont_SetMsgPtr(&menuObj->font, menuObj->unk_41838 + i * 0x30);
+        SysFont_SetMsgPtr(&menuObj->font, menuObj->unk_41838 + i * 48);
         SysFont_SetPos(&menuObj->font, 0, temp_values[i]);
-        SysFont_SetHAlign(&menuObj->font, 0, 0x100);
-        SysFont_SetVAlign(&menuObj->font, 3, 0x50);
-        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4, 0x20, 0xA);
+        SysFont_SetHAlign(&menuObj->font, 0, 256);
+        SysFont_SetVAlign(&menuObj->font, 3, 80);
+        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4, 32, 10);
     }
 
     func_0203abec(3, menuObj->unk_41FF4, (u8*)G2_GetBG0CharPtr() + 0x2400, 0x2800);
@@ -1844,9 +1844,9 @@ void func_ov002_02082e70(void* arg0, s32* arg1, void* arg2, void* arg3) {
     }
     do {
         SysFont_SetMsgPtr(arg0, *entry);
-        SysFont_SetPos(arg0, 0x48, (u16)((index + 1) * 0x28));
-        SysFont_SetHAlign(arg0, 0, 0x70);
-        SysFont_SetVAlign(arg0, 0, 0x10);
+        SysFont_SetPos(arg0, 72, (u16)((index + 1) * 40));
+        SysFont_SetHAlign(arg0, 0, 112);
+        SysFont_SetVAlign(arg0, 0, 16);
         SysFont_DrawCurrentToScreen(arg0, arg3, arg2, 0);
         index++;
         entry++;
@@ -1938,10 +1938,10 @@ void func_ov002_02083484(OtosuMenuObj* menuObj, u16* arg1) {
 
     SysFont_SetColor(&menuObj->font, 1);
     SysFont_SetLineSpacing(&menuObj->font, 4);
-    SysFont_SetSpacing(&menuObj->font, 1, 0);
+    SysFont_SetSpacing(&menuObj->font, TRUE, 0);
     func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg1, table_ptr + 4, menuObj->unk_47490);
     SysFont_SetLineSpacing(&menuObj->font, 2);
-    SysFont_SetSpacing(&menuObj->font, 1, 0);
+    SysFont_SetSpacing(&menuObj->font, TRUE, 0);
 
     menuObj->unk_47324 = BgResMgr_AllocChar32(g_BgResourceManagers[1], table_ptr,
                                               g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x6000);
@@ -2540,9 +2540,9 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     obj->unk_11588      = DatMgr_AllocateSlot();
     data_ov002_020934e0 = 0;
     obj->unk_11580      = ResourceMgr_ReinitManagers(&obj->unk_00000);
-    SysFont_InitWithFont(&obj->font, 1, 1);
+    SysFont_InitWithFont(&obj->font, 1, TRUE);
     SysFont_SetLineSpacing(&obj->font, 3);
-    SysFont_SetSpacing(&obj->font, 1, 0);
+    SysFont_SetSpacing(&obj->font, TRUE, 0);
     SysFont_SetColor(&obj->font, 12);
     PrcMaster_Init(&obj->prcMaster, 30);
     EasyTask_InitializePool(&obj->taskPool, &obj->heap, 0x100, NULL, NULL);
@@ -3468,7 +3468,7 @@ PrcStepResult func_ov002_020875c8(PrcCtx* ctx, void* object) {
         *var_r3++ = *var_ip++;
         var_r2 -= 1;
     } while (var_r2 != 0);
-    SysFont_SetSpacing(&menuObj->font, 1, 0);
+    SysFont_SetSpacing(&menuObj->font, TRUE, 0);
     func_ov002_02082f18(menuObj, 0x15, 0x14, sp2);
     CriSndMgr_PlayFile(ADX_B11);
     menuObj->unk_474C8 = 0xFFFF;
@@ -5241,9 +5241,9 @@ void func_ov002_0208a780(OtosuMenuObj* menuObj) {
         }
         SysFont_SetMsgPtr(&menuObj->font, data_ov002_02093664);
         SysFont_SetPos(&menuObj->font, 0, 5);
-        SysFont_SetHAlign(&menuObj->font, 0, 0x100);
-        SysFont_SetVAlign(&menuObj->font, 3, 0x20);
-        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4 + (var_r9 << 0xC), 0x20, 4);
+        SysFont_SetHAlign(&menuObj->font, 0, 256);
+        SysFont_SetVAlign(&menuObj->font, 3, 32);
+        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4 + (var_r9 << 12), 32, 4);
         var_r9 += 1;
     } while ((u32)var_r9 < 3U);
     var_r5 = 0;
@@ -8385,20 +8385,20 @@ void func_ov002_0208f9ec(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
 
     SysFont_SetMsg(temp_r4, data_ov002_02092534[menuObj->unk_474CA]);
     SysFont_SetPos(temp_r4, 0, 0);
-    SysFont_SetHAlign(temp_r4, 0, 0x100);
-    SysFont_SetVAlign(temp_r4, 0, 0xC0);
+    SysFont_SetHAlign(temp_r4, 0, 256);
+    SysFont_SetVAlign(temp_r4, 0, 192);
     SysFont_DrawCurrentToScreen(temp_r4, arg2, arg1, 0);
 }
 
 void func_ov002_0208fa6c(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
-    u16   table_sp14[0xC8];
-    u16   table_upper[3];
-    u16   table_lower[3];
-    s32   temp_r0_2;
-    s32   temp_r5;
-    s32   temp_r6;
-    void* temp_r7;
-    u16   i;
+    u16      table_sp14[0xC8];
+    u16      table_upper[3];
+    u16      table_lower[3];
+    SysCode* lowerText;
+    SysCode* upperText;
+    SysCode* fmt;
+    void*    temp_r7;
+    u16      i;
 
     for (i = 0; i < 0xC8; i++) {
         table_sp14[i] = data_ov002_020926e0[i];
@@ -8410,17 +8410,17 @@ void func_ov002_0208fa6c(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
     table_lower[0] = data_ov002_02092524.unkA;
     table_lower[1] = data_ov002_02092524.unkC;
     table_lower[2] = data_ov002_02092524.unkE;
-    temp_r6        = SysFont_GetMsgBuf(temp_r7, 0x20A2U);
-    temp_r5        = SysFont_GetMsgBuf(temp_r7, table_upper[menuObj->unk_474C8]);
-    temp_r0_2      = SysFont_GetMsgBuf(temp_r7, table_lower[menuObj->unk_474CC]);
-    SysFont_Format(table_sp14, temp_r6, temp_r5, menuObj->unk_474CA + 1, 0xE, temp_r0_2);
-    Mem_Free(&gDebugHeap, temp_r6);
-    Mem_Free(&gDebugHeap, temp_r5);
-    Mem_Free(&gDebugHeap, temp_r0_2);
+    fmt            = SysFont_GetMsgBuf(temp_r7, 8354); // ""
+    upperText      = SysFont_GetMsgBuf(temp_r7, table_upper[menuObj->unk_474C8]);
+    lowerText      = SysFont_GetMsgBuf(temp_r7, table_lower[menuObj->unk_474CC]);
+    SysFont_Format(table_sp14, fmt, upperText, menuObj->unk_474CA + 1, 14, lowerText);
+    Mem_Free(&gDebugHeap, fmt);
+    Mem_Free(&gDebugHeap, upperText);
+    Mem_Free(&gDebugHeap, lowerText);
     SysFont_SetMsgPtr(temp_r7, table_sp14);
-    SysFont_SetPos(temp_r7, 0U, 0U);
-    SysFont_SetHAlign(temp_r7, 0, 0x100U);
-    SysFont_SetVAlign(temp_r7, 0, 0xC0U);
+    SysFont_SetPos(temp_r7, 0, 0);
+    SysFont_SetHAlign(temp_r7, 0, 256);
+    SysFont_SetVAlign(temp_r7, 0, 192);
     SysFont_DrawCurrentToScreen(temp_r7, arg2, arg1, 0);
 }
 

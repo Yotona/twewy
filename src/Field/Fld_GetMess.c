@@ -95,8 +95,8 @@ s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess*      mess     = task->data;
     Fld_GetMess_Args* messArgs = args;
 
-    SysFont_InitWithFont(&mess->font, 1, 1);
-    SysFont_SetSpacing(&mess->font, 1, 0);
+    SysFont_InitWithFont(&mess->font, 1, TRUE);
+    SysFont_SetSpacing(&mess->font, TRUE, 0);
     Fld_GetMess_Load(&mess->sprite, messArgs);
     Sprite_Update(&mess->sprite);
 
@@ -108,7 +108,7 @@ s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
     if (messArgs->unk_6 == 0xFFFF) {
         mess->unk_C8 = SysFont_GetMsgBuf(&mess->font, messArgs->unk_4);
         SysFont_SetHAlign(&mess->font, 1, SysFont_MeasureWidth(&mess->font, mess->unk_C8));
-        SysFont_SetPos(&mess->font, 0xD, 9);
+        SysFont_SetPos(&mess->font, 13, 9);
     } else if (messArgs->unk_6 == 0xFFFE) {
         mess->unk_C8 = SysFont_GetMsgBuf(&mess->font, messArgs->unk_4);
         func_ov030_020c4b8c(&mess->font, mess->unk_C8, 0, mess);
@@ -137,7 +137,7 @@ s32 Fld_GetMess_Render(TaskPool* pool, Task* task, void* args) {
     if (mess->unk_4A != 0) {
         mess->unk_4A--;
         if ((mess->unk_4A & 0xFF) == 0) {
-            SysFont_DrawToSprite(&mess->font, mess->unk_C8, &mess->sprite, 1);
+            SysFont_DrawToSprite(&mess->font, mess->unk_C8, &mess->sprite, TRUE);
             Mem_Free(&gDebugHeap, mess->unk_C8);
             SysFont_Destroy(&mess->font);
             mess->unk_C8 = NULL;
