@@ -9,6 +9,7 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 #include <nitro/types.h>
 
@@ -17,7 +18,7 @@ typedef struct {
     /* 0x11580 */ ResourceManager* unk_11580;
     /* 0x11584 */ s32              unk_11584;
     /* 0x11588 */ char             unk_11588[0x10428];
-    /* 0x219B0 */ UnkOv31Struct    unk_219B0;
+    /* 0x219B0 */ SysFont          font;
     /* 0x21A2C */ s32              unk_21A2C;
     /* 0x21A30 */ char             unk_21A30[0x78];
     /* 0x21AA8 */ void*            unk_21AA8;
@@ -36,13 +37,13 @@ void FontTest_RegisterVBlank(void);
 
 void func_ov001_020824a0(FontState* arg0) {
     data_02066eec = 0;
-    func_ov031_0210aaac(&arg0->unk_219B0, 1, 1);
-    func_ov031_0210ab28(&arg0->unk_219B0, 0, 0);
-    arg0->unk_219B0.unk_5C = 1;
-    func_ov031_0210ab28(&arg0->unk_219B0, 0, 0);
-    func_ov031_0210b630(&arg0->unk_219B0, 8334);
-    func_ov031_0210be18(&arg0->unk_219B0, arg0->unk_21B3C + 4, arg0->unk_21B40 + 4, 0);
-    func_ov031_0210aabc(&arg0->unk_219B0);
+    SysFont_InitWithFont(&arg0->font, 1, 1);
+    SysFont_SetPos(&arg0->font, 0, 0);
+    arg0->font.widthScale = 1;
+    SysFont_SetPos(&arg0->font, 0, 0);
+    SysFont_SetMsg(&arg0->font, 8334);
+    SysFont_DrawCurrentToScreen(&arg0->font, arg0->unk_21B3C + 4, arg0->unk_21B40 + 4, 0);
+    SysFont_Destroy(&arg0->font);
 }
 
 void func_ov001_0208254c(FontState* arg0) {

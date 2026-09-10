@@ -1,11 +1,12 @@
 #include "Interface/Menu/Shop.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[2];
     /* 0x080 */ s32              unk_080;
     /* 0x084 */ s32              unk_084;
-    /* 0x088 */ UnkOv31Struct    unk_088;
+    /* 0x088 */ SysFont          font;
     /* 0x104 */ BOOL             unk_104;
     /* 0x108 */ u16              unk_108;
     /* 0x10A */ char             unk_10A[2];
@@ -81,25 +82,25 @@ static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 
 }
 
 static void func_ov043_020bc3ac(Shop_windowU* window) {
-    func_ov031_0210aaac(&window->unk_088, 3, 1);
-    func_ov031_0210ab54(&window->unk_088, 1, 0);
+    SysFont_InitWithFont(&window->font, 3, 1);
+    SysFont_SetSpacing(&window->font, 1, 0);
 }
 
 static void func_ov043_020bc3d8(Shop_windowU* window) {
     s32 sp4;
     s32 sp0;
 
-    func_ov031_0210b630(&window->unk_088, window->unk_108);
-    func_ov031_0210a220(window, &sp4, &sp0);
+    SysFont_SetMsg(&window->font, window->unk_108);
+    SysFont_GetCellBoundsMin(window->sprites, &sp4, &sp0);
 
-    s32 offsetX = func_ov031_0210c338(&window->unk_088);
-    s32 offsetY = func_ov031_0210c5b4(&window->unk_088);
+    s32 offsetX = SysFont_MeasureCurrentWidth(&window->font);
+    s32 offsetY = SysFont_MeasureCurrentHeight(&window->font);
 
-    func_ov031_0210ab3c(&window->unk_088, 0, offsetX);
+    SysFont_SetHAlign(&window->font, 0, offsetX);
 
     s32 negOffsetX = -offsetX;
     s32 negOffsetY = -offsetY;
-    func_ov031_0210ab28(&window->unk_088, (u16)((negOffsetX / 2) - sp4), (u16)((negOffsetY / 2) - sp0));
+    SysFont_SetPos(&window->font, (u16)((negOffsetX / 2) - sp4), (u16)((negOffsetY / 2) - sp0));
 }
 
 // Nonmatching: regswap
@@ -156,7 +157,7 @@ static s32 Shop_windowU_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_RenderFrame(&window->sprites[0]);
     Sprite_RenderAltPalette(&window->sprites[1], window->unk_114, window->unk_110, 0);
     if (window->unk_104 == FALSE) {
-        func_ov031_0210bed8(&window->unk_088, window, 0);
+        SysFont_DrawCurrentToSprite(&window->font, window->sprites, 0);
         window->unk_104 = TRUE;
     }
     return 1;
@@ -172,7 +173,7 @@ static s32 Shop_windowU_Destroy(TaskPool* pool, Task* task, void* args) {
         PaletteMgr_ReleaseResource(g_PaletteManagers[1], window->unk_114);
     }
     DatMgr_ReleaseData(window->unk_10C);
-    func_ov031_0210aabc(&window->unk_088);
+    SysFont_Destroy(&window->font);
     return 1;
 }
 

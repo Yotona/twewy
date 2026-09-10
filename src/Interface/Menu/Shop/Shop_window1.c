@@ -1,17 +1,17 @@
 #include "Interface/Menu/Shop.h"
 #include "Player/Inventory.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
-    /* 0x000 */ Sprite        unk_000[3];
-    /* 0x0C0 */ BOOL          unk_0C0;
-    /* 0x0C4 */ ShopObject*   unk_0C4;
-    /* 0x0C8 */ UnkOv31Struct unk_0C8[3];
-    /* 0x23C */ char          unk_23C[0x23E - 0x23C];
-    /* 0x23E */ s16           unk_23E;
-    /* 0x240 */ char          unk_240[0x2DC - 0x240];
-    /* 0x2DC */ u16           unk_2DC;
-    /* 0x2DE */ u16           unk_2DE;
+    /* 0x000 */ Sprite      unk_000[3];
+    /* 0x0C0 */ BOOL        unk_0C0;
+    /* 0x0C4 */ ShopObject* unk_0C4;
+    /* 0x0C8 */ SysFont     fonts[3];
+    /* 0x23C */ char        unk_23C[0x23E - 0x23C];
+    /* 0x23E */ SysCode     textBuf[(0x2DC - 0x23E) / 2];
+    /* 0x2DC */ u16         unk_2DC;
+    /* 0x2DE */ u16         unk_2DE;
 } Shop_window1; // Size: 0x2E0
 
 typedef struct {
@@ -20,10 +20,6 @@ typedef struct {
     /* 0x8 */ char        unk_8[4];
 } Shop_window1_Args;
 
-extern u16  func_ov031_0210a5fc(s16* arg0, const u16* arg1, ...);
-extern void func_ov031_0210ab54(UnkOv31Struct* arg0, s32 arg1, s16 arg2);
-extern void func_ov031_0210b5fc(UnkOv31Struct* arg0, s32 arg1);
-extern s32  func_ov031_0210bed8(UnkOv31Struct* arg0, void* arg1, s32 arg2);
 extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 
 SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
@@ -126,8 +122,8 @@ void Shop_window1_Load(Shop_window1* window, Sprite* sprites, Shop_window1_Args*
 
 void func_ov043_020ba2f0(Shop_window1* window) {
     for (u16 i = 0; i < 3; i++) {
-        func_ov031_0210aa94(&window->unk_0C8[i]);
-        func_ov031_0210ab54(&window->unk_0C8[i], 1, 0);
+        SysFont_Init(&window->fonts[i]);
+        SysFont_SetSpacing(&window->fonts[i], 1, 0);
     }
 }
 
@@ -136,8 +132,8 @@ void func_ov043_020ba33c(Shop_window1* window) {
     ShopObject* shop = window->unk_0C4;
 
     for (u16 i = 0; i < 3; i++) {
-        func_ov031_0210ab28(&window->unk_0C8[i], data_ov043_020caa48[i].x, data_ov043_020caa48[i].y);
-        func_ov031_0210ab3c(&window->unk_0C8[i], 0, 0xE0);
+        SysFont_SetPos(&window->fonts[i], data_ov043_020caa48[i].x, data_ov043_020caa48[i].y);
+        SysFont_SetHAlign(&window->fonts[i], 0, 0xE0);
     }
 
     {
@@ -166,14 +162,14 @@ void func_ov043_020ba33c(Shop_window1* window) {
                 break;
         }
 
-        func_ov031_0210b630(&window->unk_0C8[0], (u16)(msgBase + itemIndex));
+        SysFont_SetMsg(&window->fonts[0], (u16)(msgBase + itemIndex));
 
         if (itemState == 0) {
             void* text;
 
             if (itemCost < 0x3E8U) {
-                text = func_ov031_0210b698(&window->unk_0C8[1], 0x3413);
-                func_ov031_0210a5fc(&window->unk_23E, text, itemCost);
+                text = SysFont_GetMsgBuf(&window->fonts[1], 0x3413);
+                SysFont_Format(window->textBuf, text, itemCost);
             } else if (itemCost < 0xF4240U) {
                 u32 thousands = itemCost / 1000;
                 u32 rem1000   = itemCost % 1000;
@@ -182,8 +178,8 @@ void func_ov043_020ba33c(Shop_window1* window) {
                 u32 tens      = rem100 / 10;
                 u32 ones      = rem100 % 10;
 
-                text = func_ov031_0210b698(&window->unk_0C8[1], 0x3414);
-                func_ov031_0210a5fc(&window->unk_23E, text, thousands, hundreds, tens, ones);
+                text = SysFont_GetMsgBuf(&window->fonts[1], 0x3414);
+                SysFont_Format(window->textBuf, text, thousands, hundreds, tens, ones);
             } else {
                 u32 millions         = itemCost / 1000000;
                 u32 rem1000000       = itemCost % 1000000;
@@ -198,20 +194,20 @@ void func_ov043_020ba33c(Shop_window1* window) {
                 u32 tens             = rem100 / 10;
                 u32 ones             = rem100 % 10;
 
-                text = func_ov031_0210b698(&window->unk_0C8[1], 0x3415);
-                func_ov031_0210a5fc(&window->unk_23E, text, millions, hundredThousands, tenThousands, thousands, hundreds,
-                                    tens, ones);
+                text = SysFont_GetMsgBuf(&window->fonts[1], 0x3415);
+                SysFont_Format(window->textBuf, text, millions, hundredThousands, tenThousands, thousands, hundreds, tens,
+                               ones);
             }
 
-            func_ov031_0210b5fc(&window->unk_0C8[1], (s32)&window->unk_23E);
+            SysFont_SetMsgPtr(&window->fonts[1], window->textBuf);
             Mem_Free(&gDebugHeap, text);
-            func_ov031_0210b630(&window->unk_0C8[2], 0x3416);
+            SysFont_SetMsg(&window->fonts[2], 0x3416);
             return;
         }
     }
 
-    func_ov031_0210b630(&window->unk_0C8[1], 0x3423);
-    func_ov031_0210b630(&window->unk_0C8[2], 0x3424);
+    SysFont_SetMsg(&window->fonts[1], 0x3423);
+    SysFont_SetMsg(&window->fonts[2], 0x3424);
 }
 
 void func_ov043_020ba6d4(Shop_window1* window) {
@@ -224,9 +220,9 @@ void func_ov043_020ba6d4(Shop_window1* window) {
         return;
     }
 
-    func_ov031_0210bed8(&window->unk_0C8[0], window, 1);
-    func_ov031_0210bed8(&window->unk_0C8[1], window, 1);
-    func_ov031_0210bed8(&window->unk_0C8[2], window, 1);
+    SysFont_DrawCurrentToSprite(&window->fonts[0], window->unk_000, 1);
+    SysFont_DrawCurrentToSprite(&window->fonts[1], window->unk_000, 1);
+    SysFont_DrawCurrentToSprite(&window->fonts[2], window->unk_000, 1);
 }
 
 s32 Shop_window1_Init(TaskPool* arg0, Task* arg1, void* arg2) {
@@ -281,9 +277,9 @@ s32 Shop_window1_Destroy(TaskPool* arg0, Task* arg1, void* arg2) {
     for (u16 i = 0; i < 3; i++) {
         Sprite_Release(&window->unk_000[i]);
     }
-    func_ov031_0210aabc(&window->unk_0C8[0]);
-    func_ov031_0210aabc(&window->unk_0C8[1]);
-    func_ov031_0210aabc(&window->unk_0C8[2]);
+    SysFont_Destroy(&window->fonts[0]);
+    SysFont_Destroy(&window->fonts[1]);
+    SysFont_Destroy(&window->fonts[2]);
     return 1;
 }
 

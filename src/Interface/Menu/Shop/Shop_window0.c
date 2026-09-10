@@ -1,17 +1,17 @@
 #include "Interface/Menu/Shop.h"
 #include "Player/Inventory.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
-    /* 0x000 */ Sprite        sprite;
-    /* 0x040 */ BOOL          shouldRender;
-    /* 0x044 */ ShopObject*   shop;
-    /* 0x048 */ UnkOv31Struct unk_048[2];
-    /* 0x140 */ char          unk_140[0x142 - 0x140];
-    /* 0x142 */ u16           unk_142;
-    /* 0x144 */ char          unk_144[0x2D0 - 0x144];
-    /* 0x2D0 */ u16           unk_2D0;
-    /* 0x2D2 */ u16           unk_2D2;
+    /* 0x000 */ Sprite      sprite;
+    /* 0x040 */ BOOL        shouldRender;
+    /* 0x044 */ ShopObject* shop;
+    /* 0x048 */ SysFont     fonts[2];
+    /* 0x140 */ char        unk_140[0x142 - 0x140];
+    /* 0x142 */ SysCode     textBuf[(0x2D0 - 0x142) / 2];
+    /* 0x2D0 */ u16         unk_2D0;
+    /* 0x2D2 */ u16         unk_2D2;
 } Shop_window0; // Size: 0x2D4
 
 typedef struct {
@@ -81,10 +81,10 @@ void Shop_window0_Load(Shop_window0* window, Sprite* sprite, Shop_window0_Args* 
 }
 
 void func_ov043_020b99bc(Shop_window0* window) {
-    func_ov031_0210aa94(&window->unk_048[0]);
-    func_ov031_0210aa94(&window->unk_048[1]);
-    func_ov031_0210ab54(&window->unk_048[0], 1, 0);
-    func_ov031_0210ab54(&window->unk_048[1], 1, 0);
+    SysFont_Init(&window->fonts[0]);
+    SysFont_Init(&window->fonts[1]);
+    SysFont_SetSpacing(&window->fonts[0], 1, 0);
+    SysFont_SetSpacing(&window->fonts[1], 1, 0);
 }
 
 // Nonmatching
@@ -93,17 +93,17 @@ void func_ov043_020b99f8(Shop_window0* window) {
     const Point temp[2] = {data_ov043_020ca9d4[0], data_ov043_020ca9d4[1]};
 
     for (u16 i = 0; i < 2; i++) {
-        func_ov031_0210ab28(&window->unk_048[i], temp[i].x, temp[i].y);
+        SysFont_SetPos(&window->fonts[i], temp[i].x, temp[i].y);
     }
 
-    func_ov031_0210b630(&window->unk_048[0], 0x3039);
-    func_ov031_0210ab3c(&window->unk_048[0], 1, 0xFFFF);
+    SysFont_SetMsg(&window->fonts[0], 0x3039);
+    SysFont_SetHAlign(&window->fonts[0], 1, 0xFFFF);
 
     if (shop->unk_84E == 0xFFFF) {
-        void* temp_r0 = func_ov031_0210b698(&window->unk_048[1], 0x303A);
-        func_ov031_0210a5fc(&window->unk_142, temp_r0, shop->unk_7B5);
-        func_ov031_0210ab3c(&window->unk_048[1], 0, 0xF0);
-        func_ov031_0210ab48(&window->unk_048[1], 0, 0x2E);
+        void* temp_r0 = SysFont_GetMsgBuf(&window->fonts[1], 0x303A);
+        SysFont_Format(window->textBuf, temp_r0, shop->unk_7B5);
+        SysFont_SetHAlign(&window->fonts[1], 0, 0xF0);
+        SysFont_SetVAlign(&window->fonts[1], 0, 0x2E);
         Mem_Free(&gDebugHeap, temp_r0);
         return;
     }
@@ -122,11 +122,11 @@ void func_ov043_020b99f8(Shop_window0* window) {
         var_r5 = 0x34BE;
     }
 
-    void* temp_r5   = func_ov031_0210b698(&window->unk_048[1], 0x303B);
-    void* temp_r0_3 = func_ov031_0210b698(&window->unk_048[1], var_r5 + index);
-    func_ov031_0210a5fc(&window->unk_142, temp_r5, temp_r0_3);
-    func_ov031_0210ab3c(&window->unk_048[1], 0, 228);
-    func_ov031_0210ab48(&window->unk_048[1], 0, 46);
+    void* temp_r5   = SysFont_GetMsgBuf(&window->fonts[1], 0x303B);
+    void* temp_r0_3 = SysFont_GetMsgBuf(&window->fonts[1], var_r5 + index);
+    SysFont_Format(window->textBuf, temp_r5, temp_r0_3);
+    SysFont_SetHAlign(&window->fonts[1], 0, 228);
+    SysFont_SetVAlign(&window->fonts[1], 0, 46);
     Mem_Free(&gDebugHeap, temp_r5);
     Mem_Free(&gDebugHeap, temp_r0_3);
 }
@@ -137,28 +137,28 @@ void func_ov043_020b9bcc(Shop_window0* window) {
     const Point temp[2] = {data_ov043_020ca9d4[0], data_ov043_020ca9d4[1]};
 
     for (u16 i = 0; i < 2; i++) {
-        func_ov031_0210ab28(&window->unk_048[i], temp[i].x, temp[i].y);
+        SysFont_SetPos(&window->fonts[i], temp[i].x, temp[i].y);
     }
 
-    func_ov031_0210b630(&window->unk_048[0], 0x303C);
-    func_ov031_0210ab3c(&window->unk_048[0], 1, 0xFFFF);
+    SysFont_SetMsg(&window->fonts[0], 0x303C);
+    SysFont_SetHAlign(&window->fonts[0], 1, 0xFFFF);
 
-    void* temp_r4 = func_ov031_0210b698(&window->unk_048[1], 0x303D);
+    void* temp_r4 = SysFont_GetMsgBuf(&window->fonts[1], 0x303D);
     s32   temp_r5 = Inventory_GetCategory(shop->unk_84C);
     s32   temp_r0 = Inventory_GetCategorizedIndex(shop->unk_84C);
 
     void* var_r8;
 
     if (temp_r5 == 0) {
-        var_r8 = func_ov031_0210b698(&window->unk_048[1], temp_r0 + 0x27C1);
+        var_r8 = SysFont_GetMsgBuf(&window->fonts[1], temp_r0 + 0x27C1);
     } else if (temp_r5 == 1) {
-        var_r8 = func_ov031_0210b698(&window->unk_048[1], temp_r0 + 0x2C14);
+        var_r8 = SysFont_GetMsgBuf(&window->fonts[1], temp_r0 + 0x2C14);
     } else {
         OS_WaitForever();
     }
-    func_ov031_0210a5fc(&window->unk_142, temp_r4, var_r8);
-    func_ov031_0210ab3c(&window->unk_048[1], 0, 228);
-    func_ov031_0210ab48(&window->unk_048[1], 0, 46);
+    SysFont_Format(window->textBuf, temp_r4, var_r8);
+    SysFont_SetHAlign(&window->fonts[1], 0, 228);
+    SysFont_SetVAlign(&window->fonts[1], 0, 46);
     Mem_Free(&gDebugHeap, temp_r4);
     Mem_Free(&gDebugHeap, var_r8);
 }
@@ -169,28 +169,28 @@ void func_ov043_020b9d3c(Shop_window0* window) {
     const Point temp[2] = {data_ov043_020ca9d4[0], data_ov043_020ca9d4[1]};
 
     for (u16 i = 0; i < 2; i++) {
-        func_ov031_0210ab28(&window->unk_048[i], temp[i].x, temp[i].y);
+        SysFont_SetPos(&window->fonts[i], temp[i].x, temp[i].y);
     }
 
-    func_ov031_0210b630(&window->unk_048[0], 0x303C);
-    func_ov031_0210ab3c(&window->unk_048[0], 1, 0xFFFF);
+    SysFont_SetMsg(&window->fonts[0], 0x303C);
+    SysFont_SetHAlign(&window->fonts[0], 1, 0xFFFF);
 
-    void* temp_r4 = func_ov031_0210b698(&window->unk_048[1], 0x303E);
+    void* temp_r4 = SysFont_GetMsgBuf(&window->fonts[1], 0x303E);
     s32   temp_r5 = Inventory_GetCategory(shop->unk_84C);
     s32   temp_r0 = Inventory_GetCategorizedIndex(shop->unk_84C);
 
     void* var_r8;
 
     if (temp_r5 == 0) {
-        var_r8 = func_ov031_0210b698(&window->unk_048[1], temp_r0 + 0x27C1);
+        var_r8 = SysFont_GetMsgBuf(&window->fonts[1], temp_r0 + 0x27C1);
     } else if (temp_r5 == 1) {
-        var_r8 = func_ov031_0210b698(&window->unk_048[1], temp_r0 + 0x2C14);
+        var_r8 = SysFont_GetMsgBuf(&window->fonts[1], temp_r0 + 0x2C14);
     } else {
         OS_WaitForever();
     }
-    func_ov031_0210a5fc(&window->unk_142, temp_r4, var_r8);
-    func_ov031_0210ab3c(&window->unk_048[1], 0, 228);
-    func_ov031_0210ab48(&window->unk_048[1], 0, 46);
+    SysFont_Format(window->textBuf, temp_r4, var_r8);
+    SysFont_SetHAlign(&window->fonts[1], 0, 228);
+    SysFont_SetVAlign(&window->fonts[1], 0, 46);
     Mem_Free(&gDebugHeap, temp_r4);
     Mem_Free(&gDebugHeap, var_r8);
 }
@@ -200,15 +200,15 @@ void func_ov043_020b9eac(Shop_window0* window) {
     const Point temp[2] = {data_ov043_020ca9d4[6], data_ov043_020ca9d4[7]};
 
     for (u16 i = 0; i < 2; i++) {
-        func_ov031_0210ab28(&window->unk_048[i], temp[i].x, temp[i].y);
+        SysFont_SetPos(&window->fonts[i], temp[i].x, temp[i].y);
     }
 
     window->unk_2D2 = 1;
-    func_ov031_0210b630(&window->unk_048[0], 0x3425);
-    func_ov031_0210ab3c(&window->unk_048[0], 1, 0xFFFF);
-    func_ov031_0210b630(&window->unk_048[1], 0x3426);
-    func_ov031_0210ab3c(&window->unk_048[1], 0, 228);
-    func_ov031_0210ab48(&window->unk_048[1], 0, 46);
+    SysFont_SetMsg(&window->fonts[0], 0x3425);
+    SysFont_SetHAlign(&window->fonts[0], 1, 0xFFFF);
+    SysFont_SetMsg(&window->fonts[1], 0x3426);
+    SysFont_SetHAlign(&window->fonts[1], 0, 228);
+    SysFont_SetVAlign(&window->fonts[1], 0, 46);
 }
 
 void func_ov043_020b9f80(Shop_window0* window) {
@@ -219,11 +219,11 @@ void func_ov043_020b9f80(Shop_window0* window) {
     window->unk_2D0--;
     if (window->unk_2D0 == 0) {
         if (window->unk_2D2 == 1) {
-            func_ov031_0210bed8(&window->unk_048[0], window, 1);
-            func_ov031_0210bed8(&window->unk_048[1], window, 1);
+            SysFont_DrawCurrentToSprite(&window->fonts[0], &window->sprite, 1);
+            SysFont_DrawCurrentToSprite(&window->fonts[1], &window->sprite, 1);
         } else {
-            func_ov031_0210bed8(&window->unk_048[0], window, 1);
-            func_ov031_0210beb0(&window->unk_048[1], &window->unk_142, window, 1);
+            SysFont_DrawCurrentToSprite(&window->fonts[0], &window->sprite, 1);
+            SysFont_DrawToSprite(&window->fonts[1], window->textBuf, &window->sprite, 1);
         }
     }
 }
@@ -274,8 +274,8 @@ s32 Shop_window0_Destroy(TaskPool* pool, Task* task, void* args) {
     Shop_window0* window = task->data;
 
     Sprite_Release(&window->sprite);
-    func_ov031_0210aabc(&window->unk_048[0]);
-    func_ov031_0210aabc(&window->unk_048[1]);
+    SysFont_Destroy(&window->fonts[0]);
+    SysFont_Destroy(&window->fonts[1]);
     return 1;
 }
 

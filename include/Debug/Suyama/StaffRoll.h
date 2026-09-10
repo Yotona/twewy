@@ -5,6 +5,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
@@ -44,7 +45,7 @@ typedef struct {
     /* 0x008 */ DisplayBGLayer            bgLayer;
     /* 0x00C */ u16                       unk_00C;
     /* 0x00E */ s16                       unk_00E;
-    /* 0x010 */ UnkOv31Struct             unk_010[30];
+    /* 0x010 */ SysFont                   fonts[30];
     /* 0xE98 */ s32                       unk_E98;
     /* 0xE9C */ s32                       unk_E9C;
     /* 0xEA0 */ s32                       unk_EA0;
@@ -158,7 +159,7 @@ typedef struct {
     /* 0x21590 */ char                     unk_21590[0x4];
     /* 0x21594 */ TaskPool                 taskPool;
     /* 0x21614 */ StaffRoll_CallbackStruct unk_21614;
-    /* 0x2171C */ UnkOv31Struct            unk_2171C;
+    /* 0x2171C */ SysFont                  font;
 } StaffRollState; // Size: 0x21798
 
 #endif            // DEBUG_SUYAMA_STAFFROLL_H

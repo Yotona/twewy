@@ -1,10 +1,11 @@
 #include "Interface/Menu/Depart.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
     /* 0x000 */ DepartObject* depart;
-    /* 0x004 */ UnkOv31Struct unk_004[5];
-    /* 0x270 */ UnkOv31Struct unk_270[5];
+    /* 0x004 */ SysFont       unk_004[5];
+    /* 0x270 */ SysFont       unk_270[5];
 } DepartTextScr; // Size: 0x4DC
 
 typedef struct {
@@ -19,13 +20,13 @@ static const TaskHandle data_ov043_020caec4 = {"Tsk_Depart_textScr", DepartTextS
 void func_ov043_020beb44(DepartTextScr* textScr) {
     s32 i;
     for (i = 0; i < 5; i++) {
-        func_ov031_0210aa94(&textScr->unk_004[i]);
-        func_ov031_0210aa94(&textScr->unk_270[i]);
+        SysFont_Init(&textScr->unk_004[i]);
+        SysFont_Init(&textScr->unk_270[i]);
     }
 
     for (i = 0; i < 5; i++) {
-        func_ov031_0210ab34(&textScr->unk_004[i], 14);
-        func_ov031_0210ab34(&textScr->unk_270[i], 14);
+        SysFont_SetColor(&textScr->unk_004[i], 14);
+        SysFont_SetColor(&textScr->unk_270[i], 14);
     }
 }
 
@@ -55,8 +56,8 @@ s32 DepartTextScr_Release(TaskPool* pool, Task* task, void* args) {
     DepartTextScr* textScr = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        func_ov031_0210aabc(&textScr->unk_004[i]);
-        func_ov031_0210aabc(&textScr->unk_270[i]);
+        SysFont_Destroy(&textScr->unk_004[i]);
+        SysFont_Destroy(&textScr->unk_270[i]);
     }
     return 1;
 }

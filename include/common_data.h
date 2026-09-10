@@ -51,42 +51,4 @@ typedef struct {
 } UnkStruct_02074D10;
 extern UnkStruct_02074D10 data_02074d10;
 
-typedef struct {
-    /* 0x00 */ s32         unk0;
-    /* 0x04 */ const void* unk4;
-    /* 0x08 */ void*       unk8;
-    /* 0x0C */ void*       unkC;
-    /* 0x10 */ void*       unk10;
-    /* 0x14 */ void*       unk_14;
-    /* 0x18 */ void*       unk18;
-    /* 0x1C */ s32         unk1C;
-    /* 0x20 */ s32         unk20[5];
-    /* 0x34 */ s32         unk34[5];
-    /* 0x48 */ s32         unk48;
-    /* 0x4C */ u16         unk4C;
-    /* 0x4E */ u16         unk4E;
-    /* 0x50 */ s32         unk50;
-    /* 0x54 */ u16         unk54;
-    /* 0x56 */ s16         unk56;
-    /* 0x58 */ s16         unk58;
-    /* 0x5A */ s8          unk5A;
-    /* 0x5B */ u8          unk5B;
-    /* 0x5C */ s16         unk_5C;
-    /* 0x5E */ s16         unk5E;
-    /* 0x60 */ s16         unk60;
-    /* 0x64 */ s32         unk64;
-    /* 0x68 */ s32         unk68;
-    /* 0x6C */ s32         unk6C;
-    /* 0x70 */ s32         unk_70;
-    /* 0x74 */ s32         unk74;
-    /* 0x78 */ s32         unk78;
-} UnkOv31Struct; // Size: 0x7C
-extern void  func_ov031_0210aa94(UnkOv31Struct*);
-extern void  func_ov031_0210aabc(UnkOv31Struct*);
-extern void  func_ov031_0210ab28(UnkOv31Struct*, u16, u16);
-extern void  func_ov031_0210ab34(UnkOv31Struct*, s32);
-extern void  func_ov031_0210b630(UnkOv31Struct*, u16);
-extern void  func_ov031_0210ab3c(UnkOv31Struct*, s32, s32);
-extern void* func_ov031_0210b698(UnkOv31Struct*, u16);
-
 #endif // COMMON_DATA_H
