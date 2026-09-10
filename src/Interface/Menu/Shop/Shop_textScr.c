@@ -1,5 +1,6 @@
 #include "Interface/Menu/Shop.h"
 #include "Player/Inventory.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 #define SHOP_TEXTSCR_LAYOUT_SIZE 17
@@ -26,8 +27,8 @@ typedef struct {
 } Shop_textScr_ConstText;
 
 typedef struct {
-    /* 0x00 */ void*         owner;
-    /* 0x04 */ UnkOv31Struct unk_004[17];
+    /* 0x00 */ void*   owner;
+    /* 0x04 */ SysFont fonts[17];
 } Shop_textScr; // Size: 0x840
 
 typedef struct {
@@ -78,10 +79,6 @@ typedef struct {
 
 extern void OS_WaitForever(void);
 extern u16* func_02024434(s32);
-extern void func_ov031_0210a5fc(u16*, const void*, ...);
-extern s32  func_ov031_0210bde8(UnkOv31Struct*, u16*, s32, s32, u32);
-extern s32  func_ov031_0210be18(UnkOv31Struct*, u32, u32, s32);
-extern void func_ov031_0210ab54(UnkOv31Struct*, s32, s32);
 extern void func_ov043_020af4c4(void*, s32);
 extern void func_ov043_020af4f0(void*, s32);
 extern void func_ov043_020af51c(void*, s32);
@@ -138,9 +135,9 @@ void func_ov043_020b51c0(u16 arg0, u16* arg1) {
 
 void func_ov043_020b525c(Shop_textScr* textScr) {
     for (s32 i = 0; i < 17; i++) {
-        func_ov031_0210aa94(&textScr->unk_004[i]);
-        func_ov031_0210ab34(&textScr->unk_004[i], 0xE);
-        func_ov031_0210ab54(&textScr->unk_004[i], 1, 0);
+        SysFont_Init(&textScr->fonts[i]);
+        SysFont_SetColor(&textScr->fonts[i], 0xE);
+        SysFont_SetSpacing(&textScr->fonts[i], 1, 0);
     }
 }
 
@@ -149,7 +146,7 @@ void func_ov043_020b52ac(Shop_textScr* textScr, s32 arg1, s32 arg2) {
     u16         buffer[64];
 
     for (u16 i = 0; i < 17; i++) {
-        func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[i].x, data_ov043_020cc95c[i].y);
+        SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[i].x, data_ov043_020cc95c[i].y);
     }
 
     for (u16 i = 0; i < 3; i++) {
@@ -178,30 +175,30 @@ void func_ov043_020b52ac(Shop_textScr* textScr, s32 arg1, s32 arg2) {
             categoryMessage = swagMsgBase;
         }
 
-        u16* nameText     = func_ov031_0210b698(&textScr->unk_004[i * 3 + 1], 0x340B);
-        u32* categoryText = func_ov031_0210b698(&textScr->unk_004[i * 3 + 1], (categoryMessage + itemIndex));
+        u16* nameText     = SysFont_GetMsgBuf(&textScr->fonts[i * 3 + 1], 0x340B);
+        u32* categoryText = SysFont_GetMsgBuf(&textScr->fonts[i * 3 + 1], (categoryMessage + itemIndex));
 
-        func_ov031_0210a5fc(buffer, nameText, categoryText);
-        func_ov031_0210ab3c(&textScr->unk_004[i * 3 + 1], 1, 0xFFFF);
-        func_ov031_0210bde8(&textScr->unk_004[i * 3 + 1], buffer, arg2 + 4, arg1 + 4, 0);
+        SysFont_Format(buffer, nameText, categoryText);
+        SysFont_SetHAlign(&textScr->fonts[i * 3 + 1], 1, 0xFFFF);
+        SysFont_DrawToScreen(&textScr->fonts[i * 3 + 1], buffer, arg2 + 4, arg1 + 4, 0);
         Mem_Free(&gDebugHeap, nameText);
         Mem_Free(&gDebugHeap, categoryText);
 
-        u16* countText = func_ov031_0210b698(&textScr->unk_004[i * 3 + 2], 0x340C);
+        u16* countText = SysFont_GetMsgBuf(&textScr->fonts[i * 3 + 2], 0x340C);
 
-        func_ov031_0210a5fc(buffer, countText, slot->ownedCount);
-        func_ov031_0210ab3c(&textScr->unk_004[i * 3 + 2], 1, 0xFFFF);
-        func_ov031_0210bde8(&textScr->unk_004[i * 3 + 2], buffer, arg2 + 4, arg1 + 4, 0);
+        SysFont_Format(buffer, countText, slot->ownedCount);
+        SysFont_SetHAlign(&textScr->fonts[i * 3 + 2], 1, 0xFFFF);
+        SysFont_DrawToScreen(&textScr->fonts[i * 3 + 2], buffer, arg2 + 4, arg1 + 4, 0);
         Mem_Free(&gDebugHeap, countText);
 
         if (slot->ownedCount > maxOwned) {
-            countText = func_ov031_0210b698(&textScr->unk_004[i * 3 + 3], 0x340E);
+            countText = SysFont_GetMsgBuf(&textScr->fonts[i * 3 + 3], 0x340E);
         } else {
-            countText = func_ov031_0210b698(&textScr->unk_004[i * 3 + 3], 0x340D);
+            countText = SysFont_GetMsgBuf(&textScr->fonts[i * 3 + 3], 0x340D);
         }
-        func_ov031_0210a5fc(buffer, countText, maxOwned);
-        func_ov031_0210ab3c(&textScr->unk_004[i * 3 + 3], 1, 0xFFFF);
-        func_ov031_0210bde8(&textScr->unk_004[i * 3 + 3], buffer, arg2 + 4, arg1 + 4, 0);
+        SysFont_Format(buffer, countText, maxOwned);
+        SysFont_SetHAlign(&textScr->fonts[i * 3 + 3], 1, 0xFFFF);
+        SysFont_DrawToScreen(&textScr->fonts[i * 3 + 3], buffer, arg2 + 4, arg1 + 4, 0);
         Mem_Free(&gDebugHeap, countText);
     }
 }
@@ -216,46 +213,46 @@ void func_ov043_020b55a4(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
     switch (shop->unk_854) {
         case 0: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_A + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_A + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_A + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_A + i].y);
             }
 
             if (raw.unk_05 <= 0x0C) {
-                func_ov031_0210b630(&textScr->unk_004[1], (u16)(raw.unk_05 + 0x2A21));
-                func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x6B);
-                func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[1], (u16)(raw.unk_05 + 0x2A21));
+                SysFont_SetHAlign(&textScr->fonts[1], 0, 0x6B);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
             } else {
-                func_ov031_0210b630(&textScr->unk_004[1], 0x2A2F);
-                func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x6B);
-                func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[1], 0x2A2F);
+                SysFont_SetHAlign(&textScr->fonts[1], 0, 0x6B);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
             }
 
             if (raw.unk_02 != 0xFFFF) {
-                func_ov031_0210b630(&textScr->unk_004[2], (u16)(raw.unk_02 + 0x28F1));
-                func_ov031_0210ab3c(&textScr->unk_004[2], 0, 0x84);
-                func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[2], (u16)(raw.unk_02 + 0x28F1));
+                SysFont_SetHAlign(&textScr->fonts[2], 0, 0x84);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
             } else if (raw.unk_24 == 0xFF) {
-                func_ov031_0210b630(&textScr->unk_004[2], 0x3339);
-                func_ov031_0210ab3c(&textScr->unk_004[2], 0, 0x84);
-                func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[2], 0x3339);
+                SysFont_SetHAlign(&textScr->fonts[2], 0, 0x84);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
             } else {
-                func_ov031_0210b630(&textScr->unk_004[2], (u16)(raw.unk_24 + 0x22C3));
-                func_ov031_0210ab3c(&textScr->unk_004[2], 0, 0x84);
-                func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[2], (u16)(raw.unk_24 + 0x22C3));
+                SysFont_SetHAlign(&textScr->fonts[2], 0, 0x84);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
             }
 
             {
                 u16* specialName = func_02024434(arg3);
                 if (specialName != NULL) {
-                    u16* fmt = func_ov031_0210b698(&textScr->unk_004[3], 0x3427);
-                    func_ov031_0210a5fc(buffer, fmt, specialName);
-                    func_ov031_0210ab3c(&textScr->unk_004[3], 0, 0x65);
-                    func_ov031_0210bde8(&textScr->unk_004[3], buffer, arg2 + 4, arg1 + 4, 0);
+                    u16* fmt = SysFont_GetMsgBuf(&textScr->fonts[3], 0x3427);
+                    SysFont_Format(buffer, fmt, specialName);
+                    SysFont_SetHAlign(&textScr->fonts[3], 0, 0x65);
+                    SysFont_DrawToScreen(&textScr->fonts[3], buffer, arg2 + 4, arg1 + 4, 0);
                     Mem_Free(&gDebugHeap, fmt);
                 } else if (raw.unk_0E == 0) {
-                    func_ov031_0210b630(&textScr->unk_004[3], 0x3357);
-                    func_ov031_0210ab3c(&textScr->unk_004[3], 0, 0x65);
-                    func_ov031_0210be18(&textScr->unk_004[3], arg2 + 4, arg1 + 4, 0);
+                    SysFont_SetMsg(&textScr->fonts[3], 0x3357);
+                    SysFont_SetHAlign(&textScr->fonts[3], 0, 0x65);
+                    SysFont_DrawCurrentToScreen(&textScr->fonts[3], arg2 + 4, arg1 + 4, 0);
                 } else {
                     u16 templateVals[5];
 
@@ -265,96 +262,96 @@ void func_ov043_020b55a4(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
                     templateVals[3] = data_ov043_020ca5f4.unk_18;
                     templateVals[4] = data_ov043_020ca5f4.unk_1A;
 
-                    u16* fmt = func_ov031_0210b698(&textScr->unk_004[3], 0x3322);
+                    u16* fmt = SysFont_GetMsgBuf(&textScr->fonts[3], 0x3322);
 
-                    func_ov031_0210a5fc(buffer, templateVals, fmt, func_ov043_020b5198(raw.unk_0E, raw.unk_10, 1));
-                    func_ov031_0210ab3c(&textScr->unk_004[3], 0, 0x65);
-                    func_ov031_0210bde8(&textScr->unk_004[3], buffer, arg2 + 4, arg1 + 4, 0);
+                    SysFont_Format(buffer, templateVals, fmt, func_ov043_020b5198(raw.unk_0E, raw.unk_10, 1));
+                    SysFont_SetHAlign(&textScr->fonts[3], 0, 0x65);
+                    SysFont_DrawToScreen(&textScr->fonts[3], buffer, arg2 + 4, arg1 + 4, 0);
                     Mem_Free(&gDebugHeap, fmt);
                 }
             }
 
             if (raw.unk_12 == 0) {
-                func_ov031_0210b630(&textScr->unk_004[4], 0x3357);
-                func_ov031_0210ab3c(&textScr->unk_004[4], 0, 0x65);
-                func_ov031_0210be18(&textScr->unk_004[4], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[4], 0x3357);
+                SysFont_SetHAlign(&textScr->fonts[4], 0, 0x65);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[4], arg2 + 4, arg1 + 4, 0);
             } else if ((u16)(raw.unk_12 - 1) <= 1) {
                 u16  total = func_ov043_020b51ac(raw.unk_14, raw.unk_16, 1);
                 u16* fmt;
 
                 if (total == 1) {
-                    fmt = func_ov031_0210b698(&textScr->unk_004[4], 0x335A);
+                    fmt = SysFont_GetMsgBuf(&textScr->fonts[4], 0x335A);
                 } else {
-                    fmt = func_ov031_0210b698(&textScr->unk_004[4], 0x3359);
+                    fmt = SysFont_GetMsgBuf(&textScr->fonts[4], 0x3359);
                 }
 
-                func_ov031_0210a5fc(buffer, fmt, total);
-                func_ov031_0210ab3c(&textScr->unk_004[4], 0, 0x65);
-                func_ov031_0210bde8(&textScr->unk_004[4], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, fmt, total);
+                SysFont_SetHAlign(&textScr->fonts[4], 0, 0x65);
+                SysFont_DrawToScreen(&textScr->fonts[4], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, fmt);
             } else {
-                u16* fmt      = func_ov031_0210b698(&textScr->unk_004[4], 0x3358);
+                u16* fmt      = SysFont_GetMsgBuf(&textScr->fonts[4], 0x3358);
                 u16  money[2] = {0};
 
                 func_ov043_020b51c0((u32)func_ov043_020b51ac(raw.unk_14, raw.unk_16, 1), money);
-                func_ov031_0210a5fc(buffer, fmt, money[0], money[1]);
-                func_ov031_0210ab3c(&textScr->unk_004[4], 0, 0x65);
-                func_ov031_0210bde8(&textScr->unk_004[4], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, fmt, money[0], money[1]);
+                SysFont_SetHAlign(&textScr->fonts[4], 0, 0x65);
+                SysFont_DrawToScreen(&textScr->fonts[4], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, fmt);
             }
         } break;
 
         case 1: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
             if (raw.unk_30 != 0xFF) {
-                func_ov031_0210b630(&textScr->unk_004[1], (u16)(raw.unk_30 + 0x333F));
+                SysFont_SetMsg(&textScr->fonts[1], (u16)(raw.unk_30 + 0x333F));
             } else {
-                func_ov031_0210b630(&textScr->unk_004[1], 0x3339);
+                SysFont_SetMsg(&textScr->fonts[1], 0x3339);
             }
-            func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-            func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
-            func_ov031_0210b630(&textScr->unk_004[2], (u16)(arg3 + 0x2430));
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], (u16)(arg3 + 0x2430));
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
         } break;
 
         case 2: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
-            func_ov031_0210b630(&textScr->unk_004[2], (u16)(arg3 + 0x2560));
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], (u16)(arg3 + 0x2560));
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
         } break;
 
         case 3: {
             u16 templateVals[2];
 
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
             templateVals[0] = data_ov043_020ca5f4.unk_00;
             templateVals[1] = data_ov043_020ca5f4.unk_02;
 
-            func_ov031_0210b630(&textScr->unk_004[2], 0x2690);
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], 0x2690);
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
 
             for (u16 i = 0; i < 7; i++) {
                 ShopItemSlot* slot = (ShopItemSlot*)((u8*)shop + ((shop->unk_848 + i) * sizeof(ShopItemSlot)));
-                func_ov031_0210a5fc(buffer, templateVals, slot->unk_24);
-                func_ov031_0210ab3c(&textScr->unk_004[i + 10], 0, 0x14);
-                func_ov031_0210ab34(&textScr->unk_004[i + 10], 0xC);
-                func_ov031_0210bde8(&textScr->unk_004[i + 10], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, templateVals, slot->unk_24);
+                SysFont_SetHAlign(&textScr->fonts[i + 10], 0, 0x14);
+                SysFont_SetColor(&textScr->fonts[i + 10], 0xC);
+                SysFont_DrawToScreen(&textScr->fonts[i + 10], buffer, arg2 + 4, arg1 + 4, 0);
             }
         } break;
 
@@ -363,9 +360,9 @@ void func_ov043_020b55a4(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
             break;
     }
 
-    func_ov031_0210b630(&textScr->unk_004[0], (u16)(arg3 + 0x27C1));
-    func_ov031_0210ab3c(&textScr->unk_004[0], 0, 0x72);
-    func_ov031_0210be18(&textScr->unk_004[0], arg2 + 4, arg1 + 4, 0);
+    SysFont_SetMsg(&textScr->fonts[0], (u16)(arg3 + 0x27C1));
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 0x72);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], arg2 + 4, arg1 + 4, 0);
 }
 
 void func_ov043_020b5d18(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
@@ -378,13 +375,13 @@ void func_ov043_020b5d18(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
     switch (shop->unk_854) {
         case 0: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_D + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_D + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_D + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_D + i].y);
             }
 
-            func_ov031_0210b630(&textScr->unk_004[1], (u16)(raw.unk_02 + 0x2A21));
-            func_ov031_0210ab3c(&textScr->unk_004[1], 0, 107);
-            func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[1], (u16)(raw.unk_02 + 0x2A21));
+            SysFont_SetHAlign(&textScr->fonts[1], 0, 107);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
             {
                 u16  templateVals[4];
@@ -395,78 +392,78 @@ void func_ov043_020b5d18(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
                 templateVals[2] = data_ov043_020ca5f4.unk_0E;
                 templateVals[3] = data_ov043_020ca5f4.unk_10;
 
-                fmt = func_ov031_0210b698(&textScr->unk_004[2], 0x3328);
-                func_ov031_0210a5fc(buffer, templateVals, fmt, raw.unk_08);
-                func_ov031_0210ab3c(&textScr->unk_004[2], 0, 101);
-                func_ov031_0210bde8(&textScr->unk_004[2], buffer, arg2 + 4, arg1 + 4, 0);
+                fmt = SysFont_GetMsgBuf(&textScr->fonts[2], 0x3328);
+                SysFont_Format(buffer, templateVals, fmt, raw.unk_08);
+                SysFont_SetHAlign(&textScr->fonts[2], 0, 101);
+                SysFont_DrawToScreen(&textScr->fonts[2], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, fmt);
             }
 
             if (raw.unk_0C == 0) {
-                func_ov031_0210b630(&textScr->unk_004[3], 0x3339);
-                func_ov031_0210ab3c(&textScr->unk_004[3], 0, 101);
-                func_ov031_0210be18(&textScr->unk_004[3], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[3], 0x3339);
+                SysFont_SetHAlign(&textScr->fonts[3], 0, 101);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[3], arg2 + 4, arg1 + 4, 0);
             } else {
-                u16* textFmt = func_ov031_0210b698(&textScr->unk_004[3], 0x3322);
+                u16* textFmt = SysFont_GetMsgBuf(&textScr->fonts[3], 0x3322);
                 u16* valueFmt;
                 s16  value = raw.unk_0C;
 
                 if (value > 0) {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[3], 0x333B);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[3], 0x333B);
                 } else {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[3], 0x333C);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[3], 0x333C);
                     value    = -value;
                 }
 
-                func_ov031_0210a5fc(buffer, valueFmt, textFmt, value);
-                func_ov031_0210ab3c(&textScr->unk_004[3], 0, 101);
-                func_ov031_0210bde8(&textScr->unk_004[3], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, valueFmt, textFmt, value);
+                SysFont_SetHAlign(&textScr->fonts[3], 0, 101);
+                SysFont_DrawToScreen(&textScr->fonts[3], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, valueFmt);
                 Mem_Free(&gDebugHeap, textFmt);
             }
 
             if (raw.unk_0A == 0) {
-                func_ov031_0210b630(&textScr->unk_004[4], 0x3339);
-                func_ov031_0210ab3c(&textScr->unk_004[4], 0, 101);
-                func_ov031_0210be18(&textScr->unk_004[4], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[4], 0x3339);
+                SysFont_SetHAlign(&textScr->fonts[4], 0, 101);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[4], arg2 + 4, arg1 + 4, 0);
             } else {
                 s32  value = raw.unk_0A;
                 u16* valueFmt;
-                u16* textFmt = func_ov031_0210b698(&textScr->unk_004[4], 0x3323);
+                u16* textFmt = SysFont_GetMsgBuf(&textScr->fonts[4], 0x3323);
 
                 if (value > 0) {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[4], 0x333B);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[4], 0x333B);
                 } else {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[4], 0x333C);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[4], 0x333C);
                     value    = -value;
                 }
 
-                func_ov031_0210a5fc(buffer, valueFmt, textFmt, value);
-                func_ov031_0210ab3c(&textScr->unk_004[4], 0, 0x65);
-                func_ov031_0210bde8(&textScr->unk_004[4], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, valueFmt, textFmt, value);
+                SysFont_SetHAlign(&textScr->fonts[4], 0, 0x65);
+                SysFont_DrawToScreen(&textScr->fonts[4], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, valueFmt);
                 Mem_Free(&gDebugHeap, textFmt);
             }
 
             if (raw.unk_0E == 0) {
-                func_ov031_0210b630(&textScr->unk_004[5], 0x3339);
-                func_ov031_0210be18(&textScr->unk_004[5], arg2 + 4, arg1 + 4, 0);
-                func_ov031_0210ab3c(&textScr->unk_004[5], 0, 0x65);
+                SysFont_SetMsg(&textScr->fonts[5], 0x3339);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[5], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetHAlign(&textScr->fonts[5], 0, 0x65);
             } else {
                 s32  value = raw.unk_0E;
                 u16* valueFmt;
-                u16* textFmt = func_ov031_0210b698(&textScr->unk_004[5], 0x3324);
+                u16* textFmt = SysFont_GetMsgBuf(&textScr->fonts[5], 0x3324);
 
                 if (value > 0) {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[5], 0x333B);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[5], 0x333B);
                 } else {
-                    valueFmt = func_ov031_0210b698(&textScr->unk_004[5], 0x333C);
+                    valueFmt = SysFont_GetMsgBuf(&textScr->fonts[5], 0x333C);
                     value    = -value;
                 }
 
-                func_ov031_0210a5fc(buffer, valueFmt, textFmt, (u16)value);
-                func_ov031_0210ab3c(&textScr->unk_004[5], 0, 0x65);
-                func_ov031_0210bde8(&textScr->unk_004[5], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, valueFmt, textFmt, (u16)value);
+                SysFont_SetHAlign(&textScr->fonts[5], 0, 0x65);
+                SysFont_DrawToScreen(&textScr->fonts[5], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, valueFmt);
                 Mem_Free(&gDebugHeap, textFmt);
             }
@@ -480,49 +477,49 @@ void func_ov043_020b5d18(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
             templateVals[2] = data_ov043_020ca5f4.unk_08;
 
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
             {
-                u16* fmtA = func_ov031_0210b698(&textScr->unk_004[1], 0x335F);
-                u16* fmtB = func_ov031_0210b698(&textScr->unk_004[1], (u16)(raw.unk_03 + 0x3360));
+                u16* fmtA = SysFont_GetMsgBuf(&textScr->fonts[1], 0x335F);
+                u16* fmtB = SysFont_GetMsgBuf(&textScr->fonts[1], (u16)(raw.unk_03 + 0x3360));
 
-                func_ov031_0210a5fc(buffer, templateVals, fmtA, fmtB);
-                func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-                func_ov031_0210bde8(&textScr->unk_004[1], buffer, arg2 + 4, arg1 + 4, 0);
+                SysFont_Format(buffer, templateVals, fmtA, fmtB);
+                SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+                SysFont_DrawToScreen(&textScr->fonts[1], buffer, arg2 + 4, arg1 + 4, 0);
                 Mem_Free(&gDebugHeap, fmtA);
                 Mem_Free(&gDebugHeap, fmtB);
             }
 
-            func_ov031_0210b630(&textScr->unk_004[2], (u16)(arg3 + 0x2AFC));
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], (u16)(arg3 + 0x2AFC));
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
         } break;
 
         case 2: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
             ShopItemSlot* slot = (ShopItemSlot*)((u8*)shop + (shop->unk_848 * sizeof(ShopItemSlot)));
             if (slot->validFlag == 1) {
-                func_ov031_0210b630(&textScr->unk_004[1], (u16)(raw.unk_10 + 0x22C3));
-                func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-                func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[1], (u16)(raw.unk_10 + 0x22C3));
+                SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
-                func_ov031_0210b630(&textScr->unk_004[2], (u16)(raw.unk_10 + 0x219B));
-                func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-                func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[2], (u16)(raw.unk_10 + 0x219B));
+                SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
             } else {
-                func_ov031_0210b630(&textScr->unk_004[1], 0x33E0);
-                func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-                func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[1], 0x33E0);
+                SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
-                func_ov031_0210b630(&textScr->unk_004[2], 0x33E1);
-                func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-                func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+                SysFont_SetMsg(&textScr->fonts[2], 0x33E1);
+                SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+                SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
             }
         } break;
 
@@ -531,9 +528,9 @@ void func_ov043_020b5d18(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
             break;
     }
 
-    func_ov031_0210b630(&textScr->unk_004[0], (u16)(arg3 + 0x2C14));
-    func_ov031_0210ab3c(&textScr->unk_004[0], 0, 0x72);
-    func_ov031_0210be18(&textScr->unk_004[0], arg2 + 4, arg1 + 4, 0);
+    SysFont_SetMsg(&textScr->fonts[0], (u16)(arg3 + 0x2C14));
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 0x72);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], arg2 + 4, arg1 + 4, 0);
 }
 
 void func_ov043_020b63fc(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
@@ -546,41 +543,41 @@ void func_ov043_020b63fc(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
     switch (shop->unk_854) {
         case 0: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
-            func_ov031_0210b630(&textScr->unk_004[1], 0x3366);
-            func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-            func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[1], 0x3366);
+            SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
-            func_ov031_0210b630(&textScr->unk_004[2], (u16)(arg3 + 0x2A43));
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], (u16)(arg3 + 0x2A43));
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
         } break;
 
         case 1: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
             u16* fmt;
             if (raw.unk_02 == 1) {
-                fmt = func_ov031_0210b698(&textScr->unk_004[1], 0x33F3);
+                fmt = SysFont_GetMsgBuf(&textScr->fonts[1], 0x33F3);
             } else {
-                fmt = func_ov031_0210b698(&textScr->unk_004[1], 0x33F2);
+                fmt = SysFont_GetMsgBuf(&textScr->fonts[1], 0x33F2);
             }
 
             u16 buffer[64];
-            func_ov031_0210a5fc(buffer, fmt, raw.unk_02);
-            func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-            func_ov031_0210bde8(&textScr->unk_004[1], buffer, arg2 + 4, arg1 + 4, 0);
+            SysFont_Format(buffer, fmt, raw.unk_02);
+            SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+            SysFont_DrawToScreen(&textScr->fonts[1], buffer, arg2 + 4, arg1 + 4, 0);
             Mem_Free(&gDebugHeap, fmt);
 
-            u16* text = func_ov031_0210b698(&textScr->unk_004[2], raw.unk_08 + 0x33EC);
-            func_ov031_0210a5fc(buffer, text, raw.unk_0C, raw.unk_0A);
-            func_ov031_0210bde8(&textScr->unk_004[2], buffer, arg2 + 4, arg1 + 4, 0);
+            u16* text = SysFont_GetMsgBuf(&textScr->fonts[2], raw.unk_08 + 0x33EC);
+            SysFont_Format(buffer, text, raw.unk_0C, raw.unk_0A);
+            SysFont_DrawToScreen(&textScr->fonts[2], buffer, arg2 + 4, arg1 + 4, 0);
             Mem_Free(&gDebugHeap, text);
         } break;
 
@@ -589,9 +586,9 @@ void func_ov043_020b63fc(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
             break;
     }
 
-    func_ov031_0210b630(&textScr->unk_004[0], (u16)(arg3 + 0x2A6D));
-    func_ov031_0210ab3c(&textScr->unk_004[0], 0, 0x72);
-    func_ov031_0210be18(&textScr->unk_004[0], arg2 + 4, arg1 + 4, 0);
+    SysFont_SetMsg(&textScr->fonts[0], (u16)(arg3 + 0x2A6D));
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 0x72);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], arg2 + 4, arg1 + 4, 0);
 }
 
 void func_ov043_020b6668(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
@@ -600,17 +597,17 @@ void func_ov043_020b6668(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
     switch (shop->unk_854) {
         case 0: {
             for (u16 i = 0; i < 17; i++) {
-                func_ov031_0210ab28(&textScr->unk_004[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
-                                    data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
+                SysFont_SetPos(&textScr->fonts[i], data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].x,
+                               data_ov043_020cc95c[SHOP_TEXTSCR_LAYOUT_B + i].y);
             }
 
-            func_ov031_0210b630(&textScr->unk_004[1], 0x3367);
-            func_ov031_0210ab3c(&textScr->unk_004[1], 0, 0x95);
-            func_ov031_0210be18(&textScr->unk_004[1], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[1], 0x3367);
+            SysFont_SetHAlign(&textScr->fonts[1], 0, 0x95);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[1], arg2 + 4, arg1 + 4, 0);
 
-            func_ov031_0210b630(&textScr->unk_004[2], (u16)(arg3 + 0x3428));
-            func_ov031_0210ab3c(&textScr->unk_004[2], 1, 0xFFFF);
-            func_ov031_0210be18(&textScr->unk_004[2], arg2 + 4, arg1 + 4, 0);
+            SysFont_SetMsg(&textScr->fonts[2], (u16)(arg3 + 0x3428));
+            SysFont_SetHAlign(&textScr->fonts[2], 1, 0xFFFF);
+            SysFont_DrawCurrentToScreen(&textScr->fonts[2], arg2 + 4, arg1 + 4, 0);
         } break;
 
         case 4:
@@ -621,9 +618,9 @@ void func_ov043_020b6668(Shop_textScr* textScr, s32 arg1, s32 arg2, s32 arg3) {
             break;
     }
 
-    func_ov031_0210b630(&textScr->unk_004[0], (u16)(arg3 + 0x34BE));
-    func_ov031_0210ab3c(&textScr->unk_004[0], 0, 0x72);
-    func_ov031_0210be18(&textScr->unk_004[0], arg2 + 4, arg1 + 4, 0);
+    SysFont_SetMsg(&textScr->fonts[0], (u16)(arg3 + 0x34BE));
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 0x72);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], arg2 + 4, arg1 + 4, 0);
 }
 
 // Nonmatching
@@ -695,7 +692,7 @@ static s32 func_ov043_020b68f0(TaskPool* arg0, Task* arg1, void* arg2) {
     Shop_textScr* textScr = arg1->data;
 
     for (s32 i = 0; i < 17; i++) {
-        func_ov031_0210aabc(&textScr->unk_004[i]);
+        SysFont_Destroy(&textScr->fonts[i]);
     }
 
     return 1;

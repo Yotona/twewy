@@ -447,8 +447,8 @@ void func_ov043_020c328c(void** arg0) {
     var_r6 = arg0 + 1;
     var_r5 = 0;
     do {
-        func_ov031_0210aa94(var_r6);
-        func_ov031_0210ab34(var_r6, 0xE);
+        SysFont_Init(var_r6);
+        SysFont_SetColor(var_r6, 0xE);
         var_r5 += 1;
         var_r6 += 0x7C;
     } while (var_r5 < 0xA);
@@ -715,8 +715,8 @@ void func_ov043_020c424c(void** arg0) {
     var_r6 = arg0 + 1;
     var_r5 = 0;
     do {
-        func_ov031_0210aa94(var_r6);
-        func_ov031_0210ab34(var_r6, 14);
+        SysFont_Init(var_r6);
+        SysFont_SetColor(var_r6, 14);
         var_r5 += 1;
         var_r6 += 0x7C;
     } while (var_r5 < 22);

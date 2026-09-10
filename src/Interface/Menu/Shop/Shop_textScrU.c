@@ -1,9 +1,10 @@
 #include "Interface/Menu/Shop.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
-    /* 0x000 */ void*         unk_000;
-    /* 0x004 */ UnkOv31Struct unk_004[3];
+    /* 0x000 */ void*   unk_000;
+    /* 0x004 */ SysFont fonts[3];
 } Shop_textScrU; // Size: 0x178
 
 typedef struct {
@@ -19,8 +20,8 @@ const u16 data_ov043_020cac70[6] = {36, 8, 36, 21, 36, 153};
 
 void func_ov043_020bc098(Shop_textScrU* textScr) {
     for (s32 i = 0; i < 3; i++) {
-        func_ov031_0210aa94(&textScr->unk_004[i]);
-        func_ov031_0210ab54(&textScr->unk_004[i], 1, 0);
+        SysFont_Init(&textScr->fonts[i]);
+        SysFont_SetSpacing(&textScr->fonts[i], 1, 0);
     }
 }
 
@@ -50,7 +51,7 @@ s32 Shop_textScrU_Destroy(TaskPool* pool, Task* task, void* args) {
     Shop_textScrU* textScr = task->data;
 
     for (s32 i = 0; i < 3; i++) {
-        func_ov031_0210aabc(&textScr->unk_004[i]);
+        SysFont_Destroy(&textScr->fonts[i]);
     }
     return 1;
 }

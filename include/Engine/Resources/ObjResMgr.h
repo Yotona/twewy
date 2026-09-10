@@ -20,7 +20,7 @@ typedef struct ObjResource {
         u16 hasSourceData : 1;
         u16 _reserved     : 12;
     };
-    /* 0x0A */ u16   unk_0A;
+    /* 0x0A */ s16   unk_0A;
     /* 0x0C */ s32   unk_0C;
     /* 0x10 */ s16   bitmapIndex;
     /* 0x12 */ s16   unk_12;

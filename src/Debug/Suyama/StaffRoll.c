@@ -6,6 +6,7 @@
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Save.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 #include <nitro/fx.h>
 #include <nitro/types.h>
@@ -82,7 +83,7 @@ void func_ov042_020824e0(StaffRollState* state) {
         MI_CpuSet(state, 0, sizeof(StaffRollState));
     }
     FS_LoadOverlay(0, &OVERLAY_31_ID);
-    func_ov031_0210aa94(&state->unk_2171C);
+    SysFont_Init(&state->font);
     func_ov042_020842e4();
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     Mem_InitializeHeap(&state->heap, &state->heapBuffer, sizeof(state->heapBuffer));
@@ -120,7 +121,7 @@ void func_ov042_02082620(StaffRollState* state) {
 // Nonmatching: Regswaps
 void func_ov042_02082700(StaffRollState* state) {
     EasyTask_DestroyPool(&state->taskPool);
-    func_ov031_0210aabc(&state->unk_2171C);
+    SysFont_Destroy(&state->font);
     ResourceMgr_ReinitManagers(0);
 
     for (s32 engine = 0; engine < 2; engine++) {
@@ -426,27 +427,28 @@ void func_ov042_02082f94(StaffRoll_CallbackStruct* state) {
         DebugOvlDisp_Pop();
 }
 
-BOOL func_ov042_02082fc4(UnkOv31Struct* arg0) {
-    return arg0->unk_14 != NULL;
+BOOL func_ov042_02082fc4(SysFont* font) {
+    return font->msg != NULL;
 }
 
 // Nonmatching
-void func_ov042_02082fd8(UnkOv31Struct* arg0, s32 r1) {
-    u16* in_lr;
+// Recolours a message in place: rewrites every colour control code to `color`.
+void func_ov042_02082fd8(SysFont* font, s32 color) {
+    SysCode* cur;
 
-    if (arg0 != NULL) {
-        in_lr = arg0->unk_14;
+    if (font != NULL) {
+        cur = font->msg;
     }
 
-    if (in_lr != NULL) {
-        u16 uVar1 = *in_lr;
+    if (cur != NULL) {
+        SysCode code = *cur;
 
-        while (uVar1 != 0xffff) {
-            if ((uVar1 & 0xfff0) == 0xffb0) {
-                *in_lr = r1 & 0xf | 0xffb0;
+        while (code != SYSFONT_CODE_STR_END) {
+            if ((code & 0xfff0) == 0xffb0) {
+                *cur = color & 0xf | 0xffb0;
             }
-            in_lr++;
-            uVar1 = *in_lr;
+            cur++;
+            code = *cur;
         }
         return;
     }
@@ -841,13 +843,13 @@ s32 func_ov042_02083c78(FontRoll* fontRoll) {
     if (fontRoll->unk_E98 == -1) {
         return 0;
     }
-    UnkOv31Struct* temp_r4 = &fontRoll->unk_010[fontRoll->unk_E98];
+    SysFont* temp_r4 = &fontRoll->fonts[fontRoll->unk_E98];
     if (func_ov042_02082fc4(temp_r4) == 0) {
         return 0;
     }
 
-    u8  temp_r4_2 = temp_r4->unk_70 - ((s32)fontRoll->unk_EA0 >> 0xC);
-    s32 temp_r1   = 0x100 - func_ov031_0210c5b4(temp_r4);
+    u8  temp_r4_2 = temp_r4->y - ((s32)fontRoll->unk_EA0 >> 0xC);
+    s32 temp_r1   = 0x100 - SysFont_MeasureCurrentHeight(temp_r4);
     if (((s32)temp_r4_2 >= (s32)(temp_r1 - 0x10)) && ((s32)temp_r4_2 <= temp_r1)) {
         return 1;
     }
@@ -864,17 +866,17 @@ void func_ov042_02083cf0(FontRoll* fontRoll) {
     StaffRollUnkA* temp_r4 = &fontRoll->unk_000->unk_10[fontRoll->engine].group1[fontRoll->bgLayer];
     StaffRollUnkB* temp_r9 = &fontRoll->unk_000->unk_10[fontRoll->engine].group2[fontRoll->bgLayer];
 
-    if (func_ov042_02082fc4(&fontRoll->unk_010[temp_r3]) == 0) {
+    if (func_ov042_02082fc4(&fontRoll->fonts[temp_r3]) == 0) {
         return;
     }
-    func_ov031_0210ab34(&fontRoll->unk_010[temp_r3], 8);
-    func_ov042_02082fd8(&fontRoll->unk_010[temp_r3], 8);
+    SysFont_SetColor(&fontRoll->fonts[temp_r3], 8);
+    func_ov042_02082fd8(&fontRoll->fonts[temp_r3], 8);
 
     u8* var_r2 = Data_GetPackEntryData(temp_r9->data, 1);
     u8* var_r3 = Data_GetPackEntryData(temp_r4->data, 1);
 
-    func_ov031_0210be18(&fontRoll->unk_010[temp_r3], var_r2 + 4, var_r3 + 4, 0);
-    func_ov031_0210aabc(&fontRoll->unk_010[temp_r3]);
+    SysFont_DrawCurrentToScreen(&fontRoll->fonts[temp_r3], var_r2 + 4, var_r3 + 4, 0);
+    SysFont_Destroy(&fontRoll->fonts[temp_r3]);
     func_ov042_02083bb8(fontRoll);
     fontRoll->unk_E98 = (fontRoll->unk_E98 + 1) % 30;
 }
@@ -889,8 +891,8 @@ s32 func_ov042_02083df8(FontRoll* fontRoll) {
         return 0;
     }
 
-    UnkOv31Struct* temp_r4 = &fontRoll->unk_010[temp_r5];
-    s32            temp    = temp_r4->unk_70;
+    SysFont* temp_r4 = &fontRoll->fonts[temp_r5];
+    s32      temp    = temp_r4->y;
 
     u8 var_r3 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
     if (var_r3 < temp) {
@@ -898,7 +900,7 @@ s32 func_ov042_02083df8(FontRoll* fontRoll) {
     }
 
     u8* temp_r5_3 = func_ov042_02083b48(fontRoll, fontRoll->unk_00C, fontRoll->unk_EAC);
-    if ((s32)(var_r3 - temp) >= func_ov031_0210c5b4(temp_r4) + *temp_r5_3) {
+    if ((s32)(var_r3 - temp) >= SysFont_MeasureCurrentHeight(temp_r4) + *temp_r5_3) {
         return 1;
     }
     return 0;
@@ -916,37 +918,37 @@ void func_ov042_02083e8c(FontRoll* fontRoll) {
     }
     fontRoll->unk_E9C = var_r4;
 
-    UnkOv31Struct* temp_r7 = fontRoll->unk_010;
-    u32            temp_r9 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
+    SysFont* temp_r7 = fontRoll->fonts;
+    u32      temp_r9 = ((s32)fontRoll->unk_EA0 >> 0xC) + 0xC0;
 
     StaffRollUnkA* temp_r11 = &fontRoll->unk_000->unk_10[fontRoll->engine].group1[fontRoll->bgLayer];
     StaffRollUnkB* temp_r4  = &fontRoll->unk_000->unk_10[fontRoll->engine].group2[fontRoll->bgLayer];
 
     s32 temp_r5 = fontRoll->bgLayer;
 
-    func_ov031_0210aa94(&temp_r7[var_r4]);
-    func_ov031_0210b630(&temp_r7[var_r4], &temp_r8[fontRoll->unk_EAC]);
-    func_ov031_0210ab34(&temp_r7[var_r4], 0xE);
+    SysFont_Init(&temp_r7[var_r4]);
+    SysFont_SetMsg(&temp_r7[var_r4], &temp_r8[fontRoll->unk_EAC]);
+    SysFont_SetColor(&temp_r7[var_r4], 0xE);
 
     switch (sp0[1]) {
         case 0:
-            func_ov031_0210ab3c(&temp_r7[var_r4], 1, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 1, 0x9C);
             break;
         case 1:
-            func_ov031_0210ab3c(&temp_r7[var_r4], 0, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 0, 0x9C);
             break;
         case 2:
-            func_ov031_0210ab3c(&temp_r7[var_r4], 2, 0x9C);
+            SysFont_SetHAlign(&temp_r7[var_r4], 2, 0x9C);
             break;
     }
 
-    func_ov031_0210ab54(&temp_r7[var_r4], 1, 0);
-    func_ov031_0210ab28(&temp_r7[var_r4], 0x64, (u8)temp_r9);
+    SysFont_SetSpacing(&temp_r7[var_r4], 1, 0);
+    SysFont_SetPos(&temp_r7[var_r4], 0x64, (u8)temp_r9);
 
     u8* var_r2 = Data_GetPackEntryData(temp_r4->data, 1);
     u8* var_r3 = Data_GetPackEntryData(temp_r11->data, 1);
 
-    func_ov031_0210be18(&temp_r7[var_r4], var_r2 + 4, var_r3 + 4, 0);
+    SysFont_DrawCurrentToScreen(&temp_r7[var_r4], var_r2 + 4, var_r3 + 4, 0);
     func_ov042_02083bb8(fontRoll);
     fontRoll->unk_EAC++;
 }
@@ -1023,8 +1025,8 @@ s32 func_ov042_0208429c(FontRoll* fontRoll) {
     DatMgr_ReleaseData(fontRoll->unk_EA8);
 
     for (s32 i = 0; i < 30; i++) {
-        if (func_ov042_02082fc4(&fontRoll->unk_010[i]) != 0) {
-            func_ov031_0210aabc(&fontRoll->unk_010[i]);
+        if (func_ov042_02082fc4(&fontRoll->fonts[i]) != 0) {
+            SysFont_Destroy(&fontRoll->fonts[i]);
         }
     }
     return 1;

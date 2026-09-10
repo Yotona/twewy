@@ -10,6 +10,7 @@
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
+#include "Util/SysFont.h"
 #include "nitro/reg.h"
 #include <nitro/types.h>
 
@@ -96,8 +97,6 @@ extern void func_ov030_020c6300(void);
 extern s32  func_ov030_020c6e5c(TaskPool*, s32, s32);
 extern s32  func_ov030_020c717c(TaskPool*, s32, s32);
 extern s32  func_ov030_020c83e8(TaskPool*, Task*);
-
-extern s32 func_ov031_0210c060(u16);
 
 // Nonmatching
 void FldEvent_SetCurrent(FieldEvent event) {
@@ -707,7 +706,7 @@ s32 func_ov030_020a7994(FieldEventManager* eventMgr) {
 
 void func_ov030_020a7aa0(u32 arg0, FieldEventManager* eventMgr, u32 arg2) {
     if (arg0 != -1) {
-        if ((eventMgr->unk_21CEA + 1) == func_ov031_0210c060(arg2)) {
+        if ((eventMgr->unk_21CEA + 1) == SysFont_LoadMsgCount(arg2)) {
             eventMgr->unk_21CEA = 0;
             FldEvent_AdvanceScript(eventMgr);
         } else {

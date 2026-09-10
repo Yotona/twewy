@@ -1,9 +1,10 @@
 #include "Interface/Menu/Top.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
     /* 0x000 */ UnkStruct_TopMenu* unk_000;
-    /* 0x004 */ UnkOv31Struct      unk_004[10];
+    /* 0x004 */ SysFont            fonts[10];
 } MenuTop_textScrU; // Size: 0x4DC
 
 typedef struct {
@@ -25,8 +26,8 @@ static const TaskHandle Tsk_MenuTop_textScrU = {"Tsk_MenuTop_textScrU", MenuTop_
 
 void func_ov043_0208a630(MenuTop_textScrU* textScrU) {
     for (s32 i = 0; i < 10; i++) {
-        func_ov031_0210aa94(&textScrU->unk_004[i]);
-        func_ov031_0210ab34(&textScrU->unk_004[i], 14);
+        SysFont_Init(&textScrU->fonts[i]);
+        SysFont_SetColor(&textScrU->fonts[i], 14);
     }
 }
 
@@ -52,26 +53,26 @@ void func_ov043_0208ab0c(MenuTop_textScrU* textScrU) {
     }
 
     for (u16 i = 0; i < 3; i++) {
-        func_ov031_0210ab28(&textScrU->unk_004[i], temp[i].x, temp[i].y);
-        func_ov031_0210ab54(&textScrU->unk_004[i], 1, 0);
+        SysFont_SetPos(&textScrU->fonts[i], temp[i].x, temp[i].y);
+        SysFont_SetSpacing(&textScrU->fonts[i], 1, 0);
     }
 
-    func_ov031_0210b630(textScrU->unk_004, (u16)(temp_r6->unk_60 + 0x2A97));
-    func_ov031_0210ab3c(textScrU->unk_004, 1, 0xE0);
-    func_ov031_0210ab48(&textScrU->unk_004, 3, 0xFFFF);
-    func_ov031_0210be18(&textScrU->unk_004, temp_r8 + 4, temp_r9 + 4, 0);
+    SysFont_SetMsg(&textScrU->fonts[0], (u16)(temp_r6->unk_60 + 0x2A97));
+    SysFont_SetHAlign(&textScrU->fonts[0], 1, 0xE0);
+    SysFont_SetVAlign(&textScrU->fonts[0], 3, 0xFFFF);
+    SysFont_DrawCurrentToScreen(&textScrU->fonts[0], temp_r8 + 4, temp_r9 + 4, 0);
 
-    s32 temp_r0 = func_ov031_0210b698(&textScrU->unk_004[1], 0x333D);
-    s32 sp10;
+    SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[1], 0x333D);
+    SysCode  text[180];
 
-    func_ov031_0210a5fc(&sp10, temp_r0, temp_r6->unk_60 + 1, 7);
-    func_ov031_0210ab3c(&textScrU->unk_004[1], 2, 0xDC);
-    func_ov031_0210bde8(&textScrU->unk_004[1], &sp10, temp_r8 + 4, temp_r9 + 4, 0);
-    Mem_Free(&gDebugHeap, temp_r0);
+    SysFont_Format(text, fmt, temp_r6->unk_60 + 1, 7);
+    SysFont_SetHAlign(&textScrU->fonts[1], 2, 0xDC);
+    SysFont_DrawToScreen(&textScrU->fonts[1], text, temp_r8 + 4, temp_r9 + 4, 0);
+    Mem_Free(&gDebugHeap, fmt);
 
-    func_ov031_0210b630(&textScrU->unk_004[2], (u16)(temp_r6->unk_60 + 0x2A9E));
-    func_ov031_0210ab3c(&textScrU->unk_004[2], 1, 0xE0);
-    func_ov031_0210be18(&textScrU->unk_004[2], temp_r8 + 4, temp_r9 + 4, 0);
+    SysFont_SetMsg(&textScrU->fonts[2], (u16)(temp_r6->unk_60 + 0x2A9E));
+    SysFont_SetHAlign(&textScrU->fonts[2], 1, 0xE0);
+    SysFont_DrawCurrentToScreen(&textScrU->fonts[2], temp_r8 + 4, temp_r9 + 4, 0);
 }
 
 s32 MenuTop_textScrU_Init(TaskPool* pool, Task* task, void* args) {
@@ -111,7 +112,7 @@ s32 MenuTop_textScrU_Destroy(TaskPool* pool, Task* task, void* args) {
     MenuTop_textScrU* textScrU = task->data;
 
     for (s32 i = 0; i < 10; i++) {
-        func_ov031_0210aabc(&textScrU->unk_004[i]);
+        SysFont_Destroy(&textScrU->fonts[i]);
     }
 
     return 1;

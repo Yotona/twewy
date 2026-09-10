@@ -1,66 +1,66 @@
-func_ov031_0210a220 kind:function(arm,size=0xb8) addr:0x0210a220
-func_ov031_0210a2d8 kind:function(arm,size=0xac) addr:0x0210a2d8
-func_ov031_0210a384 kind:function(arm,size=0x140) addr:0x0210a384
-func_ov031_0210a4c4 kind:function(arm,size=0x3c) addr:0x0210a4c4
-func_ov031_0210a500 kind:function(arm,size=0xc) addr:0x0210a500
-func_ov031_0210a50c kind:function(arm,size=0xf0) addr:0x0210a50c
-func_ov031_0210a5fc kind:function(arm,size=0x1e4) addr:0x0210a5fc
-func_ov031_0210a7e0 kind:function(arm,size=0x28) addr:0x0210a7e0
-func_ov031_0210a808 kind:function(arm,size=0x28c) addr:0x0210a808
-func_ov031_0210aa94 kind:function(arm,size=0x18) addr:0x0210aa94
-func_ov031_0210aaac kind:function(arm,size=0x10) addr:0x0210aaac
-func_ov031_0210aabc kind:function(arm,size=0x6c) addr:0x0210aabc
-func_ov031_0210ab28 kind:function(arm,size=0xc) addr:0x0210ab28
-func_ov031_0210ab34 kind:function(arm,size=0x8) addr:0x0210ab34
-func_ov031_0210ab3c kind:function(arm,size=0xc) addr:0x0210ab3c
-func_ov031_0210ab48 kind:function(arm,size=0xc) addr:0x0210ab48
-func_ov031_0210ab54 kind:function(arm,size=0xc) addr:0x0210ab54
-func_ov031_0210ab60 kind:function(arm,size=0x8) addr:0x0210ab60
-func_ov031_0210ab68 kind:function(arm,size=0xb4) addr:0x0210ab68
-func_ov031_0210ac1c kind:function(arm,size=0x184) addr:0x0210ac1c
-func_ov031_0210ada0 kind:function(arm,size=0x1a8) addr:0x0210ada0
-func_ov031_0210af48 kind:function(arm,size=0x274) addr:0x0210af48
-func_ov031_0210b1bc kind:function(arm,size=0x238) addr:0x0210b1bc
-func_ov031_0210b3f4 kind:function(arm,size=0x208) addr:0x0210b3f4
-func_ov031_0210b5fc kind:function(arm,size=0x34) addr:0x0210b5fc
-func_ov031_0210b630 kind:function(arm,size=0x68) addr:0x0210b630
-func_ov031_0210b698 kind:function(arm,size=0xbc) addr:0x0210b698
-func_ov031_0210b754 kind:function(arm,size=0x588) addr:0x0210b754
-func_ov031_0210bcdc kind:function(arm,size=0x50) addr:0x0210bcdc
-func_ov031_0210bd2c kind:function(arm,size=0x2c) addr:0x0210bd2c
-func_ov031_0210bd58 kind:function(arm,size=0x40) addr:0x0210bd58
-func_ov031_0210bd98 kind:function(arm,size=0x50) addr:0x0210bd98
-func_ov031_0210bde8 kind:function(arm,size=0x30) addr:0x0210bde8
-func_ov031_0210be18 kind:function(arm,size=0x40) addr:0x0210be18
-func_ov031_0210be58 kind:function(arm,size=0x58) addr:0x0210be58
-func_ov031_0210beb0 kind:function(arm,size=0x28) addr:0x0210beb0
-func_ov031_0210bed8 kind:function(arm,size=0x54) addr:0x0210bed8
-func_ov031_0210bf2c kind:function(arm,size=0x74) addr:0x0210bf2c
-func_ov031_0210bfa0 kind:function(arm,size=0x70) addr:0x0210bfa0
-func_ov031_0210c010 kind:function(arm,size=0x50) addr:0x0210c010
-func_ov031_0210c060 kind:function(arm,size=0x74) addr:0x0210c060
-func_ov031_0210c0d4 kind:function(arm,size=0x6c) addr:0x0210c0d4
-func_ov031_0210c140 kind:function(arm,size=0x54) addr:0x0210c140
-func_ov031_0210c194 kind:function(arm,size=0xb4) addr:0x0210c194
-func_ov031_0210c248 kind:function(arm,size=0xd8) addr:0x0210c248
-func_ov031_0210c320 kind:function(arm,size=0x18) addr:0x0210c320
-func_ov031_0210c338 kind:function(arm,size=0x10) addr:0x0210c338
-func_ov031_0210c348 kind:function(arm,size=0x28) addr:0x0210c348
-func_ov031_0210c370 kind:function(arm,size=0xfc) addr:0x0210c370
-func_ov031_0210c46c kind:function(arm,size=0x1c) addr:0x0210c46c
-func_ov031_0210c488 kind:function(arm,size=0x30) addr:0x0210c488
-func_ov031_0210c4b8 kind:function(arm,size=0x14) addr:0x0210c4b8
-func_ov031_0210c4cc kind:function(arm,size=0xe8) addr:0x0210c4cc
-func_ov031_0210c5b4 kind:function(arm,size=0x10) addr:0x0210c5b4
-func_ov031_0210c5c4 kind:function(arm,size=0x28) addr:0x0210c5c4
-func_ov031_0210c5ec kind:function(arm,size=0x48) addr:0x0210c5ec
-func_ov031_0210c634 kind:function(arm,size=0x44) addr:0x0210c634
-func_ov031_0210c678 kind:function(arm,size=0x74) addr:0x0210c678
-func_ov031_0210c6ec kind:function(arm,size=0x88) addr:0x0210c6ec
-func_ov031_0210c774 kind:function(arm,size=0x50) addr:0x0210c774
-func_ov031_0210c7c4 kind:function(arm,size=0x24) addr:0x0210c7c4
-func_ov031_0210c7e8 kind:function(arm,size=0x24) addr:0x0210c7e8
-func_ov031_0210c80c kind:function(arm,size=0xac) addr:0x0210c80c
+SysFont_GetCellBoundsMin kind:function(arm,size=0xb8) addr:0x0210a220
+SysFont_WriteU32 kind:function(arm,size=0xac) addr:0x0210a2d8
+SysFont_WriteS32 kind:function(arm,size=0x140) addr:0x0210a384
+SysFont_WriteString kind:function(arm,size=0x3c) addr:0x0210a4c4
+SysFont_WriteChar kind:function(arm,size=0xc) addr:0x0210a500
+SysFont_WriteFx32 kind:function(arm,size=0xf0) addr:0x0210a50c
+SysFont_Format kind:function(arm,size=0x1e4) addr:0x0210a5fc
+SysFont_IsTerminator kind:function(arm,size=0x28) addr:0x0210a7e0
+SysFont_InitEx kind:function(arm,size=0x28c) addr:0x0210a808
+SysFont_Init kind:function(arm,size=0x18) addr:0x0210aa94
+SysFont_InitWithFont kind:function(arm,size=0x10) addr:0x0210aaac
+SysFont_Destroy kind:function(arm,size=0x6c) addr:0x0210aabc
+SysFont_SetPos kind:function(arm,size=0xc) addr:0x0210ab28
+SysFont_SetColor kind:function(arm,size=0x8) addr:0x0210ab34
+SysFont_SetHAlign kind:function(arm,size=0xc) addr:0x0210ab3c
+SysFont_SetVAlign kind:function(arm,size=0xc) addr:0x0210ab48
+SysFont_SetSpacing kind:function(arm,size=0xc) addr:0x0210ab54
+SysFont_SetLineSpacing kind:function(arm,size=0x8) addr:0x0210ab60
+SysFont_GetAllocPal kind:function(arm,size=0xb4) addr:0x0210ab68
+SysFont_DecodeGlyph kind:function(arm,size=0x184) addr:0x0210ac1c
+SysFont_BlitGlyphToChar kind:function(arm,size=0x1a8) addr:0x0210ada0
+SysFont_BlitGlyphToScreen kind:function(arm,size=0x274) addr:0x0210af48
+SysFont_ResolveCellPixel kind:function(arm,size=0x238) addr:0x0210b1bc
+SysFont_BlitGlyphToSprite kind:function(arm,size=0x208) addr:0x0210b3f4
+SysFont_SetMsgPtr kind:function(arm,size=0x34) addr:0x0210b5fc
+SysFont_SetMsg kind:function(arm,size=0x68) addr:0x0210b630
+SysFont_GetMsgBuf kind:function(arm,size=0xbc) addr:0x0210b698
+SysFont_DrawInternal kind:function(arm,size=0x588) addr:0x0210b754
+SysFont_DrawToCharRange kind:function(arm,size=0x50) addr:0x0210bcdc
+SysFont_DrawToChar kind:function(arm,size=0x2c) addr:0x0210bd2c
+SysFont_DrawCurrentToChar kind:function(arm,size=0x40) addr:0x0210bd58
+SysFont_DrawToScreenRange kind:function(arm,size=0x50) addr:0x0210bd98
+SysFont_DrawToScreen kind:function(arm,size=0x30) addr:0x0210bde8
+SysFont_DrawCurrentToScreen kind:function(arm,size=0x40) addr:0x0210be18
+SysFont_DrawToSpriteRange kind:function(arm,size=0x58) addr:0x0210be58
+SysFont_DrawToSprite kind:function(arm,size=0x28) addr:0x0210beb0
+SysFont_DrawCurrentToSprite kind:function(arm,size=0x54) addr:0x0210bed8
+SysFont_DrawMsgToSprite kind:function(arm,size=0x74) addr:0x0210bf2c
+SysFont_DrawMsgToSpriteRange kind:function(arm,size=0x70) addr:0x0210bfa0
+SysFont_CountMsgs kind:function(arm,size=0x50) addr:0x0210c010
+SysFont_LoadMsgCount kind:function(arm,size=0x74) addr:0x0210c060
+SysFont_GetMsgAt kind:function(arm,size=0x6c) addr:0x0210c0d4
+SysFont_IsProportionalGlyph kind:function(arm,size=0x54) addr:0x0210c140
+SysFont_GetGlyphWidth kind:function(arm,size=0xb4) addr:0x0210c194
+SysFont_MeasureWidthEx kind:function(arm,size=0xd8) addr:0x0210c248
+SysFont_MeasureWidth kind:function(arm,size=0x18) addr:0x0210c320
+SysFont_MeasureCurrentWidth kind:function(arm,size=0x10) addr:0x0210c338
+SysFont_MeasureMsgWidth kind:function(arm,size=0x28) addr:0x0210c348
+SysFont_MeasureLineWidthsEx kind:function(arm,size=0xfc) addr:0x0210c370
+SysFont_MeasureLineWidths kind:function(arm,size=0x1c) addr:0x0210c46c
+SysFont_MeasureMsgLineWidths kind:function(arm,size=0x30) addr:0x0210c488
+SysFont_MeasureHeight kind:function(arm,size=0x14) addr:0x0210c4b8
+SysFont_MeasureHeightEx kind:function(arm,size=0xe8) addr:0x0210c4cc
+SysFont_MeasureCurrentHeight kind:function(arm,size=0x10) addr:0x0210c5b4
+SysFont_MeasureMsgHeight kind:function(arm,size=0x28) addr:0x0210c5c4
+SysFont_GetStrBufLen kind:function(arm,size=0x48) addr:0x0210c5ec
+SysFont_HashDsCode kind:function(arm,size=0x44) addr:0x0210c634 local
+SysFont_FindDsCodeSlot kind:function(arm,size=0x74) addr:0x0210c678 local
+SysFont_DsCodesToSysCodes kind:function(arm,size=0x88) addr:0x0210c6ec local
+SysFont_GetSysCodeBuf_from_DsCode kind:function(arm,size=0x50) addr:0x0210c774
+SysFont_GetOwnerName kind:function(arm,size=0x24) addr:0x0210c7c4
+SysFont_GetOwnerMessage kind:function(arm,size=0x24) addr:0x0210c7e8
+SysFont_GetUserDSCommentBufReturn kind:function(arm,size=0xac) addr:0x0210c80c
 
 
 PrcCtx_Reset kind:function(arm,size=0x94) addr:0x0210c8b8 local
@@ -91,25 +91,27 @@ PrcStep_TickDelay kind:function(arm,size=0x30) addr:0x0210d0cc
 PrcStep_Advance kind:function(arm,size=0x10) addr:0x0210d0fc
 PrcStep_PopFrame kind:function(arm,size=0x8) addr:0x0210d10c
 PrcStep_Continue kind:function(arm,size=0x8) addr:0x0210d114
-data_ov031_0210d11c kind:data(any) addr:0x0210d11c
-data_ov031_0210d120 kind:data(any) addr:0x0210d120
-data_ov031_0210d128 kind:data(any) addr:0x0210d128
-data_ov031_0210d130 kind:data(any) addr:0x0210d130
-data_ov031_0210d160 kind:data(any) addr:0x0210d160
-data_ov031_0210d168 kind:data(any) addr:0x0210d168
-data_ov031_0210d178 kind:data(any) addr:0x0210d178
-data_ov031_0210d1a8 kind:data(any) addr:0x0210d1a8
-data_ov031_0210d1d8 kind:data(any) addr:0x0210d1d8
-data_ov031_0210d208 kind:data(any) addr:0x0210d208
-data_ov031_0210d238 kind:data(any) addr:0x0210d238
-data_ov031_0210da5c kind:data(any) addr:0x0210da5c
-data_ov031_0210da70 kind:data(any) addr:0x0210da70
-data_ov031_0210da88 kind:data(any) addr:0x0210da88
-data_ov031_0210daa0 kind:data(any) addr:0x0210daa0
-data_ov031_0210dab4 kind:data(any) addr:0x0210dab4
-data_ov031_0210dac8 kind:data(any) addr:0x0210dac8
-data_ov031_0210daec kind:data(any) addr:0x0210daec
+@1607 kind:data(any) addr:0x0210d11c local
+MesTableBinId kind:data(any) addr:0x0210d120 local
+FontBinId kind:data(any) addr:0x0210d128 local
+MesTxtBinId kind:data(any) addr:0x0210d130 local
+@1616 kind:data(any) addr:0x0210d138 local
+@2583 kind:data(any) addr:0x0210d140 local
+PaletteEntryOrder kind:data(any) addr:0x0210d160 local
+SysFontInfoTable kind:data(any) addr:0x0210d168 local
+sFontInfo_8x8 kind:data(any) addr:0x0210d178 local
+sFontInfo_10x10 kind:data(any) addr:0x0210d1a8 local
+sFontInfo_10x12 kind:data(any) addr:0x0210d1d8 local
+sFontInfo_12x12 kind:data(any) addr:0x0210d208 local
+SysFontDsCodeMap kind:data(any) addr:0x0210d238 local
+@1498 kind:data(any) addr:0x0210da5c local
+@1499 kind:data(any) addr:0x0210da70 local
+@1497 kind:data(any) addr:0x0210da88 local
+@3118 kind:data(any) addr:0x0210daa0 local
+@3402 kind:data(any) addr:0x0210dab4 local
+@3707 kind:data(any) addr:0x0210dac8 local
+@3717 kind:data(any) addr:0x0210daec local
 
 @516 kind:data(byte[10]) addr:0x0210db10 local
 
-data_ov031_0210db20 kind:bss addr:0x0210db20
+sPixelRef kind:bss addr:0x0210db20

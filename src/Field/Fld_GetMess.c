@@ -2,19 +2,20 @@
 #include "Engine/File/DatMgr.h"
 #include "Field/FieldTasks.h"
 #include "SpriteMgr.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 #include <nitro/types.h>
 
 extern BinIdentifier data_ov030_020d9944;
 
 typedef struct {
-    /* 0x00 */ Sprite        sprite;
-    /* 0x40 */ s32           unk_40;
-    /* 0x44 */ s32           unk_44;
-    /* 0x48 */ u16           unk_48;
-    /* 0x4A */ u8            unk_4A;
-    /* 0x4C */ UnkOv31Struct unk_4C;
-    /* 0xC8 */ void*         unk_C8;
+    /* 0x00 */ Sprite  sprite;
+    /* 0x40 */ s32     unk_40;
+    /* 0x44 */ s32     unk_44;
+    /* 0x48 */ u16     unk_48;
+    /* 0x4A */ u8      unk_4A;
+    /* 0x4C */ SysFont font;
+    /* 0xC8 */ void*   unk_C8;
 } Fld_GetMess; // Size: 0xCC
 
 typedef struct {
@@ -94,8 +95,8 @@ s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess*      mess     = task->data;
     Fld_GetMess_Args* messArgs = args;
 
-    func_ov031_0210aaac(&mess->unk_4C, 1, 1);
-    func_ov031_0210ab54(&mess->unk_4C, 1, 0);
+    SysFont_InitWithFont(&mess->font, 1, 1);
+    SysFont_SetSpacing(&mess->font, 1, 0);
     Fld_GetMess_Load(&mess->sprite, messArgs);
     Sprite_Update(&mess->sprite);
 
@@ -105,15 +106,15 @@ s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
     mess->unk_48 = 0x14;
 
     if (messArgs->unk_6 == 0xFFFF) {
-        mess->unk_C8 = func_ov031_0210b698(&mess->unk_4C, messArgs->unk_4);
-        func_ov031_0210ab3c(&mess->unk_4C, 1, func_ov031_0210c320(&mess->unk_4C, mess->unk_C8));
-        func_ov031_0210ab28(&mess->unk_4C, 0xD, 9);
+        mess->unk_C8 = SysFont_GetMsgBuf(&mess->font, messArgs->unk_4);
+        SysFont_SetHAlign(&mess->font, 1, SysFont_MeasureWidth(&mess->font, mess->unk_C8));
+        SysFont_SetPos(&mess->font, 0xD, 9);
     } else if (messArgs->unk_6 == 0xFFFE) {
-        mess->unk_C8 = func_ov031_0210b698(&mess->unk_4C, messArgs->unk_4);
-        func_ov030_020c4b8c(&mess->unk_4C, mess->unk_C8, 0, mess);
+        mess->unk_C8 = SysFont_GetMsgBuf(&mess->font, messArgs->unk_4);
+        func_ov030_020c4b8c(&mess->font, mess->unk_C8, 0, mess);
     } else {
-        mess->unk_C8 = func_ov030_020c4ae8(&mess->unk_4C, messArgs->unk_4, messArgs->unk_6);
-        func_ov030_020c4b8c(&mess->unk_4C, mess->unk_C8, 0, mess);
+        mess->unk_C8 = func_ov030_020c4ae8(&mess->font, messArgs->unk_4, messArgs->unk_6);
+        func_ov030_020c4b8c(&mess->font, mess->unk_C8, 0, mess);
     }
     return 1;
 }
@@ -136,9 +137,9 @@ s32 Fld_GetMess_Render(TaskPool* pool, Task* task, void* args) {
     if (mess->unk_4A != 0) {
         mess->unk_4A--;
         if ((mess->unk_4A & 0xFF) == 0) {
-            func_ov031_0210beb0(&mess->unk_4C, mess->unk_C8, &mess->sprite, 1);
+            SysFont_DrawToSprite(&mess->font, mess->unk_C8, &mess->sprite, 1);
             Mem_Free(&gDebugHeap, mess->unk_C8);
-            func_ov031_0210aabc(&mess->unk_4C);
+            SysFont_Destroy(&mess->font);
             mess->unk_C8 = NULL;
         }
     }
@@ -151,7 +152,7 @@ s32 Fld_GetMess_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Destroy(&mess->sprite);
     if (mess->unk_C8 != NULL) {
         Mem_Free(&gDebugHeap, mess->unk_C8);
-        func_ov031_0210aabc(&mess->unk_4C);
+        SysFont_Destroy(&mess->font);
     }
     return 1;
 }

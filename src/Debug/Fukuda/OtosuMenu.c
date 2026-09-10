@@ -12,12 +12,10 @@
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
+#include "Util/SysFont.h"
 
 #include <nitro/mi/cpumem.h>
 
-extern void func_ov031_0210aaac(void*, s32, s32);
-extern void func_ov031_0210ab60(void*, s16);
-extern void func_ov031_0210ab54(void*, s32, s16);
 extern void func_0200d8f0(void);
 extern void func_ov030_020ae92c(void);
 
@@ -1641,7 +1639,7 @@ PrcStepResult func_ov002_0208275c(PrcCtx* ctx, void* object) {
         MI_CpuFillU16(-1, (u8*)menuObj->unk_41838 + i * 0x30, 0x16);
     }
 
-    void* paletteData = func_ov031_0210c7c4();
+    void* paletteData = SysFont_GetOwnerName();
     MI_CpuCopyU8(paletteData, &menuObj->unk_4196E, 0x16);
     MI_CpuCopyU8(paletteData, (u8*)menuObj->unk_41838 + (data_02074d10.unk_40A * 0x30), 0x16);
     MI_CpuCopyU8(paletteData, &menuObj->unk_4181C, 0x16);
@@ -1766,11 +1764,11 @@ void func_ov002_02082ab4(OtosuMenuObj* menuObj) {
             continue;
         }
 
-        func_ov031_0210b5fc(&menuObj->unk_45FF4, menuObj->unk_41838 + i * 0x30);
-        func_ov031_0210ab28(&menuObj->unk_45FF4, 0, temp_values[i]);
-        func_ov031_0210ab3c(&menuObj->unk_45FF4, 0, 0x100);
-        func_ov031_0210ab48(&menuObj->unk_45FF4, 3, 0x50);
-        func_ov031_0210bd58(&menuObj->unk_45FF4, menuObj->unk_41FF4, 0x20, 0xA);
+        SysFont_SetMsgPtr(&menuObj->font, menuObj->unk_41838 + i * 0x30);
+        SysFont_SetPos(&menuObj->font, 0, temp_values[i]);
+        SysFont_SetHAlign(&menuObj->font, 0, 0x100);
+        SysFont_SetVAlign(&menuObj->font, 3, 0x50);
+        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4, 0x20, 0xA);
     }
 
     func_0203abec(3, menuObj->unk_41FF4, (u8*)G2_GetBG0CharPtr() + 0x2400, 0x2800);
@@ -1828,11 +1826,11 @@ void func_ov002_02082dbc(void* arg0, const Ov002_U16_5* arg1, void* arg2, void* 
         return;
     }
     do {
-        func_ov031_0210b630(arg0, entry->unk0);
-        func_ov031_0210ab28(arg0, entry->unk2, entry->unk4);
-        func_ov031_0210ab3c(arg0, 0, (u16)(entry->unk6 - entry->unk2));
-        func_ov031_0210ab48(arg0, 0, (u16)(entry->unk8 - entry->unk4));
-        func_ov031_0210be18(arg0, arg3, arg2, 0);
+        SysFont_SetMsg(arg0, entry->unk0);
+        SysFont_SetPos(arg0, entry->unk2, entry->unk4);
+        SysFont_SetHAlign(arg0, 0, (u16)(entry->unk6 - entry->unk2));
+        SysFont_SetVAlign(arg0, 0, (u16)(entry->unk8 - entry->unk4));
+        SysFont_DrawCurrentToScreen(arg0, arg3, arg2, 0);
         entry++;
     } while (entry->unk0 != 0xFFFF);
 }
@@ -1845,11 +1843,11 @@ void func_ov002_02082e70(void* arg0, s32* arg1, void* arg2, void* arg3) {
         return;
     }
     do {
-        func_ov031_0210b5fc(arg0, *entry);
-        func_ov031_0210ab28(arg0, 0x48, (u16)((index + 1) * 0x28));
-        func_ov031_0210ab3c(arg0, 0, 0x70);
-        func_ov031_0210ab48(arg0, 0, 0x10);
-        func_ov031_0210be18(arg0, arg3, arg2, 0);
+        SysFont_SetMsgPtr(arg0, *entry);
+        SysFont_SetPos(arg0, 0x48, (u16)((index + 1) * 0x28));
+        SysFont_SetHAlign(arg0, 0, 0x70);
+        SysFont_SetVAlign(arg0, 0, 0x10);
+        SysFont_DrawCurrentToScreen(arg0, arg3, arg2, 0);
         index++;
         entry++;
     } while (*entry != 0);
@@ -1910,8 +1908,8 @@ void func_ov002_02082f18(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, void* arg3) 
     void* ptr          = Data_GetPackEntryData(menuObj->unk_462F0, 7);
     menuObj->unk_474A8 = Data_GetPackEntryData(menuObj->unk_462F0, 8) + 4;
 
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg3, ptr + 4, menuObj->unk_474A8);
+    SysFont_SetColor(&menuObj->font, 1);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg3, ptr + 4, menuObj->unk_474A8);
 
     menuObj->unk_47330 =
         BgResMgr_AllocChar32(g_BgResourceManagers[0], ptr, g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
@@ -1938,12 +1936,12 @@ void func_ov002_02083484(OtosuMenuObj* menuObj, u16* arg1) {
     void* table_ptr    = Data_GetPackEntryData(menuObj->unk_462F0, 5);
     menuObj->unk_47490 = Data_GetPackEntryData(menuObj->unk_462F0, 6) + 4;
 
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1);
-    func_ov031_0210ab60(&menuObj->unk_45FF4, 4);
-    func_ov031_0210ab54(&menuObj->unk_45FF4, 1, 0);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg1, table_ptr + 4, menuObj->unk_47490);
-    func_ov031_0210ab60(&menuObj->unk_45FF4, 2);
-    func_ov031_0210ab54(&menuObj->unk_45FF4, 1, 0);
+    SysFont_SetColor(&menuObj->font, 1);
+    SysFont_SetLineSpacing(&menuObj->font, 4);
+    SysFont_SetSpacing(&menuObj->font, 1, 0);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg1, table_ptr + 4, menuObj->unk_47490);
+    SysFont_SetLineSpacing(&menuObj->font, 2);
+    SysFont_SetSpacing(&menuObj->font, 1, 0);
 
     menuObj->unk_47324 = BgResMgr_AllocChar32(g_BgResourceManagers[1], table_ptr,
                                               g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x6000);
@@ -2202,12 +2200,12 @@ void func_ov002_02084494(OtosuMenuObj* menuObj, u8 arg1, u16* arg2) {
     void* var_r4 = Data_GetPackEntryData(menuObj->unk_462F0, 7);
 
     menuObj->unk_474A8 = Data_GetPackEntryData(menuObj->unk_462F0, 8) + 4;
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1U);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)sp4C, var_r4 + 4, menuObj->unk_474A8);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg2, var_r4 + 4, menuObj->unk_474A8);
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 3U);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)sp24, var_r4 + 4, menuObj->unk_474A8);
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1U);
+    SysFont_SetColor(&menuObj->font, 1U);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)sp4C, var_r4 + 4, menuObj->unk_474A8);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg2, var_r4 + 4, menuObj->unk_474A8);
+    SysFont_SetColor(&menuObj->font, 3U);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)sp24, var_r4 + 4, menuObj->unk_474A8);
+    SysFont_SetColor(&menuObj->font, 1U);
     menuObj->unk_47330 = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r4,
                                               g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
     func_0200d1d8(menuObj->unk_473E8, 0, 0, 0, menuObj->unk_474A8, 1, 1);
@@ -2297,9 +2295,9 @@ void func_ov002_02084c84(OtosuMenuObj* menuObj, u16* arg1) {
         var_r1_6 = Data_GetPackEntryData(temp_r2, 8);
     }
     menuObj->unk_474A8 = (void*)(var_r1_6 + 4);
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1U);
+    SysFont_SetColor(&menuObj->font, 1U);
     if (arg1 != NULL) {
-        func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg1, var_r4 + 4, menuObj->unk_474A8);
+        func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg1, var_r4 + 4, menuObj->unk_474A8);
     }
     menuObj->unk_47330 = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r4,
                                               g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
@@ -2334,8 +2332,8 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
                                               g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x6000);
 
     menuObj->unk_47490 = Data_GetPackEntryData(menuObj->unk_462F0, 6) + 4;
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1);
-    func_ov002_02082e70(&menuObj->unk_45FF4, arg3, menuObj->unk_47490 + 4, menuObj->unk_47490);
+    SysFont_SetColor(&menuObj->font, 1);
+    func_ov002_02082e70(&menuObj->font, arg3, menuObj->unk_47490 + 4, menuObj->unk_47490);
     func_0200d1d8(&menuObj->unk_47370, 1, 1, 0, &menuObj->unk_47490, 1, 1);
 
     Display_SetSubLayers(LAYER_BG1 | LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
@@ -2369,8 +2367,8 @@ void func_ov002_020850c0(OtosuMenuObj* menuObj, s32 arg1, s32 arg2, s32* arg3, u
     void* ptr          = Data_GetPackEntryData(menuObj->unk_462F0, 7);
     menuObj->unk_474A8 = Data_GetPackEntryData(menuObj->unk_462F0, 8);
     menuObj->unk_474A8 = menuObj->unk_474A8 + 4;
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 1);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg4, ptr + 4, menuObj->unk_474A8);
+    SysFont_SetColor(&menuObj->font, 1);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg4, ptr + 4, menuObj->unk_474A8);
 
     menuObj->unk_47330 =
         BgResMgr_AllocChar32(g_BgResourceManagers[0], ptr, g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
@@ -2542,10 +2540,10 @@ OtosuMenuObj* OtosuMenu_Init(void) {
     obj->unk_11588      = DatMgr_AllocateSlot();
     data_ov002_020934e0 = 0;
     obj->unk_11580      = ResourceMgr_ReinitManagers(&obj->unk_00000);
-    func_ov031_0210aaac(&obj->unk_45FF4, 1, 1);
-    func_ov031_0210ab60(&obj->unk_45FF4, 3);
-    func_ov031_0210ab54(&obj->unk_45FF4, 1, 0);
-    func_ov031_0210ab34(&obj->unk_45FF4, 12);
+    SysFont_InitWithFont(&obj->font, 1, 1);
+    SysFont_SetLineSpacing(&obj->font, 3);
+    SysFont_SetSpacing(&obj->font, 1, 0);
+    SysFont_SetColor(&obj->font, 12);
     PrcMaster_Init(&obj->prcMaster, 30);
     EasyTask_InitializePool(&obj->taskPool, &obj->heap, 0x100, NULL, NULL);
     EasyTask_CreateTask(&obj->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
@@ -2836,7 +2834,7 @@ void OtosuMenu_Destroy(OtosuMenuObj* menuObj) {
     DatMgr_ClearSlot(menuObj->unk_11588);
     Interrupts_RegisterVBlankCallback(NULL, 1);
     Interrupts_RegisterHBlankCallback(0, 1);
-    func_ov031_0210aabc(&menuObj->unk_45FF4);
+    SysFont_Destroy(&menuObj->font);
     FS_UnloadOverlay(0, &OVERLAY_31_ID);
     if (menuObj->unk_41FF0 != 0) {
         OvlMgr_UnloadOverlay(3);
@@ -3470,7 +3468,7 @@ PrcStepResult func_ov002_020875c8(PrcCtx* ctx, void* object) {
         *var_r3++ = *var_ip++;
         var_r2 -= 1;
     } while (var_r2 != 0);
-    func_ov031_0210ab54(&menuObj->unk_45FF4, 1, 0);
+    SysFont_SetSpacing(&menuObj->font, 1, 0);
     func_ov002_02082f18(menuObj, 0x15, 0x14, sp2);
     CriSndMgr_PlayFile(ADX_B11);
     menuObj->unk_474C8 = 0xFFFF;
@@ -4881,7 +4879,7 @@ PrcStepResult func_ov002_02089d40(PrcCtx* ctx, void* object) {
     menuObj->unk_4196A = 0;
     menuObj->unk_4198A = 1;
     menuObj->unk_41834 = 1;
-    temp_r0            = func_ov031_0210c7c4();
+    temp_r0            = SysFont_GetOwnerName();
     MI_CpuCopyU8(temp_r0, (u8*)menuObj->unk_4196E, 0x16);
     MI_CpuCopyU8(temp_r0, (u8*)menuObj->unk_41838, 0x16);
     Mem_Free(&gDebugHeap, temp_r0);
@@ -5241,11 +5239,11 @@ void func_ov002_0208a780(OtosuMenuObj* menuObj) {
         } else {
             MI_CpuCopyU8((var_r9 * 0x1E) + (s32)((u8*)menuObj->unk_41E38), data_ov002_02093664, 0x16);
         }
-        func_ov031_0210b5fc(&menuObj->unk_45FF4, data_ov002_02093664);
-        func_ov031_0210ab28(&menuObj->unk_45FF4, 0, 5);
-        func_ov031_0210ab3c(&menuObj->unk_45FF4, 0, 0x100);
-        func_ov031_0210ab48(&menuObj->unk_45FF4, 3, 0x20);
-        func_ov031_0210bd58(&menuObj->unk_45FF4, menuObj->unk_41FF4 + (var_r9 << 0xC), 0x20, 4);
+        SysFont_SetMsgPtr(&menuObj->font, data_ov002_02093664);
+        SysFont_SetPos(&menuObj->font, 0, 5);
+        SysFont_SetHAlign(&menuObj->font, 0, 0x100);
+        SysFont_SetVAlign(&menuObj->font, 3, 0x20);
+        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4 + (var_r9 << 0xC), 0x20, 4);
         var_r9 += 1;
     } while ((u32)var_r9 < 3U);
     var_r5 = 0;
@@ -5658,7 +5656,7 @@ PrcStepResult func_ov002_0208b0a4(PrcCtx* ctx, void* object) {
     menuObj->unk_46078.posX = 0;
     menuObj->unk_46078.posY = 0xC8;
     func_ov002_02082f18(object, 0x18, 0x16, subroutine_arg0);
-    temp_r0_2 = func_ov031_0210c7c4();
+    temp_r0_2 = SysFont_GetOwnerName();
     MI_CpuCopyU8(temp_r0_2, object + 0x4181C, 0x16);
     Mem_Free(&gDebugHeap, temp_r0_2);
     PrcCtx_AdvanceStep(ctx);
@@ -7410,7 +7408,7 @@ PrcStepResult func_ov002_0208e348(PrcCtx* ctx, void* object) {
     menuObj->unk_41FD0 = 0;
 loop_1:
     if (((const u16*)&data_ov002_0209228e[data_02074d10.unk_41C])[var_r9] != 0xFFFF) {
-        temp_r0 = func_ov031_0210b698(&menuObj->unk_45FF4, 0);
+        temp_r0 = SysFont_GetMsgBuf(&menuObj->font, 0);
         MI_CpuCopyU16(temp_r0, (var_r9 * 0x30) + (s32)(menuObj + 0x41838), 0x2A);
         Mem_Free(&gDebugHeap, temp_r0);
         var_r9 += 1;
@@ -8385,11 +8383,11 @@ void func_ov002_0208f9e8(void) {
 void func_ov002_0208f9ec(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
     void* temp_r4 = menuObj->unk_48058;
 
-    func_ov031_0210b630(temp_r4, data_ov002_02092534[menuObj->unk_474CA]);
-    func_ov031_0210ab28(temp_r4, 0, 0);
-    func_ov031_0210ab3c(temp_r4, 0, 0x100);
-    func_ov031_0210ab48(temp_r4, 0, 0xC0);
-    func_ov031_0210be18(temp_r4, arg2, arg1, 0);
+    SysFont_SetMsg(temp_r4, data_ov002_02092534[menuObj->unk_474CA]);
+    SysFont_SetPos(temp_r4, 0, 0);
+    SysFont_SetHAlign(temp_r4, 0, 0x100);
+    SysFont_SetVAlign(temp_r4, 0, 0xC0);
+    SysFont_DrawCurrentToScreen(temp_r4, arg2, arg1, 0);
 }
 
 void func_ov002_0208fa6c(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
@@ -8412,18 +8410,18 @@ void func_ov002_0208fa6c(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
     table_lower[0] = data_ov002_02092524.unkA;
     table_lower[1] = data_ov002_02092524.unkC;
     table_lower[2] = data_ov002_02092524.unkE;
-    temp_r6        = func_ov031_0210b698(temp_r7, 0x20A2U);
-    temp_r5        = func_ov031_0210b698(temp_r7, table_upper[menuObj->unk_474C8]);
-    temp_r0_2      = func_ov031_0210b698(temp_r7, table_lower[menuObj->unk_474CC]);
-    func_ov031_0210a5fc(table_sp14, temp_r6, temp_r5, menuObj->unk_474CA + 1, 0xE, temp_r0_2);
+    temp_r6        = SysFont_GetMsgBuf(temp_r7, 0x20A2U);
+    temp_r5        = SysFont_GetMsgBuf(temp_r7, table_upper[menuObj->unk_474C8]);
+    temp_r0_2      = SysFont_GetMsgBuf(temp_r7, table_lower[menuObj->unk_474CC]);
+    SysFont_Format(table_sp14, temp_r6, temp_r5, menuObj->unk_474CA + 1, 0xE, temp_r0_2);
     Mem_Free(&gDebugHeap, temp_r6);
     Mem_Free(&gDebugHeap, temp_r5);
     Mem_Free(&gDebugHeap, temp_r0_2);
-    func_ov031_0210b5fc(temp_r7, (s32)table_sp14);
-    func_ov031_0210ab28(temp_r7, 0U, 0U);
-    func_ov031_0210ab3c(temp_r7, 0, 0x100U);
-    func_ov031_0210ab48(temp_r7, 0, 0xC0U);
-    func_ov031_0210be18(temp_r7, arg2, arg1, 0);
+    SysFont_SetMsgPtr(temp_r7, table_sp14);
+    SysFont_SetPos(temp_r7, 0U, 0U);
+    SysFont_SetHAlign(temp_r7, 0, 0x100U);
+    SysFont_SetVAlign(temp_r7, 0, 0xC0U);
+    SysFont_DrawCurrentToScreen(temp_r7, arg2, arg1, 0);
 }
 
 void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
@@ -8457,14 +8455,14 @@ void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
     menuObj->unk_462F0 = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac.binIden, 1, 0);
     Display_SetMainLayers(LAYER_BG0);
     Display_SetSubLayers(LAYER_BG3);
-    temp_r1 = func_ov031_0210ab68();
+    temp_r1 = SysFont_GetAllocPal(0);
     var_r4  = Data_GetPackEntryData(menuObj->unk_462F0, 4);
     var_ip  = 0;
     do {
-        temp_r3   = var_ip * 2;
-        temp_r2_3 = var_r4 + (var_ip * 2);
-        var_ip += 1;
+        temp_r3                         = var_ip * 2;
+        temp_r2_3                       = var_r4 + (var_ip * 2);
         *(u16*)((u8*)temp_r2_3 + 0x120) = *(u16*)(temp_r1 + temp_r3);
+        var_ip += 1;
     } while ((u32)var_ip < 0x10U);
     Mem_Free(&gDebugHeap, temp_r1);
     DC_PurgeAll();
@@ -8479,7 +8477,7 @@ void func_ov002_0208fbf4(OtosuMenuObj* menuObj) {
     func_ov002_0208f9ec(menuObj, var_r4_2 + 4, &menuObj->unk_474A0);
     func_0200d1d8(&menuObj->unk_473C0, 1, 3, 0, &menuObj->unk_474A0, 1, 1);
     temp_r2_4 = menuObj->unk_462F0;
-    temp_r1_4 = func_ov031_0210ab68(0);
+    temp_r1_4 = SysFont_GetAllocPal(0);
     var_r4_3  = Data_GetPackEntryData(temp_r2_4, 3);
     var_ip_2  = 0;
     do {
@@ -8511,19 +8509,19 @@ void func_ov002_0208ff0c(void* arg0) {
 }
 
 void func_ov002_0208ff18(OtosuMenuObj* menuObj) {
-    func_ov031_0210ab34(&menuObj->unk_45FF4, subroutine_arg0[menuObj->unk_474CC]);
+    SysFont_SetColor(&menuObj->font, subroutine_arg0[menuObj->unk_474CC]);
 }
 
 void func_ov002_0208ff6c(OtosuMenuObj* menuObj) {
-    void* sp0          = &menuObj->unk_45FF4;
+    void* sp0          = &menuObj->font;
     menuObj->unk_48058 = (void*)(&sp0)[menuObj->unk_474C8];
 }
 
 PrcStepResult func_ov002_0208ffac(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    menuObj->unk_48058 = &menuObj->unk_45FF4;
-    func_ov031_0210ab34(&menuObj->unk_45FF4, 14);
+    menuObj->unk_48058 = &menuObj->font;
+    SysFont_SetColor(&menuObj->font, 14);
 
     Display_SetMainLayers(LAYER_BG0);
     Display_SetSubLayers(LAYER_BG2);
@@ -8749,7 +8747,7 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     var_r1_3 = Data_GetPackEntryData(menuObj->unk_462F4, 3);
 
     menuObj->unk_47498 = (void*)(var_r1_3 + 4);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg1, var_r4 + 4, menuObj->unk_47498);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg1, var_r4 + 4, menuObj->unk_47498);
     menuObj->unk_47328 = BgResMgr_AllocChar32(g_BgResourceManagers[1], var_r4,
                                               g_DisplaySettings.engineState[1].bgSettings[2].charBase, 0, 0x4380);
     func_0200d1d8(&menuObj->unk_47398, 1, 2, 0, &menuObj->unk_47498, 1, 1);
@@ -8787,7 +8785,7 @@ void func_ov002_020904cc(OtosuMenuObj* menuObj, u16* arg1, u16* arg2) {
     menuObj->unk_474A8 = &menuObj->unk_46320;
     menuObj->unk_47330 = BgResMgr_AllocChar32(g_BgResourceManagers[0], var_r4_2,
                                               g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
-    func_ov002_02082dbc(&menuObj->unk_45FF4, (const Ov002_U16_5*)arg2, var_r4_2 + 4, menuObj->unk_474A8);
+    func_ov002_02082dbc(&menuObj->font, (const Ov002_U16_5*)arg2, var_r4_2 + 4, menuObj->unk_474A8);
     func_0200d1d8(&menuObj->unk_473E8, 0, 0, 0, &menuObj->unk_474A8, 1, 1);
     Display_Commit();
 }

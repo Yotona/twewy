@@ -11,6 +11,7 @@
 #include "Engine/Text.h"
 #include "Field/FieldDebug.h"
 #include "Util/MsgXls.h"
+#include "Util/SysFont.h"
 #include "common_data.h"
 
 typedef struct {
@@ -24,7 +25,7 @@ typedef struct {
     /* 0x21618 */ char             unk_21618[0x8];
     /* 0x21620 */ TextObject       text;
     /* 0x21734 */ char             unk_21734[0x2FC];
-    /* 0x21A30 */ UnkOv31Struct    unk_21A30;
+    /* 0x21A30 */ SysFont          unk_21A30;
     /* 0x21AAC */ s32              messTask; // Task id of the live message window, or -1
     /* 0x21AB0 */ u16              mesNo;    // Message index, global across every .xls file
     /* 0x21AB2 */ char             unk_21AB2[0x2];
@@ -70,7 +71,7 @@ extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 heig
 extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textObj);
 
-extern u8 func_ov030_020ca778(UnkOv31Struct* arg0, u16 mesNo, s32 arg2, const u8* winKind);
+extern u8 func_ov030_020ca778(SysFont* arg0, u16 mesNo, s32 arg2, const u8* winKind);
 
 extern const TaskHandle Task_Window;
 
@@ -285,7 +286,7 @@ void FldMesSel_Init(void* object) {
     EasyTask_InitializePool(&selObj->taskPool, &selObj->heap, 0x100, NULL, NULL);
     OvlMgr_LoadOverlay(3, &OVERLAY_31_ID);
     OvlMgr_LoadOverlay(4, &OVERLAY_36_ID);
-    func_ov031_0210aa94(&selObj->unk_21A30);
+    SysFont_Init(&selObj->unk_21A30);
     data_02066aec                                       = 0;
     data_02066eec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
@@ -314,7 +315,7 @@ void FldMesSel_Destroy(void* object) {
 
     FldMesSel_Close(selObj);
     EasyTask_DestroyPool(&selObj->taskPool);
-    func_ov031_0210aabc(&selObj->unk_21A30);
+    SysFont_Destroy(&selObj->unk_21A30);
     OvlMgr_UnloadOverlay(4);
     OvlMgr_UnloadOverlay(3);
     ResourceMgr_ReinitManagers(NULL);

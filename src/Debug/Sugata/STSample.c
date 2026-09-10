@@ -63,7 +63,7 @@ void func_ov041_020827cc(STSampleState* state) {
     state->unk_21F2C = 0;
     state->unk_21E64 = 0;
     func_0203a96c(&state->unk_21F30);
-    GetDsFirmwareUserSettings(abStack_5c);
+    OS_GetOwnerInfo(abStack_5c);
     MI_CpuSet(&state->unk_21F36, 0, 0x16);
     func_ov040_0209da10(&state->unk_21F36, auStack_58, local_42);
     MI_CpuSet(&state->unk_21F4C, 0, 0x36);

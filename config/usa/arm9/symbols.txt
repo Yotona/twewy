@@ -2441,7 +2441,7 @@ func_0203a884 kind:function(arm,size=0x2c) addr:0x0203a884
 OS_SystemReset kind:function(arm,size=0xbc) addr:0x0203a8b0
 
 func_0203a96c kind:function(arm,size=0x1c) addr:0x0203a96c
-GetDsFirmwareUserSettings kind:function(arm,size=0x84) addr:0x0203a988
+OS_GetOwnerInfo kind:function(arm,size=0x84) addr:0x0203a988
 CountLeadingZeros kind:function(arm,size=0x8) addr:0x0203aa0c
 func_0203aa14 kind:function(arm,size=0x34) addr:0x0203aa14
 func_0203aa48 kind:function(arm,size=0x88) addr:0x0203aa48
