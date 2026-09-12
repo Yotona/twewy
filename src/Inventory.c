@@ -52,7 +52,7 @@ static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->defense        = 0;
     stats->dropRate       = 1;
     stats->bravery        = 15;
-    stats->activeFriend   = 255;
+    stats->activePartner  = 255;
 
     stats->unk_19_0 = 1;
     stats->unk_19_2 = 2;
@@ -721,7 +721,7 @@ s32 func_020236a0(void) {
     return 0;
 }
 
-s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
+s16 Stats_GetEffectiveValue(ActivePartner activePartner, StatType statType) {
     RawItemData  itemData;
     u16          itemID;
     ItemCategory itemCategory;
@@ -754,9 +754,9 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
         }
     }
 
-    if ((statType == STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
+    if ((statType == STAT_HEALTH) && (activePartner != PARTNER_NONE)) {
         for (i = 0; i < 4; i++) {
-            itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
+            itemID       = gSaveData.friendStats[activePartner].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
 
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
@@ -772,7 +772,7 @@ s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType) {
 }
 
 // Nonmatching: Differences in arithmetic, data access, and instruction order
-u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
+u32 Stats_GetMaxHealth(ActivePartner activePartner, u16 playerLevel) {
     RawItemData itemData;
 
     u16 health = (((playerLevel - 1) * 50) + 200 + gSaveData.playerStats.baseHealth);
@@ -786,9 +786,9 @@ u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
         }
     }
 
-    if (activeFriend != FRIEND_NONE) {
+    if (activePartner != PARTNER_NONE) {
         for (u16 i = 0; i < 4; i++) {
-            u16          itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
+            u16          itemID       = gSaveData.friendStats[activePartner].equippedThreads[i];
             ItemCategory itemCategory = Inventory_GetCategory(itemID);
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
                 Data_LoadToBuffer(1, itemData, &data_0205c180, Inventory_GetCategorizedIndex(itemID));
@@ -802,22 +802,22 @@ u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel) {
     return health;
 }
 
-s16 Stats_GetEffectiveFriendValue(ActiveFriend activeFriend, StatType statType) {
+s16 Stats_GetEffectiveFriendValue(ActivePartner activePartner, StatType statType) {
     RawItemData  itemData;
     u16          itemID;
     ItemCategory itemCategory;
 
     s16 stat = 0;
 
-    if ((statType != STAT_HEALTH) && (activeFriend != FRIEND_NONE)) {
+    if ((statType != STAT_HEALTH) && (activePartner != PARTNER_NONE)) {
         if (statType == STAT_ATTACK) {
-            stat += gSaveData.friendStats[activeFriend].attack;
+            stat += gSaveData.friendStats[activePartner].attack;
         } else if (statType == STAT_DEFENSE) {
-            stat += gSaveData.friendStats[activeFriend].defense;
+            stat += gSaveData.friendStats[activePartner].defense;
         }
 
         for (u16 i = 0; i < 4; i++) {
-            itemID       = gSaveData.friendStats[activeFriend].equippedThreads[i];
+            itemID       = gSaveData.friendStats[activePartner].equippedThreads[i];
             itemCategory = Inventory_GetCategory(itemID);
 
             if ((itemID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {

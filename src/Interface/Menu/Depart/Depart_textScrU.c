@@ -33,7 +33,7 @@ static void func_ov043_020bee4c(DepartTextScrU* textScrU) {
 
     SysFont_SetPos(&textScrU->font, 2, 6);
     SysFont_SetSpacing(&textScrU->font, TRUE, 0);
-    SysFont_SetMsg(&textScrU->font, depart->unk_0A + 12216); // "104 Building"...
+    SysFont_SetMsg(&textScrU->font, depart->unk_0A + SYSMSG_SHOP_NAMES_START);
     SysFont_DrawCurrentToScreen(&textScrU->font, map + 1, charData + 1, 0);
 }
 

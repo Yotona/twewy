@@ -41,3 +41,28 @@ The entirety of USA's overlay 36 is not present in the JP release, leaving it wi
 - **[USA only](../src/Util/SysFont.c#L915)**: `SysFont_InitEx` defaults `lineSpacing` to 1 for `fontId` 3. JP always uses 2.
 - **[USA only](../src/Util/SysFont.c#L1893)**: `SysFont_CountMsgs` and `SysFont_LoadMsgCount` are defined.
 - **[USA only](../src/Util/SysFont.c#L2215)**: `SysFont_GetStrBufLen` is defined.
+
+### src/Interface/Menu/MenuEquip.c
+
+USA's overlay 43 defines 37 functions in this TU against JP's 36 (JP is overlay 42; see the overlay 36 shift above).
+
+- **[USA only](../src/Interface/Menu/MenuEquip.c#L460)**: `MenuEquip_RefreshCursorInfo`, a wrapper pairing `MenuEquip_UpdateCursorItem` and `MenuEquip_RefreshItemInfo`. JP defines both, but never invokes them at its only USA call site.
+- **[USA only](../src/Interface/Menu/MenuEquip.c#L190)**: `MenuEquip_CreateTasks` creates the pointer task. JP never does.
+- **[USA only](../src/Interface/Menu/MenuEquip.c#L220)**: `MenuEquip_CreateTasks` creates the second scrollbar task. JP never does.
+- **[USA only](../src/Interface/Menu/MenuEquip.c#L681)**: `MenuEquip_UpdateButtonInput` previews a CD item held under the cursor, via `MenuEquip_IsCdItem` / `MenuEquip_PlayCdTrack`. JP's button path omits this; both releases still preview from the touch path in [`MenuEquip_StageMain`](../src/Interface/Menu/MenuEquip.c#L781), and both define the two CD helpers.
+
+### src/Interface/Menu/MenuEquipData.c
+
+USA defines 57 functions in this TU against JP's 52. The five extras all belong to two USA-added features: per-thread *ability* bonuses and *swag* stat totals, plus the item list's page rounding.
+
+- **[USA only](../src/Interface/Menu/MenuEquipData.c#L144)**: `MenuEquip_AddSwagBonus`, accumulating the per-character attack/defense totals `unk_DB38` through `unk_DB3D` from six swag item IDs. Called only from [`MenuEquip_BuildItemEntries`](../src/Interface/Menu/MenuEquipData.c#L569), whose JP counterpart has no such call.
+- **[USA only](../src/Interface/Menu/MenuEquipData.c#L167)**, **[USA only](../src/Interface/Menu/MenuEquipData.c#L243)**, **[USA only](../src/Interface/Menu/MenuEquipData.c#L316)**: `MenuEquip_GetAbilityAttackBonus`, `MenuEquip_GetAbilityDefenseBonus` and `MenuEquip_GetAbilityHealthBonus`, the per-character bonus tables keyed on a thread's ability id.
+- **[Both](../src/Interface/Menu/MenuEquipData.c#L389)**, **[Both](../src/Interface/Menu/MenuEquipData.c#L417)**, **[Both](../src/Interface/Menu/MenuEquipData.c#L445)**: `MenuEquip_CalcAttackBonus`, `MenuEquip_CalcDefenseBonus` and `MenuEquip_CalcHealthBonus`. JP sums the raw per-thread stat across the four slots and clamps (0x54/0x54/0x90 bytes). USA additionally skips empty (`0xFFFF`) entries, adds the ability bonus when `unk_12 == 1`, and, for attack and defense, adds the swag totals (0xF8/0xF8/0x110 bytes).
+- **[USA only](../src/Interface/Menu/MenuEquipData.c#L853)**: `MenuEquip_RoundUpToPages`, rounding a list length up to whole pages of 8 rows.
+- **[Both](../src/Interface/Menu/MenuEquipData.c#L875)**: `MenuEquip_BuildTabs`. JP fills the nine tab pointer tables and returns. USA also counts each tab and derives the paging state `unk_DAF0`, `unk_DB02`, `unk_DB14` and `unk_DB26` through `MenuEquip_RoundUpToPages`.
+- **[USA only](../src/Interface/Menu/MenuEquipData.c#L979)**: `MenuEquip_LoadFromSave` refills every character's food capacity when flag `0x2CB` is set. JP returns after storing the date, keeping only the preceding date-change refill.
+
+### src/Interface/Menu/MenuEquip/
+
+- **[USA only](../src/Interface/Menu/MenuEquip/MenuEquip_pointer.c)**: task TU with no JP counterpart.
+- **[USA only](../src/Interface/Menu/MenuEquip/MenuEquip_sbar2.c)**: task TU with no JP counterpart; JP ships only [`MenuEquip_sbar.c`](../src/Interface/Menu/MenuEquip/MenuEquip_sbar.c). USA's overlay delinks 28 MenuEquip task TUs against JP's 26.

@@ -144,13 +144,13 @@ void func_ov043_020ba33c(Shop_window1* window) {
     s32          msgBase;
 
     if (category == ITEM_CATEGORY_PIN) {
-        msgBase = 10177; // "Ice Blow"...
+        msgBase = SYSMSG_PIN_NAMES_START;
     } else if (category == ITEM_CATEGORY_THREAD) {
-        msgBase = 11284; // "M Cap"...
+        msgBase = SYSMSG_THREAD_NAMES_START;
     } else if (category == ITEM_CATEGORY_FOOD) {
-        msgBase = 10861; // "Hamburger"...
+        msgBase = SYSMSG_FOOD_NAMES_START;
     } else {
-        msgBase = 13502; // "Colorful Thread"...
+        msgBase = SYSMSG_SWAG_NAMES_START;
     }
 
     SysFont_SetMsg(&window->fonts[0], msgBase + itemIndex);
@@ -158,8 +158,9 @@ void func_ov043_020ba33c(Shop_window1* window) {
     if (shop->slots[shop->unk_848].unk_10 == 0) {
         SysCode* fmt;
 
+#ifdef REGION_USA
         if (itemCost < 1000) {
-            fmt = SysFont_GetMsgBuf(&window->fonts[1], 13331); // "<cC>$ <u32>"
+            fmt = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_PRICE_FMT);
             SysFont_Format(window->textBuf, fmt, itemCost);
         } else if (itemCost < 1000000) {
             u32 remainder = itemCost;
@@ -170,7 +171,7 @@ void func_ov043_020ba33c(Shop_window1* window) {
             u32 tens = remainder / 10;
             u32 ones = remainder - tens * 10;
 
-            fmt = SysFont_GetMsgBuf(&window->fonts[1], 13332); // "<cC>$ <u32>,<u32><u32><u32>"
+            fmt = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_PRICE_THOUSANDS_FMT);
             SysFont_Format(window->textBuf, fmt, thousands, hundreds, tens, ones);
         } else {
             u32 remainder = itemCost;
@@ -187,18 +188,22 @@ void func_ov043_020ba33c(Shop_window1* window) {
             u32 tens = remainder / 10;
             u32 ones = remainder - tens * 10;
 
-            fmt = SysFont_GetMsgBuf(&window->fonts[1], 13333); // "<cC>$ <u32>,<u32><u32><u32>,<u32><u32><u32>"
+            fmt = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_PRICE_MILLIONS_FMT);
             SysFont_Format(window->textBuf, fmt, millions, hundredThousands, tenThousands, thousands, hundreds, tens, ones);
         }
+#else
+        fmt = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_PRICE_FMT);
+        SysFont_Format(window->textBuf, fmt, itemCost);
+#endif
 
         SysFont_SetMsgPtr(&window->fonts[1], window->textBuf);
         Mem_Free(&gDebugHeap, fmt);
-        SysFont_SetMsg(&window->fonts[2], 13334); // "Buy this merchandise?"
+        SysFont_SetMsg(&window->fonts[2], SYSMSG_SHOP_BUY_CONFIRM);
         return;
     }
 
-    SysFont_SetMsg(&window->fonts[1], 13347); // "<cC>QUEST ITEM<cE>"
-    SysFont_SetMsg(&window->fonts[2], 13348); // "<cC>Trade in<cE> your items for this?"
+    SysFont_SetMsg(&window->fonts[1], SYSMSG_SHOP_QUEST_ITEM);
+    SysFont_SetMsg(&window->fonts[2], SYSMSG_SHOP_TRADE_CONFIRM);
 }
 
 void func_ov043_020ba6d4(Shop_window1* window) {

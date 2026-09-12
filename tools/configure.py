@@ -53,7 +53,7 @@ args = parser.parse_args()
 
 # Config
 GAME = "twewy"
-DSD_VERSION = "v0.12.0"
+DSD_VERSION = "v0.12.1"
 WIBO_VERSION = "1.2.0"
 OBJDIFF_VERSION = "v3.8.1"
 MWCC_DEFAULT_VERSION = "2.0/sp1p5"
@@ -121,13 +121,15 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
         version="1.2/sp4",
         flags=OLD_MWCC_CC_FLAGS,
     ),
-    # The area name table shares one "tmp" literal between three of its slots, which
-    # only happens when duplicate string literals are pooled.
     Path("src/Interface/Debug/Field/FieldSelect.c"): CompilerConfig(
         version=MWCC_DEFAULT_VERSION,
         flags=STR_REUSE_CC_FLAGS,
     ),
     Path("src/Interface/Debug/Field/EventSelect.c"): CompilerConfig(
+        version=MWCC_DEFAULT_VERSION,
+        flags=STR_REUSE_CC_FLAGS,
+    ),
+    Path("src/Interface/Menu/MenuEquip.c"): CompilerConfig(
         version=MWCC_DEFAULT_VERSION,
         flags=STR_REUSE_CC_FLAGS,
     ),

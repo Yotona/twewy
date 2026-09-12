@@ -355,11 +355,173 @@ src/Debug/Takami/MenuScena.c:
     .rodata     start:0x020c90d4 end:0x020c96e4
     .data       start:0x020cbec4 end:0x020cc134
 
-src/Debug/Takami/MenuEquip.c:
-    .text       start:0x0209f320 end:0x020ac5d8
-    .rodata     start:0x020c96e4 end:0x020ca18c
-    .data       start:0x020cc134 end:0x020cc5bc
+src/Interface/Menu/MenuEquip.c:
+    .text       start:0x0209f320 end:0x020a1b70
+    .rodata     start:0x020c96e4 end:0x020c97d0
+    .data       start:0x020cc134 end:0x020cc2d8
     .bss        start:0x020cd284 end:0x020cd288
+
+src/Interface/Menu/MenuEquipData.c:
+    .text       start:0x020a1b70 end:0x020a4b00
+    .rodata     start:0x020c97d0 end:0x020c9924
+    .data       start:0x020cc2d8 end:0x020cc338
+
+src/Interface/Menu/MenuEquip/MenuEquip_icon.c:
+    .text       start:0x020a4b00 end:0x020a4e14
+    .rodata     start:0x020c9924 end:0x020c996c
+    .data       start:0x020cc338 end:0x020cc34c
+
+src/Interface/Menu/MenuEquip/MenuEquip_nameD.c:
+    complete
+    .text       start:0x020a4e14 end:0x020a519c
+    .rodata     start:0x020c996c end:0x020c99fc
+    .data       start:0x020cc34c end:0x020cc360
+
+src/Interface/Menu/MenuEquip/MenuEquip_nameU.c:
+    complete
+    .text       start:0x020a519c end:0x020a54f0
+    .rodata     start:0x020c99fc end:0x020c9a74
+    .data       start:0x020cc360 end:0x020cc374
+
+src/Interface/Menu/MenuEquip/MenuEquip_tab.c:
+    .text       start:0x020a54f0 end:0x020a57c0
+    .rodata     start:0x020c9a74 end:0x020c9abc
+    .data       start:0x020cc374 end:0x020cc388
+
+src/Interface/Menu/MenuEquip/MenuEquip_partner.c:
+    complete
+    .text       start:0x020a57c0 end:0x020a5bfc
+    .rodata     start:0x020c9abc end:0x020c9b04
+    .data       start:0x020cc388 end:0x020cc3a0
+
+src/Interface/Menu/MenuEquip/MenuEquip_partnerHide.c:
+    complete
+    .text       start:0x020a5bfc end:0x020a5dec
+    .rodata     start:0x020c9b04 end:0x020c9b4c
+    .data       start:0x020cc3a0 end:0x020cc3bc
+
+src/Interface/Menu/MenuEquip/MenuEquip_numNek.c:
+    .text       start:0x020a5dec end:0x020a6a5c
+    .rodata     start:0x020c9b4c end:0x020c9b94
+    .data       start:0x020cc3bc end:0x020cc3d4
+
+src/Interface/Menu/MenuEquip/MenuEquip_numPtr.c:
+    .text       start:0x020a6a5c end:0x020a777c
+    .rodata     start:0x020c9b94 end:0x020c9bdc
+    .data       start:0x020cc3d4 end:0x020cc3ec
+
+src/Interface/Menu/MenuEquip/MenuEquip_foodGauge.c:
+    complete
+    .text       start:0x020a777c end:0x020a7b94
+    .rodata     start:0x020c9bdc end:0x020c9c2c
+    .data       start:0x020cc3ec end:0x020cc404
+
+src/Interface/Menu/MenuEquip/MenuEquip_item.c:
+    .text       start:0x020a7b94 end:0x020a7e3c
+    .rodata     start:0x020c9c2c end:0x020c9c74
+    .data       start:0x020cc404 end:0x020cc418
+
+src/Interface/Menu/MenuEquip/MenuEquip_itemNum.c:
+    complete
+    .text       start:0x020a7e3c end:0x020a824c
+    .rodata     start:0x020c9c74 end:0x020c9cc0
+    .data       start:0x020cc418 end:0x020cc430
+
+src/Interface/Menu/MenuEquip/MenuEquip_itemAbl.c:
+    complete
+    .text       start:0x020a824c end:0x020a84e0
+    .rodata     start:0x020c9cc0 end:0x020c9d08
+    .data       start:0x020cc430 end:0x020cc448
+
+src/Interface/Menu/MenuEquip/MenuEquip_itemCur.c:
+    complete
+    .text       start:0x020a84e0 end:0x020a87cc
+    .rodata     start:0x020c9d08 end:0x020c9d50
+    .data       start:0x020cc448 end:0x020cc460
+
+src/Interface/Menu/MenuEquip/MenuEquip_itemMask.c:
+    complete
+    .text       start:0x020a87cc end:0x020a8aa8
+    .rodata     start:0x020c9d50 end:0x020c9d98
+    .data       start:0x020cc460 end:0x020cc478
+
+src/Interface/Menu/MenuEquip/MenuEquip_sbar.c:
+    .text       start:0x020a8aa8 end:0x020a9134
+    .rodata     start:0x020c9d98 end:0x020c9de0
+    .data       start:0x020cc478 end:0x020cc48c
+
+src/Interface/Menu/MenuEquip/MenuEquip_sbar2.c:
+    complete
+    .text       start:0x020a9134 end:0x020a93e8
+    .rodata     start:0x020c9de0 end:0x020c9e28
+    .data       start:0x020cc48c end:0x020cc4a0
+
+src/Interface/Menu/MenuEquip/MenuEquip_mov.c:
+    complete
+    .text       start:0x020a93e8 end:0x020a964c
+    .rodata     start:0x020c9e28 end:0x020c9e70
+    .data       start:0x020cc4a0 end:0x020cc4b4
+
+src/Interface/Menu/MenuEquip/MenuEquip_shadow.c:
+    complete
+    .text       start:0x020a964c end:0x020a989c
+    .rodata     start:0x020c9e70 end:0x020c9eb8
+    .data       start:0x020cc4b4 end:0x020cc4cc
+
+src/Interface/Menu/MenuEquip/MenuEquip_textScr.c:
+    .text       start:0x020a989c end:0x020a9cb0
+    .rodata     start:0x020c9eb8 end:0x020c9ee4
+    .data       start:0x020cc4cc end:0x020cc4e4
+
+src/Interface/Menu/MenuEquip/MenuEquip_window.c:
+    complete
+    .text       start:0x020a9cb0 end:0x020a9ed8
+    .rodata     start:0x020c9ee4 end:0x020c9f2c
+    .data       start:0x020cc4e4 end:0x020cc4fc
+
+src/Interface/Menu/MenuEquip/MenuEquip_helpCur.c:
+    .text       start:0x020a9ed8 end:0x020aa2a8
+    .rodata     start:0x020c9f2c end:0x020c9f74
+    .data       start:0x020cc4fc end:0x020cc514
+
+src/Interface/Menu/MenuEquip/MenuEquip_textItem.c:
+    complete
+    .text       start:0x020aa2a8 end:0x020aa61c
+    .rodata     start:0x020c9f74 end:0x020c9fbc
+    .data       start:0x020cc514 end:0x020cc52c
+
+src/Interface/Menu/MenuEquip/MenuEquip_pointer.c:
+    complete
+    .text       start:0x020aa61c end:0x020aa854
+    .rodata     start:0x020c9fbc end:0x020ca004
+    .data       start:0x020cc52c end:0x020cc544
+
+src/Interface/Menu/MenuEquip/MenuEquip_textScrU.c:
+    .text       start:0x020aa854 end:0x020ab7c8
+    .rodata     start:0x020ca004 end:0x020ca064
+    .data       start:0x020cc544 end:0x020cc55c
+
+src/Interface/Menu/MenuEquip/MenuEquip_brdLogoU.c:
+    complete
+    .text       start:0x020ab7c8 end:0x020aba38
+    .rodata     start:0x020ca064 end:0x020ca0ac
+    .data       start:0x020cc55c end:0x020cc574
+
+src/Interface/Menu/MenuEquip/MenuEquip_itemU.c:
+    .text       start:0x020aba38 end:0x020abe24
+    .rodata     start:0x020ca0ac end:0x020ca0f4
+    .data       start:0x020cc574 end:0x020cc588
+
+src/Interface/Menu/MenuEquip/MenuEquip_numItemIdU.c:
+    .text       start:0x020abe24 end:0x020ac310
+    .rodata     start:0x020ca0f4 end:0x020ca144
+    .data       start:0x020cc588 end:0x020cc5a4
+
+src/Interface/Menu/MenuEquip/MenuEquip_helpCurU.c:
+    complete
+    .text       start:0x020ac310 end:0x020ac5d8
+    .rodata     start:0x020ca144 end:0x020ca18c
+    .data       start:0x020cc5a4 end:0x020cc5bc
 
 src/Interface/Menu/Shop.c:
     .text       start:0x020ac5d8 end:0x020b2b48

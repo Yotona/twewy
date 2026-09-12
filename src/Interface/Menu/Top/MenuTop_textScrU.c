@@ -62,14 +62,14 @@ static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
     }
 
     if (topMenu->unk_4E < 21) {
-        SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_20[0] + 10785); // "Mus Rattus"...
-        SysFont_SetMsg(&textScrU->fonts[1], topMenu->unk_20[1] + 10785); // "Mus Rattus"...
-        SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_20[2] + 10785); // "Mus Rattus"...
-        SysFont_SetMsg(&textScrU->fonts[3], topMenu->unk_2C + 10785);    // "Mus Rattus"...
-        SysFont_SetMsg(&textScrU->fonts[4], 10800);                      // "Attack <cC>doubled"
-        SysFont_SetMsg(&textScrU->fonts[5], 10801);                      // "Attack <cC>+50%"
-        SysFont_SetMsg(&textScrU->fonts[6], 10802);                      // "Attack <cC>+20%"
-        SysFont_SetMsg(&textScrU->fonts[7], 10803);                      // "Attack <c6>halved"
+        SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_20[0] + SYSMSG_BRAND_NAMES_START);
+        SysFont_SetMsg(&textScrU->fonts[1], topMenu->unk_20[1] + SYSMSG_BRAND_NAMES_START);
+        SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_20[2] + SYSMSG_BRAND_NAMES_START);
+        SysFont_SetMsg(&textScrU->fonts[3], topMenu->unk_2C + SYSMSG_BRAND_NAMES_START);
+        SysFont_SetMsg(&textScrU->fonts[4], SYSMSG_BRAND_ATTACK_DOUBLED);
+        SysFont_SetMsg(&textScrU->fonts[5], SYSMSG_BRAND_ATTACK_UP_50);
+        SysFont_SetMsg(&textScrU->fonts[6], SYSMSG_BRAND_ATTACK_UP_20);
+        SysFont_SetMsg(&textScrU->fonts[7], SYSMSG_BRAND_ATTACK_HALVED);
 
         for (i = 0; i < 8; i++) {
             SysFont_SetColor(&textScrU->fonts[i], 14);
@@ -79,8 +79,9 @@ static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
     } else if ((topMenu->unk_4E >= 22) && (topMenu->unk_4E <= 34)) {
         SysFont_SetPos(&textScrU->fonts[0], 7, 24);
 
-        SysCode* fmt      = SysFont_GetMsgBuf(&textScrU->fonts[0], 13342); // "A special force field\nsurrounds this ar"...
-        SysCode* areaName = SysFont_GetMsgBuf(&textScrU->fonts[0], func_020243d4(topMenu->unk_4E & 0xFF) + 10785);
+        SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[0], SYSMSG_BRAND_AREA_PROTECTED_FMT);
+        SysCode* areaName =
+            SysFont_GetMsgBuf(&textScrU->fonts[0], func_020243d4(topMenu->unk_4E & 0xFF) + SYSMSG_BRAND_NAMES_START);
 
         SysFont_Format(text, fmt, areaName);
         SysFont_SetColor(&textScrU->fonts[0], 14);
@@ -91,7 +92,7 @@ static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
         Mem_Free(&gDebugHeap, areaName);
     } else {
         SysFont_SetPos(&textScrU->fonts[0], 7, 24);
-        SysFont_SetMsg(&textScrU->fonts[0], 13343); // "This area doesn't\nseem to be affected\n"...
+        SysFont_SetMsg(&textScrU->fonts[0], SYSMSG_BRAND_AREA_UNAFFECTED);
         SysFont_SetColor(&textScrU->fonts[0], 14);
         SysFont_SetHAlign(&textScrU->fonts[0], 0, 112);
         SysFont_SetVAlign(&textScrU->fonts[0], 0, 160);
@@ -101,15 +102,15 @@ static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
     u8  day = gSaveData.unk_1AB0;
     u16 partnerMsg;
     if (day <= 6) {
-        partnerMsg = 13087; // "Shiki"
+        partnerMsg = SYSMSG_PARTNER_SHIKI;
     } else if (day <= 13) {
-        partnerMsg = 13088; // "Joshua"
+        partnerMsg = SYSMSG_PARTNER_JOSHUA;
     } else if (day <= 20) {
-        partnerMsg = 13089; // "Beat"
+        partnerMsg = SYSMSG_PARTNER_BEAT;
     }
 
     if (day <= 20) {
-        SysCode* fmt     = SysFont_GetMsgBuf(&textScrU->fonts[8], 13169); // "<str>, Day <u32>"
+        SysCode* fmt     = SysFont_GetMsgBuf(&textScrU->fonts[8], SYSMSG_PARTNER_DAY_FMT);
         SysCode* partner = SysFont_GetMsgBuf(&textScrU->fonts[8], partnerMsg);
 
         SysFont_Format(text, fmt, partner, day % 7 + 1);
@@ -118,17 +119,19 @@ static void MenuTop_textScrU_DrawTrendPage(MenuTop_textScrU* textScrU) {
         SysFont_DrawToScreen(&textScrU->fonts[8], text, map + 2, charData + 2, 0);
         Mem_Free(&gDebugHeap, fmt);
         Mem_Free(&gDebugHeap, partner);
+#ifdef REGION_USA
     } else {
-        SysFont_SetMsg(&textScrU->fonts[8], 13170); // ""Another Day""
+        SysFont_SetMsg(&textScrU->fonts[8], SYSMSG_ANOTHER_DAY);
         SysFont_SetColor(&textScrU->fonts[8], 8);
         SysFont_SetHAlign(&textScrU->fonts[8], 1, 240);
         SysFont_DrawCurrentToScreen(&textScrU->fonts[8], map + 2, charData + 2, 0);
+#endif
     }
 
     if (func_0202366c(topMenu->unk_4E & 0xFF, 1) == 1) {
-        SysFont_SetMsg(&textScrU->fonts[9], topMenu->unk_4E + 11564); // "Scramble Crossing"...
+        SysFont_SetMsg(&textScrU->fonts[9], topMenu->unk_4E + SYSMSG_AREA_NAMES_START);
     } else {
-        SysFont_SetMsg(&textScrU->fonts[9], 11606);                   // "? ? ?"
+        SysFont_SetMsg(&textScrU->fonts[9], SYSMSG_AREA_NAME_UNKNOWN);
     }
 
     SysFont_SetColor(&textScrU->fonts[9], 8);
@@ -156,18 +159,18 @@ static void MenuTop_textScrU_DrawHelpPage(MenuTop_textScrU* textScrU) {
         SysFont_SetSpacing(&textScrU->fonts[i], TRUE, 0);
     }
 
-    SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_60 + 10903); // "THE PHONE MENU"...
+    SysFont_SetMsg(&textScrU->fonts[0], topMenu->unk_60 + SYSMSG_TOPMENU_HELP_LABELS);
     SysFont_SetHAlign(&textScrU->fonts[0], 1, 224);
     SysFont_SetVAlign(&textScrU->fonts[0], 3, SYSFONT_NO_LIMIT);
     SysFont_DrawCurrentToScreen(&textScrU->fonts[0], map + 2, charData + 2, 0);
-    SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[1], 13117); // "<u32>/<u32>"
+    SysCode* fmt = SysFont_GetMsgBuf(&textScrU->fonts[1], SYSMSG_DIVIDED_U32S);
 
     SysCode text[180];
     SysFont_Format(text, fmt, topMenu->unk_60 + 1, 7);
     SysFont_SetHAlign(&textScrU->fonts[1], 2, 220);
     SysFont_DrawToScreen(&textScrU->fonts[1], text, map + 2, charData + 2, 0);
     Mem_Free(&gDebugHeap, fmt);
-    SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_60 + 10910); // "Use the Phone Menu to"...
+    SysFont_SetMsg(&textScrU->fonts[2], topMenu->unk_60 + SYSMSG_TOPMENU_HELP_TEXT);
     SysFont_SetHAlign(&textScrU->fonts[2], 1, 224);
     SysFont_DrawCurrentToScreen(&textScrU->fonts[2], map + 2, charData + 2, 0);
 }

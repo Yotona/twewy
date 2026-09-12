@@ -179,10 +179,10 @@ s32 func_ov030_02084eb4(FieldEventManager* eventMgr) {
         case EVENT_SHIKI1_PACT_WITH_SHIKI:
             FldGate_Set(2);
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
-            gSaveData.unk_24B4                 = 0;
-            gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = EVENT_SHIKI1_DRAG_AND_NEKU_COMBAT_TUTORIAL | EVENTFLAG_NOBGM;
+            gSaveData.playerStats.activePartner = PARTNER_SHIKI;
+            gSaveData.unk_24B4                  = 0;
+            gSaveData.unk_24B8                  = 1;
+            gSaveData.currentStoryEvent         = EVENT_SHIKI1_DRAG_AND_NEKU_COMBAT_TUTORIAL | EVENTFLAG_NOBGM;
             func_ov030_020af364(3);
             return 1;
 
@@ -751,7 +751,7 @@ void func_ov030_02086700(void) {
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 0x39;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_02086804(s32 arg0) {
@@ -1173,8 +1173,8 @@ s32 func_ov030_020876c8(FieldEventManager* arg0) {
             func_ov030_020aec1c(10);
             func_ov030_020aeaa0(0x15, 4);
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
-            gSaveData.unk_267A                 = 4;
+            gSaveData.playerStats.activePartner = PARTNER_SHIKI;
+            gSaveData.unk_267A                  = 4;
             FldEvent_GrantItem(arg0, ITEM_STICKER_EASY);
             break;
         case 0x90:
@@ -3231,8 +3231,8 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
-            arg0->unk_21CF8                    = 1;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
+            arg0->unk_21CF8                     = 1;
             break;
         case 0xFC:
             FldGate_Set(0x10);
@@ -3247,8 +3247,8 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
-            arg0->unk_21CF8                    = 1;
+            gSaveData.playerStats.activePartner = PARTNER_SHIKI;
+            arg0->unk_21CF8                     = 1;
             break;
         case 0xFF:
             func_02023598(0);
@@ -3271,7 +3271,7 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             break;
         case 0x102:
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
             func_ov030_020c596c();
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
@@ -3321,13 +3321,13 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             return 1;
         case 0x10B:
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
-            arg0->unk_21AD0                    = 1;
-            arg0->unk_21ACC                    = 0;
-            arg0->unk_21AFC                    = 1;
-            arg0->unk_21B00                    = 0x66;
-            arg0->unk_21B08                    = 0x15D000;
-            arg0->unk_21B0C                    = 0xD6000;
+            gSaveData.playerStats.activePartner = PARTNER_SHIKI;
+            arg0->unk_21AD0                     = 1;
+            arg0->unk_21ACC                     = 0;
+            arg0->unk_21AFC                     = 1;
+            arg0->unk_21B00                     = 0x66;
+            arg0->unk_21B08                     = 0x15D000;
+            arg0->unk_21B0C                     = 0xD6000;
             break;
         case 0x10C:
             gSaveData.unk_3124 = 15;
@@ -3764,13 +3764,13 @@ s32 func_ov030_0208ddfc(FieldEventManager* arg0) {
             return 1;
         case 0x11C:
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
-            gSaveData.unk_24B4                 = 0;
-            gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x11D;
-            gSaveData.unk_3124                 = 0x11;
-            gSaveData.unk_3128                 = 0;
-            arg0->unk_21630                    = 4;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
+            gSaveData.unk_24B4                  = 0;
+            gSaveData.unk_24B8                  = 1;
+            gSaveData.currentStoryEvent         = EVENTFLAG_NOBGM | 0x11D;
+            gSaveData.unk_3124                  = 0x11;
+            gSaveData.unk_3128                  = 0;
+            arg0->unk_21630                     = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x11D:
@@ -3927,11 +3927,11 @@ void func_ov030_0208e6e4(void) {
     func_ov030_020c26bc(0);
     gSaveData.unk_264C = 4;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
-    gSaveData.unk_24B4                 = 0;
-    gSaveData.unk_24B8                 = 1;
-    gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x122;
-    gSaveData.unk_3124                 = 0x3E;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
+    gSaveData.unk_24B4                  = 0;
+    gSaveData.unk_24B8                  = 1;
+    gSaveData.currentStoryEvent         = EVENTFLAG_NOBGM | 0x122;
+    gSaveData.unk_3124                  = 0x3E;
 }
 
 s32 func_ov030_0208e7e4(FieldEventManager* arg0) {
@@ -4069,7 +4069,7 @@ s32 func_ov030_0208ec3c(FieldEventManager* arg0) {
             break;
         case 0x129:
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+            gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
             FldGate_Set(2);
             func_ov030_020aec38(9);
             func_ov030_020c596c();
@@ -4204,7 +4204,7 @@ void func_ov030_0208f160(void) {
     gSaveData.unk_2662 = 4;
     gSaveData.unk_26C4 = 2;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_0208f288(FieldEventManager* arg0) {
@@ -4421,7 +4421,7 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             gSaveData.unk_264A = 4;
             gSaveData.unk_264E = 4;
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+            gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
             func_ov030_020aec38(9);
             func_ov030_020c596c();
             func_ov030_020c1960();
@@ -6179,7 +6179,7 @@ s32 func_ov030_02093db8(FieldEventManager* arg0) {
             return 1;
         case 0x1D4:
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
             func_ov030_020aec1c(9);
             gSaveData.unk_2660 = 2;
             func_ov030_020c596c();
@@ -6193,7 +6193,7 @@ s32 func_ov030_02093db8(FieldEventManager* arg0) {
             break;
         case 0x1D7:
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+            gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
             func_ov030_020aec38(9);
             gSaveData.unk_3124 = 0x1C;
             gSaveData.unk_3128 = 1;
@@ -7650,13 +7650,13 @@ s32 func_ov030_02097f4c(FieldEventManager* arg0) {
             return 1;
         case 0x235:
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
-            gSaveData.unk_24B4                 = 0;
-            gSaveData.unk_24B8                 = 1;
-            gSaveData.currentStoryEvent        = EVENTFLAG_NOBGM | 0x236;
-            gSaveData.unk_3124                 = 0x22;
-            gSaveData.unk_3128                 = 0;
-            arg0->unk_21630                    = 4;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
+            gSaveData.unk_24B4                  = 0;
+            gSaveData.unk_24B8                  = 1;
+            gSaveData.currentStoryEvent         = EVENTFLAG_NOBGM | 0x236;
+            gSaveData.unk_3124                  = 0x22;
+            gSaveData.unk_3128                  = 0;
+            arg0->unk_21630                     = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x236:
@@ -7783,8 +7783,8 @@ void func_ov030_02098500(void) {
     gSaveData.unk_2656 = 4;
     gSaveData.unk_266E = 4;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
-    gSaveData.unk_3124                 = 0x45;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
+    gSaveData.unk_3124                  = 0x45;
 }
 
 s32 func_ov030_02098604(FieldEventManager* arg0) {
@@ -7911,7 +7911,7 @@ s32 func_ov030_02098a30(FieldEventManager* arg0) {
             gSaveData.unk_24B8          = 1;
             gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x542;
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_BEAT;
+            gSaveData.playerStats.activePartner = PARTNER_BEAT;
             func_ov030_020c596c();
             func_ov030_020c1960();
             func_ov030_020acfc4(arg0);
@@ -8831,7 +8831,7 @@ void func_ov030_0209af50(void) {
     func_ov030_02084944(0xE, 0);
     func_ov030_02084944(15, 0);
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_0209b058(s32 arg0) {
@@ -8853,7 +8853,7 @@ s32 func_ov030_0209b058(s32 arg0) {
         if ((FldGate_Get(3) != 0) && (FldGate_Get(0x45) == 0)) {
             FldGate_Set(0x45);
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_BEAT;
+            gSaveData.playerStats.activePartner = PARTNER_BEAT;
         }
         if ((func_ov030_020848e4(arg0, 0x11) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(38) == 0) && (FldGate_Get(4) == 0))
         {
@@ -8892,7 +8892,7 @@ s32 func_ov030_0209b058(s32 arg0) {
         } else if ((FldGate_Get(2) != 0) && (FldGate_Get(0x46) == 0)) {
             FldGate_Set(0x46);
             func_ov030_020aec1c(1);
-            gSaveData.playerStats.activeFriend = FRIEND_BEAT;
+            gSaveData.playerStats.activePartner = PARTNER_BEAT;
         }
         if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(2) != 0) && (FldGate_Get(42) == 0)) {
             FldGate_Set(42);
@@ -9117,8 +9117,8 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             break;
         case 0x2B3:
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
-            arg0->unk_21CF8                    = 1;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
+            arg0->unk_21CF8                     = 1;
             break;
         case 0x2B4:
             FldGate_Set(2);
@@ -9852,10 +9852,10 @@ s32 func_ov030_0209dafc(FieldEventManager* arg0) {
             gSaveData.unk_26B4          = 4;
             gSaveData.unk_26B6          = 4;
             func_ov030_020aec38(1);
-            gSaveData.playerStats.activeFriend = FRIEND_NONE;
-            gSaveData.unk_3124                 = 46;
-            gSaveData.unk_3128                 = 0;
-            arg0->unk_21630                    = 4;
+            gSaveData.playerStats.activePartner = PARTNER_NONE;
+            gSaveData.unk_3124                  = 46;
+            gSaveData.unk_3128                  = 0;
+            arg0->unk_21630                     = 4;
             DebugOvlDisp_Pop();
             return 0;
         case 0x303:
@@ -11801,7 +11801,7 @@ void func_ov030_020a2a44(void) {
     func_ov030_020c26bc(0);
     gSaveData.unk_3124 = 58;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_020a2a84(void) {
@@ -11886,7 +11886,7 @@ void func_ov030_020a2d0c(void) {
     gSaveData.unk_2680 = 4;
     gSaveData.unk_2682 = 4;
     func_ov030_020aec38(1);
-    gSaveData.playerStats.activeFriend = FRIEND_NONE;
+    gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_020a2d54(void) {
@@ -12042,7 +12042,7 @@ void func_ov030_020a31c4(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x88B;
     func_ov030_020aec1c(1);
-    gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+    gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
 }
 
 s32 func_ov030_020a321c(s32 arg0) {

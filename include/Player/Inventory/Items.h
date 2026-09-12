@@ -7,26 +7,34 @@
  * @brief Item information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ u16  unk_00;
-    /* 0x02 */ u8   unk_02;
-    /* 0x03 */ u8   unk_03;
-    /* 0x04 */ u32  unk_04;
-    /* 0x06 */ char unk_06[0xA - 0x08];
-    /* 0x0A */ s16  defense;
-    /* 0x0C */ s16  attack;
-    /* 0x0E */ s16  health;
-    /* 0x10 */ char unk_10[0x8];
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u8  unk_02;
+    /* 0x03 */ u8  unk_03;
+    /* 0x04 */ u32 unk_04;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0A */ s16 defense;
+    /* 0x0C */ s16 attack;
+    /* 0x0E */ s16 health;
+    /* 0x10 */ u8  unk_10;
+    /* 0x11 */ u8  unk_11;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u16 unk_14;
+    /* 0x16 */ u16 unk_16;
 } RawItemData; // Size: 0x18
 
 /**
  * @brief Food information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ u16  unk_00;
-    /* 0x02 */ char unk_02[0x2];
-    /* 0x04 */ s32  unk_04;
-    /* 0x08 */ char unk_08[0x14 - 0x08];
-} RawFoodData; // Size: 0x14
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ u16 unk_0E;
+    /* 0x10 */ s8  unk_10[4]; // Per character
+} RawFoodData;                // Size: 0x14
 
 /**
  * @brief Swag information as stored from within an external binary data file.

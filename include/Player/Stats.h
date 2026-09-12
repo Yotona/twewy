@@ -10,11 +10,11 @@ typedef enum {
 } StatType;
 
 typedef enum {
-    FRIEND_SHIKI  = 0,
-    FRIEND_JOSHUA = 1,
-    FRIEND_BEAT   = 2,
-    FRIEND_NONE   = 0xFF,
-} ActiveFriend;
+    PARTNER_SHIKI  = 0,
+    PARTNER_JOSHUA = 1,
+    PARTNER_BEAT   = 2,
+    PARTNER_NONE   = 0xFF,
+} ActivePartner;
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
@@ -27,7 +27,7 @@ typedef struct {
     /* 0x12 */ u16 defense;
     /* 0x14 */ u16 dropRate;
     /* 0x16 */ u16 bravery;
-    /* 0x18 */ u8  activeFriend; // Shiki, Joshua, Beat, or None
+    /* 0x18 */ u8  activePartner; // Shiki, Joshua, Beat, or None
     /* 0x19 */ struct {
         u8 unk_19_0 : 2;
         u8 unk_19_2 : 2;
@@ -70,28 +70,28 @@ typedef struct {
 /**
  * @brief Gets the effective value of a player stat, including bonuses from equipped threads.
  *
- * @param activeFriend The currently active friend, if any.
+ * @param activePartner The currently active friend, if any.
  * @param statType The type of stat to calculate.
  * @return The effective value of the specified stat for the player.
  */
-s16 Stats_GetEffectiveValue(ActiveFriend activeFriend, StatType statType);
+s16 Stats_GetEffectiveValue(ActivePartner activePartner, StatType statType);
 
 /**
  * @brief Gets the player's effective maximum health.
  *
- * @param activeFriend The currently active friend, if any.
+ * @param activePartner The currently active friend, if any.
  * @param playerLevel The player's current set level.
  * @return The effective maximum health of the player.
  */
-u32 Stats_GetMaxHealth(ActiveFriend activeFriend, u16 playerLevel);
+u32 Stats_GetMaxHealth(ActivePartner activePartner, u16 playerLevel);
 
 /**
  * @brief Gets the effective value of a friend stat, including bonuses from equipped threads.
  *
- * @param activeFriend The currently active friend, if any.
+ * @param activePartner The currently active friend, if any.
  * @param statType The type of stat to calculate.
  * @return The effective value of the specified stat for the specified friend.
  */
-s16 Stats_GetEffectiveFriendValue(ActiveFriend activeFriend, StatType statType);
+s16 Stats_GetEffectiveFriendValue(ActivePartner activePartner, StatType statType);
 
 #endif // PLAYER_STATS_H

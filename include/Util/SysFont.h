@@ -3,6 +3,7 @@
 
 #include "Engine/File/DatMgr.h"
 #include "SpriteMgr.h"
+#include "Util/SysFontMsgs.h"
 #include <nitro/types.h>
 
 /**

@@ -134,7 +134,7 @@ void func_ov030_020b0544(FieldSelectObject* object) {
         Text_RenderToScreen(&object->text, 8, 0x50, "MapJump OFF");
     }
 
-    Text_RenderToScreen(&object->text, 8, 0x58, Str_SPrintf("partner:%d", gSaveData.playerStats.activeFriend));
+    Text_RenderToScreen(&object->text, 8, 0x58, Str_SPrintf("partner:%d", gSaveData.playerStats.activePartner));
     Text_RenderToScreen(&object->text, 8, 0x60, Str_SPrintf("noize symbol:%d", gSaveData.unk_3110));
     Text_RenderToScreen(&object->text, 8, 0x68, Str_SPrintf("top brand:%d", object->unk_219B8));
     Text_RenderToScreen(&object->text, 0, (object->unk_219B4 * 8) + 0x10, ">");
@@ -177,13 +177,13 @@ void func_ov030_020b08f0(FieldSelectObject* object) {
 // Cycles the active friend with the D-Pad, clamped to the three party members.
 void func_ov030_020b08fc(void) {
     if (SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) {
-        if (gSaveData.playerStats.activeFriend < 2) {
-            gSaveData.playerStats.activeFriend++;
+        if (gSaveData.playerStats.activePartner < 2) {
+            gSaveData.playerStats.activePartner++;
         }
         return;
     }
-    if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT) && gSaveData.playerStats.activeFriend != 0) {
-        gSaveData.playerStats.activeFriend--;
+    if ((SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT) && gSaveData.playerStats.activePartner != 0) {
+        gSaveData.playerStats.activePartner--;
     }
 }
 
@@ -376,17 +376,17 @@ void func_ov030_020b0e58(void) {
     gSaveData.unk_24BE = 0;
 
     if (gSaveData.unk_1AB0 <= 6) {
-        gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
+        gSaveData.playerStats.activePartner = PARTNER_SHIKI;
     } else if (gSaveData.unk_1AB0 <= 13) {
-        gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+        gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
     } else if (gSaveData.unk_1AB0 <= 20) {
-        gSaveData.playerStats.activeFriend = FRIEND_BEAT;
+        gSaveData.playerStats.activePartner = PARTNER_BEAT;
     } else if (gSaveData.unk_1AB0 <= 28) {
-        gSaveData.playerStats.activeFriend = FRIEND_SHIKI;
+        gSaveData.playerStats.activePartner = PARTNER_SHIKI;
     } else if (gSaveData.unk_1AB0 <= 35) {
-        gSaveData.playerStats.activeFriend = FRIEND_JOSHUA;
+        gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
     } else if (gSaveData.unk_1AB0 <= 42) {
-        gSaveData.playerStats.activeFriend = FRIEND_BEAT;
+        gSaveData.playerStats.activePartner = PARTNER_BEAT;
     }
 
     func_ov030_020aec38(6);

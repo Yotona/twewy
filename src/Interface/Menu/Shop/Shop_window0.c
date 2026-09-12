@@ -110,11 +110,11 @@ void Shop_window0_SetupLevelUpText(Shop_window0* window) {
         SysFont_SetPos(&window->fonts[i], fontPos[i].x, fontPos[i].y);
     }
 
-    SysFont_SetMsg(&window->fonts[0], 12345); // "Friendship level up!"
+    SysFont_SetMsg(&window->fonts[0], SYSMSG_SHOP_FRIENDSHIP_UP);
     SysFont_SetHAlign(&window->fonts[0], 1, SYSFONT_NO_LIMIT);
 
     if (shop->unk_84E == 0xFFFF) {
-        SysCode* fmt = SysFont_GetMsgBuf(&window->fonts[1], 12346); // "<c8>You've grown on the seller!<cE>\nThe"...
+        SysCode* fmt = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_FRIENDSHIP_UP_TIPS);
         SysFont_Format(window->textBuf, fmt, shop->unk_7B5);
         SysFont_SetHAlign(&window->fonts[1], 0, 240);
         SysFont_SetVAlign(&window->fonts[1], 0, 46);
@@ -127,16 +127,16 @@ void Shop_window0_SetupLevelUpText(Shop_window0* window) {
     s32          nameBase;
 
     if (category == ITEM_CATEGORY_PIN) {
-        nameBase = 10177; // "Ice Blow"...
+        nameBase = SYSMSG_PIN_NAMES_START;
     } else if (category == ITEM_CATEGORY_THREAD) {
-        nameBase = 11284; // "M Cap"...
+        nameBase = SYSMSG_THREAD_NAMES_START;
     } else if (category == ITEM_CATEGORY_FOOD) {
-        nameBase = 10861; // "Hamburger"...
+        nameBase = SYSMSG_FOOD_NAMES_START;
     } else {
-        nameBase = 13502; // "Colorful Thread"...
+        nameBase = SYSMSG_SWAG_NAMES_START;
     }
 
-    SysCode* fmt      = SysFont_GetMsgBuf(&window->fonts[1], 12347); // "<c8>You've grown on the seller!<cE>\nNow"...
+    SysCode* fmt      = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_FRIENDSHIP_UP_ITEM);
     SysCode* itemName = SysFont_GetMsgBuf(&window->fonts[1], nameBase + itemIndex);
     SysFont_Format(window->textBuf, fmt, itemName);
     SysFont_SetHAlign(&window->fonts[1], 0, 228);
@@ -156,18 +156,18 @@ void Shop_window0_SetupStyleAbilityText(Shop_window0* window) {
         SysFont_SetPos(&window->fonts[i], fontPos[i].x, fontPos[i].y);
     }
 
-    SysFont_SetMsg(&window->fonts[0], 12348); // "New ability unlocked!"
+    SysFont_SetMsg(&window->fonts[0], SYSMSG_SHOP_ABILITY_UNLOCKED);
     SysFont_SetHAlign(&window->fonts[0], 1, SYSFONT_NO_LIMIT);
 
-    SysCode*     fmt       = SysFont_GetMsgBuf(&window->fonts[1], 12349); // "<c8>The seller digs your style!<cE>\nYou"...
+    SysCode*     fmt       = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_ABILITY_TIP_STYLE);
     ItemCategory category  = Inventory_GetCategory(shop->unk_84C);
     s32          itemIndex = Inventory_GetCategorizedIndex(shop->unk_84C);
     SysCode*     itemName;
 
     if (category == ITEM_CATEGORY_PIN) {
-        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + 10177); // "Ice Blow"...
+        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + SYSMSG_PIN_NAMES_START);
     } else if (category == ITEM_CATEGORY_THREAD) {
-        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + 11284); // "M Cap"...
+        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + SYSMSG_THREAD_NAMES_START);
     } else {
         OS_WaitForever();
     }
@@ -190,18 +190,18 @@ void Shop_window0_SetupBrowseAbilityText(Shop_window0* window) {
         SysFont_SetPos(&window->fonts[i], fontPos[i].x, fontPos[i].y);
     }
 
-    SysFont_SetMsg(&window->fonts[0], 12348); // "New ability unlocked!"
+    SysFont_SetMsg(&window->fonts[0], SYSMSG_SHOP_ABILITY_UNLOCKED);
     SysFont_SetHAlign(&window->fonts[0], 1, SYSFONT_NO_LIMIT);
 
-    SysCode*     fmt       = SysFont_GetMsgBuf(&window->fonts[1], 12350); // "<c8>The seller notices you browsing<cE> "...
+    SysCode*     fmt       = SysFont_GetMsgBuf(&window->fonts[1], SYSMSG_SHOP_ABILITY_TIP_BROWSE);
     ItemCategory category  = Inventory_GetCategory(shop->unk_84C);
     s32          itemIndex = Inventory_GetCategorizedIndex(shop->unk_84C);
     SysCode*     itemName;
 
     if (category == ITEM_CATEGORY_PIN) {
-        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + 10177); // "Ice Blow"...
+        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + SYSMSG_PIN_NAMES_START);
     } else if (category == ITEM_CATEGORY_THREAD) {
-        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + 11284); // "M Cap"...
+        itemName = SysFont_GetMsgBuf(&window->fonts[1], itemIndex + SYSMSG_THREAD_NAMES_START);
     } else {
         OS_WaitForever();
     }
@@ -224,9 +224,9 @@ void Shop_window0_SetupBagFullText(Shop_window0* window) {
     }
 
     window->unk_2D2 = 1;
-    SysFont_SetMsg(&window->fonts[0], 13349); // "You <cC>can't carry<cE> any more!"
+    SysFont_SetMsg(&window->fonts[0], SYSMSG_SHOP_BAG_FULL_TITLE);
     SysFont_SetHAlign(&window->fonts[0], 1, SYSFONT_NO_LIMIT);
-    SysFont_SetMsg(&window->fonts[1], 13350); // "One more item to lug around and you\nmig"...
+    SysFont_SetMsg(&window->fonts[1], SYSMSG_SHOP_BAG_FULL_TEXT);
     SysFont_SetHAlign(&window->fonts[1], 0, 228);
     SysFont_SetVAlign(&window->fonts[1], 0, 46);
 }

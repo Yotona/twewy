@@ -8410,7 +8410,7 @@ void func_ov002_0208fa6c(OtosuMenuObj* menuObj, void* arg1, void* arg2) {
     table_lower[0] = data_ov002_02092524.unkA;
     table_lower[1] = data_ov002_02092524.unkC;
     table_lower[2] = data_ov002_02092524.unkE;
-    fmt            = SysFont_GetMsgBuf(temp_r7, 8354); // ""
+    fmt            = SysFont_GetMsgBuf(temp_r7, SYSMSG_FONT_PAGE_FMT);
     upperText      = SysFont_GetMsgBuf(temp_r7, table_upper[menuObj->unk_474C8]);
     lowerText      = SysFont_GetMsgBuf(temp_r7, table_lower[menuObj->unk_474CC]);
     SysFont_Format(table_sp14, fmt, upperText, menuObj->unk_474CA + 1, 14, lowerText);

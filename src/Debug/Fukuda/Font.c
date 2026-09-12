@@ -41,7 +41,7 @@ void func_ov001_020824a0(FontState* arg0) {
     SysFont_SetPos(&arg0->font, 0, 0);
     arg0->font.widthScale = 1;
     SysFont_SetPos(&arg0->font, 0, 0);
-    SysFont_SetMsg(&arg0->font, 8334);
+    SysFont_SetMsg(&arg0->font, SYSMSG_FONT_CHECK_TEXT);
     SysFont_DrawCurrentToScreen(&arg0->font, arg0->unk_21B3C + 4, arg0->unk_21B40 + 4, 0);
     SysFont_Destroy(&arg0->font);
 }
