@@ -42,8 +42,8 @@ extern void  func_ov003_020c492c(void*);
 extern s32   func_ov003_020c6230(void*);
 extern void  func_ov003_020c4ee0(void*);
 extern void  func_ov003_02087ed8(u16);
-extern void  func_ov003_0208a114(u16);
-extern s32   func_ov003_0208a164(u16, void*, s32, s32, s32);
+extern s32   func_ov003_0208a114(u16);
+extern s32   func_ov003_0208a164(s32, void*, s32, s32, s32);
 extern s32   func_ov003_0208a08c(s32, void*, s32);
 
 extern s16 data_0205e4e0[];
@@ -74,6 +74,13 @@ void func_ov013_02125eb4(BtlEnm015*);
 void func_ov013_02125ed0(BtlEnm015*);
 void func_ov013_02125efc(BtlEnm015*);
 void func_ov013_02125fd0(BtlEnm015Eff*, Enm015Spawn*);
+s32  func_ov013_021265b0(BtlEnm015Stamp*);
+void func_ov013_02126ab0(BtlEnm015*);
+void func_ov013_02126b30(BtlEnm015*);
+void func_ov013_02126c64(BtlEnm015*);
+void func_ov013_021270a0(BtlEnm015*);
+void func_ov013_0212710c(BtlEnm015*);
+void func_ov013_02127230(BtlEnm015*);
 
 // MARK: Data
 
@@ -458,6 +465,41 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     func_ov003_02082750(data, owner->unk_084.flags46 & 1);
 }
 
+s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
+    BtlEnm015Eff* data  = task->data;
+    BtlEnm015*    owner = data->unk_6C;
+
+    switch (stage) {
+        case 0:
+            func_ov013_02125fd0(data, (Enm015Spawn*)args);
+            break;
+        case 1:
+            if (func_ov003_020c3c28() != 0) {
+                return 0;
+            }
+            if (owner->actor.flags & 4) {
+                return 0;
+            }
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
+                return 0;
+            }
+            CombatSprite_Update(&data->sprite);
+            break;
+        case 2: {
+            s16 x;
+            s16 y;
+            func_ov003_02084348(func_ov003_020c37f8(data) ? 1 : 0, &x, &y, data->unk_60, data->unk_64, data->unk_68);
+            CombatSprite_SetPosition(&data->sprite, x, y);
+            func_ov003_02082730(&data->sprite, 0x80000000 - data->unk_64);
+            CombatSprite_Render(&data->sprite);
+        } break;
+        case 3:
+            CombatSprite_Release(&data->sprite);
+            break;
+    }
+    return 1;
+}
+
 s32 func_ov013_021261e8(s32 arg0, s32 arg1) {
     if (arg0 >= func_ov003_020ccedc(0) + 0x18000 || arg0 <= -0x18000) {
         return 1;
@@ -529,36 +571,171 @@ s32 func_ov013_02126254(BtlEnm015Stamp* data) {
     return 1;
 }
 
-s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
-    BtlEnm015Eff* data  = task->data;
-    BtlEnm015*    owner = data->unk_6C;
+s32 func_ov013_021265b0(BtlEnm015Stamp* data) {
+    s32        t     = data->unk_04;
+    BtlEnm015* boss  = (BtlEnm015*)data_ov003_020e71b8->unk3D89C;
+    BtlEnm015* owner = data->unk_00;
+
+    if (t % 60 == 0) {
+        s32 sec = t / 60;
+        s32 dx;
+
+        if (owner->actor.position.x < boss->actor.position.x) {
+            dx = ROUND(0x28 * sec);
+        } else {
+            dx = ROUND(-(0x28 * sec));
+        }
+
+        func_ov013_021256f0(owner, 0, owner->actor.position.x + dx - 0x8000, owner->actor.position.y, 0);
+
+        if (sec >= 5) {
+            return 0;
+        }
+    }
+
+    data->unk_04++;
+    return 1;
+}
+
+s32 func_ov013_02126788(BtlEnm015StampSub* data) {
+    s32   engine = func_ov003_020c37f8(&data->unk_00->unk_084) != 0;
+    void* base;
+    s32   se;
+
+    if (engine != 0) {
+        base = data_ov003_020e71b8->unk3D89C;
+    } else {
+        base = data_ov003_020e71b8->unk3D898;
+    }
+    se = (engine != 0) ? 0x8A : 0x88;
+
+    switch (data->unk_64) {
+        case 0: {
+            s32 h;
+
+            data->unk_70 += 0xF000;
+            if (data->unk_70 >= 0) {
+                s32 r;
+
+                func_ov013_02125838(data->unk_00);
+                if (SndMgr_IsSEPlaying(0x227) == 0) {
+                    func_ov003_02087ed8(0x227);
+                }
+                h = func_ov003_0208a114(se);
+                r = func_ov003_0208a164(h, &data->unk_00->actor.unk_04, data->unk_68, data->unk_6C, data->unk_70);
+                if (r == 1) {
+                    func_ov003_020c4cc4(data->unk_00, 0x228);
+                } else if (r != 2) {
+                    if (func_ov003_0208a08c(engine, base, 0) != 0) {
+                        *(s16*)((u8*)base + 0x10) = 1;
+                    }
+                }
+                data->unk_64 = data->unk_64 + 1;
+                data->unk_66 = 0x3C;
+            }
+            break;
+        }
+
+        case 1:
+            data->unk_66 = data->unk_66 - 1;
+            if (data->unk_66 < 0) {
+                return 0;
+            }
+            break;
+    }
+
+    CombatSprite_Update(&data->sprite);
+    return 1;
+}
+
+void func_ov013_021268d8(BtlEnm015StampSub* data) {
+    s16 x;
+    s16 y;
+
+    func_ov003_02084348(func_ov003_020c37f8(&data->unk_00->unk_084) != 0, &x, &y, data->unk_68, data->unk_6C, 0);
+    CombatSprite_SetPosition(&data->sprite, x, y);
+    func_ov003_02082730(&data->sprite, 0x7FFFFFFF - data->unk_6C);
+    CombatSprite_Render(&data->sprite);
+}
+
+void func_ov013_02126950(BtlEnm015StampSub* data) {
+    CombatSprite_Release(&data->sprite);
+}
+
+void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
+    BtlEnm015* owner = args->unk_00;
+
+    MI_CpuSet(data, 0, sizeof(BtlEnm015StampSub));
+    data->unk_00 = args->unk_00;
+    data->unk_68 = args->unk_08;
+    data->unk_6C = args->unk_0C;
+    data->unk_70 = 0;
+
+    u16* table  = (u16*)func_ov013_021256e4();
+    s32  engine = owner->unk_084.sprite.bits_0_1;
+
+    SpriteAnimationEx anim;
+    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
+    anim.anim.unk_2A     = table[3] + 1;
+    anim.anim.unk_20     = func_ov013_021256d0(owner->unk_080);
+    anim.anim.unk_26     = table[2];
+    anim.anim.unk_28     = table[1];
+    anim.anim.unk_1C     = table[0];
+    anim.anim.bits_10_11 = 0;
+    anim.anim.unk_22     = 2;
+    anim.unk_2C          = 0;
+    CombatSprite_Load(&data->sprite, &anim);
+}
+
+s32 func_ov013_02126a30(TaskPool* pool, Task* task, void* args, s32 stage) {
+    BtlEnm015StampSub* data  = task->data;
+    BtlEnm015*         owner = data->unk_00;
 
     switch (stage) {
         case 0:
-            func_ov013_02125fd0(data, (Enm015Spawn*)args);
+            func_ov013_02126960(data, (Enm015Spawn*)args);
             break;
         case 1:
-            if (func_ov003_020c3c28() != 0) {
+            if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
                 return 0;
             }
-            if (owner->actor.flags & 4) {
-                return 0;
-            }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
-                return 0;
-            }
-            CombatSprite_Update(&data->sprite);
+            return func_ov013_02126788(data);
+        case 2:
+            func_ov013_021268d8(data);
             break;
-        case 2: {
-            s16 x;
-            s16 y;
-            func_ov003_02084348(func_ov003_020c37f8(data) ? 1 : 0, &x, &y, data->unk_60, data->unk_64, data->unk_68);
-            CombatSprite_SetPosition(&data->sprite, x, y);
-            func_ov003_02082730(&data->sprite, 0x80000000 - data->unk_64);
-            CombatSprite_Render(&data->sprite);
-        } break;
         case 3:
-            CombatSprite_Release(&data->sprite);
+            func_ov013_02126950(data);
+            break;
+    }
+    return 1;
+}
+
+s32 func_ov013_021266c8(BtlEnm015Stamp* data, Enm015Spawn* args) {
+    MI_CpuSet(data, 0, sizeof(BtlEnm015Stamp));
+    data->unk_00 = args->unk_00;
+    data->unk_08 = args->unk_14;
+    data->unk_04 = 0x3C;
+    return 1;
+}
+
+s32 func_ov013_02126700(TaskPool* pool, Task* task, void* args, s32 stage) {
+    BtlEnm015Stamp* data  = task->data;
+    BtlEnm015*      owner = data->unk_00;
+
+    switch (stage) {
+        case 0:
+            func_ov013_021266c8(data, (Enm015Spawn*)args);
+            break;
+        case 1:
+            if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
+                return 0;
+            }
+            if (func_ov003_020c37f8(&data->unk_00->unk_084) != 0) {
+                return func_ov013_021265b0(data);
+            }
+            return func_ov013_02126254(data);
+        case 2:
+        case 3:
             break;
     }
     return 1;

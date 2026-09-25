@@ -68,8 +68,27 @@ typedef struct BtlEnm015 {
     /* 0x1DC */ s32 unk_1DC;
     /* 0x1E0 */ s32 unk_1E0;
     /* 0x1E4 */ s32 unk_1E4;
-    /* 0x1E8 */ u8  unk_1E8[0x4];
+    /* 0x1E8 */ u16 unk_1E8;
 } BtlEnm015; // Size: 0x1EC
+
+/// Task data for the `Tsk_BtlEnm015_EffStampSub` task.
+typedef struct BtlEnm015StampSub {
+    /* 0x00 */ BtlEnm015*   unk_00;
+    /* 0x04 */ CombatSprite sprite;
+    /* 0x64 */ s16          unk_64;
+    /* 0x66 */ s16          unk_66;
+    /* 0x68 */ s32          unk_68;
+    /* 0x6C */ s32          unk_6C;
+    /* 0x70 */ s32          unk_70;
+} BtlEnm015StampSub; // Size: 0x74
+
+/// Task data for the `Tsk_BtlEnm015_Shake` task.
+typedef struct BtlEnm015Shake {
+    /* 0x00 */ BtlEnm015* unk_00;
+    /* 0x04 */ void*      unk_04;
+    /* 0x08 */ s32        unk_08;
+    /* 0x0C */ s16        unk_0C;
+} BtlEnm015Shake; // Size: 0x10
 
 /// Task data for the `Tsk_BtlEnm015_Eff` task.
 typedef struct BtlEnm015Eff {
