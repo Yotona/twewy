@@ -29,7 +29,7 @@ extern void  func_ov003_020849dc(void* list, void* node);
 extern s16   func_ov003_020843b0(s32, s32);
 extern s16   func_ov003_020843ec(s32, s32, s32);
 extern void  func_ov003_02087f28(s32, s32);
-extern void  func_ov003_02087f64(s32);
+extern void  func_ov003_02087f64(s32, s32);
 extern void  func_ov003_020974f8(s32, s32);
 extern void  func_ov003_0208cbc8(s16*);
 extern void  func_ov021_020f11bc(s32, s32*, s32*, s32*);
@@ -202,7 +202,6 @@ void func_ov007_020e769c(s16* out) {
     func_ov003_0208cbc8(out);
 }
 
-// Nonmatching: register allocation differs (r4/r5 assignment)
 void func_ov007_020e76dc(BtlAuraLast* data, s32 arg) {
     s32 mode = arg;
 
@@ -211,29 +210,33 @@ void func_ov007_020e76dc(BtlAuraLast* data, s32 arg) {
         return;
     }
 
-    s32 flag;
-    s32 size;
-    s16 animIndex;
-    s16 posX;
-    s16 posY;
+    s32            flag;
+    BtlAuraSprite* sprite;
+    s16            posX;
+    s16            posY;
+    s16            animIndex;
+    u16            size;
+    s32            posXBase;
 
-    BtlAuraSprite* sprite = func_ov003_0208495c(&data->unk_120);
+    sprite = func_ov003_0208495c(&data->unk_120);
     if (sprite == NULL) {
         return;
     }
 
-    if (mode == 1) {
+    if (mode != 0 && mode == 1) {
         animIndex = (s16)RNG_Next(5);
         if (data->unk_808 < 0xC0000) {
-            flag = 1;
-            size = 0x40;
-            posX = (s16)((RNG_Next(0x11) - 8) + (data->unk_804 << 12));
-            posY = (s16)((data->unk_808 << 28) >> 16);
+            posXBase = data->unk_804;
+            flag     = 1;
+            size     = 0x40;
+            posX     = (s16)((RNG_Next(0x11) - 8) + (posXBase << 12));
+            posY     = (s16)(data->unk_808 << 12);
         } else {
-            flag = 0;
-            size = 0x3E;
-            posX = (s16)((RNG_Next(0x11) - 8) + (data->unk_804 << 12));
-            posY = (s16)((data->unk_808 << 12) - 0xC0);
+            posXBase = data->unk_804;
+            flag     = 0;
+            size     = 0x3E;
+            posX     = (s16)((RNG_Next(0x11) - 8) + (posXBase << 12));
+            posY     = (s16)((data->unk_808 << 12) - 0xC0);
         }
         data->unk_7F0 = 2;
     } else {
@@ -326,7 +329,6 @@ void func_ov007_020e7a54(BtlAuraLast* data) {
     }
 }
 
-// Nonmatching: register allocation / scheduling differs
 void func_ov007_020e7a8c(BtlAuraLast* data) {
     if (data_ov003_020e71b8->unk3D8EC == 1) {
         return;
@@ -335,7 +337,7 @@ void func_ov007_020e7a8c(BtlAuraLast* data) {
         data_ov003_020e71b8->unk3D8EC = 0;
         data->unk_804                 = ((CombatActor*)data_ov003_020e71b8->unk3D89C)->screenX << 12;
         data->unk_808                 = (((CombatActor*)data_ov003_020e71b8->unk3D89C)->screenY - 0x20) << 12;
-        func_ov003_02087f64(data->unk_804);
+        func_ov003_02087f64(0x21, data->unk_804);
         data_ov003_020e71b8->unk3D8F0 = 0;
         func_ov007_020e769c(&data->unk_80C);
         data->unk_7FC = 1;
