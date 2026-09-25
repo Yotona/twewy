@@ -6,6 +6,6 @@
     .bss        start:0x02128500 end:0x02128540 kind:bss align:32
 
 src/Combat/Noise/BtlEnm026/BtlEnm026.c:
-    .text       start:0x021256c0 end:0x021261d8
+    .text       start:0x021256c0 end:0x02127fd8
     .rodata     start:0x02127fd8 end:0x021282c4
     .data       start:0x021282e0 end:0x02128500

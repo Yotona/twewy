@@ -309,23 +309,42 @@ void func_ov015_021257f8(BtlEnm026* data) {
         data->actor.flags |= 0x10000000;
     }
     if (func_ov015_02125c94(data) != 0) {
-        if (data->unk_1D4 == 1) {
-            data->unk_1CC                = 0;
-            data_ov015_02128500.result10 = -1;
+        data->unk_1CC = 0;
+        if (data->unk_1D4 != 1) {
+            if (data_ov015_02128500.variant == 6 || data_ov015_02128500.variant == 1) {
+                data_ov015_02128500.result10 = data->unk_1CC - 1;
+            }
         } else {
-            data->unk_1CC = 0;
-            if (data_ov015_02128500.variant == 6) {
-                data_ov015_02128500.result10 = -1;
-            }
-            if (data_ov015_02128500.variant == 1) {
-                data_ov015_02128500.result10 = -1;
-            }
+            data_ov015_02128500.result10 = data->unk_1CC - 1;
         }
     }
     if (data_ov015_02128198[data_ov015_02128500.variant].unk_04 != NULL) {
         data_ov015_02128198[data_ov015_02128500.variant].unk_04(data);
     }
-    if (data_ov015_02128500.result10 != -1) {
+    if (data_ov015_02128500.result10 == -1) {
+        if (data_ov015_02128500.variant == 0xB) {
+            if (func_ov003_020c37f8(&data->unk_084) == 0) {
+                pool = &data_ov003_020e71b8->unk_00000;
+            } else {
+                pool = &data_ov003_020e71b8->taskPool;
+            }
+            EasyTask_DeleteTask(pool, data->unk_1E0);
+        }
+        data_ov015_02128500.flag08 = 1;
+        {
+            s32 vel = 0x6000;
+            if (data->unk_1D0 <= 0) {
+                vel = -vel;
+            }
+            data->unk_1D0 = vel;
+        }
+        func_ov003_020ccec0(data, 1);
+        data_ov003_020e71b8->unk3D878 |= 0x200000;
+        if (data_ov015_02128500.variant == 3) {
+            *(u8*)((u8*)data_ov003_020e71b8 + 0x3D875) = 2;
+            data_ov003_020e71b8->unk3D878 |= 0x20000000;
+        }
+    } else {
         if (func_ov003_020c37f8(&data->unk_084) == 0) {
             return;
         }
@@ -338,31 +357,7 @@ void func_ov015_021257f8(BtlEnm026* data) {
         {
             func_ov003_0208a08c(0, data->unk_184, 0);
         }
-        return;
     }
-    if (data_ov015_02128500.variant == 0xB) {
-        if (func_ov003_020c37f8(&data->unk_084) == 0) {
-            pool = &data_ov003_020e71b8->unk_00000;
-        } else {
-            pool = &data_ov003_020e71b8->taskPool;
-        }
-        EasyTask_DeleteTask(pool, data->unk_1E0);
-    }
-    data_ov015_02128500.flag08 = 1;
-    {
-        s32 vel = 0x6000;
-        if (data->unk_1D0 <= 0) {
-            vel = -vel;
-        }
-        data->unk_1D0 = vel;
-    }
-    func_ov003_020ccec0(data, 1);
-    data_ov003_020e71b8->unk3D878 |= 0x200000;
-    if (data_ov015_02128500.variant != 3) {
-        return;
-    }
-    *(u8*)((u8*)data_ov003_020e71b8 + 0x3D875) = 2;
-    data_ov003_020e71b8->unk3D878 |= 0x20000000;
 }
 
 s32 func_ov015_021259f4(BtlEnm026* owner, s32 kind, void* params) {
