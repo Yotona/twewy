@@ -740,8 +740,9 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
 s32 func_ov015_02126660(BtlEnm026Icon* data) {
     BtlEnm026* owner  = data->unk_120;
     s32        engine = (func_ov003_020c37f8(data) != 0);
-    s32        r5;
-    s32        r6;
+    s32        px;
+    s32        pz;
+    s32        py;
     s16        sx;
     s16        sy;
 
@@ -750,39 +751,40 @@ s32 func_ov015_02126660(BtlEnm026Icon* data) {
             return 1;
         }
     }
-    r5 = owner->actor.position.x + ((owner->unk_084.flags46 & 1) ? -0xF000 : 0xF000);
-    r6 = owner->actor.position.z - 0x19000;
+    px = owner->actor.position.x + ((owner->unk_084.flags46 & 1) ? 0xF000 : -0xF000);
+    pz = owner->actor.position.z - 0x19000;
+    py = owner->actor.position.y;
 
     switch (data->unk_00.animTableIndex) {
         case 0:
-            func_ov003_02084348(engine, &sx, &sy, r5, owner->actor.position.y, r6);
+            func_ov003_02084348(engine, &sx, &sy, px, py, pz);
             CombatSprite_SetPosition(&data->unk_60, sx, sy);
-            func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - owner->actor.position.y);
+            func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - py);
             CombatSprite_Render(&data->unk_60);
             break;
 
         case 1:
-            if (data->unk_C0.animTableIndex == 3) {
-                func_ov003_02084348(engine, &sx, &sy, r5, owner->actor.position.y, r6);
+            if (data->unk_C0.animTableIndex != 3) {
+                func_ov003_02084348(engine, &sx, &sy, px - 0x4000, py, pz);
+                CombatSprite_SetPosition(&data->unk_C0, sx, sy);
+                func_ov003_02082730(&data->unk_C0, 0x7FFFFFFD - py);
+                CombatSprite_Render(&data->unk_C0);
+                func_ov003_02084348(engine, &sx, &sy, px + 0x4000, py, pz);
                 CombatSprite_SetPosition(&data->unk_60, sx, sy);
-                func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - owner->actor.position.y);
+                func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - py);
                 CombatSprite_Render(&data->unk_60);
             } else {
-                func_ov003_02084348(engine, &sx, &sy, r5 - 0x4000, owner->actor.position.y, r6);
-                CombatSprite_SetPosition(&data->unk_C0, sx, sy);
-                func_ov003_02082730(&data->unk_C0, 0x7FFFFFFD - owner->actor.position.y);
-                CombatSprite_Render(&data->unk_C0);
-                func_ov003_02084348(engine, &sx, &sy, r5 + 0x4000, owner->actor.position.y, r6);
+                func_ov003_02084348(engine, &sx, &sy, px, py, pz);
                 CombatSprite_SetPosition(&data->unk_60, sx, sy);
-                func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - owner->actor.position.y);
+                func_ov003_02082730(&data->unk_60, 0x7FFFFFFD - py);
                 CombatSprite_Render(&data->unk_60);
             }
             break;
     }
 
-    func_ov003_02084348(engine, &sx, &sy, r5, owner->actor.position.y, r6);
+    func_ov003_02084348(engine, &sx, &sy, px, py, pz);
     CombatSprite_SetPosition(&data->unk_00, sx, sy);
-    func_ov003_02082730(&data->unk_00, 0x7FFFFFFE - owner->actor.position.y);
+    func_ov003_02082730(&data->unk_00, 0x7FFFFFFE - py);
     CombatSprite_Render(&data->unk_00);
     return 1;
 }
