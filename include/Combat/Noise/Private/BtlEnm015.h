@@ -71,6 +71,15 @@ typedef struct BtlEnm015 {
     /* 0x1E8 */ u8  unk_1E8[0x4];
 } BtlEnm015; // Size: 0x1EC
 
+/// Task data for the `Tsk_BtlEnm015_Eff` task.
+typedef struct BtlEnm015Eff {
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ s32          unk_60;
+    /* 0x64 */ s32          unk_64;
+    /* 0x68 */ s32          unk_68;
+    /* 0x6C */ BtlEnm015*   unk_6C;
+} BtlEnm015Eff; // Size: 0x70
+
 extern Enm015Variant* data_ov013_02127540[3];
 extern s32            data_ov013_02127640;
 extern s32            data_ov013_02127644;
