@@ -1,3 +1,6 @@
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Fusion/BtlFusion.c
+//////////////////////////////////////////////////////////////////////
 func_ov007_020e7360 kind:function(arm,size=0x14) addr:0x020e7360
 func_ov007_020e7374 kind:function(arm,size=0x64) addr:0x020e7374
 func_ov007_020e73d8 kind:function(arm,size=0xa0) addr:0x020e73d8
@@ -23,9 +26,9 @@ func_ov007_020e7d48 kind:function(arm,size=0x5c) addr:0x020e7d48
 func_ov007_020e7da4 kind:function(arm,size=0x10c) addr:0x020e7da4
 func_ov007_020e7eb0 kind:function(arm,size=0x30) addr:0x020e7eb0
 func_ov007_020e7ee0 kind:function(arm,size=0x68) addr:0x020e7ee0
-data_ov007_020e7f48 kind:data(any) addr:0x020e7f48 ambiguous
+Tsk_BtlPlayerLast kind:data(any) addr:0x020e7f48
 data_ov007_020e7f54 kind:data(any) addr:0x020e7f54
-data_ov007_020e7f64 kind:data(any) addr:0x020e7f64 ambiguous
+Tsk_BtlAuraLast kind:data(any) addr:0x020e7f64
 data_ov007_020e7f70 kind:data(any) addr:0x020e7f70
 data_ov007_020e7f80 kind:data(any) addr:0x020e7f80
 data_ov007_020e7fa0 kind:data(any) addr:0x020e7fa0

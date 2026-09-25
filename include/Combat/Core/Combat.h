@@ -53,6 +53,12 @@ typedef struct {
     /* 0x3D8DC */ s16              unk3D8DC;
     /* 0x3D8DE */ s16              unk3D8DE;
     /* 0x3D8E0 */ s32              unk3D8E0;
+    /* 0x3D8E4 */ u8               unk_3D8E4[0x8];
+    /* 0x3D8EC */ u8               unk3D8EC;
+    /* 0x3D8ED */ s8               unk3D8ED;
+    /* 0x3D8EE */ s16              unk3D8EE;
+    /* 0x3D8F0 */ s32              unk3D8F0;
+    /* 0x3D8F4 */ s32              unk3D8F4;
 } Ov003Global;
 
 extern Ov003Global* data_ov003_020e71b8;

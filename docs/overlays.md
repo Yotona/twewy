@@ -9,7 +9,7 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [04 - Shiki](#overlay-04---shiki)
 - [05](#overlay-05)
 - [06](#overlay-06)
-- [07](#overlay-07)
+- [07 - Fusion / Last Attacks](#overlay-07---fusion--last-attacks)
 - [08 - Tutorial Battles](#overlay-08---tutorial-battles)
 - [09 - Noise](#overlay-09---noise)
 - [10](#overlay-10)
@@ -103,13 +103,21 @@ TODO: Decompile and document
 
 Speculated purpose: Beat
 
-## Overlay 07
+## Overlay 07 - Fusion / Last Attacks
 
-**Files:** N/A (Not yet decompiled)
+**Category:** Combat
 
-TODO: Decompile and document
+**Files:**
+[BtlFusion](../src/Combat/Fusion/BtlFusion.c)
 
-Speculated purpose: Fusion attacks
+Provides the `Tsk_BtlPlayerLast` and `Tsk_BtlAuraLast` combat tasks. `Tsk_BtlPlayerLast` drives the
+player's finishing attack (screen-space reprojection plus an actor update callback); `Tsk_BtlAuraLast`
+manages a pool of 16 aura sprites used for the attack's visual effects, interpolating and spawning them
+from active/free lists.
+
+Status: 22 of 25 functions match byte-for-byte. `func_ov007_020e76dc`, `func_ov007_020e7a8c`, and
+`func_ov007_020e7da4` are Nonmatching due to MWCC register-allocation differences. The TU cannot be
+marked `complete` until those are resolved.
 
 ## Overlay 08 - Tutorial Battles
 
