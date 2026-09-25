@@ -85,9 +85,9 @@ typedef struct BtlEnm015StampSub {
 /// Task data for the `Tsk_BtlEnm015_Shake` task.
 typedef struct BtlEnm015Shake {
     /* 0x00 */ BtlEnm015* unk_00;
-    /* 0x04 */ void*      unk_04;
+    /* 0x04 */ u8*        unk_04;
     /* 0x08 */ s32        unk_08;
-    /* 0x0C */ s16        unk_0C;
+    /* 0x0C */ u16        unk_0C;
 } BtlEnm015Shake; // Size: 0x10
 
 /// Task data for the `Tsk_BtlEnm015_Eff` task.
