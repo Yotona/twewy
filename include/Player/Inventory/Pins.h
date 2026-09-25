@@ -16,12 +16,18 @@ typedef union {
  */
 typedef struct {
     /* 0x00 */ u16  unk_00;
-    /* 0x02 */ char unk_02[0x8 - 0x2];
+    /* 0x02 */ char unk_02[0x5 - 0x2];
+    /* 0x05 */ u8   brand;
+    /* 0x06 */ u8   ppCurve;
+    /* 0x07 */ char unk_07[0x8 - 0x7];
     /* 0x08 */ u32  unk_08;
     /* 0x0C */ s16  unk_0C;
     /* 0x0E */ char unk_0E[0x25 - 0x0E];
-    /* 0x25 */ u8   unk_25;
-    /* 0x26 */ char unk_26[0x34 - 0x26];
+    /* 0x25 */ u8   maxLevel;
+    /* 0x26 */ u8   evolveLevel[2];
+    /* 0x28 */ u8   evolveCondition[2];
+    /* 0x2A */ u16  evolvePinID[2];
+    /* 0x2E */ char unk_2E[0x34 - 0x2E];
 } RawPinData; // Size: 0x34
 
 typedef struct {

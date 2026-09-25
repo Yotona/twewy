@@ -4,8 +4,135 @@
     .data       start:0x0208fac0 end:0x020902a0 kind:data align:32
     .bss        start:0x020902a0 end:0x020902c0 kind:bss align:32
 
-src/Debug/Takami/Result.c:
-    .text       start:0x02082e80 end:0x0208f108
-    .rodata     start:0x0208f108 end:0x0208fab4
-    .data       start:0x0208fac0 end:0x020902a0
+src/Interface/Menu/Result.c:
+    .text       start:0x02082e80 end:0x020858b0
+    .rodata     start:0x0208f108 end:0x0208f2ec
+    .data       start:0x0208fac0 end:0x0208ff44
     .bss        start:0x020902a0 end:0x020902c0
+
+src/Interface/Menu/ResultData.c:
+    .text       start:0x020858b0 end:0x02088468
+    .rodata     start:0x0208f2ec end:0x0208f3bc
+    .data       start:0x0208ff44 end:0x020900cc
+
+src/Interface/Menu/Result/Result_numTime.c:
+    complete
+    .text       start:0x02088468 end:0x020888f4
+    .rodata     start:0x0208f3bc end:0x0208f414
+    .data       start:0x020900cc end:0x020900e0
+
+src/Interface/Menu/Result/Result_numMaxHit.c:
+    complete
+    .text       start:0x020888f4 end:0x02088cc4
+    .rodata     start:0x0208f414 end:0x0208f45c
+    .data       start:0x020900e0 end:0x020900f8
+
+src/Interface/Menu/Result/Result_num_Param.c:
+    .text       start:0x02088cc4 end:0x020898e0
+    .rodata     start:0x0208f45c end:0x0208f4fc
+    .data       start:0x020900f8 end:0x02090110
+
+src/Interface/Menu/Result/Result_num_Param_sure.c:
+    .text       start:0x020898e0 end:0x0208a2b8
+    .rodata     start:0x0208f4fc end:0x0208f558
+    .data       start:0x02090110 end:0x0209012c
+
+src/Interface/Menu/Result/Result_num_Param_sleep.c:
+    .text       start:0x0208a2b8 end:0x0208aad0
+    .rodata     start:0x0208f558 end:0x0208f5b4
+    .data       start:0x0209012c end:0x02090148
+
+src/Interface/Menu/Result/Result_num_Param_mabs.c:
+    .text       start:0x0208aad0 end:0x0208b4b4
+    .rodata     start:0x0208f5b4 end:0x0208f630
+    .data       start:0x02090148 end:0x02090164
+
+src/Interface/Menu/Result/Result_bdg.c:
+    complete
+    .text       start:0x0208b4b4 end:0x0208b758
+    .rodata     start:0x0208f630 end:0x0208f684
+    .data       start:0x02090164 end:0x02090174
+
+src/Interface/Menu/Result/Result_bdgBP.c:
+    complete
+    .text       start:0x0208b758 end:0x0208bb04
+    .rodata     start:0x0208f684 end:0x0208f6d8
+    .data       start:0x02090174 end:0x02090188
+
+src/Interface/Menu/Result/Result_bdgLV.c:
+    complete
+    .text       start:0x0208bb04 end:0x0208bf78
+    .rodata     start:0x0208f6d8 end:0x0208f72c
+    .data       start:0x02090188 end:0x0209019c
+
+src/Interface/Menu/Result/Result_bdgPRI.c:
+    complete
+    .text       start:0x0208bf78 end:0x0208c234
+    .rodata     start:0x0208f72c end:0x0208f780
+    .data       start:0x0209019c end:0x020901b0
+
+src/Interface/Menu/Result/Result_bdgSC.c:
+    complete
+    .text       start:0x0208c234 end:0x0208c548
+    .rodata     start:0x0208f780 end:0x0208f7d4
+    .data       start:0x020901b0 end:0x020901c4
+
+src/Interface/Menu/Result/Result_lvup.c:
+    complete
+    .text       start:0x0208c548 end:0x0208c890
+    .rodata     start:0x0208f7d4 end:0x0208f828
+    .data       start:0x020901c4 end:0x020901d4
+
+src/Interface/Menu/Result/Result_star.c:
+    complete
+    .text       start:0x0208c890 end:0x0208cca8
+    .rodata     start:0x0208f828 end:0x0208f87c
+    .data       start:0x020901d4 end:0x020901e4
+
+src/Interface/Menu/Result/Result_evo.c:
+    complete
+    .text       start:0x0208cca8 end:0x0208d000
+    .rodata     start:0x0208f87c end:0x0208f8d0
+    .data       start:0x020901e4 end:0x020901f4
+
+src/Interface/Menu/Result/Result_flash.c:
+    complete
+    .text       start:0x0208d000 end:0x0208d2c8
+    .rodata     start:0x0208f8d0 end:0x0208f924
+    .data       start:0x020901f4 end:0x02090208
+
+src/Interface/Menu/Result/Result_textScr_sure.c:
+    complete
+    .text       start:0x0208d2c8 end:0x0208d790
+    .rodata     start:0x0208f924 end:0x0208f95c
+    .data       start:0x02090208 end:0x02090220
+
+src/Interface/Menu/Result/Result_textScr_sleep.c:
+    complete
+    .text       start:0x0208d790 end:0x0208dac0
+    .rodata     start:0x0208f95c end:0x0208f988
+    .data       start:0x02090220 end:0x0209023c
+
+src/Interface/Menu/Result/Result_slotCover.c:
+    complete
+    .text       start:0x0208dac0 end:0x0208dd1c
+    .rodata     start:0x0208f988 end:0x0208f9dc
+    .data       start:0x0209023c end:0x02090254
+
+src/Interface/Menu/Result/Result_rankU.c:
+    complete
+    .text       start:0x0208dd1c end:0x0208e014
+    .rodata     start:0x0208f9dc end:0x0208fa24
+    .data       start:0x02090254 end:0x02090268
+
+src/Interface/Menu/Result/Result_bdgU.c:
+    complete
+    .text       start:0x0208e014 end:0x0208e880
+    .rodata     start:0x0208fa24 end:0x0208fa6c
+    .data       start:0x02090268 end:0x02090278
+
+src/Interface/Menu/Result/Result_beltU.c:
+    complete
+    .text       start:0x0208e880 end:0x0208f108
+    .rodata     start:0x0208fa6c end:0x0208fab4
+    .data       start:0x02090278 end:0x020902a0

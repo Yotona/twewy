@@ -529,8 +529,8 @@ void MenuEquip_InitStats(MenuEquipObject* owner) {
     owner->stats[0].attackBonus      = MenuEquip_CalcAttackBonus(owner, 0);
     owner->stats[0].defense          = gSaveData.playerStats.defense;
     owner->stats[0].defenseBonus     = MenuEquip_CalcDefenseBonus(owner, 0);
-    owner->stats[0].foodCapacityUsed = gSaveData.playerStats.unk_2A;
-    owner->stats[0].foodCapacityLeft = gSaveData.playerStats.unk_2B;
+    owner->stats[0].foodCapacityUsed = gSaveData.playerStats.foodBytesLeft;
+    owner->stats[0].foodCapacityLeft = gSaveData.playerStats.foodCapacityLeft;
     for (i = 0; i < 3; i++) {
         owner->stats[i + 1].health       = 0;
         owner->stats[i + 1].healthBonus  = 0;
@@ -541,8 +541,8 @@ void MenuEquip_InitStats(MenuEquipObject* owner) {
         owner->stats[i + 1].attackBonus      = MenuEquip_CalcAttackBonus(owner, i + 1);
         owner->stats[i + 1].defense          = gSaveData.friendStats[i].defense;
         owner->stats[i + 1].defenseBonus     = MenuEquip_CalcDefenseBonus(owner, i + 1);
-        owner->stats[i + 1].foodCapacityUsed = gSaveData.friendStats[i].unk_16;
-        owner->stats[i + 1].foodCapacityLeft = gSaveData.friendStats[i].unk_17;
+        owner->stats[i + 1].foodCapacityUsed = gSaveData.friendStats[i].foodBytesLeft;
+        owner->stats[i + 1].foodCapacityLeft = gSaveData.friendStats[i].foodCapacityLeft;
     }
 }
 
@@ -598,7 +598,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
             entry->count           = 1;
             entry->unk_11          = 0;
             entry->abilityUnlocked = (u32)(gSaveData.unk_1EB2[index] << 0x1F) >> 0x1F;
-            entry->brand           = itemData[index].unk_02;
+            entry->brand           = itemData[index].brand;
             entry->unk_14          = itemData[index].unk_04;
             entry->abilityId       = itemData[index].unk_10;
             entry->unk_1A          = itemData[index].unk_12;
@@ -633,7 +633,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                 entry->count           = 1;
                 entry->unk_11          = 0;
                 entry->abilityUnlocked = (u32)(gSaveData.unk_1EB2[index] << 0x1F) >> 0x1F;
-                entry->brand           = itemData[index].unk_02;
+                entry->brand           = itemData[index].brand;
                 entry->unk_14          = itemData[index].unk_04;
                 entry->abilityId       = itemData[index].unk_10;
                 entry->unk_1A          = itemData[index].unk_12;
@@ -649,7 +649,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
         }
     }
 
-    itemId = gSaveData.playerStats.unk_28;
+    itemId = gSaveData.playerStats.foodItem;
     index  = Inventory_GetCategorizedIndex(itemId);
     if (itemId == 0xFFFF) {
         owner->equipped[0][4] = data_ov043_020cc2d8;
@@ -659,7 +659,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
         entry->graphicIndex    = foodData[index].unk_00;
         entry->category        = ITEM_CATEGORY_FOOD;
         entry->subCategory     = 0;
-        entry->capacityCost    = gSaveData.playerStats.unk_2A;
+        entry->capacityCost    = gSaveData.playerStats.foodBytesLeft;
         entry->braveryReq      = 0;
         entry->attackBonus     = 0;
         entry->defenseBonus    = 0;
@@ -672,8 +672,8 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
         entry->abilityId       = 0;
         entry->unk_1A          = 0;
         entry->unk_1C          = 0;
-        entry->foodEffectMsg   = foodData[index].unk_08;
-        entry->foodEffectValue = foodData[index].unk_0A;
+        entry->foodEffectMsg   = foodData[index].stat;
+        entry->foodEffectValue = foodData[index].statBonus;
         entry->syncGain        = foodData[index].unk_0C;
         entry->taste[0]        = foodData[index].unk_10[0];
         entry->taste[1]        = foodData[index].unk_10[1];
@@ -682,7 +682,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
     }
 
     for (i = 0; i < 3; i++) {
-        itemId = gSaveData.friendStats[i].unk_14;
+        itemId = gSaveData.friendStats[i].foodItem;
         index  = Inventory_GetCategorizedIndex(itemId);
         if (itemId == 0xFFFF) {
             owner->equipped[i + 1][4] = data_ov043_020cc2d8;
@@ -692,7 +692,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
             entry->graphicIndex    = foodData[index].unk_00;
             entry->category        = ITEM_CATEGORY_FOOD;
             entry->subCategory     = 0;
-            entry->capacityCost    = gSaveData.friendStats[i].unk_16;
+            entry->capacityCost    = gSaveData.friendStats[i].foodBytesLeft;
             entry->braveryReq      = 0;
             entry->attackBonus     = 0;
             entry->defenseBonus    = 0;
@@ -705,8 +705,8 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
             entry->abilityId       = 0;
             entry->unk_1A          = 0;
             entry->unk_1C          = 0;
-            entry->foodEffectMsg   = foodData[index].unk_08;
-            entry->foodEffectValue = foodData[index].unk_0A;
+            entry->foodEffectMsg   = foodData[index].stat;
+            entry->foodEffectValue = foodData[index].statBonus;
             entry->syncGain        = foodData[index].unk_0C;
             entry->taste[0]        = foodData[index].unk_10[0];
             entry->taste[1]        = foodData[index].unk_10[1];
@@ -736,7 +736,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                     entry->count           = (u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C;
                     entry->unk_11          = (u32)(gSaveData.inventoryItems[i].flags << 0x1B) >> 0x1F;
                     entry->abilityUnlocked = (u32)(gSaveData.unk_1EB2[index] << 0x1F) >> 0x1F;
-                    entry->brand           = itemData[index].unk_02;
+                    entry->brand           = itemData[index].brand;
                     entry->unk_14          = itemData[index].unk_04;
                     entry->abilityId       = itemData[index].unk_10;
                     entry->unk_1A          = itemData[index].unk_12;
@@ -768,8 +768,8 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                     entry->abilityId       = 0;
                     entry->unk_1A          = 0;
                     entry->unk_1C          = 0;
-                    entry->foodEffectMsg   = foodData[index].unk_08;
-                    entry->foodEffectValue = foodData[index].unk_0A;
+                    entry->foodEffectMsg   = foodData[index].stat;
+                    entry->foodEffectValue = foodData[index].statBonus;
                     entry->syncGain        = foodData[index].unk_0C;
                     entry->taste[0]        = foodData[index].unk_10[0];
                     entry->taste[1]        = foodData[index].unk_10[1];
@@ -968,17 +968,17 @@ void MenuEquip_WriteBackToSave(MenuEquipObject* owner) {
         gSaveData.playerStats.equippedThreads[i] = owner->equipped[0][i].itemId;
         gSaveData.playerStats.unk_24[i]          = owner->equipped[0][i].abilityUnlocked;
     }
-    gSaveData.playerStats.unk_28 = owner->equipped[0][4].itemId;
-    gSaveData.playerStats.unk_2A = owner->equipped[0][4].capacityCost;
-    gSaveData.playerStats.unk_2B = owner->stats[0].foodCapacityLeft;
+    gSaveData.playerStats.foodItem         = owner->equipped[0][4].itemId;
+    gSaveData.playerStats.foodBytesLeft    = owner->equipped[0][4].capacityCost;
+    gSaveData.playerStats.foodCapacityLeft = owner->stats[0].foodCapacityLeft;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 4; j++) {
             gSaveData.friendStats[i].equippedThreads[j] = owner->equipped[i + 1][j].itemId;
             gSaveData.friendStats[i].unk_10[j]          = owner->equipped[i + 1][j].abilityUnlocked;
         }
-        gSaveData.friendStats[i].unk_14 = owner->equipped[i + 1][4].itemId;
-        gSaveData.friendStats[i].unk_16 = owner->equipped[i + 1][4].capacityCost;
-        gSaveData.friendStats[i].unk_17 = owner->stats[i + 1].foodCapacityLeft;
+        gSaveData.friendStats[i].foodItem         = owner->equipped[i + 1][4].itemId;
+        gSaveData.friendStats[i].foodBytesLeft    = owner->equipped[i + 1][4].capacityCost;
+        gSaveData.friendStats[i].foodCapacityLeft = owner->stats[i + 1].foodCapacityLeft;
     }
     for (i = 0; i < 472; i++) {
         gSaveData.inventoryItems[i].itemID = owner->inventory[i].itemId;

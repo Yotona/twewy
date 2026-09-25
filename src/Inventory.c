@@ -68,9 +68,9 @@ static void Stats_ResetPlayerStats(PlayerStats* stats) {
         stats->unk_24[i]          = 0;
     }
 
-    stats->unk_28 = 0xffff;
-    stats->unk_2A = 0;
-    stats->unk_2B = 24;
+    stats->foodItem         = 0xffff;
+    stats->foodBytesLeft    = 0;
+    stats->foodCapacityLeft = 24;
 }
 
 static void Stats_ResetFriendStats(FriendStats* stats) {
@@ -92,9 +92,9 @@ static void Stats_ResetFriendStats(FriendStats* stats) {
             stats->unk_10[j]          = 0;
         }
 
-        stats->unk_14 = 0xFFFF;
-        stats->unk_16 = 0;
-        stats->unk_17 = 24;
+        stats->foodItem         = 0xFFFF;
+        stats->foodBytesLeft    = 0;
+        stats->foodCapacityLeft = 24;
         stats++;
     }
 }
@@ -220,7 +220,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     Inventory_ResetStockpilePins(arg0->stockpilePins);
     Inventory_ResetMasteredPins(arg0->masteredPins);
     Inventory_ResetStoredItems(arg0->inventoryItems);
-    func_02022284(&arg0->unk_16D0);
+    func_02022284(arg0->brandTrends);
     func_02022424(arg0->unk_1A18);
     Stats_ResetExperience(&arg0->experience);
     arg0->unk_1AB0 = 0;
@@ -240,7 +240,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     func_02022488(&arg0->unk_1AC2);
     func_02022488(&arg0->unk_1AF2);
     func_020224f4(&arg0->unk_1B24);
-    func_02022534(&arg0->unk_1D7C);
+    func_02022534(&arg0->civviesMet);
     func_0202254c(&arg0->unk_1D84);
 
     arg0->unk_1D94 = 0;
@@ -330,7 +330,7 @@ u16 Inventory_GetOpenPinStockpileCapacity(void) {
 
             if (pinID != 0xFFFF) {
                 Data_LoadToBuffer(1, pinData, &data_0205c188, pinID);
-                if (pinData.unk_25 != gSaveData.pinLayouts[deck][slot].flags.bits.level) {
+                if (pinData.maxLevel != gSaveData.pinLayouts[deck][slot].flags.bits.level) {
                     var_r7 += 1;
                 }
             }
@@ -360,7 +360,7 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
 
     if (arg1 == 1) {
         Data_LoadToBuffer(1, pinData, &data_0205c158, itemID);
-        if (pinData.unk_25 == 1) {
+        if (pinData.maxLevel == 1) {
             arg1 = 2;
         }
     }
@@ -437,7 +437,7 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
     }
     if (arg1 == 1) {
         Data_LoadToBuffer(1, pinData, &data_0205c160, itemID);
-        if (pinData.unk_25 == 1) {
+        if (pinData.maxLevel == 1) {
             arg1 = 2;
         }
     }
@@ -865,7 +865,7 @@ s32 func_02023be8(u16 itemID, s32 arg1) {
             if (arg1 == 1) {
                 var_r5 = pinData.unk_08;
             } else {
-                var_r5 = ((pinData.unk_25 - 1) * pinData.unk_0C) + pinData.unk_08;
+                var_r5 = ((pinData.maxLevel - 1) * pinData.unk_0C) + pinData.unk_08;
             }
             DatMgr_ReleaseData(data);
         } break;
@@ -977,7 +977,7 @@ s32 func_02023e58(u32 arg0) {
 
         if ((equippedID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
             Data_LoadToBuffer(1, itemData, &data_0205c140, itemIdx);
-            sp4[i] = itemData.unk_02;
+            sp4[i] = itemData.brand;
         }
     }
 
@@ -1013,7 +1013,7 @@ s32 func_02023f60(u32 arg0, u32 arg1) {
 
         if ((equippedID != 0xFFFF) && (itemCategory == ITEM_CATEGORY_THREAD)) {
             Data_LoadToBuffer(1, itemData, &data_0205c148, itemIdx);
-            sp4[i] = itemData.unk_02;
+            sp4[i] = itemData.brand;
         }
     }
 

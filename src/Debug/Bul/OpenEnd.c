@@ -361,7 +361,7 @@ void        OpenEnd_StartNewGame(OpenEndState* state) {
     }
 }
 
-extern void func_ov044_02084a88();
+extern void ProcessOverlay_Result();
 extern void func_ov030_020ae92c();
 
 void OpenEnd_ContinueGame(OpenEndState* state) {
@@ -370,7 +370,8 @@ void OpenEnd_ContinueGame(OpenEndState* state) {
     if (Savefile_Load() == 0) {
         if (func_02023010(0x2AB) != 0) {
             gSaveData.unk_1AB4 |= 0x10;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, func_ov044_02084a88, 0, 0); //<-- Overlay44 -> Shutdown PP Gain screen
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, ProcessOverlay_Result, 0,
+                                   0); //<-- Overlay44 -> Shutdown PP Gain screen
             return;
         }
         if ((gSaveData.unk_1AB4 & 0x2) != 0) {

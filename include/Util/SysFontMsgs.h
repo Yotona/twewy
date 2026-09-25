@@ -40,6 +40,23 @@
     // menu_map.xls
     #define SYSMSG_AREA_NAMES_START  11564 // "Scramble Crossing"..
     #define SYSMSG_AREA_NAME_UNKNOWN 11606 // "? ? ?"
+    // menu_result.xls
+    #define SYSMSG_RESULT_PIN_OBTAINED_FMT    12155 // "Obtained <cC><str><cE> x<u32>."
+    #define SYSMSG_RESULT_FOOD_DIGESTED_FMT   12156 // "<str> digested the <str>."
+    #define SYSMSG_RESULT_PARTNER_STAT_UP_FMT 12157 // "<str><str> <cC>+<u32><cE>"
+    // USA-only: JP names the partner too and uses SYSMSG_RESULT_PARTNER_STAT_UP_FMT.
+    #define SYSMSG_RESULT_STAT_UP_FMT           12158 // "<str> <cC>+<u32><cE>"
+    #define SYSMSG_RESULT_SPECIAL_BONUS_START   12159 // "No damage taken."..
+    #define SYSMSG_RESULT_MINGLE_COUNT_PLURAL   12207 // "You encountered <u32> people while you w"...
+    #define SYSMSG_RESULT_MINGLE_COUNT_SINGULAR 12208 // "You encountered <u32> person while you w"...
+    #define SYSMSG_RESULT_SLEEP_PP_INFO         12209 // "You receive PP for the amount of time yo"...
+    #define SYSMSG_RESULT_SLEEP_SINCE           12210 // "A total of"
+    #define SYSMSG_RESULT_SLEEP_ELAPSED         12211 // "have passed."
+    #define SYSMSG_RESULT_SLEEP_DHM             12212 // "<u32>d <u32>h <u32>m"
+    #define SYSMSG_RESULT_SLEEP_HMS             12213 // "<u32>h <u32>m <u32>s"
+    // USA-only: JP has no combined sentence and draws the pieces above instead.
+    #define SYSMSG_RESULT_SLEEP_TOTAL_DHM 12214 // "A total of  <u32>d <u32>h <u32>m  have p"...
+    #define SYSMSG_RESULT_SLEEP_TOTAL_HMS 12215 // "A total of  <u32>h <u32>m <u32>s  have p"...
     // menu_shop.xls
     #define SYSMSG_SHOP_NAMES_START        12216 // "104 Building"..
     #define SYSMSG_SHOP_FRIENDSHIP_UP      12345 // "Friendship level up!"
@@ -49,6 +66,7 @@
     #define SYSMSG_SHOP_ABILITY_TIP_STYLE  12349 // "<c8>The seller digs your style!<cE>\nYou"...
     #define SYSMSG_SHOP_ABILITY_TIP_BROWSE 12350 // "<c8>The seller notices you browsing<cE> "...
     // menu_system.xls
+    #define SYSMSG_PARTNER_NEKU                 13086 // "Neku"
     #define SYSMSG_PARTNER_SHIKI                13087 // "Shiki"
     #define SYSMSG_PARTNER_JOSHUA               13088 // "Joshua"
     #define SYSMSG_PARTNER_BEAT                 13089 // "Beat"
@@ -60,6 +78,11 @@
     #define SYSMSG_STAT_BONUS_FMT               13115 // "<str> <c6>+<s32>"
     #define SYSMSG_STAT_PENALTY_FMT             13116 // "<str> <cC>-<s32>"
     #define SYSMSG_DIVIDED_U32S                 13117 // "<u32>/<u32>"
+    #define SYSMSG_MINGLE_ESPERS                13197 // "ESP'ers"
+    #define SYSMSG_MINGLE_CIVVIES               13198 // "Civvies"
+    #define SYSMSG_MINGLE_ALIENS                13199 // "Aliens"
+    #define SYSMSG_COUNT_FMT                    13213 // "<u32>"
+    #define SYSMSG_COUNT_NONE                   13214 // "\u2014" (em dash)
     #define SYSMSG_THREAD_ATTRIBUTE_LABEL       13151 // "Threads: "
     #define SYSMSG_THREAD_ATTRIBUTE_NAMES_START 13152 // "Headwear"..
     #define SYSMSG_FOOD_ITEM_LABEL              13158 // "Food Item"
@@ -111,6 +134,16 @@
     #define SYSMSG_THREAD_NAMES_START           11207 // "Ｍキャップ"..
     #define SYSMSG_AREA_NAMES_START             11487 // "スクランブル{02E6}{02D8}{02A6}"..
     #define SYSMSG_AREA_NAME_UNKNOWN            11529 // "？？？"
+    #define SYSMSG_RESULT_PIN_OBTAINED_FMT      12078 // "<str>×<cC><u32><cE>ゲット！"
+    #define SYSMSG_RESULT_FOOD_DIGESTED_FMT     12079 // "<str>が<str>{0250}{0322}！"
+    #define SYSMSG_RESULT_PARTNER_STAT_UP_FMT   12080 // "<str>　<str><cC>＋<u32><cE>"
+    #define SYSMSG_RESULT_SPECIAL_BONUS_START   12081 // "ノーダメージで{070E}{0381}した！"..
+    #define SYSMSG_RESULT_MINGLE_COUNT          12129 // "{0826}{070F}のすれ{0266}い{0729}{02BC}の"...
+    #define SYSMSG_RESULT_SLEEP_PP_INFO         12130 // "ゲームをプレイしていなかった"...
+    #define SYSMSG_RESULT_SLEEP_SINCE           12131 // "{024D}{070F}から"
+    #define SYSMSG_RESULT_SLEEP_ELAPSED         12132 // "{03D7}{042A}"
+    #define SYSMSG_RESULT_SLEEP_DHM             12133 // "<u32>{0898}<u32>{070C}{070A}<u32>{082F}"
+    #define SYSMSG_RESULT_SLEEP_HMS             12134 // "<u32>{070C}{070A}<u32>{082F}<u32>{03A9}"
     #define SYSMSG_SHOP_NAMES_START             12135 // "１０４ビル"..
     #define SYSMSG_SHOP_FRIENDSHIP_UP           12264 // "ショップ{026E}{02FB}との{027B}"...
     #define SYSMSG_SHOP_FRIENDSHIP_UP_TIPS      12265 // "<c8>ショップ{026E}{02FB}と{02"...
@@ -118,6 +151,7 @@
     #define SYSMSG_SHOP_ABILITY_UNLOCKED        12267 // "ショップ{026E}{02FB}からアビリティ{"...
     #define SYSMSG_SHOP_ABILITY_TIP_STYLE       12268 // "<c8>{025B}{082F}のコーディネイト"...
     #define SYSMSG_SHOP_ABILITY_TIP_BROWSE      12269 // "<c8>アイテムを{0238}ていたら{0264"...
+    #define SYSMSG_PARTNER_NEKU                 13005 // "ネク"
     #define SYSMSG_PARTNER_SHIKI                13006 // "シキ"
     #define SYSMSG_PARTNER_JOSHUA               13007 // "ヨシュア"
     #define SYSMSG_PARTNER_BEAT                 13008 // "ビイト"
@@ -129,6 +163,11 @@
     #define SYSMSG_STAT_BONUS_FMT               13034 // "<str>　<c6>＋<s32>"
     #define SYSMSG_STAT_PENALTY_FMT             13035 // "<str>　<cC>－<s32>"
     #define SYSMSG_DIVIDED_U32S                 13036 // "<u32>／<u32>"
+    #define SYSMSG_MINGLE_ESPERS                13098 // "エスパー"
+    #define SYSMSG_MINGLE_CIVVIES               13099 // "いっぱんじん"
+    #define SYSMSG_MINGLE_ALIENS                13100 // "エイリアン"
+    #define SYSMSG_COUNT_FMT                    13111 // "<u32>{085D}"
+    #define SYSMSG_COUNT_NONE                   13112 // "－"
     #define SYSMSG_THREAD_ATTRIBUTE_LABEL       13069 // "そうび{062A}{026B}："
     #define SYSMSG_THREAD_ATTRIBUTE_NAMES_START 13070 // "{02A7}"..
     #define SYSMSG_FOOD_ITEM_LABEL              13076 // "フードアイテム"

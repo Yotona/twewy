@@ -2787,7 +2787,7 @@ static void OtosuMenu_Update(OtosuMenuObj* menuObj) {
             SystemStatusFlags.unk_06 = 1;
             SystemStatusFlags.unk_07 = 1;
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, (void*)0x02084A88, NULL, 0);
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, (void*)0x02084A88 /* ProcessOverlay_Result */, NULL, 0);
             return;
         }
 

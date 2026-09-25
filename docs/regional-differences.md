@@ -66,3 +66,32 @@ USA defines 57 functions in this TU against JP's 52. The five extras all belong 
 
 - **[USA only](../src/Interface/Menu/MenuEquip/MenuEquip_pointer.c)**: task TU with no JP counterpart.
 - **[USA only](../src/Interface/Menu/MenuEquip/MenuEquip_sbar2.c)**: task TU with no JP counterpart; JP ships only [`MenuEquip_sbar.c`](../src/Interface/Menu/MenuEquip/MenuEquip_sbar.c). USA's overlay delinks 28 MenuEquip task TUs against JP's 26.
+
+### src/Interface/Menu/Result.c
+
+- **[Both](../src/Interface/Menu/Result.c#L196)**: `Result_InitState`. USA copies the Mingle-mode pins in through `Result_ImportSurePins` before it loads equipment. JP calls `Result_LoadEquipment` once, before it checks the mode.
+- **[Both](../src/Interface/Menu/Result.c#L249)**, **[Both](../src/Interface/Menu/Result.c#L994)**: JP starts the fade-in from `Result_CreateTasks`, and USA starts it from `Result_Init`.
+- **[USA only](../src/Interface/Menu/Result.c#L984)**: `Result_Init` validates the main and debug heap sequences.
+- **[USA only](../src/Interface/Menu/Result.c#L491)**, **[USA only](../src/Interface/Menu/Result.c#L662)**, **[USA only](../src/Interface/Menu/Result.c#L786)**: `Result_StageBattleCountPP`, `Result_StageSureCountPP` and `Result_StageSleepCountPP` stop a max-level badge's battle, mingle and shutdown PP at `startPP + ppToNextLevel`. JP lets it keep growing.
+
+### src/Interface/Menu/ResultData.c
+
+- **[USA only](../src/Interface/Menu/ResultData.c#L463)**: `Result_GetCurrentDate`, the RTC date packed as `YYYYMMDD`.
+- **[Both](../src/Interface/Menu/ResultData.c#L471)**: `Result_DigestFood`. USA refills food capacity to 24 when the date has changed since the last save (`unk_242C`) and when flag 715 is set. JP does neither. The two releases also update `foodBytesLeft` and `foodCapacityLeft` in the opposite order.
+- **[USA only](../src/Interface/Menu/ResultData.c#L755)**: `Result_ImportSurePins`, which copies the six pins from `data_ov038_0209a204` into `equippedPins` and frees them.
+- **[Both](../src/Interface/Menu/ResultData.c#L278)**: `MINGLE_PP_WEIGHT` in `Result_GetDominantPPType` is 20 in USA and 9 in JP.
+- **[Both](../src/Interface/Menu/ResultData.c#L776)**: the Mingle-mode PP per esper, civvy and alien in `Result_InitSureMode` is 50/20/100 in USA and 20/3/20 in JP.
+- **[USA only](../src/Interface/Menu/ResultData.c#L1095)**: `Result_SaveEquippedPins` also writes the equipped pins back to the active `pinLayouts` deck.
+- **[Both](../src/Interface/Menu/ResultData.c#L1110)**: `SYNC_PENALTY` in `Result_CommitBattle`, the partner sync lost per unit of `unk_318F`, is 5 in USA and 10 in JP.
+- **[JP only](../src/Interface/Menu/ResultData.c#L1267)**: `Result_CommitSure` awards EXP equal to the number of people mingled with. In USA the function is empty.
+
+### src/Interface/Menu/Result/
+
+- **[Both](../src/Interface/Menu/Result/Result_bdgU.c#L8)**, **[Both](../src/Interface/Menu/Result/Result_rankU.c#L5)**: `Result_bdgU` and `Result_rankU` use different slide-in speed, acceleration and position constants.
+- **[USA only](../src/Interface/Menu/Result/Result_bdgU.c#L282)**: a touch or A press skips the `Result_bdgU` slide-in.
+- **[Both](../src/Interface/Menu/Result/Result_beltU.c#L28)**: `Result_beltU` text buffers are `[2][100]` in USA and `[2][30]` in JP, which moves `drawDelay`. USA also [sets font spacing](../src/Interface/Menu/Result/Result_beltU.c#L131) and [scrolls twice as fast](../src/Interface/Menu/Result/Result_beltU.c#L337).
+- **[Both](../src/Interface/Menu/Result/Result_beltU.c#L186)**: in USA the food stat-up message leaves out the partner name.
+- **[USA only](../src/Interface/Menu/Result/Result_numMaxHit.c#L117)**: `Result_numMaxHit` picks the "hit" or "hits" label from the count. JP has a single label.
+- **[Both](../src/Interface/Menu/Result/Result_textScr_sure.c#L29)**, **[Both](../src/Interface/Menu/Result/Result_textScr_sleep.c#L29)**: the text buffers are 200 `SysCode`s in USA and 50 in JP.
+- **[USA only](../src/Interface/Menu/Result/Result_textScr_sure.c#L56)**: the mingle count uses a singular or plural message.
+- **[Both](../src/Interface/Menu/Result/Result_textScr_sleep.c#L57)**: USA draws the elapsed sleep time as one formatted line on font 1. JP draws separate "since" and "elapsed" labels and then the time on font 3.

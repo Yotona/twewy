@@ -3546,9 +3546,9 @@ data_02066a58 kind:bss addr:0x020672b8
 data_020672bc kind:bss addr:0x020672bc
 data_020672cc kind:bss addr:0x020672cc
 data_0206730c kind:bss addr:0x0206730c
-data_0206734c kind:bss addr:0x0206734c
+data_02066aec kind:bss addr:0x0206734c
 data_0206754c kind:bss addr:0x0206754c
-data_0206774c kind:bss addr:0x0206774c
+data_02066eec kind:bss addr:0x0206774c
 data_02067860 kind:bss addr:0x02067860
 data_02067878 kind:bss addr:0x02067878
 data_0206794c kind:bss addr:0x0206794c
@@ -3561,7 +3561,7 @@ data_02068fd8 kind:bss addr:0x02068fd8
 data_02068ff8 kind:bss addr:0x02068ff8
 data_0206a064 kind:bss addr:0x0206a064
 data_0206a484 kind:bss addr:0x0206a484
-data_0206b0f0 kind:bss addr:0x0206b0f0
+data_0206a890 kind:bss addr:0x0206b0f0
 g_HBlankManager kind:bss addr:0x0206b100
 data_0206b1f4 kind:bss addr:0x0206b1f4
 gMainHeap kind:bss addr:0x0206b204

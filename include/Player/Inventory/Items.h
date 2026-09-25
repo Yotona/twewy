@@ -8,7 +8,7 @@
  */
 typedef struct {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8  unk_02;
+    /* 0x02 */ u8  brand;
     /* 0x03 */ u8  unk_03;
     /* 0x04 */ u32 unk_04;
     /* 0x08 */ u16 unk_08;
@@ -29,8 +29,8 @@ typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ s32 unk_04;
-    /* 0x08 */ u16 unk_08;
-    /* 0x0A */ s16 unk_0A;
+    /* 0x08 */ u16 stat;
+    /* 0x0A */ s16 statBonus;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ u16 unk_0E;
     /* 0x10 */ s8  unk_10[4]; // Per character

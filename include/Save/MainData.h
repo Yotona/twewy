@@ -10,6 +10,26 @@ typedef struct {
     /* 0x2 */ u16 unk_2;
 } UnkSmallStruct;
 
+typedef struct {
+    /* 0x00 */ u16 scores[13];
+    /* 0x1A */ u8  ranking[13];
+    /* 0x27 */ u8  unk_27;
+} BrandTrend; // Size: 0x28
+
+typedef struct {
+    /* 0x0 */ u8 year   : 7;
+    /* 0x1 */ u8 month  : 4;
+    /* 0x2 */ u8 day    : 5;
+    /* 0x3 */ u8 hour   : 5;
+    /* 0x4 */ u8 minute : 6;
+    /* 0x5 */ u8 second : 6;
+} PackedDateTime; // Size: 0x6
+
+typedef struct {
+    /* 0x0 */ u16 itemId;
+    /* 0x2 */ s16 count;
+} UnkItemCount; // Size: 0x4
+
 typedef struct MainData {
     /* 0x0000 */ PlayerStats    playerStats;
     /* 0x002C */ FriendStats    friendStats[3];
@@ -17,10 +37,7 @@ typedef struct MainData {
     /* 0x00B0 */ StockpilePin   stockpilePins[256];
     /* 0x0AB0 */ MasteredPin    masteredPins[304];
     /* 0x0F70 */ InventoryItem  inventoryItems[472];
-    /* 0x16D0 */ s32            unk_16D0;
-    /* 0x16D4 */ char           unk_16D4[0x16EA - 0x16D4];
-    /* 0x16EA */ u8             unk_16EA[160];
-    /* 0x178A */ char           unk_178A[0x1A18 - 0x178A];
+    /* 0x16D0 */ BrandTrend     brandTrends[21];
     /* 0x1A18 */ s32            unk_1A18[35];
     /* 0x1AA4 */ Experience     experience;
     /* 0x1AB0 */ u8             unk_1AB0;
@@ -39,10 +56,14 @@ typedef struct MainData {
     /* 0x1AF4 */ char           unk_1AF4[0x1B24 - 0x1AF4];
     /* 0x1B24 */ u16            unk_1B24;
     /* 0x1B26 */ char           unk_1B26[0x1D7C - 0x1B26];
-    /* 0x1D7C */ u16            unk_1D7C;
-    /* 0x1D7E */ char           unk_1D7E[0x1D84 - 0x1D7E];
-    /* 0x1D84 */ u16            unk_1D84;
-    /* 0x1D86 */ char           unk_1D86[0x1D94 - 0x1D86];
+    /* 0x1D7C */ u8             civviesMet;
+    /* 0x1D7D */ u8             espersMet;
+    /* 0x1D7E */ u8             aliensMet;
+    /* 0x1D7F */ char           unk_1D7F[0x1D84 - 0x1D7F];
+    /* 0x1D84 */ u8             unk_1D84;
+    /* 0x1D85 */ char           unk_1D85[0x1D88 - 0x1D85];
+    /* 0x1D88 */ u32            mabsBasePP;
+    /* 0x1D8C */ char           unk_1D8C[0x1D94 - 0x1D8C];
     /* 0x1D94 */ u32            unk_1D94;
     /* 0x1D98 */ u8             unk_1D98[41];
     /* 0x1DC1 */ char           unk_1DC1[1];
@@ -57,7 +78,9 @@ typedef struct MainData {
     /* 0x2326 */ u16            unk_2326[16];
     /* 0x2346 */ u16            unk_2346;
     /* 0x2348 */ u16            unk_2348;
-    /* 0x234A */ char           unk_234A[0x242C - 0x234A];
+    /* 0x234A */ char           unk_234A[0x2370 - 0x234A];
+    /* 0x2370 */ PackedDateTime lastSaveTime;
+    /* 0x2376 */ char           unk_2376[0x242C - 0x2376];
     /* 0x242C */ u32            unk_242C;
     /* 0x2430 */ u16            unk_2430;
     /* 0x2432 */ u16            unk_2432;
@@ -211,12 +234,24 @@ typedef struct MainData {
     /* 0x312C */ s32            unk_312C;
     /* 0x3130 */ s32            unk_3130;
     /* 0x3134 */ s32            unk_3134;
-    /* 0x3138 */ char           unk_3138[0x313C - 0x3138];
+    /* 0x3138 */ s32            unk_3138;
     /* 0x313C */ s32            unk_313C;
     /* 0x3140 */ u8             unk_3140;
     /* 0x3141 */ u8             unk_3141;
     /* 0x3142 */ u16            unk_3142;
-    /* 0x3144 */ char           unk_3144[0x3234 - 0x3144];
+    /* 0x3144 */ s16            battleCount;
+    /* 0x3146 */ char           unk_3146[0x3180 - 0x3146];
+    /* 0x3180 */ u8             battlePartner;
+    /* 0x3181 */ u8             unk_3181;
+    /* 0x3182 */ s16            battleBasePP;
+    /* 0x3184 */ u32            battleParTime;
+    /* 0x3188 */ u32            battleClearTime;
+    /* 0x318C */ s16            battleMaxHits;
+    /* 0x318E */ u8             unk_318E;
+    /* 0x318F */ u8             unk_318F;
+    /* 0x3190 */ u32            battleBonusFlags;
+    /* 0x3194 */ UnkItemCount   battleDrops[32];
+    /* 0x3214 */ char           unk_3214[0x3234 - 0x3214];
     /* 0x3234 */ s32            unk_3234;
     /* 0x3238 */ u32            unk_3238;
     /* 0x323C */ char           unk_323C[0x323E - 0x323C];

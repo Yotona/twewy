@@ -104,7 +104,7 @@ extern void func_ov043_020bd414(void* state);
 extern void func_ov043_020c04f0(void* state);
 extern void func_ov043_020c6644(void* state);
 
-extern void func_ov044_02084a88(void* state);
+extern void ProcessOverlay_Result(void* state);
 
 extern void func_ov045_02083c78(void* state);
 extern void func_ov045_02088700(void* state);
@@ -134,7 +134,7 @@ const DebugLauncherOption Options_Takami[14] = {
     // "Feature: Equipment", "Description: Equipment selection screen"
     {5,           "機能\:そうび",       "説明:そうびを選択する画面",                  43, ProcessOverlay_MenuEquip},
     // "Feature: Result", "Description: Result screen after battle"
-    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",                  44,      func_ov044_02084a88},
+    {6,         "機能\:リザルト", "説明:バトル終了後のリザルト画面",                  44,    ProcessOverlay_Result},
     // "Feature: Shop", "Description: Shop screen"
     {7,         "機能\:ショップ",               "説明:ショップ画面",                  43,      func_ov043_020aeee0},
     // "Feature: Department Store", "Description: Department store screen"

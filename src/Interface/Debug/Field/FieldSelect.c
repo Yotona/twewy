@@ -150,7 +150,7 @@ void func_ov030_020b0834(FieldSelectObject* object) {
         object->unk_219B8 = -1;
         return;
     }
-    object->unk_219B8 = gSaveData.unk_16EA[index * 0x28];
+    object->unk_219B8 = gSaveData.brandTrends[index].ranking[0];
 }
 
 void func_ov030_020b0878(FieldSelectObject* object) {
@@ -158,7 +158,7 @@ void func_ov030_020b0878(FieldSelectObject* object) {
     if (index < 0) {
         return;
     }
-    gSaveData.unk_16EA[index * 0x28] = object->unk_219B8;
+    gSaveData.brandTrends[index].ranking[0] = object->unk_219B8;
 }
 
 void func_ov030_020b08b0(FieldSelectObject* object) {

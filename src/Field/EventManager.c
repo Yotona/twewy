@@ -1843,7 +1843,7 @@ void func_ov030_020aa9f4(FieldEventManager* eventMgr, s16 arg1, s16 arg2, s16 ar
 }
 
 u8 func_ov030_020aaad8(void) {
-    return gSaveData.unk_16EA[func_ov030_020af350() * 0x28];
+    return gSaveData.brandTrends[func_ov030_020af350()].ranking[0];
 }
 
 s32 func_ov030_020aaaf8(u16 itemID, s32 arg1) {

@@ -43,9 +43,9 @@ typedef struct {
     /* 0x1B */ u8  _pad_1B;
     /* 0x1C */ u16 equippedThreads[4]; // Item IDs of equipped threads, or 0xFFFF if empty
     /* 0x24 */ u8  unk_24[4];
-    /* 0x28 */ u16 unk_28;
-    /* 0x2A */ u8  unk_2A;
-    /* 0x2B */ u8  unk_2B;
+    /* 0x28 */ u16 foodItem;
+    /* 0x2A */ u8  foodBytesLeft;
+    /* 0x2B */ u8  foodCapacityLeft;
 } PlayerStats; // Size: 0x2C
 
 typedef struct {
@@ -55,9 +55,9 @@ typedef struct {
     /* 0x06 */ u16 bravery;
     /* 0x08 */ u16 equippedThreads[4]; // Item IDs of equipped threads, or 0xFFFF if empty
     /* 0x10 */ u8  unk_10[4];
-    /* 0x14 */ u16 unk_14;
-    /* 0x16 */ u8  unk_16;
-    /* 0x17 */ u8  unk_17;
+    /* 0x14 */ u16 foodItem;
+    /* 0x16 */ u8  foodBytesLeft;
+    /* 0x17 */ u8  foodCapacityLeft;
 } FriendStats; // Size: 0x18
 
 typedef struct {

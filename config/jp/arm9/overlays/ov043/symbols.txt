@@ -1,388 +1,394 @@
-func_ov043_02082e80 kind:function(arm,size=0x9c) addr:0x02082e80
-func_ov043_02082f1c kind:function(arm,size=0xec) addr:0x02082f1c
-func_ov043_02083008 kind:function(arm,size=0x90) addr:0x02083008
-func_ov043_02083098 kind:function(arm,size=0x214) addr:0x02083098
-func_ov043_020832ac kind:function(arm,size=0x40) addr:0x020832ac
-func_ov043_020832ec kind:function(arm,size=0x130) addr:0x020832ec
-func_ov043_0208341c kind:function(arm,size=0x3c) addr:0x0208341c
-func_ov043_02083458 kind:function(arm,size=0xb0) addr:0x02083458
-func_ov043_02083508 kind:function(arm,size=0x3c8) addr:0x02083508
-func_ov043_020838d0 kind:function(arm,size=0x310) addr:0x020838d0
-func_ov043_02083be0 kind:function(arm,size=0x1cc) addr:0x02083be0
-func_ov043_02083dac kind:function(arm,size=0x114) addr:0x02083dac
-func_ov043_02083ec0 kind:function(arm,size=0x34) addr:0x02083ec0
-func_ov043_02083ef4 kind:function(arm,size=0x64) addr:0x02083ef4
-func_ov043_02083f58 kind:function(arm,size=0x68) addr:0x02083f58
-func_ov043_02083fc0 kind:function(arm,size=0x2f4) addr:0x02083fc0
-func_ov043_020842b4 kind:function(arm,size=0x1b0) addr:0x020842b4
-func_ov043_02084464 kind:function(arm,size=0x48) addr:0x02084464
-func_ov043_020844ac kind:function(arm,size=0x48) addr:0x020844ac
-func_ov043_020844f4 kind:function(arm,size=0x2f4) addr:0x020844f4
-func_ov043_020847e8 kind:function(arm,size=0x1b0) addr:0x020847e8
-func_ov043_02084998 kind:function(arm,size=0x48) addr:0x02084998
-func_ov043_020849e0 kind:function(arm,size=0x5c) addr:0x020849e0
-func_ov043_02084a3c kind:function(arm,size=0x2f4) addr:0x02084a3c
-func_ov043_02084d30 kind:function(arm,size=0x1b0) addr:0x02084d30
-func_ov043_02084ee0 kind:function(arm,size=0x48) addr:0x02084ee0
-func_ov043_02084f28 kind:function(arm,size=0x28) addr:0x02084f28
-func_ov043_02084f50 kind:function(arm,size=0x14c) addr:0x02084f50
-func_ov043_0208509c kind:function(arm,size=0x224) addr:0x0208509c
-func_ov043_020852c0 kind:function(arm,size=0x104) addr:0x020852c0
-func_ov043_020853c4 kind:function(arm,size=0x40) addr:0x020853c4
-func_ov043_02085404 kind:function(arm,size=0x394) addr:0x02085404
-func_ov043_02085798 kind:function(arm,size=0xe8) addr:0x02085798
-func_ov043_02085880 kind:function(arm,size=0x1c) addr:0x02085880
-func_ov043_0208589c kind:function(arm,size=0x14) addr:0x0208589c
-func_ov043_020858b0 kind:function(arm,size=0x4c) addr:0x020858b0
-func_ov043_020858fc kind:function(arm,size=0x2c) addr:0x020858fc
-func_ov043_02085928 kind:function(arm,size=0x2c) addr:0x02085928
-func_ov043_02085954 kind:function(arm,size=0x2c) addr:0x02085954
-func_ov043_02085980 kind:function(arm,size=0x1c) addr:0x02085980
-func_ov043_0208599c kind:function(arm,size=0x18) addr:0x0208599c
-func_ov043_020859b4 kind:function(arm,size=0x34) addr:0x020859b4
-func_ov043_020859e8 kind:function(arm,size=0x18) addr:0x020859e8
-func_ov043_02085a00 kind:function(arm,size=0x50) addr:0x02085a00
-func_ov043_02085a50 kind:function(arm,size=0x5c) addr:0x02085a50
-func_ov043_02085aac kind:function(arm,size=0x50) addr:0x02085aac
-func_ov043_02085afc kind:function(arm,size=0x5c) addr:0x02085afc
-func_ov043_02085b58 kind:function(arm,size=0x10) addr:0x02085b58
-func_ov043_02085b68 kind:function(arm,size=0x3c) addr:0x02085b68
-func_ov043_02085ba4 kind:function(arm,size=0x34) addr:0x02085ba4
-func_ov043_02085bd8 kind:function(arm,size=0x54) addr:0x02085bd8
-func_ov043_02085c2c kind:function(arm,size=0x54) addr:0x02085c2c
-func_ov043_02085c80 kind:function(arm,size=0x3c) addr:0x02085c80
-func_ov043_02085cbc kind:function(arm,size=0x3c) addr:0x02085cbc
-func_ov043_02085cf8 kind:function(arm,size=0x38) addr:0x02085cf8
-func_ov043_02085d30 kind:function(arm,size=0x150) addr:0x02085d30
-func_ov043_02085e80 kind:function(arm,size=0x20) addr:0x02085e80
-func_ov043_02085ea0 kind:function(arm,size=0x48) addr:0x02085ea0
-func_ov043_02085ee8 kind:function(arm,size=0x64) addr:0x02085ee8
-func_ov043_02085f4c kind:function(arm,size=0x1f8) addr:0x02085f4c
-func_ov043_02086144 kind:function(arm,size=0x234) addr:0x02086144
-func_ov043_02086378 kind:function(arm,size=0x6c) addr:0x02086378
-func_ov043_020863e4 kind:function(arm,size=0x114) addr:0x020863e4
-func_ov043_020864f8 kind:function(arm,size=0x2f4) addr:0x020864f8
-func_ov043_020867ec kind:function(arm,size=0x1f0) addr:0x020867ec
-func_ov043_020869dc kind:function(arm,size=0x74) addr:0x020869dc
-func_ov043_02086a50 kind:function(arm,size=0x4a8) addr:0x02086a50
-func_ov043_02086ef8 kind:function(arm,size=0xd8) addr:0x02086ef8
-func_ov043_02086fd0 kind:function(arm,size=0x6c) addr:0x02086fd0
-func_ov043_0208703c kind:function(arm,size=0x80) addr:0x0208703c
-func_ov043_020870bc kind:function(arm,size=0x30) addr:0x020870bc
-func_ov043_020870ec kind:function(arm,size=0xa8) addr:0x020870ec
-func_ov043_02087194 kind:function(arm,size=0xd4) addr:0x02087194
-func_ov043_02087268 kind:function(arm,size=0x50) addr:0x02087268
-func_ov043_020872b8 kind:function(arm,size=0x3c) addr:0x020872b8
-func_ov043_020872f4 kind:function(arm,size=0x44) addr:0x020872f4
-func_ov043_02087338 kind:function(arm,size=0x8c) addr:0x02087338
-func_ov043_020873c4 kind:function(arm,size=0x44) addr:0x020873c4
-func_ov043_02087408 kind:function(arm,size=0x90) addr:0x02087408
-func_ov043_02087498 kind:function(arm,size=0xb8) addr:0x02087498
-func_ov043_02087550 kind:function(arm,size=0xa4) addr:0x02087550
-func_ov043_020875f4 kind:function(arm,size=0x9c) addr:0x020875f4
-func_ov043_02087690 kind:function(arm,size=0x534) addr:0x02087690
-func_ov043_02087bc4 kind:function(arm,size=0x20) addr:0x02087bc4
-func_ov043_02087be4 kind:function(arm,size=0x4) addr:0x02087be4
-func_ov043_02087be8 kind:function(arm,size=0x24) addr:0x02087be8
-func_ov043_02087c0c kind:function(arm,size=0x200) addr:0x02087c0c
-func_ov043_02087e0c kind:function(arm,size=0x228) addr:0x02087e0c
-func_ov043_02088034 kind:function(arm,size=0x88) addr:0x02088034
-func_ov043_020880bc kind:function(arm,size=0x24) addr:0x020880bc
-func_ov043_020880e0 kind:function(arm,size=0x33c) addr:0x020880e0
-func_ov043_0208841c kind:function(arm,size=0x4) addr:0x0208841c
-func_ov043_02088420 kind:function(arm,size=0x48) addr:0x02088420
-func_ov043_02088468 kind:function(arm,size=0xa0) addr:0x02088468
-func_ov043_02088508 kind:function(arm,size=0x2a8) addr:0x02088508
-func_ov043_020887b0 kind:function(arm,size=0x28) addr:0x020887b0
-func_ov043_020887d8 kind:function(arm,size=0x2c) addr:0x020887d8
-func_ov043_02088804 kind:function(arm,size=0x40) addr:0x02088804
-func_ov043_02088844 kind:function(arm,size=0x2c) addr:0x02088844
-func_ov043_02088870 kind:function(arm,size=0x48) addr:0x02088870
-func_ov043_020888b8 kind:function(arm,size=0x3c) addr:0x020888b8
-func_ov043_020888f4 kind:function(arm,size=0xa0) addr:0x020888f4
-func_ov043_02088994 kind:function(arm,size=0x1ec) addr:0x02088994
-func_ov043_02088b80 kind:function(arm,size=0x28) addr:0x02088b80
-func_ov043_02088ba8 kind:function(arm,size=0x2c) addr:0x02088ba8
-func_ov043_02088bd4 kind:function(arm,size=0x40) addr:0x02088bd4
-func_ov043_02088c14 kind:function(arm,size=0x2c) addr:0x02088c14
-func_ov043_02088c40 kind:function(arm,size=0x48) addr:0x02088c40
-func_ov043_02088c88 kind:function(arm,size=0x3c) addr:0x02088c88
-func_ov043_02088cc4 kind:function(arm,size=0xa0) addr:0x02088cc4
-func_ov043_02088d64 kind:function(arm,size=0xd4) addr:0x02088d64
-func_ov043_02088e38 kind:function(arm,size=0x154) addr:0x02088e38
-func_ov043_02088f8c kind:function(arm,size=0x180) addr:0x02088f8c
-func_ov043_0208910c kind:function(arm,size=0x10c) addr:0x0208910c
-func_ov043_02089218 kind:function(arm,size=0x10c) addr:0x02089218
-func_ov043_02089324 kind:function(arm,size=0x110) addr:0x02089324
-func_ov043_02089434 kind:function(arm,size=0x34) addr:0x02089434
-func_ov043_02089468 kind:function(arm,size=0x94) addr:0x02089468
-func_ov043_020894fc kind:function(arm,size=0x164) addr:0x020894fc
-func_ov043_02089660 kind:function(arm,size=0x12c) addr:0x02089660
-func_ov043_0208978c kind:function(arm,size=0x20) addr:0x0208978c
-func_ov043_020897ac kind:function(arm,size=0x4c) addr:0x020897ac
-func_ov043_020897f8 kind:function(arm,size=0x40) addr:0x020897f8
-func_ov043_02089838 kind:function(arm,size=0x2c) addr:0x02089838
-func_ov043_02089864 kind:function(arm,size=0x48) addr:0x02089864
-func_ov043_020898ac kind:function(arm,size=0x34) addr:0x020898ac
-func_ov043_020898e0 kind:function(arm,size=0xa0) addr:0x020898e0
-func_ov043_02089980 kind:function(arm,size=0xbc) addr:0x02089980
-func_ov043_02089a3c kind:function(arm,size=0x3b4) addr:0x02089a3c
-func_ov043_02089df0 kind:function(arm,size=0x168) addr:0x02089df0
-func_ov043_02089f58 kind:function(arm,size=0x164) addr:0x02089f58
-func_ov043_0208a0bc kind:function(arm,size=0xc0) addr:0x0208a0bc
-func_ov043_0208a17c kind:function(arm,size=0x20) addr:0x0208a17c
-func_ov043_0208a19c kind:function(arm,size=0x34) addr:0x0208a19c
-func_ov043_0208a1d0 kind:function(arm,size=0x40) addr:0x0208a1d0
-func_ov043_0208a210 kind:function(arm,size=0x2c) addr:0x0208a210
-func_ov043_0208a23c kind:function(arm,size=0x48) addr:0x0208a23c
-func_ov043_0208a284 kind:function(arm,size=0x34) addr:0x0208a284
-func_ov043_0208a2b8 kind:function(arm,size=0xa0) addr:0x0208a2b8
-func_ov043_0208a358 kind:function(arm,size=0xbc) addr:0x0208a358
-func_ov043_0208a414 kind:function(arm,size=0x1f4) addr:0x0208a414
-func_ov043_0208a608 kind:function(arm,size=0x168) addr:0x0208a608
-func_ov043_0208a770 kind:function(arm,size=0x164) addr:0x0208a770
-func_ov043_0208a8d4 kind:function(arm,size=0xc0) addr:0x0208a8d4
-func_ov043_0208a994 kind:function(arm,size=0x20) addr:0x0208a994
-func_ov043_0208a9b4 kind:function(arm,size=0x34) addr:0x0208a9b4
-func_ov043_0208a9e8 kind:function(arm,size=0x40) addr:0x0208a9e8
-func_ov043_0208aa28 kind:function(arm,size=0x2c) addr:0x0208aa28
-func_ov043_0208aa54 kind:function(arm,size=0x48) addr:0x0208aa54
-func_ov043_0208aa9c kind:function(arm,size=0x34) addr:0x0208aa9c
-func_ov043_0208aad0 kind:function(arm,size=0xa0) addr:0x0208aad0
-func_ov043_0208ab70 kind:function(arm,size=0xd4) addr:0x0208ab70
-func_ov043_0208ac44 kind:function(arm,size=0x168) addr:0x0208ac44
-func_ov043_0208adac kind:function(arm,size=0x10c) addr:0x0208adac
-func_ov043_0208aeb8 kind:function(arm,size=0x10c) addr:0x0208aeb8
-func_ov043_0208afc4 kind:function(arm,size=0x168) addr:0x0208afc4
-func_ov043_0208b12c kind:function(arm,size=0x164) addr:0x0208b12c
-func_ov043_0208b290 kind:function(arm,size=0xe8) addr:0x0208b290
-func_ov043_0208b378 kind:function(arm,size=0x20) addr:0x0208b378
-func_ov043_0208b398 kind:function(arm,size=0x34) addr:0x0208b398
-func_ov043_0208b3cc kind:function(arm,size=0x40) addr:0x0208b3cc
-func_ov043_0208b40c kind:function(arm,size=0x2c) addr:0x0208b40c
-func_ov043_0208b438 kind:function(arm,size=0x48) addr:0x0208b438
-func_ov043_0208b480 kind:function(arm,size=0x34) addr:0x0208b480
-func_ov043_0208b4b4 kind:function(arm,size=0xa8) addr:0x0208b4b4
-func_ov043_0208b55c kind:function(arm,size=0x100) addr:0x0208b55c
-func_ov043_0208b65c kind:function(arm,size=0x28) addr:0x0208b65c
-func_ov043_0208b684 kind:function(arm,size=0x14) addr:0x0208b684
-func_ov043_0208b698 kind:function(arm,size=0x20) addr:0x0208b698
-func_ov043_0208b6b8 kind:function(arm,size=0x14) addr:0x0208b6b8
-func_ov043_0208b6cc kind:function(arm,size=0x48) addr:0x0208b6cc
-func_ov043_0208b714 kind:function(arm,size=0x44) addr:0x0208b714
-func_ov043_0208b758 kind:function(arm,size=0xac) addr:0x0208b758
-func_ov043_0208b804 kind:function(arm,size=0x9c) addr:0x0208b804
-func_ov043_0208b8a0 kind:function(arm,size=0xec) addr:0x0208b8a0
-func_ov043_0208b98c kind:function(arm,size=0x28) addr:0x0208b98c
-func_ov043_0208b9b4 kind:function(arm,size=0x54) addr:0x0208b9b4
-func_ov043_0208ba08 kind:function(arm,size=0x48) addr:0x0208ba08
-func_ov043_0208ba50 kind:function(arm,size=0x34) addr:0x0208ba50
-func_ov043_0208ba84 kind:function(arm,size=0x48) addr:0x0208ba84
-func_ov043_0208bacc kind:function(arm,size=0x38) addr:0x0208bacc
-func_ov043_0208bb04 kind:function(arm,size=0xa8) addr:0x0208bb04
-func_ov043_0208bbac kind:function(arm,size=0xe8) addr:0x0208bbac
-func_ov043_0208bc94 kind:function(arm,size=0x15c) addr:0x0208bc94
-func_ov043_0208bdf0 kind:function(arm,size=0x34) addr:0x0208bdf0
-func_ov043_0208be24 kind:function(arm,size=0x68) addr:0x0208be24
-func_ov043_0208be8c kind:function(arm,size=0x40) addr:0x0208be8c
-func_ov043_0208becc kind:function(arm,size=0x2c) addr:0x0208becc
-func_ov043_0208bef8 kind:function(arm,size=0x48) addr:0x0208bef8
-func_ov043_0208bf40 kind:function(arm,size=0x38) addr:0x0208bf40
-func_ov043_0208bf78 kind:function(arm,size=0xac) addr:0x0208bf78
-func_ov043_0208c024 kind:function(arm,size=0x100) addr:0x0208c024
-func_ov043_0208c124 kind:function(arm,size=0x28) addr:0x0208c124
-func_ov043_0208c14c kind:function(arm,size=0x14) addr:0x0208c14c
-func_ov043_0208c160 kind:function(arm,size=0x20) addr:0x0208c160
-func_ov043_0208c180 kind:function(arm,size=0x14) addr:0x0208c180
-func_ov043_0208c194 kind:function(arm,size=0x48) addr:0x0208c194
-func_ov043_0208c1dc kind:function(arm,size=0x58) addr:0x0208c1dc
-func_ov043_0208c234 kind:function(arm,size=0xa8) addr:0x0208c234
-func_ov043_0208c2dc kind:function(arm,size=0x164) addr:0x0208c2dc
-func_ov043_0208c440 kind:function(arm,size=0x20) addr:0x0208c440
-func_ov043_0208c460 kind:function(arm,size=0x14) addr:0x0208c460
-func_ov043_0208c474 kind:function(arm,size=0x20) addr:0x0208c474
-func_ov043_0208c494 kind:function(arm,size=0x14) addr:0x0208c494
-func_ov043_0208c4a8 kind:function(arm,size=0x48) addr:0x0208c4a8
-func_ov043_0208c4f0 kind:function(arm,size=0x58) addr:0x0208c4f0
-func_ov043_0208c548 kind:function(arm,size=0xac) addr:0x0208c548
-func_ov043_0208c5f4 kind:function(arm,size=0xe0) addr:0x0208c5f4
-func_ov043_0208c6d4 kind:function(arm,size=0x50) addr:0x0208c6d4
-func_ov043_0208c724 kind:function(arm,size=0xb8) addr:0x0208c724
-func_ov043_0208c7dc kind:function(arm,size=0x20) addr:0x0208c7dc
-func_ov043_0208c7fc kind:function(arm,size=0x14) addr:0x0208c7fc
-func_ov043_0208c810 kind:function(arm,size=0x48) addr:0x0208c810
-func_ov043_0208c858 kind:function(arm,size=0x38) addr:0x0208c858
-func_ov043_0208c890 kind:function(arm,size=0xa8) addr:0x0208c890
-func_ov043_0208c938 kind:function(arm,size=0x1c4) addr:0x0208c938
-func_ov043_0208cafc kind:function(arm,size=0x20) addr:0x0208cafc
-func_ov043_0208cb1c kind:function(arm,size=0xd0) addr:0x0208cb1c
-func_ov043_0208cbec kind:function(arm,size=0x20) addr:0x0208cbec
-func_ov043_0208cc0c kind:function(arm,size=0x14) addr:0x0208cc0c
-func_ov043_0208cc20 kind:function(arm,size=0x48) addr:0x0208cc20
-func_ov043_0208cc68 kind:function(arm,size=0x40) addr:0x0208cc68
-func_ov043_0208cca8 kind:function(arm,size=0xac) addr:0x0208cca8
-func_ov043_0208cd54 kind:function(arm,size=0xe8) addr:0x0208cd54
-func_ov043_0208ce3c kind:function(arm,size=0x58) addr:0x0208ce3c
-func_ov043_0208ce94 kind:function(arm,size=0xb8) addr:0x0208ce94
-func_ov043_0208cf4c kind:function(arm,size=0x20) addr:0x0208cf4c
-func_ov043_0208cf6c kind:function(arm,size=0x14) addr:0x0208cf6c
-func_ov043_0208cf80 kind:function(arm,size=0x48) addr:0x0208cf80
-func_ov043_0208cfc8 kind:function(arm,size=0x38) addr:0x0208cfc8
-func_ov043_0208d000 kind:function(arm,size=0xa8) addr:0x0208d000
-func_ov043_0208d0a8 kind:function(arm,size=0x11c) addr:0x0208d0a8
-func_ov043_0208d1c4 kind:function(arm,size=0x20) addr:0x0208d1c4
-func_ov043_0208d1e4 kind:function(arm,size=0x30) addr:0x0208d1e4
-func_ov043_0208d214 kind:function(arm,size=0x20) addr:0x0208d214
-func_ov043_0208d234 kind:function(arm,size=0x14) addr:0x0208d234
-func_ov043_0208d248 kind:function(arm,size=0x48) addr:0x0208d248
-func_ov043_0208d290 kind:function(arm,size=0x38) addr:0x0208d290
-func_ov043_0208d2c8 kind:function(arm,size=0x50) addr:0x0208d2c8
-func_ov043_0208d318 kind:function(arm,size=0x394) addr:0x0208d318
-func_ov043_0208d6ac kind:function(arm,size=0x28) addr:0x0208d6ac
-func_ov043_0208d6d4 kind:function(arm,size=0x8) addr:0x0208d6d4
-func_ov043_0208d6dc kind:function(arm,size=0x8) addr:0x0208d6dc
-func_ov043_0208d6e4 kind:function(arm,size=0x30) addr:0x0208d6e4
-func_ov043_0208d714 kind:function(arm,size=0x48) addr:0x0208d714
-func_ov043_0208d75c kind:function(arm,size=0x34) addr:0x0208d75c
-func_ov043_0208d790 kind:function(arm,size=0x50) addr:0x0208d790
-func_ov043_0208d7e0 kind:function(arm,size=0x1fc) addr:0x0208d7e0
-func_ov043_0208d9dc kind:function(arm,size=0x28) addr:0x0208d9dc
-func_ov043_0208da04 kind:function(arm,size=0x8) addr:0x0208da04
-func_ov043_0208da0c kind:function(arm,size=0x8) addr:0x0208da0c
-func_ov043_0208da14 kind:function(arm,size=0x30) addr:0x0208da14
-func_ov043_0208da44 kind:function(arm,size=0x48) addr:0x0208da44
-func_ov043_0208da8c kind:function(arm,size=0x34) addr:0x0208da8c
-func_ov043_0208dac0 kind:function(arm,size=0xa8) addr:0x0208dac0
-func_ov043_0208db68 kind:function(arm,size=0xd8) addr:0x0208db68
-func_ov043_0208dc40 kind:function(arm,size=0x20) addr:0x0208dc40
-func_ov043_0208dc60 kind:function(arm,size=0x14) addr:0x0208dc60
-func_ov043_0208dc74 kind:function(arm,size=0x14) addr:0x0208dc74
-func_ov043_0208dc88 kind:function(arm,size=0x14) addr:0x0208dc88
-func_ov043_0208dc9c kind:function(arm,size=0x48) addr:0x0208dc9c
-func_ov043_0208dce4 kind:function(arm,size=0x38) addr:0x0208dce4
-func_ov043_0208dd1c kind:function(arm,size=0xa0) addr:0x0208dd1c
-func_ov043_0208ddbc kind:function(arm,size=0xb4) addr:0x0208ddbc
-func_ov043_0208de70 kind:function(arm,size=0x28) addr:0x0208de70
-func_ov043_0208de98 kind:function(arm,size=0xc0) addr:0x0208de98
-func_ov043_0208df58 kind:function(arm,size=0x24) addr:0x0208df58
-func_ov043_0208df7c kind:function(arm,size=0x18) addr:0x0208df7c
-func_ov043_0208df94 kind:function(arm,size=0x48) addr:0x0208df94
-func_ov043_0208dfdc kind:function(arm,size=0x38) addr:0x0208dfdc
-func_ov043_0208e014 kind:function(arm,size=0xa0) addr:0x0208e014
-func_ov043_0208e0b4 kind:function(arm,size=0x14c) addr:0x0208e0b4
-func_ov043_0208e200 kind:function(arm,size=0xb0) addr:0x0208e200
-func_ov043_0208e2b0 kind:function(arm,size=0x170) addr:0x0208e2b0
-func_ov043_0208e420 kind:function(arm,size=0x12c) addr:0x0208e420
-func_ov043_0208e54c kind:function(arm,size=0x20) addr:0x0208e54c
-func_ov043_0208e56c kind:function(arm,size=0x1fc) addr:0x0208e56c
-func_ov043_0208e768 kind:function(arm,size=0x40) addr:0x0208e768
-func_ov043_0208e7a8 kind:function(arm,size=0x2c) addr:0x0208e7a8
-func_ov043_0208e7d4 kind:function(arm,size=0x48) addr:0x0208e7d4
-func_ov043_0208e81c kind:function(arm,size=0x64) addr:0x0208e81c
-func_ov043_0208e880 kind:function(arm,size=0xa0) addr:0x0208e880
-func_ov043_0208e920 kind:function(arm,size=0xf8) addr:0x0208e920
-func_ov043_0208ea18 kind:function(arm,size=0x1c) addr:0x0208ea18
-func_ov043_0208ea34 kind:function(arm,size=0xa8) addr:0x0208ea34
-func_ov043_0208eadc kind:function(arm,size=0x17c) addr:0x0208eadc
-func_ov043_0208ec58 kind:function(arm,size=0x58) addr:0x0208ec58
-func_ov043_0208ecb0 kind:function(arm,size=0xa4) addr:0x0208ecb0
-func_ov043_0208ed54 kind:function(arm,size=0x84) addr:0x0208ed54
-func_ov043_0208edd8 kind:function(arm,size=0x254) addr:0x0208edd8
-func_ov043_0208f02c kind:function(arm,size=0x2c) addr:0x0208f02c
-func_ov043_0208f058 kind:function(arm,size=0x28) addr:0x0208f058
-func_ov043_0208f080 kind:function(arm,size=0x48) addr:0x0208f080
-func_ov043_0208f0c8 kind:function(arm,size=0x40) addr:0x0208f0c8
-data_ov043_0208f108 kind:data(any) addr:0x0208f108
+Result_InitState kind:function(arm,size=0x9c) addr:0x02082e80
+Result_CreateBadgeTasks kind:function(arm,size=0xec) addr:0x02082f1c
+Result_DestroyBadgeTasks kind:function(arm,size=0x90) addr:0x02083008
+Result_CreateTasks kind:function(arm,size=0x214) addr:0x02083098
+Result_IsAnyBadgeEvolving kind:function(arm,size=0x40) addr:0x020832ac
+Result_UpdateEvoFlash kind:function(arm,size=0x130) addr:0x020832ec
+Result_StageFadeIn kind:function(arm,size=0x3c) addr:0x0208341c
+Result_StageStart kind:function(arm,size=0xb0) addr:0x02083458
+Result_StageBattleRewards kind:function(arm,size=0x3c8) addr:0x02083508
+Result_StageBattleCountPP kind:function(arm,size=0x310) addr:0x020838d0
+Result_StageBattleEvolve kind:function(arm,size=0x1cc) addr:0x02083be0
+Result_StageBattleVoice kind:function(arm,size=0x114) addr:0x02083dac
+Result_StageBattleWaitVoice kind:function(arm,size=0x34) addr:0x02083ec0
+Result_StageBattleWaitExit kind:function(arm,size=0x64) addr:0x02083ef4
+Result_StageSureStart kind:function(arm,size=0x68) addr:0x02083f58
+Result_StageSureCountPP kind:function(arm,size=0x2f4) addr:0x02083fc0
+Result_StageSureEvolve kind:function(arm,size=0x1b0) addr:0x020842b4
+Result_StageSureWaitExit kind:function(arm,size=0x48) addr:0x02084464
+Result_StageSleepStart kind:function(arm,size=0x48) addr:0x020844ac
+Result_StageSleepCountPP kind:function(arm,size=0x2f4) addr:0x020844f4
+Result_StageSleepEvolve kind:function(arm,size=0x1b0) addr:0x020847e8
+Result_StageSleepWaitExit kind:function(arm,size=0x48) addr:0x02084998
+Result_StageMabsStart kind:function(arm,size=0x5c) addr:0x020849e0
+Result_StageMabsCountPP kind:function(arm,size=0x2f4) addr:0x02084a3c
+Result_StageMabsEvolve kind:function(arm,size=0x1b0) addr:0x02084d30
+Result_StageMabsWaitExit kind:function(arm,size=0x48) addr:0x02084ee0
+Result_StageFadeOut kind:function(arm,size=0x28) addr:0x02084f28
+Result_Init kind:function(arm,size=0x14c) addr:0x02084f50
+Result_Update kind:function(arm,size=0x224) addr:0x0208509c
+Result_Destroy kind:function(arm,size=0x104) addr:0x020852c0
+ProcessOverlay_Result kind:function(arm,size=0x40) addr:0x020853c4
+Result_InitDisplay kind:function(arm,size=0x394) addr:0x02085404
+Result_VBlank kind:function(arm,size=0xe8) addr:0x02085798
+Result_RegisterVBlank kind:function(arm,size=0x1c) addr:0x02085880
+Result_DeregisterVBlank kind:function(arm,size=0x14) addr:0x0208589c
+Result_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x020858b0
+Result_LoadPinData kind:function(arm,size=0x2c) addr:0x020858fc
+Result_LoadItemData kind:function(arm,size=0x2c) addr:0x02085928
+Result_LoadFoodData kind:function(arm,size=0x2c) addr:0x02085954
+Result_GetBadgeTotalPP kind:function(arm,size=0x1c) addr:0x02085980
+Result_GetBadgeLevelPP kind:function(arm,size=0x18) addr:0x0208599c
+Result_GetBadgeNextLevelPP kind:function(arm,size=0x34) addr:0x020859b4
+Result_GetLevelsMultiplier kind:function(arm,size=0x18) addr:0x020859e8
+Result_CalcTimeRank kind:function(arm,size=0x50) addr:0x02085a00
+Result_GetTimeRankMultiplier kind:function(arm,size=0x5c) addr:0x02085a50
+Result_CalcRateBRank kind:function(arm,size=0x50) addr:0x02085aac
+Result_GetRateBMultiplier kind:function(arm,size=0x5c) addr:0x02085afc
+Result_GetSpecialBonusMultiplier kind:function(arm,size=0x10) addr:0x02085b58
+Result_CalcBattlePP kind:function(arm,size=0x3c) addr:0x02085b68
+Result_CalcOverallRank kind:function(arm,size=0x34) addr:0x02085ba4
+Result_CalcMabsPinCountRank kind:function(arm,size=0x54) addr:0x02085bd8
+Result_GetMabsPinCountMultiplier kind:function(arm,size=0x54) addr:0x02085c2c
+Result_CalcMabsRateBRank kind:function(arm,size=0x3c) addr:0x02085c80
+Result_GetMabsRateBMultiplier kind:function(arm,size=0x3c) addr:0x02085cbc
+Result_GetDominantPPType kind:function(arm,size=0x38) addr:0x02085cf8
+Result_CheckBadgeEvolution kind:function(arm,size=0x150) addr:0x02085d30
+Result_GetBadgeSlotCount kind:function(arm,size=0x20) addr:0x02085e80
+Result_CountDroppedPins kind:function(arm,size=0x48) addr:0x02085ea0
+Result_SumUnmasteredDrops kind:function(arm,size=0x64) addr:0x02085ee8
+Result_LoadDroppedPins kind:function(arm,size=0x1f8) addr:0x02085f4c
+Result_DigestFood kind:function(arm,size=0x234) addr:0x02086144
+Result_LoadSpecialBonuses kind:function(arm,size=0x6c) addr:0x02086378
+Result_EvolveBadge kind:function(arm,size=0x114) addr:0x020863e4
+Result_LoadEquipment kind:function(arm,size=0x2f4) addr:0x020864f8
+Result_InitBattleMode kind:function(arm,size=0x1f0) addr:0x020867ec
+Result_InitSureMode kind:function(arm,size=0x74) addr:0x020869dc
+Result_InitSleepMode kind:function(arm,size=0x4a8) addr:0x02086a50
+Result_InitMabsMode kind:function(arm,size=0xd8) addr:0x02086ef8
+Result_IncrementMasteredPin kind:function(arm,size=0x6c) addr:0x02086fd0
+Result_AddMasteredPin kind:function(arm,size=0x80) addr:0x0208703c
+Result_StoreMasteredPin kind:function(arm,size=0x30) addr:0x020870bc
+Result_AddStockpilePin kind:function(arm,size=0xa8) addr:0x020870ec
+Result_AddEquipmentBrandTrend kind:function(arm,size=0xd4) addr:0x02087194
+Result_GetAreaFavoriteBrand kind:function(arm,size=0x50) addr:0x02087268
+Result_GetEvenHourBrand kind:function(arm,size=0x3c) addr:0x020872b8
+Result_GetOddHourBrand kind:function(arm,size=0x44) addr:0x020872f4
+Result_AddRandomBrandTrend kind:function(arm,size=0x8c) addr:0x02087338
+Result_ApplyBrandTrendGain kind:function(arm,size=0x44) addr:0x020873c4
+Result_NormalizeBrandTrends kind:function(arm,size=0x90) addr:0x02087408
+Result_SortBrandRanking kind:function(arm,size=0xb8) addr:0x02087498
+Result_UpdateBrandTrends kind:function(arm,size=0xa4) addr:0x02087550
+Result_SaveEquippedPins kind:function(arm,size=0x9c) addr:0x020875f4
+Result_CommitBattle kind:function(arm,size=0x534) addr:0x02087690
+Result_CommitSure kind:function(arm,size=0x20) addr:0x02087bc4
+Result_CommitSleep kind:function(arm,size=0x4) addr:0x02087be4
+Result_CommitMabs kind:function(arm,size=0x24) addr:0x02087be8
+Result_LoadBgResource kind:function(arm,size=0x200) addr:0x02087c0c
+Result_LoadBgResourceIndexed kind:function(arm,size=0x228) addr:0x02087e0c
+Result_ReleaseBgResource kind:function(arm,size=0x88) addr:0x02088034
+Result_ClearBgResource kind:function(arm,size=0x24) addr:0x020880bc
+Result_LoadBackgrounds kind:function(arm,size=0x33c) addr:0x020880e0
+Result_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x0208841c
+Result_ReleaseBackgrounds kind:function(arm,size=0x48) addr:0x02088420
+Result_numTime_GetFrameInfo kind:function(arm,size=0xa0) addr:0x02088468 local
+Result_numTime_Load kind:function(arm,size=0x2a8) addr:0x02088508 local
+Result_numTime_Init kind:function(arm,size=0x28) addr:0x020887b0 local
+Result_numTime_Update kind:function(arm,size=0x2c) addr:0x020887d8 local
+Result_numTime_Render kind:function(arm,size=0x40) addr:0x02088804 local
+Result_numTime_Destroy kind:function(arm,size=0x2c) addr:0x02088844 local
+Result_numTime_RunTask kind:function(arm,size=0x48) addr:0x02088870 local
+Result_numTime_CreateTask kind:function(arm,size=0x3c) addr:0x020888b8
+Result_numMaxHit_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020888f4 local
+Result_numMaxHit_Load kind:function(arm,size=0x1ec) addr:0x02088994 local
+Result_numMaxHit_Init kind:function(arm,size=0x28) addr:0x02088b80 local
+Result_numMaxHit_Update kind:function(arm,size=0x2c) addr:0x02088ba8 local
+Result_numMaxHit_Render kind:function(arm,size=0x40) addr:0x02088bd4 local
+Result_numMaxHit_Destroy kind:function(arm,size=0x2c) addr:0x02088c14 local
+Result_numMaxHit_RunTask kind:function(arm,size=0x48) addr:0x02088c40 local
+Result_numMaxHit_CreateTask kind:function(arm,size=0x3c) addr:0x02088c88
+Result_num_Param_GetFrameInfo kind:function(arm,size=0xa0) addr:0x02088cc4
+Result_num_Param_LoadLabels kind:function(arm,size=0xd4) addr:0x02088d64
+Result_num_Param_LoadTime kind:function(arm,size=0x154) addr:0x02088e38
+Result_num_Param_LoadLevels kind:function(arm,size=0x180) addr:0x02088f8c
+Result_num_Param_LoadRateA kind:function(arm,size=0x10c) addr:0x0208910c
+Result_num_Param_LoadRateB kind:function(arm,size=0x10c) addr:0x02089218
+Result_num_Param_LoadRateC kind:function(arm,size=0x110) addr:0x02089324
+Result_num_Param_LoadGrade kind:function(arm,size=0x34) addr:0x02089434
+Result_num_Param_LoadPoints kind:function(arm,size=0x94) addr:0x02089468
+Result_num_Param_UpdatePoints kind:function(arm,size=0x164) addr:0x020894fc
+Result_num_Param_Load kind:function(arm,size=0x12c) addr:0x02089660
+Result_num_Param_Init kind:function(arm,size=0x20) addr:0x0208978c
+Result_num_Param_Update kind:function(arm,size=0x4c) addr:0x020897ac
+Result_num_Param_Render kind:function(arm,size=0x40) addr:0x020897f8
+Result_num_Param_Destroy kind:function(arm,size=0x2c) addr:0x02089838
+Result_num_Param_RunTask kind:function(arm,size=0x48) addr:0x02089864
+Result_num_Param_CreateTask kind:function(arm,size=0x34) addr:0x020898ac
+Result_num_Param_sure_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020898e0 local
+Result_num_Param_sure_LoadLabels kind:function(arm,size=0xbc) addr:0x02089980 local
+Result_num_Param_sure_LoadCounts kind:function(arm,size=0x3b4) addr:0x02089a3c local
+Result_num_Param_sure_LoadPoints kind:function(arm,size=0x168) addr:0x02089df0 local
+Result_num_Param_sure_UpdatePoints kind:function(arm,size=0x164) addr:0x02089f58 local
+Result_num_Param_sure_Load kind:function(arm,size=0xc0) addr:0x0208a0bc local
+Result_num_Param_sure_Init kind:function(arm,size=0x20) addr:0x0208a17c local
+Result_num_Param_sure_Update kind:function(arm,size=0x34) addr:0x0208a19c local
+Result_num_Param_sure_Render kind:function(arm,size=0x40) addr:0x0208a1d0 local
+Result_num_Param_sure_Destroy kind:function(arm,size=0x2c) addr:0x0208a210 local
+Result_num_Param_sure_RunTask kind:function(arm,size=0x48) addr:0x0208a23c local
+Result_num_Param_sure_CreateTask kind:function(arm,size=0x34) addr:0x0208a284
+Result_num_Param_sleep_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208a2b8 local
+Result_num_Param_sleep_LoadLabels kind:function(arm,size=0xbc) addr:0x0208a358 local
+Result_num_Param_sleep_LoadRows kind:function(arm,size=0x1f4) addr:0x0208a414 local
+Result_num_Param_sleep_LoadPoints kind:function(arm,size=0x168) addr:0x0208a608 local
+Result_num_Param_sleep_UpdatePoints kind:function(arm,size=0x164) addr:0x0208a770 local
+Result_num_Param_sleep_Load kind:function(arm,size=0xc0) addr:0x0208a8d4 local
+Result_num_Param_sleep_Init kind:function(arm,size=0x20) addr:0x0208a994 local
+Result_num_Param_sleep_Update kind:function(arm,size=0x34) addr:0x0208a9b4 local
+Result_num_Param_sleep_Render kind:function(arm,size=0x40) addr:0x0208a9e8 local
+Result_num_Param_sleep_Destroy kind:function(arm,size=0x2c) addr:0x0208aa28 local
+Result_num_Param_sleep_RunTask kind:function(arm,size=0x48) addr:0x0208aa54 local
+Result_num_Param_sleep_CreateTask kind:function(arm,size=0x34) addr:0x0208aa9c
+Result_num_Param_mabs_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208aad0 local
+Result_num_Param_mabs_LoadLabels kind:function(arm,size=0xd4) addr:0x0208ab70 local
+Result_num_Param_mabs_LoadTime kind:function(arm,size=0x168) addr:0x0208ac44 local
+Result_num_Param_mabs_LoadRateA kind:function(arm,size=0x10c) addr:0x0208adac local
+Result_num_Param_mabs_LoadRateB kind:function(arm,size=0x10c) addr:0x0208aeb8 local
+Result_num_Param_mabs_LoadPoints kind:function(arm,size=0x168) addr:0x0208afc4 local
+Result_num_Param_mabs_UpdatePoints kind:function(arm,size=0x164) addr:0x0208b12c local
+Result_num_Param_mabs_Load kind:function(arm,size=0xe8) addr:0x0208b290 local
+Result_num_Param_mabs_Init kind:function(arm,size=0x20) addr:0x0208b378 local
+Result_num_Param_mabs_Update kind:function(arm,size=0x34) addr:0x0208b398 local
+Result_num_Param_mabs_Render kind:function(arm,size=0x40) addr:0x0208b3cc local
+Result_num_Param_mabs_Destroy kind:function(arm,size=0x2c) addr:0x0208b40c local
+Result_num_Param_mabs_RunTask kind:function(arm,size=0x48) addr:0x0208b438 local
+Result_num_Param_mabs_CreateTask kind:function(arm,size=0x34) addr:0x0208b480
+Result_bdg_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208b4b4 local
+Result_bdg_Load kind:function(arm,size=0x100) addr:0x0208b55c local
+Result_bdg_Init kind:function(arm,size=0x28) addr:0x0208b65c local
+Result_bdg_Update kind:function(arm,size=0x14) addr:0x0208b684 local
+Result_bdg_Render kind:function(arm,size=0x20) addr:0x0208b698 local
+Result_bdg_Destroy kind:function(arm,size=0x14) addr:0x0208b6b8 local
+Result_bdg_RunTask kind:function(arm,size=0x48) addr:0x0208b6cc local
+Result_bdg_CreateTask kind:function(arm,size=0x44) addr:0x0208b714
+Result_bdgBP_GetFrameInfo kind:function(arm,size=0xac) addr:0x0208b758 local
+Result_bdgBP_GetGaugeFrame kind:function(arm,size=0x9c) addr:0x0208b804 local
+Result_bdgBP_Load kind:function(arm,size=0xec) addr:0x0208b8a0 local
+Result_bdgBP_Init kind:function(arm,size=0x28) addr:0x0208b98c local
+Result_bdgBP_Update kind:function(arm,size=0x54) addr:0x0208b9b4 local
+Result_bdgBP_Render kind:function(arm,size=0x48) addr:0x0208ba08 local
+Result_bdgBP_Destroy kind:function(arm,size=0x34) addr:0x0208ba50 local
+Result_bdgBP_RunTask kind:function(arm,size=0x48) addr:0x0208ba84 local
+Result_bdgBP_CreateTask kind:function(arm,size=0x38) addr:0x0208bacc
+Result_bdgLV_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208bb04 local
+Result_bdgLV_UpdateDigits kind:function(arm,size=0xe8) addr:0x0208bbac local
+Result_bdgLV_Load kind:function(arm,size=0x15c) addr:0x0208bc94 local
+Result_bdgLV_Init kind:function(arm,size=0x34) addr:0x0208bdf0 local
+Result_bdgLV_Update kind:function(arm,size=0x68) addr:0x0208be24 local
+Result_bdgLV_Render kind:function(arm,size=0x40) addr:0x0208be8c local
+Result_bdgLV_Destroy kind:function(arm,size=0x2c) addr:0x0208becc local
+Result_bdgLV_RunTask kind:function(arm,size=0x48) addr:0x0208bef8 local
+Result_bdgLV_CreateTask kind:function(arm,size=0x38) addr:0x0208bf40
+Result_bdgPRI_GetFrameInfo kind:function(arm,size=0xac) addr:0x0208bf78 local
+Result_bdgPRI_Load kind:function(arm,size=0x100) addr:0x0208c024 local
+Result_bdgPRI_Init kind:function(arm,size=0x28) addr:0x0208c124 local
+Result_bdgPRI_Update kind:function(arm,size=0x14) addr:0x0208c14c local
+Result_bdgPRI_Render kind:function(arm,size=0x20) addr:0x0208c160 local
+Result_bdgPRI_Destroy kind:function(arm,size=0x14) addr:0x0208c180 local
+Result_bdgPRI_RunTask kind:function(arm,size=0x48) addr:0x0208c194 local
+Result_bdgPRI_CreateTask kind:function(arm,size=0x58) addr:0x0208c1dc
+Result_bdgSC_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208c234 local
+Result_bdgSC_Load kind:function(arm,size=0x164) addr:0x0208c2dc local
+Result_bdgSC_Init kind:function(arm,size=0x20) addr:0x0208c440 local
+Result_bdgSC_Update kind:function(arm,size=0x14) addr:0x0208c460 local
+Result_bdgSC_Render kind:function(arm,size=0x20) addr:0x0208c474 local
+Result_bdgSC_Destroy kind:function(arm,size=0x14) addr:0x0208c494 local
+Result_bdgSC_RunTask kind:function(arm,size=0x48) addr:0x0208c4a8 local
+Result_bdgSC_CreateTask kind:function(arm,size=0x58) addr:0x0208c4f0
+Result_lvup_GetFrameInfo kind:function(arm,size=0xac) addr:0x0208c548 local
+Result_lvup_Load kind:function(arm,size=0xe0) addr:0x0208c5f4 local
+Result_lvup_Init kind:function(arm,size=0x50) addr:0x0208c6d4 local
+Result_lvup_Update kind:function(arm,size=0xb8) addr:0x0208c724 local
+Result_lvup_Render kind:function(arm,size=0x20) addr:0x0208c7dc local
+Result_lvup_Destroy kind:function(arm,size=0x14) addr:0x0208c7fc local
+Result_lvup_RunTask kind:function(arm,size=0x48) addr:0x0208c810 local
+Result_lvup_CreateTask kind:function(arm,size=0x38) addr:0x0208c858
+Result_star_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208c890 local
+Result_star_Load kind:function(arm,size=0x1c4) addr:0x0208c938 local
+Result_star_Init kind:function(arm,size=0x20) addr:0x0208cafc local
+Result_star_Update kind:function(arm,size=0xd0) addr:0x0208cb1c local
+Result_star_Render kind:function(arm,size=0x20) addr:0x0208cbec local
+Result_star_Destroy kind:function(arm,size=0x14) addr:0x0208cc0c local
+Result_star_RunTask kind:function(arm,size=0x48) addr:0x0208cc20 local
+Result_star_CreateTask kind:function(arm,size=0x40) addr:0x0208cc68
+Result_evo_GetFrameInfo kind:function(arm,size=0xac) addr:0x0208cca8 local
+Result_evo_Load kind:function(arm,size=0xe8) addr:0x0208cd54 local
+Result_evo_Init kind:function(arm,size=0x58) addr:0x0208ce3c local
+Result_evo_Update kind:function(arm,size=0xb8) addr:0x0208ce94 local
+Result_evo_Render kind:function(arm,size=0x20) addr:0x0208cf4c local
+Result_evo_Destroy kind:function(arm,size=0x14) addr:0x0208cf6c local
+Result_evo_RunTask kind:function(arm,size=0x48) addr:0x0208cf80 local
+Result_evo_CreateTask kind:function(arm,size=0x38) addr:0x0208cfc8
+Result_flash_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208d000 local
+Result_flash_Load kind:function(arm,size=0x11c) addr:0x0208d0a8 local
+Result_flash_Init kind:function(arm,size=0x20) addr:0x0208d1c4 local
+Result_flash_Update kind:function(arm,size=0x30) addr:0x0208d1e4 local
+Result_flash_Render kind:function(arm,size=0x20) addr:0x0208d214 local
+Result_flash_Destroy kind:function(arm,size=0x14) addr:0x0208d234 local
+Result_flash_RunTask kind:function(arm,size=0x48) addr:0x0208d248 local
+Result_flash_CreateTask kind:function(arm,size=0x38) addr:0x0208d290
+Result_textScr_sure_InitFonts kind:function(arm,size=0x50) addr:0x0208d2c8 local
+Result_textScr_sure_Draw kind:function(arm,size=0x394) addr:0x0208d318 local
+Result_textScr_sure_Init kind:function(arm,size=0x28) addr:0x0208d6ac local
+Result_textScr_sure_Update kind:function(arm,size=0x8) addr:0x0208d6d4 local
+Result_textScr_sure_Render kind:function(arm,size=0x8) addr:0x0208d6dc local
+Result_textScr_sure_Destroy kind:function(arm,size=0x30) addr:0x0208d6e4 local
+Result_textScr_sure_RunTask kind:function(arm,size=0x48) addr:0x0208d714 local
+Result_textScr_sure_CreateTask kind:function(arm,size=0x34) addr:0x0208d75c
+Result_textScr_sleep_InitFonts kind:function(arm,size=0x50) addr:0x0208d790 local
+Result_textScr_sleep_Draw kind:function(arm,size=0x1fc) addr:0x0208d7e0 local
+Result_textScr_sleep_Init kind:function(arm,size=0x28) addr:0x0208d9dc local
+Result_textScr_sleep_Update kind:function(arm,size=0x8) addr:0x0208da04 local
+Result_textScr_sleep_Render kind:function(arm,size=0x8) addr:0x0208da0c local
+Result_textScr_sleep_Destroy kind:function(arm,size=0x30) addr:0x0208da14 local
+Result_textScr_sleep_RunTask kind:function(arm,size=0x48) addr:0x0208da44 local
+Result_textScr_sleep_CreateTask kind:function(arm,size=0x34) addr:0x0208da8c
+Result_slotCover_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208dac0 local
+Result_slotCover_Load kind:function(arm,size=0xd8) addr:0x0208db68 local
+Result_slotCover_Init kind:function(arm,size=0x20) addr:0x0208dc40 local
+Result_slotCover_Update kind:function(arm,size=0x14) addr:0x0208dc60 local
+Result_slotCover_Render kind:function(arm,size=0x14) addr:0x0208dc74 local
+Result_slotCover_Destroy kind:function(arm,size=0x14) addr:0x0208dc88 local
+Result_slotCover_RunTask kind:function(arm,size=0x48) addr:0x0208dc9c local
+Result_slotCover_CreateTask kind:function(arm,size=0x38) addr:0x0208dce4
+Result_rankU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208dd1c local
+Result_rankU_Load kind:function(arm,size=0xb4) addr:0x0208ddbc local
+Result_rankU_Init kind:function(arm,size=0x28) addr:0x0208de70 local
+Result_rankU_Update kind:function(arm,size=0xc0) addr:0x0208de98 local
+Result_rankU_Render kind:function(arm,size=0x24) addr:0x0208df58 local
+Result_rankU_Destroy kind:function(arm,size=0x18) addr:0x0208df7c local
+Result_rankU_RunTask kind:function(arm,size=0x48) addr:0x0208df94 local
+Result_rankU_CreateTask kind:function(arm,size=0x38) addr:0x0208dfdc
+Result_bdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208e014 local
+Result_bdgU_LoadPackedData kind:function(arm,size=0x14c) addr:0x0208e0b4 local
+Result_bdgU_LoadIcon kind:function(arm,size=0xb0) addr:0x0208e200 local
+Result_bdgU_LoadCount kind:function(arm,size=0x170) addr:0x0208e2b0 local
+Result_bdgU_Load kind:function(arm,size=0x12c) addr:0x0208e420 local
+Result_bdgU_Init kind:function(arm,size=0x20) addr:0x0208e54c local
+Result_bdgU_Update kind:function(arm,size=0x1fc) addr:0x0208e56c local
+Result_bdgU_Render kind:function(arm,size=0x40) addr:0x0208e768 local
+Result_bdgU_Destroy kind:function(arm,size=0x2c) addr:0x0208e7a8 local
+Result_bdgU_RunTask kind:function(arm,size=0x48) addr:0x0208e7d4 local
+Result_bdgU_CreateTask kind:function(arm,size=0x64) addr:0x0208e81c
+Result_beltU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208e880 local
+Result_beltU_Load kind:function(arm,size=0xf8) addr:0x0208e920 local
+Result_beltU_InitFonts kind:function(arm,size=0x1c) addr:0x0208ea18 local
+Result_beltU_SetPinText kind:function(arm,size=0xa8) addr:0x0208ea34 local
+Result_beltU_SetFoodText kind:function(arm,size=0x17c) addr:0x0208eadc local
+Result_beltU_SetBonusText kind:function(arm,size=0x58) addr:0x0208ec58 local
+Result_beltU_DrawText kind:function(arm,size=0xa4) addr:0x0208ecb0 local
+Result_beltU_Init kind:function(arm,size=0x84) addr:0x0208ed54 local
+Result_beltU_Update kind:function(arm,size=0x254) addr:0x0208edd8 local
+Result_beltU_Render kind:function(arm,size=0x2c) addr:0x0208f02c local
+Result_beltU_Destroy kind:function(arm,size=0x28) addr:0x0208f058 local
+Result_beltU_RunTask kind:function(arm,size=0x48) addr:0x0208f080 local
+Result_beltU_CreateTask kind:function(arm,size=0x40) addr:0x0208f0c8
+OvlProc_Result kind:data(any) addr:0x0208f108
 data_ov043_0208f114 kind:data(any) addr:0x0208f114
 data_ov043_0208f134 kind:data(any) addr:0x0208f134
 data_ov043_0208f184 kind:data(any) addr:0x0208f184
-data_ov043_0208f1d4 kind:data(any) addr:0x0208f1d4
-data_ov043_0208f234 kind:data(any) addr:0x0208f234
-data_ov043_0208f23c kind:data(any) addr:0x0208f23c
-data_ov043_0208f29c kind:data(any) addr:0x0208f29c
-data_ov043_0208f2ac kind:data(any) addr:0x0208f2ac
-data_ov043_0208f2b4 kind:data(any) addr:0x0208f2b4
-data_ov043_0208f2c4 kind:data(any) addr:0x0208f2c4
-data_ov043_0208f2cc kind:data(any) addr:0x0208f2cc
-data_ov043_0208f2d4 kind:data(any) addr:0x0208f2d4
+Result_BinIdentifiers kind:data(any) addr:0x0208f1d4
 data_ov043_0208f2ec kind:data(any) addr:0x0208f2ec
+data_ov043_0208f2fa kind:data(any) addr:0x0208f2fa
+data_ov043_0208f308 kind:data(any) addr:0x0208f308
 data_ov043_0208f316 kind:data(any) addr:0x0208f316
-data_ov043_0208f3bc kind:data(any) addr:0x0208f3bc
-data_ov043_0208f3c8 kind:data(any) addr:0x0208f3c8
-data_ov043_0208f3d8 kind:data(any) addr:0x0208f3d8
-data_ov043_0208f3e8 kind:data(any) addr:0x0208f3e8
-data_ov043_0208f414 kind:data(any) addr:0x0208f414
-data_ov043_0208f420 kind:data(any) addr:0x0208f420
-data_ov043_0208f430 kind:data(any) addr:0x0208f430
-data_ov043_0208f45c kind:data(any) addr:0x0208f45c
-data_ov043_0208f47c kind:data(any) addr:0x0208f47c
-data_ov043_0208f488 kind:data(any) addr:0x0208f488
-data_ov043_0208f498 kind:data(any) addr:0x0208f498
-data_ov043_0208f4aa kind:data(any) addr:0x0208f4aa
-data_ov043_0208f4d0 kind:data(any) addr:0x0208f4d0
-data_ov043_0208f4e0 kind:data(any) addr:0x0208f4e0 ambiguous
-data_ov043_0208f4fc kind:data(any) addr:0x0208f4fc
-data_ov043_0208f510 kind:data(any) addr:0x0208f510
-data_ov043_0208f51c kind:data(any) addr:0x0208f51c
-data_ov043_0208f52c kind:data(any) addr:0x0208f52c
-data_ov043_0208f558 kind:data(any) addr:0x0208f558
-data_ov043_0208f56c kind:data(any) addr:0x0208f56c
-data_ov043_0208f578 kind:data(any) addr:0x0208f578
-data_ov043_0208f588 kind:data(any) addr:0x0208f588
-data_ov043_0208f5b4 kind:data(any) addr:0x0208f5b4
-data_ov043_0208f5c4 kind:data(any) addr:0x0208f5c4
-data_ov043_0208f5dc kind:data(any) addr:0x0208f5dc
-data_ov043_0208f5ec kind:data(any) addr:0x0208f5ec
-data_ov043_0208f604 kind:data(any) addr:0x0208f604
-data_ov043_0208f630 kind:data(any) addr:0x0208f630
-data_ov043_0208f63c kind:data(any) addr:0x0208f63c
-data_ov043_0208f648 kind:data(any) addr:0x0208f648
-data_ov043_0208f658 kind:data(any) addr:0x0208f658
-data_ov043_0208f684 kind:data(any) addr:0x0208f684
-data_ov043_0208f69c kind:data(any) addr:0x0208f69c
-data_ov043_0208f6ac kind:data(any) addr:0x0208f6ac
-data_ov043_0208f6d8 kind:data(any) addr:0x0208f6d8
-data_ov043_0208f6f0 kind:data(any) addr:0x0208f6f0
-data_ov043_0208f700 kind:data(any) addr:0x0208f700
-data_ov043_0208f72c kind:data(any) addr:0x0208f72c
-data_ov043_0208f744 kind:data(any) addr:0x0208f744
-data_ov043_0208f754 kind:data(any) addr:0x0208f754
-data_ov043_0208f780 kind:data(any) addr:0x0208f780
-data_ov043_0208f798 kind:data(any) addr:0x0208f798
-data_ov043_0208f7a8 kind:data(any) addr:0x0208f7a8
-data_ov043_0208f7d4 kind:data(any) addr:0x0208f7d4
-data_ov043_0208f7ec kind:data(any) addr:0x0208f7ec
-data_ov043_0208f7fc kind:data(any) addr:0x0208f7fc
-data_ov043_0208f828 kind:data(any) addr:0x0208f828
-data_ov043_0208f840 kind:data(any) addr:0x0208f840
-data_ov043_0208f850 kind:data(any) addr:0x0208f850
-data_ov043_0208f864 kind:data(any) addr:0x0208f864 ambiguous
-data_ov043_0208f87c kind:data(any) addr:0x0208f87c
-data_ov043_0208f888 kind:data(any) addr:0x0208f888
-data_ov043_0208f894 kind:data(any) addr:0x0208f894
-data_ov043_0208f8a4 kind:data(any) addr:0x0208f8a4
-data_ov043_0208f8d0 kind:data(any) addr:0x0208f8d0
-data_ov043_0208f8e8 kind:data(any) addr:0x0208f8e8
-data_ov043_0208f8f8 kind:data(any) addr:0x0208f8f8
-data_ov043_0208f924 kind:data(any) addr:0x0208f924
-data_ov043_0208f930 kind:data(any) addr:0x0208f930
-data_ov043_0208f940 kind:data(any) addr:0x0208f940
-data_ov043_0208f95c kind:data(any) addr:0x0208f95c
-data_ov043_0208f968 kind:data(any) addr:0x0208f968
-data_ov043_0208f978 kind:data(any) addr:0x0208f978
-data_ov043_0208f988 kind:data(any) addr:0x0208f988
-data_ov043_0208f9a0 kind:data(any) addr:0x0208f9a0
-data_ov043_0208f9b0 kind:data(any) addr:0x0208f9b0
-data_ov043_0208f9dc kind:data(any) addr:0x0208f9dc
-data_ov043_0208f9e8 kind:data(any) addr:0x0208f9e8
-data_ov043_0208f9f8 kind:data(any) addr:0x0208f9f8
-data_ov043_0208fa24 kind:data(any) addr:0x0208fa24
-data_ov043_0208fa30 kind:data(any) addr:0x0208fa30
-data_ov043_0208fa40 kind:data(any) addr:0x0208fa40
-data_ov043_0208fa6c kind:data(any) addr:0x0208fa6c
-data_ov043_0208fa78 kind:data(any) addr:0x0208fa78
-data_ov043_0208fa88 kind:data(any) addr:0x0208fa88
-data_ov043_0208fac0 kind:data(any) addr:0x0208fac0
+Result_BrandNames kind:data(any) addr:0x0208f32c
+Result_AreaNames kind:data(any) addr:0x0208f368
+Tsk_Result_numTime kind:data(any) addr:0x0208f3bc local
+@1340 kind:data(any) addr:0x0208f3c8 local
+@1297 kind:data(any) addr:0x0208f3d8 local
+Result_numTime_Anim kind:data(any) addr:0x0208f3e8 local
+Tsk_Result_numMaxHit kind:data(any) addr:0x0208f414 local
+@1340 kind:data(any) addr:0x0208f420 local
+Result_numMaxHit_Anim kind:data(any) addr:0x0208f430 local
+@1496 kind:data(any) addr:0x0208f45c local
+@1477 kind:data(any) addr:0x0208f464 local
+@1515 kind:data(any) addr:0x0208f46c local
+@1445 kind:data(any) addr:0x0208f474 local
+Tsk_Result_num_Param kind:data(any) addr:0x0208f47c local
+@1654 kind:data(any) addr:0x0208f488 local
+@1403 kind:data(any) addr:0x0208f498 local
+@1401 kind:data(any) addr:0x0208f4aa local
+Result_num_Param_Anim kind:data(any) addr:0x0208f4d0
+@1404 kind:data(any) addr:0x0208f4fc local
+@1402 kind:data(any) addr:0x0208f502 local
+Tsk_Result_num_Param_sure kind:data(any) addr:0x0208f510 local
+@1340 kind:data(any) addr:0x0208f51c local
+Result_num_Param_sure_Anim kind:data(any) addr:0x0208f52c local
+@1404 kind:data(any) addr:0x0208f558 local
+@1402 kind:data(any) addr:0x0208f55e local
+Tsk_Result_num_Param_sleep kind:data(any) addr:0x0208f56c local
+@1340 kind:data(any) addr:0x0208f578 local
+Result_num_Param_sleep_Anim kind:data(any) addr:0x0208f588 local
+@1466 kind:data(any) addr:0x0208f5b4 local
+@1447 kind:data(any) addr:0x0208f5bc local
+Tsk_Result_num_Param_mabs kind:data(any) addr:0x0208f5c4 local
+@1403 kind:data(any) addr:0x0208f5d0 local
+@1340 kind:data(any) addr:0x0208f5dc local
+@1350 kind:data(any) addr:0x0208f5ec local
+Result_num_Param_mabs_Anim kind:data(any) addr:0x0208f604 local
+@1294 kind:data(any) addr:0x0208f630 local
+Tsk_Result_bdg kind:data(any) addr:0x0208f63c local
+@1337 kind:data(any) addr:0x0208f648 local
+Result_bdg_Anim kind:data(any) addr:0x0208f658 local
+Tsk_Result_bdgBP kind:data(any) addr:0x0208f684 local
+@1376 kind:data(any) addr:0x0208f690 local
+@1434 kind:data(any) addr:0x0208f69c local
+Result_bdgBP_Anim kind:data(any) addr:0x0208f6ac local
+Tsk_Result_bdgLV kind:data(any) addr:0x0208f6d8 local
+@1371 kind:data(any) addr:0x0208f6e4 local
+@1429 kind:data(any) addr:0x0208f6f0 local
+Result_bdgLV_Anim kind:data(any) addr:0x0208f700 local
+Tsk_Result_bdgPRI kind:data(any) addr:0x0208f72c local
+@1356 kind:data(any) addr:0x0208f738 local
+@1399 kind:data(any) addr:0x0208f744 local
+Result_bdgPRI_Anim kind:data(any) addr:0x0208f754 local
+Tsk_Result_bdgSC kind:data(any) addr:0x0208f780 local
+@1356 kind:data(any) addr:0x0208f78c local
+@1404 kind:data(any) addr:0x0208f798 local
+Result_bdgSC_Anim kind:data(any) addr:0x0208f7a8 local
+Tsk_Result_lvup kind:data(any) addr:0x0208f7d4 local
+@1378 kind:data(any) addr:0x0208f7e0 local
+@1340 kind:data(any) addr:0x0208f7ec local
+Result_lvup_Anim kind:data(any) addr:0x0208f7fc local
+Tsk_Result_star kind:data(any) addr:0x0208f828 local
+@1340 kind:data(any) addr:0x0208f840 local
+Result_star_Anim kind:data(any) addr:0x0208f850 local
+@1297 kind:data(any) addr:0x0208f87c local
+Tsk_Result_evo kind:data(any) addr:0x0208f888 local
+@1340 kind:data(any) addr:0x0208f894 local
+Result_evo_Anim kind:data(any) addr:0x0208f8a4 local
+Tsk_Result_flash kind:data(any) addr:0x0208f8d0 local
+@1340 kind:data(any) addr:0x0208f8e8 local
+Result_flash_Anim kind:data(any) addr:0x0208f8f8 local
+Tsk_Result_textScr_sure kind:data(any) addr:0x0208f924 local
+@1340 kind:data(any) addr:0x0208f930 local
+@1297 kind:data(any) addr:0x0208f940 local
+Tsk_Result_textScr_sleep kind:data(any) addr:0x0208f95c local
+@1340 kind:data(any) addr:0x0208f968 local
+@1297 kind:data(any) addr:0x0208f978 local
+Tsk_Result_slotCover kind:data(any) addr:0x0208f988 local
+@1340 kind:data(any) addr:0x0208f9a0 local
+Result_slotCover_Anim kind:data(any) addr:0x0208f9b0 local
+Tsk_Result_rankU kind:data(any) addr:0x0208f9dc local
+@1340 kind:data(any) addr:0x0208f9e8 local
+Result_rankU_Anim kind:data(any) addr:0x0208f9f8 local
+Tsk_Result_bdgU kind:data(any) addr:0x0208fa24 local
+@1575 kind:data(any) addr:0x0208fa30 local
+Result_bdgU_Anim kind:data(any) addr:0x0208fa40 local
+Tsk_Result_beltU kind:data(any) addr:0x0208fa6c local
+@1727 kind:data(any) addr:0x0208fa78 local
+Result_beltU_Anim kind:data(any) addr:0x0208fa88 local
+Result_SequenceName kind:data(any) addr:0x0208fac0
 data_ov043_0208fac4 kind:data(any) addr:0x0208fac4
 data_ov043_0208fad4 kind:data(any) addr:0x0208fad4
 data_ov043_0208fae8 kind:data(any) addr:0x0208fae8
@@ -419,7 +425,7 @@ data_ov043_0208fe84 kind:data(any) addr:0x0208fe84
 data_ov043_0208fea4 kind:data(any) addr:0x0208fea4
 data_ov043_0208fec4 kind:data(any) addr:0x0208fec4
 data_ov043_0208fee4 kind:data(any) addr:0x0208fee4
-data_ov043_0208ff04 kind:data(any) addr:0x0208ff04
+Result_EmptyBadge kind:data(any) addr:0x0208ff04
 data_ov043_0208ff44 kind:data(any) addr:0x0208ff44
 data_ov043_0208ff48 kind:data(any) addr:0x0208ff48
 data_ov043_0208ff4c kind:data(any) addr:0x0208ff4c
@@ -456,25 +462,25 @@ data_ov043_0209007c kind:data(any) addr:0x0209007c
 data_ov043_02090090 kind:data(any) addr:0x02090090
 data_ov043_020900a4 kind:data(any) addr:0x020900a4
 data_ov043_020900b8 kind:data(any) addr:0x020900b8
-data_ov043_020900cc kind:data(any) addr:0x020900cc
-data_ov043_020900e0 kind:data(any) addr:0x020900e0
-data_ov043_020900f8 kind:data(any) addr:0x020900f8
-data_ov043_02090110 kind:data(any) addr:0x02090110
-data_ov043_0209012c kind:data(any) addr:0x0209012c
-data_ov043_02090148 kind:data(any) addr:0x02090148
-data_ov043_02090164 kind:data(any) addr:0x02090164
-data_ov043_02090174 kind:data(any) addr:0x02090174
-data_ov043_02090188 kind:data(any) addr:0x02090188
-data_ov043_0209019c kind:data(any) addr:0x0209019c
-data_ov043_020901b0 kind:data(any) addr:0x020901b0
-data_ov043_020901c4 kind:data(any) addr:0x020901c4
-data_ov043_020901d4 kind:data(any) addr:0x020901d4
-data_ov043_020901e4 kind:data(any) addr:0x020901e4
-data_ov043_020901f4 kind:data(any) addr:0x020901f4
-data_ov043_02090208 kind:data(any) addr:0x02090208
-data_ov043_02090220 kind:data(any) addr:0x02090220
-data_ov043_0209023c kind:data(any) addr:0x0209023c
-data_ov043_02090254 kind:data(any) addr:0x02090254
-data_ov043_02090268 kind:data(any) addr:0x02090268
-data_ov043_02090278 kind:data(any) addr:0x02090278
-data_ov043_020902a0 kind:bss addr:0x020902a0
+@1334 kind:data(any) addr:0x020900cc local
+@1334 kind:data(any) addr:0x020900e0 local
+@1655 kind:data(any) addr:0x020900f8 local
+@1334 kind:data(any) addr:0x02090110 local
+@1379 kind:data(any) addr:0x0209012c local
+@1601 kind:data(any) addr:0x02090148 local
+@1334 kind:data(any) addr:0x02090164 local
+@1435 kind:data(any) addr:0x02090174 local
+@1430 kind:data(any) addr:0x02090188 local
+@1400 kind:data(any) addr:0x0209019c local
+@1405 kind:data(any) addr:0x020901b0 local
+@1434 kind:data(any) addr:0x020901c4 local
+@1425 kind:data(any) addr:0x020901d4 local
+@1447 kind:data(any) addr:0x020901e4 local
+@1411 kind:data(any) addr:0x020901f4 local
+@1473 kind:data(any) addr:0x02090208 local
+@1473 kind:data(any) addr:0x02090220 local
+@1408 kind:data(any) addr:0x0209023c local
+@1356 kind:data(any) addr:0x02090254 local
+@1400 kind:data(any) addr:0x02090268 local
+@1570 kind:data(any) addr:0x02090278 local
+g_ResultState kind:bss addr:0x020902a0
