@@ -898,7 +898,7 @@ void func_ov015_0212699c(BtlEnm026* data) {
             if (data->actor.position.z < 0) {
                 return;
             }
-            data->unk_1E8 = (data->unk_084.flags46 & 1) ? -0x8000 : 0x8000;
+            data->unk_1E8 = (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
             Mini108_VBlank(&data->unk_084, 0xC, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
@@ -1113,7 +1113,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             if (data->unk_1C0 >= 0) {
                 return;
             }
-            data->unk_1E8 = (data->unk_084.flags46 & 1) ? -0x8000 : 0x8000;
+            data->unk_1E8 = (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
             Mini108_VBlank(&data->unk_084, 0xC, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
