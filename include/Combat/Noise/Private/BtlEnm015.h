@@ -10,10 +10,10 @@
 typedef struct Enm015Variant {
     /* 0x00 */ BinIdentifier*   binIden;
     /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u8               unk_08;
-    /* 0x09 */ u8               unk_09;
+    /* 0x08 */ u16              unk_08;
     /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u32              unk_0C;
+    /* 0x0C */ u16              unk_0C;
+    /* 0x0E */ u16              unk_0E;
 } Enm015Variant; // Size: 0x10
 
 /// Spawn parameters passed to the `Tsk_BtlEnm015` tasks.
