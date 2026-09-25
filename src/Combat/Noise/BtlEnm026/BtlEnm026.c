@@ -824,21 +824,20 @@ void func_ov015_021268b0(BtlEnm026* data) {
             data->unk_1C0 = func_ov003_020c42ec(data);
             /* fallthrough */
         case 1:
+            data->unk_1C0 = data->unk_1C0 - 1;
+            if (data->unk_1C0 < 0) {
+                func_ov015_02125a64(data, (s32)func_ov015_02125f48);
+            }
+            if (data->unk_1D8 == 1) {
+                s16 count;
+
+                data->unk_196 |= 0x2;
+                count         = RNG_Next(3) + 3;
+                data->unk_1F0 = count;
+                data->unk_1D8 = 0;
+                func_ov015_02125a64(data, (s32)func_ov015_0212699c);
+            }
             break;
-    }
-
-    data->unk_1C0 = data->unk_1C0 - 1;
-    if (data->unk_1C0 < 0) {
-        func_ov015_02125a64(data, (s32)func_ov015_02125f48);
-    }
-    if (data->unk_1D8 == 1) {
-        s16 count;
-
-        data->unk_196 |= 0x2;
-        count         = RNG_Next(3) + 3;
-        data->unk_1F0 = count;
-        data->unk_1D8 = 0;
-        func_ov015_02125a64(data, (s32)func_ov015_0212699c);
     }
 }
 
