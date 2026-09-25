@@ -52,7 +52,6 @@ extern void  func_ov003_020ccf1c(void*, s32);
 extern void  func_ov003_020c4b1c(void*);
 extern s32   func_ov003_020c42ec(void*);
 extern void  func_ov003_020c5924(void*, void*);
-extern void  func_ov003_02082d04(void*);
 extern void  func_ov003_020c4b5c(void*);
 extern void  func_ov003_020a4390(s32, s32);
 extern void  func_ov003_020c4fc8(void*);
@@ -859,7 +858,7 @@ void func_ov015_0212699c(BtlEnm026* data) {
             }
             data->unk_1C0 = data->unk_1C0 - 1;
             if (data->unk_1C0 >= 0) {
-                func_ov003_02082d04(&data->unk_084);
+                Sprite_Restart(&data->unk_084.sprite);
                 return;
             }
             Mini108_VBlank(&data->unk_084, 0xB, 0);
@@ -1080,7 +1079,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             }
             data->unk_1C0 = data->unk_1C0 - 1;
             if (data->unk_1C0 >= 0) {
-                func_ov003_02082d04(&data->unk_084);
+                Sprite_Restart(&data->unk_084.sprite);
                 return;
             }
             Mini108_VBlank(&data->unk_084, 0xB, 0);
