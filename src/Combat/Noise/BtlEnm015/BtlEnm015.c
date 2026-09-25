@@ -300,16 +300,17 @@ void func_ov013_02125b8c(s32 arg0, BtlEnm015* data, s32 arg2, s32 arg3) {
 
     SpriteAnimationEx anim;
     CombatSprite_InitAnim(&anim.anim, arg0, variant->binIden);
-    SpriteAnimEntry* entry = &variant->animTable[variant->unk_08];
-    anim.anim.bits_10_11   = 1;
-    anim.anim.unk_1E       = (s16)(variant->unk_0C << 5);
-    anim.anim.unk_20       = variant->unk_0A;
-    anim.anim.unk_1C       = entry->charDataIndex;
-    anim.anim.unk_26       = entry->frameDataIndex;
-    anim.anim.unk_28       = entry->paletteDataIndex;
-    anim.anim.unk_22       = 2;
-    anim.anim.unk_2A       = entry->animDataIndex + 1;
-    anim.unk_2C            = variant->animTable;
+    SpriteAnimEntry* animTable = variant->animTable;
+    SpriteAnimEntry* entry     = &animTable[variant->unk_08];
+    anim.anim.bits_10_11       = 1;
+    anim.anim.unk_1E           = (s16)(variant->unk_0C << 5);
+    anim.anim.unk_20           = variant->unk_0A;
+    anim.anim.unk_1C           = entry->charDataIndex;
+    anim.anim.unk_26           = entry->frameDataIndex;
+    anim.anim.unk_28           = entry->paletteDataIndex;
+    anim.anim.unk_22           = 2;
+    anim.anim.unk_2A           = entry->animDataIndex + 1;
+    anim.unk_2C                = animTable;
     CombatSprite_Load(&data->unk_084, &anim);
     Mini108_VBlank(&data->unk_084, 0, 0);
 
@@ -321,11 +322,13 @@ void func_ov013_02125b8c(s32 arg0, BtlEnm015* data, s32 arg2, s32 arg3) {
     func_ov003_020c4ab4(data, 0);
 
     data->unk_1D8 = (s16)((RNG_Next(7) + 0x11) * 0x3C);
-    if (arg0 == 0) {
-        s16 timer     = data->unk_198 + RNG_Next(data->unk_19C);
-        data->unk_1DA = timer;
-    } else {
-        s16 timer     = data->unk_19E + RNG_Next(data->unk_1A2);
+    {
+        s16 timer;
+        if (arg0 == 0) {
+            timer = data->unk_198 + RNG_Next(data->unk_19C);
+        } else {
+            timer = data->unk_19E + RNG_Next(data->unk_1A2);
+        }
         data->unk_1DA = timer;
     }
     data_ov013_02127644 = -1;
