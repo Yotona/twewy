@@ -45,12 +45,12 @@ data_ov013_0212748c kind:data(any) addr:0x0212748c
 data_ov013_02127494 kind:data(any) addr:0x02127494
 data_ov013_0212749c kind:data(any) addr:0x0212749c
 data_ov013_021274dc kind:data(any) addr:0x021274dc ambiguous
-data_ov013_021274ec kind:data(any) addr:0x021274ec
-data_ov013_021274f8 kind:data(any) addr:0x021274f8
-data_ov013_02127504 kind:data(any) addr:0x02127504
-data_ov013_02127510 kind:data(any) addr:0x02127510 ambiguous
-data_ov013_0212751c kind:data(any) addr:0x0212751c
-data_ov013_02127528 kind:data(any) addr:0x02127528 ambiguous
+Tsk_BtlEnm015_Eff kind:data(any) addr:0x021274ec
+Tsk_BtlEnm015_EffStamp kind:data(any) addr:0x021274f8
+Tsk_BtlEnm015_EffStampSub kind:data(any) addr:0x02127504
+Tsk_BtlEnm015_RG kind:data(any) addr:0x02127510 ambiguous
+Tsk_BtlEnm015_Shake kind:data(any) addr:0x0212751c
+Tsk_BtlEnm015_UG kind:data(any) addr:0x02127528 ambiguous
 data_ov013_02127540 kind:data(any) addr:0x02127540
 data_ov013_0212754c kind:data(any) addr:0x0212754c
 data_ov013_02127568 kind:data(any) addr:0x02127568
