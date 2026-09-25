@@ -460,8 +460,8 @@ s32 func_ov015_02125c94(BtlEnm026* data) {
 }
 
 void func_ov015_02125d0c(BtlEnm026* data, s32 count, void* handleA, void* handleB) {
-    Enm026ParticleParams blockA;
     Enm026ParticleParams blockB;
+    Enm026ParticleParams blockA;
     s32                  i;
 
     MI_CpuSet(&blockB, 0, sizeof(blockB));
@@ -469,9 +469,9 @@ void func_ov015_02125d0c(BtlEnm026* data, s32 count, void* handleA, void* handle
     blockA.unk_00 = data->unk_07C;
     blockB.unk_00 = data->unk_07C;
     blockA.unk_06 &= ~0x1;
-    blockB.unk_06 = (blockB.unk_06 & ~0x1) | (blockA.unk_06 & 0x1);
     blockA.unk_04 = data->unk_080;
     blockB.unk_04 = data->unk_080;
+    blockB.unk_06 = (blockB.unk_06 & ~0x1) | (blockA.unk_06 & 0x1);
     blockA.unk_10 = 0;
     blockB.unk_10 = 0;
     if (count <= 0) {
@@ -491,14 +491,14 @@ void func_ov015_02125e5c(BtlEnm026* data) {
 
     if (func_ov003_020c37f8(&data->unk_084) != 0) {
         ret = func_ov003_020ccfc8(data, 4);
-    } else if (data_ov015_02128500.variant == 7) {
-        ret = func_ov003_020ccfc8(data, 4);
-    } else {
+    } else if (data_ov015_02128500.variant != 7) {
         if (data->unk_1C0 == 0) {
             Mini108_VBlank(&data->unk_084, 0, 0);
         }
         data->unk_1C0 = data->unk_1C0 + 1;
         ret           = data->unk_1C0 < 0xF;
+    } else {
+        ret = func_ov003_020ccfc8(data, 4);
     }
     if (ret != 0) {
         return;
@@ -524,11 +524,7 @@ void func_ov015_02125f48(BtlEnm026* data) {
     if (func_ov003_020c5e98(data) != 0) {
         return;
     }
-    if (data->unk_18C & 0x20) {
-        func_ov015_02125a64(data, (s32)func_ov015_021260c4);
-    } else {
-        func_ov015_02125a64(data, data->unk_1C8);
-    }
+    func_ov015_02125a64(data, (data->unk_18C & 0x20) ? (s32)func_ov015_021260c4 : data->unk_1C8);
 }
 
 void func_ov015_02125f80(BtlEnm026* data) {
@@ -577,16 +573,16 @@ void func_ov015_021260c4(BtlEnm026* data) {
 
     data->actor.flags |= 0x4;
     if (data_ov015_02128500.variant == 6) {
-        if (data_ov015_02128500.result10 == -1 || data->unk_1D4 != 3) {
-            ret = func_ov003_020cd010(data);
-        } else {
+        if (data_ov015_02128500.result10 != -1 && data->unk_1D4 == 3) {
             ret = func_ov003_020ccfec(data);
+        } else {
+            ret = func_ov003_020cd010(data);
         }
     } else {
-        if (data_ov015_02128500.result10 == -1 || data->unk_1D4 != 1) {
-            ret = func_ov003_020cd010(data);
-        } else {
+        if (data_ov015_02128500.result10 != -1 && data->unk_1D4 == 1) {
             ret = func_ov003_020ccfec(data);
+        } else {
+            ret = func_ov003_020cd010(data);
         }
     }
     if (ret == 0) {
@@ -616,9 +612,8 @@ void func_ov015_021261ac(BtlEnm026* data) {
 }
 
 s32 func_ov015_021261d8(BtlEnm026Icon* data, Enm026IconSpawn* args) {
-    BtlEnm026* owner  = args->unk_00;
-    s32        engine = owner->unk_084.sprite.bits_0_1;
-    s32        r5     = 0;
+    BtlEnm026* owner = args->unk_00;
+    s32        r5    = 0;
 
     MI_CpuSet(data, 0, sizeof(BtlEnm026Icon));
     data->unk_120 = args->unk_00;
@@ -628,38 +623,44 @@ s32 func_ov015_021261d8(BtlEnm026Icon* data, Enm026IconSpawn* args) {
     switch (args->unk_04) {
         case 0: {
             SpriteAnimationEx anim;
-            CombatSprite_InitAnim(&anim.anim, 0, &data_ov015_02128230);
-            anim.anim.bits_10_11 = 0;
+            CombatSprite_InitAnim(&anim.anim, r5, &data_ov015_02128230);
+            r5                   = 0x11;
             anim.anim.unk_18     = 2;
-            anim.anim.packIndex  = data_ov015_02128500.timer18 + 1;
+            anim.anim.unk_26     = 2;
+            anim.anim.packIndex  = data_ov015_02128500.unk_28 + 1;
+            anim.anim.bits_10_11 = 0;
+            anim.anim.unk_28     = 3;
             anim.anim.unk_1C     = 1;
             anim.anim.unk_20     = 4;
-            anim.anim.unk_26     = 2;
-            anim.anim.unk_28     = 3;
             anim.anim.unk_2A     = 1;
             anim.unk_2C          = 0;
             CombatSprite_Load(&data->unk_60, &anim);
-            CombatSprite_LoadFromTable(engine, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238, 3, 4, 0x10);
-            r5 = 0x11;
+            CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0x10);
             break;
         }
 
         case 1:
-            CombatSprite_LoadFromTable(engine, &data->unk_60, &data_ov015_02128228, data_ov015_02128238, 3, 4, 2);
-            Mini108_VBlank(&data->unk_60, 3, 0);
-            CombatSprite_LoadFromTable(engine, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238, 3, 4, 2);
-            Mini108_VBlank(&data->unk_C0, 3, 0);
+            CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 2);
             r5 = 0x10;
+            Mini108_VBlank(&data->unk_60, 3, 0);
+            CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 2);
+            Mini108_VBlank(&data->unk_C0, 3, 0);
             break;
 
         case 2:
-            CombatSprite_LoadFromTable(engine, &data->unk_60, &data_ov015_02128228, data_ov015_02128238, 3, 4, 0);
-            CombatSprite_LoadFromTable(engine, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238, 3, 4, 0);
             r5 = 4;
+            CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0);
+            CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0);
             break;
     }
 
-    CombatSprite_LoadFromTable(engine, &data->unk_00, &data_ov015_02128228, data_ov015_02128238, data->unk_124, 4, r5);
+    CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_00, &data_ov015_02128228, data_ov015_02128238,
+                               data->unk_124, 4, r5);
     Mini108_VBlank(&data->unk_00, data->unk_124, data->unk_124 == 2);
     if (data->unk_124 != 2) {
         CombatSprite_SetFlip(&data->unk_00, owner->unk_084.flags46 & 1);
@@ -964,15 +965,13 @@ void func_ov015_02126db8(BtlEnm026* data) {
         func_ov015_02125a64(data, (s32)func_ov015_021268b0);
         return;
     }
-    if (data_ov015_02128500.flag08 != 0 || data_ov015_02128500.variant == 3) {
+    if ((data_ov015_02128500.flag08 != 0 && data_ov015_02128500.variant == 3) || data_ov015_02128500.result10 == -1) {
         if (data->unk_1D4 == 1 && data->unk_1E4 == 0) {
             func_ov003_020c4cc4(data, 0x27A);
             data->unk_1E4 = 1;
         }
         func_ov015_02125a64(data, (s32)func_ov015_02126ec4);
-        return;
-    }
-    if (data_ov015_02128500.result10 != -1) {
+    } else {
         if (data_ov015_02128500.variant == 0xB) {
             return;
         }
@@ -1242,13 +1241,8 @@ void func_ov015_02127690(BtlEnm026* data) {
 
 void func_ov015_021276c4() {}
 
-void func_ov015_021276c8() {
-    if (data_ov015_02128500.unk_24 != 0) {
-        func_ov003_020a4390(data_ov015_02128500.unk_24, 4);
-        data_ov015_02128500.unk_24 = 0;
-        return;
-    }
-    {
+void func_ov015_021276c8(void) {
+    if (data_ov015_02128500.unk_24 == 0) {
         void* node = func_ov003_0208495c((u8*)data_ov003_020e71b8 + 0x3D8BC);
         node       = func_ov003_02084984((u8*)node + 0x108);
         while (node != 0) {
@@ -1261,7 +1255,10 @@ void func_ov015_021276c8() {
             }
             node = func_ov003_02084984((u8*)node + 0x108);
         }
+        return;
     }
+    func_ov003_020a4390(data_ov015_02128500.unk_24, 4);
+    data_ov015_02128500.unk_24 = 0;
 }
 
 void func_ov015_02127758(BtlEnm026* data) {
@@ -1276,40 +1273,43 @@ void func_ov015_02127758(BtlEnm026* data) {
 }
 
 void func_ov015_021277a4(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) != 0 || data_ov015_02128500.flag08 != 0) {
-        func_ov003_020ccec0(data, 1);
-        data->actor.unk_62 = 0;
-        return;
-    }
-    if (data_ov015_02128500.unk_20 != 0) {
-        if (*(s16*)((u8*)data_ov003_020e71b8 + 0x3D8F8) != 0) {
-            return;
-        }
-        data_ov015_02128500.unk_20 = 0;
-        data_ov015_02128500.unk_1E = data_ov015_02128500.unk_1E - 1;
-        if (data_ov015_02128500.unk_1E > 0) {
-            return;
-        }
-        if (data->actor.currentHp != 0) {
-            if (data->unk_184->actor.currentHp != 0) {
-                data_ov015_02128500.result10 = -1;
+    if (func_ov003_020c37f8(&data->unk_084) == 0 && data_ov015_02128500.flag08 == 0) {
+        if (data_ov015_02128500.unk_20 != 0) {
+            if (*(s16*)((u8*)data_ov003_020e71b8 + 0x3D8F8) != 0) {
+                return;
             }
+            data_ov015_02128500.unk_20 = 0;
+            data_ov015_02128500.unk_1E = data_ov015_02128500.unk_1E - 1;
+            if (data_ov015_02128500.unk_1E > 0) {
+                return;
+            }
+            if (data->actor.currentHp != 0) {
+                if (data->unk_184->actor.currentHp != 0) {
+                    data_ov015_02128500.result10 = -1;
+                }
+            }
+            return;
+        }
+        if (*(s16*)((u8*)data_ov003_020e71b8 + 0x3D8F8) != 0) {
+            data_ov015_02128500.unk_20 = 1;
         }
         return;
     }
-    if (*(s16*)((u8*)data_ov003_020e71b8 + 0x3D8F8) != 0) {
-        data_ov015_02128500.unk_20 = 1;
-    }
+    func_ov003_020ccec0(data, 1);
+    data->actor.unk_62 = 0;
 }
 
 void func_ov015_0212786c(BtlEnm026* data) {
+    BtlEnm026* twin;
+
     if (func_ov003_020c37f8(&data->unk_084) == 0) {
         return;
     }
+    twin = data->unk_184;
     if (data_ov015_02128500.unk14 != 2) {
         return;
     }
-    func_ov015_02125a64(data->unk_184->unk_188, (s32)func_ov015_02125e5c);
+    func_ov015_02125a64(twin->unk_188, (s32)func_ov015_02125e5c);
 }
 
 void func_ov015_021278b0(BtlEnm026* data) {
@@ -1324,9 +1324,8 @@ void func_ov015_021278b0(BtlEnm026* data) {
 
 void func_ov015_021278f8(BtlEnm026* data) {
     if (data->actor.pendingCommand == 3 && (data->actor.flags & 0x2000)) {
-        s16 count                     = data_ov015_02128500.counter1C + 1;
-        data_ov015_02128500.counter1C = count;
-        data->unk_1D4                 = (count > 2) ? 1 : 3;
+        data_ov015_02128500.counter1C = data_ov015_02128500.counter1C + 1;
+        data->unk_1D4                 = (data_ov015_02128500.counter1C > 2) ? 1 : 3;
         return;
     }
     data->unk_1D4 = 3;
@@ -1431,17 +1430,14 @@ void func_ov015_02127bd0(BtlEnm026* data) {
 }
 
 void func_ov015_02127c18(BtlEnm026* data) {
-    s16 count;
-
     if (data->actor.pendingCommand != 3) {
         return;
     }
     if (func_ov003_020c37f8(&data->unk_084) != 0) {
         return;
     }
-    count = data_ov015_02128500.counter1C + 1;
-    if (data->unk_1D4 == count) {
-        data_ov015_02128500.counter1C = count;
+    if (data->unk_1D4 == data_ov015_02128500.counter1C + 1) {
+        data_ov015_02128500.counter1C = data_ov015_02128500.counter1C + 1;
     } else {
         data_ov015_02128500.result10 = -1;
     }
@@ -1537,10 +1533,10 @@ void func_ov015_02127e7c(BtlEnm026* data) {
             data->unk_1DC = 0xF;
             return;
         }
-    } else if (data_ov015_02128500.unk14 != 1 && data_ov015_02128500.unk14 != 2) {
+    }
+    if (data_ov015_02128500.unk14 != 1 && data_ov015_02128500.unk14 != 2 && data_ov015_02128500.unk14 != 7) {
         return;
     }
-
     if (twin->unk_1DC > 0) {
         func_ov015_02125a64(data, (s32)func_ov015_02125e5c);
         func_ov015_02125a64(twin, (s32)func_ov015_02125e5c);
