@@ -409,7 +409,7 @@ void func_ov013_02125efc(BtlEnm015* arg0) {
     s32 x                  = arg0->actor.position.x;
     s32 y                  = arg0->actor.position.y;
     arg0->actor.position.x = x + 0xC000;
-    arg0->actor.position.y = y + 0xA000;
+    arg0->actor.position.y += 0xA000;
     if (arg0->actor.flags & 1) {
         arg0->actor.flags &= ~1;
     }
@@ -674,13 +674,14 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
 
     SpriteAnimationEx anim;
     CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
-    anim.anim.unk_2A     = table[3] + 1;
+    u16 animData         = table[3];
     anim.anim.unk_20     = func_ov013_021256d0(owner->unk_080);
     anim.anim.unk_26     = table[2];
     anim.anim.unk_28     = table[1];
     anim.anim.unk_1C     = table[0];
     anim.anim.bits_10_11 = 0;
     anim.anim.unk_22     = 2;
+    anim.anim.unk_2A     = animData + 1;
     anim.unk_2C          = 0;
     CombatSprite_Load(&data->sprite, &anim);
 }
