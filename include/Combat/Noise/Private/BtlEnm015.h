@@ -80,6 +80,13 @@ typedef struct BtlEnm015Eff {
     /* 0x6C */ BtlEnm015*   unk_6C;
 } BtlEnm015Eff; // Size: 0x70
 
+/// Task data for the `Tsk_BtlEnm015_EffStamp` task.
+typedef struct BtlEnm015Stamp {
+    /* 0x00 */ BtlEnm015* unk_00;
+    /* 0x04 */ s32        unk_04;
+    /* 0x08 */ u16        unk_08;
+} BtlEnm015Stamp; // Size: 0x0C
+
 extern Enm015Variant* data_ov013_02127540[3];
 extern s32            data_ov013_02127640;
 extern s32            data_ov013_02127644;

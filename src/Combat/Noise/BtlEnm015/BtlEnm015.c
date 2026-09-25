@@ -36,6 +36,24 @@ extern s32   func_ov003_02088130(void);
 extern void  func_ov003_0208810c(void*, void*);
 extern void  func_ov003_02082750(void*, s32);
 extern void  func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+extern s32   func_ov003_020ccedc(s32);
+extern s32   func_ov003_020ccefc(s32);
+extern void  func_ov003_020c492c(void*);
+extern s32   func_ov003_020c6230(void*);
+extern void  func_ov003_020c4ee0(void*);
+extern void  func_ov003_02087ed8(u16);
+extern void  func_ov003_0208a114(u16);
+extern s32   func_ov003_0208a164(u16, void*, s32, s32, s32);
+extern s32   func_ov003_0208a08c(s32, void*, s32);
+
+extern s16 data_0205e4e0[];
+
+/// Rounds a fixed-point value through a float, matching the original codegen.
+#define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
+
+static inline s32 Mth_MulFixed(s32 a, s32 b) {
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
 
 // MARK: Forward declarations
 
@@ -438,6 +456,77 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     CombatSprite_Load(&data->sprite, &anim);
     CombatSprite_SetAnimFromTable(&data->sprite, idx, 1);
     func_ov003_02082750(data, owner->unk_084.flags46 & 1);
+}
+
+s32 func_ov013_021261e8(s32 arg0, s32 arg1) {
+    if (arg0 >= func_ov003_020ccedc(0) + 0x18000 || arg0 <= -0x18000) {
+        return 1;
+    }
+    if (arg1 >= func_ov003_020ccefc(0) + 0x18000 || arg1 <= -0x18000) {
+        return 1;
+    }
+    return 0;
+}
+
+s32 func_ov013_02126254(BtlEnm015Stamp* data) {
+    s32 count = 0;
+    s32 i;
+
+    switch (data->unk_08) {
+        case 0: {
+            s32 t = data->unk_04;
+            if (t % 60 == 0) {
+                s32 q2 = t / 60 + 1;
+                for (i = 0; i < 5; i++) {
+                    s32 angle = i * 0x200;
+                    s32 dy    = Mth_MulFixed(data_0205e4e0[angle * 2 + 1], ROUND(q2 * 0x28));
+                    s16 tx    = data_0205e4e0[angle * 2];
+                    s32 px    = data->unk_00->actor.position.x + dy;
+                    s32 dx    = Mth_MulFixed(tx, ROUND(q2 * 0x28));
+                    s32 py    = (data->unk_00->actor.position.y + dx) >> 1;
+                    if (func_ov013_021261e8(px, py) != 0) {
+                        count++;
+                        if (count >= 5) {
+                            return 0;
+                        }
+                    } else {
+                        func_ov013_021256f0(data->unk_00, 0, px, py, 0);
+                    }
+                }
+            }
+            break;
+        }
+
+        case 1: {
+            s32 t = data->unk_04;
+            if (t % 60 == 0) {
+                s32 q2 = t / 60 + 1;
+                for (i = 0; i < 4; i++) {
+                    s32 angle = i * 0x200 + 0x100;
+                    s32 dy    = Mth_MulFixed(data_0205e4e0[angle * 2 + 1], ROUND(q2 * 0x28));
+                    s16 tx    = data_0205e4e0[angle * 2];
+                    s32 px    = data->unk_00->actor.position.x + dy;
+                    s32 dx    = Mth_MulFixed(tx, ROUND(q2 * 0x28));
+                    s32 py    = (data->unk_00->actor.position.y + dx) >> 1;
+                    if (func_ov013_021261e8(px, py) != 0) {
+                        count++;
+                        if (count >= 4) {
+                            return 0;
+                        }
+                    } else {
+                        func_ov013_021256f0(data->unk_00, 0, px, py, 0);
+                    }
+                }
+            }
+            break;
+        }
+
+        default:
+            return count;
+    }
+
+    data->unk_04++;
+    return 1;
 }
 
 s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
