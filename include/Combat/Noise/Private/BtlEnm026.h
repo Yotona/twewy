@@ -90,8 +90,7 @@ typedef struct BtlEnm026 {
     /* 0x1D0 */ s32 unk_1D0;
     /* 0x1D4 */ s16 unk_1D4;
     /* 0x1D6 */ s16 unk_1D6;
-    /* 0x1D8 */ s16 unk_1D8;
-    /* 0x1DA */ s16 unk_1DA;
+    /* 0x1D8 */ s32 unk_1D8;
     /* 0x1DC */ s16 unk_1DC;
     /* 0x1DE */ u16 unk_1DE;
     /* 0x1E0 */ s32 unk_1E0;
@@ -117,7 +116,7 @@ typedef struct BtlEnm026Icon {
     /* 0x124 */ s16          unk_124;
     /* 0x126 */ u16          unk_126;
     /* 0x128 */ void*        unk_128;
-    /* 0x12C */ u16          unk_12C;
+    /* 0x12C */ s16          unk_12C;
     /* 0x12E */ u16          unk_12E;
     /* 0x130 */ s32          unk_130;
 } BtlEnm026Icon; // Size: 0x134

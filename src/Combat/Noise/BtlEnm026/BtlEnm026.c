@@ -922,14 +922,12 @@ void func_ov015_0212699c(BtlEnm026* data) {
         }
 
         case 4: {
-            s32 angle = FX_Atan2Idx(data->unk_1B0 - data->actor.position.y, data->unk_1AC - data->actor.position.x) >> 4;
-            s16 sin   = data_0205e4e0[angle * 2 + 1];
-            s16 cos   = data_0205e4e0[angle * 2];
-            s32 mag   = Mth_MulFixed((sin < 0) ? -sin : sin, 0x2000);
-
-            mag += 0x1000;
-            data->unk_1E8          = Mth_MulFixed(sin, mag);
-            data->unk_1EC          = Mth_MulFixed(cos, mag);
+            s32 angle     = FX_Atan2Idx(data->unk_1B0 - data->actor.position.y, data->unk_1AC - data->actor.position.x) >> 4;
+            s16 sin       = data_0205e4e0[angle * 2 + 1];
+            s16 cos       = data_0205e4e0[angle * 2];
+            s32 mag       = Mth_MulFixed(((sin < 0) ? -sin : sin) + 0x1000, 0x2000);
+            data->unk_1E8 = Mth_MulFixed(sin, mag);
+            data->unk_1EC = Mth_MulFixed(cos, mag);
             data->actor.position.x = data->actor.position.x + data->unk_1E8;
             if (data->unk_1E8 > 0) {
                 if (data->actor.position.x > data->unk_1AC) {
@@ -1140,7 +1138,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
 
 void func_ov015_0212736c(BtlEnm026* data) {
     if (data_ov015_02128500.variant == 0x11 && data->unk_1D8 == 1) {
-        s16 count;
+        s32 count;
 
         data->unk_1D8 = 0;
         count         = RNG_Next(3) + 3;
@@ -1148,7 +1146,7 @@ void func_ov015_0212736c(BtlEnm026* data) {
         func_ov015_02125a64(data, (s32)func_ov015_02126fd8);
         return;
     }
-    if (data_ov015_02128500.flag08 != 0 || data_ov015_02128500.result10 != -1) {
+    if (data_ov015_02128500.flag08 != 0 || data_ov015_02128500.result10 == -1) {
         if (data->unk_1D4 == 1 && data->unk_1E4 == 0) {
             func_ov003_020c4cc4(data, 0x27A);
             data->unk_1E4 = 1;
@@ -1167,7 +1165,7 @@ void func_ov015_0212736c(BtlEnm026* data) {
             break;
 
         case 1: {
-            u32 r;
+            s32 r;
             s16 sin;
             s16 cos;
 
@@ -1181,6 +1179,7 @@ void func_ov015_0212736c(BtlEnm026* data) {
             cos           = data_0205e4e0[(r >> 4) * 2];
             data->unk_1E8 = Mth_MulFixed(sin, data->unk_1D0);
             data->unk_1EC = Mth_MulFixed(cos, data->unk_1D0) >> 1;
+            func_ov003_020c4ab4(data, (data->unk_1E8 > 0) ? 1 : 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = RNG_Next(data->unk_198);
             break;
@@ -1366,7 +1365,7 @@ void func_ov015_02127a14(BtlEnm026* data) {
     twin = data->unk_184->unk_188;
     twin->unk_18C |= 0x1;
     if (data->unk_084.animTableIndex != 0) {
-        *(u32*)&twin->unk_18C &= ~0x1;
+        twin->unk_18C &= ~0x1;
     }
 }
 
