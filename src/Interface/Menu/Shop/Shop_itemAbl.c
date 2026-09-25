@@ -15,64 +15,40 @@ typedef struct {
     /* 0x08 */ u16         itemIndex;
 } Shop_itemAbl_Args;
 
-static SpriteFrameInfo* Shop_itemAbl_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+static SpriteFrameInfo* Shop_itemAbl_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              Shop_itemAbl_RunTask(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3);
 
 static const TaskHandle Tsk_Shop_itemAbl = {"Tsk_Shop_itemAbl", Shop_itemAbl_RunTask, sizeof(Shop_itemAbl)};
 
 static const SpriteAnimation Shop_itemAbl_Anim = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0x400,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Shop_itemAbl_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020ca1b8,
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 4,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x400,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Shop_itemAbl_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020ca1b8,
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 4,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* Shop_itemAbl_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2) {
-    SpriteFrameInfo* frameInfo = &data_0206b408;
-
-    switch (arg2) {
-        case 1:
-            frameInfo->unk_00 = 1;
-            return frameInfo;
-
-        case 2:
-            frameInfo         = &data_0206b408;
-            frameInfo->unk_04 = 0;
-            frameInfo->unk_08 = 0;
-            frameInfo->unk_0C = 0;
-            frameInfo->unk_10 = -1;
-
-            if (arg0->animData != NULL && arg0->frameDataTable != NULL && arg0->unk16 >= 0) {
-                frameInfo->unk_04 = *((u16*)arg0->frameDataTable + (arg0->unk16 * 4 + 1));
-                frameInfo->unk_08 =
-                    (s32)((u16*)arg0->frameDataTable + *((u16*)((u8*)arg0->frameDataTable + (arg0->unk16 * 8))));
-            }
-            frameInfo->unk_10 = 0x3A2000;
-            return frameInfo;
-
-        default:
-            return NULL;
-    }
+static SpriteFrameInfo* Shop_itemAbl_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3A2000);
 }
 
 static void Shop_itemAbl_Load(Shop_itemAbl* abl, Sprite* arg1, Shop_itemAbl_Args* arg2) {

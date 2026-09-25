@@ -22,7 +22,7 @@ typedef struct {
 
 extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 
-SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 void             Shop_window1_Load(Shop_window1* arg0, Sprite* arg1, Shop_window1_Args* arg2);
 void             func_ov043_020ba2f0(Shop_window1* arg0);
 void             func_ov043_020ba33c(Shop_window1* arg0);
@@ -42,59 +42,34 @@ static const Point data_ov043_020caa48[3] = {
 };
 
 static const SpriteAnimation data_ov043_020caa64 = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 1,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Shop_window1_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020ca1c0,
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 4,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Shop_window1_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020ca1c0,
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 4,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* temp = &data_0206b408;
-    switch (mode) {
-        case 1: {
-            temp->unk_00 = 1;
-            return temp;
-        } break;
-
-        case 2: {
-            temp         = &data_0206b408;
-            temp->unk_04 = 0;
-            temp->unk_08 = 0;
-            temp->unk_0C = 0;
-            temp->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            temp->unk_10 = 0x3E8000;
-            return temp;
-        } break;
-
-        default:
-            return NULL;
-    }
+SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3E8000);
 }
 
 void Shop_window1_Load(Shop_window1* window, Sprite* sprites, Shop_window1_Args* arg2) {

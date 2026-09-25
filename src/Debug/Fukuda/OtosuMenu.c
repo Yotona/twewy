@@ -1513,61 +1513,37 @@ u8* func_ov002_020824a0(void) {
     return data_ov002_020934fa;
 }
 
-static SpriteFrameInfo* func_ov002_020824ac(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+static SpriteFrameInfo* func_ov002_020824ac(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static u16 subroutine_arg0[0x400];
 
 static const SpriteAnimation data_ov002_02091b8c = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0000,
-    .unk_04     = -13,
-    .unk_06     = 0x000C,
-    .unk_08     = func_ov002_020824ac,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0000,
+    .unk_04            = -13,
+    .unk_06            = 0x000C,
+    .frameInfoCallback = func_ov002_020824ac,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_02082548(OtosuMenuObj* menuObj) {
@@ -3542,7 +3518,7 @@ PrcStepResult func_ov002_02087728(PrcCtx* ctx, void* object) {
                 menuObj->unk_46078.posX = table_sp0[anim_index + 1];
                 menuObj->unk_46078.posY = table_sp0[anim_index + 2];
                 Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[anim_index],
-                                       menuObj->unk_46078.frameDataTable);
+                                       menuObj->unk_46078.cellTable);
                 return PRC_STEP_CONTINUE;
         }
     }
@@ -4206,7 +4182,7 @@ PrcStepResult func_ov002_02088b28(PrcCtx* ctx, void* object) {
         menuObj->unk_46078.posX = table_sp0[anim_index + 1];
         menuObj->unk_46078.posY = table_sp0[anim_index + 2];
         Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[anim_index],
-                               menuObj->unk_46078.frameDataTable);
+                               menuObj->unk_46078.cellTable);
         menuObj->unk_4196A = 5;
         func_ov002_0208800c(menuObj);
     }
@@ -4415,7 +4391,7 @@ PrcStepResult func_ov002_0208920c(PrcCtx* ctx, void* object) {
             menuObj->unk_46078.posX = table_sp0[temp_r7 + 1];
             menuObj->unk_46078.posY = table_sp0[temp_r7 + 2];
             Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp0[temp_r7],
-                                   menuObj->unk_46078.frameDataTable);
+                                   menuObj->unk_46078.cellTable);
             func_ov002_0208800c(menuObj);
         }
     }
@@ -4716,7 +4692,7 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
         menuObj->unk_46078.posX = (u16) * (&sp2 + temp_ip);
         menuObj->unk_46078.posY = (u16) * (&sp4 + temp_ip);
         Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp6[0],
-                               menuObj->unk_46078.frameDataTable);
+                               menuObj->unk_46078.cellTable);
         return PRC_STEP_CONTINUE;
     }
     return PRC_STEP_CONTINUE;
@@ -5142,7 +5118,7 @@ PrcStepResult func_ov002_0208a250(PrcCtx* ctx, void* object) {
                 menuObj->unk_46078.posX = (u16) * (((u16*)temp_r1_2) + 1);
                 menuObj->unk_46078.posY = (u16) * (((u16*)temp_r1_2) + 2);
                 Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16) * (((u16*)temp_r1_2) + 0),
-                                       menuObj->unk_46078.frameDataTable);
+                                       menuObj->unk_46078.cellTable);
             }
             goto block_33;
         }
@@ -5490,7 +5466,7 @@ PrcStepResult func_ov002_0208ab58(PrcCtx* ctx, void* object) {
                     menuObj->unk_46078.posX = table_anim[temp_r6 + 1];
                     menuObj->unk_46078.posY = table_anim[temp_r6 + 2];
                     Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_anim[temp_r6],
-                                           menuObj->unk_46078.frameDataTable);
+                                           menuObj->unk_46078.cellTable);
                     break;
             }
             goto block_36;
@@ -5751,8 +5727,7 @@ PrcStepResult func_ov002_0208b270(PrcCtx* ctx, void* object) {
             (void)temp_r5;
             menuObj->unk_46078.posX = sp6;
             menuObj->unk_46078.posY = sp8;
-            Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)sp4,
-                                   menuObj->unk_46078.frameDataTable);
+            Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)sp4, menuObj->unk_46078.cellTable);
         }
         goto block_10;
     }
@@ -6254,59 +6229,35 @@ void func_ov002_0208c228(void) {
     OamMgr_Init();
 }
 
-SpriteFrameInfo* func_ov002_0208c6f8(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_0208c6f8(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_02092170 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0000,
-    .unk_04     = -13,
-    .unk_06     = 0x000C,
-    .unk_08     = func_ov002_0208c6f8,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0000,
+    .unk_04            = -13,
+    .unk_06            = 0x000C,
+    .frameInfoCallback = func_ov002_0208c6f8,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_0208c794(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2) {
@@ -6358,64 +6309,39 @@ PrcStepResult func_ov002_0208c8b0(PrcCtx* ctx, void* object) {
     if ((index < 0) || (index > 3)) {
         OS_WaitForever();
     }
-    Sprite_ChangeAnimation(&menuObj->unk_460C0, menuObj->unk_460C0.animData, options[index],
-                           menuObj->unk_460C0.frameDataTable);
+    Sprite_ChangeAnimation(&menuObj->unk_460C0, menuObj->unk_460C0.animData, options[index], menuObj->unk_460C0.cellTable);
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_0208c92c(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_0208c92c(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_0209219c = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0400,
-    .unk_04     = -13,
-    .unk_06     = 0x000C,
-    .unk_08     = func_ov002_0208c92c,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0400,
+    .unk_04            = -13,
+    .unk_06            = 0x000C,
+    .frameInfoCallback = func_ov002_0208c92c,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_0208c9c8(void* arg0, void* arg1, s16* arg2) {
@@ -6612,12 +6538,12 @@ s32 func_ov002_0208cdb0(OtosuMenuObj* menuObj, u16 arg1) {
     SpriteFrameInfo sp0;
     u8              index;
 
-    sp0.unk_00 = 0;
-    sp0.unk_04 = 0;
-    sp0.unk_08 = 0;
-    sp0.unk_0C = 0;
-    sp0.unk_10 = 0;
-    index      = *(u8*)((u8*)menuObj->unk_41FD5 + arg1);
+    sp0.updateSteps = 0;
+    sp0.pieceCount  = 0;
+    sp0.cellPieces  = NULL;
+    sp0.affine      = NULL;
+    sp0.sortKey     = 0;
+    index           = *(u8*)((u8*)menuObj->unk_41FD5 + arg1);
     return (s32)((u8*)menuObj->unk_41838 + (index * 0x30));
 }
 
@@ -7155,7 +7081,7 @@ PrcStepResult func_ov002_0208db58(PrcCtx* ctx, void* object) {
         menuObj->unk_46078.posX = temp_r1_2[1];
         menuObj->unk_46078.posY = temp_r1_2[2];
         Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)temp_r1_2[0],
-                               menuObj->unk_46078.frameDataTable);
+                               menuObj->unk_46078.cellTable);
     }
     temp_r5                = OS_DisableIRQ();
     data_ov002_020935e0[0] = menuObj->unk_4196A;
@@ -7496,7 +7422,7 @@ PrcStepResult func_ov002_0208e514(PrcCtx* ctx, void* object) {
         menuObj->unk_46078.posX = table_sp6[temp_ip + 1];
         menuObj->unk_46078.posY = table_sp6[temp_ip + 2];
         Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, (s16)table_sp6[temp_ip],
-                               menuObj->unk_46078.frameDataTable);
+                               menuObj->unk_46078.cellTable);
     }
     return PRC_STEP_CONTINUE;
 }
@@ -7623,59 +7549,35 @@ PrcStepResult func_ov002_0208e838(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_0208e890(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_0208e890(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_0209241c = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0000,
-    .unk_04     = -13,
-    .unk_06     = 0x000C,
-    .unk_08     = func_ov002_0208e890,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0000,
+    .unk_04            = -13,
+    .unk_06            = 0x000C,
+    .frameInfoCallback = func_ov002_0208e890,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_0208e92c(void* arg1, void* arg2) {
@@ -7965,59 +7867,35 @@ PrcStepResult func_ov002_0208eeac(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_0208f020(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_0208f020(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_020924cc = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0000,
-    .unk_04     = -13,
-    .unk_06     = 0x000C,
-    .unk_08     = func_ov002_0208f020,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0000,
+    .unk_04            = -13,
+    .unk_06            = 0x000C,
+    .frameInfoCallback = func_ov002_0208f020,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_0208f0bc(void* arg1, void* arg2) {
@@ -8224,59 +8102,35 @@ PrcStepResult func_ov002_0208f6f0(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_0208f6f8(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_0208f6f8(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_020924f8 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0000,
-    .unk_04     = 0x0080,
-    .unk_06     = 0x0060,
-    .unk_08     = func_ov002_0208f6f8,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0x0000,
-    .unk_1C     = 0x0015,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0018,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0016,
-    .unk_28     = 0x0017,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0000,
+    .unk_04            = 0x0080,
+    .unk_06            = 0x0060,
+    .frameInfoCallback = func_ov002_0208f6f8,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0x0000,
+    .unk_1C            = 0x0015,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0018,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0016,
+    .unk_28            = 0x0017,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_0208f794(void* arg1) {
@@ -8601,39 +8455,15 @@ PrcStepResult OtosuPrcStep_CheckButtonInput(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_020901a0(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_020901a0(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 void func_ov002_0209023c(OtosuMenuObj* menuObj) {
     SpriteAnimation anim = data_ov002_02092a20;
 
     _Sprite_Load(&menuObj->unk_46078, &anim);
-    Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, 3, menuObj->unk_46078.frameDataTable);
+    Sprite_ChangeAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, 3, menuObj->unk_46078.cellTable);
 }
 
 void func_ov002_020902a4(s32 arg0, OtosuMenuObj* menuObj) {
@@ -8858,7 +8688,7 @@ PrcStepResult func_ov002_0209095c(PrcCtx* ctx, void* arg1) {
         menuObj->unk_46078.posX = (u16) * (&sp2 + temp_ip);
         menuObj->unk_46078.posY = (u16) * (&sp4 + temp_ip);
         Sprite_SetAnimation(&menuObj->unk_46078, menuObj->unk_46078.animData, subroutine_arg0[temp_ip],
-                            menuObj->unk_46078.frameDataTable);
+                            menuObj->unk_46078.cellTable);
         return PRC_STEP_CONTINUE;
     }
 }
@@ -9165,59 +8995,35 @@ PrcStepResult func_ov002_02091720(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_02091760(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_02091760(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_02092a4c = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0800,
-    .unk_04     = 0x0080,
-    .unk_06     = 0x0060,
-    .unk_08     = func_ov002_02091760,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = (BinIdentifier*)&data_ov002_02091c34,
-    .unk_18     = 0x0002,
-    .packIndex  = 0x000D,
-    .unk_1C     = 0x0002,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0001,
-    .unk_22     = 0x0002,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0003,
-    .unk_28     = 0x0004,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0800,
+    .unk_04            = 0x0080,
+    .unk_06            = 0x0060,
+    .frameInfoCallback = func_ov002_02091760,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = (BinIdentifier*)&data_ov002_02091c34,
+    .unk_18            = 0x0002,
+    .packIndex         = 0x000D,
+    .unk_1C            = 0x0002,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0001,
+    .unk_22            = 0x0002,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0003,
+    .unk_28            = 0x0004,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_020917fc(s32 arg1) {
@@ -9272,59 +9078,35 @@ PrcStepResult func_ov002_02091970(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-SpriteFrameInfo* func_ov002_02091978(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov002_02091978(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static const SpriteAnimation data_ov002_02092ab8 = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x0800,
-    .unk_04     = 0x0080,
-    .unk_06     = 0x0060,
-    .unk_08     = func_ov002_02091978,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov002_02091acc,
-    .unk_18     = 0x0000,
-    .packIndex  = 0,
-    .unk_1C     = 0x0021,
-    .unk_1E     = 0x0000,
-    .unk_20     = 0x0024,
-    .unk_22     = 0x0001,
-    .unk_24     = 0x0000,
-    .unk_26     = 0x0022,
-    .unk_28     = 0x0023,
-    .unk_2A     = 0x0001,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x0800,
+    .unk_04            = 0x0080,
+    .unk_06            = 0x0060,
+    .frameInfoCallback = func_ov002_02091978,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov002_02091acc,
+    .unk_18            = 0x0000,
+    .packIndex         = 0,
+    .unk_1C            = 0x0021,
+    .unk_1E            = 0x0000,
+    .unk_20            = 0x0024,
+    .unk_22            = 0x0001,
+    .unk_24            = 0x0000,
+    .unk_26            = 0x0022,
+    .unk_28            = 0x0023,
+    .unk_2A            = 0x0001,
 };
 
 void func_ov002_02091a14(s32 arg0, void* arg1) {

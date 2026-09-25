@@ -21,32 +21,8 @@ void func_ov043_020c53a0(void* arg1, s32* arg2, s32 arg3) {
     // Not yet implemented
 }
 
-SpriteFrameInfo* Save_BdgU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* temp = &data_0206b408;
-
-    switch (mode) {
-        case 1: {
-            temp->unk_00 = 1;
-            return temp;
-        } break;
-
-        case 2: {
-            temp         = &data_0206b408;
-            temp->unk_04 = 0;
-            temp->unk_08 = 0;
-            temp->unk_0C = 0;
-            temp->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            return temp;
-        } break;
-    }
-
-    return NULL;
+SpriteFrameInfo* Save_BdgU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackEarly(sprite, mode);
 }
 
 void Save_BdgU_Load(Save_BdgU* bdgU, Sprite* sprite, Save_BdgU_Args* bdgUArgs) {

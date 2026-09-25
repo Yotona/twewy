@@ -17,64 +17,40 @@ typedef struct {
 extern BinIdentifier data_ov043_020c79c8;
 extern void          func_ov043_02084620(void* sprite, s16 frame);
 
-static SpriteFrameInfo* MenuTop_luckNum_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode);
+static SpriteFrameInfo* MenuTop_luckNum_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_luckNum_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuTop_luckNum = {"Tsk_MenuTop_luckNum", MenuTop_luckNum_RunTask, sizeof(MenuTop_luckNum)};
 
 static const SpriteAnimation data_ov043_020c7bd0 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0x400,
-    .unk_04     = 230,
-    .unk_06     = 180,
-    .unk_08     = MenuTop_luckNum_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c79c8,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x400,
+    .unk_04            = 230,
+    .unk_06            = 180,
+    .frameInfoCallback = MenuTop_luckNum_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c79c8,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* MenuTop_luckNum_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+static SpriteFrameInfo* MenuTop_luckNum_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 // Nonmatching

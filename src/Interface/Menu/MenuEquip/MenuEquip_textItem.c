@@ -17,64 +17,41 @@ typedef struct {
     /* 0x8 */ s32              unk_8;
 } MenuEquip_textItem_Args;
 
-static SpriteFrameInfo* MenuEquip_textItem_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
+static SpriteFrameInfo* MenuEquip_textItem_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuEquip_textItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuEquip_textItem = {"Tsk_MenuEquip_textItem", MenuEquip_textItem_RunTask,
                                                   sizeof(MenuEquip_textItem)};
 
 static const SpriteAnimation MenuEquip_textItem_Anim = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 1,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0xC00,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = MenuEquip_textItem_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c9758[2],
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 0xA,
-    .unk_22     = 6,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0xC00,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = MenuEquip_textItem_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c9758[2],
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 0xA,
+    .unk_22            = 6,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* MenuEquip_textItem_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
-
-    switch (mode) {
-        case 1:
-            info->unk_00 = 1;
-            return info;
-
-        case 2:
-            info         = &data_0206b408;
-            info->unk_04 = 0;
-            info->unk_08 = 0;
-            info->unk_0C = 0;
-            info->unk_10 = -1;
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                info->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                info->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info->unk_10 = 0x3E8000;
-            return info;
-
-        default:
-            return NULL;
-    }
+static SpriteFrameInfo* MenuEquip_textItem_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3E8000);
 }
 
 static void MenuEquip_textItem_Load(MenuEquip_textItem* textItem, Sprite* sprite, MenuEquip_textItem_Args* args) {

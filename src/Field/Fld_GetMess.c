@@ -24,64 +24,40 @@ typedef struct {
     /* 0x6 */ u16 unk_6;
 } Fld_GetMess_Args;
 
-SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode);
+SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 s32              Fld_GetMess_RunTask(TaskPool*, Task*, void*, s32);
 
 static const TaskHandle Tsk_Fld_GetMess = {"Tsk_Fld_GetMess", Fld_GetMess_RunTask, sizeof(Fld_GetMess)};
 
 static const SpriteAnimation data_ov030_020ec8f0 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 1,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0,
-    .unk_04     = 0xFF80,
-    .unk_06     = 0xA0,
-    .unk_08     = Fld_GetMess_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov030_020d9944,
-    .unk_18     = 2,
-    .packIndex  = 11,
-    .unk_1C     = 2,
-    .unk_1E     = 0,
-    .unk_20     = 1,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 3,
-    .unk_28     = 4,
-    .unk_2A     = 3,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0,
+    .unk_04            = 0xFF80,
+    .unk_06            = 0xA0,
+    .frameInfoCallback = Fld_GetMess_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov030_020d9944,
+    .unk_18            = 2,
+    .packIndex         = 11,
+    .unk_1C            = 2,
+    .unk_1E            = 0,
+    .unk_20            = 1,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 3,
+    .unk_28            = 4,
+    .unk_2A            = 3,
 };
 
-SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 void Fld_GetMess_Load(Sprite* sprite, Fld_GetMess_Args* args) {

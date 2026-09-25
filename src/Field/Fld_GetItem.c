@@ -19,7 +19,7 @@ typedef struct {
     /* 0x4 */ u16 unk_4;
 } Fld_GetItem_Args;
 
-SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg1, s32 mode);
+SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg, s32 mode);
 s32              Fld_GetItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_GetItem = {"Tsk_Fld_GetItem", Fld_GetItem_RunTask, sizeof(Fld_GetItem)};
@@ -37,30 +37,30 @@ static const BinIdentifier data_ov030_020ec9f4[7] = {
 };
 
 static const SpriteAnimation data_ov030_020ec9c8 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 3,
-    .unk_04     = 0x80,
-    .unk_06     = 0x51,
-    .unk_08     = func_ov030_020c7d20,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov030_020ec9f4[5],
-    .unk_18     = 2,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 3,
+    .unk_04            = 0x80,
+    .unk_06            = 0x51,
+    .frameInfoCallback = func_ov030_020c7d20,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov030_020ec9f4[5],
+    .unk_18            = 2,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
 void Fld_GetItem_LoadThreadData(RawItemData* itemData, s32 arg1) {
@@ -173,7 +173,7 @@ void func_ov030_020c7bc0(Sprite* arg0, Fld_GetItem_Args* arg1, s32 arg2, s32 arg
     DatMgr_ReleaseData(sp8);
 }
 
-SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg1, s32 mode) {
+SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg, s32 mode) {
     // Not yet implemented
 }
 
@@ -182,7 +182,7 @@ void func_ov030_020c7e00(Sprite* sprite, Fld_GetItem_Args* args, void* arg2) {
     SpriteAnimation anim = data_ov030_020ec9c8;
 
     anim.dataType = args->unk_0;
-    anim.unk_10   = arg2;
+    anim.owner    = arg2;
 
     s16 temp_r4_3 = func_ov030_020c7b24(args->unk_4, &temp);
     if (temp != 0) {

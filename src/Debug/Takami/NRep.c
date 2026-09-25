@@ -451,7 +451,7 @@ typedef struct {
     /* 0x84 */ NRepMenuState* unk_84;
 } NRepMenu;
 
-static SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg1, s32 arg2);
+static SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg, s32 mode);
 static s32              NRepMenu_Init(TaskPool* pool, Task* task, void* args);
 static s32              NRepMenu_Update(TaskPool* pool, Task* task, void* args);
 static s32              NRepMenu_Render(TaskPool* pool, Task* task, void* args);
@@ -461,34 +461,34 @@ static s32              NRepMenu_RunTask(TaskPool* pool, Task* task, void* args,
 const BinIdentifier data_ov043_020cb4a0 = {43, "Apl_Tak/Grp_MenuIcon.bin"};
 
 const SpriteAnimation data_ov043_020cb4d8 = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0x400,
-    .unk_04     = 80,
-    .unk_06     = 80,
-    .unk_08     = func_ov043_020c70c8,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020cb4a0,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0x400,
+    .unk_04            = 80,
+    .unk_06            = 80,
+    .frameInfoCallback = func_ov043_020c70c8,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020cb4a0,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg1, s32 arg2) {
-    // Not yet implemented
+SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 void NrepMenu_Load(NRepMenu* arg0, NRepMenuTaskArgs* args) {
@@ -696,7 +696,7 @@ typedef struct {
     /* 0x08 */ u16          unk_8;
 } NRepCursorTaskArgs;
 
-static SpriteFrameInfo* NRepCursor_GetAnimInfo(Sprite* sprite, s32 arg1, s32 arg2);
+static SpriteFrameInfo* NRepCursor_GetAnimInfo(Sprite* sprite, s32 arg, s32 mode);
 static void             NRepCursor_Load(NRepCursor* arg0, Sprite* arg1, NRepCursorTaskArgs* args);
 static s32              NRepCursor_Init(TaskPool* pool, Task* task, void* args);
 static s32              NRepCursor_Update(TaskPool* pool, Task* task, void* args);
@@ -707,36 +707,34 @@ static s32              NrepCursor_RunTask(TaskPool* pool, Task* task, void* arg
 const BinIdentifier data_ov043_020cb4a8 = {43, "Apl_Tak/Grp_Badge.bin"};
 
 const SpriteAnimation data_ov043_020cb540 = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 80,
-    .unk_06     = 80,
-    .unk_08     = NRepCursor_GetAnimInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020cb4a8,
-    .unk_18     = 2,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0,
+    .unk_04            = 80,
+    .unk_06            = 80,
+    .frameInfoCallback = NRepCursor_GetAnimInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020cb4a8,
+    .unk_18            = 2,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-SpriteFrameInfo* NRepCursor_GetAnimInfo(Sprite* sprite, s32 arg1, s32 arg2) {
-    (void)sprite;
-    (void)arg2;
-    return NULL;
+SpriteFrameInfo* NRepCursor_GetAnimInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x384000);
 }
 
 void NRepCursor_Load(NRepCursor* cursor, Sprite* sprite, NRepCursorTaskArgs* args) {

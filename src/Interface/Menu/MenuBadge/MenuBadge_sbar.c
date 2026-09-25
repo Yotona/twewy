@@ -15,36 +15,36 @@ typedef struct {
     /* 0x4 */ MenuBadgeObject* unk_4;
 } MenuBadge_sbar_Args;
 
-static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 frameIndex, s32 mode);
+static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 arg, s32 mode);
 static s32              func_ov043_02094d78(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle data_ov043_020c89dc = {"Tsk_MenuBadge_sbar", func_ov043_02094d78, sizeof(MenuBadge_sbar)};
 
 static const SpriteAnimation data_ov043_020c89f8 = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0xC00,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = func_ov043_02094854,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c82e4,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 0xD,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0xC00,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = func_ov043_02094854,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c82e4,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 0xD,
+    .unk_22            = 2,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
 // Nonmatching
@@ -85,34 +85,8 @@ static u16 func_ov043_02094818(u16 scroll, u8 mode) {
     return y;
 }
 
-static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 frameIndex, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-
-            temp->unk_04 = 0;
-            temp->unk_08 = 0;
-            temp->unk_0C = 0;
-            temp->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-
-            info = temp;
-        } break;
-    }
-
-    return info;
+static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static void func_ov043_020948f0(Sprite* sprites, MenuBadge_sbar_Args* args) {

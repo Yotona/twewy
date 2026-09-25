@@ -11,67 +11,40 @@ typedef struct {
     /* 0x4 */ MenuBadgeObject* unk_4;
 } MenuBadge_bdgCur_Args;
 
-static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
+static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_bdgCur_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuBadge_bdgCur = {"Tsk_MenuBadge_bdgCur", MenuBadge_bdgCur_RunTask, sizeof(MenuBadge_bdgCur)};
 
 static const SpriteAnimation MenuBadge_bdgCur_Anim = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0x800,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = MenuBadge_bdgCur_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c82e4,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 0xD,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x800,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = MenuBadge_bdgCur_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c82e4,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 0xD,
+    .unk_22            = 2,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
-
-    switch (mode) {
-        case 1: {
-            info->unk_00 = 1;
-            return info;
-        } break;
-
-        case 2: {
-            info = &data_0206b408;
-
-            info->unk_04 = 0;
-            info->unk_08 = 0;
-            info->unk_0C = 0;
-            info->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                info->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                info->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-
-            info->unk_10 = 0x3C0000;
-            return info;
-        } break;
-    }
-
-    return NULL;
+static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3C0000);
 }
 
 static void MenuBadge_bdgCur_Load(MenuBadge_bdgCur* bdgCur, Sprite* sprite, MenuBadge_bdgCur_Args* args) {

@@ -210,7 +210,7 @@ void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
     Text_RenderToScreen(&state->textObj, 8, 0x40, Str_SPrintf("UseChr:%d", useChr));
     Text_RenderToScreen(&state->textObj, 8, 0x48, Str_SPrintf("MaxLineChr:%d", state->maxLineChr));
     Text_RenderToScreen(&state->textObj, 8, 0x50, Str_SPrintf("UseLineChr:%d", useLineChar));
-    Text_RenderToScreen(&state->textObj, 8, 0x58, Str_SPrintf("pic:%d", temp_r4->sprite.unk16 - 1));
+    Text_RenderToScreen(&state->textObj, 8, 0x58, Str_SPrintf("pic:%d", temp_r4->sprite.cellIndex - 1));
     Text_RenderToScreen(&state->textObj, 8, 0x60,
                         Str_SPrintf("aob:%d", temp_r4->sprite.currentFrame - temp_r4->sprite.loopFrame));
     Text_RenderToScreen(&state->textObj, 8, 0x68, Str_SPrintf("frame:%d", temp_r4->sprite.frameTimer));
@@ -375,13 +375,12 @@ void func_ov038_0208476c(GrpCheckState* state) {
 
 void func_ov038_02084874(GrpCheckState* state) {
     if (state->hasSprite) {
-        Sprite_ChangeAnimation(&state->unk_11674, state->unk_11674.animData, state->unk_11B90,
-                               state->unk_11674.frameDataTable);
+        Sprite_ChangeAnimation(&state->unk_11674, state->unk_11674.animData, state->unk_11B90, state->unk_11674.cellTable);
     }
 
     if (func_ov038_020846f4(state) != 0) {
         Sprite* sprite = &state->unk_116C0[state->unk_11B80].sprite;
-        Sprite_ChangeAnimation(sprite, sprite->animData, state->unk_11B90, sprite->frameDataTable);
+        Sprite_ChangeAnimation(sprite, sprite->animData, state->unk_11B90, sprite->cellTable);
     }
 
     GrpCheck_PrintSpritePath(state);

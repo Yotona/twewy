@@ -15,60 +15,40 @@ typedef struct {
     /* 0x4 */ ShopObject* shop;
 } Shop_sbar2_Args;
 
-static SpriteFrameInfo* Shop_sbar2_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+static SpriteFrameInfo* Shop_sbar2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              Shop_sbar2_RunTask(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3);
 
 static const TaskHandle Tsk_Shop_sbar2 = {"Tsk_Shop_sbar2", Shop_sbar2_RunTask, sizeof(Shop_sbar2)};
 
 static const SpriteAnimation Shop_sbar2_Anim = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0xC00,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Shop_sbar2_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020ca1b0,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 3,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0xC00,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Shop_sbar2_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020ca1b0,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 3,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* Shop_sbar2_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2) {
-    SpriteFrameInfo* var_r3 = NULL;
-
-    switch (arg2) {
-        case 1:
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-            if (arg0->animData != NULL && arg0->frameDataTable != NULL && arg0->unk16 >= 0) {
-                temp->unk_04 = *((u16*)arg0->frameDataTable + (arg0->unk16 * 4 + 1));
-                temp->unk_08 = (s32)((u16*)arg0->frameDataTable + *((u16*)((u8*)arg0->frameDataTable + (arg0->unk16 * 8))));
-            }
-            var_r3 = temp;
-        }
-    }
-    return var_r3;
+static SpriteFrameInfo* Shop_sbar2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static void Shop_sbar2_Load(Sprite* arg0, Shop_sbar2_Args* arg1) {

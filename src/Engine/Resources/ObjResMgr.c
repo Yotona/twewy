@@ -3,7 +3,7 @@
 
 static void ObjResMgr_FreeBitmapByOffset(ObjResBitmap* bitmap, s32 offset);
 static s32  func_0200c818(ObjResBitmap* bitmap, s32 value, s32 shift);
-static void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* entry, void* data, s32 mode);
+static void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* entry, void* data, struct OamCellPiece* cellPieces);
 
 extern void func_0200ed38(void);
 extern void func_0200ed4c(void);
@@ -348,19 +348,19 @@ static void ObjResMgr_PushActiveEntry(ObjResMgr* mgr, ObjResource* entry) {
 }
 
 static void ObjResMgr_Reset(ObjResMgr* mgr, ObjResource* entry) {
-    entry->flags         = (u16)(data_0205ad9c.sizes[mgr->engine] | 6);
-    entry->refCount      = 0;
-    entry->mode          = 0;
-    entry->skipTransfer  = 0;
-    entry->unk_02        = 0;
-    entry->hasSourceData = 0;
-    entry->unk_0C        = 0;
-    entry->unk_0A        = 0;
-    entry->bitmapIndex   = -1;
-    entry->unk_12        = -1;
-    entry->vramOffset    = -1;
-    entry->unk_18        = NULL;
-    entry->unk_1C        = 0;
+    entry->flags            = (u16)(data_0205ad9c.sizes[mgr->engine] | 6);
+    entry->refCount         = 0;
+    entry->mode             = 0;
+    entry->skipTransfer     = 0;
+    entry->unk_02           = 0;
+    entry->hasSourceData    = 0;
+    entry->unk_0C           = 0;
+    entry->unk_0A           = 0;
+    entry->bitmapIndex      = -1;
+    entry->unk_12           = -1;
+    entry->vramOffset       = -1;
+    entry->loadedCharData   = NULL;
+    entry->loadedCellPieces = NULL;
 }
 
 static ObjResource* ObjResMgr_RemoveActiveEntry(ObjResMgr* mgr, ObjResource* target) {
@@ -519,7 +519,7 @@ ObjResource* ObjResMgr_AllocResource(ObjResMgr* mgr, void* data, u32 size, u32 m
         ObjResource* found = mgr->activeList;
         if (found != NULL) {
             do {
-                if (found->hasSourceData == 1 && mode == found->mode && found->unk_18 == data) {
+                if (found->hasSourceData == 1 && mode == found->mode && found->loadedCharData == data) {
                     if (found->vramOffset >= size) {
                         if (found->refCount != 0xFFFF) {
                             found->refCount++;
@@ -563,7 +563,7 @@ ObjResource* ObjResMgr_AllocResource(ObjResMgr* mgr, void* data, u32 size, u32 m
     entry->flags |= 0x10;
     entry->vramOffset = func_0200c7e8(&mgr->bitmap, entry->bitmapIndex << 5);
     ObjResMgr_PushActiveEntry(mgr, entry);
-    ObjResMgr_LoadToVram(mgr, entry, data, 0);
+    ObjResMgr_LoadToVram(mgr, entry, data, NULL);
     return entry;
 }
 
@@ -585,7 +585,7 @@ BOOL ObjResMgr_ReleaseResource(ObjResMgr* mgr, ObjResource* resource) {
     return released;
 }
 
-void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32 mode) {
+void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, struct OamCellPiece* cellPieces) {
     u32 dataSize;
     s32 header;
 
@@ -595,10 +595,10 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
         return;
 
     resource->unk_12 = resource->bitmapIndex;
-    if (mode != 0) {
+    if (cellPieces != NULL) {
         if (!(*(u8*)data & 0xF0)) {
             OamMgr_QueueCellCharTransfers((s32)((u8*)&g_OamMgr + mgr->engine * 0x108C), (s32)mgr->vramBase,
-                                          resource->bitmapIndex << 5, (void*)((u8*)data + 4), mode);
+                                          resource->bitmapIndex << 5, (void*)((u8*)data + 4), cellPieces);
         }
     } else {
         header   = *(s32*)data;
@@ -622,6 +622,6 @@ void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32
             }
         }
     }
-    resource->unk_18 = data;
-    resource->unk_1C = mode;
+    resource->loadedCharData   = data;
+    resource->loadedCellPieces = cellPieces;
 }

@@ -20,7 +20,7 @@ s32 CombatSprite_SetAnimFromTable(CombatSprite* cSprite, u16 animTableIndex, s32
     Data*            temp_ip;
     void*            animData;
     void*            charSource;
-    SpriteFrameData* frameData;
+    SpriteCell*      frameData;
     SpriteAnimEntry* animEntry;
 
     if (animTableIndex == cSprite->animTableIndex) {
@@ -65,7 +65,7 @@ s32 CombatSprite_SetAnim(CombatSprite* cSprite, u16 animTableIndex, s32 arg2) {
     } else {
         cSprite->sprite.animationMode = ANIM_MODE_LOOPED;
     }
-    Sprite_ChangeAnimation(&cSprite->sprite, cSprite->sprite.animData, animTableIndex + 1, cSprite->sprite.frameDataTable);
+    Sprite_ChangeAnimation(&cSprite->sprite, cSprite->sprite.animData, animTableIndex + 1, cSprite->sprite.cellTable);
     return 0;
 }
 
@@ -114,7 +114,7 @@ void CombatSprite_SetPosition(CombatSprite* cSprite, s32 posX, s32 posY) {
 }
 
 void func_ov003_02082730(CombatSprite* cSprite, s32 arg1) {
-    cSprite->unk48 = arg1;
+    cSprite->sortKey = arg1;
 }
 
 void func_ov003_02082738(CombatSprite* cSprite, s32 arg1) {
@@ -164,31 +164,31 @@ void CombatSprite_RenderWithPalette(CombatSprite* cSprite, s32 arg1) {
     data_0206a890.unk_0C = (prev & 0x1F);
 }
 
-SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
+SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    SpriteFrameInfo* info = &g_SpriteFrameInfo;
 
     switch (mode) {
-        case 1: {
-            info->unk_00 = 1;
+        case SPRITE_FRAME_UPDATE: {
+            info->updateSteps = 1;
             return info;
         } break;
 
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
+        case SPRITE_FRAME_RENDER: {
+            SpriteFrameInfo* temp = &g_SpriteFrameInfo;
 
-            temp->unk_04 = 0;
-            temp->unk_08 = 0;
-            temp->unk_0C = ((SpriteFrameSource*)sprite->unk24)->unk_4C;
-            temp->unk_10 = ((SpriteFrameSource*)sprite->unk24)->unk_48;
+            temp->pieceCount = 0;
+            temp->cellPieces = NULL;
+            temp->affine     = ((CombatSprite*)sprite->owner)->affine;
+            temp->sortKey    = ((CombatSprite*)sprite->owner)->sortKey;
 
-            if ((sprite->animData != NULL) && (sprite->frameDataTable != NULL && sprite->unk16 >= 0)) {
-                u16* temp_r3 = (u16*)sprite->frameDataTable;
+            if ((sprite->animData != NULL) && (sprite->cellTable != NULL && sprite->cellIndex >= 0)) {
+                u16* temp_r3 = (u16*)sprite->cellTable;
 
-                s16 temp_r2 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
+                s16 temp_r2 = *((u16*)sprite->cellTable + (sprite->cellIndex * 4 + 1));
 
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
+                temp->pieceCount = *((u16*)sprite->cellTable + (sprite->cellIndex * 4 + 1));
+                temp->cellPieces =
+                    (OamCellPiece*)((u16*)sprite->cellTable + *((u16*)((u8*)sprite->cellTable + (sprite->cellIndex * 8))));
             }
             info = temp;
             return info;
@@ -204,12 +204,12 @@ void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier*
 }
 
 s32 CombatSprite_Load(CombatSprite* cSprite, SpriteAnimationEx* anim) {
-    anim->anim.unk_10       = cSprite;
+    anim->anim.owner        = cSprite;
     cSprite->animTable      = (SpriteAnimEntry*)(void*)(*((s32*)((u8*)anim + 0x2C)));
     cSprite->animTableIndex = -1;
-    cSprite->unk48          = -1;
+    cSprite->sortKey        = -1;
     cSprite->flags46        = 0;
-    cSprite->unk4C          = 0;
+    cSprite->affine         = NULL;
     cSprite->paletteMode    = 0;
     cSprite->paletteTimer   = 0;
     if (Sprite_Load(&cSprite->sprite, &anim->anim) == 0) {

@@ -12,37 +12,13 @@ typedef struct {
     /* 0x8 */ s16         unk_8;
 } Shop_numFsgU_Args;
 
-SpriteFrameInfo* func_ov043_020bb7d4(Sprite* sprite, s32 arg1, s32 mode);
+SpriteFrameInfo* func_ov043_020bb7d4(Sprite* sprite, s32 arg, s32 mode);
 s32              Shop_numFsgU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Shop_numFsgU = {"Tsk_Shop_numFsgU", Shop_numFsgU_RunTask, 0x158};
 
-SpriteFrameInfo* func_ov043_020bb7d4(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+SpriteFrameInfo* func_ov043_020bb7d4(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 void func_ov043_020bb870(Shop_numFsgU* num) {

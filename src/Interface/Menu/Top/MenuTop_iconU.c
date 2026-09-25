@@ -19,64 +19,40 @@ enum {
     UNKTHING_B = 1,
 };
 
-static SpriteFrameInfo* MenuTop_iconU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode);
+static SpriteFrameInfo* MenuTop_iconU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_iconU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const SpriteAnimation MenuTop_iconU_Anim = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0x800,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = MenuTop_iconU_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c79a8,
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x800,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = MenuTop_iconU_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c79a8,
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 2,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
 static const TaskHandle Tsk_MenuTop_iconU = {"Tsk_MenuTop_iconU", MenuTop_iconU_RunTask, sizeof(MenuTop_iconU)};
 
-static SpriteFrameInfo* MenuTop_iconU_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        } break;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info = temp;
-        } break;
-    }
-
-    return info;
+static SpriteFrameInfo* MenuTop_iconU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 static void MenuTop_iconU_Load(MenuTop_iconU* icon, Sprite* sprite, MenuTop_iconU_Args* args) {

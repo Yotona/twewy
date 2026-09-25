@@ -5,7 +5,7 @@
 
 const s16 data_0205adb4[12] = {1, 0, 0, 0, 8, 8, 8, 8, 0, 0, 0, 0};
 
-SpriteFrameInfo data_0206b408;
+SpriteFrameInfo g_SpriteFrameInfo;
 
 static s32 AnimCmd_Start(Sprite* sprite);
 static s32 AnimCmd_Nop(Sprite* sprite);
@@ -25,23 +25,24 @@ const AnimCommand data_0205adcc[11] = {
     AnimCmd_AddPosition, AnimCmd_SetScale,  AnimCmd_SetLoopFrame, AnimCmd_Loop, AnimCmd_Jump,
 };
 
-static SpriteFrameInfo* Sprite_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2) {
-    switch (arg2) {
-        case 1:
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-        case 2:
-            data_0206b408.unk_04 = 0;
-            data_0206b408.unk_08 = 0;
-            data_0206b408.unk_0C = 0;
-            data_0206b408.unk_10 = -1;
-            SpriteFrameInfo* ret = &data_0206b408;
+static SpriteFrameInfo* Sprite_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    switch (mode) {
+        case SPRITE_FRAME_UPDATE:
+            g_SpriteFrameInfo.updateSteps = 1;
+            return &g_SpriteFrameInfo;
+        case SPRITE_FRAME_RENDER:
+            g_SpriteFrameInfo.pieceCount = 0;
+            g_SpriteFrameInfo.cellPieces = NULL;
+            g_SpriteFrameInfo.affine     = NULL;
+            g_SpriteFrameInfo.sortKey    = -1;
+            SpriteFrameInfo* ret         = &g_SpriteFrameInfo;
             if (sprite->animData != NULL) {
-                if (sprite->frameDataTable != 0) {
-                    if (sprite->unk16 >= 0) {
-                        // Did the devs use pointer arithmetic here instead of indexing? It seems like it, but it's weird.
-                        ret->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                        ret->unk_08 = ((u16*)sprite->frameDataTable + sprite->frameDataTable[sprite->unk16].unk_00);
+                if (sprite->cellTable != NULL) {
+                    if (sprite->cellIndex >= 0) {
+                        // pieceCount is read through raw pointer arithmetic; see Sprite_FillFrameInfo.
+                        ret->pieceCount = *((u16*)sprite->cellTable + (sprite->cellIndex * 4 + 1));
+                        ret->cellPieces =
+                            (OamCellPiece*)((u16*)sprite->cellTable + sprite->cellTable[sprite->cellIndex].pieceOffset);
                     }
                 }
             }
@@ -76,8 +77,8 @@ s32 AnimCmd_Nop(Sprite* sprite) {
 s32 AnimCmd_PlayFrame(Sprite* sprite) {
     s32 var_r1 = 0;
 
-    sprite->unk16 = (s16) * (sprite->animData + (((sprite->currentFrame * 4) + 1)));
-    s16 temp_r3   = *(sprite->animData + (((sprite->currentFrame * 4) + 2)));
+    sprite->cellIndex = (s16) * (sprite->animData + (((sprite->currentFrame * 4) + 1)));
+    s16 temp_r3       = *(sprite->animData + (((sprite->currentFrame * 4) + 2)));
 
     if (temp_r3 > 0) {
         sprite->frameTimer++;
@@ -94,7 +95,7 @@ s32 AnimCmd_PlayFrame(Sprite* sprite) {
 s32 AnimCmd_Wait(Sprite* sprite) {
     s32 var_r1 = 0;
 
-    sprite->unk16 = -1;
+    sprite->cellIndex = -1;
 
     s16 temp_r3 = *(sprite->animData + (((sprite->currentFrame * 4) + 1)));
     if (temp_r3 > 0) {
@@ -132,7 +133,7 @@ static s32 AnimCmd_SetLoopFrame(Sprite* sprite) {
 
 static s32 AnimCmd_Loop(Sprite* sprite) {
     sprite->currentFrame = sprite->loopFrame;
-    sprite->unk16        = -1;
+    sprite->cellIndex    = -1;
     return 1;
 }
 
@@ -172,17 +173,17 @@ void Sprite_Init(Sprite* sprite) {
     sprite->bits_7            = 1;
     sprite->bits_9            = 1;
     sprite->posY              = 0xC0;
-    sprite->unk16             = -1;
+    sprite->cellIndex         = -1;
     sprite->frameInfoCallback = Sprite_GetFrameInfo;
 }
 
 void Sprite_Update(Sprite* sprite) {
-    SpriteFrameInfo* temp_r4 = sprite->frameInfoCallback(sprite, 0, 1);
+    SpriteFrameInfo* temp_r4 = sprite->frameInfoCallback(sprite, 0, SPRITE_FRAME_UPDATE);
 
     sprite->isPlaying = FALSE;
     sprite->bit_11    = 0;
     if (sprite->animData != NULL) {
-        for (s32 var_r5 = 0; var_r5 < temp_r4->unk_00; var_r5++) {
+        for (s32 var_r5 = 0; var_r5 < temp_r4->updateSteps; var_r5++) {
             while (data_0205adcc[(*(sprite->animData + (sprite->currentFrame * 4)))](sprite) == TRUE) {
                 // Loop until condition is false
             }
@@ -206,7 +207,7 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         isAnimating = TRUE;
     }
     if (isAnimating == TRUE) {
-        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], tempchar, sprite->unk34, 0); // replace texture in VRAM?
+        ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], tempchar, sprite->unk34, NULL); // replace texture in VRAM?
     }
     if (tempbit == 2) {
         PaletteResource* tempPalette = sprite->paletteData;
@@ -224,35 +225,34 @@ static void func_0200dde8(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
                 }
                 break;
         }
-        func_02003ef4(arg1->unk_10, endX, sprite->posY + sprite->scaleY, arg1->unk_08, (s32)arg2.raw,
-                      sprite->charData->bitmapIndex * 32, tempArg, arg1->unk_0C);
+        func_02003ef4(arg1->sortKey, endX, sprite->posY + sprite->scaleY, arg1->cellPieces, (s32)arg2.raw,
+                      sprite->charData->bitmapIndex * 32, tempArg, arg1->affine);
         return;
     }
-    s16 temp_lr = sprite->charData->bitmapIndex;
-    u16 attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
-    s32 temp_08 = arg1->unk_08;
-    s16 posY    = sprite->posY;
-    s16 scaleY  = sprite->scaleY;
+    s16           temp_lr = sprite->charData->bitmapIndex;
+    u16           attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
+    OamCellPiece* pieces  = arg1->cellPieces;
+    s16           posY    = sprite->posY;
+    s16           scaleY  = sprite->scaleY;
     if (tempbit != 2) {
         Unk_Bitfield                 temp_arg2;
         volatile Unk_Bitfield* const p = &temp_arg2;
 
         temp_arg2.raw = attrs;
         if (p->unk_00 == 1) {
-            temp_08 = (s32)OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
-                                                               attrs, temp_lr, &g_OamMgr[tempbit].affine[p->unk_05]);
+            pieces = OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, pieces, attrs, temp_lr,
+                                                         &g_OamMgr[tempbit].affine[p->unk_05]);
         } else {
-            temp_08 = (s32)OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
-                                                         attrs, temp_lr);
+            pieces = OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, pieces, attrs, temp_lr);
         }
     }
-    arg1->unk_08 = temp_08;
-    s32 temp_10  = arg1->unk_10;
-    if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&g_OamMgr[tempbit], temp_10, (OamCellPiece*)arg1->unk_08);
+    arg1->cellPieces = pieces;
+    s32 sortKey      = arg1->sortKey;
+    if (sortKey >= 0) {
+        OamMgr_SubmitCommand(&g_OamMgr[tempbit], sortKey, arg1->cellPieces);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], (OamCellPiece*)arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], arg1->cellPieces);
 }
 
 static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield arg2) { // Render sprite, version 2
@@ -265,18 +265,18 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
         endX = sprite->posX + sprite->scaleX;
     }
     isAnimating   = FALSE;
-    void* charSrc = sprite->charData->unk_18;
+    void* charSrc = sprite->charData->loadedCharData;
     if (sprite->charData->bitmapIndex != sprite->charData->unk_12) { // if currentFrame != maxFrame?
         isAnimating = TRUE;
     }
-    if (isAnimating == TRUE || charSrc != sprite->unk34 || arg1->unk_08 != sprite->unk38) {
-        s32 vramOffset = arg1->unk_08;
-        sprite->unk38  = vramOffset;
+    if (isAnimating == TRUE || charSrc != sprite->unk34 || arg1->cellPieces != sprite->lastCellPieces) {
+        OamCellPiece* cellPieces = arg1->cellPieces;
+        sprite->lastCellPieces   = cellPieces;
         ObjResMgr_LoadToVram(g_ObjResourceManagers[tempbit], sprite->charData, sprite->unk34,
-                             vramOffset); // replace texture in VRAM?
+                             cellPieces); // queue this cell's char transfers
     }
     if (tempbit == 2) {
-        arg1->unk_08                 = (s32)OamMgr_CloneCellPieces(NULL, (OamCellPiece*)arg1->unk_08);
+        arg1->cellPieces             = OamMgr_CloneCellPieces(NULL, arg1->cellPieces);
         PaletteResource* tempPalette = sprite->paletteData;
         u32              tempArg     = 0;
         switch (tempbit) {
@@ -292,15 +292,15 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
                 }
                 break;
         }
-        func_02003ef4(arg1->unk_10, endX, sprite->posY + sprite->scaleY, arg1->unk_08, (s32)arg2.raw,
-                      sprite->charData->bitmapIndex * 32, tempArg, arg1->unk_0C);
+        func_02003ef4(arg1->sortKey, endX, sprite->posY + sprite->scaleY, arg1->cellPieces, (s32)arg2.raw,
+                      sprite->charData->bitmapIndex * 32, tempArg, arg1->affine);
         return;
     }
-    s16 temp_lr = sprite->charData->bitmapIndex;
-    u16 attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
-    s32 temp_08 = arg1->unk_08;
-    s16 posY    = sprite->posY;
-    s16 scaleY  = sprite->scaleY;
+    s16           temp_lr = sprite->charData->bitmapIndex;
+    u16           attrs   = arg2.raw & 0xFFFF; // mask is a no-op, but keeps attrs off the sunk-load path
+    OamCellPiece* pieces  = arg1->cellPieces;
+    s16           posY    = sprite->posY;
+    s16           scaleY  = sprite->scaleY;
     if (tempbit != 2) {
         // arg2 is copied to a stack home and re-read from it at the bit-0 test and again for
         // the affine group index; volatile reproduces those reloads.
@@ -309,31 +309,30 @@ static void func_0200e034(Sprite* sprite, SpriteFrameInfo* arg1, Unk_Bitfield ar
 
         temp_arg2.raw = attrs;
         if (p->unk_00 == 1) {
-            temp_08 = (s32)OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
-                                                               attrs, temp_lr, &g_OamMgr[tempbit].affine[p->unk_05]);
+            pieces = OamMgr_BuildVisibleCellPiecesAffine(&g_OamMgr[tempbit], endX, posY + scaleY, pieces, attrs, temp_lr,
+                                                         &g_OamMgr[tempbit].affine[p->unk_05]);
         } else {
-            temp_08 = (s32)OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, (OamCellPiece*)temp_08,
-                                                         attrs, temp_lr);
+            pieces = OamMgr_BuildVisibleCellPieces(&g_OamMgr[tempbit], endX, posY + scaleY, pieces, attrs, temp_lr);
         }
     }
-    arg1->unk_08 = temp_08;
-    arg1->unk_08 = (s32)OamMgr_CloneCellPieces((OamCellPiece*)arg1->unk_08, (OamCellPiece*)arg1->unk_08);
-    s32 temp_10  = arg1->unk_10;
-    if (temp_10 >= 0) {
-        OamMgr_SubmitCommand(&g_OamMgr[tempbit], temp_10, (OamCellPiece*)arg1->unk_08);
+    arg1->cellPieces = pieces;
+    arg1->cellPieces = OamMgr_CloneCellPieces(arg1->cellPieces, arg1->cellPieces);
+    s32 sortKey      = arg1->sortKey;
+    if (sortKey >= 0) {
+        OamMgr_SubmitCommand(&g_OamMgr[tempbit], sortKey, arg1->cellPieces);
         return;
     }
-    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], (OamCellPiece*)arg1->unk_08);
+    OamMgr_CopyCellPiecesToOam(&g_OamMgr[tempbit], arg1->cellPieces);
 }
 
 void Sprite_RenderFrame(Sprite* sprite) {
-    SpriteFrameInfo* renderData = sprite->frameInfoCallback(sprite, 0, 2);
+    SpriteFrameInfo* renderData = sprite->frameInfoCallback(sprite, 0, SPRITE_FRAME_RENDER);
 
     u32 test2 = sprite->bits_0_1;
 
     if (sprite->bits_7 != 0 && sprite->charData != NULL && sprite->paletteData != NULL) {
         PaletteResource* pData = sprite->paletteData;
-        if (renderData->unk_08 != 0) {
+        if (renderData->cellPieces != NULL) {
             // Compiler optimization: unk_0A is copied into a local variable. Stored onto the stack.
             // Normally Stack allocation would happen at the start of the function with a `sub sp, sp, 0xXX` instrunction
             // But in this function the stack allocation only happens when the local variable is needed for a function call
@@ -426,10 +425,10 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
         } break;
     }
 
-    void*            animData       = Data_GetPackEntryData(sprite->resourceData, sp8[4]);
-    SpriteFrameData* frameDataTable = (SpriteFrameData*)Data_GetPackEntryData(sprite->resourceData, sp8[3]);
+    void*       animData  = Data_GetPackEntryData(sprite->resourceData, sp8[4]);
+    SpriteCell* cellTable = (SpriteCell*)Data_GetPackEntryData(sprite->resourceData, sp8[3]);
 
-    Sprite_ChangeAnimation(sprite, animData, arg1->unk_2A, frameDataTable);
+    Sprite_ChangeAnimation(sprite, animData, arg1->unk_2A, cellTable);
     void* var_r1_2 = NULL;
     void* var_r6   = NULL;
     switch (sprite->bits_3_4) { // Decide character data loading type (based on Sprite data mode/type?)
@@ -449,7 +448,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
 
     s32 charFormat = arg1->unk_1E;
     if ((charFormat == 0) && (var_r1_2 == NULL)) {
-        charFormat = frameDataTable->unk_06;
+        charFormat = cellTable->charByteSize;
     }
 
     u32 temp_r4_4 = arg1->bits_0_1;
@@ -467,7 +466,8 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     if (sp8[2] > 0) {
         if ((arg1->unk_24 == 0) || (arg1->unk_24 == 0xFFFF)) {
             if (arg1->unk_22 == 0) {
-                var_r3 = (u32)((((Sprite*)(sprite->resourceData->buffer + (sp8[2] * 8)))->unk24 + 0x1F) & ~0x1F) >> 5;
+                PackEntry* entries = (PackEntry*)((u8*)sprite->resourceData->buffer + sizeof(PackHeader));
+                var_r3             = ((entries[sp8[2]].size + 0x1F) & ~0x1F) >> 5; // palette bytes -> 16-color slots
             }
             sprite->paletteData = PaletteMgr_AcquireContiguous(g_PaletteManagers[temp_r4_4], var_r6, temp_r5_6, var_r3);
         } else {
@@ -487,15 +487,15 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
         return 0;
     }
 
-    sprite->unk38 = 0;
-    if (arg1->unk_08 != NULL) {
-        sprite->frameInfoCallback = arg1->unk_08;
+    sprite->lastCellPieces = NULL;
+    if (arg1->frameInfoCallback != NULL) {
+        sprite->frameInfoCallback = arg1->frameInfoCallback;
         if (sprite->animData == NULL) {
             sprite->animData = data_0205adb4;
         }
     }
-    sprite->unk24 = arg1->unk_10;
-    sprite->frameInfoCallback(sprite, arg1->unk_0C, 0);
+    sprite->owner = arg1->owner;
+    sprite->frameInfoCallback(sprite, arg1->callbackArg, SPRITE_FRAME_LOAD);
     return 1;
 }
 
@@ -504,7 +504,7 @@ s32 Sprite_Load(Sprite* sprite, SpriteAnimation* anim) {
 }
 
 void Sprite_Release(Sprite* sprite) {
-    sprite->frameInfoCallback(sprite, 0, 3);
+    sprite->frameInfoCallback(sprite, 0, SPRITE_FRAME_RELEASE);
 
     u32 temp_r4 = sprite->bits_0_1;
 
@@ -560,46 +560,46 @@ BOOL SpriteMgr_IsFrameFinished(Sprite* sprite) {
     return ret;
 }
 
-void Sprite_SetAnimation(Sprite* sprite, s16* animData, s16 animFrame, SpriteFrameData* frameDataTable) {
+void Sprite_SetAnimation(Sprite* sprite, s16* animData, s16 animFrame, SpriteCell* cellTable) {
     if (animFrame >= *animData) {
         animFrame = 0;
     }
 
-    sprite->isPlaying      = FALSE;
-    sprite->bit_11         = 0;
-    sprite->isSingleFrame  = 0;
-    sprite->scaleX         = 0;
-    sprite->scaleY         = 0;
-    sprite->currentFrame   = animData[animFrame + 4] >> 2; // what?
-    sprite->loopFrame      = sprite->currentFrame;
-    sprite->frameTimer     = 0;
-    sprite->animIndex      = animFrame;
-    sprite->unk16          = -1;
-    sprite->animData       = animData;
-    sprite->frameDataTable = frameDataTable;
+    sprite->isPlaying     = FALSE;
+    sprite->bit_11        = 0;
+    sprite->isSingleFrame = 0;
+    sprite->scaleX        = 0;
+    sprite->scaleY        = 0;
+    sprite->currentFrame  = animData[animFrame + 4] >> 2; // what?
+    sprite->loopFrame     = sprite->currentFrame;
+    sprite->frameTimer    = 0;
+    sprite->animIndex     = animFrame;
+    sprite->cellIndex     = -1;
+    sprite->animData      = animData;
+    sprite->cellTable     = cellTable;
 }
 
-s32 Sprite_ChangeAnimation(Sprite* arg0, void* animData, s16 animIndex, SpriteFrameData* frameDataTable) {
-    if ((arg0->animData == animData) && (arg0->animIndex == animIndex) && (arg0->frameDataTable == frameDataTable)) {
+s32 Sprite_ChangeAnimation(Sprite* arg0, void* animData, s16 animIndex, SpriteCell* cellTable) {
+    if ((arg0->animData == animData) && (arg0->animIndex == animIndex) && (arg0->cellTable == cellTable)) {
         return 0;
     }
-    Sprite_SetAnimation(arg0, animData, animIndex, frameDataTable);
+    Sprite_SetAnimation(arg0, animData, animIndex, cellTable);
     return 1;
 }
 
-static void Sprite_SetStaticCell(Sprite* arg0, s32 arg1, s16 arg2) {
-    arg0->isPlaying      = FALSE;
-    arg0->bit_11         = 0;
-    arg0->isSingleFrame  = 1;
-    arg0->scaleX         = 0;
-    arg0->scaleY         = 0;
-    arg0->currentFrame   = 0;
-    arg0->loopFrame      = 0;
-    arg0->frameTimer     = 0;
-    arg0->animIndex      = 0;
-    arg0->unk16          = arg2;
-    arg0->animData       = data_0205adb4;
-    arg0->frameDataTable = arg1;
+static void Sprite_SetStaticCell(Sprite* arg0, SpriteCell* cellTable, s16 cellIndex) {
+    arg0->isPlaying     = FALSE;
+    arg0->bit_11        = 0;
+    arg0->isSingleFrame = 1;
+    arg0->scaleX        = 0;
+    arg0->scaleY        = 0;
+    arg0->currentFrame  = 0;
+    arg0->loopFrame     = 0;
+    arg0->frameTimer    = 0;
+    arg0->animIndex     = 0;
+    arg0->cellIndex     = cellIndex;
+    arg0->animData      = data_0205adb4;
+    arg0->cellTable     = cellTable;
 }
 
 s32 Sprite_ChangePalette(Sprite* sprite, s32 arg1, void* arg2, u16 arg3, u32 arg4) {
@@ -619,9 +619,9 @@ s32 Sprite_ChangePalette(Sprite* sprite, s32 arg1, void* arg2, u16 arg3, u32 arg
 
 void Sprite_Restart(Sprite* sprite) {
     if (sprite->isSingleFrame == FALSE) {
-        Sprite_SetAnimation(sprite, sprite->animData, sprite->animIndex, sprite->frameDataTable);
+        Sprite_SetAnimation(sprite, sprite->animData, sprite->animIndex, sprite->cellTable);
     } else {
-        Sprite_SetStaticCell(sprite, sprite->frameDataTable, sprite->unk16);
+        Sprite_SetStaticCell(sprite, sprite->cellTable, sprite->cellIndex);
     }
 }
 

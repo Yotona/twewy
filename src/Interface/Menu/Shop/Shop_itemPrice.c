@@ -16,62 +16,40 @@ typedef struct {
     /* 0x14 */ s32         unk_14;
 } Shop_itemPrice_Args; // Size: 0x18
 
-static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              Shop_itemPrice_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Shop_itemPrice = {"Tsk_Shop_itemPrice", Shop_itemPrice_RunTask, sizeof(Shop_itemPrice)};
 
 static const SpriteAnimation data_ov043_020ca768 = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Shop_itemPrice_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020ca1b8,
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 4,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Shop_itemPrice_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020ca1b8,
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 4,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2) {
-    SpriteFrameInfo* info = &data_0206b408;
-
-    switch (arg2) {
-        case 1:
-            info->unk_00 = 1;
-            return info;
-
-        case 2: {
-            info         = &data_0206b408;
-            info->unk_04 = 0;
-            info->unk_08 = 0;
-            info->unk_0C = 0;
-            info->unk_10 = -1;
-            if (arg0->animData != NULL && arg0->frameDataTable != NULL && arg0->unk16 >= 0) {
-                info->unk_04 = *((u16*)arg0->frameDataTable + (arg0->unk16 * 4 + 1));
-                info->unk_08 = (s32)((u16*)arg0->frameDataTable + *((u16*)((u8*)arg0->frameDataTable + (arg0->unk16 * 8))));
-            }
-            info->unk_10 = 0x398000;
-            return info;
-        } break;
-    }
-
-    return NULL;
+static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x398000);
 }
 
 // Nonmatching

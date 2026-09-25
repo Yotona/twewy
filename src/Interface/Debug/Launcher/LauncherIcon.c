@@ -19,72 +19,64 @@ typedef struct {
 
 extern const BinIdentifier data_ov046_02083a4c;
 
-SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 arg2);
+SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg, s32 mode);
 static s32       LauncherIcon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 SpriteAnimation data_ov046_02084804 = {
-    .bits_0_1   = 0,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 0,
-    .unk_06     = 0,
-    .unk_08     = func_ov046_02083698,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov046_02083a4c,
-    .unk_18     = 2,
-    .packIndex  = 2,
-    .unk_1C     = 0,
-    .unk_1E     = 0,
-    .unk_20     = 10,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 0,
-    .unk_28     = 0,
-    .unk_2A     = 1,
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0,
+    .unk_04            = 0,
+    .unk_06            = 0,
+    .frameInfoCallback = func_ov046_02083698,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov046_02083a4c,
+    .unk_18            = 2,
+    .packIndex         = 2,
+    .unk_1C            = 0,
+    .unk_1E            = 0,
+    .unk_20            = 10,
+    .unk_22            = 2,
+    .unk_24            = 0,
+    .unk_26            = 0,
+    .unk_28            = 0,
+    .unk_2A            = 1,
 };
 
 const TaskHandle Tsk_LauncherIcon = {"LauncherIcon", LauncherIcon_RunTask, sizeof(LauncherIcon)};
 
 // Non-matching: Significant differences
-SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
-    void*            temp = sprite->unk24;
+SpriteFrameInfo* func_ov046_02083698(Sprite* sprite, s32 arg, s32 mode) {
+    SpriteFrameInfo* info = &g_SpriteFrameInfo;
+    LauncherIcon*    icon = sprite->owner;
 
     switch (mode) {
-        case 1: {
-            info->unk_00 = 1;
+        case SPRITE_FRAME_UPDATE: {
+            info->updateSteps = 1;
             return info;
         } break;
 
-        case 2: {
-            info = &data_0206b408;
+        case SPRITE_FRAME_RENDER: {
+            info = &g_SpriteFrameInfo;
 
-            if (*(s32*)(temp + 0x8) == 0x1000 && *(s32*)(temp + 0xC) != 0x1000) {
+            if (icon->unk_08 == 0x1000 && icon->unk_0C != 0x1000) {
                 sprite->unk_0A.unk_00 = 1;
                 sprite->unk_0A.unk_01 = 0;
-                sprite->unk_0A.unk_05 =
-                    OamMgr_AllocAffineGroup(&g_OamMgr[sprite->bits_0_1], 0, *(u32*)(temp + 0x8), *(u32*)(temp + 0xC), 0);
+                sprite->unk_0A.unk_05 = OamMgr_AllocAffineGroup(&g_OamMgr[sprite->bits_0_1], 0, icon->unk_08, icon->unk_0C, 0);
             } else {
                 sprite->unk_0A.unk_00 = 0;
                 sprite->unk_0A.unk_01 = 0;
                 sprite->unk_0A.unk_05 = 0;
             }
-            info->unk_04 = 0;
-            info->unk_08 = 0;
-            info->unk_0C = 0;
-            info->unk_10 = -1;
-            if (sprite->animData != NULL && sprite->frameDataTable != 0 && sprite->unk16 >= 0) {
-                info->unk_04 = *(u16*)(sprite->frameDataTable + (((sprite->unk16 * 2) + 1) * 2));
-                info->unk_08 = sprite->frameDataTable + (*(u16*)(sprite->frameDataTable + (sprite->unk16 * 8)) * 2);
-            }
-            if (*(s32*)(temp + 0x8) != 0 && *(s32*)(temp + 0xC) == 0) {
-                info->unk_08 = 0;
+            Sprite_FillFrameInfo(info, sprite);
+            if (icon->unk_08 != 0 && icon->unk_0C == 0) {
+                info->cellPieces = NULL;
             }
         } break;
     }
@@ -100,7 +92,7 @@ s32 func_ov046_020837f8(LauncherIcon* icon, LauncherIcon_Args* args) {
     data_ov046_02084804.dataType  = args->dataType;
     data_ov046_02084804.unk_04    = args->unk_8 + 16;
     data_ov046_02084804.unk_06    = args->unk_C + 16;
-    data_ov046_02084804.unk_10    = icon;
+    data_ov046_02084804.owner     = icon;
     data_ov046_02084804.packIndex = 2;
     if (args->unk_4 < 10) {
         data_ov046_02084804.unk_2A = args->unk_4 + 1;

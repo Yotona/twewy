@@ -3625,7 +3625,7 @@ g_PaletteManagers kind:bss addr:0x0206bc2c
 g_ObjResourceManagers kind:bss addr:0x0206bc38
 ActiveResourceManager kind:bss addr:0x0206bc44 local
 data_0206bc48 kind:bss addr:0x0206bc48
-data_0206b408 kind:bss addr:0x0206bc68
+g_SpriteFrameInfo kind:bss addr:0x0206bc68
 data_0206bc7c kind:bss addr:0x0206bc7c
 data_0206bc8c kind:bss addr:0x0206bc8c
 data_0206bc90 kind:bss addr:0x0206bc90

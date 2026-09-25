@@ -754,7 +754,7 @@ s32 func_ov017_021309d8(BtlBoss03_00_RG* rg, s16 arg1) {
         func_ov003_020c4ab4(rg, 0);
     }
 
-    if ((rg->unk_084.sprite.unk16 == 11) && (rg->unk_084.sprite.frameTimer == 1)) {
+    if ((rg->unk_084.sprite.cellIndex == 11) && (rg->unk_084.sprite.frameTimer == 1)) {
         while (func_ov017_0213ef4c() != 0) {
             func_ov017_02140b9c(rg, 0);
         }
@@ -1318,7 +1318,7 @@ void func_ov017_021316f0(BtlBoss03_01_RG* rg) {
             }
 
             s32 temp_r6 = func_ov017_02132d4c(rg, 0, rg->unk_1C0);
-            if (rg->sprite.sprite.unk16 == 4 && rg->sprite.sprite.frameTimer == 1) {
+            if (rg->sprite.sprite.cellIndex == 4 && rg->sprite.sprite.frameTimer == 1) {
                 while (func_ov017_0213ef4c() > 0) {
                     func_ov017_02140b9c(rg, 0);
                 }
@@ -1395,7 +1395,7 @@ void func_ov017_021318a8(BtlBoss03_01_RG* rg) {
                     CombatSprite_SetAnimFromTable(&rg->sprite, 15, 1);
                 }
             }
-            if ((rg->sprite.sprite.unk16 == 4) && (rg->sprite.sprite.frameTimer == 1)) {
+            if ((rg->sprite.sprite.cellIndex == 4) && (rg->sprite.sprite.frameTimer == 1)) {
                 temp_r1_3 = rg->unk_080;
                 var_r4_2  = 0x30000;
                 if (temp_r1_3 == 0) {
@@ -1516,7 +1516,7 @@ void func_ov017_02131cd0(BtlBoss03_01_RG* rg) {
                     CombatSprite_SetAnimFromTable(&rg->sprite, 15, 1);
                 }
             }
-            if ((rg->sprite.sprite.unk16 == 4) && (rg->sprite.sprite.frameTimer == 1)) {
+            if ((rg->sprite.sprite.cellIndex == 4) && (rg->sprite.sprite.frameTimer == 1)) {
                 s32 var_r6 = 0x30000;
                 if (rg->unk_080 == 0) {
                     var_r5_2 = &data_ov017_021425d8;
@@ -1737,13 +1737,13 @@ void func_ov017_02132378(BtlBoss03_01_RG* rg) {
             if (rg->actor.isFlipped == TRUE) {
                 var_r5 = -1;
             }
-            if (rg->sprite.sprite.unk16 == 3 && rg->sprite.sprite.frameTimer == 1) {
+            if (rg->sprite.sprite.cellIndex == 3 && rg->sprite.sprite.frameTimer == 1) {
                 for (s32 i = 0; i < 5; i++) {
                     rg->unk_1EC[i] = func_ov017_02140c40(rg, var_r5 * data_ov017_0214269c[i].unk_0, RNG_Next(0x3001) - 0x1800,
                                                          data_ov017_0214269c[i].unk_4, 0x78);
                 }
                 func_ov003_02087f00(SEIDX_SE_B005_BADGE_NAGE01, func_ov003_020843b0(1, rg->actor.position.x));
-            } else if (rg->sprite.sprite.unk16 == 8 && rg->sprite.sprite.frameTimer == 1) {
+            } else if (rg->sprite.sprite.cellIndex == 8 && rg->sprite.sprite.frameTimer == 1) {
                 for (s32 i = 0; i < 4; i++) {
                     rg->unk_200[i] = func_ov017_02140c40(rg, var_r5 * data_ov017_0214267c[i].unk_0, RNG_Next(0x3001) - 0x1800,
                                                          data_ov017_0214267c[i].unk_4, 0x78);

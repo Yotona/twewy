@@ -20,14 +20,14 @@ typedef struct ObjResource {
         u16 hasSourceData : 1;
         u16 _reserved     : 12;
     };
-    /* 0x0A */ s16   unk_0A;
-    /* 0x0C */ s32   unk_0C;
-    /* 0x10 */ s16   bitmapIndex;
-    /* 0x12 */ s16   unk_12;
-    /* 0x14 */ s32   vramOffset;
-    /* 0x18 */ void* unk_18;
-    /* 0x1C */ s32   unk_1C;
-} ObjResource; // size 0x20
+    /* 0x0A */ s16                  unk_0A;
+    /* 0x0C */ s32                  unk_0C;
+    /* 0x10 */ s16                  bitmapIndex;
+    /* 0x12 */ s16                  unk_12;
+    /* 0x14 */ s32                  vramOffset;
+    /* 0x18 */ void*                loadedCharData;   // char data last sent by ObjResMgr_LoadToVram
+    /* 0x1C */ struct OamCellPiece* loadedCellPieces; // its cell pieces (per-cell transfer), NULL = whole block
+} ObjResource;                                        // size 0x20
 
 /**
  * @brief Bitmap allocator state for object resource VRAM.
@@ -110,8 +110,9 @@ BOOL ObjResMgr_ReleaseResource(ObjResMgr* mgr, ObjResource* resource);
  * @param mgr Manager instance.
  * @param resource Destination resource entry.
  * @param data Source data pointer.
- * @param mode Transfer mode selector.
+ * @param cellPieces Cell whose marked pieces get their char data queued for transfer,
+ *                   or NULL to copy the whole char block.
  */
-void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, s32 mode);
+void ObjResMgr_LoadToVram(ObjResMgr* mgr, ObjResource* resource, void* data, struct OamCellPiece* cellPieces);
 
 #endif // ENGINE_RESOURCES_OBJRESMGR_H

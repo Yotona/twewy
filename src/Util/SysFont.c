@@ -649,8 +649,8 @@ static u16                 PaletteEntryOrder[4] = {1, 2, 3, 0};
 static SysFontPixelRef sPixelRef;
 
 void SysFont_GetCellBoundsMin(const Sprite* sprite, s32* minX, s32* minY) {
-    s32                 table_index = sprite->unk16 * 4;
-    const u16*          table       = (const u16*)sprite->frameDataTable;
+    s32                 table_index = sprite->cellIndex * 4;
+    const u16*          table       = (const u16*)sprite->cellTable;
     u16                 i;
     s32                 min_x = SYSFONT_SCREEN_WIDTH;
     s32                 min_y = SYSFONT_SCREEN_HEIGHT;
@@ -1372,7 +1372,7 @@ SysFontPixelRef* SysFont_ResolveCellPixel(Sprite* sprite, s32 px, s32 py, const 
 // The frame size, every stack slot and the whole loop body now match.
 void SysFont_BlitGlyphToSprite(SysFont* font, u8* glyph, Sprite* sprite, s32 color, s32 skipTransparent, u16 dstX, u16 dstY,
                                u16 scale, BOOL toVram) {
-    s32         frameIndex;
+    s32         cellEntry;
     const u16*  table;
     s32         row;
     const void* cellPieces;
@@ -1388,14 +1388,14 @@ void SysFont_BlitGlyphToSprite(SysFont* font, u8* glyph, Sprite* sprite, s32 col
     s32 cellHeight;
 #endif
 
-    frameIndex = sprite->unk16 * 4;
-    table      = (const u16*)sprite->frameDataTable;
-    pieceCount = table[frameIndex + 1];
+    cellEntry  = sprite->cellIndex * 4;
+    table      = (const u16*)sprite->cellTable;
+    pieceCount = table[cellEntry + 1];
     cellWidth  = font->info->cellWidth;
 #ifdef REGION_USA
     cellHeight = font->info->cellHeight;
 #endif
-    cellPieces      = table + table[frameIndex];
+    cellPieces      = table + table[cellEntry];
     bitmapIndexDiv4 = sprite->charData->bitmapIndex / 4;
     baseX           = font->x + dstX;
     clipRight       = font->clipRight;

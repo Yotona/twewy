@@ -4403,7 +4403,7 @@ data_0206b3e8 kind:bss addr:0x0206b3e8
 /////////////////////////////////////////////////////////////
 // src/Engine/Resources/SpriteMgr.c
 /////////////////////////////////////////////////////////////
-data_0206b408 kind:bss addr:0x0206b408
+g_SpriteFrameInfo kind:bss addr:0x0206b408
 
 data_0206b41c kind:bss addr:0x0206b41c
 data_0206b42c kind:bss addr:0x0206b42c

@@ -13,65 +13,40 @@ typedef struct {
     /* 0xA */ u16           graphicIndex;
 } Result_bdg_Args;
 
-static SpriteFrameInfo* Result_bdg_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
+static SpriteFrameInfo* Result_bdg_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              Result_bdg_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const SpriteAnimation Result_bdg_Anim = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Result_bdg_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &Result_BinIdentifiers[27],
-    .unk_18     = 2,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Result_bdg_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Result_BinIdentifiers[27],
+    .unk_18            = 2,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
 static const TaskHandle Tsk_Result_bdg = {"Tsk_Result_bdg", Result_bdg_RunTask, sizeof(Result_bdg)};
 
-static SpriteFrameInfo* Result_bdg_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
-
-    switch (mode) {
-        case 1: {
-            data_0206b408.unk_00 = 1;
-            return info;
-        } break;
-
-        case 2: {
-            data_0206b408.unk_04 = 0;
-            data_0206b408.unk_08 = 0;
-            data_0206b408.unk_0C = 0;
-            data_0206b408.unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                data_0206b408.unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                data_0206b408.unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-
-            info->unk_10 = 0x258000;
-            return info;
-        } break;
-    }
-
-    return NULL;
+static SpriteFrameInfo* Result_bdg_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x258000);
 }
 
 static void Result_bdg_Load(Result_bdg* bdg, Sprite* sprite, Result_bdg_Args* args) {

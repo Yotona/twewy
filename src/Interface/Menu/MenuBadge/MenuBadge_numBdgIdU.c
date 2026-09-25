@@ -14,37 +14,37 @@ typedef struct {
 
 extern void func_ov043_0208fa14(Sprite* sprite, s16 frame);
 
-static SpriteFrameInfo* MenuBadge_numBdgIdU_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode);
+static SpriteFrameInfo* MenuBadge_numBdgIdU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_numBdgIdU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuBadge_numBdgIdU = {"Tsk_MenuBadge_numBdgIdU", MenuBadge_numBdgIdU_RunTask,
                                                    sizeof(MenuBadge_numBdgIdU)};
 
 static const SpriteAnimation MenuBadge_numBdgIdU_Anim = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0xC00,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = MenuBadge_numBdgIdU_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020c82fc,
-    .unk_18     = 0,
-    .packIndex  = 0,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 2,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0xC00,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = MenuBadge_numBdgIdU_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020c82fc,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 2,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
 void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId) {
@@ -74,33 +74,8 @@ void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId
     }
 }
 
-static SpriteFrameInfo* MenuBadge_numBdgIdU_GetFrameInfo(Sprite* sprite, s32 frameIndex, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case 1:
-            data_0206b408.unk_00 = 1;
-            return &data_0206b408;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-
-            temp->unk_04 = 0;
-            temp->unk_08 = 0;
-            temp->unk_0C = 0;
-            temp->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                temp->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                temp->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-
-            info = temp;
-        } break;
-    }
-
-    return info;
+static SpriteFrameInfo* MenuBadge_numBdgIdU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 // Nonmatching

@@ -42,7 +42,7 @@ typedef struct {
  * Defines one piece of a multi-piece sprite cell. Arrays of these
  * descriptors define all pieces; terminated by charName == 0xFFFF.
  */
-typedef struct {
+typedef struct OamCellPiece {
     /* 0x0 */ u16 charName; ///< Character/tile index (0xFFFF = terminator)
     /* 0x2 */ union {       ///< Y position, shape, color mode
         u16 attr0;
@@ -128,7 +128,7 @@ typedef struct {
 /**
  * @brief Stored affine transformation parameters for one affine group.
  */
-typedef struct {
+typedef struct OamAffineParam {
     /* 0x00 */ s32 rotation; ///< Rotation angle
     /* 0x04 */ s32 scaleX;   ///< Horizontal scale
     /* 0x08 */ s32 scaleY;   ///< Vertical scale

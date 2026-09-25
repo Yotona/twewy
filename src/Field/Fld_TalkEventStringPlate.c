@@ -24,7 +24,7 @@ typedef struct {
     /* 0x10 */ s32 unk_10;
 } Fld_TalkEventStringPlate_Args;
 
-SpriteFrameInfo* Fld_TalkEventStringPlate_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2);
+SpriteFrameInfo* Fld_TalkEventStringPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 s32              Fld_TalkEventStringPlate_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_TalkEventStringPlate = {"Tsk_Fld_TalkEventStringPlate", Fld_TalkEventStringPlate_RunTask,
@@ -33,33 +33,33 @@ static const TaskHandle Tsk_Fld_TalkEventStringPlate = {"Tsk_Fld_TalkEventString
 extern const BinIdentifier data_ov030_020d9944;
 
 const SpriteAnimation data_ov030_020e71d0 = {
-    .bits_0_1   = 1,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 1,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 0,
-    .unk_06     = 0,
-    .unk_08     = Fld_TalkEventStringPlate_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov030_020d9944,
-    .unk_18     = 2,
-    .packIndex  = 8,
-    .unk_1C     = 2,
-    .unk_1E     = 0,
-    .unk_20     = 1,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 3,
-    .unk_28     = 4,
-    .unk_2A     = 1,
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0,
+    .unk_04            = 0,
+    .unk_06            = 0,
+    .frameInfoCallback = Fld_TalkEventStringPlate_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov030_020d9944,
+    .unk_18            = 2,
+    .packIndex         = 8,
+    .unk_1C            = 2,
+    .unk_1E            = 0,
+    .unk_20            = 1,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 3,
+    .unk_28            = 4,
+    .unk_2A            = 1,
 };
 
-SpriteFrameInfo* Fld_TalkEventStringPlate_GetFrameInfo(Sprite* sprite, s32 arg1, s32 mode) {
+SpriteFrameInfo* Fld_TalkEventStringPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     // Not yet implemented
 }
 
@@ -77,7 +77,7 @@ void Fld_TalkEventStringPlate_Load(Fld_TalkEventStringPlate* plate, Fld_TalkEven
         anim.packIndex = 13;
         anim.bits_0_1  = 0;
     }
-    anim.unk_10 = arg4;
+    anim.owner = arg4;
     _Sprite_Load(&plate->sprite, &anim);
 }
 

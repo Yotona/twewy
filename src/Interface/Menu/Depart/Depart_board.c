@@ -17,65 +17,40 @@ typedef struct {
     /* 0x0C */ u16           unk_0C;
 } DepartBoardArgs;
 
-static SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg1, s32 mode);
+static SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg, s32 mode);
 static s32              DepartBoard_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle data_ov043_020cae7c = {"Tsk_Depart_board", DepartBoard_RunTask, sizeof(DepartBoard)};
 
 static const SpriteAnimation data_ov043_020cae98 = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02.raw = 0xC00,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = func_ov043_020be7dc,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020cadb0,
-    .unk_18     = 2,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 1,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0xC00,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = func_ov043_020be7dc,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020cadb0,
+    .unk_18            = 2,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg1, s32 mode) {
-    SpriteFrameInfo* info = &data_0206b408;
-
-    switch (mode) {
-        case 1: {
-            info->unk_00 = 1;
-            return info;
-        } break;
-
-        case 2: {
-            info         = &data_0206b408;
-            info->unk_04 = 0;
-            info->unk_08 = 0;
-            info->unk_0C = 0;
-            info->unk_10 = -1;
-
-            if (sprite->animData != NULL && sprite->frameDataTable != NULL && sprite->unk16 >= 0) {
-                info->unk_04 = *((u16*)sprite->frameDataTable + (sprite->unk16 * 4 + 1));
-                info->unk_08 =
-                    (s32)((u16*)sprite->frameDataTable + *((u16*)((u8*)sprite->frameDataTable + (sprite->unk16 * 8))));
-            }
-            info->unk_10 = 0x352000;
-            return info;
-        } break;
-    }
-
-    return NULL;
+SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x352000);
 }
 
 void func_ov043_020be888(DepartBoard* board, Sprite* sprite, DepartBoardArgs* args) {

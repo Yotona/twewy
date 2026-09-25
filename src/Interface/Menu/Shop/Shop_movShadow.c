@@ -12,66 +12,40 @@ typedef struct {
     /* 0x04 */ ShopObject* shop;
 } Shop_movShadow_Args;
 
-static SpriteFrameInfo* Shop_movShadow_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+static SpriteFrameInfo* Shop_movShadow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              Shop_movShadow_RunTask(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3);
 
 static const TaskHandle Tsk_Shop_movShadow = {"Tsk_Shop_movShadow", Shop_movShadow_RunTask, sizeof(Shop_movShadow)};
 
 static const SpriteAnimation data_ov043_020ca960 = {
-    .bits_0_1   = 2,
-    .dataType   = 0,
-    .bit_6      = 0,
-    .bits_7_9   = 5,
-    .bits_10_11 = 0,
-    .bits_12_13 = 1,
-    .bits_14_15 = 0,
-    .unk_02     = 0,
-    .unk_04     = 0x50,
-    .unk_06     = 0x50,
-    .unk_08     = Shop_movShadow_GetFrameInfo,
-    .unk_0C     = 0,
-    .unk_10     = 0,
-    .binIden    = &data_ov043_020ca1b8,
-    .unk_18     = 0,
-    .packIndex  = 1,
-    .unk_1C     = 1,
-    .unk_1E     = 0,
-    .unk_20     = 4,
-    .unk_22     = 4,
-    .unk_24     = 0,
-    .unk_26     = 2,
-    .unk_28     = 3,
-    .unk_2A     = 1,
+    .bits_0_1          = 2,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02            = 0,
+    .unk_04            = 0x50,
+    .unk_06            = 0x50,
+    .frameInfoCallback = Shop_movShadow_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &data_ov043_020ca1b8,
+    .unk_18            = 0,
+    .packIndex         = 1,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 4,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .unk_2A            = 1,
 };
 
-static SpriteFrameInfo* Shop_movShadow_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2) {
-    SpriteFrameInfo* temp = &data_0206b408;
-
-    switch (arg2) {
-        case 1:
-            temp->unk_00 = 1;
-            return temp;
-
-        case 2: {
-            SpriteFrameInfo* temp = &data_0206b408;
-            temp->unk_04          = 0;
-            temp->unk_08          = 0;
-            temp->unk_0C          = 0;
-            temp->unk_10          = -1;
-            if (arg0->animData != 0 && arg0->frameDataTable != 0) {
-                if ((s32)arg0->unk16 >= 0) {
-                    temp->unk_04 = *((u16*)arg0->frameDataTable + (((arg0->unk16 * 4) + 1)));
-                    temp->unk_08 =
-                        (s32)((u16*)arg0->frameDataTable + *((u16*)((u8*)arg0->frameDataTable + (arg0->unk16 * 8))));
-                }
-            }
-            temp->unk_10 = 0x3D4000;
-            return temp;
-        }
-
-        default:
-            return NULL;
-    }
+static SpriteFrameInfo* Shop_movShadow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3D4000);
 }
 
 // Nonmatching

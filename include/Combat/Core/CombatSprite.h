@@ -12,17 +12,17 @@ typedef struct {
 } SpriteAnimEntry;
 
 typedef struct {
-    /* 0x00 */ Sprite            sprite;
-    /* 0x40 */ SpriteAnimEntry*  animTable;
-    /* 0x44 */ s16               animTableIndex;
-    /* 0x46 */ u16               flags46;
-    /* 0x48 */ s32               unk48;
-    /* 0x4C */ s32               unk4C;
-    /* 0x50 */ UnkSmallInternal* basePaletteSource;
-    /* 0x54 */ PaletteResource*  basePalette;
-    /* 0x58 */ s32               paletteMode;
-    /* 0x5C */ s16               paletteTimer;
-    /* 0x5E */ char              unk_5E[0x2];
+    /* 0x00 */ Sprite                 sprite;
+    /* 0x40 */ SpriteAnimEntry*       animTable;
+    /* 0x44 */ s16                    animTableIndex;
+    /* 0x46 */ u16                    flags46;
+    /* 0x48 */ s32                    sortKey; // frame info sortKey, -1 = unsorted
+    /* 0x4C */ struct OamAffineParam* affine;  // frame info affine (3D path)
+    /* 0x50 */ UnkSmallInternal*      basePaletteSource;
+    /* 0x54 */ PaletteResource*       basePalette;
+    /* 0x58 */ s32                    paletteMode;
+    /* 0x5C */ s16                    paletteTimer;
+    /* 0x5E */ char                   unk_5E[0x2];
 } CombatSprite;
 
 typedef struct {
@@ -36,12 +36,6 @@ struct SpriteAnimEntry {
     u16 frameDataIndex;
     s16 animDataIndex;
 };
-
-typedef struct {
-    u8  pad_00[0x48];
-    s32 unk_48;
-    s32 unk_4C;
-} SpriteFrameSource;
 
 /// MARK: Functions
 
@@ -65,7 +59,7 @@ void CombatSprite_SetPaletteMode(CombatSprite* cSprite, s32 arg1);
 
 void CombatSprite_RenderWithPalette(CombatSprite* cSprite, s32 arg1);
 
-SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* arg0, s32 arg1, s32 arg2);
+SpriteFrameInfo* CombatSprite_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 
 void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier* iden);
 
