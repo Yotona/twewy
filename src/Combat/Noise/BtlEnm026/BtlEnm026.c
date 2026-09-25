@@ -1306,10 +1306,9 @@ void func_ov015_0212786c(BtlEnm026* data) {
         return;
     }
     twin = data->unk_184;
-    if (data_ov015_02128500.unk14 != 2) {
-        return;
+    if (data_ov015_02128500.unk14 == 2) {
+        func_ov015_02125a64(twin->unk_188, (s32)func_ov015_02125e5c);
     }
-    func_ov015_02125a64(twin->unk_188, (s32)func_ov015_02125e5c);
 }
 
 void func_ov015_021278b0(BtlEnm026* data) {
