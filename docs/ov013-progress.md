@@ -35,32 +35,67 @@ ninja objdiff.json build/usa/delinks/src/Combat/Noise/BtlEnm015/BtlEnm015.o
 ```
 
 Parse `build/ov_diff.json`: `left.symbols[]` entries with `kind == "SYMBOL_FUNCTION"` have `match_percent`.
+In the per-function instruction diff, `left` = the original (delinked from ROM), `right` = our build.
+`DIFF_DELETE` = present in the original but missing in ours; `DIFF_INSERT` = the reverse.
 
-`config/usa/arm9/overlays/ov013/delinks.txt` currently maps `.text` from `0x021256c0` to `0x021261e8` and the whole `.rodata`/`.data`. **Extend the `.text` end offset whenever a new function is added**, since the mapping must be a contiguous prefix.
+**All 38 functions are implemented.** The `.text` delink covers the full range
+(`0x021256c0`–`0x02127444`), so any new edit affects all of them at once.
 
 ## Status (objdiff)
 
-17 of 38 functions implemented. Exact (100%):
-
-`021256d0`, `021256f0`, `021257a4`, `02125838`, `02125b64`, `02125e90`, `02125eb4`, `02125ed0`, plus `021256c0` (98.75) and `021256e4` (98.33) which are byte-identical and only differ in objdiff's relocation accounting.
-
-Nonmatching (register allocation / scheduling), in rough priority:
+26 of 38 functions are exact (100%). The rest:
 
 | Function | % | Notes |
 |----------|---|-------|
-| `func_ov013_02125fd0` | 63.5 | Eff task init; struct/field order likely needs work |
-| `func_ov013_02125b8c` | 77.5 | RG/UG init; register allocation across the anim build |
-| `func_ov013_021258f0` | 97.1 | only `mov r2, r12, lsr #0x1f` scheduling differs |
-| `func_ov013_02125efc` | 97.6 | RG/UG render helper |
-| `func_ov013_021260e8` | 97.4 | Eff dispatcher |
-| `func_ov013_02125d24` | 98.6 | jump-table switch now matches; minor scheduling |
-| `func_ov013_02125a04` | 99.9 | nearly exact |
+| `func_ov013_02126960` | 76.5 | EffStampSub init; anim-build register allocation/scheduling |
+| `func_ov013_02125b8c` | 78.1 | RG/UG init; anim-build register allocation/scheduling |
+| `func_ov013_02125fd0` | 83.2 | Eff task init; same class of reg-alloc diffs |
+| `func_ov013_02126254` | 95.2 | spark ring; loop register assignment (count/conv/owner colors) |
+| `func_ov013_021265b0` | 95.9 | single-spark spawn; reg-alloc swaps (magic/global/owner) |
+| `func_ov013_02127370` | 95.7 | UG handler; 0x19000 constant materialization position |
+| `func_ov013_02126788` | 96.8 | EffStampSub update; reg swaps around the pc-rel loads |
+| `func_ov013_02125d24` | 98.6 | command switch; IsFrameFinished if/else predication shape |
+| `func_ov013_02125a04` | 99.9 | one `bl` shows `branch_dest` on the original side (forward intra-TU call) |
+| `func_ov013_02126ff4` | 99.4 | Shake handler; ternary store register swap |
+| `func_ov013_021256c0` | 98.8 | byte-identical; `.word` literal relocation accounting |
+| `func_ov013_021256e4` | 98.3 | byte-identical; `.word` literal relocation accounting |
 
-## Remaining functions to implement (address order)
+The `021256c0`/`021256e4`/`02125a04` mismatches are objdiff accounting artifacts, not code
+differences (same bytes; the delinker resolves some relocations to raw `branch_dest` values /
+different symbol indices on the original side).
 
-`021261e8`, `02126254`, `021265b0`, `021266c8`, `02126700`, `02126788`, `021268d8`,
-`02126950`, `02126960`, `02126a30`, `02126ab0`, `02126b30`, `02126c64`, `02126dd8`,
-`02126ef0`, `02126f8c`, `02126ff4`, `021270a0`, `0212710c`, `02127230`, `02127370`.
+## Key codegen recipes discovered (MWCC 2.0 sp1p5, -O4,p)
+
+- The recurring `bl _fflt / _fadd|_fsub / _ffix` dance with `0x3F000000` (0.5f) is a
+  `round()`-style macro on an integer:
+  `#define ROUND(v) ((s32)((v) > 0 ? (f32)((v) * 0x1000) + 0.5f : (f32)((v) * 0x1000) - 0.5f))`.
+  `* 0x1000` (not `<< 12`) is required so the hoisted copy becomes `q2 * 0x28000`.
+- The 12.12 fixed multiply helper: `static inline s32 Mth_MulFixed(s32 a, s32 b) {
+  return (s32)(((s64)a * b + 0x800) >> 12); }` produces the register-form
+  `mov rX,#0x800 / adds / mov rX,#0 / adc` sequence. Calling it as
+  `Mth_MulFixed(tbl[a], ROUND(b))` (table value first) puts the table value in `rn` of `smull`.
+- Div-by-60 chains: write `t % 60` and `t / 60` as separate expressions (no shared local) to get
+  the two `smull` chains the original emits.
+- Sparse 2-3 case switches compile to `cmp`/`beq` chains with the case bodies placed after the
+  dispatch; 4 dense cases compile to an `addls pc, pc, rX, lsl #2` jump table.
+- `if (A || B) return 0;` produces the branched shape used by the task handlers' case 1;
+  separate ifs produce predicated returns (both shapes exist in the original — Eff uses separate
+  ifs, EffStamp/EffStampSub/Shake use `||`).
+- `angle = i * 0x200` inside the loop body blocks IVSR (matching the original's per-iteration
+  `lsl` + `add rX, rX, #0x200`), unlike an accumulating `angle += 0x200` variable.
+- `data->unk_00 = args->unk_00;` must re-read `args->unk_00` after `MI_CpuSet` (the local is used
+  for later reads) — this reproduces the double `ldr` after the call.
+- MWCC strength-reduces `x * 0x1000` into `lsl #0xC` for register values but reassociates
+  `(q * 0x28) * 0x1000` into `q * 0x28000` when hoisting.
+- Calls to `0x020824a0` must use the ov000 symbol name `Mini108_VBlank` (the original binary's
+  linker name), likewise `CombatSprite_SetFlip` (0x02082750), `CombatSprite_SetPaletteMode`
+  (0x020827c0) and `CombatActor_Render` (0x020831e4); using the old `func_ov003_*` spellings costs
+  relocation-name mismatches in objdiff.
+
+## Remaining functions to implement
+
+None — all implemented. Remaining work is register-allocation/schedule matching for the four
+anim-build/init functions and small scheduling diffs listed above.
 
 ## Useful symbol resolutions
 
@@ -70,12 +105,13 @@ Many ov003 helpers are unnamed; these are used by the implemented code:
 - `0x02082b00` = `CombatSprite_Init`; `0x02082b0c` = `CombatSprite_Update`; `0x02082b64` = `CombatSprite_Render`
 - `0x02082cc4` = `CombatSprite_Release`; `0x02082724` = `CombatSprite_SetPosition`; `0x02082730` (unnamed)
 - `0x02082940` = `CombatSprite_InitAnim`; `0x02082998` = `CombatSprite_Load`; `0x02082a04` = `CombatSprite_LoadFromTable`
-- `0x020824a0` = `CombatSprite_SetAnimFromTable` (multi-module alias; objdiff may show `Mini108_VBlank`)
-- `0x020082f2c` area helpers `020c37f8`, `020c3c28`, `020c3c88`, `020c3efc`, `020c427c`, `020c4628`,
-  `020c4668`, `020c4748`, `020c4830`, `020c495c`, `020c4ab4`, `020c4cc4`, `020c4e0c`, `020c5bfc`,
-  `020c6230`, `020c72b4`, `020ccea8`, `020ccedc`, `020ccefc`, `020ccfec` (all `func_ov003_*`)
-- `data_ov003_020e71b8` is `Ov003Global*` (`Combat.h`); task pools at `unk_00000` and `taskPool`
+- `0x020824a0` = `CombatSprite_SetAnimFromTable` (multi-module alias; referenced as `Mini108_VBlank`)
+- `0x02082750` = `CombatSprite_SetFlip`; `0x020827c0` = `CombatSprite_SetPaletteMode`; `0x020831e4` = `CombatActor_Render`
 - `0x02082a04` projection helper cluster: `func_ov003_02084348`, `020843b0`, `020843ec`, `02084634`, `02084694`
+- `0x020ccedc` / `0x020ccefc` take an engine index (0/1) and return a fixed-point screen metric.
+- `0x0208a114` / `0x0208a164` / `0x0208a08c` are the 3D-SE helpers (`a164`'s first arg is
+  `a114`'s return value).
+- `data_0205e4e0` is a 12.12 fixed-point sin/cos table (pairs of s16).
 
 ## Notes
 
@@ -85,3 +121,6 @@ Many ov003 helpers are unnamed; these are used by the implemented code:
   ROM still links the delinked original (i.e. `ninja sha1` passing does not validate this source).
 - `data_ov013_02127640` / `data_ov013_02127644` are two separate `s32` BSS task-id slots.
 - The `Tsk_BtlEnm015_*` symbols were renamed in `symbols.txt` to match the source task-handle names.
+- `Enm015Variant.unk_08` and `.unk_0C` are `u16` (the original loads them with `ldrh`).
+- `BtlEnm015.unk_1E8` is `u16`; `BtlEnm015Shake.unk_0C` is `u16`.
+- The RG task's `MI_CpuSet` clears `0x1E8` bytes (not `sizeof(BtlEnm015)` = 0x1EC).
