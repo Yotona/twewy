@@ -55,7 +55,6 @@ extern void  func_ov003_020c5924(void*, void*);
 extern void  func_ov003_02082d04(void*);
 extern void  func_ov003_020c4b5c(void*);
 extern void  func_ov003_020a4390(s32, s32);
-extern void  func_ov003_02082f1c(void*, s32);
 extern void  func_ov003_020c4fc8(void*);
 extern void  func_ov003_020ccec0(void*, s32);
 extern void* func_ov003_0208495c(void*);
@@ -1451,11 +1450,14 @@ void func_ov015_02127c68(BtlEnm026* data) {
 }
 
 void func_ov015_02127ca0(BtlEnm026* data) {
+    s32 flag;
+
     data->actor.pendingCommand = 0;
     if ((u32)data_ov015_02128500.unk14 - 1 <= 2) {
         data_ov015_02128500.result10 = -1;
     }
-    if (SystemStatusFlags.unk_10 == 0) {
+    flag = SystemStatusFlags.unk_10 != 0;
+    if (flag == 0) {
         return;
     }
     if (*(u8*)((u8*)data_ov003_020e71b8 + 0x3D874) != 2) {
@@ -1464,7 +1466,7 @@ void func_ov015_02127ca0(BtlEnm026* data) {
     if (data_ov015_02128500.result10 == -1) {
         return;
     }
-    func_ov003_02082f1c(data, 3);
+    CombatActor_SetPendingCommand(&data->actor, 3);
     if (func_ov003_020c37f8(&data->unk_084) == 0) {
         data->actor.flags |= 0x2000;
     }
