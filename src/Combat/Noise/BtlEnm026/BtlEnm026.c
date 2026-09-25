@@ -551,6 +551,9 @@ void func_ov015_02125f80(BtlEnm026* data) {
         case 11:
             data->unk_1E0 = func_ov015_021259f4(data, 2, NULL);
             break;
+
+        case 12:
+            break;
     }
 }
 
@@ -991,10 +994,10 @@ void func_ov015_02126db8(BtlEnm026* data) {
 }
 
 void func_ov015_02126ec4(BtlEnm026* data) {
-    if (data_ov015_02128500.result10 == -1) {
-        Mini108_VBlank(&data->unk_084, 3, 0);
-    } else {
+    if (data_ov015_02128500.result10 != -1) {
         Mini108_VBlank(&data->unk_084, 2, 0);
+    } else {
+        Mini108_VBlank(&data->unk_084, 3, 0);
     }
     data->actor.position.x += data->unk_1D0 >> 1;
     func_ov003_020c4ab4(data, (data->unk_1D0 > 0) ? 1 : 0);
@@ -1195,10 +1198,10 @@ void func_ov015_0212736c(BtlEnm026* data) {
 }
 
 void func_ov015_02127594(BtlEnm026* data) {
-    if (data_ov015_02128500.result10 == -1) {
-        Mini108_VBlank(&data->unk_084, 3, 0);
-    } else {
+    if (data_ov015_02128500.result10 != -1) {
         Mini108_VBlank(&data->unk_084, 2, 0);
+    } else {
+        Mini108_VBlank(&data->unk_084, 3, 0);
     }
     data->actor.position.x += data->unk_1D0;
     func_ov003_020c4ab4(data, (data->unk_1D0 > 0) ? 1 : 0);
