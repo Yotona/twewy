@@ -215,8 +215,8 @@ void func_ov013_02125838(BtlEnm015* arg0) {
 s16 func_ov013_021258f0(BtlEnm015* arg0) {
     s16 maxHp = arg0->actor.maxHp;
     s16 v     = arg0->unk_1D6;
-    s32 diff  = maxHp - (v + 1);
     s32 ten   = maxHp / 10;
+    s32 diff  = maxHp - (v + 1);
 
     if (diff <= 0) {
         return (s16)((RNG_Next(3) + 2) * 0x3C);
@@ -676,13 +676,13 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
     CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
     u16 animData         = table[3];
     anim.anim.unk_20     = func_ov013_021256d0(owner->unk_080);
+    anim.unk_2C          = 0;
     anim.anim.unk_26     = table[2];
     anim.anim.unk_28     = table[1];
     anim.anim.unk_1C     = table[0];
     anim.anim.bits_10_11 = 0;
     anim.anim.unk_22     = 2;
     anim.anim.unk_2A     = animData + 1;
-    anim.unk_2C          = 0;
     CombatSprite_Load(&data->sprite, &anim);
 }
 
