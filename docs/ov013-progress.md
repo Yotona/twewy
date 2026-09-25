@@ -52,7 +52,7 @@ In the per-function instruction diff, `left` = the original (delinked from ROM),
 | `func_ov013_02125fd0` | 83.2 | Eff task init; same class of reg-alloc diffs |
 | `func_ov013_02126254` | 95.2 | spark ring; loop register assignment (count/conv/owner colors) |
 | `func_ov013_021265b0` | 95.9 | single-spark spawn; reg-alloc swaps (magic/global/owner) |
-| `func_ov013_02127370` | 95.7 | UG handler; 0x19000 constant materialization position |
+| `func_ov013_02127370` | 96.5 | UG handler; 0x19000 constant materialization position |
 | `func_ov013_02126788` | 96.8 | EffStampSub update; reg swaps around the pc-rel loads |
 | `func_ov013_02125d24` | 98.6 | command switch; IsFrameFinished if/else predication shape |
 | `func_ov013_02125a04` | 99.9 | one `bl` shows `branch_dest` on the original side (forward intra-TU call) |
