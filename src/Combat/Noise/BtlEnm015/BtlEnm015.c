@@ -858,7 +858,7 @@ s32 func_ov013_02126dd8(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 s32 func_ov013_02126ef0(BtlEnm015Shake* data) {
-    data->unk_0C = (data->unk_0C + RNG_Next(3) + 1) % 4;
+    data->unk_0C = (RNG_Next(3) + 1 + data->unk_0C) % 4;
 
     switch (data->unk_0C) {
         case 0:
@@ -953,8 +953,8 @@ void func_ov013_0212710c(BtlEnm015* arg0) {
             Mini108_VBlank(&arg0->unk_084, 8, 1);
             func_ov003_020c4cc4(arg0, 0x226);
             func_ov013_021257a4(arg0, arg0->unk_1E8 & 1);
-            func_ov003_0208a08c(0, boss, 0);
             arg0->unk_1E8 = arg0->unk_1E8 + 1;
+            func_ov003_0208a08c(0, boss, 0);
             func_ov013_02125838(arg0);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
