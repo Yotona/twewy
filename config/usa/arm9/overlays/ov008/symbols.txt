@@ -1,3 +1,6 @@
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Tutorial/BtlTutorial.c
+//////////////////////////////////////////////////////////////////////
 func_ov008_020e7360 kind:function(arm,size=0x14) addr:0x020e7360
 func_ov008_020e7374 kind:function(arm,size=0xb8) addr:0x020e7374
 func_ov008_020e742c kind:function(arm,size=0x38) addr:0x020e742c
@@ -12,12 +15,12 @@ func_ov008_020e78e0 kind:function(arm,size=0x18) addr:0x020e78e0
 func_ov008_020e78f8 kind:function(arm,size=0x18) addr:0x020e78f8
 func_ov008_020e7910 kind:function(arm,size=0x8c) addr:0x020e7910
 func_ov008_020e799c kind:function(arm,size=0x68) addr:0x020e799c
-data_ov008_020e7a04 kind:data(any) addr:0x020e7a04 ambiguous
+Tsk_BtlPlayerNone kind:data(any) addr:0x020e7a04
 data_ov008_020e7a10 kind:data(any) addr:0x020e7a10
 data_ov008_020e7a20 kind:data(any) addr:0x020e7a20
 data_ov008_020e7a28 kind:data(any) addr:0x020e7a28
 data_ov008_020e7a38 kind:data(any) addr:0x020e7a38
-data_ov008_020e7a68 kind:data(any) addr:0x020e7a68 ambiguous
+Tsk_BtlTutorial kind:data(any) addr:0x020e7a68
 data_ov008_020e7a80 kind:data(any) addr:0x020e7a80
 data_ov008_020e7a94 kind:data(any) addr:0x020e7a94
 data_ov008_020e7aa0 kind:data(any) addr:0x020e7aa0

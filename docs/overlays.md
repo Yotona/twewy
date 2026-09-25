@@ -10,7 +10,7 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 - [05](#overlay-05)
 - [06](#overlay-06)
 - [07](#overlay-07)
-- [08](#overlay-08)
+- [08 - Tutorial Battles](#overlay-08---tutorial-battles)
 - [09 - Noise](#overlay-09---noise)
 - [10](#overlay-10)
 - [11](#overlay-11)
@@ -111,13 +111,19 @@ TODO: Decompile and document
 
 Speculated purpose: Fusion attacks
 
-## Overlay 08
+## Overlay 08 - Tutorial Battles
 
-**Files:** N/A (Not yet decompiled)
+**Category:** Combat
 
-TODO: Decompile and document
+**Files:**
+[BtlTutorial](../src/Combat/Tutorial/BtlTutorial.c)
 
-Speculated purpose: Tutorial battles
+Provides the `Tsk_BtlPlayerNone` and `Tsk_BtlTutorial` combat tasks. `Tsk_BtlTutorial` loads the tutorial
+graphics pack (`Apl_Fur/Grp_Tutorial.bin`), configures sub-engine BG1/BG2 for the tutorial overlay, and
+draws a combat sprite; `Tsk_BtlPlayerNone` is the stub partner task used while the tutorial runs. The
+active variant is selected from the combat context.
+
+TODO: Document the exact tutorial variants (`data_ov008_020e7a38`).
 
 ## Overlay 09 - Noise
 
