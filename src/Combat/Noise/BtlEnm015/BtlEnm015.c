@@ -430,8 +430,8 @@ void func_ov013_02125efc(BtlEnm015* arg0) {
 }
 
 void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
-    s32        flag  = 0;
     BtlEnm015* owner = args->unk_00;
+    s32        flag  = 0;
 
     MI_CpuSet(data, 0, sizeof(BtlEnm015Eff));
     data->unk_6C = args->unk_00;
@@ -1019,8 +1019,8 @@ s32 func_ov013_02127370(TaskPool* pool, Task* task, void* args, s32 stage) {
             ret = func_ov013_02125d24(data);
             if (data->unk_1C4 != func_ov013_02125ed0) {
                 data->unk_148          = func_ov003_020ccedc(0) >> 1;
-                data->actor.position.x = data->unk_148;
                 data->unk_14C          = 0x19000;
+                data->actor.position.x = data->unk_148;
                 data->actor.position.y = 0x19000;
                 data->unk_150          = 0;
                 data->actor.position.z = 0;
