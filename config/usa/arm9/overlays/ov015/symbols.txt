@@ -83,9 +83,9 @@ data_ov015_0212819c kind:data(any) addr:0x0212819c
 data_ov015_02128228 kind:data(any) addr:0x02128228
 data_ov015_02128230 kind:data(any) addr:0x02128230
 data_ov015_02128238 kind:data(any) addr:0x02128238
-data_ov015_021282a0 kind:data(any) addr:0x021282a0
-data_ov015_021282ac kind:data(any) addr:0x021282ac
-data_ov015_021282b8 kind:data(any) addr:0x021282b8
+Tsk_BtlEnm026_Icon kind:data(any) addr:0x021282a0
+Tsk_BtlEnm026_RG kind:data(any) addr:0x021282ac
+Tsk_BtlEnm026_UG kind:data(any) addr:0x021282b8
 data_ov015_021282e0 kind:data(any) addr:0x021282e0
 data_ov015_021282fc kind:data(any) addr:0x021282fc
 data_ov015_02128318 kind:data(any) addr:0x02128318
