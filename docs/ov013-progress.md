@@ -48,7 +48,7 @@ In the per-function instruction diff, `left` = the original (delinked from ROM),
 | Function | % | Notes |
 |----------|---|-------|
 | `func_ov013_02126960` | 76.5 | EffStampSub init; anim-build register allocation/scheduling |
-| `func_ov013_02125b8c` | 78.1 | RG/UG init; anim-build register allocation/scheduling |
+| `func_ov013_02125b8c` | 85.8 | RG/UG init; anim-build register allocation/scheduling |
 | `func_ov013_02125fd0` | 83.2 | Eff task init; same class of reg-alloc diffs |
 | `func_ov013_02126254` | 95.2 | spark ring; loop register assignment (count/conv/owner colors) |
 | `func_ov013_021265b0` | 95.9 | single-spark spawn; reg-alloc swaps (magic/global/owner) |
@@ -91,6 +91,14 @@ different symbol indices on the original side).
   linker name), likewise `CombatSprite_SetFlip` (0x02082750), `CombatSprite_SetPaletteMode`
   (0x020827c0) and `CombatActor_Render` (0x020831e4); using the old `func_ov003_*` spellings costs
   relocation-name mismatches in objdiff.
+- Reading a table pointer into a **named local** before computing `&table[idx]` keeps the pointer in
+  a single register across the anim build (no rematerialized reload before the `unk_2C` store).
+- Assigning a **single `s16` local from both branches** of an if/else (then storing it once)
+  produces the `lsl #0x10 / asr #0x10` sign-extend sequence; separate per-branch locals fold the
+  truncation into the `strh` instead.
+- `(s32)(f32)` conversions and `(s16)` locals aside, most remaining mismatches are pure register
+  color permutations that follow from allocation order; small source reorderings (declaration order,
+  statement order inside the anim-field block) shift them.
 
 ## Remaining functions to implement
 
