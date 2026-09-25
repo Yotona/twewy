@@ -464,12 +464,11 @@ void func_ov015_02125d0c(BtlEnm026* data, s32 count, void* handleA, void* handle
 
     MI_CpuSet(&blockB, 0, sizeof(blockB));
     MI_CpuSet(&blockA, 0, sizeof(blockA));
-    blockA.unk_00 = data->unk_07C;
-    blockB.unk_00 = data->unk_07C;
+    blockA.unk_00 = blockB.unk_00 = data->unk_07C;
     blockA.unk_06 &= ~0x1;
+    blockB.unk_06 = (blockB.unk_06 & ~0x1) | (blockA.unk_06 & 0x1);
     blockA.unk_04 = data->unk_080;
     blockB.unk_04 = data->unk_080;
-    blockB.unk_06 = (blockB.unk_06 & ~0x1) | (blockA.unk_06 & 0x1);
     blockA.unk_10 = 0;
     blockB.unk_10 = 0;
     if (count <= 0) {
