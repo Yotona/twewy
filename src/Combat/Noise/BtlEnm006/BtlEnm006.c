@@ -61,6 +61,10 @@ extern void func_ov003_02082724(void*, s16, s16);
 extern void func_ov003_02082b64(void*);
 extern void func_ov003_02084694(void*, s32);
 extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
+extern void func_ov003_020cb498(s32, s32, void*, void*);
+extern s32  func_ov003_020843b0(s32, s32);
+extern void Mini108_VBlank(CombatSprite*, u16, s32);
+extern s32  func_ov010_02128820(BtlEnm006*);
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(void);
@@ -703,7 +707,9 @@ s32 func_ov010_02128e0c(BtlEnm006* data, void* arg1) {
     func_ov003_020c3efc(data, arg1);
     func_ov003_020c4520(data);
     func_ov003_020c4b5c(data);
-    func_ov003_02084694(&data->unk_144, 1);
+    // 0x144 is inside the sprite block's span, so it cannot be an outer-struct field; the offset
+    // cast is also what keeps the address as a single `add r0, r4, #0x144`.
+    func_ov003_02084694((u8*)data + 0x144, 1);
     func_ov010_02127460(data, (void*)func_ov010_02127500);
     data->unk_1CC                             = 1;
     data->unk_1DC                             = 0;
@@ -728,5 +734,69 @@ s32 func_ov010_02125878(BtlEnm006* data) {
     CombatSprite_SetPosition((CombatSprite*)data, dx, dy);
     func_ov003_02082730((CombatSprite*)data, 0x80000000 - data->unk_64);
     CombatSprite_Render((CombatSprite*)data);
+    return 1;
+}
+
+// Three-phase death animation, driven by sprite.unk_C4. Each phase re-enters its one-time setup
+// only while unk_C0 is still zero, and unk_C0 is the frame counter within the phase.
+void func_ov010_02125b28(BtlEnm006* data) {
+    CombatSprite* cs = (CombatSprite*)((u8*)data + 0x84);
+    switch (data->sprite.unk_C4) {
+        case 0:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0++;
+                Mini108_VBlank(cs, 3, 1);
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 1;
+            return;
+        case 1:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                data->sprite.unk_8C |= 1;
+                func_ov003_020cb578(0, 0);
+                data->sprite.unk_C2 = 1;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0++;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 2;
+            return;
+        case 2:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0++;
+                data->sprite.unk_8C &= ~1;
+                data->unk_54 &= ~0x20;
+                Mini108_VBlank(cs, 4, 1);
+                func_ov003_020cb578(data, 1);
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            func_ov010_02125910(data, (void*)func_ov010_021259e8);
+            return;
+    }
+}
+
+// Fires a one-off effect every fourth frame, and only while a flag sprite field says so.
+s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
+    Enm006SpriteAlt2* alt = (Enm006SpriteAlt2*)&data->sprite;
+    if (arg1 == 0) {
+        alt->unk_F0 = 0;
+    }
+    func_ov010_02128820(data);
+    if ((data->unk_9A - 1) % 4 == 0) {
+        if (data->unk_8C == 1) {
+            // The second parameter of func_ov003_02087f00 is declared as a callback pointer, but
+            // the original really calls 020843b0 here and passes the result.
+            func_ov003_02087f00(0x1CE, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+        }
+    }
     return 1;
 }
