@@ -670,13 +670,15 @@ void func_ov012_02125de4(BtlEnm014* data) {
 void func_ov012_021265a4(BtlEnm014* data) {
     switch (data->unk_1C2) {
         case 0: {
-            s32 threshold = 0x14;
             if (func_ov003_020c6230(data) != 0) {
                 return;
             }
             data->unk_1E4 = 0;
             if (data->unk_080 == 2) {
-                s32 pct = data->actor.currentHp * 100 / data->actor.maxHp;
+                s32 hp100 = data->actor.currentHp * 0x64;
+                s32 pct;
+                s32 threshold = 0x14;
+                pct           = hp100 / data->actor.maxHp;
                 if (pct <= 0xA) {
                     threshold = 0x64;
                 } else if (pct <= 0x28) {
