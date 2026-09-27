@@ -881,8 +881,11 @@ s32 func_ov012_02126c1c(BtlEnm014* data) {
         if (data->actor.position.x < boss->actor.position.x) {
             goto hit;
         }
-    } else if (data->actor.position.x > boss->actor.position.x) {
-        goto hit;
+    }
+    if (data->unk_084.flags46 & 1) {
+        if (data->actor.position.x > boss->actor.position.x) {
+            goto hit;
+        }
     }
     return 0;
 
@@ -1045,6 +1048,7 @@ void func_ov012_02127134(BtlEnm014* data) {
 
         case 1: {
             s32 d;
+            s32 x;
             data->unk_1C0 = data->unk_1C0 + 1;
             if (data->unk_1C0 == 0x28) {
                 func_ov003_020c4cc4(data, 0x219);
@@ -1052,10 +1056,10 @@ void func_ov012_02127134(BtlEnm014* data) {
             if (data->unk_1C0 > 0x28 && data->unk_1C0 < 0x32) {
                 d = ROUND(func_ov003_020cd11c(0x82));
                 d = (data->unk_084.flags46 & 1) ? d : -d;
+                x = data->actor.position.x;
                 if (data->unk_1D0 == 0) {
-                    data->unk_1D0 =
-                        func_ov003_0208a164(func_ov003_0208a114(0x82), &data->actor.unk_04, data->actor.position.x + d,
-                                            data->actor.position.y, data->actor.position.z);
+                    data->unk_1D0 = func_ov003_0208a164(func_ov003_0208a114(0x82), &data->actor.unk_04, x + d,
+                                                        data->actor.position.y, data->actor.position.z);
                     if (data->unk_1D0 == 1) {
                         func_ov003_020c4cc4(data, 0x21A);
                         boss->actor.zVelocity = Mth_MulFixed(boss->actor.zVelocity, 0x2000);
@@ -1079,10 +1083,13 @@ void func_ov012_02127134(BtlEnm014* data) {
                 return;
             }
             if (func_ov012_02126c1c(data) != 0 && data->unk_1D0 == 1) {
-                func_ov012_02125768(data, func_ov012_02126dac);
-                return;
+                goto dash;
             }
             func_ov012_02126bd8(data);
+            return;
+
+        dash:
+            func_ov012_02125768(data, func_ov012_02126dac);
             return;
     }
 }
