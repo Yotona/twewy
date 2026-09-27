@@ -94,12 +94,26 @@ typedef struct Enm006AnimRow {
     u16 slot[4];
 } Enm006AnimRow;
 
+/// A 16-byte record out of the 0x02129250..0x021292B0 blob. `data_ov010_02129250`,
+/// `data_ov010_02129254`, `data_ov010_02129258` and `data_ov010_0212925c` are four *overlapping*
+/// views of that one 0x60-byte block (each is read with a 16-byte stride), so they cannot all be
+/// declared with their real element type. The block is tiled below by non-overlapping objects to
+/// keep the byte image -- and therefore the .rodata match -- intact, and the strided reads go
+/// through casts of those objects.
+typedef struct Enm006PhaseRec {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+} Enm006PhaseRec;
+
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(BtlEnm006*);
 extern void func_ov010_02127764(void);
 extern void func_ov010_02125c80(void);
 extern void func_ov010_02125b28(BtlEnm006*);
 extern void func_ov010_02125938(BtlEnm006*);
+extern s32  func_ov010_0212643c(BtlEnm006*);
 extern s32  func_ov010_021265ac(BtlEnm006*, s32);
 extern s32  func_ov003_020cb7a4(s32);
 extern void func_ov003_020c44ac(BtlEnm006*);
@@ -865,6 +879,121 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
         }
     }
     return 1;
+}
+
+// The waypoint chase. `arg1` is the sprite's frame counter: on the first frame (0) it re-seeks the
+// nearest waypoint with func_ov010_0212643c, and only then does it pick a velocity target from the
+// phase tables. The phase counter `unk_1EC` is a six-entry ring, so the wrap is `(x + 6) % 6`, not
+// `% 10` -- the 0x2aaaaaab reciprocal with no trailing shift is a divide by six.
+//
+// `unk_1F4` bit 2 is set by func_ov010_0212643c from the sign of the owner/edge dot product, and it
+// both picks the direction of the phase step and selects between the two indexings of the phase
+// tables. The test is the shift pair `lsl #29 / lsr #31`, so it has to be spelled with a `(u32)`.
+//
+// `v` is the halfword handed to the sprite restart as its second argument. The original never
+// initialises it and never reads it back -- the dead `moveq r1, #1 / moveq r1, #2` chain in the
+// reflected arm is all that is left of it -- so it is not initialised here either, and the
+// `arg1 == 0` arm leaves whatever was in the register.
+//
+// Both nested tests are `goto`s rather than if/else: MWCC if-converts an if/else into predicated
+// loads, and the original branches past the cold arm in both cases.
+//
+// The mirror flag is written back through `arg1` rather than through a local of its own. The
+// original's `cmp r4, #0` is the last read of the argument and r4 is the register the flag lands
+// in, so a separate local costs a whole extra callee-saved register here (and with it r6/r7 for
+// `data`, which moves every `data`-relative load in the function).
+s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
+    if (arg1 == 0) {
+        ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
+        data->unk_1EC                              = func_ov010_0212643c(data);
+        if (((u32)data->unk_1F4 << 29) >> 31 == 1) {
+            data->unk_1EC = data->unk_1EC + 1;
+        } else {
+            data->unk_1EC = data->unk_1EC - 1;
+        }
+        // Two statements, not one `= (x + 6) % 6`. Same arithmetic, but only the second form
+        // keeps the dividend in r12 across the reciprocal multiply instead of in r3.
+        data->unk_1EC += 6;
+        data->unk_1EC %= 6;
+    }
+    if (((Enm006SpriteAlt2*)&data->sprite)->unk_F0 == 0) {
+        u16 v;
+        if (((u32)data->unk_1F4 << 29) >> 31 == 1) {
+            data->unk_1EC = data->unk_1EC - 1;
+        } else {
+            data->unk_1EC = data->unk_1EC + 1;
+        }
+        data->unk_1EC += 6;
+        data->unk_1EC %= 6;
+        data->unk_1D0 = ((const Enm006PhaseRec*)&data_ov010_02129250)[data->unk_1EC].unk_00 + (func_ov003_020cb744(1) >> 1);
+        data->unk_1D4 = ((const Enm006PhaseRec*)&data_ov010_02129254)[data->unk_1EC].unk_00 + (func_ov003_020cb7a4(1) >> 1);
+        data->unk_1D8 = 0;
+        if (arg1 == 0) {
+            // `v` is dead here, but it still has to be *assigned* on every path that reaches the
+            // sprite restart: left undefined in one arm, MWCC extends its live range back to the
+            // function entry, gives it a callee-saved register and shifts `arg1`/`data` up to
+            // r5/r6, which moves every `data`-relative load in the function. This costs nothing
+            // -- the register already holds the zero written to unk_1D8.
+            v = 0;
+            // Both arms move, so the `<` arm has to name the register that already holds the
+            // zero written to unk_1D8: writing `arg1 = 0; if (...) arg1 = 1;` lets MWCC fold the
+            // conditional away as redundant and drops the `movlt`.
+            if (data->unk_1D0 < data->unk_28) {
+                arg1 = 0;
+            } else {
+                arg1 = 1;
+            }
+        } else {
+            if (((u32)data->unk_1F4 << 29) >> 31 == 0) {
+                goto reflected;
+            }
+            {
+                s32 idx = (data->unk_1EC + 1) % 6;
+                v       = ((const u16*)&data_ov010_02129258)[idx * 8];
+                arg1    = ((const Enm006PhaseRec*)&data_ov010_0212925c)[idx].unk_00 ^ 1;
+                if (v == 2) {
+                    v = 1;
+                    goto restart;
+                }
+                if (v == 1) {
+                    v = 2;
+                }
+            }
+            goto restart;
+        reflected: {
+            s32 idx = data->unk_1EC;
+            v       = ((const u16*)&data_ov010_02129258)[idx * 8];
+            arg1    = ((const Enm006PhaseRec*)&data_ov010_0212925c)[idx].unk_00;
+        }
+        restart:;
+        }
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), v, 0);
+        func_ov003_020c4ab4(data, arg1);
+    }
+    func_ov010_02126830(data, (void*)0x2000);
+    if ((data->unk_9A - 1) % 4 == 0) {
+        if (data->unk_8C == 1) {
+            func_ov003_02087f00(0x1CE, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+        }
+    }
+    if (func_ov010_0212688c(data) >= 0x2000) {
+        goto wrap;
+    }
+    data->sprite.unk_AC                        = data->unk_28;
+    data->sprite.unk_B0                        = data->unk_2C;
+    data->sprite.unk_B4                        = data->unk_30;
+    data->unk_28                               = data->unk_1D0;
+    data->unk_2C                               = data->unk_1D4;
+    data->unk_30                               = data->unk_1D8;
+    data->unk_1E4                              = 0;
+    data->unk_1E0                              = 0;
+    data->unk_1DC                              = 0;
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
+    return 1;
+wrap:
+    // `= x + 1`, not `+= 1`, for the register choice.
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 + 1;
+    return 0;
 }
 
 // Two near-twins: both advance a 4-entry animation phase and, on every phase but the last,

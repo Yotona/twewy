@@ -34,7 +34,11 @@ typedef struct Enm006SpriteBlock {
     /* 0x9E */ s16        unk_9E;
     u8                    padA0[0xA2 - 0xA0];
     /* 0xA2 */ s16        unk_A2;
-    u8                    padA4[0xC0 - 0xA4];
+    u8                    padA4[0xAC - 0xA4];
+    /* 0xAC */ s32        unk_AC; // the position the waypoint seek was launched from
+    /* 0xB0 */ s32        unk_B0;
+    /* 0xB4 */ s32        unk_B4;
+    u8                    padB8[0xC0 - 0xB8];
     /* 0xC0 */ s16        unk_C0;
     /* 0xC2 */ s16        unk_C2;
     /* 0xC4 */ s16        unk_C4;
@@ -122,7 +126,8 @@ struct BtlEnm006 {
     /* 0x1E4 */ s32               unk_1E4;
     u8                            pad1E8[0x1EC - 0x1E8];
     /* 0x1EC */ s32               unk_1EC;
-    u8                            pad1F0[0x1F5 - 0x1F0];
+    u8                            pad1F0[0x1F4 - 0x1F0];
+    /* 0x1F4 */ u8                unk_1F4; // bit 2: the waypoint reflection flag
     /* 0x1F5 */ u8                unk_1F5; // bit 0 mirrors the sprite
     u8                            pad1F6[0x1FC - 0x1F6];
 };
