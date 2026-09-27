@@ -89,7 +89,9 @@ struct BtlEnm006 {
     /* 0x60 */ s32 unk_60;
     /* 0x64 */ s32 unk_64;
     /* 0x68 */ s32 unk_68;
-    u8             pad6C[0x80 - 0x6C];
+    u8             pad6C[0x70 - 0x6C];
+    /* 0x70 */ s16 unk_70; // 4.12 outline radius, scaled to 16.16 by func_ov010_0212847c
+    u8             pad72[0x80 - 0x72];
     /* 0x80 */ u16 unk_80; // asset/variant index
     /* 0x82 */ u16 pad82;
     // 0x84 holds a CombatSprite; it is not named as a field because its size is unknown and

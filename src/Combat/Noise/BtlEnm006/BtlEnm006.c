@@ -77,9 +77,10 @@ extern s32   func_ov010_02128bcc(void*, void*);
 extern void  func_ov010_02127110(void*, void*);
 extern void  func_ov010_02127650(void);
 extern void  func_ov010_02127cc0(void);
-extern void  func_ov010_0212847c(s32*, s32*, void*, s32);
+extern void  func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
 extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
 extern s32   func_ov003_020cb764(s32);
+extern s32   func_ov003_020cb744(s32);
 extern void* func_ov003_020c3c88(void);
 extern s32   func_ov003_020c42ec(BtlEnm006*);
 extern s32   func_ov003_020c4348(BtlEnm006*);
@@ -980,6 +981,91 @@ void func_ov010_02127488(BtlEnm006* data) {
     return;
 big:
     func_ov010_02127460(data, (void*)func_ov010_02127cc0);
+}
+
+// Computes sample point `index` of the ten-point outline that `func_ov010_02128820` walks,
+// writing it through the two out-pointers in x-then-y order (`outX` is the one compared
+// against `BtlEnm006::unk_28`, the owner's x).
+//
+// Three details are load-bearing for the codegen:
+//
+// - The negative-index fold is `i - 10 * (|i - 5| / 6)`, *not* a plain `i + 10`. It is what
+//   produces `subs #5 / rsbmi / smull 0x2aaaaaab / mla #10`: 0x2aaaaaab is ceil(2^32/6) with no
+//   trailing shift, so the divisor is six and *not* five, and the 0x66666667 further down (with
+//   its `asr #2`) is the divide by ten.
+// - `unk_70` is 4.12 and is scaled into 16.16 by a float round trip. The `+ 0.5f` / `- 0.5f`
+//   is a rounding that can never actually round, but the original spells it that way and the
+//   two soft-float arms are two separate `bl`s rather than one. The `(s32)` has to sit
+//   *outside* the ternary, or each arm grows its own trailing `_ffix` call.
+// - Both screen-bound getters are called *before* the switch, and their halves are computed
+//   before the jump, so they have to be plain locals the switch reads rather than expressions
+//   rewritten into the arms.
+void func_ov010_0212847c(s32* outX, s32* outY, BtlEnm006* data, s32 index) {
+    s32 i = index;
+    s32 lo;
+    s32 hi;
+    s32 midLo;
+    s32 midHi;
+    s32 rad;
+
+    if (i < 0) {
+        s32 d = i - 5;
+        i     = i + 10 * ((d < 0 ? -d : d) / 6);
+    }
+    i %= 10;
+
+    s32 v = data->unk_70;
+    rad   = (s32)(v > 0 ? (f32)(v * 0x1000) + 0.5f : (f32)(v * 0x1000) - 0.5f);
+
+    lo    = func_ov003_020cb744(0);
+    hi    = func_ov003_020cb7a4(0);
+    midLo = lo >> 1;
+    midHi = hi >> 1;
+
+    switch (i) {
+        case 0:
+            *outX = rad;
+            *outY = midHi;
+            return;
+        case 1:
+            *outX = rad + 0x30000;
+            *outY = midHi - 0x20000;
+            return;
+        case 2:
+            *outX = midLo - 0x30000;
+            *outY = midHi - 0x20000;
+            return;
+        case 3:
+            *outX = midLo + 0x30000;
+            *outY = midHi + 0x20000;
+            return;
+        case 4:
+            *outX = lo - 0x31000 - rad;
+            *outY = midHi + 0x20000;
+            return;
+        case 5:
+            *outX = lo - 0x1000 - rad;
+            *outY = midHi;
+            return;
+        case 6:
+            *outX = lo - 0x31000 - rad;
+            *outY = midHi - 0x20000;
+            return;
+        case 7:
+            *outX = midLo + 0x30000;
+            *outY = midHi - 0x20000;
+            return;
+        case 8:
+            *outX = midLo - 0x30000;
+            *outY = midHi + 0x20000;
+            return;
+        case 9:
+            *outX = rad + 0x30000;
+            *outY = midHi + 0x20000;
+            return;
+        default:
+            return;
+    }
 }
 
 // Finds the index of the nearest of ten sample points. The x-axis cull is two-sided: the
