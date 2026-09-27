@@ -50,12 +50,17 @@ extern s32  func_ov003_020c65cc(void*, s32);
 extern s32  func_ov003_020c72b4(void*, s32, s32);
 extern s32  func_ov003_020c37f8(void*);
 extern s32  func_ov003_020c7070(void*);
+extern s32  func_ov003_020c4e0c(void*);
+extern s32  func_ov003_020cc354(void*);
+extern s32  func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
 extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(void);
 extern void func_ov010_02127550(void);
 extern void func_ov010_02127764(void);
+extern void func_ov010_02125c80(void);
+extern void func_ov010_02125de4(void);
 
 extern char data_ov010_0212932c[28];
 extern char data_ov010_02129348[28];
@@ -600,4 +605,44 @@ body:
     }
     *(s32*)arg2 = *(s32*)arg2 - 1;
     return 0;
+}
+
+// Picks the next behaviour by a coin flip. The "dead" case has to be the *outer* else so the
+// f()==0 branch jumps forward past both random arms -- which is also what fixes the order of
+// the three function-pointer literals in the pool.
+void func_ov010_02125938(BtlEnm006* data) {
+    if (func_ov003_020c4e0c(data) != 0) {
+        if (RNG_Next(0x64) < 0x4B) {
+            func_ov010_02125910(data, (void*)func_ov010_02125c80);
+        } else {
+            func_ov010_02125910(data, (void*)func_ov010_02125de4);
+        }
+    } else {
+        func_ov010_02125910(data, (void*)func_ov010_021259e8);
+    }
+}
+
+// The horizontal mirror is applied by biasing position.x by +/-0x8000 rather than by a flag, so
+// the bias has to be materialised before the three stack arguments are pushed.
+s32 func_ov010_021268c4(void* arg0, void* arg1) {
+    BtlEnm006* data = arg0;
+    if (func_ov003_020cc354(arg1) != 0) {
+        return 0;
+    }
+    s32 flip = data->unk_24 == 0 ? 0x8000 : -0x8000;
+    return func_ov003_020cc38c(arg1, data->unk_28 + flip, data->unk_2C + 0x8000, data->unk_30, 0x10000, 0x10000, 0x20000);
+}
+
+// Same shape as func_ov010_02126c38 -- spawn a sub-task with the current actor as its param --
+// but the frame is 0x10 rather than 0xC and the handle is the DeadEff variant.
+void func_ov010_021256d0(void* arg0, void* arg1) {
+    void*     self = arg0;
+    TaskPool* pool = (TaskPool*)func_ov003_020c37f8((u8*)arg1 + 0x84);
+    if (pool == NULL) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+        if (pool != NULL) {
+            pool = (TaskPool*)((u32)pool + 0x8C + 0x8000);
+        }
+    }
+    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_DeadEff, 0, 0, 0, &self);
 }

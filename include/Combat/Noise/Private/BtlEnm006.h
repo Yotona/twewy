@@ -37,7 +37,8 @@ typedef struct Enm006SpriteBlock {
 /// gaps are explicit padding and the struct grows as more functions land.
 /// Size: 0x1FC (from the Tsk_BtlEnm006_RG TaskHandle).
 struct BtlEnm006 {
-    u8                            pad00[0x28];
+    u8                            pad00[0x24];
+    /* 0x24 */ s32                unk_24; // non-zero mirrors the sprite horizontally
     /* 0x28 */ s32                unk_28; // position.x
     /* 0x2C */ s32                unk_2C; // position.y
     /* 0x30 */ s32                unk_30; // position.z
