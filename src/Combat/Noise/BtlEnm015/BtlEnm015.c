@@ -85,21 +85,23 @@ void func_ov013_02127230(BtlEnm015*);
 // MARK: Data
 
 char data_ov013_0212754c[28] = "Apl_Hor/Grp_BtlEnm015.bin";
-// The reference splits this name at 0x0212756c; tiled to keep its symbol extents.
-char data_ov013_02127568[4]  = {65, 112, 108, 95};
+// The original splits this literal into a 4-byte "Apl_" object at 0x02127568 and
+// the 24-byte remainder at 0x0212756c. The BinIdentifier still points at 0x02127568,
+// so the runtime path is unchanged.
+char data_ov013_02127568[4]  = "Apl_";
 char data_ov013_0212756c[24] = "Hor/Grp_BtlEnm015b.bin";
 char data_ov013_02127584[28] = "Apl_Hor/Grp_BtlEnm015a.bin";
 
-BinIdentifier data_ov013_02127484 = {3, data_ov013_0212754c};
-BinIdentifier data_ov013_0212748c = {3, data_ov013_02127568};
-BinIdentifier data_ov013_02127494 = {3, data_ov013_02127584};
+const BinIdentifier data_ov013_02127484 = {3, data_ov013_0212754c};
+const BinIdentifier data_ov013_0212748c = {3, data_ov013_02127568};
+const BinIdentifier data_ov013_02127494 = {3, data_ov013_02127584};
 
-SpriteAnimEntry data_ov013_02127454[2] = {
+const SpriteAnimEntry data_ov013_02127454[2] = {
     {0x10, 0x12, 0x11, 0},
     {0x16, 0x18, 0x17, 0},
 };
 
-SpriteAnimEntry data_ov013_0212749c[8] = {
+const SpriteAnimEntry data_ov013_0212749c[8] = {
     {0x1, 0x3, 0x2, 0},
     {0x4, 0x6, 0x5, 0},
     {0x4, 0x6, 0x5, 1},
@@ -110,14 +112,14 @@ SpriteAnimEntry data_ov013_0212749c[8] = {
     {0xA, 0xC, 0xB, 0},
 };
 
-SpriteAnimEntry data_ov013_021274dc[2] = {
+const SpriteAnimEntry data_ov013_021274dc[2] = {
     { 0xD,  0xF,  0xE, 0},
     {0x13, 0x15, 0x14, 0},
 };
 
-Enm015Variant data_ov013_02127444 = {&data_ov013_02127484, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
-Enm015Variant data_ov013_02127474 = {&data_ov013_0212748c, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
-Enm015Variant data_ov013_02127464 = {&data_ov013_02127494, data_ov013_0212749c, 0, 0x19, 0x2C8, 0};
+const Enm015Variant data_ov013_02127444 = {&data_ov013_02127484, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
+const Enm015Variant data_ov013_02127474 = {&data_ov013_0212748c, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
+const Enm015Variant data_ov013_02127464 = {&data_ov013_02127494, data_ov013_0212749c, 0, 0x19, 0x2C8, 0};
 
 Enm015Variant* data_ov013_02127540[3] = {
     &data_ov013_02127444,
@@ -129,7 +131,7 @@ char data_ov013_021275a0[20] = "Tsk_BtlEnm015_Eff";
 char data_ov013_021275b4[24] = "Tsk_BtlEnm015_EffStamp";
 char data_ov013_021275cc[28] = "Tsk_BtlEnm015_EffStampSub";
 char data_ov013_021275e8[20] = "Tsk_BtlEnm015_RG";
-char data_ov013_021275fc[]   = "Tsk_BtlEnm015_Shake";
+char data_ov013_021275fc[20] = "Tsk_BtlEnm015_Shake";
 char data_ov013_02127610[48] = "Tsk_BtlEnm015_UG";
 
 const TaskHandle Tsk_BtlEnm015_Eff         = {data_ov013_021275a0, func_ov013_021260e8, 0x70};
