@@ -43,34 +43,44 @@ Assets: `Apl_Suy/Grp_BtlEnm006{,.a,.b}.bin`.
 
 ## Status (objdiff)
 
-**43 of 71 functions implemented, 24 exact, average 58.89%; `.rodata` 99.2%, `.data` 100%.**
-(`.text` is 22.8% and will stay low until the remaining 28 functions land — the section score
+**49 of 71 functions implemented, 18 exact, average 66.61%; `.rodata` 99.2%, `.data` 100%.**
+(`.text` is 28.2% and will stay low until the remaining 22 functions land — the section score
 covers the whole declared range, not just what is written.)
 
-The 19 implemented-but-imperfect functions are all known and triaged:
+The "exact" count went *down* from 24 while the average went *up* from 58.89% to 66.61%:
+implementing a function that then scores 99.7% moves it out of the exact bucket while raising
+the mean. The jump-table and `bl`-chain reloc artifact is unavoidable and systematic, so
+18/49 exact is not a regression — the average and the 31 functions now at ≥98% are the better
+signal.
+
+The 31 implemented-but-imperfect functions are all known and triaged:
 
 | function | % | mechanism |
 |----------|---|-----------|
-| `func_ov010_02125730`, `021269d0`, `02126d04`, `02128dbc`, `02127178` | 99.7 | reloc artifact — the jump-table `b` entries carry absolute addresses on the original side and section-relative ones on ours; identical once branch targets are normalised |
-| `func_ov010_02125878` | 99.9 | same reloc artifact |
+| `func_ov010_02125878`, `02125998`, `02127500`, `02128314`, `02128e0c` | 99.9 | reloc artifact — literal-pool words carry absolute addresses on the original side and section-relative ones on ours; identical once branch/literal targets are normalised |
+| `func_ov010_0212688c`, `02128ac8`, `02125730`, `021269d0`, `02126d04`, `02128dbc`, `02127178`, `02125910`, `02127460` | 99.7 | same reloc artifact, on the `bl` target words |
+| `func_ov010_02126830`, `02128a6c` | 99.7 | same |
 | `func_ov010_02128a08` | 99.6 | one register: the original recycles the dead `arg1` register for the constant, MWCC picks a fresh one |
 | `func_ov010_02126934`, `02128d20` | 98.6 | reg-colour: the 0x100 base goes in a fresh `r0` at each use in the original, MWCC keeps it in one register |
-| `func_ov010_02126420`, `02125b28` | 98.4–98.6 | reg-colour on the loaded s16 (`r1` vs `r0`) |
-| `func_ov010_021283c0`, `02128434`, `0212636c`, `021282b8`, `021263c4` | 87.5–92.2 | reg-colour, five instances of one shape (below) |
-| `func_ov010_02126c38`, `021256d0`, `021270a8` | 75.0–86.3 | the task-spawn family (below) |
+| `func_ov010_02126420`, `02125b28` | 98.3–98.6 | reg-colour on the loaded s16 (`r1` vs `r0`) |
+| `func_ov010_021283c0`, `02128434`, `0212636c`, `021282b8`, `021263c4` | 87.2–92.0 | reg-colour, five instances of one shape (below) |
+| `func_ov010_02127550` | 76.8 | schedule: the original loads both scale factors from the manager up front, MWCC sinks the second load past the first multiply and spills `r6` |
+| `func_ov010_02126c38`, `021256d0`, `02127110`, `021270a8` | 75.0–86.3 | the task-spawn family (below) |
 
-**Jump-table task handlers cost ~0.25% each, systematically.** Six in a row landed in that
-bucket, so expect it for any future `addls pc, pc, rX, lsl #2` handler in this codebase.
+**Jump-table task handlers and `bl`-chain callers cost ~0.25% each, systematically.** Nine in a
+row landed in that bucket, so expect it for any function whose last word is a literal or a call
+target. Treat 99.7% as exact.
 
-**The task-spawn family wants a branch, not a predicate.** `02126c38`, `021256d0` and
-`021270a8` all do `pool = lookup(...); if (pool == NULL) { pool = global; if (pool != NULL)
+**The task-spawn family wants a branch, not a predicate.** `02126c38`, `021256d0`, `02127110`
+and `021270a8` all do `pool = lookup(...); if (pool == NULL) { pool = global; if (pool != NULL)
 { pool += 0x8C + 0x8000; } }`. The original emits `ldreq`/`beq` — a real branch over the offset
 arithmetic — and MWCC if-converts ours into `cmp / addne / addne`. No C spelling found that
 produces the branch; an `if/else` with an empty then-arm made it worse, not better.
-`021270a8` additionally stores both parameters to dead home slots (`str r0, [sp, #0xc]`,
-`str r1, [sp, #0x10]`) that only appear if their addresses are taken, and nothing reproduces
-that. What *does* help this family: the 6th argument is `&local`, and naming the incoming
-argument as a local (`void* self = arg0; ... &self`) stops MWCC spilling r0-r3.
+`021270a8` and `02127110` additionally store their parameters to dead home slots
+(`str r0, [sp, #0xc]`, `str r1, [sp, #0x10]`) that only appear if their addresses are taken,
+and nothing reproduces that. What *does* help this family: the 6th argument is `&local`, and
+naming the incoming argument as a local (`void* self = arg0; ... &self`) stops MWCC spilling
+r0-r3.
 
 **Five functions share one unfixed reg-colour difference.** They all open with
 
@@ -92,7 +102,7 @@ worse. The semantics are right; only the register choice differs.
 
 | Section | Bytes | Status |
 |---------|-------|--------|
-| `.text` | 14,664 | 43 / 71 functions implemented, 24 exact |
+| `.text` | 14,664 | 49 / 71 functions implemented, average 66.61% |
 | `.rodata` | 772 | 99.2% |
 | `.data` | 224 | 100% |
 
@@ -208,23 +218,43 @@ Beyond `docs/decomp-tricks.md` and the sibling overlays:
   `SpriteAnimEntry` folds the two index terms into one shifted add and reorders the
   instructions. Casting to a local `struct { u16 slot[4]; }[3]` restores the original form
   (87.6% → 98.6%).
+- **A rare arm written inline gets inverted; give it its own block at the end.** In
+  `02127488`, `if (rand >= 0x5A) { rare(); return; }` became `blo` + a jump *over* the rare
+  block. The original has a forward `bhs` to a block placed last. Restructuring to
+  `if (...) goto big;` with `big:` after the common path restored both the branch polarity and
+  the literal-pool order: 72.2% → 100%.
+- **Sequential guards beat `else if` when the two tests share a load.** `02128624` reads
+  `unk_24` once and tests it twice, so the "flag is 0 and the point is in range" path has to
+  fall *through* into the second test. Written as `else if` the second read happens on a
+  separate path and MWCC inserts a jump. Hoisting the flag into a local and using two plain
+  `if`s: 97.7% → 100%.
+- **`bhs` vs `bge` is a cast, not a comparison rewrite.** Where the original branches unsigned
+  (`bhs`) and yours branches signed (`bge`), the operands need `(u32)` — here on both sides of
+  a call that returns a fixed-point value.
 
 ## Next steps
 
-1. 28 functions remain. The biggest tractable one is `func_ov010_02128820` (0x2E8 bytes) — the
-   per-frame body that calls `0212847c` twice, does a `Vec_DotProduct` reflection test and runs
-   the `unk_E8 % 10` phase counter. Everything it needs is already named.
-2. Then the per-stage workers `02126d54`, `02126e58`, `02126fdc`, `021271c0`, `021272e0`,
-   `02125780`, `02126a20`, `02126a94`, `02128e80`, plus `02126c94`, `0212847c`, `02128624`,
-   `021286e8`, `02125c80`, `02127550`, `02127110`, `02127488`, `02127650`, `02128b48`,
-   `02128bcc`, `02128cbc`, `02128820`.
-3. `02126d54`, `02126e58` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a
-   `s32[8]` at `+0x80` of a **0xA0-byte** task data — that is a *different* struct from
-   `BtlEnm006` (which is 0x1FC and has a `u16` at 0x80). It needs its own type; the offsets
-   seen so far are `unk_00` (the `BtlEnm006*`), `unk_04` (a CombatSprite), `unk_68`/`unk_6C`
-   (copied position), `unk_70` (added to each frame), `unk_74` (an accumulator clamped to
-   0x4000), `unk_7C`/`unk_7E` (s16 angles), and `unk_80[8]`.
-4. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
+22 functions remain:
+
+`02125780`, `021259e8`, `02125c80`, `02125de4`, `0212643c`, `021265ac`, `02126a20`,
+`02126a94`, `02126c94`, `02126d54`, `02126e58`, `02126fdc`, `021271c0`, `021272e0`,
+`02127650`, `02127764`, `02127cc0`, `0212847c`, `021286e8`, `02128820`, `02128b48`,
+`02128e80`
+
+1. `021259e8` is the near-twin of the 76.8% `02127550` and shares its whole opening block, so
+   fixing the load-schedule there should lift both. Worth doing as a pair.
+2. `02128b48` is blocked on something odd: its second call's return value comes from
+   `ldr r0, [sp, #0x4]`, a frame slot nothing ever writes. Either the callee takes six
+   arguments and the original passes garbage, or there is an out-param. Not yet understood.
+3. `02128820` (0x2E8 bytes) is the per-frame body — the biggest tractable one. Everything it
+   needs is already named.
+4. `02126d54`, `02126e58` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a `s32[8]`
+   at `+0x80` of a **0xA0-byte** task data — that is a *different* struct from `BtlEnm006`
+   (which is 0x1FC and has a `u16` at 0x80). It needs its own type; the offsets seen so far are
+   `unk_00` (the `BtlEnm006*`), `unk_04` (a CombatSprite), `unk_68`/`unk_6C` (copied position),
+   `unk_70` (added to each frame), `unk_74` (an accumulator clamped to 0x4000),
+   `unk_7C`/`unk_7E` (s16 angles), and `unk_80[8]`.
+5. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
 
 **Watch the field order when you extend the struct.** One field (`unk_144`, at 0x144 — which is
 *past* the sprite block's 0x100..0x1C8 span) was inserted at the wrong place in the declaration
