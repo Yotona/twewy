@@ -83,6 +83,75 @@ This should be applied to ov013 and ov015 too — both have the same
 `BinIdentifier` / `SpriteAnimEntry` / name-string shape and the same 12%/82% symptom,
 and it is a prerequisite for ever marking a Noise overlay `complete`.
 
+## The `lr` puzzle in `func_ov012_02126c74` — causal model
+
+This was worth chasing, because it is the same residue blocking ~30 functions across
+ov012/ov013/ov015. Findings, in the order they were established:
+
+**There is no solved reference instance anywhere in the repo.** Every user of the
+`data_0205e4e0` sin/cos table was checked: `Boss02.c` (25 refs) is overlay ov017 at 11.9%,
+`Boss03.c` and `OamMgr.c` are auto-translated with `temp_r5`-style names and sit at low
+percentages, and the only hand-written users are `BtlEnm014/015/026` — i.e. the three
+overlays that exhibit the problem. So there is no "here is how the original wrote it" to
+copy from.
+
+**The `lr` choice is a consequence, not the cause.** The two sides differ in *schedule*
+first and register choice second:
+
+| | original | ours |
+|---|---|---|
+| `idx*2` home | `lr`, live 26→42 (16 instrs) | `r1`, live 26→32 (6 instrs) |
+| `idx*4` | derived from `lr` at index 42 | derived at index 31 |
+| table address | **rematerialised** — `ldr [pc]` at both 28 and 43 | **kept live** in `r2` from 28→32 |
+
+The original's long live range is what *forces* MWCC to rematerialise the table address
+(two `ldr rX, [pc, #imm]` for the same symbol). Ours has a short range, so keeping the
+address in a register is cheaper and MWCC does. So "MWCC picked `r0` instead of `lr`" is a
+symptom. Chasing the register directly was always going to fail.
+
+**Why "move the second read later" fails — the real reason.** Writing the second table
+read at its use site (`cos = data_0205e4e0[idx * 2]` after the first store) does move the
+schedule, but it makes things *worse*: 91.8% → 74.7%, and the function grows from 80 to 89
+instructions. The intervening store to `data->unk_1D8` creates a memory dependency MWCC
+cannot disambiguate from the load of a global, so the scheduler serialises and drags the
+whole prologue (the `position.y`/`position.x` loads) across the branch. Any variant that
+puts a store between the two table reads is fighting that barrier, not the scheduler.
+
+**Pointer-local is refuted.** The one shape that ought to have made the address
+non-hoistable — reaching the table through an `s16*` local, so the compiler cannot prove
+it is unchanged across the magnitude computation — makes it worse, not better:
+
+| variant | % | entries | `ldr [pc]` | `lr` uses |
+|---|---|---|---|---|
+| both reads hoisted (committed) | **91.8** | 80 | 2 | 6 |
+| through `s16* tbl`, second read late | 85.0 | 84 | 2 | 3 |
+| through `s16* tbl`, both reads hoisted | 83.4 | 85 | 2 | 1 |
+| second read at use site (after a store) | 74.7 | 89 | 3 | 1 |
+
+With the pointer local MWCC *does* keep the address in a register (2 `ldr [pc]`, one of
+them the unrelated `data_ov003_020e71b8`), which is the opposite of the rematerialisation
+the original performs. The hypothesis that the original used a pointer local is therefore
+wrong.
+
+**What is still needed.** A source form where the second table read is ordered after the
+magnitude computation, has *no* store between the two reads, and is nonetheless not hoisted.
+The `p0`/`p1` temporaries achieve "no store between" (74.1%) but MWCC still hoists the read
+because its only dependency — `idx` — is available immediately. Since it is the same
+compiler on both sides, something in the original must have made that load opaque to the
+scheduler in a way none of the ~14 spellings tried here reproduces.
+
+Full list of shapes tried and rejected for this function: both reads hoisted into locals
+(kept, 91.8%), `idx2` temp, products via `p0`/`p1` temporaries, `idx2` + temporaries, second
+read at use site, second read at use site with `p0`/`p1`, `s16*` pointer local in three
+arrangements, and the bitwise-`&` and truthiness spellings. Best of the rejected set is 85.0%.
+
+**Contrast with the if-conversion puzzles, which *are* solvable.** The `ldrne`/`cmpne`
+refusals in `func_ov012_02127134` (and the same shape in ov013's `func_ov013_02125d24` and
+ov015's `func_ov015_02127ac4`) come from a genuinely different mechanism, and inverting the
+condition to an early `return` fixed two of them outright. So "MWCC ignored my source" is
+not a general truth here: scheduling/if-conversion decisions are steerable, and only this
+rematerialisation one has resisted everything.
+
 ## Key codegen recipes discovered (MWCC 2.0 sp1p5, -O4,p)
 
 Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-progress.md`,
@@ -98,12 +167,10 @@ Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-p
   `&`, truthiness, `if(1){}`, a plain `return` body, and two label orders); all give
   99.22% or worse. The rest of the 580-byte function is byte-identical, so this one
   slot is the entire remaining gap.
-- **The second `sin`/`cos` table read must be hoisted, not inlined at its use site.**
-  In `func_ov012_02126c74` the original keeps `idx * 2` in `lr` across the magnitude
-  multiply and re-loads the table base from the literal pool afterwards; reading
-  `data_0205e4e0[idx * 2]` inline at the second `Mth_MulFixed` instead makes MWCC
-  schedule both `ldrsh`s together up front (82.9% vs 91.8%). Nine variants tried;
-  hoisting both reads into locals is the best.
+- **Hoisting both table reads is the best available form**, but see "The `lr` puzzle"
+  above for why: it is not because hoisting matches the original's schedule, it is because
+  the alternatives are worse for a different reason (a store-aliasing barrier, or a pointer
+  local that defeats the rematerialisation the original actually performs).
 
 - **`if (cond) { A } if (!cond) { B } goto tail;`** produces the original's
   `ands ip, rX, #1 / bne <second> / <first> / cmp ip, #0 / beq <miss> / <second>` shape
