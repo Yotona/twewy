@@ -944,7 +944,7 @@ s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
                 arg1 = 1;
             }
         } else {
-            if (((u32)data->unk_1F4 << 29) >> 31 == 0) {
+            if (((u32)data->unk_1F4 << 29) >> 31 != 1) {
                 goto reflected;
             }
             {
