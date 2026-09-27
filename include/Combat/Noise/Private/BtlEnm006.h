@@ -29,8 +29,12 @@ typedef struct Enm006SpriteBlock {
     /* 0x8C */ u16        unk_8C;
     u8                    pad8E[0x98 - 0x8E];
     /* 0x98 */ s16        unk_98;
+    u8                    pad9A[0x9C - 0x9A];
     /* 0x9C */ s16        unk_9C;
-    u8                    pad9A[0xC0 - 0x9A];
+    /* 0x9E */ s16        unk_9E;
+    u8                    padA0[0xA2 - 0xA0];
+    /* 0xA2 */ s16        unk_A2;
+    u8                    padA4[0xC0 - 0xA4];
     /* 0xC0 */ s16        unk_C0;
     /* 0xC2 */ s16        unk_C2;
     /* 0xC4 */ s16        unk_C4;

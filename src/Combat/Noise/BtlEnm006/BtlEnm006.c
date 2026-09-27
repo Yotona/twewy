@@ -91,9 +91,13 @@ typedef struct Enm006AnimRow {
 } Enm006AnimRow;
 
 // Per-instance callbacks passed to the init helpers.
-extern void func_ov010_021259e8(void);
+extern void func_ov010_021259e8(BtlEnm006*);
 extern void func_ov010_02127764(void);
 extern void func_ov010_02125c80(void);
+extern void func_ov010_02125b28(BtlEnm006*);
+extern void func_ov010_02125938(BtlEnm006*);
+extern s32  func_ov010_021265ac(BtlEnm006*, s32);
+extern s32  func_ov003_020cb7a4(s32);
 extern void func_ov010_02127550(BtlEnm006*);
 extern void func_ov010_02125de4(void);
 
@@ -1011,4 +1015,42 @@ void func_ov010_02127550(BtlEnm006* data) {
     }
     data->sprite.unk_C0 = 1;
     data->sprite.unk_C2 = func_ov003_020c42ec(data);
+}
+
+// The twin of func_ov010_02127550, with a different manager struct (scale factors at 0x22/0x26
+// rather than 0x1C/0x20) and different velocity slots. Both halves of the function are a chain
+// of forward branches to one shared `unk_C0++` tail, so the guards have to be `goto`s.
+void func_ov010_021259e8(BtlEnm006* data) {
+    if (*(u16*)((u8*)data->sprite.unk_88 + 2) != 0) {
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+        func_ov010_02125910(data, (void*)func_ov010_02125b28);
+        return;
+    }
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        u8* g               = (u8*)func_ov003_020c3c88();
+        s16 kx              = *(s16*)(g + 0x22);
+        s16 ky              = *(s16*)(g + 0x26);
+        s32 p               = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * kx;
+        data->sprite.unk_9E = (s16)(p >> 12);
+        p                   = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * ky;
+        data->sprite.unk_A2 = (s16)(p >> 12);
+        data->sprite.unk_C2 = func_ov003_020c42ec(data);
+    }
+    if (func_ov010_021265ac(data, data->sprite.unk_C0) != 0) {
+        if (data->sprite.unk_C0 >= data->sprite.unk_C2) {
+            if (data->unk_2C == func_ov003_020cb7a4(1) / 2) {
+                if (func_ov003_020c4348(data) != 0) {
+                    func_ov010_02125938(data);
+                    return;
+                }
+                data->sprite.unk_C0 = 1;
+                data->sprite.unk_C2 = func_ov003_020c42ec(data);
+                return;
+            }
+        }
+    }
+    data->sprite.unk_C0++;
 }
