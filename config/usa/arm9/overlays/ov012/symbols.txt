@@ -49,16 +49,16 @@ data_ov012_0212789c kind:data(any) addr:0x0212789c
 data_ov012_021278a4 kind:data(any) addr:0x021278a4
 data_ov012_021278ac kind:data(any) addr:0x021278ac
 data_ov012_021278b4 kind:data(any) addr:0x021278b4
-data_ov012_02127934 kind:data(any) addr:0x02127934
-data_ov012_02127940 kind:data(any) addr:0x02127940 ambiguous
+Tsk_BtlEnm014_Eff kind:data(any) addr:0x02127934
+Tsk_BtlEnm014_RG kind:data(any) addr:0x02127940
 data_ov012_0212794c kind:data(any) addr:0x0212794c
-data_ov012_0212795c kind:data(any) addr:0x0212795c ambiguous
+Tsk_BtlEnm014_UG kind:data(any) addr:0x0212795c
 data_ov012_02127980 kind:data(any) addr:0x02127980 ambiguous
 data_ov012_02127990 kind:data(any) addr:0x02127990
 data_ov012_021279ac kind:data(any) addr:0x021279ac
 data_ov012_021279c8 kind:data(any) addr:0x021279c8
 data_ov012_021279e4 kind:data(any) addr:0x021279e4
-Tsk_BtlEnm014_Eff kind:data(any) addr:0x02127a00
-Tsk_BtlEnm014_RG kind:data(any) addr:0x02127a14
+data_ov012_02127a00 kind:data(any) addr:0x02127a00
+data_ov012_02127a14 kind:data(any) addr:0x02127a14
 data_ov012_02127a18 kind:data(any) addr:0x02127a18 ambiguous
-Tsk_BtlEnm014_UG kind:data(any) addr:0x02127a28
+data_ov012_02127a28 kind:data(any) addr:0x02127a28

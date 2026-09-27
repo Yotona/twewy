@@ -24,6 +24,16 @@ typedef struct Enm014Spawn {
     /* 0x0A */ u16               unk_0A;
 } Enm014Spawn; // Size: 0x0C
 
+/// Chase-distance accumulator. The chase handlers read and write it as a full
+/// 32-bit value while the attack timers manipulate the two 16-bit halves.
+typedef union Enm014Chase {
+    s32 word;
+    struct {
+        s16 lo;
+        s16 hi;
+    } half;
+} Enm014Chase; // Size: 0x4
+
 /// Task data for the `Tsk_BtlEnm014_RG` / `Tsk_BtlEnm014_UG` tasks.
 typedef struct BtlEnm014 {
     /* 0x000 */ CombatActor  actor;
@@ -53,18 +63,17 @@ typedef struct BtlEnm014 {
     /* 0x1C0 */ s16          unk_1C0;
     /* 0x1C2 */ s16          unk_1C2;
     /* 0x1C4 */ void (*unk_1C4)(struct BtlEnm014*);
-    /* 0x1C8 */ s32 unk_1C8;
-    /* 0x1CC */ s32 unk_1CC;
-    /* 0x1D0 */ s32 unk_1D0;
-    /* 0x1D4 */ s16 unk_1D4;
-    /* 0x1D6 */ s16 unk_1D6;
-    /* 0x1D8 */ s32 unk_1D8;
-    /* 0x1DC */ s32 unk_1DC;
-    /* 0x1E0 */ s16 unk_1E0;
-    /* 0x1E2 */ s16 unk_1E2;
-    /* 0x1E4 */ s32 unk_1E4;
-    /* 0x1E8 */ s32 unk_1E8;
-    /* 0x1EC */ s32 unk_1EC;
+    /* 0x1C8 */ s32         unk_1C8;
+    /* 0x1CC */ s32         unk_1CC;
+    /* 0x1D0 */ s32         unk_1D0;
+    /* 0x1D4 */ s16         unk_1D4;
+    /* 0x1D6 */ s16         unk_1D6;
+    /* 0x1D8 */ s32         unk_1D8;
+    /* 0x1DC */ s32         unk_1DC;
+    /* 0x1E0 */ Enm014Chase unk_1E0;
+    /* 0x1E4 */ s32         unk_1E4;
+    /* 0x1E8 */ s32         unk_1E8;
+    /* 0x1EC */ s32         unk_1EC;
 } BtlEnm014; // Size: 0x1F0
 
 /// Task data for the `Tsk_BtlEnm014_Eff` task.
