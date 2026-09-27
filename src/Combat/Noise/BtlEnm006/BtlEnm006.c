@@ -70,13 +70,18 @@ extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
-extern s32  func_ov010_02128bcc(void*, void*);
-extern void func_ov010_02127110(void*, void*);
-extern void func_ov010_02127650(void);
-extern void func_ov010_02127cc0(void);
-extern void func_ov010_0212847c(s32*, s32*, void*, s32);
-extern s32  func_ov003_020cba2c(s32, s32, s32, s32);
-extern s32  func_ov003_020cb764(s32);
+extern s32   func_ov010_02128bcc(void*, void*);
+extern void  func_ov010_02127110(void*, void*);
+extern void  func_ov010_02127650(void);
+extern void  func_ov010_02127cc0(void);
+extern void  func_ov010_0212847c(s32*, s32*, void*, s32);
+extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
+extern s32   func_ov003_020cb764(s32);
+extern void* func_ov003_020c3c88(void);
+extern s32   func_ov003_020c42ec(BtlEnm006*);
+extern s32   func_ov003_020c4348(BtlEnm006*);
+extern s32   func_ov010_02128a08(BtlEnm006*, s32);
+extern void  func_ov010_02127488(BtlEnm006*);
 
 /// The animation tables are addressed as `table + variant*8 + phase*2`, i.e. an array of 8-byte
 /// records each holding four halfwords -- not as `SpriteAnimEntry[]`, whose field access folds the
@@ -87,9 +92,9 @@ typedef struct Enm006AnimRow {
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(void);
-extern void func_ov010_02127550(void);
 extern void func_ov010_02127764(void);
 extern void func_ov010_02125c80(void);
+extern void func_ov010_02127550(BtlEnm006*);
 extern void func_ov010_02125de4(void);
 
 extern char data_ov010_0212932c[28];
@@ -975,4 +980,35 @@ s32 func_ov010_02128624(BtlEnm006* data) {
         }
     }
     return bestI;
+}
+
+// A near-twin of func_ov010_021259e8. On the first frame the sprite's two velocity components are
+// scaled from the current 4-entry animation phase and a global manager's two s16 scale factors;
+// after that it drives the frame counter and hands off to func_ov010_02127488.
+void func_ov010_02127550(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        u8* g               = (u8*)func_ov003_020c3c88();
+        s16 kx              = *(s16*)(g + 0x1C);
+        s16 ky              = *(s16*)(g + 0x20);
+        s32 p               = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * kx;
+        data->sprite.unk_98 = (s16)(p >> 12);
+        p                   = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * ky;
+        data->sprite.unk_9C = (s16)(p >> 12);
+        data->sprite.unk_C2 = func_ov003_020c42ec(data);
+    }
+    func_ov010_02128a08(data, data->sprite.unk_C0);
+    if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+        data->sprite.unk_C0++;
+        return;
+    }
+    if (func_ov003_020c4348(data) != 0) {
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+        func_ov010_02127488(data);
+        return;
+    }
+    data->sprite.unk_C0 = 1;
+    data->sprite.unk_C2 = func_ov003_020c42ec(data);
 }

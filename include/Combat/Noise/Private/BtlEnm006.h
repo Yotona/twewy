@@ -27,7 +27,10 @@ typedef struct Enm006SpriteBlock {
     /* 0x84 */ BtlEnm006* twin; // the paired instance, as in the sibling overlays
     /* 0x88 */ void*      unk_88;
     /* 0x8C */ u16        unk_8C;
-    u8                    pad8E[0xC0 - 0x8E];
+    u8                    pad8E[0x98 - 0x8E];
+    /* 0x98 */ s16        unk_98;
+    /* 0x9C */ s16        unk_9C;
+    u8                    pad9A[0xC0 - 0x9A];
     /* 0xC0 */ s16        unk_C0;
     /* 0xC2 */ s16        unk_C2;
     /* 0xC4 */ s16        unk_C4;
