@@ -1298,6 +1298,12 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
 // arms come out identical from the first store on and MWCC merges far more of them than the
 // original does. And the `unk_30` store is duplicated rather than shared: the `sub / str` pair
 // that both arms end on is itself the tail merge the original has, not a written-out statement.
+//
+// The residue at 95.9% is all register choice: MWCC pushes two callee-saved registers where the
+// original pushes three (it keeps an `r3` this version has no use for), it hoists the shared
+// `unk_10` load above the mode branch, and it picks `r1`/`r2` the other way round for the zero
+// and the base pointer in the mode-0 wrap. A block-scoped `s32 dx = x + data->unk_10;` temp was
+// tried to block the hoist and does not; MWCC hoists the load regardless of the temp.
 s32 func_ov010_021272e0(Enm006Swlo* data) {
     data->unk_2C = data->unk_2C + 0x600;
     s32 result   = 1;
