@@ -33,6 +33,15 @@ typedef struct Enm006SpriteBlock {
     u8                    padC6[0xC8 - 0xC6];
 } Enm006SpriteBlock; // Size: 0xC8
 
+/// A second, *overlapping* view of the same 0x100 base. `func_ov010_02128e0c` reaches the s16 at
+/// 0x1E8 as base+0x100 then +0xE8, a different addressing form from the outer struct's own
+/// 0x1DC accesses. One memory range, two views -- so it needs its own type rather than a field
+/// on `BtlEnm006`.
+typedef struct Enm006SpriteAlt {
+    u8             pad00[0xE8];
+    /* 0xE8 */ s16 unk_E8;
+} Enm006SpriteAlt;
+
 /// The main `BtlEnm006` task data. Only offsets confirmed by the disassembly are named; the
 /// gaps are explicit padding and the struct grows as more functions land.
 /// Size: 0x1FC (from the Tsk_BtlEnm006_RG TaskHandle).
@@ -48,7 +57,12 @@ struct BtlEnm006 {
     /* 0x40 */ s32                unk_40; // 4.12 fixed point
     u8                            pad44[0x54 - 0x44];
     /* 0x54 */ s32                unk_54; // engine bits
-    u8                            pad58[0x80 - 0x58];
+    u8                            pad58[0x60 - 0x58];
+    /* 0x60 */ s32                unk_60;
+    /* 0x64 */ s32                unk_64;
+    /* 0x68 */ s32                unk_68;
+    u8                            pad6C[0x144 - 0x6C];
+    /* 0x144 */ u8                unk_144;
     /* 0x80 */ u16                unk_80; // asset/variant index
     /* 0x82 */ u16                pad82;
     /* 0x84 */ u16                unk_84; // engine bits 0..1

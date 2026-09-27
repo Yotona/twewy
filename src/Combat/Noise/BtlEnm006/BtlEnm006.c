@@ -24,7 +24,6 @@ extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 // Per-stage workers dispatched by the task entry points above. Declared void* for the
 // task data because the owning structs are not mapped yet.
 extern s32 func_ov010_02125780(void*, void*);
-extern s32 func_ov010_02125878(void*);
 extern s32 func_ov010_02126a20(void*, void*);
 extern s32 func_ov010_02126a94(void*);
 extern s32 func_ov010_02126d54(void*, void*);
@@ -32,7 +31,6 @@ extern s32 func_ov010_02126e58(void*);
 extern s32 func_ov010_02126fdc(void*);
 extern s32 func_ov010_021271c0(void*, void*);
 extern s32 func_ov010_021272e0(void*);
-extern s32 func_ov010_02128e0c(void*, void*);
 extern s32 func_ov010_02128e80(void*);
 
 // ov003 helpers.
@@ -53,6 +51,15 @@ extern s32  func_ov003_020c7070(void*);
 extern s32  func_ov003_020c4e0c(void*);
 extern s32  func_ov003_020cc354(void*);
 extern s32  func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
+extern s32  func_ov003_020c3c28(void*);
+extern s32  func_ov003_020c3efc(void*, void*);
+extern void func_ov003_020c4520(void*);
+extern void func_ov003_020c4b5c(void*);
+extern void func_ov003_020c4668(void*);
+extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
+extern void func_ov003_02082724(void*, s16, s16);
+extern void func_ov003_02082b64(void*);
+extern void func_ov003_02084694(void*, s32);
 extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
 
 // Per-instance callbacks passed to the init helpers.
@@ -686,4 +693,40 @@ void func_ov010_021283c0(BtlEnm006* data) {
         return;
     }
     func_ov010_02127460(data, (void*)func_ov010_02127550);
+}
+
+// The sprite block is 0x200 bytes here, not 0xC8 -- the clear covers the whole thing, and the
+// 0x1E8 halfword is reached through the overlapping `Enm006SpriteAlt` view so the address is
+// built as base+0x100 then +0xE8 rather than as one outer-struct access.
+s32 func_ov010_02128e0c(BtlEnm006* data, void* arg1) {
+    MI_CpuSet(data, 0, 0x200);
+    func_ov003_020c3efc(data, arg1);
+    func_ov003_020c4520(data);
+    func_ov003_020c4b5c(data);
+    func_ov003_02084694(&data->unk_144, 1);
+    func_ov010_02127460(data, (void*)func_ov010_02127500);
+    data->unk_1CC                             = 1;
+    data->unk_1DC                             = 0;
+    data->unk_1E0                             = 0;
+    data->unk_1E4                             = 0;
+    ((Enm006SpriteAlt*)&data->sprite)->unk_E8 = 0;
+    return 1;
+}
+
+// Fixed-point velocity integration, as in the sibling per-frame workers: ask the trig helper for
+// a direction from (unk_60, unk_64, unk_68), hand the sprite the result, then set a negated angle.
+s32 func_ov010_02125878(BtlEnm006* data) {
+    if (func_ov003_020c3c28(data) != 0) {
+        return 0;
+    }
+    // Not initialised: the helper always writes both out-params, and zeroing them first would
+    // add two `strh` the original does not have.
+    s16 dy;
+    s16 dx;
+    s32 flag = func_ov003_020c37f8(data) != 0;
+    func_ov003_02084348(flag, &dy, &dx, data->unk_60, data->unk_64, data->unk_68);
+    CombatSprite_SetPosition((CombatSprite*)data, dx, dy);
+    func_ov003_02082730((CombatSprite*)data, 0x80000000 - data->unk_64);
+    CombatSprite_Render((CombatSprite*)data);
+    return 1;
 }
