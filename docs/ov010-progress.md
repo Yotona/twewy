@@ -16,6 +16,11 @@
   `objdiff.json`, deletes `build/ov_diff.json` first, and exits non-zero if objdiff did
   not recreate it. A missing unit makes `objdiff-cli` fail *silently*, leaving the
   previous run's JSON in place.
+- **The generated build does not list the header as a dependency of the translation unit.**
+  A header-only edit leaves a stale `.o` in place, `ninja` reports "no work to do", and every
+  measurement silently re-reports the previous numbers. `ov.ps1` now touches the source file
+  so ninja always relinks. If you ever build by hand, do the same — this cost a long
+  misdiagnosis of a struct-offset bug that turned out not to exist.
 - PowerShell's `[System.IO.File]` calls do not follow `cd` in this shell. Use absolute
   paths, or Python, for config edits.
 
@@ -38,22 +43,50 @@ Assets: `Apl_Suy/Grp_BtlEnm006{,.a,.b}.bin`.
 
 ## Status (objdiff)
 
-**18 of 71 functions implemented, 12 exact, average 25.31%; `.rodata` 99.2%, `.data` 100%.**
+**31 of 71 functions implemented, 22 exact, average 46.74%; `.rodata` 99.2%, `.data` 100%.**
+(`.text` is 13.5% and will stay low until the remaining 40 functions land — the section score
+covers the whole declared range, not just what is written.)
 
-The six implemented-but-imperfect functions are all known and triaged — five are reloc
-artifacts and one is a register choice:
+The nine implemented-but-imperfect functions are all known and triaged:
 
 | function | % | mechanism |
 |----------|---|-----------|
 | `func_ov010_02125730`, `021269d0`, `02126d04`, `02128dbc`, `02127178` | 99.7 | reloc artifact — the jump-table `b` entries carry absolute addresses on the original side and section-relative ones on ours; identical once branch targets are normalised |
 | `func_ov010_02126420` | 98.6 | reg-colour — the zero goes to `r0` in the original, a fresh `r1` in ours |
+| `func_ov010_02128434`, `0212636c`, `021263c4`, `021282b8` | 87.5–90.2 | reg-colour, four instances of one shape (below) |
+| `func_ov010_02126c38`, `021256d0` | 77.6–86.3 | branch-vs-predicate on the task-pool fallback |
 
 **Jump-table task handlers cost ~0.25% each, systematically.** Four in a row landed in that
 bucket, so expect it for any future `addls pc, pc, rX, lsl #2` handler in this codebase.
 
+**The task-spawn fallback wants a branch, not a predicate.** `func_ov010_02126c38` and
+`func_ov010_021256d0` both do `pool = lookup(...); if (pool == NULL) { pool = global; if (pool
+!= NULL) { pool += 0x8C + 0x8000; } }`. The original emits `ldreq`/`beq` — a real branch over
+the offset arithmetic — and MWCC if-converts ours into `cmp / addne / addne`. No C spelling
+found that produces the branch; the `if/else` with an empty then-arm made it worse, not
+better. Left as-is.
+
+**Four functions share one unfixed reg-colour difference.** They all open with
+
+```c
+if (data->sprite.unk_C0 == 0) {
+    data->sprite.unk_C0++;
+    data->unk_1E4 = 0;
+    data->unk_1E0 = 0;
+    data->unk_1DC = 0;
+}
+```
+
+and the original computes the increment into a *fresh* register and reuses the register the
+loaded halfword was in for the constant zero (`add r2, r1, #1 / mov r1, #0 / strh r2, ...`),
+whereas MWCC does the increment in place and puts the zero in `r0`. Naming the loaded value as
+a local, hoisting the zero into its own local, and introducing an `Enm006SpriteBlock*` local
+were each tried and each left the codegen byte-identical (or 1 point worse). The semantics are
+right; only the register choice differs.
+
 | Section | Bytes | Status |
 |---------|-------|--------|
-| `.text` | 14,664 | 0 / 71 functions implemented |
+| `.text` | 14,664 | 31 / 71 functions implemented, 22 exact |
 | `.rodata` | 772 | 99.2% |
 | `.data` | 224 | 100% |
 
@@ -127,16 +160,38 @@ Beyond `docs/decomp-tricks.md` and the sibling overlays:
   `extern`s were redundant.
 - **Dense vs sparse switch.** Four stage handlers use `cmp r3, #3 / addls pc, pc, r3, lsl #2`;
   `Swlo` uses a `cmp/beq` chain because it has no case 2. Matches the ov015 rule.
+- **Watch for constant folding that changes the value.** `func_ov010_02127500` stores
+  `data + 0xF6 + 0x100`. Written as one expression, MWCC reassociates it to
+  `(data + 0x100) + 0x100` — 0xA too high, a real behaviour bug, 98% and no warning. The
+  original keeps the two steps, so the source has to too: hoist the `+ 0xF6` into its own
+  local *above* the `strh`, and both the two-step arithmetic and the register allocation
+  (base in `r1`, loaded value in `r0` — the opposite of the sibling functions) fall out.
+  Whenever an expected value *and* the register choice are both wrong, suspect folding before
+  you suspect the struct.
+- **An outer `else` can be load-bearing for the literal pool.** `func_ov010_02125938` picks one
+  of three callbacks. Written `if (f() == 0) { A } else if (rand) { B } else { C }` it scored
+  65.6% and emitted the literals in the wrong order. Restructured to
+  `if (f() != 0) { if (rand) { B } else { C } } else { A }` — same semantics, `A` moves last,
+  the `f()==0` branch jumps forward past both random arms, and the pool order matches. 100%.
+- **Struct size vs struct extent.** `Enm006SpriteBlock` looked like 0xC6 bytes but has to be
+  0xC8: MWCC rounds the sub-struct up to its 4-byte alignment, and the outer struct then has
+  two padding bytes *before* the next `void*`, which is 4-aligned and so eats two more. Add
+  the trailing pad explicitly (`padC6[0xC8 - 0xC6]`) so the intent is visible even though it
+  does not change the generated size.
 
 ## Next steps
 
-1. Work the 56-92 byte band: `0212688c`, `02128ac8`, `02128434`, `02128b00`, `02125998`,
-   `02127500`, `02128c6c`, `0212636c`, `021263c4`, `02126830`, `02126c38`, `021282b8`,
-   `02128a6c`.
-2. The per-stage workers (`02126d54`, `02126e58`, `02126fdc`, `021271c0`, `021272e0`,
-   `02125780`, `02125778`, `02125878`, `02126a20`, `02126a94`, `02128e0c`, `02128e80`) are
-   in that band and will fill in the `BtlEnm006` layout.
-3. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
+1. The per-stage workers are the next real block: `02126d54`, `02126e58`, `02126fdc`,
+   `021271c0`, `021272e0`, `02125780`, `02125778`, `02125878`, `02126a20`, `02126a94`,
+   `02128e0c`, `02128e80`. They will fill in the rest of the `BtlEnm006` layout.
+2. `02126d54`, `02126e58` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a
+   `s32[8]` at `+0x80` of a **0xA0-byte** task data — that is a *different* struct from
+   `BtlEnm006` (which is 0x1FC and has a `u16` at 0x80). It needs its own type; the offsets
+   seen so far are `unk_00` (the `BtlEnm006*`), `unk_04` (a CombatSprite), `unk_68`/`unk_6C`
+   (copied position), `unk_74` (an accumulator clamped to 0x4000), `unk_7C`/`unk_7E` (s16
+   angles), and `unk_80[8]`.
+3. Then the mid-size remainder, and leave the three >1 KB functions (`02127cc0`, `02125de4`,
+   `02127764`) for last.
 
 Triage the residue with `build/scratch/triage.py` as it grows — see `decomp-tricks` §8.9 for
 why that matters.
