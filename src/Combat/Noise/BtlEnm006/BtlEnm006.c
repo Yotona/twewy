@@ -1129,10 +1129,14 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
         edge.x    = o2a - o1a;
         edge.y    = o2b - o1b;
         edge.z    = 0;
-        if (Vec_DotProduct(&toOwner, &edge) < 0) {
-            data->unk_1F5 &= ~1;
-        } else {
+        // The load stays ahead of the branch and feeds both arms, and the "faces left" arm is
+        // if-converted (`biclt`/`strltb`) while the other is a *branch* to a block placed just
+        // after it. Writing the test as `>= 0` with the clear-bit as the `else` is what gets
+        // MWCC to emit a `blt` past the set-bit block instead of predicating both arms.
+        if (Vec_DotProduct(&toOwner, &edge) >= 0) {
             data->unk_1F5 = (data->unk_1F5 & ~1) | 1;
+        } else {
+            data->unk_1F5 &= ~1;
         }
     }
 
