@@ -30,7 +30,7 @@ extern void func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
 extern s32  func_ov010_02126e58(Enm006Swirl*);
 extern s32  func_ov010_02126fdc(Enm006Swirl*);
 extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
-extern s32  func_ov010_021272e0(void*);
+extern s32  func_ov010_021272e0(Enm006Swlo*);
 extern s32  func_ov010_02128e80(void*);
 
 // ov003 helpers.
@@ -439,7 +439,7 @@ s32 func_ov010_02127178(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 0:
             return func_ov010_021271c0(data, args);
         case 1:
-            return func_ov010_021272e0(data);
+            return func_ov010_021272e0((Enm006Swlo*)data);
         case 3:
             return func_ov010_02127458();
     }
@@ -1285,4 +1285,57 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
     data->unk_18                = (RNG_Next(9) - 4) << 12;
     data->unk_1C                = (RNG_Next(9) - 4) << 12;
     return 1;
+}
+
+// The Swlo per-frame body. The angle `unk_2C` climbs by 0x600 a frame and saturates at 0xC000;
+// the frame it saturates on is the one that runs the "wrap" effect, and the return value is 1 on
+// every frame before that. `unk_00` is the mode flag, tested twice: once to pick the record that
+// takes the position, and again to pick which of the two wrap effects runs.
+//
+// Two things here are load-bearing for the shape of the code. The position stores go through
+// `data->unk_08` / `data->unk_0C` directly rather than through the `body` local, because the
+// original re-derives the pointer for each of the three stores; with `body` used instead, the two
+// mode arms come out identical from the `unk_28` store on and MWCC tail-merges them, which drops
+// five instructions. And the `unk_30` store is a *shared* statement after the branch, not
+// duplicated in each arm: that is what leaves `body` and `unk_1C` live across the `b`.
+s32 func_ov010_021272e0(Enm006Swlo* data) {
+    data->unk_2C = data->unk_2C + 0x600;
+    s32 result   = 1;
+    if (data->unk_2C >= 0xC000) {
+        data->unk_2C = 0xC000;
+        result       = 0;
+    }
+    s32 x;
+    s32 y;
+    func_ov003_020cbcb4(&x, &y, data->unk_2C, 0x20000, 0x400);
+    if (*(s32*)((u8*)data->unk_04 + 0x24) == 0) {
+        x = -x;
+    }
+    BtlEnm006* body;
+    if (data->unk_00 == NULL) {
+        body                              = (BtlEnm006*)data->unk_08;
+        *(s32*)((u8*)data->unk_08 + 0x28) = x + data->unk_10 + data->unk_18;
+        *(s32*)((u8*)data->unk_08 + 0x2C) = y + data->unk_14;
+    } else {
+        body                 = data->unk_0C;
+        data->unk_0C->unk_28 = x + data->unk_10 + data->unk_18;
+        data->unk_0C->unk_2C = y + data->unk_14;
+    }
+    body->unk_30 = data->unk_1C - 0x8000;
+    if (result == 0) {
+        BtlEnm006* self;
+        if (data->unk_00 == NULL) {
+            self                      = (BtlEnm006*)data->unk_08;
+            *(u16*)((u8*)self + 0x10) = 0;
+            self->unk_40              = self->unk_24 == 0 ? 0x1800 : -0x1800;
+            self->unk_38              = -0x5000;
+            func_ov003_02082f1c(self, 2);
+        } else {
+            self = data->unk_0C;
+            self->sprite.unk_8C |= 0x1000;
+            func_ov003_020c4fc8(self);
+        }
+        self->unk_54 &= ~0x10000000;
+    }
+    return result;
 }
