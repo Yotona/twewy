@@ -373,9 +373,12 @@ s32 func_ov013_02125d24(BtlEnm015* arg0) {
         func_ov003_020c4668(arg0);
     }
     if (data_ov003_020e71b8->unk3D874 == 2 && func_ov003_020c3c28() == 0 && arg0->unk_084.animTableIndex == 0) {
-        u16 diff = SpriteMgr_IsFrameFinished(&arg0->unk_084.sprite)
-                       ? arg0->unk_084.sprite.currentFrame - arg0->unk_084.sprite.loopFrame
-                       : arg0->unk_084.sprite.currentFrame - arg0->unk_084.sprite.loopFrame + 1;
+        u16 diff;
+        if (SpriteMgr_IsFrameFinished(&arg0->unk_084.sprite)) {
+            diff = arg0->unk_084.sprite.currentFrame - arg0->unk_084.sprite.loopFrame + 1;
+        } else {
+            diff = arg0->unk_084.sprite.currentFrame - arg0->unk_084.sprite.loopFrame;
+        }
         if (diff == 4) {
             func_ov003_020c4cc4(arg0, 0x223);
         }
