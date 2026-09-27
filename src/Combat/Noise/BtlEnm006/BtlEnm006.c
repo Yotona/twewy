@@ -42,6 +42,17 @@ extern void func_ov003_020c48fc(void*);
 extern void func_ov003_020c492c(void*);
 extern s32  func_ov003_020c703c(void*);
 extern void func_ov003_020c427c(void*);
+extern void func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+extern s32  func_ov003_020cb3c4(s32, s32);
+extern s32  func_ov003_020c5bfc(void*);
+extern s32  func_ov003_020c62c4(void*, s32);
+extern s32  func_ov003_020c65cc(void*, s32);
+extern s32  func_ov003_020c72b4(void*, s32, s32);
+
+// Per-instance callbacks passed to the init helpers.
+extern void func_ov010_021259e8(void);
+extern void func_ov010_02127550(void);
+extern void func_ov010_02127764(void);
 
 extern char data_ov010_0212932c[28];
 extern char data_ov010_02129348[28];
@@ -429,4 +440,89 @@ zero:
     return 0;
 one:
     return 1;
+}
+
+// func_ov010_0212688c and func_ov010_02128ac8 are byte-identical: a six-argument call where
+// the two stack arguments are evaluated first.
+void func_ov010_0212688c(BtlEnm006* data) {
+    func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
+}
+
+void func_ov010_02128ac8(BtlEnm006* data) {
+    func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
+}
+
+s32 func_ov010_02128b00(void) {
+    s32 lo = func_ov003_020cb3c4(0, 5);
+    s32 hi = func_ov003_020cb3c4(0, 0x3C);
+    s32 t  = ((hi - lo) << 11) + 0x1000;
+    return ((u32)FX_Divide(t * 0x64, t + 0x3000) << 4) >> 16;
+}
+
+// A family of five share this shape: bump sprite.unk_C0 if it is still zero, do a
+// one-time setup, then bail out unless a gate returns zero -- in which case a per-instance
+// callback is handed to one of the two init helpers. The gate and the callback differ.
+void func_ov010_02125998(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->sprite.unk_88 = data->sprite.twin->sprite.unk_88;
+    }
+    if (func_ov003_020c5bfc(data) != 0) {
+        return;
+    }
+    func_ov010_02125910(data, (void*)func_ov010_021259e8);
+}
+
+void func_ov010_02127500(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        // The two-step data+0xF6 then +0x100 is load-bearing: folded to a single add, MWCC
+        // reassociates it to (data+0x100)+0x100 and the stored pointer is 0xA too high.
+        u8* p = (u8*)data + 0xF6;
+        data->sprite.unk_C0++;
+        data->sprite.unk_88 = p + 0x100;
+    }
+    if (func_ov003_020c5bfc(data) != 0) {
+        return;
+    }
+    func_ov010_02127460(data, (void*)func_ov010_02127764);
+}
+
+void func_ov010_0212636c(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+    }
+    if (func_ov003_020c62c4(data, 6) != 0) {
+        return;
+    }
+    func_ov010_02125910(data, (void*)func_ov010_021259e8);
+}
+
+void func_ov010_021263c4(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+    }
+    if (func_ov003_020c72b4(data, 0, 9) != 0) {
+        return;
+    }
+    func_ov010_02125910(data, (void*)func_ov010_021259e8);
+}
+
+void func_ov010_021282b8(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+        data->unk_38  = 0;
+    }
+    if (func_ov003_020c65cc(data, 6) != 0) {
+        return;
+    }
+    func_ov010_02127460(data, (void*)func_ov010_02127550);
 }

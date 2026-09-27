@@ -38,7 +38,18 @@ Assets: `Apl_Suy/Grp_BtlEnm006{,.a,.b}.bin`.
 
 ## Status (objdiff)
 
-**0 of 71 functions exact** — no functions written yet. **`.rodata` 99.2%, `.data` 100%.**
+**18 of 71 functions implemented, 12 exact, average 25.31%; `.rodata` 99.2%, `.data` 100%.**
+
+The six implemented-but-imperfect functions are all known and triaged — five are reloc
+artifacts and one is a register choice:
+
+| function | % | mechanism |
+|----------|---|-----------|
+| `func_ov010_02125730`, `021269d0`, `02126d04`, `02128dbc`, `02127178` | 99.7 | reloc artifact — the jump-table `b` entries carry absolute addresses on the original side and section-relative ones on ours; identical once branch targets are normalised |
+| `func_ov010_02126420` | 98.6 | reg-colour — the zero goes to `r0` in the original, a fresh `r1` in ours |
+
+**Jump-table task handlers cost ~0.25% each, systematically.** Four in a row landed in that
+bucket, so expect it for any future `addls pc, pc, rX, lsl #2` handler in this codebase.
 
 | Section | Bytes | Status |
 |---------|-------|--------|
@@ -90,14 +101,49 @@ three use sites (including the `data_ov010_02129380` table), which is uglier tha
 ~6 bytes it recovers. **Fixing all three properly means correcting `symbols.txt`** — the
 same ground-truth decision flagged for ov015, and still the user's call.
 
+## Codegen recipes confirmed on ov010
+
+Beyond `docs/decomp-tricks.md` and the sibling overlays:
+
+- **A conditional-pointer "callback", not a task handler.** A body shaped
+  `push {r3, lr} / bl <helper> / mov r0, #1 / pop {r3, pc}` passes its incoming `r0`
+  straight to the callee. Typing it `(TaskPool*, Task*, void* args, s32 stage)` makes
+  MWCC emit a `mov r0, r2` the original does not have — all six of these scored exactly
+  75% until re-typed as single-argument. None of them appears in a `TaskHandle`, which is
+  the tell.
+- **A pointer local to a sub-struct is the wrong tool; field access is the right one.**
+  `func_ov010_02125910` needs `data + 0x100` computed *after* a call. A
+  `u16* p = (u8*)data + 0x100;` local gets hoisted above the call and costs an extra
+  callee-saved register (72.5% vs 100%). Field access through a struct reproduces it. The
+  field offsets must be relative to the sub-struct (`0xC0`, not `0x1C0`) because that
+  base+0x100-then-+0xC0 fold is what the original codegen depends on.
+- **Shared tails need labels on *every* arm, not just the shared one.** In
+  `func_ov010_02128c3c` all three tests branch to one `return 0` and `return 1` is its own
+  forward branch. Labelling only the zero arm got 89.8%; the rest was MWCC predicating the
+  `return 1` (`movlt r0, #1; bxlt lr`). Both arms needed a `goto`.
+- **objdiff renders the original side with real symbol names for helpers.** That is how
+  `func_ov003_02082b0c` / `02082cc4` were identified as `CombatSprite_Update` /
+  `CombatSprite_Release` — both already declared in `Combat/Core/CombatSprite.h`, so the
+  `extern`s were redundant.
+- **Dense vs sparse switch.** Four stage handlers use `cmp r3, #3 / addls pc, pc, r3, lsl #2`;
+  `Swlo` uses a `cmp/beq` chain because it has no case 2. Matches the ov015 rule.
+
 ## Next steps
 
-1. Derive the `BtlEnm006` struct layout from the disassembly (the header currently only
-   has `Enm006Variant` and `Enm006Spawn`).
-2. Implement the 9 tiny + 6 small functions first; they establish the accessor patterns
-   and the struct offsets everything else depends on.
-3. Work up through the 29 medium functions.
-4. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
+1. Work the 56-92 byte band: `0212688c`, `02128ac8`, `02128434`, `02128b00`, `02125998`,
+   `02127500`, `02128c6c`, `0212636c`, `021263c4`, `02126830`, `02126c38`, `021282b8`,
+   `02128a6c`.
+2. The per-stage workers (`02126d54`, `02126e58`, `02126fdc`, `021271c0`, `021272e0`,
+   `02125780`, `02125778`, `02125878`, `02126a20`, `02126a94`, `02128e0c`, `02128e80`) are
+   in that band and will fill in the `BtlEnm006` layout.
+3. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
 
 Triage the residue with `build/scratch/triage.py` as it grows — see `decomp-tricks` §8.9 for
 why that matters.
+
+### Tooling
+
+- `build/scratch/asm.py <func>...` pulls named functions out of the reference disassembly.
+  Read its output carefully: `Select-Object -First N` truncated a case body and led to a
+  wrong dispatch target that the diff caught immediately.
+
