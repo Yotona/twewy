@@ -1406,10 +1406,11 @@ void func_ov015_02127ac4(BtlEnm026* data) {
     if ((u32)(data_ov015_02128500.unk14 - 1) <= 1) {
         CombatSprite_SetPaletteMode(&twin->unk_084, 2);
     }
-    if (data->unk_1C4 == (void (*)(BtlEnm026*))data->unk_1C8) {
-        if (RNG_Next(data->unk_19E) == 0) {
-            func_ov015_02125a64(data, (s32)func_ov015_02125f48);
-        }
+    if (data->unk_1C4 != (void (*)(BtlEnm026*))data->unk_1C8) {
+        return;
+    }
+    if (RNG_Next(data->unk_19E) == 0) {
+        func_ov015_02125a64(data, (s32)func_ov015_02125f48);
     }
     if (data->unk_1D4 != 1 || data_ov015_02128500.unk14 != 3) {
         return;
