@@ -91,7 +91,9 @@ struct BtlEnm006 {
     /* 0xB4 */ s32                unk_B4;
     u8                            padB8[0xC0 - 0xB8];
     /* 0xC0 */ s32                unk_C0;
-    u8                            padC4[0xD4 - 0xC4];
+    u8                            padC4[0xC8 - 0xC4];
+    /* 0xC8 */ s16                unk_C8;
+    u8                            padCA[0xD4 - 0xCA];
     /* 0xD4 */ s32                unk_D4;
     /* 0xD8 */ s32                unk_D8;
     u8                            padDC[0x100 - 0xDC];

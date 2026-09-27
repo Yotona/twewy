@@ -23,15 +23,15 @@ extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 
 // Per-stage workers dispatched by the task entry points above. Declared void* for the
 // task data because the owning structs are not mapped yet.
-extern s32 func_ov010_02125780(void*, void*);
-extern s32 func_ov010_02126a20(void*, void*);
-extern s32 func_ov010_02126a94(void*);
-extern s32 func_ov010_02126d54(void*, void*);
-extern s32 func_ov010_02126e58(void*);
-extern s32 func_ov010_02126fdc(void*);
-extern s32 func_ov010_021271c0(void*, void*);
-extern s32 func_ov010_021272e0(void*);
-extern s32 func_ov010_02128e80(void*);
+extern s32  func_ov010_02125780(void*, void*);
+extern void func_ov010_02126a20(BtlEnm006*, void*);
+extern s32  func_ov010_02126a94(BtlEnm006*);
+extern s32  func_ov010_02126d54(void*, void*);
+extern s32  func_ov010_02126e58(void*);
+extern s32  func_ov010_02126fdc(void*);
+extern s32  func_ov010_021271c0(void*, void*);
+extern s32  func_ov010_021272e0(void*);
+extern s32  func_ov010_02128e80(void*);
 
 // ov003 helpers.
 extern void                  func_ov003_020c48b0(void*);
@@ -98,6 +98,15 @@ extern void func_ov010_02125b28(BtlEnm006*);
 extern void func_ov010_02125938(BtlEnm006*);
 extern s32  func_ov010_021265ac(BtlEnm006*, s32);
 extern s32  func_ov003_020cb7a4(s32);
+extern void func_ov003_020c44ac(BtlEnm006*);
+extern void func_ov003_020c4b1c(BtlEnm006*);
+extern void func_ov003_020c4628(BtlEnm006*);
+extern s32  func_ov003_020c3bf0(void);
+extern s32  func_ov003_02082f2c(BtlEnm006*);
+extern s32  func_ov010_02126420(void*);
+extern void func_ov010_0212636c(BtlEnm006*);
+extern void func_ov010_021263c4(BtlEnm006*);
+extern void func_ov010_02125998(BtlEnm006*);
 extern void func_ov010_02127550(BtlEnm006*);
 extern void func_ov010_02125de4(void);
 
@@ -394,7 +403,8 @@ s32 func_ov010_021269d0(TaskPool* pool, Task* task, void* args, s32 stage) {
     void* data = task->data;
     switch (stage) {
         case 0:
-            return func_ov010_02126a20(data, args);
+            func_ov010_02126a20(data, args);
+            return 1;
         case 1:
             return func_ov010_02126a94(data);
         case 2:
@@ -1053,4 +1063,72 @@ void func_ov010_021259e8(BtlEnm006* data) {
         }
     }
     data->sprite.unk_C0++;
+}
+
+// The DeadEff stage-0 constructor. The whole 0x1FC task data is cleared, not just the sprite
+// block, and the engine bit is set *before* the init callback runs.
+void func_ov010_02126a20(BtlEnm006* data, void* arg1) {
+    MI_CpuSet(data, 0, 0x1FC);
+    func_ov003_020c3efc(data, arg1);
+    func_ov003_020c44ac(data);
+    func_ov003_020c4b1c(data);
+    data->unk_54 |= 0x80000000;
+    func_ov010_02125910(data, (void*)func_ov010_02125998);
+    data->unk_1CC                             = 1;
+    data->unk_1DC                             = 0;
+    data->unk_1E0                             = 0;
+    data->unk_1E4                             = 0;
+    ((Enm006SpriteAlt*)&data->sprite)->unk_E8 = 0;
+}
+
+// The DeadEff per-frame body: a 7-way stage switch, then the shared motion/tick tail. Cases 1 and
+// 2 share a block, and 0/4/5 fall through to the tail untouched. Note the polarity of the two
+// flag tests -- the *callback* runs when the bit is clear, because the original branches on the
+// flags left by the `orrs`/`tst`, not on the value it just wrote.
+s32 func_ov010_02126a94(BtlEnm006* data) {
+    if (data->unk_1C8 != (void*)func_ov010_02125998) {
+        if (func_ov003_020c3bf0() != 0) {
+            return 1;
+        }
+    }
+    s32 flag = data->unk_1C8 == (void*)func_ov010_02125de4;
+    switch (func_ov003_02082f2c(data)) {
+        case 1:
+        case 2:
+            if (flag == 0) {
+                func_ov003_02084694((u8*)data + 0x144, 0);
+                func_ov010_02125910(data, (void*)func_ov010_0212636c);
+            }
+            break;
+        case 3:
+            if (data->sprite.unk_8C & 0x10) {
+                data->sprite.unk_8C |= 0x20;
+            } else {
+                func_ov010_02125910(data, (void*)func_ov010_02126420);
+            }
+            break;
+        case 6:
+            if (data->unk_54 & 1) {
+                break;
+            }
+            data->unk_54 |= 1;
+            func_ov010_02125910(data, (void*)func_ov010_021263c4);
+            break;
+    }
+    data->unk_28 += data->unk_1DC;
+    data->unk_2C += data->unk_1E0;
+    data->unk_30 += data->unk_1E4;
+    if (data->unk_1C8 != NULL) {
+        ((void (*)(void))data->unk_1C8)();
+    }
+    u8* p = (u8*)data->sprite.unk_88;
+    if (*(u16*)(p + 2) != 0) {
+        if ((data->sprite.unk_8C & 1) || data->unk_C8 == 0xD) {
+            func_ov010_02126934(data, 0);
+            *(u16*)(p + 2) = 0;
+        }
+    }
+    data->unk_54 |= 0x80000000;
+    func_ov003_020c4628(data);
+    return data->unk_1CC;
 }
