@@ -44,7 +44,11 @@ struct BtlEnm006 {
     /* 0x30 */ s32                unk_30; // position.z
     u8                            pad34[0x38 - 0x34];
     /* 0x38 */ s32                unk_38;
-    u8                            pad3C[0x80 - 0x3C];
+    u8                            pad3C[0x40 - 0x3C];
+    /* 0x40 */ s32                unk_40; // 4.12 fixed point
+    u8                            pad44[0x54 - 0x44];
+    /* 0x54 */ s32                unk_54; // engine bits
+    u8                            pad58[0x80 - 0x58];
     /* 0x80 */ u16                unk_80; // asset/variant index
     /* 0x82 */ u16                pad82;
     /* 0x84 */ u16                unk_84; // engine bits 0..1
@@ -60,7 +64,9 @@ struct BtlEnm006 {
     /* 0x1DC */ s32               unk_1DC;
     /* 0x1E0 */ s32               unk_1E0;
     /* 0x1E4 */ s32               unk_1E4;
-    u8                            pad1E8[0x1FC - 0x1E8];
+    u8                            pad1E8[0x1F5 - 0x1E8];
+    /* 0x1F5 */ u8                unk_1F5; // bit 0 mirrors the sprite
+    u8                            pad1F6[0x1FC - 0x1F6];
 };
 
 /// Arguments handed to the `Tsk_BtlEnm006_*` task constructors.

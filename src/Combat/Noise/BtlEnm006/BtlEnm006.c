@@ -646,3 +646,44 @@ void func_ov010_021256d0(void* arg0, void* arg1) {
     }
     EasyTask_CreateTask(pool, &Tsk_BtlEnm006_DeadEff, 0, 0, 0, &self);
 }
+
+// Two more members of the init family. The `unk_1F5` bit-0 test has to be spelled as a shift
+// pair, not `& 1`: `if (x & 1)` gives `tst r0, #1 / ldrne / bicne`, while the original wants
+// the bit moved into a value and *then* predicated on it being zero
+// (`lsl #30 / lsr #31 / ldreq / biceq / streq`). The `(u32)` cast matters -- the compiler is
+// built with `-char signed`, so without it the final shift is `asr` rather than `lsr`.
+void func_ov010_02128314(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+        data->unk_38  = 0;
+        // 4.12 fixed point: (x * 10.0) rounded to nearest, via a 64-bit intermediate.
+        data->unk_40 = (s32)((((s64)data->unk_40 * 0x2800) + 0x800) >> 12);
+        if (((u32)data->unk_1F5 << 30) >> 31 == 0) {
+            data->unk_54 &= ~0x40000000;
+        }
+        data->unk_54 &= ~0x4000;
+    }
+    if (func_ov003_020c65cc(data, 9) != 0) {
+        return;
+    }
+    func_ov010_02127460(data, (void*)func_ov010_02127550);
+}
+
+void func_ov010_021283c0(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+        if (((u32)data->unk_1F5 << 30) >> 31 == 0) {
+            data->unk_54 &= ~0x40000000;
+        }
+    }
+    if (func_ov003_020c72b4(data, 0, 9) != 0) {
+        return;
+    }
+    func_ov010_02127460(data, (void*)func_ov010_02127550);
+}
