@@ -40,7 +40,7 @@ extern void func_ov003_020c48fc(void*);
 extern void func_ov003_020c492c(void*);
 extern s32  func_ov003_020c703c(void*);
 extern void func_ov003_020c427c(void*);
-extern void func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+extern s32  func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
 // Bearing from (x0, y0) to (x1, y1): FX_Atan2Idx(y1 - y0, x1 - x0).
 extern s32                   func_ov003_020cba14(s32, s32, s32, s32);
 extern void                  func_ov003_020cbcb4(s32*, s32*, s16, s32, s32);
@@ -67,7 +67,7 @@ extern s32                   func_ov003_020cb910(void*, void*, s32, s32, s32, s3
 extern s32                   func_ov003_020cb498(s32, s32, void*, void*);
 extern s32                   func_ov003_020843b0(s32, s32);
 extern void                  Mini108_VBlank(CombatSprite*, u16, s32);
-extern s32                   func_ov010_02128820(BtlEnm006*);
+extern void                  func_ov010_02128820(BtlEnm006*, s32);
 extern void                  CombatSprite_SetPaletteSource(CombatSprite*, s32);
 extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
@@ -503,13 +503,14 @@ one:
 }
 
 // func_ov010_0212688c and func_ov010_02128ac8 are byte-identical: a six-argument call where
-// the two stack arguments are evaluated first.
-void func_ov010_0212688c(BtlEnm006* data) {
-    func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
+// the two stack arguments are evaluated first. Both let `func_ov003_020cba54`'s result fall
+// through in r0 -- that is what `func_ov010_02128820` compares against 0x2800.
+s32 func_ov010_0212688c(BtlEnm006* data) {
+    return func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
 }
 
-void func_ov010_02128ac8(BtlEnm006* data) {
-    func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
+s32 func_ov010_02128ac8(BtlEnm006* data) {
+    return func_ov003_020cba54(data->unk_28, data->unk_2C, data->unk_30, data->unk_1D0, data->unk_1D4, data->unk_1D8);
 }
 
 s32 func_ov010_02128b00(void) {
@@ -854,7 +855,7 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
     if (arg1 == 0) {
         ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
     }
-    func_ov010_02128820(data);
+    func_ov010_02128820(data, arg1);
     if ((data->unk_9A - 1) % 4 == 0) {
         if (data->unk_8C == 1) {
             // The second parameter of func_ov003_02087f00 is declared as a callback pointer, but
@@ -1080,6 +1081,87 @@ s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outW
         *outWord = 0;
     }
     return v;
+}
+
+// The per-frame body. Reads the two neighbouring sample points around the owner's own index,
+// turns them into a target triple, mirrors the sprite from the sign of the dot product between
+// the edge and the offset to the owner, then advances/clears the two timers at 0x1F0/0x1F2.
+//
+// The four sample-point outputs are the *first* thing the two `func_ov010_0212847c` calls fill,
+// and each of them is re-loaded from the frame for every use afterwards -- `unk_1EC` is re-read
+// for the second call's index, `o1a`/`o1b` are re-read for the two stores and the two call
+// arguments. Caching any of them makes MWCC park them in callee-saved registers and the loads
+// disappear.
+void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
+    // h is the halfword the sector lookup writes; w is the word beside it, which `sp+0` holds the
+    // address of for the outgoing fifth argument.
+    s16 h = 0;
+    s32 w = 0;
+    s32 o2b;
+    s32 o2a;
+    s32 o1b;
+    s32 o1a;
+
+    if (arg1 == 0) {
+        data->unk_1EC                              = func_ov010_02128624(data);
+        ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
+    }
+    if (((Enm006SpriteAlt2*)&data->sprite)->unk_F0 != 0) {
+        goto tail;
+    }
+
+    func_ov010_0212847c(&o1a, &o1b, data, data->unk_1EC);
+    func_ov010_0212847c(&o2a, &o2b, data, data->unk_1EC + 1);
+
+    if (arg1 == 0) {
+        // The dot product of the edge (o1 -> o2) with the offset from o1 to the owner decides
+        // which way round the sprite faces. The z components are explicit zeros in the original.
+        Vec edge;
+        Vec toOwner;
+        edge.x    = o2a - o1a;
+        edge.y    = o2b - o1b;
+        edge.z    = 0;
+        toOwner.x = data->unk_28 - o1a;
+        toOwner.y = data->unk_2C - o1b;
+        toOwner.z = 0;
+        if (Vec_DotProduct(&edge, &toOwner) < 0) {
+            data->unk_1F5 &= 0xFE;
+        } else {
+            data->unk_1F5 |= 1;
+        }
+    }
+
+    data->unk_1D0 = o1a;
+    data->unk_1D4 = o1b;
+    data->unk_1D8 = 0;
+    func_ov010_021286e8(data, o1a, o1b, &h, &w);
+    Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), h, 0);
+    func_ov003_020c4ab4(data, w);
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F2 = func_ov010_02128a6c(data, (void*)0x2800);
+
+    // The bit test on the byte is a shift pair, not `& 1`.
+    if (((u32)data->unk_1F5 << 31) >> 31 == 1) {
+        data->unk_1EC -= 1;
+    } else {
+        data->unk_1EC += 1;
+    }
+    data->unk_1EC = (data->unk_1EC + 10) % 10;
+
+tail:
+    // Both arms return from here, so the "bump" arm has to be a forward branch to a block placed
+    // last, and the clearing arm is the fall-through of the second test.
+    if (((Enm006SpriteAlt2*)&data->sprite)->unk_F0 < ((Enm006SpriteAlt2*)&data->sprite)->unk_F2) {
+        if (func_ov010_02128ac8(data) >= 0x2800) {
+            goto bump;
+        }
+    }
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
+    data->unk_1E4                              = 0;
+    data->unk_1E0                              = 0;
+    data->unk_1DC                              = 0;
+    return;
+bump:
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 += 1;
 }
 
 // A near-twin of func_ov010_021259e8. On the first frame the sprite's two velocity components are

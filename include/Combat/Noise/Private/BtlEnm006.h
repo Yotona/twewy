@@ -50,11 +50,14 @@ typedef struct Enm006SpriteAlt {
     /* 0xE8 */ u16 unk_E8;
 } Enm006SpriteAlt;
 
-/// A third overlapping view, for the s16 at 0x1F0. It gets its own type rather than a second
-/// field on `Enm006SpriteAlt`: with two fields MWCC places the second one 0x38 bytes early.
+/// A third overlapping view, for the s16 at 0x1F0 and the one at 0x1F2. It gets its own type
+/// rather than a second field on `Enm006SpriteAlt`: with two fields MWCC places the second one
+/// 0x38 bytes early. The pair here is *contiguous*, unlike that one, and `func_ov010_02128820`
+/// reads both through a single `base+0x100` pointer, so they have to share a type.
 typedef struct Enm006SpriteAlt2 {
     u8             pad00[0xF0];
     /* 0xF0 */ s16 unk_F0;
+    /* 0xF2 */ s16 unk_F2;
 } Enm006SpriteAlt2;
 
 /// A fourth overlapping view, for the u16 at 0x1F6: `func_ov010_02128e80` reaches it as
