@@ -41,28 +41,69 @@ with no `diff_kind` — test `is_diff = "diff_kind" in entry`, not `"instruction
 
 ## Status (objdiff)
 
-**33 of 40 functions are exact (100%), average 99.67%; `.text` section 99.64%.**
-The `.text` delink covers the full range, so any edit affects all 40 functions at once.
+**37 of 40 functions are exact (100%), average 99.77%; `.text` 99.65%, `.rodata` 100%,
+`.data` 100%.** The `.text` delink covers the full range, so any edit affects all 40
+functions at once.
 
 | Function | % | Notes |
 |----------|---|-------|
 | `func_ov012_02126c74` | 91.8 | atan2 chase vector; register-colour cascade (see below) |
-| `func_ov012_021256d0` | 98.3 | byte-identical; `.word` literal + branch-dest reloc accounting |
-| `func_ov012_021256c0` | 98.8 | byte-identical; `.word` literal reloc accounting |
-| `func_ov012_021256dc` | 99.0 | byte-identical; `.word` literal reloc accounting |
-| `func_ov012_02125c48` | 99.9 | byte-identical; `.word data_ov012_0212794c` reloc accounting |
-| `func_ov012_02126a1c` | 99.6 | byte-identical; forward intra-TU `bl` shown as `branch_dest` |
-| `func_ov012_02127134` | 99.2 | one `cmp/cmpne` pair; size is 0x248 vs the original's 0x244 |
+| `func_ov012_02127134` | 99.2 | one `beq` slot: ours 0x248 vs the original's 0x244 |
+| `func_ov012_02126a1c` | 99.6 | byte-identical; forward intra-TU `bl` reloc-index accounting |
 
-The first four are objdiff **relocation-index artifacts**: both sides render
-`.word data_ov012_02127894` identically, but the two objects have different
-`R_ARM_ABS32` target symbol *indices*, and this objdiff build reports that as
-`DIFF_ARG_MISMATCH`. Nothing to fix in the source.
+`func_ov012_02126a1c` is byte-identical to the original: both `bl` targets decode
+correctly against `build/usa/build/arm9_ov012.bin` (`EB00002B` → `0x02126ad8`,
+`EB000003` → `0x02126a4c`). objdiff reports `DIFF_ARG_MISMATCH` only because the two
+objects give the same target symbols different `R_ARM_PC24` symbol *indices*. Nothing
+to fix in the source.
+
+## Data-section matching (the big win: +4 functions, `.rodata` 12% → 100%)
+
+`.rodata` and `.data` used to sit at 12% / 82% and were written off as a known
+overlay-wide gap. They are fully fixable, and the fix is the same one-liner that
+`src/Combat/Friend/Shiki/BtlArm_Doll.c` (a `complete` unit) already uses:
+
+- **Every read-only table must be `const`.** The variant records, the
+  `SpriteAnimEntry` tables, the `BinIdentifier`s, the `TaskHandle`s and the `s32`
+  score table all belong in `.rodata`. Without `const` MWCC puts them in `.data`
+  and the section layout collapses. Marking them `const` took `.rodata` from 12%
+  to 94% *and* fixed four functions whose only defect was a literal reloc.
+- **The `char[]` name strings must stay non-const** so they land in `.data`, where
+  the original has them. Adding `const` to them pushes `.data` to 0%.
+- **Give the `char[]` strings their padded sizes explicitly** (`[28]`, `[20]`,
+  `[24]`, ...). MWCC otherwise packs them at their natural length and the
+  inter-object padding bytes differ.
+- **A string literal can be split across two objects.** The original's
+  `Tsk_BtlEnm014_RG` name is a 4-byte `"Tsk_"` object at `0x02127a14` plus a
+  16-byte remainder at `0x02127a18` (`symbols.txt` marks the latter `ambiguous`).
+  Declaring it as two adjacent arrays reproduces both extents and the byte image is
+  identical, because the `TaskHandle` still points at `0x02127a14`. `.data` 86% → 100%.
+
+This should be applied to ov013 and ov015 too — both have the same
+`BinIdentifier` / `SpriteAnimEntry` / name-string shape and the same 12%/82% symptom,
+and it is a prerequisite for ever marking a Noise overlay `complete`.
 
 ## Key codegen recipes discovered (MWCC 2.0 sp1p5, -O4,p)
 
 Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-progress.md`,
 `docs/decomp-tricks.md`):
+
+- **MWCC will not if-convert `A && B` into `ldrne`/`cmpne` here.** In
+  `func_ov012_02127134` the original emits `cmp r0,#0 / ldrne r0,[r5,#0x1d0] /
+  cmpne r0,#1 / beq` while every source spelling we tried emits
+  `cmp r0,#0 / beq / ldr / cmp / beq` — one word longer, which shifts all three
+  `ldr [pc, #imm]` literal offsets by 4 and costs the whole function. Fourteen
+  shapes were tried (`&&`, nested `if`, De Morgan, the call result in a local, the
+  condition in a local, the field in a local, the field through a pointer, bitwise
+  `&`, truthiness, `if(1){}`, a plain `return` body, and two label orders); all give
+  99.22% or worse. The rest of the 580-byte function is byte-identical, so this one
+  slot is the entire remaining gap.
+- **The second `sin`/`cos` table read must be hoisted, not inlined at its use site.**
+  In `func_ov012_02126c74` the original keeps `idx * 2` in `lr` across the magnitude
+  multiply and re-loads the table base from the literal pool afterwards; reading
+  `data_0205e4e0[idx * 2]` inline at the second `Mth_MulFixed` instead makes MWCC
+  schedule both `ldrsh`s together up front (82.9% vs 91.8%). Nine variants tried;
+  hoisting both reads into locals is the best.
 
 - **`if (cond) { A } if (!cond) { B } goto tail;`** produces the original's
   `ands ip, rX, #1 / bne <second> / <first> / cmp ip, #0 / beq <miss> / <second>` shape
@@ -90,7 +131,7 @@ Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-p
   in ov015 — the two overlays scale the same table differently).
 - **Loading the second table entry before computing the magnitude** lets MWCC
   interleave the two `smull`s and match the original's schedule
-  (`func_ov012_02126c74`, 91.8% → jumped from 82.9% to 91.8%).
+  (`func_ov012_02126c74`; superseded by the note above, which gives the full picture).
 - **Two statements beat one expression for scheduling.** `func_ov012_021265a4` needs
   `hp100 = currentHp * 0x64;` then `pct = hp100 / maxHp;` so the `mov r5, #0x14`
   default lands between the `smulbb` and the `bl _s32_div_f`.
@@ -144,11 +185,9 @@ Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-p
   keep their `data_ov012_*` names.
 - Naming the data objects with the exact lowercase spellings from `symbols.txt` removes
   four objdiff reloc mismatches; uppercase hex costs ~1% on each affected function.
-- **`.rodata` (12%) and `.data` (82%) do not match.** MWCC places the non-`const` variant
-  records, `BinIdentifier`s, anim tables and the `u16` index table in `.data`, while the
-  original keeps them in `.rodata`; the intra-section order also differs. This is the
-  same situation as ov013/ov015 and does not affect the code metrics. Fixing it would need
-  `const` on the tables plus a different declaration order.
+- `.rodata` and `.data` now both match at 100% — see the data-section section above for
+  the `const` / padded-size / split-literal recipe. This is the piece ov013 and ov015 are
+  still missing.
 - `ninja sha1` fails on exactly 4 bytes of NDS header metadata
   (`0x6C/0x6D` arm9 overlay-table length, `0x15E/0x15F` overlay-table offset) because
   ov012 is *not* marked `complete` in `delinks.txt` and the ROM still links the delinked
@@ -159,12 +198,32 @@ Beyond the shared ov013/ov015 notes (see `docs/ov013-progress.md`, `docs/ov015-p
 
 ## Remaining work
 
-- `func_ov012_02126c74` (91.8%): the instruction sequence now matches, but MWCC allocates
-  `idx * 2` to `r1` where the original uses `lr`, which cascades into the `|sin|`,
-  `(absin + 0x1000)` and table-base registers and moves the second `ldrsh data_0205e4e0`
-  earlier. Tried and rejected: declaration reordering, inlining the second table load,
-  folding `* 2` into the `idx` assignment, and hoisting the `cos` load. Needs a source
-  form that makes MWCC pick `lr` for the first shift result.
-- `func_ov012_02127134` (99.2%): the original's `cmp / ldrne / cmpne / beq` chain is one
-  instruction shorter than MWCC's `cmp / beq / ldr / cmp / beq`; the `&&` in an `if`/`else`
-  and the `goto` form both produce the longer form.
+Three functions, all register-allocation or if-conversion decisions that resisted every
+source spelling tried. The bytes are verified correct in two of the three cases.
+
+- `func_ov012_02126c74` (91.8%): the instruction *sequence* matches, but MWCC allocates
+  `idx * 2` to `r0` where the original uses `lr` (and puts `sin` in `lr` where the
+  original uses `r0` — an exact swap), and it keeps the table base live instead of
+  re-loading it from the literal pool. Rejected: `idx2` temp, both reads hoisted, both
+  reads inline, products via temporaries, pointer local, and no-`idx2` variants
+  (9 total; 91.8% is the ceiling, everything else 82.9% or 74.7%).
+- `func_ov012_02127134` (99.2%): one 4-byte slot. The original predicates
+  (`cmp / ldrne / cmpne / beq`); MWCC branches over the load
+  (`cmp / beq / ldr / cmp / beq`). Everything else in the 580-byte function is
+  byte-identical. 14 source shapes tried, all 99.2% or worse.
+- `func_ov012_02126a1c` (99.6%): byte-identical; objdiff reloc-index artifact only.
+
+## Applying the `const` recipe to ov013 / ov015
+
+This is the highest-value follow-up and should be done before starting another
+overlay. Both siblings have the same data shape and the same 12% / 82% symptom:
+
+1. `const` every variant record, `SpriteAnimEntry` table, `BinIdentifier`,
+   `TaskHandle` and scalar table in `BtlEnm015.c` / `BtlEnm026.c`.
+2. Leave the `char[]` asset-name and task-name strings non-`const`, and give them
+   their padded sizes (derive each from the gap to the next symbol in `symbols.txt`).
+3. Check whether any name string is split mid-literal in `symbols.txt`; if so, split the
+   array the same way.
+4. Re-measure — expect several functions to go to 100% as a side effect, since the
+   literal-pool relocs get fixed too.
+
