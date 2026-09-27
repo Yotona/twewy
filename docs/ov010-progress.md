@@ -255,6 +255,40 @@ Beyond `docs/decomp-tricks.md` and the sibling overlays:
   and the diff's alignment hid it. When a `s16`/`u16` field's offset is *not* `prev + 2`, say so
   in the declaration.
 
+## Resolved: the `02128b48` blocker
+
+`func_ov003_020cb498` takes **four** register arguments, not six:
+
+```c
+s32 func_ov003_020cb498(s32 sel, s32 want, void* callback, void* arg4);
+```
+
+It walks a list of nodes, and for each node whose field at `+0x7C` equals `want` it calls
+`callback(hitCount, node, arg4)` and increments the count if the callback returned non-zero. It
+returns the count.
+
+So `func_ov010_02128b48`'s 8-byte frame slot is **not** an uninitialised read. It is the
+callback's out-parameter:
+
+```c
+s32 func_ov010_02128b48(void) {
+    s32 hits = func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128c3c, 0);
+    if (hits != 0 && RNG_Next(0x64) >= 0x14) {
+        s32 local[2];
+        local[0] = RNG_Next(hits);
+        func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128c6c, local);
+        return local[1]; // written by 02128c6c via its third argument
+    }
+    return *(s32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898);
+}
+```
+
+`func_ov010_02128c6c(s32 arg0, s32 arg1, void* arg2)` does `*(s32*)((u8*)arg2 + 4) = arg1`, so
+`local[1]` is filled in during the search. The first call passes `arg4 = 0` because
+`02128c3c` ignores it. The lesson generalises: **a frame slot that is written by no
+instruction in the function is probably written by a callee** — check the callback's arity and
+out-params before calling it garbage.
+
 ## Next steps
 
 19 functions remain:
@@ -267,9 +301,8 @@ Beyond `docs/decomp-tricks.md` and the sibling overlays:
    0x1B0 / 0x1B4 plus four more `data_ov010_021292xx` tables. Highest-value single item.
 2. `02128820` (0x2E8 bytes) is the per-frame body — the biggest tractable one. Everything it
    needs is already named.
-3. `02128b48` is blocked on something odd: its second call's return value comes from
-   `ldr r0, [sp, #0x4]`, a frame slot nothing ever writes. Either the callee takes six
-   arguments and the original passes garbage, or there is an out-param. Not yet understood.
+3. `02128b48` was blocked on an apparently-uninitialised frame slot; that is **resolved** — see
+   the section above. It is ready to implement and needs no new struct fields.
 4. `02126d54`, `02126e58`, `02126c94` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a
    `s32[8]` at `+0x80` of a **0xA0-byte** task data — that is a *different* struct from
    `BtlEnm006` (which is 0x1FC and has a `u16` at 0x80). It needs its own type; the offsets seen
