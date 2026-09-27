@@ -74,6 +74,9 @@ extern s32  func_ov010_02128bcc(void*, void*);
 extern void func_ov010_02127110(void*, void*);
 extern void func_ov010_02127650(void);
 extern void func_ov010_02127cc0(void);
+extern void func_ov010_0212847c(s32*, s32*, void*, s32);
+extern s32  func_ov003_020cba2c(s32, s32, s32, s32);
+extern s32  func_ov003_020cb764(s32);
 
 /// The animation tables are addressed as `table + variant*8 + phase*2`, i.e. an array of 8-byte
 /// records each holding four halfwords -- not as `SpriteAnimEntry[]`, whose field access folds the
@@ -932,4 +935,44 @@ void func_ov010_02127488(BtlEnm006* data) {
     return;
 big:
     func_ov010_02127460(data, (void*)func_ov010_02127cc0);
+}
+
+// Finds the index of the nearest of ten sample points. The x-axis cull is two-sided: the
+// mirror flag decides which side of the owner counts as "behind".
+s32 func_ov010_02128624(BtlEnm006* data) {
+    s32 bestD = 0x7FFFFFFF;
+    s32 bestI = -1;
+    s32 y;
+    s32 x;
+    s32 i;
+    for (i = 0; i < 10; i++) {
+        func_ov010_0212847c(&y, &x, data, i);
+        // Two sequential guards, not `else if`, and `flip` is read once: the original loads
+        // unk_24 into a register after the call and tests that same register twice, so the
+        // "unk_24 == 0 and in range" path falls straight through into the second test.
+        s32 flip = data->unk_24;
+        if (flip == 0) {
+            if (y > data->unk_28) {
+                continue;
+            }
+        }
+        if (flip == 1) {
+            if (y < data->unk_28) {
+                continue;
+            }
+        }
+        s32 d = func_ov003_020cba2c(data->unk_28, data->unk_2C, y, x);
+        if (d < bestD) {
+            bestD = d;
+            bestI = i;
+        }
+    }
+    if (bestI == -1) {
+        if (data->unk_28 < func_ov003_020cb764(1)) {
+            bestI = 0;
+        } else {
+            bestI = 5;
+        }
+    }
+    return bestI;
 }
