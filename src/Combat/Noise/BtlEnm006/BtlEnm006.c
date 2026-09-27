@@ -34,37 +34,48 @@ extern s32 func_ov010_021272e0(void*);
 extern s32 func_ov010_02128e80(void*);
 
 // ov003 helpers.
-extern void func_ov003_020c48b0(void*);
-extern void func_ov003_020c4878(void*);
-extern void func_ov003_020c48fc(void*);
-extern void func_ov003_020c492c(void*);
-extern s32  func_ov003_020c703c(void*);
-extern void func_ov003_020c427c(void*);
-extern void func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
-extern s32  func_ov003_020cb3c4(s32, s32);
-extern s32  func_ov003_020c5bfc(void*);
-extern s32  func_ov003_020c62c4(void*, s32);
-extern s32  func_ov003_020c65cc(void*, s32);
-extern s32  func_ov003_020c72b4(void*, s32, s32);
-extern s32  func_ov003_020c37f8(void*);
-extern s32  func_ov003_020c7070(void*);
-extern s32  func_ov003_020c4e0c(void*);
-extern s32  func_ov003_020cc354(void*);
-extern s32  func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
-extern s32  func_ov003_020c3c28(void*);
-extern s32  func_ov003_020c3efc(void*, void*);
-extern void func_ov003_020c4520(void*);
-extern void func_ov003_020c4b5c(void*);
-extern void func_ov003_020c4668(void*);
-extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
-extern void func_ov003_02082724(void*, s16, s16);
-extern void func_ov003_02082b64(void*);
-extern void func_ov003_02084694(void*, s32);
-extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
-extern void func_ov003_020cb498(s32, s32, void*, void*);
-extern s32  func_ov003_020843b0(s32, s32);
-extern void Mini108_VBlank(CombatSprite*, u16, s32);
-extern s32  func_ov010_02128820(BtlEnm006*);
+extern void                  func_ov003_020c48b0(void*);
+extern void                  func_ov003_020c4878(void*);
+extern void                  func_ov003_020c48fc(void*);
+extern void                  func_ov003_020c492c(void*);
+extern s32                   func_ov003_020c703c(void*);
+extern void                  func_ov003_020c427c(void*);
+extern void                  func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+extern s32                   func_ov003_020cb3c4(s32, s32);
+extern s32                   func_ov003_020c5bfc(void*);
+extern s32                   func_ov003_020c62c4(void*, s32);
+extern s32                   func_ov003_020c65cc(void*, s32);
+extern s32                   func_ov003_020c72b4(void*, s32, s32);
+extern s32                   func_ov003_020c37f8(void*);
+extern s32                   func_ov003_020c7070(void*);
+extern s32                   func_ov003_020c4e0c(void*);
+extern s32                   func_ov003_020cc354(void*);
+extern s32                   func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
+extern s32                   func_ov003_020c3c28(void*);
+extern s32                   func_ov003_020c3efc(void*, void*);
+extern void                  func_ov003_020c4520(void*);
+extern void                  func_ov003_020c4b5c(void*);
+extern void                  func_ov003_020c4668(void*);
+extern void                  func_ov003_02084348(s32, void*, void*, s32, s32, s32);
+extern void                  func_ov003_02082724(void*, s16, s16);
+extern void                  func_ov003_02082b64(void*);
+extern void                  func_ov003_02084694(void*, s32);
+extern s32                   func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
+extern void                  func_ov003_020cb498(s32, s32, void*, void*);
+extern s32                   func_ov003_020843b0(s32, s32);
+extern void                  Mini108_VBlank(CombatSprite*, u16, s32);
+extern s32                   func_ov010_02128820(BtlEnm006*);
+extern void                  CombatSprite_SetPaletteSource(CombatSprite*, s32);
+extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
+extern const SpriteAnimEntry data_ov010_02129238[3];
+extern const SpriteAnimEntry data_ov010_021292f4[3];
+
+/// The animation tables are addressed as `table + variant*8 + phase*2`, i.e. an array of 8-byte
+/// records each holding four halfwords -- not as `SpriteAnimEntry[]`, whose field access folds the
+/// two index terms together and produces a different instruction order.
+typedef struct Enm006AnimRow {
+    u16 slot[4];
+} Enm006AnimRow;
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(void);
@@ -800,4 +811,56 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
         }
     }
     return 1;
+}
+
+// Two near-twins: both advance a 4-entry animation phase and, on every phase but the last,
+// restart the sprite animation and rescale the phase into 4.12 fixed point for the speed field.
+// The divide is by three, spelled with the 0x55555556 reciprocal.
+//
+// The sprite view has to be re-derived at each use, not hoisted into a local: held in a variable
+// MWCC gives it its own callee-saved register and the whole function spills (68.9% -> 100%).
+// The animation table is read through a `u16*`, not through `SpriteAnimEntry`, because the
+// original addresses it as `table + variant*8 + phase*2`.
+void func_ov010_02126934(BtlEnm006* data, u16 arg1) {
+    ((Enm006SpriteAlt*)&data->sprite)->unk_E8 += arg1;
+    if (((Enm006SpriteAlt*)&data->sprite)->unk_E8 >= 4) {
+        ((Enm006SpriteAlt*)&data->sprite)->unk_E8 = 3;
+    } else {
+        CombatSprite_SetPaletteSource(
+            (CombatSprite*)((u8*)data + 0x84),
+            ((const Enm006AnimRow*)data_ov010_02129238)[data->unk_80].slot[((Enm006SpriteAlt*)&data->sprite)->unk_E8]);
+        data->unk_D4 = data->unk_C0;
+        data->unk_D8 = data->unk_B4;
+        data->unk_8  = (s16)((((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 12) / 3 + 0x1000) * 0x64) >> 12);
+    }
+    data->unk_54 |= 0x40000000;
+}
+
+void func_ov010_02128d20(BtlEnm006* data, u16 arg1) {
+    ((Enm006SpriteAlt*)&data->sprite)->unk_E8 += arg1;
+    if (((Enm006SpriteAlt*)&data->sprite)->unk_E8 >= 4) {
+        ((Enm006SpriteAlt*)&data->sprite)->unk_E8 = 3;
+    } else {
+        CombatSprite_SetPaletteSource(
+            (CombatSprite*)((u8*)data + 0x84),
+            ((const Enm006AnimRow*)data_ov010_021292f4)[data->unk_80].slot[((Enm006SpriteAlt*)&data->sprite)->unk_E8]);
+        data->unk_D4 = data->unk_C0;
+        data->unk_D8 = data->unk_B4;
+        data->unk_8  = (s16)((((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 12) / 3 + 0x1000) * 0x64) >> 12);
+    }
+    data->unk_54 |= 0x40000000;
+}
+
+// The third copy of the task-spawn shape, this time for the Swlo handle. Its frame is 0x18 and
+// the param it hands over is a pointer to a local zero rather than to the incoming argument.
+void func_ov010_021270a8(void* arg0, void* arg1) {
+    s32       zero = 0;
+    TaskPool* pool = (TaskPool*)func_ov003_020c37f8((u8*)arg0 + 0x84);
+    if (pool == NULL) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+        if (pool != NULL) {
+            pool = (TaskPool*)((u32*)pool + 0x8C + 0x8000);
+        }
+    }
+    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swlo, 0, 0, 0, &zero);
 }

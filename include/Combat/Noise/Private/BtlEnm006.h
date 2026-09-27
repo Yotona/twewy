@@ -40,7 +40,7 @@ typedef struct Enm006SpriteBlock {
 /// on `BtlEnm006`.
 typedef struct Enm006SpriteAlt {
     u8             pad00[0xE8];
-    /* 0xE8 */ s16 unk_E8;
+    /* 0xE8 */ u16 unk_E8;
 } Enm006SpriteAlt;
 
 /// A third overlapping view, for the s16 at 0x1F0. It gets its own type rather than a second
@@ -54,7 +54,9 @@ typedef struct Enm006SpriteAlt2 {
 /// gaps are explicit padding and the struct grows as more functions land.
 /// Size: 0x1FC (from the Tsk_BtlEnm006_RG TaskHandle).
 struct BtlEnm006 {
-    u8             pad00[0x24];
+    u8             pad00[0x8];
+    /* 0x8 */ s16  unk_8;  // 4.12 fixed point
+    u8             pad0A[0x24 - 0xA];
     /* 0x24 */ s32 unk_24; // non-zero mirrors the sprite horizontally
     /* 0x28 */ s32 unk_28; // position.x
     /* 0x2C */ s32 unk_2C; // position.y
@@ -73,12 +75,19 @@ struct BtlEnm006 {
     /* 0x80 */ u16 unk_80; // asset/variant index
     /* 0x82 */ u16 pad82;
     // 0x84 holds a CombatSprite; it is not named as a field because its size is unknown and
-    // naming it would fix the padding below. The two functions that touch it cast instead.
+    // naming it would fix the padding below. The three functions that touch it cast instead.
     u8                            pad84[0x8C - 0x84];
     /* 0x8C */ s16                unk_8C;
     u8                            pad8E[0x9A - 0x8E];
     /* 0x9A */ s16                unk_9A;
-    u8                            pad9C[0x100 - 0x9C];
+    u8                            pad9C[0xB4 - 0x9C];
+    /* 0xB4 */ s32                unk_B4;
+    u8                            padB8[0xC0 - 0xB8];
+    /* 0xC0 */ s32                unk_C0;
+    u8                            padC4[0xD4 - 0xC4];
+    /* 0xD4 */ s32                unk_D4;
+    /* 0xD8 */ s32                unk_D8;
+    u8                            padDC[0x100 - 0xDC];
     /* 0x100 */ Enm006SpriteBlock sprite; // 0xC8 bytes, so it ends exactly on 0x1C8
     u8                            pad1C8[0x1C8 - 0x1C8];
     /* 0x1C8 */ void*             unk_1C8;
@@ -89,7 +98,9 @@ struct BtlEnm006 {
     /* 0x1DC */ s32               unk_1DC;
     /* 0x1E0 */ s32               unk_1E0;
     /* 0x1E4 */ s32               unk_1E4;
-    u8                            pad1E8[0x1F5 - 0x1E8];
+    u8                            pad1E8[0x1EC - 0x1E8];
+    /* 0x1EC */ s32               unk_1EC;
+    u8                            pad1F0[0x1F5 - 0x1F0];
     /* 0x1F5 */ u8                unk_1F5; // bit 0 mirrors the sprite
     u8                            pad1F6[0x1FC - 0x1F6];
 };
