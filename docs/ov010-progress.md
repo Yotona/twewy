@@ -43,30 +43,36 @@ Assets: `Apl_Suy/Grp_BtlEnm006{,.a,.b}.bin`.
 
 ## Status (objdiff)
 
-**31 of 71 functions implemented, 22 exact, average 46.74%; `.rodata` 99.2%, `.data` 100%.**
-(`.text` is 13.5% and will stay low until the remaining 40 functions land — the section score
+**43 of 71 functions implemented, 24 exact, average 58.89%; `.rodata` 99.2%, `.data` 100%.**
+(`.text` is 22.8% and will stay low until the remaining 28 functions land — the section score
 covers the whole declared range, not just what is written.)
 
-The nine implemented-but-imperfect functions are all known and triaged:
+The 19 implemented-but-imperfect functions are all known and triaged:
 
 | function | % | mechanism |
 |----------|---|-----------|
 | `func_ov010_02125730`, `021269d0`, `02126d04`, `02128dbc`, `02127178` | 99.7 | reloc artifact — the jump-table `b` entries carry absolute addresses on the original side and section-relative ones on ours; identical once branch targets are normalised |
-| `func_ov010_02126420` | 98.6 | reg-colour — the zero goes to `r0` in the original, a fresh `r1` in ours |
-| `func_ov010_02128434`, `0212636c`, `021263c4`, `021282b8` | 87.5–90.2 | reg-colour, four instances of one shape (below) |
-| `func_ov010_02126c38`, `021256d0` | 77.6–86.3 | branch-vs-predicate on the task-pool fallback |
+| `func_ov010_02125878` | 99.9 | same reloc artifact |
+| `func_ov010_02128a08` | 99.6 | one register: the original recycles the dead `arg1` register for the constant, MWCC picks a fresh one |
+| `func_ov010_02126934`, `02128d20` | 98.6 | reg-colour: the 0x100 base goes in a fresh `r0` at each use in the original, MWCC keeps it in one register |
+| `func_ov010_02126420`, `02125b28` | 98.4–98.6 | reg-colour on the loaded s16 (`r1` vs `r0`) |
+| `func_ov010_021283c0`, `02128434`, `0212636c`, `021282b8`, `021263c4` | 87.5–92.2 | reg-colour, five instances of one shape (below) |
+| `func_ov010_02126c38`, `021256d0`, `021270a8` | 75.0–86.3 | the task-spawn family (below) |
 
-**Jump-table task handlers cost ~0.25% each, systematically.** Four in a row landed in that
+**Jump-table task handlers cost ~0.25% each, systematically.** Six in a row landed in that
 bucket, so expect it for any future `addls pc, pc, rX, lsl #2` handler in this codebase.
 
-**The task-spawn fallback wants a branch, not a predicate.** `func_ov010_02126c38` and
-`func_ov010_021256d0` both do `pool = lookup(...); if (pool == NULL) { pool = global; if (pool
-!= NULL) { pool += 0x8C + 0x8000; } }`. The original emits `ldreq`/`beq` — a real branch over
-the offset arithmetic — and MWCC if-converts ours into `cmp / addne / addne`. No C spelling
-found that produces the branch; the `if/else` with an empty then-arm made it worse, not
-better. Left as-is.
+**The task-spawn family wants a branch, not a predicate.** `02126c38`, `021256d0` and
+`021270a8` all do `pool = lookup(...); if (pool == NULL) { pool = global; if (pool != NULL)
+{ pool += 0x8C + 0x8000; } }`. The original emits `ldreq`/`beq` — a real branch over the offset
+arithmetic — and MWCC if-converts ours into `cmp / addne / addne`. No C spelling found that
+produces the branch; an `if/else` with an empty then-arm made it worse, not better.
+`021270a8` additionally stores both parameters to dead home slots (`str r0, [sp, #0xc]`,
+`str r1, [sp, #0x10]`) that only appear if their addresses are taken, and nothing reproduces
+that. What *does* help this family: the 6th argument is `&local`, and naming the incoming
+argument as a local (`void* self = arg0; ... &self`) stops MWCC spilling r0-r3.
 
-**Four functions share one unfixed reg-colour difference.** They all open with
+**Five functions share one unfixed reg-colour difference.** They all open with
 
 ```c
 if (data->sprite.unk_C0 == 0) {
@@ -80,13 +86,13 @@ if (data->sprite.unk_C0 == 0) {
 and the original computes the increment into a *fresh* register and reuses the register the
 loaded halfword was in for the constant zero (`add r2, r1, #1 / mov r1, #0 / strh r2, ...`),
 whereas MWCC does the increment in place and puts the zero in `r0`. Naming the loaded value as
-a local, hoisting the zero into its own local, and introducing an `Enm006SpriteBlock*` local
-were each tried and each left the codegen byte-identical (or 1 point worse). The semantics are
-right; only the register choice differs.
+an `s16` local, as an `s32` local, hoisting the zero into its own local, and introducing an
+`Enm006SpriteBlock*` local were each tried; all left the codegen byte-identical or 1 point
+worse. The semantics are right; only the register choice differs.
 
 | Section | Bytes | Status |
 |---------|-------|--------|
-| `.text` | 14,664 | 31 / 71 functions implemented, 22 exact |
+| `.text` | 14,664 | 43 / 71 functions implemented, 24 exact |
 | `.rodata` | 772 | 99.2% |
 | `.data` | 224 | 100% |
 
@@ -178,20 +184,52 @@ Beyond `docs/decomp-tricks.md` and the sibling overlays:
   two padding bytes *before* the next `void*`, which is 4-aligned and so eats two more. Add
   the trailing pad explicitly (`padC6[0xC8 - 0xC6]`) so the intent is visible even though it
   does not change the generated size.
+- **A bit test on a byte is a shift pair, not `tst`.** `if (x & 1)` gives
+  `tst r0, #1 / ldrne / bicne`. The original wants the bit moved into a *value* and then
+  predicated on it being zero: `lsl #30 / lsr #31 / ldreq / biceq / streq`. So spell it
+  `if (((u32)x << 30) >> 31 == 0)`. The `(u32)` is load-bearing — the compiler is built with
+  `-char signed`, so without it the final shift is `asr` rather than `lsr`.
+- **`(x - 1) % 4` is the fix for a four-instruction sequence.** `sub / lsr #31 / rsb lsl #30
+  / adds ror #30` is MWCC's expansion of a signed `% 4`, and it matched exactly.
+- **Two overlapping views of one memory range.** The 0x1E8, 0x1F0 and 0x1F2 halfwords are
+  reached as `base+0x100` then `+0xE8`/`+0xF0`, while 0x1DC is reached as a direct outer-struct
+  access — two different addressing forms for one struct, so two types are needed
+  (`Enm006SpriteAlt`, `Enm006SpriteAlt2`) plus an offset cast for 0x144, which is *inside* the
+  sprite block's span and so cannot be an outer field at all. Give each view exactly **one**
+  field: a two-field `Enm006SpriteAlt` made MWCC place the second field 0x38 bytes early.
+- **Re-derive a sub-struct pointer at each use; do not hoist it.** `func_ov010_02126934` reads
+  through the 0x100 view four times. Written with a local `Enm006SpriteAlt* alt`, MWCC gives
+  `alt` its own callee-saved register and the function spills (68.9%). Written as a bare
+  `(Enm006SpriteAlt*)&data->sprite` at each use it re-derives the base and scores 98.6%.
+  Same for `02128a08`, where hoisting turns the original's predicated `addeq r0, r4, #0x100`
+  into an unconditional `add r1, r4, #0x100`.
+- **An 8-byte record of four halfwords indexes differently from `SpriteAnimEntry`.** The
+  animation tables are addressed as `table + variant*8 + phase*2`; reading them through
+  `SpriteAnimEntry` folds the two index terms into one shifted add and reorders the
+  instructions. Casting to a local `struct { u16 slot[4]; }[3]` restores the original form
+  (87.6% → 98.6%).
 
 ## Next steps
 
-1. The per-stage workers are the next real block: `02126d54`, `02126e58`, `02126fdc`,
-   `021271c0`, `021272e0`, `02125780`, `02125778`, `02125878`, `02126a20`, `02126a94`,
-   `02128e0c`, `02128e80`. They will fill in the rest of the `BtlEnm006` layout.
-2. `02126d54`, `02126e58` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a
+1. 28 functions remain. The biggest tractable one is `func_ov010_02128820` (0x2E8 bytes) — the
+   per-frame body that calls `0212847c` twice, does a `Vec_DotProduct` reflection test and runs
+   the `unk_E8 % 10` phase counter. Everything it needs is already named.
+2. Then the per-stage workers `02126d54`, `02126e58`, `02126fdc`, `021271c0`, `021272e0`,
+   `02125780`, `02126a20`, `02126a94`, `02128e80`, plus `02126c94`, `0212847c`, `02128624`,
+   `021286e8`, `02125c80`, `02127550`, `02127110`, `02127488`, `02127650`, `02128b48`,
+   `02128bcc`, `02128cbc`, `02128820`.
+3. `02126d54`, `02126e58` and `02126fdc` belong to `Tsk_BtlEnm006_Swirl` and index a
    `s32[8]` at `+0x80` of a **0xA0-byte** task data — that is a *different* struct from
    `BtlEnm006` (which is 0x1FC and has a `u16` at 0x80). It needs its own type; the offsets
    seen so far are `unk_00` (the `BtlEnm006*`), `unk_04` (a CombatSprite), `unk_68`/`unk_6C`
-   (copied position), `unk_74` (an accumulator clamped to 0x4000), `unk_7C`/`unk_7E` (s16
-   angles), and `unk_80[8]`.
-3. Then the mid-size remainder, and leave the three >1 KB functions (`02127cc0`, `02125de4`,
-   `02127764`) for last.
+   (copied position), `unk_70` (added to each frame), `unk_74` (an accumulator clamped to
+   0x4000), `unk_7C`/`unk_7E` (s16 angles), and `unk_80[8]`.
+4. Leave the three >1 KB functions (`02127cc0`, `02125de4`, `02127764`) for last.
+
+**Watch the field order when you extend the struct.** One field (`unk_144`, at 0x144 — which is
+*past* the sprite block's 0x100..0x1C8 span) was inserted at the wrong place in the declaration
+once, and everything from there on silently shifted by 0x38. It cost a long misdiagnosis. If a
+whole function's offsets move at once, suspect the declaration order before the disassembly.
 
 Triage the residue with `build/scratch/triage.py` as it grows — see `decomp-tricks` §8.9 for
 why that matters.
