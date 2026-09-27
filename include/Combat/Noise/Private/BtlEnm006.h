@@ -120,13 +120,15 @@ struct BtlEnm006 {
 /// padding because its size is unknown and naming it would fix the offsets below.
 typedef struct Enm006Swirl {
     /* 0x00 */ BtlEnm006* unk_00; // the owning instance
-    u8                    pad04[0x68 - 0x04];
+    u8                    pad04[0x64 - 0x04];
+    /* 0x64 */ s16        unk_64; // one-shot "has fired" flag
+    u8                    pad66[0x68 - 0x66];
     /* 0x68 */ s32        unk_68; // position.x, biased by 0x20000
     /* 0x6C */ s32        unk_6C; // position.y
     /* 0x70 */ s32        unk_70;
     /* 0x74 */ s32        unk_74; // accumulator, clamped to 0x4000
     /* 0x78 */ s32        unk_78; // wrap flag
-    /* 0x7C */ s16        unk_7C; // angle, clamped to 0x200
+    /* 0x7C */ u16        unk_7C; // angle, clamped to 0x200
     /* 0x7E */ s16        unk_7E;
     /* 0x80 */ s32        unk_80[8];
 } Enm006Swirl; // Size: 0xA0 (from the Tsk_BtlEnm006_Swirl TaskHandle)

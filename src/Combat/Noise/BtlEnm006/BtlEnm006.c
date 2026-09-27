@@ -27,8 +27,8 @@ extern s32  func_ov010_02125780(void*, void*);
 extern void func_ov010_02126a20(BtlEnm006*, void*);
 extern s32  func_ov010_02126a94(BtlEnm006*);
 extern void func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
-extern s32  func_ov010_02126e58(void*);
-extern s32  func_ov010_02126fdc(void*);
+extern s32  func_ov010_02126e58(Enm006Swirl*);
+extern s32  func_ov010_02126fdc(Enm006Swirl*);
 extern s32  func_ov010_021271c0(void*, void*);
 extern s32  func_ov010_021272e0(void*);
 extern s32  func_ov010_02128e80(void*);
@@ -1169,9 +1169,84 @@ void func_ov010_02126d54(Enm006Swirl* data, Enm006Spawn* args) {
 // Advances one of the eight swirl points along the spiral. The 4.12 fixed-point scale is
 // converted up to 16.16 with a rounding term, which is what the `>> 29` in the original is.
 void func_ov010_02126c94(Enm006Swirl* data, s32* outY, s32* outX, s32 index) {
+    // The `>> 2` and the `>> 29` have to be two separate shifts; folded into one, MWCC emits
+    // `asr #31` where the original has `asr #2 / lsr #29`.
     s32 t = index << 16;
-    s32 v = data->unk_7C + ((t + ((t >> 2) >> 29)) >> 3);
+    s32 h = t >> 2;
+    s32 v = data->unk_7C + ((t + (h >> 29)) >> 3);
     func_ov003_020cbcb4(outY, outX, (s16)v, data->unk_70, 0x800);
     *outY += data->unk_68;
     *outX += data->unk_6C;
+}
+
+// The Swirl per-frame body. Two details are load-bearing: the y bounds test `>=` the *upper*
+// limit while the x bounds test `>=` too but are reached by inverting a `blt`, and a point that
+// fails the bounds test is *still emitted* -- only its `unk_80` slot is cleared, and the emit
+// falls through into the same call.
+s32 func_ov010_02126e58(Enm006Swirl* data) {
+    s32 count = 0;
+    if (func_ov003_020c3c28(data) != 0) {
+        return 0;
+    }
+    if (data->unk_64 == 0) {
+        data->unk_64++;
+        func_ov003_02087f00(0x1D0, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_00->unk_28));
+    }
+    s32 hi = func_ov003_020cb744(0);
+    s32 lo = func_ov003_020cb7a4(0);
+    CombatSprite_Update((CombatSprite*)((u8*)data + 4));
+    data->unk_70 += data->unk_74;
+    // The two-step add is load-bearing: folded, it reassociates.
+    s32 step = data->unk_74 + 0x9A;
+    step += 0x100;
+    data->unk_74 = step;
+    if (data->unk_74 > 0x4000) {
+        data->unk_74 = 0x4000;
+    }
+    if (data->unk_78 == 1) {
+        data->unk_7C = data->unk_7C + data->unk_7E;
+    } else {
+        data->unk_7C = data->unk_7C - data->unk_7E;
+    }
+    data->unk_7E += 0x20;
+    if (data->unk_7E > 0x200) {
+        data->unk_7E = 0x200;
+    }
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        if (data->unk_80[i] == 0) {
+            continue;
+        }
+        s32 y;
+        s32 x;
+        func_ov010_02126c94(data, &y, &x, i);
+        if (y - 0x10 < 0 || y + 0x10 >= hi || x - 0x10 < 0 || x + 0x10 >= lo) {
+            data->unk_80[i] = 0;
+        }
+        func_ov003_020c5b2c(0x50, data->unk_00, y, x, 0);
+        count++;
+    }
+    return count != 0;
+}
+
+// The other Swirl per-frame path: moves the single sprite to each live point in turn rather than
+// emitting particles. Returns 1 unconditionally.
+s32 func_ov010_02126fdc(Enm006Swirl* data) {
+    s32 flag = func_ov003_020c37f8((u8*)data + 4) != 0;
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        if (data->unk_80[i] == 0) {
+            continue;
+        }
+        s32 y;
+        s32 x;
+        s16 a;
+        s16 b;
+        func_ov010_02126c94(data, &y, &x, i);
+        func_ov003_02084348(flag, &a, &b, x, y, 0);
+        CombatSprite_SetPosition((CombatSprite*)((u8*)data + 4), a, b);
+        func_ov003_02082730((CombatSprite*)((u8*)data + 4), 0x7FFFFFFF - y);
+        CombatSprite_Render((CombatSprite*)((u8*)data + 4));
+    }
+    return 1;
 }
