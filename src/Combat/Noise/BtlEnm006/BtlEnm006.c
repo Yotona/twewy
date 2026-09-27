@@ -1083,18 +1083,22 @@ s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outW
     return v;
 }
 
-// The per-frame body. Reads the two neighbouring sample points around the owner's own index,
-// turns them into a target triple, mirrors the sprite from the sign of the dot product between
-// the edge and the offset to the owner, then advances/clears the two timers at 0x1F0/0x1F2.
+// The per-frame body. On the first frame it latches the owner's own sample index, then each
+// frame it reads the two sample points either side of that index, turns them into a target
+// triple, mirrors the sprite from the sign of a dot product, and finally advances or clears the
+// counter at 0x1F0 against the one at 0x1F2.
 //
 // The four sample-point outputs are the *first* thing the two `func_ov010_0212847c` calls fill,
-// and each of them is re-loaded from the frame for every use afterwards -- `unk_1EC` is re-read
-// for the second call's index, `o1a`/`o1b` are re-read for the two stores and the two call
-// arguments. Caching any of them makes MWCC park them in callee-saved registers and the loads
-// disappear.
+// and every use afterwards re-loads them from the frame -- `unk_1EC` is re-read for the second
+// call's index, `o1a`/`o1b` for the two stores and the two call arguments. Caching any of them
+// in a variable makes MWCC park it in a callee-saved register and the loads disappear.
+//
+// The declaration order of the six frame locals is load-bearing: MWCC hands out the slots
+// top-down in *reverse* declaration order, so `h` at 0x04 and `w` at 0x08 require the four
+// points to be declared `o1a, o1b, o2a, o2b` and `w` last. Getting this backwards costs ~15%.
 void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
-    // h is the halfword the sector lookup writes; w is the word beside it, which `sp+0` holds the
-    // address of for the outgoing fifth argument. Neither is initialised in the original.
+    // h is the halfword the sector lookup writes; w is the word beside it, whose address goes
+    // into `sp+0` as the outgoing fifth argument. Neither is initialised in the original.
     s16 h;
     s32 o1a;
     s32 o1b;
@@ -1114,13 +1118,9 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     func_ov010_0212847c(&o2a, &o2b, data, data->unk_1EC + 1);
 
     if (arg1 == 0) {
-        // The dot product of the offset from o1 to the owner against the edge o1 -> o2 decides
-        // which way round the sprite faces. The z components are explicit zeros in the original,
-        // and the "faces left" arm clears bit 0 without touching the rest while the other arm
-        // re-ORs it -- the difference between `bic`+`orr` and a bare `orr`.
         // `toOwner` is declared first so that it gets the *higher* of the two 12-byte frame
-        // slots (0x28), and `edge` the lower one (0x1C) -- the reverse swaps both the stores
-        // and the two pointer arguments to Vec_DotProduct.
+        // slots (0x28) and `edge` the lower one (0x1C) -- the reverse swaps both the stores and
+        // the two pointer arguments to Vec_DotProduct. The z components are explicit zeros.
         Vec toOwner;
         Vec edge;
         toOwner.x = data->unk_28 - o1a;
@@ -1129,10 +1129,11 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
         edge.x    = o2a - o1a;
         edge.y    = o2b - o1b;
         edge.z    = 0;
-        // The load stays ahead of the branch and feeds both arms, and the "faces left" arm is
-        // if-converted (`biclt`/`strltb`) while the other is a *branch* to a block placed just
-        // after it. Writing the test as `>= 0` with the clear-bit as the `else` is what gets
-        // MWCC to emit a `blt` past the set-bit block instead of predicating both arms.
+        // The single `ldrb` stays ahead of the branch and feeds both arms, and only the "faces
+        // left" arm is if-converted (`biclt`/`strltb`): the other is a `blt` past a block placed
+        // just after it. Spelling the test as `>= 0` with the clear-bit in the `else` is what
+        // makes MWCC branch instead of predicating both arms; `< 0` with the arms the other way
+        // round predicates both and loses four instructions.
         if (Vec_DotProduct(&toOwner, &edge) >= 0) {
             data->unk_1F5 = (data->unk_1F5 & ~1) | 1;
         } else {
@@ -1148,12 +1149,15 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     func_ov003_020c4ab4(data, w);
     ((Enm006SpriteAlt2*)&data->sprite)->unk_F2 = func_ov010_02128a6c(data, (void*)0x2800);
 
-    // The bit test on the byte is a shift pair, not `& 1`.
+    // A bit test on the byte is a shift pair, and the inner shift has to be the *signed* one --
+    // `(u32)x << 31 >> 31` folds to `and #1`, `(u32)(x << 31) >> 31` does not.
     if ((u32)(data->unk_1F5 << 31) >> 31 == 1) {
         data->unk_1EC -= 1;
     } else {
         data->unk_1EC += 1;
     }
+    // Two statements, not one `= (x + 10) % 10`. Same arithmetic, but MWCC keeps the dividend in
+    // r12 across the reciprocal multiply rather than in r3.
     data->unk_1EC += 10;
     data->unk_1EC %= 10;
 
@@ -1171,6 +1175,7 @@ tail:
     data->unk_1DC                              = 0;
     return;
 bump:
+    // `= x + 1`, not `+= 1`: the compound form picks r1 for the address, the plain one r0.
     ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 + 1;
 }
 
