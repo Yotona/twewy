@@ -61,7 +61,7 @@ extern void                  func_ov003_02082724(void*, s16, s16);
 extern void                  func_ov003_02082b64(void*);
 extern void                  func_ov003_02084694(void*, s32);
 extern s32                   func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
-extern void                  func_ov003_020cb498(s32, s32, void*, void*);
+extern s32                   func_ov003_020cb498(s32, s32, void*, void*);
 extern s32                   func_ov003_020843b0(s32, s32);
 extern void                  Mini108_VBlank(CombatSprite*, u16, s32);
 extern s32                   func_ov010_02128820(BtlEnm006*);
@@ -655,6 +655,28 @@ body:
     }
     *(s32*)arg2 = *(s32*)arg2 - 1;
     return 0;
+}
+
+// Two rounds of the same list walk. The first just counts the eligible nodes; if there were some,
+// a 20% coin flip then draws one of them and walks the list again to find it. The 8-byte local is
+// that second walk's out-param, not a local pair: `func_ov010_02128c6c` counts down from its first
+// word and stores the winning node into its second, and the function returns that second word
+// without ever writing it itself. The default answer -- used when nothing matched, or when the coin
+// flip came up short -- is a field of the global block, reached by dereferencing the global pointer
+// first, so the two offsets have to stay separate. The draw has to sit *after* the default via an
+// explicit `goto`: written as a nested `if` MWCC inverts the test and places the (cold) draw last
+// with a `blo` over it, which also reorders the three literal-pool words.
+s32 func_ov010_02128b48(void) {
+    s32 hits = func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128c3c, 0);
+    s32 local[2];
+    if (hits != 0 && RNG_Next(0x64) >= 0x14) {
+        goto pick;
+    }
+    return *(s32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898);
+pick:
+    local[0] = RNG_Next(hits);
+    func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128c6c, local);
+    return local[1];
 }
 
 // Picks the next behaviour by a coin flip. The "dead" case has to be the *outer* else so the
