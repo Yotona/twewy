@@ -890,17 +890,19 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
 // both picks the direction of the phase step and selects between the two indexings of the phase
 // tables. The test is the shift pair `lsl #29 / lsr #31`, so it has to be spelled with a `(u32)`.
 //
-// `v` is the halfword handed to the sprite restart as its second argument. The original never
-// initialises it and never reads it back -- the dead `moveq r1, #1 / moveq r1, #2` chain in the
-// reflected arm is all that is left of it -- so it is not initialised here either, and the
-// `arg1 == 0` arm leaves whatever was in the register.
+// `v` is the halfword handed to the sprite restart as its second argument. The original's value is
+// dead -- the `moveq r1, #1 / moveq r1, #2` chain in the reflected arm is all that is left of it --
+// and on the `arg1 == 0` path it is whatever the register happened to hold, which is why that arm
+// stores the zero written to `unk_1D8` rather than reloading it.
 //
 // Both nested tests are `goto`s rather than if/else: MWCC if-converts an if/else into predicated
-// loads, and the original branches past the cold arm in both cases.
+// loads, and the original branches past the cold arm in both cases. The `!= 1` in the second one
+// is load-bearing: `== 0` lets MWCC fold the compare into the shift's own Z flag and emits
+// `movs / beq` instead of `cmp r0, #0x1 / bne`.
 //
 // The mirror flag is written back through `arg1` rather than through a local of its own. The
 // original's `cmp r4, #0` is the last read of the argument and r4 is the register the flag lands
-// in, so a separate local costs a whole extra callee-saved register here (and with it r6/r7 for
+// in, so a separate local costs a whole extra callee-saved register here (and with it r5/r6 for
 // `data`, which moves every `data`-relative load in the function).
 s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
     if (arg1 == 0) {
@@ -977,8 +979,11 @@ s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
         }
     }
     if (func_ov010_0212688c(data) >= 0x2000) {
-        goto wrap;
+        goto bump;
     }
+    // Save the position the seek was launched from, then adopt the target. The split between r0
+    // and r3 across these six pairs is a register-colouring tie-break around the return value:
+    // the original keeps r0 for four of them, we keep it for two. Four spellings did not move it.
     data->sprite.unk_AC                        = data->unk_28;
     data->sprite.unk_B0                        = data->unk_2C;
     data->sprite.unk_B4                        = data->unk_30;
@@ -990,7 +995,7 @@ s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
     data->unk_1DC                              = 0;
     ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
     return 1;
-wrap:
+bump:
     // `= x + 1`, not `+= 1`, for the register choice.
     ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 + 1;
     return 0;
