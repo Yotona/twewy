@@ -21,6 +21,13 @@ extern s32 func_ov010_02126d04(TaskPool*, Task*, void*, s32);
 extern s32 func_ov010_02127178(TaskPool*, Task*, void*, s32);
 extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 
+// ov003 helpers.
+extern void func_ov003_020c48b0(void*);
+extern void func_ov003_020c4878(void*);
+extern void func_ov003_020c48fc(void*);
+extern void func_ov003_020c492c(void*);
+extern s32  func_ov003_020c703c(void*);
+
 extern char data_ov010_0212932c[28];
 extern char data_ov010_02129348[28];
 extern char data_ov010_02129364[24];
@@ -227,3 +234,61 @@ char data_ov010_021293a4[20] = "Tsk_BtlEnm006_RG";
 char data_ov010_021293b8[20] = "Tsk_BtlEnm006_Swirl";
 char data_ov010_021293cc[20] = "Tsk_BtlEnm006_Swlo";
 char data_ov010_021293e0[32] = "Tsk_BtlEnm006_UG";
+
+// MARK: Functions
+
+BinIdentifier* func_ov010_021256c0(s32 index) {
+    return (BinIdentifier*)((u8*)&data_ov010_02129050 + index * 8);
+}
+
+s32 func_ov010_02127458(void) {
+    return 1;
+}
+
+// These are single-argument callbacks, not task handlers: none of them appears in a
+// TaskHandle, and each passes its incoming r0 straight through with no register shuffle.
+// Typed CombatSprite* where the callee is known to be one of the CombatSprite helpers.
+s32 func_ov010_02125900(CombatSprite* sprite) {
+    CombatSprite_Release(sprite);
+    return 1;
+}
+
+s32 func_ov010_02126c18(CombatSprite* sprite) {
+    func_ov003_020c4878(sprite);
+    return 1;
+}
+
+s32 func_ov010_02126c28(CombatSprite* sprite) {
+    func_ov003_020c48fc(sprite);
+    return 1;
+}
+
+s32 func_ov010_02128fe8(CombatSprite* sprite) {
+    func_ov003_020c48b0(sprite);
+    return 1;
+}
+
+s32 func_ov010_02128ff8(CombatSprite* sprite) {
+    func_ov003_020c492c(sprite);
+    return 1;
+}
+
+// Releases the block at sprite + 4 rather than sprite itself.
+s32 func_ov010_02127094(CombatSprite* sprite) {
+    CombatSprite_Release((CombatSprite*)((u8*)sprite + 4));
+    return 1;
+}
+
+s32 func_ov010_02125854(CombatSprite* sprite) {
+    CombatSprite_Update(sprite);
+    return SpriteMgr_IsAnimationFinished(&sprite->sprite) == 0;
+}
+
+s32 func_ov010_02126420(void* data) {
+    s32 result = func_ov003_020c703c(data);
+    if (result == 0) {
+        // The BtlEnm006 layout is not mapped yet, so this field is reached by offset.
+        *(s32*)((u8*)data + 0x1CC) = 0;
+    }
+    return result;
+}

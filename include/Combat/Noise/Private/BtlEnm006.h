@@ -18,6 +18,11 @@ typedef struct Enm006Variant {
 
 typedef struct BtlEnm006 BtlEnm006;
 
+/// The main `BtlEnm006` task data. The layout is not mapped yet -- only the
+/// Tsk_BtlEnm006_RG task-data size (0x1FC) is known from the TaskHandle record -- so
+/// fields are reached by offset until enough functions land to derive it.
+/// Size: 0x1FC
+
 /// Arguments handed to the `Tsk_BtlEnm006_*` task constructors.
 typedef struct Enm006Spawn {
     /* 0x00 */ BtlEnm006* unk_00;
