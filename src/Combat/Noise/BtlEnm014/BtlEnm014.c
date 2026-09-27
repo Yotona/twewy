@@ -110,39 +110,40 @@ s32                    func_ov012_021277b0(TaskPool*, Task*, void*, s32);
 
 // The asset name strings and the variant/anim tables are referenced by the
 // variant records declared first, so they are forward-declared here.
-extern char data_ov012_02127990[];
-extern char data_ov012_021279ac[];
-extern char data_ov012_021279c8[];
-extern char data_ov012_021279e4[];
-extern char data_ov012_02127a00[];
-extern char data_ov012_02127a14[];
-extern char data_ov012_02127a28[];
+extern char data_ov012_02127990[28];
+extern char data_ov012_021279ac[28];
+extern char data_ov012_021279c8[28];
+extern char data_ov012_021279e4[28];
+extern char data_ov012_02127a00[20];
+extern char data_ov012_02127a14[4];
+extern char data_ov012_02127a18[16];
+extern char data_ov012_02127a28[24];
 
-BinIdentifier   data_ov012_02127894;
-BinIdentifier   data_ov012_0212789c;
-BinIdentifier   data_ov012_021278a4;
-BinIdentifier   data_ov012_021278ac;
-SpriteAnimEntry data_ov012_021278b4[8][2];
+const BinIdentifier   data_ov012_02127894;
+const BinIdentifier   data_ov012_0212789c;
+const BinIdentifier   data_ov012_021278a4;
+const BinIdentifier   data_ov012_021278ac;
+SpriteAnimEntry const data_ov012_021278b4[8][2];
 
-u16 data_ov012_0212783c[4] = {0x10, 0x16, 0x16, 0x16};
+const u16 data_ov012_0212783c[4] = {0x10, 0x16, 0x16, 0x16};
 
-Enm014Variant data_ov012_02127844 = {&data_ov012_02127894, &data_ov012_021278b4[0][0], 0, 0x10, 0xD8, 0};
+const Enm014Variant data_ov012_02127844 = {&data_ov012_02127894, &data_ov012_021278b4[0][0], 0, 0x10, 0xD8, 0};
 
-SpriteAnimEntry data_ov012_02127854[2] = {
+const SpriteAnimEntry data_ov012_02127854[2] = {
     {   4,    6,    5, 0},
     {0x13, 0x15, 0x14, 0},
 };
 
-Enm014Variant data_ov012_02127864 = {&data_ov012_0212789c, &data_ov012_021278b4[0][0], 0, 0x16, 0xF0, 0};
-Enm014Variant data_ov012_02127874 = {&data_ov012_021278ac, &data_ov012_021278b4[0][0], 0, 0x16, 0x104, 0};
-Enm014Variant data_ov012_02127884 = {&data_ov012_021278a4, &data_ov012_021278b4[0][0], 0, 0x16, 0x104, 0};
+const Enm014Variant data_ov012_02127864 = {&data_ov012_0212789c, &data_ov012_021278b4[0][0], 0, 0x16, 0xF0, 0};
+const Enm014Variant data_ov012_02127874 = {&data_ov012_021278ac, &data_ov012_021278b4[0][0], 0, 0x16, 0x104, 0};
+const Enm014Variant data_ov012_02127884 = {&data_ov012_021278a4, &data_ov012_021278b4[0][0], 0, 0x16, 0x104, 0};
 
-BinIdentifier data_ov012_02127894 = {3, data_ov012_02127990};
-BinIdentifier data_ov012_0212789c = {3, data_ov012_021279ac};
-BinIdentifier data_ov012_021278a4 = {3, data_ov012_021279c8};
-BinIdentifier data_ov012_021278ac = {3, data_ov012_021279e4};
+const BinIdentifier data_ov012_02127894 = {3, data_ov012_02127990};
+const BinIdentifier data_ov012_0212789c = {3, data_ov012_021279ac};
+const BinIdentifier data_ov012_021278a4 = {3, data_ov012_021279c8};
+const BinIdentifier data_ov012_021278ac = {3, data_ov012_021279e4};
 
-SpriteAnimEntry data_ov012_021278b4[8][2] = {
+const SpriteAnimEntry data_ov012_021278b4[8][2] = {
     {         {1, 3, 2, 0},          {1, 3, 2, 1}},
     {         {7, 9, 8, 0},          {7, 9, 8, 1}},
     {   {0xA, 0xC, 0xB, 0},    {0xA, 0xC, 0xB, 1}},
@@ -156,7 +157,7 @@ SpriteAnimEntry data_ov012_021278b4[8][2] = {
 const TaskHandle Tsk_BtlEnm014_Eff = {data_ov012_02127a00, func_ov012_02125ab4, 0x7C};
 const TaskHandle Tsk_BtlEnm014_RG  = {data_ov012_02127a14, func_ov012_02126968, 0x1E8};
 
-s32 data_ov012_0212794c[4] = {0x64, 0x32, 0x32, 0x41};
+const s32 data_ov012_0212794c[4] = {0x64, 0x32, 0x32, 0x41};
 
 const TaskHandle Tsk_BtlEnm014_UG = {data_ov012_02127a28, func_ov012_021277b0, 0x1F0};
 
@@ -167,14 +168,18 @@ Enm014Variant* data_ov012_02127980[4] = {
     &data_ov012_02127874,
 };
 
-char data_ov012_02127990[] = "Apl_Hor/Grp_BtlEnm014.bin";
-char data_ov012_021279ac[] = "Apl_Hor/Grp_BtlEnm014a.bin";
-char data_ov012_021279c8[] = "Apl_Hor/Grp_BtlEnm014b.bin";
-char data_ov012_021279e4[] = "Apl_Hor/Grp_BtlEnm014c.bin";
+char data_ov012_02127990[28] = "Apl_Hor/Grp_BtlEnm014.bin";
+char data_ov012_021279ac[28] = "Apl_Hor/Grp_BtlEnm014a.bin";
+char data_ov012_021279c8[28] = "Apl_Hor/Grp_BtlEnm014b.bin";
+char data_ov012_021279e4[28] = "Apl_Hor/Grp_BtlEnm014c.bin";
 
-char data_ov012_02127a00[] = "Tsk_BtlEnm014_Eff";
-char data_ov012_02127a14[] = "Tsk_BtlEnm014_RG";
-char data_ov012_02127a28[] = "Tsk_BtlEnm014_UG";
+char data_ov012_02127a00[20] = "Tsk_BtlEnm014_Eff";
+// The original splits this literal into a 4-byte "Tsk_" object at 0x02127a14
+// and the 16-byte remainder at 0x02127a18. The task handle still points at
+// 0x02127a14, so the runtime string is unchanged.
+char data_ov012_02127a14[4]  = "Tsk_";
+char data_ov012_02127a18[16] = "BtlEnm014_RG";
+char data_ov012_02127a28[24] = "Tsk_BtlEnm014_UG";
 
 // MARK: Functions
 
