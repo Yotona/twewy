@@ -1154,7 +1154,8 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     } else {
         data->unk_1EC += 1;
     }
-    data->unk_1EC = (data->unk_1EC + 10) % 10;
+    data->unk_1EC += 10;
+    data->unk_1EC %= 10;
 
 tail:
     // Both arms return from here, so the "bump" arm has to be a forward branch to a block placed
