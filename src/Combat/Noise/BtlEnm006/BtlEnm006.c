@@ -786,9 +786,10 @@ void func_ov010_02125b28(BtlEnm006* data) {
 
 // Fires a one-off effect every fourth frame, and only while a flag sprite field says so.
 s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
-    Enm006SpriteAlt2* alt = (Enm006SpriteAlt2*)&data->sprite;
+    // The address has to be computed *inside* the branch: hoisting it to a local turns the
+    // original's `addeq r0, r4, #0x100` into an unconditional `add r1, r4, #0x100`.
     if (arg1 == 0) {
-        alt->unk_F0 = 0;
+        ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = 0;
     }
     func_ov010_02128820(data);
     if ((data->unk_9A - 1) % 4 == 0) {
