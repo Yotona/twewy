@@ -938,8 +938,8 @@ void func_ov012_02126c74(BtlEnm014* data) {
 
     idx           = FX_Atan2Idx(boss->actor.position.y - data->actor.position.y, aim) >> 4;
     sin           = data_0205e4e0[idx * 2 + 1];
-    mag           = Mth_MulFixed(ABSVAL(sin) + 0x1000, 0x800);
     cos           = data_0205e4e0[idx * 2];
+    mag           = Mth_MulFixed(ABSVAL(sin) + 0x1000, 0x800);
     data->unk_1D8 = Mth_MulFixed(sin, mag);
     data->unk_1DC = Mth_MulFixed(cos, mag);
 
