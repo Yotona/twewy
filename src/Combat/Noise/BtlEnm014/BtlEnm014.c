@@ -250,20 +250,28 @@ void func_ov012_0212582c(BtlEnm014* data) {
 void func_ov012_02125858(BtlEnm014* data) {
     BtlEnm014* boss;
 
-    boss               = (data->unk_084.sprite.bits_0_1 != 0) ? data_ov003_020e71b8->unk3D89C : data_ov003_020e71b8->unk3D898;
+    if (data->unk_084.sprite.bits_0_1 == 0) {
+        boss = data_ov003_020e71b8->unk3D898;
+    } else {
+        boss = data_ov003_020e71b8->unk3D89C;
+    }
     data->actor.unk_62 = 100;
     if (data->unk_084.flags46 & 1) {
         if (data->actor.position.x < boss->actor.position.x) {
-            data->actor.unk_62 = 50;
-            if (data->unk_080 == 3) {
-                data->actor.unk_62 = 0;
-            }
+            goto hit;
         }
-    } else if (data->actor.position.x > boss->actor.position.x) {
-        data->actor.unk_62 = 50;
-        if (data->unk_080 == 3) {
-            data->actor.unk_62 = 0;
+    }
+    if (!(data->unk_084.flags46 & 1)) {
+        if (data->actor.position.x > boss->actor.position.x) {
+            goto hit;
         }
+    }
+    return;
+
+hit:
+    data->actor.unk_62 = 50;
+    if (data->unk_080 == 3) {
+        data->actor.unk_62 = 0;
     }
 }
 
@@ -807,13 +815,14 @@ s32 func_ov012_02126a4c(BtlEnm014* data) {
     if (data->unk_084.flags46 & 1) {
         lo = data->actor.position.x;
     }
-    if (boss->actor.position.x - boss->actor.unk_70 >= lo + 0x3C000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
-        boss->actor.position.y >= data->actor.position.y + 0xF000 || boss->actor.position.y <= data->actor.position.y - 0xF000)
+    if (!(boss->actor.position.x - boss->actor.unk_70 >= lo + 0x3C000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
+          boss->actor.position.y >= data->actor.position.y + 0xF000 ||
+          boss->actor.position.y <= data->actor.position.y - 0xF000))
     {
-        return 0;
+        func_ov012_02125768(data, func_ov012_02127134);
+        return 1;
     }
-    func_ov012_02125768(data, func_ov012_02127134);
-    return 1;
+    return 0;
 }
 
 s32 func_ov012_02126ad8(BtlEnm014* data) {
@@ -827,13 +836,14 @@ s32 func_ov012_02126ad8(BtlEnm014* data) {
     if (data->unk_084.flags46 & 1) {
         lo = data->actor.position.x;
     }
-    if (boss->actor.position.x - boss->actor.unk_70 >= lo + 0x50000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
-        boss->actor.position.y >= data->actor.position.y + 0xA000 || boss->actor.position.y <= data->actor.position.y - 0xA000)
+    if (!(boss->actor.position.x - boss->actor.unk_70 >= lo + 0x50000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
+          boss->actor.position.y >= data->actor.position.y + 0xA000 ||
+          boss->actor.position.y <= data->actor.position.y - 0xA000))
     {
-        return 0;
+        func_ov012_02125768(data, func_ov012_02127378);
+        return 1;
     }
-    func_ov012_02125768(data, func_ov012_02127378);
-    return 1;
+    return 0;
 }
 
 void func_ov012_02126b74(BtlEnm014* data) {
@@ -867,14 +877,17 @@ void func_ov012_02126bd8(BtlEnm014* data) {
 s32 func_ov012_02126c1c(BtlEnm014* data) {
     BtlEnm014* boss = data_ov003_020e71b8->unk3D898;
 
-    if (data->unk_084.flags46 & 1) {
+    if (!(data->unk_084.flags46 & 1)) {
         if (data->actor.position.x < boss->actor.position.x) {
-            return 1;
+            goto hit;
         }
     } else if (data->actor.position.x > boss->actor.position.x) {
-        return 1;
+        goto hit;
     }
     return 0;
+
+hit:
+    return 1;
 }
 
 void func_ov012_02126c74(BtlEnm014* data) {
@@ -886,24 +899,24 @@ void func_ov012_02126c74(BtlEnm014* data) {
     s32        mag;
     s32        cos;
 
-    if (boss->actor.position.x <= data->actor.position.x) {
-        if (dx < -0x28000) {
-            aim = dx + 0x28000;
-        } else {
-            aim = 1;
-        }
-    } else {
+    if (boss->actor.position.x > data->actor.position.x) {
         if (dx > 0x28000) {
             aim = dx - 0x28000;
         } else {
             aim = -1;
         }
+    } else {
+        if (dx < -0x28000) {
+            aim = dx + 0x28000;
+        } else {
+            aim = 1;
+        }
     }
 
-    idx           = (FX_Atan2Idx(boss->actor.position.y - data->actor.position.y, aim) >> 4) * 2;
-    sin           = data_0205e4e0[idx + 1];
+    idx           = FX_Atan2Idx(boss->actor.position.y - data->actor.position.y, aim) >> 4;
+    sin           = data_0205e4e0[idx * 2 + 1];
     mag           = Mth_MulFixed(ABSVAL(sin) + 0x1000, 0x800);
-    cos           = data_0205e4e0[idx];
+    cos           = data_0205e4e0[idx * 2];
     data->unk_1D8 = Mth_MulFixed(sin, mag);
     data->unk_1DC = Mth_MulFixed(cos, mag);
 
@@ -1032,21 +1045,22 @@ void func_ov012_02127134(BtlEnm014* data) {
 
         case 1: {
             s32 d;
-            s32 h;
             data->unk_1C0 = data->unk_1C0 + 1;
             if (data->unk_1C0 == 0x28) {
                 func_ov003_020c4cc4(data, 0x219);
             }
-            if (data->unk_1C0 > 0x28 && data->unk_1C0 < 0x32 && data->unk_1D0 == 0) {
-                d             = ROUND(func_ov003_020cd11c(0x82));
-                d             = (data->unk_084.flags46 & 1) ? d : -d;
-                h             = func_ov003_0208a114(0x82);
-                data->unk_1D0 = func_ov003_0208a164(h, &data->actor.unk_04, data->actor.position.x + d, data->actor.position.y,
-                                                    data->actor.position.z);
-                if (data->unk_1D0 == 1) {
-                    func_ov003_020c4cc4(data, 0x21A);
-                    boss->actor.zVelocity = Mth_MulFixed(boss->actor.zVelocity, 0x800);
-                    boss->actor.yVelocity = Mth_MulFixed(boss->actor.yVelocity, 0x1800);
+            if (data->unk_1C0 > 0x28 && data->unk_1C0 < 0x32) {
+                d = ROUND(func_ov003_020cd11c(0x82));
+                d = (data->unk_084.flags46 & 1) ? d : -d;
+                if (data->unk_1D0 == 0) {
+                    data->unk_1D0 =
+                        func_ov003_0208a164(func_ov003_0208a114(0x82), &data->actor.unk_04, data->actor.position.x + d,
+                                            data->actor.position.y, data->actor.position.z);
+                    if (data->unk_1D0 == 1) {
+                        func_ov003_020c4cc4(data, 0x21A);
+                        boss->actor.zVelocity = Mth_MulFixed(boss->actor.zVelocity, 0x2000);
+                        boss->actor.yVelocity = Mth_MulFixed(boss->actor.yVelocity, 0x1800);
+                    }
                 }
             }
             func_ov012_02126b74(data);
@@ -1066,9 +1080,9 @@ void func_ov012_02127134(BtlEnm014* data) {
             }
             if (func_ov012_02126c1c(data) != 0 && data->unk_1D0 == 1) {
                 func_ov012_02125768(data, func_ov012_02126dac);
-            } else {
-                func_ov012_02126bd8(data);
+                return;
             }
+            func_ov012_02126bd8(data);
             return;
     }
 }
