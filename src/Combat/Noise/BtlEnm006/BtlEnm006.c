@@ -984,22 +984,31 @@ big:
 }
 
 // Computes sample point `index` of the ten-point outline that `func_ov010_02128820` walks,
-// writing it through the two out-pointers in x-then-y order (`outX` is the one compared
-// against `BtlEnm006::unk_28`, the owner's x).
+// writing it through the two out-pointers in x-then-y order. `outX` is the first: that is the
+// one `func_ov010_02128624` compares against the owner's `unk_28`, and the one `func_ov010_02128820`
+// reads as `toOwner.x`.
 //
-// Three details are load-bearing for the codegen:
+// The ten points only take five distinct x values and three distinct y values, all of them offset
+// from either the rounded 4.12 radius `rad` or one of the two screen bounds, so the shape is a
+// flat ten-sided outline rather than a circle -- the offsets do not scale with the radius.
 //
-// - The negative-index fold is `i - 10 * (|i - 5| / 6)`, *not* a plain `i + 10`. It is what
+// Four details are load-bearing for the codegen:
+//
+// - The negative-index fold is `i + 10 * (|i - 5| / 6)`, *not* a plain `i + 10`. It is what
 //   produces `subs #5 / rsbmi / smull 0x2aaaaaab / mla #10`: 0x2aaaaaab is ceil(2^32/6) with no
-//   trailing shift, so the divisor is six and *not* five, and the 0x66666667 further down (with
-//   its `asr #2`) is the divide by ten.
+//   trailing shift, so the divisor is six and *not* five, and the `+` (not `-`) is what keeps
+//   every index inside 0..9. The 0x66666667 further down, with its `asr #2`, is the divide by
+//   ten. Writing the multiply as `i - 10 * q` also costs the `mla`: it becomes `mul` + `sub`.
 // - `unk_70` is 4.12 and is scaled into 16.16 by a float round trip. The `+ 0.5f` / `- 0.5f`
 //   is a rounding that can never actually round, but the original spells it that way and the
 //   two soft-float arms are two separate `bl`s rather than one. The `(s32)` has to sit
-//   *outside* the ternary, or each arm grows its own trailing `_ffix` call.
+//   *outside* the ternary, or each arm grows its own trailing `_ffix` call. Reading the field
+//   into a local is also load-bearing: named directly, the compiler keeps the shifted value in
+//   a callee-saved register and spills.
 // - Both screen-bound getters are called *before* the switch, and their halves are computed
 //   before the jump, so they have to be plain locals the switch reads rather than expressions
-//   rewritten into the arms.
+//   rewritten into the arms. `midLo` is assigned before `midHi` so the two `asr #1` come out in
+//   the original's order.
 void func_ov010_0212847c(s32* outX, s32* outY, BtlEnm006* data, s32 index) {
     s32 i = index;
     s32 lo;
@@ -1073,26 +1082,28 @@ void func_ov010_0212847c(s32* outX, s32* outY, BtlEnm006* data, s32 index) {
 s32 func_ov010_02128624(BtlEnm006* data) {
     s32 bestD = 0x7FFFFFFF;
     s32 bestI = -1;
-    s32 y;
     s32 x;
+    s32 y;
     s32 i;
     for (i = 0; i < 10; i++) {
-        func_ov010_0212847c(&y, &x, data, i);
+        // `func_ov010_0212847c` fills x first and y second -- confirmed by `func_ov010_02128820`,
+        // which reads the first out-param as `toOwner.x` against the owner's `unk_28`.
+        func_ov010_0212847c(&x, &y, data, i);
         // Two sequential guards, not `else if`, and `flip` is read once: the original loads
         // unk_24 into a register after the call and tests that same register twice, so the
         // "unk_24 == 0 and in range" path falls straight through into the second test.
         s32 flip = data->unk_24;
         if (flip == 0) {
-            if (y > data->unk_28) {
+            if (x > data->unk_28) {
                 continue;
             }
         }
         if (flip == 1) {
-            if (y < data->unk_28) {
+            if (x < data->unk_28) {
                 continue;
             }
         }
-        s32 d = func_ov003_020cba2c(data->unk_28, data->unk_2C, y, x);
+        s32 d = func_ov003_020cba2c(data->unk_28, data->unk_2C, x, y);
         if (d < bestD) {
             bestD = d;
             bestI = i;
