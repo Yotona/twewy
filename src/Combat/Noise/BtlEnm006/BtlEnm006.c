@@ -34,13 +34,16 @@ extern s32  func_ov010_021272e0(Enm006Swlo*);
 extern s32  func_ov010_02128e80(void*);
 
 // ov003 helpers.
-extern void                  func_ov003_020c48b0(void*);
-extern void                  func_ov003_020c4878(void*);
-extern void                  func_ov003_020c48fc(void*);
-extern void                  func_ov003_020c492c(void*);
-extern s32                   func_ov003_020c703c(void*);
-extern void                  func_ov003_020c427c(void*);
-extern void                  func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+extern void func_ov003_020c48b0(void*);
+extern void func_ov003_020c4878(void*);
+extern void func_ov003_020c48fc(void*);
+extern void func_ov003_020c492c(void*);
+extern s32  func_ov003_020c703c(void*);
+extern void func_ov003_020c427c(void*);
+extern void func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+// Bearing from (x0, y0) to (x1, y1): FX_Atan2Idx(y1 - y0, x1 - x0).
+extern s32                   func_ov003_020cba14(s32, s32, s32, s32);
+extern void                  func_ov003_020cbcb4(s32*, s32*, s16, s32, s32);
 extern s32                   func_ov003_020cb3c4(s32, s32);
 extern s32                   func_ov003_020c5bfc(void*);
 extern s32                   func_ov003_020c62c4(void*, s32);
@@ -1017,6 +1020,67 @@ s32 func_ov010_02128624(BtlEnm006* data) {
         }
     }
     return bestI;
+}
+
+// Sector lookup. The four halfword bounds live in the 8-byte frame, built from two base values
+// and their +0x8000 copies; the loop keeps the first index whose u16-truncated distance from the
+// bearing falls outside [0xAAA, 0xF6BE], so i == 4 means "no sector" and lands on the default
+// block. The return value is the value just stored through `outWord` -- on the default path that
+// is `unk_28` itself in the not-less case, which is why `v` is a phi and not a second load.
+s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outWord) {
+    u16 sector[4];
+    u16 a;
+    u16 b;
+    s32 angle;
+    s32 i;
+
+    angle = func_ov003_020cba14(data->unk_28, data->unk_2C, x1, y1);
+    // The two bases have to be plain locals: read back out of the array, MWCC spills them to the
+    // frame and reloads them, while the original keeps both in registers across the two stores.
+    a         = 0x182D;
+    b         = 0x67D2;
+    sector[0] = a;
+    sector[1] = b;
+    sector[2] = a + 0x8000;
+    sector[3] = b + 0x8000;
+
+    for (i = 0; i < 4; i++) {
+        // Both tests share the one truncation, and they are an `||`, not an `&&`: `cmpls r3, r2`
+        // runs the second compare only when the first one did *not* break, and the shared `bhi`
+        // then breaks on either the first compare's HI (0xAAA > d) or the second (d > 0xF6BE).
+        u32 d = (u16)(sector[i] - angle);
+        if (d < 0xAAA || d > 0xF6BE) {
+            break;
+        }
+    }
+
+    switch (i) {
+        case 0:
+            *outHalf = 1;
+            *outWord = 1;
+            return 1;
+        case 1:
+            *outHalf = 1;
+            *outWord = 0;
+            return 0;
+        case 2:
+            *outHalf = 2;
+            *outWord = 0;
+            return 0;
+        case 3:
+            *outHalf = 2;
+            *outWord = 1;
+            return 1;
+    }
+    *outHalf = 0;
+    s32 v    = data->unk_28;
+    if (v < x1) {
+        v        = 1;
+        *outWord = 1;
+    } else {
+        *outWord = 0;
+    }
+    return v;
 }
 
 // A near-twin of func_ov010_021259e8. On the first frame the sprite's two velocity components are
