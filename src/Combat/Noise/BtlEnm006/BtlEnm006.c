@@ -1312,15 +1312,11 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
         x = -x;
     }
     if (data->unk_00 == NULL) {
-        // The temp is load-bearing: without it MWCC hoists the `unk_10` load above the mode
-        // branch (it is used on both arms), which the original does not do.
-        s32 dx                          = x + data->unk_10;
-        *(s32*)((u8*)data->unk_08 + 0x28) = dx + data->unk_18;
+        *(s32*)((u8*)data->unk_08 + 0x28) = x + data->unk_10 + data->unk_18;
         *(s32*)((u8*)data->unk_08 + 0x2C) = y + data->unk_14;
         *(s32*)((u8*)data->unk_08 + 0x30) = data->unk_1C - 0x8000;
     } else {
-        s32 dx              = x + data->unk_10;
-        data->unk_0C->unk_28 = dx + data->unk_18;
+        data->unk_0C->unk_28 = x + data->unk_10 + data->unk_18;
         data->unk_0C->unk_2C = y + data->unk_14;
         data->unk_0C->unk_30 = data->unk_1C - 0x8000;
     }
