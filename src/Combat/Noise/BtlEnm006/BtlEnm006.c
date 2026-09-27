@@ -881,6 +881,81 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
     return 1;
 }
 
+// Finds the nearest of the six waypoints and records which side of the segment the owner is on.
+// The return value is the waypoint's index, 0..5, and it is what `func_ov010_021265ac` stores in
+// `unk_1EC` on the first frame of a re-seek.
+//
+// The table's coordinates are stored relative to the centre of the play area, so every use
+// re-derives `bound >> 1`: the *raw* bound is what the two calls' results stay in, and the halving
+// happens at each of the four places it is used (twice in the loop's guards, once in the distance
+// call, once in the fallback compare).
+s32 func_ov010_0212643c(BtlEnm006* data) {
+    // Declared ahead of the two bound getters: the two constant seeds have to be materialised
+    // *before* the first call, and only this declaration order gets `mvn r9` / `sub r6` there.
+    s32 bestD = 0x7FFFFFFF;
+    s32 best  = 0x7FFFFFFF - 0x80000000;
+    s32 cx    = func_ov003_020cb744(1);
+    s32 cy    = func_ov003_020cb7a4(1);
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        // Two sequential guards sharing the one mirror-flag load, not an `else if`: the original
+        // falls out of the first into the second. A waypoint on the wrong side of the owner is
+        // skipped entirely; `unk_24` selects which side that is.
+        if (data->unk_24 == 0 && ((const Enm006PhaseRec*)&data_ov010_02129250)[i].unk_00 + (cx >> 1) > data->unk_28) {
+            continue;
+        }
+        if (data->unk_24 == 1 && ((const Enm006PhaseRec*)&data_ov010_02129250)[i].unk_00 + (cx >> 1) < data->unk_28) {
+            continue;
+        }
+        // Owner first, waypoint second: the two waypoint halves land in r2/r3 as the *third* and
+        // *fourth* arguments, which is what lets them collapse into the original's single
+        // `ldmia` of the record's two words. Read into locals, or the pair does not merge.
+        s32 px = ((const Enm006PhaseRec*)&data_ov010_02129250)[i].unk_00;
+        s32 py = ((const Enm006PhaseRec*)&data_ov010_02129250)[i].unk_04;
+        s32 d  = func_ov003_020cba2c(data->unk_28, data->unk_2C, px + (cx >> 1), py + (cy >> 1));
+        if (d < bestD) {
+            bestD = d;
+            best  = i;
+        }
+    }
+    if (best == 0x7FFFFFFF - 0x80000000) {
+        // Nothing was on the right side at all: fall back to the leftmost or rightmost waypoint.
+        best = (data->unk_28 < (cx >> 1)) ? 3 : 0;
+    }
+
+    // The neighbour of the best waypoint, wrapping: `0x2aaaaaab` with no trailing shift is a
+    // divide by six. Two statements, not one `= (x + 1) % 6`, for the register the dividend lands
+    // in across the reciprocal multiply.
+    s32 next = best + 1;
+    next %= 6;
+    // `toOwner` is declared first so that it gets the *higher* of the two 12-byte frame slots
+    // (0xC) and `edge` the lower one (0x0) -- the reverse swaps both the stores and the two
+    // pointer arguments to Vec_DotProduct. The z components are explicit zeros.
+    //
+    // The y component of a record lives in the *overlapping* 0x02129254 view, which is why the y
+    // terms name a second symbol: that is what puts `data_ov010_02129254` in the literal pool
+    // between the reciprocal and the 0x02129250 reload, as the original has it.
+    Vec toOwner;
+    Vec edge;
+    toOwner.x = data->unk_28 - (((const Enm006PhaseRec*)&data_ov010_02129250)[best].unk_00 + (cx >> 1));
+    toOwner.y = data->unk_2C - (((const Enm006PhaseRec*)&data_ov010_02129254)[best].unk_00 + (cy >> 1));
+    toOwner.z = 0;
+    edge.x    = ((const Enm006PhaseRec*)&data_ov010_02129250)[next].unk_00 -
+             ((const Enm006PhaseRec*)&data_ov010_02129250)[best].unk_00;
+    edge.y = ((const Enm006PhaseRec*)&data_ov010_02129254)[next].unk_00 -
+             ((const Enm006PhaseRec*)&data_ov010_02129254)[best].unk_00;
+    edge.z = 0;
+    // A dot product of at least zero faces right. Bit 2 of `unk_1F4` is what `func_ov010_021265ac`
+    // reads on the next frame, so it is set *or cleared* here rather than only set.
+    if (Vec_DotProduct(&toOwner, &edge) >= 0) {
+        data->unk_1F4 |= 4;
+    } else {
+        data->unk_1F4 &= ~4;
+    }
+    return best;
+}
+
 // The waypoint chase. `arg1` is the sprite's frame counter: on the first frame (0) it re-seeks the
 // nearest waypoint with func_ov010_0212643c, and only then does it pick a velocity target from the
 // phase tables. The phase counter `unk_1EC` is a six-entry ring, so the wrap is `(x + 6) % 6`, not
