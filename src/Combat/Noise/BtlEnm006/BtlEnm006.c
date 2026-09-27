@@ -48,6 +48,9 @@ extern s32  func_ov003_020c5bfc(void*);
 extern s32  func_ov003_020c62c4(void*, s32);
 extern s32  func_ov003_020c65cc(void*, s32);
 extern s32  func_ov003_020c72b4(void*, s32, s32);
+extern s32  func_ov003_020c37f8(void*);
+extern s32  func_ov003_020c7070(void*);
+extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(void);
@@ -525,4 +528,76 @@ void func_ov010_021282b8(BtlEnm006* data) {
         return;
     }
     func_ov010_02127460(data, (void*)func_ov010_02127550);
+}
+
+void func_ov010_02128434(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        data->sprite.unk_C0++;
+        data->unk_1E4 = 0;
+        data->unk_1E0 = 0;
+        data->unk_1DC = 0;
+    }
+    if (func_ov003_020c7070(data) == 0) {
+        data->unk_1CC = 0;
+    }
+}
+
+// func_ov010_02126830 and func_ov010_02128a6c are byte-identical. A ten-argument call: the six
+// stack arguments are evaluated first, and the first two register arguments are the *addresses*
+// of two of the fields that also appear as later arguments.
+s16 func_ov010_02126830(BtlEnm006* data, void* arg1) {
+    return func_ov003_020cb910(&data->unk_1DC, &data->unk_1E0, &data->unk_1E4, data->unk_28, data->unk_2C, data->unk_30,
+                               data->unk_1D0, data->unk_1D4, data->unk_1D8, arg1);
+}
+
+s16 func_ov010_02128a6c(BtlEnm006* data, void* arg1) {
+    return func_ov003_020cb910(&data->unk_1DC, &data->unk_1E0, &data->unk_1E4, data->unk_28, data->unk_2C, data->unk_30,
+                               data->unk_1D0, data->unk_1D4, data->unk_1D8, arg1);
+}
+
+// Spawns the sub-task. The pool handle is either whatever the lookup at data+0x84 returns, or --
+// when that returns zero -- a pair of globals offset by a fixed bias.
+void func_ov010_02126c38(void* arg0) {
+    // `&self` is what the original hands over as the task's param: it takes the address of the
+    // incoming argument, which MWCC homes in the outgoing-argument area at sp+8. Taking the
+    // address of the parameter directly makes it spill r0-r3 instead.
+    void*     self = arg0;
+    TaskPool* pool = (TaskPool*)func_ov003_020c37f8((u8*)self + 0x84);
+    if (pool == NULL) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+        if (pool != NULL) {
+            pool = (TaskPool*)((u32)pool + 0x8C + 0x8000);
+        }
+    }
+    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swirl, 0, 0, 0, &self);
+}
+
+// All three tests reach one shared `return 0` block, but by different routes: the first two branch
+// *forward* to it, while the third falls through into it and the body is reached by a forward
+// branch. Written as plain early returns MWCC predicates them into the fall-through instead
+// (`movlt r0, #0 / bxlt lr`), so the arms need explicit labels. The final decrement also re-reads
+// the field rather than reusing the value tested a few lines earlier.
+s32 func_ov010_02128c6c(s32 arg0, s32 arg1, void* arg2) {
+    s32 v = *(s32*)((u8*)arg1 + 0x7C);
+    if (v < -1) {
+        goto zero;
+    }
+    if (v == 5) {
+        goto zero;
+    }
+    if (v < 0x3C) {
+        goto body;
+    }
+zero:
+    return 0;
+body:
+    s32 c = *(s32*)arg2;
+    if (c < 0) {
+        return 0;
+    }
+    if (c == 0) {
+        *(s32*)((u8*)arg2 + 4) = arg1;
+    }
+    *(s32*)arg2 = *(s32*)arg2 - 1;
+    return 0;
 }
