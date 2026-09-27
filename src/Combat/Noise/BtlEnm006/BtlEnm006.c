@@ -41,6 +41,7 @@ extern void func_ov003_020c4878(void*);
 extern void func_ov003_020c48fc(void*);
 extern void func_ov003_020c492c(void*);
 extern s32  func_ov003_020c703c(void*);
+extern void func_ov003_020c427c(void*);
 
 extern char data_ov010_0212932c[28];
 extern char data_ov010_02129348[28];
@@ -389,5 +390,43 @@ s32 func_ov010_02128dbc(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 3:
             return func_ov010_02128ff8(data);
     }
+    return 1;
+}
+
+// func_ov010_02125910 and func_ov010_02127460 are byte-identical bodies. Both compute
+// data + 0x100 once, *after* the call, and index the two halfword clears from that base --
+// so the stores must be plain field accesses, not a pointer local, or the address gets
+// hoisted above the call and an extra callee-saved register appears.
+void func_ov010_02125910(BtlEnm006* data, void* arg1) {
+    func_ov003_020c427c(data);
+    data->unk_1C8       = arg1;
+    data->sprite.unk_C4 = 0;
+    data->sprite.unk_C0 = 0;
+}
+
+void func_ov010_02127460(BtlEnm006* data, void* arg1) {
+    func_ov003_020c427c(data);
+    data->unk_1C8       = arg1;
+    data->sprite.unk_C4 = 0;
+    data->sprite.unk_C0 = 0;
+}
+
+// The original branches all three tests forward to one shared `return 0`, then reaches
+// `return 1` by a forward branch of its own. So both arms need explicit labels: early
+// returns get predicated by MWCC (`movlt r0, #1; bxlt lr`) instead of branching.
+s32 func_ov010_02128c3c(void* arg0, void* arg1) {
+    s32 v = *(s32*)((u8*)arg1 + 0x7C);
+    if (v < -1) {
+        goto zero;
+    }
+    if (v == 5) {
+        goto zero;
+    }
+    if (v < 0x3C) {
+        goto one;
+    }
+zero:
+    return 0;
+one:
     return 1;
 }
