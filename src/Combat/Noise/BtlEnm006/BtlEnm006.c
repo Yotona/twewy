@@ -70,6 +70,11 @@ extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
+extern s32  func_ov010_02128bcc(void*, void*);
+extern void func_ov010_02127110(void*, void*);
+extern void func_ov010_02127650(void);
+extern void func_ov010_02127cc0(void);
+
 /// The animation tables are addressed as `table + variant*8 + phase*2`, i.e. an array of 8-byte
 /// records each holding four halfwords -- not as `SpriteAnimEntry[]`, whose field access folds the
 /// two index terms together and produces a different instruction order.
@@ -863,4 +868,68 @@ void func_ov010_021270a8(void* arg0, void* arg1) {
         }
     }
     EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swlo, 0, 0, 0, &zero);
+}
+
+// Twin of func_ov010_021268c4 -- same mirror-by-position-bias trick, different box size.
+s32 func_ov010_02128bcc(void* arg0, void* arg1) {
+    BtlEnm006* data = arg0;
+    if (func_ov003_020cc354(arg1) != 0) {
+        return 0;
+    }
+    s32 flip = data->unk_24 == 0 ? 0x8000 : -0x8000;
+    return func_ov003_020cc38c(arg1, data->unk_28 + flip, data->unk_2C + 0x8000, data->unk_30, 0x18000, 0x20000, 0x20000);
+}
+
+// The gate before spawning a follower: the target must not be in its dying state, must not have
+// bit 2 set in its engine flags, and must be inside the arena. The return value is the
+// *negation* of the first argument, so a caller passing 1 gets 0.
+s32 func_ov010_02128cbc(s32 arg0, void* arg1, void* arg2) {
+    if (*(s32*)((u8*)arg1 + 0x7C) == 5) {
+        return 0;
+    }
+    if (*(s32*)((u8*)arg1 + 0x54) & 4) {
+        return 0;
+    }
+    if (func_ov010_02128bcc(arg2, arg1) == 0) {
+        goto zero;
+    }
+    func_ov010_02127110(arg2, arg1);
+    return arg0 == 0;
+zero:
+    // The first two early returns are predicated by MWCC and match; this one has to branch
+    // forward to this shared block, which a plain `return 0` does not produce.
+    return 0;
+}
+
+// The fourth copy of the task-spawn shape; the param handed over points at a local one.
+void func_ov010_02127110(void* arg0, void* arg1) {
+    s32       one  = 1;
+    TaskPool* pool = (TaskPool*)func_ov003_020c37f8((u8*)arg0 + 0x84);
+    if (pool == NULL) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+        if (pool != NULL) {
+            pool = (TaskPool*)((u32*)pool + 0x8C + 0x8000);
+        }
+    }
+    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swlo, 0, 0, 0, &one);
+}
+
+// Three-way behaviour pick. The `unk_80` test has to come first and *not* short-circuit the
+// random draw: the original branches past the draw when unk_80 is zero. The rare arm also has to
+// be the *last* block in the layout -- written inline, MWCC inverts the compare into `blo` and
+// jumps over it, instead of the original's forward `bhs` to a block placed at the end.
+void func_ov010_02127488(BtlEnm006* data) {
+    if (data->unk_80 != 0) {
+        if (RNG_Next(0x64) >= 0x5A) {
+            goto big;
+        }
+    }
+    if ((u32)RNG_Next(0x64) < (u32)func_ov010_02128b00()) {
+        func_ov010_02127460(data, (void*)func_ov010_02127764);
+    } else {
+        func_ov010_02127460(data, (void*)func_ov010_02127650);
+    }
+    return;
+big:
+    func_ov010_02127460(data, (void*)func_ov010_02127cc0);
 }
