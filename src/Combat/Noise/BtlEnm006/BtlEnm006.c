@@ -1094,9 +1094,9 @@ s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outW
 // disappear.
 void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     // h is the halfword the sector lookup writes; w is the word beside it, which `sp+0` holds the
-    // address of for the outgoing fifth argument.
-    s16 h = 0;
-    s32 w = 0;
+    // address of for the outgoing fifth argument. Neither is initialised in the original.
+    s16 h;
+    s32 w;
     s32 o2b;
     s32 o2a;
     s32 o1b;
@@ -1114,20 +1114,22 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     func_ov010_0212847c(&o2a, &o2b, data, data->unk_1EC + 1);
 
     if (arg1 == 0) {
-        // The dot product of the edge (o1 -> o2) with the offset from o1 to the owner decides
-        // which way round the sprite faces. The z components are explicit zeros in the original.
+        // The dot product of the offset from o1 to the owner against the edge o1 -> o2 decides
+        // which way round the sprite faces. The z components are explicit zeros in the original,
+        // and the "faces left" arm clears bit 0 without touching the rest while the other arm
+        // re-ORs it -- the difference between `bic`+`orr` and a bare `orr`.
         Vec edge;
         Vec toOwner;
-        edge.x    = o2a - o1a;
-        edge.y    = o2b - o1b;
-        edge.z    = 0;
         toOwner.x = data->unk_28 - o1a;
         toOwner.y = data->unk_2C - o1b;
         toOwner.z = 0;
-        if (Vec_DotProduct(&edge, &toOwner) < 0) {
+        edge.x    = o2a - o1a;
+        edge.y    = o2b - o1b;
+        edge.z    = 0;
+        if (Vec_DotProduct(&toOwner, &edge) < 0) {
             data->unk_1F5 &= 0xFE;
         } else {
-            data->unk_1F5 |= 1;
+            data->unk_1F5 = (data->unk_1F5 & 0xFE) | 1;
         }
     }
 
