@@ -1170,7 +1170,7 @@ tail:
     data->unk_1DC                              = 0;
     return;
 bump:
-    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 += 1;
+    ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 = ((Enm006SpriteAlt2*)&data->sprite)->unk_F0 + 1;
 }
 
 // A near-twin of func_ov010_021259e8. On the first frame the sprite's two velocity components are
