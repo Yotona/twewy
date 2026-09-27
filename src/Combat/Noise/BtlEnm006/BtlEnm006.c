@@ -31,7 +31,7 @@ extern s32  func_ov010_02126e58(Enm006Swirl*);
 extern s32  func_ov010_02126fdc(Enm006Swirl*);
 extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
 extern s32  func_ov010_021272e0(Enm006Swlo*);
-extern s32  func_ov010_02128e80(void*);
+extern s32  func_ov010_02128e80(BtlEnm006*);
 
 // ov003 helpers.
 extern void func_ov003_020c48b0(void*);
@@ -105,7 +105,6 @@ extern void func_ov003_020c44ac(BtlEnm006*);
 extern void func_ov003_020c4b1c(BtlEnm006*);
 extern void func_ov003_020c4628(BtlEnm006*);
 extern s32  func_ov003_020c3bf0(void);
-extern s32  func_ov003_02082f2c(BtlEnm006*);
 extern s32  func_ov010_02126420(void*);
 extern void func_ov010_0212636c(BtlEnm006*);
 extern void func_ov010_021263c4(BtlEnm006*);
@@ -1169,17 +1168,23 @@ void func_ov010_02126a20(BtlEnm006* data, void* arg1) {
 }
 
 // The DeadEff per-frame body: a 7-way stage switch, then the shared motion/tick tail. Cases 1 and
-// 2 share a block, and 0/4/5 fall through to the tail untouched. Note the polarity of the two
-// flag tests -- the *callback* runs when the bit is clear, because the original branches on the
-// flags left by the `orrs`/`tst`, not on the value it just wrote.
+// 2 share a block, and 0/4/5 fall through to the tail untouched.
+//
+// The `flag` is spelled as a plain zero plus a conditional assignment rather than one comparison
+// expression: the original hoists the `mov r5, #0` up next to the first guard and sinks the
+// `moveq r5, #1` down to the call, which is what two statements give and what
+// `flag = (a == b)` does not.
 s32 func_ov010_02126a94(BtlEnm006* data) {
     if (data->unk_1C8 != (void*)func_ov010_02125998) {
         if (func_ov003_020c3bf0() != 0) {
             return 1;
         }
     }
-    s32 flag = data->unk_1C8 == (void*)func_ov010_02125de4;
-    switch (func_ov003_02082f2c(data)) {
+    s32 flag = 0;
+    if (data->unk_1C8 == (void*)func_ov010_02125de4) {
+        flag = 1;
+    }
+    switch (CombatActor_PopPendingCommand((CombatActor*)data)) {
         case 1:
         case 2:
             if (flag == 0) {
@@ -1195,10 +1200,12 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
             }
             break;
         case 6:
-            if (data->unk_54 & 1) {
+            // Same shape as 02128e80's case 6: the original reuses the flags its own `orrs`
+            // leaves behind, so the `|= 1` comes first and the test is on the whole word.
+            data->unk_54 |= 1;
+            if (data->unk_54 != 0) {
                 break;
             }
-            data->unk_54 |= 1;
             func_ov010_02125910(data, (void*)func_ov010_021263c4);
             break;
     }
@@ -1206,17 +1213,92 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
     data->unk_2C += data->unk_1E0;
     data->unk_30 += data->unk_1E4;
     if (data->unk_1C8 != NULL) {
-        ((void (*)(void))data->unk_1C8)();
+        // The callee takes the instance: spelled as a nullary call, MWCC leaves the callback
+        // itself in r0 and `blx r0` hands it the function pointer instead of `data`.
+        ((void (*)(BtlEnm006*))data->unk_1C8)(data);
     }
     u8* p = (u8*)data->sprite.unk_88;
-    if (*(u16*)(p + 2) != 0) {
+    // The flag is passed on to the animation helper as its increment: the original already has
+    // it in r1 from the `ldrh` that tested it, and passing a literal 0 would both add a
+    // `mov r1, #0` the original does not have and advance the phase by the wrong amount.
+    u16 step = *(u16*)(p + 2);
+    if (step != 0) {
         if ((data->sprite.unk_8C & 1) || data->unk_C8 == 0xD) {
-            func_ov010_02126934(data, 0);
+            func_ov010_02126934(data, step);
             *(u16*)(p + 2) = 0;
         }
     }
     data->unk_54 |= 0x80000000;
     func_ov003_020c4628(data);
+    return data->unk_1CC;
+}
+
+// The near-twin of func_ov010_02126a94, for the UG task. Same prologue, same tail, but the four
+// stage cases do not share a block and the callback set is the UG one; cases 0/4/5 and anything
+// above 6 fall straight through to the tail, so there is no `default:`.
+//
+// Two details are load-bearing:
+//
+//  - Case 6 tests the *whole* word, and does so *after* the `|= 1`. The original reuses the
+//    flags its own `orrs` leaves behind (`orrs / str / bne`), and `x | 1` can never be zero,
+//    so the callback arm is dead in the original binary -- that is what the disassembly says,
+//    and this is the spelling that reproduces it. The reading that looks semantically right,
+//    `if (unk_54 & 1) break; unk_54 |= 1;`, compiles to `tst r0, #1 / bne` plus a late
+//    `orr`/`str`: one instruction more, in the wrong order, and it would call the callback.
+//  - The 0x1F6 halfword is handed straight to the animation helper as its increment argument.
+//    The original already has it in r1 from the `ldrh` that tested it, so the C has to pass the
+//    *value* rather than a literal 0 -- a literal costs an extra `mov r1, #0` that the
+//    original does not have. (Same story in 02126a94, where the flag comes from `unk_88 + 2`.)
+//
+// The switch discriminant is `CombatActor_PopPendingCommand`, not a `func_ov003_*` name: that
+// is what `config/usa/arm9/overlays/ov003/symbols.txt` calls 0x02082f2c, and objdiff scores a
+// `bl` whose two sides disagree about the symbol name.
+//
+// The 0x1F6 halfword itself is read through the overlapping `Enm006SpriteAlt3` view so the
+// address is built as base+0x100 then +0xF6, not as one outer-struct access, and so the same
+// base register can serve the following `unk_8C` load.
+s32 func_ov010_02128e80(BtlEnm006* data) {
+    data->unk_38 = 0;
+    if (data->unk_1C8 != (void*)func_ov010_02127500) {
+        if (func_ov003_020c3bf0() != 0) {
+            return 1;
+        }
+    }
+    switch (CombatActor_PopPendingCommand((CombatActor*)data)) {
+        case 1:
+            func_ov010_02127460(data, (void*)func_ov010_021282b8);
+            data->unk_38 = 0;
+            break;
+        case 2:
+            func_ov010_02127460(data, (void*)func_ov010_02128314);
+            break;
+        case 3:
+            func_ov010_02127460(data, (void*)func_ov010_02128434);
+            break;
+        case 6:
+            data->unk_54 |= 1;
+            if (data->unk_54 != 0) {
+                break;
+            }
+            func_ov010_02127460(data, (void*)func_ov010_021283c0);
+            break;
+    }
+    data->unk_28 += data->unk_1DC;
+    data->unk_2C += data->unk_1E0;
+    data->unk_30 += data->unk_1E4;
+    if (data->unk_1C8 != NULL) {
+        ((void (*)(BtlEnm006*))data->unk_1C8)(data);
+    }
+    u16 flag = ((Enm006SpriteAlt3*)&data->sprite)->unk_F6;
+    if (flag != 0) {
+        if ((data->sprite.unk_8C & 1) || data->unk_C8 == 0xD || data->unk_C8 == 0xF) {
+            func_ov010_02128d20(data, flag);
+            // Re-derived, not reused from `flag`: the address has to be rebuilt after the call.
+            ((Enm006SpriteAlt3*)&data->sprite)->unk_F6 = 0;
+        }
+    }
+    data->unk_54 |= 0x80000000;
+    func_ov003_020c4668(data);
     return data->unk_1CC;
 }
 
@@ -1358,7 +1440,9 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
         target       = args->unk_0C;
         data->unk_0C = target;
         func_ov003_02084694((u8*)target + 0x144, 1);
-        func_ov003_02082f1c(target, 1);
+        // `CombatActor_SetPendingCommand` is what config/usa/.../ov003/symbols.txt calls
+        // 0x02082f1c, and objdiff scores a `bl` whose two sides disagree about the name.
+        CombatActor_SetPendingCommand((CombatActor*)target, 1);
         func_ov010_021256d0(data->unk_04, data->unk_0C);
     }
     data->unk_30 = (data->unk_30 & ~1) | 1;
@@ -1422,7 +1506,7 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
             // drops the four loads.
             *(s32*)((u8*)data->unk_08 + 0x40) = *(s32*)((u8*)data->unk_08 + 0x24) == 0 ? 0x1800 : -0x1800;
             *(s32*)((u8*)data->unk_08 + 0x38) = -0x5000;
-            func_ov003_02082f1c(data->unk_08, 2);
+            CombatActor_SetPendingCommand((CombatActor*)data->unk_08, 2);
         } else {
             self = data->unk_0C;
             self->sprite.unk_8C |= 0x1000;

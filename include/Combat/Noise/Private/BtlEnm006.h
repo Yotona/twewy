@@ -57,6 +57,14 @@ typedef struct Enm006SpriteAlt2 {
     /* 0xF0 */ s16 unk_F0;
 } Enm006SpriteAlt2;
 
+/// A fourth overlapping view, for the u16 at 0x1F6: `func_ov010_02128e80` reaches it as
+/// base+0x100 then +0xF6, the same two-step form as the two views above. One field only,
+/// for the reason given on `Enm006SpriteAlt2`.
+typedef struct Enm006SpriteAlt3 {
+    u8             pad00[0xF6];
+    /* 0xF6 */ u16 unk_F6;
+} Enm006SpriteAlt3;
+
 /// The main `BtlEnm006` task data. Only offsets confirmed by the disassembly are named; the
 /// gaps are explicit padding and the struct grows as more functions land.
 /// Size: 0x1FC (from the Tsk_BtlEnm006_RG TaskHandle).
