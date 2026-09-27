@@ -58,7 +58,7 @@ data_ov012_02127990 kind:data(any) addr:0x02127990
 data_ov012_021279ac kind:data(any) addr:0x021279ac
 data_ov012_021279c8 kind:data(any) addr:0x021279c8
 data_ov012_021279e4 kind:data(any) addr:0x021279e4
-data_ov012_02127a00 kind:data(any) addr:0x02127a00
-data_ov012_02127a14 kind:data(any) addr:0x02127a14
+Tsk_BtlEnm014_Eff kind:data(any) addr:0x02127a00
+Tsk_BtlEnm014_RG kind:data(any) addr:0x02127a14
 data_ov012_02127a18 kind:data(any) addr:0x02127a18 ambiguous
-data_ov012_02127a28 kind:data(any) addr:0x02127a28
+Tsk_BtlEnm014_UG kind:data(any) addr:0x02127a28
