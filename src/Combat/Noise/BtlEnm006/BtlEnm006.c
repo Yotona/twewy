@@ -21,6 +21,20 @@ extern s32 func_ov010_02126d04(TaskPool*, Task*, void*, s32);
 extern s32 func_ov010_02127178(TaskPool*, Task*, void*, s32);
 extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 
+// Per-stage workers dispatched by the task entry points above. Declared void* for the
+// task data because the owning structs are not mapped yet.
+extern s32 func_ov010_02125780(void*, void*);
+extern s32 func_ov010_02125878(void*);
+extern s32 func_ov010_02126a20(void*, void*);
+extern s32 func_ov010_02126a94(void*);
+extern s32 func_ov010_02126d54(void*, void*);
+extern s32 func_ov010_02126e58(void*);
+extern s32 func_ov010_02126fdc(void*);
+extern s32 func_ov010_021271c0(void*, void*);
+extern s32 func_ov010_021272e0(void*);
+extern s32 func_ov010_02128e0c(void*, void*);
+extern s32 func_ov010_02128e80(void*);
+
 // ov003 helpers.
 extern void func_ov003_020c48b0(void*);
 extern void func_ov003_020c4878(void*);
@@ -291,4 +305,89 @@ s32 func_ov010_02126420(void* data) {
         *(s32*)((u8*)data + 0x1CC) = 0;
     }
     return result;
+}
+
+// MARK: Task entry points
+//
+// All five are the same shape: read task->data, dispatch on stage, and return whatever the
+// per-stage worker returns (1 for an unhandled stage). The sub-workers are declared void*
+// because their owning structs are not mapped yet -- their sizes come from the TaskHandle
+// records: DeadEff 0x6C, RG 0x1FC, Swirl 0xA0, Swlo 0x34, UG 0x200.
+
+// Tsk_BtlEnm006_DeadEff -- dense 4-case table.
+s32 func_ov010_02125730(TaskPool* pool, Task* task, void* args, s32 stage) {
+    void* data = task->data;
+    switch (stage) {
+        case 0:
+            return func_ov010_02125780(data, args);
+        case 1:
+            return func_ov010_02125854(data);
+        case 2:
+            return func_ov010_02125878(data);
+        case 3:
+            return func_ov010_02125900(data);
+    }
+    return 1;
+}
+
+// Tsk_BtlEnm006_RG -- dense 4-case table.
+s32 func_ov010_021269d0(TaskPool* pool, Task* task, void* args, s32 stage) {
+    void* data = task->data;
+    switch (stage) {
+        case 0:
+            return func_ov010_02126a20(data, args);
+        case 1:
+            return func_ov010_02126a94(data);
+        case 2:
+            return func_ov010_02126c18(data);
+        case 3:
+            return func_ov010_02126c28(data);
+    }
+    return 1;
+}
+
+// Tsk_BtlEnm006_Swirl -- dense 4-case table.
+s32 func_ov010_02126d04(TaskPool* pool, Task* task, void* args, s32 stage) {
+    void* data = task->data;
+    switch (stage) {
+        case 0:
+            return func_ov010_02126d54(data, args);
+        case 1:
+            return func_ov010_02126e58(data);
+        case 2:
+            return func_ov010_02126fdc(data);
+        case 3:
+            return func_ov010_02127094(data);
+    }
+    return 1;
+}
+
+// Tsk_BtlEnm006_Swlo -- sparse chain; stages 0, 1 and 3 only, so no jump table.
+s32 func_ov010_02127178(TaskPool* pool, Task* task, void* args, s32 stage) {
+    void* data = task->data;
+    switch (stage) {
+        case 0:
+            return func_ov010_021271c0(data, args);
+        case 1:
+            return func_ov010_021272e0(data);
+        case 3:
+            return func_ov010_02127458();
+    }
+    return 1;
+}
+
+// Tsk_BtlEnm006_UG -- dense 4-case table.
+s32 func_ov010_02128dbc(TaskPool* pool, Task* task, void* args, s32 stage) {
+    void* data = task->data;
+    switch (stage) {
+        case 0:
+            return func_ov010_02128e0c(data, args);
+        case 1:
+            return func_ov010_02128e80(data);
+        case 2:
+            return func_ov010_02128fe8(data);
+        case 3:
+            return func_ov010_02128ff8(data);
+    }
+    return 1;
 }
