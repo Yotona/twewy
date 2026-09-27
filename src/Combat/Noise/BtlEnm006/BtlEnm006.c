@@ -29,7 +29,7 @@ extern s32  func_ov010_02126a94(BtlEnm006*);
 extern void func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
 extern s32  func_ov010_02126e58(Enm006Swirl*);
 extern s32  func_ov010_02126fdc(Enm006Swirl*);
-extern s32  func_ov010_021271c0(void*, void*);
+extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
 extern s32  func_ov010_021272e0(void*);
 extern s32  func_ov010_02128e80(void*);
 
@@ -1248,5 +1248,41 @@ s32 func_ov010_02126fdc(Enm006Swirl* data) {
         func_ov003_02082730((CombatSprite*)((u8*)data + 4), 0x7FFFFFFF - y);
         CombatSprite_Render((CombatSprite*)((u8*)data + 4));
     }
+    return 1;
+}
+
+// The Swlo stage-0 constructor. `unk_00` from the spawn arguments is a *mode flag*, not a
+// pointer: it picks which of two target records gets the engine bits and the health value, and
+// the register holding that choice is reused for the whole tail.
+s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
+    MI_CpuSet(data, 0, 0x34);
+    data->unk_00 = args->unk_00;
+    data->unk_04 = args->unk_04;
+    void* target;
+    if (data->unk_00 == NULL) {
+        target       = args->unk_08;
+        data->unk_08 = target;
+        s32 hit      = func_ov003_020c37f8((u8*)data->unk_04 + 0x84) != 0;
+        data->unk_0C = hit ? (BtlEnm006*)args->unk_08 : (BtlEnm006*)args->unk_0C;
+        s16 mode     = hit ? 0x52 : 0x4D;
+        if (func_ov003_020c5b0c(mode, data->unk_0C, *(s32*)((u8*)data->unk_10 + 0x28)) != 1) {
+            return 0;
+        }
+    } else {
+        target       = args->unk_0C;
+        data->unk_0C = target;
+        func_ov003_02084694((u8*)target + 0x144, 1);
+        func_ov003_02082f1c(target, 1);
+        func_ov010_021256d0(data->unk_04, data->unk_0C);
+    }
+    data->unk_30 = (data->unk_30 & ~1) | 1;
+    *(u32*)((u8*)target + 0x54) |= 0x10000000;
+    *(u16*)((u8*)target + 0x10) = 0x258;
+    data->unk_10                = *(s32*)((u8*)args->unk_04 + 0x28);
+    data->unk_14                = *(s32*)((u8*)args->unk_04 + 0x2C);
+    data->unk_2C                = 0x4000;
+    data->unk_2E                = 0;
+    data->unk_18                = (RNG_Next(9) - 4) << 12;
+    data->unk_1C                = (RNG_Next(9) - 4) << 12;
     return 1;
 }

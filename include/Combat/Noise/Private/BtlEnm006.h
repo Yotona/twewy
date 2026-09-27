@@ -133,6 +133,24 @@ typedef struct Enm006Swirl {
     /* 0x80 */ s32        unk_80[8];
 } Enm006Swirl; // Size: 0xA0 (from the Tsk_BtlEnm006_Swirl TaskHandle)
 
+/// The `Tsk_BtlEnm006_Swlo` task data. 0x34 bytes. `unk_00` is a mode flag, not a pointer: it
+/// selects which of `unk_08` / `unk_0C` the computed position is written through.
+typedef struct Enm006Swlo {
+    /* 0x00 */ void*      unk_00; // mode: non-zero selects unk_0C
+    /* 0x04 */ void*      unk_04;
+    /* 0x08 */ void*      unk_08;
+    /* 0x0C */ BtlEnm006* unk_0C;
+    /* 0x10 */ void*      unk_10;
+    /* 0x14 */ s32        unk_14;
+    /* 0x18 */ s32        unk_18;
+    /* 0x1C */ s32        unk_1C;
+    u8                    pad20[0x2C - 0x20];
+    /* 0x2C */ u16        unk_2C; // clamped to 0xC000
+    /* 0x2E */ u16        unk_2E;
+    /* 0x30 */ u8         unk_30;
+    u8                    pad31[0x34 - 0x31];
+} Enm006Swlo; // Size: 0x34 (from the Tsk_BtlEnm006_Swlo TaskHandle)
+
 /// Arguments handed to the `Tsk_BtlEnm006_*` task constructors.
 typedef struct Enm006Spawn {
     /* 0x00 */ BtlEnm006* unk_00;
