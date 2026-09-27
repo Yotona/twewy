@@ -619,6 +619,48 @@ bx lr
 
 **Trick**: MWCC sets the return value conditionally using `moveq`/`movne` rather than branching to set it.
 
+### 8.9 Triaging Sub-100% Functions by Mechanism
+
+A residue of "not 100%" is not one problem. Before spending attempts on source
+restructuring, sort each sub-100% function into a bucket — the buckets have very
+different tractability. `build/scratch/triage.py` does this from `build/ov_diff.json`.
+
+The discriminator that matters: compare the two instruction streams with **condition
+suffixes stripped** (`ldrne` == `ldr`) and **branch/literal targets normalised**. If the
+mnemonic multisets still differ, the two sides are doing different work and no amount of
+register-nudging will help. If they match, the difference is only how the work is
+predicated, scheduled or coloured — and those *are* often steerable.
+
+Buckets, in descending order of tractability:
+
+| bucket | test | what fixes it |
+|---|---|---|
+| `reloc-artifact` | streams identical after normalising targets | nothing — objdiff relocation-index accounting |
+| `schedule` | same work, same predication, reordered | statement order in the source |
+| `reg-colour` | same work, same predication, different registers | named locals to reshape live ranges |
+| `if-conversion` | same work, different predicated count | invert the condition to an early `return` |
+| `mixed` | mnemonic multisets differ | genuinely different code — expect to lose |
+
+As of the ov012/013/015 pass, the 23 residue functions sorted as 2 `reloc-artifact`,
+3 `schedule`, 7 `reg-colour`, 13 `mixed` — i.e. **the bulk is `mixed` and is not worth
+attacking without a specific hypothesis**. Note that the `if-conversion` bucket nearly
+empties once suffixes are stripped: predication differences are almost always accompanied
+by real work differences, so "MWCC refused to if-convert" is usually a symptom of a
+different problem, not the problem itself.
+
+Two cautions from that pass:
+
+- **Do not chase the register choice directly.** In `func_ov012_02126c74` the original
+  holds a value in `lr` where ours uses `r1`, but that is downstream of a *schedule*
+  difference: the original's longer live range forces MWCC to rematerialise an address,
+  ours is short enough to keep it live. Fixing the schedule is the only route; renaming
+  variables to "use lr" does nothing.
+- **Watch for store-aliasing barriers.** Moving a load later in the source can be
+  self-defeating: an intervening store to a struct field creates a dependency MWCC cannot
+  disambiguate from a global load, and it will serialise the block (in that same function,
+  91.8% → 74.7% and +9 instructions). Measure instruction *count*, not just percentage,
+  when a variant makes things worse.
+
 ---
 
 ## 9. Task & Overlay Lifecycle Patterns
