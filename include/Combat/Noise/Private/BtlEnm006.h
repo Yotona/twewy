@@ -114,6 +114,23 @@ struct BtlEnm006 {
     u8                            pad1F6[0x1FC - 0x1F6];
 };
 
+/// The `Tsk_BtlEnm006_Swirl` task data. This is a *different* struct from `BtlEnm006`: 0xA0 bytes
+/// rather than 0x1FC, and a `s32[8]` at 0x80 where `BtlEnm006` has a single `u16`. Confusing the
+/// two shifts everything, so it gets its own type. 0x04 holds a CombatSprite; it is left as
+/// padding because its size is unknown and naming it would fix the offsets below.
+typedef struct Enm006Swirl {
+    /* 0x00 */ BtlEnm006* unk_00; // the owning instance
+    u8                    pad04[0x68 - 0x04];
+    /* 0x68 */ s32        unk_68; // position.x, biased by 0x20000
+    /* 0x6C */ s32        unk_6C; // position.y
+    /* 0x70 */ s32        unk_70;
+    /* 0x74 */ s32        unk_74; // accumulator, clamped to 0x4000
+    /* 0x78 */ s32        unk_78; // wrap flag
+    /* 0x7C */ s16        unk_7C; // angle, clamped to 0x200
+    /* 0x7E */ s16        unk_7E;
+    /* 0x80 */ s32        unk_80[8];
+} Enm006Swirl; // Size: 0xA0 (from the Tsk_BtlEnm006_Swirl TaskHandle)
+
 /// Arguments handed to the `Tsk_BtlEnm006_*` task constructors.
 typedef struct Enm006Spawn {
     /* 0x00 */ BtlEnm006* unk_00;

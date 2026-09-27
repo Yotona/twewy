@@ -26,7 +26,7 @@ extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 extern s32  func_ov010_02125780(void*, void*);
 extern void func_ov010_02126a20(BtlEnm006*, void*);
 extern s32  func_ov010_02126a94(BtlEnm006*);
-extern s32  func_ov010_02126d54(void*, void*);
+extern void func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
 extern s32  func_ov010_02126e58(void*);
 extern s32  func_ov010_02126fdc(void*);
 extern s32  func_ov010_021271c0(void*, void*);
@@ -420,7 +420,8 @@ s32 func_ov010_02126d04(TaskPool* pool, Task* task, void* args, s32 stage) {
     void* data = task->data;
     switch (stage) {
         case 0:
-            return func_ov010_02126d54(data, args);
+            func_ov010_02126d54((Enm006Swirl*)data, args);
+            return 1;
         case 1:
             return func_ov010_02126e58(data);
         case 2:
@@ -1131,4 +1132,46 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
     data->unk_54 |= 0x80000000;
     func_ov003_020c4628(data);
     return data->unk_1CC;
+}
+
+// The Swirl stage-0 constructor. The x coordinate carries a 0x20000 bias, and the mirror case
+// *normalises* it: subtract the bias, and bounce straight back if that lands exactly on zero.
+// Written as an `if (x == 0x20000) x += 0x20000` it compiles to the same thing but reads worse.
+void func_ov010_02126d54(Enm006Swirl* data, Enm006Spawn* args) {
+    MI_CpuSet(data, 0, 0xA0);
+    BtlEnm006* d = args->unk_00;
+    u16        v = d->unk_80;
+    u32        m = *(u32*)((u8*)d + 0x84) & 3;
+    func_ov003_02082a04(m, (u8*)data + 4, (void*)func_ov010_021256c0(v), 0, (u16)data_ov010_021292b0[v], 0x30);
+    Mini108_VBlank((CombatSprite*)((u8*)data + 4), 0, 0);
+    data->unk_00 = d;
+    data->unk_68 = d->unk_28;
+    data->unk_6C = d->unk_2C;
+    data->unk_74 = 0;
+    data->unk_7E = 0;
+    if (d->unk_24 != 0) {
+        data->unk_78 = 0;
+        data->unk_68 -= 0x20000;
+        if (data->unk_68 == 0) {
+            data->unk_78 = 1;
+            data->unk_68 += 0x20000;
+        }
+    } else {
+        data->unk_78 = 1;
+        data->unk_68 += 0x20000;
+    }
+    s32 i;
+    for (i = 0; i < 8; i++) {
+        data->unk_80[i] = 1;
+    }
+}
+
+// Advances one of the eight swirl points along the spiral. The 4.12 fixed-point scale is
+// converted up to 16.16 with a rounding term, which is what the `>> 29` in the original is.
+void func_ov010_02126c94(Enm006Swirl* data, s32* outY, s32* outX, s32 index) {
+    s32 t = index << 16;
+    s32 v = data->unk_7C + ((t + ((t >> 2) >> 29)) >> 3);
+    func_ov003_020cbcb4(outY, outX, (s16)v, data->unk_70, 0x800);
+    *outY += data->unk_68;
+    *outX += data->unk_6C;
 }
