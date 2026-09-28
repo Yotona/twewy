@@ -73,17 +73,15 @@ extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
 extern s32                   func_ov003_020c6230(void*);
 extern s32                   func_ov003_020c4c1c(void*);
 extern void                  func_ov003_020c4ee0(void*);
-extern s32                   func_ov003_020c5b2c(s32, void*, s32, s32, s32);
+extern s32                   func_ov003_020c5b2c(u16, void*, s32, s32, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
 extern s32   func_ov010_02128cbc(s32, void*, void*);
 extern void  func_ov003_020c4c5c(BtlEnm006*);
-extern s32   func_ov003_020cc300(BtlEnm006*);
 extern void  func_ov003_020cb578(BtlEnm006*, s32);
 extern s32   func_ov010_02128bcc(void*, void*);
 extern void  func_ov010_02127110(void*, void*);
-extern void  func_ov010_02127cc0(void);
 extern void  func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
 extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
 extern s32   func_ov003_020cb764(s32);
@@ -96,6 +94,25 @@ extern s32   func_ov003_020c42ec(BtlEnm006*);
 extern s32   func_ov003_020c4348(BtlEnm006*);
 extern s32   func_ov010_02128a08(BtlEnm006*, s32);
 extern void  func_ov010_02127488(BtlEnm006*);
+
+// `func_ov003_020cc300` takes **two** arguments, not one. It reads r0's 0x28 / 0x2C / 0x70 and
+// then hands its *second* argument straight to func_ov003_020cb814 (`mov r0, r1`). Both call
+// sites pass 0 -- and the `mov r1, #0` that says so is the word func_ov010_02127764 was
+// missing at 99.7%.
+extern s32 func_ov003_020cc300(BtlEnm006*, s32);
+
+/// A 0xC-byte record out of the table `func_ov003_0208a114` walks (`base + index * 12`).
+/// `func_ov010_02127cc0` only ever reads the byte at 0x05, as the 4.12 scale it applies to a
+/// mirrored copy of the owner's position; the rest of the record is not identified. The `u16`
+/// index parameter is load-bearing: the original truncates the caller's `s32` with
+/// `lsl #0x10 / lsr #0x10` at *both* uses.
+typedef struct Enm006CmdTbl {
+    u8            pad00[5];
+    /* 0x05 */ u8 unk_05;
+    u8            pad06[6];
+} Enm006CmdTbl;
+
+extern const Enm006CmdTbl* func_ov003_0208a114(u16);
 
 /// The animation tables are addressed as `table + variant*8 + phase*2`, i.e. an array of 8-byte
 /// records each holding four halfwords -- not as `SpriteAnimEntry[]`, whose field access folds the
@@ -116,6 +133,10 @@ typedef struct Enm006PhaseRec {
     s32 unk_08;
     s32 unk_0C;
 } Enm006PhaseRec;
+
+/// 4.12 fixed point to `s32`, via a float round trip. The `(s32)` has to sit *outside* the
+/// ternary, or each arm grows its own trailing `_ffix`.
+#define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(BtlEnm006*);
@@ -1257,7 +1278,7 @@ void func_ov010_02127764(BtlEnm006* data) {
                 } else {
                     data->unk_28 = other->unk_28 - 0x1C000;
                 }
-                if (func_ov003_020cc300(data) == 0) {
+                if (func_ov003_020cc300(data, 0) == 0) {
                     func_ov003_020c4c9c(data);
                     if (data->unk_24 == 0) {
                         data->unk_28 = other->unk_28 + 0x1C000;
@@ -1357,6 +1378,205 @@ void func_ov010_02127764(BtlEnm006* data) {
             if (((u32)data->unk_1F5 << 30) >> 31 == 0) {
                 data->unk_54 &= ~0x40000000;
             }
+            func_ov010_02127460(data, (void*)func_ov010_02127550);
+            return;
+    }
+}
+
+// The rare behaviour. `func_ov010_02127488` only reaches it when `unk_80` is non-zero *and* the
+// second coin flip lands >= 0x5A, and then hands it over to func_ov010_02127460 as the per-frame
+// callback -- so the signature is `(BtlEnm006*)`, not nullary.
+//
+// Structurally the twin of func_ov010_02127764: six dense phases on sprite.unk_C4, each with a
+// one-time setup that only re-runs while unk_C0 is still zero, and unk_C0 as the frame counter
+// within the phase. Three things are different from that sibling and are load-bearing:
+//
+//  - Phase 2 mirrors around the instance the *global* points at rather than one handed back by
+//    func_ov010_02128b48, and the pointer chain `data_ov003_020e71b8->unk3D898` is re-derived at
+//    all six of its uses. Hoisting it into a local gives it a callee-saved register that the
+//    original does not have and the whole function spills; the original never keeps it anywhere.
+//  - Phase 3 is the only phase that *moves* the sprite: it picks a command index and a trigger
+//    value out of `unk_80`, looks a 4.12 scale up in a 12-byte table and hands the engine a
+//    mirrored copy of the position. The scale is the same float round trip as
+//    func_ov010_0212847c, spelled out in *both* arms of the mirror test so the two `_ffix` calls
+//    are duplicated the way the original's are -- and read into a `u32`, not an `s32`, because
+//    the original's `> 0` test is a zero test (`beq`, not `ble`), which only happens if the
+//    compiler can see the value is unsigned.
+//  - Phase 5 restarts the sprite animation twice, with the two flag clears wedged between the
+//    two calls.
+//
+// The 0x1CC sound index is a rotated immediate and stays a `mov`; 0x1CD and 0x1D1 are not
+// encodable and come from the literal pool, in first-reference order, so the C order of the case
+// blocks *is* the pool order. Phase 3 is also the one phase that does not leave: it advances
+// unk_C0 forever and only the animation-finished path resets it and moves on.
+//
+// Residue: none beyond the reloc artifact. Instruction-identical to the original.
+void func_ov010_02127cc0(BtlEnm006* data) {
+    // `n` is the 0x4E/0x4F command index, `v` the unk_9A value the same key selects. Both are
+    // read on a path where they are never assigned (an `unk_80` that is neither 1 nor 2), which
+    // is what puts them in r4/r5 -- exactly the callee-saved registers the original pushes.
+    s32 n;
+    s32 v;
+    switch (data->sprite.unk_C4) {
+        case 0:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 1;
+            return;
+        case 1:
+            if (data->sprite.unk_C0 == 0) {
+                // The duplicated `unk_8C |= 1` is genuine here, with the `unk_54` update wedged
+                // between the two, exactly as in func_ov010_02127764's case 1.
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                data->sprite.unk_8C |= 1;
+                func_ov003_020cb578(data, 0);
+                data->sprite.unk_C2 = 0x3C;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 2;
+            return;
+        case 2:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xF, 1);
+                data->sprite.unk_8C &= ~1;
+                // Both arms are calls, so this branches rather than predicating: the `0` call is
+                // the fall-through and the `1` call the forward branch target. `bge` is signed,
+                // so neither operand carries a cast.
+                if (data->unk_28 < ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_28) {
+                    func_ov003_020c4ab4(data, 0);
+                } else {
+                    func_ov003_020c4ab4(data, 1);
+                }
+                data->unk_2C = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_2C;
+                data->unk_30 = 0;
+                if (data->unk_2C < 0x20000) {
+                    data->unk_2C = 0x20000;
+                }
+                // Both arms re-derive the peer rather than sharing one fetch, and the `-` arm is
+                // the fall-through with the `+` arm relocated behind a forward branch.
+                if (data->unk_24 == 0) {
+                    data->unk_28 = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_28 - 0x60000;
+                } else {
+                    data->unk_28 = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_28 + 0x60000;
+                }
+                if (func_ov003_020cc300(data, 0) == 0) {
+                    func_ov003_020c4c9c(data);
+                    if (data->unk_24 == 0) {
+                        data->unk_28 = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_28 - 0x60000;
+                    } else {
+                        data->unk_28 = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->unk_28 + 0x60000;
+                    }
+                }
+            }
+            if (data->unk_9A == 0xC && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 3;
+            return;
+        case 3:
+            if (data->sprite.unk_C0 == 0) {
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0x10, 1);
+                data->sprite.unk_8C &= ~1;
+                data->unk_54 &= ~0x20;
+                func_ov003_020cb578(data, 1);
+            }
+            if (data->unk_9A == 0xF && data->unk_8C == 1) {
+                if (data->unk_80 == 2) {
+                    func_ov010_02126c38(data);
+                }
+                func_ov003_02087f00(0x1D1, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            // Two sequential guards on the same load, not an `else if` written flat: the second
+            // test if-converts into the pair of predicated moves and falls into the join, so it
+            // has no branch of its own.
+            if (data->unk_80 == 1) {
+                v = 0xF;
+                n = 0x4E;
+            } else {
+                if (data->unk_80 == 2) {
+                    v = 0xE;
+                    n = 0x4F;
+                }
+            }
+            if (data->unk_9A == v && data->unk_8C == 1) {
+                u32 t = func_ov003_0208a114(n)->unk_05;
+                s32 x;
+                // The round trip is spelled out in both arms so the two `_ffix` calls duplicate.
+                if (data->unk_24 == 0) {
+                    x = data->unk_28 - 0x48000 + ROUND(t);
+                } else {
+                    x = data->unk_28 + 0x48000 - ROUND(t);
+                }
+                func_ov003_020c5b2c(n, data, x, data->unk_2C, data->unk_30);
+            }
+            // Predicated both ways -- `addeq` / `streq` / `subne` / `strne` -- and note the sign
+            // is the mirror of the one above: `unk_24 == 0` is the `+` here.
+            if (data->sprite.unk_C0 == 0x19) {
+                if (data->unk_24 == 0) {
+                    data->unk_28 = data->unk_28 + 0x48000;
+                } else {
+                    data->unk_28 = data->unk_28 - 0x48000;
+                }
+            }
+            // The reset arm is the fall-through of the `beq`, so the `unk_C0++` has to be the
+            // branch target.
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) != 0) {
+                data->sprite.unk_C0 = 0;
+                data->sprite.unk_C4 = 4;
+                return;
+            }
+            data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+            return;
+        case 4:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                func_ov003_020cb578(data, 0);
+                data->sprite.unk_C2 = 0x3C;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 5;
+            return;
+        case 5:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 4, 1);
+                data->sprite.unk_8C &= ~1;
+                data->unk_54 &= ~0x20;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 4, 1);
+                func_ov003_020cb578(data, 1);
+                func_ov003_020c4c5c(data);
+                data->unk_28 = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
+                data->unk_2C = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
+                data->unk_30 = 0;
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            // No `default:` and no trailing `break`: case 5 falls into the shared epilogue, which is
+            // also where the out-of-range dispatch branch lands.
             func_ov010_02127460(data, (void*)func_ov010_02127550);
             return;
     }
