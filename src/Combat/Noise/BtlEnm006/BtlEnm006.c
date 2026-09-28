@@ -940,7 +940,8 @@ void func_ov010_02125c80(BtlEnm006* data) {
 void func_ov010_02127650(BtlEnm006* data) {
     if (data->sprite.unk_C0 == 0) {
         Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xC, 0);
-        if (data->unk_28 < func_ov003_020cb744(0) >> 1) {
+        s32 mid = func_ov003_020cb744(0);
+        if (data->unk_28 < mid >> 1) {
             data->unk_1D0 = data->unk_28 + 0x80000;
         } else {
             data->unk_1D0 = data->unk_28 - 0x80000;
@@ -948,10 +949,10 @@ void func_ov010_02127650(BtlEnm006* data) {
         data->unk_1D4       = data->unk_2C;
         data->unk_1D8       = data->unk_30;
         data->sprite.unk_C2 = func_ov010_02128a6c(data, (void*)0x4000);
-        if (data->unk_1DC >= 0) {
-            func_ov003_020c4ab4(data, 1);
-        } else {
+        if (data->unk_1DC < 0) {
             func_ov003_020c4ab4(data, 0);
+        } else {
+            func_ov003_020c4ab4(data, 1);
         }
     }
     if (data->unk_9A == 1 && data->unk_8C == 1) {
