@@ -4,27 +4,23 @@
 typedef struct {
     /* 0x00 */ Sprite sprite;
     /* 0x40 */ s32    unk_40;
-    /* 0x44 */ s32    unk_44;
+    /* 0x44 */ s32    topMenu;
 } MenuTop_select; // Size: 0x48
 
 typedef struct {
     /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 unk_4;
-    /* 0x8 */ u16 unk_8;
+    /* 0x4 */ s32 topMenu;
+    /* 0x8 */ u16 entry;
 } MenuTop_select_Args;
 
 static SpriteFrameInfo* MenuTop_select_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_select_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern s32           func_ov043_0208498c(void);
-extern s32           func_ov043_020849cc(s16 arg0);
-extern BinIdentifier data_ov043_020c7980;
-
 static const TaskHandle Tsk_MenuTop_select = {"Tsk_MenuTop_select", MenuTop_select_RunTask, sizeof(MenuTop_select)};
 
-static const s16 data_ov043_020c7ac4[] = {1, 2, 3, 4, 5, 6, 7, 8};
+static const s16 MenuTop_select_Frames[] = {1, 2, 3, 4, 5, 6, 7, 8};
 
-static const Point data_ov043_020c7ad4[] = {
+static const Point MenuTop_select_Positions[] = {
     {0x22, 0x31},
     {0x61, 0x31},
     {0xA0, 0x31},
@@ -35,7 +31,7 @@ static const Point data_ov043_020c7ad4[] = {
     {0xDF, 0x67},
 };
 
-static const SpriteAnimation data_ov043_020c7af4 = {
+static const SpriteAnimation MenuTop_select_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -49,7 +45,7 @@ static const SpriteAnimation data_ov043_020c7af4 = {
     .frameInfoCallback = MenuTop_select_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7980,
+    .binIden           = &MenuTop_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -68,40 +64,40 @@ static SpriteFrameInfo* MenuTop_select_GetFrameInfo(Sprite* sprite, s32 arg, s32
 
 // Nonmatching
 static void MenuTop_select_Load(Sprite* sprite, MenuTop_select_Args* args) {
-    s16             var_5A;
+    s16             frame;
     Point           points[8];
     s16             frameIds[8];
-    SpriteAnimation anim = data_ov043_020c7af4;
+    SpriteAnimation anim = MenuTop_select_Anim;
 
     for (s32 i = 0; i < 8; i++) {
-        points[i] = data_ov043_020c7ad4[i];
+        points[i] = MenuTop_select_Positions[i];
     }
 
     for (s32 i = 0; i < 8; i++) {
-        frameIds[i] = data_ov043_020c7ac4[i];
+        frameIds[i] = MenuTop_select_Frames[i];
     }
 
     anim.dataType = args->dataType;
-    anim.unk_04   = points[args->unk_8].x;
-    anim.unk_06   = points[args->unk_8].y;
+    anim.unk_04   = points[args->entry].x;
+    anim.unk_06   = points[args->entry].y;
 
-    if (func_ov043_020849cc(args->unk_8) == 0) {
-        if (args->unk_8 == 7) {
-            var_5A = 9;
-        } else if (args->unk_8 == 6) {
-            if (func_ov043_0208498c() == 1) {
-                var_5A = 9;
+    if (MenuTop_IsEntryAvailable(args->entry) == 0) {
+        if (args->entry == 7) {
+            frame = 9;
+        } else if (args->entry == 6) {
+            if (MenuTop_IsInRestrictedArea() == 1) {
+                frame = 9;
             } else {
-                var_5A = 10;
+                frame = 10;
             }
         } else {
-            var_5A = 10;
+            frame = 10;
         }
     } else {
-        anim.unk_2A = frameIds[args->unk_8];
+        anim.unk_2A = frameIds[args->entry];
     }
 
-    anim.unk_2A = var_5A;
+    anim.unk_2A = frame;
     _Sprite_Load(sprite, &anim);
 }
 
@@ -110,7 +106,7 @@ static s32 MenuTop_select_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_select_Args* selectArg = args;
 
     MenuTop_select_Load(&select->sprite, selectArg);
-    select->unk_44 = selectArg->unk_4;
+    select->topMenu = selectArg->topMenu;
     return 1;
 }
 
@@ -146,12 +142,12 @@ static s32 MenuTop_select_RunTask(TaskPool* pool, Task* task, void* args, s32 st
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_select_CreateTask(TaskPool* pool, s32 dataType, s32 arg2, s16 arg3) {
+s32 MenuTop_select_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu, u16 entry) {
     MenuTop_select_Args args;
 
     args.dataType = dataType;
-    args.unk_4    = arg2;
-    args.unk_8    = arg3;
+    args.topMenu  = topMenu;
+    args.entry    = entry;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_select, NULL, 0, NULL, &args);
 }

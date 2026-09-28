@@ -1923,22 +1923,22 @@ void func_ov030_020b10b0(EventSelectObject* object) {
     Text_RenderToScreen(&object->text, 8, 0x18,
                         Str_SPrintf("%s", data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].name));
 
-    s32 week = gSaveData.unk_1AB0 / 7;
+    s32 week = gSaveData.chapter / 7;
     if (week == 0) {
         // "chapter:Shiki %d"
-        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:シキ%d章", (gSaveData.unk_1AB0 % 7) + 1));
+        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:シキ%d章", (gSaveData.chapter % 7) + 1));
     } else if (week == 1) {
         // "chapter:Joshua %d"
-        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:ヨシュア%d章", (gSaveData.unk_1AB0 % 7) + 1));
+        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:ヨシュア%d章", (gSaveData.chapter % 7) + 1));
     } else if (week == 2) {
         // "chapter:Beat %d"
-        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:ビイト%d章", (gSaveData.unk_1AB0 % 7) + 1));
-    } else if (gSaveData.unk_1AB0 == 21) {
+        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:ビイト%d章", (gSaveData.chapter % 7) + 1));
+    } else if (gSaveData.chapter == 21) {
         // "chapter:Resolution"
         Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:解決編"));
     } else {
         // "chapter:Back %d"
-        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:裏%d", gSaveData.unk_1AB0 - 21));
+        Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:裏%d", gSaveData.chapter - 21));
     }
 
     Text_RenderToScreen(&object->text, 8, 0x28, func_ov030_020b0534(gSaveData.unk_2458));
@@ -2030,7 +2030,7 @@ void func_ov030_020b1450(EventSelectObject* object) {
         } else if (gSaveData.unk_26E8 == 1) {
             func_ov030_020b139c(&gSaveData.unk_26E4, data_ov030_020de334[gSaveData.unk_26E6].count);
         } else if (gSaveData.unk_26E8 == 2) {
-            func_ov030_020b1404(&gSaveData.unk_1AB0);
+            func_ov030_020b1404(&gSaveData.chapter);
         } else {
             func_ov030_020b139c(&gSaveData.unk_2458, 0x2C);
         }

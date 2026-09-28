@@ -1,25 +1,22 @@
 #include "Engine/EasyTask.h"
+#include "Interface/Menu/Top.h"
 #include "SpriteMgr.h"
 
 typedef struct {
-    /* 0x00 */ Sprite sprites[2];
-    /* 0x80 */ u32    unk_80;
-    /* 0x84 */ u8*    unk_84;
+    /* 0x00 */ Sprite         sprites[2];
+    /* 0x80 */ u32            unk_80;
+    /* 0x84 */ MenuTopObject* topMenu;
 } MenuTop_icon; // Size: 0x88
 
 typedef struct {
-    /* 0x0 */ s32 dataType;
-    /* 0x4 */ u8* unk_4;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_icon_Args;
 
 static SpriteFrameInfo* MenuTop_icon_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_icon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern void func_ov043_02084620(Sprite* sprite, s16 arg1);
-
-extern BinIdentifier data_ov043_020c79d0;
-
-static const u16 data_ov043_020c7b20[] = {3, 5};
+static const u16 MenuTop_icon_Frames[] = {3, 5};
 
 static const TaskHandle Tsk_MenuTop_icon = {"Tsk_MenuTop_icon", MenuTop_icon_RunTask, sizeof(MenuTop_icon)};
 
@@ -37,7 +34,7 @@ static const SpriteAnimation MenuTop_icon_Anim = {
     .frameInfoCallback = MenuTop_icon_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79d0,
+    .binIden           = &MenuTop_BinIdentifiers[12],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -77,7 +74,7 @@ static s32 MenuTop_icon_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_icon*      icon     = task->data;
     MenuTop_icon_Args* iconArgs = args;
 
-    icon->unk_84 = iconArgs->unk_4;
+    icon->topMenu = iconArgs->topMenu;
     MenuTop_icon_Load(icon, iconArgs);
     return 1;
 }
@@ -87,16 +84,16 @@ static s32 MenuTop_icon_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_icon* icon = task->data;
 
     for (s32 i = 0; i < 2; i++) {
-        if (icon->unk_84[i + 2] == 1) {
-            func_ov043_02084620(&icon->sprites[i], (s16)(data_ov043_020c7b20[i] + 1));
+        if (icon->topMenu->iconPressed[i] == 1) {
+            MenuTop_SetSpriteFrame(&icon->sprites[i], (s16)(MenuTop_icon_Frames[i] + 1));
 
-            if (icon->unk_84[4] != 0) {
-                icon->unk_84[4]--;
+            if (icon->topMenu->pressTimer != 0) {
+                icon->topMenu->pressTimer--;
             } else {
-                icon->unk_84[i + 2] = 0;
+                icon->topMenu->iconPressed[i] = 0;
             }
         } else {
-            func_ov043_02084620(&icon->sprites[i], (s16)data_ov043_020c7b20[i]);
+            MenuTop_SetSpriteFrame(&icon->sprites[i], (s16)MenuTop_icon_Frames[i]);
         }
     }
 
@@ -136,10 +133,10 @@ static s32 MenuTop_icon_RunTask(TaskPool* pool, Task* task, void* args, s32 stag
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_icon_CreateTask(TaskPool* pool, s32 arg1, void* arg2) {
+s32 MenuTop_icon_CreateTask(TaskPool* pool, s32 dataType, void* topMenu) {
     MenuTop_icon_Args args;
 
-    args.dataType = arg1;
-    args.unk_4    = arg2;
+    args.dataType = dataType;
+    args.topMenu  = topMenu;
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_icon, NULL, 0, NULL, &args);
 }

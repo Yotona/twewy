@@ -159,9 +159,9 @@ from:0x020e83f8 kind:load to:0x02071d10 module:main
 from:0x020e83fc kind:load to:0x02071d10 add:0x3100 module:main
 from:0x020e8400 kind:load to:0x02071d10 add:0x3000 module:main
 from:0x020e8404 kind:load to:0x02071d10 add:0x30 module:main
-from:0x020e840c kind:load to:0x0208f44c module:overlays(38,43,44)
+from:0x020e840c kind:load to:0x0208f44c module:overlays(38,43)
 from:0x020e8414 kind:load to:0x020e9670 module:overlay(27)
-from:0x020e841c kind:load to:0x0208ec74 module:overlays(3,38,44)
+from:0x020e841c kind:load to:0x0208ec74 module:overlays(3,38)
 from:0x020e8420 kind:load to:0x0206a9e0 module:main
 from:0x020e8440 kind:arm_call to:0x02004618 module:main
 from:0x020e8454 kind:arm_call to:0x020049a8 module:main

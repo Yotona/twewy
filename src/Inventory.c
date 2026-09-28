@@ -44,9 +44,9 @@ const data_0205c2dc_t data_0205c2dc[8];
 static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->unk_00         = 0;
     stats->baseHealth     = 0;
-    stats->unk_04         = 1;
-    stats->level          = stats->unk_04;
-    stats->expToNextLevel = stats->level * 100;
+    stats->currentLevel   = 1;
+    stats->maxLevel       = stats->currentLevel;
+    stats->expToNextLevel = stats->maxLevel * 100;
     stats->money          = 0;
     stats->attack         = 10;
     stats->defense        = 0;
@@ -54,11 +54,11 @@ static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->bravery        = 15;
     stats->activePartner  = 255;
 
-    stats->unk_19_0 = 1;
-    stats->unk_19_2 = 2;
-    stats->unk_19_4 = 0;
-    stats->unk_19_6 = 0;
-    stats->unk_19_7 = 0;
+    stats->difficulty = 1;
+    stats->partnerAI  = 2;
+    stats->unk_19_4   = 0;
+    stats->unk_19_6   = 0;
+    stats->unk_19_7   = 0;
 
     stats->unk_1A_0 = 0;
     stats->unk_1A_1 = 2;
@@ -223,13 +223,13 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     func_02022284(arg0->brandTrends);
     func_02022424(arg0->unk_1A18);
     Stats_ResetExperience(&arg0->experience);
-    arg0->unk_1AB0 = 0;
-    arg0->unk_1AB1 = 0;
-    arg0->unk_1AB2 = 1;
-    arg0->unk_1AB3 = 0;
-    arg0->unk_1AB4 = 1;
-    arg0->unk_1AB6 = 0;
-    arg0->unk_1AB8 = 0;
+    arg0->chapter     = 0;
+    arg0->currentArea = 0;
+    arg0->unk_1AB2    = 1;
+    arg0->unk_1AB3    = 0;
+    arg0->unk_1AB4    = 1;
+    arg0->unk_1AB6    = 0;
+    arg0->unk_1AB8    = 0;
 
     for (u16 i = 0; i < ARRAY_LEN(arg0->unk_1ABA); i++) {
         arg0->unk_1ABA[i] = -1;
@@ -274,7 +274,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
 
     func_02022640(&arg0->unk_2348);
     arg0->unk_242C = 0;
-    arg0->unk_2430 = 0;
+    arg0->bgmFile  = 0;
     arg0->unk_2432 = 0;
     arg0->unk_2434 = 0;
     arg0->unk_2436 = 0;

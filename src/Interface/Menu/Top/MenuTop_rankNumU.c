@@ -5,12 +5,12 @@
 typedef struct {
     /* 0x00 */ Sprite sprites[2];
     /* 0x80 */ s32    visibleFlags[2];
-    /* 0x88 */ void*  owner;
+    /* 0x88 */ void*  topMenu;
 } MenuTop_rankNumU; // Size: 0x8C
 
 typedef struct {
     /* 0x00 */ s32   dataType;
-    /* 0x04 */ void* owner;
+    /* 0x04 */ void* topMenu;
     /* 0x08 */ u16   positionIndex;
     /* 0x0A */ u16   value;
 } MenuTop_rankNumU_Args;
@@ -34,7 +34,7 @@ static const SpriteAnimation MenuTop_rankNumU_Anim = {
     .frameInfoCallback = MenuTop_rankNumU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79a8,
+    .binIden           = &MenuTop_BinIdentifiers[7],
     .unk_18            = 0,
     .packIndex         = 1,
     .unk_1C            = 0,
@@ -47,7 +47,7 @@ static const SpriteAnimation MenuTop_rankNumU_Anim = {
     .unk_2A            = 1,
 };
 
-static const Point data_ov043_020c7d40[] = {
+static const Point MenuTop_rankNumU_Positions[] = {
     {13, 105},
     {13, 130},
     {13, 155},
@@ -80,13 +80,13 @@ static void MenuTop_rankNumU_Load(MenuTop_rankNumU* taskData, Sprite* sprites, M
     }
 
     anim.unk_2A = tens + 3;
-    anim.unk_04 = data_ov043_020c7d40[args->positionIndex].x + xOffset;
-    anim.unk_06 = data_ov043_020c7d40[args->positionIndex].y;
+    anim.unk_04 = MenuTop_rankNumU_Positions[args->positionIndex].x + xOffset;
+    anim.unk_06 = MenuTop_rankNumU_Positions[args->positionIndex].y;
     _Sprite_Load(&sprites[0], &anim);
 
     anim.unk_2A = ones + 3;
-    anim.unk_04 = data_ov043_020c7d40[args->positionIndex].x + xOffset + 7;
-    anim.unk_06 = data_ov043_020c7d40[args->positionIndex].y;
+    anim.unk_04 = MenuTop_rankNumU_Positions[args->positionIndex].x + xOffset + 7;
+    anim.unk_06 = MenuTop_rankNumU_Positions[args->positionIndex].y;
     _Sprite_Load(&sprites[1], &anim);
 }
 
@@ -94,7 +94,7 @@ static s32 MenuTop_rankNumU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_rankNumU*      taskData = task->data;
     MenuTop_rankNumU_Args* initArgs = args;
 
-    taskData->owner = initArgs->owner;
+    taskData->topMenu = initArgs->topMenu;
     MenuTop_rankNumU_Load(taskData, taskData->sprites, initArgs);
     return 1;
 }
@@ -140,13 +140,13 @@ s32 MenuTop_rankNumU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) 
     return stages.iter[stage](pool, task, args);
 }
 
-void MenuTop_rankNumU_CreateTask(TaskPool* pool, s32 dataType, s16 positionIndex, s16 value, s32 owner) {
+s32 MenuTop_rankNumU_CreateTask(TaskPool* pool, s32 dataType, s16 positionIndex, s16 value, s32 topMenu) {
     MenuTop_rankNumU_Args args;
 
     args.dataType      = dataType;
-    args.owner         = (void*)owner;
+    args.topMenu       = (void*)topMenu;
     args.positionIndex = positionIndex;
     args.value         = value;
 
-    EasyTask_CreateTask(pool, &Tsk_MenuTop_rankNumU, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_MenuTop_rankNumU, NULL, 0, NULL, &args);
 }

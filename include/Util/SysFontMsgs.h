@@ -74,6 +74,7 @@
     #define SYSMSG_STAT_DEFENSE                 13091 // "Defense"
     #define SYSMSG_STAT_HP                      13092 // "HP"
     #define SYSMSG_BRAVERY_REQ                  13096 // "Bravery Req."
+    #define SYSMSG_TOPMENU_ENTRY_NAMES_START    13097 // "Friends"..
     #define SYSMSG_STAT_NONE                    13113 // "----"
     #define SYSMSG_STAT_BONUS_FMT               13115 // "<str> <c6>+<s32>"
     #define SYSMSG_STAT_PENALTY_FMT             13116 // "<str> <cC>-<s32>"
@@ -159,6 +160,7 @@
     #define SYSMSG_STAT_DEFENSE                 13010 // "{038A}{082B}{0247}"
     #define SYSMSG_STAT_HP                      13011 // "ÇgÇo"
     #define SYSMSG_BRAVERY_REQ                  13015 // "{0286}{0292}{04FD}{0236}"
+    #define SYSMSG_TOPMENU_ENTRY_NAMES_START    13016 // "ÉtÉåÉìÉh"..
     #define SYSMSG_STAT_NONE                    13032 // "Å|Å|Å|Å|"
     #define SYSMSG_STAT_BONUS_FMT               13034 // "<str>Å@<c6>Å{<s32>"
     #define SYSMSG_STAT_PENALTY_FMT             13035 // "<str>Å@<cC>Å|<s32>"

@@ -27,7 +27,7 @@ typedef struct {
     /* 0x0A */ u16 unk_0A;
 } NRepHitboxData;
 
-extern void func_ov043_02084040(void*);
+extern void ProcessOverlay_MenuTop(void*);
 
 void func_ov043_020c6304(void);
 void func_ov043_020c632c(void);
@@ -164,7 +164,7 @@ void func_ov043_020c64a4(NRepState* state) {
     if (state->unk_21680 != 0) {
         if (ctx->unk_03 == 0) {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, func_ov043_02084040, NULL, 0);
+            MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, ProcessOverlay_MenuTop, NULL, 0);
         } else {
             OverlayTag tag;
             MainOvlDisp_Pop(&tag);

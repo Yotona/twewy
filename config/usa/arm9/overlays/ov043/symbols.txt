@@ -42,51 +42,51 @@ TakTest_OBJ_CreateTask kind:function(arm,size=0x30) addr:0x02082fa0
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuTop.c
 /////////////////////////////////////////////////////////////
-func_ov043_02082fd0 kind:function(arm,size=0x7c) addr:0x02082fd0
-func_ov043_0208304c kind:function(arm,size=0x4bc) addr:0x0208304c
-func_ov043_02083508 kind:function(arm,size=0x6c) addr:0x02083508
-func_ov043_02083574 kind:function(arm,size=0xbc) addr:0x02083574
-func_ov043_02083630 kind:function(arm,size=0x358) addr:0x02083630
-func_ov043_02083988 kind:function(arm,size=0x13c) addr:0x02083988
-func_ov043_02083ac4 kind:function(arm,size=0x94) addr:0x02083ac4
-func_ov043_02083b58 kind:function(arm,size=0x28) addr:0x02083b58
-func_ov043_02083b80 kind:function(arm,size=0x180) addr:0x02083b80
-func_ov043_02083d00 kind:function(arm,size=0x264) addr:0x02083d00
-func_ov043_02083f64 kind:function(arm,size=0xdc) addr:0x02083f64
-func_ov043_02084040 kind:function(arm,size=0x40) addr:0x02084040
-func_ov043_02084080 kind:function(arm,size=0x464) addr:0x02084080
-func_ov043_020844e4 kind:function(arm,size=0xd0) addr:0x020844e4
-func_ov043_020845b4 kind:function(arm,size=0x1c) addr:0x020845b4
-func_ov043_020845d0 kind:function(arm,size=0x14) addr:0x020845d0
-func_ov043_020845e4 kind:function(arm,size=0x3c) addr:0x020845e4
-func_ov043_02084620 kind:function(arm,size=0x4c) addr:0x02084620
-func_ov043_0208466c kind:function(arm,size=0x90) addr:0x0208466c
-func_ov043_020846fc kind:function(arm,size=0x4c) addr:0x020846fc
-func_ov043_02084748 kind:function(arm,size=0x1d0) addr:0x02084748
-func_ov043_02084918 kind:function(arm,size=0x74) addr:0x02084918
-func_ov043_0208498c kind:function(arm,size=0x40) addr:0x0208498c
-func_ov043_020849cc kind:function(arm,size=0xe0) addr:0x020849cc
-func_ov043_02084aac kind:function(arm,size=0xa8) addr:0x02084aac
-func_ov043_02084b54 kind:function(arm,size=0xe8) addr:0x02084b54
-func_ov043_02084c3c kind:function(arm,size=0x60) addr:0x02084c3c
-func_ov043_02084c9c kind:function(arm,size=0x50) addr:0x02084c9c
-func_ov043_02084cec kind:function(arm,size=0xd4) addr:0x02084cec
-func_ov043_02084dc0 kind:function(arm,size=0x60) addr:0x02084dc0
-func_ov043_02084e20 kind:function(arm,size=0xb8) addr:0x02084e20
-func_ov043_02084ed8 kind:function(arm,size=0x60) addr:0x02084ed8
-func_ov043_02084f38 kind:function(arm,size=0x60) addr:0x02084f38
-func_ov043_02084f98 kind:function(arm,size=0x60) addr:0x02084f98
-func_ov043_02084ff8 kind:function(arm,size=0xe4) addr:0x02084ff8
-func_ov043_020850dc kind:function(arm,size=0x200) addr:0x020850dc
-func_ov043_020852dc kind:function(arm,size=0x228) addr:0x020852dc
-func_ov043_02085504 kind:function(arm,size=0xac) addr:0x02085504
-func_ov043_020855b0 kind:function(arm,size=0x88) addr:0x020855b0
-func_ov043_02085638 kind:function(arm,size=0x38) addr:0x02085638
-func_ov043_02085670 kind:function(arm,size=0x48) addr:0x02085670
-func_ov043_020856b8 kind:function(arm,size=0x24) addr:0x020856b8
-func_ov043_020856dc kind:function(arm,size=0x15c) addr:0x020856dc
-func_ov043_02085838 kind:function(arm,size=0x4) addr:0x02085838
-func_ov043_0208583c kind:function(arm,size=0x6c) addr:0x0208583c
+MenuTop_InitState kind:function(arm,size=0x7c) addr:0x02082fd0
+MenuTop_CreateTasks kind:function(arm,size=0x4bc) addr:0x0208304c
+MenuTop_StageFadeIn kind:function(arm,size=0x6c) addr:0x02083508
+MenuTop_StageOpenHelp kind:function(arm,size=0xbc) addr:0x02083574
+MenuTop_StageMain kind:function(arm,size=0x358) addr:0x02083630
+MenuTop_StageHelp kind:function(arm,size=0x13c) addr:0x02083988
+MenuTop_StageCloseHelp kind:function(arm,size=0x94) addr:0x02083ac4
+MenuTop_StageFadeOut kind:function(arm,size=0x28) addr:0x02083b58
+MenuTop_Init kind:function(arm,size=0x180) addr:0x02083b80
+MenuTop_Update kind:function(arm,size=0x264) addr:0x02083d00
+MenuTop_Destroy kind:function(arm,size=0xdc) addr:0x02083f64
+ProcessOverlay_MenuTop kind:function(arm,size=0x40) addr:0x02084040
+MenuTop_InitDisplay kind:function(arm,size=0x464) addr:0x02084080
+MenuTop_VBlank kind:function(arm,size=0xd0) addr:0x020844e4
+MenuTop_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020845b4
+MenuTop_DeregisterVBlank kind:function(arm,size=0x14) addr:0x020845d0
+MenuTop_IsPointInRect kind:function(arm,size=0x3c) addr:0x020845e4
+MenuTop_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x02084620
+MenuTop_ClampMoney kind:function(arm,size=0x90) addr:0x0208466c
+MenuTop_GetMoneyCapLevel kind:function(arm,size=0x4c) addr:0x020846fc
+MenuTop_LoadFromSave kind:function(arm,size=0x1d0) addr:0x02084748
+MenuTop_WriteBackToSave kind:function(arm,size=0x74) addr:0x02084918
+MenuTop_IsInRestrictedArea kind:function(arm,size=0x40) addr:0x0208498c
+MenuTop_IsEntryAvailable kind:function(arm,size=0xe0) addr:0x020849cc
+MenuTop_GetIconButtonAtPoint kind:function(arm,size=0xa8) addr:0x02084aac
+MenuTop_GetEntryAtPoint kind:function(arm,size=0xe8) addr:0x02084b54
+MenuTop_IsPointOnDifficulty kind:function(arm,size=0x60) addr:0x02084c3c
+MenuTop_GetDifficultyForRow kind:function(arm,size=0x50) addr:0x02084c9c
+MenuTop_GetDifficultyRowAtPoint kind:function(arm,size=0xd4) addr:0x02084cec
+MenuTop_IsPointOnPartnerAI kind:function(arm,size=0x60) addr:0x02084dc0
+MenuTop_GetPartnerAIRowAtPoint kind:function(arm,size=0xb8) addr:0x02084e20
+MenuTop_IsPointOnLevelGauge kind:function(arm,size=0x60) addr:0x02084ed8
+MenuTop_IsPointOnLevelDown kind:function(arm,size=0x60) addr:0x02084f38
+MenuTop_IsPointOnLevelUp kind:function(arm,size=0x60) addr:0x02084f98
+MenuTop_GetHelpButtonAtPoint kind:function(arm,size=0xe4) addr:0x02084ff8
+MenuTop_LoadBgResource kind:function(arm,size=0x200) addr:0x020850dc
+MenuTop_LoadBgResourceIndexed kind:function(arm,size=0x228) addr:0x020852dc
+MenuTop_LoadBgScreen kind:function(arm,size=0xac) addr:0x02085504
+MenuTop_ReleaseBgResource kind:function(arm,size=0x88) addr:0x020855b0
+MenuTop_ReleaseBgScreen kind:function(arm,size=0x38) addr:0x02085638
+MenuTop_ReloadBgResource kind:function(arm,size=0x48) addr:0x02085670
+MenuTop_ClearBgResource kind:function(arm,size=0x24) addr:0x020856b8
+MenuTop_LoadBackgrounds kind:function(arm,size=0x15c) addr:0x020856dc
+MenuTop_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x02085838
+MenuTop_ReleaseBackgrounds kind:function(arm,size=0x6c) addr:0x0208583c
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_select.c
@@ -115,9 +115,9 @@ MenuTop_icon_CreateTask kind:function(arm,size=0x34) addr:0x02085e60
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_lvGauge.c
 /////////////////////////////////////////////////////////////
-func_ov043_02085e94 kind:function(arm,size=0x54) addr:0x02085e94 local
-func_ov043_02085ee8 kind:function(arm,size=0xe4) addr:0x02085ee8 local
-func_ov043_02085fcc kind:function(arm,size=0x34) addr:0x02085fcc local
+MenuTop_lvGauge_SetKnobFromLevel kind:function(arm,size=0x54) addr:0x02085e94 local
+MenuTop_lvGauge_SetLevelFromKnob kind:function(arm,size=0xe4) addr:0x02085ee8 local
+MenuTop_lvGauge_GetBarScale kind:function(arm,size=0x34) addr:0x02085fcc local
 MenuTop_lvGauge_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02086000 local
 MenuTop_lvGauge_Load kind:function(arm,size=0x18c) addr:0x0208609c local
 MenuTop_lvGauge_Init kind:function(arm,size=0x20) addr:0x02086228 local
@@ -130,7 +130,7 @@ MenuTop_lvGauge_CreateTask kind:function(arm,size=0x34) addr:0x02086510
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckNum.c
 /////////////////////////////////////////////////////////////
-func_ov043_02086544 kind:function(arm,size=0x160) addr:0x02086544
+MenuTop_luckNum_Refresh kind:function(arm,size=0x160) addr:0x02086544
 MenuTop_luckNum_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020866a4
 MenuTop_luckNum_Load kind:function(arm,size=0x1c4) addr:0x02086740
 MenuTop_luckNum_Init kind:function(arm,size=0x38) addr:0x02086904
@@ -191,7 +191,7 @@ MenuTop_rankNumU_CreateTask kind:function(arm,size=0x40) addr:0x0208758c
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numLV.c
 /////////////////////////////////////////////////////////////
-func_ov043_020875cc kind:function(arm,size=0xd0) addr:0x020875cc
+MenuTop_numLV_Refresh kind:function(arm,size=0xd0) addr:0x020875cc
 MenuTop_numLV_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208769c
 MenuTop_numLV_Load kind:function(arm,size=0x254) addr:0x02087738
 MenuTop_numLV_Init kind:function(arm,size=0x28) addr:0x0208798c
@@ -216,7 +216,7 @@ MenuTop_numExpNext_CreateTask kind:function(arm,size=0x3c) addr:0x02087e68
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numHP.c
 /////////////////////////////////////////////////////////////
-func_ov043_02087ea4 kind:function(arm,size=0x184) addr:0x02087ea4
+MenuTop_numHP_Refresh kind:function(arm,size=0x184) addr:0x02087ea4
 MenuTop_numHP_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088028
 MenuTop_numHP_Load kind:function(arm,size=0x1ec) addr:0x020880c4
 MenuTop_numHP_Init kind:function(arm,size=0x2c) addr:0x020882b0
@@ -241,7 +241,7 @@ MenuTop_numMoney_CreateTask kind:function(arm,size=0x3c) addr:0x020888c0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawDiff.c
 /////////////////////////////////////////////////////////////
-func_ov043_020888fc kind:function(arm,size=0x4c) addr:0x020888fc local
+MenuTop_drawDiff_GetFrame kind:function(arm,size=0x4c) addr:0x020888fc local
 MenuTop_drawDiff_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088948 local
 MenuTop_drawDiff_Load kind:function(arm,size=0x90) addr:0x020889e4 local
 MenuTop_drawDiff_Init kind:function(arm,size=0x28) addr:0x02088a74 local
@@ -254,7 +254,7 @@ MenuTop_drawDiff_CreateTask kind:function(arm,size=0x3c) addr:0x02088b44
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawPtrAI.c
 /////////////////////////////////////////////////////////////
-func_ov043_02088b80 kind:function(arm,size=0x4c) addr:0x02088b80 local
+MenuTop_drawPtrAI_GetFrame kind:function(arm,size=0x4c) addr:0x02088b80 local
 MenuTop_drawPtrAI_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088bcc local
 MenuTop_drawPtrAI_Load kind:function(arm,size=0x90) addr:0x02088c68 local
 MenuTop_drawPtrAI_Init kind:function(arm,size=0x28) addr:0x02088cf8 local
@@ -267,7 +267,7 @@ MenuTop_drawPtrAI_CreateTask kind:function(arm,size=0x3c) addr:0x02088dc8
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selDiff.c
 /////////////////////////////////////////////////////////////
-func_ov043_02088e04 kind:function(arm,size=0x44) addr:0x02088e04
+MenuTop_selDiff_GetRowY kind:function(arm,size=0x44) addr:0x02088e04
 MenuTop_selDiff_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088e48
 MenuTop_selDiff_Load kind:function(arm,size=0x148) addr:0x02088ee4
 MenuTop_selDiff_Init kind:function(arm,size=0x3c) addr:0x0208902c
@@ -280,7 +280,7 @@ MenuTop_selDiff_CreateTask kind:function(arm,size=0x3c) addr:0x02089338
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selPtrAI.c
 /////////////////////////////////////////////////////////////
-func_ov043_02089374 kind:function(arm,size=0x44) addr:0x02089374 local
+MenuTop_selPtrAI_GetRowY kind:function(arm,size=0x44) addr:0x02089374 local
 MenuTop_selPtrAI_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020893b8 local
 MenuTop_selPtrAI_Load kind:function(arm,size=0x15c) addr:0x02089454 local
 MenuTop_selPtrAI_Init kind:function(arm,size=0x3c) addr:0x020895b0 local
@@ -293,50 +293,50 @@ MenuTop_selPtrAI_CreateTask kind:function(arm,size=0x3c) addr:0x02089898
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScr.c
 /////////////////////////////////////////////////////////////
-func_ov043_020898d4 kind:function(arm,size=0x38) addr:0x020898d4
-func_ov043_0208990c kind:function(arm,size=0x128) addr:0x0208990c
-func_ov043_02089a34 kind:function(arm,size=0x28) addr:0x02089a34
-func_ov043_02089a5c kind:function(arm,size=0x8) addr:0x02089a5c
-func_ov043_02089a64 kind:function(arm,size=0x8) addr:0x02089a64
-func_ov043_02089a6c kind:function(arm,size=0x30) addr:0x02089a6c
-func_ov043_02089a9c kind:function(arm,size=0x48) addr:0x02089a9c
-func_ov043_02089ae4 kind:function(arm,size=0x34) addr:0x02089ae4
+MenuTop_textScr_InitFonts kind:function(arm,size=0x38) addr:0x020898d4 local
+MenuTop_textScr_DrawEntryNames kind:function(arm,size=0x128) addr:0x0208990c local
+MenuTop_textScr_Init kind:function(arm,size=0x28) addr:0x02089a34 local
+MenuTop_textScr_Update kind:function(arm,size=0x8) addr:0x02089a5c local
+MenuTop_textScr_Render kind:function(arm,size=0x8) addr:0x02089a64 local
+MenuTop_textScr_Destroy kind:function(arm,size=0x30) addr:0x02089a6c local
+MenuTop_textScr_RunTask kind:function(arm,size=0x48) addr:0x02089a9c local
+MenuTop_textScr_CreateTask kind:function(arm,size=0x34) addr:0x02089ae4
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipU.c
 /////////////////////////////////////////////////////////////
-func_ov043_02089b18 kind:function(arm,size=0xa0) addr:0x02089b18
-func_ov043_02089bb8 kind:function(arm,size=0x138) addr:0x02089bb8
-func_ov043_02089cf0 kind:function(arm,size=0x20) addr:0x02089cf0
-func_ov043_02089d10 kind:function(arm,size=0x14) addr:0x02089d10
-func_ov043_02089d24 kind:function(arm,size=0x44) addr:0x02089d24
-func_ov043_02089d68 kind:function(arm,size=0x14) addr:0x02089d68
-func_ov043_02089d7c kind:function(arm,size=0x48) addr:0x02089d7c
-func_ov043_02089dc4 kind:function(arm,size=0x38) addr:0x02089dc4
+MenuTop_mapTipU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x02089b18 local
+MenuTop_mapTipU_Load kind:function(arm,size=0x138) addr:0x02089bb8 local
+MenuTop_mapTipU_Init kind:function(arm,size=0x20) addr:0x02089cf0 local
+MenuTop_mapTipU_Update kind:function(arm,size=0x14) addr:0x02089d10 local
+MenuTop_mapTipU_Render kind:function(arm,size=0x44) addr:0x02089d24 local
+MenuTop_mapTipU_Destroy kind:function(arm,size=0x14) addr:0x02089d68 local
+MenuTop_mapTipU_RunTask kind:function(arm,size=0x48) addr:0x02089d7c local
+MenuTop_mapTipU_CreateTask kind:function(arm,size=0x38) addr:0x02089dc4
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipBrdU.c
 /////////////////////////////////////////////////////////////
-func_ov043_02089dfc kind:function(arm,size=0xa0) addr:0x02089dfc
-func_ov043_02089e9c kind:function(arm,size=0xdc) addr:0x02089e9c
-func_ov043_02089f78 kind:function(arm,size=0x20) addr:0x02089f78
-func_ov043_02089f98 kind:function(arm,size=0x14) addr:0x02089f98
-func_ov043_02089fac kind:function(arm,size=0x14) addr:0x02089fac
-func_ov043_02089fc0 kind:function(arm,size=0x14) addr:0x02089fc0
-func_ov043_02089fd4 kind:function(arm,size=0x48) addr:0x02089fd4
-func_ov043_0208a01c kind:function(arm,size=0x38) addr:0x0208a01c
+MenuTop_mapTipBrdU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x02089dfc local
+MenuTop_mapTipBrdU_Load kind:function(arm,size=0xdc) addr:0x02089e9c local
+MenuTop_mapTipBrdU_Init kind:function(arm,size=0x20) addr:0x02089f78 local
+MenuTop_mapTipBrdU_Update kind:function(arm,size=0x14) addr:0x02089f98 local
+MenuTop_mapTipBrdU_Render kind:function(arm,size=0x14) addr:0x02089fac local
+MenuTop_mapTipBrdU_Destroy kind:function(arm,size=0x14) addr:0x02089fc0 local
+MenuTop_mapTipBrdU_RunTask kind:function(arm,size=0x48) addr:0x02089fd4 local
+MenuTop_mapTipBrdU_CreateTask kind:function(arm,size=0x38) addr:0x0208a01c
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_helpCur.c
 /////////////////////////////////////////////////////////////
-func_ov043_0208a054 kind:function(arm,size=0x9c) addr:0x0208a054
-func_ov043_0208a0f0 kind:function(arm,size=0x108) addr:0x0208a0f0
-func_ov043_0208a1f8 kind:function(arm,size=0x20) addr:0x0208a1f8
-func_ov043_0208a218 kind:function(arm,size=0xf8) addr:0x0208a218
-func_ov043_0208a310 kind:function(arm,size=0x40) addr:0x0208a310
-func_ov043_0208a350 kind:function(arm,size=0x2c) addr:0x0208a350
-func_ov043_0208a37c kind:function(arm,size=0x48) addr:0x0208a37c
-func_ov043_0208a3c4 kind:function(arm,size=0x34) addr:0x0208a3c4
+MenuTop_helpCur_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208a054 local
+MenuTop_helpCur_Load kind:function(arm,size=0x108) addr:0x0208a0f0 local
+MenuTop_helpCur_Init kind:function(arm,size=0x20) addr:0x0208a1f8 local
+MenuTop_helpCur_Update kind:function(arm,size=0xf8) addr:0x0208a218 local
+MenuTop_helpCur_Render kind:function(arm,size=0x40) addr:0x0208a310 local
+MenuTop_helpCur_Destroy kind:function(arm,size=0x2c) addr:0x0208a350 local
+MenuTop_helpCur_RunTask kind:function(arm,size=0x48) addr:0x0208a37c local
+MenuTop_helpCur_CreateTask kind:function(arm,size=0x34) addr:0x0208a3c4
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_pointer.c
@@ -2475,36 +2475,28 @@ data_ov043_020c78dc kind:data(any) addr:0x020c78dc
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/MenuTop.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c7908 kind:data(any) addr:0x020c7908
-data_ov043_020c7914 kind:data(any) addr:0x020c7914
-data_ov043_020c7970 kind:data(any) addr:0x020c7970
-data_ov043_020c7980 kind:data(any) addr:0x020c7980
-data_ov043_020c7988 kind:data(any) addr:0x020c7988
-data_ov043_020c7990 kind:data(any) addr:0x020c7990
-data_ov043_020c79a8 kind:data(any) addr:0x020c79a8
-data_ov043_020c79b0 kind:data(any) addr:0x020c79b0
-data_ov043_020c79c8 kind:data(any) addr:0x020c79c8
-data_ov043_020c79d0 kind:data(any) addr:0x020c79d0
-data_ov043_020c79d8 kind:data(any) addr:0x020c79d8
-data_ov043_020c79e0 kind:data(any) addr:0x020c79e0
-data_ov043_020c7a48 kind:data(any) addr:0x020c7a48
-data_ov043_020c7a58 kind:data(any) addr:0x020c7a58
-data_ov043_020c7a68 kind:data(any) addr:0x020c7a68
-data_ov043_020c7a88 kind:data(any) addr:0x020c7a88
+OvlProc_MenuTop kind:data(any) addr:0x020c7908
+MenuTop_AreaMapPos kind:data(any) addr:0x020c7914
+MenuTop_BinIdentifiers kind:data(any) addr:0x020c7970
+@1580 kind:data(any) addr:0x020c79e0 local
+@1628 kind:data(any) addr:0x020c7a48 local
+@1599 kind:data(any) addr:0x020c7a58 local
+@1561 kind:data(any) addr:0x020c7a68 local
+@1591 kind:data(any) addr:0x020c7a88 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_select.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_select kind:data(any) addr:0x020c7aa8 local
 @1338 kind:data(any) addr:0x020c7ab4 local
-data_ov043_020c7ac4 kind:data(any) addr:0x020c7ac4 local
-data_ov043_020c7ad4 kind:data(any) addr:0x020c7ad4 local
-data_ov043_020c7af4 kind:data(any) addr:0x020c7af4 local
+MenuTop_select_Frames kind:data(any) addr:0x020c7ac4 local
+MenuTop_select_Positions kind:data(any) addr:0x020c7ad4 local
+MenuTop_select_Anim kind:data(any) addr:0x020c7af4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_icon.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c7b20 kind:data(any) addr:0x020c7b20 local
+MenuTop_icon_Frames kind:data(any) addr:0x020c7b20 local
 Tsk_MenuTop_icon kind:data(any) addr:0x020c7b24 local
 @1342 kind:data(any) addr:0x020c7b30 local
 MenuTop_icon_Anim kind:data(any) addr:0x020c7b40 local
@@ -2514,21 +2506,21 @@ MenuTop_icon_Anim kind:data(any) addr:0x020c7b40 local
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_lvGauge kind:data(any) addr:0x020c7b6c local
 @1593 kind:data(any) addr:0x020c7b78 local
-data_ov043_020c7b88 kind:data(any) addr:0x020c7b88 local
+MenuTop_lvGauge_Anim kind:data(any) addr:0x020c7b88 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckNum.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_luckNum kind:data(any) addr:0x020c7bb4
 data_ov043_020c7bc0 kind:data(any) addr:0x020c7bc0
-data_ov043_020c7bd0 kind:data(any) addr:0x020c7bd0
+MenuTop_luckNum_Anim kind:data(any) addr:0x020c7bd0
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckStar.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_luckStar kind:data(any) addr:0x020c7bfc local
 @1319 kind:data(any) addr:0x020c7c08 local
-data_ov043_020c7c18 kind:data(any) addr:0x020c7c18 local
+MenuTop_luckStar_Anim kind:data(any) addr:0x020c7c18 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_nameD.c
@@ -2537,7 +2529,7 @@ Tsk_MenuTop_nameD kind:data(any) addr:0x020c7c44 local
 data_ov043_020c7c50 kind:data(any) addr:0x020c7c50 local
 data_ov043_020c7c60 kind:data(any) addr:0x020c7c60 local
 data_ov043_020c7c70 kind:data(any) addr:0x020c7c70 local
-data_ov043_020c7c90 kind:data(any) addr:0x020c7c90 local
+MenuTop_nameD_Anim kind:data(any) addr:0x020c7c90 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_nameU.c
@@ -2546,45 +2538,45 @@ data_ov043_020c7cbc kind:data(any) addr:0x020c7cbc local
 Tsk_MenuTop_nameU kind:data(any) addr:0x020c7cc8 local
 @1350 kind:data(any) addr:0x020c7cd4 local
 @1288 kind:data(any) addr:0x020c7ce4 local
-data_ov043_020c7cf8 kind:data(any) addr:0x020c7cf8 local
+MenuTop_nameU_Anim kind:data(any) addr:0x020c7cf8 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_rankNumU.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_rankNumU kind:data(any) addr:0x020c7d24
 data_ov043_020c7d30 kind:data(any) addr:0x020c7d30
-data_ov043_020c7d40 kind:data(any) addr:0x020c7d40
+MenuTop_rankNumU_Positions kind:data(any) addr:0x020c7d40
 MenuTop_rankNumU_Anim kind:data(any) addr:0x020c7d50
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numLV.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c7d7c kind:data(any) addr:0x020c7d7c local
+MenuTop_numLV_DigitX kind:data(any) addr:0x020c7d7c local
 Tsk_MenuTop_numLV kind:data(any) addr:0x020c7d88 local
 @1411 kind:data(any) addr:0x020c7d94 local
-data_ov043_020c7da4 kind:data(any) addr:0x020c7da4 local
+MenuTop_numLV_Anim kind:data(any) addr:0x020c7da4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numExpNext.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_numExpNext kind:data(any) addr:0x020c7dd0 local
 @1354 kind:data(any) addr:0x020c7ddc local
-data_ov043_020c7dec kind:data(any) addr:0x020c7dec local
+MenuTop_numExpNext_Anim kind:data(any) addr:0x020c7dec local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numHP.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_numHP kind:data(any) addr:0x020c7e18
 @1404 kind:data(any) addr:0x020c7e24 local
-data_ov043_020c7e34 kind:data(any) addr:0x020c7e34
+MenuTop_numHP_Anim kind:data(any) addr:0x020c7e34
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numMoney.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_numMoney kind:data(any) addr:0x020c7e60 local
 @1385 kind:data(any) addr:0x020c7e6c local
-data_ov043_020c7e7c kind:data(any) addr:0x020c7e7c local
-data_ov043_020c7e90 kind:data(any) addr:0x020c7e90 local
+MenuTop_numMoney_Layout kind:data(any) addr:0x020c7e7c local
+MenuTop_numMoney_Anim kind:data(any) addr:0x020c7e90 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawDiff.c
@@ -2592,7 +2584,7 @@ data_ov043_020c7e90 kind:data(any) addr:0x020c7e90 local
 @1274 kind:data(any) addr:0x020c7ebc local
 Tsk_MenuTop_drawDiff kind:data(any) addr:0x020c7ec4 local
 @1333 kind:data(any) addr:0x020c7ed0 local
-data_ov043_020c7ee0 kind:data(any) addr:0x020c7ee0 local
+MenuTop_drawDiff_Anim kind:data(any) addr:0x020c7ee0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_drawPtrAI.c
@@ -2600,7 +2592,7 @@ data_ov043_020c7ee0 kind:data(any) addr:0x020c7ee0 local
 @1276 kind:data(any) addr:0x020c7f0c local
 Tsk_MenuTop_drawPtrAI kind:data(any) addr:0x020c7f14 local
 @1334 kind:data(any) addr:0x020c7f20 local
-data_ov043_020c7f30 kind:data(any) addr:0x020c7f30 local
+MenuTop_drawPtrAI_Anim kind:data(any) addr:0x020c7f30 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selDiff.c
@@ -2608,7 +2600,7 @@ data_ov043_020c7f30 kind:data(any) addr:0x020c7f30 local
 @1301 kind:data(any) addr:0x020c7f5c local
 Tsk_MenuTop_selDiff kind:data(any) addr:0x020c7f64 local
 @1417 kind:data(any) addr:0x020c7f70 local
-data_ov043_020c7f80 kind:data(any) addr:0x020c7f80 local
+MenuTop_selDiff_Anim kind:data(any) addr:0x020c7f80 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_selPtrAI.c
@@ -2616,42 +2608,42 @@ data_ov043_020c7f80 kind:data(any) addr:0x020c7f80 local
 @1284 kind:data(any) addr:0x020c7fac local
 Tsk_MenuTop_selPtrAI kind:data(any) addr:0x020c7fb4 local
 @1404 kind:data(any) addr:0x020c7fc0 local
-data_ov043_020c7fd0 kind:data(any) addr:0x020c7fd0 local
+MenuTop_selPtrAI_Anim kind:data(any) addr:0x020c7fd0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScr.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c7ffc kind:data(any) addr:0x020c7ffc
-data_ov043_020c8008 kind:data(any) addr:0x020c8008
-data_ov043_020c8018 kind:data(any) addr:0x020c8018
+Tsk_MenuTop_textScr kind:data(any) addr:0x020c7ffc local
+@1551 kind:data(any) addr:0x020c8008 local
+@1491 kind:data(any) addr:0x020c8018 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c8038 kind:data(any) addr:0x020c8038
-data_ov043_020c8044 kind:data(any) addr:0x020c8044
-data_ov043_020c8054 kind:data(any) addr:0x020c8054
+Tsk_MenuTop_mapTipU kind:data(any) addr:0x020c8038 local
+@1442 kind:data(any) addr:0x020c8044 local
+MenuTop_mapTipU_Anim kind:data(any) addr:0x020c8054 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipBrdU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c8080 kind:data(any) addr:0x020c8080
-data_ov043_020c808c kind:data(any) addr:0x020c808c
-data_ov043_020c809c kind:data(any) addr:0x020c809c
+Tsk_MenuTop_mapTipBrdU kind:data(any) addr:0x020c8080 local
+@1404 kind:data(any) addr:0x020c808c local
+MenuTop_mapTipBrdU_Anim kind:data(any) addr:0x020c809c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_helpCur.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c80c8 kind:data(any) addr:0x020c80c8
-data_ov043_020c80d4 kind:data(any) addr:0x020c80d4
-data_ov043_020c80e4 kind:data(any) addr:0x020c80e4
+Tsk_MenuTop_helpCur kind:data(any) addr:0x020c80c8 local
+@1453 kind:data(any) addr:0x020c80d4 local
+MenuTop_helpCur_Anim kind:data(any) addr:0x020c80e4 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_pointer.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_pointer kind:data(any) addr:0x020c8110 local
 @1328 kind:data(any) addr:0x020c811c local
-data_ov043_020c812c kind:data(any) addr:0x020c812c local
+MenuTop_pointer_Anim kind:data(any) addr:0x020c812c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScrU.c
@@ -3754,22 +3746,22 @@ data_ov043_020cb83c kind:data(any) addr:0x020cb83c
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_textScr.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb8f0 kind:data(any) addr:0x020cb8f0
+@1474 kind:data(byte[20]) addr:0x020cb8f0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb904 kind:data(any) addr:0x020cb904
+@1372 kind:data(byte[20]) addr:0x020cb904 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_mapTipBrdU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb918 kind:data(any) addr:0x020cb918
+@1348 kind:data(byte[23]) addr:0x020cb918 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_helpCur.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb930 kind:data(any) addr:0x020cb930
+@1349 kind:data(byte[20]) addr:0x020cb930 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_pointer.c

@@ -3,22 +3,20 @@
 typedef struct {
     /* 0x00 */ Sprite sprite;
     /* 0x40 */ s32    unk_40;
-    /* 0x44 */ void*  unk_44;
+    /* 0x44 */ void*  topMenu;
 } MenuTop_luckStar; // Size: 0x48
 
 typedef struct {
-    /* 0x0 */ s32   unk_0;
-    /* 0x4 */ void* unk_4;
+    /* 0x0 */ s32   dataType;
+    /* 0x4 */ void* topMenu;
 } MenuTop_luckStar_Args;
-
-extern BinIdentifier data_ov043_020c79c8;
 
 static SpriteFrameInfo* MenuTop_luckStar_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_luckStar_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuTop_luckStar = {"Tsk_MenuTop_luckStar", MenuTop_luckStar_RunTask, sizeof(MenuTop_luckStar)};
 
-static const SpriteAnimation data_ov043_020c7c18 = {
+static const SpriteAnimation MenuTop_luckStar_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -32,7 +30,7 @@ static const SpriteAnimation data_ov043_020c7c18 = {
     .frameInfoCallback = MenuTop_luckStar_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79c8,
+    .binIden           = &MenuTop_BinIdentifiers[11],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -50,9 +48,9 @@ static SpriteFrameInfo* MenuTop_luckStar_GetFrameInfo(Sprite* sprite, s32 arg, s
 }
 
 static void MenuTop_luckStar_Load(Sprite* sprite, MenuTop_luckStar_Args* args) {
-    SpriteAnimation anim = data_ov043_020c7c18;
+    SpriteAnimation anim = MenuTop_luckStar_Anim;
 
-    anim.dataType = args->unk_0;
+    anim.dataType = args->dataType;
     _Sprite_Load(sprite, &anim);
 }
 
@@ -61,7 +59,7 @@ static s32 MenuTop_luckStar_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_luckStar_Args* initArgs = args;
 
     MenuTop_luckStar_Load(&luckStar->sprite, initArgs);
-    luckStar->unk_44 = initArgs->unk_4;
+    luckStar->topMenu = initArgs->topMenu;
     return 1;
 }
 
@@ -97,10 +95,10 @@ static s32 MenuTop_luckStar_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-void MenuTop_luckStar_CreateTask(TaskPool* pool, s32 arg1, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_luckStar_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_luckStar_Args args;
 
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
-    EasyTask_CreateTask(pool, &Tsk_MenuTop_luckStar, NULL, 0, NULL, &args);
+    args.dataType = dataType;
+    args.topMenu  = topMenu;
+    return EasyTask_CreateTask(pool, &Tsk_MenuTop_luckStar, NULL, 0, NULL, &args);
 }

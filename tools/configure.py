@@ -133,6 +133,10 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
         version=MWCC_DEFAULT_VERSION,
         flags=STR_REUSE_CC_FLAGS,
     ),
+    Path("src/Interface/Menu/Top.c"): CompilerConfig(
+        version=MWCC_DEFAULT_VERSION,
+        flags=STR_REUSE_CC_FLAGS,
+    ),
     Path("libs/c"): MSL_COMPILER_CONFIG,
     Path("libs/cpp"): MSL_COMPILER_CONFIG,
     Path("libs/runtime"): MSL_RUNTIME_COMPILER_CONFIG,

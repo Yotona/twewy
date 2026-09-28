@@ -1,16 +1,16 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite             sprite;
-    /* 0x40 */ BOOL               shouldRender;
-    /* 0x44 */ UnkStruct_TopMenu* unk_44;
-    /* 0x48 */ Point              unk_48;
-    /* 0x4C */ BOOL               unk_4C;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ BOOL           shouldRender;
+    /* 0x44 */ MenuTopObject* topMenu;
+    /* 0x48 */ Point          unk_48;
+    /* 0x4C */ BOOL           onMap;
 } MenuTop_nekuU; // Size: 0x50
 
 typedef struct {
-    /* 0x0 */ s32                dataType;
-    /* 0x4 */ UnkStruct_TopMenu* unk_4;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_nekuU_Args;
 
 static SpriteFrameInfo* MenuTop_nekuU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -32,7 +32,7 @@ static const SpriteAnimation MenuTop_nekuU_Anim = {
     .frameInfoCallback = MenuTop_nekuU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79a8,
+    .binIden           = &MenuTop_BinIdentifiers[7],
     .unk_18            = 0,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -50,43 +50,43 @@ static SpriteFrameInfo* MenuTop_nekuU_GetFrameInfo(Sprite* sprite, s32 arg, s32 
 }
 
 static void MenuTop_nekuU_Load(MenuTop_nekuU* nekuU, Sprite* sprite, MenuTop_nekuU_Args* args) {
-    UnkStruct_TopMenu* unkTemp = nekuU->unk_44;
-    SpriteAnimation    anim    = MenuTop_nekuU_Anim;
+    MenuTopObject*  topMenu = nekuU->topMenu;
+    SpriteAnimation anim    = MenuTop_nekuU_Anim;
 
     anim.dataType = args->dataType;
 
-    if (unkTemp->unk_4E < 21) {
+    if (topMenu->currentArea < 21) {
         anim.unk_2A         = 13;
-        anim.unk_04         = data_ov043_020c7914[unkTemp->unk_4E].x;
-        anim.unk_06         = data_ov043_020c7914[unkTemp->unk_4E].y - 2;
+        anim.unk_04         = MenuTop_AreaMapPos[topMenu->currentArea].x;
+        anim.unk_06         = MenuTop_AreaMapPos[topMenu->currentArea].y - 2;
         nekuU->shouldRender = TRUE;
-        nekuU->unk_4C       = TRUE;
+        nekuU->onMap        = TRUE;
     } else {
         anim.unk_2A         = 13;
         anim.unk_04         = 0;
         anim.unk_06         = 0;
         nekuU->shouldRender = FALSE;
-        nekuU->unk_4C       = FALSE;
+        nekuU->onMap        = FALSE;
     }
 
     _Sprite_Load(sprite, &anim);
 }
 
 static s32 MenuTop_nekuU_Init(TaskPool* pool, Task* task, void* args) {
-    MenuTop_nekuU*      nekuU    = task->data;
-    MenuTop_nekuU_Args* helpArgs = args;
+    MenuTop_nekuU*      nekuU     = task->data;
+    MenuTop_nekuU_Args* nekuUArgs = args;
 
-    nekuU->unk_44   = helpArgs->unk_4;
+    nekuU->topMenu  = nekuUArgs->topMenu;
     nekuU->unk_48.x = 40;
     nekuU->unk_48.y = 0;
-    MenuTop_nekuU_Load(nekuU, &nekuU->sprite, helpArgs);
+    MenuTop_nekuU_Load(nekuU, &nekuU->sprite, nekuUArgs);
     return 1;
 }
 
 static s32 MenuTop_nekuU_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_nekuU* nekuU = task->data;
 
-    nekuU->shouldRender = nekuU->unk_44->unk_66;
+    nekuU->shouldRender = nekuU->topMenu->blinkOn;
 
     Sprite_Update(&nekuU->sprite);
     return 1;
@@ -118,9 +118,9 @@ static s32 MenuTop_nekuU_RunTask(TaskPool* pool, Task* task, void* args, s32 sta
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_nekuU_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_nekuU_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_nekuU_Args args;
     args.dataType = dataType;
-    args.unk_4    = arg2;
+    args.topMenu  = topMenu;
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_nekuU, NULL, 0, NULL, &args);
 }

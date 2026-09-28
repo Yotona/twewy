@@ -1,26 +1,24 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite             sprite;
-    /* 0x40 */ s32                unk_40;
-    /* 0x44 */ UnkStruct_TopMenu* unk_44;
-    /* 0x48 */ u16                unk_48;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ s32            visible;
+    /* 0x44 */ MenuTopObject* topMenu;
+    /* 0x48 */ u16            initialDifficulty;
 } MenuTop_drawDiff; // Size: 0x4C
 
 typedef struct {
-    /* 0x0 */ s32                dataType;
-    /* 0x4 */ UnkStruct_TopMenu* unk_4;
-    /* 0x8 */ u16                unk_8;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            difficulty;
 } MenuTop_drawDiff_Args;
-
-extern s32 func_ov043_02084620(Sprite* sprite, s16 frameIndex);
 
 static SpriteFrameInfo* MenuTop_drawDiff_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_drawDiff_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuTop_drawDiff = {"Tsk_MenuTop_drawDiff", MenuTop_drawDiff_RunTask, sizeof(MenuTop_drawDiff)};
 
-static const SpriteAnimation data_ov043_020c7ee0 = {
+static const SpriteAnimation MenuTop_drawDiff_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -34,7 +32,7 @@ static const SpriteAnimation data_ov043_020c7ee0 = {
     .frameInfoCallback = MenuTop_drawDiff_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -47,10 +45,10 @@ static const SpriteAnimation data_ov043_020c7ee0 = {
     .unk_2A            = 1,
 };
 
-static s16 func_ov043_020888fc(MenuTop_drawDiff* arg0) {
-    s16 data_ov043_020c7ebc[4] = {0x33, 0x32, 0x31, 0x30};
+static s16 MenuTop_drawDiff_GetFrame(MenuTop_drawDiff* taskData) {
+    s16 frames[4] = {0x33, 0x32, 0x31, 0x30};
 
-    return data_ov043_020c7ebc[arg0->unk_44->unk_12];
+    return frames[taskData->topMenu->difficulty];
 }
 
 static SpriteFrameInfo* MenuTop_drawDiff_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -60,15 +58,15 @@ static SpriteFrameInfo* MenuTop_drawDiff_GetFrameInfo(Sprite* sprite, s32 arg, s
 static void MenuTop_drawDiff_Load(void* arg0, void* arg1, MenuTop_drawDiff_Args* args) {
     MenuTop_drawDiff* taskData = arg0;
     Sprite*           sprite   = arg1;
-    SpriteAnimation   anim     = data_ov043_020c7ee0;
+    SpriteAnimation   anim     = MenuTop_drawDiff_Anim;
 
-    s32 val = func_ov043_020888fc(taskData);
+    s32 val = MenuTop_drawDiff_GetFrame(taskData);
 
-    anim.dataType    = args->dataType;
-    taskData->unk_40 = 1;
-    anim.unk_2A      = val;
-    anim.unk_04      = 0x62;
-    anim.unk_06      = 0xA4;
+    anim.dataType     = args->dataType;
+    taskData->visible = 1;
+    anim.unk_2A       = val;
+    anim.unk_04       = 0x62;
+    anim.unk_06       = 0xA4;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -77,8 +75,8 @@ static s32 MenuTop_drawDiff_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_drawDiff*      taskData = task->data;
     MenuTop_drawDiff_Args* initArgs = args;
 
-    taskData->unk_44 = initArgs->unk_4;
-    taskData->unk_48 = initArgs->unk_8;
+    taskData->topMenu           = initArgs->topMenu;
+    taskData->initialDifficulty = initArgs->difficulty;
     MenuTop_drawDiff_Load(taskData, &taskData->sprite, initArgs);
     return 1;
 }
@@ -86,7 +84,7 @@ static s32 MenuTop_drawDiff_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_drawDiff_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_drawDiff* taskData = task->data;
 
-    func_ov043_02084620(&taskData->sprite, func_ov043_020888fc(taskData));
+    MenuTop_SetSpriteFrame(&taskData->sprite, MenuTop_drawDiff_GetFrame(taskData));
     Sprite_Update(&taskData->sprite);
     return 1;
 }
@@ -94,7 +92,7 @@ static s32 MenuTop_drawDiff_Update(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_drawDiff_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_drawDiff* taskData = task->data;
 
-    if (taskData->unk_40 != 0) {
+    if (taskData->visible != 0) {
         Sprite_RenderFrame(&taskData->sprite);
     }
     return 1;
@@ -117,12 +115,12 @@ static s32 MenuTop_drawDiff_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-void MenuTop_drawDiff_CreateTask(TaskPool* pool, s32 arg1, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_drawDiff_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_drawDiff_Args args;
 
-    args.dataType = arg1;
-    args.unk_4    = arg2;
-    args.unk_8    = arg2->unk_12;
+    args.dataType   = dataType;
+    args.topMenu    = topMenu;
+    args.difficulty = topMenu->difficulty;
 
-    EasyTask_CreateTask(pool, &Tsk_MenuTop_drawDiff, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_MenuTop_drawDiff, NULL, 0, NULL, &args);
 }

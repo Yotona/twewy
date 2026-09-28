@@ -4,23 +4,21 @@
 #include "Interface/Menu/Top.h"
 #include "SndMgr.h"
 
-extern s16 func_ov043_02084e20(s16 x, s16 y);
-
 typedef struct {
-    /* 0x00 */ Sprite sprites[5];
-    /* 0x140 */ s32   visibleFlags[5];
-    /* 0x154 */ void* owner;
-    /* 0x158 */ s16   selectedIndex;
-    /* 0x15A */ u16   state;
-    /* 0x15C */ s16   delay;
-    /* 0x15E */ s16   lastFrame;
-    /* 0x160 */ s32   lastVisible;
+    /* 0x00 */ Sprite          sprites[5];
+    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x154 */ MenuTopObject* topMenu;
+    /* 0x158 */ s16            selectedIndex;
+    /* 0x15A */ u16            state;
+    /* 0x15C */ s16            delay;
+    /* 0x15E */ s16            lastCursorY;
+    /* 0x160 */ s32            lastVisible;
 } MenuTop_selPtrAI; // Size: 0x164
 
 typedef struct {
-    /* 0x00 */ s32   dataType;
-    /* 0x04 */ void* owner;
-    /* 0x08 */ s16   selectedIndex;
+    /* 0x00 */ s32            dataType;
+    /* 0x04 */ MenuTopObject* topMenu;
+    /* 0x08 */ s16            selectedIndex;
 } MenuTop_selPtrAI_Args;
 
 static SpriteFrameInfo* MenuTop_selPtrAI_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -28,7 +26,7 @@ static s32              MenuTop_selPtrAI_RunTask(TaskPool* pool, Task* task, voi
 
 static const TaskHandle Tsk_MenuTop_selPtrAI = {"Tsk_MenuTop_selPtrAI", MenuTop_selPtrAI_RunTask, sizeof(MenuTop_selPtrAI)};
 
-static const SpriteAnimation data_ov043_020c7fd0 = {
+static const SpriteAnimation MenuTop_selPtrAI_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -42,7 +40,7 @@ static const SpriteAnimation data_ov043_020c7fd0 = {
     .frameInfoCallback = MenuTop_selPtrAI_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -55,14 +53,14 @@ static const SpriteAnimation data_ov043_020c7fd0 = {
     .unk_2A            = 1,
 };
 
-static s16 func_ov043_02089374(u16 arg0) {
-    s16 data_ov043_020c7fac[4] = {
+static s16 MenuTop_selPtrAI_GetRowY(u16 row) {
+    s16 rowY[4] = {
         46,
         78,
         110,
         142,
     };
-    return data_ov043_020c7fac[arg0];
+    return rowY[row];
 }
 
 static SpriteFrameInfo* MenuTop_selPtrAI_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -70,7 +68,7 @@ static SpriteFrameInfo* MenuTop_selPtrAI_GetFrameInfo(Sprite* sprite, s32 arg, s
 }
 
 static void MenuTop_selPtrAI_Load(MenuTop_selPtrAI* taskData, Sprite* sprites, MenuTop_selPtrAI_Args* args) {
-    SpriteAnimation anim = data_ov043_020c7fd0;
+    SpriteAnimation anim = MenuTop_selPtrAI_Anim;
 
     anim.dataType = args->dataType;
 
@@ -83,28 +81,28 @@ static void MenuTop_selPtrAI_Load(MenuTop_selPtrAI* taskData, Sprite* sprites, M
 
     anim.unk_2A = 0x3C;
     anim.unk_04 = 0xDA;
-    anim.unk_06 = func_ov043_02089374(args->selectedIndex);
+    anim.unk_06 = MenuTop_selPtrAI_GetRowY(args->selectedIndex);
     _Sprite_Load(&sprites[0], &anim);
-    taskData->lastFrame = anim.unk_06;
+    taskData->lastCursorY = anim.unk_06;
 
     anim.unk_2A = 0x34;
     anim.unk_04 = 0xDA;
-    anim.unk_06 = func_ov043_02089374(0);
+    anim.unk_06 = MenuTop_selPtrAI_GetRowY(0);
     _Sprite_Load(&sprites[1], &anim);
 
     anim.unk_2A = 0x37;
     anim.unk_04 = 0xDA;
-    anim.unk_06 = func_ov043_02089374(1);
+    anim.unk_06 = MenuTop_selPtrAI_GetRowY(1);
     _Sprite_Load(&sprites[2], &anim);
 
     anim.unk_2A = 0x36;
     anim.unk_04 = 0xDA;
-    anim.unk_06 = func_ov043_02089374(2);
+    anim.unk_06 = MenuTop_selPtrAI_GetRowY(2);
     _Sprite_Load(&sprites[3], &anim);
 
     anim.unk_2A = 0x35;
     anim.unk_04 = 0xDA;
-    anim.unk_06 = func_ov043_02089374(3);
+    anim.unk_06 = MenuTop_selPtrAI_GetRowY(3);
     _Sprite_Load(&sprites[4], &anim);
 }
 
@@ -112,7 +110,7 @@ static s32 MenuTop_selPtrAI_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_selPtrAI*      taskData = task->data;
     MenuTop_selPtrAI_Args* initArgs = args;
 
-    taskData->owner         = initArgs->owner;
+    taskData->topMenu       = initArgs->topMenu;
     taskData->selectedIndex = initArgs->selectedIndex;
     taskData->state         = 0;
     taskData->delay         = 0xA;
@@ -120,11 +118,10 @@ static s32 MenuTop_selPtrAI_Init(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-// TODO: Properly type `ownerBytes` and remove casts in this function
 static s32 MenuTop_selPtrAI_Update(TaskPool* pool, Task* task, void* args) {
-    MenuTop_selPtrAI* taskData   = task->data;
-    u16*              ownerBytes = taskData->owner;
-    u16               state      = taskData->state;
+    MenuTop_selPtrAI* taskData = task->data;
+    MenuTopObject*    topMenu  = taskData->topMenu;
+    u16               state    = taskData->state;
 
     switch (state) {
         case 0:
@@ -140,26 +137,26 @@ static s32 MenuTop_selPtrAI_Update(TaskPool* pool, Task* task, void* args) {
 
             if (TouchInput_IsTouchActive() != FALSE) {
                 TouchInput_GetCoord(&coord);
-                taskData->selectedIndex = func_ov043_02084e20(coord.x, coord.y);
+                taskData->selectedIndex = MenuTop_GetPartnerAIRowAtPoint(coord.x, coord.y);
 
                 if (taskData->selectedIndex == -1) {
                     taskData->visibleFlags[0] = 0;
                 } else {
                     taskData->visibleFlags[0] = 1;
-                    taskData->sprites[0].posY = func_ov043_02089374(taskData->selectedIndex);
+                    taskData->sprites[0].posY = MenuTop_selPtrAI_GetRowY(taskData->selectedIndex);
                 }
             } else {
                 TouchInput_GetCoord(&coord);
-                taskData->selectedIndex = func_ov043_02084e20(coord.x, coord.y);
+                taskData->selectedIndex = MenuTop_GetPartnerAIRowAtPoint(coord.x, coord.y);
 
                 if (taskData->selectedIndex != -1) {
                     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
                     taskData->delay = 0x14;
                     taskData->state = 2;
                 } else {
-                    ownerBytes[0] &= ~8;
+                    topMenu->flags &= ~8;
                     g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~1;
-                    *(u16*)(ownerBytes + 0x26) = 0;
+                    topMenu->popupOpen = 0;
                     return 0;
                 }
             }
@@ -171,18 +168,18 @@ static s32 MenuTop_selPtrAI_Update(TaskPool* pool, Task* task, void* args) {
                 break;
             }
 
-            *(u16*)(ownerBytes + 10) = taskData->selectedIndex;
-            ownerBytes[0] &= ~8;
+            topMenu->partnerAI = taskData->selectedIndex;
+            topMenu->flags &= ~8;
             g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~1;
-            *(u16*)(ownerBytes + 0x26) = 0;
+            topMenu->popupOpen = 0;
             return 0;
     }
 
-    if (taskData->lastFrame != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visibleFlags[0] == 1)) {
+    if (taskData->lastCursorY != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visibleFlags[0] == 1)) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_SCROLL);
     }
 
-    taskData->lastFrame   = taskData->sprites[0].posY;
+    taskData->lastCursorY = taskData->sprites[0].posY;
     taskData->lastVisible = taskData->visibleFlags[0];
 
     for (s32 i = 0; i < 5; i++) {
@@ -222,12 +219,12 @@ s32 MenuTop_selPtrAI_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_selPtrAI_CreateTask(TaskPool* pool, s32 dataType, void* ownerContext) {
+s32 MenuTop_selPtrAI_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_selPtrAI_Args args;
 
     args.dataType      = dataType;
-    args.owner         = ownerContext;
-    args.selectedIndex = *(u16*)((u8*)ownerContext + 0x14);
+    args.topMenu       = topMenu;
+    args.selectedIndex = topMenu->partnerAI;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_selPtrAI, NULL, 0, NULL, &args);
 }

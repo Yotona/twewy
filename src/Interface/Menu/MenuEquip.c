@@ -73,7 +73,7 @@ BOOL        func_02001b44(s32, s32, s32*, s32);
 void        func_02023d00(s32);
 s32         func_02023d1c(s32);
 void        func_0202b878(void);
-extern void func_ov043_02084040(void* state);
+extern void ProcessOverlay_MenuTop(void* state);
 
 void MenuEquip_StageFadeIn(MenuEquipState* state);
 void MenuEquip_StageOpenHelp(MenuEquipState* state);
@@ -961,7 +961,7 @@ void MenuEquip_Update(MenuEquipState* state) {
 
     if (state->unk_217F8 != 0) {
         OverlayTag tag;
-        MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_43_ID, func_ov043_02084040, NULL, PROCESS_STAGE_INIT);
+        MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_43_ID, ProcessOverlay_MenuTop, NULL, PROCESS_STAGE_INIT);
     }
 }
 

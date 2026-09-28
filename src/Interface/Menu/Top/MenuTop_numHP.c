@@ -4,26 +4,24 @@
 #include "SpriteMgr.h"
 
 typedef struct {
-    /* 0x000 */ Sprite             sprites[4];
-    /* 0x100 */ s32                visibleFlags[4];
-    /* 0x110 */ UnkStruct_TopMenu* unk_110;
-    /* 0x114 */ u16                unk_114;
+    /* 0x000 */ Sprite         sprites[4];
+    /* 0x100 */ s32            visibleFlags[4];
+    /* 0x110 */ MenuTopObject* topMenu;
+    /* 0x114 */ u16            initialHealth;
 } MenuTop_numHP; // Size: 0x118
 
 typedef struct {
     /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* unk_4;
-    /* 0x8 */ u16   unk_8;
+    /* 0x4 */ void* topMenu;
+    /* 0x8 */ u16   health;
 } MenuTop_numHP_Args;
-
-extern s32 func_ov043_02084620(Sprite* sprite, s16 frameIndex);
 
 static SpriteFrameInfo* MenuTop_numHP_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_numHP_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuTop_numHP = {"Tsk_MenuTop_numHP", MenuTop_numHP_RunTask, sizeof(MenuTop_numHP)};
 
-static const SpriteAnimation data_ov043_020c7e34 = {
+static const SpriteAnimation MenuTop_numHP_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -37,7 +35,7 @@ static const SpriteAnimation data_ov043_020c7e34 = {
     .frameInfoCallback = MenuTop_numHP_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -51,16 +49,16 @@ static const SpriteAnimation data_ov043_020c7e34 = {
 };
 
 // Nonmatching
-void func_ov043_02087ea4(void* taskDataPtr) {
+void MenuTop_numHP_Refresh(void* taskDataPtr) {
     MenuTop_numHP* taskData = taskDataPtr;
     u16            digits[4];
     u32            hp;
 
-    hp = gSaveData.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
+    hp = gSaveData.playerStats.baseHealth + (((taskData->topMenu->currentLevel - 1) * 50) + 200);
     if (hp > 9999) {
         hp = 9999;
     }
-    taskData->unk_110->unk_10 = hp;
+    taskData->topMenu->health = hp;
 
     digits[0] = (u16)(hp / 1000);
     hp %= 1000;
@@ -78,7 +76,7 @@ void func_ov043_02087ea4(void* taskDataPtr) {
     }
 
     for (u16 i = 0; i < 4; i++) {
-        func_ov043_02084620(&taskData->sprites[i], (s16)(digits[i] + 0xA));
+        MenuTop_SetSpriteFrame(&taskData->sprites[i], (s16)(digits[i] + 0xA));
     }
 }
 
@@ -91,17 +89,17 @@ void MenuTop_numHP_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
     MenuTop_numHP*      taskData = taskDataPtr;
     Sprite*             sprites  = spritesPtr;
     MenuTop_numHP_Args* args     = argsPtr;
-    SpriteAnimation     anim     = data_ov043_020c7e34;
+    SpriteAnimation     anim     = MenuTop_numHP_Anim;
     u16                 digits[4];
     s32                 hp;
 
     anim.dataType = (u16)args->dataType;
 
-    hp = gSaveData.playerStats.baseHealth + (((taskData->unk_110->unk_06 - 1) * 50) + 200);
+    hp = gSaveData.playerStats.baseHealth + (((taskData->topMenu->currentLevel - 1) * 50) + 200);
     if (hp > 9999) {
         hp = 9999;
     }
-    taskData->unk_110->unk_10 = (u16)hp;
+    taskData->topMenu->health = (u16)hp;
 
     digits[0] = (hp / 1000);
     hp %= 1000;
@@ -130,8 +128,8 @@ static s32 MenuTop_numHP_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_numHP*      taskData = task->data;
     MenuTop_numHP_Args* initArgs = args;
 
-    taskData->unk_110 = initArgs->unk_4;
-    taskData->unk_114 = initArgs->unk_8;
+    taskData->topMenu       = initArgs->topMenu;
+    taskData->initialHealth = initArgs->health;
     MenuTop_numHP_Load(taskData, taskData->sprites, initArgs);
     return 1;
 }
@@ -139,7 +137,7 @@ static s32 MenuTop_numHP_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_numHP_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_numHP* taskData = task->data;
 
-    func_ov043_02087ea4(taskData);
+    MenuTop_numHP_Refresh(taskData);
 
     for (s32 i = 0; i < 4; i++) {
         Sprite_Update(&taskData->sprites[i]);
@@ -178,12 +176,12 @@ s32 MenuTop_numHP_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_numHP_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_numHP_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_numHP_Args args;
 
     args.dataType = dataType;
-    args.unk_4    = arg2;
-    args.unk_8    = arg2->unk_10;
+    args.topMenu  = topMenu;
+    args.health   = topMenu->health;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_numHP, NULL, 0, NULL, &args);
 }

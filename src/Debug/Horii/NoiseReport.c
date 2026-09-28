@@ -25,7 +25,7 @@ s16 data_ov028_020ed3a4[4] = {21, 95, 96, 0};
 
 s32 data_ov028_020ed3ac;
 
-extern void func_ov043_02084040(void* state);
+extern void ProcessOverlay_MenuTop(void* state);
 extern void func_ov030_020ae92c();
 
 void func_ov028_020e8878(NoiseReportState*);
@@ -360,7 +360,7 @@ void func_ov028_020e89d0(NoiseReportState* state) {
         switch (state->unk_2164C) {
             case 1: {
                 OverlayTag tag;
-                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, func_ov043_02084040, NULL, 0);
+                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, ProcessOverlay_MenuTop, NULL, 0);
             } break;
 
             case 2: {
@@ -370,7 +370,7 @@ void func_ov028_020e89d0(NoiseReportState* state) {
 
             default: {
                 OverlayTag tag;
-                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, func_ov043_02084040, NULL, 0);
+                MainOvlDisp_ReplaceTop(&tag, &OVERLAY_43_ID, ProcessOverlay_MenuTop, NULL, 0);
             } break;
         }
     }

@@ -23,7 +23,7 @@ extern s16  func_ov030_020c5930(void);
 extern void func_ov030_020ae96c(s32 arg0);
 extern void func_ov030_020d4f74(void);
 
-// Per chapter setup routines, indexed by MainData::unk_1AB0.
+// Per chapter setup routines, indexed by MainData::chapter.
 extern void (*const data_ov030_020dbe30[44])(void);
 
 const char* data_ov030_0210033c[48] = {
@@ -375,17 +375,17 @@ void func_ov030_020b0e58(void) {
     gSaveData.unk_3100 = -1;
     gSaveData.unk_24BE = 0;
 
-    if (gSaveData.unk_1AB0 <= 6) {
+    if (gSaveData.chapter <= 6) {
         gSaveData.playerStats.activePartner = PARTNER_SHIKI;
-    } else if (gSaveData.unk_1AB0 <= 13) {
+    } else if (gSaveData.chapter <= 13) {
         gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
-    } else if (gSaveData.unk_1AB0 <= 20) {
+    } else if (gSaveData.chapter <= 20) {
         gSaveData.playerStats.activePartner = PARTNER_BEAT;
-    } else if (gSaveData.unk_1AB0 <= 28) {
+    } else if (gSaveData.chapter <= 28) {
         gSaveData.playerStats.activePartner = PARTNER_SHIKI;
-    } else if (gSaveData.unk_1AB0 <= 35) {
+    } else if (gSaveData.chapter <= 35) {
         gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
-    } else if (gSaveData.unk_1AB0 <= 42) {
+    } else if (gSaveData.chapter <= 42) {
         gSaveData.playerStats.activePartner = PARTNER_BEAT;
     }
 
@@ -398,7 +398,7 @@ void func_ov030_020b0e58(void) {
     func_ov030_020aead0(4);
     func_ov030_020aec38(10);
     func_ov030_020b7ac8();
-    data_ov030_020dbe30[gSaveData.unk_1AB0]();
+    data_ov030_020dbe30[gSaveData.chapter]();
 
     if (gSaveData.unk_3124 == -1) {
         OverlayTag tag;

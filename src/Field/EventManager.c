@@ -1683,10 +1683,10 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
     if (gSaveData.unk_24B8 != 0) {
         return 0;
     }
-    if (gSaveData.unk_1AB0 >= 44) {
-        gSaveData.unk_1AB0 = 0;
+    if (gSaveData.chapter >= 44) {
+        gSaveData.chapter = 0;
     }
-    if (data_ov030_020da618[gSaveData.unk_1AB0](eventMgr) != 0) {
+    if (data_ov030_020da618[gSaveData.chapter](eventMgr) != 0) {
         return 1;
     }
     if (func_ov030_020ab3b8(gSaveData.currentStoryEvent) != 0) {

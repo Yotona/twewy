@@ -2,14 +2,14 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite             sprite;
-    /* 0x40 */ BOOL               shouldRender;
-    /* 0x44 */ UnkStruct_TopMenu* unk_44;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ BOOL           shouldRender;
+    /* 0x44 */ MenuTopObject* topMenu;
 } MenuTop_pointer; // Size: 0x48
 
 typedef struct {
-    /* 0x0 */ s32                dataType;
-    /* 0x4 */ UnkStruct_TopMenu* unk_4;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_pointer_Args;
 
 static SpriteFrameInfo* MenuTop_pointer_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -17,7 +17,7 @@ static s32              MenuTop_pointer_RunTask(TaskPool* pool, Task* task, void
 
 static const TaskHandle Tsk_MenuTop_pointer = {"Tsk_MenuTop_pointer", MenuTop_pointer_RunTask, sizeof(MenuTop_pointer)};
 
-static const SpriteAnimation data_ov043_020c812c = {
+static const SpriteAnimation MenuTop_pointer_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -31,7 +31,7 @@ static const SpriteAnimation data_ov043_020c812c = {
     .frameInfoCallback = MenuTop_pointer_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -49,7 +49,7 @@ static SpriteFrameInfo* MenuTop_pointer_GetFrameInfo(Sprite* sprite, s32 arg, s3
 }
 
 static void MenuTop_pointer_Load(Sprite* sprite, MenuTop_pointer_Args* args) {
-    SpriteAnimation anim = data_ov043_020c812c;
+    SpriteAnimation anim = MenuTop_pointer_Anim;
 
     anim.dataType = args->dataType;
     anim.unk_2A   = 72;
@@ -60,7 +60,7 @@ static s32 MenuTop_pointer_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_pointer*      pointer  = task->data;
     MenuTop_pointer_Args* initArgs = args;
 
-    pointer->unk_44       = initArgs->unk_4;
+    pointer->topMenu      = initArgs->topMenu;
     pointer->shouldRender = FALSE;
     MenuTop_pointer_Load(&pointer->sprite, initArgs);
     return 1;
@@ -109,11 +109,11 @@ static s32 MenuTop_pointer_RunTask(TaskPool* pool, Task* task, void* args, s32 s
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_pointer_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_pointer_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_pointer_Args args;
 
     args.dataType = dataType;
-    args.unk_4    = arg2;
+    args.topMenu  = topMenu;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_pointer, NULL, 0, NULL, &args);
 }

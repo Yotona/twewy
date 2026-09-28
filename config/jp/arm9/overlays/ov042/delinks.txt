@@ -20,9 +20,13 @@ src/Interface/Debug/TakTest/TakTest_OBJ.c:
     .data       start:0x020c7ae4 end:0x020c7b14
 
 src/Interface/Menu/Top.c:
-    .text       start:0x020839b0 end:0x0208622c
-    .rodata     start:0x020c4150 end:0x020c42f0
+    .text       start:0x020839b0 end:0x02084f68
+    .rodata     start:0x020c4150 end:0x020c4228
     .data       start:0x020c7b14 end:0x020c7cb4
+
+src/Interface/Menu/TopData.c:
+    .text       start:0x02084f68 end:0x0208622c
+    .rodata     start:0x020c4228 end:0x020c42f0
 
 src/Interface/Menu/Top/MenuTop_select.c:
     .text       start:0x0208622c end:0x020864fc
@@ -116,24 +120,25 @@ src/Interface/Menu/Top/MenuTop_mapTipU.c:
     .data       start:0x020c7e24 end:0x020c7e38
 
 src/Interface/Menu/Top/MenuTop_mapTipBrdU.c:
+    complete
     .text       start:0x0208a6c4 end:0x0208a91c
     .rodata     start:0x020c48b4 end:0x020c48fc
     .data       start:0x020c7e38 end:0x020c7e50
 
 src/Interface/Menu/Top/MenuTop_helpCur.c:
     .text       start:0x0208a91c end:0x0208acc0
-    .rodata     start:0x020c48fc end:0x020c4938
-    .data       start:0x020c7e50 end:0x020c7e60
+    .rodata     start:0x020c48fc end:0x020c4944
+    .data       start:0x020c7e50 end:0x020c7e64
 
 src/Interface/Menu/Top/MenuTop_textScrU.c:
     .text       start:0x0208acc0 end:0x0208b46c
     .rodata     start:0x020c4944 end:0x020c4994
-    .data       start:0x020c7e74 end:0x020c7e8c
+    .data       start:0x020c7e64 end:0x020c7e7c
 
 src/Interface/Menu/Top/MenuTop_brdLogoU.c:
     .text       start:0x0208b46c end:0x0208b6a4
     .rodata     start:0x020c4994 end:0x020c49dc
-    .data       start:0x020c7e8c end:0x020c7e94
+    .data       start:0x020c7e7c end:0x020c7e94
 
 src/Interface/Menu/Top/MenuTop_nekuU.c:
     complete

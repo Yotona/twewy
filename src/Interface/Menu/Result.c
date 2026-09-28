@@ -73,7 +73,7 @@ extern u32 OVERLAY_45_ID;
 // JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
     #define RESULT_OVL_MENU       OVERLAY_43_ID
-    #define RESULT_OVL_MENU_ENTRY ((void*)0x02084040) /* func_ov043_02084040 */
+    #define RESULT_OVL_MENU_ENTRY ((void*)0x02084040) /* ProcessOverlay_MenuTop */
     #define RESULT_OVL_NEXT       OVERLAY_45_ID
     #define RESULT_OVL_NEXT_ENTRY ((void*)0x02088700) /* func_ov045_02088700 */
 #else

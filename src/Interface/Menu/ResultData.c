@@ -733,7 +733,7 @@ void Result_InitBattleMode(ResultObject* result) {
     result->displayedPP            = 0;
     result->earnedPP               = Result_CalcBattlePP(result);
     result->overallRank            = Result_CalcOverallRank(result->timeRank, result->rateBRank);
-    result->currentArea            = gSaveData.unk_1AB1;
+    result->currentArea            = gSaveData.currentArea;
     result->trendRotation          = gSaveData.unk_1AB8;
     {
         u8 brands[13] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -1165,7 +1165,7 @@ void Result_CommitBattle(ResultObject* result) {
                 }
                 break;
             case 4: {
-                u16 levelBonus = gSaveData.playerStats.level - gSaveData.playerStats.unk_04;
+                u16 levelBonus = gSaveData.playerStats.maxLevel - gSaveData.playerStats.currentLevel;
                 u16 dropRate   = result->foodStatBonus[0] + (u16)(gSaveData.playerStats.dropRate - levelBonus);
 
                 if (dropRate > 900) {
@@ -1211,7 +1211,7 @@ void Result_CommitBattle(ResultObject* result) {
                 }
                 break;
             case 4: {
-                u16 levelBonus = gSaveData.playerStats.level - gSaveData.playerStats.unk_04;
+                u16 levelBonus = gSaveData.playerStats.maxLevel - gSaveData.playerStats.currentLevel;
                 u16 dropRate   = result->foodStatBonus[1] + (u16)(gSaveData.playerStats.dropRate - levelBonus);
 
                 if (dropRate > 900) {

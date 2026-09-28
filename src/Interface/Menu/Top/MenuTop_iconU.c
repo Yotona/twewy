@@ -2,21 +2,22 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite             sprite;
-    /* 0x40 */ u32                unk_40;
-    /* 0x44 */ UnkStruct_TopMenu* unk_44;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ u32            visible;
+    /* 0x44 */ MenuTopObject* topMenu;
 } MenuTop_iconU; // Size: 0x48
 
 typedef struct {
-    /* 0x0 */ s32                dataType;
-    /* 0x4 */ UnkStruct_TopMenu* unk_4;
-    /* 0x8 */ u16                unk_8;
-    /* 0xA */ u16                unk_A;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            area;
+    /* 0xA */ u16            iconFrame;
 } MenuTop_iconU_Args;
 
+// Plain FALSE/TRUE schedule the conditional moves in the opposite order; the enum constants match.
 enum {
-    UNKTHING_A = 0,
-    UNKTHING_B = 1,
+    ICONU_HIDDEN = 0,
+    ICONU_SHOWN  = 1,
 };
 
 static SpriteFrameInfo* MenuTop_iconU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -36,7 +37,7 @@ static const SpriteAnimation MenuTop_iconU_Anim = {
     .frameInfoCallback = MenuTop_iconU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79a8,
+    .binIden           = &MenuTop_BinIdentifiers[7],
     .unk_18            = 0,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -60,21 +61,21 @@ static void MenuTop_iconU_Load(MenuTop_iconU* icon, Sprite* sprite, MenuTop_icon
 
     anim.dataType = args->dataType;
 
-    if (args->unk_8 < 21) {
-        anim.unk_2A  = args->unk_A;
-        anim.unk_04  = data_ov043_020c7914[args->unk_8].x;
-        anim.unk_06  = data_ov043_020c7914[args->unk_8].y - 2;
-        icon->unk_40 = 1;
-    } else if (args->unk_8 <= 34) {
-        anim.unk_2A  = args->unk_A;
-        anim.unk_04  = data_ov043_020c7914[21].x;
-        anim.unk_06  = data_ov043_020c7914[21].y - 2;
-        icon->unk_40 = 1;
+    if (args->area < 21) {
+        anim.unk_2A   = args->iconFrame;
+        anim.unk_04   = MenuTop_AreaMapPos[args->area].x;
+        anim.unk_06   = MenuTop_AreaMapPos[args->area].y - 2;
+        icon->visible = 1;
+    } else if (args->area <= 34) {
+        anim.unk_2A   = args->iconFrame;
+        anim.unk_04   = MenuTop_AreaMapPos[21].x;
+        anim.unk_06   = MenuTop_AreaMapPos[21].y - 2;
+        icon->visible = 1;
     } else {
-        anim.unk_2A  = args->unk_A;
-        anim.unk_04  = data_ov043_020c7914[22].x;
-        anim.unk_06  = data_ov043_020c7914[22].y - 2;
-        icon->unk_40 = 1;
+        anim.unk_2A   = args->iconFrame;
+        anim.unk_04   = MenuTop_AreaMapPos[22].x;
+        anim.unk_06   = MenuTop_AreaMapPos[22].y - 2;
+        icon->visible = 1;
     }
 
     _Sprite_Load(sprite, &anim);
@@ -84,7 +85,7 @@ static s32 MenuTop_iconU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_iconU*      icon     = task->data;
     MenuTop_iconU_Args* iconArgs = args;
 
-    icon->unk_44 = iconArgs->unk_4;
+    icon->topMenu = iconArgs->topMenu;
     MenuTop_iconU_Load(icon, &icon->sprite, iconArgs);
     return 1;
 }
@@ -92,7 +93,7 @@ static s32 MenuTop_iconU_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_iconU_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_iconU* icon = task->data;
 
-    icon->unk_40 = (icon->unk_44->unk_66 == 1) ? UNKTHING_A : UNKTHING_B;
+    icon->visible = (icon->topMenu->blinkOn == 1) ? ICONU_HIDDEN : ICONU_SHOWN;
     Sprite_Update(&icon->sprite);
     return 1;
 }
@@ -100,7 +101,7 @@ static s32 MenuTop_iconU_Update(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_iconU_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_iconU* icon = task->data;
 
-    if (icon->unk_40) {
+    if (icon->visible) {
         Sprite_RenderFrame(&icon->sprite);
     }
     return 1;
@@ -123,11 +124,11 @@ static s32 MenuTop_iconU_RunTask(TaskPool* pool, Task* task, void* args, s32 sta
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_iconU_CreateTask(TaskPool* pool, s32 arg1, UnkStruct_TopMenu* arg2, u16 arg3, u16 arg4) {
+s32 MenuTop_iconU_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu, u16 area, u16 iconFrame) {
     MenuTop_iconU_Args args;
-    args.dataType = arg1;
-    args.unk_4    = arg2;
-    args.unk_8    = arg3;
-    args.unk_A    = arg4;
+    args.dataType  = dataType;
+    args.topMenu   = topMenu;
+    args.area      = area;
+    args.iconFrame = iconFrame;
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_iconU, NULL, 0, NULL, &args);
 }

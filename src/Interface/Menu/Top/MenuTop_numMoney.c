@@ -2,25 +2,23 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite              sprites[10];
-    /* 0x280 */ s32                visibleFlags[10];
-    /* 0x2A8 */ UnkStruct_TopMenu* unk_2A8;
+    /* 0x00 */ Sprite          sprites[10];
+    /* 0x280 */ s32            visibleFlags[10];
+    /* 0x2A8 */ MenuTopObject* topMenu;
 } MenuTop_numMoney; // Size: 0x2AC
 
 typedef struct {
     /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* unk_4;
+    /* 0x4 */ void* topMenu;
     /* 0x8 */ u32   money;
 } MenuTop_numMoney_Args;
-
-extern s32 func_ov043_0208466c(void* owner, u8 displayMode);
 
 static SpriteFrameInfo* MenuTop_numMoney_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_numMoney_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_MenuTop_numMoney = {"Tsk_MenuTop_numMoney", MenuTop_numMoney_RunTask, sizeof(MenuTop_numMoney)};
 
-static const Point data_ov043_020c7e7c[5] = {
+static const Point MenuTop_numMoney_Layout[5] = {
     {-10,  0},
     { 10, 16},
     { 22, 32},
@@ -28,7 +26,7 @@ static const Point data_ov043_020c7e7c[5] = {
     {  5, 27},
 };
 
-static const SpriteAnimation data_ov043_020c7e90 = {
+static const SpriteAnimation MenuTop_numMoney_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -42,7 +40,7 @@ static const SpriteAnimation data_ov043_020c7e90 = {
     .frameInfoCallback = MenuTop_numMoney_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -61,14 +59,14 @@ static SpriteFrameInfo* MenuTop_numMoney_GetFrameInfo(Sprite* sprite, s32 arg, s
 
 // Nonmatching
 static void MenuTop_numMoney_Load(MenuTop_numMoney* numMoney, void* spritesPtr, MenuTop_numMoney_Args* args) {
-    Sprite*            sprites = spritesPtr;
-    UnkStruct_TopMenu* owner   = numMoney->unk_2A8;
-    SpriteAnimation    anim    = data_ov043_020c7e90;
-    u32                value;
-    u32                digits[7];
-    s32                frameBase;
-    s32                digitBase;
-    s32                suffixFrame;
+    Sprite*         sprites = spritesPtr;
+    MenuTopObject*  topMenu = numMoney->topMenu;
+    SpriteAnimation anim    = MenuTop_numMoney_Anim;
+    u32             value;
+    u32             digits[7];
+    s32             frameBase;
+    s32             digitBase;
+    s32             suffixFrame;
 
     anim.dataType = args->dataType;
 
@@ -99,7 +97,7 @@ static void MenuTop_numMoney_Load(MenuTop_numMoney* numMoney, void* spritesPtr, 
         numMoney->visibleFlags[i + 1] = 0;
     }
 
-    if (func_ov043_0208466c(owner, owner->unk_5C) == 0) {
+    if (MenuTop_ClampMoney(topMenu, topMenu->moneyCapLevel) == 0) {
         frameBase   = 0x20;
         digitBase   = 0x16;
         suffixFrame = 0x49;
@@ -110,13 +108,13 @@ static void MenuTop_numMoney_Load(MenuTop_numMoney* numMoney, void* spritesPtr, 
     }
 
     anim.unk_2A = frameBase;
-    anim.unk_04 = data_ov043_020c7e7c[0].x + 0x47;
+    anim.unk_04 = MenuTop_numMoney_Layout[0].x + 0x47;
     anim.unk_06 = 0xB7;
     _Sprite_Load(&sprites[0], &anim);
 
     for (u16 i = 0; i < 7; i++) {
         anim.unk_2A = digitBase + digits[i];
-        anim.unk_04 = data_ov043_020c7e7c[i].y + 0x47;
+        anim.unk_04 = MenuTop_numMoney_Layout[i].y + 0x47;
         anim.unk_06 = 0xB7;
         _Sprite_Load(&sprites[i + 1], &anim);
     }
@@ -129,12 +127,12 @@ static void MenuTop_numMoney_Load(MenuTop_numMoney* numMoney, void* spritesPtr, 
     }
 
     anim.unk_2A = suffixFrame;
-    anim.unk_04 = data_ov043_020c7e7c[3].x + 0x47;
+    anim.unk_04 = MenuTop_numMoney_Layout[3].x + 0x47;
     anim.unk_06 = 0xB7;
     _Sprite_Load(&sprites[8], &anim);
 
     anim.unk_2A = suffixFrame;
-    anim.unk_04 = data_ov043_020c7e7c[4].x + 0x47;
+    anim.unk_04 = MenuTop_numMoney_Layout[4].x + 0x47;
     anim.unk_06 = 0xB7;
     _Sprite_Load(&sprites[9], &anim);
 }
@@ -143,7 +141,7 @@ static s32 MenuTop_numMoney_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_numMoney*      taskData = task->data;
     MenuTop_numMoney_Args* initArgs = args;
 
-    taskData->unk_2A8 = initArgs->unk_4;
+    taskData->topMenu = initArgs->topMenu;
     MenuTop_numMoney_Load(taskData, taskData->sprites, initArgs);
     return 1;
 }
@@ -187,12 +185,12 @@ s32 MenuTop_numMoney_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_numMoney_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_numMoney_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_numMoney_Args args;
 
     args.dataType = dataType;
-    args.unk_4    = arg2;
-    args.money    = arg2->unk_18;
+    args.topMenu  = topMenu;
+    args.money    = topMenu->money;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_numMoney, NULL, 0, NULL, &args);
 }

@@ -1201,8 +1201,8 @@ const UnknownTableFunc data_ov030_020e4e98[44] = {
 };
 
 s32* func_ov030_020baa2c(s32* arg0) {
-    if (gSaveData.unk_1AB0 >= 44) {
-        gSaveData.unk_1AB0 = 0;
+    if (gSaveData.chapter >= 44) {
+        gSaveData.chapter = 0;
     }
-    return data_ov030_020e4e98[gSaveData.unk_1AB0](arg0);
+    return data_ov030_020e4e98[gSaveData.chapter](arg0);
 }

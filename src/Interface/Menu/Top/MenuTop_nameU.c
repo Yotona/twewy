@@ -4,12 +4,12 @@
 typedef struct {
     Sprite sprites[5];
     s32    unk_140;
-    s32    unk_144;
+    s32    topMenu;
 } MenuTop_nameU;
 
 typedef struct {
     s32 dataType;
-    s32 unk_4;
+    s32 topMenu;
 } MenuTop_nameU_Args;
 
 typedef struct {
@@ -24,7 +24,7 @@ static s32              MenuTop_nameU_RunTask(TaskPool* pool, Task* task, void* 
 
 static const TaskHandle Tsk_MenuTop_nameU = {"Tsk_MenuTop_nameU", MenuTop_nameU_RunTask, sizeof(MenuTop_nameU)};
 
-static const SpriteAnimation data_ov043_020c7cf8 = {
+static const SpriteAnimation MenuTop_nameU_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -38,7 +38,7 @@ static const SpriteAnimation data_ov043_020c7cf8 = {
     .frameInfoCallback = MenuTop_nameU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79a8,
+    .binIden           = &MenuTop_BinIdentifiers[7],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -56,9 +56,9 @@ static SpriteFrameInfo* MenuTop_nameU_GetFrameInfo(Sprite* sprite, s32 arg, s32 
 }
 
 static void MenuTop_nameU_Load(MenuTop_nameU* nameU, MenuTop_nameU_Args* args) {
-    SpriteAnimation anim = data_ov043_020c7cf8;
+    SpriteAnimation anim = MenuTop_nameU_Anim;
 
-    MenuTop_nameU_Pos data_ov043_020c7ce4[5] = {
+    MenuTop_nameU_Pos positions[5] = {
         {0x06, 0x1C, 0x06, 0x1C},
         {0x06, 0x5E, 0x06, 0x5E},
         {0x06, 0x77, 0x06, 0x77},
@@ -66,14 +66,14 @@ static void MenuTop_nameU_Load(MenuTop_nameU* nameU, MenuTop_nameU_Args* args) {
         {0x06, 0xA9, 0x06, 0xA9},
     };
 
-    s16 data_ov043_020c7cbc[] = {1, 2, 2, 2, 2, 0};
+    s16 frames[] = {1, 2, 2, 2, 2, 0};
 
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 5; i++) {
-        anim.unk_2A = data_ov043_020c7cbc[i];
-        anim.unk_04 = data_ov043_020c7ce4[i].x;
-        anim.unk_06 = data_ov043_020c7ce4[i].y;
+        anim.unk_2A = frames[i];
+        anim.unk_04 = positions[i].x;
+        anim.unk_06 = positions[i].y;
         _Sprite_Load(&nameU->sprites[i], &anim);
     }
 }
@@ -82,7 +82,7 @@ static s32 MenuTop_nameU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_nameU*      nameU    = task->data;
     MenuTop_nameU_Args* taskArgs = args;
 
-    nameU->unk_144 = taskArgs->unk_4;
+    nameU->topMenu = taskArgs->topMenu;
     nameU->unk_140 = 1;
     MenuTop_nameU_Load(nameU, taskArgs);
     return 1;
@@ -126,10 +126,10 @@ static s32 MenuTop_nameU_RunTask(TaskPool* pool, Task* task, void* args, s32 sta
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_nameU_CreateTask(TaskPool* pool, s32 arg1, s32 arg2) {
+s32 MenuTop_nameU_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu) {
     MenuTop_nameU_Args args;
 
-    args.dataType = arg1;
-    args.unk_4    = arg2;
+    args.dataType = dataType;
+    args.topMenu  = topMenu;
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_nameU, 0, 0, 0, &args);
 }

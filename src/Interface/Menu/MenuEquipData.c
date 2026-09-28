@@ -110,7 +110,7 @@ void MenuEquip_PlayCdTrack(u16 itemId) {
     u16 adx = adxTable[itemId - 0x285];
 
     CriSndMgr_PlayFile(adx);
-    gSaveData.unk_2430 = adx;
+    gSaveData.bgmFile = adx;
 }
 
 u32 MenuEquip_CalcEquippedBravery(MenuEquipObject* owner, u16 character) {
@@ -520,11 +520,12 @@ s32 MenuEquip_CanEquipSubCategory(MenuEquipObject* owner, u16 character, u8 subC
 void MenuEquip_InitStats(MenuEquipObject* owner) {
     u16 i;
 
-    owner->stats[0].health      = gSaveData.playerStats.baseHealth + (s16)(((s16)gSaveData.playerStats.unk_04 - 1) * 50 + 200);
-    owner->stats[0].healthBonus = MenuEquip_CalcHealthBonus(owner, (u16)(gSaveData.playerStats.activePartner + 1));
-    owner->stats[0].sync        = 1;
+    owner->stats[0].health =
+        gSaveData.playerStats.baseHealth + (s16)(((s16)gSaveData.playerStats.currentLevel - 1) * 50 + 200);
+    owner->stats[0].healthBonus      = MenuEquip_CalcHealthBonus(owner, (u16)(gSaveData.playerStats.activePartner + 1));
+    owner->stats[0].sync             = 1;
     owner->stats[0].braveryBonus     = 0;
-    owner->stats[0].bravery          = MenuEquip_CalcMaxBravery(gSaveData.playerStats.bravery, gSaveData.playerStats.level);
+    owner->stats[0].bravery          = MenuEquip_CalcMaxBravery(gSaveData.playerStats.bravery, gSaveData.playerStats.maxLevel);
     owner->stats[0].attack           = gSaveData.playerStats.attack;
     owner->stats[0].attackBonus      = MenuEquip_CalcAttackBonus(owner, 0);
     owner->stats[0].defense          = gSaveData.playerStats.defense;
@@ -536,8 +537,9 @@ void MenuEquip_InitStats(MenuEquipObject* owner) {
         owner->stats[i + 1].healthBonus  = 0;
         owner->stats[i + 1].sync         = gSaveData.friendStats[i].sync;
         owner->stats[i + 1].braveryBonus = 0;
-        owner->stats[i + 1].bravery = MenuEquip_CalcMaxBravery(gSaveData.friendStats[i].bravery, gSaveData.playerStats.level);
-        owner->stats[i + 1].attack  = gSaveData.friendStats[i].attack;
+        owner->stats[i + 1].bravery =
+            MenuEquip_CalcMaxBravery(gSaveData.friendStats[i].bravery, gSaveData.playerStats.maxLevel);
+        owner->stats[i + 1].attack           = gSaveData.friendStats[i].attack;
         owner->stats[i + 1].attackBonus      = MenuEquip_CalcAttackBonus(owner, i + 1);
         owner->stats[i + 1].defense          = gSaveData.friendStats[i].defense;
         owner->stats[i + 1].defenseBonus     = MenuEquip_CalcDefenseBonus(owner, i + 1);

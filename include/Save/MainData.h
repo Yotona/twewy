@@ -40,8 +40,8 @@ typedef struct MainData {
     /* 0x16D0 */ BrandTrend     brandTrends[21];
     /* 0x1A18 */ s32            unk_1A18[35];
     /* 0x1AA4 */ Experience     experience;
-    /* 0x1AB0 */ u8             unk_1AB0;
-    /* 0x1AB1 */ u8             unk_1AB1;
+    /* 0x1AB0 */ u8             chapter; // 0-6 Shiki's week, 7-13 Joshua's, 14-20 Beat's, 21+ post-game
+    /* 0x1AB1 */ u8             currentArea;
     /* 0x1AB2 */ u8             unk_1AB2;
     /* 0x1AB3 */ u8             unk_1AB3;
     /* 0x1AB4 */ u16            unk_1AB4;
@@ -82,7 +82,7 @@ typedef struct MainData {
     /* 0x2370 */ PackedDateTime lastSaveTime;
     /* 0x2376 */ char           unk_2376[0x242C - 0x2376];
     /* 0x242C */ u32            unk_242C;
-    /* 0x2430 */ u16            unk_2430;
+    /* 0x2430 */ u16            bgmFile; // ADX file resumed when returning to the menu
     /* 0x2432 */ u16            unk_2432;
     /* 0x2434 */ u16            unk_2434;
     /* 0x2436 */ u16            unk_2436;

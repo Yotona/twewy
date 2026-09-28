@@ -19,8 +19,8 @@ typedef enum {
 typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 baseHealth;
-    /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u16 level;
+    /* 0x04 */ u16 currentLevel; // Current level set in the phone menu
+    /* 0x06 */ u16 maxLevel;     // Highest level reached
     /* 0x08 */ u32 expToNextLevel;
     /* 0x0C */ u32 money;
     /* 0x10 */ u16 attack;
@@ -29,11 +29,11 @@ typedef struct {
     /* 0x16 */ u16 bravery;
     /* 0x18 */ u8  activePartner; // Shiki, Joshua, Beat, or None
     /* 0x19 */ struct {
-        u8 unk_19_0 : 2;
-        u8 unk_19_2 : 2;
-        u8 unk_19_4 : 2;
-        u8 unk_19_6 : 1;
-        u8 unk_19_7 : 1;
+        u8 difficulty : 2;
+        u8 partnerAI  : 2;
+        u8 unk_19_4   : 2;
+        u8 unk_19_6   : 1;
+        u8 unk_19_7   : 1;
     };
     /* 0x1A */ struct {
         u8 unk_1A_0 : 1;

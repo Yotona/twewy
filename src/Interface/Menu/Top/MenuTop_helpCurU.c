@@ -2,14 +2,14 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite sprites[2];
-    /* 0x80 */ s32    unk_80[2];
-    /* 0x88 */ s32    unk_88;
+    /* 0x00 */ Sprite         sprites[2];
+    /* 0x80 */ s32            visible[2];
+    /* 0x88 */ MenuTopObject* topMenu;
 } MenuTop_helpCurU; // Size: 0x8C
 
 typedef struct {
     /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 unk_4;
+    /* 0x4 */ s32 topMenu;
 } MenuTop_helpCurU_Args;
 
 static SpriteFrameInfo* MenuTop_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -31,7 +31,7 @@ static const SpriteAnimation MenuTop_helpCurU_Anim = {
     .frameInfoCallback = MenuTop_helpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c79a8,
+    .binIden           = &MenuTop_BinIdentifiers[7],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -68,7 +68,7 @@ static s32 MenuTop_helpCurU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_helpCurU*      helpCurU = task->data;
     MenuTop_helpCurU_Args* helpArgs = args;
 
-    helpCurU->unk_88 = helpArgs->unk_4;
+    helpCurU->topMenu = (MenuTopObject*)helpArgs->topMenu;
     MenuTop_helpCurU_Load(helpCurU->sprites, helpArgs);
     return 1;
 }
@@ -76,16 +76,16 @@ static s32 MenuTop_helpCurU_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_helpCurU_Update(TaskPool* pool, Task* task, void* args) {
     MenuTop_helpCurU* helpCurU = task->data;
 
-    u8 val = *(u8*)(helpCurU->unk_88 + 0x60);
-    if (val == 0) {
-        helpCurU->unk_80[0] = 0;
-        helpCurU->unk_80[1] = 1;
-    } else if (val == 6) {
-        helpCurU->unk_80[0] = 1;
-        helpCurU->unk_80[1] = 0;
+    u8 helpPage = helpCurU->topMenu->helpPage;
+    if (helpPage == 0) {
+        helpCurU->visible[0] = 0;
+        helpCurU->visible[1] = 1;
+    } else if (helpPage == 6) {
+        helpCurU->visible[0] = 1;
+        helpCurU->visible[1] = 0;
     } else {
-        helpCurU->unk_80[0] = 1;
-        helpCurU->unk_80[1] = 1;
+        helpCurU->visible[0] = 1;
+        helpCurU->visible[1] = 1;
     }
 
     for (u16 i = 0; i < 2; i++) {
@@ -98,7 +98,7 @@ static s32 MenuTop_helpCurU_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_helpCurU* helpCurU = task->data;
 
     for (u16 i = 0; i < 2; i++) {
-        if (helpCurU->unk_80[i] != 0) {
+        if (helpCurU->visible[i] != 0) {
             Sprite_RenderFrame(&helpCurU->sprites[i]);
         }
     }
@@ -124,9 +124,9 @@ static s32 MenuTop_helpCurU_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_helpCurU_CreateTask(TaskPool* pool, s32 dataType, s32 arg2) {
+s32 MenuTop_helpCurU_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu) {
     MenuTop_helpCurU_Args args;
     args.dataType = dataType;
-    args.unk_4    = arg2;
+    args.topMenu  = topMenu;
     return EasyTask_CreateTask(pool, &Tsk_MenuTop_helpCurU, NULL, 0, NULL, &args);
 }

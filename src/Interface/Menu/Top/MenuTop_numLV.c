@@ -3,31 +3,29 @@
 #include "SndMgr.h"
 
 typedef struct {
-    /* 0x000 */ Sprite             sprites[5];
-    /* 0x140 */ s32                visibleFlags[5];
-    /* 0x154 */ UnkStruct_TopMenu* unk_154;
-    /* 0x158 */ u16                previousLevel;
+    /* 0x000 */ Sprite         sprites[5];
+    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x154 */ MenuTopObject* topMenu;
+    /* 0x158 */ u16            previousLevel;
 } MenuTop_numLV; // Size: 0x15C
 
 typedef struct {
     /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* owner;
+    /* 0x4 */ void* topMenu;
     /* 0x8 */ u16   level;
-    /* 0xA */ u16   bonus;
+    /* 0xA */ u16   maxLevel;
 } MenuTop_numLV_Args;
-
-extern s32 func_ov043_02084620(Sprite* sprite, s16 frameIndex);
 
 static SpriteFrameInfo* MenuTop_numLV_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_numLV_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const s16 data_ov043_020c7d7c[5] = {
+static const s16 MenuTop_numLV_DigitX[5] = {
     0x32, 0x38, 0x40, 0x48, 0x4E,
 };
 
 static const TaskHandle Tsk_MenuTop_numLV = {"Tsk_MenuTop_numLV", MenuTop_numLV_RunTask, sizeof(MenuTop_numLV)};
 
-static const SpriteAnimation data_ov043_020c7da4 = {
+static const SpriteAnimation MenuTop_numLV_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -41,7 +39,7 @@ static const SpriteAnimation data_ov043_020c7da4 = {
     .frameInfoCallback = MenuTop_numLV_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c7988,
+    .binIden           = &MenuTop_BinIdentifiers[3],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -55,8 +53,8 @@ static const SpriteAnimation data_ov043_020c7da4 = {
 };
 
 // Nonmatching
-void func_ov043_020875cc(MenuTop_numLV* taskData) {
-    u16 level = taskData->unk_154->unk_06;
+void MenuTop_numLV_Refresh(MenuTop_numLV* taskData) {
+    u16 level = taskData->topMenu->currentLevel;
     s16 tensFrame;
     s16 onesFrame;
     s16 onesXOffset;
@@ -85,8 +83,8 @@ void func_ov043_020875cc(MenuTop_numLV* taskData) {
         }
     }
 
-    func_ov043_02084620(&taskData->sprites[0], tensFrame);
-    func_ov043_02084620(&taskData->sprites[1], onesFrame);
+    MenuTop_SetSpriteFrame(&taskData->sprites[0], tensFrame);
+    MenuTop_SetSpriteFrame(&taskData->sprites[1], onesFrame);
     taskData->sprites[0].posX = 0x32;
     taskData->sprites[1].posX = (s16)(onesXOffset + 0x38);
 }
@@ -100,7 +98,7 @@ void MenuTop_numLV_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
     MenuTop_numLV*      taskData       = taskDataPtr;
     Sprite*             sprites        = spritesPtr;
     MenuTop_numLV_Args* args           = argsPtr;
-    SpriteAnimation     anim           = data_ov043_020c7da4;
+    SpriteAnimation     anim           = MenuTop_numLV_Anim;
     s16                 digitFrames[5] = {0};
     s16                 xOffsets[5]    = {0};
 
@@ -134,21 +132,21 @@ void MenuTop_numLV_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
 
     digitFrames[2] = 0x14;
 
-    if (args->bonus >= 100) {
+    if (args->maxLevel >= 100) {
         digitFrames[3]            = 1;
         digitFrames[4]            = 0x15;
         taskData->visibleFlags[3] = 0;
         xOffsets[3]               = 1;
         xOffsets[4]               = -3;
     } else {
-        u32 signedBit = args->bonus >> 0x1F;
-        s16 tens      = (s16)(signedBit + (args->bonus / 10));
-        s16 ones      = (s16)(args->bonus - (10 * tens));
+        u32 signedBit = args->maxLevel >> 0x1F;
+        s16 tens      = (s16)(signedBit + (args->maxLevel / 10));
+        s16 ones      = (s16)(args->maxLevel - (10 * tens));
 
         digitFrames[3] = (s16)(tens + 0xA);
         digitFrames[4] = (s16)(ones + 0xA);
 
-        if (args->bonus >= 10) {
+        if (args->maxLevel >= 10) {
             xOffsets[4] = 0;
         } else {
             taskData->visibleFlags[3] = 0;
@@ -158,7 +156,7 @@ void MenuTop_numLV_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
 
     for (u16 i = 0; i < 5; i++) {
         anim.unk_2A = digitFrames[i];
-        anim.unk_04 = (s16)(data_ov043_020c7d7c[i] + xOffsets[i]);
+        anim.unk_04 = (s16)(MenuTop_numLV_DigitX[i] + xOffsets[i]);
         anim.unk_06 = 0x8B;
         _Sprite_Load(&sprites[i], &anim);
     }
@@ -170,18 +168,18 @@ static s32 MenuTop_numLV_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_numLV* taskData = task->data;
 
     MenuTop_numLV_Load(taskData, taskData, args);
-    taskData->unk_154 = ((MenuTop_numLV_Args*)args)->owner;
+    taskData->topMenu = ((MenuTop_numLV_Args*)args)->topMenu;
     return 1;
 }
 
 static s32 MenuTop_numLV_Update(TaskPool* pool, Task* task, void* args) {
-    MenuTop_numLV*     taskData = task->data;
-    UnkStruct_TopMenu* temp     = taskData->unk_154;
+    MenuTop_numLV* taskData = task->data;
+    MenuTopObject* topMenu  = taskData->topMenu;
 
-    func_ov043_020875cc(taskData);
-    if (taskData->previousLevel != temp->unk_06) {
+    MenuTop_numLV_Refresh(taskData);
+    if (taskData->previousLevel != topMenu->currentLevel) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_SCROLL);
-        taskData->previousLevel = temp->unk_06;
+        taskData->previousLevel = topMenu->currentLevel;
     }
 
     for (s32 i = 0; i < 5; i++) {
@@ -223,13 +221,13 @@ s32 MenuTop_numLV_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-void MenuTop_numLV_CreateTask(TaskPool* pool, s32 dataType, UnkStruct_TopMenu* arg2) {
+s32 MenuTop_numLV_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_numLV_Args args;
 
     args.dataType = dataType;
-    args.owner    = arg2;
-    args.level    = arg2->unk_06;
-    args.bonus    = arg2->unk_08;
+    args.topMenu  = topMenu;
+    args.level    = topMenu->currentLevel;
+    args.maxLevel = topMenu->maxLevel;
 
-    EasyTask_CreateTask(pool, &Tsk_MenuTop_numLV, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_MenuTop_numLV, NULL, 0, NULL, &args);
 }

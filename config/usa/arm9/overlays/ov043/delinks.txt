@@ -23,9 +23,14 @@ src/Interface/Debug/TakTest/TakTest_OBJ.c:
     .data       start:0x020cb5c4 end:0x020cb5f4
 
 src/Interface/Menu/Top.c:
-    .text       start:0x02082fd0 end:0x020858a8
-    .rodata     start:0x020c7908 end:0x020c7aa8
+    .text       start:0x02082fd0 end:0x020845e4
+    .rodata     start:0x020c7908 end:0x020c79e0
     .data       start:0x020cb5f4 end:0x020cb794
+
+src/Interface/Menu/TopData.c:
+    complete
+    .text       start:0x020845e4 end:0x020858a8
+    .rodata     start:0x020c79e0 end:0x020c7aa8
 
 src/Interface/Menu/Top/MenuTop_select.c:
     .text       start:0x020858a8 end:0x02085b78
@@ -112,21 +117,25 @@ src/Interface/Menu/Top/MenuTop_selPtrAI.c:
     .data       start:0x020cb8d8 end:0x020cb8f0
 
 src/Interface/Menu/Top/MenuTop_textScr.c:
+    complete
     .text       start:0x020898d4 end:0x02089b18
     .rodata     start:0x020c7ffc end:0x020c8038
     .data       start:0x020cb8f0 end:0x020cb904
 
 src/Interface/Menu/Top/MenuTop_mapTipU.c:
+    complete
     .text       start:0x02089b18 end:0x02089dfc
     .rodata     start:0x020c8038 end:0x020c8080
     .data       start:0x020cb904 end:0x020cb918
 
 src/Interface/Menu/Top/MenuTop_mapTipBrdU.c:
+    complete
     .text       start:0x02089dfc end:0x0208a054
     .rodata     start:0x020c8080 end:0x020c80c8
     .data       start:0x020cb918 end:0x020cb930
 
 src/Interface/Menu/Top/MenuTop_helpCur.c:
+    complete
     .text       start:0x0208a054 end:0x0208a3f8
     .rodata     start:0x020c80c8 end:0x020c8110
     .data       start:0x020cb930 end:0x020cb944
