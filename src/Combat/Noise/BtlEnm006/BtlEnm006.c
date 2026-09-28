@@ -79,7 +79,6 @@ extern const SpriteAnimEntry data_ov010_021292f4[3];
 
 extern s32   func_ov010_02128bcc(void*, void*);
 extern void  func_ov010_02127110(void*, void*);
-extern void  func_ov010_02127650(void);
 extern void  func_ov010_02127cc0(void);
 extern void  func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
 extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
@@ -922,6 +921,52 @@ void func_ov010_02125c80(BtlEnm006* data) {
             func_ov003_020c4ee0(data);
             return;
     }
+}
+
+// The near-twin of func_ov010_02125c80's phase-1 body -- this is the other callback handed to
+// func_ov010_02127488, so the signature is `(BtlEnm006*)` and not nullary. On the first frame it
+// arms the swoop, then mirrors the sprite off the sign of the z velocity; on every frame it fires
+// the one-shot effect, hands the position to the sound helper and advances the phase counter.
+//
+// Two things are the mirror image of func_ov010_02125c80 and are load-bearing:
+//
+//  - The screen bound is fetched **once** and both arms reuse the `unk_28` already in a register,
+//    so this is the if-converted `addlt`/`subge` form. func_ov010_02125c80 puts a second call in
+//    each arm (three calls in total), which is also why it branches there instead of predicating:
+//    its arms are too big to if-convert, while these two are a single add each.
+//  - The mirror test is the one place where the original branches instead of predicating, because
+//    both of its arms are calls. The `0` call is the fall-through and the `1` call is the forward
+//    branch target, so the condition is spelled `>= 0` and the `1` arm is the `then`.
+void func_ov010_02127650(BtlEnm006* data) {
+    if (data->sprite.unk_C0 == 0) {
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xC, 0);
+        if (data->unk_28 < func_ov003_020cb744(0) >> 1) {
+            data->unk_1D0 = data->unk_28 + 0x80000;
+        } else {
+            data->unk_1D0 = data->unk_28 - 0x80000;
+        }
+        data->unk_1D4       = data->unk_2C;
+        data->unk_1D8       = data->unk_30;
+        data->sprite.unk_C2 = func_ov010_02128a6c(data, (void*)0x4000);
+        if (data->unk_1DC >= 0) {
+            func_ov003_020c4ab4(data, 1);
+        } else {
+            func_ov003_020c4ab4(data, 0);
+        }
+    }
+    if (data->unk_9A == 1 && data->unk_8C == 1) {
+        // As in func_ov010_02125c80: the second parameter is declared as a callback pointer, but
+        // the original really calls 020843b0 here and passes the result.
+        func_ov003_02087f00(0x1CF, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+    }
+    // (cmd, owner, x, y, z). The stack argument is the one MWCC evaluates *first*, so z is the
+    // load that reaches [sp] ahead of r2/r3.
+    func_ov003_020c5b2c(0x4C, data, data->unk_28, data->unk_2C, data->unk_30);
+    if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+        data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+        return;
+    }
+    func_ov010_02127460(data, (void*)func_ov010_02127550);
 }
 
 // Fires a one-off effect every fourth frame, and only while a flag sprite field says so.
