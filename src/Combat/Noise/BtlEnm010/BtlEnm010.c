@@ -328,6 +328,15 @@ void func_ov011_02125b98(void* arg0, void* arg1) {
 /// `s32 data_ov011_0212c124[3]` = `{0xFFFF8000, 0xFFFF0000, 0}`, a three-entry offset table.
 extern const s32 data_ov011_0212c124[];
 
+/// The other three `Tsk_BtlEnm010_Lser` command handlers, dispatched by `func_ov011_02125cf8`.
+extern s32 func_ov011_02125e14(BtlEnm010Lser* data);
+extern s32 func_ov011_02126354(BtlEnm010Lser* data);
+extern s32 func_ov011_021265a8(BtlEnm010Lser* data);
+
+/// `func_ov011_02125d48` -- the Lser task's command-0 initialiser. Declared ahead of
+/// `func_ov011_02125cf8`, which dispatches to it, and defined below in address order.
+extern s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
+
 /// `Mini108_VBlank` lives in ov000; the project spells it with this name. Declared here for
 /// the same reason ov010 declares it locally: there is no header for ov000's symbols.
 extern void Mini108_VBlank(CombatSprite* cSprite, u16 arg1, s32 arg2);
@@ -377,6 +386,28 @@ void func_ov011_02125c44(BtlEnm010Owner* owner, BtlEnm010LserRec* rec, CombatSpr
     // so writing the assignment first moves the store three instructions earlier.
     rec->unk_04 = 0x20000;
     rec->unk_08 = 0 - (RNG_Next(0x1001) + 0x1000);
+}
+
+/// The `Tsk_BtlEnm010_Lser` task entry point: a four-way command dispatch over a dense 0..3
+/// range, so it gets a jump table (`cmp r3, #3 / addls pc, pc, r3, lsl #2`).
+///
+/// Only case 0 passes the incoming `arg2` on; the other three handlers take the data alone,
+/// which is why their `bl` sites need no `mov r1`.
+s32 func_ov011_02125cf8(s32 arg0, Task* task, s32 arg2, s32 cmd) {
+    BtlEnm010Lser* data = task->data;
+
+    switch (cmd) {
+        case 0:
+            return func_ov011_02125d48(data, arg2);
+        case 1:
+            return func_ov011_02125e14(data);
+        case 2:
+            return func_ov011_02126354(data);
+        case 3:
+            return func_ov011_021265a8(data);
+        default:
+            return 1;
+    }
 }
 
 /// The `Tsk_BtlEnm010_Lser` task's initialiser, run for command 0. Clears the whole 0x254-byte
