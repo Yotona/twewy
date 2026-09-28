@@ -183,3 +183,43 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
     CombatSprite_LoadFromTable(arg0, arg1, (const BinIdentifier*)bin, (const SpriteAnimEntry*)data_ov011_0212cadc[arg2], 0,
                                elem, pal);
 }
+
+// MARK: The AnmMgr task's own entry point and its commands
+
+/// `func_ov011_02125a08` -- the AnmMgr task's command 0. Declared here so that
+/// `func_ov011_021259d0` can call it; it is defined further down, in address order.
+extern s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, s32 arg1);
+
+/// `func_ov003_020cb194` -- walks the 8-byte table at `p + 8` and releases every element,
+/// using the halfword count at `p + 0xC`. One argument.
+extern void func_ov003_020cb194(void* p);
+
+/// The `Tsk_BtlEnm010_AnmMgr` task entry point: a three-way command dispatch. Command 0 and
+/// command 3 fall through to the two handlers, anything else returns 1.
+///
+/// The load of the task data is *before* the first branch in the original, so it is written
+/// as one load shared by both arms; the handlers take it in `r0` as their first argument, so
+/// it costs no register.
+s32 func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd) {
+    BtlEnm010AnmMgr* data = task->data;
+
+    // Spelled as a switch, not as two `if`s and a `return 1`.  As `if`s, MWCC if-converts the
+    // trailing `return 1` into the fall-through of the second arm and emits
+    // `bne / movne r0, #1 / ldmneia`; the original branches to all three arms, with the
+    // `return 1` block last and reached by a forward `b`.
+    switch (cmd) {
+        case 0:
+            return func_ov011_02125a08(data, arg2);
+        case 3:
+            return func_ov011_02125b88(data);
+        default:
+            return 1;
+    }
+}
+
+/// Command 3: release every element of the table, then return 1. The call's result is
+/// discarded in the original, so it is spelled as a discarded call.
+s32 func_ov011_02125b88(BtlEnm010AnmMgr* data) {
+    func_ov003_020cb194(data);
+    return 1;
+}
