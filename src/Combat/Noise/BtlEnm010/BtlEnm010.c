@@ -464,7 +464,7 @@ extern s32 func_ov003_020cc354(void* p);
 extern void func_ov003_02082b0c(CombatSprite* cSprite);
 
 /// `func_ov003_020843b0` -- two arguments; turns a 4.12 y coordinate into a sound pan value.
-extern s32 func_ov003_020843b0(s32 a, s32 b);
+extern s16 func_ov003_020843b0(s32 a, s32 b);
 
 /// `func_ov003_020843ec` -- three arguments; the same projection as `func_ov003_020843b0` but
 /// taking a y/z pair, so the `mode` argument selects the projection plane.
@@ -895,9 +895,11 @@ void func_ov011_021268c4(BtlEnm010RG* data) {
     }
 }
 
-extern s32 func_ov003_020c4c9c(void* p);
-extern s32 func_ov003_020cb520(void* p, s32 arg1);
-extern s32 func_ov003_020cb594(void* p, s32 arg1);
+extern s32  func_ov003_020c4c9c(void* p);
+extern void func_ov003_020c48b0(void* p);
+extern void func_ov003_020c492c(void* p);
+extern s32  func_ov003_020cb520(void* p, s32 arg1);
+extern s32  func_ov003_020cb594(void* p, s32 arg1);
 
 /// RG's phase-2 handler. The first pass primes the sprite, seeds the `0x30` countdown and its
 /// `0x1D0` bias, then plays a sound; after that a `Sprite::unk16 == 3` frame adds `0x2800` at
@@ -1278,11 +1280,11 @@ s32 func_ov011_02127b98(void* arg0, void* arg1) {
     BtlEnm010RG* data;
 
     data = *(BtlEnm010RG**)((u8*)arg1 + 0x18);
-    if (data->unk_200 == -1 && data->unk_204 != 0) {
+    if (data->unk_200 == -1 || data->unk_204 == 0) {
+        func_ov003_020c4878(data);
+    } else {
         func_ov003_020c4748(data);
         func_ov003_0208810c((void*)((u8*)data + 0xE4), data);
-    } else {
-        func_ov003_020c4878(data);
     }
     return 1;
 }
@@ -1713,7 +1715,7 @@ extern s32  func_ov011_02129994(void* p, s32 arg1);
 extern s32  func_ov011_02129b84(void* p);
 extern s32  func_ov011_02129cec(void* p);
 extern void func_ov011_0212a134(BtlEnm010Tatt* data);
-extern s32  func_ov011_0212b800(s32 arg);
+extern s32  func_ov011_0212b800(BtlEnm010Tatt* data, s32 arg1);
 
 /// `Tsk_BtlEnm010_Tatt`'s task entry. Fifth and last of the identical four-way dispatchers
 /// (`0x0212801c`, `0x02128348`, `0x02128758`, and this one).
@@ -1752,14 +1754,14 @@ void func_ov011_0212a10c(BtlEnm010Tatt* data) {
 /// One of Tatt's phases: poll a predicate on the `0x1C0` counter, and on the frame it goes quiet
 /// bump the counter and advance to the next phase.
 void func_ov011_0212a634(BtlEnm010Tatt* data) {
-    if (func_ov011_0212b800(data->unk_1C0) != 0) {
+    if (func_ov011_0212b800(data, data->unk_1C0) != 0) {
         return;
     }
     data->unk_1C0 = data->unk_1C0 + 1;
     func_ov011_02129ed0(data, func_ov011_0212a134);
 }
 
-extern s32       func_ov011_02128f80(void);
+extern s32       func_ov011_02128f80(BtlEnm010Tatt* data);
 extern const u16 data_ov011_0212c28c[];
 extern const u16 data_ov011_0212c28e[];
 extern const u16 data_ov011_0212c290[];
@@ -1773,7 +1775,7 @@ void func_ov011_02128eb0(BtlEnm010Tatt* data) {
     void* p;
 
     if (data->unk_228 % 60 == 0) {
-        p = func_ov011_02128f80();
+        p = func_ov011_02128f80(data);
         if (p != NULL) {
             *(u16*)((u8*)p + 0x84) = *(u16*)((u8*)p + 0x84) | 0x20;
         }
@@ -1847,4 +1849,346 @@ void func_ov011_021293a8(void* arg0, void* p) {
     *(u16*)((u8*)p + 0x84) = *(u16*)((u8*)p + 0x84) & ~0x10;
     *(s16*)((u8*)p + 0x60) = 0;
     *(s16*)((u8*)p + 0x64) = 0;
+}
+
+extern s32  func_ov003_020c6bc8(BtlEnm010Tatt* data, s32 arg1);
+extern void func_ov011_0212b388(BtlEnm010Tatt* data);
+
+/// One of Tatt's phases. The first frame primes the `0x84` sprite, clears the three `0x1D*`
+/// words and drops bit 28 of `0x54`; then it polls for the frame 4 animation to end and, on the
+/// frame it does, installs `func_ov011_0212b388`.
+///
+/// The three `0x1D*` stores go out **descending** (`0x1D8`, `0x1D4`, `0x1D0`) -- the reverse-order
+/// rule of brief section 15, reached here through three separate assignments of the same value
+/// rather than through a struct copy.
+void func_ov011_0212b318(BtlEnm010Tatt* data) {
+    s32 r;
+
+    if (data->unk_1C0 == 0) {
+        data->unk_1C0 = data->unk_1C0 + 1;
+        data->unk_1D8 = 0;
+        data->unk_1D4 = 0;
+        data->unk_1D0 = 0;
+        data->unk_54  = data->unk_54 & ~0x10000000;
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
+    }
+    if (func_ov003_020c6bc8(data, 4) != 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212b388);
+}
+
+extern s32 func_ov003_020c6c2c(BtlEnm010Tatt* data, s32 arg1);
+
+/// The next Tatt phase. Same opening as `func_ov011_0212b318` but the sprite prime comes *after*
+/// the three clears, and the poll is on frame 5 rather than frame 4. Both functions are `void`:
+/// the original's `cmp r0, #0` / `popne {r4, pc}` is an early-exit off a discarded predicate,
+/// not a returned value, and neither epilogue substitutes a literal.
+void func_ov011_0212b388(BtlEnm010Tatt* data) {
+    if (data->unk_1C0 == 0) {
+        data->unk_1C0 = data->unk_1C0 + 1;
+        data->unk_1D8 = 0;
+        data->unk_1D4 = 0;
+        data->unk_1D0 = 0;
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
+    }
+    if (func_ov003_020c6c2c(data, 5) != 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212a134);
+}
+
+extern s32 func_ov003_020c7070(BtlEnm010Tatt* data);
+
+/// A Tatt phase with no phase advance at the end: it primes the sprite, and clears `0x1CC` on
+/// whichever frame `func_ov003_020c7070` first reports zero. The store is predicated on the
+/// same compare, so it comes out as a `moveq`/`streq` pair rather than an `if` block.
+void func_ov011_0212b4f4(BtlEnm010Tatt* data) {
+    if (data->unk_1C0 == 0) {
+        data->unk_1C0 = data->unk_1C0 + 1;
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
+        data->unk_1D8 = 0;
+        data->unk_1D4 = 0;
+        data->unk_1D0 = 0;
+        data->unk_54  = data->unk_54 & ~0x10000000;
+    }
+    if (func_ov003_020c7070(data) == 0) {
+        data->unk_1CC = 0;
+    }
+}
+
+extern s32  func_ov003_020c4c9c(void* p);
+extern void func_ov003_020c48b0(void* p);
+extern void func_ov003_020c492c(void* p);
+
+/// Tatt's coordinate phase, the predicate `func_ov011_0212a634` polls. Returns 1 while the
+/// animation is still running, so the caller's "poll until it goes quiet" reads inverted, and
+/// returns 0 on the frame it finishes -- having nudged `0x28` one 0x10000 unit up or down
+/// depending on the sign of `0x24`.
+s32 func_ov011_0212b800(BtlEnm010Tatt* data, s32 arg1) {
+    if (arg1 == 0) {
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 3);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 1);
+    }
+    if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) != 0) {
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 0);
+        func_ov003_020c4c9c(data);
+        if (*(s32*)((u8*)data + 0x24) == 0) {
+            *(s32*)((u8*)data + 0x28) = *(s32*)((u8*)data + 0x28) + 0x10000;
+        } else {
+            *(s32*)((u8*)data + 0x28) = *(s32*)((u8*)data + 0x28) - 0x10000;
+        }
+        return 0;
+    }
+    return 1;
+}
+
+/// The varargs-forwarding trampoline. It copies a sixteen-byte table of four entry points onto
+/// the stack with a single `ldm`/`stm` pair and calls through element `arg3` -- the `ldm`/`stm`
+/// is MWCC's whole-aggregate copy, which is why the four assignments below are written as one
+/// struct assignment rather than four element stores.
+///
+/// The task data is **not** pinned, so it is taken as an opaque pointer. If a seventh task
+/// struct turns up, this is one of its entries.
+typedef s32 (*BtlEnm010Fn)(void*, void*, void*);
+
+typedef struct BtlEnm010FnTable {
+    BtlEnm010Fn f[4];
+} BtlEnm010FnTable;
+
+extern const BtlEnm010FnTable data_ov011_0212c36c;
+
+s32 func_ov011_0212b99c(void* arg0, void* arg1, void* arg2, s32 index) {
+    BtlEnm010FnTable t;
+    BtlEnm010Fn      f;
+
+    t = data_ov011_0212c36c;
+    f = t.f[index];
+    return f(arg0, arg1, arg2);
+}
+
+/// A phase of whatever task this is, and the exact twin of `func_ov011_02127b98` at a `+0x20C`
+/// base instead of `+0x200`. `0x20C == -1` together with a non-zero `0x210` selects the
+/// `020c4748` + `0208810c` pair; anything else -- including the "both are in range" case -- takes
+/// the `020c48b0` path. The predicate is a short-circuiting `||`, which is what produces the
+/// `ldrne`/`cmpne` pair and not a load-compare per operand.
+s32 func_ov011_0212bc84(void* arg0, void* arg1) {
+    void* p;
+
+    p = *(void**)((u8*)arg1 + 0x18);
+    if (*(s32*)((u8*)p + 0x20C) == -1 || *(s32*)((u8*)p + 0x210) == 0) {
+        func_ov003_020c48b0(p);
+    } else {
+        func_ov003_020c4748(p);
+        func_ov003_0208810c((void*)((u8*)p + 0xE4), p);
+    }
+    return 1;
+}
+
+/// The matching task entry: hand the data to `func_ov003_020c492c`, then set bit 4 of the
+/// relevant task's `0x04` through the zero-argument `func_ov011_02125714`.
+s32 func_ov011_0212bcc8(void* arg0, void* arg1) {
+    s32 r;
+
+    func_ov003_020c492c(*(void**)((u8*)arg1 + 0x18));
+    func_ov011_02125714();
+    return 1;
+}
+
+extern const s16 data_ov011_0212c30c[];
+extern const s16 data_ov011_0212c30e[];
+
+/// Scatters one of `0x1F4`-based counters by a random walk. Two `s16` tables sit two bytes apart
+/// and are both indexed with a four-byte stride, so the subscript is `i * 2` on an `s16*`; the
+/// random draw's bound is `2 * lo[i] + 1` and the result is biased by `-lo[i] + hi[i]`, which
+/// is why the `rsb` comes before `hi[i]` is even loaded.
+void func_ov011_0212bd3c(void* p, s32 i) {
+    s32 lo;
+    s32 hi;
+    s32 r;
+
+    lo                                     = data_ov011_0212c30e[i * 2];
+    r                                      = RNG_Next(lo * 2 + 1);
+    hi                                     = data_ov011_0212c30c[i * 2];
+    *(s16*)((u8*)p + 0x100 + i * 2 + 0xF4) = hi + (r - lo);
+}
+
+/// Is the `0x1F4`-based counter for slot `i` exhausted? `<= 0` rather than `< 0`, which is what
+/// the `movle`/`movgt` pair against literal 1/0 encodes.
+s32 func_ov011_0212bdbc(void* p, s32 i) {
+    return *(s16*)((u8*)p + 0x100 + i * 2 + 0xF4) <= 0;
+}
+
+/// Decrement the `0x1F4`-based counter for slot `i`, but only while it is still positive. The
+/// guard and the body reach the same address by two different routes -- `i * 2 + 0x100 + 0xF4`
+/// in the test and a `+0x1F4` base in the body -- and that asymmetry is in the original, so the
+/// two spellings are kept apart here rather than folded into one pointer.
+void func_ov011_0212bd90(void* p, s32 i) {
+    s16* q;
+
+    if (*(s16*)((u8*)p + i * 2 + 0x100 + 0xF4) <= 0) {
+        return;
+    }
+    q    = (s16*)((u8*)p + 0x1F4);
+    q[i] = q[i] - 1;
+}
+
+extern s32 func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
+
+/// A Tatt phase, and the last of the family that opens with "bump `0x1C0`, prime the sprite,
+/// clear the `0x1D*` words". Three differences from `func_ov011_0212b318`: an extra
+/// `func_ov003_020cb520(data, 1)` call, the `0x54` bit-28 clear, and the poll taking two
+/// arguments. The `0x1D0` store appears twice -- `0x1D0`, `0x1D4`, `0x1D0` -- which is in the
+/// original and is transcribed literally rather than folded.
+void func_ov011_0212b558(BtlEnm010Tatt* data) {
+    if (data->unk_1C0 == 0) {
+        data->unk_1C0 = data->unk_1C0 + 1;
+        func_ov003_020cb520(data, 1);
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
+        data->unk_1D0 = 0;
+        data->unk_1D4 = 0;
+        data->unk_1D0 = 0;
+        data->unk_54  = data->unk_54 & ~0x10000000;
+    }
+    if (func_ov003_020c72b4(data, 0, 4) != 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212a134);
+}
+
+extern void func_ov011_02128ca4(BtlEnm010Tatt* data, s32 arg1);
+extern void func_ov011_02128eb0(BtlEnm010Tatt* data);
+
+/// Tatt's arm-throw phase. On the first frame it sets bit 4 of all four `0x88`-strided records;
+/// after that it looks for a record that *already* has bit 4 and does nothing if it finds one --
+/// so the reset only takes effect once every record has had its turn. The two loops keep their
+/// counter and walking pointer in *swapped* registers (`r2`/`r3` then `r3`/`r2`), which means the
+/// original's four locals are four distinct variables, not two reused ones.
+///
+/// The bit-4 test is the same shift-extract as `func_ov011_02129110`, here at `<< 27`, and it is
+/// compared against literal 1 rather than tested for truth.
+void func_ov011_02128e30(BtlEnm010Tatt* data) {
+    s32  i;
+    u16* p;
+    u16* q;
+    s32  j;
+
+    if (data->unk_228 == 0) {
+        data->unk_228 = data->unk_228 + 1;
+        p             = (u16*)((u8*)data + 0x88);
+        for (i = 0; i < 4; i++) {
+            *p = *p | 0x10;
+            p  = (u16*)((u8*)p + 0x88);
+        }
+    }
+    q = (u16*)((u8*)data + 0x88);
+    for (j = 0; j < 4; j++) {
+        if (((u32)(*q << 27) >> 31) == 1) {
+            break;
+        }
+        q = (u16*)((u8*)q + 0x88);
+    }
+    if (j != 4) {
+        return;
+    }
+    func_ov011_02128ca4(data, (s32)func_ov011_02128eb0);
+}
+
+extern void func_ov011_021256c0(u16 arg0);
+extern void func_ov003_020c4520(void* p);
+extern void func_ov003_020c4b5c(void* p);
+
+/// UG's initialiser, and the reason `BtlEnm010UG` is 0x214: the `MI_CpuSet` clears exactly that
+/// much and nothing else in the function writes further.
+///
+/// Three things worth writing down. The `0x100` base is materialised once and carries six
+/// halfword stores, so they are written as `unk_1C0`-style fields on the struct and MWCC
+/// re-derives the base. The `0x1CC` word is set to 1 and the nine after it to 0, in descending
+/// triples. And `0x206` is `(x & ~1) | 1` -- a clear and an immediate re-set that MWCC does not
+/// fold, so the C has to spell it as the two-step it is rather than as a plain `|= 1`.
+void func_ov011_0212b9e4(void* arg0, void* arg1, void* arg2) {
+    BtlEnm010UG* data;
+    void*        args;
+
+    data = *(BtlEnm010UG**)((u8*)arg1 + 0x18);
+    args = arg2;
+    MI_CpuSet(data, 0, 0x214);
+    func_ov011_021256c0(*(u16*)((u8*)args + 0x04));
+    func_ov003_020c3efc(data, args);
+    func_ov003_020c4520(data);
+    func_ov003_020c4b5c(data);
+    data->unk_1C0              = 0;
+    data->unk_1C2              = 0;
+    data->unk_1C4              = 0;
+    data->unk_1CC              = 1;
+    data->unk_1D8              = 0;
+    data->unk_1D4              = 0;
+    data->unk_1D0              = 0;
+    data->unk_1E4              = 0;
+    data->unk_1E0              = 0;
+    data->unk_1DC              = 0;
+    data->unk_1F0              = 0;
+    data->unk_1EC              = 0;
+    data->unk_1E8              = 0;
+    *(s16*)((u8*)data + 0x1F6) = 0;
+    data->unk_1F8              = 0;
+    data->unk_1FA              = 0;
+    data->unk_208              = -1;
+    data->unk_20C              = -1;
+    func_ov011_0212bd90((void*)data, 0);
+    func_ov011_02129ed0((void*)data, func_ov011_0212a10c);
+    data->unk_206              = (data->unk_206 & 0xFE) | 1;
+    data->unk_54               = data->unk_54 | 0x40000000;
+    *(u16*)((u8*)data + 0x18C) = *(u16*)((u8*)data + 0x18C) | 4;
+}
+
+extern s32 func_ov011_0212b890(void* data, s16* arg1, s16* arg2, s32 arg3);
+
+/// A Tatt phase: latch the `0x1F8`/`0x1FA` pair on the first frame, hand both to
+/// `func_ov011_0212b890` along with the `0x1C0` counter, and when they come back as the sentinel
+/// pair stash a handle in `0x208` and play a sound. `0x1C0` is a read-modify-write, so the
+/// counter passed to the callee is the *pre-increment* value.
+void func_ov011_0212aee8(BtlEnm010Tatt* data) {
+    s32 r;
+
+    if (data->unk_1C0 == 0) {
+        data->unk_1F8 = 0x14;
+        data->unk_1FA = 0x1E;
+    }
+    r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0);
+    data->unk_1C0 = data->unk_1C0 + 1;
+    if (data->unk_1F8 == 0 && data->unk_1FA == 0x1E) {
+        data->unk_208 = func_ov011_02128718(data);
+        func_ov003_02087f00(0x1DE, func_ov003_020843b0(0, *(s32*)((u8*)data + 0x28)));
+    }
+    if (r != 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212a134);
+}
+
+extern s32 func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+
+/// Another Tatt phase. The `0x80000` bias is a *conditional negation* -- `rsbeq` against the test
+/// of `0x24` -- so it has to be a ternary, not an `if` around the call. The frame filter on
+/// `0x9A` is `>= 3 && <= 4`, which is what the `blt`/`bgt` pair around one block encodes.
+void func_ov011_0212b0a4(BtlEnm010Tatt* data) {
+    s32 bias;
+
+    bias = (*(s32*)((u8*)data + 0x24) == 0) ? 0 - 0x80000 : 0x80000;
+    if (data->unk_1C0 == 0) {
+        data->unk_1C0 = data->unk_1C0 + 1;
+        func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 4);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 1);
+        func_ov003_02087f00(0x1DF, func_ov003_020843b0(0, *(s32*)((u8*)data + 0x28)));
+    }
+    if (*(s16*)((u8*)data + 0x9A) >= 3 && *(s16*)((u8*)data + 0x9A) <= 4) {
+        func_ov003_020c5b2c(0x59, (s32)(u32)data, *(s32*)((u8*)data + 0x28) + bias, *(s32*)((u8*)data + 0x2C),
+                            *(s32*)((u8*)data + 0x30));
+    }
+    if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) == 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212a134);
 }

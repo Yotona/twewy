@@ -83,7 +83,7 @@ extern void func_ov003_02082b64(void*);
 extern void func_ov003_02084694(void*, s32);
 extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
 extern s32  func_ov003_020cb498(s32, s32, void*, void*);
-extern s32  func_ov003_020843b0(s32, s32);
+extern s16  func_ov003_020843b0(s32, s32);
 extern void Mini108_VBlank(CombatSprite*, u16, s32);
 extern void func_ov010_02128820(BtlEnm006*, s32);
 extern void CombatSprite_SetPaletteSource(CombatSprite*, s32);

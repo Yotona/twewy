@@ -94,18 +94,29 @@ typedef struct BtlEnm010UG {
     /* 0x028 */ s32 unk_028;
     /* 0x02C */ s32 unk_02C;
     /* 0x030 */ s32 unk_030;
-    /* 0x034 */ s32 pad_034[110]; // 0x34 .. 0x1C3
-    /* 0x1C4 */ s32 pad_1C4;
+    /* 0x034 */ s32 pad_034[8];  // 0x34 .. 0x53
+    /* 0x054 */ s32 unk_54;
+    /* 0x058 */ s32 pad_058[90]; // 0x58 .. 0x1BF
+    /* 0x1C0 */ s16 unk_1C0;
+    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x1C4 */ s16 unk_1C4;
+    /* 0x1C6 */ s16 pad_1C6;
     /* 0x1C8 */ void* (*unk_1C8)(void);
     /* 0x1CC */ s32 unk_1CC;
     /* 0x1D0 */ s32 unk_1D0;
     /* 0x1D4 */ s32 unk_1D4;
     /* 0x1D8 */ s32 unk_1D8;
-    /* 0x1DC */ s32 pad_1DC[3];
+    /* 0x1DC */ s32 unk_1DC;
+    /* 0x1E0 */ s32 unk_1E0;
+    /* 0x1E4 */ s32 unk_1E4;
     /* 0x1E8 */ s32 unk_1E8;
     /* 0x1EC */ s32 unk_1EC;
     /* 0x1F0 */ s32 unk_1F0;
-    /* 0x1F4 */ s32 pad_1F4[3];
+    /* 0x1F4 */ s32 pad_1F4;
+    /* 0x1F8 */ s16 unk_1F8;
+    /* 0x1FA */ s16 unk_1FA;
+    /* 0x1FC */ s16 pad_1FC;
+    /* 0x1FE */ s16 pad_1FE;
     /* 0x200 */ s32 pad_200;
     /* 0x204 */ s32 unk_204;
     /* 0x206 */ u8  unk_206;
@@ -270,19 +281,36 @@ typedef struct BtlEnm010Sprl {
 /// offsets come out the same. `0x224` is a word and the three after it are `s16`s zeroed from one
 /// `mov r1, #0`.
 typedef struct BtlEnm010Tatt {
-    /* 0x000 */ s32 pad_000[112]; // 0x00 .. 0x1BF
+    /* 0x000 */ s32 pad_000[21]; // 0x00 .. 0x53
+    /* 0x054 */ s32 unk_54;
+    /* 0x058 */ s32 pad_058[5];  // 0x58 .. 0x6B
+    /* 0x06C */ s32 pad_06C[47]; // 0x6C .. 0x127
+    /* 0x128 */ s32 pad_128[38]; // 0x128 .. 0x1BF
     /* 0x1C0 */ s16 unk_1C0;
     /* 0x1C2 */ s16 pad_1C2;
     /* 0x1C4 */ s16 unk_1C4;
     /* 0x1C6 */ s16 pad_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010Tatt*);
-    /* 0x1CC */ s32 pad_1CC[22]; // 0x1CC .. 0x223
+    /* 0x1CC */ s32 unk_1CC;
+    /* 0x1D0 */ s32 unk_1D0;
+    /* 0x1D4 */ s32 unk_1D4;
+    /* 0x1D8 */ s32 unk_1D8;
+    /* 0x1DC */ s32 pad_1DC[7]; // 0x1DC .. 0x1F7
+    /* 0x1F8 */ s16 unk_1F8;
+    /* 0x1FA */ s16 unk_1FA;
+    /* 0x1FC */ s16 pad_1FC;
+    /* 0x1FE */ s16 pad_1FE;
+    /* 0x200 */ s32 pad_200[2]; // 0x200 .. 0x207
+    /* 0x208 */ s32 unk_208;
+    /* 0x20C */ s32 pad_20C[6]; // 0x20C .. 0x223
     /* 0x224 */ s32 unk_224;
     /* 0x228 */ s16 unk_228;
     /* 0x22A */ s16 unk_22A;
     /* 0x22C */ s16 unk_22C;
     /* 0x22E */ s16 pad_22E;
-    /* 0x230 */ s32 pad_230[8]; // 0x230 .. 0x24F
+    /* 0x230 */ s32 pad_230[7]; // 0x230 .. 0x24B
+    /* 0x24C */ u8  unk_24C;
+    /* 0x24D */ u8  pad_24D[3]; // 0x24D .. 0x24F
 } BtlEnm010Tatt;
 
 /// The owner object every task in this overlay is hung off. `Task+0x18` / the spawn argument's
