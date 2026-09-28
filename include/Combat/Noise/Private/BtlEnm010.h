@@ -211,6 +211,80 @@ typedef struct BtlEnm010RG {
     /* 0x204 */ s32 unk_204;
 } BtlEnm010RG;
 
+/// `Tsk_BtlEnm010_Rnge` task data -- **0x6C bytes**, from the word in the `TaskHandle` at
+/// `0x0212c1d4` and independently from `func_ov011_02127ce0`'s case 0, which opens with
+/// `mov r0, r4 / mov r1, #0 / mov r2, #0x6c / bl MI_CpuSet`.
+///
+/// **A `CombatSprite` lives at `0x00`, and it is the task data pointer itself** -- the same
+/// pointer is handed to `func_ov003_02082724`, `func_ov003_02082730`, `func_ov003_02082b64`,
+/// `func_ov003_02082b0c`, `func_ov003_02082cc4`, `Mini108_VBlank` and
+/// `SpriteMgr_IsAnimationFinished` with no bias at all. So the two `s16`s below are
+/// `Sprite::frameTimer` and `Sprite::unk16`, reached as flat `ldrsh` at `0x08` and `0x16`.
+/// The sprite is left as raw padding: `sizeof(CombatSprite)` is 0x7D and `0x60` is the owner
+/// pointer.
+typedef struct BtlEnm010Rnge {
+    /* 0x00 */ s32                    pad_000[2];  // 0x00 .. 0x07, the CombatSprite
+    /* 0x08 */ s16                    unk_008;     // Sprite::frameTimer
+    /* 0x0A */ s16                    pad_00A;
+    /* 0x0C */ s32                    pad_00C[2];  // 0x0C .. 0x13
+    /* 0x14 */ s16                    pad_014;     // Sprite::animIndex
+    /* 0x16 */ s16                    unk_016;     // Sprite::unk16
+    /* 0x18 */ s32                    pad_018[18]; // 0x18 .. 0x5F
+    /* 0x60 */ struct BtlEnm010Owner* unk_060;
+    /* 0x64 */ s32                    pad_064;
+    /* 0x68 */ s32                    pad_068;
+} BtlEnm010Rnge;
+
+/// `Tsk_BtlEnm010_Sprl` task data -- **0xB8 bytes**, from the word in the `TaskHandle` at
+/// `0x0212c210`.
+///
+/// The layout is pinned by `func_ov011_02128b80` alone, the only function that touches it: a
+/// five-iteration loop whose index `i` reaches the struct three ways at once --
+/// `add r3, r10, r9, lsl #0x2` then a `+0x84` displacement, a `+0x70` displacement off the same
+/// base, and a scaled index into `data_ov011_0212c21c`.
+///
+///   `0x04` a `CombatSprite` -- the same pointer is handed to `func_ov003_02082724`,
+///        `func_ov003_02082730`, `func_ov003_0208260c` and `func_ov003_02082b64` with a `+0x4`
+///        bias and nothing else. Raw padding: `sizeof(CombatSprite)` is 0x7D, which would run
+///        past `0x70`.
+///   `0x70` five `s32`s, read as `*(data + i * 4 + 0x70)` and passed to `func_ov003_02084348`.
+///   `0x84` five `s32`s, read as `*(data + i * 4 + 0x84)`; the fourth goes to
+///        `func_ov003_02082730` negated against `0x7FFFFFFF`.
+///   `0x98` a single `s32`, read at a *fixed* offset while the two arrays above are indexed --
+///         so it is the word just past the `0x84` array, not a sixth element of it.
+typedef struct BtlEnm010Sprl {
+    /* 0x000 */ s32 pad_000;     // 0x00 .. 0x03
+    /* 0x004 */ s32 pad_004[27]; // 0x04 .. 0x6F, the CombatSprite
+    /* 0x070 */ s32 unk_070[5];  // 0x70 .. 0x83
+    /* 0x084 */ s32 unk_084[5];  // 0x84 .. 0x97
+    /* 0x098 */ s32 unk_098;
+    /* 0x09C */ s32 pad_09C[7];  // 0x9C .. 0xB7
+} BtlEnm010Sprl;
+
+/// `Tsk_BtlEnm010_Tatt` task data -- **0x250 bytes**, from the word in the `TaskHandle` at
+/// `0x0212c240`.
+///
+/// Barely characterised so far. `0x1C0`/`0x1C4`/`0x1C8` and `0x224`..`0x22C` are pinned by
+/// `func_ov011_02129ed0` and `func_ov011_02128ca4`, which are the RG phase-setup pair again but
+/// reached through a `+0x200` base -- the same shape as `func_ov011_021265d4`, which is why the
+/// offsets come out the same. `0x224` is a word and the three after it are `s16`s zeroed from one
+/// `mov r1, #0`.
+typedef struct BtlEnm010Tatt {
+    /* 0x000 */ s32 pad_000[112]; // 0x00 .. 0x1BF
+    /* 0x1C0 */ s16 unk_1C0;
+    /* 0x1C2 */ s16 pad_1C2;
+    /* 0x1C4 */ s16 unk_1C4;
+    /* 0x1C6 */ s16 pad_1C6;
+    /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010Tatt*);
+    /* 0x1CC */ s32 pad_1CC[22]; // 0x1CC .. 0x223
+    /* 0x224 */ s32 unk_224;
+    /* 0x228 */ s16 unk_228;
+    /* 0x22A */ s16 unk_22A;
+    /* 0x22C */ s16 unk_22C;
+    /* 0x22E */ s16 pad_22E;
+    /* 0x230 */ s32 pad_230[8]; // 0x230 .. 0x24F
+} BtlEnm010Tatt;
+
 /// The owner object every task in this overlay is hung off. `Task+0x18` / the spawn argument's
 /// first word point at one of these.
 ///

@@ -1031,6 +1031,98 @@ void func_ov011_021278d4(void* p, s32 arg1, s32 arg2, s32 index) {
 extern s32 func_ov003_020c62c4(void* p, s32 arg1);
 extern s32 func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 
+extern void func_ov003_02082750(CombatSprite* cSprite, s32 arg1, s32 arg2);
+extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+
+/// `Tsk_BtlEnm010_Rnge`'s task entry: a four-way switch whose arms all fall through to a
+/// single `return r`, and `r` is 1 unless case 1's animation has finished.
+///
+/// Two details are load-bearing. Case 0's `ldr r0, [r6, #0x0]` appears **three** times, so the
+/// spawn-argument read has to be written three times rather than hoisted into a local. And case 1
+/// reads `unk_60->unk_54` once into a register and tests bits 9 and 14 off it, in that order --
+/// the Lser equivalent at `func_ov011_02125e14` tests 14 before 9, and the two are not
+/// interchangeable.
+s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
+    BtlEnm010Rnge* data;
+    s32            r;
+    s32            snd;
+    s32            pan;
+    s32            bias;
+    s32            y;
+
+    data = *(BtlEnm010Rnge**)((u8*)arg1 + 0x18);
+    r    = 1;
+    switch (index) {
+        case 0:
+            MI_CpuSet(data, 0, 0x6C);
+            func_ov011_021258b4(((u32)((s32) * (u32*)((u8*)*(u32*)arg2 + 0x84) << 30) >> 30), (CombatSprite*)data, 0);
+            Mini108_VBlank((CombatSprite*)data, 0, r);
+            data->unk_060 = *(BtlEnm010Owner**)arg2;
+            if (*(s32*)((u8*)*(BtlEnm010Owner**)arg2 + 0x24) == 1) {
+                func_ov003_02082750((CombatSprite*)data, r, 0);
+            } else {
+                func_ov003_02082750((CombatSprite*)data, 0, 0);
+            }
+            break;
+        case 1:
+            if (func_ov003_020c3c28() != 0) {
+                return 0;
+            }
+            if (func_ov003_020cc354(data->unk_060) != 0 || (data->unk_060->unk_54 & 0x200) != 0 ||
+                (data->unk_060->unk_54 & 0x4000) != 0)
+            {
+                return 0;
+            }
+            func_ov003_02082b0c((CombatSprite*)data);
+            if (func_ov003_020c37f8((void*)data) != 0) {
+                snd = 0x5B;
+                pan = func_ov003_020843b0(r, data->unk_060->unk_28);
+            } else {
+                snd = 0x53;
+                pan = func_ov003_020843b0(0, data->unk_060->unk_28);
+            }
+            bias = 0x80000;
+            if (data->unk_060->unk_24 == 0) {
+                bias = -bias;
+            }
+            if (data->unk_016 == 2 && data->unk_008 == 1) {
+                func_ov003_02087f00(0x1DB, (s32(*)(s32, s32))pan);
+            }
+            if (data->unk_016 >= 4 && data->unk_016 <= 6) {
+                if (func_ov003_020c5b2c((u16)snd, data->unk_060->unk_28 + bias, data->unk_060->unk_2C, data->unk_060->unk_30,
+                                        data->unk_060->unk_30) == 1)
+                {
+                    func_ov003_02087f00(0x1DC, (s32(*)(s32, s32))pan);
+                }
+            }
+            if (SpriteMgr_IsAnimationFinished((Sprite*)data) != 0) {
+                r = 0;
+            }
+            break;
+        case 2:
+            if ((u32)((s32) * (u32*)data << 30) >> 30) {
+                pan = func_ov003_020843b0(0, data->unk_060->unk_28);
+                y   = func_ov003_020843ec(0, data->unk_060->unk_2C, data->unk_060->unk_30);
+            } else {
+                pan = func_ov003_020843b0(r, data->unk_060->unk_28);
+                y   = func_ov003_020843ec(r, data->unk_060->unk_2C, data->unk_060->unk_30);
+            }
+            if (data->unk_060->unk_24 == 0) {
+                pan = (s16)(pan - 0x20);
+            } else {
+                pan = (s16)(pan + 0x20);
+            }
+            func_ov003_02082724((CombatSprite*)data, pan, y);
+            func_ov003_02082730((CombatSprite*)data, 0x7FFFFFFF - (data->unk_060->unk_2C + 0x20000));
+            func_ov003_02082b64((CombatSprite*)data);
+            break;
+        case 3:
+            func_ov003_02082cc4(data);
+            break;
+    }
+    return r;
+}
+
 /// An RG phase entry of the shape the other two take: prime once on `0x1C0 == 0`, then poll a
 /// two-argument predicate and re-arm phase 0 when it goes quiet.
 ///
@@ -1332,6 +1424,21 @@ typedef struct BtlEnm010RngeArgs {
     /* 0x1E */ u16   pad_1E;
 } BtlEnm010RngeArgs;
 
+/// The 0x18-byte spawn block `func_ov011_021282b8` builds -- the same shape as
+/// `BtlEnm010RngeArgs` with the trailing `u16` pair and its pad left off. The size is pinned by the
+/// frame: `push {r3, r4, r5, r6, r7, lr}` then `sub sp, sp, #0x20` puts the block at `sp+0x8` and
+/// its last written byte at `sp+0x1F`, so it is 0x18 bytes and not 0x20. Nothing is ever stored to
+/// what would have been offset `0x1C`.
+typedef struct BtlEnm010SprlArgs {
+    /* 0x00 */ void* field_00;
+    /* 0x04 */ s32   field_04;
+    /* 0x08 */ s32   field_08;
+    /* 0x0C */ s32   field_0C;
+    /* 0x10 */ s32   field_10;
+    /* 0x14 */ u16   field_14;
+    /* 0x16 */ s16   field_16;
+} BtlEnm010SprlArgs;
+
 /// `Tsk_BtlEnm010_Rnge`'s task spawn. Nine arguments in, a 0x20-byte block out.
 ///
 /// Two things are load-bearing. `arg7` is a by-value `u16` that the C *assigns*, and MWCC reuses
@@ -1361,4 +1468,383 @@ s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 
     t.field_18 = arg4;
     t.field_1C = arg6;
     return EasyTask_CreateTask(pool, &data_ov011_0212c1e0, 0, 0, 0, (void*)&t);
+}
+
+extern const TaskHandle data_ov011_0212c210;
+
+/// SWA's phase-3 handler. Walks the five task ids at `0x0C`..`0x1C` and sets each live task's
+/// `markedForDel`. The pool is the plain global unless `0x04` is non-zero, in which case it is
+/// the same base biased by `0x8C + 0x8000` -- the same pair of arms as `func_ov011_02127c84` and
+/// `func_ov011_02127f6c`, third and fourth time.
+s32 func_ov011_02128250(void* p) {
+    TaskPool* pool;
+    s32       i;
+
+    if (*(u32*)((u8*)p + 4) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    for (i = 0; i < 5; i++) {
+        Task* t = EasyTask_GetTaskById(pool, *((u32*)((u8*)p + i * 4) + 3));
+        if (t != NULL) {
+            /* Not `t->markedForDel = 1`: that is the same bit, but MWCC narrows the
+             * halfword byte-wise and comes out with three instructions where the original has
+             * one `ldrh` / `orr` / `strh`. The OR has to be spelled on the whole halfword. */
+            *(u16*)((u8*)t + 4) = *(u16*)((u8*)t + 4) | 0x10;
+        }
+    }
+    return 1;
+}
+
+extern const TaskHandle data_ov011_0212c1f8;
+
+/// Sprl's spawn, and the second instance of the `0x20`-byte block shape `func_ov011_02127f6c`
+/// established -- same struct, and the 0x1C word is left unset here.
+///
+/// Seven arguments: four in registers, then a `u16`, a word and an `s16` on the stack.
+s32 func_ov011_021282b8(void* arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4, s32 arg5, s16 arg6) {
+    BtlEnm010SprlArgs t;
+    TaskPool*         pool;
+
+    if (func_ov003_020c37f8((void*)((u8*)arg0 + 0x84)) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    t.field_00 = arg0;
+    t.field_04 = arg1;
+    t.field_08 = arg2;
+    t.field_0C = arg3;
+    t.field_10 = arg5;
+    t.field_16 = arg6;
+    t.field_14 = arg4;
+    return EasyTask_CreateTask(pool, &data_ov011_0212c1f8, 0, 0, 0, (void*)&t);
+}
+
+extern s32 func_ov011_021283a8(void* p, s32 arg1);
+extern s32 func_ov011_021284bc(void* p);
+extern s32 func_ov011_02128698(void* p);
+
+/// `Tsk_BtlEnm010_SingleShot`'s task entry. Same shape as `func_ov011_0212801c` and
+/// `func_ov011_02128758`: a four-way switch, the default arm's result is the literal 1 set up
+/// before the switch, and every arm copies its callee's result into r1 for the shared tail.
+s32 func_ov011_02128348(void* arg0, void* arg1, s32 arg2, s32 index) {
+    void* p;
+    s32   r;
+
+    p = *(void**)((u8*)arg1 + 0x18);
+    r = 1;
+    switch (index) {
+        case 0:
+            r = func_ov011_021283a8(p, arg2);
+            break;
+        case 1:
+            r = func_ov011_021284bc(p);
+            break;
+        case 2:
+            r = func_ov011_02128698(p);
+            break;
+        case 3:
+            r = func_ov011_02128704(p);
+            break;
+    }
+    return r;
+}
+
+extern const s32 data_ov011_0212c1ec[];
+extern s32       func_ov003_0208260c(void* p, s32 a1, s32 a2, s32 a3, s32 a4);
+
+/// SingleShot's phase-2 handler: three passes over a table and a 0x10-stride record block.
+///
+/// `base` is a genuine second counter in the original -- `mov r4, r6` before the loop and `r4`
+/// never stepped again, so arguments 2 and 5 of `func_ov003_0208260c` are always 0 while the
+/// table index and the record pointer both advance. It has to be a separate local, not a second
+/// name for `i`.
+s32 func_ov011_02128698(void* p) {
+    void* data;
+    s32   base;
+    s32   i;
+    void* rec;
+
+    data = p;
+    base = 0;
+    rec  = (void*)((u8*)data + 0x68);
+    for (i = 0; i < 3; i++) {
+        func_ov003_0208260c((void*)((u8*)data + 4), base, data_ov011_0212c1ec[i], data_ov011_0212c1ec[i], base);
+        func_ov003_02082724((CombatSprite*)((u8*)data + 4), *(s16*)((u8*)rec + 0xC), *(s16*)((u8*)rec + 0xE));
+        func_ov003_02082b64((CombatSprite*)((u8*)data + 4));
+        rec = (void*)((u8*)rec + 0x10);
+    }
+    return 1;
+}
+
+/// Ticks the sprite at `+0x04` and nothing else.
+s32 func_ov011_02128704(void* p) {
+    func_ov003_02082cc4((void*)((u8*)p + 4));
+    return 1;
+}
+
+/// Spawns the Sprl task. As in `func_ov011_02127c84`, the last argument is the *address of the
+/// data pointer* -- the prologue's `str r0, [sp, #0x8]` and the `str r1, [sp, #0x4]` that stores
+/// `sp + 8` into the outgoing slot only make sense if the caller gets a pointer to a pointer.
+/// It has to be a **local** copy: address-taken on the parameter itself makes MWCC push r0-r3
+/// and the function comes out 8 bytes long.
+s32 func_ov011_02128718(void* p) {
+    void* arg0;
+
+    arg0 = p;
+    return EasyTask_CreateTask((TaskPool*)data_ov003_020e71b8, &data_ov011_0212c210, 0, 0, 0, (void*)&arg0);
+}
+
+extern s32 func_ov011_021287b8(void* p, s32 arg1);
+extern s32 func_ov011_021288c8(void* p);
+extern s32 func_ov011_02128b80(BtlEnm010Sprl* data);
+extern s32 func_ov011_02128c30(void* p);
+
+/// `Tsk_BtlEnm010_Sprl`'s task entry, third of the three identical four-way dispatchers
+/// (`0x0212801c`, `0x02128348`, `0x02128758`).
+s32 func_ov011_02128758(void* arg0, void* arg1, s32 arg2, s32 index) {
+    void* p;
+    s32   r;
+
+    p = *(void**)((u8*)arg1 + 0x18);
+    r = 1;
+    switch (index) {
+        case 0:
+            r = func_ov011_021287b8(p, arg2);
+            break;
+        case 1:
+            r = func_ov011_021288c8(p);
+            break;
+        case 2:
+            r = func_ov011_02128b80(p);
+            break;
+        case 3:
+            r = func_ov011_02128c30(p);
+            break;
+    }
+    return r;
+}
+
+extern const s32 data_ov011_0212c21c[];
+
+/// Sprl's phase-2 handler: five passes, each one projecting, positioning and then animating.
+///
+/// The two arrays are reached as `*(data + i * 4 + 0x70)` and `*(data + i * 4 + 0x84)`, written
+/// here as subscripts off a `data + i * 4` base so the scaled add stays inline -- as a single
+/// `+ 0x70` / `+ 0x84` bias it materialises `i * 4` into a register instead, which is what
+/// `func_ov011_02128250` does and why that one is two words long.
+s32 func_ov011_02128b80(BtlEnm010Sprl* data) {
+    s16 v0;
+    s16 v1;
+    s32 i;
+    s32 z;
+
+    z = 0;
+    for (i = 0; i < 5; i++) {
+        func_ov003_02084348(z, &v0, &v1, data->unk_070[i], data->unk_098, data->unk_084[i]);
+        func_ov003_02082724((CombatSprite*)((u8*)data + 4), v0, v1);
+        func_ov003_02082730((CombatSprite*)((u8*)data + 4), 0x7FFFFFFF - data->unk_084[i]);
+        func_ov003_0208260c((void*)((u8*)data + 4), z, data_ov011_0212c21c[i], data_ov011_0212c21c[i], z);
+        func_ov003_02082b64((CombatSprite*)((u8*)data + 4));
+    }
+    return 1;
+}
+
+/// Ticks the sprite at `+0x04` and nothing else. Second of the two identical 20-byte tickers
+/// (`0x02128704` was the first).
+s32 func_ov011_02128c30(void* p) {
+    func_ov003_02082cc4((void*)((u8*)p + 4));
+    return 1;
+}
+
+extern const TaskHandle data_ov011_0212c240;
+
+/// Spawns the Tatt task. The plain pool-or-biased pair, and -- for the fourth time now -- the
+/// last argument to `EasyTask_CreateTask` is the address of a *local* copy of the data pointer.
+s32 func_ov011_02128c44(void* p) {
+    void*     arg0;
+    TaskPool* pool;
+
+    arg0 = p;
+    if (func_ov003_020c37f8((void*)((u8*)arg0 + 0x84)) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    return EasyTask_CreateTask(pool, &data_ov011_0212c240, 0, 0, 0, (void*)&arg0);
+}
+
+/// Tatt's RG-shaped phase reset, at a `+0x200` base: store the incoming word at `0x224`, then
+/// clear the three `s16`s at `0x228`/`0x22A`/`0x22C` from a single `mov r1, #0`. The three
+/// stores go out in ascending address order.
+void func_ov011_02128ca4(BtlEnm010Tatt* data, s32 arg1) {
+    data->unk_224 = arg1;
+    data->unk_228 = 0;
+    data->unk_22A = 0;
+    data->unk_22C = 0;
+}
+
+/// Tatt's phase-0 setup. The RG pair again -- `func_ov003_020c427c` thunk, then the callback at
+/// `0x1C8`, then the `0x1C4`-before-`0x1C0` clear pair. Third confirmation of that ordering.
+void func_ov011_02129ed0(BtlEnm010Tatt* data, void (*func)(BtlEnm010Tatt*)) {
+    func_ov003_020c427c(data, (void*)func);
+    data->unk_1C8 = func;
+    data->unk_1C4 = 0;
+    data->unk_1C0 = 0;
+}
+
+/// Four sprite ticks at a 0x88 stride from `+0x04`. `i` is declared before the walking pointer
+/// because the original puts the counter in r4 and the pointer in r5.
+s32 func_ov011_02129ea4(void* p) {
+    s32   i;
+    void* sp;
+
+    sp = (void*)((u8*)p + 4);
+    for (i = 0; i < 4; i++) {
+        func_ov003_02082cc4(sp);
+        sp = (void*)((u8*)sp + 0x88);
+    }
+    return 1;
+}
+
+extern s32  func_ov011_02129994(void* p, s32 arg1);
+extern s32  func_ov011_02129b84(void* p);
+extern s32  func_ov011_02129cec(void* p);
+extern void func_ov011_0212a134(BtlEnm010Tatt* data);
+extern s32  func_ov011_0212b800(s32 arg);
+
+/// `Tsk_BtlEnm010_Tatt`'s task entry. Fifth and last of the identical four-way dispatchers
+/// (`0x0212801c`, `0x02128348`, `0x02128758`, and this one).
+s32 func_ov011_02129934(void* arg0, void* arg1, s32 arg2, s32 index) {
+    void* p;
+    s32   r;
+
+    p = *(void**)((u8*)arg1 + 0x18);
+    r = 1;
+    switch (index) {
+        case 0:
+            r = func_ov011_02129994(p, arg2);
+            break;
+        case 1:
+            r = func_ov011_02129b84(p);
+            break;
+        case 2:
+            r = func_ov011_02129cec(p);
+            break;
+        case 3:
+            r = func_ov011_02129ea4(p);
+            break;
+    }
+    return r;
+}
+
+/// Tatt's task entry proper. Bails on whatever `func_ov003_020c5bfc` reports, otherwise installs
+/// phase 0 -- the same two-line shape as RG's `func_ov011_021267f4`.
+void func_ov011_0212a10c(BtlEnm010Tatt* data) {
+    if (func_ov003_020c5bfc() != 0) {
+        return;
+    }
+    func_ov011_02129ed0(data, func_ov011_0212a134);
+}
+
+/// One of Tatt's phases: poll a predicate on the `0x1C0` counter, and on the frame it goes quiet
+/// bump the counter and advance to the next phase.
+void func_ov011_0212a634(BtlEnm010Tatt* data) {
+    if (func_ov011_0212b800(data->unk_1C0) != 0) {
+        return;
+    }
+    data->unk_1C0 = data->unk_1C0 + 1;
+    func_ov011_02129ed0(data, func_ov011_0212a134);
+}
+
+extern s32       func_ov011_02128f80(void);
+extern const u16 data_ov011_0212c28c[];
+extern const u16 data_ov011_0212c28e[];
+extern const u16 data_ov011_0212c290[];
+
+/// Every sixtieth frame, set bit 5 of the sub-object's `0x84` halfword. Then bump `0x228`.
+///
+/// The `% 60` is the signed magic-multiply sequence (`smull` with `0x88888889`), so it is a plain
+/// `%` on the `s16` -- no `(u32)` cast, which would give the `umull` form and lose the fixup.
+/// The bit-5 set is spelled on the whole halfword, not as a bitfield: see `func_ov011_02128250`.
+void func_ov011_02128eb0(BtlEnm010Tatt* data) {
+    void* p;
+
+    if (data->unk_228 % 60 == 0) {
+        p = func_ov011_02128f80();
+        if (p != NULL) {
+            *(u16*)((u8*)p + 0x84) = *(u16*)((u8*)p + 0x84) | 0x20;
+        }
+    }
+    data->unk_228 = data->unk_228 + 1;
+}
+
+/// A linear search over a 0x10-entry table, with a wrap to 0 on overflow, then a palette swap.
+///
+/// The three tables are two bytes apart in `symbols.txt` but are all indexed with an 8-byte
+/// stride, so the subscript is `i * 4` on a `u16*` and not `i`.
+void func_ov011_02128f10(void* p, u16 v) {
+    void* data;
+    s32   i;
+
+    data = p;
+    for (i = 0; i < 0x10; i++) {
+        if (v < data_ov011_0212c28c[i * 4]) {
+            break;
+        }
+    }
+    if (i == 0x10) {
+        i = 0;
+    }
+    *(u16*)((u8*)data + 0x70) = v;
+    Mini108_VBlank((CombatSprite*)data, data_ov011_0212c28e[i * 4], 0);
+    func_ov003_02082750((CombatSprite*)data, data_ov011_0212c290[i * 4], 0);
+}
+
+extern void func_ov011_02129188(void* p, void* rec);
+extern void func_ov011_021293a8(void* p, void* rec);
+extern void func_ov011_02129410(void* p, void* rec);
+
+/// Four sub-objects at a 0x88 stride from `+0x04`, each dispatched on three bits of its `0x84`
+/// halfword. The three tests are bits 3, 4 and 5 in that order, and the halfword is re-read for
+/// each one -- so it has to be written three times, not hoisted.
+///
+/// The task struct here is **not** pinned: the stride and the `0x60`/`0x64`/`0x84` offsets are
+/// the only evidence, and they do not fit any struct characterised so far. Raw offsets on purpose.
+void func_ov011_02129110(void* p) {
+    s32   i;
+    void* rec;
+
+    rec = (void*)((u8*)p + 4);
+    for (i = 0; i < 4; i++) {
+        if ((u32)(*(u16*)((u8*)rec + 0x84) << 28) >> 31) {
+            func_ov011_02129188(p, rec);
+        }
+        if ((u32)(*(u16*)((u8*)rec + 0x84) << 27) >> 31) {
+            func_ov011_021293a8(p, rec);
+        }
+        if ((u32)(*(u16*)((u8*)rec + 0x84) << 26) >> 31) {
+            func_ov011_02129410(p, rec);
+        }
+        rec = (void*)((u8*)rec + 0x88);
+    }
+}
+
+/// One sub-object's teardown, and the second argument is the one that matters -- `mov r4, r1`
+/// with no use of r0 anywhere. The `0x84` bit-4 clear is the mirror image of the bit-5 set in
+/// `func_ov011_02128eb0`, and again has to be spelled on the whole halfword.
+void func_ov011_021293a8(void* arg0, void* p) {
+    if (*(s16*)((u8*)p + 0x60) == 0) {
+        *(s16*)((u8*)p + 0x60) = *(s16*)((u8*)p + 0x60) + 1;
+        Mini108_VBlank((CombatSprite*)p, 5, 1);
+    }
+    if (SpriteMgr_IsAnimationFinished((Sprite*)p) == 0) {
+        return;
+    }
+    Mini108_VBlank((CombatSprite*)p, 6, 1);
+    *(u16*)((u8*)p + 0x84) = *(u16*)((u8*)p + 0x84) & ~0x10;
+    *(s16*)((u8*)p + 0x60) = 0;
+    *(s16*)((u8*)p + 0x64) = 0;
 }

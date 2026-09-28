@@ -186,8 +186,8 @@ a walking `CombatSprite*` with a literal stride.
 
 ## Done
 
-**29 of 114 functions byte-identical** (`RELOCC` or better), 2 written but not yet exact
-(63 differing bytes between them), **83 not yet written**.
+**49 of 114 functions byte-identical** (`RELOCC` or better), 12 written but not yet exact
+(315 differing bytes between them), **53 not yet written**.
 
 | function | bytes | status |
 |----------|-------|--------|
@@ -220,21 +220,54 @@ a walking `CombatSprite*` with a literal stride.
 | `func_ov011_02127758` | 112 | **byte-exact** |
 | `func_ov011_021277c8` | 268 | **byte-exact** |
 | `func_ov011_021278d4` | 72 | **byte-identical** (raw, no reloc difference either) |
+| `func_ov011_02127a64` | 308 | **byte-exact** |
+| `func_ov011_02127bf0` | 92 | **byte-exact** |
+| `func_ov011_02127bdc` | 20 | **byte-exact** |
+| `func_ov011_02127c4c` | 56 | **byte-exact** |
+| `func_ov011_02127c84` | 92 | **byte-exact** |
+| `func_ov011_0212801c` | 84 | **byte-exact** |
 | `func_ov011_021268c4` | 320 | written, 30 B out — brief §8 |
 | `func_ov011_02126b2c` | 204 | written, 4 B long — brief §9 |
+| `func_ov011_0212791c` | 328 | written, 4 B short — brief §12 |
+| `func_ov011_02127b98` | 68 | written, 8 B long — brief §12 |
+| `func_ov011_02127f6c` | 176 | written, load order off — brief §12 |
+| `func_ov011_02128348` | 96 | **byte-exact** |
+| `func_ov011_02128698` | 108 | **byte-exact** |
+| `func_ov011_02128704` | 20 | **byte-exact** |
+| `func_ov011_02128718` | 64 | **byte-exact** |
+| `func_ov011_02128758` | 96 | **byte-exact** |
+| `func_ov011_021282b8` | 144 | **byte-exact** |
+| `func_ov011_02128250` | 104 | written, 8 B long — brief §14 |
+| `func_ov011_02127ce0` | 652 | written, 4 B short — brief §14 |
+| `func_ov011_02128b80` | 176 | written, load order off — brief §14 |
+| `func_ov011_02128c30` | 20 | **byte-exact** |
+| `func_ov011_02128ca4` | 28 | **byte-identical** (raw, no reloc difference either) |
+| `func_ov011_02129ed0` | 40 | **byte-exact** |
+| `func_ov011_02129ea4` | 44 | **byte-exact** |
+| `func_ov011_02129110` | 120 | **byte-exact** |
+| `func_ov011_021293a8` | 104 | **byte-exact** |
+| `func_ov011_02129934` | 96 | **byte-exact** |
+| `func_ov011_0212a10c` | 40 | **byte-exact** |
+| `func_ov011_02128c44` | 96 | written, 4 B short — brief §14 |
+| `func_ov011_02128eb0` | 96 | written, base register — brief §14 |
+| `func_ov011_02128f10` | 112 | written, 20 B long — brief §14 |
+| `func_ov011_0212a634` | 64 | written, base register — brief §14 |
 
-**The contiguous-prefix framing was dropped this round**, and it was costing throughput: the
+**The contiguous-prefix framing was dropped two rounds ago**, and it was costing throughput: the
 count is what matters, and a byte-exact function at a higher address is worth more than a
 contiguous prefix that stalls. Consequence to remember: `fbdiff.py` measures per symbol, so
-the count above is honest, but **six functions are currently in the file out of address order**
-(`02127628`..`021278d4` sit before the unwritten `02126bf8`..`02127628` run's start). They must be
+the count above is honest, but **sixteen functions are currently in the file out of address
+order**. The run `02127628`..`02128758` is written, and `02128348`/`02128698`/`021282b8` were
+*inserted* at their addresses rather than appended, so what is left inside it is only the three
+still-unwritten `021282b8`-adjacent functions `021283a8` and `021284bc` plus the unwritten
+`02126bf8`..`02127628` block ahead of it. They must be
 reinserted in order before the final link, and `romcmp.py` is what will catch it if they are not.
 
-Two functions were read in full and deliberately **skipped rather than half-written**:
-`021260e8` (620 B, brief §6) and `02126bf8` (648 B, brief §10). Both have their layouts and open
-questions recorded, so neither restarts from a blank page. `.text`/`.rodata`/`.data` are not
-byte-identical and `romcmp.py` has not been run — the linked ROM does not exist until all 114
-functions are emitted, so `fbdiff.py` is the only signal available.
+Three functions were read in full and deliberately **skipped rather than half-written**:
+`021260e8` (620 B, brief §6) and `02126bf8` (648 B, brief §10) — the two largest in the overlay.
+Both have their layouts and open questions recorded, so neither restarts from a blank page.
+`.text`/`.rodata`/`.data` are not byte-identical and `romcmp.py` has not been run — the linked ROM
+does not exist until all 114 functions are emitted, so `fbdiff.py` is the only signal available.
 
 `ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
 `(TaskPool*)((u32)data_ov003_020e71b8 + 0x118 + 0x10000)`. `data_ov003_020e71b8` is already
@@ -242,37 +275,38 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
+1. **The twelve written-not-exact, they are the cheapest bytes on the board.** All in
+   `build/scratch/AGENT_BRIEF.md` §8, §9, §12 and §14. Four of them (`02126b2c`, `02127b98`,
+   `0212a634`, `02128eb0`) are the *same* r0-vs-r1 base allocation and are grouped under one
+   heading in §14 — do not spend more than one build each on that.
+2. **New: the reverse-order rule** (brief §15). MWCC loads a struct assignment's sources in
+   reverse of the order the C assigns the fields, and stores them in reverse of that again. It
+   is what made `021282b8` byte-exact, and it is the open question on `02128b80`.
+3. **The unattempted list is now 53 and getting short.** Next in address order after the last
+   landed function: `02128cc0` (0x170), `02128e30` (0x80), `02128f80` (0x190), `02129188` (0x220),
+   `02129410` (0x524), `02129994` (0x1F0), `02129b84`, `02129cec`, `02129ef8`, `02129f80`,
+   `0212a134`, `0212a2ec`, `0212a420`, `0212a540`, `0212a674`, then the UG block from `0212b99c`
+   and the tail to `0212bdd8`.
+4. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
    half-written**. `build/scratch/AGENT_BRIEF.md` §10 has the eight-step plan and the three open
-   questions. It is the largest thing left in this run and packs four hard idioms into 648 bytes.
-2. **The two near-misses first, they are small diffs.** `021268c4` is 30 bytes out on one
-   comparison (brief §8, six spellings already tried); `02126b2c` is 4 bytes long and one
-   register low (brief §9, one construct not yet tried). Both are cheaper than anything else on
-   the list.
-3. Then `02126e80` (304 B), `02126fb0` (656 B), `02127240` (304 B), `02127370` (260 B),
-   `02127474` (436 B) — the rest of RG's phases.
-4. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6
-   with the seven-step plan, four confirmed arities, and the one open question
-   (`func_ov003_02082750` is called with 3 arguments at one site and 2 at another while the callee
-   clobbers r2 before reading it; try the 2-argument declaration first).
-5. **A wrong declaration in `Combat.h` is confirmed and unfixed** — see
-   `build/scratch/AGENT_BRIEF.md` §5. `func_ov003_02087f00`'s second parameter is `s32`, not a
-   function pointer: `SndMgr_PlaySEWithPan` takes `(SndMgrSeIdx, s32 sePan)`, and of 106 call
-   sites in `src/`, 105 pass an `s32` expression and **zero** pass a real function pointer. 22
-   casts in the finished `BtlEnm006.c` exist only to satisfy the bad declaration. Fixing it
-   means deleting those casts and re-verifying ov010 is still byte-identical — a separate
-   commit, not this overlay's business.
-6. **RG is now largely characterised** (0x208, entry `021278d4`): `0x24` flag, `0x28`/`0x2C` a
-   position pair, `0x30` a countdown, `0x80` a `u16` mode, `0x84` a `CombatSprite`, `0x1C0` a
-   counter, `0x1C2` its latch, `0x1C4` a phase, `0x1C8` a callback, `0x1CC` a result,
-   `0x1D0`/`0x1D4`/`0x1D8` a step triple, `0x1DC`/`0x1E0`/`0x1E4` seeded together, `0x1E8` a
-   step, `0x1F4` a counter, `0x1F6` a flag byte, `0x1F8`/`0x1FA` an `s16` pair, `0x1FC` a `-1`
-   sentinel. Still to characterise: **Rnge 0x06C** (`02127ce0`), **SWA 0x020** (`0212801c`),
-   **Sprl 0x0B8** (`02128758`), **Tatt 0x250** (`02129934`), **UG 0x214** (`0212b99c`;
-   `0212bac8` is its per-frame handler), plus the four 0x180-byte handles at
-   `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. For each, the task's
-   *initialiser* is the cheap way in: it writes every field, so it pins the layout.
-7. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
-   entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
-   blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
-   `relocs.txt` for the address.
+   questions. It is the largest thing left and packs four hard idioms into 648 bytes.
+5. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6.
+   Try the 2-argument declaration for `func_ov003_02082750` first.
+6. **A wrong declaration in `Combat.h` is confirmed and unfixed** — brief §5.
+   `func_ov003_02087f00`'s second parameter is `s32`, not a function pointer: of 106 call sites
+   in `src/`, 105 pass an `s32` expression and **zero** pass a real function pointer. 22 casts in
+   the finished `BtlEnm006.c` exist only to satisfy the bad declaration. Fixing it means deleting
+   those casts and re-verifying ov010 is still byte-identical — a separate commit.
+7. **Structs.** `BtlEnm010RG` (0x208) and `BtlEnm010Lser` (0x254) done. `BtlEnm010Rnge` (0x6C),
+   `BtlEnm010Sprl` (0xB8) and `BtlEnm010Tatt` (0x250) created and partly pinned. Spawn blocks:
+   `BtlEnm010RngeArgs` (0x20), `BtlEnm010SprlArgs` (0x18). `BtlEnm010RngeArgs` is used by two
+   different spawns with different arities — see the commit for `02127f6c`. Still to create:
+   **SingleShot 0x0B4** (`0x021283a8` clears exactly 0xB4 via `MI_CpuSet`), **UG 0x214**
+   (`0212b99c`; `0212bac8` is its per-frame handler; `0x28`/`0x2C`/`0x30` a position triple and
+   `0x210` a counter reaching `0x214`), plus the four 0x180-byte handles at
+   `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. **`02129110`/`021293a8` use a
+   0x88-stride record block that fits none of these** — raw offsets there are deliberate.
+8. `.rodata` and `.data` still need their symbols named and declared.
+9. **The address-order debt is unchanged in size but still mostly unwritten functions.** Keep
+   inserting at address. When the unattempted list is down to a handful, do the reordering pass
+   as its own piece of work with its own verification.
