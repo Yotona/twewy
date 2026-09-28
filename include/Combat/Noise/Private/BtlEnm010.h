@@ -115,6 +115,77 @@ typedef struct BtlEnm010UG {
     /* 0x210 */ s32 unk_210;
 } BtlEnm010UG;
 
+/// `Tsk_BtlEnm010_RG` task data -- **0x208 bytes**. Two independent confirmations of the size:
+/// the word in the `TaskHandle` at `0x0212c130`, and `func_ov011_0212791c`, the initialiser, which
+/// opens with `mov r0, r4 / mov r1, #0 / mov r2, #0x208 / bl MI_CpuSet` -- the only write to the
+/// whole block.
+///
+/// **Barely characterised.** The fields below have evidence, and each of them is pinned:
+///   `0x80` a `u16` that selects one of four index tables -- `ldrh r2, [r0, #0x80]` feeding a
+///          `cmp #3 / addls pc, pc, r2, lsl #2` jump table in `func_ov011_021265fc`. A `u16`
+///          because the load is `ldrh`, not `ldrsh`.
+///   `0x84` is passed to `func_ov011_02125750` and `Mini108_VBlank`, both of which take a
+///          `CombatSprite*`, and `func_ov011_021268c4` reads `Sprite::frameTimer` at `0x8C` and
+///          `Sprite::unk16` at `0x9A` through it -- so there is a `CombatSprite` here.
+///          **Still raw padding, not a field**: `sizeof(CombatSprite)` is 0x7D, not the 0x60 this
+///          overlay strides sprites by, so a member here would put the next field at 0x101
+///          instead of 0x1C0. Reach it through a cast, the same way `BtlEnm010Lser` does.
+///   `0x1C0` and `0x1C4` are zeroed together from a single `mov r1, #0` in `func_ov011_021265d4`,
+///          reached through an `add r0, r5, #0x100` base -- so they are `s16`, and they are a pair.
+///   `0x1C2` takes the `s32` return of `func_ov003_020c42ec` with a `strh`, so it is the
+///          matching `s16` of the word at `0x1C0` -- `0x1C0` counts up to it.
+///   `0x1C8` takes the second argument of that same function, which every call site fills with
+///          the address of a function (`func_ov011_0212681c` from `0x021267f4`), so it is a
+///          callback.
+///   `0x1F4` a `s16` counter, read as `ldrsh` and incremented on every `func_ov011_021265fc` call,
+///          and used as the index into the four tables after a `% 5` / `% 6` / `% 5` / `% 7`.
+///   `0x1F6` a `s16` flag byte manipulated one bit at a time, always through the `0x100` base.
+///   `0x1FC` compared against `mvn r0, #0` -- a `-1` sentinel, and the only thing that lets
+///          `func_ov011_0212681c` run the phase picker instead of just bumping `0x1C0`.
+///   `0x24` a word read as a plain flag: `ldr r1, [r4, #0x24] / cmp r1, #0 / bne` sends
+///          `func_ov011_0212681c` down its bail-out arm.
+///   `0x28` the y of a 4.12 position triple, the second argument to `func_ov003_020843b0`;
+///          `0x2C` is its z, read by `func_ov011_02127bf0`.
+///   `0x1D0` and `0x1D4` cleared together by `func_ov011_021268c4` when the `0x1C0` counter
+///          reaches `0x1C2`; `0x1D0` is also tested `>= 0` there to build a 0/1 argument.
+///   `0x1DC` is `func_ov003_020cb744(1) >> 1 - 0x40000`, `0x1E0` is `func_ov003_020cb7a4(1) >> 1`,
+///          and `0x1E4` a zero -- all three written from one `mov r1, #0` in the same function.
+///   `0x30` a countdown, written `-0x40000` by `func_ov011_02126a04` and then tested `< 0` to
+///          decide whether the phase has finished. `0x1D0` is biased off the same `-0x40000`
+///          expression by `+0x38000`, which is why that value stays in a register across both.
+///   `0x1D8` a `0x2800` step written when `Sprite::unk16 == 3 && Sprite::frameTimer == 1`, and
+///          zeroed when the phase ends.
+typedef struct BtlEnm010RG {
+    /* 0x000 */ s32 pad_000[9]; // 0x00 .. 0x23
+    /* 0x024 */ s32 unk_024;
+    /* 0x028 */ s32 unk_028;
+    /* 0x02C */ s32 unk_02C;
+    /* 0x030 */ s32 unk_030;
+    /* 0x034 */ s32 pad_034[19]; // 0x34 .. 0x7F
+    /* 0x080 */ u16 unk_080;
+    /* 0x082 */ u16 pad_082;
+    /* 0x084 */ s32 pad_084[79]; // 0x84 .. 0x1BF
+    /* 0x1C0 */ s16 unk_1C0;
+    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x1C4 */ s16 unk_1C4;
+    /* 0x1C6 */ s16 pad_1C6;
+    /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010RG*);
+    /* 0x1CC */ s32 unk_1CC;
+    /* 0x1D0 */ s32 unk_1D0;
+    /* 0x1D4 */ s32 unk_1D4;
+    /* 0x1D8 */ s32 unk_1D8;
+    /* 0x1DC */ s32 unk_1DC;
+    /* 0x1E0 */ s32 unk_1E0;
+    /* 0x1E4 */ s32 unk_1E4;
+    /* 0x1E8 */ s32 pad_1E8[3]; // 0x1E8 .. 0x1F3
+    /* 0x1F4 */ s16 unk_1F4;
+    /* 0x1F6 */ s16 unk_1F6;
+    /* 0x1F8 */ s16 unk_1F8;
+    /* 0x1FA */ s16 unk_1FA;
+    /* 0x1FC */ s32 unk_1FC;
+    /* 0x200 */ s32 pad_200[2]; // 0x200 .. 0x207
+} BtlEnm010RG;
+
 /// The owner object every task in this overlay is hung off. `Task+0x18` / the spawn argument's
 /// first word point at one of these.
 ///
