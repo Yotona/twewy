@@ -2313,11 +2313,13 @@ s32 func_ov011_02128150(void* p) {
     }
     if (*(s16*)((u8*)p + 0x08) == 0) {
         o = *(u32**)p;
+        s32 pan;
         if (func_ov003_020c37f8((void*)((u8*)o + 0x84)) != 0) {
-            func_ov003_02087f00(0x1D9, func_ov003_020843b0(1, *(s32*)((u8*)o + 0x28)));
+            pan = func_ov003_020843b0(1, *(s32*)((u8*)o + 0x28));
         } else {
-            func_ov003_02087f00(0x1D9, func_ov003_020843b0(0, *(s32*)((u8*)o + 0x28)));
+            pan = func_ov003_020843b0(0, *(s32*)((u8*)o + 0x28));
         }
+        func_ov003_02087f00(0x1D9, pan);
         *(s16*)((u8*)p + 0x08) = *(s16*)((u8*)p + 0x08) + 1;
     }
     if (*(s32*)((u8*)p + 0x04) == 0) {
@@ -2714,11 +2716,13 @@ s32 func_ov011_021288c8(void* p) {
         if (func_ov003_0208a164(&fx, (void*)((u8*)p + 0xB0), ((BtlEnm010Sprl*)p)->unk_070[i], ((BtlEnm010Sprl*)p)->unk_084[i],
                                 ((BtlEnm010Sprl*)p)->unk_098) == 1)
         {
+            s32 pan;
             if (func_ov003_020c37f8((void*)((u8*)p + 4)) != 0) {
-                func_ov003_02087f00(0x1DA, func_ov003_020843b0(1, ((BtlEnm010Sprl*)p)->unk_070[i]));
+                pan = func_ov003_020843b0(1, ((BtlEnm010Sprl*)p)->unk_070[i]);
             } else {
-                func_ov003_02087f00(0x1DA, func_ov003_020843b0(0, ((BtlEnm010Sprl*)p)->unk_070[i]));
+                pan = func_ov003_020843b0(0, ((BtlEnm010Sprl*)p)->unk_070[i]);
             }
+            func_ov003_02087f00(0x1DA, pan);
         }
     }
     if (*(s32*)((u8*)p + 0xA4) > *(s32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x7CC)) {
@@ -2907,9 +2911,14 @@ void func_ov011_02128f10(void* p, u16 v) {
 }
 
 /// Tatt's "nearest live record" search. The `0x23C` step is computed against one of *two* chase
-/// pointers -- `+0x89C` when bit 0 of `0x24C` is clear and `+0x898` when it is set -- and the
-/// branch direction is the `beq` on the bit test, so the two float arms are an if/else on the bit
-/// and not a ternary on a direction value.
+/// pointers -- `+0x89C` with mode 1 when bit 1 of `0x24C` is SET and `+0x898` with mode 0 when it
+/// is clear -- and the branch direction is the `beq` on the bit test, so the nonzero arm is the
+/// fall-through and the zero arm is the branch target.
+///
+/// The `0.5f` round is a ternary with the `(s32)` cast *outside* it: one `_ffix` after the float
+/// merge per arm of the mirror test, with the helper re-derived in the condition and in both
+/// ternary arms (three calls; the original caches nothing). Arm A's add is commuted
+/// (`0.5f + f`, i.e. `_fadd` with the constant in r0), arm B is `f - 0.5f`.
 ///
 /// A record is *skipped* when bit 0 is clear or bit 4 is set, and the two tests are chained with
 /// `lslne`/`cmpne` rather than branched, so they are one short-circuiting `&&` in the C. The
@@ -2924,30 +2933,24 @@ void* func_ov011_02128f80(BtlEnm010Tatt* data) {
 
     best = NULL;
     v    = 0x7FFFFFFF;
-    if (((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31) == 0) {
-        if (func_ov003_020843b0(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28)) > 0) {
-            d = _ffix(
-                _fadd(_fflt(func_ov003_020843b0(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28))
-                            << 12),
-                      0.5f));
-        } else {
-            d = _ffix(
-                _fsub(_fflt(func_ov003_020843b0(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28))
-                            << 12),
-                      0.5f));
-        }
+    if (((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31) != 0) {
+        d = (s32)(func_ov003_020843b0(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28)) > 0
+                      ? 0.5f + (f32)(func_ov003_020843b0(
+                                         1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28))
+                                     << 12)
+                      : (f32)(func_ov003_020843b0(1,
+                                                  *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28))
+                              << 12) -
+                            0.5f);
     } else {
-        if (func_ov003_020843b0(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28)) > 0) {
-            d = _ffix(
-                _fadd(_fflt(func_ov003_020843b0(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28))
-                            << 12),
-                      0.5f));
-        } else {
-            d = _ffix(
-                _fsub(_fflt(func_ov003_020843b0(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28))
-                            << 12),
-                      0.5f));
-        }
+        d = (s32)(func_ov003_020843b0(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28)) > 0
+                      ? 0.5f + (f32)(func_ov003_020843b0(
+                                         0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28))
+                                     << 12)
+                      : (f32)(func_ov003_020843b0(0,
+                                                  *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28))
+                              << 12) -
+                            0.5f);
     }
     p = (void*)((u8*)data + 4);
     for (i = 0; i < 4; i++) {
@@ -3056,11 +3059,8 @@ void func_ov011_02129188(void* p, void* rec) {
         func_ov011_02128f10(rec, func_ov003_020cba14(v0, v1, *(s32*)((u8*)rec + 0x68), *(s32*)((u8*)rec + 0x6C)));
     } else if (state == 1) {
         if (*(s16*)((u8*)rec + 0x60) == 0) {
-            *(s16*)((u8*)rec + 0x62) = 0xA;
-            *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) | 4;
-            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x7C);
-            *(s32*)((u8*)rec + 0x6C) = *(s32*)((u8*)rec + 0x80);
-            *(u16*)((u8*)rec + 0x72) = *(u16*)((u8*)rec + 0x70) + 0x8000;
+            *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+            func_ov011_02128f10(rec, 0xC000);
         }
         cur = *(s32*)((u8*)rec + 0x68);
         dst = *(s32*)((u8*)rec + 0x7C);
@@ -3281,18 +3281,15 @@ s32 func_ov011_02129994(BtlEnm010Tatt* data, void* arg1) {
     *(s32*)((u8*)data + 0x230) = *(s32*)((u8*)*(u32*)arg1 + 0x28);
     *(s32*)((u8*)data + 0x234) = *(s32*)((u8*)*(u32*)arg1 + 0x2C);
     *(s32*)((u8*)data + 0x238) = *(s32*)((u8*)*(u32*)arg1 + 0x30);
-    if (func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) > 0) {
-        *(s32*)((u8*)data + 0x23C) = _ffix(_fadd(_fflt(func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) << 12), 0.5f));
-    } else {
-        *(s32*)((u8*)data + 0x23C) = _ffix(_fsub(_fflt(func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) << 12), 0.5f));
-    }
-    if (func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) > 0) {
-        *(s32*)((u8*)data + 0x240) = _ffix(_fadd(
-            _fflt(func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) << 12), 0.5f));
-    } else {
-        *(s32*)((u8*)data + 0x240) = _ffix(_fsub(
-            _fflt(func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) << 12), 0.5f));
-    }
+    *(s32*)((u8*)data + 0x23C) = (s32)(func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) > 0
+                                           ? 0.5f + (f32)(func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) << 12)
+                                           : (f32)(func_ov003_020843b0(r, *(s32*)((u8*)*(u32*)arg1 + 0x28)) << 12) - 0.5f);
+    *(s32*)((u8*)data + 0x240) =
+        (s32)(func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) > 0
+                  ? 0.5f +
+                        (f32)(func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) << 12)
+                  : (f32)(func_ov003_020843ec(r, *(s32*)((u8*)*(u32*)arg1 + 0x2C), *(s32*)((u8*)*(u32*)arg1 + 0x30)) << 12) -
+                        0.5f);
     q = (void*)((u8*)data + 4);
     p = (u16*)((u8*)data + 0x88);
     for (i = 1; i < 5; i++) {
@@ -3341,19 +3338,14 @@ s32 func_ov011_02129b84(BtlEnm010Tatt* data) {
             return r;
         }
     }
-    dir = (s32)((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31);
-    if (func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) > 0) {
-        *(s32*)((u8*)data + 0x23C) = _ffix(_fadd(_fflt(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12), 0.5f));
-    } else {
-        *(s32*)((u8*)data + 0x23C) = _ffix(_fsub(_fflt(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12), 0.5f));
-    }
-    if (func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) > 0) {
-        *(s32*)((u8*)data + 0x240) =
-            _ffix(_fadd(_fflt(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12), 0.5f));
-    } else {
-        *(s32*)((u8*)data + 0x240) =
-            _ffix(_fsub(_fflt(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12), 0.5f));
-    }
+    dir                        = (s32)((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31);
+    *(s32*)((u8*)data + 0x23C) = (s32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) > 0
+                                           ? 0.5f + (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12)
+                                           : (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12) - 0.5f);
+    *(s32*)((u8*)data + 0x240) =
+        (s32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) > 0
+                  ? 0.5f + (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12)
+                  : (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12) - 0.5f);
     if (*(void**)((u8*)data + 0x224) != NULL) {
         (*(void (**)(void*))((u8*)data + 0x224))(data);
     }
@@ -3390,19 +3382,15 @@ s32 func_ov011_02129cec(BtlEnm010Tatt* data) {
     void* p;
 
     dir = (s32)(((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31) != 0) ? 1 : 0;
-    if (func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) > 0) {
-        vx = _ffix(_fadd(_fflt(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12), 0.5f));
-    } else {
-        vx = _ffix(_fsub(_fflt(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12), 0.5f));
-    }
-    if (func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) > 0) {
-        vy = _ffix(_fadd(_fflt(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12), 0.5f));
-    } else {
-        vy = _ffix(_fsub(_fflt(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12), 0.5f));
-    }
-    a = 0;
-    b = 0;
-    p = (void*)((u8*)data + 4);
+    vx  = (s32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) > 0
+                    ? 0.5f + (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12)
+                    : (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12) - 0.5f);
+    vy  = (s32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) > 0
+                    ? 0.5f + (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12)
+                    : (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12) - 0.5f);
+    a   = 0;
+    b   = 0;
+    p   = (void*)((u8*)data + 4);
     for (i = 0; i < 4; i++) {
         if (((u32)(*(u16*)((u8*)p + 0x84) << 30) >> 31) != 0) {
             if (((u32)(*(u16*)((u8*)p + 0x84) << 29) >> 31) != 0) {
