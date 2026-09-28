@@ -350,7 +350,7 @@ extern void func_ov003_02082d04(CombatSprite* cSprite);
 ///
 /// Five arguments; the fifth is on the caller's stack, which is why the callee reads it at
 /// `sp + 8` after its own eight-byte `push {r3, lr}`.
-void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010Owner* owner, s32 index) {
+void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010OwnerCopy* owner, s32 index) {
     *outX = (owner->unk_24 == 0) ? owner->unk_28 - 0x40000 : owner->unk_28 + 0x40000;
     *outY = owner->unk_2C;
     *outZ = owner->unk_30 + data_ov011_0212c124[index];
@@ -359,7 +359,7 @@ void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010Owner* owner,
 /// Advances one of the Lser task's three emitter records. Bails out once the accumulated
 /// value leaves range, or when the caller has disabled the emitter, then re-seeds the record
 /// and kicks the sprite's animation.
-void func_ov011_02125c44(BtlEnm010Owner* owner, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled) {
+void func_ov011_02125c44(BtlEnm010OwnerCopy* owner, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled) {
     s32 v = rec->unk_04 + rec->unk_08;
 
     rec->unk_04 = v;
@@ -450,4 +450,66 @@ s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args) {
         data->unk_250 &= ~8;
     }
     return 1;
+}
+
+/// `func_ov003_020c3c28` -- no arguments; returns a global mode bit.
+extern s32 func_ov003_020c3c28(void);
+
+/// `func_ov003_020cc354` -- one argument; bails out of the copy block if its `0x54` flags are
+/// set or its `0x5A` countdown is non-positive, and returns whether it bailed.
+extern s32 func_ov003_020cc354(void* p);
+
+/// `func_ov003_02082b0c` -- one argument, a `CombatSprite*`; ticks a palette timer behind the
+/// sprite's `flags46` bit 12.
+extern void func_ov003_02082b0c(CombatSprite* cSprite);
+
+/// The Lser task's command 1, the per-frame worker. Refreshes the owner's state, drops the owner
+/// when it has gone stale, picks one of three sub-workers off the emitter's mode halfword, then
+/// ticks all four sprites.
+///
+/// The three stale-owner tests are one `||` chain because the original branches to the same
+/// `unk_00 = 0` block from all three of them.
+s32 func_ov011_02125e14(BtlEnm010Lser* data) {
+    s32           result = 0;
+    s32           i;
+    CombatSprite* sp;
+
+    if (func_ov003_020c3c28() != 0) {
+        return 0;
+    }
+    if (data->unk_00 != NULL) {
+        if (data->unk_00->unk_54 & 4) {
+            return 0;
+        }
+    }
+    // Two separate `if (data->unk_00 != NULL)` blocks, not a nested pair. The original re-tests
+    // the owner pointer with its own `cmp` / `beq` after the first block, and folding the two
+    // into one nested `if` costs those two instructions.
+    if (data->unk_00 != NULL) {
+        if (func_ov003_020cc354(&data->copy) != 0 || (data->copy.unk_54 & 0x4000) != 0 || (data->copy.unk_54 & 0x200) != 0) {
+            data->unk_00 = NULL;
+        }
+    }
+    if (data->unk_00 != NULL) {
+        // A struct assignment, not a hand-written loop: MWCC turns it into the original's
+        // `ldm r6!, {r0-r3} / stm lr!, {r0-r3}` x 7 plus a three-word tail, i.e. 0x7C bytes.
+        data->copy = *(const BtlEnm010OwnerCopy*)data->unk_00;
+    }
+    switch (data->emit.unk_28) {
+        case 0:
+            result = func_ov011_02125f24(data);
+            break;
+        case 1:
+            result = func_ov011_02126064(data);
+            break;
+        case 2:
+            result = func_ov011_021260e8(data);
+            break;
+    }
+    sp = (CombatSprite*)((u8*)data + 0x80);
+    for (i = 0; i < 4; i++) {
+        func_ov003_02082b0c(sp);
+        sp = (CombatSprite*)((u8*)sp + 0x60);
+    }
+    return result;
 }

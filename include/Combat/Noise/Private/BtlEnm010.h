@@ -119,20 +119,48 @@ typedef struct BtlEnm010UG {
 /// first word point at one of these.
 ///
 /// Two roles so far, and both are consistent with the offsets:
-///   - `func_ov011_02125c00` receives it as `LserData + 4` and reads `unk_24`..`unk_30` as a
-///     4.12 position triple behind a mirror flag, then biases `unk_28` by `+/- 0x40000`.
+///   - `func_ov011_02125c00` receives a *copy* of one (see `BtlEnm010OwnerCopy`) and reads
+///     `unk_24`..`unk_30` as a 4.12 position triple behind a mirror flag, then biases `unk_28`
+///     by `+/- 0x40000`.
 ///   - `func_ov011_02125d48` reads `unk_84` (two bits, used as a sprite-variant selector) and
 ///     `unk_24` off the spawn argument's pointer.
-/// `unk_24` and `unk_84` are the only fields anything has touched, so the rest is padding.
+/// `unk_54` is the engine-flags word: `func_ov011_02125e14` tests its bit 2 through the owner
+/// pointer, and `func_ov003_020cc354` -- which the same function calls on the *copy* -- tests
+/// bits 2 and 8 of the copy's own `0x54` and reads a countdown at its `0x5A`.
 typedef struct BtlEnm010Owner {
     /* 0x00 */ s32 pad_00[9];
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
-    /* 0x34 */ s32 pad_34[20];
+    /* 0x34 */ s32 pad_34[8];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+    /* 0x5C */ s16 unk_5C;
+    /* 0x5E */ s16 pad_5E;
+    /* 0x60 */ s32 pad_60[9];
     /* 0x84 */ u32 unk_84;
 } BtlEnm010Owner;
+
+/// The **0x7C-byte prefix** of `BtlEnm010Owner` that `func_ov011_02125e14` bulk-copies out of
+/// `data->unk_00` into the task's own block every time the owner is still valid.
+///
+/// The copy loop is `ldm r6!, {r0,r1,r2,r3} / stm lr!, {r0,r1,r2,r3}` seven times followed by
+/// `ldm r6, {r0,r1,r2} / stm lr, {r0,r1,r2}` -- 7 * 16 + 12 = **0x7C** bytes, which is what pins
+/// the size and makes it a struct assignment rather than a hand-written loop.
+///
+/// It really is a *prefix*: `0x84` is reachable on the owner but not inside the copy, which is
+/// why `func_ov011_02125d48` reads it through the pointer and not through `data + 4`.
+typedef struct BtlEnm010OwnerCopy {
+    /* 0x00 */ s32 pad_00[9];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 pad_34[8];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 pad_58[9];
+} BtlEnm010OwnerCopy;
 
 /// One 0xC-byte per-emitter record inside the Lser task's data, at `LserData + 0x200` with a
 /// 0xC stride, indexed three deep.
@@ -160,7 +188,7 @@ typedef struct BtlEnm010LserRec {
 typedef struct BtlEnm010LserEmit {
     /* 0x00 */ BtlEnm010LserRec rec[3];
     /* 0x24 */ s32              pad_24;
-    /* 0x28 */ u16              unk_28;
+    /* 0x28 */ s16              unk_28;
     /* 0x2A */ u16              pad_2A;
 } BtlEnm010LserEmit;
 
@@ -187,18 +215,18 @@ typedef struct BtlEnm010LserEmit {
 /// instead of 0x200. Reach the elements through a walking `CombatSprite*` instead; the stride
 /// is the ROM's, not `sizeof`.
 typedef struct BtlEnm010Lser {
-    /* 0x000 */ BtlEnm010Owner*   unk_00;
-    /* 0x004 */ s32               pad_04[31];
-    /* 0x080 */ s32               pad_080[0x60]; /* four CombatSprite, 0x60 apart */
-    /* 0x200 */ BtlEnm010LserEmit emit;
-    /* 0x22C */ s32               pad_22C[4];
-    /* 0x23C */ s32               unk_23C;
-    /* 0x240 */ s32               unk_240;
-    /* 0x244 */ s32               unk_244;
-    /* 0x248 */ s32               pad_248;
-    /* 0x24C */ s32               unk_24C;
-    /* 0x250 */ u8                unk_250;
-    /* 0x251 */ u8                pad_251[3];
+    /* 0x000 */ BtlEnm010Owner*    unk_00;
+    /* 0x004 */ BtlEnm010OwnerCopy copy;
+    /* 0x080 */ s32                pad_080[0x60]; /* four CombatSprite, 0x60 apart */
+    /* 0x200 */ BtlEnm010LserEmit  emit;
+    /* 0x22C */ s32                pad_22C[4];
+    /* 0x23C */ s32                unk_23C;
+    /* 0x240 */ s32                unk_240;
+    /* 0x244 */ s32                unk_244;
+    /* 0x248 */ s32                pad_248;
+    /* 0x24C */ s32                unk_24C;
+    /* 0x250 */ u8                 unk_250;
+    /* 0x251 */ u8                 pad_251[3];
 } BtlEnm010Lser;
 
 /// The 0x18-byte spawn-argument record `func_ov011_02125b98` hands to the new
