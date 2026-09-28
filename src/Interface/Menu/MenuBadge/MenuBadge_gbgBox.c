@@ -4,7 +4,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_gbgBox; // Size: 0x48
 
@@ -27,8 +27,8 @@ static const SpriteAnimation data_ov043_020c89b0 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0xF1,
-    .unk_06            = 0x1D,
+    .posX              = 0xF1,
+    .posY              = 0x1D,
     .frameInfoCallback = MenuBadge_gbgBox_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation data_ov043_020c89b0 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_gbgBox_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,8 +52,8 @@ static SpriteFrameInfo* MenuBadge_gbgBox_GetFrameInfo(Sprite* sprite, s32 arg, s
 static void MenuBadge_gbgBox_Load(Sprite* sprite, MenuBadge_gbgBox_Args* args) {
     SpriteAnimation anim = data_ov043_020c89b0;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 33;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 33;
 
     _Sprite_Load(sprite, &anim);
 }

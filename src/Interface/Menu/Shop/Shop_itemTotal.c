@@ -29,8 +29,8 @@ static const SpriteAnimation data_ov043_020ca840 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemTotal_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,60 +44,60 @@ static const SpriteAnimation data_ov043_020ca840 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_itemTotal_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3B6000);
 }
 
-static void Shop_itemTotal_Load(Shop_itemTotal* arg0, Sprite* arg1, Shop_itemTotal_Args* arg2) {
+static void Shop_itemTotal_Load(Shop_itemTotal* taskData, Sprite* sprites, Shop_itemTotal_Args* args) {
     SpriteAnimation anim = data_ov043_020ca840;
 
-    anim.dataType = (u16)arg2->dataType;
+    anim.dataType = (u16)args->dataType;
     anim.bits_7_9 = 5;
 
-    if (arg2->unk_08 == 0xFFFF) {
-        anim.unk_04      = 0;
-        anim.unk_06      = 0;
-        arg0->unk_080[0] = FALSE;
-        arg0->unk_080[1] = FALSE;
-        _Sprite_Load(&arg1[0], &anim);
-        _Sprite_Load(&arg1[1], &anim);
+    if (args->unk_08 == 0xFFFF) {
+        anim.posX            = 0;
+        anim.posY            = 0;
+        taskData->unk_080[0] = FALSE;
+        taskData->unk_080[1] = FALSE;
+        _Sprite_Load(&sprites[0], &anim);
+        _Sprite_Load(&sprites[1], &anim);
     } else {
-        anim.unk_04 = 0xEB;
-        anim.unk_06 = 0x54;
+        anim.posX = 0xEB;
+        anim.posY = 0x54;
 
-        if (arg2->unk_0A == 0) {
-            arg0->unk_080[0] = TRUE;
-            arg0->unk_080[1] = TRUE;
-            anim.binIden     = &data_ov043_020ca1f0;
-            anim.unk_18      = 2;
-            anim.packIndex   = arg2->unk_0C + 1;
-            anim.unk_2A      = 1;
-            anim.unk_22      = 1;
-            _Sprite_Load(&arg1[0], &anim);
+        if (args->unk_0A == 0) {
+            taskData->unk_080[0] = TRUE;
+            taskData->unk_080[1] = TRUE;
+            anim.binIden         = &data_ov043_020ca1f0;
+            anim.unk_18          = 2;
+            anim.packIndex       = args->unk_0C + 1;
+            anim.animIndex       = 1;
+            anim.unk_22          = 1;
+            _Sprite_Load(&sprites[0], &anim);
 
             anim.binIden   = &data_ov043_020ca1b8;
             anim.unk_18    = 0;
             anim.packIndex = 1;
-            anim.unk_2A    = 0x17;
+            anim.animIndex = 0x17;
             anim.unk_22    = 4;
-            _Sprite_Load(&arg1[1], &anim);
+            _Sprite_Load(&sprites[1], &anim);
             return;
         } else {
 
-            arg0->unk_080[0] = TRUE;
-            arg0->unk_080[1] = FALSE;
-            anim.binIden     = &data_ov043_020ca1f8;
-            anim.unk_18      = 2;
-            anim.packIndex   = arg2->unk_0C + 1;
-            anim.unk_2A      = 1;
-            anim.unk_22      = 1;
-            _Sprite_Load(&arg1[0], &anim);
+            taskData->unk_080[0] = TRUE;
+            taskData->unk_080[1] = FALSE;
+            anim.binIden         = &data_ov043_020ca1f8;
+            anim.unk_18          = 2;
+            anim.packIndex       = args->unk_0C + 1;
+            anim.animIndex       = 1;
+            anim.unk_22          = 1;
+            _Sprite_Load(&sprites[0], &anim);
 
             anim.unk_22 = 4;
-            _Sprite_Load(&arg1[1], &anim);
+            _Sprite_Load(&sprites[1], &anim);
         }
     }
 }

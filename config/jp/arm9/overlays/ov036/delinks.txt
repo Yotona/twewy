@@ -6,9 +6,11 @@
 
 src/Debug/Bul/OpenEnd.c:
     .text       start:0x02082e80 end:0x02083ff8
-    .rodata     start:0x02084320 end:0x02084444
-    .data       start:0x02084460 end:0x02084640
+    .rodata     start:0x02084320 end:0x020843d4
+    .data       start:0x02084460 end:0x02084628
     .bss        start:0x02084640 end:0x02084660
 
 src/Interface/Menu/OpenEnd/OpenEnd_Badge.c:
     .text       start:0x02083ff8 end:0x02084320
+    .rodata     start:0x020843d4 end:0x02084444
+    .data       start:0x02084628 end:0x02084640

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[2];
-    /* 0x80 */ s32              shouldRender[2];
+    /* 0x80 */ BOOL             visible[2];
     /* 0x88 */ MenuBadgeObject* menuBadge;
 } MenuBadge_helpCurU; // Size: 0x8C
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_helpCurU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_helpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_helpCurU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -51,15 +51,15 @@ static SpriteFrameInfo* MenuBadge_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg,
 static void MenuBadge_helpCurU_Load(Sprite* sprites, MenuBadge_helpCurU_Args* args) {
     SpriteAnimation anim = MenuBadge_helpCurU_Anim;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 0x1E;
-    anim.unk_04   = 7;
-    anim.unk_06   = 0x60;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 0x1E;
+    anim.posX      = 7;
+    anim.posY      = 0x60;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x1F;
-    anim.unk_04 = 0xF9;
-    anim.unk_06 = 0x60;
+    anim.animIndex = 0x1F;
+    anim.posX      = 0xF9;
+    anim.posY      = 0x60;
     _Sprite_Load(&sprites[1], &anim);
 }
 
@@ -77,14 +77,14 @@ static s32 MenuBadge_helpCurU_Update(TaskPool* pool, Task* task, void* args) {
 
     u8 page = helpCur->menuBadge->helpPage;
     if (page == 0) {
-        helpCur->shouldRender[0] = 0;
-        helpCur->shouldRender[1] = 1;
+        helpCur->visible[0] = FALSE;
+        helpCur->visible[1] = TRUE;
     } else if (page == 0xA) {
-        helpCur->shouldRender[0] = 1;
-        helpCur->shouldRender[1] = 0;
+        helpCur->visible[0] = TRUE;
+        helpCur->visible[1] = FALSE;
     } else {
-        helpCur->shouldRender[0] = 1;
-        helpCur->shouldRender[1] = 1;
+        helpCur->visible[0] = TRUE;
+        helpCur->visible[1] = TRUE;
     }
 
     for (u16 i = 0; i < 2; i++) {
@@ -97,7 +97,7 @@ static s32 MenuBadge_helpCurU_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadge_helpCurU* helpCur = task->data;
 
     for (u16 i = 0; i < 2; i++) {
-        if (helpCur->shouldRender[i] != 0) {
+        if (helpCur->visible[i] != 0) {
             Sprite_RenderFrame(&helpCur->sprites[i]);
         }
     }

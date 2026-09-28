@@ -57,8 +57,8 @@ static const SpriteAnimation Result_bdgU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_bdgU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -72,7 +72,7 @@ static const SpriteAnimation Result_bdgU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_bdgU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -120,9 +120,9 @@ static void Result_bdgU_LoadIcon(Result_bdgU* bdgU, Sprite* sprites, Result_bdgU
     anim->binIden   = &Result_BinIdentifiers[28];
     anim->unk_18    = 2;
     anim->unk_22    = 1;
-    anim->unk_2A    = 1;
-    anim->unk_04    = bdgU->posX >> 12;
-    anim->unk_06    = bdgU->posY >> 12;
+    anim->animIndex = 1;
+    anim->posX      = bdgU->posX >> 12;
+    anim->posY      = bdgU->posY >> 12;
     _Sprite_Load(&sprites[3], anim);
 
     bdgU->visible[3] = TRUE;
@@ -153,19 +153,19 @@ static void Result_bdgU_LoadCount(Result_bdgU* bdgU, Sprite* sprites, Result_bdg
         bdgU->visible[2]   = TRUE;
     }
 
-    anim->unk_2A = 0x11;
-    anim->unk_04 = bdgU->countOffsetX + ((bdgU->posX >> 12) + 9);
-    anim->unk_06 = (bdgU->posY >> 12) + 0xB;
+    anim->animIndex = 0x11;
+    anim->posX      = bdgU->countOffsetX + ((bdgU->posX >> 12) + 9);
+    anim->posY      = (bdgU->posY >> 12) + 0xB;
     _Sprite_Load(&sprites[0], anim);
 
-    anim->unk_2A = tens + 7;
-    anim->unk_04 = bdgU->countOffsetX + ((bdgU->posX >> 12) + 9);
-    anim->unk_06 = (bdgU->posY >> 12) + 0xB;
+    anim->animIndex = tens + 7;
+    anim->posX      = bdgU->countOffsetX + ((bdgU->posX >> 12) + 9);
+    anim->posY      = (bdgU->posY >> 12) + 0xB;
     _Sprite_Load(&sprites[1], anim);
 
-    anim->unk_2A = ones + 7;
-    anim->unk_04 = bdgU->countOffsetX + ((bdgU->posX >> 12) + 0xD);
-    anim->unk_06 = (bdgU->posY >> 12) + 0xB;
+    anim->animIndex = ones + 7;
+    anim->posX      = bdgU->countOffsetX + ((bdgU->posX >> 12) + 0xD);
+    anim->posY      = (bdgU->posY >> 12) + 0xB;
     _Sprite_Load(&sprites[2], anim);
 }
 

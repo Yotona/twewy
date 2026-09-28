@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[12];
-    /* 0x300 */ BOOL             shouldRender[12];
+    /* 0x300 */ BOOL             visible[12];
     /* 0x330 */ MenuEquipObject* owner;
 } MenuEquip_nameD; // Size: 0x334
 
@@ -25,8 +25,8 @@ static const SpriteAnimation MenuEquip_nameD_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_nameD_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation MenuEquip_nameD_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_nameD_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -69,23 +69,23 @@ static void MenuEquip_nameD_Load(MenuEquip_nameD* nameD, Sprite* sprites, MenuEq
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 12; i++) {
-        nameD->shouldRender[i] = TRUE;
+        nameD->visible[i] = TRUE;
         if (i == 1) {
             if (owner->activePartner == 0) {
-                anim.unk_2A = 26;
+                anim.animIndex = 26;
             } else if (owner->activePartner == 1) {
-                anim.unk_2A = 27;
+                anim.animIndex = 27;
             } else if (owner->activePartner == 2) {
-                anim.unk_2A = 28;
+                anim.animIndex = 28;
             } else {
-                anim.unk_2A            = 1;
-                nameD->shouldRender[i] = FALSE;
+                anim.animIndex    = 1;
+                nameD->visible[i] = FALSE;
             }
         } else {
-            anim.unk_2A = frames[i];
+            anim.animIndex = frames[i];
         }
-        anim.unk_04 = positions[i][0];
-        anim.unk_06 = positions[i][1];
+        anim.posX = positions[i][0];
+        anim.posY = positions[i][1];
         _Sprite_Load(&sprites[i], &anim);
     }
 }
@@ -117,7 +117,7 @@ static s32 MenuEquip_nameD_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_nameD* nameD = task->data;
 
     for (s16 i = 0; i < 12; i++) {
-        if (nameD->shouldRender[i] != 0) {
+        if (nameD->visible[i] != 0) {
             Sprite_RenderFrame(&nameD->sprites[i]);
         }
     }

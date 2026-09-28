@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[3];
-    /* 0xC0 */ s32              visibleFlags[3];
+    /* 0xC0 */ BOOL             visible[3];
     /* 0xCC */ MenuBadgeObject* menuBadge;
     /* 0xD0 */ u16              slot;
     /* 0xD2 */ s16              onesOffsetX;
@@ -32,8 +32,8 @@ static const SpriteAnimation MenuBadge_bdgLV_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgLV_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -47,7 +47,7 @@ static const SpriteAnimation MenuBadge_bdgLV_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const struct BadgeLevelDigits {
@@ -71,53 +71,53 @@ static void MenuBadge_bdgLV_Load(MenuBadge_bdgLV* bdgLV, Sprite* sprites, MenuBa
 
     bdgLV->onesOffsetX = -5;
     if (args->pinId == 0xFFFF) {
-        bdgLV->visibleFlags[0] = 0;
-        bdgLV->visibleFlags[1] = 0;
-        bdgLV->visibleFlags[2] = 0;
+        bdgLV->visible[0] = FALSE;
+        bdgLV->visible[1] = FALSE;
+        bdgLV->visible[2] = FALSE;
     } else {
         if (args->level >= args->maxLevel) {
-            bdgLV->visibleFlags[0] = 1;
-            bdgLV->visibleFlags[1] = 1;
-            bdgLV->visibleFlags[2] = 0;
-            tens                   = 0xA;
-            ones                   = 0;
-            bdgLV->onesOffsetX     = -5;
+            bdgLV->visible[0]  = TRUE;
+            bdgLV->visible[1]  = TRUE;
+            bdgLV->visible[2]  = FALSE;
+            tens               = 0xA;
+            ones               = 0;
+            bdgLV->onesOffsetX = -5;
         } else if (args->level < 10) {
-            bdgLV->visibleFlags[0] = 1;
-            bdgLV->visibleFlags[1] = 1;
-            bdgLV->visibleFlags[2] = 0;
-            tens                   = args->level;
-            ones                   = 0;
-            bdgLV->onesOffsetX     = -5;
+            bdgLV->visible[0]  = TRUE;
+            bdgLV->visible[1]  = TRUE;
+            bdgLV->visible[2]  = FALSE;
+            tens               = args->level;
+            ones               = 0;
+            bdgLV->onesOffsetX = -5;
         } else {
-            bdgLV->visibleFlags[0] = 1;
-            bdgLV->visibleFlags[1] = 1;
-            bdgLV->visibleFlags[2] = 1;
-            tens                   = args->level / 10;
-            ones                   = args->level - (tens * 10);
-            bdgLV->onesOffsetX     = -6;
+            bdgLV->visible[0]  = TRUE;
+            bdgLV->visible[1]  = TRUE;
+            bdgLV->visible[2]  = TRUE;
+            tens               = args->level / 10;
+            ones               = args->level - (tens * 10);
+            bdgLV->onesOffsetX = -6;
         }
 
         if (args->slot >= 6 && args->count == 0) {
-            bdgLV->visibleFlags[0] = 0;
-            bdgLV->visibleFlags[1] = 0;
-            bdgLV->visibleFlags[2] = 0;
+            bdgLV->visible[0] = FALSE;
+            bdgLV->visible[1] = FALSE;
+            bdgLV->visible[2] = FALSE;
         }
     }
 
-    anim.unk_2A = 11;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x - 7;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 13;
+    anim.animIndex = 11;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x - 7;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 13;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = tens + 12;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + bdgLV->onesOffsetX;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 13;
+    anim.animIndex = tens + 12;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x + bdgLV->onesOffsetX;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 13;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = ones + 12;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x - 2;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 13;
+    anim.animIndex = ones + 12;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x - 2;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 13;
     _Sprite_Load(&sprites[2], &anim);
 
     bdgLV->slot = args->slot;
@@ -146,7 +146,7 @@ static s32 MenuBadge_bdgLV_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadgeObject* menuBadge = bdgLV->menuBadge;
 
     for (s32 i = 0; i < 3; i++) {
-        if (bdgLV->visibleFlags[i] != 0 && menuBadge->slotVisible[bdgLV->slot] == 1) {
+        if (bdgLV->visible[i] != 0 && menuBadge->slotVisible[bdgLV->slot] == 1) {
             Sprite_RenderFrame(&bdgLV->sprites[i]);
         }
     }

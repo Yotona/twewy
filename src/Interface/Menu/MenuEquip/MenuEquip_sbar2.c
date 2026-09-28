@@ -26,8 +26,8 @@ static const SpriteAnimation MenuEquip_sbar2_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_sbar2_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuEquip_sbar2_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_sbar2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,19 +53,19 @@ static void MenuEquip_sbar2_Load(Sprite* sprites, MenuEquip_sbar2_Args* args) {
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x2E;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0xB0;
+    anim.animIndex = 0x2E;
+    anim.posX      = 0xF8;
+    anim.posY      = 0xB0;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x11;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0x78;
+    anim.animIndex = 0x11;
+    anim.posX      = 0xF8;
+    anim.posY      = 0x78;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x12;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0xB7;
+    anim.animIndex = 0x12;
+    anim.posX      = 0xF8;
+    anim.posY      = 0xB7;
     _Sprite_Load(&sprites[2], &anim);
 }
 

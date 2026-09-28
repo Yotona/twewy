@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[30];
-    /* 0x780 */ BOOL             shouldRender[30];
+    /* 0x780 */ BOOL             visible[30];
     /* 0x7F8 */ MenuEquipObject* owner;
 } MenuEquip_numNek; // Size: 0x7FC
 
@@ -25,8 +25,8 @@ static const SpriteAnimation MenuEquip_numNek_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_numNek_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation MenuEquip_numNek_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void MenuEquip_numNek_CalcDigits3(s16 value, s16* digits, BOOL* visible) {
@@ -115,7 +115,7 @@ static void MenuEquip_numNek_UpdateDigits(MenuEquip_numNek* numNek) {
     s32              frameBase;
     s16              i;
 
-    MenuEquip_numNek_CalcDigits4(owner->stats[0].health, digits, &numNek->shouldRender[0]);
+    MenuEquip_numNek_CalcDigits4(owner->stats[0].health, digits, &numNek->visible[0]);
     for (i = 0; i < 4; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i], digits[i] + 1, 6, 5);
     }
@@ -127,25 +127,25 @@ static void MenuEquip_numNek_UpdateDigits(MenuEquip_numNek* numNek) {
         signFrame = 0x22;
         frameBase = 0x18;
     }
-    numNek->shouldRender[4] = TRUE;
+    numNek->visible[4] = TRUE;
     MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[4], signFrame, 6, 5);
-    MenuEquip_numNek_CalcDigits4(owner->stats[0].healthBonus, digits, &numNek->shouldRender[5]);
+    MenuEquip_numNek_CalcDigits4(owner->stats[0].healthBonus, digits, &numNek->visible[5]);
     for (i = 0; i < 4; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 5], frameBase + digits[i], 6, 5);
     }
 
-    MenuEquip_numNek_CalcDigits3(0, digits, &numNek->shouldRender[9]);
+    MenuEquip_numNek_CalcDigits3(0, digits, &numNek->visible[9]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 9], digits[i] + 1, 6, 5);
-        numNek->shouldRender[i + 9] = FALSE;
+        numNek->visible[i + 9] = FALSE;
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].bravery, digits, &numNek->shouldRender[13]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].bravery, digits, &numNek->visible[13]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 13], digits[i] + 0x23, 6, 5);
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].attack, digits, &numNek->shouldRender[16]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].attack, digits, &numNek->visible[16]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 16], digits[i] + 1, 6, 5);
     }
@@ -157,14 +157,14 @@ static void MenuEquip_numNek_UpdateDigits(MenuEquip_numNek* numNek) {
         signFrame = 0x22;
         frameBase = 0x18;
     }
-    numNek->shouldRender[19] = TRUE;
+    numNek->visible[19] = TRUE;
     MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[19], signFrame, 6, 5);
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].attackBonus, digits, &numNek->shouldRender[20]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].attackBonus, digits, &numNek->visible[20]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 20], frameBase + digits[i], 6, 5);
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].defense, digits, &numNek->shouldRender[23]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].defense, digits, &numNek->visible[23]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 23], digits[i] + 1, 6, 5);
     }
@@ -176,9 +176,9 @@ static void MenuEquip_numNek_UpdateDigits(MenuEquip_numNek* numNek) {
         signFrame = 0x22;
         frameBase = 0x18;
     }
-    numNek->shouldRender[26] = TRUE;
+    numNek->visible[26] = TRUE;
     MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[26], signFrame, 6, 5);
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].defenseBonus, digits, &numNek->shouldRender[27]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].defenseBonus, digits, &numNek->visible[27]);
     for (i = 0; i < 3; i++) {
         MenuEquip_SetSpriteFrameFromPack(&numNek->sprites[i + 27], frameBase + digits[i], 6, 5);
     }
@@ -194,107 +194,107 @@ static void MenuEquip_numNek_Load(MenuEquip_numNek* numNek, Sprite* sprites, Men
 
     anim.dataType = args->dataType;
 
-    MenuEquip_numNek_CalcDigits4(owner->stats[0].health, digits, &numNek->shouldRender[0]);
+    MenuEquip_numNek_CalcDigits4(owner->stats[0].health, digits, &numNek->visible[0]);
     for (i = 0; i < 4; i++) {
-        anim.unk_2A = digits[i] + 1;
-        anim.unk_04 = i * 5 + 0x16;
-        anim.unk_06 = 0x4C;
+        anim.animIndex = digits[i] + 1;
+        anim.posX      = i * 5 + 0x16;
+        anim.posY      = 0x4C;
         _Sprite_Load(&sprites[i], &anim);
     }
 
     if (owner->stats[0].healthBonus >= 0) {
-        anim.unk_2A = 0x17;
-        frameBase   = 0xD;
+        anim.animIndex = 0x17;
+        frameBase      = 0xD;
     } else {
-        anim.unk_2A = 0x22;
-        frameBase   = 0x18;
+        anim.animIndex = 0x22;
+        frameBase      = 0x18;
     }
-    anim.unk_04             = 0x2E;
-    anim.unk_06             = 0x4C;
-    numNek->shouldRender[4] = TRUE;
+    anim.posX          = 0x2E;
+    anim.posY          = 0x4C;
+    numNek->visible[4] = TRUE;
     _Sprite_Load(&sprites[4], &anim);
-    MenuEquip_numNek_CalcDigits4(owner->stats[0].healthBonus, digits, &numNek->shouldRender[5]);
+    MenuEquip_numNek_CalcDigits4(owner->stats[0].healthBonus, digits, &numNek->visible[5]);
     for (i = 0; i < 4; i++) {
-        anim.unk_2A = frameBase + digits[i];
-        anim.unk_04 = i * 5 + 0x2E;
-        anim.unk_06 = 0x4C;
+        anim.animIndex = frameBase + digits[i];
+        anim.posX      = i * 5 + 0x2E;
+        anim.posY      = 0x4C;
         _Sprite_Load(&sprites[i + 5], &anim);
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].braveryBonus, digits, &numNek->shouldRender[9]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].braveryBonus, digits, &numNek->visible[9]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 1;
-        anim.unk_04 = i * 5 + 0x5D;
-        anim.unk_06 = 0x5A;
+        anim.animIndex = digits[i] + 1;
+        anim.posX      = i * 5 + 0x5D;
+        anim.posY      = 0x5A;
         _Sprite_Load(&sprites[i + 9], &anim);
-        numNek->shouldRender[i + 9] = FALSE;
+        numNek->visible[i + 9] = FALSE;
     }
 
-    anim.unk_2A              = 0x2D;
-    anim.unk_04              = 0x70;
-    anim.unk_06              = 0x5A;
-    numNek->shouldRender[12] = FALSE;
+    anim.animIndex      = 0x2D;
+    anim.posX           = 0x70;
+    anim.posY           = 0x5A;
+    numNek->visible[12] = FALSE;
     _Sprite_Load(&sprites[12], &anim);
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].bravery, digits, &numNek->shouldRender[13]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].bravery, digits, &numNek->visible[13]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 0x23;
-        anim.unk_04 = i * 5 + 0x70;
-        anim.unk_06 = 0x5A;
+        anim.animIndex = digits[i] + 0x23;
+        anim.posX      = i * 5 + 0x70;
+        anim.posY      = 0x5A;
         _Sprite_Load(&sprites[i + 13], &anim);
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].attack, digits, &numNek->shouldRender[16]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].attack, digits, &numNek->visible[16]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 1;
-        anim.unk_04 = i * 5 + 0x5D;
-        anim.unk_06 = 0x62;
+        anim.animIndex = digits[i] + 1;
+        anim.posX      = i * 5 + 0x5D;
+        anim.posY      = 0x62;
         _Sprite_Load(&sprites[i + 16], &anim);
     }
 
     if (owner->stats[0].attackBonus >= 0) {
-        anim.unk_2A = 0x17;
-        frameBase   = 0xD;
+        anim.animIndex = 0x17;
+        frameBase      = 0xD;
     } else {
-        anim.unk_2A = 0x22;
-        frameBase   = 0x18;
+        anim.animIndex = 0x22;
+        frameBase      = 0x18;
     }
-    anim.unk_04              = 0x70;
-    anim.unk_06              = 0x62;
-    numNek->shouldRender[19] = TRUE;
+    anim.posX           = 0x70;
+    anim.posY           = 0x62;
+    numNek->visible[19] = TRUE;
     _Sprite_Load(&sprites[19], &anim);
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].attackBonus, digits, &numNek->shouldRender[20]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].attackBonus, digits, &numNek->visible[20]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = frameBase + digits[i];
-        anim.unk_04 = i * 5 + 0x70;
-        anim.unk_06 = 0x62;
+        anim.animIndex = frameBase + digits[i];
+        anim.posX      = i * 5 + 0x70;
+        anim.posY      = 0x62;
         _Sprite_Load(&sprites[i + 20], &anim);
     }
 
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].defense, digits, &numNek->shouldRender[23]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].defense, digits, &numNek->visible[23]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 1;
-        anim.unk_04 = i * 5 + 0x5D;
-        anim.unk_06 = 0x6A;
+        anim.animIndex = digits[i] + 1;
+        anim.posX      = i * 5 + 0x5D;
+        anim.posY      = 0x6A;
         _Sprite_Load(&sprites[i + 23], &anim);
     }
 
     if (owner->stats[0].defenseBonus >= 0) {
-        anim.unk_2A = 0x17;
-        frameBase   = 0xD;
+        anim.animIndex = 0x17;
+        frameBase      = 0xD;
     } else {
-        anim.unk_2A = 0x22;
-        frameBase   = 0x18;
+        anim.animIndex = 0x22;
+        frameBase      = 0x18;
     }
-    anim.unk_04              = 0x70;
-    anim.unk_06              = 0x6A;
-    numNek->shouldRender[26] = TRUE;
+    anim.posX           = 0x70;
+    anim.posY           = 0x6A;
+    numNek->visible[26] = TRUE;
     _Sprite_Load(&sprites[26], &anim);
-    MenuEquip_numNek_CalcDigits3(owner->stats[0].defenseBonus, digits, &numNek->shouldRender[27]);
+    MenuEquip_numNek_CalcDigits3(owner->stats[0].defenseBonus, digits, &numNek->visible[27]);
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = frameBase + digits[i];
-        anim.unk_04 = i * 5 + 0x70;
-        anim.unk_06 = 0x6A;
+        anim.animIndex = frameBase + digits[i];
+        anim.posX      = i * 5 + 0x70;
+        anim.posY      = 0x6A;
         _Sprite_Load(&sprites[i + 27], &anim);
     }
 }
@@ -327,7 +327,7 @@ static s32 MenuEquip_numNek_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_numNek* numNek = task->data;
 
     for (s32 i = 0; i < 30; i++) {
-        if (numNek->shouldRender[i] != 0) {
+        if (numNek->visible[i] != 0) {
             Sprite_RenderFrame(&numNek->sprites[i]);
         }
     }

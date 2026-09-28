@@ -41,8 +41,8 @@ const SpriteAnimation data_ov030_020e71d0 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0,
-    .unk_06            = 0,
+    .posX              = 0,
+    .posY              = 0,
     .frameInfoCallback = Fld_TalkEventStringPlate_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -56,7 +56,7 @@ const SpriteAnimation data_ov030_020e71d0 = {
     .unk_24            = 0,
     .unk_26            = 3,
     .unk_28            = 4,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Fld_TalkEventStringPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -67,13 +67,13 @@ void Fld_TalkEventStringPlate_Load(Fld_TalkEventStringPlate* plate, Fld_TalkEven
                                    void* arg4) {
     SpriteAnimation anim = data_ov030_020e71d0;
     anim.dataType        = args->unk_00;
-    anim.unk_04          = arg2;
-    anim.unk_06          = arg3;
+    anim.posX            = arg2;
+    anim.posY            = arg3;
 
     if (args->unk_08 != 4) {
-        anim.unk_2A += (s16)args->unk_08;
+        anim.animIndex += (s16)args->unk_08;
     } else {
-        anim.unk_2A    = 1;
+        anim.animIndex = 1;
         anim.packIndex = 13;
         anim.bits_0_1  = 0;
     }

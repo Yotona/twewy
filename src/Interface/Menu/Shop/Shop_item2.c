@@ -5,7 +5,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprites[3];
-    /* 0xC0 */ s32         shouldRender[3];
+    /* 0xC0 */ BOOL        visible[3];
     /* 0xCC */ ShopObject* shop;
     /* 0xD0 */ s32         affineScaleX;
     /* 0xD4 */ s32         affineScaleY;
@@ -47,8 +47,8 @@ static const SpriteAnimation data_ov043_020ca690 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_item2_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -62,7 +62,7 @@ static const SpriteAnimation data_ov043_020ca690 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_item2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -116,43 +116,43 @@ void Shop_item2_Load(Shop_item2* item, Sprite* sprites, Shop_item2_Args* args) {
     anim.binIden   = &data_ov043_020ca1b0;
     anim.unk_18    = 0;
     anim.packIndex = 1;
-    anim.unk_2A    = 66;
+    anim.animIndex = 66;
     anim.unk_22    = 3;
-    anim.unk_04    = 0x80;
-    anim.unk_06    = 0x40;
+    anim.posX      = 0x80;
+    anim.posY      = 0x40;
     anim.unk_02.raw |= 2;
 
     _Sprite_Load(&sprites[0], &anim);
 
     if (args->category == ITEM_CATEGORY_PIN) {
-        item->shouldRender[0] = FALSE;
-        item->shouldRender[1] = TRUE;
-        item->shouldRender[2] = TRUE;
+        item->visible[0] = FALSE;
+        item->visible[1] = TRUE;
+        item->visible[2] = TRUE;
 
         anim.binIden   = &data_ov043_020ca258;
         anim.unk_18    = 2;
         anim.packIndex = 2;
-        anim.unk_2A    = 1;
+        anim.animIndex = 1;
         anim.unk_22    = 1;
         anim.unk_02.raw |= 2;
-        anim.unk_04 = 0x7C;
-        anim.unk_06 = 0x3C;
+        anim.posX = 0x7C;
+        anim.posY = 0x3C;
         _Sprite_Load(&sprites[1], &anim);
 
         func_ov043_020b6e80(item, &sprites[1], args, 11, args->iconPackIndex + 1);
     } else {
-        item->shouldRender[0] = FALSE;
-        item->shouldRender[1] = TRUE;
-        item->shouldRender[2] = FALSE;
+        item->visible[0] = FALSE;
+        item->visible[1] = TRUE;
+        item->visible[2] = FALSE;
 
         anim.binIden   = &data_ov043_020ca258;
         anim.unk_18    = 2;
         anim.packIndex = 2;
-        anim.unk_2A    = 1;
+        anim.animIndex = 1;
         anim.unk_22    = 1;
         anim.unk_02.raw |= 2;
-        anim.unk_04 = 0x80;
-        anim.unk_06 = 0x40;
+        anim.posX = 0x80;
+        anim.posY = 0x40;
         _Sprite_Load(&sprites[1], &anim);
 
         func_ov043_020b6e80(item, &sprites[1], args, 12, args->iconPackIndex + 1);
@@ -161,11 +161,11 @@ void Shop_item2_Load(Shop_item2* item, Sprite* sprites, Shop_item2_Args* args) {
     anim.binIden   = &data_ov043_020ca1b0;
     anim.unk_18    = 0;
     anim.packIndex = 1;
-    anim.unk_2A    = 0x46;
+    anim.animIndex = 0x46;
     anim.unk_22    = 4;
     anim.unk_02.raw |= 2;
-    anim.unk_04 = 0x80;
-    anim.unk_06 = 0x40;
+    anim.posX = 0x80;
+    anim.posY = 0x40;
     _Sprite_Load(&sprites[2], &anim);
 
     item->affineScaleX = 0x2000;
@@ -197,7 +197,7 @@ static s32 Shop_item2_Update(TaskPool* pool, Task* task, void* args) {
                     if (item->arg_0E != 1) {
                         item->animState = 1;
                     } else {
-                        item->shouldRender[0] = TRUE;
+                        item->visible[0] = TRUE;
                         func_ov043_020af42c(&item->sprites[0], 0x41);
                         item->animState = 2;
                     }
@@ -235,7 +235,7 @@ static s32 Shop_item2_Render(TaskPool* pool, Task* task, void* args) {
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~1) | 1;
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~0x3E0) | (affine >> 0x16);
 
-        if (item->shouldRender[i] != 0) {
+        if (item->visible[i] != 0) {
             Sprite_RenderFrame(sprite);
         }
     }

@@ -24,8 +24,8 @@ static const SpriteAnimation Depart_cur_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Depart_cur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -39,7 +39,7 @@ static const SpriteAnimation Depart_cur_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_Depart_cur = {"Tsk_Depart_cur", Depart_cur_RunTask, sizeof(DepartCur)};
@@ -56,10 +56,10 @@ static void Depart_cur_Load(DepartCur* cur, Sprite* sprite, DepartCurArgs* args)
     cur->unk_40 = 1;
     cur->unk_48 = depart->unk_04;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 3;
-    anim.unk_04   = depart->unk_04 * 10 + data_ov043_020ccd00[depart->unk_0C].x;
-    anim.unk_06   = depart->unk_04 * 37 + data_ov043_020ccd00[depart->unk_0C].y;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 3;
+    anim.posX      = depart->unk_04 * 10 + data_ov043_020ccd00[depart->unk_0C].x;
+    anim.posY      = depart->unk_04 * 37 + data_ov043_020ccd00[depart->unk_0C].y;
 
     _Sprite_Load(sprite, &anim);
 }

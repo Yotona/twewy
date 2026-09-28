@@ -469,8 +469,8 @@ const SpriteAnimation data_ov043_020cb4d8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x400,
-    .unk_04            = 80,
-    .unk_06            = 80,
+    .posX              = 80,
+    .posY              = 80,
     .frameInfoCallback = func_ov043_020c70c8,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -484,7 +484,7 @@ const SpriteAnimation data_ov043_020cb4d8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg, s32 mode) {
@@ -494,15 +494,15 @@ SpriteFrameInfo* func_ov043_020c70c8(Sprite* sprite, s32 arg, s32 mode) {
 void NrepMenu_Load(NRepMenu* arg0, NRepMenuTaskArgs* args) {
     SpriteAnimation anim = data_ov043_020cb4d8;
 
-    anim.dataType = args->unk_0;
-    anim.unk_2A   = 3;
-    anim.unk_04   = 218;
-    anim.unk_06   = 12;
+    anim.dataType  = args->unk_0;
+    anim.animIndex = 3;
+    anim.posX      = 218;
+    anim.posY      = 12;
     _Sprite_Load(&arg0->sprites[0], &anim);
 
-    anim.unk_2A = 5;
-    anim.unk_04 = 243;
-    anim.unk_06 = 12;
+    anim.animIndex = 5;
+    anim.posX      = 243;
+    anim.posY      = 12;
     _Sprite_Load(&arg0->sprites[1], &anim);
 }
 
@@ -715,8 +715,8 @@ const SpriteAnimation data_ov043_020cb540 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 80,
-    .unk_06            = 80,
+    .posX              = 80,
+    .posY              = 80,
     .frameInfoCallback = NRepCursor_GetAnimInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -730,7 +730,7 @@ const SpriteAnimation data_ov043_020cb540 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* NRepCursor_GetAnimInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -741,8 +741,8 @@ void NRepCursor_Load(NRepCursor* cursor, Sprite* sprite, NRepCursorTaskArgs* arg
     SpriteAnimation anim = data_ov043_020cb540;
 
     anim.dataType = args->unk_0;
-    anim.unk_04   = ((args->unk_8 % 8) * 26) + 40;
-    anim.unk_06   = ((args->unk_8 / 8) * 26) + 40;
+    anim.posX     = ((args->unk_8 % 8) * 26) + 40;
+    anim.posY     = ((args->unk_8 / 8) * 26) + 40;
 
     if (args->unk_8 < 16) {
         anim.bits_7_9 = 5;

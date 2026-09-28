@@ -23,8 +23,8 @@ static const SpriteAnimation data_ov043_020ca3e4 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 231,
-    .unk_06            = 9,
+    .posX              = 231,
+    .posY              = 9,
     .frameInfoCallback = Shop_exit_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -38,7 +38,7 @@ static const SpriteAnimation data_ov043_020ca3e4 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_Shop_exit = {"Tsk_Shop_exit", Shop_exit_RunTask, sizeof(Shop_exit)};
@@ -50,7 +50,7 @@ static SpriteFrameInfo* Shop_exit_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode
 static void Shop_exit_Load(Shop_exit* exit, Sprite* sprite, Shop_exit_Args* exitArgs) {
     SpriteAnimation anim = data_ov043_020ca3e4;
     anim.dataType        = exitArgs->dataType;
-    anim.unk_2A          = 41;
+    anim.animIndex       = 41;
     _Sprite_Load(sprite, &anim);
 }
 

@@ -24,8 +24,8 @@ static const SpriteAnimation Result_flash_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_flash_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -39,7 +39,7 @@ static const SpriteAnimation Result_flash_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_flash_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,9 +53,9 @@ static void Result_flash_Load(Result_flash* flash, Sprite* sprite, Result_flash_
 
     anim.dataType      = args->dataType;
     anim.bits_7_9      = 6;
-    anim.unk_04        = posX[args->index];
-    anim.unk_06        = 0xA5;
-    anim.unk_2A        = 0x36;
+    anim.posX          = posX[args->index];
+    anim.posY          = 0xA5;
+    anim.animIndex     = 0x36;
     flash->visible     = TRUE;
     owner->flashLevel  = 1;
     anim.unk_02.unk_02 = 1;

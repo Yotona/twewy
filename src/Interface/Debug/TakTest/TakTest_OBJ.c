@@ -26,8 +26,8 @@ const SpriteAnimation data_ov043_020c78dc = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0xC0,
-    .unk_06            = 0,
+    .posX              = 0xC0,
+    .posY              = 0,
     .frameInfoCallback = TakTest_OBJ_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ const SpriteAnimation data_ov043_020c78dc = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 const TaskHandle Tsk_TakTest_OBJ = {"Tsk_TakTest_OBJ", TakTest_OBJ_RunTask, sizeof(TakTest_OBJ)};
@@ -97,5 +97,5 @@ s32 TakTest_OBJ_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 s32 TakTest_OBJ_CreateTask(TaskPool* pool, s32 arg1) {
     s32 sp8 = arg1;
-    EasyTask_CreateTask(pool, &Tsk_TakTest_OBJ, 0, 0, 0, &sp8);
+    EasyTask_CreateTask(pool, &Tsk_TakTest_OBJ, NULL, 0, NULL, &sp8);
 }

@@ -35,8 +35,8 @@ static const SpriteAnimation Shop_windowU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 80,
-    .unk_06            = 92,
+    .posX              = 80,
+    .posY              = 92,
     .frameInfoCallback = Shop_windowU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -50,7 +50,7 @@ static const SpriteAnimation Shop_windowU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_windowU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -81,7 +81,7 @@ static void Shop_windowU_Load(Shop_windowU* window, Sprite* sprite, Shop_windowU
     SpriteAnimation anim = Shop_windowU_Anim;
 
     anim.dataType  = windowArgs->dataType;
-    anim.unk_2A    = 4;
+    anim.animIndex = 4;
     anim.packIndex = 10;
     anim.unk_20    = 1;
     anim.unk_1C    = 2;
@@ -89,8 +89,8 @@ static void Shop_windowU_Load(Shop_windowU* window, Sprite* sprite, Shop_windowU
     anim.unk_28    = 4;
     _Sprite_Load(&sprite[0], &anim);
 
-    anim.unk_04 += 3;
-    anim.unk_06 += 3;
+    anim.posX += 3;
+    anim.posY += 3;
     _Sprite_Load(&sprite[1], &anim);
 
     Sprite_UpdateAndCheck(sprite);

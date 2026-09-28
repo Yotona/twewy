@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ BOOL        shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
     /* 0x48 */ u16         unk_48;
     /* 0x4A */ u16         unk_4A;
@@ -28,8 +28,8 @@ static const SpriteAnimation Shop_itemCur_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,25 +43,25 @@ static const SpriteAnimation Shop_itemCur_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_itemCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3C0000);
 }
 
-static void Shop_itemCur_Load(Shop_itemCur* arg0, Sprite* arg1, Shop_itemCur_Args* arg2) {
+static void Shop_itemCur_Load(Shop_itemCur* taskData, Sprite* sprites, Shop_itemCur_Args* args) {
     SpriteAnimation anim = Shop_itemCur_Anim;
 
-    arg0->shouldRender = TRUE;
-    arg0->unk_48       = 0;
+    taskData->visible = TRUE;
+    taskData->unk_48  = 0;
 
-    anim.dataType = arg2->dataType;
-    anim.unk_2A   = 0x12;
-    anim.unk_04   = 0x16;
-    anim.unk_06   = 0x27;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 0x12;
+    anim.posX      = 0x16;
+    anim.posY      = 0x27;
 
-    _Sprite_Load(arg1, &anim);
+    _Sprite_Load(sprites, &anim);
 }
 
 static s32 Shop_itemCur_Init(TaskPool* pool, Task* task, void* args) {
@@ -81,11 +81,11 @@ static s32 Shop_itemCur_Update(TaskPool* pool, Task* task, void* args) {
     if (cursor >= start && cursor < start + 0xC) {
         u16 index = cursor - start;
 
-        itemCur->sprite.posX  = ((index % 6) * 0x21) + 0x16;
-        itemCur->sprite.posY  = ((index / 6) * 0x29) + 0x27;
-        itemCur->shouldRender = TRUE;
+        itemCur->sprite.posX = ((index % 6) * 0x21) + 0x16;
+        itemCur->sprite.posY = ((index / 6) * 0x29) + 0x27;
+        itemCur->visible     = TRUE;
     } else {
-        itemCur->shouldRender = FALSE;
+        itemCur->visible = FALSE;
     }
 
     Sprite_Update(&itemCur->sprite);
@@ -95,7 +95,7 @@ static s32 Shop_itemCur_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_itemCur_Render(TaskPool* pool, Task* task, void* args) {
     Shop_itemCur* itemCur = task->data;
 
-    if (itemCur->shouldRender) {
+    if (itemCur->visible) {
         Sprite_RenderFrame(&itemCur->sprite);
     }
     return 1;

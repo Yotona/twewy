@@ -6,13 +6,13 @@
 
 typedef struct {
     /* 0x00 */ Sprite          sprites[5];
-    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
     /* 0x158 */ s16            selectedIndex;
     /* 0x15A */ u16            state;
     /* 0x15C */ s16            delay;
     /* 0x15E */ s16            lastCursorY;
-    /* 0x160 */ s32            lastVisible;
+    /* 0x160 */ BOOL           lastVisible;
 } MenuTop_selPtrAI; // Size: 0x164
 
 typedef struct {
@@ -35,8 +35,8 @@ static const SpriteAnimation MenuTop_selPtrAI_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_selPtrAI_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -50,7 +50,7 @@ static const SpriteAnimation MenuTop_selPtrAI_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static s16 MenuTop_selPtrAI_GetRowY(u16 row) {
@@ -73,36 +73,36 @@ static void MenuTop_selPtrAI_Load(MenuTop_selPtrAI* taskData, Sprite* sprites, M
     anim.dataType = args->dataType;
 
     for (s32 i = 0; i < 5; i++) {
-        taskData->visibleFlags[i] = 1;
+        taskData->visible[i] = TRUE;
     }
 
-    taskData->visibleFlags[0] = 0;
-    taskData->lastVisible     = 0;
+    taskData->visible[0]  = FALSE;
+    taskData->lastVisible = FALSE;
 
-    anim.unk_2A = 0x3C;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = MenuTop_selPtrAI_GetRowY(args->selectedIndex);
+    anim.animIndex = 0x3C;
+    anim.posX      = 0xDA;
+    anim.posY      = MenuTop_selPtrAI_GetRowY(args->selectedIndex);
     _Sprite_Load(&sprites[0], &anim);
-    taskData->lastCursorY = anim.unk_06;
+    taskData->lastCursorY = anim.posY;
 
-    anim.unk_2A = 0x34;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = MenuTop_selPtrAI_GetRowY(0);
+    anim.animIndex = 0x34;
+    anim.posX      = 0xDA;
+    anim.posY      = MenuTop_selPtrAI_GetRowY(0);
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x37;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = MenuTop_selPtrAI_GetRowY(1);
+    anim.animIndex = 0x37;
+    anim.posX      = 0xDA;
+    anim.posY      = MenuTop_selPtrAI_GetRowY(1);
     _Sprite_Load(&sprites[2], &anim);
 
-    anim.unk_2A = 0x36;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = MenuTop_selPtrAI_GetRowY(2);
+    anim.animIndex = 0x36;
+    anim.posX      = 0xDA;
+    anim.posY      = MenuTop_selPtrAI_GetRowY(2);
     _Sprite_Load(&sprites[3], &anim);
 
-    anim.unk_2A = 0x35;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = MenuTop_selPtrAI_GetRowY(3);
+    anim.animIndex = 0x35;
+    anim.posX      = 0xDA;
+    anim.posY      = MenuTop_selPtrAI_GetRowY(3);
     _Sprite_Load(&sprites[4], &anim);
 }
 
@@ -140,9 +140,9 @@ static s32 MenuTop_selPtrAI_Update(TaskPool* pool, Task* task, void* args) {
                 taskData->selectedIndex = MenuTop_GetPartnerAIRowAtPoint(coord.x, coord.y);
 
                 if (taskData->selectedIndex == -1) {
-                    taskData->visibleFlags[0] = 0;
+                    taskData->visible[0] = FALSE;
                 } else {
-                    taskData->visibleFlags[0] = 1;
+                    taskData->visible[0]      = TRUE;
                     taskData->sprites[0].posY = MenuTop_selPtrAI_GetRowY(taskData->selectedIndex);
                 }
             } else {
@@ -175,12 +175,12 @@ static s32 MenuTop_selPtrAI_Update(TaskPool* pool, Task* task, void* args) {
             return 0;
     }
 
-    if (taskData->lastCursorY != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visibleFlags[0] == 1)) {
+    if (taskData->lastCursorY != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visible[0] == 1)) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_SCROLL);
     }
 
     taskData->lastCursorY = taskData->sprites[0].posY;
-    taskData->lastVisible = taskData->visibleFlags[0];
+    taskData->lastVisible = taskData->visible[0];
 
     for (s32 i = 0; i < 5; i++) {
         Sprite_Update(&taskData->sprites[i]);
@@ -192,7 +192,7 @@ static s32 MenuTop_selPtrAI_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_selPtrAI* taskData = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (taskData->visibleFlags[i] != 0) {
+        if (taskData->visible[i] != 0) {
             Sprite_RenderFrame(&taskData->sprites[i]);
         }
     }

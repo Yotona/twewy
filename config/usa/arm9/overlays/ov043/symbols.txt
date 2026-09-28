@@ -131,13 +131,13 @@ MenuTop_lvGauge_CreateTask kind:function(arm,size=0x34) addr:0x02086510
 // src/Interface/Menu/Top/MenuTop_luckNum.c
 /////////////////////////////////////////////////////////////
 MenuTop_luckNum_Refresh kind:function(arm,size=0x160) addr:0x02086544
-MenuTop_luckNum_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020866a4
+MenuTop_luckNum_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020866a4 local
 MenuTop_luckNum_Load kind:function(arm,size=0x1c4) addr:0x02086740
-MenuTop_luckNum_Init kind:function(arm,size=0x38) addr:0x02086904
-MenuTop_luckNum_Update kind:function(arm,size=0x68) addr:0x0208693c
-MenuTop_luckNum_Render kind:function(arm,size=0x40) addr:0x020869a4
-MenuTop_luckNum_Destroy kind:function(arm,size=0x2c) addr:0x020869e4
-MenuTop_luckNum_RunTask kind:function(arm,size=0x48) addr:0x02086a10
+MenuTop_luckNum_Init kind:function(arm,size=0x38) addr:0x02086904 local
+MenuTop_luckNum_Update kind:function(arm,size=0x68) addr:0x0208693c local
+MenuTop_luckNum_Render kind:function(arm,size=0x40) addr:0x020869a4 local
+MenuTop_luckNum_Destroy kind:function(arm,size=0x2c) addr:0x020869e4 local
+MenuTop_luckNum_RunTask kind:function(arm,size=0x48) addr:0x02086a10 local
 MenuTop_luckNum_CreateTask kind:function(arm,size=0x3c) addr:0x02086a58
 
 /////////////////////////////////////////////////////////////
@@ -179,26 +179,26 @@ MenuTop_nameU_CreateTask kind:function(arm,size=0x34) addr:0x02087228
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_rankNumU.c
 /////////////////////////////////////////////////////////////
-MenuTop_rankNumU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208725c
-MenuTop_rankNumU_Load kind:function(arm,size=0x17c) addr:0x020872f8
-MenuTop_rankNumU_Init kind:function(arm,size=0x20) addr:0x02087474
-MenuTop_rankNumU_Update kind:function(arm,size=0x34) addr:0x02087494
-MenuTop_rankNumU_Render kind:function(arm,size=0x48) addr:0x020874c8
-MenuTop_rankNumU_Destroy kind:function(arm,size=0x34) addr:0x02087510
-MenuTop_rankNumU_RunTask kind:function(arm,size=0x48) addr:0x02087544
+MenuTop_rankNumU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208725c local
+MenuTop_rankNumU_Load kind:function(arm,size=0x17c) addr:0x020872f8 local
+MenuTop_rankNumU_Init kind:function(arm,size=0x20) addr:0x02087474 local
+MenuTop_rankNumU_Update kind:function(arm,size=0x34) addr:0x02087494 local
+MenuTop_rankNumU_Render kind:function(arm,size=0x48) addr:0x020874c8 local
+MenuTop_rankNumU_Destroy kind:function(arm,size=0x34) addr:0x02087510 local
+MenuTop_rankNumU_RunTask kind:function(arm,size=0x48) addr:0x02087544 local
 MenuTop_rankNumU_CreateTask kind:function(arm,size=0x40) addr:0x0208758c
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numLV.c
 /////////////////////////////////////////////////////////////
 MenuTop_numLV_Refresh kind:function(arm,size=0xd0) addr:0x020875cc
-MenuTop_numLV_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208769c
+MenuTop_numLV_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208769c local
 MenuTop_numLV_Load kind:function(arm,size=0x254) addr:0x02087738
-MenuTop_numLV_Init kind:function(arm,size=0x28) addr:0x0208798c
-MenuTop_numLV_Update kind:function(arm,size=0x64) addr:0x020879b4
-MenuTop_numLV_Render kind:function(arm,size=0x40) addr:0x02087a18
-MenuTop_numLV_Destroy kind:function(arm,size=0x2c) addr:0x02087a58
-MenuTop_numLV_RunTask kind:function(arm,size=0x48) addr:0x02087a84
+MenuTop_numLV_Init kind:function(arm,size=0x28) addr:0x0208798c local
+MenuTop_numLV_Update kind:function(arm,size=0x64) addr:0x020879b4 local
+MenuTop_numLV_Render kind:function(arm,size=0x40) addr:0x02087a18 local
+MenuTop_numLV_Destroy kind:function(arm,size=0x2c) addr:0x02087a58 local
+MenuTop_numLV_RunTask kind:function(arm,size=0x48) addr:0x02087a84 local
 MenuTop_numLV_CreateTask kind:function(arm,size=0x44) addr:0x02087acc
 
 /////////////////////////////////////////////////////////////
@@ -217,13 +217,13 @@ MenuTop_numExpNext_CreateTask kind:function(arm,size=0x3c) addr:0x02087e68
 // src/Interface/Menu/Top/MenuTop_numHP.c
 /////////////////////////////////////////////////////////////
 MenuTop_numHP_Refresh kind:function(arm,size=0x184) addr:0x02087ea4
-MenuTop_numHP_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088028
+MenuTop_numHP_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02088028 local
 MenuTop_numHP_Load kind:function(arm,size=0x1ec) addr:0x020880c4
-MenuTop_numHP_Init kind:function(arm,size=0x2c) addr:0x020882b0
-MenuTop_numHP_Update kind:function(arm,size=0x34) addr:0x020882dc
-MenuTop_numHP_Render kind:function(arm,size=0x40) addr:0x02088310
-MenuTop_numHP_Destroy kind:function(arm,size=0x2c) addr:0x02088350
-MenuTop_numHP_RunTask kind:function(arm,size=0x48) addr:0x0208837c
+MenuTop_numHP_Init kind:function(arm,size=0x2c) addr:0x020882b0 local
+MenuTop_numHP_Update kind:function(arm,size=0x34) addr:0x020882dc local
+MenuTop_numHP_Render kind:function(arm,size=0x40) addr:0x02088310 local
+MenuTop_numHP_Destroy kind:function(arm,size=0x2c) addr:0x02088350 local
+MenuTop_numHP_RunTask kind:function(arm,size=0x48) addr:0x0208837c local
 MenuTop_numHP_CreateTask kind:function(arm,size=0x3c) addr:0x020883c4
 
 /////////////////////////////////////////////////////////////
@@ -667,7 +667,7 @@ func_ov043_020949e8 kind:function(arm,size=0x338) addr:0x020949e8 local
 func_ov043_02094d20 kind:function(arm,size=0x2c) addr:0x02094d20 local
 func_ov043_02094d4c kind:function(arm,size=0x2c) addr:0x02094d4c local
 func_ov043_02094d78 kind:function(arm,size=0x48) addr:0x02094d78 local
-func_ov043_02094dc0 kind:function(arm,size=0x34) addr:0x02094dc0
+MenuBadge_sbar_CreateTask kind:function(arm,size=0x34) addr:0x02094dc0
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_tab.c
@@ -1662,7 +1662,7 @@ func_ov043_020b3138 kind:function(arm,size=0x3c) addr:0x020b3138
 func_ov043_020b3174 kind:function(arm,size=0x48) addr:0x020b3174
 func_ov043_020b31bc kind:function(arm,size=0x34) addr:0x020b31bc
 func_ov043_020b31f0 kind:function(arm,size=0x48) addr:0x020b31f0
-func_ov043_020b3238 kind:function(arm,size=0x34) addr:0x020b3238
+Shop_nameD_CreateTask kind:function(arm,size=0x34) addr:0x020b3238
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_exit.c
@@ -1688,7 +1688,7 @@ func_ov043_020b38ac kind:function(arm,size=0x34) addr:0x020b38ac
 func_ov043_020b38e0 kind:function(arm,size=0x40) addr:0x020b38e0
 func_ov043_020b3920 kind:function(arm,size=0x2c) addr:0x020b3920
 func_ov043_020b394c kind:function(arm,size=0x48) addr:0x020b394c
-func_ov043_020b3994 kind:function(arm,size=0x3c) addr:0x020b3994
+Shop_numMoneyNek_CreateTask kind:function(arm,size=0x3c) addr:0x020b3994
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_numMoneyBdg.c
@@ -1740,7 +1740,7 @@ func_ov043_020b4984 kind:function(arm,size=0xc4) addr:0x020b4984
 func_ov043_020b4a48 kind:function(arm,size=0x20) addr:0x020b4a48
 func_ov043_020b4a68 kind:function(arm,size=0x14) addr:0x020b4a68
 func_ov043_020b4a7c kind:function(arm,size=0x48) addr:0x020b4a7c
-func_ov043_020b4ac4 kind:function(arm,size=0x34) addr:0x020b4ac4
+Shop_check_CreateTask kind:function(arm,size=0x34) addr:0x020b4ac4
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_tab.c
@@ -1754,7 +1754,7 @@ func_ov043_020b4e70 kind:function(arm,size=0x240) addr:0x020b4e70
 func_ov043_020b50b0 kind:function(arm,size=0x40) addr:0x020b50b0
 func_ov043_020b50f0 kind:function(arm,size=0x2c) addr:0x020b50f0
 func_ov043_020b511c kind:function(arm,size=0x48) addr:0x020b511c
-func_ov043_020b5164 kind:function(arm,size=0x34) addr:0x020b5164
+Shop_tab_CreateTask kind:function(arm,size=0x34) addr:0x020b5164
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_textScr.c
@@ -1774,7 +1774,7 @@ func_ov043_020b688c kind:function(arm,size=0x5c) addr:0x020b688c
 func_ov043_020b68e8 kind:function(arm,size=0x8) addr:0x020b68e8
 func_ov043_020b68f0 kind:function(arm,size=0x30) addr:0x020b68f0
 func_ov043_020b6920 kind:function(arm,size=0x48) addr:0x020b6920
-func_ov043_020b6968 kind:function(arm,size=0x34) addr:0x020b6968
+Shop_textScr_CreateTask kind:function(arm,size=0x34) addr:0x020b6968
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_item.c
@@ -2113,7 +2113,7 @@ func_ov043_020bd7e4 kind:function(arm,size=0xe8) addr:0x020bd7e4
 func_ov043_020bd8cc kind:function(arm,size=0x1c) addr:0x020bd8cc
 func_ov043_020bd8e8 kind:function(arm,size=0x14) addr:0x020bd8e8
 func_ov043_020bd8fc kind:function(arm,size=0x3c) addr:0x020bd8fc
-func_ov043_020bd938 kind:function(arm,size=0x4c) addr:0x020bd938
+Depart_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x020bd938
 func_ov043_020bd984 kind:function(arm,size=0x2c) addr:0x020bd984
 func_ov043_020bd9b0 kind:function(arm,size=0x2c) addr:0x020bd9b0
 func_ov043_020bd9dc kind:function(arm,size=0x2c) addr:0x020bd9dc
@@ -2124,13 +2124,13 @@ func_ov043_020bdb2c kind:function(arm,size=0x140) addr:0x020bdb2c
 func_ov043_020bdc6c kind:function(arm,size=0x4) addr:0x020bdc6c
 func_ov043_020bdc70 kind:function(arm,size=0x60) addr:0x020bdc70
 func_ov043_020bdcd0 kind:function(arm,size=0xcc) addr:0x020bdcd0
-func_ov043_020bdd9c kind:function(arm,size=0x200) addr:0x020bdd9c
-func_ov043_020bdf9c kind:function(arm,size=0x20c) addr:0x020bdf9c
-func_ov043_020be1a8 kind:function(arm,size=0x88) addr:0x020be1a8
-func_ov043_020be230 kind:function(arm,size=0x24) addr:0x020be230
-func_ov043_020be254 kind:function(arm,size=0xd4) addr:0x020be254
-func_ov043_020be328 kind:function(arm,size=0x4) addr:0x020be328
-func_ov043_020be32c kind:function(arm,size=0x3c) addr:0x020be32c
+Depart_LoadBgResource kind:function(arm,size=0x200) addr:0x020bdd9c
+Depart_LoadBgResourcePacked kind:function(arm,size=0x20c) addr:0x020bdf9c
+Depart_ReleaseBgResource kind:function(arm,size=0x88) addr:0x020be1a8
+Depart_ClearBgResource kind:function(arm,size=0x24) addr:0x020be230
+Depart_LoadBackgrounds kind:function(arm,size=0xd4) addr:0x020be254
+Depart_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x020be328
+Depart_ReleaseBackgrounds kind:function(arm,size=0x3c) addr:0x020be32c
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_exit.c
@@ -2511,9 +2511,9 @@ MenuTop_lvGauge_Anim kind:data(any) addr:0x020c7b88 local
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckNum.c
 /////////////////////////////////////////////////////////////
-Tsk_MenuTop_luckNum kind:data(any) addr:0x020c7bb4
-data_ov043_020c7bc0 kind:data(any) addr:0x020c7bc0
-MenuTop_luckNum_Anim kind:data(any) addr:0x020c7bd0
+Tsk_MenuTop_luckNum kind:data(any) addr:0x020c7bb4 local
+@1576 kind:data(any) addr:0x020c7bc0 local
+MenuTop_luckNum_Anim kind:data(any) addr:0x020c7bd0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckStar.c
@@ -2543,15 +2543,15 @@ MenuTop_nameU_Anim kind:data(any) addr:0x020c7cf8 local
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_rankNumU.c
 /////////////////////////////////////////////////////////////
-Tsk_MenuTop_rankNumU kind:data(any) addr:0x020c7d24
-data_ov043_020c7d30 kind:data(any) addr:0x020c7d30
-MenuTop_rankNumU_Positions kind:data(any) addr:0x020c7d40
-MenuTop_rankNumU_Anim kind:data(any) addr:0x020c7d50
+Tsk_MenuTop_rankNumU kind:data(any) addr:0x020c7d24 local
+@1526 kind:data(any) addr:0x020c7d30 local
+@1462 kind:data(any) addr:0x020c7d40 local
+MenuTop_rankNumU_Anim kind:data(any) addr:0x020c7d50 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numLV.c
 /////////////////////////////////////////////////////////////
-MenuTop_numLV_DigitX kind:data(any) addr:0x020c7d7c local
+@1498 kind:data(any) addr:0x020c7d7c local
 Tsk_MenuTop_numLV kind:data(any) addr:0x020c7d88 local
 @1411 kind:data(any) addr:0x020c7d94 local
 MenuTop_numLV_Anim kind:data(any) addr:0x020c7da4 local
@@ -2566,16 +2566,16 @@ MenuTop_numExpNext_Anim kind:data(any) addr:0x020c7dec local
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numHP.c
 /////////////////////////////////////////////////////////////
-Tsk_MenuTop_numHP kind:data(any) addr:0x020c7e18
+Tsk_MenuTop_numHP kind:data(any) addr:0x020c7e18 local
 @1404 kind:data(any) addr:0x020c7e24 local
-MenuTop_numHP_Anim kind:data(any) addr:0x020c7e34
+MenuTop_numHP_Anim kind:data(any) addr:0x020c7e34 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numMoney.c
 /////////////////////////////////////////////////////////////
 Tsk_MenuTop_numMoney kind:data(any) addr:0x020c7e60 local
 @1385 kind:data(any) addr:0x020c7e6c local
-MenuTop_numMoney_Layout kind:data(any) addr:0x020c7e7c local
+@1465 kind:data(any) addr:0x020c7e7c local
 MenuTop_numMoney_Anim kind:data(any) addr:0x020c7e90 local
 
 /////////////////////////////////////////////////////////////
@@ -2775,7 +2775,7 @@ data_ov043_020c89b0 kind:data(any) addr:0x020c89b0 local
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/MenuBadge/MenuBadge_sbar.c
 /////////////////////////////////////////////////////////////
-data_ov043_020c89dc kind:data(any) addr:0x020c89dc
+Tsk_MenuBadge_sbar kind:data(any) addr:0x020c89dc
 data_ov043_020c89e8 kind:data(any) addr:0x020c89e8
 data_ov043_020c89f8 kind:data(any) addr:0x020c89f8
 
@@ -3254,7 +3254,7 @@ data_ov043_020ca258 kind:data(any) addr:0x020ca258
 data_ov043_020ca260 kind:data(any) addr:0x020ca260
 data_ov043_020ca2a8 kind:data(any) addr:0x020ca2a8
 data_ov043_020ca2c0 kind:data(any) addr:0x020ca2c0
-data_ov043_020ca360 kind:data(any) addr:0x020ca360
+Tsk_Shop_nameD kind:data(any) addr:0x020ca360
 data_ov043_020ca36c kind:data(any) addr:0x020ca36c
 data_ov043_020ca37c kind:data(any) addr:0x020ca37c
 data_ov043_020ca39c kind:data(any) addr:0x020ca39c
@@ -3267,7 +3267,7 @@ Tsk_Shop_exit kind:data(any) addr:0x020ca3c8 local
 data_ov043_020ca3e4 kind:data(any) addr:0x020ca3e4 local
 
 
-data_ov043_020ca410 kind:data(any) addr:0x020ca410
+Tsk_Shop_numMoneyNek kind:data(any) addr:0x020ca410
 data_ov043_020ca41c kind:data(any) addr:0x020ca41c
 data_ov043_020ca42c kind:data(any) addr:0x020ca42c
 data_ov043_020ca440 kind:data(any) addr:0x020ca440
@@ -3295,17 +3295,17 @@ Shop_sbar2_Anim kind:data(any) addr:0x020ca52c local
 /////////////////////////////////////////////////////////////
 // src/Interface/Shop/Shop_check.c
 /////////////////////////////////////////////////////////////
-data_ov043_020ca558 kind:data(any) addr:0x020ca558 local
+Tsk_Shop_check kind:data(any) addr:0x020ca558 local
 @1375 kind:data(any) addr:0x020ca564 local
 data_ov043_020ca574 kind:data(any) addr:0x020ca574 local
 
 
 data_ov043_020ca5a0 kind:data(any) addr:0x020ca5a0
-data_ov043_020ca5ac kind:data(any) addr:0x020ca5ac
+Tsk_Shop_tab kind:data(any) addr:0x020ca5ac
 data_ov043_020ca5b8 kind:data(any) addr:0x020ca5b8
 data_ov043_020ca5c8 kind:data(any) addr:0x020ca5c8
 data_ov043_020ca5f4 kind:data(any) addr:0x020ca5f4
-data_ov043_020ca610 kind:data(any) addr:0x020ca610
+Tsk_Shop_textScr kind:data(any) addr:0x020ca610
 data_ov043_020ca61c kind:data(any) addr:0x020ca61c
 Tsk_Shop_item kind:data(any) addr:0x020ca62c
 data_ov043_020ca638 kind:data(any) addr:0x020ca638
@@ -3493,28 +3493,28 @@ data_ov043_020cade0 kind:data(any) addr:0x020cade0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_exit.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cadec kind:data(any) addr:0x020cadec local
+Tsk_Depart_exit kind:data(any) addr:0x020cadec local
 @1349 kind:data(any) addr:0x020cadf8 local
 data_ov043_020cae08 kind:data(any) addr:0x020cae08 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_panel.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cae34 kind:data(any) addr:0x020cae34 local
+Tsk_Depart_panel kind:data(any) addr:0x020cae34 local
 @1317 kind:data(any) addr:0x020cae40 local
 data_ov043_020cae50 kind:data(any) addr:0x020cae50 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_board.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cae7c kind:data(any) addr:0x020cae7c local
+Tsk_Depart_board kind:data(any) addr:0x020cae7c local
 @1375 kind:data(any) addr:0x020cae88 local
 data_ov043_020cae98 kind:data(any) addr:0x020cae98 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Depart/Depart_textScr.c
 /////////////////////////////////////////////////////////////
-data_ov043_020caec4 kind:data(any) addr:0x020caec4 local
+Tsk_Depart_textScr kind:data(any) addr:0x020caec4 local
 @1329 kind:data(any) addr:0x020caed0 local
 
 /////////////////////////////////////////////////////////////
@@ -3679,7 +3679,7 @@ data_ov043_020cb774 kind:data(any) addr:0x020cb774
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckNum.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb7d0 kind:data(any) addr:0x020cb7d0
+@1442 kind:data(any) addr:0x020cb7d0 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_luckStar.c
@@ -3699,12 +3699,12 @@ data_ov043_020cb7d0 kind:data(any) addr:0x020cb7d0
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_rankNumU.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb824 kind:data(any) addr:0x020cb824
+@1442 kind:data(any) addr:0x020cb824 local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numLV.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cb83c kind:data(any) addr:0x020cb83c
+@1464 kind:data(any) addr:0x020cb83c local
 
 /////////////////////////////////////////////////////////////
 // src/Interface/Menu/Top/MenuTop_numExpNext.c

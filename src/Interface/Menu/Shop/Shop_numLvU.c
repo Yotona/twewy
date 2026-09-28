@@ -4,7 +4,7 @@ extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 
 typedef struct {
     /* 0x00 */ Sprite      sprites[2];
-    /* 0x80 */ BOOL        shouldRender[2];
+    /* 0x80 */ BOOL        visible[2];
     /* 0x88 */ ShopObject* shop;
 } Shop_numLvU; // Size: 0x8C
 
@@ -28,8 +28,8 @@ static const SpriteAnimation data_ov043_020cab60 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_numLvU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation data_ov043_020cab60 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void func_ov043_020bae58(Shop_numLvU* num) {
@@ -56,17 +56,17 @@ static void func_ov043_020bae58(Shop_numLvU* num) {
     digit[1] = value % 10;
 
     for (i = 0; i < 2; i++) {
-        num->shouldRender[i] = TRUE;
+        num->visible[i] = TRUE;
     }
 
     if (digit[0] == 0) {
-        num->shouldRender[0] = FALSE;
-        num->shouldRender[1] = TRUE;
-        offsetX              = -3;
+        num->visible[0] = FALSE;
+        num->visible[1] = TRUE;
+        offsetX         = -3;
     } else {
-        num->shouldRender[0] = TRUE;
-        num->shouldRender[1] = TRUE;
-        offsetX              = 0;
+        num->visible[0] = TRUE;
+        num->visible[1] = TRUE;
+        offsetX         = 0;
     }
 
     for (i = 0; i < 2; i++) {
@@ -92,23 +92,23 @@ static void Shop_numLvU_Load(Shop_numLvU* num, Sprite* sprites, Shop_numLvU_Args
     digit[1] = value % 10;
 
     for (u16 i = 0; i < 2; i++) {
-        num->shouldRender[i] = TRUE;
+        num->visible[i] = TRUE;
     }
 
     if (digit[0] == 0) {
-        num->shouldRender[0] = FALSE;
-        num->shouldRender[1] = TRUE;
-        offsetX              = -3;
+        num->visible[0] = FALSE;
+        num->visible[1] = TRUE;
+        offsetX         = -3;
     } else {
-        num->shouldRender[0] = TRUE;
-        num->shouldRender[1] = TRUE;
-        offsetX              = 0;
+        num->visible[0] = TRUE;
+        num->visible[1] = TRUE;
+        offsetX         = 0;
     }
 
     for (u16 i = 0; i < 2; i++) {
-        anim.unk_2A = digit[i] + 10;
-        anim.unk_04 = offsetX + (i * 6 + 0x1F);
-        anim.unk_06 = 183;
+        anim.animIndex = digit[i] + 10;
+        anim.posX      = offsetX + (i * 6 + 0x1F);
+        anim.posY      = 183;
         _Sprite_Load(&sprites[i], &anim);
     }
 }
@@ -136,7 +136,7 @@ static s32 Shop_numLvU_Render(TaskPool* pool, Task* task, void* args) {
     Shop_numLvU* num = task->data;
 
     for (s32 i = 0; i < 2; i++) {
-        if (num->shouldRender[i]) {
+        if (num->visible[i]) {
             Sprite_RenderFrame(&num->sprites[i]);
         }
     }

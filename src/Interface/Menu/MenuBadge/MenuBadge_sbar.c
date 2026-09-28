@@ -18,7 +18,7 @@ typedef struct {
 static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 arg, s32 mode);
 static s32              func_ov043_02094d78(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const TaskHandle data_ov043_020c89dc = {"Tsk_MenuBadge_sbar", func_ov043_02094d78, sizeof(MenuBadge_sbar)};
+static const TaskHandle Tsk_MenuBadge_sbar = {"Tsk_MenuBadge_sbar", func_ov043_02094d78, sizeof(MenuBadge_sbar)};
 
 static const SpriteAnimation data_ov043_020c89f8 = {
     .bits_0_1          = 0,
@@ -29,8 +29,8 @@ static const SpriteAnimation data_ov043_020c89f8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = func_ov043_02094854,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation data_ov043_020c89f8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 // Nonmatching
@@ -94,19 +94,19 @@ static void func_ov043_020948f0(Sprite* sprites, MenuBadge_sbar_Args* args) {
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x20;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0x65;
+    anim.animIndex = 0x20;
+    anim.posX      = 0xF8;
+    anim.posY      = 0x65;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x1E;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0x4A;
+    anim.animIndex = 0x1E;
+    anim.posX      = 0xF8;
+    anim.posY      = 0x4A;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x1F;
-    anim.unk_04 = 0xF8;
-    anim.unk_06 = 0xAA;
+    anim.animIndex = 0x1F;
+    anim.posX      = 0xF8;
+    anim.posY      = 0xAA;
     _Sprite_Load(&sprites[2], &anim);
 }
 
@@ -267,11 +267,11 @@ static s32 func_ov043_02094d78(TaskPool* pool, Task* task, void* args, s32 stage
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov043_02094dc0(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
+s32 MenuBadge_sbar_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_sbar_Args args;
 
     args.dataType  = dataType;
     args.menuBadge = owner;
 
-    return EasyTask_CreateTask(pool, &data_ov043_020c89dc, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_MenuBadge_sbar, NULL, 0, NULL, &args);
 }

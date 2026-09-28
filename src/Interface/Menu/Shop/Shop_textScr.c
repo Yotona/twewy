@@ -149,7 +149,7 @@ static Point data_ov043_020cc95c[68] = {
     {214, 165},
 };
 
-static const TaskHandle data_ov043_020ca610 = {"Tsk_Shop_textScr", func_ov043_020b6920, 0x840};
+static const TaskHandle Tsk_Shop_textScr = {"Tsk_Shop_textScr", func_ov043_020b6920, 0x840};
 
 u16 func_ov043_020b5198(u16 arg0, s16 arg1, s32 arg2) {
     return (u16)((arg1 * (arg2 - 1)) + arg0);
@@ -661,8 +661,8 @@ void func_ov043_020b6668(Shop_textScr* textScr, u16* charData, u16* map, s32 ite
 void func_ov043_020b678c(Shop_textScr* textScr) {
     ShopObject* shop = textScr->owner;
 
-    u16* map      = shop->unk_914;
-    u16* charData = shop->unk_910;
+    u16* map      = shop->resources[5].screenMap;
+    u16* charData = shop->resources[5].charData;
 
     if (map == NULL || charData == NULL) {
         OS_WaitForever();
@@ -741,10 +741,10 @@ static s32 func_ov043_020b6920(TaskPool* pool, Task* task, void* args, s32 stage
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov043_020b6968(TaskPool* pool, s32 dataType, ShopObject* shop) {
+s32 Shop_textScr_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_textScr_Args args;
 
     args.dataType = dataType;
     args.shop     = shop;
-    return EasyTask_CreateTask(pool, &data_ov043_020ca610, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_Shop_textScr, NULL, 0, NULL, &args);
 }

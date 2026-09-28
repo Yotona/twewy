@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[24];
-    /* 0x600 */ BOOL             shouldRender[24];
+    /* 0x600 */ BOOL             visible[24];
     /* 0x660 */ MenuEquipObject* owner;
     /* 0x664 */ u16              index;
     /* 0x666 */ u16              unk_666;
@@ -33,8 +33,8 @@ static const SpriteAnimation MenuEquip_foodGauge_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_foodGauge_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation MenuEquip_foodGauge_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_foodGauge_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -65,23 +65,23 @@ static void MenuEquip_foodGauge_Load(MenuEquip_foodGauge* foodGauge, Sprite* spr
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 24; i++) {
-        anim.unk_04 = (s16)((i % 6) * 5) + positions[args->index][0] + 2;
-        anim.unk_06 = positions[args->index][1] - (s16)((i / 6) * 5) + 2;
+        anim.posX = (s16)((i % 6) * 5) + positions[args->index][0] + 2;
+        anim.posY = positions[args->index][1] - (s16)((i / 6) * 5) + 2;
         if (i < foodGauge->unk_666) {
             if (i < 12) {
-                anim.unk_2A = 0x3C;
+                anim.animIndex = 0x3C;
             } else if (i < 18) {
-                anim.unk_2A = 0x3B;
+                anim.animIndex = 0x3B;
             } else {
-                anim.unk_2A = 0x3A;
+                anim.animIndex = 0x3A;
             }
-            foodGauge->shouldRender[i] = TRUE;
+            foodGauge->visible[i] = TRUE;
         } else if (i > foodGauge->unk_66A - 1) {
-            anim.unk_2A                = 0x3E;
-            foodGauge->shouldRender[i] = TRUE;
+            anim.animIndex        = 0x3E;
+            foodGauge->visible[i] = TRUE;
         } else {
-            anim.unk_2A                = 0x3C;
-            foodGauge->shouldRender[i] = FALSE;
+            anim.animIndex        = 0x3C;
+            foodGauge->visible[i] = FALSE;
         }
         _Sprite_Load(&sprites[i], &anim);
     }
@@ -112,7 +112,7 @@ static s32 MenuEquip_foodGauge_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_foodGauge* foodGauge = task->data;
 
     for (s16 i = 0; i < 24; i++) {
-        if (foodGauge->shouldRender[i] != 0) {
+        if (foodGauge->visible[i] != 0) {
             Sprite_RenderFrame(&foodGauge->sprites[i]);
         }
     }

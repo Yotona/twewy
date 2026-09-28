@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgCur; // Size: 0x48
 
@@ -25,8 +25,8 @@ static const SpriteAnimation MenuBadge_bdgCur_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation MenuBadge_bdgCur_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,10 +52,10 @@ static void MenuBadge_bdgCur_Load(MenuBadge_bdgCur* bdgCur, Sprite* sprite, Menu
 
     bdgCur->visible = TRUE;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 46;
-    anim.unk_04   = MenuBadge_SlotPositions[0].x;
-    anim.unk_06   = MenuBadge_SlotPositions[0].y;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 46;
+    anim.posX      = MenuBadge_SlotPositions[0].x;
+    anim.posY      = MenuBadge_SlotPositions[0].y;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -75,7 +75,7 @@ static s32 MenuBadge_bdgCur_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadgeObject*  menuBadge = bdgCur->menuBadge;
 
     if (menuBadge->flags & MENUBADGE_FLAG_DRAGGING) {
-        bdgCur->visible = 0;
+        bdgCur->visible = FALSE;
     } else {
         u16 cursorPos = menuBadge->cursorListIndex;
 

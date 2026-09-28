@@ -4,7 +4,7 @@ extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 
 typedef struct {
     /* 0x000 */ Sprite      sprites[8];
-    /* 0x200 */ BOOL        shouldRender[8];
+    /* 0x200 */ BOOL        visible[8];
     /* 0x220 */ ShopObject* shop;
 } Shop_nameD; // Size: 0x224
 
@@ -15,9 +15,9 @@ typedef struct {
 
 SpriteFrameInfo* func_ov043_020b2e70(Sprite* sprite, s32 arg, s32 mode);
 s32              func_ov043_020b31f0(TaskPool* pool, Task* task, void* args, s32 stage);
-s32              func_ov043_020b3238(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32              Shop_nameD_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 
-static const TaskHandle data_ov043_020ca360 = {"Tsk_Shop_nameD", func_ov043_020b31f0, sizeof(Shop_nameD)};
+static const TaskHandle Tsk_Shop_nameD = {"Tsk_Shop_nameD", func_ov043_020b31f0, sizeof(Shop_nameD)};
 
 static const Point data_ov043_020ca37c[8] = {
     { 8, 159},
@@ -39,8 +39,8 @@ static const SpriteAnimation data_ov043_020ca39c = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = func_ov043_020b2e70,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -54,7 +54,7 @@ static const SpriteAnimation data_ov043_020ca39c = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 // Nonmatching
@@ -68,39 +68,39 @@ void func_ov043_020b2b48(Shop_nameD* name) {
             func_ov043_020af42c(&name->sprites[4], 15);
             func_ov043_020af42c(&name->sprites[6], 16);
             func_ov043_020af42c(&name->sprites[7], 17);
-            name->shouldRender[2] = FALSE;
-            name->shouldRender[4] = TRUE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = TRUE;
-            name->shouldRender[7] = TRUE;
+            name->visible[2] = FALSE;
+            name->visible[4] = TRUE;
+            name->visible[5] = FALSE;
+            name->visible[6] = TRUE;
+            name->visible[7] = TRUE;
         } else if (shop->unk_854 == 1) {
             func_ov043_020af42c(&name->sprites[2], 5);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else if (shop->unk_854 == 2) {
             func_ov043_020af42c(&name->sprites[2], 6);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else if (shop->unk_854 == 3) {
             func_ov043_020af42c(&name->sprites[2], 9);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else {
             func_ov043_020af42c(&name->sprites[2], 10);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         }
     } else if (state == 1) {
         if (shop->unk_854 == 0) {
@@ -108,70 +108,70 @@ void func_ov043_020b2b48(Shop_nameD* name) {
             func_ov043_020af42c(&name->sprites[5], 12);
             func_ov043_020af42c(&name->sprites[6], 13);
             func_ov043_020af42c(&name->sprites[7], 14);
-            name->shouldRender[2] = FALSE;
-            name->shouldRender[4] = TRUE;
-            name->shouldRender[5] = TRUE;
-            name->shouldRender[6] = TRUE;
-            name->shouldRender[7] = TRUE;
+            name->visible[2] = FALSE;
+            name->visible[4] = TRUE;
+            name->visible[5] = TRUE;
+            name->visible[6] = TRUE;
+            name->visible[7] = TRUE;
         } else if (shop->unk_854 == 1) {
             func_ov043_020af42c(&name->sprites[2], 4);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else if (shop->unk_854 == 2) {
             func_ov043_020af42c(&name->sprites[2], 8);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else {
             func_ov043_020af42c(&name->sprites[2], 10);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         }
     } else if (state == 2) {
         if (shop->unk_854 == 0) {
             func_ov043_020af42c(&name->sprites[2], 4);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else if (shop->unk_854 == 1) {
             func_ov043_020af42c(&name->sprites[2], 7);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         } else {
             func_ov043_020af42c(&name->sprites[2], 0xA);
-            name->shouldRender[2] = TRUE;
-            name->shouldRender[4] = FALSE;
-            name->shouldRender[5] = FALSE;
-            name->shouldRender[6] = FALSE;
-            name->shouldRender[7] = FALSE;
+            name->visible[2] = TRUE;
+            name->visible[4] = FALSE;
+            name->visible[5] = FALSE;
+            name->visible[6] = FALSE;
+            name->visible[7] = FALSE;
         }
     } else if (shop->unk_854 == 0) {
         func_ov043_020af42c(&name->sprites[2], 4);
-        name->shouldRender[2] = TRUE;
-        name->shouldRender[4] = FALSE;
-        name->shouldRender[5] = FALSE;
-        name->shouldRender[6] = FALSE;
-        name->shouldRender[7] = FALSE;
+        name->visible[2] = TRUE;
+        name->visible[4] = FALSE;
+        name->visible[5] = FALSE;
+        name->visible[6] = FALSE;
+        name->visible[7] = FALSE;
     } else {
         func_ov043_020af42c(&name->sprites[2], 0xA);
-        name->shouldRender[2] = TRUE;
-        name->shouldRender[4] = FALSE;
-        name->shouldRender[5] = FALSE;
-        name->shouldRender[6] = FALSE;
-        name->shouldRender[7] = FALSE;
+        name->visible[2] = TRUE;
+        name->visible[4] = FALSE;
+        name->visible[5] = FALSE;
+        name->visible[6] = FALSE;
+        name->visible[7] = FALSE;
     }
 }
 
@@ -191,26 +191,26 @@ void func_ov043_020b2f0c(Shop_nameD* name, Sprite* sprites, Shop_nameD_Args* arg
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 8; i++) {
-        name->shouldRender[i] = TRUE;
+        name->visible[i] = TRUE;
     }
 
     if (state <= 1) {
-        name->shouldRender[2] = FALSE;
+        name->visible[2] = FALSE;
     }
 
     if (state == 0) {
-        name->shouldRender[5] = FALSE;
+        name->visible[5] = FALSE;
     } else if (state >= 2) {
         for (s16 i = 4; i < 8; i++) {
-            frameIndex[i]         = 1;
-            name->shouldRender[i] = FALSE;
+            frameIndex[i]    = 1;
+            name->visible[i] = FALSE;
         }
     }
 
     for (s16 i = 0; i < 8; i++) {
-        anim.unk_2A = frameIndex[i];
-        anim.unk_04 = data_ov043_020ca37c[i].x;
-        anim.unk_06 = data_ov043_020ca37c[i].y;
+        anim.animIndex = frameIndex[i];
+        anim.posX      = data_ov043_020ca37c[i].x;
+        anim.posY      = data_ov043_020ca37c[i].y;
         _Sprite_Load(&name->sprites[i], &anim);
     }
 }
@@ -238,7 +238,7 @@ s32 func_ov043_020b3174(TaskPool* pool, Task* task, void* args) {
     Shop_nameD* name = task->data;
 
     for (s16 i = 0; i < 8; i++) {
-        if (name->shouldRender[i]) {
+        if (name->visible[i]) {
             Sprite_RenderFrame(&name->sprites[i]);
         }
     }
@@ -265,11 +265,11 @@ s32 func_ov043_020b31f0(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov043_020b3238(TaskPool* pool, s32 dataType, ShopObject* shop) {
+s32 Shop_nameD_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_nameD_Args args;
 
     args.dataType = dataType;
     args.shop     = shop;
 
-    return EasyTask_CreateTask(pool, &data_ov043_020ca360, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_Shop_nameD, NULL, 0, NULL, &args);
 }

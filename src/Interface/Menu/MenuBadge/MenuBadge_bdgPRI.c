@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgPRI; // Size: 0x48
 
@@ -29,8 +29,8 @@ static const SpriteAnimation MenuBadge_bdgPRI_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgPRI_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuBadge_bdgPRI_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdgPRI_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -55,15 +55,15 @@ static void MenuBadge_bdgPRI_Load(MenuBadge_bdgPRI* bdgPRI, Sprite* sprite, Menu
     SpriteAnimation anim = MenuBadge_bdgPRI_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = MenuBadge_SlotPositions[args->slot].x - 9;
-    anim.unk_06   = MenuBadge_SlotPositions[args->slot].y - 9;
+    anim.posX     = MenuBadge_SlotPositions[args->slot].x - 9;
+    anim.posY     = MenuBadge_SlotPositions[args->slot].y - 9;
     anim.bits_7_9 = 6;
 
     if (args->slot < args->slotCount) {
-        anim.unk_2A     = args->slot + 1;
+        anim.animIndex  = args->slot + 1;
         bdgPRI->visible = TRUE;
     } else {
-        anim.unk_2A     = 1;
+        anim.animIndex  = 1;
         bdgPRI->visible = FALSE;
     }
 

@@ -33,8 +33,8 @@ static const SpriteAnimation Result_star_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_star_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation Result_star_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_star_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -61,19 +61,19 @@ static void Result_star_Load(Result_star* star, Sprite* sprite, Result_star_Args
 
     anim.dataType = args->dataType;
     anim.bits_7_9 = 6;
-    anim.unk_04   = posX[args->index];
-    anim.unk_06   = 0xA9;
+    anim.posX     = posX[args->index];
+    anim.posY     = 0xA9;
 
     if (args->kind == 0) {
-        anim.unk_2A = 2;
+        anim.animIndex = 2;
     } else {
-        anim.unk_2A = 4;
+        anim.animIndex = 4;
     }
 
-    star->posX      = anim.unk_04 << 12;
+    star->posX      = anim.posX << 12;
     star->velocityX = (s16)(RNG_Next(0xFFFF) % 30 - 15) * 0x4CD;
     star->accelX    = 0;
-    star->posY      = anim.unk_06 << 12;
+    star->posY      = anim.posY << 12;
     star->velocityY = (s16)(RNG_Next(0xFFFF) % 30 - 15) * 0x4CD;
     star->accelY    = 0;
     star->lifeTimer = RNG_Next(0xFFFF) % 20 + 10;

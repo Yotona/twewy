@@ -25,8 +25,8 @@ static const SpriteAnimation MenuEquip_tab_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = -0xD,
-    .unk_06            = 0xC,
+    .posX              = -0xD,
+    .posY              = 0xC,
     .frameInfoCallback = MenuEquip_tab_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation MenuEquip_tab_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_tab_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,9 +53,9 @@ static void MenuEquip_tab_Load(Sprite* sprites, MenuEquip_tab_Args* args) {
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 8; i++) {
-        anim.unk_2A = i * 2 + 1;
-        anim.unk_04 = i * 14 + 138;
-        anim.unk_06 = 121;
+        anim.animIndex = i * 2 + 1;
+        anim.posX      = i * 14 + 138;
+        anim.posY      = 121;
         _Sprite_Load(&sprites[i], &anim);
     }
 }

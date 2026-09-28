@@ -26,8 +26,8 @@ static const SpriteAnimation MenuEquip_itemCur_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_itemCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuEquip_itemCur_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_itemCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -51,13 +51,13 @@ static SpriteFrameInfo* MenuEquip_itemCur_GetFrameInfo(Sprite* sprite, s32 arg, 
 static void MenuEquip_itemCur_Load(Sprite* sprite, MenuEquip_itemCur_Args* args) {
     SpriteAnimation anim = MenuEquip_itemCur_Anim;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 0x23;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 0x23;
     {
-        const u16* pos = (const u16*)data_ov043_020c96f0[0];
+        const u16* pos = (const u16*)&data_ov043_020c96f0[0];
 
-        anim.unk_04 = pos[0];
-        anim.unk_06 = pos[1];
+        anim.posX = pos[0];
+        anim.posY = pos[1];
     }
     _Sprite_Load(sprite, &anim);
 }
@@ -79,14 +79,14 @@ static s32 MenuEquip_itemCur_Update(TaskPool* pool, Task* task, void* args) {
     if (owner->dirtyFlags & 1) {
         itemCur->visible = FALSE;
     } else if (owner->cursorListIndex == 0xFFFF) {
-        itemCur->sprite.posX = data_ov043_020c96f0[owner->cursorSlot][0];
-        itemCur->sprite.posY = data_ov043_020c96f0[owner->cursorSlot][1];
+        itemCur->sprite.posX = data_ov043_020c96f0[owner->cursorSlot].x;
+        itemCur->sprite.posY = data_ov043_020c96f0[owner->cursorSlot].y;
         itemCur->visible     = TRUE;
     } else if (owner->cursorListIndex >= owner->listScroll && owner->cursorListIndex < owner->listScroll + 16) {
         s32 slot = (u16)(owner->cursorListIndex - owner->listScroll) + 10;
 
-        itemCur->sprite.posX = data_ov043_020c96f0[slot][0];
-        itemCur->sprite.posY = data_ov043_020c96f0[slot][1];
+        itemCur->sprite.posX = data_ov043_020c96f0[slot].x;
+        itemCur->sprite.posY = data_ov043_020c96f0[slot].y;
         itemCur->visible     = TRUE;
     } else {
         itemCur->visible = FALSE;

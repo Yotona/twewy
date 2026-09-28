@@ -55,8 +55,8 @@ static const SpriteAnimation Result_beltU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_beltU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -70,7 +70,7 @@ static const SpriteAnimation Result_beltU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_beltU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -94,10 +94,10 @@ static void Result_beltU_Load(Result_beltU* beltU, Sprite* sprite, Result_beltU_
     beltU->index     = args->index;
     beltU->drawDelay = 2;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = args->mode + 0x12;
-    anim.unk_04   = beltU->posX >> 12;
-    anim.unk_06   = beltU->posY >> 12;
+    anim.dataType  = args->dataType;
+    anim.animIndex = args->mode + 0x12;
+    anim.posX      = beltU->posX >> 12;
+    anim.posY      = beltU->posY >> 12;
     _Sprite_Load(sprite, &anim);
 }
 

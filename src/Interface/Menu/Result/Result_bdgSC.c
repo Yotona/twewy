@@ -27,8 +27,8 @@ static const SpriteAnimation Result_bdgSC_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_bdgSC_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation Result_bdgSC_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_bdgSC_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -54,27 +54,27 @@ static void Result_bdgSC_Load(Result_bdgSC* bdgSC, Sprite* sprite, Result_bdgSC_
     s16             posX[6] = {0x2C, 0x4E, 0x70, 0x92, 0xB4, 0xD6};
 
     anim.dataType = args->dataType;
-    anim.unk_04   = posX[args->index] + 9;
-    anim.unk_06   = 0x9C;
+    anim.posX     = posX[args->index] + 9;
+    anim.posY     = 0x9C;
     anim.bits_7_9 = 6;
 
     if (args->index >= args->badgeCount || args->graphicIndex == 0xFFFF) {
-        anim.unk_2A    = 0x25;
+        anim.animIndex = 0x25;
         bdgSC->visible = FALSE;
     } else {
         switch (args->status) {
             case 0: {
-                anim.unk_2A    = 0x25;
+                anim.animIndex = 0x25;
                 bdgSC->visible = FALSE;
             } break;
 
             case 1: {
-                anim.unk_2A    = 0x26;
+                anim.animIndex = 0x26;
                 bdgSC->visible = TRUE;
             } break;
 
             case 2: {
-                anim.unk_2A    = 0x27;
+                anim.animIndex = 0x27;
                 bdgSC->visible = TRUE;
             } break;
         }

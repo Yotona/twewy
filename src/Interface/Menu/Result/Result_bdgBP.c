@@ -25,8 +25,8 @@ static const SpriteAnimation Result_bdgBP_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_bdgBP_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation Result_bdgBP_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_bdgBP_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -80,13 +80,13 @@ static void Result_bdgBP_Load(Result_bdgBP* bdgBP, Sprite* sprites, Result_bdgBP
     SpriteAnimation anim    = Result_bdgBP_Anim;
     s16             posX[6] = {0x2C, 0x4E, 0x70, 0x92, 0xB4, 0xD6};
 
-    anim.dataType = args->dataType;
-    anim.unk_04   = posX[args->index] - 0xC;
-    anim.unk_06   = 0xB8;
-    anim.unk_2A   = Result_bdgBP_GetGaugeFrame(bdgBP, args->index) + 5;
+    anim.dataType  = args->dataType;
+    anim.posX      = posX[args->index] - 0xC;
+    anim.posY      = 0xB8;
+    anim.animIndex = Result_bdgBP_GetGaugeFrame(bdgBP, args->index) + 5;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x1E;
+    anim.animIndex = 0x1E;
     _Sprite_Load(&sprites[1], &anim);
 }
 

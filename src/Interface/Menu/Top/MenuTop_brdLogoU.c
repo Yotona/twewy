@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite         sprite;
-    /* 0x40 */ s32            visible;
+    /* 0x40 */ BOOL           visible;
     /* 0x44 */ MenuTopObject* topMenu;
 } MenuTop_brdLogoU; // Size: 0x48
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuTop_brdLogoU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x3E,
-    .unk_06            = 0x3C,
+    .posX              = 0x3E,
+    .posY              = 0x3C,
     .frameInfoCallback = MenuTop_brdLogoU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuTop_brdLogoU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_brdLogoU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,13 +56,13 @@ static void MenuTop_brdLogoU_Load(MenuTop_brdLogoU* brdLogoU, Sprite* sprite, Me
 
     if (topMenu->currentArea < 21) {
         anim.packIndex    = topMenu->areaBrandRanking[0] + 1;
-        brdLogoU->visible = 1;
+        brdLogoU->visible = TRUE;
     } else if (topMenu->currentArea >= 22) {
         anim.packIndex    = 1;
-        brdLogoU->visible = 0;
+        brdLogoU->visible = FALSE;
     } else {
         anim.packIndex            = 1;
-        *(u32*)&brdLogoU->visible = 0;
+        *(u32*)&brdLogoU->visible = FALSE;
     }
 
     _Sprite_Load(sprite, &anim);

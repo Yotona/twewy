@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ BOOL        shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
 } Shop_pointer; // Size: 0x48
 
@@ -27,8 +27,8 @@ static const SpriteAnimation data_ov043_020caaac = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_pointer_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation data_ov043_020caaac = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 
 };
 
@@ -53,8 +53,8 @@ SpriteFrameInfo* Shop_pointer_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
 void Shop_pointer_Load(Shop_pointer* pointer, Shop_pointer_Args* pointerArgs) {
     SpriteAnimation anim = data_ov043_020caaac;
 
-    anim.dataType = pointerArgs->dataType;
-    anim.unk_2A   = 67;
+    anim.dataType  = pointerArgs->dataType;
+    anim.animIndex = 67;
     _Sprite_Load(&pointer->sprite, &anim);
 }
 
@@ -62,8 +62,8 @@ s32 Shop_pointer_Init(TaskPool* pool, Task* task, void* args) {
     Shop_pointer*      pointer     = task->data;
     Shop_pointer_Args* pointerArgs = args;
 
-    pointer->shop         = pointerArgs->shop;
-    pointer->shouldRender = FALSE;
+    pointer->shop    = pointerArgs->shop;
+    pointer->visible = FALSE;
     Shop_pointer_Load(pointer, pointerArgs);
     return 1;
 }
@@ -73,12 +73,12 @@ s32 Shop_pointer_Update(TaskPool* pool, Task* task, void* args) {
     TouchCoord    coord;
 
     if (TouchInput_IsTouchActive() == FALSE) {
-        pointer->shouldRender = 0;
+        pointer->visible = FALSE;
     } else {
         TouchInput_GetCoord(&coord);
-        pointer->sprite.posX  = coord.x;
-        pointer->sprite.posY  = coord.y;
-        pointer->shouldRender = 1;
+        pointer->sprite.posX = coord.x;
+        pointer->sprite.posY = coord.y;
+        pointer->visible     = TRUE;
     }
 
     Sprite_Update(&pointer->sprite);
@@ -88,7 +88,7 @@ s32 Shop_pointer_Update(TaskPool* pool, Task* task, void* args) {
 s32 Shop_pointer_Render(TaskPool* pool, Task* task, void* args) {
     Shop_pointer* pointer = task->data;
 
-    if (pointer->shouldRender == TRUE) {
+    if (pointer->visible == TRUE) {
         Sprite_RenderFrame(&pointer->sprite);
     }
     return 1;

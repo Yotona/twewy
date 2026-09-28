@@ -395,7 +395,7 @@ static void MenuBadge_textScrU_DrawInfoTab(MenuBadge_textScrU* textScrU, MenuBad
 
 static void MenuBadge_textScrU_DrawInfoPage(MenuBadge_textScrU* textScrU) {
     MenuBadgeObject* menuBadge                                = textScrU->menuBadge;
-    MenuBadgePoint   positions[MENUBADGE_TEXTSCRU_FONT_COUNT] = {
+    Point            positions[MENUBADGE_TEXTSCRU_FONT_COUNT] = {
 #ifdef REGION_USA
         {  9,  17},
          {  9,  41},
@@ -457,7 +457,7 @@ static void MenuBadge_textScrU_DrawInfoPage(MenuBadge_textScrU* textScrU) {
 
 static void MenuBadge_textScrU_DrawHelpPage(MenuBadge_textScrU* textScrU) {
     MenuBadgeObject* menuBadge    = textScrU->menuBadge;
-    MenuBadgePoint   positions[3] = {
+    Point            positions[3] = {
         {24, 11},
         {24, 10},
         {14, 27},
@@ -511,7 +511,7 @@ static s32 MenuBadge_textScrU_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadgeObject*    menuBadge = textScrU->menuBadge;
 
     if (menuBadge->flags & MENUBADGE_FLAG_REDRAW_INFO) {
-        MenuBadge_ReloadBgResource(&menuBadge->resources[0], 1, 0, 7, 15, 1);
+        MenuBadge_ReloadBgResource(&menuBadge->resources[0], DISPLAY_SUB, 0, 7, 15, 1);
         if (menuBadge->windowMessage == MENUBADGE_MSG_HELP) {
             MenuBadge_textScrU_DrawHelpPage(textScrU);
         } else {

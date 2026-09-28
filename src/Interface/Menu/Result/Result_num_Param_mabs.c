@@ -31,9 +31,9 @@ static void Result_num_Param_mabs_LoadLabels(Result_num_Param_mabs* numParam, Re
     s16 frames[6] = {0x32, 0x33, 0x34, 0x3A, 0x3B, 0x3C};
 
     for (s16 i = 0; i < 6; i++) {
-        anim->unk_2A = frames[i];
-        anim->unk_04 = positions[i][0];
-        anim->unk_06 = positions[i][1];
+        anim->animIndex = frames[i];
+        anim->posX      = positions[i][0];
+        anim->posY      = positions[i][1];
         _Sprite_Load(&sprites[i], anim);
     }
 }
@@ -67,9 +67,9 @@ static void Result_num_Param_mabs_LoadTime(Result_num_Param_mabs* numParam, Resu
     }
 
     for (i = 0, posX = 0x8E; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x27;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x27;
         _Sprite_Load(&sprites[i + 6], anim);
         posX += 7;
     }
@@ -91,15 +91,15 @@ static void Result_num_Param_mabs_LoadRateA(Result_num_Param_mabs* numParam, Res
     digits[2] = 10;
     digits[3] = value % 10;
 
-    anim->unk_2A = owner->mabsPinCountRank + 0x1B;
-    anim->unk_04 = 0x93;
-    anim->unk_06 = 0x3D;
+    anim->animIndex = owner->mabsPinCountRank + 0x1B;
+    anim->posX      = 0x93;
+    anim->posY      = 0x3D;
     _Sprite_Load(&sprites[11], anim);
 
     for (s16 i = 0; i < 4; i++) {
-        anim->unk_2A = digits[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xBD;
-        anim->unk_06 = 0x3D;
+        anim->animIndex = digits[i] + 0xF;
+        anim->posX      = posX[i] + 0xBD;
+        anim->posY      = 0x3D;
         _Sprite_Load(&sprites[i + 12], anim);
     }
 }
@@ -120,15 +120,15 @@ static void Result_num_Param_mabs_LoadRateB(Result_num_Param_mabs* numParam, Res
     digits[2] = 0xA;
     digits[3] = value % 10;
 
-    anim->unk_2A = owner->mabsRateBRank + 0x1B;
-    anim->unk_04 = 0x93;
-    anim->unk_06 = 0x53;
+    anim->animIndex = owner->mabsRateBRank + 0x1B;
+    anim->posX      = 0x93;
+    anim->posY      = 0x53;
     _Sprite_Load(&sprites[16], anim);
 
     for (s16 i = 0; i < 4; i++) {
-        anim->unk_2A = digits[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xBD;
-        anim->unk_06 = 0x53;
+        anim->animIndex = digits[i] + 0xF;
+        anim->posX      = posX[i] + 0xBD;
+        anim->posY      = 0x53;
         _Sprite_Load(&sprites[i + 17], anim);
     }
 }
@@ -162,9 +162,9 @@ static void Result_num_Param_mabs_LoadPoints(Result_num_Param_mabs* numParam, Re
     }
 
     for (i = 0, posX = 0x8E; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x74;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x74;
         _Sprite_Load(&sprites[i + 21], anim);
         posX += 7;
     }
@@ -214,8 +214,8 @@ static const SpriteAnimation Result_num_Param_mabs_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_num_Param_mabs_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -229,7 +229,7 @@ static const SpriteAnimation Result_num_Param_mabs_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void Result_num_Param_mabs_Load(Result_num_Param_mabs* numParam, Sprite* sprites, Result_num_Param_mabs_Args* args) {

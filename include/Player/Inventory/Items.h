@@ -49,10 +49,20 @@ typedef struct {
     /* 0x00 */ char unk_00[0xC];
 } RawShopData; // Size: 0xC
 
+typedef union {
+    struct {
+        u8 count           : 4;
+        u8 unk_04          : 1;
+        u8 abilityUnlocked : 1;
+        u8 unk_06          : 2;
+    } bits;
+    u8 raw;
+} InventoryItemFlags;
+
 typedef struct {
-    /* 0x0 */ u16 itemID;
-    /* 0x2 */ u8  flags;
-    /* 0x3 */ u8  unk_3;
+    /* 0x0 */ u16                itemID;
+    /* 0x2 */ InventoryItemFlags flags;
+    /* 0x3 */ u8                 unk_3;
 } InventoryItem;
 
 typedef enum {

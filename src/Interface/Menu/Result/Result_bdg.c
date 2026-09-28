@@ -25,8 +25,8 @@ static const SpriteAnimation Result_bdg_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_bdg_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation Result_bdg_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_Result_bdg = {"Tsk_Result_bdg", Result_bdg_RunTask, sizeof(Result_bdg)};
@@ -54,8 +54,8 @@ static void Result_bdg_Load(Result_bdg* bdg, Sprite* sprite, Result_bdg_Args* ar
     s16             posX[6] = {0x2C, 0x4E, 0x70, 0x92, 0xB4, 0xD6};
 
     anim.dataType = args->dataType;
-    anim.unk_04   = posX[args->index];
-    anim.unk_06   = 0xA5;
+    anim.posX     = posX[args->index];
+    anim.posY     = 0xA5;
     anim.bits_7_9 = 5;
 
     if (args->graphicIndex == 0xFFFF) {

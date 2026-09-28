@@ -2,15 +2,15 @@
 
 typedef struct {
     /* 0x00 */ Sprite         sprite;
-    /* 0x40 */ s32            visible;
+    /* 0x40 */ BOOL           visible;
     /* 0x44 */ MenuTopObject* topMenu;
     /* 0x48 */ u16            initialPartnerAI;
 } MenuTop_drawPtrAI; // Size: 0x4C
 
 typedef struct {
-    /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* topMenu;
-    /* 0x8 */ u16   partnerAI;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            partnerAI;
 } MenuTop_drawPtrAI_Args;
 
 static SpriteFrameInfo* MenuTop_drawPtrAI_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuTop_drawPtrAI_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_drawPtrAI_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation MenuTop_drawPtrAI_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static s16 MenuTop_drawPtrAI_GetFrame(void* arg0) {
@@ -58,18 +58,16 @@ static SpriteFrameInfo* MenuTop_drawPtrAI_GetFrameInfo(Sprite* sprite, s32 arg, 
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-static void MenuTop_drawPtrAI_Load(void* arg0, void* arg1, MenuTop_drawPtrAI_Args* args) {
-    MenuTop_drawPtrAI* taskData = arg0;
-    Sprite*            sprite   = arg1;
-    SpriteAnimation    anim     = MenuTop_drawPtrAI_Anim;
+static void MenuTop_drawPtrAI_Load(MenuTop_drawPtrAI* taskData, Sprite* sprite, MenuTop_drawPtrAI_Args* args) {
+    SpriteAnimation anim = MenuTop_drawPtrAI_Anim;
 
     s32 val = MenuTop_drawPtrAI_GetFrame(taskData);
 
     anim.dataType     = args->dataType;
-    taskData->visible = 1;
-    anim.unk_2A       = val;
-    anim.unk_04       = 218;
-    anim.unk_06       = 164;
+    taskData->visible = TRUE;
+    anim.animIndex    = val;
+    anim.posX         = 218;
+    anim.posY         = 164;
 
     _Sprite_Load(sprite, &anim);
 }

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[3];
-    /* 0xC0 */ s32              visible;
+    /* 0xC0 */ BOOL             visible;
     /* 0xC4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_tabBdgType; // Size: 0xC8
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_tabBdgType_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_tabBdgType_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_tabBdgType_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_tabBdgType_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -51,21 +51,21 @@ static SpriteFrameInfo* MenuBadge_tabBdgType_GetFrameInfo(Sprite* sprite, s32 ar
 static void MenuBadge_tabBdgType_Load(Sprite* sprites, MenuBadge_tabBdgType_Args* args) {
     SpriteAnimation anim = MenuBadge_tabBdgType_Anim;
 
-    const MenuBadgePoint data_ov043_020c8a6c[2] = {
+    const Point data_ov043_020c8a6c[2] = {
         {0x89, 0xB8},
         {0xD4, 0xB8},
     };
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x3A;
-    anim.unk_04 = data_ov043_020c8a6c[0].x;
-    anim.unk_06 = data_ov043_020c8a6c[0].y;
+    anim.animIndex = 0x3A;
+    anim.posX      = data_ov043_020c8a6c[0].x;
+    anim.posY      = data_ov043_020c8a6c[0].y;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x3C;
-    anim.unk_04 = data_ov043_020c8a6c[1].x;
-    anim.unk_06 = data_ov043_020c8a6c[1].y;
+    anim.animIndex = 0x3C;
+    anim.posX      = data_ov043_020c8a6c[1].x;
+    anim.posY      = data_ov043_020c8a6c[1].y;
     _Sprite_Load(&sprites[1], &anim);
 }
 

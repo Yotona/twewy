@@ -1528,8 +1528,8 @@ static const SpriteAnimation data_ov002_02091b8c = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0000,
-    .unk_04            = -13,
-    .unk_06            = 0x000C,
+    .posX              = -13,
+    .posY              = 0x000C,
     .frameInfoCallback = func_ov002_020824ac,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -1543,21 +1543,21 @@ static const SpriteAnimation data_ov002_02091b8c = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_02082548(OtosuMenuObj* menuObj) {
     SpriteAnimation anim = data_ov002_02091b8c;
 
-    anim.dataType = menuObj->unk_1158C;
-    anim.unk_2A   = 1;
-    anim.unk_04   = 0x80;
-    anim.unk_06   = 0xC8;
-    anim.unk_1C   = 0x15;
-    anim.unk_20   = 0x18;
-    anim.unk_22   = 2;
-    anim.unk_26   = 0x16;
-    anim.unk_28   = 0x17;
+    anim.dataType  = menuObj->unk_1158C;
+    anim.animIndex = 1;
+    anim.posX      = 0x80;
+    anim.posY      = 0xC8;
+    anim.unk_1C    = 0x15;
+    anim.unk_20    = 0x18;
+    anim.unk_22    = 2;
+    anim.unk_26    = 0x16;
+    anim.unk_28    = 0x17;
 
     if (_Sprite_Load(&menuObj->unk_46078, &anim) == 0) {
         OS_WaitForever();
@@ -6242,8 +6242,8 @@ static const SpriteAnimation data_ov002_02092170 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0000,
-    .unk_04            = -13,
-    .unk_06            = 0x000C,
+    .posX              = -13,
+    .posY              = 0x000C,
     .frameInfoCallback = func_ov002_0208c6f8,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -6257,7 +6257,7 @@ static const SpriteAnimation data_ov002_02092170 = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_0208c794(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2) {
@@ -6265,16 +6265,16 @@ void func_ov002_0208c794(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2) {
     u16*            flags     = (u16*)&anim;
     u16             data_type = menuObj->unk_1158C;
 
-    *flags      = (u16)((*flags & (u16)~0x3C) | (u16)(((u32)data_type << 0x1C) >> 0x1A));
-    anim.unk_2A = 1;
-    *flags      = (u16)((*flags & (u16)~3) | 1);
-    anim.unk_04 = 0x80;
-    anim.unk_06 = 0x60;
-    anim.unk_1C = 0x11;
-    anim.unk_20 = 0x14;
-    anim.unk_22 = 2;
-    anim.unk_26 = 0x12;
-    anim.unk_28 = 0x13;
+    *flags         = (u16)((*flags & (u16)~0x3C) | (u16)(((u32)data_type << 0x1C) >> 0x1A));
+    anim.animIndex = 1;
+    *flags         = (u16)((*flags & (u16)~3) | 1);
+    anim.posX      = 0x80;
+    anim.posY      = 0x60;
+    anim.unk_1C    = 0x11;
+    anim.unk_20    = 0x14;
+    anim.unk_22    = 2;
+    anim.unk_26    = 0x12;
+    anim.unk_28    = 0x13;
     if (_Sprite_Load(&menuObj->unk_460C0, &anim) != 0) {
         return;
     }
@@ -6326,8 +6326,8 @@ static const SpriteAnimation data_ov002_0209219c = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0400,
-    .unk_04            = -13,
-    .unk_06            = 0x000C,
+    .posX              = -13,
+    .posY              = 0x000C,
     .frameInfoCallback = func_ov002_0208c92c,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -6341,21 +6341,21 @@ static const SpriteAnimation data_ov002_0209219c = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_0208c9c8(void* arg0, void* arg1, s16* arg2) {
     SpriteAnimation anim = data_ov002_0209219c;
 
-    anim.bits_0_1 = 0;
-    anim.unk_2A   = 1;
-    anim.unk_04   = 0x80;
-    anim.unk_06   = *arg2;
-    anim.unk_1C   = 0x11;
-    anim.unk_20   = 0x14;
-    anim.unk_22   = 2;
-    anim.unk_26   = 0x12;
-    anim.unk_28   = 0x13;
+    anim.bits_0_1  = 0;
+    anim.animIndex = 1;
+    anim.posX      = 0x80;
+    anim.posY      = *arg2;
+    anim.unk_1C    = 0x11;
+    anim.unk_20    = 0x14;
+    anim.unk_22    = 2;
+    anim.unk_26    = 0x12;
+    anim.unk_28    = 0x13;
 
     if (_Sprite_Load((Sprite*)arg1, &anim) == 0) {
         OS_WaitForever();
@@ -7562,8 +7562,8 @@ static const SpriteAnimation data_ov002_0209241c = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0000,
-    .unk_04            = -13,
-    .unk_06            = 0x000C,
+    .posX              = -13,
+    .posY              = 0x000C,
     .frameInfoCallback = func_ov002_0208e890,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -7577,7 +7577,7 @@ static const SpriteAnimation data_ov002_0209241c = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_0208e92c(void* arg1, void* arg2) {
@@ -7617,23 +7617,23 @@ void func_ov002_0208e92c(void* arg1, void* arg2) {
     anim.unk_22            = sp26;
     anim.unk_26            = (s16)sp2A;
     anim.unk_28            = (s16)sp2C;
-    anim.unk_2A            = sp2E;
+    anim.animIndex         = sp2E;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 4), &anim) == 0) {
         OS_WaitForever();
     }
-    sp2E        = 3;
-    anim.unk_2A = sp2E;
+    sp2E           = 3;
+    anim.animIndex = sp2E;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x44), &anim) == 0) {
         OS_WaitForever();
     }
-    anim_u16[0] = (u16)((anim_u16[0] & ~3) | 1);
-    sp2E        = 1;
-    anim.unk_2A = sp2E;
+    anim_u16[0]    = (u16)((anim_u16[0] & ~3) | 1);
+    sp2E           = 1;
+    anim.animIndex = sp2E;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x84), &anim) == 0) {
         OS_WaitForever();
     }
-    sp2E        = 3;
-    anim.unk_2A = sp2E;
+    sp2E           = 3;
+    anim.animIndex = sp2E;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0xC4), &anim) == 0) {
         OS_WaitForever();
     }
@@ -7880,8 +7880,8 @@ static const SpriteAnimation data_ov002_020924cc = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0000,
-    .unk_04            = -13,
-    .unk_06            = 0x000C,
+    .posX              = -13,
+    .posY              = 0x000C,
     .frameInfoCallback = func_ov002_0208f020,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -7895,7 +7895,7 @@ static const SpriteAnimation data_ov002_020924cc = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_0208f0bc(void* arg1, void* arg2) {
@@ -7946,40 +7946,40 @@ void func_ov002_0208f0bc(void* arg1, void* arg2) {
     anim.unk_26   = 0x1E;
     anim.unk_28   = 0x1F;
 
-    anim.unk_04     = 0x80;
-    anim.unk_06     = (s16)table_48[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.posX       = 0x80;
+    anim.posY       = (s16)table_48[OVMGR_U8(arg1, 0x10)] + 0x60;
     anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x800);
-    anim.unk_2A     = (OVMGR_S32(arg1, 0xC) != 0) ? 2 : 1;
+    anim.animIndex  = (OVMGR_S32(arg1, 0xC) != 0) ? 2 : 1;
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x20), &anim) == 0) {
         OS_WaitForever();
     }
 
-    anim.unk_04     = 0x80;
-    anim.unk_06     = (s16)table_40[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.posX       = 0x80;
+    anim.posY       = (s16)table_40[OVMGR_U8(arg1, 0x10)] + 0x60;
     anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x400);
-    anim.unk_2A     = (OVMGR_S32(arg1, 0xC) != 0) ? 3 : table_38[OVMGR_U8(arg1, 0x11)];
+    anim.animIndex  = (OVMGR_S32(arg1, 0xC) != 0) ? 3 : table_38[OVMGR_U8(arg1, 0x11)];
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0x60), &anim) == 0) {
         OS_WaitForever();
     }
 
-    anim.unk_04     = 0x8C;
-    anim.unk_06     = (s16)table_30[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.posX       = 0x8C;
+    anim.posY       = (s16)table_30[OVMGR_U8(arg1, 0x10)] + 0x60;
     anim.unk_02.raw = (u16)((anim.unk_02.raw & ~0xC00) | 0x400);
     if (OVMGR_S32(arg1, 0xC) == 0) {
-        anim.unk_2A = table_20[OVMGR_U8(arg1, 0x12)];
+        anim.animIndex = table_20[OVMGR_U8(arg1, 0x12)];
     } else {
-        anim.unk_2A = table_28[OVMGR_U8(arg1, 0x12)];
+        anim.animIndex = table_28[OVMGR_U8(arg1, 0x12)];
     }
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0xA0), &anim) == 0) {
         OS_WaitForever();
     }
 
-    anim.unk_04 = 0x8C;
-    anim.unk_06 = (s16)table_18[OVMGR_U8(arg1, 0x10)] + 0x60;
+    anim.posX = 0x8C;
+    anim.posY = (s16)table_18[OVMGR_U8(arg1, 0x10)] + 0x60;
     if (OVMGR_S32(arg1, 0xC) == 0) {
-        anim.unk_2A = table_8[OVMGR_U8(arg1, 0x11)];
+        anim.animIndex = table_8[OVMGR_U8(arg1, 0x11)];
     } else {
-        anim.unk_2A = table_10[OVMGR_U8(arg1, 0x11)];
+        anim.animIndex = table_10[OVMGR_U8(arg1, 0x11)];
     }
 
     var_r0_5                   = OVMGR_U16(arg1, 0x14);
@@ -8013,13 +8013,13 @@ void func_ov002_0208f0bc(void* arg1, void* arg2) {
         return;
     }
 loop_36:
-    temp_r0_3   = *((u8*)arg1 + 0x1A + var_r9);
-    anim.unk_04 = (s16)table_78[var_r9] + 0x80;
-    anim.unk_06 = subroutine_arg0[OVMGR_U8(arg1, 0x10)] + 0x60;
+    temp_r0_3 = *((u8*)arg1 + 0x1A + var_r9);
+    anim.posX = (s16)table_78[var_r9] + 0x80;
+    anim.posY = subroutine_arg0[OVMGR_U8(arg1, 0x10)] + 0x60;
     if (OVMGR_S32(arg1, 0xC) != 0) {
-        anim.unk_2A = table_50[temp_r0_3];
+        anim.animIndex = table_50[temp_r0_3];
     } else {
-        anim.unk_2A = table_64[temp_r0_3];
+        anim.animIndex = table_64[temp_r0_3];
     }
     if (_Sprite_Load((Sprite*)((u8*)arg1 + 0xE0 + (var_r9 << 6)), &anim) == 0) {
         OS_WaitForever();
@@ -8115,8 +8115,8 @@ static const SpriteAnimation data_ov002_020924f8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0000,
-    .unk_04            = 0x0080,
-    .unk_06            = 0x0060,
+    .posX              = 0x0080,
+    .posY              = 0x0060,
     .frameInfoCallback = func_ov002_0208f6f8,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -8130,20 +8130,20 @@ static const SpriteAnimation data_ov002_020924f8 = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0016,
     .unk_28            = 0x0017,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_0208f794(void* arg1) {
     SpriteAnimation anim     = data_ov002_020924f8;
     u16*            anim_u16 = (u16*)&anim;
 
-    anim_u16[0] = (u16)((anim_u16[0] & ~3) | 1);
-    anim.unk_1C = 0x19;
-    anim.unk_20 = 0x1C;
-    anim.unk_26 = 0x1A;
-    anim.unk_28 = 0x1B;
-    anim.unk_2A = 1;
-    anim.unk_22 = 1;
+    anim_u16[0]    = (u16)((anim_u16[0] & ~3) | 1);
+    anim.unk_1C    = 0x19;
+    anim.unk_20    = 0x1C;
+    anim.unk_26    = 0x1A;
+    anim.unk_28    = 0x1B;
+    anim.animIndex = 1;
+    anim.unk_22    = 1;
     if (_Sprite_Load(arg1, &anim) != 0) {
         return;
     }
@@ -9008,8 +9008,8 @@ static const SpriteAnimation data_ov002_02092a4c = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0800,
-    .unk_04            = 0x0080,
-    .unk_06            = 0x0060,
+    .posX              = 0x0080,
+    .posY              = 0x0060,
     .frameInfoCallback = func_ov002_02091760,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -9023,7 +9023,7 @@ static const SpriteAnimation data_ov002_02092a4c = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0003,
     .unk_28            = 0x0004,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_020917fc(s32 arg1) {
@@ -9040,15 +9040,15 @@ void func_ov002_020917fc(s32 arg1) {
     }
     var_r5 = 0;
     do {
-        temp_r2     = &subroutine_arg0[var_r5 * 0x10];
-        anim.unk_1C = (s16)temp_r2[0];
-        anim.unk_20 = (s16)temp_r2[1];
-        anim.unk_22 = (s16)temp_r2[2];
-        anim.unk_26 = (s16)temp_r2[3];
-        anim.unk_28 = (s16)temp_r2[4];
-        anim.unk_04 = (s16)(temp_r2[5] + 0x80);
-        anim.unk_06 = (s16)(temp_r2[6] + 0x60);
-        anim.unk_2A = (s16)temp_r2[7];
+        temp_r2        = &subroutine_arg0[var_r5 * 0x10];
+        anim.unk_1C    = (s16)temp_r2[0];
+        anim.unk_20    = (s16)temp_r2[1];
+        anim.unk_22    = (s16)temp_r2[2];
+        anim.unk_26    = (s16)temp_r2[3];
+        anim.unk_28    = (s16)temp_r2[4];
+        anim.posX      = (s16)(temp_r2[5] + 0x80);
+        anim.posY      = (s16)(temp_r2[6] + 0x60);
+        anim.animIndex = (s16)temp_r2[7];
         if (_Sprite_Load(arg1 + (var_r5 << 6), &anim) == 0) {
             OS_WaitForever();
         }
@@ -9091,8 +9091,8 @@ static const SpriteAnimation data_ov002_02092ab8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0x0800,
-    .unk_04            = 0x0080,
-    .unk_06            = 0x0060,
+    .posX              = 0x0080,
+    .posY              = 0x0060,
     .frameInfoCallback = func_ov002_02091978,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -9106,7 +9106,7 @@ static const SpriteAnimation data_ov002_02092ab8 = {
     .unk_24            = 0x0000,
     .unk_26            = 0x0022,
     .unk_28            = 0x0023,
-    .unk_2A            = 0x0001,
+    .animIndex         = 0x0001,
 };
 
 void func_ov002_02091a14(s32 arg0, void* arg1) {

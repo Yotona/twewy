@@ -6,6 +6,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Interface/Menu/MenuCommon.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
 #include <nitro/rtc.h>
@@ -41,17 +42,6 @@ typedef struct {
     /* 0x3 */ u8  brand;
 } ResultThread; // Size: 0x4
 
-// Same shape as DepartResources (see Depart.h).
-typedef struct {
-    /* 0x00 */ Data*            data;
-    /* 0x04 */ BgResource*      screenResource;
-    /* 0x08 */ BgResource*      charResource;
-    /* 0x0C */ PaletteResource* paletteResource;
-    /* 0x10 */ u16*             charData;
-    /* 0x14 */ u16*             screenMap;
-    /* 0x18 */ u8*              paletteData;
-} ResultBgResource; // Size: 0x1C
-
 typedef struct {
     /* 0x000 */ ResultBadge  badges[6];
     /* 0x180 */ ResultThread threads[2][4];
@@ -72,58 +62,58 @@ typedef struct {
     // Handshake between the stages and the belt/badge tasks. 0x01: a belt was just added,
     // 0x02: ready for the next belt, 0x04: shift the dropped-pin icons, 0x08: PP count finished
     // (show the rank), 0x10: fast-forward held, 0x20: food belt (advances two rows).
-    /* 0x29C */ u16              stageFlags;
-    /* 0x29E */ u8               unk_29E;
-    /* 0x29F */ u8               exitTarget; // Where Result_Update goes once the stages finish
-    /* 0x2A0 */ u32              basePP;
-    /* 0x2A4 */ u16              battleCount;
-    /* 0x2A6 */ u16              timeRank;
-    /* 0x2A8 */ u16              rateBRank;
-    /* 0x2AA */ u16              specialBonusLevel;
-    /* 0x2AC */ u16              battleCountMultiplier;
-    /* 0x2AE */ u16              timeMultiplier;
-    /* 0x2B0 */ u16              rateBMultiplier;
-    /* 0x2B2 */ u16              specialBonusMultiplier;
-    /* 0x2B4 */ u32              displayedPP;
-    /* 0x2B8 */ u32              earnedPP;
-    /* 0x2BC */ u16              overallRank;
-    /* 0x2BE */ char             unk_2BE[0x2C0 - 0x2BE];
-    /* 0x2C0 */ u32              clearTime;
-    /* 0x2C4 */ s32              maxHits;
-    /* 0x2C8 */ u32              trendScores[22][13];
-    /* 0x740 */ s32              trendGains[22][13];
-    /* 0xBB8 */ u8               trendRanking[22][13];
-    /* 0xCD6 */ char             unk_CD6[0xCD8 - 0xCD6];
-    /* 0xCD8 */ RTCDate          date;
-    /* 0xCE8 */ RTCTime          time;
-    /* 0xCF4 */ u8               trendRotation;
-    /* 0xCF5 */ u8               currentArea;
-    /* 0xCF6 */ u8               battlePartner;
-    /* 0xCF7 */ char             unk_CF7[0xCF8 - 0xCF7];
-    /* 0xCF8 */ s16              flashStep;
-    /* 0xCFA */ char             unk_CFA[0xCFC - 0xCFA];
-    /* 0xCFC */ s16              flashTimer;
-    /* 0xCFE */ s16              unk_CFE;
-    /* 0xD00 */ s16              flashLevel;
-    /* 0xD02 */ u8               espersMet;
-    /* 0xD03 */ u8               civviesMet;
-    /* 0xD04 */ u8               aliensMet;
-    /* 0xD05 */ char             unk_D05[0xD06 - 0xD05];
-    /* 0xD06 */ u16              esperPP;
-    /* 0xD08 */ u16              civvyPP;
-    /* 0xD0A */ u16              alienPP;
-    /* 0xD0C */ u16              elapsedDays;
-    /* 0xD0E */ u8               elapsedHours;
-    /* 0xD0F */ u8               elapsedMinutes;
-    /* 0xD10 */ u8               elapsedSeconds;
-    /* 0xD11 */ char             unk_D11[0xD12 - 0xD11];
-    /* 0xD12 */ u16              dailyPP[7];
-    /* 0xD20 */ u16              mabsPinCountRank;
-    /* 0xD22 */ u16              mabsRateBRank;
-    /* 0xD24 */ u16              mabsPinCountMultiplier;
-    /* 0xD26 */ u16              mabsRateBMultiplier;
-    /* 0xD28 */ ResultBgResource bgResources[8]; // [5]-[7]: main BG1-BG3, [3]: sub BG3
-} ResultObject;                                  // Size: 0xE08
+    /* 0x29C */ u16            stageFlags;
+    /* 0x29E */ u8             unk_29E;
+    /* 0x29F */ u8             exitTarget; // Where Result_Update goes once the stages finish
+    /* 0x2A0 */ u32            basePP;
+    /* 0x2A4 */ u16            battleCount;
+    /* 0x2A6 */ u16            timeRank;
+    /* 0x2A8 */ u16            rateBRank;
+    /* 0x2AA */ u16            specialBonusLevel;
+    /* 0x2AC */ u16            battleCountMultiplier;
+    /* 0x2AE */ u16            timeMultiplier;
+    /* 0x2B0 */ u16            rateBMultiplier;
+    /* 0x2B2 */ u16            specialBonusMultiplier;
+    /* 0x2B4 */ u32            displayedPP;
+    /* 0x2B8 */ u32            earnedPP;
+    /* 0x2BC */ u16            overallRank;
+    /* 0x2BE */ char           unk_2BE[0x2C0 - 0x2BE];
+    /* 0x2C0 */ u32            clearTime;
+    /* 0x2C4 */ s32            maxHits;
+    /* 0x2C8 */ u32            trendScores[22][13];
+    /* 0x740 */ s32            trendGains[22][13];
+    /* 0xBB8 */ u8             trendRanking[22][13];
+    /* 0xCD6 */ char           unk_CD6[0xCD8 - 0xCD6];
+    /* 0xCD8 */ RTCDate        date;
+    /* 0xCE8 */ RTCTime        time;
+    /* 0xCF4 */ u8             trendRotation;
+    /* 0xCF5 */ u8             currentArea;
+    /* 0xCF6 */ u8             battlePartner;
+    /* 0xCF7 */ char           unk_CF7[0xCF8 - 0xCF7];
+    /* 0xCF8 */ s16            flashStep;
+    /* 0xCFA */ char           unk_CFA[0xCFC - 0xCFA];
+    /* 0xCFC */ s16            flashTimer;
+    /* 0xCFE */ s16            unk_CFE;
+    /* 0xD00 */ s16            flashLevel;
+    /* 0xD02 */ u8             espersMet;
+    /* 0xD03 */ u8             civviesMet;
+    /* 0xD04 */ u8             aliensMet;
+    /* 0xD05 */ char           unk_D05[0xD06 - 0xD05];
+    /* 0xD06 */ u16            esperPP;
+    /* 0xD08 */ u16            civvyPP;
+    /* 0xD0A */ u16            alienPP;
+    /* 0xD0C */ u16            elapsedDays;
+    /* 0xD0E */ u8             elapsedHours;
+    /* 0xD0F */ u8             elapsedMinutes;
+    /* 0xD10 */ u8             elapsedSeconds;
+    /* 0xD11 */ char           unk_D11[0xD12 - 0xD11];
+    /* 0xD12 */ u16            dailyPP[7];
+    /* 0xD20 */ u16            mabsPinCountRank;
+    /* 0xD22 */ u16            mabsRateBRank;
+    /* 0xD24 */ u16            mabsPinCountMultiplier;
+    /* 0xD26 */ u16            mabsRateBMultiplier;
+    /* 0xD28 */ MenuBgResource resources[8]; // [0]-[3]: sub BG0-BG3, [4]-[7]: main BG0-BG3
+} ResultObject;                              // Size: 0xE08
 
 /**
  * @brief Archive entries for every file the result screen loads: the BG/OBJ graphics for each mode,

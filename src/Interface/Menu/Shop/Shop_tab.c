@@ -1,3 +1,4 @@
+#include "Display.h"
 #include "Engine/IO/TouchInput.h"
 #include "Interface/Menu/Shop.h"
 #include "SndMgr.h"
@@ -17,7 +18,6 @@ typedef struct {
 
 extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 extern u32  func_ov043_020b1830(s16 arg0, s16 arg1);
-extern void func_ov043_020b28d4(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 
 SpriteFrameInfo* func_ov043_020b4bc8(Sprite* sprite, s32 arg, s32 mode);
 s32              func_ov043_020b4e50(TaskPool* arg0, Task* arg1, void* arg2);
@@ -37,7 +37,7 @@ static const s16 data_ov043_020ca5a0[6] = {
     0x1F, 0x50, 0x81, 0xB2, 0xE3, 0x00,
 };
 
-static const TaskHandle data_ov043_020ca5ac = {"Tsk_Shop_tab", func_ov043_020b511c, sizeof(Shop_tab)};
+static const TaskHandle Tsk_Shop_tab = {"Tsk_Shop_tab", func_ov043_020b511c, sizeof(Shop_tab)};
 
 static const SpriteAnimation data_ov043_020ca5c8 = {
     .bits_0_1          = 0,
@@ -48,8 +48,8 @@ static const SpriteAnimation data_ov043_020ca5c8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x0C00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = func_ov043_020b4bc8,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -63,7 +63,7 @@ static const SpriteAnimation data_ov043_020ca5c8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 void func_ov043_020b4af8(ShopObject* arg0, u32 arg1, u16 arg2) {
@@ -99,7 +99,7 @@ void func_ov043_020b4af8(ShopObject* arg0, u32 arg1, u16 arg2) {
             break;
     }
 
-    func_ov043_020b28d4(&arg0->unk_938, arg0->unk_938, 0, 3, arg1 + 2);
+    func_ov043_020b28d4(&arg0->resources[7], arg0->resources[7].data, DISPLAY_MAIN, 3, arg1 + 2);
 }
 
 // Nonmatching
@@ -147,9 +147,9 @@ void func_ov043_020b4c64(Shop_tab* arg0, Sprite* arg1, Shop_tab_Args* arg2) {
 
     if (*(u16*)(tabEntry + 0x00) == 0xFFFF) {
         for (u16 i = 0; i < 5; i++) {
-            anim.unk_2A      = 0x30;
-            anim.unk_04      = xPos[i];
-            anim.unk_06      = 0xBB;
+            anim.animIndex   = 0x30;
+            anim.posX        = xPos[i];
+            anim.posY        = 0xBB;
             arg0->unk_140[i] = FALSE;
             _Sprite_Load(&arg1[i], &anim);
         }
@@ -158,18 +158,18 @@ void func_ov043_020b4c64(Shop_tab* arg0, Sprite* arg1, Shop_tab_Args* arg2) {
 
         for (u16 i = 0; i < 5; i++) {
             if (frameData[i] == 0) {
-                anim.unk_2A      = 0x30;
+                anim.animIndex   = 0x30;
                 arg0->unk_140[i] = FALSE;
             } else {
-                anim.unk_2A      = frameData[i] + (i != 0);
+                anim.animIndex   = frameData[i] + (i != 0);
                 arg0->unk_140[i] = TRUE;
                 if ((i == 4) && (canUseFifth == 0)) {
                     arg0->unk_140[4] = FALSE;
                 }
             }
 
-            anim.unk_04 = xPos[i];
-            anim.unk_06 = 0xBB;
+            anim.posX = xPos[i];
+            anim.posY = 0xBB;
             _Sprite_Load(&arg1[i], &anim);
         }
     }
@@ -302,10 +302,10 @@ s32 func_ov043_020b511c(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3) {
     return stages.iter[arg3](arg0, arg1, arg2);
 }
 
-s32 func_ov043_020b5164(TaskPool* arg0, s32 arg1, s32 arg2) {
+s32 Shop_tab_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_tab_Args args;
 
-    args.unk_00 = arg1;
-    args.unk_04 = (ShopObject*)arg2;
-    return EasyTask_CreateTask(arg0, &data_ov043_020ca5ac, NULL, 0, NULL, &args);
+    args.unk_00 = dataType;
+    args.unk_04 = shop;
+    return EasyTask_CreateTask(pool, &Tsk_Shop_tab, NULL, 0, NULL, &args);
 }

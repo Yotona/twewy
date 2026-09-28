@@ -29,8 +29,8 @@ static const SpriteAnimation MenuTop_icon_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0xB6,
-    .unk_06            = 0x10,
+    .posX              = 0xB6,
+    .posY              = 0x10,
     .frameInfoCallback = MenuTop_icon_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuTop_icon_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_icon_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -57,16 +57,16 @@ static void MenuTop_icon_Load(MenuTop_icon* icon, MenuTop_icon_Args* args) {
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 3;
-    anim.unk_04 = 0xDA;
-    anim.unk_06 = 0xC;
-    anim.unk_22 = 1;
+    anim.animIndex = 3;
+    anim.posX      = 0xDA;
+    anim.posY      = 0xC;
+    anim.unk_22    = 1;
     _Sprite_Load(&icon->sprites[0], &anim);
 
-    anim.unk_2A = 5;
-    anim.unk_04 = 0xF3;
-    anim.unk_06 = 0xC;
-    anim.unk_22 = 1;
+    anim.animIndex = 5;
+    anim.posX      = 0xF3;
+    anim.posY      = 0xC;
+    anim.unk_22    = 1;
     _Sprite_Load(&icon->sprites[1], &anim);
 }
 
@@ -133,7 +133,7 @@ static s32 MenuTop_icon_RunTask(TaskPool* pool, Task* task, void* args, s32 stag
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_icon_CreateTask(TaskPool* pool, s32 dataType, void* topMenu) {
+s32 MenuTop_icon_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_icon_Args args;
 
     args.dataType = dataType;

@@ -22,11 +22,11 @@ void func_ov043_020824a0(TakTestState* state) {
 }
 
 void TakTest_UpdateTaskPool(TakTestState* state) {
-    EasyTask_UpdatePool(&state->taskPool);
+    EasyTask_UpdatePool(&state->base.taskPool);
 }
 
 void TakTest_DestroyTaskPool(TakTestState* state) {
-    EasyTask_DestroyPool(&state->taskPool);
+    EasyTask_DestroyPool(&state->base.taskPool);
 }
 
 void TakTest_Init(TakTestState* state) {
@@ -36,19 +36,19 @@ void TakTest_Init(TakTestState* state) {
         Mem_SetSequence(&gDebugHeap, state, sequence);
         MainOvlDisp_SetCbArg(state);
     }
-    state->unk_11584 = DatMgr_AllocateSlot();
-    state->unk_11588 = DatMgr_AllocateSlot();
+    state->base.spareDataType = DatMgr_AllocateSlot();
+    state->base.dataType      = DatMgr_AllocateSlot();
     TakTest_RegisterVBlank();
-    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
-    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x80, NULL, NULL);
+    state->base.prevResMgr = ResourceMgr_ReinitManagers(&state->base.resMgr);
+    Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
+    EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x80, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
     func_ov043_020824a0(state);
 
-    EasyTask_CreateTask(&state->taskPool, &Tsk_TakTest_BG, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Tsk_TakTest_BG, NULL, 0, NULL, NULL);
 
-    state->unk_21618 = TakTest_OBJ_CreateTask(&state->taskPool, state->unk_11588);
+    state->unk_21618 = TakTest_OBJ_CreateTask(&state->base.taskPool, state->base.dataType);
     MainOvlDisp_NextProcessStage();
 }
 
@@ -67,8 +67,8 @@ void TakTest_Update(TakTestState* state) {
 void TakTest_Destroy(TakTestState* state) {
     TakTest_DestroyTaskPool(state);
     ResourceMgr_ReinitManagers(NULL);
-    DatMgr_ClearSlot(state->unk_11584);
-    DatMgr_ClearSlot(state->unk_11588);
+    DatMgr_ClearSlot(state->base.spareDataType);
+    DatMgr_ClearSlot(state->base.dataType);
     Mem_Free(&gDebugHeap, state);
 }
 
@@ -87,7 +87,6 @@ void ProcessOverlay_TakTest(TakTestState* state) {
     }
 }
 
-// Nonmatching: Some data access differences
 void TakTest_InitSystems(void) {
     Interrupts_Init();
     HBlank_Init();

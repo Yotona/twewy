@@ -18,7 +18,7 @@ typedef struct {
 static SpriteFrameInfo* MenuBadge_bdgNum_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_bdgNum_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const MenuBadgePoint data_ov043_020c8900 = {1, 1};
+static const Point data_ov043_020c8900 = {1, 1};
 
 static const TaskHandle Tsk_MenuBadge_bdgNum = {"Tsk_MenuBadge_bdgNum", MenuBadge_bdgNum_RunTask, sizeof(MenuBadge_bdgNum)};
 
@@ -31,8 +31,8 @@ static const SpriteAnimation MenuBadge_bdgNum_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgNum_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ static const SpriteAnimation MenuBadge_bdgNum_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdgNum_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -64,24 +64,24 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
     anim.dataType = args->dataType;
 
     if (args->pinId == 0xFFFF) {
-        bdgNum->visible[0] = 0;
-        bdgNum->visible[1] = 0;
-        bdgNum->visible[2] = 0;
+        bdgNum->visible[0] = FALSE;
+        bdgNum->visible[1] = FALSE;
+        bdgNum->visible[2] = FALSE;
     } else {
         if (args->count < 10) {
             ones = 0;
             tens = args->count;
 
-            bdgNum->visible[0] = 1;
-            bdgNum->visible[1] = 1;
-            bdgNum->visible[2] = 0;
+            bdgNum->visible[0] = TRUE;
+            bdgNum->visible[1] = TRUE;
+            bdgNum->visible[2] = FALSE;
         } else {
             ones = args->count - (tens * 10);
             tens = args->count / 10;
 
-            bdgNum->visible[0] = 1;
-            bdgNum->visible[1] = 1;
-            bdgNum->visible[2] = 1;
+            bdgNum->visible[0] = TRUE;
+            bdgNum->visible[1] = TRUE;
+            bdgNum->visible[2] = TRUE;
             xOffset            = -2;
         }
     }
@@ -95,19 +95,19 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
     anim.unk_20   = 0xD;
     anim.unk_28   = 6;
 
-    anim.unk_2A = 24;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + xOffset;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
+    anim.animIndex = 24;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x + xOffset;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = tens + 25;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + xOffset;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
+    anim.animIndex = tens + 25;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x + xOffset;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = ones + 25;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + 4 + xOffset;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
+    anim.animIndex = ones + 25;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x + 4 + xOffset;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[2], &anim);
 
     anim.binIden  = &MenuBadge_BinIdentifiers[2];
@@ -119,9 +119,9 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
     anim.unk_22   = 2;
     anim.unk_28   = 3;
 
-    anim.unk_2A = 3;
-    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x;
-    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 0x13;
+    anim.animIndex = 3;
+    anim.posX      = MenuBadge_SlotPositions[args->slot].x;
+    anim.posY      = MenuBadge_SlotPositions[args->slot].y + 0x13;
 
     _Sprite_Load(&bdgNum->sprites[3], &anim);
 }

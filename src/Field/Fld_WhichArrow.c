@@ -33,8 +33,8 @@ static const SpriteAnimation data_ov030_020ec938 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x80,
-    .unk_06            = 0,
+    .posX              = 0x80,
+    .posY              = 0,
     .frameInfoCallback = Fld_WhichArrow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation data_ov030_020ec938 = {
     .unk_24            = 0,
     .unk_26            = 3,
     .unk_28            = 4,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,8 +58,8 @@ SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) 
 void Fld_WhichArrow_Load(Sprite* sprite, Fld_WhichArrow_Args* arrowArgs, s16 arg2) {
     SpriteAnimation anim = data_ov030_020ec938;
     anim.dataType        = arrowArgs->dataType;
-    anim.unk_06          = arg2;
-    anim.unk_2A          = arrowArgs->unk_6;
+    anim.posY            = arg2;
+    anim.animIndex       = arrowArgs->unk_6;
     if (arrowArgs->unk_6 == 3) {
         anim.bits_12_13 = 2;
     }

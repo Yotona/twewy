@@ -5,15 +5,15 @@
 
 typedef struct {
     /* 0x000 */ Sprite         sprites[4];
-    /* 0x100 */ s32            visibleFlags[4];
+    /* 0x100 */ BOOL           visible[4];
     /* 0x110 */ MenuTopObject* topMenu;
     /* 0x114 */ u16            initialHealth;
 } MenuTop_numHP; // Size: 0x118
 
 typedef struct {
-    /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* topMenu;
-    /* 0x8 */ u16   health;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            health;
 } MenuTop_numHP_Args;
 
 static SpriteFrameInfo* MenuTop_numHP_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -30,8 +30,8 @@ static const SpriteAnimation MenuTop_numHP_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_numHP_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,38 +45,42 @@ static const SpriteAnimation MenuTop_numHP_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
-// Nonmatching
-void MenuTop_numHP_Refresh(void* taskDataPtr) {
-    MenuTop_numHP* taskData = taskDataPtr;
+void MenuTop_numHP_Refresh(MenuTop_numHP* taskData) {
+    MenuTopObject* topMenu = taskData->topMenu;
     u16            digits[4];
-    u32            hp;
+    u16            hp;
+    u16            remainder;
+    u16            i;
 
-    hp = gSaveData.playerStats.baseHealth + (((taskData->topMenu->currentLevel - 1) * 50) + 200);
+    topMenu->health = gSaveData.playerStats.baseHealth + (s16)(((s16)topMenu->currentLevel - 1) * 50 + 200);
+    hp              = topMenu->health;
     if (hp > 9999) {
         hp = 9999;
     }
-    taskData->topMenu->health = hp;
 
-    digits[0] = (u16)(hp / 1000);
-    hp %= 1000;
-    digits[1] = (u16)(hp / 100);
-    hp %= 100;
-    digits[2] = (u16)(hp / 10);
-    digits[3] = (u16)(hp % 10);
+    digits[0] = hp / 1000;
+    remainder = hp % 1000;
+    digits[1] = remainder / 100;
+    remainder = remainder % 100;
+    digits[2] = remainder / 10;
+    digits[3] = remainder % 10;
 
-    for (s32 i = 0; i < 4; i++) {
-        taskData->visibleFlags[i] = 1;
+    for (i = 0; i < 4; i++) {
+        taskData->visible[i] = TRUE;
     }
 
-    for (s32 i = 0; i < 3 && digits[i] == 0; i++) {
-        taskData->visibleFlags[i] = 0;
+    for (i = 0; i < 3; i++) {
+        if (digits[i] != 0) {
+            break;
+        }
+        taskData->visible[i] = FALSE;
     }
 
-    for (u16 i = 0; i < 4; i++) {
-        MenuTop_SetSpriteFrame(&taskData->sprites[i], (s16)(digits[i] + 0xA));
+    for (i = 0; i < 4; i++) {
+        MenuTop_SetSpriteFrame(&taskData->sprites[i], digits[i] + 10);
     }
 }
 
@@ -84,42 +88,48 @@ static SpriteFrameInfo* MenuTop_numHP_GetFrameInfo(Sprite* sprite, s32 arg, s32 
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-// Nonmatching
-void MenuTop_numHP_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
-    MenuTop_numHP*      taskData = taskDataPtr;
-    Sprite*             sprites  = spritesPtr;
-    MenuTop_numHP_Args* args     = argsPtr;
-    SpriteAnimation     anim     = MenuTop_numHP_Anim;
-    u16                 digits[4];
-    s32                 hp;
+void MenuTop_numHP_Load(MenuTop_numHP* taskData, Sprite* sprites, MenuTop_numHP_Args* args) {
+    MenuTopObject*  topMenu = taskData->topMenu;
+    SpriteAnimation anim    = MenuTop_numHP_Anim;
+    u16             digits[4];
+    u16             hp;
+    u16             remainder;
+    u16             i;
 
-    anim.dataType = (u16)args->dataType;
+    anim.dataType = args->dataType;
 
-    hp = gSaveData.playerStats.baseHealth + (((taskData->topMenu->currentLevel - 1) * 50) + 200);
+    topMenu->health = gSaveData.playerStats.baseHealth + (s16)(((s16)topMenu->currentLevel - 1) * 50 + 200);
+    hp              = topMenu->health;
     if (hp > 9999) {
         hp = 9999;
     }
-    taskData->topMenu->health = (u16)hp;
 
-    digits[0] = (hp / 1000);
-    hp %= 1000;
-    digits[1] = (hp / 100);
-    hp %= 100;
-    digits[2] = (hp / 10);
-    digits[3] = (hp % 10);
+    digits[0] = hp / 1000;
+    remainder = hp % 1000;
+    digits[1] = remainder / 100;
+    remainder = remainder % 100;
+    digits[2] = remainder / 10;
+    digits[3] = remainder % 10;
 
-    for (s32 i = 0; i < 4; i++) {
-        taskData->visibleFlags[i] = 1;
+    for (i = 0; i < 4; i++) {
+        taskData->visible[i] = TRUE;
     }
 
-    for (s32 i = 0; i < 3 && digits[i] == 0; i++) {
-        taskData->visibleFlags[i] = 0;
+    for (i = 0; i < 3; i++) {
+        if (digits[i] != 0) {
+            break;
+        }
+        taskData->visible[i] = FALSE;
     }
 
-    for (u16 i = 0; i < 4; i++) {
-        anim.unk_2A = digits[i] + 10;
-        anim.unk_04 = (i * 6) + 212;
-        anim.unk_06 = 139;
+    for (i = 0; i < 4; i++) {
+        anim.animIndex = digits[i] + 10;
+#ifdef REGION_USA
+        anim.posX = i * 6 + 212;
+#else
+        anim.posX = i * 8 + 210;
+#endif
+        anim.posY = 139;
         _Sprite_Load(&sprites[i], &anim);
     }
 }
@@ -149,7 +159,7 @@ static s32 MenuTop_numHP_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_numHP* taskData = task->data;
 
     for (s32 i = 0; i < 4; i++) {
-        if (taskData->visibleFlags[i] != 0) {
+        if (taskData->visible[i] != 0) {
             Sprite_RenderFrame(&taskData->sprites[i]);
         }
     }

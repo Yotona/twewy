@@ -29,8 +29,8 @@ static const SpriteAnimation MenuEquip_itemMask_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_itemMask_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuEquip_itemMask_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_itemMask_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,11 +58,11 @@ static void MenuEquip_itemMask_Load(MenuEquip_itemMask* itemMask, Sprite* sprite
 
     anim.dataType = args->dataType;
     {
-        const u16* pos = (const u16*)data_ov043_020c96f0[args->index];
+        const u16* pos = (const u16*)&data_ov043_020c96f0[args->index];
 
-        anim.unk_2A = 0x3D;
-        anim.unk_04 = pos[0];
-        anim.unk_06 = pos[1];
+        anim.animIndex = 0x3D;
+        anim.posX      = pos[0];
+        anim.posY      = pos[1];
     }
 
     item = owner->slots[args->index];

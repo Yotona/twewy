@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite         sprite;
-    /* 0x40 */ BOOL           shouldRender;
+    /* 0x40 */ BOOL           visible;
     /* 0x44 */ MenuTopObject* topMenu;
     /* 0x48 */ u16            area;
     /* 0x4A */ u16            topBrand;
@@ -31,8 +31,8 @@ static const SpriteAnimation MenuTop_mapTipU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_mapTipU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ static const SpriteAnimation MenuTop_mapTipU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_mapTipU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -60,24 +60,24 @@ static void MenuTop_mapTipU_Load(MenuTop_mapTipU* mapTipU, Sprite* sprite, MenuT
     anim.dataType = args->dataType;
     anim.bits_7_9 = 5;
 
-    mapTipU->area         = args->area;
-    mapTipU->topBrand     = topMenu->areaTopBrand[mapTipU->area];
-    mapTipU->shouldRender = TRUE;
-    mapTipU->unk_4C       = 0;
-    mapTipU->unk_4E       = 0;
+    mapTipU->area     = args->area;
+    mapTipU->topBrand = topMenu->areaTopBrand[mapTipU->area];
+    mapTipU->visible  = TRUE;
+    mapTipU->unk_4C   = 0;
+    mapTipU->unk_4E   = 0;
 
-    anim.unk_2A = mapTipU->area + 1;
-    anim.unk_04 = MenuTop_AreaMapPos[mapTipU->area].x;
-    anim.unk_06 = MenuTop_AreaMapPos[mapTipU->area].y;
+    anim.animIndex = mapTipU->area + 1;
+    anim.posX      = MenuTop_AreaMapPos[mapTipU->area].x;
+    anim.posY      = MenuTop_AreaMapPos[mapTipU->area].y;
     _Sprite_Load(sprite, &anim);
 
     if (mapTipU->area == 21) {
         if (func_0202366c(22, 1) == 0) {
-            mapTipU->shouldRender = FALSE;
+            mapTipU->visible = FALSE;
         }
     } else if (mapTipU->area == 22) {
         if (func_0202366c(35, 1) == 0) {
-            mapTipU->shouldRender = FALSE;
+            mapTipU->visible = FALSE;
         }
     }
 }
@@ -101,7 +101,7 @@ static s32 MenuTop_mapTipU_Update(TaskPool* pool, Task* task, void* args) {
 static s32 MenuTop_mapTipU_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_mapTipU* mapTipU = task->data;
 
-    if (mapTipU->shouldRender) {
+    if (mapTipU->visible) {
         if (mapTipU->area >= 21) {
             Sprite_RenderFrame(&mapTipU->sprite);
         } else {

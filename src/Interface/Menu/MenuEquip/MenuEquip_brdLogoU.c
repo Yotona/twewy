@@ -29,8 +29,8 @@ static const SpriteAnimation MenuEquip_brdLogoU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0xA8,
-    .unk_06            = 0x1C,
+    .posX              = 0xA8,
+    .posY              = 0x1C,
     .frameInfoCallback = MenuEquip_brdLogoU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuEquip_brdLogoU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_brdLogoU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {

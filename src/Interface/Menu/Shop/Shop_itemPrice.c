@@ -30,8 +30,8 @@ static const SpriteAnimation data_ov043_020ca768 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemPrice_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,7 +45,7 @@ static const SpriteAnimation data_ov043_020ca768 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,7 +53,7 @@ static SpriteFrameInfo* Shop_itemPrice_GetFrameInfo(Sprite* sprite, s32 arg, s32
 }
 
 // Nonmatching
-static void Shop_itemPrice_Load(Shop_itemPrice* arg0, Sprite* arg1, Shop_itemPrice_Args* args) {
+static void Shop_itemPrice_Load(Shop_itemPrice* taskData, Sprite* sprites, Shop_itemPrice_Args* args) {
     SpriteAnimation anim = data_ov043_020ca768;
     u32             digits[7];
     s16             x;
@@ -63,8 +63,8 @@ static void Shop_itemPrice_Load(Shop_itemPrice* arg0, Sprite* arg1, Shop_itemPri
 
     if (args->unk_0A == 0xFFFF) {
         for (s32 i = 0; i < 7; i++) {
-            arg0->unk_1C0[i] = FALSE;
-            _Sprite_Load(&arg1[i], &anim);
+            taskData->unk_1C0[i] = FALSE;
+            _Sprite_Load(&sprites[i], &anim);
         }
         return;
     }
@@ -73,23 +73,23 @@ static void Shop_itemPrice_Load(Shop_itemPrice* arg0, Sprite* arg1, Shop_itemPri
     y = (s16)((args->unk_08 / 6) * 0x29 + 0x27);
 
     if (args->unk_14 == 1) {
-        anim.unk_04 = x;
-        anim.unk_06 = y;
-        anim.unk_2A = (args->unk_10 == 1) ? 13 : 14;
+        anim.posX      = x;
+        anim.posY      = y;
+        anim.animIndex = (args->unk_10 == 1) ? 13 : 14;
 
-        arg0->unk_1C0[0] = TRUE;
+        taskData->unk_1C0[0] = TRUE;
         for (s32 i = 1; i < 7; i++) {
-            arg0->unk_1C0[i] = FALSE;
+            taskData->unk_1C0[i] = FALSE;
         }
 
         for (s32 i = 0; i < 7; i++) {
-            _Sprite_Load(&arg1[i], &anim);
+            _Sprite_Load(&sprites[i], &anim);
         }
         return;
     }
 
     for (s32 i = 0; i < 7; i++) {
-        arg0->unk_1C0[i] = TRUE;
+        taskData->unk_1C0[i] = TRUE;
     }
 
     {
@@ -113,14 +113,14 @@ static void Shop_itemPrice_Load(Shop_itemPrice* arg0, Sprite* arg1, Shop_itemPri
         if (digits[i] != 0) {
             break;
         }
-        arg0->unk_1C0[i] = FALSE;
+        taskData->unk_1C0[i] = FALSE;
     }
 
     for (s32 i = 0; i < 7; i++) {
-        anim.unk_2A = (u16)(digits[i] + 1);
-        anim.unk_04 = (u16)(x - 0xC + (i * 4));
-        anim.unk_06 = (u16)(y + 0x14);
-        _Sprite_Load(&arg1[i], &anim);
+        anim.animIndex = (u16)(digits[i] + 1);
+        anim.posX      = (u16)(x - 0xC + (i * 4));
+        anim.posY      = (u16)(y + 0x14);
+        _Sprite_Load(&sprites[i], &anim);
     }
 }
 

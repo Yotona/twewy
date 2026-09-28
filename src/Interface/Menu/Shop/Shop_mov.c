@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprites[2];
-    /* 0x80 */ BOOL        shouldRender[2];
+    /* 0x80 */ BOOL        visible[2];
     /* 0x88 */ ShopObject* shop;
 } Shop_mov; // Size: 0x8C
 
@@ -28,8 +28,8 @@ static const SpriteAnimation data_ov043_020ca918 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_mov_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,14 +43,14 @@ static const SpriteAnimation data_ov043_020ca918 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_mov_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3E8000);
 }
 
-static void Shop_mov_Load(Shop_mov* mov, Sprite* arg1, Shop_mov_Args* args) {
+static void Shop_mov_Load(Shop_mov* mov, Sprite* sprites, Shop_mov_Args* args) {
     ShopObject* shop = mov->shop;
 
     SpriteAnimation anim = data_ov043_020ca918;
@@ -62,39 +62,39 @@ static void Shop_mov_Load(Shop_mov* mov, Sprite* arg1, Shop_mov_Args* args) {
 
     anim.dataType = args->dataType;
     anim.bits_7_9 = 6;
-    anim.unk_04   = shop->unk_840;
-    anim.unk_06   = shop->unk_842;
+    anim.posX     = shop->unk_840;
+    anim.posY     = shop->unk_842;
 
     if (args->unk_0A == 0) {
-        mov->shouldRender[0] = TRUE;
-        mov->shouldRender[1] = TRUE;
+        mov->visible[0] = TRUE;
+        mov->visible[1] = TRUE;
 
         anim.binIden   = &data_ov043_020ca1f0;
         anim.unk_18    = 2;
         anim.packIndex = args->unk_0C + 1;
-        anim.unk_2A    = 1;
+        anim.animIndex = 1;
         anim.unk_22    = 1;
-        _Sprite_Load(arg1, &anim);
+        _Sprite_Load(sprites, &anim);
 
         anim.binIden   = &data_ov043_020ca1b8;
         anim.unk_18    = 0;
         anim.packIndex = 1;
-        anim.unk_2A    = 0x17;
+        anim.animIndex = 0x17;
         anim.unk_22    = 4;
-        _Sprite_Load(&arg1[1], &anim);
+        _Sprite_Load(&sprites[1], &anim);
     } else {
-        mov->shouldRender[0] = TRUE;
-        mov->shouldRender[1] = FALSE;
+        mov->visible[0] = TRUE;
+        mov->visible[1] = FALSE;
 
         anim.binIden   = &data_ov043_020ca1f8;
         anim.unk_18    = 2;
         anim.packIndex = args->unk_0C + 1;
-        anim.unk_2A    = 1;
+        anim.animIndex = 1;
         anim.unk_22    = 1;
-        _Sprite_Load(arg1, &anim);
+        _Sprite_Load(sprites, &anim);
 
         anim.unk_22 = 4;
-        _Sprite_Load(&arg1[1], &anim);
+        _Sprite_Load(&sprites[1], &anim);
     }
 }
 
@@ -124,7 +124,7 @@ static s32 Shop_mov_Render(TaskPool* pool, Task* task, void* args) {
     Shop_mov* mov = task->data;
 
     for (s32 i = 0; i < 2; i++) {
-        if (mov->shouldRender[i] != 0) {
+        if (mov->visible[i] != 0) {
             Sprite_RenderFrame(&mov->sprites[i]);
         }
     }

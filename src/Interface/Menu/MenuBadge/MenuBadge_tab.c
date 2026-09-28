@@ -27,8 +27,8 @@ static const SpriteAnimation MenuBadge_tab_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = -0xD,
-    .unk_06            = 0xC,
+    .posX              = -0xD,
+    .posY              = 0xC,
     .frameInfoCallback = MenuBadge_tab_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation MenuBadge_tab_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_tab_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -54,19 +54,19 @@ static void MenuBadge_tab_Load(Sprite* sprites, MenuBadge_tab_Args* args) {
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x22;
-    anim.unk_04 = 0x5F;
-    anim.unk_06 = 6;
+    anim.animIndex = 0x22;
+    anim.posX      = 0x5F;
+    anim.posY      = 6;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x25;
-    anim.unk_04 = 0x80;
-    anim.unk_06 = 6;
+    anim.animIndex = 0x25;
+    anim.posX      = 0x80;
+    anim.posY      = 6;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x27;
-    anim.unk_04 = 0xA1;
-    anim.unk_06 = 6;
+    anim.animIndex = 0x27;
+    anim.posX      = 0xA1;
+    anim.posY      = 6;
     _Sprite_Load(&sprites[2], &anim);
 }
 
@@ -109,7 +109,7 @@ static s32 MenuBadge_tab_Update(TaskPool* pool, Task* task, void* args) {
             } else {
                 pageArg = 3;
             }
-            MenuBadge_ReloadBgScreen(&menuBadge->resources[3], menuBadge->resources[3].data, 1, 3, pageArg + 2);
+            MenuBadge_ReloadBgScreen(&menuBadge->resources[3], menuBadge->resources[3].data, DISPLAY_SUB, 3, pageArg + 2);
         }
     }
 

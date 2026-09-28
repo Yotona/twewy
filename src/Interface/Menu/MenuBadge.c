@@ -22,47 +22,41 @@
 #include <nitro/reg.h>
 
 typedef struct {
-    /* 0x00000 */ ResourceManager  resMgr;
-    /* 0x11580 */ ResourceManager* prevResMgr;
-    /* 0x11584 */ s32              spareDataType;
-    /* 0x11588 */ s32              dataType;
-    /* 0x1158C */ Heap             heap;
-    /* 0x11598 */ u8               heapBuffer[0x10000];
-    /* 0x21598 */ TaskPool         taskPool;
-    /* 0x21618 */ s32              taskId_Icon;
-    /* 0x2161C */ s32              taskId_Bdg[30];
-    /* 0x21694 */ s32              taskId_BdgLV[30];
-    /* 0x2170C */ s32              taskId_BdgBP[30];
-    /* 0x21784 */ s32              taskId_BdgNum[30];
-    /* 0x217FC */ s32              taskId_BdgSC[6];
-    /* 0x21814 */ s32              taskId_BdgPRI[6];
-    /* 0x2182C */ s32              taskId_SlotCover[6];
-    /* 0x21844 */ s32              taskId_BdgCur;
-    /* 0x21848 */ s32              taskId_Mov;
-    /* 0x2184C */ s32              taskId_Shadow;
-    /* 0x21850 */ s32              taskId_GbgBox;
-    /* 0x21854 */ s32              taskId_Sbar;
-    /* 0x21858 */ s32              taskId_Tab;
-    /* 0x2185C */ s32              taskId_TabDeck;
-    /* 0x21860 */ s32              taskId_TabBdgType;
-    /* 0x21864 */ s32              taskId_NumMoney;
-    /* 0x21868 */ s32              taskId_Window;
-    /* 0x2186C */ s32              taskId_TextScr;
-    /* 0x21870 */ s32              taskId_HelpCur;
-    /* 0x21874 */ s32              taskId_StkmstIn;
-    /* 0x21878 */ s32              taskId_Pointer;
-    /* 0x2187C */ s32              taskId_NameU;
-    /* 0x21880 */ s32              taskId_BdgU;
-    /* 0x21884 */ s32              taskId_BrdLogoU;
-    /* 0x21888 */ s32              taskId_TextScrU;
-    /* 0x2188C */ s32              taskId_NumBdgIdU;
-    /* 0x21890 */ s32              taskId_BpGaugeU;
-    /* 0x21894 */ s32              taskId_HelpCurU;
-    /* 0x21898 */ s32              taskId_MstStarU;
-    /* 0x2189C */ s32              exitReady;
-    /* 0x218A0 */ s16              timer;
-    /* 0x218A2 */ u16              inputDelay;
-    /* 0x218A4 */ MenuBadgeObject  menuBadge;
+    /* 0x00000 */ MenuStateBase   base;
+    /* 0x21618 */ s32             taskId_Icon;
+    /* 0x2161C */ s32             taskId_Bdg[30];
+    /* 0x21694 */ s32             taskId_BdgLV[30];
+    /* 0x2170C */ s32             taskId_BdgBP[30];
+    /* 0x21784 */ s32             taskId_BdgNum[30];
+    /* 0x217FC */ s32             taskId_BdgSC[6];
+    /* 0x21814 */ s32             taskId_BdgPRI[6];
+    /* 0x2182C */ s32             taskId_SlotCover[6];
+    /* 0x21844 */ s32             taskId_BdgCur;
+    /* 0x21848 */ s32             taskId_Mov;
+    /* 0x2184C */ s32             taskId_Shadow;
+    /* 0x21850 */ s32             taskId_GbgBox;
+    /* 0x21854 */ s32             taskId_Sbar;
+    /* 0x21858 */ s32             taskId_Tab;
+    /* 0x2185C */ s32             taskId_TabDeck;
+    /* 0x21860 */ s32             taskId_TabBdgType;
+    /* 0x21864 */ s32             taskId_NumMoney;
+    /* 0x21868 */ s32             taskId_Window;
+    /* 0x2186C */ s32             taskId_TextScr;
+    /* 0x21870 */ s32             taskId_HelpCur;
+    /* 0x21874 */ s32             taskId_StkmstIn;
+    /* 0x21878 */ s32             taskId_Pointer;
+    /* 0x2187C */ s32             taskId_NameU;
+    /* 0x21880 */ s32             taskId_BdgU;
+    /* 0x21884 */ s32             taskId_BrdLogoU;
+    /* 0x21888 */ s32             taskId_TextScrU;
+    /* 0x2188C */ s32             taskId_NumBdgIdU;
+    /* 0x21890 */ s32             taskId_BpGaugeU;
+    /* 0x21894 */ s32             taskId_HelpCurU;
+    /* 0x21898 */ s32             taskId_MstStarU;
+    /* 0x2189C */ s32             exitReady;
+    /* 0x218A0 */ s16             timer;
+    /* 0x218A2 */ u16             inputDelay;
+    /* 0x218A4 */ MenuBadgeObject menuBadge;
 } MenuBadgeState; // Size: 0x2CB18
 
 static MenuBadgeState* data_ov043_020cd280;
@@ -126,7 +120,7 @@ const BinIdentifier MenuBadge_BinIdentifiers[15] = {
 };
 
 // Position of each badge slot: 0-5 the current deck, 6-29 the visible list page.
-const MenuBadgePoint MenuBadge_SlotPositions[30] = {
+const Point MenuBadge_SlotPositions[30] = {
     { 21,  39},
     { 55,  39},
     { 89,  39},
@@ -162,18 +156,18 @@ const MenuBadgePoint MenuBadge_SlotPositions[30] = {
 void MenuBadge_DestroySlotTasks(MenuBadgeObject* menuBadge, s16 index, u8 listMode) {
     MenuBadgeState* state = data_ov043_020cd280;
 
-    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->taskPool, state->taskId_Bdg[index]));
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Bdg[index]);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgLV[index]);
+    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->base.taskPool, state->taskId_Bdg[index]));
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Bdg[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgLV[index]);
     if (listMode == 0) {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgBP[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgBP[index]);
     } else if (index < 6) {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgBP[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgBP[index]);
     } else {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgNum[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgNum[index]);
     }
     if (index < 6) {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgSC[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgSC[index]);
     }
 }
 
@@ -181,17 +175,18 @@ void MenuBadge_CreateSlotTasks(MenuBadgeObject* menuBadge, s32 index, u8 listMod
     MenuBadgeState* state = data_ov043_020cd280;
     u16             slot  = index;
 
-    state->taskId_Bdg[index]   = MenuBadge_bdg_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
-    state->taskId_BdgLV[index] = MenuBadge_bdgLV_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+    state->taskId_Bdg[index]   = MenuBadge_bdg_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
+    state->taskId_BdgLV[index] = MenuBadge_bdgLV_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
     if (listMode == 0) {
-        state->taskId_BdgBP[index] = MenuBadge_bdgBP_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+        state->taskId_BdgBP[index] = MenuBadge_bdgBP_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
     } else if (index < 6) {
-        state->taskId_BdgBP[index] = MenuBadge_bdgBP_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+        state->taskId_BdgBP[index] = MenuBadge_bdgBP_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
     } else {
-        state->taskId_BdgNum[index] = MenuBadge_bdgNum_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+        state->taskId_BdgNum[index] =
+            MenuBadge_bdgNum_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
     }
     if (index < 6) {
-        state->taskId_BdgSC[index] = MenuBadge_bdgSC_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+        state->taskId_BdgSC[index] = MenuBadge_bdgSC_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
     }
 }
 
@@ -248,7 +243,7 @@ void MenuBadge_InitState(MenuBadgeState* state) {
         menuBadge->sellArrowPressed[j] = 0;
     }
     for (k = 0; k < 30; k++) {
-        menuBadge->slotVisible[k] = 1;
+        menuBadge->slotVisible[k] = TRUE;
     }
     for (l = 0; l < 3; l++) {
         menuBadge->helpButtonPressed[l] = 0;
@@ -262,36 +257,37 @@ void MenuBadge_InitState(MenuBadgeState* state) {
 void MenuBadge_CreateTasks(MenuBadgeState* state) {
     MenuBadgeObject* menuBadge = &state->menuBadge;
 
-    EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -0x10, 0x1000);
-    state->taskId_Pointer = MenuBadge_pointer_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_Icon    = MenuBadge_icon_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_Tab     = MenuBadge_tab_CreateTask(&state->taskPool, state->dataType, menuBadge);
+    state->taskId_Pointer = MenuBadge_pointer_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_Icon    = MenuBadge_icon_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_Tab     = MenuBadge_tab_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
     for (u16 i = 0; i < 30; i++) {
         MenuBadge_CreateSlotTasks(menuBadge, (s16)i, menuBadge->listMode);
     }
     for (u16 i = 0; i < 6; i++) {
-        state->taskId_BdgPRI[i] = MenuBadge_bdgPRI_CreateTask(&state->taskPool, state->dataType, i, menuBadge);
+        state->taskId_BdgPRI[i] = MenuBadge_bdgPRI_CreateTask(&state->base.taskPool, state->base.dataType, i, menuBadge);
     }
     for (u16 i = 0; i < 6; i++) {
         if (i >= menuBadge->deckSlotCount) {
-            state->taskId_SlotCover[i] = MenuBadge_slotCover_CreateTask(&state->taskPool, state->dataType, i, menuBadge);
+            state->taskId_SlotCover[i] =
+                MenuBadge_slotCover_CreateTask(&state->base.taskPool, state->base.dataType, i, menuBadge);
         }
     }
-    state->taskId_BdgCur     = MenuBadge_bdgCur_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_NameU      = MenuBadge_nameU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_GbgBox     = MenuBadge_gbgBox_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_Sbar       = func_ov043_02094dc0(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_TabDeck    = MenuBadge_tabDeck_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_TabBdgType = MenuBadge_tabBdgType_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_NumMoney   = MenuBadge_numMoney_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_TextScr    = MenuBadge_textScr_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_BdgU       = MenuBadge_bdgU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_TextScrU   = MenuBadge_textScrU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_BrdLogoU   = MenuBadge_brdLogoU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_NumBdgIdU  = MenuBadge_numBdgIdU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_BpGaugeU   = MenuBadge_bpGaugeU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_MstStarU   = MenuBadge_mstStarU_CreateTask(&state->taskPool, state->dataType, menuBadge);
+    state->taskId_BdgCur     = MenuBadge_bdgCur_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_NameU      = MenuBadge_nameU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_GbgBox     = MenuBadge_gbgBox_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_Sbar       = MenuBadge_sbar_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_TabDeck    = MenuBadge_tabDeck_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_TabBdgType = MenuBadge_tabBdgType_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_NumMoney   = MenuBadge_numMoney_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_TextScr    = MenuBadge_textScr_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_BdgU       = MenuBadge_bdgU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_TextScrU   = MenuBadge_textScrU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_BrdLogoU   = MenuBadge_brdLogoU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_NumBdgIdU  = MenuBadge_numBdgIdU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_BpGaugeU   = MenuBadge_bpGaugeU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_MstStarU   = MenuBadge_mstStarU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
 }
 
 s32 MenuBadge_InsertIntoStockpile(MenuBadgeObject* menuBadge, MenuBadgeEntry* entry) {
@@ -393,7 +389,7 @@ s32 MenuBadge_StockpileUnequip(MenuBadgeObject* menuBadge, s32 src, s32 dst) {
         MenuBadge_AddToMastered(menuBadge, &menuBadge->dragBadge);
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_STOCK_MASTER_IN);
         state->taskId_StkmstIn =
-            MenuBadge_stkmstIn_CreateTask(&state->taskPool, state->dataType, menuBadge->touchPos, 1, menuBadge);
+            MenuBadge_stkmstIn_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge->touchPos, 1, menuBadge);
     }
     MenuBadge_ClearSlot(menuBadge, menuBadge->dragSrc, menuBadge->listMode);
     return 1;
@@ -414,8 +410,8 @@ s32 MenuBadge_StockpileEquip(MenuBadgeObject* menuBadge, s32 src, s32 dst) {
             {
                 MenuBadgeState* state = data_ov043_020cd280;
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_STOCK_MASTER_IN);
-                state->taskId_StkmstIn =
-                    MenuBadge_stkmstIn_CreateTask(&state->taskPool, state->dataType, menuBadge->touchPos, 1, menuBadge);
+                state->taskId_StkmstIn = MenuBadge_stkmstIn_CreateTask(&state->base.taskPool, state->base.dataType,
+                                                                       menuBadge->touchPos, 1, menuBadge);
             }
         }
     } else {
@@ -456,7 +452,7 @@ s32 MenuBadge_MasteredUnequip(MenuBadgeObject* menuBadge, s32 src, s32 dst) {
         }
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_STOCK_MASTER_IN);
         state->taskId_StkmstIn =
-            MenuBadge_stkmstIn_CreateTask(&state->taskPool, state->dataType, menuBadge->touchPos, 0, menuBadge);
+            MenuBadge_stkmstIn_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge->touchPos, 0, menuBadge);
     } else {
         MenuBadge_AddToMastered(menuBadge, &menuBadge->dragBadge);
     }
@@ -476,8 +472,8 @@ s32 MenuBadge_MasteredEquip(MenuBadgeObject* menuBadge, s32 src, s32 dst) {
             {
                 MenuBadgeState* state = data_ov043_020cd280;
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_STOCK_MASTER_IN);
-                state->taskId_StkmstIn =
-                    MenuBadge_stkmstIn_CreateTask(&state->taskPool, state->dataType, menuBadge->touchPos, 0, menuBadge);
+                state->taskId_StkmstIn = MenuBadge_stkmstIn_CreateTask(&state->base.taskPool, state->base.dataType,
+                                                                       menuBadge->touchPos, 0, menuBadge);
             }
         } else if (menuBadge->slots[src]->pinId == menuBadge->slots[dst]->pinId) {
             MenuBadge_CreateSlotTasks(menuBadge, menuBadge->dragSrc, menuBadge->listMode);
@@ -573,10 +569,10 @@ s32 MenuBadge_DropBadge(MenuBadgeObject* menuBadge, u8 listMode, s32 src, s32 ds
 void MenuBadge_RefreshBadgeInfo(MenuBadgeState* state) {
     MenuBadgeObject* menuBadge = &state->menuBadge;
 
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgU);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BrdLogoU);
-    state->taskId_BdgU     = MenuBadge_bdgU_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_BrdLogoU = MenuBadge_brdLogoU_CreateTask(&state->taskPool, state->dataType, menuBadge);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgU);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BrdLogoU);
+    state->taskId_BdgU     = MenuBadge_bdgU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_BrdLogoU = MenuBadge_brdLogoU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
     menuBadge->flags |= MENUBADGE_FLAG_REDRAW_INFO;
 }
 
@@ -643,18 +639,19 @@ void func_ov043_0208d194(MenuBadgeObject* menuBadge) {
     if (slot < 6) {
         if ((menuBadge->slots[slot]->unk_16 != 2) && (menuBadge->slots[slot]->pinId != 0xFFFF)) {
             SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
-            EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgSC[slot]);
+            EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgSC[slot]);
             menuBadge->slots[slot]->unk_16 = 1 - menuBadge->slots[slot]->unk_16;
-            state->taskId_BdgSC[slot]      = MenuBadge_bdgSC_CreateTask(&state->taskPool, state->dataType, slot, menuBadge);
+            state->taskId_BdgSC[slot] =
+                MenuBadge_bdgSC_CreateTask(&state->base.taskPool, state->base.dataType, slot, menuBadge);
         }
     }
 }
 
 void MenuBadge_DestroyDragTasks(MenuBadgeState* state) {
-    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->taskPool, state->taskId_Mov));
-    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->taskPool, state->taskId_Shadow));
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Mov);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Shadow);
+    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->base.taskPool, state->taskId_Mov));
+    Sprite_Release(MenuBadge_bdg_GetTaskData(&state->base.taskPool, state->taskId_Shadow));
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Mov);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Shadow);
 }
 
 void MenuBadge_UpdateCursorBadge(MenuBadgeObject* menuBadge) {
@@ -843,8 +840,8 @@ void MenuBadge_StageOpenHelp(MenuBadgeState* state) {
     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG1 | LAYER_BG2;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG2;
-    state->taskId_HelpCur    = MenuBadge_helpCur_CreateTask(&state->taskPool, state->dataType, menuBadge);
-    state->taskId_HelpCurU   = MenuBadge_helpCurU_CreateTask(&state->taskPool, state->dataType, menuBadge);
+    state->taskId_HelpCur    = MenuBadge_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+    state->taskId_HelpCurU   = MenuBadge_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
     menuBadge->windowMessage = 1;
     menuBadge->flags |= MENUBADGE_FLAG_REDRAW_INFO;
     DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageHelp, state, PROCESS_STAGE_INIT);
@@ -863,8 +860,8 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
             if (TouchInput_WasTouchReleased()) {
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CLICK02);
                 menuBadge->flags &= ~MENUBADGE_FLAG_DRAGGING;
-                EasyTask_DeleteTask(&state->taskPool, state->taskId_Mov);
-                EasyTask_DeleteTask(&state->taskPool, state->taskId_Shadow);
+                EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Mov);
+                EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Shadow);
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageBeginSell, state, PROCESS_STAGE_INIT);
                 return;
             }
@@ -880,11 +877,12 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
                     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_KINSHI);
                     menuBadge->windowMessage = menuBadge->slots[menuBadge->dragSrc]->pinClass + 5;
                     menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
-                    state->taskId_Window = MenuBadge_window2_CreateTask(&state->taskPool, state->dataType, menuBadge);
+                    state->taskId_Window =
+                        MenuBadge_window2_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
                     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
                     DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageErrorMessage, state, PROCESS_STAGE_INIT);
                 }
-                menuBadge->slotVisible[menuBadge->dragSrc] = 1;
+                menuBadge->slotVisible[menuBadge->dragSrc] = TRUE;
                 menuBadge->flags &= ~MENUBADGE_FLAG_DRAGGING;
                 menuBadge->flags &= ~MENUBADGE_FLAG_DROP_VALID;
             }
@@ -892,7 +890,7 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
             menuBadge->flags &= ~MENUBADGE_FLAG_DROP_VALID;
             if (TouchInput_WasTouchReleased()) {
                 MenuBadge_DestroyDragTasks(state);
-                menuBadge->slotVisible[menuBadge->dragSrc] = 1;
+                menuBadge->slotVisible[menuBadge->dragSrc] = TRUE;
                 menuBadge->flags &= ~MENUBADGE_FLAG_DRAGGING;
             }
         }
@@ -913,9 +911,9 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
             } else {
                 menuBadge->cursorListIndex = menuBadge->listTop + (menuBadge->dragSrc - 6);
             }
-            menuBadge->slotVisible[menuBadge->dragSrc] = 0;
-            state->taskId_Mov    = MenuBadge_mov_CreateTask(&state->taskPool, state->dataType, menuBadge);
-            state->taskId_Shadow = MenuBadge_shadow_CreateTask(&state->taskPool, state->dataType, menuBadge);
+            menuBadge->slotVisible[menuBadge->dragSrc] = FALSE;
+            state->taskId_Mov    = MenuBadge_mov_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+            state->taskId_Shadow = MenuBadge_shadow_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
             MenuBadge_RefreshBadgeInfo(state);
             return;
         }
@@ -935,7 +933,7 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
                 }
             }
             MenuBadge_SwitchList(menuBadge, menuBadge->listMode, 0);
-            MenuBadge_ReloadBgScreen(&menuBadge->resources[7], menuBadge->resources[7].data, 0, 3,
+            MenuBadge_ReloadBgScreen(&menuBadge->resources[7], menuBadge->resources[7].data, DISPLAY_MAIN, 3,
                                      (menuBadge->listMode * 2) + 2);
             return;
         }
@@ -957,7 +955,7 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
                 menuBadge->windowMessage = 3;
                 menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
-                state->taskId_Window = MenuBadge_window1_CreateTask(&state->taskPool, state->dataType, menuBadge);
+                state->taskId_Window = MenuBadge_window1_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageSortWindow, state, PROCESS_STAGE_INIT);
                 return;
@@ -966,8 +964,8 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
                 g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG1 | LAYER_BG2;
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG2;
-                state->taskId_HelpCur    = MenuBadge_helpCur_CreateTask(&state->taskPool, state->dataType, menuBadge);
-                state->taskId_HelpCurU   = MenuBadge_helpCurU_CreateTask(&state->taskPool, state->dataType, menuBadge);
+                state->taskId_HelpCur  = MenuBadge_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
+                state->taskId_HelpCurU = MenuBadge_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
                 menuBadge->windowMessage = 1;
                 menuBadge->flags |= MENUBADGE_FLAG_REDRAW_INFO;
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageHelp, state, PROCESS_STAGE_INIT);
@@ -979,7 +977,7 @@ void MenuBadge_StageMain(MenuBadgeState* state) {
                 menuBadge->excessPinCount = total - 200;
                 menuBadge->windowMessage  = 10;
                 menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
-                state->taskId_Window = MenuBadge_window2_CreateTask(&state->taskPool, state->dataType, menuBadge);
+                state->taskId_Window = MenuBadge_window2_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageErrorMessage, state, PROCESS_STAGE_INIT);
                 return;
@@ -1009,11 +1007,11 @@ void MenuBadge_StageErrorMessage(MenuBadgeState* state) {
     MenuBadgeObject* menuBadge = &state->menuBadge;
 
     if (TouchInput_WasTouchPressed()) {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_Window);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Window);
         g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG1;
         g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
         menuBadge->windowMessage                   = 0;
-        menuBadge->slotVisible[menuBadge->dragSrc] = 1;
+        menuBadge->slotVisible[menuBadge->dragSrc] = TRUE;
         DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageMain, state, PROCESS_STAGE_INIT);
     }
 }
@@ -1046,7 +1044,7 @@ void MenuBadge_SellBadge(MenuBadgeState* state) {
                 MenuBadge_RefreshSlot(menuBadge, menuBadge->dragSrc, menuBadge->listMode);
             }
         }
-        menuBadge->slotVisible[menuBadge->dragSrc] = 1;
+        menuBadge->slotVisible[menuBadge->dragSrc] = TRUE;
         menuBadge->windowMessage                   = 0;
         if (menuBadge->autoArrange == 1) {
             if (menuBadge->autoArrangeBy[0] == 1) {
@@ -1106,7 +1104,7 @@ void MenuBadge_StageBeginSell(MenuBadgeState* state) {
             menuBadge->windowMessage = 11;
             menuBadge->flags |= MENUBADGE_FLAG_MONEY_CAP_WARNED;
             menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
-            state->taskId_Window = MenuBadge_window2_CreateTask(&state->taskPool, state->dataType, menuBadge);
+            state->taskId_Window = MenuBadge_window2_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
             g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
             DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageErrorMessage, state, PROCESS_STAGE_INIT);
             return;
@@ -1118,7 +1116,7 @@ void MenuBadge_StageBeginSell(MenuBadgeState* state) {
         menuBadge->windowMessage = 2;
         menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
         menuBadge->sellCount = 1;
-        state->taskId_Window = MenuBadge_window0_CreateTask(&state->taskPool, state->dataType, menuBadge);
+        state->taskId_Window = MenuBadge_window0_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
         g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
         DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageSellConfirm, state, PROCESS_STAGE_INIT);
         return;
@@ -1126,7 +1124,7 @@ void MenuBadge_StageBeginSell(MenuBadgeState* state) {
     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_KINSHI);
     menuBadge->windowMessage = 4;
     menuBadge->flags |= MENUBADGE_FLAG_REDRAW_WINDOW;
-    state->taskId_Window = MenuBadge_window2_CreateTask(&state->taskPool, state->dataType, menuBadge);
+    state->taskId_Window = MenuBadge_window2_CreateTask(&state->base.taskPool, state->base.dataType, menuBadge);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
     DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageErrorMessage, state, PROCESS_STAGE_INIT);
 }
@@ -1232,11 +1230,11 @@ void MenuBadge_StageCloseSellWindow(MenuBadgeState* state) {
         menuBadge->windowCloseTimer--;
         return;
     }
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Window);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Window);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG1;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
     menuBadge->windowMessage                   = 0;
-    menuBadge->slotVisible[menuBadge->dragSrc] = 1;
+    menuBadge->slotVisible[menuBadge->dragSrc] = TRUE;
     DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageMain, state, PROCESS_STAGE_INIT);
 }
 
@@ -1308,7 +1306,7 @@ void MenuBadge_StageCloseSortWindow(MenuBadgeState* state) {
         menuBadge->windowCloseTimer--;
         return;
     }
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Window);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Window);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG1;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
     menuBadge->windowMessage = 0;
@@ -1374,8 +1372,8 @@ void MenuBadge_StageCloseHelp(MenuBadgeState* state) {
         g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG1;
         g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG2;
         g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCur);
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCurU);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCur);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCurU);
         menuBadge->helpPage      = 0;
         menuBadge->windowMessage = 0;
         menuBadge->flags |= MENUBADGE_FLAG_REDRAW_INFO;
@@ -1398,15 +1396,15 @@ void MenuBadge_Init(MenuBadgeState* state) {
         data_ov043_020cd280 = state;
         MainOvlDisp_SetCbArg(state);
     }
-    state->spareDataType = DatMgr_AllocateSlot();
-    state->dataType      = DatMgr_AllocateSlot();
+    state->base.spareDataType = DatMgr_AllocateSlot();
+    state->base.dataType      = DatMgr_AllocateSlot();
     MenuBadge_RegisterVBlank();
-    state->prevResMgr = ResourceMgr_ReinitManagers(&state->resMgr);
+    state->base.prevResMgr = ResourceMgr_ReinitManagers(&state->base.resMgr);
     Mem_ValidateSequences(&gMainHeap);
     Mem_ValidateSequences(&gDebugHeap);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x100, NULL, NULL);
+    Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
+    EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x100, NULL, NULL);
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
     data_02066aec = 0;
     data_02066eec = 0;
@@ -1431,7 +1429,7 @@ void MenuBadge_Update(MenuBadgeState* state) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     MenuBadge_UpdateBackgrounds(menuBadge);
     DebugOvlDisp_Run();
-    EasyTask_UpdatePool(&state->taskPool);
+    EasyTask_UpdatePool(&state->base.taskPool);
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->exitReady = 1;
     }
@@ -1458,10 +1456,10 @@ void MenuBadge_Destroy(MenuBadgeState* state) {
 
     MenuBadge_WriteBackToSave(menuBadge);
     MenuBadge_ReleaseBackgrounds(menuBadge);
-    EasyTask_DestroyPool(&state->taskPool);
+    EasyTask_DestroyPool(&state->base.taskPool);
     ResourceMgr_ReinitManagers(NULL);
-    DatMgr_ClearSlot(state->spareDataType);
-    DatMgr_ClearSlot(state->dataType);
+    DatMgr_ClearSlot(state->base.spareDataType);
+    DatMgr_ClearSlot(state->base.dataType);
     MenuBadge_DeregisterVBlank();
     FS_UnloadOverlay(0, (u32)&OVERLAY_31_ID);
     Mem_Free(&gDebugHeap, state);

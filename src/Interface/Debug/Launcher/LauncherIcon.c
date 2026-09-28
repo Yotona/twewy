@@ -31,8 +31,8 @@ SpriteAnimation data_ov046_02084804 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0,
-    .unk_06            = 0,
+    .posX              = 0,
+    .posY              = 0,
     .frameInfoCallback = func_ov046_02083698,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ SpriteAnimation data_ov046_02084804 = {
     .unk_24            = 0,
     .unk_26            = 0,
     .unk_28            = 0,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 const TaskHandle Tsk_LauncherIcon = {"LauncherIcon", LauncherIcon_RunTask, sizeof(LauncherIcon)};
@@ -90,25 +90,25 @@ s32 func_ov046_020837f8(LauncherIcon* icon, LauncherIcon_Args* args) {
     icon->unk_08                  = 0;
     icon->unk_0C                  = 0;
     data_ov046_02084804.dataType  = args->dataType;
-    data_ov046_02084804.unk_04    = args->unk_8 + 16;
-    data_ov046_02084804.unk_06    = args->unk_C + 16;
+    data_ov046_02084804.posX      = args->unk_8 + 16;
+    data_ov046_02084804.posY      = args->unk_C + 16;
     data_ov046_02084804.owner     = icon;
     data_ov046_02084804.packIndex = 2;
     if (args->unk_4 < 10) {
-        data_ov046_02084804.unk_2A = args->unk_4 + 1;
-        data_ov046_02084804.unk_1C = 4;
-        data_ov046_02084804.unk_26 = 5;
-        data_ov046_02084804.unk_28 = 6;
+        data_ov046_02084804.animIndex = args->unk_4 + 1;
+        data_ov046_02084804.unk_1C    = 4;
+        data_ov046_02084804.unk_26    = 5;
+        data_ov046_02084804.unk_28    = 6;
     } else if (args->unk_4 < 37) {
-        data_ov046_02084804.unk_2A = args->unk_4 - 10;
-        data_ov046_02084804.unk_1C = 1;
-        data_ov046_02084804.unk_26 = 2;
-        data_ov046_02084804.unk_28 = 3;
+        data_ov046_02084804.animIndex = args->unk_4 - 10;
+        data_ov046_02084804.unk_1C    = 1;
+        data_ov046_02084804.unk_26    = 2;
+        data_ov046_02084804.unk_28    = 3;
     } else {
-        data_ov046_02084804.unk_2A = args->unk_4 - 37;
-        data_ov046_02084804.unk_1C = 7;
-        data_ov046_02084804.unk_26 = 8;
-        data_ov046_02084804.unk_28 = 9;
+        data_ov046_02084804.animIndex = args->unk_4 - 37;
+        data_ov046_02084804.unk_1C    = 7;
+        data_ov046_02084804.unk_26    = 8;
+        data_ov046_02084804.unk_28    = 9;
     }
     _Sprite_Load(&icon->sprite, &data_ov046_02084804);
     return 1;

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite         sprites[5];
-    /* 0x140 */ s32            visible[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
     /* 0x158 */ s32            initialDropRate;
     /* 0x15C */ u16            prevLevel;
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuTop_luckNum_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 230,
-    .unk_06            = 180,
+    .posX              = 230,
+    .posY              = 180,
     .frameInfoCallback = MenuTop_luckNum_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,11 +43,10 @@ static const SpriteAnimation MenuTop_luckNum_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
-// Nonmatching
-static void MenuTop_luckNum_Refresh(MenuTop_luckNum* luckNum) {
+void MenuTop_luckNum_Refresh(MenuTop_luckNum* luckNum) {
     u32 luckVal = luckNum->topMenu->dropRate;
     s32 digits[5];
 
@@ -64,13 +63,14 @@ static void MenuTop_luckNum_Refresh(MenuTop_luckNum* luckNum) {
     digits[4] = luckVal % 10;
 
     for (u16 i = 0; i < 5; i++) {
-        luckNum->visible[i] = 1;
+        luckNum->visible[i] = TRUE;
     }
 
     for (u16 i = 0; i < 4; i++) {
-        if (digits[i] == 0) {
-            luckNum->visible[i] = 0;
+        if (digits[i] != 0) {
+            break;
         }
+        luckNum->visible[i] = FALSE;
     }
 
     for (u16 i = 0; i < 5; i++) {
@@ -82,14 +82,15 @@ static SpriteFrameInfo* MenuTop_luckNum_GetFrameInfo(Sprite* sprite, s32 arg, s3
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-// Nonmatching
 void MenuTop_luckNum_Load(MenuTop_luckNum* luckNum, Sprite* sprites, MenuTop_luckNum_Args* args) {
-    SpriteAnimation anim = MenuTop_luckNum_Anim;
+    MenuTopObject*  topMenu = luckNum->topMenu;
+    SpriteAnimation anim    = MenuTop_luckNum_Anim;
+    u32             luckVal;
+    s32             digits[5];
 
     anim.dataType = args->dataType;
 
-    u32 luckVal = luckNum->topMenu->dropRate;
-    s32 digits[5];
+    luckVal = topMenu->dropRate;
 
     if (luckVal > 999)
         luckVal = 999;
@@ -104,19 +105,20 @@ void MenuTop_luckNum_Load(MenuTop_luckNum* luckNum, Sprite* sprites, MenuTop_luc
     digits[4] = luckVal % 10;
 
     for (u16 i = 0; i < 5; i++) {
-        luckNum->visible[i] = 1;
+        luckNum->visible[i] = TRUE;
     }
 
     for (u16 i = 0; i < 4; i++) {
-        if (digits[i] == 0) {
-            luckNum->visible[i] = 0;
+        if (digits[i] != 0) {
+            break;
         }
+        luckNum->visible[i] = FALSE;
     }
 
     for (u16 i = 0; i < 5; i++) {
-        anim.unk_2A = (s16)(digits[i] + 1);
-        anim.unk_04 = (s16)(i * 8 + 214);
-        anim.unk_06 = 182;
+        anim.animIndex = (s16)(digits[i] + 1);
+        anim.posX      = (s16)(i * 8 + 214);
+        anim.posY      = 182;
         _Sprite_Load(&sprites[i], &anim);
     }
 }

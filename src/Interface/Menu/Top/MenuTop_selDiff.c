@@ -5,7 +5,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite          sprites[5];
-    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
     /* 0x158 */ s16            selectedIndex;
     /* 0x15A */ s16            state;
@@ -14,7 +14,7 @@ typedef struct {
     /* 0x160 */ u8             unk_160[0xC];
     /* 0x16C */ s16            lastCursorY;
     /* 0x16E */ u16            unk_16E;
-    /* 0x170 */ s32            lastVisible;
+    /* 0x170 */ BOOL           lastVisible;
 } MenuTop_selDiff;
 
 typedef struct {
@@ -37,8 +37,8 @@ static const SpriteAnimation MenuTop_selDiff_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_selDiff_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -52,7 +52,7 @@ static const SpriteAnimation MenuTop_selDiff_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static s16 MenuTop_selDiff_GetRowY(u16 row) {
@@ -70,10 +70,10 @@ static void MenuTop_selDiff_Load(MenuTop_selDiff* taskData, Sprite* sprites, Men
     SpriteAnimation anim = MenuTop_selDiff_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = MenuTop_selDiff_GetRowY(args->selectedIndex);
+    anim.posX     = MenuTop_selDiff_GetRowY(args->selectedIndex);
 
-    taskData->visibleFlags[0] = 0;
-    taskData->lastVisible     = 0;
+    taskData->visible[0]  = FALSE;
+    taskData->lastVisible = FALSE;
     _Sprite_Load(&sprites[0], &anim);
 
     taskData->lastCursorY = MenuTop_selDiff_GetRowY(args->selectedIndex);
@@ -82,17 +82,17 @@ static void MenuTop_selDiff_Load(MenuTop_selDiff* taskData, Sprite* sprites, Men
         u16 frameIndex = MenuTop_GetDifficultyForRow(i, taskData->topMenu->unlockedDifficulty);
 
         if (frameIndex == 0xFF) {
-            anim.unk_2A = 1;
-            anim.unk_04 = 98;
-            anim.unk_06 = MenuTop_selDiff_GetRowY(i);
+            anim.animIndex = 1;
+            anim.posX      = 98;
+            anim.posY      = MenuTop_selDiff_GetRowY(i);
             _Sprite_Load(&sprites[i + 1], &anim);
-            taskData->visibleFlags[i + 1] = 0;
+            taskData->visible[i + 1] = FALSE;
         } else {
-            anim.unk_2A = 0x2F - frameIndex;
-            anim.unk_04 = 98;
-            anim.unk_06 = MenuTop_selDiff_GetRowY(i);
+            anim.animIndex = 0x2F - frameIndex;
+            anim.posX      = 98;
+            anim.posY      = MenuTop_selDiff_GetRowY(i);
             _Sprite_Load(&sprites[i + 1], &anim);
-            taskData->visibleFlags[i + 1] = 1;
+            taskData->visible[i + 1] = TRUE;
         }
     }
 }
@@ -131,9 +131,9 @@ static s32 MenuTop_selDiff_Update(TaskPool* pool, Task* task, void* args) {
                 taskData->selectedIndex =
                     MenuTop_GetDifficultyRowAtPoint((s16)coord.x, (s16)coord.y, topMenu->unlockedDifficulty);
                 if (taskData->selectedIndex == -1) {
-                    taskData->visibleFlags[0] = 0;
+                    taskData->visible[0] = FALSE;
                 } else {
-                    taskData->visibleFlags[0] = 1;
+                    taskData->visible[0]      = TRUE;
                     taskData->sprites[0].posY = MenuTop_selDiff_GetRowY(taskData->selectedIndex);
                 }
             } else {
@@ -169,12 +169,12 @@ static s32 MenuTop_selDiff_Update(TaskPool* pool, Task* task, void* args) {
             return 0;
     }
 
-    if (taskData->lastCursorY != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visibleFlags[0] == 1)) {
+    if (taskData->lastCursorY != taskData->sprites[0].posY || (taskData->lastVisible == 0 && taskData->visible[0] == 1)) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_SCROLL);
     }
 
     taskData->lastCursorY = (s16)taskData->sprites[0].posY;
-    taskData->lastVisible = taskData->visibleFlags[0];
+    taskData->lastVisible = taskData->visible[0];
 
     for (s32 i = 0; i < 5; i++) {
         Sprite_Update(&taskData->sprites[i]);
@@ -186,7 +186,7 @@ static s32 MenuTop_selDiff_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_selDiff* taskData = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (taskData->visibleFlags[i] != 0) {
+        if (taskData->visible[i] != 0) {
             Sprite_RenderFrame(&taskData->sprites[i]);
         }
     }

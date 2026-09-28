@@ -36,8 +36,8 @@ static const SpriteAnimation data_ov043_020ca4e4 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0xD1,
-    .unk_06            = 0x38,
+    .posX              = 0xD1,
+    .posY              = 0x38,
     .frameInfoCallback = Shop_sbar_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -51,7 +51,7 @@ static const SpriteAnimation data_ov043_020ca4e4 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 // Nonmatching: regswap
@@ -88,19 +88,19 @@ static void Shop_sbar_Load(Sprite* sprite, Shop_sbar_Args* args) {
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 45;
-    anim.unk_04 = 209;
-    anim.unk_06 = 56;
+    anim.animIndex = 45;
+    anim.posX      = 209;
+    anim.posY      = 56;
     _Sprite_Load(&sprite[0], &anim);
 
-    anim.unk_2A = 43;
-    anim.unk_04 = 209;
-    anim.unk_06 = 29;
+    anim.animIndex = 43;
+    anim.posX      = 209;
+    anim.posY      = 29;
     _Sprite_Load(&sprite[1], &anim);
 
-    anim.unk_2A = 44;
-    anim.unk_04 = 209;
-    anim.unk_06 = 102;
+    anim.animIndex = 44;
+    anim.posX      = 209;
+    anim.posY      = 102;
     _Sprite_Load(&sprite[2], &anim);
 }
 

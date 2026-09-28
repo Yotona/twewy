@@ -10,7 +10,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ BOOL        shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
 } Shop_boardU; // Size: 0x48
 
@@ -26,8 +26,8 @@ static const SpriteAnimation data_ov043_020cad38 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_boardU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation data_ov043_020cad38 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_Shop_boardU = {"Tsk_Shop_boardU", Shop_boardU_RunTask, sizeof(Shop_boardU)};
@@ -59,12 +59,12 @@ static void Shop_boardU_Load(Shop_boardU* board, Sprite* sprite, Shop_boardU_Arg
     u32             val;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = 17;
-    anim.unk_06   = 19;
+    anim.posX     = 17;
+    anim.posY     = 19;
 
     if (args->unk_8 == 0xFFFF) {
-        board->shouldRender = FALSE;
-        val                 = 1;
+        board->visible = FALSE;
+        val            = 1;
     } else {
         ItemCategory category = Inventory_GetCategory(args->unk_8);
         if (category == ITEM_CATEGORY_THREAD) {
@@ -80,7 +80,7 @@ static void Shop_boardU_Load(Shop_boardU* board, Sprite* sprite, Shop_boardU_Arg
             func_ov043_020af548(&treasureData, Inventory_GetCategorizedIndex(args->unk_8));
             val = treasureData.unk_00;
         }
-        board->shouldRender = TRUE;
+        board->visible = TRUE;
     }
 
     _Sprite_Load(sprite, &anim);
@@ -106,7 +106,7 @@ static s32 Shop_boardU_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_boardU_Render(TaskPool* pool, Task* task, void* args) {
     Shop_boardU* board = task->data;
 
-    if (board->shouldRender) {
+    if (board->visible) {
         Sprite_RenderFrame(&board->sprite);
     }
     return 1;

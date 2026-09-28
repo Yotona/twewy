@@ -119,6 +119,10 @@ PaletteResource* PaletteMgr_AcquireMasked(PaletteMgr* mgr, void* source, u32 slo
  */
 PaletteResource* PaletteMgr_AllocPalette(PaletteMgr* mgr, void* sourcePalette, u32 slotType, s16 start, u32 count);
 
+// The menu BG loaders call PaletteMgr_AllocPalette without its prototype in scope, so `start` is
+// passed through as a plain int instead of being narrowed to s16.
+#define PaletteMgr_AllocPaletteNoProto ((PaletteResource * (*)()) PaletteMgr_AllocPalette)
+
 /**
  * @brief Release a palette resource, freeing its slot and allowing reuse.
  *

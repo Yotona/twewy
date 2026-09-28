@@ -4,7 +4,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite      sprite;
-    /* 0x040 */ BOOL        shouldRender;
+    /* 0x040 */ BOOL        visible;
     /* 0x044 */ ShopObject* shop;
     /* 0x048 */ SysFont     fonts[2];
     /* 0x140 */ char        unk_140[0x142 - 0x140];
@@ -31,8 +31,8 @@ static const SpriteAnimation Shop_window0_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_window0_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ static const SpriteAnimation Shop_window0_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Shop_window0_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,14 +56,14 @@ SpriteFrameInfo* Shop_window0_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
 void Shop_window0_Load(Shop_window0* window, Sprite* sprite, Shop_window0_Args* windowArgs) {
     SpriteAnimation anim = Shop_window0_Anim;
 
-    window->shouldRender = TRUE;
-    window->unk_2D0      = 2;
-    window->unk_2D2      = 2;
+    window->visible = TRUE;
+    window->unk_2D0 = 2;
+    window->unk_2D2 = 2;
 
-    anim.dataType = windowArgs->dataType;
-    anim.unk_04   = 0x80;
-    anim.unk_06   = 0x98;
-    anim.unk_2A   = 1;
+    anim.dataType  = windowArgs->dataType;
+    anim.posX      = 0x80;
+    anim.posY      = 0x98;
+    anim.animIndex = 1;
     _Sprite_Load(sprite, &anim);
 }
 
@@ -258,7 +258,7 @@ s32 Shop_window0_Update(TaskPool* pool, Task* task, void* args) {
 s32 Shop_window0_Render(TaskPool* pool, Task* task, void* args) {
     Shop_window0* window = task->data;
 
-    if (window->shouldRender) {
+    if (window->visible) {
         Sprite_RenderFrame(&window->sprite);
     }
     Shop_window0_DrawTextDelayed(window);

@@ -4,7 +4,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[5];
-    /* 0x140 */ BOOL             shouldRender[5];
+    /* 0x140 */ BOOL             visible[5];
     /* 0x154 */ MenuEquipObject* owner;
 } MenuEquip_partner; // Size: 0x158
 
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuEquip_partner_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = -0xD,
-    .unk_06            = 0xC,
+    .posX              = -0xD,
+    .posY              = 0xC,
     .frameInfoCallback = MenuEquip_partner_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation MenuEquip_partner_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_partner_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,21 +56,21 @@ static void MenuEquip_partner_Load(MenuEquip_partner* partner, Sprite* sprites, 
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x18;
-    anim.unk_04 = 0x51;
-    anim.unk_06 = 0xC;
+    anim.animIndex = 0x18;
+    anim.posX      = 0x51;
+    anim.posY      = 0xC;
     _Sprite_Load(&sprites[0], &anim);
 
     for (s16 i = 0; i < 3; i++) {
-        anim.unk_2A = i + 0x15;
-        anim.unk_04 = i * 0x12 + 0x85;
-        anim.unk_06 = 0xC;
+        anim.animIndex = i + 0x15;
+        anim.posX      = i * 0x12 + 0x85;
+        anim.posY      = 0xC;
         _Sprite_Load(&sprites[i + 1], &anim);
     }
 
-    anim.unk_2A = 0x14;
-    anim.unk_04 = owner->activePartner * 0x12 + 0x85;
-    anim.unk_06 = 0xC;
+    anim.animIndex = 0x14;
+    anim.posX      = owner->activePartner * 0x12 + 0x85;
+    anim.posY      = 0xC;
     _Sprite_Load(&sprites[4], &anim);
 }
 
@@ -80,7 +80,7 @@ static s32 MenuEquip_partner_Init(TaskPool* pool, Task* task, void* args) {
 
     partner->owner = partnerArgs->owner;
     for (u16 i = 0; i < 5; i++) {
-        partner->shouldRender[i] = TRUE;
+        partner->visible[i] = TRUE;
     }
     MenuEquip_partner_Load(partner, partner->sprites, partnerArgs);
     return 1;
@@ -92,11 +92,11 @@ static s32 MenuEquip_partner_Update(TaskPool* pool, Task* task, void* args) {
     TouchCoord         coord;
 
     if (owner->helpOpen != 0) {
-        partner->shouldRender[4] = FALSE;
+        partner->visible[4] = FALSE;
         return 1;
     }
 
-    partner->shouldRender[4] = TRUE;
+    partner->visible[4] = TRUE;
 
     if (owner->dirtyFlags & 0x10) {
         owner->dirtyFlags &= ~0x10;
@@ -117,8 +117,8 @@ static s32 MenuEquip_partner_Update(TaskPool* pool, Task* task, void* args) {
 #ifdef REGION_USA
             MenuEquip_RefreshCursorInfo();
 #endif
-            MenuEquip_ReleaseBgResource(&owner->resources[7], 0);
-            MenuEquip_LoadBgResourceIndexed(&owner->resources[7], 0, 3, 0, 0, 0xE,
+            MenuEquip_ReleaseBgResource(&owner->resources[7], DISPLAY_MAIN);
+            MenuEquip_LoadBgResourceIndexed(&owner->resources[7], DISPLAY_MAIN, 3, 0, 0, 0xE,
                                             owner->activePartner + owner->partnerArtSet * 3, owner->activePartner);
         }
     }
@@ -133,7 +133,7 @@ static s32 MenuEquip_partner_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_partner* partner = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (partner->shouldRender[i] != 0) {
+        if (partner->visible[i] != 0) {
             Sprite_RenderFrame(&partner->sprites[i]);
         }
     }

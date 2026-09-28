@@ -14,13 +14,7 @@ s32                 func_02041680(RTCDate* date);
 s32                 func_020417e0(RTCDate* date, RTCTime* time);
 s64                 func_02041f14(RTCDate* date, RTCTime* time);
 void                Stats_AddExperience(u32 exp);
-BgResource*         BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
-BgResource*         BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, u32 screenBase, u32 screenSize);
 extern EquippedPin* data_ov038_0209a204[6];
-
-// This TU called PaletteMgr_AllocPalette with no prototype in scope, so palStart reaches it as a plain
-// int instead of being narrowed to the s16 parameter.
-#define PaletteMgr_AllocPaletteNoProto ((PaletteResource * (*)()) PaletteMgr_AllocPalette)
 
 const u16 data_ov044_0208ec32[7] = {260, 259, 258, 257, 256, 255, 254};
 const u16 data_ov044_0208ec40[7] = {20, 18, 16, 15, 14, 13, 12};
@@ -1277,7 +1271,7 @@ void Result_CommitMabs(ResultObject* result) {
     Stats_AddExperience(3);
 }
 
-void Result_LoadBgResource(ResultBgResource* res, s32 engine, s32 layer, u8 binIndex, s32 palStart, u32 palCount) {
+void Result_LoadBgResource(MenuBgResource* res, s32 engine, s32 layer, u8 binIndex, s32 palStart, u32 palCount) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &Result_BinIdentifiers[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
     res->screenMap   = Data_GetPackEntryData(res->data, 2);
@@ -1315,7 +1309,7 @@ void Result_LoadBgResource(ResultBgResource* res, s32 engine, s32 layer, u8 binI
     }
 }
 
-void Result_LoadBgResourceIndexed(ResultBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
+void Result_LoadBgResourceIndexed(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
                                   s32 screenIndex, s32 palIndex) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &Result_BinIdentifiers[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
@@ -1354,7 +1348,7 @@ void Result_LoadBgResourceIndexed(ResultBgResource* res, s32 engine, s32 layer, 
     }
 }
 
-void Result_ReleaseBgResource(ResultBgResource* res, s32 engine) {
+void Result_ReleaseBgResource(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_MAIN], res->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
@@ -1367,7 +1361,7 @@ void Result_ReleaseBgResource(ResultBgResource* res, s32 engine) {
     DatMgr_ReleaseData(res->data);
 }
 
-void Result_ClearBgResource(ResultBgResource* res) {
+void Result_ClearBgResource(MenuBgResource* res) {
     res->data            = NULL;
     res->screenResource  = NULL;
     res->charResource    = NULL;
@@ -1378,10 +1372,10 @@ void Result_ClearBgResource(ResultBgResource* res) {
 }
 
 void Result_LoadBackgrounds(ResultObject* result) {
-    s32               i;
-    ResultBgResource* mainRes = &result->bgResources[0];
-    ResultBgResource* subRes  = &result->bgResources[4];
-    u8                bin;
+    s32             i;
+    MenuBgResource* mainRes = &result->resources[0];
+    MenuBgResource* subRes  = &result->resources[4];
+    u8              bin;
 
     for (i = 0; i < 4; i++) {
         Result_ClearBgResource(mainRes);
@@ -1391,20 +1385,20 @@ void Result_LoadBackgrounds(ResultObject* result) {
     }
 
     if (gSaveData.unk_1AB4 & 8) {
-        Result_LoadBgResource(&result->bgResources[5], 0, 1, 34, 15, 1);
-        Result_LoadBgResourceIndexed(&result->bgResources[6], 0, 2, 0, 10, 4, 2, 0);
-        Result_LoadBgResource(&result->bgResources[7], 0, 3, 9, 0, 10);
-        Result_LoadBgResource(&result->bgResources[3], 1, 3, 22, 0, 10);
+        Result_LoadBgResource(&result->resources[5], DISPLAY_MAIN, 1, 34, 15, 1);
+        Result_LoadBgResourceIndexed(&result->resources[6], DISPLAY_MAIN, 2, 0, 10, 4, 2, 0);
+        Result_LoadBgResource(&result->resources[7], DISPLAY_MAIN, 3, 9, 0, 10);
+        Result_LoadBgResource(&result->resources[3], DISPLAY_SUB, 3, 22, 0, 10);
     } else if (gSaveData.unk_1AB4 & 0x10) {
-        Result_LoadBgResource(&result->bgResources[5], 0, 1, 34, 15, 1);
-        Result_LoadBgResourceIndexed(&result->bgResources[6], 0, 2, 0, 10, 4, 3, 0);
-        Result_LoadBgResource(&result->bgResources[7], 0, 3, 11, 0, 10);
-        Result_LoadBgResource(&result->bgResources[3], 1, 3, 24, 0, 10);
+        Result_LoadBgResource(&result->resources[5], DISPLAY_MAIN, 1, 34, 15, 1);
+        Result_LoadBgResourceIndexed(&result->resources[6], DISPLAY_MAIN, 2, 0, 10, 4, 3, 0);
+        Result_LoadBgResource(&result->resources[7], DISPLAY_MAIN, 3, 11, 0, 10);
+        Result_LoadBgResource(&result->resources[3], DISPLAY_SUB, 3, 24, 0, 10);
     } else if (gSaveData.unk_1AB4 & 0x60) {
-        Result_LoadBgResource(&result->bgResources[5], 0, 1, 34, 15, 1);
-        Result_LoadBgResourceIndexed(&result->bgResources[6], 0, 2, 0, 10, 4, 4, 0);
-        Result_LoadBgResource(&result->bgResources[7], 0, 3, 10, 0, 10);
-        Result_LoadBgResource(&result->bgResources[3], 1, 3, 23, 0, 10);
+        Result_LoadBgResource(&result->resources[5], DISPLAY_MAIN, 1, 34, 15, 1);
+        Result_LoadBgResourceIndexed(&result->resources[6], DISPLAY_MAIN, 2, 0, 10, 4, 4, 0);
+        Result_LoadBgResource(&result->resources[7], DISPLAY_MAIN, 3, 10, 0, 10);
+        Result_LoadBgResource(&result->resources[3], DISPLAY_SUB, 3, 23, 0, 10);
     } else {
         if (result->overallRank <= 3) {
             if (result->battlePartner == 0xFF) {
@@ -1417,18 +1411,18 @@ void Result_LoadBackgrounds(ResultObject* result) {
         } else {
             bin = (result->battlePartner * 2) + 3;
         }
-        Result_LoadBgResource(&result->bgResources[5], 0, 1, 34, 15, 1);
-        Result_LoadBgResource(&result->bgResources[6], 0, 2, 0, 10, 4);
-        Result_LoadBgResource(&result->bgResources[7], 0, 3, bin + 1, 0, 10);
-        Result_LoadBgResource(&result->bgResources[3], 1, 3, bin + 14, 0, 10);
+        Result_LoadBgResource(&result->resources[5], DISPLAY_MAIN, 1, 34, 15, 1);
+        Result_LoadBgResource(&result->resources[6], DISPLAY_MAIN, 2, 0, 10, 4);
+        Result_LoadBgResource(&result->resources[7], DISPLAY_MAIN, 3, bin + 1, 0, 10);
+        Result_LoadBgResource(&result->resources[3], DISPLAY_SUB, 3, bin + 14, 0, 10);
     }
 }
 
 void Result_UpdateBackgrounds(ResultObject* result) {}
 
 void Result_ReleaseBackgrounds(ResultObject* result) {
-    Result_ReleaseBgResource(&result->bgResources[5], 0);
-    Result_ReleaseBgResource(&result->bgResources[6], 0);
-    Result_ReleaseBgResource(&result->bgResources[7], 0);
-    Result_ReleaseBgResource(&result->bgResources[3], 1);
+    Result_ReleaseBgResource(&result->resources[5], DISPLAY_MAIN);
+    Result_ReleaseBgResource(&result->resources[6], DISPLAY_MAIN);
+    Result_ReleaseBgResource(&result->resources[7], DISPLAY_MAIN);
+    Result_ReleaseBgResource(&result->resources[3], DISPLAY_SUB);
 }

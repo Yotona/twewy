@@ -28,8 +28,8 @@ static const SpriteAnimation Result_bdgLV_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_bdgLV_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation Result_bdgLV_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_bdgLV_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -102,19 +102,19 @@ static void Result_bdgLV_Load(Result_bdgLV* bdgLV, Sprite* sprites, Result_bdgLV
 
     Result_bdgLV_UpdateDigits(bdgLV, args->index);
 
-    anim.unk_2A = 0x29;
-    anim.unk_04 = posX[args->index] - 7;
-    anim.unk_06 = 0xB2;
+    anim.animIndex = 0x29;
+    anim.posX      = posX[args->index] - 7;
+    anim.posY      = 0xB2;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = bdgLV->tensDigit + 0x2A;
-    anim.unk_04 = bdgLV->onesOffsetX + posX[args->index];
-    anim.unk_06 = 0xB2;
+    anim.animIndex = bdgLV->tensDigit + 0x2A;
+    anim.posX      = bdgLV->onesOffsetX + posX[args->index];
+    anim.posY      = 0xB2;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = bdgLV->onesDigit + 0x2A;
-    anim.unk_04 = posX[args->index] - 2;
-    anim.unk_06 = 0xB2;
+    anim.animIndex = bdgLV->onesDigit + 0x2A;
+    anim.posX      = posX[args->index] - 2;
+    anim.posY      = 0xB2;
     _Sprite_Load(&sprites[2], &anim);
 }
 

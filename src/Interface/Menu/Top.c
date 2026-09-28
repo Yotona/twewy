@@ -23,46 +23,40 @@
 #include <nitro/reg.h>
 
 typedef struct {
-    /* 0x00000 */ ResourceManager  resMgr;
-    /* 0x11580 */ ResourceManager* prevResMgr;
-    /* 0x11584 */ s32              spareDataType;
-    /* 0x11588 */ s32              dataType;
-    /* 0x1158C */ Heap             heap;
-    /* 0x11598 */ u8               heapBuffer[0x10000];
-    /* 0x21598 */ TaskPool         taskPool;
-    /* 0x21618 */ s32              unk_21618;
-    /* 0x2161C */ s32              taskId_LuckNum;
-    /* 0x21620 */ s32              taskId_LuckStar;
-    /* 0x21624 */ s32              taskId_LvGauge;
-    /* 0x21628 */ s32              taskId_Select[8];
-    /* 0x21648 */ s32              taskId_Icon;
-    /* 0x2164C */ s32              taskId_NameD;
-    /* 0x21650 */ s32              taskId_NumLV;
-    /* 0x21654 */ s32              taskId_NumExpNext;
-    /* 0x21658 */ s32              taskId_NumHP;
-    /* 0x2165C */ s32              taskId_NumMoney;
-    /* 0x21660 */ s32              unk_21660;
-    /* 0x21664 */ s32              taskId_DrawDiff;
-    /* 0x21668 */ s32              taskId_DrawPtrAI;
-    /* 0x2166C */ s32              taskId_SelDiff;
-    /* 0x21670 */ s32              taskId_SelPtrAI;
-    /* 0x21674 */ s32              unk_21674;
-    /* 0x21678 */ s32              taskId_TextScr;
-    /* 0x2167C */ s32              taskId_HelpCur;
-    /* 0x21680 */ s32              taskId_Pointer;
-    /* 0x21684 */ s32              taskId_NameU;
-    /* 0x21688 */ s32              taskId_RankNumU[4];
-    /* 0x21698 */ s32              taskId_MapTipU[21]; // 23 are created; the last two land in taskId_MapTipBrdU[0..1]
-    /* 0x216EC */ s32              taskId_MapTipBrdU[21];
-    /* 0x21740 */ s32              taskId_BrdLogoU;
-    /* 0x21744 */ s32              taskId_NekuU;
-    /* 0x21748 */ s32              taskId_IconU[46];
-    /* 0x21800 */ s32              taskId_TextScrU;
-    /* 0x21804 */ s32              taskId_HelpCurU;
-    /* 0x21808 */ s16              timer;
-    /* 0x2180A */ char             unk_2180A[0x2180C - 0x2180A];
-    /* 0x2180C */ s32              exitReady;
-    /* 0x21810 */ MenuTopObject    topMenu;
+    /* 0x00000 */ MenuStateBase base;
+    /* 0x21618 */ s32           unk_21618;
+    /* 0x2161C */ s32           taskId_LuckNum;
+    /* 0x21620 */ s32           taskId_LuckStar;
+    /* 0x21624 */ s32           taskId_LvGauge;
+    /* 0x21628 */ s32           taskId_Select[8];
+    /* 0x21648 */ s32           taskId_Icon;
+    /* 0x2164C */ s32           taskId_NameD;
+    /* 0x21650 */ s32           taskId_NumLV;
+    /* 0x21654 */ s32           taskId_NumExpNext;
+    /* 0x21658 */ s32           taskId_NumHP;
+    /* 0x2165C */ s32           taskId_NumMoney;
+    /* 0x21660 */ s32           unk_21660;
+    /* 0x21664 */ s32           taskId_DrawDiff;
+    /* 0x21668 */ s32           taskId_DrawPtrAI;
+    /* 0x2166C */ s32           taskId_SelDiff;
+    /* 0x21670 */ s32           taskId_SelPtrAI;
+    /* 0x21674 */ s32           unk_21674;
+    /* 0x21678 */ s32           taskId_TextScr;
+    /* 0x2167C */ s32           taskId_HelpCur;
+    /* 0x21680 */ s32           taskId_Pointer;
+    /* 0x21684 */ s32           taskId_NameU;
+    /* 0x21688 */ s32           taskId_RankNumU[4];
+    /* 0x21698 */ s32           taskId_MapTipU[21]; // 23 are created; the last two land in taskId_MapTipBrdU[0..1]
+    /* 0x216EC */ s32           taskId_MapTipBrdU[21];
+    /* 0x21740 */ s32           taskId_BrdLogoU;
+    /* 0x21744 */ s32           taskId_NekuU;
+    /* 0x21748 */ s32           taskId_IconU[46];
+    /* 0x21800 */ s32           taskId_TextScrU;
+    /* 0x21804 */ s32           taskId_HelpCurU;
+    /* 0x21808 */ s16           timer;
+    /* 0x2180A */ char          unk_2180A[0x2180C - 0x2180A];
+    /* 0x2180C */ s32           exitReady;
+    /* 0x21810 */ MenuTopObject topMenu;
 } MenuTopState; // Size: 0x21958
 
 void GX_LoadBgPltt(void* src, u32 offset, u32 size);
@@ -174,47 +168,49 @@ void MenuTop_CreateTasks(MenuTopState* state) {
     u16            area;
     u16            iconCount;
 
-    EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -0x10, 0x1000);
-    state->taskId_Pointer  = MenuTop_pointer_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_LuckNum  = MenuTop_luckNum_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_LuckStar = MenuTop_luckStar_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_LvGauge  = MenuTop_lvGauge_CreateTask(&state->taskPool, state->dataType, topMenu);
+    state->taskId_Pointer  = MenuTop_pointer_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_LuckNum  = MenuTop_luckNum_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_LuckStar = MenuTop_luckStar_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_LvGauge  = MenuTop_lvGauge_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
     for (u16 i = 0; i < 8; i++) {
-        state->taskId_Select[i] = MenuTop_select_CreateTask(&state->taskPool, state->dataType, (s32)topMenu, i);
+        state->taskId_Select[i] = MenuTop_select_CreateTask(&state->base.taskPool, state->base.dataType, topMenu, i);
     }
-    state->taskId_Icon       = MenuTop_icon_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_NameD      = MenuTop_nameD_CreateTask(&state->taskPool, state->dataType, (s32)topMenu);
-    state->taskId_NumLV      = MenuTop_numLV_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_NumExpNext = MenuTop_numExpNext_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_NumHP      = MenuTop_numHP_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_NumMoney   = MenuTop_numMoney_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_DrawDiff   = MenuTop_drawDiff_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_DrawPtrAI  = MenuTop_drawPtrAI_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_TextScr    = MenuTop_textScr_CreateTask(&state->taskPool, state->dataType, topMenu);
+    state->taskId_Icon       = MenuTop_icon_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NameD      = MenuTop_nameD_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NumLV      = MenuTop_numLV_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NumExpNext = MenuTop_numExpNext_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NumHP      = MenuTop_numHP_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NumMoney   = MenuTop_numMoney_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_DrawDiff   = MenuTop_drawDiff_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_DrawPtrAI  = MenuTop_drawPtrAI_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_TextScr    = MenuTop_textScr_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
     if (topMenu->currentArea <= 20) {
-        state->taskId_NameU       = MenuTop_nameU_CreateTask(&state->taskPool, state->dataType, (s32)topMenu);
-        state->taskId_RankNumU[0] = MenuTop_rankNumU_CreateTask(&state->taskPool, state->dataType, 0, 1, (s32)topMenu);
-        state->taskId_RankNumU[1] = MenuTop_rankNumU_CreateTask(&state->taskPool, state->dataType, 1, 2, (s32)topMenu);
-        state->taskId_RankNumU[2] = MenuTop_rankNumU_CreateTask(&state->taskPool, state->dataType, 2, 3, (s32)topMenu);
-        state->taskId_RankNumU[3] = MenuTop_rankNumU_CreateTask(&state->taskPool, state->dataType, 3, 13, (s32)topMenu);
+        state->taskId_NameU       = MenuTop_nameU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+        state->taskId_RankNumU[0] = MenuTop_rankNumU_CreateTask(&state->base.taskPool, state->base.dataType, 0, 1, topMenu);
+        state->taskId_RankNumU[1] = MenuTop_rankNumU_CreateTask(&state->base.taskPool, state->base.dataType, 1, 2, topMenu);
+        state->taskId_RankNumU[2] = MenuTop_rankNumU_CreateTask(&state->base.taskPool, state->base.dataType, 2, 3, topMenu);
+        state->taskId_RankNumU[3] = MenuTop_rankNumU_CreateTask(&state->base.taskPool, state->base.dataType, 3, 13, topMenu);
     }
     for (u16 i = 0; i < 21; i++) {
-        state->taskId_MapTipU[i]    = MenuTop_mapTipU_CreateTask(&state->taskPool, state->dataType, i, topMenu);
-        state->taskId_MapTipBrdU[i] = MenuTop_mapTipBrdU_CreateTask(&state->taskPool, state->dataType, i, topMenu);
+        state->taskId_MapTipU[i]    = MenuTop_mapTipU_CreateTask(&state->base.taskPool, state->base.dataType, i, topMenu);
+        state->taskId_MapTipBrdU[i] = MenuTop_mapTipBrdU_CreateTask(&state->base.taskPool, state->base.dataType, i, topMenu);
     }
-    state->taskId_MapTipU[21] = MenuTop_mapTipU_CreateTask(&state->taskPool, state->dataType, 21, topMenu);
-    state->taskId_MapTipU[22] = MenuTop_mapTipU_CreateTask(&state->taskPool, state->dataType, 22, topMenu);
-    state->taskId_BrdLogoU    = MenuTop_brdLogoU_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_TextScrU    = MenuTop_textScrU_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_NekuU       = MenuTop_nekuU_CreateTask(&state->taskPool, state->dataType, topMenu);
+    state->taskId_MapTipU[21] = MenuTop_mapTipU_CreateTask(&state->base.taskPool, state->base.dataType, 21, topMenu);
+    state->taskId_MapTipU[22] = MenuTop_mapTipU_CreateTask(&state->base.taskPool, state->base.dataType, 22, topMenu);
+    state->taskId_BrdLogoU    = MenuTop_brdLogoU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_TextScrU    = MenuTop_textScrU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_NekuU       = MenuTop_nekuU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
     iconCount                 = 0;
     for (area = 0; area < 41; area++) {
         if (((s32(*)(u8, s32))func_0202366c)(area, 4) == 1) {
-            state->taskId_IconU[iconCount] = MenuTop_iconU_CreateTask(&state->taskPool, state->dataType, topMenu, area, 15);
+            state->taskId_IconU[iconCount] =
+                MenuTop_iconU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu, area, 15);
             iconCount++;
         } else if (((s32(*)(u8, s32))func_0202366c)(area, 2) == 1) {
-            state->taskId_IconU[iconCount] = MenuTop_iconU_CreateTask(&state->taskPool, state->dataType, topMenu, area, 14);
+            state->taskId_IconU[iconCount] =
+                MenuTop_iconU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu, area, 14);
             iconCount++;
         }
     }
@@ -243,8 +239,8 @@ void MenuTop_StageOpenHelp(MenuTopState* state) {
     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0;
-    state->taskId_HelpCur  = MenuTop_helpCur_CreateTask(&state->taskPool, state->dataType, topMenu);
-    state->taskId_HelpCurU = MenuTop_helpCurU_CreateTask(&state->taskPool, state->dataType, (s32)topMenu);
+    state->taskId_HelpCur  = MenuTop_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+    state->taskId_HelpCurU = MenuTop_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
     topMenu->upperPage     = 2;
     topMenu->flags |= 2;
     DebugOvlDisp_ReplaceTop((OverlayCB)MenuTop_StageHelp, state, PROCESS_STAGE_INIT);
@@ -265,7 +261,7 @@ void MenuTop_StageMain(MenuTopState* state) {
                 if (MenuTop_IsPointOnDifficulty(coord.x, coord.y) == 1) {
                     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
                     topMenu->flags |= 8;
-                    state->taskId_SelDiff = MenuTop_selDiff_CreateTask(&state->taskPool, state->dataType, topMenu);
+                    state->taskId_SelDiff = MenuTop_selDiff_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
                     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0;
                     topMenu->popupOpen = 1;
                     return;
@@ -273,7 +269,7 @@ void MenuTop_StageMain(MenuTopState* state) {
                 if (MenuTop_IsPointOnPartnerAI(coord.x, coord.y) == 1) {
                     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
                     topMenu->flags |= 8;
-                    state->taskId_SelPtrAI = MenuTop_selPtrAI_CreateTask(&state->taskPool, state->dataType, topMenu);
+                    state->taskId_SelPtrAI = MenuTop_selPtrAI_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
                     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0;
                     topMenu->popupOpen = 1;
                     return;
@@ -306,8 +302,8 @@ void MenuTop_StageMain(MenuTopState* state) {
                     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
                     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1 | LAYER_BG2;
                     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0;
-                    state->taskId_HelpCur  = MenuTop_helpCur_CreateTask(&state->taskPool, state->dataType, topMenu);
-                    state->taskId_HelpCurU = MenuTop_helpCurU_CreateTask(&state->taskPool, state->dataType, (s32)topMenu);
+                    state->taskId_HelpCur  = MenuTop_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
+                    state->taskId_HelpCurU = MenuTop_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, topMenu);
                     topMenu->upperPage     = 2;
                     topMenu->flags |= 2;
                     DebugOvlDisp_ReplaceTop((OverlayCB)MenuTop_StageHelp, state, PROCESS_STAGE_INIT);
@@ -388,8 +384,8 @@ void MenuTop_StageCloseHelp(MenuTopState* state) {
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG1;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
     g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG0;
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCur);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCurU);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCur);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCurU);
     topMenu->helpPage  = 0;
     topMenu->upperPage = 0;
     topMenu->flags |= 2;
@@ -410,15 +406,15 @@ void MenuTop_Init(MenuTopState* state) {
         Mem_SetSequence(&gDebugHeap, state, sequence);
         MainOvlDisp_SetCbArg(state);
     }
-    state->spareDataType = DatMgr_AllocateSlot();
-    state->dataType      = DatMgr_AllocateSlot();
+    state->base.spareDataType = DatMgr_AllocateSlot();
+    state->base.dataType      = DatMgr_AllocateSlot();
     MenuTop_RegisterVBlank();
-    state->prevResMgr = ResourceMgr_ReinitManagers(&state->resMgr);
+    state->base.prevResMgr = ResourceMgr_ReinitManagers(&state->base.resMgr);
     Mem_ValidateSequences(&gMainHeap);
     Mem_ValidateSequences(&gDebugHeap);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x80, NULL, NULL);
+    Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
+    EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x80, NULL, NULL);
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
     data_02066aec = 0;
     data_02066eec = 0;
@@ -446,7 +442,7 @@ void MenuTop_Update(MenuTopState* state) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     MenuTop_UpdateBackgrounds(topMenu);
     DebugOvlDisp_Run();
-    EasyTask_UpdatePool(&state->taskPool);
+    EasyTask_UpdatePool(&state->base.taskPool);
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->exitReady = 1;
     }
@@ -519,10 +515,10 @@ void MenuTop_Destroy(MenuTopState* state) {
     }
     MenuTop_WriteBackToSave(topMenu);
     MenuTop_ReleaseBackgrounds(topMenu);
-    EasyTask_DestroyPool(&state->taskPool);
+    EasyTask_DestroyPool(&state->base.taskPool);
     ResourceMgr_ReinitManagers(NULL);
-    DatMgr_ClearSlot(state->spareDataType);
-    DatMgr_ClearSlot(state->dataType);
+    DatMgr_ClearSlot(state->base.spareDataType);
+    DatMgr_ClearSlot(state->base.dataType);
     MenuTop_DeregisterVBlank();
     FS_UnloadOverlay(0, (u32)&OVERLAY_31_ID);
     Mem_Free(&gDebugHeap, state);

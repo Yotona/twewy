@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite         sprites[5];
-    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
 } MenuTop_numExpNext; // Size: 0x158
 
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuTop_numExpNext_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_numExpNext_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,20 +43,18 @@ static const SpriteAnimation MenuTop_numExpNext_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_numExpNext_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void MenuTop_numExpNext_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
-    MenuTop_numExpNext*      taskData = taskDataPtr;
-    Sprite*                  sprites  = spritesPtr;
-    MenuTop_numExpNext_Args* args     = argsPtr;
-    SpriteAnimation          anim     = MenuTop_numExpNext_Anim;
-    u32                      value;
-    u32                      digits[5];
+static void MenuTop_numExpNext_Load(MenuTop_numExpNext* taskData, Sprite* sprites, MenuTop_numExpNext_Args* args) {
+    SpriteAnimation anim = MenuTop_numExpNext_Anim;
+    u32             value;
+    u32             digits[5];
+    u16             i;
 
     anim.dataType = args->dataType;
 
@@ -70,18 +68,25 @@ void MenuTop_numExpNext_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr)
     digits[3] = value / 10;
     digits[4] = value % 10;
 
-    for (s32 i = 0; i < 5; i++) {
-        taskData->visibleFlags[i] = 1;
+    for (i = 0; i < 5; i++) {
+        taskData->visible[i] = TRUE;
     }
 
-    for (s32 i = 0; i < 4 && digits[i] == 0; i++) {
-        taskData->visibleFlags[i] = 0;
+    for (i = 0; i < 4; i++) {
+        if (digits[i] != 0) {
+            break;
+        }
+        taskData->visible[i] = FALSE;
     }
 
-    for (s32 i = 0; i < 5; i++) {
-        anim.unk_2A = (s16)(digits[i] + 0xA);
-        anim.unk_04 = (s16)((i * 6) + 0x87);
-        anim.unk_06 = 0x8B;
+    for (i = 0; i < 5; i++) {
+        anim.animIndex = digits[i] + 10;
+#ifdef REGION_USA
+        anim.posX = i * 6 + 135;
+#else
+        anim.posX = i * 8 + 133;
+#endif
+        anim.posY = 139;
         _Sprite_Load(&sprites[i], &anim);
     }
 }
@@ -90,7 +95,7 @@ static s32 MenuTop_numExpNext_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_numExpNext*      taskData = task->data;
     MenuTop_numExpNext_Args* initArgs = args;
 
-    MenuTop_numExpNext_Load(taskData, taskData, initArgs);
+    MenuTop_numExpNext_Load(taskData, taskData->sprites, initArgs);
     taskData->topMenu = initArgs->topMenu;
     return 1;
 }
@@ -108,7 +113,7 @@ static s32 MenuTop_numExpNext_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_numExpNext* taskData = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (taskData->visibleFlags[i] != 0) {
+        if (taskData->visible[i] != 0) {
             Sprite_RenderFrame(&taskData->sprites[i]);
         }
     }

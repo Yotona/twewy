@@ -43,8 +43,8 @@ static const SpriteAnimation Result_rankU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_rankU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -58,7 +58,7 @@ static const SpriteAnimation Result_rankU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_rankU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -72,10 +72,10 @@ static void Result_rankU_Load(Result_rankU* rankU, Sprite* sprite, Result_rankU_
     rankU->velocityX = 0x6000;
     rankU->accelX    = RANKU_ACCEL_X;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = args->rank + 1;
-    anim.unk_04   = rankU->posX >> 12;
-    anim.unk_06   = 0x20;
+    anim.dataType  = args->dataType;
+    anim.animIndex = args->rank + 1;
+    anim.posX      = rankU->posX >> 12;
+    anim.posY      = 0x20;
 
     _Sprite_Load(sprite, &anim);
     rankU->visible = TRUE;

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_brdLogoU; // Size: 0x48
 
@@ -28,8 +28,8 @@ static const SpriteAnimation data_ov043_020c8f80 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0xA8,
-    .unk_06            = 0x1C,
+    .posX              = 0xA8,
+    .posY              = 0x1C,
     .frameInfoCallback = MenuBadge_brdLogoU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation data_ov043_020c8f80 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_brdLogoU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -57,15 +57,15 @@ static void MenuBadge_brdLogoU_Load(MenuBadge_brdLogoU* brdLogo, Sprite* sprite,
 
     if (args->badgeId == 0xFFFF) {
         anim.packIndex   = 1;
-        brdLogo->visible = 0;
+        brdLogo->visible = FALSE;
     } else {
         u8 brandId = args->brandId;
         if (brandId <= 0xC) {
             anim.packIndex   = brandId + 1;
-            brdLogo->visible = 1;
+            brdLogo->visible = TRUE;
         } else {
             anim.packIndex   = 1;
-            brdLogo->visible = 0;
+            brdLogo->visible = FALSE;
         }
     }
 

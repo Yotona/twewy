@@ -1,14 +1,14 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite sprite;
-    /* 0x40 */ s32    unk_40;
-    /* 0x44 */ void*  topMenu;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ s32            unk_40;
+    /* 0x44 */ MenuTopObject* topMenu;
 } MenuTop_luckStar; // Size: 0x48
 
 typedef struct {
-    /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* topMenu;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_luckStar_Args;
 
 static SpriteFrameInfo* MenuTop_luckStar_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -25,8 +25,8 @@ static const SpriteAnimation MenuTop_luckStar_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0xCA,
-    .unk_06            = 0xB6,
+    .posX              = 0xCA,
+    .posY              = 0xB6,
     .frameInfoCallback = MenuTop_luckStar_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation MenuTop_luckStar_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 11,
+    .animIndex         = 11,
 };
 
 static SpriteFrameInfo* MenuTop_luckStar_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {

@@ -2,12 +2,8 @@
 #define INTERFACE_MENU_SHOP_H
 
 #include "Engine/EasyTask.h"
+#include "Interface/Menu/MenuCommon.h"
 #include "SpriteMgr.h"
-
-typedef struct Point {
-    s16 x;
-    s16 y;
-} Point;
 
 typedef struct {
     /* 0x00 */ u16  unk_00;
@@ -73,19 +69,17 @@ typedef struct {
     /* 0x850 */ u16                 unk_850;
     /* 0x852 */ char                unk_852[0x854 - 0x852];
     /* 0x854 */ u8                  unk_854;
-    /* 0x855 */ char                unk_855[0x85E - 0x855];
+    /* 0x855 */ char                unk_855[0x858 - 0x855];
+    /* 0x858 */ u32                 unk_858;
+    /* 0x85C */ char                unk_85C[0x85E - 0x85C];
     /* 0x85E */ u16                 unk_85E;
     /* 0x860 */ char                unk_860[0x864 - 0x860];
     /* 0x864 */ u8                  unk_864[3];
     /* 0x867 */ char                unk_867[0x870 - 0x867];
     /* 0x870 */ u16                 unk_870;
     /* 0x872 */ u16                 unk_872;
-    /* 0x874 */ char                unk_874[0x910 - 0x874];
-    /* 0x910 */ u16*                unk_910; // BG char data
-    /* 0x914 */ u16*                unk_914; // BG screen map
-    /* 0x918 */ char                unk_918[0x938 - 0x918];
-    /* 0x938 */ u32                 unk_938;
-} ShopObject;
+    /* 0x874 */ MenuBgResource      resources[8]; // [0]-[3]: sub BG0-BG3, [4]-[7]: main BG0-BG3
+} ShopObject;                                     // Size: 0x954
 
 extern BinIdentifier data_ov043_020ca1b0;
 extern BinIdentifier data_ov043_020ca1b8;
@@ -98,20 +92,22 @@ extern BinIdentifier data_ov043_020ca1f8;
 extern BinIdentifier data_ov043_020ca200;
 extern BinIdentifier data_ov043_020ca208;
 
-s32 func_ov043_020b3238(TaskPool* pool, s32 dataType, ShopObject* shop);
-s32 func_ov043_020b6968(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_nameD_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_textScr_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_itemCur_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_itemAbl_CreateTask(TaskPool* pool, s32 dataType, s16 itemIndex, ShopObject* shop);
 s32 Shop_itemStar_CreateTask(TaskPool* pool, s32 dataType, s16 itemIndex, ShopObject* shop);
 s32 Shop_brdLogo_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_numLvU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_item_CreateTask(TaskPool* pool, s32 dataType, u16 itemIndex, ShopObject* shop);
-s32 func_ov043_020b4570(TaskPool* arg0, s32 dataType, ShopObject* shop);
-s32 func_ov043_020b4ac4(TaskPool* pool, s32 dataType, ShopObject* shop);
-s32 Shop_numAblU_CreateTask(TaskPool* pool, s32 arg1, ShopObject* shop);
-s32 Shop_numFsgU_CreateTask(TaskPool* arg0, s32 arg1, ShopObject* shop);
-s32 Shop_fsgGaugeU_CreateTask(TaskPool* pool, s32 arg1, ShopObject* shop);
-s32 Shop_textScrU_CreateTask(TaskPool* pool, s32 arg1, void* arg2);
+s32 func_ov043_020b4570(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_numMoneyNek_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_tab_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_check_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_numAblU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_numFsgU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_fsgGaugeU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
+s32 Shop_textScrU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 
 s32 Shop_window1_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_windowU_CreateTask(TaskPool* pool, s32 dataType, s16 msgIndex, ShopObject* shop);
@@ -119,4 +115,7 @@ s32 Shop_windowU_CreateTask(TaskPool* pool, s32 dataType, s16 msgIndex, ShopObje
 s32 Shop_castU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 s32 Shop_boardU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop);
 
-#endif // INTERFACE_MENU_SHOP_H
+// Shop.c
+void func_ov043_020b28d4(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex); // ReloadBgScreen
+
+#endif                                                                                             // INTERFACE_MENU_SHOP_H

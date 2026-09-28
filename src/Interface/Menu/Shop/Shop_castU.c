@@ -4,7 +4,7 @@ extern void func_ov043_020af478(void*, s16);
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ BOOL        shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
     /* 0x48 */ u16         unk_48;
 } Shop_castU; // Size: 0x4C
@@ -29,8 +29,8 @@ static const SpriteAnimation Shop_castU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 204,
-    .unk_06            = 96,
+    .posX              = 204,
+    .posY              = 96,
     .frameInfoCallback = Shop_castU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation Shop_castU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_castU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -61,11 +61,11 @@ static void Shop_castU_Load(Shop_castU* cast, Sprite* sprite, Shop_castU_Args* c
     anim.unk_1C    = 2;
     anim.unk_26    = 3;
     anim.unk_28    = 4;
-    anim.unk_2A    = castArgs->unk_8 + 1;
+    anim.animIndex = castArgs->unk_8 + 1;
     anim.packIndex = shop->unk_776 + 30;
 
-    cast->shouldRender = TRUE;
-    cast->unk_48       = castArgs->unk_8;
+    cast->visible = TRUE;
+    cast->unk_48  = castArgs->unk_8;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -94,7 +94,7 @@ static s32 Shop_castU_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_castU_Render(TaskPool* pool, Task* task, void* args) {
     Shop_castU* cast = task->data;
 
-    if (cast->shouldRender) {
+    if (cast->visible) {
         Sprite_RenderFrame(&cast->sprite);
     }
     return 1;

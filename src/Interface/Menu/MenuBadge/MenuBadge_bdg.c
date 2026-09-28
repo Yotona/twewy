@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
     /* 0x48 */ u16              slot;
 } MenuBadge_bdg; // Size: 0x4C
@@ -30,8 +30,8 @@ static const SpriteAnimation data_ov043_020c8720 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdg_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,7 +45,7 @@ static const SpriteAnimation data_ov043_020c8720 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdg_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,10 +58,10 @@ static void MenuBadge_bdg_Load(MenuBadge_bdg* bdg, Sprite* sprite, MenuBadge_bdg
 
     anim.dataType = args->dataType;
 
-    MenuBadgePoint* point = &MenuBadge_SlotPositions[args->slot];
+    Point* point = &MenuBadge_SlotPositions[args->slot];
 
-    anim.unk_04 = point->x;
-    anim.unk_06 = point->y;
+    anim.posX = point->x;
+    anim.posY = point->y;
 
     if (args->slot < 16) {
         anim.bits_7_9 = 5;

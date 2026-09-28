@@ -88,7 +88,7 @@ void func_ov004_020eac00(CombatSprite* arg0, s32 arg1, s32 arg2) {
     anim.anim.unk_26     = data_ov004_020f0290[arg1].frameDataIndex;
     anim.anim.unk_28     = data_ov004_020f0290[arg1].paletteDataIndex;
     anim.anim.unk_20     = 7;
-    anim.anim.unk_2A     = data_ov004_020f0290[arg1].animDataIndex + 1;
+    anim.anim.animIndex  = data_ov004_020f0290[arg1].animDataIndex + 1;
     anim.unk_2C          = &data_ov004_020f0290;
     CombatSprite_Load(arg0, &anim);
     func_ov003_02082738(arg0, 0);

@@ -26,8 +26,8 @@ static const SpriteAnimation data_ov043_020ca960 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_movShadow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation data_ov043_020ca960 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_movShadow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,10 +53,10 @@ static void Shop_movShadow_Load(Shop_movShadow* shadow, Sprite* sprite, Shop_mov
     ShopObject*     shop = shadow->shop;
     SpriteAnimation anim = data_ov043_020ca960;
 
-    anim.unk_2A   = 36;
-    anim.dataType = args->dataType;
-    anim.unk_04   = shop->unk_840 + 4;
-    anim.unk_06   = shop->unk_842 + 6;
+    anim.animIndex = 36;
+    anim.dataType  = args->dataType;
+    anim.posX      = shop->unk_840 + 4;
+    anim.posY      = shop->unk_842 + 6;
 
     data_0206a890.unk_0C = 20;
     _Sprite_Load(sprite, &anim);
@@ -108,10 +108,10 @@ static s32 Shop_movShadow_RunTask(TaskPool* pool, Task* task, void* arg2, s32 ar
     return stages.iter[arg3](pool, task, arg2);
 }
 
-s32 Shop_movShadow_CreateTask(TaskPool* pool, s32 arg1, s32 arg2) {
+s32 Shop_movShadow_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_movShadow_Args args;
 
-    args.dataType = arg1;
-    args.shop     = (ShopObject*)arg2;
+    args.dataType = dataType;
+    args.shop     = shop;
     return EasyTask_CreateTask(pool, &Tsk_Shop_movShadow, NULL, 0, NULL, &args);
 }

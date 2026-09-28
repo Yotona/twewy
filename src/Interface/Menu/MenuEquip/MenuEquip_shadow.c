@@ -26,8 +26,8 @@ static const SpriteAnimation MenuEquip_shadow_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_shadow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuEquip_shadow_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_shadow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,7 +52,7 @@ static void MenuEquip_shadow_Load(Sprite* sprite, MenuEquip_shadow_Args* args) {
     SpriteAnimation anim = MenuEquip_shadow_Anim;
 
     anim.dataType        = args->dataType;
-    anim.unk_2A          = 0x3D;
+    anim.animIndex       = 0x3D;
     anim.unk_02.unk_02   = 1;
     data_0206a890.unk_0C = 0xA;
     _Sprite_Load(sprite, &anim);

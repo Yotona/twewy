@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_pointer; // Size: 0x48
 
@@ -27,8 +27,8 @@ static const SpriteAnimation data_ov043_020c8dd8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_pointer_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation data_ov043_020c8dd8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_pointer_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,8 +52,8 @@ static SpriteFrameInfo* MenuBadge_pointer_GetFrameInfo(Sprite* sprite, s32 arg, 
 static void MenuBadge_pointer_Load(Sprite* sprite, MenuBadge_pointer_Args* args) {
     SpriteAnimation anim = data_ov043_020c8dd8;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 0x5D;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 0x5D;
 
     _Sprite_Load(sprite, &anim);
 }

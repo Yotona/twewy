@@ -4,7 +4,7 @@
 typedef struct {
     /* 0x00 */ s32              dataType;
     /* 0x04 */ Sprite           sprite;
-    /* 0x44 */ s32              visible;
+    /* 0x44 */ BOOL             visible;
     /* 0x48 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgU; // Size: 0x4C
 
@@ -29,8 +29,8 @@ static const SpriteAnimation MenuBadge_bdgU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuBadge_bdgU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void MenuBadge_bdgU_LoadPackedData(MenuBadge_bdgU* bdgU, Sprite* sprite, MenuBadge_bdgU_Args* args, s32 packIndex) {
@@ -95,8 +95,8 @@ static void MenuBadge_bdgU_Load(MenuBadge_bdgU* bdgU, Sprite* sprite, MenuBadge_
     SpriteAnimation  anim      = MenuBadge_bdgU_Anim;
 
     anim.dataType  = args->dataType;
-    anim.unk_04    = 0xEA;
-    anim.unk_06    = 0x1C;
+    anim.posX      = 0xEA;
+    anim.posY      = 0x1C;
     anim.packIndex = args->vramPage + 1;
 
     _Sprite_Load(sprite, &anim);

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_mstStarU; // Size: 0x48
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_mstStarU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_mstStarU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_mstStarU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_mstStarU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,21 +52,21 @@ static void MenuBadge_mstStarU_Load(MenuBadge_mstStarU* mstStar, Sprite* sprite,
     MenuBadgeObject* menuBadge = mstStar->menuBadge;
     SpriteAnimation  anim      = MenuBadge_mstStarU_Anim;
 
-    anim.dataType = (u16)args->dataType;
-    anim.unk_2A   = 0x25;
-    anim.unk_04   = 0xDA;
-    anim.unk_06   = 0xA;
+    anim.dataType  = (u16)args->dataType;
+    anim.animIndex = 0x25;
+    anim.posX      = 0xDA;
+    anim.posY      = 0xA;
     _Sprite_Load(sprite, &anim);
 
     u16 badgeId = menuBadge->cursorBadge.pinId;
     if (badgeId != 0xFFFF) {
         if (menuBadge->masteredCounts[badgeId] > 0) {
-            mstStar->visible = 1;
+            mstStar->visible = TRUE;
         } else {
-            mstStar->visible = 0;
+            mstStar->visible = FALSE;
         }
     } else {
-        mstStar->visible = 0;
+        mstStar->visible = FALSE;
     }
 }
 
@@ -86,12 +86,12 @@ static s32 MenuBadge_mstStarU_Update(TaskPool* pool, Task* task, void* args) {
     u16 badgeId = menuBadge->cursorBadge.pinId;
     if (badgeId != 0xFFFF) {
         if (menuBadge->masteredCounts[badgeId] > 0) {
-            mstStar->visible = 1;
+            mstStar->visible = TRUE;
         } else {
-            mstStar->visible = 0;
+            mstStar->visible = FALSE;
         }
     } else {
-        mstStar->visible = 0;
+        mstStar->visible = FALSE;
     }
 
     Sprite_Update(&mstStar->sprite);

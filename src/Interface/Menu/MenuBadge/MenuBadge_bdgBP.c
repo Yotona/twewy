@@ -2,8 +2,8 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[2];
-    /* 0x80 */ s32              gaugeVisible;
-    /* 0x84 */ s32              baseVisible;
+    /* 0x80 */ BOOL             gaugeVisible;
+    /* 0x84 */ BOOL             baseVisible;
     /* 0x88 */ MenuBadgeObject* menuBadge;
     /* 0x8C */ u16              slot;
 } MenuBadge_bdgBP; // Size: 0x90
@@ -33,8 +33,8 @@ static const SpriteAnimation MenuBadge_bdgBP_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgBP_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,20 +48,19 @@ static const SpriteAnimation MenuBadge_bdgBP_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdgBP_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3AC000);
 }
 
-// Nonmatching
 static void MenuBadge_bdgBP_Load(MenuBadge_bdgBP* bdgBP, Sprite* baseSprite, Sprite* gaugeSprite, MenuBadge_bdgBP_Args* args) {
     SpriteAnimation anim = MenuBadge_bdgBP_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = MenuBadge_SlotPositions[args->slot].x - 12;
-    anim.unk_06   = MenuBadge_SlotPositions[args->slot].y + 19;
+    anim.posX     = MenuBadge_SlotPositions[args->slot].x - 12;
+    anim.posY     = MenuBadge_SlotPositions[args->slot].y + 19;
 
     u16 gaugeFrame = 0;
 
@@ -83,10 +82,10 @@ static void MenuBadge_bdgBP_Load(MenuBadge_bdgBP* bdgBP, Sprite* baseSprite, Spr
         bdgBP->baseVisible = TRUE;
     }
 
-    anim.unk_2A = 0x1D;
+    anim.animIndex = 0x1D;
     _Sprite_Load(baseSprite, &anim);
 
-    anim.unk_2A = gaugeFrame + 4;
+    anim.animIndex = gaugeFrame + 4;
     _Sprite_Load(gaugeSprite, &anim);
 
     bdgBP->slot = args->slot;

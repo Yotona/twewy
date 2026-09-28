@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[4];
-    /* 0x100 */ s32              shouldRender[4];
+    /* 0x100 */ BOOL             visible[4];
     /* 0x110 */ MenuBadgeObject* menuBadge;
 } MenuBadge_numBdgIdU; // Size: 0x114
 
@@ -29,8 +29,8 @@ static const SpriteAnimation MenuBadge_numBdgIdU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_numBdgIdU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,13 +44,13 @@ static const SpriteAnimation MenuBadge_numBdgIdU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId) {
     if (numBdgId->menuBadge->cursorBadge.pinId == 0xFFFF) {
         for (u16 i = 0; i < 3; i++) {
-            numBdgId->shouldRender[i] = 0;
+            numBdgId->visible[i] = FALSE;
         }
         return;
     }
@@ -66,7 +66,7 @@ void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId
     digits[2] = rem % 10;
 
     for (u16 i = 0; i < 3; i++) {
-        numBdgId->shouldRender[i] = 1;
+        numBdgId->visible[i] = TRUE;
     }
 
     for (u16 i = 0; i < 3; i++) {
@@ -84,7 +84,7 @@ static void MenuBadge_numBdgIdU_Load(MenuBadge_numBdgIdU* numBdgId, Sprite* spri
     SpriteAnimation  anim      = MenuBadge_numBdgIdU_Anim;
     u16              i;
 
-    const MenuBadgePoint data_ov043_020c8fac[2] = {
+    const Point data_ov043_020c8fac[2] = {
         {225, 10},
         {236, 10}
     };
@@ -94,12 +94,12 @@ static void MenuBadge_numBdgIdU_Load(MenuBadge_numBdgIdU* numBdgId, Sprite* spri
     anim.dataType = args->dataType;
 
     for (i = 0; i < 4; i++) {
-        numBdgId->shouldRender[i] = 1;
+        numBdgId->visible[i] = TRUE;
     }
 
     if (menuBadge->cursorBadge.pinId == 0xFFFF) {
         for (i = 0; i < 3; i++) {
-            numBdgId->shouldRender[i] = 0;
+            numBdgId->visible[i] = FALSE;
         }
 
     } else {
@@ -110,15 +110,15 @@ static void MenuBadge_numBdgIdU_Load(MenuBadge_numBdgIdU* numBdgId, Sprite* spri
         digits[2] = rem % 10;
     }
     for (i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 0x11;
-        anim.unk_04 = data_ov043_020c8fac[1].x + (i * 4);
-        anim.unk_06 = data_ov043_020c8fac[1].y;
+        anim.animIndex = digits[i] + 0x11;
+        anim.posX      = data_ov043_020c8fac[1].x + (i * 4);
+        anim.posY      = data_ov043_020c8fac[1].y;
         _Sprite_Load(&sprites[i], &anim);
     }
 
-    anim.unk_2A = 0x10;
-    anim.unk_04 = data_ov043_020c8fac[0].x;
-    anim.unk_06 = data_ov043_020c8fac[0].y;
+    anim.animIndex = 0x10;
+    anim.posX      = data_ov043_020c8fac[0].x;
+    anim.posY      = data_ov043_020c8fac[0].y;
     _Sprite_Load(&sprites[3], &anim);
 }
 
@@ -146,7 +146,7 @@ static s32 MenuBadge_numBdgIdU_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadge_numBdgIdU* numBdgId = task->data;
 
     for (s32 i = 0; i < 4; i++) {
-        if (numBdgId->shouldRender[i] != 0) {
+        if (numBdgId->visible[i] != 0) {
             Sprite_RenderFrame(&numBdgId->sprites[i]);
         }
     }

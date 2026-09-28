@@ -29,8 +29,8 @@ static const SpriteAnimation Shop_numMoneyBdg_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_numMoneyBdg_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation Shop_numMoneyBdg_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void Shop_numMoneyBdg_CalcDigits(Shop_numMoneyBdg* arg0, u32* arg1) {
@@ -110,7 +110,7 @@ static SpriteFrameInfo* Shop_numMoneyBdg_GetFrameInfo(Sprite* sprite, s32 arg, s
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-static void Shop_numMoneyBdg_Load(Shop_numMoneyBdg* arg0, Sprite* arg1, Shop_numMoneyBdg_Args* args) {
+static void Shop_numMoneyBdg_Load(Shop_numMoneyBdg* taskData, Sprite* sprites, Shop_numMoneyBdg_Args* args) {
     SpriteAnimation anim = Shop_numMoneyBdg_Anim;
 
     u32   digits[7];
@@ -124,29 +124,29 @@ static void Shop_numMoneyBdg_Load(Shop_numMoneyBdg* arg0, Sprite* arg1, Shop_num
 
     anim.dataType = args->dataType;
 
-    Shop_numMoneyBdg_CalcDigits(arg0, digits);
+    Shop_numMoneyBdg_CalcDigits(taskData, digits);
 
-    anim.unk_2A = 0x1C;
-    anim.unk_04 = positions[0].x + 202;
-    anim.unk_06 = 0x77;
-    _Sprite_Load(&arg1[0], &anim);
+    anim.animIndex = 0x1C;
+    anim.posX      = positions[0].x + 202;
+    anim.posY      = 0x77;
+    _Sprite_Load(&sprites[0], &anim);
 
     for (u16 i = 0; i < 7; i++) {
-        anim.unk_2A = digits[i] + 18;
-        anim.unk_04 = ((s16*)positions)[i + 1] + 202;
-        anim.unk_06 = 0x77;
-        _Sprite_Load(&arg1[i + 1], &anim);
+        anim.animIndex = digits[i] + 18;
+        anim.posX      = ((s16*)positions)[i + 1] + 202;
+        anim.posY      = 0x77;
+        _Sprite_Load(&sprites[i + 1], &anim);
     }
 
-    anim.unk_2A = 0x44;
-    anim.unk_04 = positions[4].x + 202;
-    anim.unk_06 = 0x77;
-    _Sprite_Load(&arg1[8], &anim);
+    anim.animIndex = 0x44;
+    anim.posX      = positions[4].x + 202;
+    anim.posY      = 0x77;
+    _Sprite_Load(&sprites[8], &anim);
 
-    anim.unk_2A = 0x44;
-    anim.unk_04 = positions[4].y + 202;
-    anim.unk_06 = 0x77;
-    _Sprite_Load(&arg1[9], &anim);
+    anim.animIndex = 0x44;
+    anim.posX      = positions[4].y + 202;
+    anim.posY      = 0x77;
+    _Sprite_Load(&sprites[9], &anim);
 }
 
 static s32 Shop_numMoneyBdg_Init(TaskPool* pool, Task* task, void* args) {

@@ -5,7 +5,7 @@ extern s32 func_ov043_020b1a70(ShopObject* shop, s16 itemIndex);
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ BOOL        shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
     /* 0x48 */ s16         itemIndex;
     /* 0x4A */ u16         itemFrame;
@@ -32,8 +32,8 @@ static const SpriteAnimation Shop_itemMask_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemMask_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -47,7 +47,7 @@ static const SpriteAnimation Shop_itemMask_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_itemMask_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -59,18 +59,18 @@ static void Shop_itemMask_Load(Shop_itemMask* itemMask, Sprite* sprite, Shop_ite
 
     SpriteAnimation anim = Shop_itemMask_Anim;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 19;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 19;
 
-    anim.unk_04 = (args->itemIndex % 6) * 0x21 + 0x16;
-    anim.unk_06 = (args->itemIndex / 6) * 0x29 + 0x27;
+    anim.posX = (args->itemIndex % 6) * 0x21 + 0x16;
+    anim.posY = (args->itemIndex / 6) * 0x29 + 0x27;
 
     if (args->itemFrame == 0xFFFF) {
-        itemMask->shouldRender = FALSE;
+        itemMask->visible = FALSE;
     } else if (func_ov043_020b1a70(shop, args->itemIndex) == 1) {
-        itemMask->shouldRender = FALSE;
+        itemMask->visible = FALSE;
     } else {
-        itemMask->shouldRender = TRUE;
+        itemMask->visible = TRUE;
     }
 
     itemMask->itemIndex = args->itemIndex;
@@ -94,9 +94,9 @@ static s32 Shop_itemMask_Update(TaskPool* pool, Task* task, void* args) {
     Shop_itemMask* itemMask = task->data;
 
     if (func_ov043_020b1a70(itemMask->shop, itemMask->itemIndex) == 1) {
-        itemMask->shouldRender = FALSE;
+        itemMask->visible = FALSE;
     } else {
-        itemMask->shouldRender = TRUE;
+        itemMask->visible = TRUE;
     }
     Sprite_Update(&itemMask->sprite);
     return 1;
@@ -105,7 +105,7 @@ static s32 Shop_itemMask_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_itemMask_Render(TaskPool* pool, Task* task, void* args) {
     Shop_itemMask* itemMask = task->data;
 
-    if (itemMask->shouldRender != FALSE) {
+    if (itemMask->visible != FALSE) {
         Sprite_RenderFrame(&itemMask->sprite);
     }
     return 1;

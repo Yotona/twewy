@@ -12,7 +12,32 @@ typedef struct {
 
 s32 OpenEnd_TaskBadge_RunTask(struct TaskPool* pool, struct Task* task, void* taskParam, s32 index);
 
-static const SpriteAnimation OpenEnd_Badge_Anim;
+static const SpriteAnimation OpenEnd_Badge_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 1,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0,
+    .posX              = 128,
+    .posY              = 96,
+    .frameInfoCallback = NULL,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = NULL,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 0,
+    .unk_1E            = 0,
+    .unk_20            = 1,
+    .unk_22            = 16,
+    .unk_24            = 0,
+    .unk_26            = 0,
+    .unk_28            = 0,
+    .animIndex         = 0,
+};
 
 static const TaskHandle TaskHandle_OpenEnd_Badge = {"Tsk_OpenEnd_Badge", OpenEnd_TaskBadge_RunTask, 0x84};
 
@@ -33,12 +58,12 @@ BOOL OpenEnd_IsInCircle(s32* coords, s32 x, s32 y) {
 }
 
 void OpenEnd_InitBadgeAnim(SpriteAnimation* anim, s16 r1, s16 r2, s16 r3, s16 s1) {
-    *anim         = OpenEnd_Badge_Anim;
-    anim->binIden = OpenEnd_FileList;
-    anim->unk_1C  = r1;
-    anim->unk_26  = r2;
-    anim->unk_28  = r3;
-    anim->unk_2A  = s1;
+    *anim           = OpenEnd_Badge_Anim;
+    anim->binIden   = OpenEnd_FileList;
+    anim->unk_1C    = r1;
+    anim->unk_26    = r2;
+    anim->unk_28    = r3;
+    anim->animIndex = s1;
 }
 
 s32 OpenEnd_TaskBadge_Init(struct TaskPool* unused_r0, struct Task* r1, void* taskParam) {
@@ -54,7 +79,7 @@ s32 OpenEnd_TaskBadge_Init(struct TaskPool* unused_r0, struct Task* r1, void* ta
 
     Sprite_Load(&badgeData->badgeShadow, &anim);
 
-    anim.unk_2A = 2;
+    anim.animIndex = 2;
     Sprite_Load(&badgeData->badge, &anim);
 
     return 1;
@@ -65,7 +90,6 @@ const u32 OpenEnd_TitleScreen_BadgeInfo[][5] = {
     {0xD7, 0x1F, 0x19, 0x01, 0x01}
 };
 
-// Nonmatching
 s32 OpenEnd_TaskBadge_Update(TaskPool* pool, Task* task, void* args) {
     OpenEnd_Badge* badgeData = task->data;
 
@@ -86,7 +110,7 @@ s32 OpenEnd_TaskBadge_Update(TaskPool* pool, Task* task, void* args) {
 
     if (flag_screenTouched != 0 && TouchInput_WasTouchReleased() != FALSE) {
         if (OpenEnd_IsInCircle(&OpenEnd_TitleScreen_BadgeInfo[badgeData->badgeIndex][0], coords.x, coords.y) != FALSE) {
-            OpenEnd_OnButtonSelect(OpenEnd_TitleScreen_BadgeInfo[badgeData->badgeIndex][1]);
+            OpenEnd_OnButtonSelect(OpenEnd_TitleScreen_BadgeInfo[badgeData->badgeIndex][4]);
         }
     }
     Sprite_Update(&badgeData->badge);

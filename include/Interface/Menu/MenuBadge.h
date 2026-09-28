@@ -5,12 +5,8 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Interface/Menu/MenuCommon.h"
 #include "SpriteMgr.h"
-
-typedef struct {
-    s16 x;
-    s16 y;
-} MenuBadgePoint;
 
 // A single pin as displayed/sorted in the badge menu. Filled from the save data,
 // Apl_Tak/BadgeData.bin (RawPinData), and Apl_Tak/BeBadge_Parm.bin (Tin Pin Slammer stats).
@@ -85,69 +81,58 @@ typedef struct {
 #define MENUBADGE_MSG_TOO_MANY_PINS 10 // excessPinCount over the 200 limit
 #define MENUBADGE_MSG_MONEY_CAPPED  11
 
-// Loaded background/palette resource.
 typedef struct {
-    /* 0x00 */ Data*            data;
-    /* 0x04 */ BgResource*      screenResource;
-    /* 0x08 */ BgResource*      charResource;
-    /* 0x0C */ PaletteResource* paletteResource;
-    /* 0x10 */ u16*             charData;
-    /* 0x14 */ u16*             screenMap;
-    /* 0x18 */ u8*              paletteData;
-} MenuBadgeResource; // Size: 0x1C
-
-typedef struct {
-    /* 0x0000 */ MenuBadgeEntry    decks[4][6];
-    /* 0x0720 */ MenuBadgeEntry    stockpile[256];
-    /* 0x5320 */ MenuBadgeEntry    mastered[304];
-    /* 0xAD60 */ MenuBadgeEntry*   slots[30]; // 0-5 the current deck, 6-29 the visible list page
-    /* 0xADD8 */ MenuBadgeEntry    cursorBadge;
-    /* 0xAE24 */ MenuBadgeEntry    dragBadge;
-    /* 0xAE70 */ s32               slotVisible[30]; // 0 while that slot's badge is being dragged
-    /* 0xAEE8 */ u16               flags;           // MENUBADGE_FLAG_*
-    /* 0xAEEA */ u8                deckSlotCount;   // unlocked deck slots, 2-6
-    /* 0xAEEB */ u8                listMode;        // 0 = stockpile, 1 = mastered
-    /* 0xAEEC */ s16               dragSrc;         // slot the drag started on, -1 = none
-    /* 0xAEEE */ s16               dragDst;         // slot under the dragged badge; 40 = back to the list
-    /* 0xAEF0 */ s16               unk_AEF0;
-    /* 0xAEF2 */ MenuBadgePoint    touchPos;
-    /* 0xAEF6 */ u16               cursorSlot;       // 0-29
-    /* 0xAEF8 */ u16               cursorListIndex;  // index into the current list, 0xFFFF = on the deck
-    /* 0xAEFA */ u16               listTop;          // first list entry on the visible page
-    /* 0xAEFC */ u16               prevListTop;
-    /* 0xAEFE */ u8                infoTab;          // upper-screen page: 0 = effect, 1 = growth, 2 = Tin Pin
-    /* 0xAEFF */ u8                buttonPressed[3]; // arrange, help, exit
-    /* 0xAF02 */ u8                pressTimer;       // frames a pressed button stays highlighted
-    /* 0xAF03 */ u8                badgeVramPage;    // double-buffers the upper-screen badge
-    /* 0xAF04 */ u8                exitDest;         // 0 = Top menu, 1 = overlay 27
-    /* 0xAF05 */ u8                moneyCapLevel;
-    /* 0xAF06 */ char              unk_AF06[0xAF08 - 0xAF06];
-    /* 0xAF08 */ s32               unk_AF08;
-    /* 0xAF0C */ u32               money;
-    /* 0xAF10 */ u16               sellCount;
-    /* 0xAF12 */ u8                sellButtonPressed[2]; // confirm, cancel
-    /* 0xAF14 */ char              unk_AF14[0xAF18 - 0xAF14];
-    /* 0xAF18 */ u8                sellArrowPressed[2];  // count up, count down
-    /* 0xAF1A */ char              unk_AF1A[0xAF1C - 0xAF1A];
-    /* 0xAF1C */ u8                helpButtonPressed[3]; // previous, next, close
-    /* 0xAF1F */ u8                helpPage;
-    /* 0xAF20 */ u16               windowMessage;        // MENUBADGE_MSG_*; tasks pause while non-zero
-    /* 0xAF22 */ s16               unk_AF22;
-    /* 0xAF24 */ s16               windowCloseTimer;
-    /* 0xAF26 */ u8                currentDeck;
-    /* 0xAF27 */ u8                arrangeButtonPressed[4]; // by number, by psych, always, close
-    /* 0xAF2B */ u8                autoArrangeBy[2];        // [0] by number, [1] by psych
-    /* 0xAF2D */ u8                autoArrange;             // "Always arrange"
-    /* 0xAF2E */ char              unk_AF2E[0xAF30 - 0xAF2E];
-    /* 0xAF30 */ u16               excessPinCount;          // unmastered pins over the 200 limit
-    /* 0xAF32 */ s16               masteredCounts[304];     // mastered copies owned, by pin ID
-    /* 0xB192 */ char              unk_B192[0xB194 - 0xB192];
-    /* 0xB194 */ MenuBadgeResource resources[8];
+    /* 0x0000 */ MenuBadgeEntry  decks[4][6];
+    /* 0x0720 */ MenuBadgeEntry  stockpile[256];
+    /* 0x5320 */ MenuBadgeEntry  mastered[304];
+    /* 0xAD60 */ MenuBadgeEntry* slots[30]; // 0-5 the current deck, 6-29 the visible list page
+    /* 0xADD8 */ MenuBadgeEntry  cursorBadge;
+    /* 0xAE24 */ MenuBadgeEntry  dragBadge;
+    /* 0xAE70 */ BOOL            slotVisible[30]; // FALSE while that slot's badge is being dragged
+    /* 0xAEE8 */ u16             flags;           // MENUBADGE_FLAG_*
+    /* 0xAEEA */ u8              deckSlotCount;   // unlocked deck slots, 2-6
+    /* 0xAEEB */ u8              listMode;        // 0 = stockpile, 1 = mastered
+    /* 0xAEEC */ s16             dragSrc;         // slot the drag started on, -1 = none
+    /* 0xAEEE */ s16             dragDst;         // slot under the dragged badge; 40 = back to the list
+    /* 0xAEF0 */ s16             unk_AEF0;
+    /* 0xAEF2 */ Point           touchPos;
+    /* 0xAEF6 */ u16             cursorSlot;       // 0-29
+    /* 0xAEF8 */ u16             cursorListIndex;  // index into the current list, 0xFFFF = on the deck
+    /* 0xAEFA */ u16             listTop;          // first list entry on the visible page
+    /* 0xAEFC */ u16             prevListTop;
+    /* 0xAEFE */ u8              infoTab;          // upper-screen page: 0 = effect, 1 = growth, 2 = Tin Pin
+    /* 0xAEFF */ u8              buttonPressed[3]; // arrange, help, exit
+    /* 0xAF02 */ u8              pressTimer;       // frames a pressed button stays highlighted
+    /* 0xAF03 */ u8              badgeVramPage;    // double-buffers the upper-screen badge
+    /* 0xAF04 */ u8              exitDest;         // 0 = Top menu, 1 = overlay 27
+    /* 0xAF05 */ u8              moneyCapLevel;
+    /* 0xAF06 */ char            unk_AF06[0xAF08 - 0xAF06];
+    /* 0xAF08 */ s32             unk_AF08;
+    /* 0xAF0C */ u32             money;
+    /* 0xAF10 */ u16             sellCount;
+    /* 0xAF12 */ u8              sellButtonPressed[2]; // confirm, cancel
+    /* 0xAF14 */ char            unk_AF14[0xAF18 - 0xAF14];
+    /* 0xAF18 */ u8              sellArrowPressed[2];  // count up, count down
+    /* 0xAF1A */ char            unk_AF1A[0xAF1C - 0xAF1A];
+    /* 0xAF1C */ u8              helpButtonPressed[3]; // previous, next, close
+    /* 0xAF1F */ u8              helpPage;
+    /* 0xAF20 */ u16             windowMessage;        // MENUBADGE_MSG_*; tasks pause while non-zero
+    /* 0xAF22 */ s16             unk_AF22;
+    /* 0xAF24 */ s16             windowCloseTimer;
+    /* 0xAF26 */ u8              currentDeck;
+    /* 0xAF27 */ u8              arrangeButtonPressed[4]; // by number, by psych, always, close
+    /* 0xAF2B */ u8              autoArrangeBy[2];        // [0] by number, [1] by psych
+    /* 0xAF2D */ u8              autoArrange;             // "Always arrange"
+    /* 0xAF2E */ char            unk_AF2E[0xAF30 - 0xAF2E];
+    /* 0xAF30 */ u16             excessPinCount;          // unmastered pins over the 200 limit
+    /* 0xAF32 */ s16             masteredCounts[304];     // mastered copies owned, by pin ID
+    /* 0xB192 */ char            unk_B192[0xB194 - 0xB192];
+    /* 0xB194 */ MenuBgResource  resources[8];
 } MenuBadgeObject; // Size: 0xB274
 
-extern const BinIdentifier  MenuBadge_BinIdentifiers[15];
-extern const MenuBadgePoint MenuBadge_SlotPositions[30];
-extern MenuBadgeEntry       MenuBadge_EmptyEntry;
+extern const BinIdentifier MenuBadge_BinIdentifiers[15];
+extern const Point         MenuBadge_SlotPositions[30];
+extern MenuBadgeEntry      MenuBadge_EmptyEntry;
 
 s32  MenuBadge_IsPointInRect(s32 x, s32 y, s32 left, s32 top, s16 width, s16 height);
 void MenuBadge_SetSpriteFrame(Sprite* sprite, s16 frame);
@@ -178,8 +163,8 @@ s16  MenuBadge_GetSortButtonAtPoint(s16 x, s16 y);
 s16  MenuBadge_GetSellCountArrowAtPoint(s16 x, s16 y);
 s16  MenuBadge_GetHelpButtonAtPoint(s16 x, s16 y);
 s16  MenuBadge_GetDeckTabAtPoint(s16 x, s16 y);
-void MenuBadge_ReloadBgResource(MenuBadgeResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount);
-void MenuBadge_ReloadBgScreen(MenuBadgeResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex);
+void MenuBadge_ReloadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount);
+void MenuBadge_ReloadBgScreen(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex);
 void MenuBadge_LoadBackgrounds(MenuBadgeObject* menuBadge);
 void MenuBadge_UpdateBackgrounds(MenuBadgeObject* menuBadge);
 void MenuBadge_ReleaseBackgrounds(MenuBadgeObject* menuBadge);
@@ -205,10 +190,10 @@ s32   MenuBadge_nameU_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* 
 s32   MenuBadge_numBdgIdU_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_numMoney_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_pointer_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
-s32   func_ov043_02094dc0(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge); // sbar
+s32   MenuBadge_sbar_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_shadow_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_slotCover_CreateTask(TaskPool* pool, s32 dataType, u16 index, MenuBadgeObject* menuBadge);
-s32   MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, MenuBadgePoint pos, s16 frame, MenuBadgeObject* menuBadge);
+s32   MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, Point pos, s16 frame, MenuBadgeObject* menuBadge);
 s32   MenuBadge_tab_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_tabBdgType_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_tabDeck_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
@@ -216,6 +201,6 @@ s32   MenuBadge_textScr_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject
 s32   MenuBadge_textScrU_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_window0_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 s32   MenuBadge_window1_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
-s32   MenuBadge_window2_CreateTask(TaskPool* pool, s32 dataType, void* arg2);
+s32   MenuBadge_window2_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge);
 
 #endif // INTERFACE_MENU_MENUBADGE_H

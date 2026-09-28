@@ -33,8 +33,8 @@ static const SpriteAnimation MenuEquip_itemU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_itemU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation MenuEquip_itemU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 // Nonmatching: copy loop register allocation
@@ -94,8 +94,8 @@ static void MenuEquip_itemU_Load(MenuEquip_itemU* itemU, Sprite* sprite, MenuEqu
     SpriteAnimation anim = MenuEquip_itemU_Anim;
 
     anim.dataType  = args->dataType;
-    anim.unk_04    = 0xEC;
-    anim.unk_06    = 0x1C;
+    anim.posX      = 0xEC;
+    anim.posY      = 0x1C;
     anim.packIndex = args->bufferIndex + 1;
     _Sprite_Load(sprite, &anim);
 

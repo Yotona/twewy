@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[10];
-    /* 0x280 */ s32              visibleFlags[10];
+    /* 0x280 */ BOOL             visible[10];
     /* 0x2A8 */ MenuBadgeObject* menuBadge;
     /* 0x2AC */ u8               digitCount;
 } MenuBadge_numMoney; // Size: 0x2B0
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuBadge_numMoney_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_numMoney_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation MenuBadge_numMoney_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void func_ov043_020957b8(MenuBadge_numMoney* numMoney, u32 money, u32* digits) {
@@ -66,7 +66,7 @@ static void func_ov043_020957b8(MenuBadge_numMoney* numMoney, u32 money, u32* di
     digits[6] = value % 10;
 
     for (s32 i = 0; i < 10; i++) {
-        numMoney->visibleFlags[i] = TRUE;
+        numMoney->visible[i] = TRUE;
     }
 
     numMoney->digitCount = 7;
@@ -74,14 +74,14 @@ static void func_ov043_020957b8(MenuBadge_numMoney* numMoney, u32 money, u32* di
         if (digits[i] != 0) {
             break;
         }
-        numMoney->visibleFlags[i + 1] = FALSE;
+        numMoney->visible[i + 1] = FALSE;
         numMoney->digitCount--;
     }
 
     if (money < 1000000) {
-        numMoney->visibleFlags[8] = FALSE;
+        numMoney->visible[8] = FALSE;
         if (money < 1000) {
-            numMoney->visibleFlags[9] = FALSE;
+            numMoney->visible[9] = FALSE;
         }
     }
 }
@@ -126,7 +126,7 @@ static void MenuBadge_numMoney_Load(MenuBadge_numMoney* numMoney, Sprite* sprite
     MenuBadgeObject* menuBadge = numMoney->menuBadge;
     SpriteAnimation  anim      = MenuBadge_numMoney_Anim;
 
-    MenuBadgePoint positions[5] = {
+    Point positions[5] = {
         {-10,  0},
         { 10, 16},
         { 22, 32},
@@ -153,26 +153,26 @@ static void MenuBadge_numMoney_Load(MenuBadge_numMoney* numMoney, Sprite* sprite
         suffixFrame = 0x5F;
     }
 
-    anim.unk_2A = labelFrame;
-    anim.unk_04 = positions[0].x + 0x25;
-    anim.unk_06 = 0xB9;
+    anim.animIndex = labelFrame;
+    anim.posX      = positions[0].x + 0x25;
+    anim.posY      = 0xB9;
     _Sprite_Load(&sprites[0], &anim);
 
     for (u16 i = 0; i < 7; i++) {
-        anim.unk_2A = digitBase + digits[i];
-        anim.unk_04 = positions[i].y + 0x25;
-        anim.unk_06 = 0xB9;
+        anim.animIndex = digitBase + digits[i];
+        anim.posX      = positions[i].y + 0x25;
+        anim.posY      = 0xB9;
         _Sprite_Load(&sprites[i + 1], &anim);
     }
 
-    anim.unk_2A = suffixFrame;
-    anim.unk_04 = positions[4].x + 0x25;
-    anim.unk_06 = 0xB9;
+    anim.animIndex = suffixFrame;
+    anim.posX      = positions[4].x + 0x25;
+    anim.posY      = 0xB9;
     _Sprite_Load(&sprites[8], &anim);
 
-    anim.unk_2A = suffixFrame;
-    anim.unk_04 = positions[4].y + 0x25;
-    anim.unk_06 = 0xB9;
+    anim.animIndex = suffixFrame;
+    anim.posX      = positions[4].y + 0x25;
+    anim.posY      = 0xB9;
     _Sprite_Load(&sprites[9], &anim);
 }
 
@@ -199,7 +199,7 @@ static s32 MenuBadge_numMoney_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadge_numMoney* numMoney = task->data;
 
     for (s32 i = 0; i < 10; i++) {
-        if (numMoney->visibleFlags[i] != 0) {
+        if (numMoney->visible[i] != 0) {
             Sprite_RenderFrame(&numMoney->sprites[i]);
         }
     }

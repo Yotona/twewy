@@ -2,26 +2,29 @@
 #include "Interface/Menu/Top.h"
 #include "SndMgr.h"
 
+// Single-digit numbers shift left to stay centred
+#ifdef REGION_USA
+    #define MENUTOP_NUMLV_ONE_DIGIT_SHIFT -3
+#else
+    #define MENUTOP_NUMLV_ONE_DIGIT_SHIFT -4
+#endif
+
 typedef struct {
     /* 0x000 */ Sprite         sprites[5];
-    /* 0x140 */ s32            visibleFlags[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
     /* 0x158 */ u16            previousLevel;
 } MenuTop_numLV; // Size: 0x15C
 
 typedef struct {
-    /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* topMenu;
-    /* 0x8 */ u16   level;
-    /* 0xA */ u16   maxLevel;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            level;
+    /* 0xA */ u16            maxLevel;
 } MenuTop_numLV_Args;
 
 static SpriteFrameInfo* MenuTop_numLV_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuTop_numLV_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
-
-static const s16 MenuTop_numLV_DigitX[5] = {
-    0x32, 0x38, 0x40, 0x48, 0x4E,
-};
 
 static const TaskHandle Tsk_MenuTop_numLV = {"Tsk_MenuTop_numLV", MenuTop_numLV_RunTask, sizeof(MenuTop_numLV)};
 
@@ -34,8 +37,8 @@ static const SpriteAnimation MenuTop_numLV_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_numLV_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -49,115 +52,104 @@ static const SpriteAnimation MenuTop_numLV_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
-// Nonmatching
 void MenuTop_numLV_Refresh(MenuTop_numLV* taskData) {
     u16 level = taskData->topMenu->currentLevel;
     s16 tensFrame;
-    s16 onesFrame;
     s16 onesXOffset;
+    s16 onesFrame;
 
     if (level >= 100) {
-        tensFrame                 = 1;
-        taskData->visibleFlags[0] = 0;
-        onesFrame                 = 0x15;
-        onesXOffset               = -3;
+        taskData->visible[0] = FALSE;
+        onesFrame            = 21;
+        onesXOffset          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
+        tensFrame            = 1;
     } else {
-        u32 signedBit = level >> 0x1F;
-        s16 tens      = (s16)(signedBit + (level / 10));
-        s16 ones      = (s16)(level - (10 * tens));
+        tensFrame = (u16)(level / 10) + 10;
+        onesFrame = (u16)(level % 10) + 10;
 
-        tensFrame = tens + 10;
-        onesFrame = ones + 10;
-
-        if (level >= 10) {
-            taskData->visibleFlags[0] = 1;
-            taskData->visibleFlags[1] = 1;
-            onesXOffset               = 0;
+        if (level < 10) {
+            taskData->visible[0] = FALSE;
+            taskData->visible[1] = TRUE;
+            onesXOffset          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
         } else {
-            taskData->visibleFlags[0] = 0;
-            taskData->visibleFlags[1] = 1;
-            onesXOffset               = -3;
+            taskData->visible[0] = TRUE;
+            taskData->visible[1] = TRUE;
+            onesXOffset          = 0;
         }
     }
 
     MenuTop_SetSpriteFrame(&taskData->sprites[0], tensFrame);
     MenuTop_SetSpriteFrame(&taskData->sprites[1], onesFrame);
-    taskData->sprites[0].posX = 0x32;
-    taskData->sprites[1].posX = (s16)(onesXOffset + 0x38);
+#ifdef REGION_USA
+    taskData->sprites[0].posX = 50;
+#else
+    taskData->sprites[0].posX = 48;
+#endif
+    taskData->sprites[1].posX = onesXOffset + 56;
 }
 
 static SpriteFrameInfo* MenuTop_numLV_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-// Nonmatching
-void MenuTop_numLV_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
-    MenuTop_numLV*      taskData       = taskDataPtr;
-    Sprite*             sprites        = spritesPtr;
-    MenuTop_numLV_Args* args           = argsPtr;
-    SpriteAnimation     anim           = MenuTop_numLV_Anim;
-    s16                 digitFrames[5] = {0};
-    s16                 xOffsets[5]    = {0};
+void MenuTop_numLV_Load(MenuTop_numLV* taskData, Sprite* sprites, MenuTop_numLV_Args* args) {
+    SpriteAnimation anim = MenuTop_numLV_Anim;
+#ifdef REGION_USA
+    s16 digitX[5] = {50, 56, 64, 72, 78};
+#else
+    s16 digitX[5] = {48, 56, 63, 71, 79};
+#endif
+    s16 xOffsets[5] = {0};
+    s16 digitFrames[5];
+    u16 i;
 
     anim.dataType = args->dataType;
 
-    for (s32 i = 0; i < 5; i++) {
-        taskData->visibleFlags[i] = 1;
+    for (i = 0; i < 5; i++) {
+        taskData->visible[i] = TRUE;
     }
 
     if (args->level >= 100) {
-        digitFrames[0]            = 1;
-        digitFrames[1]            = 0x15;
-        taskData->visibleFlags[0] = 0;
-        xOffsets[0]               = 1;
-        xOffsets[1]               = -3;
+        taskData->visible[0] = FALSE;
+        digitFrames[0]       = 1;
+        digitFrames[1]       = 21;
+        xOffsets[1]          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
     } else {
-        u32 signedBit = args->level >> 0x1F;
-        s16 tens      = (s16)(signedBit + (args->level / 10));
-        s16 ones      = (s16)(args->level - (10 * tens));
-
-        digitFrames[0] = (s16)(tens + 0xA);
-        digitFrames[1] = (s16)(ones + 0xA);
-
-        if (args->level >= 10) {
-            xOffsets[1] = 0;
+        digitFrames[0] = (u16)(args->level / 10) + 10;
+        digitFrames[1] = (u16)(args->level % 10) + 10;
+        if (args->level < 10) {
+            taskData->visible[0] = FALSE;
+            xOffsets[1]          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
         } else {
-            taskData->visibleFlags[0] = 0;
-            xOffsets[1]               = -3;
+            xOffsets[1] = 0;
         }
     }
 
-    digitFrames[2] = 0x14;
+    digitFrames[2] = 20;
 
     if (args->maxLevel >= 100) {
-        digitFrames[3]            = 1;
-        digitFrames[4]            = 0x15;
-        taskData->visibleFlags[3] = 0;
-        xOffsets[3]               = 1;
-        xOffsets[4]               = -3;
+        taskData->visible[3] = FALSE;
+        digitFrames[3]       = 1;
+        digitFrames[4]       = 21;
+        xOffsets[4]          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
     } else {
-        u32 signedBit = args->maxLevel >> 0x1F;
-        s16 tens      = (s16)(signedBit + (args->maxLevel / 10));
-        s16 ones      = (s16)(args->maxLevel - (10 * tens));
-
-        digitFrames[3] = (s16)(tens + 0xA);
-        digitFrames[4] = (s16)(ones + 0xA);
-
-        if (args->maxLevel >= 10) {
-            xOffsets[4] = 0;
+        digitFrames[3] = (u16)(args->maxLevel / 10) + 10;
+        digitFrames[4] = (u16)(args->maxLevel % 10) + 10;
+        if (args->maxLevel < 10) {
+            taskData->visible[3] = FALSE;
+            xOffsets[4]          = MENUTOP_NUMLV_ONE_DIGIT_SHIFT;
         } else {
-            taskData->visibleFlags[3] = 0;
-            xOffsets[4]               = -3;
+            xOffsets[4] = 0;
         }
     }
 
-    for (u16 i = 0; i < 5; i++) {
-        anim.unk_2A = digitFrames[i];
-        anim.unk_04 = (s16)(MenuTop_numLV_DigitX[i] + xOffsets[i]);
-        anim.unk_06 = 0x8B;
+    for (i = 0; i < 5; i++) {
+        anim.animIndex = digitFrames[i];
+        anim.posX      = digitX[i] + xOffsets[i];
+        anim.posY      = 139;
         _Sprite_Load(&sprites[i], &anim);
     }
 
@@ -167,7 +159,7 @@ void MenuTop_numLV_Load(void* taskDataPtr, void* spritesPtr, void* argsPtr) {
 static s32 MenuTop_numLV_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_numLV* taskData = task->data;
 
-    MenuTop_numLV_Load(taskData, taskData, args);
+    MenuTop_numLV_Load(taskData, taskData->sprites, args);
     taskData->topMenu = ((MenuTop_numLV_Args*)args)->topMenu;
     return 1;
 }
@@ -193,7 +185,7 @@ static s32 MenuTop_numLV_Render(TaskPool* pool, Task* task, void* args) {
     MenuTop_numLV* taskData = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (taskData->visibleFlags[i] != 0) {
+        if (taskData->visible[i] != 0) {
             Sprite_RenderFrame(&taskData->sprites[i]);
         }
     }

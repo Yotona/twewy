@@ -34,9 +34,9 @@ static void Result_num_Param_LoadLabels(Result_num_Param* numParam, ResultObject
     s16 frames[9] = {0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A};
 
     for (s16 i = 0; i < 9; i++) {
-        anim->unk_2A = frames[i];
-        anim->unk_04 = positions[i][0];
-        anim->unk_06 = positions[i][1];
+        anim->animIndex = frames[i];
+        anim->posX      = positions[i][0];
+        anim->posY      = positions[i][1];
         _Sprite_Load(&sprites[i], anim);
     }
 }
@@ -70,9 +70,9 @@ static void Result_num_Param_LoadTime(Result_num_Param* numParam, ResultObject* 
     }
 
     for (i = 0, posX = 0x7F; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x26;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x26;
         _Sprite_Load(&sprites[i + 9], anim);
         posX += 7;
     }
@@ -113,17 +113,17 @@ static void Result_num_Param_LoadLevels(Result_num_Param* numParam, ResultObject
     }
 
     for (i = 0, x = 0x7F; i < 2; i++) {
-        anim->unk_2A = digitsA[i] + 0xF;
-        anim->unk_04 = offset + x;
-        anim->unk_06 = 0x35;
+        anim->animIndex = digitsA[i] + 0xF;
+        anim->posX      = offset + x;
+        anim->posY      = 0x35;
         _Sprite_Load(&sprites[i + 14], anim);
         x += 7;
     }
 
     for (i = 0; i < 4; i++) {
-        anim->unk_2A = digitsB[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xAD;
-        anim->unk_06 = 0x35;
+        anim->animIndex = digitsB[i] + 0xF;
+        anim->posX      = posX[i] + 0xAD;
+        anim->posY      = 0x35;
         _Sprite_Load(&sprites[i + 16], anim);
     }
 }
@@ -145,15 +145,15 @@ static void Result_num_Param_LoadRateA(Result_num_Param* numParam, ResultObject*
     digits[3] = value % 10;
     digits[2] = 0xA;
 
-    anim->unk_2A = owner->timeRank + 0x1B;
-    anim->unk_04 = 0x83;
-    anim->unk_06 = 0x44;
+    anim->animIndex = owner->timeRank + 0x1B;
+    anim->posX      = 0x83;
+    anim->posY      = 0x44;
     _Sprite_Load(&sprites[20], anim);
 
     for (s16 i = 0; i < 4; i++) {
-        anim->unk_2A = digits[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xAD;
-        anim->unk_06 = 0x44;
+        anim->animIndex = digits[i] + 0xF;
+        anim->posX      = posX[i] + 0xAD;
+        anim->posY      = 0x44;
         _Sprite_Load(&sprites[i + 21], anim);
     }
 }
@@ -174,15 +174,15 @@ static void Result_num_Param_LoadRateB(Result_num_Param* numParam, ResultObject*
     digits[3] = value % 10;
     digits[2] = 0xA;
 
-    anim->unk_2A = owner->rateBRank + 0x1B;
-    anim->unk_04 = 0x83;
-    anim->unk_06 = 0x53;
+    anim->animIndex = owner->rateBRank + 0x1B;
+    anim->posX      = 0x83;
+    anim->posY      = 0x53;
     _Sprite_Load(&sprites[25], anim);
 
     for (s16 i = 0; i < 4; i++) {
-        anim->unk_2A = digits[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xAD;
-        anim->unk_06 = 0x53;
+        anim->animIndex = digits[i] + 0xF;
+        anim->posX      = posX[i] + 0xAD;
+        anim->posY      = 0x53;
         _Sprite_Load(&sprites[i + 26], anim);
     }
 }
@@ -208,24 +208,24 @@ static void Result_num_Param_LoadRateC(Result_num_Param* numParam, ResultObject*
     digits[3] = value % 10;
     digits[2] = 0xA;
 
-    anim->unk_2A = level + 0xF;
-    anim->unk_04 = 0x83;
-    anim->unk_06 = 0x62;
+    anim->animIndex = level + 0xF;
+    anim->posX      = 0x83;
+    anim->posY      = 0x62;
     _Sprite_Load(&sprites[30], anim);
 
     for (s16 i = 0; i < 4; i++) {
-        anim->unk_2A = digits[i] + 0xF;
-        anim->unk_04 = posX[i] + 0xAD;
-        anim->unk_06 = 0x62;
+        anim->animIndex = digits[i] + 0xF;
+        anim->posX      = posX[i] + 0xAD;
+        anim->posY      = 0x62;
         _Sprite_Load(&sprites[i + 31], anim);
     }
 }
 
 static void Result_num_Param_LoadGrade(Result_num_Param* numParam, ResultObject* owner, Sprite* sprites,
                                        SpriteAnimation* anim) {
-    anim->unk_2A = owner->overallRank + 0x2B;
-    anim->unk_04 = 0x56;
-    anim->unk_06 = 0x7B;
+    anim->animIndex = owner->overallRank + 0x2B;
+    anim->posX      = 0x56;
+    anim->posY      = 0x7B;
     _Sprite_Load(&sprites[35], anim);
 }
 
@@ -242,9 +242,9 @@ static void Result_num_Param_LoadPoints(Result_num_Param* numParam, ResultObject
     numParam->visible[40] = TRUE;
 
     for (i = 0, posX = 0xB0; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x7B;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x7B;
         _Sprite_Load(&sprites[i + 36], anim);
         posX += 7;
     }
@@ -294,8 +294,8 @@ static const SpriteAnimation Result_num_Param_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_num_Param_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -309,7 +309,7 @@ static const SpriteAnimation Result_num_Param_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void Result_num_Param_Load(Result_num_Param* numParam, Sprite* sprites, Result_num_Param_Args* args) {

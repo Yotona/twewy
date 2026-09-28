@@ -38,8 +38,8 @@ static const SpriteAnimation data_ov043_020cab18 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_nameU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -53,7 +53,7 @@ static const SpriteAnimation data_ov043_020cab18 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_nameU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -66,9 +66,9 @@ static void Shop_nameU_Load(Sprite* sprites, Shop_nameU_Args* args) {
 
     anim.dataType = args->dataType;
     for (s16 i = 0; i < 6; i++) {
-        anim.unk_2A = data_ov043_020caad8[i];
-        anim.unk_04 = data_ov043_020cab00[i].x;
-        anim.unk_06 = data_ov043_020cab00[i].y;
+        anim.animIndex = data_ov043_020caad8[i];
+        anim.posX      = data_ov043_020cab00[i].x;
+        anim.posY      = data_ov043_020cab00[i].y;
         _Sprite_Load(&sprites[i], &anim);
     }
 }

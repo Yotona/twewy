@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[4];
-    /* 0x100 */ BOOL             shouldRender[4];
+    /* 0x100 */ BOOL             visible[4];
     /* 0x110 */ MenuEquipObject* owner;
 } MenuEquip_numItemIdU; // Size: 0x114
 
@@ -27,8 +27,8 @@ static const SpriteAnimation MenuEquip_numItemIdU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_numItemIdU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,7 +42,7 @@ static const SpriteAnimation MenuEquip_numItemIdU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void MenuEquip_numItemIdU_UpdateDigits(MenuEquip_numItemIdU* numItemIdU, u16 itemId) {
@@ -51,7 +51,7 @@ static void MenuEquip_numItemIdU_UpdateDigits(MenuEquip_numItemIdU* numItemIdU, 
 
     if (numItemIdU->owner->cursorItem.itemId == 0xFFFF) {
         for (u16 i = 0; i < 3; i++) {
-            numItemIdU->shouldRender[i] = FALSE;
+            numItemIdU->visible[i] = FALSE;
         }
         return;
     }
@@ -66,7 +66,7 @@ static void MenuEquip_numItemIdU_UpdateDigits(MenuEquip_numItemIdU* numItemIdU, 
     digits[2] = number % 100 % 10;
 
     for (u16 i = 0; i < 3; i++) {
-        numItemIdU->shouldRender[i] = TRUE;
+        numItemIdU->visible[i] = TRUE;
     }
 
     for (u16 i = 0; i < 3; i++) {
@@ -90,12 +90,12 @@ static void MenuEquip_numItemIdU_Load(MenuEquip_numItemIdU* numItemIdU, Sprite* 
     anim.dataType = args->dataType;
 
     for (u16 i = 0; i < 4; i++) {
-        numItemIdU->shouldRender[i] = TRUE;
+        numItemIdU->visible[i] = TRUE;
     }
 
     if (owner->cursorItem.itemId == 0xFFFF) {
         for (u16 i = 0; i < 3; i++) {
-            numItemIdU->shouldRender[i] = FALSE;
+            numItemIdU->visible[i] = FALSE;
         }
     } else {
         if (owner->cursorItem.itemId < 304) {
@@ -108,15 +108,15 @@ static void MenuEquip_numItemIdU_Load(MenuEquip_numItemIdU* numItemIdU, Sprite* 
     }
 
     for (u16 i = 0; i < 3; i++) {
-        anim.unk_2A = digits[i] + 41;
-        anim.unk_04 = digitPos[0] + i * 4;
-        anim.unk_06 = digitPos[1];
+        anim.animIndex = digits[i] + 41;
+        anim.posX      = digitPos[0] + i * 4;
+        anim.posY      = digitPos[1];
         _Sprite_Load(&sprites[i], &anim);
     }
 
-    anim.unk_2A = 40;
-    anim.unk_04 = sepPos[0];
-    anim.unk_06 = sepPos[1];
+    anim.animIndex = 40;
+    anim.posX      = sepPos[0];
+    anim.posY      = sepPos[1];
     _Sprite_Load(&sprites[3], &anim);
 }
 
@@ -144,7 +144,7 @@ static s32 MenuEquip_numItemIdU_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_numItemIdU* numItemIdU = task->data;
 
     for (s32 i = 0; i < 4; i++) {
-        if (numItemIdU->shouldRender[i] != 0) {
+        if (numItemIdU->visible[i] != 0) {
             Sprite_RenderFrame(&numItemIdU->sprites[i]);
         }
     }

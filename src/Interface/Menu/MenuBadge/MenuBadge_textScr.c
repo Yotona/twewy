@@ -77,8 +77,8 @@ static void MenuBadge_textScr_DrawSellConfirm(MenuBadge_textScr* textScr, u16* m
 #else
     SysCode buf[30];
 #endif
-    SysCode        countFmt[3]  = {SYSFONT_CODE_COLOR(12), SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
-    MenuBadgePoint positions[5] = {
+    SysCode countFmt[3]  = {SYSFONT_CODE_COLOR(12), SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
+    Point   positions[5] = {
         {  0, 62},
         {  0, 78},
         {  0, 93},
@@ -140,7 +140,7 @@ static void MenuBadge_textScr_DrawSellConfirm(MenuBadge_textScr* textScr, u16* m
 
 static void MenuBadge_textScr_DrawArrange(MenuBadge_textScr* textScr, u16* map, u16* charData) {
     MenuBadgeObject* menuBadge    = textScr->menuBadge;
-    MenuBadgePoint   positions[5] = {
+    Point            positions[5] = {
         {16,  40},
         {88,  67},
         {88,  90},
@@ -174,7 +174,7 @@ static void MenuBadge_textScr_DrawArrange(MenuBadge_textScr* textScr, u16* map, 
 }
 
 static void MenuBadge_textScr_DrawCannotSell(MenuBadge_textScr* textScr, u16* map, u16* charData) {
-    MenuBadgePoint positions[5] = {
+    Point positions[5] = {
         {0, 56},
         {0,  0},
         {0,  0},
@@ -193,7 +193,7 @@ static void MenuBadge_textScr_DrawCannotSell(MenuBadge_textScr* textScr, u16* ma
 }
 
 static void MenuBadge_textScr_DrawClassLimit(MenuBadge_textScr* textScr, u16* map, u16* charData, s32 pinClass) {
-    MenuBadgePoint positions[5] = {
+    Point positions[5] = {
         {0, 56},
         {0,  0},
         {0,  0},
@@ -218,7 +218,7 @@ static void MenuBadge_textScr_DrawTooManyPins(MenuBadge_textScr* textScr, u16* m
 #else
     SysCode buf[100];
 #endif
-    MenuBadgePoint positions[5] = {
+    Point positions[5] = {
         {0, 56},
         {0,  0},
         {0,  0},
@@ -249,7 +249,7 @@ static void MenuBadge_textScr_DrawTooManyPins(MenuBadge_textScr* textScr, u16* m
 
 #ifdef REGION_USA
 static void MenuBadge_textScr_DrawMoneyCapped(MenuBadge_textScr* textScr, u16* map, u16* charData) {
-    MenuBadgePoint positions[5] = {
+    Point positions[5] = {
         {0, 56},
         {0,  0},
         {0,  0},
@@ -328,7 +328,7 @@ static s32 MenuBadge_textScr_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadgeObject*   menuBadge = textScr->menuBadge;
 
     if (menuBadge->flags & MENUBADGE_FLAG_REDRAW_WINDOW) {
-        MenuBadge_ReloadBgResource(&menuBadge->resources[5], 0, 1, 6, 15, 1);
+        MenuBadge_ReloadBgResource(&menuBadge->resources[5], DISPLAY_MAIN, 1, 6, 15, 1);
         MenuBadge_textScr_DrawWindow(textScr);
         menuBadge->flags &= ~MENUBADGE_FLAG_REDRAW_WINDOW;
     }

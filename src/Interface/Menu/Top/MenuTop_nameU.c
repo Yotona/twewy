@@ -2,14 +2,14 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    Sprite sprites[5];
-    s32    unk_140;
-    s32    topMenu;
+    Sprite         sprites[5];
+    s32            unk_140;
+    MenuTopObject* topMenu;
 } MenuTop_nameU;
 
 typedef struct {
-    s32 dataType;
-    s32 topMenu;
+    s32            dataType;
+    MenuTopObject* topMenu;
 } MenuTop_nameU_Args;
 
 typedef struct {
@@ -33,8 +33,8 @@ static const SpriteAnimation MenuTop_nameU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_nameU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation MenuTop_nameU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_nameU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -71,9 +71,9 @@ static void MenuTop_nameU_Load(MenuTop_nameU* nameU, MenuTop_nameU_Args* args) {
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 5; i++) {
-        anim.unk_2A = frames[i];
-        anim.unk_04 = positions[i].x;
-        anim.unk_06 = positions[i].y;
+        anim.animIndex = frames[i];
+        anim.posX      = positions[i].x;
+        anim.posY      = positions[i].y;
         _Sprite_Load(&nameU->sprites[i], &anim);
     }
 }
@@ -126,10 +126,10 @@ static s32 MenuTop_nameU_RunTask(TaskPool* pool, Task* task, void* args, s32 sta
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_nameU_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu) {
+s32 MenuTop_nameU_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_nameU_Args args;
 
     args.dataType = dataType;
     args.topMenu  = topMenu;
-    return EasyTask_CreateTask(pool, &Tsk_MenuTop_nameU, 0, 0, 0, &args);
+    return EasyTask_CreateTask(pool, &Tsk_MenuTop_nameU, NULL, 0, NULL, &args);
 }

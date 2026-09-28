@@ -21,46 +21,40 @@
 #include <nitro/reg.h>
 
 typedef struct {
-    /* 0x00000 */ ResourceManager  unk_00000;
-    /* 0x11580 */ ResourceManager* unk_11580;
-    /* 0x11584 */ s32              unk_11584;
-    /* 0x11588 */ s32              unk_11588;
-    /* 0x1158C */ Heap             heap;
-    /* 0x11598 */ u8               heapBuffer[0x10000];
-    /* 0x21598 */ TaskPool         taskPool;
-    /* 0x21618 */ s32              taskId_Fade;
-    /* 0x2161C */ s32              taskId_Icon;
-    /* 0x21620 */ s32              taskId_Item[26];
-    /* 0x21688 */ s32              taskId_ItemNum[26];
-    /* 0x216F0 */ s32              taskId_ItemAbl[26];
-    /* 0x21758 */ s32              taskId_ItemCur;
-    /* 0x2175C */ s32              taskId_ItemMask[16];
-    /* 0x2179C */ s32              taskId_Mov;
-    /* 0x217A0 */ s32              taskId_Shadow;
-    /* 0x217A4 */ s32              taskId_HelpCur;
-    /* 0x217A8 */ s32              taskId_NameU;
-    /* 0x217AC */ s32              taskId_Sbar;
-    /* 0x217B0 */ s32              taskId_Sbar2;
-    /* 0x217B4 */ s32              taskId_Tab;
-    /* 0x217B8 */ s32              taskId_Partner;
-    /* 0x217BC */ s32              taskId_PartnerHide;
-    /* 0x217C0 */ s32              taskId_NumNek;
-    /* 0x217C4 */ s32              taskId_NumPtr;
-    /* 0x217C8 */ s32              taskId_NameD;
-    /* 0x217CC */ s32              taskId_TextScr;
-    /* 0x217D0 */ s32              taskId_Window;
-    /* 0x217D4 */ s32              taskId_TextItem;
-    /* 0x217D8 */ s32              taskId_Pointer;
-    /* 0x217DC */ s32              taskId_ItemU;
-    /* 0x217E0 */ s32              taskId_TextScrU;
-    /* 0x217E4 */ s32              taskId_BrdLogoU;
-    /* 0x217E8 */ s32              taskId_NumItemIdU;
-    /* 0x217EC */ s32              taskId_HelpCurU;
-    /* 0x217F0 */ s32              taskId_FoodGauge[2];
-    /* 0x217F8 */ s32              unk_217F8;
-    /* 0x217FC */ u16              unk_217FC;
-    /* 0x217FE */ s16              unk_217FE;
-    /* 0x21800 */ MenuEquipObject  menuEquip;
+    /* 0x00000 */ MenuStateBase   base;
+    /* 0x21618 */ s32             taskId_Fade;
+    /* 0x2161C */ s32             taskId_Icon;
+    /* 0x21620 */ s32             taskId_Item[26];
+    /* 0x21688 */ s32             taskId_ItemNum[26];
+    /* 0x216F0 */ s32             taskId_ItemAbl[26];
+    /* 0x21758 */ s32             taskId_ItemCur;
+    /* 0x2175C */ s32             taskId_ItemMask[16];
+    /* 0x2179C */ s32             taskId_Mov;
+    /* 0x217A0 */ s32             taskId_Shadow;
+    /* 0x217A4 */ s32             taskId_HelpCur;
+    /* 0x217A8 */ s32             taskId_NameU;
+    /* 0x217AC */ s32             taskId_Sbar;
+    /* 0x217B0 */ s32             taskId_Sbar2;
+    /* 0x217B4 */ s32             taskId_Tab;
+    /* 0x217B8 */ s32             taskId_Partner;
+    /* 0x217BC */ s32             taskId_PartnerHide;
+    /* 0x217C0 */ s32             taskId_NumNek;
+    /* 0x217C4 */ s32             taskId_NumPtr;
+    /* 0x217C8 */ s32             taskId_NameD;
+    /* 0x217CC */ s32             taskId_TextScr;
+    /* 0x217D0 */ s32             taskId_Window;
+    /* 0x217D4 */ s32             taskId_TextItem;
+    /* 0x217D8 */ s32             taskId_Pointer;
+    /* 0x217DC */ s32             taskId_ItemU;
+    /* 0x217E0 */ s32             taskId_TextScrU;
+    /* 0x217E4 */ s32             taskId_BrdLogoU;
+    /* 0x217E8 */ s32             taskId_NumItemIdU;
+    /* 0x217EC */ s32             taskId_HelpCurU;
+    /* 0x217F0 */ s32             taskId_FoodGauge[2];
+    /* 0x217F8 */ s32             unk_217F8;
+    /* 0x217FC */ u16             unk_217FC;
+    /* 0x217FE */ s16             unk_217FE;
+    /* 0x21800 */ MenuEquipObject menuEquip;
 } MenuEquipState; // Size: 0x2F340
 
 static MenuEquipState* data_ov043_020cd284;
@@ -97,7 +91,7 @@ static const OverlayProcess data_ov043_020c96e4 = {
 };
 
 // Position of each cursor slot: 0-4 Neku's equipment, 5-9 the partner's, 10-25 the item list.
-const s16 data_ov043_020c96f0[26][2] = {
+const Point data_ov043_020c96f0[26] = {
     {0x51, 0x29},
     {0x6E, 0x29},
     {0x51, 0x46},
@@ -179,53 +173,54 @@ void MenuEquip_InitState(MenuEquipState* state) {
 void MenuEquip_CreateTasks(MenuEquipState* state) {
     MenuEquipObject* menuEquip = &state->menuEquip;
 
-    EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -0x10, 0x1000);
-    state->taskId_Pointer = MenuEquip_pointer_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_Icon    = MenuEquip_icon_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_Tab     = MenuEquip_tab_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_NameD   = MenuEquip_nameD_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_NumNek  = MenuEquip_numNek_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    state->taskId_Pointer = MenuEquip_pointer_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_Icon    = MenuEquip_icon_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_Tab     = MenuEquip_tab_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_NameD   = MenuEquip_nameD_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_NumNek  = MenuEquip_numNek_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     if ((func_02023010(686) != 0) && (menuEquip->activePartner != PARTNER_NONE)) {
-        state->taskId_Partner = MenuEquip_partner_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+        state->taskId_Partner = MenuEquip_partner_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     }
     if (menuEquip->activePartner != PARTNER_NONE) {
-        state->taskId_NumPtr = MenuEquip_numPtr_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+        state->taskId_NumPtr = MenuEquip_numPtr_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     } else {
-        state->taskId_PartnerHide = MenuEquip_partnerHide_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+        state->taskId_PartnerHide = MenuEquip_partnerHide_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     }
     for (u16 i = 0; i < 26; i++) {
-        state->taskId_Item[i]    = MenuEquip_item_CreateTask(&state->taskPool, state->unk_11588, i, menuEquip);
-        state->taskId_ItemNum[i] = MenuEquip_itemNum_CreateTask(&state->taskPool, state->unk_11588, i, menuEquip);
-        state->taskId_ItemAbl[i] = MenuEquip_itemAbl_CreateTask(&state->taskPool, state->unk_11588, i, menuEquip);
+        state->taskId_Item[i]    = MenuEquip_item_CreateTask(&state->base.taskPool, state->base.dataType, i, menuEquip);
+        state->taskId_ItemNum[i] = MenuEquip_itemNum_CreateTask(&state->base.taskPool, state->base.dataType, i, menuEquip);
+        state->taskId_ItemAbl[i] = MenuEquip_itemAbl_CreateTask(&state->base.taskPool, state->base.dataType, i, menuEquip);
     }
-    state->taskId_ItemCur = MenuEquip_itemCur_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    state->taskId_ItemCur = MenuEquip_itemCur_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     for (u16 j = 0; j < 16; j++) {
-        state->taskId_ItemMask[j] = MenuEquip_itemMask_CreateTask(&state->taskPool, state->unk_11588, j + 10, menuEquip);
+        state->taskId_ItemMask[j] =
+            MenuEquip_itemMask_CreateTask(&state->base.taskPool, state->base.dataType, j + 10, menuEquip);
     }
 
-    state->taskId_FoodGauge[0] = MenuEquip_foodGauge_CreateTask(&state->taskPool, state->unk_11588, 0, menuEquip);
-    state->taskId_FoodGauge[1] = MenuEquip_foodGauge_CreateTask(&state->taskPool, state->unk_11588, 1, menuEquip);
-    state->taskId_Sbar         = MenuEquip_sbar_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_Sbar2        = MenuEquip_sbar2_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_Window       = MenuEquip_window_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_TextScr      = MenuEquip_textScr_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_TextItem     = MenuEquip_textItem_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_NameU        = MenuEquip_nameU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_TextScrU     = MenuEquip_textScrU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_BrdLogoU     = MenuEquip_brdLogoU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_ItemU        = MenuEquip_itemU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_NumItemIdU   = MenuEquip_numItemIdU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    state->taskId_FoodGauge[0] = MenuEquip_foodGauge_CreateTask(&state->base.taskPool, state->base.dataType, 0, menuEquip);
+    state->taskId_FoodGauge[1] = MenuEquip_foodGauge_CreateTask(&state->base.taskPool, state->base.dataType, 1, menuEquip);
+    state->taskId_Sbar         = MenuEquip_sbar_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_Sbar2        = MenuEquip_sbar2_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_Window       = MenuEquip_window_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_TextScr      = MenuEquip_textScr_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_TextItem     = MenuEquip_textItem_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_NameU        = MenuEquip_nameU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_TextScrU     = MenuEquip_textScrU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_BrdLogoU     = MenuEquip_brdLogoU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_ItemU        = MenuEquip_itemU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_NumItemIdU   = MenuEquip_numItemIdU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
 }
 
 void MenuEquip_DestroySlotTasks(MenuEquipObject* menuEquip, s16 index) {
     MenuEquipState* state = data_ov043_020cd284;
 
-    Sprite_Release(MenuEquip_item_GetTaskData(&state->taskPool, state->taskId_Item[index]));
+    Sprite_Release(MenuEquip_item_GetTaskData(&state->base.taskPool, state->taskId_Item[index]));
     if (index != 30) {
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_Item[index]);
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_ItemNum[index]);
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_ItemAbl[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Item[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_ItemNum[index]);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_ItemAbl[index]);
     }
 }
 
@@ -233,17 +228,19 @@ void MenuEquip_CreateSlotTasks(MenuEquipObject* menuEquip, s16 index) {
     MenuEquipState* state = data_ov043_020cd284;
 
     if (index != 30) {
-        state->taskId_Item[index]    = MenuEquip_item_CreateTask(&state->taskPool, state->unk_11588, index, menuEquip);
-        state->taskId_ItemNum[index] = MenuEquip_itemNum_CreateTask(&state->taskPool, state->unk_11588, index, menuEquip);
-        state->taskId_ItemAbl[index] = MenuEquip_itemAbl_CreateTask(&state->taskPool, state->unk_11588, index, menuEquip);
+        state->taskId_Item[index] = MenuEquip_item_CreateTask(&state->base.taskPool, state->base.dataType, index, menuEquip);
+        state->taskId_ItemNum[index] =
+            MenuEquip_itemNum_CreateTask(&state->base.taskPool, state->base.dataType, index, menuEquip);
+        state->taskId_ItemAbl[index] =
+            MenuEquip_itemAbl_CreateTask(&state->base.taskPool, state->base.dataType, index, menuEquip);
     }
 }
 
 void MenuEquip_RefreshItemText(MenuEquipObject* menuEquip) {
     MenuEquipState* state = data_ov043_020cd284;
 
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_TextItem);
-    state->taskId_TextItem = MenuEquip_textItem_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_TextItem);
+    state->taskId_TextItem = MenuEquip_textItem_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
 }
 
 void MenuEquip_RefreshSlot(MenuEquipObject* menuEquip, s32 index) {
@@ -271,21 +268,22 @@ void MenuEquip_SwitchPartnerEquipment(MenuEquipObject* menuEquip, u16 index) {
     for (s16 i = 0; i < 5; i++) {
         MenuEquip_DestroySlotTasks(menuEquip, i + 5);
     }
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_FoodGauge[1]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_FoodGauge[1]);
     for (s16 i = 0; i < 5; i++) {
         menuEquip->slots[5 + i] = &menuEquip->equipped[index + 1][i];
     }
     for (s16 i = 0; i < 5; i++) {
         MenuEquip_CreateSlotTasks(menuEquip, i + 5);
     }
-    state->taskId_FoodGauge[1] = MenuEquip_foodGauge_CreateTask(&state->taskPool, state->unk_11588, 1, menuEquip);
+    state->taskId_FoodGauge[1] = MenuEquip_foodGauge_CreateTask(&state->base.taskPool, state->base.dataType, 1, menuEquip);
 }
 
 void MenuEquip_RefreshFoodGauge(MenuEquipObject* menuEquip, s16 index) {
     MenuEquipState* state = data_ov043_020cd284;
 
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_FoodGauge[index]);
-    state->taskId_FoodGauge[index] = MenuEquip_foodGauge_CreateTask(&state->taskPool, state->unk_11588, index, menuEquip);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_FoodGauge[index]);
+    state->taskId_FoodGauge[index] =
+        MenuEquip_foodGauge_CreateTask(&state->base.taskPool, state->base.dataType, index, menuEquip);
 }
 
 s32 MenuEquip_ReturnItemToInventory(MenuEquipObject* menuEquip, MenuEquipItemEntry* item) {
@@ -432,19 +430,19 @@ s16 MenuEquip_MoveItem(MenuEquipObject* menuEquip, u16 src, u16 dst) {
 }
 
 void MenuEquip_DestroyDragTasks(MenuEquipState* state) {
-    Sprite_Release(MenuEquip_item_GetTaskData(&state->taskPool, state->taskId_Mov));
-    Sprite_Release(MenuEquip_item_GetTaskData(&state->taskPool, state->taskId_Shadow));
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Mov);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Shadow);
+    Sprite_Release(MenuEquip_item_GetTaskData(&state->base.taskPool, state->taskId_Mov));
+    Sprite_Release(MenuEquip_item_GetTaskData(&state->base.taskPool, state->taskId_Shadow));
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Mov);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Shadow);
 }
 
 void MenuEquip_RefreshItemInfo(MenuEquipState* state) {
     MenuEquipObject* menuEquip = &state->menuEquip;
 
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_ItemU);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BrdLogoU);
-    state->taskId_ItemU    = MenuEquip_itemU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_BrdLogoU = MenuEquip_brdLogoU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_ItemU);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BrdLogoU);
+    state->taskId_ItemU    = MenuEquip_itemU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_BrdLogoU = MenuEquip_brdLogoU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     menuEquip->dirtyFlags |= 0x20;
 }
 
@@ -707,8 +705,8 @@ void MenuEquip_StageOpenHelp(MenuEquipState* state) {
     SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_CURSOR);
     g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG1 | LAYER_BG2;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG2;
-    state->taskId_HelpCur  = MenuEquip_helpCur_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-    state->taskId_HelpCurU = MenuEquip_helpCurU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+    state->taskId_HelpCur  = MenuEquip_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+    state->taskId_HelpCurU = MenuEquip_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     menuEquip->helpOpen    = 1;
     menuEquip->dirtyFlags |= 0x20;
     DebugOvlDisp_ReplaceTop((OverlayCB)MenuEquip_StageHelp, state, PROCESS_STAGE_INIT);
@@ -773,8 +771,8 @@ void MenuEquip_StageMain(MenuEquipState* state) {
             {
                 menuEquip->dirtyFlags &= ~1;
             } else {
-                state->taskId_Mov    = MenuEquip_mov_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-                state->taskId_Shadow = MenuEquip_shadow_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+                state->taskId_Mov    = MenuEquip_mov_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+                state->taskId_Shadow = MenuEquip_shadow_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
             }
             MenuEquip_RefreshItemInfo(state);
             MenuEquip_RefreshItemText(menuEquip);
@@ -817,8 +815,8 @@ void MenuEquip_StageMain(MenuEquipState* state) {
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
                 g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG1 | LAYER_BG2;
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG2;
-                state->taskId_HelpCur  = MenuEquip_helpCur_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
-                state->taskId_HelpCurU = MenuEquip_helpCurU_CreateTask(&state->taskPool, state->unk_11588, menuEquip);
+                state->taskId_HelpCur  = MenuEquip_helpCur_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
+                state->taskId_HelpCurU = MenuEquip_helpCurU_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
                 menuEquip->helpOpen    = 1;
                 menuEquip->dirtyFlags |= 0x20;
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuEquip_StageHelp, state, PROCESS_STAGE_INIT);
@@ -895,8 +893,8 @@ void MenuEquip_StageCloseHelp(MenuEquipState* state) {
         g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG1;
         g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG2;
         g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG2;
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCur);
-        EasyTask_DeleteTask(&state->taskPool, state->taskId_HelpCurU);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCur);
+        EasyTask_DeleteTask(&state->base.taskPool, state->taskId_HelpCurU);
         menuEquip->helpPage = 0;
         menuEquip->helpOpen = 0;
         menuEquip->dirtyFlags |= 0x20;
@@ -919,13 +917,13 @@ void MenuEquip_Init(MenuEquipState* state) {
         data_ov043_020cd284 = state;
         MainOvlDisp_SetCbArg(state);
     }
-    state->unk_11584 = DatMgr_AllocateSlot();
-    state->unk_11588 = DatMgr_AllocateSlot();
+    state->base.spareDataType = DatMgr_AllocateSlot();
+    state->base.dataType      = DatMgr_AllocateSlot();
     MenuEquip_RegisterVBlank();
-    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
+    state->base.prevResMgr = ResourceMgr_ReinitManagers(&state->base.resMgr);
     TouchInput_Init();
-    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
-    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x100, NULL, NULL);
+    Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
+    EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x100, NULL, NULL);
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
     data_02066aec = 0;
     data_02066eec = 0;
@@ -948,7 +946,7 @@ void MenuEquip_Update(MenuEquipState* state) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     MenuEquip_UpdateBackgrounds(&state->menuEquip);
     DebugOvlDisp_Run();
-    EasyTask_UpdatePool(&state->taskPool);
+    EasyTask_UpdatePool(&state->base.taskPool);
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->unk_217F8 = 1;
     }
@@ -968,10 +966,10 @@ void MenuEquip_Update(MenuEquipState* state) {
 void MenuEquip_Destroy(MenuEquipState* state) {
     MenuEquip_WriteBackToSave(&state->menuEquip);
     MenuEquip_ReleaseBackgrounds(&state->menuEquip);
-    EasyTask_DestroyPool(&state->taskPool);
+    EasyTask_DestroyPool(&state->base.taskPool);
     ResourceMgr_ReinitManagers(NULL);
-    DatMgr_ClearSlot(state->unk_11584);
-    DatMgr_ClearSlot(state->unk_11588);
+    DatMgr_ClearSlot(state->base.spareDataType);
+    DatMgr_ClearSlot(state->base.dataType);
     MenuEquip_DeregisterVBlank();
     FS_UnloadOverlay(0, (u32)&OVERLAY_31_ID);
     Mem_Free(&gDebugHeap, state);

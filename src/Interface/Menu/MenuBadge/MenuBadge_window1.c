@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[5];
-    /* 0x140 */ s32              visibleFlags[5];
+    /* 0x140 */ BOOL             visible[5];
     /* 0x154 */ MenuBadgeObject* menuBadge;
 } MenuBadge_window1; // Size: 0x158
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_window1_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_window1_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_window1_Anim = {
     .unk_24            = 0,
     .unk_26            = 8,
     .unk_28            = 9,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_window1_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -54,32 +54,32 @@ static void MenuBadge_window1_Load(MenuBadge_window1* window1, Sprite* sprites, 
     anim.dataType = args->dataType;
 
     for (u16 i = 0; i < 5; i++) {
-        window1->visibleFlags[i] = 1;
+        window1->visible[i] = TRUE;
     }
 
-    anim.unk_2A = 1;
-    anim.unk_04 = 0x3A;
-    anim.unk_06 = 0x46;
+    anim.animIndex = 1;
+    anim.posX      = 0x3A;
+    anim.posY      = 0x46;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 3;
-    anim.unk_04 = 0x3A;
-    anim.unk_06 = 0x5D;
+    anim.animIndex = 3;
+    anim.posX      = 0x3A;
+    anim.posY      = 0x5D;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 5;
-    anim.unk_04 = 0x3A;
-    anim.unk_06 = 0x7A;
+    anim.animIndex = 5;
+    anim.posX      = 0x3A;
+    anim.posY      = 0x7A;
     _Sprite_Load(&sprites[2], &anim);
 
-    anim.unk_2A = 0xD;
-    anim.unk_04 = 0xD0;
-    anim.unk_06 = 0x8D;
+    anim.animIndex = 0xD;
+    anim.posX      = 0xD0;
+    anim.posY      = 0x8D;
     _Sprite_Load(&sprites[3], &anim);
 
-    anim.unk_2A = 0xF;
-    anim.unk_04 = 0x80;
-    anim.unk_06 = 0x60;
+    anim.animIndex = 0xF;
+    anim.posX      = 0x80;
+    anim.posY      = 0x60;
     _Sprite_Load(&sprites[4], &anim);
 }
 
@@ -127,7 +127,7 @@ static s32 MenuBadge_window1_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadge_window1* window1 = task->data;
 
     for (u16 i = 0; i < 5; i++) {
-        if (window1->visibleFlags[i]) {
+        if (window1->visible[i]) {
             Sprite_RenderFrame(&window1->sprites[i]);
         }
     }

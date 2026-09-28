@@ -135,13 +135,14 @@ static void Inventory_ResetMasteredPins(MasteredPin* masteredPins) {
     }
 }
 
-// Nonmatching: Flag manipulation is incorrect
 static void Inventory_ResetStoredItems(InventoryItem* items) {
-    InventoryItem* item = items;
     s32            i;
+    InventoryItem* item = items;
     for (i = 0; i < 472; i++) {
-        items[i].itemID = 0xFFFF;
-        item->flags     = ((u8)(item->flags & ~0xF) | 0x10) & ~0x20;
+        items[i].itemID                  = 0xFFFF;
+        item->flags.bits.count           = 0;
+        item->flags.bits.unk_04          = 1;
+        item->flags.bits.abilityUnlocked = 0;
         item++;
     }
 }
@@ -389,23 +390,18 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
     return FALSE;
 }
 
-// Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
-static void Inventory_AddStockpiledPin(u16 pinIdx, s32 pinID, u32 flag) {
-    gSaveData.stockpilePins[pinIdx].pinID            = pinID;
-    gSaveData.stockpilePins[pinIdx].battlePP         = 0;
-    gSaveData.stockpilePins[pinIdx].minglePP         = 0;
-    gSaveData.stockpilePins[pinIdx].shutdownPP       = 0;
-    gSaveData.stockpilePins[pinIdx].flags.bits.level = 1;
-    gSaveData.stockpilePins[pinIdx].flags.raw &= ~0x80;
-    gSaveData.stockpilePins[pinIdx].flags.raw |= (flag >> 0x18);
+static void Inventory_AddStockpiledPin(u16 pinIdx, s32 pinID, u8 flag) {
+    gSaveData.stockpilePins[pinIdx].pinID             = pinID;
+    gSaveData.stockpilePins[pinIdx].battlePP          = 0;
+    gSaveData.stockpilePins[pinIdx].minglePP          = 0;
+    gSaveData.stockpilePins[pinIdx].shutdownPP        = 0;
+    gSaveData.stockpilePins[pinIdx].flags.bits.level  = 1;
+    gSaveData.stockpilePins[pinIdx].flags.bits.unk_07 = flag;
 }
 
-// Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
-static void Inventory_AddMasteredPin(u16 pinIdx, s32 pinID, u32 flag) {
-    gSaveData.masteredPins[pinIdx].pinID = pinID;
-
-    gSaveData.masteredPins[pinIdx].flags.raw &= ~0x80;
-    gSaveData.masteredPins[pinIdx].flags.raw |= ((flag << 0x1f) >> 0x18);
+static void Inventory_AddMasteredPin(u16 pinIdx, s32 pinID, u8 flag) {
+    gSaveData.masteredPins[pinIdx].pinID             = pinID;
+    gSaveData.masteredPins[pinIdx].flags.bits.unk_07 = flag;
 
     gSaveData.masteredPins[pinIdx].count++;
     if (gSaveData.masteredPins[pinIdx].count > 99) {
@@ -413,24 +409,23 @@ static void Inventory_AddMasteredPin(u16 pinIdx, s32 pinID, u32 flag) {
     }
 }
 
-// Nonmatching: bitfield is likely incorrect, or at least incorrectly accessed
-void Inventory_AddStockItem(u16 arg0, s32 arg1, s32 arg2) {
-    gSaveData.inventoryItems[arg0].itemID = arg1;
+void Inventory_AddStockItem(u16 arg0, s32 arg1, u8 arg2) {
+    gSaveData.inventoryItems[arg0].itemID                     = arg1;
+    gSaveData.inventoryItems[arg0].flags.bits.unk_04          = arg2;
+    gSaveData.inventoryItems[arg0].flags.bits.abilityUnlocked = 0;
+    gSaveData.inventoryItems[arg0].flags.bits.count++;
 
-    u8 temp_r1 = ((gSaveData.inventoryItems[arg0].flags & ~0x10) | ((u32)(arg2 << 0x1F) >> 0x1B)) & ~0x20;
-
-    gSaveData.inventoryItems[arg0].flags = (temp_r1 & ~0xF) | (((temp_r1 & 0xF) + 1) & 0xF);
-
-    if (((u32)(gSaveData.inventoryItems[arg0].flags << 0x1C) >> 0x1C) > 9) {
-        gSaveData.inventoryItems[arg0].flags = (gSaveData.inventoryItems[arg0].flags & ~0xF) | 9;
+    if (gSaveData.inventoryItems[arg0].flags.bits.count > 9) {
+        gSaveData.inventoryItems[arg0].flags.bits.count = 9;
     }
 }
 
 // Nonmatching: Difference in arg1 arithmetic
 BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
-    RawPinData pinData;
-
+    RawPinData   pinData;
     ItemCategory category = Inventory_GetCategory(itemID);
+    u8           flag;
+    s32          temp_r0_2;
 
     if (itemID >= 776) {
         return FALSE;
@@ -442,11 +437,8 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
         }
     }
 
-    s32 temp_r0 = arg1 & 0xF000;
-    if (temp_r0 != 0x1000) {
-        return temp_r0 != 0;
-    }
-    s32 temp_r0_2 = arg1 & 0xF;
+    temp_r0_2 = arg1 & 0xF;
+    flag      = (arg1 & 0xF000) != 0x1000;
 
     if (category == ITEM_CATEGORY_PIN) {
         if (temp_r0_2 == 1) {
@@ -455,21 +447,21 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
             }
             for (u16 i = 0; i < 256; i++) {
                 if (gSaveData.stockpilePins[i].pinID == 0xFFFF) {
-                    Inventory_AddStockpiledPin(i, itemID, arg1);
+                    Inventory_AddStockpiledPin(i, itemID, flag);
                     return TRUE;
                 }
             }
         } else if (temp_r0_2 == 2) {
             for (u16 i = 0; i < 304; i++) {
                 if (itemID == gSaveData.masteredPins[i].pinID) {
-                    Inventory_AddMasteredPin(i, itemID, arg1);
+                    Inventory_AddMasteredPin(i, itemID, flag);
                     return TRUE;
                 }
             }
 
             for (u16 i = 0; i < 304; i++) {
                 if (gSaveData.masteredPins[i].pinID == 0xFFFF) {
-                    Inventory_AddMasteredPin(i, itemID, arg1);
+                    Inventory_AddMasteredPin(i, itemID, flag);
                     return TRUE;
                 }
             }
@@ -478,14 +470,14 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
     } else {
         for (u16 i = 0; i < 472; i++) {
             if (itemID == gSaveData.inventoryItems[i].itemID) {
-                Inventory_AddStockItem(i, itemID, arg1);
+                Inventory_AddStockItem(i, itemID, flag);
                 return TRUE;
             }
         }
 
         for (u16 i = 0; i < 472; i++) {
             if (gSaveData.inventoryItems[i].itemID == 0xFFFF) {
-                Inventory_AddStockItem(i, itemID, arg1);
+                Inventory_AddStockItem(i, itemID, flag);
                 return TRUE;
             }
         }
@@ -542,7 +534,7 @@ u32 func_02023010(u16 arg0) {
 
         for (u16 i = 0; i < 472; i++) {
             if (arg0 == gSaveData.inventoryItems[i].itemID) {
-                var_r3 += ((u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C);
+                var_r3 += gSaveData.inventoryItems[i].flags.bits.count;
                 break;
             }
         }
@@ -604,7 +596,7 @@ s32 Inventory_HasRequiredQuantity(u16 itemID, u32 arg1, s32 arg2) {
 
         for (u16 i = 0; i < 472; i++) {
             if (gSaveData.inventoryItems[i].itemID == itemID) {
-                owned = (owned + ((u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C)) & 0xFFFF;
+                owned = (owned + gSaveData.inventoryItems[i].flags.bits.count) & 0xFFFF;
                 break;
             }
         }
@@ -1182,17 +1174,23 @@ s32 func_02024434(s32 arg0) {
     return val;
 }
 
-// Nonmatching: Instruction differences
 void func_02024558(void) {
+    // Stock 4 of every item except the partners' attack/defense boost stickers, which are cleared
     for (u16 i = 0; i < 472; i++) {
-        u16 itemID = i + 304;
-        if ((itemID == 690) || (itemID == 691) || (itemID == 698) || (itemID == 699)) {
-            gSaveData.inventoryItems[i].itemID = 0xFFFF;
-            gSaveData.inventoryItems[i].flags  = (~0xF) & gSaveData.inventoryItems[i].flags;
-            gSaveData.inventoryItems[i].flags  = (gSaveData.inventoryItems[i].flags | 0x10) & (~0x20);
+        u16 itemID = i + ITEM_THREAD_M_CAP;
+        if ((itemID == ITEM_STICKER_ATK_BOOST_SHIKI) || (itemID == ITEM_STICKER_DEF_BOOST_SHIKI) ||
+            (itemID == ITEM_STICKER_ATK_BOOST_JOSHUA) || (itemID == ITEM_STICKER_DEF_BOOST_JOSHUA) ||
+            (itemID == ITEM_STICKER_ATK_BOOST_BEAT) || (itemID == ITEM_STICKER_DEF_BOOST_BEAT))
+        {
+            gSaveData.inventoryItems[i].itemID                     = 0xFFFF;
+            gSaveData.inventoryItems[i].flags.bits.count           = 0;
+            gSaveData.inventoryItems[i].flags.bits.unk_04          = 1;
+            gSaveData.inventoryItems[i].flags.bits.abilityUnlocked = 0;
         } else {
-            gSaveData.inventoryItems[i].itemID = 0xFFFF;
-            gSaveData.inventoryItems[i].flags  = ((gSaveData.inventoryItems[i].flags & ~0xF) | 0x10) & ~0x20;
+            gSaveData.inventoryItems[i].itemID                     = itemID;
+            gSaveData.inventoryItems[i].flags.bits.count           = 4;
+            gSaveData.inventoryItems[i].flags.bits.unk_04          = 1;
+            gSaveData.inventoryItems[i].flags.bits.abilityUnlocked = 0;
         }
     }
 }

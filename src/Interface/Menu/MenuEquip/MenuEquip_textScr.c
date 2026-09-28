@@ -107,7 +107,7 @@ static s32 MenuEquip_textScr_Update(TaskPool* pool, Task* task, void* args) {
     MenuEquipObject*   owner   = textScr->owner;
 
     if (owner->dirtyFlags & 0x40) {
-        MenuEquip_ReloadBgResource(&owner->resources[5], 0, 1, 11, 15, 1);
+        MenuEquip_ReloadBgResource(&owner->resources[5], DISPLAY_MAIN, 1, 11, 15, 1);
         MenuEquip_textScr_DrawTabName(textScr);
         owner->dirtyFlags &= ~0x40;
     }

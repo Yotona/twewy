@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[13];
-    /* 0x340 */ s32              visible;
+    /* 0x340 */ BOOL             visible;
     /* 0x344 */ MenuBadgeObject* menuBadge;
 } MenuBadge_nameU; // Size: 0x348
 
@@ -27,8 +27,8 @@ static const SpriteAnimation MenuBadge_nameU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_nameU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -42,10 +42,10 @@ static const SpriteAnimation MenuBadge_nameU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
-static const MenuBadgePoint data_ov043_020c8e4c[13] = {
+static const Point data_ov043_020c8e4c[13] = {
     {  6,  11},
     {  6,  35},
     {  6, 145},
@@ -67,11 +67,11 @@ static SpriteFrameInfo* MenuBadge_nameU_GetFrameInfo(Sprite* sprite, s32 arg, s3
 
 static void MenuBadge_nameU_Load(Sprite* sprites, MenuBadge_nameU_Args* args) {
     SpriteAnimation anim = MenuBadge_nameU_Anim;
-    MenuBadgePoint  points[13];
+    Point           points[13];
 
-    u32                   i;
-    MenuBadgePoint*       dst = points;
-    const MenuBadgePoint* src = data_ov043_020c8e4c;
+    u32          i;
+    Point*       dst = points;
+    const Point* src = data_ov043_020c8e4c;
 
     for (i = 13; i != 0; i--) {
         *dst = *src;
@@ -82,17 +82,17 @@ static void MenuBadge_nameU_Load(Sprite* sprites, MenuBadge_nameU_Args* args) {
     anim.dataType = args->dataType;
 
     for (s16 i = 0; i < 3; i++) {
-        anim.unk_2A = i + 1;
-        anim.unk_04 = points[i].x;
-        anim.unk_06 = points[i].y;
+        anim.animIndex = i + 1;
+        anim.posX      = points[i].x;
+        anim.posY      = points[i].y;
         _Sprite_Load(&sprites[i], &anim);
     }
 
     Sprite* sprite = &sprites[3];
     for (s16 i = 3; i < 13; i++) {
-        anim.unk_2A = i + 3;
-        anim.unk_04 = points[i].x;
-        anim.unk_06 = points[i].y;
+        anim.animIndex = i + 3;
+        anim.posX      = points[i].x;
+        anim.posY      = points[i].y;
         _Sprite_Load(sprite, &anim);
         sprite++;
     }

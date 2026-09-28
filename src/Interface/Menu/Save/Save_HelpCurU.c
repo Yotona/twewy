@@ -23,8 +23,8 @@ static const SpriteAnimation Save_HelpCurU_Animation = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Save_HelpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -38,7 +38,7 @@ static const SpriteAnimation Save_HelpCurU_Animation = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_Save_helpCurU = {"Tsk_Save_helpCurU", Save_HelpCurU_RunTask, sizeof(SaveHelpCurU)};
@@ -51,14 +51,14 @@ void Save_HelpCurU_Load(SaveHelpCurU* helpCurU, HelpCurUArgs* args) {
     SpriteAnimation anim = Save_HelpCurU_Animation;
     anim.dataType        = args->dataType;
 
-    anim.unk_2A = 33;
-    anim.unk_04 = 7;
-    anim.unk_06 = 96;
+    anim.animIndex = 33;
+    anim.posX      = 7;
+    anim.posY      = 96;
     _Sprite_Load(&helpCurU->sprites[0], &anim);
 
-    anim.unk_2A = 34;
-    anim.unk_04 = 249;
-    anim.unk_06 = 96;
+    anim.animIndex = 34;
+    anim.posX      = 249;
+    anim.posY      = 96;
     _Sprite_Load(&helpCurU->sprites[1], &anim);
 }
 

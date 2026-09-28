@@ -25,36 +25,30 @@
 #include <nitro/reg.h>
 
 typedef struct {
-    /* 0x00000 */ ResourceManager  unk_00000;
-    /* 0x11580 */ ResourceManager* unk_11580;
-    /* 0x11584 */ s32              unk_11584;
-    /* 0x11588 */ s32              unk_11588;
-    /* 0x1158C */ Heap             heap;
-    /* 0x11598 */ u8               heapBuffer[0x10000];
-    /* 0x21598 */ TaskPool         taskPool;
-    /* 0x21618 */ s32              taskId_NumTime;
-    /* 0x2161C */ s32              taskId_NumMaxHit;
-    /* 0x21620 */ s32              taskId_NumParam;
-    /* 0x21624 */ s32              taskId_Bdg[6];
-    /* 0x2163C */ s32              taskId_BdgBP[6];
-    /* 0x21654 */ s32              taskId_BdgLV[6];
-    /* 0x2166C */ s32              taskId_BdgPRI[6];
-    /* 0x21684 */ s32              taskId_BdgSC[6];
-    /* 0x2169C */ s32              taskId_SlotCover[6];
-    /* 0x216B4 */ s32              taskId_Lvup[6];
-    /* 0x216CC */ s32              taskId_Evo[6];
-    /* 0x216E4 */ s32              taskId_Flash[6];
-    /* 0x216FC */ s32              taskId_TextScr;
-    /* 0x21700 */ s32              taskId_Star[6][15];
-    /* 0x21868 */ s32              taskId_BdgU[32];
-    /* 0x218E8 */ s32              taskId_BeltU[50];
-    /* 0x219B0 */ s32              taskId_RankU;
-    /* 0x219B4 */ s32              exitReady;
-    /* 0x219B8 */ s16              timer;
-    /* 0x219BA */ s16              entryIndex;
-    /* 0x219BC */ u16              rewardStep;
-    /* 0x219BE */ char             unk_219BE[0x219C0 - 0x219BE];
-    /* 0x219C0 */ ResultObject     result;
+    /* 0x00000 */ MenuStateBase base;
+    /* 0x21618 */ s32           taskId_NumTime;
+    /* 0x2161C */ s32           taskId_NumMaxHit;
+    /* 0x21620 */ s32           taskId_NumParam;
+    /* 0x21624 */ s32           taskId_Bdg[6];
+    /* 0x2163C */ s32           taskId_BdgBP[6];
+    /* 0x21654 */ s32           taskId_BdgLV[6];
+    /* 0x2166C */ s32           taskId_BdgPRI[6];
+    /* 0x21684 */ s32           taskId_BdgSC[6];
+    /* 0x2169C */ s32           taskId_SlotCover[6];
+    /* 0x216B4 */ s32           taskId_Lvup[6];
+    /* 0x216CC */ s32           taskId_Evo[6];
+    /* 0x216E4 */ s32           taskId_Flash[6];
+    /* 0x216FC */ s32           taskId_TextScr;
+    /* 0x21700 */ s32           taskId_Star[6][15];
+    /* 0x21868 */ s32           taskId_BdgU[32];
+    /* 0x218E8 */ s32           taskId_BeltU[50];
+    /* 0x219B0 */ s32           taskId_RankU;
+    /* 0x219B4 */ s32           exitReady;
+    /* 0x219B8 */ s16           timer;
+    /* 0x219BA */ s16           entryIndex;
+    /* 0x219BC */ u16           rewardStep;
+    /* 0x219BE */ char          unk_219BE[0x219C0 - 0x219BE];
+    /* 0x219C0 */ ResultObject  result;
 } ResultState; // Size: 0x227C8
 
 // Explicitly initialized so mwcc creates it here rather than at its first use; the later creation
@@ -226,21 +220,21 @@ void Result_CreateBadgeTasks(ResultObject* result, s32 index) {
     ResultState* state = g_ResultState;
     u16          i     = index;
 
-    state->taskId_Bdg[index]    = Result_bdg_CreateTask(&state->taskPool, state->unk_11588, i, result);
-    state->taskId_BdgBP[index]  = Result_bdgBP_CreateTask(&state->taskPool, state->unk_11588, i, result);
-    state->taskId_BdgLV[index]  = Result_bdgLV_CreateTask(&state->taskPool, state->unk_11588, i, result);
-    state->taskId_BdgPRI[index] = Result_bdgPRI_CreateTask(&state->taskPool, state->unk_11588, i, result);
-    state->taskId_BdgSC[index]  = Result_bdgSC_CreateTask(&state->taskPool, state->unk_11588, i, result);
+    state->taskId_Bdg[index]    = Result_bdg_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
+    state->taskId_BdgBP[index]  = Result_bdgBP_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
+    state->taskId_BdgLV[index]  = Result_bdgLV_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
+    state->taskId_BdgPRI[index] = Result_bdgPRI_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
+    state->taskId_BdgSC[index]  = Result_bdgSC_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
 }
 
 void Result_DestroyBadgeTasks(ResultObject* result, s32 index) {
     ResultState* state = g_ResultState;
 
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_Bdg[index]);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgBP[index]);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgLV[index]);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgPRI[index]);
-    EasyTask_DeleteTask(&state->taskPool, state->taskId_BdgSC[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Bdg[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgBP[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgLV[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgPRI[index]);
+    EasyTask_DeleteTask(&state->base.taskPool, state->taskId_BdgSC[index]);
 }
 
 void Result_CreateTasks(ResultState* state) {
@@ -248,22 +242,23 @@ void Result_CreateTasks(ResultState* state) {
 
 #ifdef REGION_JP
     // USA starts the fade-in from Result_Init instead.
-    EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -0x10, 0x1000);
 #endif
     if (gSaveData.unk_1AB4 & 8) {
-        state->taskId_TextScr  = Result_textScr_sure_CreateTask(&state->taskPool, state->unk_11588, result);
-        state->taskId_NumParam = Result_num_Param_sure_CreateTask(&state->taskPool, state->unk_11588, result);
+        state->taskId_TextScr  = Result_textScr_sure_CreateTask(&state->base.taskPool, state->base.dataType, result);
+        state->taskId_NumParam = Result_num_Param_sure_CreateTask(&state->base.taskPool, state->base.dataType, result);
     } else if (gSaveData.unk_1AB4 & 0x10) {
-        state->taskId_TextScr  = Result_textScr_sleep_CreateTask(&state->taskPool, state->unk_11588, result);
-        state->taskId_NumParam = Result_num_Param_sleep_CreateTask(&state->taskPool, state->unk_11588, result);
+        state->taskId_TextScr  = Result_textScr_sleep_CreateTask(&state->base.taskPool, state->base.dataType, result);
+        state->taskId_NumParam = Result_num_Param_sleep_CreateTask(&state->base.taskPool, state->base.dataType, result);
     } else if (gSaveData.unk_1AB4 & 0x60) {
-        state->taskId_NumParam = Result_num_Param_mabs_CreateTask(&state->taskPool, state->unk_11588, result);
+        state->taskId_NumParam = Result_num_Param_mabs_CreateTask(&state->base.taskPool, state->base.dataType, result);
     } else {
-        state->taskId_NumTime   = Result_numTime_CreateTask(&state->taskPool, state->unk_11588, result);
-        state->taskId_NumMaxHit = Result_numMaxHit_CreateTask(&state->taskPool, state->unk_11588, result);
-        state->taskId_NumParam  = Result_num_Param_CreateTask(&state->taskPool, state->unk_11588, result);
-        state->taskId_RankU     = Result_rankU_CreateTask(&state->taskPool, state->unk_11588, result->overallRank, result);
+        state->taskId_NumTime   = Result_numTime_CreateTask(&state->base.taskPool, state->base.dataType, result);
+        state->taskId_NumMaxHit = Result_numMaxHit_CreateTask(&state->base.taskPool, state->base.dataType, result);
+        state->taskId_NumParam  = Result_num_Param_CreateTask(&state->base.taskPool, state->base.dataType, result);
+        state->taskId_RankU =
+            Result_rankU_CreateTask(&state->base.taskPool, state->base.dataType, result->overallRank, result);
     }
 
     for (s16 i = 0; i < 6; i++) {
@@ -271,7 +266,7 @@ void Result_CreateTasks(ResultState* state) {
     }
     for (s16 i = 0; i < 6; i++) {
         if (i >= result->badgeCount) {
-            state->taskId_SlotCover[i] = Result_slotCover_CreateTask(&state->taskPool, state->unk_11588, i, result);
+            state->taskId_SlotCover[i] = Result_slotCover_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
         }
     }
 }
@@ -362,9 +357,9 @@ void Result_StageBattleRewards(ResultState* state) {
                     result->stageFlags |= 4;
                 }
                 state->taskId_BeltU[state->entryIndex] =
-                    Result_beltU_CreateTask(&state->taskPool, state->unk_11588, 0, state->entryIndex, result);
+                    Result_beltU_CreateTask(&state->base.taskPool, state->base.dataType, 0, state->entryIndex, result);
                 state->taskId_BdgU[state->entryIndex] =
-                    Result_bdgU_CreateTask(&state->taskPool, state->unk_11588, 0, state->entryIndex, result);
+                    Result_bdgU_CreateTask(&state->base.taskPool, state->base.dataType, 0, state->entryIndex, result);
                 state->entryIndex++;
                 if (state->entryIndex >= result->dropCount) {
                     state->entryIndex = 0;
@@ -382,7 +377,7 @@ void Result_StageBattleRewards(ResultState* state) {
                 result->stageFlags |= 1;
                 index = state->entryIndex;
                 state->taskId_BeltU[(u16)(index + 32)] =
-                    Result_beltU_CreateTask(&state->taskPool, state->unk_11588, 2, index, result);
+                    Result_beltU_CreateTask(&state->base.taskPool, state->base.dataType, 2, index, result);
                 state->entryIndex++;
                 if (state->entryIndex >= result->specialBonusCount) {
                     state->entryIndex = 0;
@@ -399,8 +394,9 @@ void Result_StageBattleRewards(ResultState* state) {
                 if (result->stageFlags & 2) {
                     result->stageFlags &= ~2;
                     result->stageFlags |= 0x21;
-                    state->taskId_BeltU[48] = Result_beltU_CreateTask(&state->taskPool, state->unk_11588, 1, 0, result);
-                    state->rewardStep       = 3;
+                    state->taskId_BeltU[48] =
+                        Result_beltU_CreateTask(&state->base.taskPool, state->base.dataType, 1, 0, result);
+                    state->rewardStep = 3;
                 }
             } else {
                 state->rewardStep = 3;
@@ -414,8 +410,9 @@ void Result_StageBattleRewards(ResultState* state) {
                     u16 slot = state->entryIndex + 48;
 
                     result->stageFlags |= 0x21;
-                    state->taskId_BeltU[slot] = Result_beltU_CreateTask(&state->taskPool, state->unk_11588, 1, 1, result);
-                    state->rewardStep         = 4;
+                    state->taskId_BeltU[slot] =
+                        Result_beltU_CreateTask(&state->base.taskPool, state->base.dataType, 1, 1, result);
+                    state->rewardStep = 4;
                 }
             } else {
                 state->rewardStep = 4;
@@ -483,7 +480,8 @@ void Result_StageBattleCountPP(ResultState* state) {
                     if (result->badges[i].evolveChoice != 2) {
                         result->badges[i].totalPP = result->badges[i].nextLevelPP;
                         result->badges[i].flags |= 1;
-                        state->taskId_Flash[i] = Result_flash_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Flash[i] =
+                            Result_flash_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                     } else {
                         result->badges[i].level++;
                         result->badges[i].levelPP     = Result_GetBadgeLevelPP(result, i, result->badges[i].ppCurve);
@@ -495,10 +493,10 @@ void Result_StageBattleCountPP(ResultState* state) {
                             }
                         }
 #endif
-                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                         for (u16 j = 0; j < 15; j++) {
                             state->taskId_Star[i][j] =
-                                Result_star_CreateTask(&state->taskPool, state->unk_11588, i, 0, result);
+                                Result_star_CreateTask(&state->base.taskPool, state->base.dataType, i, 0, result);
                         }
                     }
                 }
@@ -520,12 +518,12 @@ void Result_StageBattleEvolve(ResultState* state) {
                                result->badges[state->entryIndex].evolvePinID[result->badges[state->entryIndex].evolveChoice]);
             Result_CreateBadgeTasks(result, state->entryIndex);
             state->taskId_Evo[state->entryIndex] =
-                Result_evo_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, result);
+                Result_evo_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, result);
             for (u16 j = 0; j < 15; j++) {
                 state->taskId_Star[state->entryIndex][j] =
-                    Result_star_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, 1, result);
+                    Result_star_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, 1, result);
             }
-            EasyTask_DeleteTask(&state->taskPool, state->taskId_Flash[state->entryIndex]);
+            EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Flash[state->entryIndex]);
             state->timer = 30;
             state->entryIndex++;
         }
@@ -654,7 +652,8 @@ void Result_StageSureCountPP(ResultState* state) {
                     if (result->badges[i].evolveChoice != 2) {
                         result->badges[i].totalPP = result->badges[i].nextLevelPP;
                         result->badges[i].flags |= 1;
-                        state->taskId_Flash[i] = Result_flash_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Flash[i] =
+                            Result_flash_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                     } else {
                         result->badges[i].level++;
                         result->badges[i].levelPP     = Result_GetBadgeLevelPP(result, i, result->badges[i].ppCurve);
@@ -666,10 +665,10 @@ void Result_StageSureCountPP(ResultState* state) {
                             }
                         }
 #endif
-                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                         for (u16 j = 0; j < 15; j++) {
                             state->taskId_Star[i][j] =
-                                Result_star_CreateTask(&state->taskPool, state->unk_11588, i, 0, result);
+                                Result_star_CreateTask(&state->base.taskPool, state->base.dataType, i, 0, result);
                         }
                     }
                 }
@@ -691,12 +690,12 @@ void Result_StageSureEvolve(ResultState* state) {
                                result->badges[state->entryIndex].evolvePinID[result->badges[state->entryIndex].evolveChoice]);
             Result_CreateBadgeTasks(result, state->entryIndex);
             state->taskId_Evo[state->entryIndex] =
-                Result_evo_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, result);
+                Result_evo_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, result);
             for (u16 j = 0; j < 15; j++) {
                 state->taskId_Star[state->entryIndex][j] =
-                    Result_star_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, 1, result);
+                    Result_star_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, 1, result);
             }
-            EasyTask_DeleteTask(&state->taskPool, state->taskId_Flash[state->entryIndex]);
+            EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Flash[state->entryIndex]);
             state->timer = 30;
             state->entryIndex++;
         }
@@ -778,7 +777,8 @@ void Result_StageSleepCountPP(ResultState* state) {
                     if (result->badges[i].evolveChoice != 2) {
                         result->badges[i].totalPP = result->badges[i].nextLevelPP;
                         result->badges[i].flags |= 1;
-                        state->taskId_Flash[i] = Result_flash_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Flash[i] =
+                            Result_flash_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                     } else {
                         result->badges[i].level++;
                         result->badges[i].levelPP     = Result_GetBadgeLevelPP(result, i, result->badges[i].ppCurve);
@@ -790,10 +790,10 @@ void Result_StageSleepCountPP(ResultState* state) {
                             }
                         }
 #endif
-                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                         for (u16 j = 0; j < 15; j++) {
                             state->taskId_Star[i][j] =
-                                Result_star_CreateTask(&state->taskPool, state->unk_11588, i, 0, result);
+                                Result_star_CreateTask(&state->base.taskPool, state->base.dataType, i, 0, result);
                         }
                     }
                 }
@@ -815,12 +815,12 @@ void Result_StageSleepEvolve(ResultState* state) {
                                result->badges[state->entryIndex].evolvePinID[result->badges[state->entryIndex].evolveChoice]);
             Result_CreateBadgeTasks(result, state->entryIndex);
             state->taskId_Evo[state->entryIndex] =
-                Result_evo_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, result);
+                Result_evo_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, result);
             for (u16 j = 0; j < 15; j++) {
                 state->taskId_Star[state->entryIndex][j] =
-                    Result_star_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, 1, result);
+                    Result_star_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, 1, result);
             }
-            EasyTask_DeleteTask(&state->taskPool, state->taskId_Flash[state->entryIndex]);
+            EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Flash[state->entryIndex]);
             state->timer = 30;
             state->entryIndex++;
         }
@@ -906,15 +906,16 @@ void Result_StageMabsCountPP(ResultState* state) {
                     if (result->badges[i].evolveChoice != 2) {
                         result->badges[i].totalPP = result->badges[i].nextLevelPP;
                         result->badges[i].flags |= 1;
-                        state->taskId_Flash[i] = Result_flash_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Flash[i] =
+                            Result_flash_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                     } else {
                         result->badges[i].level++;
                         result->badges[i].levelPP     = Result_GetBadgeLevelPP(result, i, result->badges[i].ppCurve);
                         result->badges[i].nextLevelPP = Result_GetBadgeNextLevelPP(result, i, result->badges[i].ppCurve);
-                        state->taskId_Lvup[i]         = Result_lvup_CreateTask(&state->taskPool, state->unk_11588, i, result);
+                        state->taskId_Lvup[i] = Result_lvup_CreateTask(&state->base.taskPool, state->base.dataType, i, result);
                         for (u16 j = 0; j < 15; j++) {
                             state->taskId_Star[i][j] =
-                                Result_star_CreateTask(&state->taskPool, state->unk_11588, i, 0, result);
+                                Result_star_CreateTask(&state->base.taskPool, state->base.dataType, i, 0, result);
                         }
                     }
                 }
@@ -936,12 +937,12 @@ void Result_StageMabsEvolve(ResultState* state) {
                                result->badges[state->entryIndex].evolvePinID[result->badges[state->entryIndex].evolveChoice]);
             Result_CreateBadgeTasks(result, state->entryIndex);
             state->taskId_Evo[state->entryIndex] =
-                Result_evo_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, result);
+                Result_evo_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, result);
             for (u16 j = 0; j < 15; j++) {
                 state->taskId_Star[state->entryIndex][j] =
-                    Result_star_CreateTask(&state->taskPool, state->unk_11588, state->entryIndex, 1, result);
+                    Result_star_CreateTask(&state->base.taskPool, state->base.dataType, state->entryIndex, 1, result);
             }
-            EasyTask_DeleteTask(&state->taskPool, state->taskId_Flash[state->entryIndex]);
+            EasyTask_DeleteTask(&state->base.taskPool, state->taskId_Flash[state->entryIndex]);
             state->timer = 30;
             state->entryIndex++;
         }
@@ -977,22 +978,22 @@ void Result_Init(ResultState* state) {
         g_ResultState = state;
         MainOvlDisp_SetCbArg(state);
     }
-    state->unk_11584 = DatMgr_AllocateSlot();
-    state->unk_11588 = DatMgr_AllocateSlot();
+    state->base.spareDataType = DatMgr_AllocateSlot();
+    state->base.dataType      = DatMgr_AllocateSlot();
     Result_RegisterVBlank();
-    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
+    state->base.prevResMgr = ResourceMgr_ReinitManagers(&state->base.resMgr);
 #ifdef REGION_USA
     Mem_ValidateSequences(&gMainHeap);
     Mem_ValidateSequences(&gDebugHeap);
 #endif
     TouchInput_Init();
-    Mem_InitializeHeap(&state->heap, state->heapBuffer, sizeof(state->heapBuffer));
+    Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
-    EasyTask_InitializePool(&state->taskPool, &state->heap, 0x200, NULL, NULL);
+    EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x200, NULL, NULL);
     data_02066aec = 0;
     data_02066eec = 0;
 #ifdef REGION_USA
-    EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
+    EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -0x10, 0x1000);
 #endif
     Result_InitState(state);
@@ -1018,7 +1019,7 @@ void Result_Update(ResultState* state) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     Result_UpdateBackgrounds(result);
     DebugOvlDisp_Run();
-    EasyTask_UpdatePool(&state->taskPool);
+    EasyTask_UpdatePool(&state->base.taskPool);
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
         state->exitReady = 1;
     }
@@ -1090,10 +1091,10 @@ void Result_Destroy(ResultState* state) {
     }
     CriSndMgr_Stop(0);
     Result_ReleaseBackgrounds(result);
-    EasyTask_DestroyPool(&state->taskPool);
+    EasyTask_DestroyPool(&state->base.taskPool);
     ResourceMgr_ReinitManagers(NULL);
-    DatMgr_ClearSlot(state->unk_11584);
-    DatMgr_ClearSlot(state->unk_11588);
+    DatMgr_ClearSlot(state->base.spareDataType);
+    DatMgr_ClearSlot(state->base.dataType);
     Result_DeregisterVBlank();
     FS_UnloadOverlay(0, (u32)&OVERLAY_31_ID);
     Mem_Free(&gDebugHeap, state);

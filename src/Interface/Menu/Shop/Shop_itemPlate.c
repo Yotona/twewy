@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ s32         shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
 } Shop_itemPlate; // Size: 0x48
 
@@ -31,8 +31,8 @@ static const SpriteAnimation Shop_itemPlate_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemPlate_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ static const SpriteAnimation Shop_itemPlate_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_itemPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -57,19 +57,19 @@ static void Shop_itemPlate_Load(Shop_itemPlate* itemPlate, Sprite* sprite, Shop_
     SpriteAnimation anim = Shop_itemPlate_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = ((args->itemIndex % 6) * 33) + 22;
-    anim.unk_06   = ((args->itemIndex / 6) * 41) + 39;
+    anim.posX     = ((args->itemIndex % 6) * 33) + 22;
+    anim.posY     = ((args->itemIndex / 6) * 41) + 39;
 
     if (args->itemFrame == 0xFFFF) {
-        itemPlate->shouldRender = FALSE;
+        itemPlate->visible = FALSE;
     } else {
-        itemPlate->shouldRender = TRUE;
+        itemPlate->visible = TRUE;
         if (args->unk_10 == 0) {
-            anim.unk_2A = 0x14;
+            anim.animIndex = 0x14;
         } else if (args->unk_0C == 1) {
-            anim.unk_2A = 0x15;
+            anim.animIndex = 0x15;
         } else {
-            anim.unk_2A = 0x16;
+            anim.animIndex = 0x16;
         }
     }
 
@@ -95,7 +95,7 @@ static s32 Shop_itemPlate_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_itemPlate_Render(TaskPool* pool, Task* task, void* args) {
     Shop_itemPlate* itemPlate = task->data;
 
-    if (itemPlate->shouldRender) {
+    if (itemPlate->visible) {
         Sprite_RenderFrame(&itemPlate->sprite);
     }
     return 1;

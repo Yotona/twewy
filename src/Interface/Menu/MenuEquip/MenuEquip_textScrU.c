@@ -373,7 +373,7 @@ static s32 MenuEquip_textScrU_Update(TaskPool* pool, Task* task, void* args) {
     MenuEquipObject*    owner    = textScrU->owner;
 
     if (owner->dirtyFlags & 0x20) {
-        MenuEquip_ReloadBgResource(&owner->resources[0], 1, 0, 10, 15, 1);
+        MenuEquip_ReloadBgResource(&owner->resources[0], DISPLAY_SUB, 0, 10, 15, 1);
         if (owner->helpOpen == 0) {
             MenuEquip_textScrU_DrawItemPage(textScrU);
         } else {

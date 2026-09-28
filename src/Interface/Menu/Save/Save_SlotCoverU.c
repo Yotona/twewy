@@ -12,10 +12,7 @@ typedef struct {
     /* 0x0C */ u16   unk_08;
 } SlotCoverUArgs;
 
-const struct Point {
-    s16 x;
-    s16 y;
-} data_ov043_020cb3d8[] = {};
+const Point data_ov043_020cb3d8[] = {};
 
 SpriteFrameInfo* Save_SlotCoverU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 s32              Save_SlotCoverU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -31,8 +28,8 @@ static const SpriteAnimation data_ov043_020cb3f0 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Save_SlotCoverU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +43,7 @@ static const SpriteAnimation data_ov043_020cb3f0 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Save_SlotCoverU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,10 +53,10 @@ SpriteFrameInfo* Save_SlotCoverU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode)
 // Nonmatching
 void Save_SlotCoverU_Load(SaveSlotCoverU* slotCoverU, Sprite* sprite, SlotCoverUArgs* slotCoverArgs) {
     SpriteAnimation anim = data_ov043_020cb3f0;
-    anim.unk_2A          = 35;
+    anim.animIndex       = 35;
     anim.dataType        = slotCoverArgs->unk_00;
-    anim.unk_04          = data_ov043_020cb3d8[slotCoverArgs->unk_00].x;
-    anim.unk_06          = data_ov043_020cb3d8[slotCoverArgs->unk_00].y;
+    anim.posX            = data_ov043_020cb3d8[slotCoverArgs->unk_00].x;
+    anim.posY            = data_ov043_020cb3d8[slotCoverArgs->unk_00].y;
     _Sprite_Load(sprite, &anim);
     slotCoverU->unk_40 = *(u8*)(slotCoverU->unk_44 + 0x168) >= slotCoverArgs->unk_08;
 }

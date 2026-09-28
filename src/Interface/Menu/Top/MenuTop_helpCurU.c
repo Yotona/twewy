@@ -3,13 +3,13 @@
 
 typedef struct {
     /* 0x00 */ Sprite         sprites[2];
-    /* 0x80 */ s32            visible[2];
+    /* 0x80 */ BOOL           visible[2];
     /* 0x88 */ MenuTopObject* topMenu;
 } MenuTop_helpCurU; // Size: 0x8C
 
 typedef struct {
-    /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 topMenu;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_helpCurU_Args;
 
 static SpriteFrameInfo* MenuTop_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuTop_helpCurU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_helpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuTop_helpCurU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,14 +53,14 @@ static void MenuTop_helpCurU_Load(Sprite* sprites, MenuTop_helpCurU_Args* args) 
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 27;
-    anim.unk_04 = 7;
-    anim.unk_06 = 96;
+    anim.animIndex = 27;
+    anim.posX      = 7;
+    anim.posY      = 96;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 28;
-    anim.unk_04 = 249;
-    anim.unk_06 = 96;
+    anim.animIndex = 28;
+    anim.posX      = 249;
+    anim.posY      = 96;
     _Sprite_Load(&sprites[1], &anim);
 }
 
@@ -68,7 +68,7 @@ static s32 MenuTop_helpCurU_Init(TaskPool* pool, Task* task, void* args) {
     MenuTop_helpCurU*      helpCurU = task->data;
     MenuTop_helpCurU_Args* helpArgs = args;
 
-    helpCurU->topMenu = (MenuTopObject*)helpArgs->topMenu;
+    helpCurU->topMenu = helpArgs->topMenu;
     MenuTop_helpCurU_Load(helpCurU->sprites, helpArgs);
     return 1;
 }
@@ -78,14 +78,14 @@ static s32 MenuTop_helpCurU_Update(TaskPool* pool, Task* task, void* args) {
 
     u8 helpPage = helpCurU->topMenu->helpPage;
     if (helpPage == 0) {
-        helpCurU->visible[0] = 0;
-        helpCurU->visible[1] = 1;
+        helpCurU->visible[0] = FALSE;
+        helpCurU->visible[1] = TRUE;
     } else if (helpPage == 6) {
-        helpCurU->visible[0] = 1;
-        helpCurU->visible[1] = 0;
+        helpCurU->visible[0] = TRUE;
+        helpCurU->visible[1] = FALSE;
     } else {
-        helpCurU->visible[0] = 1;
-        helpCurU->visible[1] = 1;
+        helpCurU->visible[0] = TRUE;
+        helpCurU->visible[1] = TRUE;
     }
 
     for (u16 i = 0; i < 2; i++) {
@@ -124,7 +124,7 @@ static s32 MenuTop_helpCurU_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_helpCurU_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu) {
+s32 MenuTop_helpCurU_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_helpCurU_Args args;
     args.dataType = dataType;
     args.topMenu  = topMenu;

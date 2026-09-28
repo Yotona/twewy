@@ -30,8 +30,8 @@ static const SpriteAnimation data_ov030_020ec980 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 1,
-    .unk_04            = 0x80,
-    .unk_06            = 0x51,
+    .posX              = 0x80,
+    .posY              = 0x51,
     .frameInfoCallback = Fld_GetBase_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,7 +45,7 @@ static const SpriteAnimation data_ov030_020ec980 = {
     .unk_24            = 0,
     .unk_26            = 3,
     .unk_28            = 4,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Fld_GetBase_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,7 +58,7 @@ void Fld_GetBase_Load(Sprite* sprite, Fld_GetBase_Args* args, void* arg2) {
     anim.dataType = args->unk_0;
     anim.owner    = arg2;
     if (args->unk_4 != 0) {
-        anim.unk_2A = 4;
+        anim.animIndex = 4;
     }
     _Sprite_Load(sprite, &anim);
 }

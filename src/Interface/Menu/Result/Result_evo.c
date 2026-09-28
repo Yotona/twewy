@@ -30,8 +30,8 @@ static const SpriteAnimation Result_evo_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_evo_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,7 +45,7 @@ static const SpriteAnimation Result_evo_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_evo_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,12 +56,12 @@ static void Result_evo_Load(Result_evo* evo, Sprite* sprite, Result_evo_Args* ar
     SpriteAnimation anim    = Result_evo_Anim;
     s16             posX[6] = {0x2C, 0x4E, 0x70, 0x92, 0xB4, 0xD6};
 
-    anim.dataType = args->dataType;
-    anim.bits_7_9 = 6;
-    anim.unk_04   = posX[args->index];
-    anim.unk_06   = 0xA5;
-    anim.unk_2A   = 3;
-    evo->visible  = TRUE;
+    anim.dataType  = args->dataType;
+    anim.bits_7_9  = 6;
+    anim.posX      = posX[args->index];
+    anim.posY      = 0xA5;
+    anim.animIndex = 3;
+    evo->visible   = TRUE;
 
     _Sprite_Load(sprite, &anim);
 }

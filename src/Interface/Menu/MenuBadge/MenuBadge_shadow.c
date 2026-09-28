@@ -3,7 +3,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_shadow; // Size: 0x48
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_shadow_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_shadow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_shadow_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_shadow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -52,7 +52,7 @@ static void MenuBadge_shadow_Load(Sprite* sprite, MenuBadge_shadow_Args* args) {
     SpriteAnimation anim = MenuBadge_shadow_Anim;
 
     anim.dataType      = args->dataType;
-    anim.unk_2A        = 23;
+    anim.animIndex     = 23;
     anim.bits_7_9      = 6;
     anim.unk_02.unk_02 = 1;
 

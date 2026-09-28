@@ -15,7 +15,7 @@ typedef struct {
 
 s32 DepartTextScr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const TaskHandle data_ov043_020caec4 = {"Tsk_Depart_textScr", DepartTextScr_RunTask, sizeof(DepartTextScr)};
+static const TaskHandle Tsk_Depart_textScr = {"Tsk_Depart_textScr", DepartTextScr_RunTask, sizeof(DepartTextScr)};
 
 void func_ov043_020beb44(DepartTextScr* textScr) {
     s32 i;
@@ -76,5 +76,5 @@ s32 DepartTextScr_CreateTask(TaskPool* pool, s32 dataType, DepartObject* depart)
     DepartTextScrArgs args;
     args.dataType = dataType;
     args.depart   = depart;
-    return EasyTask_CreateTask(pool, &data_ov043_020caec4, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_Depart_textScr, NULL, 0, NULL, &args);
 }

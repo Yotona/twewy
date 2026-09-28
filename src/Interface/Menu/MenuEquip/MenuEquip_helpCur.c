@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[3];
-    /* 0xC0 */ BOOL             shouldRender[3];
+    /* 0xC0 */ BOOL             visible[3];
     /* 0xCC */ MenuEquipObject* owner;
 } MenuEquip_helpCur; // Size: 0xD0
 
@@ -28,8 +28,8 @@ static const SpriteAnimation MenuEquip_helpCur_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_helpCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation MenuEquip_helpCur_Anim = {
     .unk_24            = 0,
     .unk_26            = 8,
     .unk_28            = 9,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_helpCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -56,26 +56,26 @@ static void MenuEquip_helpCur_Load(MenuEquip_helpCur* helpCur, Sprite* sprites, 
     anim.dataType = args->dataType;
 
     for (u16 i = 0; i < 3; i++) {
-        helpCur->shouldRender[i] = TRUE;
+        helpCur->visible[i] = TRUE;
     }
 
-    anim.unk_2A = 1;
-    anim.unk_04 = 0x30;
-    anim.unk_06 = 0x58;
+    anim.animIndex = 1;
+    anim.posX      = 0x30;
+    anim.posY      = 0x58;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 3;
-    anim.unk_04 = 0xD0;
-    anim.unk_06 = 0x58;
+    anim.animIndex = 3;
+    anim.posX      = 0xD0;
+    anim.posY      = 0x58;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 5;
-    anim.unk_04 = 0x80;
-    anim.unk_06 = 0x7D;
+    anim.animIndex = 5;
+    anim.posX      = 0x80;
+    anim.posY      = 0x7D;
     _Sprite_Load(&sprites[2], &anim);
 
     if (func_02023d1c(3) == 0) {
-        helpCur->shouldRender[2] = FALSE;
+        helpCur->visible[2] = FALSE;
     }
 }
 
@@ -112,18 +112,18 @@ static s32 MenuEquip_helpCur_Update(TaskPool* pool, Task* task, void* args) {
     }
 
     if (owner->helpPage == 0) {
-        helpCur->shouldRender[0] = FALSE;
-        helpCur->shouldRender[1] = TRUE;
+        helpCur->visible[0] = FALSE;
+        helpCur->visible[1] = TRUE;
     } else if (owner->helpPage == 8) {
-        helpCur->shouldRender[0] = TRUE;
-        helpCur->shouldRender[1] = FALSE;
+        helpCur->visible[0] = TRUE;
+        helpCur->visible[1] = FALSE;
     } else {
-        helpCur->shouldRender[0] = TRUE;
-        helpCur->shouldRender[1] = TRUE;
+        helpCur->visible[0] = TRUE;
+        helpCur->visible[1] = TRUE;
     }
 
     if (func_02023d1c(3) == 1) {
-        helpCur->shouldRender[2] = TRUE;
+        helpCur->visible[2] = TRUE;
     }
 
     for (s32 i = 0; i < 3; i++) {
@@ -136,7 +136,7 @@ static s32 MenuEquip_helpCur_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_helpCur* helpCur = task->data;
 
     for (s32 i = 0; i < 3; i++) {
-        if (helpCur->shouldRender[i] != 0) {
+        if (helpCur->visible[i] != 0) {
             Sprite_RenderFrame(&helpCur->sprites[i]);
         }
     }

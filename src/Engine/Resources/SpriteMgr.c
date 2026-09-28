@@ -368,8 +368,8 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     sprite->animationMode = arg1->bits_12_13;
 
     sprite->unk_0A = arg1->unk_02;
-    sprite->posX   = arg1->unk_04;
-    sprite->posY   = arg1->unk_06;
+    sprite->posX   = arg1->posX;
+    sprite->posY   = arg1->posY;
 
     s32 sp8[5];
     sp8[0] = 4;
@@ -428,7 +428,7 @@ static s32 Sprite_LoadFromData(Sprite* sprite, SpriteAnimation* arg1) {
     void*       animData  = Data_GetPackEntryData(sprite->resourceData, sp8[4]);
     SpriteCell* cellTable = (SpriteCell*)Data_GetPackEntryData(sprite->resourceData, sp8[3]);
 
-    Sprite_ChangeAnimation(sprite, animData, arg1->unk_2A, cellTable);
+    Sprite_ChangeAnimation(sprite, animData, arg1->animIndex, cellTable);
     void* var_r1_2 = NULL;
     void* var_r6   = NULL;
     switch (sprite->bits_3_4) { // Decide character data loading type (based on Sprite data mode/type?)

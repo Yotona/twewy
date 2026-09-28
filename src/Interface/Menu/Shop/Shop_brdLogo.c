@@ -32,8 +32,8 @@ static const SpriteAnimation data_ov043_020ca9a8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 60,
-    .unk_06            = 160,
+    .posX              = 60,
+    .posY              = 160,
     .frameInfoCallback = Shop_brdLogo_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -47,7 +47,7 @@ static const SpriteAnimation data_ov043_020ca9a8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_brdLogo_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {

@@ -6,7 +6,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite         sprites[5];
-    /* 0x140 */ s32            visible[5];
+    /* 0x140 */ BOOL           visible[5];
     /* 0x154 */ MenuTopObject* topMenu;
     /* 0x158 */ u16            rotation;
     /* 0x15A */ u16            _pad_15A;
@@ -15,8 +15,8 @@ typedef struct {
 } MenuTop_lvGauge; // Size: 0x164
 
 typedef struct {
-    /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* topMenu;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
 } MenuTop_lvGauge_Args;
 
 static SpriteFrameInfo* MenuTop_lvGauge_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -33,8 +33,8 @@ static const SpriteAnimation MenuTop_lvGauge_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_lvGauge_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -48,7 +48,7 @@ static const SpriteAnimation MenuTop_lvGauge_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void MenuTop_lvGauge_SetKnobFromLevel(MenuTopObject* topMenu) {
@@ -107,16 +107,17 @@ static void MenuTop_lvGauge_SetLevelFromKnob(MenuTopObject* topMenu) {
     }
 }
 
-// Nonmatching
 static s32 MenuTop_lvGauge_GetBarScale(MenuTop_lvGauge* gauge, s32 knobX) {
-    u32 x = I2F(knobX);
+    fx32 x = I2F(knobX);
+    fx32 scale;
 
-    if (x <= 0x26000) {
-        gauge->visible[1] = 0;
-        return 0;
+    if (x <= I2F(38)) {
+        gauge->visible[1] = FALSE;
+        // BUG: no return value on this path; the caller gets whatever is left in r0
     } else {
-        gauge->visible[1] = 1;
-        return FX_Divide(x - 0x26000, 0x64000);
+        scale             = FX_Divide(x - I2F(38), I2F(100));
+        gauge->visible[1] = TRUE;
+        return scale;
     }
 }
 
@@ -124,47 +125,46 @@ static SpriteFrameInfo* MenuTop_lvGauge_GetFrameInfo(Sprite* sprite, s32 arg, s3
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-static void MenuTop_lvGauge_Load(MenuTop_lvGauge* gauge, Sprite* sprites, void* arg2) {
-    MenuTop_lvGauge_Args* args    = arg2;
-    MenuTopObject*        topMenu = gauge->topMenu;
-    SpriteAnimation       anim    = MenuTop_lvGauge_Anim;
+static void MenuTop_lvGauge_Load(MenuTop_lvGauge* gauge, Sprite* sprites, MenuTop_lvGauge_Args* args) {
+    MenuTopObject*  topMenu = gauge->topMenu;
+    SpriteAnimation anim    = MenuTop_lvGauge_Anim;
 
     anim.dataType = args->dataType;
 
     MenuTop_lvGauge_SetKnobFromLevel(topMenu);
 
     anim.unk_02.raw &= ~2;
-    anim.unk_2A = 0x23;
-    anim.unk_04 = topMenu->levelKnobX;
-    anim.unk_06 = topMenu->levelKnobY;
+    anim.animIndex = 0x23;
+    anim.posX      = topMenu->levelKnobX;
+    anim.posY      = topMenu->levelKnobY;
     _Sprite_Load(&sprites[0], &anim);
 
     anim.unk_02.raw |= 2;
-    anim.unk_2A = 0x24;
-    anim.unk_04 = 0x26;
-    anim.unk_06 = 0x98;
+    anim.animIndex = 0x24;
+    anim.posX      = 0x26;
+    anim.posY      = 0x98;
     _Sprite_Load(&sprites[1], &anim);
 
     anim.unk_02.raw &= ~2;
-    anim.unk_2A = 0x25;
-    anim.unk_04 = 0x26;
-    anim.unk_06 = 0x98;
+    anim.animIndex = 0x25;
+    anim.posX      = 0x26;
+    anim.posY      = 0x98;
     _Sprite_Load(&sprites[2], &anim);
 
     anim.unk_02.raw &= ~2;
-    anim.unk_2A = 0x21;
-    anim.unk_04 = 0x21;
-    anim.unk_06 = 0x98;
+    anim.animIndex = 0x21;
+    anim.posX      = 0x21;
+    anim.posY      = 0x98;
     _Sprite_Load(&sprites[3], &anim);
 
     anim.unk_02.raw &= ~2;
-    anim.unk_2A = 0x22;
-    anim.unk_04 = 0xF3;
-    anim.unk_06 = 0x98;
+    anim.animIndex = 0x22;
+    anim.posX      = 0xF3;
+    anim.posY      = 0x98;
     _Sprite_Load(&sprites[4], &anim);
 
     for (s32 i = 0; i < 5; i++) {
-        gauge->visible[i] = 1;
+        gauge->visible[i] = TRUE;
     }
 
     gauge->rotation = 0;
@@ -207,9 +207,9 @@ static s32 MenuTop_lvGauge_Update(TaskPool* pool, Task* task, void* args) {
         MenuTop_lvGauge_SetLevelFromKnob(topMenu);
     } else {
         if (topMenu->maxLevel <= 1) {
-            gauge->visible[0] = 0;
+            gauge->visible[0] = FALSE;
         } else {
-            gauge->visible[0] = 1;
+            gauge->visible[0] = TRUE;
         }
 
         if (TouchInput_IsTouchActive() != 0) {
@@ -286,7 +286,7 @@ static s32 MenuTop_lvGauge_RunTask(TaskPool* pool, Task* task, void* args, s32 s
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_lvGauge_CreateTask(TaskPool* pool, s32 dataType, void* topMenu) {
+s32 MenuTop_lvGauge_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu) {
     MenuTop_lvGauge_Args args;
 
     args.dataType = dataType;

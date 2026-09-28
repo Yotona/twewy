@@ -40,10 +40,10 @@ data_ov037_02083a7c kind:data(any) addr:0x02083a7c
 OvlProc_OpenEnd kind:data(any) addr:0x02083a84
 screenFunctions kind:data(any) addr:0x02083a90
 OpenEnd_FileList kind:data(any) addr:0x02083aa8
-TaskHandle_OpenEnd_Badge kind:data(any) addr:0x02083b40
-data_ov037_02083b4c kind:data(any) addr:0x02083b4c
-OpenEnd_TitleScreen_ButtonInfo kind:data(any) addr:0x02083b5c
-OpenEnd_Badge_Anim kind:data(any) addr:0x02083b84
+TaskHandle_OpenEnd_Badge kind:data(any) addr:0x02083b40 local
+@1377 kind:data(any) addr:0x02083b4c local
+OpenEnd_TitleScreen_BadgeInfo kind:data(any) addr:0x02083b5c
+OpenEnd_Badge_Anim kind:data(any) addr:0x02083b84 local
 seq_OpenEnd kind:data(any) addr:0x02083bc0
 @1227 kind:data(any) addr:0x02083bc4
 @379 kind:data(any) addr:0x02083bd8
@@ -65,7 +65,7 @@ seq_OpenEnd kind:data(any) addr:0x02083bc0
 @395 kind:data(any) addr:0x02083d7c
 @396 kind:data(any) addr:0x02083d9c
 @397 kind:data(any) addr:0x02083dbc
-@1350 kind:data(any) addr:0x02083ddc
+@1350 kind:data(any) addr:0x02083ddc local
 
 
 g_OpenEndstate kind:bss addr:0x02083e00

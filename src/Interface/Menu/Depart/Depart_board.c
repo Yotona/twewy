@@ -20,7 +20,7 @@ typedef struct {
 static SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg, s32 mode);
 static s32              DepartBoard_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const TaskHandle data_ov043_020cae7c = {"Tsk_Depart_board", DepartBoard_RunTask, sizeof(DepartBoard)};
+static const TaskHandle Tsk_Depart_board = {"Tsk_Depart_board", DepartBoard_RunTask, sizeof(DepartBoard)};
 
 static const SpriteAnimation data_ov043_020cae98 = {
     .bits_0_1          = 2,
@@ -31,8 +31,8 @@ static const SpriteAnimation data_ov043_020cae98 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = func_ov043_020be7dc,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -46,7 +46,7 @@ static const SpriteAnimation data_ov043_020cae98 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* func_ov043_020be7dc(Sprite* sprite, s32 arg, s32 mode) {
@@ -60,8 +60,8 @@ void func_ov043_020be888(DepartBoard* board, Sprite* sprite, DepartBoardArgs* ar
 
     anim.dataType  = args->dataType;
     anim.packIndex = args->unk_08;
-    anim.unk_04    = (args->unk_08 * 37) + data_ov043_020ccd00[depart->unk_0C].x - 54;
-    anim.unk_06    = (args->unk_08 * 10) + data_ov043_020ccd00[depart->unk_0C].y;
+    anim.posX      = (args->unk_08 * 37) + data_ov043_020ccd00[depart->unk_0C].x - 54;
+    anim.posY      = (args->unk_08 * 10) + data_ov043_020ccd00[depart->unk_0C].y;
 
     board->unk_80[0] = 1;
     board->unk_80[1] = 0;
@@ -141,5 +141,5 @@ s32 DepartBoard_CreateTask(TaskPool* pool, s32 dataType, u16 arg2, DepartObject*
         func_ov043_020bd9dc(&treasureData, Inventory_GetCategorizedIndex(args.itemID));
         args.unk_0C = treasureData.unk_00;
     }
-    EasyTask_CreateTask(pool, &data_ov043_020cae7c, NULL, 0, NULL, &args);
+    EasyTask_CreateTask(pool, &Tsk_Depart_board, NULL, 0, NULL, &args);
 }

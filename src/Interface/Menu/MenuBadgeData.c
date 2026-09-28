@@ -10,13 +10,7 @@
 #include "common_data.h"
 #include <nitro/math.h>
 
-// The BG loaders call PaletteMgr_AllocPalette without its prototype in scope, so palStart is passed
-// through as a plain int instead of being narrowed to the s16 parameter.
-#define PaletteMgr_AllocPaletteNoProto ((PaletteResource * (*)()) PaletteMgr_AllocPalette)
-
-BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
-BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, u32 screenBase, u32 screenSize);
-void        func_02047ec8(void* head, u32 num, u32 width, s32 (*compare)(void*, void*), void* buffer);
+void func_02047ec8(void* head, u32 num, u32 width, s32 (*compare)(void*, void*), void* buffer);
 
 // A pin's Tin Pin Slammer stats
 typedef struct {
@@ -1028,7 +1022,7 @@ s16 MenuBadge_GetDeckTabAtPoint(s16 x, s16 y) {
     return -1;
 }
 
-void MenuBadge_LoadBgResource(MenuBadgeResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
+void MenuBadge_LoadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &MenuBadge_BinIdentifiers[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
     res->screenMap   = Data_GetPackEntryData(res->data, 2);
@@ -1066,7 +1060,7 @@ void MenuBadge_LoadBgResource(MenuBadgeResource* res, s32 engine, s32 layer, s32
     }
 }
 
-void MenuBadge_LoadBgScreen(MenuBadgeResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
+void MenuBadge_LoadBgScreen(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
     res->screenMap = Data_GetPackEntryData(data, screenIndex);
     if (engine == DISPLAY_MAIN) {
         res->screenResource =
@@ -1081,7 +1075,7 @@ void MenuBadge_LoadBgScreen(MenuBadgeResource* res, Data* data, s32 engine, s32 
     }
 }
 
-void MenuBadge_ReleaseBgResource(MenuBadgeResource* res, s32 engine) {
+void MenuBadge_ReleaseBgResource(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_MAIN], res->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
@@ -1094,7 +1088,7 @@ void MenuBadge_ReleaseBgResource(MenuBadgeResource* res, s32 engine) {
     DatMgr_ReleaseData(res->data);
 }
 
-void MenuBadge_ReleaseBgScreen(MenuBadgeResource* res, s32 engine) {
+void MenuBadge_ReleaseBgScreen(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
     } else {
@@ -1102,17 +1096,17 @@ void MenuBadge_ReleaseBgScreen(MenuBadgeResource* res, s32 engine) {
     }
 }
 
-void MenuBadge_ReloadBgResource(MenuBadgeResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
+void MenuBadge_ReloadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     MenuBadge_ReleaseBgResource(res, engine);
     MenuBadge_LoadBgResource(res, engine, layer, binIndex, palStart, palCount);
 }
 
-void MenuBadge_ReloadBgScreen(MenuBadgeResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
+void MenuBadge_ReloadBgScreen(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
     MenuBadge_ReleaseBgScreen(res, engine);
     MenuBadge_LoadBgScreen(res, data, engine, layer, screenIndex);
 }
 
-void MenuBadge_ClearBgResource(MenuBadgeResource* res) {
+void MenuBadge_ClearBgResource(MenuBgResource* res) {
     res->data            = NULL;
     res->screenResource  = NULL;
     res->charResource    = NULL;
@@ -1123,9 +1117,9 @@ void MenuBadge_ClearBgResource(MenuBadgeResource* res) {
 }
 
 void MenuBadge_LoadBackgrounds(MenuBadgeObject* menuBadge) {
-    s32                i;
-    MenuBadgeResource* mainRes = &menuBadge->resources[0];
-    MenuBadgeResource* subRes  = &menuBadge->resources[4];
+    s32             i;
+    MenuBgResource* mainRes = &menuBadge->resources[0];
+    MenuBgResource* subRes  = &menuBadge->resources[4];
 
     for (i = 0; i < 4; i++) {
         MenuBadge_ClearBgResource(mainRes);
@@ -1134,13 +1128,13 @@ void MenuBadge_LoadBackgrounds(MenuBadgeObject* menuBadge) {
         subRes += 1;
     }
 
-    MenuBadge_LoadBgResource(&menuBadge->resources[5], 0, 1, 6, 15, 1);
-    MenuBadge_LoadBgResource(&menuBadge->resources[7], 0, 3, 0, 0, 10);
-    MenuBadge_LoadBgScreen(&menuBadge->resources[6], menuBadge->resources[7].data, 0, 2, 5);
-    MenuBadge_LoadBgResource(&menuBadge->resources[0], 1, 0, 7, 15, 1);
-    MenuBadge_LoadBgResource(&menuBadge->resources[3], 1, 3, 3, 1, 1);
-    MenuBadge_LoadBgScreen(&menuBadge->resources[1], menuBadge->resources[3].data, 1, 1, 6);
-    MenuBadge_LoadBgScreen(&menuBadge->resources[2], menuBadge->resources[3].data, 1, 2, 7);
+    MenuBadge_LoadBgResource(&menuBadge->resources[5], DISPLAY_MAIN, 1, 6, 15, 1);
+    MenuBadge_LoadBgResource(&menuBadge->resources[7], DISPLAY_MAIN, 3, 0, 0, 10);
+    MenuBadge_LoadBgScreen(&menuBadge->resources[6], menuBadge->resources[7].data, DISPLAY_MAIN, 2, 5);
+    MenuBadge_LoadBgResource(&menuBadge->resources[0], DISPLAY_SUB, 0, 7, 15, 1);
+    MenuBadge_LoadBgResource(&menuBadge->resources[3], DISPLAY_SUB, 3, 3, 1, 1);
+    MenuBadge_LoadBgScreen(&menuBadge->resources[1], menuBadge->resources[3].data, DISPLAY_SUB, 1, 6);
+    MenuBadge_LoadBgScreen(&menuBadge->resources[2], menuBadge->resources[3].data, DISPLAY_SUB, 2, 7);
 }
 
 void MenuBadge_UpdateBackgrounds(MenuBadgeObject* menuBadge) {
@@ -1148,11 +1142,11 @@ void MenuBadge_UpdateBackgrounds(MenuBadgeObject* menuBadge) {
 }
 
 void MenuBadge_ReleaseBackgrounds(MenuBadgeObject* menuBadge) {
-    MenuBadge_ReleaseBgResource(&menuBadge->resources[5], 0);
-    MenuBadge_ReleaseBgResource(&menuBadge->resources[7], 0);
-    MenuBadge_ReleaseBgScreen(&menuBadge->resources[6], 0);
-    MenuBadge_ReleaseBgResource(&menuBadge->resources[0], 1);
-    MenuBadge_ReleaseBgResource(&menuBadge->resources[3], 1);
-    MenuBadge_ReleaseBgScreen(&menuBadge->resources[1], 1);
-    MenuBadge_ReleaseBgScreen(&menuBadge->resources[2], 1);
+    MenuBadge_ReleaseBgResource(&menuBadge->resources[5], DISPLAY_MAIN);
+    MenuBadge_ReleaseBgResource(&menuBadge->resources[7], DISPLAY_MAIN);
+    MenuBadge_ReleaseBgScreen(&menuBadge->resources[6], DISPLAY_MAIN);
+    MenuBadge_ReleaseBgResource(&menuBadge->resources[0], DISPLAY_SUB);
+    MenuBadge_ReleaseBgResource(&menuBadge->resources[3], DISPLAY_SUB);
+    MenuBadge_ReleaseBgScreen(&menuBadge->resources[1], DISPLAY_SUB);
+    MenuBadge_ReleaseBgScreen(&menuBadge->resources[2], DISPLAY_SUB);
 }

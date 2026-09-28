@@ -26,8 +26,8 @@ static const SpriteAnimation Result_num_Param_sleep_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_num_Param_sleep_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation Result_num_Param_sleep_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_num_Param_sleep_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,9 +58,9 @@ static void Result_num_Param_sleep_LoadLabels(Result_num_Param_sleep* numParam, 
     s16 frames[3] = {0x32, 0x33, 0x3A};
 
     for (s16 i = 0; i < 3; i++) {
-        anim->unk_2A = frames[i];
-        anim->unk_04 = positions[i][0];
-        anim->unk_06 = positions[i][1];
+        anim->animIndex = frames[i];
+        anim->posX      = positions[i][0];
+        anim->posY      = positions[i][1];
         _Sprite_Load(&sprites[i], anim);
     }
 }
@@ -110,9 +110,9 @@ static void Result_num_Param_sleep_LoadRows(Result_num_Param_sleep* numParam, Re
         }
 
         for (i = 0, posX = rowX; i < 3; i++) {
-            anim->unk_2A = frameBase + digits[i];
-            anim->unk_04 = xOffset + posX;
-            anim->unk_06 = 0x62;
+            anim->animIndex = frameBase + digits[i];
+            anim->posX      = xOffset + posX;
+            anim->posY      = 0x62;
             _Sprite_Load(&sprites[(row + 1) * 3 + i], anim);
             posX += 7;
         }
@@ -151,9 +151,9 @@ static void Result_num_Param_sleep_LoadPoints(Result_num_Param_sleep* numParam, 
     }
 
     for (i = 0, posX = 0x8E; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x7B;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x7B;
         _Sprite_Load(&sprites[i + 24], anim);
         posX += 7;
     }

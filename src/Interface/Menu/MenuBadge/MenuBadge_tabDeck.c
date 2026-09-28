@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[4];
-    /* 0x100 */ s32              visible;
+    /* 0x100 */ BOOL             visible;
     /* 0x104 */ MenuBadgeObject* menuBadge;
 } MenuBadge_tabDeck; // Size: 0x108
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuBadge_tabDeck_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_tabDeck_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuBadge_tabDeck_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_tabDeck_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,7 +53,7 @@ static void MenuBadge_tabDeck_Load(MenuBadge_tabDeck* tabDeck, Sprite* sprites, 
     SpriteAnimation  anim      = MenuBadge_tabDeck_Anim;
     u16              sel[4]    = {0};
 
-    MenuBadgePoint positions[4] = {
+    Point positions[4] = {
         {0x85, 0x14},
         {0x90, 0x14},
         {0x9B, 0x14},
@@ -65,9 +65,9 @@ static void MenuBadge_tabDeck_Load(MenuBadge_tabDeck* tabDeck, Sprite* sprites, 
     sel[menuBadge->currentDeck] = 1;
 
     for (u16 i = 0; i < 4; i++) {
-        anim.unk_2A = i * 2 + 0x31 + sel[i];
-        anim.unk_04 = positions[i].x;
-        anim.unk_06 = positions[i].y;
+        anim.animIndex = i * 2 + 0x31 + sel[i];
+        anim.posX      = positions[i].x;
+        anim.posY      = positions[i].y;
         _Sprite_Load(&sprites[i], &anim);
     }
 }

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite      sprite;
-    /* 0x40 */ s32         shouldRender;
+    /* 0x40 */ BOOL        visible;
     /* 0x44 */ ShopObject* shop;
     /* 0x48 */ u16         itemIndex;
     /* 0x4A */ u16         unk_4A;
@@ -34,8 +34,8 @@ static const SpriteAnimation Shop_itemStar_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemStar_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -49,7 +49,7 @@ static const SpriteAnimation Shop_itemStar_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Shop_itemStar_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -63,10 +63,10 @@ static void Shop_itemStar_Load(Shop_itemStar* itemStar, Sprite* sprite, Shop_ite
 
     itemStar->itemIndex = args->itemIndex;
 
-    anim.dataType = args->dataType;
-    anim.unk_04   = ((args->itemIndex % 6) * 33) + 29;
-    anim.unk_06   = ((args->itemIndex / 6) * 41) + 46;
-    anim.unk_2A   = 0x11;
+    anim.dataType  = args->dataType;
+    anim.posX      = ((args->itemIndex % 6) * 33) + 29;
+    anim.posY      = ((args->itemIndex / 6) * 41) + 46;
+    anim.animIndex = 0x11;
 
     _Sprite_Load(sprite, &anim);
 
@@ -74,9 +74,9 @@ static void Shop_itemStar_Load(Shop_itemStar* itemStar, Sprite* sprite, Shop_ite
 
     u32 val = itemInfo->unk_14;
     if (itemInfo->unk_10 == 1 && func_02023d88(val) == 1) {
-        itemStar->shouldRender = TRUE;
+        itemStar->visible = TRUE;
     } else {
-        itemStar->shouldRender = FALSE;
+        itemStar->visible = FALSE;
     }
 }
 
@@ -97,9 +97,9 @@ static s32 Shop_itemStar_Update(TaskPool* pool, Task* task, void* args) {
 
     u32 val = itemInfo->unk_14;
     if (itemInfo->unk_10 == 1 && func_02023d88(val) == 1) {
-        itemStar->shouldRender = 1;
+        itemStar->visible = TRUE;
     } else {
-        itemStar->shouldRender = 0;
+        itemStar->visible = FALSE;
     }
     Sprite_Update(&itemStar->sprite);
     return 1;
@@ -108,7 +108,7 @@ static s32 Shop_itemStar_Update(TaskPool* pool, Task* task, void* args) {
 static s32 Shop_itemStar_Render(TaskPool* pool, Task* task, void* args) {
     Shop_itemStar* itemStar = task->data;
 
-    if (itemStar->shouldRender) {
+    if (itemStar->visible) {
         Sprite_RenderFrame(&itemStar->sprite);
     }
     return 1;

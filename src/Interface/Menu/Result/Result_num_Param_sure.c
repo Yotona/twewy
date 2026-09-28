@@ -26,8 +26,8 @@ static const SpriteAnimation Result_num_Param_sure_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Result_num_Param_sure_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation Result_num_Param_sure_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Result_num_Param_sure_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,9 +58,9 @@ static void Result_num_Param_sure_LoadLabels(Result_num_Param_sure* numParam, Re
     s16 frames[3] = {0x32, 0x33, 0x3A};
 
     for (s16 i = 0; i < 3; i++) {
-        anim->unk_2A = frames[i];
-        anim->unk_04 = positions[i][0];
-        anim->unk_06 = positions[i][1];
+        anim->animIndex = frames[i];
+        anim->posX      = positions[i][0];
+        anim->posY      = positions[i][1];
         _Sprite_Load(&sprites[i], anim);
     }
 }
@@ -100,9 +100,9 @@ static void Result_num_Param_sure_LoadCounts(Result_num_Param_sure* numParam, Re
     aliens[3] = value % 10;
 
     for (i = 0, posX = 0xBF; i < 4; i++) {
-        anim->unk_2A = espers[i] + 0xF;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x46;
+        anim->animIndex = espers[i] + 0xF;
+        anim->posX      = posX;
+        anim->posY      = 0x46;
         _Sprite_Load(&sprites[i + 3], anim);
         posX += 7;
     }
@@ -115,9 +115,9 @@ static void Result_num_Param_sure_LoadCounts(Result_num_Param_sure* numParam, Re
     }
 
     for (i = 0, posX = 0xBF; i < 4; i++) {
-        anim->unk_2A = civvies[i] + 0xF;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x55;
+        anim->animIndex = civvies[i] + 0xF;
+        anim->posX      = posX;
+        anim->posY      = 0x55;
         _Sprite_Load(&sprites[i + 7], anim);
         posX += 7;
     }
@@ -130,9 +130,9 @@ static void Result_num_Param_sure_LoadCounts(Result_num_Param_sure* numParam, Re
     }
 
     for (i = 0, posX = 0xBF; i < 4; i++) {
-        anim->unk_2A = aliens[i] + 0xF;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x64;
+        anim->animIndex = aliens[i] + 0xF;
+        anim->posX      = posX;
+        anim->posY      = 0x64;
         _Sprite_Load(&sprites[i + 11], anim);
         posX += 7;
     }
@@ -174,9 +174,9 @@ static void Result_num_Param_sure_LoadPoints(Result_num_Param_sure* numParam, Re
     }
 
     for (i = 0, posX = 0x8E; i < 5; i++) {
-        anim->unk_2A = digits[i] + 0x21;
-        anim->unk_04 = posX;
-        anim->unk_06 = 0x7B;
+        anim->animIndex = digits[i] + 0x21;
+        anim->posX      = posX;
+        anim->posY      = 0x7B;
         _Sprite_Load(&sprites[i + 15], anim);
         posX += 7;
     }

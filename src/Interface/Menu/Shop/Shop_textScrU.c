@@ -3,13 +3,13 @@
 #include "common_data.h"
 
 typedef struct {
-    /* 0x000 */ void*   unk_000;
-    /* 0x004 */ SysFont fonts[3];
+    /* 0x000 */ ShopObject* shop;
+    /* 0x004 */ SysFont     fonts[3];
 } Shop_textScrU; // Size: 0x178
 
 typedef struct {
-    /* 0x0 */ s32   unk_0;
-    /* 0x4 */ void* unk_4;
+    /* 0x0 */ s32         dataType;
+    /* 0x4 */ ShopObject* shop;
 } Shop_textScrU_Args;
 
 s32 Shop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -33,7 +33,7 @@ s32 Shop_textScrU_Init(TaskPool* pool, Task* task, void* args) {
     Shop_textScrU*      textScr     = task->data;
     Shop_textScrU_Args* textScrArgs = args;
 
-    textScr->unk_000 = textScrArgs->unk_4;
+    textScr->shop = textScrArgs->shop;
     func_ov043_020bc098(textScr);
     func_ov043_020bc0d8(textScr);
     return 1;
@@ -66,9 +66,9 @@ s32 Shop_textScrU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-s32 Shop_textScrU_CreateTask(TaskPool* pool, s32 arg1, void* arg2) {
+s32 Shop_textScrU_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_textScrU_Args args;
-    args.unk_0 = arg1;
-    args.unk_4 = arg2;
+    args.dataType = dataType;
+    args.shop     = shop;
     return EasyTask_CreateTask(pool, &Tsk_Shop_textScrU, NULL, 0, NULL, &args);
 }

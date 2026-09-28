@@ -45,8 +45,8 @@ static const SpriteAnimation data_ov030_020ec9c8 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 3,
-    .unk_04            = 0x80,
-    .unk_06            = 0x51,
+    .posX              = 0x80,
+    .posY              = 0x51,
     .frameInfoCallback = func_ov030_020c7d20,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -60,7 +60,7 @@ static const SpriteAnimation data_ov030_020ec9c8 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 void Fld_GetItem_LoadThreadData(RawItemData* itemData, s32 arg1) {
@@ -186,8 +186,8 @@ void func_ov030_020c7e00(Sprite* sprite, Fld_GetItem_Args* args, void* arg2) {
 
     s16 temp_r4_3 = func_ov030_020c7b24(args->unk_4, &temp);
     if (temp != 0) {
-        anim.unk_04 -= 4;
-        anim.unk_06 -= 4;
+        anim.posX -= 4;
+        anim.posY -= 4;
     }
     _Sprite_Load(sprite, &anim);
     func_ov030_020c7bc0(sprite, args, (u16)temp_r4_3, temp);

@@ -191,7 +191,7 @@ static s32 MenuTop_textScrU_Update(TaskPool* pool, Task* task, void* args) {
 
     if (topMenu->flags & 2) {
         topMenu->flags &= ~2;
-        MenuTop_ReloadBgResource(&topMenu->resources[0], 0, 0, 9, 15, 1);
+        MenuTop_ReloadBgResource(&topMenu->resources[0], DISPLAY_MAIN, 0, 9, 15, 1);
 
         if (topMenu->upperPage == 0) {
             MenuTop_textScrU_DrawTrendPage(textScrU);

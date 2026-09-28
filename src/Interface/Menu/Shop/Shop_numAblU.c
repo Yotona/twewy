@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite      sprites[5];
-    /* 0x140 */ BOOL        shouldRender[5];
+    /* 0x140 */ BOOL        visible[5];
     /* 0x154 */ ShopObject* shop;
 } Shop_numAblU; // Size: 0x158
 
@@ -51,7 +51,7 @@ s32 Shop_numAblU_Render(TaskPool* pool, Task* task, void* args) {
     Shop_numAblU* num = task->data;
 
     for (s32 i = 0; i < 5; i++) {
-        if (num->shouldRender[i]) {
+        if (num->visible[i]) {
             Sprite_RenderFrame(&num->sprites[i]);
         }
     }

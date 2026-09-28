@@ -14,7 +14,7 @@ typedef struct {
 static SpriteFrameInfo* func_ov043_020be368(Sprite* sprite, s32 arg, s32 mode);
 static s32              DepartExit_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-static const TaskHandle data_ov043_020cadec = {"Tsk_Depart_exit", DepartExit_RunTask, sizeof(DepartExit)};
+static const TaskHandle Tsk_Depart_exit = {"Tsk_Depart_exit", DepartExit_RunTask, sizeof(DepartExit)};
 
 static const SpriteAnimation data_ov043_020cae08 = {
     .bits_0_1          = 0,
@@ -25,8 +25,8 @@ static const SpriteAnimation data_ov043_020cae08 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0xE7,
-    .unk_06            = 0x9,
+    .posX              = 0xE7,
+    .posY              = 0x9,
     .frameInfoCallback = func_ov043_020be368,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -40,7 +40,7 @@ static const SpriteAnimation data_ov043_020cae08 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* func_ov043_020be368(Sprite* sprite, s32 arg, s32 mode) {
@@ -50,8 +50,8 @@ static SpriteFrameInfo* func_ov043_020be368(Sprite* sprite, s32 arg, s32 mode) {
 static void func_ov043_020be404(void* arg1, Sprite* sprite, DepartExitArgs* args) {
     SpriteAnimation anim = data_ov043_020cae08;
 
-    anim.dataType = args->dataType;
-    anim.unk_2A   = 1;
+    anim.dataType  = args->dataType;
+    anim.animIndex = 1;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -71,14 +71,14 @@ static s32 DepartExit_Update(TaskPool* pool, Task* task, void* args) {
     DepartObject* depart     = departExit->depart;
 
     if (depart->unk_30 == 1) {
-        func_ov043_020bd938(&departExit->sprite, 2);
+        Depart_SetSpriteFrame(&departExit->sprite, 2);
         if (depart->unk_31 != 0) {
             depart->unk_31--;
         } else {
             depart->unk_30 = 0;
         }
     } else {
-        func_ov043_020bd938(&departExit->sprite, 1);
+        Depart_SetSpriteFrame(&departExit->sprite, 1);
     }
     Sprite_Update(&departExit->sprite);
     return 1;
@@ -112,5 +112,5 @@ s32 DepartExit_CreateTask(TaskPool* pool, s32 dataType, DepartObject* depart) {
     DepartExitArgs args;
     args.dataType = dataType;
     args.depart   = depart;
-    return EasyTask_CreateTask(pool, &data_ov043_020cadec, NULL, 0, NULL, &args);
+    return EasyTask_CreateTask(pool, &Tsk_Depart_exit, NULL, 0, NULL, &args);
 }

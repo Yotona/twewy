@@ -7,10 +7,6 @@
 #include "Save.h"
 #include "SpriteMgr.h"
 
-// The BG loaders call PaletteMgr_AllocPalette without its prototype in scope, so palStart is passed
-// through as a plain int instead of being narrowed to the s16 parameter.
-#define PaletteMgr_AllocPaletteNoProto ((PaletteResource * (*)()) PaletteMgr_AllocPalette)
-
 s32 MenuTop_IsPointInRect(s32 x, s32 y, s32 left, s32 top, s16 width, s16 height) {
     if ((x >= left) && (x <= (left + width)) && (y >= top) && (y <= (top + height))) {
         return 1;
@@ -327,7 +323,7 @@ s16 MenuTop_GetHelpButtonAtPoint(s16 x, s16 y) {
     return -1;
 }
 
-void MenuTop_LoadBgResource(MenuTopResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
+void MenuTop_LoadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &MenuTop_BinIdentifiers[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
     res->screenMap   = Data_GetPackEntryData(res->data, 2);
@@ -365,7 +361,7 @@ void MenuTop_LoadBgResource(MenuTopResource* res, s32 engine, s32 layer, s32 bin
     }
 }
 
-void MenuTop_LoadBgResourceIndexed(MenuTopResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
+void MenuTop_LoadBgResourceIndexed(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
                                    s32 screenIndex, s32 palIndex) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &MenuTop_BinIdentifiers[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
@@ -404,7 +400,7 @@ void MenuTop_LoadBgResourceIndexed(MenuTopResource* res, s32 engine, s32 layer, 
     }
 }
 
-void MenuTop_LoadBgScreen(MenuTopResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
+void MenuTop_LoadBgScreen(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
     res->screenMap = Data_GetPackEntryData(data, screenIndex);
     if (engine == DISPLAY_MAIN) {
         res->screenResource =
@@ -419,7 +415,7 @@ void MenuTop_LoadBgScreen(MenuTopResource* res, Data* data, s32 engine, s32 laye
     }
 }
 
-void MenuTop_ReleaseBgResource(MenuTopResource* res, s32 engine) {
+void MenuTop_ReleaseBgResource(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_MAIN], res->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
@@ -432,7 +428,7 @@ void MenuTop_ReleaseBgResource(MenuTopResource* res, s32 engine) {
     DatMgr_ReleaseData(res->data);
 }
 
-void MenuTop_ReleaseBgScreen(MenuTopResource* res, s32 engine) {
+void MenuTop_ReleaseBgScreen(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
     } else {
@@ -440,12 +436,12 @@ void MenuTop_ReleaseBgScreen(MenuTopResource* res, s32 engine) {
     }
 }
 
-void MenuTop_ReloadBgResource(MenuTopResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
+void MenuTop_ReloadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     MenuTop_ReleaseBgResource(res, engine);
     MenuTop_LoadBgResource(res, engine, layer, binIndex, palStart, palCount);
 }
 
-void MenuTop_ClearBgResource(MenuTopResource* res) {
+void MenuTop_ClearBgResource(MenuBgResource* res) {
     res->data            = NULL;
     res->screenResource  = NULL;
     res->charResource    = NULL;
@@ -456,9 +452,9 @@ void MenuTop_ClearBgResource(MenuTopResource* res) {
 }
 
 void MenuTop_LoadBackgrounds(MenuTopObject* topMenu) {
-    s32              i;
-    MenuTopResource* mainRes = &topMenu->resources[0];
-    MenuTopResource* subRes  = &topMenu->resources[4];
+    s32             i;
+    MenuBgResource* mainRes = &topMenu->resources[0];
+    MenuBgResource* subRes  = &topMenu->resources[4];
 
     for (i = 0; i < 4; i++) {
         MenuTop_ClearBgResource(mainRes);
@@ -467,18 +463,18 @@ void MenuTop_LoadBackgrounds(MenuTopObject* topMenu) {
         subRes += 1;
     }
 
-    MenuTop_LoadBgResource(&topMenu->resources[5], 1, 1, 10, 15, 1);
-    MenuTop_LoadBgResource(&topMenu->resources[6], 1, 2, 0, 1, 2);
-    MenuTop_LoadBgResource(&topMenu->resources[7], 1, 3, 1, 0, 1);
-    MenuTop_LoadBgScreen(&topMenu->resources[4], topMenu->resources[6].data, 1, 0, 4);
-    MenuTop_LoadBgResource(&topMenu->resources[0], 0, 0, 9, 15, 1);
+    MenuTop_LoadBgResource(&topMenu->resources[5], DISPLAY_SUB, 1, 10, 15, 1);
+    MenuTop_LoadBgResource(&topMenu->resources[6], DISPLAY_SUB, 2, 0, 1, 2);
+    MenuTop_LoadBgResource(&topMenu->resources[7], DISPLAY_SUB, 3, 1, 0, 1);
+    MenuTop_LoadBgScreen(&topMenu->resources[4], topMenu->resources[6].data, DISPLAY_SUB, 0, 4);
+    MenuTop_LoadBgResource(&topMenu->resources[0], DISPLAY_MAIN, 0, 9, 15, 1);
     if (topMenu->currentArea <= 20) {
-        MenuTop_LoadBgResource(&topMenu->resources[3], 0, 3, 5, 0, 5);
+        MenuTop_LoadBgResource(&topMenu->resources[3], DISPLAY_MAIN, 3, 5, 0, 5);
     } else {
-        MenuTop_LoadBgResourceIndexed(&topMenu->resources[3], 0, 3, 5, 0, 5, 4, 0);
+        MenuTop_LoadBgResourceIndexed(&topMenu->resources[3], DISPLAY_MAIN, 3, 5, 0, 5, 4, 0);
     }
-    MenuTop_LoadBgScreen(&topMenu->resources[1], topMenu->resources[3].data, 0, 1, 4);
-    MenuTop_LoadBgScreen(&topMenu->resources[2], topMenu->resources[3].data, 0, 2, 5);
+    MenuTop_LoadBgScreen(&topMenu->resources[1], topMenu->resources[3].data, DISPLAY_MAIN, 1, 4);
+    MenuTop_LoadBgScreen(&topMenu->resources[2], topMenu->resources[3].data, DISPLAY_MAIN, 2, 5);
 }
 
 void MenuTop_UpdateBackgrounds(MenuTopObject* topMenu) {
@@ -486,12 +482,12 @@ void MenuTop_UpdateBackgrounds(MenuTopObject* topMenu) {
 }
 
 void MenuTop_ReleaseBackgrounds(MenuTopObject* topMenu) {
-    MenuTop_ReleaseBgScreen(&topMenu->resources[4], 1);
-    MenuTop_ReleaseBgResource(&topMenu->resources[5], 1);
-    MenuTop_ReleaseBgResource(&topMenu->resources[6], 1);
-    MenuTop_ReleaseBgResource(&topMenu->resources[7], 1);
-    MenuTop_ReleaseBgResource(&topMenu->resources[0], 0);
-    MenuTop_ReleaseBgScreen(&topMenu->resources[1], 0);
-    MenuTop_ReleaseBgScreen(&topMenu->resources[2], 0);
-    MenuTop_ReleaseBgResource(&topMenu->resources[3], 0);
+    MenuTop_ReleaseBgScreen(&topMenu->resources[4], DISPLAY_SUB);
+    MenuTop_ReleaseBgResource(&topMenu->resources[5], DISPLAY_SUB);
+    MenuTop_ReleaseBgResource(&topMenu->resources[6], DISPLAY_SUB);
+    MenuTop_ReleaseBgResource(&topMenu->resources[7], DISPLAY_SUB);
+    MenuTop_ReleaseBgResource(&topMenu->resources[0], DISPLAY_MAIN);
+    MenuTop_ReleaseBgScreen(&topMenu->resources[1], DISPLAY_MAIN);
+    MenuTop_ReleaseBgScreen(&topMenu->resources[2], DISPLAY_MAIN);
+    MenuTop_ReleaseBgResource(&topMenu->resources[3], DISPLAY_MAIN);
 }

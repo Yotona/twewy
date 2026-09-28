@@ -24,8 +24,8 @@ static void func_ov043_020bee2c(DepartTextScrU* textScrU) {
 static void func_ov043_020bee4c(DepartTextScrU* textScrU) {
     DepartObject* depart = textScrU->unk_00;
 
-    u32* map      = depart->unk_34[2].unk_14;
-    u32* charData = depart->unk_34[2].unk_10;
+    u16* map      = depart->resources[2].screenMap;
+    u16* charData = depart->resources[2].charData;
 
     if ((map == NULL) || (charData == NULL)) {
         OS_WaitForever();
@@ -34,7 +34,7 @@ static void func_ov043_020bee4c(DepartTextScrU* textScrU) {
     SysFont_SetPos(&textScrU->font, 2, 6);
     SysFont_SetSpacing(&textScrU->font, TRUE, 0);
     SysFont_SetMsg(&textScrU->font, depart->unk_0A + SYSMSG_SHOP_NAMES_START);
-    SysFont_DrawCurrentToScreen(&textScrU->font, map + 1, charData + 1, 0);
+    SysFont_DrawCurrentToScreen(&textScrU->font, map + 2, charData + 2, 0);
 }
 
 static s32 Depart_textScrU_Init(TaskPool* pool, Task* task, void* args) {

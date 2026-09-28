@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite         sprite;
-    /* 0x40 */ BOOL           shouldRender;
+    /* 0x40 */ BOOL           visible;
     /* 0x44 */ MenuTopObject* topMenu;
     /* 0x48 */ u16            area;
     /* 0x4A */ u16            topBrand;
@@ -29,8 +29,8 @@ static const SpriteAnimation MenuTop_mapTipBrdU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_mapTipBrdU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuTop_mapTipBrdU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_mapTipBrdU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -55,15 +55,15 @@ static void MenuTop_mapTipBrdU_Load(MenuTop_mapTipBrdU* mapTipBrdU, Sprite* spri
     MenuTopObject*  topMenu = mapTipBrdU->topMenu;
     SpriteAnimation anim    = MenuTop_mapTipBrdU_Anim;
 
-    mapTipBrdU->area         = args->area;
-    mapTipBrdU->topBrand     = topMenu->areaTopBrand[mapTipBrdU->area];
-    mapTipBrdU->shouldRender = TRUE;
+    mapTipBrdU->area     = args->area;
+    mapTipBrdU->topBrand = topMenu->areaTopBrand[mapTipBrdU->area];
+    mapTipBrdU->visible  = TRUE;
 
-    anim.dataType = args->dataType;
-    anim.bits_7_9 = 5;
-    anim.unk_2A   = mapTipBrdU->topBrand + 24;
-    anim.unk_04   = MenuTop_AreaMapPos[args->area].x;
-    anim.unk_06   = MenuTop_AreaMapPos[args->area].y;
+    anim.dataType  = args->dataType;
+    anim.bits_7_9  = 5;
+    anim.animIndex = mapTipBrdU->topBrand + 24;
+    anim.posX      = MenuTop_AreaMapPos[args->area].x;
+    anim.posY      = MenuTop_AreaMapPos[args->area].y;
     _Sprite_Load(sprite, &anim);
 }
 

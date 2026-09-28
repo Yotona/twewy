@@ -32,8 +32,8 @@ static const SpriteAnimation MenuTop_iconU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuTop_iconU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -47,7 +47,7 @@ static const SpriteAnimation MenuTop_iconU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static const TaskHandle Tsk_MenuTop_iconU = {"Tsk_MenuTop_iconU", MenuTop_iconU_RunTask, sizeof(MenuTop_iconU)};
@@ -62,20 +62,20 @@ static void MenuTop_iconU_Load(MenuTop_iconU* icon, Sprite* sprite, MenuTop_icon
     anim.dataType = args->dataType;
 
     if (args->area < 21) {
-        anim.unk_2A   = args->iconFrame;
-        anim.unk_04   = MenuTop_AreaMapPos[args->area].x;
-        anim.unk_06   = MenuTop_AreaMapPos[args->area].y - 2;
-        icon->visible = 1;
+        anim.animIndex = args->iconFrame;
+        anim.posX      = MenuTop_AreaMapPos[args->area].x;
+        anim.posY      = MenuTop_AreaMapPos[args->area].y - 2;
+        icon->visible  = TRUE;
     } else if (args->area <= 34) {
-        anim.unk_2A   = args->iconFrame;
-        anim.unk_04   = MenuTop_AreaMapPos[21].x;
-        anim.unk_06   = MenuTop_AreaMapPos[21].y - 2;
-        icon->visible = 1;
+        anim.animIndex = args->iconFrame;
+        anim.posX      = MenuTop_AreaMapPos[21].x;
+        anim.posY      = MenuTop_AreaMapPos[21].y - 2;
+        icon->visible  = TRUE;
     } else {
-        anim.unk_2A   = args->iconFrame;
-        anim.unk_04   = MenuTop_AreaMapPos[22].x;
-        anim.unk_06   = MenuTop_AreaMapPos[22].y - 2;
-        icon->visible = 1;
+        anim.animIndex = args->iconFrame;
+        anim.posX      = MenuTop_AreaMapPos[22].x;
+        anim.posY      = MenuTop_AreaMapPos[22].y - 2;
+        icon->visible  = TRUE;
     }
 
     _Sprite_Load(sprite, &anim);

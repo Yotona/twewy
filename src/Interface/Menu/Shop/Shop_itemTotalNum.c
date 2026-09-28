@@ -28,8 +28,8 @@ static const SpriteAnimation Shop_itemTotalNum_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_itemTotalNum_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -43,7 +43,7 @@ static const SpriteAnimation Shop_itemTotalNum_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static void Shop_itemTotalNum_CalcDigits(Shop_itemTotalNum* arg0, s32 arg1, u16* arg2) {
@@ -74,26 +74,26 @@ static SpriteFrameInfo* Shop_itemTotalNum_GetFrameInfo(Sprite* sprite, s32 arg, 
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x398000);
 }
 
-static void Shop_itemTotalNum_Load(Shop_itemTotalNum* totalNum, Sprite* arg1, Shop_itemTotalNum_Args* arg2) {
+static void Shop_itemTotalNum_Load(Shop_itemTotalNum* totalNum, Sprite* sprites, Shop_itemTotalNum_Args* args) {
     ShopObject* shop = totalNum->shop;
 
     SpriteAnimation anim = Shop_itemTotalNum_Anim;
     u16             digits[3];
 
-    anim.dataType = arg2->dataType;
+    anim.dataType = args->dataType;
 
     Shop_itemTotalNum_CalcDigits(totalNum, func_02023010(shop->slots[shop->unk_848].itemID), digits);
 
-    anim.unk_2A = 0x0C;
-    anim.unk_04 = ((3 - totalNum->unk_114) * 4) + 0xEF;
-    anim.unk_06 = 0x67;
-    _Sprite_Load(&arg1[0], &anim);
+    anim.animIndex = 0x0C;
+    anim.posX      = ((3 - totalNum->unk_114) * 4) + 0xEF;
+    anim.posY      = 0x67;
+    _Sprite_Load(&sprites[0], &anim);
 
     for (s32 i = 0, posX = 0xEF; i < 3; i++, posX += 4) {
-        anim.unk_2A = digits[i] + 1;
-        anim.unk_04 = posX;
-        anim.unk_06 = 0x67;
-        _Sprite_Load(&arg1[i + 1], &anim);
+        anim.animIndex = digits[i] + 1;
+        anim.posX      = posX;
+        anim.posY      = 0x67;
+        _Sprite_Load(&sprites[i + 1], &anim);
     }
 }
 

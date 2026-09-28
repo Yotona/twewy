@@ -234,7 +234,7 @@ void CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifie
     anim.anim.unk_26     = entry->frameDataIndex;
     anim.anim.unk_28     = entry->paletteDataIndex;
     anim.anim.unk_20     = arg5;
-    anim.anim.unk_2A     = entry->animDataIndex + 1;
+    anim.anim.animIndex  = entry->animDataIndex + 1;
     anim.unk_2C          = arg3;
     CombatSprite_Load(arg1, &anim);
 }
@@ -249,7 +249,7 @@ void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifie
     anim.anim.unk_26     = arg5;
     anim.anim.unk_28     = arg4;
     anim.anim.unk_20     = arg6;
-    anim.anim.unk_2A     = arg7 + 1;
+    anim.anim.animIndex  = arg7 + 1;
     anim.unk_2C          = 0;
     CombatSprite_Load(cSprite, &anim);
 }

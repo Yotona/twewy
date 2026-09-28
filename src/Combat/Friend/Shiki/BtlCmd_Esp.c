@@ -61,7 +61,7 @@ void func_ov004_020ea648(CombatSprite* arg0, u16 arg1) {
     sp0.anim.unk_26     = 5;
     sp0.anim.unk_28     = 6;
     sp0.anim.unk_20     = 7;
-    sp0.anim.unk_2A     = arg1 + 1;
+    sp0.anim.animIndex  = arg1 + 1;
     sp0.unk_2C          = 0;
     CombatSprite_Load(arg0, &sp0);
     CombatSprite_SetAnim(arg0, arg1, 0);

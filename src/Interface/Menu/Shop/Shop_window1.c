@@ -50,8 +50,8 @@ static const SpriteAnimation data_ov043_020caa64 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02            = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_window1_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -65,33 +65,33 @@ static const SpriteAnimation data_ov043_020caa64 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 SpriteFrameInfo* Shop_window1_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x3E8000);
 }
 
-void Shop_window1_Load(Shop_window1* window, Sprite* sprites, Shop_window1_Args* arg2) {
+void Shop_window1_Load(Shop_window1* window, Sprite* sprites, Shop_window1_Args* args) {
     SpriteAnimation anim = data_ov043_020caa64;
 
     window->unk_0C0 = TRUE;
     window->unk_2DC = 2;
 
-    anim.dataType = (u16)arg2->dataType;
-    anim.unk_2A   = 6;
-    anim.unk_04   = 0x80;
-    anim.unk_06   = 0x60;
+    anim.dataType  = (u16)args->dataType;
+    anim.animIndex = 6;
+    anim.posX      = 0x80;
+    anim.posY      = 0x60;
     _Sprite_Load(sprites, &anim);
 
-    anim.unk_2A = 2;
-    anim.unk_04 = 0x4B;
-    anim.unk_06 = 0x75;
+    anim.animIndex = 2;
+    anim.posX      = 0x4B;
+    anim.posY      = 0x75;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_04 = 0xB4;
-    anim.unk_06 = 0x75;
-    anim.unk_2A = 4;
+    anim.posX      = 0xB4;
+    anim.posY      = 0x75;
+    anim.animIndex = 4;
     _Sprite_Load(&sprites[2], &anim);
 }
 

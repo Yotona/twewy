@@ -29,8 +29,8 @@ static const SpriteAnimation Shop_sbar2_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = Shop_sbar2_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,32 +44,32 @@ static const SpriteAnimation Shop_sbar2_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* Shop_sbar2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-static void Shop_sbar2_Load(Sprite* arg0, Shop_sbar2_Args* arg1) {
+static void Shop_sbar2_Load(Sprite* sprites, Shop_sbar2_Args* args) {
     SpriteAnimation anim = Shop_sbar2_Anim;
 
-    anim.dataType = arg1->dataType;
+    anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x2E;
-    anim.unk_04 = 0xD1;
-    anim.unk_06 = 0x5F;
-    _Sprite_Load(&arg0[0], &anim);
+    anim.animIndex = 0x2E;
+    anim.posX      = 0xD1;
+    anim.posY      = 0x5F;
+    _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x2B;
-    anim.unk_04 = 0xD1;
-    anim.unk_06 = 0x1D;
-    _Sprite_Load(&arg0[1], &anim);
+    anim.animIndex = 0x2B;
+    anim.posX      = 0xD1;
+    anim.posY      = 0x1D;
+    _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x2C;
-    anim.unk_04 = 0xD1;
-    anim.unk_06 = 0x66;
-    _Sprite_Load(&arg0[2], &anim);
+    anim.animIndex = 0x2C;
+    anim.posX      = 0xD1;
+    anim.posY      = 0x66;
+    _Sprite_Load(&sprites[2], &anim);
 }
 
 static s32 Shop_sbar2_Init(TaskPool* arg0, Task* task, void* args) {

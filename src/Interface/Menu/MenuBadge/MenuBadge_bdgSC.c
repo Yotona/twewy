@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
     /* 0x48 */ u16              slot;
 } MenuBadge_bdgSC; // Size: 0x4C
@@ -30,8 +30,8 @@ static const SpriteAnimation MenuBadge_bdgSC_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_bdgSC_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,37 +45,36 @@ static const SpriteAnimation MenuBadge_bdgSC_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_bdgSC_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackSorted(sprite, mode, 0x38E000);
 }
 
-// Nonmatching
 static void MenuBadge_bdgSC_Load(MenuBadge_bdgSC* bdgSC, Sprite* sprite, MenuBadge_bdgSC_Args* args) {
     SpriteAnimation anim = MenuBadge_bdgSC_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = MenuBadge_SlotPositions[args->slot].x + 9;
-    anim.unk_06   = MenuBadge_SlotPositions[args->slot].y - 9;
+    anim.posX     = MenuBadge_SlotPositions[args->slot].x + 9;
+    anim.posY     = MenuBadge_SlotPositions[args->slot].y - 9;
     anim.bits_7_9 = 6;
 
     if (args->slot >= args->slotCount || args->pinId == 0xFFFF) {
-        anim.unk_2A    = 7;
+        anim.animIndex = 7;
         bdgSC->visible = FALSE;
     } else {
         switch (args->unk_C) {
             case 0:
-                anim.unk_2A    = 7;
+                anim.animIndex = 7;
                 bdgSC->visible = FALSE;
                 break;
             case 1:
-                anim.unk_2A    = 8;
+                anim.animIndex = 8;
                 bdgSC->visible = TRUE;
                 break;
             case 2:
-                anim.unk_2A    = 9;
+                anim.animIndex = 9;
                 bdgSC->visible = TRUE;
                 break;
         }

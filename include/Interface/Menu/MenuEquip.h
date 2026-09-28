@@ -5,6 +5,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Interface/Menu/MenuCommon.h"
 #include "SpriteMgr.h"
 
 // A single item entry as displayed/sorted in the equip lists
@@ -47,18 +48,6 @@ typedef struct {
     /* 0x13 */ u8  foodCapacityLeft;
 } MenuEquipStats; // Size: 0x14
 
-// Loaded background/palette resource, shared by all of MenuEquip's background layers.
-// Same shape as DepartResources (see Depart.h).
-typedef struct {
-    /* 0x00 */ Data*            data;
-    /* 0x04 */ BgResource*      screenResource;
-    /* 0x08 */ BgResource*      charResource;
-    /* 0x0C */ PaletteResource* paletteResource;
-    /* 0x10 */ u16*             charData;
-    /* 0x14 */ u16*             screenMap;
-    /* 0x18 */ u8*              paletteData;
-} MenuEquipResource; // Size: 0x1C
-
 typedef struct {
     /* 0x0000 */ MenuEquipItemEntry  equipped[4][5];   // Per character (row 0 is Neku): 4 threads, then food
     /* 0x0320 */ MenuEquipItemEntry  inventory[472];   // Mirrors gSaveData.inventoryItems
@@ -70,45 +59,44 @@ typedef struct {
     /* 0xD9B8 */ MenuEquipItemEntry cursorItem;        // Copy of the entry under the cursor
     /* 0xD9E0 */ u16                dirtyFlags;        // Redraw requests: 0x1 dragging, 0x20 textScrU, 0x40 textScr,
                                                        // 0x80 numNek, 0x100 numPtr, 0x200 error window
-    /* 0xD9E2 */ char              unk_D9E2[0xD9E4 - 0xD9E2];
-    /* 0xD9E4 */ s16               dragSrcSlot;
-    /* 0xD9E6 */ s16               dragDstSlot;
-    /* 0xD9E8 */ s16               touchPosX;
-    /* 0xD9EA */ s16               touchPosY;
-    /* 0xD9EC */ u16               cursorSlot;      // Indexes slots[]
-    /* 0xD9EE */ u16               cursorListIndex; // 0xFFFF while the cursor sits on an equip slot
-    /* 0xD9F0 */ u16               listScroll;      // First visible list index
-    /* 0xD9F2 */ u16               prevListScroll;  // Previous listScroll, for change detection
-    /* 0xD9F4 */ u8                iconPressed[2];
-    /* 0xD9F6 */ u8                pressTimer;
-    /* 0xD9F7 */ char              unk_D9F7[0xD9F8 - 0xD9F7];
-    /* 0xD9F8 */ s16               activePartner;
-    /* 0xD9FA */ u16               partnerArtSet;
-    /* 0xD9FC */ u8                tabActive[8];
-    /* 0xDA04 */ u8                currentTab;
-    /* 0xDA05 */ u8                itemUBuffer;
-    /* 0xDA06 */ u8                unk_DA06; // Only ever written 0
-    /* 0xDA07 */ char              unk_DA07;
-    /* 0xDA08 */ u16               errorCode;
-    /* 0xDA0A */ u8                helpPressed[3];
-    /* 0xDA0D */ u8                helpPage;
-    /* 0xDA0E */ u16               helpOpen;
-    /* 0xDA10 */ MenuEquipResource resources[8]; // [0]/[5] passed to MenuEquip_ReloadBgResource, [7] to
-                                                 // MenuEquip_ReleaseBgResource/MenuEquip_LoadBgResourceIndexed
-    /* 0xDAF0 */ u16  pagedCount[9];             // Indexed by currentTab
-    /* 0xDB02 */ u16  maxScrollRow[9];           // Indexed by currentTab
-    /* 0xDB14 */ u16  scrollBarRange[9];         // Indexed by currentTab
-    /* 0xDB26 */ u16  fitsOnePage[9];            // Indexed by currentTab
-    /* 0xDB38 */ u8   swagAttackShiki;
-    /* 0xDB39 */ u8   swagDefenseShiki;
-    /* 0xDB3A */ u8   swagAttackJoshua;
-    /* 0xDB3B */ u8   swagDefenseJoshua;
-    /* 0xDB3C */ u8   swagAttackBeat;
-    /* 0xDB3D */ u8   swagDefenseBeat;
-    /* 0xDB3E */ char unk_DB3E[0x2];
+    /* 0xD9E2 */ char           unk_D9E2[0xD9E4 - 0xD9E2];
+    /* 0xD9E4 */ s16            dragSrcSlot;
+    /* 0xD9E6 */ s16            dragDstSlot;
+    /* 0xD9E8 */ s16            touchPosX;
+    /* 0xD9EA */ s16            touchPosY;
+    /* 0xD9EC */ u16            cursorSlot;      // Indexes slots[]
+    /* 0xD9EE */ u16            cursorListIndex; // 0xFFFF while the cursor sits on an equip slot
+    /* 0xD9F0 */ u16            listScroll;      // First visible list index
+    /* 0xD9F2 */ u16            prevListScroll;  // Previous listScroll, for change detection
+    /* 0xD9F4 */ u8             iconPressed[2];
+    /* 0xD9F6 */ u8             pressTimer;
+    /* 0xD9F7 */ char           unk_D9F7[0xD9F8 - 0xD9F7];
+    /* 0xD9F8 */ s16            activePartner;
+    /* 0xD9FA */ u16            partnerArtSet;
+    /* 0xD9FC */ u8             tabActive[8];
+    /* 0xDA04 */ u8             currentTab;
+    /* 0xDA05 */ u8             itemUBuffer;
+    /* 0xDA06 */ u8             unk_DA06; // Only ever written 0
+    /* 0xDA07 */ char           unk_DA07;
+    /* 0xDA08 */ u16            errorCode;
+    /* 0xDA0A */ u8             helpPressed[3];
+    /* 0xDA0D */ u8             helpPage;
+    /* 0xDA0E */ u16            helpOpen;
+    /* 0xDA10 */ MenuBgResource resources[8];      // [0]-[3]: sub BG0-BG3, [4]-[7]: main BG0-BG3
+    /* 0xDAF0 */ u16            pagedCount[9];     // Indexed by currentTab
+    /* 0xDB02 */ u16            maxScrollRow[9];   // Indexed by currentTab
+    /* 0xDB14 */ u16            scrollBarRange[9]; // Indexed by currentTab
+    /* 0xDB26 */ u16            fitsOnePage[9];    // Indexed by currentTab
+    /* 0xDB38 */ u8             swagAttackShiki;
+    /* 0xDB39 */ u8             swagDefenseShiki;
+    /* 0xDB3A */ u8             swagAttackJoshua;
+    /* 0xDB3B */ u8             swagDefenseJoshua;
+    /* 0xDB3C */ u8             swagAttackBeat;
+    /* 0xDB3D */ u8             swagDefenseBeat;
+    /* 0xDB3E */ char           unk_DB3E[0x2];
 } MenuEquipObject; // Size: 0xDB40
 
-extern const s16           data_ov043_020c96f0[][2];
+extern const Point         data_ov043_020c96f0[26];
 extern const BinIdentifier data_ov043_020c9758[15];
 extern MenuEquipItemEntry  data_ov043_020cc2d8; // Empty slot
 
@@ -144,10 +132,10 @@ s32  MenuEquip_StackIntoInventory(MenuEquipObject* menuEquip, u16 itemId);
 s32  MenuEquip_InsertIntoInventory(MenuEquipObject* menuEquip, MenuEquipItemEntry* item);
 void MenuEquip_PlayTasteVoice(u8 character, u32 taste);
 s16  MenuEquip_GetHelpButtonAtPoint(s16 x, s16 y);
-void MenuEquip_LoadBgResourceIndexed(MenuEquipResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, s32 palCount,
+void MenuEquip_LoadBgResourceIndexed(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
                                      s32 screenIndex, s32 palIndex);
-void MenuEquip_ReleaseBgResource(MenuEquipResource* res, s32 engine);
-void MenuEquip_ReloadBgResource(MenuEquipResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, s32 palCount);
+void MenuEquip_ReleaseBgResource(MenuBgResource* res, s32 engine);
+void MenuEquip_ReloadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount);
 void MenuEquip_LoadBackgrounds(MenuEquipObject* menuEquip);
 void MenuEquip_UpdateBackgrounds(MenuEquipObject* menuEquip);
 void MenuEquip_ReleaseBackgrounds(MenuEquipObject* menuEquip);

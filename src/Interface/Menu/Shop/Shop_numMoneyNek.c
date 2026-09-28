@@ -19,7 +19,7 @@ extern void func_ov043_020af42c(Sprite* sprite, s16 frame);
 SpriteFrameInfo* func_ov043_020b3684(Sprite* sprite, s32 arg, s32 mode);
 s32              func_ov043_020b394c(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3);
 
-static const TaskHandle data_ov043_020ca410 = {"Tsk_Shop_numMoneyNek", func_ov043_020b394c, 0x2B0};
+static const TaskHandle Tsk_Shop_numMoneyNek = {"Tsk_Shop_numMoneyNek", func_ov043_020b394c, 0x2B0};
 
 static const Point data_ov043_020ca42c[5] = {
     {-10,  0},
@@ -37,8 +37,8 @@ static const SpriteAnimation data_ov043_020ca440 = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = func_ov043_020b3684,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -52,7 +52,7 @@ static const SpriteAnimation data_ov043_020ca440 = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 // Nonmatching
@@ -117,26 +117,26 @@ void func_ov043_020b3720(Shop_numMoneyNek* arg0, Sprite* arg1, Shop_numMoneyNek_
     anim.dataType = arg2->dataType;
     func_ov043_020b34a0(arg0, arg2->unk_8, digits);
 
-    anim.unk_2A = 0x27;
-    anim.unk_04 = data_ov043_020ca42c[0].x + 0x93;
-    anim.unk_06 = 9;
+    anim.animIndex = 0x27;
+    anim.posX      = data_ov043_020ca42c[0].x + 0x93;
+    anim.posY      = 9;
     _Sprite_Load(&arg1[0], &anim);
 
     for (i = 0; i < 7; i++) {
-        anim.unk_2A = (s16)(digits[i] + 0x1D);
-        anim.unk_04 = positions[i] + 0x93;
-        anim.unk_06 = 9;
+        anim.animIndex = (s16)(digits[i] + 0x1D);
+        anim.posX      = positions[i] + 0x93;
+        anim.posY      = 9;
         _Sprite_Load(&arg1[i + 1], &anim);
     }
 
-    anim.unk_2A = 0x45;
-    anim.unk_04 = data_ov043_020ca42c[4].x + 0x93;
-    anim.unk_06 = 9;
+    anim.animIndex = 0x45;
+    anim.posX      = data_ov043_020ca42c[4].x + 0x93;
+    anim.posY      = 9;
     _Sprite_Load(&arg1[8], &anim);
 
-    anim.unk_2A = 0x45;
-    anim.unk_04 = data_ov043_020ca42c[4].y + 0x93;
-    anim.unk_06 = 9;
+    anim.animIndex = 0x45;
+    anim.posX      = data_ov043_020ca42c[4].y + 0x93;
+    anim.posY      = 9;
     _Sprite_Load(&arg1[9], &anim);
 }
 
@@ -198,12 +198,11 @@ s32 func_ov043_020b394c(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov043_020b3994(TaskPool* arg0, s32 arg1, void* arg2) {
+s32 Shop_numMoneyNek_CreateTask(TaskPool* pool, s32 dataType, ShopObject* shop) {
     Shop_numMoneyNek_Args args;
-    ShopObject*           shop = arg2;
 
-    args.dataType = arg1;
+    args.dataType = dataType;
     args.shop     = shop;
-    args.unk_8    = *(u32*)((u8*)shop + 0x858);
-    return EasyTask_CreateTask(arg0, &data_ov043_020ca410, NULL, 0, NULL, &args);
+    args.unk_8    = shop->unk_858;
+    return EasyTask_CreateTask(pool, &Tsk_Shop_numMoneyNek, NULL, 0, NULL, &args);
 }

@@ -48,6 +48,7 @@ src/Interface/Menu/Top/MenuTop_lvGauge.c:
     .data       start:0x020cb7bc end:0x020cb7d0
 
 src/Interface/Menu/Top/MenuTop_luckNum.c:
+    complete
     .text       start:0x02086544 end:0x02086a94
     .rodata     start:0x020c7bb4 end:0x020c7bfc
     .data       start:0x020cb7d0 end:0x020cb7e4
@@ -69,26 +70,31 @@ src/Interface/Menu/Top/MenuTop_nameU.c:
     .data       start:0x020cb810 end:0x020cb824
 
 src/Interface/Menu/Top/MenuTop_rankNumU.c:
+    complete
     .text       start:0x0208725c end:0x020875cc
     .rodata     start:0x020c7d24 end:0x020c7d7c
     .data       start:0x020cb824 end:0x020cb83c
 
 src/Interface/Menu/Top/MenuTop_numLV.c:
+    complete
     .text       start:0x020875cc end:0x02087b10
     .rodata     start:0x020c7d7c end:0x020c7dd0
     .data       start:0x020cb83c end:0x020cb850
 
 src/Interface/Menu/Top/MenuTop_numExpNext.c:
+    complete
     .text       start:0x02087b10 end:0x02087ea4
     .rodata     start:0x020c7dd0 end:0x020c7e18
     .data       start:0x020cb850 end:0x020cb868
 
 src/Interface/Menu/Top/MenuTop_numHP.c:
+    complete
     .text       start:0x02087ea4 end:0x02088400
     .rodata     start:0x020c7e18 end:0x020c7e60
     .data       start:0x020cb868 end:0x020cb87c
 
 src/Interface/Menu/Top/MenuTop_numMoney.c:
+    complete
     .text       start:0x02088400 end:0x020888fc
     .rodata     start:0x020c7e60 end:0x020c7ebc
     .data       start:0x020cb87c end:0x020cb894
@@ -238,6 +244,7 @@ src/Interface/Menu/MenuBadge/MenuBadge_bdgNum.c:
     .data       start:0x020cbc90 end:0x020cbca8
 
 src/Interface/Menu/MenuBadge/MenuBadge_bdgCur.c:
+    complete
     .text       start:0x02094204 end:0x02094500
     .rodata     start:0x020c894c end:0x020c8994
     .data       start:0x020cbca8 end:0x020cbcc0

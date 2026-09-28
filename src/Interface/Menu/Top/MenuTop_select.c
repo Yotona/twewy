@@ -2,15 +2,15 @@
 #include "Interface/Menu/Top.h"
 
 typedef struct {
-    /* 0x00 */ Sprite sprite;
-    /* 0x40 */ s32    unk_40;
-    /* 0x44 */ s32    topMenu;
+    /* 0x00 */ Sprite         sprite;
+    /* 0x40 */ s32            unk_40;
+    /* 0x44 */ MenuTopObject* topMenu;
 } MenuTop_select; // Size: 0x48
 
 typedef struct {
-    /* 0x0 */ s32 dataType;
-    /* 0x4 */ s32 topMenu;
-    /* 0x8 */ u16 entry;
+    /* 0x0 */ s32            dataType;
+    /* 0x4 */ MenuTopObject* topMenu;
+    /* 0x8 */ u16            entry;
 } MenuTop_select_Args;
 
 static SpriteFrameInfo* MenuTop_select_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -40,8 +40,8 @@ static const SpriteAnimation MenuTop_select_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x20,
-    .unk_06            = 0x3C,
+    .posX              = 0x20,
+    .posY              = 0x3C,
     .frameInfoCallback = MenuTop_select_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -55,7 +55,7 @@ static const SpriteAnimation MenuTop_select_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuTop_select_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -78,8 +78,8 @@ static void MenuTop_select_Load(Sprite* sprite, MenuTop_select_Args* args) {
     }
 
     anim.dataType = args->dataType;
-    anim.unk_04   = points[args->entry].x;
-    anim.unk_06   = points[args->entry].y;
+    anim.posX     = points[args->entry].x;
+    anim.posY     = points[args->entry].y;
 
     if (MenuTop_IsEntryAvailable(args->entry) == 0) {
         if (args->entry == 7) {
@@ -94,10 +94,10 @@ static void MenuTop_select_Load(Sprite* sprite, MenuTop_select_Args* args) {
             frame = 10;
         }
     } else {
-        anim.unk_2A = frameIds[args->entry];
+        anim.animIndex = frameIds[args->entry];
     }
 
-    anim.unk_2A = frame;
+    anim.animIndex = frame;
     _Sprite_Load(sprite, &anim);
 }
 
@@ -142,7 +142,7 @@ static s32 MenuTop_select_RunTask(TaskPool* pool, Task* task, void* args, s32 st
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuTop_select_CreateTask(TaskPool* pool, s32 dataType, s32 topMenu, u16 entry) {
+s32 MenuTop_select_CreateTask(TaskPool* pool, s32 dataType, MenuTopObject* topMenu, u16 entry) {
     MenuTop_select_Args args;
 
     args.dataType = dataType;

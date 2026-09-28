@@ -120,9 +120,9 @@ typedef struct {
         u16 bits_12_13 : 2;
         u16 bits_14_15 : 2;
     };
-    /* 0x02 */ Unk_Bitfield            unk_02;            // OAM Attributes?
-    /* 0x04 */ s16                     unk_04;            // posX?
-    /* 0x06 */ s16                     unk_06;            // posY?
+    /* 0x02 */ Unk_Bitfield            unk_02; // OAM Attributes?
+    /* 0x04 */ s16                     posX;
+    /* 0x06 */ s16                     posY;
     /* 0x08 */ SpriteFrameInfoCallback frameInfoCallback; // NULL keeps the engine default
     /* 0x0C */ s32                     callbackArg;       // passed to frameInfoCallback with SPRITE_FRAME_LOAD
     /* 0x10 */ void*                   owner;             // copied to Sprite.owner
@@ -136,7 +136,7 @@ typedef struct {
     /* 0x24 */ u16                     unk_24;
     /* 0x26 */ s16                     unk_26;            // cellTableIndex?
     /* 0x28 */ s16                     unk_28;            // animDataIndex?
-    /* 0x2A */ s16                     unk_2A;
+    /* 0x2A */ s16                     animIndex;         // Initial animation, passed to Sprite_ChangeAnimation
 } SpriteAnimation;
 
 // Fills g_SpriteFrameInfo-style render info from the sprite's current cell

@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprites[2];
-    /* 0x80 */ BOOL             shouldRender[2];
+    /* 0x80 */ BOOL             visible[2];
     /* 0x88 */ MenuEquipObject* owner;
 } MenuEquip_helpCurU; // Size: 0x8C
 
@@ -26,8 +26,8 @@ static const SpriteAnimation MenuEquip_helpCurU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_helpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -41,7 +41,7 @@ static const SpriteAnimation MenuEquip_helpCurU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_helpCurU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -53,14 +53,14 @@ static void MenuEquip_helpCurU_Load(Sprite* sprites, MenuEquip_helpCurU_Args* ar
 
     anim.dataType = args->dataType;
 
-    anim.unk_2A = 0x26;
-    anim.unk_04 = 7;
-    anim.unk_06 = 0x60;
+    anim.animIndex = 0x26;
+    anim.posX      = 7;
+    anim.posY      = 0x60;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_2A = 0x27;
-    anim.unk_04 = 0xF9;
-    anim.unk_06 = 0x60;
+    anim.animIndex = 0x27;
+    anim.posX      = 0xF9;
+    anim.posY      = 0x60;
     _Sprite_Load(&sprites[1], &anim);
 }
 
@@ -77,14 +77,14 @@ static s32 MenuEquip_helpCurU_Update(TaskPool* pool, Task* task, void* args) {
     MenuEquip_helpCurU* helpCurU = task->data;
 
     if (helpCurU->owner->helpPage == 0) {
-        helpCurU->shouldRender[0] = FALSE;
-        helpCurU->shouldRender[1] = TRUE;
+        helpCurU->visible[0] = FALSE;
+        helpCurU->visible[1] = TRUE;
     } else if (helpCurU->owner->helpPage == 8) {
-        helpCurU->shouldRender[0] = TRUE;
-        helpCurU->shouldRender[1] = FALSE;
+        helpCurU->visible[0] = TRUE;
+        helpCurU->visible[1] = FALSE;
     } else {
-        helpCurU->shouldRender[0] = TRUE;
-        helpCurU->shouldRender[1] = TRUE;
+        helpCurU->visible[0] = TRUE;
+        helpCurU->visible[1] = TRUE;
     }
 
     for (u16 i = 0; i < 2; i++) {
@@ -97,7 +97,7 @@ static s32 MenuEquip_helpCurU_Render(TaskPool* pool, Task* task, void* args) {
     MenuEquip_helpCurU* helpCurU = task->data;
 
     for (u16 i = 0; i < 2; i++) {
-        if (helpCurU->shouldRender[i] != 0) {
+        if (helpCurU->visible[i] != 0) {
             Sprite_RenderFrame(&helpCurU->sprites[i]);
         }
     }

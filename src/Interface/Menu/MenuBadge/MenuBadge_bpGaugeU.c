@@ -4,7 +4,7 @@
 
 typedef struct {
     /* 0x000 */ Sprite           sprites[5];
-    /* 0x140 */ s32              shouldRender[5];
+    /* 0x140 */ BOOL             visible[5];
     /* 0x154 */ MenuBadgeObject* menuBadge;
     /* 0x158 */ u16              rotation[5];
     /* 0x162 */ u16              _pad_162;
@@ -32,8 +32,8 @@ static const SpriteAnimation MenuBadge_bpGaugeU_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0xC00,
-    .unk_04            = 0,
-    .unk_06            = 0,
+    .posX              = 0,
+    .posY              = 0,
     .frameInfoCallback = MenuBadge_bpGaugeU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -47,22 +47,22 @@ static const SpriteAnimation MenuBadge_bpGaugeU_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 void func_ov043_0209a23c(MenuBadge_bpGaugeU* gauge, s32 index, s32 value, u32 max) {
     if (value == 0) {
-        gauge->scaleX[index]       = 41;
-        gauge->shouldRender[index] = 0;
+        gauge->scaleX[index]  = 41;
+        gauge->visible[index] = FALSE;
     } else {
         s32 scale = FX_Divide(value << 0xC, (max >> 1) << 0xC);
 
         if (scale < 41) {
-            gauge->scaleX[index]       = 41;
-            gauge->shouldRender[index] = 0;
+            gauge->scaleX[index]  = 41;
+            gauge->visible[index] = FALSE;
         } else {
-            gauge->scaleX[index]       = scale;
-            gauge->shouldRender[index] = 1;
+            gauge->scaleX[index]  = scale;
+            gauge->visible[index] = TRUE;
         }
     }
 }
@@ -71,11 +71,11 @@ void func_ov043_0209a2a4(MenuBadge_bpGaugeU* gauge) {
     MenuBadgeObject* menuBadge = gauge->menuBadge;
 
     if (menuBadge->cursorBadge.level == menuBadge->cursorBadge.maxLevel) {
-        gauge->shouldRender[1] = 0;
-        gauge->shouldRender[2] = 0;
-        gauge->shouldRender[3] = 0;
-        gauge->shouldRender[4] = 1;
-        gauge->scaleX[4]       = 0x1000;
+        gauge->visible[1] = FALSE;
+        gauge->visible[2] = FALSE;
+        gauge->visible[3] = FALSE;
+        gauge->visible[4] = TRUE;
+        gauge->scaleX[4]  = 0x1000;
         return;
     }
 
@@ -99,7 +99,7 @@ void func_ov043_0209a2a4(MenuBadge_bpGaugeU* gauge) {
     func_ov043_0209a23c(gauge, 1, a, max);
     func_ov043_0209a23c(gauge, 2, b + a, max);
     func_ov043_0209a23c(gauge, 3, a + (c + b), max);
-    gauge->shouldRender[4] = 0;
+    gauge->visible[4] = FALSE;
 }
 
 static SpriteFrameInfo* MenuBadge_bpGaugeU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -109,36 +109,36 @@ static SpriteFrameInfo* MenuBadge_bpGaugeU_GetFrameInfo(Sprite* sprite, s32 arg,
 void MenuBadge_bpGaugeU_Load(MenuBadge_bpGaugeU* gauge, Sprite* sprites, MenuBadge_bpGaugeU_Args* args) {
     SpriteAnimation anim = MenuBadge_bpGaugeU_Anim;
 
-    anim.dataType = (u16)args->dataType;
-    anim.unk_04   = 0x8E;
-    anim.unk_06   = 0x4D;
-    anim.unk_2A   = 0x24;
+    anim.dataType  = (u16)args->dataType;
+    anim.posX      = 0x8E;
+    anim.posY      = 0x4D;
+    anim.animIndex = 0x24;
     anim.unk_02.raw |= 2;
     _Sprite_Load(&sprites[0], &anim);
 
-    anim.unk_04 = 0x8F;
-    anim.unk_06 = 0x49;
-    anim.unk_2A = 0x1C;
+    anim.posX      = 0x8F;
+    anim.posY      = 0x49;
+    anim.animIndex = 0x1C;
     _Sprite_Load(&sprites[1], &anim);
 
-    anim.unk_2A = 0x1D;
+    anim.animIndex = 0x1D;
     _Sprite_Load(&sprites[2], &anim);
 
-    anim.unk_2A = 0x1B;
+    anim.animIndex = 0x1B;
     _Sprite_Load(&sprites[3], &anim);
 
-    anim.unk_2A = 0x23;
+    anim.animIndex = 0x23;
     _Sprite_Load(&sprites[4], &anim);
 
     for (s32 i = 0; i < 5; i++) {
-        gauge->rotation[i]     = 0;
-        gauge->scaleX[i]       = 0x1000;
-        gauge->scaleY[i]       = 0x1000;
-        gauge->shouldRender[i] = 1;
+        gauge->rotation[i] = 0;
+        gauge->scaleX[i]   = 0x1000;
+        gauge->scaleY[i]   = 0x1000;
+        gauge->visible[i]  = TRUE;
     }
 
-    gauge->shouldRender[0] = 1;
-    gauge->shouldRender[4] = 0;
+    gauge->visible[0] = TRUE;
+    gauge->visible[4] = FALSE;
     func_ov043_0209a2a4(gauge);
 }
 
@@ -173,7 +173,7 @@ static s32 MenuBadge_bpGaugeU_Render(TaskPool* pool, Task* task, void* args) {
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~1) | 1;
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~0x3E0) | ((affine << 0x1B) >> 0x16);
 
-        if (gauge->shouldRender[i] != 0) {
+        if (gauge->visible[i] != 0) {
             Sprite_RenderFrame(sprite);
         }
     }

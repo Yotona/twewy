@@ -30,8 +30,8 @@ static const SpriteAnimation MenuEquip_item_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_item_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -45,7 +45,7 @@ static const SpriteAnimation MenuEquip_item_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_item_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -58,10 +58,10 @@ static void MenuEquip_item_Load(MenuEquip_item* item, Sprite* sprite, MenuEquip_
 
     anim.dataType = args->dataType;
 
-    const u16* pos = (const u16*)data_ov043_020c96f0[args->index];
+    const u16* pos = (const u16*)&data_ov043_020c96f0[args->index];
 
-    anim.unk_04   = pos[0];
-    anim.unk_06   = pos[1];
+    anim.posX     = pos[0];
+    anim.posY     = pos[1];
     anim.bits_7_9 = MenuEquip_GetFreePaletteSlot();
 
     if (args->itemId == 0xFFFF) {

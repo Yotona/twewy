@@ -29,8 +29,8 @@ static const SpriteAnimation MenuEquip_itemAbl_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x400,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuEquip_itemAbl_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -44,7 +44,7 @@ static const SpriteAnimation MenuEquip_itemAbl_Anim = {
     .unk_24            = 0,
     .unk_26            = 5,
     .unk_28            = 6,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuEquip_itemAbl_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -64,9 +64,9 @@ static void MenuEquip_itemAbl_Load(MenuEquip_itemAbl* itemAbl, Sprite* sprite, M
         itemAbl->visible = FALSE;
     }
 
-    anim.unk_2A = 0x39;
-    anim.unk_04 = data_ov043_020c96f0[args->index][0] - 0xB;
-    anim.unk_06 = data_ov043_020c96f0[args->index][1] + 0xB;
+    anim.animIndex = 0x39;
+    anim.posX      = data_ov043_020c96f0[args->index].x - 0xB;
+    anim.posY      = data_ov043_020c96f0[args->index].y + 0xB;
     _Sprite_Load(sprite, &anim);
 }
 

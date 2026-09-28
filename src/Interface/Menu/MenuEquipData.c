@@ -12,10 +12,8 @@
 #include <nitro/math.h>
 #include <nitro/rtc.h>
 
-BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
-BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, u32 screenBase, u32 screenSize);
-s32         func_02041680(RTCDate* date);
-void        func_02047ec8(void* head, u32 num, u32 width, s32 (*compare)(u16*, u16*), void* buffer);
+s32  func_02041680(RTCDate* date);
+void func_02047ec8(void* head, u32 num, u32 width, s32 (*compare)(u16*, u16*), void* buffer);
 
 MenuEquipItemEntry data_ov043_020cc2d8 = {
     .itemId      = 0xFFFF,
@@ -716,8 +714,8 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                     entry->attackBonus     = itemData[index].attack;
                     entry->defenseBonus    = itemData[index].defense;
                     entry->healthBonus     = itemData[index].health;
-                    entry->count           = (u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C;
-                    entry->unk_11          = (u32)(gSaveData.inventoryItems[i].flags << 0x1B) >> 0x1F;
+                    entry->count           = gSaveData.inventoryItems[i].flags.bits.count;
+                    entry->unk_11          = gSaveData.inventoryItems[i].flags.bits.unk_04;
                     entry->abilityUnlocked = (u32)(gSaveData.unk_1EB2[index] << 0x1F) >> 0x1F;
                     entry->brand           = itemData[index].brand;
                     entry->unk_14          = itemData[index].unk_04;
@@ -743,8 +741,8 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                     entry->attackBonus     = 0;
                     entry->defenseBonus    = 0;
                     entry->healthBonus     = 0;
-                    entry->count           = (u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C;
-                    entry->unk_11          = (u32)(gSaveData.inventoryItems[i].flags << 0x1B) >> 0x1F;
+                    entry->count           = gSaveData.inventoryItems[i].flags.bits.count;
+                    entry->unk_11          = gSaveData.inventoryItems[i].flags.bits.unk_04;
                     entry->abilityUnlocked = 0;
                     entry->brand           = 0xE;
                     entry->unk_14          = foodData[index].unk_04;
@@ -770,7 +768,7 @@ void MenuEquip_BuildItemEntries(MenuEquipObject* owner) {
                     entry->attackBonus     = 0;
                     entry->defenseBonus    = 0;
                     entry->healthBonus     = 0;
-                    entry->count           = (u32)(gSaveData.inventoryItems[i].flags << 0x1C) >> 0x1C;
+                    entry->count           = gSaveData.inventoryItems[i].flags.bits.count;
                     entry->unk_11          = 0;
                     entry->abilityUnlocked = 0;
                     entry->brand           = 0xE;
@@ -964,12 +962,10 @@ void MenuEquip_WriteBackToSave(MenuEquipObject* owner) {
         gSaveData.friendStats[i].foodCapacityLeft = owner->stats[i + 1].foodCapacityLeft;
     }
     for (i = 0; i < 472; i++) {
-        gSaveData.inventoryItems[i].itemID = owner->inventory[i].itemId;
-        gSaveData.inventoryItems[i].flags  = (gSaveData.inventoryItems[i].flags & ~0xF) | (owner->inventory[i].count & 0xF);
-        gSaveData.inventoryItems[i].flags =
-            (gSaveData.inventoryItems[i].flags & ~0x10) | ((u32)(owner->inventory[i].unk_11 << 0x1F) >> 0x1B);
-        gSaveData.inventoryItems[i].flags =
-            (gSaveData.inventoryItems[i].flags & ~0x20) | ((u32)(owner->inventory[i].abilityUnlocked << 0x1F) >> 0x1A);
+        gSaveData.inventoryItems[i].itemID                     = owner->inventory[i].itemId;
+        gSaveData.inventoryItems[i].flags.bits.count           = owner->inventory[i].count;
+        gSaveData.inventoryItems[i].flags.bits.unk_04          = owner->inventory[i].unk_11;
+        gSaveData.inventoryItems[i].flags.bits.abilityUnlocked = owner->inventory[i].abilityUnlocked;
     }
     if (owner->activePartner != 0xFF) {
         gSaveData.friendStats[0].sync = owner->stats[1].sync;
@@ -987,13 +983,13 @@ s16 MenuEquip_GetSlotAtPoint(s16 x, s16 y) {
     s16 slotX;
 
     for (i = 0; i < 26; i++) {
-        slotX = data_ov043_020c96f0[i][0];
+        slotX = data_ov043_020c96f0[i].x;
         if (slotX == 0xE5) {
             shrink = 2;
         } else {
             shrink = 0;
         }
-        if (MenuEquip_IsPointInRect(x, y, (s16)(offset[0] + slotX), (s16)(offset[1] + data_ov043_020c96f0[i][1]),
+        if (MenuEquip_IsPointInRect(x, y, (s16)(offset[0] + slotX), (s16)(offset[1] + data_ov043_020c96f0[i].y),
                                     size[0] - shrink, size[1]) == 1)
         {
             return i;
@@ -1021,8 +1017,8 @@ s16 MenuEquip_GetDropTargetAtPoint(s16 x, s16 y) {
 
     for (i = 0; i < 10; i++) {
         if ((i != 4) && (i != 9)) {
-            if (MenuEquip_IsPointInRect(x, y, (s16)(slotOffset[0] + data_ov043_020c96f0[i][0]),
-                                        (s16)(slotOffset[1] + data_ov043_020c96f0[i][1]), slotSize[0], slotSize[1]) == 1)
+            if (MenuEquip_IsPointInRect(x, y, (s16)(slotOffset[0] + data_ov043_020c96f0[i].x),
+                                        (s16)(slotOffset[1] + data_ov043_020c96f0[i].y), slotSize[0], slotSize[1]) == 1)
             {
                 return i;
             }
@@ -1247,7 +1243,7 @@ s16 MenuEquip_GetHelpButtonAtPoint(s16 x, s16 y) {
     return -1;
 }
 
-void MenuEquip_LoadBgResource(MenuEquipResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
+void MenuEquip_LoadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &data_ov043_020c9758[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
     res->screenMap   = Data_GetPackEntryData(res->data, 2);
@@ -1265,7 +1261,7 @@ void MenuEquip_LoadBgResource(MenuEquipResource* res, s32 engine, s32 layer, s32
                                  g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[layer].screenBase,
                                  g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[layer].screenSizeText);
         res->paletteResource =
-            PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], res->paletteData, 0, palStart, palCount);
+            PaletteMgr_AllocPaletteNoProto(g_PaletteManagers[DISPLAY_MAIN], res->paletteData, 0, palStart, palCount);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], res->paletteResource);
     } else {
         u32 charSize = (*(u32*)res->charData & ~0xFF) >> 8;
@@ -1280,12 +1276,12 @@ void MenuEquip_LoadBgResource(MenuEquipResource* res, s32 engine, s32 layer, s32
                                  g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[layer].screenBase,
                                  g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[layer].screenSizeText);
         res->paletteResource =
-            PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_SUB], res->paletteData, 0, palStart, palCount);
+            PaletteMgr_AllocPaletteNoProto(g_PaletteManagers[DISPLAY_SUB], res->paletteData, 0, palStart, palCount);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], res->paletteResource);
     }
 }
 
-void MenuEquip_LoadBgResourceIndexed(MenuEquipResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, s32 palCount,
+void MenuEquip_LoadBgResourceIndexed(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount,
                                      s32 screenIndex, s32 palIndex) {
     res->data        = DatMgr_LoadRawData(1, NULL, 0, &data_ov043_020c9758[binIndex]);
     res->charData    = Data_GetPackEntryData(res->data, 1);
@@ -1304,7 +1300,7 @@ void MenuEquip_LoadBgResourceIndexed(MenuEquipResource* res, s32 engine, s32 lay
                                  g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[layer].screenBase,
                                  g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[layer].screenSizeText);
         res->paletteResource =
-            PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], res->paletteData, 0, palStart, palCount);
+            PaletteMgr_AllocPaletteNoProto(g_PaletteManagers[DISPLAY_MAIN], res->paletteData, 0, palStart, palCount);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], res->paletteResource);
     } else {
         u32 charSize = (*(u32*)res->charData & ~0xFF) >> 8;
@@ -1319,12 +1315,12 @@ void MenuEquip_LoadBgResourceIndexed(MenuEquipResource* res, s32 engine, s32 lay
                                  g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[layer].screenBase,
                                  g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[layer].screenSizeText);
         res->paletteResource =
-            PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_SUB], res->paletteData, 0, palStart, palCount);
+            PaletteMgr_AllocPaletteNoProto(g_PaletteManagers[DISPLAY_SUB], res->paletteData, 0, palStart, palCount);
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], res->paletteResource);
     }
 }
 
-void MenuEquip_LoadBgScreen(MenuEquipResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
+void MenuEquip_LoadBgScreen(MenuBgResource* res, Data* data, s32 engine, s32 layer, s32 screenIndex) {
     res->screenMap = Data_GetPackEntryData(data, screenIndex);
     if (engine == DISPLAY_MAIN) {
         res->screenResource =
@@ -1339,7 +1335,7 @@ void MenuEquip_LoadBgScreen(MenuEquipResource* res, Data* data, s32 engine, s32 
     }
 }
 
-void MenuEquip_ReleaseBgResource(MenuEquipResource* res, s32 engine) {
+void MenuEquip_ReleaseBgResource(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[DISPLAY_MAIN], res->charResource);
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
@@ -1352,7 +1348,7 @@ void MenuEquip_ReleaseBgResource(MenuEquipResource* res, s32 engine) {
     DatMgr_ReleaseData(res->data);
 }
 
-void MenuEquip_ReleaseBgScreen(MenuEquipResource* res, s32 engine) {
+void MenuEquip_ReleaseBgScreen(MenuBgResource* res, s32 engine) {
     if (engine == DISPLAY_MAIN) {
         BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_MAIN], res->screenResource);
     } else {
@@ -1360,12 +1356,12 @@ void MenuEquip_ReleaseBgScreen(MenuEquipResource* res, s32 engine) {
     }
 }
 
-void MenuEquip_ReloadBgResource(MenuEquipResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, s32 palCount) {
+void MenuEquip_ReloadBgResource(MenuBgResource* res, s32 engine, s32 layer, s32 binIndex, s32 palStart, u32 palCount) {
     MenuEquip_ReleaseBgResource(res, engine);
     MenuEquip_LoadBgResource(res, engine, layer, binIndex, palStart, palCount);
 }
 
-void MenuEquip_ClearBgResource(MenuEquipResource* res) {
+void MenuEquip_ClearBgResource(MenuBgResource* res) {
     res->data            = NULL;
     res->screenResource  = NULL;
     res->charResource    = NULL;
@@ -1379,8 +1375,8 @@ void MenuEquip_LoadBackgrounds(MenuEquipObject* menuEquip) {
     s16 partner;
     s32 i; // Declared here rather than in the for: mwcc assigns registers in
            // declaration order, and hoisting i into the loop flips r5/r6/r7.
-    MenuEquipResource* mainRes = &menuEquip->resources[0];
-    MenuEquipResource* subRes  = &menuEquip->resources[4];
+    MenuBgResource* mainRes = &menuEquip->resources[0];
+    MenuBgResource* subRes  = &menuEquip->resources[4];
 
     for (i = 0; i < 4; i++) {
         MenuEquip_ClearBgResource(mainRes);
@@ -1397,17 +1393,17 @@ void MenuEquip_LoadBackgrounds(MenuEquipObject* menuEquip) {
 
     partner = menuEquip->activePartner;
     if (partner == 0xFF) {
-        MenuEquip_LoadBgResourceIndexed(&menuEquip->resources[7], 0, 3, 0, 0, 0xE, 0, 0);
+        MenuEquip_LoadBgResourceIndexed(&menuEquip->resources[7], DISPLAY_MAIN, 3, 0, 0, 0xE, 0, 0);
     } else {
-        MenuEquip_LoadBgResourceIndexed(&menuEquip->resources[7], 0, 3, 0, 0, 0xE, partner + (menuEquip->partnerArtSet * 3),
-                                        partner);
+        MenuEquip_LoadBgResourceIndexed(&menuEquip->resources[7], DISPLAY_MAIN, 3, 0, 0, 0xE,
+                                        partner + (menuEquip->partnerArtSet * 3), partner);
     }
-    MenuEquip_LoadBgResource(&menuEquip->resources[5], 0, 1, 11, 15, 1);
-    MenuEquip_LoadBgScreen(&menuEquip->resources[6], menuEquip->resources[7].data, 0, 2, 11);
-    MenuEquip_LoadBgResource(&menuEquip->resources[0], 1, 0, 10, 15, 1);
-    MenuEquip_LoadBgResource(&menuEquip->resources[3], 1, 3, 3, 1, 1);
-    MenuEquip_LoadBgScreen(&menuEquip->resources[1], menuEquip->resources[3].data, 1, 1, 4);
-    MenuEquip_LoadBgScreen(&menuEquip->resources[2], menuEquip->resources[3].data, 1, 2, 5);
+    MenuEquip_LoadBgResource(&menuEquip->resources[5], DISPLAY_MAIN, 1, 11, 15, 1);
+    MenuEquip_LoadBgScreen(&menuEquip->resources[6], menuEquip->resources[7].data, DISPLAY_MAIN, 2, 11);
+    MenuEquip_LoadBgResource(&menuEquip->resources[0], DISPLAY_SUB, 0, 10, 15, 1);
+    MenuEquip_LoadBgResource(&menuEquip->resources[3], DISPLAY_SUB, 3, 3, 1, 1);
+    MenuEquip_LoadBgScreen(&menuEquip->resources[1], menuEquip->resources[3].data, DISPLAY_SUB, 1, 4);
+    MenuEquip_LoadBgScreen(&menuEquip->resources[2], menuEquip->resources[3].data, DISPLAY_SUB, 2, 5);
 }
 
 void MenuEquip_UpdateBackgrounds(MenuEquipObject* menuEquip) {
@@ -1415,11 +1411,11 @@ void MenuEquip_UpdateBackgrounds(MenuEquipObject* menuEquip) {
 }
 
 void MenuEquip_ReleaseBackgrounds(MenuEquipObject* menuEquip) {
-    MenuEquip_ReleaseBgResource(&menuEquip->resources[5], 0);
-    MenuEquip_ReleaseBgScreen(&menuEquip->resources[6], 0);
-    MenuEquip_ReleaseBgResource(&menuEquip->resources[7], 0);
-    MenuEquip_ReleaseBgResource(&menuEquip->resources[0], 1);
-    MenuEquip_ReleaseBgScreen(&menuEquip->resources[1], 1);
-    MenuEquip_ReleaseBgScreen(&menuEquip->resources[2], 1);
-    MenuEquip_ReleaseBgResource(&menuEquip->resources[3], 1);
+    MenuEquip_ReleaseBgResource(&menuEquip->resources[5], DISPLAY_MAIN);
+    MenuEquip_ReleaseBgScreen(&menuEquip->resources[6], DISPLAY_MAIN);
+    MenuEquip_ReleaseBgResource(&menuEquip->resources[7], DISPLAY_MAIN);
+    MenuEquip_ReleaseBgResource(&menuEquip->resources[0], DISPLAY_SUB);
+    MenuEquip_ReleaseBgScreen(&menuEquip->resources[1], DISPLAY_SUB);
+    MenuEquip_ReleaseBgScreen(&menuEquip->resources[2], DISPLAY_SUB);
+    MenuEquip_ReleaseBgResource(&menuEquip->resources[3], DISPLAY_SUB);
 }

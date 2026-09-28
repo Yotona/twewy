@@ -44,6 +44,7 @@ src/Interface/Menu/Top/MenuTop_lvGauge.c:
     .data       start:0x020c7cdc end:0x020c7cf0
 
 src/Interface/Menu/Top/MenuTop_luckNum.c:
+    complete
     .text       start:0x02086ec8 end:0x02087418
     .rodata     start:0x020c43fc end:0x020c4444
     .data       start:0x020c7cf0 end:0x020c7d04
@@ -65,36 +66,43 @@ src/Interface/Menu/Top/MenuTop_nameU.c:
     .data       start:0x020c7d30 end:0x020c7d44
 
 src/Interface/Menu/Top/MenuTop_rankNumU.c:
+    complete
     .text       start:0x02087be0 end:0x02087f50
     .rodata     start:0x020c456c end:0x020c45c4
     .data       start:0x020c7d44 end:0x020c7d5c
 
 src/Interface/Menu/Top/MenuTop_numLV.c:
+    complete
     .text       start:0x02087f50 end:0x02088494
     .rodata     start:0x020c45c4 end:0x020c4618
     .data       start:0x020c7d5c end:0x020c7d70
 
 src/Interface/Menu/Top/MenuTop_numExpNext.c:
+    complete
     .text       start:0x02088494 end:0x02088824
     .rodata     start:0x020c4618 end:0x020c4660
     .data       start:0x020c7d70 end:0x020c7d88
 
 src/Interface/Menu/Top/MenuTop_numHP.c:
+    complete
     .text       start:0x02088824 end:0x02088d7c
     .rodata     start:0x020c4660 end:0x020c46a8
     .data       start:0x020c7d88 end:0x020c7d9c
 
 src/Interface/Menu/Top/MenuTop_numMoney.c:
+    complete
     .text       start:0x02088d7c end:0x020891c4
     .rodata     start:0x020c46a8 end:0x020c46f0
     .data       start:0x020c7d9c end:0x020c7db4
 
 src/Interface/Menu/Top/MenuTop_drawDiff.c:
+    complete
     .text       start:0x020891c4 end:0x02089448
     .rodata     start:0x020c46f0 end:0x020c4740
     .data       start:0x020c7db4 end:0x020c7dcc
 
 src/Interface/Menu/Top/MenuTop_drawPtrAI.c:
+    complete
     .text       start:0x02089448 end:0x020896cc
     .rodata     start:0x020c4740 end:0x020c4790
     .data       start:0x020c7dcc end:0x020c7de4
@@ -105,6 +113,7 @@ src/Interface/Menu/Top/MenuTop_selDiff.c:
     .data       start:0x020c7de4 end:0x020c7df8
 
 src/Interface/Menu/Top/MenuTop_selPtrAI.c:
+    complete
     .text       start:0x02089c3c end:0x0208a19c
     .rodata     start:0x020c47e0 end:0x020c4830
     .data       start:0x020c7df8 end:0x020c7e10
@@ -136,6 +145,7 @@ src/Interface/Menu/Top/MenuTop_textScrU.c:
     .data       start:0x020c7e64 end:0x020c7e7c
 
 src/Interface/Menu/Top/MenuTop_brdLogoU.c:
+    complete
     .text       start:0x0208b46c end:0x0208b6a4
     .rodata     start:0x020c4994 end:0x020c49dc
     .data       start:0x020c7e7c end:0x020c7e94
@@ -412,6 +422,7 @@ src/Interface/Menu/MenuEquip/MenuEquip_itemCur.c:
     .data       start:0x020c88d8 end:0x020c88f0
 
 src/Interface/Menu/MenuEquip/MenuEquip_itemMask.c:
+    complete
     .text       start:0x020a6ed8 end:0x020a71b4
     .rodata     start:0x020c6418 end:0x020c6460
     .data       start:0x020c88f0 end:0x020c8908
@@ -422,11 +433,13 @@ src/Interface/Menu/MenuEquip/MenuEquip_sbar.c:
     .data       start:0x020c8908 end:0x020c891c
 
 src/Interface/Menu/MenuEquip/MenuEquip_mov.c:
+    complete
     .text       start:0x020a77ac end:0x020a7a10
     .rodata     start:0x020c64a8 end:0x020c64f0
     .data       start:0x020c891c end:0x020c8930
 
 src/Interface/Menu/MenuEquip/MenuEquip_shadow.c:
+    complete
     .text       start:0x020a7a10 end:0x020a7c60
     .rodata     start:0x020c64f0 end:0x020c6538
     .data       start:0x020c8930 end:0x020c8948

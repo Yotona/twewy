@@ -38,8 +38,8 @@ static void Result_textScr_sleep_Draw(Result_textScr_sleep* textScr) {
         { 70, 66},
     };
     s32      i;
-    u16*     map      = owner->bgResources[5].screenMap;
-    u16*     charData = owner->bgResources[5].charData;
+    u16*     map      = owner->resources[5].screenMap;
+    u16*     charData = owner->resources[5].charData;
     SysCode* msg;
 
     if (map == NULL || charData == NULL) {

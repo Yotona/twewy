@@ -2,7 +2,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite           sprite;
-    /* 0x40 */ s32              visible;
+    /* 0x40 */ BOOL             visible;
     /* 0x44 */ MenuBadgeObject* menuBadge;
     /* 0x48 */ s32              posY;
     /* 0x4C */ s32              velocity;
@@ -35,8 +35,8 @@ static const SpriteAnimation MenuBadge_stkmstIn_Anim = {
     .bits_12_13        = 1,
     .bits_14_15        = 0,
     .unk_02.raw        = 0x800,
-    .unk_04            = 0x50,
-    .unk_06            = 0x50,
+    .posX              = 0x50,
+    .posY              = 0x50,
     .frameInfoCallback = MenuBadge_stkmstIn_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
@@ -50,7 +50,7 @@ static const SpriteAnimation MenuBadge_stkmstIn_Anim = {
     .unk_24            = 0,
     .unk_26            = 2,
     .unk_28            = 3,
-    .unk_2A            = 1,
+    .animIndex         = 1,
 };
 
 static SpriteFrameInfo* MenuBadge_stkmstIn_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -62,26 +62,26 @@ static void MenuBadge_stkmstIn_Load(MenuBadge_stkmstIn* stkmstIn, Sprite* sprite
     SpriteAnimation anim = MenuBadge_stkmstIn_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = args->x;
-    anim.unk_06   = args->y;
+    anim.posX     = args->x;
+    anim.posY     = args->y;
 
-    if (anim.unk_04 < 30) {
-        anim.unk_04 = 30;
+    if (anim.posX < 30) {
+        anim.posX = 30;
     }
-    if (anim.unk_04 > 226) {
-        anim.unk_04 = 226;
+    if (anim.posX > 226) {
+        anim.posX = 226;
     }
-    if (anim.unk_06 < 48) {
-        anim.unk_06 = 48;
+    if (anim.posY < 48) {
+        anim.posY = 48;
     }
 
-    anim.unk_06        = args->x;
-    anim.unk_2A        = (args->frame) + 0x5B;
-    stkmstIn->visible  = 1;
-    stkmstIn->posY     = I2F(anim.unk_06);
+    anim.posY          = args->x;
+    anim.animIndex     = (args->frame) + 0x5B;
+    stkmstIn->visible  = TRUE;
+    stkmstIn->posY     = I2F(anim.posY);
     stkmstIn->velocity = 0x6000;
     stkmstIn->accel    = -0x666;
-    stkmstIn->targetY  = I2F(anim.unk_06 - 30);
+    stkmstIn->targetY  = I2F(anim.posY - 30);
     _Sprite_Load(sprite, &anim);
 }
 
@@ -165,7 +165,7 @@ static s32 MenuBadge_stkmstIn_RunTask(TaskPool* pool, Task* task, void* args, s3
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, MenuBadgePoint pos, s16 frame, MenuBadgeObject* badge) {
+s32 MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, Point pos, s16 frame, MenuBadgeObject* badge) {
     MenuBadge_stkmstIn_Args args;
 
     args.dataType  = dataType;
