@@ -867,12 +867,17 @@ void func_ov010_02125b28(BtlEnm006* data) {
     }
 }
 
-// The two-phase variant of func_ov010_02125b28. Phase 0 does nothing but arm phase 1, and only if
-// the engine is not already animating; phase 1 is the one that moves. Two things here are
-// re-derived per use rather than cached, because the original re-derives them: the screen bound
-// behind the `unk_1D0` bias is fetched three times (once for the guard, once per arm), and the
-// two velocity copies are written as plain stores so their loads land in the same registers the
-// original uses.
+// The two-phase variant of func_ov010_02125b28: a swoop across the play area, one phase of
+// setup and then one of motion. Phase 0 does nothing but arm phase 1, and only while the engine
+// is not already animating; phase 1 is the one that picks a target 0x60000 either side of the
+// screen centre, asks func_ov010_02126830 how many frames the move takes, and drives the frame
+// counter until it does. Dispatched through `unk_1C8`, which is why the signature is
+// `(BtlEnm006*)` and not nullary.
+//
+// Three things here are re-derived per use rather than cached, because the original re-derives
+// them: the screen bound behind the `unk_1D0` bias is fetched three times (once for the guard,
+// once inside each arm), the two velocity copies are plain stores rather than reads into locals,
+// and the `unk_C0 < unk_C2` guard re-reads both fields instead of reusing the phase setup.
 void func_ov010_02125c80(BtlEnm006* data) {
     switch (data->sprite.unk_C4) {
         case 0:
@@ -885,9 +890,11 @@ void func_ov010_02125c80(BtlEnm006* data) {
         case 1:
             if (data->sprite.unk_C0 == 0) {
                 Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xC, 0);
-                // 4.12 fixed point. The `+` arm is the fall-through and the `-` arm is the branch
-                // target, and the bound is re-fetched inside whichever arm runs. The guard's
-                // `bge` is *signed*, so the two operands stay signed.
+                // 4.12 fixed point: the target x is the screen centre offset by 0x60000, plus if
+                // the sprite is left of the centre and minus if it is right of it. The `+` arm is
+                // the fall-through and the `-` arm is the branch target, and the bound is
+                // re-fetched inside whichever arm runs. The guard's `bge` is *signed*, so both
+                // operands stay signed -- a `(u32)` here turns it into `bhs`.
                 if (data->unk_28 < func_ov003_020cb744(1) >> 1) {
                     data->unk_1D0 = (func_ov003_020cb744(1) >> 1) + 0x60000;
                 } else {
@@ -903,8 +910,9 @@ void func_ov010_02125c80(BtlEnm006* data) {
                 // the original really calls 020843b0 here and passes the result.
                 func_ov003_02087f00(0x1CF, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
             }
-            // (0x51, data, x, y, z): the stack argument is evaluated first, so `unk_30` is the
-            // one that reaches [sp] before r2/r3 are set up.
+            // (cmd, owner, x, y, z). The stack argument is the one MWCC evaluates *first*, so
+            // z is the load that reaches [sp] ahead of r2/r3 -- passing x/y/z in the wrong order
+            // still looks plausible but swaps two loads.
             func_ov003_020c5b2c(0x51, data, data->unk_28, data->unk_2C, data->unk_30);
             if (data->sprite.unk_C0 < data->sprite.unk_C2) {
                 data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
