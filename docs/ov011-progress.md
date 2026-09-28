@@ -148,9 +148,21 @@ reaching for overlapping views.** Real overlap inside one struct is much rarer t
 
 ### Confirmed layouts
 
-`BtlEnm010AnmMgr` (0x3C), `BtlEnm010UG` (0x214), `BtlEnm010Sprite` and `BtlEnm010LserArgs`
-are in `include/Combat/Noise/Private/BtlEnm010.h`, each field carrying its evidence in a
-comment. Table also in `build/scratch/AGENT_BRIEF.md`.
+`BtlEnm010AnmMgr` (0x3C), `BtlEnm010UG` (0x214), `BtlEnm010Owner` (0x88),
+`BtlEnm010Lser` (0x254), `BtlEnm010LserArgs` (0x18), `BtlEnm010LserEmit` (0x2C) and
+`BtlEnm010LserRec` (0xC) are in `include/Combat/Noise/Private/BtlEnm010.h`, each field
+carrying its evidence in a comment. Tables also in `build/scratch/AGENT_BRIEF.md`.
+
+**`BtlEnm010Lser` (0x254) is fully characterised** -- `func_ov011_02125d48` is the task's
+initialiser and writes every field: `0x00` the owner; `0x80` four `CombatSprite`s 0x60 apart;
+`0x200` the emitter block; `0x23C`/`0x240` zeroed from one constant; `0x244` the negated
+`args->unk_10`; `0x24C` `args->unk_14`; `0x250` a byte whose bit 3 tracks
+`func_ov003_020c37f8`. `0x54`/`0x58` are read by the *next* function, `02125e14`, and are
+still padding.
+
+`BtlEnm010Owner` (0x88) is the object every task hangs off: `unk_24` a mirror flag, `unk_28`/
+`unk_2C`/`unk_30` a 4.12 position triple, `unk_84` two bits used as a sprite-variant selector.
+`02125e14` also reads the owner's `unk_54` (its engine-flags word, `tst #4`), matching ov010.
 
 `BtlEnm010AnmMgr`: `0x00` the decompression buffer, `0x04` its size, `0x08` an 8-byte-stride
 `{binId, offset}` table (all three from `func_ov003_020cb200`; `0x04`/`0x00` confirmed by
@@ -167,15 +179,16 @@ the first; `0x206` a `u8` flag; `0x208` an `EasyTask_ValidateTaskId` argument; `
 counter pair. All from `func_ov011_0212bac8`, whose four entry points are tabulated at
 `0x0212c36c`.
 
-`BtlEnm010Sprite`: `unk_46` at **0x46**, a halfword tested and then set by
-`func_ov011_02125750`. Not word-aligned, so the padding in front of it must be
-halfword-granular; a `s32 pad[n]` array silently moves it to 0x8C.
+**A header gotcha worth knowing about the rest of the overlay: `sizeof(CombatSprite)` is
+0x7D, not the 0x60 the ROM uses** -- the `Sprite` bitfield block overruns its 0x40 allocation.
+An array of the type therefore puts every later field 0x74 bytes too high. Use raw padding plus
+a walking `CombatSprite*` with a literal stride.
 
 ## Done
 
-**8 of 114 functions byte-identical** (`RELOCC`), **0 differing bytes**, objdiff average
-**100.00%** over the paired set. The emitted prefix `0x021256c0..0x02125c00` is contiguous and
-every function's size matches the original's exactly.
+**12 of 114 functions byte-identical** (`RELOCC` or better), **0 differing bytes**, objdiff
+average **100.00%** over the paired set. The emitted prefix `0x021256c0..0x02125e14` is
+contiguous and every function's size matches the original's exactly.
 
 | function | bytes | status |
 |----------|-------|--------|
@@ -187,10 +200,14 @@ every function's size matches the original's exactly.
 | `func_ov011_02125a08` | 384 | **byte-exact** |
 | `func_ov011_02125b88` | 16 | **byte-exact** |
 | `func_ov011_02125b98` | 104 | **byte-exact** |
+| `func_ov011_02125c00` | 68 | **byte-identical** (raw, no reloc difference either) |
+| `func_ov011_02125c44` | 180 | **byte-exact** |
+| `func_ov011_02125cf8` | 80 | **byte-exact** |
+| `func_ov011_02125d48` | 204 | **byte-exact** |
 
-`.text`/`.rodata`/`.data` are not byte-identical, and `romcmp.py` has not been run - the
-linked ROM does not exist until all 114 functions are emitted, so `fbdiff.py` is the only
-signal available.
+Nothing was deliberately skipped this round. `.text`/`.rodata`/`.data` are not byte-identical
+and `romcmp.py` has not been run - the linked ROM does not exist until all 114 functions are
+emitted, so `fbdiff.py` is the only signal available.
 
 `ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
 `(TaskPool*)((u32)data_ov003_020e71b8 + 0x118 + 0x10000)`. `data_ov003_020e71b8` is already
@@ -198,17 +215,17 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **Work strictly in address order from `0x02125c00`.** The prefix is contiguous, so the next
-   function emitted will land in the right place.
-2. `func_ov011_02125c00` is the next one, and it needs the **`Tsk_BtlEnm010_Lser` (0x254-byte)
-   struct**, which nothing has characterised yet. Its one caller passes
-   `add r0, r5, #0x22c / add r1, r5, #0x230 / add r2, r5, #0x234 / add r3, r5, #0x4 /
-   str [r5,#0x24c], [sp]`, so the struct is the one `func_ov011_021260e8` walks. Start with
-   `census2.py func_ov011_021260e8`. Its signature is
-   `void f(s32* a, s32* b, s32* c, void* vec, s32 idx)` -- five arguments, the fifth on the
-   stack (which is why the callee reads it at `sp + 8` after its own 8-byte push).
-3. Then `02125c44`, `02125cf8`, `02125d48`, `02125e14`, `02125f24`, `02126064`, `021260e8` --
-   all still inside the AnmMgr/Lser region.
+1. **Work strictly in address order from `0x02125e14`.**
+2. `func_ov011_02125e14` is the Lser task's command 1 and is the next thing to read. It already
+   shows two more `BtlEnm010Lser` fields that `02125d48` leaves as padding:
+   * `[r5, #0x54]` -- no, that is `data->unk_00->unk_54`, the **owner's** engine-flags word,
+     tested with `tst r0, #4` (so `unk_54` on the owner is the flags word, as on ov010).
+   * `[r5, #0x58]` and `r5 + 0x4` -- genuinely new `BtlEnm010Lser` fields. `func_ov003_020cc354`
+     takes the block at `r5 + 4`. It then bulk-copies with
+     `ldm r6!, {r0,r1,r2,r3} / stm lr!, {r0,r1,r2,r3}` seven times, so expect a block move.
+3. Then `02125f24` (320 B, the Lser per-frame worker; it is what calls `02125c44` and
+   `02125c00` in loops and is where the remaining `BtlEnm010Lser` layout will come from),
+   `02126064`, `021260e8` (620 B, the one that walks the whole 0x254 struct).
 4. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
    entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
    blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
