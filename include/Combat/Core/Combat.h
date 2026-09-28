@@ -62,6 +62,6 @@ void func_ov003_020c4878(void*);
 
 void func_ov003_020c48fc(void*);
 
-void func_ov003_02087f00(SndMgrSeIdx seIdx, s32 (*)(s32, s32));
+void func_ov003_02087f00(SndMgrSeIdx seIdx, s32 sePan);
 
 #endif // COMBAT_CORE_COMBAT_H

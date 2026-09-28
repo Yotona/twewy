@@ -568,7 +568,7 @@ s32 func_ov011_02125f24(BtlEnm010Lser* data) {
         // original passes the *value* `func_ov003_020843b0` returned straight through, so it
         // is cast rather than genuinely a callback.  Note the coordinate is
         // `data->copy.unk_28` -- `ldr r1, [r4, #0x2c]`, i.e. the *copy*, not the owner.
-        func_ov003_02087f00((SndMgrSeIdx)0x1E5, (s32(*)(s32, s32))func_ov003_020843b0(0, data->copy.unk_28));
+        func_ov003_02087f00((SndMgrSeIdx)0x1E5, func_ov003_020843b0(0, data->copy.unk_28));
     }
     // Initialise-then-if, not a ternary: a ternary emits `movle`/`movgt` (a phi), and the
     // original has a plain `mov r5, #1 / cmp / movgt r5, #0`.
@@ -878,7 +878,7 @@ void func_ov011_021268c4(BtlEnm010RG* data) {
             sp = (CombatSprite*)((u8*)data + 0x84);
             t  = sp->sprite.unk16;
             if (t == 1 && sp->sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1D6, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_028));
+                func_ov003_02087f00(0x1D6, func_ov003_020843b0(1, data->unk_028));
             }
             if (data->unk_1C0 < data->unk_1C2) {
                 data->unk_1C0 = data->unk_1C0 + 1;
@@ -923,7 +923,7 @@ void func_ov011_02126a04(BtlEnm010RG* data) {
             data->unk_1D0 = 0x8000;
         }
         data->unk_1C0 = data->unk_1C0 + 1;
-        func_ov003_02087f00(0x1E3, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_028));
+        func_ov003_02087f00(0x1E3, func_ov003_020843b0(1, data->unk_028));
     }
     if (sp->sprite.unk16 == 3 && sp->sprite.frameTimer == 1) {
         data->unk_1D8 = 0x2800;
@@ -1086,13 +1086,13 @@ s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
                 bias = -bias;
             }
             if (data->unk_016 == 2 && data->unk_008 == 1) {
-                func_ov003_02087f00(0x1DB, (s32(*)(s32, s32))pan);
+                func_ov003_02087f00(0x1DB, pan);
             }
             if (data->unk_016 >= 4 && data->unk_016 <= 6) {
                 if (func_ov003_020c5b2c((u16)snd, data->unk_060->unk_28 + bias, data->unk_060->unk_2C, data->unk_060->unk_30,
                                         data->unk_060->unk_30) == 1)
                 {
-                    func_ov003_02087f00(0x1DC, (s32(*)(s32, s32))pan);
+                    func_ov003_02087f00(0x1DC, pan);
                 }
             }
             if (SpriteMgr_IsAnimationFinished((Sprite*)data) != 0) {
@@ -1199,7 +1199,7 @@ s32 func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3) {
     switch (sp->animTableIndex) {
         case 0:
             if (sp->sprite.unk16 == 4 && sp->sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1D3, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_028));
+                func_ov003_02087f00(0x1D3, func_ov003_020843b0(1, data->unk_028));
             }
             if (SpriteMgr_IsAnimationFinished((Sprite*)sp) != 0) {
                 *arg1 = *arg1 - 1;

@@ -933,7 +933,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
                 Mini108_VBlank(cs, 3, 1);
                 func_ov003_020c4c1c(data);
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(1, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
                 return;
@@ -992,7 +992,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 }
             }
             if (data->unk_9A == 0xF && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CD, func_ov003_020843b0(1, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
                 return;
@@ -1007,13 +1007,13 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->unk_54 &= ~0x20;
                 func_ov003_020cb578(data, 1);
                 func_ov003_020c4c9c(data);
-                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1C9, func_ov003_020843b0(1, data->unk_28));
             }
             if (data->unk_9A == 6 && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CA, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CA, func_ov003_020843b0(1, data->unk_28));
             }
             if (data->unk_9A == 9 && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CB, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CB, func_ov003_020843b0(1, data->unk_28));
             }
             if (data->unk_9A == 4 && data->unk_8C == 1) {
                 // The one local here really does live across two calls, so it takes r5 -- which
@@ -1074,7 +1074,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->unk_2C = func_ov003_020cb784(1);
                 data->unk_30 = 0;
                 func_ov003_020c4b1c(data);
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(1, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
                 return;
@@ -1173,7 +1173,7 @@ void func_ov010_02125c80(BtlEnm006* data) {
             if (data->unk_9A == 1 && data->unk_8C == 1) {
                 // The second parameter of func_ov003_02087f00 is declared as a callback pointer, but
                 // the original really calls 020843b0 here and passes the result.
-                func_ov003_02087f00(0x1CF, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CF, func_ov003_020843b0(1, data->unk_28));
             }
             // (cmd, owner, x, y, z). The stack argument is the one MWCC evaluates *first*, so
             // z is the load that reaches [sp] ahead of r2/r3 -- passing x/y/z in the wrong order
@@ -1224,7 +1224,7 @@ void func_ov010_02127650(BtlEnm006* data) {
     if (data->unk_9A == 1 && data->unk_8C == 1) {
         // As in func_ov010_02125c80: the second parameter is declared as a callback pointer, but
         // the original really calls 020843b0 here and passes the result.
-        func_ov003_02087f00(0x1CF, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+        func_ov003_02087f00(0x1CF, func_ov003_020843b0(0, data->unk_28));
     }
     // (cmd, owner, x, y, z). The stack argument is the one MWCC evaluates *first*, so z is the
     // load that reaches [sp] ahead of r2/r3.
@@ -1272,7 +1272,7 @@ void func_ov010_02127764(BtlEnm006* data) {
                     data->unk_1F5 &= ~2;
                     data->unk_54 |= 0x40000000;
                 }
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1340,7 +1340,7 @@ void func_ov010_02127764(BtlEnm006* data) {
                 }
             }
             if (data->unk_9A == 0xF && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CD, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1358,13 +1358,13 @@ void func_ov010_02127764(BtlEnm006* data) {
                     func_ov003_020cb578(data, 1);
                 }
                 func_ov003_020c4c9c(data);
-                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1C9, func_ov003_020843b0(0, data->unk_28));
             }
             if (data->unk_9A == 6 && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CA, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CA, func_ov003_020843b0(0, data->unk_28));
             }
             if (data->unk_9A == 9 && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CB, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CB, func_ov003_020843b0(0, data->unk_28));
             }
             if (data->unk_9A == 4 && data->unk_8C == 1) {
                 // The one local here really does live across two calls, so it takes a
@@ -1420,7 +1420,7 @@ void func_ov010_02127764(BtlEnm006* data) {
                 data->unk_28 = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
                 data->unk_2C = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
                 data->unk_30 = 0;
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1474,7 +1474,7 @@ void func_ov010_02127cc0(BtlEnm006* data) {
             if (data->sprite.unk_C0 == 0) {
                 data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
                 Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1534,7 +1534,7 @@ void func_ov010_02127cc0(BtlEnm006* data) {
                 }
             }
             if (data->unk_9A == 0xC && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CD, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1553,7 +1553,7 @@ void func_ov010_02127cc0(BtlEnm006* data) {
                 if (data->unk_80 == 2) {
                     func_ov010_02126c38(data);
                 }
-                func_ov003_02087f00(0x1D1, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1D1, func_ov003_020843b0(0, data->unk_28));
             }
             // Two sequential guards on the same load, not an `else if` written flat: the second
             // test if-converts into the pair of predicated moves and falls into the join, so it
@@ -1626,7 +1626,7 @@ void func_ov010_02127cc0(BtlEnm006* data) {
                 data->unk_28 = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
                 data->unk_2C = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
                 data->unk_30 = 0;
-                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->unk_28));
             }
             if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
                 return;
@@ -1650,7 +1650,7 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
         if (data->unk_8C == 1) {
             // The second parameter of func_ov003_02087f00 is declared as a callback pointer, but
             // the original really calls 020843b0 here and passes the result.
-            func_ov003_02087f00(0x1CE, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            func_ov003_02087f00(0x1CE, func_ov003_020843b0(0, data->unk_28));
         }
     }
     return 1;
@@ -1831,7 +1831,7 @@ s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
     func_ov010_02126830(data, (void*)0x2000);
     if ((data->unk_9A - 1) % 4 == 0) {
         if (data->unk_8C == 1) {
-            func_ov003_02087f00(0x1CE, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            func_ov003_02087f00(0x1CE, func_ov003_020843b0(1, data->unk_28));
         }
     }
     if (func_ov010_0212688c(data) >= 0x2000) {
@@ -2547,7 +2547,7 @@ s32 func_ov010_02126e58(Enm006Swirl* data) {
     }
     if (data->unk_64 == 0) {
         data->unk_64++;
-        func_ov003_02087f00(0x1D0, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_00->unk_28));
+        func_ov003_02087f00(0x1D0, func_ov003_020843b0(0, data->unk_00->unk_28));
     }
     s32 hi = func_ov003_020cb744(0);
     s32 lo = func_ov003_020cb7a4(0);
