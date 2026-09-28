@@ -1516,13 +1516,17 @@ void func_ov010_02127cc0(BtlEnm006* data) {
                 }
             }
             if (data->unk_9A == v && data->unk_8C == 1) {
-                u32 t = func_ov003_0208a114(n)->unk_05;
+                s32 t = func_ov003_0208a114(n)->unk_05;
                 s32 x;
                 // The round trip is spelled out in both arms so the two `_ffix` calls duplicate.
+                // It is the same shape as func_ov010_0212847c's `rad`, except that the test is
+                // `!= 0` rather than `> 0`: `t` is signed (so the conversion is the signed
+                // `_fflt`, not `_ffltu`), and the zero test is what turns the `ble` of the
+                // `> 0` form into the original's `beq`.
                 if (data->unk_24 == 0) {
-                    x = data->unk_28 - 0x48000 + ROUND(t);
+                    x = data->unk_28 - 0x48000 + (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
                 } else {
-                    x = data->unk_28 + 0x48000 - ROUND(t);
+                    x = data->unk_28 + 0x48000 - (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
                 }
                 func_ov003_020c5b2c(n, data, x, data->unk_2C, data->unk_30);
             }
