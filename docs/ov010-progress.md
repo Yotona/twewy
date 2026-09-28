@@ -41,11 +41,48 @@ CombatActor shape as the Noise overlays, so every recipe from ov012/013/015 appl
 
 Assets: `Apl_Suy/Grp_BtlEnm006{,.a,.b}.bin`.
 
-## Status (objdiff)
+## Status — COMPLETE
 
-**52 of 71 functions implemented, 28 exact, average 70.42%; `.rodata` 99.2%, `.data` 100%.**
-39 of the 52 are at ≥98%. (`.text` is 33.2% and will stay low until the remaining 19 functions
-land — the section score covers the whole declared range, not just what is written.)
+**71 of 71 functions implemented, 37 exact, 50 at ≥98%, average 95.75%.**
+`.text` 96.10%, `.rodata` 99.234%, `.data` 100%.
+
+**The linked ROM's entire ov010 overlay is byte-identical to the original** — 0 differing bytes
+across all 15,660 bytes of `.text` + `.rodata` + `.data`, verified with
+`python build\scratch\romcmp.py`. That is a stronger statement than any per-symbol objdiff
+percentage, and it is the number to trust.
+
+The `.rodata` 99.234% is **not** a real discrepancy: it is the `symbols.txt` phantom-symbol
+granularity artifact (`data_ov010_02129216`, `Tsk_BtlEnm006_Swirl`, `data_ov010_021292c0`). The
+bytes match. Do not chase it, and do not edit `symbols.txt` to "fix" it.
+
+### The last word on the twelve functions below 98%
+
+Several of these were labelled *known-unfixable* over the course of the work, and one of those
+labels turned out to be **wrong**: `func_ov010_02127764` sat at 99.7% with what looked like a dead
+`mov r1, #0` from the original's allocator. It was not dead. `func_ov003_020cc300` was declared
+one-argument and really takes two; both call sites pass 0, so the wrong signature compiled to
+identical instructions *except* for that `mov`, and the `mov` was the only visible symptom.
+Fixing the signature took `02127764` to 100% and `02127cc0` to 100% in the same stroke.
+
+**A "dead" instruction in an original is worth one pass down the callee before you write it off
+as allocator residue.** Treat every remaining "dead `mov`" / "register-choice tie-break" claim
+below as unverified.
+
+### Remaining, in rough value order
+
+| function | % | note |
+|----------|---|------|
+| `02126d54` | 62.2 | lowest in the file. Its `02082a04` call originally passed six args to a seven-arg function — a real NULL deref, since fixed. |
+| `021270a8`, `02127110` | 75.0 | the task-spawn family; dead parameter home-slots nothing reproduces |
+| `02127550` | 76.9 | hoists `unk_C0++` above a call and spills `r6` |
+| `021256d0` | 77.6 | the task-spawn family |
+| `021259e8` | 81.7 | the `unk_C0` twins |
+| `02125780` | 81.9 | one 13-instruction hunk in the `02082a04` argument setup; 30 spellings all byte-identical |
+| `0212643c` | 83.6 | one 33-instruction hunk, the vector tail; 13 spellings tried |
+| `021271c0` | 84.3 | |
+| `02126c38` | 86.3 | the task-spawn family |
+| `02128434`, `0212636c`, `021282b8`, `021263c4`, `021283c0` | 87.5–92.2 | the `unk_C0 + 1` reg-colour family; **re-audit in light of the `020cc300` finding** |
+| `021269d0`, `02126d04` | 94.8 | the reloc artifact |
 
 **Treat 99.7% as exact.** A dozen functions have landed there for one unavoidable reason: the
 literal-pool and `bl`-target words carry absolute addresses on the original side and
@@ -119,7 +156,7 @@ worse. The semantics are right; only the register choice differs.
 
 | Section | Bytes | Status |
 |---------|-------|--------|
-| `.text` | 14,664 | 52 / 71 functions implemented, average 70.42% |
+| `.text` | 14,664 | 71 / 71 functions implemented, average 95.75% |
 | `.rodata` | 772 | 99.2% |
 | `.data` | 224 | 100% |
 
@@ -291,7 +328,24 @@ out-params before calling it garbage.
 
 ## Next steps
 
-19 functions remain:
+**All 71 functions are implemented and the linked ROM matches byte-for-byte.** The remaining work
+is the twelve sub-98% functions listed in the status section, and it is all codegen polish, not
+semantics. Two things are worth doing first:
+
+1. **Re-audit the `unk_C0 + 1` reg-colour family** (`02128434`, `0212636c`, `021282b8`,
+   `021263c4`, `021283c0` — five functions, 87.5–92.2%). Six C spellings were tried and all
+   failed, but the `02127764` episode showed a "known-unfixable" label here could be a wrong
+   callee signature in disguise. `func_ov003_020cc300` was one. Sweep the ov003 signatures these
+   five call against `ov003_4.s` before spending another build.
+2. **Sweep the ov003 helper declarations in `BtlEnm006.c` against `ov003_4.s`.** At least one
+   arity was wrong in a way objdiff could not see, and it silently mislabelled a function's
+   residue as unfixable. `func_ov003_020cc300`, `func_ov003_020cba54` and `func_ov003_02082a04`
+   have all been corrected this way during the work; the rest are unverified.
+
+Do **not** mark the overlay `complete` in `delinks.txt` — that is the user's call.
+
+The superseded plan that used to live here (which functions to attempt next) is replaced by the
+table in the status section above.
 
 `02125780`, `02125c80`, `02125de4`, `0212643c`, `021265ac`, `02126c94`, `02126d54`,
 `02126e58`, `02126fdc`, `021271c0`, `021272e0`, `02127650`, `02127764`, `02127cc0`,
