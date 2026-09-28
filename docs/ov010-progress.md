@@ -51,9 +51,38 @@ across all 15,660 bytes of `.text` + `.rodata` + `.data`, verified with
 `python build\scratch\romcmp.py`. That is a stronger statement than any per-symbol objdiff
 percentage, and it is the number to trust.
 
-The `.rodata` 99.234% is **not** a real discrepancy: it is the `symbols.txt` phantom-symbol
-granularity artifact (`data_ov010_02129216`, `Tsk_BtlEnm006_Swirl`, `data_ov010_021292c0`). The
-bytes match. Do not chase it, and do not edit `symbols.txt` to "fix" it.
+The `.rodata` 99.234% figure is **now 100%** — see the sweep note below. `.rodata` and `.data`
+are both at 100%; the remaining `.text` 96.1% is the twelve sub-98% functions.
+
+## The `symbols.txt` "phantom" symbols — resolved, and one was not a phantom
+
+`.rodata` sat at 99.234% for most of this work and was written off as a `symbols.txt` artifact.
+It was partly real. Three things were going on:
+
+1. **`data_ov010_02129216` genuinely is a 10-byte object.** symbols.txt gives it a 10-byte
+   extent; the tagger folded the two alignment bytes that follow the 8-byte `SpriteAnimEntry`
+   into the symbol. Declared as `Enm006AnimEntryPad2` (record + 2 pad bytes) to match.
+
+2. **`data_ov010_021292c0` is NOT a phantom — it is a real, separately-referenced 4-byte word.**
+   Its `ambiguous` flag is the tagger admitting it had no *name* for a bare `u32`, not that it
+   doubted the object exists. `config/usa/arm9/overlays/ov009/relocs.txt` has two
+   `to:0x021292c0 module:overlays(10,16,33,35)` entries: four overlays carry a relocation to
+   that address, so other code loads a pointer to it. Deleting the line from symbols.txt
+   **breaks the delink**:
+   `No symbol found for relocation from 0x021041b8 in overlay 9 to 0x021292c0 in overlay 10`.
+   So `Tsk_BtlEnm006_Swirl` really is an 8-byte object followed by a distinct 4-byte
+   `dataSize` word, and the C now declares it in two pieces.
+
+3. **Naming matters more than extents.** The 4-byte word only scores once our object is *named*
+   `data_ov015...`-style to match symbols.txt exactly. Named `Tsk_BtlEnm006_Swirl_dataSize`
+   instead, the linker gave it no address at all (`addr=None` in the objdiff dump) because
+   nothing in our own build references it — the delink's relocations resolve by *name*. Renaming
+   it to `data_ov010_021292c0` took `.rodata` from 99.482% to 100%.
+
+The generalisable rule: **an objdiff section percentage measures object granularity, not
+bytes.** Check the linked ROM (`build/scratch/romcmp.py`) before believing one. Where a
+`symbols.txt` extent is genuinely describing a differently-shaped object, reproduce it in C —
+and match the *name*, or the linker will fold the object away.
 
 ### The last word on the twelve functions below 98%
 
@@ -157,7 +186,7 @@ worse. The semantics are right; only the register choice differs.
 | Section | Bytes | Status |
 |---------|-------|--------|
 | `.text` | 14,664 | 71 / 71 functions implemented, average 95.75% |
-| `.rodata` | 772 | 99.2% |
+| `.rodata` | 772 | 100% |
 | `.data` | 224 | 100% |
 
 Function size distribution, which is the plan of attack:
