@@ -2212,11 +2212,18 @@ s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
 
 /// `Tsk_BtlEnm010_Rnge`'s task spawn. Nine arguments in, a 0x20-byte block out.
 ///
-/// Two things are load-bearing. `arg7` is a by-value `u16` that the C *assigns*, and MWCC reuses
+/// Two things are load-bearing. `arg6` is a by-value `u16` that the C *assigns*, and MWCC reuses
 /// its incoming stack slot for the store -- the original's `moveq r1, #0 / strheq r1, [sp, #0x48]`
 /// writes into the caller's outgoing area, which only happens for an assigned parameter whose
 /// address is never taken. And the last argument to `EasyTask_CreateTask` is the *address of the
 /// block*, not the block.
+///
+/// Open (8 bytes, pure register allocation): the reference loads the five stack arguments in the
+/// order arg8, arg5, arg6, arg7, arg4 and assigns them lr, r1, r3, r8, ip -- one temp (arg7)
+/// spills to the callee-saved r8. Writing the assignments in that load order matches the loads
+/// but hands r8 to arg8 instead (13 bytes), and naming the temps / reordering their declarations
+/// does not move the allocation. The field mapping and every value are correct either way; the
+/// register choice is not reachable from the declaration list.
 s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5, u16 arg6, s32 arg7, s16 arg8) {
     BtlEnm010RngeArgs t;
     TaskPool*         pool;
@@ -2743,6 +2750,10 @@ s32 func_ov011_021288c8(void* p) {
 /// here as subscripts off a `data + i * 4` base so the scaled add stays inline -- as a single
 /// `+ 0x70` / `+ 0x84` bias it materialises `i * 4` into a register instead, which is what
 /// `func_ov011_02128250` does and why that one is two words long.
+///
+/// `func_ov003_02084348`'s arguments are `(mode, out, out, x, y, z)` -- the reference spills
+/// `unk_084[i]` into the first stack slot and `unk_098` into the second, so y comes before the
+/// z height here, in the same order `func_ov011_021284bc` passes its position triple.
 s32 func_ov011_02128b80(BtlEnm010Sprl* data) {
     s16 v0;
     s16 v1;
@@ -2751,7 +2762,7 @@ s32 func_ov011_02128b80(BtlEnm010Sprl* data) {
 
     z = 0;
     for (i = 0; i < 5; i++) {
-        func_ov003_02084348(z, &v0, &v1, data->unk_070[i], data->unk_098, data->unk_084[i]);
+        func_ov003_02084348(z, &v0, &v1, data->unk_070[i], data->unk_084[i], data->unk_098);
         CombatSprite_SetPosition((CombatSprite*)((u8*)data + 4), v0, v1);
         func_ov003_02082730((CombatSprite*)((u8*)data + 4), 0x7FFFFFFF - data->unk_084[i]);
         CombatSprite_SetAffineTransform((void*)((u8*)data + 4), z, data_ov011_0212c21c[i], data_ov011_0212c21c[i], z);
