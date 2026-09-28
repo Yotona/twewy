@@ -1709,15 +1709,20 @@ void func_ov011_02126fb0(BtlEnm010RG* data) {
                     }
                 }
             }
-            // Decay the velocity pair toward zero, clamping both words at the crossing.
+            // Decay the velocity pair toward zero, clamping both words at the crossing. The
+            // 0x333 step is spelled as two separate statements -- `sub #0x33 / sub #0x300` in the
+            // original -- because a folded `- 0x333` becomes a pool constant plus an add (and the
+            // pool word lives in the function, i.e. +4 bytes).
             if (data->unk_1D0 > 0) {
-                data->unk_1E8 = data->unk_1E8 - 0x333;
+                data->unk_1E8 = data->unk_1E8 - 0x33;
+                data->unk_1E8 = data->unk_1E8 - 0x300;
                 if (data->unk_1D0 + data->unk_1E8 <= 0) {
                     data->unk_1D0 = 0;
                     data->unk_1E8 = 0;
                 }
             } else if (data->unk_1D0 < 0) {
-                data->unk_1E8 = data->unk_1E8 + 0x333;
+                data->unk_1E8 = data->unk_1E8 + 0x33;
+                data->unk_1E8 = data->unk_1E8 + 0x300;
                 if (data->unk_1D0 + data->unk_1E8 >= 0) {
                     data->unk_1D0 = 0;
                     data->unk_1E8 = 0;
@@ -3854,13 +3859,15 @@ void func_ov011_0212a78c(BtlEnm010Tatt* data) {
                 }
             }
             if (data->unk_1D0 > 0) {
-                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x333;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x33;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x300;
                 if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) <= 0) {
                     data->unk_1D0              = 0;
                     *(s32*)((u8*)data + 0x1E8) = 0;
                 }
             } else if (data->unk_1D0 < 0) {
-                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x333;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x33;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x300;
                 if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) >= 0) {
                     data->unk_1D0              = 0;
                     *(s32*)((u8*)data + 0x1E8) = 0;
@@ -4012,13 +4019,15 @@ void func_ov011_0212ac0c(BtlEnm010Tatt* data) {
                 }
             }
             if (data->unk_1D0 > 0) {
-                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x333;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x33;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x300;
                 if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) <= 0) {
                     data->unk_1D0              = 0;
                     *(s32*)((u8*)data + 0x1E8) = 0;
                 }
             } else if (data->unk_1D0 < 0) {
-                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x333;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x33;
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x300;
                 if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) >= 0) {
                     data->unk_1D0              = 0;
                     *(s32*)((u8*)data + 0x1E8) = 0;
