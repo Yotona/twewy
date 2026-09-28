@@ -72,6 +72,16 @@ typedef struct Enm006SpriteAlt3 {
     /* 0xF6 */ u16 unk_F6;
 } Enm006SpriteAlt3;
 
+/// A fifth overlapping view, for the pair of s16s at 0x1F6 / 0x1F8 that
+/// `func_ov010_02127764` copies into each other. Reached as base+0x100 then the two halfword
+/// offsets, so it needs its own type rather than a field on `BtlEnm006` -- whose own
+/// `unk_1F8` is an s32 and would fold the address to a single `str r0, [r5, #0x1f8]`.
+typedef struct Enm006SpriteAlt4 {
+    u8             pad00[0xF6];
+    /* 0xF6 */ u16 unk_F6;
+    /* 0xF8 */ u16 unk_F8;
+} Enm006SpriteAlt4;
+
 /// The main `BtlEnm006` task data. Only offsets confirmed by the disassembly are named; the
 /// gaps are explicit padding and the struct grows as more functions land.
 /// Size: 0x1FC (from the Tsk_BtlEnm006_RG TaskHandle).

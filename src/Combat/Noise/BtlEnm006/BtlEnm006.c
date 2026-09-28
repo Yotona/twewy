@@ -77,6 +77,10 @@ extern s32                   func_ov003_020c5b2c(s32, void*, s32, s32, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
+extern s32   func_ov010_02128cbc(s32, void*, void*);
+extern void  func_ov003_020c4c5c(BtlEnm006*);
+extern s32   func_ov003_020cc300(BtlEnm006*);
+extern void  func_ov003_020cb578(BtlEnm006*, s32);
 extern s32   func_ov010_02128bcc(void*, void*);
 extern void  func_ov010_02127110(void*, void*);
 extern void  func_ov010_02127cc0(void);
@@ -115,7 +119,7 @@ typedef struct Enm006PhaseRec {
 
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(BtlEnm006*);
-extern void func_ov010_02127764(void);
+extern void func_ov010_02127764(BtlEnm006*);
 extern void func_ov010_02125c80(BtlEnm006*);
 extern void func_ov010_02125b28(BtlEnm006*);
 extern void func_ov010_02125938(BtlEnm006*);
@@ -1157,6 +1161,189 @@ void func_ov010_02127650(BtlEnm006* data) {
         return;
     }
     func_ov010_02127460(data, (void*)func_ov010_02127550);
+}
+
+// The six-phase behaviour, the sibling of func_ov010_02127650 and the other one
+// func_ov010_02127488 hands to the init helper, so the signature is `(BtlEnm006*)`.
+//
+// Like func_ov010_02125de4 the six cases are dense, in order and gapless, so the original's
+// dispatch is a jump table, and every phase re-enters its one-time setup only while
+// `sprite.unk_C0` is still zero. Phases 1 and 4 are the fixed-length "wobble" phases with a
+// duplicated `unk_8C |= 1`; phase 2 is the only one that borrows a *second* instance, via
+// func_ov010_02128b48, and that pointer is what the original keeps in a callee-saved register
+// across six calls. Phase 5's tail is the only one that does not advance the phase counter --
+// it hands off to func_ov010_02127550 instead.
+//
+// The sound indices: 0x1CC is a rotated immediate and stays a `mov`, while 0x1C9/0x1CA/0x1CB/
+// 0x1CD are not and come from the literal pool. The pool order follows first reference, so
+// the C order of the blocks *is* the pool order.
+void func_ov010_02127764(BtlEnm006* data) {
+    switch (data->sprite.unk_C4) {
+        case 0:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
+                func_ov003_020c4c5c(data);
+                // The `else` arm is the one behind the forward branch: it is five instructions
+                // to the `then` arm's two, and the single `ldrb` ahead of the branch feeds both.
+                if (data->unk_54 & 0x40000000) {
+                    data->unk_1F5 |= 2;
+                } else {
+                    data->unk_1F5 &= ~2;
+                    data->unk_54 |= 0x40000000;
+                }
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 1;
+            return;
+        case 1:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                data->sprite.unk_8C |= 1;
+                func_ov003_020cb578(data, 0);
+                data->sprite.unk_C2 = 0x3C;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 2;
+            return;
+        case 2: {
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                BtlEnm006* other    = (BtlEnm006*)func_ov010_02128b48();
+                if (other != NULL) {
+                    data->unk_1F4 = (*(s32*)other == 1) ? 1 : 0;
+                }
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xD, 1);
+                data->sprite.unk_8C &= ~1;
+                // Both arms are calls, so this branches rather than predicating; the `bge`
+                // target is the later block, which is the polarity the original has.
+                if (data->unk_28 < other->unk_28) {
+                    func_ov003_020c4ab4(data, 1);
+                } else {
+                    func_ov003_020c4ab4(data, 0);
+                }
+                data->unk_2C = other->unk_2C;
+                data->unk_30 = 0;
+                if (data->unk_2C < 0x20000) {
+                    data->unk_2C = 0x20000;
+                }
+                // The two arms re-derive the other's x rather than sharing one fetch, and both
+                // spellings of it if-convert (`addeq` / `streq` / `subne` / `strne`).
+                if (data->unk_24 == 0) {
+                    data->unk_28 = other->unk_28 + 0x1C000;
+                } else {
+                    data->unk_28 = other->unk_28 - 0x1C000;
+                }
+                if (func_ov003_020cc300(data) == 0) {
+                    func_ov003_020c4c9c(data);
+                    if (data->unk_24 == 0) {
+                        data->unk_28 = other->unk_28 + 0x1C000;
+                    } else {
+                        data->unk_28 = other->unk_28 - 0x1C000;
+                    }
+                }
+            }
+            if (data->unk_9A == 0xF && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 3;
+            return;
+        }
+        case 3:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xE, 1);
+                data->unk_54 &= ~0x20;
+                if (data->unk_1F4 == 0) {
+                    func_ov003_020cb578(data, 1);
+                }
+                func_ov003_020c4c9c(data);
+                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (data->unk_9A == 6 && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CA, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (data->unk_9A == 9 && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CB, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (data->unk_9A == 4 && data->unk_8C == 1) {
+                // The one local here really does live across two calls, so it takes a
+                // callee-saved register -- which is why the original pushes it. The address
+                // form has to be the two-step `&symbol / [reg] / + 0x3D000 / [reg, #off]`,
+                // i.e. a real struct field.
+                void* t = data_ov003_020e71b8->unk3D898;
+                if (func_ov010_02128bcc(data, t) != 0) {
+                    data->unk_1F8 = func_ov010_021270a8(data, t);
+                }
+                ((Enm006SpriteAlt4*)&data->sprite)->unk_F6 = func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128cbc, data);
+                ((Enm006SpriteAlt4*)&data->sprite)->unk_F8 = ((Enm006SpriteAlt4*)&data->sprite)->unk_F6;
+            }
+            if (data->unk_9A < 9) {
+                if (data->unk_24 == 0) {
+                    data->unk_28 = data->unk_28 + 0x800;
+                } else {
+                    data->unk_28 = data->unk_28 - 0x800;
+                }
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 4;
+            return;
+        case 4:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                func_ov003_020cb578(data, 0);
+                data->sprite.unk_C2 = 0x3C;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 5;
+            return;
+        case 5:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                data->sprite.unk_8C &= ~1;
+                data->unk_54 &= ~0x20;
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 4, 1);
+                func_ov003_020cb578(data, 1);
+                func_ov003_020c4c5c(data);
+                // Random 4.12 cell, one cell in from the two screen edges. Both bounds are
+                // fetched as separate calls, each shifted down before the `+ 1`.
+                data->unk_28 = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
+                data->unk_2C = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
+                data->unk_30 = 0;
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(0, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&((CombatSprite*)((u8*)data + 0x84))->sprite) == 0) {
+                return;
+            }
+            // The bit test is a shift pair with the `(u32)` on the outside; the inner `lsl`
+            // has to be the unsigned one. Nothing follows but the hand-off.
+            if (((u32)data->unk_1F5 << 30) >> 31 == 0) {
+                data->unk_54 &= ~0x40000000;
+            }
+            func_ov010_02127460(data, (void*)func_ov010_02127550);
+            return;
+    }
 }
 
 // Fires a one-off effect every fourth frame, and only while a flag sprite field says so.
