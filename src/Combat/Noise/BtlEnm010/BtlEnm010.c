@@ -294,3 +294,40 @@ s32 func_ov011_02125b88(BtlEnm010AnmMgr* data) {
     func_ov003_020cb194(data);
     return 1;
 }
+
+/// The `TaskHandle` of the `Tsk_BtlEnm010_Lser` task (0x254 bytes of data), the task this
+/// function spawns.
+extern const TaskHandle data_ov011_0212c118;
+
+/// `func_ov003_020c37f8` -- reads the two-bit field at offset 0 of its argument and returns
+/// whether it is 1. One argument.
+extern s32 func_ov003_020c37f8(void* p);
+
+/// The 0x18-byte spawn-argument record `func_ov011_02125b98` hands to the new task. The
+/// original writes only the first and the last word and leaves `0x04..0x13` untouched, so the
+/// record is **not** zero-initialised here -- doing that would emit four extra stores.
+typedef struct BtlEnm010LserArgs {
+    /* 0x00 */ void* unk_00;
+    /* 0x04 */ s32   pad_04[4];
+    /* 0x14 */ void* unk_14;
+} BtlEnm010LserArgs;
+
+/// Spawns the `Tsk_BtlEnm010_Lser` task. Which pool it goes into depends on a two-bit flag at
+/// `arg0 + 0x84`.
+///
+/// The global is re-read in *both* arms, so it is spelled twice rather than hoisted: the
+/// original has a predicated `ldreq` pair on the zero arm and an unpredicated `ldr` pair on
+/// the other, with the `+ 0x8C + 0x8000` bias added in the second.
+void func_ov011_02125b98(void* arg0, void* arg1) {
+    BtlEnm010LserArgs args;
+    TaskPool*         pool;
+
+    if (func_ov003_020c37f8((u8*)arg0 + 0x84) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u32)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    args.unk_00 = arg0;
+    args.unk_14 = arg1;
+    EasyTask_CreateTask(pool, &data_ov011_0212c118, 0, 0, 0, &args);
+}
