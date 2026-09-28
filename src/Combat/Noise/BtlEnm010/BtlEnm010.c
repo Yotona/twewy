@@ -463,6 +463,9 @@ extern s32 func_ov003_020cc354(void* p);
 /// sprite's `flags46` bit 12.
 extern void func_ov003_02082b0c(CombatSprite* cSprite);
 
+/// `func_ov003_020843b0` -- two arguments; turns a 4.12 y coordinate into a sound pan value.
+extern s32 func_ov003_020843b0(s32 a, s32 b);
+
 /// The Lser task's command 1, the per-frame worker. Refreshes the owner's state, drops the owner
 /// when it has gone stale, picks one of three sub-workers off the emitter's mode halfword, then
 /// ticks all four sprites.
@@ -512,4 +515,80 @@ s32 func_ov011_02125e14(BtlEnm010Lser* data) {
         sp = (CombatSprite*)((u8*)sp + 0x60);
     }
     return result;
+}
+
+/// The Lser task's mode-0 worker: primes the four sprites and their palettes on the first
+/// frame, then advances the three emitter records and rolls the animation counter.
+///
+/// The four `Mini108_VBlank` calls take `data + 0x80`, `+ 0xE0`, `+ 0x140` and `+ 0x1A0` -- that
+/// is the 0x60-stride sprite walk, so they are spelled as offsets into the raw block, not as
+/// indices into a `CombatSprite[]` (whose `sizeof` is 0x7D).
+s32 func_ov011_02125f24(BtlEnm010Lser* data) {
+    s32               flag;
+    s32               i;
+    CombatSprite*     sp;
+    BtlEnm010LserRec* rec;
+
+    if (data->unk_00 == NULL) {
+        return 0;
+    }
+    if (data->emit.unk_24 == 0) {
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x80), 1, 1);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0xE0), 1, 1);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x140), 1, 1);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x1A0), 3, 0);
+        data->unk_250     = (data->unk_250 & ~1) | 1;
+        data->unk_250     = data->unk_250 & ~2;
+        data->emit.unk_26 = 0x2F;
+        // `func_ov003_02087f00` is declared in Combat.h as taking a function pointer second; the
+        // original passes the *value* `func_ov003_020843b0` returned straight through, so it
+        // is cast rather than genuinely a callback.  Note the coordinate is
+        // `data->copy.unk_28` -- `ldr r1, [r4, #0x2c]`, i.e. the *copy*, not the owner.
+        func_ov003_02087f00((SndMgrSeIdx)0x1E5, (s32(*)(s32, s32))func_ov003_020843b0(0, data->copy.unk_28));
+    }
+    // Initialise-then-if, not a ternary: a ternary emits `movle`/`movgt` (a phi), and the
+    // original has a plain `mov r5, #1 / cmp / movgt r5, #0`.
+    flag = 1;
+    if (data->emit.unk_24 > 0x24) {
+        flag = 0;
+    }
+    sp  = (CombatSprite*)((u8*)data + 0x80);
+    rec = (BtlEnm010LserRec*)((u8*)data + 0x200);
+    for (i = 0; i < 3; i++) {
+        func_ov011_02125c44(&data->copy, rec, sp, flag);
+        sp  = (CombatSprite*)((u8*)sp + 0x60);
+        rec = (BtlEnm010LserRec*)((u8*)rec + 0xC);
+    }
+    // The guard is `cmp r0, #8 / ldrbeq / orreq / strbeq` -- an `== 8` equality, and the `ldrb`
+    // is the load of the `u8` flag field, not of `unk_24`. A `<=` here gives `ldrl**s**b`/`orrls`.
+    if (data->emit.unk_24 == 8) {
+        data->unk_250 |= 2;
+    }
+    if (data->emit.unk_24 < data->emit.unk_26) {
+        data->emit.unk_24 = data->emit.unk_24 + 1;
+    } else {
+        data->emit.unk_24 = 0;
+        data->emit.unk_28 = 2;
+    }
+    return 1;
+}
+
+/// The Lser task's mode-1 worker: one sprite, one palette, and the same phase-counter roll as
+/// mode 0.
+s32 func_ov011_02126064(BtlEnm010Lser* data) {
+    if (data->unk_00 == NULL) {
+        return 0;
+    }
+    if (data->emit.unk_24 == 0) {
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x1A0), 3, 0);
+        data->unk_250     = data->unk_250 | 2;
+        data->emit.unk_26 = 4;
+    }
+    if (data->emit.unk_24 < data->emit.unk_26) {
+        data->emit.unk_24 = data->emit.unk_24 + 1;
+    } else {
+        data->emit.unk_24 = 0;
+        data->emit.unk_28 = 2;
+    }
+    return 1;
 }

@@ -187,7 +187,8 @@ typedef struct BtlEnm010LserRec {
 /// comes out 0x38 too high.
 typedef struct BtlEnm010LserEmit {
     /* 0x00 */ BtlEnm010LserRec rec[3];
-    /* 0x24 */ s32              pad_24;
+    /* 0x24 */ s16              unk_24;
+    /* 0x26 */ s16              unk_26;
     /* 0x28 */ s16              unk_28;
     /* 0x2A */ u16              pad_2A;
 } BtlEnm010LserEmit;
