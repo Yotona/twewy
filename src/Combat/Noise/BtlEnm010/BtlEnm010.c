@@ -842,10 +842,10 @@ void func_ov011_0212681c(BtlEnm010RG* data) {
     data->unk_1C0 = data->unk_1C0 + 1;
 }
 
-extern s32  func_ov003_020cb744(s32 arg);
-extern s32  func_ov003_020cb7a4(s32 arg);
-extern s32  func_ov003_020c4ab4(BtlEnm010RG* data, s32 arg1);
-extern void func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1);
+extern s32 func_ov003_020cb744(s32 arg);
+extern s32 func_ov003_020cb7a4(s32 arg);
+extern s32 func_ov003_020c4ab4(BtlEnm010RG* data, s32 arg1);
+extern s32 func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1);
 
 /// RG's phase-1 handler. A three-way chain over `0x1C4` -- a `switch` here compiles to the same
 /// `cmp / beq` chain, since the three cases are contiguous and only case 1 falls through.
@@ -1129,4 +1129,236 @@ s32 func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3) {
             break;
     }
     return 1;
+}
+
+extern s32 func_ov003_020c3efc(void* p, void* arg1);
+extern s32 func_ov003_020c44ac(void* p);
+extern s32 func_ov003_020c4b1c(void* p);
+
+/// RG's initialiser, and the only write to the whole 0x208 block.
+///
+/// Two things are load-bearing here. `unk_1FC`/`unk_200` are written as `unk_1CC - 2`, not as
+/// `-1`: the original emits `mov r0, #1 / str [r4, #0x1cc] / sub r0, r0, #2`, which a literal
+/// `-1` would have collapsed to a single `mvn`. And `0x28`/`0x2C` are written twice, once
+/// biased `+0x40000` through the pool pointer and once biased `-0x40000` through `data` -- the
+/// second write wins, and both have to be in the C.
+void func_ov011_0212791c(void* arg0, void* arg1, s32 arg2) {
+    BtlEnm010RG* data;
+    BtlEnm010RG* t;
+    s32          v;
+
+    data = *(BtlEnm010RG**)((u8*)arg1 + 0x18);
+    t    = *(BtlEnm010RG**)((u8*)data_ov003_020e71b8 + 0x3D89C);
+    MI_CpuSet(data, 0, 0x208);
+    t->unk_028                                  = (func_ov003_020cb744(1) >> 1) + 0x40000;
+    t->unk_02C                                  = func_ov003_020cb7a4(1) >> 1;
+    t->unk_030                                  = 0;
+    *(u32*)((u8*)data_ov003_020e71b8 + 0x3D878) = *(u32*)((u8*)data_ov003_020e71b8 + 0x3D878) | 0x40000000;
+    *(u32*)((u8*)data_ov003_020e71b8 + 0x3D838) = (func_ov003_020cb744(1) >> 1) + 0x40000;
+    *(u32*)((u8*)data_ov003_020e71b8 + 0x3D83C) = func_ov003_020cb7a4(1) >> 1;
+    func_ov003_020c3efc(data, (void*)(u32)arg2);
+    func_ov003_020c44ac(data);
+    data->unk_1CC = 1;
+    v             = data->unk_1CC - 2;
+    data->unk_1FC = v;
+    data->unk_200 = v;
+    func_ov011_021265d4(data, func_ov011_021267f4);
+    data->unk_1AC = (func_ov003_020cb744(1) >> 1) - 0x40000;
+    data->unk_028 = data->unk_1AC;
+    data->unk_1B0 = func_ov003_020cb7a4(1) >> 1;
+    data->unk_02C = data->unk_1B0;
+    data->unk_1B4 = 0;
+    data->unk_030 = 0;
+    func_ov003_020c4b1c(data);
+    data->unk_1F4 = 0;
+    data->unk_054 |= 1 << 30;
+}
+
+extern void func_ov003_020c4748(void* p);
+extern s32  func_ov003_0208810c(void* p, void* arg1);
+extern s32  func_ov003_020cba54(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
+extern s32  func_ov003_020cb910(void* a0, void* a1, void* a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
+
+/// RG's kill handler. Hands the task data to the engine's deleter, or -- once the `0x200`
+/// sentinel says the projectile has left the screen -- takes the exit path and then releases
+/// whatever is at `0xE4`.
+s32 func_ov011_02127b98(void* arg0, void* arg1) {
+    BtlEnm010RG* data;
+
+    data = *(BtlEnm010RG**)((u8*)arg1 + 0x18);
+    if (data->unk_200 == -1 && data->unk_204 != 0) {
+        func_ov003_020c4748(data);
+        func_ov003_0208810c((void*)((u8*)data + 0xE4), data);
+    } else {
+        func_ov003_020c4878(data);
+    }
+    return 1;
+}
+
+/// RG's "put the sprite back" handler. Four registers, two stack words, one `strh` at `0x1C2`.
+s32 func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1) {
+    s32 r;
+
+    r = func_ov003_020cb910(&data->unk_1D0, &data->unk_1D4, &data->unk_1D8, data->unk_028, data->unk_02C, data->unk_030,
+                            data->unk_1DC, data->unk_1E0, data->unk_1E4, arg1);
+    data->unk_1C2 = r;
+    return r;
+}
+
+/// RG's position commit: six values straight through, four in registers and two on the stack.
+void func_ov011_02127c4c(BtlEnm010RG* data) {
+    func_ov003_020cba54(data->unk_028, data->unk_02C, data->unk_030, data->unk_1DC, data->unk_1E0, data->unk_1E4);
+}
+
+/// RG's frame callback. Returns 1 unconditionally.
+s32 func_ov011_02127bdc(void* arg0, void* arg1) {
+    func_ov003_020c48fc(*(void**)((u8*)arg1 + 0x18));
+    return 1;
+}
+
+extern s32              func_ov003_02082f2c(void* p);
+extern s32              func_ov003_020c4628(void* p);
+extern const TaskHandle data_ov011_0212c1d4;
+
+/// RG's per-frame handler. Picks a phase off `func_ov003_02082f2c`, integrates two Euler steps
+/// over the position and velocity triples, then hands back `0x1CC`.
+///
+/// The two integration passes are in this order and it matters: the position is advanced by the
+/// velocity *before* the velocity is advanced by its own acceleration. The six `ldr/add/str`
+/// triples read `0x2C` first each time, so `0x28/0x2C/0x30` really are x/y/z in that order.
+///
+/// `0x18C`'s latch is written as an `if`: the original's `orrne`/`strhne` are predicated on the
+/// `tst`, so the store only happens on the bit-4 path.
+s32 func_ov011_02127a64(void* arg0, void* arg1) {
+    BtlEnm010RG* data;
+
+    data = *(BtlEnm010RG**)((u8*)arg1 + 0x18);
+    switch (func_ov003_02082f2c(data)) {
+        case 2:
+            func_ov011_021265d4(data, func_ov011_02127628);
+            break;
+        case 3:
+            if (data->unk_18C & 0x10) {
+                data->unk_18C = data->unk_18C | 0x20;
+            } else {
+                func_ov011_021265d4(data, func_ov011_02127698);
+            }
+            break;
+        case 6:
+            func_ov011_021265d4(data, func_ov011_021276e0);
+            break;
+    }
+    EasyTask_ValidateTaskId((TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000), (u32*)&data->unk_1FC);
+    if (data->unk_200 != -1) {
+        data->unk_204 = data->unk_204 + 1;
+    }
+    if (data->unk_1C8 != NULL) {
+        data->unk_1C8(data);
+    }
+    data->unk_028 = data->unk_028 + data->unk_1D0;
+    data->unk_02C = data->unk_02C + data->unk_1D4;
+    data->unk_030 = data->unk_030 + data->unk_1D8;
+    data->unk_1D0 = data->unk_1D0 + data->unk_1E8;
+    data->unk_1D4 = data->unk_1D4 + data->unk_1EC;
+    data->unk_1D8 = data->unk_1D8 + data->unk_1F0;
+    func_ov003_020c4628(data);
+    return data->unk_1CC;
+}
+
+/// Spawns the follow-up Rnge task. The pool is the plain global unless `0x84`'s animation is
+/// already running, in which case it is the same base biased by `0x8C + 0x8000`.
+///
+/// The last argument is `&data` -- the address of the *parameter*, not its value. That is what
+/// the prologue's `str r0, [sp, #0x8]` and the `stm sp, {r2, ip}` (which stores `sp + 8` into
+/// the outgoing slot) are for: MWCC has to give the callee a pointer to a pointer.
+s32 func_ov011_02127c84(void* p) {
+    BtlEnm010RG* data;
+    TaskPool*    pool;
+
+    data = (BtlEnm010RG*)p;
+    if (func_ov003_020c37f8((void*)((u8*)data + 0x84)) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    return EasyTask_CreateTask(pool, &data_ov011_0212c1d4, 0, 0, 0, (void*)&data);
+}
+
+extern s32 func_ov011_02128070(void* p, s32 arg1);
+extern s32 func_ov011_02128150(void* p);
+extern s32 func_ov011_02128250(void* p);
+
+/// `Tsk_BtlEnm010_SWA`'s task entry. A 3-way dispatch on the fourth argument, each arm handing
+/// back the callee's own result -- and the default arm's result is the literal 1, set up before
+/// the switch as `mov r1, #1` and copied into r0 at the end.
+s32 func_ov011_0212801c(void* arg0, void* arg1, s32 arg2, s32 index) {
+    void* p;
+    s32   r;
+
+    p = *(void**)((u8*)arg1 + 0x18);
+    r = 1;
+    switch (index) {
+        case 0:
+            r = func_ov011_02128070(p, arg2);
+            break;
+        case 1:
+            r = func_ov011_02128150(p);
+            break;
+        case 3:
+            r = func_ov011_02128250(p);
+            break;
+    }
+    return r;
+}
+
+extern const TaskHandle data_ov011_0212c1e0;
+
+/// The 0x20-byte spawn block `func_ov011_02127f6c` builds for the SWA task, and `func_ov011_02127f6c`'s
+/// own outgoing argument. One struct, not nine scalars: the original writes all nine words out of
+/// one contiguous `sp+0x8` frame slot and then hands `sp+0x8` itself to `EasyTask_CreateTask`.
+///
+/// The `u16` at `+0x1C` and the `s16` at `+0x16` are byte fields in the middle of it -- which is
+/// why the struct cannot be all `s32`.
+typedef struct BtlEnm010RngeArgs {
+    /* 0x00 */ void* field_00;
+    /* 0x04 */ s32   field_04;
+    /* 0x08 */ s32   field_08;
+    /* 0x0C */ s32   field_0C;
+    /* 0x10 */ s32   field_10;
+    /* 0x14 */ u16   field_14;
+    /* 0x16 */ s16   field_16;
+    /* 0x18 */ s32   field_18;
+    /* 0x1C */ u16   field_1C;
+    /* 0x1E */ u16   pad_1E;
+} BtlEnm010RngeArgs;
+
+/// `Tsk_BtlEnm010_Rnge`'s task spawn. Nine arguments in, a 0x20-byte block out.
+///
+/// Two things are load-bearing. `arg7` is a by-value `u16` that the C *assigns*, and MWCC reuses
+/// its incoming stack slot for the store -- the original's `moveq r1, #0 / strheq r1, [sp, #0x48]`
+/// writes into the caller's outgoing area, which only happens for an assigned parameter whose
+/// address is never taken. And the last argument to `EasyTask_CreateTask` is the *address of the
+/// block*, not the block.
+s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5, u16 arg6, s32 arg7, s16 arg8) {
+    BtlEnm010RngeArgs t;
+    TaskPool*         pool;
+
+    if (func_ov003_020c37f8((void*)((u8*)arg0 + 0x84)) == 0) {
+        pool = (TaskPool*)data_ov003_020e71b8;
+    } else {
+        pool = (TaskPool*)((u8*)data_ov003_020e71b8 + 0x8C + 0x8000);
+    }
+    if (arg4 == 1) {
+        arg6 = 0;
+    }
+    t.field_00 = arg0;
+    t.field_04 = arg1;
+    t.field_08 = arg2;
+    t.field_0C = arg3;
+    t.field_10 = arg7;
+    t.field_14 = arg5;
+    t.field_16 = arg8;
+    t.field_18 = arg4;
+    t.field_1C = arg6;
+    return EasyTask_CreateTask(pool, &data_ov011_0212c1e0, 0, 0, 0, (void*)&t);
 }

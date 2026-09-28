@@ -186,9 +186,8 @@ a walking `CombatSprite*` with a literal stride.
 
 ## Done
 
-**15 of 114 functions byte-identical** (`RELOCC` or better), **0 differing bytes**. The emitted
-prefix `0x021256c0..0x021260e8` is contiguous and every function's size matches the original's
-exactly.
+**29 of 114 functions byte-identical** (`RELOCC` or better), 2 written but not yet exact
+(63 differing bytes between them), **83 not yet written**.
 
 | function | bytes | status |
 |----------|-------|--------|
@@ -207,12 +206,35 @@ exactly.
 | `func_ov011_02125e14` | 272 | **byte-exact** |
 | `func_ov011_02125f24` | 320 | **byte-exact** |
 | `func_ov011_02126064` | 132 | **byte-exact** |
+| `func_ov011_02126354` | 596 | **byte-exact** |
+| `func_ov011_021265a8` | 44 | **byte-exact** |
+| `func_ov011_021265d4` | 40 | **byte-exact** |
+| `func_ov011_021265fc` | 504 | **byte-exact** |
+| `func_ov011_021267f4` | 40 | **byte-exact** |
+| `func_ov011_0212681c` | 168 | **byte-exact** |
+| `func_ov011_02126a04` | 232 | **byte-exact** |
+| `func_ov011_02126aec` | 64 | **byte-exact** |
+| `func_ov011_02127628` | 112 | **byte-exact** |
+| `func_ov011_02127698` | 72 | **byte-exact** |
+| `func_ov011_021276e0` | 120 | **byte-exact** |
+| `func_ov011_02127758` | 112 | **byte-exact** |
+| `func_ov011_021277c8` | 268 | **byte-exact** |
+| `func_ov011_021278d4` | 72 | **byte-identical** (raw, no reloc difference either) |
+| `func_ov011_021268c4` | 320 | written, 30 B out — brief §8 |
+| `func_ov011_02126b2c` | 204 | written, 4 B long — brief §9 |
 
-Nothing was deliberately skipped. `021260e8` (620 B) was read in full, its layout and four
-helper arities pinned, and then **capped rather than half-written** — see
-`build/scratch/AGENT_BRIEF.md` §6 for the plan and the one open question. `.text`/`.rodata`/
-`.data` are not byte-identical and `romcmp.py` has not been run - the linked ROM does not exist
-until all 114 functions are emitted, so `fbdiff.py` is the only signal available.
+**The contiguous-prefix framing was dropped this round**, and it was costing throughput: the
+count is what matters, and a byte-exact function at a higher address is worth more than a
+contiguous prefix that stalls. Consequence to remember: `fbdiff.py` measures per symbol, so
+the count above is honest, but **six functions are currently in the file out of address order**
+(`02127628`..`021278d4` sit before the unwritten `02126bf8`..`02127628` run's start). They must be
+reinserted in order before the final link, and `romcmp.py` is what will catch it if they are not.
+
+Two functions were read in full and deliberately **skipped rather than half-written**:
+`021260e8` (620 B, brief §6) and `02126bf8` (648 B, brief §10). Both have their layouts and open
+questions recorded, so neither restarts from a blank page. `.text`/`.rodata`/`.data` are not
+byte-identical and `romcmp.py` has not been run — the linked ROM does not exist until all 114
+functions are emitted, so `fbdiff.py` is the only signal available.
 
 `ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
 `(TaskPool*)((u32)data_ov003_020e71b8 + 0x118 + 0x10000)`. `data_ov003_020e71b8` is already
@@ -220,26 +242,37 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **`0x021260e8`** (620 B, the Lser mode-2 worker) was read and deliberately **capped, not
-   half-written**. `build/scratch/AGENT_BRIEF.md` §6 has the full plan, the four confirmed
-   helper arities, and the one open question (`func_ov003_02082750` is called with 3 arguments
-   at one site and 2 at another, and the callee clobbers r2 before reading it). The struct it
-   needs is pinned. This is the first thing to take on.
-2. Then `02126354` (596 B, the Lser's last command handler, dispatched from `02125cf8` case 2)
-   and `021265a8` (44 B, case 3).
-3. **A wrong declaration in `Combat.h` is confirmed and unfixed** — see
+1. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
+   half-written**. `build/scratch/AGENT_BRIEF.md` §10 has the eight-step plan and the three open
+   questions. It is the largest thing left in this run and packs four hard idioms into 648 bytes.
+2. **The two near-misses first, they are small diffs.** `021268c4` is 30 bytes out on one
+   comparison (brief §8, six spellings already tried); `02126b2c` is 4 bytes long and one
+   register low (brief §9, one construct not yet tried). Both are cheaper than anything else on
+   the list.
+3. Then `02126e80` (304 B), `02126fb0` (656 B), `02127240` (304 B), `02127370` (260 B),
+   `02127474` (436 B) — the rest of RG's phases.
+4. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6
+   with the seven-step plan, four confirmed arities, and the one open question
+   (`func_ov003_02082750` is called with 3 arguments at one site and 2 at another while the callee
+   clobbers r2 before reading it; try the 2-argument declaration first).
+5. **A wrong declaration in `Combat.h` is confirmed and unfixed** — see
    `build/scratch/AGENT_BRIEF.md` §5. `func_ov003_02087f00`'s second parameter is `s32`, not a
    function pointer: `SndMgr_PlaySEWithPan` takes `(SndMgrSeIdx, s32 sePan)`, and of 106 call
    sites in `src/`, 105 pass an `s32` expression and **zero** pass a real function pointer. 22
    casts in the finished `BtlEnm006.c` exist only to satisfy the bad declaration. Fixing it
    means deleting those casts and re-verifying ov010 is still byte-identical — a separate
    commit, not this overlay's business.
-4. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
+6. **RG is now largely characterised** (0x208, entry `021278d4`): `0x24` flag, `0x28`/`0x2C` a
+   position pair, `0x30` a countdown, `0x80` a `u16` mode, `0x84` a `CombatSprite`, `0x1C0` a
+   counter, `0x1C2` its latch, `0x1C4` a phase, `0x1C8` a callback, `0x1CC` a result,
+   `0x1D0`/`0x1D4`/`0x1D8` a step triple, `0x1DC`/`0x1E0`/`0x1E4` seeded together, `0x1E8` a
+   step, `0x1F4` a counter, `0x1F6` a flag byte, `0x1F8`/`0x1FA` an `s16` pair, `0x1FC` a `-1`
+   sentinel. Still to characterise: **Rnge 0x06C** (`02127ce0`), **SWA 0x020** (`0212801c`),
+   **Sprl 0x0B8** (`02128758`), **Tatt 0x250** (`02129934`), **UG 0x214** (`0212b99c`;
+   `0212bac8` is its per-frame handler), plus the four 0x180-byte handles at
+   `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. For each, the task's
+   *initialiser* is the cheap way in: it writes every field, so it pins the layout.
+7. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
    entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
    blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
    `relocs.txt` for the address.
-5. Still to characterise: **RG 0x208** (entry `021278d4`), **Rnge 0x06C** (`02127ce0`),
-   **SWA 0x020** (`0212801c`), **Sprl 0x0B8** (`02128758`), **Tatt 0x250** (`02129934`),
-   **UG 0x214** (`0212b99c`; `0212bac8` is its per-frame handler). Plus the four 0x180-byte
-   handles at `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. For each, the
-   task's *initialiser* is the cheap way in: it writes every field, so it pins the layout.

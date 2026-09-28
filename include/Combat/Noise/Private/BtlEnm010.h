@@ -107,7 +107,7 @@ typedef struct BtlEnm010UG {
     /* 0x1F0 */ s32 unk_1F0;
     /* 0x1F4 */ s32 pad_1F4[3];
     /* 0x200 */ s32 pad_200;
-    /* 0x204 */ s32 pad_204;
+    /* 0x204 */ s32 unk_204;
     /* 0x206 */ u8  unk_206;
     /* 0x207 */ u8  pad_207;
     /* 0x208 */ s32 unk_208;
@@ -154,17 +154,39 @@ typedef struct BtlEnm010UG {
 ///          decide whether the phase has finished. `0x1D0` is biased off the same `-0x40000`
 ///          expression by `+0x38000`, which is why that value stays in a register across both.
 ///   `0x1D8` a `0x2800` step written when `Sprite::unk16 == 3 && Sprite::frameTimer == 1`, and
-///          zeroed when the phase ends.
+///          zeroed when the phase ends. `0x1E8`/`0x1EC`/`0x1F0` are the second velocity triple:
+///          `func_ov011_02127a64` adds them into `0x1D0`/`0x1D4`/`0x1D8`, having just added
+///          `0x1D0`/`0x1D4`/`0x1D8` into the position at `0x28`/`0x2C`/`0x30` -- two chained
+///          semi-implicit Euler steps, in that order.
+///   `0x18C` a `u16` reached as `data + 0x100 + 0x8C`. Bit 4 tested, bit 5 set:
+///          `tst r1, #0x10 / orrne r1, r1, #0x20 / strhne` -- a one-way latch.
+///   `0x200` the exit sentinel; `func_ov011_02127a64` bumps `0x204` while it reads `-1`.
+///   `0x54` a word whose bit 30 is set by the initialiser -- `orr r1, r1, #0x40000000` -- the
+///          same engine-flags word `BtlEnm010Owner` has at its own `0x54`.
+///   `0x1AC` and `0x1B0` are each written twice by the initialiser, once as the fresh value and
+///          once copied into `0x28`/`0x2C`; `0x1B4` and `0x30` are each written with a single
+///          zero. `0x1CC` is 1 and `0x1FC`/`0x200` are `0x1CC - 2`, so the `-1` sentinel is
+///          computed from the field rather than written as a literal -- the original emits
+///          `mov r0, #1 / sub r0, r0, #2` and would have used `mvn` for a plain `-1`.
 typedef struct BtlEnm010RG {
     /* 0x000 */ s32 pad_000[9]; // 0x00 .. 0x23
     /* 0x024 */ s32 unk_024;
     /* 0x028 */ s32 unk_028;
     /* 0x02C */ s32 unk_02C;
     /* 0x030 */ s32 unk_030;
-    /* 0x034 */ s32 pad_034[19]; // 0x34 .. 0x7F
+    /* 0x034 */ s32 pad_034[8];  // 0x34 .. 0x53
+    /* 0x054 */ s32 unk_054;
+    /* 0x058 */ s32 pad_058[10]; // 0x58 .. 0x7F
     /* 0x080 */ u16 unk_080;
     /* 0x082 */ u16 pad_082;
-    /* 0x084 */ s32 pad_084[79]; // 0x84 .. 0x1BF
+    /* 0x084 */ s32 pad_084[66]; // 0x84 .. 0x18B
+    /* 0x18C */ u16 unk_18C;
+    /* 0x18E */ u16 pad_18E;
+    /* 0x190 */ s32 pad_190[7]; // 0x190 .. 0x1AB
+    /* 0x1AC */ s32 unk_1AC;
+    /* 0x1B0 */ s32 unk_1B0;
+    /* 0x1B4 */ s32 unk_1B4;
+    /* 0x1B8 */ s32 pad_1B8[2]; // 0x1B8 .. 0x1BF
     /* 0x1C0 */ s16 unk_1C0;
     /* 0x1C2 */ s16 unk_1C2;
     /* 0x1C4 */ s16 unk_1C4;
@@ -177,13 +199,16 @@ typedef struct BtlEnm010RG {
     /* 0x1DC */ s32 unk_1DC;
     /* 0x1E0 */ s32 unk_1E0;
     /* 0x1E4 */ s32 unk_1E4;
-    /* 0x1E8 */ s32 pad_1E8[3]; // 0x1E8 .. 0x1F3
+    /* 0x1E8 */ s32 unk_1E8;
+    /* 0x1EC */ s32 unk_1EC;
+    /* 0x1F0 */ s32 unk_1F0;
     /* 0x1F4 */ s16 unk_1F4;
     /* 0x1F6 */ s16 unk_1F6;
     /* 0x1F8 */ s16 unk_1F8;
     /* 0x1FA */ s16 unk_1FA;
     /* 0x1FC */ s32 unk_1FC;
-    /* 0x200 */ s32 pad_200[2]; // 0x200 .. 0x207
+    /* 0x200 */ s32 unk_200;
+    /* 0x204 */ s32 unk_204;
 } BtlEnm010RG;
 
 /// The owner object every task in this overlay is hung off. `Task+0x18` / the spawn argument's
