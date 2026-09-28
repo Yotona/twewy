@@ -12,6 +12,19 @@
 
 // MARK: Data
 
+/// The first eight bytes of a `TaskHandle` -- see the note at its definition below.
+typedef struct TaskHandleHead {
+    /* 0x00 */ const char* taskName;
+    /* 0x04 */ s32 (*taskFunc)(TaskPool*, Task*, void*, s32);
+} TaskHandleHead; // Size: 0x8
+
+/// A `SpriteAnimEntry` with the two bytes of trailing alignment the tagger absorbed into
+/// data_ov010_02129216's extent. See the note at its definition below.
+typedef struct Enm006AnimEntryPad2 {
+    /* 0x00 */ SpriteAnimEntry entry;
+    /* 0x08 */ u8              pad[2];
+} Enm006AnimEntryPad2; // Size: 0xA
+
 // The variant records in .rodata reference these tables and the asset-name strings in
 // .data, so both sides are forward-declared here.
 // Task entry points referenced by the TaskHandle records below.
@@ -178,11 +191,13 @@ extern const SpriteAnimEntry data_ov010_02129068[17];
 extern const SpriteAnimEntry data_ov010_021290f0[14];
 extern const SpriteAnimEntry data_ov010_02129178[17];
 
-extern const Enm006Variant   data_ov010_02129008;
-extern const Enm006Variant   data_ov010_02129018;
-extern const SpriteAnimEntry data_ov010_02129206[1];
-extern const SpriteAnimEntry data_ov010_0212920e[1];
-extern const SpriteAnimEntry data_ov010_02129216[1];
+extern const Enm006Variant       data_ov010_02129008;
+extern const Enm006Variant       data_ov010_02129018;
+extern const SpriteAnimEntry     data_ov010_02129206[1];
+extern const SpriteAnimEntry     data_ov010_0212920e[1];
+extern const Enm006AnimEntryPad2 data_ov010_02129216;
+extern const TaskHandleHead      Tsk_BtlEnm006_Swirl;
+extern const u32                 data_ov010_021292c0;
 
 // .rodata, in the original's layout order.
 //
@@ -292,8 +307,12 @@ const SpriteAnimEntry data_ov010_0212920e[1] = {
     {16, 18, 17, 0},
 };
 
-const SpriteAnimEntry data_ov010_02129216[1] = {
+// symbols.txt gives data_ov010_02129216 a 10-byte extent: the tagger folded the two bytes of
+// alignment padding that follow the record into the symbol. Declared here as a 10-byte object so
+// objdiff sees the same extent. The padding is not a real field; the record itself is 8 bytes.
+const Enm006AnimEntryPad2 data_ov010_02129216 = {
     {16, 18, 17, 0},
+    {0, 0},
 };
 
 const TaskHandle Tsk_BtlEnm006_DeadEff = {data_ov010_0212938c, func_ov010_02125730, 0x6C};
@@ -319,7 +338,19 @@ const s16 data_ov010_0212925c[42] = {
 
 const s16 data_ov010_021292b0[4] = {0x17, 0x17, 0x17, 0};
 
-const TaskHandle Tsk_BtlEnm006_Swirl = {data_ov010_021293b8, func_ov010_02126d04, 0xA0};
+// The Swirl handle is declared in two pieces, not as one `TaskHandle`. symbols.txt gives
+// Tsk_BtlEnm006_Swirl an 8-byte extent and puts a separate 4-byte symbol at 0x021292c0 -- and
+// that second word is genuinely a distinct object, not a tagger artifact: four overlays
+// (10, 16, 33, 35) carry a relocation to 0x021292c0, i.e. other code loads a pointer to it.
+// The `ambiguous` flag on that symbol only records that the tagger had no name for a bare u32.
+// So the honest model is an 8-byte head plus a 4-byte dataSize, and the two are declared
+// consecutively so they stay adjacent. Editing symbols.txt to delete the second symbol breaks
+// the delink, because those relocations need a name at that address.
+const TaskHandleHead Tsk_BtlEnm006_Swirl = {data_ov010_021293b8, func_ov010_02126d04};
+// Named to match symbols.txt so the delink's ov009 relocations to 0x021292c0 resolve against
+// this object directly. With any other name the linker gives it no address at all (nothing in
+// our own build references it) and objdiff cannot pair it with the original symbol.
+const u32 data_ov010_021292c0 = 0xA0;
 
 const SpriteAnimEntry data_ov010_021292c4[3] = {
     {16, 18, 17, 4},
@@ -358,7 +389,7 @@ char data_ov010_02129364[24] = {'A', 'p', 'l', '_', 'S', 'u', 'y', '/', 'G', 'r'
 char data_ov010_0212937c[4]  = "in";
 
 SpriteAnimEntry* data_ov010_02129380[3] = {
-    &data_ov010_02129216[0],
+    (SpriteAnimEntry*)&data_ov010_02129216.entry,
     &data_ov010_0212920e[0],
     &data_ov010_02129206[0],
 };
@@ -677,7 +708,9 @@ void func_ov010_02126c38(void* arg0) {
             pool = (TaskPool*)((u32)pool + 0x8C + 0x8000);
         }
     }
-    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swirl, 0, 0, 0, &self);
+    // The 4-byte dataSize immediately follows the 8-byte head, so this reinterprets the pair as
+    // a whole TaskHandle again.
+    EasyTask_CreateTask(pool, (const TaskHandle*)&Tsk_BtlEnm006_Swirl, 0, 0, 0, &self);
 }
 
 // All three tests reach one shared `return 0` block, but by different routes: the first two branch
