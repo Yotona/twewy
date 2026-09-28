@@ -2280,25 +2280,24 @@ s32 func_ov011_0212801c(void* arg0, void* arg1, s32 arg2, s32 index) {
 /// same 0x20-byte spawn block, and `0x18` is the slot count. The per-slot x is a **16-bit**
 /// fixed-point sum: the division result and the `0x14 - step/2` bias are each rounded through
 /// `lsl #0x10 / lsr #0x10` and then added and rounded again, so the whole expression is `s16`.
-/// Rnge's spawn. The 0x20-byte data is a five-slot task-id array at `0x0C`; the argument is the
-/// same 0x20-byte spawn block, and `0x18` is the slot count. The per-slot x is a **16-bit**
-/// fixed-point sum: the division result and the `0x14 - step/2` bias are each rounded through
-/// `lsl #0x10 / lsr #0x10` and then added and rounded again, so the whole expression is `s16`.
+///
+/// Open (+28 size): the reference keeps four values live across the `021282b8` call (p, a, i and
+/// the bias, pre-shifted `lsl #0x16` into r7) and re-derives `0x18`/`0x1C` at each use. Naming
+/// `count`/`step` parks them in callee-saved registers (+4 each; both re-derived now, -3 bytes).
+/// The bias wants its own statement before the call -- tried, and it costs 2 bytes on its own;
+/// the remaining piece is that whole pre-call schedule taken together.
 s32 func_ov011_02128070(void* p, void* a) {
-    s32 count;
     s32 i;
-    s32 step;
-    s32 v;
-    s32 r;
 
     MI_CpuSet(p, 0, 0x20);
-    count = *(s32*)((u8*)a + 0x18);
-    for (i = 0; i < count; i++) {
-        step = *(u16*)((u8*)a + 0x1C);
-        v    = (s16)((s16)_s32_div_f(step * i, count - 1) + (s16)((s32) * (u16*)((u8*)a + 0x14) - step / 2));
-        r = func_ov011_021282b8(*(s32*)((u8*)a + 0x00), *(s32*)((u8*)a + 0x04), *(s32*)((u8*)a + 0x08), *(s32*)((u8*)a + 0x0C),
+    for (i = 0; i < *(s32*)((u8*)a + 0x18); i++) {
+        s32 v;
+
+        v = (s16)((s16)_s32_div_f(*(u16*)((u8*)a + 0x1C) * i, *(s32*)((u8*)a + 0x18) - 1) +
+                  (s16)((s32) * (u16*)((u8*)a + 0x14) - *(u16*)((u8*)a + 0x1C) / 2));
+        *(s32*)((u8*)p + 0x0C + i * 4) =
+            func_ov011_021282b8(*(s32*)((u8*)a + 0x00), *(s32*)((u8*)a + 0x04), *(s32*)((u8*)a + 0x08), *(s32*)((u8*)a + 0x0C),
                                 v, *(s32*)((u8*)a + 0x10), *(s16*)((u8*)a + 0x16));
-        *(s32*)((u8*)p + 0x0C + i * 4) = r;
     }
     for (; i < 5; i++) {
         *(s32*)((u8*)p + 0x0C + i * 4) = -1;
