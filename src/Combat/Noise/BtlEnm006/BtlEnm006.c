@@ -110,14 +110,14 @@ extern s32  func_ov003_020cb784(s32);
 extern void func_ov003_020c4c9c(BtlEnm006*);
 extern s32  func_ov010_021270a8(void*, void*);
 extern s32  func_ov003_020cb744(s32);
-// DO NOT "fix" this to (BtlEnm006*) and pass `data`.  The helper genuinely dereferences r0
-// (`ldr r2, [r0, #0x7c]`), so it is really a 1-argument function -- but the original's call
-// sites never set up r0: at both of ours the incoming `data` is still live in r0 (it is
-// parked in r4, not moved), and the original emits a bare `bl func_ov003_020c3c88`.  Passing
-// the argument explicitly adds a `mov r0, r4` the original does not have, which drops
-// func_ov010_02127550 from 100% to 76.91% and func_ov010_021259e8 to 81.67%.
-// See BtlEnm015.c, which calls the same helper with `mov r0, r5` and is correctly 1-arg.
-extern void* func_ov003_020c3c88(void);
+// The helper dereferences r0 (`ldr r2, [r0, #0x7c]` then `ldrsh r0, [r0, #0x80]`), so it
+// really takes 1 argument; it was declared `(void)` here only because the original's call
+// sites never set r0 up -- the incoming `data` was still live in r0, and the allocator
+// coalesced the implicit pass with it.  Declaring it and passing `data` explicitly is
+// score-neutral and byte-neutral (the coalescing already happened), and it removes the
+// dependence on r0 happening to be right.  BtlEnm015.c calls the same helper with an
+// explicit `mov r0, r5` and was already 1-arg.
+extern void* func_ov003_020c3c88(BtlEnm006*);
 extern s32   func_ov003_020c42ec(BtlEnm006*);
 extern s32   func_ov003_020c4348(BtlEnm006*);
 extern s32   func_ov010_02128a08(BtlEnm006*, s32);
@@ -2272,7 +2272,7 @@ bump:
 void func_ov010_02127550(BtlEnm006* data) {
     if (data->sprite.unk_C0 == 0) {
         data->sprite.unk_C0++;
-        u8* g               = (u8*)func_ov003_020c3c88();
+        u8* g               = (u8*)func_ov003_020c3c88(data);
         s16 kx              = *(s16*)(g + 0x1C);
         s16 ky              = *(s16*)(g + 0x20);
         s32 p               = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * kx;
@@ -2310,7 +2310,7 @@ void func_ov010_021259e8(BtlEnm006* data) {
     }
     if (data->sprite.unk_C0 == 0) {
         data->sprite.unk_C0++;
-        u8* g               = (u8*)func_ov003_020c3c88();
+        u8* g               = (u8*)func_ov003_020c3c88(data);
         s16 kx              = *(s16*)(g + 0x22);
         s16 ky              = *(s16*)(g + 0x26);
         s32 p               = ((s32)(((Enm006SpriteAlt*)&data->sprite)->unk_E8 << 11) / 3 + 0x1000) * kx;
