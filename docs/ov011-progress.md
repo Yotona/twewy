@@ -186,8 +186,9 @@ a walking `CombatSprite*` with a literal stride.
 
 ## Done
 
-**49 of 114 functions byte-identical** (`RELOCC` or better), 12 written but not yet exact
-(315 differing bytes between them), **53 not yet written**.
+**62 of 114 functions byte-identical** (`RELOCC` or better, 6 of them raw `OK`), 14 written but
+not yet exact (371 differing bytes between them), **38 not yet written**. objdiff 45/114 at 100%,
+average 64.20%.
 
 | function | bytes | status |
 |----------|-------|--------|
@@ -249,19 +250,35 @@ a walking `CombatSprite*` with a literal stride.
 | `func_ov011_02129934` | 96 | **byte-exact** |
 | `func_ov011_0212a10c` | 40 | **byte-exact** |
 | `func_ov011_02128c44` | 96 | written, 4 B short — brief §14 |
-| `func_ov011_02128eb0` | 96 | written, base register — brief §14 |
+| `func_ov011_02128eb0` | 96 | **byte-exact** — landed once its callee's arity was fixed |
 | `func_ov011_02128f10` | 112 | written, 20 B long — brief §14 |
-| `func_ov011_0212a634` | 64 | written, base register — brief §14 |
+| `func_ov011_0212a634` | 64 | **byte-exact** — landed once its callee's arity was fixed |
+| `func_ov011_0212b318` | 112 | **byte-exact** |
+| `func_ov011_0212b388` | 100 | written, two instructions — brief §14 |
+| `func_ov011_0212b4f4` | 100 | **byte-exact** |
+| `func_ov011_0212b558` | 128 | **byte-exact** |
+| `func_ov011_0212b800` | 144 | **byte-exact** |
+| `func_ov011_0212b99c` | 72 | **byte-identical** (raw) |
+| `func_ov011_0212bc84` | 68 | **byte-exact** |
+| `func_ov011_0212bcc8` | 24 | **byte-exact** |
+| `func_ov011_0212bd3c` | 84 | written, 4 B short — brief §14 |
+| `func_ov011_0212bdbc` | 28 | **byte-identical** (raw) |
+| `func_ov011_0212bd90` | 44 | **byte-identical** (raw) |
+| `func_ov011_02128e30` | 128 | **byte-exact** |
+| `func_ov011_0212aee8` | 172 | written, 4 B long — brief §14 |
+| `func_ov011_0212b0a4` | 196 | **byte-exact** |
+| `func_ov011_0212b9e4` | 228 | written, 4 B short — brief §14 |
 
 **The contiguous-prefix framing was dropped two rounds ago**, and it was costing throughput: the
 count is what matters, and a byte-exact function at a higher address is worth more than a
 contiguous prefix that stalls. Consequence to remember: `fbdiff.py` measures per symbol, so
-the count above is honest, but **sixteen functions are currently in the file out of address
-order**. The run `02127628`..`02128758` is written, and `02128348`/`02128698`/`021282b8` were
-*inserted* at their addresses rather than appended, so what is left inside it is only the three
-still-unwritten `021282b8`-adjacent functions `021283a8` and `021284bc` plus the unwritten
-`02126bf8`..`02127628` block ahead of it. They must be
-reinserted in order before the final link, and `romcmp.py` is what will catch it if they are not.
+the count above is honest, but **roughly sixteen functions are currently in the file out of
+address order**. The run `02127628`..`02128758` is written, and `02128348`/`02128698`/`021282b8`
+were *inserted* at their addresses rather than appended, so what is left inside it is only the
+still-unwritten `021283a8` and `021284bc` plus the unwritten `02126bf8`..`02127628` block ahead
+of it. The `0212b318`..`0212bd90` batch was appended past the end of the file, so it is in
+order. Everything must be reinserted in order before the final link, and `romcmp.py` is what will
+catch it if they are not.
 
 Three functions were read in full and deliberately **skipped rather than half-written**:
 `021260e8` (620 B, brief §6) and `02126bf8` (648 B, brief §10) — the two largest in the overlay.
@@ -275,37 +292,39 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **The twelve written-not-exact, they are the cheapest bytes on the board.** All in
-   `build/scratch/AGENT_BRIEF.md` §8, §9, §12 and §14. Four of them (`02126b2c`, `02127b98`,
-   `0212a634`, `02128eb0`) are the *same* r0-vs-r1 base allocation and are grouped under one
-   heading in §14 — do not spend more than one build each on that.
-2. **New: the reverse-order rule** (brief §15). MWCC loads a struct assignment's sources in
-   reverse of the order the C assigns the fields, and stores them in reverse of that again. It
-   is what made `021282b8` byte-exact, and it is the open question on `02128b80`.
-3. **The unattempted list is now 53 and getting short.** Next in address order after the last
-   landed function: `02128cc0` (0x170), `02128e30` (0x80), `02128f80` (0x190), `02129188` (0x220),
-   `02129410` (0x524), `02129994` (0x1F0), `02129b84`, `02129cec`, `02129ef8`, `02129f80`,
-   `0212a134`, `0212a2ec`, `0212a420`, `0212a540`, `0212a674`, then the UG block from `0212b99c`
-   and the tail to `0212bdd8`.
-4. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
+1. **The unattempted list is 38 and getting short.** Next in address order after the last
+   landed function: `02128cc0` (0x170), `02128f80` (0x190, Tatt's — its `0x24C` byte and
+   `0x84` sprite are now identifiable), `02129188` (0x220), `02129410` (0x524),
+   `02129994` (0x1F0), `02129b84`, `02129cec`, `02129ef8`, `02129f80`, `0212a134`, `0212a2ec`,
+   `0212a420`, `0212a540`, `0212a674`, `0212a78c`, `0212aa20`, `0212ac0c`, `0212af94`,
+   `0212b168`, `0212b3ec`, `0212b5d8`, `0212b6e0`, `0212b890`, `0212bac8` (UG's per-frame
+   handler), then the tail to `0212bdd8` and the four 0x180-byte handles at
+   `0x0212bde8`-`0x0212be18` whose tasks are still unidentified.
+2. **The fourteen written-not-exact, they are the cheapest bytes on the board.** All in
+   `build/scratch/AGENT_BRIEF.md` §8, §9, §12 and §14. Three of the four functions that used to
+   be grouped as "the same r0-vs-r1 base allocation" are now byte-exact — **two of them were
+   wrong callee arities, not allocator noise.** The test is in §14: read the callee's first two
+   instructions before writing a function off as an allocator artefact. Only `02126b2c`
+   survives, and its arity is correct, so it is genuinely unexplained.
+3. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
    half-written**. `build/scratch/AGENT_BRIEF.md` §10 has the eight-step plan and the three open
    questions. It is the largest thing left and packs four hard idioms into 648 bytes.
-5. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6.
-   Try the 2-argument declaration for `func_ov003_02082750` first.
-6. **A wrong declaration in `Combat.h` is confirmed and unfixed** — brief §5.
-   `func_ov003_02087f00`'s second parameter is `s32`, not a function pointer: of 106 call sites
-   in `src/`, 105 pass an `s32` expression and **zero** pass a real function pointer. 22 casts in
-   the finished `BtlEnm006.c` exist only to satisfy the bad declaration. Fixing it means deleting
-   those casts and re-verifying ov010 is still byte-identical — a separate commit.
-7. **Structs.** `BtlEnm010RG` (0x208) and `BtlEnm010Lser` (0x254) done. `BtlEnm010Rnge` (0x6C),
-   `BtlEnm010Sprl` (0xB8) and `BtlEnm010Tatt` (0x250) created and partly pinned. Spawn blocks:
-   `BtlEnm010RngeArgs` (0x20), `BtlEnm010SprlArgs` (0x18). `BtlEnm010RngeArgs` is used by two
-   different spawns with different arities — see the commit for `02127f6c`. Still to create:
-   **SingleShot 0x0B4** (`0x021283a8` clears exactly 0xB4 via `MI_CpuSet`), **UG 0x214**
-   (`0212b99c`; `0212bac8` is its per-frame handler; `0x28`/`0x2C`/`0x30` a position triple and
-   `0x210` a counter reaching `0x214`), plus the four 0x180-byte handles at
-   `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. **`02129110`/`021293a8` use a
-   0x88-stride record block that fits none of these** — raw offsets there are deliberate.
+4. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6.
+   `func_ov003_02082750` is now declared 3-argument, which was the open question in §6 and is
+   the wrong way round for `021260e8`'s call site — switch it back if that function is next.
+5. **Structs.** `BtlEnm010RG` (0x208) and `BtlEnm010Lser` (0x254) done. `BtlEnm010Rnge` (0x6C),
+   `BtlEnm010Sprl` (0xB8), `BtlEnm010Tatt` (0x250) and **`BtlEnm010UG` (0x214)** created and
+   partly pinned — UG's initialiser `0212b9e4` is written and clears exactly 0x214, and its
+   `0x1C0`/`0x1C2`/`0x1C4` are Tatt's at a `+0x40` offset, which is why `func_ov011_02129ed0`
+   serves both tasks. Spawn blocks: `BtlEnm010RngeArgs` (0x20), `BtlEnm010SprlArgs` (0x18).
+   `BtlEnm010RngeArgs` is used by two different spawns with different arities — see the commit
+   for `02127f6c`. Still to create: **SingleShot 0x0B4** (`0x021283a8` clears exactly 0xB4 via
+   `MI_CpuSet`), plus the four 0x180-byte handles at `0x0212bde8`-`0x0212be18`.
+   **`02129110`/`021293a8` use a 0x88-stride record block that fits none of these** — raw offsets
+   there are deliberate, and `02128e30` walks the same block.
+6. **A wrong declaration in `Combat.h` was confirmed and has since been fixed** — brief §5.
+   `func_ov003_02087f00` now takes `(SndMgrSeIdx, s32 sePan)`; the six casts in
+   `BtlEnm010.c` are gone. `func_ov003_020843b0` is declared `s16` everywhere.
 8. `.rodata` and `.data` still need their symbols named and declared.
 9. **The address-order debt is unchanged in size but still mostly unwritten functions.** Keep
    inserting at address. When the unattempted list is down to a handful, do the reordering pass

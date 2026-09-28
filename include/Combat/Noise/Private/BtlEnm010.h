@@ -272,6 +272,31 @@ typedef struct BtlEnm010Sprl {
     /* 0x09C */ s32 pad_09C[7];  // 0x9C .. 0xB7
 } BtlEnm010Sprl;
 
+/// `Tsk_BtlEnm010_SingleShot` task data -- **0xB4 bytes**, pinned by the `MI_CpuSet` in
+/// `func_ov011_021283a8`, its own initialiser, which clears exactly 0xB4.
+///
+/// The `CombatSprite` is at `0x04`, not `0x00` -- the same shape as Sprl, and it is the only
+/// offset the initialiser pins besides the tail block. The spawn block it is handed is
+/// `BtlEnm010RngeArgs` (0x20): owner at `+0x00`, a 16-bit scale at `+0x10`, and `0x14`/`0x16` a
+/// `u16`/`s16` pair.
+typedef struct BtlEnm010SingleShot {
+    /* 0x000 */ u32 pad_000[1];   // 0x00 .. 0x03
+    /* 0x004 */ u8  pad_004[108]; // 0x04 .. 0x6F
+    /* 0x070 */ s32 unk_070[3];   // 0x70 .. 0x7B
+    /* 0x07C */ u8  pad_07C[24];  // 0x7C .. 0x93
+    /* 0x094 */ u32 pad_094;      // 0x94 .. 0x97
+    /* 0x098 */ s32 unk_098;
+    /* 0x09C */ s32 unk_09C;
+    /* 0x0A0 */ s32 unk_0A0;
+    /* 0x0A4 */ s32 unk_0A4;
+    /* 0x0A8 */ s16 unk_0A8;
+    /* 0x0AA */ s16 unk_0AA;
+    /* 0x0AC */ u16 unk_0AC;
+    /* 0x0AE */ u16 unk_0AE;
+    /* 0x0B0 */ u16 unk_0B0;
+    /* 0x0B2 */ u16 unk_0B2;
+} BtlEnm010SingleShot;
+
 /// `Tsk_BtlEnm010_Tatt` task data -- **0x250 bytes**, from the word in the `TaskHandle` at
 /// `0x0212c240`.
 ///
@@ -287,7 +312,7 @@ typedef struct BtlEnm010Tatt {
     /* 0x06C */ s32 pad_06C[47]; // 0x6C .. 0x127
     /* 0x128 */ s32 pad_128[38]; // 0x128 .. 0x1BF
     /* 0x1C0 */ s16 unk_1C0;
-    /* 0x1C2 */ s16 pad_1C2;
+    /* 0x1C2 */ s16 unk_1C2;
     /* 0x1C4 */ s16 unk_1C4;
     /* 0x1C6 */ s16 pad_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010Tatt*);
@@ -298,7 +323,7 @@ typedef struct BtlEnm010Tatt {
     /* 0x1DC */ s32 pad_1DC[7]; // 0x1DC .. 0x1F7
     /* 0x1F8 */ s16 unk_1F8;
     /* 0x1FA */ s16 unk_1FA;
-    /* 0x1FC */ s16 pad_1FC;
+    /* 0x1FC */ s16 unk_1FC;
     /* 0x1FE */ s16 pad_1FE;
     /* 0x200 */ s32 pad_200[2]; // 0x200 .. 0x207
     /* 0x208 */ s32 unk_208;
