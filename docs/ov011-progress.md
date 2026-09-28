@@ -108,7 +108,7 @@ offsets.
 
 **Always measure the full range `-end 0x0212bdd8`.**
 
-## Structs - resolved
+## Structs - resolved, and the answer to the open question
 
 The overlay owns **nine tasks, each with a different data size**, and the size is written out
 literally in each `TaskHandle` in `.rodata` (the word after the two function pointers). That
@@ -137,10 +137,7 @@ overlay.
 - `func_ov011_02125750` and `func_ov011_021258b4` get their data from
   `EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0)` -- the one task
   `func_ov011_021256c0` spawns from the handle at `0x0212bfa4`. That is
-  **`Tsk_BtlEnm010_AnmMgr`, 0x3C bytes.** Five 8-byte slots at `0x14` end at exactly
-  `0x14 + 0x28 = 0x3C`, so the count is five and the table fills the struct to its last byte.
-  `0x34` is slot 4 word 0 (`unk_34 - fileSize`), `0x38` is slot 4 word 1 read as a halfword
-  (the mode that scales a 0x28-stride table index).
+  **`Tsk_BtlEnm010_AnmMgr`, 0x3C bytes.**
 - `0x28`/`0x2C`/`0x30` as position x/y/z and `0x1C8` as a callback come from
   `func_ov011_0212bac8`, whose data comes from `Task* + 0x18` -- a different task,
   `Tsk_BtlEnm010_UG`, **0x214 bytes**.
@@ -151,37 +148,45 @@ reaching for overlapping views.** Real overlap inside one struct is much rarer t
 
 ### Confirmed layouts
 
-`BtlEnm010AnmMgr` (0x3C), `BtlEnm010UG` (0x214) and `BtlEnm010Sprite` are in
-`include/Combat/Noise/Private/BtlEnm010.h`, each field carrying its evidence in a comment.
+`BtlEnm010AnmMgr` (0x3C), `BtlEnm010UG` (0x214), `BtlEnm010Sprite` and `BtlEnm010LserArgs`
+are in `include/Combat/Noise/Private/BtlEnm010.h`, each field carrying its evidence in a
+comment. Table also in `build/scratch/AGENT_BRIEF.md`.
 
-`BtlEnm010AnmMgr`: `0x00` / `0x04` base pointers, `0x08` an 8-byte-stride `{binId, offset}`
-table (all three from `func_ov003_020cb200`), `0x14` five 8-byte slots written by
-`func_ov003_020cb128` (which is `stm r0, {r1, r2}`), `0x34` slot 4 word 0, `0x38` slot 4 word 1
-as a `u16`. `0x0C`/`0x10` are untouched by any implemented function and are explicit padding.
+`BtlEnm010AnmMgr`: `0x00` the decompression buffer, `0x04` its size, `0x08` an 8-byte-stride
+`{binId, offset}` table (all three from `func_ov003_020cb200`; `0x04`/`0x00` confirmed by
+`func_ov003_020cb150`, which allocates `unk_04` bytes off `gMainHeap` and stores the result in
+`unk_00`); `0x0C` a halfword count (`func_ov003_020cb194`); `0x14` **four** 8-byte slots
+`0x14..0x33`; `0x34` s32 and `0x38` u16 are the two fields *after* the table, **not** a fifth
+slot -- `func_ov011_02125a08` stores `max10 + sec10` in `unk_34` and the mode in `unk_38`.
+(An earlier revision of this doc claimed five slots; the index ranges in `02125750` (0..2) and
+`021258b4` (2..3) only ever reach four.)
 
-`BtlEnm010UG` (0x214): `0x28/0x2C/0x30` position x/y/z; `0x1C8` a callback (`blx r1` behind a
-`cmp #0` / `beq`); `0x1CC` receives `func_ov003_020c4668`'s result; `0x1D0/0x1D4/0x1D8` and
-`0x1E8/0x1EC/0x1F0` two velocity triples, the second added into the first; `0x206` a `u8` flag
-tested with an `lsl #0x1f / lsr #0x1f` pair; `0x208` an `EasyTask_ValidateTaskId` argument;
-`0x20C`/`0x210` a counter pair. All from `func_ov011_0212bac8`, whose four entry points are
-tabulated at `0x0212c36c`.
+`BtlEnm010UG` (0x214): `0x28/0x2C/0x30` position x/y/z; `0x1C8` a callback; `0x1CC` a result
+word; `0x1D0/0x1D4/0x1D8` and `0x1E8/0x1EC/0x1F0` two velocity triples, the second added into
+the first; `0x206` a `u8` flag; `0x208` an `EasyTask_ValidateTaskId` argument; `0x20C`/`0x210` a
+counter pair. All from `func_ov011_0212bac8`, whose four entry points are tabulated at
+`0x0212c36c`.
 
-`BtlEnm010Sprite`: `unk_46` at **0x46** -- a halfword, tested and then set by
-`func_ov011_02125750`. 0x46 is not word-aligned, so the padding in front of it must be
-halfword-granular; a `s32 pad[n]` array silently moves the field to 0x8C.
+`BtlEnm010Sprite`: `unk_46` at **0x46**, a halfword tested and then set by
+`func_ov011_02125750`. Not word-aligned, so the padding in front of it must be
+halfword-granular; a `s32 pad[n]` array silently moves it to 0x8C.
 
 ## Done
 
+**8 of 114 functions byte-identical** (`RELOCC`), **0 differing bytes**, objdiff average
+**100.00%** over the paired set. The emitted prefix `0x021256c0..0x02125c00` is contiguous and
+every function's size matches the original's exactly.
+
 | function | bytes | status |
 |----------|-------|--------|
-| `func_ov011_021256c0` | 84 | **byte-exact** (modulo the `bl` relocation) |
-| `func_ov011_02125714` | 60 | **byte-exact** (modulo the `bl` relocation) |
-| `func_ov011_02125750` | 356 | 6 of 356 bytes differ; objdiff 99.44% |
-
-`func_ov011_02125750`'s residue is a single six-instruction hunk in which three dead
-temporaries are numbered one register lower than the original's (`r1/r2/r3` against
-`r0/r1/r2`); the instruction sequence, the `mla`, the indexed `ldr` and the function's size
-all match. Stopping there.
+| `func_ov011_021256c0` | 84 | **byte-exact** |
+| `func_ov011_02125714` | 60 | **byte-exact** |
+| `func_ov011_02125750` | 356 | **byte-exact** |
+| `func_ov011_021258b4` | 284 | **byte-exact** |
+| `func_ov011_021259d0` | 56 | **byte-exact** |
+| `func_ov011_02125a08` | 384 | **byte-exact** |
+| `func_ov011_02125b88` | 16 | **byte-exact** |
+| `func_ov011_02125b98` | 104 | **byte-exact** |
 
 `.text`/`.rodata`/`.data` are not byte-identical, and `romcmp.py` has not been run - the
 linked ROM does not exist until all 114 functions are emitted, so `fbdiff.py` is the only
@@ -193,17 +198,20 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **Work strictly in address order from `0x021258b4`.** The emitted prefix
-   `0x021256c0..0x021258b4` is now contiguous and correct in size, so the next function
-   emitted will land in the right place.
-2. `func_ov011_021258b4` is `func_ov011_02125750` with the slot loop starting at 2 and
-   running to 4, and with the `CombatSprite_LoadFromTable` tail unmodified - read it next to
-   `02125750`'s finished C, most of it will transfer.
-3. `func_ov011_021259d0` is the `AnmMgr` task entry point (56 bytes, a 3-way dispatcher onto
-   `02125a08` / `02125b88` / `return 1`) and is trivially reachable.
+1. **Work strictly in address order from `0x02125c00`.** The prefix is contiguous, so the next
+   function emitted will land in the right place.
+2. `func_ov011_02125c00` is the next one, and it needs the **`Tsk_BtlEnm010_Lser` (0x254-byte)
+   struct**, which nothing has characterised yet. Its one caller passes
+   `add r0, r5, #0x22c / add r1, r5, #0x230 / add r2, r5, #0x234 / add r3, r5, #0x4 /
+   str [r5,#0x24c], [sp]`, so the struct is the one `func_ov011_021260e8` walks. Start with
+   `census2.py func_ov011_021260e8`. Its signature is
+   `void f(s32* a, s32* b, s32* c, void* vec, s32 idx)` -- five arguments, the fifth on the
+   stack (which is why the callee reads it at `sp + 8` after its own 8-byte push).
+3. Then `02125c44`, `02125cf8`, `02125d48`, `02125e14`, `02125f24`, `02126064`, `021260e8` --
+   all still inside the AnmMgr/Lser region.
 4. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
    entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
    blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
    `relocs.txt` for the address.
-5. Still open: the eight 0x180-byte tasks at `0x0212bde8`-`0x0212be18` are uncharacterised,
-   and `BtlEnm010UG`'s `0x0C`-`0x1C4` range is untouched padding.
+5. Still open: the eight 0x180-byte tasks at `0x0212bde8`-`0x0212be18` are uncharacterised, and
+   `BtlEnm010UG`'s `0x0C`-`0x1C4` range is untouched padding.
