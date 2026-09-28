@@ -169,6 +169,16 @@ typedef struct Enm006Swlo {
     u8                    pad31[0x34 - 0x31];
 } Enm006Swlo; // Size: 0x34 (from the Tsk_BtlEnm006_Swlo TaskHandle)
 
+/// The `Tsk_BtlEnm006_DeadEff` task data. 0x6C bytes, and the CombatSprite is at offset *zero*
+/// here (the sibling constructors put theirs at 0x04). It is left as padding for the same reason
+/// as everywhere else: its size is unknown and naming it would fix the offsets below.
+typedef struct Enm006DeadEff {
+    u8             pad00[0x60];
+    /* 0x60 */ s32 unk_60; // position.x
+    /* 0x64 */ s32 unk_64; // position.y
+    /* 0x68 */ s32 unk_68; // position.z
+} Enm006DeadEff;           // Size: 0x6C (from the Tsk_BtlEnm006_DeadEff TaskHandle)
+
 /// Arguments handed to the `Tsk_BtlEnm006_*` task constructors.
 typedef struct Enm006Spawn {
     /* 0x00 */ BtlEnm006* unk_00;

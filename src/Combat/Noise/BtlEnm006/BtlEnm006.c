@@ -23,7 +23,7 @@ extern s32 func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
 
 // Per-stage workers dispatched by the task entry points above. Declared void* for the
 // task data because the owning structs are not mapped yet.
-extern s32  func_ov010_02125780(void*, void*);
+extern s32  func_ov010_02125780(Enm006DeadEff*, Enm006Spawn*);
 extern void func_ov010_02126a20(BtlEnm006*, void*);
 extern s32  func_ov010_02126a94(BtlEnm006*);
 extern void func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
@@ -1775,12 +1775,17 @@ s32 func_ov010_02128e80(BtlEnm006* data) {
 // The Swirl stage-0 constructor. The x coordinate carries a 0x20000 bias, and the mirror case
 // *normalises* it: subtract the bias, and bounce straight back if that lands exactly on zero.
 // Written as an `if (x == 0x20000) x += 0x20000` it compiles to the same thing but reads worse.
+//
+// `02082a04` takes **seven** arguments, not six: the anim table is the fourth, and the three
+// stack words are the element offset (0), the palette index and 0x30. Passing six leaves the
+// callee reading an uninitialised [sp+8] and dereferencing a NULL anim table.
 void func_ov010_02126d54(Enm006Swirl* data, Enm006Spawn* args) {
     MI_CpuSet(data, 0, 0xA0);
     BtlEnm006* d = args->unk_00;
     u16        v = d->unk_80;
-    u32        m = *(u32*)((u8*)d + 0x84) & 3;
-    func_ov003_02082a04(m, (u8*)data + 4, (void*)func_ov010_021256c0(v), 0, (u16)data_ov010_021292b0[v], 0x30);
+    u32        m = (u32)((s32) * (s32*)((u8*)d + 0x84) << 30) >> 30;
+    CombatSprite_LoadFromTable(m, (CombatSprite*)((u8*)data + 4), func_ov010_021256c0(v), data_ov010_021292c4, 0,
+                               (u16)data_ov010_021292b0[v], 0x30);
     Mini108_VBlank((CombatSprite*)((u8*)data + 4), 0, 0);
     data->unk_00 = d;
     data->unk_68 = d->unk_28;
@@ -1985,4 +1990,48 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
         self->unk_54 &= ~0x10000000;
     }
     return result;
+}
+
+// The DeadEff stage-0 constructor. Structurally the same as `func_ov010_02126d54` -- clear, read
+// the variant and the two-bit selector out of the owner, hand them to `02082a04`, prime the
+// sprite -- but the clear is 0x6C rather than 0xA0, the CombatSprite is at offset *zero*, and
+// there is no mirror-bias normalisation. The flip is tested against 1, not against 0.
+//
+// `func_ov003_02082a04` (CombatSprite_LoadFromTable) takes **seven** arguments: r0-r3 are the
+// palette mode, the sprite, the BinIdentifier and the anim table, and the three stack words at
+// [sp], [sp+4], [sp+8] are the anim-table element offset, the palette index and 0x30. The
+// `func_ov010_02126d54` call site spells it as a six-argument call, which is wrong.
+//
+// The two-bit selector is a shift *pair*, not a mask: `& 3` gives `and r7, r1, #3`. The `(s32)`
+// on the inside of the `<< 30` is what keeps `lsr` rather than `asr` on the outside, exactly as
+// the `<< 30 >> 31` recipe in the brief says -- MWCC only strength-reduces the unsigned form.
+//
+// `m` is live across the call, so it takes a callee-saved register (r7) and `v` takes r4, which
+// the original then reuses for the 0x30 argument constant once `v` is dead. `data` is in r6 and
+// `args` in r5 from the first instruction. `args->unk_00` is re-derived at each of its five uses
+// rather than kept in a local: a local that is only *read* on a path where it is never assigned
+// takes a callee-saved register and pushes everything else up one, which desynchronises the
+// whole function.
+//
+// Residue (81.9%): one 13-instruction hunk, the `02082a04` argument setup, and the literal-pool
+// order that follows from it. The original emits the anim-table pair first
+// (`ldr r1, [pc] / mov r2, r0 / ldr r3, [r1, r4, lsl #2]`) and the palette-index shift pair into
+// r12 (`lsl ip, r4, #1 / ldrh ip, [r1, ip]`); ours emits the zero, then the callback, then the
+// palette lookup into r3/lr, then the anim table. Thirty C spellings of the call (locals for each
+// argument, `register`, `const`/`u16`/`s32`/`u16*` casts, a block-scope prototype with `s32`
+// tails instead of `u16`, reordering the two locals, the unprototyped implicit declaration, the
+// argument spelled through a pointer local, moving one of the tail stores) all produce a
+// byte-identical word stream, so this is an allocator/scheduler tie-break, not a spelling.
+s32 func_ov010_02125780(Enm006DeadEff* data, Enm006Spawn* args) {
+    MI_CpuSet(data, 0, 0x6C);
+    u16 v = args->unk_00->unk_80;
+    u32 m = (u32)((s32) * (s32*)((u8*)args->unk_00 + 0x84) << 30) >> 30;
+    CombatSprite_LoadFromTable(m, (CombatSprite*)data, func_ov010_021256c0(v), data_ov010_02129380[v], 0,
+                               (u16)data_ov010_02129200[v], 0x30);
+    Mini108_VBlank((CombatSprite*)data, 0, 1);
+    CombatSprite_SetFlip((CombatSprite*)data, args->unk_00->unk_24 == 1);
+    data->unk_60 = args->unk_00->unk_28;
+    data->unk_64 = args->unk_00->unk_2C;
+    data->unk_68 = args->unk_00->unk_30;
+    return 1;
 }
