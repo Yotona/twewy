@@ -70,6 +70,10 @@ extern void                  Mini108_VBlank(CombatSprite*, u16, s32);
 extern void                  func_ov010_02128820(BtlEnm006*, s32);
 extern void                  CombatSprite_SetPaletteSource(CombatSprite*, s32);
 extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
+extern s32                   func_ov003_020c6230(void*);
+extern s32                   func_ov003_020c4c1c(void*);
+extern void                  func_ov003_020c4ee0(void*);
+extern s32                   func_ov003_020c5b2c(s32, void*, s32, s32, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
@@ -110,7 +114,7 @@ typedef struct Enm006PhaseRec {
 // Per-instance callbacks passed to the init helpers.
 extern void func_ov010_021259e8(BtlEnm006*);
 extern void func_ov010_02127764(void);
-extern void func_ov010_02125c80(void);
+extern void func_ov010_02125c80(BtlEnm006*);
 extern void func_ov010_02125b28(BtlEnm006*);
 extern void func_ov010_02125938(BtlEnm006*);
 extern s32  func_ov010_0212643c(BtlEnm006*);
@@ -859,6 +863,55 @@ void func_ov010_02125b28(BtlEnm006* data) {
                 return;
             }
             func_ov010_02125910(data, (void*)func_ov010_021259e8);
+            return;
+    }
+}
+
+// The two-phase variant of func_ov010_02125b28. Phase 0 does nothing but arm phase 1, and only if
+// the engine is not already animating; phase 1 is the one that moves. Two things here are
+// re-derived per use rather than cached, because the original re-derives them: the screen bound
+// behind the `unk_1D0` bias is fetched three times (once for the guard, once per arm), and the
+// two velocity copies are written as plain stores so their loads land in the same registers the
+// original uses.
+void func_ov010_02125c80(BtlEnm006* data) {
+    switch (data->sprite.unk_C4) {
+        case 0:
+            if (func_ov003_020c6230(data) != 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 1;
+            return;
+        case 1:
+            if (data->sprite.unk_C0 == 0) {
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xC, 0);
+                // 4.12 fixed point. The `+` arm is the fall-through and the `-` arm is the branch
+                // target, and the bound is re-fetched inside whichever arm runs. The guard's
+                // `bge` is *signed*, so the two operands stay signed.
+                if (data->unk_28 < func_ov003_020cb744(1) >> 1) {
+                    data->unk_1D0 = (func_ov003_020cb744(1) >> 1) + 0x60000;
+                } else {
+                    data->unk_1D0 = (func_ov003_020cb744(1) >> 1) - 0x60000;
+                }
+                data->unk_1D4       = data->unk_2C;
+                data->unk_1D8       = data->unk_30;
+                data->sprite.unk_C2 = func_ov010_02126830(data, (void*)0x4000);
+                func_ov003_020c4c1c(data);
+            }
+            if (data->unk_9A == 1 && data->unk_8C == 1) {
+                // The second parameter of func_ov003_02087f00 is declared as a callback pointer, but
+                // the original really calls 020843b0 here and passes the result.
+                func_ov003_02087f00(0x1CF, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            // (0x51, data, x, y, z): the stack argument is evaluated first, so `unk_30` is the
+            // one that reaches [sp] before r2/r3 are set up.
+            func_ov003_020c5b2c(0x51, data, data->unk_28, data->unk_2C, data->unk_30);
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            func_ov010_02125910(data, (void*)func_ov010_021259e8);
+            func_ov003_020c4ee0(data);
             return;
     }
 }
