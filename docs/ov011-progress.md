@@ -1,15 +1,17 @@
-# ov011 — `BtlEnm010` (in progress)
+# ov011 — `BtlEnm010`
+
+Status as of the session that ended at **74 of 114 functions byte-exact**. This file is the
+authoritative hand-off. Everything below is measured, not estimated.
 
 ## Identity
 
 `ov011` is **`BtlEnm010`**, a Noise (`Apl_Suy`) enemy. Identified from the `.data` string blob at
-`0x0212c460`, which holds `Apl_Suy/Grp_BtlEnm010_*.bin` — `MotMove`, `MotTurn`, `EffShot`,
-`EffRange`, and several letter-suffixed variants.
+`0x0212c460`: `Apl_Suy/Grp_BtlEnm010_*.bin` — `MotMove`, `MotTurn`, `EffShot`, `EffRange`, and
+several letter-suffixed variants.
 
-Same family as the four already-finished overlays: `BtlEnm006` (ov010), `BtlEnm014` (ov012),
-`BtlEnm015` (ov013), `BtlEnm026` (ov015). Those are byte-identical to the original ROM, so their
-C, headers and task-data structs are the reference for style and idiom — but **not** for struct
-offsets (see "The brief was wrong" below).
+Sibling overlays, all four finished and **byte-identical to the original ROM**, and the models for
+style and idiom: `BtlEnm006` (ov010), `BtlEnm014` (ov012), `BtlEnm015` (ov013), `BtlEnm026`
+(ov015).
 
 ## Layout
 
@@ -21,311 +23,213 @@ offsets (see "The brief was wrong" below).
 | `.data` | `0x0212c460` | `0x0212cca0` | `0x840` (2,112 B) |
 | `.bss` | `0x0212cca0` | `0x0212ccc0` | `0x20` (32 B) |
 
-**114 functions** in `.text`. This is the largest overlay attempted so far — roughly 1.8x
-ov010's 14,664 bytes of `.text`.
+**114 functions** in `.text` — the largest overlay attempted, about 1.8x ov010.
+
+## Current state
+
+```
+114 total | 6 raw byte-identical | 68 identical-modulo-relocation | 31 differ | 9 missing
+1327 differing bytes
+```
+
+- **74 byte-exact.** `.text` prefix `0x021256c0..0x021260e8` is contiguous.
+- **31 written-not-exact**, 1,327 differing bytes. Nearly all are register-allocation residue.
+- **9 unstarted**, 476–1,316 bytes.
+- **Address-order debt: ~16 functions** out of address order in the source file. See
+  "The real blocker" below.
+
+Progression across the session: 2 → 12 → 15 → 29 → 41 → 49 → 62 → 73 → **74**. The last six
+rounds moved it 62 → 73 → 74 → 74 → 74 → 74. The cheap phase is over.
+
+`.text`/`.rodata`/`.data` are **not** yet byte-identical, and `romcmp.py` has never been able to
+run for this overlay — see "The real blocker".
+
+## The real blocker: the overlay has never linked
+
+`romcmp.py` compares the built ROM against `E:\Git\twewy\build\usa\twewy_usa.nds`. It is the only
+check that has ever actually mattered on this project — an objdiff section percentage measures
+object granularity and reloc artefacts, not correctness. **For ov011 it cannot run at all**, because
+the overlay does not link until all 114 functions are emitted, and the address-order debt must be
+paid before it can.
+
+So the whole of ov011's verification rests on `fbdiff.py` (per-function byte comparison) and has
+never had the authoritative end-to-end check. **Paying the address-order debt is the highest-value
+remaining action**, more so than any individual function.
+
+## Structs — all closed
+
+Nine tasks, and the useful fact that makes this cheap: **every `TaskHandle` in `.rodata` literally
+stores its task's data size** in the word after its two function pointers. Nine tasks, nine sizes,
+no inference needed.
+
+| `TaskHandle` | name | entry | data size |
+|---|---|---|---|
+| `0x0212bfa4` | `AnmMgr` | `021259d0` | `0x03C` |
+| `0x0212c118` | `Lser` | `02125cf8` | `0x254` |
+| `0x0212c130` | `RG` | `021278d4` | `0x208` |
+| `0x0212c1d4` | `Rnge` | `02127ce0` | `0x06C` |
+| `0x0212c1e0` | `SWA` | `0212801c` | `0x020` — needs no struct; handlers take `void*` |
+| `0x0212c1f8` | `SingleShot` | `02128348` | `0x0B4` |
+| `0x0212c210` | `Sprl` | `02128758` | `0x0B8` |
+| `0x0212c240` | `Tatt` | `02129934` | `0x250` |
+| `0x0212c448` | `UG` | `0212b99c` | `0x214` |
+
+Plus four `0x180`-byte handles at `0x0212bde8`–`0x0212be18`, **tasks not yet identified**.
+
+Method that worked: the task's initialiser writes every field and so pins the layout; confirm each
+offset against the instruction that touches it; `census2.py <func>` for an offset histogram first;
+`MI_CpuSet(data, 0, <size>)` confirms the size independently. `Lser` and `RG` are the fullest
+worked examples.
+
+**One loose end:** `02129110`/`021293a8`/`02128cc0`/`02128e30` walk a **0x88-stride record block** —
+four 0x88-byte records, a `u16` flag halfword at `+0x84` within each, a signed displacement at
+`+0x68`. It fits none of the seven task structs, so those offsets are deliberately left raw. It may
+be a seventh type.
+
+## The wrong-prototype class — eight found, and now closed
+
+A "dead instruction" in the original — a value computed and discarded — has turned out to be a
+mis-declared callee **eight times** here. Every one was initially written off as allocator residue
+or a register-choice artefact, and every one of those write-offs was wrong:
+
+| helper | was | actually |
+|---|---|---|
+| `func_ov003_020c3c28` | 1 arg | 0 args |
+| `func_ov003_020c3c88` | 0 args | 1 arg |
+| `func_ov003_020c4ab4` | `void` | returns `arg1 != 0` |
+| `func_ov003_020c6230` | 0 args | 1 arg |
+| `func_ov003_02084348` | — | 6 args, two written back through `s16*` |
+| `func_ov011_0212b800` | 1 arg | 2 args |
+| `func_ov011_02128f80` | 0 args | 1 arg |
+| `func_ov011_02128f80` | `s32` | returns `void*` |
+| `func_ov011_021258b4` | `u16*` | `CombatSprite*` |
+| `func_ov011_02127c4c` | `void` | returns `s32` |
+| `func_ov011_021283a8` / `021287b8` | `void` | return `s32`, no epilogue constant |
+
+**The class is now closed, by argument rather than by exhaustion:**
+
+- *Arity cannot hide in a byte-exact function.* Every call it makes has the right register setup,
+  because the `mov`/`add` pairs in front of each `bl` are part of the compared bytes. So every
+  helper reached from the 74 byte-exact functions is already validated.
+- *Return type is the invisible class*, because a caller that only stores a result tolerates any
+  declaration. But the eight declarations where one could still hide are all functions **not yet
+  written**, and writing a definition forces MWCC to reject a mismatch. There are no extern-only
+  helpers left that will never be defined.
+
+**The correctly-scoped test, which took several rounds to get right:**
+
+> A dead *instruction* implies a wrong signature. A wrong *register allocation* does not.
+
+A dead instruction is a value computed and discarded, which is exactly what a mis-declared arity
+produces. A register-allocation diff means the C has the wrong number of live locals, and the fix
+is more or fewer declarations — never a different prototype. Conflating the two sent the earlier
+rounds hunting for prototypes in functions that were merely misallocated.
+
+**`audit003.py` and `audit011.py` are ~90% false positive and must not be trusted as a signal.**
+The heuristic marks r0–r3 read on first sight, but in almost every function here r0–r3 are first
+touched as the *destination of a call result*, long after arguments have been copied to r4 or
+higher. Nearly every function that takes an argument moves it to a callee-saved register
+immediately. Confirm every hit by reading the callee's prologue by hand.
+
+## What is left, and what it is worth
+
+**The 9 unstarted**, smallest first:
+
+```
+476 B  021284bc     disassembly was already read by the previous session
+544 B  02129188
+620 B  021260e8     plan recorded in the brief, §6
+648 B  02126bf8     plan recorded in the brief, §10
+656 B  02126fb0
+660 B  0212a78c     five table lookups, 0x14 frame
+696 B  021288c8
+732 B  0212ac0c
+1316 B 02129410     largest in the overlay; needs a round of its own
+```
+
+**The 31 written-not-exact** are almost all register-allocation residue — the same class the four
+finished overlays were shipped with. Now that prototypes are ruled out, the cause has exactly one
+remaining explanation: wrong live-local counts. That is a bounded mechanical search over a known
+list, which is why it is the better ratio of effort to result.
+
+**Not yet measured, and a real open question:** how many of the 31's sub-99% functions are
+*actually* correct and merely carrying the known `bl func_ov003_*` `-0x8` symbol addend? That
+artefact shows up in ~100% of calls including otherwise-perfect functions. Auditing it means
+reading every diff line of twenty-odd functions, which was deliberately deferred. The two functions
+sampled were both real multi-instruction diffs in non-`bl` positions, so it explains none of those.
 
 ## Worktree
 
-`E:\Git\twewy-ov011`, branch `decomp-ov011`, branched off `decomp-ov010` (the most mature branch).
+`E:\Git\twewy-ov011`, branch `decomp-ov011`, branched off `decomp-ov010`.
 
-`extract/` is a junction to `E:\Git\twewy\extract` — the **parent** directory, not `extract\usa`.
-`objdiff-cli.exe` is an untracked, gitignored binary copied in from `E:\Git\twewy-ov010`.
-`build/` is gitignored, so everything in `build/scratch/` is untracked by design; copy the
-tooling from ov010's worktree rather than expecting `git` to carry it.
+- `extract/` is a **junction** to `E:\Git\twewy\extract` — the parent directory, not `extract\usa`.
+- `objdiff-cli.exe` is an untracked, gitignored binary copied in from `E:\Git\twewy-ov010`.
+- `build/` is gitignored, so **everything in `build/scratch/` is untracked**. It exists on this
+  machine and the tooling is all there, but it would not survive a fresh clone. Copy from
+  `E:\Git\twewy-ov010\build\scratch` when setting up a new worktree.
+- `E:\Git\twewy` is the main checkout and holds unrelated work in progress. **Read-only.**
 
-## The brief was wrong — this cost a session
-
-The `build/scratch/AGENT_BRIEF.md` inherited from ov010 was a **byte-for-byte copy of ov010's
-brief with `BtlEnm006` → `BtlEnm010` and `ov010` → `ov011` textually substituted**. Reversing
-those two substitutions reproduces ov010's file with zero differing lines. So every statement
-in it about `BtlEnm010`, `Enm006SpriteBlock`, `Enm006Swirl`, `Tsk_BtlEnm010_Swirl`, the 0x1FC
-struct, `unk_1F4`/`unk_1F8`, "71/71 functions complete, average 95.75%", and each
-"`func_ov011_0212xxxx` is at 100%" was **ov010's**, and none of it applies here.
-
-It has been rewritten. The MWCC codegen recipes in it are compiler-level and were kept; the
-struct offsets, the helper-signature claims that referenced them, and the completion claims were
-removed. **Do not reintroduce them from the ov010 copy.**
-
-## Blocker — RESOLVED
-
-The original symptom: objdiff could not pair functions, so progress was unmeasurable. Our two
-functions showed up with `match_percent: null`; the left (original) side had 153
-`SYMBOL_OBJECT` and zero `SYMBOL_FUNCTION`; `.text` reported 100 (section granularity only) and
-`.rodata`/`.data` 0.
-
-Two independent causes, both now fixed:
-
-1. **`config/usa/arm9/overlays/ov011/delinks.txt` had an empty file-level `.text` range** —
-   `start:0x021256c0 end:0x021256c0`. dsd's delink only emits function symbols for the part of
-   a source file it is asked to delink, so an empty range means **zero function symbols**.
-   Declaring the real end (`0x0212bdd8`) restores all 114. This is what the overlay-level
-   `.text` line was always for; the per-file line has to be kept in step with it. `ov010`'s
-   committed `delinks.txt` has the same two lines with the file-level end equal to the real
-   end — that is the shape to match.
-
-2. **`ninja build/usa/delinks/.../BtlEnm010.o` is a no-op.** The delinks objects are not
-   declared ninja outputs; the `delink` rule's only declared output is
-   `build/usa/delinks/_dsd_gap@main_47.o`, and the rule's command writes every object as a side
-   effect. Ninja sees the stale file on disk and stops. `ov.ps1` now runs that edge.
-
-`objdiff.json` and the `delink` rule in `build.ninja` were otherwise identical to ov010's, and
-`tools/configure.py` needed no change.
-
-## Tooling (in `build/scratch/`, untracked)
+## Tooling (`build/scratch/`, untracked)
 
 | file | purpose |
 |------|---------|
-| `asm.py` | dump the reference disassembly for named functions |
-| `pd.py` | per-instruction diff from objdiff's JSON, `L=original`, `R=ours` |
-| `fbdiff.py` | **the authoritative measurement** — per-function byte diff, relocation-aware |
-| `ov.ps1` | build + relink + objdiff + fbdiff. `-end` defaults to the full `0x0212bdd8`; `-wipe` forces a clean rebuild |
-| `romcmp.py` | ROM byte comparison against the original |
-| `census.py` | global histogram of every `[rN, #imm]` offset the original uses |
-| `census2.py` | the same, per named function, or `-c <token>` to find the callers of a symbol |
-| `fnlist.py` | the 114 functions in address order with sizes |
-| `audit003.py` | derive `func_ov003_*` arity from `ov003_4.s` (from ov010; has false positives) |
-| `elf.py` | minimal ELF32 reader (`sections`, `symbols`) |
-| `AGENT_BRIEF.md` | rewritten; read it before trusting any struct offset |
+| **`AGENT_BRIEF.md`** | **the pipeline brief — read this first.** Struct layouts, every codegen recipe with the model function that measured it, per-function state for all 40 remaining, the plans in §6/§10, and the `symbols.txt` rules. |
+| `fbdiff.py` | **the measurement tool.** Reads both objects directly, boundaries from `symbols.txt`, prints `OK` (byte-identical) / `RELOCC` (identical once relocation bits are masked) / diff size. The primary signal. |
+| `objtext.py` | Hashes an object's concatenated per-function `.text` sections. A whole-file hash moves whenever a type or comment changes, so it is useless for this. |
+| `asm.py` | Dumps reference disassembly for named functions. `python -u build\scratch\asm.py func_ov011_021256c0` |
+| `pd.py` | Per-instruction diff, `L=original`, `R=ours` |
+| `mine.py` | Decodes **our** object; objdiff's formatter mis-renders shift immediates |
+| `ov.ps1` / `ovm.ps1` | Iterate: patch the delinks `.text end`, build, diff, print. **Use `ovm.ps1` for anything that does not edit the `.c`.** |
+| `romcmp.py` | ROM byte comparison. **Cannot run until the overlay links.** Correct mapping (`ram - 0x1FECCC0`, anchored on `Apl_Suy/Grp_BtlEnm010_MotMove`). |
+| `census.py` / `census2.py` | Offset histograms across a task's functions — the fastest way to characterise a struct |
+| `audit003.py` / `audit011.py` | ov003 and ov011-local arity triage. ~90% false positive. |
+| `retcheck.py` | Return-type classification. Only its "every return site sets r0" verdicts are trustworthy; the 3-instruction window is too narrow. |
 
-### How measurement works now
+**Always measure with `-end 0x0212bdd8`.** Anything smaller truncates the range and makes the
+average look better than it is.
 
-`fbdiff.py` reads the two relocatable objects directly and does not depend on objdiff's
-pairing at all:
+## Traps, learned the hard way
 
-- original `build/usa/delinks/src/Combat/Noise/BtlEnm010/BtlEnm010.o`
-- ours `build/usa/src/Combat/Noise/BtlEnm010/BtlEnm010.o`
-- boundaries from `config/usa/arm9/overlays/ov011/symbols.txt` (114 entries)
+- **Address-order debt blocks the link.** Functions must be emitted in address order. Insert at
+  address as you write; `fbdiff` measures per symbol so the count stays honest, but the link will
+  not.
+- **`build/usa/delinks/**.o` is never a declared ninja output** — it is a side effect of the delink
+  rule, and its only declared output is `_dsd_gap@main_*.o`. Ninja therefore sees a stale file and
+  stops. A stale base object mimics a code regression. Suspect it before your C.
+- **The build does not track headers as dependencies of a TU.** A header-only edit leaves a stale
+  `.o` and every measurement silently re-reports old numbers. This cost a long misdiagnosis of a
+  struct bug that did not exist. `ovm.ps1` handles it.
+- **Stale `objdiff.json` invalidates measurements silently**: a missing unit makes
+  `objdiff-cli diff -u` fail *without writing output*, so a harness reprints the previous JSON.
+- **A delinks TU entry needs the FULL `.text` range.** With `end == start`, dsd emits zero function
+  symbols — 153 `SYMBOL_OBJECT` and no `SYMBOL_FUNCTION`, and `.text` reporting a meaningless 100%.
+- **`dsd` renders register-shifted operand2 shifts at 2x the ARM field** (`e1a00201` prints as
+  `lsl #0x4`). Read the bytes, not the text.
+- **`sizeof(CombatSprite)` is 0x7D but the ROM strides sprites by 0x60.** A `CombatSprite[]` array
+  puts every later field 0x38 too high. Use raw padding plus a walking `CombatSprite*`.
+- **A sub-struct whose size is not a multiple of 4 shifts every later `s32`.** Check sizes, not
+  just offsets.
+- **PowerShell `[System.IO.File]` calls do not follow `cd`.** Use absolute paths or Python.
+- **Use the edit tool for source edits.** A `Get-Content` → `[ArrayList]` → `RemoveAt` →
+  `Set-Content -NoNewline` round-trip collapsed an entire source file onto one line and cost a
+  third of a session.
+- **Do not edit `symbols.txt` before checking whether another overlay's `relocs.txt` targets the
+  address.** Deleting a referenced symbol breaks the delink outright.
+- **Calls to `0x020824a0` must be spelled `Mini108_VBlank`.**
+- Do **not** mark the overlay `complete` in `delinks.txt`. That is the user's call.
 
-Verdicts: `OK` (byte-identical), `RELOCC` (identical once the bits a relocation overwrites are
-masked out — the verdict that matters, since every `bl` and every literal-pool slot is a
-placeholder in a relocatable object), `DIFF`, `MISSING`. Detail mode prints both sides'
-instruction text, taking the original's from `ov011_4.s` and both sides' from objdiff's JSON.
+## Cross-branch work done this session
 
-`romcmp.py` anchors on `"Apl_Suy/Grp_BtlEnm010_MotMove"` (RAM `0x0212C470`, file `0x1407B0`):
-`file_offset = ram_address - 0x1FECCC0`. Every overlay loads at RAM `0x021256c0`, so the RAM
-address does not locate the overlay — ov010 and ov011 share that base and sit at different file
-offsets.
+Both fixes are in **all five worktrees** and verified byte-neutral:
 
-**Always measure the full range `-end 0x0212bdd8`.**
+- **`func_ov003_02087f00` takes `(SndMgrSeIdx, s32 sePan)`, not a callback pointer.** The body
+  tail-calls `SndMgr_PlaySEWithPan` with r0/r1 untouched and builds r2 itself, so the second
+  argument is a pan value. 27 bogus casts removed across `BtlEnm006.c` and `BtlEnm010.c`.
+  Commits `5bd9c64` (ov010), `b4a0dca` (ov011), `a09868c` (ov008), `d135a7a` (ov012), `e25b1b6`
+  (ov013), `d7ea679` (ov015).
+- **`func_ov003_020843b0` returns `s16`, not `s32`.** Its body ends `lsl r0,r0,#4 / asr r0,r0,#16`,
+  so r0 is already a sign-extended 16-bit value. A four-case codegen probe showed the width is
+  invisible except where a caller narrows, and there `s16` is 8 bytes shorter. Every call site is
+  the pass-through shape, so it is byte-neutral. Commits `3a93a78` (ov010), `bceb388` (ov011).
 
-## Structs - resolved, and the answer to the open question
-
-The overlay owns **nine tasks, each with a different data size**, and the size is written out
-literally in each `TaskHandle` in `.rodata` (the word after the two function pointers). That
-is the fact that settles the struct question without any guessing.
-
-| `TaskHandle` | name | task entry point | data size |
-|---|---|---|---|
-| `0x0212bfa4` | `Tsk_BtlEnm010_AnmMgr` | `func_ov011_021259d0` | **0x03C** |
-| `0x0212c118` | `Tsk_BtlEnm010_Lser` | `func_ov011_02125cf8` | **0x254** |
-| `0x0212c130` | `Tsk_BtlEnm010_RG` | `func_ov011_021278d4` | **0x208** |
-| `0x0212c1d4` | `Tsk_BtlEnm010_Rnge` | `func_ov011_02127ce0` | **0x06C** |
-| `0x0212c1e0` | `Tsk_BtlEnm010_SWA` | `func_ov011_0212801c` | **0x020** |
-| `0x0212c1f8` | `Tsk_BtlEnm010_SingleShot` | `func_ov011_02128348` | **0x0B4** |
-| `0x0212c210` | `Tsk_BtlEnm010_Sprl` | `func_ov011_02128758` | **0x0B8** |
-| `0x0212c240` | `Tsk_BtlEnm010_Tatt` | `func_ov011_02129934` | **0x250** |
-| `0x0212c448` | `Tsk_BtlEnm010_UG` | `func_ov011_0212b99c` | **0x214** |
-
-Plus four handles at `0x0212bde8` / `0x0212bdf8` / `0x0212be08` / `0x0212be18`, all size
-**0x180**, sharing one of two `initData` records and one entry point (`0x0212bde0`).
-
-### The `0x14+slot*8` vs `0x28/0x2C/0x30` question - ANSWERED: no conflict
-
-They belong to **different tasks**, so no overlapping views are needed anywhere in this
-overlay.
-
-- `func_ov011_02125750` and `func_ov011_021258b4` get their data from
-  `EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0)` -- the one task
-  `func_ov011_021256c0` spawns from the handle at `0x0212bfa4`. That is
-  **`Tsk_BtlEnm010_AnmMgr`, 0x3C bytes.**
-- `0x28`/`0x2C`/`0x30` as position x/y/z and `0x1C8` as a callback come from
-  `func_ov011_0212bac8`, whose data comes from `Task* + 0x18` -- a different task,
-  `Tsk_BtlEnm010_UG`, **0x214 bytes**.
-
-The lesson, and the reason ov010 needed `Enm006SpriteAlt` and ov011 does not: when two
-functions disagree about what an offset means, **check which task each is working on before
-reaching for overlapping views.** Real overlap inside one struct is much rarer than it looks.
-
-### Confirmed layouts
-
-`BtlEnm010AnmMgr` (0x3C), `BtlEnm010UG` (0x214), `BtlEnm010Owner` (0x88),
-`BtlEnm010Lser` (0x254), `BtlEnm010LserArgs` (0x18), `BtlEnm010LserEmit` (0x2C) and
-`BtlEnm010LserRec` (0xC) are in `include/Combat/Noise/Private/BtlEnm010.h`, each field
-carrying its evidence in a comment. Tables also in `build/scratch/AGENT_BRIEF.md`.
-
-**`BtlEnm010Lser` (0x254) is fully characterised** -- `func_ov011_02125d48` is the task's
-initialiser and writes every field: `0x00` the owner; `0x80` four `CombatSprite`s 0x60 apart;
-`0x200` the emitter block; `0x23C`/`0x240` zeroed from one constant; `0x244` the negated
-`args->unk_10`; `0x24C` `args->unk_14`; `0x250` a byte whose bit 3 tracks
-`func_ov003_020c37f8`. `0x54`/`0x58` are read by the *next* function, `02125e14`, and are
-still padding.
-
-`BtlEnm010Owner` (0x88) is the object every task hangs off: `unk_24` a mirror flag, `unk_28`/
-`unk_2C`/`unk_30` a 4.12 position triple, `unk_84` two bits used as a sprite-variant selector.
-`02125e14` also reads the owner's `unk_54` (its engine-flags word, `tst #4`), matching ov010.
-
-`BtlEnm010AnmMgr`: `0x00` the decompression buffer, `0x04` its size, `0x08` an 8-byte-stride
-`{binId, offset}` table (all three from `func_ov003_020cb200`; `0x04`/`0x00` confirmed by
-`func_ov003_020cb150`, which allocates `unk_04` bytes off `gMainHeap` and stores the result in
-`unk_00`); `0x0C` a halfword count (`func_ov003_020cb194`); `0x14` **four** 8-byte slots
-`0x14..0x33`; `0x34` s32 and `0x38` u16 are the two fields *after* the table, **not** a fifth
-slot -- `func_ov011_02125a08` stores `max10 + sec10` in `unk_34` and the mode in `unk_38`.
-(An earlier revision of this doc claimed five slots; the index ranges in `02125750` (0..2) and
-`021258b4` (2..3) only ever reach four.)
-
-`BtlEnm010UG` (0x214): `0x28/0x2C/0x30` position x/y/z; `0x1C8` a callback; `0x1CC` a result
-word; `0x1D0/0x1D4/0x1D8` and `0x1E8/0x1EC/0x1F0` two velocity triples, the second added into
-the first; `0x206` a `u8` flag; `0x208` an `EasyTask_ValidateTaskId` argument; `0x20C`/`0x210` a
-counter pair. All from `func_ov011_0212bac8`, whose four entry points are tabulated at
-`0x0212c36c`.
-
-**A header gotcha worth knowing about the rest of the overlay: `sizeof(CombatSprite)` is
-0x7D, not the 0x60 the ROM uses** -- the `Sprite` bitfield block overruns its 0x40 allocation.
-An array of the type therefore puts every later field 0x74 bytes too high. Use raw padding plus
-a walking `CombatSprite*` with a literal stride.
-
-## Done
-
-**62 of 114 functions byte-identical** (`RELOCC` or better, 6 of them raw `OK`), 14 written but
-not yet exact (371 differing bytes between them), **38 not yet written**. objdiff 45/114 at 100%,
-average 64.20%.
-
-| function | bytes | status |
-|----------|-------|--------|
-| `func_ov011_021256c0` | 84 | **byte-exact** |
-| `func_ov011_02125714` | 60 | **byte-exact** |
-| `func_ov011_02125750` | 356 | **byte-exact** |
-| `func_ov011_021258b4` | 284 | **byte-exact** |
-| `func_ov011_021259d0` | 56 | **byte-exact** |
-| `func_ov011_02125a08` | 384 | **byte-exact** |
-| `func_ov011_02125b88` | 16 | **byte-exact** |
-| `func_ov011_02125b98` | 104 | **byte-exact** |
-| `func_ov011_02125c00` | 68 | **byte-identical** (raw, no reloc difference either) |
-| `func_ov011_02125c44` | 180 | **byte-exact** |
-| `func_ov011_02125cf8` | 80 | **byte-exact** |
-| `func_ov011_02125d48` | 204 | **byte-exact** |
-| `func_ov011_02125e14` | 272 | **byte-exact** |
-| `func_ov011_02125f24` | 320 | **byte-exact** |
-| `func_ov011_02126064` | 132 | **byte-exact** |
-| `func_ov011_02126354` | 596 | **byte-exact** |
-| `func_ov011_021265a8` | 44 | **byte-exact** |
-| `func_ov011_021265d4` | 40 | **byte-exact** |
-| `func_ov011_021265fc` | 504 | **byte-exact** |
-| `func_ov011_021267f4` | 40 | **byte-exact** |
-| `func_ov011_0212681c` | 168 | **byte-exact** |
-| `func_ov011_02126a04` | 232 | **byte-exact** |
-| `func_ov011_02126aec` | 64 | **byte-exact** |
-| `func_ov011_02127628` | 112 | **byte-exact** |
-| `func_ov011_02127698` | 72 | **byte-exact** |
-| `func_ov011_021276e0` | 120 | **byte-exact** |
-| `func_ov011_02127758` | 112 | **byte-exact** |
-| `func_ov011_021277c8` | 268 | **byte-exact** |
-| `func_ov011_021278d4` | 72 | **byte-identical** (raw, no reloc difference either) |
-| `func_ov011_02127a64` | 308 | **byte-exact** |
-| `func_ov011_02127bf0` | 92 | **byte-exact** |
-| `func_ov011_02127bdc` | 20 | **byte-exact** |
-| `func_ov011_02127c4c` | 56 | **byte-exact** |
-| `func_ov011_02127c84` | 92 | **byte-exact** |
-| `func_ov011_0212801c` | 84 | **byte-exact** |
-| `func_ov011_021268c4` | 320 | written, 30 B out — brief §8 |
-| `func_ov011_02126b2c` | 204 | written, 4 B long — brief §9 |
-| `func_ov011_0212791c` | 328 | written, 4 B short — brief §12 |
-| `func_ov011_02127b98` | 68 | written, 8 B long — brief §12 |
-| `func_ov011_02127f6c` | 176 | written, load order off — brief §12 |
-| `func_ov011_02128348` | 96 | **byte-exact** |
-| `func_ov011_02128698` | 108 | **byte-exact** |
-| `func_ov011_02128704` | 20 | **byte-exact** |
-| `func_ov011_02128718` | 64 | **byte-exact** |
-| `func_ov011_02128758` | 96 | **byte-exact** |
-| `func_ov011_021282b8` | 144 | **byte-exact** |
-| `func_ov011_02128250` | 104 | written, 8 B long — brief §14 |
-| `func_ov011_02127ce0` | 652 | written, 4 B short — brief §14 |
-| `func_ov011_02128b80` | 176 | written, load order off — brief §14 |
-| `func_ov011_02128c30` | 20 | **byte-exact** |
-| `func_ov011_02128ca4` | 28 | **byte-identical** (raw, no reloc difference either) |
-| `func_ov011_02129ed0` | 40 | **byte-exact** |
-| `func_ov011_02129ea4` | 44 | **byte-exact** |
-| `func_ov011_02129110` | 120 | **byte-exact** |
-| `func_ov011_021293a8` | 104 | **byte-exact** |
-| `func_ov011_02129934` | 96 | **byte-exact** |
-| `func_ov011_0212a10c` | 40 | **byte-exact** |
-| `func_ov011_02128c44` | 96 | written, 4 B short — brief §14 |
-| `func_ov011_02128eb0` | 96 | **byte-exact** — landed once its callee's arity was fixed |
-| `func_ov011_02128f10` | 112 | written, 20 B long — brief §14 |
-| `func_ov011_0212a634` | 64 | **byte-exact** — landed once its callee's arity was fixed |
-| `func_ov011_0212b318` | 112 | **byte-exact** |
-| `func_ov011_0212b388` | 100 | written, two instructions — brief §14 |
-| `func_ov011_0212b4f4` | 100 | **byte-exact** |
-| `func_ov011_0212b558` | 128 | **byte-exact** |
-| `func_ov011_0212b800` | 144 | **byte-exact** |
-| `func_ov011_0212b99c` | 72 | **byte-identical** (raw) |
-| `func_ov011_0212bc84` | 68 | **byte-exact** |
-| `func_ov011_0212bcc8` | 24 | **byte-exact** |
-| `func_ov011_0212bd3c` | 84 | written, 4 B short — brief §14 |
-| `func_ov011_0212bdbc` | 28 | **byte-identical** (raw) |
-| `func_ov011_0212bd90` | 44 | **byte-identical** (raw) |
-| `func_ov011_02128e30` | 128 | **byte-exact** |
-| `func_ov011_0212aee8` | 172 | written, 4 B long — brief §14 |
-| `func_ov011_0212b0a4` | 196 | **byte-exact** |
-| `func_ov011_0212b9e4` | 228 | written, 4 B short — brief §14 |
-
-**The contiguous-prefix framing was dropped two rounds ago**, and it was costing throughput: the
-count is what matters, and a byte-exact function at a higher address is worth more than a
-contiguous prefix that stalls. Consequence to remember: `fbdiff.py` measures per symbol, so
-the count above is honest, but **roughly sixteen functions are currently in the file out of
-address order**. The run `02127628`..`02128758` is written, and `02128348`/`02128698`/`021282b8`
-were *inserted* at their addresses rather than appended, so what is left inside it is only the
-still-unwritten `021283a8` and `021284bc` plus the unwritten `02126bf8`..`02127628` block ahead
-of it. The `0212b318`..`0212bd90` batch was appended past the end of the file, so it is in
-order. Everything must be reinserted in order before the final link, and `romcmp.py` is what will
-catch it if they are not.
-
-Three functions were read in full and deliberately **skipped rather than half-written**:
-`021260e8` (620 B, brief §6) and `02126bf8` (648 B, brief §10) — the two largest in the overlay.
-Both have their layouts and open questions recorded, so neither restarts from a blank page.
-`.text`/`.rodata`/`.data` are not byte-identical and `romcmp.py` has not been run — the linked ROM
-does not exist until all 114 functions are emitted, so `fbdiff.py` is the only signal available.
-
-`ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
-`(TaskPool*)((u32)data_ov003_020e71b8 + 0x118 + 0x10000)`. `data_ov003_020e71b8` is already
-declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
-
-## Next
-
-1. **The unattempted list is 38 and getting short.** Next in address order after the last
-   landed function: `02128cc0` (0x170), `02128f80` (0x190, Tatt's — its `0x24C` byte and
-   `0x84` sprite are now identifiable), `02129188` (0x220), `02129410` (0x524),
-   `02129994` (0x1F0), `02129b84`, `02129cec`, `02129ef8`, `02129f80`, `0212a134`, `0212a2ec`,
-   `0212a420`, `0212a540`, `0212a674`, `0212a78c`, `0212aa20`, `0212ac0c`, `0212af94`,
-   `0212b168`, `0212b3ec`, `0212b5d8`, `0212b6e0`, `0212b890`, `0212bac8` (UG's per-frame
-   handler), then the tail to `0212bdd8` and the four 0x180-byte handles at
-   `0x0212bde8`-`0x0212be18` whose tasks are still unidentified.
-2. **The fourteen written-not-exact, they are the cheapest bytes on the board.** All in
-   `build/scratch/AGENT_BRIEF.md` §8, §9, §12 and §14. Three of the four functions that used to
-   be grouped as "the same r0-vs-r1 base allocation" are now byte-exact — **two of them were
-   wrong callee arities, not allocator noise.** The test is in §14: read the callee's first two
-   instructions before writing a function off as an allocator artefact. Only `02126b2c`
-   survives, and its arity is correct, so it is genuinely unexplained.
-3. **`0x02126bf8`** (648 B, RG's phase-5 worker) — read in full, deliberately **skipped, not
-   half-written**. `build/scratch/AGENT_BRIEF.md` §10 has the eight-step plan and the three open
-   questions. It is the largest thing left and packs four hard idioms into 648 bytes.
-4. **`0x021260e8`** (620 B, the Lser mode-2 worker) is still outstanding, recorded in brief §6.
-   `func_ov003_02082750` is now declared 3-argument, which was the open question in §6 and is
-   the wrong way round for `021260e8`'s call site — switch it back if that function is next.
-5. **Structs.** `BtlEnm010RG` (0x208) and `BtlEnm010Lser` (0x254) done. `BtlEnm010Rnge` (0x6C),
-   `BtlEnm010Sprl` (0xB8), `BtlEnm010Tatt` (0x250) and **`BtlEnm010UG` (0x214)** created and
-   partly pinned — UG's initialiser `0212b9e4` is written and clears exactly 0x214, and its
-   `0x1C0`/`0x1C2`/`0x1C4` are Tatt's at a `+0x40` offset, which is why `func_ov011_02129ed0`
-   serves both tasks. Spawn blocks: `BtlEnm010RngeArgs` (0x20), `BtlEnm010SprlArgs` (0x18).
-   `BtlEnm010RngeArgs` is used by two different spawns with different arities — see the commit
-   for `02127f6c`. Still to create: **SingleShot 0x0B4** (`0x021283a8` clears exactly 0xB4 via
-   `MI_CpuSet`), plus the four 0x180-byte handles at `0x0212bde8`-`0x0212be18`.
-   **`02129110`/`021293a8` use a 0x88-stride record block that fits none of these** — raw offsets
-   there are deliberate, and `02128e30` walks the same block.
-6. **A wrong declaration in `Combat.h` was confirmed and has since been fixed** — brief §5.
-   `func_ov003_02087f00` now takes `(SndMgrSeIdx, s32 sePan)`; the six casts in
-   `BtlEnm010.c` are gone. `func_ov003_020843b0` is declared `s16` everywhere.
-8. `.rodata` and `.data` still need their symbols named and declared.
-9. **The address-order debt is unchanged in size but still mostly unwritten functions.** Keep
-   inserting at address. When the unattempted list is down to a handful, do the reordering pass
-   as its own piece of work with its own verification.
+The four finished overlays remain byte-identical to the original ROM.
