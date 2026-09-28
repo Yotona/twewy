@@ -55,19 +55,24 @@ extern s32  func_ov003_020c703c(void*);
 extern void func_ov003_020c427c(void*);
 extern s32  func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
 // Bearing from (x0, y0) to (x1, y1): FX_Atan2Idx(y1 - y0, x1 - x0).
-extern s32                   func_ov003_020cba14(s32, s32, s32, s32);
-extern void                  func_ov003_020cbcb4(s32*, s32*, s16, s32, s32);
-extern s32                   func_ov003_020cb3c4(s32, s32);
-extern s32                   func_ov003_020c5bfc(void*);
-extern s32                   func_ov003_020c62c4(void*, s32);
-extern s32                   func_ov003_020c65cc(void*, s32);
-extern s32                   func_ov003_020c72b4(void*, s32, s32);
-extern s32                   func_ov003_020c37f8(void*);
-extern s32                   func_ov003_020c7070(void*);
-extern s32                   func_ov003_020c4e0c(void*);
-extern s32                   func_ov003_020cc354(void*);
-extern s32                   func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
-extern s32                   func_ov003_020c3c28(void*);
+extern s32  func_ov003_020cba14(s32, s32, s32, s32);
+extern void func_ov003_020cbcb4(s32*, s32*, s16, s32, s32);
+extern s32  func_ov003_020cb3c4(s32, s32);
+extern s32  func_ov003_020c5bfc(void*);
+extern s32  func_ov003_020c62c4(void*, s32);
+extern s32  func_ov003_020c65cc(void*, s32);
+extern s32  func_ov003_020c72b4(void*, s32, s32);
+extern s32  func_ov003_020c37f8(void*);
+extern s32  func_ov003_020c7070(void*);
+extern s32  func_ov003_020c4e0c(void*);
+extern s32  func_ov003_020cc354(void*);
+extern s32  func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
+// Reads no argument at all: `ldr r0, .L; ldr r0, [r0]; add r0, r0, #0x3d000;
+// ldr r0, [r0, #0x878]; and r0, r0, #2; bx lr`.  It was declared with a `void*` here purely
+// because the two call sites below passed `data`, and the register allocator elided the
+// store -- r0 already held `data`.  Declared void now; identical codegen, but the call no
+// longer depends on that coincidence.
+extern s32                   func_ov003_020c3c28(void);
 extern s32                   func_ov003_020c3efc(void*, void*);
 extern void                  func_ov003_020c4520(void*);
 extern void                  func_ov003_020c4b5c(void*);
@@ -90,18 +95,25 @@ extern s32                   func_ov003_020c5b2c(u16, void*, s32, s32, s32);
 extern const SpriteAnimEntry data_ov010_02129238[3];
 extern const SpriteAnimEntry data_ov010_021292f4[3];
 
-extern s32   func_ov010_02128cbc(s32, void*, void*);
-extern void  func_ov003_020c4c5c(BtlEnm006*);
-extern void  func_ov003_020cb578(BtlEnm006*, s32);
-extern s32   func_ov010_02128bcc(void*, void*);
-extern void  func_ov010_02127110(void*, void*);
-extern void  func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
-extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
-extern s32   func_ov003_020cb764(s32);
-extern s32   func_ov003_020cb784(s32);
-extern void  func_ov003_020c4c9c(BtlEnm006*);
-extern s32   func_ov010_021270a8(void*, void*);
-extern s32   func_ov003_020cb744(s32);
+extern s32  func_ov010_02128cbc(s32, void*, void*);
+extern void func_ov003_020c4c5c(BtlEnm006*);
+extern void func_ov003_020cb578(BtlEnm006*, s32);
+extern s32  func_ov010_02128bcc(void*, void*);
+extern void func_ov010_02127110(void*, void*);
+extern void func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
+extern s32  func_ov003_020cba2c(s32, s32, s32, s32);
+extern s32  func_ov003_020cb764(s32);
+extern s32  func_ov003_020cb784(s32);
+extern void func_ov003_020c4c9c(BtlEnm006*);
+extern s32  func_ov010_021270a8(void*, void*);
+extern s32  func_ov003_020cb744(s32);
+// DO NOT "fix" this to (BtlEnm006*) and pass `data`.  The helper genuinely dereferences r0
+// (`ldr r2, [r0, #0x7c]`), so it is really a 1-argument function -- but the original's call
+// sites never set up r0: at both of ours the incoming `data` is still live in r0 (it is
+// parked in r4, not moved), and the original emits a bare `bl func_ov003_020c3c88`.  Passing
+// the argument explicitly adds a `mov r0, r4` the original does not have, which drops
+// func_ov010_02127550 from 100% to 76.91% and func_ov010_021259e8 to 81.67%.
+// See BtlEnm015.c, which calls the same helper with `mov r0, r5` and is correctly 1-arg.
 extern void* func_ov003_020c3c88(void);
 extern s32   func_ov003_020c42ec(BtlEnm006*);
 extern s32   func_ov003_020c4348(BtlEnm006*);
@@ -869,7 +881,7 @@ s32 func_ov010_02128e0c(BtlEnm006* data, void* arg1) {
 // Fixed-point velocity integration, as in the sibling per-frame workers: ask the trig helper for
 // a direction from (unk_60, unk_64, unk_68), hand the sprite the result, then set a negated angle.
 s32 func_ov010_02125878(BtlEnm006* data) {
-    if (func_ov003_020c3c28(data) != 0) {
+    if (func_ov003_020c3c28() != 0) {
         return 0;
     }
     // Not initialised: the helper always writes both out-params, and zeroing them first would
@@ -2527,7 +2539,7 @@ void func_ov010_02126c94(Enm006Swirl* data, s32* outY, s32* outX, s32 index) {
 // falls through into the same call.
 s32 func_ov010_02126e58(Enm006Swirl* data) {
     s32 count = 0;
-    if (func_ov003_020c3c28(data) != 0) {
+    if (func_ov003_020c3c28() != 0) {
         return 0;
     }
     if (data->unk_64 == 0) {
