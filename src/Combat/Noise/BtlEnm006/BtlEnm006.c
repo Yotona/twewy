@@ -1220,7 +1220,14 @@ void func_ov010_02127764(BtlEnm006* data) {
                 data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
                 BtlEnm006* other    = (BtlEnm006*)func_ov010_02128b48();
                 if (other != NULL) {
-                    data->unk_1F4 = (*(s32*)other == 1) ? 1 : 0;
+                    // An if/else, not a ternary: the original *predicates* both stores
+                    // (`moveq` / `streqb` / `movne` / `strneb`), and a ternary collapses into a
+                    // phi instead -- one word shorter, and a different encoding.
+                    if (*(s32*)other == 1) {
+                        data->unk_1F4 = 1;
+                    } else {
+                        data->unk_1F4 = 0;
+                    }
                 }
                 Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0xD, 1);
                 data->sprite.unk_8C &= ~1;
@@ -1286,7 +1293,9 @@ void func_ov010_02127764(BtlEnm006* data) {
                 // i.e. a real struct field.
                 void* t = data_ov003_020e71b8->unk3D898;
                 if (func_ov010_02128bcc(data, t) != 0) {
-                    data->unk_1F8 = func_ov010_021270a8(data, t);
+                    // The result really is discarded: the original goes straight from this
+                    // call to the next block's argument setup, with no store.
+                    func_ov010_021270a8(data, t);
                 }
                 ((Enm006SpriteAlt4*)&data->sprite)->unk_F6 = func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128cbc, data);
                 ((Enm006SpriteAlt4*)&data->sprite)->unk_F8 = ((Enm006SpriteAlt4*)&data->sprite)->unk_F6;
