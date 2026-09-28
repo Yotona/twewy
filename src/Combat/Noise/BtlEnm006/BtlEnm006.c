@@ -72,22 +72,25 @@ extern s32  func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
 // because the two call sites below passed `data`, and the register allocator elided the
 // store -- r0 already held `data`.  Declared void now; identical codegen, but the call no
 // longer depends on that coincidence.
-extern s32                   func_ov003_020c3c28(void);
-extern s32                   func_ov003_020c3efc(void*, void*);
-extern void                  func_ov003_020c4520(void*);
-extern void                  func_ov003_020c4b5c(void*);
-extern void                  func_ov003_020c4668(void*);
-extern void                  func_ov003_02084348(s32, void*, void*, s32, s32, s32);
-extern void                  func_ov003_02082724(void*, s16, s16);
-extern void                  func_ov003_02082b64(void*);
-extern void                  func_ov003_02084694(void*, s32);
-extern s32                   func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
-extern s32                   func_ov003_020cb498(s32, s32, void*, void*);
-extern s32                   func_ov003_020843b0(s32, s32);
-extern void                  Mini108_VBlank(CombatSprite*, u16, s32);
-extern void                  func_ov010_02128820(BtlEnm006*, s32);
-extern void                  CombatSprite_SetPaletteSource(CombatSprite*, s32);
-extern void                  func_ov003_020c4ab4(BtlEnm006*, s32);
+extern s32  func_ov003_020c3c28(void);
+extern s32  func_ov003_020c3efc(void*, void*);
+extern void func_ov003_020c4520(void*);
+extern void func_ov003_020c4b5c(void*);
+extern void func_ov003_020c4668(void*);
+extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
+extern void func_ov003_02082724(void*, s16, s16);
+extern void func_ov003_02082b64(void*);
+extern void func_ov003_02084694(void*, s32);
+extern s32  func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
+extern s32  func_ov003_020cb498(s32, s32, void*, void*);
+extern s32  func_ov003_020843b0(s32, s32);
+extern void Mini108_VBlank(CombatSprite*, u16, s32);
+extern void func_ov010_02128820(BtlEnm006*, s32);
+extern void CombatSprite_SetPaletteSource(CombatSprite*, s32);
+// Returns arg1 != 0 (mov r0, #1 / mov r0, #0), not void.  All eight call sites here discard
+// the result, so declaring it void compiled to the same code -- but it is a setter-shaped
+// call that quietly throws away a value, and the wrong type hides that.
+extern s32                   func_ov003_020c4ab4(BtlEnm006*, s32);
 extern s32                   func_ov003_020c6230(void*);
 extern s32                   func_ov003_020c4c1c(void*);
 extern void                  func_ov003_020c4ee0(void*);
