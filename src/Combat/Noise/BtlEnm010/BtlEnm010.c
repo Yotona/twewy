@@ -36,9 +36,8 @@ void func_ov011_02125714(void) {
 
 // MARK: Bin-file helpers (ov003), signatures read out of build/usa/asm/ov003_4.s
 
-/// `func_ov003_02082cc4` -- flushes a sprite's pending animation and tail-calls
-/// `Sprite_Release`. One argument.
-extern void func_ov003_02082cc4(void* sprite);
+/// `CombatSprite_Release` (`func_ov003_02082cc4`) -- flushes a sprite's pending animation and
+/// tail-calls `Sprite_Release`. One argument. Declared in `Combat/Core/CombatSprite.h`.
 
 /// `func_ov003_020cb32c` -- `BinMgr_FindById(binId) != 0`.
 ///
@@ -107,7 +106,7 @@ void func_ov011_02125750(s32 arg0, CombatSprite* arg1, s32 arg2) {
     s32              size;
     u16              phase;
 
-    func_ov003_02082cc4(arg1);
+    CombatSprite_Release(arg1);
     data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0);
     // The original builds the record pointer first (`mla r1, r3, r1, r2`) and then indexes
     // it by the variant (`ldr r4, [r1, r8, lsl #2]`).  Spelled as a single subscript
@@ -341,8 +340,8 @@ extern s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
 /// the same reason ov010 declares it locally: there is no header for ov000's symbols.
 extern void Mini108_VBlank(CombatSprite* cSprite, u16 arg1, s32 arg2);
 
-/// `func_ov003_02082d04` -- `Sprite_Restart`, one argument, tail-called.
-extern void func_ov003_02082d04(CombatSprite* cSprite);
+/// `CombatSprite_Restart` (`func_ov003_02082d04`) -- one argument, tail-called. Declared in
+/// `Combat/Core/CombatSprite.h`.
 
 /// Resolves the Lser task's owner position into three out-parameters: the x biased by
 /// `+/- 0x40000` depending on the mirror flag, the y, and the z nudged by an indexed entry of
@@ -374,7 +373,7 @@ void func_ov011_02125c44(BtlEnm010OwnerCopy* owner, BtlEnm010LserRec* rec, Comba
     } else {
         Mini108_VBlank(sprite, 2, 1);
     }
-    func_ov003_02082d04(sprite);
+    CombatSprite_Restart(sprite);
     rec->unk_00 = RNG_Next(0x4000);
     if (owner->unk_24 == 0) {
         rec->unk_00 = rec->unk_00 + 0x6000;
@@ -459,9 +458,8 @@ extern s32 func_ov003_020c3c28(void);
 /// set or its `0x5A` countdown is non-positive, and returns whether it bailed.
 extern s32 func_ov003_020cc354(void* p);
 
-/// `func_ov003_02082b0c` -- one argument, a `CombatSprite*`; ticks a palette timer behind the
-/// sprite's `flags46` bit 12.
-extern void func_ov003_02082b0c(CombatSprite* cSprite);
+/// `CombatSprite_Update` (`func_ov003_02082b0c`) -- one argument, a `CombatSprite*`; ticks a
+/// palette timer behind the sprite's `flags46` bit 12. Declared in `Combat/Core/CombatSprite.h`.
 
 /// `func_ov003_020843b0` -- two arguments; turns a 4.12 y coordinate into a sound pan value.
 extern s16 func_ov003_020843b0(s32 a, s32 b);
@@ -479,11 +477,11 @@ extern s32 func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
 /// on entry, so it is a `u16` parameter; the callee never reads it again after that.
 extern s32 func_ov003_020cbc50(s32* a, s32* b, u16 c, s32 d);
 
-/// `func_ov003_02082724` -- three arguments; `strh r1, [r0, #0xc] / strh r2, [r0, #0xe]`.
-extern void func_ov003_02082724(CombatSprite* cSprite, s32 arg1, s32 arg2);
+/// `CombatSprite_SetPosition` (`func_ov003_02082724`) -- three arguments;
+/// `strh r1, [r0, #0xc] / strh r2, [r0, #0xe]`. Declared in `Combat/Core/CombatSprite.h`.
 
-/// `func_ov003_02082b64` -- one argument, a `CombatSprite*`; ticks the sprite.
-extern void func_ov003_02082b64(CombatSprite* cSprite);
+/// `CombatSprite_Render` (`func_ov003_02082b64`) -- one argument, a `CombatSprite*`; ticks the
+/// sprite. Declared in `Combat/Core/CombatSprite.h`.
 
 /// The fixed-point rounding idiom shared with `BtlEnm014`: convert a 4.12 value to `f32`, bias it
 /// by a half, and truncate. The sign test is repeated in both arms, so the value itself is
@@ -535,7 +533,7 @@ s32 func_ov011_02125e14(BtlEnm010Lser* data) {
     }
     sp = (CombatSprite*)((u8*)data + 0x80);
     for (i = 0; i < 4; i++) {
-        func_ov003_02082b0c(sp);
+        CombatSprite_Update(sp);
         sp = (CombatSprite*)((u8*)sp + 0x60);
     }
     return result;
@@ -666,9 +664,9 @@ s32 func_ov011_02126354(BtlEnm010Lser* data) {
             func_ov003_020cbc50(&acc0, &acc1, rec->unk_00, rec->unk_04);
             acc0 += vx;
             acc1 += vy;
-            func_ov003_02082724(sp, (acc0 * 16) >> 16, (acc1 * 16) >> 16);
+            CombatSprite_SetPosition(sp, (acc0 * 16) >> 16, (acc1 * 16) >> 16);
             func_ov003_02082730(sp, 0x7FFFFFFE - outY);
-            func_ov003_02082b64(sp);
+            CombatSprite_Render(sp);
             rec = (BtlEnm010LserRec*)((u8*)rec + 0xC);
             sp  = (CombatSprite*)((u8*)sp + 0x60);
         }
@@ -676,17 +674,17 @@ s32 func_ov011_02126354(BtlEnm010Lser* data) {
 
     // Bit 1: the centre sprite at `0x1A0`, on the offsets alone.
     if ((u32)(data->unk_250 << 30) >> 31) {
-        func_ov003_02082724((CombatSprite*)((u8*)data + 0x1A0), (vx * 16) >> 16, (vy * 16) >> 16);
+        CombatSprite_SetPosition((CombatSprite*)((u8*)data + 0x1A0), (vx * 16) >> 16, (vy * 16) >> 16);
         func_ov003_02082730((CombatSprite*)((u8*)data + 0x1A0), 0x7FFFFFFF - outY);
-        func_ov003_02082b64((CombatSprite*)((u8*)data + 0x1A0));
+        CombatSprite_Render((CombatSprite*)((u8*)data + 0x1A0));
     }
 
     // Bit 2: the first sprite at `0x80`, on the owner's own projected position.
     if ((u32)(data->unk_250 << 29) >> 31) {
         func_ov003_02084348(mode, &t1, &t0, data->unk_22C, data->unk_230, data->unk_234);
-        func_ov003_02082724((CombatSprite*)((u8*)data + 0x80), t1, t0);
+        CombatSprite_SetPosition((CombatSprite*)((u8*)data + 0x80), t1, t0);
         func_ov003_02082730((CombatSprite*)((u8*)data + 0x80), 0x7FFFFFFD - outY);
-        func_ov003_02082b64((CombatSprite*)((u8*)data + 0x80));
+        CombatSprite_Render((CombatSprite*)((u8*)data + 0x80));
     }
     return 1;
 }
@@ -698,7 +696,7 @@ s32 func_ov011_021265a8(BtlEnm010Lser* data) {
 
     sp = (CombatSprite*)((u8*)data + 0x80);
     for (i = 0; i < 4; i++) {
-        func_ov003_02082cc4(sp);
+        CombatSprite_Release(sp);
         sp = (CombatSprite*)((u8*)sp + 0x60);
     }
     return 1;
@@ -1035,8 +1033,10 @@ void func_ov011_021278d4(void* p, s32 arg1, s32 arg2, s32 index) {
 extern s32 func_ov003_020c62c4(void* p, s32 arg1);
 extern s32 func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 
-extern void func_ov003_02082750(CombatSprite* cSprite, s32 arg1, s32 arg2);
-extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
+// `CombatSprite_SetFlip` (`func_ov003_02082750`) takes TWO arguments; its first instruction
+// clobbers r2 (`ldrh r2, [r0, #0xa]`) and both call sites in the original set only r0/r1.
+// Declared in `Combat/Core/CombatSprite.h`.
+extern s32 func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 
 /// `Tsk_BtlEnm010_Rnge`'s task entry: a four-way switch whose arms all fall through to a
 /// single `return r`, and `r` is 1 unless case 1's animation has finished.
@@ -1063,9 +1063,9 @@ s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
             Mini108_VBlank((CombatSprite*)data, 0, r);
             data->unk_060 = *(BtlEnm010Owner**)arg2;
             if (*(s32*)((u8*)*(BtlEnm010Owner**)arg2 + 0x24) == 1) {
-                func_ov003_02082750((CombatSprite*)data, r, 0);
+                CombatSprite_SetFlip((CombatSprite*)data, r);
             } else {
-                func_ov003_02082750((CombatSprite*)data, 0, 0);
+                CombatSprite_SetFlip((CombatSprite*)data, 0);
             }
             break;
         case 1:
@@ -1077,7 +1077,7 @@ s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
             {
                 return 0;
             }
-            func_ov003_02082b0c((CombatSprite*)data);
+            CombatSprite_Update((CombatSprite*)data);
             if (func_ov003_020c37f8((void*)data) != 0) {
                 snd = 0x5B;
                 pan = func_ov003_020843b0(r, data->unk_060->unk_28);
@@ -1116,12 +1116,12 @@ s32 func_ov011_02127ce0(void* arg0, void* arg1, s32 arg2, s32 index) {
             } else {
                 pan = (s16)(pan + 0x20);
             }
-            func_ov003_02082724((CombatSprite*)data, pan, y);
+            CombatSprite_SetPosition((CombatSprite*)data, pan, y);
             func_ov003_02082730((CombatSprite*)data, 0x7FFFFFFF - (data->unk_060->unk_2C + 0x20000));
-            func_ov003_02082b64((CombatSprite*)data);
+            CombatSprite_Render((CombatSprite*)data);
             break;
         case 3:
-            func_ov003_02082cc4(data);
+            CombatSprite_Release((CombatSprite*)data);
             break;
     }
     return r;
@@ -1312,11 +1312,12 @@ s32 func_ov011_02127bdc(void* arg0, void* arg1) {
     return 1;
 }
 
-extern s32              func_ov003_02082f2c(void* p);
+// `CombatActor_PopPendingCommand` (`CombatActor_PopPendingCommand`) -- declared in
+// `Combat/Core/CombatActor.h`; the RG phase dispatcher reads its result as a phase number.
 extern s32              func_ov003_020c4628(void* p);
 extern const TaskHandle data_ov011_0212c1d4;
 
-/// RG's per-frame handler. Picks a phase off `func_ov003_02082f2c`, integrates two Euler steps
+/// RG's per-frame handler. Picks a phase off `CombatActor_PopPendingCommand`, integrates two Euler steps
 /// over the position and velocity triples, then hands back `0x1CC`.
 ///
 /// The two integration passes are in this order and it matters: the position is advanced by the
@@ -1329,7 +1330,7 @@ s32 func_ov011_02127a64(void* arg0, void* arg1) {
     BtlEnm010RG* data;
 
     data = *(BtlEnm010RG**)((u8*)arg1 + 0x18);
-    switch (func_ov003_02082f2c(data)) {
+    switch (CombatActor_PopPendingCommand((CombatActor*)data)) {
         case 2:
             func_ov011_021265d4(data, func_ov011_02127628);
             break;
@@ -1557,12 +1558,13 @@ s32 func_ov011_02128348(void* arg0, void* arg1, s32 arg2, s32 index) {
 }
 
 extern const s32 data_ov011_0212c1ec[];
-extern s32       func_ov003_0208260c(void* p, s32 a1, s32 a2, s32 a3, s32 a4);
+// `CombatSprite_SetAffineTransform` (`CombatSprite_SetAffineTransform`) -- five arguments, declared in
+// `Combat/Core/CombatSprite.h`.
 
 /// SingleShot's phase-2 handler: three passes over a table and a 0x10-stride record block.
 ///
 /// `base` is a genuine second counter in the original -- `mov r4, r6` before the loop and `r4`
-/// never stepped again, so arguments 2 and 5 of `func_ov003_0208260c` are always 0 while the
+/// never stepped again, so arguments 2 and 5 of `CombatSprite_SetAffineTransform` are always 0 while the
 /// table index and the record pointer both advance. It has to be a separate local, not a second
 /// name for `i`.
 s32 func_ov011_02128698(void* p) {
@@ -1575,9 +1577,9 @@ s32 func_ov011_02128698(void* p) {
     base = 0;
     rec  = (void*)((u8*)data + 0x68);
     for (i = 0; i < 3; i++) {
-        func_ov003_0208260c((void*)((u8*)data + 4), base, data_ov011_0212c1ec[i], data_ov011_0212c1ec[i], base);
-        func_ov003_02082724((CombatSprite*)((u8*)data + 4), *(s16*)((u8*)rec + 0xC), *(s16*)((u8*)rec + 0xE));
-        func_ov003_02082b64((CombatSprite*)((u8*)data + 4));
+        CombatSprite_SetAffineTransform((void*)((u8*)data + 4), base, data_ov011_0212c1ec[i], data_ov011_0212c1ec[i], base);
+        CombatSprite_SetPosition((CombatSprite*)((u8*)data + 4), *(s16*)((u8*)rec + 0xC), *(s16*)((u8*)rec + 0xE));
+        CombatSprite_Render((CombatSprite*)((u8*)data + 4));
         rec = (void*)((u8*)rec + 0x10);
     }
     return 1;
@@ -1585,7 +1587,7 @@ s32 func_ov011_02128698(void* p) {
 
 /// Ticks the sprite at `+0x04` and nothing else.
 s32 func_ov011_02128704(void* p) {
-    func_ov003_02082cc4((void*)((u8*)p + 4));
+    CombatSprite_Release((void*)((u8*)p + 4));
     return 1;
 }
 
@@ -1648,10 +1650,10 @@ s32 func_ov011_02128b80(BtlEnm010Sprl* data) {
     z = 0;
     for (i = 0; i < 5; i++) {
         func_ov003_02084348(z, &v0, &v1, data->unk_070[i], data->unk_098, data->unk_084[i]);
-        func_ov003_02082724((CombatSprite*)((u8*)data + 4), v0, v1);
+        CombatSprite_SetPosition((CombatSprite*)((u8*)data + 4), v0, v1);
         func_ov003_02082730((CombatSprite*)((u8*)data + 4), 0x7FFFFFFF - data->unk_084[i]);
-        func_ov003_0208260c((void*)((u8*)data + 4), z, data_ov011_0212c21c[i], data_ov011_0212c21c[i], z);
-        func_ov003_02082b64((CombatSprite*)((u8*)data + 4));
+        CombatSprite_SetAffineTransform((void*)((u8*)data + 4), z, data_ov011_0212c21c[i], data_ov011_0212c21c[i], z);
+        CombatSprite_Render((CombatSprite*)((u8*)data + 4));
     }
     return 1;
 }
@@ -1659,7 +1661,7 @@ s32 func_ov011_02128b80(BtlEnm010Sprl* data) {
 /// Ticks the sprite at `+0x04` and nothing else. Second of the two identical 20-byte tickers
 /// (`0x02128704` was the first).
 s32 func_ov011_02128c30(void* p) {
-    func_ov003_02082cc4((void*)((u8*)p + 4));
+    CombatSprite_Release((void*)((u8*)p + 4));
     return 1;
 }
 
@@ -1707,7 +1709,7 @@ s32 func_ov011_02129ea4(void* p) {
 
     sp = (void*)((u8*)p + 4);
     for (i = 0; i < 4; i++) {
-        func_ov003_02082cc4(sp);
+        CombatSprite_Release(sp);
         sp = (void*)((u8*)sp + 0x88);
     }
     return 1;
@@ -1804,7 +1806,7 @@ void func_ov011_02128f10(void* p, u16 v) {
     }
     *(u16*)((u8*)data + 0x70) = v;
     Mini108_VBlank((CombatSprite*)data, data_ov011_0212c28e[i * 4], 0);
-    func_ov003_02082750((CombatSprite*)data, data_ov011_0212c290[i * 4], 0);
+    CombatSprite_SetFlip((CombatSprite*)data, data_ov011_0212c290[i * 4]);
 }
 
 extern void func_ov011_02129188(void* p, void* rec);
@@ -2662,8 +2664,8 @@ void func_ov011_0212b168(BtlEnm010Tatt* data) {
 
 extern s32  func_ov003_020c42ec(void* p);
 extern s32  func_ov003_020c4348(void* p);
-extern void func_ov011_02082d04(void* p);
 extern void func_ov011_0212b168(BtlEnm010Tatt* data);
+
 extern void func_ov011_0212a78c(BtlEnm010Tatt* data);
 extern void func_ov011_0212ac0c(BtlEnm010Tatt* data);
 extern void func_ov011_0212aee8(BtlEnm010Tatt* data);
@@ -2713,7 +2715,7 @@ void func_ov011_0212a134(BtlEnm010Tatt* data) {
             if (data->unk_1C0 == 0) {
                 func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 0);
                 Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 0);
-                func_ov011_02082d04((CombatSprite*)((u8*)data + 0x84));
+                CombatSprite_Restart((CombatSprite*)((u8*)data + 0x84));
             }
             if (data->unk_1C2 > 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
@@ -2852,7 +2854,6 @@ void func_ov011_02128cc0(BtlEnm010Tatt* data) {
     func_ov011_02128ca4(data, (s32)func_ov011_02128e30);
 }
 
-extern s32  func_ov003_02082f2c(void* p);
 extern void func_ov003_02084694(void* p, s32 arg1);
 extern s32  func_ov003_020c3bf0(void* p);
 extern s32  func_ov003_020c4668(void* p);
@@ -2865,7 +2866,7 @@ s32 func_ov011_0212bac8(void* arg0, void* arg1) {
     BtlEnm010Tatt* data;
 
     data = (BtlEnm010Tatt*)*(void**)((u8*)arg1 + 0x18);
-    switch (func_ov003_02082f2c(data)) {
+    switch (CombatActor_PopPendingCommand((CombatActor*)data)) {
         case 2:
             if (((u32)(*(u8*)((u8*)data + 0x206) << 31) >> 31) == 0) {
                 break;
@@ -2995,7 +2996,7 @@ s32 func_ov011_02129b84(BtlEnm010Tatt* data) {
     q = (s16*)((u8*)data + 4);
     for (i = 0; i < 4; i++) {
         if (((u32)(*p << 30) >> 31) == 1) {
-            func_ov003_02082b0c((CombatSprite*)q);
+            CombatSprite_Update((CombatSprite*)q);
             r = 1;
         }
         p = (s16*)((u8*)p + 0x88);
@@ -3342,9 +3343,9 @@ s32 func_ov011_02129cec(BtlEnm010Tatt* data) {
                 a = vx + *(s32*)((u8*)p + 0x68);
                 b = vy + *(s32*)((u8*)p + 0x6C);
             }
-            func_ov003_02082724((CombatSprite*)p, (b * 16) >> 16, (a * 16) >> 16);
-            func_ov003_0208260c(p, i, i, *(s32*)((u8*)p + 0x78), i);
-            func_ov003_02082b64((CombatSprite*)p);
+            CombatSprite_SetPosition((CombatSprite*)p, (b * 16) >> 16, (a * 16) >> 16);
+            CombatSprite_SetAffineTransform(p, i, i, *(s32*)((u8*)p + 0x78), i);
+            CombatSprite_Render((CombatSprite*)p);
         }
         p = (void*)((u8*)p + 0x88);
     }
