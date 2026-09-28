@@ -186,9 +186,9 @@ a walking `CombatSprite*` with a literal stride.
 
 ## Done
 
-**12 of 114 functions byte-identical** (`RELOCC` or better), **0 differing bytes**, objdiff
-average **100.00%** over the paired set. The emitted prefix `0x021256c0..0x02125e14` is
-contiguous and every function's size matches the original's exactly.
+**15 of 114 functions byte-identical** (`RELOCC` or better), **0 differing bytes**. The emitted
+prefix `0x021256c0..0x021260e8` is contiguous and every function's size matches the original's
+exactly.
 
 | function | bytes | status |
 |----------|-------|--------|
@@ -204,9 +204,12 @@ contiguous and every function's size matches the original's exactly.
 | `func_ov011_02125c44` | 180 | **byte-exact** |
 | `func_ov011_02125cf8` | 80 | **byte-exact** |
 | `func_ov011_02125d48` | 204 | **byte-exact** |
+| `func_ov011_02125e14` | 272 | **byte-exact** |
+| `func_ov011_02125f24` | 320 | **byte-exact** |
+| `func_ov011_02126064` | 132 | **byte-exact** |
 
-Nothing was deliberately skipped this round. `.text`/`.rodata`/`.data` are not byte-identical
-and `romcmp.py` has not been run - the linked ROM does not exist until all 114 functions are
+Nothing was deliberately skipped. `.text`/`.rodata`/`.data` are not byte-identical and
+`romcmp.py` has not been run - the linked ROM does not exist until all 114 functions are
 emitted, so `fbdiff.py` is the only signal available.
 
 `ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
@@ -215,20 +218,18 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **Work strictly in address order from `0x02125e14`.**
-2. `func_ov011_02125e14` is the Lser task's command 1 and is the next thing to read. It already
-   shows two more `BtlEnm010Lser` fields that `02125d48` leaves as padding:
-   * `[r5, #0x54]` -- no, that is `data->unk_00->unk_54`, the **owner's** engine-flags word,
-     tested with `tst r0, #4` (so `unk_54` on the owner is the flags word, as on ov010).
-   * `[r5, #0x58]` and `r5 + 0x4` -- genuinely new `BtlEnm010Lser` fields. `func_ov003_020cc354`
-     takes the block at `r5 + 4`. It then bulk-copies with
-     `ldm r6!, {r0,r1,r2,r3} / stm lr!, {r0,r1,r2,r3}` seven times, so expect a block move.
-3. Then `02125f24` (320 B, the Lser per-frame worker; it is what calls `02125c44` and
-   `02125c00` in loops and is where the remaining `BtlEnm010Lser` layout will come from),
-   `02126064`, `021260e8` (620 B, the one that walks the whole 0x254 struct).
-4. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
+1. **Work strictly in address order from `0x021260e8`** (620 B, the Lser mode-2 worker). It is
+   the largest function in the Lser region and it walks the whole 0x254 struct, so expect
+   several builds. Its offset census has already been taken: it is what named
+   `unk_22C`/`unk_230`/`unk_234`/`unk_248`, all four of which are now declared.
+2. Then `02126354` (596 B, the Lser's remaining command handler, dispatched from
+   `02125cf8` case 2) and `021265a8` (44 B, case 3).
+3. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
    entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
    blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
    `relocs.txt` for the address.
-5. Still open: the eight 0x180-byte tasks at `0x0212bde8`-`0x0212be18` are uncharacterised, and
-   `BtlEnm010UG`'s `0x0C`-`0x1C4` range is untouched padding.
+4. Still to characterise: **RG 0x208** (entry `021278d4`), **Rnge 0x06C** (`02127ce0`),
+   **SWA 0x020** (`0212801c`), **Sprl 0x0B8** (`02128758`), **Tatt 0x250** (`02129934`),
+   **UG 0x214** (`0212b99c`; `0212bac8` is its per-frame handler). Plus the four 0x180-byte
+   handles at `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. For each, the
+   task's *initialiser* is the cheap way in: it writes every field, so it pins the layout.

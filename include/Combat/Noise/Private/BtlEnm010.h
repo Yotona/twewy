@@ -203,12 +203,15 @@ typedef struct BtlEnm010LserEmit {
 ///   `0x080` four `CombatSprite`s, 0x60 apart, primed by `func_ov011_021258b4` in a loop whose
 ///          pointer step is a literal `add r5, r5, #0x60`.
 ///   `0x200` the emitter block (`BtlEnm010LserEmit`).
+///   `0x22C`, `0x230`, `0x234` accumulators, and `0x248` a fourth; all four are read-modify-
+///          written by `func_ov011_021260e8`, the mode-2 worker.
 ///   `0x23C`, `0x240` zeroed from a single `mov r0, #0`.
 ///   `0x244` the spawn argument's `unk_10`, negated when the owner's `unk_24` is clear
 ///          (`ldreq / rsbeq / streq`).
 ///   `0x24C` the spawn argument's `unk_14`.
 ///   `0x250` a byte whose bit 3 tracks `func_ov003_020c37f8(owner + 0x84)`
-///          (`orrne / biceq`).
+///          (`orrne / biceq`), and whose bit 1 is set by all three mode workers.
+///   `0x004` a 0x7C-byte copy of the owner, refreshed every frame by `func_ov011_02125e14`.
 ///
 /// **The sprite block is raw padding, not `CombatSprite sprite[4]`.** `sizeof(CombatSprite)`
 /// in this header is 0x7D, not the 0x60 the ROM uses, because the `Sprite` bitfield block
@@ -220,11 +223,14 @@ typedef struct BtlEnm010Lser {
     /* 0x004 */ BtlEnm010OwnerCopy copy;
     /* 0x080 */ s32                pad_080[0x60]; /* four CombatSprite, 0x60 apart */
     /* 0x200 */ BtlEnm010LserEmit  emit;
-    /* 0x22C */ s32                pad_22C[4];
+    /* 0x22C */ s32                unk_22C;
+    /* 0x230 */ s32                unk_230;
+    /* 0x234 */ s32                unk_234;
+    /* 0x238 */ s32                pad_238;
     /* 0x23C */ s32                unk_23C;
     /* 0x240 */ s32                unk_240;
     /* 0x244 */ s32                unk_244;
-    /* 0x248 */ s32                pad_248;
+    /* 0x248 */ s32                unk_248;
     /* 0x24C */ s32                unk_24C;
     /* 0x250 */ u8                 unk_250;
     /* 0x251 */ u8                 pad_251[3];
