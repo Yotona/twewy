@@ -115,24 +115,24 @@ typedef struct BtlEnm010UG {
     /* 0x210 */ s32 unk_210;
 } BtlEnm010UG;
 
-/// The `Tsk_BtlEnm010_Lser` task's shared state block, reached as `LserData + 4`.
+/// The owner object every task in this overlay is hung off. `Task+0x18` / the spawn argument's
+/// first word point at one of these.
 ///
-/// The task's whole data block is 0x254 bytes (the size in the `TaskHandle` at
-/// `0x0212c118`); this is the sub-record at offset 4, and the four fields below are at
-/// absolute offsets `0x28`/`0x2C`/`0x30`/`0x34`.
-///
-/// Evidence: `func_ov011_02125c00` reads all four and `func_ov011_02125c44` reads `unk_24`.
-/// The values look like a 4.12 position triple (`unk_28`/`unk_2C`/`unk_30`) with a mirror flag
-/// in front, because `unk_28` is biased by `+/- 0x40000` depending on `unk_24` and
-/// `data_ov011_0212c124` is the three-entry `s32` table `{0xFFFF8000, 0xFFFF0000, 0}` used to
-/// nudge `unk_30` by an indexed amount.
-typedef struct BtlEnm010LserVec {
+/// Two roles so far, and both are consistent with the offsets:
+///   - `func_ov011_02125c00` receives it as `LserData + 4` and reads `unk_24`..`unk_30` as a
+///     4.12 position triple behind a mirror flag, then biases `unk_28` by `+/- 0x40000`.
+///   - `func_ov011_02125d48` reads `unk_84` (two bits, used as a sprite-variant selector) and
+///     `unk_24` off the spawn argument's pointer.
+/// `unk_24` and `unk_84` are the only fields anything has touched, so the rest is padding.
+typedef struct BtlEnm010Owner {
     /* 0x00 */ s32 pad_00[9];
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
-} BtlEnm010LserVec;
+    /* 0x34 */ s32 pad_34[20];
+    /* 0x84 */ u32 unk_84;
+} BtlEnm010Owner;
 
 /// One 0xC-byte per-emitter record inside the Lser task's data, at `LserData + 0x200` with a
 /// 0xC stride, indexed three deep.
@@ -148,17 +148,71 @@ typedef struct BtlEnm010LserRec {
     /* 0x08 */ s32 unk_08;
 } BtlEnm010LserRec;
 
-/// The per-sprite record the loaders take as their second argument. Only `unk_46` (a flag
-/// halfword whose bit 0 is tested and then set) is known so far.///
-/// Evidence: `func_ov011_02125750` reads it at `ldrh r1, [r9, #0x46]` before the release
-/// call and writes it back with a predicated `ldrh`/`orr`/`strh` triple, so the field really
-/// is at 0x46 and is a halfword. Note that 0x46 is not a multiple of four, so the padding in
-/// front of it has to be halfword-granular -- a `s32` pad array silently puts the field at
-/// the next word boundary instead.
-typedef struct BtlEnm010Sprite {
-    /* 0x00 */ s32 pad_00[0x11];
-    /* 0x44 */ u16 pad_44;
-    /* 0x46 */ u16 unk_46;
-} BtlEnm010Sprite;
+/// The three emitter records plus one halfword, at `LserData + 0x200`.
+///
+/// The halfword is written as `add r0, r7, #0x200 / strh r1, [r0, #0x28]`, i.e. reached
+/// through the 0x200 base rather than as a flat `0x228` offset, which is why it lives in a
+/// sub-struct here. It is set from `args->unk_14 != 0`.
+///
+/// The trailing `pad_2A` exists only to make the struct 0x2C bytes: without it the next
+/// `s32` field of `BtlEnm010Lser` cannot start at 0x23C, and every offset from 0x23C to the end
+/// comes out 0x38 too high.
+typedef struct BtlEnm010LserEmit {
+    /* 0x00 */ BtlEnm010LserRec rec[3];
+    /* 0x24 */ s32              pad_24;
+    /* 0x28 */ u16              unk_28;
+    /* 0x2A */ u16              pad_2A;
+} BtlEnm010LserEmit;
+
+/// `Tsk_BtlEnm010_Lser` task data -- **0x254 bytes**, the size in the `TaskHandle` at
+/// `0x0212c118`, and confirmed independently by `func_ov011_02125d48`'s
+/// `MI_CpuSet(data, 0, 0x254)`, which is the only write to the whole block.
+///
+/// `func_ov011_02125d48` is the task's initialiser and touches every field below, so each one
+/// carries its own evidence:
+///   `0x000` the owner, copied from the spawn argument.
+///   `0x080` four `CombatSprite`s, 0x60 apart, primed by `func_ov011_021258b4` in a loop whose
+///          pointer step is a literal `add r5, r5, #0x60`.
+///   `0x200` the emitter block (`BtlEnm010LserEmit`).
+///   `0x23C`, `0x240` zeroed from a single `mov r0, #0`.
+///   `0x244` the spawn argument's `unk_10`, negated when the owner's `unk_24` is clear
+///          (`ldreq / rsbeq / streq`).
+///   `0x24C` the spawn argument's `unk_14`.
+///   `0x250` a byte whose bit 3 tracks `func_ov003_020c37f8(owner + 0x84)`
+///          (`orrne / biceq`).
+///
+/// **The sprite block is raw padding, not `CombatSprite sprite[4]`.** `sizeof(CombatSprite)`
+/// in this header is 0x7D, not the 0x60 the ROM uses, because the `Sprite` bitfield block
+/// overruns its 0x40 allocation -- so an array of the type puts the next field at 0x274
+/// instead of 0x200. Reach the elements through a walking `CombatSprite*` instead; the stride
+/// is the ROM's, not `sizeof`.
+typedef struct BtlEnm010Lser {
+    /* 0x000 */ BtlEnm010Owner*   unk_00;
+    /* 0x004 */ s32               pad_04[31];
+    /* 0x080 */ s32               pad_080[0x60]; /* four CombatSprite, 0x60 apart */
+    /* 0x200 */ BtlEnm010LserEmit emit;
+    /* 0x22C */ s32               pad_22C[4];
+    /* 0x23C */ s32               unk_23C;
+    /* 0x240 */ s32               unk_240;
+    /* 0x244 */ s32               unk_244;
+    /* 0x248 */ s32               pad_248;
+    /* 0x24C */ s32               unk_24C;
+    /* 0x250 */ u8                unk_250;
+    /* 0x251 */ u8                pad_251[3];
+} BtlEnm010Lser;
+
+/// The 0x18-byte spawn-argument record `func_ov011_02125b98` hands to the new
+/// `Tsk_BtlEnm010_Lser` task.
+///
+/// `func_ov011_02125b98` writes only `unk_00` and `unk_14`; `func_ov011_02125d48` (the task's
+/// initialiser) then reads `unk_00`, `unk_10` and `unk_14`. The words at `0x04..0x0F` are
+/// untouched by anything, and the record must **not** be zero-initialised -- doing that emits
+/// four stores the original does not have.
+typedef struct BtlEnm010LserArgs {
+    /* 0x00 */ BtlEnm010Owner* unk_00;
+    /* 0x04 */ s32             pad_04[3];
+    /* 0x10 */ s32             unk_10;
+    /* 0x14 */ s32             unk_14;
+} BtlEnm010LserArgs;
 
 #endif /* COMBAT_NOISE_PRIVATE_BTLENM010_H */

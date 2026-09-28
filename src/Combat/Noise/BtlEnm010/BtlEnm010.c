@@ -99,8 +99,8 @@ extern const void* data_ov011_0212cadc[];
 /// The two values below deliberately do not share a variable. Written as one `phase`, the slot
 /// size and the anim phase are the same live value, so MWCC keeps it in a callee-saved
 /// register for the whole function and every `data`-relative load moves up one register.
-void func_ov011_02125750(s32 arg0, BtlEnm010Sprite* arg1, s32 arg2) {
-    s32              flag = (arg1->unk_46 & 1) ? 1 : 0;
+void func_ov011_02125750(s32 arg0, CombatSprite* arg1, s32 arg2) {
+    s32              flag = (arg1->flags46 & 1) ? 1 : 0;
     void*            bin;
     BtlEnm010AnmMgr* data;
     s32              slot;
@@ -136,10 +136,10 @@ void func_ov011_02125750(s32 arg0, BtlEnm010Sprite* arg1, s32 arg2) {
     if (data->unk_38 != 3) {
         phase = phase + data->unk_38;
     }
-    CombatSprite_LoadFromTable(arg0, (CombatSprite*)arg1, (const BinIdentifier*)bin,
-                               (const SpriteAnimEntry*)data_ov011_0212caf4[arg2], 0, phase, data_ov011_0212bfe0[arg2]);
+    CombatSprite_LoadFromTable(arg0, arg1, (const BinIdentifier*)bin, (const SpriteAnimEntry*)data_ov011_0212caf4[arg2], 0,
+                               phase, data_ov011_0212bfe0[arg2]);
     if (flag == 1) {
-        arg1->unk_46 |= 1;
+        arg1->flags46 |= 1;
     }
 }
 
@@ -303,15 +303,6 @@ extern const TaskHandle data_ov011_0212c118;
 /// whether it is 1. One argument.
 extern s32 func_ov003_020c37f8(void* p);
 
-/// The 0x18-byte spawn-argument record `func_ov011_02125b98` hands to the new task. The
-/// original writes only the first and the last word and leaves `0x04..0x13` untouched, so the
-/// record is **not** zero-initialised here -- doing that would emit four extra stores.
-typedef struct BtlEnm010LserArgs {
-    /* 0x00 */ void* unk_00;
-    /* 0x04 */ s32   pad_04[4];
-    /* 0x14 */ void* unk_14;
-} BtlEnm010LserArgs;
-
 /// Spawns the `Tsk_BtlEnm010_Lser` task. Which pool it goes into depends on a two-bit flag at
 /// `arg0 + 0x84`.
 ///
@@ -350,16 +341,16 @@ extern void func_ov003_02082d04(CombatSprite* cSprite);
 ///
 /// Five arguments; the fifth is on the caller's stack, which is why the callee reads it at
 /// `sp + 8` after its own eight-byte `push {r3, lr}`.
-void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010LserVec* vec, s32 index) {
-    *outX = (vec->unk_24 == 0) ? vec->unk_28 - 0x40000 : vec->unk_28 + 0x40000;
-    *outY = vec->unk_2C;
-    *outZ = vec->unk_30 + data_ov011_0212c124[index];
+void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010Owner* owner, s32 index) {
+    *outX = (owner->unk_24 == 0) ? owner->unk_28 - 0x40000 : owner->unk_28 + 0x40000;
+    *outY = owner->unk_2C;
+    *outZ = owner->unk_30 + data_ov011_0212c124[index];
 }
 
 /// Advances one of the Lser task's three emitter records. Bails out once the accumulated
 /// value leaves range, or when the caller has disabled the emitter, then re-seeds the record
 /// and kicks the sprite's animation.
-void func_ov011_02125c44(BtlEnm010LserVec* vec, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled) {
+void func_ov011_02125c44(BtlEnm010Owner* owner, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled) {
     s32 v = rec->unk_04 + rec->unk_08;
 
     rec->unk_04 = v;
@@ -376,7 +367,7 @@ void func_ov011_02125c44(BtlEnm010LserVec* vec, BtlEnm010LserRec* rec, CombatSpr
     }
     func_ov003_02082d04(sprite);
     rec->unk_00 = RNG_Next(0x4000);
-    if (vec->unk_24 == 0) {
+    if (owner->unk_24 == 0) {
         rec->unk_00 = rec->unk_00 + 0x6000;
     } else {
         rec->unk_00 = rec->unk_00 - 0x2000;
@@ -386,4 +377,46 @@ void func_ov011_02125c44(BtlEnm010LserVec* vec, BtlEnm010LserRec* rec, CombatSpr
     // so writing the assignment first moves the store three instructions earlier.
     rec->unk_04 = 0x20000;
     rec->unk_08 = 0 - (RNG_Next(0x1001) + 0x1000);
+}
+
+/// The `Tsk_BtlEnm010_Lser` task's initialiser, run for command 0. Clears the whole 0x254-byte
+/// block, primes the four sprites, then fills in the fields the per-frame code reads.
+s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args) {
+    // A walking pointer, not `&data->sprite[i]`: the ROM's stride is 0x60 but
+    // `sizeof(CombatSprite)` is 0x7D here, so the array form lands the next field at 0x274.
+    // The mask is spelled `(u32)((s32)x << 30) >> 30` because the all-unsigned form folds to
+    // `and r0, r0, #3` and loses the `lsl #30 / lsr #30` pair. Both are initialised *after*
+    // the `MI_CpuSet`, which is where the original has `add r5, r7, #0x80`.
+    // `i` is declared before `sp` on purpose: MWCC numbers the first-declared long-lived local
+    // lower, and the original keeps the counter in r4 and the sprite pointer in r5.
+    s32           i;
+    CombatSprite* sp;
+
+    MI_CpuSet(data, 0, 0x254);
+    sp = (CombatSprite*)((u8*)data + 0x80);
+    for (i = 0; i < 4; i++) {
+        func_ov011_021258b4((u32)((s32)args->unk_00->unk_84 << 30) >> 30, sp, 2);
+        sp = (CombatSprite*)((u8*)sp + 0x60);
+    }
+    data->unk_00  = args->unk_00;
+    data->unk_23C = 0;
+    data->unk_240 = 0;
+    data->unk_244 = args->unk_10;
+    if (args->unk_00->unk_24 == 0) {
+        data->unk_244 = 0 - data->unk_244;
+    }
+    data->unk_24C = args->unk_14;
+    // An if/else, not a ternary: the original's `moveq r1, #0` comes *before* its
+    // `movne r1, #1`, and a ternary emits them the other way round.
+    if (args->unk_14 == 0) {
+        data->emit.unk_28 = 0;
+    } else {
+        data->emit.unk_28 = 1;
+    }
+    if (func_ov003_020c37f8((u8*)args->unk_00 + 0x84) != 0) {
+        data->unk_250 |= 8;
+    } else {
+        data->unk_250 &= ~8;
+    }
+    return 1;
 }
