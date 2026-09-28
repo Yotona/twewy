@@ -1,7 +1,8 @@
 # ov011 — `BtlEnm010`
 
-Status as of the session that ended at **74 of 114 functions byte-exact**. This file is the
-authoritative hand-off. Everything below is measured, not estimated.
+Status as of the session that ended at **74 of 114 functions byte-exact, all 114 written, the
+overlay linking**. This file is the authoritative hand-off. Everything below is measured, not
+estimated.
 
 ## Identity
 
@@ -28,33 +29,62 @@ style and idiom: `BtlEnm006` (ov010), `BtlEnm014` (ov012), `BtlEnm015` (ov013), 
 ## Current state
 
 ```
-114 total | 6 raw byte-identical | 68 identical-modulo-relocation | 31 differ | 9 missing
-1327 differing bytes
+114 total | 6 raw byte-identical | 68 identical-modulo-relocation | 40 differ | 0 missing
+1956 differing bytes
 ```
 
 - **74 byte-exact.** `.text` prefix `0x021256c0..0x021260e8` is contiguous.
-- **31 written-not-exact**, 1,327 differing bytes. Nearly all are register-allocation residue.
-- **9 unstarted**, 476–1,316 bytes.
-- **Address-order debt: ~16 functions** out of address order in the source file. See
-  "The real blocker" below.
+- **40 written-not-exact**, 1,956 differing bytes: 31 older functions (1,224 B after the
+  canonical-name fix) + the 9 functions written this session at first-pass quality (732 B).
+- **0 unstarted.** All 114 definitions exist and compile.
+- **Address-order debt: PAID.** All 114 definitions are emitted in ascending address order and
+  the object's per-function `.text` sections verify ascending. It was **46** functions out of
+  order, not "~16" — the earlier estimate was an eyeball; a longest-increasing-subsequence count
+  is the honest number.
+- **34 functions carry wrong codegen sizes** (net +200 bytes) — see "What is left". Until those
+  are exact, every symbol after them in `.text` lands shifted and the ROM comparison avalanches.
 
-Progression across the session: 2 → 12 → 15 → 29 → 41 → 49 → 62 → 73 → **74**. The last six
-rounds moved it 62 → 73 → 74 → 74 → 74 → 74. The cheap phase is over.
+Progression across the earlier sessions: 2 → 12 → 15 → 29 → 41 → 49 → 62 → 73 → **74**. The last
+six of those moved 62 → 73 → 74 → 74 → 74 → 74. The cheap phase is over. This session moved the
+*state* rather than the count: the address-order debt is paid, all nine missing functions exist,
+and the overlay links.
 
-`.text`/`.rodata`/`.data` are **not** yet byte-identical, and `romcmp.py` has never been able to
-run for this overlay — see "The real blocker".
+## The link: achieved experimentally, and how to reproduce it
 
-## The real blocker: the overlay has never linked
+`romcmp.py` now **runs against our code** — the first end-to-end check this overlay has ever
+had. Three findings gate it, all measured:
 
-`romcmp.py` compares the built ROM against `E:\Git\twewy\build\usa\twewy_usa.nds`. It is the only
-check that has ever actually mattered on this project — an objdiff section percentage measures
-object granularity and reloc artefacts, not correctness. **For ov011 it cannot run at all**, because
-the overlay does not link until all 114 functions are emitted, and the address-order debt must be
-paid before it can.
+1. **The link only uses our object when the delinks entry is marked `complete`.** Without it,
+   `build\usa\delinks\src\Combat\Noise\BtlEnm010\BtlEnm010.o` (the original bytes) is what
+   links, and a `romcmp` 0-diff is the ROM compared against itself — a vacuous pass. This is
+   project-wide: `object_to_link` flips to `build\usa\src\...` only for `complete` entries
+   (see `dsd json delinks`). **Marking it is the user's call** (hard rule 3); it is deliberately
+   *not* marked in the tree.
+2. **The data does NOT gate the link.** The `data_ov011_*` symbols resolve from the
+   `_dsd_gap@ov011_0.o` gap object when the per-file entry claims only `.text` — i.e. dropping
+   the `.rodata`/`.data` claim lines from `src/Combat/Noise/BtlEnm010/BtlEnm010.c:` lets the gap
+   carry the original data while our TU owns `.text`. To run the link + `romcmp`, apply exactly
+   that (drop the two claim lines, add `complete`): a two-line, fully reversible config change,
+   kept out of the tree. The endgame still wants the data transcribed into C.
+3. **Every function had to exist first** — with the names fixed, the 9 unwritten functions were
+   the only undefined symbols left.
 
-So the whole of ov011's verification rests on `fbdiff.py` (per-function byte comparison) and has
-never had the authoritative end-to-end check. **Paying the address-order debt is the highest-value
-remaining action**, more so than any individual function.
+Measured result of the first truthful `romcmp`: `.text` 79% differing, `.rodata` 61%, `.data`
+95%, **and the anchor is +0xC0 off** ("`.data` is at the wrong place"). Read that carefully:
+
+- **The 79% is inflated by a placement shift, not by codegen.** Our `.text` is ~0xC0 bytes too
+  big (the size debt below), so every symbol after it moves, and every literal-pool word naming
+  a moved symbol differs by exactly the shift. The 2-byte diff runs inside *byte-exact*
+  functions are **literal-pool words, not wrong calls** — e.g. at `0x0212570C` the pool word
+  for `data_ov011_0212bfa4` reads `0x0212c06c` instead of `0x0212bfa4`. Do not chase them as
+  call-target bugs.
+- **The honest per-function truth remains `fbdiff`: 1,956 differing bytes in 40 functions.**
+  `romcmp` becomes fully meaningful once the sizes are exact — which is precisely what it is for.
+
+Two `romcmp.py` details: its recorded `DELTA` constant (`0x1FECCC0`) is wrong by `0x1000` (the
+tool self-corrects from the anchor; the original ROM measures `0x1FEBCC0`), and it compares
+using the *original's* delta even when the new ROM's anchor has moved — read the anchor warning
+before trusting any region numbers.
 
 ## Structs — all closed
 
@@ -86,11 +116,11 @@ four 0x88-byte records, a `u16` flag halfword at `+0x84` within each, a signed d
 `+0x68`. It fits none of the seven task structs, so those offsets are deliberately left raw. It may
 be a seventh type.
 
-## The wrong-prototype class — eight found, and now closed
+## The wrong-prototype class — eleven found; the "closed" verdict was wrong
 
 A "dead instruction" in the original — a value computed and discarded — has turned out to be a
-mis-declared callee **eight times** here. Every one was initially written off as allocator residue
-or a register-choice artefact, and every one of those write-offs was wrong:
+mis-declared callee **eleven times** here. Every one was initially written off as allocator
+residue or a register-choice artefact, and every one of those write-offs was wrong:
 
 | helper | was | actually |
 |---|---|---|
@@ -105,16 +135,25 @@ or a register-choice artefact, and every one of those write-offs was wrong:
 | `func_ov011_021258b4` | `u16*` | `CombatSprite*` |
 | `func_ov011_02127c4c` | `void` | returns `s32` |
 | `func_ov011_021283a8` / `021287b8` | `void` | return `s32`, no epilogue constant |
+| `func_ov003_02082750` (`CombatSprite_SetFlip`) | 3 args | **2 args** — its first instruction clobbers r2 (`ldrh r2, [r0, #0xa]`) and every reference call site sets only r0/r1. The phantom third argument cost 102 bytes of diff in `02127ce0` alone. |
+| `func_ov011_02125b98` | `void`, 2nd arg `void*` | **`s32`** (the `EasyTask_CreateTask` handle, stored by every call site into `0x1FC`/`0x208`), 2nd arg `s32` (the shot index) |
 
-**The class is now closed, by argument rather than by exhaustion:**
+**A third variant of the class was found this session: wrong *names*.** Nine externs spelled
+`func_ov003_0208xxxx` for addresses that carry real names in `ov003`'s `symbols.txt`
+(`CombatSprite_SetAffineTransform`, `SetPosition`, `SetFlip`, `Update`, `Render`, `Release`,
+`Restart`, `CombatActor_PopPendingCommand`) — invisible to `fbdiff` (the `bl` bytes are
+identical), fatal at link. The finished sibling `BtlEnm006.c` already uses the canonical names.
 
-- *Arity cannot hide in a byte-exact function.* Every call it makes has the right register setup,
-  because the `mov`/`add` pairs in front of each `bl` are part of the compared bytes. So every
-  helper reached from the 74 byte-exact functions is already validated.
-- *Return type is the invisible class*, because a caller that only stores a result tolerates any
-  declaration. But the eight declarations where one could still hide are all functions **not yet
-  written**, and writing a definition forces MWCC to reject a mismatch. There are no extern-only
-  helpers left that will never be defined.
+**The earlier "class is closed" argument was wrong — do not trust it.** It claimed a return
+type cannot hide once every callee is written; yet both `CombatSprite_SetFlip` (an arity bug
+inside *written* callers) and `func_ov011_02125b98` (a return type that only became visible
+when new callers stored it) survived that argument. What is actually true:
+
+- *Arity cannot hide in a byte-exact function's own call sites* — but it hides fine in the
+  **callee's declaration** while the callers are the only witnesses, which is what `SetFlip`
+  was. When a byte-exact function has diff residue near a `bl`, read the callee's prologue.
+- *Return type is the invisible class*: a caller that only stores a result tolerates any
+  declaration, and the wrongness surfaces only when a *new* caller starts using the result.
 
 **The correctly-scoped test, which took several rounds to get right:**
 
@@ -133,30 +172,46 @@ immediately. Confirm every hit by reading the callee's prologue by hand.
 
 ## What is left, and what it is worth
 
-**The 9 unstarted**, smallest first:
+**The size debt is the top of the list** — 34 functions emit the wrong number of bytes (net
+**+200**), and until every size is exact the overlay cannot be placed where the original put
+it (`romcmp` measured the anchor +0xC0 off). Size exactness is what `romcmp` exists to police:
 
 ```
-476 B  021284bc     disassembly was already read by the previous session
-544 B  02129188
-620 B  021260e8     plan recorded in the brief, §6
-648 B  02126bf8     plan recorded in the brief, §10
-656 B  02126fb0
-660 B  0212a78c     five table lookups, 0x14 frame
-696 B  021288c8
-732 B  0212ac0c
-1316 B 02129410     largest in the overlay; needs a round of its own
+addr       ref    ours   delta   addr       ref    ours   delta
+021260e8   0x26C  0x280   +20    02128cc0   0x170  0x174    +4
+021268c4   0x140  0x134   -12    02128f10   0x070  0x080   +16
+02126b2c   0x0CC  0x0D0    +4    02128f80   0x190  0x1A4   +20
+02126bf8   0x288  0x294   +12    02129188   0x220  0x20C   -20
+02126fb0   0x290  0x294    +4    02129410   0x524  0x51C    -8
+0212791c   0x148  0x144    -4    02129994   0x1F0  0x208   +24
+02127ce0   0x28C  0x288    -4    02129b84   0x168  0x174   +12
+02128070   0x0E0  0x0FC   +28    02129cec   0x1B8  0x1D0   +24
+02128150   0x100  0x114   +20    02129f80   0x18C  0x184    -8
+02128250   0x068  0x070    +8    0212a674   0x118  0x10C   -12
+021284bc   0x1DC  0x1D4    -8    0212a78c   0x294  0x29C    +8
+021287b8   0x110  0x118    +8    0212aa20   0x1EC  0x1E8    -4
+021288c8   0x2B8  0x2D8   +32    0212ac0c   0x2DC  0x2E0    +4
+02128c44   0x060  0x05C    -4    0212aee8   0x0AC  0x0B0    +4
+0212b5d8   0x108  0x10C    +4    0212b6e0   0x120  0x134   +20
+0212b890   0x10C  0x118   +12    0212b9e4   0x0E4  0x0E0    -4
+0212bac8   0x1BC  0x1C0    +4    0212bd3c   0x054  0x050    -4
 ```
 
-**The 31 written-not-exact** are almost all register-allocation residue — the same class the four
-finished overlays were shipped with. Now that prototypes are ruled out, the cause has exactly one
-remaining explanation: wrong live-local counts. That is a bounded mechanical search over a known
-list, which is why it is the better ratio of effort to result.
+(25 of the 34 are the older written-not-exact set — mostly register-allocation residue, the
+class the four finished overlays were shipped with; 9 are the new first-pass transcriptions,
+which are *semantically* faithful but spilled codegen. Fixing the 25 older ones is the better
+ratio: the recipes in the brief are measured against them.)
 
-**Not yet measured, and a real open question:** how many of the 31's sub-99% functions are
-*actually* correct and merely carrying the known `bl func_ov003_*` `-0x8` symbol addend? That
-artefact shows up in ~100% of calls including otherwise-perfect functions. Auditing it means
-reading every diff line of twenty-odd functions, which was deliberately deferred. The two functions
-sampled were both real multi-instruction diffs in non-`bl` positions, so it explains none of those.
+**The old "`bl func_ov003_*` `-0x8` symbol addend" open question is now answered: there is no
+addend bug.** The 2-byte diffs that `romcmp` shows inside byte-exact functions are literal-pool
+words naming *shifted data symbols* (placement, see above). `fbdiff`'s `RELOCC` masking is
+object-level and sound.
+
+**The data endgame is still open and does not block the link.** The `.rodata`/`.data` gap
+bridge is a legitimate interim state, but a finished overlay wants the 154 `data_ov011_*`
+symbols transcribed into C (TaskHandles with function pointers, the string blob, the tables) —
+`BtlEnm006.c` is the model. Until then `romcmp`'s `.rodata`/`.data` numbers compare gap-provided
+original bytes and are vacuous.
 
 ## Worktree
 
@@ -190,9 +245,11 @@ average look better than it is.
 
 ## Traps, learned the hard way
 
-- **Address-order debt blocks the link.** Functions must be emitted in address order. Insert at
-  address as you write; `fbdiff` measures per symbol so the count stays honest, but the link will
-  not.
+- **Address-order debt blocks the link — and it is now paid.** Functions must be emitted in
+  address order (all 114 are, and the object's `.text` sections verify ascending). Insert at
+  address as you write anything new; `fbdiff` measures per symbol so the count stays honest, but
+  the link will not. When the file was sorted, 46 of 105 definitions had to move — count with a
+  longest-increasing-subsequence, not by eyeball.
 - **`build/usa/delinks/**.o` is never a declared ninja output** — it is a side effect of the delink
   rule, and its only declared output is `_dsd_gap@main_*.o`. Ninja therefore sees a stale file and
   stops. A stale base object mimics a code regression. Suspect it before your C.
@@ -216,7 +273,26 @@ average look better than it is.
 - **Do not edit `symbols.txt` before checking whether another overlay's `relocs.txt` targets the
   address.** Deleting a referenced symbol breaks the delink outright.
 - **Calls to `0x020824a0` must be spelled `Mini108_VBlank`.**
-- Do **not** mark the overlay `complete` in `delinks.txt`. That is the user's call.
+- **Cross-module calls must be spelled with the canonical name in the target module's
+  `symbols.txt`**, not `func_ov003_XXXXXXXX`: where the address carries a real name
+  (`CombatSprite_Restart` at `0x02082d04`, etc.) the placeholder spelling is an undefined symbol
+  at link time and *identical bytes* at `fbdiff` time. Nine of these existed; `BtlEnm006.c` shows
+  the canonical spellings.
+- **A `romcmp` 0-diff can be vacuous.** Until the delinks entry is marked `complete`, the link
+  uses the delinks (original-bytes) object and `romcmp` compares the ROM against itself. Check
+  `dsd json delinks` for `object_to_link` before believing a ROM-level number.
+- **Literal-pool words move when any function's size is wrong**, and the ROM comparison then
+  avalanches from the first wrong size — 2-byte diffs appear inside *byte-exact* functions and
+  look like wrong call targets. They are shifted data symbols. Measure per-function sizes
+  (`fbdiff`, or the object's symbol table against `symbols.txt`) before reading `romcmp`.
+- **MWCC rejects implicit-declaration-then-definition** (`identifier redeclared: was declared as
+  'int (...)'`) and rejects taking the address of an undeclared function. Any reordering that
+  creates forward references needs real prototypes first.
+- **Run the scratch PowerShell scripts with `pwsh`, not Windows PowerShell 5.1** — 5.1 turns
+  native stderr into a terminating `NativeCommandError` under `$ErrorActionPreference = 'Stop'`
+  and the script dies after doing its work.
+- Do **not** mark the overlay `complete` in `delinks.txt`. That is the user's call. (It is also
+  the only switch that makes the link use our object — see "The link" above.)
 
 ## Cross-branch work done this session
 

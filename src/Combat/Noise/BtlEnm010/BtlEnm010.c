@@ -20,6 +20,80 @@ extern const TaskHandle data_ov011_0212bfa4;
 // function can be emitted in address order (the linker places functions
 // in source order).  Order within this block is unchanged.
 
+/// A 0xC-byte record out of the table `func_ov003_0208a114` walks (`base + index * 12`) -- the
+/// same table `BtlEnm006.c` names `Enm006CmdTbl`. Only the bytes below are identified: callers
+/// copy the whole record (`ldm`/`stm` of three words), overwrite the gray triple at `+5`..`+7`,
+/// and hand the copy to `func_ov003_0208a164`/`func_ov003_0208a1a4`.
+typedef struct BtlEnm010CmdTbl {
+    /* 0x00 */ u8 pad_00[5];
+    /* 0x05 */ u8 unk_05;
+    /* 0x06 */ u8 unk_06;
+    /* 0x07 */ u8 unk_07;
+    /* 0x08 */ u8 pad_08[4];
+} BtlEnm010CmdTbl;
+
+/// One 4-byte record of the aim table `data_ov011_0212c13c`, indexed by
+/// `(0x1E - data->unk_1FA) / 5`. `unk_00` is loaded `ldrh` (u16) and added to the per-slot base
+/// angle; `unk_02` is loaded `ldrsh` (s16) and passed through to the shot spawn unchanged.
+typedef struct BtlEnm010RGAim {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ s16 unk_02;
+} BtlEnm010RGAim;
+
+/// `func_ov003_0208a114` -- one argument; returns a pointer to the 0xC-byte record at
+/// `base + index * 12` (`mla r0, 0xc, r0, table; bx lr`). The `u16` parameter is load-bearing:
+/// call sites truncate a computed selector with `lsl #0x10 / lsr #0x10`.
+extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
+
+/// `func_ov003_0208a164` -- five arguments (r0-r3 plus one stack word), returning 1 on success.
+extern s32 func_ov003_0208a164(BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y, s32 z);
+
+/// `func_ov003_0208a1a4` -- four register arguments, returning 1 on success; submits the command
+/// record at integer pixel x/y.
+extern s32 func_ov003_0208a1a4(const BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y);
+
+/// `func_ov003_020cc7f4` -- four arguments in r0-r3; a zero return stops the caller.
+extern s32 func_ov003_020cc7f4(s32 a0, s32 a1, s32 a2, s32 a3);
+
+/// `func_ov003_020cbcb4` -- writes a polar angle/radius pair into two x/y out-arrays; five
+/// arguments, the fifth on the caller's stack.
+extern void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 radius, s32 scale);
+
+/// `func_ov003_0208442c` -- two arguments; projects a screen x into the cull test space.
+extern s32 func_ov003_0208442c(s32 a0, s32 a1);
+
+/// `func_ov003_020cbd30` -- evaluates a three-point 4.12 curve (six words) at `t` into the
+/// two-word out-point. Eight words to the callee (r0-r3 plus five stack words).
+extern void func_ov003_020cbd30(s32* out, s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 t);
+
+/// `func_ov003_020cba14` -- four arguments; returns the 16-bit angle from (x0,y0) to (x1,y1).
+extern u16 func_ov003_020cba14(s32 x0, s32 y0, s32 x1, s32 y1);
+
+extern s32 FX_Divide(s32 numer, s32 denom);
+
+/// Aim table for `func_ov011_02126bf8`'s spread shot; 4-byte records.
+extern const BtlEnm010RGAim data_ov011_0212c13c[];
+
+/// Per-mode shot cap (`func_ov011_02126fb0`, `func_ov011_02126bf8`), indexed by `unk_080`.
+extern const s32 data_ov011_0212c148[];
+extern const s32 data_ov011_0212c168[];
+
+/// `func_ov011_02129188`'s curve data: two 8-byte origins and two 6-word (3 x/y point) curves.
+extern const s32 data_ov011_0212c230[];
+extern const s32 data_ov011_0212c25c[];
+extern const s32 data_ov011_0212c274[];
+
+/// Per-slot count/limit tables for the Tatt phases.
+extern const s32 data_ov011_0212c33c[];
+extern const s32 data_ov011_0212c34c[];
+
+/// The `[slot][shot]` 16-byte-record parameter table's four field views (the reference keeps
+/// one biased base per field: four literal-pool entries four bytes apart).
+extern const s32 data_ov011_0212c3c8[];
+extern const u16 data_ov011_0212c3cc[];
+extern const s32 data_ov011_0212c3d0[];
+extern const s16 data_ov011_0212c3d4[];
+
 // Forward declarations.  The definitions are in address order, so callers
 // of a later-address function would otherwise see an implicit declaration.
 void       func_ov011_021256c0(u16 arg0);
@@ -29,7 +103,7 @@ void       func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2);
 s32        func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd);
 s32        func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
 s32        func_ov011_02125b88(BtlEnm010AnmMgr* data);
-void       func_ov011_02125b98(void* arg0, void* arg1);
+s32        func_ov011_02125b98(void* arg0, s32 arg1);
 void       func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010OwnerCopy* owner, s32 index);
 void       func_ov011_02125c44(BtlEnm010OwnerCopy* owner, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled);
 s32        func_ov011_02125cf8(s32 arg0, Task* task, s32 arg2, s32 cmd);
@@ -127,7 +201,7 @@ s16        func_ov011_0212bce0(BtlEnm010Tatt* data, s32 arg1);
 void       func_ov011_0212bd3c(void* p, s32 i);
 void       func_ov011_0212bd90(void* p, s32 i);
 s32        func_ov011_0212bdbc(void* p, s32 i);
-extern s32 func_ov011_021260e8(BtlEnm010Lser* data); // not yet written
+extern s32 func_ov011_021260e8(BtlEnm010Lser* data);
 
 // MARK: Bin-file helpers (ov003), signatures read out of build/usa/asm/ov003_4.s
 
@@ -724,13 +798,17 @@ s32 func_ov011_02125b88(BtlEnm010AnmMgr* data) {
     return 1;
 }
 
-/// Spawns the `Tsk_BtlEnm010_Lser` task. Which pool it goes into depends on a two-bit flag at
-/// `arg0 + 0x84`.
+/// Spawns the `Tsk_BtlEnm010_Lser` task and returns its handle. Which pool it goes into depends
+/// on a two-bit flag at `arg0 + 0x84`.
 ///
 /// The global is re-read in *both* arms, so it is spelled twice rather than hoisted: the
 /// original has a predicated `ldreq` pair on the zero arm and an unpredicated `ldr` pair on
 /// the other, with the `+ 0x8C + 0x8000` bias added in the second.
-void func_ov011_02125b98(void* arg0, void* arg1) {
+///
+/// Returns the `EasyTask_CreateTask` result: every call site in the original stores it (the
+/// Lser task handle lands in the caller's `0x1FC`/`0x208` slot), which is why this is `s32` and
+/// not `void` -- wrong-prototype class, found while writing 02126fb0/0212ac0c.
+s32 func_ov011_02125b98(void* arg0, s32 arg1) {
     BtlEnm010LserArgs args;
     TaskPool*         pool;
 
@@ -741,7 +819,7 @@ void func_ov011_02125b98(void* arg0, void* arg1) {
     }
     args.unk_00 = arg0;
     args.unk_14 = arg1;
-    EasyTask_CreateTask(pool, &data_ov011_0212c118, 0, 0, 0, &args);
+    return EasyTask_CreateTask(pool, &data_ov011_0212c118, 0, 0, 0, &args);
 }
 
 /// `CombatSprite_Restart` (`func_ov003_02082d04`) -- one argument, tail-called. Declared in
@@ -979,6 +1057,84 @@ s32 func_ov011_02126064(BtlEnm010Lser* data) {
         data->emit.unk_24 = 0;
         data->emit.unk_28 = 2;
     }
+    return 1;
+}
+
+/// The Lser task's mode-2 worker, the laser-firing phase. On the first frame it primes the two end
+/// sprites and resolves the owner's position into the `0x22C`/`0x230`/`0x234` triple, with
+/// `0x248`'s sign and the `0x22C` bias picked by the mirror flag; every frame it clears flag bit 2
+/// once the `0x1A0` sprite's animation finishes, plays a sound as the emitter's phase counter hits
+/// 0x11, and while flag bit 2 is set advances `0x22C` by `0x248` and reports 0 the frame the move
+/// completes. From phase 0xA on it emits one command record per frame through
+/// `func_ov003_0208a164` -- the record's byte pair and the x bias chosen by a three-way branch on
+/// the phase counter -- and plays a sound when the emit succeeds. The counter rolls at the tail;
+/// the function returns 1 except for the one early 0.
+s32 func_ov011_021260e8(BtlEnm010Lser* data) {
+    s32 mode;
+
+    // Flag bit 3, materialised as a 0/1 mode passed as the first argument to
+    // `func_ov003_020843b0` at three call sites. The shift pair is the bit-test idiom.
+    if (((u32)(data->unk_250 << 28) >> 31) != 0) {
+        mode = 1;
+    } else {
+        mode = 0;
+    }
+    if (data->emit.unk_24 == 0) {
+        data->emit.unk_24 = data->emit.unk_24 + 1;
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x80), 5, 0);
+        Mini108_VBlank((CombatSprite*)((u8*)data + 0x1A0), 4, 1);
+        func_ov011_02125c00(&data->unk_22C, &data->unk_230, &data->unk_234, &data->copy, data->unk_24C);
+        if (data->copy.unk_24 == 0) {
+            data->unk_248 = 0 - 0x8000;
+            data->unk_22C = data->unk_22C - 0x28000;
+        } else {
+            data->unk_248 = 0x8000;
+            data->unk_22C = data->unk_22C + 0x28000;
+            CombatSprite_SetFlip((CombatSprite*)((u8*)data + 0x80), 1);
+            CombatSprite_SetFlip((CombatSprite*)((u8*)data + 0x1A0), 1);
+        }
+        data->unk_250 &= ~1;
+    }
+    if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x1A0)) != 0) {
+        data->unk_250 &= ~2;
+    }
+    if (data->emit.unk_24 == 0x11) {
+        data->unk_250 |= 4;
+        func_ov003_02087f00(0x1DD, func_ov003_020843b0(mode, data->copy.unk_28));
+    }
+    if ((u32)(data->unk_250 << 29) >> 31) {
+        data->unk_22C = data->unk_22C + data->unk_248;
+        if (func_ov003_020cc7f4(func_ov003_020843b0(mode, data->unk_22C), 0, 0x60, 0) == 0) {
+            return 0;
+        }
+    }
+    if (data->emit.unk_24 >= 0xA) {
+        BtlEnm010CmdTbl rec;
+        s32             x;
+        u16             idx;
+
+        if (func_ov003_020c37f8((void*)((u8*)data + 0x80)) != 0) {
+            idx = 0x5E;
+        } else {
+            idx = 0x56;
+        }
+        rec = *func_ov003_0208a114(idx);
+        if (data->emit.unk_24 < 0xE) {
+            rec.unk_05 = 0x18;
+            rec.unk_07 = 0x20;
+            x          = (data->copy.unk_24 == 0) ? data->unk_22C + 0x18000 : data->unk_22C - 0x18000;
+        } else if (data->emit.unk_24 < 0x11) {
+            rec.unk_05 = 0x20;
+            rec.unk_07 = 0x10;
+            x          = (data->copy.unk_24 == 0) ? data->unk_22C + 0x28000 : data->unk_22C - 0x18000;
+        } else {
+            x = data->unk_22C;
+        }
+        if (func_ov003_0208a164(&rec, (void*)((u8*)data + 8), x, data->unk_230, data->unk_234) == 1) {
+            func_ov003_02087f00(0x1DA, func_ov003_020843b0(mode, x));
+        }
+    }
+    data->emit.unk_24 = data->emit.unk_24 + 1;
     return 1;
 }
 
@@ -1316,6 +1472,141 @@ void func_ov011_02126b2c(BtlEnm010RG* data) {
     }
 }
 
+/// RG's phase-5 handler: the two-flag "spread shot" phase.
+///
+/// The flag halfword at `0x1F6` is bit-decomposed twice with signed shift pairs (no `(u32)`
+/// cast -- the original wants `asr`, not `lsr`): bit 1 into `flags[0]`, bit 0 into `flags[1]`,
+/// each as a 0 / -1 mask. `count` is `data_ov011_0212c168[data->unk_080]`, forced to 2 when
+/// both flag bits are set (the short-circuit `&&` is load-bearing: the original skips the bit-0
+/// extraction entirely when bit 1 is clear). The two masks go into a frame array because the
+/// spawn loop below indexes them by its counter.
+///
+/// `switch (data->unk_1C4)`: case 0 is the usual `func_ov003_020c6230` bail (ONE argument --
+/// it derives its own `+0x100` base) then the `0x1C0 = 0, 0x1C4 = 1` latch; case 1 is
+/// everything else; anything else falls out of the switch to a bare return. The tail clamp
+/// therefore lives *inside* case 1 -- that is what makes the fall-out's epilogue an inline
+/// `pop`, exactly like `func_ov011_021268c4`/`func_ov011_02126b2c`.
+///
+/// Case 1 latches `0x1F8 = 0x14, 0x1FA = 0x1E` when `0x1C0 == 0`, then hands both words to
+/// `func_ov011_021277c8` as pointers -- the third argument spelled `(u8*)data + 0xFA + 0x100`
+/// for the same reason `func_ov011_02126b2c` spells it that way (the original builds it with
+/// `add r2, r4, #0xfa / add r2, r2, #0x100`), and the fourth is the PRE-increment `0x1C0`.
+/// The increment store goes out before the `bl`, matching `func_ov011_02126b2c`'s identical
+/// call sequence byte for byte.
+///
+/// The spawn block is guarded by two SEQUENTIAL tests whose failures target different blocks --
+/// `unk_1F8 == 0 && unk_1FA % 5 == 0` (both bail to the tail clamp) and then, inside,
+/// `slot == 0` (the launch kick) which merely skips to the loop. The second is a plain signed
+/// DIVISION compared to zero (`smull` with `0x66666667` = `/5`, NOT `/6` as the plan guessed:
+/// the same magic and the same `mov r2, #0x5` serve `unk_1FA % 5`, the division and the two
+/// `0x1E8` subtractions below).
+///
+/// The launch kick writes `0x1D0`/`0x1E8` in opposite directions per the `0x24` mirror flag.
+/// The `0x1E8` values are spelled with the shared literal 5 in opposite operand orders --
+/// `5 - 0x338` (= -0x333) and `0x338 - 5` (= +0x333) -- because the original emits
+/// `sub r0, r2, #0x338` in one arm and `rsb r0, r2, #0x338` in the other with r2 still holding
+/// the modulo's 5. They are NOT the same value; do not unify them. `0x1D0` is likewise
+/// `0x2000` / `0 - 0x2000`, sharing one materialised `0x2000`.
+///
+/// The spawn loop runs twice (once per flag bit), each iteration guarded by `flags[i] != 0`
+/// and `slot < count`, and calls `func_ov011_02127f6c` with all NINE of its declared arguments
+/// (four registers + five stack words): the mirrored x bias (`0 - 0x40000` / `0x40000`), two
+/// zeroes, a z of `(0 - 0x40000) + 0x30000` (= -0x10000, sharing the hoisted `0 - 0x40000`
+/// with the x bias), 1, a truncated `u16` angle `(u16)(base + aim[slot].unk_00)` whose base is
+/// `0x8000`/`0x8C00` unmirrored and `0`/`0xF400` mirrored (slot 0 / slot 1, zero arm first),
+/// another zero, the literal `0x333`, and `aim[slot].unk_02`. The result latches `0x1FC`.
+///
+/// The tail clamp zeroes the `0x1D0`/`0x1E8` pair when its step crosses zero from either
+/// side (`else if` is load-bearing: the second compare reuses the first `cmp`'s flags), then
+/// returns if `func_ov011_021277c8` said the animation is done, else re-arms phase 1.
+void func_ov011_02126bf8(BtlEnm010RG* data) {
+    s32 bit1;
+    s32 slot;
+    s32 count;
+    s32 i;
+    s32 flags[2];
+    s32 r;
+    s32 n;
+    s32 bias;
+    s32 angle;
+
+    bit1  = (data->unk_1F6 << 30) >> 31;
+    count = data_ov011_0212c168[data->unk_080];
+    if (bit1 != 0 && ((data->unk_1F6 << 31) >> 31) != 0) {
+        count = 2;
+    }
+    flags[0] = bit1;
+    flags[1] = (data->unk_1F6 << 31) >> 31;
+    switch (data->unk_1C4) {
+        case 0:
+            if (func_ov003_020c6230(data) != 0) {
+                return;
+            }
+            data->unk_1C0 = 0;
+            data->unk_1C4 = 1;
+            return;
+        case 1:
+            if (data->unk_1C0 == 0) {
+                data->unk_1F8 = 0x14;
+                data->unk_1FA = 0x1E;
+            }
+            r             = func_ov011_021277c8(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0);
+            data->unk_1C0 = data->unk_1C0 + 1;
+            if (data->unk_1F8 == 0 && data->unk_1FA % 5 == 0) {
+                slot = (0x1E - data->unk_1FA) / 5;
+                if (slot == 0) {
+                    if (data->unk_024 == 0) {
+                        data->unk_1D0 = 0x2000;
+                        data->unk_1E8 = 5 - 0x338;
+                    } else {
+                        data->unk_1D0 = 0 - 0x2000;
+                        data->unk_1E8 = 0x338 - 5;
+                    }
+                }
+                for (i = 0; i < 2; i++) {
+                    if (flags[i] != 0 && slot < count) {
+                        if (data->unk_024 == 0) {
+                            if (i == 0) {
+                                angle = 0x8000;
+                            }
+                            bias = 0 - 0x40000;
+                            if (i != 0) {
+                                angle = 0x8C00;
+                            }
+                        } else {
+                            if (i == 0) {
+                                angle = 0;
+                            }
+                            bias = 0x40000;
+                            if (i != 0) {
+                                angle = 0xF400;
+                            }
+                        }
+                        data->unk_1FC = func_ov011_02127f6c(data, bias, 0, (0 - 0x40000) + 0x30000, 1,
+                                                            (u16)(angle + data_ov011_0212c13c[slot].unk_00), 0, 0x333,
+                                                            data_ov011_0212c13c[slot].unk_02);
+                    }
+                }
+            }
+            if (data->unk_1D0 > 0) {
+                if (data->unk_1D0 + data->unk_1E8 < 0) {
+                    data->unk_1D0 = 0;
+                    data->unk_1E8 = 0;
+                }
+            } else if (data->unk_1D0 < 0) {
+                if (data->unk_1D0 + data->unk_1E8 > 0) {
+                    data->unk_1D0 = 0;
+                    data->unk_1E8 = 0;
+                }
+            }
+            if (r != 0) {
+                return;
+            }
+            func_ov011_021265d4(data, func_ov011_021268c4);
+            return;
+    }
+}
+
 /// RG's short-range phase. Same opening as `func_ov011_02127370` with a `0x60000` bias, a frame
 /// 3 sprite prime, and one extra block: a `&&` on `0x9A == 6` and `0x8C == 1` that plays a sound
 /// the medium-range phase does not.
@@ -1349,6 +1640,94 @@ void func_ov011_02126e80(BtlEnm010RG* data) {
                 return;
             }
             func_ov011_021265d4(data, func_ov011_0212681c);
+            return;
+    }
+}
+
+/// RG's "spawning" phase, dispatched from `func_ov011_021265fc`'s table. A three-way switch on the
+/// phase state at `0x1C4`: state 0 waits out `func_ov003_020c6230` and latches `0x1C0 = 0`,
+/// `0x1C4 = 1`; state 1 primes the `0x84` sprite with anim 9 on the first frame and hands over to
+/// state 2 when its animation finishes; state 2 first primes anim 2 and spawns the Lser task
+/// (`func_ov011_02125b98(data, 0)` -> `0x1FC`, latch `0x1C2 = 0x4B`), then every 15 frames past
+/// 0x28 spawns another Lser with the iteration count while it is below
+/// `data_ov011_0212c148[unk_080]`, and every 15 frames past 0x3C kicks the `0x1D0`/`0x1E8`
+/// velocity pair (`+/- 0x40000`-class step, then 0) until the second-to-last iteration, where it
+/// plays anim 3. The velocity pair decays toward zero (`0x333` per frame, clamped at the
+/// crossing), and once the sprite's animation finishes the phase hands back to
+/// `func_ov011_021268c4`, otherwise the frame counter rolls.
+void func_ov011_02126fb0(BtlEnm010RG* data) {
+    switch (data->unk_1C4) {
+        case 0:
+            if (func_ov003_020c6230(data) != 0) {
+                return;
+            }
+            data->unk_1C0 = 0;
+            data->unk_1C4 = 1;
+            return;
+        case 1:
+            if (data->unk_1C0 == 0) {
+                data->unk_1C0 = data->unk_1C0 + 1;
+                func_ov011_02125750(1, (CombatSprite*)((u8*)data + 0x84), 9);
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 1);
+            }
+            if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) == 0) {
+                return;
+            }
+            data->unk_1C0 = 0;
+            data->unk_1C4 = 2;
+            return;
+        case 2:
+            if (data->unk_1C0 == 0) {
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 2, 0);
+                data->unk_1FC = func_ov011_02125b98(data, 0);
+                data->unk_1C2 = 0x4B;
+            }
+            if (data->unk_1C0 >= 0x28) {
+                s32 y = data->unk_1C0 - 0x28;
+
+                if (y % 15 == 0) {
+                    s32 q = y / 15;
+
+                    if (q > 0 && q < data_ov011_0212c148[data->unk_080]) {
+                        data->unk_1FC = func_ov011_02125b98(data, q);
+                    }
+                }
+            }
+            if (data->unk_1C0 >= 0x3C) {
+                s32 y = data->unk_1C0 - 0x3C;
+
+                if (y % 15 == 0) {
+                    s32 q = y / 15;
+
+                    // Two sequential `if`s, not a nested pair: each re-reads the table entry.
+                    if (q < data_ov011_0212c148[data->unk_080]) {
+                        data->unk_1D0 = (data->unk_024 == 0) ? 0x4000 : 0 - 0x4000;
+                        data->unk_1E8 = 0;
+                    }
+                    if (q == data_ov011_0212c148[data->unk_080] - 1) {
+                        Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
+                    }
+                }
+            }
+            // Decay the velocity pair toward zero, clamping both words at the crossing.
+            if (data->unk_1D0 > 0) {
+                data->unk_1E8 = data->unk_1E8 - 0x333;
+                if (data->unk_1D0 + data->unk_1E8 <= 0) {
+                    data->unk_1D0 = 0;
+                    data->unk_1E8 = 0;
+                }
+            } else if (data->unk_1D0 < 0) {
+                data->unk_1E8 = data->unk_1E8 + 0x333;
+                if (data->unk_1D0 + data->unk_1E8 >= 0) {
+                    data->unk_1D0 = 0;
+                    data->unk_1E8 = 0;
+                }
+            }
+            if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) != 0) {
+                func_ov011_021265d4(data, func_ov011_021268c4);
+                return;
+            }
+            data->unk_1C0 = data->unk_1C0 + 1;
             return;
     }
 }
@@ -2063,6 +2442,91 @@ s32 func_ov011_021283a8(BtlEnm010SingleShot* data, void* arg1) {
     *(u16*)((u8*)data + 0xB2) = *(u16*)((u8*)o + 0xA);
 }
 
+/// SingleShot's phase-2 worker: steps the three 0x10-byte projectile records at `p + 0x68`,
+/// projects each one to screen space, submits one effect per projectile, and returns 0 once all
+/// three have left the screen -- so the task retires when the volley is gone.
+///
+/// The guards and the first-frame block are the Rnge worker's shape: bail to `r` (= 0) when
+/// `func_ov003_020c3c28()` is set or the owner's `0x54` flags have bit 2, then tick the
+/// `CombatSprite` at `+0x04`. The `func_ov003_020c37f8(p + 4)` arm picks the mode (`0`/`1`, later
+/// reused by `func_ov003_0208442c` and `func_ov003_020cb744`) and the `u16` effect-table index
+/// (`0x5C`/`0x54`) handed to `func_ov003_0208a114`, and computes the pan from `unk_098`. The
+/// `s16` flag at `0x64` fires SE `0x1D9` exactly once, and the increment stores before the call.
+///
+/// The record block is 3 records, 0x10 apart: `+0x00` position, `+0x04` velocity, `+0x08`
+/// acceleration (seeded at 0x70/0x80/0x90 by `func_ov011_021283a8`), `+0x0C`/`+0x0E` the projected
+/// `s16` pair `func_ov011_02128698` renders. While the delay halfword at `0xA8` is positive it
+/// only counts down; otherwise the physics advances (pos += vel, vel += acc). The projection is
+/// `func_ov003_020cbc50(unk_0AA, pos)` biased by the frame's `func_ov003_02084348` offsets, spelled
+/// as the 4.12 idiom `(out + (bias << 12)) >> 12`.
+///
+/// Per projectile, `func_ov003_0208a1a4` submits the effect against the copied halfword block at
+/// `+0xAC`; a `== 1` result plays SE `0x1DA` with the projected x as pan. The survivor test is
+/// `func_ov003_0208442c(mode, x)` against `[0 - 0x8000, func_ov003_020cb744(mode) + 0x8000]`, with
+/// the `||` short-circuiting so `func_ov003_020cb744` only runs on the fall-through; `r` counts
+/// the records outside it and the tail is the `cmp r8, #3 / movne / moveq` pair.
+s32 func_ov011_021284bc(void* p) {
+    s32   r;
+    s32   mode;
+    u16   id;
+    s32   pan;
+    s32   oa;
+    s32   ob;
+    s16   va;
+    s16   vb;
+    s32   i;
+    void* rec;
+
+    r = 0;
+    if (func_ov003_020c3c28() != 0) {
+        return r;
+    }
+    if (*(u32*)p != 0 && (*(s32*)((u8*)*(u32*)p + 0x54) & 4) != 0) {
+        return r;
+    }
+    CombatSprite_Update((CombatSprite*)((u8*)p + 4));
+    if (func_ov003_020c37f8((void*)((u8*)p + 4)) != 0) {
+        mode = 1;
+        id   = 0x5C;
+        pan  = func_ov003_020843b0(mode, ((BtlEnm010SingleShot*)p)->unk_098);
+    } else {
+        mode = 0;
+        id   = 0x54;
+        pan  = func_ov003_020843b0(mode, ((BtlEnm010SingleShot*)p)->unk_098);
+    }
+    if (*(s16*)((u8*)p + 0x64) == 0) {
+        *(s16*)((u8*)p + 0x64) = *(s16*)((u8*)p + 0x64) + 1;
+        func_ov003_02087f00(0x1D9, pan);
+    }
+    func_ov003_02084348(mode, &va, &vb, ((BtlEnm010SingleShot*)p)->unk_09C, ((BtlEnm010SingleShot*)p)->unk_0A0,
+                        ((BtlEnm010SingleShot*)p)->unk_0A4);
+    rec = (void*)((u8*)p + 0x68);
+    for (i = 0; i < 3; i++) {
+        if (((BtlEnm010SingleShot*)p)->unk_0A8 > 0) {
+            ((BtlEnm010SingleShot*)p)->unk_0A8 = ((BtlEnm010SingleShot*)p)->unk_0A8 - 1;
+        } else {
+            *(s32*)rec               = *(s32*)rec + *(s32*)((u8*)rec + 0x04);
+            *(s32*)((u8*)rec + 0x04) = *(s32*)((u8*)rec + 0x04) + *(s32*)((u8*)rec + 0x08);
+        }
+        func_ov003_020cbc50(&oa, &ob, *(u16*)((u8*)p + 0xAA), *(s32*)rec);
+        *(s16*)((u8*)rec + 0x0C) = (oa + (va << 12)) >> 12;
+        *(s16*)((u8*)rec + 0x0E) = (ob + (vb << 12)) >> 12;
+        if (func_ov003_0208a1a4(func_ov003_0208a114(id), (void*)((u8*)p + 0xAC), *(s16*)((u8*)rec + 0x0C),
+                                *(s16*)((u8*)rec + 0x0E)) == 1)
+        {
+            func_ov003_02087f00(0x1DA, *(s16*)((u8*)rec + 0x0C));
+        }
+        {
+            s32 v = func_ov003_0208442c(mode, *(s16*)((u8*)rec + 0x0C));
+            if (v < 0 - 0x8000 || v > func_ov003_020cb744(mode) + 0x8000) {
+                r++;
+            }
+        }
+        rec = (void*)((u8*)rec + 0x10);
+    }
+    return (r == 3) ? 0 : 1;
+}
+
 // `CombatSprite_SetAffineTransform` (`CombatSprite_SetAffineTransform`) -- five arguments, declared in
 // `Combat/Core/CombatSprite.h`.
 
@@ -2167,6 +2631,101 @@ s32 func_ov011_021287b8(BtlEnm010Sprl* data, void* arg1) {
     *(u16*)((u8*)data + 0xB2) = *(u16*)((u8*)*(u32*)arg1 + 0x6);
     *(u16*)((u8*)data + 0xB4) = *(u16*)((u8*)*(u32*)arg1 + 0x8);
     *(u16*)((u8*)data + 0xB6) = *(u16*)((u8*)*(u32*)arg1 + 0xA);
+}
+
+/// Sprl's phase-2 worker: advances a five-joint spiral chain, clamps the joints to a maximum
+/// spacing, renders one effect per joint, and returns 0 once the spiral's radius has grown past
+/// the global limit -- otherwise it ticks the sprite and returns 1.
+///
+/// The guards match `func_ov011_021284bc`. The physics head is a polar equation: the radius at
+/// `0xA4` accumulates its rate at `0xA8`, the `u16` angle at `0xAC` accumulates `0xAE` (wrapping
+/// at the halfword store), and `func_ov003_020cbcb4` writes the head's x/y -- `unk_070[0]` /
+/// `unk_084[0]` -- from angle and radius; the base at `0x9C`/`0xA0` is then added in. The
+/// `s16` flag at `0x64` plays SE `0x1DE` exactly once, its pan from `func_ov003_020843b0` against
+/// the owner's `+0x28`.
+///
+/// The clamp loop (`i = 1..4`) is a rope constraint: if joint `i` is further than
+/// `(data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16 / 2` (two 8.8 radii summed into
+/// 4.12, halved) from joint `i - 1` it is pulled back onto that distance. The direction is a
+/// 64-bit `dx * half + 0x800 >> 12` round divided by the distance with `FX_Divide`, per axis, and
+/// the `x` store lands between the two calls exactly as the original interleaves them. The `* 16`
+/// sum and its `>> 1` are spelled twice on purpose: the original folds the shifted operand into
+/// the `cmp` and materialises `r5` from a second `asr`.
+///
+/// The render loop (`i = 0..4`) tints a `func_ov003_0208a114(0x57)` record with the half-radius
+/// byte and submits it through `func_ov003_0208a164` against the copied halfword block at `+0xB0`
+/// with the joint's x/y and `unk_098` as z; a `== 1` result plays SE `0x1DA`. The exit test is
+/// `unk_0A4 > data_ov003_020e71b8 + 0x3D000 + 0x7CC` -- the four-hop global load, spelled with the
+/// split bias exactly like the rest of this file.
+s32 func_ov011_021288c8(void* p) {
+    s32                    dx;
+    s32                    dy;
+    s32                    dist;
+    s32                    half;
+    s32                    pan;
+    s32                    i;
+    struct BtlEnm010CmdTbl fx;
+    s32                    t;
+    s16                    v;
+    u8                     b;
+
+    if (func_ov003_020c3c28() != 0) {
+        return 0;
+    }
+    if (*(u32*)p != 0 && (*(s32*)((u8*)*(u32*)p + 0x54) & 4) != 0) {
+        return 0;
+    }
+    *(s32*)((u8*)p + 0xA4) = *(s32*)((u8*)p + 0xA4) + *(s32*)((u8*)p + 0xA8);
+    *(u16*)((u8*)p + 0xAC) = *(u16*)((u8*)p + 0xAC) + *(u16*)((u8*)p + 0xAE);
+    func_ov003_020cbcb4(((BtlEnm010Sprl*)p)->unk_070, ((BtlEnm010Sprl*)p)->unk_084, *(u16*)((u8*)p + 0xAC),
+                        *(s32*)((u8*)p + 0xA4), 0x800);
+    ((BtlEnm010Sprl*)p)->unk_070[0] = ((BtlEnm010Sprl*)p)->unk_070[0] + *(s32*)((u8*)p + 0x9C);
+    ((BtlEnm010Sprl*)p)->unk_084[0] = ((BtlEnm010Sprl*)p)->unk_084[0] + *(s32*)((u8*)p + 0xA0);
+    if (*(s16*)((u8*)p + 0x64) == 0) {
+        *(s16*)((u8*)p + 0x64) = *(s16*)((u8*)p + 0x64) + 1;
+        if (func_ov003_020c37f8((void*)((u8*)p + 4)) != 0) {
+            pan = func_ov003_020843b0(1, *(s32*)((u8*)*(u32*)p + 0x28));
+        } else {
+            pan = func_ov003_020843b0(0, *(s32*)((u8*)*(u32*)p + 0x28));
+        }
+        func_ov003_02087f00(0x1DE, pan);
+    }
+    for (i = 1; i < 5; i++) {
+        dx   = ((BtlEnm010Sprl*)p)->unk_070[i] - ((BtlEnm010Sprl*)p)->unk_070[i - 1];
+        dy   = ((BtlEnm010Sprl*)p)->unk_084[i] - ((BtlEnm010Sprl*)p)->unk_084[i - 1];
+        dist = func_ov003_020cba2c(0, 0, dx, dy);
+        half = (data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16 / 2;
+        if (dist < (data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16 / 2) {
+            continue;
+        }
+        ((BtlEnm010Sprl*)p)->unk_070[i] =
+            ((BtlEnm010Sprl*)p)->unk_070[i - 1] + FX_Divide((s32)(((long long)dx * (long long)half + 0x800) >> 12), dist);
+        ((BtlEnm010Sprl*)p)->unk_084[i] =
+            ((BtlEnm010Sprl*)p)->unk_084[i - 1] + FX_Divide((s32)(((long long)dy * (long long)half + 0x800) >> 12), dist);
+    }
+    for (i = 0; i < 5; i++) {
+        t         = (data_ov011_0212c21c[i] * 16) >> 12;
+        v         = (s16)(t >> 1);
+        b         = (u8)v;
+        fx        = *func_ov003_0208a114(0x57);
+        fx.unk_05 = b;
+        fx.unk_06 = b;
+        fx.unk_07 = b;
+        if (func_ov003_0208a164(&fx, (void*)((u8*)p + 0xB0), ((BtlEnm010Sprl*)p)->unk_070[i], ((BtlEnm010Sprl*)p)->unk_084[i],
+                                ((BtlEnm010Sprl*)p)->unk_098) == 1)
+        {
+            if (func_ov003_020c37f8((void*)((u8*)p + 4)) != 0) {
+                func_ov003_02087f00(0x1DA, func_ov003_020843b0(1, ((BtlEnm010Sprl*)p)->unk_070[i]));
+            } else {
+                func_ov003_02087f00(0x1DA, func_ov003_020843b0(0, ((BtlEnm010Sprl*)p)->unk_070[i]));
+            }
+        }
+    }
+    if (*(s32*)((u8*)p + 0xA4) > *(s32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x7CC)) {
+        return 0;
+    }
+    CombatSprite_Update((CombatSprite*)((u8*)p + 4));
+    return 1;
 }
 
 /// Sprl's phase-2 handler: five passes, each one projecting, positioning and then animating.
@@ -2432,6 +2991,100 @@ void func_ov011_02129110(void* p) {
     }
 }
 
+/// One record's arc launcher -- the bit-3 worker `func_ov011_02129110` dispatches, and `p` is the
+/// Tatt data the 0x88-stride record block hangs off. Raw offsets on purpose: the record fits no
+/// declared struct.
+///
+/// The `0x64` halfword is a two-state machine. State 0 spends `0x62` frames (latched to 0x14 on
+/// the first frame) tweening the record's `0x68`/`0x6C` displacement along one of the two
+/// three-point curves `data_ov011_0212c25c` / `data_ov011_0212c274` (six `s32` words each, handed
+/// to `func_ov003_020cbd30` with `t` = the frame counter rounded to 4.12 and divided by the
+/// limit). Bit 0 of the record's `0x84` flag halfword picks the curve *and* which of the two
+/// 8-byte halves of `data_ov011_0212c230` supplies the fixed origin the sprite is aimed from;
+/// `p + 0x24C` bit 0 mirrors every x component (negating the origin on the way in and the curve
+/// output on the way out). The state-0 tail -- shared by both arms, and the reason the else arm
+/// only latches -- aims the sprite: `func_ov003_020cba14(origin, displacement)` measures the
+/// angle and `func_ov011_02128f10` converts it into the palette swap. State 1 then walks `0x68`
+/// the last 0x4000 per frame to the target displacement latched at `0x7C`/`0x80` (by
+/// `func_ov011_02129410`'s state 0), snaps, resets the machine and clears bit 3 so the dispatch
+/// stops. The `0x78` accumulator runs on every call regardless of state: +0x19A per call -- the
+/// original emits it as two `add`s, `#0x9a` then `#0x100` -- clamped at 0x1000.
+///
+/// `ROUND` is the file-scope macro in `BtlEnm010.c`; `_fflt`/`_fadd`/`_fsub`/`_ffix`/`_s32_div_f`
+/// are the soft-float helpers this file already calls bare. The frame slot pair the original
+/// builds for `func_ov003_020cbd30`'s output is spelled `m[2]` here.
+void func_ov011_02129188(void* p, void* rec) {
+    s32        state;
+    const s32* tpl;
+    s32        v0;
+    s32        v1;
+    s32        limit;
+    s32        count;
+    s32        m[2];
+    s32        cur;
+    s32        dst;
+    s32        d;
+
+    state = *(s16*)((u8*)rec + 0x64);
+    if (state == 0) {
+        if (((u32)(*(u16*)((u8*)rec + 0x84) << 31) >> 31) == 1) {
+            v0  = data_ov011_0212c230[0];
+            v1  = data_ov011_0212c230[1];
+            tpl = data_ov011_0212c25c;
+        } else {
+            v0  = data_ov011_0212c230[2];
+            v1  = data_ov011_0212c230[3];
+            tpl = data_ov011_0212c274;
+        }
+        if (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) {
+            v0 = 0 - v0;
+        }
+        if (*(s16*)((u8*)rec + 0x60) == 0) {
+            *(s16*)((u8*)rec + 0x62) = 0x14;
+        }
+        limit = *(s16*)((u8*)rec + 0x62);
+        count = *(s16*)((u8*)rec + 0x60);
+        if (count < limit) {
+            func_ov003_020cbd30(m, tpl[0], tpl[1], tpl[2], tpl[3], tpl[4], tpl[5], _s32_div_f(ROUND(count), limit));
+            *(s32*)((u8*)rec + 0x68) = (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) ? 0 - m[0] : m[0];
+            *(s32*)((u8*)rec + 0x6C) = m[1];
+            *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+        } else {
+            *(s16*)((u8*)rec + 0x60) = 0;
+            *(s16*)((u8*)rec + 0x64) = 1;
+        }
+        func_ov011_02128f10(rec, func_ov003_020cba14(v0, v1, *(s32*)((u8*)rec + 0x68), *(s32*)((u8*)rec + 0x6C)));
+    } else if (state == 1) {
+        if (*(s16*)((u8*)rec + 0x60) == 0) {
+            *(s16*)((u8*)rec + 0x62) = 0xA;
+            *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) | 4;
+            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x7C);
+            *(s32*)((u8*)rec + 0x6C) = *(s32*)((u8*)rec + 0x80);
+            *(u16*)((u8*)rec + 0x72) = *(u16*)((u8*)rec + 0x70) + 0x8000;
+        }
+        cur = *(s32*)((u8*)rec + 0x68);
+        dst = *(s32*)((u8*)rec + 0x7C);
+        d   = cur - dst;
+        if (d < 0) {
+            d = 0 - d;
+        }
+        if (d < 0x4000) {
+            *(s32*)((u8*)rec + 0x68) = dst;
+            *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) & ~8;
+            *(s16*)((u8*)rec + 0x60) = 0;
+            *(s16*)((u8*)rec + 0x64) = 0;
+        } else if (cur > dst) {
+            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) - 0x4000;
+        } else {
+            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) + 0x4000;
+        }
+    }
+    *(s32*)((u8*)rec + 0x78) = *(s32*)((u8*)rec + 0x78) + 0x19A;
+    if (*(s32*)((u8*)rec + 0x78) > 0x1000) {
+        *(s32*)((u8*)rec + 0x78) = 0x1000;
+    }
+}
+
 /// One sub-object's teardown, and the second argument is the one that matters -- `mov r4, r1`
 /// with no use of r0 anywhere. The `0x84` bit-4 clear is the mirror image of the bit-5 set in
 /// `func_ov011_02128eb0`, and again has to be spelled on the whole halfword.
@@ -2447,6 +3100,141 @@ void func_ov011_021293a8(void* arg0, void* p) {
     *(u16*)((u8*)p + 0x84) = *(u16*)((u8*)p + 0x84) & ~0x10;
     *(s16*)((u8*)p + 0x60) = 0;
     *(s16*)((u8*)p + 0x64) = 0;
+}
+
+/// The largest function in the overlay: one record's projectile worker -- the bit-5 worker
+/// `func_ov011_02129110` dispatches, `p` is the Tatt data and `rec` one 0x88-stride record (raw
+/// offsets: it fits no declared struct).
+///
+/// Before anything else it resolves the *target's* screen position into the two long-lived values:
+/// `vx` is `func_ov003_020843b0` and `vy` `func_ov003_020843ec`, both `ROUND`-ed to 4.12, of the
+/// chase object's `0x28`/`0x2C`/`0x30` position. `p + 0x24C` bit 1 picks the chase pointer:
+/// `+0x3D89C` with mode 1 when set, `+0x3D898` with mode 0 when clear. The helpers are spelled
+/// out in *both* arms of each round so the calls duplicate exactly as the original's do.
+///
+/// The record's `0x64` halfword then runs a four-state machine:
+///   - 0: on the first of 0x3C frames, latch the target *relative* to the record's home
+///     (`0x7C` = vx - `p+0x23C`, `0x80` = vy - `p+0x240` - 0x10000), measure the range into
+///     `0x74` (`func_ov003_020cba2c`) and the heading into `0x70` (`func_ov003_020cba14`), and
+///     aim the sprite through `func_ov011_02128f10`. Counts up to `0x62` and advances to 1.
+///   - 1: on the first of 0xA frames set flag bit 2, snap the displacement `0x68`/`0x6C` to the
+///     latched target and arm `0x72` = heading + 0x8000 (the reversed heading). Adds 0x2000 to
+///     the `0x74` range each frame and advances to 2.
+///   - 2: play SE 0x1E1 once (pan = the home x biased by the displacement, narrowed 4.12 ->
+///     s16), burn the `0x74` range down by 0x8000 per frame (zero-clamp advances to 3), and emit
+///     a five-particle burst every frame: `func_ov003_020cbc50` decomposes the reversed heading
+///     once into the base position and once per particle along it, and `func_ov003_0208a1a4`
+///     fires command record `func_ov003_0208a114(index)` at each narrowed position. The command
+///     index is 0x5F or 0x58 on `p + 0x24C` bit 1 (the same mirror bit), so the two sides get
+///     different particle records.
+///   - 3: idle 0xA frames, then clear the record's flag bit 1 -- the "in use" bit
+///     `func_ov011_02129994` set at spawn -- leaving the record dead for `func_ov011_02128f80`.
+///     Falls out of the switch and shares the function epilogue with the out-of-range path.
+///
+/// Notes for a codegen pass: the burst loop's counter starts at -1 and its offset seed is spelled
+/// `i - 0xF` in the original (`sub r5, r4, #0xf`), so the five particles sit at offsets
+/// -16, 0, 16, 32, 48 stepped by 0x10 with the test `i < 4` at the bottom. The 4.12 -> pixel
+/// narrowing is the `lsl #4 / asr #16` pair, i.e. bit-exactly `(s16)(x >> 12)`. `ROUND` is the
+/// file-scope macro in `BtlEnm010.c`; `func_ov003_02087f00`, `func_ov003_020843b0`,
+/// `func_ov003_020843ec`, `func_ov003_020cbc50`, `func_ov003_020cba2c` and
+/// `func_ov011_02128f10` keep their `BtlEnm010.c` extern-block spellings.
+void func_ov011_02129410(void* p, void* rec) {
+    s32 vx;
+    s32 vy;
+    s32 idx;
+    s32 bx;
+    s32 by;
+    s32 ox;
+    s32 oy;
+    s32 i;
+    s32 off;
+
+    if (((u32)(*(u8*)((u8*)p + 0x24C) << 30) >> 31) != 0) {
+        vx = ROUND(func_ov003_020843b0(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x28)));
+        vy = ROUND(func_ov003_020843ec(1, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x2C),
+                                       *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x89C)) + 0x30)));
+    } else {
+        vx = ROUND(func_ov003_020843b0(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28)));
+        vy = ROUND(func_ov003_020843ec(0, *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x2C),
+                                       *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x30)));
+    }
+    switch (*(s16*)((u8*)rec + 0x64)) {
+        case 0:
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x62) = 0x3C;
+                *(s32*)((u8*)rec + 0x7C) = vx - *(s32*)((u8*)p + 0x23C);
+                *(s32*)((u8*)rec + 0x80) = vy - *(s32*)((u8*)p + 0x240) - 0x10000;
+                *(s32*)((u8*)rec + 0x74) = func_ov003_020cba2c(*(s32*)((u8*)p + 0x23C) + *(s32*)((u8*)rec + 0x68),
+                                                               *(s32*)((u8*)p + 0x240) + *(s32*)((u8*)rec + 0x6C), vx, vy);
+                *(u16*)((u8*)rec + 0x70) = func_ov003_020cba14(*(s32*)((u8*)rec + 0x68), *(s32*)((u8*)rec + 0x6C),
+                                                               *(s32*)((u8*)rec + 0x7C), *(s32*)((u8*)rec + 0x80));
+                func_ov011_02128f10(rec, *(u16*)((u8*)rec + 0x70));
+            }
+            if (*(s16*)((u8*)rec + 0x60) < *(s16*)((u8*)rec + 0x62)) {
+                *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+                return;
+            }
+            *(s16*)((u8*)rec + 0x60) = 0;
+            *(s16*)((u8*)rec + 0x64) = 1;
+            return;
+        case 1:
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x62) = 0xA;
+                *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) | 4;
+                *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x7C);
+                *(s32*)((u8*)rec + 0x6C) = *(s32*)((u8*)rec + 0x80);
+                *(u16*)((u8*)rec + 0x72) = *(u16*)((u8*)rec + 0x70) + 0x8000;
+            }
+            if (*(s16*)((u8*)rec + 0x60) >= *(s16*)((u8*)rec + 0x62)) {
+                *(s16*)((u8*)rec + 0x60) = 0;
+                *(s16*)((u8*)rec + 0x64) = 2;
+                return;
+            }
+            *(s32*)((u8*)rec + 0x74) = *(s32*)((u8*)rec + 0x74) + 0x2000;
+            *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+            return;
+        case 2:
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+                func_ov003_02087f00(0x1E1, (s16)((*(s32*)((u8*)p + 0x23C) + *(s32*)((u8*)rec + 0x68)) >> 12));
+            }
+            if (*(s32*)((u8*)rec + 0x74) > 0) {
+                *(s32*)((u8*)rec + 0x74) = *(s32*)((u8*)rec + 0x74) - 0x8000;
+                if (*(s32*)((u8*)rec + 0x74) < 0) {
+                    *(s32*)((u8*)rec + 0x74) = 0;
+                    *(s16*)((u8*)rec + 0x60) = 0;
+                    *(s16*)((u8*)rec + 0x64) = 3;
+                }
+            }
+            if (((u32)(*(u8*)((u8*)p + 0x24C) << 30) >> 31) != 0) {
+                idx = 0x5F;
+            } else {
+                idx = 0x58;
+            }
+            func_ov003_020cbc50(&bx, &by, *(u16*)((u8*)rec + 0x72), *(s32*)((u8*)rec + 0x74));
+            bx  = bx + *(s32*)((u8*)p + 0x23C) + *(s32*)((u8*)rec + 0x68);
+            by  = by + *(s32*)((u8*)p + 0x240) + *(s32*)((u8*)rec + 0x6C);
+            i   = -1;
+            off = i - 0xF;
+            do {
+                func_ov003_020cbc50(&ox, &oy, *(u16*)((u8*)rec + 0x72), off * 0x1000);
+                func_ov003_0208a1a4(func_ov003_0208a114(idx), (void*)((u8*)p + 0x244), (s16)((bx + ox) >> 12),
+                                    (s16)((by + oy) >> 12));
+                off = off + 0x10;
+                i   = i + 1;
+            } while (i < 4);
+            return;
+        case 3:
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x62) = 0xA;
+            }
+            if (*(s16*)((u8*)rec + 0x60) < *(s16*)((u8*)rec + 0x62)) {
+                *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+                return;
+            }
+            *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) & ~2;
+            /* falls out of the switch: shares the epilogue with the out-of-range dispatch */
+    }
 }
 
 /// `Tsk_BtlEnm010_Tatt`'s task entry. Fifth and last of the identical four-way dispatchers
@@ -2973,6 +3761,112 @@ void func_ov011_0212a674(BtlEnm010Tatt* data) {
     }
 }
 
+/// Tatt's burst phase (dispatch value 1 in `func_ov011_02129f80`'s picker).
+///
+/// Case 0 is the shared seed-and-poll arm, byte-for-byte the shape `func_ov011_0212a674`'s case 0
+/// has: copy `0x28` into `0x1DC`, the chase pointer's `0x2C` into `0x1E0`, zero `0x1E4` through one
+/// reused `s32` local (the original re-uses r3 for the `0x28` value and then for the 0), then run
+/// the `func_ov011_0212b5d8` / 60-frame poll and latch `0x1C0 = 0, 0x1C4 = 1` when it gives up or
+/// times out.
+///
+/// Case 1 is the attack proper:
+///   - frame 0 latches `0x1F8 = 0x14` and `0x1FA = (s16)(data_ov011_0212c34c[slot] * 10 + 0x14)`
+///     -- the `lsl #16 / asr #16` narrowing is live: the guard below subtracts from the narrowed
+///     value;
+///   - the `0x1F8`/`0x1FA` pair goes through `func_ov011_0212b890` with the *pre-increment* `0x1C0`
+///     (the RMW store is emitted before the `bl`, `func_ov011_0212aee8`'s idiom);
+///   - while `0x1F8` has run down to 0 and `0x1FA` sits on a ten-frame boundary, and fewer than
+///     `data_ov011_0212c34c[slot]` ten-frame ticks have elapsed, spawn a `Tsk_BtlEnm010_Rnge` burst
+///     through `func_ov011_02127f6c`: data pointer, the `+/- 0x40000` mirror bias (r1), 0 (r2),
+///     `0 - 0x10000` (r3), then the `[slot][shot]` parameter record as the five stack words -- s32,
+///     the `0x8000`/0 phase word (u16), u16, s32, s16 -- and the handle lands in `0x208`.  The
+///     shot index is `q`, the quotient the guard computed; the table row is re-derived from the
+///     `u16` at `0x80` exactly once for all four field loads;
+///   - the shared velocity-decay tail: while `0x1D0` is positive `0x1E8` accumulates `-0x333` per
+///     frame, while negative `+0x333`, and once `0x1D0 + 0x1E8` crosses zero both are cleared
+///     (`0x333` comes out as `sub #0x33 / sub #0x300`, i.e. it is spelled as one constant);
+///   - finally, if the `func_ov011_0212b890` result is non-zero the phase stays armed; otherwise
+///     the pair is zeroed again and `func_ov011_02129ed0(data, func_ov011_0212a134)` re-arms the
+///     phase driver.  (No dead `mov r0, #imm` sits at any return: the reference epilogues never
+///     set r0, so the `void` signature is exact.)
+void func_ov011_0212a78c(BtlEnm010Tatt* data) {
+    s32 v;
+    s16 limit;
+    s32 r;
+
+    switch (data->unk_1C4) {
+        case 0:
+            v                          = *(s32*)((u8*)data + 0x28);
+            *(s32*)((u8*)data + 0x1DC) = v;
+            *(s32*)((u8*)data + 0x1E0) = *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x2C);
+            v                          = 0;
+            *(s32*)((u8*)data + 0x1E4) = v;
+            if (func_ov011_0212b5d8(data, data->unk_1C0) == 0 || data->unk_1C0 >= 0x3C) {
+                data->unk_1C0 = 0;
+                data->unk_1C4 = 1;
+                return;
+            }
+            data->unk_1C0 = data->unk_1C0 + 1;
+            return;
+        case 1:
+            limit = data_ov011_0212c34c[*(u16*)((u8*)data + 0x80)] * 10 + 0x14;
+            if (data->unk_1C0 == 0) {
+                data->unk_1F8 = 0x14;
+                data->unk_1FA = limit;
+            }
+            r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0);
+            data->unk_1C0 = data->unk_1C0 + 1;
+            if (data->unk_1F8 == 0 && data->unk_1FA % 10 == 0) {
+                s32 q = (limit - data->unk_1FA) / 10;
+
+                if (q < data_ov011_0212c34c[*(u16*)((u8*)data + 0x80)]) {
+                    s32 bias;
+                    u16 a5;
+
+                    if (*(s32*)((u8*)data + 0x24) != 0) {
+                        *(s32*)((u8*)data + 0x1D0) = 0 - 0x4000;
+                        bias                       = 0x40000;
+                        a5                         = 0;
+                    } else {
+                        *(s32*)((u8*)data + 0x1D0) = 0x4000;
+                        bias                       = 0 - 0x40000;
+                        a5                         = 0x8000;
+                    }
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                    {
+                        s32 slot = *(u16*)((u8*)data + 0x80);
+
+                        data->unk_208 = func_ov011_02127f6c(data, bias, 0, 0 - 0x10000,
+                                                            *(s32*)((u8*)data_ov011_0212c3c8 + slot * 0x20 + q * 0x10), a5,
+                                                            *(u16*)((u8*)data_ov011_0212c3cc + slot * 0x20 + q * 0x10),
+                                                            *(s32*)((u8*)data_ov011_0212c3d0 + slot * 0x20 + q * 0x10),
+                                                            *(s16*)((u8*)data_ov011_0212c3d4 + slot * 0x20 + q * 0x10));
+                    }
+                }
+            }
+            if (data->unk_1D0 > 0) {
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x333;
+                if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) <= 0) {
+                    data->unk_1D0              = 0;
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                }
+            } else if (data->unk_1D0 < 0) {
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x333;
+                if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) >= 0) {
+                    data->unk_1D0              = 0;
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                }
+            }
+            if (r != 0) {
+                return;
+            }
+            data->unk_1D0              = 0;
+            *(s32*)((u8*)data + 0x1E8) = 0;
+            func_ov011_02129ed0(data, func_ov011_0212a134);
+            return;
+    }
+}
+
 /// Tatt's converging phase. Two things the reference does that the C has to be shaped around.
 /// First, there is a block *before* the switch guarded on `0x1C4 == 0 && 0x1C0 == 0` in a single
 /// short-circuiting `&&`, which is why the second test's `ldrsh` is predicated on the first.
@@ -3026,6 +3920,106 @@ void func_ov011_0212aa20(BtlEnm010Tatt* data) {
                 return;
             }
             func_ov011_02129ed0(data, func_ov011_0212a134);
+            return;
+    }
+}
+
+/// Tatt's strafe phase (dispatch value 3 in `func_ov011_02129f80`'s picker).
+///
+/// Case 0 is the shared seed-and-poll arm, the same code `func_ov011_0212a78c` and
+/// `func_ov011_0212a674` have: `0x1DC`/`0x1E0`/`0x1E4` seeded from `0x28`, the chase pointer's
+/// `0x2C` and a reused zero, then the `func_ov011_0212b5d8` / 60-frame poll latching
+/// `0x1C0 = 0, 0x1C4 = 1`.
+///
+/// Case 1 primes the attack: on frame 0 bump `0x1C0` first, then kick the sprite with
+/// `func_ov011_02125750(0, data + 0x84, 9)` and `Mini108_VBlank(..., 0, 1)`.  Once
+/// `SpriteMgr_IsAnimationFinished` reports done, latch `0x1C0 = 0, 0x1C4 = 2`.
+///
+/// Case 2 runs the strafe and shares its tail with `func_ov011_0212a78c`:
+///   - frame 0: `Mini108_VBlank(data + 0x84, 2, 0)`, spawn the `Tsk_BtlEnm010_Lser` burst via
+///     `func_ov011_02125b98(data, 0)` into `0x208`, and arm the `0x1C2` countdown at `0x4B`;
+///   - from frame `0x28`, every 15 frames (a *signed* `% 15` / `/ 15` `smull` pair on
+///     `0x1C0 - 0x28`), for shot indices `1 .. count-1`, spawn again with the shot index `q`;
+///   - from frame `0x3C`, every 15 frames: while `q < data_ov011_0212c33c[slot]` kick `0x1D0` to
+///     `+/- 0x4000` by the sign of `0x24` (a ternary -- the reference is `mov r1, #0x4000` then a
+///     flag-predicated `rsbne`) and clear `0x1E8`; when `q == count - 1` (the table re-read!)
+///     swap the sprite with `Mini108_VBlank(data + 0x84, 3, 1)`;
+///   - the shared `0x1D0`/`0x1E8` decay tail (`+=/-= 0x333` toward zero, both cleared on
+///     crossing);
+///   - when the animation finishes, `func_ov011_02129ed0(data, func_ov011_0212a134)`; otherwise
+///     `0x1C0` advances one frame.  (No dead `mov r0, #imm` at any return: the reference
+///     epilogues never set r0, so the `void` signature is exact.)
+void func_ov011_0212ac0c(BtlEnm010Tatt* data) {
+    s32 v;
+
+    switch (data->unk_1C4) {
+        case 0:
+            v                          = *(s32*)((u8*)data + 0x28);
+            *(s32*)((u8*)data + 0x1DC) = v;
+            *(s32*)((u8*)data + 0x1E0) = *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x2C);
+            v                          = 0;
+            *(s32*)((u8*)data + 0x1E4) = v;
+            if (func_ov011_0212b5d8(data, data->unk_1C0) == 0 || data->unk_1C0 >= 0x3C) {
+                data->unk_1C0 = 0;
+                data->unk_1C4 = 1;
+                return;
+            }
+            data->unk_1C0 = data->unk_1C0 + 1;
+            return;
+        case 1:
+            if (data->unk_1C0 == 0) {
+                data->unk_1C0 = data->unk_1C0 + 1;
+                func_ov011_02125750(0, (CombatSprite*)((u8*)data + 0x84), 9);
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 0, 1);
+            }
+            if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) == 0) {
+                return;
+            }
+            data->unk_1C0 = 0;
+            data->unk_1C4 = 2;
+            return;
+        case 2:
+            if (data->unk_1C0 == 0) {
+                Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 2, 0);
+                data->unk_208 = func_ov011_02125b98(data, 0);
+                data->unk_1C2 = 0x4B;
+            }
+            if (data->unk_1C0 >= 0x28 && (data->unk_1C0 - 0x28) % 15 == 0) {
+                s32 q = (data->unk_1C0 - 0x28) / 15;
+
+                if (q > 0 && q < data_ov011_0212c33c[*(u16*)((u8*)data + 0x80)]) {
+                    data->unk_208 = func_ov011_02125b98(data, q);
+                }
+            }
+            if (data->unk_1C0 >= 0x3C && (data->unk_1C0 - 0x3C) % 15 == 0) {
+                s32 q = (data->unk_1C0 - 0x3C) / 15;
+
+                if (q < data_ov011_0212c33c[*(u16*)((u8*)data + 0x80)]) {
+                    data->unk_1D0              = (*(s32*)((u8*)data + 0x24) != 0) ? 0 - 0x4000 : 0x4000;
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                }
+                if (q == data_ov011_0212c33c[*(u16*)((u8*)data + 0x80)] - 1) {
+                    Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
+                }
+            }
+            if (data->unk_1D0 > 0) {
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) - 0x333;
+                if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) <= 0) {
+                    data->unk_1D0              = 0;
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                }
+            } else if (data->unk_1D0 < 0) {
+                *(s32*)((u8*)data + 0x1E8) = *(s32*)((u8*)data + 0x1E8) + 0x333;
+                if (data->unk_1D0 + *(s32*)((u8*)data + 0x1E8) >= 0) {
+                    data->unk_1D0              = 0;
+                    *(s32*)((u8*)data + 0x1E8) = 0;
+                }
+            }
+            if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) != 0) {
+                func_ov011_02129ed0(data, func_ov011_0212a134);
+                return;
+            }
+            data->unk_1C0 = data->unk_1C0 + 1;
             return;
     }
 }
