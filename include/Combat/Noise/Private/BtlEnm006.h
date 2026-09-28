@@ -129,7 +129,8 @@ struct BtlEnm006 {
     u8                            pad1F0[0x1F4 - 0x1F0];
     /* 0x1F4 */ u8                unk_1F4; // bit 2: the waypoint reflection flag
     /* 0x1F5 */ u8                unk_1F5; // bit 0 mirrors the sprite
-    u8                            pad1F6[0x1FC - 0x1F6];
+    u8                            pad1F6[0x1F8 - 0x1F6];
+    /* 0x1F8 */ s32               unk_1F8; // result of the last follower spawn, or -1 for "none"
 };
 
 /// The `Tsk_BtlEnm006_Swirl` task data. This is a *different* struct from `BtlEnm006`: 0xA0 bytes

@@ -83,6 +83,9 @@ extern void  func_ov010_02127cc0(void);
 extern void  func_ov010_0212847c(s32*, s32*, BtlEnm006*, s32);
 extern s32   func_ov003_020cba2c(s32, s32, s32, s32);
 extern s32   func_ov003_020cb764(s32);
+extern s32   func_ov003_020cb784(s32);
+extern void  func_ov003_020c4c9c(BtlEnm006*);
+extern s32   func_ov010_021270a8(void*, void*);
 extern s32   func_ov003_020cb744(s32);
 extern void* func_ov003_020c3c88(void);
 extern s32   func_ov003_020c42ec(BtlEnm006*);
@@ -128,7 +131,7 @@ extern void func_ov010_0212636c(BtlEnm006*);
 extern void func_ov010_021263c4(BtlEnm006*);
 extern void func_ov010_02125998(BtlEnm006*);
 extern void func_ov010_02127550(BtlEnm006*);
-extern void func_ov010_02125de4(void);
+extern void func_ov010_02125de4(BtlEnm006*);
 
 extern char data_ov010_0212932c[28];
 extern char data_ov010_02129348[28];
@@ -819,6 +822,188 @@ s32 func_ov010_02125878(BtlEnm006* data) {
     return 1;
 }
 
+// The DeadEff stage driver: a dense seven-case switch on sprite.unk_C4, the same shape as
+// func_ov010_02125b28 below with four more phases. Its cases have to stay dense and in order --
+// the original's dispatch is a jump table (`cmp #6 / addls pc, pc, r1, lsl #2` over seven `b`s),
+// where func_ov010_02125b28's three cases get a compare chain.
+//
+// The two `unk_8C |= 1` writes in cases 2 and 5 are genuinely duplicated in the original, with
+// the `unk_54` update wedged between them, so they are spelled twice here rather than factored.
+void func_ov010_02125de4(BtlEnm006* data) {
+    CombatSprite* cs = (CombatSprite*)((u8*)data + 0x84);
+    switch (data->sprite.unk_C4) {
+        case 0:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                // The low two bits of unk_1F4 pick the variant: 1 on the short draw, 0 on the
+                // long one. Both arms read the field once and the whole thing if-converts
+                // (`biclo / orrlo / bichs`), so the test is the unsigned one the original wants.
+                if ((u32)RNG_Next(0x64) < 0x1E) {
+                    data->unk_1F4 = (data->unk_1F4 & ~3) | 1;
+                } else {
+                    data->unk_1F4 = data->unk_1F4 & ~3;
+                }
+                data->unk_1F8 = -1;
+            }
+            if (func_ov003_020c6230(data) != 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 1;
+            return;
+        case 1:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank(cs, 3, 1);
+                func_ov003_020c4c1c(data);
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 2;
+            return;
+        case 2:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                data->sprite.unk_8C |= 1;
+                func_ov003_020cb578(data, 0);
+                // Three phase lengths, keyed on the low two bits of unk_1F4; a value of 3 keeps
+                // whatever was already there. An if/else-if chain rather than a `switch`: the
+                // original's first two arms are relocated behind forward branches and only the
+                // last one is inline and predicated, which is how a chain lays out.
+                s32 v = (u32)data->unk_1F4 << 30 >> 30;
+                if (v == 0) {
+                    data->sprite.unk_C2 = 0x3C;
+                } else if (v == 1) {
+                    data->sprite.unk_C2 = 0x78;
+                } else if (v == 2) {
+                    data->sprite.unk_C2 = 0x1E;
+                }
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 3;
+            return;
+        case 3:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank(cs, 0xD, 1);
+                data->sprite.unk_8C &= ~1;
+                // The two arms re-derive the global rather than sharing one fetch, and the `+`
+                // arm is the fall-through with the `-` arm relocated behind a forward branch.
+                if (data->unk_24 == 0) {
+                    data->unk_28 = data_ov003_020e71b8->unk3D838 + 0x10000;
+                } else {
+                    data->unk_28 = data_ov003_020e71b8->unk3D838 - 0x10000;
+                }
+                data->unk_2C = data_ov003_020e71b8->unk3D83C;
+                data->unk_30 = 0;
+                if (data->unk_24 == 1) {
+                    data->unk_28 = data->unk_28 - 0xB000;
+                } else {
+                    data->unk_28 = data->unk_28 + 0xB000;
+                }
+            }
+            if (data->unk_9A == 0xF && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CD, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 4;
+            return;
+        case 4:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                Mini108_VBlank(cs, 0xE, 1);
+                data->unk_54 &= ~0x20;
+                func_ov003_020cb578(data, 1);
+                func_ov003_020c4c9c(data);
+                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (data->unk_9A == 6 && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (data->unk_9A == 9 && data->unk_8C == 1) {
+                func_ov003_02087f00(0x1CB, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (data->unk_9A == 4 && data->unk_8C == 1) {
+                // The one local here really does live across two calls, so it takes r5 -- which
+                // is why the original pushes it. The address form has to be the two-step
+                // `&symbol / [reg] / + 0x3D000 / [reg, #off]`, i.e. a real struct field.
+                void* t = data_ov003_020e71b8->unk3D89C;
+                if (func_ov010_021268c4(data, t) != 0) {
+                    data->unk_1F8 = func_ov010_021270a8(data, t);
+                }
+            }
+            if (data->unk_9A < 9) {
+                if (data->unk_24 == 0) {
+                    data->unk_28 = data->unk_28 + 0x800;
+                } else {
+                    data->unk_28 = data->unk_28 - 0x800;
+                }
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            // The shift pair has to be a *value* (the `== 1` keeps its `cmp`, because the test is
+            // a conjunction and not a lone branch), and the `-1` is a fresh `sub` off the zero
+            // that is already in the register from the store above.
+            if (((u32)data->unk_1F4 << 30) >> 30 == 1 && data->unk_1F8 == -1) {
+                data->unk_1F4       = (data->unk_1F4 & ~3) | 2;
+                data->sprite.unk_C4 = 2;
+                return;
+            }
+            data->sprite.unk_C4 = 5;
+            return;
+        case 5:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_8C |= 1;
+                data->unk_54 |= 0x20;
+                func_ov003_020cb578(data, 0);
+                data->sprite.unk_C2 = 0x3C;
+            }
+            if (data->sprite.unk_C0 < data->sprite.unk_C2) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                return;
+            }
+            data->sprite.unk_C0 = 0;
+            data->sprite.unk_C4 = 6;
+            return;
+        case 6:
+            if (data->sprite.unk_C0 == 0) {
+                data->sprite.unk_C0 = data->sprite.unk_C0 + 1;
+                data->sprite.unk_8C &= ~1;
+                data->unk_54 &= ~0x20;
+                Mini108_VBlank(cs, 4, 1);
+                func_ov003_020cb578(data, 1);
+                if (data->unk_24 == 0) {
+                    data->unk_28 = func_ov003_020cb764(1) + 0x60000;
+                } else {
+                    data->unk_28 = func_ov003_020cb764(1) - 0x60000;
+                }
+                data->unk_2C = func_ov003_020cb784(1);
+                data->unk_30 = 0;
+                func_ov003_020c4b1c(data);
+                func_ov003_02087f00(0x1CC, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+            }
+            if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
+                return;
+            }
+            func_ov010_02125910(data, (void*)func_ov010_021259e8);
+            func_ov003_020c4ee0(data);
+            return;
+    }
+}
+
 // Three-phase death animation, driven by sprite.unk_C4. Each phase re-enters its one-time setup
 // only while unk_C0 is still zero, and unk_C0 is the frame counter within the phase.
 void func_ov010_02125b28(BtlEnm006* data) {
@@ -1229,7 +1414,7 @@ void func_ov010_02128d20(BtlEnm006* data, u16 arg1) {
 
 // The third copy of the task-spawn shape, this time for the Swlo handle. Its frame is 0x18 and
 // the param it hands over is a pointer to a local zero rather than to the incoming argument.
-void func_ov010_021270a8(void* arg0, void* arg1) {
+s32 func_ov010_021270a8(void* arg0, void* arg1) {
     s32       zero = 0;
     TaskPool* pool = (TaskPool*)func_ov003_020c37f8((u8*)arg0 + 0x84);
     if (pool == NULL) {
