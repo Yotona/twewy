@@ -136,6 +136,10 @@ typedef struct Enm006PhaseRec {
 
 /// 4.12 fixed point to `s32`, via a float round trip. The `(s32)` has to sit *outside* the
 /// ternary, or each arm grows its own trailing `_ffix`.
+///
+/// NOT USED in this file: `func_ov010_0212847c` spells the shape out, and `func_ov010_02127cc0`
+/// spells it out with `!= 0` rather than `> 0` -- a `u32` operand there emits `_ffltu` where
+/// the original has the signed `_fflt`. Left here as the canonical form for the siblings.
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 
 // Per-instance callbacks passed to the init helpers.
