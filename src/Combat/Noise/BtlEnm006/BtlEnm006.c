@@ -874,13 +874,17 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 // whatever was already there. An if/else-if chain rather than a `switch`: the
                 // original's first two arms are relocated behind forward branches and only the
                 // last one is inline and predicated, which is how a chain lays out.
-                s32 v = (u32)data->unk_1F4 << 30 >> 30;
-                if (v == 0) {
-                    data->sprite.unk_C2 = 0x3C;
-                } else if (v == 1) {
-                    data->sprite.unk_C2 = 0x78;
-                } else if (v == 2) {
-                    data->sprite.unk_C2 = 0x1E;
+                s32 v = (u32)((s32)data->unk_1F4 << 30) >> 30;
+                switch (v) {
+                    case 0:
+                        data->sprite.unk_C2 = 0x3C;
+                        break;
+                    case 1:
+                        data->sprite.unk_C2 = 0x78;
+                        break;
+                    case 2:
+                        data->sprite.unk_C2 = 0x1E;
+                        break;
                 }
             }
             if (data->sprite.unk_C0 < data->sprite.unk_C2) {
@@ -929,7 +933,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
             }
             if (data->unk_9A == 6 && data->unk_8C == 1) {
-                func_ov003_02087f00(0x1C9, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
+                func_ov003_02087f00(0x1CA, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
             }
             if (data->unk_9A == 9 && data->unk_8C == 1) {
                 func_ov003_02087f00(0x1CB, (s32(*)(s32, s32))func_ov003_020843b0(1, data->unk_28));
@@ -957,7 +961,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
             // The shift pair has to be a *value* (the `== 1` keeps its `cmp`, because the test is
             // a conjunction and not a lone branch), and the `-1` is a fresh `sub` off the zero
             // that is already in the register from the store above.
-            if (((u32)data->unk_1F4 << 30) >> 30 == 1 && data->unk_1F8 == -1) {
+            if ((u32)((s32)data->unk_1F4 << 30) >> 30 == 1 && data->unk_1F8 == -1) {
                 data->unk_1F4       = (data->unk_1F4 & ~3) | 2;
                 data->sprite.unk_C4 = 2;
                 return;
