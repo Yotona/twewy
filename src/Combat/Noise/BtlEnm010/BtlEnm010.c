@@ -331,3 +331,59 @@ void func_ov011_02125b98(void* arg0, void* arg1) {
     args.unk_14 = arg1;
     EasyTask_CreateTask(pool, &data_ov011_0212c118, 0, 0, 0, &args);
 }
+
+// MARK: Tsk_BtlEnm010_Lser
+
+/// `s32 data_ov011_0212c124[3]` = `{0xFFFF8000, 0xFFFF0000, 0}`, a three-entry offset table.
+extern const s32 data_ov011_0212c124[];
+
+/// `Mini108_VBlank` lives in ov000; the project spells it with this name. Declared here for
+/// the same reason ov010 declares it locally: there is no header for ov000's symbols.
+extern void Mini108_VBlank(CombatSprite* cSprite, u16 arg1, s32 arg2);
+
+/// `func_ov003_02082d04` -- `Sprite_Restart`, one argument, tail-called.
+extern void func_ov003_02082d04(CombatSprite* cSprite);
+
+/// Resolves the Lser task's owner position into three out-parameters: the x biased by
+/// `+/- 0x40000` depending on the mirror flag, the y, and the z nudged by an indexed entry of
+/// `data_ov011_0212c124`.
+///
+/// Five arguments; the fifth is on the caller's stack, which is why the callee reads it at
+/// `sp + 8` after its own eight-byte `push {r3, lr}`.
+void func_ov011_02125c00(s32* outX, s32* outY, s32* outZ, BtlEnm010LserVec* vec, s32 index) {
+    *outX = (vec->unk_24 == 0) ? vec->unk_28 - 0x40000 : vec->unk_28 + 0x40000;
+    *outY = vec->unk_2C;
+    *outZ = vec->unk_30 + data_ov011_0212c124[index];
+}
+
+/// Advances one of the Lser task's three emitter records. Bails out once the accumulated
+/// value leaves range, or when the caller has disabled the emitter, then re-seeds the record
+/// and kicks the sprite's animation.
+void func_ov011_02125c44(BtlEnm010LserVec* vec, BtlEnm010LserRec* rec, CombatSprite* sprite, s32 enabled) {
+    s32 v = rec->unk_04 + rec->unk_08;
+
+    rec->unk_04 = v;
+    if (v >= 0x8000) {
+        return;
+    }
+    if (enabled == 0) {
+        return;
+    }
+    if (RNG_Next(0x64) < 0x32) {
+        Mini108_VBlank(sprite, 1, 1);
+    } else {
+        Mini108_VBlank(sprite, 2, 1);
+    }
+    func_ov003_02082d04(sprite);
+    rec->unk_00 = RNG_Next(0x4000);
+    if (vec->unk_24 == 0) {
+        rec->unk_00 = rec->unk_00 + 0x6000;
+    } else {
+        rec->unk_00 = rec->unk_00 - 0x2000;
+    }
+    // `rec->unk_04 = 0x20000` comes *after* the adjustment above, not before it. The original
+    // materialises 0x20000 into r1 early but does not store it until just after the `strh`,
+    // so writing the assignment first moves the store three instructions earlier.
+    rec->unk_04 = 0x20000;
+    rec->unk_08 = 0 - (RNG_Next(0x1001) + 0x1000);
+}

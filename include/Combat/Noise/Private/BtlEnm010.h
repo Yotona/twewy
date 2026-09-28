@@ -115,9 +115,41 @@ typedef struct BtlEnm010UG {
     /* 0x210 */ s32 unk_210;
 } BtlEnm010UG;
 
-/// The per-sprite record the loaders take as their second argument. Only `unk_46` (a flag
-/// halfword whose bit 0 is tested and then set) is known so far.
+/// The `Tsk_BtlEnm010_Lser` task's shared state block, reached as `LserData + 4`.
 ///
+/// The task's whole data block is 0x254 bytes (the size in the `TaskHandle` at
+/// `0x0212c118`); this is the sub-record at offset 4, and the four fields below are at
+/// absolute offsets `0x28`/`0x2C`/`0x30`/`0x34`.
+///
+/// Evidence: `func_ov011_02125c00` reads all four and `func_ov011_02125c44` reads `unk_24`.
+/// The values look like a 4.12 position triple (`unk_28`/`unk_2C`/`unk_30`) with a mirror flag
+/// in front, because `unk_28` is biased by `+/- 0x40000` depending on `unk_24` and
+/// `data_ov011_0212c124` is the three-entry `s32` table `{0xFFFF8000, 0xFFFF0000, 0}` used to
+/// nudge `unk_30` by an indexed amount.
+typedef struct BtlEnm010LserVec {
+    /* 0x00 */ s32 pad_00[9];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+} BtlEnm010LserVec;
+
+/// One 0xC-byte per-emitter record inside the Lser task's data, at `LserData + 0x200` with a
+/// 0xC stride, indexed three deep.
+///
+/// Evidence: `func_ov011_02125c44` reads and writes all three fields, and its caller
+/// `func_ov011_02125f24` builds the pointer as `r4 + 0x200` and steps it by `0xC` while it
+/// steps the matching sprite by `0x60`. `unk_04` accumulates `unk_08` each call and is
+/// compared against `0x8000`, so it is a 4.12 angle or distance.
+typedef struct BtlEnm010LserRec {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 pad_02;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+} BtlEnm010LserRec;
+
+/// The per-sprite record the loaders take as their second argument. Only `unk_46` (a flag
+/// halfword whose bit 0 is tested and then set) is known so far.///
 /// Evidence: `func_ov011_02125750` reads it at `ldrh r1, [r9, #0x46]` before the release
 /// call and writes it back with a predicated `ldrh`/`orr`/`strh` triple, so the field really
 /// is at 0x46 and is a halfword. Note that 0x46 is not a multiple of four, so the padding in
