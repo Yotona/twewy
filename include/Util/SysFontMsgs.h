@@ -16,10 +16,19 @@
     #define SYSMSG_THREAD_ABILITY_HELP_START 8603 // "Increases your <cC>drop rate<cE> by 1."..
     // menu_abilityName.xls
     #define SYSMSG_THREAD_ABILITY_NAME_START 8899 // "<ic_ab>Mother Lode"..
+    // menu_bdgHelp1.xls
+    #define SYSMSG_PIN_EFFECT_HELP_START 9264 // "<cC>Slash vertically up on empty space<c"...
+    // menu_bdgHelp2.xls
+    #define SYSMSG_PIN_GROWTH_HELP_START 9568 // "Growth Bonus:   Power:<cC> Y    <cE>Uses"...
+    // menu_bdgHelpM.xls; USA's first entry is the Tin Pin stat labels, JP's are per-pin texts.
+    #define SYSMSG_PIN_TINPIN_HELP_START 9872 // "Weight:                     Spin:       "...
     // menu_bdgName.xls
     #define SYSMSG_PIN_NAMES_START 10177 // "Ice Blow"..
+    // menu_bdgPsy.xls
+    #define SYSMSG_PSYCH_NAMES_START 10481 // "<ic_ne>Spark Core<ic_ci>"
     // menu_brand.xls
     #define SYSMSG_BRAND_NAMES_START    10785 // "Mus Rattus"..
+    #define SYSMSG_BRAND_UNBRANDED      10799 // "Unbranded"
     #define SYSMSG_BRAND_ATTACK_DOUBLED 10800 // "Attack <cC>doubled"
     #define SYSMSG_BRAND_ATTACK_UP_50   10801 // "Attack <cC>+50%"
     #define SYSMSG_BRAND_ATTACK_UP_20   10802 // "Attack <cC>+20%"
@@ -31,6 +40,8 @@
     // menu_helpMess.xls
     #define SYSMSG_TOPMENU_HELP_LABELS   10903 // "THE PHONE MENU"..
     #define SYSMSG_TOPMENU_HELP_TEXT     10910 // "Use the Phone Menu to <cC>access game me"...
+    #define SYSMSG_BADGEMENU_HELP_LABELS 10925 // "THE PINS MENU"
+    #define SYSMSG_BADGEMENU_HELP_TEXT   10936 // "Use this menu to <cC>find out more about"...
     #define SYSMSG_EQUIPMENU_HELP_LABELS 10947 // "THE ITEMS MENU"..
     #define SYSMSG_EQUIPMENU_HELP_TEXT   10956 // "Use this menu to change your characters'"...
     // menu_itemHelp.xls
@@ -66,19 +77,31 @@
     #define SYSMSG_SHOP_ABILITY_TIP_STYLE  12349 // "<c8>The seller digs your style!<cE>\nYou"...
     #define SYSMSG_SHOP_ABILITY_TIP_BROWSE 12350 // "<c8>The seller notices you browsing<cE> "...
     // menu_system.xls
-    #define SYSMSG_PARTNER_NEKU                 13086 // "Neku"
-    #define SYSMSG_PARTNER_SHIKI                13087 // "Shiki"
-    #define SYSMSG_PARTNER_JOSHUA               13088 // "Joshua"
-    #define SYSMSG_PARTNER_BEAT                 13089 // "Beat"
-    #define SYSMSG_STAT_ATTACK                  13090 // "Attack"
-    #define SYSMSG_STAT_DEFENSE                 13091 // "Defense"
-    #define SYSMSG_STAT_HP                      13092 // "HP"
-    #define SYSMSG_BRAVERY_REQ                  13096 // "Bravery Req."
-    #define SYSMSG_TOPMENU_ENTRY_NAMES_START    13097 // "Friends"..
-    #define SYSMSG_STAT_NONE                    13113 // "----"
-    #define SYSMSG_STAT_BONUS_FMT               13115 // "<str> <c6>+<s32>"
-    #define SYSMSG_STAT_PENALTY_FMT             13116 // "<str> <cC>-<s32>"
-    #define SYSMSG_DIVIDED_U32S                 13117 // "<u32>/<u32>"
+    #define SYSMSG_PARTNER_NEKU              13086 // "Neku"
+    #define SYSMSG_PARTNER_SHIKI             13087 // "Shiki"
+    #define SYSMSG_PARTNER_JOSHUA            13088 // "Joshua"
+    #define SYSMSG_PARTNER_BEAT              13089 // "Beat"
+    #define SYSMSG_STAT_ATTACK               13090 // "Attack"
+    #define SYSMSG_STAT_DEFENSE              13091 // "Defense"
+    #define SYSMSG_STAT_HP                   13092 // "HP"
+    #define SYSMSG_BRAVERY_REQ               13096 // "Bravery Req."
+    #define SYSMSG_TOPMENU_ENTRY_NAMES_START 13097 // "Friends"..
+    #define SYSMSG_PIN_CLASS_NAMES_START     13105 // "<cC>Angel<cE>"
+    #define SYSMSG_STAT_NONE                 13113 // "----"
+    #define SYSMSG_SLASH                     13114 // "/"
+    #define SYSMSG_STAT_BONUS_FMT            13115 // "<str> <c6>+<s32>"
+    #define SYSMSG_STAT_PENALTY_FMT          13116 // "<str> <cC>-<s32>"
+    #define SYSMSG_DIVIDED_U32S              13117 // "<u32>/<u32>"
+    #define SYSMSG_PIN_INPUT_TYPES_START     13119 // "Touch the pin"
+    #define SYSMSG_PIN_STAT_NONE             13143 // "\u2014\u2014\u2014\u2014" (em dashes)
+    #define SYSMSG_PIN_DURATION_TIME_FMT     13144 // "Lasts <cC><u32>.<u32><cE>s"
+    #define SYSMSG_PIN_DURATION_USES_FMT     13145 // "Lasts <cC><u32><cE> uses"
+    // USA-only: JP has no singular form.
+    #define SYSMSG_PIN_DURATION_USE_FMT         13146 // "Lasts <cC><u32><cE> use"
+    #define SYSMSG_PIN_BOOT_INSTANT             13147 // "Instant boot"
+    #define SYSMSG_PIN_BOOT_TIME_FMT            13148 // "Ready to use in <cC><u32>.<u32><cE>s"
+    #define SYSMSG_PIN_REBOOT_NONE              13149 // "\u2014\u2014\u2014\u2014" (em dashes)
+    #define SYSMSG_PIN_REBOOT_TIME_FMT          13150 // "Reboots in <cC><u32>.<u32><cE>s"
     #define SYSMSG_MINGLE_ESPERS                13197 // "ESP'ers"
     #define SYSMSG_MINGLE_CIVVIES               13198 // "Civvies"
     #define SYSMSG_MINGLE_ALIENS                13199 // "Aliens"
@@ -98,16 +121,33 @@
     #define SYSMSG_SWAG_TIPS_LABEL              13300 // ""
     #define SYSMSG_CANT_EAT_TITLE_START         13301 // "You <cC>can't eat<cE> this item!"..
     #define SYSMSG_CANT_EAT_TEXT_START          13302 // "At least, not if you want to avoid\nthe "...
-    #define SYSMSG_SHOP_PRICE_FMT               13331 // "<cC>$ <u32>"
-    #define SYSMSG_SHOP_PRICE_THOUSANDS_FMT     13332 // "<cC>$ <u32>,<u32><u32><u32>"
-    #define SYSMSG_SHOP_PRICE_MILLIONS_FMT      13333 // "<cC>$ <u32>,<u32><u32><u32>,<u32><u32><u"...
-    #define SYSMSG_SHOP_BUY_CONFIRM             13334 // "Buy this merchandise?"
-    #define SYSMSG_BRAND_AREA_PROTECTED_FMT     13342 // "A special force field\nsurrounds this ar"...
-    #define SYSMSG_BRAND_AREA_UNAFFECTED        13343 // "This area doesn't\nseem to be affected\n"...
-    #define SYSMSG_SHOP_QUEST_ITEM              13347 // "<cC>QUEST ITEM<cE>"
-    #define SYSMSG_SHOP_TRADE_CONFIRM           13348 // "<cC>Trade in<cE> your items for this?"
-    #define SYSMSG_SHOP_BAG_FULL_TITLE          13349 // "You <cC>can't carry<cE> any more!"
-    #define SYSMSG_SHOP_BAG_FULL_TEXT           13350 // "One more item to lug around and you\nmig"...
+    #define SYSMSG_PIN_CANNOT_SELL              13314 // "<cC>You can't cash in this pin!<cE>\nIt's"...
+    #define SYSMSG_PIN_STOCKPILE_FULL           13315 // "Your stockpile is full!\nYou can only ho"...
+    // USA-only: JP has no singular form.
+    #define SYSMSG_PIN_STOCKPILE_FULL_SINGULAR 13316 // "Your stockpile is full!\nYou can only ho"...
+    #define SYSMSG_PIN_CLASS_LIMIT_START       13317 // "You're over your <cC>class limit<cE>!\nYo"...
+    // USA-only: JP has no money cap warning.
+    #define SYSMSG_PIN_WALLET_FULL 13322 // "Warning:\nYour <cC>wallet<cE> is full, so"...
+    // USA-only: JP formats the plain number with a local template.
+    #define SYSMSG_PIN_PRICE_FMT            13328 // "$ <u32>"
+    #define SYSMSG_PIN_PRICE_THOUSANDS_FMT  13329 // "$ <u32>,<u32><u32><u32>"
+    #define SYSMSG_PIN_PRICE_MILLIONS_FMT   13330 // "$ <u32>,<u32><u32><u32>,<u32><u32><u32>"
+    #define SYSMSG_SHOP_PRICE_FMT           13331 // "<cC>$ <u32>"
+    #define SYSMSG_SHOP_PRICE_THOUSANDS_FMT 13332 // "<cC>$ <u32>,<u32><u32><u32>"
+    #define SYSMSG_SHOP_PRICE_MILLIONS_FMT  13333 // "<cC>$ <u32>,<u32><u32><u32>,<u32><u32><u"...
+    #define SYSMSG_SHOP_BUY_CONFIRM         13334 // "Buy this merchandise?"
+    #define SYSMSG_PIN_SELL_CONFIRM         13335 // "Cash in this pin?"
+    #define SYSMSG_PIN_ARRANGE_TITLE        13336 // "<cC>Organize your pins"
+    #define SYSMSG_PIN_ARRANGE_BY_NUMBER    13337 // "Arrange by number."
+    #define SYSMSG_PIN_ARRANGE_BY_PSYCH     13339 // "Arrange by psych."
+    #define SYSMSG_PIN_ALWAYS_ARRANGE       13341 // "Always organize your pins."
+    #define SYSMSG_BRAND_AREA_PROTECTED_FMT 13342 // "A special force field\nsurrounds this ar"...
+    #define SYSMSG_BRAND_AREA_UNAFFECTED    13343 // "This area doesn't\nseem to be affected\n"...
+    #define SYSMSG_SHOP_QUEST_ITEM          13347 // "<cC>QUEST ITEM<cE>"
+    #define SYSMSG_SHOP_TRADE_CONFIRM       13348 // "<cC>Trade in<cE> your items for this?"
+    #define SYSMSG_SHOP_BAG_FULL_TITLE      13349 // "You <cC>can't carry<cE> any more!"
+    #define SYSMSG_SHOP_BAG_FULL_TEXT       13350 // "One more item to lug around and you\nmig"...
+    #define SYSMSG_PIN_RECOVERY_FMT         13351 // "Recovery <cC><u32><cE>%"
     // menu_treasureHelp.xls
     #define SYSMSG_SWAG_DESC_START 13352 // "Awe-inspiring thread, hand-dyed in Nishi"...
     // menu_treasureName.xls
@@ -119,8 +159,13 @@
     #define SYSMSG_FONT_PAGE_FMT                8279  // "フォントセット :　<str>\n<u32>/<"...
     #define SYSMSG_THREAD_ABILITY_HELP_START    8527  // "ドロップレートが１アップする"..
     #define SYSMSG_THREAD_ABILITY_NAME_START    8823  // "<ic_ab>ビッグトレジャー"..
+    #define SYSMSG_PIN_EFFECT_HELP_START        9188  // "<cC>{03B2}{070A}を{0728}か"...
+    #define SYSMSG_PIN_GROWTH_HELP_START        9492  // "{02BB}{02B6}{07D9}{0262}"...
+    #define SYSMSG_PIN_TINPIN_HELP_START        9796  // "おもさ<cC>９　　<cE>カーブ<cC>０　　"...
     #define SYSMSG_PIN_NAMES_START              10100 // "アイスブロウ"..
+    #define SYSMSG_PSYCH_NAMES_START            10404 // "<ic_ne>スパークポイント<ic_ci>"
     #define SYSMSG_BRAND_NAMES_START            10708 // "ムース・ラットゥス"..
+    #define SYSMSG_BRAND_UNBRANDED              10722 // "ノーブランド"
     #define SYSMSG_BRAND_ATTACK_DOUBLED         10723 // "{0710}{070E}{0247}<cC>２{"...
     #define SYSMSG_BRAND_ATTACK_UP_50           10724 // "{0710}{070E}{0247}<cC>１．"...
     #define SYSMSG_BRAND_ATTACK_UP_20           10725 // "{0710}{070E}{0247}<cC>１．"...
@@ -129,6 +174,8 @@
     #define SYSMSG_FOOD_NAMES_START             10784 // "ハンバーガー"..
     #define SYSMSG_TOPMENU_HELP_LABELS          10826 // "トップメニュー"..
     #define SYSMSG_TOPMENU_HELP_TEXT            10833 // "　トップメニューでは　<cC>{0283}の{0"...
+    #define SYSMSG_BADGEMENU_HELP_LABELS        10848 // "バッジメニュー"
+    #define SYSMSG_BADGEMENU_HELP_TEXT          10859 // "　バッジメニューでは{0733}っている<cC>"...
     #define SYSMSG_EQUIPMENU_HELP_LABELS        10870 // "アイテムメニュー"..
     #define SYSMSG_EQUIPMENU_HELP_TEXT          10879 // "　アイテムメニューでは<cC>キャラクターのそう"...
     #define SYSMSG_THREAD_DESC_START            10927 // "Ｍのワッペンがついたキャップ\nシンプルさを{0"...
@@ -161,10 +208,20 @@
     #define SYSMSG_STAT_HP                      13011 // "ＨＰ"
     #define SYSMSG_BRAVERY_REQ                  13015 // "{0286}{0292}{04FD}{0236}"
     #define SYSMSG_TOPMENU_ENTRY_NAMES_START    13016 // "フレンド"..
+    #define SYSMSG_PIN_CLASS_NAMES_START        13024 // "<cC>{02FF}{0265}<cE>クラス"
     #define SYSMSG_STAT_NONE                    13032 // "－－－－"
+    #define SYSMSG_SLASH                        13033 // "／"
     #define SYSMSG_STAT_BONUS_FMT               13034 // "<str>　<c6>＋<s32>"
     #define SYSMSG_STAT_PENALTY_FMT             13035 // "<str>　<cC>－<s32>"
     #define SYSMSG_DIVIDED_U32S                 13036 // "<u32>／<u32>"
+    #define SYSMSG_PIN_INPUT_TYPES_START        13038 // "バッジをタッチ"
+    #define SYSMSG_PIN_STAT_NONE                13062 // "－－－－"
+    #define SYSMSG_PIN_DURATION_TIME_FMT        13063 // "{0265}{0711}{070C}{070A}"...
+    #define SYSMSG_PIN_DURATION_USES_FMT        13064 // "{0265}{0711}{070F}{0290}"...
+    #define SYSMSG_PIN_BOOT_INSTANT             13065 // "{05A4}{070C}{0741}{0252}"
+    #define SYSMSG_PIN_BOOT_TIME_FMT            13066 // "<cC><u32>.<u32><cE>{03A9"...
+    #define SYSMSG_PIN_REBOOT_NONE              13067 // "－－－－"
+    #define SYSMSG_PIN_REBOOT_TIME_FMT          13068 // "<cC><u32>.<u32><cE>{03A9"...
     #define SYSMSG_MINGLE_ESPERS                13098 // "エスパー"
     #define SYSMSG_MINGLE_CIVVIES               13099 // "いっぱんじん"
     #define SYSMSG_MINGLE_ALIENS                13100 // "エイリアン"
@@ -183,14 +240,23 @@
     #define SYSMSG_SWAG_TIPS_LABEL              13196 // "ＴＩＰＳ"
     #define SYSMSG_CANT_EAT_TITLE_START         13197 // "<cC>このアイテム<cE>はたべられません！"..
     #define SYSMSG_CANT_EAT_TEXT_START          13198 // "このアイテムをたべると\nおなかをこわしてしまい"...
+    #define SYSMSG_PIN_CANNOT_SELL              13210 // "<cC>このバッジは{056B}{0330}でき"...
+    #define SYSMSG_PIN_STOCKPILE_FULL           13211 // "<cC>ストックバッジ<cE>がいっぱいです！"...
+    #define SYSMSG_PIN_CLASS_LIMIT_START        13212 // "<cC>クラス<cE>{02AB}{028A}オ"...
     #define SYSMSG_SHOP_PRICE_FMT               13221 // "<cC>{0225}<u32>"
     #define SYSMSG_SHOP_BUY_CONFIRM             13222 // "この{041D}{02C6}を{065E}{02"...
+    #define SYSMSG_PIN_SELL_CONFIRM             13223 // "このバッジを{056B}{0330}しますか？"
+    #define SYSMSG_PIN_ARRANGE_TITLE            13224 // "<cC>バッジをならびかえます"
+    #define SYSMSG_PIN_ARRANGE_BY_NUMBER        13225 // "ナンバーでならべる"
+    #define SYSMSG_PIN_ARRANGE_BY_PSYCH         13227 // "サイキックでならべる"
+    #define SYSMSG_PIN_ALWAYS_ARRANGE           13229 // "{0312}{070F}オートでならべる"
     #define SYSMSG_BRAND_AREA_PROTECTED_FMT     13230 // "この{025A}{026B}は{02E9}{06"...
     #define SYSMSG_BRAND_AREA_UNAFFECTED        13231 // "この{025A}{026B}には\nブランドラン"...
     #define SYSMSG_SHOP_QUEST_ITEM              13235 // "<cC>クエストアイテム<cE>"
     #define SYSMSG_SHOP_TRADE_CONFIRM           13236 // "お{070D}{0733}ちのアイテムと<cC>"...
     #define SYSMSG_SHOP_BAG_FULL_TITLE          13237 // "<cC>{026B}{0733}{0290}オー"...
     #define SYSMSG_SHOP_BAG_FULL_TEXT           13238 // "お{070D}{0733}ちがいっぱいなので\n"...
+    #define SYSMSG_PIN_RECOVERY_FMT             13239 // "{070F}{0824}{0247}<cC><u"...
     #define SYSMSG_SWAG_DESC_START              13240 // "{059A}{0272}の{024F}{0723"...
     #define SYSMSG_SWAG_NAMES_START             13390 // "あざやかな{05E8}"..
     #define SYSMSG_SWAG_TIPS_START              13540 // "あるアイテムを、もっとステキで{073A}{02"...

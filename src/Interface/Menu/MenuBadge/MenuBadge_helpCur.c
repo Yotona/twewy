@@ -3,12 +3,12 @@
 typedef struct {
     /* 0x00 */ Sprite           sprites[3];
     /* 0xC0 */ s32              visibleFlags[3];
-    /* 0xCC */ MenuBadgeObject* unk_CC;
+    /* 0xCC */ MenuBadgeObject* menuBadge;
 } MenuBadge_helpCur; // Size: 0xD0
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_helpCur_Args;
 
 extern s32 func_02023d1c(s32 arg0);
@@ -33,7 +33,7 @@ static const SpriteAnimation MenuBadge_helpCur_Anim = {
     .frameInfoCallback = MenuBadge_helpCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -83,7 +83,7 @@ static s32 MenuBadge_helpCur_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_helpCur*      helpCur  = task->data;
     MenuBadge_helpCur_Args* initArgs = args;
 
-    helpCur->unk_CC = initArgs->unk_4;
+    helpCur->menuBadge = initArgs->menuBadge;
     MenuBadge_helpCur_Load(helpCur, helpCur->sprites, initArgs);
     return 1;
 }
@@ -91,30 +91,30 @@ static s32 MenuBadge_helpCur_Init(TaskPool* pool, Task* task, void* args) {
 // Nonmatching
 static s32 MenuBadge_helpCur_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_helpCur* helpCur = task->data;
-    MenuBadgeObject*   owner   = helpCur->unk_CC;
+    MenuBadgeObject*   owner   = helpCur->menuBadge;
 
     s32 idleFrame   = 0x55;
     s32 activeFrame = 0x56;
 
     for (s32 i = 0; i < 3; i++) {
-        if (owner->unk_AF1C[i] == 1) {
-            func_ov043_0208fa60(&helpCur->sprites[i], activeFrame, 3, 2);
-            if (owner->unk_AF02 != 0) {
-                owner->unk_AF02--;
+        if (owner->helpButtonPressed[i] == 1) {
+            MenuBadge_SetSpriteFrameFromPack(&helpCur->sprites[i], activeFrame, 3, 2);
+            if (owner->pressTimer != 0) {
+                owner->pressTimer--;
             } else {
-                owner->unk_AF1C[i] = 0;
+                owner->helpButtonPressed[i] = 0;
             }
         } else {
-            func_ov043_0208fa60(&helpCur->sprites[i], idleFrame, 3, 2);
+            MenuBadge_SetSpriteFrameFromPack(&helpCur->sprites[i], idleFrame, 3, 2);
         }
         activeFrame += 2;
         idleFrame += 2;
     }
 
-    if (owner->unk_AF1F == 0) {
+    if (owner->helpPage == 0) {
         helpCur->visibleFlags[0] = 0;
         helpCur->visibleFlags[1] = 1;
-    } else if (owner->unk_AF1F != 10) {
+    } else if (owner->helpPage != 10) {
         helpCur->visibleFlags[0] = 1;
         helpCur->visibleFlags[1] = 1;
     } else {
@@ -165,8 +165,8 @@ static s32 MenuBadge_helpCur_RunTask(TaskPool* pool, Task* task, void* args, s32
 s32 MenuBadge_helpCur_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_helpCur_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_helpCur, NULL, 0, NULL, &args);
 }

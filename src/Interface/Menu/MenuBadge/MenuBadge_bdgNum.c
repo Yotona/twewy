@@ -3,16 +3,16 @@
 typedef struct {
     /* 0x000 */ Sprite           sprites[4];
     /* 0x100 */ BOOL             visible[3];
-    /* 0x10C */ MenuBadgeObject* unk_10C;
-    /* 0x110 */ u16              unk_110;
+    /* 0x10C */ MenuBadgeObject* menuBadge;
+    /* 0x110 */ u16              slot;
 } MenuBadge_bdgNum; // Size: 0x114
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
-    /* 0x8 */ u16              unk_8;
-    /* 0xA */ u16              unk_A;
-    /* 0xC */ u16              unk_C;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
+    /* 0x8 */ u16              slot;
+    /* 0xA */ u16              pinId;
+    /* 0xC */ u16              count;
 } MenuBadge_bdgNum_Args;
 
 static SpriteFrameInfo* MenuBadge_bdgNum_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -36,7 +36,7 @@ static const SpriteAnimation MenuBadge_bdgNum_Anim = {
     .frameInfoCallback = MenuBadge_bdgNum_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 4,
@@ -63,21 +63,21 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
 
     anim.dataType = args->dataType;
 
-    if (args->unk_A == 0xFFFF) {
+    if (args->pinId == 0xFFFF) {
         bdgNum->visible[0] = 0;
         bdgNum->visible[1] = 0;
         bdgNum->visible[2] = 0;
     } else {
-        if (args->unk_C < 10) {
+        if (args->count < 10) {
             ones = 0;
-            tens = args->unk_C;
+            tens = args->count;
 
             bdgNum->visible[0] = 1;
             bdgNum->visible[1] = 1;
             bdgNum->visible[2] = 0;
         } else {
-            ones = args->unk_C - (tens * 10);
-            tens = args->unk_C / 10;
+            ones = args->count - (tens * 10);
+            tens = args->count / 10;
 
             bdgNum->visible[0] = 1;
             bdgNum->visible[1] = 1;
@@ -89,28 +89,28 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
     anim.bits_0_1 = 2;
     anim.unk_26   = 5;
     anim.bits_7_9 = 6;
-    anim.binIden  = &data_ov043_020c82e4;
+    anim.binIden  = &MenuBadge_BinIdentifiers[2];
     anim.unk_22   = 2;
     anim.unk_1C   = 4;
     anim.unk_20   = 0xD;
     anim.unk_28   = 6;
 
     anim.unk_2A = 24;
-    anim.unk_04 = data_ov043_020c834c[args->unk_8].x + xOffset;
-    anim.unk_06 = data_ov043_020c834c[args->unk_8].y + 19;
+    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + xOffset;
+    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[0], &anim);
 
     anim.unk_2A = tens + 25;
-    anim.unk_04 = data_ov043_020c834c[args->unk_8].x + xOffset;
-    anim.unk_06 = data_ov043_020c834c[args->unk_8].y + 19;
+    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + xOffset;
+    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[1], &anim);
 
     anim.unk_2A = ones + 25;
-    anim.unk_04 = data_ov043_020c834c[args->unk_8].x + 4 + xOffset;
-    anim.unk_06 = data_ov043_020c834c[args->unk_8].y + 19;
+    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x + 4 + xOffset;
+    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 19;
     _Sprite_Load(&sprites[2], &anim);
 
-    anim.binIden  = &data_ov043_020c82e4;
+    anim.binIden  = &MenuBadge_BinIdentifiers[2];
     anim.bits_0_1 = 0;
     anim.bits_7_9 = 5;
     anim.unk_1C   = 1;
@@ -120,8 +120,8 @@ static void MenuBadge_bdgNum_Load(MenuBadge_bdgNum* bdgNum, Sprite* sprites, Men
     anim.unk_28   = 3;
 
     anim.unk_2A = 3;
-    anim.unk_04 = data_ov043_020c834c[args->unk_8].x;
-    anim.unk_06 = data_ov043_020c834c[args->unk_8].y + 0x13;
+    anim.unk_04 = MenuBadge_SlotPositions[args->slot].x;
+    anim.unk_06 = MenuBadge_SlotPositions[args->slot].y + 0x13;
 
     _Sprite_Load(&bdgNum->sprites[3], &anim);
 }
@@ -130,9 +130,9 @@ static s32 MenuBadge_bdgNum_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_bdgNum*      bdgNum   = task->data;
     MenuBadge_bdgNum_Args* initArgs = args;
 
-    bdgNum->unk_10C = initArgs->unk_4;
+    bdgNum->menuBadge = initArgs->menuBadge;
     MenuBadge_bdgNum_Load(bdgNum, bdgNum->sprites, initArgs);
-    bdgNum->unk_110 = initArgs->unk_8;
+    bdgNum->slot = initArgs->slot;
     return 1;
 }
 
@@ -151,7 +151,7 @@ static s32 MenuBadge_bdgNum_Render(TaskPool* pool, Task* task, void* args) {
     MenuBadge_bdgNum* bdgNum = task->data;
     s32               i;
 
-    if (bdgNum->unk_10C->unk_AE70[bdgNum->unk_110] == 1) {
+    if (bdgNum->menuBadge->slotVisible[bdgNum->slot] == 1) {
         if (bdgNum->visible[0] != 0) {
             Sprite_RenderFrame(&bdgNum->sprites[3]);
         }
@@ -185,14 +185,14 @@ static s32 MenuBadge_bdgNum_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuBadge_bdgNum_CreateTask(TaskPool* pool, s32 dataType, s16 index, MenuBadgeObject* owner) {
+s32 MenuBadge_bdgNum_CreateTask(TaskPool* pool, s32 dataType, u16 index, MenuBadgeObject* owner) {
     MenuBadge_bdgNum_Args args;
 
-    args.unk_8    = index;
-    args.unk_4    = owner;
-    args.dataType = dataType;
-    args.unk_A    = owner->unk_AD60[index]->unk_00;
-    args.unk_C    = owner->unk_AD60[index]->unk_17;
+    args.slot      = index;
+    args.menuBadge = owner;
+    args.dataType  = dataType;
+    args.pinId     = owner->slots[index]->pinId;
+    args.count     = owner->slots[index]->count;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_bdgNum, NULL, 0, NULL, &args);
 }

@@ -101,7 +101,7 @@ s16 func_ov030_020c7b24(u16 itemID, s32* arg1) {
     } else {
         RawPinData pinData;
         Fld_GetItem_LoadPinData(&pinData, itemIdx);
-        var_r1 = pinData.unk_00;
+        var_r1 = pinData.iconIndex;
         *arg1  = 1;
     }
 

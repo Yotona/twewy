@@ -278,107 +278,107 @@ MenuTop_helpCurU_Render kind:function(arm,size=0x40) addr:0x0208bdb4 local
 MenuTop_helpCurU_Destroy kind:function(arm,size=0x30) addr:0x0208bdf4 local
 MenuTop_helpCurU_RunTask kind:function(arm,size=0x48) addr:0x0208be24 local
 MenuTop_helpCurU_CreateTask kind:function(arm,size=0x34) addr:0x0208be6c
-func_ov042_0208bea0 kind:function(arm,size=0xe0) addr:0x0208bea0
-func_ov042_0208bf80 kind:function(arm,size=0x130) addr:0x0208bf80
-func_ov042_0208c0b0 kind:function(arm,size=0x64) addr:0x0208c0b0
-func_ov042_0208c114 kind:function(arm,size=0x30) addr:0x0208c114
-func_ov042_0208c144 kind:function(arm,size=0x150) addr:0x0208c144
-func_ov042_0208c294 kind:function(arm,size=0x2ec) addr:0x0208c294
-func_ov042_0208c580 kind:function(arm,size=0xec) addr:0x0208c580
-func_ov042_0208c66c kind:function(arm,size=0xe8) addr:0x0208c66c
-func_ov042_0208c754 kind:function(arm,size=0xf0) addr:0x0208c754
-func_ov042_0208c844 kind:function(arm,size=0x3c) addr:0x0208c844
-func_ov042_0208c880 kind:function(arm,size=0xd8) addr:0x0208c880
-func_ov042_0208c958 kind:function(arm,size=0xbc) addr:0x0208c958
-func_ov042_0208ca14 kind:function(arm,size=0x250) addr:0x0208ca14
-func_ov042_0208cc64 kind:function(arm,size=0xd8) addr:0x0208cc64
-func_ov042_0208cd3c kind:function(arm,size=0xd8) addr:0x0208cd3c
-func_ov042_0208ce14 kind:function(arm,size=0xbc) addr:0x0208ce14
-func_ov042_0208ced0 kind:function(arm,size=0x228) addr:0x0208ced0
-func_ov042_0208d0f8 kind:function(arm,size=0xd8) addr:0x0208d0f8
-func_ov042_0208d1d0 kind:function(arm,size=0x20c) addr:0x0208d1d0
-func_ov042_0208d3dc kind:function(arm,size=0x88) addr:0x0208d3dc
-func_ov042_0208d464 kind:function(arm,size=0x94) addr:0x0208d464
-func_ov042_0208d4f8 kind:function(arm,size=0xd8) addr:0x0208d4f8
-func_ov042_0208d5d0 kind:function(arm,size=0x144) addr:0x0208d5d0
+MenuBadge_DestroySlotTasks kind:function(arm,size=0xe0) addr:0x0208bea0
+MenuBadge_CreateSlotTasks kind:function(arm,size=0x130) addr:0x0208bf80
+MenuBadge_ClearSlot kind:function(arm,size=0x64) addr:0x0208c0b0
+MenuBadge_RefreshSlot kind:function(arm,size=0x30) addr:0x0208c114
+MenuBadge_InitState kind:function(arm,size=0x150) addr:0x0208c144
+MenuBadge_CreateTasks kind:function(arm,size=0x2ec) addr:0x0208c294
+MenuBadge_InsertIntoStockpile kind:function(arm,size=0xec) addr:0x0208c580
+MenuBadge_StackIntoMastered kind:function(arm,size=0xe8) addr:0x0208c66c
+MenuBadge_InsertIntoMastered kind:function(arm,size=0xf0) addr:0x0208c754
+MenuBadge_AddToMastered kind:function(arm,size=0x3c) addr:0x0208c844
+MenuBadge_StockpileSwapDeckSlots kind:function(arm,size=0xd8) addr:0x0208c880
+MenuBadge_StockpileUnequip kind:function(arm,size=0xbc) addr:0x0208c958
+MenuBadge_StockpileEquip kind:function(arm,size=0x250) addr:0x0208ca14
+MenuBadge_StockpileMoveBadge kind:function(arm,size=0xd8) addr:0x0208cc64
+MenuBadge_MasteredSwapDeckSlots kind:function(arm,size=0xd8) addr:0x0208cd3c
+MenuBadge_MasteredUnequip kind:function(arm,size=0xbc) addr:0x0208ce14
+MenuBadge_MasteredEquip kind:function(arm,size=0x228) addr:0x0208ced0
+MenuBadge_MasteredMoveBadge kind:function(arm,size=0xd8) addr:0x0208d0f8
+MenuBadge_DropBadge kind:function(arm,size=0x20c) addr:0x0208d1d0
+MenuBadge_RefreshBadgeInfo kind:function(arm,size=0x88) addr:0x0208d3dc
+MenuBadge_SwitchDeck kind:function(arm,size=0x94) addr:0x0208d464
+MenuBadge_RefreshList kind:function(arm,size=0xd8) addr:0x0208d4f8
+MenuBadge_SwitchList kind:function(arm,size=0x144) addr:0x0208d5d0
 func_ov042_0208d714 kind:function(arm,size=0xb4) addr:0x0208d714
-func_ov042_0208d7c8 kind:function(arm,size=0x64) addr:0x0208d7c8
-func_ov042_0208d82c kind:function(arm,size=0xc8) addr:0x0208d82c
-func_ov042_0208d8f4 kind:function(arm,size=0x560) addr:0x0208d8f4
-func_ov042_0208de54 kind:function(arm,size=0x6c) addr:0x0208de54
-func_ov042_0208dec0 kind:function(arm,size=0xbc) addr:0x0208dec0
-func_ov042_0208df7c kind:function(arm,size=0x784) addr:0x0208df7c
-func_ov042_0208e700 kind:function(arm,size=0x7c) addr:0x0208e700
-func_ov042_0208e77c kind:function(arm,size=0x60) addr:0x0208e77c
-func_ov042_0208e7dc kind:function(arm,size=0x2d8) addr:0x0208e7dc
-func_ov042_0208eab4 kind:function(arm,size=0x120) addr:0x0208eab4
-func_ov042_0208ebd4 kind:function(arm,size=0x3d8) addr:0x0208ebd4
-func_ov042_0208efac kind:function(arm,size=0x88) addr:0x0208efac
-func_ov042_0208f034 kind:function(arm,size=0x240) addr:0x0208f034
-func_ov042_0208f274 kind:function(arm,size=0x70) addr:0x0208f274
-func_ov042_0208f2e4 kind:function(arm,size=0x48) addr:0x0208f2e4
-func_ov042_0208f32c kind:function(arm,size=0x48) addr:0x0208f32c
-func_ov042_0208f374 kind:function(arm,size=0x2c) addr:0x0208f374
-func_ov042_0208f3a0 kind:function(arm,size=0xec) addr:0x0208f3a0
-func_ov042_0208f48c kind:function(arm,size=0x9c) addr:0x0208f48c
-func_ov042_0208f528 kind:function(arm,size=0x28) addr:0x0208f528
-func_ov042_0208f550 kind:function(arm,size=0x14c) addr:0x0208f550
-func_ov042_0208f69c kind:function(arm,size=0x144) addr:0x0208f69c
-func_ov042_0208f7e0 kind:function(arm,size=0x84) addr:0x0208f7e0
-func_ov042_0208f864 kind:function(arm,size=0x40) addr:0x0208f864
-func_ov042_0208f8a4 kind:function(arm,size=0x434) addr:0x0208f8a4
-func_ov042_0208fcd8 kind:function(arm,size=0xe8) addr:0x0208fcd8
-func_ov042_0208fdc0 kind:function(arm,size=0x1c) addr:0x0208fdc0
-func_ov042_0208fddc kind:function(arm,size=0x14) addr:0x0208fddc
-func_ov042_0208fdf0 kind:function(arm,size=0x3c) addr:0x0208fdf0
-func_ov042_0208fe2c kind:function(arm,size=0x4c) addr:0x0208fe2c
-func_ov042_0208fe78 kind:function(arm,size=0x68) addr:0x0208fe78
-func_ov042_0208fee0 kind:function(arm,size=0x24) addr:0x0208fee0
-func_ov042_0208ff04 kind:function(arm,size=0x14) addr:0x0208ff04
-func_ov042_0208ff18 kind:function(arm,size=0x14) addr:0x0208ff18
-func_ov042_0208ff2c kind:function(arm,size=0x30) addr:0x0208ff2c
-func_ov042_0208ff5c kind:function(arm,size=0x24) addr:0x0208ff5c
-func_ov042_0208ff80 kind:function(arm,size=0x4c) addr:0x0208ff80
-func_ov042_0208ffcc kind:function(arm,size=0x3c) addr:0x0208ffcc
-func_ov042_02090008 kind:function(arm,size=0xe0) addr:0x02090008
-func_ov042_020900e8 kind:function(arm,size=0xb0) addr:0x020900e8
-func_ov042_02090198 kind:function(arm,size=0x20) addr:0x02090198
-func_ov042_020901b8 kind:function(arm,size=0x9c) addr:0x020901b8
-func_ov042_02090254 kind:function(arm,size=0x4c) addr:0x02090254
+MenuBadge_DestroyDragTasks kind:function(arm,size=0x64) addr:0x0208d7c8
+MenuBadge_UpdateCursorBadge kind:function(arm,size=0xc8) addr:0x0208d82c
+MenuBadge_UpdateButtonInput kind:function(arm,size=0x560) addr:0x0208d8f4
+MenuBadge_StageFadeIn kind:function(arm,size=0x6c) addr:0x0208de54
+MenuBadge_StageOpenHelp kind:function(arm,size=0xbc) addr:0x0208dec0
+MenuBadge_StageMain kind:function(arm,size=0x784) addr:0x0208df7c
+MenuBadge_StageErrorMessage kind:function(arm,size=0x7c) addr:0x0208e700
+MenuBadge_ClearSoldSlot kind:function(arm,size=0x60) addr:0x0208e77c
+MenuBadge_SellBadge kind:function(arm,size=0x2d8) addr:0x0208e7dc
+MenuBadge_StageBeginSell kind:function(arm,size=0x120) addr:0x0208eab4
+MenuBadge_StageSellConfirm kind:function(arm,size=0x3d8) addr:0x0208ebd4
+MenuBadge_StageCloseSellWindow kind:function(arm,size=0x88) addr:0x0208efac
+MenuBadge_StageSortWindow kind:function(arm,size=0x240) addr:0x0208f034
+MenuBadge_StageCloseSortWindow kind:function(arm,size=0x70) addr:0x0208f274
+MenuBadge_HelpPrevPage kind:function(arm,size=0x48) addr:0x0208f2e4
+MenuBadge_HelpNextPage kind:function(arm,size=0x48) addr:0x0208f32c
+MenuBadge_ExitHelp kind:function(arm,size=0x2c) addr:0x0208f374
+MenuBadge_StageHelp kind:function(arm,size=0xec) addr:0x0208f3a0
+MenuBadge_StageCloseHelp kind:function(arm,size=0x9c) addr:0x0208f48c
+MenuBadge_StageFadeOut kind:function(arm,size=0x28) addr:0x0208f528
+MenuBadge_Init kind:function(arm,size=0x14c) addr:0x0208f550
+MenuBadge_Update kind:function(arm,size=0x144) addr:0x0208f69c
+MenuBadge_Destroy kind:function(arm,size=0x84) addr:0x0208f7e0
+ProcessOverlay_MenuBadge kind:function(arm,size=0x40) addr:0x0208f864
+MenuBadge_InitDisplay kind:function(arm,size=0x434) addr:0x0208f8a4
+MenuBadge_VBlank kind:function(arm,size=0xe8) addr:0x0208fcd8
+MenuBadge_RegisterVBlank kind:function(arm,size=0x1c) addr:0x0208fdc0
+MenuBadge_DeregisterVBlank kind:function(arm,size=0x14) addr:0x0208fddc
+MenuBadge_IsPointInRect kind:function(arm,size=0x3c) addr:0x0208fdf0
+MenuBadge_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x0208fe2c
+MenuBadge_SetSpriteFrameFromPack kind:function(arm,size=0x68) addr:0x0208fe78
+MenuBadge_IsSlotMastered kind:function(arm,size=0x24) addr:0x0208fee0
+MenuBadge_CalcTotalPP kind:function(arm,size=0x14) addr:0x0208ff04
+MenuBadge_GetLevelPP kind:function(arm,size=0x14) addr:0x0208ff18
+MenuBadge_GetNextLevelPP kind:function(arm,size=0x30) addr:0x0208ff2c
+MenuBadge_LoadPinData kind:function(arm,size=0x24) addr:0x0208ff5c
+MenuBadge_GetFreePaletteSlot kind:function(arm,size=0x4c) addr:0x0208ff80
+MenuBadge_CompareByPinId kind:function(arm,size=0x3c) addr:0x0208ffcc
+MenuBadge_CompareByPsych kind:function(arm,size=0xe0) addr:0x02090008
+MenuBadge_SortList kind:function(arm,size=0xb0) addr:0x020900e8
+MenuBadge_CalcSellPrice kind:function(arm,size=0x20) addr:0x02090198
+MenuBadge_ClampMoney kind:function(arm,size=0x9c) addr:0x020901b8
+MenuBadge_GetMoneyCapLevel kind:function(arm,size=0x4c) addr:0x02090254
 func_ov042_020902a0 kind:function(arm,size=0x20) addr:0x020902a0
-func_ov042_020902c0 kind:function(arm,size=0x27c) addr:0x020902c0
-func_ov042_0209053c kind:function(arm,size=0x20) addr:0x0209053c
+MenuBadge_CanEquipToDeck kind:function(arm,size=0x27c) addr:0x020902c0
+MenuBadge_GetDeckSlotCount kind:function(arm,size=0x20) addr:0x0209053c
 func_ov042_0209055c kind:function(arm,size=0x14) addr:0x0209055c
-func_ov042_02090570 kind:function(arm,size=0xbc) addr:0x02090570
-func_ov042_0209062c kind:function(arm,size=0x7a0) addr:0x0209062c
-func_ov042_02090dcc kind:function(arm,size=0x1f4) addr:0x02090dcc
-func_ov042_02090fc0 kind:function(arm,size=0x448) addr:0x02090fc0
-func_ov042_02091408 kind:function(arm,size=0x10c) addr:0x02091408
-func_ov042_02091514 kind:function(arm,size=0x178) addr:0x02091514
-func_ov042_0209168c kind:function(arm,size=0xb8) addr:0x0209168c
-func_ov042_02091744 kind:function(arm,size=0xa8) addr:0x02091744
-func_ov042_020917ec kind:function(arm,size=0x60) addr:0x020917ec
-func_ov042_0209184c kind:function(arm,size=0x60) addr:0x0209184c
-func_ov042_020918ac kind:function(arm,size=0xa8) addr:0x020918ac
-func_ov042_02091954 kind:function(arm,size=0x60) addr:0x02091954
-func_ov042_020919b4 kind:function(arm,size=0xb8) addr:0x020919b4
-func_ov042_02091a6c kind:function(arm,size=0x60) addr:0x02091a6c
-func_ov042_02091acc kind:function(arm,size=0x20) addr:0x02091acc
-func_ov042_02091aec kind:function(arm,size=0xa8) addr:0x02091aec
-func_ov042_02091b94 kind:function(arm,size=0xdc) addr:0x02091b94
-func_ov042_02091c70 kind:function(arm,size=0xa8) addr:0x02091c70
-func_ov042_02091d18 kind:function(arm,size=0xe4) addr:0x02091d18
-func_ov042_02091dfc kind:function(arm,size=0xa8) addr:0x02091dfc
-func_ov042_02091ea4 kind:function(arm,size=0x200) addr:0x02091ea4
-func_ov042_020920a4 kind:function(arm,size=0xac) addr:0x020920a4
-func_ov042_02092150 kind:function(arm,size=0x88) addr:0x02092150
-func_ov042_020921d8 kind:function(arm,size=0x38) addr:0x020921d8
-func_ov042_02092210 kind:function(arm,size=0x48) addr:0x02092210
-func_ov042_02092258 kind:function(arm,size=0x3c) addr:0x02092258
-func_ov042_02092294 kind:function(arm,size=0x24) addr:0x02092294
-func_ov042_020922b8 kind:function(arm,size=0x140) addr:0x020922b8
-func_ov042_020923f8 kind:function(arm,size=0x4) addr:0x020923f8
-func_ov042_020923fc kind:function(arm,size=0x78) addr:0x020923fc
+MenuBadge_CountUnmasteredBadges kind:function(arm,size=0xbc) addr:0x02090570
+MenuBadge_LoadFromSave kind:function(arm,size=0x7a0) addr:0x0209062c
+MenuBadge_InitBadgeData kind:function(arm,size=0x1f4) addr:0x02090dcc
+MenuBadge_WriteBackToSave kind:function(arm,size=0x448) addr:0x02090fc0
+MenuBadge_GetSlotAtPoint kind:function(arm,size=0x10c) addr:0x02091408
+MenuBadge_GetDropTargetAtPoint kind:function(arm,size=0x178) addr:0x02091514
+MenuBadge_GetButtonAtPoint kind:function(arm,size=0xb8) addr:0x0209168c
+MenuBadge_GetListTabAtPoint kind:function(arm,size=0xa8) addr:0x02091744
+MenuBadge_IsPointOnScrollBar kind:function(arm,size=0x60) addr:0x020917ec
+MenuBadge_IsPointOnScrollKnob kind:function(arm,size=0x60) addr:0x0209184c
+MenuBadge_GetScrollArrowAtPoint kind:function(arm,size=0xa8) addr:0x020918ac
+MenuBadge_IsPointOnSellBox kind:function(arm,size=0x60) addr:0x02091954
+MenuBadge_GetTabAtPoint kind:function(arm,size=0xb8) addr:0x020919b4
+MenuBadge_CanDragSlot kind:function(arm,size=0x60) addr:0x02091a6c
+MenuBadge_CanDropOnSlot kind:function(arm,size=0x20) addr:0x02091acc
+MenuBadge_GetSellButtonAtPoint kind:function(arm,size=0xa8) addr:0x02091aec
+MenuBadge_GetSortButtonAtPoint kind:function(arm,size=0xdc) addr:0x02091b94
+MenuBadge_GetSellCountArrowAtPoint kind:function(arm,size=0xa8) addr:0x02091c70
+MenuBadge_GetHelpButtonAtPoint kind:function(arm,size=0xe4) addr:0x02091d18
+MenuBadge_GetDeckTabAtPoint kind:function(arm,size=0xa8) addr:0x02091dfc
+MenuBadge_LoadBgResource kind:function(arm,size=0x200) addr:0x02091ea4
+MenuBadge_LoadBgScreen kind:function(arm,size=0xac) addr:0x020920a4
+MenuBadge_ReleaseBgResource kind:function(arm,size=0x88) addr:0x02092150
+MenuBadge_ReleaseBgScreen kind:function(arm,size=0x38) addr:0x020921d8
+MenuBadge_ReloadBgResource kind:function(arm,size=0x48) addr:0x02092210
+MenuBadge_ReloadBgScreen kind:function(arm,size=0x3c) addr:0x02092258
+MenuBadge_ClearBgResource kind:function(arm,size=0x24) addr:0x02092294
+MenuBadge_LoadBackgrounds kind:function(arm,size=0x140) addr:0x020922b8
+MenuBadge_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x020923f8
+MenuBadge_ReleaseBackgrounds kind:function(arm,size=0x78) addr:0x020923fc
 MenuBadge_icon_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02092474
 MenuBadge_icon_Load kind:function(arm,size=0xcc) addr:0x02092510
 MenuBadge_icon_Init kind:function(arm,size=0x28) addr:0x020925dc
@@ -537,19 +537,19 @@ MenuBadge_window2_Render kind:function(arm,size=0x20) addr:0x02096714 local
 MenuBadge_window2_Release kind:function(arm,size=0x14) addr:0x02096734 local
 MenuBadge_window2_RunTask kind:function(arm,size=0x48) addr:0x02096748 local
 MenuBadge_window2_CreateTask kind:function(arm,size=0x34) addr:0x02096790
-func_ov042_020967c4 kind:function(arm,size=0x50) addr:0x020967c4
-func_ov042_02096814 kind:function(arm,size=0x268) addr:0x02096814
-func_ov042_02096a7c kind:function(arm,size=0x1c0) addr:0x02096a7c
-func_ov042_02096c3c kind:function(arm,size=0xcc) addr:0x02096c3c
-func_ov042_02096d08 kind:function(arm,size=0xd8) addr:0x02096d08
-func_ov042_02096de0 kind:function(arm,size=0x100) addr:0x02096de0
-func_ov042_02096ee0 kind:function(arm,size=0x130) addr:0x02096ee0
-func_ov042_02097010 kind:function(arm,size=0x28) addr:0x02097010
-func_ov042_02097038 kind:function(arm,size=0x68) addr:0x02097038
-func_ov042_020970a0 kind:function(arm,size=0x8) addr:0x020970a0
-func_ov042_020970a8 kind:function(arm,size=0x30) addr:0x020970a8
-func_ov042_020970d8 kind:function(arm,size=0x48) addr:0x020970d8
-func_ov042_02097120 kind:function(arm,size=0x34) addr:0x02097120
+MenuBadge_textScr_InitFonts kind:function(arm,size=0x50) addr:0x020967c4 local
+MenuBadge_textScr_DrawSellConfirm kind:function(arm,size=0x268) addr:0x02096814 local
+MenuBadge_textScr_DrawArrange kind:function(arm,size=0x1c0) addr:0x02096a7c local
+MenuBadge_textScr_DrawCannotSell kind:function(arm,size=0xcc) addr:0x02096c3c local
+MenuBadge_textScr_DrawClassLimit kind:function(arm,size=0xd8) addr:0x02096d08 local
+MenuBadge_textScr_DrawTooManyPins kind:function(arm,size=0x100) addr:0x02096de0 local
+MenuBadge_textScr_DrawWindow kind:function(arm,size=0x130) addr:0x02096ee0 local
+MenuBadge_textScr_Init kind:function(arm,size=0x28) addr:0x02097010 local
+MenuBadge_textScr_Update kind:function(arm,size=0x68) addr:0x02097038 local
+MenuBadge_textScr_Render kind:function(arm,size=0x8) addr:0x020970a0 local
+MenuBadge_textScr_Destroy kind:function(arm,size=0x30) addr:0x020970a8 local
+MenuBadge_textScr_RunTask kind:function(arm,size=0x48) addr:0x020970d8 local
+MenuBadge_textScr_CreateTask kind:function(arm,size=0x34) addr:0x02097120
 MenuBadge_slotCover_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02097154 local
 MenuBadge_slotCover_Load kind:function(arm,size=0xb0) addr:0x020971f0 local
 MenuBadge_slotCover_Init kind:function(arm,size=0x20) addr:0x020972a0 local
@@ -591,31 +591,31 @@ MenuBadge_bdgU_Render kind:function(arm,size=0x24) addr:0x020980bc
 MenuBadge_bdgU_Release kind:function(arm,size=0x18) addr:0x020980e0
 MenuBadge_bdgU_RunTask kind:function(arm,size=0x48) addr:0x020980f8
 MenuBadge_bdgU_CreateTask kind:function(arm,size=0x58) addr:0x02098140
-func_ov042_02098198 kind:function(arm,size=0x14) addr:0x02098198
-func_ov042_020981ac kind:function(arm,size=0x14) addr:0x020981ac
-func_ov042_020981c0 kind:function(arm,size=0x9c) addr:0x020981c0
-func_ov042_0209825c kind:function(arm,size=0x50) addr:0x0209825c
-func_ov042_020982ac kind:function(arm,size=0x48) addr:0x020982ac
-func_ov042_020982f4 kind:function(arm,size=0x98) addr:0x020982f4
-func_ov042_0209838c kind:function(arm,size=0xd8) addr:0x0209838c
-func_ov042_02098464 kind:function(arm,size=0xf0) addr:0x02098464
-func_ov042_02098554 kind:function(arm,size=0xd4) addr:0x02098554
-func_ov042_02098628 kind:function(arm,size=0x18c) addr:0x02098628
-func_ov042_020987b4 kind:function(arm,size=0x58) addr:0x020987b4
-func_ov042_0209880c kind:function(arm,size=0x180) addr:0x0209880c
-func_ov042_0209898c kind:function(arm,size=0x90) addr:0x0209898c
-func_ov042_02098a1c kind:function(arm,size=0x118) addr:0x02098a1c
-func_ov042_02098b34 kind:function(arm,size=0x118) addr:0x02098b34
-func_ov042_02098c4c kind:function(arm,size=0xa4) addr:0x02098c4c
-func_ov042_02098cf0 kind:function(arm,size=0xd8) addr:0x02098cf0
-func_ov042_02098dc8 kind:function(arm,size=0x1b8) addr:0x02098dc8
-func_ov042_02098f80 kind:function(arm,size=0x1b0) addr:0x02098f80
-func_ov042_02099130 kind:function(arm,size=0x28) addr:0x02099130
-func_ov042_02099158 kind:function(arm,size=0x80) addr:0x02099158
-func_ov042_020991d8 kind:function(arm,size=0x8) addr:0x020991d8
-func_ov042_020991e0 kind:function(arm,size=0x30) addr:0x020991e0
-func_ov042_02099210 kind:function(arm,size=0x48) addr:0x02099210
-MenuBadge_brdLogoU_CreateTask kind:function(arm,size=0x34) addr:0x02099258
+MenuBadge_textScrU_CalcLevelAttack kind:function(arm,size=0x14) addr:0x02098198 local
+MenuBadge_textScrU_CalcLevelTiming kind:function(arm,size=0x14) addr:0x020981ac local
+MenuBadge_textScrU_FramesToSeconds kind:function(arm,size=0x9c) addr:0x020981c0 local
+MenuBadge_textScrU_InitFonts kind:function(arm,size=0x50) addr:0x0209825c local
+MenuBadge_textScrU_DrawName kind:function(arm,size=0x48) addr:0x020982ac local
+MenuBadge_textScrU_DrawBrand kind:function(arm,size=0x98) addr:0x020982f4 local
+MenuBadge_textScrU_DrawLevel kind:function(arm,size=0xd8) addr:0x0209838c local
+MenuBadge_textScrU_DrawPsych kind:function(arm,size=0xf0) addr:0x02098464 local
+MenuBadge_textScrU_DrawNextLevelPP kind:function(arm,size=0xd4) addr:0x02098554 local
+MenuBadge_textScrU_DrawAttack kind:function(arm,size=0x18c) addr:0x02098628 local
+MenuBadge_textScrU_DrawClass kind:function(arm,size=0x58) addr:0x020987b4 local
+MenuBadge_textScrU_DrawDuration kind:function(arm,size=0x180) addr:0x0209880c local
+MenuBadge_textScrU_DrawSellPrice kind:function(arm,size=0x90) addr:0x0209898c local
+MenuBadge_textScrU_DrawBootTime kind:function(arm,size=0x118) addr:0x02098a1c local
+MenuBadge_textScrU_DrawRebootTime kind:function(arm,size=0x118) addr:0x02098b34 local
+MenuBadge_textScrU_DrawInputType kind:function(arm,size=0xa4) addr:0x02098c4c local
+MenuBadge_textScrU_DrawInfoTab kind:function(arm,size=0xd8) addr:0x02098cf0 local
+MenuBadge_textScrU_DrawInfoPage kind:function(arm,size=0x1b8) addr:0x02098dc8 local
+MenuBadge_textScrU_DrawHelpPage kind:function(arm,size=0x1b0) addr:0x02098f80 local
+MenuBadge_textScrU_Init kind:function(arm,size=0x28) addr:0x02099130 local
+MenuBadge_textScrU_Update kind:function(arm,size=0x80) addr:0x02099158 local
+MenuBadge_textScrU_Render kind:function(arm,size=0x8) addr:0x020991d8 local
+MenuBadge_textScrU_Destroy kind:function(arm,size=0x30) addr:0x020991e0 local
+MenuBadge_textScrU_RunTask kind:function(arm,size=0x48) addr:0x02099210 local
+MenuBadge_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x02099258
 MenuBadge_brdLogoU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209928c
 MenuBadge_brdLogoU_Load kind:function(arm,size=0xc4) addr:0x02099328
 MenuBadge_brdLogoU_Init kind:function(arm,size=0x20) addr:0x020993ec
@@ -623,7 +623,7 @@ MenuBadge_brdLogoU_Update kind:function(arm,size=0x14) addr:0x0209940c
 MenuBadge_brdLogoU_Render kind:function(arm,size=0x20) addr:0x02099420
 MenuBadge_brdLogoU_Release kind:function(arm,size=0x14) addr:0x02099440
 MenuBadge_brdLogoU_RunTask kind:function(arm,size=0x48) addr:0x02099454
-func_ov042_0209949c kind:function(arm,size=0x4c) addr:0x0209949c
+MenuBadge_brdLogoU_CreateTask kind:function(arm,size=0x4c) addr:0x0209949c
 MenuBadge_numBdgIdU_UpdateDigits kind:function(arm,size=0x10c) addr:0x020994e8
 MenuBadge_numBdgIdU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020995f4
 MenuBadge_numBdgIdU_Load kind:function(arm,size=0x1c8) addr:0x02099690
@@ -1892,16 +1892,9 @@ MenuTop_iconU_Anim kind:data(any) addr:0x020c4a40 local
 Tsk_MenuTop_helpCurU kind:data(any) addr:0x020c4a6c local
 @1352 kind:data(any) addr:0x020c4a78 local
 MenuTop_helpCurU_Anim kind:data(any) addr:0x020c4a88 local
-data_ov042_020c4ab4 kind:data(any) addr:0x020c4ab4
-data_ov042_020c4ac0 kind:data(any) addr:0x020c4ac0
-data_ov043_020c82e4 kind:data(any) addr:0x020c4ad0
-data_ov042_020c4ae8 kind:data(any) addr:0x020c4ae8
-data_ov042_020c4b00 kind:data(any) addr:0x020c4b00
-data_ov042_020c4b08 kind:data(any) addr:0x020c4b08
-data_ov042_020c4b20 kind:data(any) addr:0x020c4b20
-data_ov042_020c4b28 kind:data(any) addr:0x020c4b28
-data_ov043_020c834c kind:data(any) addr:0x020c4b30
-data_ov042_020c4b32 kind:data(any) addr:0x020c4b32
+OvlProc_MenuBadge kind:data(any) addr:0x020c4ab4
+MenuBadge_BinIdentifiers kind:data(any) addr:0x020c4ac0
+MenuBadge_SlotPositions kind:data(any) addr:0x020c4b30
 data_ov042_020c4ba8 kind:data(any) addr:0x020c4ba8
 data_ov042_020c4c40 kind:data(any) addr:0x020c4c40
 data_ov042_020c4c50 kind:data(any) addr:0x020c4c50
@@ -1969,7 +1962,7 @@ Tsk_MenuBadge_window2 kind:data(any) addr:0x020c53d0 local
 @1352 kind:data(any) addr:0x020c53dc local
 MenuBadge_window2_Anim kind:data(any) addr:0x020c53ec local
 data_ov042_020c5418 kind:data(any) addr:0x020c5418
-data_ov042_020c5420 kind:data(any) addr:0x020c5420
+Tsk_MenuBadge_textScr kind:data(any) addr:0x020c5420
 data_ov042_020c542c kind:data(any) addr:0x020c542c
 data_ov042_020c543c kind:data(any) addr:0x020c543c
 data_ov042_020c5450 kind:data(any) addr:0x020c5450
@@ -1993,7 +1986,7 @@ Tsk_MenuBadge_bdgU kind:data(any) addr:0x020c55f4
 data_ov042_020c5600 kind:data(any) addr:0x020c5600
 MenuBadge_bdgU_Anim kind:data(any) addr:0x020c5610
 data_ov042_020c563c kind:data(any) addr:0x020c563c
-data_ov042_020c5654 kind:data(any) addr:0x020c5654
+Tsk_MenuBadge_textScrU kind:data(any) addr:0x020c5654
 data_ov042_020c566c kind:data(any) addr:0x020c566c
 data_ov042_020c567c kind:data(any) addr:0x020c567c
 Tsk_MenuBadge_brdLogoU kind:data(any) addr:0x020c56b8
@@ -2429,7 +2422,7 @@ data_ov042_020c7fdc kind:data(any) addr:0x020c7fdc
 data_ov042_020c7ffc kind:data(any) addr:0x020c7ffc
 data_ov042_020c801c kind:data(any) addr:0x020c801c
 data_ov042_020c803c kind:data(any) addr:0x020c803c
-data_ov042_020c805c kind:data(any) addr:0x020c805c
+MenuBadge_EmptyEntry kind:data(any) addr:0x020c805c
 data_ov042_020c80a0 kind:data(any) addr:0x020c80a0
 data_ov042_020c80b4 kind:data(any) addr:0x020c80b4
 data_ov042_020c80c0 kind:data(any) addr:0x020c80c0

@@ -1,472 +1,371 @@
-// #include "Interface/Menu/MenuBadge.h"
+#include "Engine/Core/Memory.h"
+#include "Interface/Menu/MenuBadge.h"
+#include "Util/SysFont.h"
 
-// ? OS_WaitForever();                                 /* extern */
-// ? func_ov031_0210a5fc(?*, u16*, u32, u32, u32, u32, u32, u32, s32); /* extern */
-// ? func_ov031_0210aa94(s32);                         /* extern */
-// ? func_ov031_0210aabc(s32);                         /* extern */
-// ? func_ov031_0210ab28(s32, s16, s16);               /* extern */
-// ? func_ov031_0210ab34(s32, ?);                      /* extern */
-// ? func_ov031_0210ab3c(void**, ?, ?);                /* extern */
-// ? func_ov031_0210ab48(void*, ?, s32);               /* extern */
-// ? func_ov031_0210ab54(s32, ?, ?);                   /* extern */
-// ? func_ov031_0210b630(void*, u16);                  /* extern */
-// u16* func_ov031_0210b698(void*, s32, s32);          /* extern */
-// ? func_ov031_0210bde8(void**, ?*, s32, s32, s32);   /* extern */
-// ? func_ov031_0210be18(void*, s32, s32, ?);          /* extern */
-// s32 func_ov043_0208fac8(void*, u16);                /* extern */
-// u32 func_ov043_0208fdd0(s32, s16, u8);              /* extern */
-// ? func_ov043_02092184(void*, ?, ?, ?, s32, s32);    /* extern */
-// s32 func_ov043_02097348(void* arg1, void* arg2);    /* static */
-// s32 func_ov043_02097370(void* arg1);                /* static */
-// s32 func_ov043_020973d8();                          /* static */
-// s32 func_ov043_020973e0(void* arg1);                /* static */
-// void func_ov043_02097410(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3); /* static */
-// extern const MenuBadgePoint data_ov043_020c8c48[2] = {
-//     {-0x44, -0x30},
-//     {   -1,     0},
-// };
-// static s8 data_ov043_020cbd94[0x18] = {
-//     0x54,
-//     0x73,
-//     0x6B,
-//     0x5F,
-//     0x4D,
-//     0x65,
-//     0x6E,
-//     0x75,
-//     0x42,
-//     0x61,
-//     0x64,
-//     0x67,
-//     0x65,
-//     0x5F,
-//     0x74,
-//     0x65,
-//     0x78,
-//     0x74,
-//     0x53,
-//     0x63,
-//     0x72,
-//     0,
-//     0,
-//     0,
-// };
-// static TaskHandle data_ov043_020c8c50 = {
-//     data_ov043_020cbd94,
-//     ((s32 (*)(TaskPool*, Task*, void*, s32)) func_ov043_02097410),
-//     0x270,
-// }; /* const */
-// static ? data_ov043_020c8c5c;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8c6c;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8c80;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8c94;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8ca8;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8cbc;                       /* unable to generate initializer: unknown type; const */
-// static ? data_ov043_020c8cd0;                       /* unable to generate initializer: unknown type; const */
+typedef struct {
+    /* 0x000 */ MenuBadgeObject* menuBadge;
+    /* 0x004 */ SysFont          fonts[5];
+} MenuBadge_textScr; // Size: 0x270
 
-// void func_ov043_02096818(void** arg0) {
-//     s32 var_r7;
-//     s32 var_r8;
+typedef struct {
+    /* 0x0 */ s32              dataType;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
+} MenuBadge_textScr_Args;
 
-// var_r7 = 0;
-// var_r8 = arg0 + 4;
-// do {
-//     func_ov031_0210aa94(var_r8);
-//     func_ov031_0210ab34(var_r8, 0xE);
-//     func_ov031_0210ab54(var_r8, 1, 0);
-//     var_r7 += 1;
-//     var_r8 += 0x7C;
-// } while (var_r7 < 5);
-// }
+static s32 MenuBadge_textScr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-// void func_ov043_02096868(void** arg0, s32 arg1, s32 arg2, u32 arg3) {
-//     ? sp1C;
-//     s32 sp18;
-//     s32 sp14;
-//     s32 temp_r0;
-//     s32 temp_r0_2;
-//     s32 temp_r0_3;
-//     s32 temp_r0_4;
-//     s32 temp_r1;
-//     s32 temp_r1_2;
-//     s32 temp_r1_3;
-//     s32 temp_r1_4;
-//     s32 temp_r7;
-//     u16* var_r4;
+static void MenuBadge_textScr_InitFonts(MenuBadge_textScr* textScr) {
+    for (s32 i = 0; i < 5; i++) {
+        SysFont_Init(&textScr->fonts[i]);
+        SysFont_SetColor(&textScr->fonts[i], 14);
+        SysFont_SetSpacing(&textScr->fonts[i], TRUE, 0);
+    }
+}
 
-// sp14 = arg1;
-// sp18 = arg2;
-// if (arg3 < 0x3E8U) {
-//     var_r4 = func_ov031_0210b698(arg0 + 0x80, 0x3413);
-//     func_ov031_0210a5fc(&sp1C, var_r4, arg3);
-// } else if (arg3 < 0xF4240U) {
-//     temp_r1 = arg3 - (0x3E8 * ((u32) MULTU_HI(arg3, 0x10624DD3) >> 6));
-//     temp_r0 = temp_r1 - (0x64 * ((u32) MULTU_HI(temp_r1, 0x51EB851F) >> 5));
-//     var_r4 = func_ov031_0210b698(arg0 + 0x80, 0x3414, MULTU_HI(temp_r0, 0xCCCCCCCD) / 3435973837);
-//     func_ov031_0210a5fc(&sp1C, var_r4, (u32) MULTU_HI(arg3, 0x10624DD3) >> 6, (u32) MULTU_HI(temp_r1, 0x51EB851F) >> 5,
-//     (u32) MULTU_HI(temp_r0, 0xCCCCCCCD) >> 3, temp_r0 - (0xA * ((u32) MULTU_HI(temp_r0, 0xCCCCCCCD) >> 3)));
-// } else {
-//     temp_r0_2 = arg3 - (0xF4240 * ((u32) MULTU_HI(arg3, 0x431BDE83) >> 0x12));
-//     temp_r1_2 = MULTU_HI(temp_r0_2, 0x4F8B588F);
-//     temp_r7 = MULTU_HI(temp_r0_2, 0x4F8B588F);
-//     temp_r1_3 = temp_r0_2 - (0x186A0 * ((u32) (temp_r1_2 + ((u32) (temp_r0_2 - temp_r1_2) >> 1)) >> 0x10));
-//     temp_r0_3 = temp_r1_3 - (0x2710 * ((u32) MULTU_HI(temp_r1_3, 0xD1B71759) >> 0xD));
-//     temp_r1_4 = temp_r0_3 - (0x3E8 * ((u32) MULTU_HI(temp_r0_3, 0x10624DD3) >> 6));
-//     temp_r0_4 = temp_r1_4 - (0x64 * ((u32) MULTU_HI(temp_r1_4, 0x51EB851F) >> 5));
-//     var_r4 = func_ov031_0210b698(arg0 + 0x80, 0x3415, MULTU_HI(temp_r0_4, 0xCCCCCCCD) / 3435973837);
-//     func_ov031_0210a5fc(&sp1C, var_r4, (u32) MULTU_HI(arg3, 0x431BDE83) >> 0x12, (u32) (temp_r7 + ((u32) (temp_r0_2 -
-//     temp_r7) >> 1)) >> 0x10, (u32) MULTU_HI(temp_r1_3, 0xD1B71759) >> 0xD, (u32) MULTU_HI(temp_r0_3, 0x10624DD3) >> 6, (u32)
-//     MULTU_HI(temp_r1_4, 0x51EB851F) >> 5, (u32) MULTU_HI(temp_r0_4, 0xCCCCCCCD) >> 3, temp_r0_4 - (0xA * ((u32)
-//     MULTU_HI(temp_r0_4, 0xCCCCCCCD) >> 3)));
-// }
-// func_ov031_0210ab3c(arg0 + 0x80, 0, 0x100);
-// func_ov031_0210bde8(arg0 + 0x80, &sp1C, sp14 + 4, sp18 + 4, 0);
-// Mem_Free(&gDebugHeap, var_r4);
-// }
+#ifdef REGION_USA
+static void MenuBadge_textScr_DrawPrice(MenuBadge_textScr* textScr, u16* map, u16* charData, u32 price) {
+    SysCode  buf[60];
+    SysCode* fmt;
 
-// void func_ov043_02096acc(void** arg0, s32 arg1, s32 arg2) {
-//     ? sp1E;
-//     u16 sp8;
-//     u16 sp6;
-//     u16 sp4;
-//     ?* var_r4;
-//     s32 var_r2;
-//     s32* var_r3;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 temp_r4;
-//     u16 temp_r5;
-//     u16 var_r7;
-//     u32 temp_r4_2;
-//     void* temp_r11;
+    if (price < 1000) {
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[1], SYSMSG_SHOP_PRICE_FMT);
+        SysFont_Format(buf, fmt, price);
+    } else if (price < 1000000) {
+        u32 remainder = price;
+        remainder %= 1000;
+        u32 hundreds = remainder / 100;
+        remainder %= 100;
+        u32 tens = remainder / 10;
+        remainder %= 10;
 
-// temp_r11 = *arg0;
-// sp4 = data_ov043_020c8c48.unk0;
-// sp6 = data_ov043_020c8c48.unk2;
-// var_r4 = &data_ov043_020c8ca8;
-// var_r3 = &spA[0];
-// sp8 = data_ov043_020c8c48.unk4;
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r4->unk0;
-//     temp_r0 = var_r4->unk2;
-//     var_r4 += 4;
-//     var_r3->unk0 = temp_r1;
-//     var_r3->unk2 = temp_r0;
-//     var_r3 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r7 = 0;
-// do {
-//     func_ov031_0210ab28((var_r7 * 0x7C) + (s32) (arg0 + 4), (&spA[0])[var_r7].unk0, (&spA[0])[var_r7].unk2);
-//     var_r7 += 1;
-// } while ((u32) var_r7 < 5U);
-// temp_r4 = temp_r11->unkADD8;
-// temp_r4_2 = func_ov043_0208fdd0(temp_r11->unkADFC, temp_r11->unkAE00, temp_r11->unkADEC);
-// func_ov031_0210b630(arg0 + 4, (u16) (temp_r4 + 0x27C1));
-// func_ov031_0210ab3c(arg0 + 4, 0, 0x100);
-// func_ov031_0210ab48(arg0 + 4, 3, 0xFFFF);
-// func_ov031_0210be18(arg0 + 4, arg1 + 4, arg2 + 4, 0);
-// func_ov031_0210b630(arg0 + 0xFC, 0x3417U);
-// func_ov031_0210ab3c(arg0 + 0xFC, 0, 0x100);
-// func_ov031_0210be18(arg0 + 0xFC, arg1 + 4, arg2 + 4, 0);
-// if (func_ov043_0208fac8(temp_r11, temp_r11->unkAEEC) == 0) {
-//     func_ov043_02096868(arg0, arg1, arg2, temp_r4_2);
-//     return;
-// }
-// temp_r5 = temp_r11->unkAF10;
-// func_ov043_02096868(arg0, arg1, arg2, temp_r4_2 * temp_r5);
-// func_ov031_0210a5fc(&sp1E, &sp4, (u32) temp_r5);
-// func_ov031_0210ab3c(arg0 + 0x178, 0, 0x1E);
-// func_ov031_0210bde8(arg0 + 0x178, &sp1E, arg1 + 4, arg2 + 4, 0);
-// }
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[1], SYSMSG_SHOP_PRICE_THOUSANDS_FMT);
+        SysFont_Format(buf, fmt, price / 1000, hundreds, tens, remainder);
+    } else {
+        u32 thousands;
+        u32 hundreds;
+        u32 tens;
+        u32 remainder = price;
+        u32 hundredThousands;
+        u32 tenThousands;
 
-// void func_ov043_02096cac(void** arg0, s32 arg1, s32 arg2) {
-//     ?* var_r3;
-//     ?* var_r4;
-//     s32 var_r2;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 var_r7;
-//     void* temp_r11;
+        remainder %= 1000000;
+        hundredThousands = remainder / 100000;
+        remainder %= 100000;
+        tenThousands = remainder / 10000;
+        remainder %= 10000;
+        thousands = remainder / 1000;
+        remainder %= 1000;
+        hundreds = remainder / 100;
+        remainder %= 100;
+        tens = remainder / 10;
+        remainder %= 10;
 
-// temp_r11 = *arg0;
-// var_r4 = &data_ov043_020c8cbc;
-// var_r3 = &subroutine_arg0;
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r4->unk0;
-//     temp_r0 = var_r4->unk2;
-//     var_r4 += 4;
-//     var_r3->unk0 = temp_r1;
-//     var_r3->unk2 = temp_r0;
-//     var_r3 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r7 = 0;
-// do {
-//     func_ov031_0210ab28((var_r7 * 0x7C) + (s32) (arg0 + 4), (&subroutine_arg0)[var_r7].unk0,
-//     (&subroutine_arg0)[var_r7].unk2); var_r7 += 1;
-// } while ((u32) var_r7 < 5U);
-// func_ov031_0210b630(arg0 + 4, 0x3418U);
-// func_ov031_0210ab3c(arg0 + 4, 0, 0xE0);
-// func_ov031_0210ab48(arg0 + 4, 3, 0xFFFF);
-// func_ov031_0210be18(arg0 + 4, arg1 + 4, arg2 + 4, 0);
-// func_ov031_0210b630(arg0 + 0x80, (u16) (temp_r11->unkAF2B + 0x3419));
-// func_ov031_0210ab3c(arg0 + 0x80, 2, 0x88);
-// func_ov031_0210ab48(arg0 + 0x80, 3, 0xFFFF);
-// func_ov031_0210be18(arg0 + 0x80, arg1 + 4, arg2 + 4, 0);
-// func_ov031_0210b630(arg0 + 0xFC, (u16) (temp_r11->unkAF2C + 0x341B));
-// func_ov031_0210ab3c(arg0 + 0xFC, 2, 0x88);
-// func_ov031_0210ab48(arg0 + 0xFC, 3, 0xFFFF);
-// func_ov031_0210be18(arg0 + 0xFC, arg1 + 4, arg2 + 4, 0);
-// func_ov031_0210b630(arg0 + 0x178, 0x341DU);
-// func_ov031_0210ab3c(arg0 + 0x178, 2, 0x88);
-// func_ov031_0210ab48(arg0 + 0x178, 3, 0xFFFF);
-// func_ov031_0210be18(arg0 + 0x178, arg1 + 4, arg2 + 4, 0);
-// }
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[1], SYSMSG_SHOP_PRICE_MILLIONS_FMT);
+        SysFont_Format(buf, fmt, price / 1000000, hundredThousands, tenThousands, thousands, hundreds, tens, remainder);
+    }
 
-// void func_ov043_02096e6c(void** arg0, s32 arg1, s32 arg2) {
-//     ?* var_r3;
-//     ?* var_r4;
-//     s32 var_r2;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 var_r6;
+    SysFont_SetHAlign(&textScr->fonts[1], 0, 256);
+    SysFont_DrawToScreen(&textScr->fonts[1], buf, map + 2, charData + 2, 0);
+    Mem_Free(&gDebugHeap, fmt);
+}
+#endif
 
-// var_r4 = &data_ov043_020c8c94;
-// var_r3 = &subroutine_arg0;
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r4->unk0;
-//     temp_r0 = var_r4->unk2;
-//     var_r4 += 4;
-//     var_r3->unk0 = temp_r1;
-//     var_r3->unk2 = temp_r0;
-//     var_r3 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r6 = 0;
-// do {
-//     func_ov031_0210ab28((var_r6 * 0x7C) + (arg0 + 4), (&subroutine_arg0)[var_r6].unk0, (&subroutine_arg0)[var_r6].unk2);
-//     var_r6 += 1;
-// } while ((u32) var_r6 < 5U);
-// func_ov031_0210b630(arg0 + 4, 0x3402U);
-// func_ov031_0210ab3c(arg0 + 4, 0, 0x100);
-// func_ov031_0210ab48(arg0 + 4, 0, 0x50);
-// func_ov031_0210be18(arg0 + 4, arg1 + 4, arg2 + 4, 0);
-// }
+static void MenuBadge_textScr_DrawSellConfirm(MenuBadge_textScr* textScr, u16* map, u16* charData) {
+    MenuBadgeObject* menuBadge = textScr->menuBadge;
+#ifdef REGION_USA
+    SysCode buf[60];
+#else
+    SysCode buf[30];
+#endif
+    SysCode        countFmt[3]  = {SYSFONT_CODE_COLOR(12), SYSFONT_CODE_FMT_U32, SYSFONT_CODE_STR_END};
+    MenuBadgePoint positions[5] = {
+        {  0, 62},
+        {  0, 78},
+        {  0, 93},
+        {209, 77},
+        {  0,  0},
+    };
+    u16 pinId;
+    u32 price;
 
-// void func_ov043_02096f38(void** arg0, s32 arg1, s32 arg2, s32 arg3) {
-//     ?* var_r4;
-//     ?* var_r5;
-//     s32 var_r2;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 var_r7;
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
 
-// var_r5 = &data_ov043_020c8c6c;
-// var_r4 = &subroutine_arg0;
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r5->unk0;
-//     temp_r0 = var_r5->unk2;
-//     var_r5 += 4;
-//     var_r4->unk0 = temp_r1;
-//     var_r4->unk2 = temp_r0;
-//     var_r4 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r7 = 0;
-// do {
-//     func_ov031_0210ab28((var_r7 * 0x7C) + (arg0 + 4), (&subroutine_arg0)[var_r7].unk0, (&subroutine_arg0)[var_r7].unk2);
-//     var_r7 += 1;
-// } while ((u32) var_r7 < 5U);
-// func_ov031_0210b630(arg0 + 4, (u16) (arg3 + 0x3405));
-// func_ov031_0210ab3c(arg0 + 4, 0, 0x100);
-// func_ov031_0210ab48(arg0 + 4, 0, 0x50);
-// func_ov031_0210be18(arg0 + 4, arg1 + 4, arg2 + 4, 0);
-// }
+    pinId = menuBadge->cursorBadge.pinId;
+    price = MenuBadge_CalcSellPrice(menuBadge->cursorBadge.price, menuBadge->cursorBadge.priceGrowth,
+                                    menuBadge->cursorBadge.level);
 
-// void func_ov043_02097010(void** arg0, s32 arg1, s32 arg2) {
-//     ? sp18;
-//     ?* var_r4;
-//     s32 var_r2;
-//     s32* var_r3;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 var_r8;
-//     u16* var_r0;
-//     void* temp_r7;
+    SysFont_SetMsg(&textScr->fonts[0], pinId + SYSMSG_PIN_NAMES_START);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 256);
+    SysFont_SetVAlign(&textScr->fonts[0], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], map + 2, charData + 2, 0);
 
-// temp_r7 = *arg0;
-// var_r4 = &data_ov043_020c8c80;
-// var_r3 = &sp4[0];
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r4->unk0;
-//     temp_r0 = var_r4->unk2;
-//     var_r4 += 4;
-//     var_r3->unk0 = temp_r1;
-//     var_r3->unk2 = temp_r0;
-//     var_r3 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r8 = 0;
-// do {
-//     func_ov031_0210ab28((var_r8 * 0x7C) + (s32) (arg0 + 4), (&sp4[0])[var_r8].unk0, (&sp4[0])[var_r8].unk2);
-//     var_r8 += 1;
-// } while ((u32) var_r8 < 5U);
-// if (temp_r7->unkAF30 == 1) {
-//     var_r0 = func_ov031_0210b698(arg0 + 4, 0x3404);
-// } else {
-//     var_r0 = func_ov031_0210b698(arg0 + 4, 0x3403);
-// }
-// func_ov031_0210a5fc(&sp18, var_r0, (u32) temp_r7->unkAF30);
-// func_ov031_0210ab3c(arg0 + 4, 0, 0x100);
-// func_ov031_0210ab48(arg0 + 4, 0, 0x50);
-// func_ov031_0210bde8(arg0 + 4, &sp18, arg1 + 4, arg2 + 4, 0);
-// Mem_Free(&gDebugHeap, var_r0);
-// }
+    SysFont_SetMsg(&textScr->fonts[2], SYSMSG_PIN_SELL_CONFIRM);
+    SysFont_SetHAlign(&textScr->fonts[2], 0, 256);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[2], map + 2, charData + 2, 0);
 
-// void func_ov043_02097134(void** arg0, s32 arg1, s32 arg2) {
-//     ?* var_r3;
-//     ?* var_r4;
-//     s32 var_r2;
-//     u16 temp_r0;
-//     u16 temp_r1;
-//     u16 var_r6;
+#ifdef REGION_USA
+    if (MenuBadge_IsSlotMastered(menuBadge, menuBadge->dragSrc) == FALSE) {
+        MenuBadge_textScr_DrawPrice(textScr, map, charData, price);
+        return;
+    }
 
-// var_r4 = &data_ov043_020c8cd0;
-// var_r3 = &subroutine_arg0;
-// var_r2 = 5;
-// do {
-//     temp_r1 = var_r4->unk0;
-//     temp_r0 = var_r4->unk2;
-//     var_r4 += 4;
-//     var_r3->unk0 = temp_r1;
-//     var_r3->unk2 = temp_r0;
-//     var_r3 += 4;
-//     var_r2 -= 1;
-// } while (var_r2 != 0);
-// var_r6 = 0;
-// do {
-//     func_ov031_0210ab28((var_r6 * 0x7C) + (arg0 + 4), (&subroutine_arg0)[var_r6].unk0, (&subroutine_arg0)[var_r6].unk2);
-//     var_r6 += 1;
-// } while ((u32) var_r6 < 5U);
-// func_ov031_0210b630(arg0 + 4, 0x340AU);
-// func_ov031_0210ab3c(arg0 + 4, 0, 0x100);
-// func_ov031_0210ab48(arg0 + 4, 0, 0x50);
-// func_ov031_0210be18(arg0 + 4, arg1 + 4, arg2 + 4, 0);
-// }
+    u16 count = menuBadge->sellCount;
+    MenuBadge_textScr_DrawPrice(textScr, map, charData, price * count);
+#else
+    SysCode* fmt;
 
-// void func_ov043_02097200(void** arg0) {
-//     s32 temp_r6;
-//     s32 temp_r7;
-//     u16 temp_r0;
-//     void* temp_r5;
+    if (MenuBadge_IsSlotMastered(menuBadge, menuBadge->dragSrc) == FALSE) {
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[1], SYSMSG_SHOP_PRICE_FMT);
+        SysFont_SetHAlign(&textScr->fonts[1], 0, 256);
+        SysFont_Format(buf, fmt, price);
+        SysFont_DrawToScreen(&textScr->fonts[1], buf, map + 2, charData + 2, 0);
+        Mem_Free(&gDebugHeap, fmt);
+        return;
+    }
 
-// temp_r5 = *arg0;
-// temp_r6 = temp_r5->unkB234;
-// temp_r7 = temp_r5->unkB230;
-// if ((temp_r6 != 0) && (temp_r7 != 0)) {
+    u16 count = menuBadge->sellCount;
+    fmt       = SysFont_GetMsgBuf(&textScr->fonts[1], SYSMSG_SHOP_PRICE_FMT);
+    SysFont_SetHAlign(&textScr->fonts[1], 0, 256);
+    SysFont_Format(buf, fmt, price * count);
+    SysFont_DrawToScreen(&textScr->fonts[1], buf, map + 2, charData + 2, 0);
+    Mem_Free(&gDebugHeap, fmt);
+#endif
 
-// } else {
-//     OS_WaitForever();
-// }
-// temp_r0 = temp_r5->unkAF20;
-// switch (temp_r0) {
-//     default:
-//         return;
-//     case 2:
-//         func_ov043_02096acc(arg0, temp_r6, temp_r7);
-//         return;
-//     case 3:
-//         func_ov043_02096cac(arg0, temp_r6, temp_r7);
-//         return;
-//     case 4:
-//         func_ov043_02096e6c(arg0, temp_r6, temp_r7);
-//         return;
-//     case 5:
-//         func_ov043_02096f38(arg0, temp_r6, temp_r7, 0);
-//         return;
-//     case 6:
-//         func_ov043_02096f38(arg0, temp_r6, temp_r7, 1);
-//         return;
-//     case 7:
-//         func_ov043_02096f38(arg0, temp_r6, temp_r7, 2);
-//         return;
-//     case 8:
-//         func_ov043_02096f38(arg0, temp_r6, temp_r7, 3);
-//         return;
-//     case 9:
-//         func_ov043_02096f38(arg0, temp_r6, temp_r7, 4);
-//         return;
-//     case 10:
-//         func_ov043_02097010(arg0, temp_r6, temp_r7);
-//         return;
-//     case 11:
-//         func_ov043_02097134(arg0, temp_r6, temp_r7);
-//         return;
-//         return;
-// }
-// }
+    SysFont_Format(buf, countFmt, count);
+    SysFont_SetHAlign(&textScr->fonts[3], 0, 30);
+    SysFont_DrawToScreen(&textScr->fonts[3], buf, map + 2, charData + 2, 0);
+}
 
-// s32 func_ov043_02097348(void* arg1, void* arg2) {
-//     void** temp_r4;
+static void MenuBadge_textScr_DrawArrange(MenuBadge_textScr* textScr, u16* map, u16* charData) {
+    MenuBadgeObject* menuBadge    = textScr->menuBadge;
+    MenuBadgePoint   positions[5] = {
+        {16,  40},
+        {88,  67},
+        {88,  90},
+        {88, 119},
+        { 0,   0},
+    };
 
-// temp_r4 = arg1->unk18;
-// *temp_r4 = arg2->unk4;
-// func_ov043_02096818(temp_r4);
-// func_ov043_02097200(temp_r4);
-// return 1;
-// }
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
 
-// s32 func_ov043_02097370(void* arg1) {
-//     void* temp_r5;
-//     void** temp_r4;
+    SysFont_SetMsg(&textScr->fonts[0], SYSMSG_PIN_ARRANGE_TITLE);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 224);
+    SysFont_SetVAlign(&textScr->fonts[0], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], map + 2, charData + 2, 0);
 
-// temp_r4 = arg1->unk18;
-// temp_r5 = *temp_r4;
-// if (temp_r5->unkAEE8 & 0x100) {
-//     func_ov043_02092184(temp_r5 + 0xB220, 0, 1, 6, 0xF, 1);
-//     func_ov043_02097200(temp_r4);
-//     temp_r5->unkAEE8 = (u16) (temp_r5->unkAEE8 & ~0x100);
-// }
-// return 1;
-// }
+    SysFont_SetMsg(&textScr->fonts[1], menuBadge->autoArrangeBy[0] + SYSMSG_PIN_ARRANGE_BY_NUMBER);
+    SysFont_SetHAlign(&textScr->fonts[1], 2, 136);
+    SysFont_SetVAlign(&textScr->fonts[1], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[1], map + 2, charData + 2, 0);
 
-// s32 func_ov043_020973d8(void) {
-//     return 1;
-// }
+    SysFont_SetMsg(&textScr->fonts[2], menuBadge->autoArrangeBy[1] + SYSMSG_PIN_ARRANGE_BY_PSYCH);
+    SysFont_SetHAlign(&textScr->fonts[2], 2, 136);
+    SysFont_SetVAlign(&textScr->fonts[2], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[2], map + 2, charData + 2, 0);
 
-// s32 func_ov043_020973e0(void* arg1) {
-//     s32 var_r4;
-//     s32 var_r5;
+    SysFont_SetMsg(&textScr->fonts[3], SYSMSG_PIN_ALWAYS_ARRANGE);
+    SysFont_SetHAlign(&textScr->fonts[3], 2, 136);
+    SysFont_SetVAlign(&textScr->fonts[3], 3, SYSFONT_NO_LIMIT);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[3], map + 2, charData + 2, 0);
+}
 
-// var_r4 = 0;
-// var_r5 = arg1->unk18 + 4;
-// do {
-//     func_ov031_0210aabc(var_r5);
-//     var_r4 += 1;
-//     var_r5 += 0x7C;
-// } while (var_r4 < 5);
-// return 1;
-// }
+static void MenuBadge_textScr_DrawCannotSell(MenuBadge_textScr* textScr, u16* map, u16* charData) {
+    MenuBadgePoint positions[5] = {
+        {0, 56},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+    };
 
-// void func_ov043_02097410(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3) {
-//     subroutine_arg0.unk0 = data_ov043_020c8c5c.unk0;
-//     subroutine_arg0.unk4 = (s32) data_ov043_020c8c5c.unk4;
-//     subroutine_arg0.unk8 = (s32) data_ov043_020c8c5c.unk8;
-//     subroutine_arg0.unkC = (s32) data_ov043_020c8c5c.unkC;
-//     (&subroutine_arg0)[arg3](arg0, arg1, arg2);
-// }
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
 
-// void func_ov043_02097458(TaskPool* arg0, s32 arg1, s32 arg2) {
-//     s32 spC;
-//     s32 sp8;
+    SysFont_SetMsg(&textScr->fonts[0], SYSMSG_PIN_CANNOT_SELL);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 256);
+    SysFont_SetVAlign(&textScr->fonts[0], 0, 80);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], map + 2, charData + 2, 0);
+}
 
-// sp8 = arg1;
-// spC = arg2;
-// EasyTask_CreateTask(arg0, &data_ov043_020c8c50, NULL, 0, NULL, &sp8);
-// }
+static void MenuBadge_textScr_DrawClassLimit(MenuBadge_textScr* textScr, u16* map, u16* charData, s32 pinClass) {
+    MenuBadgePoint positions[5] = {
+        {0, 56},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+    };
+
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
+
+    SysFont_SetMsg(&textScr->fonts[0], pinClass + SYSMSG_PIN_CLASS_LIMIT_START);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 256);
+    SysFont_SetVAlign(&textScr->fonts[0], 0, 80);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], map + 2, charData + 2, 0);
+}
+
+static void MenuBadge_textScr_DrawTooManyPins(MenuBadge_textScr* textScr, u16* map, u16* charData) {
+    MenuBadgeObject* menuBadge = textScr->menuBadge;
+#ifdef REGION_USA
+    SysCode buf[200];
+#else
+    SysCode buf[100];
+#endif
+    MenuBadgePoint positions[5] = {
+        {0, 56},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+    };
+    SysCode* fmt;
+
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
+
+#ifdef REGION_USA
+    if (menuBadge->excessPinCount == 1) {
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[0], SYSMSG_PIN_STOCKPILE_FULL_SINGULAR);
+    } else {
+        fmt = SysFont_GetMsgBuf(&textScr->fonts[0], SYSMSG_PIN_STOCKPILE_FULL);
+    }
+#else
+    fmt = SysFont_GetMsgBuf(&textScr->fonts[0], SYSMSG_PIN_STOCKPILE_FULL);
+#endif
+    SysFont_Format(buf, fmt, menuBadge->excessPinCount);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 256);
+    SysFont_SetVAlign(&textScr->fonts[0], 0, 80);
+    SysFont_DrawToScreen(&textScr->fonts[0], buf, map + 2, charData + 2, 0);
+    Mem_Free(&gDebugHeap, fmt);
+}
+
+#ifdef REGION_USA
+static void MenuBadge_textScr_DrawMoneyCapped(MenuBadge_textScr* textScr, u16* map, u16* charData) {
+    MenuBadgePoint positions[5] = {
+        {0, 56},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+        {0,  0},
+    };
+
+    for (u16 i = 0; i < 5; i++) {
+        SysFont_SetPos(&textScr->fonts[i], positions[i].x, positions[i].y);
+    }
+
+    SysFont_SetMsg(&textScr->fonts[0], SYSMSG_PIN_WALLET_FULL);
+    SysFont_SetHAlign(&textScr->fonts[0], 0, 256);
+    SysFont_SetVAlign(&textScr->fonts[0], 0, 80);
+    SysFont_DrawCurrentToScreen(&textScr->fonts[0], map + 2, charData + 2, 0);
+}
+#endif
+
+static void MenuBadge_textScr_DrawWindow(MenuBadge_textScr* textScr) {
+    MenuBadgeObject* menuBadge = textScr->menuBadge;
+    u16*             map       = menuBadge->resources[5].screenMap;
+    u16*             charData  = menuBadge->resources[5].charData;
+
+    if (map == NULL || charData == NULL) {
+        OS_WaitForever();
+    }
+
+    switch (menuBadge->windowMessage) {
+        case MENUBADGE_MSG_SELL_CONFIRM:
+            MenuBadge_textScr_DrawSellConfirm(textScr, map, charData);
+            break;
+        case MENUBADGE_MSG_ARRANGE:
+            MenuBadge_textScr_DrawArrange(textScr, map, charData);
+            break;
+        case MENUBADGE_MSG_CANNOT_SELL:
+            MenuBadge_textScr_DrawCannotSell(textScr, map, charData);
+            break;
+        case MENUBADGE_MSG_CLASS_LIMIT + 0:
+            MenuBadge_textScr_DrawClassLimit(textScr, map, charData, 0);
+            break;
+        case MENUBADGE_MSG_CLASS_LIMIT + 1:
+            MenuBadge_textScr_DrawClassLimit(textScr, map, charData, 1);
+            break;
+        case MENUBADGE_MSG_CLASS_LIMIT + 2:
+            MenuBadge_textScr_DrawClassLimit(textScr, map, charData, 2);
+            break;
+        case MENUBADGE_MSG_CLASS_LIMIT + 3:
+            MenuBadge_textScr_DrawClassLimit(textScr, map, charData, 3);
+            break;
+        case MENUBADGE_MSG_CLASS_LIMIT + 4:
+            MenuBadge_textScr_DrawClassLimit(textScr, map, charData, 4);
+            break;
+        case MENUBADGE_MSG_TOO_MANY_PINS:
+            MenuBadge_textScr_DrawTooManyPins(textScr, map, charData);
+            break;
+#ifdef REGION_USA
+        case MENUBADGE_MSG_MONEY_CAPPED:
+            MenuBadge_textScr_DrawMoneyCapped(textScr, map, charData);
+            break;
+#endif
+    }
+}
+
+static s32 MenuBadge_textScr_Init(TaskPool* pool, Task* task, void* args) {
+    MenuBadge_textScr*      textScr     = task->data;
+    MenuBadge_textScr_Args* textScrArgs = args;
+
+    textScr->menuBadge = textScrArgs->menuBadge;
+    MenuBadge_textScr_InitFonts(textScr);
+    MenuBadge_textScr_DrawWindow(textScr);
+    return 1;
+}
+
+static s32 MenuBadge_textScr_Update(TaskPool* pool, Task* task, void* args) {
+    MenuBadge_textScr* textScr   = task->data;
+    MenuBadgeObject*   menuBadge = textScr->menuBadge;
+
+    if (menuBadge->flags & MENUBADGE_FLAG_REDRAW_WINDOW) {
+        MenuBadge_ReloadBgResource(&menuBadge->resources[5], 0, 1, 6, 15, 1);
+        MenuBadge_textScr_DrawWindow(textScr);
+        menuBadge->flags &= ~MENUBADGE_FLAG_REDRAW_WINDOW;
+    }
+    return 1;
+}
+
+static s32 MenuBadge_textScr_Render(TaskPool* pool, Task* task, void* args) {
+    return 1;
+}
+
+static s32 MenuBadge_textScr_Destroy(TaskPool* pool, Task* task, void* args) {
+    MenuBadge_textScr* textScr = task->data;
+
+    for (s32 i = 0; i < 5; i++) {
+        SysFont_Destroy(&textScr->fonts[i]);
+    }
+    return 1;
+}
+
+static s32 MenuBadge_textScr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    TaskStages stages = {
+        .initialize = MenuBadge_textScr_Init,
+        .update     = MenuBadge_textScr_Update,
+        .render     = MenuBadge_textScr_Render,
+        .cleanup    = MenuBadge_textScr_Destroy,
+    };
+    return stages.iter[stage](pool, task, args);
+}
+
+static const TaskHandle Tsk_MenuBadge_textScr = {"Tsk_MenuBadge_textScr", MenuBadge_textScr_RunTask,
+                                                 sizeof(MenuBadge_textScr)};
+
+s32 MenuBadge_textScr_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menuBadge) {
+    MenuBadge_textScr_Args args;
+
+    args.dataType  = dataType;
+    args.menuBadge = menuBadge;
+
+    return EasyTask_CreateTask(pool, &Tsk_MenuBadge_textScr, NULL, 0, NULL, &args);
+}

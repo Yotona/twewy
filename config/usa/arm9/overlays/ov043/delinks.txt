@@ -177,10 +177,15 @@ src/Interface/Menu/Top/MenuTop_helpCurU.c:
     .data       start:0x020cb9b0 end:0x020cb9c8
 
 src/Interface/Menu/MenuBadge.c:
-    .text       start:0x0208b854 end:0x020923f0
-    .rodata     start:0x020c82c8 end:0x020c86bc
-    .data       start:0x020cb9c8 end:0x020cbbe8
+    .text       start:0x0208b854 end:0x0208f9d8
+    .rodata     start:0x020c82c8 end:0x020c83c4
+    .data       start:0x020cb9c8 end:0x020cbb6c
     .bss        start:0x020cd280 end:0x020cd284
+
+src/Interface/Menu/MenuBadgeData.c:
+    .text       start:0x0208f9d8 end:0x020923f0
+    .rodata     start:0x020c83c4 end:0x020c86bc
+    .data       start:0x020cbb6c end:0x020cbbe8
 
 src/Interface/Menu/MenuBadge/MenuBadge_icon.c:
     .text       start:0x020923f0 end:0x02092728
@@ -288,6 +293,7 @@ src/Interface/Menu/MenuBadge/MenuBadge_window2.c:
     .data       start:0x020cbd7c end:0x020cbd94
 
 src/Interface/Menu/MenuBadge/MenuBadge_textScr.c:
+    complete
     .text       start:0x02096818 end:0x0209748c
     .rodata     start:0x020c8c48 end:0x020c8ce4
     .data       start:0x020cbd94 end:0x020cbdac
@@ -327,6 +333,7 @@ src/Interface/Menu/MenuBadge/MenuBadge_bdgU.c:
     .data       start:0x020cbe20 end:0x020cbe34
 
 src/Interface/Menu/MenuBadge/MenuBadge_textScrU.c:
+    complete
     .text       start:0x02098738 end:0x02099b28
     .rodata     start:0x020c8ec8 end:0x020c8f64
     .data       start:0x020cbe34 end:0x020cbe4c

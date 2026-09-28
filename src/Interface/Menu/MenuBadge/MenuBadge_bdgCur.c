@@ -3,12 +3,12 @@
 typedef struct {
     /* 0x00 */ Sprite           sprite;
     /* 0x40 */ s32              visible;
-    /* 0x44 */ MenuBadgeObject* unk_44;
+    /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgCur; // Size: 0x48
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgCur_Args;
 
 static SpriteFrameInfo* MenuBadge_bdgCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -30,7 +30,7 @@ static const SpriteAnimation MenuBadge_bdgCur_Anim = {
     .frameInfoCallback = MenuBadge_bdgCur_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -54,8 +54,8 @@ static void MenuBadge_bdgCur_Load(MenuBadge_bdgCur* bdgCur, Sprite* sprite, Menu
 
     anim.dataType = args->dataType;
     anim.unk_2A   = 46;
-    anim.unk_04   = data_ov043_020c834c[0].x;
-    anim.unk_06   = data_ov043_020c834c[0].y;
+    anim.unk_04   = MenuBadge_SlotPositions[0].x;
+    anim.unk_06   = MenuBadge_SlotPositions[0].y;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -64,7 +64,7 @@ static s32 MenuBadge_bdgCur_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_bdgCur*      bdgCur   = task->data;
     MenuBadge_bdgCur_Args* initArgs = args;
 
-    bdgCur->unk_44 = initArgs->unk_4;
+    bdgCur->menuBadge = initArgs->menuBadge;
     MenuBadge_bdgCur_Load(bdgCur, &bdgCur->sprite, initArgs);
     return 1;
 }
@@ -72,29 +72,29 @@ static s32 MenuBadge_bdgCur_Init(TaskPool* pool, Task* task, void* args) {
 // Nonmatching
 static s32 MenuBadge_bdgCur_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_bdgCur* bdgCur    = task->data;
-    MenuBadgeObject*  menuBadge = bdgCur->unk_44;
+    MenuBadgeObject*  menuBadge = bdgCur->menuBadge;
 
-    if (menuBadge->unk_AEE8 & 1) {
+    if (menuBadge->flags & MENUBADGE_FLAG_DRAGGING) {
         bdgCur->visible = 0;
     } else {
-        u16 cursorPos = menuBadge->unk_AEF8;
+        u16 cursorPos = menuBadge->cursorListIndex;
 
         if (cursorPos == 0xFFFF) {
-            bdgCur->sprite.posX = data_ov043_020c834c[menuBadge->unk_AEF6].x;
-            bdgCur->sprite.posY = data_ov043_020c834c[menuBadge->unk_AEF6].y;
+            bdgCur->sprite.posX = MenuBadge_SlotPositions[menuBadge->cursorSlot].x;
+            bdgCur->sprite.posY = MenuBadge_SlotPositions[menuBadge->cursorSlot].y;
             bdgCur->visible     = TRUE;
-        } else if (cursorPos >= menuBadge->unk_AEFA && cursorPos < menuBadge->unk_AEFA + 24) {
-            s32 slot = (u16)(cursorPos - menuBadge->unk_AEFA) + 6;
+        } else if (cursorPos >= menuBadge->listTop && cursorPos < menuBadge->listTop + 24) {
+            s32 slot = (u16)(cursorPos - menuBadge->listTop) + 6;
 
-            bdgCur->sprite.posX = data_ov043_020c834c[slot].x;
-            bdgCur->sprite.posY = data_ov043_020c834c[slot].y;
+            bdgCur->sprite.posX = MenuBadge_SlotPositions[slot].x;
+            bdgCur->sprite.posY = MenuBadge_SlotPositions[slot].y;
             bdgCur->visible     = TRUE;
         } else {
             bdgCur->visible = FALSE;
         }
     }
 
-    if (menuBadge->unk_AF20 != 0) {
+    if (menuBadge->windowMessage != 0) {
         bdgCur->visible = FALSE;
     }
 
@@ -131,8 +131,8 @@ static s32 MenuBadge_bdgCur_RunTask(TaskPool* pool, Task* task, void* args, s32 
 s32 MenuBadge_bdgCur_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_bdgCur_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_bdgCur, NULL, 0, NULL, &args);
 }

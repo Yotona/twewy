@@ -11,24 +11,48 @@ typedef union {
     u8 raw;
 } PinFlags;
 
+// Deck limit of a pin (RawPinData.pinClass), shown as "Angel" / "Reaper" / "A" / "B" / "C"
+typedef enum {
+    PIN_CLASS_ANGEL  = 0, // one Angel pin per deck
+    PIN_CLASS_REAPER = 1, // one Reaper pin per deck
+    PIN_CLASS_A      = 2, // no other pin of the same psych
+    PIN_CLASS_B      = 3, // at most two of the same psych
+    PIN_CLASS_C      = 4, // at most three of the same psych
+    PIN_CLASS_NONE   = 5, // empty slot
+} PinClass;
+
 /**
  * @brief Pin information as stored from within an external binary data file.
  */
 typedef struct {
-    /* 0x00 */ u16  unk_00;
-    /* 0x02 */ char unk_02[0x5 - 0x2];
+    /* 0x00 */ u16  iconIndex; // sprite pack index - 1
+    /* 0x02 */ u16  psychId;   // 0xFFFF = none
+    /* 0x04 */ u8   unk_04;
     /* 0x05 */ u8   brand;
     /* 0x06 */ u8   ppCurve;
-    /* 0x07 */ char unk_07[0x8 - 0x7];
-    /* 0x08 */ u32  unk_08;
-    /* 0x0C */ s16  unk_0C;
-    /* 0x0E */ char unk_0E[0x25 - 0x0E];
+    /* 0x07 */ u8   pinClass; // PinClass
+    /* 0x08 */ u32  price;    // 10000000 = cannot be sold
+    /* 0x0C */ s16  priceGrowth;
+    /* 0x0E */ u16  attack;
+    /* 0x10 */ s16  attackGrowth;
+    /* 0x12 */ u16  durationType; // 0 = none, 1-2 = uses, 3+ = frames
+    /* 0x14 */ u16  duration;
+    /* 0x16 */ s16  durationGrowth;
+    /* 0x18 */ u16  bootType; // 0 = instant, 1 = after bootTime frames
+    /* 0x1A */ u16  bootTime;
+    /* 0x1C */ s16  bootTimeGrowth;
+    /* 0x1E */ u16  rebootType; // 1 = after rebootTime frames
+    /* 0x20 */ u16  rebootTime;
+    /* 0x22 */ s16  rebootTimeGrowth;
+    /* 0x24 */ u8   abilityId; // 0xFF = none
     /* 0x25 */ u8   maxLevel;
     /* 0x26 */ u8   evolveLevel[2];
     /* 0x28 */ u8   evolveCondition[2];
     /* 0x2A */ u16  evolvePinID[2];
-    /* 0x2E */ char unk_2E[0x34 - 0x2E];
-} RawPinData; // Size: 0x34
+    /* 0x2E */ char unk_2E[0x30 - 0x2E];
+    /* 0x30 */ u8   inputType; // 0 = touch the pin, 1 = slash Neku, ...; 0xFF = none
+    /* 0x31 */ char unk_31[0x34 - 0x31];
+} RawPinData;                  // Size: 0x34
 
 typedef struct {
     /* 0x00 */ u16      pinID;

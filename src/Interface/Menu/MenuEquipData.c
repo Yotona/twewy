@@ -9,6 +9,7 @@
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"
+#include <nitro/math.h>
 #include <nitro/rtc.h>
 
 BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
@@ -21,26 +22,6 @@ MenuEquipItemEntry data_ov043_020cc2d8 = {
     .subCategory = 0xF,
     .brand       = 0xE,
 };
-
-// NitroSDK MATH_CountLeadingZeros / MATH_ILog2 / MATH_QSortStackSize
-static inline u32 MATH_CountLeadingZeros(register u32 x) {
-    asm { clz x, x }
-    return x;
-}
-
-static inline s32 MATH_ILog2(u32 x) {
-    return (s32)(31 - MATH_CountLeadingZeros(x));
-}
-
-static inline u32 MATH_QSortStackSize(u32 num) {
-    s32 tmp = MATH_ILog2(num);
-
-    if (tmp <= 0) {
-        return sizeof(s32);
-    } else {
-        return (u32)((MATH_ILog2(num) + 1) * sizeof(s32) * 2);
-    }
-}
 
 s32 MenuEquip_IsPointInRect(s32 x, s32 y, s32 left, s32 top, s16 width, s16 height) {
     if ((x >= left) && (x <= (left + width)) && (y >= top) && (y <= (top + height))) {

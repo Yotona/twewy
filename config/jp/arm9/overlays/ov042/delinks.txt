@@ -159,10 +159,15 @@ src/Interface/Menu/Top/MenuTop_helpCurU.c:
     .data       start:0x020c7ebc end:0x020c7ed4
 
 src/Interface/Menu/MenuBadge.c:
-    .text       start:0x0208bea0 end:0x02092474
-    .rodata     start:0x020c4ab4 end:0x020c4ea0
-    .data       start:0x020c7ed4 end:0x020c80c0
+    .text       start:0x0208bea0 end:0x0208fdf0
+    .rodata     start:0x020c4ab4 end:0x020c4ba8
+    .data       start:0x020c7ed4 end:0x020c805c
     .bss        start:0x020c9600 end:0x020c9608
+
+src/Interface/Menu/MenuBadgeData.c:
+    .text       start:0x0208fdf0 end:0x02092474
+    .rodata     start:0x020c4ba8 end:0x020c4ea0
+    .data       start:0x020c805c end:0x020c80c0
 
 src/Interface/Menu/MenuBadge/MenuBadge_icon.c:
     .text       start:0x02092474 end:0x020927ac

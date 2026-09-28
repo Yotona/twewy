@@ -274,7 +274,7 @@ s32 Shop_item2_CreateTask(TaskPool* pool, s32 dataType, u16 itemID, s16 arg3, Sh
         case ITEM_CATEGORY_PIN: {
             RawPinData pinData;
             func_ov043_020af4c4(&pinData, args.categorizedIndex);
-            args.iconPackIndex = pinData.unk_00;
+            args.iconPackIndex = pinData.iconIndex;
             break;
         }
 

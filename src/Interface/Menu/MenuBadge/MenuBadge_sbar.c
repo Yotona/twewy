@@ -6,13 +6,13 @@
 typedef struct {
     /* 0x00 */ Sprite           sprites[3];
     /* 0xC0 */ s32              unk_C0;
-    /* 0xC4 */ MenuBadgeObject* unk_C4;
-    /* 0xC8 */ u16              unk_C8;
+    /* 0xC4 */ MenuBadgeObject* menuBadge;
+    /* 0xC8 */ u16              prevListTop;
 } MenuBadge_sbar; // Size: 0xCC
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_sbar_Args;
 
 static SpriteFrameInfo* func_ov043_02094854(Sprite* sprite, s32 arg, s32 mode);
@@ -34,7 +34,7 @@ static const SpriteAnimation data_ov043_020c89f8 = {
     .frameInfoCallback = func_ov043_02094854,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -112,12 +112,12 @@ static void func_ov043_020948f0(Sprite* sprites, MenuBadge_sbar_Args* args) {
 
 static s32 func_ov043_020949bc(TaskPool* pool, Task* task, void* args) {
     MenuBadge_sbar_Args* initArgs = args;
-    MenuBadgeObject*     owner    = initArgs->unk_4;
+    MenuBadgeObject*     owner    = initArgs->menuBadge;
 
     MenuBadge_sbar* sbar = task->data;
 
-    sbar->unk_C4 = owner;
-    sbar->unk_C8 = owner->unk_AEFA;
+    sbar->menuBadge   = owner;
+    sbar->prevListTop = owner->listTop;
 
     func_ov043_020948f0(sbar->sprites, initArgs);
     return 1;
@@ -125,26 +125,26 @@ static s32 func_ov043_020949bc(TaskPool* pool, Task* task, void* args) {
 
 static s32 func_ov043_020949e8(TaskPool* pool, Task* task, void* args) {
     MenuBadge_sbar*  sbar  = task->data;
-    MenuBadgeObject* owner = sbar->unk_C4;
+    MenuBadgeObject* owner = sbar->menuBadge;
     TouchCoord       coord;
 
-    if (owner->unk_AF20 != 0) {
+    if (owner->windowMessage != 0) {
         return 1;
     }
-    if (owner->unk_AEE8 & 1) {
+    if (owner->flags & MENUBADGE_FLAG_DRAGGING) {
         return 1;
     }
 
-    if (owner->unk_AEE8 & 8) {
+    if (owner->flags & MENUBADGE_FLAG_SCROLL_JUMP) {
         TouchInput_GetCoord(&coord);
-        owner->unk_AEFA = func_ov043_020947bc((u16)(coord.y + 0xC), owner->unk_AEEB);
-        owner->unk_AEE8 &= ~8;
-        owner->unk_AEE8 |= 0x10;
+        owner->listTop = func_ov043_020947bc((u16)(coord.y + 0xC), owner->listMode);
+        owner->flags &= ~MENUBADGE_FLAG_SCROLL_JUMP;
+        owner->flags |= MENUBADGE_FLAG_SCROLL_DRAG;
 
-        sbar->sprites[0].posY = func_ov043_02094818(owner->unk_AEFA, owner->unk_AEEB);
+        sbar->sprites[0].posY = func_ov043_02094818(owner->listTop, owner->listMode);
     }
 
-    if (owner->unk_AEE8 & 0x10) {
+    if (owner->flags & MENUBADGE_FLAG_SCROLL_DRAG) {
         TouchInput_GetCoord(&coord);
 
         s16 posY    = sbar->sprites[0].posY;
@@ -164,74 +164,74 @@ static s32 func_ov043_020949e8(TaskPool* pool, Task* task, void* args) {
             sbar->sprites[0].posY = 163;
         }
 
-        owner->unk_AEFA = func_ov043_020947bc(sbar->sprites[0].posY, owner->unk_AEEB);
+        owner->listTop = func_ov043_020947bc(sbar->sprites[0].posY, owner->listMode);
 
         if (TouchInput_WasTouchReleased() != 0) {
-            owner->unk_AEE8 &= ~0x10;
+            owner->flags &= ~MENUBADGE_FLAG_SCROLL_DRAG;
         }
 
-        if (owner->unk_AEF6 >= 6U) {
-            s32 diff = owner->unk_AEF8 - owner->unk_AEFA;
+        if (owner->cursorSlot >= 6U) {
+            s32 diff = owner->cursorListIndex - owner->listTop;
 
             if (diff < 0) {
-                owner->unk_AEF6 = (owner->unk_AEF8 % 8) + 6;
+                owner->cursorSlot = (owner->cursorListIndex % 8) + 6;
             } else if (diff < 0x18) {
-                owner->unk_AEF6 = diff + 6;
+                owner->cursorSlot = diff + 6;
             } else {
-                owner->unk_AEF6 = (diff % 8) + 0x16;
+                owner->cursorSlot = (diff % 8) + 0x16;
             }
         }
     } else {
         if (TouchInput_WasTouchPressed() != 0) {
             TouchInput_GetCoord(&coord);
-            if (func_ov043_02091760(coord.x, coord.y) == 1) {
-                if (func_ov043_020917c0(coord.x, coord.y, sbar->sprites[0].posX, sbar->sprites[0].posY) == 1) {
-                    owner->unk_AEE8 |= 0x10;
+            if (MenuBadge_IsPointOnScrollBar(coord.x, coord.y) == 1) {
+                if (MenuBadge_IsPointOnScrollKnob(coord.x, coord.y, sbar->sprites[0].posX, sbar->sprites[0].posY) == 1) {
+                    owner->flags |= MENUBADGE_FLAG_SCROLL_DRAG;
                 } else {
-                    owner->unk_AEE8 |= 8;
+                    owner->flags |= MENUBADGE_FLAG_SCROLL_JUMP;
                 }
             } else {
-                s32 arrow = func_ov043_02091820(coord.x, coord.y);
+                s32 arrow = MenuBadge_GetScrollArrowAtPoint(coord.x, coord.y);
 
                 if (arrow == 0) {
-                    u16 scroll = owner->unk_AEFA;
+                    u16 scroll = owner->listTop;
 
                     if (scroll >= 8U) {
-                        owner->unk_AEFA = scroll - 8;
+                        owner->listTop = scroll - 8;
 
-                        if (owner->unk_AEF6 >= 6U && owner->unk_AEF6 < 0x16U) {
-                            owner->unk_AEF6 = owner->unk_AEF6 + 8;
+                        if (owner->cursorSlot >= 6U && owner->cursorSlot < 0x16U) {
+                            owner->cursorSlot = owner->cursorSlot + 8;
                         }
                     }
                 } else if (arrow == 1) {
                     s32 maxSteps;
                     u16 scroll;
 
-                    if (owner->unk_AEEB == 0) {
+                    if (owner->listMode == 0) {
                         maxSteps = 0x1D;
                     } else {
                         maxSteps = 0x23;
                     }
 
-                    scroll = owner->unk_AEFA;
+                    scroll = owner->listTop;
                     if (scroll <= (maxSteps * 8) - 8) {
-                        owner->unk_AEFA = scroll + 8;
+                        owner->listTop = scroll + 8;
 
-                        if (owner->unk_AEF6 >= 0xEU && owner->unk_AEF6 < 0x1EU) {
-                            owner->unk_AEF6 = owner->unk_AEF6 - 8;
+                        if (owner->cursorSlot >= 0xEU && owner->cursorSlot < 0x1EU) {
+                            owner->cursorSlot = owner->cursorSlot - 8;
                         }
                     }
                 }
             }
         }
 
-        sbar->sprites[0].posY = func_ov043_02094818(owner->unk_AEFA, owner->unk_AEEB);
+        sbar->sprites[0].posY = func_ov043_02094818(owner->listTop, owner->listMode);
     }
 
-    if (sbar->unk_C8 != owner->unk_AEFA) {
+    if (sbar->prevListTop != owner->listTop) {
         SndMgr_StartPlayingSE(0x119);
     }
-    sbar->unk_C8 = owner->unk_AEFA;
+    sbar->prevListTop = owner->listTop;
 
     for (s32 i = 0; i < 3; i++) {
         Sprite_Update(&sbar->sprites[i]);
@@ -270,8 +270,8 @@ static s32 func_ov043_02094d78(TaskPool* pool, Task* task, void* args, s32 stage
 s32 func_ov043_02094dc0(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_sbar_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &data_ov043_020c89dc, NULL, 0, NULL, &args);
 }

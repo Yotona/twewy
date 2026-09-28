@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_shadow_Anim = {
     .frameInfoCallback = MenuBadge_shadow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 4,
@@ -75,8 +75,8 @@ static s32 MenuBadge_shadow_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_shadow* shadow    = task->data;
     MenuBadgeObject*  menuBadge = shadow->menuBadge;
 
-    shadow->sprite.posX = menuBadge->unk_AEF2 + 4;
-    shadow->sprite.posY = menuBadge->unk_AEF4 + 6;
+    shadow->sprite.posX = menuBadge->touchPos.x + 4;
+    shadow->sprite.posY = menuBadge->touchPos.y + 6;
     Sprite_Update(&shadow->sprite);
     return 1;
 }

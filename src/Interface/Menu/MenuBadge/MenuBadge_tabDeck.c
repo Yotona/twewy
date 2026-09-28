@@ -3,12 +3,12 @@
 typedef struct {
     /* 0x000 */ Sprite           sprites[4];
     /* 0x100 */ s32              visible;
-    /* 0x104 */ MenuBadgeObject* unk_104;
+    /* 0x104 */ MenuBadgeObject* menuBadge;
 } MenuBadge_tabDeck; // Size: 0x108
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_tabDeck_Args;
 
 static SpriteFrameInfo* MenuBadge_tabDeck_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_tabDeck_Anim = {
     .frameInfoCallback = MenuBadge_tabDeck_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -49,7 +49,7 @@ static SpriteFrameInfo* MenuBadge_tabDeck_GetFrameInfo(Sprite* sprite, s32 arg, 
 }
 
 static void MenuBadge_tabDeck_Load(MenuBadge_tabDeck* tabDeck, Sprite* sprites, MenuBadge_tabDeck_Args* args) {
-    MenuBadgeObject* menuBadge = tabDeck->unk_104;
+    MenuBadgeObject* menuBadge = tabDeck->menuBadge;
     SpriteAnimation  anim      = MenuBadge_tabDeck_Anim;
     u16              sel[4]    = {0};
 
@@ -62,7 +62,7 @@ static void MenuBadge_tabDeck_Load(MenuBadge_tabDeck* tabDeck, Sprite* sprites, 
 
     anim.dataType = args->dataType;
 
-    sel[menuBadge->unk_AF26] = 1;
+    sel[menuBadge->currentDeck] = 1;
 
     for (u16 i = 0; i < 4; i++) {
         anim.unk_2A = i * 2 + 0x31 + sel[i];
@@ -76,22 +76,22 @@ static s32 MenuBadge_tabDeck_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_tabDeck*      tabDeck  = task->data;
     MenuBadge_tabDeck_Args* initArgs = args;
 
-    tabDeck->visible = TRUE;
-    tabDeck->unk_104 = initArgs->unk_4;
+    tabDeck->visible   = TRUE;
+    tabDeck->menuBadge = initArgs->menuBadge;
     MenuBadge_tabDeck_Load(tabDeck, tabDeck->sprites, initArgs);
     return 1;
 }
 
 static s32 MenuBadge_tabDeck_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_tabDeck* tabDeck   = task->data;
-    MenuBadgeObject*   menuBadge = tabDeck->unk_104;
+    MenuBadgeObject*   menuBadge = tabDeck->menuBadge;
 
     u16 sel[4] = {0};
 
-    sel[menuBadge->unk_AF26] = 1;
+    sel[menuBadge->currentDeck] = 1;
 
     for (u16 i = 0; i < 4; i++) {
-        func_ov043_0208fa60(&tabDeck->sprites[i], i * 2 + 0x31 + sel[i], 3, 2);
+        MenuBadge_SetSpriteFrameFromPack(&tabDeck->sprites[i], i * 2 + 0x31 + sel[i], 3, 2);
     }
 
     for (u16 i = 0; i < 4; i++) {
@@ -131,8 +131,8 @@ static s32 MenuBadge_tabDeck_RunTask(TaskPool* pool, Task* task, void* args, s32
 s32 MenuBadge_tabDeck_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_tabDeck_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_tabDeck, NULL, 0, NULL, &args);
 }

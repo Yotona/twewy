@@ -32,7 +32,7 @@ static const SpriteAnimation data_ov043_020c89b0 = {
     .frameInfoCallback = MenuBadge_gbgBox_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -65,7 +65,7 @@ static s32 MenuBadge_gbgBox_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_gbgBox_Load(&gbgBox->sprite, gbgBoxArgs);
     gbgBox->menuBadge = gbgBoxArgs->menuBadge;
 
-    if (gbgBox->menuBadge->unk_AEE8 & 0x20) {
+    if (gbgBox->menuBadge->flags & MENUBADGE_FLAG_QUICK_SELL) {
         gbgBox->visible = TRUE;
     } else {
         gbgBox->visible = FALSE;
@@ -78,20 +78,20 @@ static s32 MenuBadge_gbgBox_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadgeObject*  menuBadge = gbgBox->menuBadge;
     TouchCoord        coord;
 
-    if (menuBadge->unk_AF20 != 0) {
+    if (menuBadge->windowMessage != 0) {
         return 1;
     }
 
     if (TouchInput_WasTouchPressed() != 0) {
         TouchInput_GetCoord(&coord);
-        if (func_ov043_020918c8(coord.x, coord.y) == 1) {
+        if (MenuBadge_IsPointOnSellBox(coord.x, coord.y) == 1) {
             SndMgr_StartPlayingSE(0x11A);
-            if (menuBadge->unk_AEE8 & 0x20) {
+            if (menuBadge->flags & MENUBADGE_FLAG_QUICK_SELL) {
                 gbgBox->visible = FALSE;
-                menuBadge->unk_AEE8 &= ~0x20;
+                menuBadge->flags &= ~MENUBADGE_FLAG_QUICK_SELL;
             } else {
                 gbgBox->visible = TRUE;
-                menuBadge->unk_AEE8 |= 0x20;
+                menuBadge->flags |= MENUBADGE_FLAG_QUICK_SELL;
             }
         }
     }

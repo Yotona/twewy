@@ -29,16 +29,16 @@ typedef struct {
     /* 0x16 */ u16 bravery;
     /* 0x18 */ u8  activePartner; // Shiki, Joshua, Beat, or None
     /* 0x19 */ struct {
-        u8 difficulty : 2;
-        u8 partnerAI  : 2;
-        u8 unk_19_4   : 2;
-        u8 unk_19_6   : 1;
-        u8 unk_19_7   : 1;
+        u8 difficulty   : 2;
+        u8 partnerAI    : 2;
+        u8 pinDeck      : 2; // active pin deck
+        u8 unk_19_6     : 1;
+        u8 pinQuickSell : 1; // "sell without confirming" option in pin menu
     };
     /* 0x1A */ struct {
-        u8 unk_1A_0 : 1;
-        u8 unk_1A_1 : 2;
-        u8          : 5;
+        u8 pinAutoArrange   : 1;
+        u8 pinAutoArrangeBy : 2; // 0 = by number, 1 = by psych, 2 = off
+        u8                  : 5;
     };
     /* 0x1B */ u8  _pad_1B;
     /* 0x1C */ u16 equippedThreads[4]; // Item IDs of equipped threads, or 0xFFFF if empty

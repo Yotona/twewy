@@ -34,7 +34,7 @@ static const SpriteAnimation MenuBadge_bdgU_Anim = {
     .frameInfoCallback = MenuBadge_bdgU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c831c,
+    .binIden           = &MenuBadge_BinIdentifiers[9],
     .unk_18            = 2,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -51,10 +51,10 @@ static void MenuBadge_bdgU_LoadPackedData(MenuBadge_bdgU* bdgU, Sprite* sprite, 
     s32 dataType = args->dataType;
 
     Data* data;
-    if (BinMgr_FindById((s32)&data_ov043_020c8314) == NULL) {
-        data = DatMgr_LoadPackEntry(dataType, NULL, 0, &data_ov043_020c8314, packIndex, FALSE);
+    if (BinMgr_FindById((s32)&MenuBadge_BinIdentifiers[8]) == NULL) {
+        data = DatMgr_LoadPackEntry(dataType, NULL, 0, &MenuBadge_BinIdentifiers[8], packIndex, FALSE);
     } else {
-        data = DatMgr_LoadPackEntryDirect(dataType, &data_ov043_020c8314, packIndex, 0);
+        data = DatMgr_LoadPackEntryDirect(dataType, &MenuBadge_BinIdentifiers[8], packIndex, 0);
     }
 
     u8*   src        = (u8*)Data_GetPackEntryData(data, 1) + 4;
@@ -106,7 +106,7 @@ static void MenuBadge_bdgU_Load(MenuBadge_bdgU* bdgU, Sprite* sprite, MenuBadge_
         return;
     }
 
-    MenuBadge_bdgU_LoadPackedData(bdgU, sprite, args, (u16)(menuBadge->unk_ADF2 + 1));
+    MenuBadge_bdgU_LoadPackedData(bdgU, sprite, args, (u16)(menuBadge->cursorBadge.iconIndex + 1));
     bdgU->visible = TRUE;
 }
 
@@ -156,11 +156,11 @@ static s32 MenuBadge_bdgU_RunTask(TaskPool* pool, Task* task, void* args, s32 st
 s32 MenuBadge_bdgU_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* badge) {
     MenuBadge_bdgU_Args args;
 
-    args.dataType   = dataType;
-    args.menuBadge  = badge;
-    args.badgeId    = badge->unk_ADD8;
-    args.vramPage   = badge->unk_AF03;
-    badge->unk_AF03 = 1 - badge->unk_AF03;
+    args.dataType        = dataType;
+    args.menuBadge       = badge;
+    args.badgeId         = badge->cursorBadge.pinId;
+    args.vramPage        = badge->badgeVramPage;
+    badge->badgeVramPage = 1 - badge->badgeVramPage;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_bdgU, NULL, 0, NULL, &args);
 }

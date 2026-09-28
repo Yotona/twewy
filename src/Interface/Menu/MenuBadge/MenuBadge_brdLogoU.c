@@ -33,7 +33,7 @@ static const SpriteAnimation data_ov043_020c8f80 = {
     .frameInfoCallback = MenuBadge_brdLogoU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c8334,
+    .binIden           = &MenuBadge_BinIdentifiers[12],
     .unk_18            = 2,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -119,8 +119,8 @@ s32 MenuBadge_brdLogoU_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject*
 
     args.dataType  = dataType;
     args.menuBadge = badge;
-    args.badgeId   = badge->unk_ADD8;
-    args.brandId   = badge->unk_ADF7;
+    args.badgeId   = badge->cursorBadge.pinId;
+    args.brandId   = badge->cursorBadge.brand;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_brdLogoU, NULL, 0, NULL, &args);
 }

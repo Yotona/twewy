@@ -3,12 +3,12 @@
 typedef struct {
     /* 0x000 */ Sprite           sprites[5];
     /* 0x140 */ s32              visibleFlags[5];
-    /* 0x154 */ MenuBadgeObject* unk_154;
+    /* 0x154 */ MenuBadgeObject* menuBadge;
 } MenuBadge_window0; // Size: 0x158
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_window0_Args;
 
 static SpriteFrameInfo* MenuBadge_window0_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_window0_Anim = {
     .frameInfoCallback = MenuBadge_window0_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 0xA,
@@ -49,7 +49,7 @@ static SpriteFrameInfo* MenuBadge_window0_GetFrameInfo(Sprite* sprite, s32 arg, 
 }
 
 static void MenuBadge_window0_Load(MenuBadge_window0* window0, Sprite* sprites, MenuBadge_window0_Args* args) {
-    MenuBadgeObject* owner = window0->unk_154;
+    MenuBadgeObject* owner = window0->menuBadge;
     SpriteAnimation  anim  = MenuBadge_window0_Anim;
     u16              i;
 
@@ -84,7 +84,7 @@ static void MenuBadge_window0_Load(MenuBadge_window0* window0, Sprite* sprites, 
     anim.unk_06 = 0x60;
     _Sprite_Load(&sprites[4], &anim);
 
-    if (func_ov043_0208fac8(owner, owner->unk_AEEC) == 0) {
+    if (MenuBadge_IsSlotMastered(owner, owner->dragSrc) == 0) {
         window0->visibleFlags[2] = 0;
         window0->visibleFlags[3] = 0;
     }
@@ -94,7 +94,7 @@ static s32 MenuBadge_window0_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_window0*      window0  = task->data;
     MenuBadge_window0_Args* initArgs = args;
 
-    window0->unk_154 = initArgs->unk_4;
+    window0->menuBadge = initArgs->menuBadge;
     MenuBadge_window0_Load(window0, window0->sprites, initArgs);
     return 1;
 }
@@ -102,31 +102,31 @@ static s32 MenuBadge_window0_Init(TaskPool* pool, Task* task, void* args) {
 // Nonmatching: regswap
 static s32 MenuBadge_window0_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_window0* window0 = task->data;
-    MenuBadgeObject*   owner   = window0->unk_154;
+    MenuBadgeObject*   owner   = window0->menuBadge;
 
     for (u16 i = 0; i < 2; i++) {
-        if (owner->unk_AF12[i] == 1) {
-            func_ov043_0208fa60(&window0->sprites[i], i * 2 + 6, 0xC, 0xB);
-            if (owner->unk_AF02 == 0) {
-                owner->unk_AF12[i] = 0;
+        if (owner->sellButtonPressed[i] == 1) {
+            MenuBadge_SetSpriteFrameFromPack(&window0->sprites[i], i * 2 + 6, 0xC, 0xB);
+            if (owner->pressTimer == 0) {
+                owner->sellButtonPressed[i] = 0;
             } else {
-                owner->unk_AF02--;
+                owner->pressTimer--;
             }
         } else {
-            func_ov043_0208fa60(&window0->sprites[i], i * 2 + 5, 0xC, 0xB);
+            MenuBadge_SetSpriteFrameFromPack(&window0->sprites[i], i * 2 + 5, 0xC, 0xB);
         }
     }
 
     for (u16 i = 0; i < 2; i++) {
-        if (owner->unk_AF18[i] == 1) {
-            func_ov043_0208fa60(&window0->sprites[i + 2], i * 2 + 2, 0xC, 0xB);
-            if (owner->unk_AF02 == 0) {
-                owner->unk_AF18[i] = 0;
+        if (owner->sellArrowPressed[i] == 1) {
+            MenuBadge_SetSpriteFrameFromPack(&window0->sprites[i + 2], i * 2 + 2, 0xC, 0xB);
+            if (owner->pressTimer == 0) {
+                owner->sellArrowPressed[i] = 0;
             } else {
-                owner->unk_AF02--;
+                owner->pressTimer--;
             }
         } else {
-            func_ov043_0208fa60(&window0->sprites[i + 2], i * 2 + 1, 0xC, 0xB);
+            MenuBadge_SetSpriteFrameFromPack(&window0->sprites[i + 2], i * 2 + 1, 0xC, 0xB);
         }
     }
 
@@ -150,7 +150,7 @@ static s32 MenuBadge_window0_Render(TaskPool* pool, Task* task, void* args) {
 static s32 MenuBadge_window0_Release(TaskPool* pool, Task* task, void* args) {
     MenuBadge_window0* window0 = task->data;
 
-    window0->unk_154->unk_AF02 = 0;
+    window0->menuBadge->pressTimer = 0;
     for (u16 i = 0; i < 5; i++) {
         Sprite_Release(&window0->sprites[i]);
     }
@@ -170,8 +170,8 @@ static s32 MenuBadge_window0_RunTask(TaskPool* pool, Task* task, void* args, s32
 s32 MenuBadge_window0_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_window0_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_window0, NULL, 0, NULL, &args);
 }

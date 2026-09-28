@@ -12,7 +12,7 @@ typedef struct {
     /* 0x8 */ u16              unk_8;
 } MenuBadge_numBdgIdU_Args;
 
-extern void func_ov043_0208fa14(Sprite* sprite, s16 frame);
+extern void MenuBadge_SetSpriteFrame(Sprite* sprite, s16 frame);
 
 static SpriteFrameInfo* MenuBadge_numBdgIdU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_numBdgIdU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -34,7 +34,7 @@ static const SpriteAnimation MenuBadge_numBdgIdU_Anim = {
     .frameInfoCallback = MenuBadge_numBdgIdU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82fc,
+    .binIden           = &MenuBadge_BinIdentifiers[5],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -48,7 +48,7 @@ static const SpriteAnimation MenuBadge_numBdgIdU_Anim = {
 };
 
 void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId) {
-    if (numBdgId->menuBadge->unk_ADD8 == 0xFFFF) {
+    if (numBdgId->menuBadge->cursorBadge.pinId == 0xFFFF) {
         for (u16 i = 0; i < 3; i++) {
             numBdgId->shouldRender[i] = 0;
         }
@@ -70,7 +70,7 @@ void MenuBadge_numBdgIdU_UpdateDigits(MenuBadge_numBdgIdU* numBdgId, u16 badgeId
     }
 
     for (u16 i = 0; i < 3; i++) {
-        func_ov043_0208fa14(&numBdgId->sprites[i], (s16)(digits[i] + 0x11));
+        MenuBadge_SetSpriteFrame(&numBdgId->sprites[i], (s16)(digits[i] + 0x11));
     }
 }
 
@@ -97,13 +97,13 @@ static void MenuBadge_numBdgIdU_Load(MenuBadge_numBdgIdU* numBdgId, Sprite* spri
         numBdgId->shouldRender[i] = 1;
     }
 
-    if (menuBadge->unk_ADD8 == 0xFFFF) {
+    if (menuBadge->cursorBadge.pinId == 0xFFFF) {
         for (i = 0; i < 3; i++) {
             numBdgId->shouldRender[i] = 0;
         }
 
     } else {
-        u32 value = menuBadge->unk_ADD8 + 1;
+        u32 value = menuBadge->cursorBadge.pinId + 1;
         digits[0] = value / 100;
         u32 rem   = value % 100;
         digits[1] = rem / 10;
@@ -134,7 +134,7 @@ static s32 MenuBadge_numBdgIdU_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuBadge_numBdgIdU_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_numBdgIdU* numBdgId = task->data;
 
-    MenuBadge_numBdgIdU_UpdateDigits(numBdgId, numBdgId->menuBadge->unk_ADD8);
+    MenuBadge_numBdgIdU_UpdateDigits(numBdgId, numBdgId->menuBadge->cursorBadge.pinId);
 
     for (s32 i = 0; i < 4; i++) {
         Sprite_Update(&numBdgId->sprites[i]);

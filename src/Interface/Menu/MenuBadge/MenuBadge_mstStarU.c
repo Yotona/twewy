@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_mstStarU_Anim = {
     .frameInfoCallback = MenuBadge_mstStarU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82fc,
+    .binIden           = &MenuBadge_BinIdentifiers[5],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -58,9 +58,9 @@ static void MenuBadge_mstStarU_Load(MenuBadge_mstStarU* mstStar, Sprite* sprite,
     anim.unk_06   = 0xA;
     _Sprite_Load(sprite, &anim);
 
-    u16 badgeId = menuBadge->unk_ADD8;
+    u16 badgeId = menuBadge->cursorBadge.pinId;
     if (badgeId != 0xFFFF) {
-        if ((&menuBadge->unk_AF32)[badgeId] > 0) {
+        if (menuBadge->masteredCounts[badgeId] > 0) {
             mstStar->visible = 1;
         } else {
             mstStar->visible = 0;
@@ -83,9 +83,9 @@ static s32 MenuBadge_mstStarU_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_mstStarU* mstStar   = task->data;
     MenuBadgeObject*    menuBadge = mstStar->menuBadge;
 
-    u16 badgeId = menuBadge->unk_ADD8;
+    u16 badgeId = menuBadge->cursorBadge.pinId;
     if (badgeId != 0xFFFF) {
-        if ((&menuBadge->unk_AF32)[badgeId] > 0) {
+        if (menuBadge->masteredCounts[badgeId] > 0) {
             mstStar->visible = 1;
         } else {
             mstStar->visible = 0;

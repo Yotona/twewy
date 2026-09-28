@@ -96,7 +96,7 @@ extern void func_ov042_020824a0(void* state);
 
 extern void ProcessOverlay_TakTest(void* state);
 extern void ProcessOverlay_MenuTop(void* state);
-extern void func_ov043_0208f44c(void* state);
+extern void ProcessOverlay_MenuBadge(void* state);
 extern void func_ov043_0209bce4(void* state);
 extern void ProcessOverlay_MenuEquip(void* state);
 extern void func_ov043_020aeee0(void* state);
@@ -128,7 +128,7 @@ const DebugLauncherOption Options_Takami[14] = {
     // "Feature: Menu Top", "Description: First screen of the menu"
     {2,   "機能\:メニュートップ",       "説明:メニューの最初の画面",                  43,   ProcessOverlay_MenuTop},
     // "Feature: Badge Select", "Description: Screen for organizing badges"
-    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",                  43,      func_ov043_0208f44c},
+    {3,   "機能\:バッジセレクト",       "説明:バッジを編成する画面",                  43, ProcessOverlay_MenuBadge},
     // "Feature: Scenario Select", "Description: Scenario selection screen"
     {4, "機能\:シナリオセレクト",     "説明:シナリオを選択する画面",                  43,      func_ov043_0209bce4},
     // "Feature: Equipment", "Description: Equipment selection screen"

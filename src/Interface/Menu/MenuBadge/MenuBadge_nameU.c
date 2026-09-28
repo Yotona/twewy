@@ -11,7 +11,7 @@ typedef struct {
     /* 0x4 */ MenuBadgeObject* menuBadge;
 } MenuBadge_nameU_Args;
 
-extern void func_ov043_0208fa14(Sprite* sprite, s16 frame);
+extern void MenuBadge_SetSpriteFrame(Sprite* sprite, s16 frame);
 
 static SpriteFrameInfo* MenuBadge_nameU_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_nameU_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -32,7 +32,7 @@ static const SpriteAnimation MenuBadge_nameU_Anim = {
     .frameInfoCallback = MenuBadge_nameU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82fc,
+    .binIden           = &MenuBadge_BinIdentifiers[5],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -112,9 +112,9 @@ static s32 MenuBadge_nameU_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_nameU* name      = task->data;
     MenuBadgeObject* menuBadge = name->menuBadge;
 
-    if (menuBadge->unk_AEE8 & 0x40) {
-        menuBadge->unk_AEE8 &= ~0x40;
-        func_ov043_0208fa14(&name->sprites[2], menuBadge->unk_AEFE + 3);
+    if (menuBadge->flags & MENUBADGE_FLAG_INFO_TAB_CHANGED) {
+        menuBadge->flags &= ~MENUBADGE_FLAG_INFO_TAB_CHANGED;
+        MenuBadge_SetSpriteFrame(&name->sprites[2], menuBadge->infoTab + 3);
     }
 
     for (s16 i = 0; i < 13; i++) {

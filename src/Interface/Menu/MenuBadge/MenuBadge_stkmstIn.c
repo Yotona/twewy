@@ -20,11 +20,6 @@ typedef struct {
     /* 0xC */ u16              frame;
 } MenuBadge_stkmstIn_Args;
 
-typedef struct {
-    u16 x;
-    u16 y;
-} MenuBadgeUPoint;
-
 static SpriteFrameInfo* MenuBadge_stkmstIn_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuBadge_stkmstIn_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
@@ -45,7 +40,7 @@ static const SpriteAnimation MenuBadge_stkmstIn_Anim = {
     .frameInfoCallback = MenuBadge_stkmstIn_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -170,7 +165,7 @@ static s32 MenuBadge_stkmstIn_RunTask(TaskPool* pool, Task* task, void* args, s3
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeUPoint pos, s16 frame, MenuBadgeObject* badge) {
+s32 MenuBadge_stkmstIn_CreateTask(TaskPool* pool, s32 dataType, MenuBadgePoint pos, s16 frame, MenuBadgeObject* badge) {
     MenuBadge_stkmstIn_Args args;
 
     args.dataType  = dataType;

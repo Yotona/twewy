@@ -6,7 +6,7 @@ typedef struct {
     /* 0x000 */ Sprite           sprites[5];
     /* 0x140 */ s32              shouldRender[5];
     /* 0x154 */ MenuBadgeObject* menuBadge;
-    /* 0x158 */ u16              unk_158[5];
+    /* 0x158 */ u16              rotation[5];
     /* 0x162 */ u16              _pad_162;
     /* 0x164 */ s32              scaleX[5];
     /* 0x178 */ s32              scaleY[5];
@@ -37,7 +37,7 @@ static const SpriteAnimation MenuBadge_bpGaugeU_Anim = {
     .frameInfoCallback = MenuBadge_bpGaugeU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82fc,
+    .binIden           = &MenuBadge_BinIdentifiers[5],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -70,7 +70,7 @@ void func_ov043_0209a23c(MenuBadge_bpGaugeU* gauge, s32 index, s32 value, u32 ma
 void func_ov043_0209a2a4(MenuBadge_bpGaugeU* gauge) {
     MenuBadgeObject* menuBadge = gauge->menuBadge;
 
-    if (menuBadge->unk_ADEC == menuBadge->unk_AE19) {
+    if (menuBadge->cursorBadge.level == menuBadge->cursorBadge.maxLevel) {
         gauge->shouldRender[1] = 0;
         gauge->shouldRender[2] = 0;
         gauge->shouldRender[3] = 0;
@@ -79,10 +79,10 @@ void func_ov043_0209a2a4(MenuBadge_bpGaugeU* gauge) {
         return;
     }
 
-    s32 a   = menuBadge->unk_ADDA;
-    s32 b   = menuBadge->unk_ADDE;
-    s32 c   = menuBadge->unk_ADDC;
-    u32 max = menuBadge->unk_ADE8;
+    s32 a   = menuBadge->cursorBadge.battlePP;
+    s32 b   = menuBadge->cursorBadge.shutdownPP;
+    s32 c   = menuBadge->cursorBadge.minglePP;
+    u32 max = menuBadge->cursorBadge.maxPP;
 
     s32 total = (c + (a + b)) << 0xC;
     if (total > 0) {
@@ -131,7 +131,7 @@ void MenuBadge_bpGaugeU_Load(MenuBadge_bpGaugeU* gauge, Sprite* sprites, MenuBad
     _Sprite_Load(&sprites[4], &anim);
 
     for (s32 i = 0; i < 5; i++) {
-        gauge->unk_158[i]      = 0;
+        gauge->rotation[i]     = 0;
         gauge->scaleX[i]       = 0x1000;
         gauge->scaleY[i]       = 0x1000;
         gauge->shouldRender[i] = 1;
@@ -168,7 +168,7 @@ static s32 MenuBadge_bpGaugeU_Render(TaskPool* pool, Task* task, void* args) {
 
     for (s32 i = 0; i < 5; i++) {
         Sprite* sprite = &gauge->sprites[i];
-        u32     affine = (u16)OamMgr_AllocAffineGroup(&g_OamMgr[1], gauge->unk_158[i], gauge->scaleX[i], gauge->scaleY[i], 0);
+        u32     affine = (u16)OamMgr_AllocAffineGroup(&g_OamMgr[1], gauge->rotation[i], gauge->scaleX[i], gauge->scaleY[i], 0);
 
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~1) | 1;
         sprite->unk_0A.raw = (sprite->unk_0A.raw & ~0x3E0) | ((affine << 0x1B) >> 0x16);

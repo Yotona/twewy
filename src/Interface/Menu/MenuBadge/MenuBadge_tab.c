@@ -32,7 +32,7 @@ static const SpriteAnimation MenuBadge_tab_Anim = {
     .frameInfoCallback = MenuBadge_tab_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -83,7 +83,7 @@ static s32 MenuBadge_tab_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_tab*   tab       = task->data;
     MenuBadgeObject* menuBadge = tab->menuBadge;
 
-    if (menuBadge->unk_AF20 != 0) {
+    if (menuBadge->windowMessage != 0) {
         return 1;
     }
 
@@ -91,25 +91,25 @@ static s32 MenuBadge_tab_Update(TaskPool* pool, Task* task, void* args) {
         TouchCoord coord;
 
         TouchInput_GetCoord(&coord);
-        u32 newTab = func_ov043_02091928(coord.x, coord.y);
-        if (newTab != -1 && newTab != menuBadge->unk_AEFE) {
+        u32 newTab = MenuBadge_GetTabAtPoint(coord.x, coord.y);
+        if (newTab != -1 && newTab != menuBadge->infoTab) {
             SndMgr_StartPlayingSE(0x11A);
 
-            func_ov043_0208fa60(&tab->sprites[menuBadge->unk_AEFE], menuBadge->unk_AEFE * 2 + 0x23, 3, 2);
-            func_ov043_0208fa60(&tab->sprites[newTab], newTab * 2 + 0x22, 3, 2);
-            menuBadge->unk_AEFE = newTab;
-            menuBadge->unk_AEE8 |= 0x80;
-            menuBadge->unk_AEE8 |= 0x40;
+            MenuBadge_SetSpriteFrameFromPack(&tab->sprites[menuBadge->infoTab], menuBadge->infoTab * 2 + 0x23, 3, 2);
+            MenuBadge_SetSpriteFrameFromPack(&tab->sprites[newTab], newTab * 2 + 0x22, 3, 2);
+            menuBadge->infoTab = newTab;
+            menuBadge->flags |= MENUBADGE_FLAG_REDRAW_INFO;
+            menuBadge->flags |= MENUBADGE_FLAG_INFO_TAB_CHANGED;
 
             s32 pageArg;
-            if (menuBadge->unk_AEFE == 0) {
+            if (menuBadge->infoTab == 0) {
                 pageArg = 0;
-            } else if (menuBadge->unk_AEFE == 1) {
+            } else if (menuBadge->infoTab == 1) {
                 pageArg = 2;
             } else {
                 pageArg = 3;
             }
-            func_ov043_020921cc(&menuBadge->unk_B1E8, menuBadge->unk_B1E8, 1, 3, pageArg + 2);
+            MenuBadge_ReloadBgScreen(&menuBadge->resources[3], menuBadge->resources[3].data, 1, 3, pageArg + 2);
         }
     }
 

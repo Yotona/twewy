@@ -1093,7 +1093,7 @@ void Result_SaveEquippedPins(ResultObject* result) {
     }
 
 #ifdef REGION_USA
-    layout = gSaveData.playerStats.unk_19_4;
+    layout = gSaveData.playerStats.pinDeck;
     for (i = 0; i < 6; i++) {
         gSaveData.pinLayouts[layout][i].pinID             = gSaveData.equippedPins[i].pinID;
         gSaveData.pinLayouts[layout][i].flags.bits.level  = gSaveData.equippedPins[i].flags.bits.level;

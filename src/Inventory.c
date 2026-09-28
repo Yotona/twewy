@@ -54,14 +54,14 @@ static void Stats_ResetPlayerStats(PlayerStats* stats) {
     stats->bravery        = 15;
     stats->activePartner  = 255;
 
-    stats->difficulty = 1;
-    stats->partnerAI  = 2;
-    stats->unk_19_4   = 0;
-    stats->unk_19_6   = 0;
-    stats->unk_19_7   = 0;
+    stats->difficulty   = 1;
+    stats->partnerAI    = 2;
+    stats->pinDeck      = 0;
+    stats->unk_19_6     = 0;
+    stats->pinQuickSell = 0;
 
-    stats->unk_1A_0 = 0;
-    stats->unk_1A_1 = 2;
+    stats->pinAutoArrange   = 0;
+    stats->pinAutoArrangeBy = 2;
 
     for (s32 i = 0; i < 4; i++) {
         stats->equippedThreads[i] = 0xFFFF;
@@ -863,9 +863,9 @@ s32 func_02023be8(u16 itemID, s32 arg1) {
         case ITEM_CATEGORY_PIN: {
             Data* data = Data_Load(1, pinData, &data_0205c168, itemIdx);
             if (arg1 == 1) {
-                var_r5 = pinData.unk_08;
+                var_r5 = pinData.price;
             } else {
-                var_r5 = ((pinData.maxLevel - 1) * pinData.unk_0C) + pinData.unk_08;
+                var_r5 = ((pinData.maxLevel - 1) * pinData.priceGrowth) + pinData.price;
             }
             DatMgr_ReleaseData(data);
         } break;

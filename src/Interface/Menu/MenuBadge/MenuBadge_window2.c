@@ -3,12 +3,12 @@
 typedef struct {
     /* 0x00 */ Sprite sprite;
     /* 0x40 */ s32    visible;
-    /* 0x44 */ void*  unk_44;
+    /* 0x44 */ void*  menuBadge;
 } MenuBadge_window2; // Size: 0x48
 
 typedef struct {
     /* 0x0 */ s32   dataType;
-    /* 0x4 */ void* unk_4;
+    /* 0x4 */ void* menuBadge;
 } MenuBadge_window2_Args;
 
 static SpriteFrameInfo* MenuBadge_window2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_window2_Anim = {
     .frameInfoCallback = MenuBadge_window2_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 0xA,
@@ -63,8 +63,8 @@ static s32 MenuBadge_window2_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_window2*      window2  = task->data;
     MenuBadge_window2_Args* initArgs = args;
 
-    window2->visible = 1;
-    window2->unk_44  = initArgs->unk_4;
+    window2->visible   = 1;
+    window2->menuBadge = initArgs->menuBadge;
     MenuBadge_window2_Load(&window2->sprite, initArgs);
     return 1;
 }
@@ -105,8 +105,8 @@ static s32 MenuBadge_window2_RunTask(TaskPool* pool, Task* task, void* args, s32
 s32 MenuBadge_window2_CreateTask(TaskPool* pool, s32 dataType, void* arg2) {
     MenuBadge_window2_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = arg2;
+    args.dataType  = dataType;
+    args.menuBadge = arg2;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_window2, NULL, 0, NULL, &args);
 }

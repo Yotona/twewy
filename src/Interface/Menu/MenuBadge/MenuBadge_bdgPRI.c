@@ -3,16 +3,16 @@
 typedef struct {
     /* 0x00 */ Sprite           sprite;
     /* 0x40 */ s32              visible;
-    /* 0x44 */ MenuBadgeObject* unk_44;
+    /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_bdgPRI; // Size: 0x48
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
-    /* 0x8 */ u16              unk_8;
-    /* 0xA */ u16              unk_A;
-    /* 0xC */ s16              unk_C;
-    /* 0xE */ u8               unk_E;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
+    /* 0x8 */ u16              slot;
+    /* 0xA */ u16              pinId;
+    /* 0xC */ s16              deckSlot;
+    /* 0xE */ u8               slotCount;
 } MenuBadge_bdgPRI_Args;
 
 static SpriteFrameInfo* MenuBadge_bdgPRI_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -34,7 +34,7 @@ static const SpriteAnimation MenuBadge_bdgPRI_Anim = {
     .frameInfoCallback = MenuBadge_bdgPRI_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 4,
@@ -55,12 +55,12 @@ static void MenuBadge_bdgPRI_Load(MenuBadge_bdgPRI* bdgPRI, Sprite* sprite, Menu
     SpriteAnimation anim = MenuBadge_bdgPRI_Anim;
 
     anim.dataType = args->dataType;
-    anim.unk_04   = data_ov043_020c834c[args->unk_8].x - 9;
-    anim.unk_06   = data_ov043_020c834c[args->unk_8].y - 9;
+    anim.unk_04   = MenuBadge_SlotPositions[args->slot].x - 9;
+    anim.unk_06   = MenuBadge_SlotPositions[args->slot].y - 9;
     anim.bits_7_9 = 6;
 
-    if (args->unk_8 < args->unk_E) {
-        anim.unk_2A     = args->unk_8 + 1;
+    if (args->slot < args->slotCount) {
+        anim.unk_2A     = args->slot + 1;
         bdgPRI->visible = TRUE;
     } else {
         anim.unk_2A     = 1;
@@ -75,7 +75,7 @@ static s32 MenuBadge_bdgPRI_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_bdgPRI_Args* bdgPRIArgs = args;
 
     MenuBadge_bdgPRI_Load(bdgPRI, &bdgPRI->sprite, bdgPRIArgs);
-    bdgPRI->unk_44 = bdgPRIArgs->unk_4;
+    bdgPRI->menuBadge = bdgPRIArgs->menuBadge;
     return 1;
 }
 
@@ -112,15 +112,15 @@ static s32 MenuBadge_bdgPRI_RunTask(TaskPool* pool, Task* task, void* args, s32 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuBadge_bdgPRI_CreateTask(TaskPool* pool, s32 dataType, s16 index, MenuBadgeObject* owner) {
+s32 MenuBadge_bdgPRI_CreateTask(TaskPool* pool, s32 dataType, u16 index, MenuBadgeObject* owner) {
     MenuBadge_bdgPRI_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
-    args.unk_8    = index;
-    args.unk_A    = owner->unk_AD60[index]->unk_00;
-    args.unk_C    = owner->unk_AD60[index]->unk_15;
-    args.unk_E    = owner->unk_AEEA;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
+    args.slot      = index;
+    args.pinId     = owner->slots[index]->pinId;
+    args.deckSlot  = owner->slots[index]->deckSlot;
+    args.slotCount = owner->deckSlotCount;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_bdgPRI, NULL, 0, NULL, &args);
 }

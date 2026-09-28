@@ -9,8 +9,8 @@ typedef struct {
 typedef struct {
     /* 0x0 */ s32              dataType;
     /* 0x4 */ MenuBadgeObject* menuBadge;
-    /* 0x8 */ u16              unk_8;
-    /* 0xA */ u16              unk_A;
+    /* 0x8 */ u16              pinId;
+    /* 0xA */ u16              iconIndex;
 } MenuBadge_mov_Args;
 
 static SpriteFrameInfo* MenuBadge_mov_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -32,7 +32,7 @@ static const SpriteAnimation MenuBadge_mov_Anim = {
     .frameInfoCallback = MenuBadge_mov_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c8314,
+    .binIden           = &MenuBadge_BinIdentifiers[8],
     .unk_18            = 2,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -53,10 +53,10 @@ static void MenuBadge_mov_Load(MenuBadge_mov* mov, Sprite* sprite, MenuBadge_mov
     SpriteAnimation anim = MenuBadge_mov_Anim;
 
     anim.dataType = args->dataType;
-    anim.bits_7_9 = func_ov043_0208fb8c();
+    anim.bits_7_9 = MenuBadge_GetFreePaletteSlot();
 
-    if (args->unk_8 != 0xFFFF) {
-        anim.packIndex = args->unk_A + 1;
+    if (args->pinId != 0xFFFF) {
+        anim.packIndex = args->iconIndex + 1;
         _Sprite_Load(sprite, &anim);
     }
 }
@@ -75,8 +75,8 @@ static s32 MenuBadge_mov_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_mov*   mov       = task->data;
     MenuBadgeObject* menuBadge = mov->menuBadge;
 
-    mov->sprite.posX = menuBadge->unk_AEF2;
-    mov->sprite.posY = menuBadge->unk_AEF4;
+    mov->sprite.posX = menuBadge->touchPos.x;
+    mov->sprite.posY = menuBadge->touchPos.y;
     Sprite_Update(&mov->sprite);
     return 1;
 }
@@ -112,8 +112,8 @@ s32 MenuBadge_mov_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* menu
 
     args.dataType  = dataType;
     args.menuBadge = menuBadge;
-    args.unk_8     = menuBadge->unk_ADD8;
-    args.unk_A     = menuBadge->unk_ADF2;
+    args.pinId     = menuBadge->cursorBadge.pinId;
+    args.iconIndex = menuBadge->cursorBadge.iconIndex;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_mov, NULL, 0, NULL, &args);
 }

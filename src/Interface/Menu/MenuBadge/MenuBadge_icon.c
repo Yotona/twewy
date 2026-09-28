@@ -30,7 +30,7 @@ static const SpriteAnimation MenuBadge_icon_Anim = {
     .frameInfoCallback = MenuBadge_icon_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -86,15 +86,15 @@ static s32 MenuBadge_icon_Update(TaskPool* pool, Task* task, void* args) {
     s32 activeFrame = 41;
 
     for (s32 i = 0; i < 3; i++) {
-        if (badge->unk_AEFF[i] == 1) {
-            func_ov043_0208fa60(&icon->sprites[i], activeFrame, 3, 2);
-            if (badge->unk_AF02 != 0) {
-                badge->unk_AF02--;
+        if (badge->buttonPressed[i] == 1) {
+            MenuBadge_SetSpriteFrameFromPack(&icon->sprites[i], activeFrame, 3, 2);
+            if (badge->pressTimer != 0) {
+                badge->pressTimer--;
             } else {
-                badge->unk_AEFF[i] = 0;
+                badge->buttonPressed[i] = 0;
             }
         } else {
-            func_ov043_0208fa60(&icon->sprites[i], idleFrame, 3, 2);
+            MenuBadge_SetSpriteFrameFromPack(&icon->sprites[i], idleFrame, 3, 2);
         }
         activeFrame += 2;
         idleFrame += 2;

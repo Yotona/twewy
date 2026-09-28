@@ -3,13 +3,13 @@
 typedef struct {
     /* 0x000 */ Sprite           sprites[10];
     /* 0x280 */ s32              visibleFlags[10];
-    /* 0x2A8 */ MenuBadgeObject* unk_2A8;
-    /* 0x2AC */ u8               unk_2AC;
+    /* 0x2A8 */ MenuBadgeObject* menuBadge;
+    /* 0x2AC */ u8               digitCount;
 } MenuBadge_numMoney; // Size: 0x2B0
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
     /* 0x8 */ u32              money;
 } MenuBadge_numMoney_Args;
 
@@ -33,7 +33,7 @@ static const SpriteAnimation MenuBadge_numMoney_Anim = {
     .frameInfoCallback = MenuBadge_numMoney_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -69,13 +69,13 @@ static void func_ov043_020957b8(MenuBadge_numMoney* numMoney, u32 money, u32* di
         numMoney->visibleFlags[i] = TRUE;
     }
 
-    numMoney->unk_2AC = 7;
+    numMoney->digitCount = 7;
     for (s32 i = 0; i < 6; i++) {
         if (digits[i] != 0) {
             break;
         }
         numMoney->visibleFlags[i + 1] = FALSE;
-        numMoney->unk_2AC--;
+        numMoney->digitCount--;
     }
 
     if (money < 1000000) {
@@ -88,16 +88,16 @@ static void func_ov043_020957b8(MenuBadge_numMoney* numMoney, u32 money, u32* di
 
 // Nonmatching: regswap
 static void func_ov043_02095940(MenuBadge_numMoney* numMoney) {
-    MenuBadgeObject* owner = numMoney->unk_2A8;
+    MenuBadgeObject* owner = numMoney->menuBadge;
 
     s16 labelFrame;
     s32 digitBase;
     s16 suffixFrame;
 
     u32 digits[7];
-    func_ov043_020957b8(numMoney, owner->unk_AF0C, digits);
+    func_ov043_020957b8(numMoney, owner->money, digits);
 
-    if (func_ov043_0208fdf0(owner, owner->unk_AF05) == 0) {
+    if (MenuBadge_ClampMoney(owner, owner->moneyCapLevel) == 0) {
         labelFrame  = 0x49;
         digitBase   = 0x3F;
         suffixFrame = 0x5E;
@@ -107,14 +107,14 @@ static void func_ov043_02095940(MenuBadge_numMoney* numMoney) {
         suffixFrame = 0x5F;
     }
 
-    func_ov043_0208fa60(&numMoney->sprites[0], labelFrame, 3, 2);
+    MenuBadge_SetSpriteFrameFromPack(&numMoney->sprites[0], labelFrame, 3, 2);
 
     for (u16 i = 0; i < 7; i++) {
-        func_ov043_0208fa60(&numMoney->sprites[i + 1], digitBase + digits[i], 3, 2);
+        MenuBadge_SetSpriteFrameFromPack(&numMoney->sprites[i + 1], digitBase + digits[i], 3, 2);
     }
 
-    func_ov043_0208fa60(&numMoney->sprites[8], suffixFrame, 3, 2);
-    func_ov043_0208fa60(&numMoney->sprites[9], suffixFrame, 3, 2);
+    MenuBadge_SetSpriteFrameFromPack(&numMoney->sprites[8], suffixFrame, 3, 2);
+    MenuBadge_SetSpriteFrameFromPack(&numMoney->sprites[9], suffixFrame, 3, 2);
 }
 
 static SpriteFrameInfo* MenuBadge_numMoney_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
@@ -123,7 +123,7 @@ static SpriteFrameInfo* MenuBadge_numMoney_GetFrameInfo(Sprite* sprite, s32 arg,
 
 // Nonmatching: regswap
 static void MenuBadge_numMoney_Load(MenuBadge_numMoney* numMoney, Sprite* sprites, MenuBadge_numMoney_Args* args) {
-    MenuBadgeObject* menuBadge = numMoney->unk_2A8;
+    MenuBadgeObject* menuBadge = numMoney->menuBadge;
     SpriteAnimation  anim      = MenuBadge_numMoney_Anim;
 
     MenuBadgePoint positions[5] = {
@@ -143,7 +143,7 @@ static void MenuBadge_numMoney_Load(MenuBadge_numMoney* numMoney, Sprite* sprite
     u32 digits[7];
     func_ov043_020957b8(numMoney, args->money, digits);
 
-    if (func_ov043_0208fdf0(menuBadge, menuBadge->unk_AF05) == 0) {
+    if (MenuBadge_ClampMoney(menuBadge, menuBadge->moneyCapLevel) == 0) {
         labelFrame  = 0x49;
         digitBase   = 0x3F;
         suffixFrame = 0x5E;
@@ -180,7 +180,7 @@ static s32 MenuBadge_numMoney_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_numMoney*      numMoney = task->data;
     MenuBadge_numMoney_Args* initArgs = args;
 
-    numMoney->unk_2A8 = initArgs->unk_4;
+    numMoney->menuBadge = initArgs->menuBadge;
     MenuBadge_numMoney_Load(numMoney, numMoney->sprites, initArgs);
     return 1;
 }
@@ -228,9 +228,9 @@ static s32 MenuBadge_numMoney_RunTask(TaskPool* pool, Task* task, void* args, s3
 s32 MenuBadge_numMoney_CreateTask(TaskPool* pool, s32 dataType, MenuBadgeObject* owner) {
     MenuBadge_numMoney_Args args;
 
-    args.dataType = dataType;
-    args.unk_4    = owner;
-    args.money    = owner->unk_AF0C;
+    args.dataType  = dataType;
+    args.menuBadge = owner;
+    args.money     = owner->money;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_numMoney, NULL, 0, NULL, &args);
 }

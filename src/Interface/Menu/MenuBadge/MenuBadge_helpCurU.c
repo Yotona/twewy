@@ -31,7 +31,7 @@ static const SpriteAnimation MenuBadge_helpCurU_Anim = {
     .frameInfoCallback = MenuBadge_helpCurU_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82fc,
+    .binIden           = &MenuBadge_BinIdentifiers[5],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -75,7 +75,7 @@ static s32 MenuBadge_helpCurU_Init(TaskPool* pool, Task* task, void* args) {
 static s32 MenuBadge_helpCurU_Update(TaskPool* pool, Task* task, void* args) {
     MenuBadge_helpCurU* helpCur = task->data;
 
-    u8 page = helpCur->menuBadge->unk_AF1F;
+    u8 page = helpCur->menuBadge->helpPage;
     if (page == 0) {
         helpCur->shouldRender[0] = 0;
         helpCur->shouldRender[1] = 1;

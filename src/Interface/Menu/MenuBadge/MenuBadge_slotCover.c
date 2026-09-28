@@ -3,13 +3,13 @@
 typedef struct {
     /* 0x00 */ Sprite           sprite;
     /* 0x40 */ s32              visible;
-    /* 0x44 */ MenuBadgeObject* unk_44;
+    /* 0x44 */ MenuBadgeObject* menuBadge;
 } MenuBadge_slotCover; // Size: 0x48
 
 typedef struct {
     /* 0x0 */ s32              dataType;
-    /* 0x4 */ MenuBadgeObject* unk_4;
-    /* 0x8 */ u16              unk_8;
+    /* 0x4 */ MenuBadgeObject* menuBadge;
+    /* 0x8 */ u16              slot;
 } MenuBadge_slotCover_Args;
 
 static SpriteFrameInfo* MenuBadge_slotCover_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
@@ -32,7 +32,7 @@ static const SpriteAnimation MenuBadge_slotCover_Anim = {
     .frameInfoCallback = MenuBadge_slotCover_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov043_020c82e4,
+    .binIden           = &MenuBadge_BinIdentifiers[2],
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -55,8 +55,8 @@ static void MenuBadge_slotCover_Load(MenuBadge_slotCover* slotCover, Sprite* spr
     slotCover->visible = 1;
     anim.dataType      = args->dataType;
     anim.unk_2A        = 0x39;
-    anim.unk_04        = data_ov043_020c834c[args->unk_8].x;
-    anim.unk_06        = data_ov043_020c834c[args->unk_8].y;
+    anim.unk_04        = MenuBadge_SlotPositions[args->slot].x;
+    anim.unk_06        = MenuBadge_SlotPositions[args->slot].y;
 
     _Sprite_Load(sprite, &anim);
 }
@@ -65,7 +65,7 @@ static s32 MenuBadge_slotCover_Init(TaskPool* pool, Task* task, void* args) {
     MenuBadge_slotCover*      slotCover = task->data;
     MenuBadge_slotCover_Args* initArgs  = args;
 
-    slotCover->unk_44 = initArgs->unk_4;
+    slotCover->menuBadge = initArgs->menuBadge;
     MenuBadge_slotCover_Load(slotCover, &slotCover->sprite, initArgs);
     return 1;
 }
@@ -101,12 +101,12 @@ static s32 MenuBadge_slotCover_RunTask(TaskPool* pool, Task* task, void* args, s
     return stages.iter[stage](pool, task, args);
 }
 
-s32 MenuBadge_slotCover_CreateTask(TaskPool* pool, s32 dataType, s16 index, MenuBadgeObject* owner) {
+s32 MenuBadge_slotCover_CreateTask(TaskPool* pool, s32 dataType, u16 index, MenuBadgeObject* owner) {
     MenuBadge_slotCover_Args args;
 
-    args.dataType = dataType;
-    args.unk_8    = index;
-    args.unk_4    = owner;
+    args.dataType  = dataType;
+    args.slot      = index;
+    args.menuBadge = owner;
 
     return EasyTask_CreateTask(pool, &Tsk_MenuBadge_slotCover, NULL, 0, NULL, &args);
 }

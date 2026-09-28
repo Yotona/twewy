@@ -1,7 +1,6 @@
 #ifndef _NDS_MATH_H
 #define _NDS_MATH_H
 
-#include "global.h"
 #include <nitro/types.h>
 
 #include <nitro/fx.h>
@@ -202,6 +201,25 @@ void Mat4p_InitIdentity(Mat4p* m);
 void Mat4p_CopyToMat4x3p(Mat4p* m, Mat4x3p* out);
 void Mat4p_InitZRotation(Mat4p* m, fx32 sin, fx32 cos);
 void Mat4p_Multiply(Mat4p* a, Mat4p* b, Mat4p* out);
+
+static inline u32 MATH_CountLeadingZeros(register u32 x) {
+    asm { clz x, x }
+    return x;
+}
+
+static inline s32 MATH_ILog2(u32 x) {
+    return (s32)(31 - MATH_CountLeadingZeros(x));
+}
+
+static inline u32 MATH_QSortStackSize(u32 num) {
+    s32 tmp = MATH_ILog2(num);
+
+    if (tmp <= 0) {
+        return sizeof(s32);
+    } else {
+        return (u32)((MATH_ILog2(num) + 1) * sizeof(s32) * 2);
+    }
+}
 
 #ifdef __cplusplus
 }
