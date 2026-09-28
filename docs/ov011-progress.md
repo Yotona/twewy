@@ -208,9 +208,11 @@ exactly.
 | `func_ov011_02125f24` | 320 | **byte-exact** |
 | `func_ov011_02126064` | 132 | **byte-exact** |
 
-Nothing was deliberately skipped. `.text`/`.rodata`/`.data` are not byte-identical and
-`romcmp.py` has not been run - the linked ROM does not exist until all 114 functions are
-emitted, so `fbdiff.py` is the only signal available.
+Nothing was deliberately skipped. `021260e8` (620 B) was read in full, its layout and four
+helper arities pinned, and then **capped rather than half-written** — see
+`build/scratch/AGENT_BRIEF.md` §6 for the plan and the one open question. `.text`/`.rodata`/
+`.data` are not byte-identical and `romcmp.py` has not been run - the linked ROM does not exist
+until all 114 functions are emitted, so `fbdiff.py` is the only signal available.
 
 `ENM010_POOL` in `BtlEnm010.c` is a local `#define` for
 `(TaskPool*)((u32)data_ov003_020e71b8 + 0x118 + 0x10000)`. `data_ov003_020e71b8` is already
@@ -218,17 +220,25 @@ declared in `Combat/Core/Combat.h` as an `Ov003Global*` - do not redeclare it.
 
 ## Next
 
-1. **Work strictly in address order from `0x021260e8`** (620 B, the Lser mode-2 worker). It is
-   the largest function in the Lser region and it walks the whole 0x254 struct, so expect
-   several builds. Its offset census has already been taken: it is what named
-   `unk_22C`/`unk_230`/`unk_234`/`unk_248`, all four of which are now declared.
-2. Then `02126354` (596 B, the Lser's remaining command handler, dispatched from
-   `02125cf8` case 2) and `021265a8` (44 B, case 3).
-3. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
+1. **`0x021260e8`** (620 B, the Lser mode-2 worker) was read and deliberately **capped, not
+   half-written**. `build/scratch/AGENT_BRIEF.md` §6 has the full plan, the four confirmed
+   helper arities, and the one open question (`func_ov003_02082750` is called with 3 arguments
+   at one site and 2 at another, and the callee clobbers r2 before reading it). The struct it
+   needs is pinned. This is the first thing to take on.
+2. Then `02126354` (596 B, the Lser's last command handler, dispatched from `02125cf8` case 2)
+   and `021265a8` (44 B, case 3).
+3. **A wrong declaration in `Combat.h` is confirmed and unfixed** — see
+   `build/scratch/AGENT_BRIEF.md` §5. `func_ov003_02087f00`'s second parameter is `s32`, not a
+   function pointer: `SndMgr_PlaySEWithPan` takes `(SndMgrSeIdx, s32 sePan)`, and of 106 call
+   sites in `src/`, 105 pass an `s32` expression and **zero** pass a real function pointer. 22
+   casts in the finished `BtlEnm006.c` exist only to satisfy the bad declaration. Fixing it
+   means deleting those casts and re-verifying ov010 is still byte-identical — a separate
+   commit, not this overlay's business.
+4. `.rodata` and `.data` still need their symbols named and declared. The `symbols.txt`
    entries are all `func_ov011_*` / `data_ov011_*`; the real task names live in the string
    blobs. Do not add or delete `symbols.txt` entries without checking every other overlay's
    `relocs.txt` for the address.
-4. Still to characterise: **RG 0x208** (entry `021278d4`), **Rnge 0x06C** (`02127ce0`),
+5. Still to characterise: **RG 0x208** (entry `021278d4`), **Rnge 0x06C** (`02127ce0`),
    **SWA 0x020** (`0212801c`), **Sprl 0x0B8** (`02128758`), **Tatt 0x250** (`02129934`),
    **UG 0x214** (`0212b99c`; `0212bac8` is its per-frame handler). Plus the four 0x180-byte
    handles at `0x0212bde8`-`0x0212be18`, whose tasks are still unidentified. For each, the
