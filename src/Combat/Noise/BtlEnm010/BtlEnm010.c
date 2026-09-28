@@ -131,7 +131,7 @@ void       func_ov011_021276e0(BtlEnm010RG* data);
 s32        func_ov011_02127758(void* p, s32 arg1);
 s32        func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3);
 void       func_ov011_021278d4(void* p, s32 arg1, s32 arg2, s32 index);
-void       func_ov011_0212791c(void* arg0, void* arg1, s32 arg2);
+s32        func_ov011_0212791c(void* arg0, void* arg1, s32 arg2);
 s32        func_ov011_02127a64(void* arg0, void* arg1);
 s32        func_ov011_02127b98(void* arg0, void* arg1);
 s32        func_ov011_02127bdc(void* arg0, void* arg1);
@@ -1983,7 +1983,11 @@ void func_ov011_021278d4(void* p, s32 arg1, s32 arg2, s32 index) {
 /// `-1` would have collapsed to a single `mvn`. And `0x28`/`0x2C` are written twice, once
 /// biased `+0x40000` through the pool pointer and once biased `-0x40000` through `data` -- the
 /// second write wins, and both have to be in the C.
-void func_ov011_0212791c(void* arg0, void* arg1, s32 arg2) {
+///
+/// Returns 1. The `mov r0, #1` in the original's tail is not dead -- it is the return value,
+/// and it is what finally pinned the return type (wrong-prototype class, found while auditing
+/// the `0x1F4`/`0x54` tail).
+s32 func_ov011_0212791c(void* arg0, void* arg1, s32 arg2) {
     BtlEnm010RG* data;
     BtlEnm010RG* t;
     s32          v;
@@ -2013,6 +2017,7 @@ void func_ov011_0212791c(void* arg0, void* arg1, s32 arg2) {
     func_ov003_020c4b1c(data);
     data->unk_1F4 = 0;
     data->unk_054 |= 1 << 30;
+    return 1;
 }
 
 /// RG's per-frame handler. Picks a phase off `CombatActor_PopPendingCommand`, integrates two Euler steps
@@ -3698,13 +3703,18 @@ void func_ov011_0212a540(BtlEnm010Tatt* data) {
     func_ov011_02129ed0(data, func_ov011_0212a134);
 }
 
-/// One of Tatt's phases: poll a predicate on the `0x1C0` counter, and on the frame it goes quiet
-/// bump the counter and advance to the next phase.
+/// One of Tatt's phases: poll a predicate on the `0x1C0` counter. The counter is bumped
+/// **unconditionally** every frame -- the reference loads it fresh after the call, increments and
+/// stores *before* the `popne` -- and only the hand-over to `func_ov011_02129ed0` is skipped when
+/// the predicate is still active.
 void func_ov011_0212a634(BtlEnm010Tatt* data) {
-    if (func_ov011_0212b800(data, data->unk_1C0) != 0) {
+    s32 r;
+
+    r             = func_ov011_0212b800(data, data->unk_1C0);
+    data->unk_1C0 = data->unk_1C0 + 1;
+    if (r != 0) {
         return;
     }
-    data->unk_1C0 = data->unk_1C0 + 1;
     func_ov011_02129ed0(data, func_ov011_0212a134);
 }
 
@@ -4165,6 +4175,12 @@ void func_ov011_0212b318(BtlEnm010Tatt* data) {
 /// the three clears, and the poll is on frame 5 rather than frame 4. Both functions are `void`:
 /// the original's `cmp r0, #0` / `popne {r4, pc}` is an early-exit off a discarded predicate,
 /// not a returned value, and neither epilogue substitutes a literal.
+///
+/// Open (2 bytes): the reference emits the counter `strh` *before* `mov r0, #0` while
+/// `func_ov011_0212b318`'s identical block emits the `mov` first. Four spellings tried --
+/// `= x + 1`, `+= 1`, a shared zero local feeding the clears and the call arguments, and a local
+/// zero -- all byte-identical to each other. It is the scheduler's placement of the constant
+/// def and is not reachable from the statement order; do not chase it further.
 void func_ov011_0212b388(BtlEnm010Tatt* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0 = data->unk_1C0 + 1;
