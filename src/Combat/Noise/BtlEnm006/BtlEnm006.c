@@ -925,8 +925,8 @@ s32 func_ov010_0212643c(BtlEnm006* data) {
     }
 
     // The neighbour of the best waypoint, wrapping: `0x2aaaaaab` with no trailing shift is a
-    // divide by six. Two statements, not one `= (x + 1) % 6`, for the register the dividend lands
-    // in across the reciprocal multiply.
+    // divide by six. Two statements, not one `= (best + 1) % 6` -- the one-statement form moves
+    // `best` out of r6 and costs eight instructions.
     s32 next = best + 1;
     next %= 6;
     // `toOwner` is declared first so that it gets the *higher* of the two 12-byte frame slots
@@ -936,6 +936,12 @@ s32 func_ov010_0212643c(BtlEnm006* data) {
     // The y component of a record lives in the *overlapping* 0x02129254 view, which is why the y
     // terms name a second symbol: that is what puts `data_ov010_02129254` in the literal pool
     // between the reciprocal and the 0x02129250 reload, as the original has it.
+    //
+    // The original re-reads each `best` word twice here -- once for `toOwner` and once for `edge`
+    // -- six loads in all, where the folded version needs four. Forcing the second read back
+    // (a `volatile` cast does it) costs more than it saves: the two extra live values push the
+    // reciprocal's dividend out of the callee-saved register the original keeps it in, and the
+    // whole tail re-colours. Left folded; that hunk is the known residue.
     Vec toOwner;
     Vec edge;
     toOwner.x = data->unk_28 - (((const Enm006PhaseRec*)&data_ov010_02129250)[best].unk_00 + (cx >> 1));
