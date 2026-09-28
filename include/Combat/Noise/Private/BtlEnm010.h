@@ -34,13 +34,15 @@ extern Task* data_ov011_0212cca0;
 // <func>` lists every field access of a named function.
 // ---------------------------------------------------------------------------------------
 
-/// One 8-byte record of `BtlEnm010AnmMgr`'s slot table. `func_ov003_020cb128` is literally
+/// One 8-byte record of `BtlEnm010AnmMgr`'s bin table. `func_ov003_020cb128` is literally
 /// `stm r0, {r1, r2}`, so both words are written as a pair, which is why the table has to be
 /// a struct of two words rather than two parallel arrays.
 ///
-/// Evidence: `func_ov011_02125750` reaches slot 4 as `ldr r1, [r5, #0x34]` and
-/// `ldrh r3, [r5, #0x38]`; `func_ov011_021258b4` reaches the same slot through the single
-/// indexed `add r0, r5, #0x14 / add r0, r0, r6, lsl #3`.
+/// Evidence: `func_ov011_02125750` reaches slot 4's *neighbours* as `ldr r1, [r5, #0x34]` and
+/// `ldrh r3, [r5, #0x38]`; `func_ov011_021258b4` reaches the table through the single indexed
+/// `add r0, r5, #0x14 / add r0, r0, r6, lsl #3`, with the index running 0..2 and 2..3
+/// respectively, so only four slots exist. `0x34`/`0x38` are the two fields *after* the table,
+/// not a fifth slot.
 typedef struct BtlEnm010AnmSlot {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ u16 unk_04;
@@ -52,18 +54,21 @@ typedef struct BtlEnm010AnmSlot {
 /// again, both through `data_ov011_0212cca0`.
 ///
 /// `unk_00`, `unk_04` and `unk_08` are established from `func_ov003_020cb200`, which walks all
-/// three: `unk_08` is an **8-byte-stride** table of `{binId, offset}` records, `unk_00` is the
-/// base it decompresses into, and `unk_04` is a second base that it subtracts `offset` from.
-/// `func_ov003_020cb348` and `func_ov003_020cb304` confirm `unk_08` and its stride.
-///
-/// The five slots at `0x14` fill `0x14..0x3B` exactly, which is what fixes the count at five
-/// rather than the three that `func_ov011_02125750` alone indexes.
+/// three, and from `func_ov003_020cb150`, which allocates `unk_04` bytes off `gMainHeap` and
+/// stores the result in `unk_00`. So `unk_00` is the decompression buffer, `unk_04` its size
+/// and `unk_08` an **8-byte-stride** table of `{binId, offset}` records.
+/// `func_ov003_020cb348`/`020cb304` confirm `unk_08` and its stride, and `func_ov003_020cb194`
+/// reads the halfword count at `unk_0C`. `func_ov011_02125a08` fills all of it.
 typedef struct BtlEnm010AnmMgr {
     /* 0x00 */ void*            unk_00;
-    /* 0x04 */ void*            unk_04;
+    /* 0x04 */ s32              unk_04;
     /* 0x08 */ void*            unk_08;
-    /* 0x0C */ s32              pad_0C[2];
-    /* 0x14 */ BtlEnm010AnmSlot unk_14[5];
+    /* 0x0C */ s32              unk_0C;
+    /* 0x10 */ s32              unk_10;
+    /* 0x14 */ BtlEnm010AnmSlot unk_14[4];
+    /* 0x34 */ s32              unk_34;
+    /* 0x38 */ u16              unk_38;
+    /* 0x3A */ u16              pad_3A;
 } BtlEnm010AnmMgr;
 
 /// `Tsk_BtlEnm010_UG` task data -- **0x214 bytes**, the size in the `TaskHandle` at

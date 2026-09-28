@@ -114,7 +114,7 @@ void func_ov011_02125750(s32 arg0, BtlEnm010Sprite* arg1, s32 arg2) {
     // `base[mode * 0x28 + arg2]` MWCC instead folds the variant into the displacement and
     // emits `mla r0, r2, r0, r8` / `ldr r4, [r1, r0, lsl #2]` -- same value, six wrong
     // instructions.  The bias has to be spelled as a pointer.
-    bin = ((const void* const*)((const u8*)data_ov011_0212cb1c + data->unk_14[4].unk_04 * 0x28))[arg2];
+    bin = ((const void* const*)((const u8*)data_ov011_0212cb1c + data->unk_38 * 0x28))[arg2];
     if (func_ov003_020cb32c(data, bin) == 0) {
         slot = 0;
         do {
@@ -127,14 +127,14 @@ void func_ov011_02125750(s32 arg0, BtlEnm010Sprite* arg1, s32 arg2) {
         if (slot == 0) {
             size = 0;
         } else {
-            size = data->unk_14[4].unk_00 - func_ov003_020cb368(bin);
+            size = data->unk_34 - func_ov003_020cb368(bin);
         }
         func_ov003_020cb128(&data->unk_14[slot].unk_00, bin, size);
         func_ov003_020cb200(data, (u16)slot);
     }
     phase = data_ov011_0212bff4[arg2];
-    if (data->unk_14[4].unk_04 != 3) {
-        phase = phase + data->unk_14[4].unk_04;
+    if (data->unk_38 != 3) {
+        phase = phase + data->unk_38;
     }
     CombatSprite_LoadFromTable(arg0, (CombatSprite*)arg1, (const BinIdentifier*)bin,
                                (const SpriteAnimEntry*)data_ov011_0212caf4[arg2], 0, phase, data_ov011_0212bfe0[arg2]);
@@ -167,7 +167,7 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
         } while (slot < 4);
         func_ov003_020cb304(data, (u16)slot);
         if (slot == 2) {
-            size = data->unk_14[4].unk_00;
+            size = data->unk_34;
         } else {
             // Split into two statements so that the load of `unk_04` is issued *before* the
             // call.  In one compound expression MWCC sinks it past the call and keeps the
@@ -188,11 +188,24 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
 
 /// `func_ov011_02125a08` -- the AnmMgr task's command 0. Declared here so that
 /// `func_ov011_021259d0` can call it; it is defined further down, in address order.
-extern s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, s32 arg1);
+extern s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
 
 /// `func_ov003_020cb194` -- walks the 8-byte table at `p + 8` and releases every element,
 /// using the halfword count at `p + 0xC`. One argument.
 extern void func_ov003_020cb194(void* p);
+
+/// `func_ov003_020cb130` -- builds the pool descriptor: `dst[0] = 0`, `dst[4] = arg3`,
+/// `dst[8] = arg1`, `dst[0xC] = (u16)arg2`, `dst[0x10] = arg4`. **Five** arguments; the fifth
+/// is passed on the caller's stack.
+extern void func_ov003_020cb130(void* dst, void* a, u16 b, s32 c, void* e);
+
+/// `func_ov003_020cb150` -- allocates `data->unk_04` bytes off `gMainHeap`, stores the result
+/// in `data->unk_00`, and returns whether it succeeded. One argument.
+extern s32 func_ov003_020cb150(void* p);
+
+/// The heap name `func_ov011_02125a08` hands to the pool allocator, and the two bin tables it
+/// measures: the 0x28-stride one (ten records per mode) and the flat three-entry one.
+extern const char data_ov011_0212cbd4[];
 
 /// The `Tsk_BtlEnm010_AnmMgr` task entry point: a three-way command dispatch. Command 0 and
 /// command 3 fall through to the two handlers, anything else returns 1.
@@ -215,6 +228,64 @@ s32 func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd) {
         default:
             return 1;
     }
+}
+
+/// A pair of running maxima, kept in the frame. The original zeroes each pair with a single
+/// `str` pair through a base pointer (`add r4, sp, #0xc / str r1, [r4, #0] / str r1, [r4, #4]`)
+/// and then reads and writes the halves at constant frame slots, so the two maxima are one
+/// 8-byte object, not two scalars. Spelled as two `s32` locals MWCC promotes all four to
+/// callee-saved registers instead and the loop bodies lose their stores entirely.
+typedef struct BtlEnm010Pair {
+    s32 max;
+    s32 sec;
+} BtlEnm010Pair;
+
+/// Command 0: measure every bin the task will ever load, size the decompression buffer from
+/// the two largest of each group, then hand the whole thing to the pool allocator.
+///
+/// The two search loops are the same shape and are *not* factored into a helper: the original
+/// has them fully duplicated, with the stride-0x28 table and the 3-entry table walked by
+/// separate code, so sharing them would change the block layout.
+///
+/// `p10` is declared first so that it lands at the higher frame slots (`sp + 0xC` / `sp +
+/// 0x10`) and `p3` at `sp + 4` / `sp + 8`, which is the order the original zeroes them in.
+s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1) {
+    BtlEnm010Pair p10 = {0, 0};
+    BtlEnm010Pair p3  = {0, 0};
+    s32           i;
+    s32           size;
+
+    MI_CpuSet(data, 0, 0x3C);
+    for (i = 0; i < 10; i++) {
+        size = func_ov003_020cb368(((const void* const*)((const u8*)data_ov011_0212cb1c + arg1[0] * 0x28))[i]);
+        // Both tests are **unsigned**: the original's stores and branches are `strhi`/`bhi`,
+        // not `strgt`/`bgt`, so the operands need a `(u32)` on both sides.
+        if ((u32)size > (u32)p10.max) {
+            p10.sec = p10.max;
+            p10.max = size;
+        } else if ((u32)size > (u32)p10.sec) {
+            p10.sec = size;
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        size = func_ov003_020cb368(data_ov011_0212cae8[i]);
+        if ((u32)size > (u32)p3.max) {
+            p3.sec = p3.max;
+            p3.max = size;
+        } else if ((u32)size > (u32)p3.sec) {
+            p3.sec = size;
+        }
+    }
+    func_ov003_020cb128(&data->unk_14[0].unk_00, *(const void* const*)((const u8*)data_ov011_0212cb1c + arg1[0] * 0x28), 0);
+    func_ov003_020cb128(&data->unk_14[1].unk_00, 0, 0);
+    func_ov003_020cb128(&data->unk_14[2].unk_00, 0, 0);
+    func_ov003_020cb128(&data->unk_14[3].unk_00, 0, 0);
+    func_ov003_020cb130(data, &data->unk_14[0], 4, p10.max + p10.sec + p3.max + p3.sec, data_ov011_0212cbd4);
+    func_ov003_020cb150(data);
+    func_ov003_020cb200(data, 0);
+    data->unk_38 = arg1[0];
+    data->unk_34 = p10.max + p10.sec;
+    return 1;
 }
 
 /// Command 3: release every element of the table, then return 1. The call's result is
