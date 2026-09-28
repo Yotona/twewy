@@ -97,6 +97,52 @@ Fixing the signature took `02127764` to 100% and `02127cc0` to 100% in the same 
 as allocator residue.** Treat every remaining "dead `mov`" / "register-choice tie-break" claim
 below as unverified.
 
+### The ov003 helper-signature audit — done, and it settles the residue question
+
+Every `func_ov003_*` declaration across all four overlays was audited against `ov003_4.s`.
+Five real mismatches, all invisible to objdiff (none moved a score), all kept as latent-bug
+fixes:
+
+| helper | was | actually | where |
+|--------|-----|----------|-------|
+| `func_ov003_020c3c28` | 1 arg | **0 args** | ov010 |
+| `func_ov003_020c3c88` | 0 args | **1 arg** | ov010 |
+| `func_ov003_020c4ab4` | `void` | **returns `arg1 != 0`** | ov010, ov013, ov015 |
+
+The first survived only because both call sites passed `data` and the allocator elided the store
+— r0 already held it. The third was invisible because all 16 call sites discard the result.
+
+**The important negative result: no wrong signature is load-bearing.** That is provable rather
+than assumed — a wrong arity that changed generated code *would* produce a differing byte, and
+all four overlays are byte-identical to the original ROM. So the sub-98% residue below is
+**not** explained by wrong declarations; the signature angle is exhausted.
+
+What the residue actually is, then:
+
+1. **A uniform `-0x8` addend on every `bl func_ov003_*`.** Present in ~100% of calls, including
+   functions scoring 99.9%. This is the `bl` offset convention: the original carries an absolute
+   target, ours a section-relative one plus the addend. objdiff scores the word either way. It
+   is a symbol-matching artifact, not a defect, and it is the single largest contributor to the
+   sub-100% totals across all four overlays.
+2. **Register choice** — MWCC picks r0 where the original picked r1, or holds a base in a
+   callee-saved register where the original re-derived it.
+
+So the honest reading of the numbers is: **the four overlays are byte-perfect, and every
+remaining percentage point is objdiff scoring register choice and symbol representation.** The
+honest reading of the numbers is: the decompilation is done, and further work on these functions
+optimises a metric, not the artefact.
+
+### A measurement trap worth knowing about
+
+`build/usa/delinks/**.o` is built by the `delink` rule, whose inputs are the `delinks.txt`
+files — **not** the `.c`. Touching the source does not rebuild it, and `ov.ps1`'s `delinks.txt`
+regex can silently fail to match, so the file's mtime never moves either. A header- or
+signature-only change can therefore leave a stale object in place and produce a *false*
+regression. `ovm.ps1` in each worktree deletes both objects plus `objdiff.json` and
+`ov_diff.json` before measuring — **use `ovm.ps1`, not `ov.ps1`, when you change something that
+does not alter the `.c`.** This produced one false regression report during the audit, corrected
+in `860cb00`.
+
 ### Remaining, in rough value order
 
 | function | % | note |
