@@ -1177,6 +1177,13 @@ void func_ov010_02127650(BtlEnm006* data) {
 // The sound indices: 0x1CC is a rotated immediate and stays a `mov`, while 0x1C9/0x1CA/0x1CB/
 // 0x1CD are not and come from the literal pool. The pool order follows first reference, so
 // the C order of the blocks *is* the pool order.
+//
+// Residue at 99.7%: one word. The original has a *dead* `mov r1, #0` between the reload of
+// `unk_2C` and the clamp compare -- r1 is dead everywhere afterwards. Five spellings of the
+// clamp (plain `if`, a named bound, a self-assigning `else`, the inverted test with the arms
+// swapped, and a duplicate `unk_30 = 0` after it) all produce the identical word stream, and a
+// C statement cannot conjure a dead constant materialisation, so this is allocator residue in
+// the original build. Everything else in the function is instruction-identical.
 void func_ov010_02127764(BtlEnm006* data) {
     switch (data->sprite.unk_C4) {
         case 0:
