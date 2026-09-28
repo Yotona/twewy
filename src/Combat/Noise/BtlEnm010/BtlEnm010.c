@@ -3038,67 +3038,72 @@ void func_ov011_02129110(void* p) {
 /// are the soft-float helpers this file already calls bare. The frame slot pair the original
 /// builds for `func_ov003_020cbd30`'s output is spelled `m[2]` here.
 void func_ov011_02129188(void* p, void* rec) {
+    struct {
+        s32 m[2];
+        s32 org[2];
+    } f;
     s32        state;
     const s32* tpl;
-    s32        v0;
-    s32        v1;
     s32        limit;
     s32        count;
-    s32        m[2];
     s32        cur;
     s32        dst;
     s32        d;
 
     state = *(s16*)((u8*)rec + 0x64);
-    if (state == 0) {
-        if (((u32)(*(u16*)((u8*)rec + 0x84) << 31) >> 31) == 1) {
-            v0  = data_ov011_0212c230[0];
-            v1  = data_ov011_0212c230[1];
-            tpl = data_ov011_0212c25c;
-        } else {
-            v0  = data_ov011_0212c230[2];
-            v1  = data_ov011_0212c230[3];
-            tpl = data_ov011_0212c274;
-        }
-        if (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) {
-            v0 = 0 - v0;
-        }
-        if (*(s16*)((u8*)rec + 0x60) == 0) {
-            *(s16*)((u8*)rec + 0x62) = 0x14;
-        }
-        limit = *(s16*)((u8*)rec + 0x62);
-        count = *(s16*)((u8*)rec + 0x60);
-        if (count < limit) {
-            func_ov003_020cbd30(m, tpl[0], tpl[1], tpl[2], tpl[3], tpl[4], tpl[5], _s32_div_f(ROUND(count), limit));
-            *(s32*)((u8*)rec + 0x68) = (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) ? 0 - m[0] : m[0];
-            *(s32*)((u8*)rec + 0x6C) = m[1];
-            *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
-        } else {
-            *(s16*)((u8*)rec + 0x60) = 0;
-            *(s16*)((u8*)rec + 0x64) = 1;
-        }
-        func_ov011_02128f10(rec, func_ov003_020cba14(v0, v1, *(s32*)((u8*)rec + 0x68), *(s32*)((u8*)rec + 0x6C)));
-    } else if (state == 1) {
-        if (*(s16*)((u8*)rec + 0x60) == 0) {
-            *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
-            func_ov011_02128f10(rec, 0xC000);
-        }
-        cur = *(s32*)((u8*)rec + 0x68);
-        dst = *(s32*)((u8*)rec + 0x7C);
-        d   = cur - dst;
-        if (d < 0) {
-            d = 0 - d;
-        }
-        if (d < 0x4000) {
-            *(s32*)((u8*)rec + 0x68) = dst;
-            *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) & ~8;
-            *(s16*)((u8*)rec + 0x60) = 0;
-            *(s16*)((u8*)rec + 0x64) = 0;
-        } else if (cur > dst) {
-            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) - 0x4000;
-        } else {
-            *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) + 0x4000;
-        }
+    switch (state) {
+        case 0:
+            if (((u32)(*(u16*)((u8*)rec + 0x84) << 31) >> 31) == 1) {
+                f.org[0] = data_ov011_0212c230[0];
+                f.org[1] = data_ov011_0212c230[1];
+                tpl      = data_ov011_0212c25c;
+            } else {
+                f.org[0] = data_ov011_0212c230[2];
+                f.org[1] = data_ov011_0212c230[3];
+                tpl      = data_ov011_0212c274;
+            }
+            if (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) {
+                f.org[0] = 0 - f.org[0];
+            }
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x62) = 0x14;
+            }
+            limit = *(s16*)((u8*)rec + 0x62);
+            count = *(s16*)((u8*)rec + 0x60);
+            if (count >= limit) {
+                *(s16*)((u8*)rec + 0x60) = 0;
+                *(s16*)((u8*)rec + 0x64) = 1;
+            } else {
+                func_ov003_020cbd30(f.m, tpl[0], tpl[1], tpl[2], tpl[3], tpl[4], tpl[5], _s32_div_f(ROUND(count), limit));
+                *(s32*)((u8*)rec + 0x68) = (((u32)(*(u8*)((u8*)p + 0x24C) << 31) >> 31) != 0) ? 0 - f.m[0] : f.m[0];
+                *(s32*)((u8*)rec + 0x6C) = f.m[1];
+                *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+            }
+            func_ov011_02128f10(rec,
+                                func_ov003_020cba14(f.org[0], f.org[1], *(s32*)((u8*)rec + 0x68), *(s32*)((u8*)rec + 0x6C)));
+            break;
+        case 1:
+            if (*(s16*)((u8*)rec + 0x60) == 0) {
+                *(s16*)((u8*)rec + 0x60) = *(s16*)((u8*)rec + 0x60) + 1;
+                func_ov011_02128f10(rec, 0xC000);
+            }
+            cur = *(s32*)((u8*)rec + 0x68);
+            dst = *(s32*)((u8*)rec + 0x7C);
+            d   = cur - dst;
+            if (d < 0) {
+                d = 0 - d;
+            }
+            if (d < 0x4000) {
+                *(s32*)((u8*)rec + 0x68) = dst;
+                *(u16*)((u8*)rec + 0x84) = *(u16*)((u8*)rec + 0x84) & ~8;
+                *(s16*)((u8*)rec + 0x60) = 0;
+                *(s16*)((u8*)rec + 0x64) = 0;
+            } else if (cur > dst) {
+                *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) - 0x4000;
+            } else {
+                *(s32*)((u8*)rec + 0x68) = *(s32*)((u8*)rec + 0x68) + 0x4000;
+            }
+            break;
     }
     *(s32*)((u8*)rec + 0x78) = *(s32*)((u8*)rec + 0x78) + 0x19A;
     if (*(s32*)((u8*)rec + 0x78) > 0x1000) {
