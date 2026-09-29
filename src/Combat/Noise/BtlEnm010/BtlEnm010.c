@@ -3392,12 +3392,14 @@ s32 func_ov011_02129b84(BtlEnm010Tatt* data) {
     if (func_ov003_020c3c28() != 0) {
         return r;
     }
-    if (*(void**)((u8*)data + 0x00) != NULL) {
-        if (*(s32*)((u8*)*(void**)((u8*)data + 0x00) + 0x54) & 4) {
+    {
+        void* owner = *(void**)((u8*)data + 0x00);
+
+        if (owner != NULL && (*(s32*)((u8*)owner + 0x54) & 4) != 0) {
             return r;
         }
     }
-    dir                        = (s32)((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31);
+    dir                        = ((u32)(*(u8*)((u8*)data + 0x24C) << 30) >> 31) != 0 ? 1 : 0;
     *(s32*)((u8*)data + 0x23C) = (s32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) > 0
                                            ? 0.5f + (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12)
                                            : (f32)(func_ov003_020843b0(dir, *(s32*)((u8*)data + 0x230)) << 12) - 0.5f);
@@ -3405,20 +3407,26 @@ s32 func_ov011_02129b84(BtlEnm010Tatt* data) {
         (s32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) > 0
                   ? 0.5f + (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12)
                   : (f32)(func_ov003_020843ec(dir, *(s32*)((u8*)data + 0x234), *(s32*)((u8*)data + 0x238)) << 12) - 0.5f);
-    if (*(void**)((u8*)data + 0x224) != NULL) {
-        (*(void (**)(void*))((u8*)data + 0x224))(data);
+    {
+        void (*cb)(void*) = *(void (**)(void*))((u8*)data + 0x224);
+
+        if (cb != NULL) {
+            cb(data);
+        }
     }
     func_ov011_02129110(data);
     p = (s16*)((u8*)data + 0x88);
     q = (s16*)((u8*)data + 4);
-    for (i = 0; i < 4; i++) {
-        if (((u32)(*p << 30) >> 31) == 1) {
+    i = 0;
+    do {
+        if (((u32)(*(u16*)p << 30) >> 31) == 1) {
             CombatSprite_Update((CombatSprite*)q);
             r = 1;
         }
         p = (s16*)((u8*)p + 0x88);
         q = (s16*)((u8*)q + 0x88);
-    }
+        i++;
+    } while (i < 4);
     return r;
 }
 
