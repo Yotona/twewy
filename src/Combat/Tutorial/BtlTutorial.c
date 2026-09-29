@@ -37,10 +37,10 @@ void func_ov008_020e75f8(CombatSprite*, s32);
 
 // MARK: Data
 
-char data_ov008_020e7a80[]  = "Tsk_BtlPlayerNone";
-u16  data_ov008_020e7a94[6] = {1, 2, 2, 2, 4, 3};
-char data_ov008_020e7aa0[]  = "Tsk_BtlTutorial";
-char data_ov008_020e7ab0[]  = "Apl_Fur/Grp_Tutorial.bin";
+char data_ov008_020e7a80[20] = "Tsk_BtlPlayerNone";
+u16  data_ov008_020e7a94[6]  = {1, 2, 2, 2, 4, 3};
+char data_ov008_020e7aa0[]   = "Tsk_BtlTutorial";
+char data_ov008_020e7ab0[48] = "Apl_Fur/Grp_Tutorial.bin";
 
 const TaskHandle Tsk_BtlPlayerNone = {data_ov008_020e7a80, func_ov008_020e7474, 0x84};
 
