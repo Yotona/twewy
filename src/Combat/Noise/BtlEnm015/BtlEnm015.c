@@ -84,9 +84,11 @@ void func_ov013_02127230(BtlEnm015*);
 
 // MARK: Data
 
-char data_ov013_0212754c[] = "Apl_Hor/Grp_BtlEnm015.bin";
-char data_ov013_02127568[] = "Apl_Hor/Grp_BtlEnm015b.bin";
-char data_ov013_02127584[] = "Apl_Hor/Grp_BtlEnm015a.bin";
+char data_ov013_0212754c[28] = "Apl_Hor/Grp_BtlEnm015.bin";
+// The reference splits this name at 0x0212756c; tiled to keep its symbol extents.
+char data_ov013_02127568[4]  = {65, 112, 108, 95};
+char data_ov013_0212756c[24] = "Hor/Grp_BtlEnm015b.bin";
+char data_ov013_02127584[28] = "Apl_Hor/Grp_BtlEnm015a.bin";
 
 BinIdentifier data_ov013_02127484 = {3, data_ov013_0212754c};
 BinIdentifier data_ov013_0212748c = {3, data_ov013_02127568};
@@ -113,9 +115,9 @@ SpriteAnimEntry data_ov013_021274dc[2] = {
     {0x13, 0x15, 0x14, 0},
 };
 
-Enm015Variant data_ov013_02127444 = {&data_ov013_02127484, data_ov013_0212749c, 0, 0, 0x19, 0x2BC};
-Enm015Variant data_ov013_02127474 = {&data_ov013_0212748c, data_ov013_0212749c, 0, 0, 0x19, 0x2BC};
-Enm015Variant data_ov013_02127464 = {&data_ov013_02127494, data_ov013_0212749c, 0, 0, 0x19, 0x2C8};
+Enm015Variant data_ov013_02127444 = {&data_ov013_02127484, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
+Enm015Variant data_ov013_02127474 = {&data_ov013_0212748c, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
+Enm015Variant data_ov013_02127464 = {&data_ov013_02127494, data_ov013_0212749c, 0, 0x19, 0x2C8, 0};
 
 Enm015Variant* data_ov013_02127540[3] = {
     &data_ov013_02127444,
@@ -123,12 +125,12 @@ Enm015Variant* data_ov013_02127540[3] = {
     &data_ov013_02127464,
 };
 
-char data_ov013_021275a0[] = "Tsk_BtlEnm015_Eff";
-char data_ov013_021275b4[] = "Tsk_BtlEnm015_EffStamp";
-char data_ov013_021275cc[] = "Tsk_BtlEnm015_EffStampSub";
-char data_ov013_021275e8[] = "Tsk_BtlEnm015_RG";
-char data_ov013_021275fc[] = "Tsk_BtlEnm015_Shake";
-char data_ov013_02127610[] = "Tsk_BtlEnm015_UG";
+char data_ov013_021275a0[20] = "Tsk_BtlEnm015_Eff";
+char data_ov013_021275b4[24] = "Tsk_BtlEnm015_EffStamp";
+char data_ov013_021275cc[28] = "Tsk_BtlEnm015_EffStampSub";
+char data_ov013_021275e8[20] = "Tsk_BtlEnm015_RG";
+char data_ov013_021275fc[]   = "Tsk_BtlEnm015_Shake";
+char data_ov013_02127610[48] = "Tsk_BtlEnm015_UG";
 
 const TaskHandle Tsk_BtlEnm015_Eff         = {data_ov013_021275a0, func_ov013_021260e8, 0x70};
 const TaskHandle Tsk_BtlEnm015_EffStamp    = {data_ov013_021275b4, func_ov013_02126700, 0xC};

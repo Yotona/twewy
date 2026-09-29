@@ -131,21 +131,25 @@ void func_ov015_02127f90(BtlEnm026*);
 
 // MARK: Data
 
-char data_ov015_021282e0[] = "Apl_Hor/Grp_BtlEnm026.bin";
-char data_ov015_021282fc[] = "Apl_Hor/Grp_BtlEnm026a.bin";
-char data_ov015_02128318[] = "Apl_Hor/Grp_BtlEnm026c.bin";
-char data_ov015_02128334[] = "Apl_Hor/Grp_BtlEnm026d.bin";
-char data_ov015_02128350[] = "Apl_Hor/Grp_BtlEnm026e.bin";
-char data_ov015_0212836c[] = "Apl_Hor/Grp_BtlEnm026f.bin";
-char data_ov015_02128388[] = "Apl_Hor/Grp_BtlEnm026g.bin";
-char data_ov015_021283a4[] = "Apl_Hor/Grp_BtlEnm026h.bin";
-char data_ov015_021283c0[] = "Apl_Hor/Grp_BtlEnm026i.bin";
-char data_ov015_021283dc[] = "Apl_Hor/Grp_BtlEnm026b.bin";
-char data_ov015_0212846c[] = "Tsk_BtlEnm026_Icon";
-char data_ov015_02128480[] = "Apl_Hor/Grp_BtlEnm026_Bdg.bin";
-char data_ov015_021284a0[] = "Apl_Hor/Grp_BtlEnm026_Icon.bin";
-char data_ov015_021284c0[] = "Tsk_BtlEnm026_RG";
-char data_ov015_021284d4[] = "Tsk_BtlEnm026_UG";
+char data_ov015_021282e0[28] = "Apl_Hor/Grp_BtlEnm026.bin";
+char data_ov015_021282fc[28] = "Apl_Hor/Grp_BtlEnm026a.bin";
+char data_ov015_02128318[28] = "Apl_Hor/Grp_BtlEnm026c.bin";
+// The reference splits this name at 0x02128338; tiled to keep its symbol extents.
+char data_ov015_02128334[4]  = {65, 112, 108, 95};
+char data_ov015_02128338[24] = "Hor/Grp_BtlEnm026d.bin";
+char data_ov015_02128350[28] = "Apl_Hor/Grp_BtlEnm026e.bin";
+char data_ov015_0212836c[28] = "Apl_Hor/Grp_BtlEnm026f.bin";
+char data_ov015_02128388[28] = "Apl_Hor/Grp_BtlEnm026g.bin";
+char data_ov015_021283a4[28] = "Apl_Hor/Grp_BtlEnm026h.bin";
+char data_ov015_021283c0[28] = "Apl_Hor/Grp_BtlEnm026i.bin";
+// The reference splits this name at 0x021283f0; tiled to keep its symbol extents.
+char data_ov015_021283dc[20] = {65, 112, 108, 95, 72, 111, 114, 47, 71, 114, 112, 95, 66, 116, 108, 69, 110, 109, 48, 50};
+char data_ov015_021283f0[8]  = "6b.bin";
+char data_ov015_0212846c[20] = "Tsk_BtlEnm026_Icon";
+char data_ov015_02128480[32] = "Apl_Hor/Grp_BtlEnm026_Bdg.bin";
+char data_ov015_021284a0[32] = "Apl_Hor/Grp_BtlEnm026_Icon.bin";
+char data_ov015_021284c0[20] = "Tsk_BtlEnm026_RG";
+char data_ov015_021284d4[44] = "Tsk_BtlEnm026_UG";
 
 BinIdentifier data_ov015_02128078 = {3, data_ov015_021282e0};
 BinIdentifier data_ov015_02128080 = {3, data_ov015_021282fc};
@@ -174,41 +178,44 @@ SpriteAnimEntry data_ov015_021280c8[13] = {
     {0xD, 0xF, 0xE, 2},
 };
 
-Enm026IdPair data_ov015_02128130[13] = {
-    {0x11, 0x00},
-    {0x12, 0x04},
-    {0x13, 0x01},
-    {0x14, 0x0B},
-    {0x15, 0x02},
-    {0x16, 0x06},
-    {0x17, 0x05},
-    {0x18, 0x08},
-    {0x19, 0x09},
-    {0x1A, 0x0A},
-    {0x1B, 0x07},
-    {0x1C, 0x11},
-    {0x1D, 0x03},
+// The reference splits this table at 0x02128134 -- the first pair's first word is its
+// own symbol.  Tiled to keep the symbol extents exact; the pair view is cast over both
+// objects at the use sites (the BtlEnm006 overlapping-view pattern).
+const u32 data_ov015_02128130[1]  = {0x11};
+const u32 data_ov015_02128134[25] = {
+    0x00000000, 0x00000012, 0x00000004, 0x00000013, 0x00000001, 0x00000014, 0x0000000B, 0x00000015, 0x00000002,
+    0x00000016, 0x00000006, 0x00000017, 0x00000005, 0x00000018, 0x00000008, 0x00000019, 0x00000009, 0x0000001A,
+    0x0000000A, 0x0000001B, 0x00000007, 0x0000001C, 0x00000011, 0x0000001D, 0x00000003,
 };
 
-Enm026StateFns data_ov015_02128198[18] = {
-    {               NULL, func_ov015_0212786c},
-    {func_ov015_021278b0, func_ov015_021278f8},
-    {func_ov015_02127690, func_ov015_021276c4},
-    {               NULL,                NULL},
-    {func_ov015_02127bc0,                NULL},
-    {func_ov015_02127d64, func_ov015_02127da4},
-    {func_ov015_02127bd0, func_ov015_02127c18},
-    {func_ov015_02127e5c, func_ov015_02127e7c},
-    {func_ov015_02127a74, func_ov015_02127ac4},
-    {func_ov015_021279c0, func_ov015_02127a14},
-    {func_ov015_02127758, func_ov015_021277a4},
-    {func_ov015_02127c68, func_ov015_02127ca0},
-    {               NULL, func_ov015_02127f90},
-    {func_ov015_02127a60,                NULL},
-    {               NULL, func_ov015_021276c8},
-    {               NULL,                NULL},
-    {               NULL,                NULL},
-    {func_ov015_02127950, func_ov015_02127974},
+// The reference splits this table at 0x0212819c -- the first entry's first pointer is
+// its own symbol.  Tiled to keep the symbol extents exact; the state view is cast over
+// both objects at the use sites.
+const u32 data_ov015_02128198[1] = {0};
+const struct {
+    void (*head)();
+    Enm026StateFns rest[17];
+} data_ov015_0212819c = {
+    func_ov015_0212786c,
+    {
+      {func_ov015_021278b0, func_ov015_021278f8},
+      {func_ov015_02127690, func_ov015_021276c4},
+      {NULL, NULL},
+      {func_ov015_02127bc0, NULL},
+      {func_ov015_02127d64, func_ov015_02127da4},
+      {func_ov015_02127bd0, func_ov015_02127c18},
+      {func_ov015_02127e5c, func_ov015_02127e7c},
+      {func_ov015_02127a74, func_ov015_02127ac4},
+      {func_ov015_021279c0, func_ov015_02127a14},
+      {func_ov015_02127758, func_ov015_021277a4},
+      {func_ov015_02127c68, func_ov015_02127ca0},
+      {NULL, func_ov015_02127f90},
+      {func_ov015_02127a60, NULL},
+      {NULL, func_ov015_021276c8},
+      {NULL, NULL},
+      {NULL, NULL},
+      {func_ov015_02127950, func_ov015_02127974},
+      }
 };
 
 SpriteAnimEntry data_ov015_02128238[13] = {
@@ -265,8 +272,8 @@ Enm026State data_ov015_02128500;
 s32 func_ov015_021256c0(s32 arg0) {
     s32 i;
     for (i = 0; i < 13; i++) {
-        if (arg0 == data_ov015_02128130[i].unk_00) {
-            return data_ov015_02128130[i].unk_04;
+        if (arg0 == ((Enm026IdPair*)data_ov015_02128130)[i].unk_00) {
+            return ((Enm026IdPair*)data_ov015_02128130)[i].unk_04;
         }
     }
     return 0;
@@ -288,8 +295,8 @@ void func_ov015_021256f8(BtlEnm026* data) {
         data_ov015_02128500.counter0C = data_ov015_02128500.counter0C + 1;
     }
     data->unk_1D4 = data_ov015_02128500.counter0C;
-    if (data_ov015_02128198[data_ov015_02128500.variant].unk_00 != NULL) {
-        data_ov015_02128198[data_ov015_02128500.variant].unk_00(data);
+    if (((Enm026StateFns*)data_ov015_02128198)[data_ov015_02128500.variant].unk_00 != NULL) {
+        ((Enm026StateFns*)data_ov015_02128198)[data_ov015_02128500.variant].unk_00(data);
     }
     if (func_ov003_020c37f8(&data->unk_084) != 0) {
         data->unk_196 &= ~0x2;
@@ -316,8 +323,8 @@ void func_ov015_021257f8(BtlEnm026* data) {
             data_ov015_02128500.result10 = data->unk_1CC - 1;
         }
     }
-    if (data_ov015_02128198[data_ov015_02128500.variant].unk_04 != NULL) {
-        data_ov015_02128198[data_ov015_02128500.variant].unk_04(data);
+    if (((Enm026StateFns*)data_ov015_02128198)[data_ov015_02128500.variant].unk_04 != NULL) {
+        ((Enm026StateFns*)data_ov015_02128198)[data_ov015_02128500.variant].unk_04(data);
     }
     if (data_ov015_02128500.result10 == -1) {
         if (data_ov015_02128500.variant == 0xB) {
