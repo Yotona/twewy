@@ -2838,7 +2838,6 @@ void func_ov011_02128ca4(BtlEnm010Tatt* data, s32 arg1) {
 /// the fill loop confirm that the 0x88-stride block is four 0x88-byte records.
 void func_ov011_02128cc0(BtlEnm010Tatt* data) {
     s32  i;
-    s32  v;
     s32* p;
 
     if (data->unk_228 == 0) {
@@ -2858,11 +2857,10 @@ void func_ov011_02128cc0(BtlEnm010Tatt* data) {
         func_ov011_02128f10((void*)((u8*)data + 0x8C), 0xEE38);
         func_ov011_02128f10((void*)((u8*)data + 0x114), 0xFF49);
         func_ov011_02128f10((void*)((u8*)data + 0x19C), 0xFF49);
-        v = 0 - 0x70000;
         p = (s32*)((u8*)data + 0x80);
         for (i = 0; i < 4; i++) {
             p[0] = (((u32)(*(u8*)((u8*)data + 0x24C) << 31) >> 31) != 0) ? 0 - data_ov011_0212c24c[i] : data_ov011_0212c24c[i];
-            p[1] = v;
+            p[1] = 0 - 0x70000;
             p    = (s32*)((u8*)p + 0x88);
         }
         data->unk_228 = data->unk_228 + 1;

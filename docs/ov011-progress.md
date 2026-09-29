@@ -270,6 +270,13 @@ average look better than it is.
 - **Use the edit tool for source edits.** A `Get-Content` → `[ArrayList]` → `RemoveAt` →
   `Set-Content -NoNewline` round-trip collapsed an entire source file onto one line and cost a
   third of a session.
+- **A `git commit` that dies on the clang-format hook leaves the work UNCOMMITTED.** The hook
+  rewrites the files and the retry is easy to forget — and a later `git checkout` or `git stash`
+  silently drops the whole landing. This cost one full function landing (recovered by re-doing
+  it). Verify `git log --oneline -1` after every commit, and never `git checkout` a file without
+  checking `git status` first.
+- **`fbdiff` reads the built object, not the source.** A `git stash`/`checkout` without a rebuild
+  measures the *old* build and will happily confirm a conclusion about code you no longer have.
 - **Do not edit `symbols.txt` before checking whether another overlay's `relocs.txt` targets the
   address.** Deleting a referenced symbol breaks the delink outright.
 - **Calls to `0x020824a0` must be spelled `Mini108_VBlank`.**
