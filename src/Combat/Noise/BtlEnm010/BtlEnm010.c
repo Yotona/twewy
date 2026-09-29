@@ -4429,19 +4429,20 @@ s32 func_ov011_0212b890(BtlEnm010Tatt* data, s16* p, s16* q, s32 arg3) {
                     Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 1, 0);
                 }
             }
-            return 1;
+            goto out;
         case 1:
             *q = *q - 1;
             if (*q <= 0) {
                 Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 3, 1);
             }
-            return 1;
+            goto out;
         case 3:
             if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) != 0) {
                 return 0;
             }
-            return 1;
+            goto out;
     }
+out:
     return 1;
 }
 
