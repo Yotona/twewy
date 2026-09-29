@@ -24,12 +24,16 @@ extern const TaskHandle data_ov011_0212bfa4;
 /// same table `BtlEnm006.c` names `Enm006CmdTbl`. Only the bytes below are identified: callers
 /// copy the whole record (`ldm`/`stm` of three words), overwrite the gray triple at `+5`..`+7`,
 /// and hand the copy to `func_ov003_0208a164`/`func_ov003_0208a1a4`.
+///
+/// The two `s32` words are load-bearing: a byte-array record has alignment 1, and MWCC then
+/// copies it with a *byte loop* instead of the `ldm`/`stm` pair the original has.
 typedef struct BtlEnm010CmdTbl {
-    /* 0x00 */ u8 pad_00[5];
-    /* 0x05 */ u8 unk_05;
-    /* 0x06 */ u8 unk_06;
-    /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 pad_08[4];
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ u8  unk_04;
+    /* 0x05 */ u8  unk_05;
+    /* 0x06 */ u8  unk_06;
+    /* 0x07 */ u8  unk_07;
+    /* 0x08 */ s32 unk_08;
 } BtlEnm010CmdTbl;
 
 /// One 4-byte record of the aim table `data_ov011_0212c13c`, indexed by
@@ -1111,14 +1115,14 @@ s32 func_ov011_021260e8(BtlEnm010Lser* data) {
     if (data->emit.unk_24 >= 0xA) {
         BtlEnm010CmdTbl rec;
         s32             x;
-        u16             idx;
+        s32             idx;
 
         if (func_ov003_020c37f8((void*)((u8*)data + 0x80)) != 0) {
             idx = 0x5E;
         } else {
             idx = 0x56;
         }
-        rec = *func_ov003_0208a114(idx);
+        rec = *func_ov003_0208a114((u16)idx);
         if (data->emit.unk_24 < 0xE) {
             rec.unk_05 = 0x18;
             rec.unk_07 = 0x20;
@@ -2685,7 +2689,6 @@ s32 func_ov011_021288c8(void* p) {
     struct BtlEnm010CmdTbl fx;
     s32                    t;
     s16                    v;
-    u8                     b;
 
     if (func_ov003_020c3c28() != 0) {
         return 0;
@@ -2712,8 +2715,8 @@ s32 func_ov011_021288c8(void* p) {
         dx   = ((BtlEnm010Sprl*)p)->unk_070[i] - ((BtlEnm010Sprl*)p)->unk_070[i - 1];
         dy   = ((BtlEnm010Sprl*)p)->unk_084[i] - ((BtlEnm010Sprl*)p)->unk_084[i - 1];
         dist = func_ov003_020cba2c(0, 0, dx, dy);
-        half = (data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16 / 2;
-        if (dist < (data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16 / 2) {
+        half = ((data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16) >> 1;
+        if (dist < (((data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16) >> 1)) {
             continue;
         }
         ((BtlEnm010Sprl*)p)->unk_070[i] =
@@ -2724,11 +2727,10 @@ s32 func_ov011_021288c8(void* p) {
     for (i = 0; i < 5; i++) {
         t         = (data_ov011_0212c21c[i] * 16) >> 12;
         v         = (s16)(t >> 1);
-        b         = (u8)v;
         fx        = *func_ov003_0208a114(0x57);
-        fx.unk_05 = b;
-        fx.unk_06 = b;
-        fx.unk_07 = b;
+        fx.unk_05 = (u8)v;
+        fx.unk_06 = (u8)v;
+        fx.unk_07 = (u8)v;
         if (func_ov003_0208a164(&fx, (void*)((u8*)p + 0xB0), ((BtlEnm010Sprl*)p)->unk_070[i], ((BtlEnm010Sprl*)p)->unk_084[i],
                                 ((BtlEnm010Sprl*)p)->unk_098) == 1)
         {
