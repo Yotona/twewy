@@ -3866,8 +3866,13 @@ void func_ov011_0212a78c(BtlEnm010Tatt* data) {
                 data->unk_1F8 = 0x14;
                 data->unk_1FA = limit;
             }
-            r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0);
-            data->unk_1C0 = data->unk_1C0 + 1;
+            {
+                s32 old;
+
+                old           = data->unk_1C0;
+                data->unk_1C0 = old + 1;
+                r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), old);
+            }
             if (data->unk_1F8 == 0 && data->unk_1FA % 10 == 0) {
                 s32 q = (limit - data->unk_1FA) / 10;
 
@@ -4091,8 +4096,13 @@ void func_ov011_0212aee8(BtlEnm010Tatt* data) {
         data->unk_1F8 = 0x14;
         data->unk_1FA = 0x1E;
     }
-    r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0);
-    data->unk_1C0 = data->unk_1C0 + 1;
+    {
+        s32 old;
+
+        old           = data->unk_1C0;
+        data->unk_1C0 = old + 1;
+        r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), old);
+    }
     if (data->unk_1F8 == 0 && data->unk_1FA == 0x1E) {
         data->unk_208 = func_ov011_02128718(data);
         func_ov003_02087f00(0x1DE, func_ov003_020843b0(0, *(s32*)((u8*)data + 0x28)));
