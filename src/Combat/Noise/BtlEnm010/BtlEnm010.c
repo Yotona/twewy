@@ -2914,22 +2914,28 @@ void func_ov011_02128eb0(BtlEnm010Tatt* data) {
 ///
 /// The three tables are two bytes apart in `symbols.txt` but are all indexed with an 8-byte
 /// stride, so the subscript is `i * 4` on a `u16*` and not `i`.
+///
+/// Open (16 bytes): the reference keeps a raw counter (`mov r0, r4, lsl #3` recomputed per
+/// iteration) and the parameter in r5; ours CSEs `i * 4` into a scaled induction variable in
+/// r3/r12 and parks the parameter in r4.  Three spellings tried -- declaration order, dropping
+/// the `data = p` alias, and the do/while loop shape of the 02125750 recipe -- all
+/// byte-identical to each other.  The scaled induction is not reachable from the C as written.
 void func_ov011_02128f10(void* p, u16 v) {
-    void* data;
-    s32   i;
+    s32 i;
 
-    data = p;
-    for (i = 0; i < 0x10; i++) {
+    i = 0;
+    do {
         if (v < data_ov011_0212c28c[i * 4]) {
             break;
         }
-    }
+        i++;
+    } while (i < 0x10);
     if (i == 0x10) {
         i = 0;
     }
-    *(u16*)((u8*)data + 0x70) = v;
-    Mini108_VBlank((CombatSprite*)data, data_ov011_0212c28e[i * 4], 0);
-    CombatSprite_SetFlip((CombatSprite*)data, data_ov011_0212c290[i * 4]);
+    *(u16*)((u8*)p + 0x70) = v;
+    Mini108_VBlank((CombatSprite*)p, data_ov011_0212c28e[i * 4], 0);
+    CombatSprite_SetFlip((CombatSprite*)p, data_ov011_0212c290[i * 4]);
 }
 
 /// Tatt's "nearest live record" search. The `0x23C` step is computed against one of *two* chase
@@ -3767,16 +3773,24 @@ void func_ov011_0212a674(BtlEnm010Tatt* data) {
             return;
         case 1:
             if (data->unk_1C0 == 0) {
-                data->unk_1F8 = 0xBD;
-                data->unk_1FA = 0x1E;
+                data->unk_1F8 = 0x1E;
+                data->unk_1FA = 0xBD;
             }
-            if (func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), data->unk_1C0) != 0) {
-                return;
+            {
+                s32 r;
+                s32 old;
+
+                old           = data->unk_1C0;
+                data->unk_1C0 = old + 1;
+                r             = func_ov011_0212b890(data, (s16*)&data->unk_1F8, (s16*)((u8*)data + 0xFA + 0x100), old);
+                if (data->unk_1F8 == 0 && data->unk_1FA == 0xBD) {
+                    data->unk_208 = func_ov011_02127c84(data);
+                }
+                if (r != 0) {
+                    return;
+                }
+                func_ov011_02129ed0(data, func_ov011_0212a134);
             }
-            if (data->unk_1F8 == 0 && data->unk_1FA == 0xBD) {
-                data->unk_208 = func_ov011_02127c84(data);
-            }
-            func_ov011_02129ed0(data, func_ov011_0212a134);
             return;
     }
 }
