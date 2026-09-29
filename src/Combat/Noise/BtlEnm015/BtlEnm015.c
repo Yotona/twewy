@@ -311,7 +311,7 @@ void func_ov013_02125b8c(s32 arg0, BtlEnm015* data, s32 arg2, s32 arg3) {
     anim.anim.unk_26           = entry->frameDataIndex;
     anim.anim.unk_28           = entry->paletteDataIndex;
     anim.anim.unk_22           = 2;
-    anim.anim.unk_2A           = entry->animDataIndex + 1;
+    anim.anim.animIndex        = entry->animDataIndex + 1;
     anim.unk_2C                = animTable;
     CombatSprite_Load(&data->unk_084, &anim);
     Mini108_VBlank(&data->unk_084, 0, 0);
@@ -461,7 +461,7 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     anim.anim.unk_28       = entry->paletteDataIndex;
     anim.anim.unk_20       = unk20;
     anim.anim.unk_22       = 2;
-    anim.anim.unk_2A       = entry->animDataIndex + 1;
+    anim.anim.animIndex    = entry->animDataIndex + 1;
     anim.unk_2C            = table;
     CombatSprite_Load(&data->sprite, &anim);
     Mini108_VBlank(&data->sprite, args->unk_04, 1);
@@ -687,7 +687,7 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
     anim.anim.unk_1C     = table[0];
     anim.anim.bits_10_11 = 0;
     anim.anim.unk_22     = 2;
-    anim.anim.unk_2A     = animData + 1;
+    anim.anim.animIndex  = animData + 1;
     CombatSprite_Load(&data->sprite, &anim);
 }
 

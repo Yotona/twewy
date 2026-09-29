@@ -1359,7 +1359,7 @@ void func_ov011_021268c4(BtlEnm010RG* data) {
                 func_ov003_020c4ab4(data, data->unk_1D0 >= 0 ? 1 : 0);
             }
             sp = (CombatSprite*)((u8*)data + 0x84);
-            t  = sp->sprite.unk16;
+            t  = sp->sprite.cellIndex;
             if (t == 1 && sp->sprite.frameTimer == 1) {
                 func_ov003_02087f00(0x1D6, func_ov003_020843b0(1, data->unk_028));
             }
@@ -1404,7 +1404,7 @@ void func_ov011_02126a04(BtlEnm010RG* data) {
         data->unk_1C0 = data->unk_1C0 + 1;
         func_ov003_02087f00(0x1E3, func_ov003_020843b0(1, data->unk_028));
     }
-    if (sp->sprite.unk16 == 3 && sp->sprite.frameTimer == 1) {
+    if (sp->sprite.cellIndex == 3 && sp->sprite.frameTimer == 1) {
         data->unk_1D8 = 0x2800;
     }
     if (data->unk_030 < 0) {
@@ -1942,7 +1942,7 @@ s32 func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3) {
     }
     switch (sp->animTableIndex) {
         case 0:
-            if (sp->sprite.unk16 == 4 && sp->sprite.frameTimer == 1) {
+            if (sp->sprite.cellIndex == 4 && sp->sprite.frameTimer == 1) {
                 func_ov003_02087f00(0x1D3, func_ov003_020843b0(1, data->unk_028));
             }
             if (SpriteMgr_IsAnimationFinished((Sprite*)sp) != 0) {

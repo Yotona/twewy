@@ -442,11 +442,11 @@ s32 func_ov015_02125b08(BtlEnm026* data) {
     func_ov003_020ccea8(data, &data->unk_084);
 
     if (data->unk_084.animTableIndex == 2) {
-        if (data->unk_084.sprite.unk16 == 1 && data->unk_084.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
+        if (data->unk_084.sprite.cellIndex == 1 && data->unk_084.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
             func_ov003_020c4cc4(data, 0x27B);
         }
     } else if (data->unk_084.animTableIndex == 3) {
-        if (data->unk_084.sprite.unk16 == 4 && data->unk_084.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
+        if (data->unk_084.sprite.cellIndex == 4 && data->unk_084.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
             func_ov003_020c4cc4(data, 0x27C);
         }
     }
@@ -639,7 +639,7 @@ s32 func_ov015_021261d8(BtlEnm026Icon* data, Enm026IconSpawn* args) {
             anim.anim.unk_28     = 3;
             anim.anim.unk_1C     = 1;
             anim.anim.unk_20     = 4;
-            anim.anim.unk_2A     = 1;
+            anim.anim.animIndex  = 1;
             anim.unk_2C          = 0;
             CombatSprite_Load(&data->unk_60, &anim);
             CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,

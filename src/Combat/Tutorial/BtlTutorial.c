@@ -174,7 +174,7 @@ void func_ov008_020e75f8(CombatSprite* cSprite, s32 variant) {
     anim.anim.unk_26     = 4;
     anim.anim.unk_28     = 5;
     anim.anim.unk_20     = 6;
-    anim.anim.unk_2A     = data_ov008_020e7a94[variant] + 1;
+    anim.anim.animIndex  = data_ov008_020e7a94[variant] + 1;
     anim.unk_2C          = 0;
     CombatSprite_Load(cSprite, &anim);
     CombatSprite_SetPosition(cSprite, 0x80, 0x60);

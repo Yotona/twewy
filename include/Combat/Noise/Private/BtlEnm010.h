@@ -180,7 +180,7 @@ typedef struct BtlEnm010UG {
 ///          because the load is `ldrh`, not `ldrsh`.
 ///   `0x84` is passed to `func_ov011_02125750` and `Mini108_VBlank`, both of which take a
 ///          `CombatSprite*`, and `func_ov011_021268c4` reads `Sprite::frameTimer` at `0x8C` and
-///          `Sprite::unk16` at `0x9A` through it -- so there is a `CombatSprite` here.
+///          `Sprite::cellIndex` at `0x9A` through it -- so there is a `CombatSprite` here.
 ///          **Still raw padding, not a field**: `sizeof(CombatSprite)` is 0x7D, not the 0x60 this
 ///          overlay strides sprites by, so a member here would put the next field at 0x101
 ///          instead of 0x1C0. Reach it through a cast, the same way `BtlEnm010Lser` does.
@@ -207,7 +207,7 @@ typedef struct BtlEnm010UG {
 ///   `0x30` a countdown, written `-0x40000` by `func_ov011_02126a04` and then tested `< 0` to
 ///          decide whether the phase has finished. `0x1D0` is biased off the same `-0x40000`
 ///          expression by `+0x38000`, which is why that value stays in a register across both.
-///   `0x1D8` a `0x2800` step written when `Sprite::unk16 == 3 && Sprite::frameTimer == 1`, and
+///   `0x1D8` a `0x2800` step written when `Sprite::cellIndex == 3 && Sprite::frameTimer == 1`, and
 ///          zeroed when the phase ends. `0x1E8`/`0x1EC`/`0x1F0` are the second velocity triple:
 ///          `func_ov011_02127a64` adds them into `0x1D0`/`0x1D4`/`0x1D8`, having just added
 ///          `0x1D0`/`0x1D4`/`0x1D8` into the position at `0x28`/`0x2C`/`0x30` -- two chained
@@ -273,7 +273,7 @@ typedef struct BtlEnm010RG {
 /// pointer is handed to `func_ov003_02082724`, `func_ov003_02082730`, `func_ov003_02082b64`,
 /// `func_ov003_02082b0c`, `func_ov003_02082cc4`, `Mini108_VBlank` and
 /// `SpriteMgr_IsAnimationFinished` with no bias at all. So the two `s16`s below are
-/// `Sprite::frameTimer` and `Sprite::unk16`, reached as flat `ldrsh` at `0x08` and `0x16`.
+/// `Sprite::frameTimer` and `Sprite::cellIndex`, reached as flat `ldrsh` at `0x08` and `0x16`.
 /// The sprite is left as raw padding: `sizeof(CombatSprite)` is 0x7D and `0x60` is the owner
 /// pointer.
 typedef struct BtlEnm010Rnge {
@@ -282,7 +282,7 @@ typedef struct BtlEnm010Rnge {
     /* 0x0A */ s16                    pad_00A;
     /* 0x0C */ s32                    pad_00C[2];  // 0x0C .. 0x13
     /* 0x14 */ s16                    pad_014;     // Sprite::animIndex
-    /* 0x16 */ s16                    unk_016;     // Sprite::unk16
+    /* 0x16 */ s16                    unk_016;     // Sprite::cellIndex
     /* 0x18 */ s32                    pad_018[18]; // 0x18 .. 0x5F
     /* 0x60 */ struct BtlEnm010Owner* unk_060;
     /* 0x64 */ s32                    pad_064;
