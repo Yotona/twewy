@@ -121,7 +121,7 @@ const Enm015Variant data_ov013_02127444 = {&data_ov013_02127484, data_ov013_0212
 const Enm015Variant data_ov013_02127474 = {&data_ov013_0212748c, data_ov013_0212749c, 0, 0x19, 0x2BC, 0};
 const Enm015Variant data_ov013_02127464 = {&data_ov013_02127494, data_ov013_0212749c, 0, 0x19, 0x2C8, 0};
 
-Enm015Variant* data_ov013_02127540[3] = {
+const Enm015Variant* data_ov013_02127540[3] = {
     &data_ov013_02127444,
     &data_ov013_02127474,
     &data_ov013_02127464,

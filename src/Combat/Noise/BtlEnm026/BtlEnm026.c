@@ -208,41 +208,42 @@ const SpriteAnimEntry data_ov015_021280c8[13] = {
     {0xD, 0xF, 0xE, 2},
 };
 
-const Enm026IdPair data_ov015_02128130[13] = {
-    {0x11, 0x00},
-    {0x12, 0x04},
-    {0x13, 0x01},
-    {0x14, 0x0B},
-    {0x15, 0x02},
-    {0x16, 0x06},
-    {0x17, 0x05},
-    {0x18, 0x08},
-    {0x19, 0x09},
-    {0x1A, 0x0A},
-    {0x1B, 0x07},
-    {0x1C, 0x11},
-    {0x1D, 0x03},
+// The reference splits this table at 0x02128134 -- the first pair's first word is
+// its own symbol.  Tiled to keep the symbol extents exact; the pair view is cast
+// over both objects at the use sites (the BtlEnm006 overlapping-view pattern).
+const u32 data_ov015_02128130[1]  = {0x11};
+const u32 data_ov015_02128134[25] = {
+    0x0,  0x12, 0x4,  0x13, 0x1,  0x14, 0xB,  0x15, 0x2,  0x16, 0x6,  0x17, 0x5,
+    0x18, 0x8,  0x19, 0x9,  0x1A, 0xA,  0x1B, 0x7,  0x1C, 0x11, 0x1D, 0x3,
 };
 
-const Enm026StateFns data_ov015_02128198[18] = {
-    {               NULL, func_ov015_0212786c},
-    {func_ov015_021278b0, func_ov015_021278f8},
-    {func_ov015_02127690, func_ov015_021276c4},
-    {               NULL,                NULL},
-    {func_ov015_02127bc0,                NULL},
-    {func_ov015_02127d64, func_ov015_02127da4},
-    {func_ov015_02127bd0, func_ov015_02127c18},
-    {func_ov015_02127e5c, func_ov015_02127e7c},
-    {func_ov015_02127a74, func_ov015_02127ac4},
-    {func_ov015_021279c0, func_ov015_02127a14},
-    {func_ov015_02127758, func_ov015_021277a4},
-    {func_ov015_02127c68, func_ov015_02127ca0},
-    {               NULL, func_ov015_02127f90},
-    {func_ov015_02127a60,                NULL},
-    {               NULL, func_ov015_021276c8},
-    {               NULL,                NULL},
-    {               NULL,                NULL},
-    {func_ov015_02127950, func_ov015_02127974},
+// The reference splits this table at 0x0212819c -- the first entry's first pointer
+// is its own symbol.  Tiled likewise; the state view is cast over both objects.
+const u32 data_ov015_02128198[1] = {0};
+const struct {
+    void (*head)();
+    Enm026StateFns rest[17];
+} data_ov015_0212819c = {
+    func_ov015_0212786c,
+    {
+      {func_ov015_021278b0, func_ov015_021278f8},
+      {func_ov015_02127690, func_ov015_021276c4},
+      {NULL, NULL},
+      {func_ov015_02127bc0, NULL},
+      {func_ov015_02127d64, func_ov015_02127da4},
+      {func_ov015_02127bd0, func_ov015_02127c18},
+      {func_ov015_02127e5c, func_ov015_02127e7c},
+      {func_ov015_02127a74, func_ov015_02127ac4},
+      {func_ov015_021279c0, func_ov015_02127a14},
+      {func_ov015_02127758, func_ov015_021277a4},
+      {func_ov015_02127c68, func_ov015_02127ca0},
+      {NULL, func_ov015_02127f90},
+      {func_ov015_02127a60, NULL},
+      {NULL, func_ov015_021276c8},
+      {NULL, NULL},
+      {NULL, NULL},
+      {func_ov015_02127950, func_ov015_02127974},
+      }
 };
 
 const BinIdentifier data_ov015_02128228 = {3, data_ov015_021284a0};
@@ -287,13 +288,13 @@ char data_ov015_021283c0[28] = "Apl_Hor/Grp_BtlEnm026i.bin";
 char data_ov015_021283dc[20] = "Apl_Hor/Grp_BtlEnm02";
 char data_ov015_021283f0[8]  = "6b.bin";
 
-Enm026Variant* data_ov015_021283f8[11] = {
+const Enm026Variant* data_ov015_021283f8[11] = {
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
 };
 
-Enm026Variant* data_ov015_02128424[18] = {
+const Enm026Variant* data_ov015_02128424[18] = {
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fe8, &data_ov015_02128058, &data_ov015_02128028,
     &data_ov015_02128018, &data_ov015_02128018, &data_ov015_02128008, &data_ov015_02128048, &data_ov015_02127ff8,
     &data_ov015_02128068, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02128068, &data_ov015_02128068,
