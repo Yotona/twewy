@@ -44,6 +44,14 @@ typedef struct BtlEnm010RGAim {
     /* 0x02 */ s16 unk_02;
 } BtlEnm010RGAim;
 
+/// `BtlEnm010Var84` -- the word at `+0x84` whose low 2 bits select the sprite variant. The
+/// reference reads the whole word and extracts with `lsl #0x1e / lsr #0x1e`; a hand-written
+/// shift pair folds to `and #0x3`, and only the bitfield form keeps the pair.
+typedef struct BtlEnm010Var84 {
+    u32 var  : 2;
+    u32 rest : 30;
+} BtlEnm010Var84;
+
 /// `func_ov003_0208a114` -- one argument; returns a pointer to the 0xC-byte record at
 /// `base + index * 12` (`mla r0, 0xc, r0, table; bx lr`). The `u16` parameter is load-bearing:
 /// call sites truncate a computed selector with `lsl #0x10 / lsr #0x10`.
@@ -2444,7 +2452,7 @@ s32 func_ov011_021283a8(BtlEnm010SingleShot* data, void* arg1) {
     u32* o;
 
     MI_CpuSet(data, 0, 0xB4);
-    func_ov011_021258b4(((*(u32*)((u8*)*(u32*)arg1 + 0x84) << 30) >> 30), (CombatSprite*)((u8*)data + 4), 2);
+    func_ov011_021258b4((u32)((*(u32*)((u8*)*(u32*)arg1 + 0x84)) << 30) >> 30, (CombatSprite*)((u8*)data + 4), 2);
     Mini108_VBlank((CombatSprite*)((u8*)data + 4), 0, 0);
     for (i = 0; i < 3; i++) {
         *(s32*)((u8*)data + 0x70 + i * 16) =
@@ -2623,13 +2631,20 @@ s32 func_ov011_02128758(void* arg0, void* arg1, s32 arg2, s32 index) {
 /// re-read through `*(u32*)arg1` at every use rather than cached in a local -- the original
 /// loads it five times and caching it costs those loads. The five-way fill writes the base
 /// position to `0x70 + i * 4` and the base height to `0x84 + i * 4`, interleaved.
+///
+/// The variant selector at `+0x84` is a 2-bit bitfield (`BtlEnm010Var84`): the reference reads
+/// the word and extracts with `lsl #0x1e / lsr #0x1e`, and a hand-written shift pair folds to
+/// `and #0x3` -- only the bitfield spelling keeps the pair.
+///
+/// Open (51 bytes): the `+0x24`/arm block runs one register higher than the reference (chain in
+/// r1/v in r2 vs r0/r1) with the same live-value count -- the scratch rotation, not a
+/// declaration. Scoping `i` did not move it.
 s32 func_ov011_021287b8(BtlEnm010Sprl* data, void* arg1) {
-    s32 i;
     s32 v;
 
     MI_CpuSet(data, 0, 0xB8);
     *(u32*)((u8*)data + 0x00) = *(u32*)arg1;
-    func_ov011_021258b4(*(u16*)((u8*)*(u32*)arg1 + 0x84), 0, 2);
+    func_ov011_021258b4(((const BtlEnm010Var84*)((const u8*)*(u32*)arg1 + 0x84))->var, (CombatSprite*)((u8*)data + 4), 2);
     Mini108_VBlank((CombatSprite*)((u8*)data + 4), 0, 0);
     if (*(s32*)((u8*)*(u32*)arg1 + 0x24) == 0) {
         *(u16*)((u8*)data + 0xAC) = 0x8000;
@@ -2642,7 +2657,7 @@ s32 func_ov011_021287b8(BtlEnm010Sprl* data, void* arg1) {
     }
     *(s32*)((u8*)data + 0x9C) = *(s32*)((u8*)*(u32*)arg1 + 0x28) + v;
     *(s32*)((u8*)data + 0xA0) = *(s32*)((u8*)*(u32*)arg1 + 0x2C);
-    for (i = 0; i < 5; i++) {
+    for (s32 i = 0; i < 5; i++) {
         *(s32*)((u8*)data + 0x70 + i * 4) = *(s32*)((u8*)data + 0x9C);
         *(s32*)((u8*)data + 0x84 + i * 4) = *(s32*)((u8*)data + 0xA0);
     }
@@ -3326,7 +3341,7 @@ s32 func_ov011_02129994(BtlEnm010Tatt* data, void* arg1) {
     q = (void*)((u8*)data + 4);
     p = (u16*)((u8*)data + 0x88);
     for (i = 1; i < 5; i++) {
-        func_ov011_021258b4(((*(u32*)((u8*)*(u32*)arg1 + 0x84) << 30) >> 30), (CombatSprite*)q, i);
+        func_ov011_021258b4((u32)((*(u32*)((u8*)*(u32*)arg1 + 0x84)) << 30) >> 30, (CombatSprite*)q, i);
         p[0] = p[0] | 2;
         q    = (void*)((u8*)q + 0x88);
         p    = (u16*)((u8*)p + 0x88);
@@ -3752,6 +3767,11 @@ void func_ov011_0212a634(BtlEnm010Tatt* data) {
 /// The `0x1DC`/`0x1E4` stores both go through one `s32` local: the original loads `0x28` into
 /// r3, stores it, then overwrites r3 with 0 and stores that, and a local is what forces the
 /// reuse.
+///
+/// Open (97 bytes): the `0x1C4`/`0x1C0` stores re-derive the `data + 0x100` page base in the
+/// reference (two `add r0, r5, #0x100`) where ours CSEs it; the split `0x100 + 0xC4` spelling
+/// brings the second add back but the reference also interleaves it *between* the `movlt`/
+/// `movge` phi pair, which no spelling has moved.
 void func_ov011_0212a674(BtlEnm010Tatt* data) {
     s32 v;
 
@@ -3911,13 +3931,13 @@ void func_ov011_0212aa20(BtlEnm010Tatt* data) {
 
     bias = (*(s32*)((u8*)data + 0x24) == 0) ? 0 - 0x60000 : 0x60000;
     if (data->unk_1C4 == 0 && data->unk_1C0 == 0) {
-        *(s16*)((u8*)data + 0x1C4) =
+        *(s16*)((u8*)data + 0x100 + 0xC4) =
             (func_ov003_020cba2c(*(s32*)((u8*)data + 0x28), *(s32*)((u8*)data + 0x2C),
                                  *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x28),
                                  *(s32*)((u8*)(*(u32*)((u8*)data_ov003_020e71b8 + 0x3D000 + 0x898)) + 0x2C)) < 0x80000)
                 ? 1
                 : 0;
-        data->unk_1C0 = 0;
+        *(s16*)((u8*)data + 0x100 + 0xC0) = 0;
     }
     switch (data->unk_1C4) {
         case 0:
