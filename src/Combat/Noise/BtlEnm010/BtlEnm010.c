@@ -3505,17 +3505,15 @@ void func_ov011_02129ef8(BtlEnm010Tatt* data) {
 void func_ov011_02129f80(BtlEnm010Tatt* data) {
     void (*f)(BtlEnm010Tatt*);
     s32 v;
-    u32 n;
 
-    f = NULL;
-    n = *(s16*)((u8*)data + 0x1F6);
     v = 0;
+    f = NULL;
     switch (*(u16*)((u8*)data + 0x80)) {
         case 0:
-            v = data_ov011_0212c37c[n % 5];
+            v = data_ov011_0212c37c[(u32)(*(s16*)((u8*)data + 0x1F6)) % 5];
             break;
         case 1:
-            v = data_ov011_0212c390[n % 6];
+            v = data_ov011_0212c390[(u32)(*(s16*)((u8*)data + 0x1F6)) % 6];
             break;
         case 2:
             if (func_ov011_0212bdbc(data, 0) != 0) {
@@ -3525,7 +3523,7 @@ void func_ov011_02129f80(BtlEnm010Tatt* data) {
             }
             break;
         case 3:
-            v = *(s32*)((u8*)data_ov011_0212c3a8 + (((n << 30) >> 27) + (u32)RNG_Next(2) * 4));
+            v = ((s32*)((u8*)data_ov011_0212c3a8 + (((((u32)(*(s16*)((u8*)data + 0x1F6))) << 30) >> 27))))[(u32)RNG_Next(2)];
             break;
     }
     *(s16*)((u8*)data + 0x1F6) = *(s16*)((u8*)data + 0x1F6) + 1;
