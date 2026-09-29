@@ -106,9 +106,9 @@ typedef struct BtlEnm015Stamp {
     /* 0x08 */ u16        unk_08;
 } BtlEnm015Stamp; // Size: 0x0C
 
-extern Enm015Variant* data_ov013_02127540[3];
-extern s32            data_ov013_02127640;
-extern s32            data_ov013_02127644;
+extern const Enm015Variant* data_ov013_02127540[3];
+extern s32                  data_ov013_02127640;
+extern s32                  data_ov013_02127644;
 
 extern const TaskHandle Tsk_BtlEnm015_Eff;
 extern const TaskHandle Tsk_BtlEnm015_EffStamp;
