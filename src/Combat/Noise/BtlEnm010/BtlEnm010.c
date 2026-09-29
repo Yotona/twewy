@@ -1533,12 +1533,12 @@ void func_ov011_02126b2c(BtlEnm010RG* data) {
 /// returns if `func_ov011_021277c8` said the animation is done, else re-arms phase 1.
 void func_ov011_02126bf8(BtlEnm010RG* data) {
     s32 bit1;
+    s32 n;
+    s32 r;
     s32 slot;
     s32 count;
     s32 i;
     s32 flags[2];
-    s32 r;
-    s32 n;
     s32 bias;
     s32 angle;
 
