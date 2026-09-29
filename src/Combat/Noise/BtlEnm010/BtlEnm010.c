@@ -52,6 +52,13 @@ typedef struct BtlEnm010Var84 {
     u32 rest : 30;
 } BtlEnm010Var84;
 
+/// A two-halfword pair, for the aggregate copies whose reference shape is two `ldrh`/two
+/// `strh` in address order (the scalar spelling reverses one side or the other).
+typedef struct BtlEnm010Pair16 {
+    u16 lo;
+    u16 hi;
+} BtlEnm010Pair16;
+
 /// `func_ov003_0208a114` -- one argument; returns a pointer to the 0xC-byte record at
 /// `base + index * 12` (`mla r0, 0xc, r0, table; bx lr`). The `u16` parameter is load-bearing:
 /// call sites truncate a computed selector with `lsl #0x10 / lsr #0x10`.
@@ -3320,8 +3327,8 @@ s32 func_ov011_02129934(void* arg0, void* arg1, s32 arg2, s32 index) {
 s32 func_ov011_02129994(BtlEnm010Tatt* data, void* arg1) {
     s32   r;
     s32   i;
-    u16*  p;
     void* q;
+    u16*  p;
 
     MI_CpuSet(data, 0, 0x250);
     r                          = (func_ov003_020c37f8((void*)((u8*)*(u32*)arg1 + 0x84)) != 0) ? 1 : 0;
@@ -3340,27 +3347,31 @@ s32 func_ov011_02129994(BtlEnm010Tatt* data, void* arg1) {
                         0.5f);
     q = (void*)((u8*)data + 4);
     p = (u16*)((u8*)data + 0x88);
-    for (i = 1; i < 5; i++) {
-        func_ov011_021258b4((u32)((*(u32*)((u8*)*(u32*)arg1 + 0x84)) << 30) >> 30, (CombatSprite*)q, i);
+    i = 0;
+    do {
+        func_ov011_021258b4(((const BtlEnm010Var84*)((const u8*)*(u32*)arg1 + 0x84))->var, (CombatSprite*)q, 1);
+        i++;
         p[0] = p[0] | 2;
-        q    = (void*)((u8*)q + 0x88);
         p    = (u16*)((u8*)p + 0x88);
-    }
+        q    = (void*)((u8*)q + 0x88);
+    } while (i < 4);
     func_ov011_02128ca4(data, (s32)func_ov011_02128cc0);
     if (*(s32*)((u8*)*(u32*)arg1 + 0x24) == 0) {
-        *(u8*)((u8*)data + 0x24C) = *(u8*)((u8*)data + 0x24C) & 0xFE;
+        *(u8*)((u8*)data + 0x24C) = *(u8*)((u8*)data + 0x24C) & ~1;
     } else {
-        *(u8*)((u8*)data + 0x24C) = (u8)((*(u8*)((u8*)data + 0x24C) & 0xFE) | 1);
+        *(u8*)((u8*)data + 0x24C) = (u8)((*(u8*)((u8*)data + 0x24C) & ~1) | 1);
     }
     if (func_ov003_020c37f8((void*)((u8*)*(u32*)arg1 + 0x84)) != 0) {
         *(u8*)((u8*)data + 0x24C) = *(u8*)((u8*)data + 0x24C) | 2;
     } else {
-        *(u8*)((u8*)data + 0x24C) = *(u8*)((u8*)data + 0x24C) & 0xFD;
+        *(u8*)((u8*)data + 0x24C) = *(u8*)((u8*)data + 0x24C) & ~2;
     }
-    *(u16*)((u8*)data + 0x244) = *(u16*)((u8*)*(u32*)arg1 + 0x04);
-    *(u16*)((u8*)data + 0x246) = *(u16*)((u8*)*(u32*)arg1 + 0x06);
-    *(u16*)((u8*)data + 0x248) = *(u16*)((u8*)*(u32*)arg1 + 0x08);
-    *(u16*)((u8*)data + 0x24A) = *(u16*)((u8*)*(u32*)arg1 + 0x0A);
+    {
+        void* owner = *(u32*)arg1;
+
+        *(BtlEnm010Pair16*)((u8*)data + 0x244) = *(const BtlEnm010Pair16*)((const u8*)owner + 0x04);
+        *(BtlEnm010Pair16*)((u8*)data + 0x248) = *(const BtlEnm010Pair16*)((const u8*)owner + 0x08);
+    }
     return 1;
 }
 
