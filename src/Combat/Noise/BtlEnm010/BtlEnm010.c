@@ -4348,23 +4348,24 @@ s32 func_ov011_0212b6e0(BtlEnm010Tatt* data, s32 arg1) {
                 *(s16*)((u8*)data + 0x202) = func_ov011_0212bce0(data, 0x8000);
                 func_ov003_02087f00(0x1E4, func_ov003_020843b0(0, *(s32*)((u8*)data + 0x28)));
             }
-            return 1;
+            goto out;
         case 1:
             if (*(s16*)((u8*)data + 0x204) < *(s16*)((u8*)data + 0x202)) {
                 *(s16*)((u8*)data + 0x204) = *(s16*)((u8*)data + 0x204) + 1;
-                return 1;
+                goto out;
             }
             Mini108_VBlank((CombatSprite*)((u8*)data + 0x84), 2, 1);
             data->unk_1D4 = 0;
             data->unk_1D0 = 0;
-            return 1;
+            goto out;
         case 2:
             if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)data + 0x84)) != 0) {
                 func_ov003_020cb520(data, 1);
                 return 0;
             }
-            return 1;
+            goto out;
     }
+out:
     return 1;
 }
 
