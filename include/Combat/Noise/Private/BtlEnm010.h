@@ -8,7 +8,50 @@
 
 /// A saved handle to the single task `BtlEnm010` spawns, so the other entry points can find it
 /// again. Lives in the overlay's `.bss`.
-extern Task* data_ov011_0212cca0;
+///
+/// `symbols.txt` gives this symbol the whole 0x20-byte `.bss` extent -- the auto-tagger folded
+/// the unnamed statics that follow the handle into it -- so the object is declared with that
+/// granularity, the handle being its first word (the same trick `BtlEnm006.c` uses for
+/// `data_ov010_02129028`, and what objdiff compares against).
+typedef struct BtlEnm010Bss {
+    /* 0x00 */ Task* task;
+    /* 0x04 */ u8    tail[0x1C];
+} BtlEnm010Bss;
+
+extern BtlEnm010Bss data_ov011_0212cca0;
+
+// ---------------------------------------------------------------------------------------
+// Data record shapes.  These live here rather than in `BtlEnm010.c` because the overlay's
+// data is a translation unit of its own (`BtlEnm010Data.c`): the reference's codegen loads
+// every table through pointers, so the definitions must not be visible to the code -- MWCC's
+// `-ipa file` folds reads of in-file `const` tables into immediates and silently changes
+// the generated code.
+// ---------------------------------------------------------------------------------------
+
+/// One 4-byte record of the aim table `data_ov011_0212c13c`, indexed by
+/// `(0x1E - data->unk_1FA) / 5`. `unk_00` is loaded `ldrh` (u16) and added to the per-slot base
+/// angle; `unk_02` is loaded `ldrsh` (s16) and passed through to the shot spawn unchanged.
+typedef struct BtlEnm010RGAim {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ s16 unk_02;
+} BtlEnm010RGAim;
+
+/// The four RG phase entries as one 0x10-byte block of function pointers.
+///
+/// The size is pinned twice: `func_ov011_021278d4` copies exactly 16 bytes of it with a single
+/// `ldm r0, {r0, r1, r2, r3} / stm`, and `data_ov011_0212c168` -- the table `func_ov011_02126bf8`
+/// indexes -- starts 0x10 bytes later.
+typedef struct BtlEnm010RGEntry {
+    /* 0x00 */ void (*func[4])(void*, s32, s32);
+} BtlEnm010RGEntry;
+
+/// The 0x10-byte function table `data_ov011_0212c36c`, copied whole onto the stack with a
+/// single `ldm`/`stm` pair and called through element `arg3`.
+typedef s32 (*BtlEnm010Fn)(void*, void*, void*);
+
+typedef struct BtlEnm010FnTable {
+    BtlEnm010Fn f[4];
+} BtlEnm010FnTable;
 
 // ---------------------------------------------------------------------------------------
 // Task data structs.

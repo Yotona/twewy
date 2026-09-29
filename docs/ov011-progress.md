@@ -29,25 +29,58 @@ style and idiom: `BtlEnm006` (ov010), `BtlEnm014` (ov012), `BtlEnm015` (ov013), 
 ## Current state
 
 ```
-114 total | 6 raw byte-identical | 68 identical-modulo-relocation | 40 differ | 0 missing
-1956 differing bytes
+functions: 114 total | 6 raw byte-identical | 80 identical-modulo-relocation | 28 differ | 0 missing
+1163 differing bytes
+data:     154 symbols compared against the delink reference, 0 problems (bytes + relocations)
 ```
 
-- **74 byte-exact.** `.text` prefix `0x021256c0..0x021260e8` is contiguous.
-- **40 written-not-exact**, 1,956 differing bytes: 31 older functions (1,224 B after the
-  canonical-name fix) + the 9 functions written this session at first-pass quality (732 B).
+- **86 byte-exact functions.** `.text` prefix `0x021256c0..0x021260e8` is contiguous.
+- **28 written-not-exact**, 1,163 differing bytes — the diff queue (largest: 02126bf8 130,
+  02129410 121, 0212aa20 97, 021284bc 79, 02129cec 75, 02129188 76, 02128070 55, 021287b8 51,
+  02128cc0 50, 02128150 49).
 - **0 unstarted.** All 114 definitions exist and compile.
+- **The data is transcribed.** All 154 `.rodata`/`.data`/`.bss` symbols live in
+  `BtlEnm010Data.c`, byte-exact against the delink reference (`datadiff.py`: 0 problems) and at
+  objdiff's `.rodata`/`.data` 100%. See "The data" below for the two toolchain walls this
+  uncovered — one of them forced the data into its own translation unit.
 - **Address-order debt: PAID.** All 114 definitions are emitted in ascending address order and
   the object's per-function `.text` sections verify ascending. It was **46** functions out of
   order, not "~16" — the earlier estimate was an eyeball; a longest-increasing-subsequence count
   is the honest number.
-- **34 functions carry wrong codegen sizes** (net +200 bytes) — see "What is left". Until those
-  are exact, every symbol after them in `.text` lands shifted and the ROM comparison avalanches.
+- **28 functions carry wrong codegen sizes** — see "What is left". Until those are exact, every
+  symbol after them in `.text` lands shifted and the ROM comparison avalanches.
 
-Progression across the earlier sessions: 2 → 12 → 15 → 29 → 41 → 49 → 62 → 73 → **74**. The last
-six of those moved 62 → 73 → 74 → 74 → 74 → 74. The cheap phase is over. This session moved the
-*state* rather than the count: the address-order debt is paid, all nine missing functions exist,
-and the overlay links.
+Progression across the earlier sessions: 2 → 12 → 15 → 29 → 41 → 49 → 62 → 73 → 74 → **86**.
+
+## The data: transcribed, verified, and the two toolchain walls
+
+`BtlEnm010Data.c` holds every data symbol in the original's layout order, generated from the
+delink reference object by `build/scratch/datagen.py` and verified symbol-by-symbol by
+`build/scratch/datadiff.py` (bytes **and** relocation targets: 154/154). objdiff scores
+`.rodata` and `.data` at **100%**. Two measured facts govern everything about this file:
+
+1. **The data must not share a translation unit with the code.** The reference codegen loads
+   every table through pointers (`ldr r0, =table; ldr r1, [r0]`). With the definitions visible
+   to the code, MWCC's `-ipa file` folds those reads into immediates and silently rewrites the
+   functions — `func_ov011_02129188` alone loses 40 bytes of match, and even without `-ipa` the
+   visible array sizes (an `extern s32 x[]` versus a defined `s32 x[4]`) perturb register
+   allocation for another 5. The measured baseline is 1,163 bytes of `.text` diff with the data
+   out of the TU, 1,203 with it in. This is why the file exists at all.
+
+2. **The compiler and linker do not order the data entries, and no source ordering can make
+   them.** MWCC emits data objects size-sorted (with same-shape objects packed into shared
+   sections and an opaque tie-break); mwldarm preserves input section order; the result is that
+   arbitrary data layouts cannot be expressed in the linked image from C. The emission order is
+   a pure function of the symbol set — proven invariant to source order, declaration order,
+   type spelling, `#pragma define_section`/`section`/`pool`/`constpool`, `-constpool`, and
+   `-str reuse`. This is a toolchain limitation, not a property of our data: objdiff compares
+   the data per symbol (100%), and the byte image is verbatim. The ROM-level `complete` endgame
+   for the data is blocked on it; the ROM's data currently comes from the delink object, as it
+   does for every sibling overlay.
+
+The `.bss` symbol is declared `BtlEnm010Bss` (handle + 0x1C tail) rather than `Task*` + pad:
+`symbols.txt` gives `data_ov011_0212cca0` the whole 0x20 extent, and objdiff compares that
+granularity — the same trick `BtlEnm006.c` uses for `data_ov010_02129028`.
 
 ## The link: achieved experimentally, and how to reproduce it
 
@@ -237,6 +270,9 @@ original bytes and are vacuous.
 | `ov.ps1` / `ovm.ps1` | Iterate: patch the delinks `.text end`, build, diff, print. **Use `ovm.ps1` for anything that does not edit the `.c`.** |
 | `romcmp.py` | ROM byte comparison. **Cannot run until the overlay links.** Correct mapping (`ram - 0x1FECCC0`, anchored on `Apl_Suy/Grp_BtlEnm010_MotMove`). |
 | `census.py` / `census2.py` | Offset histograms across a task's functions — the fastest way to characterise a struct |
+| `datagen.py` | Generates the data definitions (`.rodata`/`.data`/`.bss`) from the delink reference object: bytes verbatim, typed where the code or the relocations demand it. Output: `data_gen.c`. |
+| `datadiff.py` | **the data measurement tool.** Compares every data symbol against the delink reference — bytes and relocation targets, symbol by symbol (objdiff's standard; section order is the toolchain's problem). |
+| `mk_datafile.py` | Assembles `BtlEnm010Data.c` from the generated block + the preamble (the `-ipa` split rationale lives there). |
 | `audit003.py` / `audit011.py` | ov003 and ov011-local arity triage. ~90% false positive. |
 | `retcheck.py` | Return-type classification. Only its "every return site sets r0" verdicts are trustworthy; the 3-instruction window is too narrow. |
 
@@ -245,6 +281,19 @@ average look better than it is.
 
 ## Traps, learned the hard way
 
+- **Never let the data share a TU with the code that reads it.** MWCC's `-ipa file` folds reads
+  of in-file `const` tables into immediates and silently rewrites the callers — 40 bytes of
+  match gone in `func_ov011_02129188` alone — and even without `-ipa`, the *visible array size*
+  (`extern s32 x[]` vs a defined `s32 x[4]`) shifts register allocation. The reference loads
+  every table through pointers, which is itself the proof its data was a separate TU. Measure
+  the `.text` diff (1,163 vs 1,203) after any experiment that moves definitions around.
+- **Data section *placement* is not expressible from C with this toolchain.** MWCC emits data
+  objects size-sorted (same-shape objects packed into shared sections, opaque tie-break);
+  mwldarm keeps input order. The emission order is a pure function of the symbol set — source
+  order, declaration order, `#pragma define_section`/`section`/`pool`/`constpool`, `-constpool`
+  and `-str reuse` all leave it unchanged. Do not build post-processing band-aids against it:
+  verify the data symbol-by-symbol (`datadiff.py`, objdiff) and treat the ROM-level placement as
+  blocked on the toolchain.
 - **Address-order debt blocks the link — and it is now paid.** Functions must be emitted in
   address order (all 114 are, and the object's `.text` sections verify ascending). Insert at
   address as you write anything new; `fbdiff` measures per symbol so the count stays honest, but

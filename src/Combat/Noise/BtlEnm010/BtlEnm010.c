@@ -36,14 +36,6 @@ typedef struct BtlEnm010CmdTbl {
     /* 0x08 */ s32 unk_08;
 } BtlEnm010CmdTbl;
 
-/// One 4-byte record of the aim table `data_ov011_0212c13c`, indexed by
-/// `(0x1E - data->unk_1FA) / 5`. `unk_00` is loaded `ldrh` (u16) and added to the per-slot base
-/// angle; `unk_02` is loaded `ldrsh` (s16) and passed through to the shot spawn unchanged.
-typedef struct BtlEnm010RGAim {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ s16 unk_02;
-} BtlEnm010RGAim;
-
 /// `BtlEnm010Var84` -- the word at `+0x84` whose low 2 bits select the sprite variant. The
 /// reference reads the whole word and extracts with `lsl #0x1e / lsr #0x1e`; a hand-written
 /// shift pair folds to `and #0x3`, and only the bitfield form keeps the pair.
@@ -300,7 +292,7 @@ extern s32 func_ov003_020cb150(void* p);
 
 /// The heap name `func_ov011_02125a08` hands to the pool allocator, and the two bin tables it
 /// measures: the 0x28-stride one (ten records per mode) and the flat three-entry one.
-extern const char data_ov011_0212cbd4[];
+extern char data_ov011_0212cbd4[];
 
 /// A pair of running maxima, kept in the frame. The original zeroes each pair with a single
 /// `str` pair through a base pointer (`add r4, sp, #0xc / str r1, [r4, #0] / str r1, [r4, #4]`)
@@ -423,15 +415,6 @@ extern s32 func_ov011_02127c84(void* p);
 
 extern s32 func_ov003_020c703c(void* p);
 
-/// The four RG phase entries as one 0x10-byte block of function pointers.
-///
-/// The size is pinned twice: `func_ov011_021278d4` copies exactly 16 bytes of it with a single
-/// `ldm r0, {r0, r1, r2, r3} / stm`, and `data_ov011_0212c168` -- the table `func_ov011_02126bf8`
-/// indexes -- starts 0x10 bytes later.
-typedef struct BtlEnm010RGEntry {
-    /* 0x00 */ void (*func[4])(void*, s32, s32);
-} BtlEnm010RGEntry;
-
 extern const BtlEnm010RGEntry data_ov011_0212c158;
 
 extern s32 func_ov003_020c62c4(void* p, s32 arg1);
@@ -548,12 +531,6 @@ extern void func_ov003_020c492c(void* p);
 ///
 /// The task data is **not** pinned, so it is taken as an opaque pointer. If a seventh task
 /// struct turns up, this is one of its entries.
-typedef s32 (*BtlEnm010Fn)(void*, void*, void*);
-
-typedef struct BtlEnm010FnTable {
-    BtlEnm010Fn f[4];
-} BtlEnm010FnTable;
-
 extern const BtlEnm010FnTable data_ov011_0212c36c;
 
 extern const s16 data_ov011_0212c30c[];
@@ -572,12 +549,12 @@ extern s32 func_ov011_0212b890(BtlEnm010Tatt* data, s16* arg1, s16* arg2, s32 ar
 
 extern s32 func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 
-extern s32       func_ov003_020cb888(void* p, s32 arg1, s32 arg2);
-extern const u32 data_ov011_0212cc7c[];
-extern void      func_ov011_0212a134(BtlEnm010Tatt* data);
-extern void      func_ov011_0212a2ec(BtlEnm010Tatt* data);
-extern void      func_ov011_0212a420(BtlEnm010Tatt* data);
-extern void      func_ov011_0212a634(BtlEnm010Tatt* data);
+extern s32         func_ov003_020cb888(void* p, s32 arg1, s32 arg2);
+extern const void* data_ov011_0212cc7c[];
+extern void        func_ov011_0212a134(BtlEnm010Tatt* data);
+extern void        func_ov011_0212a2ec(BtlEnm010Tatt* data);
+extern void        func_ov011_0212a420(BtlEnm010Tatt* data);
+extern void        func_ov011_0212a634(BtlEnm010Tatt* data);
 
 extern s32 func_ov003_020cb594(void* p, s32 arg1);
 
@@ -632,16 +609,16 @@ extern void func_ov011_02128cc0(BtlEnm010Tatt* data);
 // Spawns the one task this overlay owns and stashes the handle for the other entry points.
 // The incoming halfword is handed over by pointer as the task's parameter.
 void func_ov011_021256c0(u16 arg0) {
-    u16   param         = arg0;
-    u32   zero          = 0;
-    Task* t             = EasyTask_CreateTask(ENM010_POOL, &data_ov011_0212bfa4, 0, 0, zero, &param);
-    data_ov011_0212cca0 = t;
+    u16   param              = arg0;
+    u32   zero               = 0;
+    Task* t                  = EasyTask_CreateTask(ENM010_POOL, &data_ov011_0212bfa4, 0, 0, zero, &param);
+    data_ov011_0212cca0.task = t;
 }
 
 // Looks the task back up and marks it, setting bit 4 of its flags word. Predicated rather than
 // branched in the original: the `cmp`/`ldrhne`/`orrne`/`strhne` chain.
 void func_ov011_02125714(void) {
-    Task* t = EasyTask_GetTaskById(ENM010_POOL, data_ov011_0212cca0);
+    Task* t = EasyTask_GetTaskById(ENM010_POOL, data_ov011_0212cca0.task);
     if (t != NULL) {
         *(u16*)((u8*)t + 4) |= 0x10;
     }
@@ -663,7 +640,7 @@ void func_ov011_02125750(s32 arg0, CombatSprite* arg1, s32 arg2) {
     u16              phase;
 
     CombatSprite_Release(arg1);
-    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0);
+    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
     // The original builds the record pointer first (`mla r1, r3, r1, r2`) and then indexes
     // it by the variant (`ldr r4, [r1, r8, lsl #2]`).  Spelled as a single subscript
     // `base[mode * 0x28 + arg2]` MWCC instead folds the variant into the displacement and
@@ -710,7 +687,7 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
     u16              elem;
     u16              pal;
 
-    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0);
+    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
     bin  = data_ov011_0212cae8[arg2];
     if (func_ov003_020cb32c(data, bin) == 0) {
         slot = 2;
