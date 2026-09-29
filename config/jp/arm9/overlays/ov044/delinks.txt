@@ -4,17 +4,157 @@
     .data       start:0x020984e0 end:0x02098e60 kind:data align:32
     .bss        start:0x02098e60 end:0x02098e80 kind:bss align:32
 
-src/Debug/Takami/Tusin.c:
-    .text       start:0x02082e80 end:0x02087458
-    .rodata     start:0x0209749c end:0x0209778c
-    .data       start:0x020984e0 end:0x020986dc
+src/Interface/Menu/Tusin.c:
+    .text       start:0x02082e80 end:0x02084d44
+    .rodata     start:0x0209749c end:0x02097528
+    .data       start:0x020984e0 end:0x02098678
     .bss        start:0x02098e60 end:0x02098e64
 
-src/Debug/Takami/TusinSet.c:
-    .text       start:0x02087458 end:0x0208ed2c
-    .rodata     start:0x0209778c end:0x02097ddc
-    .data       start:0x020986dc end:0x02098a4c
+src/Interface/Menu/TusinData.c:
+    .text       start:0x02084d44 end:0x02085ae4
+    .rodata     start:0x02097528 end:0x020975dc
+
+src/Interface/Menu/Tusin/Tusin_textScr.c:
+    complete
+    .text       start:0x02085ae4 end:0x020860c8
+    .rodata     start:0x020975dc end:0x02097624
+    .data       start:0x02098678 end:0x0209868c
+
+src/Interface/Menu/Tusin/Tusin_btn.c:
+    complete
+    .text       start:0x020860c8 end:0x020862fc
+    .rodata     start:0x02097624 end:0x0209766c
+    .data       start:0x0209868c end:0x0209869c
+
+src/Interface/Menu/Tusin/Tusin_btnF.c:
+    complete
+    .text       start:0x020862fc end:0x02086558
+    .rodata     start:0x0209766c end:0x020976b4
+    .data       start:0x0209869c end:0x020986ac
+
+src/Interface/Menu/Tusin/Tusin_btnLR.c:
+    complete
+    .text       start:0x02086558 end:0x02086850
+    .rodata     start:0x020976b4 end:0x020976fc
+    .data       start:0x020986ac end:0x020986bc
+
+src/Interface/Menu/Tusin/Tusin_num.c:
+    complete
+    .text       start:0x02086850 end:0x02086c48
+    .rodata     start:0x020976fc end:0x02097744
+    .data       start:0x020986bc end:0x020986cc
+
+src/Interface/Menu/Tusin/Tusin_beltU.c:
+    complete
+    .text       start:0x02086c48 end:0x02087458
+    .rodata     start:0x02097744 end:0x0209778c
+    .data       start:0x020986cc end:0x020986dc
+
+src/Interface/Menu/TusinSet.c:
+    .text       start:0x02087458 end:0x02088b5c
+    .rodata     start:0x0209778c end:0x02097860
+    .data       start:0x020986dc end:0x020988ac
     .bss        start:0x02098e64 end:0x02098e68
+
+src/Interface/Menu/TusinSetData.c:
+    .text       start:0x02088b5c end:0x0208a55c
+    .rodata     start:0x02097860 end:0x020978cc
+    .data       start:0x020988ac end:0x020988f0
+
+src/Interface/Menu/TusinSet/TusinSet_textScr.c:
+    complete
+    .text       start:0x0208a55c end:0x0208a8dc
+    .rodata     start:0x020978cc end:0x020978fc
+    .data       start:0x020988f0 end:0x02098908
+
+src/Interface/Menu/TusinSet/TusinSet_btn.c:
+    complete
+    .text       start:0x0208a8dc end:0x0208aba4
+    .rodata     start:0x020978fc end:0x02097944
+    .data       start:0x02098908 end:0x0209891c
+
+src/Interface/Menu/TusinSet/TusinSet_icon.c:
+    complete
+    .text       start:0x0208aba4 end:0x0208aea8
+    .rodata     start:0x02097944 end:0x0209798c
+    .data       start:0x0209891c end:0x02098930
+
+src/Interface/Menu/TusinSet/TusinSet_nameD.c:
+    complete
+    .text       start:0x0208aea8 end:0x0208b154
+    .rodata     start:0x0209798c end:0x020979dc
+    .data       start:0x02098930 end:0x02098944
+
+src/Interface/Menu/TusinSet/TusinSet_partner.c:
+    complete
+    .text       start:0x0208b154 end:0x0208b574
+    .rodata     start:0x020979dc end:0x02097a24
+    .data       start:0x02098944 end:0x0209895c
+
+src/Interface/Menu/TusinSet/TusinSet_item.c:
+    .text       start:0x0208b574 end:0x0208b800
+    .rodata     start:0x02097a24 end:0x02097a6c
+    .data       start:0x0209895c end:0x02098970
+
+src/Interface/Menu/TusinSet/TusinSet_itemCur.c:
+    complete
+    .text       start:0x0208b800 end:0x0208ba8c
+    .rodata     start:0x02097a6c end:0x02097ab4
+    .data       start:0x02098970 end:0x02098988
+
+src/Interface/Menu/TusinSet/TusinSet_tab.c:
+    complete
+    .text       start:0x0208ba8c end:0x0208bd5c
+    .rodata     start:0x02097ab4 end:0x02097afc
+    .data       start:0x02098988 end:0x0209899c
+
+src/Interface/Menu/TusinSet/TusinSet_sbar.c:
+    complete
+    .text       start:0x0208bd5c end:0x0208c2ac
+    .rodata     start:0x02097afc end:0x02097b44
+    .data       start:0x0209899c end:0x020989b0
+
+src/Interface/Menu/TusinSet/TusinSet_helpCur.c:
+    complete
+    .text       start:0x0208c2ac end:0x0208c674
+    .rodata     start:0x02097b44 end:0x02097b8c
+    .data       start:0x020989b0 end:0x020989c8
+
+src/Interface/Menu/TusinSet/TusinSet_textScrU.c:
+    complete
+    .text       start:0x0208c674 end:0x0208d680
+    .rodata     start:0x02097b8c end:0x02097c0c
+    .data       start:0x020989c8 end:0x020989e0
+
+src/Interface/Menu/TusinSet/TusinSet_bdgU.c:
+    complete
+    .text       start:0x0208d680 end:0x0208df64
+    .rodata     start:0x02097c0c end:0x02097c70
+    .data       start:0x020989e0 end:0x020989f4
+
+src/Interface/Menu/TusinSet/TusinSet_itemU.c:
+    complete
+    .text       start:0x0208df64 end:0x0208e4b4
+    .rodata     start:0x02097c70 end:0x02097cdc
+    .data       start:0x020989f4 end:0x02098a08
+
+src/Interface/Menu/TusinSet/TusinSet_nameU.c:
+    complete
+    .text       start:0x0208e4b4 end:0x0208e810
+    .rodata     start:0x02097cdc end:0x02097d34
+    .data       start:0x02098a08 end:0x02098a1c
+
+src/Interface/Menu/TusinSet/TusinSet_slotCoverU.c:
+    complete
+    .text       start:0x0208e810 end:0x0208ea64
+    .rodata     start:0x02097d34 end:0x02097d94
+    .data       start:0x02098a1c end:0x02098a34
+
+src/Interface/Menu/TusinSet/TusinSet_helpCurU.c:
+    complete
+    .text       start:0x0208ea64 end:0x0208ed2c
+    .rodata     start:0x02097d94 end:0x02097ddc
+    .data       start:0x02098a34 end:0x02098a4c
 
 src/Debug/Takami/FriendList.c:
     .text       start:0x0208ed2c end:0x0209749c

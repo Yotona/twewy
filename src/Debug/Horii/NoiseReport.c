@@ -139,7 +139,7 @@ func_ov028_020e81fc(Sprite*, s16) {
 }
 
 void func_ov028_020e8220(void) {
-    func_02023d1c(2);
+    Inventory_IsHelpSeen(2);
 }
 
 func_ov028_020e8230(s16) {

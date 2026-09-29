@@ -11,7 +11,7 @@ typedef struct {
     /* 0x4 */ MenuEquipObject* owner;
 } MenuEquip_helpCur_Args;
 
-extern s32 func_02023d1c(s32 arg0);
+extern s32 Inventory_IsHelpSeen(s32 arg0);
 
 static SpriteFrameInfo* MenuEquip_helpCur_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 static s32              MenuEquip_helpCur_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -74,7 +74,7 @@ static void MenuEquip_helpCur_Load(MenuEquip_helpCur* helpCur, Sprite* sprites, 
     anim.posY      = 0x7D;
     _Sprite_Load(&sprites[2], &anim);
 
-    if (func_02023d1c(3) == 0) {
+    if (Inventory_IsHelpSeen(3) == 0) {
         helpCur->visible[2] = FALSE;
     }
 }
@@ -122,7 +122,7 @@ static s32 MenuEquip_helpCur_Update(TaskPool* pool, Task* task, void* args) {
         helpCur->visible[1] = TRUE;
     }
 
-    if (func_02023d1c(3) == 1) {
+    if (Inventory_IsHelpSeen(3) == 1) {
         helpCur->visible[2] = TRUE;
     }
 

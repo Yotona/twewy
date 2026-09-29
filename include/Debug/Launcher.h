@@ -106,8 +106,8 @@ extern void func_ov043_020c6644(void* state);
 
 extern void ProcessOverlay_Result(void* state);
 
-extern void func_ov045_02083c78(void* state);
-extern void func_ov045_02088700(void* state);
+extern void ProcessOverlay_Tusin(void* state);
+extern void ProcessOverlay_TusinSet(void* state);
 extern void func_ov045_02091034(void* state);
 
 const DebugLauncherOption Options_Horii[2] = {
@@ -144,9 +144,9 @@ const DebugLauncherOption Options_Takami[14] = {
     // "Feature: Test2", "Description: Test2"
     {1,          "機能\:テスト2",                    "説明:テスト2",                  43,      func_ov043_020c6644},
     // "Feature: Communication Menu", "Description: Communication menu screen"
-    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",                  45,      func_ov045_02083c78},
+    {2,   "機能\:通信中メニュー",         "説明:通信中メニュー画面",                  45,     ProcessOverlay_Tusin},
     // "Feature: Communication Setup", "Description: Communication setup screen"
-    {3,       "機能\:通信セット",             "説明:通信セット画面",                  45,      func_ov045_02088700},
+    {3,       "機能\:通信セット",             "説明:通信セット画面",                  45,  ProcessOverlay_TusinSet},
     // "Feature: Friend List", "Description: Friend list screen"
     {4,   "機能\:フレンドリスト",         "説明:フレンドリスト画面",                  45,      func_ov045_02091034},
     {0,                     NULL,                              NULL, OVERLAY_ID_UNLOADED,                     NULL},

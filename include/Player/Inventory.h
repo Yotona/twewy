@@ -63,6 +63,16 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1);
  */
 s32 Inventory_HasRequiredQuantity(u16 itemID, u32 reqQuantity, s32 minPinLevel);
 
+/**
+ * @brief Marks a menu's help pages as seen, so the menu stops opening them on entry.
+ */
+void Inventory_SetHelpSeen(s32 menu);
+
+/**
+ * @brief Checks whether a menu's help pages have been seen.
+ */
+s32 Inventory_IsHelpSeen(s32 menu);
+
 // TODO: Below functions need named and organized into correct headers
 
 u32 func_02023010(u16 arg0);

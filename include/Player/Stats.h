@@ -61,8 +61,20 @@ typedef struct {
 } FriendStats; // Size: 0x18
 
 typedef struct {
-    /* 0x0 */ u16 unk_0;
-    /* 0x2 */ u16 unk_2;
+    /* 0x0 */ union {
+        struct {
+            u16 unk_0_0  : 7; // Count of unk_1FCC entries that are set
+            u16 pinCount : 9; // Pins collected
+        };
+        u16 unk_0;
+    };
+    /* 0x2 */ union {
+        struct {
+            u16 itemCount : 9; // Items collected
+            u16           : 7;
+        };
+        u16 unk_2;
+    };
     /* 0x4 */ u32 current;
     /* 0x8 */ u32 unk_8;
 } Experience;

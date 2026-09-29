@@ -1,6 +1,6 @@
 #include "Interface/Menu/Top.h"
 
-extern s32 func_02023d1c(s32 arg0);
+extern s32 Inventory_IsHelpSeen(s32 arg0);
 
 typedef struct {
     /* 0x00 */ Sprite         sprites[3];
@@ -73,7 +73,7 @@ static void MenuTop_helpCur_Load(MenuTop_helpCur* helpCur, Sprite* sprites, Menu
         helpCur->visible[i] = TRUE;
     }
 
-    if (func_02023d1c(0) == 0) {
+    if (Inventory_IsHelpSeen(0) == 0) {
         helpCur->visible[2] = FALSE;
     }
 }
@@ -116,7 +116,7 @@ static s32 MenuTop_helpCur_Update(TaskPool* pool, Task* task, void* args) {
         helpCur->visible[1] = TRUE;
     }
 
-    if (func_02023d1c(0) == 1) {
+    if (Inventory_IsHelpSeen(0) == 1) {
         helpCur->visible[2] = TRUE;
     }
 

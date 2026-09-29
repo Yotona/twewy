@@ -66,8 +66,8 @@ void GX_LoadObjPltt(void* src, u32 offset, u32 size);
 void GXs_LoadBgPltt(void* src, u32 offset, u32 size);
 void GXs_LoadObjPltt(void* src, u32 offset, u32 size);
 BOOL func_02001b44(s32, s32, s32*, s32);
-void func_02023d00(s32);
-s32  func_02023d1c(s32);
+void Inventory_SetHelpSeen(s32);
+s32  Inventory_IsHelpSeen(s32);
 void func_0202b878(void);
 
 extern void ProcessOverlay_MenuTop(void* state);
@@ -820,7 +820,7 @@ block_72:
 void MenuBadge_StageFadeIn(MenuBadgeState* state) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x1000);
     if (EasyFade_IsFading() == FALSE) {
-        if (func_02023d1c(4) == 0) {
+        if (Inventory_IsHelpSeen(4) == 0) {
             state->timer = 30;
             DebugOvlDisp_ReplaceTop((OverlayCB)MenuBadge_StageOpenHelp, state, PROCESS_STAGE_INIT);
         } else {
@@ -1355,13 +1355,13 @@ void MenuBadge_StageHelp(MenuBadgeState* state) {
                 MenuBadge_HelpPrevPage(state);
             } else if (button == 1) {
                 MenuBadge_HelpNextPage(state);
-            } else if (func_02023d1c(4) == 1) {
+            } else if (Inventory_IsHelpSeen(4) == 1) {
                 MenuBadge_ExitHelp(state);
             }
         }
     }
-    if (func_02023d1c(4) == 0) {
-        func_02023d00(4);
+    if (Inventory_IsHelpSeen(4) == 0) {
+        Inventory_SetHelpSeen(4);
     }
 }
 

@@ -51,6 +51,11 @@ s32 Savefile_RunSavePipelineStep(void);
  */
 s32 Savefile_RunAlternatePipelineStep(void);
 
+void Savefile_ResetIOPipeline(void);
+void FriendData_Set(GlobalFriendData* globalFriendData);
+s32  Savefile_LoadFriendImage(GlobalFriendData* outputBuffer);
+u16  Savefile_GetWriteErrorFlags(void);
+
 /**
  * @brief Reset all gameplay-related data to their initial state. This includes all player and friend stats, all pins, all
  * equipment, all story progress, and all collections.

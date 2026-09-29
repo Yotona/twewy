@@ -1,339 +1,339 @@
-func_ov045_020824a0 kind:function(arm,size=0x88) addr:0x020824a0
-func_ov045_02082528 kind:function(arm,size=0x38) addr:0x02082528
-func_ov045_02082560 kind:function(arm,size=0x198) addr:0x02082560
-func_ov045_020826f8 kind:function(arm,size=0x108) addr:0x020826f8
-func_ov045_02082800 kind:function(arm,size=0x1fc) addr:0x02082800
-func_ov045_020829fc kind:function(arm,size=0xb0) addr:0x020829fc
-func_ov045_02082aac kind:function(arm,size=0xb8) addr:0x02082aac
-func_ov045_02082b64 kind:function(arm,size=0x94) addr:0x02082b64
-func_ov045_02082bf8 kind:function(arm,size=0x3d8) addr:0x02082bf8
-func_ov045_02082fd0 kind:function(arm,size=0x90) addr:0x02082fd0
-func_ov045_02083060 kind:function(arm,size=0x5c) addr:0x02083060
-func_ov045_020830bc kind:function(arm,size=0x3c) addr:0x020830bc
-func_ov045_020830f8 kind:function(arm,size=0x4d8) addr:0x020830f8
-func_ov045_020835d0 kind:function(arm,size=0x3c) addr:0x020835d0
-func_ov045_0208360c kind:function(arm,size=0x54) addr:0x0208360c
-func_ov045_02083660 kind:function(arm,size=0xec) addr:0x02083660
-func_ov045_0208374c kind:function(arm,size=0x3c) addr:0x0208374c
-func_ov045_02083788 kind:function(arm,size=0x4c) addr:0x02083788
-func_ov045_020837d4 kind:function(arm,size=0x1f8) addr:0x020837d4
-func_ov045_020839cc kind:function(arm,size=0x1f8) addr:0x020839cc
-func_ov045_02083bc4 kind:function(arm,size=0xb4) addr:0x02083bc4
-func_ov045_02083c78 kind:function(arm,size=0x40) addr:0x02083c78
-func_ov045_02083cb8 kind:function(arm,size=0x314) addr:0x02083cb8
-func_ov045_02083fcc kind:function(arm,size=0xd4) addr:0x02083fcc
-func_ov045_020840a0 kind:function(arm,size=0x1c) addr:0x020840a0
-func_ov045_020840bc kind:function(arm,size=0x14) addr:0x020840bc
-func_ov045_020840d0 kind:function(arm,size=0x3c) addr:0x020840d0
-func_ov045_0208410c kind:function(arm,size=0x4c) addr:0x0208410c
-func_ov045_02084158 kind:function(arm,size=0x2c) addr:0x02084158
-func_ov045_02084184 kind:function(arm,size=0x2c) addr:0x02084184
-func_ov045_020841b0 kind:function(arm,size=0x2c) addr:0x020841b0
-func_ov045_020841dc kind:function(arm,size=0x2c) addr:0x020841dc
-func_ov045_02084208 kind:function(arm,size=0x88) addr:0x02084208
-func_ov045_02084290 kind:function(arm,size=0x4c) addr:0x02084290
-func_ov045_020842dc kind:function(arm,size=0x60) addr:0x020842dc
-func_ov045_0208433c kind:function(arm,size=0x90) addr:0x0208433c
-func_ov045_020843cc kind:function(arm,size=0x4c) addr:0x020843cc
-func_ov045_02084418 kind:function(arm,size=0x20) addr:0x02084418
-func_ov045_02084438 kind:function(arm,size=0x1c) addr:0x02084438
-func_ov045_02084454 kind:function(arm,size=0x18) addr:0x02084454
-func_ov045_0208446c kind:function(arm,size=0x34) addr:0x0208446c
-func_ov045_020844a0 kind:function(arm,size=0x274) addr:0x020844a0
-func_ov045_02084714 kind:function(arm,size=0x1d0) addr:0x02084714
-func_ov045_020848e4 kind:function(arm,size=0x120) addr:0x020848e4
-func_ov045_02084a04 kind:function(arm,size=0x38) addr:0x02084a04
-func_ov045_02084a3c kind:function(arm,size=0x13c) addr:0x02084a3c
-func_ov045_02084b78 kind:function(arm,size=0x3c) addr:0x02084b78
-func_ov045_02084bb4 kind:function(arm,size=0xa8) addr:0x02084bb4
-func_ov045_02084c5c kind:function(arm,size=0x114) addr:0x02084c5c
-func_ov045_02084d70 kind:function(arm,size=0x11c) addr:0x02084d70
-func_ov045_02084e8c kind:function(arm,size=0x28c) addr:0x02084e8c
-func_ov045_02085118 kind:function(arm,size=0x60) addr:0x02085118
-func_ov045_02085178 kind:function(arm,size=0x60) addr:0x02085178
-func_ov045_020851d8 kind:function(arm,size=0xa8) addr:0x020851d8
-func_ov045_02085280 kind:function(arm,size=0x200) addr:0x02085280
-func_ov045_02085480 kind:function(arm,size=0x88) addr:0x02085480
-func_ov045_02085508 kind:function(arm,size=0x48) addr:0x02085508
-func_ov045_02085550 kind:function(arm,size=0x24) addr:0x02085550
-func_ov045_02085574 kind:function(arm,size=0xac) addr:0x02085574
-func_ov045_02085620 kind:function(arm,size=0x4) addr:0x02085620
-func_ov045_02085624 kind:function(arm,size=0x34) addr:0x02085624
-func_ov045_02085658 kind:function(arm,size=0xa4) addr:0x02085658
-func_ov045_020856fc kind:function(arm,size=0x420) addr:0x020856fc
-func_ov045_02085b1c kind:function(arm,size=0x28) addr:0x02085b1c
-func_ov045_02085b44 kind:function(arm,size=0x68) addr:0x02085b44
-func_ov045_02085bac kind:function(arm,size=0x8) addr:0x02085bac
-func_ov045_02085bb4 kind:function(arm,size=0x30) addr:0x02085bb4
-func_ov045_02085be4 kind:function(arm,size=0x48) addr:0x02085be4
-func_ov045_02085c2c kind:function(arm,size=0x34) addr:0x02085c2c
-func_ov045_02085c60 kind:function(arm,size=0x9c) addr:0x02085c60
-func_ov045_02085cfc kind:function(arm,size=0x84) addr:0x02085cfc
-func_ov045_02085d80 kind:function(arm,size=0x30) addr:0x02085d80
-func_ov045_02085db0 kind:function(arm,size=0x40) addr:0x02085db0
-func_ov045_02085df0 kind:function(arm,size=0x14) addr:0x02085df0
-func_ov045_02085e04 kind:function(arm,size=0x14) addr:0x02085e04
-func_ov045_02085e18 kind:function(arm,size=0x48) addr:0x02085e18
-func_ov045_02085e60 kind:function(arm,size=0x34) addr:0x02085e60
-func_ov045_02085e94 kind:function(arm,size=0x9c) addr:0x02085e94
-func_ov045_02085f30 kind:function(arm,size=0x84) addr:0x02085f30
-func_ov045_02085fb4 kind:function(arm,size=0x30) addr:0x02085fb4
-func_ov045_02085fe4 kind:function(arm,size=0x68) addr:0x02085fe4
-func_ov045_0208604c kind:function(arm,size=0x14) addr:0x0208604c
-func_ov045_02086060 kind:function(arm,size=0x14) addr:0x02086060
-func_ov045_02086074 kind:function(arm,size=0x48) addr:0x02086074
-func_ov045_020860bc kind:function(arm,size=0x34) addr:0x020860bc
-func_ov045_020860f0 kind:function(arm,size=0x9c) addr:0x020860f0
-func_ov045_0208618c kind:function(arm,size=0xa8) addr:0x0208618c
-func_ov045_02086234 kind:function(arm,size=0x34) addr:0x02086234
-func_ov045_02086268 kind:function(arm,size=0xb0) addr:0x02086268
-func_ov045_02086318 kind:function(arm,size=0x30) addr:0x02086318
-func_ov045_02086348 kind:function(arm,size=0x30) addr:0x02086348
-func_ov045_02086378 kind:function(arm,size=0x48) addr:0x02086378
-func_ov045_020863c0 kind:function(arm,size=0x34) addr:0x020863c0
-func_ov045_020863f4 kind:function(arm,size=0x9c) addr:0x020863f4
-func_ov045_02086490 kind:function(arm,size=0xf0) addr:0x02086490
-func_ov045_02086580 kind:function(arm,size=0x114) addr:0x02086580
-func_ov045_02086694 kind:function(arm,size=0x28) addr:0x02086694
-func_ov045_020866bc kind:function(arm,size=0x44) addr:0x020866bc
-func_ov045_02086700 kind:function(arm,size=0x40) addr:0x02086700
-func_ov045_02086740 kind:function(arm,size=0x30) addr:0x02086740
-func_ov045_02086770 kind:function(arm,size=0x48) addr:0x02086770
-func_ov045_020867b8 kind:function(arm,size=0x34) addr:0x020867b8
-func_ov045_020867ec kind:function(arm,size=0x14c) addr:0x020867ec
-func_ov045_02086938 kind:function(arm,size=0xa0) addr:0x02086938
-func_ov045_020869d8 kind:function(arm,size=0x240) addr:0x020869d8
-func_ov045_02086c18 kind:function(arm,size=0x5c) addr:0x02086c18
-func_ov045_02086c74 kind:function(arm,size=0x1a4) addr:0x02086c74
-func_ov045_02086e18 kind:function(arm,size=0x74) addr:0x02086e18
-func_ov045_02086e8c kind:function(arm,size=0x44) addr:0x02086e8c
-func_ov045_02086ed0 kind:function(arm,size=0x190) addr:0x02086ed0
-func_ov045_02087060 kind:function(arm,size=0x4c) addr:0x02087060
-func_ov045_020870ac kind:function(arm,size=0x44) addr:0x020870ac
-func_ov045_020870f0 kind:function(arm,size=0x48) addr:0x020870f0
-func_ov045_02087138 kind:function(arm,size=0x60) addr:0x02087138
-func_ov045_02087198 kind:function(arm,size=0xd8) addr:0x02087198
-func_ov045_02087270 kind:function(arm,size=0x300) addr:0x02087270
-func_ov045_02087570 kind:function(arm,size=0xd8) addr:0x02087570
-func_ov045_02087648 kind:function(arm,size=0xe4) addr:0x02087648
-func_ov045_0208772c kind:function(arm,size=0x74) addr:0x0208772c
-func_ov045_020877a0 kind:function(arm,size=0x64) addr:0x020877a0
-func_ov045_02087804 kind:function(arm,size=0x38) addr:0x02087804
-func_ov045_0208783c kind:function(arm,size=0x2c) addr:0x0208783c
-func_ov045_02087868 kind:function(arm,size=0x510) addr:0x02087868
-func_ov045_02087d78 kind:function(arm,size=0x70) addr:0x02087d78
-func_ov045_02087de8 kind:function(arm,size=0xc4) addr:0x02087de8
-func_ov045_02087eac kind:function(arm,size=0x2ec) addr:0x02087eac
-func_ov045_02088198 kind:function(arm,size=0x154) addr:0x02088198
-func_ov045_020882ec kind:function(arm,size=0xa0) addr:0x020882ec
-func_ov045_0208838c kind:function(arm,size=0x28) addr:0x0208838c
-func_ov045_020883b4 kind:function(arm,size=0x15c) addr:0x020883b4
-func_ov045_02088510 kind:function(arm,size=0x164) addr:0x02088510
-func_ov045_02088674 kind:function(arm,size=0x8c) addr:0x02088674
-func_ov045_02088700 kind:function(arm,size=0x40) addr:0x02088700
-func_ov045_02088740 kind:function(arm,size=0x43c) addr:0x02088740
-func_ov045_02088b7c kind:function(arm,size=0xe8) addr:0x02088b7c
-func_ov045_02088c64 kind:function(arm,size=0x1c) addr:0x02088c64
-func_ov045_02088c80 kind:function(arm,size=0x14) addr:0x02088c80
-func_ov045_02088c94 kind:function(arm,size=0x3c) addr:0x02088c94
-func_ov045_02088cd0 kind:function(arm,size=0x4c) addr:0x02088cd0
-func_ov045_02088d1c kind:function(arm,size=0x24) addr:0x02088d1c
-func_ov045_02088d40 kind:function(arm,size=0x24) addr:0x02088d40
-func_ov045_02088d64 kind:function(arm,size=0x24) addr:0x02088d64
-func_ov045_02088d88 kind:function(arm,size=0x24) addr:0x02088d88
-func_ov045_02088dac kind:function(arm,size=0x20) addr:0x02088dac
-func_ov045_02088dcc kind:function(arm,size=0x14) addr:0x02088dcc
-func_ov045_02088de0 kind:function(arm,size=0x14) addr:0x02088de0
-func_ov045_02088df4 kind:function(arm,size=0x30) addr:0x02088df4
-func_ov045_02088e24 kind:function(arm,size=0x68) addr:0x02088e24
-func_ov045_02088e8c kind:function(arm,size=0x60) addr:0x02088e8c
-func_ov045_02088eec kind:function(arm,size=0x30) addr:0x02088eec
-func_ov045_02088f1c kind:function(arm,size=0x1e8) addr:0x02088f1c
-func_ov045_02089104 kind:function(arm,size=0x10) addr:0x02089104
-func_ov045_02089114 kind:function(arm,size=0x90) addr:0x02089114
-func_ov045_020891a4 kind:function(arm,size=0x828) addr:0x020891a4
-func_ov045_020899cc kind:function(arm,size=0xb8) addr:0x020899cc
-func_ov045_02089a84 kind:function(arm,size=0xa8) addr:0x02089a84
-func_ov045_02089b2c kind:function(arm,size=0x60) addr:0x02089b2c
-func_ov045_02089b8c kind:function(arm,size=0xb8) addr:0x02089b8c
-func_ov045_02089c44 kind:function(arm,size=0xa0) addr:0x02089c44
-func_ov045_02089ce4 kind:function(arm,size=0xd4) addr:0x02089ce4
-func_ov045_02089db8 kind:function(arm,size=0x60) addr:0x02089db8
-func_ov045_02089e18 kind:function(arm,size=0x60) addr:0x02089e18
-func_ov045_02089e78 kind:function(arm,size=0xa8) addr:0x02089e78
-func_ov045_02089f20 kind:function(arm,size=0xe4) addr:0x02089f20
-func_ov045_0208a004 kind:function(arm,size=0x200) addr:0x0208a004
-func_ov045_0208a204 kind:function(arm,size=0x228) addr:0x0208a204
-func_ov045_0208a42c kind:function(arm,size=0xac) addr:0x0208a42c
-func_ov045_0208a4d8 kind:function(arm,size=0x88) addr:0x0208a4d8
-func_ov045_0208a560 kind:function(arm,size=0x38) addr:0x0208a560
-func_ov045_0208a598 kind:function(arm,size=0x48) addr:0x0208a598
-func_ov045_0208a5e0 kind:function(arm,size=0x24) addr:0x0208a5e0
-func_ov045_0208a604 kind:function(arm,size=0x200) addr:0x0208a604
-func_ov045_0208a804 kind:function(arm,size=0x4) addr:0x0208a804
-func_ov045_0208a808 kind:function(arm,size=0x7c) addr:0x0208a808
-func_ov045_0208a884 kind:function(arm,size=0xa4) addr:0x0208a884
-func_ov045_0208a928 kind:function(arm,size=0x198) addr:0x0208a928
-func_ov045_0208aac0 kind:function(arm,size=0x28) addr:0x0208aac0
-func_ov045_0208aae8 kind:function(arm,size=0x68) addr:0x0208aae8
-func_ov045_0208ab50 kind:function(arm,size=0x8) addr:0x0208ab50
-func_ov045_0208ab58 kind:function(arm,size=0x30) addr:0x0208ab58
-func_ov045_0208ab88 kind:function(arm,size=0x48) addr:0x0208ab88
-func_ov045_0208abd0 kind:function(arm,size=0x34) addr:0x0208abd0
-func_ov045_0208ac04 kind:function(arm,size=0x9c) addr:0x0208ac04
-func_ov045_0208aca0 kind:function(arm,size=0x84) addr:0x0208aca0
-func_ov045_0208ad24 kind:function(arm,size=0x30) addr:0x0208ad24
-func_ov045_0208ad54 kind:function(arm,size=0xd4) addr:0x0208ad54
-func_ov045_0208ae28 kind:function(arm,size=0x14) addr:0x0208ae28
-func_ov045_0208ae3c kind:function(arm,size=0x14) addr:0x0208ae3c
-func_ov045_0208ae50 kind:function(arm,size=0x48) addr:0x0208ae50
-func_ov045_0208ae98 kind:function(arm,size=0x34) addr:0x0208ae98
-func_ov045_0208aecc kind:function(arm,size=0x9c) addr:0x0208aecc
-func_ov045_0208af68 kind:function(arm,size=0xa8) addr:0x0208af68
-func_ov045_0208b010 kind:function(arm,size=0x20) addr:0x0208b010
-func_ov045_0208b030 kind:function(arm,size=0xcc) addr:0x0208b030
-func_ov045_0208b0fc kind:function(arm,size=0x2c) addr:0x0208b0fc
-func_ov045_0208b128 kind:function(arm,size=0x2c) addr:0x0208b128
-func_ov045_0208b154 kind:function(arm,size=0x48) addr:0x0208b154
-func_ov045_0208b19c kind:function(arm,size=0x34) addr:0x0208b19c
-func_ov045_0208b1d0 kind:function(arm,size=0x9c) addr:0x0208b1d0
-func_ov045_0208b26c kind:function(arm,size=0xd0) addr:0x0208b26c
-func_ov045_0208b33c kind:function(arm,size=0x28) addr:0x0208b33c
-func_ov045_0208b364 kind:function(arm,size=0x34) addr:0x0208b364
-func_ov045_0208b398 kind:function(arm,size=0x34) addr:0x0208b398
-func_ov045_0208b3cc kind:function(arm,size=0x34) addr:0x0208b3cc
-func_ov045_0208b400 kind:function(arm,size=0x48) addr:0x0208b400
-func_ov045_0208b448 kind:function(arm,size=0x34) addr:0x0208b448
-func_ov045_0208b47c kind:function(arm,size=0x9c) addr:0x0208b47c
-func_ov045_0208b518 kind:function(arm,size=0x104) addr:0x0208b518
-func_ov045_0208b61c kind:function(arm,size=0x44) addr:0x0208b61c
-func_ov045_0208b660 kind:function(arm,size=0x154) addr:0x0208b660
-func_ov045_0208b7b4 kind:function(arm,size=0x40) addr:0x0208b7b4
-func_ov045_0208b7f4 kind:function(arm,size=0x2c) addr:0x0208b7f4
-func_ov045_0208b820 kind:function(arm,size=0x48) addr:0x0208b820
-func_ov045_0208b868 kind:function(arm,size=0x34) addr:0x0208b868
-func_ov045_0208b89c kind:function(arm,size=0xa8) addr:0x0208b89c
-func_ov045_0208b944 kind:function(arm,size=0xcc) addr:0x0208b944
-func_ov045_0208ba10 kind:function(arm,size=0x20) addr:0x0208ba10
-func_ov045_0208ba30 kind:function(arm,size=0x14) addr:0x0208ba30
-func_ov045_0208ba44 kind:function(arm,size=0x20) addr:0x0208ba44
-func_ov045_0208ba64 kind:function(arm,size=0x14) addr:0x0208ba64
-func_ov045_0208ba78 kind:function(arm,size=0x48) addr:0x0208ba78
-func_ov045_0208bac0 kind:function(arm,size=0x58) addr:0x0208bac0
-func_ov045_0208bb18 kind:function(arm,size=0x10) addr:0x0208bb18
-func_ov045_0208bb28 kind:function(arm,size=0x9c) addr:0x0208bb28
-func_ov045_0208bbc4 kind:function(arm,size=0x8c) addr:0x0208bbc4
-func_ov045_0208bc50 kind:function(arm,size=0x28) addr:0x0208bc50
-func_ov045_0208bc78 kind:function(arm,size=0x8c) addr:0x0208bc78
-func_ov045_0208bd04 kind:function(arm,size=0x20) addr:0x0208bd04
-func_ov045_0208bd24 kind:function(arm,size=0x14) addr:0x0208bd24
-func_ov045_0208bd38 kind:function(arm,size=0x48) addr:0x0208bd38
-func_ov045_0208bd80 kind:function(arm,size=0x34) addr:0x0208bd80
-func_ov045_0208bdb4 kind:function(arm,size=0x9c) addr:0x0208bdb4
-func_ov045_0208be50 kind:function(arm,size=0xa8) addr:0x0208be50
-func_ov045_0208bef8 kind:function(arm,size=0x28) addr:0x0208bef8
-func_ov045_0208bf20 kind:function(arm,size=0x90) addr:0x0208bf20
-func_ov045_0208bfb0 kind:function(arm,size=0x2c) addr:0x0208bfb0
-func_ov045_0208bfdc kind:function(arm,size=0x2c) addr:0x0208bfdc
-func_ov045_0208c008 kind:function(arm,size=0x48) addr:0x0208c008
-func_ov045_0208c050 kind:function(arm,size=0x34) addr:0x0208c050
-func_ov045_0208c084 kind:function(arm,size=0x74) addr:0x0208c084
-func_ov045_0208c0f8 kind:function(arm,size=0x44) addr:0x0208c0f8
-func_ov045_0208c13c kind:function(arm,size=0x9c) addr:0x0208c13c
-func_ov045_0208c1d8 kind:function(arm,size=0xcc) addr:0x0208c1d8
-func_ov045_0208c2a4 kind:function(arm,size=0x2c) addr:0x0208c2a4
-func_ov045_0208c2d0 kind:function(arm,size=0x2a4) addr:0x0208c2d0
-func_ov045_0208c574 kind:function(arm,size=0x4c) addr:0x0208c574
-func_ov045_0208c5c0 kind:function(arm,size=0x2c) addr:0x0208c5c0
-func_ov045_0208c5ec kind:function(arm,size=0x48) addr:0x0208c5ec
-func_ov045_0208c634 kind:function(arm,size=0x34) addr:0x0208c634
-func_ov045_0208c668 kind:function(arm,size=0x9c) addr:0x0208c668
-func_ov045_0208c704 kind:function(arm,size=0xcc) addr:0x0208c704
-func_ov045_0208c7d0 kind:function(arm,size=0x2c) addr:0x0208c7d0
-func_ov045_0208c7fc kind:function(arm,size=0x2c) addr:0x0208c7fc
-func_ov045_0208c828 kind:function(arm,size=0x4c) addr:0x0208c828
-func_ov045_0208c874 kind:function(arm,size=0x2c) addr:0x0208c874
-func_ov045_0208c8a0 kind:function(arm,size=0x48) addr:0x0208c8a0
-func_ov045_0208c8e8 kind:function(arm,size=0x34) addr:0x0208c8e8
-func_ov045_0208c91c kind:function(arm,size=0x9c) addr:0x0208c91c
-func_ov045_0208c9b8 kind:function(arm,size=0x100) addr:0x0208c9b8
-func_ov045_0208cab8 kind:function(arm,size=0x20) addr:0x0208cab8
-func_ov045_0208cad8 kind:function(arm,size=0x124) addr:0x0208cad8
-func_ov045_0208cbfc kind:function(arm,size=0x40) addr:0x0208cbfc
-func_ov045_0208cc3c kind:function(arm,size=0x2c) addr:0x0208cc3c
-func_ov045_0208cc68 kind:function(arm,size=0x48) addr:0x0208cc68
-func_ov045_0208ccb0 kind:function(arm,size=0x34) addr:0x0208ccb0
-func_ov045_0208cce4 kind:function(arm,size=0x9c) addr:0x0208cce4
-func_ov045_0208cd80 kind:function(arm,size=0x74) addr:0x0208cd80
-func_ov045_0208cdf4 kind:function(arm,size=0x28) addr:0x0208cdf4
-func_ov045_0208ce1c kind:function(arm,size=0x50) addr:0x0208ce1c
-func_ov045_0208ce6c kind:function(arm,size=0x20) addr:0x0208ce6c
-func_ov045_0208ce8c kind:function(arm,size=0x14) addr:0x0208ce8c
-func_ov045_0208cea0 kind:function(arm,size=0x48) addr:0x0208cea0
-func_ov045_0208cee8 kind:function(arm,size=0x34) addr:0x0208cee8
-func_ov045_0208cf1c kind:function(arm,size=0x94) addr:0x0208cf1c
-func_ov045_0208cfb0 kind:function(arm,size=0x88) addr:0x0208cfb0
-func_ov045_0208d038 kind:function(arm,size=0x50) addr:0x0208d038
-func_ov045_0208d088 kind:function(arm,size=0x4c) addr:0x0208d088
-func_ov045_0208d0d4 kind:function(arm,size=0x40) addr:0x0208d0d4
-func_ov045_0208d114 kind:function(arm,size=0x54) addr:0x0208d114
-func_ov045_0208d168 kind:function(arm,size=0x40) addr:0x0208d168
-func_ov045_0208d1a8 kind:function(arm,size=0x4c) addr:0x0208d1a8
-func_ov045_0208d1f4 kind:function(arm,size=0x40) addr:0x0208d1f4
-func_ov045_0208d234 kind:function(arm,size=0xdc) addr:0x0208d234
-func_ov045_0208d310 kind:function(arm,size=0x60) addr:0x0208d310
-func_ov045_0208d370 kind:function(arm,size=0x38) addr:0x0208d370
-func_ov045_0208d3a8 kind:function(arm,size=0x904) addr:0x0208d3a8
-func_ov045_0208dcac kind:function(arm,size=0x1b0) addr:0x0208dcac
-func_ov045_0208de5c kind:function(arm,size=0x28) addr:0x0208de5c
-func_ov045_0208de84 kind:function(arm,size=0x80) addr:0x0208de84
-func_ov045_0208df04 kind:function(arm,size=0x8) addr:0x0208df04
-func_ov045_0208df0c kind:function(arm,size=0x30) addr:0x0208df0c
-func_ov045_0208df3c kind:function(arm,size=0x48) addr:0x0208df3c
-func_ov045_0208df84 kind:function(arm,size=0x34) addr:0x0208df84
-func_ov045_0208dfb8 kind:function(arm,size=0x14c) addr:0x0208dfb8
-func_ov045_0208e104 kind:function(arm,size=0xa0) addr:0x0208e104
-func_ov045_0208e1a4 kind:function(arm,size=0x554) addr:0x0208e1a4
-func_ov045_0208e6f8 kind:function(arm,size=0x28) addr:0x0208e6f8
-func_ov045_0208e720 kind:function(arm,size=0x34) addr:0x0208e720
-func_ov045_0208e754 kind:function(arm,size=0x44) addr:0x0208e754
-func_ov045_0208e798 kind:function(arm,size=0x34) addr:0x0208e798
-func_ov045_0208e7cc kind:function(arm,size=0x48) addr:0x0208e7cc
-func_ov045_0208e814 kind:function(arm,size=0x88) addr:0x0208e814
-func_ov045_0208e89c kind:function(arm,size=0x14c) addr:0x0208e89c
-func_ov045_0208e9e8 kind:function(arm,size=0xa0) addr:0x0208e9e8
-func_ov045_0208ea88 kind:function(arm,size=0x1bc) addr:0x0208ea88
-func_ov045_0208ec44 kind:function(arm,size=0x28) addr:0x0208ec44
-func_ov045_0208ec6c kind:function(arm,size=0x34) addr:0x0208ec6c
-func_ov045_0208eca0 kind:function(arm,size=0x44) addr:0x0208eca0
-func_ov045_0208ece4 kind:function(arm,size=0x34) addr:0x0208ece4
-func_ov045_0208ed18 kind:function(arm,size=0x48) addr:0x0208ed18
-func_ov045_0208ed60 kind:function(arm,size=0x78) addr:0x0208ed60
-func_ov045_0208edd8 kind:function(arm,size=0x14) addr:0x0208edd8
-func_ov045_0208edec kind:function(arm,size=0x9c) addr:0x0208edec
-func_ov045_0208ee88 kind:function(arm,size=0x140) addr:0x0208ee88
-func_ov045_0208efc8 kind:function(arm,size=0x20) addr:0x0208efc8
-func_ov045_0208efe8 kind:function(arm,size=0x68) addr:0x0208efe8
-func_ov045_0208f050 kind:function(arm,size=0x48) addr:0x0208f050
-func_ov045_0208f098 kind:function(arm,size=0x34) addr:0x0208f098
-func_ov045_0208f0cc kind:function(arm,size=0x48) addr:0x0208f0cc
-func_ov045_0208f114 kind:function(arm,size=0x34) addr:0x0208f114
-func_ov045_0208f148 kind:function(arm,size=0x9c) addr:0x0208f148
-func_ov045_0208f1e4 kind:function(arm,size=0xdc) addr:0x0208f1e4
-func_ov045_0208f2c0 kind:function(arm,size=0x20) addr:0x0208f2c0
-func_ov045_0208f2e0 kind:function(arm,size=0x14) addr:0x0208f2e0
-func_ov045_0208f2f4 kind:function(arm,size=0x14) addr:0x0208f2f4
-func_ov045_0208f308 kind:function(arm,size=0x14) addr:0x0208f308
-func_ov045_0208f31c kind:function(arm,size=0x48) addr:0x0208f31c
-func_ov045_0208f364 kind:function(arm,size=0x38) addr:0x0208f364
-func_ov045_0208f39c kind:function(arm,size=0x9c) addr:0x0208f39c
-func_ov045_0208f438 kind:function(arm,size=0xa8) addr:0x0208f438
-func_ov045_0208f4e0 kind:function(arm,size=0x20) addr:0x0208f4e0
-func_ov045_0208f500 kind:function(arm,size=0x78) addr:0x0208f500
-func_ov045_0208f578 kind:function(arm,size=0x40) addr:0x0208f578
-func_ov045_0208f5b8 kind:function(arm,size=0x30) addr:0x0208f5b8
-func_ov045_0208f5e8 kind:function(arm,size=0x48) addr:0x0208f5e8
-func_ov045_0208f630 kind:function(arm,size=0x34) addr:0x0208f630
+Tusin_IsPlayerSeen kind:function(arm,size=0x88) addr:0x020824a0
+Tusin_FindFreeSeenSlot kind:function(arm,size=0x38) addr:0x02082528
+Tusin_OnScan kind:function(arm,size=0x198) addr:0x02082560
+Tusin_OnReceive kind:function(arm,size=0x108) addr:0x020826f8
+Tusin_InitState kind:function(arm,size=0x1fc) addr:0x02082800
+Tusin_CreateTasks kind:function(arm,size=0xb0) addr:0x020829fc
+Tusin_ShiftFriends kind:function(arm,size=0xb8) addr:0x02082aac
+Tusin_FindFriend kind:function(arm,size=0x94) addr:0x02082b64
+Tusin_StoreFriend kind:function(arm,size=0x3d8) addr:0x02082bf8
+Tusin_ProcessEsper kind:function(arm,size=0x90) addr:0x02082fd0
+Tusin_StageFadeIn kind:function(arm,size=0x5c) addr:0x02083060
+Tusin_StageStartComm kind:function(arm,size=0x3c) addr:0x020830bc
+Tusin_StageMain kind:function(arm,size=0x4d8) addr:0x020830f8
+Tusin_StageBeginSave kind:function(arm,size=0x3c) addr:0x020835d0
+Tusin_StageSave kind:function(arm,size=0x54) addr:0x0208360c
+Tusin_StageSaving kind:function(arm,size=0xec) addr:0x02083660
+Tusin_StageSaveDone kind:function(arm,size=0x3c) addr:0x0208374c
+Tusin_StageFadeOut kind:function(arm,size=0x4c) addr:0x02083788
+Tusin_Init kind:function(arm,size=0x1f8) addr:0x020837d4
+Tusin_Update kind:function(arm,size=0x1f8) addr:0x020839cc
+Tusin_Destroy kind:function(arm,size=0xb4) addr:0x02083bc4
+ProcessOverlay_Tusin kind:function(arm,size=0x40) addr:0x02083c78
+Tusin_InitDisplay kind:function(arm,size=0x314) addr:0x02083cb8
+Tusin_VBlank kind:function(arm,size=0xd4) addr:0x02083fcc
+Tusin_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020840a0
+Tusin_DeregisterVBlank kind:function(arm,size=0x14) addr:0x020840bc
+Tusin_IsPointInRect kind:function(arm,size=0x3c) addr:0x020840d0
+Tusin_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x0208410c
+Tusin_LoadPinData kind:function(arm,size=0x2c) addr:0x02084158
+Tusin_LoadItemData kind:function(arm,size=0x2c) addr:0x02084184
+Tusin_LoadFoodData kind:function(arm,size=0x2c) addr:0x020841b0
+Tusin_LoadTreasureData kind:function(arm,size=0x2c) addr:0x020841dc
+Tusin_GetRandomCivvyGift kind:function(arm,size=0x88) addr:0x02084208
+Tusin_GetAlienGift kind:function(arm,size=0x4c) addr:0x02084290
+Tusin_AddBravery kind:function(arm,size=0x60) addr:0x020842dc
+Tusin_ClampMoney kind:function(arm,size=0x90) addr:0x0208433c
+Tusin_GetMoneyCapLevel kind:function(arm,size=0x4c) addr:0x020843cc
+Tusin_GetBadgeSlotCount kind:function(arm,size=0x20) addr:0x02084418
+Tusin_GetBadgeTotalPP kind:function(arm,size=0x1c) addr:0x02084438
+Tusin_GetBadgeLevelPP kind:function(arm,size=0x18) addr:0x02084454
+Tusin_GetBadgeNextLevelPP kind:function(arm,size=0x34) addr:0x0208446c
+Tusin_WriteLastProfile kind:function(arm,size=0x274) addr:0x020844a0
+Tusin_LoadEquipment kind:function(arm,size=0x1d0) addr:0x02084714
+Tusin_InitProfile kind:function(arm,size=0x120) addr:0x020848e4
+Tusin_CalcMinglePP kind:function(arm,size=0x38) addr:0x02084a04
+Tusin_ExportSurePins kind:function(arm,size=0x13c) addr:0x02084a3c
+Tusin_GetDominantPPType kind:function(arm,size=0x3c) addr:0x02084b78
+Tusin_CheckBadgeEvolution kind:function(arm,size=0xa8) addr:0x02084bb4
+Tusin_EvolveBadge kind:function(arm,size=0x114) addr:0x02084c5c
+Tusin_AddBadgePP kind:function(arm,size=0x11c) addr:0x02084d70
+Tusin_CommitResults kind:function(arm,size=0x28c) addr:0x02084e8c
+Tusin_IsPointOnBtnF kind:function(arm,size=0x60) addr:0x02085118
+Tusin_IsPointOnBtn kind:function(arm,size=0x60) addr:0x02085178
+Tusin_GetBtnLRAtPoint kind:function(arm,size=0xa8) addr:0x020851d8
+Tusin_LoadBgResource kind:function(arm,size=0x200) addr:0x02085280
+Tusin_ReleaseBgResource kind:function(arm,size=0x88) addr:0x02085480
+Tusin_ReloadBgResource kind:function(arm,size=0x48) addr:0x02085508
+Tusin_ClearBgResource kind:function(arm,size=0x24) addr:0x02085550
+Tusin_LoadBackgrounds kind:function(arm,size=0xac) addr:0x02085574
+Tusin_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x02085620
+Tusin_ReleaseBackgrounds kind:function(arm,size=0x34) addr:0x02085624
+Tusin_textScr_InitFonts kind:function(arm,size=0xa4) addr:0x02085658 local
+Tusin_textScr_Draw kind:function(arm,size=0x420) addr:0x020856fc local
+Tusin_textScr_Init kind:function(arm,size=0x28) addr:0x02085b1c local
+Tusin_textScr_Update kind:function(arm,size=0x68) addr:0x02085b44 local
+Tusin_textScr_Render kind:function(arm,size=0x8) addr:0x02085bac local
+Tusin_textScr_Destroy kind:function(arm,size=0x30) addr:0x02085bb4 local
+Tusin_textScr_RunTask kind:function(arm,size=0x48) addr:0x02085be4 local
+Tusin_textScr_CreateTask kind:function(arm,size=0x34) addr:0x02085c2c
+Tusin_btn_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02085c60 local
+Tusin_btn_Load kind:function(arm,size=0x84) addr:0x02085cfc local
+Tusin_btn_Init kind:function(arm,size=0x30) addr:0x02085d80 local
+Tusin_btn_Update kind:function(arm,size=0x40) addr:0x02085db0 local
+Tusin_btn_Render kind:function(arm,size=0x14) addr:0x02085df0 local
+Tusin_btn_Destroy kind:function(arm,size=0x14) addr:0x02085e04 local
+Tusin_btn_RunTask kind:function(arm,size=0x48) addr:0x02085e18 local
+Tusin_btn_CreateTask kind:function(arm,size=0x34) addr:0x02085e60
+Tusin_btnF_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02085e94 local
+Tusin_btnF_Load kind:function(arm,size=0x84) addr:0x02085f30 local
+Tusin_btnF_Init kind:function(arm,size=0x30) addr:0x02085fb4 local
+Tusin_btnF_Update kind:function(arm,size=0x68) addr:0x02085fe4 local
+Tusin_btnF_Render kind:function(arm,size=0x14) addr:0x0208604c local
+Tusin_btnF_Destroy kind:function(arm,size=0x14) addr:0x02086060 local
+Tusin_btnF_RunTask kind:function(arm,size=0x48) addr:0x02086074 local
+Tusin_btnF_CreateTask kind:function(arm,size=0x34) addr:0x020860bc
+Tusin_btnLR_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020860f0 local
+Tusin_btnLR_Load kind:function(arm,size=0xa8) addr:0x0208618c local
+Tusin_btnLR_Init kind:function(arm,size=0x34) addr:0x02086234 local
+Tusin_btnLR_Update kind:function(arm,size=0xb0) addr:0x02086268 local
+Tusin_btnLR_Render kind:function(arm,size=0x30) addr:0x02086318 local
+Tusin_btnLR_Destroy kind:function(arm,size=0x30) addr:0x02086348 local
+Tusin_btnLR_RunTask kind:function(arm,size=0x48) addr:0x02086378 local
+Tusin_btnLR_CreateTask kind:function(arm,size=0x34) addr:0x020863c0
+Tusin_num_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020863f4 local
+Tusin_num_UpdateDigits kind:function(arm,size=0xf0) addr:0x02086490 local
+Tusin_num_Load kind:function(arm,size=0x114) addr:0x02086580 local
+Tusin_num_Init kind:function(arm,size=0x28) addr:0x02086694 local
+Tusin_num_Update kind:function(arm,size=0x44) addr:0x020866bc local
+Tusin_num_Render kind:function(arm,size=0x40) addr:0x02086700 local
+Tusin_num_Destroy kind:function(arm,size=0x30) addr:0x02086740 local
+Tusin_num_RunTask kind:function(arm,size=0x48) addr:0x02086770 local
+Tusin_num_CreateTask kind:function(arm,size=0x34) addr:0x020867b8
+Tusin_beltU_LoadPackedData kind:function(arm,size=0x14c) addr:0x020867ec local
+Tusin_beltU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x02086938 local
+Tusin_beltU_Load kind:function(arm,size=0x240) addr:0x020869d8 local
+Tusin_beltU_InitFonts kind:function(arm,size=0x5c) addr:0x02086c18 local
+Tusin_beltU_SetText kind:function(arm,size=0x1a4) addr:0x02086c74 local
+Tusin_beltU_DrawText kind:function(arm,size=0x74) addr:0x02086e18 local
+Tusin_beltU_Init kind:function(arm,size=0x44) addr:0x02086e8c local
+Tusin_beltU_Update kind:function(arm,size=0x190) addr:0x02086ed0 local
+Tusin_beltU_Render kind:function(arm,size=0x4c) addr:0x02087060 local
+Tusin_beltU_Destroy kind:function(arm,size=0x44) addr:0x020870ac local
+Tusin_beltU_RunTask kind:function(arm,size=0x48) addr:0x020870f0 local
+Tusin_beltU_CreateTask kind:function(arm,size=0x60) addr:0x02087138
+TusinSet_InitState kind:function(arm,size=0xd8) addr:0x02087198
+TusinSet_CreateTasks kind:function(arm,size=0x300) addr:0x02087270
+TusinSet_ChangePartner kind:function(arm,size=0xd8) addr:0x02087570
+TusinSet_ReloadItemTasks kind:function(arm,size=0xe4) addr:0x02087648
+TusinSet_SelectCursorItem kind:function(arm,size=0x74) addr:0x0208772c
+TusinSet_ReloadGiftIcon kind:function(arm,size=0x64) addr:0x020877a0
+TusinSet_IsAnyTabSelected kind:function(arm,size=0x38) addr:0x02087804
+TusinSet_ClearTabSelection kind:function(arm,size=0x2c) addr:0x0208783c
+TusinSet_HandleButtons kind:function(arm,size=0x510) addr:0x02087868
+TusinSet_StageFadeIn kind:function(arm,size=0x70) addr:0x02087d78
+TusinSet_StageFirstHelp kind:function(arm,size=0xc4) addr:0x02087de8
+TusinSet_StageMain kind:function(arm,size=0x2ec) addr:0x02087eac
+TusinSet_StageHelp kind:function(arm,size=0x154) addr:0x02088198
+TusinSet_StageCloseHelp kind:function(arm,size=0xa0) addr:0x020882ec
+TusinSet_StageFadeOut kind:function(arm,size=0x28) addr:0x0208838c
+TusinSet_Init kind:function(arm,size=0x15c) addr:0x020883b4
+TusinSet_Update kind:function(arm,size=0x164) addr:0x02088510
+TusinSet_Destroy kind:function(arm,size=0x8c) addr:0x02088674
+ProcessOverlay_TusinSet kind:function(arm,size=0x40) addr:0x02088700
+TusinSet_InitDisplay kind:function(arm,size=0x43c) addr:0x02088740
+TusinSet_VBlank kind:function(arm,size=0xe8) addr:0x02088b7c
+TusinSet_RegisterVBlank kind:function(arm,size=0x1c) addr:0x02088c64
+TusinSet_DeregisterVBlank kind:function(arm,size=0x14) addr:0x02088c80
+TusinSet_IsPointInRect kind:function(arm,size=0x3c) addr:0x02088c94
+TusinSet_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x02088cd0
+TusinSet_LoadPinData kind:function(arm,size=0x24) addr:0x02088d1c
+TusinSet_LoadItemData kind:function(arm,size=0x24) addr:0x02088d40
+TusinSet_LoadFoodData kind:function(arm,size=0x24) addr:0x02088d64
+TusinSet_LoadTreasureData kind:function(arm,size=0x24) addr:0x02088d88
+TusinSet_GetBadgeSlotCount kind:function(arm,size=0x20) addr:0x02088dac
+TusinSet_SumPinPP kind:function(arm,size=0x14) addr:0x02088dcc
+TusinSet_GetPinLevelPP kind:function(arm,size=0x14) addr:0x02088de0
+TusinSet_GetPinNextLevelPP kind:function(arm,size=0x30) addr:0x02088df4
+TusinSet_BuildListBySubCategory kind:function(arm,size=0x68) addr:0x02088e24
+TusinSet_BuildListByCategory kind:function(arm,size=0x60) addr:0x02088e8c
+TusinSet_RoundUpToPages kind:function(arm,size=0x30) addr:0x02088eec
+TusinSet_BuildLists kind:function(arm,size=0x1e8) addr:0x02088f1c
+TusinSet_CompareItemIds kind:function(arm,size=0x10) addr:0x02089104
+TusinSet_SortInventory kind:function(arm,size=0x90) addr:0x02089114
+TusinSet_LoadFromSave kind:function(arm,size=0x828) addr:0x020891a4
+TusinSet_WriteToSave kind:function(arm,size=0xb8) addr:0x020899cc
+TusinSet_GetIconAtPoint kind:function(arm,size=0xa8) addr:0x02089a84
+TusinSet_IsPointOnBtn kind:function(arm,size=0x60) addr:0x02089b2c
+TusinSet_GetTabAtPoint kind:function(arm,size=0xb8) addr:0x02089b8c
+TusinSet_GetPartnerAtPoint kind:function(arm,size=0xa0) addr:0x02089c44
+TusinSet_GetSlotAtPoint kind:function(arm,size=0xd4) addr:0x02089ce4
+TusinSet_IsPointOnSbar kind:function(arm,size=0x60) addr:0x02089db8
+TusinSet_IsPointOnSbarKnob kind:function(arm,size=0x60) addr:0x02089e18
+TusinSet_GetSbarArrowAtPoint kind:function(arm,size=0xa8) addr:0x02089e78
+TusinSet_GetHelpBtnAtPoint kind:function(arm,size=0xe4) addr:0x02089f20
+TusinSet_LoadBgResource kind:function(arm,size=0x200) addr:0x0208a004
+TusinSet_LoadBgResourceIndexed kind:function(arm,size=0x228) addr:0x0208a204
+TusinSet_LoadBgScreen kind:function(arm,size=0xac) addr:0x0208a42c
+TusinSet_ReleaseBgResource kind:function(arm,size=0x88) addr:0x0208a4d8
+TusinSet_ReleaseBgScreen kind:function(arm,size=0x38) addr:0x0208a560
+TusinSet_ReloadBgResource kind:function(arm,size=0x48) addr:0x0208a598
+TusinSet_ClearBgResource kind:function(arm,size=0x24) addr:0x0208a5e0
+TusinSet_LoadBackgrounds kind:function(arm,size=0x200) addr:0x0208a604
+TusinSet_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x0208a804
+TusinSet_ReleaseBackgrounds kind:function(arm,size=0x7c) addr:0x0208a808
+TusinSet_textScr_InitFonts kind:function(arm,size=0xa4) addr:0x0208a884 local
+TusinSet_textScr_Draw kind:function(arm,size=0x198) addr:0x0208a928 local
+TusinSet_textScr_Init kind:function(arm,size=0x28) addr:0x0208aac0 local
+TusinSet_textScr_Update kind:function(arm,size=0x68) addr:0x0208aae8 local
+TusinSet_textScr_Render kind:function(arm,size=0x8) addr:0x0208ab50 local
+TusinSet_textScr_Destroy kind:function(arm,size=0x30) addr:0x0208ab58 local
+TusinSet_textScr_RunTask kind:function(arm,size=0x48) addr:0x0208ab88 local
+TusinSet_textScr_CreateTask kind:function(arm,size=0x34) addr:0x0208abd0
+TusinSet_btn_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208ac04 local
+TusinSet_btn_Load kind:function(arm,size=0x84) addr:0x0208aca0 local
+TusinSet_btn_Init kind:function(arm,size=0x30) addr:0x0208ad24 local
+TusinSet_btn_Update kind:function(arm,size=0xd4) addr:0x0208ad54 local
+TusinSet_btn_Render kind:function(arm,size=0x14) addr:0x0208ae28 local
+TusinSet_btn_Destroy kind:function(arm,size=0x14) addr:0x0208ae3c local
+TusinSet_btn_RunTask kind:function(arm,size=0x48) addr:0x0208ae50 local
+TusinSet_btn_CreateTask kind:function(arm,size=0x34) addr:0x0208ae98
+TusinSet_icon_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208aecc local
+TusinSet_icon_Load kind:function(arm,size=0xa8) addr:0x0208af68 local
+TusinSet_icon_Init kind:function(arm,size=0x20) addr:0x0208b010 local
+TusinSet_icon_Update kind:function(arm,size=0xcc) addr:0x0208b030 local
+TusinSet_icon_Render kind:function(arm,size=0x2c) addr:0x0208b0fc local
+TusinSet_icon_Destroy kind:function(arm,size=0x2c) addr:0x0208b128 local
+TusinSet_icon_RunTask kind:function(arm,size=0x48) addr:0x0208b154 local
+TusinSet_icon_CreateTask kind:function(arm,size=0x34) addr:0x0208b19c
+TusinSet_nameD_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208b1d0 local
+TusinSet_nameD_Load kind:function(arm,size=0xd0) addr:0x0208b26c local
+TusinSet_nameD_Init kind:function(arm,size=0x28) addr:0x0208b33c local
+TusinSet_nameD_Update kind:function(arm,size=0x34) addr:0x0208b364 local
+TusinSet_nameD_Render kind:function(arm,size=0x34) addr:0x0208b398 local
+TusinSet_nameD_Destroy kind:function(arm,size=0x34) addr:0x0208b3cc local
+TusinSet_nameD_RunTask kind:function(arm,size=0x48) addr:0x0208b400 local
+TusinSet_nameD_CreateTask kind:function(arm,size=0x34) addr:0x0208b448
+TusinSet_partner_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208b47c local
+TusinSet_partner_Load kind:function(arm,size=0x104) addr:0x0208b518 local
+TusinSet_partner_Init kind:function(arm,size=0x44) addr:0x0208b61c local
+TusinSet_partner_Update kind:function(arm,size=0x154) addr:0x0208b660 local
+TusinSet_partner_Render kind:function(arm,size=0x40) addr:0x0208b7b4 local
+TusinSet_partner_Destroy kind:function(arm,size=0x2c) addr:0x0208b7f4 local
+TusinSet_partner_RunTask kind:function(arm,size=0x48) addr:0x0208b820 local
+TusinSet_partner_CreateTask kind:function(arm,size=0x34) addr:0x0208b868
+TusinSet_item_GetFrameInfo kind:function(arm,size=0xa8) addr:0x0208b89c
+TusinSet_item_Load kind:function(arm,size=0xcc) addr:0x0208b944
+TusinSet_item_Init kind:function(arm,size=0x20) addr:0x0208ba10
+TusinSet_item_Update kind:function(arm,size=0x14) addr:0x0208ba30
+TusinSet_item_Render kind:function(arm,size=0x20) addr:0x0208ba44
+TusinSet_item_Destroy kind:function(arm,size=0x14) addr:0x0208ba64
+TusinSet_item_RunTask kind:function(arm,size=0x48) addr:0x0208ba78
+TusinSet_item_CreateTask kind:function(arm,size=0x58) addr:0x0208bac0
+TusinSet_item_ReleaseSprite kind:function(arm,size=0x10) addr:0x0208bb18
+TusinSet_itemCur_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208bb28 local
+TusinSet_itemCur_Load kind:function(arm,size=0x8c) addr:0x0208bbc4 local
+TusinSet_itemCur_Init kind:function(arm,size=0x28) addr:0x0208bc50 local
+TusinSet_itemCur_Update kind:function(arm,size=0x8c) addr:0x0208bc78 local
+TusinSet_itemCur_Render kind:function(arm,size=0x20) addr:0x0208bd04 local
+TusinSet_itemCur_Destroy kind:function(arm,size=0x14) addr:0x0208bd24 local
+TusinSet_itemCur_RunTask kind:function(arm,size=0x48) addr:0x0208bd38 local
+TusinSet_itemCur_CreateTask kind:function(arm,size=0x34) addr:0x0208bd80
+TusinSet_tab_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208bdb4 local
+TusinSet_tab_Load kind:function(arm,size=0xa8) addr:0x0208be50 local
+TusinSet_tab_Init kind:function(arm,size=0x28) addr:0x0208bef8 local
+TusinSet_tab_Update kind:function(arm,size=0x90) addr:0x0208bf20 local
+TusinSet_tab_Render kind:function(arm,size=0x2c) addr:0x0208bfb0 local
+TusinSet_tab_Destroy kind:function(arm,size=0x2c) addr:0x0208bfdc local
+TusinSet_tab_RunTask kind:function(arm,size=0x48) addr:0x0208c008 local
+TusinSet_tab_CreateTask kind:function(arm,size=0x34) addr:0x0208c050
+TusinSet_sbar_PosYToScroll kind:function(arm,size=0x74) addr:0x0208c084
+TusinSet_sbar_ScrollToPosY kind:function(arm,size=0x44) addr:0x0208c0f8
+TusinSet_sbar_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208c13c
+TusinSet_sbar_Load kind:function(arm,size=0xcc) addr:0x0208c1d8
+TusinSet_sbar_Init kind:function(arm,size=0x2c) addr:0x0208c2a4
+TusinSet_sbar_Update kind:function(arm,size=0x2a4) addr:0x0208c2d0
+TusinSet_sbar_Render kind:function(arm,size=0x4c) addr:0x0208c574
+TusinSet_sbar_Destroy kind:function(arm,size=0x2c) addr:0x0208c5c0
+TusinSet_sbar_RunTask kind:function(arm,size=0x48) addr:0x0208c5ec
+TusinSet_sbar_CreateTask kind:function(arm,size=0x34) addr:0x0208c634
+TusinSet_sbar2_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208c668 local
+TusinSet_sbar2_Load kind:function(arm,size=0xcc) addr:0x0208c704 local
+TusinSet_sbar2_Init kind:function(arm,size=0x2c) addr:0x0208c7d0 local
+TusinSet_sbar2_Update kind:function(arm,size=0x2c) addr:0x0208c7fc local
+TusinSet_sbar2_Render kind:function(arm,size=0x4c) addr:0x0208c828 local
+TusinSet_sbar2_Destroy kind:function(arm,size=0x2c) addr:0x0208c874 local
+TusinSet_sbar2_RunTask kind:function(arm,size=0x48) addr:0x0208c8a0 local
+TusinSet_sbar2_CreateTask kind:function(arm,size=0x34) addr:0x0208c8e8
+TusinSet_helpCur_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208c91c local
+TusinSet_helpCur_Load kind:function(arm,size=0x100) addr:0x0208c9b8 local
+TusinSet_helpCur_Init kind:function(arm,size=0x20) addr:0x0208cab8 local
+TusinSet_helpCur_Update kind:function(arm,size=0x124) addr:0x0208cad8 local
+TusinSet_helpCur_Render kind:function(arm,size=0x40) addr:0x0208cbfc local
+TusinSet_helpCur_Destroy kind:function(arm,size=0x2c) addr:0x0208cc3c local
+TusinSet_helpCur_RunTask kind:function(arm,size=0x48) addr:0x0208cc68 local
+TusinSet_helpCur_CreateTask kind:function(arm,size=0x34) addr:0x0208ccb0
+TusinSet_pointer_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208cce4 local
+TusinSet_pointer_Load kind:function(arm,size=0x74) addr:0x0208cd80 local
+TusinSet_pointer_Init kind:function(arm,size=0x28) addr:0x0208cdf4 local
+TusinSet_pointer_Update kind:function(arm,size=0x50) addr:0x0208ce1c local
+TusinSet_pointer_Render kind:function(arm,size=0x20) addr:0x0208ce6c local
+TusinSet_pointer_Destroy kind:function(arm,size=0x14) addr:0x0208ce8c local
+TusinSet_pointer_RunTask kind:function(arm,size=0x48) addr:0x0208cea0 local
+TusinSet_pointer_CreateTask kind:function(arm,size=0x34) addr:0x0208cee8
+TusinSet_textScrU_GetEsperRank kind:function(arm,size=0x94) addr:0x0208cf1c local
+TusinSet_textScrU_GetEsperRankGrade kind:function(arm,size=0x88) addr:0x0208cfb0 local
+TusinSet_textScrU_GetEsperPointsGrade kind:function(arm,size=0x50) addr:0x0208d038 local
+TusinSet_textScrU_CalcNoiseReportPercent kind:function(arm,size=0x4c) addr:0x0208d088 local
+TusinSet_textScrU_GetNoiseReportGrade kind:function(arm,size=0x40) addr:0x0208d0d4 local
+TusinSet_textScrU_CalcPinMasteryPercent kind:function(arm,size=0x54) addr:0x0208d114 local
+TusinSet_textScrU_GetPinMasteryGrade kind:function(arm,size=0x40) addr:0x0208d168 local
+TusinSet_textScrU_CalcItemCollectionPercent kind:function(arm,size=0x4c) addr:0x0208d1a8 local
+TusinSet_textScrU_GetItemCollectionGrade kind:function(arm,size=0x40) addr:0x0208d1f4 local
+TusinSet_textScrU_SplitTime kind:function(arm,size=0xdc) addr:0x0208d234 local
+TusinSet_textScrU_GetTimeAttackGrade kind:function(arm,size=0x60) addr:0x0208d310 local
+TusinSet_textScrU_InitFonts kind:function(arm,size=0x38) addr:0x0208d370 local
+TusinSet_textScrU_DrawCard kind:function(arm,size=0x904) addr:0x0208d3a8 local
+TusinSet_textScrU_DrawHelp kind:function(arm,size=0x1b0) addr:0x0208dcac local
+TusinSet_textScrU_Init kind:function(arm,size=0x28) addr:0x0208de5c local
+TusinSet_textScrU_Update kind:function(arm,size=0x80) addr:0x0208de84 local
+TusinSet_textScrU_Render kind:function(arm,size=0x8) addr:0x0208df04 local
+TusinSet_textScrU_Destroy kind:function(arm,size=0x30) addr:0x0208df0c local
+TusinSet_textScrU_RunTask kind:function(arm,size=0x48) addr:0x0208df3c local
+TusinSet_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x0208df84
+TusinSet_bdgU_LoadPackedData kind:function(arm,size=0x14c) addr:0x0208dfb8 local
+TusinSet_bdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208e104 local
+TusinSet_bdgU_Load kind:function(arm,size=0x554) addr:0x0208e1a4 local
+TusinSet_bdgU_Init kind:function(arm,size=0x28) addr:0x0208e6f8 local
+TusinSet_bdgU_Update kind:function(arm,size=0x34) addr:0x0208e720 local
+TusinSet_bdgU_Render kind:function(arm,size=0x44) addr:0x0208e754 local
+TusinSet_bdgU_Destroy kind:function(arm,size=0x34) addr:0x0208e798 local
+TusinSet_bdgU_RunTask kind:function(arm,size=0x48) addr:0x0208e7cc local
+TusinSet_bdgU_CreateTask kind:function(arm,size=0x88) addr:0x0208e814
+TusinSet_itemU_LoadPackedData kind:function(arm,size=0x14c) addr:0x0208e89c local
+TusinSet_itemU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x0208e9e8 local
+TusinSet_itemU_Load kind:function(arm,size=0x1bc) addr:0x0208ea88 local
+TusinSet_itemU_Init kind:function(arm,size=0x28) addr:0x0208ec44 local
+TusinSet_itemU_Update kind:function(arm,size=0x34) addr:0x0208ec6c local
+TusinSet_itemU_Render kind:function(arm,size=0x44) addr:0x0208eca0 local
+TusinSet_itemU_Destroy kind:function(arm,size=0x34) addr:0x0208ece4 local
+TusinSet_itemU_RunTask kind:function(arm,size=0x48) addr:0x0208ed18 local
+TusinSet_itemU_CreateTask kind:function(arm,size=0x78) addr:0x0208ed60
+TusinSet_itemU_ReleaseSprite kind:function(arm,size=0x14) addr:0x0208edd8
+TusinSet_nameU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208edec local
+TusinSet_nameU_Load kind:function(arm,size=0x140) addr:0x0208ee88 local
+TusinSet_nameU_Init kind:function(arm,size=0x20) addr:0x0208efc8 local
+TusinSet_nameU_Update kind:function(arm,size=0x68) addr:0x0208efe8 local
+TusinSet_nameU_Render kind:function(arm,size=0x48) addr:0x0208f050 local
+TusinSet_nameU_Destroy kind:function(arm,size=0x34) addr:0x0208f098 local
+TusinSet_nameU_RunTask kind:function(arm,size=0x48) addr:0x0208f0cc local
+TusinSet_nameU_CreateTask kind:function(arm,size=0x34) addr:0x0208f114
+TusinSet_slotCoverU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208f148 local
+TusinSet_slotCoverU_Load kind:function(arm,size=0xdc) addr:0x0208f1e4 local
+TusinSet_slotCoverU_Init kind:function(arm,size=0x20) addr:0x0208f2c0 local
+TusinSet_slotCoverU_Update kind:function(arm,size=0x14) addr:0x0208f2e0 local
+TusinSet_slotCoverU_Render kind:function(arm,size=0x14) addr:0x0208f2f4 local
+TusinSet_slotCoverU_Destroy kind:function(arm,size=0x14) addr:0x0208f308 local
+TusinSet_slotCoverU_RunTask kind:function(arm,size=0x48) addr:0x0208f31c local
+TusinSet_slotCoverU_CreateTask kind:function(arm,size=0x38) addr:0x0208f364
+TusinSet_helpCurU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208f39c local
+TusinSet_helpCurU_Load kind:function(arm,size=0xa8) addr:0x0208f438 local
+TusinSet_helpCurU_Init kind:function(arm,size=0x20) addr:0x0208f4e0 local
+TusinSet_helpCurU_Update kind:function(arm,size=0x78) addr:0x0208f500 local
+TusinSet_helpCurU_Render kind:function(arm,size=0x40) addr:0x0208f578 local
+TusinSet_helpCurU_Destroy kind:function(arm,size=0x30) addr:0x0208f5b8 local
+TusinSet_helpCurU_RunTask kind:function(arm,size=0x48) addr:0x0208f5e8 local
+TusinSet_helpCurU_CreateTask kind:function(arm,size=0x34) addr:0x0208f630
 func_ov045_0208f664 kind:function(arm,size=0x108) addr:0x0208f664
 func_ov045_0208f76c kind:function(arm,size=0x294) addr:0x0208f76c
 func_ov045_0208fa00 kind:function(arm,size=0x84) addr:0x0208fa00
@@ -553,115 +553,94 @@ func_ov045_020985b0 kind:function(arm,size=0x40) addr:0x020985b0
 func_ov045_020985f0 kind:function(arm,size=0x30) addr:0x020985f0
 func_ov045_02098620 kind:function(arm,size=0x48) addr:0x02098620
 func_ov045_02098668 kind:function(arm,size=0x34) addr:0x02098668
-data_ov045_0209869c kind:data(any) addr:0x0209869c
-data_ov045_020986a8 kind:data(any) addr:0x020986a8
-data_ov045_020986b8 kind:data(any) addr:0x020986b8
-data_ov045_020986d0 kind:data(any) addr:0x020986d0
-data_ov045_020986e8 kind:data(any) addr:0x020986e8
-data_ov045_020986f8 kind:data(any) addr:0x020986f8
-data_ov045_02098700 kind:data(any) addr:0x02098700
-data_ov045_02098708 kind:data(any) addr:0x02098708
-data_ov045_02098710 kind:data(any) addr:0x02098710
-data_ov045_02098718 kind:data(any) addr:0x02098718
-data_ov045_02098728 kind:data(any) addr:0x02098728
-data_ov045_02098750 kind:data(any) addr:0x02098750
-data_ov045_0209878c kind:data(any) addr:0x0209878c
-data_ov045_020987dc kind:data(any) addr:0x020987dc
-data_ov045_020987e8 kind:data(any) addr:0x020987e8
-data_ov045_020987f8 kind:data(any) addr:0x020987f8
-data_ov045_02098824 kind:data(any) addr:0x02098824
-data_ov045_02098830 kind:data(any) addr:0x02098830
-data_ov045_02098840 kind:data(any) addr:0x02098840
-data_ov045_0209886c kind:data(any) addr:0x0209886c
-data_ov045_02098878 kind:data(any) addr:0x02098878
-data_ov045_02098888 kind:data(any) addr:0x02098888
-data_ov045_020988b4 kind:data(any) addr:0x020988b4
-data_ov045_020988c0 kind:data(any) addr:0x020988c0
-data_ov045_020988d0 kind:data(any) addr:0x020988d0
-data_ov045_020988fc kind:data(any) addr:0x020988fc
-data_ov045_02098908 kind:data(any) addr:0x02098908
-data_ov045_02098918 kind:data(any) addr:0x02098918
-data_ov045_02098944 kind:data(any) addr:0x02098944
-data_ov045_02098950 kind:data(any) addr:0x02098950
-data_ov045_02098960 kind:data(any) addr:0x02098960
-data_ov045_0209898c kind:data(any) addr:0x0209898c
-data_ov045_02098998 kind:data(any) addr:0x02098998
-data_ov045_0209899a kind:data(any) addr:0x0209899a
-data_ov045_020989d8 kind:data(any) addr:0x020989d8
-data_ov045_020989e8 kind:data(any) addr:0x020989e8
-data_ov045_020989f8 kind:data(any) addr:0x020989f8
-data_ov045_02098a10 kind:data(any) addr:0x02098a10
-data_ov045_02098a18 kind:data(any) addr:0x02098a18
-data_ov045_02098a20 kind:data(any) addr:0x02098a20
-data_ov045_02098a28 kind:data(any) addr:0x02098a28
-data_ov045_02098a30 kind:data(any) addr:0x02098a30
-data_ov045_02098a38 kind:data(any) addr:0x02098a38
-data_ov045_02098a40 kind:data(any) addr:0x02098a40
-data_ov045_02098a48 kind:data(any) addr:0x02098a48
-data_ov045_02098a50 kind:data(any) addr:0x02098a50
-data_ov045_02098a58 kind:data(any) addr:0x02098a58
+OvlProc_Tusin kind:data(any) addr:0x0209869c
+Tusin_BinIdentifiers kind:data(any) addr:0x020986a8
+@1941 kind:data(any) addr:0x02098728 local
+@1665 kind:data(any) addr:0x02098750 local
+@1658 kind:data(any) addr:0x0209878c local
+Tsk_Tusin_textScr kind:data(any) addr:0x020987dc local
+@1646 kind:data(any) addr:0x020987e8 local
+@1570 kind:data(any) addr:0x020987f8 local
+Tsk_Tusin_btn kind:data(any) addr:0x02098824 local
+@1496 kind:data(any) addr:0x02098830 local
+Tusin_btn_Anim kind:data(any) addr:0x02098840 local
+Tsk_Tusin_btnF kind:data(any) addr:0x0209886c local
+@1501 kind:data(any) addr:0x02098878 local
+Tusin_btnF_Anim kind:data(any) addr:0x02098888 local
+Tsk_Tusin_btnLR kind:data(any) addr:0x020988b4 local
+@1523 kind:data(any) addr:0x020988c0 local
+Tusin_btnLR_Anim kind:data(any) addr:0x020988d0 local
+Tsk_Tusin_num kind:data(any) addr:0x020988fc local
+@1552 kind:data(any) addr:0x02098908 local
+Tusin_num_Anim kind:data(any) addr:0x02098918 local
+Tsk_Tusin_beltU kind:data(any) addr:0x02098944 local
+@1794 kind:data(any) addr:0x02098950 local
+Tusin_beltU_Anim kind:data(any) addr:0x02098960 local
+OvlProc_TusinSet kind:data(any) addr:0x0209898c local
+TusinSet_SlotPositions kind:data(any) addr:0x02098998
+TusinSet_BinIdentifiers kind:data(any) addr:0x020989d8
 data_ov045_02098a60 kind:data(any) addr:0x02098a60
 data_ov045_02098aba kind:data(any) addr:0x02098aba
-data_ov045_02098acc kind:data(any) addr:0x02098acc
-data_ov045_02098ad8 kind:data(any) addr:0x02098ad8
-data_ov045_02098ae8 kind:data(any) addr:0x02098ae8
-data_ov045_02098afc kind:data(any) addr:0x02098afc
-data_ov045_02098b08 kind:data(any) addr:0x02098b08
-data_ov045_02098b18 kind:data(any) addr:0x02098b18
-data_ov045_02098b44 kind:data(any) addr:0x02098b44
-data_ov045_02098b50 kind:data(any) addr:0x02098b50
-data_ov045_02098b60 kind:data(any) addr:0x02098b60
-data_ov045_02098b8c kind:data(any) addr:0x02098b8c
-data_ov045_02098b94 kind:data(any) addr:0x02098b94
-data_ov045_02098ba0 kind:data(any) addr:0x02098ba0
-data_ov045_02098bb0 kind:data(any) addr:0x02098bb0
-data_ov045_02098bdc kind:data(any) addr:0x02098bdc
-data_ov045_02098be8 kind:data(any) addr:0x02098be8
-data_ov045_02098bf8 kind:data(any) addr:0x02098bf8
-data_ov045_02098c24 kind:data(any) addr:0x02098c24
+Tsk_TusinSet_textScr kind:data(any) addr:0x02098acc local
+@1644 kind:data(any) addr:0x02098ad8 local
+@1568 kind:data(any) addr:0x02098ae8 local
+Tsk_TusinSet_btn kind:data(any) addr:0x02098afc local
+@1564 kind:data(any) addr:0x02098b08 local
+TusinSet_btn_Anim kind:data(any) addr:0x02098b18 local
+Tsk_TusinSet_icon kind:data(any) addr:0x02098b44 local
+@1521 kind:data(any) addr:0x02098b50 local
+TusinSet_icon_Anim kind:data(any) addr:0x02098b60 local
+.rodata kind:data(any) addr:0x02098b8c local
+Tsk_TusinSet_nameD kind:data(any) addr:0x02098b94 local
+@1511 kind:data(any) addr:0x02098ba0 local
+TusinSet_nameD_Anim kind:data(any) addr:0x02098bb0 local
+Tsk_TusinSet_partner kind:data(any) addr:0x02098bdc local
+@1569 kind:data(any) addr:0x02098be8 local
+TusinSet_partner_Anim kind:data(any) addr:0x02098bf8 local
+Tsk_TusinSet_item kind:data(any) addr:0x02098c24
 data_ov045_02098c30 kind:data(any) addr:0x02098c30
 data_ov045_02098c40 kind:data(any) addr:0x02098c40
-data_ov045_02098c6c kind:data(any) addr:0x02098c6c
-data_ov045_02098c78 kind:data(any) addr:0x02098c78
-data_ov045_02098c88 kind:data(any) addr:0x02098c88
-data_ov045_02098cb4 kind:data(any) addr:0x02098cb4
-data_ov045_02098cc0 kind:data(any) addr:0x02098cc0
-data_ov045_02098cd0 kind:data(any) addr:0x02098cd0
-data_ov045_02098cfc kind:data(any) addr:0x02098cfc
+Tsk_TusinSet_itemCur kind:data(any) addr:0x02098c6c local
+@1502 kind:data(any) addr:0x02098c78 local
+TusinSet_itemCur_Anim kind:data(any) addr:0x02098c88 local
+Tsk_TusinSet_tab kind:data(any) addr:0x02098cb4 local
+@1524 kind:data(any) addr:0x02098cc0 local
+TusinSet_tab_Anim kind:data(any) addr:0x02098cd0 local
+Tsk_TusinSet_sbar kind:data(any) addr:0x02098cfc
 data_ov045_02098d08 kind:data(any) addr:0x02098d08
 data_ov045_02098d18 kind:data(any) addr:0x02098d18
-data_ov045_02098d44 kind:data(any) addr:0x02098d44
-data_ov045_02098d50 kind:data(any) addr:0x02098d50
-data_ov045_02098d60 kind:data(any) addr:0x02098d60
-data_ov045_02098d8c kind:data(any) addr:0x02098d8c
-data_ov045_02098d98 kind:data(any) addr:0x02098d98
-data_ov045_02098da8 kind:data(any) addr:0x02098da8
-data_ov045_02098dd4 kind:data(any) addr:0x02098dd4
-data_ov045_02098de0 kind:data(any) addr:0x02098de0
-data_ov045_02098df0 kind:data(any) addr:0x02098df0
-data_ov045_02098e1c kind:data(any) addr:0x02098e1c
-data_ov045_02098e34 kind:data(any) addr:0x02098e34
-data_ov045_02098e44 kind:data(any) addr:0x02098e44
-data_ov045_02098e9c kind:data(any) addr:0x02098e9c
-data_ov045_02098ea0 kind:data(any) addr:0x02098ea0
-data_ov045_02098eac kind:data(any) addr:0x02098eac
-data_ov045_02098ebc kind:data(any) addr:0x02098ebc
-data_ov045_02098ed4 kind:data(any) addr:0x02098ed4
-data_ov045_02098f00 kind:data(any) addr:0x02098f00
-data_ov045_02098f0c kind:data(any) addr:0x02098f0c
-data_ov045_02098f1c kind:data(any) addr:0x02098f1c
-data_ov045_02098f40 kind:data(any) addr:0x02098f40
-data_ov045_02098f6c kind:data(any) addr:0x02098f6c
-data_ov045_02098f78 kind:data(any) addr:0x02098f78
-data_ov045_02098f88 kind:data(any) addr:0x02098f88
-data_ov045_02098f98 kind:data(any) addr:0x02098f98
-data_ov045_02098fc4 kind:data(any) addr:0x02098fc4
-data_ov045_02098fd0 kind:data(any) addr:0x02098fd0
-data_ov045_02098fe0 kind:data(any) addr:0x02098fe0
-data_ov045_02098ff8 kind:data(any) addr:0x02098ff8
-data_ov045_02099024 kind:data(any) addr:0x02099024
-data_ov045_02099030 kind:data(any) addr:0x02099030
-data_ov045_02099040 kind:data(any) addr:0x02099040
+Tsk_TusinSet_sbar2 kind:data(any) addr:0x02098d44 local
+@1513 kind:data(any) addr:0x02098d50 local
+TusinSet_sbar2_Anim kind:data(any) addr:0x02098d60 local
+Tsk_TusinSet_helpCur kind:data(any) addr:0x02098d8c local
+@1540 kind:data(any) addr:0x02098d98 local
+TusinSet_helpCur_Anim kind:data(any) addr:0x02098da8 local
+Tsk_TusinSet_pointer kind:data(any) addr:0x02098dd4 local
+@1500 kind:data(any) addr:0x02098de0 local
+TusinSet_pointer_Anim kind:data(any) addr:0x02098df0 local
+Tsk_TusinSet_textScrU kind:data(any) addr:0x02098e1c local
+@1849 kind:data(any) addr:0x02098e34 local
+@1747 kind:data(any) addr:0x02098e44 local
+@1529 kind:data(any) addr:0x02098e9c local
+Tsk_TusinSet_bdgU kind:data(any) addr:0x02098ea0 local
+@1637 kind:data(any) addr:0x02098eac local
+@1534 kind:data(any) addr:0x02098ebc local
+TusinSet_bdgU_Anim kind:data(any) addr:0x02098ed4 local
+Tsk_TusinSet_itemU kind:data(any) addr:0x02098f00 local
+@1590 kind:data(any) addr:0x02098f0c local
+@1530 kind:data(any) addr:0x02098f1c local
+TusinSet_itemU_Anim kind:data(any) addr:0x02098f40 local
+Tsk_TusinSet_nameU kind:data(any) addr:0x02098f6c local
+@1523 kind:data(any) addr:0x02098f78 local
+@1456 kind:data(any) addr:0x02098f88 local
+TusinSet_nameU_Anim kind:data(any) addr:0x02098f98 local
+Tsk_TusinSet_slotCoverU kind:data(any) addr:0x02098fc4 local
+@1494 kind:data(any) addr:0x02098fd0 local
+@1456 kind:data(any) addr:0x02098fe0 local
+TusinSet_slotCoverU_Anim kind:data(any) addr:0x02098ff8 local
+Tsk_TusinSet_helpCurU kind:data(any) addr:0x02099024 local
+@1517 kind:data(any) addr:0x02099030 local
+TusinSet_helpCurU_Anim kind:data(any) addr:0x02099040 local
 data_ov045_0209906c kind:data(any) addr:0x0209906c
 data_ov045_02099078 kind:data(any) addr:0x02099078
 data_ov045_02099088 kind:data(any) addr:0x02099088
@@ -741,9 +720,9 @@ data_ov045_02099738 kind:data(any) addr:0x02099738
 data_ov045_02099764 kind:data(any) addr:0x02099764
 data_ov045_02099770 kind:data(any) addr:0x02099770
 data_ov045_02099780 kind:data(any) addr:0x02099780
-data_ov045_020997c0 kind:data(any) addr:0x020997c0
+Tusin_SequenceName kind:data(any) addr:0x020997c0
 data_ov045_020997c4 kind:data(any) addr:0x020997c4
-data_ov045_020997d0 kind:data(any) addr:0x020997d0
+Tusin_FriendDataName kind:data(any) addr:0x020997d0
 data_ov045_020997e4 kind:data(any) addr:0x020997e4
 data_ov045_020997f8 kind:data(any) addr:0x020997f8
 data_ov045_02099810 kind:data(any) addr:0x02099810
@@ -759,17 +738,17 @@ data_ov045_02099900 kind:data(any) addr:0x02099900
 data_ov045_0209991c kind:data(any) addr:0x0209991c
 data_ov045_02099938 kind:data(any) addr:0x02099938
 data_ov045_02099958 kind:data(any) addr:0x02099958
-data_ov045_02099978 kind:data(any) addr:0x02099978
-data_ov045_020999b8 kind:data(any) addr:0x020999b8
-data_ov045_020999c8 kind:data(any) addr:0x020999c8
-data_ov045_020999dc kind:data(any) addr:0x020999dc
-data_ov045_020999ec kind:data(any) addr:0x020999ec
-data_ov045_020999fc kind:data(any) addr:0x020999fc
-data_ov045_02099a0c kind:data(any) addr:0x02099a0c
-data_ov045_02099a1c kind:data(any) addr:0x02099a1c
-data_ov045_02099a2c kind:data(any) addr:0x02099a2c
+Tusin_EmptyBadge kind:data(any) addr:0x02099978
+@2304 kind:data(any) addr:0x020999b8 local
+@1564 kind:data(any) addr:0x020999c8 local
+@1438 kind:data(any) addr:0x020999dc local
+@1438 kind:data(any) addr:0x020999ec local
+@1438 kind:data(any) addr:0x020999fc local
+@1438 kind:data(any) addr:0x02099a0c local
+@1603 kind:data(any) addr:0x02099a1c local
+TusinSet_SequenceName kind:data(any) addr:0x02099a2c local
 data_ov045_02099a30 kind:data(any) addr:0x02099a30
-data_ov045_02099a40 kind:data(any) addr:0x02099a40
+TusinSet_EmptyItem kind:data(any) addr:0x02099a40
 data_ov045_02099a50 kind:data(any) addr:0x02099a50
 data_ov045_02099a64 kind:data(any) addr:0x02099a64
 data_ov045_02099a7c kind:data(any) addr:0x02099a7c
@@ -791,24 +770,24 @@ data_ov045_02099c0c kind:data(any) addr:0x02099c0c
 data_ov045_02099c18 kind:data(any) addr:0x02099c18
 data_ov045_02099c24 kind:data(any) addr:0x02099c24
 data_ov045_02099c30 kind:data(any) addr:0x02099c30
-data_ov045_02099c40 kind:data(any) addr:0x02099c40
-data_ov045_02099c58 kind:data(any) addr:0x02099c58
-data_ov045_02099c6c kind:data(any) addr:0x02099c6c
-data_ov045_02099c80 kind:data(any) addr:0x02099c80
-data_ov045_02099c94 kind:data(any) addr:0x02099c94
+@1562 kind:data(any) addr:0x02099c40 local
+@1499 kind:data(any) addr:0x02099c58 local
+@1436 kind:data(any) addr:0x02099c6c local
+@1436 kind:data(any) addr:0x02099c80 local
+@1461 kind:data(any) addr:0x02099c94 local
 data_ov045_02099cac kind:data(any) addr:0x02099cac
-data_ov045_02099cc0 kind:data(any) addr:0x02099cc0
-data_ov045_02099cd8 kind:data(any) addr:0x02099cd8
+@1436 kind:data(any) addr:0x02099cc0 local
+@1436 kind:data(any) addr:0x02099cd8 local
 data_ov045_02099cec kind:data(any) addr:0x02099cec
-data_ov045_02099d00 kind:data(any) addr:0x02099d00
-data_ov045_02099d14 kind:data(any) addr:0x02099d14
-data_ov045_02099d2c kind:data(any) addr:0x02099d2c
-data_ov045_02099d44 kind:data(any) addr:0x02099d44
-data_ov045_02099d5c kind:data(any) addr:0x02099d5c
-data_ov045_02099d70 kind:data(any) addr:0x02099d70
-data_ov045_02099d84 kind:data(any) addr:0x02099d84
-data_ov045_02099d98 kind:data(any) addr:0x02099d98
-data_ov045_02099db0 kind:data(any) addr:0x02099db0
+@1436 kind:data(any) addr:0x02099d00 local
+@1436 kind:data(any) addr:0x02099d14 local
+@1439 kind:data(any) addr:0x02099d2c local
+@1850 kind:data(any) addr:0x02099d44 local
+@1472 kind:data(any) addr:0x02099d5c local
+@1472 kind:data(any) addr:0x02099d70 local
+@1436 kind:data(any) addr:0x02099d84 local
+@1436 kind:data(any) addr:0x02099d98 local
+@1436 kind:data(any) addr:0x02099db0 local
 data_ov045_02099dc8 kind:data(any) addr:0x02099dc8
 data_ov045_02099dcc kind:data(any) addr:0x02099dcc
 data_ov045_02099de0 kind:data(any) addr:0x02099de0
@@ -852,7 +831,7 @@ data_ov045_0209a188 kind:data(any) addr:0x0209a188
 data_ov045_0209a19c kind:data(any) addr:0x0209a19c
 data_ov045_0209a1b4 kind:data(any) addr:0x0209a1b4
 data_ov045_0209a1cc kind:data(any) addr:0x0209a1cc
-data_ov045_0209a200 kind:bss addr:0x0209a200
-data_ov045_0209a204 kind:bss addr:0x0209a204
-data_ov045_0209a21c kind:bss addr:0x0209a21c
+Tusin_State kind:bss addr:0x0209a200
+Tusin_SurePins kind:bss addr:0x0209a204
+TusinSet_State kind:bss addr:0x0209a21c
 data_ov045_0209a220 kind:bss addr:0x0209a220

@@ -69,12 +69,12 @@ extern u32 OVERLAY_45_ID;
     #define RESULT_OVL_MENU       OVERLAY_43_ID
     #define RESULT_OVL_MENU_ENTRY ((void*)0x02084040) /* ProcessOverlay_MenuTop */
     #define RESULT_OVL_NEXT       OVERLAY_45_ID
-    #define RESULT_OVL_NEXT_ENTRY ((void*)0x02088700) /* func_ov045_02088700 */
+    #define RESULT_OVL_NEXT_ENTRY ((void*)0x02088700) /* ProcessOverlay_TusinSet */
 #else
     #define RESULT_OVL_MENU       OVERLAY_42_ID
     #define RESULT_OVL_MENU_ENTRY ((void*)0x020849C4) /* func_ov042_020849c4 */
     #define RESULT_OVL_NEXT       OVERLAY_44_ID
-    #define RESULT_OVL_NEXT_ENTRY ((void*)0x020885C8) /* func_ov044_020885c8 */
+    #define RESULT_OVL_NEXT_ENTRY ((void*)0x020885C8) /* ProcessOverlay_TusinSet */
 #endif
 extern void func_ov030_020ae92c(void);
 extern void func_ov030_020b0fe8(void);

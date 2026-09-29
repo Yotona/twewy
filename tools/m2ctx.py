@@ -15,6 +15,7 @@ parser.add_argument('-f', type=str, dest='out_file', required=False, help='Outpu
 parser.add_argument('-c', action=argparse.BooleanOptionalAction, dest='clipboard', required=False, help='Copy output to clipboard')
 parser.add_argument('-e', type=str, dest='encoding', required=False, default="shift-jis", help='Input file encoding')
 parser.add_argument('-v', action=argparse.BooleanOptionalAction, dest='verbose', required=False, help='Verbose error output')
+parser.add_argument('-D', action='append', dest='defines', default=[], metavar='MACRO', help='Define a macro for the preprocessor (e.g. -D REGION_USA)')
 args = parser.parse_args()
 
 CXX_FLAGS = [
@@ -64,6 +65,7 @@ try:
                 'gcc',
                 '-E', '-P', '-fworking-directory', '-undef', '-dD',
                 *CXX_FLAGS,
+                *[f'-D{d}' for d in args.defines],
                 tmp_file.name
             ], cwd=root_dir, encoding=args.encoding)
         except subprocess.CalledProcessError as e:

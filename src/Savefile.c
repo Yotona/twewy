@@ -194,14 +194,14 @@ static s32 FriendData_InitAllEntriesEmpty(GlobalFriendData* friendData) {
             friendData->unk_0000[i].unk_00[j] = -1;
         }
 
-        friendData->unk_0000[i].unk_6A = -1;
+        friendData->unk_0000[i].shop.giftItemId = -1;
 
         for (j = 0; j < 6; j++) {
-            friendData->unk_0000[i].unk_6C[j] = 0xFFFF;
+            friendData->unk_0000[i].shop.unk_04[j] = 0xFFFF;
         }
 
         for (j = 0; j < 16; j++) {
-            friendData->unk_0000[i].unk_78[j] = 0xFFFF;
+            friendData->unk_0000[i].shop.unk_10[j] = 0xFFFF;
         }
     }
 

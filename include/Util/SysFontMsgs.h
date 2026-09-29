@@ -38,12 +38,14 @@
     // menu_foodName.xls
     #define SYSMSG_FOOD_NAMES_START 10861 // "Hamburger"..
     // menu_helpMess.xls
-    #define SYSMSG_TOPMENU_HELP_LABELS   10903 // "THE PHONE MENU"..
-    #define SYSMSG_TOPMENU_HELP_TEXT     10910 // "Use the Phone Menu to <cC>access game me"...
-    #define SYSMSG_BADGEMENU_HELP_LABELS 10925 // "THE PINS MENU"
-    #define SYSMSG_BADGEMENU_HELP_TEXT   10936 // "Use this menu to <cC>find out more about"...
-    #define SYSMSG_EQUIPMENU_HELP_LABELS 10947 // "THE ITEMS MENU"..
-    #define SYSMSG_EQUIPMENU_HELP_TEXT   10956 // "Use this menu to change your characters'"...
+    #define SYSMSG_TOPMENU_HELP_LABELS    10903 // "THE PHONE MENU"..
+    #define SYSMSG_TOPMENU_HELP_TEXT      10910 // "Use the Phone Menu to <cC>access game me"...
+    #define SYSMSG_BADGEMENU_HELP_LABELS  10925 // "THE PINS MENU"
+    #define SYSMSG_BADGEMENU_HELP_TEXT    10936 // "Use this menu to <cC>find out more about"...
+    #define SYSMSG_EQUIPMENU_HELP_LABELS  10947 // "THE ITEMS MENU"..
+    #define SYSMSG_EQUIPMENU_HELP_TEXT    10956 // "Use this menu to change your characters'"...
+    #define SYSMSG_MINGLEMENU_HELP_LABELS 10965 // "MINGLE MODE"..
+    #define SYSMSG_MINGLEMENU_HELP_TEXT   10972 // "From this menu you can enter Mingle Mode"...
     // menu_itemHelp.xls
     #define SYSMSG_THREAD_DESC_START 11004 // "This baseball cap bears an "M" patch.\nA"...
     // menu_itemName.xls
@@ -97,16 +99,48 @@
     #define SYSMSG_PIN_DURATION_TIME_FMT     13144 // "Lasts <cC><u32>.<u32><cE>s"
     #define SYSMSG_PIN_DURATION_USES_FMT     13145 // "Lasts <cC><u32><cE> uses"
     // USA-only: JP has no singular form.
-    #define SYSMSG_PIN_DURATION_USE_FMT         13146 // "Lasts <cC><u32><cE> use"
-    #define SYSMSG_PIN_BOOT_INSTANT             13147 // "Instant boot"
-    #define SYSMSG_PIN_BOOT_TIME_FMT            13148 // "Ready to use in <cC><u32>.<u32><cE>s"
-    #define SYSMSG_PIN_REBOOT_NONE              13149 // "\u2014\u2014\u2014\u2014" (em dashes)
-    #define SYSMSG_PIN_REBOOT_TIME_FMT          13150 // "Reboots in <cC><u32>.<u32><cE>s"
-    #define SYSMSG_MINGLE_ESPERS                13197 // "ESP'ers"
-    #define SYSMSG_MINGLE_CIVVIES               13198 // "Civvies"
-    #define SYSMSG_MINGLE_ALIENS                13199 // "Aliens"
-    #define SYSMSG_COUNT_FMT                    13213 // "<u32>"
-    #define SYSMSG_COUNT_NONE                   13214 // "\u2014" (em dash)
+    #define SYSMSG_PIN_DURATION_USE_FMT    13146 // "Lasts <cC><u32><cE> use"
+    #define SYSMSG_PIN_BOOT_INSTANT        13147 // "Instant boot"
+    #define SYSMSG_PIN_BOOT_TIME_FMT       13148 // "Ready to use in <cC><u32>.<u32><cE>s"
+    #define SYSMSG_PIN_REBOOT_NONE         13149 // "\u2014\u2014\u2014\u2014" (em dashes)
+    #define SYSMSG_PIN_REBOOT_TIME_FMT     13150 // "Reboots in <cC><u32>.<u32><cE>s"
+    #define SYSMSG_MINGLE_ESPERS           13197 // "ESP'ers"
+    #define SYSMSG_MINGLE_CIVVIES          13198 // "Civvies"
+    #define SYSMSG_MINGLE_ALIENS           13199 // "Aliens"
+    #define SYSMSG_CARD_ESPER_RANK         13200 // "ESP'er Rank"
+    #define SYSMSG_CARD_ESPER_POINTS       13201 // "ESP'er Points"
+    #define SYSMSG_CARD_NOISE_REPORT       13202 // "Noise Report"
+    #define SYSMSG_CARD_PIN_MASTERY        13203 // "Pin Mastery"
+    #define SYSMSG_CARD_ITEM_COLLECTION    13204 // "Item Collection"
+    #define SYSMSG_CARD_TIME_ATTACK        13205 // "Final Time Attack"
+    #define SYSMSG_CARD_POINTS_PLURAL      13206 // "<u32> pts."
+    #define SYSMSG_CARD_POINTS_SINGULAR    13207 // "<u32> pt."
+    #define SYSMSG_CARD_TYPES_PLURAL       13208 // "<u32> types"
+    #define SYSMSG_CARD_TYPES_SINGULAR     13209 // "<u32> type"
+    #define SYSMSG_CARD_PERCENT_FMT        13210 // "<u32>.<u32> %"
+    #define SYSMSG_CARD_TIME_FMT           13212 // "<u32>'<u32><u32>\"<u32><u32>"
+    #define SYSMSG_COUNT_FMT               13213 // "<u32>"
+    #define SYSMSG_COUNT_NONE              13214 // "\u2014" (em dash)
+    #define SYSMSG_CARD_GRADES_START       13215 // "\u2606" (star), then "A".."E"
+    #define SYSMSG_CARD_ESPER_RANKS_START  13221 // "God".."Only Human"
+    #define SYSMSG_SAVE_COMPLETE           13186 // "Save complete."
+    #define SYSMSG_MINGLE_REVIEW_INFO      13232 // "Review your information."
+    #define SYSMSG_MINGLE_SEND_NOTICE      13233 // "The contents shown above will be sent.\n"...
+    #define SYSMSG_MINGLE_POWER_LIGHT_HINT 13234 // "End communications when the\npower light"...
+    #define SYSMSG_MINGLE_COUNT_HINT       13235 // "Communications end when this\nmingle cou"...
+    #define SYSMSG_MINGLE_END_AND_SAVE     13236 // "End communications and save"
+    #define SYSMSG_MINGLE_POWER_LIGHT_RED  13237 // "The power light is red!\nCommunications "...
+    #define SYSMSG_MINGLE_REMAINING_PLURAL 13238 // "You can mingle with <u32> more people."
+    // USA-only: JP has no singular form.
+    #define SYSMSG_MINGLE_REMAINING_SINGULAR    13239 // "You can mingle with <u32> more person."
+    #define SYSMSG_MINGLE_NOW_MINGLING          13240 // "Now mingling!\nFeel free to close your D"...
+    #define SYSMSG_MINGLE_ENDING                13241 // "Ending communications."
+    #define SYSMSG_MINGLE_QUOTA_MET             13242 // "You've met your mingle quota!\nCommunica"...
+    #define SYSMSG_MINGLE_SAVING                13243 // "<cC>Saving... Don't turn power OFF or re"...
+    #define SYSMSG_MINGLE_RAN_INTO_FMT          13244 // "You ran into <cC><str><cE>!"
+    #define SYSMSG_MINGLE_RAKED_IN_FMT          13245 // "You raked in <cC>$<u32><cE>!"
+    #define SYSMSG_MINGLE_RAN_INTO_OTHER_FMT    13248 // "You ran into <cC><str><cE>..."
+    #define SYSMSG_MINGLE_ALIEN_NAMES_START     13250 // "a cuckoo"
     #define SYSMSG_THREAD_ATTRIBUTE_LABEL       13151 // "Threads: "
     #define SYSMSG_THREAD_ATTRIBUTE_NAMES_START 13152 // "Headwear"..
     #define SYSMSG_FOOD_ITEM_LABEL              13158 // "Food Item"
@@ -178,6 +212,8 @@
     #define SYSMSG_BADGEMENU_HELP_TEXT          10859 // "　バッジメニューでは{0733}っている<cC>"...
     #define SYSMSG_EQUIPMENU_HELP_LABELS        10870 // "アイテムメニュー"..
     #define SYSMSG_EQUIPMENU_HELP_TEXT          10879 // "　アイテムメニューでは<cC>キャラクターのそう"...
+    #define SYSMSG_MINGLEMENU_HELP_LABELS       10888 // "すれ{0266}いメニュー"..
+    #define SYSMSG_MINGLEMENU_HELP_TEXT         10895 // "　すれ{0266}いメニューでは{0729}{02BC}の<cC>セッティングや"...
     #define SYSMSG_THREAD_DESC_START            10927 // "Ｍのワッペンがついたキャップ\nシンプルさを{0"...
     #define SYSMSG_THREAD_NAMES_START           11207 // "Ｍキャップ"..
     #define SYSMSG_AREA_NAMES_START             11487 // "スクランブル{02E6}{02D8}{02A6}"..
@@ -225,8 +261,36 @@
     #define SYSMSG_MINGLE_ESPERS                13098 // "エスパー"
     #define SYSMSG_MINGLE_CIVVIES               13099 // "いっぱんじん"
     #define SYSMSG_MINGLE_ALIENS                13100 // "エイリアン"
+    #define SYSMSG_CARD_ESPER_RANK              13101 // "エスパーランク"
+    #define SYSMSG_CARD_ESPER_POINTS            13102 // "エスパーポイント"
+    #define SYSMSG_CARD_NOISE_REPORT            13103 // "ノイズレポート"
+    #define SYSMSG_CARD_PIN_MASTERY             13104 // "マスターバッジ"
+    #define SYSMSG_CARD_ITEM_COLLECTION         13105 // "アイテムコンプ"
+    #define SYSMSG_CARD_TIME_ATTACK             13106 // "ファイナルタイムアタック"
+    #define SYSMSG_CARD_POINTS_FMT              13107 // "<u32>ポイント"
+    #define SYSMSG_CARD_TYPES_FMT               13108 // "<u32>{03D6}{0389}"
+    #define SYSMSG_CARD_PERCENT_FMT             13109 // "<u32>.<u32>{020D}"
+    #define SYSMSG_CARD_TIME_FMT                13110 // "<u32><u32>'<u32><u32>"<u32><u32>"
     #define SYSMSG_COUNT_FMT                    13111 // "<u32>{085D}"
     #define SYSMSG_COUNT_NONE                   13112 // "－"
+    #define SYSMSG_CARD_GRADES_START            13113 // "Ｓ"..
+    #define SYSMSG_CARD_ESPER_RANKS_START       13119 // "{023F}"..
+    #define SYSMSG_SAVE_COMPLETE                13089 // "セーブ{0738}{0343}しました"
+    #define SYSMSG_MINGLE_REVIEW_INFO           13130 // "すれ{0266}い{0729}{02BC}　セッティング"
+    #define SYSMSG_MINGLE_SEND_NOTICE           13131 // "この{02C7}{03FF}は{0729}{02BC}{0713}{070D}に"...
+    #define SYSMSG_MINGLE_POWER_LIGHT_HINT      13132 // "{02A1}{060A}ランプが{036E}いときは\n{0729}{02BC}"...
+    #define SYSMSG_MINGLE_COUNT_HINT            13133 // "{0729}{02BC}する{029C}り{085D}{0290}\n０{085"...
+    #define SYSMSG_MINGLE_END_AND_SAVE          13134 // "セーブして{0729}{02BC}を{0738}{0343}する"
+    #define SYSMSG_MINGLE_POWER_LIGHT_RED       13135 // "{02A1}{060A}ランプが{036E}くなったので\n{0729}{02B"...
+    #define SYSMSG_MINGLE_REMAINING             13136 // "あと<u32>{085D}まですれ{0266}い{0729}{02BC}できます"
+    #define SYSMSG_MINGLE_NOW_MINGLING          13137 // "すれ{0266}い{0729}{02BC}{024F}です！\nこの{02F8}"...
+    #define SYSMSG_MINGLE_ENDING                13138 // "{0729}{02BC}を{0738}{0343}します"
+    #define SYSMSG_MINGLE_QUOTA_MET             13139 // "{0375}{0294}の{085D}{0290}に{0715}したので\n{0"...
+    #define SYSMSG_MINGLE_SAVING                13140 // "<cC>セーブ{024F}…　カードを{0360}いたり\n{02A1}{060"...
+    #define SYSMSG_MINGLE_RAN_INTO_FMT          13141 // "<cC><str><cE>とすれ{0266}いました！"
+    #define SYSMSG_MINGLE_RAKED_IN_FMT          13142 // "<cC>{0225}<u32><cE>のお{028E}い{0255}げです！"
+    #define SYSMSG_MINGLE_RAN_INTO_OTHER_FMT    13145 // "<cC><str><cE>とすれ{0266}いました…"
+    #define SYSMSG_MINGLE_ALIEN_NAMES_START     13147 // "かんこどり"
     #define SYSMSG_THREAD_ATTRIBUTE_LABEL       13069 // "そうび{062A}{026B}："
     #define SYSMSG_THREAD_ATTRIBUTE_NAMES_START 13070 // "{02A7}"..
     #define SYSMSG_FOOD_ITEM_LABEL              13076 // "フードアイテム"

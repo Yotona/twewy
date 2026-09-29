@@ -30,6 +30,19 @@ typedef struct {
     /* 0x2 */ s16 count;
 } UnkItemCount; // Size: 0x4
 
+typedef struct {
+    /* 0x0 */ u8   macAddress[6];
+    /* 0x6 */ char unk_6[0x8 - 0x6];
+    /* 0x8 */ u32  unk_8; // Low 24 bits: money owed to the player, high 8 bits: shop id
+} MingleFriend;           // Size: 0xC
+
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 giftItemId; // Item handed to whoever mingles with this player
+    /* 0x04 */ u16 unk_04[6];
+    /* 0x10 */ u16 unk_10[16];
+} MingleShop; // Size: 0x30
+
 typedef struct MainData {
     /* 0x0000 */ PlayerStats    playerStats;
     /* 0x002C */ FriendStats    friendStats[3];
@@ -50,16 +63,16 @@ typedef struct MainData {
     /* 0x1AB9 */ u8             unk_1AB9;
     /* 0x1ABA */ u16            unk_1ABA[3];
     /* 0x1AC0 */ u16            unk_1AC0;
-    /* 0x1AC2 */ u16            unk_1AC2;
-    /* 0x1AC4 */ char           unk_1AC4[0x1AF2 - 0x1AC4];
-    /* 0x1AF2 */ u16            unk_1AF2;
-    /* 0x1AF4 */ char           unk_1AF4[0x1B24 - 0x1AF4];
-    /* 0x1B24 */ u16            unk_1B24;
-    /* 0x1B26 */ char           unk_1B26[0x1D7C - 0x1B26];
+    /* 0x1AC2 */ MingleShop     mingleShop;
+    /* 0x1AF2 */ MingleShop     unk_1AF2;
+    /* 0x1B22 */ char           unk_1B22[0x1B24 - 0x1B22];
+    /* 0x1B24 */ MingleFriend   mingleFriends[50];
     /* 0x1D7C */ u8             civviesMet;
     /* 0x1D7D */ u8             espersMet;
     /* 0x1D7E */ u8             aliensMet;
-    /* 0x1D7F */ char           unk_1D7F[0x1D84 - 0x1D7F];
+    /* 0x1D7F */ char           unk_1D7F;
+    /* 0x1D80 */ u16            unk_1D80;
+    /* 0x1D82 */ char           unk_1D82[0x1D84 - 0x1D82];
     /* 0x1D84 */ u8             unk_1D84;
     /* 0x1D85 */ char           unk_1D85[0x1D88 - 0x1D85];
     /* 0x1D88 */ u32            mabsBasePP;
@@ -77,10 +90,17 @@ typedef struct MainData {
     /* 0x2324 */ u16            unk_2324;
     /* 0x2326 */ u16            unk_2326[16];
     /* 0x2346 */ u16            unk_2346;
-    /* 0x2348 */ u16            unk_2348;
-    /* 0x234A */ char           unk_234A[0x2370 - 0x234A];
+    /* 0x2348 */ u16            lastNickName[11]; // Snapshot written by mingle mode before it saves
+    /* 0x235E */ u8             lastMacAddress[6];
+    /* 0x2364 */ Experience     lastExperience;
     /* 0x2370 */ PackedDateTime lastSaveTime;
-    /* 0x2376 */ char           unk_2376[0x242C - 0x2376];
+    /* 0x2376 */ u8             lastChapter;
+    /* 0x2377 */ u8             lastArea;
+    /* 0x2378 */ PlayerStats    lastPlayerStats;
+    /* 0x23A4 */ FriendStats    lastFriendStats[3];
+    /* 0x23EC */ EquippedPin    lastEquippedPins[6];
+    /* 0x2428 */ u16            lastBadgeSlots;
+    /* 0x242A */ u16            lastGiftItemId;
     /* 0x242C */ u32            unk_242C;
     /* 0x2430 */ u16            bgmFile; // ADX file resumed when returning to the menu
     /* 0x2432 */ u16            unk_2432;

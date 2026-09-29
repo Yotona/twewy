@@ -64,8 +64,8 @@ void        GX_LoadObjPltt(void* src, u32 offset, u32 size);
 void        GXs_LoadBgPltt(void* src, u32 offset, u32 size);
 void        GXs_LoadObjPltt(void* src, u32 offset, u32 size);
 BOOL        func_02001b44(s32, s32, s32*, s32);
-void        func_02023d00(s32);
-s32         func_02023d1c(s32);
+void        Inventory_SetHelpSeen(s32);
+s32         Inventory_IsHelpSeen(s32);
 void        func_0202b878(void);
 extern void ProcessOverlay_MenuTop(void* state);
 
@@ -685,7 +685,7 @@ block_82:
 void MenuEquip_StageFadeIn(MenuEquipState* state) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x1000);
     if (EasyFade_IsFading() == FALSE) {
-        if (func_02023d1c(3) == 0) {
+        if (Inventory_IsHelpSeen(3) == 0) {
             state->unk_217FE = 30;
             DebugOvlDisp_ReplaceTop((OverlayCB)MenuEquip_StageOpenHelp, state, PROCESS_STAGE_INIT);
         } else {
@@ -875,14 +875,14 @@ void MenuEquip_StageHelp(MenuEquipState* state) {
                     menuEquip->helpPage++;
                     menuEquip->dirtyFlags |= 0x20;
                 }
-            } else if (func_02023d1c(3) == 1) {
+            } else if (Inventory_IsHelpSeen(3) == 1) {
                 SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_RETURN);
                 DebugOvlDisp_ReplaceTop((OverlayCB)MenuEquip_StageCloseHelp, state, PROCESS_STAGE_INIT);
             }
         }
     }
-    if (func_02023d1c(3) == 0) {
-        func_02023d00(3);
+    if (Inventory_IsHelpSeen(3) == 0) {
+        Inventory_SetHelpSeen(3);
     }
 }
 

@@ -238,9 +238,9 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
 
     arg0->unk_1AC0 = 0;
     arg0->unk_1AB9 = 0;
-    func_02022488(&arg0->unk_1AC2);
+    func_02022488(&arg0->mingleShop);
     func_02022488(&arg0->unk_1AF2);
-    func_020224f4(&arg0->unk_1B24);
+    func_020224f4(&arg0->mingleFriends);
     func_02022534(&arg0->civviesMet);
     func_0202254c(&arg0->unk_1D84);
 
@@ -273,7 +273,7 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
         arg0->unk_2326[i] = 0;
     }
 
-    func_02022640(&arg0->unk_2348);
+    func_02022640(&arg0->lastNickName);
     arg0->unk_242C = 0;
     arg0->bgmFile  = 0;
     arg0->unk_2432 = 0;
@@ -887,11 +887,11 @@ s32 func_02023be8(u16 itemID, s32 arg1) {
     return var_r5;
 }
 
-void func_02023d00(s32 arg0) {
+void Inventory_SetHelpSeen(s32 arg0) {
     gSaveState.unk_20.unk_2324 |= (1 << arg0);
 }
 
-s32 func_02023d1c(s32 arg0) {
+s32 Inventory_IsHelpSeen(s32 arg0) {
     s32 var_r2 = 1;
     if ((gSaveState.unk_20.unk_2324 & (1 << arg0)) == 0) {
         var_r2 = 0;

@@ -1,6 +1,7 @@
 #ifndef SAVE_FRIENDDATA_H
 #define SAVE_FRIENDDATA_H
 
+#include "Save/MainData.h"
 #include <nitro/types.h>
 
 typedef struct {
@@ -8,12 +9,16 @@ typedef struct {
     /* 0x6 */ char unk_6[0xC - 0x6];
 } UnkSmallFriendStruct; // Size: 0xC
 
+// A player met in mingle mode.
 typedef struct {
-    /* 0x00 */ u8   unk_00[6];
-    /* 0x06 */ char unk_06[0x6A - 0x06];
-    /* 0x6A */ u16  unk_6A;
-    /* 0x6C */ u16  unk_6C[6];
-    /* 0x78 */ u16  unk_78[0x10];
+    /* 0x00 */ u8             unk_00[6]; // MAC address
+    /* 0x06 */ u16            nickName[11];
+    /* 0x1C */ u16            message[27];
+    /* 0x52 */ u8             timesMet;
+    /* 0x53 */ PackedDateTime lastMet;
+    /* 0x59 */ char           unk_59[0x5C - 0x59];
+    /* 0x5C */ Experience     experience;
+    /* 0x68 */ MingleShop     shop;
 } UnkLargeFriendStruct; // Size: 0x98
 
 typedef struct GlobalFriendData {
