@@ -3450,9 +3450,12 @@ s32 func_ov011_02129cec(BtlEnm010Tatt* data) {
     a   = 0;
     b   = 0;
     p   = (void*)((u8*)data + 4);
-    for (i = 0; i < 4; i++) {
-        if (((u32)(*(u16*)((u8*)p + 0x84) << 30) >> 31) != 0) {
-            if (((u32)(*(u16*)((u8*)p + 0x84) << 29) >> 31) != 0) {
+    i   = 0;
+    do {
+        u16 fl = *(u16*)((u8*)p + 0x84);
+
+        if (((u32)(fl << 30) >> 31) != 0) {
+            if (((u32)(fl << 29) >> 31) != 0) {
                 func_ov003_020cbc50(&a, &b, *(s16*)((u8*)p + 0x72), *(s16*)((u8*)p + 0x74));
                 a = vx + *(s32*)((u8*)p + 0x68) + a;
                 b = vy + *(s32*)((u8*)p + 0x6C) + b;
@@ -3461,11 +3464,12 @@ s32 func_ov011_02129cec(BtlEnm010Tatt* data) {
                 b = vy + *(s32*)((u8*)p + 0x6C);
             }
             CombatSprite_SetPosition((CombatSprite*)p, (b * 16) >> 16, (a * 16) >> 16);
-            CombatSprite_SetAffineTransform(p, i, i, *(s32*)((u8*)p + 0x78), i);
+            CombatSprite_SetAffineTransform(p, i, *(s32*)((u8*)p + 0x78), *(s32*)((u8*)p + 0x78), i);
             CombatSprite_Render((CombatSprite*)p);
         }
+        i++;
         p = (void*)((u8*)p + 0x88);
-    }
+    } while (i < 4);
     return 1;
 }
 
