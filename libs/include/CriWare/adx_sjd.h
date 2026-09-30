@@ -38,8 +38,8 @@ typedef struct {
     /* 0x4C */ void* unk_4C;     // dtrpobj  -- its user pointer
     /* 0x50 */ void (*unk_50)(); // dfltfunc -- filter callback
     /* 0x54 */ void* unk_54;     // dfltobj
-    /* 0x58 */ u32   unk_58;
-    /* 0x5C */ u32   unk_5C;
+    /* 0x58 */ void (*unk_58)(); // per-channel decode callback (func_02015344)
+    /* 0x5C */ void* unk_5C;     // its user pointer
     /* 0x60 */ s32   unk_60;
     /* 0x64 */ char  unk_64[0x3C];
     /* 0xA0 */ s32   unk_A0;

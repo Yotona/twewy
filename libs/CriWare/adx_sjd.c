@@ -34,6 +34,9 @@ s32   func_020127ec(ADXB adxb, u16* header, s32 len);
 void  func_02012748(ADXB adxb);
 s32   ADXB_GetSfreq(ADXB adxb);
 s32   ADXB_GetTotalNumSmpl(ADXB adxb);
+s32   ADXB_GetDecDtLen(ADXB adxb);
+s32   ADXB_GetDecNumSmpl(ADXB adxb);
+void  ADXB_Reset(ADXB adxb);
 
 void func_0201a670(SJCK* ck, s32 nbyte, SJCK* ck1, SJCK* ck2);
 
@@ -490,16 +493,66 @@ void func_02014f44(ADXSJD* sjd) {
     ADXB_Start(adxb);
 }
 
-// Nonmatching: stub (0.4%, 0x1AC bytes). Called from func_02015554
-// after ADXB_ExecHndl leaves adxb->stat == 3, i.e. the decode-done
-// bookkeeping. Not yet decoded.
-void func_02015344(ADXSJD* sjd) {}
+// Nonmatching: 99.07%. Every call and every branch matches. The residue is
+// sji: the target loads it into r4 in the prologue and keeps it there, while
+// mwcc sinks the load to the first use and passes it in r0 directly, saving
+// the copy. Six declaration orders and an inlined-sji variant were measured;
+// none changed it.
+//
+// Decode-done bookkeeping, entered from func_02015554 once ADXB_ExecHndl leaves
+// adxb->stat == 3. Upstream this is adxsjd_decexec_end, but NITRO drops the
+// dtrpsmpl/dtrpfunc tail: after accumulating the five counters it goes straight
+// to ADXB_Reset, and the per-channel callback is a second pair at 0x58/0x5C
+// rather than the dfltfunc at 0x50/0x54 that func_02014b94 uses.
+void func_02015344(ADXSJD* sjd) {
+    ADXB adxb = sjd->adxb;
+    SJ   sji  = sjd->sji;
+    SJCK ck;
+    SJCK ck2;
+    s32  total_nsmpl;
+    s32  dlen;
+    s32  ndecsmpl;
+    s32  i;
+
+    total_nsmpl = ADXB_GetTotalNumSmpl(adxb);
+    dlen        = ADXB_GetDecDtLen(adxb);
+    ndecsmpl    = ADXB_GetDecNumSmpl(adxb);
+
+    if (ADXB_GetFormat(adxb) != 1 || func_02015aa4(sjd) != 1) {
+        if (ndecsmpl >= total_nsmpl - sjd->unk_34) {
+            ndecsmpl = total_nsmpl - sjd->unk_34;
+        }
+    }
+
+    func_0201a670((SJCK*)&sjd->unk_14[0], dlen, &ck, &ck2);
+    SJ_PutChunk(sji, 0, &ck);
+    SJ_UngetChunk(sji, 1, &ck2);
+
+    for (i = 0; i < ADXB_GetNumChan(sjd->adxb); i++) {
+        func_0201a670(&((SJCK*)&sjd->unk_14[8])[i], ndecsmpl * 2, &ck, &ck2);
+
+        if (sjd->unk_58 != NULL) {
+            sjd->unk_58(sjd->unk_5C, i, ck.data, ck.length);
+        }
+
+        SJ_PutChunk(sjd->sjo[i], 1, &ck);
+        SJ_UngetChunk(sjd->sjo[i], 0, &ck2);
+    }
+
+    sjd->unk_2C += ndecsmpl;
+    sjd->unk_30 += dlen;
+    sjd->unk_34 += ndecsmpl;
+    sjd->unk_40 += ndecsmpl;
+    sjd->unk_44 += dlen;
+
+    ADXB_Reset(adxb);
+}
 
 void func_020154f0(ADXSJD* sjd) {
     ADXB adxb        = sjd->adxb;
-    s32  total_nsmpl = ADXB_GetTotalNumSmpl(adxb);
-    s32  dlen        = ADXB_GetDecDtLen(adxb);
-    s32  ndecsmpl    = ADXB_GetDecNumSmpl(adxb);
+    s32  total_nsmpl = ADXB_GetTotalNumSmpl(sjd->adxb);
+    s32  dlen        = ADXB_GetDecDtLen(sjd->adxb);
+    s32  ndecsmpl    = ADXB_GetDecNumSmpl(sjd->adxb);
 
     total_nsmpl -= sjd->unk_34;
 
@@ -552,16 +605,98 @@ void func_020155c0(ADXSJD* sjd) {
     }
 }
 
-// Nonmatching: stub (0.5%, 0x130 bytes). Supply-side, entered from
-// ADXSJD_ExecHndl under ADXCRS_Lock when sjd->unk_A8 > 0. No
-// counterpart in either PS2 reference -- NITRO adds an AHX supply
-// queue. Not yet decoded.
-void func_0201562c(ADXSJD* sjd) {}
+// Nonmatching: 99.14%. One register swap: the target gives the loop counter
+// r8 and the byte count r9, mwcc hands them out the other way round. Six
+// declaration orders were measured and none of them changes it.
+//
+// Supply-side, entered from ADXSJD_ExecHndl under ADXCRS_Lock when
+// sjd->unk_A8 > 0. It pads every output channel with silence: work out how
+// many bytes are actually left, round that down to a whole sample, then push
+// that many zero bytes onto each channel and advance unk_A8 past them.
+//
+// NITRO-only -- neither PS2 reference has a counterpart, so this is read
+// straight off the target.
+void func_0201562c(ADXSJD* sjd) {
+    SJCK ck;
+    s32  nbyte;
+    s32  nsmpl;
+    s32  i;
 
-// Nonmatching: stub (0.6%, 0x11C bytes). The second supply-side arm,
-// entered under ADXCRS_Lock when sjd->unk_AC > 0. Like func_0201562c
-// this is NITRO-only. Not yet decoded.
-void func_0201575c(ADXSJD* sjd) {}
+    nbyte = sjd->unk_A8 * 2;
+
+    // Clamp against the shortest output channel.
+    for (i = 0; i < sjd->maxnch; i++) {
+        SJ_GetChunk(sjd->sjo[i], 0, 0x7FFFFFFF, &ck);
+
+        if (nbyte >= ck.length) {
+            nbyte = ck.length;
+        }
+
+        SJ_UngetChunk(sjd->sjo[i], 0, &ck);
+    }
+
+    // Whole samples only, so drop any odd trailing byte.
+    nsmpl = nbyte / 2;
+    nbyte = nsmpl * 2;
+
+    if (nbyte <= 0) {
+        return;
+    }
+
+    for (i = 0; i < sjd->maxnch; i++) {
+        SJ_GetChunk(sjd->sjo[i], 0, nbyte, &ck);
+        memset(ck.data, 0, nbyte);
+        SJ_PutChunk(sjd->sjo[i], 1, &ck);
+    }
+
+    sjd->unk_A8 -= nsmpl;
+}
+
+// Nonmatching: 99.23%. The same single register swap as func_0201562c -- the
+// target gives the loop counter r9 and the byte count r10, mwcc reverses it.
+//
+// The second supply-side arm, entered from ADXSJD_ExecHndl under ADXCRS_Lock
+// when sjd->unk_AC > 0. Same shape as func_0201562c and on the same two
+// counters, but it works on stream id 1 and moves the data to id 0 rather than
+// zero-filling it -- so where func_0201562c pads with fresh silence, this one
+// shifts silence that is already buffered on the other channel.
+//
+// NITRO-only -- neither PS2 reference has a counterpart, so this is read
+// straight off the target.
+void func_0201575c(ADXSJD* sjd) {
+    SJCK ck;
+    s32  nbyte;
+    s32  nsmpl;
+    s32  i;
+
+    nbyte = sjd->unk_AC * 2;
+
+    // Clamp against the shortest output channel.
+    for (i = 0; i < sjd->maxnch; i++) {
+        SJ_GetChunk(sjd->sjo[i], 1, 0x7FFFFFFF, &ck);
+
+        if (nbyte >= ck.length) {
+            nbyte = ck.length;
+        }
+
+        SJ_UngetChunk(sjd->sjo[i], 1, &ck);
+    }
+
+    // Whole samples only, so drop any odd trailing byte.
+    nsmpl = nbyte / 2;
+    nbyte = nsmpl * 2;
+
+    if (nbyte <= 0) {
+        return;
+    }
+
+    for (i = 0; i < sjd->maxnch; i++) {
+        SJ_GetChunk(sjd->sjo[i], 1, nbyte, &ck);
+        SJ_PutChunk(sjd->sjo[i], 0, &ck);
+    }
+
+    sjd->unk_AC -= nsmpl;
+}
 
 // ADXSJD_ExecServer. The per-object loop always runs; each of the two
 // callbacks is skipped when its slot is null. Recvx's ADXT_ExecServer calls
