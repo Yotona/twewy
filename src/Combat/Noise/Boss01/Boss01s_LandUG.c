@@ -24,7 +24,7 @@ s32 Boss01s_LandUG_Init(TaskPool* pool, Task* task, void* args) {
 
     MI_CpuSet(landUG, 0, sizeof(Boss01s_LandUG));
     CombatSprite_LoadFromTable(0, &landUG->sprite, &data_ov016_02128f98, &LandUG_Anim, 0, 4, 0xC);
-    landUG->unk_60 = data_ov003_020e71b8->unk3D7CC / 2;
+    landUG->unk_60 = data_ov003_020e71b8->unk3D7C0[0].unk_0C / 2;
     landUG->unk_64 = -0x1E000;
     landUG->unk_68 = 0;
     return 1;

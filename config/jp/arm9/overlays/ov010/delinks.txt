@@ -3,3 +3,33 @@
     .ctor       start:0x0212962c end:0x0212962c kind:rodata align:4
     .data       start:0x02129640 end:0x02129720 kind:data align:32
     .bss        start:0x02129720 end:0x02129720 kind:bss align:32
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_Anim.c:
+    .text       start:0x021259e0 end:0x021259f0
+    .rodata     start:0x02129328 end:0x02129520
+    .data       start:0x02129640 end:0x021296a0
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_DeadEff.c:
+    .text       start:0x021259f0 end:0x02125c30
+    .rodata     start:0x02129520 end:0x0212954c
+    .data       start:0x021296a0 end:0x021296c4
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_RG.c:
+    .text       start:0x02125c30 end:0x02126f58
+    .rodata     start:0x0212954c end:0x021295d0
+    .data       start:0x021296c4 end:0x021296d8
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_Swirl.c:
+    .text       start:0x02126f58 end:0x021273c8
+    .rodata     start:0x021295d0 end:0x021295fc
+    .data       start:0x021296d8 end:0x021296ec
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_Swlo.c:
+    .text       start:0x021273c8 end:0x02127780
+    .rodata     start:0x021295fc end:0x02129608
+    .data       start:0x021296ec end:0x02129700
+
+src/Combat/Noise/BtlEnm006/BtlEnm006_UG.c:
+    .text       start:0x02127780 end:0x02129328
+    .rodata     start:0x02129608 end:0x0212962c
+    .data       start:0x02129700 end:0x02129720

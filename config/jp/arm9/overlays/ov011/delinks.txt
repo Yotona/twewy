@@ -3,3 +3,49 @@
     .ctor       start:0x0212c75c end:0x0212c75c kind:rodata align:4
     .data       start:0x0212c760 end:0x0212cfa0 kind:data align:32
     .bss        start:0x0212cfa0 end:0x0212cfc0 kind:bss align:32
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_AnmMgr.c:
+    .text       start:0x021259e0 end:0x02125eb8
+    .rodata     start:0x0212c0e0 end:0x0212c420
+    .data       start:0x0212c760 end:0x0212cee8
+    .bss        start:0x0212cfa0 end:0x0212cfc0
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_Lser.c:
+    .text       start:0x02125eb8 end:0x021268f4
+    .rodata     start:0x0212c420 end:0x0212c438
+    .data       start:0x0212cee8 end:0x0212cefc
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_RG.c:
+    .text       start:0x021268f4 end:0x02127f8c
+    .rodata     start:0x0212c438 end:0x0212c4dc
+    .data       start:0x0212cefc end:0x0212cf10
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_Rnge.c:
+    .text       start:0x02127f8c end:0x02128274
+    .rodata     start:0x0212c4dc end:0x0212c4e8
+    .data       start:0x0212cf10 end:0x0212cf24
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_SWay.c:
+    .text       start:0x02128274 end:0x021285c0
+    .rodata     start:0x0212c4e8 end:0x0212c4f4
+    .data       start:0x0212cf24 end:0x0212cf38
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_SingleShot.c:
+    .text       start:0x021285c0 end:0x02128a20
+    .rodata     start:0x0212c4f4 end:0x0212c518
+    .data       start:0x0212cf38 end:0x0212cf54
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_Sprl.c:
+    .text       start:0x02128a20 end:0x02128f4c
+    .rodata     start:0x0212c518 end:0x0212c538
+    .data       start:0x0212cf54 end:0x0212cf68
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_Tatt.c:
+    .text       start:0x02128f4c end:0x0212a1d8
+    .rodata     start:0x0212c538 end:0x0212c614
+    .data       start:0x0212cf68 end:0x0212cf7c
+
+src/Combat/Noise/BtlEnm010/BtlEnm010_UG.c:
+    .text       start:0x0212a1d8 end:0x0212c0e0
+    .rodata     start:0x0212c614 end:0x0212c75c
+    .data       start:0x0212cf7c end:0x0212cfa0

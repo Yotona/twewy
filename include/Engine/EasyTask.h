@@ -20,13 +20,16 @@ struct TaskPool;
  */
 typedef struct Task {
     /* 0x00 */ struct Task* next;
-    /* 0x04 */ struct {
-        u16 inUse        : 1;
-        u16 isActive     : 1;
-        u16 isPending    : 1;
-        u16 ownsData     : 1;
-        u16 markedForDel : 1;
-        u16 reserved     : 11;
+    /* 0x04 */ union {
+        struct {
+            u16 inUse        : 1;
+            u16 isActive     : 1;
+            u16 isPending    : 1;
+            u16 ownsData     : 1;
+            u16 markedForDel : 1;
+            u16 reserved     : 11;
+        };
+        u16 flags; // the bits above as one halfword, for callers that OR them in directly
     };
     /* 0x06 */ u16 childCount;
     /* 0x08 */ u16 id;

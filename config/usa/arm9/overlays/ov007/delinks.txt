@@ -4,3 +4,15 @@
     .ctor       start:0x020e7f90 end:0x020e7f90 kind:rodata align:4
     .data       start:0x020e7fa0 end:0x020e7fe0 kind:data align:32
     .bss        start:0x020e7fe0 end:0x020e7fe0 kind:bss align:32
+
+src/Combat/Fusion/BtlPlayerLast.c:
+    complete
+    .text       start:0x020e7360 end:0x020e75e4
+    .rodata     start:0x020e7f48 end:0x020e7f64
+    .data       start:0x020e7fa0 end:0x020e7fb4
+
+src/Combat/Fusion/BtlAuraLast.c:
+    complete
+    .text       start:0x020e75e4 end:0x020e7f48
+    .rodata     start:0x020e7f64 end:0x020e7f90
+    .data       start:0x020e7fb4 end:0x020e7fc4

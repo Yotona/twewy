@@ -403,7 +403,7 @@ void func_ov004_020e7a84(BtlPlayer01* player) {
             }
             if (SpriteMgr_IsAnimationFinished(&player->unk_07C.sprite)) {
                 player->actor.flags &= ~2;
-                player->actor.position.x = data_ov003_020e71b8->unk3D838;
+                player->actor.position.x = data_ov003_020e71b8->unk3D7C0[1].unk_20;
                 player->unk_14C          = func_ov004_020e8394;
                 player->unk_150          = 0;
                 player->unk_152          = 0;
@@ -508,7 +508,7 @@ void func_ov004_020e7f30(BtlPlayer01* player) {
     switch (player->unk_150) {
         case 0: {
             if (player->unk_152 == 0) {
-                s32 temp_r2 = data_ov003_020e71b8->unk3D838;
+                s32 temp_r2 = data_ov003_020e71b8->unk3D7C0[1].unk_20;
                 if (player->actor.position.x > temp_r2) {
                     player->actor.isFlipped = 0;
                 }
@@ -521,8 +521,8 @@ void func_ov004_020e7f30(BtlPlayer01* player) {
                 player->unk_152 = 0x10;
             }
             if (player->unk_152 > 0) {
-                func_02026590(&player->actor.position.x, data_ov003_020e71b8->unk3D838, (u16)player->unk_152);
-                func_02026590(&player->actor.position.y, data_ov003_020e71b8->unk3D83C, (u16)player->unk_152);
+                func_02026590(&player->actor.position.x, data_ov003_020e71b8->unk3D7C0[1].unk_20, (u16)player->unk_152);
+                func_02026590(&player->actor.position.y, data_ov003_020e71b8->unk3D7C0[1].unk_24, (u16)player->unk_152);
                 player->unk_152--;
             }
             if (player->unk_152 <= 0) {
@@ -562,7 +562,7 @@ void func_ov004_020e808c(BtlPlayer01* player) {
                 player->unk_152 = 8;
             }
             if (player->unk_152 > 0) {
-                func_02026590(&player->actor.position.x, data_ov003_020e71b8->unk3D838, (u16)player->unk_152);
+                func_02026590(&player->actor.position.x, data_ov003_020e71b8->unk3D7C0[1].unk_20, (u16)player->unk_152);
                 player->unk_152--;
             }
             if (player->unk_152 <= 0) {
@@ -573,7 +573,7 @@ void func_ov004_020e808c(BtlPlayer01* player) {
 
         case 3: {
             if (SpriteMgr_IsAnimationFinished(&player->unk_07C.sprite)) {
-                player->actor.position.x = (s32)data_ov003_020e71b8->unk3D838;
+                player->actor.position.x = (s32)data_ov003_020e71b8->unk3D7C0[1].unk_20;
                 player->actor.flags &= ~8;
                 player->unk_14C = func_ov004_020e8394;
                 player->unk_150 = 0;
@@ -643,7 +643,7 @@ void func_ov004_020e8270(BtlPlayer01* player) {
 }
 
 void func_ov004_020e8394(BtlPlayer01* player) {
-    if (player->actor.position.x != data_ov003_020e71b8->unk3D838) {
+    if (player->actor.position.x != data_ov003_020e71b8->unk3D7C0[1].unk_20) {
         player->unk_14C = func_ov004_020e7f30;
         player->unk_150 = 0;
         player->unk_152 = 0;
@@ -980,8 +980,8 @@ s32 BtlPlayer01_Init(TaskPool* pool, Task* task, void* args) {
     player->unk_142               = 0;
     player->unk_144               = 0;
     player->actor.isFlipped       = 0;
-    player->actor.position.x      = data_ov003_020e71b8->unk3D838;
-    player->actor.position.y      = data_ov003_020e71b8->unk3D83C;
+    player->actor.position.x      = data_ov003_020e71b8->unk3D7C0[1].unk_20;
+    player->actor.position.y      = data_ov003_020e71b8->unk3D7C0[1].unk_24;
     player->actor.position.z      = 0;
     player->actor.unk_70          = 0xC;
     player->actor.unk_72          = 0x30;

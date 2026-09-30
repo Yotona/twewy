@@ -3,3 +3,39 @@
     .ctor       start:0x02127840 end:0x02127840 kind:rodata align:4
     .data       start:0x02127860 end:0x02127960 kind:data align:32
     .bss        start:0x02127960 end:0x02127980 kind:bss align:32
+
+src/Combat/Noise/BtlEnm015/BtlEnm015.c:
+    .text       start:0x021259e0 end:0x021262f0
+    .rodata     start:0x02127750 end:0x021277f8
+    .data       start:0x02127860 end:0x021278c0
+    .bss        start:0x02127960 end:0x02127980
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_Eff.c:
+    .text       start:0x021262f0 end:0x02126508
+    .rodata     start:0x021277f8 end:0x02127804
+    .data       start:0x021278c0 end:0x021278d4
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_EffStamp.c:
+    .text       start:0x02126508 end:0x02126aa8
+    .rodata     start:0x02127804 end:0x02127810
+    .data       start:0x021278d4 end:0x021278ec
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_EffStampSub.c:
+    .text       start:0x02126aa8 end:0x02126dd0
+    .rodata     start:0x02127810 end:0x0212781c
+    .data       start:0x021278ec end:0x02127908
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_RG.c:
+    .text       start:0x02126dd0 end:0x021271fc
+    .rodata     start:0x0212781c end:0x02127828
+    .data       start:0x02127908 end:0x0212791c
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_Shake.c:
+    .text       start:0x021271fc end:0x021273ac
+    .rodata     start:0x02127828 end:0x02127834
+    .data       start:0x0212791c end:0x02127930
+
+src/Combat/Noise/BtlEnm015/BtlEnm015_UG.c:
+    .text       start:0x021273ac end:0x02127750
+    .rodata     start:0x02127834 end:0x02127840
+    .data       start:0x02127930 end:0x02127960
