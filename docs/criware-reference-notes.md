@@ -620,7 +620,8 @@ validates the bss layout changes).
 | `adx_sjd/func_02014b50` | 0.68 | **100.0** |
 | `adx_sjd/func_02015554` (state-2 decode arm) | 1.48 | **100.0** |
 | `adx_sjd/func_02014e74` (4-arg header reader) | 0.77 | 83.92 |
-| `adx_sjd/func_02014f44` (main decode step, 0x400) | 0.16 | 95.42 |
+| `adx_sjd/func_02014f44` (main decode step, 0x400) | 0.16 | 97.23 |
+| `adx_sjd/func_02014b94` (state-1 arm, 0x2E0) | 0.22 | 99.92 |
 | `adx_sjd/func_02015878` (`ADXSJD_ExecServer`) | 0.42 | **100.0** |
 | `adx_sjd/func_020122fc`→`adx_bsc/adxb_clear` | 6.30 | 79.61 |
 | `adx_stmc/ADXSTM_Init` | **0 (absent)** | 99.91 |
@@ -669,7 +670,78 @@ right. What the codegen settled that reading the target does not:
   `"EXX... <func>: "` / `"<message>"` convention already used in `adx_bsc.c`.
 
 
-### 13.0.1 What `adx_tsvr.c` needed, and what it taught
+### 13.0.1 Compile probes, don't round-trip the real TU
+
+The single biggest speedup available on this module. A `ninja build/usa/...o`
+plus objdiff round trip is ~40 s. A throwaway `.c` compiled directly with the
+unit's own mwcc flags is **~0.1 s**, and it answers the "which spelling of this
+expression produces that instruction sequence?" question outright, because you
+can put six candidate spellings in one file and read all six answers at once.
+
+Build the probe exactly as ninja would (PowerShell needs the args in an array,
+or `-O4,p` gets parsed as a comma expression):
+
+```powershell
+$a = @('-O4,p','-enum','int','-char','signed','-proc','arm946e','-gccext,on',
+       '-fp','soft','-inline','noauto','-RTTI','off','-interworking','-w','off',
+       '-sym','on','-gccinc','-nolink','-msgstyle','gcc','-enc','SJIS',
+       '-ipa','file','-str','noreuse','-Cpp_exceptions','off','-lang=c99',
+       '-c',$src,'-o',$out)
+& ".\tools\mwccarm\2.0\sp1p5\mwccarm.exe" @a
+```
+
+Then disassemble with `tools/disasm.py <obj> <fn>`, or in one go with
+`capstone` + `pyelftools` over `.symtab`. `tools/disasm.py` is the in-repo
+script and also takes `--target` for a side-by-side.
+
+What probes settled that guessing had not:
+
+- **`%` and `/` by the same constant do not lower the same way.** `i % 2` is a
+  three-instruction sequence (`lsr #31` / `rsb lsl #31` / `add ror #31`); `i / 2`
+  gets a two-instruction peephole (`add rX,rY,rY,lsr #31` + `asr #1`). The probe
+  put six spellings of "divide by two" in one file and the three-instruction
+  form turned up *only* in the `%` position. Reading the target's `i` as a
+  counter does not tell you which it is; the instruction count does. This was
+  worth 1.8% on `func_02014b94` and also explains the `asr #10 / add lsr #21 /
+  asr #11` pattern noted in §13.0.4 - that is a `%`/`/` by 2048, and the
+  rounding term is what distinguishes the signed-divide lowering from a shift.
+- **mwcc bottom-tests a combined `while (a && b)`.** It hoists both increments
+  above the test and jumps into the test block. Eight different spellings
+  (both `&&` orders, the `for`-header form, `++i` in the condition, a comma
+  operator, `i = i + 1`, empty body) *all* rotated. Only two forms stop it: a
+  `for (;;)` with two `break`s, or an equivalent `goto` pair. Use the `for (;;)`.
+  Note this also changes semantics: the two-break form's bound test uses the
+  *already-incremented* counter, so the loop runs one pass fewer than
+  `while (i < n)` would — the target is the authority on which one is right.
+- **A redundant guard survives.** If the target emits `cmp len,#0 / ble` a
+  second time *after* an `if (len == 0) return;`, that is a literal
+  `if (len > 0)` in the source, and mwcc reuses the stale flags rather than
+  folding it. Reproducing it took `func_02014f44` from 95.5 to 97.2.
+- **Register pressure changes the loop shape.** A probe where the loop
+  variable dies at the loop is *not* representative — with it live afterwards
+  mwcc schedules differently. When a probe disagrees with the real build,
+  make the probe's surroundings match before believing the probe.
+
+### 13.0.2 Recovering error strings from the target object
+
+`build/<region>/delinks/<tu>.o` contains the retail `.rodata`, so the
+`ADXERR_CallErrFunc2` string pairs are recoverable without guessing:
+
+```python
+import re
+d = open(r'build\usa\delinks\libs\CriWare\adx_sjd.o','rb').read()
+for m in re.finditer(rb'[\x20-\x7e]{3,}', d):
+    print(hex(m.start()), repr(m.group()))
+```
+
+To turn a file offset into the address the pool relocation will name, anchor
+on one known pair: here `file 0x1288` was `data_02063a30`, giving
+`addr = offset + 0x020627a8`, which then correctly predicted `data_020639ac`,
+`-cc`, `-ec` and `data_02063a0c` for the other three. The pairs are adjacent
+in `.rodata` and follow the `"EXX... <func>: "` / `"<message>"` convention
+already used in `adx_bsc.c`.
+
+### 13.0.3 What `adx_tsvr.c` needed, and what it taught
 
 The TU was missing, not broken. Getting it in required three things beyond the
 source file:
@@ -701,7 +773,7 @@ Note `adxt_ExecServer` in `adx_tlk.c` is *still* `/* NYI */` — it calls
 `adxt_ExecHndl`, which now exists, but it also needs `adxt_tsvr_enter_cnt` and the
 not-yet-written state handlers to be worth enabling.
 
-### 13.0.2 mwcc findings from the eight handlers
+### 13.0.4 mwcc findings from the eight handlers
 
 Three of these cost real time and are worth recording, because none of them are
 guessable from the C:
@@ -798,10 +870,16 @@ Two earlier findings also turned out to be wrong and are corrected here:
   the loop's `GetNumChan` reload are the only differences, and the two ways of
   spelling the guard (hoisted `nch` vs. re-called) both score below the current
   form, so there is nothing left to try short of the permuter.
-* `adx_sjd/func_02014f44`'s residual 4.6% — the zero-scan's loop rotation is
-  fixed by mwcc regardless of which order the two conditions are written in
-  (both `*p == 0 && i < len` and the explicit `break` form were measured), and
-  what is left is register choice.
+* `adx_sjd/func_02014f44`'s residual 2.8% — `sjd->sjo[0]` hoisted into r8
+  instead of r0, decpos in r1 rather than r8, and the near-done flag folding to
+  one `movne` where the target keeps a separate `mov` + `b`. Purely register
+  choice; every other instruction matches.
+* Chasing `func_02014b94` above 99.92%. The body is already
+  instruction-for-instruction identical; the residue is three literal-pool
+  relocations that objdiff names `data_020639cc` / `data_020639ec` /
+  `data_02063a0c` in the target and `@635` / `@636` / `@637` here, because the
+  error strings are anonymous `.rodata` with no symbol to pair against. Same
+  noise class as §13.0.1's relocation naming.
 * Reconstructing `adxt_tsvr_enter_cnt`, `ADXSJD_ExecServer`, `ADXRNA_ExecServer`
   call graphs before the ADXSJD core exists — `adxt_ExecServer` needs
   `adxt_tsvr_enter_cnt` (an unnamed dword near `adxt_time_mode` in bss) and
