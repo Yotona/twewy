@@ -73,8 +73,6 @@ data_ov010_02129008 kind:data(any) addr:0x02129008
 data_ov010_02129018 kind:data(any) addr:0x02129018
 data_ov010_02129028 kind:data(any) addr:0x02129028
 data_ov010_02129050 kind:data(any) addr:0x02129050
-data_ov010_02129058 kind:data(any) addr:0x02129058
-data_ov010_02129060 kind:data(any) addr:0x02129060
 data_ov010_02129068 kind:data(any) addr:0x02129068
 data_ov010_021290f0 kind:data(any) addr:0x021290f0
 data_ov010_02129160 kind:data(any) addr:0x02129160 ambiguous
@@ -87,9 +85,6 @@ Tsk_BtlEnm006_DeadEff kind:data(any) addr:0x02129220
 Tsk_BtlEnm006_RG kind:data(any) addr:0x0212922c ambiguous
 data_ov010_02129238 kind:data(any) addr:0x02129238
 data_ov010_02129250 kind:data(any) addr:0x02129250
-data_ov010_02129254 kind:data(any) addr:0x02129254
-data_ov010_02129258 kind:data(any) addr:0x02129258
-data_ov010_0212925c kind:data(any) addr:0x0212925c
 data_ov010_021292b0 kind:data(any) addr:0x021292b0
 Tsk_BtlEnm006_Swirl kind:data(any) addr:0x021292b8
 data_ov010_021292c0 kind:data(any) addr:0x021292c0 ambiguous
@@ -101,7 +96,6 @@ data_ov010_02129320 kind:data(any) addr:0x02129320 ambiguous
 data_ov010_0212932c kind:data(any) addr:0x0212932c
 data_ov010_02129348 kind:data(any) addr:0x02129348
 data_ov010_02129364 kind:data(any) addr:0x02129364
-data_ov010_0212937c kind:data(any) addr:0x0212937c ambiguous
 data_ov010_02129380 kind:data(any) addr:0x02129380
 data_ov010_0212938c kind:data(any) addr:0x0212938c
 data_ov010_021293a4 kind:data(any) addr:0x021293a4

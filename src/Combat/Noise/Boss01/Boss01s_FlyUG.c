@@ -25,7 +25,7 @@ static const TaskHandle      Tsk_Boss01s_FlyUG     = {"Tsk_Boss01s_FlyUG", Boss0
 static const SpriteAnimEntry data_ov016_0212903c[] = {1, 3, 2, 4, 1, 3, 2, 5, 1, 3, 2, 6};
 
 void Boss01s_FlyUG_GetSpawnPos(Boss01s_FlyUG* arg0, Vec* arg1) {
-    s32 width = F2I(data_ov003_020e71b8->unk3D7CC);
+    s32 width = F2I(data_ov003_020e71b8->unk3D7C0[0].unk_0C);
 
     if (RNG_Next(2) != 0) {
         arg1->x = I2F((width / 2 - 0x30) + RNG_Next(65));

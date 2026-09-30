@@ -4,19 +4,8 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
-#include "Engine/File/DatMgr.h"
+#include "Engine/File/BinMgr.h"
 
-/// One of the `Tsk_BtlEnm014` asset variants.
-typedef struct Enm014Variant {
-    /* 0x00 */ BinIdentifier*   binIden;
-    /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u16              unk_08;
-    /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u16              unk_0C;
-    /* 0x0E */ u16              unk_0E;
-} Enm014Variant; // Size: 0x10
-
-/// Spawn parameters passed to the `Tsk_BtlEnm014_Eff` task.
 typedef struct Enm014Spawn {
     /* 0x00 */ struct BtlEnm014* unk_00;
     /* 0x04 */ s32               unk_04;
@@ -24,8 +13,6 @@ typedef struct Enm014Spawn {
     /* 0x0A */ u16               unk_0A;
 } Enm014Spawn; // Size: 0x0C
 
-/// Chase-distance accumulator. The chase handlers read and write it as a full
-/// 32-bit value while the attack timers manipulate the two 16-bit halves.
 typedef union Enm014Chase {
     s32 word;
     struct {
@@ -34,7 +21,6 @@ typedef union Enm014Chase {
     } half;
 } Enm014Chase; // Size: 0x4
 
-/// Task data for the `Tsk_BtlEnm014_RG` / `Tsk_BtlEnm014_UG` tasks.
 typedef struct BtlEnm014 {
     /* 0x000 */ CombatActor  actor;
     /* 0x07C */ u8           unk_07C[0x4];
@@ -76,22 +62,20 @@ typedef struct BtlEnm014 {
     /* 0x1EC */ s32         unk_1EC;
 } BtlEnm014; // Size: 0x1F0
 
-/// Task data for the `Tsk_BtlEnm014_Eff` task.
-typedef struct BtlEnm014Eff {
-    /* 0x00 */ CombatSprite sprite;
-    /* 0x60 */ s16          unk_60;
-    /* 0x62 */ s16          unk_62;
-    /* 0x64 */ s32          unk_64;
-    /* 0x68 */ s32          unk_68;
-    /* 0x6C */ s32          unk_6C;
-    /* 0x70 */ BtlEnm014*   unk_70;
-    /* 0x74 */ s32          unk_74;
-    /* 0x78 */ u16          unk_78;
-    /* 0x7A */ u16          unk_7A;
-} BtlEnm014Eff; // Size: 0x7C
-
 extern const TaskHandle Tsk_BtlEnm014_Eff;
-extern const TaskHandle Tsk_BtlEnm014_RG;
-extern const TaskHandle Tsk_BtlEnm014_UG;
+
+BinIdentifier*         func_ov012_021256c0(s32);
+const SpriteAnimEntry* func_ov012_021256d0(void);
+u16                    func_ov012_021256dc(s32);
+void                   func_ov012_021256f0(s32, BtlEnm014*, s32);
+void                   func_ov012_02125768(BtlEnm014*, void (*)(BtlEnm014*));
+void                   func_ov012_02125790(s32, BtlEnm014*, s32, s32);
+void                   func_ov012_021257c4(BtlEnm014*);
+void                   func_ov012_021257e8(BtlEnm014*);
+void                   func_ov012_02125810(BtlEnm014*);
+void                   func_ov012_0212582c(BtlEnm014*);
+void                   func_ov012_02125858(BtlEnm014*);
+void                   func_ov012_021258e8(void);
+void                   func_ov012_02125958(BtlEnm014*);
 
 #endif // COMBAT_NOISE_PRIVATE_BTLENM014_H

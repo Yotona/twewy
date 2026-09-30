@@ -110,7 +110,7 @@ s32 func_ov016_02126468(Boss01_UG* bossUG) {
     }
     if (var_ip == 0) {
         var_ip_2 = 0;
-        if ((temp_lr != 0) && ((s32)bossUG->actor.position.x > (s32)(data_ov003_020e71b8->unk3D7CC + 0x80000))) {
+        if ((temp_lr != 0) && ((s32)bossUG->actor.position.x > (s32)(data_ov003_020e71b8->unk3D7C0[0].unk_0C + 0x80000))) {
             var_ip_2 = 1;
         }
         if (var_ip_2 == 0) {

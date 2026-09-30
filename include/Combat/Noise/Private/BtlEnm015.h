@@ -4,19 +4,8 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
-#include "Engine/File/DatMgr.h"
+#include "Engine/File/BinMgr.h"
 
-/// One of the `Tsk_BtlEnm015` asset variants.
-typedef struct Enm015Variant {
-    /* 0x00 */ BinIdentifier*   binIden;
-    /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u16              unk_08;
-    /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u16              unk_0C;
-    /* 0x0E */ u16              unk_0E;
-} Enm015Variant; // Size: 0x10
-
-/// Spawn parameters passed to the `Tsk_BtlEnm015` tasks.
 typedef struct Enm015Spawn {
     /* 0x00 */ void* unk_00;
     /* 0x04 */ u16   unk_04;
@@ -28,7 +17,6 @@ typedef struct Enm015Spawn {
     /* 0x16 */ u16   unk_16;
 } Enm015Spawn; // Size: 0x18
 
-/// Task data for the `Tsk_BtlEnm015_RG` / `Tsk_BtlEnm015_UG` tasks.
 typedef struct BtlEnm015 {
     /* 0x000 */ CombatActor  actor;
     /* 0x07C */ u8           unk_07C[0x4];
@@ -71,50 +59,26 @@ typedef struct BtlEnm015 {
     /* 0x1E8 */ u16 unk_1E8;
 } BtlEnm015; // Size: 0x1EC
 
-/// Task data for the `Tsk_BtlEnm015_EffStampSub` task.
-typedef struct BtlEnm015StampSub {
-    /* 0x00 */ BtlEnm015*   unk_00;
-    /* 0x04 */ CombatSprite sprite;
-    /* 0x64 */ s16          unk_64;
-    /* 0x66 */ s16          unk_66;
-    /* 0x68 */ s32          unk_68;
-    /* 0x6C */ s32          unk_6C;
-    /* 0x70 */ s32          unk_70;
-} BtlEnm015StampSub; // Size: 0x74
-
-/// Task data for the `Tsk_BtlEnm015_Shake` task.
-typedef struct BtlEnm015Shake {
-    /* 0x00 */ BtlEnm015* unk_00;
-    /* 0x04 */ u8*        unk_04;
-    /* 0x08 */ s32        unk_08;
-    /* 0x0C */ u16        unk_0C;
-} BtlEnm015Shake; // Size: 0x10
-
-/// Task data for the `Tsk_BtlEnm015_Eff` task.
-typedef struct BtlEnm015Eff {
-    /* 0x00 */ CombatSprite sprite;
-    /* 0x60 */ s32          unk_60;
-    /* 0x64 */ s32          unk_64;
-    /* 0x68 */ s32          unk_68;
-    /* 0x6C */ BtlEnm015*   unk_6C;
-} BtlEnm015Eff; // Size: 0x70
-
-/// Task data for the `Tsk_BtlEnm015_EffStamp` task.
-typedef struct BtlEnm015Stamp {
-    /* 0x00 */ BtlEnm015* unk_00;
-    /* 0x04 */ s32        unk_04;
-    /* 0x08 */ u16        unk_08;
-} BtlEnm015Stamp; // Size: 0x0C
-
-extern const Enm015Variant* data_ov013_02127540[3];
-extern s32                  data_ov013_02127640;
-extern s32                  data_ov013_02127644;
+extern s32 data_ov013_02127640;
+extern s32 data_ov013_02127644;
 
 extern const TaskHandle Tsk_BtlEnm015_Eff;
 extern const TaskHandle Tsk_BtlEnm015_EffStamp;
 extern const TaskHandle Tsk_BtlEnm015_EffStampSub;
-extern const TaskHandle Tsk_BtlEnm015_RG;
 extern const TaskHandle Tsk_BtlEnm015_Shake;
-extern const TaskHandle Tsk_BtlEnm015_UG;
+
+BinIdentifier*   func_ov013_021256c0(s32 index);
+u16              func_ov013_021256d0(s32 index);
+SpriteAnimEntry* func_ov013_021256e4(void);
+void             func_ov013_021256f0(BtlEnm015* arg0, u16 arg1, void* arg2, void* arg3, void* arg4);
+void             func_ov013_021257a4(BtlEnm015* arg0, s32 arg1);
+void             func_ov013_02125838(BtlEnm015* arg0);
+s32              func_ov013_02125a04(BtlEnm015*, s32, s32, s32);
+void             func_ov013_02125b64(BtlEnm015*, s32);
+void             func_ov013_02125b8c(s32, BtlEnm015*, s32, s32);
+s32              func_ov013_02125d24(BtlEnm015*);
+void             func_ov013_02125e90(BtlEnm015*);
+void             func_ov013_02125ed0(BtlEnm015*);
+void             func_ov013_02125efc(BtlEnm015*);
 
 #endif // COMBAT_NOISE_PRIVATE_BTLENM015_H

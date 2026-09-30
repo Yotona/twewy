@@ -1,6 +1,5 @@
 #include "Combat/Tutorial/BtlTutorial.h"
 #include "Combat/Core/Combat.h"
-#include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
@@ -12,47 +11,23 @@
 
 #include <nitro/mi/cpumem.h>
 
-extern void func_ov003_02083ab0(s32, s32, s32, s32);
-extern s32  func_ov003_0208b690(u16);
+extern s32 func_ov003_0208b690(u16);
 
 extern void*       BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
 extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, GXBGScreenSizeText screenSize);
 
-// Task stage handlers (forward declared for the TaskStages tables below).
-s32 func_ov008_020e7374(TaskPool*, Task*, void*);
-s32 func_ov008_020e742c(TaskPool*, Task*, void*);
-s32 func_ov008_020e7464(TaskPool*, Task*, void*);
-s32 func_ov008_020e746c(TaskPool*, Task*, void*);
-s32 func_ov008_020e7474(TaskPool*, Task*, void*, s32);
-s32 func_ov008_020e769c(TaskPool*, Task*, void*);
-s32 func_ov008_020e78e0(TaskPool*, Task*, void*);
-s32 func_ov008_020e78f8(TaskPool*, Task*, void*);
-s32 func_ov008_020e7910(TaskPool*, Task*, void*);
-s32 func_ov008_020e799c(TaskPool*, Task*, void*, s32);
-
-void func_ov008_020e7360(BtlPlayerNone*, void (*)(BtlPlayerNone*));
+s32  func_ov008_020e769c(TaskPool*, Task*, void*);
+s32  func_ov008_020e78e0(TaskPool*, Task*, void*);
+s32  func_ov008_020e78f8(TaskPool*, Task*, void*);
+s32  func_ov008_020e7910(TaskPool*, Task*, void*);
+s32  func_ov008_020e799c(TaskPool*, Task*, void*, s32);
 void func_ov008_020e74dc(void);
 s32  func_ov008_020e7580(void);
 void func_ov008_020e75f8(CombatSprite*, s32);
 
-// MARK: Data
+u16 data_ov008_020e7a94[6] = {1, 2, 2, 2, 4, 3};
 
-char data_ov008_020e7a80[20] = "Tsk_BtlPlayerNone";
-u16  data_ov008_020e7a94[6]  = {1, 2, 2, 2, 4, 3};
-char data_ov008_020e7aa0[]   = "Tsk_BtlTutorial";
-char data_ov008_020e7ab0[48] = "Apl_Fur/Grp_Tutorial.bin";
-
-const TaskHandle Tsk_BtlPlayerNone = {data_ov008_020e7a80, func_ov008_020e7474, 0x84};
-
-static const TaskStages data_ov008_020e7a10 = {
-    .initialize = func_ov008_020e7374,
-    .update     = func_ov008_020e742c,
-    .render     = func_ov008_020e7464,
-    .cleanup    = func_ov008_020e746c,
-};
-
-/// `Tsk_BtlTutorial` asset pack identifier.
-static const BinIdentifier data_ov008_020e7a20 = {8, data_ov008_020e7ab0};
+static const BinIdentifier data_ov008_020e7a20 = {8, "Apl_Fur/Grp_Tutorial.bin"};
 
 static const TaskStages data_ov008_020e7a28 = {
     .initialize = func_ov008_020e769c,
@@ -61,7 +36,6 @@ static const TaskStages data_ov008_020e7a28 = {
     .cleanup    = func_ov008_020e7910,
 };
 
-/// Pack indices/palette index and sizes for each tutorial variant.
 static const BtlTutorialVariant data_ov008_020e7a38[6] = {
     { 3, 3, 1, 2, 0x6400, 0x6400},
     { 4, 3, 1, 2, 0x6400, 0x6400},
@@ -71,63 +45,7 @@ static const BtlTutorialVariant data_ov008_020e7a38[6] = {
     {10, 3, 1, 2, 0x6400, 0x6400},
 };
 
-const TaskHandle Tsk_BtlTutorial = {data_ov008_020e7aa0, func_ov008_020e799c, 0x7C};
-
-// MARK: Functions
-
-void func_ov008_020e7360(BtlPlayerNone* data, void (*callback)(BtlPlayerNone*)) {
-    data->unk_7C = callback;
-    data->unk_80 = 0;
-    data->unk_82 = 0;
-}
-
-s32 func_ov008_020e7374(TaskPool* pool, Task* task, void* args) {
-    BtlPlayerNone* data = task->data;
-
-    MI_CpuSet(data, 0, sizeof(BtlPlayerNone));
-    CombatActor_Init(&data->actor, 0);
-    data_ov003_020e71b8->unk3D89C = data;
-    data->actor.isFlipped         = FALSE;
-    data->actor.position.x        = data_ov003_020e71b8->unk3D838;
-    data->actor.position.y        = data_ov003_020e71b8->unk3D83C;
-    data->actor.position.z        = 0;
-    data->actor.zGravity          = 0x800;
-    data->actor.unk_70            = 0xC;
-    data->actor.unk_72            = 0x30;
-    data->actor.unk_76            = 0x18;
-    data->actor.flags |= 0x10;
-    func_ov003_02083ab0(1, data->actor.position.x, data->actor.position.y, data->actor.position.z);
-    func_ov008_020e7360(data, NULL);
-    return 1;
-}
-
-s32 func_ov008_020e742c(TaskPool* pool, Task* task, void* args) {
-    BtlPlayerNone* data = task->data;
-
-    if (data->unk_7C != NULL) {
-        data->unk_7C(data);
-    }
-    CombatActor_UpdateEffects(1, &data->actor);
-    CombatActor_UpdatePhysics(&data->actor);
-    return 1;
-}
-
-s32 func_ov008_020e7464(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 func_ov008_020e746c(TaskPool* pool, Task* task, void* args) {
-    return 1;
-}
-
-s32 func_ov008_020e7474(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov008_020e7a10;
-
-    if (func_ov003_0208b690(stage) != 0) {
-        return 1;
-    }
-    return stages.iter[stage](pool, task, args);
-}
+const TaskHandle Tsk_BtlTutorial = {"Tsk_BtlTutorial", func_ov008_020e799c, 0x7C};
 
 void func_ov008_020e74dc(void) {
     Display_InitSubBG1(DISPLAY_BGMODE_TEXT, 1, 1, 0, 1, 0, 0x4084);
@@ -140,7 +58,7 @@ void func_ov008_020e74dc(void) {
 s32 func_ov008_020e7580(void) {
     s32 result = 0;
 
-    switch (*(u16*)((u8*)data_ov003_020e71b8 + 0x3D800 + 0x8E) - 0x32) {
+    switch (data_ov003_020e71b8->unk3D88E - 0x32) {
         case 0:
             result = 0;
             break;
@@ -185,7 +103,7 @@ s32 func_ov008_020e769c(TaskPool* pool, Task* task, void* args) {
 
     MI_CpuSet(data, 0, sizeof(BtlTutorial));
     func_ov008_020e74dc();
-    data_ov003_020e71b8->unk3D81A |= 1;
+    data_ov003_020e71b8->unk3D7C0[1].unk_02 |= 1;
 
     s32                       variant = func_ov008_020e7580();
     Data*                     pack1;
@@ -246,7 +164,7 @@ s32 func_ov008_020e7910(TaskPool* pool, Task* task, void* args) {
     BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], data->unk_08);
     BgResMgr_ReleaseScreen(g_BgResourceManagers[DISPLAY_SUB], data->unk_0C);
     PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], data->unk_10);
-    data_ov003_020e71b8->unk3D81A &= ~1;
+    data_ov003_020e71b8->unk3D7C0[1].unk_02 &= ~1;
     return 1;
 }
 

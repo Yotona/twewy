@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-// src/Combat/Tutorial/BtlTutorial.c
+// src/Combat/Tutorial/BtlPlayerNone.c
 //////////////////////////////////////////////////////////////////////
 func_ov008_020e7360 kind:function(arm,size=0x14) addr:0x020e7360
 func_ov008_020e7374 kind:function(arm,size=0xb8) addr:0x020e7374
@@ -7,6 +7,9 @@ func_ov008_020e742c kind:function(arm,size=0x38) addr:0x020e742c
 func_ov008_020e7464 kind:function(arm,size=0x8) addr:0x020e7464
 func_ov008_020e746c kind:function(arm,size=0x8) addr:0x020e746c
 func_ov008_020e7474 kind:function(arm,size=0x68) addr:0x020e7474
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Tutorial/BtlTutorial.c
+//////////////////////////////////////////////////////////////////////
 func_ov008_020e74dc kind:function(arm,size=0xa4) addr:0x020e74dc
 func_ov008_020e7580 kind:function(arm,size=0x78) addr:0x020e7580
 func_ov008_020e75f8 kind:function(arm,size=0xa4) addr:0x020e75f8
@@ -16,12 +19,12 @@ func_ov008_020e78f8 kind:function(arm,size=0x18) addr:0x020e78f8
 func_ov008_020e7910 kind:function(arm,size=0x8c) addr:0x020e7910
 func_ov008_020e799c kind:function(arm,size=0x68) addr:0x020e799c
 Tsk_BtlPlayerNone kind:data(any) addr:0x020e7a04
-data_ov008_020e7a10 kind:data(any) addr:0x020e7a10
-data_ov008_020e7a20 kind:data(any) addr:0x020e7a20
-data_ov008_020e7a28 kind:data(any) addr:0x020e7a28
-data_ov008_020e7a38 kind:data(any) addr:0x020e7a38
+data_ov008_020e7a10 kind:data(any) addr:0x020e7a10 local
+data_ov008_020e7a20 kind:data(any) addr:0x020e7a20 local
+data_ov008_020e7a28 kind:data(any) addr:0x020e7a28 local
+data_ov008_020e7a38 kind:data(any) addr:0x020e7a38 local
 Tsk_BtlTutorial kind:data(any) addr:0x020e7a68
-data_ov008_020e7a80 kind:data(any) addr:0x020e7a80
+@1462 kind:data(byte[18]) addr:0x020e7a80 local
 data_ov008_020e7a94 kind:data(any) addr:0x020e7a94
-data_ov008_020e7aa0 kind:data(any) addr:0x020e7aa0
-data_ov008_020e7ab0 kind:data(any) addr:0x020e7ab0
+@1472 kind:data(byte[16]) addr:0x020e7aa0 local
+@1471 kind:data(byte[25]) addr:0x020e7ab0 local

@@ -1077,19 +1077,19 @@ void func_ov017_0212794c(void* arg0) {
             ((Boss03*)arg0)->unkF8 = 0U;
             ((Boss03*)arg0)->unkFA = (u16)(RNG_Next(0x12C) + 0x12C);
             ((Boss03*)arg0)->unkFC = 0U;
-            temp_r2                = data_ov003_020e71b8->unk3D7CC;
+            temp_r2                = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
             func_ov003_020c3acc(0, 0x2FB, (s32)(temp_r2 + (temp_r2 >> 0x1F)) >> 1);
         }
     } else if (temp_r0 == 0) {
         ((Boss03*)arg0)->unk1D0 = (s16)(((Boss03*)arg0)->unk1D0 - 1);
         if (((Boss03*)arg0)->unk1D0 == 0) {
-            func_ov003_020c3acc(0, 0x301, data_ov003_020e71b8->unk3D7C4);
+            func_ov003_020c3acc(0, 0x301, data_ov003_020e71b8->unk3D7C0[0].unk_04);
             ((Boss03*)arg0)->unk1D0 = 0x48;
         }
     } else if (temp_r0 == 1) {
         ((Boss03*)arg0)->unk1D0 = (s16)(((Boss03*)arg0)->unk1D0 - 1);
         if (((Boss03*)arg0)->unk1D0 == 0) {
-            func_ov003_020c3acc(0, 0x302, data_ov003_020e71b8->unk3D7C4);
+            func_ov003_020c3acc(0, 0x302, data_ov003_020e71b8->unk3D7C0[0].unk_04);
             ((Boss03*)arg0)->unk1D0 = 0x24;
         }
     }
@@ -1101,7 +1101,7 @@ void func_ov017_0212794c(void* arg0) {
             func_ov003_020d3c2c(arg0 + 0xA0, &data_ov017_02141764);
             func_ov003_020d3c98(arg0 + 0x7C, arg0 + 0xA0);
             ((Boss03*)arg0)->unkF8 = 1U;
-            temp_r2_2              = data_ov003_020e71b8->unk3D7CC;
+            temp_r2_2              = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
             func_ov003_020c3acc(0, 0x2FC, (s32)(temp_r2_2 + (temp_r2_2 >> 0x1F)) >> 1);
             ((Boss03*)arg0)->unk1D0 = 0x24;
             return;
@@ -1255,9 +1255,9 @@ s32 func_ov017_02127c40(void* arg1, u16* arg2) {
     func_ov003_02082730(temp_r4 + 0x100, -0x1000);
     CombatSprite_LoadDirect(2, (CombatSprite*)(temp_r4 + 0x160), &data_ov017_02141724, 3, 2, 4, 1, 0);
     func_ov003_02082730(temp_r4 + 0x160, -0x1000);
-    data_ov003_020e71b8->unk3D7C2 = 0;
-    data_ov003_020e71b8->unk3D81A = 0;
-    ((Boss03*)temp_r4)->unkFA     = (s16)(RNG_Next(0x12C) + 0x12C);
+    data_ov003_020e71b8->unk3D7C0[0].unk_02 = 0;
+    data_ov003_020e71b8->unk3D7C0[1].unk_02 = 0;
+    ((Boss03*)temp_r4)->unkFA               = (s16)(RNG_Next(0x12C) + 0x12C);
     func_ov003_02083a2c(0, 0, 0x140, 0x200, 0x1F0, 0);
     func_ov003_02083a2c(1, 0x70, 0x1C8, 0x190, 0x200, 0);
     ((Boss03*)temp_r5)->unk18 = (s32)(0x130000 - ((Boss03*)temp_r5)->unk8);
@@ -1265,10 +1265,10 @@ s32 func_ov017_02127c40(void* arg1, u16* arg2) {
     if ((arg2 != NULL) && (*arg2 != 0)) {
         func_ov017_02126be4(temp_r4, NULL);
     } else {
-        temp_r2_3                   = data_ov003_020e71b8->unk3D7CC;
+        temp_r2_3                   = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
         temp_r1_6                   = data_ov003_020e71b8->unk3D898;
         ((Boss03*)temp_r1_6)->unk28 = (s32)((s32)(temp_r2_3 + (temp_r2_3 >> 0x1F)) >> 1);
-        temp_r2_4                   = data_ov003_020e71b8->unk3D7D0;
+        temp_r2_4                   = data_ov003_020e71b8->unk3D7C0[0].unk_10;
         temp_r2_5                   = (s32)(temp_r2_4 + (temp_r2_4 >> 0x1F)) >> 1;
         ((Boss03*)temp_r1_6)->unk2C = temp_r2_5;
         func_ov003_02083ab0(0, ((Boss03*)temp_r1_6)->unk28, temp_r2_5, 0);
@@ -1371,10 +1371,10 @@ void func_ov017_02128388(void* arg0) {
     s32 temp_r1_2;
     s32 temp_r1_3;
 
-    temp_r1 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
+    temp_r1 = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
     ((Boss03*)arg0)->unk28  = temp_r1;
     ((Boss03*)arg0)->unk1AC = temp_r1;
-    temp_r1_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
+    temp_r1_2 = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
     ((Boss03*)arg0)->unk2C  = temp_r1_2;
     ((Boss03*)arg0)->unk1B0 = temp_r1_2;
     temp_r1_3               = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk290 * 0xC));
@@ -1400,8 +1400,8 @@ void func_ov017_0212843c(void* arg0) {
         CombatSprite_SetAnimFromTable(arg0 + 0x84, 6, 1);
     }
     if (((Boss03*)arg0)->unk280 == 0x32) {
-        sp8  = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
-        spC  = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
+        sp8  = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
+        spC  = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
         sp10 = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk290 * 0xC));
         if (((Boss03*)arg0)->unkCA & 1) {
             var_r1 = 1;
@@ -1516,10 +1516,12 @@ s32 func_ov017_021287b8(void* arg1, s32 arg2) {
     ((Boss03*)temp_r4)->unk29C = 1;
     ((Boss03*)temp_r4)->unk298 = 0;
     ((Boss03*)temp_r4)->unk290 = (u16)RNG_Next(4);
-    temp_r0 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)temp_r4)->unk290 * 0xC));
+    temp_r0 =
+        data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)temp_r4)->unk290 * 0xC));
     ((Boss03*)temp_r4)->unk28  = temp_r0;
     ((Boss03*)temp_r4)->unk1AC = temp_r0;
-    temp_r0_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)temp_r4)->unk290 * 0xC));
+    temp_r0_2 =
+        data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)temp_r4)->unk290 * 0xC));
     ((Boss03*)temp_r4)->unk2C  = temp_r0_2;
     ((Boss03*)temp_r4)->unk1B0 = temp_r0_2;
     temp_r1                    = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)temp_r4)->unk290 * 0xC));
@@ -2222,8 +2224,8 @@ s32 func_ov017_021299d0(void* arg1, u16* arg2) {
     func_ov003_020d3bec(temp_r4 + 0x48, &data_ov017_02141c68, temp_r4 + 0x10, temp_r4 + 0x38, &data_ov017_02141c88);
     func_ov003_020d3b6c(temp_r4 + 0x6C, 0, 0, 1, 0, 0);
     func_ov003_020d3bec(temp_r4 + 0x6C, &data_ov017_02141c68, temp_r4 + 0x10, temp_r4 + 0x3C, &data_ov017_02141cb0);
-    data_ov003_020e71b8->unk3D7C2 = 0;
-    data_ov003_020e71b8->unk3D81A = 0;
+    data_ov003_020e71b8->unk3D7C0[0].unk_02 = 0;
+    data_ov003_020e71b8->unk3D7C0[1].unk_02 = 0;
     func_ov003_02083a2c(0, 0x40, 0x140, 0x1C0, 0x1E0, 0);
     func_ov003_02083a2c(1, 0x70, 0x1C8, 0x190, 0x200, 0);
     ((Boss03*)temp_r5)->unk18 = (s32)(0x160000 - ((Boss03*)temp_r5)->unk8);
@@ -2231,10 +2233,10 @@ s32 func_ov017_021299d0(void* arg1, u16* arg2) {
     if ((arg2 != NULL) && (*arg2 != 0)) {
         func_ov017_02129764(temp_r4, func_ov017_021298e0);
     } else {
-        temp_ip                     = data_ov003_020e71b8->unk3D7CC;
+        temp_ip                     = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
         temp_r2                     = data_ov003_020e71b8->unk3D898;
         ((Boss03*)temp_r2)->unk28   = (s32)((s32)(temp_ip + (temp_ip >> 0x1F)) >> 1);
-        temp_r3                     = data_ov003_020e71b8->unk3D7D0;
+        temp_r3                     = data_ov003_020e71b8->unk3D7C0[0].unk_10;
         ((Boss03*)temp_r2)->unk2C   = (s32)((s32)(temp_r3 + (temp_r3 >> 0x1F)) >> 1);
         temp_r3_2                   = ((Boss03*)temp_r4)->unk0;
         ((Boss03*)temp_r3_2)->unk28 = (s32)((Boss03*)temp_r3_2)->unk34;
@@ -2317,10 +2319,10 @@ void func_ov017_02129ef8(void* arg0) {
     s32 temp_r1_2;
     s32 temp_r1_3;
 
-    temp_r1 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
+    temp_r1 = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
     ((Boss03*)arg0)->unk28  = temp_r1;
     ((Boss03*)arg0)->unk1AC = temp_r1;
-    temp_r1_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
+    temp_r1_2 = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
     ((Boss03*)arg0)->unk2C  = temp_r1_2;
     ((Boss03*)arg0)->unk1B0 = temp_r1_2;
     temp_r1_3               = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk290 * 0xC));
@@ -2495,8 +2497,8 @@ void func_ov017_0212a37c(void* arg0) {
         CombatSprite_SetAnimFromTable(arg0 + 0x84, 6, 1);
     }
     if (((Boss03*)arg0)->unk280 == 0x32) {
-        sp8  = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
-        spC  = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
+        sp8  = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk290 * 0xC));
+        spC  = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk290 * 0xC));
         sp10 = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk290 * 0xC));
         if (((Boss03*)arg0)->unkCA & 1) {
             var_r1 = 1;
@@ -2766,7 +2768,7 @@ void func_ov017_0212aaa0(void* arg0) {
     }
     if ((data_ov017_021439d8 != 0) && (((Boss03*)arg0)->unk1A8 == 3)) {
         func_ov017_02130178(0, 0x4EB, 0x56C, ((Boss03*)arg0)->unk28);
-        temp_r2 = data_ov003_020e71b8->unk3D7CC;
+        temp_r2 = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
         func_ov003_020c3acc(0, 0x303, (s32)(temp_r2 + (temp_r2 >> 0x1F)) >> 1);
         var_r8 = &gSaveState + 0x20;
         var_r7 = 0;
@@ -3418,10 +3420,10 @@ void func_ov017_0212bd10(void* arg0) {
 
     data_ov017_021439ec     = 0;
     ((Boss03*)arg0)->unk1D4 = (u16)RNG_Next(4);
-    temp_r0 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D4 * 0xC));
+    temp_r0 = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D4 * 0xC));
     ((Boss03*)arg0)->unk28  = temp_r0;
     ((Boss03*)arg0)->unk1AC = temp_r0;
-    temp_r0_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D4 * 0xC));
+    temp_r0_2 = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D4 * 0xC));
     ((Boss03*)arg0)->unk2C  = temp_r0_2;
     ((Boss03*)arg0)->unk1B0 = temp_r0_2;
     temp_r2                 = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk1D4 * 0xC));
@@ -3440,10 +3442,10 @@ void func_ov017_0212bdcc(void* arg0) {
         return;
     }
     ((Boss03*)arg0)->unk1D4 = (u16)RNG_Next(4);
-    temp_r0 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D4 * 0xC));
+    temp_r0 = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D4 * 0xC));
     ((Boss03*)arg0)->unk28  = temp_r0;
     ((Boss03*)arg0)->unk1AC = temp_r0;
-    temp_r0_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D4 * 0xC));
+    temp_r0_2 = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D4 * 0xC));
     ((Boss03*)arg0)->unk2C  = temp_r0_2;
     ((Boss03*)arg0)->unk1B0 = temp_r0_2;
     temp_r0_3               = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk1D4 * 0xC));
@@ -3540,10 +3542,12 @@ s32 func_ov017_0212c078(void* arg1, s32 arg2) {
     ((Boss03*)temp_r4)->unk1D4 = (u16)RNG_Next(4);
     ((Boss03*)temp_r4)->unk38  = 0;
     ((Boss03*)temp_r4)->unk3C  = 0;
-    temp_r0 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)temp_r4)->unk1D4 * 0xC));
+    temp_r0 =
+        data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)temp_r4)->unk1D4 * 0xC));
     ((Boss03*)temp_r4)->unk28  = temp_r0;
     ((Boss03*)temp_r4)->unk1AC = temp_r0;
-    temp_r3 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)temp_r4)->unk1D4 * 0xC));
+    temp_r3 =
+        data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)temp_r4)->unk1D4 * 0xC));
     ((Boss03*)temp_r4)->unk2C  = temp_r3;
     ((Boss03*)temp_r4)->unk1B0 = temp_r3;
     temp_r1                    = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)temp_r4)->unk1D4 * 0xC));
@@ -4371,8 +4375,8 @@ s32 func_ov017_0212d374(void* arg1, u16* arg2) {
     ((Boss03*)temp_r4)->unk38 = (void*)(var_r0 + 4);
     func_0200d1d8(temp_r4 + 0x10, 0, 1, 0, temp_r4 + 0x38, 1, 1);
     func_0200d858(temp_r4 + 0x10, 1, 1, 0);
-    data_ov003_020e71b8->unk3D7C2 = 0;
-    data_ov003_020e71b8->unk3D81A = 0;
+    data_ov003_020e71b8->unk3D7C0[0].unk_02 = 0;
+    data_ov003_020e71b8->unk3D7C0[1].unk_02 = 0;
     func_ov003_02083a2c(0, 0x20, 0x140, 0x1E0, 0, 0);
     func_ov003_02083a2c(1, 0x70, 0x1C8, 0x190, 0x200, 0);
     temp_r6                   = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
@@ -4382,10 +4386,10 @@ s32 func_ov017_0212d374(void* arg1, u16* arg2) {
     if ((arg2 != NULL) && (*arg2 != 0)) {
         func_ov017_0212d27c(temp_r4, NULL);
     } else {
-        temp_r5                     = data_ov003_020e71b8->unk3D7CC;
+        temp_r5                     = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
         temp_ip_2                   = data_ov003_020e71b8->unk3D898;
         ((Boss03*)temp_ip_2)->unk28 = (s32)((s32)(temp_r5 + (temp_r5 >> 0x1F)) >> 1);
-        temp_r2                     = data_ov003_020e71b8->unk3D7D0;
+        temp_r2                     = data_ov003_020e71b8->unk3D7C0[0].unk_10;
         ((Boss03*)temp_ip_2)->unk2C = (s32)((s32)(temp_r2 + (temp_r2 >> 0x1F)) >> 1);
         temp_r3                     = ((Boss03*)temp_r4)->unk0;
         ((Boss03*)temp_r3)->unk28   = (s32)((Boss03*)temp_r3)->unk34;
@@ -5339,10 +5343,10 @@ void func_ov017_0212ee70(void* arg0) {
     s32 temp_r1_2;
     s32 temp_r1_3;
 
-    temp_r1 = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D0 * 0xC));
+    temp_r1 = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D0 * 0xC));
     ((Boss03*)arg0)->unk28  = temp_r1;
     ((Boss03*)arg0)->unk1AC = temp_r1;
-    temp_r1_2 = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D0 * 0xC));
+    temp_r1_2 = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D0 * 0xC));
     ((Boss03*)arg0)->unk2C  = temp_r1_2;
     ((Boss03*)arg0)->unk1B0 = temp_r1_2;
     temp_r1_3               = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk1D0 * 0xC));
@@ -5491,8 +5495,8 @@ void func_ov017_0212f280(void* arg0) {
         CombatSprite_SetAnimFromTable(arg0 + 0x84, 6, 1);
     }
     if (((Boss03*)arg0)->unk1C0 == 0x32) {
-        sp8  = data_ov003_020e71b8->unk3D838 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D0 * 0xC));
-        spC  = data_ov003_020e71b8->unk3D83C + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D0 * 0xC));
+        sp8  = data_ov003_020e71b8->unk3D7C0[1].unk_20 + *(s32*)((u8*)&data_ov017_02141538 + (((Boss03*)arg0)->unk1D0 * 0xC));
+        spC  = data_ov003_020e71b8->unk3D7C0[1].unk_24 + *(s32*)((u8*)&data_ov017_0214153c + (((Boss03*)arg0)->unk1D0 * 0xC));
         sp10 = *(s32*)((u8*)&data_ov017_02141540 + (((Boss03*)arg0)->unk1D0 * 0xC));
         if (((Boss03*)arg0)->unkCA & 1) {
             var_r1 = 1;
@@ -6028,9 +6032,9 @@ void func_ov017_0212ffe4(s32 arg0, s32 arg1, s32 arg2) {
     if (data_ov003_020e71b8->unk3D878 & 2) {
         return;
     }
-    temp_r1_2 = data_ov003_020e71b8->unk3D7CC;
+    temp_r1_2 = data_ov003_020e71b8->unk3D7C0[0].unk_0C;
     temp_r4   = func_ov003_020843b0(0, ((s32)(temp_r1_2 + (temp_r1_2 >> 0x1F)) >> 1) + 0x8000);
-    temp_r1_3 = data_ov003_020e71b8->unk3D7D0;
+    temp_r1_3 = data_ov003_020e71b8->unk3D7C0[0].unk_10;
     temp_r0_2 = func_ov003_020843ec(0, ((s32)(temp_r1_3 + (temp_r1_3 >> 0x1F)) >> 1) - 0x6C000, 0);
     CombatSprite_SetPosition(arg0, temp_r4, temp_r0_2);
     func_ov003_02082730(arg0, 0x7FFFFFFF);

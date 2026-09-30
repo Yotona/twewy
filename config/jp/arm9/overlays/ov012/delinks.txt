@@ -3,3 +3,23 @@
     .ctor       start:0x02127c88 end:0x02127c88 kind:rodata align:4
     .data       start:0x02127ca0 end:0x02127d60 kind:data align:32
     .bss        start:0x02127d60 end:0x02127d60 kind:bss align:32
+
+src/Combat/Noise/BtlEnm014/BtlEnm014.c:
+    .text       start:0x021259e0 end:0x02125cdc
+    .rodata     start:0x02127b5c end:0x02127c54
+    .data       start:0x02127ca0 end:0x02127d20
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_Eff.c:
+    .text       start:0x02125cdc end:0x02125f68
+    .rodata     start:0x02127c54 end:0x02127c60
+    .data       start:0x02127d20 end:0x02127d34
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_RG.c:
+    .text       start:0x02125f68 end:0x02126d3c
+    .rodata     start:0x02127c60 end:0x02127c7c
+    .data       start:0x02127d34 end:0x02127d48
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_UG.c:
+    .text       start:0x02126d3c end:0x02127b5c
+    .rodata     start:0x02127c7c end:0x02127c88
+    .data       start:0x02127d48 end:0x02127d60

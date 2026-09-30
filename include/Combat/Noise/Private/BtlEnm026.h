@@ -4,36 +4,7 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
-#include "Engine/File/DatMgr.h"
 
-/// One of the `Tsk_BtlEnm026` asset variants.
-typedef struct Enm026Variant {
-    /* 0x00 */ BinIdentifier*   binIden;
-    /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u16              unk_08;
-    /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u32              unk_0C;
-} Enm026Variant; // Size: 0x10
-
-/// Lookup entry mapping an enemy id to a `Tsk_BtlEnm026` variant index.
-typedef struct Enm026IdPair {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-} Enm026IdPair;
-
-/// Spawn parameters passed to the `Tsk_BtlEnm026_RG` / `Tsk_BtlEnm026_UG` tasks.
-typedef struct Enm026Spawn {
-    /* 0x00 */ void* unk_00;
-    /* 0x04 */ u16   unk_04;
-    /* 0x06 */ u16   unk_06;
-    /* 0x08 */ s32   unk_08;
-    /* 0x0C */ s32   unk_0C;
-    /* 0x10 */ s32   unk_10;
-    /* 0x14 */ u16   unk_14;
-    /* 0x16 */ u16   unk_16;
-} Enm026Spawn; // Size: 0x18
-
-/// Spawn parameters passed to the `Tsk_BtlEnm026_Icon` task.
 typedef struct Enm026IconSpawn {
     /* 0x00 */ struct BtlEnm026* unk_00;
     /* 0x04 */ s16               unk_04;
@@ -41,17 +12,6 @@ typedef struct Enm026IconSpawn {
     /* 0x08 */ void*             unk_08;
 } Enm026IconSpawn; // Size: 0x0C
 
-/// Per-particle spawn parameters consumed by `func_ov003_020c3cec`.
-typedef struct Enm026ParticleParams {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-} Enm026ParticleParams; // Size: 0x14
-
-/// Task data for the `Tsk_BtlEnm026_RG` / `Tsk_BtlEnm026_UG` tasks.
 typedef struct BtlEnm026 {
     /* 0x000 */ CombatActor       actor;
     /* 0x07C */ u32               unk_07C;
@@ -63,7 +23,9 @@ typedef struct BtlEnm026 {
     /* 0x148 */ s32               unk_148;
     /* 0x14C */ s32               unk_14C;
     /* 0x150 */ s32               unk_150;
-    /* 0x154 */ u8                unk_154[0x30];
+    /* 0x154 */ u8                unk_154[0x178 - 0x154];
+    /* 0x178 */ void*             unk_178; // link in the unk3D8A4 unit list
+    /* 0x17C */ u8                unk_17C[0x184 - 0x17C];
     /* 0x184 */ struct BtlEnm026* unk_184;
     /* 0x188 */ struct BtlEnm026* unk_188;
     /* 0x18C */ u16               unk_18C;
@@ -100,28 +62,6 @@ typedef struct BtlEnm026 {
     /* 0x1F0 */ u16 unk_1F0;
 } BtlEnm026; // Size: 0x1F4
 
-/// Pair of per-variant state callbacks (`NULL` when unused). The table also
-/// holds argument-less stubs, so the members use unspecified parameters.
-typedef struct Enm026StateFns {
-    /* 0x00 */ void (*unk_00)();
-    /* 0x04 */ void (*unk_04)();
-} Enm026StateFns;
-
-/// Task data for the `Tsk_BtlEnm026_Icon` task.
-typedef struct BtlEnm026Icon {
-    /* 0x000 */ CombatSprite unk_00;
-    /* 0x060 */ CombatSprite unk_60;
-    /* 0x0C0 */ CombatSprite unk_C0;
-    /* 0x120 */ BtlEnm026*   unk_120;
-    /* 0x124 */ s16          unk_124;
-    /* 0x126 */ u16          unk_126;
-    /* 0x128 */ void*        unk_128;
-    /* 0x12C */ s16          unk_12C;
-    /* 0x12E */ u16          unk_12E;
-    /* 0x130 */ s32          unk_130;
-} BtlEnm026Icon; // Size: 0x134
-
-/// Shared spawn/defeat state for the `Tsk_BtlEnm026` tasks.
 typedef struct Enm026State {
     /* 0x00 */ s32 initialized;
     /* 0x04 */ s32 variant;
@@ -140,4 +80,40 @@ typedef struct Enm026State {
     /* 0x2A */ u8  pad_2A[0x16];
 } Enm026State; // Size: 0x40
 
-#endif         // COMBAT_NOISE_PRIVATE_BTLENM026_H
+void                    func_ov015_02125a64(BtlEnm026*, s32);
+void                    func_ov015_02125a8c(s32, BtlEnm026*, void*, s32);
+s32                     func_ov015_02125b08(BtlEnm026*);
+s32                     func_ov015_02125c94(BtlEnm026*);
+void                    func_ov015_02125d0c(BtlEnm026*, s32, void*, void*);
+void                    func_ov015_02125e5c(BtlEnm026*);
+void                    func_ov015_02125f48(BtlEnm026*);
+void                    func_ov015_02127690(BtlEnm026*);
+void                    func_ov015_021276c4();
+void                    func_ov015_021276c8();
+void                    func_ov015_02127758(BtlEnm026*);
+void                    func_ov015_021277a4(BtlEnm026*);
+void                    func_ov015_0212786c(BtlEnm026*);
+void                    func_ov015_021278b0(BtlEnm026*);
+void                    func_ov015_021278f8(BtlEnm026*);
+void                    func_ov015_02127950(BtlEnm026*);
+void                    func_ov015_02127974(BtlEnm026*);
+void                    func_ov015_021279c0(BtlEnm026*);
+void                    func_ov015_02127a14(BtlEnm026*);
+void                    func_ov015_02127a60(BtlEnm026*);
+void                    func_ov015_02127a74(BtlEnm026*);
+void                    func_ov015_02127ac4(BtlEnm026*);
+void                    func_ov015_02127bc0(BtlEnm026*);
+void                    func_ov015_02127bd0(BtlEnm026*);
+void                    func_ov015_02127c18(BtlEnm026*);
+void                    func_ov015_02127c68(BtlEnm026*);
+void                    func_ov015_02127ca0(BtlEnm026*);
+void                    func_ov015_02127d64(void);
+void                    func_ov015_02127da4(BtlEnm026*);
+void                    func_ov015_02127e5c(BtlEnm026*);
+void                    func_ov015_02127e7c(BtlEnm026*);
+void                    func_ov015_02127f90(BtlEnm026*);
+extern const TaskHandle Tsk_BtlEnm026_Icon;
+extern const TaskHandle Tsk_BtlEnm026_RG;
+extern Enm026State      data_ov015_02128500;
+
+#endif // COMBAT_NOISE_PRIVATE_BTLENM026_H

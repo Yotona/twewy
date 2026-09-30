@@ -29,4 +29,4 @@ data_ov007_020e8404 kind:data(any) addr:0x020e8404 ambiguous
 data_ov007_020e8410 kind:data(any) addr:0x020e8410
 data_ov007_020e8420 kind:data(any) addr:0x020e8420
 data_ov007_020e8440 kind:data(any) addr:0x020e8440
-data_ov007_020e8454 kind:data(any) addr:0x020e8454
+data_ov007_020e8454 kind:data(byte[16]) addr:0x020e8454

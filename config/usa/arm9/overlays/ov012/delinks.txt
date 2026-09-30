@@ -6,6 +6,23 @@
     .bss        start:0x02127a40 end:0x02127a40 kind:bss align:32
 
 src/Combat/Noise/BtlEnm014/BtlEnm014.c:
-    .text       start:0x021256c0 end:0x0212783c
-    .rodata     start:0x0212783c end:0x02127968
-    .data       start:0x02127980 end:0x02127a40
+    .text       start:0x021256c0 end:0x021259bc
+    .rodata     start:0x0212783c end:0x02127934
+    .data       start:0x02127980 end:0x02127a00
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_Eff.c:
+    complete
+    .text       start:0x021259bc end:0x02125c48
+    .rodata     start:0x02127934 end:0x02127940
+    .data       start:0x02127a00 end:0x02127a14
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_RG.c:
+    complete
+    .text       start:0x02125c48 end:0x02126a1c
+    .rodata     start:0x02127940 end:0x0212795c
+    .data       start:0x02127a14 end:0x02127a28
+
+src/Combat/Noise/BtlEnm014/BtlEnm014_UG.c:
+    .text       start:0x02126a1c end:0x0212783c
+    .rodata     start:0x0212795c end:0x02127968
+    .data       start:0x02127a28 end:0x02127a40

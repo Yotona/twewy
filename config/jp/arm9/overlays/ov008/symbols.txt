@@ -21,4 +21,4 @@ data_ov008_020e7f08 kind:data(any) addr:0x020e7f08 ambiguous
 data_ov008_020e7f20 kind:data(any) addr:0x020e7f20
 data_ov008_020e7f34 kind:data(any) addr:0x020e7f34
 data_ov008_020e7f40 kind:data(any) addr:0x020e7f40
-data_ov008_020e7f50 kind:data(any) addr:0x020e7f50
+data_ov008_020e7f50 kind:data(byte[25]) addr:0x020e7f50

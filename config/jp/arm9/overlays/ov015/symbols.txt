@@ -77,9 +77,7 @@ data_ov015_021283b8 kind:data(any) addr:0x021283b8
 data_ov015_021283c0 kind:data(any) addr:0x021283c0
 data_ov015_021283c8 kind:data(any) addr:0x021283c8
 data_ov015_02128430 kind:data(any) addr:0x02128430
-data_ov015_02128434 kind:data(any) addr:0x02128434
 data_ov015_02128498 kind:data(any) addr:0x02128498
-data_ov015_0212849c kind:data(any) addr:0x0212849c
 data_ov015_02128528 kind:data(any) addr:0x02128528
 data_ov015_02128530 kind:data(any) addr:0x02128530
 data_ov015_02128538 kind:data(any) addr:0x02128538

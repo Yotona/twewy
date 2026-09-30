@@ -54,13 +54,12 @@ Tsk_BtlEnm015_UG kind:data(any) addr:0x02127528 ambiguous
 data_ov013_02127540 kind:data(any) addr:0x02127540
 data_ov013_0212754c kind:data(any) addr:0x0212754c
 data_ov013_02127568 kind:data(any) addr:0x02127568
-data_ov013_0212756c kind:data(any) addr:0x0212756c ambiguous
 data_ov013_02127584 kind:data(any) addr:0x02127584
 data_ov013_021275a0 kind:data(any) addr:0x021275a0
 data_ov013_021275b4 kind:data(any) addr:0x021275b4
-data_ov013_021275cc kind:data(any) addr:0x021275cc
-data_ov013_021275e8 kind:data(any) addr:0x021275e8
-data_ov013_021275fc kind:data(any) addr:0x021275fc
+@1473 kind:data(any) addr:0x021275cc local
+@1475 kind:data(any) addr:0x021275e8 local
+@1475 kind:data(any) addr:0x021275fc local
 data_ov013_02127610 kind:data(any) addr:0x02127610
 data_ov013_02127640 kind:bss addr:0x02127640
 data_ov013_02127644 kind:bss addr:0x02127644

@@ -77,16 +77,16 @@ s16 func_ov017_021256e4(BtlBoss02_00_RG* rg) {
 }
 
 void func_ov017_02125708(BtlBoss02_00_RG* rg) {
-    rg->unk_1AC = rg->actor.position.x = data_ov003_020e71b8->unk3D838 + data_ov017_02141538[rg->unk_260].x;
-    rg->unk_1B0 = rg->actor.position.y = data_ov003_020e71b8->unk3D83C + data_ov017_02141538[rg->unk_260].y;
+    rg->unk_1AC = rg->actor.position.x = data_ov003_020e71b8->unk3D7C0[1].unk_20 + data_ov017_02141538[rg->unk_260].x;
+    rg->unk_1B0 = rg->actor.position.y = data_ov003_020e71b8->unk3D7C0[1].unk_24 + data_ov017_02141538[rg->unk_260].y;
     rg->unk_1B4 = rg->actor.position.z = data_ov017_02141538[rg->unk_260].z;
 }
 
 void func_ov017_02125794(BtlBoss02_00_RG* rg) {
     CombatSprite_LoadFromTable(1, &rg->unk_1D8, &data_ov017_02141520, &data_ov017_021415a8, 0x10, 7, 0x80);
     rg->unk_238 = &rg->unk_1D8;
-    rg->unk_23C = data_ov003_020e71b8->unk3D824 / 2;
-    rg->unk_240 = data_ov003_020e71b8->unk3D828 / 2;
+    rg->unk_23C = data_ov003_020e71b8->unk3D7C0[1].unk_0C / 2;
+    rg->unk_240 = data_ov003_020e71b8->unk3D7C0[1].unk_10 / 2;
     rg->unk_244 = 0x40000;
     func_ov003_020c3acc(1, 762, rg->unk_23C);
     rg->unk_248 = 1;
@@ -193,8 +193,8 @@ void func_ov017_02125b58(BtlBoss02_00_RG* rg) {
         CombatSprite_SetAnimFromTable(&rg->unk_084, 6, 1);
     }
     if (rg->unk_1C0 == 48) {
-        vec.x = data_ov003_020e71b8->unk3D838 + data_ov017_02141538[rg->unk_260].x;
-        vec.y = data_ov003_020e71b8->unk3D83C + data_ov017_02141538[rg->unk_260].y;
+        vec.x = data_ov003_020e71b8->unk3D7C0[1].unk_20 + data_ov017_02141538[rg->unk_260].x;
+        vec.y = data_ov003_020e71b8->unk3D7C0[1].unk_24 + data_ov017_02141538[rg->unk_260].y;
         vec.z = data_ov017_02141538[rg->unk_260].z;
         sp14  = (rg->unk_084.flags46 & 1);
         EasyTask_CreateTask(&data_ov003_020e71b8->taskPool, &data_ov017_02141f30, 0, 0, 0, &vec);
@@ -350,8 +350,8 @@ s32 BtlBoss02_00_RG_Init(TaskPool* pool, Task* task, void* args) {
     rg->unk_1D4         = 100;
     rg->unk_1D6         = 100;
 
-    rg->unk_1AC = rg->actor.position.x = data_ov003_020e71b8->unk3D838 + data_ov017_02141538[0].x;
-    rg->unk_1B0 = rg->actor.position.y = data_ov003_020e71b8->unk3D83C + data_ov017_02141538[0].y;
+    rg->unk_1AC = rg->actor.position.x = data_ov003_020e71b8->unk3D7C0[1].unk_20 + data_ov017_02141538[0].x;
+    rg->unk_1B0 = rg->actor.position.y = data_ov003_020e71b8->unk3D7C0[1].unk_24 + data_ov017_02141538[0].y;
     rg->unk_1B4 = rg->actor.position.z = data_ov017_02141538[0].z;
 
     rg->actor.zVelocity = 0;

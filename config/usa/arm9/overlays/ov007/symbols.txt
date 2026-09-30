@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-// src/Combat/Fusion/BtlFusion.c
+// src/Combat/Fusion/BtlPlayerLast.c
 //////////////////////////////////////////////////////////////////////
 func_ov007_020e7360 kind:function(arm,size=0x14) addr:0x020e7360
 func_ov007_020e7374 kind:function(arm,size=0x64) addr:0x020e7374
@@ -9,6 +9,9 @@ func_ov007_020e7534 kind:function(arm,size=0x38) addr:0x020e7534
 func_ov007_020e756c kind:function(arm,size=0x8) addr:0x020e756c
 func_ov007_020e7574 kind:function(arm,size=0x8) addr:0x020e7574
 func_ov007_020e757c kind:function(arm,size=0x68) addr:0x020e757c
+//////////////////////////////////////////////////////////////////////
+// src/Combat/Fusion/BtlAuraLast.c
+//////////////////////////////////////////////////////////////////////
 func_ov007_020e75e4 kind:function(arm,size=0x18) addr:0x020e75e4
 func_ov007_020e75fc kind:function(arm,size=0x50) addr:0x020e75fc
 func_ov007_020e764c kind:function(arm,size=0x50) addr:0x020e764c
@@ -27,9 +30,9 @@ func_ov007_020e7da4 kind:function(arm,size=0x10c) addr:0x020e7da4
 func_ov007_020e7eb0 kind:function(arm,size=0x30) addr:0x020e7eb0
 func_ov007_020e7ee0 kind:function(arm,size=0x68) addr:0x020e7ee0
 Tsk_BtlPlayerLast kind:data(any) addr:0x020e7f48
-data_ov007_020e7f54 kind:data(any) addr:0x020e7f54
+@1538 kind:data(any) addr:0x020e7f54 local
 Tsk_BtlAuraLast kind:data(any) addr:0x020e7f64
-data_ov007_020e7f70 kind:data(any) addr:0x020e7f70
-data_ov007_020e7f80 kind:data(any) addr:0x020e7f80
-data_ov007_020e7fa0 kind:data(any) addr:0x020e7fa0
-data_ov007_020e7fb4 kind:data(any) addr:0x020e7fb4
+data_ov007_020e7f70 kind:data(any) addr:0x020e7f70 local
+data_ov007_020e7f80 kind:data(any) addr:0x020e7f80 local
+@1476 kind:data(byte[18]) addr:0x020e7fa0 local
+@1436 kind:data(byte[16]) addr:0x020e7fb4 local
