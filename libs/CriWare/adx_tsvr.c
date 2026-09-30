@@ -47,6 +47,8 @@ s32* func_02015a7c(ADXSJD* sjd);
 s32  func_02015a84(ADXSJD* sjd);
 s32  func_02014b50(ADXSJD* sjd); // ADXSJD_TermSupply
 void func_02014b3c(ADXSJD* sjd);
+void func_020155c0(ADXSJD* sjd);
+s32  func_02015928(ADXSJD* sjd); // GetFormat
 void func_02015904(ADXSJD* sjd, s32 trap_func, s32 trap_obj);
 void ADXSJD_Start(ADXSJD* sjd);
 void ADXSJD_Stop(ADXSJD* sjd);
@@ -70,6 +72,12 @@ void func_0201bf3c(void* rna, s32 n);
 void func_0201bf60(void* rna, s32 n);
 void func_0201bf6c(void* rna, s32 n);
 void func_0201bf70(void* rna, s32* p);
+// adx_dcd.c
+s32 func_020130dc(s8* data, s32 len, s16* ofst);
+s32 func_02013868(s8* data, s32 len, s16* ofst);
+// in the sj_utl / LSC-amp gaps, which have no source file yet
+void func_0201a670(s32 ofst, SJCK* in, SJCK* out);
+s32  func_02021534(s8* data, s32 len, s16* ofst);
 // adx_tlk.c
 void adxt_start_stm(ADXT adxt, const char* filename, void* dir, s32 ofst, s32 range);
 void func_02017b20(ADXT adxt, s32 a, s32 b);
@@ -243,9 +251,109 @@ void func_020181f4(ADXT adxt) {
     }
 }
 
-// Nonmatching: stub (0.2%). Not adxt_stat_decinfo; ADXT_ExecHndl routes stat 1
-// to func_0201854c instead. Unidentified in the PS2 reference.
-void func_02018238(ADXT adxt) {}
+// Splits the two input chunks at the offsets the header scan reported, then
+// restarts the decoder. Reached as the non-looping arm of the trap callback
+// pair (func_02017f80 / func_02018238) that func_0201854c installs.
+void func_02018238(ADXT adxt) {
+    ADXSJD* sjd = adxt->sjd;
+    SJ      sji = adxt->sji;
+    SJCK    ckA;
+    SJCK    ckB;
+    SJCK    ckC;
+    SJCK    ckD;
+    s16     ofst[2];
+    s16     ofst0;
+    s16     ofst1;
+    s32     zero;
+    s32     skip;
+    s32     ret0;
+    s32     ret1;
+
+    if (adxt->playbackFlag == 0) {
+        return;
+    }
+
+    ofst[0] = 0;
+    ofst[1] = 0;
+    zero    = 0;
+    skip    = zero;
+
+    func_02012f88(); // ADXCRS_Lock
+
+    SJ_GetChunk(sji, 1, SJCK_LEN_MAX, &ckA);
+    SJ_GetChunk(sji, 1, SJCK_LEN_MAX, &ckC);
+
+    // A non-zero here means the header scan already consumed the link, so
+    // unwind and bail. (Opposite polarity to the two decoders below.)
+    if (func_02015928(sjd) == 0 && func_02013868(ckA.data, ckA.length, &ofst[1]) != 0) {
+        ADXT_SetLnkSw(adxt, 0);
+        SJ_UngetChunk(sji, 1, &ckC);
+        SJ_UngetChunk(sji, 1, &ckA);
+        func_02012f8c(); // ADXCRS_Unlock
+        return;
+    }
+
+    skip += ofst[1];
+
+    if (func_02015928(sjd) == 1) {
+        ret0 = func_02021534(ckA.data + skip, ckA.length - skip, &ofst[1]);
+        if (ret0 != 0) {
+            ret1 = func_02021534(ckC.data, ckC.length, &ofst[0]);
+        }
+    } else {
+        ret0 = func_020130dc(ckA.data + skip, ckA.length - skip, &ofst[1]);
+        if (ret0 != 0) {
+            ret1 = func_020130dc(ckC.data, ckC.length, &ofst[0]);
+        }
+    }
+
+    // The target reads both offsets into registers right after the decoder
+    // results, before the bail-out test, so they stay live across it -- that is
+    // also what forces the extra pair of callee-saved registers in its frame.
+    ofst1 = ofst[1];
+    ofst0 = ofst[0];
+
+    // Both decoders reporting non-zero means the split did not take; the target
+    // flattens this into one `cmp`/`cmpne` pair ahead of a single error block.
+    if (ret0 != 0 && ret1 != 0) {
+        SJ_UngetChunk(sji, 1, &ckC);
+        SJ_UngetChunk(sji, 1, &ckA);
+        ADXT_SetLnkSw(adxt, 0);
+        func_02012f8c();
+        return;
+    }
+
+    if (ret0 == 0) {
+        SJ_UngetChunk(sji, 1, &ckC);
+        func_0201a670(skip + ofst1, &ckA, &ckB);
+        SJ_PutChunk(sji, 0, &ckA);
+        SJ_UngetChunk(sji, 1, &ckB);
+    } else {
+        SJ_PutChunk(sji, 0, &ckA);
+        func_0201a670(zero + ofst0, &ckC, &ckD);
+        SJ_PutChunk(sji, 0, &ckC);
+        SJ_UngetChunk(sji, 1, &ckD);
+    }
+
+    func_02012f8c(); // ADXCRS_Unlock
+
+    adxt->decofst += func_020158ec(sjd);
+    ADXSJD_Stop(sjd);
+    ADXSJD_Start(sjd);
+    func_020155c0(sjd);
+
+    if (ADXSJD_GetStat(sjd) != ADXSJD_STAT_DECINFO) {
+        ADXT_SetLnkSw(adxt, 0);
+        return;
+    }
+
+    // func_02014b3c is called with two arguments here but with one in
+    // func_0201854c, so the real prototype is not used for either.
+    ((void (*)(ADXSJD*, s32))func_02014b3c)(sjd, adxt->maxdecsmpl);
+    func_02015910(sjd, ADXSJD_GetTotalNumSmpl(sjd));
+    func_02015920(sjd, 0);
+    func_02015918(sjd, 0);
+}
 
 // adxt_stat_decinfo
 void func_0201854c(ADXT adxt) {
