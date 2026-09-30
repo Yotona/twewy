@@ -137,17 +137,39 @@ decompiles all 38 of its own.
 
 Stubbed in our tree but non-trivial in the ROM:
 
-| Ours | Size | Reference | Note |
+| Address | Size | Name | Status |
 |---|---|---|---|
-| `ADXSJD_Init` | 0x60 | `ADXSJD_Init` | stub |
-| `ADXSJD_Finish` | 0x58 | `ADXSJD_Finish` | stub |
-| `func_02014b94` | 0x2e0 | `adxsjd_decode_prep` | stub |
-| `func_02014e74` | 0xd0 | `adxsjd_get_wr` | stub |
-| `func_02014f44` | 0x400 | `adxsjd_decexec_start` | stub |
-| `func_02015344` | 0x1ac | `adxsjd_decexec_end` | stub |
-| `func_0201562c` | 0x130 | `adxsjd_decexec_extra` (1st half) | stub |
-| `func_0201575c` | 0x11c | `adxsjd_decexec_extra` (2nd half) | stub |
-| `func_02015878` | 0x6c | `ADXSJD_ExecServer` | stub |
+| `0x02014b3c` | 0x14 | `ADXSJD_SetAhxDecSmpl` | **100%** |
+| `0x02014b50` | 0x10 | `ADXSJD_TermSupply` | **100%** |
+| `0x02014b94` | 0x2e0 | `adxsjd_decode_prep` | 99.92% |
+| `0x02014e74` | 0xd0 | *unidentified* | 83.9% |
+| `0x02014f44` | 0x400 | `adxsjd_decexec_start` | 97.23% |
+| `0x02015344` | 0x1ac | `adxsjd_decexec_end` | 99.07% |
+| `0x020154f0` | 0x64 | `adxsjd_decexec_extra` | *not attempted* |
+| `0x02015554` | 0x6c | `adxsjd_decode_exec` | **100%** |
+| `0x0201562c` | 0x130 | *unidentified, NITRO-only* | 99.14% |
+| `0x0201575c` | 0x11c | *unidentified, NITRO-only* | 99.23% |
+| `0x02015878` | 0x6c | `ADXSJD_ExecServer` | **100%** |
+
+Two corrections to identifications that were recorded here earlier and are now
+wrong, both because they were inferred from address order rather than read off
+the target:
+
+- `func_0201562c` / `func_0201575c` are **not** halves of a single
+  `adxsjd_decexec_extra`. Read in full, they are two supply-side functions
+  keyed off `unk_A8` and `unk_AC`: each clamps a byte count against the
+  shortest output channel, rounds down to a whole sample, then either
+  zero-pads (id 0 → `memset` → id 1) or moves buffered silence from channel 1
+  to channel 0. Neither PS2 reference has any counterpart.
+- The real `adxsjd_decexec_extra` is `func_020154f0`: it is called from
+  `adxsjd_decode_exec` on exactly the format test the 3s reference uses
+  (0xA/0x14/0xB/0x0F), and it accumulates the same `unk_2C`/`unk_30`/`unk_34`
+  counters as `adxsjd_decexec_end`. Not yet attempted.
+- `func_02014e74` was recorded as `adxsjd_get_wr`. That is unproven: neither
+  reference has a 4-argument `ADXSJD` function to compare against, and our
+  tree already carries a *declared but never defined* `adxsjd_get_wr`
+  (it is passed to `ADXB_EntryGetWrFunc` and resolves to nothing), so the name
+  is already taken by something else. Left unidentified.
 
 The 0x8/0x10-byte stubs in the getter tail are trivially
 `return ADXB_GetXxx(sjd->adxb);` tail calls; the reference gives the exact list.
@@ -156,7 +178,7 @@ The 0x8/0x10-byte stubs in the getter tail are trivially
 
 Identification was by **address order + size + relocation fingerprints**, not
 guessing. E.g. `relocs.txt` has `from:0x02014adc kind:load to:0x02014e74`,
-i.e. `func_02014b94` takes the *address* of `func_02014e74` — that is
+i.e. `adxsjd_decode_prep` takes the *address* of `func_02014e74` — that is
 `ADXB_EntryGetWrFunc(sjd->adxb, adxsjd_get_wr, sjd)` in
 `adxsjd_decode_prep`. Size cross-checks agree throughout
 (`decode_prep` 0x2e0 vs ref 0x278; `decexec_end` 0x1ac vs ref 0x1c8).
@@ -618,11 +640,11 @@ validates the bss layout changes).
 | `adx_sjd/{ADXSJD_GetSfreq, GetOutBps, GetTotalNumSmpl}` | 23.75 ea | **100.0 ea** |
 | `adx_sjd/func_02014b3c` | 0.70 | **100.0** |
 | `adx_sjd/func_02014b50` | 0.68 | **100.0** |
-| `adx_sjd/func_02015554` (state-2 decode arm) | 1.48 | **100.0** |
+| `adx_sjd/adxsjd_decode_exec` (state-2 decode arm) | 1.48 | **100.0** |
 | `adx_sjd/func_02014e74` (4-arg header reader) | 0.77 | 83.92 |
-| `adx_sjd/func_02014f44` (main decode step, 0x400) | 0.16 | 97.23 |
-| `adx_sjd/func_02014b94` (state-1 arm, 0x2E0) | 0.22 | 99.92 |
-| `adx_sjd/func_02015344` (decode-done, 0x1AC) | 0.37 | 99.07 |
+| `adx_sjd/adxsjd_decexec_start` (main decode step, 0x400) | 0.16 | 97.23 |
+| `adx_sjd/adxsjd_decode_prep` (state-1 arm, 0x2E0) | 0.22 | 99.92 |
+| `adx_sjd/adxsjd_decexec_end` (decode-done, 0x1AC) | 0.37 | 99.07 |
 | `adx_sjd/func_0201562c` (supply zero-pad, 0x130) | 0.53 | 99.14 |
 | `adx_sjd/func_0201575c` (supply channel move, 0x11C) | 0.56 | 99.23 |
 | `adx_sjd/func_02015878` (`ADXSJD_ExecServer`) | 0.42 | **100.0** |
@@ -640,7 +662,7 @@ validates the bss layout changes).
 | `adx_tsvr/func_02018238` | **not built** | 93.9 |
 | `adx_tsvr/func_0201a670` (`SJ_SplitChunk`, 4 args) | 0.00 | 86.9 (arg order) |
 
-### 13.0.0 mwcc findings from `func_02014f44`
+### 13.0.0 mwcc findings from `adxsjd_decexec_start`
 
 The largest function in `adx_sjd.c`, and the one that took the longest to get
 right. What the codegen settled that reading the target does not:
@@ -705,7 +727,7 @@ What probes settled that guessing had not:
   put six spellings of "divide by two" in one file and the three-instruction
   form turned up *only* in the `%` position. Reading the target's `i` as a
   counter does not tell you which it is; the instruction count does. This was
-  worth 1.8% on `func_02014b94` and also explains the `asr #10 / add lsr #21 /
+  worth 1.8% on `adxsjd_decode_prep` and also explains the `asr #10 / add lsr #21 /
   asr #11` pattern noted in §13.0.7 - that is a `%`/`/` by 2048, and the
   rounding term is what distinguishes the signed-divide lowering from a shift.
 - **mwcc bottom-tests a combined `while (a && b)`.** It hoists both increments
@@ -719,7 +741,7 @@ What probes settled that guessing had not:
 - **A redundant guard survives.** If the target emits `cmp len,#0 / ble` a
   second time *after* an `if (len == 0) return;`, that is a literal
   `if (len > 0)` in the source, and mwcc reuses the stale flags rather than
-  folding it. Reproducing it took `func_02014f44` from 95.5 to 97.2.
+  folding it. Reproducing it took `adxsjd_decexec_start` from 95.5 to 97.2.
 - **Register pressure changes the loop shape.** A probe where the loop
   variable dies at the loop is *not* representative — with it live afterwards
   mwcc schedules differently. When a probe disagrees with the real build,
@@ -779,12 +801,12 @@ not-yet-written state handlers to be worth enabling.
 ### 13.0.4 `/` and `%` are not interchangeable, in either direction
 
 Worth stating separately because it cuts the opposite way from §13.0.1.
-`func_02014b94` needs `i % 2` (three-instruction lowering) and
+`adxsjd_decode_prep` needs `i % 2` (three-instruction lowering) and
 `func_0201562c` / `func_0201575c` need `nbyte / 2` (two-instruction). Both are
 "divide by two" on an `s32`; the choice is decided by what the *result* is
 used for, not by the arithmetic:
 
-- `func_02014b94` tests parity — "is the leading-zero count odd, i.e. is the
+- `adxsjd_decode_prep` tests parity — "is the leading-zero count odd, i.e. is the
   data misaligned" — so it is a `%` against 1.
 - `func_0201562c`/`func_0201575c` round a byte count down to a whole sample
   and then multiply back by two, so it is a `/` by 2.
@@ -794,7 +816,7 @@ Read the *use* of the quotient, not the operator's meaning.
 
 ### 13.0.5 A local can be held in some places and re-read in others
 
-`func_02015344` is the case that cost the most time here (90.4% → 99.07%).
+`adxsjd_decexec_end` is the case that cost the most time here (90.4% → 99.07%).
 The target reads its `ADXB` from two different places:
 
 ```
@@ -818,9 +840,9 @@ whole difference.
 
 ### 13.0.6 Sweep scripts must scope their edits
 
-The declaration sweep that found the `func_02015344` shape used a file-global
+The declaration sweep that found the `adxsjd_decexec_end` shape used a file-global
 `str.replace` on `ADXB_GetFormat(adxb)`. It rewrote that inside
-`func_02014b94` and `func_02014f44` as well, and the `finally` block wrote the
+`adxsjd_decode_prep` and `adxsjd_decexec_start` as well, and the `finally` block wrote the
 best-scoring variant back over both — silently regressing two functions that
 were already at 99.9% and 97.2%. The tell was that the per-function numbers
 looked fine while the ROM-level totals barely moved.
@@ -916,7 +938,7 @@ Two earlier findings also turned out to be wrong and are corrected here:
 | 5 | Same for `adx_crs.c`: the target anchors at `0x0206bc30` and reaches its two globals at `+4`/`+8`; ours anchors at `+0`/`+4`. Needs `adxcrs_lvl` inside mwcc's addressing cluster. | 2 x 99.6% -> 100% |
 | 6 | Implement `adxt_SetLpFlg` from the reference (`/* NYI */`, 0xdc bytes) | 8.4% -> ? |
 | 7 | Add `sj_utl.c` / `sj_crs.c` / `sj_uni.c` (2.2) - 0x180 bytes, 9 functions already called from `sj_mem.c`/`sj_rbf.c`/`adx_stmc.c` | fixes 3 broken call sites each |
-| 8 | Remaining `adx_sjd` core: `func_02014b94` (0x2e0), `func_02014f44` (0x400), `func_02015344` (0x1ac), `func_0201562c` (0x130), `func_0201575c` (0x11c), `func_02014e74` (0xd0) - all <=1% | ~2.2 KB of near-zero code |
+| 8 | Remaining `adx_sjd` core: `adxsjd_decode_prep` (0x2e0), `adxsjd_decexec_start` (0x400), `adxsjd_decexec_end` (0x1ac), `func_0201562c` (0x130), `func_0201575c` (0x11c), `func_02014e74` (0xd0) - all <=1% | ~2.2 KB of near-zero code |
 | 9 | Rewrite the `func_0201654c` sentinel block with a real `Sint64` (4.3) | fixes a read of an uninitialised variable |
 | 10 | Settle the `adx_bsc.c` phantom-globals problem (7.2) | bss layout for the whole module |
 | 11 | Check whether the game's VBlank handler bumps `adxt_vsync_cnt` (8.1) | possible playback-timing bug |
@@ -934,14 +956,14 @@ Two earlier findings also turned out to be wrong and are corrected here:
   spelling the guard (hoisted `nch` vs. re-called) both score below the current
   form, so there is nothing left to try short of the permuter. This is now the
   worst function in `adx_sjd.c` and the only one still under 90%.
-* `adx_sjd/func_02014f44`'s residual 2.8% — `sjd->sjo[0]` hoisted into r8
+* `adx_sjd/adxsjd_decexec_start`'s residual 2.8% — `sjd->sjo[0]` hoisted into r8
   instead of r0, decpos in r1 rather than r8, and the near-done flag folding to
   one `movne` where the target keeps a separate `mov` + `b`. Purely register
   choice; every other instruction matches.
-* `adx_sjd/{func_02015344, 0201562c, 0201575c}`'s residuals — one register swap
+* `adx_sjd/{adxsjd_decexec_end, 0201562c, 0201575c}`'s residuals — one register swap
   or one sunk load each, measured across six declaration orders and an
   inlined-sji variant. Not worth more.
-* Chasing `func_02014b94` above 99.92%. The body is already
+* Chasing `adxsjd_decode_prep` above 99.92%. The body is already
   instruction-for-instruction identical; the residue is three literal-pool
   relocations that objdiff names `data_020639cc` / `data_020639ec` /
   `data_02063a0c` in the target and `@635` / `@636` / `@637` here, because the

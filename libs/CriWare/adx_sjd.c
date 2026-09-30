@@ -190,7 +190,7 @@ void ADXSJD_Stop(ADXSJD* sjd) {
 //   0x020639cc "The data alignment is illegal."
 //   0x020639ec "E03010901 ADXB_DecodeHeader: "
 //   0x02063a0c "Can not decode this file format."
-void func_02014b94(ADXSJD* sjd) {
+void adxsjd_decode_prep(ADXSJD* sjd) {
     ADXB adxb = sjd->adxb;
     SJ   sji  = sjd->sji;
     SJCK ck;
@@ -345,11 +345,11 @@ void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
 // target keeps a separate mov + b. The two .word pool entries differ only in
 // relocation name (anonymous .rodata vs the delinked data_02063a30/54).
 //
-// The main decode step, entered from func_02015554 when adxb->stat == 0. Two
+// The main decode step, entered from adxsjd_decode_exec when adxb->stat == 0. Two
 // distinct jobs live here: recognising and consuming a leading ADX sub-header
 // (the big-endian 0x8001 tag), and otherwise handing the decoded audio to the
 // ADXB. The sub-header path always returns, so the tail is the PCM path.
-void func_02014f44(ADXSJD* sjd) {
+void adxsjd_decexec_start(ADXSJD* sjd) {
     ADXB  adxb = sjd->adxb;
     SJ    sji  = sjd->sji;
     SJCK  ck1;
@@ -418,7 +418,7 @@ void func_02014f44(ADXSJD* sjd) {
             if (len > 0) {
                 p = cki->data;
 
-                // Same two-break shape as func_02014b94's scan: a combined while
+                // Same two-break shape as adxsjd_decode_prep's scan: a combined while
                 // condition gets bottom-tested here, and the bound test has to
                 // use the already-incremented i.
                 for (;;) {
@@ -499,12 +499,12 @@ void func_02014f44(ADXSJD* sjd) {
 // the copy. Six declaration orders and an inlined-sji variant were measured;
 // none changed it.
 //
-// Decode-done bookkeeping, entered from func_02015554 once ADXB_ExecHndl leaves
+// Decode-done bookkeeping, entered from adxsjd_decode_exec once ADXB_ExecHndl leaves
 // adxb->stat == 3. Upstream this is adxsjd_decexec_end, but NITRO drops the
 // dtrpsmpl/dtrpfunc tail: after accumulating the five counters it goes straight
 // to ADXB_Reset, and the per-channel callback is a second pair at 0x58/0x5C
-// rather than the dfltfunc at 0x50/0x54 that func_02014b94 uses.
-void func_02015344(ADXSJD* sjd) {
+// rather than the dfltfunc at 0x50/0x54 that adxsjd_decode_prep uses.
+void adxsjd_decexec_end(ADXSJD* sjd) {
     ADXB adxb = sjd->adxb;
     SJ   sji  = sjd->sji;
     SJCK ck;
@@ -569,17 +569,17 @@ void func_020154f0(ADXSJD* sjd) {
 // decide whether to finish up. The five-value test on adxb->format is written
 // as an || chain because mwcc folds only the last adjacent constant pair into
 // a range check.
-void func_02015554(ADXSJD* sjd) {
+void adxsjd_decode_exec(ADXSJD* sjd) {
     ADXB adxb = sjd->adxb;
 
     if (ADXB_GetStat(adxb) == 0) {
-        func_02014f44(sjd);
+        adxsjd_decexec_start(sjd);
     }
 
     ADXB_ExecHndl(adxb);
 
     if (ADXB_GetStat(adxb) == 3) {
-        func_02015344(sjd);
+        adxsjd_decexec_end(sjd);
     }
 
     if (adxb->format == 10 || adxb->format == 20 || adxb->format == 11 || adxb->format == 12 || adxb->format == 15) {
@@ -594,9 +594,9 @@ void func_020155c0(ADXSJD* sjd) {
         ADXCRS_Unlock();
     }
     if (sjd->state == 2) {
-        func_02015554(sjd);
+        adxsjd_decode_exec(sjd);
     } else if (sjd->state == 1) {
-        func_02014b94(sjd);
+        adxsjd_decode_prep(sjd);
     }
     if (sjd->unk_AC > 0) {
         ADXCRS_Lock();
