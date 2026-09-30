@@ -171,8 +171,122 @@ src/Interface/Menu/TusinSet/TusinSet_helpCurU.c:
     .rodata     start:0x02099024 end:0x0209906c
     .data       start:0x02099db0 end:0x02099dc8
 
-src/Debug/Takami/FriendList.c:
-    .text       start:0x0208f664 end:0x0209869c
-    .rodata     start:0x0209906c end:0x020997ac
-    .data       start:0x02099dc8 end:0x0209a200
+src/Interface/Menu/FriendList.c:
+    .text       start:0x0208f664 end:0x020915c0
+    .rodata     start:0x0209906c end:0x02099108
+    .data       start:0x02099dc8 end:0x0209a014
     .bss        start:0x0209a220 end:0x0209a240
+
+src/Interface/Menu/FriendListData.c:
+    complete
+    .text       start:0x020915c0 end:0x02092ef8
+    .rodata     start:0x02099108 end:0x0209918c
+    .data       start:0x0209a014 end:0x0209a048
+
+src/Interface/Menu/FriendList/FriendList_textScr.c:
+    complete
+    .text       start:0x02092ef8 end:0x020936f8
+    .rodata     start:0x0209918c end:0x020991f0
+    .data       start:0x0209a048 end:0x0209a060
+
+src/Interface/Menu/FriendList/FriendList_btn.c:
+    complete
+    .text       start:0x020936f8 end:0x02093a80
+    .rodata     start:0x020991f0 end:0x02099244
+    .data       start:0x0209a060 end:0x0209a074
+
+src/Interface/Menu/FriendList/FriendList_icon.c:
+    complete
+    .text       start:0x02093a80 end:0x02093da8
+    .rodata     start:0x02099244 end:0x0209928c
+    .data       start:0x0209a074 end:0x0209a088
+
+src/Interface/Menu/FriendList/FriendList_partner.c:
+    complete
+    .text       start:0x02093da8 end:0x020941cc
+    .rodata     start:0x0209928c end:0x020992d4
+    .data       start:0x0209a088 end:0x0209a0a0
+
+src/Interface/Menu/FriendList/FriendList_sbar.c:
+    complete
+    .text       start:0x020941cc end:0x020946f8
+    .rodata     start:0x020992d4 end:0x0209931c
+    .data       start:0x0209a0a0 end:0x0209a0b4
+
+src/Interface/Menu/FriendList/FriendList_numFrdID.c:
+    complete
+    .text       start:0x020946f8 end:0x02094b70
+    .rodata     start:0x0209931c end:0x02099364
+    .data       start:0x0209a0b4 end:0x0209a0cc
+
+src/Interface/Menu/FriendList/FriendList_numDate.c:
+    complete
+    .text       start:0x02094b70 end:0x020950b8
+    .rodata     start:0x02099364 end:0x020993c4
+    .data       start:0x0209a0cc end:0x0209a0e4
+
+src/Interface/Menu/FriendList/FriendList_nameD.c:
+    complete
+    .text       start:0x020950b8 end:0x02095374
+    .rodata     start:0x020993c4 end:0x02099418
+    .data       start:0x0209a0e4 end:0x0209a0fc
+
+src/Interface/Menu/FriendList/FriendList_item.c:
+    complete
+    .text       start:0x02095374 end:0x020955ec
+    .rodata     start:0x02099418 end:0x02099460
+    .data       start:0x0209a0fc end:0x0209a110
+
+src/Interface/Menu/FriendList/FriendList_itemCur.c:
+    complete
+    .text       start:0x020955ec end:0x0209588c
+    .rodata     start:0x02099460 end:0x020994a8
+    .data       start:0x0209a110 end:0x0209a128
+
+src/Interface/Menu/FriendList/FriendList_myShop.c:
+    complete
+    .text       start:0x0209588c end:0x02095d90
+    .rodata     start:0x020994a8 end:0x0209951c
+    .data       start:0x0209a128 end:0x0209a140
+
+src/Interface/Menu/FriendList/FriendList_helpCur.c:
+    complete
+    .text       start:0x02095d90 end:0x02096158
+    .rodata     start:0x0209951c end:0x02099564
+    .data       start:0x0209a140 end:0x0209a158
+
+src/Interface/Menu/FriendList/FriendList_pointer.c:
+    complete
+    .text       start:0x02096158 end:0x02096390
+    .rodata     start:0x02099564 end:0x020995ac
+    .data       start:0x0209a158 end:0x0209a170
+
+src/Interface/Menu/FriendList/FriendList_textScrU.c:
+    complete
+    .text       start:0x02096390 end:0x0209761c
+    .rodata     start:0x020995ac end:0x02099640
+    .data       start:0x0209a170 end:0x0209a188
+
+src/Interface/Menu/FriendList/FriendList_bdgU.c:
+    complete
+    .text       start:0x0209761c end:0x02097c30
+    .rodata     start:0x02099640 end:0x020996a0
+    .data       start:0x0209a188 end:0x0209a19c
+
+src/Interface/Menu/FriendList/FriendList_itemU.c:
+    complete
+    .text       start:0x02097c30 end:0x02098078
+    .rodata     start:0x020996a0 end:0x0209970c
+    .data       start:0x0209a19c end:0x0209a1b4
+
+src/Interface/Menu/FriendList/FriendList_nameU.c:
+    complete
+    .text       start:0x02098078 end:0x020983d4
+    .rodata     start:0x0209970c end:0x02099764
+    .data       start:0x0209a1b4 end:0x0209a1cc
+
+src/Interface/Menu/FriendList/FriendList_helpCurU.c:
+    complete
+    .text       start:0x020983d4 end:0x0209869c
+    .rodata     start:0x02099764 end:0x020997ac
+    .data       start:0x0209a1cc end:0x0209a200

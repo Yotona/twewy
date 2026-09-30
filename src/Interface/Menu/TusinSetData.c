@@ -46,7 +46,7 @@ void TusinSet_LoadTreasureData(RawTreasureData* buffer) {
 }
 
 u8 TusinSet_GetBadgeSlotCount(void) {
-    u8 count = func_02023010(0x2A8) + 2;
+    u8 count = Inventory_GetOwnedCount(ITEM_STICKER_EXTRA_SLOT) + 2;
 
     if (count > 6) {
         count = 6;
@@ -729,7 +729,7 @@ void TusinSet_LoadBackgrounds(TusinSetObject* tusinSet) {
     }
 
     TusinSet_LoadBgResource(&tusinSet->resources[6], DISPLAY_MAIN, 2, 1, 15, 1);
-    if (func_02023010(0x2AE) == 0 || tusinSet->partner == 0xFF) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) == 0 || tusinSet->partner == 0xFF) {
         TusinSet_LoadBgResource(&tusinSet->resources[7], DISPLAY_MAIN, 3, 0, 0, 4);
     } else {
         TusinSet_LoadBgResourceIndexed(&tusinSet->resources[7], DISPLAY_MAIN, 3, 0, 0, 4, 2, 0);

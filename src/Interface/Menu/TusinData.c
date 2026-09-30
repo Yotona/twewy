@@ -134,13 +134,13 @@ s32 Tusin_ClampMoney(TusinObject* tusin, u8 capLevel) {
 }
 
 s32 Tusin_GetMoneyCapLevel(void) {
-    if (func_02023010(0x284) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_FAT_CAT_WALLET) != 0) {
         return 3;
     }
-    if (func_02023010(0x283) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_TRENDY_WALLET) != 0) {
         return 2;
     }
-    if (func_02023010(0x282) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_MY_FIRST_WALLET) != 0) {
         return 1;
     }
     return 0;
@@ -177,7 +177,7 @@ s64 func_ov044_02085104(s64 a, s64 b) {
 #endif
 
 u8 Tusin_GetBadgeSlotCount(void) {
-    u8 count = func_02023010(0x2A8) + 2;
+    u8 count = Inventory_GetOwnedCount(ITEM_STICKER_EXTRA_SLOT) + 2;
 
     if (count > 6) {
         count = 6;

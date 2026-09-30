@@ -224,7 +224,7 @@ void TusinSet_CreateTasks(TusinSetState* state) {
     state->taskId_Sbar2 = TusinSet_sbar2_CreateTask(&state->base.taskPool, state->base.dataType, tusinSet);
 #endif
     state->taskId_ItemCur = TusinSet_itemCur_CreateTask(&state->base.taskPool, state->base.dataType, tusinSet);
-    if (func_02023010(0x2AE) != 0 && tusinSet->partner != 0xFF) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) != 0 && tusinSet->partner != 0xFF) {
         state->taskId_Partner = TusinSet_partner_CreateTask(&state->base.taskPool, state->base.dataType, tusinSet);
     }
     for (i = 0; i < 16; i++) {

@@ -384,7 +384,7 @@ BOOL Inventory_CanAddPin(u16 itemID, s32 arg1) {
                 }
             }
         }
-    } else if (func_02023010(itemID) < 9) {
+    } else if (Inventory_GetOwnedCount(itemID) < 9) {
         return TRUE;
     }
     return FALSE;
@@ -486,7 +486,7 @@ BOOL Inventory_AddItem(u16 itemID, s32 arg1) {
 }
 
 // Nonmatching: Regswaps
-u32 func_02023010(u16 arg0) {
+u32 Inventory_GetOwnedCount(u16 arg0) {
 
     ItemCategory category = Inventory_GetCategory(arg0);
 

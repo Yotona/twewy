@@ -363,7 +363,7 @@ u8 Result_CheckBadgeEvolution(ResultObject* result, u16 index, s32 kind) {
 }
 
 u8 Result_GetBadgeSlotCount(void) {
-    u8 count = func_02023010(680) + 2;
+    u8 count = Inventory_GetOwnedCount(ITEM_STICKER_EXTRA_SLOT) + 2;
 
     if (count > 6) {
         count = 6;
@@ -543,7 +543,7 @@ void Result_DigestFood(ResultObject* result) {
     }
 
     result->foodFinishedCount = expired;
-    if (func_02023010(715)) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_HOLLOW_LEG)) {
         gSaveData.playerStats.foodCapacityLeft          = 24;
         gSaveData.friendStats[partner].foodCapacityLeft = 24;
     }
@@ -1112,7 +1112,7 @@ void Result_CommitBattle(ResultObject* result) {
     u8 partner = gSaveData.playerStats.activePartner;
 
     Stats_AddExperience(result->battleCount);
-    if (func_02023010(684)) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_BRAND_AWARENESS)) {
         Result_UpdateBrandTrends(result);
         for (u16 i = 0; i < 21; i++) {
             for (u16 j = 0; j < 13; j++) {

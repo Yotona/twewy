@@ -180,7 +180,7 @@ void MenuEquip_CreateTasks(MenuEquipState* state) {
     state->taskId_Tab     = MenuEquip_tab_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     state->taskId_NameD   = MenuEquip_nameD_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     state->taskId_NumNek  = MenuEquip_numNek_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
-    if ((func_02023010(686) != 0) && (menuEquip->activePartner != PARTNER_NONE)) {
+    if ((Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) != 0) && (menuEquip->activePartner != PARTNER_NONE)) {
         state->taskId_Partner = MenuEquip_partner_CreateTask(&state->base.taskPool, state->base.dataType, menuEquip);
     }
     if (menuEquip->activePartner != PARTNER_NONE) {

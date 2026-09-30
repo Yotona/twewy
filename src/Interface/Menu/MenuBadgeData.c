@@ -212,20 +212,20 @@ s32 MenuBadge_ClampMoney(MenuBadgeObject* owner, u8 capLevel) {
 }
 
 s32 MenuBadge_GetMoneyCapLevel(void) {
-    if (func_02023010(0x284) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_FAT_CAT_WALLET) != 0) {
         return 3;
     }
-    if (func_02023010(0x283) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_TRENDY_WALLET) != 0) {
         return 2;
     }
-    if (func_02023010(0x282) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_MY_FIRST_WALLET) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 func_ov043_0208fed8(void) {
-    if (func_02023010(0x2CB) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_HOLLOW_LEG) != 0) {
         return 1;
     }
     return 0;
@@ -309,7 +309,7 @@ s32 MenuBadge_CanEquipToDeck(MenuBadgeObject* menuBadge, u16 src, u16 dst) {
 }
 
 u8 MenuBadge_GetDeckSlotCount(void) {
-    u8 slotCount = func_02023010(0x2A8) + 2;
+    u8 slotCount = Inventory_GetOwnedCount(ITEM_STICKER_EXTRA_SLOT) + 2;
 
     if (slotCount > 6) {
         slotCount = 6;

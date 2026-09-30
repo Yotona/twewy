@@ -6,6 +6,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Player/Inventory.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
 #include <nitro/fx.h>
@@ -151,7 +152,7 @@ void func_ov043_020c0bf4(void* arg0) {
 }
 
 u8 func_ov043_020c0c18(void) {
-    u8 val = func_02023010(680) + 2;
+    u8 val = Inventory_GetOwnedCount(ITEM_STICKER_EXTRA_SLOT) + 2;
     if (val > 6) {
         val = 6;
     }
@@ -162,8 +163,8 @@ u16 func_ov043_020c0c38(u16 arg0, u16 arg1, u16 arg2) {
     return (u16)(arg2 + (arg0 + arg1));
 }
 
-u16 func_ov043_020c0c4c(void) {
-    return func_02023480();
+u16 func_ov043_020c0c4c(u32 arg0, s32 arg1) {
+    return func_02023480(arg0, arg1);
 }
 
 u16 func_ov043_020c0c60(u32 arg0, u8 arg1, u8 arg2) {

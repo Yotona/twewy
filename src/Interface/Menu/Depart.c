@@ -396,7 +396,7 @@ void func_ov043_020bdb2c(void* arg0) {
     // func_ov043_020bda08(&spC, arg0->unkA);
     // var_r0 = spE;
     // if (var_r0 == 3) {
-    //     func_02023010(0x2AE);
+    //     Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED);
     //     var_r0 = func_ov043_020bdb18(data_02072d10.unk712) + 0x6B;
     // }
     // arg0->unk6 = var_r0;

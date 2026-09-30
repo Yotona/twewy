@@ -368,7 +368,7 @@ void OpenEnd_ContinueGame(OpenEndState* state) {
 
     OverlayTag tag, tag2, tag3, tag4;
     if (Savefile_Load() == 0) {
-        if (func_02023010(0x2AB) != 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_SHUTDOWN) != 0) {
             gSaveData.unk_1AB4 |= 0x10;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_44_ID, ProcessOverlay_Result, 0,
                                    0); //<-- Overlay44 -> Shutdown PP Gain screen

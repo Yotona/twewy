@@ -82,7 +82,7 @@ static void Shop_itemTotalNum_Load(Shop_itemTotalNum* totalNum, Sprite* sprites,
 
     anim.dataType = args->dataType;
 
-    Shop_itemTotalNum_CalcDigits(totalNum, func_02023010(shop->slots[shop->unk_848].itemID), digits);
+    Shop_itemTotalNum_CalcDigits(totalNum, Inventory_GetOwnedCount(shop->slots[shop->unk_848].itemID), digits);
 
     anim.animIndex = 0x0C;
     anim.posX      = ((3 - totalNum->unk_114) * 4) + 0xEF;

@@ -37,7 +37,10 @@ typedef struct {
 } MingleFriend;           // Size: 0xC
 
 typedef struct {
-    /* 0x00 */ u16 unk_00;
+    /* 0x00 */ u16 shopId  : 6; // Mingle Mode shop settings
+    u16            clerkId : 6;
+    u16            musicId : 3;
+    u16                    : 1;
     /* 0x02 */ u16 giftItemId; // Item handed to whoever mingles with this player
     /* 0x04 */ u16 unk_04[6];
     /* 0x10 */ u16 unk_10[16];

@@ -934,7 +934,7 @@ void MenuEquip_LoadFromSave(MenuEquipObject* owner) {
         }
     }
     gSaveData.unk_242C = date;
-    if (func_02023010(0x2CB) == 0) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_HOLLOW_LEG) == 0) {
         return;
     }
     for (i = 0; i < 4; i++) {
@@ -1385,7 +1385,7 @@ void MenuEquip_LoadBackgrounds(MenuEquipObject* menuEquip) {
         subRes += 1;
     }
 
-    if (func_02023010(0x2AE) == 0) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) == 0) {
         menuEquip->partnerArtSet = 0;
     } else {
         menuEquip->partnerArtSet = 1;

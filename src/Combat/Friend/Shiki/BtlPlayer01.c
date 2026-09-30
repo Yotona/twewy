@@ -69,7 +69,7 @@ static const SpriteAnimEntry data_ov004_020f008c[18] = {
 };
 
 BOOL func_ov004_020e7360(void) {
-    return func_02023010(688) != 0;
+    return Inventory_GetOwnedCount(ITEM_STICKER_FUSION_BOOST_SHIKI) != 0;
 }
 
 // Nonmatching: External data access differences
@@ -253,7 +253,7 @@ static void func_ov004_020e75d8(BtlPlayer01* player, s32 arg1) {
 static void func_ov004_020e77b4(BtlPlayer01* player, u32 arg1) {
     switch (arg1) {
         case 7: {
-            if (func_02023010(694)) {
+            if (Inventory_GetOwnedCount(ITEM_STICKER_JUMP)) {
                 player->unk_14C = func_ov004_020e8b94;
                 player->unk_150 = 0;
                 player->unk_152 = 0;
@@ -261,7 +261,7 @@ static void func_ov004_020e77b4(BtlPlayer01* player, u32 arg1) {
         } break;
 
         case 6: {
-            if (func_02023010(693) && player->unk_146 <= 0) {
+            if (Inventory_GetOwnedCount(ITEM_STICKER_BLOCK_SHIKI) && player->unk_146 <= 0) {
                 func_ov003_02086aa8(0);
                 player->unk_14C = func_ov004_020e8b00;
                 player->unk_150 = 0;
@@ -270,7 +270,7 @@ static void func_ov004_020e77b4(BtlPlayer01* player, u32 arg1) {
         } break;
 
         case 3: {
-            if (func_02023010(692) != 0) {
+            if (Inventory_GetOwnedCount(ITEM_STICKER_BACKLASH) != 0) {
                 player->unk_14C = func_ov004_020e8a00;
                 player->unk_150 = 0;
                 player->unk_152 = 0;
@@ -442,7 +442,7 @@ void func_ov004_020e7c14(BtlPlayer01* player) {
 
         case 1: {
             if ((InputStatus.buttonState.pressedButtons & 0xCF3) && !(player->actor.flags & 0x20000) &&
-                (func_02023010(689) != 0))
+                (Inventory_GetOwnedCount(ITEM_STICKER_SAFE_LANDING_SHIKI) != 0))
             {
                 player->actor.flags |= 0x10;
                 player->actor.flags &= 0xFFFFBFFD;

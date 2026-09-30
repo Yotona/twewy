@@ -47,13 +47,13 @@ s32 MenuTop_ClampMoney(MenuTopObject* topMenu, u8 capLevel) {
 }
 
 s32 MenuTop_GetMoneyCapLevel(void) {
-    if (func_02023010(0x284) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_FAT_CAT_WALLET) != 0) {
         return 3;
     }
-    if (func_02023010(0x283) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_TRENDY_WALLET) != 0) {
         return 2;
     }
-    if (func_02023010(0x282) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_WALLET_MY_FIRST_WALLET) != 0) {
         return 1;
     }
     return 0;
@@ -92,11 +92,11 @@ void MenuTop_LoadFromSave(MenuTopObject* topMenu) {
     for (i = 0; i < 21; i++) {
         topMenu->areaTopBrand[i] = gSaveData.brandTrends[i].ranking[0];
     }
-    if (func_02023010(0x2CC) != 0) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_ULTIMATE) != 0) {
         topMenu->unlockedDifficulty = 3;
-    } else if (func_02023010(0x2CA) != 0) {
+    } else if (Inventory_GetOwnedCount(ITEM_STICKER_HARD) != 0) {
         topMenu->unlockedDifficulty = 2;
-    } else if (func_02023010(0x2CD) != 0) {
+    } else if (Inventory_GetOwnedCount(ITEM_STICKER_EASY) != 0) {
         topMenu->unlockedDifficulty = 1;
     } else {
         topMenu->unlockedDifficulty = 0;
@@ -119,7 +119,8 @@ void MenuTop_WriteBackToSave(MenuTopObject* topMenu) {
 }
 
 s32 MenuTop_IsInRestrictedArea(void) {
-    if (func_02023010(0x2AE) == 0 && gSaveData.currentArea >= 37 && gSaveData.currentArea <= 40) {
+    if (Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) == 0 && gSaveData.currentArea >= 37 && gSaveData.currentArea <= 40)
+    {
         return 1;
     }
     return 0;
@@ -127,23 +128,23 @@ s32 MenuTop_IsInRestrictedArea(void) {
 
 s32 MenuTop_IsEntryAvailable(s16 entry) {
     if (entry == 0) {
-        if (func_02023010(0x2D0) == 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_MINGLE_MODE) == 0) {
             return 0;
         }
     } else if (entry == 1) {
-        if (func_02023010(0x2CE) == 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_NOISE_REPORT) == 0) {
             return 0;
         }
     } else if (entry == 4) {
-        if (func_02023010(0x2AE) == 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_GAME_CLEARED) == 0) {
             return 0;
         }
     } else if (entry == 5) {
-        if (func_02023010(0x2CF) == 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_TIN_PIN_VERSUS) == 0) {
             return 0;
         }
     } else if (entry == 6) {
-        if (func_02023010(0x2D0) == 0) {
+        if (Inventory_GetOwnedCount(ITEM_STICKER_MINGLE_MODE) == 0) {
             return 0;
         }
         if (MenuTop_IsInRestrictedArea() == 1) {

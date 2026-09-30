@@ -73,9 +73,18 @@ void Inventory_SetHelpSeen(s32 menu);
  */
 s32 Inventory_IsHelpSeen(s32 menu);
 
-// TODO: Below functions need named and organized into correct headers
+/**
+ * @brief Counts how many of an item the player owns.
+ *
+ * Pins are counted across the decks, the stockpile and the mastered-pin list; other items across
+ * the equipped threads of the player and partners, plus the inventory stack.
+ *
+ * @param itemID The global item ID of the item to count.
+ * @return The number owned, or 0 for an invalid item ID.
+ */
+u32 Inventory_GetOwnedCount(u16 itemID);
 
-u32 func_02023010(u16 arg0);
+// TODO: Below functions need named and organized into correct headers
 
 s32 func_02023480(u32 arg0, s32 arg1);
 
