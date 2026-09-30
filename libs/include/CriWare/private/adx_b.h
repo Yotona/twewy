@@ -23,32 +23,32 @@ typedef struct {
 } ADXB_UNK; // Size: 0x2C
 
 typedef struct ADXB_OBJ {
-    /* 0x00 */ s16              unk0;
-    /* 0x02 */ s16              unk2;
-    /* 0x04 */ s32              stat;
-    /* 0x08 */ ADXPD            adxpd;
-    /* 0x0C */ s8               encoding_type;
-    /* 0x0D */ s8               sample_bitdepth;
-    /* 0x0E */ s8               channel_count;
-    /* 0x0F */ s8               block_size;
-    /* 0x10 */ s32              samples_per_block;
-    /* 0x14 */ s32              sample_rate;
-    /* 0x18 */ s32              total_samples;
-    /* 0x1C */ s16              unk1C;
-    /* 0x1E */ char             pad1E[2];
-    /* 0x20 */ struct ADXB_OBJ* unk20;
-    /* 0x24 */ s16              loop_count;
-    /* 0x26 */ s16              unk26;
-    /* 0x28 */ s32              unk28;
-    /* 0x2C */ s32              unk2C;
-    /* 0x30 */ s32              unk30;
-    /* 0x34 */ s32              unk34;
-    /* 0x38 */ s32              unk38;
-    /* 0x3C */ void*            pcm_buf;
-    /* 0x40 */ s32              unk40;
-    /* 0x44 */ s32              unk44;
-    /* 0x48 */ ADXB_UNK         unk48;
-    /* 0x74 */ s32              unk74;
+    /* 0x00 */ s16      unk0;
+    /* 0x02 */ s16      unk2;
+    /* 0x04 */ s32      stat;
+    /* 0x08 */ ADXPD    adxpd;
+    /* 0x0C */ s8       encoding_type;
+    /* 0x0D */ s8       sample_bitdepth;
+    /* 0x0E */ s8       channel_count;
+    /* 0x0F */ s8       block_size;
+    /* 0x10 */ s32      samples_per_block;
+    /* 0x14 */ s32      sample_rate;
+    /* 0x18 */ s32      total_samples;
+    /* 0x1C */ s16      unk1C;
+    /* 0x1E */ char     pad1E[2];
+    /* 0x20 */ s32      unk20; // lp_ins_nsmpl
+    /* 0x24 */ s16      loop_count;
+    /* 0x26 */ s16      unk26;
+    /* 0x28 */ s32      unk28;
+    /* 0x2C */ s32      unk2C;
+    /* 0x30 */ s32      unk30;
+    /* 0x34 */ s32      unk34;
+    /* 0x38 */ s32      unk38;
+    /* 0x3C */ void*    pcm_buf;
+    /* 0x40 */ s32      unk40;
+    /* 0x44 */ s32      unk44;
+    /* 0x48 */ ADXB_UNK unk48;
+    /* 0x74 */ s32      unk74;
     /* 0x78 */ void* (*get_wr)(void*, s32*, s32*, s32*);
     /* 0x7C */ void* object;
     /* 0x80 */ void (*add_wr)(void*, s32, s32);

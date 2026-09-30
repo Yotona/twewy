@@ -32,9 +32,11 @@ void func_02012f8c(); // ADXCRS_Unlock
 
 // callees living in sibling TUs (address-named in the original)
 // adx_sjd.c -- no public header declares these
-u32  func_020158e4(ADXSJD* sjd); // GetDecDtLen
+s32  func_020158e4(ADXSJD* sjd); // GetDecDtLen
 void func_020158f4(ADXSJD* sjd, s32 pos);
-void func_02015904(ADXSJD* sjd, s32 trap_func, s32 trap_obj);
+// ADXSJD_EntryTrapFunc. Takes a real callback plus a user pointer, which is
+// why unk_48/unk_4C are typed as pointers rather than u32.
+void func_02015904(ADXSJD* sjd, void (*trap_func)(ADXT), void* trap_obj);
 void func_02015910(ADXSJD* sjd, s32 samples);
 void func_02015918(ADXSJD* sjd, s32 cnt);
 void func_02015920(ADXSJD* sjd, s32 dt_len);
@@ -49,7 +51,6 @@ s32  func_02014b50(ADXSJD* sjd); // ADXSJD_TermSupply
 void func_02014b3c(ADXSJD* sjd);
 void func_020155c0(ADXSJD* sjd);
 s32  func_02015928(ADXSJD* sjd); // GetFormat
-void func_02015904(ADXSJD* sjd, s32 trap_func, s32 trap_obj);
 void ADXSJD_Start(ADXSJD* sjd);
 void ADXSJD_Stop(ADXSJD* sjd);
 void ADXSJD_SetMaxDecSmpl(ADXSJD* sjd, s32 n);
@@ -158,7 +159,7 @@ void func_02017f80(ADXT adxt) {
     func_02015910(sjd, trp);
     func_02015920(sjd, ainf_len);
     func_020158f4(sjd, cof);
-    func_02015904(sjd, (s32)func_02018004, (s32)adxt);
+    func_02015904(sjd, func_02018004, adxt);
 }
 
 // The trap callback func_02017f80 registers. Re-arms the trap once the skip
@@ -233,7 +234,7 @@ void func_02018168(ADXT adxt) {
     }
 
     if (adxt->lpflg == 0) {
-        if ((s32)func_020158e4(sjd) >= (s32)adxt->loopDecodeLength) {
+        if (func_020158e4(sjd) >= (s32)adxt->loopDecodeLength) {
             func_02015910(adxt->sjd, -1);
         }
 
@@ -439,7 +440,7 @@ void func_0201854c(ADXT adxt) {
             func_02015910(sjd, adxt->trpnsmpl);
             func_02015920(sjd, 0);
             func_02015918(sjd, 0);
-            func_02015904(sjd, (s32)func_02017f80, (s32)adxt);
+            func_02015904(sjd, func_02017f80, adxt);
         } else {
             if (adxt->stm != NULL) {
                 ADXSTM_SetEos(adxt->stm, SJCK_LEN_MAX);
@@ -448,7 +449,7 @@ void func_0201854c(ADXT adxt) {
             func_02015910(sjd, ADXSJD_GetTotalNumSmpl(sjd));
             func_02015920(sjd, 0);
             func_02015918(sjd, 0);
-            func_02015904(sjd, (s32)func_02018238, (s32)adxt);
+            func_02015904(sjd, func_02018238, adxt);
         }
 
         sfreq    = ADXSJD_GetSfreq(sjd);
@@ -549,7 +550,7 @@ void func_02018a64(ADXT adxt) {
     s32 num_chan;
     s32 i;
 
-    if (adxt->lpflg == 0 && adxt->loopDecodeLength != 0 && (s32)func_020158e4(adxt->sjd) >= (s32)adxt->loopDecodeLength) {
+    if (adxt->lpflg == 0 && adxt->loopDecodeLength != 0 && func_020158e4(adxt->sjd) >= (s32)adxt->loopDecodeLength) {
         func_02015910(adxt->sjd, -1);
     }
 

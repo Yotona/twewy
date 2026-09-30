@@ -638,7 +638,7 @@ void ADXT_SetLpFlg(ADXT adxt, s32 flag) {
 }
 
 // adx_sjd.c accessors, no public header declares these
-u32 func_020158e4(ADXSJD* sjd); // GetDecDtLen
+s32 func_020158e4(ADXSJD* sjd); // GetDecDtLen
 s32 func_020159a8(ADXSJD* sjd); // GetAinfLen
 s32 func_020159d4(ADXSJD* sjd); // GetLpEndOfst
 s32 _s32_div_f(s32 a, s32 b);

@@ -193,7 +193,7 @@ void func_0201575c(ADXSJD* sjd) {}
 
 void func_02015878() {}
 
-u32 func_020158e4(ADXSJD* sjd) {
+s32 func_020158e4(ADXSJD* sjd) {
     return sjd->unk_30;
 }
 

@@ -27,26 +27,26 @@ typedef struct {
     /* 0x08 */ SJ   sji;
     /* 0x0C */ SJ   sjo[2];
     /* 0x14 */ char unk_14[0x18];
-    /* 0x2C */ u32  unk_2C;
-    /* 0x30 */ u32  unk_30;
-    /* 0x34 */ s32  unk_34;
-    /* 0x38 */ s32  unk_38;
-    /* 0x3C */ u32  unk_3C;
-    /* 0x40 */ u32  unk_40;
-    /* 0x44 */ u32  unk_44;
-    /* 0x48 */ u32  unk_48;
-    /* 0x4C */ u32  unk_4C;
-    /* 0x50 */ u32  unk_50;
-    /* 0x54 */ u32  unk_54;
-    /* 0x58 */ u32  unk_58;
-    /* 0x5C */ u32  unk_5C;
-    /* 0x60 */ s32  unk_60;
-    /* 0x64 */ char unk_64[0x3C];
-    /* 0xA0 */ s32  unk_A0;
-    /* 0xA4 */ s32  unk_A4;
-    /* 0xA8 */ s32  unk_A8;
-    /* 0xAC */ s32  unk_AC;
-    /* 0xB0 */ s32  unk_B0;
+    /* 0x2C */ s32  unk_2C;      // total_decsmpl
+    /* 0x30 */ s32  unk_30;      // total_decdtlen
+    /* 0x34 */ s32  unk_34;      // decpos
+    /* 0x38 */ s32  unk_38;      // maxdecsmpl
+    /* 0x3C */ s32  unk_3C;      // dtrpsmpl  (trap sample count; set to -1)
+    /* 0x40 */ s32  unk_40;      // dtrpcnt
+    /* 0x44 */ s32  unk_44;      // dtrpdtlen
+    /* 0x48 */ void (*unk_48)(); // dtrpfunc -- ADXSJD trap callback
+    /* 0x4C */ void* unk_4C;     // dtrpobj  -- its user pointer
+    /* 0x50 */ void (*unk_50)(); // dfltfunc -- filter callback
+    /* 0x54 */ void* unk_54;     // dfltobj
+    /* 0x58 */ u32   unk_58;
+    /* 0x5C */ u32   unk_5C;
+    /* 0x60 */ s32   unk_60;
+    /* 0x64 */ char  unk_64[0x3C];
+    /* 0xA0 */ s32   unk_A0;
+    /* 0xA4 */ s32   unk_A4;
+    /* 0xA8 */ s32   unk_A8;
+    /* 0xAC */ s32   unk_AC;
+    /* 0xB0 */ s32   unk_B0;
 } ADXSJD; // Size: 0xB4
 
 void ADXSJD_Destroy(ADXSJD* sjd);
