@@ -456,9 +456,18 @@ void ADXB_EvokeExpandMono(ADXB arg0, s32 arg1) {
 }
 
 void ADXB_EvokeExpandSte(ADXB arg0, s32 arg1) {
-    ADXPD temp_r4 = arg0->adxpd;
+    ADXPD     temp_r4 = arg0->adxpd;
+    ADXB_UNK* unk     = &arg0->unk48;
+    s32       a3;
+    s32       t0;
 
-    ADXPD_EntrySte(temp_r4, arg0->unk48.unk0, arg1 * 2, arg0->unk48.unk14 + (arg0->unk48.unk20 * 2) + (arg0->unk48.unk1C * 2));
+    // These are two distinct arguments to ADXPD_EntrySte: a3 goes to unk20 and
+    // t0 to unk24 (the extra/inter-channel buffer that ADXPD_ExecHndl hands to
+    // ADX_DecodeSte4). Passing only their sum left unk24 unwritten.
+    a3 = unk->unk14 + (unk->unk20 * 2);
+    t0 = a3 + (unk->unk1C * 2);
+
+    ADXPD_EntrySte(temp_r4, unk->unk0, arg1 * 2, a3, t0);
     ADXPD_Start(temp_r4);
 }
 

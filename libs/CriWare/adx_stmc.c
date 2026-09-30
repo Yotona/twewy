@@ -36,6 +36,22 @@ s32 adxstmf_rtim_num  = 6;
 s32 adxstmf_nrml_ofst = 6;
 s32 adxstmf_rtim_ofst = 0;
 
+// Was missing entirely (called from adx_inis.c:68) -- mirrors ADXSTM_Finish's
+// refcount pair. Increments first and tests against 1 (not 0), and returns 1.
+//
+// Nonmatching: the body and clear loop match, but the target anchors its
+// literal pool at 0x0206c398 and reaches the refcount at [r0 + 0xc] ==
+// 0x0206c3a4, i.e. the refcount is a field of one 0x18-byte object at
+// 0x0206c398 rather than a standalone global. Closing this needs that object
+// modelled as a struct covering 0x0206c398-0x0206c3b0.
+s32 ADXSTM_Init(void) {
+    if (++data_0206c3a4 == 1) {
+        __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
+    }
+
+    return 1;
+}
+
 void ADXSTM_Finish(void) {
     ADXSTM* pAVar1;
     int     iVar2;
@@ -49,7 +65,47 @@ void ADXSTM_Finish(void) {
     __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
 }
 
-void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, s32 arg2, s32 file_len, SJ sj) {}
+// Nonmatching: 29%. Structure and every field store match; only the round-up
+// division differs. The target computes the sector count as
+//   mov r1, r5, lsr #31 / rsb r0, r1, r5, lsl #21 / add r0, r1, r0, ror #21 /
+//   cmp r0, #0 / mov r0, r5, asr #11 / ... / movle r3, r2 / add r0, r5, r0,
+//   lsr #21 / add r0, r3, r0, asr #11
+// i.e. a magic-multiply divide by 0x200000 whose quotient only supplies a
+// 0/1 correction that is then ADDED to (file_len >> 11). Neither
+// `file_len / 0x800` nor the PS2 reference's round-up form
+// (`file_len / 0x800; if (remainder) sct++`) reproduces it -- the latter scores
+// worse (23%). Closing this needs the exact original expression.
+void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, s32 arg2, s32 file_len, SJ sj) {
+    s32 file_sct;
+
+    func_020168d0(); // ADXCRS_Lock
+
+    file_sct = file_len / 0x800;
+
+    stm->unk_01      = 1;
+    stm->unk_02      = 0;
+    stm->sj          = sj;
+    stm->fileHndl    = cvfs;
+    stm->unk_0C      = arg2;
+    stm->file_len    = file_len;
+    stm->unk_14      = file_len >> 31;
+    stm->unk_18      = file_sct;
+    stm->req_rd_size = 0x200;
+    stm->unk_5C      = 0;
+    stm->unk_60      = 0xFFFFF;
+    stm->unk_34      = stm->unk_18;
+
+    if (sj != NULL) {
+        stm->unk_44 = SJ_GetNumData(sj, 0) + SJ_GetNumData(sj, 1);
+        stm->unk_1C = stm->unk_44;
+        stm->unk_20 = stm->unk_44;
+    }
+
+    stm->unk_48 = 0;
+    stm->unk_00 = 1;
+
+    func_020168dc(); // ADXCRS_Unlock
+}
 
 static ADXSTM* ADXSTMF_CreateCvfsRt(s32 arg0, s32 offset, s32 file_len, SJ sj) {
     ADXSTM* stm = NULL;

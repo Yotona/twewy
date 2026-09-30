@@ -252,6 +252,12 @@ libs/CriWare/adx_tlk2.c:
     .text       start:0x02017bc0 end:0x02017f80
     .data       start:0x02063da8 end:0x02063edc
 
+libs/CriWare/adx_tsvr.c:
+    categories: CriWare, Library
+    .text       start:0x02017f80 end:0x02018cdc
+    .data       start:0x02063edc end:0x02063f74
+    .bss        start:0x0206c7fc end:0x0206c80c
+
 libs/CriWare/adx_xpnd.c:
     categories: CriWare, Library
     complete

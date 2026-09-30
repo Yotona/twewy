@@ -6,6 +6,16 @@
 #include <nitro/types.h>
 
 /**
+ * Number of ADXSJD objects in the `adxsjd_obj` pool.
+ *
+ * Verified from the original module: `delinks.txt` gives `adx_sjd.c` a bss
+ * range of 0x0206c0b4-0x0206c398, and `adxsjd_obj` starts at 0x0206c0c8.
+ * 0x0206c398 - 0x0206c0c8 = 0x2D0 = 4 * sizeof(ADXSJD) (0xB4), so the pool is
+ * exactly 4 entries deep.
+ */
+#define ADXSJD_MAX_OBJ 4
+
+/**
  * @brief Stream Joint Decoder
  */
 typedef struct {

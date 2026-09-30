@@ -121,9 +121,9 @@ void SVM_CallErr1(const char* msg) {
     }
 }
 
-s32 SVM_SetCbSvrId(s32 svtype, s32 id, s32 (*func)(void*), void* object) {
+s32 SVM_SetCbSvrId(s32 svtype, s32 (*func)(void*), void* object, char* tag) {
     SVM_Lock();
-    s32 svrId = svm_SetCbSvrId(svtype, id, func, object);
+    s32 svrId = svm_SetCbSvrId(svtype, func, object, tag);
     SVM_Unlock();
     return svrId;
 }

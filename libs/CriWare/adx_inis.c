@@ -114,7 +114,7 @@ void ADXT_Finish() {
         SJRBF_Finish();
         SJUNI_Finish();
         ADXCRS_Unlock();
-        func_02012f48();
+        func_02012f48(); // ADXCRS_Finish
 
         for (s32 i = 0; i < ADXT_MAX_OBJ; i++) {
             if (adxt_obj[i].used != '\0') {
