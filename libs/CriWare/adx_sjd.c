@@ -22,8 +22,13 @@ typedef struct {
 ADXSJD_CTRL data_0206c0b4              = {0};
 ADXSJD      adxsjd_obj[ADXSJD_MAX_OBJ] = {0};
 
-void ADXB_SetAhxDecSmpl(ADXB adxb, s32 decsmpl);
-void ADXB_AhxTermSupply(ADXB adxb);
+void  ADXB_SetAhxDecSmpl(ADXB adxb, s32 decsmpl);
+void  ADXB_AhxTermSupply(ADXB adxb);
+s32   ADXB_GetStat(ADXB adxb);
+void  ADXB_ExecHndl(ADXB adxb);
+s32   ADXB_GetNumChan(ADXB adxb);
+void* ADXB_GetPcmBuf(ADXB adxb);
+void* SJRBF_GetBufPtr(SJ sj);
 
 void func_0201575c(ADXSJD* sjd);
 void func_0201562c(ADXSJD* sjd);
@@ -158,13 +163,51 @@ void ADXSJD_Stop(ADXSJD* sjd) {
     sjd->state = 0;
 }
 
-void func_02014b94(ADXSJD* sjd) {}
+// Nonmatching: stub (0.2%, 0x2E0 bytes). The state-1 arm of ADXSJD_ExecHndl;
+// upstream adxsjd_decode_prep. Decoded: gets a 0xC800-byte chunk into
+// sjd->sji, scans forward over leading zero bytes to find the split point,
+// and if that lands mid-sample takes the ADXERR path and sets
+// sjd->state = 4. Otherwise SJ_SplitChunk + SJ_PutChunk, then a length
+// check (< 0x10 bails), ADXB scan, spsdinfo memcpy, and a five-way
+// adxb->format test {10,20,11,12,15} before setting state = 2. Four error
+// strings at 0x020639ac/9cc/9ec/a0c. Needs the error strings to match.
 
-void func_02014e74() {}
+// Fills three caller-supplied counts and returns the decoder's PCM buffer.
+// unk_14 is really SJCK cki at 0x14 plus cko[2] at 0x1C (the header models the
+// whole 0x18 as a byte array), so the output chunks have to be addressed by
+// casting into it.
+void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
+    SJCK* cko  = (SJCK*)&sjd->unk_14[8];
+    SJ    sjo0 = sjd->sjo[0];
+    s32   nch;
+    s32   i;
 
-void func_02014f44() {}
+    nch = ADXB_GetNumChan(sjd->adxb);
 
-void func_02015344() {}
+    for (i = 0; i < nch; i++) {
+        SJ_GetChunk(sjd->sjo[i], i, 0x4000, &cko[i]);
+    }
+
+    *out_wpos = (s32)(cko[0].data - SJRBF_GetBufPtr(sjo0)) / 2;
+    *out_room = (cko[0].length / 2 < sjd->unk_38) ? cko[0].length / 2 : sjd->unk_38;
+
+    // unk_3C is the trap sample count. When it has been cleared to a negative
+    // sentinel the remaining-loop count is saturated rather than computed --
+    // ~0xE0000000 == 0x1FFFFFFF.
+    *out_loop = (sjd->unk_3C >= 0) ? sjd->unk_3C - sjd->unk_40 : 0x1FFFFFFF;
+
+    // Result discarded: the target's epilogue pops straight to pc without
+    // writing r0, so the original called this without returning it.
+    ADXB_GetPcmBuf(sjd->adxb);
+}
+
+// Nonmatching: stub (0.2%, 0x400 bytes) -- the largest of the six.
+// Called from func_02015554 when adxb->stat == 0, so it is the main
+// decode step. Not yet decoded.
+
+// Nonmatching: stub (0.4%, 0x1AC bytes). Called from func_02015554
+// after ADXB_ExecHndl leaves adxb->stat == 3, i.e. the decode-done
+// bookkeeping. Not yet decoded.
 
 void func_020154f0(ADXSJD* sjd) {
     ADXB adxb        = sjd->adxb;
@@ -182,7 +225,28 @@ void func_020154f0(ADXSJD* sjd) {
     sjd->unk_34 += ndecsmpl;
 }
 
-void func_02015554(ADXSJD* sjd) {}
+// The state-2 arm of ADXSJD_ExecHndl. The target tests adxb->stat twice
+// around the decode: once to decide whether to run it, and once afterwards to
+// decide whether to finish up. The five-value test on adxb->format is written
+// as an || chain because mwcc folds only the last adjacent constant pair into
+// a range check.
+void func_02015554(ADXSJD* sjd) {
+    ADXB adxb = sjd->adxb;
+
+    if (ADXB_GetStat(adxb) == 0) {
+        func_02014f44(sjd);
+    }
+
+    ADXB_ExecHndl(adxb);
+
+    if (ADXB_GetStat(adxb) == 3) {
+        func_02015344(sjd);
+    }
+
+    if (adxb->format == 10 || adxb->format == 20 || adxb->format == 11 || adxb->format == 12 || adxb->format == 15) {
+        func_020154f0(sjd);
+    }
+}
 
 void func_020155c0(ADXSJD* sjd) {
     if (0 < sjd->unk_A8) {
@@ -202,9 +266,14 @@ void func_020155c0(ADXSJD* sjd) {
     }
 }
 
-void func_0201562c(ADXSJD* sjd) {}
+// Nonmatching: stub (0.5%, 0x130 bytes). Supply-side, entered from
+// ADXSJD_ExecHndl under ADXCRS_Lock when sjd->unk_A8 > 0. No
+// counterpart in either PS2 reference -- NITRO adds an AHX supply
+// queue. Not yet decoded.
 
-void func_0201575c(ADXSJD* sjd) {}
+// Nonmatching: stub (0.6%, 0x11C bytes). The second supply-side arm,
+// entered under ADXCRS_Lock when sjd->unk_AC > 0. Like func_0201562c
+// this is NITRO-only. Not yet decoded.
 
 // ADXSJD_ExecServer. The per-object loop always runs; each of the two
 // callbacks is skipped when its slot is null. Recvx's ADXT_ExecServer calls
