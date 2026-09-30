@@ -98,7 +98,27 @@ void adxb_DefAddWr(void* object, s32 arg1, s32 arg2) {
     adxb->unk88 += arg2;
 }
 
-void func_020122fc(ADXB adxb) {}
+// adxb_clear. The 16 bytes at 0xC4 are unkC4. The target inlines this clear as
+// four strb per iteration over four iterations; a memset() with a constant size
+// is left as a real call by mwcc, so it has to be spelled out for the shape to
+// come out.
+void func_020122fc(ADXB adxb) {
+    s8* p = (s8*)&adxb->unkC4;
+    s32 i;
+
+    adxb->ainf_len    = 0;
+    adxb->def_out_vol = 0;
+    adxb->def_pan[0]  = -0x80;
+    adxb->def_pan[1]  = -0x80;
+
+    for (i = 0; i < 4; i++) {
+        p[0] = 0;
+        p[1] = 0;
+        p[2] = 0;
+        p[3] = 0;
+        p += 4;
+    }
+}
 
 ADXB ADXB_Create(s32 arg0, void* arg1, s32 arg2, s32 arg3) {
     ADXB  adxb;

@@ -8,15 +8,22 @@
 // mwcc instead of holding the address. The object array follows at 0x0206c0c8,
 // and Init/Finish clear 0x2D0 bytes (45x `stmia lr!`), which is exactly
 // ADXSJD_MAX_OBJ * sizeof(ADXSJD) == 4 * 0xB4.
+// 0x00/0x08 hold a callback and 0x04/0x10 its user pointer -- but crossed
+// round, not paired: the 0x08 callback is handed the 0x04 object and the 0x00
+// callback the 0x10 one. That is how the target's func_02015878 reads them.
 typedef struct {
-    /* 0x00 */ s32          unk00;
-    /* 0x04 */ s32          unk04;
-    /* 0x08 */ s32          unk08;
+    /* 0x00 */ void (*unk00)(void*);
+    /* 0x04 */ void* unk04;
+    /* 0x08 */ void (*unk08)(void*);
     /* 0x0C */ volatile s32 init_cnt;
+    /* 0x10 */ void*        unk10;
 } ADXSJD_CTRL; // Size: 0x14
 
 ADXSJD_CTRL data_0206c0b4              = {0};
 ADXSJD      adxsjd_obj[ADXSJD_MAX_OBJ] = {0};
+
+void ADXB_SetAhxDecSmpl(ADXB adxb, s32 decsmpl);
+void ADXB_AhxTermSupply(ADXB adxb);
 
 void func_0201575c(ADXSJD* sjd);
 void func_0201562c(ADXSJD* sjd);
@@ -129,9 +136,17 @@ void ADXSJD_SetInSj(ADXSJD* sjd, SJ sj) {
     ADXB_SetAhxInSj(sjd->adxb, sj);
 }
 
-void func_02014b3c() {}
+// ADXSJD_SetMaxDecSmpl. The PS2 reference also calls ADXB_SetAc3DecSmpl
+// here; NITRO has no AC3, and the target's tail call names ADXB_SetAhxDecSmpl.
+void func_02014b3c(ADXSJD* sjd, s32 nsmpl) {
+    sjd->unk_38 = nsmpl;
+    ADXB_SetAhxDecSmpl(sjd->adxb, nsmpl);
+}
 
-void func_02014b50() {}
+// ADXSJD_TermSupply -- AHX only, for the same reason.
+void func_02014b50(ADXSJD* sjd) {
+    ADXB_AhxTermSupply(sjd->adxb);
+}
 
 void ADXSJD_Start(ADXSJD* sjd) {
     ADXSJD_Clear(sjd);
@@ -191,7 +206,27 @@ void func_0201562c(ADXSJD* sjd) {}
 
 void func_0201575c(ADXSJD* sjd) {}
 
-void func_02015878() {}
+// ADXSJD_ExecServer. The per-object loop always runs; each of the two
+// callbacks is skipped when its slot is null. Recvx's ADXT_ExecServer calls
+// this from inside its own stage machine, and NITRO inlines that whole chain
+// into adxt_ExecServer.
+void func_02015878(void) {
+    s32 i;
+
+    if (data_0206c0b4.unk08 != 0) {
+        data_0206c0b4.unk08(data_0206c0b4.unk04);
+    }
+
+    for (i = 0; i < ADXSJD_MAX_OBJ; i++) {
+        if (adxsjd_obj[i].used == 1) {
+            func_020155c0(&adxsjd_obj[i]);
+        }
+    }
+
+    if (data_0206c0b4.unk00 != 0) {
+        data_0206c0b4.unk00(data_0206c0b4.unk10);
+    }
+}
 
 s32 func_020158e4(ADXSJD* sjd) {
     return sjd->unk_30;
