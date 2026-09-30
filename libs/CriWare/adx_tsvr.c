@@ -46,6 +46,11 @@ s32  func_020159c4(ADXSJD* sjd);
 s32* func_02015a7c(ADXSJD* sjd);
 s32  func_02015a84(ADXSJD* sjd);
 s32  func_02014b50(ADXSJD* sjd); // ADXSJD_TermSupply
+void func_02014b3c(ADXSJD* sjd);
+void func_02015904(ADXSJD* sjd, s32 trap_func, s32 trap_obj);
+void ADXSJD_Start(ADXSJD* sjd);
+void ADXSJD_Stop(ADXSJD* sjd);
+void ADXSJD_SetMaxDecSmpl(ADXSJD* sjd, s32 n);
 s8   ADXSJD_GetStat(ADXSJD* sjd);
 s32  func_02015a94(ADXSJD* sjd);
 // adx_stmc.c
@@ -59,23 +64,58 @@ s32  func_0201bf0c(void* rna); // ADXRNA_GetNumData
 s32  func_0201bf18(void* rna); // ADXRNA_GetNumRoom
 void ADXRNA_SetPlaySw(void* rna, s32 sw);
 void ADXRNA_SetTransSw(void* rna, s32 sw);
+// ADXRNA forwarders (adx_rna.c has no source file either)
+void func_0201bf30(void* rna, s32 n);
+void func_0201bf3c(void* rna, s32 n);
+void func_0201bf60(void* rna, s32 n);
+void func_0201bf6c(void* rna, s32 n);
+void func_0201bf70(void* rna, s32* p);
+// adx_tlk.c
+void adxt_start_stm(ADXT adxt, const char* filename, void* dir, s32 ofst, s32 range);
+void func_02017b20(ADXT adxt, s32 a, s32 b);
+void func_02017b4c(ADXT adxt, s32* a, s32* b);
+// adx_errs.c
+void ADXERR_CallErrFunc2(s8* msg, s8* arg);
+void ADXERR_ItoA2(s32 v, s32 base, s8* str, s32 width);
+// lsc.c
+s32 func_020215bc(void* amp, s32 sfreq);
+s32 _s32_div_f(s32 a, s32 b);
 
 extern s32 volatile adxt_vsync_cnt; // adx_inis.c
 void memset(void*, int, int);
 
 #define ADXSJD_STAT_PLAYING 3
+#define ADXSJD_STAT_DECINFO 2
 
 // sj.h has no macro for GetNumData (vtable slot 0x24).
 #define SJ_GetNumData(sj, id) (*(sj)->vtable->GetNumData)(sj, id)
 
 void func_02018004(ADXT adxt);
 
-// .bss 0x0206c7fc-0x0206c80c (four words; delinks.txt). func_02018b30 writes the
-// second of them, so the word order below is load-bearing.
-s32 data_0206c7fc = 0;
-s32 data_0206c800 = 0;
-s32 data_0206c804 = 0;
-s32 data_0206c808 = 0;
+// .bss 0x0206c7fc-0x0206c80c (four words; delinks.txt). Wrapped in a struct
+// because mwcc does not honour declaration order for same-sized file statics:
+// as loose globals it emitted 0x800, 0x7fc, 0x808, 0x804 regardless of how
+// they were declared. 0x0206c7fc is a callback the host installs;
+// 0x0206c804 / 0x0206c808 are the reference's adxt_dbg_ndt / adxt_dbg_nch.
+struct {
+    s32 f_7fc; // callback: (ADXT, sfreq, num_chan, total_smpl)
+    s32 f_800;
+    s32 f_804; // adxt_dbg_ndt
+    s32 f_808; // adxt_dbg_nch
+} data_0206c7fc = {0, 0, 0, 0};
+
+#define data_0206c800 data_0206c7fc.f_800
+#define data_0206c804 data_0206c7fc.f_804
+#define data_0206c808 data_0206c7fc.f_808
+
+#define ADXT_CB_FUNC ((void (*)(ADXT adxt, s32 sfreq, s32 num_chan, s32 total_smpl))data_0206c7fc.f_7fc)
+
+// .data 0x02063edc-0x02063f74. The three ADXERR_CallErrFunc strings live in
+// .data rather than .rodata; the target's literal pools point here. The 0xedc
+// and 0xf48 wordings are unverified -- only their addresses are known.
+char data_02063edc[] = "E9081102 adxt trap: can't get loop skip data";
+char data_02063f08[] = "E9081001 adxt_stat_decinfo: can't play this number of channels";
+char data_02063f48[] = "E02080842 ADXT_ExecHndl: parameter error";
 
 void adxt_ExecHndl(ADXT adxt);
 void func_0201854c(ADXT adxt);
@@ -207,8 +247,138 @@ void func_020181f4(ADXT adxt) {
 // to func_0201854c instead. Unidentified in the PS2 reference.
 void func_02018238(ADXT adxt) {}
 
-// Nonmatching: stub (0.2%). Upstream: adxt_stat_decinfo.
-void func_0201854c(ADXT adxt) {}
+// adxt_stat_decinfo
+void func_0201854c(ADXT adxt) {
+    ADXSJD* sjd = adxt->sjd;
+    s32     num_chan;
+    s32     sfreq;
+    s32     num_loop;
+    s32     blk_smpl;
+    s32     lp_end_ofst;
+    s32     stat;
+    s32     a;
+    s32     b;
+    s8      num_chan_str[32];
+
+    a = 0;
+    b = 0;
+
+    if ((u8)adxt->pmode <= 1 && adxt->streamStartFlag == 1) {
+        if (func_02015f5c(adxt->stm) == 2) {
+            return;
+        }
+
+        if (adxt->sjf != NULL) {
+            SJ_Reset(adxt->sjf);
+        }
+
+        adxt_start_stm(adxt, adxt->filename, adxt->directory, adxt->offset, adxt->range);
+        adxt->streamStartFlag = 0;
+    }
+
+    stat = ADXSJD_GetStat(sjd);
+
+    // Written as if/else rather than an early return: the target branches over
+    // the whole body to a trailing `stat == 4` arm, which only happens with this
+    // block shape.
+    if (stat == ADXSJD_STAT_DECINFO) {
+        num_chan = func_02015948(sjd);
+
+        if (num_chan > adxt->maxnch) {
+            ADXERR_ItoA2(num_chan, adxt->maxnch, num_chan_str, 16);
+            ADXERR_CallErrFunc2(data_02063f08, num_chan_str);
+            ADXT_Stop(adxt);
+            return;
+        }
+
+        sfreq    = ADXSJD_GetSfreq(sjd);
+        num_loop = func_02015988(sjd);
+
+        if (func_02015928(sjd) == 10) {
+            adxt->maxdecsmpl = _s32_div_f(sfreq, adxt->svrfreq);
+            blk_smpl         = func_02015968(sjd);
+        } else if (num_loop <= 0) {
+            adxt->maxdecsmpl = (_s32_div_f(sfreq, adxt->svrfreq) * 3) / 2;
+            blk_smpl         = func_02015968(sjd);
+        } else {
+            adxt->maxdecsmpl = _s32_div_f(sfreq, adxt->svrfreq) * 3;
+            blk_smpl         = func_02015968(sjd);
+        }
+
+        blk_smpl <<= 1;
+        adxt->maxdecsmpl = _s32_div_f(adxt->maxdecsmpl + blk_smpl, blk_smpl) * blk_smpl;
+
+        func_02014b3c(sjd);
+
+        if (num_loop > 0) {
+            if (adxt->pmode == ADXT_PLAYBACK_MEM) {
+                adxt->lp_skiplen = 0;
+            } else {
+                // div is the constant 2048; the target inlines both divisions
+                // rather than calling _s32_div_f.
+                lp_end_ofst      = func_020159d4(sjd);
+                adxt->lp_skiplen = (2048 - (lp_end_ofst / 2048)) / 2048;
+                adxt->lesct      = (lp_end_ofst + 2047) / 2048;
+                ADXSTM_SetEos(adxt->stm, adxt->lesct);
+                ADXSTM_EntryEosFunc(adxt->stm, (s32)func_02018168, (s32)adxt);
+            }
+
+            adxt->trpnsmpl = func_02015998(sjd);
+            func_02015910(sjd, adxt->trpnsmpl);
+            func_02015920(sjd, 0);
+            func_02015918(sjd, 0);
+            func_02015904(sjd, (s32)func_02017f80, (s32)adxt);
+        } else {
+            if (adxt->stm != NULL) {
+                ADXSTM_SetEos(adxt->stm, SJCK_LEN_MAX);
+            }
+
+            func_02015910(sjd, ADXSJD_GetTotalNumSmpl(sjd));
+            func_02015920(sjd, 0);
+            func_02015918(sjd, 0);
+            func_02015904(sjd, (s32)func_02018238, (s32)adxt);
+        }
+
+        sfreq    = ADXSJD_GetSfreq(sjd);
+        num_chan = func_02015948(sjd);
+        num_loop = ADXSJD_GetTotalNumSmpl(sjd);
+
+        func_0201bf60(adxt->rna, ADXSJD_GetOutBps(sjd));
+        func_0201bf3c(adxt->rna, sfreq);
+        func_0201bf30(adxt->rna, num_chan);
+        func_0201bf6c(adxt->rna, num_loop);
+
+        ADXT_SetOutVol(adxt, adxt->outvol);
+
+        func_02017b4c(adxt, &a, &b);
+
+        if (a != 0 || b != 0) {
+            func_02017b20(adxt, a, b);
+        }
+
+        func_020181f4(adxt);
+
+        if (adxt->amp != NULL) {
+            func_020215bc(adxt->amp, sfreq);
+        }
+
+        // Vestigial in this build: the format probe survives but both arms of the
+        // test fall through to the same code, so the target keeps the compare.
+        if (func_02015928(sjd) != 2) {
+        }
+
+        func_0201bf70(adxt->rna, func_02015a7c(sjd));
+        ADXRNA_SetTransSw(adxt->rna, 1);
+
+        if (data_0206c7fc.f_7fc != 0) {
+            ADXT_CB_FUNC(adxt, sfreq, num_chan, num_loop);
+        }
+
+        adxt->stat = ADXT_STAT_PREPPING;
+    } else if (stat == 4) {
+        adxt->stat = ADXT_STAT_ERROR;
+    }
+}
 
 // adxt_stat_prep
 void func_02018910(ADXT adxt) {
