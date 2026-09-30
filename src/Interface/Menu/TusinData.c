@@ -19,9 +19,9 @@ void func_0203a96c(u8* macAddress);
 s32  func_020417e0(RTCDate* date, RTCTime* time);
 s64  func_02041f14(RTCDate* date, RTCTime* time);
 void Stats_AddExperience(u32 exp);
-u16  func_02024080(void);
-u16  func_020241b0(void);
-u16  func_02024244(void);
+u16  Inventory_GetNoiseReportCount(void);
+u16  Inventory_GetMasteredPinCount(void);
+u16  Inventory_GetCollectedItemCount(void);
 
 #ifdef REGION_USA
 extern EquippedPin* Tusin_SurePins[6];
@@ -214,9 +214,9 @@ void Tusin_WriteLastProfile(void) {
     func_0203a96c(gSaveData.lastMacAddress);
     OS_GetOwnerInfo(&ownerInfo);
     MI_CpuCopyU8(ownerInfo.nickName, gSaveData.lastNickName, sizeof(gSaveData.lastNickName));
-    gSaveData.experience.unk_0_0   = func_02024080();
-    gSaveData.experience.pinCount  = func_020241b0();
-    gSaveData.experience.itemCount = func_02024244();
+    gSaveData.experience.unk_0_0   = Inventory_GetNoiseReportCount();
+    gSaveData.experience.pinCount  = Inventory_GetMasteredPinCount();
+    gSaveData.experience.itemCount = Inventory_GetCollectedItemCount();
     gSaveData.lastExperience       = gSaveData.experience;
 
     func_020417e0(&date, &time);

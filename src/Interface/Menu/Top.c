@@ -71,7 +71,7 @@ extern void ProcessOverlay_MenuEquip(void* state);
 extern void func_ov028_020e82d0(void* state);
 extern void ProcessOverlay_MenuBadge(void* state);
 extern void func_ov043_0209bce4(void* state);
-extern void func_ov043_020c04f0(void* state);
+extern void ProcessOverlay_Save(void* state);
 
 void MenuTop_InitState(MenuTopState* state);
 void MenuTop_CreateTasks(MenuTopState* state);
@@ -486,7 +486,7 @@ void MenuTop_Update(MenuTopState* state) {
         } break;
         case 7: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_43_ID, func_ov043_020c04f0, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_43_ID, ProcessOverlay_Save, NULL, PROCESS_STAGE_INIT);
         } break;
         case 9: {
             OverlayTag tag;

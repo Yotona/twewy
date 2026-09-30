@@ -2207,188 +2207,188 @@ Depart_cur_CreateTask kind:function(arm,size=0x34) addr:0x020bf21c
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
 /////////////////////////////////////////////////////////////
-func_ov043_020bf250 kind:function(arm,size=0x90) addr:0x020bf250
-func_ov043_020bf2e0 kind:function(arm,size=0x1f4) addr:0x020bf2e0
-func_ov043_020bf4d4 kind:function(arm,size=0x2c4) addr:0x020bf4d4
-func_ov043_020bf798 kind:function(arm,size=0xdc) addr:0x020bf798
-func_ov043_020bf874 kind:function(arm,size=0xcc) addr:0x020bf874
-func_ov043_020bf940 kind:function(arm,size=0xc4) addr:0x020bf940
-func_ov043_020bfa04 kind:function(arm,size=0x220) addr:0x020bfa04
-func_ov043_020bfc24 kind:function(arm,size=0x54) addr:0x020bfc24
-func_ov043_020bfc78 kind:function(arm,size=0xf8) addr:0x020bfc78
-func_ov043_020bfd70 kind:function(arm,size=0x40) addr:0x020bfd70
-func_ov043_020bfdb0 kind:function(arm,size=0x144) addr:0x020bfdb0
-func_ov043_020bfef4 kind:function(arm,size=0x98) addr:0x020bfef4
-func_ov043_020bff8c kind:function(arm,size=0xbc) addr:0x020bff8c
-func_ov043_020c0048 kind:function(arm,size=0x200) addr:0x020c0048
-func_ov043_020c0248 kind:function(arm,size=0x220) addr:0x020c0248
-func_ov043_020c0468 kind:function(arm,size=0x88) addr:0x020c0468
-func_ov043_020c04f0 kind:function(arm,size=0x40) addr:0x020c04f0
-func_ov043_020c0530 kind:function(arm,size=0x4b8) addr:0x020c0530
-func_ov043_020c09e8 kind:function(arm,size=0xe8) addr:0x020c09e8
-func_ov043_020c0ad0 kind:function(arm,size=0x1c) addr:0x020c0ad0
-func_ov043_020c0aec kind:function(arm,size=0x14) addr:0x020c0aec
-func_ov043_020c0b00 kind:function(arm,size=0x3c) addr:0x020c0b00
-func_ov043_020c0b3c kind:function(arm,size=0x4c) addr:0x020c0b3c
-func_ov043_020c0b88 kind:function(arm,size=0x24) addr:0x020c0b88
-func_ov043_020c0bac kind:function(arm,size=0x24) addr:0x020c0bac
-func_ov043_020c0bd0 kind:function(arm,size=0x24) addr:0x020c0bd0
-func_ov043_020c0bf4 kind:function(arm,size=0x24) addr:0x020c0bf4
-func_ov043_020c0c18 kind:function(arm,size=0x20) addr:0x020c0c18
-func_ov043_020c0c38 kind:function(arm,size=0x14) addr:0x020c0c38
-func_ov043_020c0c4c kind:function(arm,size=0x14) addr:0x020c0c4c
-func_ov043_020c0c60 kind:function(arm,size=0x30) addr:0x020c0c60
-func_ov043_020c0c90 kind:function(arm,size=0x5c4) addr:0x020c0c90
-func_ov043_020c1254 kind:function(arm,size=0x68) addr:0x020c1254
-func_ov043_020c12bc kind:function(arm,size=0x274) addr:0x020c12bc
-func_ov043_020c1530 kind:function(arm,size=0xa8) addr:0x020c1530
-func_ov043_020c15d8 kind:function(arm,size=0x60) addr:0x020c15d8
-func_ov043_020c1638 kind:function(arm,size=0xa0) addr:0x020c1638
-func_ov043_020c16d8 kind:function(arm,size=0xe4) addr:0x020c16d8
-func_ov043_020c17bc kind:function(arm,size=0x200) addr:0x020c17bc
-func_ov043_020c19bc kind:function(arm,size=0x228) addr:0x020c19bc
-func_ov043_020c1be4 kind:function(arm,size=0xac) addr:0x020c1be4
-func_ov043_020c1c90 kind:function(arm,size=0x88) addr:0x020c1c90
-func_ov043_020c1d18 kind:function(arm,size=0x38) addr:0x020c1d18
-func_ov043_020c1d50 kind:function(arm,size=0x48) addr:0x020c1d50
-func_ov043_020c1d98 kind:function(arm,size=0x24) addr:0x020c1d98
-func_ov043_020c1dbc kind:function(arm,size=0x1dc) addr:0x020c1dbc
-func_ov043_020c1f98 kind:function(arm,size=0x4) addr:0x020c1f98
-func_ov043_020c1f9c kind:function(arm,size=0x6c) addr:0x020c1f9c
-func_ov043_020c2008 kind:function(arm,size=0x9c) addr:0x020c2008
-func_ov043_020c20a4 kind:function(arm,size=0xa8) addr:0x020c20a4
-func_ov043_020c214c kind:function(arm,size=0x20) addr:0x020c214c
-func_ov043_020c216c kind:function(arm,size=0xa4) addr:0x020c216c
-func_ov043_020c2210 kind:function(arm,size=0x2c) addr:0x020c2210
-func_ov043_020c223c kind:function(arm,size=0x2c) addr:0x020c223c
-func_ov043_020c2268 kind:function(arm,size=0x48) addr:0x020c2268
-func_ov043_020c22b0 kind:function(arm,size=0x34) addr:0x020c22b0
-func_ov043_020c22e4 kind:function(arm,size=0x9c) addr:0x020c22e4
-func_ov043_020c2380 kind:function(arm,size=0x84) addr:0x020c2380
-func_ov043_020c2404 kind:function(arm,size=0x28) addr:0x020c2404
-func_ov043_020c242c kind:function(arm,size=0x14) addr:0x020c242c
-func_ov043_020c2440 kind:function(arm,size=0x14) addr:0x020c2440
-func_ov043_020c2454 kind:function(arm,size=0x14) addr:0x020c2454
-func_ov043_020c2468 kind:function(arm,size=0x48) addr:0x020c2468
-func_ov043_020c24b0 kind:function(arm,size=0x34) addr:0x020c24b0
-func_ov043_020c24e4 kind:function(arm,size=0x9c) addr:0x020c24e4
-func_ov043_020c2580 kind:function(arm,size=0x140) addr:0x020c2580
-func_ov043_020c26c0 kind:function(arm,size=0x20) addr:0x020c26c0
-func_ov043_020c26e0 kind:function(arm,size=0x68) addr:0x020c26e0
-func_ov043_020c2748 kind:function(arm,size=0x48) addr:0x020c2748
-func_ov043_020c2790 kind:function(arm,size=0x34) addr:0x020c2790
-func_ov043_020c27c4 kind:function(arm,size=0x48) addr:0x020c27c4
-func_ov043_020c280c kind:function(arm,size=0x34) addr:0x020c280c
-func_ov043_020c2840 kind:function(arm,size=0x9c) addr:0x020c2840
-func_ov043_020c28dc kind:function(arm,size=0x1cc) addr:0x020c28dc
-func_ov043_020c2aa8 kind:function(arm,size=0x20) addr:0x020c2aa8
-func_ov043_020c2ac8 kind:function(arm,size=0x34) addr:0x020c2ac8
-func_ov043_020c2afc kind:function(arm,size=0x48) addr:0x020c2afc
-func_ov043_020c2b44 kind:function(arm,size=0x34) addr:0x020c2b44
-func_ov043_020c2b78 kind:function(arm,size=0x48) addr:0x020c2b78
-func_ov043_020c2bc0 kind:function(arm,size=0x34) addr:0x020c2bc0
-func_ov043_020c2bf4 kind:function(arm,size=0x9c) addr:0x020c2bf4
-func_ov043_020c2c90 kind:function(arm,size=0x84) addr:0x020c2c90
-func_ov043_020c2d14 kind:function(arm,size=0x30) addr:0x020c2d14
-func_ov043_020c2d44 kind:function(arm,size=0x68) addr:0x020c2d44
-func_ov043_020c2dac kind:function(arm,size=0x14) addr:0x020c2dac
-func_ov043_020c2dc0 kind:function(arm,size=0x14) addr:0x020c2dc0
-func_ov043_020c2dd4 kind:function(arm,size=0x48) addr:0x020c2dd4
-func_ov043_020c2e1c kind:function(arm,size=0x34) addr:0x020c2e1c
-func_ov043_020c2e50 kind:function(arm,size=0x9c) addr:0x020c2e50
-func_ov043_020c2eec kind:function(arm,size=0x104) addr:0x020c2eec
-func_ov043_020c2ff0 kind:function(arm,size=0x44) addr:0x020c2ff0
-func_ov043_020c3034 kind:function(arm,size=0x170) addr:0x020c3034
-func_ov043_020c31a4 kind:function(arm,size=0x40) addr:0x020c31a4
-func_ov043_020c31e4 kind:function(arm,size=0x2c) addr:0x020c31e4
-func_ov043_020c3210 kind:function(arm,size=0x48) addr:0x020c3210
-func_ov043_020c3258 kind:function(arm,size=0x34) addr:0x020c3258
-func_ov043_020c328c kind:function(arm,size=0x38) addr:0x020c328c
-func_ov043_020c32c4 kind:function(arm,size=0x30c) addr:0x020c32c4
-func_ov043_020c35d0 kind:function(arm,size=0x70) addr:0x020c35d0
-func_ov043_020c3640 kind:function(arm,size=0x2dc) addr:0x020c3640
-func_ov043_020c391c kind:function(arm,size=0x28) addr:0x020c391c
-func_ov043_020c3944 kind:function(arm,size=0x64) addr:0x020c3944
-func_ov043_020c39a8 kind:function(arm,size=0x8) addr:0x020c39a8
-func_ov043_020c39b0 kind:function(arm,size=0x30) addr:0x020c39b0
-func_ov043_020c39e0 kind:function(arm,size=0x48) addr:0x020c39e0
-func_ov043_020c3a28 kind:function(arm,size=0x34) addr:0x020c3a28
-func_ov043_020c3a5c kind:function(arm,size=0x9c) addr:0x020c3a5c
-func_ov043_020c3af8 kind:function(arm,size=0x100) addr:0x020c3af8
-func_ov043_020c3bf8 kind:function(arm,size=0x20) addr:0x020c3bf8
-func_ov043_020c3c18 kind:function(arm,size=0xf8) addr:0x020c3c18
-func_ov043_020c3d10 kind:function(arm,size=0x40) addr:0x020c3d10
-func_ov043_020c3d50 kind:function(arm,size=0x2c) addr:0x020c3d50
-func_ov043_020c3d7c kind:function(arm,size=0x48) addr:0x020c3d7c
-func_ov043_020c3dc4 kind:function(arm,size=0x34) addr:0x020c3dc4
-func_ov043_020c3df8 kind:function(arm,size=0x94) addr:0x020c3df8
-func_ov043_020c3e8c kind:function(arm,size=0x88) addr:0x020c3e8c
-func_ov043_020c3f14 kind:function(arm,size=0x50) addr:0x020c3f14
-func_ov043_020c3f64 kind:function(arm,size=0x4c) addr:0x020c3f64
-func_ov043_020c3fb0 kind:function(arm,size=0x40) addr:0x020c3fb0
-func_ov043_020c3ff0 kind:function(arm,size=0x54) addr:0x020c3ff0
-func_ov043_020c4044 kind:function(arm,size=0x40) addr:0x020c4044
-func_ov043_020c4084 kind:function(arm,size=0x4c) addr:0x020c4084
-func_ov043_020c40d0 kind:function(arm,size=0x40) addr:0x020c40d0
-func_ov043_020c4110 kind:function(arm,size=0xdc) addr:0x020c4110
-func_ov043_020c41ec kind:function(arm,size=0x60) addr:0x020c41ec
-func_ov043_020c424c kind:function(arm,size=0x38) addr:0x020c424c
-func_ov043_020c4284 kind:function(arm,size=0x8e4) addr:0x020c4284
-func_ov043_020c4b68 kind:function(arm,size=0x1a0) addr:0x020c4b68
-func_ov043_020c4d08 kind:function(arm,size=0x28) addr:0x020c4d08
-func_ov043_020c4d30 kind:function(arm,size=0x7c) addr:0x020c4d30
-func_ov043_020c4dac kind:function(arm,size=0x8) addr:0x020c4dac
-func_ov043_020c4db4 kind:function(arm,size=0x30) addr:0x020c4db4
-func_ov043_020c4de4 kind:function(arm,size=0x48) addr:0x020c4de4
-func_ov043_020c4e2c kind:function(arm,size=0x34) addr:0x020c4e2c
-func_ov043_020c4e60 kind:function(arm,size=0x14c) addr:0x020c4e60
-func_ov043_020c4fac kind:function(arm,size=0xa0) addr:0x020c4fac
-func_ov043_020c504c kind:function(arm,size=0x1bc) addr:0x020c504c
-func_ov043_020c5208 kind:function(arm,size=0x28) addr:0x020c5208
-func_ov043_020c5230 kind:function(arm,size=0x34) addr:0x020c5230
-func_ov043_020c5264 kind:function(arm,size=0x44) addr:0x020c5264
-func_ov043_020c52a8 kind:function(arm,size=0x34) addr:0x020c52a8
-func_ov043_020c52dc kind:function(arm,size=0x48) addr:0x020c52dc
-func_ov043_020c5324 kind:function(arm,size=0x68) addr:0x020c5324
-func_ov043_020c538c kind:function(arm,size=0x14) addr:0x020c538c
+Save_InitState kind:function(arm,size=0x90) addr:0x020bf250
+Save_CreateTasks kind:function(arm,size=0x1f4) addr:0x020bf2e0
+Save_ReloadCardTasks kind:function(arm,size=0x2c4) addr:0x020bf4d4
+Save_ChangePartner kind:function(arm,size=0xdc) addr:0x020bf798
+Save_StageFadeIn kind:function(arm,size=0xcc) addr:0x020bf874
+Save_StageFirstHelp kind:function(arm,size=0xc4) addr:0x020bf940
+Save_StageMain kind:function(arm,size=0x220) addr:0x020bfa04
+Save_StageStartSave kind:function(arm,size=0x54) addr:0x020bfc24
+Save_StageSaving kind:function(arm,size=0xf8) addr:0x020bfc78
+Save_StageSaved kind:function(arm,size=0x40) addr:0x020bfd70
+Save_StageHelp kind:function(arm,size=0x144) addr:0x020bfdb0
+Save_StageCloseHelp kind:function(arm,size=0x98) addr:0x020bfef4
+Save_StageFadeOut kind:function(arm,size=0xbc) addr:0x020bff8c
+Save_Init kind:function(arm,size=0x200) addr:0x020c0048
+Save_Update kind:function(arm,size=0x220) addr:0x020c0248
+Save_Destroy kind:function(arm,size=0x88) addr:0x020c0468
+ProcessOverlay_Save kind:function(arm,size=0x40) addr:0x020c04f0
+Save_InitDisplay kind:function(arm,size=0x4b8) addr:0x020c0530
+Save_VBlank kind:function(arm,size=0xe8) addr:0x020c09e8
+Save_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020c0ad0
+Save_DeregisterVBlank kind:function(arm,size=0x14) addr:0x020c0aec
+Save_IsPointInRect kind:function(arm,size=0x3c) addr:0x020c0b00
+Save_SetSpriteFrame kind:function(arm,size=0x4c) addr:0x020c0b3c
+Save_LoadPinData kind:function(arm,size=0x24) addr:0x020c0b88
+Save_LoadItemData kind:function(arm,size=0x24) addr:0x020c0bac
+Save_LoadFoodData kind:function(arm,size=0x24) addr:0x020c0bd0
+Save_LoadTreasureData kind:function(arm,size=0x24) addr:0x020c0bf4
+Save_GetBadgeSlotCount kind:function(arm,size=0x20) addr:0x020c0c18
+Save_SumPinPP kind:function(arm,size=0x14) addr:0x020c0c38
+Save_GetPinLevelPP kind:function(arm,size=0x14) addr:0x020c0c4c
+Save_GetPinNextLevelPP kind:function(arm,size=0x30) addr:0x020c0c60
+Save_LoadFromSave kind:function(arm,size=0x5c4) addr:0x020c0c90
+Save_LoadCard kind:function(arm,size=0x68) addr:0x020c1254
+Save_WriteSnapshot kind:function(arm,size=0x274) addr:0x020c12bc
+Save_GetIconAtPoint kind:function(arm,size=0xa8) addr:0x020c1530
+Save_IsPointOnSaveBtn kind:function(arm,size=0x60) addr:0x020c15d8
+Save_GetPartnerAtPoint kind:function(arm,size=0xa0) addr:0x020c1638
+Save_GetHelpBtnAtPoint kind:function(arm,size=0xe4) addr:0x020c16d8
+Save_LoadBgResource kind:function(arm,size=0x200) addr:0x020c17bc
+Save_LoadBgResourceIndexed kind:function(arm,size=0x228) addr:0x020c19bc
+Save_LoadBgScreen kind:function(arm,size=0xac) addr:0x020c1be4
+Save_ReleaseBgResource kind:function(arm,size=0x88) addr:0x020c1c90
+Save_ReleaseBgScreen kind:function(arm,size=0x38) addr:0x020c1d18
+Save_ReloadBgResource kind:function(arm,size=0x48) addr:0x020c1d50
+Save_ClearBgResource kind:function(arm,size=0x24) addr:0x020c1d98
+Save_LoadBackgrounds kind:function(arm,size=0x1dc) addr:0x020c1dbc
+Save_UpdateBackgrounds kind:function(arm,size=0x4) addr:0x020c1f98
+Save_ReleaseBackgrounds kind:function(arm,size=0x6c) addr:0x020c1f9c
+Save_icon_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c2008 local
+Save_icon_Load kind:function(arm,size=0xa8) addr:0x020c20a4 local
+Save_icon_Init kind:function(arm,size=0x20) addr:0x020c214c local
+Save_icon_Update kind:function(arm,size=0xa4) addr:0x020c216c local
+Save_icon_Render kind:function(arm,size=0x2c) addr:0x020c2210 local
+Save_icon_Destroy kind:function(arm,size=0x2c) addr:0x020c223c local
+Save_icon_RunTask kind:function(arm,size=0x48) addr:0x020c2268 local
+Save_icon_CreateTask kind:function(arm,size=0x34) addr:0x020c22b0
+Save_nameD_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c22e4 local
+Save_nameD_Load kind:function(arm,size=0x84) addr:0x020c2380 local
+Save_nameD_Init kind:function(arm,size=0x28) addr:0x020c2404 local
+Save_nameD_Update kind:function(arm,size=0x14) addr:0x020c242c local
+Save_nameD_Render kind:function(arm,size=0x14) addr:0x020c2440 local
+Save_nameD_Destroy kind:function(arm,size=0x14) addr:0x020c2454 local
+Save_nameD_RunTask kind:function(arm,size=0x48) addr:0x020c2468 local
+Save_nameD_CreateTask kind:function(arm,size=0x34) addr:0x020c24b0
+Save_nameU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c24e4 local
+Save_nameU_Load kind:function(arm,size=0x140) addr:0x020c2580 local
+Save_nameU_Init kind:function(arm,size=0x20) addr:0x020c26c0 local
+Save_nameU_Update kind:function(arm,size=0x68) addr:0x020c26e0 local
+Save_nameU_Render kind:function(arm,size=0x48) addr:0x020c2748 local
+Save_nameU_Destroy kind:function(arm,size=0x34) addr:0x020c2790 local
+Save_nameU_RunTask kind:function(arm,size=0x48) addr:0x020c27c4 local
+Save_nameU_CreateTask kind:function(arm,size=0x34) addr:0x020c280c
+Save_chara_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c2840 local
+Save_chara_Load kind:function(arm,size=0x1cc) addr:0x020c28dc local
+Save_chara_Init kind:function(arm,size=0x20) addr:0x020c2aa8 local
+Save_chara_Update kind:function(arm,size=0x34) addr:0x020c2ac8 local
+Save_chara_Render kind:function(arm,size=0x48) addr:0x020c2afc local
+Save_chara_Destroy kind:function(arm,size=0x34) addr:0x020c2b44 local
+Save_chara_RunTask kind:function(arm,size=0x48) addr:0x020c2b78 local
+Save_chara_CreateTask kind:function(arm,size=0x34) addr:0x020c2bc0
+Save_saveBtn_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c2bf4 local
+Save_saveBtn_Load kind:function(arm,size=0x84) addr:0x020c2c90 local
+Save_saveBtn_Init kind:function(arm,size=0x30) addr:0x020c2d14 local
+Save_saveBtn_Update kind:function(arm,size=0x68) addr:0x020c2d44 local
+Save_saveBtn_Render kind:function(arm,size=0x14) addr:0x020c2dac local
+Save_saveBtn_Destroy kind:function(arm,size=0x14) addr:0x020c2dc0 local
+Save_saveBtn_RunTask kind:function(arm,size=0x48) addr:0x020c2dd4 local
+Save_saveBtn_CreateTask kind:function(arm,size=0x34) addr:0x020c2e1c
+Save_partner_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c2e50 local
+Save_partner_Load kind:function(arm,size=0x104) addr:0x020c2eec local
+Save_partner_Init kind:function(arm,size=0x44) addr:0x020c2ff0 local
+Save_partner_Update kind:function(arm,size=0x170) addr:0x020c3034 local
+Save_partner_Render kind:function(arm,size=0x40) addr:0x020c31a4 local
+Save_partner_Destroy kind:function(arm,size=0x2c) addr:0x020c31e4 local
+Save_partner_RunTask kind:function(arm,size=0x48) addr:0x020c3210 local
+Save_partner_CreateTask kind:function(arm,size=0x34) addr:0x020c3258
+Save_textScr_InitFonts kind:function(arm,size=0x38) addr:0x020c328c local
+Save_textScr_DrawSaveInfo kind:function(arm,size=0x30c) addr:0x020c32c4 local
+Save_textScr_DrawNoSaveInfo kind:function(arm,size=0x70) addr:0x020c35d0 local
+Save_textScr_Draw kind:function(arm,size=0x2dc) addr:0x020c3640 local
+Save_textScr_Init kind:function(arm,size=0x28) addr:0x020c391c local
+Save_textScr_Update kind:function(arm,size=0x64) addr:0x020c3944 local
+Save_textScr_Render kind:function(arm,size=0x8) addr:0x020c39a8 local
+Save_textScr_Destroy kind:function(arm,size=0x30) addr:0x020c39b0 local
+Save_textScr_RunTask kind:function(arm,size=0x48) addr:0x020c39e0 local
+Save_textScr_CreateTask kind:function(arm,size=0x34) addr:0x020c3a28
+Save_helpCur_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c3a5c local
+Save_helpCur_Load kind:function(arm,size=0x100) addr:0x020c3af8 local
+Save_helpCur_Init kind:function(arm,size=0x20) addr:0x020c3bf8 local
+Save_helpCur_Update kind:function(arm,size=0xf8) addr:0x020c3c18 local
+Save_helpCur_Render kind:function(arm,size=0x40) addr:0x020c3d10 local
+Save_helpCur_Destroy kind:function(arm,size=0x2c) addr:0x020c3d50 local
+Save_helpCur_RunTask kind:function(arm,size=0x48) addr:0x020c3d7c local
+Save_helpCur_CreateTask kind:function(arm,size=0x34) addr:0x020c3dc4
+Save_textScrU_GetEsperRank kind:function(arm,size=0x94) addr:0x020c3df8 local
+Save_textScrU_GetEsperRankGrade kind:function(arm,size=0x88) addr:0x020c3e8c local
+Save_textScrU_GetEsperPointsGrade kind:function(arm,size=0x50) addr:0x020c3f14 local
+Save_textScrU_CalcNoiseReportPercent kind:function(arm,size=0x4c) addr:0x020c3f64 local
+Save_textScrU_GetNoiseReportGrade kind:function(arm,size=0x40) addr:0x020c3fb0 local
+Save_textScrU_CalcPinMasteryPercent kind:function(arm,size=0x54) addr:0x020c3ff0 local
+Save_textScrU_GetPinMasteryGrade kind:function(arm,size=0x40) addr:0x020c4044 local
+Save_textScrU_CalcItemCollectionPercent kind:function(arm,size=0x4c) addr:0x020c4084 local
+Save_textScrU_GetItemCollectionGrade kind:function(arm,size=0x40) addr:0x020c40d0 local
+Save_textScrU_SplitTime kind:function(arm,size=0xdc) addr:0x020c4110 local
+Save_textScrU_GetTimeAttackGrade kind:function(arm,size=0x60) addr:0x020c41ec local
+Save_textScrU_InitFonts kind:function(arm,size=0x38) addr:0x020c424c local
+Save_textScrU_DrawCard kind:function(arm,size=0x8e4) addr:0x020c4284 local
+Save_textScrU_DrawHelp kind:function(arm,size=0x1a0) addr:0x020c4b68 local
+Save_textScrU_Init kind:function(arm,size=0x28) addr:0x020c4d08 local
+Save_textScrU_Update kind:function(arm,size=0x7c) addr:0x020c4d30 local
+Save_textScrU_Render kind:function(arm,size=0x8) addr:0x020c4dac local
+Save_textScrU_Destroy kind:function(arm,size=0x30) addr:0x020c4db4 local
+Save_textScrU_RunTask kind:function(arm,size=0x48) addr:0x020c4de4 local
+Save_textScrU_CreateTask kind:function(arm,size=0x34) addr:0x020c4e2c
+Save_itemU_LoadPackedData kind:function(arm,size=0x14c) addr:0x020c4e60 local
+Save_itemU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020c4fac local
+Save_itemU_Load kind:function(arm,size=0x1bc) addr:0x020c504c local
+Save_itemU_Init kind:function(arm,size=0x28) addr:0x020c5208 local
+Save_itemU_Update kind:function(arm,size=0x34) addr:0x020c5230 local
+Save_itemU_Render kind:function(arm,size=0x44) addr:0x020c5264 local
+Save_itemU_Destroy kind:function(arm,size=0x34) addr:0x020c52a8 local
+Save_itemU_RunTask kind:function(arm,size=0x48) addr:0x020c52dc local
+Save_itemU_CreateTask kind:function(arm,size=0x68) addr:0x020c5324
+Save_itemU_ReleaseSprite kind:function(arm,size=0x14) addr:0x020c538c
 
 /////////////////////////////////////////////////////////////
-// src/Interface/Menu/Save/Save_BdgU.c
+// src/Interface/Menu/Save/Save_bdgU.c
 /////////////////////////////////////////////////////////////
-func_ov043_020c53a0 kind:function(arm,size=0x14c) addr:0x020c53a0
-Save_BdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020c54ec
-Save_BdgU_Load kind:function(arm,size=0x55c) addr:0x020c558c
-Save_BdgU_Init kind:function(arm,size=0x28) addr:0x020c5ae8
-Save_BdgU_Update kind:function(arm,size=0x34) addr:0x020c5b10
-Save_BdgU_Render kind:function(arm,size=0x44) addr:0x020c5b44
-Save_BdgU_Destroy kind:function(arm,size=0x34) addr:0x020c5b88
-Save_BdgU_RunTask kind:function(arm,size=0x48) addr:0x020c5bbc
-Save_BdgU_CreateTask kind:function(arm,size=0x94) addr:0x020c5c04
-func_ov043_020c5c98 kind:function(arm,size=0x14) addr:0x020c5c98
+Save_bdgU_LoadPackedData kind:function(arm,size=0x14c) addr:0x020c53a0 local
+Save_bdgU_GetFrameInfo kind:function(arm,size=0xa0) addr:0x020c54ec local
+Save_bdgU_Load kind:function(arm,size=0x55c) addr:0x020c558c local
+Save_bdgU_Init kind:function(arm,size=0x28) addr:0x020c5ae8 local
+Save_bdgU_Update kind:function(arm,size=0x34) addr:0x020c5b10 local
+Save_bdgU_Render kind:function(arm,size=0x44) addr:0x020c5b44 local
+Save_bdgU_Destroy kind:function(arm,size=0x34) addr:0x020c5b88 local
+Save_bdgU_RunTask kind:function(arm,size=0x48) addr:0x020c5bbc local
+Save_bdgU_CreateTask kind:function(arm,size=0x94) addr:0x020c5c04
+Save_bdgU_ReleaseSprite kind:function(arm,size=0x14) addr:0x020c5c98
 
 /////////////////////////////////////////////////////////////
-// src/Interface/Menu/Save/Save_SlotCoverU.c
+// src/Interface/Menu/Save/Save_slotCoverU.c
 /////////////////////////////////////////////////////////////
-Save_SlotCoverU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5cac
-Save_SlotCoverU_Load kind:function(arm,size=0xf0) addr:0x020c5d48
-Save_SlotCoverU_Init kind:function(arm,size=0x20) addr:0x020c5e38
-Save_SlotCoverU_Update kind:function(arm,size=0x14) addr:0x020c5e58
-Save_SlotCoverU_Render kind:function(arm,size=0x20) addr:0x020c5e6c
-Save_SlotCoverU_Destroy kind:function(arm,size=0x14) addr:0x020c5e8c
-Save_SlotCoverU_RunTask kind:function(arm,size=0x48) addr:0x020c5ea0
-Save_SlotCoverU_CreateTask kind:function(arm,size=0x38) addr:0x020c5ee8
+Save_slotCoverU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5cac local
+Save_slotCoverU_Load kind:function(arm,size=0xf0) addr:0x020c5d48 local
+Save_slotCoverU_Init kind:function(arm,size=0x20) addr:0x020c5e38 local
+Save_slotCoverU_Update kind:function(arm,size=0x14) addr:0x020c5e58 local
+Save_slotCoverU_Render kind:function(arm,size=0x20) addr:0x020c5e6c local
+Save_slotCoverU_Destroy kind:function(arm,size=0x14) addr:0x020c5e8c local
+Save_slotCoverU_RunTask kind:function(arm,size=0x48) addr:0x020c5ea0 local
+Save_slotCoverU_CreateTask kind:function(arm,size=0x38) addr:0x020c5ee8
 
 /////////////////////////////////////////////////////////////
-// src/Interface/Menu/Save/Save_HelpCurU.c
+// src/Interface/Menu/Save/Save_helpCurU.c
 /////////////////////////////////////////////////////////////
-Save_HelpCurU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5f20
-Save_HelpCurU_Load kind:function(arm,size=0xa8) addr:0x020c5fbc
-Save_HelpCurU_Init kind:function(arm,size=0x20) addr:0x020c6064
-Save_HelpCurU_Update kind:function(arm,size=0x74) addr:0x020c6084
-Save_HelpCurU_Render kind:function(arm,size=0x40) addr:0x020c60f8
-Save_HelpCurU_Destroy kind:function(arm,size=0x30) addr:0x020c6138
-Save_HelpCurU_RunTask kind:function(arm,size=0x48) addr:0x020c6168
-Save_HelpCurU_CreateTask kind:function(arm,size=0x34) addr:0x020c61b0
+Save_helpCurU_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5f20 local
+Save_helpCurU_Load kind:function(arm,size=0xa8) addr:0x020c5fbc local
+Save_helpCurU_Init kind:function(arm,size=0x20) addr:0x020c6064 local
+Save_helpCurU_Update kind:function(arm,size=0x74) addr:0x020c6084 local
+Save_helpCurU_Render kind:function(arm,size=0x40) addr:0x020c60f8 local
+Save_helpCurU_Destroy kind:function(arm,size=0x30) addr:0x020c6138 local
+Save_helpCurU_RunTask kind:function(arm,size=0x48) addr:0x020c6168 local
+Save_helpCurU_CreateTask kind:function(arm,size=0x34) addr:0x020c61b0
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
@@ -3533,71 +3533,65 @@ Depart_cur_Anim kind:data(any) addr:0x020caf18 local
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
 /////////////////////////////////////////////////////////////
-OvlProc_Save kind:data(any) addr:0x020caf44
-data_ov043_020caf50 kind:data(any) addr:0x020caf50
-data_ov043_020caf68 kind:data(any) addr:0x020caf68
-data_ov043_020caf70 kind:data(any) addr:0x020caf70
-data_ov043_020caf88 kind:data(any) addr:0x020caf88
-data_ov043_020caf90 kind:data(any) addr:0x020caf90
-data_ov043_020caf98 kind:data(any) addr:0x020caf98
-data_ov043_020cafa0 kind:data(any) addr:0x020cafa0
-data_ov043_020cafa8 kind:data(any) addr:0x020cafa8
-data_ov043_020cafb0 kind:data(any) addr:0x020cafb0
-data_ov043_020cafb8 kind:data(any) addr:0x020cafb8
-data_ov043_020cafc0 kind:data(any) addr:0x020cafc0
-data_ov043_020cafc8 kind:data(any) addr:0x020cafc8
-data_ov043_020cafd0 kind:data(any) addr:0x020cafd0
-data_ov043_020cafd8 kind:data(any) addr:0x020cafd8
-data_ov043_020cb010 kind:data(any) addr:0x020cb010
-data_ov043_020cb01c kind:data(any) addr:0x020cb01c
-data_ov043_020cb02c kind:data(any) addr:0x020cb02c
-data_ov043_020cb058 kind:data(any) addr:0x020cb058
-data_ov043_020cb064 kind:data(any) addr:0x020cb064
-data_ov043_020cb074 kind:data(any) addr:0x020cb074
-data_ov043_020cb0a0 kind:data(any) addr:0x020cb0a0
-data_ov043_020cb0ac kind:data(any) addr:0x020cb0ac
-data_ov043_020cb0bc kind:data(any) addr:0x020cb0bc
-data_ov043_020cb0cc kind:data(any) addr:0x020cb0cc
-data_ov043_020cb0f8 kind:data(any) addr:0x020cb0f8
-data_ov043_020cb104 kind:data(any) addr:0x020cb104
-data_ov043_020cb114 kind:data(any) addr:0x020cb114
-data_ov043_020cb124 kind:data(any) addr:0x020cb124
-data_ov043_020cb150 kind:data(any) addr:0x020cb150
-data_ov043_020cb15c kind:data(any) addr:0x020cb15c
-data_ov043_020cb16c kind:data(any) addr:0x020cb16c
-data_ov043_020cb194 kind:data(any) addr:0x020cb194 ambiguous
-data_ov043_020cb198 kind:data(any) addr:0x020cb198
-data_ov043_020cb1a4 kind:data(any) addr:0x020cb1a4
-data_ov043_020cb1b4 kind:data(any) addr:0x020cb1b4
-data_ov043_020cb1e0 kind:data(any) addr:0x020cb1e0
-data_ov043_020cb1ec kind:data(any) addr:0x020cb1ec
-data_ov043_020cb1fc kind:data(any) addr:0x020cb1fc
-data_ov043_020cb224 kind:data(any) addr:0x020cb224
-data_ov043_020cb230 kind:data(any) addr:0x020cb230
-data_ov043_020cb240 kind:data(any) addr:0x020cb240
-data_ov043_020cb26c kind:data(any) addr:0x020cb26c
-data_ov043_020cb284 kind:data(any) addr:0x020cb284
-data_ov043_020cb294 kind:data(any) addr:0x020cb294
-data_ov043_020cb2ec kind:data(any) addr:0x020cb2ec
-data_ov043_020cb2f8 kind:data(any) addr:0x020cb2f8
-data_ov043_020cb308 kind:data(any) addr:0x020cb308
-data_ov043_020cb32c kind:data(any) addr:0x020cb32c
-data_ov043_020cb358 kind:data(any) addr:0x020cb358
-Tsk_Save_bdgU kind:data(any) addr:0x020cb35c
-data_ov043_020cb368 kind:data(any) addr:0x020cb368
-data_ov043_020cb378 kind:data(any) addr:0x020cb378
-data_ov043_020cb390 kind:data(any) addr:0x020cb390
-Tsk_Save_slotCoverU kind:data(any) addr:0x020cb3bc
-data_ov043_020cb3c8 kind:data(any) addr:0x020cb3c8
-data_ov043_020cb3d8 kind:data(any) addr:0x020cb3d8
-data_ov043_020cb3f0 kind:data(any) addr:0x020cb3f0
+OvlProc_Save kind:data(any) addr:0x020caf44 local
+Save_BinIdentifiers kind:data(any) addr:0x020caf50
+@1705 kind:data(any) addr:0x020cafd8 local
+@1718 kind:data(any) addr:0x020cafdc local
+@1690 kind:data(any) addr:0x020cafe0 local
+@1707 kind:data(any) addr:0x020cafe4 local
+@1716 kind:data(any) addr:0x020cafe8 local
+@1688 kind:data(any) addr:0x020cafee local
+@1733 kind:data(any) addr:0x020caff6 local
+@1735 kind:data(any) addr:0x020cb002 local
+Tsk_Save_icon kind:data(any) addr:0x020cb010 local
+@1548 kind:data(any) addr:0x020cb01c local
+Save_icon_Anim kind:data(any) addr:0x020cb02c local
+Tsk_Save_nameD kind:data(any) addr:0x020cb058 local
+@1518 kind:data(any) addr:0x020cb064 local
+Save_nameD_Anim kind:data(any) addr:0x020cb074 local
+Tsk_Save_nameU kind:data(any) addr:0x020cb0a0 local
+@1550 kind:data(any) addr:0x020cb0ac local
+@1483 kind:data(any) addr:0x020cb0bc local
+Save_nameU_Anim kind:data(any) addr:0x020cb0cc local
+Tsk_Save_chara kind:data(any) addr:0x020cb0f8 local
+@1571 kind:data(any) addr:0x020cb104 local
+@1485 kind:data(any) addr:0x020cb114 local
+Save_chara_Anim kind:data(any) addr:0x020cb124 local
+Tsk_Save_saveBtn kind:data(any) addr:0x020cb150 local
+@1525 kind:data(any) addr:0x020cb15c local
+Save_saveBtn_Anim kind:data(any) addr:0x020cb16c local
+Tsk_Save_partner kind:data(any) addr:0x020cb198 local
+@1602 kind:data(any) addr:0x020cb1a4 local
+Save_partner_Anim kind:data(any) addr:0x020cb1b4 local
+Tsk_Save_textScr kind:data(any) addr:0x020cb1e0 local
+@1741 kind:data(any) addr:0x020cb1ec local
+@1666 kind:data(any) addr:0x020cb1fc local
+Tsk_Save_helpCur kind:data(any) addr:0x020cb224 local
+@1567 kind:data(any) addr:0x020cb230 local
+Save_helpCur_Anim kind:data(any) addr:0x020cb240 local
+Tsk_Save_textScrU kind:data(any) addr:0x020cb26c local
+@1876 kind:data(any) addr:0x020cb284 local
+@1774 kind:data(any) addr:0x020cb294 local
+Tsk_Save_itemU kind:data(any) addr:0x020cb2ec local
+@1617 kind:data(any) addr:0x020cb2f8 local
+@1557 kind:data(any) addr:0x020cb308 local
+Save_itemU_Anim kind:data(any) addr:0x020cb32c local
+@1557 kind:data(any) addr:0x020cb358 local
+Tsk_Save_bdgU kind:data(any) addr:0x020cb35c local
+@1664 kind:data(any) addr:0x020cb368 local
+@1561 kind:data(any) addr:0x020cb378 local
+Save_bdgU_Anim kind:data(any) addr:0x020cb390 local
+Tsk_Save_slotCoverU kind:data(any) addr:0x020cb3bc local
+@1524 kind:data(any) addr:0x020cb3c8 local
+@1484 kind:data(any) addr:0x020cb3d8 local
+Save_slotCoverU_Anim kind:data(any) addr:0x020cb3f0 local
 
 /////////////////////////////////////////////////////////////
-// src/Interface/Menu/Save/Save_HelpCurU.c
+// src/Interface/Menu/Save/Save_helpCurU.c
 /////////////////////////////////////////////////////////////
 Tsk_Save_helpCurU kind:data(any) addr:0x020cb41c local
 @1348 kind:data(any) addr:0x020cb428 local
-Save_HelpCurU_Animation kind:data(any) addr:0x020cb438 local
+Save_helpCurU_Anim kind:data(any) addr:0x020cb438 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c
@@ -4405,44 +4399,44 @@ data_ov043_020ccdd0 kind:data(any) addr:0x020ccdd0
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cce74 kind:data(any) addr:0x020cce74
-data_ov043_020cce78 kind:data(any) addr:0x020cce78
-data_ov043_020cce84 kind:data(any) addr:0x020cce84
-data_ov043_020cce98 kind:data(any) addr:0x020cce98
-data_ov043_020cceac kind:data(any) addr:0x020cceac
-data_ov043_020ccec4 kind:data(any) addr:0x020ccec4
-data_ov043_020ccedc kind:data(any) addr:0x020ccedc
-data_ov043_020ccef4 kind:data(any) addr:0x020ccef4
-data_ov043_020ccf0c kind:data(any) addr:0x020ccf0c
-data_ov043_020ccf28 kind:data(any) addr:0x020ccf28
-data_ov043_020ccf44 kind:data(any) addr:0x020ccf44
-data_ov043_020ccf60 kind:data(any) addr:0x020ccf60
-data_ov043_020ccf7c kind:data(any) addr:0x020ccf7c
-data_ov043_020ccf98 kind:data(any) addr:0x020ccf98
-data_ov043_020ccfb4 kind:data(any) addr:0x020ccfb4
-data_ov043_020ccfd0 kind:data(any) addr:0x020ccfd0
-data_ov043_020ccfec kind:data(any) addr:0x020ccfec
-data_ov043_020cd008 kind:data(any) addr:0x020cd008
-data_ov043_020cd024 kind:data(any) addr:0x020cd024
-data_ov043_020cd044 kind:data(any) addr:0x020cd044
-data_ov043_020cd050 kind:data(any) addr:0x020cd050
-data_ov043_020cd05c kind:data(any) addr:0x020cd05c
-data_ov043_020cd068 kind:data(any) addr:0x020cd068
-data_ov043_020cd078 kind:data(any) addr:0x020cd078
-data_ov043_020cd088 kind:data(any) addr:0x020cd088
-data_ov043_020cd098 kind:data(any) addr:0x020cd098
-data_ov043_020cd0a8 kind:data(any) addr:0x020cd0a8
-data_ov043_020cd0b8 kind:data(any) addr:0x020cd0b8
-data_ov043_020cd0cc kind:data(any) addr:0x020cd0cc
-data_ov043_020cd0e0 kind:data(any) addr:0x020cd0e0
-data_ov043_020cd0f4 kind:data(any) addr:0x020cd0f4
-data_ov043_020cd108 kind:data(any) addr:0x020cd108
-data_ov043_020cd11c kind:data(any) addr:0x020cd11c
-data_ov043_020cd12c kind:data(any) addr:0x020cd12c
-data_ov043_020cd13c kind:data(any) addr:0x020cd13c
+Save_SequenceName kind:data(any) addr:0x020cce74 local
+@1838 kind:data(byte[11]) addr:0x020cce78 local
+Save_FriendDataName kind:data(byte[17]) addr:0x020cce84 local
+@1839 kind:data(byte[19]) addr:0x020cce98 local
+@1842 kind:data(byte[21]) addr:0x020cceac local
+@1840 kind:data(byte[21]) addr:0x020ccec4 local
+@1841 kind:data(byte[21]) addr:0x020ccedc local
+@1843 kind:data(byte[22]) addr:0x020ccef4 local
+@1844 kind:data(byte[25]) addr:0x020ccf0c local
+@1845 kind:data(byte[25]) addr:0x020ccf28 local
+@1846 kind:data(byte[25]) addr:0x020ccf44 local
+@1847 kind:data(byte[26]) addr:0x020ccf60 local
+@1850 kind:data(byte[27]) addr:0x020ccf7c local
+@1851 kind:data(byte[27]) addr:0x020ccf98 local
+@1852 kind:data(byte[27]) addr:0x020ccfb4 local
+@1848 kind:data(byte[27]) addr:0x020ccfd0 local
+@1849 kind:data(byte[27]) addr:0x020ccfec local
+@1853 kind:data(byte[27]) addr:0x020cd008 local
+@1854 kind:data(byte[29]) addr:0x020cd024 local
+@2253 kind:data(byte[11]) addr:0x020cd044 local
+@2254 kind:data(byte[10]) addr:0x020cd050 local
+@2255 kind:data(byte[10]) addr:0x020cd05c local
+@2256 kind:data(byte[14]) addr:0x020cd068 local
+@1463 kind:data(byte[14]) addr:0x020cd078 local
+@1463 kind:data(byte[15]) addr:0x020cd088 local
+@1463 kind:data(byte[15]) addr:0x020cd098 local
+@1463 kind:data(byte[15]) addr:0x020cd0a8 local
+@1463 kind:data(byte[17]) addr:0x020cd0b8 local
+@1488 kind:data(byte[17]) addr:0x020cd0cc local
+@1592 kind:data(byte[17]) addr:0x020cd0e0 local
+@1463 kind:data(byte[17]) addr:0x020cd0f4 local
+@1877 kind:data(byte[18]) addr:0x020cd108 local
+@1499 kind:data(byte[15]) addr:0x020cd11c local
+@1499 kind:data(byte[14]) addr:0x020cd12c local
+@1463 kind:data(byte[20]) addr:0x020cd13c local
 
 /////////////////////////////////////////////////////////////
-// src/Interface/Menu/Save/Save_HelpCurU.c
+// src/Interface/Menu/Save/Save_helpCurU.c
 /////////////////////////////////////////////////////////////
 @1263 kind:data(byte[18]) addr:0x020cd150 local
 
@@ -4491,7 +4485,7 @@ data_ov043_020cd28c kind:bss addr:0x020cd28c
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/Save.c
 /////////////////////////////////////////////////////////////
-data_ov043_020cd290 kind:bss addr:0x020cd290
+.bss kind:data(byte[0]) addr:0x020cd290 local
 
 /////////////////////////////////////////////////////////////
 // src/Debug/Takami/NRep.c

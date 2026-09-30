@@ -778,18 +778,89 @@ src/Interface/Menu/Depart/Depart_cur.c:
     .data       start:0x020cce64 end:0x020cce74
 
 src/Interface/Menu/Save.c:
-    .text       start:0x020bf250 end:0x020c53a0
-    .rodata     start:0x020caf44 end:0x020cb41c
-    .data       start:0x020cce74 end:0x020cd150
+    .text       start:0x020bf250 end:0x020c0b00
+    .rodata     start:0x020caf44 end:0x020cafd8
+    .data       start:0x020cce74 end:0x020cd044
     .bss        start:0x020cd290 end:0x020cd294
 
-src/Interface/Menu/Save/Save_BdgU.c:
+src/Interface/Menu/SaveData.c:
+    .text       start:0x020c0b00 end:0x020c2008
+    .rodata     start:0x020cafd8 end:0x020cb010
+    .data       start:0x020cd044 end:0x020cd078
+
+src/Interface/Menu/Save/Save_icon.c:
+    complete
+    .text       start:0x020c2008 end:0x020c22e4
+    .rodata     start:0x020cb010 end:0x020cb058
+    .data       start:0x020cd078 end:0x020cd088
+
+src/Interface/Menu/Save/Save_nameD.c:
+    complete
+    .text       start:0x020c22e4 end:0x020c24e4
+    .rodata     start:0x020cb058 end:0x020cb0a0
+    .data       start:0x020cd088 end:0x020cd098
+
+src/Interface/Menu/Save/Save_nameU.c:
+    complete
+    .text       start:0x020c24e4 end:0x020c2840
+    .rodata     start:0x020cb0a0 end:0x020cb0f8
+    .data       start:0x020cd098 end:0x020cd0a8
+
+src/Interface/Menu/Save/Save_chara.c:
+    complete
+    .text       start:0x020c2840 end:0x020c2bf4
+    .rodata     start:0x020cb0f8 end:0x020cb150
+    .data       start:0x020cd0a8 end:0x020cd0b8
+
+src/Interface/Menu/Save/Save_saveBtn.c:
+    complete
+    .text       start:0x020c2bf4 end:0x020c2e50
+    .rodata     start:0x020cb150 end:0x020cb198
+    .data       start:0x020cd0b8 end:0x020cd0cc
+
+src/Interface/Menu/Save/Save_partner.c:
+    complete
+    .text       start:0x020c2e50 end:0x020c328c
+    .rodata     start:0x020cb198 end:0x020cb1e0
+    .data       start:0x020cd0cc end:0x020cd0e0
+
+src/Interface/Menu/Save/Save_textScr.c:
+    complete
+    .text       start:0x020c328c end:0x020c3a5c
+    .rodata     start:0x020cb1e0 end:0x020cb224
+    .data       start:0x020cd0e0 end:0x020cd0f4
+
+src/Interface/Menu/Save/Save_helpCur.c:
+    complete
+    .text       start:0x020c3a5c end:0x020c3df8
+    .rodata     start:0x020cb224 end:0x020cb26c
+    .data       start:0x020cd0f4 end:0x020cd108
+
+src/Interface/Menu/Save/Save_textScrU.c:
+    complete
+    .text       start:0x020c3df8 end:0x020c4e60
+    .rodata     start:0x020cb26c end:0x020cb2ec
+    .data       start:0x020cd108 end:0x020cd11c
+
+src/Interface/Menu/Save/Save_itemU.c:
+    complete
+    .text       start:0x020c4e60 end:0x020c53a0
+    .rodata     start:0x020cb2ec end:0x020cb358
+    .data       start:0x020cd11c end:0x020cd12c
+
+src/Interface/Menu/Save/Save_bdgU.c:
+    complete
     .text       start:0x020c53a0 end:0x020c5cac
+    .rodata     start:0x020cb358 end:0x020cb3bc
+    .data       start:0x020cd12c end:0x020cd13c
 
-src/Interface/Menu/Save/Save_SlotCoverU.c:
+src/Interface/Menu/Save/Save_slotCoverU.c:
+    complete
     .text       start:0x020c5cac end:0x020c5f20
+    .rodata     start:0x020cb3bc end:0x020cb41c
+    .data       start:0x020cd13c end:0x020cd150
 
-src/Interface/Menu/Save/Save_HelpCurU.c:
+src/Interface/Menu/Save/Save_helpCurU.c:
     complete
     .text       start:0x020c5f20 end:0x020c61e4
     .rodata     start:0x020cb41c end:0x020cb464

@@ -1017,7 +1017,7 @@ s32 func_02023f60(u32 arg0, u32 arg1) {
     return 1;
 }
 
-u32 func_02024080(void) {
+u32 Inventory_GetNoiseReportCount(void) {
     MainData* mainData = &gSaveState.unk_20;
 
     u32 var_r0 = 0;
@@ -1056,7 +1056,7 @@ s32 func_020240e0(u16 arg0, void* arg1) {
     return 0;
 }
 
-u16 func_020241b0(void) {
+u16 Inventory_GetMasteredPinCount(void) {
     u16 i;
 
     u16   var_r5    = 0;
@@ -1075,7 +1075,7 @@ u16 func_020241b0(void) {
     return var_r5;
 }
 
-u32 func_02024244(void) {
+u32 Inventory_GetCollectedItemCount(void) {
     u32 var_r0 = 0;
 
     MainData* mainData = &gSaveState.unk_20;
