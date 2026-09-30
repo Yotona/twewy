@@ -298,6 +298,16 @@ libs/CriWare/cri_cvfs.c:
     .data       start:0x02064894 end:0x02064cf4
     .bss        start:0x020703e0 end:0x02070774
 
+libs/CriWare/adx_rna.c:
+    categories: CriWare, Library
+    .text       start:0x0201bf78 end:0x0201bfa0
+    .bss        start:0x02070a48 end:0x02070a58
+
+libs/CriWare/adx_rna2.c:
+    categories: CriWare, Library
+    .text       start:0x0201d558 end:0x0201d580
+    .bss        start:0x020713b4 end:0x020713bc
+
 libs/CriWare/acssvr.c:
     categories: CriWare, Library
     .text       start:0x0201ef48 end:0x0201f568
