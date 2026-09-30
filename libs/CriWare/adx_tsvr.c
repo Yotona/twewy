@@ -76,7 +76,11 @@ void func_0201bf70(void* rna, s32* p);
 s32 func_020130dc(s8* data, s32 len, s16* ofst);
 s32 func_02013868(s8* data, s32 len, s16* ofst);
 // in the sj_utl / LSC-amp gaps, which have no source file yet
-void func_0201a670(s32 ofst, SJCK* in, SJCK* out);
+// SJ_SplitChunk: four arguments -- (chunk, nbyte, out1, out2), and the
+// first and third are normally the *same* chunk, i.e. it splits in place.
+// adx_stmc.c already calls it this way; the declaration and the two call
+// sites here were wrong, which put the offset in the chunk-pointer slot.
+void func_0201a670(SJCK* ck, s32 nbyte, SJCK* ck1, SJCK* ck2);
 s32  func_02021534(s8* data, s32 len, s16* ofst);
 // adx_tlk.c
 void adxt_start_stm(ADXT adxt, const char* filename, void* dir, s32 ofst, s32 range);
@@ -325,12 +329,12 @@ void func_02018238(ADXT adxt) {
 
     if (ret0 == 0) {
         SJ_UngetChunk(sji, 1, &ckC);
-        func_0201a670(skip + ofst1, &ckA, &ckB);
+        func_0201a670(&ckA, skip + ofst1, &ckA, &ckB);
         SJ_PutChunk(sji, 0, &ckA);
         SJ_UngetChunk(sji, 1, &ckB);
     } else {
         SJ_PutChunk(sji, 0, &ckA);
-        func_0201a670(zero + ofst0, &ckC, &ckD);
+        func_0201a670(&ckC, zero + ofst0, &ckC, &ckD);
         SJ_PutChunk(sji, 0, &ckC);
         SJ_UngetChunk(sji, 1, &ckD);
     }

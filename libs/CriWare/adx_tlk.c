@@ -637,12 +637,54 @@ void ADXT_SetLpFlg(ADXT adxt, s32 flag) {
     func_02012f8c();
 }
 
+// adx_sjd.c accessors, no public header declares these
+u32 func_020158e4(ADXSJD* sjd); // GetDecDtLen
+s32 func_020159a8(ADXSJD* sjd); // GetAinfLen
+s32 func_020159d4(ADXSJD* sjd); // GetLpEndOfst
+s32 _s32_div_f(s32 a, s32 b);
+// Turning looping off has to re-derive the loop length from how much is
+// actually buffered, so this is not the one-line lpflg = flg the PS2
+// reference shows -- NITRO grew the recompute.
+//
+// The loop span is a whole number of 2048-byte sectors, so both the AIFF
+// header and the loop end are rounded up before being scaled; and the
+// usable length is then truncated down to a whole number of spans. The
+// (x + 2047) / 2048 roundings here are the biased form and *do* match --
+// unlike ADXSTMF_SetupHandleMember, which needs the divide-plus-remainder
+// spelling instead.
 void adxt_SetLpFlg(ADXT adxt, s32 flag) {
+    s32 ndata;
+    s32 len;
+    s32 ainf_sect;
+    s32 lp_sect;
+
     if (adxt == NULL) {
         ADXERR_CallErrFunc1("E02080828 adxt_SetLpFlg: parameter error");
         return;
     }
-    /* NYI */
+
+    if (adxt->sji != NULL) {
+        ndata = SJ_GetNumData(adxt->sji, 1);
+    } else {
+        ndata = 0;
+    }
+
+    if (adxt->pmode != ADXT_PLAYBACK_SLFILE && adxt->lpflg == 1 && flag == 0) {
+        ndata += func_020158e4(adxt->sjd);
+
+        ainf_sect = (func_020159a8(adxt->sjd) + 2047) / 2048;
+        lp_sect   = (func_020159d4(adxt->sjd) + 2047) / 2048;
+
+        len = (lp_sect << 11) - (ainf_sect << 11);
+
+        if (len <= 0) {
+            adxt->loopDecodeLength = 0;
+        } else {
+            adxt->loopDecodeLength = _s32_div_f(ndata - (ainf_sect << 11), len) * len + (ainf_sect << 11);
+        }
+    }
+
+    adxt->lpflg = flag;
 }
 
 void ADXT_Pause(ADXT adxt, s32 pauseState) {
