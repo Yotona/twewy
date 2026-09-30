@@ -65,22 +65,26 @@ void ADXSTM_Finish(void) {
     __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
 }
 
-// Nonmatching: 29%. Structure and every field store match; only the round-up
-// division differs. The target computes the sector count as
+// esct is ceil(file_len / 2048). The target computes it as a divide plus a
+// remainder correction, not as a biased divide: the magic sequence at
 //   mov r1, r5, lsr #31 / rsb r0, r1, r5, lsl #21 / add r0, r1, r0, ror #21 /
-//   cmp r0, #0 / mov r0, r5, asr #11 / ... / movle r3, r2 / add r0, r5, r0,
-//   lsr #21 / add r0, r3, r0, asr #11
-// i.e. a magic-multiply divide by 0x200000 whose quotient only supplies a
-// 0/1 correction that is then ADDED to (file_len >> 11). Neither
-// `file_len / 0x800` nor the PS2 reference's round-up form
-// (`file_len / 0x800; if (remainder) sct++`) reproduces it -- the latter scores
-// worse (23%). Closing this needs the exact original expression.
+//   cmp r0, #0 / mov r0, r5, asr #10
+// yields the quotient, and the `cmp` against 0 decides a 0/1 term that is then
+// added, materialised as `mov r3, #1` up front and `movle r3, r2` (r2 == 0)
+// later. So it is `/ 2048` AND `% 2048` in one go.
+//
+// The second PS2 reference decomp (AshfordFamily/recvx) writes the biased
+// `(fsize + 2047) / 2048` instead. That is the same value but does NOT
+// reproduce this codegen: it scores 23%, against 70% for the divide-plus-
+// remainder spelling. mwcc canonicalises `/`+`%` and the ternary form to the
+// same 63-instruction shape, so only the biased form is distinguishable -- and
+// it is the wrong one here.
 void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, s32 arg2, s32 file_len, SJ sj) {
     s32 file_sct;
 
     func_020168d0(); // ADXCRS_Lock
 
-    file_sct = file_len / 0x800;
+    file_sct = (file_len / 2048) + ((file_len % 2048) ? 1 : 0);
 
     stm->unk_01      = 1;
     stm->unk_02      = 0;
