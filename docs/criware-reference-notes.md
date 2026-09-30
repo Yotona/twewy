@@ -622,6 +622,9 @@ validates the bss layout changes).
 | `adx_sjd/func_02014e74` (4-arg header reader) | 0.77 | 83.92 |
 | `adx_sjd/func_02014f44` (main decode step, 0x400) | 0.16 | 97.23 |
 | `adx_sjd/func_02014b94` (state-1 arm, 0x2E0) | 0.22 | 99.92 |
+| `adx_sjd/func_02015344` (decode-done, 0x1AC) | 0.37 | 99.07 |
+| `adx_sjd/func_0201562c` (supply zero-pad, 0x130) | 0.53 | 99.14 |
+| `adx_sjd/func_0201575c` (supply channel move, 0x11C) | 0.56 | 99.23 |
 | `adx_sjd/func_02015878` (`ADXSJD_ExecServer`) | 0.42 | **100.0** |
 | `adx_sjd/func_020122fc`→`adx_bsc/adxb_clear` | 6.30 | 79.61 |
 | `adx_stmc/ADXSTM_Init` | **0 (absent)** | 99.91 |
@@ -703,7 +706,7 @@ What probes settled that guessing had not:
   form turned up *only* in the `%` position. Reading the target's `i` as a
   counter does not tell you which it is; the instruction count does. This was
   worth 1.8% on `func_02014b94` and also explains the `asr #10 / add lsr #21 /
-  asr #11` pattern noted in §13.0.4 - that is a `%`/`/` by 2048, and the
+  asr #11` pattern noted in §13.0.7 - that is a `%`/`/` by 2048, and the
   rounding term is what distinguishes the signed-divide lowering from a shift.
 - **mwcc bottom-tests a combined `while (a && b)`.** It hoists both increments
   above the test and jumps into the test block. Eight different spellings
@@ -773,7 +776,67 @@ Note `adxt_ExecServer` in `adx_tlk.c` is *still* `/* NYI */` — it calls
 `adxt_ExecHndl`, which now exists, but it also needs `adxt_tsvr_enter_cnt` and the
 not-yet-written state handlers to be worth enabling.
 
-### 13.0.4 mwcc findings from the eight handlers
+### 13.0.4 `/` and `%` are not interchangeable, in either direction
+
+Worth stating separately because it cuts the opposite way from §13.0.1.
+`func_02014b94` needs `i % 2` (three-instruction lowering) and
+`func_0201562c` / `func_0201575c` need `nbyte / 2` (two-instruction). Both are
+"divide by two" on an `s32`; the choice is decided by what the *result* is
+used for, not by the arithmetic:
+
+- `func_02014b94` tests parity — "is the leading-zero count odd, i.e. is the
+  data misaligned" — so it is a `%` against 1.
+- `func_0201562c`/`func_0201575c` round a byte count down to a whole sample
+  and then multiply back by two, so it is a `/` by 2.
+
+Writing the "equivalent" operator in either function costs a few percent.
+Read the *use* of the quotient, not the operator's meaning.
+
+### 13.0.5 A local can be held in some places and re-read in others
+
+`func_02015344` is the case that cost the most time here (90.4% → 99.07%).
+The target reads its `ADXB` from two different places:
+
+```
+str r0, [sp, #4]      ; prologue: stored to a spill slot
+ldr r0, [sp, #4]      ;   ... and reloaded for each of the first four calls
+ldr r0, [r10, #4]     ; inside the loop: read straight off sjd
+ldr r0, [sp, #4]      ; epilogue: the spill slot again, for ADXB_Reset
+```
+
+So the source is a hybrid: `ADXB adxb = sjd->adxb;` used in the prologue and
+the final call, with `sjd->adxb` written out explicitly in the loop. Holding
+the local everywhere scored 86.6%, dropping it entirely scored 90.4%, and the
+hybrid scored 99.07 — the spill only happens in the hybrid, and the spill is
+what makes the frame 0x18 and every register in the loop land where the target
+has it.
+
+The general lesson: when a target loads the same struct field from a spill
+slot in one region and from the base register in another, do not "clean that
+up". It is a real asymmetry in the original source, and it is usually the
+whole difference.
+
+### 13.0.6 Sweep scripts must scope their edits
+
+The declaration sweep that found the `func_02015344` shape used a file-global
+`str.replace` on `ADXB_GetFormat(adxb)`. It rewrote that inside
+`func_02014b94` and `func_02014f44` as well, and the `finally` block wrote the
+best-scoring variant back over both — silently regressing two functions that
+were already at 99.9% and 97.2%. The tell was that the per-function numbers
+looked fine while the ROM-level totals barely moved.
+
+Rules for a sweep here:
+- Anchor every replacement on the function's own text slice, extracted by name.
+- Assert the match count is exactly 1.
+- Re-measure **every** function in the file afterwards, not just the target.
+- Keep a way back: `git show HEAD:<path>` and a per-function extract-and-restore
+  is enough to undo it without losing concurrent work.
+
+
+Three of these cost real time and are worth recording, because none of them are
+guessable from the C:
+
+### 13.0.7 mwcc findings from the eight handlers
 
 Three of these cost real time and are worth recording, because none of them are
 guessable from the C:
@@ -869,11 +932,15 @@ Two earlier findings also turned out to be wrong and are corrected here:
 * `adx_sjd/func_02014e74`'s residual 16% — the three out-pointer registers and
   the loop's `GetNumChan` reload are the only differences, and the two ways of
   spelling the guard (hoisted `nch` vs. re-called) both score below the current
-  form, so there is nothing left to try short of the permuter.
+  form, so there is nothing left to try short of the permuter. This is now the
+  worst function in `adx_sjd.c` and the only one still under 90%.
 * `adx_sjd/func_02014f44`'s residual 2.8% — `sjd->sjo[0]` hoisted into r8
   instead of r0, decpos in r1 rather than r8, and the near-done flag folding to
   one `movne` where the target keeps a separate `mov` + `b`. Purely register
   choice; every other instruction matches.
+* `adx_sjd/{func_02015344, 0201562c, 0201575c}`'s residuals — one register swap
+  or one sunk load each, measured across six declaration orders and an
+  inlined-sji variant. Not worth more.
 * Chasing `func_02014b94` above 99.92%. The body is already
   instruction-for-instruction identical; the residue is three literal-pool
   relocations that objdiff names `data_020639cc` / `data_020639ec` /
