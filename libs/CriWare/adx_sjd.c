@@ -171,6 +171,7 @@ void ADXSJD_Stop(ADXSJD* sjd) {
 // check (< 0x10 bails), ADXB scan, spsdinfo memcpy, and a five-way
 // adxb->format test {10,20,11,12,15} before setting state = 2. Four error
 // strings at 0x020639ac/9cc/9ec/a0c. Needs the error strings to match.
+void func_02014b94(ADXSJD* sjd) {}
 
 // Fills three caller-supplied counts and returns the decoder's PCM buffer.
 // unk_14 is really SJCK cki at 0x14 plus cko[2] at 0x1C (the header models the
@@ -201,13 +202,156 @@ void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
     ADXB_GetPcmBuf(sjd->adxb);
 }
 
-// Nonmatching: stub (0.2%, 0x400 bytes) -- the largest of the six.
-// Called from func_02015554 when adxb->stat == 0, so it is the main
-// decode step. Not yet decoded.
+// BSWAP_U16_EX from retail CriWare's sj.h, which this tree does not carry.
+// The argument is read as a signed 16-bit word, hence the asr in the codegen.
+#define BSWAP_U16_EX(x) ((u16)(s16)(((((s16)(x)) >> 8) & 0xFF) | ((((s16)(x)) << 8) & 0xFF00)))
+
+// Nonmatching: 95.4% (0x400 bytes, the largest function in this file). What is
+// left is register choice only -- the zero-scan loop wants its byte test as the
+// loop head with the bound test in the latch, and mwcc rotates it the other way
+// whichever order the two conditions are written in; sjd->sjo[0] gets hoisted
+// into r8 instead of being passed straight in r0; and decpos lands in r1 rather
+// than r8. The done-flag assignment folds to a single movne where the target
+// keeps a separate mov + b.
+//
+// The main decode step, entered from func_02015554 when adxb->stat == 0. Two
+// distinct jobs live here: recognising and consuming a leading ADX sub-header
+// (the big-endian 0x8001 tag), and otherwise handing the decoded audio to the
+// ADXB. The sub-header path always returns, so the tail is the PCM path.
+void func_02014f44(ADXSJD* sjd) {
+    ADXB  adxb = sjd->adxb;
+    SJ    sji  = sjd->sji;
+    SJCK  ck1;
+    SJCK  ck2;
+    SJCK* cki = (SJCK*)&sjd->unk_14[0];
+    s16   ofst;
+    s32   i;
+    s32   len;
+    s32   total;
+    s32   done;
+
+    // unk_14 is really SJCK cki at 0x14 followed by cko[2] at 0x1C; the header
+    // models the whole 0x18 as a single byte array, so cki is cast back out.
+    done = 0;
+
+    // The loop callback only fires once the trap has been fully consumed.
+    if (sjd->unk_3C >= 0 && sjd->unk_40 >= sjd->unk_3C) {
+        if (sjd->unk_48 != NULL) {
+            sjd->unk_48(sjd->unk_4C);
+        }
+    }
+
+    if (sjd->unk_03 == 1 && SJ_GetNumData(sji, 1) == 0) {
+        sjd->state = 3;
+        return;
+    }
+
+    SJ_GetChunk(sji, 1, 0x7FFFFFFF, cki);
+
+    // A leading big-endian 0x8001 tag marks this chunk as an ADX sub-header
+    // rather than PCM.
+    if (ADXB_GetFormat(adxb) == 0 && cki->length >= 4 && BSWAP_U16_EX(*(s16*)cki->data) == 0x8001) {
+        sjd->state = 3;
+
+        if (func_02013868(cki->data, cki->length, &ofst) == 0) {
+            if (ofst > cki->length) {
+                SJ_UngetChunk(sji, 1, cki);
+                return;
+            }
+
+            func_0201a670(cki, ofst, cki, &ck1);
+            SJ_PutChunk(sji, 0, cki);
+            SJ_UngetChunk(sji, 1, &ck1);
+        }
+
+        if (sjd->unk_A4 == 0) {
+            return;
+        }
+
+        // Peel leading zero bytes off the stream one chunk at a time. The byte
+        // test runs before the bound test, so an all-zero chunk makes no
+        // progress and the loop only ends once a chunk is fully consumed.
+        for (;;) {
+            s8* p;
+
+            SJ_GetChunk(sji, 1, 0x7FFFFFFF, cki);
+
+            len = cki->length;
+
+            if (len == 0) {
+                return;
+            }
+
+            p = cki->data;
+            i = 0;
+
+            while (*p == 0 && i < len) {
+                p++;
+                i++;
+            }
+
+            func_0201a670(cki, i, cki, &ck1);
+            SJ_PutChunk(sji, 0, cki);
+            SJ_UngetChunk(sji, 1, &ck1);
+
+            if (i < len) {
+                return;
+            }
+        }
+    }
+
+    total = ADXSJD_GetTotalNumSmpl(sjd);
+
+    if (sjd->unk_34 >= total) {
+        if (ADXB_GetFormat(adxb) == 1) {
+            if (func_02015aa4(sjd) != 1) {
+                done = 1;
+            }
+        } else {
+            done = 1;
+        }
+    } else if (ADXB_GetFormat(adxb) == 10 && sjd->unk_34 + 0x240 >= total) {
+        done = 1;
+    }
+
+    if (done != 0) {
+        sjd->state = 3;
+        SJ_UngetChunk(sji, 1, cki);
+        return;
+    }
+
+    if (func_02015968(sjd) > SJ_GetNumData(sjd->sjo[0], 0) / 2) {
+        SJ_UngetChunk(sji, 1, cki);
+        return;
+    }
+
+    if (func_02015aa4(sjd) != 1 && ADXB_GetFormat(adxb) == 1) {
+        if (ADXB_GetBitdepth(adxb) == 0x10) {
+            s32 nch  = ADXB_GetNumChan(sjd->adxb);
+            s32 have = sjd->unk_34 + cki->length / nch / 2;
+
+            // Trim the chunk down to the audio that is still outstanding.
+            if (have > total) {
+                func_0201a670(cki, nch * (total - have) * 2, cki, &ck2);
+                SJ_UngetChunk(sji, 1, &ck2);
+            }
+        } else {
+            ADXERR_CallErrFunc2("E07021901 adxsjd_decexec_start: ", "8 or 4bit WAV file can't playback continuously.");
+        }
+    }
+
+    if (ADXB_GetFormat(adxb) == 10) {
+        SJ_UngetChunk(sji, 1, cki);
+    }
+
+    ADXB_EntryData(adxb, cki->data, cki->length);
+    ADXB_Start(adxb);
+}
 
 // Nonmatching: stub (0.4%, 0x1AC bytes). Called from func_02015554
 // after ADXB_ExecHndl leaves adxb->stat == 3, i.e. the decode-done
 // bookkeeping. Not yet decoded.
+void func_02015344(ADXSJD* sjd) {}
 
 void func_020154f0(ADXSJD* sjd) {
     ADXB adxb        = sjd->adxb;
@@ -270,10 +414,12 @@ void func_020155c0(ADXSJD* sjd) {
 // ADXSJD_ExecHndl under ADXCRS_Lock when sjd->unk_A8 > 0. No
 // counterpart in either PS2 reference -- NITRO adds an AHX supply
 // queue. Not yet decoded.
+void func_0201562c(ADXSJD* sjd) {}
 
 // Nonmatching: stub (0.6%, 0x11C bytes). The second supply-side arm,
 // entered under ADXCRS_Lock when sjd->unk_AC > 0. Like func_0201562c
 // this is NITRO-only. Not yet decoded.
+void func_0201575c(ADXSJD* sjd) {}
 
 // ADXSJD_ExecServer. The per-object loop always runs; each of the two
 // callbacks is skipped when its slot is null. Recvx's ADXT_ExecServer calls
