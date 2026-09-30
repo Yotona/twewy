@@ -593,10 +593,17 @@ NULL pointer / bad handle). Useful for filling in stubs.
 ### 13.0 Measured results of what was ported
 
 USA baseline `39.158726%` fuzzy / `28.537209%` matched code / `4958` functions.
-After the ports below: **`39.281998%` / `28.594307%` / `4982` functions**, and
+Current: **`39.382282%` / `28.604269%` / `4986` functions**, with
 `build/usa/twewy_usa.nds: OK` throughout (the ROM SHA-1 never broke, which also
-validates the bss layout changes). 22 functions improved in the first pass, and
-`adx_tsvr.c` added 8 more (6 at 100%).
+validates the bss layout changes).
+
+> **Do not trust the intermediate number from commit `a4bb935`.** Its script
+> replaced each `void func_...(ADXSJD* sjd) {}` stub with only the comment above
+> it, leaving five functions called but undefined. They vanished from the report
+> rather than scoring low, so that commit's `28.60854` was measured against a
+> build that did not contain them and reads *higher* than the true value.
+> Fixed in `ade5fc8`. When a script rewrites a stub into a comment, keep the
+> definition -- the call sites are still there.
 
 | Function | Before | After |
 |---|---|---|
@@ -609,8 +616,15 @@ validates the bss layout changes). 22 functions improved in the first pass, and
 | `adx_sjd/func_02015a2c` | 2.00 | **100.0** |
 | `adx_sjd/{func_02015928, 02015948, 02015968, 02015988, 02015998, 020159c4, 020159d4, 02015a84, 02015a94}` | 23.75 ea | **100.0 ea** |
 | `adx_sjd/{ADXSJD_GetSfreq, GetOutBps, GetTotalNumSmpl}` | 23.75 ea | **100.0 ea** |
+| `adx_sjd/func_02014b3c` | 0.70 | **100.0** |
+| `adx_sjd/func_02014b50` | 0.68 | **100.0** |
+| `adx_sjd/func_02015554` (state-2 decode arm) | 1.48 | **100.0** |
+| `adx_sjd/func_02014e74` (4-arg header reader) | 0.77 | 83.92 |
+| `adx_sjd/func_02014f44` (main decode step, 0x400) | 0.16 | 95.42 |
+| `adx_sjd/func_02015878` (`ADXSJD_ExecServer`) | 0.42 | **100.0** |
+| `adx_sjd/func_020122fc`→`adx_bsc/adxb_clear` | 6.30 | 79.61 |
 | `adx_stmc/ADXSTM_Init` | **0 (absent)** | 99.91 |
-| `adx_stmc/ADXSTMF_SetupHandleMember` | 0.70 | 29.09 |
+| `adx_stmc/ADXSTMF_SetupHandleMember` | 0.70 | 70.53 |
 | `adx_tsvr/{adxt_ExecHndl, func_02018b30, func_02018b74, func_02018b78, func_02018bd4, func_02018c40}` | **not built** | **100.0 ea** |
 | `adx_tsvr/func_02017f80` (trap entry) | **not built** | **100.0** |
 | `adx_tsvr/func_02018004` (trap callback) | **not built** | **100.0** |
@@ -619,7 +633,41 @@ validates the bss layout changes). 22 functions improved in the first pass, and
 | `adx_tsvr/func_02018910` (`adxt_stat_prep`) | **not built** | 91.9 |
 | `adx_tsvr/func_02018168` (eos/seek) | **not built** | 90.9 |
 | `adx_tsvr/func_0201854c` (`adxt_stat_decinfo`) | **not built** | 89.6 |
-| `adx_tsvr/func_02018238` | **not built** | 0.2 (stub) |
+| `adx_tsvr/func_02018238` | **not built** | 93.9 |
+| `adx_tsvr/func_0201a670` (`SJ_SplitChunk`, 4 args) | 0.00 | 86.9 (arg order) |
+
+### 13.0.0 mwcc findings from `func_02014f44`
+
+The largest function in `adx_sjd.c`, and the one that took the longest to get
+right. What the codegen settled that reading the target does not:
+
+- **A `&&` chain is order-sensitive down to the byte.** `ADXB_GetFormat` → length
+  → tag. Hoisting the tag read into a statement ahead of the `if` reorders all
+  three tests and cost ~7%; the value must be computed inline in the condition.
+- **`ldrsh` on the tag means the byte swap is on a *signed* 16-bit word**, and
+  the result round-trips through `s16` before the `u16` compare. That is what
+  produces the `lsl #16 / asr #16 / lsl #16` triple and the
+  `cmp rConst, rVal, lsr #16`. Retail calls the macro `BSWAP_U16_EX`; this tree
+  does not carry it, so it is defined locally in the `.c`.
+- **A four-byte-immediate-looking `sub rN, rM, #0x8000000K` is a materialised
+  constant, and the `K` is off by one from the value you would guess.** The
+  target's `sub r2, r1, #0x80000002` is `0x7FFFFFFF`, not `0x7FFFFFFE`; the
+  latter emits `#0x80000003` and is one byte-count low.
+- **A loop that reloads its bound once and keeps it in a register needs a local.**
+  The zero-scan reads `cki->length` into `r9` per pass, not per iteration; writing
+  `i < cki->length` inline re-loads it every time and changes the shape.
+- **Fall-through choice is per-branch and not consistent between the two
+  branches of the same function.** The near-done test falls through on
+  `decpos >= total` while the bitdepth test falls through on `== 0x10`. Getting
+  either backwards only costs a couple of instructions, so try both.
+- **`unk_14` is `SJCK cki` at `0x14` plus `cko[2]` at `0x1C`**, which the header
+  models as one `0x18` byte array. Anything reading `sjd + 0x14..0x20` has to
+  cast back into it. Same trap cost a build error in `func_02014e74`.
+- **Error strings are recoverable from the target object** by scanning
+  `build/<region>/delinks/<tu>.o` for printable runs. The pair passed to
+  `ADXERR_CallErrFunc2` are adjacent in `.rodata`, and the split matches the
+  `"EXX... <func>: "` / `"<message>"` convention already used in `adx_bsc.c`.
+
 
 ### 13.0.1 What `adx_tsvr.c` needed, and what it taught
 
@@ -746,6 +794,14 @@ Two earlier findings also turned out to be wrong and are corrected here:
 * The six `// Nonmatching` markers in `adx_dcd.c` (§7) — reference confirms our logic.
 * `lsc.c` (§9).
 * Anything in `criss.c` / `acss*.c` / `acsvhl.c` / `adx_f.c` (§12).
+* `adx_sjd/func_02014e74`'s residual 16% — the three out-pointer registers and
+  the loop's `GetNumChan` reload are the only differences, and the two ways of
+  spelling the guard (hoisted `nch` vs. re-called) both score below the current
+  form, so there is nothing left to try short of the permuter.
+* `adx_sjd/func_02014f44`'s residual 4.6% — the zero-scan's loop rotation is
+  fixed by mwcc regardless of which order the two conditions are written in
+  (both `*p == 0 && i < len` and the explicit `break` form were measured), and
+  what is left is register choice.
 * Reconstructing `adxt_tsvr_enter_cnt`, `ADXSJD_ExecServer`, `ADXRNA_ExecServer`
   call graphs before the ADXSJD core exists — `adxt_ExecServer` needs
   `adxt_tsvr_enter_cnt` (an unnamed dword near `adxt_time_mode` in bss) and
