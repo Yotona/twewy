@@ -29,6 +29,13 @@ void  ADXB_ExecHndl(ADXB adxb);
 s32   ADXB_GetNumChan(ADXB adxb);
 void* ADXB_GetPcmBuf(ADXB adxb);
 void* SJRBF_GetBufPtr(SJ sj);
+s32   func_02012258(void);
+s32   func_020127ec(ADXB adxb, u16* header, s32 len);
+void  func_02012748(ADXB adxb);
+s32   ADXB_GetSfreq(ADXB adxb);
+s32   ADXB_GetTotalNumSmpl(ADXB adxb);
+
+void func_0201a670(SJCK* ck, s32 nbyte, SJCK* ck1, SJCK* ck2);
 
 void func_0201575c(ADXSJD* sjd);
 void func_0201562c(ADXSJD* sjd);
@@ -163,15 +170,136 @@ void ADXSJD_Stop(ADXSJD* sjd) {
     sjd->state = 0;
 }
 
-// Nonmatching: stub (0.2%, 0x2E0 bytes). The state-1 arm of ADXSJD_ExecHndl;
-// upstream adxsjd_decode_prep. Decoded: gets a 0xC800-byte chunk into
-// sjd->sji, scans forward over leading zero bytes to find the split point,
-// and if that lands mid-sample takes the ADXERR path and sets
-// sjd->state = 4. Otherwise SJ_SplitChunk + SJ_PutChunk, then a length
-// check (< 0x10 bails), ADXB scan, spsdinfo memcpy, and a five-way
-// adxb->format test {10,20,11,12,15} before setting state = 2. Four error
-// strings at 0x020639ac/9cc/9ec/a0c. Needs the error strings to match.
-void func_02014b94(ADXSJD* sjd) {}
+// Nonmatching: 99.92% -- every instruction in the body matches. The only
+// residue is three literal-pool words whose relocations objdiff names
+// `data_020639cc` / `data_020639ec` / `data_02063a0c` in the delinked target
+// and `@635` / `@636` / `@637` here, because the strings are anonymous
+// .rodata in a C file and have no symbol to pair with. Not fixable from source.
+//
+// The state-1 arm of ADXSJD_ExecHndl, upstream adxsjd_decode_prep. It pulls a
+// chunk off the input stream, finds where the real audio starts by skipping
+// leading zero bytes, and either bails out (bad alignment, or a header the ADXB
+// will not take) or hands the header to the ADXB and moves the object to state
+// 2.
+//
+// The two failure strings are recovered from the target object's rodata:
+//   0x020639ac "E04102501 adxsjd_decode_prep: "
+//   0x020639cc "The data alignment is illegal."
+//   0x020639ec "E03010901 ADXB_DecodeHeader: "
+//   0x02063a0c "Can not decode this file format."
+void func_02014b94(ADXSJD* sjd) {
+    ADXB adxb = sjd->adxb;
+    SJ   sji  = sjd->sji;
+    SJCK ck;
+    SJCK ck2;
+    s8*  p;
+    s32  i;
+    s32  hdrlen;
+    s32  fmt;
+
+    SJ_GetChunk(sji, 1, 0xC800, &ck);
+
+    // Skip the leading zero bytes to find the split point. The length test is
+    // the loop's entry guard, so a zero-length chunk never dereferences it.
+    i = 0;
+
+    if (ck.length > 0) {
+        p = ck.data;
+
+        // Written as an unrolled loop with two breaks on purpose: a plain
+        // `while (*p == 0 && i < ck.length)` gets bottom-tested by mwcc, and the
+        // bound test has to use the already-incremented i (so this runs one
+        // pass fewer than `i < ck.length` would).
+        for (;;) {
+            if (*p != 0) {
+                break;
+            }
+
+            i++;
+            p++;
+
+            if (i >= ck.length) {
+                break;
+            }
+        }
+    }
+
+    // An odd number of leading zero bytes means the data is not 16-bit
+    // aligned. This is a % not a /: the modulo lowering is a three-instruction
+    // sequence where the divide is two, and the target has the three.
+    if (i % 2 == 1) {
+        SJ_UngetChunk(sji, 1, &ck);
+
+        if (func_02012258() == 0) {
+            ADXERR_CallErrFunc2("E04102501 adxsjd_decode_prep: ", "The data alignment is illegal.");
+        }
+
+        sjd->state = 4;
+        return;
+    }
+
+    // Put the padding back, then keep the header half for the ADXB to read.
+    func_0201a670(&ck, i, &ck2, &ck);
+    SJ_PutChunk(sji, 0, &ck2);
+
+    if (ck.length < 0x10) {
+        SJ_UngetChunk(sji, 1, &ck);
+        return;
+    }
+
+    hdrlen = func_020127ec(adxb, (u16*)ck.data, ck.length);
+
+    if (hdrlen == 0 || hdrlen > ck.length) {
+        SJ_UngetChunk(sji, 1, &ck);
+        return;
+    }
+
+    if (hdrlen < 0) {
+        if (adxb->unk9A != 0) {
+            // The ADXB will not take this format, but unk9A names one it will,
+            // so fall back to that and carry on with no header.
+            func_02012748(adxb);
+            hdrlen = 0;
+        } else {
+            SJ_UngetChunk(sji, 1, &ck);
+
+            if (func_02012258() == 0) {
+                ADXERR_CallErrFunc2("E03010901 ADXB_DecodeHeader: ", "Can not decode this file format.");
+            }
+
+            sjd->state = 4;
+            return;
+        }
+    }
+
+    sjd->unk_A0 = hdrlen;
+
+    if (sjd->unk_50 != NULL) {
+        sjd->unk_50(sjd->unk_54, ADXB_GetFormat(adxb), ADXB_GetNumChan(adxb), ADXB_GetSfreq(adxb), ADXB_GetTotalNumSmpl(adxb));
+    }
+
+    if (ADXB_GetFormat(adxb) == 4) {
+        sjd->unk_03 = 1;
+    }
+
+    if (ADXB_GetFormat(adxb) == 2) {
+        memcpy(&sjd->unk_60, ck.data, (ck.length < 0x40) ? ck.length : 0x40);
+    }
+
+    // These formats want the whole chunk handed straight back; anything else
+    // gets trimmed to the header length first.
+    fmt = ADXB_GetFormat(adxb);
+
+    if (fmt == 10 || fmt == 11 || fmt == 12 || fmt == 20 || fmt == 15) {
+        SJ_UngetChunk(sji, 1, &ck);
+    } else {
+        func_0201a670(&ck, hdrlen, &ck, &ck2);
+        SJ_PutChunk(sji, 0, &ck);
+        SJ_UngetChunk(sji, 1, &ck2);
+    }
+
+    sjd->state = 2;
+}
 
 // Fills three caller-supplied counts and returns the decoder's PCM buffer.
 // unk_14 is really SJCK cki at 0x14 plus cko[2] at 0x1C (the header models the
@@ -206,13 +334,13 @@ void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
 // The argument is read as a signed 16-bit word, hence the asr in the codegen.
 #define BSWAP_U16_EX(x) ((u16)(s16)(((((s16)(x)) >> 8) & 0xFF) | ((((s16)(x)) << 8) & 0xFF00)))
 
-// Nonmatching: 95.4% (0x400 bytes, the largest function in this file). What is
-// left is register choice only -- the zero-scan loop wants its byte test as the
-// loop head with the bound test in the latch, and mwcc rotates it the other way
-// whichever order the two conditions are written in; sjd->sjo[0] gets hoisted
-// into r8 instead of being passed straight in r0; and decpos lands in r1 rather
-// than r8. The done-flag assignment folds to a single movne where the target
-// keeps a separate mov + b.
+// Nonmatching: 97.2% (0x400 bytes, the largest function in this file). All the
+// control flow, both short-circuit chains and the tag byte-swap now match
+// instruction for instruction; what is left is register choice. sjd->sjo[0] is
+// hoisted into r8 instead of being passed straight through r0, decpos lands in
+// r1 rather than r8, and the near-done flag folds to a single movne where the
+// target keeps a separate mov + b. The two .word pool entries differ only in
+// relocation name (anonymous .rodata vs the delinked data_02063a30/54).
 //
 // The main decode step, entered from func_02015554 when adxb->stat == 0. Two
 // distinct jobs live here: recognising and consuming a leading ADX sub-header
@@ -282,12 +410,26 @@ void func_02014f44(ADXSJD* sjd) {
                 return;
             }
 
-            p = cki->data;
             i = 0;
 
-            while (*p == 0 && i < len) {
-                p++;
-                i++;
+            if (len > 0) {
+                p = cki->data;
+
+                // Same two-break shape as func_02014b94's scan: a combined while
+                // condition gets bottom-tested here, and the bound test has to
+                // use the already-incremented i.
+                for (;;) {
+                    if (*p != 0) {
+                        break;
+                    }
+
+                    i++;
+                    p++;
+
+                    if (i >= len) {
+                        break;
+                    }
+                }
             }
 
             func_0201a670(cki, i, cki, &ck1);
