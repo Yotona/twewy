@@ -593,10 +593,10 @@ NULL pointer / bad handle). Useful for filling in stubs.
 ### 13.0 Measured results of what was ported
 
 USA baseline `39.158726%` fuzzy / `28.537209%` matched code / `4958` functions.
-After the ports below: **`39.201283%` / `28.575008%` / `4980` functions**, and
+After the ports below: **`39.281998%` / `28.594307%` / `4982` functions**, and
 `build/usa/twewy_usa.nds: OK` throughout (the ROM SHA-1 never broke, which also
-validates the bss layout changes). 22 functions improved in the first pass and
-`adx_tsvr.c` added 6 more at 100%.
+validates the bss layout changes). 22 functions improved in the first pass, and
+`adx_tsvr.c` added 8 more (6 at 100%).
 
 | Function | Before | After |
 |---|---|---|
@@ -612,7 +612,14 @@ validates the bss layout changes). 22 functions improved in the first pass and
 | `adx_stmc/ADXSTM_Init` | **0 (absent)** | 99.91 |
 | `adx_stmc/ADXSTMF_SetupHandleMember` | 0.70 | 29.09 |
 | `adx_tsvr/{adxt_ExecHndl, func_02018b30, func_02018b74, func_02018b78, func_02018bd4, func_02018c40}` | **not built** | **100.0 ea** |
-| `adx_tsvr/{func_02017f80, 02018004, 02018168, 020181f4, 02018238, 0201854c, 02018910, 02018a64}` | **not built** | 0.2 - 2.4 (stubs) |
+| `adx_tsvr/func_02017f80` (trap entry) | **not built** | **100.0** |
+| `adx_tsvr/func_02018004` (trap callback) | **not built** | **100.0** |
+| `adx_tsvr/func_020181f4` (nlp trap entry) | **not built** | **100.0** |
+| `adx_tsvr/func_02018a64` (`adxt_stat_playing`) | **not built** | 94.7 |
+| `adx_tsvr/func_02018910` (`adxt_stat_prep`) | **not built** | 91.9 |
+| `adx_tsvr/func_02018168` (eos/seek) | **not built** | 90.9 |
+| `adx_tsvr/func_0201854c` (`adxt_stat_decinfo`) | **not built** | 89.6 |
+| `adx_tsvr/func_02018238` | **not built** | 0.2 (stub) |
 
 ### 13.0.1 What `adx_tsvr.c` needed, and what it taught
 
@@ -645,6 +652,37 @@ something else. It also shows the body is an `if`/`else if` chain in the order
 Note `adxt_ExecServer` in `adx_tlk.c` is *still* `/* NYI */` — it calls
 `adxt_ExecHndl`, which now exists, but it also needs `adxt_tsvr_enter_cnt` and the
 not-yet-written state handlers to be worth enabling.
+
+### 13.0.2 mwcc findings from the eight handlers
+
+Three of these cost real time and are worth recording, because none of them are
+guessable from the C:
+
+1. **`mov r1, r0, asr #10 / add r1, r0, r1, lsr #21 / asr #11` is a signed
+   division by 2048**, not by 1000. The rounding term is what distinguishes a
+   division from a plain shift. Both `func_02018168` and `func_0201854c` use it,
+   and reading it as `/1000` costs ~16% and ~4% respectively. The
+   `rsb`/`ror #21` variant is the same operation for a divisor the compiler
+   materialised into a register.
+2. **mwcc does not honour declaration order for same-sized file statics.** Four
+   loose `s32` globals came out `0x800, 0x7fc, 0x808, 0x804` regardless of how
+   they were declared, which silently broke both `func_0201854c`'s callback load
+   and `func_02018b30`'s store. Wrapping them in a struct pins the offsets.
+   Cost: `func_02018b30` went 100 -> 99.6 because the target reaches that word
+   through its own literal rather than a struct base. Net win.
+3. **Block layout encodes the source's control-flow *shape*, not just its
+   semantics.** `func_0201854c`'s `ADXSJD_GetStat` guard written as an early
+   return puts the `stat == 4` arm inline; written as `if (stat == 2) { ... }
+   else if (stat == 4) { ... }` mwcc branches over the whole body to a trailing
+   arm, which is what the target does. Worth 4% on a 241-instruction function.
+   The same applies to `func_02018004`, where the target's `bne` lands past only
+   the stream re-prime -- so `func_02015a94` and the `lpcnt` bump are *outside*
+   the `if`, not inside it.
+
+Where the PS2 reference and the NITRO build disagree, the NITRO target wins and
+the reference is only a structural guide. The `func_02018910` clamp to 0x800, the
+unsigned `(u8)pmode <= 1` guard, and the use of the channel index as both the SJ
+chunk id and the `memset` fill byte are all NITRO-only.
 
 ### 13.1 Deliberately **rejected**: renames
 
@@ -686,8 +724,10 @@ Two earlier findings also turned out to be wrong and are corrected here:
 
 | # | Action | Payoff |
 |---|---|---|
-| 1 | **Finish `adx_tsvr.c`'s 8 remaining state handlers** — `func_0201854c` (0x3c4, `adxt_stat_decinfo`), `func_02018238` (0x314), `func_02018004` (0x164), `func_02018910` (0x154, `adxt_stat_prep`), `func_02018168` (0x8c), `func_02017f80` (0x84), `func_02018a64` (0xcc, `adxt_stat_playing`), `func_020181f4` (0x44). Their targets are already decoded in the objdiff JSON and the PS2 reference has full bodies for `stat_decinfo`/`stat_prep`/`stat_playing`/`set_outpan`. | ~2.4 KB currently at <2.5% |
-| 2 | Enable `adxt_ExecServer` in `adx_tlk.c` (still `/* NYI */`, 0xe8 bytes) — `adxt_ExecHndl` now exists, but it also needs `adxt_tsvr_enter_cnt` (unnamed bss dword near `adxt_time_mode`) | 0xe8 bytes |
+| 1 | **Finish `adx_tsvr.c`**: only `func_02018238` (0x314) is still a stub. Its target is decoded in the objdiff JSON; the PS2 reference has no counterpart, but its shape is two near-identical halves differing only in which decoder they call (`func_02021534` vs `func_020130dc`). | 0x314 bytes at 0.2% |
+| 2 | Close the register-allocation gaps in `func_0201854c` (89.6), `func_02018910` (91.9), `func_02018168` (90.9) and `func_02018a64` (94.7). In each case the body is instruction-for-instruction correct and only mwcc's choice of callee-saved registers (and, for 0x18a64, how it clusters the two bss literals) differs. | ~0.4 KB |
+| 3 | Enable `adxt_ExecServer` in `adx_tlk.c` (still `/* NYI */`, 0xe8 bytes) — `adxt_ExecHndl` now exists, but it also needs `adxt_tsvr_enter_cnt` (unnamed bss dword near `adxt_time_mode`) | 0xe8 bytes |
+| 4 | **Add `adx_rna.c` / `adx_rna2.c`.** `func_02018004`–`func_0201854c` call nine ADXRNA entry points (`func_0201bf0c`..`func_0201bf70`) that have delinks entries and target bytes but *no source file at all* — a second unfilled hole, same shape as `adx_tsvr`. | unblocks the ADXRNA call sites |
 | 3 | Close `ADXSTMF_SetupHandleMember`'s round-up division (currently 29%). The target's sector count is `(file_len >> 11) + (magic_div_quotient > 0 ? 1 : 0)` where the magic divide is by `0x200000`; neither `file_len / 0x800` nor the PS2 reference's round-up form reproduces it (the latter scores worse, 23%). | ~0xb4 bytes -> 100% |
 | 4 | Model the `0x0206c398` 0x18-byte control object in `adx_stmc.c` so `ADXSTM_Init` anchors its pool at `0x398` and reaches the refcount at `+0xc` | Init 99.9% -> 100% |
 | 5 | Same for `adx_crs.c`: the target anchors at `0x0206bc30` and reaches its two globals at `+4`/`+8`; ours anchors at `+0`/`+4`. Needs `adxcrs_lvl` inside mwcc's addressing cluster. | 2 x 99.6% -> 100% |
