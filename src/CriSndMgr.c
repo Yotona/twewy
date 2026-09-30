@@ -1,8 +1,8 @@
 #include "CriSndMgr.h"
 #include "Engine/Core/Memory.h"
 #include "common_data.h"
-#include <CriWare/adxt.h>
-#include <CriWare/criss.h>
+#include <cri/adxt.h>
+#include <cri/criss.h>
 
 CriSndMgr criSndMgr;
 
