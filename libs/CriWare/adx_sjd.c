@@ -65,17 +65,17 @@ void ADXSJD_Finish(void) {
 }
 
 void ADXSJD_Clear(ADXSJD* sjd) {
-    sjd->unk_A0 = 0;
-    sjd->unk_2C = 0;
-    sjd->unk_30 = 0;
-    sjd->unk_34 = 0;
-    sjd->unk_38 = 0x7FFFFFFF;
-    sjd->unk_3C = -1;
-    sjd->unk_40 = 0;
-    sjd->unk_44 = 0;
-    sjd->unk_03 = 0;
-    sjd->unk_A8 = 0;
-    sjd->unk_AC = 0;
+    sjd->hdrlen         = 0;
+    sjd->total_decsmpl  = 0;
+    sjd->total_decdtlen = 0;
+    sjd->decpos         = 0;
+    sjd->maxdecsmpl     = 0x7FFFFFFF;
+    sjd->dtrpsmpl       = -1;
+    sjd->dtrpcnt        = 0;
+    sjd->dtrpdtlen      = 0;
+    sjd->empty_end      = 0;
+    sjd->unk_A8         = 0;
+    sjd->unk_AC         = 0;
 }
 
 ADXSJD* ADXSJD_Create(SJ sj, s32 maxChans, SJ* sjo) {
@@ -119,11 +119,11 @@ ADXSJD* ADXSJD_Create(SJ sj, s32 maxChans, SJ* sjo) {
 
     sjd->state = 0;
     ADXSJD_Clear(sjd);
-    sjd->unk_48 = 0;
-    sjd->unk_4C = 0;
-    sjd->unk_50 = 0;
-    sjd->unk_54 = 0;
-    sjd->used   = TRUE;
+    sjd->dtrpfunc = 0;
+    sjd->dtrpobj  = 0;
+    sjd->dfltfunc = 0;
+    sjd->dfltobj  = 0;
+    sjd->used     = TRUE;
     return sjd;
 }
 
@@ -154,7 +154,7 @@ void ADXSJD_SetInSj(ADXSJD* sjd, SJ sj) {
 // ADXSJD_SetMaxDecSmpl. The PS2 reference also calls ADXB_SetAc3DecSmpl
 // here; NITRO has no AC3, and the target's tail call names ADXB_SetAhxDecSmpl.
 void func_02014b3c(ADXSJD* sjd, s32 nsmpl) {
-    sjd->unk_38 = nsmpl;
+    sjd->maxdecsmpl = nsmpl;
     ADXB_SetAhxDecSmpl(sjd->adxb, nsmpl);
 }
 
@@ -275,18 +275,19 @@ void adxsjd_decode_prep(ADXSJD* sjd) {
         }
     }
 
-    sjd->unk_A0 = hdrlen;
+    sjd->hdrlen = hdrlen;
 
-    if (sjd->unk_50 != NULL) {
-        sjd->unk_50(sjd->unk_54, ADXB_GetFormat(adxb), ADXB_GetNumChan(adxb), ADXB_GetSfreq(adxb), ADXB_GetTotalNumSmpl(adxb));
+    if (sjd->dfltfunc != NULL) {
+        sjd->dfltfunc(sjd->dfltobj, ADXB_GetFormat(adxb), ADXB_GetNumChan(adxb), ADXB_GetSfreq(adxb),
+                      ADXB_GetTotalNumSmpl(adxb));
     }
 
     if (ADXB_GetFormat(adxb) == 4) {
-        sjd->unk_03 = 1;
+        sjd->empty_end = 1;
     }
 
     if (ADXB_GetFormat(adxb) == 2) {
-        memcpy(&sjd->unk_60, ck.data, (ck.length < 0x40) ? ck.length : 0x40);
+        memcpy(sjd->spsdinfo, ck.data, (ck.length < 0x40) ? ck.length : 0x40);
     }
 
     // These formats want the whole chunk handed straight back; anything else
@@ -305,11 +306,8 @@ void adxsjd_decode_prep(ADXSJD* sjd) {
 }
 
 // Fills three caller-supplied counts and returns the decoder's PCM buffer.
-// unk_14 is really SJCK cki at 0x14 plus cko[2] at 0x1C (the header models the
-// whole 0x18 as a byte array), so the output chunks have to be addressed by
-// casting into it.
 void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
-    SJCK* cko  = (SJCK*)&sjd->unk_14[8];
+    SJCK* cko  = sjd->cko;
     SJ    sjo0 = sjd->sjo[0];
     s32   nch;
     s32   i;
@@ -321,12 +319,12 @@ void func_02014e74(ADXSJD* sjd, s32* out_wpos, s32* out_room, s32* out_loop) {
     }
 
     *out_wpos = (s32)(cko[0].data - SJRBF_GetBufPtr(sjo0)) / 2;
-    *out_room = (cko[0].length / 2 < sjd->unk_38) ? cko[0].length / 2 : sjd->unk_38;
+    *out_room = (cko[0].length / 2 < sjd->maxdecsmpl) ? cko[0].length / 2 : sjd->maxdecsmpl;
 
     // unk_3C is the trap sample count. When it has been cleared to a negative
     // sentinel the remaining-loop count is saturated rather than computed --
     // ~0xE0000000 == 0x1FFFFFFF.
-    *out_loop = (sjd->unk_3C >= 0) ? sjd->unk_3C - sjd->unk_40 : 0x1FFFFFFF;
+    *out_loop = (sjd->dtrpsmpl >= 0) ? sjd->dtrpsmpl - sjd->dtrpcnt : 0x1FFFFFFF;
 
     // Result discarded: the target's epilogue pops straight to pc without
     // writing r0, so the original called this without returning it.
@@ -354,25 +352,23 @@ void adxsjd_decexec_start(ADXSJD* sjd) {
     SJ    sji  = sjd->sji;
     SJCK  ck1;
     SJCK  ck2;
-    SJCK* cki = (SJCK*)&sjd->unk_14[0];
+    SJCK* cki = &sjd->cki;
     s16   ofst;
     s32   i;
     s32   len;
     s32   total;
     s32   done;
 
-    // unk_14 is really SJCK cki at 0x14 followed by cko[2] at 0x1C; the header
-    // models the whole 0x18 as a single byte array, so cki is cast back out.
     done = 0;
 
     // The loop callback only fires once the trap has been fully consumed.
-    if (sjd->unk_3C >= 0 && sjd->unk_40 >= sjd->unk_3C) {
-        if (sjd->unk_48 != NULL) {
-            sjd->unk_48(sjd->unk_4C);
+    if (sjd->dtrpsmpl >= 0 && sjd->dtrpcnt >= sjd->dtrpsmpl) {
+        if (sjd->dtrpfunc != NULL) {
+            sjd->dtrpfunc(sjd->dtrpobj);
         }
     }
 
-    if (sjd->unk_03 == 1 && SJ_GetNumData(sji, 1) == 0) {
+    if (sjd->empty_end == 1 && SJ_GetNumData(sji, 1) == 0) {
         sjd->state = 3;
         return;
     }
@@ -447,7 +443,7 @@ void adxsjd_decexec_start(ADXSJD* sjd) {
 
     total = ADXSJD_GetTotalNumSmpl(sjd);
 
-    if (sjd->unk_34 >= total) {
+    if (sjd->decpos >= total) {
         if (ADXB_GetFormat(adxb) == 1) {
             if (func_02015aa4(sjd) != 1) {
                 done = 1;
@@ -455,7 +451,7 @@ void adxsjd_decexec_start(ADXSJD* sjd) {
         } else {
             done = 1;
         }
-    } else if (ADXB_GetFormat(adxb) == 10 && sjd->unk_34 + 0x240 >= total) {
+    } else if (ADXB_GetFormat(adxb) == 10 && sjd->decpos + 0x240 >= total) {
         done = 1;
     }
 
@@ -473,7 +469,7 @@ void adxsjd_decexec_start(ADXSJD* sjd) {
     if (func_02015aa4(sjd) != 1 && ADXB_GetFormat(adxb) == 1) {
         if (ADXB_GetBitdepth(adxb) == 0x10) {
             s32 nch  = ADXB_GetNumChan(sjd->adxb);
-            s32 have = sjd->unk_34 + cki->length / nch / 2;
+            s32 have = sjd->decpos + cki->length / nch / 2;
 
             // Trim the chunk down to the audio that is still outstanding.
             if (have > total) {
@@ -519,17 +515,17 @@ void adxsjd_decexec_end(ADXSJD* sjd) {
     ndecsmpl    = ADXB_GetDecNumSmpl(adxb);
 
     if (ADXB_GetFormat(adxb) != 1 || func_02015aa4(sjd) != 1) {
-        if (ndecsmpl >= total_nsmpl - sjd->unk_34) {
-            ndecsmpl = total_nsmpl - sjd->unk_34;
+        if (ndecsmpl >= total_nsmpl - sjd->decpos) {
+            ndecsmpl = total_nsmpl - sjd->decpos;
         }
     }
 
-    func_0201a670((SJCK*)&sjd->unk_14[0], dlen, &ck, &ck2);
+    func_0201a670(&sjd->cki, dlen, &ck, &ck2);
     SJ_PutChunk(sji, 0, &ck);
     SJ_UngetChunk(sji, 1, &ck2);
 
     for (i = 0; i < ADXB_GetNumChan(sjd->adxb); i++) {
-        func_0201a670(&((SJCK*)&sjd->unk_14[8])[i], ndecsmpl * 2, &ck, &ck2);
+        func_0201a670(&sjd->cko[i], ndecsmpl * 2, &ck, &ck2);
 
         if (sjd->unk_58 != NULL) {
             sjd->unk_58(sjd->unk_5C, i, ck.data, ck.length);
@@ -539,11 +535,11 @@ void adxsjd_decexec_end(ADXSJD* sjd) {
         SJ_UngetChunk(sjd->sjo[i], 0, &ck2);
     }
 
-    sjd->unk_2C += ndecsmpl;
-    sjd->unk_30 += dlen;
-    sjd->unk_34 += ndecsmpl;
-    sjd->unk_40 += ndecsmpl;
-    sjd->unk_44 += dlen;
+    sjd->total_decsmpl += ndecsmpl;
+    sjd->total_decdtlen += dlen;
+    sjd->decpos += ndecsmpl;
+    sjd->dtrpcnt += ndecsmpl;
+    sjd->dtrpdtlen += dlen;
 
     ADXB_Reset(adxb);
 }
@@ -554,14 +550,14 @@ void func_020154f0(ADXSJD* sjd) {
     s32  dlen        = ADXB_GetDecDtLen(sjd->adxb);
     s32  ndecsmpl    = ADXB_GetDecNumSmpl(sjd->adxb);
 
-    total_nsmpl -= sjd->unk_34;
+    total_nsmpl -= sjd->decpos;
 
     if (ndecsmpl >= total_nsmpl) {
         ndecsmpl = total_nsmpl;
     }
-    sjd->unk_2C += ndecsmpl;
-    sjd->unk_30 += dlen;
-    sjd->unk_34 += ndecsmpl;
+    sjd->total_decsmpl += ndecsmpl;
+    sjd->total_decdtlen += dlen;
+    sjd->decpos += ndecsmpl;
 }
 
 // The state-2 arm of ADXSJD_ExecHndl. The target tests adxb->stat twice
@@ -721,15 +717,15 @@ void func_02015878(void) {
 }
 
 s32 func_020158e4(ADXSJD* sjd) {
-    return sjd->unk_30;
+    return sjd->total_decdtlen;
 }
 
 s32 func_020158ec(ADXSJD* sjd) {
-    return sjd->unk_2C;
+    return sjd->total_decsmpl;
 }
 
 void func_020158f4(ADXSJD* sjd, s32 param_2) {
-    sjd->unk_34 = param_2;
+    sjd->decpos = param_2;
 }
 
 void ADXSJD_SetLnkSw(ADXSJD* sjd, s32 param_2) {
@@ -737,20 +733,20 @@ void ADXSJD_SetLnkSw(ADXSJD* sjd, s32 param_2) {
 }
 
 void func_02015904(ADXSJD* sjd, s32 param_2, s32 param_3) {
-    sjd->unk_48 = param_2;
-    sjd->unk_4C = param_3;
+    sjd->dtrpfunc = param_2;
+    sjd->dtrpobj  = param_3;
 }
 
 void func_02015910(ADXSJD* sjd, s32 param_2) {
-    sjd->unk_3C = param_2;
+    sjd->dtrpsmpl = param_2;
 }
 
 void func_02015918(ADXSJD* sjd, s32 param_2) {
-    sjd->unk_40 = param_2;
+    sjd->dtrpcnt = param_2;
 }
 
 void func_02015920(ADXSJD* sjd, s32 param_2) {
-    sjd->unk_44 = param_2;
+    sjd->dtrpdtlen = param_2;
 }
 
 s32 func_02015928(ADXSJD* sjd) {
@@ -815,7 +811,7 @@ s32 func_02015a2c(ADXSJD* sjd, s32 chan) {
 }
 
 s32* func_02015a7c(ADXSJD* sjd) {
-    return &sjd->unk_60;
+    return sjd->spsdinfo;
 }
 
 s32 func_02015a84(ADXSJD* sjd) {
