@@ -200,7 +200,8 @@ libs/cri/src/adx_bsc.c:
 
 libs/cri/src/adx_crs.c:
     categories: CriWare, Library
-    .text       start:0x02012f20 end:0x02012f88
+    complete
+    .text       start:0x02012f20 end:0x02012f90
     .bss        start:0x0206bc30 end:0x0206bc3c
 
 libs/cri/src/adx_dcd.c:
@@ -244,13 +245,14 @@ libs/cri/src/adx_tlk.c:
     categories: CriWare, Library
     .text       start:0x020168f4 end:0x02017bc0
     .data       start:0x02063ae8 end:0x02063da8
-    .bss        start:0x0206c798 end:0x0206c7fc
+    .bss        start:0x0206c798 end:0x0206c7e8
 
 libs/cri/src/adx_tlk2.c:
     categories: CriWare, Library
     complete
     .text       start:0x02017bc0 end:0x02017f80
     .data       start:0x02063da8 end:0x02063edc
+    .bss        start:0x0206c7e8 end:0x0206c7fc
 
 libs/cri/src/adx_tsvr.c:
     categories: CriWare, Library
@@ -285,6 +287,23 @@ libs/cri/src/sj_mem.c:
     .data       start:0x020643e8 end:0x02064718
     .bss        start:0x0206f604 end:0x0206f8d8
 
+libs/cri/src/sj_crs.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x0201a534 end:0x0201a59c
+    .bss        start:0x0206f8d8 end:0x0206f8e4
+
+libs/cri/src/sj_uni.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x0201a59c end:0x0201a670
+    .bss        start:0x0206f8e4 end:0x02070068
+
+libs/cri/src/sj_utl.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x0201a670 end:0x0201a6b4
+
 libs/cri/src/svm.c:
     categories: CriWare, Library
     .text       start:0x0201a6b4 end:0x0201ad70
@@ -298,15 +317,71 @@ libs/cri/src/cri_cvfs.c:
     .data       start:0x02064894 end:0x02064cf4
     .bss        start:0x020703e0 end:0x02070774
 
-libs/cri/src/adx_rna.c:
+libs/cri/src/adx_mnitro.c:
     categories: CriWare, Library
-    .text       start:0x0201bf78 end:0x0201bfa0
-    .bss        start:0x02070a48 end:0x02070a58
+    .text       start:0x0201b8dc end:0x0201bea0
+    .rodata     start:0x0205bffc end:0x0205c000
+    .data       start:0x02064cf4 end:0x02064d74
+    .bss        start:0x02070774 end:0x02070a48
 
-libs/cri/src/adx_rna2.c:
+libs/cri/src/adx_rnanitro.c:
     categories: CriWare, Library
-    .text       start:0x0201d558 end:0x0201d580
-    .bss        start:0x020713b4 end:0x020713bc
+    complete
+    .text       start:0x0201bea0 end:0x0201bf78
+
+libs/cri/src/nitroci.c:
+    categories: CriWare, Library
+    .text       start:0x0201bf78 end:0x0201c80c
+    .rodata     start:0x0205c000 end:0x0205c044
+    .data       start:0x02064d74 end:0x02065024
+    .bss        start:0x02070a48 end:0x020711a8
+
+libs/cri/src/rna_crs.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x0201c80c end:0x0201c824
+
+libs/cri/src/nitro_rna.c:
+    categories: CriWare, Library
+    .text       start:0x0201c824 end:0x0201d3cc
+    .rodata     start:0x0205c044 end:0x0205c08c
+    .data       start:0x02065024 end:0x0206508c
+    .bss        start:0x020711a8 end:0x020712a4
+
+libs/cri/src/rna_err.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x0201d3cc end:0x0201d478
+    .bss        start:0x020712a4 end:0x020713ac
+
+libs/cri/src/cfg_lib.c:
+    categories: CriWare, Library
+    .text       start:0x0201d478 end:0x0201d528
+    .bss        start:0x020713ac end:0x020713b4
+
+libs/cri/src/mfci.c:
+    categories: CriWare, Library
+    .text       start:0x0201d528 end:0x0201dc48
+    .rodata     start:0x0205c08c end:0x0205c090
+    .data       start:0x0206508c end:0x020652b0
+    .bss        start:0x020713b4 end:0x020715ec
+
+libs/cri/src/nitro_snd.c:
+    categories: CriWare, Library
+    .text       start:0x0201dc48 end:0x0201eab0
+    .bss        start:0x020715ec end:0x02071a70
+
+libs/cri/src/adx_mng.c:
+    categories: CriWare, Library
+    .text       start:0x0201eab0 end:0x0201ebc4
+    .data       start:0x020652b0 end:0x020652b4
+
+libs/cri/src/adx_cs.c:
+    categories: CriWare, Library
+    .text       start:0x0201ebc4 end:0x0201ef48
+    .rodata     start:0x0205c090 end:0x0205c094
+    .data       start:0x020652b4 end:0x020652ec
+    .bss        start:0x02071a70 end:0x02071b00
 
 libs/cri/src/acssvr.c:
     categories: CriWare, Library
@@ -316,10 +391,12 @@ libs/cri/src/acssvr.c:
 libs/cri/src/acssnd.c:
     categories: CriWare, Library
     .text       start:0x0201f568 end:0x02020754
+    .data       start:0x0206540c end:0x020657dc
 
 libs/cri/src/acsfdr.c:
     categories: CriWare, Library
     .text       start:0x02020754 end:0x02020f1c
+    .data       start:0x020657dc end:0x02065844
 
 libs/cri/src/acssbadx.c:
     categories: CriWare, Library
@@ -334,6 +411,17 @@ libs/cri/src/acsvhl.c:
     .text       start:0x02021184 end:0x02021534
     .data       start:0x020658ec end:0x020659bc
 
+libs/cri/src/adx_bwav.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x02021534 end:0x020215b4
+    .data       start:0x020659bc end:0x020659c4
+
+libs/cri/src/adx_amp.c:
+    categories: CriWare, Library
+    complete
+    .text       start:0x020215b4 end:0x020215c4
+
 libs/cri/src/adx_f.c:
     categories: CriWare, Library
     complete
@@ -343,6 +431,17 @@ libs/cri/src/lsc.c:
     categories: CriWare, Library
     complete
     .text       start:0x020215d8 end:0x020215fc
+
+libs/cri/src/cri_crw_std.c:
+    categories: CriWare, Library
+    .text       start:0x020215fc end:0x02021698
+    .rodata     start:0x0205c0d8 end:0x0205c120
+    .data       start:0x020659c4 end:0x020659c8
+
+libs/cri/src/adx_sunitro.c:
+    categories: CriWare, Library
+    .text       start:0x02021698 end:0x02021728
+    .data       start:0x020659c8 end:0x020659e0
 
 libs/cri/src/criss.c:
     categories: CriWare, Library

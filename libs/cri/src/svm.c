@@ -43,9 +43,9 @@ SVM_UNK data_0207007c;
 SVMSVRCallback svm_svr_callbacks[8][6];
 
 void SVM_CallErr(const char* format, ...);
-int  svm_SetCbSvrId(int svtype, int (*func)(void*), void* object, char* tag);
+int  svm_SetCbSvr(int svtype, int (*func)(void*), void* object, char* tag);
 void svm_DelCbSvr(int group, int id);
-void func_0201aa38(int svtype, int id, int (*func)(void*), void* object, char* tag);
+void svm_SetCbSvrId(int svtype, int id, int (*func)(void*), void* object, char* tag);
 
 void svm_lock(int type) {
     if (svm_lock_callback.func == NULL) {
@@ -100,7 +100,7 @@ void SVM_CallErr(const char* format, ...) {
 
     memset(svmerr_msg, 0, sizeof(svmerr_msg));
     va_start(args, format);
-    func_02021684(&svmerr_msg, 0x80, format, args);
+    CRICRW_Vsprintf(&svmerr_msg, 0x80, format, args);
 
     if (svm_error_callback.func != NULL) {
         svm_error_callback.func(svm_error_callback.object, svmerr_msg);
@@ -113,21 +113,21 @@ void SVM_CallErr1(const char* msg) {
         return;
     }
 
-    func_02021624(svmerr_msg, sizeof(svmerr_msg), msg, sizeof(svmerr_msg) - 1);
+    CRICRW_Strncpy(svmerr_msg, sizeof(svmerr_msg), msg, sizeof(svmerr_msg) - 1);
 
     if (svm_error_callback.func != NULL) {
         svm_error_callback.func(svm_error_callback.object, svmerr_msg);
     }
 }
 
-int SVM_SetCbSvrId(int svtype, int (*func)(void*), void* object, char* tag) {
+int SVM_SetCbSvr(int svtype, int (*func)(void*), void* object, char* tag) {
     SVM_Lock();
-    int svrId = svm_SetCbSvrId(svtype, func, object, tag);
+    int svrId = svm_SetCbSvr(svtype, func, object, tag);
     SVM_Unlock();
     return svrId;
 }
 
-int svm_SetCbSvrId(int svtype, int (*func)(void*), void* object, char* tag) {
+int svm_SetCbSvr(int svtype, int (*func)(void*), void* object, char* tag) {
     if (svtype < 0 || svtype >= 8) {
         SVM_CallErr1("1071205:SVM_SetCbSvrId:illegal svtype");
         return -1;
@@ -180,13 +180,13 @@ void svm_DelCbSvr(int svtype, int id) {
     svm_svr_callbacks[svtype][id].object = NULL;
 }
 
-void func_0201a9fc(int svtype, int id, int (*func)(void*), void* object, char* tag) {
+void SVM_SetCbSvrId(int svtype, int id, int (*func)(void*), void* object, char* tag) {
     SVM_Lock();
-    func_0201aa38(svtype, id, func, object, tag);
+    svm_SetCbSvrId(svtype, id, func, object, tag);
     SVM_Unlock();
 }
 
-void func_0201aa38(int svtype, int id, int (*func)(void*), void* object, char* tag) {
+void svm_SetCbSvrId(int svtype, int id, int (*func)(void*), void* object, char* tag) {
     if (id < 0 || id >= 6) {
         SVM_CallErr1("1071201:SVM_SetCbSvrId:illegal id");
         return;

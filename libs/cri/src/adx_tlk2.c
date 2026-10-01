@@ -4,16 +4,27 @@
 
 #include <cri/private/adx_tlk.h>
 
+int   adxt_tlk2_unused1 = 0;
+int   adxt_tlk2_unused0 = 0;
+int   adxt_time_unit    = 0;
+float adxt_diff_av      = 0.0f;
+int   adxt_tlk2_unused2 = 0;
+
+static void adxt_unused(void) {
+    adxt_tlk2_unused0 = adxt_tlk2_unused1 = adxt_tlk2_unused2 = adxt_time_unit = 0;
+    adxt_diff_av                                                               = 0.0f;
+}
+
 static void adxt_StartAfs(ADXT adxt, int partitionId, int fileId);
-void        func_02017da4(ADXT adxt, const char* filename);
+void        adxt_StartFname(ADXT adxt, const char* filename);
 static void adxt_StartMem2(ADXT adxt, void* adxData, int dataLength);
 static void adxt_StartMemIdx(ADXT adxt, void* acxData, int idx);
 static void adxt_StartFnameRange(ADXT adxt, const char* filename, int sectOffset, int sectRange);
 
 void ADXT_StartAfs(ADXT adxt, int partitionId, int fileId) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_StartAfs(adxt, partitionId, fileId);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_StartAfs(ADXT adxt, int partitionId, int fileId) {
@@ -52,9 +63,9 @@ void adxt_StartAfs(ADXT adxt, int partitionId, int fileId) {
 }
 
 void ADXT_StartFnameRange(ADXT adxt, const char* filename, int sectOffset, int sectRange) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_StartFnameRange(adxt, filename, sectOffset, sectRange);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 static void adxt_StartFnameRange(ADXT adxt, const char* filename, int sectOffset, int sectRange) {
@@ -64,7 +75,7 @@ static void adxt_StartFnameRange(ADXT adxt, const char* filename, int sectOffset
     }
 
     ADXT_Stop(adxt);
-    func_02021614(adxt->workFilename, 0x100, filename);
+    CRICRW_Strcpy(adxt->workFilename, 0x100, filename);
     adxt->filename        = adxt->workFilename;
     adxt->directory       = NULL;
     adxt->offset          = sectOffset;
@@ -75,20 +86,20 @@ static void adxt_StartFnameRange(ADXT adxt, const char* filename, int sectOffset
     ADXT_SetLnkSw(adxt, 0);
 }
 
-void func_02017d80(ADXT adxt, const char* filename) {
-    func_02012f88();
-    func_02017da4(adxt, filename);
-    func_02012f8c();
+void ADXT_StartFname(ADXT adxt, const char* filename) {
+    ADXCRS_Enter();
+    adxt_StartFname(adxt, filename);
+    ADXCRS_Leave();
 }
 
-void func_02017da4(ADXT adxt, const char* filename) {
+void adxt_StartFname(ADXT adxt, const char* filename) {
     adxt_StartFnameRange(adxt, filename, 0, 0xFFFFF);
 }
 
 void ADXT_StartMem2(ADXT adxt, void* adxData, int dataLength) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_StartMem2(adxt, adxData, dataLength);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_StartMem2(ADXT adxt, void* adxData, int dataLength) {
@@ -112,9 +123,9 @@ void adxt_StartMem2(ADXT adxt, void* adxData, int dataLength) {
 }
 
 void ADXT_StartMemIdx(ADXT adxt, void* acxData, int idx) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_StartMemIdx(adxt, acxData, idx);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_StartMemIdx(ADXT adxt, void* acxData, int idx) {

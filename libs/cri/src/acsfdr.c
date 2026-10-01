@@ -200,8 +200,7 @@ int func_02020a88(ACSFDR* fdr, int param_2) {
             fVar2 = uVar7;
             break;
         case 3:
-            lVar6 = (1.5707964f * param_2) / 3238200;
-            uVar1 = func_020528a8(lVar6);
+            uVar1 = cos((1.5707964f * param_2) / 3238200);
             uVar1 = func_0205494c(uVar1);
             uVar1 -= 1.0f;
             uVar1 = 3238200 * uVar1;

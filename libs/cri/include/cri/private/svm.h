@@ -15,22 +15,27 @@ void SVM_Unlock();
 void SVM_CallErr(const char* format, ...);
 void SVM_SetCbErr(void (*callback)(void*, char*), void* object);
 // Registers a server callback in the first free slot of `svtype` and returns
-// that slot index (or -1). `tag` is stored in SVMSVRCallback::tag.
-int SVM_SetCbSvrId(int svtype, int (*func)(void*), void* object, char* tag);
-// Registers a server callback at the explicit slot `id`. Declared/defined as
-// func_0201a9fc/func_0201aa38 in svm.c; its in-binary error strings
-// ("1071201:SVM_SetCbSvrId:illegal id", "2100801:SVM_SetCbSvrId:over write
-// callback function.") identify it as SVM_SetCbSvrId, but it is still unnamed
-// because it has no callers outside adx_inis.c.
-void func_0201a9fc(int svtype, int id, int (*func)(void*), void* object, char* tag);
+// that slot index (or -1). `tag` is stored in SVMSVRCallback::tag. Named from
+// its own "1051001:SVM_SetCbSvr:too many server function" string and 3s's
+// SVM_SetCbSvr; its svtype check reuses SVM_SetCbSvrId's message, a copy-paste
+// in the original (SVM_DelCbSvr does the same).
+int SVM_SetCbSvr(int svtype, int (*func)(void*), void* object, char* tag);
+// Registers a server callback at the explicit slot `id` ("1071201:
+// SVM_SetCbSvrId:illegal id", "2100801:SVM_SetCbSvrId:over write callback
+// function.").
+void SVM_SetCbSvrId(int svtype, int id, int (*func)(void*), void* object, char* tag);
 void SVM_DelCbSvr(int svtype, int id);
 void SVM_SetCbLock(void (*func)(void*), void* object);
 void SVM_SetCbUnlock(void (*func)(void*), void* object);
 void SVM_Finish();
 int  SVM_ExecSvrVint();
+int  SVM_ExecSvrUsrVsync();
 int  SVM_ExecSvrVsync();
+int  SVM_ExecSvrUhigh();
 int  SVM_ExecSvrFs();
 int  SVM_ExecSvrMain();
+int  SVM_ExecSvrMwIdle();
+int  SVM_ExecSvrUsrIdle();
 int  SVM_TestAndSet(int* mem);
 void SVM_CallErr1(const char* msg);
 

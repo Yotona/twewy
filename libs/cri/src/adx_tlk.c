@@ -3,7 +3,7 @@
 #include <cri/lsc.h>
 
 static ADXT adxt_Create(int maxChans, void* work, int worksize);
-static ADXT func_02016c90(void* work, int workSize);
+static ADXT adxt_Create3D(void* work, int workSize);
 static void adxt_Destroy(ADXT adxt);
 static void adxt_DestroyAll(void);
 static void adxt_SetLpFlg(ADXT adxt, int flag);
@@ -19,52 +19,84 @@ static void adxt_ExecHndl(ADXT adxt);
 void        ADXT_SetExtraInfo(ADXT adxt, char flag);
 static void adxt_SetLnkSw(ADXT adxt, int sw);
 
-extern int data_0206c7c0;
-int        data_02063ae8 = 25;
 extern int data_0206bd7c;
 
-extern int   adxt_def_svrfreq;
-extern float adxt_diff_av = 0.0f;
+void ADXSJD_ExecServer(void);
+void ADXRNA_ExecServer(void);
+void ADXT_ExecHndl(ADXT adxt);
 
+extern float adxt_diff_av;
+extern int   adxt_time_unit;
+
+int data_02063ae8           = 25;
+int adxt_tlk_unused6        = 0;
+int adxt_tlk_unused5        = 0;
+int adxt_tlk_unused4        = 0;
+int adxt_tlk_unused3        = 0;
+int adxt_tlk_unused2        = 0;
+int adxt_tlk_unused1        = 0;
+int adxt_tlk_unused0        = 0;
 void (*ahxdetachfunc)(ADXT) = NULL;
-int adxt_time_unit          = 0;
+int adxt_def_svrfreq2       = 0; // written with adxt_def_svrfreq, never read
+int adxt_def_svrfreq        = 0;
+int adxt_tsvr_enter_cnt     = 0; // adxt_ExecServer's stage: 0 idle, 1 SJD, 2 handles, 3 RNA
 int adxt_time_mode          = 0;
-int adxt_time_adjust_sw     = 1;
 
-void func_02012f88();
-void func_02012f8c();
+// Optional hooks around the phases of adxt_ExecServer (func(obj)).
+void* adxt_exec_rna_obj            = NULL;
+void (*adxt_exec_sjd_func)(void*)  = NULL;
+void* adxt_exec_sjd_obj            = NULL;
+void (*adxt_exec_end_func)(void*)  = NULL;
+void* adxt_exec_end_obj            = NULL;
+void (*adxt_exec_hndl_func)(void*) = NULL;
+void* adxt_exec_hndl_obj           = NULL;
+void (*adxt_exec_rna_func)(void*)  = NULL;
+int adxt_time_adjust_sw            = 1;
+
+static void adxt_unused(void) {
+    adxt_tlk_unused0 = adxt_tlk_unused1 = adxt_tlk_unused2 = adxt_tlk_unused3 = 0;
+    adxt_tlk_unused4 = adxt_tlk_unused5 = adxt_tlk_unused6 = 0;
+}
+
+void ADXCRS_Enter();
+void ADXCRS_Leave();
 void ADXERR_CallErrFunc1(const char*);
 void memset(void*, int, int);
 
 void func_020168f4(void) {
-    func_02012f88();
+    ADXCRS_Enter();
 }
 
 void func_02016900(void) {
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 ADXT ADXT_Create(int maxChans, void* work, int workSize) {
     ADXT padxt;
 
-    func_02012f88();
+    ADXCRS_Enter();
     padxt = adxt_Create(maxChans, work, workSize);
-    func_02012f8c();
+    ADXCRS_Leave();
     return padxt;
 }
 
 static ADXT adxt_Create(int maxChans, void* work, int workSize) {
     ADXT adxt;
+    int  size;
+    int  aligned_work;
+    int  ix;
+    int  i;
+    int  idx;
+    int  ibufSize;
 
-    int aligned_work = ((unsigned int)work + 0x3F) & ~0x3F;
-    int size         = workSize - (aligned_work - (unsigned int)work);
+    aligned_work = ((unsigned int)work + 0x3F) & ~0x3F;
+    size         = workSize - (aligned_work - (unsigned int)work);
 
     if (maxChans < 0 || work == NULL || workSize < 0) {
         ADXERR_CallErrFunc1("E02080804 adxt_Create: parameter error");
         return NULL;
     }
 
-    int idx;
     for (idx = 0; idx < 4; idx++) {
         if (adxt_obj[idx].used == FALSE) {
             break;
@@ -81,7 +113,7 @@ static ADXT adxt_Create(int maxChans, void* work, int workSize) {
 
     adxt->maxnch = maxChans;
 
-    int ibufSize = size - ADXT_CALC_OBUFSIZE(maxChans) - 0x124;
+    ibufSize = size - ADXT_CALC_OBUFSIZE(maxChans) - 0x124;
 
     adxt->ibuf    = (char*)(aligned_work + ADXT_CALC_OBUFSIZE(maxChans));
     adxt->ibuflen = ibufSize / 0x800 * 0x800;
@@ -111,7 +143,7 @@ static ADXT adxt_Create(int maxChans, void* work, int workSize) {
         return NULL;
     }
 
-    for (int ix = 0; ix < maxChans; ix++) {
+    for (ix = 0; ix < maxChans; ix++) {
         adxt->sjo[ix] =
             SJRBF_Create(adxt->obuf + adxt->obufdist * ix, adxt->obufsize * 2, (adxt->obufdist - adxt->obufsize) * 2);
         if (adxt->sjo[ix] == NULL) {
@@ -145,7 +177,7 @@ static ADXT adxt_Create(int maxChans, void* work, int workSize) {
     adxt->maxsct  = adxt->ibuflen / 0x800;
     adxt->minsct  = adxt->maxsct * 0.85f;
     adxt->outvol  = 0;
-    for (int i = 0; i < maxChans; i++) {
+    for (i = 0; i < maxChans; i++) {
         adxt->outpan[i] = -0x80;
     }
     adxt->outbalance = 0;
@@ -168,16 +200,16 @@ static ADXT adxt_Create(int maxChans, void* work, int workSize) {
     return adxt;
 }
 
-ADXT func_02016c64(void* work, int workSize) {
+ADXT ADXT_Create3D(void* work, int workSize) {
     ADXT adxt;
 
-    func_02012f88();
-    adxt = func_02016c90(work, workSize);
-    func_02012f8c();
+    ADXCRS_Enter();
+    adxt = adxt_Create3D(work, workSize);
+    ADXCRS_Leave();
     return adxt;
 }
 
-ADXT func_02016c90(void* work, int workSize) {
+ADXT adxt_Create3D(void* work, int workSize) {
     ADXT adxt = adxt_Create(1, work, workSize);
     if (adxt == NULL) {
         adxt = NULL;
@@ -192,9 +224,9 @@ void adxt_detach_ahx(ADXT adxt) {
 }
 
 void ADXT_Destroy(ADXT adxt) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_Destroy(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_Destroy(ADXT adxt) {
@@ -274,9 +306,9 @@ void adxt_Destroy(ADXT adxt) {
 }
 
 void ADXT_DestroyAll(void) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_DestroyAll();
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_DestroyAll(void) {
@@ -325,7 +357,7 @@ void adxt_start_stm(ADXT adxt, const char* filename, void* dir, int arg3, int ar
     ADXSTM_Seek(adxt->stm, 0);
     ADXSTM_StopNw(adxt->stm);
     ADXSTM_ReleaseFileNw(adxt->stm);
-    ADXSTM_BindFileNw(adxt->stm, filename, dir, arg3, arg4 << 11, ((arg4 >> 0x1F) << 0xB) | ((unsigned int)arg4 >> 0x15));
+    ADXSTM_BindFileNw(adxt->stm, filename, dir, arg3, (long long)arg4 << 11);
     ADXSTM_Start(adxt->stm);
     adxt_start_sj(adxt, adxt->sjf);
 }
@@ -356,9 +388,9 @@ void ADXT_StopWithoutLsc(ADXT adxt) {
 }
 
 void ADXT_Stop(ADXT adxt) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_Stop(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_Stop(ADXT adxt) {
@@ -387,9 +419,9 @@ void adxt_Stop(ADXT adxt) {
 int ADXT_GetStat(ADXT adxt) {
     int stat;
 
-    func_02012f88();
+    ADXCRS_Enter();
     stat = adxt_GetStat(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
     return stat;
 }
 
@@ -405,7 +437,7 @@ void ADXT_GetTimeSfreq(ADXT adxt, int* count, int* frequency) {
     char stat = adxt->stat;
 
     if ((unsigned int)(unsigned char)(char)(stat - 3) <= 1) {
-        func_0201bf00(adxt->rna, count, frequency);
+        ADXRNA_GetTime(adxt->rna, count, frequency);
     } else if (stat == ADXT_STAT_PLAYEND) {
         *count     = ADXSJD_GetTotalNumSmpl(adxt->sjd);
         *frequency = ADXSJD_GetSfreq(adxt->sjd);
@@ -445,7 +477,7 @@ void adxt_GetTime(ADXT adxt, int* count, int* frequency) {
         adxt_diff_av = (((float)loc_count / loc_freq) - ((float)*count / adxt_time_unit)) * 1000.0f;
 
         if (adxt_diff_av > 60.0f || adxt_diff_av < -60.0f) {
-            func_0201bf00(adxt->rna, &loc_count, &loc_freq);
+            ADXRNA_GetTime(adxt->rna, &loc_count, &loc_freq);
 
             adxt->tvofst = (float)loc_count / loc_freq * adxt_time_unit;
             adxt->svcnt  = adxt_vsync_cnt;
@@ -454,7 +486,7 @@ void adxt_GetTime(ADXT adxt, int* count, int* frequency) {
         loc_count = ADXSJD_GetTotalNumSmpl(adxt->sjd);
         loc_freq  = ADXSJD_GetSfreq(adxt->sjd);
         loc_count *= (16 / ADXSJD_GetOutBps(adxt->sjd));
-        *count = (float)loc_count / loc_freq * adxt->time_ofst;
+        *count = adxt_time_unit * ((float)loc_count / loc_freq);
         *count += adxt->tvofst + 1;
     } else {
         *count = 0;
@@ -464,16 +496,16 @@ void adxt_GetTime(ADXT adxt, int* count, int* frequency) {
     *frequency = adxt_time_unit;
 }
 
-int ADXT_Play(ADXT adxt) {
+int ADXT_GetTimeReal(ADXT adxt) {
     int val;
 
-    func_02012f88();
-    val = func_020174c8(adxt);
-    func_02012f8c();
+    ADXCRS_Enter();
+    val = adxt_GetTimeReal(adxt);
+    ADXCRS_Leave();
     return val;
 }
 
-int func_020174c8(ADXT adxt) {
+int adxt_GetTimeReal(ADXT adxt) {
     int local_c;
     int local_10;
 
@@ -484,9 +516,9 @@ int func_020174c8(ADXT adxt) {
 int ADXT_GetNumChan(ADXT adxt) {
     int numChan;
 
-    func_02012f88();
+    ADXCRS_Enter();
     numChan = adxt_GetNumChan(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
     return numChan;
 }
 
@@ -496,15 +528,15 @@ int adxt_GetNumChan(ADXT adxt) {
         return -1;
     }
     if (adxt->stat >= ADXT_STAT_PREPPING) {
-        return func_02015948(adxt->sjd);
+        return ADXSJD_GetNumChan(adxt->sjd);
     }
     return 0;
 }
 
 void ADXT_SetOutPan(ADXT adxt, int channel, int pan) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_SetOutPan(adxt, channel, pan);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_SetOutPan(ADXT adxt, int channel, int pan) {
@@ -530,7 +562,7 @@ void adxt_SetOutPan(ADXT adxt, int channel, int pan) {
     }
 
     if (adxt->extraInfoFlag == TRUE) {
-        iVar1 = func_02015a2c(adxt->sjd, channel);
+        iVar1 = ADXSJD_GetDefPan(adxt->sjd, channel);
         if (iVar1 == -128) {
             iVar1 = 0;
         }
@@ -540,7 +572,7 @@ void adxt_SetOutPan(ADXT adxt, int channel, int pan) {
 
     if (data_0206bd7c == 0) {
         if (pan == -128) {
-            iVar2 = func_02015948((int)adxt->sjd);
+            iVar2 = ADXSJD_GetNumChan((int)adxt->sjd);
             if (iVar2 == 2) {
                 if (channel == 0) {
                     iVar2 = -15;
@@ -559,16 +591,16 @@ void adxt_SetOutPan(ADXT adxt, int channel, int pan) {
     }
     adxt->outpan[channel] = pan;
     if (channel < adxt->maxnch) {
-        func_0201bf54((int)adxt->rna, channel, iVar2);
+        ADXRNA_SetOutPan((int)adxt->rna, channel, iVar2);
     } else {
         ADXERR_CallErrFunc1("E8101208 adxt_SetOutPan: parameter error");
     }
 }
 
 void ADXT_SetOutVol(ADXT adxt, int vol) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_SetOutVol(adxt, vol);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void adxt_SetOutVol(ADXT adxt, int vol) {
@@ -590,9 +622,9 @@ void adxt_SetOutVol(ADXT adxt, int vol) {
 int ADXT_GetOutVol(ADXT adxt) {
     int outVol;
 
-    func_02012f88();
+    ADXCRS_Enter();
     outVol = adxt_GetOutVol(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
     return outVol;
 }
 
@@ -610,37 +642,75 @@ void ADXT_SetExtraInfo(ADXT adxt, char flag) {
 
 void adxt_SetDefSvrFreq(int freq);
 void ADXT_SetDefSvrFreq(int freq) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_SetDefSvrFreq(freq);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 // Nonmatching: Data differences
 void adxt_SetDefSvrFreq(int freq) {
-    adxt_def_svrfreq = freq;
+    adxt_def_svrfreq  = freq;
+    adxt_def_svrfreq2 = freq;
 }
 
 void adxt_ExecServer();
 void ADXT_ExecServer() {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_ExecServer();
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
+// NITRO's server: recvx's ADXSJD -> handles -> RNA sequence, made
+// re-entrancy-safe with adxt_tsvr_enter_cnt and bracketed by optional hooks.
 void adxt_ExecServer() {
-    /* NYI */
+    int  i;
+    ADXT adxt;
+
+    ADXCRS_Lock();
+    if (adxt_tsvr_enter_cnt != 0) {
+        ADXCRS_Unlock();
+        return;
+    }
+    adxt_tsvr_enter_cnt = 1;
+    ADXCRS_Unlock();
+
+    if (adxt_exec_sjd_func != NULL) {
+        adxt_exec_sjd_func(adxt_exec_sjd_obj);
+    }
+    ADXSJD_ExecServer();
+
+    adxt_tsvr_enter_cnt = 2;
+    for (i = 0, adxt = adxt_obj; i < ADXT_MAX_OBJ; i++, adxt++) {
+        if (adxt->used == 1) {
+            ADXT_ExecHndl(adxt);
+        }
+    }
+
+    adxt_tsvr_enter_cnt = 3;
+    if (adxt_exec_hndl_func != NULL) {
+        adxt_exec_hndl_func(adxt_exec_hndl_obj);
+    }
+    ADXRNA_ExecServer();
+    if (adxt_exec_rna_func != NULL) {
+        adxt_exec_rna_func(adxt_exec_rna_obj);
+    }
+
+    adxt_tsvr_enter_cnt = 0;
+    if (adxt_exec_end_func != NULL) {
+        adxt_exec_end_func(adxt_exec_end_obj);
+    }
 }
 
 void ADXT_SetLpFlg(ADXT adxt, int flag) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_SetLpFlg(adxt, flag);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 // adx_sjd.c accessors, no public header declares these
-int func_020158e4(ADXSJD* sjd); // GetDecDtLen
-int func_020159a8(ADXSJD* sjd); // GetAinfLen
-int func_020159d4(ADXSJD* sjd); // GetLpEndOfst
+int ADXSJD_GetDecDtLen(ADXSJD* sjd);    // GetDecDtLen
+int ADXSJD_GetLpStartOfst(ADXSJD* sjd); // GetAinfLen
+int ADXSJD_GetLpEndOfst(ADXSJD* sjd);   // GetLpEndOfst
 int _s32_div_f(int a, int b);
 // Turning looping off has to re-derive the loop length from how much is
 // actually buffered, so this is not the one-line lpflg = flg the PS2
@@ -670,10 +740,10 @@ void adxt_SetLpFlg(ADXT adxt, int flag) {
     }
 
     if (adxt->pmode != ADXT_PLAYBACK_SLFILE && adxt->lpflg == 1 && flag == 0) {
-        ndata += func_020158e4(adxt->sjd);
+        ndata += ADXSJD_GetDecDtLen(adxt->sjd);
 
-        ainf_sect = (func_020159a8(adxt->sjd) + 2047) / 2048;
-        lp_sect   = (func_020159d4(adxt->sjd) + 2047) / 2048;
+        ainf_sect = (ADXSJD_GetLpStartOfst(adxt->sjd) + 2047) / 2048;
+        lp_sect   = (ADXSJD_GetLpEndOfst(adxt->sjd) + 2047) / 2048;
 
         len = (lp_sect << 11) - (ainf_sect << 11);
 
@@ -688,9 +758,9 @@ void adxt_SetLpFlg(ADXT adxt, int flag) {
 }
 
 void ADXT_Pause(ADXT adxt, int pauseState) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_Pause(adxt, pauseState);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 // Nonmatching: Data differences
@@ -734,9 +804,9 @@ void adxt_Pause(ADXT adxt, int pauseState) {
 int ADXT_GetStatPause(ADXT adxt) {
     int statPause;
 
-    func_02012f88();
+    ADXCRS_Enter();
     statPause = adxt_GetStatPause(adxt);
-    func_02012f8c();
+    ADXCRS_Leave();
     return statPause;
 }
 
@@ -748,34 +818,34 @@ int adxt_GetStatPause(ADXT adxt) {
     return adxt->pause_flag;
 }
 
-void func_02017b20(ADXT adxt, int param_1, int param_2) {
-    func_02012f88();
-    func_02017b78(adxt, param_1, param_2);
-    func_02012f8c();
+void ADXT_SetTranspose(ADXT adxt, int param_1, int param_2) {
+    ADXCRS_Enter();
+    adxt_SetTranspose(adxt, param_1, param_2);
+    ADXCRS_Leave();
 }
 
-void func_02017b4c(ADXT adxt, int param_1, int param_2) {
-    func_02012f88();
-    func_02017b7c(adxt, param_1, param_2);
-    func_02012f8c();
+void ADXT_GetTranspose(ADXT adxt, int param_1, int param_2) {
+    ADXCRS_Enter();
+    adxt_GetTranspose(adxt, param_1, param_2);
+    ADXCRS_Leave();
 }
 
-void func_02017b78(ADXT adxt, int param_1, int param_2) {
+void adxt_SetTranspose(ADXT adxt, int param_1, int param_2) {
     return;
 }
 
-void func_02017b7c(ADXT adxt, int param_1, int param_2) {
+void adxt_GetTranspose(ADXT adxt, int param_1, int param_2) {
     return;
 }
 
 void ADXT_SetLnkSw(ADXT adxt, int param_1) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_SetLnkSw(adxt, param_1);
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 static void adxt_SetLnkSw(ADXT adxt, int sw) {
-    adxt->playbackFlag = sw;
+    adxt->lnkflg = sw;
     if (adxt->sjd != NULL) {
         ADXSJD_SetLnkSw(adxt->sjd, sw);
     }

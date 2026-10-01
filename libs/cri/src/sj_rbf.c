@@ -78,13 +78,13 @@ void SJRBF_Error(void* obj, int ecode) {
 void SJRBF_Log(char* ecode, char* edesc) {
     char errString[64];
 
-    func_02021614(errString, sizeof(errString), ecode);
-    func_02021638(errString, sizeof(errString), edesc);
+    CRICRW_Strcpy(errString, sizeof(errString), ecode);
+    CRICRW_Strcat(errString, sizeof(errString), edesc);
     SJERR_CallErr(errString);
 }
 
 void SJRBF_Init(void) {
-    func_0201a534();
+    SJCRS_Init();
     SJCRS_Lock();
     sjrbf_Init();
     SJCRS_Unlock();
@@ -101,7 +101,7 @@ void SJRBF_Finish(void) {
     SJCRS_Lock();
     sjrbf_Finish();
     SJCRS_Unlock();
-    func_0201a55c();
+    SJCRS_Finish();
 }
 
 static void sjrbf_Finish(void) {

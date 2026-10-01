@@ -20,7 +20,7 @@ void LSC_EntryErrFunc(void (*err_func)(void* obj, char* msg), void* obj) {
     return; // Do nothing
 }
 
-void func_020215ec(void) {
+void LSC_GetStat(void) {
     return; // Do nothing
 }
 

@@ -15102,7 +15102,6 @@ from:0x020e1794 kind:load to:0x020e0e74 module:overlay(30)
 from:0x020e179c kind:load to:0x020e0e54 module:overlay(30)
 from:0x020e17a4 kind:load to:0x020e0f94 module:overlay(30)
 from:0x020e17ac kind:load to:0x020e0e44 module:overlay(30)
-from:0x020e1948 kind:load to:0x02070005 module:main
 from:0x020e1950 kind:load to:0x0211018e module:overlays(32,33,34,35)
 from:0x020e1a98 kind:load to:0x02120004 module:overlays(32,33,35)
 from:0x020e1e84 kind:load to:0x02120294 module:overlays(32,33,35)

@@ -50,4 +50,11 @@ typedef struct {
     unsigned short unk1E;
 } ADXHeader;
 
+void ADX_GetCoefficient(int highpass_frequency, int sample_rate, short* coef1_ptr, short* coef2_ptr);
+int  ADX_ScanInfoCode(char* ibuf, int ibuflen, short* dlen);
+int  ADX_DecodeFooter(char* ibuf, int ibuflen, short* dlen);
+int  ADX_DecodeMono4(char* ibuf, int nblk, short* obuf, short* dly, short k0, short k1, short* key, short km, short ka);
+int  ADX_DecodeSte4(char* ibuf, int nblk, short* obuf_l, short* dly_l, short* obuf_r, short* dly_r, short k0, short k1,
+                    short* key, short km, short ka);
+
 #endif // ADX_DCD_H

@@ -19,8 +19,8 @@ void (*cvfs_errfn)(void*, const char*) = NULL;
 CVFSHandle      cvfs_handles[CVFS_HANDLE_MAX]       = {0};
 CVFSNamedDevice cvfs_named_devices[CVFS_DEVICE_MAX] = {0};
 
-CVFSDevice* func_0201d540();
-CVFSDevice* func_0201bfa0();
+CVFSDevice* mfCiGetInterface();
+CVFSDevice* nitroCiGetInterface();
 
 CVFSDevice* addDevice(const char* device_name, CVFSDevice* (*device_provider)());
 int         isExistDev(const char* devName, int device_name_len);
@@ -176,7 +176,7 @@ CVFSDevice* variousProc(char* filename, char* device_name, const char* full_path
             return NULL;
         }
 
-        func_02021614(device_name, CVFS_MAX_NAME_LENGTH, full_path);
+        CRICRW_Strcpy(device_name, CVFS_MAX_NAME_LENGTH, full_path);
     }
 
     return device;
@@ -519,8 +519,8 @@ void addDevName(const char* device_name, char* out) {
     }
 
     if (isNeedDevName(device_name) == 1) {
-        func_02021614(&data_0207063c, CVFS_MAX_NAME_LENGTH, out);
-        func_0202165c(out, CVFS_MAX_NAME_LENGTH, "%s:%s", device_name, &data_0207063c);
+        CRICRW_Strcpy(&data_0207063c, CVFS_MAX_NAME_LENGTH, out);
+        CRICRW_Sprintf(out, CVFS_MAX_NAME_LENGTH, "%s:%s", device_name, &data_0207063c);
     }
 }
 
@@ -533,6 +533,6 @@ static char* const data_0205bff8 = "\nADX_NITRO Ver.";
 void func_0201b884(void) {
     func_0201bfac(data_0205bff8);
     cvFsEntryErrFunc(func_0201b874, NULL);
-    cvFsAddDev("MFS", func_0201d540, 0);
-    cvFsAddDev("NITRO\0\0", func_0201bfa0, 0);
+    cvFsAddDev("MFS", mfCiGetInterface, 0);
+    cvFsAddDev("NITRO\0\0", nitroCiGetInterface, 0);
 }

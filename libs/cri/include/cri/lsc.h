@@ -12,7 +12,7 @@ void LSC_Finish(void);
 LSC  LSC_Create(SJ sj);
 void LSC_Destroy(LSC);
 void LSC_EntryErrFunc(void (*err_func)(void* obj, char* msg), void* obj);
-void func_020215ec(void);
+void LSC_GetStat(void);
 void LSC_SetStmHndl(void* lsc, void* stm);
 void LSC_Stop(LSC lsc);
 void LSC_ExecServer(void);

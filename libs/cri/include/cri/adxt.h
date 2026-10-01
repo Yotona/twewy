@@ -82,7 +82,7 @@ typedef struct _adx_talk {
     /* 0x8C */ int          lesct;      // Loop playback end sector
     /* 0x90 */ int          trpnsmpl;   // Trap sample
     /* 0x94 */ void*        lsc;        // Loop Stream Controller
-    /* 0x98 */ char         playbackFlag;
+    /* 0x98 */ char         lnkflg;     // Link (seamless next-file) switch
     /* 0x99 */ char         pad0;
     /* 0x9A */ short        pad1;
     /* 0x9C */ unsigned int tvofst;  // Start time offset
@@ -111,7 +111,7 @@ typedef ADX_TALK* ADXT;
  */
 ADXT ADXT_Create(int maxChans, void* work, int worksize);
 
-ADXT func_02016c64(void* work, int workSize);
+ADXT ADXT_Create3D(void* work, int workSize);
 
 void ADXT_Destroy(ADXT adxt);
 
@@ -124,9 +124,9 @@ void ADXT_Stop(ADXT adxt);
 
 int ADXT_GetStat(ADXT adxt);
 
-int ADXT_Play(ADXT adxt);
+int ADXT_GetTimeReal(ADXT adxt);
 
-int func_020174c8();
+int adxt_GetTimeReal();
 
 int ADXT_GetNumChan();
 
@@ -144,8 +144,8 @@ void ADXT_SetLpFlg(ADXT adxt, int flag);
 
 int ADXT_GetStatPause(ADXT adxt);
 
-void func_02017b78(ADXT adxt, int param_1, int param_2);
-void func_02017b7c(ADXT adxt, int param_1, int param_2);
+void adxt_SetTranspose(ADXT adxt, int param_1, int param_2);
+void adxt_GetTranspose(ADXT adxt, int param_1, int param_2);
 void ADXT_SetLnkSw(ADXT adxt, int param_1);
 
 void ADXT_StartMem2(ADXT adxt, void* adxData, int dataLength);
@@ -153,6 +153,6 @@ void ADXT_StartMem2(ADXT adxt, void* adxData, int dataLength);
 void func_020177b8();
 void ADXT_ExecServer();
 
-void func_02017d80(ADXT adxt, const char* filename);
+void ADXT_StartFname(ADXT adxt, const char* filename);
 
 #endif // ADXT_H

@@ -25,7 +25,7 @@ void ADXERR_CallErrFunc1(char* msg) {
         SVM_CallErr("Error");
         return;
     }
-    func_02021624(adxerr_msg, 0x100, msg, ADXERR_MAX_LEN - 1);
+    CRICRW_Strncpy(adxerr_msg, 0x100, msg, ADXERR_MAX_LEN - 1);
 
     if (adxerr_func != NULL) {
         adxerr_func(adxerr_obj, adxerr_msg);
@@ -40,8 +40,8 @@ void ADXERR_CallErrFunc2(char* arg0, char* arg1) {
         return;
     }
 
-    func_02021624(adxerr_msg, 0x100, arg0, ADXERR_MAX_LEN - 1);
-    func_02021648(adxerr_msg, 0x100, arg1, ADXERR_MAX_LEN - 1);
+    CRICRW_Strncpy(adxerr_msg, 0x100, arg0, ADXERR_MAX_LEN - 1);
+    CRICRW_Strncat(adxerr_msg, 0x100, arg1, ADXERR_MAX_LEN - 1);
 
     if (adxerr_func != NULL) {
         adxerr_func(adxerr_obj, adxerr_msg);
@@ -76,6 +76,6 @@ void ADXERR_ItoA(int value, char* str, int base) {
 
 void ADXERR_ItoA2(int arg0, int arg1, char* str, int base) {
     ADXERR_ItoA(arg0, str, base);
-    func_02021648(str, base, " ", base - strlen(str) - 1);
+    CRICRW_Strncat(str, base, " ", base - strlen(str) - 1);
     ADXERR_ItoA(arg1, &str[strlen(str)], 4 - strlen(str));
 }

@@ -28,7 +28,7 @@ void func_02020f64(ACSSBADX* badx) {
 
 int ACSSBADX_CreateHndl(ACSSBADX* badx, int* param_2, void* work, int workSize) {
     if (param_2[2] != 0) {
-        badx->adxt = func_02016c64(work, workSize - sizeof(ACSSBADX));
+        badx->adxt = ADXT_Create3D(work, workSize - sizeof(ACSSBADX));
     } else {
         badx->adxt = ADXT_Create(*param_2, work, workSize - sizeof(ACSSBADX));
     }
@@ -50,7 +50,7 @@ void ACSSBADX_DestroyAdxt(ACSSBADX* badx) {
 }
 
 void func_02021004(ACSSBADX* badx, const char* filename) {
-    func_02017d80(badx->adxt, filename);
+    ADXT_StartFname(badx->adxt, filename);
 }
 
 void ACSSBADX_StartFnameRange(ACSSBADX* badx) {

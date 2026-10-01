@@ -84,18 +84,18 @@ void ADXB_Init() {
 void* adxb_DefGetWr(void* object, int* arg1, int* arg2, int* arg3) {
     ADXB adxb = (ADXB)object;
 
-    *arg1 = adxb->unk8C;
-    *arg2 = adxb->unk40 - adxb->unk8C;
-    *arg3 = adxb->total_samples - adxb->unk88;
+    *arg1 = adxb->curwpos;
+    *arg2 = adxb->pcmbsize - adxb->curwpos;
+    *arg3 = adxb->total_nsmpl - adxb->total_ndecsmpl;
 
-    return adxb->pcm_buf;
+    return adxb->pcmbuf;
 }
 
 void adxb_DefAddWr(void* object, int arg1, int arg2) {
     ADXB adxb = (ADXB)object;
 
-    adxb->unk8C += arg2;
-    adxb->unk88 += arg2;
+    adxb->curwpos += arg2;
+    adxb->total_ndecsmpl += arg2;
 }
 
 // adxb_clear. The 16 bytes at 0xC4 are unkC4. The target inlines this clear as
@@ -129,7 +129,7 @@ ADXB ADXB_Create(int arg0, void* arg1, int arg2, int arg3) {
     chk_adxb = &adxb_obj[0];
 
     for (i = 0; i < ADXB_MAX_OBJ; i++, chk_adxb++) {
-        if (chk_adxb->unk0 == 0) {
+        if (chk_adxb->used == 0) {
             break;
         }
     }
@@ -140,7 +140,7 @@ ADXB ADXB_Create(int arg0, void* arg1, int arg2, int arg3) {
 
     adxb = &adxb_obj[i];
     memset(adxb, 0, sizeof(ADXB_OBJ));
-    adxb->unk0  = 1;
+    adxb->used  = 1;
     adxpd       = ADXPD_Create();
     adxb->adxpd = adxpd;
 
@@ -149,14 +149,14 @@ ADXB ADXB_Create(int arg0, void* arg1, int arg2, int arg3) {
         return NULL;
     }
 
-    adxb->unk38   = arg0;
-    adxb->pcm_buf = arg1;
-    adxb->unk40   = arg2;
-    adxb->unk44   = arg3;
-    adxb->get_wr  = adxb_DefGetWr;
-    adxb->object  = adxb;
-    adxb->add_wr  = adxb_DefAddWr;
-    adxb->unk84   = adxb;
+    adxb->maxnch    = arg0;
+    adxb->pcmbuf    = arg1;
+    adxb->pcmbsize  = arg2;
+    adxb->pcmbdist  = arg3;
+    adxb->getwrfunc = adxb_DefGetWr;
+    adxb->getwrobj  = adxb;
+    adxb->addwrfunc = adxb_DefAddWr;
+    adxb->addwrobj  = adxb;
     func_020122fc(adxb);
     return adxb;
 }
@@ -167,7 +167,7 @@ void ADXB_Destroy(ADXB adxb) {
         adxb->adxpd = 0;
         ADXPD_Destroy(adxpd);
         memset(adxb, 0, sizeof(ADXB_OBJ));
-        adxb->unk0 = 0;
+        adxb->used = 0;
     }
 }
 
@@ -185,33 +185,33 @@ int ADXB_DecodeHeaderAdx(ADXB adxb, void* header, int len) {
     short sp46;
     short sp48;
 
-    adxb->unk2 = 1;
+    adxb->hdcdflag = 1;
 
-    if (ADX_DecodeInfo(header, len, &audio_offset, &adxb->encoding_type, &adxb->sample_bitdepth, &adxb->block_size,
-                       &adxb->channel_count, &adxb->sample_rate, &adxb->total_samples, &adxb->samples_per_block) < 0)
+    if (ADX_DecodeInfo(header, len, &audio_offset, &adxb->code, &adxb->bps, &adxb->blklen, &adxb->nch, &adxb->sfreq,
+                       &adxb->total_nsmpl, &adxb->blknsmpl) < 0)
     {
         return 0;
     }
 
-    if (adxb->encoding_type > 4) {
+    if (adxb->code > 4) {
         if (adxb->unkB4 == 0) {
             ADXERR_CallErrFunc2("E1060101 ADXB_DecodeHeaderAdx: ", "can't play AHX data by this handle");
             return -1;
         }
 
-        adxb->sample_bitdepth   = 8;
-        adxb->block_size        = adxb->channel_count * 0xC0;
-        adxb->samples_per_block = 0x60;
-        adxb->format            = 0xA;
-        adxb->unk1C             = 0;
-        adxb->loop_count        = 0;
-        adxb->unk26             = 0;
-        adxb->unk20             = NULL;
-        adxb->unk28             = 0;
-        adxb->unk2C             = 0;
-        adxb->unk30             = 0;
-        adxb->unk34             = 0;
-        adxb->unk88             = 0;
+        adxb->bps            = 8;
+        adxb->blklen         = adxb->nch * 0xC0;
+        adxb->blknsmpl       = 0x60;
+        adxb->format         = 0xA;
+        adxb->cof            = 0;
+        adxb->nloop          = 0;
+        adxb->lp_type        = 0;
+        adxb->lp_ins_nsmpl   = NULL;
+        adxb->lp_spos        = 0;
+        adxb->lp_sofst       = 0;
+        adxb->lp_epos        = 0;
+        adxb->lp_eofst       = 0;
+        adxb->total_ndecsmpl = 0;
 
         if (ADX_DecodeInfoExVer(header, len, &version, &flags) < 0) {
             return 0;
@@ -219,7 +219,7 @@ int ADXB_DecodeHeaderAdx(ADXB adxb, void* header, int len) {
 
         sp30 = 0;
 
-        if (adxb_get_key(adxb, version, flags, adxb->total_samples, &sp32, &sp34, &sp36) < 0) {
+        if (adxb_get_key(adxb, version, flags, adxb->total_nsmpl, &sp32, &sp34, &sp36) < 0) {
             return -1;
         }
 
@@ -231,13 +231,13 @@ int ADXB_DecodeHeaderAdx(ADXB adxb, void* header, int len) {
             return 0;
         }
 
-        if (adxb_get_key(adxb, version, flags, adxb->total_samples, &sp44, &sp46, &sp48) < 0) {
+        if (adxb_get_key(adxb, version, flags, adxb->total_nsmpl, &sp44, &sp46, &sp48) < 0) {
             return -1;
         }
 
         ADXPD_SetExtPrm(adxb->adxpd, sp44, sp46, sp48);
 
-        if (ADX_DecodeInfoExADPCM2(header, len, &adxb->unk1C) < 0) {
+        if (ADX_DecodeInfoExADPCM2(header, len, &adxb->cof) < 0) {
             return 0;
         }
 
@@ -245,53 +245,53 @@ int ADXB_DecodeHeaderAdx(ADXB adxb, void* header, int len) {
             return 0;
         }
 
-        ADXPD_SetCoef(adxb->adxpd, adxb->sample_rate, adxb->unk1C);
+        ADXPD_SetCoef(adxb->adxpd, adxb->sfreq, adxb->cof);
         ADXPD_SetDly(adxb->adxpd, &sp10, &sp20);
-        ADX_DecodeInfoExLoop(header, len, &adxb->unk20, &adxb->loop_count, &adxb->unk26, &adxb->unk28, &adxb->unk2C,
-                             &adxb->unk30, &adxb->unk34);
+        ADX_DecodeInfoExLoop(header, len, &adxb->lp_ins_nsmpl, &adxb->nloop, &adxb->lp_type, &adxb->lp_spos, &adxb->lp_sofst,
+                             &adxb->lp_epos, &adxb->lp_eofst);
         ADX_DecodeInfoAinf(header, len, &adxb->ainf_len, &adxb->unkC4, &adxb->def_out_vol, &adxb->def_pan);
         adxb->format = 0;
     }
 
-    adxb->unk48.unk8  = adxb->channel_count;
-    adxb->unk48.unkC  = adxb->block_size;
-    adxb->unk48.unk10 = adxb->samples_per_block;
-    adxb->unk48.unk14 = adxb->pcm_buf;
-    adxb->unk48.unk18 = adxb->unk40;
-    adxb->unk48.unk1C = adxb->unk44;
-    adxb->unk8C       = 0;
+    adxb->dp.nch      = adxb->nch;
+    adxb->dp.blksize  = adxb->blklen;
+    adxb->dp.blknsmpl = adxb->blknsmpl;
+    adxb->dp.pcmbuf   = adxb->pcmbuf;
+    adxb->dp.pcmbsize = adxb->pcmbsize;
+    adxb->dp.pcmbdist = adxb->pcmbdist;
+    adxb->curwpos     = 0;
 
     return audio_offset;
 }
 
 void func_02012748(ADXB adxb) {
-    adxb->unk2              = 1;
-    adxb->sample_rate       = 48000;
-    adxb->channel_count     = 2;
-    adxb->sample_bitdepth   = 16;
-    adxb->total_samples     = 0x7fffffff;
-    adxb->block_size        = 127;
-    adxb->samples_per_block = 1024;
-    adxb->format            = adxb->unk9A;
-    adxb->unk48.unk8        = adxb->channel_count;
-    adxb->unk48.unkC        = adxb->block_size;
-    adxb->unk48.unk10       = adxb->samples_per_block;
-    adxb->unk48.unk14       = adxb->pcm_buf;
-    adxb->unk48.unk18       = adxb->unk40;
-    adxb->unk48.unk1C       = adxb->unk44;
-    adxb->unk8C             = 0;
-    adxb->unk1C             = 0;
-    adxb->loop_count        = 0;
-    adxb->unk26             = 0;
-    adxb->unk20             = NULL;
-    adxb->unk28             = 0;
-    adxb->unk2C             = 0;
-    adxb->unk30             = 0;
-    adxb->unk34             = 0;
-    adxb->unk88             = 0;
+    adxb->hdcdflag       = 1;
+    adxb->sfreq          = 48000;
+    adxb->nch            = 2;
+    adxb->bps            = 16;
+    adxb->total_nsmpl    = 0x7fffffff;
+    adxb->blklen         = 127;
+    adxb->blknsmpl       = 1024;
+    adxb->format         = adxb->unk9A;
+    adxb->dp.nch         = adxb->nch;
+    adxb->dp.blksize     = adxb->blklen;
+    adxb->dp.blknsmpl    = adxb->blknsmpl;
+    adxb->dp.pcmbuf      = adxb->pcmbuf;
+    adxb->dp.pcmbsize    = adxb->pcmbsize;
+    adxb->dp.pcmbdist    = adxb->pcmbdist;
+    adxb->curwpos        = 0;
+    adxb->cof            = 0;
+    adxb->nloop          = 0;
+    adxb->lp_type        = 0;
+    adxb->lp_ins_nsmpl   = NULL;
+    adxb->lp_spos        = 0;
+    adxb->lp_sofst       = 0;
+    adxb->lp_epos        = 0;
+    adxb->lp_eofst       = 0;
+    adxb->total_ndecsmpl = 0;
 }
 
-int func_020127ec(ADXB adxb, unsigned short* header, int len) {
+int ADXB_DecodeHeader(ADXB adxb, unsigned short* header, int len) {
     func_020122fc(adxb);
 
     unsigned short temp = *header;
@@ -302,12 +302,12 @@ int func_020127ec(ADXB adxb, unsigned short* header, int len) {
 }
 
 void ADXB_EntryGetWrFunc(ADXB adxb, void* (*get_wr)(void*, int*, int*, int*), void* object) {
-    adxb->get_wr = get_wr;
-    adxb->object = object;
+    adxb->getwrfunc = get_wr;
+    adxb->getwrobj  = object;
 }
 
 void* ADXB_GetPcmBuf(ADXB adxb) {
-    return adxb->pcm_buf;
+    return adxb->pcmbuf;
 }
 
 int ADXB_GetFormat(ADXB adxb) {
@@ -315,7 +315,7 @@ int ADXB_GetFormat(ADXB adxb) {
 }
 
 int ADXB_GetSfreq(ADXB adxb) {
-    return adxb->sample_rate;
+    return adxb->sfreq;
 }
 
 int ADXB_GetNumChan(ADXB adxb) {
@@ -324,11 +324,11 @@ int ADXB_GetNumChan(ADXB adxb) {
         return -1;
     }
 
-    return adxb->channel_count;
+    return adxb->nch;
 }
 
-int ADXB_GetBitdepth(ADXB adxb) {
-    return adxb->sample_bitdepth;
+int ADXB_GetFmtBps(ADXB adxb) {
+    return adxb->bps;
 }
 
 int ADXB_GetOutBps(ADXB adxb) {
@@ -336,34 +336,34 @@ int ADXB_GetOutBps(ADXB adxb) {
 }
 
 int ADXB_GetBlkSmpl(ADXB adxb) {
-    return adxb->samples_per_block;
+    return adxb->blknsmpl;
 }
 
 int ADXB_GetTotalNumSmpl(ADXB adxb) {
-    return adxb->total_samples;
+    return adxb->total_nsmpl;
 }
 
 int ADXB_GetNumLoop(ADXB adxb) {
-    return adxb->loop_count;
+    return adxb->nloop;
 }
 
-int func_020128b8(ADXB adxb) {
-    return adxb->unk28;
+int ADXB_GetLpStartPos(ADXB adxb) {
+    return adxb->lp_spos;
 }
 
-int func_020128c0(ADXB adxb) {
+int ADXB_GetLpStartOfst(ADXB adxb) {
     if (adxb == NULL) {
         return 0;
     }
-    return adxb->unk2C;
+    return adxb->lp_sofst;
 }
 
-int func_020128d0(ADXB adxb) {
-    return adxb->unk30;
+int ADXB_GetLpEndPos(ADXB adxb) {
+    return adxb->lp_epos;
 }
 
-int func_020128d8(ADXB adxb) {
-    return adxb->unk34;
+int ADXB_GetLpEndOfst(ADXB adxb) {
+    return adxb->lp_eofst;
 }
 
 int ADXB_GetAinfLen(ADXB adxb) {
@@ -378,12 +378,12 @@ short ADXB_GetDefPan(ADXB adxb, int arg1) {
     return adxb->def_pan[arg1];
 }
 
-void func_020128fc(ADXB adxb) {
+void ADXB_TakeSnapshot(ADXB adxb) {
     ADXPD_GetDly(adxb->adxpd, &adxb->unkAC, &adxb->unkB0);
     ADXPD_GetExtPrm(adxb->adxpd, &adxb->unkA6, &adxb->unkA8, &adxb->unkAA);
 }
 
-void func_0201292c(ADXB adxb) {
+void ADXB_RestoreSnapshot(ADXB adxb) {
     ADXPD_SetDly(adxb->adxpd, &adxb->unkAC, &adxb->unkB0);
     ADXPD_SetExtPrm(adxb->adxpd, adxb->unkA6, adxb->unkA8, adxb->unkAA);
 }
@@ -397,7 +397,7 @@ int adxb_get_key(ADXB adxb, unsigned char arg1, unsigned char arg2, int arg3, sh
         *arg6 = 0;
     } else {
         if (arg2 >= 0x10) {
-            func_0202165c(sp, sizeof(sp), "%08X", arg3);
+            CRICRW_Sprintf(sp, sizeof(sp), "%08X", arg3);
             SKG_GenerateKey(sp, 8, arg4, arg5, arg6);
         } else if (arg2 >= 8) {
             if ((adxb->unkA0 == 0) && (adxb->unkA2 == 0) && (adxb->unkA4 == 0)) {
@@ -425,16 +425,16 @@ int ADXB_GetStat(ADXB adxb) {
 
 void ADXB_EntryData(ADXB adxb, int arg1, int arg2) {
     if (adxb->format == 0) {
-        adxb->unk48.unk0 = arg1;
-        adxb->unk48.unk4 = arg2 / adxb->block_size;
-        adxb->unk74      = 0;
+        adxb->dp.ibuf  = arg1;
+        adxb->dp.niblk = arg2 / adxb->blklen;
+        adxb->ndecsmpl = 0;
     } else {
-        adxb->unk48.unk0 = arg1;
-        adxb->unk48.unk4 = arg2 / ((adxb->sample_bitdepth / 8) * adxb->channel_count);
-        adxb->unk74      = 0;
+        adxb->dp.ibuf  = arg1;
+        adxb->dp.niblk = arg2 / ((adxb->bps / 8) * adxb->nch);
+        adxb->ndecsmpl = 0;
     }
-    adxb->dec_num_sample = 0;
-    adxb->dec_data_len   = 0;
+    adxb->total_decsmpl  = 0;
+    adxb->total_decdtlen = 0;
     adxb->unkE0          = 0;
     adxb->unkDC          = 0;
 }
@@ -453,46 +453,46 @@ void ADXB_Stop(ADXB adxb) {
 void ADXB_Reset(ADXB adxb) {
     if (adxb->stat == 3) {
         ADXPD_Reset(adxb->adxpd);
-        adxb->unk8C = 0;
-        adxb->stat  = 0;
+        adxb->curwpos = 0;
+        adxb->stat    = 0;
     }
 }
 
 int ADXB_GetDecDtLen(ADXB adxb) {
-    return adxb->dec_data_len;
+    return adxb->total_decdtlen;
 }
 
 int ADXB_GetDecNumSmpl(ADXB adxb) {
-    return adxb->dec_num_sample;
+    return adxb->total_decsmpl;
 }
 
 // Nonmatching: Wrong instruction order
 void ADXB_EvokeExpandMono(ADXB arg0, int arg1) {
-    ADXPD     temp_r4 = arg0->adxpd;
-    ADXB_UNK* unk     = &arg0->unk48;
+    ADXPD         temp_r4 = arg0->adxpd;
+    ADXB_DECPARA* unk     = &arg0->dp;
 
-    ADXPD_EntryMono(temp_r4, unk->unk0, arg1, unk->unk14 + (unk->unk20 * 2), 0);
+    ADXPD_EntryMono(temp_r4, unk->ibuf, arg1, unk->pcmbuf + (unk->wpos * 2), 0);
     ADXPD_Start(temp_r4);
 }
 
 void ADXB_EvokeExpandSte(ADXB arg0, int arg1) {
-    ADXPD     temp_r4 = arg0->adxpd;
-    ADXB_UNK* unk     = &arg0->unk48;
-    int       a3;
-    int       t0;
+    ADXPD         temp_r4 = arg0->adxpd;
+    ADXB_DECPARA* unk     = &arg0->dp;
+    int           a3;
+    int           t0;
 
     // These are two distinct arguments to ADXPD_EntrySte: a3 goes to unk20 and
     // t0 to unk24 (the extra/inter-channel buffer that ADXPD_ExecHndl hands to
     // ADX_DecodeSte4). Passing only their sum left unk24 unwritten.
-    a3 = unk->unk14 + (unk->unk20 * 2);
-    t0 = a3 + (unk->unk1C * 2);
+    a3 = unk->pcmbuf + (unk->wpos * 2);
+    t0 = a3 + (unk->pcmbdist * 2);
 
-    ADXPD_EntrySte(temp_r4, unk->unk0, arg1 * 2, a3, t0);
+    ADXPD_EntrySte(temp_r4, unk->ibuf, arg1 * 2, a3, t0);
     ADXPD_Start(temp_r4);
 }
 
 void ADXB_EvokeDecode(ADXB adxb) {
-    ADXB_UNK* unk = &adxb->unk48;
+    ADXB_DECPARA* unk = &adxb->dp;
 
     int var_a3;
     int temp_t0;
@@ -505,23 +505,23 @@ void ADXB_EvokeDecode(ADXB adxb) {
     int temp_lo_3;
     int temp_lo_2;
 
-    temp_lo = unk->unk4 / unk->unk8;
+    temp_lo = unk->niblk / unk->nch;
 
-    var_t1  = unk->unk10;
-    temp_t7 = unk->unk18;
-    temp_t0 = unk->unk20;
-    var_a3  = unk->unk28;
+    var_t1  = unk->blknsmpl;
+    temp_t7 = unk->pcmbsize;
+    temp_t0 = unk->wpos;
+    var_a3  = unk->lp_nsmpl;
 
-    var_t4 = unk->unk24;
+    var_t4 = unk->nroom;
 
     temp_lo_2 = (var_a3 + var_t1 - 1) / var_t1;
     temp_a1_2 = var_t1 - (var_a3 + var_t1 - 1) % var_t1 - 1;
-    var_t3    = ((var_t1 + (unk->unk18 - temp_t0)) - 1) / var_t1;
+    var_t3    = ((var_t1 + (unk->pcmbsize - temp_t0)) - 1) / var_t1;
 
     temp_lo_3 = var_t3 * var_t1;
 
     if (temp_lo_2 < var_t3) {
-        if ((temp_t0 + (temp_lo_3)-temp_a1_2) < unk->unk18) {
+        if ((temp_t0 + (temp_lo_3)-temp_a1_2) < unk->pcmbsize) {
             var_t3 += 1;
         }
     }
@@ -534,7 +534,7 @@ void ADXB_EvokeDecode(ADXB adxb) {
     temp_lo = MIN(temp_lo, temp_lo_2);
     temp_lo = MIN(temp_lo, var_t3);
 
-    if (unk->unk8 == 2) {
+    if (unk->nch == 2) {
         ADXB_EvokeExpandSte(adxb, temp_lo);
     } else {
         ADXB_EvokeExpandMono(adxb, temp_lo);
@@ -561,40 +561,40 @@ void ADXB_CopyExtraBufMono(void* arg0, int arg1, int arg2, int arg3) {
 }
 
 void ADXB_EndDecode(ADXB adxb) {
-    int       s1, s2, sp0, s3, s0, _s0, _s1, v0, v1, temp_div;
-    int       s7;
-    ADXB_UNK* s5 = &adxb->unk48;
-    void*     s8 = s5->unk14;
-    int       s4;
-    int       tmp1, tmp3;
+    int           s1, s2, sp0, s3, s0, _s0, _s1, v0, v1, temp_div;
+    int           s7;
+    ADXB_DECPARA* s5 = &adxb->dp;
+    void*         s8 = s5->pcmbuf;
+    int           s4;
+    int           tmp1, tmp3;
 
-    s3  = s5->unkC;
-    s1  = s5->unk10;
-    s4  = s5->unk20;
-    sp0 = adxb->unk44;
-    s7  = adxb->unk40;
+    s3  = s5->blksize;
+    s1  = s5->blknsmpl;
+    s4  = s5->wpos;
+    sp0 = adxb->pcmbdist;
+    s7  = adxb->pcmbsize;
 
-    temp_div = s5->unk28 + s1 - 1;
+    temp_div = s5->lp_nsmpl + s1 - 1;
     s0       = temp_div % s1;
     _s0      = s1 - s0 - 1;
     s2       = temp_div / s1;
 
     v0 = ADXPD_GetNumBlk(adxb->adxpd);
 
-    tmp1                 = v0 * s1;
-    s1                   = tmp1;
-    s2                   = s2 * s5->unk8;
-    tmp3                 = v0 * s3;
-    s3                   = tmp3;
-    s1                   = s1 / s5->unk8;
-    adxb->dec_num_sample = (v0 < s2) ? s1 : s1 - _s0;
-    s4 += adxb->dec_num_sample;
-    adxb->dec_data_len = s3;
+    tmp1                = v0 * s1;
+    s1                  = tmp1;
+    s2                  = s2 * s5->nch;
+    tmp3                = v0 * s3;
+    s3                  = tmp3;
+    s1                  = s1 / s5->nch;
+    adxb->total_decsmpl = (v0 < s2) ? s1 : s1 - _s0;
+    s4 += adxb->total_decsmpl;
+    adxb->total_decdtlen = s3;
 
     if (s4 >= s7) {
         s4 -= s7;
 
-        if ((s5->unk8 == 2)) {
+        if ((s5->nch == 2)) {
             ADXB_CopyExtraBufSte(s8, s7, sp0, s4);
         } else {
             ADXB_CopyExtraBufMono(s8, s7, sp0, s4);
@@ -605,7 +605,7 @@ void ADXB_EndDecode(ADXB adxb) {
 void ADXB_ExecOneAdx(ADXB adxb) {
     if (adxb->stat == 1) {
         if (ADXPD_GetStat(adxb->adxpd) == 0) {
-            adxb->get_wr(adxb->object, &adxb->unk48.unk20, &adxb->unk48.unk24, &adxb->unk48.unk28);
+            adxb->getwrfunc(adxb->getwrobj, &adxb->dp.wpos, &adxb->dp.nroom, &adxb->dp.lp_nsmpl);
             ADXB_EvokeDecode(adxb);
             adxb->stat = 2;
         }
@@ -617,7 +617,7 @@ void ADXB_ExecOneAdx(ADXB adxb) {
         if (ADXPD_GetStat(adxb->adxpd) == 3) {
             ADXB_EndDecode(adxb);
             ADXPD_Reset(adxb->adxpd);
-            adxb->add_wr(adxb->unk84, adxb->dec_data_len, adxb->dec_num_sample);
+            adxb->addwrfunc(adxb->addwrobj, adxb->total_decdtlen, adxb->total_decsmpl);
             adxb->stat = 3;
         }
     }
@@ -635,6 +635,18 @@ void ADXB_ExecHndl(ADXB adxb) {
     }
 }
 
+// NITRO-only: report how many input bytes were consumed since the last call
+// (the counter wraps at 0x7FFFFFFF) and how many PCM bytes the last decode made.
 void func_02012ed8(ADXB adxb) {
-    // not yet implemented
+    int dtlen = adxb->unkDC;
+    int total = adxb->total_decdtlen;
+    int nsmpl = adxb->total_decsmpl;
+    int nbyte = total - dtlen;
+
+    if (nbyte < 0) {
+        nbyte = (0x7FFFFFFF - dtlen) + total;
+    }
+
+    adxb->unkE4(adxb->unkE8, nbyte, adxb->nch * (nsmpl * 2));
+    adxb->unkDC = adxb->total_decdtlen;
 }

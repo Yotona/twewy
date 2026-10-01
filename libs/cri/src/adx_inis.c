@@ -76,10 +76,10 @@ void ADXT_Init() {
 
         __builtin__clear(adxt_obj, sizeof(adxt_obj));
 
-        func_0201a9fc(2, 1, adxt_exec_tsvr, 0, "adxt_exec_tsvr");
+        SVM_SetCbSvrId(2, 1, adxt_exec_tsvr, 0, "adxt_exec_tsvr");
 
-        adxt_svr_fs_id   = SVM_SetCbSvrId(4, adxt_exec_fssvr, NULL, "adxt_exec_fssvr");
-        adxt_svr_main_id = SVM_SetCbSvrId(5, adxt_exec_main_thrd, NULL, "adxt_exec_main_thrd");
+        adxt_svr_fs_id   = SVM_SetCbSvr(4, adxt_exec_fssvr, NULL, "adxt_exec_fssvr");
+        adxt_svr_main_id = SVM_SetCbSvr(5, adxt_exec_main_thrd, NULL, "adxt_exec_main_thrd");
 
         adxt_vsync_cnt = 0;
         data_0206bd7c  = 0;
@@ -126,9 +126,9 @@ void ADXT_Finish() {
 }
 
 void func_02014888(void) {
-    func_02012f88();
+    ADXCRS_Enter();
     func_0201489c();
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 void func_0201489c(void) {

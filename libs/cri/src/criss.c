@@ -36,7 +36,7 @@ void cri_ss_initialize(void* arg0, int arg1, void* arg2, void* arg3, int arg4) {
 
 void func_020218ec(void) {
     if (data_02071b00.unk_00 != 0) {
-        func_0201b930();
+        ADXM_ExecMain();
     }
 }
 
@@ -51,7 +51,7 @@ void func_02021938(unsigned int param_1) {
     if (data_02071b00.unk_00 != 0) {
         pCVar1 = data_02071b00.unk_04;
         if (pCVar1 != 0) {
-            func_0201b8dc(pCVar1, data_02071b00.unk_00);
+            ADXM_WaitVsync(pCVar1, data_02071b00.unk_00);
         }
     }
 }
@@ -144,7 +144,7 @@ int criSsPly_Play(int param_1) {
         return 0;
     }
     adxt  = (ADXT)func_02021bb4(param_1);
-    iVar1 = ADXT_Play(adxt);
+    iVar1 = ADXT_GetTimeReal(adxt);
     return iVar1;
 }
 

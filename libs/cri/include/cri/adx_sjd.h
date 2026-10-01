@@ -43,7 +43,7 @@ typedef struct {
     /* 0x5C */ void* unk_5C;     // its user pointer
     /* 0x60 */ char  spsdinfo[0x40];
     /* 0xA0 */ int   hdrlen;
-    /* 0xA4 */ int   unk_A4;
+    /* 0xA4 */ int   lnkflg; // ADXSJD_SetLnkSw
     /* 0xA8 */ int   unk_A8;
     /* 0xAC */ int   unk_AC;
     /* 0xB0 */ int   unk_B0;

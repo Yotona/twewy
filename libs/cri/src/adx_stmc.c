@@ -4,22 +4,22 @@
 ADXSTM* adxstm_Create(SJ sj, int offset);
 void    adxstm_Destroy(ADXSTM* stm);
 void    adxstm_ReleaseFileNw(ADXSTM* stm);
-void    func_02015f14(ADXSTM* stm);
-void    func_02015f30(ADXSTM* stm);
-int     func_02015f80(ADXSTM* stm);
-int     func_02015fb4(ADXSTM* stm, int param_2);
-int     func_0201602c(ADXSTM* stm);
+void    ADXSTM_ReleaseFile(ADXSTM* stm);
+void    adxstm_ReleaseFile(ADXSTM* stm);
+int     adxstm_GetStat(ADXSTM* stm);
+int     adxstm_Seek(ADXSTM* stm, int param_2);
+int     adxstm_Start(ADXSTM* stm);
 void    ADXSTM_StopNw(ADXSTM* stm);
 void    adxstm_StopNw(ADXSTM* stm);
-void    func_020160bc(ADXSTM* stm);
-void    func_020160d8(ADXSTM* stm);
-void    func_02016130(ADXSTM* stm, int param_2, int param_3);
-void    func_02016160(ADXSTM* stm, int param_2);
+void    ADXSTM_Stop(ADXSTM* stm);
+void    adxstm_Stop(ADXSTM* stm);
+void    adxstm_EntryEosFunc(ADXSTM* stm, int param_2, int param_3);
+void    adxstm_SetEos(ADXSTM* stm, int param_2);
 void    adxstm_ExecServer();
 void    func_020168d0();
 void    func_020168dc();
 int     func_020168e8(int*);
-int     func_020168c0(ADXSTM* stm, int param_2, int param_3);
+int     adxstm_SetBufSize(ADXSTM* stm, int param_2, int param_3);
 void    func_0201687c(void);
 
 ADXSTMWork data_0206c398;
@@ -36,14 +36,6 @@ int adxstmf_rtim_num  = 6;
 int adxstmf_nrml_ofst = 6;
 int adxstmf_rtim_ofst = 0;
 
-// Was missing entirely (called from adx_inis.c:68) -- mirrors ADXSTM_Finish's
-// refcount pair. Increments first and tests against 1 (not 0), and returns 1.
-//
-// Nonmatching: the body and clear loop match, but the target anchors its
-// literal pool at 0x0206c398 and reaches the refcount at [r0 + 0xc] ==
-// 0x0206c3a4, i.e. the refcount is a field of one 0x18-byte object at
-// 0x0206c398 rather than a standalone global. Closing this needs that object
-// modelled as a struct covering 0x0206c398-0x0206c3b0.
 int ADXSTM_Init(void) {
     if (++data_0206c3a4 == 1) {
         __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
@@ -65,48 +57,30 @@ void ADXSTM_Finish(void) {
     __builtin__clear(&adxstmf_obj, sizeof(adxstmf_obj));
 }
 
-// esct is ceil(file_len / 2048). The target computes it as a divide plus a
-// remainder correction, not as a biased divide: the magic sequence at
-//   mov r1, r5, lsr #31 / rsb r0, r1, r5, lsl #21 / add r0, r1, r0, ror #21 /
-//   cmp r0, #0 / mov r0, r5, asr #10
-// yields the quotient, and the `cmp` against 0 decides a 0/1 term that is then
-// added, materialised as `mov r3, #1` up front and `movle r3, r2` (r2 == 0)
-// later. So it is `/ 2048` AND `% 2048` in one go.
-//
-// The second PS2 reference decomp (AshfordFamily/recvx) writes the biased
-// `(fsize + 2047) / 2048` instead. That is the same value but does NOT
-// reproduce this codegen: it scores 23%, against 70% for the divide-plus-
-// remainder spelling. mwcc canonicalises `/`+`%` and the ternary form to the
-// same 63-instruction shape, so only the biased form is distinguishable -- and
-// it is the wrong one here.
-void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, int arg2, int file_len, SJ sj) {
-    int file_sct;
-
+// Nonmatching: one commutative add (the SJ_GetNumData sum) has its operands
+// swapped; every other instruction matches. fnsct is ceil(fsize / 2048) spelled
+// as divide + (remainder > 0), which is what the target's movle sequence is.
+void ADXSTMF_SetupHandleMember(ADXSTM* stm, CVFSHandle* cvfs, int fofst, int fsize, SJ sj) {
     func_020168d0(); // ADXCRS_Lock
 
-    file_sct = (file_len / 2048) + ((file_len % 2048) ? 1 : 0);
+    stm->stat   = 1;
+    stm->rdflg  = 0;
+    stm->sj     = sj;
+    stm->fp     = cvfs;
+    stm->fofst  = fofst;
+    stm->fsize  = fsize;
+    stm->fnsct  = (fsize / 2048) + ((fsize % 2048 > 0) ? 1 : 0);
+    stm->rdsct  = 0x200;
+    stm->stpos  = 0;
+    stm->unk_60 = 0xFFFFF;
+    stm->esct   = stm->fnsct;
 
-    stm->unk_01      = 1;
-    stm->unk_02      = 0;
-    stm->sj          = sj;
-    stm->fileHndl    = cvfs;
-    stm->unk_0C      = arg2;
-    stm->file_len    = file_len;
-    stm->unk_14      = file_len >> 31;
-    stm->unk_18      = file_sct;
-    stm->req_rd_size = 0x200;
-    stm->unk_5C      = 0;
-    stm->unk_60      = 0xFFFFF;
-    stm->unk_34      = stm->unk_18;
-
-    if (sj != NULL) {
-        stm->unk_44 = SJ_GetNumData(sj, 0) + SJ_GetNumData(sj, 1);
-        stm->unk_1C = stm->unk_44;
-        stm->unk_20 = stm->unk_44;
+    if (stm->sj != NULL) {
+        stm->minsize = stm->maxsize = stm->unk_44 = SJ_GetNumData(sj, 1) + SJ_GetNumData(sj, 0);
     }
 
-    stm->unk_48 = 0;
-    stm->unk_00 = 1;
+    stm->pause = 0;
+    stm->used  = 1;
 
     func_020168dc(); // ADXCRS_Unlock
 }
@@ -118,7 +92,7 @@ static ADXSTM* ADXSTMF_CreateCvfsRt(int arg0, int offset, int file_len, SJ sj) {
     for (i = 0; i < adxstmf_rtim_num; i++) {
         stm = &adxstmf_obj[adxstmf_rtim_ofst + i];
 
-        if (stm->unk_00 == 0) {
+        if (stm->used == 0) {
             break;
         }
     }
@@ -139,7 +113,7 @@ static ADXSTM* ADXSTMF_CreateCvfs(int arg0, int offset, int file_len, SJ sj) {
     for (i = 0; i < adxstmf_nrml_num; i++) {
         stm = &adxstmf_obj[adxstmf_nrml_ofst + i];
 
-        if (stm->unk_00 == 0) {
+        if (stm->used == 0) {
             break;
         }
     }
@@ -181,26 +155,26 @@ void adxstm_Destroy(ADXSTM* stm) {
     if (stm == NULL) {
         return;
     }
-    func_020160bc(stm);
-    func_02015f14(stm);
-    stm->unk_00 = 0;
+    ADXSTM_Stop(stm);
+    ADXSTM_ReleaseFile(stm);
+    stm->used = 0;
     memset(stm, 0, sizeof(ADXSTM));
 }
 
-void ADXSTM_BindFileNw(ADXSTM* stm, int param_2, int param_3, int param_4, int param_5, int param_6) {
+void ADXSTM_BindFileNw(ADXSTM* stm, const char* fname, void* dir, int fofst, long long fsize) {
     func_020168f4();
-    adxstm_BindFileNw(stm, param_2, param_3, param_4, param_5, param_6);
+    adxstm_BindFileNw(stm, fname, dir, fofst, fsize);
     func_02016900();
 }
 
-void adxstm_BindFileNw(ADXSTM* stm, const char* filename, void* dir, int arg3, int param_5, int param_6) {
+// NITRO takes a 64-bit byte size; the sector count is its 64-bit round-up.
+void adxstm_BindFileNw(ADXSTM* stm, const char* fname, void* dir, int fofst, long long fsize) {
     func_020168d0();
-    stm->unk_0C   = arg3;
-    stm->file_len = param_5;
-    stm->unk_14   = param_6;
-    stm->unk_18   = func_020564ec(param_5 + 0x7ff, param_6 + (unsigned int)(0xfffff800 < param_5), 0x800, 0);
-    stm->filename = filename;
-    stm->unk_58   = dir;
+    stm->fofst    = fofst;
+    stm->fsize    = fsize;
+    stm->fnsct    = (fsize + 0x7FF) / 0x800;
+    stm->filename = fname;
+    stm->dir      = dir;
     stm->unk_49   = 1;
     func_020168dc();
 }
@@ -221,14 +195,14 @@ void adxstm_ReleaseFileNw(ADXSTM* stm) {
     func_020168dc();
 }
 
-void func_02015f14(ADXSTM* stm) {
+void ADXSTM_ReleaseFile(ADXSTM* stm) {
     func_020168f4();
-    func_02015f30(stm);
+    adxstm_ReleaseFile(stm);
     func_02016900();
 }
 
-void func_02015f30(ADXSTM* stm) {
-    func_020160bc(stm);
+void adxstm_ReleaseFile(ADXSTM* stm) {
+    ADXSTM_Stop(stm);
     ADXSTM_ReleaseFileNw(stm);
 
     while (TRUE) {
@@ -239,59 +213,59 @@ void func_02015f30(ADXSTM* stm) {
     }
 }
 
-int func_02015f5c(ADXSTM* stm) {
+int ADXSTM_GetStat(ADXSTM* stm) {
     int val;
 
     func_020168f4();
-    val = func_02015f80(stm);
+    val = adxstm_GetStat(stm);
     func_02016900();
     return val;
 }
 
-int func_02015f80(ADXSTM* stm) {
-    return stm->unk_01;
+int adxstm_GetStat(ADXSTM* stm) {
+    return stm->stat;
 }
 
 int ADXSTM_Seek(ADXSTM* stm, int param_2) {
     int val;
 
     func_020168f4();
-    val = func_02015fb4(stm, param_2);
+    val = adxstm_Seek(stm, param_2);
     func_02016900();
     return val;
 }
 
-int func_02015fb4(ADXSTM* stm, int param_2) {
-    stm->unk_5C = param_2;
-    if (param_2 > stm->unk_18) {
-        stm->unk_5C = stm->unk_18;
+int adxstm_Seek(ADXSTM* stm, int param_2) {
+    stm->stpos = param_2;
+    if (param_2 > stm->fnsct) {
+        stm->stpos = stm->fnsct;
     }
-    return stm->unk_5C;
+    return stm->stpos;
 }
 
-void func_02015fcc(ADXSTM* stm) {
-    stm->unk_38 = 0;
-    stm->unk_50 = 0;
+void adxstm_start_sub(ADXSTM* stm) {
+    stm->tbyte  = 0;
+    stm->errcnt = 0;
 
-    stm->unk_01        = stm->unk_18 == 0 ? 3 : 2;
-    stm->unk_02        = 0;
-    stm->unk_28.data   = NULL;
-    stm->unk_28.length = 0;
-    stm->unk_4B        = 1;
+    stm->stat         = stm->fnsct == 0 ? 3 : 2;
+    stm->rdflg        = 0;
+    stm->reqck.data   = NULL;
+    stm->reqck.length = 0;
+    stm->unk_4B       = 1;
 }
 
 int ADXSTM_Start(ADXSTM* stm) {
     int sVar1;
 
     func_020168f4();
-    sVar1 = func_0201602c(stm);
+    sVar1 = adxstm_Start(stm);
     func_02016900();
     return sVar1;
 }
 
-int func_0201602c(ADXSTM* stm) {
+int adxstm_Start(ADXSTM* stm) {
     func_020168d0();
-    func_02015fcc(stm);
+    adxstm_start_sub(stm);
     stm->unk_60 = 0xfffff;
     func_020168dc();
     return 1;
@@ -306,30 +280,30 @@ void ADXSTM_StopNw(ADXSTM* stm) {
 void adxstm_StopNw(ADXSTM* stm) {
     func_020168d0();
 
-    if (stm->unk_01 == 2 && stm->unk_02 == 1) {
+    if (stm->stat == 2 && stm->rdflg == 1) {
         stm->unk_4C = 1;
         if (stm->unk_4B == 1) {
             stm->unk_4B = 0;
         }
     } else {
-        stm->unk_01 = 1;
+        stm->stat = 1;
     }
 
     func_020168dc();
 }
 
-void func_020160bc(ADXSTM* stm) {
+void ADXSTM_Stop(ADXSTM* stm) {
     func_020168f4();
-    func_020160d8(stm);
+    adxstm_Stop(stm);
     func_02016900();
 }
 
-void func_020160d8(ADXSTM* stm) {
+void adxstm_Stop(ADXSTM* stm) {
     ADXSTM_StopNw(stm);
 
     while (TRUE) {
-        if (stm->unk_01 == 1) {
-            if (stm->unk_28.data == NULL) {
+        if (stm->stat == 1) {
+            if (stm->reqck.data == NULL) {
                 break;
             }
         }
@@ -339,33 +313,33 @@ void func_020160d8(ADXSTM* stm) {
 
 void ADXSTM_EntryEosFunc(ADXSTM* stm, int param_2, int param_3) {
     func_020168f4();
-    func_02016130(stm, param_2, param_3);
+    adxstm_EntryEosFunc(stm, param_2, param_3);
     func_02016900();
 }
 
-void func_02016130(ADXSTM* stm, int param_2, int param_3) {
-    stm->unk_3C = param_2;
-    stm->unk_40 = param_3;
+void adxstm_EntryEosFunc(ADXSTM* stm, int param_2, int param_3) {
+    stm->eosfunc = param_2;
+    stm->eosobj  = param_3;
 }
 
 void ADXSTM_SetEos(ADXSTM* stm, int param_2) {
     func_020168f4();
-    func_02016160(stm, param_2);
+    adxstm_SetEos(stm, param_2);
     func_02016900();
 }
 
-void func_02016160(ADXSTM* stm, int param_2) {
+void adxstm_SetEos(ADXSTM* stm, int param_2) {
     if (param_2 < 0) {
-        param_2 = stm->unk_18;
+        param_2 = stm->fnsct;
     }
-    stm->unk_34 = param_2;
+    stm->esct = param_2;
 }
 
 void adxstm_sj_internal_error(void) {
     adxstm_sj_internal_error_cnt++;
 }
 
-void func_02016188(ADXSTM* stm) {
+void adxstmf_stat_exec(ADXSTM* stm) {
     int         iVar2;
     _sj_vtable* p_Var3;
     int         iVar6;
@@ -375,43 +349,43 @@ void func_02016188(ADXSTM* stm) {
     SJCK        SStack_28;
 
     SJ  sj   = stm->sj;
-    int stat = cvFsGetStat(stm->fileHndl);
+    int stat = cvFsGetStat(stm->fp);
 
     func_020168d0();
-    if (stm->unk_02 == 1) {
+    if (stm->rdflg == 1) {
         if (stat == 1) {
-            stm->unk_02 = 0;
+            stm->rdflg = 0;
             func_020168dc();
-            iVar2 = stm->unk_24;
-            func_0201a670(&stm->unk_28, iVar2 << 0xb, &SStack_18, &SStack_20);
+            iVar2 = stm->reqsct;
+            SJ_SplitChunk(&stm->reqck, iVar2 << 0xb, &SStack_18, &SStack_20);
             SJ_PutChunk(sj, 1, &SStack_18);
             SJ_UngetChunk(sj, 0, &SStack_20);
-            stm->unk_5C += stm->unk_24;
-            stm->unk_38 += iVar2 * 0x800;
-            stm->unk_28.data   = NULL;
-            stm->unk_28.length = 0;
+            stm->stpos += stm->reqsct;
+            stm->tbyte += iVar2 * 0x800;
+            stm->reqck.data   = NULL;
+            stm->reqck.length = 0;
 
-            iVar2 = stm->unk_18;
-            if (stm->unk_5C == stm->unk_34 && stm->unk_3C != NULL) {
-                stm->unk_3C(stm->unk_40);
+            iVar2 = stm->fnsct;
+            if (stm->stpos == stm->esct && stm->eosfunc != NULL) {
+                stm->eosfunc(stm->eosobj);
             }
-            if (stm->unk_5C >= iVar2) {
-                stm->unk_01 = 3;
-            } else if (stm->unk_60 <= stm->unk_38 >> 0xb && stm->unk_60 < 0xfffff) {
-                stm->unk_01 = 3;
+            if (stm->stpos >= iVar2) {
+                stm->stat = 3;
+            } else if (stm->unk_60 <= stm->tbyte >> 0xb && stm->unk_60 < 0xfffff) {
+                stm->stat = 3;
             }
-            stm->unk_50 = 0;
+            stm->errcnt = 0;
         } else if (stat == 3) {
-            stm->unk_02 = 0;
+            stm->rdflg = 0;
             func_020168dc();
-            SJ_UngetChunk(sj, 0, &stm->unk_28);
-            stm->unk_28.data   = NULL;
-            stm->unk_28.length = 0;
+            SJ_UngetChunk(sj, 0, &stm->reqck);
+            stm->reqck.data   = NULL;
+            stm->reqck.length = 0;
 
-            if (0 <= adxstmf_num_rtry && stm->unk_50 >= adxstmf_num_rtry) {
-                stm->unk_01 = 4;
-            } else if (stm->unk_50 < 0x7fffffff) {
-                stm->unk_50++;
+            if (0 <= adxstmf_num_rtry && stm->errcnt >= adxstmf_num_rtry) {
+                stm->stat = 4;
+            } else if (stm->errcnt < 0x7fffffff) {
+                stm->errcnt++;
             }
 
         } else {
@@ -420,80 +394,80 @@ void func_02016188(ADXSTM* stm) {
     } else {
         func_020168dc();
     }
-    if (stm->unk_01 == 4) {
+    if (stm->stat == 4) {
         return;
     }
     func_020168d0();
-    if (stm->unk_02 == 0) {
+    if (stm->rdflg == 0) {
 
-        stm->unk_02          = 1;
-        (stm->unk_28).data   = NULL;
-        (stm->unk_28).length = 0;
+        stm->rdflg          = 1;
+        (stm->reqck).data   = NULL;
+        (stm->reqck).length = 0;
         func_020168dc();
-        if (stm->unk_48 == 1 || stm->unk_4C == 1) {
-            stm->unk_02 = 0;
+        if (stm->pause == 1 || stm->unk_4C == 1) {
+            stm->rdflg = 0;
             return;
         }
-        p_Var3 = stm->unk_18;
+        p_Var3 = stm->fnsct;
         if (p_Var3 == NULL) {
-            stm->unk_02 = 0;
-            stm->unk_24 = 0;
-            stm->unk_01 = 3;
+            stm->rdflg  = 0;
+            stm->reqsct = 0;
+            stm->stat   = 3;
             return;
         }
         if (sj == NULL || (p_Var3 = sj->vtable) == NULL) {
-            stm->unk_02 = 0;
+            stm->rdflg = 0;
             adxstm_sj_internal_error();
             return;
         }
-        if (stm->unk_44 - (*p_Var3->GetNumData)(sj, 0) >= stm->unk_20) {
-            stm->unk_02 = 0;
+        if (stm->unk_44 - (*p_Var3->GetNumData)(sj, 0) >= stm->minsize) {
+            stm->rdflg = 0;
             return;
         }
 
-        SJ_GetChunk(sj, 0, stm->unk_1C, &SStack_28);
+        SJ_GetChunk(sj, 0, stm->maxsize, &SStack_28);
 
         iVar2 = SStack_28.length / 0x800;
-        iVar7 = stm->unk_34 - stm->unk_5C;
+        iVar7 = stm->esct - stm->stpos;
         if (iVar2 >= iVar7) {
             iVar2 = iVar7;
         }
 
-        iVar7 = stm->unk_18 - stm->unk_5C;
+        iVar7 = stm->fnsct - stm->stpos;
         if (iVar2 >= iVar7) {
             iVar2 = iVar7;
         }
-        if (iVar2 >= stm->req_rd_size) {
-            iVar2 = stm->req_rd_size;
+        if (iVar2 >= stm->rdsct) {
+            iVar2 = stm->rdsct;
         }
-        cvFsSeek(stm->fileHndl, stm->unk_0C + stm->unk_5C, 0);
+        cvFsSeek(stm->fp, stm->fofst + stm->stpos, 0);
         if (stm->unk_60 != 0xfffff) {
-            iVar6 = stm->unk_60 - ((int)stm->unk_38 / 0x800);
+            iVar6 = stm->unk_60 - ((int)stm->tbyte / 0x800);
             if (iVar2 >= iVar6) {
                 iVar2 = iVar6;
             }
         }
-        stm->unk_24        = cvFsReqRd(stm->fileHndl, iVar2, SStack_28.data);
-        stm->unk_28.data   = SStack_28.data;
-        stm->unk_28.length = SStack_28.length;
-        if (0 < stm->unk_24) {
+        stm->reqsct       = cvFsReqRd(stm->fp, iVar2, SStack_28.data);
+        stm->reqck.data   = SStack_28.data;
+        stm->reqck.length = SStack_28.length;
+        if (0 < stm->reqsct) {
             return;
         }
-        SJ_UngetChunk(sj, 0, &stm->unk_28);
-        stm->unk_28.data   = NULL;
-        stm->unk_28.length = 0;
-        stm->unk_02        = 0;
+        SJ_UngetChunk(sj, 0, &stm->reqck);
+        stm->reqck.data   = NULL;
+        stm->reqck.length = 0;
+        stm->rdflg        = 0;
 
-        if (cvFsGetStat(stm->fileHndl) != 3) {
+        if (cvFsGetStat(stm->fp) != 3) {
             return;
         }
 
-        if (0 <= adxstmf_num_rtry && stm->unk_50 >= adxstmf_num_rtry) {
-            stm->unk_01 = 4;
+        if (0 <= adxstmf_num_rtry && stm->errcnt >= adxstmf_num_rtry) {
+            stm->stat = 4;
             return;
         }
-        if (stm->unk_50 < 0x7fffffff) {
-            stm->unk_50++;
+        if (stm->errcnt < 0x7fffffff) {
+            stm->errcnt++;
         }
         return;
     }
@@ -501,22 +475,20 @@ void func_02016188(ADXSTM* stm) {
     return;
 }
 
-void func_0201654c(ADXSTM* stm) {
-    void*        handle;
-    long long    size;
-    int          uVar3;
-    int          iVar4;
-    unsigned int uVar7;
-    int          bVar8;
+void ADXSTMF_ExecHndl(ADXSTM* stm) {
+    void*     handle;
+    long long fsize;
+    int       fnsct;
+    int       bVar8;
 
-    if (stm->unk_02 == 0) {
+    if (stm->rdflg == 0) {
         if ((stm->unk_4C == 1) && (stm->unk_4C = 0, stm->unk_4B == 0)) {
-            stm->unk_01 = 1;
+            stm->stat = 1;
         }
         if (stm->unk_4A == 1) {
-            handle = stm->fileHndl;
+            handle = stm->fp;
             if (handle != NULL) {
-                stm->fileHndl = 0;
+                stm->fp = 0;
                 cvFsClose(handle);
             }
             func_020168d0();
@@ -531,11 +503,11 @@ void func_0201654c(ADXSTM* stm) {
                 stm->unk_4D = 1;
                 func_020168dc();
                 bVar8 = TRUE;
-                if (stm->fileHndl == NULL) {
-                    stm->fileHndl = cvFsOpen(stm->filename, stm->unk_58, 0);
-                    if (stm->fileHndl == NULL) {
+                if (stm->fp == NULL) {
+                    stm->fp = cvFsOpen(stm->filename, stm->dir, 0);
+                    if (stm->fp == NULL) {
                         ADXERR_CallErrFunc2("E02110501 adxstmf_stat_exec: can\'t open ", stm->filename);
-                        stm->unk_01 = 4;
+                        stm->stat   = 4;
                         stm->unk_4D = 0;
                         stm->unk_49 = 0;
                         return;
@@ -549,43 +521,40 @@ void func_0201654c(ADXSTM* stm) {
                 if (stm->unk_49 == 1 && stm->unk_4A == 1) {
                     return;
                 }
-                if (stm->unk_58 == 0) {
-                    size = cvFsGetFileSizeByHndl(stm->fileHndl);
-                    if (size < 0) {
-                        size = cvFsGetFileSize(stm->filename);
+                if (stm->dir == 0) {
+                    fsize = cvFsGetFileSizeByHndl(stm->fp);
+                    if (fsize < 0) {
+                        fsize = cvFsGetFileSize(stm->filename);
                     }
-                    iVar4 = (size + 0x7FF) / 0x800;
+                    fnsct = (fsize + 0x7FF) / 0x800;
                 } else {
-                    cvFsSeek(stm->fileHndl, 0, 2);
-                    iVar4 = cvFsTell(stm->fileHndl);
-                    uVar3 = (iVar4 * 0x800);
-                    size  = uVar3 >> 0x1F;
-                    cvFsSeek(stm->fileHndl, 0, 0);
+                    cvFsSeek(stm->fp, 0, 2);
+                    fnsct = cvFsTell(stm->fp);
+                    fsize = fnsct * 0x800;
+                    cvFsSeek(stm->fp, 0, 0);
                 }
-                if (stm->unk_14 == 0 && stm->file_len == 0x7FFFF800) {
-                    stm->file_len = uVar3;
-                    stm->unk_14   = size;
-                    stm->unk_18   = iVar4;
+                // 0x7FFFF800 is the "size unknown" placeholder BindFileNw was given.
+                if (stm->fsize == 0x7FFFF800) {
+                    stm->fsize = fsize;
+                    stm->fnsct = fnsct;
                 }
-                if (stm->unk_0C > iVar4) {
-                    stm->unk_0C = iVar4;
+                if (stm->fofst > fnsct) {
+                    stm->fofst = fnsct;
                 }
-                if (stm->unk_18 + stm->unk_0C > iVar4) {
-                    uVar7         = iVar4 - stm->unk_0C;
-                    stm->unk_18   = iVar4 - stm->unk_0C;
-                    stm->file_len = stm->unk_18 * 0x800;
-                    stm->unk_14   = uVar7 >> 0x15 | ((int)uVar7 >> 0x1f) << 0xb;
+                if (stm->fnsct + stm->fofst > fnsct) {
+                    stm->fnsct = fnsct - stm->fofst;
+                    stm->fsize = (long long)stm->fnsct << 11;
                 }
                 ADXSTM_Seek(stm, 0);
                 stm->unk_49 = 0;
-                if (cvFsGetStat(stm->fileHndl) == 3) {
+                if (cvFsGetStat(stm->fp) == 3) {
                     ADXERR_CallErrFunc2("E05072801 adxstmf_stat_exec: can\'t open ", stm->filename);
-                    handle = stm->fileHndl;
+                    handle = stm->fp;
                     if (handle != NULL) {
-                        stm->fileHndl = NULL;
+                        stm->fp = NULL;
                         cvFsClose(handle);
                     }
-                    stm->unk_01 = 4;
+                    stm->stat   = 4;
                     stm->unk_4D = 0;
                     stm->unk_49 = 0;
                     return;
@@ -598,8 +567,8 @@ void func_0201654c(ADXSTM* stm) {
             stm->unk_4B = 0;
         }
     }
-    if (stm->unk_01 == 2 && stm->unk_4D == 1 && stm->unk_49 == 0) {
-        func_02016188(stm);
+    if (stm->stat == 2 && stm->unk_4D == 1 && stm->unk_49 == 0) {
+        adxstmf_stat_exec(stm);
     }
 }
 
@@ -617,8 +586,8 @@ void adxstm_ExecServer(void) {
     }
 
     for (int idx = 0; idx < 10; idx++) {
-        if (adxstmf_obj[idx].unk_00 == 1) {
-            func_0201654c(&adxstmf_obj[idx]);
+        if (adxstmf_obj[idx].used == 1) {
+            ADXSTMF_ExecHndl(&adxstmf_obj[idx]);
         }
     }
 
@@ -643,14 +612,14 @@ int ADXSTM_SetBufSize(ADXSTM* stm, int param_2, int param_3) {
     int sVar1;
 
     func_020168f4();
-    sVar1 = func_020168c0(stm, param_2, param_3);
+    sVar1 = adxstm_SetBufSize(stm, param_2, param_3);
     func_02016900();
     return sVar1;
 }
 
-int func_020168c0(ADXSTM* stm, int param_2, int param_3) {
-    stm->unk_20 = param_2;
-    stm->unk_1C = param_3;
+int adxstm_SetBufSize(ADXSTM* stm, int param_2, int param_3) {
+    stm->minsize = param_2;
+    stm->maxsize = param_3;
     return 1;
 }
 

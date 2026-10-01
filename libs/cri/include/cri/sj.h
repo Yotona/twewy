@@ -48,4 +48,17 @@ typedef struct _sj_vtable {
 
 #define SJ_ERR_PRM (-3)
 
+// sj_crs.c
+void SJCRS_Init(void);
+void SJCRS_Finish(void);
+void SJCRS_Lock(void);
+void SJCRS_Unlock(void);
+
+// sj_uni.c
+void SJUNI_Init(void);
+void SJUNI_Finish(void);
+
+// sj_utl.c
+void SJ_SplitChunk(SJCK* ck, int nbyte, SJCK* ck1, SJCK* ck2);
+
 #endif // SJ_H

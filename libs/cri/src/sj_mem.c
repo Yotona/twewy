@@ -71,13 +71,13 @@ void SJMEM_Error(void* obj, int ecode) {
 void SJMEM_Log(char* ecode, char* edesc) {
     char errString[64];
 
-    func_02021614(errString, sizeof(errString), ecode);
-    func_02021638(errString, sizeof(errString), edesc);
+    CRICRW_Strcpy(errString, sizeof(errString), ecode);
+    CRICRW_Strcat(errString, sizeof(errString), edesc);
     SJERR_CallErr(errString);
 }
 
 void SJMEM_Init(void) {
-    func_0201a534();
+    SJCRS_Init();
     SJCRS_Lock();
     sjmem_Init();
     SJCRS_Unlock();
@@ -95,7 +95,7 @@ void SJMEM_Finish(void) {
     SJCRS_Lock();
     sjmem_Finish();
     SJCRS_Unlock();
-    func_0201a55c();
+    SJCRS_Finish();
 }
 
 static void sjmem_Finish(void) {

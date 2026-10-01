@@ -1,3 +1,4 @@
+#include <cri/private/adx_dcd.h>
 #include <cri/private/adx_xpnd.h>
 
 #define ADXPD_MAX_OBJ 4
@@ -26,44 +27,44 @@ ADXPD ADXPD_Create(void) {
     ADXPD adxpd = &adxpd_obj[i];
     memset(adxpd, 0, sizeof(ADXPD_OBJ));
     adxpd->used = 1;
-    adxpd->unk4 = i;
+    adxpd->xno  = i;
     adxpd->mode = 0;
     adxpd->stat = 0;
 
-    ADX_GetCoefficient(500, 44100, &adxpd->unk30, &adxpd->unk32);
+    ADX_GetCoefficient(500, 44100, &adxpd->k[0], &adxpd->k[1]);
 
-    __builtin__clear(&adxpd->unk28, sizeof(ADXPD_OBJ_SUB));
+    __builtin__clear(adxpd->dly, sizeof(adxpd->dly));
     return adxpd;
 }
 
-void ADXPD_SetCoef(ADXPD_OBJ* adxpd, int arg1, short* arg2) {
-    ADX_GetCoefficient(arg2, arg1, &adxpd->unk30, &adxpd->unk32);
+void ADXPD_SetCoef(ADXPD_OBJ* adxpd, int sfreq, int cof) {
+    ADX_GetCoefficient(cof, sfreq, &adxpd->k[0], &adxpd->k[1]);
 }
 
 void ADXPD_SetDly(ADXPD_OBJ* arg0, short* arg1, short* arg2) {
-    arg0->unk28.unk0 = arg1[0];
-    arg0->unk28.unk2 = arg2[0];
-    arg0->unk28.unk4 = arg1[1];
-    arg0->unk28.unk6 = arg2[1];
+    arg0->dly[0][0] = arg1[0];
+    arg0->dly[0][1] = arg2[0];
+    arg0->dly[1][0] = arg1[1];
+    arg0->dly[1][1] = arg2[1];
 }
 
 void ADXPD_GetDly(ADXPD_OBJ* adxpd, short* arg1, short* arg2) {
-    arg1[0] = adxpd->unk28.unk0;
-    arg2[0] = adxpd->unk28.unk2;
-    arg1[1] = adxpd->unk28.unk4;
-    arg2[1] = adxpd->unk28.unk6;
+    arg1[0] = adxpd->dly[0][0];
+    arg2[0] = adxpd->dly[0][1];
+    arg1[1] = adxpd->dly[1][0];
+    arg2[1] = adxpd->dly[1][1];
 }
 
 void ADXPD_SetExtPrm(ADXPD_OBJ* adxpd, short arg1, short arg2, short arg3) {
-    adxpd->unk34 = arg1;
-    adxpd->unk36 = arg2;
-    adxpd->unk38 = arg3;
+    adxpd->key     = arg1;
+    adxpd->key_mul = arg2;
+    adxpd->key_add = arg3;
 }
 
 void ADXPD_GetExtPrm(ADXPD_OBJ* adxpd, unsigned short* arg1, unsigned short* arg2, unsigned short* arg3) {
-    *arg1 = adxpd->unk34;
-    *arg2 = adxpd->unk36;
-    *arg3 = adxpd->unk38;
+    *arg1 = adxpd->key;
+    *arg2 = adxpd->key_mul;
+    *arg3 = adxpd->key_add;
 }
 
 void ADXPD_Destroy(ADXPD_OBJ* adxpd) {
@@ -79,11 +80,11 @@ int ADXPD_GetStat(ADXPD adxpd) {
 
 int ADXPD_EntryMono(ADXPD adxpd, int arg1, int arg2, int arg3, int arg4) {
     if (adxpd->stat == 0) {
-        adxpd->unk14 = 1;
-        adxpd->unk18 = arg1;
-        adxpd->unk1C = arg2;
-        adxpd->unk20 = arg3;
-        adxpd->unk24 = arg4;
+        adxpd->xprm.nch    = 1;
+        adxpd->xprm.ibuf   = arg1;
+        adxpd->xprm.nblk   = arg2;
+        adxpd->xprm.obuf_l = arg3;
+        adxpd->xprm.obuf_r = arg4;
         return 1;
     }
 
@@ -92,11 +93,11 @@ int ADXPD_EntryMono(ADXPD adxpd, int arg1, int arg2, int arg3, int arg4) {
 
 int ADXPD_EntrySte(ADXPD adxpd, int arg1, int arg2, int arg3, int arg4) {
     if (adxpd->stat == 0) {
-        adxpd->unk14 = 2;
-        adxpd->unk18 = arg1;
-        adxpd->unk1C = arg2;
-        adxpd->unk20 = arg3;
-        adxpd->unk24 = arg4;
+        adxpd->xprm.nch    = 2;
+        adxpd->xprm.ibuf   = arg1;
+        adxpd->xprm.nblk   = arg2;
+        adxpd->xprm.obuf_l = arg3;
+        adxpd->xprm.obuf_r = arg4;
         return 1;
     }
 
@@ -105,14 +106,14 @@ int ADXPD_EntrySte(ADXPD adxpd, int arg1, int arg2, int arg3, int arg4) {
 
 void ADXPD_Start(ADXPD adxpd) {
     if (adxpd->stat == 0) {
-        adxpd->num_blk = 0;
+        adxpd->ndecblk = 0;
         adxpd->stat    = 1;
     }
 }
 
 void ADXPD_Stop(ADXPD adxpd) {
     adxpd->stat = 0;
-    __builtin__clear(&adxpd->unk28, sizeof(ADXPD_OBJ_SUB));
+    __builtin__clear(adxpd->dly, sizeof(adxpd->dly));
 }
 
 void ADXPD_Reset(ADXPD adxpd) {
@@ -122,7 +123,7 @@ void ADXPD_Reset(ADXPD adxpd) {
 }
 
 int ADXPD_GetNumBlk(ADXPD adxpd) {
-    return adxpd->num_blk;
+    return adxpd->ndecblk;
 }
 
 void adxpd_error() {
@@ -138,15 +139,15 @@ void ADXPD_ExecHndl(ADXPD adxpd) {
         return;
     }
 
-    if (adxpd->unk14 == 1) {
-        adxpd->num_blk = ADX_DecodeMono4(adxpd->unk18, adxpd->unk1C, adxpd->unk20, &adxpd->unk28.unk0, adxpd->unk30,
-                                         adxpd->unk32, &adxpd->unk34, adxpd->unk36, adxpd->unk38);
+    if (adxpd->xprm.nch == 1) {
+        adxpd->ndecblk = ADX_DecodeMono4(adxpd->xprm.ibuf, adxpd->xprm.nblk, adxpd->xprm.obuf_l, adxpd->dly[0], adxpd->k[0],
+                                         adxpd->k[1], &adxpd->key, adxpd->key_mul, adxpd->key_add);
     } else {
-        adxpd->num_blk =
-            ADX_DecodeSte4(adxpd->unk18, adxpd->unk1C, adxpd->unk20, &adxpd->unk28.unk0, adxpd->unk24, &adxpd->unk28.unk4,
-                           adxpd->unk30, adxpd->unk32, &adxpd->unk34, adxpd->unk36, adxpd->unk38);
+        adxpd->ndecblk =
+            ADX_DecodeSte4(adxpd->xprm.ibuf, adxpd->xprm.nblk, adxpd->xprm.obuf_l, adxpd->dly[0], adxpd->xprm.obuf_r,
+                           adxpd->dly[1], adxpd->k[0], adxpd->k[1], &adxpd->key, adxpd->key_mul, adxpd->key_add);
 
-        if ((adxpd->num_blk % 2) == 1) {
+        if ((adxpd->ndecblk % 2) == 1) {
             adxpd_error();
         }
     }

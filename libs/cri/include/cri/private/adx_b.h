@@ -8,55 +8,58 @@ typedef struct {
     char pad0[0x10];
 } ADX_UNK;
 
+// recvx's AdxDecPara: the decode request handed to ADXPD.
 typedef struct {
-    /* 0x00 */ int   unk0;
-    /* 0x04 */ int   unk4;
-    /* 0x08 */ int   unk8;
-    /* 0x0C */ int   unkC;
-    /* 0x10 */ int   unk10;
-    /* 0x14 */ void* unk14;
-    /* 0x18 */ int   unk18;
-    /* 0x1C */ int   unk1C;
-    /* 0x20 */ int   unk20;
-    /* 0x24 */ int   unk24;
-    /* 0x28 */ int   unk28;
-} ADXB_UNK; // Size: 0x2C
+    /* 0x00 */ int   ibuf;
+    /* 0x04 */ int   niblk;
+    /* 0x08 */ int   nch;
+    /* 0x0C */ int   blksize;
+    /* 0x10 */ int   blknsmpl;
+    /* 0x14 */ void* pcmbuf;
+    /* 0x18 */ int   pcmbsize;
+    /* 0x1C */ int   pcmbdist;
+    /* 0x20 */ int   wpos;
+    /* 0x24 */ int   nroom;
+    /* 0x28 */ int   lp_nsmpl;
+} ADXB_DECPARA; // Size: 0x2C
 
+// Field names follow recvx's ADX_BASIC. NITRO drops its 8-byte block at
+// 0x48 (unk48/unk4A/unk4C), so everything from dp on sits 8 bytes lower.
 typedef struct ADXB_OBJ {
-    /* 0x00 */ short    unk0;
-    /* 0x02 */ short    unk2;
-    /* 0x04 */ int      stat;
-    /* 0x08 */ ADXPD    adxpd;
-    /* 0x0C */ char     encoding_type;
-    /* 0x0D */ char     sample_bitdepth;
-    /* 0x0E */ char     channel_count;
-    /* 0x0F */ char     block_size;
-    /* 0x10 */ int      samples_per_block;
-    /* 0x14 */ int      sample_rate;
-    /* 0x18 */ int      total_samples;
-    /* 0x1C */ short    unk1C;
-    /* 0x1E */ char     pad1E[2];
-    /* 0x20 */ int      unk20; // lp_ins_nsmpl
-    /* 0x24 */ short    loop_count;
-    /* 0x26 */ short    unk26;
-    /* 0x28 */ int      unk28;
-    /* 0x2C */ int      unk2C;
-    /* 0x30 */ int      unk30;
-    /* 0x34 */ int      unk34;
-    /* 0x38 */ int      unk38;
-    /* 0x3C */ void*    pcm_buf;
-    /* 0x40 */ int      unk40;
-    /* 0x44 */ int      unk44;
-    /* 0x48 */ ADXB_UNK unk48;
-    /* 0x74 */ int      unk74;
-    /* 0x78 */ void* (*get_wr)(void*, int*, int*, int*);
-    /* 0x7C */ void* object;
-    /* 0x80 */ void (*add_wr)(void*, int, int);
-    /* 0x84 */ int     unk84;
-    /* 0x88 */ int     unk88;
-    /* 0x8C */ int     unk8C;
-    /* 0x90 */ int     dec_num_sample;
-    /* 0x94 */ int     dec_data_len;
+    /* 0x00 */ short        used;
+    /* 0x02 */ short        hdcdflag;
+    /* 0x04 */ int          stat;
+    /* 0x08 */ ADXPD        adxpd;
+    /* 0x0C */ char         code;
+    /* 0x0D */ char         bps;
+    /* 0x0E */ char         nch;
+    /* 0x0F */ char         blklen;
+    /* 0x10 */ int          blknsmpl;
+    /* 0x14 */ int          sfreq;
+    /* 0x18 */ int          total_nsmpl;
+    /* 0x1C */ short        cof;
+    /* 0x1E */ char         pad1E[2];
+    /* 0x20 */ int          lp_ins_nsmpl;
+    /* 0x24 */ short        nloop;
+    /* 0x26 */ short        lp_type;
+    /* 0x28 */ int          lp_spos;
+    /* 0x2C */ int          lp_sofst;
+    /* 0x30 */ int          lp_epos;
+    /* 0x34 */ int          lp_eofst;
+    /* 0x38 */ int          maxnch;
+    /* 0x3C */ void*        pcmbuf;
+    /* 0x40 */ int          pcmbsize;
+    /* 0x44 */ int          pcmbdist;
+    /* 0x48 */ ADXB_DECPARA dp;
+    /* 0x74 */ int          ndecsmpl;
+    /* 0x78 */ void* (*getwrfunc)(void*, int*, int*, int*);
+    /* 0x7C */ void* getwrobj;
+    /* 0x80 */ void (*addwrfunc)(void*, int, int);
+    /* 0x84 */ int     addwrobj;
+    /* 0x88 */ int     total_ndecsmpl;
+    /* 0x8C */ int     curwpos;
+    /* 0x90 */ int     total_decsmpl;
+    /* 0x94 */ int     total_decdtlen;
     /* 0x98 */ short   format;
     /* 0x9A */ short   unk9A;
     /* 0x9C */ short   unk9C;
@@ -79,9 +82,9 @@ typedef struct ADXB_OBJ {
     /* 0xDA */ char    padDA[2];
     /* 0xDC */ int     unkDC;
     /* 0xE0 */ int     unkE0;
-    /* 0xE4 */ int     unkE4;
-    /* 0xE8 */ char    padE8[4];
-} ADXB_OBJ; // Size: 0xEC
+    /* 0xE4 */ void (*unkE4)(void* obj, int nbyte, int pcm_nbyte); // decode-progress callback
+    /* 0xE8 */ void* unkE8;                                        // its object
+} ADXB_OBJ;                                                        // Size: 0xEC
 
 typedef ADXB_OBJ* ADXB;
 

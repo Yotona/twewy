@@ -1,30 +1,9 @@
 #include <cri/adxt.h>
-
-// adx_tsvr.c -- the ADXT (text-to-lips) state machine / server.
-//
-// delinks.txt gives this TU .text 0x02017f80-0x02018cdc, .data
-// 0x02063edc-0x02063f74 and .bss 0x0206c7fc-0x0206c80c: a contiguous hole between
-// adx_tlk2.c and adx_xpnd.c that no source file covered, so the linker filled it
-// with a generated _dsd_gap object. 14 functions live there, ending with
-// adxt_ExecHndl (0x02018c5c) -- declared in adx_tlk.c but defined nowhere until
-// now, which is why adxt_ExecServer() there is still `/* NYI */`.
-//
-// Function names are deliberately address-based. objdiff pairs target and base
-// symbols BY NAME, so giving these their upstream CriWare names would drop all
-// 14 out of the report even if the code were byte-identical. The upstream names
-// (from the PS2 reference decomp) are noted per function.
-//
-// Upstream order is: trap_entry_lps, trap_entry, eos_entry, set_outpan,
-// nlp_trap_entry, stat_decinfo, stat_prep, stat_playing, stat_decend,
-// stat_playend, RcvrReplay, ExecErrChk, ExecRdErrChk, ExecRdCompChk, ExecHndl,
-// GetStatRead (16). This build has 14, and ADXT_ExecHndl's dispatch chain pins
-// the tail exactly: stat 1 -> func_0201854c, 2 -> func_02018910,
-// 3 -> func_02018a64, 4 -> func_02018b30, 5 -> func_02018b74, then
-// func_02018bd4 and func_02018b78 unconditionally.
+#include <cri/private/adx_dcd.h>
 
 void ADXERR_CallErrFunc1(const char*);
-void func_02012f88(); // ADXCRS_Lock
-void func_02012f8c(); // ADXCRS_Unlock
+void ADXCRS_Enter();
+void ADXCRS_Leave();
 
 // SJCK_LEN_MAX is the "read to the very end" sentinel; the target builds it
 // with `mvn r1, #0x80000000`.
@@ -32,66 +11,57 @@ void func_02012f8c(); // ADXCRS_Unlock
 
 // callees living in sibling TUs (address-named in the original)
 // adx_sjd.c -- no public header declares these
-int  func_020158e4(ADXSJD* sjd); // GetDecDtLen
-void func_020158f4(ADXSJD* sjd, int pos);
+int  ADXSJD_GetDecDtLen(ADXSJD* sjd); // GetDecDtLen
+void ADXSJD_SetDecPos(ADXSJD* sjd, int pos);
 // ADXSJD_EntryTrapFunc. Takes a real callback plus a user pointer, which is
 // why unk_48/unk_4C are typed as pointers rather than unsigned int.
-void func_02015904(ADXSJD* sjd, void (*trap_func)(ADXT), void* trap_obj);
-void func_02015910(ADXSJD* sjd, int samples);
-void func_02015918(ADXSJD* sjd, int cnt);
-void func_02015920(ADXSJD* sjd, int dt_len);
-int  func_02015948(ADXSJD* sjd); // GetNumChan
-int  func_02015968(ADXSJD* sjd); // GetBlkSmpl
-int  func_02015998(ADXSJD* sjd); // GetCof
-int  func_020159a8(ADXSJD* sjd); // GetAinfLen
-int  func_020159c4(ADXSJD* sjd);
-int* func_02015a7c(ADXSJD* sjd);
-int  func_02015a84(ADXSJD* sjd);
-int  func_02014b50(ADXSJD* sjd); // ADXSJD_TermSupply
-void func_02014b3c(ADXSJD* sjd);
-void func_020155c0(ADXSJD* sjd);
-int  func_02015928(ADXSJD* sjd); // GetFormat
+void ADXSJD_EntryTrapFunc(ADXSJD* sjd, void (*trap_func)(ADXT), void* trap_obj);
+void ADXSJD_SetTrapNumSmpl(ADXSJD* sjd, int samples);
+void ADXSJD_SetTrapCnt(ADXSJD* sjd, int cnt);
+void ADXSJD_SetTrapDtLen(ADXSJD* sjd, int dt_len);
+int  ADXSJD_GetNumChan(ADXSJD* sjd);     // GetNumChan
+int  ADXSJD_GetBlkSmpl(ADXSJD* sjd);     // GetBlkSmpl
+int  ADXSJD_GetLpStartPos(ADXSJD* sjd);  // GetCof
+int  ADXSJD_GetLpStartOfst(ADXSJD* sjd); // GetAinfLen
+int  ADXSJD_GetLpEndPos(ADXSJD* sjd);
+int* ADXSJD_GetSpsdInfo(ADXSJD* sjd);
+int  ADXSJD_TakeSnapshot(ADXSJD* sjd);
+void ADXSJD_TermSupply(ADXSJD* sjd);
+void ADXSJD_ExecHndl(ADXSJD* sjd);
+int  ADXSJD_GetFormat(ADXSJD* sjd); // GetFormat
 void ADXSJD_Start(ADXSJD* sjd);
 void ADXSJD_Stop(ADXSJD* sjd);
 void ADXSJD_SetMaxDecSmpl(ADXSJD* sjd, int n);
 char ADXSJD_GetStat(ADXSJD* sjd);
-int  func_02015a94(ADXSJD* sjd);
+int  ADXSJD_RestoreSnapshot(ADXSJD* sjd);
 // adx_stmc.c
-int  func_02015f5c(ADXSTM* stm); // ADXSTM_GetStat
+int  ADXSTM_GetStat(ADXSTM* stm); // ADXSTM_GetStat
 void ADXSTM_Seek(ADXSTM* stm, int pos);
 void ADXSTM_SetEos(ADXSTM* stm, int eos);
 // lsc.c -- 4-byte stub
-int func_020215ec(void* lsc);
-// adx_rna.c forwarder
-int  func_0201bf0c(void* rna); // ADXRNA_GetNumData
-int  func_0201bf18(void* rna); // ADXRNA_GetNumRoom
+int LSC_GetStat(void* lsc);
+// adx_rnanitro.c forwarder
+int  ADXRNA_GetNumData(void* rna); // ADXRNA_GetNumData
+int  ADXRNA_GetNumRoom(void* rna); // ADXRNA_GetNumRoom
 void ADXRNA_SetPlaySw(void* rna, int sw);
 void ADXRNA_SetTransSw(void* rna, int sw);
-// ADXRNA forwarders (adx_rna.c has no source file either)
-void func_0201bf30(void* rna, int n);
-void func_0201bf3c(void* rna, int n);
-void func_0201bf60(void* rna, int n);
-void func_0201bf6c(void* rna, int n);
-void func_0201bf70(void* rna, int* p);
-// adx_dcd.c
-int func_020130dc(char* data, int len, short* ofst);
-int func_02013868(char* data, int len, short* ofst);
-// in the sj_utl / LSC-amp gaps, which have no source file yet
-// SJ_SplitChunk: four arguments -- (chunk, nbyte, out1, out2), and the
-// first and third are normally the *same* chunk, i.e. it splits in place.
-// adx_stmc.c already calls it this way; the declaration and the two call
-// sites here were wrong, which put the offset in the chunk-pointer slot.
-void func_0201a670(SJCK* ck, int nbyte, SJCK* ck1, SJCK* ck2);
-int  func_02021534(char* data, int len, short* ofst);
+// adx_rnanitro.c forwarders
+void ADXRNA_SetNumChan(void* rna, int n);
+void ADXRNA_SetSfreq(void* rna, int n);
+void ADXRNA_SetBitPerSmpl(void* rna, int n);
+void ADXRNA_SetTotalNumSmpl(void* rna, int n);
+void ADXRNA_SetStmHdInfo(void* rna, int* p);
+// adx_bwav.c
+int ADX_ScanInfoCodeWav(char* data, int len, short* ofst);
 // adx_tlk.c
 void adxt_start_stm(ADXT adxt, const char* filename, void* dir, int ofst, int range);
-void func_02017b20(ADXT adxt, int a, int b);
-void func_02017b4c(ADXT adxt, int* a, int* b);
+void ADXT_SetTranspose(ADXT adxt, int a, int b);
+void ADXT_GetTranspose(ADXT adxt, int* a, int* b);
 // adx_errs.c
 void ADXERR_CallErrFunc2(char* msg, char* arg);
 void ADXERR_ItoA2(int v, int base, char* str, int width);
 // lsc.c
-int func_020215bc(void* amp, int sfreq);
+int ADXAMP_SetSfreq(void* amp, int sfreq);
 int _s32_div_f(int a, int b);
 
 extern int volatile adxt_vsync_cnt; // adx_inis.c
@@ -100,133 +70,116 @@ void memset(void*, int, int);
 #define ADXSJD_STAT_PLAYING 3
 #define ADXSJD_STAT_DECINFO 2
 
-// sj.h has no macro for GetNumData (vtable slot 0x24).
-#define SJ_GetNumData(sj, id) (*(sj)->vtable->GetNumData)(sj, id)
+void adxt_trap_entry(ADXT adxt);
 
-void func_02018004(ADXT adxt);
-
-// .bss 0x0206c7fc-0x0206c80c (four words; delinks.txt). Wrapped in a struct
-// because mwcc does not honour declaration order for same-sized file statics:
-// as loose globals it emitted 0x800, 0x7fc, 0x808, 0x804 regardless of how
-// they were declared. 0x0206c7fc is a callback the host installs;
-// 0x0206c804 / 0x0206c808 are the reference's adxt_dbg_ndt / adxt_dbg_nch.
 struct {
     int f_7fc; // callback: (ADXT, sfreq, num_chan, total_smpl)
-    int f_800;
-    int f_804; // adxt_dbg_ndt
-    int f_808; // adxt_dbg_nch
+    int dbg_rna_ndata;
+    int dbg_ndt;
+    int dbg_nch;
 } data_0206c7fc = {0, 0, 0, 0};
 
-#define data_0206c800 data_0206c7fc.f_800
-#define data_0206c804 data_0206c7fc.f_804
-#define data_0206c808 data_0206c7fc.f_808
+#define adxt_dbg_rna_ndata data_0206c7fc.dbg_rna_ndata
+#define adxt_dbg_ndt       data_0206c7fc.dbg_ndt
+#define adxt_dbg_nch       data_0206c7fc.dbg_nch
 
 #define ADXT_CB_FUNC ((void (*)(ADXT adxt, int sfreq, int num_chan, int total_smpl))data_0206c7fc.f_7fc)
 
-// .data 0x02063edc-0x02063f74. The three ADXERR_CallErrFunc strings live in
-// .data rather than .rodata; the target's literal pools point here. The 0xedc
-// and 0xf48 wordings are unverified -- only their addresses are known.
-char data_02063edc[] = "E9081102 adxt trap: can't get loop skip data";
+char data_02063edc[] = "E8101201 adxt_trap_entry: not enough data";
 char data_02063f08[] = "E9081001 adxt_stat_decinfo: can't play this number of channels";
-char data_02063f48[] = "E02080842 ADXT_ExecHndl: parameter error";
+char data_02063f48[] = "E02080842 adxt_ExecHndl: parameter error";
 
 void adxt_ExecHndl(ADXT adxt);
-void func_0201854c(ADXT adxt);
-void func_02018910(ADXT adxt);
-void func_02018a64(ADXT adxt);
-void func_02018b30(ADXT adxt);
-void func_02018b74(ADXT adxt);
-void func_02018b78(ADXT adxt);
-void func_02018bd4(ADXT adxt);
+void adxt_stat_decinfo(ADXT adxt);
+void adxt_stat_prep(ADXT adxt);
+void adxt_stat_playing(ADXT adxt);
+void adxt_stat_decend(ADXT adxt);
+void adxt_stat_playend(ADXT adxt);
+void ADXT_ExecRdErrChk(ADXT adxt);
+void ADXT_ExecRdCompChk(ADXT adxt);
 
-// adxt_trap_entry: install func_02018004 as the SJD trap callback, with the trap
-// positioned at (num_smpl - cof) and the trap span set to the AIFF header
-// length. Reached from ADXSJD_EntryTrapFunc, so the third argument is the
-// ADXT the callback will be handed back.
-void func_02017f80(ADXT adxt) {
+// Loop-start trap: snapshot the decoder at the loop start, then re-arm the trap
+// for one loop body (lp_epos - lp_spos samples) with adxt_trap_entry as the
+// callback that rewinds to lp_spos/lp_sofst each time it fires.
+void adxt_trap_entry_lps(ADXT adxt) {
     ADXSJD* sjd      = adxt->sjd;
-    int     cof      = func_02015998(sjd);
-    int     ainf_len = func_020159a8(sjd);
-    int     num_smpl = func_020159c4(sjd);
+    int     lp_spos  = ADXSJD_GetLpStartPos(sjd);
+    int     lp_sofst = ADXSJD_GetLpStartOfst(sjd);
+    int     lp_epos  = ADXSJD_GetLpEndPos(sjd);
     int     trp;
 
-    func_02015a84(sjd);
-    func_02015918(sjd, 0);
+    ADXSJD_TakeSnapshot(sjd);
+    ADXSJD_SetTrapCnt(sjd, 0);
 
-    trp            = num_smpl - cof;
+    trp            = lp_epos - lp_spos;
     adxt->trpnsmpl = trp;
 
-    func_02015910(sjd, trp);
-    func_02015920(sjd, ainf_len);
-    func_020158f4(sjd, cof);
-    func_02015904(sjd, func_02018004, adxt);
+    ADXSJD_SetTrapNumSmpl(sjd, trp);
+    ADXSJD_SetTrapDtLen(sjd, lp_sofst);
+    ADXSJD_SetDecPos(sjd, lp_spos);
+    ADXSJD_EntryTrapFunc(sjd, adxt_trap_entry, adxt);
 }
 
-// The trap callback func_02017f80 registers. Re-arms the trap once the skip
-// region has been consumed, and for in-memory playback re-primes the input
-// stream. ADXSJD_STAT_PLAYING is 3.
-void func_02018004(ADXT adxt) {
+// Loop-end trap (recvx adxt_trap_entry): skip lp_skiplen bytes, rewind the
+// decoder to the loop start and, for in-memory playback, re-prime the input
+// stream from lp_sofst. NITRO adds the ADXSJD snapshot restore.
+void adxt_trap_entry(ADXT adxt) {
     ADXSJD* sjd = adxt->sjd;
     SJ      sji = adxt->sji;
-    int     cof;
-    int     ainf_len;
-    int     num_smpl;
+    int     lp_spos;
+    int     lp_sofst;
+    int     lp_epos;
     int     trp;
     SJCK    ck;
 
-    cof      = func_02015998(sjd);
-    ainf_len = func_020159a8(sjd);
-    num_smpl = func_020159c4(sjd);
+    lp_spos  = ADXSJD_GetLpStartPos(sjd);
+    lp_sofst = ADXSJD_GetLpStartOfst(sjd);
+    lp_epos  = ADXSJD_GetLpEndPos(sjd);
 
-    // pmode 2 (mem) or 3 (stream) with looping off: nothing left to trap.
     if ((unsigned char)(char)(adxt->pmode - ADXT_PLAYBACK_MEM) <= 1 && adxt->lpflg == 0) {
-        // Target reloads adxt->sjd here rather than reusing the cached pointer.
-        func_02015910(adxt->sjd, -1);
+        ADXSJD_SetTrapNumSmpl(adxt->sjd, -1);
         return;
     }
 
     SJ_GetChunk(sji, 1, adxt->lp_skiplen, &ck);
 
     if (ck.length < adxt->lp_skiplen) {
-        // String lives in .data at 0x02063edc; wording unverified.
-        ADXERR_CallErrFunc1("E9081102 ADXT trap: can't get loop skip data");
+        ADXERR_CallErrFunc1(data_02063edc);
     }
 
     SJ_PutChunk(sji, 0, &ck);
 
-    func_02015918(sjd, 0);
+    ADXSJD_SetTrapCnt(sjd, 0);
 
-    trp            = num_smpl - cof;
+    trp            = lp_epos - lp_spos;
     adxt->trpnsmpl = trp;
 
-    func_02015910(sjd, trp);
-    func_02015920(sjd, ainf_len);
-    func_020158f4(sjd, cof);
+    ADXSJD_SetTrapNumSmpl(sjd, trp);
+    ADXSJD_SetTrapDtLen(sjd, lp_sofst);
+    ADXSJD_SetDecPos(sjd, lp_spos);
 
-    // The pmode test guards only the stream re-prime: the target's `bne` lands
-    // past it but still runs func_02015a94 and the lpcnt bump.
     if (adxt->pmode == ADXT_PLAYBACK_MEM) {
         SJ_Reset(sji);
-        SJ_GetChunk(sji, 1, ainf_len, &ck);
+        SJ_GetChunk(sji, 1, lp_sofst, &ck);
         SJ_PutChunk(sji, 0, &ck);
     }
 
-    func_02015a94(sjd);
+    ADXSJD_RestoreSnapshot(sjd);
     adxt->lpcnt++;
 }
 
-// Sets the end-of-stream marker, or seeks past the AIFF header when looping.
-// Note the two sub-cases are mutually exclusive in the target: the lpflg == 0
-// arm always reaches ADXSTM_SetEos, the lpflg != 0 arm never calls it.
-void func_02018168(ADXT adxt) {
+// Stream end-of-file callback: stop at EOF when not looping, otherwise seek the
+// stream back to the loop start sector.
+void adxt_eos_entry(ADXT adxt) {
     ADXSJD* sjd = adxt->sjd;
-    int     ainf_len;
+    ADXSTM* stm = adxt->stm;
+    int     lsofst;
 
-    if (sjd == NULL || adxt->used == 0) {
+    if (stm == NULL || sjd == NULL) {
         return;
     }
 
-    ainf_len = func_020159a8(sjd);
+    lsofst = ADXSJD_GetLpStartOfst(sjd);
 
     if (adxt->pmode == ADXT_PLAYBACK_SLFILE) {
         ADXSTM_SetEos(adxt->stm, SJCK_LEN_MAX);
@@ -234,19 +187,19 @@ void func_02018168(ADXT adxt) {
     }
 
     if (adxt->lpflg == 0) {
-        if (func_020158e4(sjd) >= (int)adxt->loopDecodeLength) {
-            func_02015910(adxt->sjd, -1);
+        if (ADXSJD_GetDecDtLen(adxt->sjd) >= (int)adxt->loopDecodeLength) {
+            ADXSJD_SetTrapNumSmpl(adxt->sjd, -1);
         }
 
         ADXSTM_SetEos(adxt->stm, SJCK_LEN_MAX);
     } else {
-        ADXSTM_Seek((ADXSTM*)sjd, ainf_len / 2048);
+        ADXSTM_Seek(stm, lsofst / 2048);
     }
 }
 
 // Mono sources have no meaningful channel-1 pan, so only channel 0 is applied.
-void func_020181f4(ADXT adxt) {
-    int num_chan = func_02015948(adxt->sjd);
+void adxt_set_outpan(ADXT adxt) {
+    int num_chan = ADXSJD_GetNumChan(adxt->sjd);
 
     if (num_chan == 1) {
         ADXT_SetOutPan(adxt, 0, adxt->outpan[0]);
@@ -256,10 +209,7 @@ void func_020181f4(ADXT adxt) {
     }
 }
 
-// Splits the two input chunks at the offsets the header scan reported, then
-// restarts the decoder. Reached as the non-looping arm of the trap callback
-// pair (func_02017f80 / func_02018238) that func_0201854c installs.
-void func_02018238(ADXT adxt) {
+void adxt_nlp_trap_entry(ADXT adxt) {
     ADXSJD* sjd = adxt->sjd;
     SJ      sji = adxt->sji;
     SJCK    ckA;
@@ -274,7 +224,7 @@ void func_02018238(ADXT adxt) {
     int     ret0;
     int     ret1;
 
-    if (adxt->playbackFlag == 0) {
+    if (adxt->lnkflg == 0) {
         return;
     }
 
@@ -283,88 +233,81 @@ void func_02018238(ADXT adxt) {
     zero    = 0;
     skip    = zero;
 
-    func_02012f88(); // ADXCRS_Lock
+    ADXCRS_Enter();
 
     SJ_GetChunk(sji, 1, SJCK_LEN_MAX, &ckA);
     SJ_GetChunk(sji, 1, SJCK_LEN_MAX, &ckC);
 
     // A non-zero here means the header scan already consumed the link, so
     // unwind and bail. (Opposite polarity to the two decoders below.)
-    if (func_02015928(sjd) == 0 && func_02013868(ckA.data, ckA.length, &ofst[1]) != 0) {
+    if (ADXSJD_GetFormat(sjd) == 0 && ADX_DecodeFooter(ckA.data, ckA.length, &ofst[1]) != 0) {
         ADXT_SetLnkSw(adxt, 0);
         SJ_UngetChunk(sji, 1, &ckC);
         SJ_UngetChunk(sji, 1, &ckA);
-        func_02012f8c(); // ADXCRS_Unlock
+        ADXCRS_Leave();
         return;
     }
 
     skip += ofst[1];
 
-    if (func_02015928(sjd) == 1) {
-        ret0 = func_02021534(ckA.data + skip, ckA.length - skip, &ofst[1]);
+    if (ADXSJD_GetFormat(sjd) == 1) {
+        ret0 = ADX_ScanInfoCodeWav(ckA.data + skip, ckA.length - skip, &ofst[1]);
         if (ret0 != 0) {
-            ret1 = func_02021534(ckC.data, ckC.length, &ofst[0]);
+            ret1 = ADX_ScanInfoCodeWav(ckC.data, ckC.length, &ofst[0]);
         }
     } else {
-        ret0 = func_020130dc(ckA.data + skip, ckA.length - skip, &ofst[1]);
+        ret0 = ADX_ScanInfoCode(ckA.data + skip, ckA.length - skip, &ofst[1]);
         if (ret0 != 0) {
-            ret1 = func_020130dc(ckC.data, ckC.length, &ofst[0]);
+            ret1 = ADX_ScanInfoCode(ckC.data, ckC.length, &ofst[0]);
         }
     }
 
-    // The target reads both offsets into registers right after the decoder
-    // results, before the bail-out test, so they stay live across it -- that is
-    // also what forces the extra pair of callee-saved registers in its frame.
     ofst1 = ofst[1];
     ofst0 = ofst[0];
 
-    // Both decoders reporting non-zero means the split did not take; the target
-    // flattens this into one `cmp`/`cmpne` pair ahead of a single error block.
     if (ret0 != 0 && ret1 != 0) {
         SJ_UngetChunk(sji, 1, &ckC);
         SJ_UngetChunk(sji, 1, &ckA);
         ADXT_SetLnkSw(adxt, 0);
-        func_02012f8c();
+        ADXCRS_Leave();
         return;
     }
 
     if (ret0 == 0) {
         SJ_UngetChunk(sji, 1, &ckC);
-        func_0201a670(&ckA, skip + ofst1, &ckA, &ckB);
+        SJ_SplitChunk(&ckA, skip + ofst1, &ckA, &ckB);
         SJ_PutChunk(sji, 0, &ckA);
         SJ_UngetChunk(sji, 1, &ckB);
     } else {
         SJ_PutChunk(sji, 0, &ckA);
-        func_0201a670(&ckC, zero + ofst0, &ckC, &ckD);
+        SJ_SplitChunk(&ckC, zero + ofst0, &ckC, &ckD);
         SJ_PutChunk(sji, 0, &ckC);
         SJ_UngetChunk(sji, 1, &ckD);
     }
 
-    func_02012f8c(); // ADXCRS_Unlock
+    ADXCRS_Leave();
 
-    adxt->decofst += func_020158ec(sjd);
+    adxt->decofst += ADXSJD_GetDecNumSmpl(sjd);
     ADXSJD_Stop(sjd);
     ADXSJD_Start(sjd);
-    func_020155c0(sjd);
+    ADXSJD_ExecHndl(sjd);
 
     if (ADXSJD_GetStat(sjd) != ADXSJD_STAT_DECINFO) {
         ADXT_SetLnkSw(adxt, 0);
         return;
     }
 
-    // func_02014b3c is called with two arguments here but with one in
-    // func_0201854c, so the real prototype is not used for either.
-    ((void (*)(ADXSJD*, int))func_02014b3c)(sjd, adxt->maxdecsmpl);
-    func_02015910(sjd, ADXSJD_GetTotalNumSmpl(sjd));
-    func_02015920(sjd, 0);
-    func_02015918(sjd, 0);
+    ADXSJD_SetMaxDecSmpl(sjd, adxt->maxdecsmpl);
+    ADXSJD_SetTrapNumSmpl(sjd, ADXSJD_GetTotalNumSmpl(sjd));
+    ADXSJD_SetTrapDtLen(sjd, 0);
+    ADXSJD_SetTrapCnt(sjd, 0);
 }
 
-// adxt_stat_decinfo
-void func_0201854c(ADXT adxt) {
+void adxt_stat_decinfo(ADXT adxt) {
     ADXSJD* sjd = adxt->sjd;
     int     num_chan;
     int     sfreq;
+    int     num_smpl;
     int     num_loop;
     int     blk_smpl;
     int     lp_end_ofst;
@@ -377,7 +320,7 @@ void func_0201854c(ADXT adxt) {
     b = 0;
 
     if ((unsigned char)adxt->pmode <= 1 && adxt->streamStartFlag == 1) {
-        if (func_02015f5c(adxt->stm) == 2) {
+        if (ADXSTM_GetStat(adxt->stm) == 2) {
             return;
         }
 
@@ -391,11 +334,8 @@ void func_0201854c(ADXT adxt) {
 
     stat = ADXSJD_GetStat(sjd);
 
-    // Written as if/else rather than an early return: the target branches over
-    // the whole body to a trailing `stat == 4` arm, which only happens with this
-    // block shape.
     if (stat == ADXSJD_STAT_DECINFO) {
-        num_chan = func_02015948(sjd);
+        num_chan = ADXSJD_GetNumChan(sjd);
 
         if (num_chan > adxt->maxnch) {
             ADXERR_ItoA2(num_chan, adxt->maxnch, num_chan_str, 16);
@@ -405,86 +345,85 @@ void func_0201854c(ADXT adxt) {
         }
 
         sfreq    = ADXSJD_GetSfreq(sjd);
-        num_loop = func_02015988(sjd);
+        num_loop = ADXSJD_GetNumLoop(sjd);
 
-        if (func_02015928(sjd) == 10) {
-            adxt->maxdecsmpl = _s32_div_f(sfreq, adxt->svrfreq);
-            blk_smpl         = func_02015968(sjd);
-        } else if (num_loop <= 0) {
-            adxt->maxdecsmpl = (_s32_div_f(sfreq, adxt->svrfreq) * 3) / 2;
-            blk_smpl         = func_02015968(sjd);
+        // AHX (format 10) decodes one block per server tick; everything else
+        // gets 3 (looping) or 1.5 ticks' worth, rounded to a whole stereo block.
+        if (ADXSJD_GetFormat(sjd) == 10) {
+            adxt->maxdecsmpl = sfreq / adxt->svrfreq;
+            blk_smpl         = ADXSJD_GetBlkSmpl(sjd);
         } else {
-            adxt->maxdecsmpl = _s32_div_f(sfreq, adxt->svrfreq) * 3;
-            blk_smpl         = func_02015968(sjd);
+            if (num_loop > 0) {
+                adxt->maxdecsmpl = (sfreq / adxt->svrfreq) * 3;
+            } else {
+                adxt->maxdecsmpl = ((sfreq / adxt->svrfreq) * 3) / 2;
+            }
+            blk_smpl = ADXSJD_GetBlkSmpl(sjd) * 2;
         }
 
-        blk_smpl <<= 1;
-        adxt->maxdecsmpl = _s32_div_f(adxt->maxdecsmpl + blk_smpl, blk_smpl) * blk_smpl;
-
-        func_02014b3c(sjd);
+        adxt->maxdecsmpl = ((adxt->maxdecsmpl + blk_smpl) / blk_smpl) * blk_smpl;
+        ADXSJD_SetMaxDecSmpl(sjd, adxt->maxdecsmpl);
 
         if (num_loop > 0) {
             if (adxt->pmode == ADXT_PLAYBACK_MEM) {
                 adxt->lp_skiplen = 0;
             } else {
-                // div is the constant 2048; the target inlines both divisions
-                // rather than calling _s32_div_f.
-                lp_end_ofst      = func_020159d4(sjd);
-                adxt->lp_skiplen = (2048 - (lp_end_ofst / 2048)) / 2048;
-                adxt->lesct      = (lp_end_ofst + 2047) / 2048;
+                lp_end_ofst      = ADXSJD_GetLpEndOfst(sjd);
+                adxt->lp_skiplen = 2048 - (lp_end_ofst % 2048);
+                lp_end_ofst += 2047;
+                adxt->lp_skiplen %= 2048;
+                adxt->lesct = lp_end_ofst / 2048;
                 ADXSTM_SetEos(adxt->stm, adxt->lesct);
-                ADXSTM_EntryEosFunc(adxt->stm, (int)func_02018168, (int)adxt);
+                ADXSTM_EntryEosFunc(adxt->stm, (int)adxt_eos_entry, (int)adxt);
             }
 
-            adxt->trpnsmpl = func_02015998(sjd);
-            func_02015910(sjd, adxt->trpnsmpl);
-            func_02015920(sjd, 0);
-            func_02015918(sjd, 0);
-            func_02015904(sjd, func_02017f80, adxt);
+            ADXSJD_GetLpEndPos(sjd);
+            adxt->trpnsmpl = ADXSJD_GetLpStartPos(sjd);
+            ADXSJD_SetTrapNumSmpl(sjd, adxt->trpnsmpl);
+            ADXSJD_SetTrapDtLen(sjd, 0);
+            ADXSJD_SetTrapCnt(sjd, 0);
+            ADXSJD_EntryTrapFunc(sjd, adxt_trap_entry_lps, adxt);
         } else {
             if (adxt->stm != NULL) {
                 ADXSTM_SetEos(adxt->stm, SJCK_LEN_MAX);
             }
 
-            func_02015910(sjd, ADXSJD_GetTotalNumSmpl(sjd));
-            func_02015920(sjd, 0);
-            func_02015918(sjd, 0);
-            func_02015904(sjd, func_02018238, adxt);
+            ADXSJD_SetTrapNumSmpl(sjd, ADXSJD_GetTotalNumSmpl(sjd));
+            ADXSJD_SetTrapDtLen(sjd, 0);
+            ADXSJD_SetTrapCnt(sjd, 0);
+            ADXSJD_EntryTrapFunc(sjd, adxt_nlp_trap_entry, adxt);
         }
 
         sfreq    = ADXSJD_GetSfreq(sjd);
-        num_chan = func_02015948(sjd);
-        num_loop = ADXSJD_GetTotalNumSmpl(sjd);
+        num_chan = ADXSJD_GetNumChan(sjd);
+        num_smpl = ADXSJD_GetTotalNumSmpl(sjd);
 
-        func_0201bf60(adxt->rna, ADXSJD_GetOutBps(sjd));
-        func_0201bf3c(adxt->rna, sfreq);
-        func_0201bf30(adxt->rna, num_chan);
-        func_0201bf6c(adxt->rna, num_loop);
+        ADXRNA_SetBitPerSmpl(adxt->rna, ADXSJD_GetOutBps(sjd));
+        ADXRNA_SetSfreq(adxt->rna, sfreq);
+        ADXRNA_SetNumChan(adxt->rna, num_chan);
+        ADXRNA_SetTotalNumSmpl(adxt->rna, num_smpl);
 
         ADXT_SetOutVol(adxt, adxt->outvol);
 
-        func_02017b4c(adxt, &a, &b);
+        ADXT_GetTranspose(adxt, &a, &b);
 
         if (a != 0 || b != 0) {
-            func_02017b20(adxt, a, b);
+            ADXT_SetTranspose(adxt, a, b);
         }
 
-        func_020181f4(adxt);
+        adxt_set_outpan(adxt);
 
         if (adxt->amp != NULL) {
-            func_020215bc(adxt->amp, sfreq);
+            ADXAMP_SetSfreq(adxt->amp, sfreq);
         }
 
-        // Vestigial in this build: the format probe survives but both arms of the
-        // test fall through to the same code, so the target keeps the compare.
-        if (func_02015928(sjd) != 2) {
+        if (ADXSJD_GetFormat(sjd) == 2) {
+            ADXRNA_SetStmHdInfo(adxt->rna, ADXSJD_GetSpsdInfo(sjd));
         }
-
-        func_0201bf70(adxt->rna, func_02015a7c(sjd));
         ADXRNA_SetTransSw(adxt->rna, 1);
 
         if (data_0206c7fc.f_7fc != 0) {
-            ADXT_CB_FUNC(adxt, sfreq, num_chan, num_loop);
+            ADXT_CB_FUNC(adxt, sfreq, num_chan, num_smpl);
         }
 
         adxt->stat = ADXT_STAT_PREPPING;
@@ -493,8 +432,7 @@ void func_0201854c(ADXT adxt) {
     }
 }
 
-// adxt_stat_prep
-void func_02018910(ADXT adxt) {
+void adxt_stat_prep(ADXT adxt) {
     void*   rna = adxt->rna;
     ADXSJD* sjd = adxt->sjd;
     int     num_data;
@@ -505,17 +443,15 @@ void func_02018910(ADXT adxt) {
     int     i;
     SJCK    ck;
 
-    num_data = func_0201bf0c(rna);
-    num_room = func_0201bf18(rna);
+    num_data = ADXRNA_GetNumData(rna);
+    num_room = ADXRNA_GetNumRoom(rna);
 
-    // NITRO clamps the window to 0x800; the PS2 reference compares against
-    // (maxdecsmpl << 1) with no clamp.
     limit = adxt->maxdecsmpl;
     if (limit >= 0x800) {
         limit = 0x800;
     }
 
-    if (num_data >= limit || num_room <= func_02015968(sjd) || ADXSJD_GetStat(sjd) == ADXSJD_STAT_PLAYING) {
+    if (num_data >= limit || num_room <= ADXSJD_GetBlkSmpl(sjd) || ADXSJD_GetStat(sjd) == ADXSJD_STAT_PLAYING) {
         if (adxt->waitFlag == 0) {
             if (adxt->pause_flag == 0) {
                 ADXRNA_SetPlaySw(rna, 1);
@@ -545,28 +481,25 @@ void func_02018910(ADXT adxt) {
     }
 }
 
-// adxt_stat_playing
-void func_02018a64(ADXT adxt) {
+void adxt_stat_playing(ADXT adxt) {
     int num_chan;
     int i;
 
-    if (adxt->lpflg == 0 && adxt->loopDecodeLength != 0 && func_020158e4(adxt->sjd) >= (int)adxt->loopDecodeLength) {
-        func_02015910(adxt->sjd, -1);
+    if (adxt->lpflg == 0 && adxt->loopDecodeLength != 0 && ADXSJD_GetDecDtLen(adxt->sjd) >= (int)adxt->loopDecodeLength) {
+        ADXSJD_SetTrapNumSmpl(adxt->sjd, -1);
     }
 
     if (ADXSJD_GetStat(adxt->sjd) != ADXSJD_STAT_PLAYING) {
         return;
     }
 
-    num_chan      = func_02015948(adxt->sjd);
-    data_0206c808 = num_chan;
+    num_chan     = ADXSJD_GetNumChan(adxt->sjd);
+    adxt_dbg_nch = num_chan;
 
-    // Walk the output streams, bailing out as soon as one still holds a
-    // sizeable backlog -- the decode side has not caught up yet.
     for (i = 0; i < num_chan; i++) {
         int nbyte = SJ_GetNumData(adxt->sjo[i], 1);
 
-        data_0206c804 = nbyte;
+        adxt_dbg_ndt = nbyte;
 
         if (nbyte >= 0x40) {
             break;
@@ -581,50 +514,45 @@ void func_02018a64(ADXT adxt) {
     adxt->stat = ADXT_STAT_DECEND;
 }
 
-// adxt_stat_decend
-void func_02018b30(ADXT adxt) {
-    data_0206c800 = func_0201bf0c(adxt->rna);
+void adxt_stat_decend(ADXT adxt) {
+    adxt_dbg_rna_ndata = ADXRNA_GetNumData(adxt->rna);
 
-    if (func_0201bf0c(adxt->rna) > 0) {
-        return;
+    if (ADXRNA_GetNumData(adxt->rna) <= 0) {
+        ADXRNA_SetPlaySw(adxt->rna, 0);
+        adxt->stat = ADXT_STAT_PLAYEND;
     }
-
-    ADXRNA_SetPlaySw(adxt->rna, 0);
-    adxt->stat = ADXT_STAT_PLAYEND;
 }
 
-// adxt_stat_playend -- "do nothing" in the reference too; this one matches.
-void func_02018b74(ADXT adxt) {}
+void adxt_stat_playend(ADXT adxt) {
+    return; // do nothing
+}
 
-// adxt_RcvrReplay / ADXT_ExecRdErrChk
-void func_02018b78(ADXT adxt) {
-    if (adxt->stm != NULL && func_02015f5c(adxt->stm) == 4) {
+void ADXT_ExecRdErrChk(ADXT adxt) {
+    if (adxt->stm != NULL && ADXSTM_GetStat(adxt->stm) == 4) {
         adxt->ercode = -1;
         adxt->stat   = ADXT_STAT_ERROR;
     }
 
-    if (adxt->lsc != NULL && func_020215ec(adxt->lsc) == 3) {
+    if (adxt->lsc != NULL && LSC_GetStat(adxt->lsc) == 3) {
         adxt->ercode = -1;
         adxt->stat   = ADXT_STAT_ERROR;
     }
 }
 
-void func_02018bd4(ADXT adxt) {
+void ADXT_ExecRdCompChk(ADXT adxt) {
     if (adxt->stm == NULL || ADXT_GetStat(adxt) == 0) {
         return;
     }
 
-    // The target lowers this to an `addls pc, pc, pmode, lsl #2` jump table
-    // over 0..4, with cases 0 and 1 sharing one block and case 2 another.
     switch (adxt->pmode) {
         case ADXT_PLAYBACK_FILENAME:
         case ADXT_PLAYBACK_AFS:
-            if (func_02015f5c(adxt->stm) == 3) {
-                func_02014b50(adxt->sjd);
+            if (ADXSTM_GetStat(adxt->stm) == 3) {
+                ADXSJD_TermSupply(adxt->sjd);
             }
             break;
         case ADXT_PLAYBACK_MEM:
-            func_02014b50(adxt->sjd);
+            ADXSJD_TermSupply(adxt->sjd);
             break;
         case ADXT_PLAYBACK_STREAM:
         case ADXT_PLAYBACK_SLFILE:
@@ -633,34 +561,34 @@ void func_02018bd4(ADXT adxt) {
     }
 }
 
-void func_02018c40(ADXT adxt) {
-    func_02012f88(); // ADXCRS_Lock
+void ADXT_ExecHndl(ADXT adxt) {
+    ADXCRS_Enter();
     adxt_ExecHndl(adxt);
-    func_02012f8c(); // ADXCRS_Unlock
+    ADXCRS_Leave();
 }
 
 void adxt_ExecHndl(ADXT adxt) {
     char stat;
 
     if (adxt == NULL) {
-        ADXERR_CallErrFunc1("E02080842 ADXT_ExecHndl: parameter error");
+        ADXERR_CallErrFunc1(data_02063f48);
         return;
     }
 
     stat = adxt->stat;
 
     if (stat == ADXT_STAT_PLAYING) {
-        func_02018a64(adxt);
+        adxt_stat_playing(adxt);
     } else if (stat == ADXT_STAT_LOADING) {
-        func_0201854c(adxt);
+        adxt_stat_decinfo(adxt);
     } else if (stat == ADXT_STAT_PREPPING) {
-        func_02018910(adxt);
+        adxt_stat_prep(adxt);
     } else if (stat == ADXT_STAT_DECEND) {
-        func_02018b30(adxt);
+        adxt_stat_decend(adxt);
     } else if (stat == ADXT_STAT_PLAYEND) {
-        func_02018b74(adxt);
+        adxt_stat_playend(adxt);
     }
 
-    func_02018bd4(adxt);
-    func_02018b78(adxt);
+    ADXT_ExecRdCompChk(adxt);
+    ADXT_ExecRdErrChk(adxt);
 }

@@ -10,9 +10,9 @@ int data_0206bd78          = 0;
 static void adxt_ExecFsSvr(void);
 
 void ADXT_ExecFsSvr(void) {
-    func_02012f88();
+    ADXCRS_Enter();
     adxt_ExecFsSvr();
-    func_02012f8c();
+    ADXCRS_Leave();
 }
 
 static void adxt_ExecFsSvr(void) {

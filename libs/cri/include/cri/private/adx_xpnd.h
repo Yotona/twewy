@@ -3,31 +3,29 @@
 
 #include <cri/cri_xpt.h>
 
+// Field names follow the recvx decomp's ADX_XPDOBJ/ADXPDPRM (PS2).
 typedef struct {
-    /* 0x00 */ short unk0;
-    /* 0x02 */ short unk2;
-    /* 0x04 */ short unk4;
-    /* 0x06 */ short unk6;
-} ADXPD_OBJ_SUB;
+    /* 0x00 */ int nch;
+    /* 0x04 */ int ibuf;
+    /* 0x08 */ int nblk;
+    /* 0x0C */ int obuf_l;
+    /* 0x10 */ int obuf_r;
+} ADXPDPRM;
 
 typedef struct {
-    /* 0x00 */ int           used;
-    /* 0x04 */ int           unk4;
-    /* 0x08 */ int           mode;
-    /* 0x0C */ int           stat;
-    /* 0x10 */ int           num_blk;
-    /* 0x14 */ int           unk14;
-    /* 0x18 */ int           unk18;
-    /* 0x1C */ int           unk1C;
-    /* 0x20 */ int           unk20;
-    /* 0x24 */ int           unk24;
-    /* 0x28 */ ADXPD_OBJ_SUB unk28;
-    /* 0x30 */ short         unk30;
-    /* 0x32 */ short         unk32;
-    /* 0x34 */ short         unk34;
-    /* 0x36 */ short         unk36;
-    /* 0x38 */ short         unk38;
-    /* 0x3A */ short         unk3A;
+    /* 0x00 */ int      used;
+    /* 0x04 */ int      xno;
+    /* 0x08 */ int      mode;
+    /* 0x0C */ int      stat;
+    /* 0x10 */ int      ndecblk;
+    /* 0x14 */ ADXPDPRM xprm;
+    /* 0x28 */ short    dly[2][2]; // [channel][tap]
+    /* 0x30 */ short    k[2];      // predictor coefficients (Q12)
+                                   // Not in recvx: scale-key LCG for scrambled ADX (see ADX_DecodeMono4).
+    /* 0x34 */ short key;
+    /* 0x36 */ short key_mul;
+    /* 0x38 */ short key_add;
+    /* 0x3A */ short pad3A;
 } ADXPD_OBJ;
 
 typedef ADXPD_OBJ* ADXPD;
