@@ -1084,14 +1084,14 @@ ADXM_SetCbErr kind:function(arm,size=0xc) addr:0x0201bafc
 ADXM_SetupFramework kind:function(arm,size=0x68) addr:0x0201bb08
 ADXM_SetupThrd kind:function(arm,size=0x1fc) addr:0x0201bb70
 ADXM_IsSetupThrd kind:function(arm,size=0x18) addr:0x0201bd6c
-func_0201bd84 kind:function(arm,size=0x10) addr:0x0201bd84
-func_0201bd94 kind:function(arm,size=0x18) addr:0x0201bd94
-func_0201bdac kind:function(arm,size=0x10) addr:0x0201bdac
-func_0201bdbc kind:function(arm,size=0x14) addr:0x0201bdbc
-func_0201bdd0 kind:function(arm,size=0x14) addr:0x0201bdd0
+adxm_get_init_level kind:function(arm,size=0x10) addr:0x0201bd84
+adxm_inc_init_level kind:function(arm,size=0x18) addr:0x0201bd94
+adxm_is_vsync_end kind:function(arm,size=0x10) addr:0x0201bdac
+adxm_set_vsync_end kind:function(arm,size=0x14) addr:0x0201bdbc
+adxm_clear_vsync_end kind:function(arm,size=0x14) addr:0x0201bdd0
 ADXM_ExecVint kind:function(arm,size=0x74) addr:0x0201bde4
-func_0201be58 kind:function(arm,size=0x24) addr:0x0201be58
-func_0201be7c kind:function(arm,size=0x24) addr:0x0201be7c
+adxm_exec_cb0 kind:function(arm,size=0x24) addr:0x0201be58
+adxm_exec_cb1 kind:function(arm,size=0x24) addr:0x0201be7c
 
 
 ADXRNA_Init kind:function(arm,size=0xc) addr:0x0201bea0
@@ -1221,7 +1221,7 @@ func_0201ea20 kind:function(arm,size=0x30) addr:0x0201ea20
 func_0201ea50 kind:function(arm,size=0x60) addr:0x0201ea50
 ADXMNG_SetFramework kind:function(arm,size=0x10) addr:0x0201eab0
 ADXMNG_CallMainServerFunctions kind:function(arm,size=0x58) addr:0x0201eac0
-func_0201eb18 kind:function(arm,size=0x5c) addr:0x0201eb18
+ADXMNG_CallVintServerFunctions kind:function(arm,size=0x5c) addr:0x0201eb18
 ADXM_ExecSvrAll kind:function(arm,size=0x2c) addr:0x0201eb74
 func_0201eba0 kind:function(arm,size=0x24) addr:0x0201eba0
 ADXCS_Init kind:function(arm,size=0x24) addr:0x0201ebc4
@@ -3426,7 +3426,7 @@ sjmem_uuid kind:data(any) addr:0x0205bfe8
 /////////////////////////////////////////////////////////////
 data_0205bff8 kind:data(any) addr:0x0205bff8
 
-data_0205bffc kind:data(any) addr:0x0205bffc
+adxnitro_build kind:data(any) addr:0x0205bffc
 data_0205c000 kind:data(any) addr:0x0205c000
 data_0205c044 kind:data(any) addr:0x0205c044
 data_0205c08c kind:data(any) addr:0x0205c08c
@@ -3884,10 +3884,10 @@ sjmem_vtbl kind:data(any) addr:0x020643e8
 @628 kind:data(any) addr:0x02064ce8 local
 @629 kind:data(any) addr:0x02064cec local
 
-data_02064cf4 kind:data(any) addr:0x02064cf4
-data_02064cf8 kind:data(any) addr:0x02064cf8
-data_02064d28 kind:data(any) addr:0x02064d28
-data_02064d68 kind:data(any) addr:0x02064d68
+adxm_imask_lvl kind:data(any) addr:0x02064cf4
+@111 kind:data(any) addr:0x02064cf8 local
+@244 kind:data(any) addr:0x02064d28 local
+@245 kind:data(any) addr:0x02064d68 local
 data_02064d74 kind:data(any) addr:0x02064d74
 data_02064ddc kind:data(any) addr:0x02064ddc
 data_02064de0 kind:data(any) addr:0x02064de0
@@ -4567,13 +4567,17 @@ data_0207063c kind:bss addr:0x0207063c
 def_dev kind:bss addr:0x02070768
 
 data_02070774 kind:bss addr:0x02070774
-data_02070790 kind:bss addr:0x02070790
-data_020707a4 kind:bss addr:0x020707a4
-data_020707ac kind:bss addr:0x020707ac
-data_020707d0 kind:bss addr:0x020707d0
-data_020707f8 kind:bss addr:0x020707f8
-data_020708b8 kind:bss addr:0x020708b8
-data_02070978 kind:bss addr:0x02070978
+data_02070778 kind:bss addr:0x02070778
+adxm_lock_level kind:bss addr:0x0207077c
+adxm_init_level kind:bss addr:0x02070780
+data_02070784 kind:bss addr:0x02070784
+data_02070788 kind:bss addr:0x02070788
+data_0207078c kind:bss addr:0x0207078c
+adxm_cb kind:bss addr:0x02070790
+adxm_save_ie kind:bss addr:0x020707a4
+data_020707a8 kind:bss addr:0x020707a8
+adxm_save_tprm kind:bss addr:0x020707ac
+adxm_obj kind:bss addr:0x020707d0
 data_02070a48 kind:bss addr:0x02070a48
 data_02070a58 kind:bss addr:0x02070a58
 data_02070fa8 kind:bss addr:0x02070fa8

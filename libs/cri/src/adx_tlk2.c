@@ -10,11 +10,6 @@ int   adxt_time_unit    = 0;
 float adxt_diff_av      = 0.0f;
 int   adxt_tlk2_unused2 = 0;
 
-static void adxt_unused(void) {
-    adxt_tlk2_unused0 = adxt_tlk2_unused1 = adxt_tlk2_unused2 = adxt_time_unit = 0;
-    adxt_diff_av                                                               = 0.0f;
-}
-
 static void adxt_StartAfs(ADXT adxt, int partitionId, int fileId);
 void        adxt_StartFname(ADXT adxt, const char* filename);
 static void adxt_StartMem2(ADXT adxt, void* adxData, int dataLength);

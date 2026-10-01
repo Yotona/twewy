@@ -2,9 +2,9 @@
 #include <stddef.h>
 #include <string.h>
 
-void* rnaerr_obj;
-void (*rnaerr_func)(void* obj, const char* msg);
-char rnaerr_msg[256];
+void (*rnaerr_func)(void* obj, const char* msg) = NULL;
+void* rnaerr_obj                                = NULL;
+char  rnaerr_msg[256];
 
 void RNAERR_Init(void) {
     memset(rnaerr_msg, 0, sizeof(rnaerr_msg));

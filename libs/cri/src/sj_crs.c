@@ -5,11 +5,6 @@ volatile int sjcrs_msk = 0;
 volatile int sjcrs_lvl = 0;
 volatile int sjcrs_cnt = 0;
 
-// Deadstripped but necessary to force data reference
-static void sjcrs_unused(void) {
-    sjcrs_lvl = 0;
-}
-
 void SJCRS_Init(void) {
     sjcrs_cnt++;
     if (sjcrs_cnt == 1) {

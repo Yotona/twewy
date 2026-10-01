@@ -2725,7 +2725,7 @@ from:0x0201b914 kind:arm_call to:0x020390c0 module:main
 from:0x0201b91c kind:arm_call to:0x02039008 module:main
 from:0x0201b924 kind:load to:0x020707d0 module:main
 from:0x0201b928 kind:load to:0x02070790 module:main
-from:0x0201b92c kind:load to:0x02070978 module:main
+from:0x0201b92c kind:load to:0x020707d0 add:0x1a8 module:main
 from:0x0201b938 kind:load to:0x0201eac0 module:main
 from:0x0201b95c kind:arm_call to:0x020385d4 module:main
 from:0x0201b97c kind:load to:0x02070774 module:main
@@ -2739,7 +2739,7 @@ from:0x0201b9f0 kind:arm_call to:0x0201abc0 module:main
 from:0x0201ba04 kind:arm_call to:0x02039008 module:main
 from:0x0201ba14 kind:arm_call to:0x0201bdbc module:main
 from:0x0201ba1c kind:load to:0x020707d0 module:main
-from:0x0201ba20 kind:load to:0x020708b8 module:main
+from:0x0201ba20 kind:load to:0x020707d0 add:0xe8 module:main
 from:0x0201ba40 kind:arm_call to:0x020390c0 module:main
 from:0x0201ba44 kind:arm_call to:0x0201abe0 module:main
 from:0x0201ba58 kind:arm_call to:0x02039008 module:main
@@ -2778,11 +2778,11 @@ from:0x0201bd44 kind:load to:0x0201b988 module:main
 from:0x0201bd48 kind:load to:0x02064d68 module:main
 from:0x0201bd4c kind:load to:0x02064cf4 module:main
 from:0x0201bd50 kind:load to:0x020707ac module:main
-from:0x0201bd54 kind:load to:0x020707f8 module:main
+from:0x0201bd54 kind:load to:0x020707d0 add:0x28 module:main
 from:0x0201bd58 kind:load to:0x0201b9b0 module:main
-from:0x0201bd5c kind:load to:0x020708b8 module:main
+from:0x0201bd5c kind:load to:0x020707d0 add:0xe8 module:main
 from:0x0201bd60 kind:load to:0x0201ba24 module:main
-from:0x0201bd64 kind:load to:0x02070978 module:main
+from:0x0201bd64 kind:load to:0x020707d0 add:0x1a8 module:main
 from:0x0201bd68 kind:load to:0x0201ba7c module:main
 from:0x0201bd70 kind:arm_call to:0x0201bd84 module:main
 from:0x0201bd90 kind:load to:0x02070774 module:main
@@ -2797,7 +2797,7 @@ from:0x0201be38 kind:arm_call to:0x0201eb18 module:main
 from:0x0201be40 kind:arm_call to:0x020390c0 module:main
 from:0x0201be4c kind:load to:0x020707d0 module:main
 from:0x0201be50 kind:load to:0x02070790 module:main
-from:0x0201be54 kind:load to:0x020707f8 module:main
+from:0x0201be54 kind:load to:0x020707d0 add:0x28 module:main
 from:0x0201be78 kind:load to:0x02070790 module:main
 from:0x0201be9c kind:load to:0x02070790 module:main
 from:0x0201bea8 kind:load to:0x0201c830 module:main

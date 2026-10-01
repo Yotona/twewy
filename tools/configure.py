@@ -93,6 +93,10 @@ MSL_CC_FLAGS = " ".join(
 
 MSL_RUNTIME_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-char unsigned"))
 
+# CriWare was built without -ipa file: initialized globals share one pooled base,
+# while uninitialized ones are each reached through their own literal.
+CRI_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
+
 
 @dataclass(frozen=True)
 class CompilerConfig:
@@ -113,6 +117,11 @@ MSL_COMPILER_CONFIG = CompilerConfig(
 MSL_RUNTIME_COMPILER_CONFIG = CompilerConfig(
     version=MWCC_DEFAULT_VERSION,
     flags=MSL_RUNTIME_CC_FLAGS,
+)
+
+CRI_COMPILER_CONFIG = CompilerConfig(
+    version=MWCC_DEFAULT_VERSION,
+    flags=CRI_CC_FLAGS,
 )
 
 # Configurations for when a file or directory needs different settings than the project default
@@ -155,6 +164,7 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     ),
     Path("libs/c"): MSL_COMPILER_CONFIG,
     Path("libs/cpp"): MSL_COMPILER_CONFIG,
+    Path("libs/cri"): CRI_COMPILER_CONFIG,
     Path("libs/runtime"): MSL_RUNTIME_COMPILER_CONFIG,
 }
 

@@ -880,14 +880,14 @@ ADXM_SetCbErr kind:function(arm,size=0xc) addr:0x0201ba88
 ADXM_SetupFramework kind:function(arm,size=0x68) addr:0x0201ba94
 ADXM_SetupThrd kind:function(arm,size=0x1fc) addr:0x0201bafc
 ADXM_IsSetupThrd kind:function(arm,size=0x18) addr:0x0201bcf8
-func_0201bd10 kind:function(arm,size=0x10) addr:0x0201bd10
-func_0201bd20 kind:function(arm,size=0x18) addr:0x0201bd20
-func_0201bd38 kind:function(arm,size=0x10) addr:0x0201bd38
-func_0201bd48 kind:function(arm,size=0x14) addr:0x0201bd48
-func_0201bd5c kind:function(arm,size=0x14) addr:0x0201bd5c
+adxm_get_init_level kind:function(arm,size=0x10) addr:0x0201bd10
+adxm_inc_init_level kind:function(arm,size=0x18) addr:0x0201bd20
+adxm_is_vsync_end kind:function(arm,size=0x10) addr:0x0201bd38
+adxm_set_vsync_end kind:function(arm,size=0x14) addr:0x0201bd48
+adxm_clear_vsync_end kind:function(arm,size=0x14) addr:0x0201bd5c
 ADXM_ExecVint kind:function(arm,size=0x74) addr:0x0201bd70
-func_0201bde4 kind:function(arm,size=0x24) addr:0x0201bde4
-func_0201be08 kind:function(arm,size=0x24) addr:0x0201be08
+adxm_exec_cb0 kind:function(arm,size=0x24) addr:0x0201bde4
+adxm_exec_cb1 kind:function(arm,size=0x24) addr:0x0201be08
 ADXRNA_Init kind:function(arm,size=0xc) addr:0x0201be2c
 ADXRNA_Finish kind:function(arm,size=0xc) addr:0x0201be38
 ADXRNA_EntryErrFunc kind:function(arm,size=0xc) addr:0x0201be44
@@ -1015,7 +1015,7 @@ func_0201e9a4 kind:function(arm,size=0x30) addr:0x0201e9a4
 func_0201e9d4 kind:function(arm,size=0x60) addr:0x0201e9d4
 ADXMNG_SetFramework kind:function(arm,size=0x10) addr:0x0201ea34
 ADXMNG_CallMainServerFunctions kind:function(arm,size=0x58) addr:0x0201ea44
-func_0201ea9c kind:function(arm,size=0x5c) addr:0x0201ea9c
+ADXMNG_CallVintServerFunctions kind:function(arm,size=0x5c) addr:0x0201ea9c
 ADXM_ExecSvrAll kind:function(arm,size=0x2c) addr:0x0201eaf8
 func_0201eb24 kind:function(arm,size=0x24) addr:0x0201eb24
 ADXCS_Init kind:function(arm,size=0x24) addr:0x0201eb48
@@ -2895,7 +2895,7 @@ data_0205c620 kind:data(any) addr:0x0205c620
 sjrbf_uuid kind:data(any) addr:0x0205c664
 sjmem_uuid kind:data(any) addr:0x0205c674
 data_0205c684 kind:data(any) addr:0x0205c684
-data_0205c688 kind:data(any) addr:0x0205c688
+adxnitro_build kind:data(any) addr:0x0205c688
 data_0205c68c kind:data(any) addr:0x0205c68c
 data_0205c6d0 kind:data(any) addr:0x0205c6d0
 data_0205c718 kind:data(any) addr:0x0205c718
@@ -3196,10 +3196,10 @@ data_0206526c kind:data(any) addr:0x0206526c
 data_02065274 kind:data(any) addr:0x02065274
 data_02065288 kind:data(any) addr:0x02065288
 data_0206528c kind:data(any) addr:0x0206528c
-data_02065294 kind:data(any) addr:0x02065294
-data_02065298 kind:data(any) addr:0x02065298
-data_020652c8 kind:data(any) addr:0x020652c8
-data_02065308 kind:data(any) addr:0x02065308
+adxm_imask_lvl kind:data(any) addr:0x02065294
+@111 kind:data(any) addr:0x02065298 local
+@244 kind:data(any) addr:0x020652c8 local
+@245 kind:data(any) addr:0x02065308 local
 data_02065314 kind:data(any) addr:0x02065314
 data_0206537c kind:data(any) addr:0x0206537c
 data_02065380 kind:data(any) addr:0x02065380
@@ -3706,14 +3706,17 @@ cvfs_named_devices kind:bss addr:0x02070c4c
 cvfs_handles kind:bss addr:0x02070e4c
 data_02070e9c kind:bss addr:0x02070e9c
 def_dev kind:bss addr:0x02070fc8
-data_02070fd4 kind:bss addr:0x02070fd4
-data_02070fec kind:bss addr:0x02070fec
-data_02071000 kind:bss addr:0x02071000
-data_02071008 kind:bss addr:0x02071008
-data_0207102c kind:bss addr:0x0207102c
-data_02071054 kind:bss addr:0x02071054
-data_02071114 kind:bss addr:0x02071114
-data_020711d4 kind:bss addr:0x020711d4
+data_02070774 kind:bss addr:0x02070fd4
+data_02070778 kind:bss addr:0x02070fd8
+adxm_lock_level kind:bss addr:0x02070fdc
+adxm_init_level kind:bss addr:0x02070fe0
+data_02070784 kind:bss addr:0x02070fe4
+data_02070788 kind:bss addr:0x02070fe8
+adxm_cb kind:bss addr:0x02070fec
+adxm_save_ie kind:bss addr:0x02071000
+data_020707a8 kind:bss addr:0x02071004
+adxm_save_tprm kind:bss addr:0x02071008
+adxm_obj kind:bss addr:0x0207102c
 data_020712a4 kind:bss addr:0x020712a4
 data_020712b0 kind:bss addr:0x020712b0
 data_02071800 kind:bss addr:0x02071800

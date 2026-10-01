@@ -318,6 +318,7 @@ libs/cri/src/cri_cvfs.c:
     .bss        start:0x020703e0 end:0x02070774
 
 libs/cri/src/adx_mnitro.c:
+    complete
     categories: CriWare, Library
     .text       start:0x0201b8dc end:0x0201bea0
     .rodata     start:0x0205bffc end:0x0205c000
