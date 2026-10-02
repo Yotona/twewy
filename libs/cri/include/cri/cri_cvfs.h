@@ -16,9 +16,9 @@ typedef struct {
     /* 0x24 */ void (*unk24)();
     /* 0x28 */ void (*StopTr)();
     /* 0x2C */ int (*GetStat)(void* fd);
-    /* 0x30 */ void (*GetSctLen)();
-    /* 0x34 */ void (*unk34)();
-    /* 0x38 */ void (*GetNumTr)();
+    /* 0x30 */ int (*GetSctLen)();
+    /* 0x34 */ void (*SetSctLen)();
+    /* 0x38 */ int (*GetNumTr)();
     /* 0x3C */ void (*unk3C)();
     /* 0x40 */ void (*IsExistFile)();
     /* 0x44 */ void (*unk44)();

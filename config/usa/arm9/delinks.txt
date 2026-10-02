@@ -332,6 +332,7 @@ libs/cri/src/adx_rnanitro.c:
 
 libs/cri/src/nitroci.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201bf78 end:0x0201c80c
     .rodata     start:0x0205c000 end:0x0205c044
     .data       start:0x02064d74 end:0x02065024
@@ -344,6 +345,7 @@ libs/cri/src/rna_crs.c:
 
 libs/cri/src/nitro_rna.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201c824 end:0x0201d3cc
     .rodata     start:0x0205c044 end:0x0205c08c
     .data       start:0x02065024 end:0x0206508c
@@ -362,6 +364,7 @@ libs/cri/src/cfg_lib.c:
 
 libs/cri/src/mfci.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201d528 end:0x0201dc48
     .rodata     start:0x0205c08c end:0x0205c090
     .data       start:0x0206508c end:0x020652b0
@@ -374,11 +377,13 @@ libs/cri/src/nitro_snd.c:
 
 libs/cri/src/adx_mng.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201eab0 end:0x0201ebc4
     .data       start:0x020652b0 end:0x020652b4
 
 libs/cri/src/adx_cs.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201ebc4 end:0x0201ef48
     .rodata     start:0x0205c090 end:0x0205c094
     .data       start:0x020652b4 end:0x020652ec
@@ -441,6 +446,7 @@ libs/cri/src/cri_crw_std.c:
 
 libs/cri/src/adx_sunitro.c:
     categories: CriWare, Library
+    complete
     .text       start:0x02021698 end:0x02021728
     .data       start:0x020659c8 end:0x020659e0
 

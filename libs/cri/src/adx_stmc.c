@@ -209,7 +209,7 @@ void adxstm_ReleaseFile(ADXSTM* stm) {
         if (stm->unk_4D == 0) {
             break;
         }
-        func_02014528(stm->unk_4D);
+        ADXT_ExecFsSvr(stm->unk_4D);
     }
 }
 
@@ -307,7 +307,7 @@ void adxstm_Stop(ADXSTM* stm) {
                 break;
             }
         }
-        func_02014528();
+        ADXT_ExecFsSvr();
     }
 }
 

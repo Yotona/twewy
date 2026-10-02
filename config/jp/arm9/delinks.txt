@@ -315,6 +315,7 @@ libs/cri/src/adx_rnanitro.c:
 
 libs/cri/src/nitroci.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201bf04 end:0x0201c798
     .rodata     start:0x0205c68c end:0x0205c6d0
     .data       start:0x02065314 end:0x020655c4
@@ -343,6 +344,7 @@ libs/cri/src/cfg_lib.c:
 
 libs/cri/src/mfci.c:
     categories: CriWare, Library
+    complete
     .text       start:0x0201d4ac end:0x0201dbcc
     .rodata     start:0x0205c718 end:0x0205c71c
     .data       start:0x0206562c end:0x02065850

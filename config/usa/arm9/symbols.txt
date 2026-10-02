@@ -1114,15 +1114,15 @@ ADXRNA_SetTotalNumSmpl kind:function(arm,size=0x4) addr:0x0201bf6c
 ADXRNA_SetStmHdInfo kind:function(arm,size=0x8) addr:0x0201bf70
 nitroci_call_errfn kind:function(arm,size=0x28) addr:0x0201bf78
 nitroCiGetInterface kind:function(arm,size=0xc) addr:0x0201bfa0
-func_0201bfac kind:function(arm,size=0x44) addr:0x0201bfac
-func_0201bff0 kind:function(arm,size=0x94) addr:0x0201bff0
-func_0201c084 kind:function(arm,size=0xd0) addr:0x0201c084
+nitroCiInit kind:function(arm,size=0x44) addr:0x0201bfac
+nitroci_make_path kind:function(arm,size=0x94) addr:0x0201bff0
+nitroci_exec_hndl kind:function(arm,size=0xd0) addr:0x0201c084
 nitroCiExecServer kind:function(arm,size=0x38) addr:0x0201c154
 nitroCiEntryErrFunc kind:function(arm,size=0x10) addr:0x0201c18c
 nitroCiGetFileSize kind:function(arm,size=0x50) addr:0x0201c19c
 nitroCiOptFn1 kind:function(arm,size=0x3c) addr:0x0201c1ec
-func_0201c228 kind:function(arm,size=0x8) addr:0x0201c228
-func_0201c230 kind:function(arm,size=0x80) addr:0x0201c230
+nitroci_opt_get_fsize kind:function(arm,size=0x8) addr:0x0201c228
+nitroci_parse_fs_name kind:function(arm,size=0x80) addr:0x0201c230
 nitroCiOpen kind:function(arm,size=0x1a4) addr:0x0201c2b0
 nitroCiClose kind:function(arm,size=0x38) addr:0x0201c454
 nitroCiSeek kind:function(arm,size=0x9c) addr:0x0201c48c
@@ -1133,9 +1133,9 @@ nitroCiGetStat kind:function(arm,size=0x28) addr:0x0201c670
 nitroCiGetSctLen kind:function(arm,size=0x28) addr:0x0201c698
 nitroCiSetSctLen kind:function(arm,size=0xa8) addr:0x0201c6c0
 nitroCiGetNumTr kind:function(arm,size=0x28) addr:0x0201c768
-func_0201c790 kind:function(arm,size=0x8) addr:0x0201c790
-func_0201c798 kind:function(arm,size=0x8) addr:0x0201c798
-func_0201c7a0 kind:function(arm,size=0x6c) addr:0x0201c7a0
+nitroci_opt_200 kind:function(arm,size=0x8) addr:0x0201c790
+nitroci_opt_201 kind:function(arm,size=0x8) addr:0x0201c798
+nitroci_get_file_size kind:function(arm,size=0x6c) addr:0x0201c7a0
 RNACRS_Lock kind:function(arm,size=0xc) addr:0x0201c80c
 RNACRS_Unlock kind:function(arm,size=0xc) addr:0x0201c818
 NITRORNA_EntryErrFunc kind:function(arm,size=0xc) addr:0x0201c824
@@ -1168,20 +1168,20 @@ RNAERR_EntryErrFunc kind:function(arm,size=0x10) addr:0x0201d42c
 RNAERR_CallErrFunc kind:function(arm,size=0x3c) addr:0x0201d43c
 func_0201d478 kind:function(arm,size=0x74) addr:0x0201d478
 CRICFG_Read kind:function(arm,size=0x3c) addr:0x0201d4ec
-func_0201d528 kind:function(arm,size=0xc) addr:0x0201d528
-func_0201d534 kind:function(arm,size=0xc) addr:0x0201d534
+mfci_lock kind:function(arm,size=0xc) addr:0x0201d528
+mfci_unlock kind:function(arm,size=0xc) addr:0x0201d534
 mfCiGetInterface kind:function(arm,size=0x18) addr:0x0201d540
 mfci_call_errfn kind:function(arm,size=0x28) addr:0x0201d558
-func_0201d580 kind:function(arm,size=0xc) addr:0x0201d580
-func_0201d58c kind:function(arm,size=0x5c) addr:0x0201d58c
+mfci_strtoul kind:function(arm,size=0xc) addr:0x0201d580
+mfci_str_to_uint kind:function(arm,size=0x5c) addr:0x0201d58c
 mfci_str_to_uint_ptr kind:function(arm,size=0x74) addr:0x0201d5e8
-func_0201d65c kind:function(arm,size=0x4) addr:0x0201d65c
+mfci_exec_hndl kind:function(arm,size=0x4) addr:0x0201d65c
 mfCiExecServer kind:function(arm,size=0x38) addr:0x0201d660
 mfCiEntryErrFunc kind:function(arm,size=0x14) addr:0x0201d698
 mfCiGetFileSize kind:function(arm,size=0x14) addr:0x0201d6ac
-func_0201d6c0 kind:function(arm,size=0x40) addr:0x0201d6c0
-func_0201d700 kind:function(arm,size=0x14) addr:0x0201d700
-func_0201d714 kind:function(arm,size=0x50) addr:0x0201d714
+mfci_get_free_hn kind:function(arm,size=0x40) addr:0x0201d6c0
+mfci_clear_obj kind:function(arm,size=0x14) addr:0x0201d700
+mfci_init_obj kind:function(arm,size=0x50) addr:0x0201d714
 mfCiOpen kind:function(arm,size=0x88) addr:0x0201d764
 mfCiClose kind:function(arm,size=0x30) addr:0x0201d7ec
 mfCiSeek kind:function(arm,size=0x90) addr:0x0201d81c
@@ -1222,12 +1222,12 @@ func_0201ea50 kind:function(arm,size=0x60) addr:0x0201ea50
 ADXMNG_SetFramework kind:function(arm,size=0x10) addr:0x0201eab0
 ADXMNG_CallMainServerFunctions kind:function(arm,size=0x58) addr:0x0201eac0
 ADXMNG_CallVintServerFunctions kind:function(arm,size=0x5c) addr:0x0201eb18
-ADXM_ExecSvrAll kind:function(arm,size=0x2c) addr:0x0201eb74
-func_0201eba0 kind:function(arm,size=0x24) addr:0x0201eba0
+ADXM_ExecSvrAll kind:function(arm,size=0x2c) addr:0x0201eb74 local
+func_0201eba0 kind:function(arm,size=0x24) addr:0x0201eba0 local
 ADXCS_Init kind:function(arm,size=0x24) addr:0x0201ebc4
-func_0201ebe8 kind:function(arm,size=0x34) addr:0x0201ebe8
+ADXCS_Create kind:function(arm,size=0x34) addr:0x0201ebe8
 func_0201ec1c kind:function(arm,size=0x2c) addr:0x0201ec1c
-func_0201ec48 kind:function(arm,size=0x24) addr:0x0201ec48
+ADXCS_CalcWorkCprm kind:function(arm,size=0x24) addr:0x0201ec48
 func_0201ec6c kind:function(arm,size=0x1c) addr:0x0201ec6c
 func_0201ec88 kind:function(arm,size=0x24) addr:0x0201ec88
 func_0201ecac kind:function(arm,size=0xc) addr:0x0201ecac
@@ -3427,10 +3427,10 @@ sjmem_uuid kind:data(any) addr:0x0205bfe8
 data_0205bff8 kind:data(any) addr:0x0205bff8
 
 adxnitro_build kind:data(any) addr:0x0205bffc
-data_0205c000 kind:data(any) addr:0x0205c000
-data_0205c044 kind:data(any) addr:0x0205c044
-data_0205c08c kind:data(any) addr:0x0205c08c
-data_0205c090 kind:data(any) addr:0x0205c090
+nitroci_build_str kind:data(any) addr:0x0205c000
+nitrorna_build_str kind:data(any) addr:0x0205c044
+mfci_build kind:data(any) addr:0x0205c08c
+adxcs_build kind:data(any) addr:0x0205c090
 
 /////////////////////////////////////////////////////////////
 // libs/cri/src/acssbadx.c
@@ -3888,49 +3888,49 @@ adxm_imask_lvl kind:data(any) addr:0x02064cf4
 @111 kind:data(any) addr:0x02064cf8 local
 @244 kind:data(any) addr:0x02064d28 local
 @245 kind:data(any) addr:0x02064d68 local
-data_02064d74 kind:data(any) addr:0x02064d74
-data_02064ddc kind:data(any) addr:0x02064ddc
-data_02064de0 kind:data(any) addr:0x02064de0
-data_02064e0c kind:data(any) addr:0x02064e0c
-data_02064e14 kind:data(any) addr:0x02064e14
-data_02064e2c kind:data(any) addr:0x02064e2c
-data_02064e54 kind:data(any) addr:0x02064e54
-data_02064e7c kind:data(any) addr:0x02064e7c
-data_02064eb0 kind:data(any) addr:0x02064eb0
-data_02064ed4 kind:data(any) addr:0x02064ed4
-data_02064eec kind:data(any) addr:0x02064eec
-data_02064f04 kind:data(any) addr:0x02064f04
-data_02064f1c kind:data(any) addr:0x02064f1c
-data_02064f40 kind:data(any) addr:0x02064f40
-data_02064f64 kind:data(any) addr:0x02064f64
-data_02064f90 kind:data(any) addr:0x02064f90
-data_02064fa8 kind:data(any) addr:0x02064fa8
-data_02064fc0 kind:data(any) addr:0x02064fc0
-data_02064fd8 kind:data(any) addr:0x02064fd8
-data_02064ff0 kind:data(any) addr:0x02064ff0
-data_0206500c kind:data(any) addr:0x0206500c
-data_02065024 kind:data(any) addr:0x02065024
-data_02065048 kind:data(any) addr:0x02065048
-data_02065064 kind:data(any) addr:0x02065064
-data_02065088 kind:data(any) addr:0x02065088
-data_0206508c kind:data(any) addr:0x0206508c
-data_020650c0 kind:data(any) addr:0x020650c0
-data_02065128 kind:data(any) addr:0x02065128
-data_0206514c kind:data(any) addr:0x0206514c
-data_02065170 kind:data(any) addr:0x02065170
-data_020651a0 kind:data(any) addr:0x020651a0
-data_020651bc kind:data(any) addr:0x020651bc
-data_020651d8 kind:data(any) addr:0x020651d8
-data_020651f4 kind:data(any) addr:0x020651f4
-data_02065214 kind:data(any) addr:0x02065214
-data_02065238 kind:data(any) addr:0x02065238
-data_02065250 kind:data(any) addr:0x02065250
-data_02065268 kind:data(any) addr:0x02065268
-data_02065280 kind:data(any) addr:0x02065280
-data_02065298 kind:data(any) addr:0x02065298
+nitroci_vtbl kind:data(any) addr:0x02064d74
+nitroci_build_ptr kind:data(any) addr:0x02064ddc
+@360 kind:data(any) addr:0x02064de0 local
+@398 kind:data(any) addr:0x02064e0c local
+@399 kind:data(any) addr:0x02064e14 local
+@454 kind:data(any) addr:0x02064e2c local
+@455 kind:data(any) addr:0x02064e54 local
+@456 kind:data(any) addr:0x02064e7c local
+@457 kind:data(any) addr:0x02064eb0 local
+@499 kind:data(any) addr:0x02064ed4 local
+@509 kind:data(any) addr:0x02064eec local
+@532 kind:data(any) addr:0x02064f04 local
+@533 kind:data(any) addr:0x02064f1c local
+@534 kind:data(any) addr:0x02064f40 local
+@535 kind:data(any) addr:0x02064f64 local
+@546 kind:data(any) addr:0x02064f90 local
+@556 kind:data(any) addr:0x02064fa8 local
+@566 kind:data(any) addr:0x02064fc0 local
+@591 kind:data(any) addr:0x02064fd8 local
+@592 kind:data(any) addr:0x02064ff0 local
+@605 kind:data(any) addr:0x0206500c local
+@342 kind:data(any) addr:0x02065024 local
+@343 kind:data(any) addr:0x02065048 local
+@747 kind:data(any) addr:0x02065064 local
+nitrorna_build_ptr kind:data(any) addr:0x02065088
+@103 kind:data(any) addr:0x0206508c local
+mfci_vtbl kind:data(any) addr:0x020650c0
+@278 kind:data(any) addr:0x02065128 local
+@279 kind:data(any) addr:0x0206514c local
+@280 kind:data(any) addr:0x02065170 local
+@331 kind:data(any) addr:0x020651a0 local
+@342 kind:data(any) addr:0x020651bc local
+@383 kind:data(any) addr:0x020651d8 local
+@384 kind:data(any) addr:0x020651f4 local
+@385 kind:data(any) addr:0x02065214 local
+@397 kind:data(any) addr:0x02065238 local
+@407 kind:data(any) addr:0x02065250 local
+@417 kind:data(any) addr:0x02065268 local
+@431 kind:data(any) addr:0x02065280 local
+@443 kind:data(any) addr:0x02065298 local
 data_020652b0 kind:data(any) addr:0x020652b0
-data_020652b4 kind:data(any) addr:0x020652b4
-data_020652b8 kind:data(any) addr:0x020652b8
+adxcs_svr kind:data(any) addr:0x020652b4
+@218 kind:data(any) addr:0x020652b8 local
 
 /////////////////////////////////////////////////////////////
 // libs/cri/src/acssvr.c
@@ -3983,9 +3983,9 @@ data_02065810 kind:data(any) addr:0x02065810
 
 @55 kind:data(any) addr:0x020659bc local
 data_020659c4 kind:data(any) addr:0x020659c4
-data_020659c8 kind:data(any) addr:0x020659c8
-data_020659d0 kind:data(any) addr:0x020659d0
-data_020659d8 kind:data(any) addr:0x020659d8
+@20 kind:data(any) addr:0x020659c8 local
+@21 kind:data(any) addr:0x020659d0 local
+@22 kind:data(any) addr:0x020659d8 local
 data_020659e0 kind:data(any) addr:0x020659e0
 data_02065a14 kind:data(any) addr:0x02065a14
 data_02065a24 kind:data(any) addr:0x02065a24
@@ -4578,26 +4578,21 @@ adxm_save_ie kind:bss addr:0x020707a4
 data_020707a8 kind:bss addr:0x020707a8
 adxm_save_tprm kind:bss addr:0x020707ac
 adxm_obj kind:bss addr:0x020707d0
-data_02070a48 kind:bss addr:0x02070a48
-data_02070a58 kind:bss addr:0x02070a58
-data_02070fa8 kind:bss addr:0x02070fa8
-data_020711a8 kind:bss addr:0x020711a8
-data_020711ac kind:bss addr:0x020711ac
-data_02071290 kind:bss addr:0x02071290
+nitroci_ctrl kind:bss addr:0x02070a48
+nitroci_obj kind:bss addr:0x02070a58
+nitroci_root_dir kind:bss addr:0x02070fa8
+nitrorna_init_cnt kind:bss addr:0x020711a8
+nitrorna_work kind:bss addr:0x020711ac
 rnaerr_func kind:bss addr:0x020712a4
 rnaerr_obj kind:bss addr:0x020712a8
 rnaerr_msg kind:bss addr:0x020712ac
 data_020713ac kind:bss addr:0x020713ac
 data_020713b0 kind:bss addr:0x020713b0
-data_020713b4 kind:bss addr:0x020713b4
-data_020713bc kind:bss addr:0x020713bc
-data_020715ec kind:bss addr:0x020715ec
-data_020715ee kind:bss addr:0x020715ee
-data_020715f0 kind:bss addr:0x020715f0
-data_020715f4 kind:bss addr:0x020715f4
-data_02071604 kind:bss addr:0x02071604
+mfci_ctrl kind:bss addr:0x020713b4
+mfci_obj kind:bss addr:0x020713bc
+nitrosnd_ch kind:bss addr:0x020715ec
 adx_decode_output_mono_flag kind:bss addr:0x02071a6c
-data_02071a70 kind:bss addr:0x02071a70
+adxcs_svr_obj kind:bss addr:0x02071a70 local
 data_02071b00 kind:bss addr:0x02071b00
 data_02071b04 kind:bss addr:0x02071b04
 data_02071b08 kind:bss addr:0x02071b08

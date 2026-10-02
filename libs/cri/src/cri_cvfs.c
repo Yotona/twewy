@@ -531,7 +531,7 @@ void func_0201b874(void* func, const char* error) {
 static char* const data_0205bff8 = "\nADX_NITRO Ver.";
 
 void func_0201b884(void) {
-    func_0201bfac(data_0205bff8);
+    nitroCiInit(data_0205bff8);
     cvFsEntryErrFunc(func_0201b874, NULL);
     cvFsAddDev("MFS", mfCiGetInterface, 0);
     cvFsAddDev("NITRO\0\0", nitroCiGetInterface, 0);
