@@ -21,9 +21,9 @@ args = parser.parse_args()
 CXX_FLAGS = [
     '-nostdinc',
     '-Iinclude',
-    '-Ilibs/include',
     '-Ilibs/c/include',
     '-Ilibs/cpp/include',
+    '-Ilibs/cri/include',
     '-Ilibs/nitro/include',
     '-Ilibs/runtime/include',
 ]

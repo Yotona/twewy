@@ -1,0 +1,538 @@
+#include <cri/cri_cvfs.h>
+#include <string.h>
+
+#define CVFS_DEVICE_MAX      32
+#define CVFS_HANDLE_MAX      10
+#define CVFS_MAX_NAME_LENGTH 297
+
+typedef struct {
+    CVFSDevice* device;
+    char        name[12];
+} CVFSNamedDevice;
+
+char  data_0207063c[300]               = "";
+int   data_020703e0                    = 0;
+char  def_dev[12]                      = "";
+void* cvfs_errobj                      = NULL;
+void (*cvfs_errfn)(void*, const char*) = NULL;
+
+CVFSHandle      cvfs_handles[CVFS_HANDLE_MAX]       = {0};
+CVFSNamedDevice cvfs_named_devices[CVFS_DEVICE_MAX] = {0};
+
+CVFSDevice* mfCiGetInterface();
+CVFSDevice* nitroCiGetInterface();
+
+CVFSDevice* addDevice(const char* device_name, CVFSDevice* (*device_provider)());
+int         isExistDev(const char* devName, int device_name_len);
+CVFSDevice* getDevice(const char* device_name);
+void        toUpperStr(char* str);
+CVFSHandle* cvFsOpen(const char* fname, void* arg1, int arg2);
+void        releaseCvFsHn(CVFSHandle* handle);
+CVFSHandle* allocCvFsHn(void);
+void        getDevName(char* filename, char* device_name, const char* full_path);
+void        getDefDev(char* arg0);
+void        addDevName(const char* device_name, char* out);
+
+// Nonmatching: Register diffs
+static void cvFsCallUsrErrFn(void* object, const char* error, int arg2) {
+    if (cvfs_errfn != NULL) {
+        cvfs_errfn(cvfs_errobj, error);
+    }
+}
+
+static void cvFsError(const char* error) {
+    cvFsCallUsrErrFn(&cvfs_errobj, error, 0);
+}
+
+static void cvFsAddDev(const char* device_name, CVFSDevice* (*device_provider)(), int arg2) {
+    CVFSDevice* device;
+
+    if (device_name == NULL) {
+        cvFsError("cvFsAddDev #1:illegal device name");
+        return;
+    }
+
+    if (device_provider == NULL) {
+        cvFsError("cvFsAddDev #2:illegal I/F func name");
+        return;
+    }
+
+    device = addDevice(device_name, device_provider);
+
+    if (device == NULL) {
+        cvFsError("cvFsAddDev #3:can not add device");
+        return;
+    }
+
+    if (device->EntryErrFunc != NULL) {
+        device->EntryErrFunc(cvFsCallUsrErrFn, NULL);
+    }
+}
+
+CVFSDevice* addDevice(const char* device_name, CVFSDevice* (*device_provider)()) {
+    int         i;
+    CVFSDevice* device;
+
+    toUpperStr(device_name);
+    device = device_provider();
+
+    if (getDevice(device_name) != NULL) {
+        return device;
+    }
+
+    for (i = 0; i < CVFS_DEVICE_MAX; i++) {
+        if (cvfs_named_devices[i].name[0] == '\0') {
+            break;
+        }
+    }
+
+    if (i == CVFS_DEVICE_MAX) {
+        return NULL;
+    }
+
+    cvfs_named_devices[i].device = device;
+    memcpy(cvfs_named_devices[i].name, device_name, strlen(device_name) + 1);
+    return device;
+}
+
+CVFSDevice* getDevice(const char* name) {
+    unsigned int len = strlen(name);
+
+    for (unsigned int i = 0; i < CVFS_DEVICE_MAX; ++i) {
+        const char* registered = cvfs_named_devices[i].name;
+
+        if (strncmp(name, registered, len) == 0) {
+            return cvfs_named_devices[i].device;
+        }
+    }
+
+    return NULL;
+}
+
+void toUpperStr(char* str) {
+    size_t len = strlen(str);
+
+    for (int i = 0; i < len + 1; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z') {
+            str[i] -= ('a' - 'A');
+        }
+    }
+}
+
+void cvFsSetDefDev(const char* devName) {
+    if (devName == NULL) {
+        cvFsError("cvFsSetDefDev #1:illegal device name");
+        return;
+    }
+
+    unsigned int device_name_len = strlen(devName);
+
+    if (device_name_len == 0) {
+        def_dev[0] = 0;
+        return;
+    }
+
+    toUpperStr(devName);
+
+    if (isExistDev(devName, device_name_len) == TRUE) {
+        memcpy(&def_dev, devName, device_name_len + 1);
+    } else {
+        cvFsError("cvFsSetDefDev #2:unknown device name");
+    }
+}
+
+int isExistDev(const char* devName, int device_name_len) {
+    for (int i = 0; i < CVFS_DEVICE_MAX; i++) {
+        if (strncmp(devName, cvfs_named_devices[i].name, device_name_len) == 0) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+char* cvFsGetDefDev(void) {
+    return def_dev;
+}
+
+CVFSDevice* variousProc(char* filename, char* device_name, const char* full_path) {
+    CVFSDevice* device;
+
+    if (filename[0] == '\0') {
+        getDefDev(filename);
+
+        if (filename[0] == '\0') {
+            return NULL;
+        }
+    }
+
+    addDevName(filename, device_name);
+    device = getDevice(filename);
+
+    if (device == NULL) {
+        getDefDev(filename);
+        device = getDevice(filename);
+
+        if (device == NULL) {
+            return NULL;
+        }
+
+        CRICRW_Strcpy(device_name, CVFS_MAX_NAME_LENGTH, full_path);
+    }
+
+    return device;
+}
+
+CVFSHandle* cvFsOpen(const char* fname, void* dir, int arg2) {
+    char filename[CVFS_MAX_NAME_LENGTH + 1];
+    char device_name[CVFS_MAX_NAME_LENGTH + 1];
+
+    if (fname == NULL) {
+        cvFsError("cvFsOpen #1:illegal file name");
+        return NULL;
+    }
+
+    getDevName(filename, device_name, fname);
+
+    if (device_name[0] == '\0') {
+        cvFsError("cvFsOpen #1:illegal file name");
+        return NULL;
+    }
+
+    CVFSHandle* fs_hn = allocCvFsHn();
+
+    if (fs_hn == NULL) {
+        cvFsError("cvFsOpen #3:can not allocate handle");
+        return NULL;
+    }
+
+    CVFSDevice* device = variousProc(filename, device_name, fname);
+    fs_hn->device      = device;
+
+    if (device == NULL) {
+        releaseCvFsHn(fs_hn);
+        cvFsError("cvFsOpen #4:device not found");
+        return NULL;
+    }
+
+    if (device->Open != NULL) {
+        fs_hn->fd = device->Open(device_name, dir, arg2);
+    } else {
+        releaseCvFsHn(fs_hn);
+        cvFsError("cvFsOpen #5:vtbl error");
+        return NULL;
+    }
+
+    if (fs_hn->fd == NULL) {
+        releaseCvFsHn(fs_hn);
+        cvFsError("cvFsOpen #6:can not open file");
+        return NULL;
+    }
+
+    return fs_hn;
+}
+
+CVFSHandle* allocCvFsHn(void) {
+    int i;
+
+    for (i = 0; i < CVFS_HANDLE_MAX; i++) {
+        if (cvfs_handles[i].fd == NULL) {
+            break;
+        }
+    }
+
+    if (i == CVFS_HANDLE_MAX) {
+        return NULL;
+    }
+
+    return &cvfs_handles[i];
+}
+
+void releaseCvFsHn(CVFSHandle* handle) {
+    handle->fd     = NULL;
+    handle->device = NULL;
+}
+
+void getDevName(char* filename, char* device_name, const char* full_path) {
+    if (full_path == NULL) {
+        return;
+    }
+
+    int i;
+    for (i = 0; i < CVFS_MAX_NAME_LENGTH; i++) {
+        if (full_path[i] == ':' || full_path[i] == '\0') {
+            break;
+        }
+        filename[i] = full_path[i];
+    }
+
+    if (full_path[i] == '\0') {
+        filename[i] = '\0';
+        memcpy(device_name, filename, strlen(filename) + 1);
+        filename[0] = '\0';
+        return;
+    }
+
+    filename[i] = '\0';
+    i += 1;
+
+    if (i == 2) {
+        filename[0] = '\0';
+        i           = 0;
+    }
+
+    int j = i;
+
+    for (j = i; j < CVFS_MAX_NAME_LENGTH; j++) {
+        if (full_path[j] == '\0') {
+            break;
+        }
+        device_name[j - i] = full_path[j];
+    }
+
+    device_name[j - i] = '\0';
+    toUpperStr(filename);
+}
+
+void getDefDev(char* arg0) {
+    unsigned int len = strlen(def_dev);
+
+    if (def_dev[0] == '\0') {
+        arg0[0] = '\0';
+    } else {
+        memcpy(arg0, def_dev, len + 1);
+    }
+}
+
+void cvFsClose(CVFSHandle* handle) {
+    if (handle == NULL) {
+        cvFsError("cvFsClose #1:handle error");
+        return;
+    }
+    if (handle->device->Close != NULL) {
+        handle->device->Close(handle->fd);
+        releaseCvFsHn(handle);
+        return;
+    }
+    cvFsError("cvFsClose #2:vtbl error");
+}
+
+int cvFsTell(CVFSHandle* hndl) {
+    int result;
+
+    if (hndl == NULL) {
+        cvFsError("cvFsTell #1:handle error");
+        return 0;
+    }
+    if (hndl->device->Tell != NULL) {
+        result = hndl->device->Tell(hndl->fd);
+    } else {
+        result = 0;
+        cvFsError("cvFsTell #2:vtbl error");
+    }
+    return result;
+}
+
+int cvFsSeek(CVFSHandle* handle, int offset, int whence) {
+    int result;
+
+    if (handle == NULL) {
+        cvFsError("cvFsSeek #1:handle error");
+        return 0;
+    }
+    if (handle->device->Seek != NULL) {
+        result = handle->device->Seek(handle->fd, offset, whence);
+    } else {
+        result = 0;
+        cvFsError("cvFsSeek #2:vtbl error");
+    }
+    return result;
+}
+
+int cvFsReqRd(CVFSHandle* fs_handle, int len, void* buf) {
+    int ret;
+
+    if (fs_handle == NULL) {
+        cvFsError("cvFsReqRd #1:handle error");
+        return 0;
+    }
+
+    if (fs_handle->device->ReqRd != NULL) {
+        ret = fs_handle->device->ReqRd(fs_handle->fd, len, buf);
+    } else {
+        ret = 0;
+        cvFsError("cvFsReqRd #2:vtbl error");
+    }
+
+    return ret;
+}
+
+void cvFsExecServer(void) {
+    CVFSDevice* device;
+    int         i;
+
+    for (i = 0; i < CVFS_DEVICE_MAX; i++) {
+        device = cvfs_named_devices[i].device;
+
+        if (device != NULL && device->ExecServer != NULL) {
+            device->ExecServer();
+        }
+    }
+}
+
+int cvFsGetStat(CVFSHandle* fs_handle) {
+    int stat = 3;
+
+    if (fs_handle == NULL) {
+        cvFsError("cvFsGetStat #1:handle error");
+        return 3;
+    }
+
+    if (fs_handle->device->GetStat != NULL) {
+        stat = fs_handle->device->GetStat(fs_handle->fd);
+    } else {
+        cvFsError("cvFsGetStat #2:vtbl error");
+    }
+
+    return stat;
+}
+
+int cvFsGetFileSize(const char* full_path) {
+    char filename[CVFS_MAX_NAME_LENGTH];
+    char device_name[CVFS_MAX_NAME_LENGTH];
+
+    if (full_path == NULL) {
+        cvFsError("cvFsGetFileSize #1:illegal file name");
+        return 0;
+    }
+
+    getDevName(filename, device_name, full_path);
+
+    if (device_name[0] == '\0') {
+        cvFsError("cvFsGetFileSize #1:illegal file name");
+        return 0;
+    }
+
+    CVFSDevice* device = variousProc(filename, device_name, full_path);
+    if (device == NULL) {
+        cvFsError("cvFsGetFileSize #3:device not found");
+    }
+
+    if (device->GetFileSize != NULL) {
+        return device->GetFileSize(device_name);
+    }
+
+    cvFsError("cvFsGetFileSize #4:vtbl error");
+    return 0;
+}
+
+int cvFsGetFileSizeByHndl(CVFSHandle* hndl) {
+    if (hndl == NULL) {
+        cvFsError("cvFsGetFileSizeByHndl #1:illegal file handle");
+        return -1;
+    }
+
+    int sVar1 = 0x7fffffff;
+    if (hndl->device->OptFn1 != NULL) {
+        sVar1 = hndl->device->OptFn1(hndl->fd, 300, 0, 0);
+    }
+    return sVar1;
+}
+
+void cvFsEntryErrFunc(void (*function)(void*, const char*), void* object) {
+    if (function == NULL) {
+        cvfs_errfn  = NULL;
+        cvfs_errobj = NULL;
+    } else {
+        cvfs_errfn  = function;
+        cvfs_errobj = object;
+    }
+}
+
+int cvFsGetVolumeInfo(const char* device_name, char* volume_name, int param_3, int param_4) {
+    if (device_name == NULL) {
+        cvFsError("cvFsGetVolumeInfo #1:illegal device name");
+        return -1;
+    }
+    if (volume_name == NULL) {
+        cvFsError("cvFsGetVolumeInfo #2:illegal volume name");
+        return -1;
+    }
+
+    CVFSDevice* device = getDevice(device_name);
+    if (device == NULL) {
+        cvFsError("cvFsGetVolumeInfo #3:device not found");
+        return -1;
+    }
+
+    // TODO: fake match
+    int local_20[5] = {0};
+
+    local_20[1] = volume_name;
+    local_20[2] = param_3;
+
+    if (device->OptFn1 != NULL) {
+        return device->OptFn1(&local_20, 5, 0, 0);
+    }
+    return -1;
+}
+
+void cvFsSetDefVol(char* devName, char* volName) {
+    if (devName == NULL) {
+        cvFsError("cvFsSetDefVol #1:illegal device name");
+        return;
+    }
+    if (volName == NULL) {
+        cvFsError("cvFsSetDefVol #2:illegal volume name");
+        return;
+    }
+    CVFSDevice* device = getDevice(devName);
+    if (device == NULL) {
+        cvFsError("cvFsSetDefVol #3:device not found");
+        return;
+    }
+
+    // TODO: fake match
+    int local_20[5] = {0};
+
+    local_20[1] = volName;
+
+    if (device->OptFn1 != NULL) {
+        device->OptFn1(&local_20, 6, 0, 0);
+    }
+}
+
+int isNeedDevName(char* name) {
+    CVFSDevice* device = getDevice(name);
+    if (device == NULL) {
+        return 0;
+    }
+
+    if (device->OptFn1 != NULL) {
+        return device->OptFn1(0, 100, 0, 0);
+    }
+    return 0;
+}
+
+void addDevName(const char* device_name, char* out) {
+    if (device_name == NULL) {
+        device_name = cvFsGetDefDev();
+    }
+
+    if (isNeedDevName(device_name) == 1) {
+        CRICRW_Strcpy(&data_0207063c, CVFS_MAX_NAME_LENGTH, out);
+        CRICRW_Sprintf(out, CVFS_MAX_NAME_LENGTH, "%s:%s", device_name, &data_0207063c);
+    }
+}
+
+void func_0201b874(void* func, const char* error) {
+    ADXERR_CallErrFunc1(error);
+}
+
+static char* const data_0205bff8 = "\nADX_NITRO Ver.";
+
+void func_0201b884(void) {
+    nitroCiInit(data_0205bff8);
+    cvFsEntryErrFunc(func_0201b874, NULL);
+    cvFsAddDev("MFS", mfCiGetInterface, 0);
+    cvFsAddDev("NITRO\0\0", nitroCiGetInterface, 0);
+}

@@ -1,7 +1,7 @@
 #ifndef CRISNDMGR_H
 #define CRISNDMGR_H
 
-#include <CriWare/criss.h>
+#include <cri/criss.h>
 #include <nitro/types.h>
 
 typedef struct {

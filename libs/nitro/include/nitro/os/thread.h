@@ -71,6 +71,8 @@ void OS_PauseThread(OSThreadQueue* queue);
 
 void OS_UnpauseThread(OSThreadQueue* queue);
 
+void OS_ResumeThreadImmediate(OSThread* thread);
+
 OSMutex* OS_RemoveMutexFromQueue(OSMutexQueue* queue);
 
 OSThread* OS_SelectThread(void);

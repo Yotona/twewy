@@ -15,8 +15,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Default compiler and flags, mirroring tools/configure.py (DEFAULT_COMPILER_CONFIG).
 COMPILER = "./tools/mwccarm/2.0/sp1p5/mwccarm.exe"
 CC_INCLUDES = (
-    "-i include -i libs/include -i libs/cpp/include "
-    "-i libs/c/include -i libs/nitro/include -i libs/runtime/include"
+    "-i include -i libs/cpp/include -i libs/c/include "
+    "-i libs/cri/include -i libs/nitro/include -i libs/runtime/include"
 )
 CC_FLAGS = (
     "-O4,p -enum int -char signed -proc arm946e -gccext,on -fp soft "
