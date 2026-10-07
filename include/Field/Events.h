@@ -21,11 +21,12 @@ typedef struct FieldEventManager {
     /* 0x216C4 */ s32      unk_216C4;
     /* 0x216C8 */ s32      unk_216C8;
     /* 0x216CC */ u32      unk_216CC;
-    /* 0x216D0 */ char     unk_216D0[0x216D4 - 0x216D0];
+    /* 0x216D0 */ s32      unk_216D0;
     /* 0x216D4 */ s32      unk_216D4;
-    /* 0x216D8 */ char     unk_216D8[0x216DC - 0x216D8];
+    /* 0x216D8 */ s32      unk_216D8;
     /* 0x216DC */ s32      taskId_UGFade;
-    /* 0x216E0 */ char     unk_216E0[0x21704 - 0x216E0];
+    /* 0x216E0 */ char     unk_216E0[0x21700 - 0x216E0];
+    /* 0x21700 */ s32      unk_21700;
     /* 0x21704 */ s32      unk_21704;
     /* 0x21708 */ s32      taskId_Mess;  // Task ID for message
     /* 0x2170C */ s32      taskId_Plate; // Task ID for string plate
@@ -54,15 +55,20 @@ typedef struct FieldEventManager {
     /* 0x21918 */ s32      unk_21918;
     /* 0x2191C */ char     unk_2191C[0x21A24 - 0x2191C];
     /* 0x21A24 */ s32      unk_21A24;
-    /* 0x21A28 */ char     unk_21A28[0x21A5C - 0x21A28];
+    /* 0x21A28 */ char     unk_21A28[0x21A58 - 0x21A28];
+    /* 0x21A58 */ void*    unk_21A58;
     /* 0x21A5C */ s32      unk_21A5C;
-    /* 0x21A60 */ char     unk_21A60[0x21AAE - 0x21A60];
-    /* 0x21AAE */ s16      unk_21AAE;
+    /* 0x21A60 */ char     unk_21A60[0x21A90 - 0x21A60];
+    /* 0x21A90 */ s32      unk_21A90;
+    /* 0x21A94 */ s32      unk_21A94;
+    /* 0x21A98 */ char     unk_21A98[0x21AAC - 0x21A98];
+    /* 0x21AAC */ u16      unk_21AAC;
+    /* 0x21AAE */ u16      unk_21AAE;
     /* 0x21AB0 */ s32      unk_21AB0;
     /* 0x21AB4 */ s32      unk_21AB4;
     /* 0x21AB8 */ char     unk_21AB8[0x21AC4 - 0x21AB8];
     /* 0x21AC4 */ s32      unk_21AC4;
-    /* 0x21AC8 */ char     unk_21AC8[0x21ACC - 0x21AC8];
+    /* 0x21AC8 */ s32      unk_21AC8;
     /* 0x21ACC */ s32      unk_21ACC;
     /* 0x21AD0 */ s32      unk_21AD0;
     /* 0x21AD4 */ char     unk_21AD4[0x21AD8 - 0x21AD4];

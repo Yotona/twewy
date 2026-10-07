@@ -4,6 +4,9 @@
     .data       start:0x020fde80 end:0x02109d60 kind:data align:32
     .bss        start:0x02109d60 end:0x0210a220 kind:bss align:32
 
+src/Field/FieldMain.c:
+    .text       start:0x020824a0 end:0x02082fe4
+
 src/Field/Events.c:
     complete
     .text       start:0x02084a2c end:0x020a669c
