@@ -7,6 +7,9 @@
 src/Field/FieldMain.c:
     .text       start:0x020824a0 end:0x02082fe4
 
+src/Field/FieldBg.c:
+    .text       start:0x02082fe4 end:0x02084a2c
+
 src/Field/Events.c:
     complete
     .text       start:0x02084a2c end:0x020a669c

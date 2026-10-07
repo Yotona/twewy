@@ -35,13 +35,6 @@ extern void func_ov030_020af10c(void);
 extern s32  func_ov030_020d311c(void*, s32, s32);
 extern s32  data_ov030_020da4b8[];
 
-// Object referenced through FieldEventManager.unk_21A58. Only offset 0x8 is
-// read here; the rest of its layout belongs to a later TU.
-typedef struct {
-    char unk_00[8];
-    s32  unk_08;
-} Unk21A58;
-
 void func_ov030_020824a0(FieldEventManager*);
 void func_ov030_020824e4(FieldEventManager*);
 void func_ov030_02082534(FieldEventManager*);
