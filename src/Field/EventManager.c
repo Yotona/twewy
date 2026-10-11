@@ -7,12 +7,14 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Field/Events.h"
 #include "Field/FieldTasks.h"
+#include "Field/FldBadge.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "Util/SysFont.h"
 #include "nitro/reg.h"
 #include <nitro/types.h>
+#include <stdarg.h>
 
 extern s16 data_ov030_020d9586[];
 extern s16 data_ov030_020d9588[];
@@ -69,10 +71,8 @@ extern void func_ov030_020b3bdc(TaskPool*, Task*, s32, s32);
 extern BOOL func_ov030_020b3c84(Task*);
 extern void func_ov030_020b3ca0(Task*);
 extern s16  func_ov030_020b3cc8(Task*);
-extern void func_ov030_020b3cd4(Task*, s32);
+extern void func_ov030_020b3cd4(Task*, u16);
 extern void func_ov030_020b3cf0(Task*);
-extern s32  func_ov030_020b3d88(TaskPool*, s32, s32, s32, s32, s32, s16, s16, s16, s16, s16, s16);
-extern u32  func_ov030_020b3fbc(TaskPool*, s32*, s32, s32, s16, s16, u32, s8, s16, s16);
 extern void func_ov030_020b400c(Task*, s32);
 extern void func_ov030_020b4038(Task*);
 extern void func_ov030_020b4060(Task*, s32);
@@ -813,121 +813,116 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
 
         case 0x1A: {
             u32* temp_r6 = (u32*)func_ov030_020a6d80(eventMgr);
-            *temp_r6     = func_ov030_020b3fbc(&eventMgr->taskPool, &eventMgr->unk_21614,
-                                               (s16)(*(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)) - 0x40), 0x40,
-                                               (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                                               (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 8, 8, 1,
-                                               (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r6, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+            *temp_r6     = func_ov030_020b3fbc(
+                &eventMgr->taskPool, eventMgr->unk_21614, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x40, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 8, 8, 1, (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r6, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x1B: {
             u32* temp_r7 = (u32*)func_ov030_020a6d80(eventMgr);
-            *temp_r7     = func_ov030_020b3fbc(&eventMgr->taskPool, &eventMgr->unk_21614,
-                                               (s16)(*(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)) - 0x40), 0x40,
-                                               (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                                               (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 8,
-                                               (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 4) * 2)), 1,
-                                               (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7, eventMgr, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+            *temp_r7     = func_ov030_020b3fbc(
+                &eventMgr->taskPool, eventMgr->unk_21614, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x40, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 8, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
+                (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7, eventMgr, gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x1C:
             func_ov030_020a6a1c(eventMgr);
             u32* temp_r6_2 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r6_2     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0x80,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 2, 0, 0, eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r6_2, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x80, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 2, 0, 0, eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r6_2, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
             return;
 
         case 0x1D: {
             u32* temp_r7_2 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_2     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 0xC, 8, 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_2, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xC, 8, 1, (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_2, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x1E: {
             u32* temp_r7_3 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_3     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 0xC,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 4) * 2)), 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_3, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xC, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
+                (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_3, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x1F: {
             u32* temp_r7_4 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_4     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 0xE, 8, 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_4, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xE, 8, 1, (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_4, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x20: {
             u32* temp_r7_5 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_5     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 0xA, 8, 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_5, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xA, 8, 1, (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_5, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x21: {
             u32* temp_r7_6 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_6     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)), 0xA,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 4) * 2)), 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_6, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xA, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
+                (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_6, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x22: {
             u32* temp_r8_3 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r8_3     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 4) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 5) * 2)),
-                (s32)(u8) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 6) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 7) * 2)),
-                (s32)(u8) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 8) * 2)), (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r8_3, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 5) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 5],
+                (s32)(u8)gSaveData.unk_24A0[gSaveData.unk_249C + 6], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 7],
+                (s32)(u8)gSaveData.unk_24A0[gSaveData.unk_249C + 8], (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r8_3, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 5]);
         } break;
 
         case 0x23: {
             u32* temp_r7_7 = (u32*)func_ov030_020a6d94(eventMgr);
-            u8   var_r6    = (u8) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 6) * 2));
-            s16  var_r0    = *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2));
-            s16  var_r2    = *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2));
+            u8   var_r6    = (u8)gSaveData.unk_24A0[gSaveData.unk_249C + 6];
+            s16  var_r0    = gSaveData.unk_24A0[gSaveData.unk_249C + 1];
+            s16  var_r2    = gSaveData.unk_24A0[gSaveData.unk_249C + 3];
             if (var_r6 != 2) {
                 var_r6 = 0x5D;
                 var_r0 = func_ov030_020b3cc8(
                     EasyTask_GetTaskById(&eventMgr->taskPool, *(u32*)func_ov030_020a6960(eventMgr, eventMgr->unk_21D00)));
                 var_r2 = var_r0;
             }
-            *temp_r7_7 = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->unk_21614, var_r2, 0xD0,
-                                             (s16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 5) * 2)), (s32)var_r6,
-                                             (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 7) * 2)), 0, 0,
-                                             (s32)eventMgr->unk_21CEA, 0, 0);
-            func_ov030_020a7aa0(*temp_r7_7, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 5) * 2)));
+            *temp_r7_7 = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->unk_21614, var_r2, 0xD0, var_r0, 0xD0,
+                                             gSaveData.unk_24A0[gSaveData.unk_249C + 5], var_r6,
+                                             gSaveData.unk_24A0[gSaveData.unk_249C + 7], 0, 0, eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_7, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 5]);
         } break;
 
         case 0x24: {
             u32* temp_r7_8 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_8     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, &eventMgr->unk_21614, *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)), 0xFFFFFC02,
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)),
-                (s32) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)),
-                (s32)(u8) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 4) * 2)), 8, 1, (s32)eventMgr->unk_21CEA);
-            func_ov030_020a7aa0(*temp_r7_8, eventMgr, (u16) * (gSaveData.unk_24A0 + ((gSaveData.unk_249C + 3) * 2)));
+                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
+                (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], (s32)(u8)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 8, 1,
+                (s32)eventMgr->unk_21CEA);
+            func_ov030_020a7aa0(*temp_r7_8, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
         } break;
 
         case 0x25:
@@ -1544,24 +1539,24 @@ void func_ov030_020a9e48(FieldEventManager* eventMgr) {
     func_ov030_020a7890(eventMgr);
 }
 
-// Nonmatching
-s32 func_ov030_020a9f54(FieldEventManager* eventMgr, s32 (*callback)(void*), s32 arg2) {
+// Nonmatching: promoted-int load before a halfword store and loop scheduling
+// (USA 96.56%; JP unvalidated).
+s32 func_ov030_020a9f54(FieldEventManager* eventMgr, s32 (*callback)(FieldEventManager*), s32 arg2, u16 count, ...) {
     if (eventMgr->taskId_Choice == -1) {
         func_ov030_020a6a1c(eventMgr);
 
-        u16 count;
+        va_list choices;
         if (count > 8) {
             count = 8;
         }
-
-        void* dataPtr = ((s32)&count & ~3) + 4;
+        va_start(choices, count);
         for (s32 index = 0; index < count; index++) {
-            dataPtr += 4;
-            FieldEventManager* itemPtr = eventMgr + (index * 2);
-            itemPtr->unk_2176C[index]  = *(u16*)dataPtr - 4;
+            eventMgr->unk_2176C[index] = (u16)va_arg(choices, int);
         }
+        va_end(choices);
 
-        eventMgr->unk_21784 = func_ov030_020b3fbc(&eventMgr->taskPool, &eventMgr->unk_21614, 0x80, 0x60, arg2, 2, 0, 0, 0, 0);
+        eventMgr->unk_21784 =
+            func_ov030_020b3fbc(&eventMgr->taskPool, eventMgr->unk_21614, 0x80, 0x60, 0x80, 0x60, arg2, 2, 0, 0, 0);
         eventMgr->taskId_Choice =
             Fld_Choice_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, (s16)count, eventMgr->unk_2176C);
     } else {
@@ -1823,8 +1818,8 @@ void func_ov030_020aa9f4(FieldEventManager* eventMgr, s16 arg1, s16 arg2, s16 ar
             return;
         }
         if (gSaveData.unk_24C8[i] == -1) {
-            gSaveData.unk_24C8[i]        = arg1;
-            gSaveData.unk_24C8[i + 0x10] = arg3;
+            gSaveData.unk_24C8[i] = arg1;
+            gSaveData.unk_2508[i] = arg3;
             if (eventMgr->unk_21758 >= 8) {
                 return;
             }

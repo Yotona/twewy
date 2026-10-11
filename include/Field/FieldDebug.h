@@ -47,8 +47,9 @@ typedef struct {
     /* 0x21594 */ s32              unk_21594;
     /* 0x21598 */ char             pad_21598[0x8];
     /* 0x215A0 */ TextObject       text;
-    /* 0x216B4 */ char             pad_216B4[0x300];
-} EventSelectObject; // Size: 0x219B4
+    /* 0x216B4 */ char             pad_216B4[0x2FC];
+    /* 0x219B0 */ s32              selectedRow; // area select (FieldSceneLoad): row the ">" cursor points at
+} EventSelectObject;                            // Size: 0x219B4
 
 void func_ov030_020b20c0(void);
 

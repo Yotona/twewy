@@ -27,9 +27,9 @@ extern s32           func_ov030_020b4514(Task* task);
 extern s32           func_ov030_020b5ce4(Task* task);
 extern s32           func_ov030_020b7c34(u32 arg0);
 extern s32           func_ov030_020b7dd8(s32 arg0);
-extern void*         func_ov030_020b85a8(s32 arg0, s32* arg1);
-extern s32           func_ov030_020c26bc(void);
-extern s32           func_ov030_020c2fc0(s32 arg0);
+extern FieldExit*    func_ov030_020b85a8(s32 arg0, s32* arg1);
+extern void          func_ov030_020c26bc(s32 state);
+extern void          func_ov030_020c2fc0(s32 arg0);
 extern s32           func_ov030_020c5374(TaskPool* pool, s32 arg1, s32 arg2);
 extern s32           func_ov030_020c5404(s16 arg0);
 extern s32           func_ov030_020c5460(s16 arg0);
@@ -53,6 +53,12 @@ typedef struct {
     u16 unk_08;
     u16 unk_0A;
 } FldRawEntry;
+
+// Pack entry 4 of the 0x2A sub-screen background: 0x80-byte palettes after a header word.
+typedef struct {
+    /* 0x0 */ u32 unk_00;
+    /* 0x4 */ u16 palettes[][0x40];
+} FldBgPaletteSet;
 
 s32  func_ov030_02082fe4(FieldEventManager* mgr);
 void func_ov030_02083024(FieldEventManager* mgr);
@@ -463,7 +469,7 @@ void func_ov030_02084198(FieldEventManager* mgr) {
     s32         index;
 
     if (mgr->unk_21A58 != NULL) {
-        sel = ((Unk21A58*)mgr->unk_21A58)->unk_04;
+        sel = mgr->unk_21A58->destArea;
     }
     func_ov030_0208416c(&entry, func_ov030_020c5404(sel));
     if (entry.unk_04 >= 3U) {
@@ -602,9 +608,9 @@ void func_ov030_0208434c(FieldEventManager* mgr, s32 arg1, s32 arg2) {
         void* palData    = Data_GetPackEntryData(pack, 3);
 
         if (var_r5 == 0x2A) {
-            void* extraData = Data_GetPackEntryData(pack, 4);
+            FldBgPaletteSet* extraData = Data_GetPackEntryData(pack, 4);
             func_02001b44(7, (g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[2].charBase << 0xE) + 0x06205000,
-                          (u8*)extraData + 4 + ((arg2 - 0x18) << 7), 0x80);
+                          extraData->palettes[arg2 - 0x18], 0x80);
             DMA_Flush();
             func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
         } else {
@@ -667,13 +673,13 @@ s32 func_ov030_020847f4(FieldEventManager* mgr) {
 }
 
 s32 func_ov030_02084860(s32 arg0, s32 arg1, s32 arg2) {
-    s32 dx = arg0 - (gSaveData.unk_244C >> 0xC);
+    s32 dx = arg0 - (gSaveData.fieldPos.x >> 0xC);
     s32 dy;
 
     if (dx < 0) {
         dx = -dx;
     }
-    dy = arg1 - (gSaveData.unk_2450 >> 0xC);
+    dy = arg1 - (gSaveData.fieldPos.y >> 0xC);
     if (dx < arg2) {
         if (dy < 0) {
             dy = -dy;
@@ -686,11 +692,11 @@ s32 func_ov030_02084860(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 s32 func_ov030_020848a4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 cx = gSaveData.unk_244C >> 0xC;
+    s32 cx = gSaveData.fieldPos.x >> 0xC;
     s32 cy;
 
     if (arg0 < cx && cx < arg2) {
-        cy = gSaveData.unk_2450 >> 0xC;
+        cy = gSaveData.fieldPos.y >> 0xC;
         if (arg1 < cy && cy < arg3) {
             return 1;
         }
@@ -734,9 +740,6 @@ s32 func_ov030_02084978(FieldEventManager* mgr) {
     return 0;
 }
 
-// Nonmatching: pure register allocation in the three-save-field sequence
-// (target keeps values in r0/ip/r3, this build picks r2/r3/r2); store order,
-// offsets and immediates verified identical.
 void func_ov030_02084980(void) {
     if (Inventory_HasRequiredQuantity(0x2AE, 1, 0) != 0) {
         FldGate_Set(0);
@@ -745,7 +748,7 @@ void func_ov030_02084980(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x8056;
-    func_ov030_020c26bc();
+    func_ov030_020c26bc(0);
     gSaveData.unk_2648 = 3;
     gSaveData.unk_264A = 3;
     gSaveData.unk_264C = 3;

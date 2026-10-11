@@ -11,7 +11,7 @@
 extern void func_02026590(void*, s32, s32);
 extern BOOL func_ov030_020b0454(void);
 extern void func_ov030_020b3034(Task*);
-extern void func_ov030_020b88e8(void*);
+extern void func_ov030_020b88e8(FieldExit* exit);
 extern void func_ov030_020bd298(Task*);
 extern void func_ov030_020ab554(void*);
 extern s32  func_ov030_02082fe4(FieldEventManager*);
@@ -25,7 +25,7 @@ extern void func_ov030_020ad730(FieldEventManager*);
 extern void func_ov030_020ad958(FieldEventManager*, s32);
 extern void func_ov030_020adaf8(FieldEventManager*);
 extern void func_ov030_020aeaa0(s32, s32);
-extern s32  func_ov030_020c0770(FieldEventManager*);
+extern s16  func_ov030_020c0770(void);
 extern void func_ov030_020c1960(void);
 extern void func_ov030_020c2d50(s32);
 extern void func_ov030_020c2f74(void);
@@ -172,11 +172,11 @@ void func_ov030_020827e4(FieldEventManager* mgr) {
         func_ov030_020aeaa0(0x17, 1);
     }
     func_ov030_020b88e8(mgr->unk_21A58);
-    if (((Unk21A58*)mgr->unk_21A58)->unk_08 == 0x66) {
-        gSaveData.unk_244C = mgr->unk_21B08;
-        gSaveData.unk_2450 = mgr->unk_21B0C;
+    if (mgr->unk_21A58->destRegion == 0x66) {
+        gSaveData.fieldPos.x = mgr->unk_21B08;
+        gSaveData.fieldPos.y = mgr->unk_21B0C;
     }
-    gSaveData.unk_2454 = func_ov030_020aeca4(gSaveData.unk_2450);
+    gSaveData.unk_2454 = func_ov030_020aeca4(gSaveData.fieldPos.y);
     func_ov030_020c1960();
     func_ov030_020ad278(mgr);
     func_ov030_020bd298(EasyTask_GetTaskById(&mgr->taskPool, mgr->unk_216D8));
@@ -285,7 +285,7 @@ void func_ov030_02082bf0(FieldEventManager* mgr) {
 }
 
 void func_ov030_02082c04(FieldEventManager* mgr) {
-    *(u16*)0x04000304 &= ~0x8000;
+    REG_POWER_CNT &= ~0x8000;
     // NOTE: the target preserves this provably-false check as cmp;cmpeq, the
     // same shape mwcc emits for a nested if or && chain (verified with the
     // repo toolchain); the call never executes.
@@ -328,7 +328,7 @@ void func_ov030_02082d3c(FieldEventManager* mgr) {
 }
 
 void func_ov030_02082d64(FieldEventManager* mgr) {
-    if (func_ov030_020c0770(mgr) != 0) {
+    if (func_ov030_020c0770() != 0) {
         return;
     }
     func_ov030_020a6a68(mgr);

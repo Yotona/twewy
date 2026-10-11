@@ -46,12 +46,12 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
         }
 
         if ((FldGate_Get(0x23) != 0) && (FldGate_Get(0x34) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((FldGate_Get(37) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
@@ -148,12 +148,12 @@ s32 func_ov030_02084eb4(FieldEventManager* eventMgr) {
             return 0;
 
         case EVENT_SHIKI1_KARIYA_UZUKI_DIALOG:
-            eventMgr->unk_21AD0 = 1;
-            eventMgr->unk_21ACC = 1;
-            eventMgr->unk_21AFC = 5;
-            eventMgr->unk_21B00 = 0x66;
-            eventMgr->unk_21B08 = 0x139000;
-            eventMgr->unk_21B0C = 0xE1000;
+            eventMgr->unk_21AD0            = 1;
+            eventMgr->unk_21ACC            = 1;
+            eventMgr->unk_21AF8.destArea   = 5;
+            eventMgr->unk_21AF8.destRegion = 0x66;
+            eventMgr->unk_21B08            = 0x139000;
+            eventMgr->unk_21B0C            = 0xE1000;
             break;
 
         case EVENT_SHIKI1_NOISE_BY_HACHIKO:
@@ -311,8 +311,8 @@ void func_ov030_02085480(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x6A;
     gSaveData.unk_3124          = 56;
-    gSaveData.unk_244C          = 0x159000;
-    gSaveData.unk_2450          = 0xD2000;
+    gSaveData.fieldPos.x        = 0x159000;
+    gSaveData.fieldPos.y        = 0xD2000;
 }
 
 s32 func_ov030_02085508(FieldEventManager* arg0) {
@@ -556,12 +556,12 @@ s32 func_ov030_02085cf8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x78:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 5;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x84000;
-            arg0->unk_21B0C = 0x98000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 5;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x84000;
+            arg0->unk_21B0C            = 0x98000;
             break;
         case 0x3CE:
             if ((FldGate_Get(GATE_GAME_CLEARED) != 0) && (FldGate_Get(1) == 0)) {
@@ -743,8 +743,8 @@ void func_ov030_02086700(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(23);
-    gSaveData.unk_244C          = 0x12C000;
-    gSaveData.unk_2450          = 0x87000;
+    gSaveData.fieldPos.x        = 0x12C000;
+    gSaveData.fieldPos.y        = 0x87000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x8A;
@@ -1618,8 +1618,8 @@ void func_ov030_02088a5c(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    gSaveData.unk_244C          = 0x1DA000;
-    gSaveData.unk_2450          = 0xBE000;
+    gSaveData.fieldPos.x        = 0x1DA000;
+    gSaveData.fieldPos.y        = 0xBE000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xC4;
@@ -1813,12 +1813,12 @@ s32 func_ov030_02089214(FieldEventManager* arg0) {
 s32 func_ov030_02089300(FieldEventManager* arg0) {
     switch (gSaveData.currentStoryEvent) {
         case 0xC4:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 3;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x1D8000;
-            arg0->unk_21B0C = 0xC1000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 3;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x1D8000;
+            arg0->unk_21B0C            = 0xC1000;
             break;
         case 0xC5:
             gSaveData.unk_24BE = 0xD8;
@@ -3305,12 +3305,12 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             FldEvent_AdvanceScript(arg0);
             return 1;
         case 0x109:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x10A:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -3324,8 +3324,8 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             gSaveData.playerStats.activePartner = PARTNER_SHIKI;
             arg0->unk_21AD0                     = 1;
             arg0->unk_21ACC                     = 0;
-            arg0->unk_21AFC                     = 1;
-            arg0->unk_21B00                     = 0x66;
+            arg0->unk_21AF8.destArea            = 1;
+            arg0->unk_21AF8.destRegion          = 0x66;
             arg0->unk_21B08                     = 0x15D000;
             arg0->unk_21B0C                     = 0xD6000;
             break;
@@ -3597,12 +3597,12 @@ s32 func_ov030_0208d80c(FieldEventManager* arg0) {
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x14) != 0) && (FldGate_Get(0x23) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
     }
     if (gSaveData.unk_2458 == 37) {
@@ -3774,12 +3774,12 @@ s32 func_ov030_0208ddfc(FieldEventManager* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x11D:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 1;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x157000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x157000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x7B3:
             FldEvent_SetCurrent(0x7B4);
@@ -4041,12 +4041,12 @@ s32 func_ov030_0208ec3c(FieldEventManager* arg0) {
             func_ov030_020aeaa0(3, 4);
             break;
         case 0x123:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 5;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x139000;
-            arg0->unk_21B0C = 0xE1000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 5;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x139000;
+            arg0->unk_21B0C            = 0xE1000;
             break;
         case 0x124:
             gSaveData.unk_24B4          = 0;
@@ -4190,8 +4190,8 @@ void func_ov030_0208f160(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(37);
-    gSaveData.unk_244C          = 0x15D000;
-    gSaveData.unk_2450          = 0xD6000;
+    gSaveData.fieldPos.x        = 0x15D000;
+    gSaveData.fieldPos.y        = 0xD6000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x136;
@@ -4298,12 +4298,12 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(0x28) != 0) && (FldGate_Get(41) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((FldGate_Get(9) != 0) && (FldGate_Get(43) == 0)) {
             FldGate_Set(43);
@@ -4371,24 +4371,24 @@ s32 func_ov030_0208fa28(FieldEventManager* arg0) {
 s32 func_ov030_0208faa4(FieldEventManager* arg0) {
     switch (gSaveData.currentStoryEvent) {
         case 0x136:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 1;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x16F000;
-            arg0->unk_21B0C = 0xE1000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x16F000;
+            arg0->unk_21B0C            = 0xE1000;
             break;
         case 0x137:
             func_ov030_020aec1c(9);
             arg0->unk_21CF8 = 1;
             break;
         case 0x13A:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x13B:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -4407,12 +4407,12 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x13D:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 1;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x16F000;
-            arg0->unk_21B0C = 0xE1000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x16F000;
+            arg0->unk_21B0C            = 0xE1000;
             break;
         case 0x13E:
             gSaveData.unk_24BE = 0x157;
@@ -4432,12 +4432,12 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             FldEvent_GrantItem(arg0, ITEM_STICKER_ATK_BOOST_JOSHUA);
             break;
         case 0x140:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 12;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x32000;
-            arg0->unk_21B0C = 0xFA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 12;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x32000;
+            arg0->unk_21B0C            = 0xFA000;
             break;
         case 0x141:
             gSaveData.unk_24B4          = 0;
@@ -4516,12 +4516,12 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             return 1;
         case 0x151:
             FldGate_Set(9);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 8;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x168000;
-            arg0->unk_21B0C = 0xFF000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 8;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x168000;
+            arg0->unk_21B0C            = 0xFF000;
             break;
         case EVENT_JOSHUA2_TIN_PIN:
             gSaveData.unk_26C4 = 4;
@@ -4530,12 +4530,12 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             func_ov030_020aac28(arg0, PIN_TIN_PIN_FIRE);
             break;
         case 0x153:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x154:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -4545,12 +4545,12 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             FldEvent_AdvanceScript(arg0);
             return 1;
         case 0x155:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 8;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x126000;
-            arg0->unk_21B0C = 0x17E000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 8;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x126000;
+            arg0->unk_21B0C            = 0x17E000;
             break;
         case 0x7CD:
             FldGate_Set(45);
@@ -4747,22 +4747,22 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(9) != 0) && (FldGate_Get(12) == 0) &&
             (FldGate_Get(0x49) == 0))
         {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x49) != 0) &&
             (FldGate_Get(0x4B) == 0))
         {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x4B) != 0)) {
             FldGate_Clear(0x4B);
@@ -5383,12 +5383,12 @@ s32 func_ov030_02091bc8(FieldEventManager* arg0) {
             }
         case 0x18F:
         case 0x191:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x50:
         case 0x51:
@@ -5695,20 +5695,20 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             FldGate_Clear(41);
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x35) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x35) != 0) && (FldGate_Get(0x37) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x37) != 0)) {
             FldGate_Clear(0x37);
@@ -6244,12 +6244,12 @@ s32 func_ov030_02093db8(FieldEventManager* arg0) {
             }
         case 0x1DA:
         case 0x1DC:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x7F2:
             FldEvent_SetCurrent(0x7F3);
@@ -6412,20 +6412,20 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
     }
     if (gSaveData.unk_2458 == 6) {
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) != 0) && (FldGate_Get(0x43) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x43) != 0)) {
             FldGate_Clear(0x43);
@@ -6797,12 +6797,12 @@ s32 func_ov030_0209585c(FieldEventManager* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x1E7:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 13;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x1E2000;
-            arg0->unk_21B0C = 0x143000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 13;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x1E2000;
+            arg0->unk_21B0C            = 0x143000;
             break;
         case 0x815:
             FldEvent_SetCurrent(0x816);
@@ -6892,15 +6892,15 @@ s32 func_ov030_0209585c(FieldEventManager* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x1E6:
-            gSaveData.unk_266C = 4;
-            gSaveData.unk_264A = 4;
-            gSaveData.unk_2662 = 4;
-            arg0->unk_21AD0    = 1;
-            arg0->unk_21ACC    = 1;
-            arg0->unk_21AFC    = 0x10;
-            arg0->unk_21B00    = 0x66;
-            arg0->unk_21B08    = 0x1E000;
-            arg0->unk_21B0C    = 0xF4000;
+            gSaveData.unk_266C         = 4;
+            gSaveData.unk_264A         = 4;
+            gSaveData.unk_2662         = 4;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 0x10;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x1E000;
+            arg0->unk_21B0C            = 0xF4000;
             break;
         case 0x1E8:
             func_ov030_020aeaa0(18, 2);
@@ -6977,12 +6977,12 @@ s32 func_ov030_0209585c(FieldEventManager* arg0) {
             } else {
                 FldEvent_GrantPin(arg0, PIN_500_YEN);
             }
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x1F8:
             FldGate_Set(0x41);
@@ -6992,22 +6992,22 @@ s32 func_ov030_0209585c(FieldEventManager* arg0) {
             } else {
                 FldEvent_GrantPin(arg0, PIN_500_YEN);
             }
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x1F5:
         case 0x1F7:
         case 0x1F9:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x524:
             FldGate_Set(0x44);
@@ -7122,33 +7122,33 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) == 0) && (FldGate_Get(46) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) != 0) && (FldGate_Get(45) == 0) &&
             (FldGate_Get(46) == 0))
         {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(45) != 0) && (FldGate_Get(46) == 0)) {
             FldGate_Clear(45);
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) != 0)) {
             FldGate_Clear(47);
@@ -7381,12 +7381,12 @@ s32 func_ov030_0209716c(FieldEventManager* arg0) {
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x21B:
             FldGate_Set(0x31);
@@ -7395,12 +7395,12 @@ s32 func_ov030_0209716c(FieldEventManager* arg0) {
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x21E:
             FldGate_Set(46);
@@ -7423,23 +7423,23 @@ s32 func_ov030_0209716c(FieldEventManager* arg0) {
             } else {
                 FldEvent_GrantPin(arg0, PIN_500_YEN);
             }
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x218:
         case 0x21A:
         case 0x21C:
         case 0x221:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x52E:
             FldGate_Set(0x33);
@@ -7577,12 +7577,12 @@ s32 func_ov030_02097acc(FieldEventManager* arg0) {
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x1C) != 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x1C) == 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) != 0)) {
             FldGate_Clear(0x32);
@@ -7660,12 +7660,12 @@ s32 func_ov030_02097f4c(FieldEventManager* arg0) {
             DebugOvlDisp_Pop();
             return 0;
         case 0x236:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 1;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x157000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x157000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x22A:
             FldGate_Set(0x31);
@@ -7882,12 +7882,12 @@ s32 func_ov030_02098a30(FieldEventManager* arg0) {
             func_ov030_020aec1c(10);
             break;
         case 0x23C:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 5;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x139000;
-            arg0->unk_21B0C = 0xE1000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 5;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x139000;
+            arg0->unk_21B0C            = 0xE1000;
             break;
         case 0x23D:
             gSaveData.unk_24BE = 0x253;
@@ -7918,12 +7918,12 @@ s32 func_ov030_02098a30(FieldEventManager* arg0) {
             func_ov030_020af364(0x20);
             return 1;
         case 0x240:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 0x11;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x5B000;
-            arg0->unk_21B0C = 0xF4000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 0x11;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x5B000;
+            arg0->unk_21B0C            = 0xF4000;
             break;
         case 0x241:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -7946,12 +7946,12 @@ s32 func_ov030_02098a30(FieldEventManager* arg0) {
             gSaveData.unk_2656 = 4;
             break;
         case 0x248:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 0x11;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x246000;
-            arg0->unk_21B0C = 0x244000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 0x11;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x246000;
+            arg0->unk_21B0C            = 0x244000;
             break;
         case 0x82C:
             if (FldGate_Get(39) != 0) {
@@ -8159,12 +8159,12 @@ s32 func_ov030_02099514(FieldEventManager* arg0) {
             gSaveData.unk_2650 = 4;
             break;
         case 0x259:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 3;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x11C000;
-            arg0->unk_21B0C = 0x102000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 3;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x11C000;
+            arg0->unk_21B0C            = 0x102000;
             break;
         case 0x25A:
             gSaveData.unk_24B4          = 0;
@@ -8347,20 +8347,20 @@ s32 func_ov030_02099990(FieldEventManager* arg0) {
             return 1;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(61) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(61) != 0) && (FldGate_Get(0x3F) == 0)) {
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x3F) != 0)) {
             FldGate_Clear(0x3F);
@@ -8712,12 +8712,12 @@ s32 func_ov030_0209a564(FieldEventManager* arg0) {
             }
         case 0x284:
         case 0x286:
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 6;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0xA0000;
-            arg0->unk_21B0C = 0xDA000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 6;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0xA0000;
+            arg0->unk_21B0C            = 0xDA000;
             break;
         case 0x82F:
             if (FldGate_Get(0x30) == 0) {
@@ -9821,13 +9821,13 @@ s32 func_ov030_0209dafc(FieldEventManager* arg0) {
         case 0x2F7:
             return func_ov030_020a9f54(arg0, func_ov030_0209d974, 0x36DB, 2, 0x36DC, 0x36DD);
         case 0x2F5:
-            gSaveData.unk_26B0 = 0;
-            arg0->unk_21AD0    = 1;
-            arg0->unk_21ACC    = 1;
-            arg0->unk_21AFC    = 0x28;
-            arg0->unk_21B00    = 0x66;
-            arg0->unk_21B08    = 0x2A000;
-            arg0->unk_21B0C    = 0xF6000;
+            gSaveData.unk_26B0         = 0;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 0x28;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x2A000;
+            arg0->unk_21B0C            = 0xF6000;
             break;
         case EVENT_BEAT7_TRAIL_OF_THE_BYGONE:
             FldEvent_GrantItem(arg0, ITEM_THREAD_PI_FACES_CAP);
@@ -10024,21 +10024,21 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(2) == 0)) {
             FldGate_Set(0x7D);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(0x32) == 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(0x7D);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
         if ((func_ov030_020848e4(arg0, 0x3E) == 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Clear(0x32);
@@ -10165,12 +10165,12 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
         }
         if ((func_ov030_020848e4(arg0, 0x31) != 0) && (FldGate_Get(0x16) != 0) && (FldGate_Get(0x65) == 0)) {
             FldGate_Set(0x7E);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 37;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x15D000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 37;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x15D000;
+            arg0->unk_21B0C            = 0xD6000;
         }
     }
     if (gSaveData.unk_2458 == 37) {
@@ -10331,12 +10331,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             return 1;
         case 0x31B:
             FldGate_Clear(0x7D);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 8;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x168000;
-            arg0->unk_21B0C = 0xFF000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 8;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x168000;
+            arg0->unk_21B0C            = 0xFF000;
             break;
         case 0x31D:
             FldGate_Set(0x31);
@@ -10383,12 +10383,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
         case 0x325:
             FldGate_Set(3);
             FldGate_Clear(0x7D);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 0;
-            arg0->unk_21AFC = 8;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x168000;
-            arg0->unk_21B0C = 0xFF000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 0;
+            arg0->unk_21AF8.destArea   = 8;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x168000;
+            arg0->unk_21B0C            = 0xFF000;
             break;
         case 0x326:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -10615,14 +10615,14 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             func_ov030_020aac28(arg0, PIN_TIN_PIN_BAHAMUT);
             FldEvent_GrantItem(arg0, ITEM_THREAD_WIZARDS_GLASSES);
             FldGate_Set(47);
-            gSaveData.unk_2676 = 4;
-            gSaveData.unk_2670 = 2;
-            arg0->unk_21AD0    = 1;
-            arg0->unk_21ACC    = 1;
-            arg0->unk_21AFC    = 1;
-            arg0->unk_21B00    = 0x66;
-            arg0->unk_21B08    = 0x157000;
-            arg0->unk_21B0C    = 0xD6000;
+            gSaveData.unk_2676         = 4;
+            gSaveData.unk_2670         = 2;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x157000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x373:
             arg0->unk_21630    = 6;
@@ -11159,12 +11159,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             FldEvent_GrantItem(arg0, ITEM_THREAD_MY_PHONES);
             gSaveData.unk_26AA = 0;
             FldGate_Clear(0x7E);
-            arg0->unk_21AD0 = 1;
-            arg0->unk_21ACC = 1;
-            arg0->unk_21AFC = 1;
-            arg0->unk_21B00 = 0x66;
-            arg0->unk_21B08 = 0x157000;
-            arg0->unk_21B0C = 0xD6000;
+            arg0->unk_21AD0            = 1;
+            arg0->unk_21ACC            = 1;
+            arg0->unk_21AF8.destArea   = 1;
+            arg0->unk_21AF8.destRegion = 0x66;
+            arg0->unk_21B08            = 0x157000;
+            arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x83A:
             if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x6E) != 0)) {
@@ -11513,13 +11513,13 @@ s32 func_ov030_020a1ed0(FieldEventManager* arg0) {
     }
 
     if ((gSaveData.unk_2458 == 18) && (func_ov030_02084860(0x181, 0xC2, 0x14) != 0)) {
-        arg0->unk_21AF0 = 1;
-        arg0->unk_21AD0 = 1;
-        arg0->unk_21ACC = 0;
-        arg0->unk_21AFC = 9;
-        arg0->unk_21B00 = 0x66;
-        arg0->unk_21B08 = 0x109000;
-        arg0->unk_21B0C = 0x11F000;
+        arg0->unk_21AF0            = 1;
+        arg0->unk_21AD0            = 1;
+        arg0->unk_21ACC            = 0;
+        arg0->unk_21AF8.destArea   = 9;
+        arg0->unk_21AF8.destRegion = 0x66;
+        arg0->unk_21B08            = 0x109000;
+        arg0->unk_21B0C            = 0x11F000;
     }
     return 0;
 }
@@ -11585,8 +11585,8 @@ s32 func_ov030_020a21a4(FieldEventManager* arg0) {
 
 void func_ov030_020a2208(FieldEventManager* arg0) {
     func_ov030_020ae96c(23);
-    gSaveData.unk_244C          = 0x12C000;
-    gSaveData.unk_2450          = 0x87000;
+    gSaveData.fieldPos.x        = 0x12C000;
+    gSaveData.fieldPos.y        = 0x87000;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x86E;

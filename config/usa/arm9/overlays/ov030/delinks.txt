@@ -10,6 +10,9 @@ src/Field/FieldMain.c:
 src/Field/FieldBg.c:
     .text       start:0x02082fe4 end:0x02084a2c
 
+src/Field/FieldEncounter.c:
+    .text       start:0x020aac84 end:0x020adcf4
+
 src/Field/Events.c:
     complete
     .text       start:0x02084a2c end:0x020a669c
@@ -95,3 +98,241 @@ src/Interface/Debug/Field/FieldMessageSelect.c:
     .text       start:0x020c9990 end:0x020ca1f4
     .rodata     start:0x020ecd0c end:0x020ecda8
     .data       start:0x0210882c end:0x021088ec
+
+src/Field/FieldBattleTransition.c:
+    categories: Field
+    .text       start:0x020aed54 end:0x020af320
+
+src/Field/FieldBattleSetup.c:
+    categories: Field
+    .text       start:0x020af320 end:0x020b04ac
+
+src/Field/Fld_Player.c:
+    categories: Field
+    .text       start:0x020b20dc end:0x020b3020
+    .rodata     start:0x020df5a0 end:0x020df67c
+
+src/Field/FieldPlayerInteraction.c:
+    categories: Field
+    .text       start:0x020b3020 end:0x020b3128
+
+src/Field/Fld_BustShot.c:
+    categories: Field
+    .text       start:0x020b3128 end:0x020b3d00
+    .rodata     start:0x020df67c end:0x020e0000
+
+src/Field/Fld_Badge.c:
+    categories: Field
+    .text       start:0x020b3d00 end:0x020b45b4
+    .rodata     start:0x020e0000 end:0x020e08c4
+
+src/Field/Fld_ScanArea.c:
+    categories: Field
+    .text       start:0x020b45b4 end:0x020b4920
+    .rodata     start:0x020e08c4 end:0x020e0918
+
+src/Field/Fld_Human.c:
+    categories: Field
+    .text       start:0x020b4920 end:0x020b5c58
+    .rodata     start:0x020e0918 end:0x020e0940
+
+src/Field/FieldSceneRender.c:
+    categories: Field
+    .text       start:0x020b5c58 end:0x020b69f4
+    .rodata     start:0x020e0940 end:0x020e0d18
+
+src/Field/FieldSceneLoad.c:
+    categories: Field
+    .text       start:0x020b69f4 end:0x020b7a00
+    .rodata     start:0x020e0d18 end:0x020e0e24
+
+src/Field/FieldAreaParameters.c:
+    categories: Field
+    .text       start:0x020b7a00 end:0x020b7c58
+
+src/Field/FieldFloorHeight.c:
+    categories: Field
+    .text       start:0x020b7c58 end:0x020b7d74
+
+src/Field/FieldAreaZeroFloor.c:
+    categories: Field
+    .text       start:0x020b7d74 end:0x020b7dd8
+
+src/Field/FieldExitRegions.c:
+    categories: Field
+    .text       start:0x020b7dd8 end:0x020b87bc
+    .rodata     start:0x020e0e24 end:0x020e1d64
+
+src/Field/FieldAreaTransition.c:
+    categories: Field
+    .text       start:0x020b87bc end:0x020b891c
+    .rodata     start:0x020e1d64 end:0x020e4e98
+
+src/Field/Fld_TalkIcon.c:
+    categories: Field
+    .text       start:0x020baa64 end:0x020bad80
+    .rodata     start:0x020e4f48 end:0x020e5ee0
+
+src/Field/Fld_NSymbolUG.c:
+    categories: Field
+    .text       start:0x020bad80 end:0x020bbe08
+    .rodata     start:0x020e5ee0 end:0x020e6018
+
+src/Field/Fld_NSymbolUGEffect.c:
+    categories: Field
+    .text       start:0x020bbe08 end:0x020bc068
+    .rodata     start:0x020e6018 end:0x020e6060
+
+src/Field/Fld_MapJumpArrow.c:
+    categories: Field
+    .text       start:0x020bc068 end:0x020bc4b8
+    .rodata     start:0x020e6060 end:0x020e60dc
+
+src/Field/Fld_Partner.c:
+    categories: Field
+    .text       start:0x020bc4b8 end:0x020bd364
+    .rodata     start:0x020e60dc end:0x020e61d4
+
+src/Field/Fld_OnePicturCell.c:
+    categories: Field
+    .text       start:0x020bd364 end:0x020bd5cc
+    .rodata     start:0x020e61d4 end:0x020e6234
+
+src/Field/Fld_CockPit.c:
+    categories: Field
+    .text       start:0x020bd5cc end:0x020bd890
+    .rodata     start:0x020e6234 end:0x020e6288
+
+src/Field/Fld_Watch.c:
+    categories: Field
+    .text       start:0x020bd890 end:0x020bdec8
+    .rodata     start:0x020e6288 end:0x020e62d0
+
+src/Field/Fld_Phone.c:
+    categories: Field
+    .text       start:0x020bdec8 end:0x020be114
+    .rodata     start:0x020e62d0 end:0x020e6318
+
+src/Field/Fld_ScanKirakira.c:
+    categories: Field
+    .text       start:0x020be114 end:0x020be85c
+    .rodata     start:0x020e6318 end:0x020e6360
+
+src/Field/Fld_ScanFukidasi.c:
+    categories: Field
+    .text       start:0x020be85c end:0x020bee24
+    .rodata     start:0x020e6360 end:0x020e637c
+
+src/Field/Fld_NpcRG.c:
+    categories: Field
+    .text       start:0x020bee24 end:0x020bf084
+    .rodata     start:0x020e637c end:0x020e68d0
+
+src/Field/Fld_LargeGingo.c:
+    categories: Field
+    .text       start:0x020bf084 end:0x020bf360
+    .rodata     start:0x020e68d0 end:0x020e6d94
+
+src/Field/Fld_Touch.c:
+    categories: Field
+    .text       start:0x020bf360 end:0x020bfb80
+    .rodata     start:0x020e6d94 end:0x020e6e3c
+
+src/Field/Fld_TouchCommand.c:
+    categories: Field
+    .text       start:0x020bfb80 end:0x020bffac
+    .rodata     start:0x020e6e3c end:0x020e6e84
+
+src/Field/Fld_TouchSeal.c:
+    categories: Field
+    .text       start:0x020bffac end:0x020c0268
+    .rodata     start:0x020e6e84 end:0x020e6eec
+
+src/Field/Fld_TouchCursor.c:
+    categories: Field
+    .text       start:0x020c0268 end:0x020c0534
+    .rodata     start:0x020e6eec end:0x020e6f34
+
+src/Field/Fld_TouchShine.c:
+    categories: Field
+    .text       start:0x020c0534 end:0x020c0780
+    .rodata     start:0x020e6f34 end:0x020e6f7c
+
+src/Field/Fld_Raster.c:
+    categories: Field
+    .text       start:0x020c0780 end:0x020c08ec
+    .rodata     start:0x020e6f7c end:0x020e6f98
+
+src/Field/Fld_NSymbolUGMgr.c:
+    categories: Field
+    .text       start:0x020c08ec end:0x020c0bdc
+    .rodata     start:0x020e6f98 end:0x020e6fb4
+
+src/Field/Fld_Luck.c:
+    categories: Field
+    .text       start:0x020c0bdc end:0x020c2088
+    .rodata     start:0x020e6fb4 end:0x020e7004
+
+src/Field/Fld_Chain.c:
+    categories: Field
+    .text       start:0x020c2088 end:0x020c248c
+    .rodata     start:0x020e7004 end:0x020e704c
+
+src/Field/Fld_ScanMoya.c:
+    categories: Field
+    .text       start:0x020c248c end:0x020c268c
+    .rodata     start:0x020e704c end:0x020e7094
+
+src/Field/Fld_Wall.c:
+    categories: Field
+    .text       start:0x020c268c end:0x020c2ccc
+    .rodata     start:0x020e7094 end:0x020e70fc
+
+src/Field/FieldAmbientSound.c:
+    categories: Field
+    .text       start:0x020c2ccc end:0x020c2e00
+
+src/Field/FieldMusic.c:
+    categories: Field
+    .text       start:0x020c2e00 end:0x020c3380
+    .rodata     start:0x020e70fc end:0x020e7124
+
+src/Field/Fld_TalkEventTouch.c:
+    categories: Field
+    .text       start:0x020c3380 end:0x020c36d0
+    .rodata     start:0x020e7124 end:0x020e716c
+
+src/Field/Fld_TalkEventPlate.c:
+    categories: Field
+    .text       start:0x020c36d0 end:0x020c3948
+    .rodata     start:0x020e716c end:0x020e71b4
+
+src/Field/FieldNoiseEncounter.c:
+    categories: Field
+    .text       start:0x020c5744 end:0x020c59b0
+    .rodata     start:0x020e7460 end:0x020ea438
+    .data       start:0x02107670 end:0x02108464
+
+src/Field/Fld_EventMail.c:
+    categories: Field
+    .text       start:0x020c8868 end:0x020c8a58
+    .rodata     start:0x020ecab4 end:0x020ecafc
+    .data       start:0x021085dc end:0x021085f0
+
+src/Field/Fld_Shinigami.c:
+    categories: Field
+    .text       start:0x020cb284 end:0x020ccb78
+    .rodata     start:0x020ed0e4 end:0x020ed100
+    .data       start:0x02108920 end:0x0210896c
+
+src/Field/Fld_ShinigamiCoin.c:
+    categories: Field
+    .text       start:0x020ccb78 end:0x020cd578
+    .rodata     start:0x020ed100 end:0x020ed150
+    .data       start:0x0210896c end:0x021089b4
+
+src/Field/Fld_ShinigamiON.c:
+    categories: Field
+    .text       start:0x020cd578 end:0x020cd790
+    .rodata     start:0x020ed150 end:0x020ed198
+    .data       start:0x021089b4 end:0x021089c8

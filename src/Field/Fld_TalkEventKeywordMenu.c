@@ -93,7 +93,7 @@ void func_ov030_020c3e30(TaskPool* pool, Task* task) {
     menu->unk_00 = func_ov030_020c3908(pool, menu->unk_48, var_r8, var_r9, var_r5);
 
     for (s16 i = 0; i < menu->unk_3C; i++) {
-        menu->unk_08[i] = Fld_TalkEventStringPlate_CreateTask(pool, menu->unk_48, var_r8, var_r9, gSaveData.unk_24C8[i + 0x10],
+        menu->unk_08[i] = Fld_TalkEventStringPlate_CreateTask(pool, menu->unk_48, var_r8, var_r9, gSaveData.unk_2508[i],
                                                               gSaveData.unk_24C8[i], 1);
         var_r9 += 20;
     }

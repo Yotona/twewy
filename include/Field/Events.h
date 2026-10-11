@@ -2,26 +2,33 @@
 #define FIELD_EVENTS_H
 
 #include "Engine/EasyTask.h"
+#include "Engine/Resources/ResourceMgr.h"
 #include "Field/EventFlags.h"
+#include "Field/FieldTypes.h"
 #include <nitro/types.h>
 
-// Pointee of FieldEventManager.unk_21A58. Only offsets 0x4 (s16) and 0x8
-// are read so far; the rest of its layout belongs to a later TU.
-typedef struct Unk21A58 {
-    char unk_00[4];
-    s16  unk_04;
-    char unk_06[2];
-    s32  unk_08;
-} Unk21A58;
+// A map exit: an entry of an area's exit table (FieldExitRegions). The field
+// keeps the exit being taken in FieldEventManager::unk_21A58.
+typedef struct FieldExit {
+    /* 0x0 */ s32 region;     // trigger region kind, see func_ov030_020b7e94
+    /* 0x4 */ s16 destArea;   // area the exit leads to, 0x46 = none
+    /* 0x6 */ s16 unk_06;
+    /* 0x8 */ s32 destRegion; // region to arrive at; 0x66 = FieldEventManager::unk_21B08/unk_21B0C
+    /* 0xC */ s32 exitId;     // MainData::exitStates index
+} FieldExit;                  // Size: 0x10
 
 typedef struct FieldEventManager {
-    /* 0x00000 */ char                    unk_00000[0x11584];
+    /* 0x00000 */ ResourceManager         resources;
+    /* 0x11580 */ char                    unk_11580[0x11584 - 0x11580];
     /* 0x11584 */ TaskPool                taskPool;
-    /* 0x11604 */ char                    unk_11604[0x21614 - 0x11604];
+    /* 0x11604 */ char                    unk_11604[0x21610 - 0x11604];
+    /* 0x21610 */ s32                     unk_21610;
     /* 0x21614 */ s32                     unk_21614;
-    /* 0x21618 */ char                    unk_21618[0x21620 - 0x21618];
+    /* 0x21618 */ s32                     unk_21618;
+    /* 0x2161C */ char                    unk_2161C[0x21620 - 0x2161C];
     /* 0x21620 */ struct Data*            unk_21620;
-    /* 0x21624 */ char                    unk_21624[0x21630 - 0x21624];
+    /* 0x21624 */ FieldPos                origin; // camera origin on the field map
+    /* 0x2162C */ s32                     unk_2162C;
     /* 0x21630 */ s32                     unk_21630;
     /* 0x21634 */ char                    unk_21634[0x216B0 - 0x21634];
     /* 0x216B0 */ s32                     unk_216B0;
@@ -36,7 +43,14 @@ typedef struct FieldEventManager {
     /* 0x216D4 */ s32                     unk_216D4;
     /* 0x216D8 */ s32                     unk_216D8;
     /* 0x216DC */ s32                     taskId_UGFade;
-    /* 0x216E0 */ char                    unk_216E0[0x21700 - 0x216E0];
+    /* 0x216E0 */ s32                     unk_216E0;
+    /* 0x216E4 */ s32                     unk_216E4;
+    /* 0x216E8 */ s32                     unk_216E8;
+    /* 0x216EC */ s32                     unk_216EC;
+    /* 0x216F0 */ s32                     unk_216F0;
+    /* 0x216F4 */ s32                     unk_216F4;
+    /* 0x216F8 */ s32                     unk_216F8;
+    /* 0x216FC */ s32                     unk_216FC;
     /* 0x21700 */ s32                     unk_21700;
     /* 0x21704 */ s32                     unk_21704;
     /* 0x21708 */ s32                     taskId_Mess;  // Task ID for message
@@ -55,8 +69,7 @@ typedef struct FieldEventManager {
     /* 0x2175A */ u16                     unk_2175A[2];
     /* 0x2175E */ char                    unk_2175E[0x2176A - 0x2175E];
     /* 0x2176A */ u16                     unk_2176A;
-    /* 0x2176C */ u16                     unk_2176C[2];
-    /* 0x21770 */ char                    unk_21770[0x2177C - 0x21770];
+    /* 0x2176C */ u16                     unk_2176C[8];
     /* 0x2177C */ s16                     unk_2177C;
     /* 0x2177E */ char                    unk_2177E[0x21780 - 0x2177E];
     /* 0x21780 */ u32                     taskId_Choice;
@@ -64,10 +77,17 @@ typedef struct FieldEventManager {
     /* 0x21788 */ u32                     unk_21788[2];
     /* 0x21790 */ char                    unk_21790[0x21918 - 0x21790];
     /* 0x21918 */ s32                     unk_21918;
-    /* 0x2191C */ char                    unk_2191C[0x21A24 - 0x2191C];
+    /* 0x2191C */ s32                     unk_2191C;
+    /* 0x21920 */ u16                     unk_21920;
+    /* 0x21922 */ u16                     unk_21922;
+    /* 0x21924 */ u32                     unk_21924[64];
     /* 0x21A24 */ s32                     unk_21A24;
-    /* 0x21A28 */ char                    unk_21A28[0x21A58 - 0x21A28];
-    /* 0x21A58 */ void*                   unk_21A58;
+    /* 0x21A28 */ struct Data*            unk_21A28;
+    /* 0x21A2C */ void*                   unk_21A2C;
+    /* 0x21A30 */ struct PaletteResource* unk_21A30;
+    /* 0x21A34 */ s32                     unk_21A34[8];
+    /* 0x21A54 */ s32                     unk_21A54;
+    /* 0x21A58 */ FieldExit*              unk_21A58;
     /* 0x21A5C */ s32                     unk_21A5C;
     /* 0x21A60 */ struct BgResource*      unk_21A60;
     /* 0x21A64 */ struct BgResource*      unk_21A64;
@@ -84,32 +104,47 @@ typedef struct FieldEventManager {
     /* 0x21A90 */ s32                     unk_21A90;
     /* 0x21A94 */ s32                     unk_21A94;
     /* 0x21A98 */ s32                     unk_21A98;
-    /* 0x21A9C */ char                    unk_21A9C[0x21AAC - 0x21A9C];
+    /* 0x21A9C */ struct ObjResource*     unk_21A9C;
+    /* 0x21AA0 */ u32                     unk_21AA0;
+    /* 0x21AA4 */ u32                     unk_21AA4;
+    /* 0x21AA8 */ u32                     unk_21AA8;
     /* 0x21AAC */ u16                     unk_21AAC;
     /* 0x21AAE */ u16                     unk_21AAE;
     /* 0x21AB0 */ s32                     unk_21AB0;
     /* 0x21AB4 */ s32                     unk_21AB4;
-    /* 0x21AB8 */ char                    unk_21AB8[0x21AC0 - 0x21AB8];
+    /* 0x21AB8 */ s32                     unk_21AB8;
+    /* 0x21ABC */ s32                     unk_21ABC;
     /* 0x21AC0 */ s32                     unk_21AC0;
     /* 0x21AC4 */ s32                     unk_21AC4;
     /* 0x21AC8 */ s32                     unk_21AC8;
     /* 0x21ACC */ s32                     unk_21ACC;
     /* 0x21AD0 */ s32                     unk_21AD0;
-    /* 0x21AD4 */ char                    unk_21AD4[0x21AD8 - 0x21AD4];
+    /* 0x21AD4 */ s32                     unk_21AD4;
     /* 0x21AD8 */ s32                     unk_21AD8;
     /* 0x21ADC */ s32                     unk_21ADC;
     /* 0x21AE0 */ s32                     unk_21AE0;
-    /* 0x21AE4 */ char                    unk_21AE4[0x21AF0 - 0x21AE4];
+    /* 0x21AE4 */ s32                     unk_21AE4;
+    /* 0x21AE8 */ s32                     unk_21AE8;
+    /* 0x21AEC */ u16                     unk_21AEC;
+    /* 0x21AEE */ char                    unk_21AEE[0x21AF0 - 0x21AEE];
     /* 0x21AF0 */ s32                     unk_21AF0;
     /* 0x21AF4 */ s16                     unk_21AF4;
-    /* 0x21AF6 */ char                    unk_21AF6[0x21AFC - 0x21AF6];
-    /* 0x21AFC */ s16                     unk_21AFC;
-    /* 0x21AFE */ char                    unk_21AFE[0x21B00 - 0x21AFE];
-    /* 0x21B00 */ s32                     unk_21B00;
-    /* 0x21B04 */ char                    unk_21B04[0x21B08 - 0x21B04];
+    /* 0x21AF6 */ char                    unk_21AF6[0x21AF8 - 0x21AF6];
+    /* 0x21AF8 */ FieldExit               unk_21AF8; // scripted exit, see func_ov030_020ab554
     /* 0x21B08 */ s32                     unk_21B08;
     /* 0x21B0C */ s32                     unk_21B0C;
-    /* 0x21B10 */ char                    unk_21B10[0x21B3C - 0x21B10];
+    /* 0x21B10 */ s32                     unk_21B10;
+    /* 0x21B14 */ s32                     unk_21B14;
+    /* 0x21B18 */ s32                     unk_21B18;
+    /* 0x21B1C */ s32                     unk_21B1C;
+    /* 0x21B20 */ s32                     unk_21B20;
+    /* 0x21B24 */ s32                     unk_21B24;
+    /* 0x21B28 */ s32                     unk_21B28;
+    /* 0x21B2C */ s32                     unk_21B2C;
+    /* 0x21B30 */ s32                     unk_21B30;
+    /* 0x21B34 */ u16                     unk_21B34;
+    /* 0x21B36 */ char                    unk_21B36[2];
+    /* 0x21B38 */ s32                     unk_21B38;
     /* 0x21B3C */ s32                     unk_21B3C[32];
     /* 0x21BBC */ u32                     unk_21BBC[35];
     /* 0x21C48 */ u32                     unk_21C48[32];
@@ -141,13 +176,27 @@ typedef struct FieldEventManager {
     /* 0x21D20 */ s16 unk_21D20;
     /* 0x21D22 */ s16 unk_21D22;
     /* 0x21D24 */ s32 (*unk_21D24)(struct FieldEventManager*);
-    /* 0x21D28 */ s16  unk_21D28;
-    /* 0x21D2A */ s16  unk_21D2A;
-    /* 0x21D2C */ char unk_21D2C[0x21D30 - 0x21D2C];
-    /* 0x21D30 */ s32  unk_21D30;
-    /* 0x21D34 */ char unk_21D34[0x22E2C - 0x21D34];
-    /* 0x22E2C */ s32  unk_22E2C;
+    /* 0x21D28 */ s16          unk_21D28;
+    /* 0x21D2A */ s16          unk_21D2A;
+    /* 0x21D2C */ struct Data* unk_21D2C;
+    /* 0x21D30 */ s32          unk_21D30;
+    /* 0x21D34 */ char         unk_21D34[0x22E14 - 0x21D34];
+    /* 0x22E14 */ s16          unk_22E14;
+    /* 0x22E16 */ char         unk_22E16[2];
+    /* 0x22E18 */ s32          unk_22E18;
+    /* 0x22E1C */ s16          unk_22E1C;
+    /* 0x22E1E */ char         unk_22E1E[2];
+    /* 0x22E20 */ s32          unk_22E20;
+    /* 0x22E24 */ char         unk_22E24[0x22E2C - 0x22E24];
+    /* 0x22E2C */ s32          unk_22E2C;
+    /* 0x22E30 */ char         unk_22E30[4];
+    /* 0x22E34 */ s32          unk_22E34;
+    /* 0x22E38 */ s32          unk_22E38;
+    /* 0x22E3C */ s32          unk_22E3C;
 } FieldEventManager;
+
+// The running field's event manager.
+extern FieldEventManager* data_ov030_02109d60;
 
 typedef s32 (*FieldEventRewardFunc)(FieldEventManager*);
 extern const FieldEventRewardFunc data_ov030_020da618[44];
@@ -351,5 +400,8 @@ void func_ov030_020aac28(FieldEventManager* eventMgr, u16 itemID);
 void func_ov030_020aec38(s32 arg0);
 
 s32 func_ov030_020aeca4(s32 arg0);
+
+// Creates a choice window from count promoted integer message IDs.
+s32 func_ov030_020a9f54(FieldEventManager* eventMgr, s32 (*callback)(FieldEventManager*), s32 mesNo, u16 count, ...);
 
 #endif // FIELD_EVENTS_H
