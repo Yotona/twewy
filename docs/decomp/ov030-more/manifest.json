@@ -1,0 +1,2515 @@
+{
+    "base_commit": "2b8fcfedc8aca72cdfa61b1de3375963f1f13e38",
+    "reference_branch": "decomp-ov030-field",
+    "reference_commit": "963b8c704b6233064eb1ec0196805d48e949c7ed",
+    "reference_owners": [
+        {
+            "source": "src/Field/FieldMain.c",
+            "section": ".text",
+            "start": 34088096,
+            "end": 34090980
+        },
+        {
+            "source": "src/Field/FieldBg.c",
+            "section": ".text",
+            "start": 34090980,
+            "end": 34097708
+        },
+        {
+            "source": "src/Field/FieldEncounter.c",
+            "section": ".text",
+            "start": 34253956,
+            "end": 34266356
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".text",
+            "start": 34097708,
+            "end": 34236060
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".rodata",
+            "start": 34448920,
+            "end": 34449096
+        },
+        {
+            "source": "src/Field/EventManager.c",
+            "section": ".text",
+            "start": 34236060,
+            "end": 34253956
+        },
+        {
+            "source": "src/Field/EventFlags.c",
+            "section": ".text",
+            "start": 34270004,
+            "end": 34270548
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".text",
+            "start": 34276524,
+            "end": 34279464
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".rodata",
+            "start": 34455264,
+            "end": 34455288
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".data",
+            "start": 34603832,
+            "end": 34605232
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".text",
+            "start": 34279464,
+            "end": 34282712
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".rodata",
+            "start": 34455288,
+            "end": 34469280
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".data",
+            "start": 34605232,
+            "end": 34628752
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldVBlank.c",
+            "section": ".text",
+            "start": 34282712,
+            "end": 34283740
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".text",
+            "start": 34310428,
+            "end": 34318948
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".rodata",
+            "start": 34492056,
+            "end": 34492232
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".text",
+            "start": 34355528,
+            "end": 34356572
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".rodata",
+            "start": 34501044,
+            "end": 34501116
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".data",
+            "start": 34633112,
+            "end": 34633144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".text",
+            "start": 34356572,
+            "end": 34357772
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".rodata",
+            "start": 34501116,
+            "end": 34501144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".data",
+            "start": 34633144,
+            "end": 34633176
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".text",
+            "start": 34369968,
+            "end": 34370852
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".rodata",
+            "start": 34523348,
+            "end": 34523420
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".data",
+            "start": 34636984,
+            "end": 34637000
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".text",
+            "start": 34370852,
+            "end": 34371588
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".rodata",
+            "start": 34523420,
+            "end": 34523492
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".data",
+            "start": 34637000,
+            "end": 34637020
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".text",
+            "start": 34371588,
+            "end": 34372212
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".rodata",
+            "start": 34523492,
+            "end": 34523564
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".data",
+            "start": 34637020,
+            "end": 34637036
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".text",
+            "start": 34372212,
+            "end": 34373580
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".rodata",
+            "start": 34523564,
+            "end": 34523692
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".data",
+            "start": 34637036,
+            "end": 34637224
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".text",
+            "start": 34373580,
+            "end": 34374644
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".rodata",
+            "start": 34523692,
+            "end": 34523720
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".data",
+            "start": 34637224,
+            "end": 34637240
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".text",
+            "start": 34374644,
+            "end": 34375076
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".rodata",
+            "start": 34523720,
+            "end": 34523748
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".data",
+            "start": 34637240,
+            "end": 34637256
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".text",
+            "start": 34380176,
+            "end": 34382324
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".rodata",
+            "start": 34524428,
+            "end": 34524584
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".data",
+            "start": 34637868,
+            "end": 34638060
+        },
+        {
+            "source": "src/Field/FieldBattleTransition.c",
+            "section": ".text",
+            "start": 34270548,
+            "end": 34272032
+        },
+        {
+            "source": "src/Field/FieldBattleSetup.c",
+            "section": ".text",
+            "start": 34272032,
+            "end": 34276524
+        },
+        {
+            "source": "src/Field/Fld_Player.c",
+            "section": ".text",
+            "start": 34283740,
+            "end": 34287648
+        },
+        {
+            "source": "src/Field/Fld_Player.c",
+            "section": ".rodata",
+            "start": 34469280,
+            "end": 34469500
+        },
+        {
+            "source": "src/Field/FieldPlayerInteraction.c",
+            "section": ".text",
+            "start": 34287648,
+            "end": 34287912
+        },
+        {
+            "source": "src/Field/Fld_BustShot.c",
+            "section": ".text",
+            "start": 34287912,
+            "end": 34290944
+        },
+        {
+            "source": "src/Field/Fld_BustShot.c",
+            "section": ".rodata",
+            "start": 34469500,
+            "end": 34471936
+        },
+        {
+            "source": "src/Field/Fld_Badge.c",
+            "section": ".text",
+            "start": 34290944,
+            "end": 34293172
+        },
+        {
+            "source": "src/Field/Fld_Badge.c",
+            "section": ".rodata",
+            "start": 34471936,
+            "end": 34474180
+        },
+        {
+            "source": "src/Field/Fld_ScanArea.c",
+            "section": ".text",
+            "start": 34293172,
+            "end": 34294048
+        },
+        {
+            "source": "src/Field/Fld_ScanArea.c",
+            "section": ".rodata",
+            "start": 34474180,
+            "end": 34474264
+        },
+        {
+            "source": "src/Field/Fld_Human.c",
+            "section": ".text",
+            "start": 34294048,
+            "end": 34298968
+        },
+        {
+            "source": "src/Field/Fld_Human.c",
+            "section": ".rodata",
+            "start": 34474264,
+            "end": 34474304
+        },
+        {
+            "source": "src/Field/FieldSceneRender.c",
+            "section": ".text",
+            "start": 34298968,
+            "end": 34302452
+        },
+        {
+            "source": "src/Field/FieldSceneRender.c",
+            "section": ".rodata",
+            "start": 34474304,
+            "end": 34475288
+        },
+        {
+            "source": "src/Field/FieldSceneLoad.c",
+            "section": ".text",
+            "start": 34302452,
+            "end": 34306560
+        },
+        {
+            "source": "src/Field/FieldSceneLoad.c",
+            "section": ".rodata",
+            "start": 34475288,
+            "end": 34475556
+        },
+        {
+            "source": "src/Field/FieldAreaParameters.c",
+            "section": ".text",
+            "start": 34306560,
+            "end": 34307160
+        },
+        {
+            "source": "src/Field/FieldFloorHeight.c",
+            "section": ".text",
+            "start": 34307160,
+            "end": 34307444
+        },
+        {
+            "source": "src/Field/FieldAreaZeroFloor.c",
+            "section": ".text",
+            "start": 34307444,
+            "end": 34307544
+        },
+        {
+            "source": "src/Field/FieldExitRegions.c",
+            "section": ".text",
+            "start": 34307544,
+            "end": 34310076
+        },
+        {
+            "source": "src/Field/FieldExitRegions.c",
+            "section": ".rodata",
+            "start": 34475556,
+            "end": 34479460
+        },
+        {
+            "source": "src/Field/FieldAreaTransition.c",
+            "section": ".text",
+            "start": 34310076,
+            "end": 34310428
+        },
+        {
+            "source": "src/Field/FieldAreaTransition.c",
+            "section": ".rodata",
+            "start": 34479460,
+            "end": 34492056
+        },
+        {
+            "source": "src/Field/Fld_TalkIcon.c",
+            "section": ".text",
+            "start": 34318948,
+            "end": 34319744
+        },
+        {
+            "source": "src/Field/Fld_TalkIcon.c",
+            "section": ".rodata",
+            "start": 34492232,
+            "end": 34496224
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUG.c",
+            "section": ".text",
+            "start": 34319744,
+            "end": 34323976
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUG.c",
+            "section": ".rodata",
+            "start": 34496224,
+            "end": 34496536
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGEffect.c",
+            "section": ".text",
+            "start": 34323976,
+            "end": 34324584
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGEffect.c",
+            "section": ".rodata",
+            "start": 34496536,
+            "end": 34496608
+        },
+        {
+            "source": "src/Field/Fld_MapJumpArrow.c",
+            "section": ".text",
+            "start": 34324584,
+            "end": 34325688
+        },
+        {
+            "source": "src/Field/Fld_MapJumpArrow.c",
+            "section": ".rodata",
+            "start": 34496608,
+            "end": 34496732
+        },
+        {
+            "source": "src/Field/Fld_Partner.c",
+            "section": ".text",
+            "start": 34325688,
+            "end": 34329444
+        },
+        {
+            "source": "src/Field/Fld_Partner.c",
+            "section": ".rodata",
+            "start": 34496732,
+            "end": 34496980
+        },
+        {
+            "source": "src/Field/Fld_OnePicturCell.c",
+            "section": ".text",
+            "start": 34329444,
+            "end": 34330060
+        },
+        {
+            "source": "src/Field/Fld_OnePicturCell.c",
+            "section": ".rodata",
+            "start": 34496980,
+            "end": 34497076
+        },
+        {
+            "source": "src/Field/Fld_CockPit.c",
+            "section": ".text",
+            "start": 34330060,
+            "end": 34330768
+        },
+        {
+            "source": "src/Field/Fld_CockPit.c",
+            "section": ".rodata",
+            "start": 34497076,
+            "end": 34497160
+        },
+        {
+            "source": "src/Field/Fld_Watch.c",
+            "section": ".text",
+            "start": 34330768,
+            "end": 34332360
+        },
+        {
+            "source": "src/Field/Fld_Watch.c",
+            "section": ".rodata",
+            "start": 34497160,
+            "end": 34497232
+        },
+        {
+            "source": "src/Field/Fld_Phone.c",
+            "section": ".text",
+            "start": 34332360,
+            "end": 34332948
+        },
+        {
+            "source": "src/Field/Fld_Phone.c",
+            "section": ".rodata",
+            "start": 34497232,
+            "end": 34497304
+        },
+        {
+            "source": "src/Field/Fld_ScanKirakira.c",
+            "section": ".text",
+            "start": 34332948,
+            "end": 34334812
+        },
+        {
+            "source": "src/Field/Fld_ScanKirakira.c",
+            "section": ".rodata",
+            "start": 34497304,
+            "end": 34497376
+        },
+        {
+            "source": "src/Field/Fld_ScanFukidasi.c",
+            "section": ".text",
+            "start": 34334812,
+            "end": 34336292
+        },
+        {
+            "source": "src/Field/Fld_ScanFukidasi.c",
+            "section": ".rodata",
+            "start": 34497376,
+            "end": 34497404
+        },
+        {
+            "source": "src/Field/Fld_NpcRG.c",
+            "section": ".text",
+            "start": 34336292,
+            "end": 34336900
+        },
+        {
+            "source": "src/Field/Fld_NpcRG.c",
+            "section": ".rodata",
+            "start": 34497404,
+            "end": 34498768
+        },
+        {
+            "source": "src/Field/Fld_LargeGingo.c",
+            "section": ".text",
+            "start": 34336900,
+            "end": 34337632
+        },
+        {
+            "source": "src/Field/Fld_LargeGingo.c",
+            "section": ".rodata",
+            "start": 34498768,
+            "end": 34499988
+        },
+        {
+            "source": "src/Field/Fld_Touch.c",
+            "section": ".text",
+            "start": 34337632,
+            "end": 34339712
+        },
+        {
+            "source": "src/Field/Fld_Touch.c",
+            "section": ".rodata",
+            "start": 34499988,
+            "end": 34500156
+        },
+        {
+            "source": "src/Field/Fld_TouchCommand.c",
+            "section": ".text",
+            "start": 34339712,
+            "end": 34340780
+        },
+        {
+            "source": "src/Field/Fld_TouchCommand.c",
+            "section": ".rodata",
+            "start": 34500156,
+            "end": 34500228
+        },
+        {
+            "source": "src/Field/Fld_TouchSeal.c",
+            "section": ".text",
+            "start": 34340780,
+            "end": 34341480
+        },
+        {
+            "source": "src/Field/Fld_TouchSeal.c",
+            "section": ".rodata",
+            "start": 34500228,
+            "end": 34500332
+        },
+        {
+            "source": "src/Field/Fld_TouchCursor.c",
+            "section": ".text",
+            "start": 34341480,
+            "end": 34342196
+        },
+        {
+            "source": "src/Field/Fld_TouchCursor.c",
+            "section": ".rodata",
+            "start": 34500332,
+            "end": 34500404
+        },
+        {
+            "source": "src/Field/Fld_TouchShine.c",
+            "section": ".text",
+            "start": 34342196,
+            "end": 34342784
+        },
+        {
+            "source": "src/Field/Fld_TouchShine.c",
+            "section": ".rodata",
+            "start": 34500404,
+            "end": 34500476
+        },
+        {
+            "source": "src/Field/Fld_Raster.c",
+            "section": ".text",
+            "start": 34342784,
+            "end": 34343148
+        },
+        {
+            "source": "src/Field/Fld_Raster.c",
+            "section": ".rodata",
+            "start": 34500476,
+            "end": 34500504
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGMgr.c",
+            "section": ".text",
+            "start": 34343148,
+            "end": 34343900
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGMgr.c",
+            "section": ".rodata",
+            "start": 34500504,
+            "end": 34500532
+        },
+        {
+            "source": "src/Field/Fld_Luck.c",
+            "section": ".text",
+            "start": 34343900,
+            "end": 34349192
+        },
+        {
+            "source": "src/Field/Fld_Luck.c",
+            "section": ".rodata",
+            "start": 34500532,
+            "end": 34500612
+        },
+        {
+            "source": "src/Field/Fld_Chain.c",
+            "section": ".text",
+            "start": 34349192,
+            "end": 34350220
+        },
+        {
+            "source": "src/Field/Fld_Chain.c",
+            "section": ".rodata",
+            "start": 34500612,
+            "end": 34500684
+        },
+        {
+            "source": "src/Field/Fld_ScanMoya.c",
+            "section": ".text",
+            "start": 34350220,
+            "end": 34350732
+        },
+        {
+            "source": "src/Field/Fld_ScanMoya.c",
+            "section": ".rodata",
+            "start": 34500684,
+            "end": 34500756
+        },
+        {
+            "source": "src/Field/Fld_Wall.c",
+            "section": ".text",
+            "start": 34350732,
+            "end": 34352332
+        },
+        {
+            "source": "src/Field/Fld_Wall.c",
+            "section": ".rodata",
+            "start": 34500756,
+            "end": 34500860
+        },
+        {
+            "source": "src/Field/FieldAmbientSound.c",
+            "section": ".text",
+            "start": 34352332,
+            "end": 34352640
+        },
+        {
+            "source": "src/Field/FieldMusic.c",
+            "section": ".text",
+            "start": 34352640,
+            "end": 34354048
+        },
+        {
+            "source": "src/Field/FieldMusic.c",
+            "section": ".rodata",
+            "start": 34500860,
+            "end": 34500900
+        },
+        {
+            "source": "src/Field/Fld_TalkEventTouch.c",
+            "section": ".text",
+            "start": 34354048,
+            "end": 34354896
+        },
+        {
+            "source": "src/Field/Fld_TalkEventTouch.c",
+            "section": ".rodata",
+            "start": 34500900,
+            "end": 34500972
+        },
+        {
+            "source": "src/Field/Fld_TalkEventPlate.c",
+            "section": ".text",
+            "start": 34354896,
+            "end": 34355528
+        },
+        {
+            "source": "src/Field/Fld_TalkEventPlate.c",
+            "section": ".rodata",
+            "start": 34500972,
+            "end": 34501044
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".text",
+            "start": 34363204,
+            "end": 34363824
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".rodata",
+            "start": 34501728,
+            "end": 34513976
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".data",
+            "start": 34633328,
+            "end": 34636900
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".text",
+            "start": 34375784,
+            "end": 34376280
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".rodata",
+            "start": 34523828,
+            "end": 34523900
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".data",
+            "start": 34637276,
+            "end": 34637296
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".text",
+            "start": 34386564,
+            "end": 34392952
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".rodata",
+            "start": 34525412,
+            "end": 34525440
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".data",
+            "start": 34638112,
+            "end": 34638188
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".text",
+            "start": 34392952,
+            "end": 34395512
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".rodata",
+            "start": 34525440,
+            "end": 34525520
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".data",
+            "start": 34638188,
+            "end": 34638260
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".text",
+            "start": 34395512,
+            "end": 34396048
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".rodata",
+            "start": 34525520,
+            "end": 34525592
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".data",
+            "start": 34638260,
+            "end": 34638280
+        }
+    ],
+    "baseline_owners": [
+        {
+            "source": "src/Field/Events.c",
+            "section": ".text",
+            "start": 34097708,
+            "end": 34236060
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".rodata",
+            "start": 34448920,
+            "end": 34449096
+        },
+        {
+            "source": "src/Field/EventManager.c",
+            "section": ".text",
+            "start": 34236060,
+            "end": 34253956
+        },
+        {
+            "source": "src/Field/EventFlags.c",
+            "section": ".text",
+            "start": 34270004,
+            "end": 34270548
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".text",
+            "start": 34276524,
+            "end": 34279464
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".rodata",
+            "start": 34455264,
+            "end": 34455288
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".data",
+            "start": 34603832,
+            "end": 34605232
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".text",
+            "start": 34279464,
+            "end": 34282712
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".rodata",
+            "start": 34455288,
+            "end": 34469280
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".data",
+            "start": 34605232,
+            "end": 34628752
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldVBlank.c",
+            "section": ".text",
+            "start": 34282712,
+            "end": 34283740
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".text",
+            "start": 34310428,
+            "end": 34318948
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".rodata",
+            "start": 34492056,
+            "end": 34492232
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".text",
+            "start": 34355528,
+            "end": 34356572
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".rodata",
+            "start": 34501044,
+            "end": 34501116
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".data",
+            "start": 34633112,
+            "end": 34633144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".text",
+            "start": 34356572,
+            "end": 34357772
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".rodata",
+            "start": 34501116,
+            "end": 34501144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".data",
+            "start": 34633144,
+            "end": 34633176
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".text",
+            "start": 34369968,
+            "end": 34370852
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".rodata",
+            "start": 34523348,
+            "end": 34523420
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".data",
+            "start": 34636984,
+            "end": 34637000
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".text",
+            "start": 34370852,
+            "end": 34371588
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".rodata",
+            "start": 34523420,
+            "end": 34523492
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".data",
+            "start": 34637000,
+            "end": 34637020
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".text",
+            "start": 34371588,
+            "end": 34372212
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".rodata",
+            "start": 34523492,
+            "end": 34523564
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".data",
+            "start": 34637020,
+            "end": 34637036
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".text",
+            "start": 34372212,
+            "end": 34373580
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".rodata",
+            "start": 34523564,
+            "end": 34523692
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".data",
+            "start": 34637036,
+            "end": 34637224
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".text",
+            "start": 34373580,
+            "end": 34374644
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".rodata",
+            "start": 34523692,
+            "end": 34523720
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".data",
+            "start": 34637224,
+            "end": 34637240
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".text",
+            "start": 34374644,
+            "end": 34375076
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".rodata",
+            "start": 34523720,
+            "end": 34523748
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".data",
+            "start": 34637240,
+            "end": 34637256
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".text",
+            "start": 34380176,
+            "end": 34382324
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".rodata",
+            "start": 34524428,
+            "end": 34524584
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".data",
+            "start": 34637868,
+            "end": 34638060
+        }
+    ],
+    "units": [
+        {
+            "name": "Fld_TalkEventCursor",
+            "source": "src/Field/Fld_TalkEventCursor.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".text",
+                    "start": 34357772,
+                    "end": 34358764
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".rodata",
+                    "start": 34501144,
+                    "end": 34501216
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".data",
+                    "start": 34633176,
+                    "end": 34633200
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c420c",
+                    "address": 34357772,
+                    "size": 220
+                },
+                {
+                    "name": "func_ov030_020c42e8",
+                    "address": 34357992,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c438c",
+                    "address": 34358156,
+                    "size": 248
+                },
+                {
+                    "name": "func_ov030_020c4484",
+                    "address": 34358404,
+                    "size": 76
+                },
+                {
+                    "name": "func_ov030_020c44d0",
+                    "address": 34358480,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020c4504",
+                    "address": 34358532,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020c4538",
+                    "address": 34358584,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020c456c",
+                    "address": 34358636,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c45b4",
+                    "address": 34358708,
+                    "size": 56
+                }
+            ]
+        },
+        {
+            "name": "Fld_TalkEventDecide",
+            "source": "src/Field/Fld_TalkEventDecide.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".text",
+                    "start": 34358764,
+                    "end": 34359376
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".rodata",
+                    "start": 34501216,
+                    "end": 34501288
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".data",
+                    "start": 34633200,
+                    "end": 34633224
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c45ec",
+                    "address": 34358764,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c4688",
+                    "address": 34358920,
+                    "size": 132
+                },
+                {
+                    "name": "func_ov030_020c470c",
+                    "address": 34359052,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c4738",
+                    "address": 34359096,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020c4760",
+                    "address": 34359136,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c4774",
+                    "address": 34359156,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c4788",
+                    "address": 34359176,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c47d0",
+                    "address": 34359248,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020c4810",
+                    "address": 34359312,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Fld_TalkEventTitle",
+            "source": "src/Field/Fld_TalkEventTitle.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".text",
+                    "start": 34359376,
+                    "end": 34359928
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".rodata",
+                    "start": 34501288,
+                    "end": 34501360
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".data",
+                    "start": 34633224,
+                    "end": 34633268
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c4850",
+                    "address": 34359376,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c48ec",
+                    "address": 34359532,
+                    "size": 108
+                },
+                {
+                    "name": "func_ov030_020c4958",
+                    "address": 34359640,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c4990",
+                    "address": 34359696,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c49d8",
+                    "address": 34359768,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c49ec",
+                    "address": 34359788,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c4a00",
+                    "address": 34359808,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c4a48",
+                    "address": 34359880,
+                    "size": 48
+                }
+            ]
+        },
+        {
+            "name": "Fld_MapJumpName",
+            "source": "src/Field/Fld_MapJumpName.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".text",
+                    "start": 34359928,
+                    "end": 34361480
+                },
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".rodata",
+                    "start": 34501360,
+                    "end": 34501412
+                },
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".data",
+                    "start": 34633268,
+                    "end": 34633288
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c4a78",
+                    "address": 34359928,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020c4ae8",
+                    "address": 34360040,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c4b8c",
+                    "address": 34360204,
+                    "size": 148
+                },
+                {
+                    "name": "func_ov030_020c4c20",
+                    "address": 34360352,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c4cbc",
+                    "address": 34360508,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c4cdc",
+                    "address": 34360540,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c4d80",
+                    "address": 34360704,
+                    "size": 348
+                },
+                {
+                    "name": "func_ov030_020c4edc",
+                    "address": 34361052,
+                    "size": 8
+                },
+                {
+                    "name": "func_ov030_020c4ee4",
+                    "address": 34361060,
+                    "size": 180
+                },
+                {
+                    "name": "func_ov030_020c4f98",
+                    "address": 34361240,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020c4fd4",
+                    "address": 34361300,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c501c",
+                    "address": 34361372,
+                    "size": 108
+                }
+            ]
+        },
+        {
+            "name": "Fld_MapName",
+            "source": "src/Field/Fld_MapName.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".text",
+                    "start": 34361480,
+                    "end": 34362372
+                },
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".rodata",
+                    "start": 34501412,
+                    "end": 34501504
+                },
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".data",
+                    "start": 34633288,
+                    "end": 34633304
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c5088",
+                    "address": 34361480,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c5124",
+                    "address": 34361636,
+                    "size": 132
+                },
+                {
+                    "name": "func_ov030_020c51a8",
+                    "address": 34361768,
+                    "size": 220
+                },
+                {
+                    "name": "func_ov030_020c5284",
+                    "address": 34361988,
+                    "size": 8
+                },
+                {
+                    "name": "func_ov030_020c528c",
+                    "address": 34361996,
+                    "size": 104
+                },
+                {
+                    "name": "func_ov030_020c52f4",
+                    "address": 34362100,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c532c",
+                    "address": 34362156,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c5374",
+                    "address": 34362228,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c53ac",
+                    "address": 34362284,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020c53e8",
+                    "address": 34362344,
+                    "size": 28
+                }
+            ]
+        },
+        {
+            "name": "Field_020c5404",
+            "source": "src/Field/Field_020c5404.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c5404.c",
+                    "section": ".text",
+                    "start": 34362372,
+                    "end": 34362508
+                },
+                {
+                    "source": "src/Field/Field_020c5404.c",
+                    "section": ".rodata",
+                    "start": 34501504,
+                    "end": 34501656
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c5404",
+                    "address": 34362372,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c5430",
+                    "address": 34362416,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020c5460",
+                    "address": 34362464,
+                    "size": 44
+                }
+            ]
+        },
+        {
+            "name": "Fld_NSymbolUGAppear",
+            "source": "src/Field/Fld_NSymbolUGAppear.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".text",
+                    "start": 34362508,
+                    "end": 34363204
+                },
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".rodata",
+                    "start": 34501656,
+                    "end": 34501728
+                },
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".data",
+                    "start": 34633304,
+                    "end": 34633328
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c548c",
+                    "address": 34362508,
+                    "size": 172
+                },
+                {
+                    "name": "func_ov030_020c5538",
+                    "address": 34362680,
+                    "size": 200
+                },
+                {
+                    "name": "func_ov030_020c5600",
+                    "address": 34362880,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c562c",
+                    "address": 34362924,
+                    "size": 104
+                },
+                {
+                    "name": "func_ov030_020c5694",
+                    "address": 34363028,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c56a8",
+                    "address": 34363048,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c56bc",
+                    "address": 34363068,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c5704",
+                    "address": 34363140,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Fld_Piranha",
+            "source": "src/Field/Fld_Piranha.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".text",
+                    "start": 34363824,
+                    "end": 34365296
+                },
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".rodata",
+                    "start": 34513976,
+                    "end": 34516608
+                },
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".data",
+                    "start": 34636900,
+                    "end": 34636944
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c59b0",
+                    "address": 34363824,
+                    "size": 76
+                },
+                {
+                    "name": "func_ov030_020c59fc",
+                    "address": 34363900,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c5a28",
+                    "address": 34363944,
+                    "size": 168
+                },
+                {
+                    "name": "func_ov030_020c5ad0",
+                    "address": 34364112,
+                    "size": 264
+                },
+                {
+                    "name": "func_ov030_020c5bd8",
+                    "address": 34364376,
+                    "size": 148
+                },
+                {
+                    "name": "func_ov030_020c5c6c",
+                    "address": 34364524,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c5c8c",
+                    "address": 34364556,
+                    "size": 400
+                },
+                {
+                    "name": "func_ov030_020c5e1c",
+                    "address": 34364956,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020c5e74",
+                    "address": 34365044,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c5e88",
+                    "address": 34365064,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c5ed0",
+                    "address": 34365136,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c5f08",
+                    "address": 34365192,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020c5f5c",
+                    "address": 34365276,
+                    "size": 20
+                }
+            ]
+        },
+        {
+            "name": "Field_020c5f70",
+            "source": "src/Field/Field_020c5f70.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c5f70.c",
+                    "section": ".text",
+                    "start": 34365296,
+                    "end": 34367548
+                },
+                {
+                    "source": "src/Field/Field_020c5f70.c",
+                    "section": ".rodata",
+                    "start": 34516608,
+                    "end": 34523172
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c5f70",
+                    "address": 34365296,
+                    "size": 144
+                },
+                {
+                    "name": "func_ov030_020c6000",
+                    "address": 34365440,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c60a4",
+                    "address": 34365604,
+                    "size": 172
+                },
+                {
+                    "name": "func_ov030_020c6150",
+                    "address": 34365776,
+                    "size": 160
+                },
+                {
+                    "name": "func_ov030_020c61f0",
+                    "address": 34365936,
+                    "size": 272
+                },
+                {
+                    "name": "func_ov030_020c6300",
+                    "address": 34366208,
+                    "size": 200
+                },
+                {
+                    "name": "func_ov030_020c63c8",
+                    "address": 34366408,
+                    "size": 208
+                },
+                {
+                    "name": "func_ov030_020c6498",
+                    "address": 34366616,
+                    "size": 932
+                }
+            ]
+        },
+        {
+            "name": "Field_020c683c",
+            "source": "src/Field/Field_020c683c.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c683c.c",
+                    "section": ".text",
+                    "start": 34367548,
+                    "end": 34368600
+                },
+                {
+                    "source": "src/Field/Field_020c683c.c",
+                    "section": ".rodata",
+                    "start": 34523172,
+                    "end": 34523204
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c683c",
+                    "address": 34367548,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020c6864",
+                    "address": 34367588,
+                    "size": 576
+                },
+                {
+                    "name": "func_ov030_020c6aa4",
+                    "address": 34368164,
+                    "size": 436
+                }
+            ]
+        },
+        {
+            "name": "Fld_TouchNext",
+            "source": "src/Field/Fld_TouchNext.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".text",
+                    "start": 34368600,
+                    "end": 34369168
+                },
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".rodata",
+                    "start": 34523204,
+                    "end": 34523276
+                },
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".data",
+                    "start": 34636944,
+                    "end": 34636964
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c6c58",
+                    "address": 34368600,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c6cf4",
+                    "address": 34368756,
+                    "size": 140
+                },
+                {
+                    "name": "func_ov030_020c6d80",
+                    "address": 34368896,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020c6db4",
+                    "address": 34368948,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c6dd4",
+                    "address": 34368980,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c6df4",
+                    "address": 34369012,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c6e14",
+                    "address": 34369044,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c6e5c",
+                    "address": 34369116,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "Fld_GetPlate",
+            "source": "src/Field/Fld_GetPlate.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".text",
+                    "start": 34369168,
+                    "end": 34369968
+                },
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".rodata",
+                    "start": 34523276,
+                    "end": 34523348
+                },
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".data",
+                    "start": 34636964,
+                    "end": 34636984
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c6e90",
+                    "address": 34369168,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c6f2c",
+                    "address": 34369324,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020c6fa0",
+                    "address": 34369440,
+                    "size": 224
+                },
+                {
+                    "name": "func_ov030_020c7080",
+                    "address": 34369664,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020c70c0",
+                    "address": 34369728,
+                    "size": 96
+                },
+                {
+                    "name": "func_ov030_020c7120",
+                    "address": 34369824,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c7134",
+                    "address": 34369844,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c717c",
+                    "address": 34369916,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "Fld_BattleIn",
+            "source": "src/Field/Fld_BattleIn.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".text",
+                    "start": 34375076,
+                    "end": 34375784
+                },
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".rodata",
+                    "start": 34523748,
+                    "end": 34523828
+                },
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".data",
+                    "start": 34637256,
+                    "end": 34637276
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c85a4",
+                    "address": 34375076,
+                    "size": 228
+                },
+                {
+                    "name": "func_ov030_020c8688",
+                    "address": 34375304,
+                    "size": 224
+                },
+                {
+                    "name": "func_ov030_020c8768",
+                    "address": 34375528,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c8794",
+                    "address": 34375572,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c87a8",
+                    "address": 34375592,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c87bc",
+                    "address": 34375612,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c87d0",
+                    "address": 34375632,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c8818",
+                    "address": 34375704,
+                    "size": 80
+                }
+            ]
+        },
+        {
+            "name": "Fld_Brush",
+            "source": "src/Field/Fld_Brush.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".text",
+                    "start": 34376280,
+                    "end": 34377740
+                },
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".rodata",
+                    "start": 34523900,
+                    "end": 34524040
+                },
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".data",
+                    "start": 34637296,
+                    "end": 34637312
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c8a58",
+                    "address": 34376280,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020c8ae0",
+                    "address": 34376416,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020c8b38",
+                    "address": 34376504,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020c8b90",
+                    "address": 34376592,
+                    "size": 404
+                },
+                {
+                    "name": "func_ov030_020c8d24",
+                    "address": 34376996,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020c8d54",
+                    "address": 34377044,
+                    "size": 504
+                },
+                {
+                    "name": "func_ov030_020c8f4c",
+                    "address": 34377548,
+                    "size": 8
+                },
+                {
+                    "name": "func_ov030_020c8f54",
+                    "address": 34377556,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020c8f94",
+                    "address": 34377620,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c8fdc",
+                    "address": 34377692,
+                    "size": 48
+                }
+            ]
+        },
+        {
+            "name": "Fld_BrushHati",
+            "source": "src/Field/Fld_BrushHati.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".text",
+                    "start": 34377740,
+                    "end": 34378228
+                },
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".rodata",
+                    "start": 34524040,
+                    "end": 34524112
+                },
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".data",
+                    "start": 34637312,
+                    "end": 34637332
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c900c",
+                    "address": 34377740,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c90a8",
+                    "address": 34377896,
+                    "size": 124
+                },
+                {
+                    "name": "func_ov030_020c9124",
+                    "address": 34378020,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020c913c",
+                    "address": 34378044,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c9150",
+                    "address": 34378064,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c9164",
+                    "address": 34378084,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c9178",
+                    "address": 34378104,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c91c0",
+                    "address": 34378176,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "Field_020c91f4",
+            "source": "src/Field/Field_020c91f4.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c91f4.c",
+                    "section": ".text",
+                    "start": 34378228,
+                    "end": 34380176
+                },
+                {
+                    "source": "src/Field/Field_020c91f4.c",
+                    "section": ".rodata",
+                    "start": 34524112,
+                    "end": 34524428
+                },
+                {
+                    "source": "src/Field/Field_020c91f4.c",
+                    "section": ".data",
+                    "start": 34637332,
+                    "end": 34637868
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c91f4",
+                    "address": 34378228,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020c927c",
+                    "address": 34378364,
+                    "size": 148
+                },
+                {
+                    "name": "func_ov030_020c9310",
+                    "address": 34378512,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020c9324",
+                    "address": 34378532,
+                    "size": 276
+                },
+                {
+                    "name": "func_ov030_020c9438",
+                    "address": 34378808,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020c9478",
+                    "address": 34378872,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c94b0",
+                    "address": 34378928,
+                    "size": 684
+                },
+                {
+                    "name": "func_ov030_020c975c",
+                    "address": 34379612,
+                    "size": 276
+                },
+                {
+                    "name": "func_ov030_020c9870",
+                    "address": 34379888,
+                    "size": 140
+                },
+                {
+                    "name": "func_ov030_020c98fc",
+                    "address": 34380028,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020c9950",
+                    "address": 34380112,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Task_Mess",
+            "source": "src/Field/Task_Mess.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Task_Mess.c",
+                    "section": ".text",
+                    "start": 34382324,
+                    "end": 34383036
+                },
+                {
+                    "source": "src/Field/Task_Mess.c",
+                    "section": ".rodata",
+                    "start": 34524584,
+                    "end": 34524612
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020ca1f4",
+                    "address": 34382324,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020ca200",
+                    "address": 34382336,
+                    "size": 260
+                },
+                {
+                    "name": "func_ov030_020ca304",
+                    "address": 34382596,
+                    "size": 124
+                },
+                {
+                    "name": "func_ov030_020ca380",
+                    "address": 34382720,
+                    "size": 100
+                },
+                {
+                    "name": "func_ov030_020ca3e4",
+                    "address": 34382820,
+                    "size": 4
+                },
+                {
+                    "name": "func_ov030_020ca3e8",
+                    "address": 34382824,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020ca424",
+                    "address": 34382884,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020ca448",
+                    "address": 34382920,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020ca45c",
+                    "address": 34382940,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020ca474",
+                    "address": 34382964,
+                    "size": 72
+                }
+            ]
+        },
+        {
+            "name": "Field_020ca4bc",
+            "source": "src/Field/Field_020ca4bc.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020ca4bc.c",
+                    "section": ".text",
+                    "start": 34383036,
+                    "end": 34386220
+                },
+                {
+                    "source": "src/Field/Field_020ca4bc.c",
+                    "section": ".rodata",
+                    "start": 34524612,
+                    "end": 34525400
+                },
+                {
+                    "source": "src/Field/Field_020ca4bc.c",
+                    "section": ".data",
+                    "start": 34638060,
+                    "end": 34638112
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020ca4bc",
+                    "address": 34383036,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020ca514",
+                    "address": 34383124,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020ca588",
+                    "address": 34383240,
+                    "size": 496
+                },
+                {
+                    "name": "func_ov030_020ca778",
+                    "address": 34383736,
+                    "size": 456
+                },
+                {
+                    "name": "func_ov030_020ca940",
+                    "address": 34384192,
+                    "size": 168
+                },
+                {
+                    "name": "func_ov030_020ca9e8",
+                    "address": 34384360,
+                    "size": 340
+                },
+                {
+                    "name": "func_ov030_020cab3c",
+                    "address": 34384700,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020cab64",
+                    "address": 34384740,
+                    "size": 684
+                },
+                {
+                    "name": "func_ov030_020cae10",
+                    "address": 34385424,
+                    "size": 652
+                },
+                {
+                    "name": "func_ov030_020cb09c",
+                    "address": 34386076,
+                    "size": 144
+                }
+            ]
+        },
+        {
+            "name": "Task_Window",
+            "source": "src/Field/Task_Window.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Task_Window.c",
+                    "section": ".text",
+                    "start": 34386220,
+                    "end": 34386564
+                },
+                {
+                    "source": "src/Field/Task_Window.c",
+                    "section": ".rodata",
+                    "start": 34525400,
+                    "end": 34525412
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020cb12c",
+                    "address": 34386220,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020cb168",
+                    "address": 34386280,
+                    "size": 108
+                },
+                {
+                    "name": "func_ov030_020cb1d4",
+                    "address": 34386388,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020cb21c",
+                    "address": 34386460,
+                    "size": 104
+                }
+            ]
+        },
+        {
+            "name": "LocaTitle",
+            "source": "src/Field/LocaTitle.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".text",
+                    "start": 34418476,
+                    "end": 34419068
+                },
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".rodata",
+                    "start": 34531656,
+                    "end": 34531736
+                },
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".data",
+                    "start": 34640100,
+                    "end": 34640144
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d2f2c",
+                    "address": 34418476,
+                    "size": 188
+                },
+                {
+                    "name": "func_ov030_020d2fe8",
+                    "address": 34418664,
+                    "size": 80
+                },
+                {
+                    "name": "func_ov030_020d3038",
+                    "address": 34418744,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d306c",
+                    "address": 34418796,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020d30b4",
+                    "address": 34418868,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020d30d4",
+                    "address": 34418900,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020d311c",
+                    "address": 34418972,
+                    "size": 96
+                }
+            ]
+        },
+        {
+            "name": "XFade",
+            "source": "src/Field/XFade.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".text",
+                    "start": 34421564,
+                    "end": 34424880
+                },
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".rodata",
+                    "start": 34531796,
+                    "end": 34531844
+                },
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".data",
+                    "start": 34640156,
+                    "end": 34640236
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d3b3c",
+                    "address": 34421564,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020d3be0",
+                    "address": 34421728,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020d3c50",
+                    "address": 34421840,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d3c88",
+                    "address": 34421896,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d3cc0",
+                    "address": 34421952,
+                    "size": 224
+                },
+                {
+                    "name": "func_ov030_020d3da0",
+                    "address": 34422176,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020d3dc0",
+                    "address": 34422208,
+                    "size": 120
+                },
+                {
+                    "name": "func_ov030_020d3e38",
+                    "address": 34422328,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020d3e74",
+                    "address": 34422388,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020d3eb0",
+                    "address": 34422448,
+                    "size": 456
+                },
+                {
+                    "name": "func_ov030_020d4078",
+                    "address": 34422904,
+                    "size": 1712
+                },
+                {
+                    "name": "func_ov030_020d4728",
+                    "address": 34424616,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d4760",
+                    "address": 34424672,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020d47e8",
+                    "address": 34424808,
+                    "size": 72
+                }
+            ]
+        }
+    ]
+}
