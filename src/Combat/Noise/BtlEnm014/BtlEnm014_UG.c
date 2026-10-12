@@ -2,6 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm014.h"
 #include "Engine/Math/Random.h"
 
+#include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
 extern void func_ov003_02084694(void*, s32);
@@ -20,13 +21,7 @@ extern void func_ov003_020ccea8(void*, void*);
 extern void func_ov003_020ccf1c(void*, s32);
 extern s32  func_ov003_020cd11c(s32);
 
-extern s16 data_0205e4e0[];
-
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
-
-static inline s32 Mth_MulFixed(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
 
 #define ABSVAL(value) ((value) < 0 ? -(value) : (value))
 
@@ -164,11 +159,11 @@ void func_ov012_02126c74(BtlEnm014* data) {
     }
 
     idx           = FX_Atan2Idx(boss->actor.position.y - data->actor.position.y, aim) >> 4;
-    sin           = data_0205e4e0[idx * 2 + 1];
-    cos           = data_0205e4e0[idx * 2];
-    mag           = Mth_MulFixed(ABSVAL(sin) + 0x1000, 0x800);
-    data->unk_1D8 = Mth_MulFixed(sin, mag);
-    data->unk_1DC = Mth_MulFixed(cos, mag);
+    sin           = FX_SinCosTable_[idx * 2 + 1];
+    cos           = FX_SinCosTable_[idx * 2];
+    mag           = FX_Mul(ABSVAL(sin) + 0x1000, 0x800);
+    data->unk_1D8 = FX_Mul(sin, mag);
+    data->unk_1DC = FX_Mul(cos, mag);
 
     if (data->unk_1D8 != 0) {
         return;
@@ -309,8 +304,8 @@ void func_ov012_02127134(BtlEnm014* data) {
                                                         data->actor.position.y, data->actor.position.z);
                     if (data->unk_1D0 == 1) {
                         func_ov003_020c4cc4(data, 0x21A);
-                        boss->actor.zVelocity = Mth_MulFixed(boss->actor.zVelocity, 0x2000);
-                        boss->actor.yVelocity = Mth_MulFixed(boss->actor.yVelocity, 0x1800);
+                        boss->actor.zVelocity = FX_Mul(boss->actor.zVelocity, 0x2000);
+                        boss->actor.yVelocity = FX_Mul(boss->actor.yVelocity, 0x1800);
                     }
                 }
             }

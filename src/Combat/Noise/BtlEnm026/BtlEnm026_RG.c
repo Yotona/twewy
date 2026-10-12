@@ -14,11 +14,6 @@ extern void func_ov003_020ccf1c(void*, s32);
 extern void func_ov003_020c4b1c(void*);
 extern s32  func_ov003_020c42ec(void*);
 extern void func_ov003_020c5924(void*, void*);
-extern s16  data_0205e4e0[];
-
-static inline s32 Mth_MulFixed(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
 
 void        func_ov015_0212699c(BtlEnm026*);
 void        func_ov015_02126ec4(BtlEnm026*);
@@ -139,11 +134,11 @@ void func_ov015_0212699c(BtlEnm026* data) {
 
         case 4: {
             s32 angle     = FX_Atan2Idx(data->unk_1B0 - data->actor.position.y, data->unk_1AC - data->actor.position.x) >> 4;
-            s16 sin       = data_0205e4e0[angle * 2 + 1];
-            s16 cos       = data_0205e4e0[angle * 2];
-            s32 mag       = Mth_MulFixed(((sin < 0) ? -sin : sin) + 0x1000, 0x2000);
-            data->unk_1E8 = Mth_MulFixed(sin, mag);
-            data->unk_1EC = Mth_MulFixed(cos, mag);
+            s16 sin       = FX_SinCosTable_[angle * 2 + 1];
+            s16 cos       = FX_SinCosTable_[angle * 2];
+            s32 mag       = FX_Mul(((sin < 0) ? -sin : sin) + 0x1000, 0x2000);
+            data->unk_1E8 = FX_Mul(sin, mag);
+            data->unk_1EC = FX_Mul(cos, mag);
             data->actor.position.x = data->actor.position.x + data->unk_1E8;
             if (data->unk_1E8 > 0) {
                 if (data->actor.position.x > data->unk_1AC) {

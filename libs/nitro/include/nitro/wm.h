@@ -26,8 +26,9 @@ extern "C" {
 #define WM_STATECODE_DISCONNECTED 0x9
 #define WM_STATECODE_PORT_RECV    0x15
 
-#define WM_SIZE_BSSID 6
-#define WM_SIZE_SSID  32
+#define WM_SIZE_BSSID         6
+#define WM_SIZE_SSID          32
+#define WM_SIZE_USER_GAMEINFO 112
 
 #define WM_ATTR_FLAG_ENTRY 0x1
 #define WM_ATTR_FLAG_MB    0x2
@@ -66,10 +67,16 @@ typedef struct WMScanParam {
 } WMScanParam;
 
 typedef struct WMGameInfo {
-    /* 00 */ u32 ggid;
-    /* 04 */ u8  unk_04[0x07 - 0x04];
-    /* 07 */ u8  attribute;
-    /* 08 */ u8  unk_08[0x78];
+    /* 00 */ u16 magicNumber;
+    /* 02 */ u8  ver;
+    /* 03 */ u8  platform;
+    /* 04 */ u32 ggid;
+    /* 08 */ u16 tgid;
+    /* 0a */ u8  userGameInfoLength;
+    /* 0b */ u8  gameNameCount_attribute;
+    /* 0c */ u16 parentMaxSize;
+    /* 0e */ u16 childMaxSize;
+    /* 10 */ u16 userGameInfo[WM_SIZE_USER_GAMEINFO / sizeof(u16)];
     /* 80 */
 } WMGameInfo;
 

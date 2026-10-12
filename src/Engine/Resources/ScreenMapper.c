@@ -1,19 +1,7 @@
+#include "Engine/Resources/ScreenMapper.h"
 #include "Display.h"
 #include "Engine/Color.h"
 #include "common_data.h"
-
-typedef struct ScreenMapEntry {
-    s32   engineId; // 0x00
-    s32   bgLayer;  // 0x04
-    s32   flags;    // 0x08
-    s32   hOffset;  // 0x0C
-    s32   vOffset;  // 0x10
-    void* tilemap;  // 0x14
-    void* unk_18;   // 0x18
-    s32   width;    // 0x1C
-    s32   height;   // 0x20
-    void* tileData; // 0x24
-} ScreenMapEntry;
 
 typedef struct {
     ScreenMapEntry* entries[4];

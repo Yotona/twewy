@@ -78,10 +78,6 @@ COMMON_CC_FLAGS = (
 )
 
 DEFAULT_CC_FLAGS = " ".join(
-    (*COMMON_CC_FLAGS, "-ipa file", "-str noreuse", "-Cpp_exceptions off")
-)
-
-STR_REUSE_CC_FLAGS = " ".join(
     (*COMMON_CC_FLAGS, "-ipa file", "-str reuse", "-Cpp_exceptions off")
 )
 
@@ -93,8 +89,6 @@ MSL_CC_FLAGS = " ".join(
 
 MSL_RUNTIME_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-char unsigned"))
 
-# CriWare was built without -ipa file: initialized globals share one pooled base,
-# while uninitialized ones are each reached through their own literal.
 CRI_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
 
 
@@ -129,38 +123,6 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
         version="1.2/sp4",
         flags=OLD_MWCC_CC_FLAGS,
-    ),
-    Path("src/Interface/Debug/Field/FieldSelect.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Debug/Field/EventSelect.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/MenuEquip.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/Top.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/MenuBadge.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/Tusin.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/TusinSet.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
-    ),
-    Path("src/Interface/Menu/Save.c"): CompilerConfig(
-        version=MWCC_DEFAULT_VERSION,
-        flags=STR_REUSE_CC_FLAGS,
     ),
     Path("libs/c"): MSL_COMPILER_CONFIG,
     Path("libs/cpp"): MSL_COMPILER_CONFIG,

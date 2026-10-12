@@ -1,9 +1,8 @@
 #ifndef _NDS_MATH_H
 #define _NDS_MATH_H
 
-#include <nitro/types.h>
-
 #include <nitro/fx.h>
+#include <nitro/types.h>
 
 #if __MWERKS__
     #define Vec2_Set(a, dst)             \
@@ -49,7 +48,6 @@ extern "C" {
 #define INT_TO_FX32(n)   ((s32)((n) << FX32_SHIFT))
 #define FLOAT_TO_FX32(n) ((s32)(((n) * 8192 + 1) / 2))
 #define ROUND_FX32(n)    (((s32)(n) + 0x800) >> FX32_SHIFT)
-#define MUL_FX32(a, b)   (fx32)((((s64)(a)) * ((s64)(b)) + 0x800) >> FX32_SHIFT)
 #define DIV_FX32(a, b)   (((a) << FX32_SHIFT) / (b))
 
 #define DEG_TO_ANG(n) ((n) * 0x10000 / 360)
@@ -141,10 +139,10 @@ void VecFx32_Scale(VecFx32* vec, fx32 scale);
 bool VecFx32_CalculateNormal(VecFx32* vec, VecFx32* a, VecFx32* b, VecFx32* c);
 
 static inline void VecFx32_Rotate(VecFx32* vec, fx32 sin, fx32 cos, VecFx32* out) {
-    out->x += MUL_FX32(vec->z, sin);
-    out->z += MUL_FX32(vec->z, cos);
-    out->x += MUL_FX32(vec->x, cos);
-    out->z += MUL_FX32(vec->x, -sin);
+    out->x += FX_Mul(vec->z, sin);
+    out->z += FX_Mul(vec->z, cos);
+    out->x += FX_Mul(vec->x, cos);
+    out->z += FX_Mul(vec->x, -sin);
 }
 
 static inline void VecFx32_CopyXZ(VecFx32* vec, VecFx32* out) {

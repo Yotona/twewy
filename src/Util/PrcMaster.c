@@ -149,7 +149,7 @@ void PrcCtx_ReplaceStepTable(PrcCtx* ctx, PrcStepFn* stepTable) {
     frame->stepIndex = 0;
 }
 
-void PrcCtx_ReplaceFrame(PrcCtx* ctx, PrcFrame* newFrame, void* arg2) {
+void PrcCtx_ReplaceFrame(PrcCtx* ctx, PrcFrameDesc* newFrame, void* arg2) {
     if (ctx->currFrameIndex == 0xFFFF) {
         ctx->currFrameIndex = 0;
     }

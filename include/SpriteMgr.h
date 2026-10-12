@@ -187,6 +187,8 @@ static inline void Sprite_FillFrameInfo(SpriteFrameInfo* info, Sprite* sprite) {
 #define Sprite_FrameInfoCallbackEarly(sprite, mode) Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, (void)0)
 #define Sprite_FrameInfoCallbackSorted(sprite, mode, sortKey_)                   \
     Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, info_->sortKey = (sortKey_))
+#define Sprite_FrameInfoCallbackAffineSorted(sprite, mode, affine_, sortKey_)                                 \
+    Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, (info_->affine = (affine_), info_->sortKey = (sortKey_)))
 
 void Sprite_Init(Sprite* sprite);
 
