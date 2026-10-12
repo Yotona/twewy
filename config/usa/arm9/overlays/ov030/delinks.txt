@@ -106,18 +106,18 @@ src/Field/Fld_TalkEventTitle.c:
     categories: Field
     .text       start:0x020c4850 end:0x020c4a78
     .rodata     start:0x020e72a8 end:0x020e72f0
-    .data       start:0x02107608 end:0x02107634
+    .data       start:0x02107608 end:0x02107620
 
 src/Field/Fld_MapJumpName.c:
     categories: Field
     .text       start:0x020c4a78 end:0x020c5088
-    .rodata     start:0x020e72f0 end:0x020e7324
-    .data       start:0x02107634 end:0x02107648
+    .rodata     start:0x020e72f0 end:0x020e7338
+    .data       start:0x02107620 end:0x02107648
 
 src/Field/Fld_MapName.c:
     categories: Field
     .text       start:0x020c5088 end:0x020c5404
-    .rodata     start:0x020e7324 end:0x020e7380
+    .rodata     start:0x020e7338 end:0x020e7380
     .data       start:0x02107648 end:0x02107658
 
 src/Field/Field_020c5404.c:
@@ -177,7 +177,7 @@ src/Field/Fld_BrushHati.c:
     .rodata     start:0x020ecb88 end:0x020ecbd0
     .data       start:0x02108600 end:0x02108614
 
-src/Field/Field_020c91f4.c:
+src/Interface/Debug/Field/FieldNpcMessageSelect.c:
     categories: Field
     .text       start:0x020c91f4 end:0x020c9990
     .rodata     start:0x020ecbd0 end:0x020ecd0c
@@ -187,29 +187,25 @@ src/Field/Task_Mess.c:
     categories: Field
     .text       start:0x020ca1f4 end:0x020ca4bc
     .rodata     start:0x020ecda8 end:0x020ecdc4
-
-src/Field/Field_020ca4bc.c:
-    categories: Field
-    .text       start:0x020ca4bc end:0x020cb12c
-    .rodata     start:0x020ecdc4 end:0x020ed0d8
-    .data       start:0x021088ec end:0x02108920
+    .data       start:0x021088ec end:0x021088f8
 
 src/Field/Task_Window.c:
     categories: Field
-    .text       start:0x020cb12c end:0x020cb284
-    .rodata     start:0x020ed0d8 end:0x020ed0e4
+    .text       start:0x020ca4bc end:0x020cb284
+    .rodata     start:0x020ecdc4 end:0x020ed0e4
+    .data       start:0x021088f8 end:0x02108920
 
 src/Field/LocaTitle.c:
     categories: Field
-    .text       start:0x020d2f2c end:0x020d317c
+    .text       start:0x020d2dac end:0x020d317c
     .rodata     start:0x020ee948 end:0x020ee998
     .data       start:0x021090e4 end:0x02109110
 
 src/Field/XFade.c:
     categories: Field
-    .text       start:0x020d3b3c end:0x020d4830
-    .rodata     start:0x020ee9d4 end:0x020eea04
-    .data       start:0x0210911c end:0x0210916c
+    .text       start:0x020d317c end:0x020d4830
+    .rodata     start:0x020ee998 end:0x020eea04
+    .data       start:0x02109110 end:0x0210916c
 
 src/Field/Field_020ae92c.c:
     categories: Field
@@ -257,25 +253,14 @@ src/Field/Field_020d24d4.c:
     categories: Field
     .text       start:0x020d24d4 end:0x020d2a80
 
-src/Field/Field_020d2a80.c:
+src/Field/LocaTitleSeq.c:
     categories: Field
-    .text       start:0x020d2a80 end:0x020d2f2c
+    .text       start:0x020d2a80 end:0x020d2dac
     .rodata     start:0x020ee93c end:0x020ee948
     .data       start:0x021090bc end:0x021090e4
 
-src/Field/Field_020d317c.c:
-    categories: Field
-    .text       start:0x020d317c end:0x020d3b3c
-    .rodata     start:0x020ee998 end:0x020ee9d4
-    .data       start:0x02109110 end:0x0210911c
-
 src/Field/Field_020d4830.c:
     categories: Field
-    .text       start:0x020d4830 end:0x020d51fc
+    .text       start:0x020d4830 end:0x020d52bc
     .rodata     start:0x020eea04 end:0x020fde48
-    .data       start:0x0210916c end:0x02109bc4
-
-src/Field/Field_020d51fc.c:
-    categories: Field
-    .text       start:0x020d51fc end:0x020d52bc
-    .data       start:0x02109bc4 end:0x02109c00
+    .data       start:0x0210916c end:0x02109c00

@@ -1,5 +1,17 @@
-// Delinked USA ov030 research unit; incomplete, original assembly remains linked.
-// Functions: 17; text: 0x020d1098-0x020d21e0.
-// Provisional boundary confidence: C; BSS ownership remains unassigned.
-// Ownership and function inventory: docs/decomp/ov030-more/manifest.json
-// Handoff: docs/decomp/ov030-more/HANDOFFS.md
+#include "Engine/Core/Memory.h"
+
+char data_ov030_0210909c[16] = "FOFileIO_Alloc";
+
+void* func_ov030_020d2188(s32 size) {
+    void* data = Mem_AllocHeapTail(&gMainHeap, size);
+    Mem_SetSequence(&gMainHeap, data, data_ov030_0210909c);
+    return data;
+}
+
+void func_ov030_020d21bc(void* data) {
+    Mem_Free(&gMainHeap, data);
+}
+
+void func_ov030_020d21d4(void* data) {
+    func_ov030_020d21bc(data);
+}

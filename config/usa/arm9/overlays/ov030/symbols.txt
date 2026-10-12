@@ -1141,64 +1141,64 @@ Fld_TalkEventKeywordMenu_CreateTask kind:function(arm,size=0x34) addr:0x020c41d8
 
 
 func_ov030_020c420c kind:function(arm,size=0xdc) addr:0x020c420c
-func_ov030_020c42e8 kind:function(arm,size=0xa4) addr:0x020c42e8
-func_ov030_020c438c kind:function(arm,size=0xf8) addr:0x020c438c
-func_ov030_020c4484 kind:function(arm,size=0x4c) addr:0x020c4484
-func_ov030_020c44d0 kind:function(arm,size=0x34) addr:0x020c44d0
-func_ov030_020c4504 kind:function(arm,size=0x34) addr:0x020c4504
-func_ov030_020c4538 kind:function(arm,size=0x34) addr:0x020c4538
-func_ov030_020c456c kind:function(arm,size=0x48) addr:0x020c456c
-func_ov030_020c45b4 kind:function(arm,size=0x38) addr:0x020c45b4
-func_ov030_020c45ec kind:function(arm,size=0x9c) addr:0x020c45ec
-func_ov030_020c4688 kind:function(arm,size=0x84) addr:0x020c4688
-func_ov030_020c470c kind:function(arm,size=0x2c) addr:0x020c470c
-func_ov030_020c4738 kind:function(arm,size=0x28) addr:0x020c4738
-func_ov030_020c4760 kind:function(arm,size=0x14) addr:0x020c4760
-func_ov030_020c4774 kind:function(arm,size=0x14) addr:0x020c4774
-func_ov030_020c4788 kind:function(arm,size=0x48) addr:0x020c4788
-func_ov030_020c47d0 kind:function(arm,size=0x40) addr:0x020c47d0
+Fld_TalkEventCursor_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c42e8
+Fld_TalkEventCursor_Load kind:function(arm,size=0xf8) addr:0x020c438c
+Fld_TalkEventCursor_Init kind:function(arm,size=0x4c) addr:0x020c4484
+Fld_TalkEventCursor_Update kind:function(arm,size=0x34) addr:0x020c44d0
+Fld_TalkEventCursor_Render kind:function(arm,size=0x34) addr:0x020c4504
+Fld_TalkEventCursor_Destroy kind:function(arm,size=0x34) addr:0x020c4538
+Fld_TalkEventCursor_RunTask kind:function(arm,size=0x48) addr:0x020c456c
+Fld_TalkEventCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c45b4
+Fld_TalkEventDecide_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c45ec
+Fld_TalkEventDecide_Load kind:function(arm,size=0x84) addr:0x020c4688
+Fld_TalkEventDecide_Init kind:function(arm,size=0x2c) addr:0x020c470c
+Fld_TalkEventDecide_Update kind:function(arm,size=0x28) addr:0x020c4738
+Fld_TalkEventDecide_Render kind:function(arm,size=0x14) addr:0x020c4760
+Fld_TalkEventDecide_Destroy kind:function(arm,size=0x14) addr:0x020c4774
+Fld_TalkEventDecide_RunTask kind:function(arm,size=0x48) addr:0x020c4788
+Fld_TalkEventDecide_CreateTask kind:function(arm,size=0x40) addr:0x020c47d0
 func_ov030_020c4810 kind:function(arm,size=0x40) addr:0x020c4810
-func_ov030_020c4850 kind:function(arm,size=0x9c) addr:0x020c4850
-func_ov030_020c48ec kind:function(arm,size=0x6c) addr:0x020c48ec
-func_ov030_020c4958 kind:function(arm,size=0x38) addr:0x020c4958
-func_ov030_020c4990 kind:function(arm,size=0x48) addr:0x020c4990
-func_ov030_020c49d8 kind:function(arm,size=0x14) addr:0x020c49d8
-func_ov030_020c49ec kind:function(arm,size=0x14) addr:0x020c49ec
-func_ov030_020c4a00 kind:function(arm,size=0x48) addr:0x020c4a00
-func_ov030_020c4a48 kind:function(arm,size=0x30) addr:0x020c4a48
+Fld_TalkEventTitle_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4850
+Fld_TalkEventTitle_Load kind:function(arm,size=0x6c) addr:0x020c48ec
+Fld_TalkEventTitle_Init kind:function(arm,size=0x38) addr:0x020c4958
+Fld_TalkEventTitle_Update kind:function(arm,size=0x48) addr:0x020c4990
+Fld_TalkEventTitle_Render kind:function(arm,size=0x14) addr:0x020c49d8
+Fld_TalkEventTitle_Destroy kind:function(arm,size=0x14) addr:0x020c49ec
+Fld_TalkEventTitle_RunTask kind:function(arm,size=0x48) addr:0x020c4a00
+Fld_TalkEventTitle_CreateTask kind:function(arm,size=0x30) addr:0x020c4a48
 func_ov030_020c4a78 kind:function(arm,size=0x70) addr:0x020c4a78
 func_ov030_020c4ae8 kind:function(arm,size=0xa4) addr:0x020c4ae8
 func_ov030_020c4b8c kind:function(arm,size=0x94) addr:0x020c4b8c
-func_ov030_020c4c20 kind:function(arm,size=0x9c) addr:0x020c4c20
+Fld_MapJumpName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4c20
 func_ov030_020c4cbc kind:function(arm,size=0x20) addr:0x020c4cbc
 func_ov030_020c4cdc kind:function(arm,size=0xa4) addr:0x020c4cdc
 func_ov030_020c4d80 kind:function(arm,size=0x15c) addr:0x020c4d80
-func_ov030_020c4edc kind:function(arm,size=0x8) addr:0x020c4edc
+Fld_MapJumpName_Update kind:function(arm,size=0x8) addr:0x020c4edc
 func_ov030_020c4ee4 kind:function(arm,size=0xb4) addr:0x020c4ee4
-func_ov030_020c4f98 kind:function(arm,size=0x3c) addr:0x020c4f98
-func_ov030_020c4fd4 kind:function(arm,size=0x48) addr:0x020c4fd4
+Fld_MapJumpName_Destroy kind:function(arm,size=0x3c) addr:0x020c4f98
+Fld_MapJumpName_RunTask kind:function(arm,size=0x48) addr:0x020c4fd4
 func_ov030_020c501c kind:function(arm,size=0x6c) addr:0x020c501c
-func_ov030_020c5088 kind:function(arm,size=0x9c) addr:0x020c5088
-func_ov030_020c5124 kind:function(arm,size=0x84) addr:0x020c5124
-func_ov030_020c51a8 kind:function(arm,size=0xdc) addr:0x020c51a8
-func_ov030_020c5284 kind:function(arm,size=0x8) addr:0x020c5284
-func_ov030_020c528c kind:function(arm,size=0x68) addr:0x020c528c
-func_ov030_020c52f4 kind:function(arm,size=0x38) addr:0x020c52f4
-func_ov030_020c532c kind:function(arm,size=0x48) addr:0x020c532c
-func_ov030_020c5374 kind:function(arm,size=0x38) addr:0x020c5374
+Fld_MapName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5088
+Fld_MapName_Load kind:function(arm,size=0x84) addr:0x020c5124
+Fld_MapName_Init kind:function(arm,size=0xdc) addr:0x020c51a8
+Fld_MapName_Update kind:function(arm,size=0x8) addr:0x020c5284
+Fld_MapName_Render kind:function(arm,size=0x68) addr:0x020c528c
+Fld_MapName_Destroy kind:function(arm,size=0x38) addr:0x020c52f4
+Fld_MapName_RunTask kind:function(arm,size=0x48) addr:0x020c532c
+Fld_MapName_CreateTask kind:function(arm,size=0x38) addr:0x020c5374
 func_ov030_020c53ac kind:function(arm,size=0x3c) addr:0x020c53ac
 func_ov030_020c53e8 kind:function(arm,size=0x1c) addr:0x020c53e8
 func_ov030_020c5404 kind:function(arm,size=0x2c) addr:0x020c5404
 func_ov030_020c5430 kind:function(arm,size=0x30) addr:0x020c5430
 func_ov030_020c5460 kind:function(arm,size=0x2c) addr:0x020c5460
-func_ov030_020c548c kind:function(arm,size=0xac) addr:0x020c548c
-func_ov030_020c5538 kind:function(arm,size=0xc8) addr:0x020c5538
-func_ov030_020c5600 kind:function(arm,size=0x2c) addr:0x020c5600
-func_ov030_020c562c kind:function(arm,size=0x68) addr:0x020c562c
-func_ov030_020c5694 kind:function(arm,size=0x14) addr:0x020c5694
-func_ov030_020c56a8 kind:function(arm,size=0x14) addr:0x020c56a8
-func_ov030_020c56bc kind:function(arm,size=0x48) addr:0x020c56bc
-func_ov030_020c5704 kind:function(arm,size=0x40) addr:0x020c5704
+Fld_NSymbolUGAppear_GetFrameInfo kind:function(arm,size=0xac) addr:0x020c548c
+Fld_NSymbolUGAppear_Load kind:function(arm,size=0xc8) addr:0x020c5538
+Fld_NSymbolUGAppear_Init kind:function(arm,size=0x2c) addr:0x020c5600
+Fld_NSymbolUGAppear_Update kind:function(arm,size=0x68) addr:0x020c562c
+Fld_NSymbolUGAppear_Render kind:function(arm,size=0x14) addr:0x020c5694
+Fld_NSymbolUGAppear_Destroy kind:function(arm,size=0x14) addr:0x020c56a8
+Fld_NSymbolUGAppear_RunTask kind:function(arm,size=0x48) addr:0x020c56bc
+Fld_NSymbolUGAppear_CreateTask kind:function(arm,size=0x40) addr:0x020c5704
 func_ov030_020c5744 kind:function(arm,size=0x54) addr:0x020c5744
 func_ov030_020c5798 kind:function(arm,size=0x6c) addr:0x020c5798
 func_ov030_020c5804 kind:function(arm,size=0x9c) addr:0x020c5804
@@ -1208,14 +1208,14 @@ func_ov030_020c5930 kind:function(arm,size=0x3c) addr:0x020c5930
 func_ov030_020c596c kind:function(arm,size=0x44) addr:0x020c596c
 func_ov030_020c59b0 kind:function(arm,size=0x4c) addr:0x020c59b0
 func_ov030_020c59fc kind:function(arm,size=0x2c) addr:0x020c59fc
-func_ov030_020c5a28 kind:function(arm,size=0xa8) addr:0x020c5a28
+Fld_Piranha_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020c5a28
 func_ov030_020c5ad0 kind:function(arm,size=0x108) addr:0x020c5ad0
 func_ov030_020c5bd8 kind:function(arm,size=0x94) addr:0x020c5bd8
 func_ov030_020c5c6c kind:function(arm,size=0x20) addr:0x020c5c6c
 func_ov030_020c5c8c kind:function(arm,size=0x190) addr:0x020c5c8c
 func_ov030_020c5e1c kind:function(arm,size=0x58) addr:0x020c5e1c
-func_ov030_020c5e74 kind:function(arm,size=0x14) addr:0x020c5e74
-func_ov030_020c5e88 kind:function(arm,size=0x48) addr:0x020c5e88
+Fld_Piranha_Destroy kind:function(arm,size=0x14) addr:0x020c5e74
+Fld_Piranha_RunTask kind:function(arm,size=0x48) addr:0x020c5e88
 func_ov030_020c5ed0 kind:function(arm,size=0x38) addr:0x020c5ed0
 func_ov030_020c5f08 kind:function(arm,size=0x54) addr:0x020c5f08
 func_ov030_020c5f5c kind:function(arm,size=0x14) addr:0x020c5f5c
@@ -1230,22 +1230,22 @@ func_ov030_020c6498 kind:function(arm,size=0x3a4) addr:0x020c6498
 func_ov030_020c683c kind:function(arm,size=0x28) addr:0x020c683c
 func_ov030_020c6864 kind:function(arm,size=0x240) addr:0x020c6864
 func_ov030_020c6aa4 kind:function(arm,size=0x1b4) addr:0x020c6aa4
-func_ov030_020c6c58 kind:function(arm,size=0x9c) addr:0x020c6c58
-func_ov030_020c6cf4 kind:function(arm,size=0x8c) addr:0x020c6cf4
-func_ov030_020c6d80 kind:function(arm,size=0x34) addr:0x020c6d80
-func_ov030_020c6db4 kind:function(arm,size=0x20) addr:0x020c6db4
-func_ov030_020c6dd4 kind:function(arm,size=0x20) addr:0x020c6dd4
-func_ov030_020c6df4 kind:function(arm,size=0x20) addr:0x020c6df4
-func_ov030_020c6e14 kind:function(arm,size=0x48) addr:0x020c6e14
-func_ov030_020c6e5c kind:function(arm,size=0x34) addr:0x020c6e5c
-func_ov030_020c6e90 kind:function(arm,size=0x9c) addr:0x020c6e90
-func_ov030_020c6f2c kind:function(arm,size=0x74) addr:0x020c6f2c
-func_ov030_020c6fa0 kind:function(arm,size=0xe0) addr:0x020c6fa0
-func_ov030_020c7080 kind:function(arm,size=0x40) addr:0x020c7080
-func_ov030_020c70c0 kind:function(arm,size=0x60) addr:0x020c70c0
-func_ov030_020c7120 kind:function(arm,size=0x14) addr:0x020c7120
-func_ov030_020c7134 kind:function(arm,size=0x48) addr:0x020c7134
-func_ov030_020c717c kind:function(arm,size=0x34) addr:0x020c717c
+Fld_TouchNext_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c6c58
+Fld_TouchNext_Load kind:function(arm,size=0x8c) addr:0x020c6cf4
+Fld_TouchNext_Init kind:function(arm,size=0x34) addr:0x020c6d80
+Fld_TouchNext_Update kind:function(arm,size=0x20) addr:0x020c6db4
+Fld_TouchNext_Render kind:function(arm,size=0x20) addr:0x020c6dd4
+Fld_TouchNext_Destroy kind:function(arm,size=0x20) addr:0x020c6df4
+Fld_TouchNext_RunTask kind:function(arm,size=0x48) addr:0x020c6e14
+Fld_TouchNext_CreateTask kind:function(arm,size=0x34) addr:0x020c6e5c
+Fld_GetPlate_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c6e90
+Fld_GetPlate_Load kind:function(arm,size=0x74) addr:0x020c6f2c
+Fld_GetPlate_Init kind:function(arm,size=0xe0) addr:0x020c6fa0
+Fld_GetPlate_Update kind:function(arm,size=0x40) addr:0x020c7080
+Fld_GetPlate_Render kind:function(arm,size=0x60) addr:0x020c70c0
+Fld_GetPlate_Destroy kind:function(arm,size=0x14) addr:0x020c7120
+Fld_GetPlate_RunTask kind:function(arm,size=0x48) addr:0x020c7134
+Fld_GetPlate_CreateTask kind:function(arm,size=0x34) addr:0x020c717c
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_GetMess.c
@@ -1328,14 +1328,14 @@ Fld_UGFade_RunTask kind:function(arm,size=0x48) addr:0x020c8524
 Fld_UGFade_CreateTask kind:function(arm,size=0x38) addr:0x020c856c
 
 
-func_ov030_020c85a4 kind:function(arm,size=0xe4) addr:0x020c85a4
-func_ov030_020c8688 kind:function(arm,size=0xe0) addr:0x020c8688
-func_ov030_020c8768 kind:function(arm,size=0x2c) addr:0x020c8768
-func_ov030_020c8794 kind:function(arm,size=0x14) addr:0x020c8794
-func_ov030_020c87a8 kind:function(arm,size=0x14) addr:0x020c87a8
-func_ov030_020c87bc kind:function(arm,size=0x14) addr:0x020c87bc
-func_ov030_020c87d0 kind:function(arm,size=0x48) addr:0x020c87d0
-func_ov030_020c8818 kind:function(arm,size=0x50) addr:0x020c8818
+Fld_BattleIn_GetFrameInfo kind:function(arm,size=0xe4) addr:0x020c85a4
+Fld_BattleIn_Load kind:function(arm,size=0xe0) addr:0x020c8688
+Fld_BattleIn_Init kind:function(arm,size=0x2c) addr:0x020c8768
+Fld_BattleIn_Update kind:function(arm,size=0x14) addr:0x020c8794
+Fld_BattleIn_Render kind:function(arm,size=0x14) addr:0x020c87a8
+Fld_BattleIn_Destroy kind:function(arm,size=0x14) addr:0x020c87bc
+Fld_BattleIn_RunTask kind:function(arm,size=0x48) addr:0x020c87d0
+Fld_BattleIn_CreateTask kind:function(arm,size=0x50) addr:0x020c8818
 func_ov030_020c8868 kind:function(arm,size=0x9c) addr:0x020c8868
 func_ov030_020c8904 kind:function(arm,size=0x6c) addr:0x020c8904
 func_ov030_020c8970 kind:function(arm,size=0x18) addr:0x020c8970
@@ -1348,32 +1348,32 @@ func_ov030_020c8a3c kind:function(arm,size=0x1c) addr:0x020c8a3c
 func_ov030_020c8a58 kind:function(arm,size=0x88) addr:0x020c8a58
 func_ov030_020c8ae0 kind:function(arm,size=0x58) addr:0x020c8ae0
 func_ov030_020c8b38 kind:function(arm,size=0x58) addr:0x020c8b38
-func_ov030_020c8b90 kind:function(arm,size=0x194) addr:0x020c8b90
+Fld_Brush_Init kind:function(arm,size=0x194) addr:0x020c8b90
 func_ov030_020c8d24 kind:function(arm,size=0x30) addr:0x020c8d24
-func_ov030_020c8d54 kind:function(arm,size=0x1f8) addr:0x020c8d54
-func_ov030_020c8f4c kind:function(arm,size=0x8) addr:0x020c8f4c
-func_ov030_020c8f54 kind:function(arm,size=0x40) addr:0x020c8f54
-func_ov030_020c8f94 kind:function(arm,size=0x48) addr:0x020c8f94
-func_ov030_020c8fdc kind:function(arm,size=0x30) addr:0x020c8fdc
-func_ov030_020c900c kind:function(arm,size=0x9c) addr:0x020c900c
-func_ov030_020c90a8 kind:function(arm,size=0x7c) addr:0x020c90a8
-func_ov030_020c9124 kind:function(arm,size=0x18) addr:0x020c9124
-func_ov030_020c913c kind:function(arm,size=0x14) addr:0x020c913c
-func_ov030_020c9150 kind:function(arm,size=0x14) addr:0x020c9150
-func_ov030_020c9164 kind:function(arm,size=0x14) addr:0x020c9164
-func_ov030_020c9178 kind:function(arm,size=0x48) addr:0x020c9178
-func_ov030_020c91c0 kind:function(arm,size=0x34) addr:0x020c91c0
-func_ov030_020c91f4 kind:function(arm,size=0x88) addr:0x020c91f4
-func_ov030_020c927c kind:function(arm,size=0x94) addr:0x020c927c
-func_ov030_020c9310 kind:function(arm,size=0x14) addr:0x020c9310
-func_ov030_020c9324 kind:function(arm,size=0x114) addr:0x020c9324
-func_ov030_020c9438 kind:function(arm,size=0x40) addr:0x020c9438
-func_ov030_020c9478 kind:function(arm,size=0x38) addr:0x020c9478
-func_ov030_020c94b0 kind:function(arm,size=0x2ac) addr:0x020c94b0
-func_ov030_020c975c kind:function(arm,size=0x114) addr:0x020c975c
-func_ov030_020c9870 kind:function(arm,size=0x8c) addr:0x020c9870
-func_ov030_020c98fc kind:function(arm,size=0x54) addr:0x020c98fc
-func_ov030_020c9950 kind:function(arm,size=0x40) addr:0x020c9950
+Fld_Brush_Update kind:function(arm,size=0x1f8) addr:0x020c8d54
+Fld_Brush_Render kind:function(arm,size=0x8) addr:0x020c8f4c
+Fld_Brush_Destroy kind:function(arm,size=0x40) addr:0x020c8f54
+Fld_Brush_RunTask kind:function(arm,size=0x48) addr:0x020c8f94
+Fld_Brush_CreateTask kind:function(arm,size=0x30) addr:0x020c8fdc
+Fld_BrushHati_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c900c
+Fld_BrushHati_Load kind:function(arm,size=0x7c) addr:0x020c90a8
+Fld_BrushHati_Init kind:function(arm,size=0x18) addr:0x020c9124
+Fld_BrushHati_Update kind:function(arm,size=0x14) addr:0x020c913c
+Fld_BrushHati_Render kind:function(arm,size=0x14) addr:0x020c9150
+Fld_BrushHati_Destroy kind:function(arm,size=0x14) addr:0x020c9164
+Fld_BrushHati_RunTask kind:function(arm,size=0x48) addr:0x020c9178
+Fld_BrushHati_CreateTask kind:function(arm,size=0x34) addr:0x020c91c0
+FldNpcMesSel_CreateTextView kind:function(arm,size=0x88) addr:0x020c91f4
+FldNpcMesSel_DrawMenu kind:function(arm,size=0x94) addr:0x020c927c
+FldNpcMesSel_DestroyTextView kind:function(arm,size=0x14) addr:0x020c9310
+FldNpcMesSel_CreateMessageWindow kind:function(arm,size=0x114) addr:0x020c9324
+FldNpcMesSel_Open kind:function(arm,size=0x40) addr:0x020c9438
+FldNpcMesSel_Close kind:function(arm,size=0x38) addr:0x020c9478
+FldNpcMesSel_HandleInput kind:function(arm,size=0x2ac) addr:0x020c94b0
+FldNpcMesSel_Init kind:function(arm,size=0x114) addr:0x020c975c
+FldNpcMesSel_Update kind:function(arm,size=0x8c) addr:0x020c9870
+FldNpcMesSel_Destroy kind:function(arm,size=0x54) addr:0x020c98fc
+ProcessOverlay_FldNpcMesSel kind:function(arm,size=0x40) addr:0x020c9950
 FldMesSel_CreateTextView kind:function(arm,size=0x88) addr:0x020c9990
 FldMesSel_DrawMenu kind:function(arm,size=0x114) addr:0x020c9a18
 FldMesSel_DestroyTextView kind:function(arm,size=0x14) addr:0x020c9b2c
@@ -1393,11 +1393,11 @@ func_ov030_020ca200 kind:function(arm,size=0x104) addr:0x020ca200
 func_ov030_020ca304 kind:function(arm,size=0x7c) addr:0x020ca304
 func_ov030_020ca380 kind:function(arm,size=0x64) addr:0x020ca380
 func_ov030_020ca3e4 kind:function(arm,size=0x4) addr:0x020ca3e4
-func_ov030_020ca3e8 kind:function(arm,size=0x3c) addr:0x020ca3e8
-func_ov030_020ca424 kind:function(arm,size=0x24) addr:0x020ca424
-func_ov030_020ca448 kind:function(arm,size=0x14) addr:0x020ca448
-func_ov030_020ca45c kind:function(arm,size=0x18) addr:0x020ca45c
-func_ov030_020ca474 kind:function(arm,size=0x48) addr:0x020ca474
+Task_Mess_Init kind:function(arm,size=0x3c) addr:0x020ca3e8
+Task_Mess_Update kind:function(arm,size=0x24) addr:0x020ca424
+Task_Mess_Render kind:function(arm,size=0x14) addr:0x020ca448
+Task_Mess_Destroy kind:function(arm,size=0x18) addr:0x020ca45c
+Task_Mess_RunTask kind:function(arm,size=0x48) addr:0x020ca474
 func_ov030_020ca4bc kind:function(arm,size=0x58) addr:0x020ca4bc
 func_ov030_020ca514 kind:function(arm,size=0x74) addr:0x020ca514
 func_ov030_020ca588 kind:function(arm,size=0x1f0) addr:0x020ca588
@@ -1408,9 +1408,9 @@ func_ov030_020cab3c kind:function(arm,size=0x28) addr:0x020cab3c
 func_ov030_020cab64 kind:function(arm,size=0x2ac) addr:0x020cab64
 func_ov030_020cae10 kind:function(arm,size=0x28c) addr:0x020cae10
 func_ov030_020cb09c kind:function(arm,size=0x90) addr:0x020cb09c
-func_ov030_020cb12c kind:function(arm,size=0x3c) addr:0x020cb12c
-func_ov030_020cb168 kind:function(arm,size=0x6c) addr:0x020cb168
-func_ov030_020cb1d4 kind:function(arm,size=0x48) addr:0x020cb1d4
+Task_Window_Render kind:function(arm,size=0x3c) addr:0x020cb12c
+Task_Window_Destroy kind:function(arm,size=0x6c) addr:0x020cb168
+Task_Window_RunTask kind:function(arm,size=0x48) addr:0x020cb1d4
 func_ov030_020cb21c kind:function(arm,size=0x68) addr:0x020cb21c
 func_ov030_020cb284 kind:function(arm,size=0xd0) addr:0x020cb284
 func_ov030_020cb354 kind:function(arm,size=0x2e0) addr:0x020cb354
@@ -1590,22 +1590,22 @@ func_ov030_020d2a1c kind:function(arm,size=0x14) addr:0x020d2a1c
 func_ov030_020d2a30 kind:function(arm,size=0x28) addr:0x020d2a30
 func_ov030_020d2a58 kind:function(arm,size=0x28) addr:0x020d2a58
 func_ov030_020d2a80 kind:function(arm,size=0x94) addr:0x020d2a80
-func_ov030_020d2b14 kind:function(arm,size=0x24) addr:0x020d2b14
-func_ov030_020d2b38 kind:function(arm,size=0x120) addr:0x020d2b38
-func_ov030_020d2c58 kind:function(arm,size=0xe0) addr:0x020d2c58
-func_ov030_020d2d38 kind:function(arm,size=0x34) addr:0x020d2d38
-func_ov030_020d2d6c kind:function(arm,size=0x40) addr:0x020d2d6c
-func_ov030_020d2dac kind:function(arm,size=0x10) addr:0x020d2dac
+LocaTitleSeq_Main kind:function(arm,size=0x24) addr:0x020d2b14
+LocaTitleSeq_Init kind:function(arm,size=0x120) addr:0x020d2b38
+LocaTitleSeq_Update kind:function(arm,size=0xe0) addr:0x020d2c58
+LocaTitleSeq_Destroy kind:function(arm,size=0x34) addr:0x020d2d38
+ProcessOverlay_LocaTitleSeq kind:function(arm,size=0x40) addr:0x020d2d6c
+LocaTitle_SetUpdate kind:function(arm,size=0x10) addr:0x020d2dac
 func_ov030_020d2dbc kind:function(arm,size=0x90) addr:0x020d2dbc
 func_ov030_020d2e4c kind:function(arm,size=0x74) addr:0x020d2e4c
 func_ov030_020d2ec0 kind:function(arm,size=0x6c) addr:0x020d2ec0
-func_ov030_020d2f2c kind:function(arm,size=0xbc) addr:0x020d2f2c
-func_ov030_020d2fe8 kind:function(arm,size=0x50) addr:0x020d2fe8
-func_ov030_020d3038 kind:function(arm,size=0x34) addr:0x020d3038
-func_ov030_020d306c kind:function(arm,size=0x48) addr:0x020d306c
-func_ov030_020d30b4 kind:function(arm,size=0x20) addr:0x020d30b4
-func_ov030_020d30d4 kind:function(arm,size=0x48) addr:0x020d30d4
-func_ov030_020d311c kind:function(arm,size=0x60) addr:0x020d311c
+LocaTitle_Load kind:function(arm,size=0xbc) addr:0x020d2f2c
+LocaTitle_Init kind:function(arm,size=0x50) addr:0x020d2fe8
+LocaTitle_Update kind:function(arm,size=0x34) addr:0x020d3038
+LocaTitle_Render kind:function(arm,size=0x48) addr:0x020d306c
+LocaTitle_Destroy kind:function(arm,size=0x20) addr:0x020d30b4
+LocaTitle_RunTask kind:function(arm,size=0x48) addr:0x020d30d4
+LocaTitle_CreateTask kind:function(arm,size=0x60) addr:0x020d311c
 func_ov030_020d317c kind:function(arm,size=0x34) addr:0x020d317c
 func_ov030_020d31b0 kind:function(arm,size=0x40) addr:0x020d31b0
 func_ov030_020d31f0 kind:function(arm,size=0x34) addr:0x020d31f0
@@ -1635,7 +1635,7 @@ func_ov030_020d3eb0 kind:function(arm,size=0x1c8) addr:0x020d3eb0
 func_ov030_020d4078 kind:function(arm,size=0x6b0) addr:0x020d4078
 func_ov030_020d4728 kind:function(arm,size=0x38) addr:0x020d4728
 func_ov030_020d4760 kind:function(arm,size=0x88) addr:0x020d4760
-func_ov030_020d47e8 kind:function(arm,size=0x48) addr:0x020d47e8
+XFade_RunTask kind:function(arm,size=0x48) addr:0x020d47e8
 func_ov030_020d4830 kind:function(arm,size=0xc) addr:0x020d4830
 func_ov030_020d483c kind:function(arm,size=0x28) addr:0x020d483c
 func_ov030_020d4864 kind:function(arm,size=0x1c) addr:0x020d4864
@@ -2522,28 +2522,25 @@ Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc
 @259 kind:data(any) addr:0x020e7208 local
 
 
-data_ov030_020e7218 kind:data(any) addr:0x020e7218
-data_ov030_020e7224 kind:data(any) addr:0x020e7224
-data_ov030_020e7234 kind:data(any) addr:0x020e7234
-data_ov030_020e7260 kind:data(any) addr:0x020e7260
-data_ov030_020e726c kind:data(any) addr:0x020e726c
-data_ov030_020e727c kind:data(any) addr:0x020e727c
-data_ov030_020e72a8 kind:data(any) addr:0x020e72a8
-data_ov030_020e72b4 kind:data(any) addr:0x020e72b4
-data_ov030_020e72c4 kind:data(any) addr:0x020e72c4
-data_ov030_020e72f0 kind:data(any) addr:0x020e72f0
-data_ov030_020e72fc kind:data(any) addr:0x020e72fc
-data_ov030_020e730c kind:data(any) addr:0x020e730c
-data_ov030_020e7324 kind:data(any) addr:0x020e7324 ambiguous
-data_ov030_020e7338 kind:data(any) addr:0x020e7338
-data_ov030_020e7344 kind:data(any) addr:0x020e7344
-data_ov030_020e7354 kind:data(any) addr:0x020e7354
+Tsk_Fld_TalkEventCursor kind:data(any) addr:0x020e7218 local
+@1359 kind:data(any) addr:0x020e7224 local
+Fld_TalkEventCursor_Anim kind:data(any) addr:0x020e7234 local
+Tsk_Fld_TalkEventDecide kind:data(any) addr:0x020e7260 local
+@1350 kind:data(any) addr:0x020e726c local
+Fld_TalkEventDecide_Anim kind:data(any) addr:0x020e727c local
+Tsk_Fld_TalkEventTitle kind:data(any) addr:0x020e72a8 local
+@1352 kind:data(any) addr:0x020e72b4 local
+Fld_TalkEventTitle_Anim kind:data(any) addr:0x020e72c4 local
+Tsk_Fld_MapJumpName kind:data(any) addr:0x020e72f0
+@1553 kind:data(any) addr:0x020e72fc local
+Fld_MapJumpName_Anim kind:data(any) addr:0x020e730c
+Tsk_Fld_MapName kind:data(any) addr:0x020e7338 local
+@1496 kind:data(any) addr:0x020e7344 local
+Fld_MapName_Anim kind:data(any) addr:0x020e7354 local
 data_ov030_020e7380 kind:data(any) addr:0x020e7380
-data_ov030_020e7382 kind:data(any) addr:0x020e7382
-data_ov030_020e7384 kind:data(any) addr:0x020e7384
-data_ov030_020e7418 kind:data(any) addr:0x020e7418
-data_ov030_020e7424 kind:data(any) addr:0x020e7424
-data_ov030_020e7434 kind:data(any) addr:0x020e7434
+Tsk_Fld_NSymbolUGAppear kind:data(any) addr:0x020e7418 local
+@1363 kind:data(any) addr:0x020e7424 local
+Fld_NSymbolUGAppear_Anim kind:data(any) addr:0x020e7434 local
 data_ov030_020e7460 kind:data(any) addr:0x020e7460
 data_ov030_020e7464 kind:data(any) addr:0x020e7464
 data_ov030_020e7468 kind:data(any) addr:0x020e7468
@@ -3399,9 +3396,9 @@ data_ov030_020ea2f4 kind:data(any) addr:0x020ea2f4
 data_ov030_020ea344 kind:data(any) addr:0x020ea344
 data_ov030_020ea394 kind:data(any) addr:0x020ea394
 data_ov030_020ea438 kind:data(any) addr:0x020ea438
-data_ov030_020ea440 kind:data(any) addr:0x020ea440
-data_ov030_020ea44c kind:data(any) addr:0x020ea44c
-data_ov030_020ea45c kind:data(any) addr:0x020ea45c
+Tsk_Fld_Piranha kind:data(any) addr:0x020ea440
+@1341 kind:data(any) addr:0x020ea44c local
+Fld_Piranha_Anim kind:data(any) addr:0x020ea45c
 data_ov030_020ea488 kind:data(any) addr:0x020ea488
 data_ov030_020eae80 kind:data(any) addr:0x020eae80
 data_ov030_020eae84 kind:data(any) addr:0x020eae84
@@ -3534,12 +3531,12 @@ data_ov030_020eba44 kind:data(any) addr:0x020eba44
 data_ov030_020ebaa4 kind:data(any) addr:0x020ebaa4
 data_ov030_020ebb24 kind:data(any) addr:0x020ebb24
 data_ov030_020ec824 kind:data(any) addr:0x020ec824
-data_ov030_020ec844 kind:data(any) addr:0x020ec844
-data_ov030_020ec850 kind:data(any) addr:0x020ec850
-data_ov030_020ec860 kind:data(any) addr:0x020ec860
-data_ov030_020ec88c kind:data(any) addr:0x020ec88c
-data_ov030_020ec898 kind:data(any) addr:0x020ec898
-data_ov030_020ec8a8 kind:data(any) addr:0x020ec8a8
+Tsk_Fld_TouchNext kind:data(any) addr:0x020ec844 local
+@1348 kind:data(any) addr:0x020ec850 local
+Fld_TouchNext_Anim kind:data(any) addr:0x020ec860 local
+Tsk_Fld_GetPlate kind:data(any) addr:0x020ec88c local
+@1483 kind:data(any) addr:0x020ec898 local
+Fld_GetPlate_Anim kind:data(any) addr:0x020ec8a8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_GetMess.c
@@ -3584,28 +3581,27 @@ Tsk_Fld_UGFade kind:data(any) addr:0x020eca48 local
 
 
 data_ov030_020eca64 kind:data(any) addr:0x020eca64
-data_ov030_020eca6c kind:data(any) addr:0x020eca6c
-data_ov030_020eca78 kind:data(any) addr:0x020eca78
-data_ov030_020eca88 kind:data(any) addr:0x020eca88
+Tsk_Fld_BattleIn kind:data(any) addr:0x020eca6c local
+@1436 kind:data(any) addr:0x020eca78 local
+Fld_BattleIn_Anim kind:data(any) addr:0x020eca88 local
 data_ov030_020ecab4 kind:data(any) addr:0x020ecab4
 data_ov030_020ecac0 kind:data(any) addr:0x020ecac0
 data_ov030_020ecad0 kind:data(any) addr:0x020ecad0
-data_ov030_020ecafc kind:data(any) addr:0x020ecafc
-data_ov030_020ecb08 kind:data(any) addr:0x020ecb08
+Tsk_Fld_Brush kind:data(any) addr:0x020ecafc local
+@247 kind:data(any) addr:0x020ecb08 local
 data_ov030_020ecb18 kind:data(any) addr:0x020ecb18
-data_ov030_020ecb88 kind:data(any) addr:0x020ecb88
-data_ov030_020ecb94 kind:data(any) addr:0x020ecb94
-data_ov030_020ecba4 kind:data(any) addr:0x020ecba4
-data_ov030_020ecbd0 kind:data(any) addr:0x020ecbd0
-data_ov030_020ecbdc kind:data(any) addr:0x020ecbdc
-data_ov030_020ecbe0 kind:data(any) addr:0x020ecbe0
+Tsk_Fld_BrushHati kind:data(any) addr:0x020ecb88 local
+@1348 kind:data(any) addr:0x020ecb94 local
+Fld_BrushHati_Anim kind:data(any) addr:0x020ecba4 local
+OvlProc_FldNpcMesSel kind:data(any) addr:0x020ecbd0 local
+FldNpcMesSelTable kind:data(any) addr:0x020ecbdc local
 OvlProc_FldMesSel kind:data(any) addr:0x020ecd0c local
 FldMesWinKindTable kind:data(any) addr:0x020ecd18 local
-data_ov030_020ecda8 kind:data(any) addr:0x020ecda8
-data_ov030_020ecdb4 kind:data(any) addr:0x020ecdb4
+Tsk_Task_Mess kind:data(any) addr:0x020ecda8
+@1528 kind:data(any) addr:0x020ecdb4 local
 data_ov030_020ecdc4 kind:data(any) addr:0x020ecdc4
 data_ov030_020ecdcc kind:data(any) addr:0x020ecdcc
-data_ov030_020ecddc kind:data(any) addr:0x020ecddc
+@1373 kind:data(any) addr:0x020ecddc local
 data_ov030_020ecdec kind:data(any) addr:0x020ecdec
 data_ov030_020ecdfc kind:data(any) addr:0x020ecdfc
 data_ov030_020ece24 kind:data(any) addr:0x020ece24
@@ -3615,7 +3611,7 @@ data_ov030_020ece80 kind:data(any) addr:0x020ece80
 data_ov030_020ece82 kind:data(any) addr:0x020ece82
 data_ov030_020eceba kind:data(any) addr:0x020eceba
 data_ov030_020ecfa4 kind:data(any) addr:0x020ecfa4
-Task_Window kind:data(any) addr:0x020ed0d8
+Tsk_Task_Window kind:data(any) addr:0x020ed0d8
 data_ov030_020ed0e4 kind:data(any) addr:0x020ed0e4
 data_ov030_020ed0f0 kind:data(any) addr:0x020ed0f0
 data_ov030_020ed100 kind:data(any) addr:0x020ed100
@@ -3661,13 +3657,13 @@ data_ov030_020ee628 kind:data(any) addr:0x020ee628
 data_ov030_020ee6f0 kind:data(any) addr:0x020ee6f0
 data_ov030_020ee7b8 kind:data(any) addr:0x020ee7b8
 data_ov030_020ee880 kind:data(any) addr:0x020ee880
-data_ov030_020ee93c kind:data(any) addr:0x020ee93c
+OvlProc_LocaTitleSeq kind:data(any) addr:0x020ee93c local
 data_ov030_020ee948 kind:data(any) addr:0x020ee948
-data_ov030_020ee950 kind:data(any) addr:0x020ee950
-data_ov030_020ee95c kind:data(any) addr:0x020ee95c
-data_ov030_020ee96c kind:data(any) addr:0x020ee96c
-data_ov030_020ee998 kind:data(any) addr:0x020ee998
-data_ov030_020ee9a4 kind:data(any) addr:0x020ee9a4
+Tsk_LocaTitle kind:data(any) addr:0x020ee950 local
+@1379 kind:data(any) addr:0x020ee95c local
+LocaTitle_Anim kind:data(any) addr:0x020ee96c local
+Tsk_XFade kind:data(any) addr:0x020ee998
+@1463 kind:data(any) addr:0x020ee9a4 local
 data_ov030_020ee9b4 kind:data(any) addr:0x020ee9b4
 data_ov030_020ee9c4 kind:data(any) addr:0x020ee9c4
 data_ov030_020ee9d4 kind:data(any) addr:0x020ee9d4
@@ -6491,13 +6487,13 @@ data_ov030_02107580 kind:data(any) addr:0x02107580
 @145 kind:data(any) addr:0x021075b8 local
 
 
-data_ov030_021075d8 kind:data(any) addr:0x021075d8
-data_ov030_021075f0 kind:data(any) addr:0x021075f0
-data_ov030_02107608 kind:data(any) addr:0x02107608
+@1326 kind:data(any) addr:0x021075d8 local
+@1298 kind:data(any) addr:0x021075f0 local
+@1296 kind:data(any) addr:0x02107608 local
 data_ov030_02107620 kind:data(any) addr:0x02107620
-data_ov030_02107634 kind:data(any) addr:0x02107634
-data_ov030_02107648 kind:data(any) addr:0x02107648
-data_ov030_02107658 kind:data(any) addr:0x02107658
+@1480 kind:data(any) addr:0x02107634 local
+@1428 kind:data(any) addr:0x02107648 local
+@1284 kind:data(any) addr:0x02107658 local
 data_ov030_02107670 kind:data(any) addr:0x02107670
 data_ov030_021076c8 kind:data(any) addr:0x021076c8
 data_ov030_02107720 kind:data(any) addr:0x02107720
@@ -6559,10 +6555,10 @@ data_ov030_021083d8 kind:data(any) addr:0x021083d8
 data_ov030_021083e4 kind:data(any) addr:0x021083e4
 data_ov030_021083f4 kind:data(any) addr:0x021083f4
 data_ov030_02108408 kind:data(any) addr:0x02108408
-data_ov030_02108464 kind:data(any) addr:0x02108464
+@1290 kind:data(any) addr:0x02108464 local
 data_ov030_02108474 kind:data(any) addr:0x02108474
-data_ov030_02108490 kind:data(any) addr:0x02108490
-data_ov030_021084a4 kind:data(any) addr:0x021084a4
+@1293 kind:data(any) addr:0x02108490 local
+@1416 kind:data(any) addr:0x021084a4 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Fld_GetMess.c
@@ -6602,12 +6598,12 @@ data_ov030_021084a4 kind:data(any) addr:0x021084a4
 @644 kind:data(any) addr:0x021085b8 local
 
 
-data_ov030_021085c8 kind:data(any) addr:0x021085c8
+@1378 kind:data(any) addr:0x021085c8 local
 data_ov030_021085dc kind:data(any) addr:0x021085dc
-data_ov030_021085f0 kind:data(any) addr:0x021085f0
-data_ov030_02108600 kind:data(any) addr:0x02108600
+@223 kind:data(any) addr:0x021085f0 local
+@1298 kind:data(any) addr:0x02108600 local
 data_ov030_02108614 kind:data(any) addr:0x02108614
-data_ov030_02108618 kind:data(any) addr:0x02108618
+FldNpcMesSelSequence kind:data(any) addr:0x02108618 local
 data_ov030_0210861c kind:data(any) addr:0x0210861c
 data_ov030_02108624 kind:data(any) addr:0x02108624
 data_ov030_0210862c kind:data(any) addr:0x0210862c
@@ -6669,8 +6665,8 @@ FldMesSelSequence kind:data(any) addr:0x0210882c local
 @1577 kind:data(byte[19]) addr:0x021088c8 local
 @1578 kind:data(byte[12]) addr:0x021088dc local
 @1579 kind:data(byte[2]) addr:0x021088e8 local
-data_ov030_021088ec kind:data(any) addr:0x021088ec
-data_ov030_021088f8 kind:data(any) addr:0x021088f8
+@1519 kind:data(any) addr:0x021088ec local
+@1342 kind:data(any) addr:0x021088f8 local
 data_ov030_02108904 kind:data(any) addr:0x02108904
 data_ov030_02108920 kind:data(any) addr:0x02108920
 data_ov030_02108934 kind:data(any) addr:0x02108934
@@ -6737,11 +6733,11 @@ data_ov030_02108f2c kind:data(any) addr:0x02108f2c
 data_ov030_02108fe4 kind:data(any) addr:0x02108fe4
 data_ov030_0210909c kind:data(any) addr:0x0210909c
 data_ov030_021090ac kind:data(any) addr:0x021090ac
-data_ov030_021090bc kind:data(any) addr:0x021090bc
-data_ov030_021090cc kind:data(any) addr:0x021090cc
-data_ov030_021090e4 kind:data(any) addr:0x021090e4
+LocaTitleSeq_State kind:data(any) addr:0x021090bc local
+@1175 kind:data(any) addr:0x021090cc local
+@1331 kind:data(any) addr:0x021090e4 local
 data_ov030_021090f4 kind:data(any) addr:0x021090f4
-data_ov030_02109110 kind:data(any) addr:0x02109110
+@1390 kind:data(any) addr:0x02109110 local
 data_ov030_0210911c kind:data(any) addr:0x0210911c
 data_ov030_02109124 kind:data(any) addr:0x02109124
 data_ov030_02109128 kind:data(any) addr:0x02109128

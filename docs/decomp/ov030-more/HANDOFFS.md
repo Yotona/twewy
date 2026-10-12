@@ -3,7 +3,7 @@
 Branch: `delink-ov030-more`, based directly on main `2b8fcfedc8aca72cdfa61b1de3375963f1f13e38`.
 Excluded field work: `decomp-ov030-field` at `963b8c704b6233064eb1ec0196805d48e949c7ed`.
 
-34 new incomplete USA TUs / 350 functions. Original delinked assembly remains linked; these are preparation stubs, not decompiled implementations. JP configuration is unchanged.
+31 incomplete USA TUs / 350 functions (34 TUs before the 2026-10-12 cleanup pass, see the section at the end). Original delinked assembly remains linked; these are preparation stubs, not decompiled implementations. JP configuration is unchanged.
 
 The expanded batch adds 13 TUs / 169 functions to the initial 21 TUs / 181 functions. It includes provisional helper cuts at 0x020ae92c, 0x020cd790–0x020d2f2c, 0x020d317c, and 0x020d4830–0x020d52bc. Several cuts have only C or C-base evidence. Those assignments provide independent work scopes; they do not establish original source boundaries. If target matching suggests merging or moving a boundary, report that evidence to the integrator before changing ownership. All BSS remains unassigned.
 
@@ -33,10 +33,9 @@ The earlier boundary analysis proposed conflicting data windows. This branch use
 | `Fld_BattleIn` | 8 | edge |
 | `Fld_Brush` | 10 | A+ |
 | `Fld_BrushHati` | 8 | A+ |
-| `Field_020c91f4` | 11 | A+ |
+| `FieldNpcMessageSelect` | 11 | A+ |
 | `Task_Mess` | 10 | edge |
-| `Field_020ca4bc` | 10 | A+ |
-| `Task_Window` | 4 | C |
+| `Task_Window` | 14 | C (merged with Field_020ca4bc) |
 | `Field_020cd790` | 5 | A |
 | `Field_020cda74` | 13 | C |
 | `Field_020cdcec` | 10 | C-base |
@@ -45,12 +44,10 @@ The earlier boundary analysis proposed conflicting data windows. This branch use
 | `Field_020d1098` | 17 | C |
 | `Field_020d21e0` | 8 | C-base |
 | `Field_020d24d4` | 13 | C-base |
-| `Field_020d2a80` | 10 | C-base |
+| `LocaTitleSeq` | 10 | C-base |
 | `LocaTitle` | 7 | C |
-| `Field_020d317c` | 16 | A+ |
-| `XFade` | 14 | C |
-| `Field_020d4830` | 19 | A+ |
-| `Field_020d51fc` | 1 | C |
+| `XFade` | 30 | C (merged with Field_020d317c) |
+| `Field_020d4830` | 20 | A+ (merged with Field_020d51fc) |
 
 ## 1. Field_020ae92c
 
@@ -86,14 +83,14 @@ Boundary confidence: edge (a working hypothesis). Assigned half-open ranges:
   .data: 0x021075d8-0x021075f0
 Functions in original order:
   func_ov030_020c420c (0x020c420c, size 0xdc)
-  func_ov030_020c42e8 (0x020c42e8, size 0xa4)
-  func_ov030_020c438c (0x020c438c, size 0xf8)
-  func_ov030_020c4484 (0x020c4484, size 0x4c)
-  func_ov030_020c44d0 (0x020c44d0, size 0x34)
-  func_ov030_020c4504 (0x020c4504, size 0x34)
-  func_ov030_020c4538 (0x020c4538, size 0x34)
-  func_ov030_020c456c (0x020c456c, size 0x48)
-  func_ov030_020c45b4 (0x020c45b4, size 0x38)
+  Fld_TalkEventCursor_GetFrameInfo (0x020c42e8, size 0xa4)
+  Fld_TalkEventCursor_Load (0x020c438c, size 0xf8)
+  Fld_TalkEventCursor_Init (0x020c4484, size 0x4c)
+  Fld_TalkEventCursor_Update (0x020c44d0, size 0x34)
+  Fld_TalkEventCursor_Render (0x020c4504, size 0x34)
+  Fld_TalkEventCursor_Destroy (0x020c4538, size 0x34)
+  Fld_TalkEventCursor_RunTask (0x020c456c, size 0x48)
+  Fld_TalkEventCursor_CreateTask (0x020c45b4, size 0x38)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -112,14 +109,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020e7260-0x020e72a8
   .data: 0x021075f0-0x02107608
 Functions in original order:
-  func_ov030_020c45ec (0x020c45ec, size 0x9c)
-  func_ov030_020c4688 (0x020c4688, size 0x84)
-  func_ov030_020c470c (0x020c470c, size 0x2c)
-  func_ov030_020c4738 (0x020c4738, size 0x28)
-  func_ov030_020c4760 (0x020c4760, size 0x14)
-  func_ov030_020c4774 (0x020c4774, size 0x14)
-  func_ov030_020c4788 (0x020c4788, size 0x48)
-  func_ov030_020c47d0 (0x020c47d0, size 0x40)
+  Fld_TalkEventDecide_GetFrameInfo (0x020c45ec, size 0x9c)
+  Fld_TalkEventDecide_Load (0x020c4688, size 0x84)
+  Fld_TalkEventDecide_Init (0x020c470c, size 0x2c)
+  Fld_TalkEventDecide_Update (0x020c4738, size 0x28)
+  Fld_TalkEventDecide_Render (0x020c4760, size 0x14)
+  Fld_TalkEventDecide_Destroy (0x020c4774, size 0x14)
+  Fld_TalkEventDecide_RunTask (0x020c4788, size 0x48)
+  Fld_TalkEventDecide_CreateTask (0x020c47d0, size 0x40)
   func_ov030_020c4810 (0x020c4810, size 0x40)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
@@ -139,14 +136,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020e72a8-0x020e72f0
   .data: 0x02107608-0x02107634
 Functions in original order:
-  func_ov030_020c4850 (0x020c4850, size 0x9c)
-  func_ov030_020c48ec (0x020c48ec, size 0x6c)
-  func_ov030_020c4958 (0x020c4958, size 0x38)
-  func_ov030_020c4990 (0x020c4990, size 0x48)
-  func_ov030_020c49d8 (0x020c49d8, size 0x14)
-  func_ov030_020c49ec (0x020c49ec, size 0x14)
-  func_ov030_020c4a00 (0x020c4a00, size 0x48)
-  func_ov030_020c4a48 (0x020c4a48, size 0x30)
+  Fld_TalkEventTitle_GetFrameInfo (0x020c4850, size 0x9c)
+  Fld_TalkEventTitle_Load (0x020c48ec, size 0x6c)
+  Fld_TalkEventTitle_Init (0x020c4958, size 0x38)
+  Fld_TalkEventTitle_Update (0x020c4990, size 0x48)
+  Fld_TalkEventTitle_Render (0x020c49d8, size 0x14)
+  Fld_TalkEventTitle_Destroy (0x020c49ec, size 0x14)
+  Fld_TalkEventTitle_RunTask (0x020c4a00, size 0x48)
+  Fld_TalkEventTitle_CreateTask (0x020c4a48, size 0x30)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -168,14 +165,14 @@ Functions in original order:
   func_ov030_020c4a78 (0x020c4a78, size 0x70)
   func_ov030_020c4ae8 (0x020c4ae8, size 0xa4)
   func_ov030_020c4b8c (0x020c4b8c, size 0x94)
-  func_ov030_020c4c20 (0x020c4c20, size 0x9c)
+  Fld_MapJumpName_GetFrameInfo (0x020c4c20, size 0x9c)
   func_ov030_020c4cbc (0x020c4cbc, size 0x20)
   func_ov030_020c4cdc (0x020c4cdc, size 0xa4)
   func_ov030_020c4d80 (0x020c4d80, size 0x15c)
-  func_ov030_020c4edc (0x020c4edc, size 0x8)
+  Fld_MapJumpName_Update (0x020c4edc, size 0x8)
   func_ov030_020c4ee4 (0x020c4ee4, size 0xb4)
-  func_ov030_020c4f98 (0x020c4f98, size 0x3c)
-  func_ov030_020c4fd4 (0x020c4fd4, size 0x48)
+  Fld_MapJumpName_Destroy (0x020c4f98, size 0x3c)
+  Fld_MapJumpName_RunTask (0x020c4fd4, size 0x48)
   func_ov030_020c501c (0x020c501c, size 0x6c)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
@@ -195,14 +192,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020e7324-0x020e7380
   .data: 0x02107648-0x02107658
 Functions in original order:
-  func_ov030_020c5088 (0x020c5088, size 0x9c)
-  func_ov030_020c5124 (0x020c5124, size 0x84)
-  func_ov030_020c51a8 (0x020c51a8, size 0xdc)
-  func_ov030_020c5284 (0x020c5284, size 0x8)
-  func_ov030_020c528c (0x020c528c, size 0x68)
-  func_ov030_020c52f4 (0x020c52f4, size 0x38)
-  func_ov030_020c532c (0x020c532c, size 0x48)
-  func_ov030_020c5374 (0x020c5374, size 0x38)
+  Fld_MapName_GetFrameInfo (0x020c5088, size 0x9c)
+  Fld_MapName_Load (0x020c5124, size 0x84)
+  Fld_MapName_Init (0x020c51a8, size 0xdc)
+  Fld_MapName_Update (0x020c5284, size 0x8)
+  Fld_MapName_Render (0x020c528c, size 0x68)
+  Fld_MapName_Destroy (0x020c52f4, size 0x38)
+  Fld_MapName_RunTask (0x020c532c, size 0x48)
+  Fld_MapName_CreateTask (0x020c5374, size 0x38)
   func_ov030_020c53ac (0x020c53ac, size 0x3c)
   func_ov030_020c53e8 (0x020c53e8, size 0x1c)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
@@ -243,14 +240,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020e7418-0x020e7460
   .data: 0x02107658-0x02107670
 Functions in original order:
-  func_ov030_020c548c (0x020c548c, size 0xac)
-  func_ov030_020c5538 (0x020c5538, size 0xc8)
-  func_ov030_020c5600 (0x020c5600, size 0x2c)
-  func_ov030_020c562c (0x020c562c, size 0x68)
-  func_ov030_020c5694 (0x020c5694, size 0x14)
-  func_ov030_020c56a8 (0x020c56a8, size 0x14)
-  func_ov030_020c56bc (0x020c56bc, size 0x48)
-  func_ov030_020c5704 (0x020c5704, size 0x40)
+  Fld_NSymbolUGAppear_GetFrameInfo (0x020c548c, size 0xac)
+  Fld_NSymbolUGAppear_Load (0x020c5538, size 0xc8)
+  Fld_NSymbolUGAppear_Init (0x020c5600, size 0x2c)
+  Fld_NSymbolUGAppear_Update (0x020c562c, size 0x68)
+  Fld_NSymbolUGAppear_Render (0x020c5694, size 0x14)
+  Fld_NSymbolUGAppear_Destroy (0x020c56a8, size 0x14)
+  Fld_NSymbolUGAppear_RunTask (0x020c56bc, size 0x48)
+  Fld_NSymbolUGAppear_CreateTask (0x020c5704, size 0x40)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -271,14 +268,14 @@ Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
 Functions in original order:
   func_ov030_020c59b0 (0x020c59b0, size 0x4c)
   func_ov030_020c59fc (0x020c59fc, size 0x2c)
-  func_ov030_020c5a28 (0x020c5a28, size 0xa8)
+  Fld_Piranha_GetFrameInfo (0x020c5a28, size 0xa8)
   func_ov030_020c5ad0 (0x020c5ad0, size 0x108)
   func_ov030_020c5bd8 (0x020c5bd8, size 0x94)
   func_ov030_020c5c6c (0x020c5c6c, size 0x20)
   func_ov030_020c5c8c (0x020c5c8c, size 0x190)
   func_ov030_020c5e1c (0x020c5e1c, size 0x58)
-  func_ov030_020c5e74 (0x020c5e74, size 0x14)
-  func_ov030_020c5e88 (0x020c5e88, size 0x48)
+  Fld_Piranha_Destroy (0x020c5e74, size 0x14)
+  Fld_Piranha_RunTask (0x020c5e88, size 0x48)
   func_ov030_020c5ed0 (0x020c5ed0, size 0x38)
   func_ov030_020c5f08 (0x020c5f08, size 0x54)
   func_ov030_020c5f5c (0x020c5f5c, size 0x14)
@@ -345,14 +342,14 @@ Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020ec844-0x020ec88c
   .data: 0x02108490-0x021084a4
 Functions in original order:
-  func_ov030_020c6c58 (0x020c6c58, size 0x9c)
-  func_ov030_020c6cf4 (0x020c6cf4, size 0x8c)
-  func_ov030_020c6d80 (0x020c6d80, size 0x34)
-  func_ov030_020c6db4 (0x020c6db4, size 0x20)
-  func_ov030_020c6dd4 (0x020c6dd4, size 0x20)
-  func_ov030_020c6df4 (0x020c6df4, size 0x20)
-  func_ov030_020c6e14 (0x020c6e14, size 0x48)
-  func_ov030_020c6e5c (0x020c6e5c, size 0x34)
+  Fld_TouchNext_GetFrameInfo (0x020c6c58, size 0x9c)
+  Fld_TouchNext_Load (0x020c6cf4, size 0x8c)
+  Fld_TouchNext_Init (0x020c6d80, size 0x34)
+  Fld_TouchNext_Update (0x020c6db4, size 0x20)
+  Fld_TouchNext_Render (0x020c6dd4, size 0x20)
+  Fld_TouchNext_Destroy (0x020c6df4, size 0x20)
+  Fld_TouchNext_RunTask (0x020c6e14, size 0x48)
+  Fld_TouchNext_CreateTask (0x020c6e5c, size 0x34)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -371,14 +368,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020ec88c-0x020ec8d4
   .data: 0x021084a4-0x021084b8
 Functions in original order:
-  func_ov030_020c6e90 (0x020c6e90, size 0x9c)
-  func_ov030_020c6f2c (0x020c6f2c, size 0x74)
-  func_ov030_020c6fa0 (0x020c6fa0, size 0xe0)
-  func_ov030_020c7080 (0x020c7080, size 0x40)
-  func_ov030_020c70c0 (0x020c70c0, size 0x60)
-  func_ov030_020c7120 (0x020c7120, size 0x14)
-  func_ov030_020c7134 (0x020c7134, size 0x48)
-  func_ov030_020c717c (0x020c717c, size 0x34)
+  Fld_GetPlate_GetFrameInfo (0x020c6e90, size 0x9c)
+  Fld_GetPlate_Load (0x020c6f2c, size 0x74)
+  Fld_GetPlate_Init (0x020c6fa0, size 0xe0)
+  Fld_GetPlate_Update (0x020c7080, size 0x40)
+  Fld_GetPlate_Render (0x020c70c0, size 0x60)
+  Fld_GetPlate_Destroy (0x020c7120, size 0x14)
+  Fld_GetPlate_RunTask (0x020c7134, size 0x48)
+  Fld_GetPlate_CreateTask (0x020c717c, size 0x34)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -397,14 +394,14 @@ Boundary confidence: edge (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020eca64-0x020ecab4
   .data: 0x021085c8-0x021085dc
 Functions in original order:
-  func_ov030_020c85a4 (0x020c85a4, size 0xe4)
-  func_ov030_020c8688 (0x020c8688, size 0xe0)
-  func_ov030_020c8768 (0x020c8768, size 0x2c)
-  func_ov030_020c8794 (0x020c8794, size 0x14)
-  func_ov030_020c87a8 (0x020c87a8, size 0x14)
-  func_ov030_020c87bc (0x020c87bc, size 0x14)
-  func_ov030_020c87d0 (0x020c87d0, size 0x48)
-  func_ov030_020c8818 (0x020c8818, size 0x50)
+  Fld_BattleIn_GetFrameInfo (0x020c85a4, size 0xe4)
+  Fld_BattleIn_Load (0x020c8688, size 0xe0)
+  Fld_BattleIn_Init (0x020c8768, size 0x2c)
+  Fld_BattleIn_Update (0x020c8794, size 0x14)
+  Fld_BattleIn_Render (0x020c87a8, size 0x14)
+  Fld_BattleIn_Destroy (0x020c87bc, size 0x14)
+  Fld_BattleIn_RunTask (0x020c87d0, size 0x48)
+  Fld_BattleIn_CreateTask (0x020c8818, size 0x50)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -426,13 +423,13 @@ Functions in original order:
   func_ov030_020c8a58 (0x020c8a58, size 0x88)
   func_ov030_020c8ae0 (0x020c8ae0, size 0x58)
   func_ov030_020c8b38 (0x020c8b38, size 0x58)
-  func_ov030_020c8b90 (0x020c8b90, size 0x194)
+  Fld_Brush_Init (0x020c8b90, size 0x194)
   func_ov030_020c8d24 (0x020c8d24, size 0x30)
-  func_ov030_020c8d54 (0x020c8d54, size 0x1f8)
-  func_ov030_020c8f4c (0x020c8f4c, size 0x8)
-  func_ov030_020c8f54 (0x020c8f54, size 0x40)
-  func_ov030_020c8f94 (0x020c8f94, size 0x48)
-  func_ov030_020c8fdc (0x020c8fdc, size 0x30)
+  Fld_Brush_Update (0x020c8d54, size 0x1f8)
+  Fld_Brush_Render (0x020c8f4c, size 0x8)
+  Fld_Brush_Destroy (0x020c8f54, size 0x40)
+  Fld_Brush_RunTask (0x020c8f94, size 0x48)
+  Fld_Brush_CreateTask (0x020c8fdc, size 0x30)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -451,14 +448,14 @@ Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020ecb88-0x020ecbd0
   .data: 0x02108600-0x02108614
 Functions in original order:
-  func_ov030_020c900c (0x020c900c, size 0x9c)
-  func_ov030_020c90a8 (0x020c90a8, size 0x7c)
-  func_ov030_020c9124 (0x020c9124, size 0x18)
-  func_ov030_020c913c (0x020c913c, size 0x14)
-  func_ov030_020c9150 (0x020c9150, size 0x14)
-  func_ov030_020c9164 (0x020c9164, size 0x14)
-  func_ov030_020c9178 (0x020c9178, size 0x48)
-  func_ov030_020c91c0 (0x020c91c0, size 0x34)
+  Fld_BrushHati_GetFrameInfo (0x020c900c, size 0x9c)
+  Fld_BrushHati_Load (0x020c90a8, size 0x7c)
+  Fld_BrushHati_Init (0x020c9124, size 0x18)
+  Fld_BrushHati_Update (0x020c913c, size 0x14)
+  Fld_BrushHati_Render (0x020c9150, size 0x14)
+  Fld_BrushHati_Destroy (0x020c9164, size 0x14)
+  Fld_BrushHati_RunTask (0x020c9178, size 0x48)
+  Fld_BrushHati_CreateTask (0x020c91c0, size 0x34)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -467,27 +464,27 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 17. Field_020c91f4
+## 17. FieldNpcMessageSelect
 
 ```text
-Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020c91f4.c (USA ov030, 11 functions).
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/FieldNpcMessageSelect.c (USA ov030, 11 functions).
 Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
 Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
   .text: 0x020c91f4-0x020c9990
   .rodata: 0x020ecbd0-0x020ecd0c
   .data: 0x02108614-0x0210882c
 Functions in original order:
-  func_ov030_020c91f4 (0x020c91f4, size 0x88)
-  func_ov030_020c927c (0x020c927c, size 0x94)
-  func_ov030_020c9310 (0x020c9310, size 0x14)
-  func_ov030_020c9324 (0x020c9324, size 0x114)
-  func_ov030_020c9438 (0x020c9438, size 0x40)
-  func_ov030_020c9478 (0x020c9478, size 0x38)
-  func_ov030_020c94b0 (0x020c94b0, size 0x2ac)
-  func_ov030_020c975c (0x020c975c, size 0x114)
-  func_ov030_020c9870 (0x020c9870, size 0x8c)
-  func_ov030_020c98fc (0x020c98fc, size 0x54)
-  func_ov030_020c9950 (0x020c9950, size 0x40)
+  FldNpcMesSel_CreateTextView (0x020c91f4, size 0x88)
+  FldNpcMesSel_DrawMenu (0x020c927c, size 0x94)
+  FldNpcMesSel_DestroyTextView (0x020c9310, size 0x14)
+  FldNpcMesSel_CreateMessageWindow (0x020c9324, size 0x114)
+  FldNpcMesSel_Open (0x020c9438, size 0x40)
+  FldNpcMesSel_Close (0x020c9478, size 0x38)
+  FldNpcMesSel_HandleInput (0x020c94b0, size 0x2ac)
+  FldNpcMesSel_Init (0x020c975c, size 0x114)
+  FldNpcMesSel_Update (0x020c9870, size 0x8c)
+  FldNpcMesSel_Destroy (0x020c98fc, size 0x54)
+  ProcessOverlay_FldNpcMesSel (0x020c9950, size 0x40)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -510,11 +507,11 @@ Functions in original order:
   func_ov030_020ca304 (0x020ca304, size 0x7c)
   func_ov030_020ca380 (0x020ca380, size 0x64)
   func_ov030_020ca3e4 (0x020ca3e4, size 0x4)
-  func_ov030_020ca3e8 (0x020ca3e8, size 0x3c)
-  func_ov030_020ca424 (0x020ca424, size 0x24)
-  func_ov030_020ca448 (0x020ca448, size 0x14)
-  func_ov030_020ca45c (0x020ca45c, size 0x18)
-  func_ov030_020ca474 (0x020ca474, size 0x48)
+  Task_Mess_Init (0x020ca3e8, size 0x3c)
+  Task_Mess_Update (0x020ca424, size 0x24)
+  Task_Mess_Render (0x020ca448, size 0x14)
+  Task_Mess_Destroy (0x020ca45c, size 0x18)
+  Task_Mess_RunTask (0x020ca474, size 0x48)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -523,7 +520,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 19. Field_020ca4bc
+## 19. Field_020ca4bc (superseded: merged into Task_Window, see the cleanup section)
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020ca4bc.c (USA ov030, 10 functions).
@@ -560,9 +557,9 @@ Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
   .text: 0x020cb12c-0x020cb284
   .rodata: 0x020ed0d8-0x020ed0e4
 Functions in original order:
-  func_ov030_020cb12c (0x020cb12c, size 0x3c)
-  func_ov030_020cb168 (0x020cb168, size 0x6c)
-  func_ov030_020cb1d4 (0x020cb1d4, size 0x48)
+  Task_Window_Render (0x020cb12c, size 0x3c)
+  Task_Window_Destroy (0x020cb168, size 0x6c)
+  Task_Window_RunTask (0x020cb1d4, size 0x48)
   func_ov030_020cb21c (0x020cb21c, size 0x68)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
@@ -826,10 +823,10 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 29. Field_020d2a80
+## 29. LocaTitleSeq
 
 ```text
-Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d2a80.c (USA ov030, 10 functions).
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/LocaTitleSeq.c (USA ov030, 10 functions).
 Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
 Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
   .text: 0x020d2a80-0x020d2f2c
@@ -837,12 +834,12 @@ Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
   .data: 0x021090bc-0x021090e4
 Functions in original order:
   func_ov030_020d2a80 (0x020d2a80, size 0x94)
-  func_ov030_020d2b14 (0x020d2b14, size 0x24)
-  func_ov030_020d2b38 (0x020d2b38, size 0x120)
-  func_ov030_020d2c58 (0x020d2c58, size 0xe0)
-  func_ov030_020d2d38 (0x020d2d38, size 0x34)
-  func_ov030_020d2d6c (0x020d2d6c, size 0x40)
-  func_ov030_020d2dac (0x020d2dac, size 0x10)
+  LocaTitleSeq_Main (0x020d2b14, size 0x24)
+  LocaTitleSeq_Init (0x020d2b38, size 0x120)
+  LocaTitleSeq_Update (0x020d2c58, size 0xe0)
+  LocaTitleSeq_Destroy (0x020d2d38, size 0x34)
+  ProcessOverlay_LocaTitleSeq (0x020d2d6c, size 0x40)
+  LocaTitle_SetUpdate (0x020d2dac, size 0x10)
   func_ov030_020d2dbc (0x020d2dbc, size 0x90)
   func_ov030_020d2e4c (0x020d2e4c, size 0x74)
   func_ov030_020d2ec0 (0x020d2ec0, size 0x6c)
@@ -864,13 +861,13 @@ Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
   .rodata: 0x020ee948-0x020ee998
   .data: 0x021090e4-0x02109110
 Functions in original order:
-  func_ov030_020d2f2c (0x020d2f2c, size 0xbc)
-  func_ov030_020d2fe8 (0x020d2fe8, size 0x50)
-  func_ov030_020d3038 (0x020d3038, size 0x34)
-  func_ov030_020d306c (0x020d306c, size 0x48)
-  func_ov030_020d30b4 (0x020d30b4, size 0x20)
-  func_ov030_020d30d4 (0x020d30d4, size 0x48)
-  func_ov030_020d311c (0x020d311c, size 0x60)
+  LocaTitle_Load (0x020d2f2c, size 0xbc)
+  LocaTitle_Init (0x020d2fe8, size 0x50)
+  LocaTitle_Update (0x020d3038, size 0x34)
+  LocaTitle_Render (0x020d306c, size 0x48)
+  LocaTitle_Destroy (0x020d30b4, size 0x20)
+  LocaTitle_RunTask (0x020d30d4, size 0x48)
+  LocaTitle_CreateTask (0x020d311c, size 0x60)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -879,7 +876,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 31. Field_020d317c
+## 31. Field_020d317c (superseded: merged into XFade, see the cleanup section)
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d317c.c (USA ov030, 16 functions).
@@ -936,7 +933,7 @@ Functions in original order:
   func_ov030_020d4078 (0x020d4078, size 0x6b0)
   func_ov030_020d4728 (0x020d4728, size 0x38)
   func_ov030_020d4760 (0x020d4760, size 0x88)
-  func_ov030_020d47e8 (0x020d47e8, size 0x48)
+  XFade_RunTask (0x020d47e8, size 0x48)
 Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
 Search existing headers and decompiled code in main/ARM9 and other overlays before defining structs. Reuse their established structs and types wherever applicable; do not create local duplicates or opaque replacements for known layouts.
 If an existing decompiled struct needs updating, make explicit handoff notes identifying its name and definition path, the proposed field/type/size/offset changes, supporting assembly evidence, and affected callers or overlays. Coordinate shared definition changes with the integrator.
@@ -982,7 +979,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 34. Field_020d51fc
+## 34. Field_020d51fc (superseded: merged into Field_020d4830, see the cleanup section)
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d51fc.c (USA ov030, 1 functions).
@@ -1011,3 +1008,22 @@ Verified on Windows, USA only:
 - `git diff --check`: passed.
 
 JP was not modified or built. The full default Ninja target additionally tries to download objdiff in this fresh checkout and encountered a missing Python requests dependency; the ROM, module and symbol validation targets above completed using installed tools. No decompilation or per-function C match is claimed for these stubs.
+
+## Cleanup pass (2026-10-12)
+
+The LLM drafts of the 29 TUs that had content were reviewed and cleaned up in one pass.
+
+Boundary corrections (all verified with `tools/check_ov030_more.py`, `dsd check symbols` and `build/usa/twewy_usa.nds: OK`):
+
+| Change | Evidence |
+|---|---|
+| `Fld_MapJumpName` `.rodata` end 0x020e7324 -> 0x020e7338, `Fld_MapName` `.rodata` start moves with it | the 0x14 bytes at 0x020e7324 are the tail of MapJumpName's `SpriteAnimation` (`unk_18`..`animIndex`), not a table; both TUs are then handle+stages+animation = 0x48 bytes |
+| `Fld_TalkEventTitle` `.data` end 0x02107634 -> 0x02107620, `Fld_MapJumpName` `.data` start 0x02107620 | "Fld_Mess_GetStrCat" is only referenced by the Mem_SetSequence call in `Fld_MapJumpName` (0x020c4ae8) |
+| `Task_Mess` gains `.data` 0x021088ec-0x021088f8 | the "Task_Mess" name string is referenced only by the Task_Mess handle |
+| `Field_020ca4bc` merged into `Task_Window` (text 0x020ca4bc-0x020cb284, `.rodata` 0x020ecdc4-0x020ed0e4, `.data` 0x021088f8-0x02108920) | the pooled `.rodata` run (BinIdentifier 8, stages 16, ..., then the 12 byte handle last) only sorts ascending as one TU, and the Task_Window name/bin strings are used by it |
+| `Field_020d317c` merged into `XFade` (text 0x020d317c-0x020d4830, `.rodata` 0x020ee998-0x020eea04, `.data` 0x02109110-0x0210916c) | the XFade handle, stage table and the two layer tables sort ascending as one pool with XFade's own `.rodata`; the previous task (LocaTitle) ends at its creator 0x020d311c |
+| `Field_020d51fc` merged into `Field_020d4830` (text 0x020d4830-0x020d52bc, `.data` 0x0210916c-0x02109c00) | "flash:%d" strings at 0x02109bd8.. are used by 0x020d5038.., "Seq_FlashSel()" at 0x02109bc4 by 0x020d52a0; their order only works inside one TU |
+
+Open boundary questions found on the way (not changed): `Field_020d21e0`'s `.rodata` table at 0x020ee880 (47 words) is referenced by `Field_020d1098` code; `Task_Mess`' creator is `func_ov030_020c4a78` in `Fld_MapJumpName`, and its args struct is the one `Task_Mess` reads.
+
+Symbols: lifecycle functions, task handles and sprite templates of the decompiled task TUs were renamed to the `<TU>_<Role>` / `Tsk_<TU>` / `<TU>_Anim` convention in USA `symbols.txt`; the name strings and TaskStages templates became anonymous `@N` locals. Hidden-word symbols inside `Field_020c5404`'s table and `Fld_MapJumpName`'s animation were removed (`relocs.txt` uses `add:`). JP is untouched.

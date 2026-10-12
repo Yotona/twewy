@@ -53,7 +53,8 @@ void func_ov030_020c3d7c(TaskPool* pool, Task* task) {
     }
     if (menu->unk_42 != temp_r0) {
         EasyTask_DeleteTask(pool, menu->unk_28);
-        menu->unk_28 = func_ov030_020c45b4(pool, menu->unk_48, menu->unk_40, (s16)(menu->unk_3E + ((s16)temp_r0 * 0x14)));
+        menu->unk_28 =
+            Fld_TalkEventCursor_CreateTask(pool, menu->unk_48, menu->unk_40, (s16)(menu->unk_3E + ((s16)temp_r0 * 0x14)));
         menu->unk_42 = temp_r0;
     }
 }
@@ -65,7 +66,7 @@ void func_ov030_020c3ddc(TaskPool* pool, Task* task) {
     if (temp_r0 < 0) {
         return;
     }
-    menu->unk_28 = func_ov030_020c45b4(pool, menu->unk_48, menu->unk_40, (s16)(menu->unk_3E + ((s16)temp_r0 * 20)));
+    menu->unk_28 = Fld_TalkEventCursor_CreateTask(pool, menu->unk_48, menu->unk_40, (s16)(menu->unk_3E + ((s16)temp_r0 * 20)));
     menu->unk_34 = func_ov030_020c3d7c;
     menu->unk_42 = temp_r0;
 }

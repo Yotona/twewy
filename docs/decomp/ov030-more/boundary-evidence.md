@@ -37,7 +37,7 @@ nonconflicting adoption intervals in manifest.json are used here.
 | 3 | 0x020c900c | 0x020c91f4 | 8 | A+ | Tsk_Fld_BrushHati | previous TU ends after the creator of Tsk_Fld_Brush; data order da+ro(20ecb88,2108614) |
 | 0 | 0x020ca1f4 | 0x020ca4bc | 10 | edge | Task_Mess | gap start (existing TU / section edge) |
 | 0 | 0x020ca1f4 | 0x020ca4bc | 10 | edge | Task_Mess | gap start (existing TU / section edge) |
-| 1 | 0x020ca4bc | 0x020cb12c | 10 | A+ |  | task Task_Mess; data order ro(20ecdc4) |
+| 1 | 0x020ca4bc | 0x020cb12c | 10 | A+ |  | task Task_Mess; data order ro(20ecdc4) (merged into Task_Window in the cleanup pass) |
 | 5 | 0x020cd578 | 0x020cd790 | 9 | A+ | Tsk_Fld_ShinigamiON | previous TU ends after the creator of Tsk_Fld_ShinigamiCoin (+4 API funcs); data order da+ro(20ed150,21089b4) @-3 |
 | 6 | 0x020cd790 | 0x020cda74 | 5 | A |  | previous TU ends after the creator of Tsk_Fld_ShinigamiON (+1 API funcs) |
 | 7 | 0x020cda74 | 0x020cdcec | 13 | C |  | data order bs+ro(20ed1c4,2109d98) cost=-0.0; noninterleaving accesses through .bss bases (0x2109d88 / 0x2109d98); ownership/addends unresolved (original data optimum interval 0x020cd808-0x020cdac0) |

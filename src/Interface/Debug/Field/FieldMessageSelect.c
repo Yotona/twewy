@@ -73,7 +73,7 @@ extern void func_02025e30(void* textObj);
 
 extern u8 func_ov030_020ca778(SysFont* arg0, u16 mesNo, s32 arg2, const u8* winKind);
 
-extern const TaskHandle Task_Window;
+extern const TaskHandle Tsk_Task_Window;
 
 // The selectable message window styles
 static const FldMesWinKind FldMesWinKindTable[12] = {
@@ -152,7 +152,7 @@ s32 FldMesSel_CreateMessageWindow(FldMesSelObject* selObj, u8 winKind) {
 
     param.unk_20 = 0;
     param.unk_1C = 0;
-    return EasyTask_CreateTask(&selObj->taskPool, &Task_Window, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(&selObj->taskPool, &Tsk_Task_Window, NULL, 0, NULL, &param);
 }
 
 void FldMesSel_Open(FldMesSelObject* selObj) {

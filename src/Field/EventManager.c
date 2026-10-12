@@ -90,12 +90,12 @@ extern void func_ov030_020c2e28(void);
 extern void func_ov030_020c2fc0(s32);
 extern s32  func_ov030_020c3654(TaskPool*, s32, s32, s16);
 extern s32  func_ov030_020c420c(TaskPool*, Task*);
-extern s32  func_ov030_020c47d0(TaskPool*, s32, s32, s32);
-extern s32  func_ov030_020c4a48(TaskPool*, s32);
+extern s32  Fld_TalkEventDecide_CreateTask(TaskPool*, s32, s32, s32);
+extern s32  Fld_TalkEventTitle_CreateTask(TaskPool*, s32);
 extern void func_ov030_020c6150(s32*);
 extern void func_ov030_020c6300(void);
-extern s32  func_ov030_020c6e5c(TaskPool*, s32, s32);
-extern s32  func_ov030_020c717c(TaskPool*, s32, s32);
+extern s32  Fld_TouchNext_CreateTask(TaskPool*, s32, s32);
+extern s32  Fld_GetPlate_CreateTask(TaskPool*, s32, s32);
 extern s32  func_ov030_020c83e8(TaskPool*, Task*);
 
 // Nonmatching
@@ -417,7 +417,7 @@ s32 func_ov030_020a701c(FieldEventManager* eventMgr) {
             g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer1 = 0;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = 0;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = 0;
-            eventMgr->unk_216C0 = func_ov030_020c47d0(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4, 0x78);
+            eventMgr->unk_216C0 = Fld_TalkEventDecide_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4, 0x78);
             eventMgr->unk_216C4 = func_ov030_020b44b8(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4, 0x78, 0, 1);
             func_ov030_020b4570(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216C4), 2);
             func_ov030_020a6f90(eventMgr);
@@ -509,7 +509,7 @@ void func_ov030_020a737c(FieldEventManager* eventMgr) {
         func_ov030_020b458c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216B0), 0);
         FldEvent_AdvanceScript(eventMgr);
         EasyFade_FadeBothDisplays(FADER_INSTANT, 0, eventMgr->unk_21D12);
-        eventMgr->unk_216C8 = func_ov030_020c4a48(&eventMgr->taskPool, eventMgr->unk_21614);
+        eventMgr->unk_216C8 = Fld_TalkEventTitle_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614);
         return;
     }
     FldEvent_AdvanceScript(eventMgr);
@@ -691,7 +691,7 @@ s32 func_ov030_020a7994(FieldEventManager* eventMgr) {
         if (eventMgr->unk_21CF4 != 0) {
             var_r2 = 1;
         }
-        eventMgr->unk_21A24 = func_ov030_020c6e5c(&eventMgr->taskPool, eventMgr->unk_21614, var_r2);
+        eventMgr->unk_21A24 = Fld_TouchNext_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, var_r2);
     }
     if (func_ov030_020a722c(eventMgr) != 0) {
         SndMgr_StartPlayingSE(SEIDX_SE_DIALOG_NEXT);
@@ -1125,11 +1125,11 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x43:
             eventMgr->unk_21758 = (u16)(eventMgr->unk_21758 - 1);
             if (eventMgr->unk_21748[eventMgr->unk_21758] == 0) {
-                eventMgr->unk_21704 = func_ov030_020c717c(&eventMgr->taskPool, eventMgr->unk_21614, 24014);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24014);
             } else if (eventMgr->unk_21748[eventMgr->unk_21758] == 1) {
-                eventMgr->unk_21704 = func_ov030_020c717c(&eventMgr->taskPool, eventMgr->unk_21614, 24015);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24015);
             } else {
-                eventMgr->unk_21704 = func_ov030_020c717c(&eventMgr->taskPool, eventMgr->unk_21614, 24016);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24016);
             }
 
             eventMgr->taskId_Mess =
@@ -1168,7 +1168,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             eventMgr->unk_2176A--;
 
             s32 temp_r4_2          = func_ov030_020a775c(eventMgr->unk_2175A[eventMgr->unk_2176A], &sp22, &sp20);
-            eventMgr->unk_21704    = func_ov030_020c717c(&eventMgr->taskPool, eventMgr->unk_21614, sp22);
+            eventMgr->unk_21704    = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, sp22);
             eventMgr->taskId_Mess  = Fld_GetMess_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, sp20, 0xFFFF);
             eventMgr->taskId_Plate = Fld_GetBase_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4_2);
             eventMgr->taskId_Item =
