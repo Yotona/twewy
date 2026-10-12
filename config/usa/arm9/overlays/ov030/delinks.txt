@@ -210,3 +210,72 @@ src/Field/XFade.c:
     .text       start:0x020d3b3c end:0x020d4830
     .rodata     start:0x020ee9d4 end:0x020eea04
     .data       start:0x0210911c end:0x0210916c
+
+src/Field/Field_020ae92c.c:
+    categories: Field
+    .text       start:0x020ae92c end:0x020aeb34
+
+src/Field/Field_020cd790.c:
+    categories: Field
+    .text       start:0x020cd790 end:0x020cda74
+    .rodata     start:0x020ed198 end:0x020ed1c4
+    .data       start:0x021089c8 end:0x021089dc
+
+src/Field/Field_020cda74.c:
+    categories: Field
+    .text       start:0x020cda74 end:0x020cdcec
+    .data       start:0x021089dc end:0x021089fc
+
+src/Field/Field_020cdcec.c:
+    categories: Field
+    .text       start:0x020cdcec end:0x020cdea0
+    .data       start:0x021089fc end:0x02108a0c
+
+src/Field/Field_020cdea0.c:
+    categories: Field
+    .text       start:0x020cdea0 end:0x020d0f18
+    .rodata     start:0x020ed1c4 end:0x020ed32c
+
+src/Field/Field_020d0f18.c:
+    categories: Field
+    .text       start:0x020d0f18 end:0x020d1098
+    .data       start:0x02108a0c end:0x02108a20
+
+src/Field/Field_020d1098.c:
+    categories: Field
+    .text       start:0x020d1098 end:0x020d21e0
+    .rodata     start:0x020ed32c end:0x020ee880
+    .data       start:0x02108a20 end:0x021090ac
+
+src/Field/Field_020d21e0.c:
+    categories: Field
+    .text       start:0x020d21e0 end:0x020d24d4
+    .rodata     start:0x020ee880 end:0x020ee93c
+    .data       start:0x021090ac end:0x021090bc
+
+src/Field/Field_020d24d4.c:
+    categories: Field
+    .text       start:0x020d24d4 end:0x020d2a80
+
+src/Field/Field_020d2a80.c:
+    categories: Field
+    .text       start:0x020d2a80 end:0x020d2f2c
+    .rodata     start:0x020ee93c end:0x020ee948
+    .data       start:0x021090bc end:0x021090e4
+
+src/Field/Field_020d317c.c:
+    categories: Field
+    .text       start:0x020d317c end:0x020d3b3c
+    .rodata     start:0x020ee998 end:0x020ee9d4
+    .data       start:0x02109110 end:0x0210911c
+
+src/Field/Field_020d4830.c:
+    categories: Field
+    .text       start:0x020d4830 end:0x020d51fc
+    .rodata     start:0x020eea04 end:0x020fde48
+    .data       start:0x0210916c end:0x02109bc4
+
+src/Field/Field_020d51fc.c:
+    categories: Field
+    .text       start:0x020d51fc end:0x020d52bc
+    .data       start:0x02109bc4 end:0x02109c00

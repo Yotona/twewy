@@ -3,7 +3,9 @@
 Branch: `delink-ov030-more`, based directly on main `2b8fcfedc8aca72cdfa61b1de3375963f1f13e38`.
 Excluded field work: `decomp-ov030-field` at `963b8c704b6233064eb1ec0196805d48e949c7ed`.
 
-21 new incomplete USA TUs / 181 functions. Original delinked assembly remains linked; these are preparation stubs, not decompiled implementations. JP configuration is unchanged.
+34 new incomplete USA TUs / 350 functions. Original delinked assembly remains linked; these are preparation stubs, not decompiled implementations. JP configuration is unchanged.
+
+The expanded batch adds 13 TUs / 169 functions to the initial 21 TUs / 181 functions. It includes provisional helper cuts at 0x020ae92c, 0x020cd790–0x020d2f2c, 0x020d317c, and 0x020d4830–0x020d52bc. Several cuts have only C or C-base evidence. Those assignments provide independent work scopes; they do not establish original source boundaries. If target matching suggests merging or moving a boundary, report that evidence to the integrator before changing ownership. All BSS remains unassigned.
 
 Use one prompt per LLM in its own branch/worktree from this branch. Each prompt owns one source file. Shared headers, symbols and configuration are coordination points: collect proposed shared changes for a single integrator rather than applying conflicting edits. Commit only the assigned source and any explicitly coordinated changes.
 
@@ -15,6 +17,7 @@ The earlier boundary analysis proposed conflicting data windows. This branch use
 
 | TU | Functions | Boundary confidence |
 |---|---:|---|
+| `Field_020ae92c` | 7 | C |
 | `Fld_TalkEventCursor` | 9 | edge |
 | `Fld_TalkEventDecide` | 9 | A+ |
 | `Fld_TalkEventTitle` | 8 | A+ |
@@ -34,10 +37,42 @@ The earlier boundary analysis proposed conflicting data windows. This branch use
 | `Task_Mess` | 10 | edge |
 | `Field_020ca4bc` | 10 | A+ |
 | `Task_Window` | 4 | C |
+| `Field_020cd790` | 5 | A |
+| `Field_020cda74` | 13 | C |
+| `Field_020cdcec` | 10 | C-base |
+| `Field_020cdea0` | 46 | C-base |
+| `Field_020d0f18` | 4 | C |
+| `Field_020d1098` | 17 | C |
+| `Field_020d21e0` | 8 | C-base |
+| `Field_020d24d4` | 13 | C-base |
+| `Field_020d2a80` | 10 | C-base |
 | `LocaTitle` | 7 | C |
+| `Field_020d317c` | 16 | A+ |
 | `XFade` | 14 | C |
+| `Field_020d4830` | 19 | A+ |
+| `Field_020d51fc` | 1 | C |
 
-## 1. Fld_TalkEventCursor
+## 1. Field_020ae92c
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020ae92c.c (USA ov030, 7 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020ae92c-0x020aeb34
+Functions in original order:
+  func_ov030_020ae92c (0x020ae92c, size 0x40)
+  func_ov030_020ae96c (0x020ae96c, size 0x134)
+  func_ov030_020aeaa0 (0x020aeaa0, size 0x18)
+  func_ov030_020aeab8 (0x020aeab8, size 0x18)
+  func_ov030_020aead0 (0x020aead0, size 0xc)
+  func_ov030_020aeadc (0x020aeadc, size 0x18)
+  func_ov030_020aeaf4 (0x020aeaf4, size 0x40)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 2. Fld_TalkEventCursor
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_TalkEventCursor.c (USA ov030, 9 functions).
@@ -61,7 +96,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 2. Fld_TalkEventDecide
+## 3. Fld_TalkEventDecide
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_TalkEventDecide.c (USA ov030, 9 functions).
@@ -85,7 +120,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 3. Fld_TalkEventTitle
+## 4. Fld_TalkEventTitle
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_TalkEventTitle.c (USA ov030, 8 functions).
@@ -108,7 +143,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 4. Fld_MapJumpName
+## 5. Fld_MapJumpName
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_MapJumpName.c (USA ov030, 12 functions).
@@ -135,7 +170,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 5. Fld_MapName
+## 6. Fld_MapName
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_MapName.c (USA ov030, 10 functions).
@@ -160,7 +195,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 6. Field_020c5404
+## 7. Field_020c5404
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020c5404.c (USA ov030, 3 functions).
@@ -177,7 +212,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 7. Fld_NSymbolUGAppear
+## 8. Fld_NSymbolUGAppear
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_NSymbolUGAppear.c (USA ov030, 8 functions).
@@ -200,7 +235,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 8. Fld_Piranha
+## 9. Fld_Piranha
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_Piranha.c (USA ov030, 13 functions).
@@ -228,7 +263,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 9. Field_020c5f70
+## 10. Field_020c5f70
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020c5f70.c (USA ov030, 8 functions).
@@ -250,7 +285,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 10. Field_020c683c
+## 11. Field_020c683c
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020c683c.c (USA ov030, 3 functions).
@@ -267,7 +302,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 11. Fld_TouchNext
+## 12. Fld_TouchNext
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_TouchNext.c (USA ov030, 8 functions).
@@ -290,7 +325,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 12. Fld_GetPlate
+## 13. Fld_GetPlate
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_GetPlate.c (USA ov030, 8 functions).
@@ -313,7 +348,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 13. Fld_BattleIn
+## 14. Fld_BattleIn
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_BattleIn.c (USA ov030, 8 functions).
@@ -336,7 +371,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 14. Fld_Brush
+## 15. Fld_Brush
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_Brush.c (USA ov030, 10 functions).
@@ -361,7 +396,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 15. Fld_BrushHati
+## 16. Fld_BrushHati
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Fld_BrushHati.c (USA ov030, 8 functions).
@@ -384,7 +419,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 16. Field_020c91f4
+## 17. Field_020c91f4
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020c91f4.c (USA ov030, 11 functions).
@@ -410,7 +445,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 17. Task_Mess
+## 18. Task_Mess
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Task_Mess.c (USA ov030, 10 functions).
@@ -434,7 +469,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 18. Field_020ca4bc
+## 19. Field_020ca4bc
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020ca4bc.c (USA ov030, 10 functions).
@@ -459,7 +494,7 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 19. Task_Window
+## 20. Task_Window
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Task_Window.c (USA ov030, 4 functions).
@@ -477,7 +512,262 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 20. LocaTitle
+## 21. Field_020cd790
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020cd790.c (USA ov030, 5 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: A (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020cd790-0x020cda74
+  .rodata: 0x020ed198-0x020ed1c4
+  .data: 0x021089c8-0x021089dc
+Functions in original order:
+  func_ov030_020cd790 (0x020cd790, size 0x30)
+  func_ov030_020cd7c0 (0x020cd7c0, size 0x14)
+  func_ov030_020cd7d4 (0x020cd7d4, size 0x28)
+  func_ov030_020cd7fc (0x020cd7fc, size 0xc)
+  func_ov030_020cd808 (0x020cd808, size 0x26c)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 22. Field_020cda74
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020cda74.c (USA ov030, 13 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020cda74-0x020cdcec
+  .data: 0x021089dc-0x021089fc
+Functions in original order:
+  func_ov030_020cda74 (0x020cda74, size 0x34)
+  func_ov030_020cdaa8 (0x020cdaa8, size 0x18)
+  func_ov030_020cdac0 (0x020cdac0, size 0x58)
+  func_ov030_020cdb18 (0x020cdb18, size 0x44)
+  func_ov030_020cdb5c (0x020cdb5c, size 0x10)
+  func_ov030_020cdb6c (0x020cdb6c, size 0x10)
+  func_ov030_020cdb7c (0x020cdb7c, size 0x24)
+  func_ov030_020cdba0 (0x020cdba0, size 0xc)
+  func_ov030_020cdbac (0x020cdbac, size 0x94)
+  func_ov030_020cdc40 (0x020cdc40, size 0x30)
+  func_ov030_020cdc70 (0x020cdc70, size 0x30)
+  func_ov030_020cdca0 (0x020cdca0, size 0x34)
+  func_ov030_020cdcd4 (0x020cdcd4, size 0x18)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 23. Field_020cdcec
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020cdcec.c (USA ov030, 10 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020cdcec-0x020cdea0
+  .data: 0x021089fc-0x02108a0c
+Functions in original order:
+  func_ov030_020cdcec (0x020cdcec, size 0x10)
+  func_ov030_020cdcfc (0x020cdcfc, size 0x78)
+  func_ov030_020cdd74 (0x020cdd74, size 0x24)
+  func_ov030_020cdd98 (0x020cdd98, size 0x50)
+  func_ov030_020cdde8 (0x020cdde8, size 0x24)
+  func_ov030_020cde0c (0x020cde0c, size 0x14)
+  func_ov030_020cde20 (0x020cde20, size 0x20)
+  func_ov030_020cde40 (0x020cde40, size 0x14)
+  func_ov030_020cde54 (0x020cde54, size 0x34)
+  func_ov030_020cde88 (0x020cde88, size 0x18)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 24. Field_020cdea0
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020cdea0.c (USA ov030, 46 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020cdea0-0x020d0f18
+  .rodata: 0x020ed1c4-0x020ed32c
+Functions in original order:
+  func_ov030_020cdea0 (0x020cdea0, size 0x2c4)
+  func_ov030_020ce164 (0x020ce164, size 0x44)
+  func_ov030_020ce1a8 (0x020ce1a8, size 0x8c)
+  func_ov030_020ce234 (0x020ce234, size 0xfc)
+  func_ov030_020ce330 (0x020ce330, size 0x5c)
+  func_ov030_020ce38c (0x020ce38c, size 0xa4)
+  func_ov030_020ce430 (0x020ce430, size 0x14c)
+  func_ov030_020ce57c (0x020ce57c, size 0x134)
+  func_ov030_020ce6b0 (0x020ce6b0, size 0x240)
+  func_ov030_020ce8f0 (0x020ce8f0, size 0x1e0)
+  func_ov030_020cead0 (0x020cead0, size 0x1c0)
+  func_ov030_020cec90 (0x020cec90, size 0x2e8)
+  func_ov030_020cef78 (0x020cef78, size 0x160)
+  func_ov030_020cf0d8 (0x020cf0d8, size 0x13c)
+  func_ov030_020cf214 (0x020cf214, size 0x340)
+  func_ov030_020cf554 (0x020cf554, size 0x14c)
+  func_ov030_020cf6a0 (0x020cf6a0, size 0x198)
+  func_ov030_020cf838 (0x020cf838, size 0x10)
+  func_ov030_020cf848 (0x020cf848, size 0xc8)
+  func_ov030_020cf910 (0x020cf910, size 0x74)
+  func_ov030_020cf984 (0x020cf984, size 0x418)
+  func_ov030_020cfd9c (0x020cfd9c, size 0xe0)
+  func_ov030_020cfe7c (0x020cfe7c, size 0x84)
+  func_ov030_020cff00 (0x020cff00, size 0x120)
+  func_ov030_020d0020 (0x020d0020, size 0x64)
+  func_ov030_020d0084 (0x020d0084, size 0x280)
+  func_ov030_020d0304 (0x020d0304, size 0x68)
+  func_ov030_020d036c (0x020d036c, size 0x27c)
+  func_ov030_020d05e8 (0x020d05e8, size 0x24)
+  func_ov030_020d060c (0x020d060c, size 0x24)
+  func_ov030_020d0630 (0x020d0630, size 0x2b8)
+  func_ov030_020d08e8 (0x020d08e8, size 0x38)
+  func_ov030_020d0920 (0x020d0920, size 0x70)
+  func_ov030_020d0990 (0x020d0990, size 0x168)
+  func_ov030_020d0af8 (0x020d0af8, size 0x2c)
+  func_ov030_020d0b24 (0x020d0b24, size 0x9c)
+  func_ov030_020d0bc0 (0x020d0bc0, size 0x30)
+  func_ov030_020d0bf0 (0x020d0bf0, size 0x48)
+  func_ov030_020d0c38 (0x020d0c38, size 0x38)
+  func_ov030_020d0c70 (0x020d0c70, size 0x64)
+  func_ov030_020d0cd4 (0x020d0cd4, size 0x1c)
+  func_ov030_020d0cf0 (0x020d0cf0, size 0x1c)
+  func_ov030_020d0d0c (0x020d0d0c, size 0x13c)
+  func_ov030_020d0e48 (0x020d0e48, size 0x58)
+  func_ov030_020d0ea0 (0x020d0ea0, size 0x74)
+  func_ov030_020d0f14 (0x020d0f14, size 0x4)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 25. Field_020d0f18
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d0f18.c (USA ov030, 4 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d0f18-0x020d1098
+  .data: 0x02108a0c-0x02108a20
+Functions in original order:
+  func_ov030_020d0f18 (0x020d0f18, size 0x34)
+  func_ov030_020d0f4c (0x020d0f4c, size 0x18)
+  func_ov030_020d0f64 (0x020d0f64, size 0xfc)
+  func_ov030_020d1060 (0x020d1060, size 0x38)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 26. Field_020d1098
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d1098.c (USA ov030, 17 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d1098-0x020d21e0
+  .rodata: 0x020ed32c-0x020ee880
+  .data: 0x02108a20-0x021090ac
+Functions in original order:
+  func_ov030_020d1098 (0x020d1098, size 0x36c)
+  func_ov030_020d1404 (0x020d1404, size 0x54)
+  func_ov030_020d1458 (0x020d1458, size 0x368)
+  func_ov030_020d17c0 (0x020d17c0, size 0x10c)
+  func_ov030_020d18cc (0x020d18cc, size 0x150)
+  func_ov030_020d1a1c (0x020d1a1c, size 0x70)
+  func_ov030_020d1a8c (0x020d1a8c, size 0x9c)
+  func_ov030_020d1b28 (0x020d1b28, size 0x78)
+  func_ov030_020d1ba0 (0x020d1ba0, size 0x168)
+  func_ov030_020d1d08 (0x020d1d08, size 0xf8)
+  func_ov030_020d1e00 (0x020d1e00, size 0xf8)
+  func_ov030_020d1ef8 (0x020d1ef8, size 0xf8)
+  func_ov030_020d1ff0 (0x020d1ff0, size 0xcc)
+  func_ov030_020d20bc (0x020d20bc, size 0xcc)
+  func_ov030_020d2188 (0x020d2188, size 0x34)
+  func_ov030_020d21bc (0x020d21bc, size 0x18)
+  func_ov030_020d21d4 (0x020d21d4, size 0xc)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 27. Field_020d21e0
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d21e0.c (USA ov030, 8 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d21e0-0x020d24d4
+  .rodata: 0x020ee880-0x020ee93c
+  .data: 0x021090ac-0x021090bc
+Functions in original order:
+  func_ov030_020d21e0 (0x020d21e0, size 0x38)
+  func_ov030_020d2218 (0x020d2218, size 0x34)
+  func_ov030_020d224c (0x020d224c, size 0xe8)
+  func_ov030_020d2334 (0x020d2334, size 0x44)
+  func_ov030_020d2378 (0x020d2378, size 0xf4)
+  func_ov030_020d246c (0x020d246c, size 0x1c)
+  func_ov030_020d2488 (0x020d2488, size 0x34)
+  func_ov030_020d24bc (0x020d24bc, size 0x18)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 28. Field_020d24d4
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d24d4.c (USA ov030, 13 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d24d4-0x020d2a80
+Functions in original order:
+  func_ov030_020d24d4 (0x020d24d4, size 0x30)
+  func_ov030_020d2504 (0x020d2504, size 0x34)
+  func_ov030_020d2538 (0x020d2538, size 0x10)
+  func_ov030_020d2548 (0x020d2548, size 0x10)
+  func_ov030_020d2558 (0x020d2558, size 0x34)
+  func_ov030_020d258c (0x020d258c, size 0x40)
+  func_ov030_020d25cc (0x020d25cc, size 0x54)
+  func_ov030_020d2620 (0x020d2620, size 0x310)
+  func_ov030_020d2930 (0x020d2930, size 0xd0)
+  func_ov030_020d2a00 (0x020d2a00, size 0x1c)
+  func_ov030_020d2a1c (0x020d2a1c, size 0x14)
+  func_ov030_020d2a30 (0x020d2a30, size 0x28)
+  func_ov030_020d2a58 (0x020d2a58, size 0x28)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 29. Field_020d2a80
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d2a80.c (USA ov030, 10 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C-base (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d2a80-0x020d2f2c
+  .rodata: 0x020ee93c-0x020ee948
+  .data: 0x021090bc-0x021090e4
+Functions in original order:
+  func_ov030_020d2a80 (0x020d2a80, size 0x94)
+  func_ov030_020d2b14 (0x020d2b14, size 0x24)
+  func_ov030_020d2b38 (0x020d2b38, size 0x120)
+  func_ov030_020d2c58 (0x020d2c58, size 0xe0)
+  func_ov030_020d2d38 (0x020d2d38, size 0x34)
+  func_ov030_020d2d6c (0x020d2d6c, size 0x40)
+  func_ov030_020d2dac (0x020d2dac, size 0x10)
+  func_ov030_020d2dbc (0x020d2dbc, size 0x90)
+  func_ov030_020d2e4c (0x020d2e4c, size 0x74)
+  func_ov030_020d2ec0 (0x020d2ec0, size 0x6c)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 30. LocaTitle
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/LocaTitle.c (USA ov030, 7 functions).
@@ -499,7 +789,38 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
-## 21. XFade
+## 31. Field_020d317c
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d317c.c (USA ov030, 16 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d317c-0x020d3b3c
+  .rodata: 0x020ee998-0x020ee9d4
+  .data: 0x02109110-0x0210911c
+Functions in original order:
+  func_ov030_020d317c (0x020d317c, size 0x34)
+  func_ov030_020d31b0 (0x020d31b0, size 0x40)
+  func_ov030_020d31f0 (0x020d31f0, size 0x34)
+  func_ov030_020d3224 (0x020d3224, size 0x60)
+  func_ov030_020d3284 (0x020d3284, size 0x78)
+  func_ov030_020d32fc (0x020d32fc, size 0x2d0)
+  func_ov030_020d35cc (0x020d35cc, size 0x1c)
+  func_ov030_020d35e8 (0x020d35e8, size 0x1c)
+  func_ov030_020d3604 (0x020d3604, size 0x1c)
+  func_ov030_020d3620 (0x020d3620, size 0x18)
+  func_ov030_020d3638 (0x020d3638, size 0xbc)
+  func_ov030_020d36f4 (0x020d36f4, size 0x124)
+  func_ov030_020d3818 (0x020d3818, size 0x118)
+  func_ov030_020d3930 (0x020d3930, size 0x1a0)
+  func_ov030_020d3ad0 (0x020d3ad0, size 0x60)
+  func_ov030_020d3b30 (0x020d3b30, size 0xc)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 32. XFade
 
 ```text
 Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/XFade.c (USA ov030, 14 functions).
@@ -528,11 +849,60 @@ Your write scope is this source file. Do not change other assigned TUs, shared h
 Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
 ```
 
+## 33. Field_020d4830
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d4830.c (USA ov030, 19 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: A+ (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d4830-0x020d51fc
+  .rodata: 0x020eea04-0x020fde48
+  .data: 0x0210916c-0x02109bc4
+Functions in original order:
+  func_ov030_020d4830 (0x020d4830, size 0xc)
+  func_ov030_020d483c (0x020d483c, size 0x28)
+  func_ov030_020d4864 (0x020d4864, size 0x1c)
+  func_ov030_020d4880 (0x020d4880, size 0xac)
+  func_ov030_020d492c (0x020d492c, size 0xb0)
+  func_ov030_020d49dc (0x020d49dc, size 0x38)
+  func_ov030_020d4a14 (0x020d4a14, size 0xa4)
+  func_ov030_020d4ab8 (0x020d4ab8, size 0x54)
+  func_ov030_020d4b0c (0x020d4b0c, size 0x8)
+  func_ov030_020d4b14 (0x020d4b14, size 0x43c)
+  func_ov030_020d4f50 (0x020d4f50, size 0x24)
+  func_ov030_020d4f74 (0x020d4f74, size 0x40)
+  func_ov030_020d4fb4 (0x020d4fb4, size 0x88)
+  func_ov030_020d503c (0x020d503c, size 0xb0)
+  func_ov030_020d50ec (0x020d50ec, size 0x14)
+  func_ov030_020d5100 (0x020d5100, size 0xc)
+  func_ov030_020d510c (0x020d510c, size 0xc)
+  func_ov030_020d5118 (0x020d5118, size 0x5c)
+  func_ov030_020d5174 (0x020d5174, size 0x88)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
+## 34. Field_020d51fc
+
+```text
+Start a new branch/worktree from delink-ov030-more. Decompile and match only src/Field/Field_020d51fc.c (USA ov030, 1 functions).
+Read docs/CONTRIBUTING.md and docs/decomp/ov030-more/manifest.json first. The source is an incomplete stub; the original assembly is still linked.
+Boundary confidence: C (a working hypothesis). Assigned half-open ranges:
+  .text: 0x020d51fc-0x020d52bc
+  .data: 0x02109bc4-0x02109c00
+Functions in original order:
+  func_ov030_020d51fc (0x020d51fc, size 0xc0)
+Recover readable C, structs and task lifecycle where present, using the existing EasyTask/TaskStages conventions and neighboring completed files as references. Preserve USA placeholder symbols until a deliberate rename is coordinated. Inspect target assembly and relocations; use m2c if available, treating its output as a draft. Do not invent function prototypes or shared data ownership to silence compiler errors.
+Your write scope is this source file. Do not change other assigned TUs, shared headers, symbols or delinks without coordinating with the integrator; report required shared edits separately. Existing owners on main and decomp-ov030-field are reserved. Do not expand ranges or claim generated gaps. Keep unresolved globals extern and describe data-layout issues rather than stealing neighboring bytes.
+Build the source object and compare every function using objdiff-cli and objdiff.json. Record per-function matches and remaining causes. Mark nonmatching functions with the repository comment convention. Leave the TU incomplete until all its assigned code/data reproduce the target and the full USA build reports build/usa/twewy_usa.nds: OK; propose the complete flag to the integrator once verified. Run python tools/check_ov030_more.py. Report changes, validation, shared-edit requests and unresolved hypotheses. Do not modify JP based on a guessed address offset.
+```
+
 ## Validation of this preparation batch
 
 Verified on Windows, USA only:
 
-- `python tools/check_ov030_more.py`: PASS, 21 TUs and 181 distinct functions; no overlaps with existing main/field ownership or within the batch.
+- `python tools/check_ov030_more.py`: PASS, 34 TUs and 350 distinct functions; no overlaps with existing main/field ownership or within the batch.
 - `python tools/configure.py --no-extract --dsd ./dsd.exe --compiler tools/mwccarm`: succeeded using installed tools.
 - `ninja sha1 check -j 6`: all module and symbol checks passed; `build/usa/twewy_usa.nds: OK`.
 - `ninja dis`: succeeded; target assembly is available locally.
