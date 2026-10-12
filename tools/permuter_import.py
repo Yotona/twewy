@@ -21,7 +21,7 @@ CC_INCLUDES = (
 CC_FLAGS = (
     "-O4,p -enum int -char signed -proc arm946e -gccext,on -fp soft "
     "-inline noauto -RTTI off -interworking -w off -sym on -gccinc -nolink "
-    "-msgstyle gcc -enc SJIS -ipa file -str noreuse -Cpp_exceptions off"
+    "-msgstyle gcc -enc SJIS -ipa file -str reuse -Cpp_exceptions off"
 )
 
 

@@ -1,11 +1,107 @@
+    categories: Tin Pin Slammer
     .text       start:0x020824a0 end:0x02091aa4 kind:code align:32
     .rodata     start:0x02091aa4 end:0x02092ae4 kind:rodata align:4
     .ctor       start:0x02092ae4 end:0x02092ae4 kind:rodata align:4
     .data       start:0x02092b00 end:0x020934e0 kind:data align:32
     .bss        start:0x020934e0 end:0x02093680 kind:bss align:32
 
-src/Debug/Fukuda/OtosuMenu.c:
-    .text       start:0x020824a0 end:0x02091aa4
-    .rodata     start:0x02091aa4 end:0x02092ae4
-    .data       start:0x02092b00 end:0x020934e0
-    .bss        start:0x020934e0 end:0x02093680
+src/Otosu/Menu/OtosuMenu.c:
+    .text       start:0x020824a0 end:0x02086b8c
+    .rodata     start:0x02091aa4 end:0x02091c3c
+    .data       start:0x02092b00 end:0x02092bf4
+    .bss        start:0x020934e0 end:0x020935c0
+
+src/Otosu/Menu/OtosuMenu_Title.c:
+    complete
+    .text       start:0x02086b8c end:0x02087524
+    .data       start:0x02092bf4 end:0x02092c9c
+
+src/Otosu/Menu/OtosuMenu_RoleSelect.c:
+    complete
+    .text       start:0x02087524 end:0x020879f8
+    .rodata     start:0x02091c3c end:0x02091cc4
+    .data       start:0x02092c9c end:0x02092ce0
+
+src/Otosu/Menu/OtosuMenu_PinSelect.c:
+    .text       start:0x020879f8 end:0x020894f8
+    .rodata     start:0x02091cc4 end:0x02091fe0
+    .data       start:0x02092ce0 end:0x02092e18
+    .bss        start:0x020935c0 end:0x02093660
+
+src/Otosu/Menu/OtosuMenu_CommError.c:
+    complete
+    .text       start:0x020894f8 end:0x02089b3c
+    .rodata     start:0x02091fe0 end:0x02092068
+    .data       start:0x02092e18 end:0x02092f30
+
+src/Otosu/Menu/OtosuMenu_Lobby.c:
+    .text       start:0x02089b3c end:0x0208c6f8
+    .rodata     start:0x02092068 end:0x02092160
+    .data       start:0x02092f30 end:0x02093004
+    .bss        start:0x02093660 end:0x02093680
+
+src/Otosu/Menu/OtosuMenu_LinkLevel.c:
+    complete
+    .text       start:0x0208c6f8 end:0x0208c92c
+    .rodata     start:0x02092160 end:0x0209219c
+    .data       start:0x02093004 end:0x0209301c
+
+src/Otosu/Menu/OtosuMenu_Icon.c:
+    .text       start:0x0208c92c end:0x0208ce00
+    .rodata     start:0x0209219c end:0x020921c8
+    .data       start:0x0209301c end:0x02093034
+
+src/Otosu/Menu/OtosuMenu_Ranking.c:
+    .text       start:0x0208ce00 end:0x0208e890
+    .rodata     start:0x020921c8 end:0x020923f0
+    .data       start:0x02093034 end:0x020931dc
+
+src/Otosu/Menu/OtosuMenu_TitleEnemy.c:
+    .text       start:0x0208e890 end:0x0208ed78
+    .rodata     start:0x020923f0 end:0x02092448
+    .data       start:0x020931dc end:0x020931fc
+
+src/Otosu/Menu/OtosuMenu_TitleBoss.c:
+    complete
+    .text       start:0x0208ed78 end:0x0208f020
+    .data       start:0x020931fc end:0x0209321c
+
+src/Otosu/Menu/OtosuMenu_RankBoard.c:
+    complete
+    .text       start:0x0208f020 end:0x0208f6f8
+    .rodata     start:0x02092448 end:0x020924f8
+    .data       start:0x0209321c end:0x0209323c
+
+src/Otosu/Menu/OtosuMenu_Daiza.c:
+    complete
+    .text       start:0x0208f6f8 end:0x0208f860
+    .rodata     start:0x020924f8 end:0x02092524
+    .data       start:0x0209323c end:0x02093254
+
+src/Otosu/Menu/OtosuMenu_Entry.c:
+    complete
+    .text       start:0x0208f860 end:0x0208f9d0
+    .data       start:0x02093254 end:0x020932b8
+
+src/Otosu/Menu/OtosuMenu_FontList.c:
+    .text       start:0x0208f9d0 end:0x020901a0
+    .rodata     start:0x02092524 end:0x02092870
+    .data       start:0x020932b8 end:0x020932e8
+
+src/Otosu/Menu/OtosuMenu_SaveData.c:
+    complete
+    .text       start:0x020901a0 end:0x02091760
+    .rodata     start:0x02092870 end:0x02092a4c
+    .data       start:0x020932e8 end:0x02093494
+
+src/Otosu/Menu/OtosuMenu_DelDataWin.c:
+    complete
+    .text       start:0x02091760 end:0x02091978
+    .rodata     start:0x02092a4c end:0x02092ab8
+    .data       start:0x02093494 end:0x020934ac
+
+src/Otosu/Menu/OtosuMenu_Icon2.c:
+    complete
+    .text       start:0x02091978 end:0x02091aa4
+    .rodata     start:0x02092ab8 end:0x02092ae4
+    .data       start:0x020934ac end:0x020934e0

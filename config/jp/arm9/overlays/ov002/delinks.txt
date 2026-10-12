@@ -1,11 +1,103 @@
+    categories: Tin Pin Slammer
     .text       start:0x02082e80 end:0x02091f0c kind:code align:32
     .rodata     start:0x02091f0c end:0x02092efc kind:rodata align:4
     .ctor       start:0x02092efc end:0x02092efc kind:rodata align:4
     .data       start:0x02092f00 end:0x02093880 kind:data align:32
     .bss        start:0x02093880 end:0x020939e0 kind:bss align:32
 
-src/Debug/Fukuda/OtosuMenu.c:
-    .text       start:0x02082e80 end:0x02091f0c
-    .rodata     start:0x02091f0c end:0x02092efc
-    .data       start:0x02092f00 end:0x02093880
-    .bss        start:0x02093880 end:0x020939e0
+src/Otosu/Menu/OtosuMenu.c:
+    .text       start:0x02082e80 end:0x0208742c
+    .rodata     start:0x02091f0c end:0x02092098
+    .data       start:0x02092f00 end:0x02092ff4
+    .bss        start:0x02093880 end:0x02093920
+
+src/Otosu/Menu/OtosuMenu_Title.c:
+    complete
+    .text       start:0x0208742c end:0x02087dc0
+    .data       start:0x02092ff4 end:0x0209309c
+
+src/Otosu/Menu/OtosuMenu_RoleSelect.c:
+    .text       start:0x02087dc0 end:0x02088280
+    .rodata     start:0x02092098 end:0x02092120
+    .data       start:0x0209309c end:0x020930d0
+
+src/Otosu/Menu/OtosuMenu_PinSelect.c:
+    .text       start:0x02088280 end:0x02089d70
+    .rodata     start:0x02092120 end:0x0209243c
+    .data       start:0x020930d0 end:0x020931f4
+    .bss        start:0x02093920 end:0x020939c0
+
+src/Otosu/Menu/OtosuMenu_CommError.c:
+    .text       start:0x02089d70 end:0x0208a378
+    .rodata     start:0x0209243c end:0x020924c4
+    .data       start:0x020931f4 end:0x02093330
+
+src/Otosu/Menu/OtosuMenu_Lobby.c:
+    .text       start:0x0208a378 end:0x0208cebc
+    .rodata     start:0x020924c4 end:0x020925bc
+    .data       start:0x02093330 end:0x02093404
+    .bss        start:0x020939c0 end:0x020939e0
+
+src/Otosu/Menu/OtosuMenu_LinkLevel.c:
+    complete
+    .text       start:0x0208cebc end:0x0208d0f0
+    .rodata     start:0x020925bc end:0x020925f8
+    .data       start:0x02093404 end:0x0209341c
+
+src/Otosu/Menu/OtosuMenu_Icon.c:
+    .text       start:0x0208d0f0 end:0x0208d5c4
+    .rodata     start:0x020925f8 end:0x02092624
+    .data       start:0x0209341c end:0x02093434
+
+src/Otosu/Menu/OtosuMenu_Ranking.c:
+    .text       start:0x0208d5c4 end:0x0208f044
+    .rodata     start:0x02092624 end:0x0209284c
+    .data       start:0x02093434 end:0x020935dc
+
+src/Otosu/Menu/OtosuMenu_TitleEnemy.c:
+    .text       start:0x0208f044 end:0x0208f52c
+    .rodata     start:0x0209284c end:0x020928a4
+    .data       start:0x020935dc end:0x020935fc
+
+src/Otosu/Menu/OtosuMenu_TitleBoss.c:
+    .text       start:0x0208f52c end:0x0208f7b4
+    .data       start:0x020935fc end:0x0209361c
+
+src/Otosu/Menu/OtosuMenu_RankBoard.c:
+    complete
+    .text       start:0x0208f7b4 end:0x0208fe8c
+    .rodata     start:0x020928a4 end:0x02092954
+    .data       start:0x0209361c end:0x0209363c
+
+src/Otosu/Menu/OtosuMenu_Daiza.c:
+    complete
+    .text       start:0x0208fe8c end:0x0208fff4
+    .rodata     start:0x02092954 end:0x02092980
+    .data       start:0x0209363c end:0x02093654
+
+src/Otosu/Menu/OtosuMenu_Entry.c:
+    complete
+    .text       start:0x0208fff4 end:0x02090164
+    .data       start:0x02093654 end:0x020936b8
+
+src/Otosu/Menu/OtosuMenu_FontList.c:
+    .text       start:0x02090164 end:0x0209096c
+    .rodata     start:0x02092980 end:0x02092cc4
+    .data       start:0x020936b8 end:0x020936e8
+
+src/Otosu/Menu/OtosuMenu_SaveData.c:
+    .text       start:0x0209096c end:0x02091bc8
+    .rodata     start:0x02092cc4 end:0x02092e64
+    .data       start:0x020936e8 end:0x02093848
+
+src/Otosu/Menu/OtosuMenu_DelDataWin.c:
+    complete
+    .text       start:0x02091bc8 end:0x02091de0
+    .rodata     start:0x02092e64 end:0x02092ed0
+    .data       start:0x02093848 end:0x02093860
+
+src/Otosu/Menu/OtosuMenu_Icon2.c:
+    complete
+    .text       start:0x02091de0 end:0x02091f0c
+    .rodata     start:0x02092ed0 end:0x02092efc
+    .data       start:0x02093860 end:0x02093880

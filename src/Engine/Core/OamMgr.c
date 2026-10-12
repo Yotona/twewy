@@ -50,7 +50,6 @@ extern u8           data_02059ad4[];
 extern TexCoordQuad data_02059b14[];
 extern OamCellFrame data_02059b94[];
 extern OamCellPiece data_02059d1c;
-extern s16          data_0205e4e0[];
 
 extern u8  data_02069c24[];
 extern s32 data_0206aa78;
@@ -240,8 +239,8 @@ static void OamMgr_SetAffineGroupParams(OamManager* mgr, s32 arg1, u32 arg2, s32
     if (arg5 & 2) {
         arg4 = -arg4;
     }
-    s32 temp_r5    = data_0205e4e0[temp_r6];
-    s32 temp_r6_2  = data_0205e4e0[temp_r6 + 1] << 0xC;
+    s32 temp_r5    = FX_SinCosTable_[temp_r6];
+    s32 temp_r6_2  = FX_SinCosTable_[temp_r6 + 1] << 0xC;
     affine->scaleY = arg4;
     affine->unk_0C = 0;
     affine->unk_0E = 0;
@@ -393,8 +392,8 @@ OamCellPiece* OamMgr_BuildVisibleCellPiecesAffine(OamManager* mgr, s32 x, s32 y,
         }
         s32 temp_r6 = var_r0 + (var_r9 >> 1);
         temp_r2     = ((s32)(u16)var_r11->rotation >> 4) * 2;
-        temp_ip     = data_0205e4e0[temp_r2];
-        sp1C        = (s32)data_0205e4e0[temp_r2 + 1];
+        temp_ip     = FX_SinCosTable_[temp_r2];
+        sp1C        = (s32)FX_SinCosTable_[temp_r2 + 1];
         sp3C        = temp_r7 * (s32)(((s64)sp1C * temp_r3_2 + 0x800) >> 12);
 
         volatile s32 temp_r6_2 = temp_r6 * (s32)(((s64)sp1C * temp_lr + 0x800) >> 12);
@@ -890,7 +889,7 @@ void func_02003c7c(s32 arg0, s32 arg1, s32 arg2, RenderCmd* arg3) {
     REG_GFX_FIFO_MATRIX_TRANSLATE = arg2;
 
     s32 temp_r1 = (temp_r5->rotation >> 4) * 2;
-    func_020370cc(data_0205e4e0[temp_r1], data_0205e4e0[temp_r1 + 1]);
+    func_020370cc(FX_SinCosTable_[temp_r1], FX_SinCosTable_[temp_r1 + 1]);
 
     s32 frameW = frame->width;
     s32 frameH = frame->height;
@@ -1024,8 +1023,8 @@ u16 func_02003ef4(s32 arg0, s32 arg1, s32 arg2, OamCellPiece* arg3, u16 arg4, vo
         sp10            = temp_r1_2;
         temp_r8_2       = (*(s32*)var_r4 >> 4) * 2;
         temp_r2_2       = *(s32*)(var_r4 + 8);
-        temp_r10        = data_0205e4e0[temp_r8_2];
-        temp_r1_3       = data_0205e4e0[temp_r8_2 + 1];
+        temp_r10        = FX_SinCosTable_[temp_r8_2];
+        temp_r1_3       = FX_SinCosTable_[temp_r8_2 + 1];
         s32 temp_r0_arg = ((temp_ip * (s32)(((s64)temp_r1_3 * temp_r9 + 0x800) >> 12)) -
                            (temp_r3 * (s32)(((s64)temp_r10 * temp_r2_2 + 0x800) >> 12))) +
                           (temp_r0_5 << 0xC);

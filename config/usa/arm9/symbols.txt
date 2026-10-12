@@ -3505,7 +3505,7 @@ data_0205e3fa kind:data(any) addr:0x0205e3fa
 data_0205e3fb kind:data(any) addr:0x0205e3fb
 data_0205e41c kind:data(any) addr:0x0205e41c
 data_0205e42c kind:data(any) addr:0x0205e42c
-data_0205e4e0 kind:data(any) addr:0x0205e4e0
+FX_SinCosTable_ kind:data(any) addr:0x0205e4e0
 data_02060206 kind:data(any) addr:0x02060206
 
 /////////////////////////////////////////////////////////////

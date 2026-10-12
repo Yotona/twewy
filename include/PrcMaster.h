@@ -19,6 +19,15 @@ typedef enum {
 /** @brief Per-step callback signature. */
 typedef PrcStepResult (*PrcStepFn)(PrcCtx*, void*);
 
+/** @brief The callbacks and step table a frame is created from; copied into a #PrcFrame by PrcCtx_ReplaceFrame. */
+typedef struct {
+    /* 0x00 */ void (*enter)();
+    /* 0x04 */ PrcStepFn* stepTable;
+    /* 0x08 */ void (*update)();
+    /* 0x0C */ void (*render)();
+    /* 0x10 */ void (*exit)();
+} PrcFrameDesc; // Size: 0x14
+
 /** @brief A stack frame in a process context. */
 typedef struct {
     /** @brief Called when the frame is entered. */
@@ -127,7 +136,7 @@ void PrcCtx_ReplaceStepTable(PrcCtx* ctx, PrcStepFn* stepTable);
  * @param newFrame Source frame definition.
  * @param enterArg Argument passed to the enter callback.
  */
-void PrcCtx_ReplaceFrame(PrcCtx* ctx, PrcFrame* newFrame, void* enterArg);
+void PrcCtx_ReplaceFrame(PrcCtx* ctx, PrcFrameDesc* newFrame, void* enterArg);
 
 /**
  * @brief Replace only the current frame update callback.

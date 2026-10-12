@@ -342,7 +342,6 @@ extern s32            data_ov017_02143774;
 extern s32            data_ov017_02143790;
 extern s32            data_ov017_021437ac;
 extern s32            data_ov017_02143a64;
-extern s32            data_0205e4e0;
 extern s32            data_ov017_021428fc;
 extern s32            data_ov017_02142900;
 extern s32            data_ov017_02142904;
@@ -9680,7 +9679,7 @@ s32 BtlBoss03_NoisAttk_Update(TaskPool* pool, Task* task, void* args) {
             temp_r2_2 = temp_lr - (0xF * (((u32)temp_lr >> 0x1F) + ((s32)(temp_lr + MULT_HI(0x88888889, temp_lr)) >> 3)));
             temp_r3_2 = temp_r2_2 << 0x10;
             temp_r2_3 = *(
-                &data_0205e4e0 +
+                FX_SinCosTable_ +
                 (((s32)(u16)((temp_r3_2 >> 0x1F) + ((s32)(MULT_HI(0x88888889, temp_r3_2) + (temp_r2_2 << 0x10)) >> 3)) >> 4) *
                  4));
             temp_r1_6 = (temp_r2_3 << 0xF) + 0x800;

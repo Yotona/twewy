@@ -11,7 +11,9 @@
     // for_check_new_font_w.xls
     #define SYSMSG_FONT_CHECK_TEXT 8334 // "How does this look on screen?!\n(I'm wor"...
     // for_test_staffroll.xls
-    #define SYSMSG_FONT_PAGE_FMT 8354 // ""
+    #define SYSMSG_FONT_PAGE_FMT             8354 // ""
+    #define SYSMSG_FONTLIST_FONT_NAME_START  8355
+    #define SYSMSG_FONTLIST_COLOR_NAME_START 8359
     // menu_abilityHelp.xls
     #define SYSMSG_THREAD_ABILITY_HELP_START 8603 // "Increases your <cC>drop rate<cE> by 1."..
     // menu_abilityName.xls
@@ -206,10 +208,12 @@
     // menu_treasureName.xls
     #define SYSMSG_SWAG_NAMES_START 13502 // "Colorful Thread"..
     // menu_treasureTips.xls
-    #define SYSMSG_SWAG_TIPS_START 13652              // "Materials like this transform certain it"...
+    #define SYSMSG_SWAG_TIPS_START 13652             // "Materials like this transform certain it"...
 #elif defined(REGION_JP)
-    #define SYSMSG_FONT_CHECK_TEXT              8266  // "{0753}{0754}{0755}{0756}"...
-    #define SYSMSG_FONT_PAGE_FMT                8279  // "フォントセット :　<str>\n<u32>/<"...
+    #define SYSMSG_FONT_CHECK_TEXT              8266 // "{0753}{0754}{0755}{0756}"...
+    #define SYSMSG_FONT_PAGE_FMT                8279 // "フォントセット :　<str>\n<u32>/<"...
+    #define SYSMSG_FONTLIST_FONT_NAME_START     8280
+    #define SYSMSG_FONTLIST_COLOR_NAME_START    8283
     #define SYSMSG_THREAD_ABILITY_HELP_START    8527  // "ドロップレートが１アップする"..
     #define SYSMSG_THREAD_ABILITY_NAME_START    8823  // "<ic_ab>ビッグトレジャー"..
     #define SYSMSG_PIN_EFFECT_HELP_START        9188  // "<cC>{03B2}{070A}を{0728}か"...

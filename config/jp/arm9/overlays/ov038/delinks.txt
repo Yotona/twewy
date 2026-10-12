@@ -1,5 +1,235 @@
+    categories: Tin Pin Slammer
     .text       start:0x02082e80 end:0x02099798 kind:code align:32
     .rodata     start:0x02099798 end:0x0209aaa0 kind:rodata align:4
     .ctor       start:0x0209aaa0 end:0x0209aaa0 kind:rodata align:4
     .data       start:0x0209aac0 end:0x0209b680 kind:data align:32
     .bss        start:0x0209b680 end:0x0209bac0 kind:bss align:32
+
+src/Otosu/Scene/OtuScene.c:
+    complete
+    .text       start:0x02082e80 end:0x02083358
+
+src/Otosu/Scene/OtuSceneEntry.c:
+    .text       start:0x02083358 end:0x02083ca0
+    .rodata     start:0x02099798 end:0x020997bc
+    .data       start:0x0209aac0 end:0x0209aad8
+    .bss        start:0x0209b680 end:0x0209b688
+
+src/Otosu/Scene/OtuGxInit.c:
+    .text       start:0x02083ca0 end:0x02084130
+
+src/Otosu/Scene/OtuVBlank.c:
+    complete
+    .text       start:0x02084130 end:0x02084354
+
+src/Otosu/Stage/OtuEditor.c:
+    .text       start:0x02084354 end:0x020884a4
+    .rodata     start:0x020997bc end:0x02099a70
+    .data       start:0x0209aad8 end:0x0209ac60
+
+src/Otosu/Stage/OtuWirelessStage.c:
+    complete
+    .text       start:0x020884a4 end:0x0208880c
+    .data       start:0x0209ac60 end:0x0209ac7c
+
+src/Otosu/Stage/OtuTaskPick.c:
+    complete
+    .text       start:0x0208880c end:0x02088d8c
+
+src/Otosu/Stage/OtuFieldAccess.c:
+    .text       start:0x02088d8c end:0x02089078
+    .bss        start:0x0209b688 end:0x0209baa0
+
+src/Otosu/Stage/OtuBoard.c:
+    complete
+    .text       start:0x02089078 end:0x0208a330
+    .rodata     start:0x02099a70 end:0x02099bb0
+    .data       start:0x0209ac7c end:0x0209ad08
+
+src/Otosu/Stage/OtuPinLogic.c:
+    .text       start:0x0208a330 end:0x0208ae70
+    .data       start:0x0209ad08 end:0x0209ae1c
+    .bss        start:0x0209baa0 end:0x0209bac0
+
+src/Otosu/Game/OtosuGame_badge.c:
+    .text       start:0x0208ae70 end:0x0208fabc
+    .rodata     start:0x02099bb0 end:0x02099c80
+    .data       start:0x0209ae1c end:0x0209ae74
+
+src/Otosu/Game/OtosuGame_shadow.c:
+    complete
+    .text       start:0x0208fabc end:0x0208fdc8
+    .rodata     start:0x02099c80 end:0x02099cc8
+    .data       start:0x0209ae74 end:0x0209ae8c
+
+src/Otosu/Game/OtosuGame_piyo.c:
+    complete
+    .text       start:0x0208fdc8 end:0x0209013c
+    .rodata     start:0x02099cc8 end:0x02099d10
+    .data       start:0x0209ae8c end:0x0209aea0
+
+src/Otosu/Game/OtosuGame_marker.c:
+    complete
+    .text       start:0x0209013c end:0x02090418
+    .rodata     start:0x02099d10 end:0x02099d58
+    .data       start:0x0209aea0 end:0x0209aeb8
+
+src/Otosu/Game/OtosuGame_meteo.c:
+    complete
+    .text       start:0x02090418 end:0x02090934
+    .rodata     start:0x02099d58 end:0x02099da0
+    .data       start:0x0209aeb8 end:0x0209af14
+
+src/Otosu/Game/OtosuGame_hammer.c:
+    .text       start:0x02090934 end:0x02091aa0
+    .rodata     start:0x02099da0 end:0x02099ed0
+    .data       start:0x0209af14 end:0x0209af2c
+
+src/Otosu/Game/OtosuGame_needle.c:
+    complete
+    .text       start:0x02091aa0 end:0x0209204c
+    .rodata     start:0x02099ed0 end:0x02099f18
+    .data       start:0x0209af2c end:0x0209af44
+
+src/Otosu/Game/OtosuGame_hand.c:
+    .text       start:0x0209204c end:0x020924b4
+    .rodata     start:0x02099f18 end:0x02099f60
+    .data       start:0x0209af44 end:0x0209af58
+
+src/Otosu/Game/OtosuGame_floor.c:
+    .text       start:0x020924b4 end:0x02092d3c
+    .rodata     start:0x02099f60 end:0x0209a28c
+    .data       start:0x0209af58 end:0x0209af78
+
+src/Otosu/Game/OtosuGame_obstacle.c:
+    complete
+    .text       start:0x02092d3c end:0x020930e0
+    .rodata     start:0x0209a28c end:0x0209a30c
+    .data       start:0x0209af78 end:0x0209af90
+
+src/Otosu/Game/OtosuGame_bg.c:
+    .text       start:0x020930e0 end:0x020937a4
+    .rodata     start:0x0209a30c end:0x0209a328
+    .data       start:0x0209af90 end:0x0209b0a0
+
+src/Otosu/Game/OtosuGame_ovbg.c:
+    .text       start:0x020937a4 end:0x02093ea0
+    .rodata     start:0x0209a328 end:0x0209a3d4
+    .data       start:0x0209b0a0 end:0x0209b0b4
+
+src/Otosu/Game/OtosuGame_badgeradar.c:
+    complete
+    .text       start:0x02093ea0 end:0x020941f8
+    .rodata     start:0x0209a3d4 end:0x0209a41c
+    .data       start:0x0209b0b4 end:0x0209b0d0
+
+src/Otosu/Game/OtosuGame_badgecount.c:
+    complete
+    .text       start:0x020941f8 end:0x020947b0
+    .rodata     start:0x0209a41c end:0x0209a4c4
+    .data       start:0x0209b0d0 end:0x0209b0ec
+
+src/Otosu/Game/OtosuGame_timer.c:
+    complete
+    .text       start:0x020947b0 end:0x02094b88
+    .rodata     start:0x0209a4c4 end:0x0209a50c
+    .data       start:0x0209b0ec end:0x0209b100
+
+src/Otosu/Game/OtosuGame_specialgauge.c:
+    .text       start:0x02094b88 end:0x0209545c
+    .rodata     start:0x0209a50c end:0x0209a5d8
+    .data       start:0x0209b100 end:0x0209b14c
+
+src/Otosu/Game/OtosuGame_spark.c:
+    complete
+    .text       start:0x0209545c end:0x02095968
+    .rodata     start:0x0209a5d8 end:0x0209a620
+    .data       start:0x0209b14c end:0x0209b160
+
+src/Otosu/Game/OtosuGame_slash.c:
+    complete
+    .text       start:0x02095968 end:0x02095e10
+    .rodata     start:0x0209a620 end:0x0209a668
+    .data       start:0x0209b160 end:0x0209b174
+
+src/Otosu/Game/OtosuGame_track.c:
+    complete
+    .text       start:0x02095e10 end:0x0209621c
+    .rodata     start:0x0209a668 end:0x0209a6b0
+    .data       start:0x0209b174 end:0x0209b188
+
+src/Otosu/Game/OtosuGame_point.c:
+    complete
+    .text       start:0x0209621c end:0x02096760
+    .rodata     start:0x0209a6b0 end:0x0209a700
+    .data       start:0x0209b188 end:0x0209b19c
+
+src/Otosu/Game/OtosuGame_entry.c:
+    .text       start:0x02096760 end:0x02096bf4
+    .rodata     start:0x0209a700 end:0x0209a748
+    .data       start:0x0209b19c end:0x0209b360
+
+src/Otosu/Game/OtosuGame_dead.c:
+    complete
+    .text       start:0x02096bf4 end:0x02096f10
+    .rodata     start:0x0209a748 end:0x0209a790
+    .data       start:0x0209b360 end:0x0209b374
+
+src/Otosu/Game/OtosuGame_gameover.c:
+    .text       start:0x02096f10 end:0x020975cc
+    .rodata     start:0x0209a790 end:0x0209a830
+    .data       start:0x0209b374 end:0x0209b41c
+
+src/Otosu/Game/OtosuGame_wricon.c:
+    complete
+    .text       start:0x020975cc end:0x020977f0
+    .rodata     start:0x0209a830 end:0x0209a878
+    .data       start:0x0209b41c end:0x0209b434
+
+src/Otosu/Game/OtosuGame_meteohahen.c:
+    complete
+    .text       start:0x020977f0 end:0x02097d0c
+    .rodata     start:0x0209a878 end:0x0209a8c0
+    .data       start:0x0209b434 end:0x0209b450
+
+src/Otosu/Game/OtosuGame_smoke.c:
+    complete
+    .text       start:0x02097d0c end:0x02098144
+    .rodata     start:0x0209a8c0 end:0x0209a908
+    .data       start:0x0209b450 end:0x0209b464
+
+src/Otosu/Game/OtosuGame_warp.c:
+    complete
+    .text       start:0x02098144 end:0x02098454
+    .rodata     start:0x0209a908 end:0x0209a950
+    .data       start:0x0209b464 end:0x0209b478
+
+src/Otosu/Game/OtosuGame_needlehahen.c:
+    complete
+    .text       start:0x02098454 end:0x02098968
+    .rodata     start:0x0209a950 end:0x0209a998
+    .data       start:0x0209b478 end:0x0209b494
+
+src/Otosu/Game/OtosuGame_hammerhahen.c:
+    complete
+    .text       start:0x02098968 end:0x02098eac
+    .rodata     start:0x0209a998 end:0x0209a9e0
+    .data       start:0x0209b494 end:0x0209b4b0
+
+src/Otosu/Game/OtosuGame_wrwait.c:
+    complete
+    .text       start:0x02098eac end:0x02099394
+    .rodata     start:0x0209a9e0 end:0x0209aa28
+    .data       start:0x0209b4b0 end:0x0209b4c8
+
+src/Otosu/Scene/OtuFileTable.c:
+    complete
+    .rodata     start:0x0209aa28 end:0x0209aaa0
+    .data       start:0x0209b4c8 end:0x0209b680
+
+src/Otosu/Scene/OtuStageDispatch.c:
+    complete
+    .text       start:0x02099394 end:0x020994ec
+
+src/Otosu/Scene/OtuVecOps.c:
+    .text       start:0x020994ec end:0x02099798

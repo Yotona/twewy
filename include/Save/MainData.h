@@ -301,8 +301,15 @@ typedef struct MainData {
     /* 0x3238 */ u32              unk_3238;
     /* 0x323C */ char             unk_323C[0x323E - 0x323C];
     /* 0x323E */ u16              unk_323E;
-    /* 0x3240 */ char             unk_3240[0x341C - 0x3240];
-    /* 0x341C */ u8               unk_341C;
-} MainData; // Size: 0x3420
+    /* 0x3240 */ char             unk_3240[0x33EC - 0x3240];
+    /* 0x33EC */ u8               otosuParentBssid[6];     // Tin Pin Slammer: the wireless game to rejoin
+    /* 0x33F2 */ u8               otosuPlayerBssids[4][6]; // Tin Pin Slammer: every player's console, in player order
+    /* 0x340A */ u8               otosuGameKey;     // Tin Pin Slammer: 0 opens the wireless menu, else the game's beacon key
+    /* 0x340B */ u8               otosuPlayerCount; // Tin Pin Slammer
+    /* 0x340C */ u8               otosuBoard;       // Tin Pin Slammer
+    /* 0x340D */ char             unk_340D[0x3414 - 0x340D];
+    /* 0x3414 */ u16              otosuScores[4];   // Tin Pin Slammer: each player's last round score
+    /* 0x341C */ u8               unk_341C;         // Tin Pin Slammer: the single-player match the story sets up
+} MainData;                                         // Size: 0x3420
 
-#endif      // SAVE_MAINDATA_H
+#endif                                              // SAVE_MAINDATA_H
