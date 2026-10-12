@@ -1,11 +1,11 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static void OtosuMenu_Entry_Load(void) {
     return; // do nothing
 }
 
-static void OtosuMenu_Entry_Destroy(PrcCtx* ctx, void* arg1) {
-    func_ov002_02085710(arg1);
+static void OtosuMenu_Entry_Destroy(PrcCtx* ctx, void* object) {
+    OtosuMenu_ReleaseScreens(object);
 }
 
 static void OtosuMenu_Entry_Update(void) {
@@ -16,13 +16,13 @@ static void OtosuMenu_Entry_Render(void) {
     return; // do nothing
 }
 
-static PrcStepResult OtosuMenu_Entry_Step_Setup(PrcCtx* ctx, void* arg1) {
-    func_ov002_02083694(arg1);
+static PrcStepResult OtosuMenu_Entry_Step_Setup(PrcCtx* ctx, void* object) {
+    OtosuMenu_SetupEntryScreens(object);
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-static PrcStepResult OtosuMenu_Entry_Step_WaitInput(PrcCtx* ctx, void* arg0) {
+static PrcStepResult OtosuMenu_Entry_Step_WaitInput(PrcCtx* ctx, void* object) {
     if ((TouchInput_WasTouchPressed()) || (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) ||
         (SysControl.buttonState.pressedButtons & INPUT_BUTTON_B) || (SysControl.buttonState.pressedButtons & INPUT_BUTTON_X) ||
         (SysControl.buttonState.pressedButtons & INPUT_BUTTON_Y) ||

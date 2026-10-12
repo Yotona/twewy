@@ -419,6 +419,7 @@ typedef enum {
     PIN_GRIZZLY  = 301,
     PIN_WOLF     = 302,
     PIN_FROG     = 303,
+    PIN_COUNT,
 } PinID;
 
 #define GLOBAL_ITEMID_PIN_OFFSET 0

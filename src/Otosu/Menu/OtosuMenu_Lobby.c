@@ -1,79 +1,141 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
-static PrcStepFn data_ov002_02092f30[] = {func_ov002_0208b570, PrcStep_PopFrame};
+typedef union {
+    struct {
+        u16 unk0;
+        u16 unk2;
+        u16 unk4;
+        u16 unk6;
+        u16 unk8;
+        u16 unkA;
+    };
+    u16 data[6];
+} Ov002_U16_6;
 
-static PrcStepFn data_ov002_02092f98[] = {
-    func_ov002_02089bb0,
-    func_ov002_0208aa4c,
-    func_ov002_0208aabc,
+typedef struct {
+    u16 data[15];
+} Ov002_U16_15;
+
+typedef union {
+    struct {
+        u16 unk0;
+        u16 unk2;
+        u16 unk4;
+        u16 unk6;
+        u16 unk8;
+        u16 unkA;
+        u16 unkC;
+        u16 unkE;
+        u16 unk10;
+        u16 unk12;
+        u16 unk14;
+        u16 unk16;
+    };
+    u16 data[12];
+} Ov002_U16_12;
+
+static void          OtosuMenu_Lobby_Load(PrcCtx* ctx, OtosuMenuObj* menuObj);
+static void          OtosuMenu_Lobby_Destroy(void* arg0, OtosuMenuObj* menuObj);
+static void          OtosuMenu_Lobby_Update(void);
+static void          OtosuMenu_Lobby_Render(void);
+static PrcStepResult OtosuMenu_Lobby_Step_Begin(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_Lobby_Step_InitHost(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_StartHost(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_DrawPlayerNames(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_SetupHostScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_HostWait(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_GoToHostStageSelect(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_GoToGuestStageSelect(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_StartScan(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_SetupJoinScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_ChooseHost(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_EndScan(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_SetupGuestScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_ConnectToHost(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_InitGuestWait(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_GuestWait(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_Lobby_Step_ShutdownWireless(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_Lobby_Step_LeaveSession(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_Lobby_Step_SendCancel(PrcCtx* ctx, void* arg1);
+static PrcStepResult OtosuMenu_Lobby_Step_SendStart(PrcCtx* ctx, void* arg1);
+static PrcStepResult OtosuMenu_Lobby_Step_ShutdownHost(PrcCtx* ctx, void* arg0);
+static PrcStepResult OtosuMenu_Lobby_Step_StopHost(PrcCtx* ctx, void* unused);
+
+static PrcStepFn OtosuMenu_Lobby_ShutdownSteps[] = {OtosuMenu_Lobby_Step_ShutdownWireless, PrcStep_PopFrame};
+
+static PrcStepFn OtosuMenu_Lobby_JoinStepTable[] = {
+    OtosuMenu_Lobby_Step_Begin,
+    OtosuMenu_Lobby_Step_StartScan,
+    OtosuMenu_Lobby_Step_SetupJoinScreen,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_0208ab58,
+    OtosuMenu_Lobby_Step_ChooseHost,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_0208af78,
-    func_ov002_0208b0a4,
-    func_ov002_0208b154,
+    OtosuMenu_Lobby_Step_EndScan,
+    OtosuMenu_Lobby_Step_SetupGuestScreen,
+    OtosuMenu_Lobby_Step_ConnectToHost,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_0208b240,
-    func_ov002_0208b270,
-    func_ov002_0208266c,
-    func_ov002_02082698,
-    func_ov002_0208b5c4,
+    OtosuMenu_Lobby_Step_InitGuestWait,
+    OtosuMenu_Lobby_Step_GuestWait,
+    OtosuPrcStep_SaveOwnPlayer,
+    OtosuPrcStep_SavePlayers,
+    OtosuMenu_Lobby_Step_LeaveSession,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_0208a764,
+    OtosuMenu_Lobby_Step_GoToGuestStageSelect,
     PrcStep_PopFrame,
 };
 
-static PrcStepFn data_ov002_02092f38[] = {func_ov002_0208b610, func_ov002_0208b6d0, PrcStep_PopFrame};
+static PrcStepFn OtosuMenu_Lobby_CancelSteps[] = {OtosuMenu_Lobby_Step_SendCancel, OtosuMenu_Lobby_Step_ShutdownHost,
+                                                  PrcStep_PopFrame};
 
-PrcFrameDesc data_ov002_02092f44 = {
-    .enter     = func_ov002_02089b3c,
-    .stepTable = data_ov002_02092f98,
-    .update    = func_ov002_02089ba8,
-    .render    = func_ov002_02089bac,
-    .exit      = func_ov002_02089b80,
+PrcFrameDesc OtosuMenu_Lobby_JoinFrameDesc = {
+    .enter     = OtosuMenu_Lobby_Load,
+    .stepTable = OtosuMenu_Lobby_JoinStepTable,
+    .update    = OtosuMenu_Lobby_Update,
+    .render    = OtosuMenu_Lobby_Render,
+    .exit      = OtosuMenu_Lobby_Destroy,
 };
 
-static PrcStepFn data_ov002_02092f58[] = {
-    func_ov002_02089bb0,
-    func_ov002_02089d40,
-    func_ov002_02089e3c,
-    func_ov002_0208a070,
-    func_ov002_0208a050,
+static PrcStepFn OtosuMenu_Lobby_HostStepTable[] = {
+    OtosuMenu_Lobby_Step_Begin,
+    OtosuMenu_Lobby_Step_InitHost,
+    OtosuMenu_Lobby_Step_StartHost,
+    OtosuMenu_Lobby_Step_SetupHostScreen,
+    OtosuMenu_Lobby_Step_DrawPlayerNames,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_0208a250,
+    OtosuMenu_Lobby_Step_HostWait,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_0208266c,
-    func_ov002_02082698,
-    func_ov002_0208b670,
-    func_ov002_0208b734,
-    func_ov002_0208a748,
+    OtosuPrcStep_SaveOwnPlayer,
+    OtosuPrcStep_SavePlayers,
+    OtosuMenu_Lobby_Step_SendStart,
+    OtosuMenu_Lobby_Step_StopHost,
+    OtosuMenu_Lobby_Step_GoToHostStageSelect,
     PrcStep_PopFrame,
 };
 
-static const Ov002_U16_6 data_ov002_02092074 = {0x0002, 0x0002, 0x009D, 0x0002, 0x00A4, 0x009D}; /* const */
+static const Ov002_U16_6 OtosuMenu_Lobby_HostCursors = {0x0002, 0x0002, 0x009D, 0x0002, 0x00A4, 0x009D}; /* const */
 BOOL                     OtosuMenu_TitleSkipped;
-static s16               data_ov002_02093664[0xE];
-static const Ov002_U16_6 data_ov002_02092068 = {0x0002, 0x0002, 0x009D, 0x0002, 0x002A, 0x0054}; /* const */
-PrcFrameDesc             data_ov002_02092ff0 = {
-                .enter     = func_ov002_02089b3c,
-                .stepTable = data_ov002_02092f58,
-                .update    = func_ov002_02089ba8,
-                .render    = func_ov002_02089bac,
-                .exit      = func_ov002_02089b80,
+static s16               OtosuMenu_Lobby_HostNameBuf[0xE];
+static const Ov002_U16_6 OtosuMenu_Lobby_GuestCursors  = {0x0002, 0x0002, 0x009D, 0x0002, 0x002A, 0x0054}; /* const */
+PrcFrameDesc             OtosuMenu_Lobby_HostFrameDesc = {
+                .enter     = OtosuMenu_Lobby_Load,
+                .stepTable = OtosuMenu_Lobby_HostStepTable,
+                .update    = OtosuMenu_Lobby_Update,
+                .render    = OtosuMenu_Lobby_Render,
+                .exit      = OtosuMenu_Lobby_Destroy,
 };
-static const OtosuMenuRectList2 data_ov002_02092080 = {
+static const OtosuMenuRectList2 OtosuMenu_Lobby_GuestButtons = {
     {
      {0x0000, 0x0008, 0x00A0, 0x0058, 0x00B8},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
      }
 };
-static const OtosuMenuRectList5 data_ov002_0209212e = {
+static const OtosuMenuRectList5 OtosuMenu_Lobby_JoinButtons = {
     {
      {0, 8, 0xA0, 0x58, 0xB8},
      {1, 0x48, 0x40, 0xB6, 0x58},
@@ -82,23 +144,23 @@ static const OtosuMenuRectList5 data_ov002_0209212e = {
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
      }
 };
-static const Ov002_U16_12       data_ov002_02092094 = {0x0002, 0x0002, 0x009D, 0x0004, 0x0040, 0x003E,
-                                                       0x0004, 0x0040, 0x005E, 0x0004, 0x0040, 0x007E}; /* const */
-static const OtosuMenuRectList3 data_ov002_020920ac = {
+static const Ov002_U16_12       OtosuMenu_Lobby_JoinCursors = {0x0002, 0x0002, 0x009D, 0x0004, 0x0040, 0x003E,
+                                                               0x0004, 0x0040, 0x005E, 0x0004, 0x0040, 0x007E}; /* const */
+static const OtosuMenuRectList3 OtosuMenu_Lobby_JoinTexts   = {
     {
      {0x23F4, 8, 8, 0xF8, 0x40},
      {0x23EB, 0x18, 0xA6, 0x58, 0xB6},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0},
      }
 };
-static const OtosuMenuRectList3 data_ov002_020920e8 = {
+static const OtosuMenuRectList3 OtosuMenu_Lobby_HostButtons = {
     {
      {0, 8, 0xA0, 0x58, 0xB8},
      {1, 0xA5, 0xA0, 0xF5, 0xB8},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
      }
 };
-static const OtosuMenuRectList4 data_ov002_02092106 = {
+static const OtosuMenuRectList4 OtosuMenu_Lobby_HostTexts = {
     {
      {0x23F6, 0x0008, 0x0008, 0x00F8, 0x0040},
      {0x23F7, 0x00C5, 0x00A6, 0x00F5, 0x00B6},
@@ -106,7 +168,7 @@ static const OtosuMenuRectList4 data_ov002_02092106 = {
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x0000},
      }
 };
-static const OtosuMenuRectList3 data_ov002_020920ca = {
+static const OtosuMenuRectList3 OtosuMenu_Lobby_GuestTexts = {
     {
      {0x23F5, 8, 8, 0xF8, 0x40},
      {0x23EB, 0x18, 0xA6, 0x58, 0xB6},
@@ -114,12 +176,12 @@ static const OtosuMenuRectList3 data_ov002_020920ca = {
      }
 };
 
-void func_ov002_02089b3c(PrcCtx* ctx, OtosuMenuObj* menuObj) {
+static void OtosuMenu_Lobby_Load(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     menuObj->cursor.posX = 0;
     menuObj->cursor.posY = 0xC8;
 }
 
-void func_ov002_02089b54(void) {
+static void OtosuMenu_Lobby_ClearWindow(void) {
     g_DisplaySettings.engineState[0].window0              = 31;
     g_DisplaySettings.engineState[0].window0Effects       = TRUE;
     g_DisplaySettings.engineState[0].windowOutside        = 31;
@@ -127,130 +189,115 @@ void func_ov002_02089b54(void) {
     Display_Commit();
 }
 
-void func_ov002_02089b80(void* arg0, OtosuMenuObj* menuObj) {
-    func_ov002_02085710(menuObj);
+static void OtosuMenu_Lobby_Destroy(void* ctx, OtosuMenuObj* menuObj) {
+    OtosuMenu_ReleaseScreens(menuObj);
     menuObj->cursor.posX = 0;
     menuObj->cursor.posY = 0xC8;
 }
 
-void func_ov002_02089ba8(void) {}
+static void OtosuMenu_Lobby_Update(void) {}
 
-void func_ov002_02089bac(void) {}
+static void OtosuMenu_Lobby_Render(void) {}
 
-PrcStepResult func_ov002_02089bb0(PrcCtx* ctx, void* unused) {
+static PrcStepResult OtosuMenu_Lobby_Step_Begin(PrcCtx* ctx, void* unused) {
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_02089bc0(void* arg0, void* arg1) {
-    ((OtosuMenuObj*)arg1)->unk_41950 = 0;
+static void OtosuMenu_Lobby_OnSendDone(void* arg, void* object) {
+    ((OtosuMenuObj*)object)->sendBusy = 0;
 }
 
-s32 func_ov002_02089bd0(void) {
+static s32 OtosuMenu_Lobby_RejectGuest(void) {
     return 0;
 }
 
-s32 func_ov002_02089bd8(void* arg0, OtosuMenuObj* menuObj) {
-    typedef struct {
-        u8  filler10[0x10];
-        u16 unk10;
-    } Ov002_89bd8Data;
-    Ov002_89bd8Data* msg = (Ov002_89bd8Data*)arg0;
-    u16              temp_r2;
+static s32 OtosuMenu_Lobby_OnGuestConnected(OtosuMenuChildInfo* guest, OtosuMenuObj* menuObj) {
+    u16 aid;
 
-    temp_r2 = msg->unk10;
-    if ((u32)temp_r2 >= 4U) {
+    aid = guest->aid;
+    if ((u32)aid >= 4U) {
         return 0;
     }
-    MI_CpuCopyU8((s32)((u8*)msg + 0x14), menuObj->players[temp_r2].name, 0x16);
-    MI_CpuCopyU8((s32)((u8*)msg + 0x0A), menuObj->players[msg->unk10].bssid, 6);
+    MI_CpuCopyU8(guest->name, menuObj->players[aid].name, 0x16);
+    MI_CpuCopyU8(guest->bssid, menuObj->players[guest->aid].bssid, 6);
 
-    menuObj->playerMask = (u16)(menuObj->playerMask | (1 << msg->unk10));
-    menuObj->unk_41836  = (u16)(menuObj->unk_41836 | (1 << msg->unk10));
+    menuObj->playerMask      = (u16)(menuObj->playerMask | (1 << guest->aid));
+    menuObj->playerDirtyMask = (u16)(menuObj->playerDirtyMask | (1 << guest->aid));
 
-    menuObj->unk_4195A[msg->unk10] = 0;
+    menuObj->guestAckMask[guest->aid] = 0;
     return 1;
 }
 
-void func_ov002_02089c88(void* arg0, OtosuMenuObj* menuObj) {
-    typedef struct {
-        u8  filler10[0x10];
-        u16 unk10;
-    } Ov002_89bd8Data;
-    Ov002_89bd8Data* msg = (Ov002_89bd8Data*)arg0;
-    u16              temp_r3;
+static void OtosuMenu_Lobby_OnGuestDisconnected(OtosuMenuChildInfo* guest, OtosuMenuObj* menuObj) {
+    u16 aid;
 
-    temp_r3 = msg->unk10;
-    if ((u32)temp_r3 >= 4U) {
+    aid = guest->aid;
+    if ((u32)aid >= 4U) {
         return;
     }
-    menuObj->playerMask = (u16)(menuObj->playerMask & ~(1 << temp_r3));
-    menuObj->unk_41836  = (u16)(menuObj->unk_41836 | (1 << msg->unk10));
+    menuObj->playerMask      = (u16)(menuObj->playerMask & ~(1 << aid));
+    menuObj->playerDirtyMask = (u16)(menuObj->playerDirtyMask | (1 << guest->aid));
 }
 
-void func_ov002_02089cd0(void* arg0, OtosuMenuObj* menuObj) {
-    menuObj->unk_4198C = 0;
+static void OtosuMenu_Lobby_OnBeaconUpdated(void* arg, OtosuMenuObj* menuObj) {
+    menuObj->beaconUpdateBusy = 0;
 }
 
-void func_ov002_02089ce0(s32 arg0, void* arg1, void* arg2, s32 arg3) {
-    typedef struct {
-        u16 unk0;
-        u16 unk2;
-    } Ov002_89ce0Data;
-    Ov002_89ce0Data* msg = (Ov002_89ce0Data*)arg1;
-    void*            temp_r5;
+static void OtosuMenu_Lobby_OnGuestPacket(s32 guest, void* data, void* size, OtosuMenuObj* menuObj) {
+    OtosuMenuGuestPacket* packet = data;
 
-    if (arg1 == NULL) {
+    if (data == NULL) {
         return;
     }
-    if (arg2 != (void*)0xA) {
+    if (size != (void*)0xA) {
         return;
     }
-    if (arg3 == 0) {
+    if (menuObj == NULL) {
         return;
     }
-    temp_r5                         = (u8*)arg3 + (arg0 * 2);
-    *(u16*)((u8*)temp_r5 + 0x4195A) = (u16)msg->unk0;
-    *(u16*)((u8*)temp_r5 + 0x41962) = (u16)msg->unk2;
-    MI_CpuCopyU8((s32)((u8*)msg + 4), (s16*)((arg0 * 6) + ((u8*)arg3 + 0x41FB6)), 6);
+    menuObj->guestAckMask[guest]    = packet->playerMask;
+    menuObj->guestAckVersion[guest] = packet->rosterVersion;
+    MI_CpuCopyU8(packet->bssid, menuObj->connectedBssids[guest], 6);
 }
 
-PrcStepResult func_ov002_02089d40(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_InitHost(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    s32 temp_r0;
+    s32 ownerName;
 
-    menuObj->playerMask = 0;
-    menuObj->unk_41836  = 0;
-    menuObj->unk_4198C  = 0;
-    menuObj->unk_41990  = 0;
-    menuObj->unk_41994  = 1;
-    menuObj->unk_41950  = 0;
-    menuObj->unk_41954  = 0;
-    menuObj->unk_41958  = 0;
-    MI_CpuSet(menuObj->unk_4195A, 0, 8);
-    MI_CpuSet(menuObj->unk_41962, 0, 8);
-    menuObj->unk_4196A  = 0;
-    menuObj->unk_4198A  = 1;
-    menuObj->playerMask = 1;
-    temp_r0             = SysFont_GetOwnerName();
-    MI_CpuCopyU8(temp_r0, (u8*)menuObj->unk_4196E, 0x16);
-    MI_CpuCopyU8(temp_r0, menuObj->players[0].name, 0x16);
-    Mem_Free(&gDebugHeap, temp_r0);
+    menuObj->playerMask          = 0;
+    menuObj->playerDirtyMask     = 0;
+    menuObj->beaconUpdateBusy    = 0;
+    menuObj->beaconUpdatePending = 0;
+    menuObj->acceptingGuests     = 1;
+    menuObj->sendBusy            = 0;
+    menuObj->rosterChanged       = 0;
+    menuObj->rosterVersion       = 0;
+    MI_CpuSet(menuObj->guestAckMask, 0, 8);
+    MI_CpuSet(menuObj->guestAckVersion, 0, 8);
+    menuObj->syncState          = 0;
+    menuObj->beacon.playerCount = 1;
+    menuObj->playerMask         = 1;
+    ownerName                   = SysFont_GetOwnerName();
+    MI_CpuCopyU8(ownerName, menuObj->beacon.name, 0x16);
+    MI_CpuCopyU8(ownerName, menuObj->players[0].name, 0x16);
+    Mem_Free(&gDebugHeap, ownerName);
     func_0203a96c(menuObj->players[0].bssid);
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089e3c(PrcCtx* ctx, void* object) {
+// Nonmatching: instruction scheduling
+static PrcStepResult OtosuMenu_Lobby_Step_StartHost(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     s32 temp_r4;
     s32 temp_r5;
-    u32 temp_r0;
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) {
+    state = func_ov040_0209cb78();
+    switch (state) {
         default:
             break;
         case 0:
@@ -265,10 +312,10 @@ PrcStepResult func_ov002_02089e3c(PrcCtx* ctx, void* object) {
             temp_r4 = func_020442f8();
             func_ov040_0209d818(3, 0, 0x78, 0xA, 1);
             func_ov040_0209d848(0);
-            func_ov040_0209cb08((u8*)menuObj + 0x4196E, 0x1E);
-            func_ov040_0209d40c(func_ov002_02089bd8, menuObj);
-            func_ov040_0209d420(func_ov002_02089c88, menuObj);
-            func_ov003_0209d434(func_ov002_02089ce0, menuObj);
+            func_ov040_0209cb08(&menuObj->beacon, 0x1E);
+            func_ov040_0209d40c(OtosuMenu_Lobby_OnGuestConnected, menuObj);
+            func_ov040_0209d420(OtosuMenu_Lobby_OnGuestDisconnected, menuObj);
+            func_ov040_0209d434(OtosuMenu_Lobby_OnGuestPacket, menuObj);
             func_ov040_0209d0a8(0, temp_r4, temp_r5);
             break;
         case 4:
@@ -278,384 +325,345 @@ PrcStepResult func_ov002_02089e3c(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_02089f3c(OtosuMenuObj* menuObj, s32 arg1) {
+static void OtosuMenu_Lobby_SetStartEnabled(OtosuMenuObj* menuObj, s32 enabled) {
     u8* pack;
-    u8* base;
-    u8* var_r0;
-    u8* var_r0_2;
+    u8* screen;
+    u8* screen2;
 
     pack = (u8*)menuObj->packs[0];
-    if (arg1 != 0) {
-        var_r0                                                = Data_GetPackEntryData((Data*)pack, 23);
-        menuObj->mainScreens[1][0]                            = (void*)(var_r0 + 4);
+    if (enabled != 0) {
+        screen                                                = Data_GetPackEntryData((Data*)pack, 23);
+        menuObj->mainScreens[1][0]                            = (void*)(screen + 4);
         g_DisplaySettings.engineState[0].window0              = 0x1F;
-        g_DisplaySettings.engineState[0].windowOutsideEffects = 1;
-        g_DisplaySettings.engineState[0].windowOutside        = 0x1F;
         g_DisplaySettings.engineState[0].window0Effects       = 1;
+        g_DisplaySettings.engineState[0].windowOutside        = 0x1F;
+        g_DisplaySettings.engineState[0].windowOutsideEffects = 1;
     } else {
-        var_r0_2                                              = Data_GetPackEntryData((Data*)pack, 24);
-        menuObj->mainScreens[1][0]                            = (void*)(var_r0_2 + 4);
+        screen2                                               = Data_GetPackEntryData((Data*)pack, 24);
+        menuObj->mainScreens[1][0]                            = (void*)(screen2 + 4);
         g_DisplaySettings.engineState[0].window0Left          = 688128;
         g_DisplaySettings.engineState[0].window0Top           = 655360;
         g_DisplaySettings.engineState[0].window0Right         = 1015808;
         g_DisplaySettings.engineState[0].window0Bottom        = 753664;
         g_DisplaySettings.engineState[0].window0              = 0x1E;
-        g_DisplaySettings.engineState[0].windowOutsideEffects = 1;
-        g_DisplaySettings.engineState[0].windowOutside        = 0x1F;
         g_DisplaySettings.engineState[0].window0Effects       = 1;
+        g_DisplaySettings.engineState[0].windowOutside        = 0x1F;
+        g_DisplaySettings.engineState[0].windowOutsideEffects = 1;
         g_DisplaySettings.controls[0].windows |= 1;
     }
     Display_Commit();
-    func_0200d1d8((u8*)menuObj->mainMaps[1].engineId, 0, 1, 0, (u8*)menuObj->mainScreens[1][0], 1, 1);
+    func_0200d1d8(&menuObj->mainMaps[1], 0, 1, 0, menuObj->mainScreens[1], 1, 1);
 }
 
-PrcStepResult func_ov002_0208a050(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_DrawPlayerNames(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    func_ov002_02082ab4(menuObj);
+    OtosuMenu_DrawPlayerNames(menuObj);
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208a070(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_SetupHostScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    OtosuMenuRectList4 table_sp0 = data_ov002_02092106;
-    u16                i;
+    OtosuMenuRectList4 texts = OtosuMenu_Lobby_HostTexts;
 
-    func_ov002_02082f18(menuObj, 0x18, 0x16, table_sp0.rects);
-    func_ov002_02089f3c(menuObj, 0);
+    OtosuMenu_SetupScreens(menuObj, 0x18, 0x16, texts.rects);
+    OtosuMenu_Lobby_SetStartEnabled(menuObj, 0);
     menuObj->unk_474C8 = 0xFFFF;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208a0f8(OtosuMenuObj* menuObj) {
-    u8  names[4][0x30];
+// Nonmatching: the names cursor and the roster mask swap registers
+static void OtosuMenu_Lobby_RefreshRoster(OtosuMenuObj* menuObj) {
+    u8  names[4][sizeof(OtosuMenuPlayer)];
     s32 i;
     u32 mask;
     u32 irq;
     u8* src;
 
-    menuObj->unk_41990 = 1;
-    menuObj->unk_41954 = 1;
-    irq                = OS_DisableIRQ();
-    mask               = menuObj->playerMask & menuObj->unk_41836;
-    menuObj->unk_41836 = 0;
-    src                = (u8*)menuObj->players;
+    menuObj->beaconUpdatePending = 1;
+    menuObj->rosterChanged       = 1;
+    irq                          = OS_DisableIRQ();
+    mask                         = menuObj->playerMask & menuObj->playerDirtyMask;
+    menuObj->playerDirtyMask     = 0;
+    src                          = (u8*)menuObj->players;
     for (i = 0; i < 4; i++) {
         if (mask & (1 << i)) {
             MI_CpuCopyU8(src, names[i], 0x16);
         }
-        src += 0x30;
+        src += sizeof(OtosuMenuPlayer);
     }
     OS_RestoreIRQ(irq);
-    func_ov002_02082ab4(menuObj);
+    OtosuMenu_DrawPlayerNames(menuObj);
 }
 
-void func_ov002_0208a198(OtosuMenuObj* menuObj) {
-    s32 var_ip;
-    u16 temp_r0;
+static void OtosuMenu_Lobby_UpdateBeacon(OtosuMenuObj* menuObj) {
+    s32 acceptNew;
+    u16 playerCount;
 
-    menuObj->unk_41990 = 0;
-    menuObj->unk_4198A = func_02047e84(menuObj->playerMask);
-    var_ip             = 1;
-    menuObj->unk_4198C = 1;
-    if (menuObj->unk_41994 != 0) {
-        if ((u32)menuObj->unk_4198A >= 4U) {
-            var_ip = 0;
+    menuObj->beaconUpdatePending = 0;
+    menuObj->beacon.playerCount  = func_02047e84(menuObj->playerMask);
+    acceptNew                    = 1;
+    menuObj->beaconUpdateBusy    = 1;
+    if (menuObj->acceptingGuests != 0) {
+        if ((u32)menuObj->beacon.playerCount >= 4U) {
+            acceptNew = 0;
         }
     } else {
-        var_ip = 0;
+        acceptNew = 0;
     }
-    if (func_ov040_0209d788(func_ov002_02089cd0, menuObj, (u8*)menuObj->unk_4196E, 0x1E, var_ip) == 0) {
-        menuObj->unk_4198C = 0;
+    if (func_ov040_0209d788(OtosuMenu_Lobby_OnBeaconUpdated, menuObj, &menuObj->beacon, 0x1E, acceptNew) == 0) {
+        menuObj->beaconUpdateBusy = 0;
     }
-    temp_r0 = menuObj->unk_4198A;
-    func_ov002_02089f3c(menuObj, (temp_r0 > 1U) ? 1 : 0);
+    playerCount = menuObj->beacon.playerCount;
+    OtosuMenu_Lobby_SetStartEnabled(menuObj, (playerCount > 1U) ? 1 : 0);
 }
 
-PrcStepResult func_ov002_0208a250(PrcCtx* ctx, void* object) {
+// Nonmatching: control flow differs
+static PrcStepResult OtosuMenu_Lobby_Step_HostWait(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    OtosuMenuRectList3 layout = data_ov002_020920e8;
-    Ov002_U16_6        anims  = data_ov002_02092074;
-    s32                sp4;
-    s32                temp_r4;
-    s32                temp_r6;
-    s32                var_r0;
-    s32                var_r2;
-    s32                var_r5;
-    s32                var_r9;
-    s32                var_r9_2;
-    const Ov002_U16_2* var_r3;
-    Ov002_U16_2*       var_r4;
-    u16                temp_r0;
-    u16                temp_r1;
-    u16                temp_r6_2;
-    u16                temp_r8;
-    u16                var_r4_2;
-    void*              temp_r1_2;
-    void*              temp_r7;
-    void*              temp_r9;
+    OtosuMenuRectList3 buttons = OtosuMenu_Lobby_HostButtons;
+    Ov002_U16_6        cursors = OtosuMenu_Lobby_HostCursors;
+    s32                irq2;
+    s32                irq;
+    s32                i;
+    s32                sendPacket;
+    s32                j;
+    s32                k;
+    u16                mask2;
+    u16                mask;
+    u16                touched;
+    void*              cursor;
 
-    var_r5   = 0;
-    var_r4_2 = func_ov002_0208597c(layout.rects);
-    if ((var_r4_2 == 1) && (menuObj->unk_4198A == 1)) {
-        var_r4_2 = 0xFFFF;
+    sendPacket = 0;
+    touched    = OtosuMenu_GetTouchedButton(buttons.rects);
+    if ((touched == 1) && (menuObj->beacon.playerCount == 1)) {
+        touched = 0xFFFF;
     }
-    if (var_r4_2 == 0xFFFE) {
-        var_r4_2             = 0xFFFF;
+    if (touched == 0xFFFE) {
+        touched              = 0xFFFF;
         menuObj->unk_474C8   = 0xFFFF;
         menuObj->cursor.posX = 0U;
         menuObj->cursor.posY = 0xC8U;
     }
-    if ((menuObj->unk_474C8 == 1) && (menuObj->unk_4198A == 1)) {
+    if ((menuObj->unk_474C8 == 1) && (menuObj->beacon.playerCount == 1)) {
         menuObj->unk_474C8   = 0xFFFF;
         menuObj->cursor.posX = 0U;
         menuObj->cursor.posY = 0xC8U;
     }
-    if (var_r4_2 != 0xFFFF) {
-        if (menuObj->unk_474C8 == var_r4_2) {
-            switch (var_r4_2) { /* irregular */
+    if (touched != 0xFFFF) {
+        if (menuObj->unk_474C8 == touched) {
+            switch (touched) { /* irregular */
                 case 0:
                     SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                     PrcCtx_ReplaceFrame(ctx, &OtosuMenu_RoleSelect_FrameDesc, NULL);
                     menuObj->linkLevelIcon.posX = 0;
                     menuObj->linkLevelIcon.posY = 0xC8;
-                    PrcCtx_PushStepTable(ctx, data_ov002_02092f38);
+                    PrcCtx_PushStepTable(ctx, OtosuMenu_Lobby_CancelSteps);
                     PrcCtx_PushStepTable(ctx, PrcSteps_FadeBrightImmediate);
                     return 0;
                 case 1:
-                    temp_r4 = OS_DisableIRQ();
+                    irq = OS_DisableIRQ();
                     SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
-                    if (((u32)func_02047e84(menuObj->playerMask) >= 2U) && (menuObj->unk_41950 == 0)) {
-                        var_r0 = 1;
+                    if (((u32)func_02047e84(menuObj->playerMask) >= 2U) && (menuObj->sendBusy == 0)) {
+                        i = 1;
                     loop_25:
-                        if (var_r0 < 4) {
-                            temp_r8 = menuObj->playerMask;
-                            if (!(temp_r8 & (1 << var_r0)) ||
-                                ((temp_r9 = (u8*)menuObj + (var_r0 * 2), (temp_r8 == ((u16*)temp_r9)[0x4195A / 2])) &&
-                                 (menuObj->unk_41958 == ((u16*)temp_r9)[0x41962 / 2])))
+                        if (i < 4) {
+                            mask = menuObj->playerMask;
+                            if (!(mask & (1 << i)) || ((mask == menuObj->guestAckMask[i]) &&
+                                                       (menuObj->rosterVersion == menuObj->guestAckVersion[i])))
                             {
-                                var_r0 += 1;
+                                i += 1;
                                 goto loop_25;
                             }
                         }
-                        if (var_r0 == 4) {
-                            func_ov040_0209d40c(func_ov002_02089bd0, menuObj);
+                        if (i == 4) {
+                            func_ov040_0209d40c(OtosuMenu_Lobby_RejectGuest, menuObj);
                             func_ov040_0209d420(NULL, menuObj);
-                            menuObj->unk_4196A = 2U;
-                            menuObj->unk_41994 = 0;
-                            var_r5             = 1;
-                            menuObj->unk_41990 = 1;
+                            menuObj->syncState           = 2U;
+                            menuObj->acceptingGuests     = 0;
+                            sendPacket                   = 1;
+                            menuObj->beaconUpdatePending = 1;
                         }
                     }
-                    OS_RestoreIRQ(temp_r4);
+                    OS_RestoreIRQ(irq);
                     goto block_33;
             }
         } else {
-            menuObj->unk_474C8 = var_r4_2;
+            menuObj->unk_474C8 = touched;
             SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
-            if ((var_r4_2 != 0) && (var_r4_2 != 1)) {
+            if ((touched != 0) && (touched != 1)) {
 
             } else {
-                temp_r1_2            = &anims.data[var_r4_2 * 3];
-                menuObj->cursor.posX = ((u16*)temp_r1_2)[1];
-                menuObj->cursor.posY = ((u16*)temp_r1_2)[2];
-                Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)((u16*)temp_r1_2)[0],
+                cursor               = &cursors.data[touched * 3];
+                menuObj->cursor.posX = ((u16*)cursor)[1];
+                menuObj->cursor.posY = ((u16*)cursor)[2];
+                Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)((u16*)cursor)[0],
                                        menuObj->cursor.cellTable);
             }
             goto block_33;
         }
     } else {
     block_33:
-        if (menuObj->unk_41836 != 0) {
-            func_ov002_0208a0f8(menuObj);
+        if (menuObj->playerDirtyMask != 0) {
+            OtosuMenu_Lobby_RefreshRoster(menuObj);
         }
-        if ((menuObj->unk_41990 != 0) && (menuObj->unk_4198C == 0)) {
-            func_ov002_0208a198(menuObj);
+        if ((menuObj->beaconUpdatePending != 0) && (menuObj->beaconUpdateBusy == 0)) {
+            OtosuMenu_Lobby_UpdateBeacon(menuObj);
         }
-        if ((menuObj->playerMask != 1) && (menuObj->unk_41950 == 0)) {
-            if (menuObj->unk_41954 != 0) {
-                menuObj->unk_41954 = 0;
-                var_r5             = 1;
-                menuObj->unk_41958 = (u16)(menuObj->unk_41958 + 1);
+        if ((menuObj->playerMask != 1) && (menuObj->sendBusy == 0)) {
+            if (menuObj->rosterChanged != 0) {
+                menuObj->rosterChanged = 0;
+                sendPacket             = 1;
+                menuObj->rosterVersion = (u16)(menuObj->rosterVersion + 1);
             } else {
-                var_r9 = 1;
+                j = 1;
             loop_49:
-                if (var_r9 < 4) {
-                    temp_r6_2 = menuObj->playerMask;
-                    if (temp_r6_2 & (1 << var_r9)) {
-                        temp_r7 = (u8*)menuObj + (var_r9 * 2);
-                        if (temp_r6_2 != ((u16*)temp_r7)[0x4195A / 2]) {
-                            var_r5 = 1;
-                        } else if (menuObj->unk_41958 != ((u16*)temp_r7)[0x41962 / 2]) {
-                            var_r5 = 1;
+                if (j < 4) {
+                    mask2 = menuObj->playerMask;
+                    if (mask2 & (1 << j)) {
+                        if (mask2 != menuObj->guestAckMask[j]) {
+                            sendPacket = 1;
+                        } else if (menuObj->rosterVersion != menuObj->guestAckVersion[j]) {
+                            sendPacket = 1;
                         } else {
                             goto block_48;
                         }
                     } else {
                     block_48:
-                        var_r9 += 1;
+                        j += 1;
                         goto loop_49;
                     }
                 }
             }
         }
-        if (var_r5 != 0) {
-            sp4                    = OS_DisableIRQ();
-            data_ov002_020935e0[0] = menuObj->unk_4196A;
-            if (menuObj->unk_4196A == 0) {
-                var_r9_2                  = 0;
-                data_ov002_020935e0[1]    = menuObj->playerMask;
-                data_ov002_020935e0[0x3A] = menuObj->unk_41958;
+        if (sendPacket != 0) {
+            irq2                           = OS_DisableIRQ();
+            OtosuMenu_HostPacket.syncState = menuObj->syncState;
+            if (menuObj->syncState == 0) {
+                k                                  = 0;
+                OtosuMenu_HostPacket.playerMask    = menuObj->playerMask;
+                OtosuMenu_HostPacket.rosterVersion = menuObj->rosterVersion;
             loop_56:
-                if (var_r9_2 < 4) {
-                    if (menuObj->playerMask & (1 << var_r9_2)) {
-                        MI_CpuCopyU8(menuObj->players[var_r9_2].name, (s16*)((var_r9_2 * 0x16) + (s32)&data_ov002_020935e0[2]),
-                                     0x16);
-                        MI_CpuCopyU8(menuObj->players[var_r9_2].bssid,
-                                     (s16*)((var_r9_2 * 6) + (s32)&data_ov002_020935e0[0x2E]), 6);
+                if (k < 4) {
+                    if (menuObj->playerMask & (1 << k)) {
+                        MI_CpuCopyU8(menuObj->players[k].name, OtosuMenu_HostPacket.names[k], 0x16);
+                        MI_CpuCopyU8(menuObj->players[k].bssid, OtosuMenu_HostPacket.bssids[k], 6);
                     }
-                    var_r9_2 += 1;
+                    k += 1;
                     goto loop_56;
                 }
             }
-            OS_RestoreIRQ(sp4);
-            menuObj->unk_41950 = 1;
-            if (func_ov040_0209d48c(data_ov002_020935e0, 0x78, func_ov002_02089bc0, menuObj) == 0) {
-                menuObj->unk_41950 = 0;
+            OS_RestoreIRQ(irq2);
+            menuObj->sendBusy = 1;
+            if (func_ov040_0209d48c(&OtosuMenu_HostPacket, 0x78, OtosuMenu_Lobby_OnSendDone, menuObj) == 0) {
+                menuObj->sendBusy = 0;
             }
         }
-        if (menuObj->unk_4196A == 2) {
-            menuObj->unk_41FD0 = (s32)func_02047e84(menuObj->playerMask);
+        if (menuObj->syncState == 2) {
+            menuObj->matchPlayerCount = (s32)func_02047e84(menuObj->playerMask);
             PrcCtx_AdvanceStep(ctx);
         }
         return 0;
     }
 }
 
-PrcStepResult func_ov002_0208a748(PrcCtx* ctx, void* object) {
-    PrcCtx_ReplaceFrame(ctx, &data_ov002_02092cf4, NULL);
+static PrcStepResult OtosuMenu_Lobby_Step_GoToHostStageSelect(PrcCtx* ctx, void* object) {
+    PrcCtx_ReplaceFrame(ctx, &OtosuMenu_StageSelect_HostFrameDesc, NULL);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208a764(PrcCtx* ctx, void* object) {
-    PrcCtx_ReplaceFrame(ctx, &data_ov002_02092ce0, NULL);
+static PrcStepResult OtosuMenu_Lobby_Step_GoToGuestStageSelect(PrcCtx* ctx, void* object) {
+    PrcCtx_ReplaceFrame(ctx, &OtosuMenu_StageSelect_GuestFrameDesc, NULL);
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208a780(OtosuMenuObj* menuObj) {
-    s32 temp_r8;
-    u16 var_r5;
-    u16 var_r9;
-    u32 temp_r1;
+// Nonmatching: register allocation of the loop constants and the chars pointer
+static void OtosuMenu_Lobby_DrawHostList(OtosuMenuObj* menuObj) {
+    s32 dest;
+    u16 j;
+    u16 i;
+    u32 offset;
 
-    MI_CpuFillU16(0, (s32)menuObj->unk_41FF4, 0x3000);
-    MI_CpuFillU16(0, (s32)data_ov002_02093664, 0x16);
-    var_r9 = 0;
+    MI_CpuFillU16(0, (s32)menuObj->nameChars, 0x3000);
+    MI_CpuFillU16(0, (s32)OtosuMenu_Lobby_HostNameBuf, 0x16);
+    i = 0;
     do {
-        if (!(menuObj->unk_41998 & (1 << var_r9))) {
-            *data_ov002_02093664 = 0xFFFF;
+        if (!(menuObj->foundHostMask & (1 << i))) {
+            *OtosuMenu_Lobby_HostNameBuf = 0xFFFF;
         } else {
-            MI_CpuCopyU8((var_r9 * 0x1E) + (s32)((u8*)menuObj->unk_41E38), data_ov002_02093664, 0x16);
+            MI_CpuCopyU8(menuObj->foundHostBeacons[i].name, OtosuMenu_Lobby_HostNameBuf, 0x16);
         }
-        SysFont_SetMsgPtr(&menuObj->font, data_ov002_02093664);
+        SysFont_SetMsgPtr(&menuObj->font, OtosuMenu_Lobby_HostNameBuf);
         SysFont_SetPos(&menuObj->font, 0, 5);
         SysFont_SetHAlign(&menuObj->font, 0, 256);
         SysFont_SetVAlign(&menuObj->font, 3, 32);
-        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->unk_41FF4 + (var_r9 << 12), 32, 4);
-        var_r9 += 1;
-    } while ((u32)var_r9 < 3U);
-    var_r5 = 0;
+        SysFont_DrawCurrentToChar(&menuObj->font, menuObj->nameChars + (i << 12), 32, 4);
+        i += 1;
+    } while ((u32)i < 3U);
+    j = 0;
     do {
-        temp_r1 = ((var_r5 << 5) + 0x48) << 8;
-        temp_r8 = G2_GetBG0CharPtr() + ((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1);
+        offset = ((j << 5) + 0x48) << 8;
+        dest   = G2_GetBG0CharPtr() + ((s32)(offset + (offset >> 0x1F)) >> 1);
         DC_PurgeAll();
-        func_0203abec(3, (s32)menuObj->unk_41FF4 + (var_r5 << 0xC), temp_r8, 0x1000);
-        var_r5 += 1;
-    } while ((u32)var_r5 < 3U);
+        func_0203abec(3, (s32)menuObj->nameChars + (j << 0xC), dest, 0x1000);
+        j += 1;
+    } while ((u32)j < 3U);
 }
 
-void func_ov002_0208a8d4(void* arg0, OtosuMenuObj* menuObj) {
-    s32 temp_r0;
-    s32 temp_r1;
-    s32 temp_r2;
-    s32 temp_r3;
-    s32 temp_r8_2;
-    s32 var_r4;
-    s32 var_r4_2;
-    s32 var_r5;
-    u16 temp_r8;
-    u8* entry = (u8*)arg0;
-    u8* slot;
-    u8* var_ip;
+// Nonmatching: instruction selection differs
+static void OtosuMenu_Lobby_OnScanResult(WMBssDesc* bss, OtosuMenuObj* menuObj) {
+    s32        slot;
+    s32        i;
+    u16        count;
+    WMBssDesc* host;
 
-    var_r5 = 0;
-    if (*(u32*)(entry + 0x3C) == 0) {
+    slot = 0;
+    if (bss->gameInfoLength == 0) {
         return;
     }
-    if (*(u8*)(entry + 0x4A) != 0x70) {
+    if (bss->gameInfo.userGameInfoLength != 0x70) {
         return;
     }
-    var_r4 = 5;
-loop_5:
-    slot = (u8*)menuObj->unk_419A0 + (var_r4 * 0xC4);
-    if (menuObj->unk_41998 & (1 << var_r4)) {
-        if ((*(u8*)(slot + 0x4) == *(u8*)(entry + 0x4)) && (*(u8*)(slot + 0x5) == *(u8*)(entry + 0x5)) &&
-            (*(u8*)(slot + 0x6) == *(u8*)(entry + 0x6)) && (*(u8*)(slot + 0x7) == *(u8*)(entry + 0x7)) &&
-            (*(u8*)(slot + 0x8) == *(u8*)(entry + 0x8)) && (*(u8*)(slot + 0x9) == *(u8*)(entry + 0x9)))
-        {
-            if (!(*(u8*)(entry + 0x4B) & 1)) {
-                menuObj->unk_41998 = (u16)(menuObj->unk_41998 & ~(1 << var_r4));
-                menuObj->unk_4199C = (u16)(menuObj->unk_4199C | (1 << var_r4));
-                return;
+    for (i = 5; i >= 0; i--) {
+        if (menuObj->foundHostMask & (1 << i)) {
+            host = &menuObj->foundHosts[i].bss;
+            if (host->bssid[0] == bss->bssid[0] && host->bssid[1] == bss->bssid[1] && host->bssid[2] == bss->bssid[2] &&
+                host->bssid[3] == bss->bssid[3] && host->bssid[4] == bss->bssid[4] && host->bssid[5] == bss->bssid[5])
+            {
+                if (!(bss->gameInfo.gameNameCount_attribute & 1)) {
+                    menuObj->foundHostMask        = (u16)(menuObj->foundHostMask & ~(1 << i));
+                    menuObj->foundHostChangedMask = (u16)(menuObj->foundHostChangedMask | (1 << i));
+                    return;
+                }
+                break;
             }
-            goto block_17;
+        } else {
+            slot = i;
         }
-        goto block_17;
     }
-    var_r5 = var_r4;
-block_17:
-    var_r4 -= 1;
-    if (var_r4 < 0) {
-        if (!(*(u8*)(entry + 0x4B) & 1)) {
-            return;
-        }
-        temp_r8 = func_02047e84();
-        if ((u32)func_02047e84(menuObj->unk_41998) >= 6U) {
-            return;
-        }
-        menuObj->unk_4199A = temp_r8;
-        if (var_r4 >= 0) {
-            var_r5 = var_r4;
-        }
-        temp_r8_2 = var_r5 * 0xC4;
-        var_ip    = (u8*)menuObj + temp_r8_2 + 0x419A0;
-        var_r4_2  = 0xC;
-        do {
-            temp_r0 = *(s32*)(entry + 0x0);
-            temp_r1 = *(s32*)(entry + 0x4);
-            temp_r2 = *(s32*)(entry + 0x8);
-            temp_r3 = *(s32*)(entry + 0xC);
-            entry += 0x10;
-            *(s32*)(var_ip + 0x0) = temp_r0;
-            *(s32*)(var_ip + 0x4) = temp_r1;
-            *(s32*)(var_ip + 0x8) = temp_r2;
-            *(s32*)(var_ip + 0xC) = temp_r3;
-            var_ip += 0x10;
-            var_r4_2 -= 1;
-        } while (var_r4_2 != 0);
-        *(u16*)((u8*)menuObj + temp_r8_2 + 0x41A60) = 0xB4;
-        menuObj->unk_41998                          = (u16)(menuObj->unk_41998 | (1 << var_r5));
-        menuObj->unk_4199C                          = (u16)(menuObj->unk_4199C | (1 << var_r5));
+    if (!(bss->gameInfo.gameNameCount_attribute & 1)) {
         return;
     }
-    goto loop_5;
+    count = func_02047e84(menuObj->foundHostMask);
+    if ((u32)func_02047e84(menuObj->foundHostMask) >= 6U) {
+        return;
+    }
+    menuObj->foundHostCount = count;
+    if (i >= 0) {
+        slot = i;
+    }
+    menuObj->foundHosts[slot].bss     = *bss;
+    menuObj->foundHosts[slot].timeout = 180;
+    menuObj->foundHostMask            = (u16)(menuObj->foundHostMask | (1 << slot));
+    menuObj->foundHostChangedMask     = (u16)(menuObj->foundHostChangedMask | (1 << slot));
 }
 
-PrcStepResult func_ov002_0208aa4c(PrcCtx* ctx, void* object) {
+// Nonmatching (JP): JP uses a different wireless GGID
+static PrcStepResult OtosuMenu_Lobby_Step_StartScan(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     switch (func_ov040_0209cb78()) {
@@ -664,7 +672,7 @@ PrcStepResult func_ov002_0208aa4c(PrcCtx* ctx, void* object) {
             func_ov040_0209caac(0x400548);
             break;
         case 1:
-            func_ov040_0209ba04(func_ov002_0208a8d4, menuObj, &OtosuMenu_BroadcastBssid, 0);
+            func_ov040_0209ba04(OtosuMenu_Lobby_OnScanResult, menuObj, &OtosuMenu_BroadcastBssid, 0);
             break;
         case 2:
             PrcCtx_AdvanceStep(ctx);
@@ -673,177 +681,140 @@ PrcStepResult func_ov002_0208aa4c(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208aabc(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_SetupJoinScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj*      menuObj = (OtosuMenuObj*)object;
-    OtosuMenuRectList3 layout  = data_ov002_020920ac;
+    OtosuMenuRectList3 texts   = OtosuMenu_Lobby_JoinTexts;
 
-    func_ov002_02082f18(menuObj, 0x1A, 0x19, layout.rects);
-    menuObj->unk_474C8 = 0xFFFF;
-    menuObj->unk_41EEC = 0xFFFF;
-    menuObj->unk_41998 = 0;
+    OtosuMenu_SetupScreens(menuObj, 0x1A, 0x19, texts.rects);
+    menuObj->unk_474C8     = 0xFFFF;
+    menuObj->selectedHost  = 0xFFFF;
+    menuObj->foundHostMask = 0;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208ab58(PrcCtx* ctx, void* object) {
+// Nonmatching: control flow differs
+static PrcStepResult OtosuMenu_Lobby_Step_ChooseHost(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    OtosuMenuRectList5 table_sp18 = data_ov002_0209212e;
-    Ov002_U16_12       table_anim = data_ov002_02092094;
-    s32                temp_r0_4;
-    s32                temp_r1_3;
-    s32                temp_r2;
-    s32                temp_r3;
-    s32                temp_r5;
-    s32                temp_r5_2;
-    s32                temp_r6;
-    s32                temp_r7;
-    s32                temp_r9;
-    s32                var_r1;
-    s32                var_r2;
-    s32                var_r2_2;
-    s32                var_r2_4;
-    s32                var_r5_2;
-    u16*               var_r3_3;
-    u16                temp_r0_3;
-    u16                temp_r7_2;
-    void*              var_r2_3;
-    void*              var_r5_3;
-    void*              var_r7_2;
-    void*              var_r8;
-    u16                i;
+    OtosuMenuRectList5 buttons = OtosuMenu_Lobby_JoinButtons;
+    Ov002_U16_12       cursors = OtosuMenu_Lobby_JoinCursors;
+    s32                irq;
+    s32                irq2;
+    s32                selected;
+    s32                cursor;
+    s32                timeout;
+    s32                i;
+    s32                j;
+    u16                touched;
+    u16                changed;
 
-    temp_r0_3 = func_ov002_0208597c(table_sp18.rects);
-    if (temp_r0_3 == 0xFFFE) {
+    touched = OtosuMenu_GetTouchedButton(buttons.rects);
+    if (touched == 0xFFFE) {
         menuObj->unk_474C8   = 0xFFFF;
         menuObj->cursor.posX = 0U;
         menuObj->cursor.posY = 0xC8U;
         return 0;
     }
-    if ((temp_r0_3 != 0xFFFF) && (temp_r0_3 != 0)) {
-        if ((menuObj->unk_41998 & (1 << (temp_r0_3 - 1))) == 0) {
-            temp_r0_3 = 0xFFFF;
+    if ((touched != 0xFFFF) && (touched != 0)) {
+        if ((menuObj->foundHostMask & (1 << (touched - 1))) == 0) {
+            touched = 0xFFFF;
         }
     }
-    if (temp_r0_3 != 0xFFFF) {
-        if (menuObj->unk_474C8 == temp_r0_3) {
-            switch (temp_r0_3) { /* switch 2 */
-                default:         /* switch 2 */
-                    goto block_36;
-                case 0:          /* switch 2 */
+    if (touched != 0xFFFF) {
+        if (menuObj->unk_474C8 == touched) {
+            switch (touched) {
+                default:
+                    goto refresh;
+                case 0:
                     SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
                     PrcCtx_ReplaceFrame(ctx, &OtosuMenu_RoleSelect_FrameDesc, NULL);
                     menuObj->linkLevelIcon.posX = 0;
                     menuObj->linkLevelIcon.posY = 0xC8;
-                    PrcCtx_PushStepTable(ctx, data_ov002_02092f30);
+                    PrcCtx_PushStepTable(ctx, OtosuMenu_Lobby_ShutdownSteps);
                     PrcCtx_PushStepTable(ctx, PrcSteps_FadeBrightImmediate);
                     return PRC_STEP_CONTINUE;
-                case 1: /* switch 2 */
-                case 2: /* switch 2 */
-                case 3: /* switch 2 */
+                case 1:
+                case 2:
+                case 3:
                     SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
-                    if (menuObj->unk_41998 & (1 << menuObj->unk_41EEC)) {
-                        temp_r9  = OS_DisableIRQ();
-                        var_r8   = (u8*)menuObj->unk_419A0 + (menuObj->unk_41EEC * 0xC4);
-                        var_r7_2 = (u8*)menuObj->unk_41EF0;
-                        var_r5_2 = 0xC;
-                        do {
-                            temp_r0_4               = *(s32*)(var_r8 + 0x0);
-                            temp_r1_3               = *(s32*)(var_r8 + 0x4);
-                            temp_r2                 = *(s32*)(var_r8 + 0x8);
-                            temp_r3                 = *(s32*)(var_r8 + 0xC);
-                            var_r8                  = (u8*)var_r8 + 0x10;
-                            *(s32*)(var_r7_2 + 0x0) = temp_r0_4;
-                            *(s32*)(var_r7_2 + 0x4) = temp_r1_3;
-                            *(s32*)(var_r7_2 + 0x8) = temp_r2;
-                            *(s32*)(var_r7_2 + 0xC) = temp_r3;
-                            var_r7_2                = (u8*)var_r7_2 + 0x10;
-                            var_r5_2 -= 1;
-                        } while (var_r5_2 != 0);
-                        OS_RestoreIRQ(temp_r9);
+                    if (menuObj->foundHostMask & (1 << menuObj->selectedHost)) {
+                        irq               = OS_DisableIRQ();
+                        menuObj->joinHost = menuObj->foundHosts[menuObj->selectedHost].bss;
+                        OS_RestoreIRQ(irq);
                         menuObj->unk_41810 = 1;
                         PrcCtx_AdvanceStep(ctx);
                     }
-                    goto block_36;
+                    goto refresh;
             }
         } else {
             SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
-            menuObj->unk_474C8 = temp_r0_3;
-            if (temp_r0_3 != 0) {
-                menuObj->unk_41EEC = (u16)(temp_r0_3 - 1);
+            menuObj->unk_474C8 = touched;
+            if (touched != 0) {
+                menuObj->selectedHost = (u16)(touched - 1);
             }
-            switch (temp_r0_3) { /* switch 3 */
-                default:         /* switch 3 */
+            switch (touched) {
+                default:
                     break;
-                case 0:          /* switch 3 */
-                case 1:          /* switch 3 */
-                case 2:          /* switch 3 */
-                case 3:          /* switch 3 */
-                    temp_r6              = temp_r0_3 * 3;
-                    menuObj->cursor.posX = table_anim.data[temp_r6 + 1];
-                    menuObj->cursor.posY = table_anim.data[temp_r6 + 2];
-                    Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)table_anim.data[temp_r6],
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    cursor               = touched * 3;
+                    menuObj->cursor.posX = cursors.data[cursor + 1];
+                    menuObj->cursor.posY = cursors.data[cursor + 2];
+                    Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)cursors.data[cursor],
                                            menuObj->cursor.cellTable);
                     break;
             }
-            goto block_36;
+            goto refresh;
         }
     } else {
-        goto block_36;
+        goto refresh;
     }
-block_36:
-    temp_r5  = OS_DisableIRQ();
-    var_r2_3 = menuObj;
-    var_r1   = 0;
-    do {
-        if (menuObj->unk_41998 & (1 << var_r1)) {
-            temp_r7                          = *(s16*)((u8*)var_r2_3 + 0x41A60) - 1;
-            *(s16*)((u8*)var_r2_3 + 0x41A60) = (s16)temp_r7;
-            if (temp_r7 <= 0) {
-                menuObj->unk_41998 = (u16)(menuObj->unk_41998 & ~(1 << var_r1));
-                menuObj->unk_4199C = (u16)(menuObj->unk_4199C | (1 << var_r1));
+refresh:
+    irq2 = OS_DisableIRQ();
+    for (i = 0; i < 6; i++) {
+        if (menuObj->foundHostMask & (1 << i)) {
+            timeout                        = menuObj->foundHosts[i].timeout - 1;
+            menuObj->foundHosts[i].timeout = timeout;
+            if (timeout <= 0) {
+                menuObj->foundHostMask        = (u16)(menuObj->foundHostMask & ~(1 << i));
+                menuObj->foundHostChangedMask = (u16)(menuObj->foundHostChangedMask | (1 << i));
             }
         }
-        var_r1 += 1;
-        var_r2_3 = (u8*)var_r2_3 + 0xC4;
-    } while (var_r1 < 6);
-    if (menuObj->unk_4199C != 0) {
-        menuObj->unk_4199A = func_02047e84(menuObj->unk_41998);
     }
-    OS_RestoreIRQ(temp_r5);
-    if (menuObj->unk_4199C != 0) {
-        u32 irqState       = OS_DisableIRQ();
-        temp_r7_2          = menuObj->unk_4199C;
-        var_r2_4           = 0;
-        menuObj->unk_4199C = 0U;
-        var_r3_3           = menuObj->unk_419F0;
-        var_r5_3           = menuObj;
-        do {
-            if (menuObj->unk_41998 & temp_r7_2 & (1 << var_r2_4)) {
-                *(Ov002_U16_15*)((u8*)var_r5_3 + 0x41E38) = *(Ov002_U16_15*)var_r3_3;
+    if (menuObj->foundHostChangedMask != 0) {
+        menuObj->foundHostCount = func_02047e84(menuObj->foundHostMask);
+    }
+    OS_RestoreIRQ(irq2);
+    if (menuObj->foundHostChangedMask != 0) {
+        u32 irqState                  = OS_DisableIRQ();
+        changed                       = menuObj->foundHostChangedMask;
+        menuObj->foundHostChangedMask = 0U;
+        for (j = 0; j < 6; j++) {
+            if (menuObj->foundHostMask & changed & (1 << j)) {
+                menuObj->foundHostBeacons[j] = *(OtosuMenuBeacon*)menuObj->foundHosts[j].bss.gameInfo.userGameInfo;
             }
-            var_r2_4 += 1;
-            var_r3_3 = (u16*)((u8*)var_r3_3 + 0xC4);
-            var_r5_3 = (u8*)var_r5_3 + 0x1E;
-        } while (var_r2_4 < 6);
+        }
         OS_RestoreIRQ(irqState);
-        temp_r5_2 = menuObj->unk_41EEC;
-        if ((temp_r5_2 != 0xFFFF) && !(menuObj->unk_41998 & (1 << temp_r5_2))) {
-            menuObj->unk_41EEC   = 0xFFFF;
-            menuObj->unk_474C8   = 0xFFFF;
-            menuObj->cursor.posX = 0U;
-            menuObj->cursor.posY = 0xC8U;
+        selected = menuObj->selectedHost;
+        if ((selected != 0xFFFF) && !(menuObj->foundHostMask & (1 << selected))) {
+            menuObj->selectedHost = 0xFFFF;
+            menuObj->unk_474C8    = 0xFFFF;
+            menuObj->cursor.posX  = 0U;
+            menuObj->cursor.posY  = 0xC8U;
         }
-        func_ov002_0208a780(menuObj);
+        OtosuMenu_Lobby_DrawHostList(menuObj);
     }
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208af78(PrcCtx* ctx, void* object) {
-    u32 temp_r0;
+static PrcStepResult OtosuMenu_Lobby_Step_EndScan(PrcCtx* ctx, void* object) {
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) { /* irregular */
+    state = func_ov040_0209cb78();
+    switch (state) { /* irregular */
         case 0:
             PrcCtx_AdvanceStep(ctx);
             break;
@@ -857,91 +828,71 @@ PrcStepResult func_ov002_0208af78(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208afc4(void* arg1, void* arg2, OtosuMenuObj* menuObj) {
-    typedef struct {
-        u16 unk0;
-        u16 unk2;
-        u8  filler04[0x70];
-        u16 unk74;
-        u16 unk76;
-    } Ov002_8afc4Data;
-    Ov002_8afc4Data* msg = (Ov002_8afc4Data*)arg1;
-    u8*              var_r5;
-    u8*              var_r7;
-    s32              var_r4;
-    u16              temp_r0;
-    void*            var_r6;
-    void*            var_r8;
+// Nonmatching (JP): JP's host packet carries a single bssid (0x66 bytes)
+static void OtosuMenu_Lobby_OnHostPacket(s32 sender, void* data, void* size, OtosuMenuObj* menuObj) {
+    OtosuMenuHostPacket* packet = data;
+    s32                  i;
 
-    if (arg1 == NULL) {
+    if (data == NULL) {
         return;
     }
-    if (arg2 != (void*)0x78) {
+    if (size != (void*)0x78) {
         return;
     }
     if (menuObj == NULL) {
         return;
     }
-    menuObj->unk_4196A = msg->unk0;
-    temp_r0            = msg->unk0;
-    switch (temp_r0) { /* irregular */
+    menuObj->syncState = packet->syncState;
+    switch (packet->syncState) {
         case 2:
         case 3:
             return;
         case 0:
-            var_r6 = (u8*)msg + 4;
-            var_r5 = (u8*)menuObj->players[0].name;
-            var_r7 = menuObj->players[0].bssid;
-            var_r8 = (u8*)msg + 0x5C;
-            var_r4 = 0;
-            do {
-                if (msg->unk2 & (1 << var_r4)) {
-                    MI_CpuCopyU8((s32)var_r6, var_r5, 0x16);
-                    MI_CpuCopyU8((s32)var_r8, var_r7, 6);
+            for (i = 0; i < 4; i++) {
+                if (packet->playerMask & (1 << i)) {
+                    MI_CpuCopyU8(packet->names[i], menuObj->players[i].name, 0x16);
+                    MI_CpuCopyU8(packet->bssids[i], menuObj->players[i].bssid, 6);
                 }
-                var_r4 += 1;
-                var_r5 += 0x30;
-                var_r6 += 0x16;
-                var_r7 += 0x30;
-                var_r8 += 6;
-            } while (var_r4 < 4);
-            menuObj->playerMask = msg->unk2;
-            menuObj->unk_41836  = 0xF;
-            menuObj->unk_41958  = msg->unk74;
+            }
+            menuObj->playerMask      = packet->playerMask;
+            menuObj->playerDirtyMask = 0xF;
+            menuObj->rosterVersion   = packet->rosterVersion;
             return;
     }
 }
 
-PrcStepResult func_ov002_0208b0a4(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_SetupGuestScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj*      menuObj = (OtosuMenuObj*)object;
-    OtosuMenuRectList3 layout  = data_ov002_020920ca;
+    OtosuMenuRectList3 texts   = OtosuMenu_Lobby_GuestTexts;
 
-    s32 temp_r0_2;
+    s32 ownerName;
     menuObj->cursor.posX = 0;
     menuObj->cursor.posY = 0xC8;
-    func_ov002_02082f18(object, 0x18, 0x16, layout.rects);
-    temp_r0_2 = SysFont_GetOwnerName();
-    MI_CpuCopyU8(temp_r0_2, object + 0x4181C, 0x16);
-    Mem_Free(&gDebugHeap, temp_r0_2);
+    OtosuMenu_SetupScreens(object, 0x18, 0x16, texts.rects);
+    ownerName = SysFont_GetOwnerName();
+    MI_CpuCopyU8(ownerName, menuObj->ownName, 0x16);
+    Mem_Free(&gDebugHeap, ownerName);
     PrcCtx_AdvanceStep(ctx);
-    return PRC_STEP_CONTINUE;
+    return PRC_STEP_REPEAT;
 }
 
-PrcStepResult func_ov002_0208b154(PrcCtx* ctx, void* object) {
-    u32 temp_r0;
+// Nonmatching: instruction scheduling
+static PrcStepResult OtosuMenu_Lobby_Step_ConnectToHost(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
+    u32           state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) { /* irregular */
+    state = func_ov040_0209cb78();
+    switch (state) { /* irregular */
         case 0:
             break;
         case 1:
-            MI_CpuCopyU8(object + 0x41EF4, object + 0x41FB0, 6);
-            MI_CpuCopyU8(object + 0x41EF4, object + 0x41862, 6);
+            MI_CpuCopyU8(menuObj->joinHost.bssid, menuObj->hostBssid, 6);
+            MI_CpuCopyU8(menuObj->joinHost.bssid, menuObj->players[0].bssid, 6);
             func_ov040_0209d818(3, 0, 0x78, 0xA, 1);
             func_ov040_0209d848(0);
-            func_ov040_0209cabc(object + 0x4181C, 0x18);
-            func_ov003_0209d434((void (*)(s32, void*, void*, s32))func_ov002_0208afc4, object);
-            func_ov040_0209d290(1, object + 0x41EF0);
+            func_ov040_0209cabc(menuObj->ownName, 0x18);
+            func_ov040_0209d434(OtosuMenu_Lobby_OnHostPacket, menuObj);
+            func_ov040_0209d290(1, &menuObj->joinHost);
             break;
         case 4:
             PrcCtx_AdvanceStep(ctx);
@@ -950,122 +901,120 @@ PrcStepResult func_ov002_0208b154(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208b230(void* arg0, OtosuMenuObj* menuObj) {
-    menuObj->unk_41950 = 0;
+static void OtosuMenu_Lobby_OnGuestSendDone(void* arg, OtosuMenuObj* menuObj) {
+    menuObj->sendBusy = 0;
 }
 
-PrcStepResult func_ov002_0208b240(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_Lobby_Step_InitGuestWait(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     menuObj->unk_474C8 = 0xFFFF;
-    menuObj->unk_41950 = 0;
+    menuObj->sendBusy  = 0;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_REPEAT;
 }
 
-PrcStepResult func_ov002_0208b270(PrcCtx* ctx, void* object) {
+// Nonmatching: control flow differs
+static PrcStepResult OtosuMenu_Lobby_Step_GuestWait(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    u8                 sp1E[0xC0];
-    u16                spA;
-    u16                sp8;
-    u16                sp6;
-    u16                sp4;
-    s32                sp0;
-    s32                temp_r1_2;
-    s32                temp_r5;
-    s32                var_r2;
-    s32                var_r8;
-    u16                temp_r0_3;
-    u16                temp_r4;
-    u16                temp_r5_2;
-    u16                var_r4_2;
-    OtosuMenuRectList2 table_spA = data_ov002_02092080;
-    u16                i;
+    u8                 names[4 * sizeof(OtosuMenuPlayer)];
+    u16                cursorY;
+    u16                cursorX;
+    u16                cursorAnim;
+    s32                irq;
+    s32                offset;
+    s32                cursor;
+    s32                i;
+    u16                state;
+    u16                mask;
+    u16                dirty;
+    u16                touched;
+    OtosuMenuRectList2 buttons = OtosuMenu_Lobby_GuestButtons;
 
-    sp4      = data_ov002_02092068.unk0;
-    sp6      = data_ov002_02092068.unk2;
-    sp8      = data_ov002_02092068.unk4;
-    var_r4_2 = func_ov002_0208597c(table_spA.rects);
-    if (var_r4_2 == 0xFFFE) {
-        var_r4_2             = 0xFFFF;
+    cursorAnim = OtosuMenu_Lobby_GuestCursors.unk0;
+    cursorX    = OtosuMenu_Lobby_GuestCursors.unk2;
+    cursorY    = OtosuMenu_Lobby_GuestCursors.unk4;
+    touched    = OtosuMenu_GetTouchedButton(buttons.rects);
+    if (touched == 0xFFFE) {
+        touched              = 0xFFFF;
         menuObj->unk_474C8   = 0xFFFF;
         menuObj->cursor.posX = 0U;
         menuObj->cursor.posY = 0xC8U;
     }
-    if (var_r4_2 != 0xFFFF) {
-        if (menuObj->unk_474C8 == var_r4_2) {
-            if (var_r4_2 == 0) {
+    if (touched != 0xFFFF) {
+        if (menuObj->unk_474C8 == touched) {
+            if (touched == 0) {
                 SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
-                PrcCtx_ReplaceFrame(ctx, &data_ov002_02092f44, NULL);
-                PrcCtx_PushStepTable(ctx, data_ov002_02092f30);
+                PrcCtx_ReplaceFrame(ctx, &OtosuMenu_Lobby_JoinFrameDesc, NULL);
+                PrcCtx_PushStepTable(ctx, OtosuMenu_Lobby_ShutdownSteps);
                 PrcCtx_PushStepTable(ctx, PrcSteps_FadeBrightImmediate);
                 return PRC_STEP_CONTINUE;
             }
             goto block_10;
         }
-        menuObj->unk_474C8 = var_r4_2;
-        if (var_r4_2 == 0) {
+        menuObj->unk_474C8 = touched;
+        if (touched == 0) {
             SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
-            temp_r5 = var_r4_2 * 6;
-            (void)temp_r5;
-            menuObj->cursor.posX = sp6;
-            menuObj->cursor.posY = sp8;
-            Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)sp4, menuObj->cursor.cellTable);
+            cursor = touched * 6;
+            (void)cursor;
+            menuObj->cursor.posX = cursorX;
+            menuObj->cursor.posY = cursorY;
+            Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, (s16)cursorAnim, menuObj->cursor.cellTable);
         }
         goto block_10;
     }
 block_10:
-    if (menuObj->unk_41836 != 0) {
-        sp0                = OS_DisableIRQ();
-        temp_r4            = menuObj->playerMask;
-        temp_r5_2          = menuObj->unk_41836;
-        menuObj->unk_4198A = func_02047e84(temp_r4);
-        var_r8             = 0;
-        menuObj->unk_41836 = 0U;
+    if (menuObj->playerDirtyMask != 0) {
+        irq                         = OS_DisableIRQ();
+        mask                        = menuObj->playerMask;
+        dirty                       = menuObj->playerDirtyMask;
+        menuObj->beacon.playerCount = func_02047e84(mask);
+        i                           = 0;
+        menuObj->playerDirtyMask    = 0U;
     loop_15:
-        if (var_r8 < 4) {
-            if (temp_r4 & temp_r5_2 & (1 << var_r8)) {
-                temp_r1_2 = var_r8 * 0x30;
-                MI_CpuCopyU8((u8*)menuObj->players + temp_r1_2, sp1E + temp_r1_2, 0x16);
+        if (i < 4) {
+            if (mask & dirty & (1 << i)) {
+                offset = i * (s32)sizeof(OtosuMenuPlayer);
+                MI_CpuCopyU8((u8*)menuObj->players + offset, names + offset, 0x16);
             }
-            var_r8 += 1;
+            i += 1;
             goto loop_15;
         }
-        OS_RestoreIRQ(sp0);
-        func_ov002_02082ab4(menuObj);
+        OS_RestoreIRQ(irq);
+        OtosuMenu_DrawPlayerNames(menuObj);
     }
-    if (menuObj->unk_41950 == 0) {
-        u32 irqState1          = OS_DisableIRQ();
-        data_ov002_020935c0[0] = menuObj->playerMask;
-        data_ov002_020935c0[1] = menuObj->unk_41958;
+    if (menuObj->sendBusy == 0) {
+        u32 irqState1                       = OS_DisableIRQ();
+        OtosuMenu_GuestPacket.playerMask    = menuObj->playerMask;
+        OtosuMenu_GuestPacket.rosterVersion = menuObj->rosterVersion;
         OS_RestoreIRQ(irqState1);
-        func_0203a96c((u8*)&data_ov002_020935c0[2]);
-        menuObj->unk_41950 = 1;
-        if (func_ov040_0209d48c(data_ov002_020935c0, 0xA, func_ov002_0208b230, menuObj) == 0) {
-            menuObj->unk_41950 = 0;
+        func_0203a96c(OtosuMenu_GuestPacket.bssid);
+        menuObj->sendBusy = 1;
+        if (func_ov040_0209d48c(&OtosuMenu_GuestPacket, 0xA, OtosuMenu_Lobby_OnGuestSendDone, menuObj) == 0) {
+            menuObj->sendBusy = 0;
         }
     }
-    temp_r0_3 = menuObj->unk_4196A;
-    if (temp_r0_3 != 2) {
-        if (temp_r0_3 == 3) {
+    state = menuObj->syncState;
+    if (state != 2) {
+        if (state == 3) {
             PrcCtx_ReplaceFrame(ctx, &OtosuMenu_RoleSelect_FrameDesc, NULL);
-            PrcCtx_PushStepTable(ctx, data_ov002_02092ec8);
-            PrcCtx_PushStepTable(ctx, data_ov002_02092f30);
+            PrcCtx_PushStepTable(ctx, OtosuMenu_CommError_JoinFailedPopStepTable);
+            PrcCtx_PushStepTable(ctx, OtosuMenu_Lobby_ShutdownSteps);
         }
     } else {
         SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_EXECUTE);
-        menuObj->unk_41FD0 = (s32)func_02047e84(menuObj->playerMask);
+        menuObj->matchPlayerCount = (s32)func_02047e84(menuObj->playerMask);
         PrcCtx_AdvanceStep(ctx);
     }
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b570(PrcCtx* ctx, void* unused) {
-    u32 temp_r0;
+static PrcStepResult OtosuMenu_Lobby_Step_ShutdownWireless(PrcCtx* ctx, void* unused) {
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) {
+    state = func_ov040_0209cb78();
+    switch (state) {
         default:
             break;
         case 0:
@@ -1084,11 +1033,11 @@ PrcStepResult func_ov002_0208b570(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b5c4(PrcCtx* ctx, void* unused) {
-    u32 temp_r0;
+static PrcStepResult OtosuMenu_Lobby_Step_LeaveSession(PrcCtx* ctx, void* unused) {
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) {
+    state = func_ov040_0209cb78();
+    switch (state) {
         case 0:
         case 3:
             break;
@@ -1107,41 +1056,44 @@ PrcStepResult func_ov002_0208b5c4(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b610(PrcCtx* ctx, void* arg1) {
+// Nonmatching: scheduling and register allocation
+static PrcStepResult OtosuMenu_Lobby_Step_SendCancel(PrcCtx* ctx, void* object) {
     if (func_ov040_0209cb68() == 1) {
         PrcCtx_AdvanceStep(ctx);
         return PRC_STEP_CONTINUE;
     }
-    u32 irqState2        = OS_DisableIRQ();
-    *data_ov002_020935e0 = 3;
+    u32 irqState2                  = OS_DisableIRQ();
+    OtosuMenu_HostPacket.syncState = 3;
     OS_RestoreIRQ(irqState2);
-    func_ov040_0209d48c(data_ov002_020935e0, 0x78, func_ov002_02089bc0, arg1);
+    func_ov040_0209d48c(&OtosuMenu_HostPacket, 0x78, OtosuMenu_Lobby_OnSendDone, object);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b670(PrcCtx* ctx, void* arg1) {
+// Nonmatching: scheduling and register allocation
+static PrcStepResult OtosuMenu_Lobby_Step_SendStart(PrcCtx* ctx, void* object) {
     if (func_ov040_0209cb68() == 1) {
         PrcCtx_AdvanceStep(ctx);
         return PRC_STEP_CONTINUE;
     }
-    u32 irqState3        = OS_DisableIRQ();
-    *data_ov002_020935e0 = 2;
+    u32 irqState3                  = OS_DisableIRQ();
+    OtosuMenu_HostPacket.syncState = 2;
     OS_RestoreIRQ(irqState3);
-    func_ov040_0209d48c(data_ov002_020935e0, 0x78, func_ov002_02089bc0, arg1);
+    func_ov040_0209d48c(&OtosuMenu_HostPacket, 0x78, OtosuMenu_Lobby_OnSendDone, object);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b6d0(PrcCtx* ctx, void* arg0) {
-    u32 temp_r0;
+// Nonmatching: control flow differs
+static PrcStepResult OtosuMenu_Lobby_Step_ShutdownHost(PrcCtx* ctx, void* object) {
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) {
+    state = func_ov040_0209cb78();
+    switch (state) {
         default:
         case 2:
             func_ov040_0209d588();
             break;
         case 0:
-            func_ov002_02089b54();
+            OtosuMenu_Lobby_ClearWindow();
             PrcCtx_AdvanceStep(ctx);
             break;
         case 1:
@@ -1156,16 +1108,16 @@ PrcStepResult func_ov002_0208b6d0(PrcCtx* ctx, void* arg0) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_0208b734(PrcCtx* ctx, void* unused) {
-    u32 temp_r0;
+static PrcStepResult OtosuMenu_Lobby_Step_StopHost(PrcCtx* ctx, void* unused) {
+    u32 state;
 
-    temp_r0 = func_ov040_0209cb78();
-    switch (temp_r0) {
+    state = func_ov040_0209cb78();
+    switch (state) {
         case 0:
         case 3:
             break;
         case 1:
-            func_ov002_02089b54();
+            OtosuMenu_Lobby_ClearWindow();
             PrcCtx_AdvanceStep(ctx);
             break;
         case 4:
@@ -1181,7 +1133,7 @@ PrcStepResult func_ov002_0208b734(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208b790(void) {
+static void OtosuMenu_VBlankCallback(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
@@ -1195,7 +1147,8 @@ void func_ov002_0208b790(void) {
     }
 }
 
-void func_ov002_0208b860(void) {
+// Nonmatching: instruction selection differs
+void OtosuMenu_InitDisplayForEntry(void) {
     Interrupts_ForceVBlank();
     g_DisplaySettings.controls[0].brightness = 16;
     g_DisplaySettings.controls[1].brightness = 16;
@@ -1281,7 +1234,7 @@ void func_ov002_0208b860(void) {
     g_DisplaySettings.controls[1].windows |= 4;
     g_DisplaySettings.engineState[1].windowOutside        = 31;
     g_DisplaySettings.engineState[1].windowOutsideEffects = FALSE;
-    Interrupts_RegisterVBlankCallback(func_ov002_0208b790, TRUE);
+    Interrupts_RegisterVBlankCallback(OtosuMenu_VBlankCallback, TRUE);
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.engineState[0].windowObj            = 12;
     g_DisplaySettings.engineState[0].windowObjEffects     = TRUE;
@@ -1305,7 +1258,8 @@ void func_ov002_0208b860(void) {
     OamMgr_Init();
 }
 
-void func_ov002_0208bd40(void) {
+// Nonmatching: scheduling and register allocation
+void OtosuMenu_InitDisplay(void) {
     Interrupts_ForceVBlank();
     Interrupts_Init();
     HBlank_Init();
@@ -1386,7 +1340,7 @@ void func_ov002_0208bd40(void) {
     g_DisplaySettings.controls[1].windows |= 4;
     g_DisplaySettings.engineState[1].windowOutside        = 31;
     g_DisplaySettings.engineState[1].windowOutsideEffects = FALSE;
-    Interrupts_RegisterVBlankCallback(func_ov002_0208b790, TRUE);
+    Interrupts_RegisterVBlankCallback(OtosuMenu_VBlankCallback, TRUE);
     g_DisplaySettings.controls[0].windows |= 4;
 
     g_DisplaySettings.engineState[0].windowObj            = 12;
@@ -1418,14 +1372,15 @@ void func_ov002_0208bd40(void) {
     OamMgr_Init();
 }
 
-void func_ov002_0208c228(void) {
+// Nonmatching: instruction selection differs
+void OtosuMenu_InitDisplayForSaveData(void) {
     Interrupts_ForceVBlank();
     Display_Init();
     Interrupts_Init();
     HBlank_Init();
     DMA_Init(0x100);
     Interrupts_RegisterHBlankCallback(0, 1);
-    Interrupts_RegisterVBlankCallback(func_ov002_0208b790, 1);
+    Interrupts_RegisterVBlankCallback(OtosuMenu_VBlankCallback, 1);
     g_DisplaySettings.controls[0].brightness = -16;
     g_DisplaySettings.controls[1].brightness = -16;
     GX_DisableBankForLcdc();

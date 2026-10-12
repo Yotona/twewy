@@ -1,11 +1,11 @@
 func_ov002_02082e80 kind:function(arm,size=0xc) addr:0x02082e80
-func_ov002_02082e8c kind:function(arm,size=0x9c) addr:0x02082e8c
-func_ov002_02082f28 kind:function(arm,size=0xc8) addr:0x02082f28
-func_ov002_02082ff0 kind:function(arm,size=0x3c) addr:0x02082ff0
-func_ov002_0208302c kind:function(arm,size=0x20) addr:0x0208302c
-func_ov002_0208304c kind:function(arm,size=0x2c) addr:0x0208304c
-func_ov002_02083078 kind:function(arm,size=0xc4) addr:0x02083078
-func_ov002_0208313c kind:function(arm,size=0x11c) addr:0x0208313c
+OtosuMenu_Cursor_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02082e8c local
+OtosuMenu_LoadCursor kind:function(arm,size=0xc8) addr:0x02082f28 local
+OtosuMenu_DestroyCursorAndLinkLevel kind:function(arm,size=0x3c) addr:0x02082ff0
+OtosuMenu_DestroyCursor kind:function(arm,size=0x20) addr:0x0208302c local
+OtosuPrcStep_SaveOwnPlayer kind:function(arm,size=0x2c) addr:0x0208304c
+OtosuPrcStep_SavePlayers kind:function(arm,size=0xc4) addr:0x02083078
+OtosuPrcStep_LoadPlayers kind:function(arm,size=0x11c) addr:0x0208313c
 OtosuPrcStep_FadeStart_BrightImmediate kind:function(arm,size=0x28) addr:0x02083258
 OtosuPrcStep_FadeStart_DarkImmediate kind:function(arm,size=0x28) addr:0x02083280
 OtosuPrcStep_FadeWait_Immediate kind:function(arm,size=0x24) addr:0x020832a8
@@ -18,47 +18,47 @@ OtosuPrcStep_FadeStart_Neutral2 kind:function(arm,size=0x28) addr:0x0208338c
 OtosuPrcStep_FadeWait_Neutral2 kind:function(arm,size=0x24) addr:0x020833b4
 OtosuPrcStep_FadeStart_NeutralSlow kind:function(arm,size=0x28) addr:0x020833d8
 OtosuPrcStep_FadeWait_NeutralSlow kind:function(arm,size=0x24) addr:0x02083400
-func_ov002_02083424 kind:function(arm,size=0x70) addr:0x02083424
-func_ov002_02083494 kind:function(arm,size=0x138) addr:0x02083494
-func_ov002_020835cc kind:function(arm,size=0xd0) addr:0x020835cc
-func_ov002_0208369c kind:function(arm,size=0x78) addr:0x0208369c
-func_ov002_02083714 kind:function(arm,size=0xb4) addr:0x02083714
-func_ov002_020837c8 kind:function(arm,size=0xa8) addr:0x020837c8
-func_ov002_02083870 kind:function(arm,size=0x56c) addr:0x02083870
-func_ov002_02083ddc kind:function(arm,size=0x210) addr:0x02083ddc
-func_ov002_02083fec kind:function(arm,size=0x3e0) addr:0x02083fec
-func_ov002_020843cc kind:function(arm,size=0xa1c) addr:0x020843cc
-func_ov002_02084de8 kind:function(arm,size=0x7f0) addr:0x02084de8
-func_ov002_020855d8 kind:function(arm,size=0x43c) addr:0x020855d8
-func_ov002_02085a14 kind:function(arm,size=0x650) addr:0x02085a14
-func_ov002_02086064 kind:function(arm,size=0x26c) addr:0x02086064
-func_ov002_020862d0 kind:function(arm,size=0xc8) addr:0x020862d0
-func_ov002_02086398 kind:function(arm,size=0x80) addr:0x02086398
-func_ov002_02086418 kind:function(arm,size=0x180) addr:0x02086418
-OtosuMenu_Init kind:function(arm,size=0x1a4) addr:0x02086598
-func_ov002_0208673c kind:function(arm,size=0x28) addr:0x0208673c
-OtosuMenu_InitForSinglePlayerEnter kind:function(arm,size=0x6c) addr:0x02086764
-OtosuMenu_InitForMultiplayerEnter kind:function(arm,size=0x78) addr:0x020867d0
-OtosuMenu_InitForMultiplayerRankings kind:function(arm,size=0xd0) addr:0x02086848
-OtosuMenu_InitForSinglePlayerRankings kind:function(arm,size=0x7c) addr:0x02086918
-OtosuMenu_InitForConnectionError kind:function(arm,size=0x9c) addr:0x02086994
-OtosuMenu_InitForRoleSelection kind:function(arm,size=0x74) addr:0x02086a30
-OtosuMenu_InitForFontList kind:function(arm,size=0x68) addr:0x02086aa4
-OtosuMenu_InitForDataCorrupted kind:function(arm,size=0x64) addr:0x02086b0c
-func_ov002_02086b70 kind:function(arm,size=0x64) addr:0x02086b70
-OtosuMenu_InitForDataLoadFailure kind:function(arm,size=0x64) addr:0x02086bd4
-OtosuMenu_InitForDataSaveFailure kind:function(arm,size=0x64) addr:0x02086c38
-OtosuMenu_Update kind:function(arm,size=0x3d0) addr:0x02086c9c
-OtosuMenu_Destroy kind:function(arm,size=0x100) addr:0x0208706c
-ProcessOverlay_OtosuMenu_MultiplayerEnter kind:function(arm,size=0x40) addr:0x0208716c
-ProcessOverlay_OtosuMenu_MultiplayerRanking kind:function(arm,size=0x40) addr:0x020871ac
-ProcessOverlay_OtosuMenu_SinglePlayerRanking kind:function(arm,size=0x40) addr:0x020871ec
-ProcessOverlay_OtosuMenu_ConnectionError kind:function(arm,size=0x40) addr:0x0208722c
-ProcessOverlay_OtosuMenu_RoleSelection kind:function(arm,size=0x40) addr:0x0208726c
-ProcessOverlay_OtosuMenu_FontList kind:function(arm,size=0x40) addr:0x020872ac
-ProcessOverlay_OtosuMenu_DataDeletion kind:function(arm,size=0x40) addr:0x020872ec
-ProcessOverlay_OtosuMenu_DataCorrupted kind:function(arm,size=0x40) addr:0x0208732c
-func_ov002_0208736c kind:function(arm,size=0x40) addr:0x0208736c
+OtosuMenu_ShutdownOnReset kind:function(arm,size=0x70) addr:0x02083424 local
+OtosuMenu_DrawPlayerNames kind:function(arm,size=0x138) addr:0x02083494
+OtosuMenu_FindOwnPlayer kind:function(arm,size=0xd0) addr:0x020835cc local
+OtosuMenu_PackPlayerBssids kind:function(arm,size=0x78) addr:0x0208369c local
+OtosuMenu_DrawTexts kind:function(arm,size=0xb4) addr:0x02083714
+OtosuMenu_DrawNameList kind:function(arm,size=0xa8) addr:0x020837c8 local
+OtosuMenu_SetupScreens kind:function(arm,size=0x56c) addr:0x02083870
+OtosuMenu_SetupConnectionLostScreens kind:function(arm,size=0x210) addr:0x02083ddc
+OtosuMenu_SetupEntryScreens kind:function(arm,size=0x3e0) addr:0x02083fec
+OtosuMenu_SetupTitleScreens kind:function(arm,size=0xa1c) addr:0x020843cc
+OtosuMenu_SetupStageSelectScreens kind:function(arm,size=0x7f0) addr:0x02084de8
+OtosuMenu_SetupResultMessageScreens kind:function(arm,size=0x43c) addr:0x020855d8
+OtosuMenu_SetupResultRankingScreens kind:function(arm,size=0x650) addr:0x02085a14
+OtosuMenu_ReleaseScreens kind:function(arm,size=0x26c) addr:0x02086064
+OtosuMenu_GetTouchedButton kind:function(arm,size=0xc8) addr:0x020862d0
+OtosuMenu_LoadCursorAndLinkLevel kind:function(arm,size=0x80) addr:0x02086398
+OtosuMenu_CheckWirelessError kind:function(arm,size=0x180) addr:0x02086418 local
+OtosuMenu_Init kind:function(arm,size=0x1a4) addr:0x02086598 local
+OtosuMenu_InitWithWireless kind:function(arm,size=0x28) addr:0x0208673c local
+OtosuMenu_InitForSinglePlayerEnter kind:function(arm,size=0x6c) addr:0x02086764 local
+OtosuMenu_InitForMultiplayerEnter kind:function(arm,size=0x78) addr:0x020867d0 local
+OtosuMenu_InitForMultiplayerRankings kind:function(arm,size=0xd0) addr:0x02086848 local
+OtosuMenu_InitForSinglePlayerRankings kind:function(arm,size=0x7c) addr:0x02086918 local
+OtosuMenu_InitForConnectionError kind:function(arm,size=0x9c) addr:0x02086994 local
+OtosuMenu_InitForRoleSelection kind:function(arm,size=0x74) addr:0x02086a30 local
+OtosuMenu_InitForFontList kind:function(arm,size=0x68) addr:0x02086aa4 local
+OtosuMenu_InitForDataDeletion kind:function(arm,size=0x64) addr:0x02086b0c local
+OtosuMenu_InitForDataCorrupted kind:function(arm,size=0x64) addr:0x02086b70 local
+OtosuMenu_InitForDataLoadFailure kind:function(arm,size=0x64) addr:0x02086bd4 local
+OtosuMenu_InitForDataSaveFailure kind:function(arm,size=0x64) addr:0x02086c38 local
+OtosuMenu_Update kind:function(arm,size=0x3d0) addr:0x02086c9c local
+OtosuMenu_Destroy kind:function(arm,size=0x100) addr:0x0208706c local
+ProcessOverlay_OtosuMenu_SinglePlayerEnter kind:function(arm,size=0x40) addr:0x0208716c
+ProcessOverlay_OtosuMenu_MultiplayerEnter kind:function(arm,size=0x40) addr:0x020871ac
+ProcessOverlay_OtosuMenu_MultiplayerRanking kind:function(arm,size=0x40) addr:0x020871ec
+ProcessOverlay_OtosuMenu_SinglePlayerRanking kind:function(arm,size=0x40) addr:0x0208722c
+ProcessOverlay_OtosuMenu_ConnectionError kind:function(arm,size=0x40) addr:0x0208726c
+ProcessOverlay_OtosuMenu_RoleSelection kind:function(arm,size=0x40) addr:0x020872ac
+ProcessOverlay_OtosuMenu_FontList kind:function(arm,size=0x40) addr:0x020872ec
+ProcessOverlay_OtosuMenu_DataDeletion kind:function(arm,size=0x40) addr:0x0208732c
+ProcessOverlay_OtosuMenu_DataCorrupted kind:function(arm,size=0x40) addr:0x0208736c
 ProcessOverlay_OtosuMenu_DataLoadFailure kind:function(arm,size=0x40) addr:0x020873ac
 ProcessOverlay_OtosuMenu_DataSaveFailure kind:function(arm,size=0x40) addr:0x020873ec
 OtosuMenu_Title_Load kind:function(arm,size=0x20) addr:0x0208742c local
@@ -84,163 +84,163 @@ OtosuMenu_RoleSelect_Render kind:function(arm,size=0x4) addr:0x02087e60 local
 OtosuMenu_RoleSelect_Step_Setup kind:function(arm,size=0x160) addr:0x02087e64 local
 OtosuMenu_RoleSelect_Step_Select kind:function(arm,size=0x1bc) addr:0x02087fc4 local
 OtosuMenu_RoleSelect_Step_Decide kind:function(arm,size=0x100) addr:0x02088180 local
-func_ov002_02088280 kind:function(arm,size=0x20) addr:0x02088280
-func_ov002_020882a0 kind:function(arm,size=0x28) addr:0x020882a0
-func_ov002_020882c8 kind:function(arm,size=0x68) addr:0x020882c8
-func_ov002_02088330 kind:function(arm,size=0x1d8) addr:0x02088330
-func_ov002_02088508 kind:function(arm,size=0x20) addr:0x02088508
-func_ov002_02088528 kind:function(arm,size=0x4) addr:0x02088528
-func_ov002_0208852c kind:function(arm,size=0x210) addr:0x0208852c
-func_ov002_0208873c kind:function(arm,size=0x158) addr:0x0208873c
-func_ov002_02088894 kind:function(arm,size=0x94) addr:0x02088894
-func_ov002_02088928 kind:function(arm,size=0x190) addr:0x02088928
-func_ov002_02088ab8 kind:function(arm,size=0x1c) addr:0x02088ab8
-func_ov002_02088ad4 kind:function(arm,size=0x10) addr:0x02088ad4
-func_ov002_02088ae4 kind:function(arm,size=0xac) addr:0x02088ae4
-func_ov002_02088b90 kind:function(arm,size=0x48) addr:0x02088b90
-func_ov002_02088bd8 kind:function(arm,size=0x10) addr:0x02088bd8
-func_ov002_02088be8 kind:function(arm,size=0x3c) addr:0x02088be8
-func_ov002_02088c24 kind:function(arm,size=0x34) addr:0x02088c24
-func_ov002_02088c58 kind:function(arm,size=0xa4) addr:0x02088c58
-func_ov002_02088cfc kind:function(arm,size=0xa4) addr:0x02088cfc
-func_ov002_02088da0 kind:function(arm,size=0xec) addr:0x02088da0
-func_ov002_02088e8c kind:function(arm,size=0xdc) addr:0x02088e8c
-func_ov002_02088f68 kind:function(arm,size=0x2ac) addr:0x02088f68
-func_ov002_02089214 kind:function(arm,size=0x10c) addr:0x02089214
-func_ov002_02089320 kind:function(arm,size=0x84) addr:0x02089320
-func_ov002_020893a4 kind:function(arm,size=0x1d8) addr:0x020893a4
-func_ov002_0208957c kind:function(arm,size=0xbc) addr:0x0208957c
-func_ov002_02089638 kind:function(arm,size=0xdc) addr:0x02089638
-func_ov002_02089714 kind:function(arm,size=0xf4) addr:0x02089714
-func_ov002_02089808 kind:function(arm,size=0x10) addr:0x02089808
-func_ov002_02089818 kind:function(arm,size=0x38) addr:0x02089818
-func_ov002_02089850 kind:function(arm,size=0xe8) addr:0x02089850
-func_ov002_02089938 kind:function(arm,size=0x38) addr:0x02089938
-func_ov002_02089970 kind:function(arm,size=0x114) addr:0x02089970
-func_ov002_02089a84 kind:function(arm,size=0x158) addr:0x02089a84
-func_ov002_02089bdc kind:function(arm,size=0x54) addr:0x02089bdc
-func_ov002_02089c30 kind:function(arm,size=0x20) addr:0x02089c30
-func_ov002_02089c50 kind:function(arm,size=0xc0) addr:0x02089c50
-func_ov002_02089d10 kind:function(arm,size=0x60) addr:0x02089d10
-func_ov002_02089d70 kind:function(arm,size=0x4) addr:0x02089d70
-func_ov002_02089d74 kind:function(arm,size=0x10) addr:0x02089d74
-func_ov002_02089d84 kind:function(arm,size=0x4) addr:0x02089d84
-func_ov002_02089d88 kind:function(arm,size=0x4) addr:0x02089d88
-func_ov002_02089d8c kind:function(arm,size=0x78) addr:0x02089d8c
-func_ov002_02089e04 kind:function(arm,size=0x3c) addr:0x02089e04
-func_ov002_02089e40 kind:function(arm,size=0x5c) addr:0x02089e40
-func_ov002_02089e9c kind:function(arm,size=0xc0) addr:0x02089e9c
-func_ov002_02089f5c kind:function(arm,size=0xb4) addr:0x02089f5c
-func_ov002_0208a010 kind:function(arm,size=0xc0) addr:0x0208a010
-func_ov002_0208a0d0 kind:function(arm,size=0xc0) addr:0x0208a0d0
-func_ov002_0208a190 kind:function(arm,size=0x160) addr:0x0208a190
-func_ov002_0208a2f0 kind:function(arm,size=0x34) addr:0x0208a2f0
-func_ov002_0208a324 kind:function(arm,size=0x14) addr:0x0208a324
-func_ov002_0208a338 kind:function(arm,size=0x14) addr:0x0208a338
-func_ov002_0208a34c kind:function(arm,size=0x2c) addr:0x0208a34c
-func_ov002_0208a378 kind:function(arm,size=0x18) addr:0x0208a378
-func_ov002_0208a390 kind:function(arm,size=0x2c) addr:0x0208a390
-func_ov002_0208a3bc kind:function(arm,size=0x28) addr:0x0208a3bc
-func_ov002_0208a3e4 kind:function(arm,size=0x4) addr:0x0208a3e4
-func_ov002_0208a3e8 kind:function(arm,size=0x4) addr:0x0208a3e8
-func_ov002_0208a3ec kind:function(arm,size=0x10) addr:0x0208a3ec
-func_ov002_0208a3fc kind:function(arm,size=0x10) addr:0x0208a3fc
-func_ov002_0208a40c kind:function(arm,size=0x8) addr:0x0208a40c
-func_ov002_0208a414 kind:function(arm,size=0xa8) addr:0x0208a414
-func_ov002_0208a4bc kind:function(arm,size=0x48) addr:0x0208a4bc
-func_ov002_0208a504 kind:function(arm,size=0x10) addr:0x0208a504
-func_ov002_0208a514 kind:function(arm,size=0x60) addr:0x0208a514
-func_ov002_0208a574 kind:function(arm,size=0xf8) addr:0x0208a574
-func_ov002_0208a66c kind:function(arm,size=0x100) addr:0x0208a66c
-func_ov002_0208a76c kind:function(arm,size=0x114) addr:0x0208a76c
-func_ov002_0208a880 kind:function(arm,size=0x20) addr:0x0208a880
-func_ov002_0208a8a0 kind:function(arm,size=0x88) addr:0x0208a8a0
-func_ov002_0208a928 kind:function(arm,size=0xa0) addr:0x0208a928
-func_ov002_0208a9c8 kind:function(arm,size=0xb8) addr:0x0208a9c8
-func_ov002_0208aa80 kind:function(arm,size=0x4c4) addr:0x0208aa80
-func_ov002_0208af44 kind:function(arm,size=0x1c) addr:0x0208af44
-func_ov002_0208af60 kind:function(arm,size=0x1c) addr:0x0208af60
-func_ov002_0208af7c kind:function(arm,size=0x154) addr:0x0208af7c
-func_ov002_0208b0d0 kind:function(arm,size=0x178) addr:0x0208b0d0
-func_ov002_0208b248 kind:function(arm,size=0x70) addr:0x0208b248
-func_ov002_0208b2b8 kind:function(arm,size=0x9c) addr:0x0208b2b8
-func_ov002_0208b354 kind:function(arm,size=0x40c) addr:0x0208b354
-func_ov002_0208b760 kind:function(arm,size=0x4c) addr:0x0208b760
-func_ov002_0208b7ac kind:function(arm,size=0xbc) addr:0x0208b7ac
-func_ov002_0208b868 kind:function(arm,size=0xb0) addr:0x0208b868
-func_ov002_0208b918 kind:function(arm,size=0xdc) addr:0x0208b918
-func_ov002_0208b9f4 kind:function(arm,size=0x10) addr:0x0208b9f4
-func_ov002_0208ba04 kind:function(arm,size=0x30) addr:0x0208ba04
-func_ov002_0208ba34 kind:function(arm,size=0x300) addr:0x0208ba34
-func_ov002_0208bd34 kind:function(arm,size=0x54) addr:0x0208bd34
-func_ov002_0208bd88 kind:function(arm,size=0x4c) addr:0x0208bd88
-func_ov002_0208bdd4 kind:function(arm,size=0x60) addr:0x0208bdd4
-func_ov002_0208be34 kind:function(arm,size=0x60) addr:0x0208be34
-func_ov002_0208be94 kind:function(arm,size=0x64) addr:0x0208be94
-func_ov002_0208bef8 kind:function(arm,size=0x5c) addr:0x0208bef8
-func_ov002_0208bf54 kind:function(arm,size=0xd0) addr:0x0208bf54
-func_ov002_0208c024 kind:function(arm,size=0x4e0) addr:0x0208c024
-func_ov002_0208c504 kind:function(arm,size=0x4e8) addr:0x0208c504
-func_ov002_0208c9ec kind:function(arm,size=0x4d0) addr:0x0208c9ec
+OtosuMenu_StageSelect_Step_DrawPlayerNames kind:function(arm,size=0x20) addr:0x02088280 local
+OtosuMenu_StageSelect_Load kind:function(arm,size=0x28) addr:0x020882a0 local
+OtosuMenu_StageSelect_Destroy kind:function(arm,size=0x68) addr:0x020882c8 local
+OtosuMenu_StageSelect_AnimatePalette kind:function(arm,size=0x1d8) addr:0x02088330 local
+OtosuMenu_StageSelect_Update kind:function(arm,size=0x20) addr:0x02088508 local
+OtosuMenu_StageSelect_Render kind:function(arm,size=0x4) addr:0x02088528 local
+OtosuMenu_LoadBoardMap kind:function(arm,size=0x210) addr:0x0208852c local
+OtosuMenu_DrawBoardPreview kind:function(arm,size=0x158) addr:0x0208873c local
+OtosuMenu_StageSelect_ShowBoardPreview kind:function(arm,size=0x94) addr:0x02088894 local
+OtosuMenu_StageSelect_Step_InitDisplay kind:function(arm,size=0x190) addr:0x02088928 local
+OtosuMenu_StageSelect_Step_StartGame kind:function(arm,size=0x1c) addr:0x02088ab8 local
+OtosuMenu_StageSelect_OnSendDone kind:function(arm,size=0x10) addr:0x02088ad4 local
+OtosuMenu_StageSelect_OnGuestConnected kind:function(arm,size=0xac) addr:0x02088ae4 local
+OtosuMenu_StageSelect_OnGuestDisconnected kind:function(arm,size=0x48) addr:0x02088b90 local
+OtosuMenu_StageSelect_OnBeaconUpdated kind:function(arm,size=0x10) addr:0x02088bd8 local
+OtosuMenu_StageSelect_OnGuestPacket kind:function(arm,size=0x3c) addr:0x02088be8 local
+OtosuMenu_StageSelect_RefreshRoster kind:function(arm,size=0x34) addr:0x02088c24 local
+OtosuMenu_StageSelect_UpdateBeacon kind:function(arm,size=0xa4) addr:0x02088c58 local
+OtosuMenu_StageSelect_Step_InitHost kind:function(arm,size=0xa4) addr:0x02088cfc local
+OtosuMenu_StageSelect_Step_StartHost kind:function(arm,size=0xec) addr:0x02088da0 local
+OtosuMenu_StageSelect_Step_SetupHostWaitScreen kind:function(arm,size=0xdc) addr:0x02088e8c local
+OtosuMenu_StageSelect_Step_HostWaitGuests kind:function(arm,size=0x2ac) addr:0x02088f68 local
+OtosuMenu_StageSelect_Step_SetupHostScreen kind:function(arm,size=0x10c) addr:0x02089214 local
+OtosuMenu_StageSelect_SendSelection kind:function(arm,size=0x84) addr:0x02089320 local
+OtosuMenu_StageSelect_Step_HostSelect kind:function(arm,size=0x1d8) addr:0x020893a4 local
+OtosuMenu_StageSelect_OnHostPacket kind:function(arm,size=0xbc) addr:0x0208957c local
+OtosuMenu_StageSelect_Step_SetupGuestWaitScreen kind:function(arm,size=0xdc) addr:0x02089638 local
+OtosuMenu_StageSelect_Step_ConnectToHost kind:function(arm,size=0xf4) addr:0x02089714 local
+OtosuMenu_StageSelect_OnGuestSendDone kind:function(arm,size=0x10) addr:0x02089808 local
+OtosuMenu_StageSelect_Step_InitGuestWait kind:function(arm,size=0x38) addr:0x02089818 local
+OtosuMenu_StageSelect_Step_GuestWait kind:function(arm,size=0xe8) addr:0x02089850 local
+OtosuMenu_StageSelect_OnHostSelection kind:function(arm,size=0x38) addr:0x02089938 local
+OtosuMenu_StageSelect_Step_SetupGuestScreen kind:function(arm,size=0x114) addr:0x02089970 local
+OtosuMenu_StageSelect_Step_FollowHostSelection kind:function(arm,size=0x158) addr:0x02089a84 local
+OtosuMenu_StageSelect_Step_LeaveSession kind:function(arm,size=0x54) addr:0x02089bdc local
+OtosuMenu_StageSelect_Step_InitSendStart kind:function(arm,size=0x20) addr:0x02089c30 local
+OtosuMenu_StageSelect_Step_SendStart kind:function(arm,size=0xc0) addr:0x02089c50 local
+OtosuMenu_StageSelect_Step_StopHost kind:function(arm,size=0x60) addr:0x02089d10 local
+OtosuMenu_CommError_Load kind:function(arm,size=0x4) addr:0x02089d70 local
+OtosuMenu_CommError_Destroy kind:function(arm,size=0x10) addr:0x02089d74 local
+OtosuMenu_CommError_Update kind:function(arm,size=0x4) addr:0x02089d84 local
+OtosuMenu_CommError_Render kind:function(arm,size=0x4) addr:0x02089d88 local
+OtosuMenu_CommError_Step_DestroyObjects kind:function(arm,size=0x78) addr:0x02089d8c local
+OtosuMenu_CommError_Step_ClearWindow kind:function(arm,size=0x3c) addr:0x02089e04 local
+OtosuMenu_CommError_Step_ShutdownWireless kind:function(arm,size=0x5c) addr:0x02089e40 local
+OtosuMenu_CommError_Step_SetupJoinFailedScreen kind:function(arm,size=0xc0) addr:0x02089e9c local
+OtosuMenu_CommError_Step_SetupConnectionLostScreen kind:function(arm,size=0xb4) addr:0x02089f5c local
+OtosuMenu_CommError_Step_SetupJoinFailedPopScreen kind:function(arm,size=0xc0) addr:0x0208a010 local
+OtosuMenu_CommError_Step_SetupWirelessUnavailableScreen kind:function(arm,size=0xc0) addr:0x0208a0d0 local
+OtosuMenu_CommError_Step_WaitBack kind:function(arm,size=0x160) addr:0x0208a190 local
+OtosuMenu_CommError_Step_WaitA kind:function(arm,size=0x34) addr:0x0208a2f0 local
+OtosuMenu_CommError_Step_ReturnToGame kind:function(arm,size=0x14) addr:0x0208a324 local
+OtosuMenu_CommError_Step_ExitToMenu kind:function(arm,size=0x14) addr:0x0208a338 local
+OtosuMenu_CommError_Step_ReturnToRoleSelect kind:function(arm,size=0x2c) addr:0x0208a34c local
+OtosuMenu_Lobby_Load kind:function(arm,size=0x18) addr:0x0208a378 local
+OtosuMenu_Lobby_ClearWindow kind:function(arm,size=0x2c) addr:0x0208a390 local
+OtosuMenu_Lobby_Destroy kind:function(arm,size=0x28) addr:0x0208a3bc local
+OtosuMenu_Lobby_Update kind:function(arm,size=0x4) addr:0x0208a3e4 local
+OtosuMenu_Lobby_Render kind:function(arm,size=0x4) addr:0x0208a3e8 local
+OtosuMenu_Lobby_Step_Begin kind:function(arm,size=0x10) addr:0x0208a3ec local
+OtosuMenu_Lobby_OnSendDone kind:function(arm,size=0x10) addr:0x0208a3fc local
+OtosuMenu_Lobby_RejectGuest kind:function(arm,size=0x8) addr:0x0208a40c local
+OtosuMenu_Lobby_OnGuestConnected kind:function(arm,size=0xa8) addr:0x0208a414 local
+OtosuMenu_Lobby_OnGuestDisconnected kind:function(arm,size=0x48) addr:0x0208a4bc local
+OtosuMenu_Lobby_OnBeaconUpdated kind:function(arm,size=0x10) addr:0x0208a504 local
+OtosuMenu_Lobby_OnGuestPacket kind:function(arm,size=0x60) addr:0x0208a514 local
+OtosuMenu_Lobby_Step_InitHost kind:function(arm,size=0xf8) addr:0x0208a574 local
+OtosuMenu_Lobby_Step_StartHost kind:function(arm,size=0x100) addr:0x0208a66c local
+OtosuMenu_Lobby_SetStartEnabled kind:function(arm,size=0x114) addr:0x0208a76c local
+OtosuMenu_Lobby_Step_DrawPlayerNames kind:function(arm,size=0x20) addr:0x0208a880 local
+OtosuMenu_Lobby_Step_SetupHostScreen kind:function(arm,size=0x88) addr:0x0208a8a0 local
+OtosuMenu_Lobby_RefreshRoster kind:function(arm,size=0xa0) addr:0x0208a928 local
+OtosuMenu_Lobby_UpdateBeacon kind:function(arm,size=0xb8) addr:0x0208a9c8 local
+OtosuMenu_Lobby_Step_HostWait kind:function(arm,size=0x4c4) addr:0x0208aa80 local
+OtosuMenu_Lobby_Step_GoToHostStageSelect kind:function(arm,size=0x1c) addr:0x0208af44 local
+OtosuMenu_Lobby_Step_GoToGuestStageSelect kind:function(arm,size=0x1c) addr:0x0208af60 local
+OtosuMenu_Lobby_DrawHostList kind:function(arm,size=0x154) addr:0x0208af7c local
+OtosuMenu_Lobby_OnScanResult kind:function(arm,size=0x178) addr:0x0208b0d0 local
+OtosuMenu_Lobby_Step_StartScan kind:function(arm,size=0x70) addr:0x0208b248 local
+OtosuMenu_Lobby_Step_SetupJoinScreen kind:function(arm,size=0x9c) addr:0x0208b2b8 local
+OtosuMenu_Lobby_Step_ChooseHost kind:function(arm,size=0x40c) addr:0x0208b354 local
+OtosuMenu_Lobby_Step_EndScan kind:function(arm,size=0x4c) addr:0x0208b760 local
+OtosuMenu_Lobby_OnHostPacket kind:function(arm,size=0xbc) addr:0x0208b7ac local
+OtosuMenu_Lobby_Step_SetupGuestScreen kind:function(arm,size=0xb0) addr:0x0208b868 local
+OtosuMenu_Lobby_Step_ConnectToHost kind:function(arm,size=0xdc) addr:0x0208b918 local
+OtosuMenu_Lobby_OnGuestSendDone kind:function(arm,size=0x10) addr:0x0208b9f4 local
+OtosuMenu_Lobby_Step_InitGuestWait kind:function(arm,size=0x30) addr:0x0208ba04 local
+OtosuMenu_Lobby_Step_GuestWait kind:function(arm,size=0x300) addr:0x0208ba34 local
+OtosuMenu_Lobby_Step_ShutdownWireless kind:function(arm,size=0x54) addr:0x0208bd34 local
+OtosuMenu_Lobby_Step_LeaveSession kind:function(arm,size=0x4c) addr:0x0208bd88 local
+OtosuMenu_Lobby_Step_SendCancel kind:function(arm,size=0x60) addr:0x0208bdd4 local
+OtosuMenu_Lobby_Step_SendStart kind:function(arm,size=0x60) addr:0x0208be34 local
+OtosuMenu_Lobby_Step_ShutdownHost kind:function(arm,size=0x64) addr:0x0208be94 local
+OtosuMenu_Lobby_Step_StopHost kind:function(arm,size=0x5c) addr:0x0208bef8 local
+OtosuMenu_VBlankCallback kind:function(arm,size=0xd0) addr:0x0208bf54 local
+OtosuMenu_InitDisplayForEntry kind:function(arm,size=0x4e0) addr:0x0208c024
+OtosuMenu_InitDisplay kind:function(arm,size=0x4e8) addr:0x0208c504
+OtosuMenu_InitDisplayForSaveData kind:function(arm,size=0x4d0) addr:0x0208c9ec
 OtosuMenu_LinkLevel_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208cebc local
 OtosuMenu_LinkLevel_Load kind:function(arm,size=0xd0) addr:0x0208cf58 local
 OtosuMenu_LinkLevel_Destroy kind:function(arm,size=0x14) addr:0x0208d028 local
 OtosuMenu_LinkLevel_Update kind:function(arm,size=0x14) addr:0x0208d03c local
 OtosuMenu_LinkLevel_Render kind:function(arm,size=0x24) addr:0x0208d050 local
 OtosuMenu_LinkLevel_Step_UpdateIcon kind:function(arm,size=0x7c) addr:0x0208d074 local
-func_ov002_0208d0f0 kind:function(arm,size=0x9c) addr:0x0208d0f0
-func_ov002_0208d18c kind:function(arm,size=0xa8) addr:0x0208d18c
-func_ov002_0208d234 kind:function(arm,size=0x10) addr:0x0208d234
-func_ov002_0208d244 kind:function(arm,size=0x10) addr:0x0208d244
-func_ov002_0208d254 kind:function(arm,size=0x10) addr:0x0208d254
-func_ov002_0208d264 kind:function(arm,size=0x8) addr:0x0208d264
-func_ov002_0208d26c kind:function(arm,size=0xa8) addr:0x0208d26c
-func_ov002_0208d314 kind:function(arm,size=0x10c) addr:0x0208d314
-func_ov002_0208d420 kind:function(arm,size=0x154) addr:0x0208d420
-func_ov002_0208d574 kind:function(arm,size=0x50) addr:0x0208d574
-func_ov002_0208d5c4 kind:function(arm,size=0x184) addr:0x0208d5c4
-func_ov002_0208d748 kind:function(arm,size=0x5c) addr:0x0208d748
-func_ov002_0208d7a4 kind:function(arm,size=0x28) addr:0x0208d7a4
-func_ov002_0208d7cc kind:function(arm,size=0x4) addr:0x0208d7cc
-func_ov002_0208d7d0 kind:function(arm,size=0x4) addr:0x0208d7d0
-func_ov002_0208d7d4 kind:function(arm,size=0x8c) addr:0x0208d7d4
-func_ov002_0208d860 kind:function(arm,size=0xa8) addr:0x0208d860
-func_ov002_0208d908 kind:function(arm,size=0x10) addr:0x0208d908
-func_ov002_0208d918 kind:function(arm,size=0xd8) addr:0x0208d918
-func_ov002_0208d9f0 kind:function(arm,size=0x50) addr:0x0208d9f0
-func_ov002_0208da40 kind:function(arm,size=0x14) addr:0x0208da40
-func_ov002_0208da54 kind:function(arm,size=0x14) addr:0x0208da54
-func_ov002_0208da68 kind:function(arm,size=0x10) addr:0x0208da68
-func_ov002_0208da78 kind:function(arm,size=0xac) addr:0x0208da78
-func_ov002_0208db24 kind:function(arm,size=0x48) addr:0x0208db24
-func_ov002_0208db6c kind:function(arm,size=0x10) addr:0x0208db6c
-func_ov002_0208db7c kind:function(arm,size=0x3c) addr:0x0208db7c
-func_ov002_0208dbb8 kind:function(arm,size=0x34) addr:0x0208dbb8
-func_ov002_0208dbec kind:function(arm,size=0x9c) addr:0x0208dbec
-func_ov002_0208dc88 kind:function(arm,size=0xf0) addr:0x0208dc88
-func_ov002_0208dd78 kind:function(arm,size=0xfc) addr:0x0208dd78
-func_ov002_0208de74 kind:function(arm,size=0xbc) addr:0x0208de74
-func_ov002_0208df30 kind:function(arm,size=0x2ac) addr:0x0208df30
-func_ov002_0208e1dc kind:function(arm,size=0x134) addr:0x0208e1dc
-func_ov002_0208e310 kind:function(arm,size=0x24c) addr:0x0208e310
-func_ov002_0208e55c kind:function(arm,size=0xbc) addr:0x0208e55c
-func_ov002_0208e618 kind:function(arm,size=0x108) addr:0x0208e618
-func_ov002_0208e720 kind:function(arm,size=0x104) addr:0x0208e720
-func_ov002_0208e824 kind:function(arm,size=0x10) addr:0x0208e824
-func_ov002_0208e834 kind:function(arm,size=0x38) addr:0x0208e834
-func_ov002_0208e86c kind:function(arm,size=0xdc) addr:0x0208e86c
-func_ov002_0208e948 kind:function(arm,size=0x6c) addr:0x0208e948
-func_ov002_0208e9b4 kind:function(arm,size=0x10c) addr:0x0208e9b4
-func_ov002_0208eac0 kind:function(arm,size=0x3c) addr:0x0208eac0
-func_ov002_0208eafc kind:function(arm,size=0xc8) addr:0x0208eafc
-func_ov002_0208ebc4 kind:function(arm,size=0x104) addr:0x0208ebc4
-func_ov002_0208ecc8 kind:function(arm,size=0x144) addr:0x0208ecc8
-func_ov002_0208ee0c kind:function(arm,size=0x54) addr:0x0208ee0c
-func_ov002_0208ee60 kind:function(arm,size=0x4c) addr:0x0208ee60
-func_ov002_0208eeac kind:function(arm,size=0x58) addr:0x0208eeac
-func_ov002_0208ef04 kind:function(arm,size=0x88) addr:0x0208ef04
-func_ov002_0208ef8c kind:function(arm,size=0x60) addr:0x0208ef8c
-func_ov002_0208efec kind:function(arm,size=0x58) addr:0x0208efec
+OtosuMenu_Icon_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208d0f0 local
+OtosuMenu_Icon_Load kind:function(arm,size=0xa8) addr:0x0208d18c local
+OtosuMenu_Icon_Destroy kind:function(arm,size=0x10) addr:0x0208d234 local
+OtosuMenu_Icon_Update kind:function(arm,size=0x10) addr:0x0208d244 local
+OtosuMenu_Icon_Render kind:function(arm,size=0x10) addr:0x0208d254 local
+OtosuMenu_Icon_Step_Idle kind:function(arm,size=0x8) addr:0x0208d264 local
+OtosuMenu_DestroyResultObjects kind:function(arm,size=0xa8) addr:0x0208d26c
+OtosuMenu_ComputeRanks kind:function(arm,size=0x10c) addr:0x0208d314
+OtosuMenu_ComputeSinglePlayerRanks kind:function(arm,size=0x154) addr:0x0208d420
+OtosuMenu_GetPlaceName kind:function(arm,size=0x50) addr:0x0208d574
+OtosuMenu_Ranking_CreateRankBoards kind:function(arm,size=0x184) addr:0x0208d5c4 local
+OtosuMenu_Ranking_Load kind:function(arm,size=0x5c) addr:0x0208d748 local
+OtosuMenu_Ranking_Destroy kind:function(arm,size=0x28) addr:0x0208d7a4 local
+OtosuMenu_Ranking_Update kind:function(arm,size=0x4) addr:0x0208d7cc local
+OtosuMenu_Ranking_Render kind:function(arm,size=0x4) addr:0x0208d7d0 local
+OtosuMenu_Ranking_Step_RecordResult kind:function(arm,size=0x8c) addr:0x0208d7d4 local
+OtosuMenu_Ranking_Step_HandleChoice kind:function(arm,size=0xa8) addr:0x0208d860 local
+OtosuMenu_Ranking_Step_Begin kind:function(arm,size=0x10) addr:0x0208d908 local
+OtosuMenu_Ranking_Step_SetupDisconnectScreen kind:function(arm,size=0xd8) addr:0x0208d918 local
+OtosuMenu_Ranking_Step_WaitDisconnect kind:function(arm,size=0x50) addr:0x0208d9f0 local
+OtosuMenu_Ranking_Step_ReturnToGame kind:function(arm,size=0x14) addr:0x0208da40 local
+OtosuMenu_Ranking_Step_ExitSinglePlayer kind:function(arm,size=0x14) addr:0x0208da54 local
+OtosuMenu_Ranking_OnSendDone kind:function(arm,size=0x10) addr:0x0208da68 local
+OtosuMenu_Ranking_OnGuestConnected kind:function(arm,size=0xac) addr:0x0208da78 local
+OtosuMenu_Ranking_OnGuestDisconnected kind:function(arm,size=0x48) addr:0x0208db24 local
+OtosuMenu_Ranking_OnBeaconUpdated kind:function(arm,size=0x10) addr:0x0208db6c local
+OtosuMenu_Ranking_OnGuestPacket kind:function(arm,size=0x3c) addr:0x0208db7c local
+OtosuMenu_Ranking_RefreshRoster kind:function(arm,size=0x34) addr:0x0208dbb8 local
+OtosuMenu_Ranking_UpdateBeacon kind:function(arm,size=0x9c) addr:0x0208dbec local
+OtosuMenu_Ranking_Step_InitHost kind:function(arm,size=0xf0) addr:0x0208dc88 local
+OtosuMenu_Ranking_Step_StartHost kind:function(arm,size=0xfc) addr:0x0208dd78 local
+OtosuMenu_Ranking_Step_SetupHostWaitScreen kind:function(arm,size=0xbc) addr:0x0208de74 local
+OtosuMenu_Ranking_Step_HostWaitGuests kind:function(arm,size=0x2ac) addr:0x0208df30 local
+OtosuMenu_Ranking_Step_SetupHostScreen kind:function(arm,size=0x134) addr:0x0208e1dc local
+OtosuMenu_Ranking_Step_HostChoose kind:function(arm,size=0x24c) addr:0x0208e310 local
+OtosuMenu_Ranking_OnHostPacket kind:function(arm,size=0xbc) addr:0x0208e55c local
+OtosuMenu_Ranking_Step_SetupGuestWaitScreen kind:function(arm,size=0x108) addr:0x0208e618 local
+OtosuMenu_Ranking_Step_ConnectToHost kind:function(arm,size=0x104) addr:0x0208e720 local
+OtosuMenu_Ranking_OnGuestSendDone kind:function(arm,size=0x10) addr:0x0208e824 local
+OtosuMenu_Ranking_Step_InitGuestWait kind:function(arm,size=0x38) addr:0x0208e834 local
+OtosuMenu_Ranking_Step_GuestWait kind:function(arm,size=0xdc) addr:0x0208e86c local
+OtosuMenu_Ranking_OnHostChoice kind:function(arm,size=0x6c) addr:0x0208e948 local
+OtosuMenu_Ranking_Step_SetupGuestScreen kind:function(arm,size=0x10c) addr:0x0208e9b4 local
+OtosuMenu_Ranking_Step_WaitHostChoice kind:function(arm,size=0x3c) addr:0x0208eac0 local
+OtosuMenu_Ranking_Step_SetupSinglePlayerNames kind:function(arm,size=0xc8) addr:0x0208eafc local
+OtosuMenu_Ranking_Step_SetupSinglePlayerScreen kind:function(arm,size=0x104) addr:0x0208ebc4 local
+OtosuMenu_Ranking_Step_SinglePlayerWaitExit kind:function(arm,size=0x144) addr:0x0208ecc8 local
+OtosuMenu_Ranking_Step_ShutdownWireless kind:function(arm,size=0x54) addr:0x0208ee0c local
+OtosuMenu_Ranking_Step_LeaveSession kind:function(arm,size=0x4c) addr:0x0208ee60 local
+OtosuMenu_Ranking_Step_CheckGuests kind:function(arm,size=0x58) addr:0x0208eeac local
+OtosuMenu_Ranking_Step_SendExit kind:function(arm,size=0x88) addr:0x0208ef04 local
+OtosuMenu_Ranking_Step_ShutdownHost kind:function(arm,size=0x60) addr:0x0208ef8c local
+OtosuMenu_Ranking_Step_StopHost kind:function(arm,size=0x58) addr:0x0208efec local
 OtosuMenu_TitleEnemy_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0208f044 local
 OtosuMenu_TitleEnemy_Load kind:function(arm,size=0x1d8) addr:0x0208f0e0 local
 OtosuMenu_TitleEnemy_Destroy kind:function(arm,size=0x38) addr:0x0208f2b8 local
@@ -275,43 +275,43 @@ OtosuMenu_Entry_Step_Setup kind:function(arm,size=0x20) addr:0x02090010 local
 OtosuMenu_Entry_Step_WaitInput kind:function(arm,size=0x7c) addr:0x02090030 local
 OtosuMenu_Entry_Step_Finish kind:function(arm,size=0x14) addr:0x020900ac local
 OtosuMenu_Entry_Step_WaitInputExit kind:function(arm,size=0xa4) addr:0x020900c0 local
-func_ov002_02090164 kind:function(arm,size=0x4) addr:0x02090164
-func_ov002_02090168 kind:function(arm,size=0x10) addr:0x02090168
-func_ov002_02090178 kind:function(arm,size=0x4) addr:0x02090178
-func_ov002_0209017c kind:function(arm,size=0x4) addr:0x0209017c
-func_ov002_02090180 kind:function(arm,size=0xbc) addr:0x02090180
-func_ov002_0209023c kind:function(arm,size=0x188) addr:0x0209023c
-func_ov002_020903c4 kind:function(arm,size=0x318) addr:0x020903c4
-func_ov002_020906dc kind:function(arm,size=0xc) addr:0x020906dc
-func_ov002_020906e8 kind:function(arm,size=0x54) addr:0x020906e8
-func_ov002_0209073c kind:function(arm,size=0x40) addr:0x0209073c
-func_ov002_0209077c kind:function(arm,size=0x68) addr:0x0209077c
-OtosuPrcStep_CheckButtonInput kind:function(arm,size=0x188) addr:0x020907e4
-OtosuMenu_SaveData_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209096c
-OtosuMenu_SaveData_LoadCursor kind:function(arm,size=0x68) addr:0x02090a08
-OtosuMenu_SaveData_Load kind:function(arm,size=0x6c) addr:0x02090a70
-OtosuMenu_SaveData_Destroy kind:function(arm,size=0x3c) addr:0x02090adc
-OtosuMenu_SaveData_Update kind:function(arm,size=0x4) addr:0x02090b18
-OtosuMenu_SaveData_Render kind:function(arm,size=0x4) addr:0x02090b1c
-OtosuMenu_SaveData_SetupScreens kind:function(arm,size=0x490) addr:0x02090b20
-OtosuMenu_SaveData_Step_DeleteConfirmChoice kind:function(arm,size=0x1b8) addr:0x02090fb0
-OtosuMenu_SaveData_Step_ResetSavePipeline kind:function(arm,size=0x14) addr:0x02091168
-OtosuMenu_SaveData_Step_ShowDeleteConfirm1 kind:function(arm,size=0xe4) addr:0x0209117c
-OtosuMenu_SaveData_Step_ShowDeleteConfirm2 kind:function(arm,size=0xe4) addr:0x02091260
-OtosuMenu_SaveData_Step_ShowDeleteConfirm3 kind:function(arm,size=0xe4) addr:0x02091344
-OtosuMenu_SaveData_Step_ShowDeleting kind:function(arm,size=0xf8) addr:0x02091428
-OtosuMenu_SaveData_Step_ShowSaveIcon kind:function(arm,size=0x64) addr:0x02091520
-OtosuMenu_SaveData_Step_WriteSave kind:function(arm,size=0x8c) addr:0x02091584
-OtosuMenu_SaveData_Step_ShowDeleted kind:function(arm,size=0xd8) addr:0x02091610
-OtosuMenu_SaveData_Step_WaitDeleteDone kind:function(arm,size=0x60) addr:0x020916e8
-OtosuMenu_SaveData_Step_ShowCorrupted kind:function(arm,size=0xf8) addr:0x02091748
-OtosuMenu_SaveData_Step_ShowCorruptDeleted kind:function(arm,size=0xd8) addr:0x02091840
-OtosuMenu_SaveData_Step_WaitDone kind:function(arm,size=0x60) addr:0x02091918
-OtosuMenu_SaveData_Step_ShowSaveFailure kind:function(arm,size=0xf8) addr:0x02091978
-OtosuMenu_SaveData_Step_ShowLoadFailure kind:function(arm,size=0xf8) addr:0x02091a70
-OtosuMenu_SaveData_Step_HangLoadFailure kind:function(arm,size=0x10) addr:0x02091b68
-OtosuMenu_SaveData_Step_HangSaveFailure kind:function(arm,size=0x10) addr:0x02091b78
-OtosuMenu_SaveData_Step_Finish kind:function(arm,size=0x40) addr:0x02091b88
+OtosuMenu_FontList_Load kind:function(arm,size=0x4) addr:0x02090164 local
+OtosuMenu_FontList_Destroy kind:function(arm,size=0x10) addr:0x02090168 local
+OtosuMenu_FontList_Update kind:function(arm,size=0x4) addr:0x02090178 local
+OtosuMenu_FontList_Render kind:function(arm,size=0x4) addr:0x0209017c local
+OtosuMenu_FontList_DrawSample kind:function(arm,size=0xbc) addr:0x02090180 local
+OtosuMenu_FontList_DrawPageInfo kind:function(arm,size=0x188) addr:0x0209023c local
+OtosuMenu_FontList_SetupScreens kind:function(arm,size=0x318) addr:0x020903c4 local
+OtosuMenu_FontList_Redraw kind:function(arm,size=0xc) addr:0x020906dc local
+OtosuMenu_FontList_ApplyColor kind:function(arm,size=0x54) addr:0x020906e8 local
+OtosuMenu_FontList_ApplyFont kind:function(arm,size=0x40) addr:0x0209073c local
+OtosuMenu_FontList_Step_Setup kind:function(arm,size=0x68) addr:0x0209077c local
+OtosuPrcStep_CheckButtonInput kind:function(arm,size=0x188) addr:0x020907e4 local
+OtosuMenu_SaveData_GetFrameInfo kind:function(arm,size=0x9c) addr:0x0209096c local
+OtosuMenu_SaveData_LoadCursor kind:function(arm,size=0x68) addr:0x02090a08 local
+OtosuMenu_SaveData_Load kind:function(arm,size=0x6c) addr:0x02090a70 local
+OtosuMenu_SaveData_Destroy kind:function(arm,size=0x3c) addr:0x02090adc local
+OtosuMenu_SaveData_Update kind:function(arm,size=0x4) addr:0x02090b18 local
+OtosuMenu_SaveData_Render kind:function(arm,size=0x4) addr:0x02090b1c local
+OtosuMenu_SaveData_SetupScreens kind:function(arm,size=0x490) addr:0x02090b20 local
+OtosuMenu_SaveData_Step_DeleteConfirmChoice kind:function(arm,size=0x1b8) addr:0x02090fb0 local
+OtosuMenu_SaveData_Step_ResetSavePipeline kind:function(arm,size=0x14) addr:0x02091168 local
+OtosuMenu_SaveData_Step_ShowDeleteConfirm1 kind:function(arm,size=0xe4) addr:0x0209117c local
+OtosuMenu_SaveData_Step_ShowDeleteConfirm2 kind:function(arm,size=0xe4) addr:0x02091260 local
+OtosuMenu_SaveData_Step_ShowDeleteConfirm3 kind:function(arm,size=0xe4) addr:0x02091344 local
+OtosuMenu_SaveData_Step_ShowDeleting kind:function(arm,size=0xf8) addr:0x02091428 local
+OtosuMenu_SaveData_Step_ShowSaveIcon kind:function(arm,size=0x64) addr:0x02091520 local
+OtosuMenu_SaveData_Step_WriteSave kind:function(arm,size=0x8c) addr:0x02091584 local
+OtosuMenu_SaveData_Step_ShowDeleted kind:function(arm,size=0xd8) addr:0x02091610 local
+OtosuMenu_SaveData_Step_WaitDeleteDone kind:function(arm,size=0x60) addr:0x020916e8 local
+OtosuMenu_SaveData_Step_ShowCorrupted kind:function(arm,size=0xf8) addr:0x02091748 local
+OtosuMenu_SaveData_Step_ShowCorruptDeleted kind:function(arm,size=0xd8) addr:0x02091840 local
+OtosuMenu_SaveData_Step_WaitDone kind:function(arm,size=0x60) addr:0x02091918 local
+OtosuMenu_SaveData_Step_ShowSaveFailure kind:function(arm,size=0xf8) addr:0x02091978 local
+OtosuMenu_SaveData_Step_ShowLoadFailure kind:function(arm,size=0xf8) addr:0x02091a70 local
+OtosuMenu_SaveData_Step_HangLoadFailure kind:function(arm,size=0x10) addr:0x02091b68 local
+OtosuMenu_SaveData_Step_HangSaveFailure kind:function(arm,size=0x10) addr:0x02091b78 local
+OtosuMenu_SaveData_Step_Finish kind:function(arm,size=0x40) addr:0x02091b88 local
 OtosuMenu_DelDataWin_GetFrameInfo kind:function(arm,size=0x9c) addr:0x02091bc8 local
 OtosuMenu_DelDataWin_Load kind:function(arm,size=0xf0) addr:0x02091c64 local
 OtosuMenu_DelDataWin_Destroy kind:function(arm,size=0x2c) addr:0x02091d54 local
@@ -324,81 +324,80 @@ OtosuMenu_Icon2_Destroy kind:function(arm,size=0x10) addr:0x02091ed4 local
 OtosuMenu_Icon2_Update kind:function(arm,size=0x10) addr:0x02091ee4 local
 OtosuMenu_Icon2_Render kind:function(arm,size=0x10) addr:0x02091ef4 local
 OtosuMenu_Icon2_Step_Continue kind:function(arm,size=0x8) addr:0x02091f04 local
-data_ov002_02091c24 kind:data(any) addr:0x02091f0c
-data_ov002_02091f14 kind:data(any) addr:0x02091f14
-data_ov002_02091aac kind:data(any) addr:0x02091f1c
+OtosuMenu_MenuBgLowerBinId kind:data(any) addr:0x02091f0c
+OtosuMenu_StageSelectSubScreens kind:data(any) addr:0x02091f14
+OtosuMenu_BinId kind:data(any) addr:0x02091f1c
 data_ov002_02091f24 kind:data(any) addr:0x02091f24
 data_ov002_02091f2c kind:data(any) addr:0x02091f2c
 data_ov002_02091f34 kind:data(any) addr:0x02091f34
-data_ov002_02091acc kind:data(any) addr:0x02091f3c
-OvlProc_OtosuMenu_RoleSelection kind:data(any) addr:0x02091f44
-OvlProc_OtosuMenu_DataDeletion kind:data(any) addr:0x02091f50
-OvlProc_OtosuMenu_FontList kind:data(any) addr:0x02091f5c
-OvlProc_OtosuMenu_ConnectionError kind:data(any) addr:0x02091f68
-OvlProc_OtosuMenu_DataCorrupted kind:data(any) addr:0x02091f74
-data_ov002_02091f80 kind:data(any) addr:0x02091f80
-OvlProc_OtosuMenu_MultiplayerEnter kind:data(any) addr:0x02091f8c
+OtosuMenu_ObjBinId kind:data(any) addr:0x02091f3c
+OvlProc_OtosuMenu_ConnectionError kind:data(any) addr:0x02091f44
+OvlProc_OtosuMenu_FontList kind:data(any) addr:0x02091f50
+OvlProc_OtosuMenu_RoleSelection kind:data(any) addr:0x02091f5c
+OvlProc_OtosuMenu_SinglePlayerRanking kind:data(any) addr:0x02091f68
+OvlProc_OtosuMenu_DataDeletion kind:data(any) addr:0x02091f74
+OvlProc_OtosuMenu_DataCorrupted kind:data(any) addr:0x02091f80
+OvlProc_OtosuMenu_SinglePlayerEnter kind:data(any) addr:0x02091f8c
 OvlProc_OtosuMenu_DataLoadFailure kind:data(any) addr:0x02091f98
-OvlProc_OtosuMenu_MultiplayerRanking kind:data(any) addr:0x02091fa4
-OvlProc_OtosuMenu_SinglePlayerRanking kind:data(any) addr:0x02091fb0
+OvlProc_OtosuMenu_MultiplayerEnter kind:data(any) addr:0x02091fa4
+OvlProc_OtosuMenu_MultiplayerRanking kind:data(any) addr:0x02091fb0
 OvlProc_OtosuMenu_DataSaveFailure kind:data(any) addr:0x02091fbc
-data_ov002_02091fc8 kind:data(any) addr:0x02091fc8
-data_ov002_02091ff0 kind:data(any) addr:0x02091ff0
-data_ov002_0209201c kind:data(any) addr:0x0209201c
-data_ov002_02091c2c kind:data(any) addr:0x02092080
-data_ov002_02091c1c kind:data(any) addr:0x02092088
-data_ov002_02091c34 kind:data(any) addr:0x02092090
+OtosuMenu_StageCategoryTexts kind:data(any) addr:0x02091fc8
+OtosuMenu_CursorAnim kind:data(any) addr:0x02091ff0
+OtosuMenu_StageNameTexts kind:data(any) addr:0x0209201c
+OtosuMenu_MenuBgUpperBinId kind:data(any) addr:0x02092080
+OtosuMenu_DelMenuBinId kind:data(any) addr:0x02092088
+OtosuMenu_FldDownScreenBinId kind:data(any) addr:0x02092090
 @2452 kind:data(any) addr:0x02092098 local
 @2450 kind:data(any) addr:0x020920b0 local
 @2442 kind:data(any) addr:0x020920e2 local
-data_ov002_02092120 kind:data(any) addr:0x02092120
-data_ov002_02092130 kind:data(any) addr:0x02092130
-data_ov002_02092144 kind:data(any) addr:0x02092144
-data_ov002_02092158 kind:data(any) addr:0x02092158
-data_ov002_0209216c kind:data(any) addr:0x0209216c
-data_ov002_02092180 kind:data(any) addr:0x02092180
-data_ov002_020921a8 kind:data(any) addr:0x020921a8
-data_ov002_020921d0 kind:data(any) addr:0x020921d0
-data_ov002_020921f8 kind:data(any) addr:0x020921f8
-data_ov002_02092220 kind:data(any) addr:0x02092220
-data_ov002_02092248 kind:data(any) addr:0x02092248
-data_ov002_02092270 kind:data(any) addr:0x02092270
-data_ov002_02092298 kind:data(any) addr:0x02092298
-data_ov002_020922c0 kind:data(any) addr:0x020922c0
-data_ov002_020922f6 kind:data(any) addr:0x020922f6
-data_ov002_0209232c kind:data(any) addr:0x0209232c
-data_ov002_02092374 kind:data(any) addr:0x02092374
-data_ov002_020923d8 kind:data(any) addr:0x020923d8
-data_ov002_0209243c kind:data(any) addr:0x0209243c local
-data_ov002_02092442 kind:data(any) addr:0x02092442 local
-data_ov002_02092456 kind:data(any) addr:0x02092456 local
-data_ov002_0209246a kind:data(any) addr:0x0209246a local
-data_ov002_02092488 kind:data(any) addr:0x02092488 local
-data_ov002_020924a6 kind:data(any) addr:0x020924a6 local
-data_ov002_020924c4 kind:data(any) addr:0x020924c4
+OtosuMenu_BoardFiles kind:data(any) addr:0x02092120
+OtosuMenu_StageSelect_GuestTexts kind:data(any) addr:0x02092130
+OtosuMenu_StageSelect_HostTexts kind:data(any) addr:0x02092144
+OtosuMenu_StageSelect_HostWaitTexts kind:data(any) addr:0x02092158
+OtosuMenu_StageSelect_GuestWaitTexts kind:data(any) addr:0x0209216c
+OtosuMenu_MapExtra2Sizes kind:data(any) addr:0x02092180
+OtosuMenu_MapExtra2Offsets kind:data(any) addr:0x020921a8
+OtosuMenu_MapHeaderSizes kind:data(any) addr:0x020921d0
+OtosuMenu_MapCellsSizes kind:data(any) addr:0x020921f8
+OtosuMenu_MapExtra1Offsets kind:data(any) addr:0x02092220
+OtosuMenu_MapCellsOffsets kind:data(any) addr:0x02092248
+OtosuMenu_MapExtra1Sizes kind:data(any) addr:0x02092270
+OtosuMenu_MapHeaderOffsets kind:data(any) addr:0x02092298
+OtosuMenu_StageSelect_GuestCursors kind:data(any) addr:0x020922c0
+OtosuMenu_StageSelect_HostCursors kind:data(any) addr:0x020922f6
+OtosuMenu_StageSelect_PaletteAnim kind:data(any) addr:0x0209232c
+OtosuMenu_StageSelect_Buttons kind:data(any) addr:0x02092374 local
+OtosuMenu_CommError_BackCursor kind:data(any) addr:0x0209243c local
+OtosuMenu_CommError_ConnectionLostTexts kind:data(any) addr:0x02092442 local
+OtosuMenu_CommError_BackButtons kind:data(any) addr:0x02092456 local
+OtosuMenu_CommError_JoinFailedTexts kind:data(any) addr:0x0209246a local
+OtosuMenu_CommError_JoinFailedPopTexts kind:data(any) addr:0x02092488 local
+OtosuMenu_CommError_WirelessUnavailableTexts kind:data(any) addr:0x020924a6 local
+OtosuMenu_Lobby_GuestCursors kind:data(any) addr:0x020924c4
 data_ov002_020924d0 kind:data(any) addr:0x020924d0
-data_ov002_020924dc kind:data(any) addr:0x020924dc
-data_ov002_020924f0 kind:data(any) addr:0x020924f0
-data_ov002_02092508 kind:data(any) addr:0x02092508
-data_ov002_02092526 kind:data(any) addr:0x02092526
+OtosuMenu_Lobby_GuestButtons kind:data(any) addr:0x020924dc
+OtosuMenu_Lobby_JoinCursors kind:data(any) addr:0x020924f0
+OtosuMenu_Lobby_JoinTexts kind:data(any) addr:0x02092508
+OtosuMenu_Lobby_GuestTexts kind:data(any) addr:0x02092526
 data_ov002_02092544 kind:data(any) addr:0x02092544
-data_ov002_02092562 kind:data(any) addr:0x02092562
-data_ov002_0209258a kind:data(any) addr:0x0209258a
+OtosuMenu_Lobby_HostTexts kind:data(any) addr:0x02092562
+OtosuMenu_Lobby_JoinButtons kind:data(any) addr:0x0209258a
 OtosuMenu_BroadcastBssid kind:data(any) addr:0x020925bc
 OtosuMenu_LinkLevel_AnimByLevel kind:data(any) addr:0x020925c4 local
 OtosuMenu_LinkLevel_Anim kind:data(any) addr:0x020925cc local
-data_ov002_020925f8 kind:data(any) addr:0x020925f8
+OtosuMenu_Icon_Anim kind:data(any) addr:0x020925f8
 data_ov002_02092624 kind:data(any) addr:0x02092624
-data_ov002_02092636 kind:data(any) addr:0x02092636
-data_ov002_0209264a kind:data(any) addr:0x0209264a
-data_ov002_0209265e kind:data(any) addr:0x0209265e
-data_ov002_02092672 kind:data(any) addr:0x02092672
-data_ov002_02092686 kind:data(any) addr:0x02092686
-data_ov002_0209269a kind:data(any) addr:0x0209269a
-data_ov002_020926ae kind:data(any) addr:0x020926ae
-data_ov002_020926cc kind:data(any) addr:0x020926cc
-data_ov002_020926ea kind:data(any) addr:0x020926ea
-data_ov002_0209284c kind:data(any) addr:0x0209284c
+OtosuMenu_Ranking_GuestWaitTexts kind:data(any) addr:0x02092636
+OtosuMenu_Ranking_SinglePlayerButtons kind:data(any) addr:0x0209264a
+OtosuMenu_Ranking_HostWaitTexts kind:data(any) addr:0x0209265e
+OtosuMenu_Ranking_SinglePlayerTexts kind:data(any) addr:0x02092672
+OtosuMenu_Ranking_GuestTexts kind:data(any) addr:0x02092686
+OtosuMenu_Ranking_DisconnectTexts kind:data(any) addr:0x0209269a
+OtosuMenu_Ranking_HostChoiceTexts kind:data(any) addr:0x020926ae
+OtosuMenu_Ranking_HostChoiceButtons kind:data(any) addr:0x020926cc
+OtosuMenu_OpponentNameSets kind:data(any) addr:0x020926ea
+OtosuMenu_TitleEnemy_Palettes kind:data(any) addr:0x0209284c local
 data_ov002_02092858 kind:data(any) addr:0x02092858
 OtosuMenu_TitleEnemy_Anim kind:data(any) addr:0x02092878 local
 OtosuMenu_RankBoard_RankAnims kind:data(any) addr:0x020928a4 local
@@ -416,10 +415,11 @@ OtosuMenu_RankBoard_WinnerDigits kind:data(any) addr:0x02092900 local
 OtosuMenu_RankBoard_DigitAnims kind:data(any) addr:0x02092914 local
 OtosuMenu_RankBoard_Anim kind:data(any) addr:0x02092928 local
 OtosuMenu_Daiza_Anim kind:data(any) addr:0x02092954 local
-data_ov002_02092980 kind:data(any) addr:0x02092980
-data_ov002_02092990 kind:data(any) addr:0x02092990
-data_ov002_020929a2 kind:data(any) addr:0x020929a2
-data_ov002_02092cc4 kind:data(any) addr:0x02092cc4
+@2234 kind:data(any) addr:0x02092980 local
+@2175 kind:data(any) addr:0x02092990 local
+@2177 kind:data(any) addr:0x020929a2 local
+@2185 kind:data(any) addr:0x02092b32 local
+sNoText7 kind:data(any) addr:0x02092cc4
 sSaveFailureText kind:data(any) addr:0x02092d0c local
 sDeleteConfirm2Text kind:data(any) addr:0x02092d20 local
 sCorruptDeletedText kind:data(any) addr:0x02092d34 local
@@ -445,9 +445,9 @@ data_ov002_02092f3c kind:data(any) addr:0x02092f3c
 data_ov002_02092f58 kind:data(any) addr:0x02092f58
 data_ov002_02092f74 kind:data(any) addr:0x02092f74
 data_ov002_02092f90 kind:data(any) addr:0x02092f90
-data_ov002_02092fb0 kind:data(any) addr:0x02092fb0
+OtosuMenu_FldDownScreenPath kind:data(any) addr:0x02092fb0
 data_ov002_02092fd0 kind:data(any) addr:0x02092fd0
-OtosuMenu_ObjName kind:data(any) addr:0x02092fe4
+data_ov002_02092fe4 kind:data(any) addr:0x02092fe4
 OtosuMenu_Title_IdleFrameDesc kind:data(any) addr:0x02092ff4 local
 OtosuMenu_Title_IdleStepTable kind:data(any) addr:0x02093008 local
 OtosuMenu_Title_StepTable kind:data(any) addr:0x02093030 local
@@ -457,37 +457,37 @@ OtosuMenu_Title_FrameDesc kind:data(any) addr:0x02093058
 OtosuMenu_RoleSelect_FrameDesc kind:data(any) addr:0x0209309c
 OtosuMenu_RoleSelect_StepTable kind:data(any) addr:0x020930b0 local
 data_ov002_020930d0 kind:data(any) addr:0x020930d0
-data_ov002_020930e0 kind:data(any) addr:0x020930e0
-data_ov002_020930f4 kind:data(any) addr:0x020930f4
+OtosuMenu_StageSelect_GuestFrameDesc kind:data(any) addr:0x020930e0
+OtosuMenu_StageSelect_HostFrameDesc kind:data(any) addr:0x020930f4
 data_ov002_02093108 kind:data(any) addr:0x02093108
-data_ov002_02093124 kind:data(any) addr:0x02093124
-data_ov002_02093188 kind:data(any) addr:0x02093188
+OtosuMenu_StageSelect_GuestStepTable kind:data(any) addr:0x02093124
+OtosuMenu_StageSelect_HostStepTable kind:data(any) addr:0x02093188
 data_ov002_020931f4 kind:data(any) addr:0x020931f4
 data_ov002_02093204 kind:data(any) addr:0x02093204
-data_ov002_02093218 kind:data(any) addr:0x02093218
-data_ov002_0209322c kind:data(any) addr:0x0209322c
-data_ov002_02093240 kind:data(any) addr:0x02093240
-data_ov002_02093254 kind:data(any) addr:0x02093254
-data_ov002_02093268 kind:data(any) addr:0x02093268
-data_ov002_02093298 kind:data(any) addr:0x02093298
-data_ov002_020932c8 kind:data(any) addr:0x020932c8
-data_ov002_020932fc kind:data(any) addr:0x020932fc
-data_ov002_02093330 kind:data(any) addr:0x02093330
+OtosuMenu_CommError_ConnectionLostFrameDesc kind:data(any) addr:0x02093218
+OtosuMenu_CommError_JoinFailedPopFrameDesc kind:data(any) addr:0x0209322c
+OtosuMenu_CommError_WirelessUnavailableFrameDesc kind:data(any) addr:0x02093240
+OtosuMenu_CommError_JoinFailedFrameDesc kind:data(any) addr:0x02093254
+OtosuMenu_CommError_ConnectionLostStepTable kind:data(any) addr:0x02093268
+OtosuMenu_CommError_WirelessUnavailableStepTable kind:data(any) addr:0x02093298
+OtosuMenu_CommError_JoinFailedPopStepTable kind:data(any) addr:0x020932c8
+OtosuMenu_CommError_JoinFailedStepTable kind:data(any) addr:0x020932fc
+OtosuMenu_Lobby_ShutdownSteps kind:data(any) addr:0x02093330
 data_ov002_02093338 kind:data(any) addr:0x02093338
-data_ov002_02093344 kind:data(any) addr:0x02093344
-data_ov002_02093358 kind:data(any) addr:0x02093358
-data_ov002_02093398 kind:data(any) addr:0x02093398
-data_ov002_020933f0 kind:data(any) addr:0x020933f0
+OtosuMenu_Lobby_JoinFrameDesc kind:data(any) addr:0x02093344
+OtosuMenu_Lobby_HostStepTable kind:data(any) addr:0x02093358
+OtosuMenu_Lobby_JoinStepTable kind:data(any) addr:0x02093398
+OtosuMenu_Lobby_HostFrameDesc kind:data(any) addr:0x020933f0
 OtosuMenu_LinkLevel_StepTable kind:data(any) addr:0x02093404 local
 OtosuMenu_LinkLevel_FrameDesc kind:data(any) addr:0x02093408
-data_ov002_0209341c kind:data(any) addr:0x0209341c
+OtosuMenu_Icon_StepTable kind:data(any) addr:0x0209341c
 OtosuMenu_Icon_FrameDesc kind:data(any) addr:0x02093420
-data_ov002_02093434 kind:data(any) addr:0x02093434
-data_ov002_02093448 kind:data(any) addr:0x02093448
-data_ov002_0209345c kind:data(any) addr:0x0209345c
-data_ov002_02093470 kind:data(any) addr:0x02093470
-data_ov002_020934a4 kind:data(any) addr:0x020934a4
-data_ov002_02093528 kind:data(any) addr:0x02093528
+OtosuMenu_Ranking_HostFrameDesc kind:data(any) addr:0x02093434
+OtosuMenu_Ranking_SinglePlayerFrameDesc kind:data(any) addr:0x02093448
+OtosuMenu_Ranking_GuestFrameDesc kind:data(any) addr:0x0209345c
+OtosuMenu_Ranking_SinglePlayerStepTable kind:data(any) addr:0x02093470
+OtosuMenu_Ranking_GuestStepTable kind:data(any) addr:0x020934a4
+OtosuMenu_Ranking_HostStepTable kind:data(any) addr:0x02093528
 data_ov002_020935b4 kind:data(any) addr:0x020935b4
 data_ov002_020935cc kind:data(any) addr:0x020935cc
 OtosuMenu_TitleEnemy_StepTable kind:data(any) addr:0x020935dc local
@@ -502,8 +502,8 @@ OtosuMenu_Entry_MultiplayerFrameDesc kind:data(any) addr:0x02093654
 OtosuMenu_Entry_SinglePlayerFrameDesc kind:data(any) addr:0x02093668
 OtosuMenu_Entry_MultiplayerStepTable kind:data(any) addr:0x0209367c local
 OtosuMenu_Entry_SinglePlayerStepTable kind:data(any) addr:0x02093698 local
-data_ov002_020936b8 kind:data(any) addr:0x020936b8
-data_ov002_020936cc kind:data(any) addr:0x020936cc
+OtosuMenu_FontList_FrameDesc kind:data(any) addr:0x020936b8
+OtosuMenu_FontList_StepTable kind:data(any) addr:0x020936cc
 OtosuMenu_SaveData_CancelStepTable kind:data(any) addr:0x020936e8 local
 OtosuMenu_SaveData_SaveFailureStepTable kind:data(any) addr:0x020936f0 local
 OtosuMenu_SaveData_LoadFailureStepTable kind:data(any) addr:0x02093700 local
@@ -520,9 +520,9 @@ OtosuMenu_DelDataWin_FrameDesc kind:data(any) addr:0x0209384c
 OtosuMenu_Icon2_StepTable kind:data(any) addr:0x02093860 local
 OtosuMenu_Icon2_FrameDesc kind:data(any) addr:0x02093864
 data_ov002_02093880 kind:bss addr:0x02093880
-data_ov002_02093884 kind:bss addr:0x02093884
+OtosuMenu_BlankName kind:bss addr:0x02093884
 data_ov002_0209389a kind:bss addr:0x0209389a
-data_ov002_02093920 kind:bss addr:0x02093920
-data_ov002_02093940 kind:bss addr:0x02093940
+OtosuMenu_GuestPacket kind:bss addr:0x02093920
+OtosuMenu_HostPacket kind:bss addr:0x02093940
 OtosuMenu_TitleSkipped kind:bss addr:0x020939c0
-data_ov002_020939c4 kind:bss addr:0x020939c4
+OtosuMenu_Lobby_HostNameBuf kind:bss addr:0x020939c4

@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static SpriteFrameInfo* OtosuMenu_Icon2_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
@@ -18,7 +18,7 @@ static const SpriteAnimation OtosuMenu_Icon2_Anim = {
     .frameInfoCallback = OtosuMenu_Icon2_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov002_02091acc,
+    .binIden           = &OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0,
     .unk_1C            = 0x0021,
@@ -31,27 +31,27 @@ static const SpriteAnimation OtosuMenu_Icon2_Anim = {
     .animIndex         = 0x0001,
 };
 
-static void OtosuMenu_Icon2_Load(s32 arg0, void* arg1) {
+static void OtosuMenu_Icon2_Load(s32 ctx, void* sprite) {
     SpriteAnimation anim = OtosuMenu_Icon2_Anim;
 
-    if (_Sprite_Load(arg1, &anim) == 0) {
+    if (_Sprite_Load(sprite, &anim) == 0) {
         OS_WaitForever();
     }
 }
 
-static void OtosuMenu_Icon2_Destroy(s32 arg0, void* arg1) {
-    Sprite_Destroy(arg1);
+static void OtosuMenu_Icon2_Destroy(s32 ctx, void* sprite) {
+    Sprite_Destroy(sprite);
 }
 
-static void OtosuMenu_Icon2_Update(s32 arg0, void* arg1) {
-    Sprite_UpdateAndCheck(arg1);
+static void OtosuMenu_Icon2_Update(s32 ctx, void* sprite) {
+    Sprite_UpdateAndCheck(sprite);
 }
 
-static void OtosuMenu_Icon2_Render(s32 arg0, void* arg1) {
-    Sprite_Render(arg1);
+static void OtosuMenu_Icon2_Render(s32 ctx, void* sprite) {
+    Sprite_Render(sprite);
 }
 
-static PrcStepResult OtosuMenu_Icon2_Step_Continue(PrcCtx* ctx, void* arg1) {
+static PrcStepResult OtosuMenu_Icon2_Step_Continue(PrcCtx* ctx, void* sprite) {
     return PRC_STEP_CONTINUE;
 }
 

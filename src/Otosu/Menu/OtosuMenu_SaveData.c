@@ -1,30 +1,30 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
-PrcStepResult    OtosuMenu_SaveData_Step_ShowSaveFailure(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_HangSaveFailure(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowLoadFailure(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_HangLoadFailure(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowCorrupted(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowSaveIcon(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_WriteSave(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowCorruptDeleted(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_WaitDone(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_Finish(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowInitializing(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowInitialized(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm1(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_DeleteConfirmChoice(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm2(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm3(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ResetSavePipeline(PrcCtx* ctx, void*);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleting(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleted(PrcCtx* ctx, void* arg1);
-PrcStepResult    OtosuMenu_SaveData_Step_WaitDeleteDone(PrcCtx* ctx, void* arg1);
-SpriteFrameInfo* OtosuMenu_SaveData_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-void             OtosuMenu_SaveData_Load(s32 arg0, OtosuMenuObj* menuObj);
-void             OtosuMenu_SaveData_Update(void);
-void             OtosuMenu_SaveData_Render(void);
-void             OtosuMenu_SaveData_Destroy(s32 arg0, OtosuMenuObj* menuObj);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowSaveFailure(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_HangSaveFailure(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowLoadFailure(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_HangLoadFailure(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowCorrupted(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowSaveIcon(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_WriteSave(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowCorruptDeleted(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_WaitDone(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_Finish(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowInitializing(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowInitialized(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm1(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_DeleteConfirmChoice(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm2(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleteConfirm3(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ResetSavePipeline(PrcCtx* ctx, void*);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleting(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_ShowDeleted(PrcCtx* ctx, void* object);
+static PrcStepResult    OtosuMenu_SaveData_Step_WaitDeleteDone(PrcCtx* ctx, void* object);
+static SpriteFrameInfo* OtosuMenu_SaveData_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static void             OtosuMenu_SaveData_Load(s32 ctx, OtosuMenuObj* menuObj);
+static void             OtosuMenu_SaveData_Update(void);
+static void             OtosuMenu_SaveData_Render(void);
+static void             OtosuMenu_SaveData_Destroy(s32 ctx, OtosuMenuObj* menuObj);
 
 static PrcStepFn OtosuMenu_SaveData_SaveFailureStepTable[] = {OtosuMenu_SaveData_Step_ShowSaveFailure,
                                                               OtosuPrcStep_FadeStart_Neutral2, OtosuPrcStep_FadeWait_Neutral2,
@@ -173,7 +173,7 @@ static const SpriteAnimation OtosuMenu_SaveData_CursorAnim = {
     .frameInfoCallback = OtosuMenu_SaveData_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091c34,
+    .binIden           = (BinIdentifier*)&OtosuMenu_FldDownScreenBinId,
     .unk_18            = 0x0002,
     .packIndex         = 0x000C,
     .unk_1C            = 0x0002,
@@ -254,10 +254,10 @@ static const OtosuMenuRectList2 sCorruptDeletedText = {
      }
 };
 
-void OtosuMenu_SaveData_Load(s32 arg0, OtosuMenuObj* menuObj);
-void OtosuMenu_SaveData_Destroy(s32 arg0, OtosuMenuObj* menuObj);
-void OtosuMenu_SaveData_Update(void);
-void OtosuMenu_SaveData_Render(void);
+static void OtosuMenu_SaveData_Load(s32 ctx, OtosuMenuObj* menuObj);
+static void OtosuMenu_SaveData_Destroy(s32 ctx, OtosuMenuObj* menuObj);
+static void OtosuMenu_SaveData_Update(void);
+static void OtosuMenu_SaveData_Render(void);
 
 PrcFrameDesc OtosuMenu_SaveData_CorruptedFrameDesc = {
     .enter     = OtosuMenu_SaveData_Load,
@@ -306,7 +306,7 @@ static const OtosuMenuRectList3 sDeleteConfirm2Buttons = {
      }
 };
 
-SpriteFrameInfo* OtosuMenu_SaveData_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* OtosuMenu_SaveData_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
@@ -318,14 +318,14 @@ static const OtosuMenuRectList3 sDeleteChoiceRects = {
      }
 };
 
-void OtosuMenu_SaveData_LoadCursor(OtosuMenuObj* menuObj) {
+static void OtosuMenu_SaveData_LoadCursor(OtosuMenuObj* menuObj) {
     SpriteAnimation anim = OtosuMenu_SaveData_CursorAnim;
 
     _Sprite_Load(&menuObj->cursor, &anim);
     Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, 3, menuObj->cursor.cellTable);
 }
 
-void OtosuMenu_SaveData_Load(s32 arg0, OtosuMenuObj* menuObj) {
+static void OtosuMenu_SaveData_Load(s32 ctx, OtosuMenuObj* menuObj) {
     PrcCtx_Init(&menuObj->objCtx[0], "DelData_WinObj", 0x100);
     PrcCtx_ReplaceFrame(&menuObj->objCtx[0], &OtosuMenu_DelDataWin_FrameDesc, NULL);
     PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->objCtx[0]);
@@ -333,20 +333,20 @@ void OtosuMenu_SaveData_Load(s32 arg0, OtosuMenuObj* menuObj) {
     OtosuMenu_SaveData_LoadCursor(menuObj);
 }
 
-void OtosuMenu_SaveData_Destroy(s32 arg0, OtosuMenuObj* menuObj) {
+static void OtosuMenu_SaveData_Destroy(s32 ctx, OtosuMenuObj* menuObj) {
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[0]);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[1]);
 }
 
-void OtosuMenu_SaveData_Update(void) {
+static void OtosuMenu_SaveData_Update(void) {
     return; // do nothing
 }
 
-void OtosuMenu_SaveData_Render(void) {
+static void OtosuMenu_SaveData_Render(void) {
     return; // do nothing
 }
 
-void OtosuMenu_SaveData_ReloadTextLayer(OtosuMenuObj* menuObj) {
+static void OtosuMenu_SaveData_ReloadTextLayer(OtosuMenuObj* menuObj) {
     if (menuObj->mainChars[0] != NULL) {
         BgResMgr_ReleaseChar(g_BgResourceManagers[0], menuObj->mainChars[0]);
         menuObj->mainChars[0] = NULL;
@@ -355,7 +355,7 @@ void OtosuMenu_SaveData_ReloadTextLayer(OtosuMenuObj* menuObj) {
         DatMgr_ReleaseData(menuObj->packs[0]);
         menuObj->packs[0] = NULL;
     }
-    menuObj->packs[0] = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac, 1, 0);
+    menuObj->packs[0] = DatMgr_LoadPackEntry(1, 0, 0, &OtosuMenu_BinId, 1, 0);
     void* textChars   = Data_GetPackEntryData(menuObj->packs[0], 7);
 
     u16 col;
@@ -376,12 +376,13 @@ void OtosuMenu_SaveData_ReloadTextLayer(OtosuMenuObj* menuObj) {
     Display_Commit();
 }
 
-void OtosuMenu_SaveData_SetupScreens(OtosuMenuObj* menuObj, const OtosuMenuRect* subTexts, const OtosuMenuRect* mainTexts) {
-    func_ov002_02085710(menuObj);
-    menuObj->packs[0] = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091aac, 1, 0);
-    menuObj->packs[1] = DatMgr_LoadPackEntry(1, 0, 0, &data_ov002_02091c1c, 1, 0);
-    menuObj->packs[2] = DatMgr_LoadRawData(1, 0, 0, &data_ov002_02091c2c);
-    menuObj->packs[3] = DatMgr_LoadRawData(1, 0, 0, &data_ov002_02091c24);
+static void OtosuMenu_SaveData_SetupScreens(OtosuMenuObj* menuObj, const OtosuMenuRect* subTexts,
+                                            const OtosuMenuRect* mainTexts) {
+    OtosuMenu_ReleaseScreens(menuObj);
+    menuObj->packs[0] = DatMgr_LoadPackEntry(1, 0, 0, &OtosuMenu_BinId, 1, 0);
+    menuObj->packs[1] = DatMgr_LoadPackEntry(1, 0, 0, &OtosuMenu_DelMenuBinId, 1, 0);
+    menuObj->packs[2] = DatMgr_LoadRawData(1, 0, 0, &OtosuMenu_MenuBgUpperBinId);
+    menuObj->packs[3] = DatMgr_LoadRawData(1, 0, 0, &OtosuMenu_MenuBgLowerBinId);
 
     Display_SetMainLayers(LAYER_BG0 | LAYER_BG3 | LAYER_OBJ);
     Display_SetSubLayers(LAYER_BG2 | LAYER_BG3 | LAYER_OBJ);
@@ -400,7 +401,7 @@ void OtosuMenu_SaveData_SetupScreens(OtosuMenuObj* menuObj, const OtosuMenuRect*
     chars                     = Data_GetPackEntryData(menuObj->packs[1], 2);
     screen                    = Data_GetPackEntryData(menuObj->packs[1], 3);
     menuObj->subScreens[2][0] = screen + 4;
-    func_ov002_02082dbc(&menuObj->font, subTexts, chars + 4, menuObj->subScreens[2][0]);
+    OtosuMenu_DrawTexts(&menuObj->font, subTexts, chars + 4, menuObj->subScreens[2][0]);
     menuObj->subChars[2] = BgResMgr_AllocChar32(g_BgResourceManagers[1], chars,
                                                 g_DisplaySettings.engineState[1].bgSettings[2].charBase, 0, 0x4380);
     func_0200d1d8(&menuObj->subMaps[2], 1, 2, 0, menuObj->subScreens[2], 1, 1);
@@ -431,19 +432,20 @@ void OtosuMenu_SaveData_SetupScreens(OtosuMenuObj* menuObj, const OtosuMenuRect*
     menuObj->mainScreens[0][0] = menuObj->tilemap;
     menuObj->mainChars[0]      = BgResMgr_AllocChar32(g_BgResourceManagers[0], textChars,
                                                       g_DisplaySettings.engineState[0].bgSettings[0].charBase, 0, 0x6000);
-    func_ov002_02082dbc(&menuObj->font, mainTexts, textChars + 4, menuObj->mainScreens[0][0]);
+    OtosuMenu_DrawTexts(&menuObj->font, mainTexts, textChars + 4, menuObj->mainScreens[0][0]);
     func_0200d1d8(&menuObj->mainMaps[0], 0, 0, 0, menuObj->mainScreens[0], 1, 1);
     Display_Commit();
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_DeleteConfirmChoice(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj    = arg1;
+// Nonmatching (JP): JP has no text-layer reload or cursor reset
+static PrcStepResult OtosuMenu_SaveData_Step_DeleteConfirmChoice(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj    = object;
     OtosuMenuRectList3 buttons    = sDeleteChoiceRects;
     OtosuMenuCursor    cursors[2] = {
         {3, 0x80, 0x56},
         {3, 0x80, 0x6A},
     };
-    u16 selected = func_ov002_0208597c(buttons.rects);
+    u16 selected = OtosuMenu_GetTouchedButton(buttons.rects);
 
     if (selected == 0xFFFF) {
         return PRC_STEP_CONTINUE;
@@ -484,14 +486,14 @@ PrcStepResult OtosuMenu_SaveData_Step_DeleteConfirmChoice(PrcCtx* ctx, void* arg
     return PRC_STEP_REPEAT;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ResetSavePipeline(PrcCtx* ctx, void*) {
+static PrcStepResult OtosuMenu_SaveData_Step_ResetSavePipeline(PrcCtx* ctx, void*) {
     PrcCtx_AdvanceStep(ctx);
     Savefile_ResetIOPipeline();
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm1(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm1(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_sp1E = sDeleteConfirm1Text;
     OtosuMenuRectList3 table_sub  = sDeleteConfirm1Buttons;
 
@@ -506,8 +508,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm1(PrcCtx* ctx, void* arg1
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm2(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm2(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_sp1E = sDeleteConfirm2Text;
     OtosuMenuRectList3 table_sub  = sDeleteConfirm2Buttons;
 
@@ -522,8 +524,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm2(PrcCtx* ctx, void* arg1
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm3(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm3(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_sp1E = sDeleteConfirm3Text;
     OtosuMenuRectList3 table_sub  = sDeleteConfirm3Buttons;
 
@@ -538,8 +540,9 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowDeleteConfirm3(PrcCtx* ctx, void* arg1
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowDeleting(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowDeleting(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sDeletingText;
     OtosuMenuRectList1 table_sub = sNoText0;
 
@@ -555,8 +558,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowDeleting(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowSaveIcon(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowSaveIcon(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     PrcCtx_Init(&menuObj->objCtx[1], "OtosuMenu_Icon2", 0x40);
     PrcCtx_ReplaceFrame(&menuObj->objCtx[1], &OtosuMenu_Icon2_FrameDesc, NULL);
@@ -565,8 +568,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowSaveIcon(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_WriteSave(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_WriteSave(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     if (Savefile_RunSavePipelineStep() == 1) {
         u16 errorFlags = Savefile_GetWriteErrorFlags();
@@ -583,8 +586,9 @@ PrcStepResult OtosuMenu_SaveData_Step_WriteSave(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowDeleted(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowDeleted(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sDeletedText;
     OtosuMenuRectList1 table_sub = sNoText1;
 
@@ -599,8 +603,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowDeleted(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_WaitDeleteDone(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_WaitDeleteDone(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
     if (TouchInput_WasTouchPressed()) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     }
@@ -611,8 +615,9 @@ PrcStepResult OtosuMenu_SaveData_Step_WaitDeleteDone(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowCorrupted(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowCorrupted(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sCorruptedText;
     OtosuMenuRectList1 table_sub = sNoText2;
 
@@ -628,8 +633,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowCorrupted(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowInitializing(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowInitializing(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sInitializingText;
     OtosuMenuRectList1 table_sub = sNoText3;
 
@@ -645,8 +650,9 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowInitializing(PrcCtx* ctx, void* arg1) 
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowCorruptDeleted(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowCorruptDeleted(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sCorruptDeletedText;
     OtosuMenuRectList1 table_sub = sNoText4;
 
@@ -661,8 +667,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowCorruptDeleted(PrcCtx* ctx, void* arg1
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowInitialized(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_ShowInitialized(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sInitializedText;
     OtosuMenuRectList1 table_sub = sNoText5;
 
@@ -677,8 +683,8 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowInitialized(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_WaitDone(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_WaitDone(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
     if (TouchInput_WasTouchPressed()) {
         SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
     }
@@ -689,8 +695,9 @@ PrcStepResult OtosuMenu_SaveData_Step_WaitDone(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowSaveFailure(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowSaveFailure(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sSaveFailureText;
     OtosuMenuRectList1 table_sub = sNoText6;
 
@@ -706,8 +713,9 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowSaveFailure(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_ShowLoadFailure(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)arg1;
+// Nonmatching (JP): JP's text layout templates sit at other offsets
+static PrcStepResult OtosuMenu_SaveData_Step_ShowLoadFailure(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
     OtosuMenuRectList2 table_spA = sLoadFailureText;
     OtosuMenuRectList1 table_sub = sNoText7;
 
@@ -723,20 +731,20 @@ PrcStepResult OtosuMenu_SaveData_Step_ShowLoadFailure(PrcCtx* ctx, void* arg1) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_HangLoadFailure(PrcCtx* ctx, void* arg1) {
+static PrcStepResult OtosuMenu_SaveData_Step_HangLoadFailure(PrcCtx* ctx, void* object) {
     OS_WaitForever();
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_HangSaveFailure(PrcCtx* ctx, void* arg1) {
+static PrcStepResult OtosuMenu_SaveData_Step_HangSaveFailure(PrcCtx* ctx, void* object) {
     OS_WaitForever();
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult OtosuMenu_SaveData_Step_Finish(PrcCtx* ctx, void* arg1) {
-    OtosuMenuObj* menuObj = (OtosuMenuObj*)arg1;
+static PrcStepResult OtosuMenu_SaveData_Step_Finish(PrcCtx* ctx, void* object) {
+    OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[0]);
-    func_ov002_02085710(menuObj);
+    OtosuMenu_ReleaseScreens(menuObj);
     menuObj->nextScene = 6;
     return PRC_STEP_CONTINUE;
 }

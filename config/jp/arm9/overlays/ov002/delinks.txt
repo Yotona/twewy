@@ -1,3 +1,4 @@
+    categories: Tin Pin Slammer
     .text       start:0x02082e80 end:0x02091f0c kind:code align:32
     .rodata     start:0x02091f0c end:0x02092efc kind:rodata align:4
     .ctor       start:0x02092efc end:0x02092efc kind:rodata align:4
@@ -7,12 +8,12 @@
 src/Otosu/Menu/OtosuMenu.c:
     .text       start:0x02082e80 end:0x0208742c
     .rodata     start:0x02091f0c end:0x02092098
-    .data       start:0x02092f00 end:0x02092fe4
+    .data       start:0x02092f00 end:0x02092ff4
     .bss        start:0x02093880 end:0x02093920
 
 src/Otosu/Menu/OtosuMenu_Title.c:
     .text       start:0x0208742c end:0x02087dc0
-    .data       start:0x02092fe4 end:0x0209309c
+    .data       start:0x02092ff4 end:0x0209309c
 
 src/Otosu/Menu/OtosuMenu_RoleSelect.c:
     .text       start:0x02087dc0 end:0x02088280

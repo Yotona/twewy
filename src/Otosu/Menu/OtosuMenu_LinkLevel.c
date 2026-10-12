@@ -1,7 +1,7 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static PrcStepResult OtosuMenu_LinkLevel_Step_UpdateIcon(PrcCtx* ctx, void* object);
-static void          OtosuMenu_LinkLevel_Load(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2);
+static void          OtosuMenu_LinkLevel_Load(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 unused);
 static void          OtosuMenu_LinkLevel_Destroy(PrcCtx* ctx, OtosuMenuObj* menuObj);
 static void          OtosuMenu_LinkLevel_Update(PrcCtx* ctx, OtosuMenuObj* menuObj);
 static void          OtosuMenu_LinkLevel_Render(PrcCtx* ctx, OtosuMenuObj* menuObj);
@@ -36,7 +36,7 @@ static const SpriteAnimation OtosuMenu_LinkLevel_Anim = {
     .frameInfoCallback = OtosuMenu_LinkLevel_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .binIden           = (BinIdentifier*)&OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0x0000,
     .unk_1C            = 0x0015,
@@ -49,10 +49,10 @@ static const SpriteAnimation OtosuMenu_LinkLevel_Anim = {
     .animIndex         = 0x0001,
 };
 
-void OtosuMenu_LinkLevel_Load(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2) {
+static void OtosuMenu_LinkLevel_Load(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 unused) {
     SpriteAnimation anim = OtosuMenu_LinkLevel_Anim;
 
-    anim.dataType  = menuObj->unk_1158C;
+    anim.dataType  = menuObj->objDataType;
     anim.bits_0_1  = 1;
     anim.animIndex = 1;
     anim.posX      = 0x80;
@@ -67,23 +67,23 @@ void OtosuMenu_LinkLevel_Load(PrcCtx* ctx, OtosuMenuObj* menuObj, s32 arg2) {
     }
 }
 
-void OtosuMenu_LinkLevel_Destroy(PrcCtx* ctx, OtosuMenuObj* menuObj) {
+static void OtosuMenu_LinkLevel_Destroy(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     Sprite_Destroy(&menuObj->linkLevelIcon);
 }
 
-void OtosuMenu_LinkLevel_Update(PrcCtx* ctx, OtosuMenuObj* menuObj) {
+static void OtosuMenu_LinkLevel_Update(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     Sprite_UpdateAndCheck(&menuObj->linkLevelIcon);
 }
 
-void OtosuMenu_LinkLevel_Render(PrcCtx* ctx, OtosuMenuObj* menuObj) {
-    if (menuObj->unk_462E8 != 0) {
+static void OtosuMenu_LinkLevel_Render(PrcCtx* ctx, OtosuMenuObj* menuObj) {
+    if (menuObj->linkLevelVisible != 0) {
         Sprite_Render(&menuObj->linkLevelIcon);
     }
 }
 
 static const u16 OtosuMenu_LinkLevel_AnimByLevel[4] = {5, 4, 3, 2};
 
-PrcStepResult OtosuMenu_LinkLevel_Step_UpdateIcon(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_LinkLevel_Step_UpdateIcon(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     u16 options[4];

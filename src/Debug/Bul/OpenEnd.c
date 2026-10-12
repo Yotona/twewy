@@ -275,12 +275,12 @@ void OpenEnd_IntroScreen_Update(OpenEndState* state) {
     }
 }
 
-extern void func_ov002_02086acc(void* r0);
+extern void ProcessOverlay_OtosuMenu_DataInitialize(void* r0);
 void        OpenEnd_IntroScreen_Destroy(OpenEndState* state) {
     OverlayTag tag;
     data_02074d10.unk_410 = 1;
     if (state->unk_11A40 != 0) {
-        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, func_ov002_02086acc, NULL, 0);
+        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataInitialize, NULL, 0);
     } else {
         OpenEnd_PlayScreenSequence(state);
     }

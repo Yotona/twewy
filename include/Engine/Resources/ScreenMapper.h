@@ -17,4 +17,7 @@ typedef struct ScreenMapEntry {
     /* 0x24 */ void* tileData;
 } ScreenMapEntry; // Size: 0x28
 
-#endif            // ENGINE_SCREENMAPPER_H
+s32  func_0200d1d8(ScreenMapEntry* entry, s32 engineId, s32 bgLayer, void* tilemap, void* tileData, s32 width, s32 height);
+void func_0200d8f0(void);
+
+#endif // ENGINE_SCREENMAPPER_H

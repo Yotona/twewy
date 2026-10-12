@@ -1,20 +1,26 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
-static PrcStepFn data_ov002_0209301c[] = {func_ov002_0208caa0};
+static void          OtosuMenu_Icon_Load(void* ctx, void* sprite, s16* y);
+static void          OtosuMenu_Icon_Destroy(PrcCtx* ctx, void* sprite);
+static void          OtosuMenu_Icon_Update(PrcCtx* ctx, void* sprite);
+static void          OtosuMenu_Icon_Render(PrcCtx* ctx, void* sprite);
+static PrcStepResult OtosuMenu_Icon_Step_Idle(PrcCtx* ctx, void* unused);
+
+static PrcStepFn OtosuMenu_Icon_StepTable[] = {OtosuMenu_Icon_Step_Idle};
 
 PrcFrameDesc OtosuMenu_Icon_FrameDesc = {
-    .enter     = func_ov002_0208c9c8,
-    .stepTable = data_ov002_0209301c,
-    .update    = func_ov002_0208ca80,
-    .render    = func_ov002_0208ca90,
-    .exit      = func_ov002_0208ca70,
+    .enter     = OtosuMenu_Icon_Load,
+    .stepTable = OtosuMenu_Icon_StepTable,
+    .update    = OtosuMenu_Icon_Update,
+    .render    = OtosuMenu_Icon_Render,
+    .exit      = OtosuMenu_Icon_Destroy,
 };
 
-SpriteFrameInfo* func_ov002_0208c92c(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* OtosuMenu_Icon_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-static const SpriteAnimation data_ov002_0209219c = {
+static const SpriteAnimation OtosuMenu_Icon_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -25,10 +31,10 @@ static const SpriteAnimation data_ov002_0209219c = {
     .unk_02            = {.raw = 0x0400},
     .posX              = -13,
     .posY              = 0x000C,
-    .frameInfoCallback = func_ov002_0208c92c,
+    .frameInfoCallback = OtosuMenu_Icon_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov002_02091acc,
+    .binIden           = &OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0x0000,
     .unk_1C            = 0x0015,
@@ -41,41 +47,41 @@ static const SpriteAnimation data_ov002_0209219c = {
     .animIndex         = 0x0001,
 };
 
-void func_ov002_0208c9c8(void* arg0, void* arg1, s16* arg2) {
-    SpriteAnimation anim = data_ov002_0209219c;
+static void OtosuMenu_Icon_Load(void* ctx, void* sprite, s16* y) {
+    SpriteAnimation anim = OtosuMenu_Icon_Anim;
 
     anim.bits_0_1  = 0;
     anim.animIndex = 1;
     anim.posX      = 0x80;
-    anim.posY      = *arg2;
+    anim.posY      = *y;
     anim.unk_1C    = 0x11;
     anim.unk_20    = 0x14;
     anim.unk_22    = 2;
     anim.unk_26    = 0x12;
     anim.unk_28    = 0x13;
 
-    if (_Sprite_Load((Sprite*)arg1, &anim) == 0) {
+    if (_Sprite_Load((Sprite*)sprite, &anim) == 0) {
         OS_WaitForever();
     }
 }
 
-void func_ov002_0208ca70(PrcCtx* ctx, void* arg1) {
-    Sprite_Destroy(arg1);
+static void OtosuMenu_Icon_Destroy(PrcCtx* ctx, void* sprite) {
+    Sprite_Destroy(sprite);
 }
 
-void func_ov002_0208ca80(PrcCtx* ctx, void* arg1) {
-    Sprite_UpdateAndCheck(arg1);
+static void OtosuMenu_Icon_Update(PrcCtx* ctx, void* sprite) {
+    Sprite_UpdateAndCheck(sprite);
 }
 
-void func_ov002_0208ca90(PrcCtx* ctx, void* arg1) {
-    Sprite_Render(arg1);
+static void OtosuMenu_Icon_Render(PrcCtx* ctx, void* sprite) {
+    Sprite_Render(sprite);
 }
 
-PrcStepResult func_ov002_0208caa0(PrcCtx* ctx, void* unused) {
+static PrcStepResult OtosuMenu_Icon_Step_Idle(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-void func_ov002_0208caa8(OtosuMenuObj* menuObj) {
+void OtosuMenu_DestroyResultObjects(OtosuMenuObj* menuObj) {
     PrcCtx* icons[4] = {&menuObj->objCtx[0], &menuObj->objCtx[1], &menuObj->objCtx[2], &menuObj->objCtx[3]};
     u16     i;
 
@@ -86,7 +92,7 @@ void func_ov002_0208caa8(OtosuMenuObj* menuObj) {
 }
 
 // Nonmatching: Several instructions reordered
-void func_ov002_0208cb50(OtosuMenuObj* menuObj) {
+void OtosuMenu_ComputeRanks(OtosuMenuObj* menuObj) {
     u16 prevScore = 0xFFFF;
     u16 placed    = 0;
     u16 place     = 0;
@@ -109,7 +115,6 @@ void func_ov002_0208cb50(OtosuMenuObj* menuObj) {
                 menuObj->firstPlaceUnique = 1;
             }
             rank++;
-            player = i;
         }
         prevScore                    = best;
         menuObj->placeRanks[place]   = rank;
@@ -119,7 +124,7 @@ void func_ov002_0208cb50(OtosuMenuObj* menuObj) {
     }
 }
 
-void func_ov002_0208cc5c(OtosuMenuObj* menuObj) {
+void OtosuMenu_ComputeSinglePlayerRanks(OtosuMenuObj* menuObj) {
     u16 placed    = 0;
     u16 place     = 0;
     u16 rank      = 0;
@@ -159,8 +164,8 @@ void func_ov002_0208cc5c(OtosuMenuObj* menuObj) {
     }
 }
 
-u16* func_ov002_0208cdb0(OtosuMenuObj* menuObj, u16 arg1) {
-    u8  player    = menuObj->placePlayers[arg1];
+u16* OtosuMenu_GetPlaceName(OtosuMenuObj* menuObj, u16 place) {
+    u8  player    = menuObj->placePlayers[place];
     u32 unused[5] = {0, 0, 0, 0, 0};
 
     return menuObj->players[player].name;

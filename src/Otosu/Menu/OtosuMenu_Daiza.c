@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static SpriteFrameInfo* OtosuMenu_Daiza_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
@@ -18,7 +18,7 @@ static const SpriteAnimation OtosuMenu_Daiza_Anim = {
     .frameInfoCallback = OtosuMenu_Daiza_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .binIden           = (BinIdentifier*)&OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0x0000,
     .unk_1C            = 0x0015,
@@ -31,7 +31,7 @@ static const SpriteAnimation OtosuMenu_Daiza_Anim = {
     .animIndex         = 0x0001,
 };
 
-static void OtosuMenu_Daiza_Load(PrcCtx* ctx, void* arg1) {
+static void OtosuMenu_Daiza_Load(PrcCtx* ctx, void* sprite) {
     SpriteAnimation anim = OtosuMenu_Daiza_Anim;
 
     anim.bits_0_1  = 1;
@@ -43,21 +43,21 @@ static void OtosuMenu_Daiza_Load(PrcCtx* ctx, void* arg1) {
     anim.animIndex = 1;
     anim.unk_22    = 1;
 
-    if (_Sprite_Load(arg1, &anim) == 0) {
+    if (_Sprite_Load(sprite, &anim) == 0) {
         OS_WaitForever();
     }
 }
 
-static void OtosuMenu_Daiza_Destroy(PrcCtx* ctx, void* arg1) {
-    Sprite_Destroy(arg1);
+static void OtosuMenu_Daiza_Destroy(PrcCtx* ctx, void* sprite) {
+    Sprite_Destroy(sprite);
 }
 
-static void OtosuMenu_Daiza_Update(PrcCtx* ctx, void* arg1) {
-    Sprite_UpdateAndCheck(arg1);
+static void OtosuMenu_Daiza_Update(PrcCtx* ctx, void* sprite) {
+    Sprite_UpdateAndCheck(sprite);
 }
 
-static void OtosuMenu_Daiza_Render(PrcCtx* ctx, void* arg1) {
-    Sprite_Render(arg1);
+static void OtosuMenu_Daiza_Render(PrcCtx* ctx, void* sprite) {
+    Sprite_Render(sprite);
 }
 
 static PrcStepResult OtosuMenu_Daiza_Step_Continue(PrcCtx* ctx, void* unused) {

@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static void OtosuMenu_TitleBoss_Load(PrcCtx* ctx, OtosuMenu_TitleBossObj* boss, OtosuMenu_TitleBossArg* arg) {
     boss->upper    = arg->upper;
@@ -26,6 +26,7 @@ static PrcStepResult OtosuMenu_TitleBoss_Step_Begin(PrcCtx* ctx, void* unused) {
     return PRC_STEP_REPEAT;
 }
 
+// Nonmatching (JP): JP does not refresh the scrolled maps
 static PrcStepResult OtosuMenu_TitleBoss_Step_Scroll(PrcCtx* ctx, void* work) {
     OtosuMenu_TitleBossObj* boss = work;
 

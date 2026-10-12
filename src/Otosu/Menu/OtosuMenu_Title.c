@@ -1,6 +1,4 @@
-#include "OtosuMenuShared.h"
-
-char OtosuMenu_ObjName[] = "OtosuMenuObj";
+#include "Otosu/OtosuMenu.h"
 
 static void          OtosuMenu_Title_Load(PrcCtx* ctx, OtosuMenuObj* menuObj);
 static void          OtosuMenu_Title_Destroy(void);
@@ -53,7 +51,7 @@ static PrcFrameDesc OtosuMenu_Title_IdleFrameDesc = {
 
 static void OtosuMenu_Title_Load(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     OtosuMenu_TitleSkipped = FALSE;
-    func_ov002_02085710(menuObj);
+    OtosuMenu_ReleaseScreens(menuObj);
 }
 
 static void OtosuMenu_Title_IdleLoad(void) {
@@ -71,8 +69,8 @@ static void OtosuMenu_Title_IdleDestroy(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[2]);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[3]);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[4]);
-    func_ov002_0208bd40();
-    func_ov002_02085710(menuObj);
+    OtosuMenu_InitDisplay();
+    OtosuMenu_ReleaseScreens(menuObj);
 }
 
 static void OtosuMenu_Title_Update(void) {
@@ -111,7 +109,7 @@ static PrcStepResult OtosuMenu_Title_Step_Setup(PrcCtx* ctx, void* object) {
     OtosuMenu_TitleBossArg bossArg;
     OtosuMenu_TitleEnmArg  enemyArg;
 
-    func_ov002_02083a74(menuObj);
+    OtosuMenu_SetupTitleScreens(menuObj);
     for (u16 i = 0; i < 4; i++) {
         enemyArg.index    = 3 - i;
         enemyArg.duration = 120;
@@ -125,8 +123,8 @@ static PrcStepResult OtosuMenu_Title_Step_Setup(PrcCtx* ctx, void* object) {
     PrcCtx_Init(&menuObj->objCtx[4], "OtosuMenu_TitleBossObj", sizeof(OtosuMenu_TitleBossObj));
     PrcCtx_ReplaceFrame(&menuObj->objCtx[4], &OtosuMenu_TitleBoss_FrameDesc, &bossArg);
     PrcMaster_RegisterContext(&menuObj->prcMaster, &menuObj->objCtx[4]);
-    menuObj->unk_474C8 = 120;
-    menuObj->unk_474D8 = -0x200000;
+    menuObj->unk_474C8  = 120;
+    menuObj->bg0ScrollX = -0x200000;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
@@ -148,9 +146,9 @@ static PrcStepResult OtosuMenu_Title_Step_WaitEntrance(PrcCtx* ctx, void* object
 static PrcStepResult OtosuMenu_Title_Step_StartScroll(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = object;
 
-    menuObj->unk_474C8 = 20;
-    menuObj->unk_474D8 = 0x100000;
-    menuObj->unk_474DC = -0x100000;
+    menuObj->unk_474C8  = 20;
+    menuObj->bg0ScrollX = 0x100000;
+    menuObj->bg1ScrollX = -0x100000;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
@@ -162,12 +160,12 @@ static PrcStepResult OtosuMenu_Title_Step_Scroll(PrcCtx* ctx, void* object) {
         PrcCtx_AdvanceStep(ctx);
         return PRC_STEP_CONTINUE;
     }
-    func_020265d4(&menuObj->unk_474D8, 0, menuObj->unk_474C8);
-    func_020265d4(&menuObj->unk_474DC, 0, menuObj->unk_474C8);
+    func_020265d4(&menuObj->bg0ScrollX, 0, menuObj->unk_474C8);
+    func_020265d4(&menuObj->bg1ScrollX, 0, menuObj->unk_474C8);
 
-    Display_SetBGOffset(menuObj->subMaps[0].engineId, menuObj->subMaps[0].bgLayer, menuObj->unk_474D8, 0);
-    Display_SetBGOffset(menuObj->mainMaps[0].engineId, menuObj->mainMaps[0].bgLayer, menuObj->unk_474D8, 0);
-    Display_SetBGOffset(menuObj->mainMaps[1].engineId, menuObj->mainMaps[1].bgLayer, menuObj->unk_474DC, 0);
+    Display_SetBGOffset(menuObj->subMaps[0].engineId, menuObj->subMaps[0].bgLayer, menuObj->bg0ScrollX, 0);
+    Display_SetBGOffset(menuObj->mainMaps[0].engineId, menuObj->mainMaps[0].bgLayer, menuObj->bg0ScrollX, 0);
+    Display_SetBGOffset(menuObj->mainMaps[1].engineId, menuObj->mainMaps[1].bgLayer, menuObj->bg1ScrollX, 0);
 
     menuObj->unk_474C8--;
     return PRC_STEP_CONTINUE;

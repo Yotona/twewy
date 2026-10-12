@@ -1,32 +1,32 @@
-#include "OtosuMenuShared.h"
-static const OtosuMenuCursor    data_ov002_02091fe0 = {2, 0x02, 0x9D};
-static const OtosuMenuRectList2 data_ov002_02091ffa = {
+#include "Otosu/OtosuMenu.h"
+static const OtosuMenuCursor    OtosuMenu_CommError_BackCursor  = {2, 0x02, 0x9D};
+static const OtosuMenuRectList2 OtosuMenu_CommError_BackButtons = {
     {
      {0x0000, 0x0008, 0x00A0, 0x0058, 0x00B8},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},
      }
 };
-static const OtosuMenuRectList2 data_ov002_02091fe6 = {
+static const OtosuMenuRectList2 OtosuMenu_CommError_ConnectionLostTexts = {
     {
      {0x23EE, 0x0000, 0x0000, 0x0100, 0x00C0},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x0000},
      }
 };
-static const OtosuMenuRectList3 data_ov002_0209204a = {
+static const OtosuMenuRectList3 OtosuMenu_CommError_WirelessUnavailableTexts = {
     {
      {0x23EF, 8, 8, 0xF8, 0x40},
      {0x23EB, 0x18, 0xA6, 0x58, 0xB6},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0},
      }
 };
-static const OtosuMenuRectList3 data_ov002_0209202c = {
+static const OtosuMenuRectList3 OtosuMenu_CommError_JoinFailedTexts = {
     {
      {0x23EC, 8, 8, 0xF8, 0x40},
      {0x23EB, 0x18, 0xA6, 0x58, 0xB6},
      {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0},
      }
 };
-static const OtosuMenuRectList3 data_ov002_0209200e = {
+static const OtosuMenuRectList3 OtosuMenu_CommError_JoinFailedPopTexts = {
     {
      {0x23EC, 8, 8, 0xF8, 0x40},
      {0x23EB, 0x18, 0xA6, 0x58, 0xB6},
@@ -34,111 +34,129 @@ static const OtosuMenuRectList3 data_ov002_0209200e = {
      }
 };
 
-PrcFrameDesc data_ov002_02092e54 = {
-    .enter     = func_ov002_020894f8,
-    .stepTable = data_ov002_02092efc,
-    .update    = func_ov002_0208950c,
-    .render    = func_ov002_02089510,
-    .exit      = func_ov002_020894fc,
+static void          OtosuMenu_CommError_Load(void);
+static void          OtosuMenu_CommError_Destroy(PrcCtx* ctx, void* arg1);
+static void          OtosuMenu_CommError_Update(void);
+static void          OtosuMenu_CommError_Render(void);
+static PrcStepResult OtosuMenu_CommError_Step_DestroyObjects(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_ClearWindow(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_CommError_Step_ShutdownWireless(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_CommError_Step_SetupJoinFailedScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_SetupConnectionLostScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_SetupJoinFailedPopScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_SetupWirelessUnavailableScreen(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_WaitBack(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_WaitA(PrcCtx* ctx, void* unused);
+static PrcStepResult OtosuMenu_CommError_Step_ReturnToGame(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_ExitToMenu(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_ReturnToRoleSelect(PrcCtx* ctx, void* object);
+static PrcStepResult OtosuMenu_CommError_Step_ReleaseScreens(PrcCtx* ctx, void* object);
+
+PrcFrameDesc OtosuMenu_CommError_JoinFailedFrameDesc = {
+    .enter     = OtosuMenu_CommError_Load,
+    .stepTable = OtosuMenu_CommError_JoinFailedStepTable,
+    .update    = OtosuMenu_CommError_Update,
+    .render    = OtosuMenu_CommError_Render,
+    .exit      = OtosuMenu_CommError_Destroy,
 };
 
-PrcStepFn data_ov002_02092e68[] = {
+PrcStepFn OtosuMenu_CommError_ConnectionLostStepTable[] = {
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089514,
-    func_ov002_0208958c,
-    func_ov002_020895c8,
-    func_ov002_020896e4,
+    OtosuMenu_CommError_Step_DestroyObjects,
+    OtosuMenu_CommError_Step_ClearWindow,
+    OtosuMenu_CommError_Step_ShutdownWireless,
+    OtosuMenu_CommError_Step_SetupConnectionLostScreen,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_02089a94,
+    OtosuMenu_CommError_Step_WaitA,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089ac8,
+    OtosuMenu_CommError_Step_ReturnToGame,
 };
 
-PrcStepFn data_ov002_02092ec8[] = {
+PrcStepFn OtosuMenu_CommError_JoinFailedPopStepTable[] = {
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089514,
-    func_ov002_0208958c,
-    func_ov002_020895c8,
-    func_ov002_02089798,
+    OtosuMenu_CommError_Step_DestroyObjects,
+    OtosuMenu_CommError_Step_ClearWindow,
+    OtosuMenu_CommError_Step_ShutdownWireless,
+    OtosuMenu_CommError_Step_SetupJoinFailedPopScreen,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_02089920,
+    OtosuMenu_CommError_Step_WaitBack,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089b1c,
+    OtosuMenu_CommError_Step_ReleaseScreens,
     PrcStep_PopFrame,
 };
 
-PrcFrameDesc data_ov002_02092e2c = {
-    .enter     = func_ov002_020894f8,
-    .stepTable = data_ov002_02092ec8,
-    .update    = func_ov002_0208950c,
-    .render    = func_ov002_02089510,
-    .exit      = func_ov002_020894fc,
+PrcFrameDesc OtosuMenu_CommError_JoinFailedPopFrameDesc = {
+    .enter     = OtosuMenu_CommError_Load,
+    .stepTable = OtosuMenu_CommError_JoinFailedPopStepTable,
+    .update    = OtosuMenu_CommError_Update,
+    .render    = OtosuMenu_CommError_Render,
+    .exit      = OtosuMenu_CommError_Destroy,
 };
 
-PrcFrameDesc data_ov002_02092e40 = {
-    .enter     = func_ov002_020894f8,
-    .stepTable = data_ov002_02092e98,
-    .update    = func_ov002_0208950c,
-    .render    = func_ov002_02089510,
-    .exit      = func_ov002_020894fc,
+PrcFrameDesc OtosuMenu_CommError_WirelessUnavailableFrameDesc = {
+    .enter     = OtosuMenu_CommError_Load,
+    .stepTable = OtosuMenu_CommError_WirelessUnavailableStepTable,
+    .update    = OtosuMenu_CommError_Update,
+    .render    = OtosuMenu_CommError_Render,
+    .exit      = OtosuMenu_CommError_Destroy,
 };
 
-PrcStepFn data_ov002_02092e98[] = {
+PrcStepFn OtosuMenu_CommError_WirelessUnavailableStepTable[] = {
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089514,
-    func_ov002_0208958c,
-    func_ov002_02089860,
+    OtosuMenu_CommError_Step_DestroyObjects,
+    OtosuMenu_CommError_Step_ClearWindow,
+    OtosuMenu_CommError_Step_SetupWirelessUnavailableScreen,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_02089920,
+    OtosuMenu_CommError_Step_WaitBack,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089adc,
+    OtosuMenu_CommError_Step_ExitToMenu,
     PrcStep_PopFrame,
 };
 
-PrcFrameDesc data_ov002_02092e18 = {
-    .enter     = func_ov002_020894f8,
-    .stepTable = data_ov002_02092e68,
-    .update    = func_ov002_0208950c,
-    .render    = func_ov002_02089510,
-    .exit      = func_ov002_020894fc,
+PrcFrameDesc OtosuMenu_CommError_ConnectionLostFrameDesc = {
+    .enter     = OtosuMenu_CommError_Load,
+    .stepTable = OtosuMenu_CommError_ConnectionLostStepTable,
+    .update    = OtosuMenu_CommError_Update,
+    .render    = OtosuMenu_CommError_Render,
+    .exit      = OtosuMenu_CommError_Destroy,
 };
 
-PrcStepFn data_ov002_02092efc[] = {
+PrcStepFn OtosuMenu_CommError_JoinFailedStepTable[] = {
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089514,
-    func_ov002_0208958c,
-    func_ov002_020895c8,
-    func_ov002_02089624,
+    OtosuMenu_CommError_Step_DestroyObjects,
+    OtosuMenu_CommError_Step_ClearWindow,
+    OtosuMenu_CommError_Step_ShutdownWireless,
+    OtosuMenu_CommError_Step_SetupJoinFailedScreen,
     OtosuPrcStep_FadeStart_Neutral,
     OtosuPrcStep_FadeWait_Neutral,
-    func_ov002_02089920,
+    OtosuMenu_CommError_Step_WaitBack,
     OtosuPrcStep_FadeStart_BrightImmediate,
     OtosuPrcStep_FadeWait_Immediate,
-    func_ov002_02089af0,
+    OtosuMenu_CommError_Step_ReturnToRoleSelect,
     PrcStep_PopFrame,
 };
 
-void func_ov002_020894f8(void) {}
+static void OtosuMenu_CommError_Load(void) {}
 
-void func_ov002_020894fc(PrcCtx* ctx, void* arg1) {
-    func_ov002_02085710(arg1);
+static void OtosuMenu_CommError_Destroy(PrcCtx* ctx, void* menuObj) {
+    OtosuMenu_ReleaseScreens(menuObj);
 }
 
-void func_ov002_0208950c(void) {}
+static void OtosuMenu_CommError_Update(void) {}
 
-void func_ov002_02089510(void) {}
+static void OtosuMenu_CommError_Render(void) {}
 
-PrcStepResult func_ov002_02089514(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_DestroyObjects(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[0]);
@@ -149,7 +167,7 @@ PrcStepResult func_ov002_02089514(PrcCtx* ctx, void* object) {
     return PRC_STEP_REPEAT;
 }
 
-PrcStepResult func_ov002_0208958c(PrcCtx* ctx, void* unused) {
+static PrcStepResult OtosuMenu_CommError_Step_ClearWindow(PrcCtx* ctx, void* unused) {
     g_DisplaySettings.engineState[0].window0              = 31;
     g_DisplaySettings.engineState[0].window0Effects       = TRUE;
     g_DisplaySettings.engineState[0].windowOutside        = 31;
@@ -159,11 +177,11 @@ PrcStepResult func_ov002_0208958c(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_020895c8(PrcCtx* ctx, void* unused) {
-    s32 temp_r0;
+static PrcStepResult OtosuMenu_CommError_Step_ShutdownWireless(PrcCtx* ctx, void* unused) {
+    s32 state;
 
-    temp_r0 = (s32)func_ov040_0209cb78();
-    switch (temp_r0) { /* irregular */
+    state = (s32)func_ov040_0209cb78();
+    switch (state) { /* irregular */
         case 3:
             break;
         case 10:
@@ -180,15 +198,15 @@ PrcStepResult func_ov002_020895c8(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089624(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_SetupJoinFailedScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj*      menuObj = (OtosuMenuObj*)object;
-    OtosuMenuRectList3 layout  = data_ov002_0209202c;
+    OtosuMenuRectList3 texts   = OtosuMenu_CommError_JoinFailedTexts;
 
     SystemStatusFlags;
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 1;
-    func_ov002_02082f18(menuObj, 0x18, 0x1B, layout.rects);
+    OtosuMenu_SetupScreens(menuObj, 0x18, 0x1B, texts.rects);
     menuObj->cursor.posX = 0;
     menuObj->cursor.posY = 0xC8;
     menuObj->unk_474C8   = 0xFFFF;
@@ -196,34 +214,34 @@ PrcStepResult func_ov002_02089624(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_020896e4(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_SetupConnectionLostScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    OtosuMenuRectList2 table_sp0 = data_ov002_02091fe6;
-    u16                i;
+    OtosuMenuRectList2 texts = OtosuMenu_CommError_ConnectionLostTexts;
 
     CriSndMgr_Pause(0x19, 1);
     SystemStatusFlags;
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 1;
-    func_ov002_02085710(menuObj);
-    func_ov002_0208bd40();
-    func_ov002_02083484(menuObj, table_sp0.rects);
+    OtosuMenu_ReleaseScreens(menuObj);
+    OtosuMenu_InitDisplay();
+    OtosuMenu_SetupConnectionLostScreens(menuObj, texts.rects);
     menuObj->unk_474C8 = 0xFFFF;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089798(PrcCtx* ctx, void* object) {
+// Nonmatching (JP): JP does not reset the link-level icon position
+static PrcStepResult OtosuMenu_CommError_Step_SetupJoinFailedPopScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj*      menuObj = (OtosuMenuObj*)object;
-    OtosuMenuRectList3 layout  = data_ov002_0209200e;
+    OtosuMenuRectList3 texts   = OtosuMenu_CommError_JoinFailedPopTexts;
 
     SystemStatusFlags;
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 1;
-    func_ov002_02082f18(menuObj, 0x18, 0x1B, layout.rects);
+    OtosuMenu_SetupScreens(menuObj, 0x18, 0x1B, texts.rects);
     menuObj->cursor.posX        = 0;
     menuObj->cursor.posY        = 0xC8;
     menuObj->linkLevelIcon.posX = 0;
@@ -233,27 +251,28 @@ PrcStepResult func_ov002_02089798(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089860(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_SetupWirelessUnavailableScreen(PrcCtx* ctx, void* object) {
     OtosuMenuObj*      menuObj = (OtosuMenuObj*)object;
-    OtosuMenuRectList3 layout  = data_ov002_0209204a;
+    OtosuMenuRectList3 texts   = OtosuMenu_CommError_WirelessUnavailableTexts;
 
     SystemStatusFlags;
     SystemStatusFlags.unk_06 = 1;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = 1;
     menuObj->unk_474C8       = 0xFFFF;
-    func_ov002_02082f18(menuObj, 0x18, 0x1B, layout.rects);
+    OtosuMenu_SetupScreens(menuObj, 0x18, 0x1B, texts.rects);
     menuObj->cursor.posX = 0;
     menuObj->cursor.posY = 0xC8;
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
-    OtosuMenuObj*      menuObj   = (OtosuMenuObj*)object;
-    OtosuMenuRectList2 table_sp6 = data_ov002_02091ffa;
-    OtosuMenuCursor    anims[1]  = {data_ov002_02091fe0};
-    u16                selected  = func_ov002_0208597c(table_sp6.rects);
+// Nonmatching (JP): JP leaves the cursor in place on confirm
+static PrcStepResult OtosuMenu_CommError_Step_WaitBack(PrcCtx* ctx, void* object) {
+    OtosuMenuObj*      menuObj    = (OtosuMenuObj*)object;
+    OtosuMenuRectList2 buttons    = OtosuMenu_CommError_BackButtons;
+    OtosuMenuCursor    cursors[1] = {OtosuMenu_CommError_BackCursor};
+    u16                selected   = OtosuMenu_GetTouchedButton(buttons.rects);
 
     if (selected == 0xFFFF) {
         return PRC_STEP_CONTINUE;
@@ -276,9 +295,9 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
         menuObj->unk_474C8 = selected;
         SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CURSOR);
         if (selected == 0) {
-            menuObj->cursor.posX = anims[selected].x;
-            menuObj->cursor.posY = anims[selected].y;
-            Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, anims[selected].anim,
+            menuObj->cursor.posX = cursors[selected].x;
+            menuObj->cursor.posY = cursors[selected].y;
+            Sprite_ChangeAnimation(&menuObj->cursor, menuObj->cursor.animData, cursors[selected].anim,
                                    menuObj->cursor.cellTable);
             return PRC_STEP_CONTINUE;
         }
@@ -286,7 +305,7 @@ PrcStepResult func_ov002_02089920(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089a94(PrcCtx* ctx, void* unused) {
+static PrcStepResult OtosuMenu_CommError_Step_WaitA(PrcCtx* ctx, void* unused) {
     if (SysControl.buttonState.pressedButtons & 1) {
         SndMgr_StartPlayingSE(SEIDX_SE_BAYBADGE_MENU_CANCEL);
         PrcCtx_AdvanceStep(ctx);
@@ -294,32 +313,32 @@ PrcStepResult func_ov002_02089a94(PrcCtx* ctx, void* unused) {
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089ac8(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_ReturnToGame(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     menuObj->nextScene = 3;
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089adc(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_ExitToMenu(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
     menuObj->nextScene = 5;
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089af0(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_ReturnToRoleSelect(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    func_ov002_02085710(menuObj);
+    OtosuMenu_ReleaseScreens(menuObj);
     PrcCtx_ReplaceFrame(ctx, &OtosuMenu_RoleSelect_FrameDesc, NULL);
     return PRC_STEP_CONTINUE;
 }
 
-PrcStepResult func_ov002_02089b1c(PrcCtx* ctx, void* object) {
+static PrcStepResult OtosuMenu_CommError_Step_ReleaseScreens(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj = (OtosuMenuObj*)object;
 
-    func_ov002_02085710(menuObj);
+    OtosuMenu_ReleaseScreens(menuObj);
     PrcCtx_AdvanceStep(ctx);
     return PRC_STEP_CONTINUE;
 }

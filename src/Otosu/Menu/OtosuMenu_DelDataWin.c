@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static SpriteFrameInfo* OtosuMenu_DelDataWin_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
@@ -18,7 +18,7 @@ static const SpriteAnimation OtosuMenu_DelDataWin_Anim = {
     .frameInfoCallback = OtosuMenu_DelDataWin_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091c34,
+    .binIden           = (BinIdentifier*)&OtosuMenu_FldDownScreenBinId,
     .unk_18            = 0x0002,
     .packIndex         = 0x000D,
     .unk_1C            = 0x0002,
@@ -58,26 +58,25 @@ static void OtosuMenu_DelDataWin_Load(PrcCtx* ctx, Sprite* sprites) {
     }
 }
 
-// todo: fix with actual data type
-static void OtosuMenu_DelDataWin_Destroy(s32 arg0, s32 arg1) {
-    for (u16 var_r4 = 0; var_r4 < 4; var_r4++) {
-        Sprite_Destroy(arg1 + (var_r4 << 6));
+static void OtosuMenu_DelDataWin_Destroy(PrcCtx* ctx, Sprite* sprites) {
+    for (u16 i = 0; i < 4; i++) {
+        Sprite_Destroy(&sprites[i]);
     }
 }
 
-static void OtosuMenu_DelDataWin_Update(s32 arg0, s32 arg1) {
-    for (u16 var_r4 = 0; var_r4 < 4; var_r4++) {
-        Sprite_UpdateAndCheck(arg1 + (var_r4 << 6));
+static void OtosuMenu_DelDataWin_Update(PrcCtx* ctx, Sprite* sprites) {
+    for (u16 i = 0; i < 4; i++) {
+        Sprite_UpdateAndCheck(&sprites[i]);
     }
 }
 
-static void OtosuMenu_DelDataWin_Render(s32 arg0, s32 arg1) {
-    for (u16 var_r4 = 0; var_r4 < 4; var_r4++) {
-        Sprite_Render(arg1 + (var_r4 << 6));
+static void OtosuMenu_DelDataWin_Render(PrcCtx* ctx, Sprite* sprites) {
+    for (u16 i = 0; i < 4; i++) {
+        Sprite_Render(&sprites[i]);
     }
 }
 
-static PrcStepResult OtosuMenu_DelDataWin_Step_Continue(PrcCtx* ctx, void* arg1) {
+static PrcStepResult OtosuMenu_DelDataWin_Step_Continue(PrcCtx* ctx, void* object) {
     return PRC_STEP_CONTINUE;
 }
 

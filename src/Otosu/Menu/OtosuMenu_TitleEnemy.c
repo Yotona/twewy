@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 /** @brief Rounds an integer pixel count to fx32 the way the float-based FX32 constant macros do. */
 #define FX32_ROUND(value) ((fx32)((value) > 0 ? (f32)((value) << FX32_SHIFT) + 0.5f : (f32)((value) << FX32_SHIFT) - 0.5f))
@@ -39,7 +39,7 @@ static const SpriteAnimation OtosuMenu_TitleEnemy_Anim = {
     .frameInfoCallback = OtosuMenu_TitleEnemy_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .binIden           = (BinIdentifier*)&OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0x0000,
     .unk_1C            = 0x0015,
@@ -60,6 +60,7 @@ static const TitleEnemyPalettes OtosuMenu_TitleEnemy_Palettes = {
     {3, 3, 2, 2}
 };
 
+// Nonmatching: instruction selection differs
 static void OtosuMenu_TitleEnemy_Load(PrcCtx* ctx, OtosuMenu_TitleEnmObj* enemy, OtosuMenu_TitleEnmArg* arg) {
     u16 cells[4][4] = {
         { 1,  4,  2,  3},
@@ -73,11 +74,11 @@ static void OtosuMenu_TitleEnemy_Load(PrcCtx* ctx, OtosuMenu_TitleEnmObj* enemy,
     enemy->x           = 0x80000;
     enemy->y           = 0x1C0000;
     anim.unk_1C        = cells[arg->index][0];
-    palettes           = OtosuMenu_TitleEnemy_Palettes;
     anim.unk_22        = 4;
     anim.unk_20        = cells[arg->index][1];
     anim.unk_26        = cells[arg->index][2];
     anim.unk_28        = cells[arg->index][3];
+    palettes           = OtosuMenu_TitleEnemy_Palettes;
     anim.animIndex     = 1;
     anim.bits_0_1      = 0;
     anim.unk_02.unk_10 = palettes.palette[arg->index];

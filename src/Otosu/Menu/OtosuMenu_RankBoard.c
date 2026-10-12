@@ -1,4 +1,16 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
+
+/** @brief Work object of a rank board ("OtosuMenu_RankBoardObj"). */
+typedef struct {
+    /* 0x000 */ u8                     unk_000[0xC];
+    /* 0x00C */ OtosuMenu_RankBoardArg arg;
+    /* 0x018 */ u16                    digitCount;
+    /* 0x01A */ u8                     digits[6]; // score digits, least significant first
+    /* 0x020 */ Sprite                 board;
+    /* 0x060 */ Sprite                 rankLabel;
+    /* 0x0A0 */ Sprite                 nameTag;
+    /* 0x0E0 */ Sprite                 digitSprites[5];
+} OtosuMenu_RankBoardObj; // Size: 0x220
 
 static void          OtosuMenu_RankBoard_Load(PrcCtx* ctx, OtosuMenu_RankBoardObj* board, OtosuMenu_RankBoardArg* arg);
 static void          OtosuMenu_RankBoard_Destroy(PrcCtx* ctx, OtosuMenu_RankBoardObj* board);
@@ -36,7 +48,7 @@ static const SpriteAnimation OtosuMenu_RankBoard_Anim = {
     .frameInfoCallback = OtosuMenu_RankBoard_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = (BinIdentifier*)&data_ov002_02091acc,
+    .binIden           = (BinIdentifier*)&OtosuMenu_ObjBinId,
     .unk_18            = 0x0000,
     .packIndex         = 0x0000,
     .unk_1C            = 0x0015,

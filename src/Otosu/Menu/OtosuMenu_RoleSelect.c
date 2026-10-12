@@ -1,4 +1,4 @@
-#include "OtosuMenuShared.h"
+#include "Otosu/OtosuMenu.h"
 
 static void          OtosuMenu_RoleSelect_Load(PrcCtx* ctx, OtosuMenuObj* menuObj);
 static void          OtosuMenu_RoleSelect_Destroy(PrcCtx* ctx, OtosuMenuObj* menuObj);
@@ -27,14 +27,14 @@ static void OtosuMenu_RoleSelect_Load(PrcCtx* ctx, OtosuMenuObj* menuObj) {
     for (u16 i = 0; i < 4; i++) {
         gSaveData.otosuScores[i] = 0;
     }
-    gSaveData.mabsBasePP = 0;
-    gSaveData.unk_1D84   = 0;
-    menuObj->unk_41FE9   = 0;
-    func_ov002_02085a44(menuObj);
+    gSaveData.mabsBasePP     = 0;
+    gSaveData.unk_1D84       = 0;
+    menuObj->commErrorScreen = 0;
+    OtosuMenu_LoadCursorAndLinkLevel(menuObj);
 }
 
 static void OtosuMenu_RoleSelect_Destroy(PrcCtx* ctx, OtosuMenuObj* menuObj) {
-    func_ov002_02085710(menuObj);
+    OtosuMenu_ReleaseScreens(menuObj);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[0]);
     PrcMaster_UnregisterContext(&menuObj->prcMaster, &menuObj->objCtx[1]);
 }
@@ -56,7 +56,7 @@ static PrcStepResult OtosuMenu_RoleSelect_Step_Setup(PrcCtx* ctx, void* object) 
     };
 
     SysFont_SetSpacing(&menuObj->font, TRUE, 0);
-    func_ov002_02082f18(menuObj, 0x15, 0x14, texts);
+    OtosuMenu_SetupScreens(menuObj, 0x15, 0x14, texts);
     CriSndMgr_PlayFile(ADX_B11);
     menuObj->unk_474C8 = 0xFFFF;
     // Each icon object is given a whole OtosuMenuObj of work memory, though only a Sprite is used.
@@ -76,6 +76,7 @@ static PrcStepResult OtosuMenu_RoleSelect_Step_Setup(PrcCtx* ctx, void* object) 
     return PRC_STEP_CONTINUE;
 }
 
+// Nonmatching (JP): JP does not move the link-level icon
 static PrcStepResult OtosuMenu_RoleSelect_Step_Select(PrcCtx* ctx, void* object) {
     OtosuMenuObj* menuObj    = object;
     OtosuMenuRect buttons[5] = {
@@ -91,7 +92,7 @@ static PrcStepResult OtosuMenu_RoleSelect_Step_Select(PrcCtx* ctx, void* object)
         {1, 0x3F, 0x75},
         {2, 0xA4, 0x9D},
     };
-    u16 selected = func_ov002_0208597c(buttons);
+    u16 selected = OtosuMenu_GetTouchedButton(buttons);
 
     if (selected == 0xFFFF) {
         return PRC_STEP_CONTINUE;
@@ -150,7 +151,7 @@ static PrcStepResult OtosuMenu_RoleSelect_Step_Decide(PrcCtx* ctx, void* object)
             menuObj->unk_46070       = wasUnk06;
             SystemStatusFlags;
             SystemStatusFlags.unk_07 = 0;
-            PrcCtx_ReplaceFrame(ctx, &data_ov002_02092ff0, &enterArg);
+            PrcCtx_ReplaceFrame(ctx, &OtosuMenu_Lobby_HostFrameDesc, &enterArg);
             break;
         case 2:
             wasUnk06                 = SystemStatusFlags.unk_06;
@@ -158,7 +159,7 @@ static PrcStepResult OtosuMenu_RoleSelect_Step_Decide(PrcCtx* ctx, void* object)
             menuObj->unk_46070       = wasUnk06;
             SystemStatusFlags;
             SystemStatusFlags.unk_07 = 0;
-            PrcCtx_ReplaceFrame(ctx, &data_ov002_02092f44, &enterArg);
+            PrcCtx_ReplaceFrame(ctx, &OtosuMenu_Lobby_JoinFrameDesc, &enterArg);
             break;
         case 3:
             gSaveData.unk_341C         = 0x1F;

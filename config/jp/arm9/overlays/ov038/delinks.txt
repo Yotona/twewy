@@ -1,3 +1,4 @@
+    categories: Tin Pin Slammer
     .text       start:0x02082e80 end:0x02099798 kind:code align:32
     .rodata     start:0x02099798 end:0x0209aaa0 kind:rodata align:4
     .ctor       start:0x0209aaa0 end:0x0209aaa0 kind:rodata align:4
