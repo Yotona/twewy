@@ -1,0 +1,3594 @@
+{
+    "base_commit": "2b8fcfedc8aca72cdfa61b1de3375963f1f13e38",
+    "reference_branch": "decomp-ov030-field",
+    "reference_commit": "963b8c704b6233064eb1ec0196805d48e949c7ed",
+    "reference_owners": [
+        {
+            "source": "src/Field/FieldMain.c",
+            "section": ".text",
+            "start": 34088096,
+            "end": 34090980
+        },
+        {
+            "source": "src/Field/FieldBg.c",
+            "section": ".text",
+            "start": 34090980,
+            "end": 34097708
+        },
+        {
+            "source": "src/Field/FieldEncounter.c",
+            "section": ".text",
+            "start": 34253956,
+            "end": 34266356
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".text",
+            "start": 34097708,
+            "end": 34236060
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".rodata",
+            "start": 34448920,
+            "end": 34449096
+        },
+        {
+            "source": "src/Field/EventManager.c",
+            "section": ".text",
+            "start": 34236060,
+            "end": 34253956
+        },
+        {
+            "source": "src/Field/EventFlags.c",
+            "section": ".text",
+            "start": 34270004,
+            "end": 34270548
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".text",
+            "start": 34276524,
+            "end": 34279464
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".rodata",
+            "start": 34455264,
+            "end": 34455288
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".data",
+            "start": 34603832,
+            "end": 34605232
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".text",
+            "start": 34279464,
+            "end": 34282712
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".rodata",
+            "start": 34455288,
+            "end": 34469280
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".data",
+            "start": 34605232,
+            "end": 34628752
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldVBlank.c",
+            "section": ".text",
+            "start": 34282712,
+            "end": 34283740
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".text",
+            "start": 34310428,
+            "end": 34318948
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".rodata",
+            "start": 34492056,
+            "end": 34492232
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".text",
+            "start": 34355528,
+            "end": 34356572
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".rodata",
+            "start": 34501044,
+            "end": 34501116
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".data",
+            "start": 34633112,
+            "end": 34633144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".text",
+            "start": 34356572,
+            "end": 34357772
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".rodata",
+            "start": 34501116,
+            "end": 34501144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".data",
+            "start": 34633144,
+            "end": 34633176
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".text",
+            "start": 34369968,
+            "end": 34370852
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".rodata",
+            "start": 34523348,
+            "end": 34523420
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".data",
+            "start": 34636984,
+            "end": 34637000
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".text",
+            "start": 34370852,
+            "end": 34371588
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".rodata",
+            "start": 34523420,
+            "end": 34523492
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".data",
+            "start": 34637000,
+            "end": 34637020
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".text",
+            "start": 34371588,
+            "end": 34372212
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".rodata",
+            "start": 34523492,
+            "end": 34523564
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".data",
+            "start": 34637020,
+            "end": 34637036
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".text",
+            "start": 34372212,
+            "end": 34373580
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".rodata",
+            "start": 34523564,
+            "end": 34523692
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".data",
+            "start": 34637036,
+            "end": 34637224
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".text",
+            "start": 34373580,
+            "end": 34374644
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".rodata",
+            "start": 34523692,
+            "end": 34523720
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".data",
+            "start": 34637224,
+            "end": 34637240
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".text",
+            "start": 34374644,
+            "end": 34375076
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".rodata",
+            "start": 34523720,
+            "end": 34523748
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".data",
+            "start": 34637240,
+            "end": 34637256
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".text",
+            "start": 34380176,
+            "end": 34382324
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".rodata",
+            "start": 34524428,
+            "end": 34524584
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".data",
+            "start": 34637868,
+            "end": 34638060
+        },
+        {
+            "source": "src/Field/FieldBattleTransition.c",
+            "section": ".text",
+            "start": 34270548,
+            "end": 34272032
+        },
+        {
+            "source": "src/Field/FieldBattleSetup.c",
+            "section": ".text",
+            "start": 34272032,
+            "end": 34276524
+        },
+        {
+            "source": "src/Field/Fld_Player.c",
+            "section": ".text",
+            "start": 34283740,
+            "end": 34287648
+        },
+        {
+            "source": "src/Field/Fld_Player.c",
+            "section": ".rodata",
+            "start": 34469280,
+            "end": 34469500
+        },
+        {
+            "source": "src/Field/FieldPlayerInteraction.c",
+            "section": ".text",
+            "start": 34287648,
+            "end": 34287912
+        },
+        {
+            "source": "src/Field/Fld_BustShot.c",
+            "section": ".text",
+            "start": 34287912,
+            "end": 34290944
+        },
+        {
+            "source": "src/Field/Fld_BustShot.c",
+            "section": ".rodata",
+            "start": 34469500,
+            "end": 34471936
+        },
+        {
+            "source": "src/Field/Fld_Badge.c",
+            "section": ".text",
+            "start": 34290944,
+            "end": 34293172
+        },
+        {
+            "source": "src/Field/Fld_Badge.c",
+            "section": ".rodata",
+            "start": 34471936,
+            "end": 34474180
+        },
+        {
+            "source": "src/Field/Fld_ScanArea.c",
+            "section": ".text",
+            "start": 34293172,
+            "end": 34294048
+        },
+        {
+            "source": "src/Field/Fld_ScanArea.c",
+            "section": ".rodata",
+            "start": 34474180,
+            "end": 34474264
+        },
+        {
+            "source": "src/Field/Fld_Human.c",
+            "section": ".text",
+            "start": 34294048,
+            "end": 34298968
+        },
+        {
+            "source": "src/Field/Fld_Human.c",
+            "section": ".rodata",
+            "start": 34474264,
+            "end": 34474304
+        },
+        {
+            "source": "src/Field/FieldSceneRender.c",
+            "section": ".text",
+            "start": 34298968,
+            "end": 34302452
+        },
+        {
+            "source": "src/Field/FieldSceneRender.c",
+            "section": ".rodata",
+            "start": 34474304,
+            "end": 34475288
+        },
+        {
+            "source": "src/Field/FieldSceneLoad.c",
+            "section": ".text",
+            "start": 34302452,
+            "end": 34306560
+        },
+        {
+            "source": "src/Field/FieldSceneLoad.c",
+            "section": ".rodata",
+            "start": 34475288,
+            "end": 34475556
+        },
+        {
+            "source": "src/Field/FieldAreaParameters.c",
+            "section": ".text",
+            "start": 34306560,
+            "end": 34307160
+        },
+        {
+            "source": "src/Field/FieldFloorHeight.c",
+            "section": ".text",
+            "start": 34307160,
+            "end": 34307444
+        },
+        {
+            "source": "src/Field/FieldAreaZeroFloor.c",
+            "section": ".text",
+            "start": 34307444,
+            "end": 34307544
+        },
+        {
+            "source": "src/Field/FieldExitRegions.c",
+            "section": ".text",
+            "start": 34307544,
+            "end": 34310076
+        },
+        {
+            "source": "src/Field/FieldExitRegions.c",
+            "section": ".rodata",
+            "start": 34475556,
+            "end": 34479460
+        },
+        {
+            "source": "src/Field/FieldAreaTransition.c",
+            "section": ".text",
+            "start": 34310076,
+            "end": 34310428
+        },
+        {
+            "source": "src/Field/FieldAreaTransition.c",
+            "section": ".rodata",
+            "start": 34479460,
+            "end": 34492056
+        },
+        {
+            "source": "src/Field/Fld_TalkIcon.c",
+            "section": ".text",
+            "start": 34318948,
+            "end": 34319744
+        },
+        {
+            "source": "src/Field/Fld_TalkIcon.c",
+            "section": ".rodata",
+            "start": 34492232,
+            "end": 34496224
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUG.c",
+            "section": ".text",
+            "start": 34319744,
+            "end": 34323976
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUG.c",
+            "section": ".rodata",
+            "start": 34496224,
+            "end": 34496536
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGEffect.c",
+            "section": ".text",
+            "start": 34323976,
+            "end": 34324584
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGEffect.c",
+            "section": ".rodata",
+            "start": 34496536,
+            "end": 34496608
+        },
+        {
+            "source": "src/Field/Fld_MapJumpArrow.c",
+            "section": ".text",
+            "start": 34324584,
+            "end": 34325688
+        },
+        {
+            "source": "src/Field/Fld_MapJumpArrow.c",
+            "section": ".rodata",
+            "start": 34496608,
+            "end": 34496732
+        },
+        {
+            "source": "src/Field/Fld_Partner.c",
+            "section": ".text",
+            "start": 34325688,
+            "end": 34329444
+        },
+        {
+            "source": "src/Field/Fld_Partner.c",
+            "section": ".rodata",
+            "start": 34496732,
+            "end": 34496980
+        },
+        {
+            "source": "src/Field/Fld_OnePicturCell.c",
+            "section": ".text",
+            "start": 34329444,
+            "end": 34330060
+        },
+        {
+            "source": "src/Field/Fld_OnePicturCell.c",
+            "section": ".rodata",
+            "start": 34496980,
+            "end": 34497076
+        },
+        {
+            "source": "src/Field/Fld_CockPit.c",
+            "section": ".text",
+            "start": 34330060,
+            "end": 34330768
+        },
+        {
+            "source": "src/Field/Fld_CockPit.c",
+            "section": ".rodata",
+            "start": 34497076,
+            "end": 34497160
+        },
+        {
+            "source": "src/Field/Fld_Watch.c",
+            "section": ".text",
+            "start": 34330768,
+            "end": 34332360
+        },
+        {
+            "source": "src/Field/Fld_Watch.c",
+            "section": ".rodata",
+            "start": 34497160,
+            "end": 34497232
+        },
+        {
+            "source": "src/Field/Fld_Phone.c",
+            "section": ".text",
+            "start": 34332360,
+            "end": 34332948
+        },
+        {
+            "source": "src/Field/Fld_Phone.c",
+            "section": ".rodata",
+            "start": 34497232,
+            "end": 34497304
+        },
+        {
+            "source": "src/Field/Fld_ScanKirakira.c",
+            "section": ".text",
+            "start": 34332948,
+            "end": 34334812
+        },
+        {
+            "source": "src/Field/Fld_ScanKirakira.c",
+            "section": ".rodata",
+            "start": 34497304,
+            "end": 34497376
+        },
+        {
+            "source": "src/Field/Fld_ScanFukidasi.c",
+            "section": ".text",
+            "start": 34334812,
+            "end": 34336292
+        },
+        {
+            "source": "src/Field/Fld_ScanFukidasi.c",
+            "section": ".rodata",
+            "start": 34497376,
+            "end": 34497404
+        },
+        {
+            "source": "src/Field/Fld_NpcRG.c",
+            "section": ".text",
+            "start": 34336292,
+            "end": 34336900
+        },
+        {
+            "source": "src/Field/Fld_NpcRG.c",
+            "section": ".rodata",
+            "start": 34497404,
+            "end": 34498768
+        },
+        {
+            "source": "src/Field/Fld_LargeGingo.c",
+            "section": ".text",
+            "start": 34336900,
+            "end": 34337632
+        },
+        {
+            "source": "src/Field/Fld_LargeGingo.c",
+            "section": ".rodata",
+            "start": 34498768,
+            "end": 34499988
+        },
+        {
+            "source": "src/Field/Fld_Touch.c",
+            "section": ".text",
+            "start": 34337632,
+            "end": 34339712
+        },
+        {
+            "source": "src/Field/Fld_Touch.c",
+            "section": ".rodata",
+            "start": 34499988,
+            "end": 34500156
+        },
+        {
+            "source": "src/Field/Fld_TouchCommand.c",
+            "section": ".text",
+            "start": 34339712,
+            "end": 34340780
+        },
+        {
+            "source": "src/Field/Fld_TouchCommand.c",
+            "section": ".rodata",
+            "start": 34500156,
+            "end": 34500228
+        },
+        {
+            "source": "src/Field/Fld_TouchSeal.c",
+            "section": ".text",
+            "start": 34340780,
+            "end": 34341480
+        },
+        {
+            "source": "src/Field/Fld_TouchSeal.c",
+            "section": ".rodata",
+            "start": 34500228,
+            "end": 34500332
+        },
+        {
+            "source": "src/Field/Fld_TouchCursor.c",
+            "section": ".text",
+            "start": 34341480,
+            "end": 34342196
+        },
+        {
+            "source": "src/Field/Fld_TouchCursor.c",
+            "section": ".rodata",
+            "start": 34500332,
+            "end": 34500404
+        },
+        {
+            "source": "src/Field/Fld_TouchShine.c",
+            "section": ".text",
+            "start": 34342196,
+            "end": 34342784
+        },
+        {
+            "source": "src/Field/Fld_TouchShine.c",
+            "section": ".rodata",
+            "start": 34500404,
+            "end": 34500476
+        },
+        {
+            "source": "src/Field/Fld_Raster.c",
+            "section": ".text",
+            "start": 34342784,
+            "end": 34343148
+        },
+        {
+            "source": "src/Field/Fld_Raster.c",
+            "section": ".rodata",
+            "start": 34500476,
+            "end": 34500504
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGMgr.c",
+            "section": ".text",
+            "start": 34343148,
+            "end": 34343900
+        },
+        {
+            "source": "src/Field/Fld_NSymbolUGMgr.c",
+            "section": ".rodata",
+            "start": 34500504,
+            "end": 34500532
+        },
+        {
+            "source": "src/Field/Fld_Luck.c",
+            "section": ".text",
+            "start": 34343900,
+            "end": 34349192
+        },
+        {
+            "source": "src/Field/Fld_Luck.c",
+            "section": ".rodata",
+            "start": 34500532,
+            "end": 34500612
+        },
+        {
+            "source": "src/Field/Fld_Chain.c",
+            "section": ".text",
+            "start": 34349192,
+            "end": 34350220
+        },
+        {
+            "source": "src/Field/Fld_Chain.c",
+            "section": ".rodata",
+            "start": 34500612,
+            "end": 34500684
+        },
+        {
+            "source": "src/Field/Fld_ScanMoya.c",
+            "section": ".text",
+            "start": 34350220,
+            "end": 34350732
+        },
+        {
+            "source": "src/Field/Fld_ScanMoya.c",
+            "section": ".rodata",
+            "start": 34500684,
+            "end": 34500756
+        },
+        {
+            "source": "src/Field/Fld_Wall.c",
+            "section": ".text",
+            "start": 34350732,
+            "end": 34352332
+        },
+        {
+            "source": "src/Field/Fld_Wall.c",
+            "section": ".rodata",
+            "start": 34500756,
+            "end": 34500860
+        },
+        {
+            "source": "src/Field/FieldAmbientSound.c",
+            "section": ".text",
+            "start": 34352332,
+            "end": 34352640
+        },
+        {
+            "source": "src/Field/FieldMusic.c",
+            "section": ".text",
+            "start": 34352640,
+            "end": 34354048
+        },
+        {
+            "source": "src/Field/FieldMusic.c",
+            "section": ".rodata",
+            "start": 34500860,
+            "end": 34500900
+        },
+        {
+            "source": "src/Field/Fld_TalkEventTouch.c",
+            "section": ".text",
+            "start": 34354048,
+            "end": 34354896
+        },
+        {
+            "source": "src/Field/Fld_TalkEventTouch.c",
+            "section": ".rodata",
+            "start": 34500900,
+            "end": 34500972
+        },
+        {
+            "source": "src/Field/Fld_TalkEventPlate.c",
+            "section": ".text",
+            "start": 34354896,
+            "end": 34355528
+        },
+        {
+            "source": "src/Field/Fld_TalkEventPlate.c",
+            "section": ".rodata",
+            "start": 34500972,
+            "end": 34501044
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".text",
+            "start": 34363204,
+            "end": 34363824
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".rodata",
+            "start": 34501728,
+            "end": 34513976
+        },
+        {
+            "source": "src/Field/FieldNoiseEncounter.c",
+            "section": ".data",
+            "start": 34633328,
+            "end": 34636900
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".text",
+            "start": 34375784,
+            "end": 34376280
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".rodata",
+            "start": 34523828,
+            "end": 34523900
+        },
+        {
+            "source": "src/Field/Fld_EventMail.c",
+            "section": ".data",
+            "start": 34637276,
+            "end": 34637296
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".text",
+            "start": 34386564,
+            "end": 34392952
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".rodata",
+            "start": 34525412,
+            "end": 34525440
+        },
+        {
+            "source": "src/Field/Fld_Shinigami.c",
+            "section": ".data",
+            "start": 34638112,
+            "end": 34638188
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".text",
+            "start": 34392952,
+            "end": 34395512
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".rodata",
+            "start": 34525440,
+            "end": 34525520
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiCoin.c",
+            "section": ".data",
+            "start": 34638188,
+            "end": 34638260
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".text",
+            "start": 34395512,
+            "end": 34396048
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".rodata",
+            "start": 34525520,
+            "end": 34525592
+        },
+        {
+            "source": "src/Field/Fld_ShinigamiON.c",
+            "section": ".data",
+            "start": 34638260,
+            "end": 34638280
+        }
+    ],
+    "baseline_owners": [
+        {
+            "source": "src/Field/Events.c",
+            "section": ".text",
+            "start": 34097708,
+            "end": 34236060
+        },
+        {
+            "source": "src/Field/Events.c",
+            "section": ".rodata",
+            "start": 34448920,
+            "end": 34449096
+        },
+        {
+            "source": "src/Field/EventManager.c",
+            "section": ".text",
+            "start": 34236060,
+            "end": 34253956
+        },
+        {
+            "source": "src/Field/EventFlags.c",
+            "section": ".text",
+            "start": 34270004,
+            "end": 34270548
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".text",
+            "start": 34276524,
+            "end": 34279464
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".rodata",
+            "start": 34455264,
+            "end": 34455288
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldSelect.c",
+            "section": ".data",
+            "start": 34603832,
+            "end": 34605232
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".text",
+            "start": 34279464,
+            "end": 34282712
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".rodata",
+            "start": 34455288,
+            "end": 34469280
+        },
+        {
+            "source": "src/Interface/Debug/Field/EventSelect.c",
+            "section": ".data",
+            "start": 34605232,
+            "end": 34628752
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldVBlank.c",
+            "section": ".text",
+            "start": 34282712,
+            "end": 34283740
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".text",
+            "start": 34310428,
+            "end": 34318948
+        },
+        {
+            "source": "src/Field/UnknownTables.c",
+            "section": ".rodata",
+            "start": 34492056,
+            "end": 34492232
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".text",
+            "start": 34355528,
+            "end": 34356572
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".rodata",
+            "start": 34501044,
+            "end": 34501116
+        },
+        {
+            "source": "src/Field/Fld_TalkEventStringPlate.c",
+            "section": ".data",
+            "start": 34633112,
+            "end": 34633144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".text",
+            "start": 34356572,
+            "end": 34357772
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".rodata",
+            "start": 34501116,
+            "end": 34501144
+        },
+        {
+            "source": "src/Field/Fld_TalkEventKeywordMenu.c",
+            "section": ".data",
+            "start": 34633144,
+            "end": 34633176
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".text",
+            "start": 34369968,
+            "end": 34370852
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".rodata",
+            "start": 34523348,
+            "end": 34523420
+        },
+        {
+            "source": "src/Field/Fld_GetMess.c",
+            "section": ".data",
+            "start": 34636984,
+            "end": 34637000
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".text",
+            "start": 34370852,
+            "end": 34371588
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".rodata",
+            "start": 34523420,
+            "end": 34523492
+        },
+        {
+            "source": "src/Field/Fld_WhichArrow.c",
+            "section": ".data",
+            "start": 34637000,
+            "end": 34637020
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".text",
+            "start": 34371588,
+            "end": 34372212
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".rodata",
+            "start": 34523492,
+            "end": 34523564
+        },
+        {
+            "source": "src/Field/Fld_GetBase.c",
+            "section": ".data",
+            "start": 34637020,
+            "end": 34637036
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".text",
+            "start": 34372212,
+            "end": 34373580
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".rodata",
+            "start": 34523564,
+            "end": 34523692
+        },
+        {
+            "source": "src/Field/Fld_GetItem.c",
+            "section": ".data",
+            "start": 34637036,
+            "end": 34637224
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".text",
+            "start": 34373580,
+            "end": 34374644
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".rodata",
+            "start": 34523692,
+            "end": 34523720
+        },
+        {
+            "source": "src/Field/Fld_Choice.c",
+            "section": ".data",
+            "start": 34637224,
+            "end": 34637240
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".text",
+            "start": 34374644,
+            "end": 34375076
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".rodata",
+            "start": 34523720,
+            "end": 34523748
+        },
+        {
+            "source": "src/Field/Fld_UGFade.c",
+            "section": ".data",
+            "start": 34637240,
+            "end": 34637256
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".text",
+            "start": 34380176,
+            "end": 34382324
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".rodata",
+            "start": 34524428,
+            "end": 34524584
+        },
+        {
+            "source": "src/Interface/Debug/Field/FieldMessageSelect.c",
+            "section": ".data",
+            "start": 34637868,
+            "end": 34638060
+        }
+    ],
+    "units": [
+        {
+            "name": "Field_020ae92c",
+            "source": "src/Field/Field_020ae92c.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020ae92c.c",
+                    "section": ".text",
+                    "start": 34269484,
+                    "end": 34270004
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020ae92c",
+                    "address": 34269484,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020ae96c",
+                    "address": 34269548,
+                    "size": 308
+                },
+                {
+                    "name": "func_ov030_020aeaa0",
+                    "address": 34269856,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020aeab8",
+                    "address": 34269880,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020aead0",
+                    "address": 34269904,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020aeadc",
+                    "address": 34269916,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020aeaf4",
+                    "address": 34269940,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Fld_TalkEventCursor",
+            "source": "src/Field/Fld_TalkEventCursor.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".text",
+                    "start": 34357772,
+                    "end": 34358764
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".rodata",
+                    "start": 34501144,
+                    "end": 34501216
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventCursor.c",
+                    "section": ".data",
+                    "start": 34633176,
+                    "end": 34633200
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c420c",
+                    "address": 34357772,
+                    "size": 220
+                },
+                {
+                    "name": "Fld_TalkEventCursor_GetFrameInfo",
+                    "address": 34357992,
+                    "size": 164
+                },
+                {
+                    "name": "Fld_TalkEventCursor_Load",
+                    "address": 34358156,
+                    "size": 248
+                },
+                {
+                    "name": "Fld_TalkEventCursor_Init",
+                    "address": 34358404,
+                    "size": 76
+                },
+                {
+                    "name": "Fld_TalkEventCursor_Update",
+                    "address": 34358480,
+                    "size": 52
+                },
+                {
+                    "name": "Fld_TalkEventCursor_Render",
+                    "address": 34358532,
+                    "size": 52
+                },
+                {
+                    "name": "Fld_TalkEventCursor_Destroy",
+                    "address": 34358584,
+                    "size": 52
+                },
+                {
+                    "name": "Fld_TalkEventCursor_RunTask",
+                    "address": 34358636,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_TalkEventCursor_CreateTask",
+                    "address": 34358708,
+                    "size": 56
+                }
+            ]
+        },
+        {
+            "name": "Fld_TalkEventDecide",
+            "source": "src/Field/Fld_TalkEventDecide.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".text",
+                    "start": 34358764,
+                    "end": 34359376
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".rodata",
+                    "start": 34501216,
+                    "end": 34501288
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventDecide.c",
+                    "section": ".data",
+                    "start": 34633200,
+                    "end": 34633224
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_TalkEventDecide_GetFrameInfo",
+                    "address": 34358764,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_TalkEventDecide_Load",
+                    "address": 34358920,
+                    "size": 132
+                },
+                {
+                    "name": "Fld_TalkEventDecide_Init",
+                    "address": 34359052,
+                    "size": 44
+                },
+                {
+                    "name": "Fld_TalkEventDecide_Update",
+                    "address": 34359096,
+                    "size": 40
+                },
+                {
+                    "name": "Fld_TalkEventDecide_Render",
+                    "address": 34359136,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_TalkEventDecide_Destroy",
+                    "address": 34359156,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_TalkEventDecide_RunTask",
+                    "address": 34359176,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_TalkEventDecide_CreateTask",
+                    "address": 34359248,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020c4810",
+                    "address": 34359312,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Fld_TalkEventTitle",
+            "source": "src/Field/Fld_TalkEventTitle.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".text",
+                    "start": 34359376,
+                    "end": 34359928
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".rodata",
+                    "start": 34501288,
+                    "end": 34501360
+                },
+                {
+                    "source": "src/Field/Fld_TalkEventTitle.c",
+                    "section": ".data",
+                    "start": 34633224,
+                    "end": 34633248
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_TalkEventTitle_GetFrameInfo",
+                    "address": 34359376,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_TalkEventTitle_Load",
+                    "address": 34359532,
+                    "size": 108
+                },
+                {
+                    "name": "Fld_TalkEventTitle_Init",
+                    "address": 34359640,
+                    "size": 56
+                },
+                {
+                    "name": "Fld_TalkEventTitle_Update",
+                    "address": 34359696,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_TalkEventTitle_Render",
+                    "address": 34359768,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_TalkEventTitle_Destroy",
+                    "address": 34359788,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_TalkEventTitle_RunTask",
+                    "address": 34359808,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_TalkEventTitle_CreateTask",
+                    "address": 34359880,
+                    "size": 48
+                }
+            ]
+        },
+        {
+            "name": "Fld_MapJumpName",
+            "source": "src/Field/Fld_MapJumpName.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".text",
+                    "start": 34359928,
+                    "end": 34361480
+                },
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".rodata",
+                    "start": 34501360,
+                    "end": 34501432
+                },
+                {
+                    "source": "src/Field/Fld_MapJumpName.c",
+                    "section": ".data",
+                    "start": 34633248,
+                    "end": 34633288
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c4a78",
+                    "address": 34359928,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020c4ae8",
+                    "address": 34360040,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c4b8c",
+                    "address": 34360204,
+                    "size": 148
+                },
+                {
+                    "name": "Fld_MapJumpName_GetFrameInfo",
+                    "address": 34360352,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020c4cbc",
+                    "address": 34360508,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c4cdc",
+                    "address": 34360540,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c4d80",
+                    "address": 34360704,
+                    "size": 348
+                },
+                {
+                    "name": "Fld_MapJumpName_Update",
+                    "address": 34361052,
+                    "size": 8
+                },
+                {
+                    "name": "func_ov030_020c4ee4",
+                    "address": 34361060,
+                    "size": 180
+                },
+                {
+                    "name": "Fld_MapJumpName_Destroy",
+                    "address": 34361240,
+                    "size": 60
+                },
+                {
+                    "name": "Fld_MapJumpName_RunTask",
+                    "address": 34361300,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c501c",
+                    "address": 34361372,
+                    "size": 108
+                }
+            ]
+        },
+        {
+            "name": "Fld_MapName",
+            "source": "src/Field/Fld_MapName.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".text",
+                    "start": 34361480,
+                    "end": 34362372
+                },
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".rodata",
+                    "start": 34501432,
+                    "end": 34501504
+                },
+                {
+                    "source": "src/Field/Fld_MapName.c",
+                    "section": ".data",
+                    "start": 34633288,
+                    "end": 34633304
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_MapName_GetFrameInfo",
+                    "address": 34361480,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_MapName_Load",
+                    "address": 34361636,
+                    "size": 132
+                },
+                {
+                    "name": "Fld_MapName_Init",
+                    "address": 34361768,
+                    "size": 220
+                },
+                {
+                    "name": "Fld_MapName_Update",
+                    "address": 34361988,
+                    "size": 8
+                },
+                {
+                    "name": "Fld_MapName_Render",
+                    "address": 34361996,
+                    "size": 104
+                },
+                {
+                    "name": "Fld_MapName_Destroy",
+                    "address": 34362100,
+                    "size": 56
+                },
+                {
+                    "name": "Fld_MapName_RunTask",
+                    "address": 34362156,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_MapName_CreateTask",
+                    "address": 34362228,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c53ac",
+                    "address": 34362284,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020c53e8",
+                    "address": 34362344,
+                    "size": 28
+                }
+            ]
+        },
+        {
+            "name": "Field_020c5404",
+            "source": "src/Field/Field_020c5404.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c5404.c",
+                    "section": ".text",
+                    "start": 34362372,
+                    "end": 34362508
+                },
+                {
+                    "source": "src/Field/Field_020c5404.c",
+                    "section": ".rodata",
+                    "start": 34501504,
+                    "end": 34501656
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c5404",
+                    "address": 34362372,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020c5430",
+                    "address": 34362416,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020c5460",
+                    "address": 34362464,
+                    "size": 44
+                }
+            ]
+        },
+        {
+            "name": "Fld_NSymbolUGAppear",
+            "source": "src/Field/Fld_NSymbolUGAppear.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".text",
+                    "start": 34362508,
+                    "end": 34363204
+                },
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".rodata",
+                    "start": 34501656,
+                    "end": 34501728
+                },
+                {
+                    "source": "src/Field/Fld_NSymbolUGAppear.c",
+                    "section": ".data",
+                    "start": 34633304,
+                    "end": 34633328
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_NSymbolUGAppear_GetFrameInfo",
+                    "address": 34362508,
+                    "size": 172
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_Load",
+                    "address": 34362680,
+                    "size": 200
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_Init",
+                    "address": 34362880,
+                    "size": 44
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_Update",
+                    "address": 34362924,
+                    "size": 104
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_Render",
+                    "address": 34363028,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_Destroy",
+                    "address": 34363048,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_RunTask",
+                    "address": 34363068,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_NSymbolUGAppear_CreateTask",
+                    "address": 34363140,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Fld_Piranha",
+            "source": "src/Field/Fld_Piranha.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".text",
+                    "start": 34363824,
+                    "end": 34365296
+                },
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".rodata",
+                    "start": 34513976,
+                    "end": 34516608
+                },
+                {
+                    "source": "src/Field/Fld_Piranha.c",
+                    "section": ".data",
+                    "start": 34636900,
+                    "end": 34636944
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c59b0",
+                    "address": 34363824,
+                    "size": 76
+                },
+                {
+                    "name": "func_ov030_020c59fc",
+                    "address": 34363900,
+                    "size": 44
+                },
+                {
+                    "name": "Fld_Piranha_GetFrameInfo",
+                    "address": 34363944,
+                    "size": 168
+                },
+                {
+                    "name": "func_ov030_020c5ad0",
+                    "address": 34364112,
+                    "size": 264
+                },
+                {
+                    "name": "func_ov030_020c5bd8",
+                    "address": 34364376,
+                    "size": 148
+                },
+                {
+                    "name": "func_ov030_020c5c6c",
+                    "address": 34364524,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020c5c8c",
+                    "address": 34364556,
+                    "size": 400
+                },
+                {
+                    "name": "func_ov030_020c5e1c",
+                    "address": 34364956,
+                    "size": 88
+                },
+                {
+                    "name": "Fld_Piranha_Destroy",
+                    "address": 34365044,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_Piranha_RunTask",
+                    "address": 34365064,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020c5ed0",
+                    "address": 34365136,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020c5f08",
+                    "address": 34365192,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020c5f5c",
+                    "address": 34365276,
+                    "size": 20
+                }
+            ]
+        },
+        {
+            "name": "Field_020c5f70",
+            "source": "src/Field/Field_020c5f70.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c5f70.c",
+                    "section": ".text",
+                    "start": 34365296,
+                    "end": 34367548
+                },
+                {
+                    "source": "src/Field/Field_020c5f70.c",
+                    "section": ".rodata",
+                    "start": 34516608,
+                    "end": 34523172
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c5f70",
+                    "address": 34365296,
+                    "size": 144
+                },
+                {
+                    "name": "func_ov030_020c6000",
+                    "address": 34365440,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020c60a4",
+                    "address": 34365604,
+                    "size": 172
+                },
+                {
+                    "name": "func_ov030_020c6150",
+                    "address": 34365776,
+                    "size": 160
+                },
+                {
+                    "name": "func_ov030_020c61f0",
+                    "address": 34365936,
+                    "size": 272
+                },
+                {
+                    "name": "func_ov030_020c6300",
+                    "address": 34366208,
+                    "size": 200
+                },
+                {
+                    "name": "func_ov030_020c63c8",
+                    "address": 34366408,
+                    "size": 208
+                },
+                {
+                    "name": "func_ov030_020c6498",
+                    "address": 34366616,
+                    "size": 932
+                }
+            ]
+        },
+        {
+            "name": "Field_020c683c",
+            "source": "src/Field/Field_020c683c.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020c683c.c",
+                    "section": ".text",
+                    "start": 34367548,
+                    "end": 34368600
+                },
+                {
+                    "source": "src/Field/Field_020c683c.c",
+                    "section": ".rodata",
+                    "start": 34523172,
+                    "end": 34523204
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c683c",
+                    "address": 34367548,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020c6864",
+                    "address": 34367588,
+                    "size": 576
+                },
+                {
+                    "name": "func_ov030_020c6aa4",
+                    "address": 34368164,
+                    "size": 436
+                }
+            ]
+        },
+        {
+            "name": "Fld_TouchNext",
+            "source": "src/Field/Fld_TouchNext.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".text",
+                    "start": 34368600,
+                    "end": 34369168
+                },
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".rodata",
+                    "start": 34523204,
+                    "end": 34523276
+                },
+                {
+                    "source": "src/Field/Fld_TouchNext.c",
+                    "section": ".data",
+                    "start": 34636944,
+                    "end": 34636964
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_TouchNext_GetFrameInfo",
+                    "address": 34368600,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_TouchNext_Load",
+                    "address": 34368756,
+                    "size": 140
+                },
+                {
+                    "name": "Fld_TouchNext_Init",
+                    "address": 34368896,
+                    "size": 52
+                },
+                {
+                    "name": "Fld_TouchNext_Update",
+                    "address": 34368948,
+                    "size": 32
+                },
+                {
+                    "name": "Fld_TouchNext_Render",
+                    "address": 34368980,
+                    "size": 32
+                },
+                {
+                    "name": "Fld_TouchNext_Destroy",
+                    "address": 34369012,
+                    "size": 32
+                },
+                {
+                    "name": "Fld_TouchNext_RunTask",
+                    "address": 34369044,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_TouchNext_CreateTask",
+                    "address": 34369116,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "Fld_GetPlate",
+            "source": "src/Field/Fld_GetPlate.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".text",
+                    "start": 34369168,
+                    "end": 34369968
+                },
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".rodata",
+                    "start": 34523276,
+                    "end": 34523348
+                },
+                {
+                    "source": "src/Field/Fld_GetPlate.c",
+                    "section": ".data",
+                    "start": 34636964,
+                    "end": 34636984
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_GetPlate_GetFrameInfo",
+                    "address": 34369168,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_GetPlate_Load",
+                    "address": 34369324,
+                    "size": 116
+                },
+                {
+                    "name": "Fld_GetPlate_Init",
+                    "address": 34369440,
+                    "size": 224
+                },
+                {
+                    "name": "Fld_GetPlate_Update",
+                    "address": 34369664,
+                    "size": 64
+                },
+                {
+                    "name": "Fld_GetPlate_Render",
+                    "address": 34369728,
+                    "size": 96
+                },
+                {
+                    "name": "Fld_GetPlate_Destroy",
+                    "address": 34369824,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_GetPlate_RunTask",
+                    "address": 34369844,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_GetPlate_CreateTask",
+                    "address": 34369916,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "Fld_BattleIn",
+            "source": "src/Field/Fld_BattleIn.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".text",
+                    "start": 34375076,
+                    "end": 34375784
+                },
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".rodata",
+                    "start": 34523748,
+                    "end": 34523828
+                },
+                {
+                    "source": "src/Field/Fld_BattleIn.c",
+                    "section": ".data",
+                    "start": 34637256,
+                    "end": 34637276
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_BattleIn_GetFrameInfo",
+                    "address": 34375076,
+                    "size": 228
+                },
+                {
+                    "name": "Fld_BattleIn_Load",
+                    "address": 34375304,
+                    "size": 224
+                },
+                {
+                    "name": "Fld_BattleIn_Init",
+                    "address": 34375528,
+                    "size": 44
+                },
+                {
+                    "name": "Fld_BattleIn_Update",
+                    "address": 34375572,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BattleIn_Render",
+                    "address": 34375592,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BattleIn_Destroy",
+                    "address": 34375612,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BattleIn_RunTask",
+                    "address": 34375632,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_BattleIn_CreateTask",
+                    "address": 34375704,
+                    "size": 80
+                }
+            ]
+        },
+        {
+            "name": "Fld_Brush",
+            "source": "src/Field/Fld_Brush.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".text",
+                    "start": 34376280,
+                    "end": 34377740
+                },
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".rodata",
+                    "start": 34523900,
+                    "end": 34524040
+                },
+                {
+                    "source": "src/Field/Fld_Brush.c",
+                    "section": ".data",
+                    "start": 34637296,
+                    "end": 34637312
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020c8a58",
+                    "address": 34376280,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020c8ae0",
+                    "address": 34376416,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020c8b38",
+                    "address": 34376504,
+                    "size": 88
+                },
+                {
+                    "name": "Fld_Brush_Init",
+                    "address": 34376592,
+                    "size": 404
+                },
+                {
+                    "name": "func_ov030_020c8d24",
+                    "address": 34376996,
+                    "size": 48
+                },
+                {
+                    "name": "Fld_Brush_Update",
+                    "address": 34377044,
+                    "size": 504
+                },
+                {
+                    "name": "Fld_Brush_Render",
+                    "address": 34377548,
+                    "size": 8
+                },
+                {
+                    "name": "Fld_Brush_Destroy",
+                    "address": 34377556,
+                    "size": 64
+                },
+                {
+                    "name": "Fld_Brush_RunTask",
+                    "address": 34377620,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_Brush_CreateTask",
+                    "address": 34377692,
+                    "size": 48
+                }
+            ]
+        },
+        {
+            "name": "Fld_BrushHati",
+            "source": "src/Field/Fld_BrushHati.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".text",
+                    "start": 34377740,
+                    "end": 34378228
+                },
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".rodata",
+                    "start": 34524040,
+                    "end": 34524112
+                },
+                {
+                    "source": "src/Field/Fld_BrushHati.c",
+                    "section": ".data",
+                    "start": 34637312,
+                    "end": 34637332
+                }
+            ],
+            "functions": [
+                {
+                    "name": "Fld_BrushHati_GetFrameInfo",
+                    "address": 34377740,
+                    "size": 156
+                },
+                {
+                    "name": "Fld_BrushHati_Load",
+                    "address": 34377896,
+                    "size": 124
+                },
+                {
+                    "name": "Fld_BrushHati_Init",
+                    "address": 34378020,
+                    "size": 24
+                },
+                {
+                    "name": "Fld_BrushHati_Update",
+                    "address": 34378044,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BrushHati_Render",
+                    "address": 34378064,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BrushHati_Destroy",
+                    "address": 34378084,
+                    "size": 20
+                },
+                {
+                    "name": "Fld_BrushHati_RunTask",
+                    "address": 34378104,
+                    "size": 72
+                },
+                {
+                    "name": "Fld_BrushHati_CreateTask",
+                    "address": 34378176,
+                    "size": 52
+                }
+            ]
+        },
+        {
+            "name": "FieldNpcMessageSelect",
+            "source": "src/Interface/Debug/Field/FieldNpcMessageSelect.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Interface/Debug/Field/FieldNpcMessageSelect.c",
+                    "section": ".text",
+                    "start": 34378228,
+                    "end": 34380176
+                },
+                {
+                    "source": "src/Interface/Debug/Field/FieldNpcMessageSelect.c",
+                    "section": ".rodata",
+                    "start": 34524112,
+                    "end": 34524428
+                },
+                {
+                    "source": "src/Interface/Debug/Field/FieldNpcMessageSelect.c",
+                    "section": ".data",
+                    "start": 34637332,
+                    "end": 34637868
+                }
+            ],
+            "functions": [
+                {
+                    "name": "FldNpcMesSel_CreateTextView",
+                    "address": 34378228,
+                    "size": 136
+                },
+                {
+                    "name": "FldNpcMesSel_DrawMenu",
+                    "address": 34378364,
+                    "size": 148
+                },
+                {
+                    "name": "FldNpcMesSel_DestroyTextView",
+                    "address": 34378512,
+                    "size": 20
+                },
+                {
+                    "name": "FldNpcMesSel_CreateMessageWindow",
+                    "address": 34378532,
+                    "size": 276
+                },
+                {
+                    "name": "FldNpcMesSel_Open",
+                    "address": 34378808,
+                    "size": 64
+                },
+                {
+                    "name": "FldNpcMesSel_Close",
+                    "address": 34378872,
+                    "size": 56
+                },
+                {
+                    "name": "FldNpcMesSel_HandleInput",
+                    "address": 34378928,
+                    "size": 684
+                },
+                {
+                    "name": "FldNpcMesSel_Init",
+                    "address": 34379612,
+                    "size": 276
+                },
+                {
+                    "name": "FldNpcMesSel_Update",
+                    "address": 34379888,
+                    "size": 140
+                },
+                {
+                    "name": "FldNpcMesSel_Destroy",
+                    "address": 34380028,
+                    "size": 84
+                },
+                {
+                    "name": "ProcessOverlay_FldNpcMesSel",
+                    "address": 34380112,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "Task_Mess",
+            "source": "src/Field/Task_Mess.c",
+            "confidence": "edge",
+            "ranges": [
+                {
+                    "source": "src/Field/Task_Mess.c",
+                    "section": ".text",
+                    "start": 34382324,
+                    "end": 34383036
+                },
+                {
+                    "source": "src/Field/Task_Mess.c",
+                    "section": ".rodata",
+                    "start": 34524584,
+                    "end": 34524612
+                },
+                {
+                    "source": "src/Field/Task_Mess.c",
+                    "section": ".data",
+                    "start": 34638060,
+                    "end": 34638072
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020ca1f4",
+                    "address": 34382324,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020ca200",
+                    "address": 34382336,
+                    "size": 260
+                },
+                {
+                    "name": "func_ov030_020ca304",
+                    "address": 34382596,
+                    "size": 124
+                },
+                {
+                    "name": "func_ov030_020ca380",
+                    "address": 34382720,
+                    "size": 100
+                },
+                {
+                    "name": "func_ov030_020ca3e4",
+                    "address": 34382820,
+                    "size": 4
+                },
+                {
+                    "name": "Task_Mess_Init",
+                    "address": 34382824,
+                    "size": 60
+                },
+                {
+                    "name": "Task_Mess_Update",
+                    "address": 34382884,
+                    "size": 36
+                },
+                {
+                    "name": "Task_Mess_Render",
+                    "address": 34382920,
+                    "size": 20
+                },
+                {
+                    "name": "Task_Mess_Destroy",
+                    "address": 34382940,
+                    "size": 24
+                },
+                {
+                    "name": "Task_Mess_RunTask",
+                    "address": 34382964,
+                    "size": 72
+                }
+            ]
+        },
+        {
+            "name": "Task_Window",
+            "source": "src/Field/Task_Window.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Task_Window.c",
+                    "section": ".text",
+                    "start": 34383036,
+                    "end": 34386564
+                },
+                {
+                    "source": "src/Field/Task_Window.c",
+                    "section": ".rodata",
+                    "start": 34524612,
+                    "end": 34525412
+                },
+                {
+                    "source": "src/Field/Task_Window.c",
+                    "section": ".data",
+                    "start": 34638072,
+                    "end": 34638112
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020ca4bc",
+                    "address": 34383036,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020ca514",
+                    "address": 34383124,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020ca588",
+                    "address": 34383240,
+                    "size": 496
+                },
+                {
+                    "name": "func_ov030_020ca778",
+                    "address": 34383736,
+                    "size": 456
+                },
+                {
+                    "name": "func_ov030_020ca940",
+                    "address": 34384192,
+                    "size": 168
+                },
+                {
+                    "name": "func_ov030_020ca9e8",
+                    "address": 34384360,
+                    "size": 340
+                },
+                {
+                    "name": "func_ov030_020cab3c",
+                    "address": 34384700,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020cab64",
+                    "address": 34384740,
+                    "size": 684
+                },
+                {
+                    "name": "func_ov030_020cae10",
+                    "address": 34385424,
+                    "size": 652
+                },
+                {
+                    "name": "func_ov030_020cb09c",
+                    "address": 34386076,
+                    "size": 144
+                },
+                {
+                    "name": "Task_Window_Render",
+                    "address": 34386220,
+                    "size": 60
+                },
+                {
+                    "name": "Task_Window_Destroy",
+                    "address": 34386280,
+                    "size": 108
+                },
+                {
+                    "name": "Task_Window_RunTask",
+                    "address": 34386388,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020cb21c",
+                    "address": 34386460,
+                    "size": 104
+                }
+            ]
+        },
+        {
+            "name": "Field_020cd790",
+            "source": "src/Field/Field_020cd790.c",
+            "confidence": "A",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020cd790.c",
+                    "section": ".text",
+                    "start": 34396048,
+                    "end": 34396788
+                },
+                {
+                    "source": "src/Field/Field_020cd790.c",
+                    "section": ".rodata",
+                    "start": 34525592,
+                    "end": 34525636
+                },
+                {
+                    "source": "src/Field/Field_020cd790.c",
+                    "section": ".data",
+                    "start": 34638280,
+                    "end": 34638300
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020cd790",
+                    "address": 34396048,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020cd7c0",
+                    "address": 34396096,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020cd7d4",
+                    "address": 34396116,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020cd7fc",
+                    "address": 34396156,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020cd808",
+                    "address": 34396168,
+                    "size": 620
+                }
+            ]
+        },
+        {
+            "name": "Field_020cda74",
+            "source": "src/Field/Field_020cda74.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020cda74.c",
+                    "section": ".text",
+                    "start": 34396788,
+                    "end": 34397420
+                },
+                {
+                    "source": "src/Field/Field_020cda74.c",
+                    "section": ".data",
+                    "start": 34638300,
+                    "end": 34638332
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020cda74",
+                    "address": 34396788,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020cdaa8",
+                    "address": 34396840,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020cdac0",
+                    "address": 34396864,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020cdb18",
+                    "address": 34396952,
+                    "size": 68
+                },
+                {
+                    "name": "func_ov030_020cdb5c",
+                    "address": 34397020,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020cdb6c",
+                    "address": 34397036,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020cdb7c",
+                    "address": 34397052,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020cdba0",
+                    "address": 34397088,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020cdbac",
+                    "address": 34397100,
+                    "size": 148
+                },
+                {
+                    "name": "func_ov030_020cdc40",
+                    "address": 34397248,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020cdc70",
+                    "address": 34397296,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020cdca0",
+                    "address": 34397344,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020cdcd4",
+                    "address": 34397396,
+                    "size": 24
+                }
+            ]
+        },
+        {
+            "name": "Field_020cdcec",
+            "source": "src/Field/Field_020cdcec.c",
+            "confidence": "C-base",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020cdcec.c",
+                    "section": ".text",
+                    "start": 34397420,
+                    "end": 34397856
+                },
+                {
+                    "source": "src/Field/Field_020cdcec.c",
+                    "section": ".data",
+                    "start": 34638332,
+                    "end": 34638348
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020cdcec",
+                    "address": 34397420,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020cdcfc",
+                    "address": 34397436,
+                    "size": 120
+                },
+                {
+                    "name": "func_ov030_020cdd74",
+                    "address": 34397556,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020cdd98",
+                    "address": 34397592,
+                    "size": 80
+                },
+                {
+                    "name": "func_ov030_020cdde8",
+                    "address": 34397672,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020cde0c",
+                    "address": 34397708,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020cde20",
+                    "address": 34397728,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020cde40",
+                    "address": 34397760,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020cde54",
+                    "address": 34397780,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020cde88",
+                    "address": 34397832,
+                    "size": 24
+                }
+            ]
+        },
+        {
+            "name": "Field_020cdea0",
+            "source": "src/Field/Field_020cdea0.c",
+            "confidence": "C-base",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020cdea0.c",
+                    "section": ".text",
+                    "start": 34397856,
+                    "end": 34410264
+                },
+                {
+                    "source": "src/Field/Field_020cdea0.c",
+                    "section": ".rodata",
+                    "start": 34525636,
+                    "end": 34525996
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020cdea0",
+                    "address": 34397856,
+                    "size": 708
+                },
+                {
+                    "name": "func_ov030_020ce164",
+                    "address": 34398564,
+                    "size": 68
+                },
+                {
+                    "name": "func_ov030_020ce1a8",
+                    "address": 34398632,
+                    "size": 140
+                },
+                {
+                    "name": "func_ov030_020ce234",
+                    "address": 34398772,
+                    "size": 252
+                },
+                {
+                    "name": "func_ov030_020ce330",
+                    "address": 34399024,
+                    "size": 92
+                },
+                {
+                    "name": "func_ov030_020ce38c",
+                    "address": 34399116,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020ce430",
+                    "address": 34399280,
+                    "size": 332
+                },
+                {
+                    "name": "func_ov030_020ce57c",
+                    "address": 34399612,
+                    "size": 308
+                },
+                {
+                    "name": "func_ov030_020ce6b0",
+                    "address": 34399920,
+                    "size": 576
+                },
+                {
+                    "name": "func_ov030_020ce8f0",
+                    "address": 34400496,
+                    "size": 480
+                },
+                {
+                    "name": "func_ov030_020cead0",
+                    "address": 34400976,
+                    "size": 448
+                },
+                {
+                    "name": "func_ov030_020cec90",
+                    "address": 34401424,
+                    "size": 744
+                },
+                {
+                    "name": "func_ov030_020cef78",
+                    "address": 34402168,
+                    "size": 352
+                },
+                {
+                    "name": "func_ov030_020cf0d8",
+                    "address": 34402520,
+                    "size": 316
+                },
+                {
+                    "name": "func_ov030_020cf214",
+                    "address": 34402836,
+                    "size": 832
+                },
+                {
+                    "name": "func_ov030_020cf554",
+                    "address": 34403668,
+                    "size": 332
+                },
+                {
+                    "name": "func_ov030_020cf6a0",
+                    "address": 34404000,
+                    "size": 408
+                },
+                {
+                    "name": "func_ov030_020cf838",
+                    "address": 34404408,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020cf848",
+                    "address": 34404424,
+                    "size": 200
+                },
+                {
+                    "name": "func_ov030_020cf910",
+                    "address": 34404624,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020cf984",
+                    "address": 34404740,
+                    "size": 1048
+                },
+                {
+                    "name": "func_ov030_020cfd9c",
+                    "address": 34405788,
+                    "size": 224
+                },
+                {
+                    "name": "func_ov030_020cfe7c",
+                    "address": 34406012,
+                    "size": 132
+                },
+                {
+                    "name": "func_ov030_020cff00",
+                    "address": 34406144,
+                    "size": 288
+                },
+                {
+                    "name": "func_ov030_020d0020",
+                    "address": 34406432,
+                    "size": 100
+                },
+                {
+                    "name": "func_ov030_020d0084",
+                    "address": 34406532,
+                    "size": 640
+                },
+                {
+                    "name": "func_ov030_020d0304",
+                    "address": 34407172,
+                    "size": 104
+                },
+                {
+                    "name": "func_ov030_020d036c",
+                    "address": 34407276,
+                    "size": 636
+                },
+                {
+                    "name": "func_ov030_020d05e8",
+                    "address": 34407912,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020d060c",
+                    "address": 34407948,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020d0630",
+                    "address": 34407984,
+                    "size": 696
+                },
+                {
+                    "name": "func_ov030_020d08e8",
+                    "address": 34408680,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d0920",
+                    "address": 34408736,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020d0990",
+                    "address": 34408848,
+                    "size": 360
+                },
+                {
+                    "name": "func_ov030_020d0af8",
+                    "address": 34409208,
+                    "size": 44
+                },
+                {
+                    "name": "func_ov030_020d0b24",
+                    "address": 34409252,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020d0bc0",
+                    "address": 34409408,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020d0bf0",
+                    "address": 34409456,
+                    "size": 72
+                },
+                {
+                    "name": "func_ov030_020d0c38",
+                    "address": 34409528,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d0c70",
+                    "address": 34409584,
+                    "size": 100
+                },
+                {
+                    "name": "func_ov030_020d0cd4",
+                    "address": 34409684,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d0cf0",
+                    "address": 34409712,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d0d0c",
+                    "address": 34409740,
+                    "size": 316
+                },
+                {
+                    "name": "func_ov030_020d0e48",
+                    "address": 34410056,
+                    "size": 88
+                },
+                {
+                    "name": "func_ov030_020d0ea0",
+                    "address": 34410144,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020d0f14",
+                    "address": 34410260,
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "Field_020d0f18",
+            "source": "src/Field/Field_020d0f18.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020d0f18.c",
+                    "section": ".text",
+                    "start": 34410264,
+                    "end": 34410648
+                },
+                {
+                    "source": "src/Field/Field_020d0f18.c",
+                    "section": ".data",
+                    "start": 34638348,
+                    "end": 34638368
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d0f18",
+                    "address": 34410264,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d0f4c",
+                    "address": 34410316,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020d0f64",
+                    "address": 34410340,
+                    "size": 252
+                },
+                {
+                    "name": "func_ov030_020d1060",
+                    "address": 34410592,
+                    "size": 56
+                }
+            ]
+        },
+        {
+            "name": "Field_020d1098",
+            "source": "src/Field/Field_020d1098.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020d1098.c",
+                    "section": ".text",
+                    "start": 34410648,
+                    "end": 34415072
+                },
+                {
+                    "source": "src/Field/Field_020d1098.c",
+                    "section": ".rodata",
+                    "start": 34525996,
+                    "end": 34531456
+                },
+                {
+                    "source": "src/Field/Field_020d1098.c",
+                    "section": ".data",
+                    "start": 34638368,
+                    "end": 34640044
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d1098",
+                    "address": 34410648,
+                    "size": 876
+                },
+                {
+                    "name": "func_ov030_020d1404",
+                    "address": 34411524,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020d1458",
+                    "address": 34411608,
+                    "size": 872
+                },
+                {
+                    "name": "func_ov030_020d17c0",
+                    "address": 34412480,
+                    "size": 268
+                },
+                {
+                    "name": "func_ov030_020d18cc",
+                    "address": 34412748,
+                    "size": 336
+                },
+                {
+                    "name": "func_ov030_020d1a1c",
+                    "address": 34413084,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020d1a8c",
+                    "address": 34413196,
+                    "size": 156
+                },
+                {
+                    "name": "func_ov030_020d1b28",
+                    "address": 34413352,
+                    "size": 120
+                },
+                {
+                    "name": "func_ov030_020d1ba0",
+                    "address": 34413472,
+                    "size": 360
+                },
+                {
+                    "name": "func_ov030_020d1d08",
+                    "address": 34413832,
+                    "size": 248
+                },
+                {
+                    "name": "func_ov030_020d1e00",
+                    "address": 34414080,
+                    "size": 248
+                },
+                {
+                    "name": "func_ov030_020d1ef8",
+                    "address": 34414328,
+                    "size": 248
+                },
+                {
+                    "name": "func_ov030_020d1ff0",
+                    "address": 34414576,
+                    "size": 204
+                },
+                {
+                    "name": "func_ov030_020d20bc",
+                    "address": 34414780,
+                    "size": 204
+                },
+                {
+                    "name": "func_ov030_020d2188",
+                    "address": 34414984,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d21bc",
+                    "address": 34415036,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020d21d4",
+                    "address": 34415060,
+                    "size": 12
+                }
+            ]
+        },
+        {
+            "name": "Field_020d21e0",
+            "source": "src/Field/Field_020d21e0.c",
+            "confidence": "C-base",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020d21e0.c",
+                    "section": ".text",
+                    "start": 34415072,
+                    "end": 34415828
+                },
+                {
+                    "source": "src/Field/Field_020d21e0.c",
+                    "section": ".rodata",
+                    "start": 34531456,
+                    "end": 34531644
+                },
+                {
+                    "source": "src/Field/Field_020d21e0.c",
+                    "section": ".data",
+                    "start": 34640044,
+                    "end": 34640060
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d21e0",
+                    "address": 34415072,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d2218",
+                    "address": 34415128,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d224c",
+                    "address": 34415180,
+                    "size": 232
+                },
+                {
+                    "name": "func_ov030_020d2334",
+                    "address": 34415412,
+                    "size": 68
+                },
+                {
+                    "name": "func_ov030_020d2378",
+                    "address": 34415480,
+                    "size": 244
+                },
+                {
+                    "name": "func_ov030_020d246c",
+                    "address": 34415724,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d2488",
+                    "address": 34415752,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d24bc",
+                    "address": 34415804,
+                    "size": 24
+                }
+            ]
+        },
+        {
+            "name": "Field_020d24d4",
+            "source": "src/Field/Field_020d24d4.c",
+            "confidence": "C-base",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020d24d4.c",
+                    "section": ".text",
+                    "start": 34415828,
+                    "end": 34417280
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d24d4",
+                    "address": 34415828,
+                    "size": 48
+                },
+                {
+                    "name": "func_ov030_020d2504",
+                    "address": 34415876,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d2538",
+                    "address": 34415928,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020d2548",
+                    "address": 34415944,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020d2558",
+                    "address": 34415960,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d258c",
+                    "address": 34416012,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020d25cc",
+                    "address": 34416076,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020d2620",
+                    "address": 34416160,
+                    "size": 784
+                },
+                {
+                    "name": "func_ov030_020d2930",
+                    "address": 34416944,
+                    "size": 208
+                },
+                {
+                    "name": "func_ov030_020d2a00",
+                    "address": 34417152,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d2a1c",
+                    "address": 34417180,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020d2a30",
+                    "address": 34417200,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020d2a58",
+                    "address": 34417240,
+                    "size": 40
+                }
+            ]
+        },
+        {
+            "name": "LocaTitleSeq",
+            "source": "src/Field/LocaTitleSeq.c",
+            "confidence": "C-base",
+            "ranges": [
+                {
+                    "source": "src/Field/LocaTitleSeq.c",
+                    "section": ".text",
+                    "start": 34417280,
+                    "end": 34418092
+                },
+                {
+                    "source": "src/Field/LocaTitleSeq.c",
+                    "section": ".rodata",
+                    "start": 34531644,
+                    "end": 34531656
+                },
+                {
+                    "source": "src/Field/LocaTitleSeq.c",
+                    "section": ".data",
+                    "start": 34640060,
+                    "end": 34640100
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d2a80",
+                    "address": 34417280,
+                    "size": 148
+                },
+                {
+                    "name": "LocaTitleSeq_Main",
+                    "address": 34417428,
+                    "size": 36
+                },
+                {
+                    "name": "LocaTitleSeq_Init",
+                    "address": 34417464,
+                    "size": 288
+                },
+                {
+                    "name": "LocaTitleSeq_Update",
+                    "address": 34417752,
+                    "size": 224
+                },
+                {
+                    "name": "LocaTitleSeq_Destroy",
+                    "address": 34417976,
+                    "size": 52
+                },
+                {
+                    "name": "ProcessOverlay_LocaTitleSeq",
+                    "address": 34418028,
+                    "size": 64
+                }
+            ]
+        },
+        {
+            "name": "LocaTitle",
+            "source": "src/Field/LocaTitle.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".text",
+                    "start": 34418092,
+                    "end": 34419068
+                },
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".rodata",
+                    "start": 34531656,
+                    "end": 34531736
+                },
+                {
+                    "source": "src/Field/LocaTitle.c",
+                    "section": ".data",
+                    "start": 34640100,
+                    "end": 34640144
+                }
+            ],
+            "functions": [
+                {
+                    "name": "LocaTitle_SetUpdate",
+                    "address": 34418092,
+                    "size": 16
+                },
+                {
+                    "name": "func_ov030_020d2dbc",
+                    "address": 34418108,
+                    "size": 144
+                },
+                {
+                    "name": "func_ov030_020d2e4c",
+                    "address": 34418252,
+                    "size": 116
+                },
+                {
+                    "name": "func_ov030_020d2ec0",
+                    "address": 34418368,
+                    "size": 108
+                },
+                {
+                    "name": "LocaTitle_Load",
+                    "address": 34418476,
+                    "size": 188
+                },
+                {
+                    "name": "LocaTitle_Init",
+                    "address": 34418664,
+                    "size": 80
+                },
+                {
+                    "name": "LocaTitle_Update",
+                    "address": 34418744,
+                    "size": 52
+                },
+                {
+                    "name": "LocaTitle_Render",
+                    "address": 34418796,
+                    "size": 72
+                },
+                {
+                    "name": "LocaTitle_Destroy",
+                    "address": 34418868,
+                    "size": 32
+                },
+                {
+                    "name": "LocaTitle_RunTask",
+                    "address": 34418900,
+                    "size": 72
+                },
+                {
+                    "name": "LocaTitle_CreateTask",
+                    "address": 34418972,
+                    "size": 96
+                }
+            ]
+        },
+        {
+            "name": "XFade",
+            "source": "src/Field/XFade.c",
+            "confidence": "C",
+            "ranges": [
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".text",
+                    "start": 34419068,
+                    "end": 34424880
+                },
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".rodata",
+                    "start": 34531736,
+                    "end": 34531844
+                },
+                {
+                    "source": "src/Field/XFade.c",
+                    "section": ".data",
+                    "start": 34640144,
+                    "end": 34640236
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d317c",
+                    "address": 34419068,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d31b0",
+                    "address": 34419120,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020d31f0",
+                    "address": 34419184,
+                    "size": 52
+                },
+                {
+                    "name": "func_ov030_020d3224",
+                    "address": 34419236,
+                    "size": 96
+                },
+                {
+                    "name": "func_ov030_020d3284",
+                    "address": 34419332,
+                    "size": 120
+                },
+                {
+                    "name": "func_ov030_020d32fc",
+                    "address": 34419452,
+                    "size": 720
+                },
+                {
+                    "name": "func_ov030_020d35cc",
+                    "address": 34420172,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d35e8",
+                    "address": 34420200,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d3604",
+                    "address": 34420228,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d3620",
+                    "address": 34420256,
+                    "size": 24
+                },
+                {
+                    "name": "func_ov030_020d3638",
+                    "address": 34420280,
+                    "size": 188
+                },
+                {
+                    "name": "func_ov030_020d36f4",
+                    "address": 34420468,
+                    "size": 292
+                },
+                {
+                    "name": "func_ov030_020d3818",
+                    "address": 34420760,
+                    "size": 280
+                },
+                {
+                    "name": "func_ov030_020d3930",
+                    "address": 34421040,
+                    "size": 416
+                },
+                {
+                    "name": "func_ov030_020d3ad0",
+                    "address": 34421456,
+                    "size": 96
+                },
+                {
+                    "name": "func_ov030_020d3b30",
+                    "address": 34421552,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020d3b3c",
+                    "address": 34421564,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020d3be0",
+                    "address": 34421728,
+                    "size": 112
+                },
+                {
+                    "name": "func_ov030_020d3c50",
+                    "address": 34421840,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d3c88",
+                    "address": 34421896,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d3cc0",
+                    "address": 34421952,
+                    "size": 224
+                },
+                {
+                    "name": "func_ov030_020d3da0",
+                    "address": 34422176,
+                    "size": 32
+                },
+                {
+                    "name": "func_ov030_020d3dc0",
+                    "address": 34422208,
+                    "size": 120
+                },
+                {
+                    "name": "func_ov030_020d3e38",
+                    "address": 34422328,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020d3e74",
+                    "address": 34422388,
+                    "size": 60
+                },
+                {
+                    "name": "func_ov030_020d3eb0",
+                    "address": 34422448,
+                    "size": 456
+                },
+                {
+                    "name": "func_ov030_020d4078",
+                    "address": 34422904,
+                    "size": 1712
+                },
+                {
+                    "name": "func_ov030_020d4728",
+                    "address": 34424616,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d4760",
+                    "address": 34424672,
+                    "size": 136
+                },
+                {
+                    "name": "XFade_RunTask",
+                    "address": 34424808,
+                    "size": 72
+                }
+            ]
+        },
+        {
+            "name": "Field_020d4830",
+            "source": "src/Field/Field_020d4830.c",
+            "confidence": "A+",
+            "ranges": [
+                {
+                    "source": "src/Field/Field_020d4830.c",
+                    "section": ".text",
+                    "start": 34424880,
+                    "end": 34427580
+                },
+                {
+                    "source": "src/Field/Field_020d4830.c",
+                    "section": ".rodata",
+                    "start": 34531844,
+                    "end": 34594376
+                },
+                {
+                    "source": "src/Field/Field_020d4830.c",
+                    "section": ".data",
+                    "start": 34640236,
+                    "end": 34642944
+                }
+            ],
+            "functions": [
+                {
+                    "name": "func_ov030_020d4830",
+                    "address": 34424880,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020d483c",
+                    "address": 34424892,
+                    "size": 40
+                },
+                {
+                    "name": "func_ov030_020d4864",
+                    "address": 34424932,
+                    "size": 28
+                },
+                {
+                    "name": "func_ov030_020d4880",
+                    "address": 34424960,
+                    "size": 172
+                },
+                {
+                    "name": "func_ov030_020d492c",
+                    "address": 34425132,
+                    "size": 176
+                },
+                {
+                    "name": "func_ov030_020d49dc",
+                    "address": 34425308,
+                    "size": 56
+                },
+                {
+                    "name": "func_ov030_020d4a14",
+                    "address": 34425364,
+                    "size": 164
+                },
+                {
+                    "name": "func_ov030_020d4ab8",
+                    "address": 34425528,
+                    "size": 84
+                },
+                {
+                    "name": "func_ov030_020d4b0c",
+                    "address": 34425612,
+                    "size": 8
+                },
+                {
+                    "name": "func_ov030_020d4b14",
+                    "address": 34425620,
+                    "size": 1084
+                },
+                {
+                    "name": "func_ov030_020d4f50",
+                    "address": 34426704,
+                    "size": 36
+                },
+                {
+                    "name": "func_ov030_020d4f74",
+                    "address": 34426740,
+                    "size": 64
+                },
+                {
+                    "name": "func_ov030_020d4fb4",
+                    "address": 34426804,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020d503c",
+                    "address": 34426940,
+                    "size": 176
+                },
+                {
+                    "name": "func_ov030_020d50ec",
+                    "address": 34427116,
+                    "size": 20
+                },
+                {
+                    "name": "func_ov030_020d5100",
+                    "address": 34427136,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020d510c",
+                    "address": 34427148,
+                    "size": 12
+                },
+                {
+                    "name": "func_ov030_020d5118",
+                    "address": 34427160,
+                    "size": 92
+                },
+                {
+                    "name": "func_ov030_020d5174",
+                    "address": 34427252,
+                    "size": 136
+                },
+                {
+                    "name": "func_ov030_020d51fc",
+                    "address": 34427388,
+                    "size": 192
+                }
+            ]
+        }
+    ]
+}
