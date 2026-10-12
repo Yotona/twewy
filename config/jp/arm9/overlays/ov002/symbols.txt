@@ -419,7 +419,7 @@ OtosuMenu_Daiza_Anim kind:data(any) addr:0x02092954 local
 @2175 kind:data(any) addr:0x02092990 local
 @2177 kind:data(any) addr:0x020929a2 local
 @2185 kind:data(any) addr:0x02092b32 local
-sNoText7 kind:data(any) addr:0x02092cc4
+sNoText7 kind:data(any) addr:0x02092cc4 local
 sSaveFailureText kind:data(any) addr:0x02092d0c local
 sDeleteConfirm2Text kind:data(any) addr:0x02092d20 local
 sCorruptDeletedText kind:data(any) addr:0x02092d34 local

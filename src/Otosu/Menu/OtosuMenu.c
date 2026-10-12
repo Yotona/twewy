@@ -1499,8 +1499,8 @@ void ProcessOverlay_OtosuMenu_DataCorrupted(void* menuObj) {
     }
 }
 
-const BinIdentifier OtosuMenu_MenuBgLowerBinId = {0x2B, "Apl_Tak/Grp_Menu_BGD.bin"};
-const BinIdentifier OtosuMenu_MenuBgUpperBinId = {0x2B, "Apl_Tak/Grp_Menu_BGU.bin"};
+const BinIdentifier OtosuMenu_MenuBgLowerBinId = {OTOSU_MENU_OVL_NUM, "Apl_Tak/Grp_Menu_BGD.bin"};
+const BinIdentifier OtosuMenu_MenuBgUpperBinId = {OTOSU_MENU_OVL_NUM, "Apl_Tak/Grp_Menu_BGU.bin"};
 
 void ProcessOverlay_OtosuMenu_DataInitialize(void* menuObj) {
     s32 stage = MainOvlDisp_GetProcessStage();

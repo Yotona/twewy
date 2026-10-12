@@ -144,7 +144,7 @@ static const s32     OtosuMenu_MapCellsOffsets[0xA] = {
 static const s32                 OtosuMenu_MapExtra1Sizes[0xA] = {0, 0, 0, 0x18, 0x10, 0x10, 0, 0, 0, 0}; /* const */
 static const OtosuMenuBoardFiles OtosuMenu_BoardFiles          = {
     {1, 2, 3, 4},
-    {0x27, "data/BeBadge_MapData.bin"}
+    {OTOSU_GAME_OVL_NUM, "data/BeBadge_MapData.bin"}
 };
 PrcFrameDesc OtosuMenu_StageSelect_GuestFrameDesc = {
     .enter     = OtosuMenu_StageSelect_Load,

@@ -12,63 +12,63 @@ OtuScene_ProcInitSinglePlayer kind:function(arm,size=0x170) addr:0x020834c0 loca
 OtuScene_ProcInitMultiplayer kind:function(arm,size=0x248) addr:0x02083630 local
 OtuScene_ProcMainSinglePlayer kind:function(arm,size=0x160) addr:0x02083878 local
 OtuScene_ProcMainMultiplayer kind:function(arm,size=0x16c) addr:0x020839d8 local
-OtuScene_Destroy kind:function(arm,size=0x68) addr:0x02083b44
+OtuScene_Destroy kind:function(arm,size=0x68) addr:0x02083b44 local
 OtuScene_ProcExitSinglePlayer kind:function(arm,size=0xc) addr:0x02083bac local
 OtuScene_ProcExitMultiplayer kind:function(arm,size=0x68) addr:0x02083bb8 local
 ProcessOverlay_OtosuGame_SinglePlayer kind:function(arm,size=0x40) addr:0x02083c20
 ProcessOverlay_OtosuGame_Multiplayer kind:function(arm,size=0x40) addr:0x02083c60
 OtuScene_InitGraphics kind:function(arm,size=0x490) addr:0x02083ca0
-OtuScene_VBlank kind:function(arm,size=0xe8) addr:0x02084130
-OtuScene_VBlankWireless kind:function(arm,size=0xf0) addr:0x02084218
+OtuScene_VBlank kind:function(arm,size=0xe8) addr:0x02084130 local
+OtuScene_VBlankWireless kind:function(arm,size=0xf0) addr:0x02084218 local
 OtuScene_InitDisplay kind:function(arm,size=0x1c) addr:0x02084308
 OtuScene_InitDisplayWireless kind:function(arm,size=0x1c) addr:0x02084324
 OtuScene_ClearVBlank kind:function(arm,size=0x14) addr:0x02084340
-OtuEditor_FormatInt kind:function(arm,size=0x60) addr:0x02084354
-OtuEditor_StepInt kind:function(arm,size=0x4c) addr:0x020843b4
-OtuEditor_FormatFixed kind:function(arm,size=0xd4) addr:0x02084400
-OtuEditor_StepFixed kind:function(arm,size=0xbc) addr:0x020844d4
-OtuEditor_DrawCursor kind:function(arm,size=0x10c) addr:0x02084590
-OtuEditor_EditMatch kind:function(arm,size=0x218) addr:0x0208469c
-OtuEditor_DrawMatch kind:function(arm,size=0x14c) addr:0x020848b4
-OtuEditor_EditFriction kind:function(arm,size=0xa0) addr:0x02084a00
-OtuEditor_DrawFriction kind:function(arm,size=0xe0) addr:0x02084aa0
-OtuEditor_EditDeck kind:function(arm,size=0x11c) addr:0x02084b80
-OtuEditor_DrawDeck kind:function(arm,size=0x19c) addr:0x02084c9c
-OtuEditor_EditTune kind:function(arm,size=0xa0) addr:0x02084e38
-OtuEditor_DrawTune kind:function(arm,size=0xe4) addr:0x02084ed8
-OtuEditor_EditDebrisDecel kind:function(arm,size=0x50) addr:0x02084fbc
-OtuEditor_DrawDebrisDecel kind:function(arm,size=0x98) addr:0x0208500c
-OtuEditor_EditHand kind:function(arm,size=0x74) addr:0x020850a4
-OtuEditor_DrawHand kind:function(arm,size=0xb4) addr:0x02085118
-OtuEditor_EditPanels kind:function(arm,size=0x88) addr:0x020851cc
-OtuEditor_DrawPanels kind:function(arm,size=0xd0) addr:0x02085254
-OtuEditor_EditStun kind:function(arm,size=0x60) addr:0x02085324
-OtuEditor_DrawStun kind:function(arm,size=0x98) addr:0x02085384
-OtuEditor_EditDebrisSpeed kind:function(arm,size=0x88) addr:0x0208541c
-OtuEditor_DrawDebrisSpeed kind:function(arm,size=0xd0) addr:0x020854a4
-OtuEditor_EditDebrisLaunch kind:function(arm,size=0xa0) addr:0x02085574
-OtuEditor_DrawDebrisLaunch kind:function(arm,size=0xec) addr:0x02085614
-OtuEditor_EditKnockback kind:function(arm,size=0x60) addr:0x02085700
+OtuEditor_FormatInt kind:function(arm,size=0x60) addr:0x02084354 local
+OtuEditor_StepInt kind:function(arm,size=0x4c) addr:0x020843b4 local
+OtuEditor_FormatFixed kind:function(arm,size=0xd4) addr:0x02084400 local
+OtuEditor_StepFixed kind:function(arm,size=0xbc) addr:0x020844d4 local
+OtuEditor_DrawCursor kind:function(arm,size=0x10c) addr:0x02084590 local
+OtuEditor_EditMatch kind:function(arm,size=0x218) addr:0x0208469c local
+OtuEditor_DrawMatch kind:function(arm,size=0x14c) addr:0x020848b4 local
+OtuEditor_EditFriction kind:function(arm,size=0xa0) addr:0x02084a00 local
+OtuEditor_DrawFriction kind:function(arm,size=0xe0) addr:0x02084aa0 local
+OtuEditor_EditDeck kind:function(arm,size=0x11c) addr:0x02084b80 local
+OtuEditor_DrawDeck kind:function(arm,size=0x19c) addr:0x02084c9c local
+OtuEditor_EditTune kind:function(arm,size=0xa0) addr:0x02084e38 local
+OtuEditor_DrawTune kind:function(arm,size=0xe4) addr:0x02084ed8 local
+OtuEditor_EditDebrisDecel kind:function(arm,size=0x50) addr:0x02084fbc local
+OtuEditor_DrawDebrisDecel kind:function(arm,size=0x98) addr:0x0208500c local
+OtuEditor_EditHand kind:function(arm,size=0x74) addr:0x020850a4 local
+OtuEditor_DrawHand kind:function(arm,size=0xb4) addr:0x02085118 local
+OtuEditor_EditPanels kind:function(arm,size=0x88) addr:0x020851cc local
+OtuEditor_DrawPanels kind:function(arm,size=0xd0) addr:0x02085254 local
+OtuEditor_EditStun kind:function(arm,size=0x60) addr:0x02085324 local
+OtuEditor_DrawStun kind:function(arm,size=0x98) addr:0x02085384 local
+OtuEditor_EditDebrisSpeed kind:function(arm,size=0x88) addr:0x0208541c local
+OtuEditor_DrawDebrisSpeed kind:function(arm,size=0xd0) addr:0x020854a4 local
+OtuEditor_EditDebrisLaunch kind:function(arm,size=0xa0) addr:0x02085574 local
+OtuEditor_DrawDebrisLaunch kind:function(arm,size=0xec) addr:0x02085614 local
+OtuEditor_EditKnockback kind:function(arm,size=0x60) addr:0x02085700 local
 OtuEditor_DrawKnockback kind:function(arm,size=0x9c) addr:0x02085760 local
-OtuEditor_EditSpin kind:function(arm,size=0xec) addr:0x020857fc
-OtuEditor_DrawSpin kind:function(arm,size=0x21c) addr:0x020858e8
-OtuEditor_EditPinId kind:function(arm,size=0x98) addr:0x02085b04
-OtuEditor_DrawPinId kind:function(arm,size=0x104) addr:0x02085b9c
-OtuEditor_EditSpecialUses kind:function(arm,size=0xc8) addr:0x02085ca0
-OtuEditor_DrawSpecialUses kind:function(arm,size=0x1c4) addr:0x02085d68
-OtuEditor_EditPinTune kind:function(arm,size=0x94) addr:0x02085f2c
-OtuEditor_DrawPinTune kind:function(arm,size=0xe8) addr:0x02085fc0
-OtuEditor_EditPinFriction kind:function(arm,size=0xa8) addr:0x020860a8
-OtuEditor_DrawPinFriction kind:function(arm,size=0xa8) addr:0x02086150
-OtuEditor_EditNeedle kind:function(arm,size=0xcc) addr:0x020861f8
-OtuEditor_DrawNeedle kind:function(arm,size=0x180) addr:0x020862c4
-OtuEditor_EditMeteo kind:function(arm,size=0xcc) addr:0x02086444
-OtuEditor_DrawMeteo kind:function(arm,size=0x180) addr:0x02086510
-OtuEditor_EditHammer kind:function(arm,size=0x1a4) addr:0x02086690
-OtuEditor_DrawHammer kind:function(arm,size=0x160) addr:0x02086834
-OtuEditor_EditStunFrames kind:function(arm,size=0xac) addr:0x02086994
-OtuEditor_DrawStunFrames kind:function(arm,size=0x114) addr:0x02086a40
-OtuEditor_DrawPage kind:function(arm,size=0x5b4) addr:0x02086b54
+OtuEditor_EditSpin kind:function(arm,size=0xec) addr:0x020857fc local
+OtuEditor_DrawSpin kind:function(arm,size=0x21c) addr:0x020858e8 local
+OtuEditor_EditPinId kind:function(arm,size=0x98) addr:0x02085b04 local
+OtuEditor_DrawPinId kind:function(arm,size=0x104) addr:0x02085b9c local
+OtuEditor_EditSpecialUses kind:function(arm,size=0xc8) addr:0x02085ca0 local
+OtuEditor_DrawSpecialUses kind:function(arm,size=0x1c4) addr:0x02085d68 local
+OtuEditor_EditPinTune kind:function(arm,size=0x94) addr:0x02085f2c local
+OtuEditor_DrawPinTune kind:function(arm,size=0xe8) addr:0x02085fc0 local
+OtuEditor_EditPinFriction kind:function(arm,size=0xa8) addr:0x020860a8 local
+OtuEditor_DrawPinFriction kind:function(arm,size=0xa8) addr:0x02086150 local
+OtuEditor_EditNeedle kind:function(arm,size=0xcc) addr:0x020861f8 local
+OtuEditor_DrawNeedle kind:function(arm,size=0x180) addr:0x020862c4 local
+OtuEditor_EditMeteo kind:function(arm,size=0xcc) addr:0x02086444 local
+OtuEditor_DrawMeteo kind:function(arm,size=0x180) addr:0x02086510 local
+OtuEditor_EditHammer kind:function(arm,size=0x1a4) addr:0x02086690 local
+OtuEditor_DrawHammer kind:function(arm,size=0x160) addr:0x02086834 local
+OtuEditor_EditStunFrames kind:function(arm,size=0xac) addr:0x02086994 local
+OtuEditor_DrawStunFrames kind:function(arm,size=0x114) addr:0x02086a40 local
+OtuEditor_DrawPage kind:function(arm,size=0x5b4) addr:0x02086b54 local
 OtuScene_Editor_Enter kind:function(arm,size=0xac) addr:0x02087108 local
 OtuScene_Editor_Exit kind:function(arm,size=0x34) addr:0x020871b4 local
 OtuScene_Editor_Run kind:function(arm,size=0x12bc) addr:0x020871e8 local
@@ -99,21 +99,21 @@ OtuScene_UpdateLocalInput kind:function(arm,size=0x28) addr:0x02088fac
 OtuBoard_OnGuestConnected kind:function(arm,size=0x94) addr:0x02088fd4
 OtuBoard_OnGuestDisconnected kind:function(arm,size=0x10) addr:0x02089068
 OtuBoard_OnScanResult kind:function(arm,size=0x84) addr:0x02089078
-OtuBoard_FollowOwnBadge kind:function(arm,size=0x1c4) addr:0x020890fc
-OtuBoard_CreateTasks kind:function(arm,size=0x1ac) addr:0x020892c0
-OtuBoard_CreateSinglePlayerBadges kind:function(arm,size=0xf4) addr:0x0208946c
-OtuBoard_CreateMultiplayerBadges kind:function(arm,size=0xd0) addr:0x02089560
-OtuBoard_LoadLayout kind:function(arm,size=0x1a0) addr:0x02089630
-OtuBoard_SetupSinglePlayer kind:function(arm,size=0xd4) addr:0x020897d0
+OtuBoard_FollowOwnBadge kind:function(arm,size=0x1c4) addr:0x020890fc local
+OtuBoard_CreateTasks kind:function(arm,size=0x1ac) addr:0x020892c0 local
+OtuBoard_CreateSinglePlayerBadges kind:function(arm,size=0xf4) addr:0x0208946c local
+OtuBoard_CreateMultiplayerBadges kind:function(arm,size=0xd0) addr:0x02089560 local
+OtuBoard_LoadLayout kind:function(arm,size=0x1a0) addr:0x02089630 local
+OtuBoard_SetupSinglePlayer kind:function(arm,size=0xd4) addr:0x020897d0 local
 OtuBoard_SetupMultiplayer kind:function(arm,size=0x54) addr:0x020898a4
 OtuBoard_Teardown kind:function(arm,size=0x94) addr:0x020898f8
-OtuBoard_ResolveAttacks kind:function(arm,size=0xb8) addr:0x0208998c
+OtuBoard_ResolveAttacks kind:function(arm,size=0xb8) addr:0x0208998c local
 OtuBoard_SpawnSparks kind:function(arm,size=0x74) addr:0x02089a44
-OtuBoard_OnBadgeHit kind:function(arm,size=0x124) addr:0x02089ab8
-OtuBoard_CollideBadges kind:function(arm,size=0xc8) addr:0x02089bdc
-OtuBoard_SeparateBadges kind:function(arm,size=0x9c) addr:0x02089ca4
-OtuBoard_CollideObstacles kind:function(arm,size=0x9c) addr:0x02089d40
-OtuBoard_GetOutcome kind:function(arm,size=0xd0) addr:0x02089ddc
+OtuBoard_OnBadgeHit kind:function(arm,size=0x124) addr:0x02089ab8 local
+OtuBoard_CollideBadges kind:function(arm,size=0xc8) addr:0x02089bdc local
+OtuBoard_SeparateBadges kind:function(arm,size=0x9c) addr:0x02089ca4 local
+OtuBoard_CollideObstacles kind:function(arm,size=0x9c) addr:0x02089d40 local
+OtuBoard_GetOutcome kind:function(arm,size=0xd0) addr:0x02089ddc local
 OtuBoard_Update kind:function(arm,size=0x2b4) addr:0x02089eac
 OtuScene_SinglePlayerBoard_Enter kind:function(arm,size=0x50) addr:0x0208a160
 OtuScene_SinglePlayerBoard_Exit kind:function(arm,size=0xc) addr:0x0208a1b0
@@ -142,65 +142,65 @@ OtosuGame_badge_Launch kind:function(arm,size=0x9c) addr:0x0208b0d8 local
 OtuBoard_GetTileType kind:function(arm,size=0x1f4) addr:0x0208b174 local
 OtuBoard_IsClearSpot kind:function(arm,size=0x310) addr:0x0208b368 local
 OtosuGame_badge_UpdateButtons kind:function(arm,size=0x28) addr:0x0208b678 local
-OtosuGame_badge_UpdateTouch kind:function(arm,size=0x6c) addr:0x0208b6a0
-OtosuGame_badge_ApplyFriction kind:function(arm,size=0x5c) addr:0x0208b70c
-OtosuGame_badge_StartWarp kind:function(arm,size=0x60) addr:0x0208b768
-OtosuGame_badge_StartFall kind:function(arm,size=0x2c) addr:0x0208b7c8
-OtosuGame_badge_KnockOut kind:function(arm,size=0x78) addr:0x0208b7f4
-OtosuGame_badge_Respawn kind:function(arm,size=0xac) addr:0x0208b86c
-OtosuGame_badge_Jump kind:function(arm,size=0x34) addr:0x0208b918
-OtosuGame_badge_UpdateMotion kind:function(arm,size=0x9e0) addr:0x0208b94c
-OtosuGame_badge_StartNeedle kind:function(arm,size=0x68) addr:0x0208c32c
-OtosuGame_badge_StartHammer kind:function(arm,size=0x80) addr:0x0208c394
-OtosuGame_badge_StartMeteo kind:function(arm,size=0x3c) addr:0x0208c414
-OtosuGame_badge_StartHand kind:function(arm,size=0xb0) addr:0x0208c450
-OtosuGame_badge_HandlePlayerInput kind:function(arm,size=0x2ec) addr:0x0208c500
-OtosuGame_badge_LaunchToward kind:function(arm,size=0xa8) addr:0x0208c7ec
-OtosuGame_badge_FindTileNearby kind:function(arm,size=0x20c) addr:0x0208c894
-OtuBoard_IsSameCell kind:function(arm,size=0x44) addr:0x0208caa0
-OtosuGame_badge_AI_SeekTile kind:function(arm,size=0xf0) addr:0x0208cae4
-OtosuGame_badge_AI_UseHand kind:function(arm,size=0x40) addr:0x0208cbd4
-OtosuGame_badge_AI_AvoidHole kind:function(arm,size=0xac) addr:0x0208cc14
-OtosuGame_badge_AI_ChaseStunned kind:function(arm,size=0xb8) addr:0x0208ccc0
-OtosuGame_badge_AI_DodgeNeedle kind:function(arm,size=0xa0) addr:0x0208cd78
-OtosuGame_badge_AI_CounterNeedle kind:function(arm,size=0x90) addr:0x0208ce18
-OtosuGame_badge_AI_CounterHammer kind:function(arm,size=0x7c) addr:0x0208cea8
-OtosuGame_badge_AI_CounterMeteo kind:function(arm,size=0x90) addr:0x0208cf24
-OtosuGame_badge_AI_NeedleNearest kind:function(arm,size=0x90) addr:0x0208cfb4
-OtosuGame_badge_AI_HammerNearest kind:function(arm,size=0x90) addr:0x0208d044
-OtosuGame_badge_AI_MeteoNearest kind:function(arm,size=0x7c) addr:0x0208d0d4
-OtosuGame_badge_AI_ChaseNearest kind:function(arm,size=0xb8) addr:0x0208d150
-OtosuGame_badge_AI_Hide kind:function(arm,size=0x60) addr:0x0208d208
-OtosuGame_badge_AI_SeekHide kind:function(arm,size=0x20) addr:0x0208d268
-OtosuGame_badge_AI_SeekWarp kind:function(arm,size=0x20) addr:0x0208d288
-OtosuGame_badge_AI_SeekJumpPad kind:function(arm,size=0x20) addr:0x0208d2a8
-OtosuGame_badge_AI_SeekConveyor kind:function(arm,size=0x20) addr:0x0208d2c8
-OtosuGame_badge_AI_Pursue kind:function(arm,size=0xa0) addr:0x0208d2e8
-OtosuGame_badge_RunAI kind:function(arm,size=0x50) addr:0x0208d388
-OtosuGame_badge_UpdateWarp kind:function(arm,size=0x148) addr:0x0208d3d8
-OtosuGame_badge_UpdateFall kind:function(arm,size=0xe8) addr:0x0208d520
-OtosuGame_badge_UpdateKnockOut kind:function(arm,size=0x104) addr:0x0208d608
-OtosuGame_badge_UpdateRespawn kind:function(arm,size=0xd0) addr:0x0208d70c
-OtosuGame_badge_UpdateNeedle kind:function(arm,size=0x34) addr:0x0208d7dc
-OtosuGame_badge_UpdateHammer kind:function(arm,size=0x34) addr:0x0208d810
-OtosuGame_badge_UpdateMeteo kind:function(arm,size=0x388) addr:0x0208d844
-OtosuGame_badge_UpdateHand kind:function(arm,size=0xe8) addr:0x0208dbcc
-OtosuGame_badge_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0208dcb4
-OtosuGame_badge_LoadSpriteA kind:function(arm,size=0x110) addr:0x0208dd78
-OtosuGame_badge_LoadSpriteB kind:function(arm,size=0x88) addr:0x0208de88
-OtosuGame_badge_LoadSpriteC kind:function(arm,size=0x88) addr:0x0208df10
-OtosuGame_badge_ResetState kind:function(arm,size=0x100) addr:0x0208df98
-OtosuGame_badge_Init kind:function(arm,size=0x108) addr:0x0208e098
-OtosuGame_badge_Update kind:function(arm,size=0x208) addr:0x0208e1a0
-OtosuGame_badge_RenderSprites kind:function(arm,size=0x88) addr:0x0208e3a8
-OtosuGame_badge_Render kind:function(arm,size=0xd0) addr:0x0208e430
-OtosuGame_badge_Destroy kind:function(arm,size=0x124) addr:0x0208e500
-OtosuGame_badge_RunTask kind:function(arm,size=0x48) addr:0x0208e624
+OtosuGame_badge_UpdateTouch kind:function(arm,size=0x6c) addr:0x0208b6a0 local
+OtosuGame_badge_ApplyFriction kind:function(arm,size=0x5c) addr:0x0208b70c local
+OtosuGame_badge_StartWarp kind:function(arm,size=0x60) addr:0x0208b768 local
+OtosuGame_badge_StartFall kind:function(arm,size=0x2c) addr:0x0208b7c8 local
+OtosuGame_badge_KnockOut kind:function(arm,size=0x78) addr:0x0208b7f4 local
+OtosuGame_badge_Respawn kind:function(arm,size=0xac) addr:0x0208b86c local
+OtosuGame_badge_Jump kind:function(arm,size=0x34) addr:0x0208b918 local
+OtosuGame_badge_UpdateMotion kind:function(arm,size=0x9e0) addr:0x0208b94c local
+OtosuGame_badge_StartNeedle kind:function(arm,size=0x68) addr:0x0208c32c local
+OtosuGame_badge_StartHammer kind:function(arm,size=0x80) addr:0x0208c394 local
+OtosuGame_badge_StartMeteo kind:function(arm,size=0x3c) addr:0x0208c414 local
+OtosuGame_badge_StartHand kind:function(arm,size=0xb0) addr:0x0208c450 local
+OtosuGame_badge_HandlePlayerInput kind:function(arm,size=0x2ec) addr:0x0208c500 local
+OtosuGame_badge_LaunchToward kind:function(arm,size=0xa8) addr:0x0208c7ec local
+OtosuGame_badge_FindTileNearby kind:function(arm,size=0x20c) addr:0x0208c894 local
+OtuBoard_IsSameCell kind:function(arm,size=0x44) addr:0x0208caa0 local
+OtosuGame_badge_AI_SeekTile kind:function(arm,size=0xf0) addr:0x0208cae4 local
+OtosuGame_badge_AI_UseHand kind:function(arm,size=0x40) addr:0x0208cbd4 local
+OtosuGame_badge_AI_AvoidHole kind:function(arm,size=0xac) addr:0x0208cc14 local
+OtosuGame_badge_AI_ChaseStunned kind:function(arm,size=0xb8) addr:0x0208ccc0 local
+OtosuGame_badge_AI_DodgeNeedle kind:function(arm,size=0xa0) addr:0x0208cd78 local
+OtosuGame_badge_AI_CounterNeedle kind:function(arm,size=0x90) addr:0x0208ce18 local
+OtosuGame_badge_AI_CounterHammer kind:function(arm,size=0x7c) addr:0x0208cea8 local
+OtosuGame_badge_AI_CounterMeteo kind:function(arm,size=0x90) addr:0x0208cf24 local
+OtosuGame_badge_AI_NeedleNearest kind:function(arm,size=0x90) addr:0x0208cfb4 local
+OtosuGame_badge_AI_HammerNearest kind:function(arm,size=0x90) addr:0x0208d044 local
+OtosuGame_badge_AI_MeteoNearest kind:function(arm,size=0x7c) addr:0x0208d0d4 local
+OtosuGame_badge_AI_ChaseNearest kind:function(arm,size=0xb8) addr:0x0208d150 local
+OtosuGame_badge_AI_Hide kind:function(arm,size=0x60) addr:0x0208d208 local
+OtosuGame_badge_AI_SeekHide kind:function(arm,size=0x20) addr:0x0208d268 local
+OtosuGame_badge_AI_SeekWarp kind:function(arm,size=0x20) addr:0x0208d288 local
+OtosuGame_badge_AI_SeekJumpPad kind:function(arm,size=0x20) addr:0x0208d2a8 local
+OtosuGame_badge_AI_SeekConveyor kind:function(arm,size=0x20) addr:0x0208d2c8 local
+OtosuGame_badge_AI_Pursue kind:function(arm,size=0xa0) addr:0x0208d2e8 local
+OtosuGame_badge_RunAI kind:function(arm,size=0x50) addr:0x0208d388 local
+OtosuGame_badge_UpdateWarp kind:function(arm,size=0x148) addr:0x0208d3d8 local
+OtosuGame_badge_UpdateFall kind:function(arm,size=0xe8) addr:0x0208d520 local
+OtosuGame_badge_UpdateKnockOut kind:function(arm,size=0x104) addr:0x0208d608 local
+OtosuGame_badge_UpdateRespawn kind:function(arm,size=0xd0) addr:0x0208d70c local
+OtosuGame_badge_UpdateNeedle kind:function(arm,size=0x34) addr:0x0208d7dc local
+OtosuGame_badge_UpdateHammer kind:function(arm,size=0x34) addr:0x0208d810 local
+OtosuGame_badge_UpdateMeteo kind:function(arm,size=0x388) addr:0x0208d844 local
+OtosuGame_badge_UpdateHand kind:function(arm,size=0xe8) addr:0x0208dbcc local
+OtosuGame_badge_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0208dcb4 local
+OtosuGame_badge_LoadSpriteA kind:function(arm,size=0x110) addr:0x0208dd78 local
+OtosuGame_badge_LoadSpriteB kind:function(arm,size=0x88) addr:0x0208de88 local
+OtosuGame_badge_LoadSpriteC kind:function(arm,size=0x88) addr:0x0208df10 local
+OtosuGame_badge_ResetState kind:function(arm,size=0x100) addr:0x0208df98 local
+OtosuGame_badge_Init kind:function(arm,size=0x108) addr:0x0208e098 local
+OtosuGame_badge_Update kind:function(arm,size=0x208) addr:0x0208e1a0 local
+OtosuGame_badge_RenderSprites kind:function(arm,size=0x88) addr:0x0208e3a8 local
+OtosuGame_badge_Render kind:function(arm,size=0xd0) addr:0x0208e430 local
+OtosuGame_badge_Destroy kind:function(arm,size=0x124) addr:0x0208e500 local
+OtosuGame_badge_RunTask kind:function(arm,size=0x48) addr:0x0208e624 local
 OtosuGame_badge_CreateTask kind:function(arm,size=0x27c) addr:0x0208e66c
-OtosuGame_badge_WillCollide kind:function(arm,size=0xc4) addr:0x0208e8e8
-OtosuGame_badge_ApplyImpulse kind:function(arm,size=0x68) addr:0x0208e9ac
-OtosuGame_badge_GetImpact kind:function(arm,size=0xd8) addr:0x0208ea14
-OtosuGame_badge_Bounce kind:function(arm,size=0x15c) addr:0x0208eaec
+OtosuGame_badge_WillCollide kind:function(arm,size=0xc4) addr:0x0208e8e8 local
+OtosuGame_badge_ApplyImpulse kind:function(arm,size=0x68) addr:0x0208e9ac local
+OtosuGame_badge_GetImpact kind:function(arm,size=0xd8) addr:0x0208ea14 local
+OtosuGame_badge_Bounce kind:function(arm,size=0x15c) addr:0x0208eaec local
 OtosuGame_badge_Collide kind:function(arm,size=0xf0) addr:0x0208ec48
 OtosuGame_badge_Separate kind:function(arm,size=0x188) addr:0x0208ed38
 OtosuGame_badge_CollideObstacle kind:function(arm,size=0x19c) addr:0x0208eec0
@@ -243,62 +243,62 @@ OtosuGame_badge_IsOutOfPins kind:function(arm,size=0x18) addr:0x0208fa38
 OtosuGame_badge_HideEntry kind:function(arm,size=0x28) addr:0x0208fa50
 OtosuGame_badge_ForgetPartner kind:function(arm,size=0x14) addr:0x0208fa78
 OtosuGame_badge_HidePoints kind:function(arm,size=0x30) addr:0x0208fa8c
-OtosuGame_shadow_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0208fabc
-OtosuGame_shadow_Load kind:function(arm,size=0xac) addr:0x0208fb80
-OtosuGame_shadow_Init kind:function(arm,size=0x4c) addr:0x0208fc2c
-OtosuGame_shadow_Update kind:function(arm,size=0x70) addr:0x0208fc78
-OtosuGame_shadow_Render kind:function(arm,size=0x50) addr:0x0208fce8
-OtosuGame_shadow_Destroy kind:function(arm,size=0x14) addr:0x0208fd38
-OtosuGame_shadow_RunTask kind:function(arm,size=0x48) addr:0x0208fd4c
+OtosuGame_shadow_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0208fabc local
+OtosuGame_shadow_Load kind:function(arm,size=0xac) addr:0x0208fb80 local
+OtosuGame_shadow_Init kind:function(arm,size=0x4c) addr:0x0208fc2c local
+OtosuGame_shadow_Update kind:function(arm,size=0x70) addr:0x0208fc78 local
+OtosuGame_shadow_Render kind:function(arm,size=0x50) addr:0x0208fce8 local
+OtosuGame_shadow_Destroy kind:function(arm,size=0x14) addr:0x0208fd38 local
+OtosuGame_shadow_RunTask kind:function(arm,size=0x48) addr:0x0208fd4c local
 OtosuGame_shadow_CreateTask kind:function(arm,size=0x34) addr:0x0208fd94
-OtosuGame_piyo_GetFrameInfo kind:function(arm,size=0xbc) addr:0x0208fdc8
-OtosuGame_piyo_Load kind:function(arm,size=0xac) addr:0x0208fe84
-OtosuGame_piyo_Init kind:function(arm,size=0x38) addr:0x0208ff30
-OtosuGame_piyo_Update kind:function(arm,size=0xec) addr:0x0208ff68
-OtosuGame_piyo_Render kind:function(arm,size=0x48) addr:0x02090054
-OtosuGame_piyo_Destroy kind:function(arm,size=0x14) addr:0x0209009c
-OtosuGame_piyo_RunTask kind:function(arm,size=0x48) addr:0x020900b0
+OtosuGame_piyo_GetFrameInfo kind:function(arm,size=0xbc) addr:0x0208fdc8 local
+OtosuGame_piyo_Load kind:function(arm,size=0xac) addr:0x0208fe84 local
+OtosuGame_piyo_Init kind:function(arm,size=0x38) addr:0x0208ff30 local
+OtosuGame_piyo_Update kind:function(arm,size=0xec) addr:0x0208ff68 local
+OtosuGame_piyo_Render kind:function(arm,size=0x48) addr:0x02090054 local
+OtosuGame_piyo_Destroy kind:function(arm,size=0x14) addr:0x0209009c local
+OtosuGame_piyo_RunTask kind:function(arm,size=0x48) addr:0x020900b0 local
 OtosuGame_piyo_CreateTask kind:function(arm,size=0x34) addr:0x020900f8
 OtosuGame_piyo_Start kind:function(arm,size=0x10) addr:0x0209012c
-OtosuGame_marker_GetFrameInfo kind:function(arm,size=0xc0) addr:0x0209013c
-OtosuGame_marker_Load kind:function(arm,size=0x8c) addr:0x020901fc
-OtosuGame_marker_Init kind:function(arm,size=0x38) addr:0x02090288
-OtosuGame_marker_Update kind:function(arm,size=0x80) addr:0x020902c0
-OtosuGame_marker_Render kind:function(arm,size=0x48) addr:0x02090340
-OtosuGame_marker_Destroy kind:function(arm,size=0x14) addr:0x02090388
-OtosuGame_marker_RunTask kind:function(arm,size=0x48) addr:0x0209039c
+OtosuGame_marker_GetFrameInfo kind:function(arm,size=0xc0) addr:0x0209013c local
+OtosuGame_marker_Load kind:function(arm,size=0x8c) addr:0x020901fc local
+OtosuGame_marker_Init kind:function(arm,size=0x38) addr:0x02090288 local
+OtosuGame_marker_Update kind:function(arm,size=0x80) addr:0x020902c0 local
+OtosuGame_marker_Render kind:function(arm,size=0x48) addr:0x02090340 local
+OtosuGame_marker_Destroy kind:function(arm,size=0x14) addr:0x02090388 local
+OtosuGame_marker_RunTask kind:function(arm,size=0x48) addr:0x0209039c local
 OtosuGame_marker_CreateTask kind:function(arm,size=0x34) addr:0x020903e4
-OtosuGame_meteo_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02090418
-OtosuGame_meteo_Load kind:function(arm,size=0x8c) addr:0x020904dc
-OtosuGame_meteo_Init kind:function(arm,size=0x58) addr:0x02090568
-OtosuGame_meteo_Update kind:function(arm,size=0x154) addr:0x020905c0
-OtosuGame_meteo_Render kind:function(arm,size=0x50) addr:0x02090714
-OtosuGame_meteo_Destroy kind:function(arm,size=0x3c) addr:0x02090764
-OtosuGame_meteo_RunTask kind:function(arm,size=0x48) addr:0x020907a0
+OtosuGame_meteo_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02090418 local
+OtosuGame_meteo_Load kind:function(arm,size=0x8c) addr:0x020904dc local
+OtosuGame_meteo_Init kind:function(arm,size=0x58) addr:0x02090568 local
+OtosuGame_meteo_Update kind:function(arm,size=0x154) addr:0x020905c0 local
+OtosuGame_meteo_Render kind:function(arm,size=0x50) addr:0x02090714 local
+OtosuGame_meteo_Destroy kind:function(arm,size=0x3c) addr:0x02090764 local
+OtosuGame_meteo_RunTask kind:function(arm,size=0x48) addr:0x020907a0 local
 OtosuGame_meteo_CreateTask kind:function(arm,size=0x80) addr:0x020907e8
 OtosuGame_meteo_GetHitRecord kind:function(arm,size=0x1c) addr:0x02090868
 OtosuGame_meteo_Start kind:function(arm,size=0x34) addr:0x02090884
 OtosuGame_meteo_Impact kind:function(arm,size=0x38) addr:0x020908b8
 OtosuGame_meteo_Recover kind:function(arm,size=0x44) addr:0x020908f0
-OtosuGame_hammer_InitScaleCursor kind:function(arm,size=0x2c) addr:0x02090934
-OtosuGame_hammer_StepScaleCursor kind:function(arm,size=0x64) addr:0x02090960
-OtosuGame_hammer_GetScaleValue kind:function(arm,size=0x20) addr:0x020909c4
-OtosuGame_hammer_InitSpinCursor kind:function(arm,size=0x30) addr:0x020909e4
-OtosuGame_hammer_StepSpinCursor kind:function(arm,size=0x68) addr:0x02090a14
-OtosuGame_hammer_GetSpinValue kind:function(arm,size=0x28) addr:0x02090a7c
-OtosuGame_hammer_GetSpinScale kind:function(arm,size=0x2c) addr:0x02090aa4
-OtosuGame_hammer_InitTrailCursor kind:function(arm,size=0x30) addr:0x02090ad0
-OtosuGame_hammer_StepTrailCursor kind:function(arm,size=0x68) addr:0x02090b00
-OtosuGame_hammer_GetTrailValue kind:function(arm,size=0x28) addr:0x02090b68
-OtosuGame_hammer_GetFrameInfoSpriteA kind:function(arm,size=0xc4) addr:0x02090b90
-OtosuGame_hammer_GetFrameInfoSpriteB kind:function(arm,size=0xc4) addr:0x02090c54
-OtosuGame_hammer_LoadSpriteA kind:function(arm,size=0x8c) addr:0x02090d18
-OtosuGame_hammer_LoadSpriteB kind:function(arm,size=0x8c) addr:0x02090da4
-OtosuGame_hammer_Init kind:function(arm,size=0xa4) addr:0x02090e30
-OtosuGame_hammer_Update kind:function(arm,size=0x7a0) addr:0x02090ed4
-OtosuGame_hammer_Render kind:function(arm,size=0xa4) addr:0x02091674
-OtosuGame_hammer_Destroy kind:function(arm,size=0x44) addr:0x02091718
-OtosuGame_hammer_RunTask kind:function(arm,size=0x48) addr:0x0209175c
+OtosuGame_hammer_InitScaleCursor kind:function(arm,size=0x2c) addr:0x02090934 local
+OtosuGame_hammer_StepScaleCursor kind:function(arm,size=0x64) addr:0x02090960 local
+OtosuGame_hammer_GetScaleValue kind:function(arm,size=0x20) addr:0x020909c4 local
+OtosuGame_hammer_InitSpinCursor kind:function(arm,size=0x30) addr:0x020909e4 local
+OtosuGame_hammer_StepSpinCursor kind:function(arm,size=0x68) addr:0x02090a14 local
+OtosuGame_hammer_GetSpinValue kind:function(arm,size=0x28) addr:0x02090a7c local
+OtosuGame_hammer_GetSpinScale kind:function(arm,size=0x2c) addr:0x02090aa4 local
+OtosuGame_hammer_InitTrailCursor kind:function(arm,size=0x30) addr:0x02090ad0 local
+OtosuGame_hammer_StepTrailCursor kind:function(arm,size=0x68) addr:0x02090b00 local
+OtosuGame_hammer_GetTrailValue kind:function(arm,size=0x28) addr:0x02090b68 local
+OtosuGame_hammer_GetFrameInfoSpriteA kind:function(arm,size=0xc4) addr:0x02090b90 local
+OtosuGame_hammer_GetFrameInfoSpriteB kind:function(arm,size=0xc4) addr:0x02090c54 local
+OtosuGame_hammer_LoadSpriteA kind:function(arm,size=0x8c) addr:0x02090d18 local
+OtosuGame_hammer_LoadSpriteB kind:function(arm,size=0x8c) addr:0x02090da4 local
+OtosuGame_hammer_Init kind:function(arm,size=0xa4) addr:0x02090e30 local
+OtosuGame_hammer_Update kind:function(arm,size=0x7a0) addr:0x02090ed4 local
+OtosuGame_hammer_Render kind:function(arm,size=0xa4) addr:0x02091674 local
+OtosuGame_hammer_Destroy kind:function(arm,size=0x44) addr:0x02091718 local
+OtosuGame_hammer_RunTask kind:function(arm,size=0x48) addr:0x0209175c local
 OtosuGame_hammer_CreateTask kind:function(arm,size=0x80) addr:0x020917a4
 OtosuGame_hammer_GetHitRecord kind:function(arm,size=0x178) addr:0x02091824
 OtosuGame_hammer_IsActive kind:function(arm,size=0x14) addr:0x0209199c
@@ -306,237 +306,237 @@ OtosuGame_hammer_Start kind:function(arm,size=0x24) addr:0x020919b0
 OtosuGame_hammer_EndSwing kind:function(arm,size=0x14) addr:0x020919d4
 OtosuGame_hammer_GetAngle kind:function(arm,size=0x10) addr:0x020919e8
 OtosuGame_hammer_Shatter kind:function(arm,size=0xa8) addr:0x020919f8
-OtosuGame_needle_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02091aa0
-OtosuGame_needle_Load kind:function(arm,size=0x8c) addr:0x02091b64
-OtosuGame_needle_Init kind:function(arm,size=0x60) addr:0x02091bf0
-OtosuGame_needle_Update kind:function(arm,size=0x208) addr:0x02091c50
-OtosuGame_needle_Render kind:function(arm,size=0x54) addr:0x02091e58
-OtosuGame_needle_Destroy kind:function(arm,size=0x3c) addr:0x02091eac
-OtosuGame_needle_RunTask kind:function(arm,size=0x48) addr:0x02091ee8
+OtosuGame_needle_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02091aa0 local
+OtosuGame_needle_Load kind:function(arm,size=0x8c) addr:0x02091b64 local
+OtosuGame_needle_Init kind:function(arm,size=0x60) addr:0x02091bf0 local
+OtosuGame_needle_Update kind:function(arm,size=0x208) addr:0x02091c50 local
+OtosuGame_needle_Render kind:function(arm,size=0x54) addr:0x02091e58 local
+OtosuGame_needle_Destroy kind:function(arm,size=0x3c) addr:0x02091eac local
+OtosuGame_needle_RunTask kind:function(arm,size=0x48) addr:0x02091ee8 local
 OtosuGame_needle_CreateTask kind:function(arm,size=0x80) addr:0x02091f30
 OtosuGame_needle_GetHitRecord kind:function(arm,size=0x2c) addr:0x02091fb0
 OtosuGame_needle_Start kind:function(arm,size=0x14) addr:0x02091fdc
 OtosuGame_needle_EndHold kind:function(arm,size=0x14) addr:0x02091ff0
 OtosuGame_needle_IsActive kind:function(arm,size=0x14) addr:0x02092004
 OtosuGame_needle_Shatter kind:function(arm,size=0x34) addr:0x02092018
-OtosuGame_hand_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0209204c
-OtosuGame_hand_Load kind:function(arm,size=0x8c) addr:0x02092110
-OtosuGame_hand_Init kind:function(arm,size=0x54) addr:0x0209219c
-OtosuGame_hand_Update kind:function(arm,size=0x1e0) addr:0x020921f0
-OtosuGame_hand_Render kind:function(arm,size=0x48) addr:0x020923d0
-OtosuGame_hand_Destroy kind:function(arm,size=0x14) addr:0x02092418
-OtosuGame_hand_RunTask kind:function(arm,size=0x48) addr:0x0209242c
+OtosuGame_hand_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0209204c local
+OtosuGame_hand_Load kind:function(arm,size=0x8c) addr:0x02092110 local
+OtosuGame_hand_Init kind:function(arm,size=0x54) addr:0x0209219c local
+OtosuGame_hand_Update kind:function(arm,size=0x1e0) addr:0x020921f0 local
+OtosuGame_hand_Render kind:function(arm,size=0x48) addr:0x020923d0 local
+OtosuGame_hand_Destroy kind:function(arm,size=0x14) addr:0x02092418 local
+OtosuGame_hand_RunTask kind:function(arm,size=0x48) addr:0x0209242c local
 OtosuGame_hand_CreateTask kind:function(arm,size=0x34) addr:0x02092474
 OtosuGame_hand_Start kind:function(arm,size=0xc) addr:0x020924a8
-OtosuGame_floor_FillTileBlock kind:function(arm,size=0x58) addr:0x020924b4
-OtosuGame_floor_Init kind:function(arm,size=0x5bc) addr:0x0209250c
-OtosuGame_floor_Update kind:function(arm,size=0xa0) addr:0x02092ac8
-OtosuGame_floor_Render kind:function(arm,size=0x8) addr:0x02092b68
-OtosuGame_floor_Destroy kind:function(arm,size=0xcc) addr:0x02092b70
-OtosuGame_floor_RunTask kind:function(arm,size=0x48) addr:0x02092c3c
+OtosuGame_floor_FillTileBlock kind:function(arm,size=0x58) addr:0x020924b4 local
+OtosuGame_floor_Init kind:function(arm,size=0x5bc) addr:0x0209250c local
+OtosuGame_floor_Update kind:function(arm,size=0xa0) addr:0x02092ac8 local
+OtosuGame_floor_Render kind:function(arm,size=0x8) addr:0x02092b68 local
+OtosuGame_floor_Destroy kind:function(arm,size=0xcc) addr:0x02092b70 local
+OtosuGame_floor_RunTask kind:function(arm,size=0x48) addr:0x02092c3c local
 OtosuGame_floor_CreateTask kind:function(arm,size=0x38) addr:0x02092c84
 OtosuGame_floor_SetScroll kind:function(arm,size=0x6c) addr:0x02092cbc
 OtosuGame_floor_Refresh kind:function(arm,size=0x14) addr:0x02092d28
-OtosuGame_obstacle_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02092d3c
-OtosuGame_obstacle_Load kind:function(arm,size=0x108) addr:0x02092df8
-OtosuGame_obstacle_Init kind:function(arm,size=0x7c) addr:0x02092f00
-OtosuGame_obstacle_Update kind:function(arm,size=0x50) addr:0x02092f7c
-OtosuGame_obstacle_Render kind:function(arm,size=0x3c) addr:0x02092fcc
-OtosuGame_obstacle_Destroy kind:function(arm,size=0x14) addr:0x02093008
-OtosuGame_obstacle_RunTask kind:function(arm,size=0x48) addr:0x0209301c
+OtosuGame_obstacle_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02092d3c local
+OtosuGame_obstacle_Load kind:function(arm,size=0x108) addr:0x02092df8 local
+OtosuGame_obstacle_Init kind:function(arm,size=0x7c) addr:0x02092f00 local
+OtosuGame_obstacle_Update kind:function(arm,size=0x50) addr:0x02092f7c local
+OtosuGame_obstacle_Render kind:function(arm,size=0x3c) addr:0x02092fcc local
+OtosuGame_obstacle_Destroy kind:function(arm,size=0x14) addr:0x02093008 local
+OtosuGame_obstacle_RunTask kind:function(arm,size=0x48) addr:0x0209301c local
 OtosuGame_obstacle_CreateTask kind:function(arm,size=0x40) addr:0x02093064
 OtosuGame_obstacle_SetOrigin kind:function(arm,size=0x14) addr:0x020930a4
 OtosuGame_obstacle_GetPos kind:function(arm,size=0x14) addr:0x020930b8
 OtosuGame_obstacle_GetScale kind:function(arm,size=0x8) addr:0x020930cc
 OtosuGame_obstacle_PlayHit kind:function(arm,size=0xc) addr:0x020930d4
-OtosuGame_bg_LoadLayer kind:function(arm,size=0x280) addr:0x020930e0
-OtosuGame_bg_Init kind:function(arm,size=0x8c) addr:0x02093360
-OtosuGame_bg_Update kind:function(arm,size=0x178) addr:0x020933ec
-OtosuGame_bg_Render kind:function(arm,size=0x8) addr:0x02093564
-OtosuGame_bg_Destroy kind:function(arm,size=0x94) addr:0x0209356c
-OtosuGame_bg_RunTask kind:function(arm,size=0x48) addr:0x02093600
+OtosuGame_bg_LoadLayer kind:function(arm,size=0x280) addr:0x020930e0 local
+OtosuGame_bg_Init kind:function(arm,size=0x8c) addr:0x02093360 local
+OtosuGame_bg_Update kind:function(arm,size=0x178) addr:0x020933ec local
+OtosuGame_bg_Render kind:function(arm,size=0x8) addr:0x02093564 local
+OtosuGame_bg_Destroy kind:function(arm,size=0x94) addr:0x0209356c local
+OtosuGame_bg_RunTask kind:function(arm,size=0x48) addr:0x02093600 local
 OtosuGame_bg_CreateTask kind:function(arm,size=0x38) addr:0x02093648
 OtosuGame_bg_SetScroll kind:function(arm,size=0xf8) addr:0x02093680
 OtosuGame_bg_Refresh kind:function(arm,size=0x2c) addr:0x02093778
-OtosuGame_ovbg_BuildScreen kind:function(arm,size=0x158) addr:0x020937a4
-OtosuGame_ovbg_Init kind:function(arm,size=0x438) addr:0x020938fc
-OtosuGame_ovbg_Update kind:function(arm,size=0x30) addr:0x02093d34
-OtosuGame_ovbg_Render kind:function(arm,size=0x8) addr:0x02093d64
-OtosuGame_ovbg_Destroy kind:function(arm,size=0x68) addr:0x02093d6c
-OtosuGame_ovbg_RunTask kind:function(arm,size=0x48) addr:0x02093dd4
+OtosuGame_ovbg_BuildScreen kind:function(arm,size=0x158) addr:0x020937a4 local
+OtosuGame_ovbg_Init kind:function(arm,size=0x438) addr:0x020938fc local
+OtosuGame_ovbg_Update kind:function(arm,size=0x30) addr:0x02093d34 local
+OtosuGame_ovbg_Render kind:function(arm,size=0x8) addr:0x02093d64 local
+OtosuGame_ovbg_Destroy kind:function(arm,size=0x68) addr:0x02093d6c local
+OtosuGame_ovbg_RunTask kind:function(arm,size=0x48) addr:0x02093dd4 local
 OtosuGame_ovbg_CreateTask kind:function(arm,size=0x38) addr:0x02093e1c
 OtosuGame_ovbg_StartPaletteAnim kind:function(arm,size=0x4c) addr:0x02093e54
-OtosuGame_badgeradar_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02093ea0
-OtosuGame_badgeradar_Load kind:function(arm,size=0x94) addr:0x02093f48
-OtosuGame_badgeradar_Init kind:function(arm,size=0x50) addr:0x02093fdc
-OtosuGame_badgeradar_Update kind:function(arm,size=0xe8) addr:0x0209402c
-OtosuGame_badgeradar_Render kind:function(arm,size=0x3c) addr:0x02094114
-OtosuGame_badgeradar_Destroy kind:function(arm,size=0x18) addr:0x02094150
-OtosuGame_badgeradar_RunTask kind:function(arm,size=0x48) addr:0x02094168
+OtosuGame_badgeradar_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02093ea0 local
+OtosuGame_badgeradar_Load kind:function(arm,size=0x94) addr:0x02093f48 local
+OtosuGame_badgeradar_Init kind:function(arm,size=0x50) addr:0x02093fdc local
+OtosuGame_badgeradar_Update kind:function(arm,size=0xe8) addr:0x0209402c local
+OtosuGame_badgeradar_Render kind:function(arm,size=0x3c) addr:0x02094114 local
+OtosuGame_badgeradar_Destroy kind:function(arm,size=0x18) addr:0x02094150 local
+OtosuGame_badgeradar_RunTask kind:function(arm,size=0x48) addr:0x02094168 local
 OtosuGame_badgeradar_CreateTask kind:function(arm,size=0x48) addr:0x020941b0
-OtosuGame_badgecount_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020941f8
-OtosuGame_badgecount_LoadSpriteA kind:function(arm,size=0x84) addr:0x020942a0
-OtosuGame_badgecount_LoadSpriteB kind:function(arm,size=0x80) addr:0x02094324
-OtosuGame_badgecount_LoadDigit kind:function(arm,size=0xd8) addr:0x020943a4
-OtosuGame_badgecount_Init kind:function(arm,size=0x90) addr:0x0209447c
-OtosuGame_badgecount_Update kind:function(arm,size=0x28) addr:0x0209450c
-OtosuGame_badgecount_Render kind:function(arm,size=0x84) addr:0x02094534
-OtosuGame_badgecount_Destroy kind:function(arm,size=0x4c) addr:0x020945b8
-OtosuGame_badgecount_RunTask kind:function(arm,size=0x48) addr:0x02094604
+OtosuGame_badgecount_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020941f8 local
+OtosuGame_badgecount_LoadSpriteA kind:function(arm,size=0x84) addr:0x020942a0 local
+OtosuGame_badgecount_LoadSpriteB kind:function(arm,size=0x80) addr:0x02094324 local
+OtosuGame_badgecount_LoadDigit kind:function(arm,size=0xd8) addr:0x020943a4 local
+OtosuGame_badgecount_Init kind:function(arm,size=0x90) addr:0x0209447c local
+OtosuGame_badgecount_Update kind:function(arm,size=0x28) addr:0x0209450c local
+OtosuGame_badgecount_Render kind:function(arm,size=0x84) addr:0x02094534 local
+OtosuGame_badgecount_Destroy kind:function(arm,size=0x4c) addr:0x020945b8 local
+OtosuGame_badgecount_RunTask kind:function(arm,size=0x48) addr:0x02094604 local
 OtosuGame_badgecount_CreateTask kind:function(arm,size=0x40) addr:0x0209464c
 OtosuGame_badgecount_ShowPinCount kind:function(arm,size=0x50) addr:0x0209468c
 OtosuGame_badgecount_SetValue kind:function(arm,size=0xd4) addr:0x020946dc
-OtosuGame_timer_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020947b0
-OtosuGame_timer_Load kind:function(arm,size=0x8c) addr:0x02094858
-OtosuGame_timer_Init kind:function(arm,size=0x5c) addr:0x020948e4
-OtosuGame_timer_Update kind:function(arm,size=0x150) addr:0x02094940
-OtosuGame_timer_Render kind:function(arm,size=0x3c) addr:0x02094a90
-OtosuGame_timer_Destroy kind:function(arm,size=0x30) addr:0x02094acc
-OtosuGame_timer_RunTask kind:function(arm,size=0x48) addr:0x02094afc
+OtosuGame_timer_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020947b0 local
+OtosuGame_timer_Load kind:function(arm,size=0x8c) addr:0x02094858 local
+OtosuGame_timer_Init kind:function(arm,size=0x5c) addr:0x020948e4 local
+OtosuGame_timer_Update kind:function(arm,size=0x150) addr:0x02094940 local
+OtosuGame_timer_Render kind:function(arm,size=0x3c) addr:0x02094a90 local
+OtosuGame_timer_Destroy kind:function(arm,size=0x30) addr:0x02094acc local
+OtosuGame_timer_RunTask kind:function(arm,size=0x48) addr:0x02094afc local
 OtosuGame_timer_CreateTask kind:function(arm,size=0x34) addr:0x02094b44
 OtosuGame_timer_GetCountdown kind:function(arm,size=0x8) addr:0x02094b78
 OtosuGame_timer_IsAlarmed kind:function(arm,size=0x8) addr:0x02094b80
-OtosuGame_specialgauge_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02094b88
-OtosuGame_specialgauge_LoadDial kind:function(arm,size=0x70) addr:0x02094c30
-OtosuGame_specialgauge_LoadPlate kind:function(arm,size=0x70) addr:0x02094ca0
-OtosuGame_specialgauge_LoadCell kind:function(arm,size=0x7c) addr:0x02094d10
-OtosuGame_specialgauge_LoadDigit kind:function(arm,size=0xa4) addr:0x02094d8c
-OtosuGame_specialgauge_Init kind:function(arm,size=0x10c) addr:0x02094e30
-OtosuGame_specialgauge_Update kind:function(arm,size=0x32c) addr:0x02094f3c
-OtosuGame_specialgauge_Render kind:function(arm,size=0x100) addr:0x02095268
-OtosuGame_specialgauge_Destroy kind:function(arm,size=0x78) addr:0x02095368
-OtosuGame_specialgauge_RunTask kind:function(arm,size=0x48) addr:0x020953e0
+OtosuGame_specialgauge_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02094b88 local
+OtosuGame_specialgauge_LoadDial kind:function(arm,size=0x70) addr:0x02094c30 local
+OtosuGame_specialgauge_LoadPlate kind:function(arm,size=0x70) addr:0x02094ca0 local
+OtosuGame_specialgauge_LoadCell kind:function(arm,size=0x7c) addr:0x02094d10 local
+OtosuGame_specialgauge_LoadDigit kind:function(arm,size=0xa4) addr:0x02094d8c local
+OtosuGame_specialgauge_Init kind:function(arm,size=0x10c) addr:0x02094e30 local
+OtosuGame_specialgauge_Update kind:function(arm,size=0x32c) addr:0x02094f3c local
+OtosuGame_specialgauge_Render kind:function(arm,size=0x100) addr:0x02095268 local
+OtosuGame_specialgauge_Destroy kind:function(arm,size=0x78) addr:0x02095368 local
+OtosuGame_specialgauge_RunTask kind:function(arm,size=0x48) addr:0x020953e0 local
 OtosuGame_specialgauge_CreateTask kind:function(arm,size=0x34) addr:0x02095428
-OtosuGame_spark_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0209545c
-OtosuGame_spark_Load kind:function(arm,size=0xa4) addr:0x02095520
-OtosuGame_spark_Init kind:function(arm,size=0x58) addr:0x020955c4
-OtosuGame_spark_Update kind:function(arm,size=0x104) addr:0x0209561c
-OtosuGame_spark_Render kind:function(arm,size=0x50) addr:0x02095720
-OtosuGame_spark_Destroy kind:function(arm,size=0x14) addr:0x02095770
-OtosuGame_spark_RunTask kind:function(arm,size=0x48) addr:0x02095784
+OtosuGame_spark_GetFrameInfo kind:function(arm,size=0xc4) addr:0x0209545c local
+OtosuGame_spark_Load kind:function(arm,size=0xa4) addr:0x02095520 local
+OtosuGame_spark_Init kind:function(arm,size=0x58) addr:0x020955c4 local
+OtosuGame_spark_Update kind:function(arm,size=0x104) addr:0x0209561c local
+OtosuGame_spark_Render kind:function(arm,size=0x50) addr:0x02095720 local
+OtosuGame_spark_Destroy kind:function(arm,size=0x14) addr:0x02095770 local
+OtosuGame_spark_RunTask kind:function(arm,size=0x48) addr:0x02095784 local
 OtosuGame_spark_CreateTask kind:function(arm,size=0x30) addr:0x020957cc
 OtosuGame_spark_SetOrigin kind:function(arm,size=0x14) addr:0x020957fc
 OtosuGame_spark_Start kind:function(arm,size=0x158) addr:0x02095810
-OtosuGame_slash_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02095968
-OtosuGame_slash_Load kind:function(arm,size=0x8c) addr:0x02095a2c
-OtosuGame_slash_Init kind:function(arm,size=0x50) addr:0x02095ab8
-OtosuGame_slash_Update kind:function(arm,size=0x230) addr:0x02095b08
-OtosuGame_slash_Render kind:function(arm,size=0x48) addr:0x02095d38
-OtosuGame_slash_Destroy kind:function(arm,size=0x14) addr:0x02095d80
-OtosuGame_slash_RunTask kind:function(arm,size=0x48) addr:0x02095d94
+OtosuGame_slash_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02095968 local
+OtosuGame_slash_Load kind:function(arm,size=0x8c) addr:0x02095a2c local
+OtosuGame_slash_Init kind:function(arm,size=0x50) addr:0x02095ab8 local
+OtosuGame_slash_Update kind:function(arm,size=0x230) addr:0x02095b08 local
+OtosuGame_slash_Render kind:function(arm,size=0x48) addr:0x02095d38 local
+OtosuGame_slash_Destroy kind:function(arm,size=0x14) addr:0x02095d80 local
+OtosuGame_slash_RunTask kind:function(arm,size=0x48) addr:0x02095d94 local
 OtosuGame_slash_CreateTask kind:function(arm,size=0x34) addr:0x02095ddc
-OtosuGame_track_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02095e10
-OtosuGame_track_Load kind:function(arm,size=0x9c) addr:0x02095ecc
-OtosuGame_track_Init kind:function(arm,size=0x44) addr:0x02095f68
-OtosuGame_track_Update kind:function(arm,size=0x6c) addr:0x02095fac
-OtosuGame_track_Render kind:function(arm,size=0x4c) addr:0x02096018
-OtosuGame_track_Destroy kind:function(arm,size=0x18) addr:0x02096064
-OtosuGame_track_RunTask kind:function(arm,size=0x48) addr:0x0209607c
+OtosuGame_track_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02095e10 local
+OtosuGame_track_Load kind:function(arm,size=0x9c) addr:0x02095ecc local
+OtosuGame_track_Init kind:function(arm,size=0x44) addr:0x02095f68 local
+OtosuGame_track_Update kind:function(arm,size=0x6c) addr:0x02095fac local
+OtosuGame_track_Render kind:function(arm,size=0x4c) addr:0x02096018 local
+OtosuGame_track_Destroy kind:function(arm,size=0x18) addr:0x02096064 local
+OtosuGame_track_RunTask kind:function(arm,size=0x48) addr:0x0209607c local
 OtosuGame_track_CreateTask kind:function(arm,size=0x38) addr:0x020960c4
 OtosuGame_track_Place kind:function(arm,size=0x120) addr:0x020960fc
-OtosuGame_point_GetFrameInfo kind:function(arm,size=0xbc) addr:0x0209621c
-OtosuGame_point_Load kind:function(arm,size=0xb4) addr:0x020962d8
-OtosuGame_point_Init kind:function(arm,size=0x60) addr:0x0209638c
-OtosuGame_point_Update kind:function(arm,size=0xf4) addr:0x020963ec
-OtosuGame_point_Render kind:function(arm,size=0xc0) addr:0x020964e0
-OtosuGame_point_Destroy kind:function(arm,size=0x2c) addr:0x020965a0
-OtosuGame_point_RunTask kind:function(arm,size=0x48) addr:0x020965cc
+OtosuGame_point_GetFrameInfo kind:function(arm,size=0xbc) addr:0x0209621c local
+OtosuGame_point_Load kind:function(arm,size=0xb4) addr:0x020962d8 local
+OtosuGame_point_Init kind:function(arm,size=0x60) addr:0x0209638c local
+OtosuGame_point_Update kind:function(arm,size=0xf4) addr:0x020963ec local
+OtosuGame_point_Render kind:function(arm,size=0xc0) addr:0x020964e0 local
+OtosuGame_point_Destroy kind:function(arm,size=0x2c) addr:0x020965a0 local
+OtosuGame_point_RunTask kind:function(arm,size=0x48) addr:0x020965cc local
 OtosuGame_point_CreateTask kind:function(arm,size=0x34) addr:0x02096614
 OtosuGame_point_Show kind:function(arm,size=0x108) addr:0x02096648
 OtosuGame_point_Hide kind:function(arm,size=0x10) addr:0x02096750
-OtosuGame_entry_GetFrameInfo kind:function(arm,size=0xb8) addr:0x02096760
-OtosuGame_entry_Load kind:function(arm,size=0x74) addr:0x02096818
-OtosuGame_entry_Init kind:function(arm,size=0x40) addr:0x0209688c
-OtosuGame_entry_Update kind:function(arm,size=0x8c) addr:0x020968cc
-OtosuGame_entry_Render kind:function(arm,size=0xd8) addr:0x02096958
-OtosuGame_entry_Destroy kind:function(arm,size=0x20) addr:0x02096a30
-OtosuGame_entry_RunTask kind:function(arm,size=0x48) addr:0x02096a50
+OtosuGame_entry_GetFrameInfo kind:function(arm,size=0xb8) addr:0x02096760 local
+OtosuGame_entry_Load kind:function(arm,size=0x74) addr:0x02096818 local
+OtosuGame_entry_Init kind:function(arm,size=0x40) addr:0x0209688c local
+OtosuGame_entry_Update kind:function(arm,size=0x8c) addr:0x020968cc local
+OtosuGame_entry_Render kind:function(arm,size=0xd8) addr:0x02096958 local
+OtosuGame_entry_Destroy kind:function(arm,size=0x20) addr:0x02096a30 local
+OtosuGame_entry_RunTask kind:function(arm,size=0x48) addr:0x02096a50 local
 OtosuGame_entry_CreateTask kind:function(arm,size=0x30) addr:0x02096a98
 OtosuGame_entry_Show kind:function(arm,size=0x11c) addr:0x02096ac8
 OtosuGame_entry_Hide kind:function(arm,size=0x10) addr:0x02096be4
-OtosuGame_dead_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02096bf4
-OtosuGame_dead_Load kind:function(arm,size=0x8c) addr:0x02096cb0
-OtosuGame_dead_Init kind:function(arm,size=0x3c) addr:0x02096d3c
-OtosuGame_dead_Update kind:function(arm,size=0xa0) addr:0x02096d78
-OtosuGame_dead_Render kind:function(arm,size=0x48) addr:0x02096e18
-OtosuGame_dead_Destroy kind:function(arm,size=0x14) addr:0x02096e60
-OtosuGame_dead_RunTask kind:function(arm,size=0x48) addr:0x02096e74
+OtosuGame_dead_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02096bf4 local
+OtosuGame_dead_Load kind:function(arm,size=0x8c) addr:0x02096cb0 local
+OtosuGame_dead_Init kind:function(arm,size=0x3c) addr:0x02096d3c local
+OtosuGame_dead_Update kind:function(arm,size=0xa0) addr:0x02096d78 local
+OtosuGame_dead_Render kind:function(arm,size=0x48) addr:0x02096e18 local
+OtosuGame_dead_Destroy kind:function(arm,size=0x14) addr:0x02096e60 local
+OtosuGame_dead_RunTask kind:function(arm,size=0x48) addr:0x02096e74 local
 OtosuGame_dead_CreateTask kind:function(arm,size=0x34) addr:0x02096ebc
 OtosuGame_dead_Start kind:function(arm,size=0x20) addr:0x02096ef0
-OtosuGame_gameover_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02096f10
-OtosuGame_gameover_GetFrameInfoSprite0 kind:function(arm,size=0xb8) addr:0x02096fd4
-OtosuGame_gameover_LoadSprite0 kind:function(arm,size=0x74) addr:0x0209708c
-OtosuGame_gameover_LoadSprite1 kind:function(arm,size=0x74) addr:0x02097100
-OtosuGame_gameover_LoadSprite2 kind:function(arm,size=0x74) addr:0x02097174
-OtosuGame_gameover_Init kind:function(arm,size=0x4c) addr:0x020971e8
-OtosuGame_gameover_Update kind:function(arm,size=0x13c) addr:0x02097234
-OtosuGame_gameover_Render kind:function(arm,size=0xb4) addr:0x02097370
-OtosuGame_gameover_Destroy kind:function(arm,size=0x20) addr:0x02097424
-OtosuGame_gameover_RunTask kind:function(arm,size=0x48) addr:0x02097444
+OtosuGame_gameover_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02096f10 local
+OtosuGame_gameover_GetFrameInfoSprite0 kind:function(arm,size=0xb8) addr:0x02096fd4 local
+OtosuGame_gameover_LoadSprite0 kind:function(arm,size=0x74) addr:0x0209708c local
+OtosuGame_gameover_LoadSprite1 kind:function(arm,size=0x74) addr:0x02097100 local
+OtosuGame_gameover_LoadSprite2 kind:function(arm,size=0x74) addr:0x02097174 local
+OtosuGame_gameover_Init kind:function(arm,size=0x4c) addr:0x020971e8 local
+OtosuGame_gameover_Update kind:function(arm,size=0x13c) addr:0x02097234 local
+OtosuGame_gameover_Render kind:function(arm,size=0xb4) addr:0x02097370 local
+OtosuGame_gameover_Destroy kind:function(arm,size=0x20) addr:0x02097424 local
+OtosuGame_gameover_RunTask kind:function(arm,size=0x48) addr:0x02097444 local
 OtosuGame_gameover_CreateTask kind:function(arm,size=0x30) addr:0x0209748c
 OtosuGame_gameover_Show kind:function(arm,size=0xfc) addr:0x020974bc
 OtosuGame_gameover_IsActive kind:function(arm,size=0x14) addr:0x020975b8
-OtosuGame_wricon_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020975cc
-OtosuGame_wricon_Load kind:function(arm,size=0x70) addr:0x02097674
-OtosuGame_wricon_Init kind:function(arm,size=0x28) addr:0x020976e4
-OtosuGame_wricon_Update kind:function(arm,size=0x8) addr:0x0209770c
-OtosuGame_wricon_Render kind:function(arm,size=0x4c) addr:0x02097714
-OtosuGame_wricon_Destroy kind:function(arm,size=0x18) addr:0x02097760
-OtosuGame_wricon_RunTask kind:function(arm,size=0x48) addr:0x02097778
+OtosuGame_wricon_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020975cc local
+OtosuGame_wricon_Load kind:function(arm,size=0x70) addr:0x02097674 local
+OtosuGame_wricon_Init kind:function(arm,size=0x28) addr:0x020976e4 local
+OtosuGame_wricon_Update kind:function(arm,size=0x8) addr:0x0209770c local
+OtosuGame_wricon_Render kind:function(arm,size=0x4c) addr:0x02097714 local
+OtosuGame_wricon_Destroy kind:function(arm,size=0x18) addr:0x02097760 local
+OtosuGame_wricon_RunTask kind:function(arm,size=0x48) addr:0x02097778 local
 OtosuGame_wricon_CreateTask kind:function(arm,size=0x30) addr:0x020977c0
-OtosuGame_meteohahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x020977f0
-OtosuGame_meteohahen_Load kind:function(arm,size=0x8c) addr:0x020978b4
-OtosuGame_meteohahen_Init kind:function(arm,size=0x60) addr:0x02097940
-OtosuGame_meteohahen_Update kind:function(arm,size=0x134) addr:0x020979a0
-OtosuGame_meteohahen_Render kind:function(arm,size=0x50) addr:0x02097ad4
-OtosuGame_meteohahen_Destroy kind:function(arm,size=0x14) addr:0x02097b24
-OtosuGame_meteohahen_RunTask kind:function(arm,size=0x48) addr:0x02097b38
+OtosuGame_meteohahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x020977f0 local
+OtosuGame_meteohahen_Load kind:function(arm,size=0x8c) addr:0x020978b4 local
+OtosuGame_meteohahen_Init kind:function(arm,size=0x60) addr:0x02097940 local
+OtosuGame_meteohahen_Update kind:function(arm,size=0x134) addr:0x020979a0 local
+OtosuGame_meteohahen_Render kind:function(arm,size=0x50) addr:0x02097ad4 local
+OtosuGame_meteohahen_Destroy kind:function(arm,size=0x14) addr:0x02097b24 local
+OtosuGame_meteohahen_RunTask kind:function(arm,size=0x48) addr:0x02097b38 local
 OtosuGame_meteohahen_CreateTask kind:function(arm,size=0x34) addr:0x02097b80
 OtosuGame_meteohahen_Start kind:function(arm,size=0x158) addr:0x02097bb4
-OtosuGame_smoke_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02097d0c
-OtosuGame_smoke_Load kind:function(arm,size=0x8c) addr:0x02097dc8
-OtosuGame_smoke_Init kind:function(arm,size=0x48) addr:0x02097e54
-OtosuGame_smoke_Update kind:function(arm,size=0x148) addr:0x02097e9c
-OtosuGame_smoke_Render kind:function(arm,size=0x50) addr:0x02097fe4
-OtosuGame_smoke_Destroy kind:function(arm,size=0x14) addr:0x02098034
-OtosuGame_smoke_RunTask kind:function(arm,size=0x48) addr:0x02098048
+OtosuGame_smoke_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02097d0c local
+OtosuGame_smoke_Load kind:function(arm,size=0x8c) addr:0x02097dc8 local
+OtosuGame_smoke_Init kind:function(arm,size=0x48) addr:0x02097e54 local
+OtosuGame_smoke_Update kind:function(arm,size=0x148) addr:0x02097e9c local
+OtosuGame_smoke_Render kind:function(arm,size=0x50) addr:0x02097fe4 local
+OtosuGame_smoke_Destroy kind:function(arm,size=0x14) addr:0x02098034 local
+OtosuGame_smoke_RunTask kind:function(arm,size=0x48) addr:0x02098048 local
 OtosuGame_smoke_CreateTask kind:function(arm,size=0x34) addr:0x02098090
 OtosuGame_smoke_Start kind:function(arm,size=0x80) addr:0x020980c4
-OtosuGame_warp_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02098144
-OtosuGame_warp_Load kind:function(arm,size=0x8c) addr:0x02098200
-OtosuGame_warp_Init kind:function(arm,size=0x3c) addr:0x0209828c
-OtosuGame_warp_Update kind:function(arm,size=0x78) addr:0x020982c8
-OtosuGame_warp_Render kind:function(arm,size=0x48) addr:0x02098340
-OtosuGame_warp_Destroy kind:function(arm,size=0x14) addr:0x02098388
-OtosuGame_warp_RunTask kind:function(arm,size=0x48) addr:0x0209839c
+OtosuGame_warp_GetFrameInfo kind:function(arm,size=0xbc) addr:0x02098144 local
+OtosuGame_warp_Load kind:function(arm,size=0x8c) addr:0x02098200 local
+OtosuGame_warp_Init kind:function(arm,size=0x3c) addr:0x0209828c local
+OtosuGame_warp_Update kind:function(arm,size=0x78) addr:0x020982c8 local
+OtosuGame_warp_Render kind:function(arm,size=0x48) addr:0x02098340 local
+OtosuGame_warp_Destroy kind:function(arm,size=0x14) addr:0x02098388 local
+OtosuGame_warp_RunTask kind:function(arm,size=0x48) addr:0x0209839c local
 OtosuGame_warp_CreateTask kind:function(arm,size=0x34) addr:0x020983e4
 OtosuGame_warp_Start kind:function(arm,size=0x34) addr:0x02098418
 OtosuGame_warp_IsActive kind:function(arm,size=0x8) addr:0x0209844c
-OtosuGame_needlehahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02098454
-OtosuGame_needlehahen_Load kind:function(arm,size=0x8c) addr:0x02098518
-OtosuGame_needlehahen_Init kind:function(arm,size=0x60) addr:0x020985a4
-OtosuGame_needlehahen_Update kind:function(arm,size=0x12c) addr:0x02098604
-OtosuGame_needlehahen_Render kind:function(arm,size=0x50) addr:0x02098730
-OtosuGame_needlehahen_Destroy kind:function(arm,size=0x14) addr:0x02098780
-OtosuGame_needlehahen_RunTask kind:function(arm,size=0x48) addr:0x02098794
+OtosuGame_needlehahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02098454 local
+OtosuGame_needlehahen_Load kind:function(arm,size=0x8c) addr:0x02098518 local
+OtosuGame_needlehahen_Init kind:function(arm,size=0x60) addr:0x020985a4 local
+OtosuGame_needlehahen_Update kind:function(arm,size=0x12c) addr:0x02098604 local
+OtosuGame_needlehahen_Render kind:function(arm,size=0x50) addr:0x02098730 local
+OtosuGame_needlehahen_Destroy kind:function(arm,size=0x14) addr:0x02098780 local
+OtosuGame_needlehahen_RunTask kind:function(arm,size=0x48) addr:0x02098794 local
 OtosuGame_needlehahen_CreateTask kind:function(arm,size=0x34) addr:0x020987dc
 OtosuGame_needlehahen_Start kind:function(arm,size=0x158) addr:0x02098810
-OtosuGame_hammerhahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02098968
-OtosuGame_hammerhahen_Load kind:function(arm,size=0x8c) addr:0x02098a2c
-OtosuGame_hammerhahen_Init kind:function(arm,size=0x60) addr:0x02098ab8
-OtosuGame_hammerhahen_Update kind:function(arm,size=0x144) addr:0x02098b18
-OtosuGame_hammerhahen_Render kind:function(arm,size=0x50) addr:0x02098c5c
-OtosuGame_hammerhahen_Destroy kind:function(arm,size=0x14) addr:0x02098cac
-OtosuGame_hammerhahen_RunTask kind:function(arm,size=0x48) addr:0x02098cc0
+OtosuGame_hammerhahen_GetFrameInfo kind:function(arm,size=0xc4) addr:0x02098968 local
+OtosuGame_hammerhahen_Load kind:function(arm,size=0x8c) addr:0x02098a2c local
+OtosuGame_hammerhahen_Init kind:function(arm,size=0x60) addr:0x02098ab8 local
+OtosuGame_hammerhahen_Update kind:function(arm,size=0x144) addr:0x02098b18 local
+OtosuGame_hammerhahen_Render kind:function(arm,size=0x50) addr:0x02098c5c local
+OtosuGame_hammerhahen_Destroy kind:function(arm,size=0x14) addr:0x02098cac local
+OtosuGame_hammerhahen_RunTask kind:function(arm,size=0x48) addr:0x02098cc0 local
 OtosuGame_hammerhahen_CreateTask kind:function(arm,size=0x34) addr:0x02098d08
 OtosuGame_hammerhahen_Start kind:function(arm,size=0x170) addr:0x02098d3c
-OtosuGame_wrwait_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02098eac
-OtosuGame_wrwait_Load kind:function(arm,size=0x70) addr:0x02098f54
-OtosuGame_wrwait_Init kind:function(arm,size=0x288) addr:0x02098fc4
-OtosuGame_wrwait_Update kind:function(arm,size=0x24) addr:0x0209924c
-OtosuGame_wrwait_Render kind:function(arm,size=0x24) addr:0x02099270
-OtosuGame_wrwait_Destroy kind:function(arm,size=0x88) addr:0x02099294
-OtosuGame_wrwait_RunTask kind:function(arm,size=0x48) addr:0x0209931c
+OtosuGame_wrwait_GetFrameInfo kind:function(arm,size=0xa8) addr:0x02098eac local
+OtosuGame_wrwait_Load kind:function(arm,size=0x70) addr:0x02098f54 local
+OtosuGame_wrwait_Init kind:function(arm,size=0x288) addr:0x02098fc4 local
+OtosuGame_wrwait_Update kind:function(arm,size=0x24) addr:0x0209924c local
+OtosuGame_wrwait_Render kind:function(arm,size=0x24) addr:0x02099270 local
+OtosuGame_wrwait_Destroy kind:function(arm,size=0x88) addr:0x02099294 local
+OtosuGame_wrwait_RunTask kind:function(arm,size=0x48) addr:0x0209931c local
 OtosuGame_wrwait_CreateTask kind:function(arm,size=0x30) addr:0x02099364
 OtuStageDispatch_Init kind:function(arm,size=0x20) addr:0x02099394
 OtuStageDispatch_SetNext kind:function(arm,size=0x10) addr:0x020993b4
@@ -559,6 +559,7 @@ OtuVec_Length kind:function(arm,size=0x2c) addr:0x02099684
 OtuVec_Normalize kind:function(arm,size=0x40) addr:0x020996b0
 OtuFrameCursor_Init kind:function(arm,size=0x40) addr:0x020996f0
 OtuFrameCursor_Step kind:function(arm,size=0x68) addr:0x02099730
+OtuScene_EditorProcs kind:data(any) addr:0x02099798
 OtuScene_SinglePlayerProcs kind:data(any) addr:0x020997a4 local
 OtuScene_MultiplayerProcs kind:data(any) addr:0x020997b0 local
 OtuEditor_PinTuneColumns kind:data(any) addr:0x020997bc
@@ -601,132 +602,135 @@ OtuBoard_SubTiles14 kind:data(any) addr:0x02099bd0
 OtuBoard_SubTiles9 kind:data(any) addr:0x02099bd4
 OtuBoard_SubTiles8 kind:data(any) addr:0x02099bd8
 OtuBoard_SubTiles7 kind:data(any) addr:0x02099bdc
-Tsk_OtosuGame_badge kind:data(any) addr:0x02099be0
-data_ov038_02099bec kind:data(any) addr:0x02099bec
-OtosuGame_badge_AnimSpriteA kind:data(any) addr:0x02099bfc
-OtosuGame_badge_AnimSpriteB kind:data(any) addr:0x02099c28
-OtosuGame_badge_AnimSpriteC kind:data(any) addr:0x02099c54
-Tsk_OtosuGame_shadow kind:data(any) addr:0x02099c80
-data_ov038_02099c8c kind:data(any) addr:0x02099c8c
-OtosuGame_shadow_Anim kind:data(any) addr:0x02099c9c
-Tsk_OtosuGame_piyo kind:data(any) addr:0x02099cc8
-data_ov038_02099cd4 kind:data(any) addr:0x02099cd4
-OtosuGame_piyo_Anim kind:data(any) addr:0x02099ce4
-Tsk_OtosuGame_marker kind:data(any) addr:0x02099d10
-data_ov038_02099d1c kind:data(any) addr:0x02099d1c
-OtosuGame_marker_Anim kind:data(any) addr:0x02099d2c
-Tsk_OtosuGame_meteo kind:data(any) addr:0x02099d58
-data_ov038_02099d64 kind:data(any) addr:0x02099d64
-OtosuGame_meteo_Anim kind:data(any) addr:0x02099d74
-Tsk_OtosuGame_hammer kind:data(any) addr:0x02099da0
-OtosuGame_hammer_RetractScale kind:data(any) addr:0x02099dac
-data_ov038_02099dbc kind:data(any) addr:0x02099dbc
-OtosuGame_hammer_RetractSpin kind:data(any) addr:0x02099dcc
-OtosuGame_hammer_WindupTrail kind:data(any) addr:0x02099dea
-OtosuGame_hammer_ExtendScale kind:data(any) addr:0x02099e08
-OtosuGame_hammer_ExtendSpin kind:data(any) addr:0x02099e28
-OtosuGame_hammer_SwingTrail kind:data(any) addr:0x02099e4c
-OtosuGame_hammer_AnimSpriteA kind:data(any) addr:0x02099e78
-OtosuGame_hammer_AnimSpriteB kind:data(any) addr:0x02099ea4
-Tsk_OtosuGame_needle kind:data(any) addr:0x02099ed0
-data_ov038_02099edc kind:data(any) addr:0x02099edc
-OtosuGame_needle_Anim kind:data(any) addr:0x02099eec
-Tsk_OtosuGame_hand kind:data(any) addr:0x02099f18
-data_ov038_02099f24 kind:data(any) addr:0x02099f24
-OtosuGame_hand_Anim kind:data(any) addr:0x02099f34
-Tsk_OtosuGame_floor kind:data(any) addr:0x02099f60
-data_ov038_02099f6c kind:data(any) addr:0x02099f6c
-data_ov038_02099f78 kind:data(any) addr:0x02099f78
-data_ov038_02099f84 kind:data(any) addr:0x02099f84
-OtosuGame_floor_PaletteAnim7 kind:data(any) addr:0x02099f94
-OtosuGame_floor_PaletteAnim10 kind:data(any) addr:0x02099fa4
-OtosuGame_floor_PaletteAnim6 kind:data(any) addr:0x02099fc0
-OtosuGame_floor_PaletteAnim8 kind:data(any) addr:0x02099fe0
-data_ov038_0209a000 kind:data(any) addr:0x0209a000
-OtosuGame_floor_PaletteAnim9 kind:data(any) addr:0x0209a024
-OtosuGame_floor_TileMap0 kind:data(any) addr:0x0209a088
-OtosuGame_floor_TileMap1 kind:data(any) addr:0x0209a134
-OtosuGame_floor_TileMap2 kind:data(any) addr:0x0209a1e0
-OtosuGame_obstacle_AnimField26 kind:data(any) addr:0x0209a28c
-OtosuGame_obstacle_AnimField1C kind:data(any) addr:0x0209a292
-OtosuGame_obstacle_AnimField28 kind:data(any) addr:0x0209a298
-OtosuGame_obstacle_PackIndices kind:data(any) addr:0x0209a29e
-Tsk_OtosuGame_obstacle kind:data(any) addr:0x0209a2a4
-data_ov038_0209a2b0 kind:data(any) addr:0x0209a2b0
-data_ov038_0209a2bc kind:data(any) addr:0x0209a2bc
-OtosuGame_obstacle_AnimField20 kind:data(any) addr:0x0209a2cc
-OtosuGame_obstacle_Anim kind:data(any) addr:0x0209a2e0
-Tsk_OtosuGame_bg kind:data(any) addr:0x0209a30c
-data_ov038_0209a318 kind:data(any) addr:0x0209a318
-Tsk_OtosuGame_ovbg kind:data(any) addr:0x0209a328
-data_ov038_0209a334 kind:data(any) addr:0x0209a334
-OtosuGame_ovbg_PaletteAnim kind:data(any) addr:0x0209a344
-OtosuGame_ovbg_AlarmPaletteAnim kind:data(any) addr:0x0209a38c
-Tsk_OtosuGame_badgeradar kind:data(any) addr:0x0209a3d4
-data_ov038_0209a3e0 kind:data(any) addr:0x0209a3e0
-OtosuGame_badgeradar_Anim kind:data(any) addr:0x0209a3f0
-data_ov038_0209a41c kind:data(any) addr:0x0209a41c
-Tsk_OtosuGame_badgecount kind:data(any) addr:0x0209a424
-data_ov038_0209a430 kind:data(any) addr:0x0209a430
-OtosuGame_badgecount_AnimSpriteB kind:data(any) addr:0x0209a440
-OtosuGame_badgecount_AnimSpriteA kind:data(any) addr:0x0209a46c
-OtosuGame_badgecount_AnimDigit kind:data(any) addr:0x0209a498
-Tsk_OtosuGame_timer kind:data(any) addr:0x0209a4c4
-data_ov038_0209a4d0 kind:data(any) addr:0x0209a4d0
-OtosuGame_timer_Anim kind:data(any) addr:0x0209a4e0
-Tsk_OtosuGame_specialgauge kind:data(any) addr:0x0209a50c
-data_ov038_0209a518 kind:data(any) addr:0x0209a518
-OtosuGame_specialgauge_AnimDial kind:data(any) addr:0x0209a528
-OtosuGame_specialgauge_AnimPlate kind:data(any) addr:0x0209a554
-OtosuGame_specialgauge_AnimCell kind:data(any) addr:0x0209a580
-OtosuGame_specialgauge_AnimDigit kind:data(any) addr:0x0209a5ac
-Tsk_OtosuGame_spark kind:data(any) addr:0x0209a5d8
-data_ov038_0209a5e4 kind:data(any) addr:0x0209a5e4
-OtosuGame_spark_Anim kind:data(any) addr:0x0209a5f4
-Tsk_OtosuGame_slash kind:data(any) addr:0x0209a620
-data_ov038_0209a62c kind:data(any) addr:0x0209a62c
-OtosuGame_slash_Anim kind:data(any) addr:0x0209a63c
-Tsk_OtosuGame_track kind:data(any) addr:0x0209a668
-data_ov038_0209a674 kind:data(any) addr:0x0209a674
-OtosuGame_track_Anim kind:data(any) addr:0x0209a684
-OtosuGame_point_AnimIndices kind:data(any) addr:0x0209a6b0
-Tsk_OtosuGame_point kind:data(any) addr:0x0209a6b8
-data_ov038_0209a6c4 kind:data(any) addr:0x0209a6c4
-OtosuGame_point_Anim kind:data(any) addr:0x0209a6d4
-Tsk_OtosuGame_entry kind:data(any) addr:0x0209a700
-data_ov038_0209a70c kind:data(any) addr:0x0209a70c
-OtosuGame_entry_Anim kind:data(any) addr:0x0209a71c
-Tsk_OtosuGame_dead kind:data(any) addr:0x0209a748
-data_ov038_0209a754 kind:data(any) addr:0x0209a754
-OtosuGame_dead_Anim kind:data(any) addr:0x0209a764
-Tsk_OtosuGame_gameover kind:data(any) addr:0x0209a790
-data_ov038_0209a79c kind:data(any) addr:0x0209a79c
-OtosuGame_gameover_AnimSprite0 kind:data(any) addr:0x0209a7ac
-OtosuGame_gameover_AnimSprite1 kind:data(any) addr:0x0209a7d8
-OtosuGame_gameover_AnimSprite2 kind:data(any) addr:0x0209a804
-Tsk_OtosuGame_wricon kind:data(any) addr:0x0209a830
-data_ov038_0209a83c kind:data(any) addr:0x0209a83c
-OtosuGame_wricon_Anim kind:data(any) addr:0x0209a84c
-Tsk_OtosuGame_meteohahen kind:data(any) addr:0x0209a878
-data_ov038_0209a884 kind:data(any) addr:0x0209a884
-OtosuGame_meteohahen_Anim kind:data(any) addr:0x0209a894
-Tsk_OtosuGame_smoke kind:data(any) addr:0x0209a8c0
-data_ov038_0209a8cc kind:data(any) addr:0x0209a8cc
-OtosuGame_smoke_Anim kind:data(any) addr:0x0209a8dc
-Tsk_OtosuGame_warp kind:data(any) addr:0x0209a908
-data_ov038_0209a914 kind:data(any) addr:0x0209a914
-OtosuGame_warp_Anim kind:data(any) addr:0x0209a924
-Tsk_OtosuGame_needlehahen kind:data(any) addr:0x0209a950
-data_ov038_0209a95c kind:data(any) addr:0x0209a95c
-OtosuGame_needlehahen_Anim kind:data(any) addr:0x0209a96c
-Tsk_OtosuGame_hammerhahen kind:data(any) addr:0x0209a998
-data_ov038_0209a9a4 kind:data(any) addr:0x0209a9a4
-OtosuGame_hammerhahen_Anim kind:data(any) addr:0x0209a9b4
-Tsk_OtosuGame_wrwait kind:data(any) addr:0x0209a9e0
-data_ov038_0209a9ec kind:data(any) addr:0x0209a9ec
-OtosuGame_wrwait_Anim kind:data(any) addr:0x0209a9fc
+Tsk_OtosuGame_badge kind:data(any) addr:0x02099be0 local
+@3237 kind:data(any) addr:0x02099bec local
+OtosuGame_badge_AnimSpriteA kind:data(any) addr:0x02099bfc local
+OtosuGame_badge_AnimSpriteB kind:data(any) addr:0x02099c28 local
+OtosuGame_badge_AnimSpriteC kind:data(any) addr:0x02099c54 local
+Tsk_OtosuGame_shadow kind:data(any) addr:0x02099c80 local
+@2394 kind:data(any) addr:0x02099c8c local
+OtosuGame_shadow_Anim kind:data(any) addr:0x02099c9c local
+Tsk_OtosuGame_piyo kind:data(any) addr:0x02099cc8 local
+@2412 kind:data(any) addr:0x02099cd4 local
+OtosuGame_piyo_Anim kind:data(any) addr:0x02099ce4 local
+Tsk_OtosuGame_marker kind:data(any) addr:0x02099d10 local
+@2398 kind:data(any) addr:0x02099d1c local
+OtosuGame_marker_Anim kind:data(any) addr:0x02099d2c local
+Tsk_OtosuGame_meteo kind:data(any) addr:0x02099d58 local
+@2423 kind:data(any) addr:0x02099d64 local
+OtosuGame_meteo_Anim kind:data(any) addr:0x02099d74 local
+Tsk_OtosuGame_hammer kind:data(any) addr:0x02099da0 local
+OtosuGame_hammer_RetractScale kind:data(any) addr:0x02099dac local
+@2561 kind:data(any) addr:0x02099dbc local
+OtosuGame_hammer_RetractSpin kind:data(any) addr:0x02099dcc local
+OtosuGame_hammer_WindupTrail kind:data(any) addr:0x02099dea local
+OtosuGame_hammer_ExtendScale kind:data(any) addr:0x02099e08 local
+OtosuGame_hammer_ExtendSpin kind:data(any) addr:0x02099e28 local
+OtosuGame_hammer_SwingTrail kind:data(any) addr:0x02099e4c local
+OtosuGame_hammer_AnimSpriteA kind:data(any) addr:0x02099e78 local
+OtosuGame_hammer_AnimSpriteB kind:data(any) addr:0x02099ea4 local
+Tsk_OtosuGame_needle kind:data(any) addr:0x02099ed0 local
+@2419 kind:data(any) addr:0x02099edc local
+OtosuGame_needle_Anim kind:data(any) addr:0x02099eec local
+Tsk_OtosuGame_hand kind:data(any) addr:0x02099f18 local
+@2409 kind:data(any) addr:0x02099f24 local
+OtosuGame_hand_Anim kind:data(any) addr:0x02099f34 local
+Tsk_OtosuGame_floor kind:data(any) addr:0x02099f60 local
+@2371 kind:data(any) addr:0x02099f6c local
+@2375 kind:data(any) addr:0x02099f78 local
+@2471 kind:data(any) addr:0x02099f84 local
+OtosuGame_floor_PaletteAnim7 kind:data(any) addr:0x02099f94 local
+OtosuGame_floor_PaletteAnim10 kind:data(any) addr:0x02099fa4 local
+OtosuGame_floor_PaletteAnim6 kind:data(any) addr:0x02099fc0 local
+OtosuGame_floor_PaletteAnim8 kind:data(any) addr:0x02099fe0 local
+@2373 kind:data(any) addr:0x0209a000 local
+OtosuGame_floor_PaletteAnim9 kind:data(any) addr:0x0209a024 local
+OtosuGame_floor_TileMap0 kind:data(any) addr:0x0209a088 local
+OtosuGame_floor_TileMap1 kind:data(any) addr:0x0209a134 local
+OtosuGame_floor_TileMap2 kind:data(any) addr:0x0209a1e0 local
+OtosuGame_obstacle_AnimField26 kind:data(any) addr:0x0209a28c local
+OtosuGame_obstacle_AnimField1C kind:data(any) addr:0x0209a292 local
+OtosuGame_obstacle_AnimField28 kind:data(any) addr:0x0209a298 local
+OtosuGame_obstacle_PackIndices kind:data(any) addr:0x0209a29e local
+Tsk_OtosuGame_obstacle kind:data(any) addr:0x0209a2a4 local
+@2360 kind:data(any) addr:0x0209a2b0 local
+@2392 kind:data(any) addr:0x0209a2bc local
+OtosuGame_obstacle_AnimField20 kind:data(any) addr:0x0209a2cc local
+OtosuGame_obstacle_Anim kind:data(any) addr:0x0209a2e0 local
+Tsk_OtosuGame_bg kind:data(any) addr:0x0209a30c local
+@2458 kind:data(any) addr:0x0209a318 local
+Tsk_OtosuGame_ovbg kind:data(any) addr:0x0209a328 local
+@2475 kind:data(any) addr:0x0209a334 local
+OtosuGame_ovbg_PaletteAnim kind:data(any) addr:0x0209a344 local
+OtosuGame_ovbg_AlarmPaletteAnim kind:data(any) addr:0x0209a38c local
+Tsk_OtosuGame_badgeradar kind:data(any) addr:0x0209a3d4 local
+@2396 kind:data(any) addr:0x0209a3e0 local
+OtosuGame_badgeradar_Anim kind:data(any) addr:0x0209a3f0 local
+@2468 kind:data(any) addr:0x0209a41c local
+Tsk_OtosuGame_badgecount kind:data(any) addr:0x0209a424 local
+@2536 kind:data(any) addr:0x0209a430 local
+OtosuGame_badgecount_AnimSpriteB kind:data(any) addr:0x0209a440 local
+OtosuGame_badgecount_AnimSpriteA kind:data(any) addr:0x0209a46c local
+OtosuGame_badgecount_AnimDigit kind:data(any) addr:0x0209a498 local
+Tsk_OtosuGame_timer kind:data(any) addr:0x0209a4c4 local
+@2433 kind:data(any) addr:0x0209a4d0 local
+OtosuGame_timer_Anim kind:data(any) addr:0x0209a4e0 local
+Tsk_OtosuGame_specialgauge kind:data(any) addr:0x0209a50c local
+@2475 kind:data(any) addr:0x0209a518 local
+OtosuGame_specialgauge_AnimDial kind:data(any) addr:0x0209a528 local
+OtosuGame_specialgauge_AnimPlate kind:data(any) addr:0x0209a554 local
+OtosuGame_specialgauge_AnimCell kind:data(any) addr:0x0209a580 local
+OtosuGame_specialgauge_AnimDigit kind:data(any) addr:0x0209a5ac local
+Tsk_OtosuGame_spark kind:data(any) addr:0x0209a5d8 local
+@2402 kind:data(any) addr:0x0209a5e4 local
+OtosuGame_spark_Anim kind:data(any) addr:0x0209a5f4 local
+Tsk_OtosuGame_slash kind:data(any) addr:0x0209a620 local
+@2423 kind:data(any) addr:0x0209a62c local
+OtosuGame_slash_Anim kind:data(any) addr:0x0209a63c local
+Tsk_OtosuGame_track kind:data(any) addr:0x0209a668 local
+@2394 kind:data(any) addr:0x0209a674 local
+OtosuGame_track_Anim kind:data(any) addr:0x0209a684 local
+OtosuGame_point_AnimIndices kind:data(any) addr:0x0209a6b0 local
+Tsk_OtosuGame_point kind:data(any) addr:0x0209a6b8 local
+@2435 kind:data(any) addr:0x0209a6c4 local
+OtosuGame_point_Anim kind:data(any) addr:0x0209a6d4 local
+Tsk_OtosuGame_entry kind:data(any) addr:0x0209a700 local
+@2398 kind:data(any) addr:0x0209a70c local
+OtosuGame_entry_Anim kind:data(any) addr:0x0209a71c local
+Tsk_OtosuGame_dead kind:data(any) addr:0x0209a748 local
+@2401 kind:data(any) addr:0x0209a754 local
+OtosuGame_dead_Anim kind:data(any) addr:0x0209a764 local
+Tsk_OtosuGame_gameover kind:data(any) addr:0x0209a790 local
+@2439 kind:data(any) addr:0x0209a79c local
+OtosuGame_gameover_AnimSprite0 kind:data(any) addr:0x0209a7ac local
+OtosuGame_gameover_AnimSprite1 kind:data(any) addr:0x0209a7d8 local
+OtosuGame_gameover_AnimSprite2 kind:data(any) addr:0x0209a804 local
+Tsk_OtosuGame_wricon kind:data(any) addr:0x0209a830 local
+@2386 kind:data(any) addr:0x0209a83c local
+OtosuGame_wricon_Anim kind:data(any) addr:0x0209a84c local
+Tsk_OtosuGame_meteohahen kind:data(any) addr:0x0209a878 local
+@2403 kind:data(any) addr:0x0209a884 local
+OtosuGame_meteohahen_Anim kind:data(any) addr:0x0209a894 local
+Tsk_OtosuGame_smoke kind:data(any) addr:0x0209a8c0 local
+@2410 kind:data(any) addr:0x0209a8cc local
+OtosuGame_smoke_Anim kind:data(any) addr:0x0209a8dc local
+Tsk_OtosuGame_warp kind:data(any) addr:0x0209a908 local
+@2397 kind:data(any) addr:0x0209a914 local
+OtosuGame_warp_Anim kind:data(any) addr:0x0209a924 local
+Tsk_OtosuGame_needlehahen kind:data(any) addr:0x0209a950 local
+@2404 kind:data(any) addr:0x0209a95c local
+OtosuGame_needlehahen_Anim kind:data(any) addr:0x0209a96c local
+Tsk_OtosuGame_hammerhahen kind:data(any) addr:0x0209a998 local
+@2406 kind:data(any) addr:0x0209a9a4 local
+OtosuGame_hammerhahen_Anim kind:data(any) addr:0x0209a9b4 local
+Tsk_OtosuGame_wrwait kind:data(any) addr:0x0209a9e0 local
+@2426 kind:data(any) addr:0x0209a9ec local
+OtosuGame_wrwait_Anim kind:data(any) addr:0x0209a9fc local
 OtuFile_Badge kind:data(any) addr:0x0209aa28
 OtuFile_CommonBg kind:data(any) addr:0x0209aa30
+OtuFile_Stage1Bg kind:data(any) addr:0x0209aa38
+OtuFile_Stage2Bg kind:data(any) addr:0x0209aa40
+OtuFile_Stage3Bg kind:data(any) addr:0x0209aa48
 OtuFile_CommonObj kind:data(any) addr:0x0209aa50
 OtuFile_UnderBg kind:data(any) addr:0x0209aa58
 OtuFile_UnderObj kind:data(any) addr:0x0209aa60
@@ -738,48 +742,48 @@ OtuFile_MapData kind:data(any) addr:0x0209aa88
 OtuFile_SingleMatches kind:data(any) addr:0x0209aa90
 OtuFile_AI kind:data(any) addr:0x0209aa98
 OtuScene_SequenceNames kind:data(any) addr:0x0209aac0 local
-data_ov038_0209aacc kind:data(any) addr:0x0209aacc
+@2698 kind:data(any) addr:0x0209aacc local
 OtuScene_EditorSteps kind:data(any) addr:0x0209aad8 local
 OtuScene_EditorStage kind:data(any) addr:0x0209aadc
-OtuEditor_BlankMark kind:data(any) addr:0x0209aaec
-OtuEditor_SelectMark kind:data(any) addr:0x0209aaf0
-OtuEditor_CursorMark kind:data(any) addr:0x0209aaf4
-data_ov038_0209aaf8 kind:data(any) addr:0x0209aaf8
-data_ov038_0209ab08 kind:data(any) addr:0x0209ab08
-data_ov038_0209ab14 kind:data(any) addr:0x0209ab14
-data_ov038_0209ab20 kind:data(any) addr:0x0209ab20
-data_ov038_0209ab28 kind:data(any) addr:0x0209ab28
-data_ov038_0209ab30 kind:data(any) addr:0x0209ab30
-data_ov038_0209ab38 kind:data(any) addr:0x0209ab38
-data_ov038_0209ab40 kind:data(any) addr:0x0209ab40
-data_ov038_0209ab48 kind:data(any) addr:0x0209ab48
-data_ov038_0209ab50 kind:data(any) addr:0x0209ab50
-data_ov038_0209ab58 kind:data(any) addr:0x0209ab58
-data_ov038_0209ab60 kind:data(any) addr:0x0209ab60
-data_ov038_0209ab68 kind:data(any) addr:0x0209ab68
-data_ov038_0209ab70 kind:data(any) addr:0x0209ab70
-data_ov038_0209ab78 kind:data(any) addr:0x0209ab78
-data_ov038_0209ab80 kind:data(any) addr:0x0209ab80
-data_ov038_0209ab88 kind:data(any) addr:0x0209ab88
-data_ov038_0209ab90 kind:data(any) addr:0x0209ab90
-data_ov038_0209ab98 kind:data(any) addr:0x0209ab98
-data_ov038_0209aba4 kind:data(any) addr:0x0209aba4
-data_ov038_0209abac kind:data(any) addr:0x0209abac
-data_ov038_0209abb4 kind:data(any) addr:0x0209abb4
-data_ov038_0209abbc kind:data(any) addr:0x0209abbc
-data_ov038_0209abcc kind:data(any) addr:0x0209abcc
-data_ov038_0209abd8 kind:data(any) addr:0x0209abd8
-data_ov038_0209abe4 kind:data(any) addr:0x0209abe4
-data_ov038_0209abec kind:data(any) addr:0x0209abec
-data_ov038_0209abf8 kind:data(any) addr:0x0209abf8
-data_ov038_0209ac08 kind:data(any) addr:0x0209ac08
-data_ov038_0209ac14 kind:data(any) addr:0x0209ac14
-data_ov038_0209ac20 kind:data(any) addr:0x0209ac20
-data_ov038_0209ac28 kind:data(any) addr:0x0209ac28
-data_ov038_0209ac34 kind:data(any) addr:0x0209ac34
-data_ov038_0209ac40 kind:data(any) addr:0x0209ac40
-data_ov038_0209ac48 kind:data(any) addr:0x0209ac48
-data_ov038_0209ac54 kind:data(any) addr:0x0209ac54
+@3927 kind:data(any) addr:0x0209aaec local
+@3928 kind:data(any) addr:0x0209aaf0 local
+@3929 kind:data(any) addr:0x0209aaf4 local
+@4393 kind:data(any) addr:0x0209aaf8 local
+@4394 kind:data(any) addr:0x0209ab08 local
+@4395 kind:data(any) addr:0x0209ab14 local
+@4396 kind:data(any) addr:0x0209ab20 local
+@4397 kind:data(any) addr:0x0209ab28 local
+@4398 kind:data(any) addr:0x0209ab30 local
+@4399 kind:data(any) addr:0x0209ab38 local
+@4400 kind:data(any) addr:0x0209ab40 local
+@4401 kind:data(any) addr:0x0209ab48 local
+@4402 kind:data(any) addr:0x0209ab50 local
+@4403 kind:data(any) addr:0x0209ab58 local
+@4404 kind:data(any) addr:0x0209ab60 local
+@4405 kind:data(any) addr:0x0209ab68 local
+@4406 kind:data(any) addr:0x0209ab70 local
+@4407 kind:data(any) addr:0x0209ab78 local
+@4408 kind:data(any) addr:0x0209ab80 local
+@4409 kind:data(any) addr:0x0209ab88 local
+@4410 kind:data(any) addr:0x0209ab90 local
+@4411 kind:data(any) addr:0x0209ab98 local
+@4412 kind:data(any) addr:0x0209aba4 local
+@4413 kind:data(any) addr:0x0209abac local
+@4414 kind:data(any) addr:0x0209abb4 local
+@4415 kind:data(any) addr:0x0209abbc local
+@4416 kind:data(any) addr:0x0209abcc local
+@4417 kind:data(any) addr:0x0209abd8 local
+@4418 kind:data(any) addr:0x0209abe4 local
+@4419 kind:data(any) addr:0x0209abec local
+@4420 kind:data(any) addr:0x0209abf8 local
+@4421 kind:data(any) addr:0x0209ac08 local
+@4422 kind:data(any) addr:0x0209ac14 local
+@4423 kind:data(any) addr:0x0209ac20 local
+@4424 kind:data(any) addr:0x0209ac28 local
+@4425 kind:data(any) addr:0x0209ac34 local
+@4426 kind:data(any) addr:0x0209ac40 local
+@4427 kind:data(any) addr:0x0209ac48 local
+@4428 kind:data(any) addr:0x0209ac54 local
 OtuScene_DisconnectSteps kind:data(any) addr:0x0209ac60 local
 OtuScene_DisconnectStage kind:data(any) addr:0x0209ac6c
 OtuDebris_LaunchMin kind:data(any) addr:0x0209ac7c
@@ -804,67 +808,66 @@ OtuPhys_SpinDecay kind:data(any) addr:0x0209ad10
 OtuPhys_SpinPower kind:data(any) addr:0x0209ad14
 OtuPhys_Knockback kind:data(any) addr:0x0209ad18
 OtuPhys_Friction kind:data(any) addr:0x0209ad1c
-data_ov038_0209ad2c kind:data(any) addr:0x0209ad2c
+OtuScene_SinglePlayerBoard kind:data(any) addr:0x0209ad2c
 OtuScene_HostBoard kind:data(any) addr:0x0209ad3c
 OtuScene_GuestBoard kind:data(any) addr:0x0209ad4c
 OtuPinTunes kind:data(any) addr:0x0209ad5c
-data_ov038_0209ae1c kind:data(any) addr:0x0209ae1c
-OtosuGame_badge_AIBehaviors kind:data(any) addr:0x0209ae30
-data_ov038_0209ae50 kind:data(any) addr:0x0209ae50 ambiguous
-data_ov038_0209ae74 kind:data(any) addr:0x0209ae74
-data_ov038_0209ae8c kind:data(any) addr:0x0209ae8c
-data_ov038_0209aea0 kind:data(any) addr:0x0209aea0
-data_ov038_0209aeb8 kind:data(any) addr:0x0209aeb8
-OtosuGame_meteo_RecoverScale kind:data(any) addr:0x0209aecc
-data_ov038_0209af14 kind:data(any) addr:0x0209af14
-data_ov038_0209af2c kind:data(any) addr:0x0209af2c
-data_ov038_0209af44 kind:data(any) addr:0x0209af44
-OtosuGame_floor_TileMaps kind:data(any) addr:0x0209af58
-data_ov038_0209af64 kind:data(any) addr:0x0209af64
-data_ov038_0209af78 kind:data(any) addr:0x0209af78
-data_ov038_0209af90 kind:data(any) addr:0x0209af90
-data_ov038_0209af98 kind:data(any) addr:0x0209af98
+@2349 kind:data(any) addr:0x0209ae1c local
+OtosuGame_badge_AIBehaviors kind:data(any) addr:0x0209ae30 local
+@2331 kind:data(any) addr:0x0209ae74 local
+@2331 kind:data(any) addr:0x0209ae8c local
+@2331 kind:data(any) addr:0x0209aea0 local
+@2331 kind:data(any) addr:0x0209aeb8 local
+OtosuGame_meteo_RecoverScale kind:data(any) addr:0x0209aecc local
+@2334 kind:data(any) addr:0x0209af14 local
+@2331 kind:data(any) addr:0x0209af2c local
+@2331 kind:data(any) addr:0x0209af44 local
+OtosuGame_floor_TileMaps kind:data(any) addr:0x0209af58 local
+@2328 kind:data(any) addr:0x0209af64 local
+@2331 kind:data(any) addr:0x0209af78 local
+data_ov039_0209a610 kind:data(any) addr:0x0209af90
+data_ov039_0209a618 kind:data(any) addr:0x0209af98
 OtosuGame_bg_LayerParams kind:data(any) addr:0x0209afa0
-data_ov038_0209afac kind:data(any) addr:0x0209afac
-data_ov038_0209afe4 kind:data(any) addr:0x0209afe4
-data_ov038_0209b01c kind:data(any) addr:0x0209b01c
-data_ov038_0209b054 kind:data(any) addr:0x0209b054
-OtosuGame_bg_TaskName kind:data(any) addr:0x0209b08c
-data_ov038_0209b0a0 kind:data(any) addr:0x0209b0a0
-data_ov038_0209b0b4 kind:data(any) addr:0x0209b0b4
-data_ov038_0209b0d0 kind:data(any) addr:0x0209b0d0
-data_ov038_0209b0ec kind:data(any) addr:0x0209b0ec
-OtosuGame_specialgauge_OnesPos kind:data(any) addr:0x0209b100
-OtosuGame_specialgauge_TwoDigitPos kind:data(any) addr:0x0209b110
-data_ov038_0209b130 kind:data(any) addr:0x0209b130
-data_ov038_0209b14c kind:data(any) addr:0x0209b14c
-data_ov038_0209b160 kind:data(any) addr:0x0209b160
-data_ov038_0209b174 kind:data(any) addr:0x0209b174
-data_ov038_0209b188 kind:data(any) addr:0x0209b188
-data_ov038_0209b19c kind:data(any) addr:0x0209b19c
-OtosuGame_entry_LabelScale kind:data(any) addr:0x0209b1b0
-OtosuGame_entry_EntryScale kind:data(any) addr:0x0209b228
-OtosuGame_entry_StartScale kind:data(any) addr:0x0209b2b8
-data_ov038_0209b360 kind:data(any) addr:0x0209b360
-data_ov038_0209b374 kind:data(any) addr:0x0209b374
-OtosuGame_gameover_ScaleKeys kind:data(any) addr:0x0209b38c
-data_ov038_0209b41c kind:data(any) addr:0x0209b41c
-data_ov038_0209b434 kind:data(any) addr:0x0209b434
-data_ov038_0209b450 kind:data(any) addr:0x0209b450
-data_ov038_0209b464 kind:data(any) addr:0x0209b464
-data_ov038_0209b478 kind:data(any) addr:0x0209b478
-data_ov038_0209b494 kind:data(any) addr:0x0209b494
-data_ov038_0209b4b0 kind:data(any) addr:0x0209b4b0
+data_ov039_0209a62c kind:data(any) addr:0x0209afac
+data_ov039_0209a664 kind:data(any) addr:0x0209afe4
+data_ov039_0209a69c kind:data(any) addr:0x0209b01c
+data_ov039_0209a6d4 kind:data(any) addr:0x0209b054
+@2442 kind:data(any) addr:0x0209b08c local
+@2328 kind:data(any) addr:0x0209b0a0 local
+@2331 kind:data(any) addr:0x0209b0b4 local
+@2437 kind:data(any) addr:0x0209b0d0 local
+@2331 kind:data(any) addr:0x0209b0ec local
+OtosuGame_specialgauge_OnesPos kind:data(any) addr:0x0209b100 local
+OtosuGame_specialgauge_TwoDigitPos kind:data(any) addr:0x0209b110 local
+@2331 kind:data(any) addr:0x0209b130 local
+@2331 kind:data(any) addr:0x0209b14c local
+@2331 kind:data(any) addr:0x0209b160 local
+@2331 kind:data(any) addr:0x0209b174 local
+@2331 kind:data(any) addr:0x0209b188 local
+@2331 kind:data(any) addr:0x0209b19c local
+OtosuGame_entry_LabelScale kind:data(any) addr:0x0209b1b0 local
+OtosuGame_entry_EntryScale kind:data(any) addr:0x0209b228 local
+OtosuGame_entry_StartScale kind:data(any) addr:0x0209b2b8 local
+@2331 kind:data(any) addr:0x0209b360 local
+@2334 kind:data(any) addr:0x0209b374 local
+OtosuGame_gameover_ScaleKeys kind:data(any) addr:0x0209b38c local
+@2331 kind:data(any) addr:0x0209b41c local
+@2331 kind:data(any) addr:0x0209b434 local
+@2331 kind:data(any) addr:0x0209b450 local
+@2331 kind:data(any) addr:0x0209b464 local
+@2331 kind:data(any) addr:0x0209b478 local
+@2331 kind:data(any) addr:0x0209b494 local
+@2331 kind:data(any) addr:0x0209b4b0 local
 OtuFile_BadgePath kind:data(any) addr:0x0209b4c8
 OtuFile_AIPath kind:data(any) addr:0x0209b4e0
 OtuFile_SingleMatchesPath kind:data(any) addr:0x0209b4f8
 OtuFile_CommonBgPath kind:data(any) addr:0x0209b510
 OtuFile_BadgeParamsPath kind:data(any) addr:0x0209b52c
 OtuFile_MapDataPath kind:data(any) addr:0x0209b548
-data_ov038_0209b564 kind:data(any) addr:0x0209b564
-data_ov038_0209b580 kind:data(any) addr:0x0209b580
+OtuFile_Stage1BgPath kind:data(any) addr:0x0209b564
+OtuFile_Stage3BgPath kind:data(any) addr:0x0209b580
 OtuFile_CommonObjPath kind:data(any) addr:0x0209b59c
-data_ov038_0209b5b8 kind:data(any) addr:0x0209b5b8
+OtuFile_Stage2BgPath kind:data(any) addr:0x0209b5b8
 OtuFile_Stage2ObjPath kind:data(any) addr:0x0209b5d4
 OtuFile_UnderBgPath kind:data(any) addr:0x0209b5f0
 OtuFile_OverBgPath kind:data(any) addr:0x0209b60c

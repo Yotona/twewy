@@ -1,6 +1,8 @@
 #ifndef OTOSU_GAME_H
 #define OTOSU_GAME_H
 
+#include "Otosu/OtosuRegion.h"
+
 #include "CriSndMgr.h"
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"

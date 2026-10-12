@@ -1,6 +1,8 @@
 #ifndef OTOSUMENU_H
 #define OTOSUMENU_H
 
+#include "Otosu/OtosuRegion.h"
+
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "EasyFade.h"

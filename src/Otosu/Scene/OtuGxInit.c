@@ -1,3 +1,5 @@
+#include "Otosu/OtosuRegion.h"
+
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
