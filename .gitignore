@@ -32,3 +32,6 @@ ctx.c
 hs_err_pid*.log
 /*.o
 /*.d
+/tools/m2cdraft.py
+/tools/check_ov030_more.py
+/docs/decomp/ov030-more/
