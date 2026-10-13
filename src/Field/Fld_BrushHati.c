@@ -49,19 +49,7 @@ static const SpriteAnimation Fld_BrushHati_Anim = {
 };
 
 SpriteFrameInfo* Fld_BrushHati_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
-    SpriteFrameInfo* info = NULL;
-
-    switch (mode) {
-        case SPRITE_FRAME_UPDATE:
-            g_SpriteFrameInfo.updateSteps = 1;
-            return &g_SpriteFrameInfo;
-        case SPRITE_FRAME_RENDER: {
-            SpriteFrameInfo* temp = &g_SpriteFrameInfo;
-            Sprite_FillFrameInfo(temp, sprite);
-            info = temp;
-        } break;
-    }
-    return info;
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
 s32 Fld_BrushHati_Load(Sprite* sprite, Fld_BrushHati_Args* args) {

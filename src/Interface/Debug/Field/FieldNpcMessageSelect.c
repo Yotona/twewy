@@ -191,28 +191,31 @@ void FldNpcMesSel_DestroyTextView(FldNpcMesSelObject* selObj) {
 }
 
 s32 FldNpcMesSel_CreateMessageWindow(FldNpcMesSelObject* selObj, u8 winKind) {
-    FldNpcMesSize      size;
     FldNpcMesTaskParam param;
-    u16                firstMes;
 
+    u16 firstMes;
     if (selObj->isMan != 0) {
         firstMes = FldNpcMesSelTable[selObj->npcIndex].range->manFirst;
     } else {
         firstMes = FldNpcMesSelTable[selObj->npcIndex].range->womanFirst;
     }
 
+    FldNpcMesSize size;
+    size.x = 0x80;
+    size.y = 0x60;
+
     param.unk_14  = 0;
     param.datSlot = selObj->datSlot;
-    size.x        = 0x80;
-    size.y        = 0x60;
     param.mesNo   = selObj->lineIndex + firstMes;
     param.winKind = winKind;
     param.unk_24  = 0;
+
     if (winKind == 6) {
         size.y       = 0x8C;
         param.unk_24 = 1;
         param.mesNo  = param.mesNo + 1;
     }
+
     param.unk_04 = size;
     param.unk_08 = size;
     param.unk_1A = 0;
@@ -222,7 +225,7 @@ s32 FldNpcMesSel_CreateMessageWindow(FldNpcMesSelObject* selObj, u8 winKind) {
     param.unk_19 = func_ov030_020ca778(&selObj->font, param.mesNo, 0, &param.winKind);
     param.unk_20 = 0;
     param.unk_1C = 0;
-    return EasyTask_CreateTask(&selObj->taskPool, &Tsk_Task_Window, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(&selObj->taskPool, &Tsk_Task_Window, 0, 0, 0, &param);
 }
 
 void FldNpcMesSel_Open(FldNpcMesSelObject* selObj) {
@@ -239,12 +242,12 @@ void FldNpcMesSel_Close(FldNpcMesSelObject* selObj) {
 }
 
 void FldNpcMesSel_HandleInput(FldNpcMesSelObject* selObj) {
-    OverlayTag tag;
-    s32        lineIndex = selObj->lineIndex;
-    s32        npcIndex  = selObj->npcIndex;
-    s32        isMan     = selObj->isMan;
+    s32 lineIndex = selObj->lineIndex;
+    s32 npcIndex  = selObj->npcIndex;
+    s32 isMan     = selObj->isMan;
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) {
+        OverlayTag tag;
         MainOvlDisp_Pop(&tag);
         return;
     }
@@ -281,7 +284,7 @@ void FldNpcMesSel_HandleInput(FldNpcMesSelObject* selObj) {
             selObj->lineIndex = 0;
             selObj->isMan     = 1;
             selObj->npcIndex++;
-            if ((u32)selObj->npcIndex >= 38u) {
+            if ((u32)selObj->npcIndex >= 38) {
                 selObj->npcIndex = 0;
             }
         }
@@ -307,21 +310,19 @@ void FldNpcMesSel_HandleInput(FldNpcMesSelObject* selObj) {
             selObj->isMan     = 1;
             selObj->lineIndex = 0;
             selObj->npcIndex++;
-            if ((u32)selObj->npcIndex >= 38u) {
+            if ((u32)selObj->npcIndex >= 38) {
                 selObj->npcIndex = 0;
             }
         }
     }
 
-    if (lineIndex == selObj->lineIndex && npcIndex == selObj->npcIndex && isMan == selObj->isMan) {
-        return;
+    if (lineIndex != selObj->lineIndex || npcIndex != selObj->npcIndex || isMan != selObj->isMan) {
+        FldNpcMesSel_DrawMenu(selObj);
+        EasyTask_DeleteTask(&selObj->taskPool, selObj->womanTask);
+        EasyTask_DeleteTask(&selObj->taskPool, selObj->manTask);
+        selObj->womanTask = FldNpcMesSel_CreateMessageWindow(selObj, 4);
+        selObj->manTask   = FldNpcMesSel_CreateMessageWindow(selObj, 6);
     }
-
-    FldNpcMesSel_DrawMenu(selObj);
-    EasyTask_DeleteTask(&selObj->taskPool, selObj->womanTask);
-    EasyTask_DeleteTask(&selObj->taskPool, selObj->manTask);
-    selObj->womanTask = FldNpcMesSel_CreateMessageWindow(selObj, 4);
-    selObj->manTask   = FldNpcMesSel_CreateMessageWindow(selObj, 6);
 }
 
 void FldNpcMesSel_Init(void* object) {
@@ -352,14 +353,14 @@ void FldNpcMesSel_Init(void* object) {
 void FldNpcMesSel_Update(void* object) {
     FldNpcMesSelObject* selObj = object;
 
-    OamMgr_Reset(g_OamMgr, 0, 0);
-    OamMgr_Reset(&g_OamMgr[1], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
+    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     FldNpcMesSel_HandleInput(selObj);
     EasyTask_UpdatePool(&selObj->taskPool);
-    OamMgr_FlushCommands(g_OamMgr);
-    OamMgr_FlushCommands(&g_OamMgr[1]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
+    OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

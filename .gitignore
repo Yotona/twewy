@@ -25,13 +25,3 @@ update*
 /compile_commands.json
 nonmatchings/
 ctx.c
-# Local agent tooling and scratch work
-/.opencode/
-/permtmp/
-/permwork/
-hs_err_pid*.log
-/*.o
-/*.d
-/tools/m2cdraft.py
-/tools/check_ov030_more.py
-/docs/decomp/ov030-more/

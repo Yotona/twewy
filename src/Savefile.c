@@ -694,7 +694,7 @@ s32 func_020259e4(s32 itemId) {
 
 s32 func_02025a2c(s32 playTime) {
     s16 unlockedCount = 0;
-    for (unsigned long itemIndex = 0; itemIndex < 67; itemIndex++) {
+    for (u32 itemIndex = 0; itemIndex < 67; itemIndex++) {
         u16 flags = data_0205c5be[itemIndex].flags;
         if ((flags & 2) || ((flags & 1) && (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == 0))) {
             continue;

@@ -91,6 +91,8 @@ MSL_RUNTIME_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-char unsigned"))
 
 CRI_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
 
+FLASH_CC_FLAGS = " ".join((*COMMON_CC_FLAGS, "-str noreuse", "-Cpp_exceptions off"))
+
 
 @dataclass(frozen=True)
 class CompilerConfig:
@@ -118,6 +120,11 @@ CRI_COMPILER_CONFIG = CompilerConfig(
     flags=CRI_CC_FLAGS,
 )
 
+FLASH_COMPILER_CONFIG = CompilerConfig(
+    version=MWCC_DEFAULT_VERSION,
+    flags=FLASH_CC_FLAGS,
+)
+
 # Configurations for when a file or directory needs different settings than the project default
 COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(
@@ -128,6 +135,7 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("libs/cpp"): MSL_COMPILER_CONFIG,
     Path("libs/cri"): CRI_COMPILER_CONFIG,
     Path("libs/runtime"): MSL_RUNTIME_COMPILER_CONFIG,
+    Path("src/Field/Flash"): FLASH_COMPILER_CONFIG,
 }
 
 # Passed to all modules and final arm9.o link

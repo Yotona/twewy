@@ -13,9 +13,7 @@ typedef struct {
     /* 0x42 */ s16    pad42;
 } Ov030ONSprite;              // 0x44
 
-typedef TaskStages Ov030ONFns;
-
-extern Ov030ONFns      data_ov030_020ed15c;
+extern TaskStages      data_ov030_020ed15c;
 extern TaskHandle      data_ov030_020ed150;
 extern SpriteAnimation data_ov030_020ed16c;
 
@@ -60,7 +58,7 @@ s32 func_ov030_020cd6d8(TaskPool* arg0, Task* arg1, void* arg2) {
 }
 
 s32 func_ov030_020cd6ec(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3) {
-    Ov030ONFns funcs = data_ov030_020ed15c;
+    TaskStages funcs = data_ov030_020ed15c;
 
     return funcs.iter[arg3](arg0, arg1, arg2);
 }

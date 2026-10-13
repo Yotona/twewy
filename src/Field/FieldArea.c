@@ -1,13 +1,137 @@
+#include "Field/Events.h"
+#include "Field/Ov030Data.h"
 #include "Field/TaskHelpers.h"
-// Preliminary USA TU; original assembly remains linked (incomplete).
-// Range: 0x020b7dd8-0x020b87bc; 8 functions.
-// Research draft: docs/decomp/ov030/Field_020b7dd8.c
-// Boundary evidence: docs/tu-boundaries/ov030.md.
-// Unassigned data stays in generated gaps; do not mark complete yet.
 #include "Save.h"
+#include <nitro/fx/fx_matrix.h>
 
-extern s32 func_ov030_020af618(void);
-extern s32 func_ov030_020b3128(s32*);
+extern void func_02027c94(s32);
+extern s32  func_ov030_020aeaf4(void);
+extern s32  func_ov030_020af618(void);
+extern s32  func_ov030_020b3128(s32*);
+extern u16  func_ov030_020c5430(void);
+extern void func_ov030_020d18cc(s32, s32);
+extern void func_ov030_020d1a1c(s32, s32);
+extern void func_ov030_020d20bc(void);
+
+extern const FieldSlope data_ov030_020e0fb4[3];
+extern const FieldSlope data_ov030_020e14f8[6];
+
+s32 func_ov030_020b7d74(s32 value);
+
+// Sets up the field camera/projection for one frame from the camera origin
+// (FieldEventManager::origin, passed by value). arg1 (eventMgr+0x2191C) is unused.
+void func_ov030_020b7a00(void* arg1, FieldPos origin) {
+    func_ov030_020d1a1c(gSaveData.fieldPos.x - origin.x, gSaveData.fieldPos.y - origin.y);
+    Mtx_OrthoW(-origin.y, -0xC0000 - origin.y, origin.x, origin.x + 0x100000, -0x400000, 0x400000, 0x20000, &data_02076a4c);
+    data_02076a44.unk_FC &= ~0x50;
+    func_02028a44();
+    func_ov030_020d18cc(origin.x + 0x80000, -(origin.y + 0x60000));
+}
+
+void func_ov030_020b7aac(s32* arg0) {
+    func_ov030_020d20bc();
+    func_02027c94(*arg0);
+    func_0202688c();
+}
+
+void func_ov030_020b7ac8(void) {
+    s32 i = 0;
+    do {
+        gSaveData.unk_2548[i] = data_ov030_020e1d64[i].unk_1C;
+        i++;
+    } while (i < 44);
+}
+
+s16 func_ov030_020b7b00(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_18;
+}
+s16 func_ov030_020b7b20(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_02;
+}
+s16 func_ov030_020b7b40(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_04;
+}
+s16 func_ov030_020b7b60(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_1A;
+}
+s32 func_ov030_020b7b80(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_00 / 2;
+}
+s32 func_ov030_020b7ba8(void) {
+    s16 origin = func_ov030_020b7b40();
+    s32 extent = func_ov030_020b7b60();
+    return origin + extent / 2;
+}
+s16 func_ov030_020b7bc4(void) {
+    s16 area   = gSaveData.unk_2458;
+    s16 second = data_ov030_020e1d64[area].unk_18;
+    s16 first  = data_ov030_020e1d64[area].unk_00;
+    if (first <= second) {
+        first = second;
+    }
+    return first;
+}
+s16 func_ov030_020b7bf8(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_10;
+}
+s32 func_ov030_020b7c18(void) {
+    return data_ov030_020e1d64[gSaveData.unk_2458].unk_14;
+}
+u16 func_ov030_020b7c34(s32 area) {
+    if (area >= 70) {
+        return func_ov030_020c5430();
+    }
+    return data_ov030_020e1d64[area].unk_1E;
+}
+
+void func_ov030_020b7c58(s32 unused, s32* out1, s32* out2, s32* out3) {
+    *out1 = data_ov030_020e1d64[gSaveData.unk_2458].unk_08;
+    *out2 = data_ov030_020e1d64[gSaveData.unk_2458].unk_0C;
+    *out3 = *out2 - *out1;
+}
+
+s32 func_ov030_020b7c9c(s32 value, s32 unusedY) {
+    s32 area = gSaveData.unk_2458;
+    if (area == 0) {
+        return func_ov030_020b7d74(value);
+    }
+    if (area == 1) {
+        if (value < 0x118000) {
+            return 0x78000;
+        }
+        if (value < 0x167000) {
+            return 0x66000;
+        }
+        if (value < 0x1BE000) {
+            return 0x75000;
+        }
+        return 0x86000;
+    }
+    return func_ov030_020b7b40() << 12;
+}
+
+s32 func_ov030_020b7d04(s32 value) {
+    u32 i;
+
+    for (i = 0; i < 2; i++) {
+        if (value + 0x100000 < data_ov030_020e0fb4[i].limit) {
+            break;
+        }
+    }
+    return data_ov030_020e0fb4[i].base + (s32)(((s64)(value + 0x100000) * data_ov030_020e0fb4[i].slope + 0x800) >> 12) -
+           0xC1000;
+}
+
+s32 func_ov030_020b7d74(s32 value) {
+    u32 i;
+
+    for (i = 0; i < 5; i++) {
+        if (value < data_ov030_020e14f8[i].limit) {
+            break;
+        }
+    }
+    return data_ov030_020e14f8[i].base + (s32)(((s64)value * data_ov030_020e14f8[i].slope + 0x800) >> 12);
+}
 
 s32 func_ov030_020b7dd8(s32 arg0) {
     s32 value;
@@ -64,7 +188,6 @@ typedef struct {
 } Ov030ClickRegion;
 
 extern Ov030ClickRegion data_ov030_020e1878[];
-extern s32              func_ov030_020b7ba8(void);
 
 // Nonmatching: register allocation only — the record reads are in field order
 // and every operand matches the target, but retail pins the 6 param pointers one
@@ -379,4 +502,43 @@ s32 func_ov030_020b86bc(FieldPos* arg0, s16* arg1, s32* arg2, s32 arg3) {
         *arg1 = 1;
     }
     return 2;
+}
+
+void func_ov030_020b87bc(FieldExit* exit) {
+    s32 out0;
+    s32 out1;
+    s32 out2;
+    s32 out3;
+    s32 direction;
+    s16 entry = exit->destArea;
+
+    if (entry == 0x25 && gSaveData.unk_2458 == 0x18) {
+        gSaveData.unk_2458 = func_ov030_020aeaf4();
+    } else {
+        gSaveData.unk_2458 = entry;
+    }
+    func_ov030_020b7e94(&out0, &out1, &out2, &out3, &direction, exit->destRegion, &gSaveData.fieldPos.x,
+                        &gSaveData.fieldPos.y);
+    if (direction == 2) {
+        gSaveData.fieldPos.x -= 0x10000;
+    } else if (direction == 6) {
+        gSaveData.fieldPos.x += 0x10000;
+    } else if (direction == 0) {
+        gSaveData.fieldPos.y -= 0x10000;
+    } else if (direction == 4) {
+        gSaveData.fieldPos.y += 0x10000;
+    }
+    if (gSaveData.unk_2458 != 0) {
+        return;
+    }
+    if (gSaveData.fieldPos.x >= 0x80000) {
+        return;
+    }
+    gSaveData.fieldPos.x = 0x18000;
+    gSaveData.fieldPos.y = 0x100000;
+}
+
+void func_ov030_020b88e8(FieldExit* exit) {
+    func_ov030_020b87bc(exit);
+    func_ov030_020b7c58(gSaveData.unk_2458, &gSaveData.unk_248C, &gSaveData.unk_2490, &gSaveData.unk_2494);
 }

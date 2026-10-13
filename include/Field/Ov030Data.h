@@ -10,7 +10,7 @@
 #include <nitro/fx.h>           // Mtx44
 
 // Engine-side render state shared by FieldSceneRender / FieldSceneLoad /
-// FieldAreaParameters: only the +0xFC control word is touched (bit 4 is cleared
+// FieldArea: only the +0xFC control word is touched (bit 4 is cleared
 // before each ortho reload), and +0x08 has its own delinked symbol.
 typedef struct {
     /* 0x00 */ char unk_00[0xFC];
@@ -38,7 +38,7 @@ typedef struct {
 } FldMesTaskParam; // Size: 0x28
 
 // Piecewise-linear lookup row: the first row whose limit exceeds the input
-// gives base + input * slope (fx32). FieldFloorHeight and FieldAreaZeroFloor.
+// gives base + input * slope (fx32). Used by FieldArea.
 typedef struct {
     /* 0x0 */ s32 limit;
     /* 0x4 */ s32 slope;

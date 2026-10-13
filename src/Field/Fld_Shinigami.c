@@ -5,21 +5,23 @@
 #include "SndMgr.h"
 #include <nitro/fx.h>
 
-// USA 0x020cb284-0x020ccb78: the "Shinigami" (reaper wall) collision helpers
-// and the reaper menu task. Positions are 2D fx32 (12-bit fraction). The map
+// The "Shinigami" (reaper wall) collision helpers and the reaper menu task. Positions are 2D fx32 (12-bit fraction). The map
 // in data_ov030_02109d84 holds a grid of cells, each listing indices of wall
 // triangles (3 vertices + category/attr); wall containment classifies points as
 // inside (1), touching (-1) or free (0), and the slide helpers steer movement
 // along wall edges.
 
 typedef struct {
-    /* 0x0 */ u16 unk_00;
-    /* 0x2 */ u16 unk_02;
-    /* 0x4 */ u16 width;
-    /* 0x6 */ u16 height;
-    /* 0x8 */ u16 cellWidth;
-    /* 0xA */ u16 cellHeight;
-} ShiniGridInfo; // Size: 0xC
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ u16 width;
+    /* 0x06 */ u16 height;
+    /* 0x08 */ u16 cellWidth;
+    /* 0x0A */ u16 cellHeight;
+    /* 0x0C */ u32 unk_0C[3];
+    /* 0x18 */ u32 wallsOffset;
+    /* 0x1C */ u32 unk_1C;
+} ShiniGridInfo; // Size: 0x20
 
 typedef struct {
     /* 0x0 */ s32 originX;
@@ -36,11 +38,12 @@ typedef struct {
 } ShiniWall; // Size: 0x20
 
 typedef struct {
-    /* 0x0 */ u8*            indexTable;
-    /* 0x4 */ ShiniGridInfo* grid;
-    /* 0x8 */ ShiniCell*     cells;
-    /* 0xC */ ShiniWall*     walls;
-} ShiniWorld;
+    /* 0x00 */ u8*            indexTable;
+    /* 0x04 */ ShiniGridInfo* grid;
+    /* 0x08 */ ShiniCell*     cells;
+    /* 0x0C */ ShiniWall*     walls;
+    /* 0x10 */ u8*            unk_10;
+} ShiniWorld; // Size: 0x14
 
 typedef struct {
     /* 0x00 */ s32 unk_00;
@@ -57,6 +60,18 @@ extern ShiniWorld* data_ov030_02109d84;
 // Wall indices listed for a cell; cell->offset is a byte offset into the index table.
 static inline s32* Shini_GetCellWalls(ShiniCell* cell) {
     return (s32*)(data_ov030_02109d84->indexTable + cell->offset);
+}
+
+void func_ov030_020cb21c(ShiniWorld* world, void* arg1, u8* file) {
+    data_ov030_02109d84             = world;
+    data_ov030_02109d84->indexTable = file;
+    if (data_ov030_02109d84->indexTable == NULL) {
+        return;
+    }
+    data_ov030_02109d84->grid   = (ShiniGridInfo*)data_ov030_02109d84->indexTable;
+    data_ov030_02109d84->cells  = (ShiniCell*)&data_ov030_02109d84->indexTable[sizeof(ShiniGridInfo)];
+    data_ov030_02109d84->walls  = (ShiniWall*)&data_ov030_02109d84->indexTable[data_ov030_02109d84->grid->wallsOffset];
+    data_ov030_02109d84->unk_10 = &data_ov030_02109d84->indexTable[data_ov030_02109d84->grid->unk_1C];
 }
 
 extern void func_ov030_020af6f0(s32);

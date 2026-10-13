@@ -20,26 +20,16 @@ typedef struct {
     /* 0x8 */ s32 dataType;
 } LocaTitle_Args;
 
-extern void MI_CpuSet(void* dest, u8 value, u32 control);
 extern void func_020265d4(s32* value, s32 target, u16 duration);
 extern void func_02026590(s32* value, s32 target, u16 duration);
 extern void func_02026608(s32* value, s32 target, u16 duration, s32 mode);
 
-void LocaTitle_SetUpdate(LocaTitle* locaTitle, void (*update)(LocaTitle*));
-void func_ov030_020d2dbc(LocaTitle* locaTitle);
 void func_ov030_020d2e4c(LocaTitle* locaTitle);
 void func_ov030_020d2ec0(LocaTitle* locaTitle);
 
-void LocaTitle_Load(LocaTitle* locaTitle, LocaTitle_Args* args);
-s32  LocaTitle_Init(TaskPool* pool, Task* task, void* args);
-s32  LocaTitle_Update(TaskPool* pool, Task* task, void* args);
-s32  LocaTitle_Render(TaskPool* pool, Task* task, void* args);
-s32  LocaTitle_Destroy(TaskPool* pool, Task* task, void* args);
-s32  LocaTitle_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
-s32  LocaTitle_CreateTask(TaskPool* pool, s32 dataType, s32 packIndex);
+s32 LocaTitle_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-char                data_ov030_021090f4[28] = "Apl_Kit/Grp_LocaTitle.bin";
-const BinIdentifier data_ov030_020ee948     = {30, data_ov030_021090f4};
+const BinIdentifier data_ov030_020ee948 = {30, "Apl_Kit/Grp_LocaTitle.bin"};
 
 static const SpriteAnimation LocaTitle_Anim = {
     .bits_0_1          = 0,
@@ -69,7 +59,8 @@ static const SpriteAnimation LocaTitle_Anim = {
 };
 
 static const TaskHandle Tsk_LocaTitle = {"Tsk_LocaTitle", LocaTitle_RunTask, sizeof(LocaTitle)};
-void                    LocaTitle_SetUpdate(LocaTitle* locaTitle, void (*update)(LocaTitle*)) {
+
+void LocaTitle_SetUpdate(LocaTitle* locaTitle, void (*update)(LocaTitle*)) {
     locaTitle->update = update;
     locaTitle->timer  = 0;
 }
@@ -85,10 +76,9 @@ void func_ov030_020d2dbc(LocaTitle* locaTitle) {
         func_02026608(&locaTitle->rightX, 0x74000, locaTitle->timer, 0);
         locaTitle->timer--;
     }
-    if (locaTitle->timer > 0) {
-        return;
+    if (locaTitle->timer <= 0) {
+        LocaTitle_SetUpdate(locaTitle, func_ov030_020d2e4c);
     }
-    LocaTitle_SetUpdate(locaTitle, func_ov030_020d2e4c);
 }
 
 void func_ov030_020d2e4c(LocaTitle* locaTitle) {
@@ -100,10 +90,9 @@ void func_ov030_020d2e4c(LocaTitle* locaTitle) {
         func_02026590(&locaTitle->rightX, 0x8C000, locaTitle->timer);
         locaTitle->timer--;
     }
-    if (locaTitle->timer > 0) {
-        return;
+    if (locaTitle->timer <= 0) {
+        LocaTitle_SetUpdate(locaTitle, func_ov030_020d2ec0);
     }
-    LocaTitle_SetUpdate(locaTitle, func_ov030_020d2ec0);
 }
 
 void func_ov030_020d2ec0(LocaTitle* locaTitle) {
@@ -177,14 +166,13 @@ s32 LocaTitle_Destroy(TaskPool* pool, Task* task, void* args) {
 }
 
 s32 LocaTitle_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
-    typedef s32 (*TaskStage)(TaskPool*, Task*, void*);
-    TaskStage stages[4] = {
-        LocaTitle_Init,
-        LocaTitle_Update,
-        LocaTitle_Render,
-        LocaTitle_Destroy,
+    const TaskStages stages = {
+        .initialize = LocaTitle_Init,
+        .update     = LocaTitle_Update,
+        .render     = LocaTitle_Render,
+        .cleanup    = LocaTitle_Destroy,
     };
-    return stages[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
 s32 LocaTitle_CreateTask(TaskPool* pool, s32 dataType, s32 packIndex) {

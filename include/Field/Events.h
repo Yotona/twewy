@@ -7,7 +7,7 @@
 #include "Field/FieldTypes.h"
 #include <nitro/types.h>
 
-// A map exit: an entry of an area's exit table (FieldExitRegions). The field
+// A map exit: an entry of an area's exit table (FieldArea). The field
 // keeps the exit being taken in FieldEventManager::unk_21A58.
 typedef struct FieldExit {
     /* 0x0 */ s32 region;     // trigger region kind, see func_ov030_020b7e94

@@ -30,26 +30,8 @@ typedef struct {
     s32               keepResources;
 } Task_Window; // Size: 0x84
 
-typedef union {
-    struct {
-        u32 unk_00[6];
-        u32 offset_18;
-        u32 offset_1C;
-    } header;
-    u8 bytes[0x1000];
-} Task_Window_RelativeData;
-
-typedef struct {
-    Task_Window_RelativeData* source;
-    Task_Window_RelativeData* base;
-    u8*                       cursor;
-    u8*                       first;
-    u8*                       second;
-} Task_Window_Buffers;
-
-extern Task_Window_Buffers* data_ov030_02109d84;
-extern s32                  func_ov030_020cab64(TaskPool* pool, Task* task, void* args);
-extern s32                  func_ov030_020cae10(TaskPool* pool, Task* task, void* args);
+extern s32 func_ov030_020cab64(TaskPool* pool, Task* task, void* args);
+extern s32 func_ov030_020cae10(TaskPool* pool, Task* task, void* args);
 
 s32 Task_Window_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
@@ -173,16 +155,4 @@ s32 Task_Window_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
         .cleanup    = Task_Window_Destroy,
     };
     return stages.iter[stage](pool, task, args);
-}
-
-void func_ov030_020cb21c(Task_Window_Buffers* window, void* data, Task_Window_RelativeData* source) {
-    data_ov030_02109d84         = window;
-    data_ov030_02109d84->source = source;
-    if (data_ov030_02109d84->source == NULL) {
-        return;
-    }
-    data_ov030_02109d84->base   = data_ov030_02109d84->source;
-    data_ov030_02109d84->cursor = &data_ov030_02109d84->source->bytes[0x20];
-    data_ov030_02109d84->first  = &data_ov030_02109d84->source->bytes[data_ov030_02109d84->base->header.offset_18];
-    data_ov030_02109d84->second = &data_ov030_02109d84->source->bytes[data_ov030_02109d84->base->header.offset_1C];
 }

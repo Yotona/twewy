@@ -54,11 +54,11 @@ extern s32  func_ov030_020c5ed0(void* arg0, s32 arg1, void* arg2, s32 arg3);
 extern void func_ov030_020c6150(s32* arg0);
 extern void func_ov030_020ac95c(FieldEventManager* mgr);
 
-extern void              func_ov030_020af980(s16 arg0);
-extern s16               func_ov030_020b7b20(void);
-extern s16               func_ov030_020b7bc4(void);
-extern s32               func_ov030_020aec08(s32 mask);
-extern FldSpawnTemplate* func_ov030_020baa2c(s32* count);
+extern void                    func_ov030_020af980(s16 arg0);
+extern s16                     func_ov030_020b7b20(void);
+extern s16                     func_ov030_020b7bc4(void);
+extern s32                     func_ov030_020aec08(s32 mask);
+extern const FldSpawnTemplate* func_ov030_020baa2c(s32* count);
 // Per-area pair of spawn-table selectors (24 areas): [0] feeds 020ac730, [1] 020ac438.
 extern const s16 data_ov030_020d9eca[24][2];
 
@@ -1144,10 +1144,10 @@ void func_ov030_020ac730(FieldEventManager* mgr, s32 percent) {
 }
 
 void func_ov030_020ac95c(FieldEventManager* mgr) {
-    s32               count = 0;
-    s32               i;
-    FldSpawnTemplate* tpl;
-    s16               area;
+    s32                     count = 0;
+    s32                     i;
+    const FldSpawnTemplate* tpl;
+    s16                     area;
 
     mgr->unk_21918 = 0;
     mgr->unk_21920 = 0;
