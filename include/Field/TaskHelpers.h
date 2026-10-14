@@ -2,6 +2,7 @@
 #define FIELD_TASK_HELPERS_H
 
 #include "Engine/EasyTask.h"
+#include "Field/FieldRegion.h"
 #include "Field/FieldTypes.h"
 
 // Helpers consume the Task returned by EasyTask_GetTaskById.

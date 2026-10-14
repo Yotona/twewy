@@ -208,7 +208,9 @@
     // menu_treasureName.xls
     #define SYSMSG_SWAG_NAMES_START 13502 // "Colorful Thread"..
     // menu_treasureTips.xls
-    #define SYSMSG_SWAG_TIPS_START 13652             // "Materials like this transform certain it"...
+    #define SYSMSG_SWAG_TIPS_START 13652 // "Materials like this transform certain it"...
+    // system_message.xls
+    #define SYSMSG_SYSTEM_MESSAGE_START 24012
 #elif defined(REGION_JP)
     #define SYSMSG_FONT_CHECK_TEXT              8266 // "{0753}{0754}{0755}{0756}"...
     #define SYSMSG_FONT_PAGE_FMT                8279 // "フォントセット :　<str>\n<u32>/<"...
@@ -363,6 +365,8 @@
     #define SYSMSG_SWAG_DESC_START              13240 // "{059A}{0272}の{024F}{0723"...
     #define SYSMSG_SWAG_NAMES_START             13390 // "あざやかな{05E8}"..
     #define SYSMSG_SWAG_TIPS_START              13540 // "あるアイテムを、もっとステキで{073A}{02"...
+    // system_message.xls
+    #define SYSMSG_SYSTEM_MESSAGE_START         23777
 #endif
 
 #endif // TWEWY_UTIL_SYSFONTMSGS_H

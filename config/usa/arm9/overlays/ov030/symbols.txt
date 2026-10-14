@@ -748,7 +748,7 @@ func_ov030_020b87bc kind:function(arm,size=0x12c) addr:0x020b87bc
 func_ov030_020b88e8 kind:function(arm,size=0x34) addr:0x020b88e8
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/UnknownTables.c
+// src/Field/Event/EventSpawnTemplates.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020b891c kind:function(arm,size=0x10) addr:0x020b891c local
 func_ov030_020b892c kind:function(arm,size=0x50) addr:0x020b892c local
@@ -1112,7 +1112,7 @@ func_ov030_020c38c0 kind:function(arm,size=0x48) addr:0x020c38c0
 func_ov030_020c3908 kind:function(arm,size=0x40) addr:0x020c3908
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 Fld_TalkEventStringPlate_GetFrameInfo kind:function(arm,size=0x104) addr:0x020c3948
 Fld_TalkEventStringPlate_Load kind:function(arm,size=0xbc) addr:0x020c3a4c
@@ -1124,7 +1124,7 @@ Fld_TalkEventStringPlate_RunTask kind:function(arm,size=0x48) addr:0x020c3cc4
 Fld_TalkEventStringPlate_CreateTask kind:function(arm,size=0x50) addr:0x020c3d0c
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020c3d5c kind:function(arm,size=0x20) addr:0x020c3d5c
 func_ov030_020c3d7c kind:function(arm,size=0x60) addr:0x020c3d7c
@@ -1248,7 +1248,7 @@ Fld_GetPlate_RunTask kind:function(arm,size=0x48) addr:0x020c7134
 Fld_GetPlate_CreateTask kind:function(arm,size=0x34) addr:0x020c717c
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetMess_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c71b0
 Fld_GetMess_Load kind:function(arm,size=0x6c) addr:0x020c724c
@@ -1260,7 +1260,7 @@ Fld_GetMess_RunTask kind:function(arm,size=0x48) addr:0x020c74a4
 Fld_GetMess_CreateTask kind:function(arm,size=0x38) addr:0x020c74ec
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Fld_WhichArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c7524
 Fld_WhichArrow_Load kind:function(arm,size=0xa8) addr:0x020c75c0
@@ -1272,7 +1272,7 @@ Fld_WhichArrow_RunTask kind:function(arm,size=0x48) addr:0x020c777c
 Fld_WhichArrow_CreateTask kind:function(arm,size=0x40) addr:0x020c77c4
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetBase_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7804
 Fld_GetBase_Load kind:function(arm,size=0x80) addr:0x020c78e4
@@ -1284,7 +1284,7 @@ Fld_GetBase_RunTask kind:function(arm,size=0x48) addr:0x020c79f8
 Fld_GetBase_CreateTask kind:function(arm,size=0x34) addr:0x020c7a40
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetItem_LoadThreadData kind:function(arm,size=0x2c) addr:0x020c7a74
 Fld_GetItem_LoadFoodData kind:function(arm,size=0x2c) addr:0x020c7aa0
@@ -1302,7 +1302,7 @@ Fld_GetItem_RunTask kind:function(arm,size=0x48) addr:0x020c7f50
 Fld_GetItem_CreateTask kind:function(arm,size=0x34) addr:0x020c7f98
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020c7fcc kind:function(arm,size=0x4) addr:0x020c7fcc
 func_ov030_020c7fd0 kind:function(arm,size=0x94) addr:0x020c7fd0
@@ -1318,7 +1318,7 @@ func_ov030_020c8340 kind:function(arm,size=0xa8) addr:0x020c8340
 func_ov030_020c83e8 kind:function(arm,size=0xc) addr:0x020c83e8
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 Fld_UGFade_Init kind:function(arm,size=0xac) addr:0x020c83f4
 Fld_UGFade_Update kind:function(arm,size=0x74) addr:0x020c84a0
@@ -2161,7 +2161,7 @@ data_ov030_020e1878 kind:data(any) addr:0x020e1878
 data_ov030_020e1d64 kind:data(any) addr:0x020e1d64
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/UnknownTables.c
+// src/Field/Event/EventSpawnTemplates.c
 //////////////////////////////////////////////////////////////////////
 data_ov030_020e2364 kind:data(any) addr:0x020e2364
 data_ov030_020e2380 kind:data(any) addr:0x020e2380
@@ -2460,14 +2460,14 @@ data_ov030_020e7178 kind:data(any) addr:0x020e7178
 data_ov030_020e7188 kind:data(any) addr:0x020e7188
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_TalkEventStringPlate kind:data(any) addr:0x020e71b4
 @1135 kind:data(any) addr:0x020e71c0
 data_ov030_020e71d0 kind:data(any) addr:0x020e71d0
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc
 @259 kind:data(any) addr:0x020e7208 local
@@ -2488,7 +2488,7 @@ Fld_MapJumpName_Anim kind:data(any) addr:0x020e730c
 Tsk_Fld_MapName kind:data(any) addr:0x020e7338 local
 @1496 kind:data(any) addr:0x020e7344 local
 Fld_MapName_Anim kind:data(any) addr:0x020e7354 local
-data_ov030_020e7380 kind:data(any) addr:0x020e7380
+data_ov030_020e7380 kind:data(any) addr:0x020e7380 local
 Tsk_Fld_NSymbolUGAppear kind:data(any) addr:0x020e7418 local
 @1363 kind:data(any) addr:0x020e7424 local
 Fld_NSymbolUGAppear_Anim kind:data(any) addr:0x020e7434 local
@@ -3490,28 +3490,28 @@ Tsk_Fld_GetPlate kind:data(any) addr:0x020ec88c local
 Fld_GetPlate_Anim kind:data(any) addr:0x020ec8a8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetMess kind:data(any) addr:0x020ec8d4 local
 @1365 kind:data(any) addr:0x020ec8e0 local
 data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_WhichArrow kind:data(any) addr:0x020ec91c local
 @1397 kind:data(any) addr:0x020ec928 local
 data_ov030_020ec938 kind:data(any) addr:0x020ec938 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetBase kind:data(any) addr:0x020ec964 local
 @1052 kind:data(any) addr:0x020ec970 local
 data_ov030_020ec980 kind:data(any) addr:0x020ec980 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetItem kind:data(any) addr:0x020ec9ac local
 @1296 kind:data(any) addr:0x020ec9b8 local
@@ -3519,13 +3519,13 @@ data_ov030_020ec9c8 kind:data(any) addr:0x020ec9c8 local
 data_ov030_020ec9f4 kind:data(any) addr:0x020ec9f4 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_Choice kind:data(any) addr:0x020eca2c local
 @267 kind:data(any) addr:0x020eca38 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_UGFade kind:data(any) addr:0x020eca48 local
 @690 kind:data(any) addr:0x020eca54 local
@@ -6427,12 +6427,12 @@ data_ov030_02107580 kind:data(any) addr:0x02107580
 
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 @1066 kind:data(any) addr:0x02107598 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 @145 kind:data(any) addr:0x021075b8 local
 
@@ -6511,22 +6511,22 @@ data_ov030_02108474 kind:data(any) addr:0x02108474
 @1416 kind:data(any) addr:0x021084a4 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 @1292 kind:data(any) addr:0x021084b8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 @1318 kind:data(any) addr:0x021084c8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 @998 kind:data(any) addr:0x021084dc local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 @1145 kind:data(any) addr:0x021084ec local
 @1150 kind:data(any) addr:0x021084fc local
@@ -6538,12 +6538,12 @@ data_ov030_02108474 kind:data(any) addr:0x02108474
 @1151 kind:data(any) addr:0x0210858c local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 @179 kind:data(any) addr:0x021085a8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 @644 kind:data(any) addr:0x021085b8 local
 

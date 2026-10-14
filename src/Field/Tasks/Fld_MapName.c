@@ -2,6 +2,7 @@
 #include "Engine/EasyTask.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
+#include "Util/SysFontMsgs.h"
 #include <nitro/types.h>
 
 extern const BinIdentifier data_ov030_020d9944;
@@ -84,8 +85,8 @@ s32 Fld_MapName_Init(TaskPool* pool, Task* task, void* args) {
     SysFont_InitWithFont(&mapName->font, 1, TRUE);
     SysFont_SetSpacing(&mapName->font, TRUE, 0);
     messageId = mapNameArgs->messageId;
-    if (messageId == 0x2D41 && func_ov030_020aeadc(0x17, 1) == 0) {
-        messageId = 0x2D56;
+    if (messageId == SYSMSG_AREA_NAMES_START + 21 && func_ov030_020aeadc(0x17, 1) == 0) {
+        messageId = SYSMSG_AREA_NAME_UNKNOWN;
     }
     mapName->msg   = SysFont_GetMsgBuf(&mapName->font, messageId);
     width          = SysFont_MeasureWidth(&mapName->font, mapName->msg);

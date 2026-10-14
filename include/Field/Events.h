@@ -4,6 +4,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Field/EventFlags.h"
+#include "Field/FieldRegion.h"
 #include "Field/FieldTypes.h"
 #include <nitro/types.h>
 

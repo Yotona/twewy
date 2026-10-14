@@ -24,11 +24,11 @@ typedef struct {
     u32   unk_6c;
 } FieldViewerState;
 
-extern FieldViewerState* data_ov030_02109ddc;
-extern void              func_ov030_020d2558(s32 size);
-extern void*             func_ov030_020d2548(void);
-extern void              func_ov030_020d2538(void* data);
-extern void              func_ov030_020d2504(void);
+FieldViewerState* data_ov030_02109ddc;
+extern void       func_ov030_020d2558(s32 size);
+extern void*      func_ov030_020d2548(void);
+extern void       func_ov030_020d2538(void* data);
+extern void       func_ov030_020d2504(void);
 
 char data_ov030_02108a0c[20] = "FO3DViewerImd_Alloc";
 

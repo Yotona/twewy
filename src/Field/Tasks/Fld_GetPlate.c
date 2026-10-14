@@ -1,7 +1,9 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
+#include "Field/FieldRegion.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
+#include "Util/SysFontMsgs.h"
 
 typedef struct {
     /* 0x00 */ Sprite  sprite;
@@ -72,7 +74,7 @@ s32 Fld_GetPlate_Init(TaskPool* pool, Task* task, void* args) {
 
     SysFont_InitWithFont(&plate->font, 1, TRUE);
     SysFont_SetSpacing(&plate->font, TRUE, 0);
-    plate->message    = func_ov030_020c4ae8(&plate->font, 0x5DCD, (u16)plateArgs->messageIndex);
+    plate->message    = func_ov030_020c4ae8(&plate->font, SYSMSG_SYSTEM_MESSAGE_START + 1, (u16)plateArgs->messageIndex);
     width             = SysFont_MeasureWidth(&plate->font, plate->message);
     plate->targetPosX = (width - 0x50) << 12;
     if (plate->targetPosX >= 0x80000) {

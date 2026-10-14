@@ -1,4 +1,5 @@
 #include "Engine/EasyTask.h"
+#include "Field/FieldRegion.h"
 #include "SpriteMgr.h"
 #include <nitro/types.h>
 
