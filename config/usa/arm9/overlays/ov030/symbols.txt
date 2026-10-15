@@ -748,7 +748,7 @@ func_ov030_020b87bc kind:function(arm,size=0x12c) addr:0x020b87bc
 func_ov030_020b88e8 kind:function(arm,size=0x34) addr:0x020b88e8
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/UnknownTables.c
+// src/Field/Event/EventSpawnTemplates.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020b891c kind:function(arm,size=0x10) addr:0x020b891c local
 func_ov030_020b892c kind:function(arm,size=0x50) addr:0x020b892c local
@@ -1112,7 +1112,7 @@ func_ov030_020c38c0 kind:function(arm,size=0x48) addr:0x020c38c0
 func_ov030_020c3908 kind:function(arm,size=0x40) addr:0x020c3908
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 Fld_TalkEventStringPlate_GetFrameInfo kind:function(arm,size=0x104) addr:0x020c3948
 Fld_TalkEventStringPlate_Load kind:function(arm,size=0xbc) addr:0x020c3a4c
@@ -1124,7 +1124,7 @@ Fld_TalkEventStringPlate_RunTask kind:function(arm,size=0x48) addr:0x020c3cc4
 Fld_TalkEventStringPlate_CreateTask kind:function(arm,size=0x50) addr:0x020c3d0c
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020c3d5c kind:function(arm,size=0x20) addr:0x020c3d5c
 func_ov030_020c3d7c kind:function(arm,size=0x60) addr:0x020c3d7c
@@ -1141,64 +1141,64 @@ Fld_TalkEventKeywordMenu_CreateTask kind:function(arm,size=0x34) addr:0x020c41d8
 
 
 func_ov030_020c420c kind:function(arm,size=0xdc) addr:0x020c420c
-func_ov030_020c42e8 kind:function(arm,size=0xa4) addr:0x020c42e8
-func_ov030_020c438c kind:function(arm,size=0xf8) addr:0x020c438c
-func_ov030_020c4484 kind:function(arm,size=0x4c) addr:0x020c4484
-func_ov030_020c44d0 kind:function(arm,size=0x34) addr:0x020c44d0
-func_ov030_020c4504 kind:function(arm,size=0x34) addr:0x020c4504
-func_ov030_020c4538 kind:function(arm,size=0x34) addr:0x020c4538
-func_ov030_020c456c kind:function(arm,size=0x48) addr:0x020c456c
-func_ov030_020c45b4 kind:function(arm,size=0x38) addr:0x020c45b4
-func_ov030_020c45ec kind:function(arm,size=0x9c) addr:0x020c45ec
-func_ov030_020c4688 kind:function(arm,size=0x84) addr:0x020c4688
-func_ov030_020c470c kind:function(arm,size=0x2c) addr:0x020c470c
-func_ov030_020c4738 kind:function(arm,size=0x28) addr:0x020c4738
-func_ov030_020c4760 kind:function(arm,size=0x14) addr:0x020c4760
-func_ov030_020c4774 kind:function(arm,size=0x14) addr:0x020c4774
-func_ov030_020c4788 kind:function(arm,size=0x48) addr:0x020c4788
-func_ov030_020c47d0 kind:function(arm,size=0x40) addr:0x020c47d0
+Fld_TalkEventCursor_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c42e8
+Fld_TalkEventCursor_Load kind:function(arm,size=0xf8) addr:0x020c438c
+Fld_TalkEventCursor_Init kind:function(arm,size=0x4c) addr:0x020c4484
+Fld_TalkEventCursor_Update kind:function(arm,size=0x34) addr:0x020c44d0
+Fld_TalkEventCursor_Render kind:function(arm,size=0x34) addr:0x020c4504
+Fld_TalkEventCursor_Destroy kind:function(arm,size=0x34) addr:0x020c4538
+Fld_TalkEventCursor_RunTask kind:function(arm,size=0x48) addr:0x020c456c
+Fld_TalkEventCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c45b4
+Fld_TalkEventDecide_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c45ec
+Fld_TalkEventDecide_Load kind:function(arm,size=0x84) addr:0x020c4688
+Fld_TalkEventDecide_Init kind:function(arm,size=0x2c) addr:0x020c470c
+Fld_TalkEventDecide_Update kind:function(arm,size=0x28) addr:0x020c4738
+Fld_TalkEventDecide_Render kind:function(arm,size=0x14) addr:0x020c4760
+Fld_TalkEventDecide_Destroy kind:function(arm,size=0x14) addr:0x020c4774
+Fld_TalkEventDecide_RunTask kind:function(arm,size=0x48) addr:0x020c4788
+Fld_TalkEventDecide_CreateTask kind:function(arm,size=0x40) addr:0x020c47d0
 func_ov030_020c4810 kind:function(arm,size=0x40) addr:0x020c4810
-func_ov030_020c4850 kind:function(arm,size=0x9c) addr:0x020c4850
-func_ov030_020c48ec kind:function(arm,size=0x6c) addr:0x020c48ec
-func_ov030_020c4958 kind:function(arm,size=0x38) addr:0x020c4958
-func_ov030_020c4990 kind:function(arm,size=0x48) addr:0x020c4990
-func_ov030_020c49d8 kind:function(arm,size=0x14) addr:0x020c49d8
-func_ov030_020c49ec kind:function(arm,size=0x14) addr:0x020c49ec
-func_ov030_020c4a00 kind:function(arm,size=0x48) addr:0x020c4a00
-func_ov030_020c4a48 kind:function(arm,size=0x30) addr:0x020c4a48
+Fld_TalkEventTitle_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4850
+Fld_TalkEventTitle_Load kind:function(arm,size=0x6c) addr:0x020c48ec
+Fld_TalkEventTitle_Init kind:function(arm,size=0x38) addr:0x020c4958
+Fld_TalkEventTitle_Update kind:function(arm,size=0x48) addr:0x020c4990
+Fld_TalkEventTitle_Render kind:function(arm,size=0x14) addr:0x020c49d8
+Fld_TalkEventTitle_Destroy kind:function(arm,size=0x14) addr:0x020c49ec
+Fld_TalkEventTitle_RunTask kind:function(arm,size=0x48) addr:0x020c4a00
+Fld_TalkEventTitle_CreateTask kind:function(arm,size=0x30) addr:0x020c4a48
 func_ov030_020c4a78 kind:function(arm,size=0x70) addr:0x020c4a78
 func_ov030_020c4ae8 kind:function(arm,size=0xa4) addr:0x020c4ae8
 func_ov030_020c4b8c kind:function(arm,size=0x94) addr:0x020c4b8c
-func_ov030_020c4c20 kind:function(arm,size=0x9c) addr:0x020c4c20
+Fld_MapJumpName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4c20
 func_ov030_020c4cbc kind:function(arm,size=0x20) addr:0x020c4cbc
 func_ov030_020c4cdc kind:function(arm,size=0xa4) addr:0x020c4cdc
 func_ov030_020c4d80 kind:function(arm,size=0x15c) addr:0x020c4d80
-func_ov030_020c4edc kind:function(arm,size=0x8) addr:0x020c4edc
+Fld_MapJumpName_Update kind:function(arm,size=0x8) addr:0x020c4edc
 func_ov030_020c4ee4 kind:function(arm,size=0xb4) addr:0x020c4ee4
-func_ov030_020c4f98 kind:function(arm,size=0x3c) addr:0x020c4f98
-func_ov030_020c4fd4 kind:function(arm,size=0x48) addr:0x020c4fd4
+Fld_MapJumpName_Destroy kind:function(arm,size=0x3c) addr:0x020c4f98
+Fld_MapJumpName_RunTask kind:function(arm,size=0x48) addr:0x020c4fd4
 func_ov030_020c501c kind:function(arm,size=0x6c) addr:0x020c501c
-func_ov030_020c5088 kind:function(arm,size=0x9c) addr:0x020c5088
-func_ov030_020c5124 kind:function(arm,size=0x84) addr:0x020c5124
-func_ov030_020c51a8 kind:function(arm,size=0xdc) addr:0x020c51a8
-func_ov030_020c5284 kind:function(arm,size=0x8) addr:0x020c5284
-func_ov030_020c528c kind:function(arm,size=0x68) addr:0x020c528c
-func_ov030_020c52f4 kind:function(arm,size=0x38) addr:0x020c52f4
-func_ov030_020c532c kind:function(arm,size=0x48) addr:0x020c532c
-func_ov030_020c5374 kind:function(arm,size=0x38) addr:0x020c5374
+Fld_MapName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5088
+Fld_MapName_Load kind:function(arm,size=0x84) addr:0x020c5124
+Fld_MapName_Init kind:function(arm,size=0xdc) addr:0x020c51a8
+Fld_MapName_Update kind:function(arm,size=0x8) addr:0x020c5284
+Fld_MapName_Render kind:function(arm,size=0x68) addr:0x020c528c
+Fld_MapName_Destroy kind:function(arm,size=0x38) addr:0x020c52f4
+Fld_MapName_RunTask kind:function(arm,size=0x48) addr:0x020c532c
+Fld_MapName_CreateTask kind:function(arm,size=0x38) addr:0x020c5374
 func_ov030_020c53ac kind:function(arm,size=0x3c) addr:0x020c53ac
 func_ov030_020c53e8 kind:function(arm,size=0x1c) addr:0x020c53e8
 func_ov030_020c5404 kind:function(arm,size=0x2c) addr:0x020c5404
 func_ov030_020c5430 kind:function(arm,size=0x30) addr:0x020c5430
 func_ov030_020c5460 kind:function(arm,size=0x2c) addr:0x020c5460
-func_ov030_020c548c kind:function(arm,size=0xac) addr:0x020c548c
-func_ov030_020c5538 kind:function(arm,size=0xc8) addr:0x020c5538
-func_ov030_020c5600 kind:function(arm,size=0x2c) addr:0x020c5600
-func_ov030_020c562c kind:function(arm,size=0x68) addr:0x020c562c
-func_ov030_020c5694 kind:function(arm,size=0x14) addr:0x020c5694
-func_ov030_020c56a8 kind:function(arm,size=0x14) addr:0x020c56a8
-func_ov030_020c56bc kind:function(arm,size=0x48) addr:0x020c56bc
-func_ov030_020c5704 kind:function(arm,size=0x40) addr:0x020c5704
+Fld_NSymbolUGAppear_GetFrameInfo kind:function(arm,size=0xac) addr:0x020c548c
+Fld_NSymbolUGAppear_Load kind:function(arm,size=0xc8) addr:0x020c5538
+Fld_NSymbolUGAppear_Init kind:function(arm,size=0x2c) addr:0x020c5600
+Fld_NSymbolUGAppear_Update kind:function(arm,size=0x68) addr:0x020c562c
+Fld_NSymbolUGAppear_Render kind:function(arm,size=0x14) addr:0x020c5694
+Fld_NSymbolUGAppear_Destroy kind:function(arm,size=0x14) addr:0x020c56a8
+Fld_NSymbolUGAppear_RunTask kind:function(arm,size=0x48) addr:0x020c56bc
+Fld_NSymbolUGAppear_CreateTask kind:function(arm,size=0x40) addr:0x020c5704
 func_ov030_020c5744 kind:function(arm,size=0x54) addr:0x020c5744
 func_ov030_020c5798 kind:function(arm,size=0x6c) addr:0x020c5798
 func_ov030_020c5804 kind:function(arm,size=0x9c) addr:0x020c5804
@@ -1208,14 +1208,14 @@ func_ov030_020c5930 kind:function(arm,size=0x3c) addr:0x020c5930
 func_ov030_020c596c kind:function(arm,size=0x44) addr:0x020c596c
 func_ov030_020c59b0 kind:function(arm,size=0x4c) addr:0x020c59b0
 func_ov030_020c59fc kind:function(arm,size=0x2c) addr:0x020c59fc
-func_ov030_020c5a28 kind:function(arm,size=0xa8) addr:0x020c5a28
+Fld_Piranha_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020c5a28
 func_ov030_020c5ad0 kind:function(arm,size=0x108) addr:0x020c5ad0
 func_ov030_020c5bd8 kind:function(arm,size=0x94) addr:0x020c5bd8
 func_ov030_020c5c6c kind:function(arm,size=0x20) addr:0x020c5c6c
 func_ov030_020c5c8c kind:function(arm,size=0x190) addr:0x020c5c8c
 func_ov030_020c5e1c kind:function(arm,size=0x58) addr:0x020c5e1c
-func_ov030_020c5e74 kind:function(arm,size=0x14) addr:0x020c5e74
-func_ov030_020c5e88 kind:function(arm,size=0x48) addr:0x020c5e88
+Fld_Piranha_Destroy kind:function(arm,size=0x14) addr:0x020c5e74
+Fld_Piranha_RunTask kind:function(arm,size=0x48) addr:0x020c5e88
 func_ov030_020c5ed0 kind:function(arm,size=0x38) addr:0x020c5ed0
 func_ov030_020c5f08 kind:function(arm,size=0x54) addr:0x020c5f08
 func_ov030_020c5f5c kind:function(arm,size=0x14) addr:0x020c5f5c
@@ -1230,25 +1230,25 @@ func_ov030_020c6498 kind:function(arm,size=0x3a4) addr:0x020c6498
 func_ov030_020c683c kind:function(arm,size=0x28) addr:0x020c683c
 func_ov030_020c6864 kind:function(arm,size=0x240) addr:0x020c6864
 func_ov030_020c6aa4 kind:function(arm,size=0x1b4) addr:0x020c6aa4
-func_ov030_020c6c58 kind:function(arm,size=0x9c) addr:0x020c6c58
-func_ov030_020c6cf4 kind:function(arm,size=0x8c) addr:0x020c6cf4
-func_ov030_020c6d80 kind:function(arm,size=0x34) addr:0x020c6d80
-func_ov030_020c6db4 kind:function(arm,size=0x20) addr:0x020c6db4
-func_ov030_020c6dd4 kind:function(arm,size=0x20) addr:0x020c6dd4
-func_ov030_020c6df4 kind:function(arm,size=0x20) addr:0x020c6df4
-func_ov030_020c6e14 kind:function(arm,size=0x48) addr:0x020c6e14
-func_ov030_020c6e5c kind:function(arm,size=0x34) addr:0x020c6e5c
-func_ov030_020c6e90 kind:function(arm,size=0x9c) addr:0x020c6e90
-func_ov030_020c6f2c kind:function(arm,size=0x74) addr:0x020c6f2c
-func_ov030_020c6fa0 kind:function(arm,size=0xe0) addr:0x020c6fa0
-func_ov030_020c7080 kind:function(arm,size=0x40) addr:0x020c7080
-func_ov030_020c70c0 kind:function(arm,size=0x60) addr:0x020c70c0
-func_ov030_020c7120 kind:function(arm,size=0x14) addr:0x020c7120
-func_ov030_020c7134 kind:function(arm,size=0x48) addr:0x020c7134
-func_ov030_020c717c kind:function(arm,size=0x34) addr:0x020c717c
+Fld_TouchNext_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c6c58
+Fld_TouchNext_Load kind:function(arm,size=0x8c) addr:0x020c6cf4
+Fld_TouchNext_Init kind:function(arm,size=0x34) addr:0x020c6d80
+Fld_TouchNext_Update kind:function(arm,size=0x20) addr:0x020c6db4
+Fld_TouchNext_Render kind:function(arm,size=0x20) addr:0x020c6dd4
+Fld_TouchNext_Destroy kind:function(arm,size=0x20) addr:0x020c6df4
+Fld_TouchNext_RunTask kind:function(arm,size=0x48) addr:0x020c6e14
+Fld_TouchNext_CreateTask kind:function(arm,size=0x34) addr:0x020c6e5c
+Fld_GetPlate_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c6e90
+Fld_GetPlate_Load kind:function(arm,size=0x74) addr:0x020c6f2c
+Fld_GetPlate_Init kind:function(arm,size=0xe0) addr:0x020c6fa0
+Fld_GetPlate_Update kind:function(arm,size=0x40) addr:0x020c7080
+Fld_GetPlate_Render kind:function(arm,size=0x60) addr:0x020c70c0
+Fld_GetPlate_Destroy kind:function(arm,size=0x14) addr:0x020c7120
+Fld_GetPlate_RunTask kind:function(arm,size=0x48) addr:0x020c7134
+Fld_GetPlate_CreateTask kind:function(arm,size=0x34) addr:0x020c717c
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetMess_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c71b0
 Fld_GetMess_Load kind:function(arm,size=0x6c) addr:0x020c724c
@@ -1260,7 +1260,7 @@ Fld_GetMess_RunTask kind:function(arm,size=0x48) addr:0x020c74a4
 Fld_GetMess_CreateTask kind:function(arm,size=0x38) addr:0x020c74ec
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Fld_WhichArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c7524
 Fld_WhichArrow_Load kind:function(arm,size=0xa8) addr:0x020c75c0
@@ -1272,7 +1272,7 @@ Fld_WhichArrow_RunTask kind:function(arm,size=0x48) addr:0x020c777c
 Fld_WhichArrow_CreateTask kind:function(arm,size=0x40) addr:0x020c77c4
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetBase_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7804
 Fld_GetBase_Load kind:function(arm,size=0x80) addr:0x020c78e4
@@ -1284,7 +1284,7 @@ Fld_GetBase_RunTask kind:function(arm,size=0x48) addr:0x020c79f8
 Fld_GetBase_CreateTask kind:function(arm,size=0x34) addr:0x020c7a40
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 Fld_GetItem_LoadThreadData kind:function(arm,size=0x2c) addr:0x020c7a74
 Fld_GetItem_LoadFoodData kind:function(arm,size=0x2c) addr:0x020c7aa0
@@ -1302,7 +1302,7 @@ Fld_GetItem_RunTask kind:function(arm,size=0x48) addr:0x020c7f50
 Fld_GetItem_CreateTask kind:function(arm,size=0x34) addr:0x020c7f98
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 func_ov030_020c7fcc kind:function(arm,size=0x4) addr:0x020c7fcc
 func_ov030_020c7fd0 kind:function(arm,size=0x94) addr:0x020c7fd0
@@ -1318,7 +1318,7 @@ func_ov030_020c8340 kind:function(arm,size=0xa8) addr:0x020c8340
 func_ov030_020c83e8 kind:function(arm,size=0xc) addr:0x020c83e8
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 Fld_UGFade_Init kind:function(arm,size=0xac) addr:0x020c83f4
 Fld_UGFade_Update kind:function(arm,size=0x74) addr:0x020c84a0
@@ -1328,14 +1328,14 @@ Fld_UGFade_RunTask kind:function(arm,size=0x48) addr:0x020c8524
 Fld_UGFade_CreateTask kind:function(arm,size=0x38) addr:0x020c856c
 
 
-func_ov030_020c85a4 kind:function(arm,size=0xe4) addr:0x020c85a4
-func_ov030_020c8688 kind:function(arm,size=0xe0) addr:0x020c8688
-func_ov030_020c8768 kind:function(arm,size=0x2c) addr:0x020c8768
-func_ov030_020c8794 kind:function(arm,size=0x14) addr:0x020c8794
-func_ov030_020c87a8 kind:function(arm,size=0x14) addr:0x020c87a8
-func_ov030_020c87bc kind:function(arm,size=0x14) addr:0x020c87bc
-func_ov030_020c87d0 kind:function(arm,size=0x48) addr:0x020c87d0
-func_ov030_020c8818 kind:function(arm,size=0x50) addr:0x020c8818
+Fld_BattleIn_GetFrameInfo kind:function(arm,size=0xe4) addr:0x020c85a4
+Fld_BattleIn_Load kind:function(arm,size=0xe0) addr:0x020c8688
+Fld_BattleIn_Init kind:function(arm,size=0x2c) addr:0x020c8768
+Fld_BattleIn_Update kind:function(arm,size=0x14) addr:0x020c8794
+Fld_BattleIn_Render kind:function(arm,size=0x14) addr:0x020c87a8
+Fld_BattleIn_Destroy kind:function(arm,size=0x14) addr:0x020c87bc
+Fld_BattleIn_RunTask kind:function(arm,size=0x48) addr:0x020c87d0
+Fld_BattleIn_CreateTask kind:function(arm,size=0x50) addr:0x020c8818
 func_ov030_020c8868 kind:function(arm,size=0x9c) addr:0x020c8868
 func_ov030_020c8904 kind:function(arm,size=0x6c) addr:0x020c8904
 func_ov030_020c8970 kind:function(arm,size=0x18) addr:0x020c8970
@@ -1348,32 +1348,32 @@ func_ov030_020c8a3c kind:function(arm,size=0x1c) addr:0x020c8a3c
 func_ov030_020c8a58 kind:function(arm,size=0x88) addr:0x020c8a58
 func_ov030_020c8ae0 kind:function(arm,size=0x58) addr:0x020c8ae0
 func_ov030_020c8b38 kind:function(arm,size=0x58) addr:0x020c8b38
-func_ov030_020c8b90 kind:function(arm,size=0x194) addr:0x020c8b90
+Fld_Brush_Init kind:function(arm,size=0x194) addr:0x020c8b90
 func_ov030_020c8d24 kind:function(arm,size=0x30) addr:0x020c8d24
-func_ov030_020c8d54 kind:function(arm,size=0x1f8) addr:0x020c8d54
-func_ov030_020c8f4c kind:function(arm,size=0x8) addr:0x020c8f4c
-func_ov030_020c8f54 kind:function(arm,size=0x40) addr:0x020c8f54
-func_ov030_020c8f94 kind:function(arm,size=0x48) addr:0x020c8f94
-func_ov030_020c8fdc kind:function(arm,size=0x30) addr:0x020c8fdc
-func_ov030_020c900c kind:function(arm,size=0x9c) addr:0x020c900c
-func_ov030_020c90a8 kind:function(arm,size=0x7c) addr:0x020c90a8
-func_ov030_020c9124 kind:function(arm,size=0x18) addr:0x020c9124
-func_ov030_020c913c kind:function(arm,size=0x14) addr:0x020c913c
-func_ov030_020c9150 kind:function(arm,size=0x14) addr:0x020c9150
-func_ov030_020c9164 kind:function(arm,size=0x14) addr:0x020c9164
-func_ov030_020c9178 kind:function(arm,size=0x48) addr:0x020c9178
-func_ov030_020c91c0 kind:function(arm,size=0x34) addr:0x020c91c0
-func_ov030_020c91f4 kind:function(arm,size=0x88) addr:0x020c91f4
-func_ov030_020c927c kind:function(arm,size=0x94) addr:0x020c927c
-func_ov030_020c9310 kind:function(arm,size=0x14) addr:0x020c9310
-func_ov030_020c9324 kind:function(arm,size=0x114) addr:0x020c9324
-func_ov030_020c9438 kind:function(arm,size=0x40) addr:0x020c9438
-func_ov030_020c9478 kind:function(arm,size=0x38) addr:0x020c9478
-func_ov030_020c94b0 kind:function(arm,size=0x2ac) addr:0x020c94b0
-func_ov030_020c975c kind:function(arm,size=0x114) addr:0x020c975c
-func_ov030_020c9870 kind:function(arm,size=0x8c) addr:0x020c9870
-func_ov030_020c98fc kind:function(arm,size=0x54) addr:0x020c98fc
-func_ov030_020c9950 kind:function(arm,size=0x40) addr:0x020c9950
+Fld_Brush_Update kind:function(arm,size=0x1f8) addr:0x020c8d54
+Fld_Brush_Render kind:function(arm,size=0x8) addr:0x020c8f4c
+Fld_Brush_Destroy kind:function(arm,size=0x40) addr:0x020c8f54
+Fld_Brush_RunTask kind:function(arm,size=0x48) addr:0x020c8f94
+Fld_Brush_CreateTask kind:function(arm,size=0x30) addr:0x020c8fdc
+Fld_BrushHati_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c900c
+Fld_BrushHati_Load kind:function(arm,size=0x7c) addr:0x020c90a8
+Fld_BrushHati_Init kind:function(arm,size=0x18) addr:0x020c9124
+Fld_BrushHati_Update kind:function(arm,size=0x14) addr:0x020c913c
+Fld_BrushHati_Render kind:function(arm,size=0x14) addr:0x020c9150
+Fld_BrushHati_Destroy kind:function(arm,size=0x14) addr:0x020c9164
+Fld_BrushHati_RunTask kind:function(arm,size=0x48) addr:0x020c9178
+Fld_BrushHati_CreateTask kind:function(arm,size=0x34) addr:0x020c91c0
+FldNpcMesSel_CreateTextView kind:function(arm,size=0x88) addr:0x020c91f4
+FldNpcMesSel_DrawMenu kind:function(arm,size=0x94) addr:0x020c927c
+FldNpcMesSel_DestroyTextView kind:function(arm,size=0x14) addr:0x020c9310
+FldNpcMesSel_CreateMessageWindow kind:function(arm,size=0x114) addr:0x020c9324
+FldNpcMesSel_Open kind:function(arm,size=0x40) addr:0x020c9438
+FldNpcMesSel_Close kind:function(arm,size=0x38) addr:0x020c9478
+FldNpcMesSel_HandleInput kind:function(arm,size=0x2ac) addr:0x020c94b0
+FldNpcMesSel_Init kind:function(arm,size=0x114) addr:0x020c975c
+FldNpcMesSel_Update kind:function(arm,size=0x8c) addr:0x020c9870
+FldNpcMesSel_Destroy kind:function(arm,size=0x54) addr:0x020c98fc
+ProcessOverlay_FldNpcMesSel kind:function(arm,size=0x40) addr:0x020c9950
 FldMesSel_CreateTextView kind:function(arm,size=0x88) addr:0x020c9990
 FldMesSel_DrawMenu kind:function(arm,size=0x114) addr:0x020c9a18
 FldMesSel_DestroyTextView kind:function(arm,size=0x14) addr:0x020c9b2c
@@ -1393,11 +1393,11 @@ func_ov030_020ca200 kind:function(arm,size=0x104) addr:0x020ca200
 func_ov030_020ca304 kind:function(arm,size=0x7c) addr:0x020ca304
 func_ov030_020ca380 kind:function(arm,size=0x64) addr:0x020ca380
 func_ov030_020ca3e4 kind:function(arm,size=0x4) addr:0x020ca3e4
-func_ov030_020ca3e8 kind:function(arm,size=0x3c) addr:0x020ca3e8
-func_ov030_020ca424 kind:function(arm,size=0x24) addr:0x020ca424
-func_ov030_020ca448 kind:function(arm,size=0x14) addr:0x020ca448
-func_ov030_020ca45c kind:function(arm,size=0x18) addr:0x020ca45c
-func_ov030_020ca474 kind:function(arm,size=0x48) addr:0x020ca474
+Task_Mess_Init kind:function(arm,size=0x3c) addr:0x020ca3e8
+Task_Mess_Update kind:function(arm,size=0x24) addr:0x020ca424
+Task_Mess_Render kind:function(arm,size=0x14) addr:0x020ca448
+Task_Mess_Destroy kind:function(arm,size=0x18) addr:0x020ca45c
+Task_Mess_RunTask kind:function(arm,size=0x48) addr:0x020ca474
 func_ov030_020ca4bc kind:function(arm,size=0x58) addr:0x020ca4bc
 func_ov030_020ca514 kind:function(arm,size=0x74) addr:0x020ca514
 func_ov030_020ca588 kind:function(arm,size=0x1f0) addr:0x020ca588
@@ -1408,9 +1408,9 @@ func_ov030_020cab3c kind:function(arm,size=0x28) addr:0x020cab3c
 func_ov030_020cab64 kind:function(arm,size=0x2ac) addr:0x020cab64
 func_ov030_020cae10 kind:function(arm,size=0x28c) addr:0x020cae10
 func_ov030_020cb09c kind:function(arm,size=0x90) addr:0x020cb09c
-func_ov030_020cb12c kind:function(arm,size=0x3c) addr:0x020cb12c
-func_ov030_020cb168 kind:function(arm,size=0x6c) addr:0x020cb168
-func_ov030_020cb1d4 kind:function(arm,size=0x48) addr:0x020cb1d4
+Task_Window_Render kind:function(arm,size=0x3c) addr:0x020cb12c
+Task_Window_Destroy kind:function(arm,size=0x6c) addr:0x020cb168
+Task_Window_RunTask kind:function(arm,size=0x48) addr:0x020cb1d4
 func_ov030_020cb21c kind:function(arm,size=0x68) addr:0x020cb21c
 func_ov030_020cb284 kind:function(arm,size=0xd0) addr:0x020cb284
 func_ov030_020cb354 kind:function(arm,size=0x2e0) addr:0x020cb354
@@ -1473,11 +1473,13 @@ func_ov030_020cd6d8 kind:function(arm,size=0x14) addr:0x020cd6d8
 func_ov030_020cd6ec kind:function(arm,size=0x48) addr:0x020cd6ec
 func_ov030_020cd734 kind:function(arm,size=0x30) addr:0x020cd734
 func_ov030_020cd764 kind:function(arm,size=0x2c) addr:0x020cd764
+
 func_ov030_020cd790 kind:function(arm,size=0x30) addr:0x020cd790
 func_ov030_020cd7c0 kind:function(arm,size=0x14) addr:0x020cd7c0
 func_ov030_020cd7d4 kind:function(arm,size=0x28) addr:0x020cd7d4
 func_ov030_020cd7fc kind:function(arm,size=0xc) addr:0x020cd7fc
 func_ov030_020cd808 kind:function(arm,size=0x26c) addr:0x020cd808
+
 func_ov030_020cda74 kind:function(arm,size=0x34) addr:0x020cda74
 func_ov030_020cdaa8 kind:function(arm,size=0x18) addr:0x020cdaa8
 func_ov030_020cdac0 kind:function(arm,size=0x58) addr:0x020cdac0
@@ -1590,22 +1592,22 @@ func_ov030_020d2a1c kind:function(arm,size=0x14) addr:0x020d2a1c
 func_ov030_020d2a30 kind:function(arm,size=0x28) addr:0x020d2a30
 func_ov030_020d2a58 kind:function(arm,size=0x28) addr:0x020d2a58
 func_ov030_020d2a80 kind:function(arm,size=0x94) addr:0x020d2a80
-func_ov030_020d2b14 kind:function(arm,size=0x24) addr:0x020d2b14
-func_ov030_020d2b38 kind:function(arm,size=0x120) addr:0x020d2b38
-func_ov030_020d2c58 kind:function(arm,size=0xe0) addr:0x020d2c58
-func_ov030_020d2d38 kind:function(arm,size=0x34) addr:0x020d2d38
-func_ov030_020d2d6c kind:function(arm,size=0x40) addr:0x020d2d6c
-func_ov030_020d2dac kind:function(arm,size=0x10) addr:0x020d2dac
+LocaTitleSeq_Main kind:function(arm,size=0x24) addr:0x020d2b14
+LocaTitleSeq_Init kind:function(arm,size=0x120) addr:0x020d2b38
+LocaTitleSeq_Update kind:function(arm,size=0xe0) addr:0x020d2c58
+LocaTitleSeq_Destroy kind:function(arm,size=0x34) addr:0x020d2d38
+ProcessOverlay_LocaTitleSeq kind:function(arm,size=0x40) addr:0x020d2d6c
+LocaTitle_SetUpdate kind:function(arm,size=0x10) addr:0x020d2dac
 func_ov030_020d2dbc kind:function(arm,size=0x90) addr:0x020d2dbc
 func_ov030_020d2e4c kind:function(arm,size=0x74) addr:0x020d2e4c
 func_ov030_020d2ec0 kind:function(arm,size=0x6c) addr:0x020d2ec0
-func_ov030_020d2f2c kind:function(arm,size=0xbc) addr:0x020d2f2c
-func_ov030_020d2fe8 kind:function(arm,size=0x50) addr:0x020d2fe8
-func_ov030_020d3038 kind:function(arm,size=0x34) addr:0x020d3038
-func_ov030_020d306c kind:function(arm,size=0x48) addr:0x020d306c
-func_ov030_020d30b4 kind:function(arm,size=0x20) addr:0x020d30b4
-func_ov030_020d30d4 kind:function(arm,size=0x48) addr:0x020d30d4
-func_ov030_020d311c kind:function(arm,size=0x60) addr:0x020d311c
+LocaTitle_Load kind:function(arm,size=0xbc) addr:0x020d2f2c
+LocaTitle_Init kind:function(arm,size=0x50) addr:0x020d2fe8
+LocaTitle_Update kind:function(arm,size=0x34) addr:0x020d3038
+LocaTitle_Render kind:function(arm,size=0x48) addr:0x020d306c
+LocaTitle_Destroy kind:function(arm,size=0x20) addr:0x020d30b4
+LocaTitle_RunTask kind:function(arm,size=0x48) addr:0x020d30d4
+LocaTitle_CreateTask kind:function(arm,size=0x60) addr:0x020d311c
 func_ov030_020d317c kind:function(arm,size=0x34) addr:0x020d317c
 func_ov030_020d31b0 kind:function(arm,size=0x40) addr:0x020d31b0
 func_ov030_020d31f0 kind:function(arm,size=0x34) addr:0x020d31f0
@@ -1635,7 +1637,7 @@ func_ov030_020d3eb0 kind:function(arm,size=0x1c8) addr:0x020d3eb0
 func_ov030_020d4078 kind:function(arm,size=0x6b0) addr:0x020d4078
 func_ov030_020d4728 kind:function(arm,size=0x38) addr:0x020d4728
 func_ov030_020d4760 kind:function(arm,size=0x88) addr:0x020d4760
-func_ov030_020d47e8 kind:function(arm,size=0x48) addr:0x020d47e8
+XFade_RunTask kind:function(arm,size=0x48) addr:0x020d47e8
 func_ov030_020d4830 kind:function(arm,size=0xc) addr:0x020d4830
 func_ov030_020d483c kind:function(arm,size=0x28) addr:0x020d483c
 func_ov030_020d4864 kind:function(arm,size=0x1c) addr:0x020d4864
@@ -1667,37 +1669,37 @@ func_ov030_020d58a4 kind:function(arm,size=0x94) addr:0x020d58a4
 func_ov030_020d5938 kind:function(arm,size=0xc8) addr:0x020d5938
 func_ov030_020d5a00 kind:function(arm,size=0x2c) addr:0x020d5a00
 func_ov030_020d5a2c kind:function(arm,size=0xfc) addr:0x020d5a2c
-func_ov030_020d5b28 kind:function(arm,size=0x6c) addr:0x020d5b28
-func_ov030_020d5b94 kind:function(arm,size=0xfc) addr:0x020d5b94
+_ZN11FlashPlayer15DrawDisplayListEt kind:function(arm,size=0x6c) addr:0x020d5b28
+_ZN11FlashPlayer6RenderEv kind:function(arm,size=0xfc) addr:0x020d5b94
 func_ov030_020d5c90 kind:function(arm,size=0xa0) addr:0x020d5c90
-func_ov030_020d5d30 kind:function(arm,size=0x24) addr:0x020d5d30
-func_ov030_020d5d54 kind:function(arm,size=0x108) addr:0x020d5d54
-func_ov030_020d5e5c kind:function(arm,size=0x74) addr:0x020d5e5c
-func_ov030_020d5ed0 kind:function(arm,size=0x30) addr:0x020d5ed0
-func_ov030_020d5f00 kind:function(arm,size=0x38) addr:0x020d5f00
-func_ov030_020d5f38 kind:function(arm,size=0x50) addr:0x020d5f38
-func_ov030_020d5f88 kind:function(arm,size=0x4) addr:0x020d5f88
-func_ov030_020d5f8c kind:function(arm,size=0x50) addr:0x020d5f8c
-func_ov030_020d5fdc kind:function(arm,size=0x4c) addr:0x020d5fdc
-func_ov030_020d6028 kind:function(arm,size=0x1ac) addr:0x020d6028
-func_ov030_020d61d4 kind:function(arm,size=0x20) addr:0x020d61d4
-func_ov030_020d61f4 kind:function(arm,size=0x14) addr:0x020d61f4
-func_ov030_020d6208 kind:function(arm,size=0x8) addr:0x020d6208
-func_ov030_020d6210 kind:function(arm,size=0x1c) addr:0x020d6210
-func_ov030_020d622c kind:function(arm,size=0x4) addr:0x020d622c
-func_ov030_020d6230 kind:function(arm,size=0x4) addr:0x020d6230
-func_ov030_020d6234 kind:function(arm,size=0x4) addr:0x020d6234
-func_ov030_020d6238 kind:function(arm,size=0x4) addr:0x020d6238
-func_ov030_020d623c kind:function(arm,size=0x8) addr:0x020d623c
-func_ov030_020d6244 kind:function(arm,size=0x88) addr:0x020d6244
-func_ov030_020d62cc kind:function(arm,size=0x14) addr:0x020d62cc
-func_ov030_020d62e0 kind:function(arm,size=0xcc) addr:0x020d62e0
-func_ov030_020d63ac kind:function(arm,size=0xc) addr:0x020d63ac
-func_ov030_020d63b8 kind:function(arm,size=0x10) addr:0x020d63b8
+_ZN9FlashRect4InitEtPKvt kind:function(arm,size=0x24) addr:0x020d5d30
+_ZN9FlashRect4DrawEPK11FlashMatrixitt kind:function(arm,size=0x108) addr:0x020d5d54
+_ZN10FlashImage4InitEttPK11FlashMatrix kind:function(arm,size=0x74) addr:0x020d5e5c
+_ZN10FlashImageD1Ev kind:function(arm,size=0x30) addr:0x020d5ed0
+_ZN10FlashImageD0Ev kind:function(arm,size=0x38) addr:0x020d5f00
+_ZN10FlashImage4DrawEPK11FlashMatrixitt kind:function(arm,size=0x50) addr:0x020d5f38
+_ZN10FlashImage7OnPlaceEP11FlashPlayer kind:function(arm,size=0x4) addr:0x020d5f88
+_ZN10FlashImage4LoadEP11FlashPlayer kind:function(arm,size=0x50) addr:0x020d5f8c
+_ZN10FlashImage7ReleaseEv kind:function(arm,size=0x4c) addr:0x020d5fdc
+_ZN10FlashImage17SetColorTransformEPK19FlashColorTransform kind:function(arm,size=0x1ac) addr:0x020d6028
+_ZN10FlashImage5ResetEv kind:function(arm,size=0x20) addr:0x020d61d4
+_ZN9FlashRectD1Ev kind:function(arm,size=0x14) addr:0x020d61f4
+_ZN9FlashRect12HasResourcesEv kind:function(arm,size=0x8) addr:0x020d6208
+_ZN9FlashRectD0Ev kind:function(arm,size=0x1c) addr:0x020d6210
+_ZN11FlashObject7OnPlaceEP11FlashPlayer kind:function(arm,size=0x4) addr:0x020d622c
+_ZN11FlashObject4LoadEP11FlashPlayer kind:function(arm,size=0x4) addr:0x020d6230
+_ZN11FlashObject7ReleaseEv kind:function(arm,size=0x4) addr:0x020d6234
+_ZN11FlashObject17SetColorTransformEPK19FlashColorTransform kind:function(arm,size=0x4) addr:0x020d6238
+_ZN10FlashImage12HasResourcesEv kind:function(arm,size=0x8) addr:0x020d623c
+_ZN9FlashHeap4InitEj kind:function(arm,size=0x88) addr:0x020d6244
+_ZN9FlashHeap9AllocNodeEv kind:function(arm,size=0x14) addr:0x020d62cc
+_ZN9FlashHeap5AllocEj kind:function(arm,size=0xcc) addr:0x020d62e0
+_ZN9FlashHeap4FreeEP13FlashHeapNode kind:function(arm,size=0xc) addr:0x020d63ac
+_ZN9FlashHeap8FreeNodeEP13FlashHeapNode kind:function(arm,size=0x10) addr:0x020d63b8
 func_ov030_020d63c8 kind:function(arm,size=0xa8) addr:0x020d63c8
 func_ov030_020d6470 kind:function(arm,size=0xb0) addr:0x020d6470
-func_ov030_020d6520 kind:function(arm,size=0x14) addr:0x020d6520
-func_ov030_020d6534 kind:function(arm,size=0x14) addr:0x020d6534
+_ZN18FlashFrameListenerD0Ev kind:function(arm,size=0x14) addr:0x020d6520
+_ZN18FlashEventCallbackD0Ev kind:function(arm,size=0x14) addr:0x020d6534
 func_ov030_020d6548 kind:function(arm,size=0x3c) addr:0x020d6548
 func_ov030_020d6584 kind:function(arm,size=0x18) addr:0x020d6584
 func_ov030_020d659c kind:function(arm,size=0x18) addr:0x020d659c
@@ -1706,135 +1708,131 @@ func_ov030_020d65e0 kind:function(arm,size=0x18) addr:0x020d65e0
 func_ov030_020d65f8 kind:function(arm,size=0x18) addr:0x020d65f8
 func_ov030_020d6610 kind:function(arm,size=0x1c) addr:0x020d6610
 func_ov030_020d662c kind:function(arm,size=0x18) addr:0x020d662c
-func_ov030_020d6644 kind:function(arm,size=0x4) addr:0x020d6644
-func_ov030_020d6648 kind:function(arm,size=0x4) addr:0x020d6648
-func_ov030_020d664c kind:function(arm,size=0x4) addr:0x020d664c
-func_ov030_020d6650 kind:function(arm,size=0x24) addr:0x020d6650
-func_ov030_020d6674 kind:function(arm,size=0x4) addr:0x020d6674
-func_ov030_020d6678 kind:function(arm,size=0x14) addr:0x020d6678
-func_ov030_020d668c kind:function(arm,size=0x4) addr:0x020d668c
-func_ov030_020d6690 kind:function(arm,size=0x4) addr:0x020d6690
-func_ov030_020d6694 kind:function(arm,size=0x4) addr:0x020d6694
-func_ov030_020d6698 kind:function(arm,size=0x14) addr:0x020d6698
-func_ov030_020d66ac kind:function(arm,size=0x20) addr:0x020d66ac
-func_ov030_020d66cc kind:function(arm,size=0x8) addr:0x020d66cc
-func_ov030_020d66d4 kind:function(arm,size=0x1c) addr:0x020d66d4
-func_ov030_020d66f0 kind:function(arm,size=0x20) addr:0x020d66f0
-func_ov030_020d6710 kind:function(arm,size=0xc) addr:0x020d6710
-func_ov030_020d671c kind:function(arm,size=0x7c) addr:0x020d671c
-func_ov030_020d6798 kind:function(arm,size=0x90) addr:0x020d6798
-func_ov030_020d6828 kind:function(arm,size=0x4c) addr:0x020d6828
-func_ov030_020d6874 kind:function(arm,size=0xec) addr:0x020d6874
-func_ov030_020d6960 kind:function(arm,size=0x89c) addr:0x020d6960
-func_ov030_020d71fc kind:function(arm,size=0x38) addr:0x020d71fc
-func_ov030_020d7234 kind:function(arm,size=0xc) addr:0x020d7234
-func_ov030_020d7240 kind:function(arm,size=0x88) addr:0x020d7240
-func_ov030_020d72c8 kind:function(arm,size=0x14) addr:0x020d72c8
-func_ov030_020d72dc kind:function(arm,size=0x8c) addr:0x020d72dc
-func_ov030_020d7368 kind:function(arm,size=0x78) addr:0x020d7368
-func_ov030_020d73e0 kind:function(arm,size=0x4) addr:0x020d73e0
-func_ov030_020d73e4 kind:function(arm,size=0x8c) addr:0x020d73e4
-func_ov030_020d7470 kind:function(arm,size=0x4) addr:0x020d7470
-func_ov030_020d7474 kind:function(arm,size=0x80) addr:0x020d7474
-func_ov030_020d74f4 kind:function(arm,size=0x4) addr:0x020d74f4
-func_ov030_020d74f8 kind:function(arm,size=0x2c) addr:0x020d74f8
-func_ov030_020d7524 kind:function(arm,size=0x4) addr:0x020d7524
-func_ov030_020d7528 kind:function(arm,size=0x30) addr:0x020d7528
-func_ov030_020d7558 kind:function(arm,size=0x34) addr:0x020d7558
-func_ov030_020d758c kind:function(arm,size=0x3c) addr:0x020d758c
-func_ov030_020d75c8 kind:function(arm,size=0x34) addr:0x020d75c8
-func_ov030_020d75fc kind:function(arm,size=0x28) addr:0x020d75fc
-func_ov030_020d7624 kind:function(arm,size=0x14) addr:0x020d7624
-func_ov030_020d7638 kind:function(arm,size=0x48) addr:0x020d7638
-func_ov030_020d7680 kind:function(arm,size=0xc) addr:0x020d7680
-func_ov030_020d768c kind:function(arm,size=0x34) addr:0x020d768c
-func_ov030_020d76c0 kind:function(arm,size=0x30) addr:0x020d76c0
-func_ov030_020d76f0 kind:function(arm,size=0x24) addr:0x020d76f0
-func_ov030_020d7714 kind:function(arm,size=0x20) addr:0x020d7714
-func_ov030_020d7734 kind:function(arm,size=0x28) addr:0x020d7734
-func_ov030_020d775c kind:function(arm,size=0x20) addr:0x020d775c
-func_ov030_020d777c kind:function(arm,size=0x34) addr:0x020d777c
-func_ov030_020d77b0 kind:function(arm,size=0x10) addr:0x020d77b0
-func_ov030_020d77c0 kind:function(arm,size=0x8) addr:0x020d77c0
-func_ov030_020d77c8 kind:function(arm,size=0x3c) addr:0x020d77c8
-func_ov030_020d7804 kind:function(arm,size=0x34) addr:0x020d7804
-func_ov030_020d7838 kind:function(arm,size=0x8) addr:0x020d7838
-func_ov030_020d7840 kind:function(arm,size=0x3c) addr:0x020d7840
-func_ov030_020d787c kind:function(arm,size=0x44) addr:0x020d787c
-func_ov030_020d78c0 kind:function(arm,size=0x5c) addr:0x020d78c0
-func_ov030_020d791c kind:function(arm,size=0x10) addr:0x020d791c
-func_ov030_020d792c kind:function(arm,size=0x54) addr:0x020d792c
-func_ov030_020d7980 kind:function(arm,size=0x24) addr:0x020d7980
-func_ov030_020d79a4 kind:function(arm,size=0x38) addr:0x020d79a4
-func_ov030_020d79dc kind:function(arm,size=0x3c) addr:0x020d79dc
-func_ov030_020d7a18 kind:function(arm,size=0x24) addr:0x020d7a18
-func_ov030_020d7a3c kind:function(arm,size=0x18) addr:0x020d7a3c
-func_ov030_020d7a54 kind:function(arm,size=0x24) addr:0x020d7a54
-func_ov030_020d7a78 kind:function(arm,size=0x18) addr:0x020d7a78
-func_ov030_020d7a90 kind:function(arm,size=0x8) addr:0x020d7a90
-func_ov030_020d7a98 kind:function(arm,size=0xc) addr:0x020d7a98
-func_ov030_020d7aa4 kind:function(arm,size=0x10) addr:0x020d7aa4
-func_ov030_020d7ab4 kind:function(arm,size=0x1c) addr:0x020d7ab4
-func_ov030_020d7ad0 kind:function(arm,size=0xa0) addr:0x020d7ad0
-func_ov030_020d7b70 kind:function(arm,size=0x124) addr:0x020d7b70
-func_ov030_020d7c94 kind:function(arm,size=0x28) addr:0x020d7c94
-func_ov030_020d7cbc kind:function(arm,size=0xc) addr:0x020d7cbc
-func_ov030_020d7cc8 kind:function(arm,size=0x54) addr:0x020d7cc8
-func_ov030_020d7d1c kind:function(arm,size=0x20) addr:0x020d7d1c
-func_ov030_020d7d3c kind:function(arm,size=0x94) addr:0x020d7d3c
-func_ov030_020d7dd0 kind:function(arm,size=0x40) addr:0x020d7dd0
-func_ov030_020d7e10 kind:function(arm,size=0x38) addr:0x020d7e10
-func_ov030_020d7e48 kind:function(arm,size=0x10) addr:0x020d7e48
-func_ov030_020d7e58 kind:function(arm,size=0x24) addr:0x020d7e58
-func_ov030_020d7e7c kind:function(arm,size=0x148) addr:0x020d7e7c
-func_ov030_020d7fc4 kind:function(arm,size=0xf8) addr:0x020d7fc4
-func_ov030_020d80bc kind:function(arm,size=0xf8) addr:0x020d80bc
-func_ov030_020d81b4 kind:function(arm,size=0x28) addr:0x020d81b4
-func_ov030_020d81dc kind:function(arm,size=0x28) addr:0x020d81dc
-func_ov030_020d8204 kind:function(arm,size=0x34) addr:0x020d8204
-func_ov030_020d8238 kind:function(arm,size=0x34) addr:0x020d8238
-func_ov030_020d826c kind:function(arm,size=0x5c) addr:0x020d826c
-func_ov030_020d82c8 kind:function(arm,size=0x2c) addr:0x020d82c8
-func_ov030_020d82f4 kind:function(arm,size=0x74) addr:0x020d82f4
-func_ov030_020d8368 kind:function(arm,size=0x4c) addr:0x020d8368
-func_ov030_020d83b4 kind:function(arm,size=0x2b4) addr:0x020d83b4
-func_ov030_020d8668 kind:function(arm,size=0xe4) addr:0x020d8668
-func_ov030_020d874c kind:function(arm,size=0x30) addr:0x020d874c
-func_ov030_020d877c kind:function(arm,size=0x14) addr:0x020d877c
-func_ov030_020d8790 kind:function(arm,size=0x20) addr:0x020d8790
-func_ov030_020d87b0 kind:function(arm,size=0x10) addr:0x020d87b0
-func_ov030_020d87c0 kind:function(arm,size=0x14) addr:0x020d87c0
-func_ov030_020d87d4 kind:function(arm,size=0x10) addr:0x020d87d4
-func_ov030_020d87e4 kind:function(arm,size=0x28) addr:0x020d87e4
-func_ov030_020d880c kind:function(arm,size=0x5c) addr:0x020d880c
-func_ov030_020d8868 kind:function(arm,size=0x8c) addr:0x020d8868
-func_ov030_020d88f4 kind:function(arm,size=0x38) addr:0x020d88f4
-func_ov030_020d892c kind:function(arm,size=0x28) addr:0x020d892c
-func_ov030_020d8954 kind:function(arm,size=0x5c) addr:0x020d8954
-func_ov030_020d89b0 kind:function(arm,size=0x2c) addr:0x020d89b0
-func_ov030_020d89dc kind:function(arm,size=0x2c) addr:0x020d89dc
-func_ov030_020d8a08 kind:function(arm,size=0x68) addr:0x020d8a08
-func_ov030_020d8a70 kind:function(arm,size=0xd8) addr:0x020d8a70
-func_ov030_020d8b48 kind:function(arm,size=0x70) addr:0x020d8b48
-func_ov030_020d8bb8 kind:function(arm,size=0x14) addr:0x020d8bb8
-func_ov030_020d8bcc kind:function(arm,size=0x14) addr:0x020d8bcc
-func_ov030_020d8be0 kind:function(arm,size=0x14) addr:0x020d8be0
-func_ov030_020d8bf4 kind:function(arm,size=0xc) addr:0x020d8bf4
-func_ov030_020d8c00 kind:function(arm,size=0xc) addr:0x020d8c00
-func_ov030_020d8c0c kind:function(arm,size=0xf4) addr:0x020d8c0c
-func_ov030_020d8d00 kind:function(arm,size=0x80) addr:0x020d8d00
-func_ov030_020d8d80 kind:function(arm,size=0x224) addr:0x020d8d80
-func_ov030_020d8fa4 kind:function(arm,size=0x26c) addr:0x020d8fa4
-func_ov030_020d9210 kind:function(arm,size=0x14) addr:0x020d9210
-func_ov030_020d9224 kind:function(arm,size=0x4) addr:0x020d9224
-func_ov030_020d9228 kind:function(arm,size=0x2c) addr:0x020d9228
-func_ov030_020d9254 kind:function(arm,size=0x6c) addr:0x020d9254
-func_ov030_020d92c0 kind:function(arm,size=0xbc) addr:0x020d92c0
-func_ov030_020d937c kind:function(arm,size=0x20) addr:0x020d937c
-func_ov030_020d939c kind:function(arm,size=0x18) addr:0x020d939c
-func_ov030_020d93b4 kind:function(arm,size=0x1c) addr:0x020d93b4
-func_ov030_020d93d0 kind:function(arm,size=0x19c) addr:0x020d93d0
-func_ov030_020d956c kind:function(arm,size=0x18) addr:0x020d956c
+_ZN18FlashFrameListenerD1Ev kind:function(arm,size=0x4) addr:0x020d6644
+_ZN18FlashEventCallbackD1Ev kind:function(arm,size=0x4) addr:0x020d6648
+_ZN13FlashListenerD1Ev kind:function(arm,size=0x4) addr:0x020d664c
+_ZN13FlashListener7MatchesEPKc kind:function(arm,size=0x24) addr:0x020d6650
+_ZN13FlashListener7OnEventEP12FlashManagerPKcS3_ kind:function(arm,size=0x4) addr:0x020d6674
+_ZN13FlashListenerD0Ev kind:function(arm,size=0x14) addr:0x020d6678
+_ZN17FlashFrameHandlerD1Ev kind:function(arm,size=0x4) addr:0x020d668c
+_ZN17FlashFrameHandler7OnEventEP12FlashManageri kind:function(arm,size=0x4) addr:0x020d6690
+_ZN17FlashFrameHandler7OnEventEP12FlashManagerPKcS3_ kind:function(arm,size=0x4) addr:0x020d6694
+_ZN17FlashFrameHandlerD0Ev kind:function(arm,size=0x14) addr:0x020d6698
+_ZN18FlashEventCallback7OnEventEP12FlashManagerPKcS3_ kind:function(arm,size=0x20) addr:0x020d66ac
+_ZN18FlashEventCallback7MatchesEPKc kind:function(arm,size=0x8) addr:0x020d66cc
+_ZN18FlashFrameListener7OnEventEP12FlashManageri kind:function(arm,size=0x1c) addr:0x020d66d4
+_ZN18FlashFrameListener7OnEventEP12FlashManagerPKcS3_ kind:function(arm,size=0x20) addr:0x020d66f0
+_ZN12FlashTextureC1Ev kind:function(arm,size=0xc) addr:0x020d6710
+_ZN12FlashTextureD1Ev kind:function(arm,size=0x7c) addr:0x020d671c
+_ZN12FlashTexture9InitHeapsEv kind:function(arm,size=0x90) addr:0x020d6798
+_ZN12FlashTexture9FreeHeapsEv kind:function(arm,size=0x4c) addr:0x020d6828
+_ZN12FlashTexture4InitEP11FlashPlayerP12FlashCharDef kind:function(arm,size=0xec) addr:0x020d6874
+_ZN12FlashTexture4DrawEPK11FlashMatrixS2_ihtPKit kind:function(arm,size=0x89c) addr:0x020d6960
+_ZN16FlashDisplayListD1Ev kind:function(arm,size=0x38) addr:0x020d71fc
+_ZN16FlashDisplayList5ClearEv kind:function(arm,size=0xc) addr:0x020d7234
+_ZN16FlashDisplayList4InitEv kind:function(arm,size=0x88) addr:0x020d7240
+_ZN16FlashDisplayList9AllocNodeEv kind:function(arm,size=0x14) addr:0x020d72c8
+_ZN16FlashDisplayList6InsertEP11FlashObjecttPK11FlashMatrix kind:function(arm,size=0x8c) addr:0x020d72dc
+_ZN16FlashDisplayList6ModifyEthPK19FlashColorTransformPK11FlashMatrix kind:function(arm,size=0x7c) addr:0x020d7368
+_ZN16FlashDisplayList6RemoveEtt kind:function(arm,size=0x90) addr:0x020d73e4
+_ZN16FlashDisplayList11RemoveDepthEt kind:function(arm,size=0x84) addr:0x020d7474
+_ZN16FlashDisplayList10FindMatrixEt kind:function(arm,size=0x30) addr:0x020d74f8
+_ZN11FlashObjectC2Ev kind:function(arm,size=0x30) addr:0x020d7528
+_ZN11FlashObjectD1Ev kind:function(arm,size=0x34) addr:0x020d7558
+_ZN11FlashObjectD0Ev kind:function(arm,size=0x3c) addr:0x020d758c
+_ZN11FlashObjectD2Ev kind:function(arm,size=0x34) addr:0x020d75c8
+_ZN11FlashObject9SetBoundsEssss kind:function(arm,size=0x28) addr:0x020d75fc
+_ZN11FlashObject5ResetEv kind:function(arm,size=0x14) addr:0x020d7624
+_ZN15FlashFileStreamC1Ev kind:function(arm,size=0x48) addr:0x020d7638
+_ZN11FlashStream5CloseEv kind:function(arm,size=0xc) addr:0x020d7680
+_ZN15FlashFileStream4OpenEPKc kind:function(arm,size=0x34) addr:0x020d768c
+_ZN15FlashFileStream4ReadEPvj kind:function(arm,size=0x30) addr:0x020d76c0
+_ZN15FlashFileStream4SeekEi kind:function(arm,size=0x24) addr:0x020d76f0
+_ZN15FlashFileStream9GetLengthEv kind:function(arm,size=0x20) addr:0x020d7714
+_ZN15FlashFileStream5CloseEv kind:function(arm,size=0x28) addr:0x020d7734
+_ZN15FlashFileStream4TellEv kind:function(arm,size=0x20) addr:0x020d775c
+_ZN11FlashStreamD1Ev kind:function(arm,size=0x34) addr:0x020d777c
+_ZN11FlashStream4OpenEPKc kind:function(arm,size=0x10) addr:0x020d77b0
+_ZN11FlashStream6IsOpenEv kind:function(arm,size=0x8) addr:0x020d77c0
+_ZN11FlashStreamD0Ev kind:function(arm,size=0x3c) addr:0x020d77c8
+_ZN15FlashFileStreamD1Ev kind:function(arm,size=0x34) addr:0x020d7804
+_ZN15FlashFileStream6IsOpenEv kind:function(arm,size=0x8) addr:0x020d7838
+_ZN15FlashFileStreamD0Ev kind:function(arm,size=0x3c) addr:0x020d7840
+_ZN12FlashManagerC1Ev kind:function(arm,size=0x44) addr:0x020d787c
+_ZN12FlashManagerD1Ev kind:function(arm,size=0x5c) addr:0x020d78c0
+_ZN12FlashManager12InitGraphicsEv kind:function(arm,size=0x10) addr:0x020d791c
+_ZN12FlashManager4LoadEPKc kind:function(arm,size=0x54) addr:0x020d792c
+_ZN12FlashManager6UpdateEv kind:function(arm,size=0x24) addr:0x020d7980
+_ZN12FlashManager4DrawEv kind:function(arm,size=0x38) addr:0x020d79a4
+_ZN12FlashManager6VBlankEv kind:function(arm,size=0x3c) addr:0x020d79dc
+_ZN12FlashManager11AddListenerEP13FlashListener kind:function(arm,size=0x24) addr:0x020d7a18
+_ZN12FlashManager14RemoveListenerEP13FlashListener kind:function(arm,size=0x18) addr:0x020d7a3c
+_ZN12FlashManager16AddFrameListenerEP18FlashFrameListener kind:function(arm,size=0x24) addr:0x020d7a54
+_ZN12FlashManager19RemoveFrameListenerEP18FlashFrameListener kind:function(arm,size=0x18) addr:0x020d7a78
+_ZN12FlashManager15SetDrawCallbackEPFvvE kind:function(arm,size=0x8) addr:0x020d7a90
+_ZN12FlashManager17ClearDrawCallbackEv kind:function(arm,size=0xc) addr:0x020d7a98
+_ZN12FlashManager5StartEv kind:function(arm,size=0x10) addr:0x020d7aa4
+_ZN12FlashManager9IsPlayingEv kind:function(arm,size=0x1c) addr:0x020d7ab4
+_ZN11FlashPlayerC1EP12FlashManager kind:function(arm,size=0xa0) addr:0x020d7ad0
+_ZN11FlashPlayerD1Ev kind:function(arm,size=0x124) addr:0x020d7b70
+_ZN12FlashCharDefD1Ev kind:function(arm,size=0x28) addr:0x020d7c94
+_ZN11FlashPlayer7SetSizeEtt kind:function(arm,size=0xc) addr:0x020d7cbc
+_ZN11FlashPlayer13AllocCharDefsEt kind:function(arm,size=0x54) addr:0x020d7cc8
+_ZN12FlashCharDefC1Ev kind:function(arm,size=0x20) addr:0x020d7d1c
+_ZN11FlashPlayer10SetCharDefEtPK12FlashCharDef kind:function(arm,size=0x94) addr:0x020d7d3c
+_ZN11FlashPlayer11FindCharDefEt kind:function(arm,size=0x40) addr:0x020d7dd0
+_ZN11FlashPlayer9SetObjectEP11FlashObject kind:function(arm,size=0x38) addr:0x020d7e10
+_ZN11FlashPlayer7SetDataEPh kind:function(arm,size=0x10) addr:0x020d7e48
+_ZN11FlashPlayer7PreloadEv kind:function(arm,size=0x24) addr:0x020d7e58
+_ZN11FlashPlayer7AdvanceEv kind:function(arm,size=0x148) addr:0x020d7e7c
+_ZN11FlashPlayer8RunFrameEv kind:function(arm,size=0xf8) addr:0x020d7fc4
+_ZN11FlashPlayer15RunPreloadFrameEv kind:function(arm,size=0xf8) addr:0x020d80bc
+_ZN11FlashPlayer7ReadU16Ev kind:function(arm,size=0x28) addr:0x020d81b4
+_ZN11FlashPlayer14ReadPreloadU16Ev kind:function(arm,size=0x28) addr:0x020d81dc
+_ZN11FlashPlayer7ReadU32Ev kind:function(arm,size=0x34) addr:0x020d8204
+_ZN11FlashPlayer14ReadPreloadU32Ev kind:function(arm,size=0x34) addr:0x020d8238
+_ZN11FlashPlayer10ReadMatrixEP11FlashMatrix kind:function(arm,size=0x5c) addr:0x020d826c
+_ZN11FlashPlayer10ReadStringEv kind:function(arm,size=0x2c) addr:0x020d82c8
+_ZN11FlashPlayer8TagPlaceEv kind:function(arm,size=0x74) addr:0x020d82f4
+_ZN11FlashPlayer12PreloadPlaceEv kind:function(arm,size=0x4c) addr:0x020d8368
+_ZN11FlashPlayer10TagPlaceExEv kind:function(arm,size=0x2b4) addr:0x020d83b4
+_ZN11FlashPlayer14PreloadPlaceExEv kind:function(arm,size=0xe4) addr:0x020d8668
+_ZN11FlashPlayer9TagRemoveEv kind:function(arm,size=0x30) addr:0x020d874c
+_ZN11FlashPlayer12PreloadSkip4Ev kind:function(arm,size=0x14) addr:0x020d877c
+_ZN11FlashPlayer14TagRemoveDepthEv kind:function(arm,size=0x20) addr:0x020d8790
+_ZN11FlashPlayer12PreloadSkip2Ev kind:function(arm,size=0x10) addr:0x020d87b0
+_ZN11FlashPlayer13TagSetBgColorEv kind:function(arm,size=0x14) addr:0x020d87c0
+_ZN11FlashPlayer13PreloadSkip2bEv kind:function(arm,size=0x10) addr:0x020d87d4
+_ZN11FlashPlayer11AddListenerEP12FlashManagerP13FlashListener kind:function(arm,size=0x28) addr:0x020d87e4
+_ZN11FlashPlayer14RemoveListenerEP13FlashListener kind:function(arm,size=0x5c) addr:0x020d880c
+_ZN11FlashPlayer8TagEventEv kind:function(arm,size=0x8c) addr:0x020d8868
+_ZN11FlashPlayer16PreloadSkipEventEv kind:function(arm,size=0x38) addr:0x020d88f4
+_ZN11FlashPlayer16AddFrameListenerEP12FlashManagerP18FlashFrameListener kind:function(arm,size=0x28) addr:0x020d892c
+_ZN11FlashPlayer19RemoveFrameListenerEP18FlashFrameListener kind:function(arm,size=0x5c) addr:0x020d8954
+_ZN11FlashPlayer7TagJumpEv kind:function(arm,size=0x2c) addr:0x020d89b0
+_ZN11FlashPlayer11PreloadJumpEv kind:function(arm,size=0x2c) addr:0x020d89dc
+_ZN11FlashPlayer4LoadEPKc kind:function(arm,size=0x68) addr:0x020d8a08
+_ZN11FlashPlayer6RewindEv kind:function(arm,size=0xd8) addr:0x020d8a70
+_ZN11FlashPlayer4PlayEv kind:function(arm,size=0x70) addr:0x020d8b48
+_ZN11FlashPlayer9IsPlayingEv kind:function(arm,size=0x14) addr:0x020d8bb8
+_Z10FlashAllocj kind:function(arm,size=0x14) addr:0x020d8bcc
+_Z15FlashAllocArrayj kind:function(arm,size=0x14) addr:0x020d8be0
+_Z9FlashFreePv kind:function(arm,size=0xc) addr:0x020d8bf4
+_Z14FlashFreeArrayPv kind:function(arm,size=0xc) addr:0x020d8c00
+_ZN11FlashParser5ParseEP11FlashStreamP11FlashPlayer kind:function(arm,size=0xf4) addr:0x020d8c0c
+_ZN11FlashParser11ParseHeaderEP11FlashStreamP11FlashPlayer kind:function(arm,size=0x80) addr:0x020d8d00
+_ZN11FlashParser13ParseCharDefsEP11FlashStreamP11FlashPlayer kind:function(arm,size=0x224) addr:0x020d8d80
+_ZN11FlashParser12ParseObjectsEP11FlashStreamP11FlashPlayer kind:function(arm,size=0x26c) addr:0x020d8fa4
+_ZN16FlashUploadQueueC1Ev kind:function(arm,size=0x14) addr:0x020d9210
+_ZN16FlashUploadQueueD1Ev kind:function(arm,size=0x4) addr:0x020d9224
+_ZN16FlashUploadQueue4InitEv kind:function(arm,size=0x2c) addr:0x020d9228
+_ZN16FlashUploadQueue4PushEPvjjP12FlashCharDef kind:function(arm,size=0x6c) addr:0x020d9254
+_ZN16FlashUploadQueue7ProcessEv kind:function(arm,size=0xbc) addr:0x020d92c0
+_ZN15FlashVramLoaderC1Ev kind:function(arm,size=0x20) addr:0x020d937c
+_ZN15FlashVramLoaderD1Ev kind:function(arm,size=0x18) addr:0x020d939c
+_ZN15FlashVramLoader5ResetEv kind:function(arm,size=0x1c) addr:0x020d93b4
+_ZN15FlashVramLoader4LoadEP11FlashStreamP12FlashCharDefjj kind:function(arm,size=0x19c) addr:0x020d93d0
+_ZN15FlashVramLoader6UpdateEv kind:function(arm,size=0x18) addr:0x020d956c
 data_ov030_020d9584 kind:data(any) addr:0x020d9584
 data_ov030_020d9586 kind:data(any) addr:0x020d9586
 data_ov030_020d9588 kind:data(any) addr:0x020d9588
@@ -1847,7 +1845,6 @@ data_ov030_020d95ac kind:data(any) addr:0x020d95ac
 data_ov030_020d95b4 kind:data(any) addr:0x020d95b4
 data_ov030_020d95bc kind:data(any) addr:0x020d95bc
 data_ov030_020d95c4 kind:data(any) addr:0x020d95c4
-data_ov030_020d95c6 kind:data(any) addr:0x020d95c6
 data_ov030_020d95d0 kind:data(any) addr:0x020d95d0
 data_ov030_020d95dc kind:data(any) addr:0x020d95dc
 data_ov030_020d95e8 kind:data(any) addr:0x020d95e8
@@ -1893,11 +1890,7 @@ data_ov030_020d98a6 kind:data(any) addr:0x020d98a6
 data_ov030_020d98bc kind:data(any) addr:0x020d98bc
 data_ov030_020d98d4 kind:data(any) addr:0x020d98d4
 data_ov030_020d98ec kind:data(any) addr:0x020d98ec
-data_ov030_020d98f0 kind:data(any) addr:0x020d98f0
 data_ov030_020d9904 kind:data(any) addr:0x020d9904
-data_ov030_020d9906 kind:data(any) addr:0x020d9906
-data_ov030_020d9908 kind:data(any) addr:0x020d9908
-data_ov030_020d990a kind:data(any) addr:0x020d990a
 data_ov030_020d990c kind:data(any) addr:0x020d990c
 data_ov030_020d9914 kind:data(any) addr:0x020d9914
 data_ov030_020d991c kind:data(any) addr:0x020d991c
@@ -1927,7 +1920,6 @@ data_ov030_020d9c0c kind:data(any) addr:0x020d9c0c
 data_ov030_020d9c34 kind:data(any) addr:0x020d9c34
 data_ov030_020d9c64 kind:data(any) addr:0x020d9c64
 data_ov030_020d9c94 kind:data(any) addr:0x020d9c94
-data_ov030_020d9c96 kind:data(any) addr:0x020d9c96
 data_ov030_020d9cc8 kind:data(any) addr:0x020d9cc8
 data_ov030_020d9cfe kind:data(any) addr:0x020d9cfe
 data_ov030_020d9d34 kind:data(any) addr:0x020d9d34
@@ -1936,11 +1928,7 @@ data_ov030_020d9db8 kind:data(any) addr:0x020d9db8
 data_ov030_020d9e12 kind:data(any) addr:0x020d9e12
 data_ov030_020d9e6e kind:data(any) addr:0x020d9e6e
 data_ov030_020d9eca kind:data(any) addr:0x020d9eca
-data_ov030_020d9ecc kind:data(any) addr:0x020d9ecc
 data_ov030_020d9f2a kind:data(any) addr:0x020d9f2a
-data_ov030_020d9f2c kind:data(any) addr:0x020d9f2c
-data_ov030_020d9f2e kind:data(any) addr:0x020d9f2e
-data_ov030_020d9f30 kind:data(any) addr:0x020d9f30
 data_ov030_020d9f32 kind:data(any) addr:0x020d9f32
 data_ov030_020d9f3a kind:data(any) addr:0x020d9f3a
 data_ov030_020d9f42 kind:data(any) addr:0x020d9f42
@@ -1972,9 +1960,6 @@ data_ov030_020da6c8 kind:data(any) addr:0x020da6c8
 data_ov030_020da778 kind:data(any) addr:0x020da778
 data_ov030_020da828 kind:data(any) addr:0x020da828
 data_ov030_020da8de kind:data(any) addr:0x020da8de
-data_ov030_020da8e0 kind:data(any) addr:0x020da8e0
-data_ov030_020da8e2 kind:data(any) addr:0x020da8e2
-data_ov030_020da8e4 kind:data(any) addr:0x020da8e4
 data_ov030_020da8e6 kind:data(any) addr:0x020da8e6
 data_ov030_020da8ee kind:data(any) addr:0x020da8ee
 data_ov030_020da8f6 kind:data(any) addr:0x020da8f6
@@ -1996,7 +1981,6 @@ data_ov030_020da976 kind:data(any) addr:0x020da976
 data_ov030_020da986 kind:data(any) addr:0x020da986
 data_ov030_020da98e kind:data(any) addr:0x020da98e
 data_ov030_020da998 kind:data(any) addr:0x020da998
-data_ov030_020da99c kind:data(any) addr:0x020da99c
 data_ov030_020daa58 kind:data(any) addr:0x020daa58
 data_ov030_020dab1c kind:data(any) addr:0x020dab1c
 data_ov030_020dabe2 kind:data(any) addr:0x020dabe2
@@ -2144,8 +2128,6 @@ data_ov030_020e0f54 kind:data(any) addr:0x020e0f54
 data_ov030_020e0f74 kind:data(any) addr:0x020e0f74
 data_ov030_020e0f94 kind:data(any) addr:0x020e0f94
 data_ov030_020e0fb4 kind:data(any) addr:0x020e0fb4
-data_ov030_020e0fb8 kind:data(any) addr:0x020e0fb8
-data_ov030_020e0fbc kind:data(any) addr:0x020e0fbc
 data_ov030_020e0fd8 kind:data(any) addr:0x020e0fd8
 data_ov030_020e0fde kind:data(any) addr:0x020e0fde ambiguous
 data_ov030_020e1008 kind:data(any) addr:0x020e1008
@@ -2173,32 +2155,15 @@ data_ov030_020e1438 kind:data(any) addr:0x020e1438
 data_ov030_020e1478 kind:data(any) addr:0x020e1478
 data_ov030_020e14b8 kind:data(any) addr:0x020e14b8
 data_ov030_020e14f8 kind:data(any) addr:0x020e14f8
-data_ov030_020e14fc kind:data(any) addr:0x020e14fc
-data_ov030_020e1500 kind:data(any) addr:0x020e1500
 data_ov030_020e1540 kind:data(any) addr:0x020e1540
 data_ov030_020e1590 kind:data(any) addr:0x020e1590
 data_ov030_020e15f0 kind:data(any) addr:0x020e15f0
 data_ov030_020e1650 kind:data(any) addr:0x020e1650
 data_ov030_020e1878 kind:data(any) addr:0x020e1878
-data_ov030_020e187a kind:data(any) addr:0x020e187a
-data_ov030_020e187c kind:data(any) addr:0x020e187c
-data_ov030_020e187e kind:data(any) addr:0x020e187e
-data_ov030_020e1880 kind:data(any) addr:0x020e1880
-data_ov030_020e1882 kind:data(any) addr:0x020e1882
-data_ov030_020e1884 kind:data(any) addr:0x020e1884
 data_ov030_020e1d64 kind:data(any) addr:0x020e1d64
-data_ov030_020e1d66 kind:data(any) addr:0x020e1d66
-data_ov030_020e1d68 kind:data(any) addr:0x020e1d68
-data_ov030_020e1d6c kind:data(any) addr:0x020e1d6c
-data_ov030_020e1d70 kind:data(any) addr:0x020e1d70
-data_ov030_020e1d74 kind:data(any) addr:0x020e1d74
-data_ov030_020e1d78 kind:data(any) addr:0x020e1d78
-data_ov030_020e1d7c kind:data(any) addr:0x020e1d7c
-data_ov030_020e1d7e kind:data(any) addr:0x020e1d7e
-data_ov030_020e1d82 kind:data(any) addr:0x020e1d82
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/UnknownTables.c
+// src/Field/Event/EventSpawnTemplates.c
 //////////////////////////////////////////////////////////////////////
 data_ov030_020e2364 kind:data(any) addr:0x020e2364
 data_ov030_020e2380 kind:data(any) addr:0x020e2380
@@ -2388,10 +2353,6 @@ data_ov030_020e4bf8 kind:data(any) addr:0x020e4bf8
 data_ov030_020e4ca0 kind:data(any) addr:0x020e4ca0
 data_ov030_020e4d48 kind:data(any) addr:0x020e4d48
 data_ov030_020e4df0 kind:data(any) addr:0x020e4df0
-
-//////////////////////////////////////////////////////////////////////
-// src/Field/UnknownTables.c
-//////////////////////////////////////////////////////////////////////
 data_ov030_020e4e98 kind:data(any) addr:0x020e4e98
 
 data_ov030_020e4f48 kind:data(any) addr:0x020e4f48
@@ -2416,12 +2377,6 @@ data_ov030_020e5ee0 kind:data(any) addr:0x020e5ee0
 data_ov030_020e5eec kind:data(any) addr:0x020e5eec
 data_ov030_020e5efc kind:data(any) addr:0x020e5efc
 data_ov030_020e5f28 kind:data(any) addr:0x020e5f28
-data_ov030_020e5f2a kind:data(any) addr:0x020e5f2a
-data_ov030_020e5f2c kind:data(any) addr:0x020e5f2c
-data_ov030_020e5f2e kind:data(any) addr:0x020e5f2e
-data_ov030_020e5f30 kind:data(any) addr:0x020e5f30
-data_ov030_020e5f32 kind:data(any) addr:0x020e5f32
-data_ov030_020e5f34 kind:data(any) addr:0x020e5f34
 data_ov030_020e6018 kind:data(any) addr:0x020e6018
 data_ov030_020e6024 kind:data(any) addr:0x020e6024
 data_ov030_020e6034 kind:data(any) addr:0x020e6034
@@ -2429,7 +2384,6 @@ data_ov030_020e6060 kind:data(any) addr:0x020e6060
 data_ov030_020e606c kind:data(any) addr:0x020e606c
 data_ov030_020e607c kind:data(any) addr:0x020e607c
 data_ov030_020e60a8 kind:data(any) addr:0x020e60a8
-data_ov030_020e60aa kind:data(any) addr:0x020e60aa
 data_ov030_020e60dc kind:data(any) addr:0x020e60dc
 data_ov030_020e60f0 kind:data(any) addr:0x020e60f0
 data_ov030_020e60fc kind:data(any) addr:0x020e60fc
@@ -2465,7 +2419,6 @@ data_ov030_020e6d84 kind:data(any) addr:0x020e6d84
 data_ov030_020e6d94 kind:data(any) addr:0x020e6d94
 data_ov030_020e6da0 kind:data(any) addr:0x020e6da0
 data_ov030_020e6db0 kind:data(any) addr:0x020e6db0
-data_ov030_020e6db2 kind:data(any) addr:0x020e6db2
 data_ov030_020e6dcc kind:data(any) addr:0x020e6dcc
 data_ov030_020e6e3c kind:data(any) addr:0x020e6e3c
 data_ov030_020e6e48 kind:data(any) addr:0x020e6e48
@@ -2480,7 +2433,7 @@ data_ov030_020e6f08 kind:data(any) addr:0x020e6f08
 data_ov030_020e6f34 kind:data(any) addr:0x020e6f34
 data_ov030_020e6f40 kind:data(any) addr:0x020e6f40
 data_ov030_020e6f50 kind:data(any) addr:0x020e6f50
-data_ov030_020e6f7c kind:data(any) addr:0x020e6f7c
+Tsk_Fld_Raster kind:data(any) addr:0x020e6f7c
 data_ov030_020e6f88 kind:data(any) addr:0x020e6f88
 data_ov030_020e6f98 kind:data(any) addr:0x020e6f98
 data_ov030_020e6fa4 kind:data(any) addr:0x020e6fa4
@@ -2509,41 +2462,38 @@ data_ov030_020e7178 kind:data(any) addr:0x020e7178
 data_ov030_020e7188 kind:data(any) addr:0x020e7188
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_TalkEventStringPlate kind:data(any) addr:0x020e71b4
 @1135 kind:data(any) addr:0x020e71c0
 data_ov030_020e71d0 kind:data(any) addr:0x020e71d0
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc
 @259 kind:data(any) addr:0x020e7208 local
 
 
-data_ov030_020e7218 kind:data(any) addr:0x020e7218
-data_ov030_020e7224 kind:data(any) addr:0x020e7224
-data_ov030_020e7234 kind:data(any) addr:0x020e7234
-data_ov030_020e7260 kind:data(any) addr:0x020e7260
-data_ov030_020e726c kind:data(any) addr:0x020e726c
-data_ov030_020e727c kind:data(any) addr:0x020e727c
-data_ov030_020e72a8 kind:data(any) addr:0x020e72a8
-data_ov030_020e72b4 kind:data(any) addr:0x020e72b4
-data_ov030_020e72c4 kind:data(any) addr:0x020e72c4
-data_ov030_020e72f0 kind:data(any) addr:0x020e72f0
-data_ov030_020e72fc kind:data(any) addr:0x020e72fc
-data_ov030_020e730c kind:data(any) addr:0x020e730c
-data_ov030_020e7324 kind:data(any) addr:0x020e7324 ambiguous
-data_ov030_020e7338 kind:data(any) addr:0x020e7338
-data_ov030_020e7344 kind:data(any) addr:0x020e7344
-data_ov030_020e7354 kind:data(any) addr:0x020e7354
-data_ov030_020e7380 kind:data(any) addr:0x020e7380
-data_ov030_020e7382 kind:data(any) addr:0x020e7382
-data_ov030_020e7384 kind:data(any) addr:0x020e7384
-data_ov030_020e7418 kind:data(any) addr:0x020e7418
-data_ov030_020e7424 kind:data(any) addr:0x020e7424
-data_ov030_020e7434 kind:data(any) addr:0x020e7434
+Tsk_Fld_TalkEventCursor kind:data(any) addr:0x020e7218 local
+@1359 kind:data(any) addr:0x020e7224 local
+Fld_TalkEventCursor_Anim kind:data(any) addr:0x020e7234 local
+Tsk_Fld_TalkEventDecide kind:data(any) addr:0x020e7260 local
+@1350 kind:data(any) addr:0x020e726c local
+Fld_TalkEventDecide_Anim kind:data(any) addr:0x020e727c local
+Tsk_Fld_TalkEventTitle kind:data(any) addr:0x020e72a8 local
+@1352 kind:data(any) addr:0x020e72b4 local
+Fld_TalkEventTitle_Anim kind:data(any) addr:0x020e72c4 local
+Tsk_Fld_MapJumpName kind:data(any) addr:0x020e72f0
+@1553 kind:data(any) addr:0x020e72fc local
+Fld_MapJumpName_Anim kind:data(any) addr:0x020e730c
+Tsk_Fld_MapName kind:data(any) addr:0x020e7338 local
+@1496 kind:data(any) addr:0x020e7344 local
+Fld_MapName_Anim kind:data(any) addr:0x020e7354 local
+data_ov030_020e7380 kind:data(any) addr:0x020e7380 local
+Tsk_Fld_NSymbolUGAppear kind:data(any) addr:0x020e7418 local
+@1363 kind:data(any) addr:0x020e7424 local
+Fld_NSymbolUGAppear_Anim kind:data(any) addr:0x020e7434 local
 data_ov030_020e7460 kind:data(any) addr:0x020e7460
 data_ov030_020e7464 kind:data(any) addr:0x020e7464
 data_ov030_020e7468 kind:data(any) addr:0x020e7468
@@ -3399,9 +3349,9 @@ data_ov030_020ea2f4 kind:data(any) addr:0x020ea2f4
 data_ov030_020ea344 kind:data(any) addr:0x020ea344
 data_ov030_020ea394 kind:data(any) addr:0x020ea394
 data_ov030_020ea438 kind:data(any) addr:0x020ea438
-data_ov030_020ea440 kind:data(any) addr:0x020ea440
-data_ov030_020ea44c kind:data(any) addr:0x020ea44c
-data_ov030_020ea45c kind:data(any) addr:0x020ea45c
+Tsk_Fld_Piranha kind:data(any) addr:0x020ea440
+@1341 kind:data(any) addr:0x020ea44c local
+Fld_Piranha_Anim kind:data(any) addr:0x020ea45c
 data_ov030_020ea488 kind:data(any) addr:0x020ea488
 data_ov030_020eae80 kind:data(any) addr:0x020eae80
 data_ov030_020eae84 kind:data(any) addr:0x020eae84
@@ -3534,36 +3484,36 @@ data_ov030_020eba44 kind:data(any) addr:0x020eba44
 data_ov030_020ebaa4 kind:data(any) addr:0x020ebaa4
 data_ov030_020ebb24 kind:data(any) addr:0x020ebb24
 data_ov030_020ec824 kind:data(any) addr:0x020ec824
-data_ov030_020ec844 kind:data(any) addr:0x020ec844
-data_ov030_020ec850 kind:data(any) addr:0x020ec850
-data_ov030_020ec860 kind:data(any) addr:0x020ec860
-data_ov030_020ec88c kind:data(any) addr:0x020ec88c
-data_ov030_020ec898 kind:data(any) addr:0x020ec898
-data_ov030_020ec8a8 kind:data(any) addr:0x020ec8a8
+Tsk_Fld_TouchNext kind:data(any) addr:0x020ec844 local
+@1348 kind:data(any) addr:0x020ec850 local
+Fld_TouchNext_Anim kind:data(any) addr:0x020ec860 local
+Tsk_Fld_GetPlate kind:data(any) addr:0x020ec88c local
+@1483 kind:data(any) addr:0x020ec898 local
+Fld_GetPlate_Anim kind:data(any) addr:0x020ec8a8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetMess kind:data(any) addr:0x020ec8d4 local
 @1365 kind:data(any) addr:0x020ec8e0 local
 data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_WhichArrow kind:data(any) addr:0x020ec91c local
 @1397 kind:data(any) addr:0x020ec928 local
 data_ov030_020ec938 kind:data(any) addr:0x020ec938 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetBase kind:data(any) addr:0x020ec964 local
 @1052 kind:data(any) addr:0x020ec970 local
 data_ov030_020ec980 kind:data(any) addr:0x020ec980 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetItem kind:data(any) addr:0x020ec9ac local
 @1296 kind:data(any) addr:0x020ec9b8 local
@@ -3571,41 +3521,40 @@ data_ov030_020ec9c8 kind:data(any) addr:0x020ec9c8 local
 data_ov030_020ec9f4 kind:data(any) addr:0x020ec9f4 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_Choice kind:data(any) addr:0x020eca2c local
 @267 kind:data(any) addr:0x020eca38 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_UGFade kind:data(any) addr:0x020eca48 local
 @690 kind:data(any) addr:0x020eca54 local
 
 
 data_ov030_020eca64 kind:data(any) addr:0x020eca64
-data_ov030_020eca6c kind:data(any) addr:0x020eca6c
-data_ov030_020eca78 kind:data(any) addr:0x020eca78
-data_ov030_020eca88 kind:data(any) addr:0x020eca88
+Tsk_Fld_BattleIn kind:data(any) addr:0x020eca6c local
+@1436 kind:data(any) addr:0x020eca78 local
+Fld_BattleIn_Anim kind:data(any) addr:0x020eca88 local
 data_ov030_020ecab4 kind:data(any) addr:0x020ecab4
 data_ov030_020ecac0 kind:data(any) addr:0x020ecac0
 data_ov030_020ecad0 kind:data(any) addr:0x020ecad0
-data_ov030_020ecafc kind:data(any) addr:0x020ecafc
-data_ov030_020ecb08 kind:data(any) addr:0x020ecb08
+Tsk_Fld_Brush kind:data(any) addr:0x020ecafc local
+@247 kind:data(any) addr:0x020ecb08 local
 data_ov030_020ecb18 kind:data(any) addr:0x020ecb18
-data_ov030_020ecb88 kind:data(any) addr:0x020ecb88
-data_ov030_020ecb94 kind:data(any) addr:0x020ecb94
-data_ov030_020ecba4 kind:data(any) addr:0x020ecba4
-data_ov030_020ecbd0 kind:data(any) addr:0x020ecbd0
-data_ov030_020ecbdc kind:data(any) addr:0x020ecbdc
-data_ov030_020ecbe0 kind:data(any) addr:0x020ecbe0
+Tsk_Fld_BrushHati kind:data(any) addr:0x020ecb88 local
+@1348 kind:data(any) addr:0x020ecb94 local
+Fld_BrushHati_Anim kind:data(any) addr:0x020ecba4 local
+OvlProc_FldNpcMesSel kind:data(any) addr:0x020ecbd0 local
+FldNpcMesSelTable kind:data(any) addr:0x020ecbdc local
 OvlProc_FldMesSel kind:data(any) addr:0x020ecd0c local
 FldMesWinKindTable kind:data(any) addr:0x020ecd18 local
-data_ov030_020ecda8 kind:data(any) addr:0x020ecda8
-data_ov030_020ecdb4 kind:data(any) addr:0x020ecdb4
+Tsk_Task_Mess kind:data(any) addr:0x020ecda8
+@1528 kind:data(any) addr:0x020ecdb4 local
 data_ov030_020ecdc4 kind:data(any) addr:0x020ecdc4
 data_ov030_020ecdcc kind:data(any) addr:0x020ecdcc
-data_ov030_020ecddc kind:data(any) addr:0x020ecddc
+@1373 kind:data(any) addr:0x020ecddc local
 data_ov030_020ecdec kind:data(any) addr:0x020ecdec
 data_ov030_020ecdfc kind:data(any) addr:0x020ecdfc
 data_ov030_020ece24 kind:data(any) addr:0x020ece24
@@ -3615,7 +3564,7 @@ data_ov030_020ece80 kind:data(any) addr:0x020ece80
 data_ov030_020ece82 kind:data(any) addr:0x020ece82
 data_ov030_020eceba kind:data(any) addr:0x020eceba
 data_ov030_020ecfa4 kind:data(any) addr:0x020ecfa4
-Task_Window kind:data(any) addr:0x020ed0d8
+Tsk_Task_Window kind:data(any) addr:0x020ed0d8
 data_ov030_020ed0e4 kind:data(any) addr:0x020ed0e4
 data_ov030_020ed0f0 kind:data(any) addr:0x020ed0f0
 data_ov030_020ed100 kind:data(any) addr:0x020ed100
@@ -3661,13 +3610,13 @@ data_ov030_020ee628 kind:data(any) addr:0x020ee628
 data_ov030_020ee6f0 kind:data(any) addr:0x020ee6f0
 data_ov030_020ee7b8 kind:data(any) addr:0x020ee7b8
 data_ov030_020ee880 kind:data(any) addr:0x020ee880
-data_ov030_020ee93c kind:data(any) addr:0x020ee93c
+OvlProc_LocaTitleSeq kind:data(any) addr:0x020ee93c local
 data_ov030_020ee948 kind:data(any) addr:0x020ee948
-data_ov030_020ee950 kind:data(any) addr:0x020ee950
-data_ov030_020ee95c kind:data(any) addr:0x020ee95c
-data_ov030_020ee96c kind:data(any) addr:0x020ee96c
-data_ov030_020ee998 kind:data(any) addr:0x020ee998
-data_ov030_020ee9a4 kind:data(any) addr:0x020ee9a4
+Tsk_LocaTitle kind:data(any) addr:0x020ee950 local
+@1379 kind:data(any) addr:0x020ee95c local
+LocaTitle_Anim kind:data(any) addr:0x020ee96c local
+Tsk_XFade kind:data(any) addr:0x020ee998
+@1463 kind:data(any) addr:0x020ee9a4 local
 data_ov030_020ee9b4 kind:data(any) addr:0x020ee9b4
 data_ov030_020ee9c4 kind:data(any) addr:0x020ee9c4
 data_ov030_020ee9d4 kind:data(any) addr:0x020ee9d4
@@ -4434,9 +4383,7 @@ data_ov030_020fd9fc kind:data(any) addr:0x020fd9fc
 data_ov030_020fda1c kind:data(any) addr:0x020fda1c
 data_ov030_020fda3c kind:data(any) addr:0x020fda3c
 data_ov030_020fda64 kind:data(any) addr:0x020fda64
-data_ov030_020fda68 kind:data(any) addr:0x020fda68
-data_ov030_020fda6c kind:data(any) addr:0x020fda6c
-data_ov030_020fde48 kind:data(any) addr:0x020fde48
+OvlProc_FlashSel kind:data(any) addr:0x020fde48
 data_ov030_020fde54 kind:data(any) addr:0x020fde54
 data_ov030_020fde60 kind:data(any) addr:0x020fde60
 data_ov030_020fde80 kind:data(any) addr:0x020fde80
@@ -4464,7 +4411,6 @@ data_ov030_021001a0 kind:data(any) addr:0x021001a0
 data_ov030_021001bc kind:data(any) addr:0x021001bc
 data_ov030_021001d8 kind:data(any) addr:0x021001d8
 data_ov030_021001f4 kind:data(any) addr:0x021001f4
-data_ov030_0210020a kind:data(any) addr:0x0210020a
 data_ov030_02100210 kind:data(any) addr:0x02100210
 data_ov030_0210022c kind:data(any) addr:0x0210022c
 data_ov030_02100248 kind:data(any) addr:0x02100248
@@ -6481,23 +6427,23 @@ data_ov030_02107580 kind:data(any) addr:0x02107580
 
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventStringPlate.c
+// src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
 @1066 kind:data(any) addr:0x02107598 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_TalkEventKeywordMenu.c
+// src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
 @145 kind:data(any) addr:0x021075b8 local
 
 
-data_ov030_021075d8 kind:data(any) addr:0x021075d8
-data_ov030_021075f0 kind:data(any) addr:0x021075f0
-data_ov030_02107608 kind:data(any) addr:0x02107608
+@1326 kind:data(any) addr:0x021075d8 local
+@1298 kind:data(any) addr:0x021075f0 local
+@1296 kind:data(any) addr:0x02107608 local
 data_ov030_02107620 kind:data(any) addr:0x02107620
-data_ov030_02107634 kind:data(any) addr:0x02107634
-data_ov030_02107648 kind:data(any) addr:0x02107648
-data_ov030_02107658 kind:data(any) addr:0x02107658
+@1480 kind:data(any) addr:0x02107634 local
+@1428 kind:data(any) addr:0x02107648 local
+@1284 kind:data(any) addr:0x02107658 local
 data_ov030_02107670 kind:data(any) addr:0x02107670
 data_ov030_021076c8 kind:data(any) addr:0x021076c8
 data_ov030_02107720 kind:data(any) addr:0x02107720
@@ -6559,28 +6505,28 @@ data_ov030_021083d8 kind:data(any) addr:0x021083d8
 data_ov030_021083e4 kind:data(any) addr:0x021083e4
 data_ov030_021083f4 kind:data(any) addr:0x021083f4
 data_ov030_02108408 kind:data(any) addr:0x02108408
-data_ov030_02108464 kind:data(any) addr:0x02108464
+@1290 kind:data(any) addr:0x02108464 local
 data_ov030_02108474 kind:data(any) addr:0x02108474
-data_ov030_02108490 kind:data(any) addr:0x02108490
-data_ov030_021084a4 kind:data(any) addr:0x021084a4
+@1293 kind:data(any) addr:0x02108490 local
+@1416 kind:data(any) addr:0x021084a4 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetMess.c
+// src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 @1292 kind:data(any) addr:0x021084b8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_WhichArrow.c
+// src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 @1318 kind:data(any) addr:0x021084c8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetBase.c
+// src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 @998 kind:data(any) addr:0x021084dc local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_GetItem.c
+// src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 @1145 kind:data(any) addr:0x021084ec local
 @1150 kind:data(any) addr:0x021084fc local
@@ -6592,22 +6538,22 @@ data_ov030_021084a4 kind:data(any) addr:0x021084a4
 @1151 kind:data(any) addr:0x0210858c local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_Choice.c
+// src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 @179 kind:data(any) addr:0x021085a8 local
 
 //////////////////////////////////////////////////////////////////////
-// src/Field/Fld_UGFade.c
+// src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 @644 kind:data(any) addr:0x021085b8 local
 
 
-data_ov030_021085c8 kind:data(any) addr:0x021085c8
+@1378 kind:data(any) addr:0x021085c8 local
 data_ov030_021085dc kind:data(any) addr:0x021085dc
-data_ov030_021085f0 kind:data(any) addr:0x021085f0
-data_ov030_02108600 kind:data(any) addr:0x02108600
+@223 kind:data(any) addr:0x021085f0 local
+@1298 kind:data(any) addr:0x02108600 local
 data_ov030_02108614 kind:data(any) addr:0x02108614
-data_ov030_02108618 kind:data(any) addr:0x02108618
+FldNpcMesSelSequence kind:data(any) addr:0x02108618 local
 data_ov030_0210861c kind:data(any) addr:0x0210861c
 data_ov030_02108624 kind:data(any) addr:0x02108624
 data_ov030_0210862c kind:data(any) addr:0x0210862c
@@ -6669,23 +6615,24 @@ FldMesSelSequence kind:data(any) addr:0x0210882c local
 @1577 kind:data(byte[19]) addr:0x021088c8 local
 @1578 kind:data(byte[12]) addr:0x021088dc local
 @1579 kind:data(byte[2]) addr:0x021088e8 local
-data_ov030_021088ec kind:data(any) addr:0x021088ec
-data_ov030_021088f8 kind:data(any) addr:0x021088f8
+@1519 kind:data(any) addr:0x021088ec local
+@1342 kind:data(any) addr:0x021088f8 local
 data_ov030_02108904 kind:data(any) addr:0x02108904
 data_ov030_02108920 kind:data(any) addr:0x02108920
 data_ov030_02108934 kind:data(any) addr:0x02108934
 data_ov030_0210894c kind:data(any) addr:0x0210894c
 data_ov030_0210896c kind:data(any) addr:0x0210896c
-data_ov030_0210896e kind:data(any) addr:0x0210896e
-data_ov030_02108970 kind:data(any) addr:0x02108970
-data_ov030_0210897c kind:data(any) addr:0x0210897c
-data_ov030_02108980 kind:data(any) addr:0x02108980
 data_ov030_021089b4 kind:data(any) addr:0x021089b4
-data_ov030_021089c8 kind:data(any) addr:0x021089c8
-data_ov030_021089dc kind:data(any) addr:0x021089dc
-data_ov030_021089ec kind:data(any) addr:0x021089ec
-data_ov030_021089fc kind:data(any) addr:0x021089fc
-data_ov030_02108a0c kind:data(any) addr:0x02108a0c
+
+@40 kind:data(any) addr:0x021089c8 local
+
+@41 kind:data(any) addr:0x021089dc local
+@143 kind:data(any) addr:0x021089ec local
+
+@233 kind:data(any) addr:0x021089fc local
+
+@37 kind:data(any) addr:0x02108a0c local
+
 data_ov030_02108a20 kind:data(any) addr:0x02108a20
 data_ov030_02108a38 kind:data(any) addr:0x02108a38
 data_ov030_02108a50 kind:data(any) addr:0x02108a50
@@ -6737,11 +6684,11 @@ data_ov030_02108f2c kind:data(any) addr:0x02108f2c
 data_ov030_02108fe4 kind:data(any) addr:0x02108fe4
 data_ov030_0210909c kind:data(any) addr:0x0210909c
 data_ov030_021090ac kind:data(any) addr:0x021090ac
-data_ov030_021090bc kind:data(any) addr:0x021090bc
-data_ov030_021090cc kind:data(any) addr:0x021090cc
-data_ov030_021090e4 kind:data(any) addr:0x021090e4
-data_ov030_021090f4 kind:data(any) addr:0x021090f4
-data_ov030_02109110 kind:data(any) addr:0x02109110
+LocaTitleSeq_State kind:data(any) addr:0x021090bc local
+@1175 kind:data(any) addr:0x021090cc local
+@1331 kind:data(any) addr:0x021090e4 local
+@1320 kind:data(any) addr:0x021090f4 local
+@1390 kind:data(any) addr:0x02109110 local
 data_ov030_0210911c kind:data(any) addr:0x0210911c
 data_ov030_02109124 kind:data(any) addr:0x02109124
 data_ov030_02109128 kind:data(any) addr:0x02109128
@@ -6918,21 +6865,22 @@ data_ov030_02109b7c kind:data(any) addr:0x02109b7c
 data_ov030_02109b94 kind:data(any) addr:0x02109b94
 data_ov030_02109bac kind:data(any) addr:0x02109bac
 data_ov030_02109bc4 kind:data(any) addr:0x02109bc4
-data_ov030_02109bc8 kind:data(any) addr:0x02109bc8
+@1456 kind:data(any) addr:0x02109bc8 local
 data_ov030_02109bd8 kind:data(any) addr:0x02109bd8
-data_ov030_02109be8 kind:data(any) addr:0x02109be8
-data_ov030_02109bf4 kind:data(any) addr:0x02109bf4
+@1481 kind:data(any) addr:0x02109be8 local
+@1482 kind:data(any) addr:0x02109bf4 local
 data_ov030_02109c00 kind:data(any) addr:0x02109c00
-data_ov030_02109c0c kind:data(any) addr:0x02109c0c
-data_ov030_02109c38 kind:data(any) addr:0x02109c38
-data_ov030_02109c64 kind:data(any) addr:0x02109c64
-data_ov030_02109c7c kind:data(any) addr:0x02109c7c
-data_ov030_02109cac kind:data(any) addr:0x02109cac
-data_ov030_02109cc4 kind:data(any) addr:0x02109cc4
-data_ov030_02109cf0 kind:data(any) addr:0x02109cf0
-data_ov030_02109d1c kind:data(any) addr:0x02109d1c
-data_ov030_02109d40 kind:data(any) addr:0x02109d40
-data_ov030_02109d48 kind:data(any) addr:0x02109d48
+_ZTV10FlashImage kind:data(any) addr:0x02109c04
+_ZTV9FlashRect kind:data(any) addr:0x02109c30
+_ZTV18FlashFrameListener kind:data(any) addr:0x02109c5c
+_ZTV18FlashEventCallback kind:data(any) addr:0x02109c74
+_ZTV17FlashFrameHandler kind:data(any) addr:0x02109c8c
+_ZTV13FlashListener kind:data(any) addr:0x02109ca4
+_ZTV11FlashObject kind:data(any) addr:0x02109cbc
+_ZTV15FlashFileStream kind:data(any) addr:0x02109ce8
+_ZTV11FlashStream kind:data(any) addr:0x02109d14
+@1799 kind:data(byte[6]) addr:0x02109d40 local
+@1806 kind:data(byte[6]) addr:0x02109d48 local
 data_ov030_02109d60 kind:bss addr:0x02109d60
 data_ov030_02109d64 kind:bss addr:0x02109d64
 data_ov030_02109d68 kind:bss addr:0x02109d68

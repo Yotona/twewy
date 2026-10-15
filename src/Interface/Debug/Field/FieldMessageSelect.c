@@ -10,6 +10,7 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
 #include "Field/FieldDebug.h"
+#include "Field/Ov030Data.h"
 #include "Util/MsgXls.h"
 #include "Util/SysFont.h"
 #include "common_data.h"
@@ -42,28 +43,6 @@ typedef struct {
     /* 0x8 */ BOOL        hasBalloon;
 } FldMesWinKind; // Size: 0xC
 
-typedef struct {
-    /* 0x0 */ s16 x;
-    /* 0x2 */ s16 y;
-} FldMesSize;
-
-typedef struct {
-    /* 0x00 */ s32        datSlot;
-    /* 0x04 */ FldMesSize unk_04;
-    /* 0x08 */ FldMesSize unk_08;
-    /* 0x0C */ s32        unk_0C;
-    /* 0x10 */ s32        mesNo;
-    /* 0x14 */ s16        unk_14;
-    /* 0x16 */ s16        unk_16;
-    /* 0x18 */ u8         winKind;
-    /* 0x19 */ u8         unk_19;
-    /* 0x1A */ s8         unk_1A;
-    /* 0x1B */ s8         unk_1B;
-    /* 0x1C */ s32        unk_1C;
-    /* 0x20 */ s32        unk_20;
-    /* 0x24 */ s16        unk_24;
-} FldMesTaskParam; // Size: 0x28
-
 // Total number of messages across every .xls file.
 #define FLD_MES_TOTAL 25233
 
@@ -73,7 +52,7 @@ extern void func_02025e30(void* textObj);
 
 extern u8 func_ov030_020ca778(SysFont* arg0, u16 mesNo, s32 arg2, const u8* winKind);
 
-extern const TaskHandle Task_Window;
+extern const TaskHandle Tsk_Task_Window;
 
 // The selectable message window styles
 static const FldMesWinKind FldMesWinKindTable[12] = {
@@ -125,14 +104,14 @@ void FldMesSel_DestroyTextView(FldMesSelObject* selObj) {
 
 // Spawns the message window task previewing the current message in the given window style.
 s32 FldMesSel_CreateMessageWindow(FldMesSelObject* selObj, u8 winKind) {
-    FldMesSize      size;
+    FldScreenPos    size;
     FldMesTaskParam param;
     u16             mesNo;
 
     param.unk_14  = 0;
     param.datSlot = selObj->datSlot;
-    size.x        = 0x80;
-    size.y        = 0x60;
+    size.sx       = 0x80;
+    size.sy       = 0x60;
     mesNo         = selObj->mesNo;
     param.mesNo   = mesNo;
     param.winKind = FldMesWinKindTable[winKind].kind;
@@ -152,7 +131,7 @@ s32 FldMesSel_CreateMessageWindow(FldMesSelObject* selObj, u8 winKind) {
 
     param.unk_20 = 0;
     param.unk_1C = 0;
-    return EasyTask_CreateTask(&selObj->taskPool, &Task_Window, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(&selObj->taskPool, &Tsk_Task_Window, NULL, 0, NULL, &param);
 }
 
 void FldMesSel_Open(FldMesSelObject* selObj) {

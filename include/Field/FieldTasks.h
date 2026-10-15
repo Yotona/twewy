@@ -2,6 +2,7 @@
 #define FIELD_FIELDTASKS_H
 
 #include "Engine/EasyTask.h"
+#include "Field/FieldRegion.h"
 
 s32 Fld_UGFade_CreateTask(TaskPool* pool, u16 arg1, s32 arg2, s32* arg3);
 

@@ -484,7 +484,7 @@ from:0x020f480c kind:arm_call to:0x020ca6a8 module:overlay(3)
 from:0x020f4814 kind:arm_call to:0x0200ea4c module:main
 from:0x020f4828 kind:arm_call to:0x020f40a0 module:overlay(24)
 from:0x020f4844 kind:load to:0x020f6c80 module:overlay(24)
-from:0x020f484c kind:load to:0x020e7324 module:overlays(3,30)
+from:0x020f484c kind:load to:0x020e7324 module:overlay(3)
 from:0x020f4850 kind:load to:0x020f40f0 module:overlay(24)
 from:0x020f485c kind:arm_call to:0x020c703c module:overlay(3)
 from:0x020f4880 kind:arm_call to:0x020c72b4 module:overlay(3)
