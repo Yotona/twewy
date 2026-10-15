@@ -89,9 +89,10 @@ static inline u32 FlashTexCoord(fx32 s, fx32 t) {
 #define FLASH_VERTEX(x, y)                                                                     \
     {                                                                                          \
         fx32 vx = FX_Mul(x, mtx->m[0][0]) + FX_Mul(y, mtx->m[0][1]) + mtx->m[0][2];            \
-        fx32 vy = -(FX_Mul(x, mtx->m[1][0]) + FX_Mul(y, mtx->m[1][1]) + mtx->m[1][2]);         \
-        s32  px = FX_Whole(FX_Mul(vx, nodeMtx->m[0][0]) + FX_Mul(vy, -nodeMtx->m[0][1])) / 20; \
-        s32  py = FX_Whole(FX_Mul(vx, -nodeMtx->m[1][0]) + FX_Mul(vy, nodeMtx->m[1][1])) / 20; \
+        fx32 vy = FX_Mul(x, mtx->m[1][0]) + FX_Mul(y, mtx->m[1][1]) + mtx->m[1][2];            \
+        vy      = -vy;                                                                         \
+        s32 px  = FX_Whole(FX_Mul(vx, nodeMtx->m[0][0]) + FX_Mul(vy, -nodeMtx->m[0][1])) / 20; \
+        s32 py  = FX_Whole(FX_Mul(vx, -nodeMtx->m[1][0]) + FX_Mul(vy, nodeMtx->m[1][1])) / 20; \
         G3_Vtx((s16)(px << 4), (s16)(py << 4), 0);                                             \
     }
 
@@ -103,6 +104,10 @@ void FlashTexture::Draw(const FlashMatrix* nodeMtx, const FlashMatrix* mtx, fx32
     u32  plttAddr;
     fx32 s;
     fx32 t;
+    fx32 left;
+    fx32 top;
+    fx32 right;
+    fx32 bottom;
 
     if (m_def->m_state != 2) {
         return;
@@ -121,19 +126,23 @@ void FlashTexture::Draw(const FlashMatrix* nodeMtx, const FlashMatrix* mtx, fx32
     REG_GFX_FIFO_POLYGON_ATTR               = (polygonId << 24) | 0x8C0 | (alpha << 16);
     t                                       = m_unk_14 << 12;
     s                                       = m_unk_12 << 12;
+    left                                    = bounds[0];
+    top                                     = bounds[1];
+    right                                   = bounds[2];
+    bottom                                  = bounds[3];
     REG_GFX_FIFO_POLYGONS_BEGIN             = 1;
     REG_GFX_FIFO_VERTEX_TEXCOORD            = FlashTexCoord(0, t);
     REG_GFX_FIFO_NORMAL                     = 0x1FF00000;
-    FLASH_VERTEX(bounds[0], bounds[3])
+    FLASH_VERTEX(left, bottom)
     REG_GFX_FIFO_VERTEX_TEXCOORD = FlashTexCoord(0, 0);
     REG_GFX_FIFO_NORMAL          = 0x1FF00000;
-    FLASH_VERTEX(bounds[0], bounds[1])
+    FLASH_VERTEX(left, top)
     REG_GFX_FIFO_VERTEX_TEXCOORD = FlashTexCoord(s, 0);
     REG_GFX_FIFO_NORMAL          = 0x1FF00000;
-    FLASH_VERTEX(bounds[2], bounds[1])
+    FLASH_VERTEX(right, top)
     REG_GFX_FIFO_VERTEX_TEXCOORD = FlashTexCoord(s, t);
     REG_GFX_FIFO_NORMAL          = 0x1FF00000;
-    FLASH_VERTEX(bounds[2], bounds[3])
+    FLASH_VERTEX(right, bottom)
     REG_GFX_FIFO_POLYGONS_END = 0;
     REG_GFX_FIFO_MATRIX_POP   = 1;
 }

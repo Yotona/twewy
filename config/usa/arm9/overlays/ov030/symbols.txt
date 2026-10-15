@@ -1473,11 +1473,13 @@ func_ov030_020cd6d8 kind:function(arm,size=0x14) addr:0x020cd6d8
 func_ov030_020cd6ec kind:function(arm,size=0x48) addr:0x020cd6ec
 func_ov030_020cd734 kind:function(arm,size=0x30) addr:0x020cd734
 func_ov030_020cd764 kind:function(arm,size=0x2c) addr:0x020cd764
+
 func_ov030_020cd790 kind:function(arm,size=0x30) addr:0x020cd790
 func_ov030_020cd7c0 kind:function(arm,size=0x14) addr:0x020cd7c0
 func_ov030_020cd7d4 kind:function(arm,size=0x28) addr:0x020cd7d4
 func_ov030_020cd7fc kind:function(arm,size=0xc) addr:0x020cd7fc
 func_ov030_020cd808 kind:function(arm,size=0x26c) addr:0x020cd808
+
 func_ov030_020cda74 kind:function(arm,size=0x34) addr:0x020cda74
 func_ov030_020cdaa8 kind:function(arm,size=0x18) addr:0x020cdaa8
 func_ov030_020cdac0 kind:function(arm,size=0x58) addr:0x020cdac0
@@ -4381,9 +4383,7 @@ data_ov030_020fd9fc kind:data(any) addr:0x020fd9fc
 data_ov030_020fda1c kind:data(any) addr:0x020fda1c
 data_ov030_020fda3c kind:data(any) addr:0x020fda3c
 data_ov030_020fda64 kind:data(any) addr:0x020fda64
-data_ov030_020fda68 kind:data(any) addr:0x020fda68
-data_ov030_020fda6c kind:data(any) addr:0x020fda6c
-data_ov030_020fde48 kind:data(any) addr:0x020fde48
+OvlProc_FlashSel kind:data(any) addr:0x020fde48
 data_ov030_020fde54 kind:data(any) addr:0x020fde54
 data_ov030_020fde60 kind:data(any) addr:0x020fde60
 data_ov030_020fde80 kind:data(any) addr:0x020fde80
@@ -6623,11 +6623,16 @@ data_ov030_02108934 kind:data(any) addr:0x02108934
 data_ov030_0210894c kind:data(any) addr:0x0210894c
 data_ov030_0210896c kind:data(any) addr:0x0210896c
 data_ov030_021089b4 kind:data(any) addr:0x021089b4
-data_ov030_021089c8 kind:data(any) addr:0x021089c8
-data_ov030_021089dc kind:data(any) addr:0x021089dc
-data_ov030_021089ec kind:data(any) addr:0x021089ec
-data_ov030_021089fc kind:data(any) addr:0x021089fc
-data_ov030_02108a0c kind:data(any) addr:0x02108a0c
+
+@40 kind:data(any) addr:0x021089c8 local
+
+@41 kind:data(any) addr:0x021089dc local
+@143 kind:data(any) addr:0x021089ec local
+
+@233 kind:data(any) addr:0x021089fc local
+
+@37 kind:data(any) addr:0x02108a0c local
+
 data_ov030_02108a20 kind:data(any) addr:0x02108a20
 data_ov030_02108a38 kind:data(any) addr:0x02108a38
 data_ov030_02108a50 kind:data(any) addr:0x02108a50
@@ -6860,10 +6865,10 @@ data_ov030_02109b7c kind:data(any) addr:0x02109b7c
 data_ov030_02109b94 kind:data(any) addr:0x02109b94
 data_ov030_02109bac kind:data(any) addr:0x02109bac
 data_ov030_02109bc4 kind:data(any) addr:0x02109bc4
-data_ov030_02109bc8 kind:data(any) addr:0x02109bc8
+@1456 kind:data(any) addr:0x02109bc8 local
 data_ov030_02109bd8 kind:data(any) addr:0x02109bd8
-data_ov030_02109be8 kind:data(any) addr:0x02109be8
-data_ov030_02109bf4 kind:data(any) addr:0x02109bf4
+@1481 kind:data(any) addr:0x02109be8 local
+@1482 kind:data(any) addr:0x02109bf4 local
 data_ov030_02109c00 kind:data(any) addr:0x02109c00
 _ZTV10FlashImage kind:data(any) addr:0x02109c04
 _ZTV9FlashRect kind:data(any) addr:0x02109c30

@@ -438,11 +438,13 @@ src/Field/Flash/FOAllocator.c:
     .bss        start:0x02109d88 end:0x02109d98
 
 src/Field/Flash/FO3DRes.c:
+    complete
     .text       start:0x020cda74 end:0x020cdcec
     .data       start:0x021089dc end:0x021089fc
     .bss        start:0x02109d98 end:0x02109d9c
 
 src/Field/Flash/FO3DObj.c:
+    complete
     .text       start:0x020cdcec end:0x020cdea0
     .data       start:0x021089fc end:0x02108a0c
     .bss        start:0x02109d9c end:0x02109da0
@@ -480,14 +482,15 @@ src/Field/Scene/LocaTitleSeq.c:
     .bss        start:0x02109de8 end:0x02109dec
 
 src/Field/Flash/SeqFlash.c:
+    complete
     .text       start:0x020d4830 end:0x020d4fb4
-    .rodata     start:0x020fd718 end:0x020fda6c
+    .rodata     start:0x020fd718 end:0x020fde48
     .data       start:0x0210916c end:0x02109bc4
     .bss        start:0x02109dec end:0x02109df0
 
 src/Field/Flash/SeqFlashSel.c:
     .text       start:0x020d4fb4 end:0x020d53b0
-    .rodata     start:0x020fda6c end:0x020fde54
+    .rodata     start:0x020fde48 end:0x020fde54
     .data       start:0x02109bc4 end:0x02109c00
 
 src/Field/Flash/FlashGraphicsInit.c:

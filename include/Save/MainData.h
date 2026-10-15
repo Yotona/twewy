@@ -280,7 +280,7 @@ typedef struct MainData {
     /* 0x3138 */ s32              unk_3138;
     /* 0x313C */ s32              unk_313C;
     /* 0x3140 */ u8               unk_3140;
-    /* 0x3141 */ u8               unk_3141;
+    /* 0x3141 */ u8               battleDifficulty;
     /* 0x3142 */ u16              unk_3142;
     /* 0x3144 */ s16              battleCount;
     /* 0x3146 */ u16              battleEncounters[16]; // one per chained battle, indexed by battleCount

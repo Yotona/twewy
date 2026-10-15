@@ -98,7 +98,6 @@ void func_ov030_020d53b0(void) {
 
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode  = GX_OBJBMPMODE_1D_128K;
-    Display_SetSubLayers(LAYER_BG0);
     Display_SetSubLayers(LAYER_BG0 | LAYER_OBJ);
     REG_POWER_CNT &= ~0x8000;
 

@@ -135,6 +135,7 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("libs/cpp"): MSL_COMPILER_CONFIG,
     Path("libs/cri"): CRI_COMPILER_CONFIG,
     Path("libs/runtime"): MSL_RUNTIME_COMPILER_CONFIG,
+    Path("src/Field/Flash/SeqFlash.c"): DEFAULT_COMPILER_CONFIG,
     Path("src/Field/Flash"): FLASH_COMPILER_CONFIG,
 }
 

@@ -78,7 +78,7 @@ void func_ov030_020af364(s32 selector) {
     gSaveData.unk_3130             = 0;
     gSaveData.unk_3134             = selector;
     gSaveData.unk_3142             = 0;
-    gSaveData.unk_3141             = gSaveData.playerStats.difficulty;
+    gSaveData.battleDifficulty     = gSaveData.playerStats.difficulty;
     gSaveData.unk_3138             = func_ov030_020af2fc();
     gSaveData.unk_3140             = 1;
     if (selector == 2) {
@@ -536,7 +536,7 @@ void func_ov030_020afab8(FieldEventManager* mgr) {
             gSaveData.unk_3134            = 1;
             gSaveData.unk_3138            = func_ov030_020af2fc();
             gSaveData.unk_3142            = 0;
-            gSaveData.unk_3141            = gSaveData.playerStats.difficulty;
+            gSaveData.battleDifficulty    = gSaveData.playerStats.difficulty;
             gSaveData.battleEncounters[0] = gSaveData.scanSymbols[gSaveData.scanSymbolSelection].encounter;
             gSaveData.unk_3140            = 0;
             if (gSaveData.scanSymbols[gSaveData.scanSymbolSelection].category >= 0x1F) {
@@ -559,7 +559,7 @@ void func_ov030_020afab8(FieldEventManager* mgr) {
                 gSaveData.unk_3130 = 2;
             }
             if (func_ov030_020afa04() != 0) {
-                gSaveData.unk_3141 = 1;
+                gSaveData.battleDifficulty = 1;
             }
             if (func_ov030_020afa58() != 0) {
                 gSaveData.unk_3140 |= 1;

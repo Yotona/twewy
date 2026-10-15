@@ -165,8 +165,8 @@ u16 Result_CalcRateBRank(u8 num, u8 denom) {
     }
 }
 
-u16 Result_GetRateBMultiplier(u32 rank, u8 arg1) {
-    if (arg1 == 0) {
+u16 Result_GetRateBMultiplier(u32 rank, u8 difficulty) {
+    if (difficulty == 0) {
         return 10;
     }
     switch (rank) {
@@ -721,8 +721,8 @@ void Result_InitBattleMode(ResultObject* result) {
     result->clearTime              = gSaveData.battleClearTime;
     result->maxHits                = gSaveData.battleMaxHits;
     result->battleCountMultiplier  = Result_GetLevelsMultiplier(result->battleCount);
-    result->timeMultiplier         = Result_GetTimeRankMultiplier(result->timeRank, gSaveData.unk_3141);
-    result->rateBMultiplier        = Result_GetRateBMultiplier(result->rateBRank, gSaveData.unk_3141);
+    result->timeMultiplier         = Result_GetTimeRankMultiplier(result->timeRank, gSaveData.battleDifficulty);
+    result->rateBMultiplier        = Result_GetRateBMultiplier(result->rateBRank, gSaveData.battleDifficulty);
     result->specialBonusMultiplier = Result_GetSpecialBonusMultiplier(result->specialBonusLevel);
     result->displayedPP            = 0;
     result->earnedPP               = Result_CalcBattlePP(result);

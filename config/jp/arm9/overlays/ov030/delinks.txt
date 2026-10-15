@@ -466,14 +466,15 @@ src/Field/Scene/LocaTitleSeq.c:
     .bss        start:0x02108c08 end:0x02108c0c
 
 src/Field/Flash/SeqFlash.c:
+    complete
     .text       start:0x020d3c88 end:0x020d4404
-    .rodata     start:0x020fc814 end:0x020fcb68
+    .rodata     start:0x020fc814 end:0x020fcf44
     .data       start:0x02107f94 end:0x021089ec
     .bss        start:0x02108c0c end:0x02108c10
 
 src/Field/Flash/SeqFlashSel.c:
     .text       start:0x020d4404 end:0x020d4800
-    .rodata     start:0x020fcb68 end:0x020fcf50
+    .rodata     start:0x020fcf44 end:0x020fcf50
     .data       start:0x021089ec end:0x02108a28
 
 src/Field/Flash/FlashGraphicsInit.c:

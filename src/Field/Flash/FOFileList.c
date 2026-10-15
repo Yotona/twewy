@@ -9,17 +9,16 @@ typedef struct {
     u32*    entrySizes;
 } FieldCache;
 
-extern FieldCache* data_ov030_02109de0;
-extern void*       func_ov030_020d2188(s32 size);
-extern void        func_ov030_020d21bc(void* data);
-extern BOOL        FS_GetFileSystemStatus(void);
-extern BOOL        FS_InitFileSystem(s32 flags);
+FieldCache* data_ov030_02109de0;
+
+extern void* func_ov030_020d2188(s32 size);
+extern void  func_ov030_020d21bc(void* data);
+extern BOOL  FS_GetFileSystemStatus(void);
+extern BOOL  FS_InitFileSystem(s32 flags);
 
 static inline BOOL FS_IsFileOpen(volatile const FS_File* file) {
     return (file->status & FS_FILE_STATUS_IS_FILE) != 0;
 }
-
-char data_ov030_021090ac[16] = "FOList_Alloc";
 
 void* func_ov030_020d21e0(void) {
     data_ov030_02109de0             = func_ov030_020d2188(0x54);
@@ -69,34 +68,36 @@ void func_ov030_020d2334(void) {
     }
 }
 
-// Nonmatching: register allocation of the chunked read loop
 void* func_ov030_020d2378(void* buffer, u32 wantedIndex) {
-    void*       dst    = NULL;
-    u32         offset = 0;
+    void*       dst = NULL;
+    u32         offset;
     u32         i;
-    u32         count;
     FieldCache* cache = data_ov030_02109de0;
 
     if (cache == NULL) {
         return dst;
     }
-    count = cache->entryCount;
-    if (count == 0) {
+    if (cache->entryCount == 0) {
         return dst;
     }
-    for (i = 0; i < count; i++) {
+    offset = 0;
+    for (i = 0; i < cache->entryCount; i++) {
         if (i == wantedIndex) {
             u32 size;
-            u32 remaining;
             u32 chunk;
+            u32 remaining;
             u8* readDst;
 
             FS_FileSeek(&data_ov030_02109de0->file, data_ov030_02109de0->dataOffset + offset, 0);
-            size      = data_ov030_02109de0->entrySizes[i];
-            dst       = buffer != NULL ? buffer : func_ov030_020d2188(size);
+            size = data_ov030_02109de0->entrySizes[i];
+            if (buffer != NULL) {
+                dst = buffer;
+            } else {
+                dst = func_ov030_020d2188(size);
+            }
             chunk     = 0x6800;
-            readDst   = dst;
             remaining = size;
+            readDst   = dst;
             while (remaining != 0) {
                 if (remaining < chunk) {
                     chunk = remaining;
@@ -125,7 +126,7 @@ u32 func_ov030_020d246c(void) {
 
 void* func_ov030_020d2488(s32 size) {
     void* data = Mem_AllocHeapTail(&gMainHeap, size);
-    Mem_SetSequence(&gMainHeap, data, data_ov030_021090ac);
+    Mem_SetSequence(&gMainHeap, data, "FOList_Alloc");
     return data;
 }
 

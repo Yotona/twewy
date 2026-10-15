@@ -2,6 +2,7 @@ CompileFlags:
   Add:
   - -m32
   - -nostdinc
+  - -DREGION_USA
 
   - -Iinclude
   - -Ilibs/c/include

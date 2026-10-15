@@ -9,14 +9,10 @@ BOOL data_ov030_0210a218[2];
 
 FlashDisplayList::~FlashDisplayList() {
     FlashDisplayNode* node = m_head;
-
-    if (node->next == NULL) {
-        return;
-    }
-    do {
+    while (node->next != NULL) {
         node->obj->m_useCount--;
         node = node->next;
-    } while (node->next != NULL);
+    }
 }
 
 void FlashDisplayList::Clear() {
