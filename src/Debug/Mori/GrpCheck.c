@@ -7,8 +7,10 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
+#include "Engine/Math/Rect.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "common_data.h"
+#include <string.h>
 
 void GrpCheck_RegisterVBlank(void);
 void GrpCheck_ClearVBlank(void);
@@ -29,32 +31,130 @@ struct {
     /* 0x4 */ s32 unk_4;
 } data_ov038_020b7200;
 
-u16 func_ov038_020824a0(void* arg0) {
-    // Not yet implemented
+typedef struct {
+    /* 0x0 */ s16 x;
+    /* 0x2 */ s16 y;
+} GrpCheckPoint;
+
+typedef struct {
+    /* 0x0 */ s32 left;
+    /* 0x4 */ s32 top;
+    /* 0x8 */ s32 right;
+    /* 0xC */ s32 bottom;
+} GrpCheckRect;
+
+GrpCheckPoint func_ov038_020824a0(OamCellPiece* piece) {
+    GrpCheckPoint pos;
+
+    pos.x = piece->attr1 & 0x1FF;
+    pos.y = piece->attr0 & 0xFF;
+
+    if (pos.x >= 0x100) {
+        pos.x -= 0x200;
+    }
+    if (pos.y >= 0x80) {
+        pos.y -= 0x100;
+    }
+    return pos;
 }
 
-void func_ov038_02082500(s32* arg0, void* arg1) {
-    // Not yet implemented
+void func_ov038_02082500(GrpCheckRect* out, OamCellPiece* piece) {
+    GrpCheckPoint pos   = func_ov038_020824a0(piece);
+    s16           x     = pos.x;
+    s16           y     = pos.y;
+    OamCellShape* shape = OamMgr_GetCellShape(piece);
+    GrpCheckRect  rect;
+
+    rect.left   = x;
+    rect.top    = y;
+    rect.right  = x + shape->width;
+    rect.bottom = y + shape->height;
+
+    *out = rect;
 }
 
-u16 func_ov038_02082578(void* arg0) {
-    // Not yet implemented
+u16 func_ov038_02082578(GrpCheckBigUnk* arg0) {
+    return ((u16*)arg0->sprite.cellTable)[arg0->sprite.cellIndex * 4 + 1];
 }
 
-u16 func_ov038_02082594(void* arg0) {
-    // Not yet implemented
+u16 func_ov038_02082594(GrpCheckBigUnk* arg0) {
+    return ((u16*)arg0->sprite.cellTable)[arg0->sprite.cellIndex * 4 + 2];
 }
 
-s32 func_ov038_020825b0(void* arg0) {
-    // Not yet implemented
+OamCellPiece* func_ov038_020825b0(GrpCheckBigUnk* arg0) {
+    return (OamCellPiece*)((u16*)arg0->sprite.cellTable + arg0->sprite.cellTable[arg0->sprite.cellIndex].pieceOffset);
 }
 
-s32 func_ov038_020825c8(void* arg0, s16 arg1, s16 arg2) {
-    // Not yet implemented
+s32 func_ov038_020825c8(GrpCheckBigUnk* arg0, s16 arg1, s16 arg2) {
+    s32  i;
+    s32  count;
+    u16* pieceData;
+    s32  offsetX;
+    s32  offsetY;
+    s32  rect[4];
+
+    if ((arg0->sprite.cellTable == NULL) || (arg0->sprite.cellIndex < 0)) {
+        return 0;
+    }
+
+    count     = func_ov038_02082578(arg0);
+    pieceData = (u16*)func_ov038_020825b0(arg0);
+    offsetX   = arg0->sprite.posX + arg0->sprite.scaleX;
+    offsetY   = arg0->sprite.posY + arg0->sprite.scaleY;
+
+    for (i = 0; i < count; i++) {
+        func_ov038_02082500((GrpCheckRect*)rect, (OamCellPiece*)&pieceData[i * 4]);
+        rect[0] += offsetX;
+        rect[1] += offsetY;
+        rect[2] += offsetX;
+        rect[3] += offsetY;
+        if (Rect_ContainsPoint(rect, arg1, arg2) != 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
-s32 func_ov038_020826b4(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_020826b4(GrpCheckBigUnk* arg0) {
+    s32  counts[0xC0];
+    s32  max = 0;
+    s32  pieceCount;
+    u16* pieceData;
+    s32  i;
+    u32  k;
+    s32  j;
+
+    if ((arg0->sprite.cellTable == NULL) || (arg0->sprite.cellIndex < 0)) {
+        return 0;
+    }
+    for (k = 0; k < 0xC0; k++) {
+        counts[k] = 0;
+    }
+    pieceCount = func_ov038_02082578(arg0);
+    pieceData  = (u16*)func_ov038_020825b0(arg0);
+
+    if (pieceCount > 0) {
+        for (i = 0; i < pieceCount; i++) {
+            OamCellPiece* piece = (OamCellPiece*)&pieceData[i * 4];
+            GrpCheckPoint pos   = func_ov038_020824a0(piece);
+            OamCellShape* shape = OamMgr_GetCellShape(piece);
+
+            for (j = 0; j < shape->height; j++) {
+                s32 index = pos.y + 0x60 + j;
+
+                if ((index >= 0) && (index < 0xC0)) {
+                    counts[index] += shape->unk_00;
+                }
+            }
+        }
+    }
+
+    for (k = 0; k < 0xC0; k++) {
+        if (counts[k] > max) {
+            max = counts[k];
+        }
+    }
+    return max;
 }
 
 void* func_ov038_020827e4(s32 arg0, s32 arg1, s32* arg2, s32 arg3, s32 arg4, u32 arg5) {
@@ -70,24 +170,177 @@ void* func_ov038_020827e4(s32 arg0, s32 arg1, s32* arg2, s32 arg3, s32 arg4, u32
     }
 }
 
-void func_ov038_0208287c(void* arg0, void* arg1) {
-    // Not yet implemented
+s32  func_0200d1d8(void* entry, s32 engineId, s32 bgLayer, void* tilemap, void* tileData, s32 width, s32 height);
+void func_0200d858(void* entry, s32 wrapH, s32 wrapV, void* defaultTile);
+
+static inline void* GrpCheck_LookupBgEntry(Data* data, s32 index) {
+    u8* base;
+
+    if ((data == NULL) || (index <= 0)) {
+        return NULL;
+    }
+    base = (u8*)data->buffer + 0x20;
+    return base + *(s32*)(base + index * 8);
 }
 
-void func_ov038_02082e44(void* arg0) {
-    // Not yet implemented
+void func_ov038_0208287c(GrpCheckBg* bg, GrpCheckBgParams* params) {
+    MI_CpuSet(bg, 0, sizeof(GrpCheckBg));
+    bg->params = *params;
+
+    if (params->unk_1C == 0) {
+        if (params->unk_20 == 0) {
+            bg->data = DatMgr_LoadRawData(params->unk_14, NULL, 0, params->unk_18);
+        } else {
+            bg->data = DatMgr_LoadCompressedBin(params->unk_14, NULL, 0, params->unk_18);
+        }
+    } else {
+        bg->data = DatMgr_LoadPackEntry(params->unk_14, NULL, 0, params->unk_18, params->unk_1C, params->unk_20);
+    }
+
+    bg->paletteRes =
+        PaletteMgr_AllocPalette(g_PaletteManagers[params->unk_00], GrpCheck_LookupBgEntry(bg->data, params->unk_24),
+                                params->unk_34, 0, params->unk_38);
+
+    {
+        s32* charData = GrpCheck_LookupBgEntry(bg->data, params->unk_26);
+        s32  charSize = params->unk_3A;
+
+        if (charSize == 0) {
+            charSize = ((u32)*charData & ~0xFF) >> 8;
+            if (((u8)*charData & 0xF0) == 0) {
+                charSize -= 4;
+            }
+        }
+        bg->charRes1 = func_ov038_020827e4(
+            g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_04].bgMode, params->unk_00, charData,
+            g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_04].charBase, 0, (u32)charSize);
+    }
+    if (params->unk_28 != 0) {
+        s32* charData = GrpCheck_LookupBgEntry(bg->data, params->unk_28);
+        s32  charSize = params->unk_3C;
+
+        if (charSize == 0) {
+            charSize = ((u32)*charData & ~0xFF) >> 8;
+            if (((u8)*charData & 0xF0) == 0) {
+                charSize -= 4;
+            }
+        }
+        bg->charRes2 = func_ov038_020827e4(
+            g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_08].bgMode, params->unk_00, charData,
+            g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_08].charBase, 0, (u32)charSize);
+    }
+
+    if ((params->unk_2C == 0) && (params->unk_2E == 0)) {
+        switch (g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_04].bgMode) {
+            case DISPLAY_BGMODE_AFFINE:
+            case DISPLAY_BGMODE_PLTT:
+            case DISPLAY_BGMODE_BMP256:
+            case DISPLAY_BGMODE_BMPDIRECT:
+            case DISPLAY_BGMODE_BMPLARGE:
+                g_DisplaySettings.engineState[params->unk_00].bgAffines[params->unk_04].unk_14 = 1;
+                break;
+        }
+        g_DisplaySettings.engineState[params->unk_00].bgOffsets[params->unk_04].hOffset = 0;
+        g_DisplaySettings.engineState[params->unk_00].bgOffsets[params->unk_04].vOffset = 0;
+        bg->screenRes =
+            BgResMgr_AllocScreen(g_BgResourceManagers[params->unk_00], GrpCheck_LookupBgEntry(bg->data, params->unk_2A),
+                                 g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_04].screenBase,
+                                 g_DisplaySettings.engineState[params->unk_00].bgSettings[params->unk_04].screenSizeText);
+        return;
+    }
+
+    if ((params->unk_28 != 0) && (params->unk_2C == 0) && (params->unk_2E != 0)) {
+        bg->tile1 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_2A) + 4;
+        bg->tile3 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_2E) + 4;
+        func_0200d1d8(&bg->screenMap1, params->unk_00, params->unk_04, 0, &bg->tile1, 1, 1);
+        func_0200d1d8(&bg->screenMap2, params->unk_00, params->unk_08, 0, &bg->tile3, 1, 1);
+        func_0200d858(&bg->screenMap1, params->unk_0C, params->unk_10, 0);
+        func_0200d858(&bg->screenMap2, params->unk_0C, params->unk_10, 0);
+        return;
+    }
+
+    bg->tile1 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_2A) + 4;
+    bg->tile2 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_2C) + 4;
+    bg->tile3 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_2E) + 4;
+    bg->tile4 = (u8*)GrpCheck_LookupBgEntry(bg->data, params->unk_30) + 4;
+    func_0200d1d8(&bg->screenMap1, params->unk_00, params->unk_04, 0, &bg->tile1, 1, 2);
+    func_0200d1d8(&bg->screenMap2, params->unk_00, params->unk_08, 0, &bg->tile3, 1, 2);
+    func_0200d858(&bg->screenMap1, params->unk_0C, params->unk_10, 0);
+    func_0200d858(&bg->screenMap2, params->unk_0C, params->unk_10, 0);
 }
 
-void func_ov038_02082ed0(void* arg0) {
-    // Not yet implemented
+void func_0200d954(s32 engine, s32 arg);
+
+void func_ov038_02082e44(GrpCheckBg* bg) {
+    if (bg->screenRes == NULL) {
+        func_0200d954(bg->params.unk_00, bg->params.unk_04);
+        func_0200d954(bg->params.unk_00, bg->params.unk_08);
+    }
+    PaletteMgr_ReleaseResource(g_PaletteManagers[bg->params.unk_00], bg->paletteRes);
+    BgResMgr_ReleaseChar(g_BgResourceManagers[bg->params.unk_00], bg->charRes1);
+    BgResMgr_ReleaseChar(g_BgResourceManagers[bg->params.unk_00], bg->charRes2);
+    BgResMgr_ReleaseScreen(g_BgResourceManagers[bg->params.unk_00], bg->screenRes);
+    DatMgr_ReleaseData(bg->data);
 }
 
-void func_ov038_02082fc4(void* arg0, s32 arg1, s32 arg2) {
-    // Not yet implemented
+void func_ov038_02082ed0(GrpCheckBg* bg) {
+    if ((bg->params.unk_28 != 0) && (bg->params.unk_2E != 0)) {
+        DisplayEngineState* engine1 = &g_DisplaySettings.engineState[bg->screenMap1.engineId];
+        s32                 layer1  = bg->screenMap1.bgLayer;
+
+        switch (engine1->bgSettings[layer1].bgMode) {
+            case DISPLAY_BGMODE_AFFINE:
+            case DISPLAY_BGMODE_PLTT:
+            case DISPLAY_BGMODE_BMP256:
+            case DISPLAY_BGMODE_BMPDIRECT:
+            case DISPLAY_BGMODE_BMPLARGE:
+                engine1->bgAffines[layer1].unk_14 = 1;
+                break;
+        }
+        engine1->bgOffsets[layer1].hOffset = bg->offsetX;
+        engine1->bgOffsets[layer1].vOffset = bg->offsetY;
+
+        DisplayEngineState* engine2 = &g_DisplaySettings.engineState[bg->screenMap2.engineId];
+        s32                 layer2  = bg->screenMap2.bgLayer;
+
+        switch (engine2->bgSettings[layer2].bgMode) {
+            case DISPLAY_BGMODE_AFFINE:
+            case DISPLAY_BGMODE_PLTT:
+            case DISPLAY_BGMODE_BMP256:
+            case DISPLAY_BGMODE_BMPDIRECT:
+            case DISPLAY_BGMODE_BMPLARGE:
+                engine2->bgAffines[layer2].unk_14 = 1;
+                break;
+        }
+        engine2->bgOffsets[layer2].hOffset = bg->offsetX - 0x100000;
+        engine2->bgOffsets[layer2].vOffset = bg->offsetY;
+    }
 }
 
-s32 func_ov038_02082fd0(GrpCheckUnk* arg0, GrpCheckUnk* arg1, s32 arg2) {
-    // Not yet implemented
+void func_ov038_02082fc4(GrpCheckBg* bg, s32 offsetX, s32 offsetY) {
+    bg->offsetX = offsetX;
+    bg->offsetY = offsetY;
+}
+
+s32 func_02048210(const char* str1, const char* str2);
+
+s32 func_ov038_02082fd0(void* arg0, void* arg1, s32 count) {
+    char** str1   = arg0;
+    char** str2   = arg1;
+    s32    result = 0;
+    s32    i      = 0;
+
+    if (count < 0) {
+        return result;
+    }
+    do {
+        result = func_02048210(str1[i], str2[i]);
+        if (result != 0) {
+            return result;
+        }
+        i++;
+    } while (i <= count);
+    return result;
 }
 
 u32 func_ov038_02083010(GrpCheckState* state) {
@@ -104,24 +357,94 @@ u32 func_ov038_02083010(GrpCheckState* state) {
     return 0;
 }
 
-s32 func_ov038_0208307c(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_0208307c(GrpCheckState* state) {
+    s32          k = state->unk_1165C;
+    s32          j;
+    GrpCheckUnk* base = data_ov038_02086fe4;
+
+    if (k >= 0) {
+        GrpCheckUnk* entry = &base[k];
+        do {
+            if (func_ov038_02082fd0(entry, &base[state->unk_1165C], 0) != 0) {
+                break;
+            }
+            entry--;
+            k--;
+        } while (k >= 0);
+    }
+    if (k <= 0) {
+        k = 0x125;
+    }
+    j = k;
+    if (k >= 0) {
+        GrpCheckUnk* entry = &base[k];
+        do {
+            if (func_ov038_02082fd0(entry, &base[k], 0) != 0) {
+                break;
+            }
+            k = j;
+            entry--;
+            j--;
+        } while (j >= 0);
+    }
+    return k;
 }
 
-s32 func_ov038_0208312c(void* arg0, s32 arg1) {
-    // Not yet implemented
+s32 func_ov038_0208312c(GrpCheckState* state, s32 arg1) {
+    s32 i = state->unk_11B8C;
+
+    while (i < data_ov038_020b7200.unk_0) {
+        if (func_ov038_02082fd0(&data_ov038_020ac980.unk_04[i], &data_ov038_020ac980.unk_04[state->unk_11B8C], arg1) != 0) {
+            return i;
+        }
+        i++;
+    }
+    return 0;
 }
 
-s32 func_ov038_020831a4(void* arg0, s32 arg1) {
-    // Not yet implemented
+s32 func_ov038_020831a4(GrpCheckState* state, s32 arg1) {
+    s32 i = state->unk_11B8C;
+    s32 j;
+
+    if (i >= 0) {
+        do {
+            if (func_ov038_02082fd0(&data_ov038_020ac980.unk_04[i], &data_ov038_020ac980.unk_04[state->unk_11B8C], arg1) != 0)
+            {
+                break;
+            }
+            i--;
+        } while (i >= 0);
+    }
+    if (i <= 0) {
+        i = data_ov038_020b7200.unk_0 - 1;
+    }
+    j = i;
+    if (i >= 0) {
+        do {
+            if (func_ov038_02082fd0(&data_ov038_020ac980.unk_04[i], &data_ov038_020ac980.unk_04[i], arg1) != 0) {
+                break;
+            }
+            i = j;
+            j--;
+        } while (j >= 0);
+    }
+    return i;
 }
 
-s32 func_ov038_02083260(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_02083260(GrpCheckState* state) {
+    if (state->unk_11B8C < data_ov038_020b7200.unk_0 - 1) {
+        return state->unk_11B8C + 1;
+    }
+    return 0;
 }
 
-s32 func_ov038_02083288(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_02083288(GrpCheckState* state) {
+    s32 value = state->unk_11B8C;
+
+    if (value <= 0) {
+        value = data_ov038_020b7200.unk_0;
+    }
+    return value - 1;
 }
 
 s32 func_ov038_020832a8(GrpCheckState* state, s32 arg1) {
@@ -129,13 +452,15 @@ s32 func_ov038_020832a8(GrpCheckState* state, s32 arg1) {
 }
 
 s32 func_ov038_020832d0(s32 arg0) {
-    while (data_ov038_020ac980.unk_04[arg0].unk_28 != 1) {
+    while (1) {
+        if (data_ov038_020ac980.unk_04[arg0].unk_28 == 1) {
+            return arg0;
+        }
         arg0--;
     }
-    return arg0;
 }
 
-s32 func_ov038_02083300(s32 arg0) {
+s32 func_ov038_02083300(s32 arg0, s32 arg1, s32 arg2) {
     if (data_ov038_020ac980.unk_04[arg0].unk_28 - 1 <= 1) {
         return arg0 + 1;
     }
@@ -145,8 +470,22 @@ s32 func_ov038_02083300(s32 arg0) {
     return func_ov038_020832d0(arg0);
 }
 
-void func_ov038_02083340(void* arg0) {
-    // Not yet implemented
+void func_02025b68(void* textObj, GrpCheckTextParams* params);
+
+void func_ov038_02083340(GrpCheckState* state) {
+    GrpCheckTextParams params;
+
+    params.unk_00 = 1;
+    params.unk_04 = 0;
+    params.unk_08 = state->unk_00004;
+    params.unk_0C = (s32)&data_0205c9b0;
+    params.unk_10 = 0;
+    params.unk_14 = 0;
+    params.unk_18 = 0;
+    params.unk_1A = 0;
+    params.unk_1C = 0x20;
+    params.unk_1E = 0x18;
+    func_02025b68(&state->unk_11BA4, &params);
 }
 
 void func_ov038_020833a4(GrpCheckState* state) {
@@ -164,14 +503,14 @@ void GrpCheck_PrintSpritePath(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 0, 0x100, 0x20);
     func_02010b84(&state->textObj, 8, 0x20, 0xA8, 8);
     Text_RenderToScreen(&state->textObj, 8, 0, Str_SPrintf("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_00));
-    Text_RenderToScreen(&state->textObj, 8, 8, Str_SPrintf("„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_04));
-    Text_RenderToScreen(&state->textObj, 8, 0x10, Str_SPrintf("@„¤%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_08));
+    Text_RenderToScreen(&state->textObj, 8, 8, Str_SPrintf("ï¿½ï¿½%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_04));
+    Text_RenderToScreen(&state->textObj, 8, 0x10, Str_SPrintf("ï¿½@ï¿½ï¿½%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_08));
     Text_RenderToScreen(&state->textObj, 8, 0x18, Str_SPrintf("%s", data_ov038_020ac980.unk_04[temp_r4->unk_40].unk_24));
     Text_RenderToScreen(&state->textObj, 8, 0x20, Str_SPrintf("anime:%d", temp_r4->sprite.animIndex));
 }
 
 // TODO: Fix encoding errors, contains multiple characters with 0x5c escapes which are not properly handled
-const char data_ov038_020b6fe0[]; // "ƒ\ƒtƒgƒEƒFƒAƒXƒvƒ‰ƒCƒg‚ð•\Ž¦‚Å‚«‚Ü‚¹‚ñ"
+const char data_ov038_020b6fe0[]; // "ï¿½\ï¿½tï¿½gï¿½Eï¿½Fï¿½Aï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½\ï¿½ï¿½ï¿½Å‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½"
 
 void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
     GrpCheckBigUnk* temp_r4 = &state->unk_116C0[state->unk_11B80];
@@ -219,12 +558,12 @@ void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
 }
 
 void GrpCheck_PrintScale(GrpCheckState* state) {
-    s32 raw        = state->unk_116C0[state->unk_11B80].unk_48;
-    s32 integer    = F2I(raw);
-    s32 fractional = F2I(raw * 100) - (integer * 100);
+    GrpCheckBigUnk* entry   = &state->unk_116C0[state->unk_11B80];
+    s32             integer = F2I(entry->unk_48);
 
     func_02010b84(&state->textObj, 8, 0x80, 0xa8, 8);
 
+    s32 fractional = F2I(entry->unk_48 * 100) - (integer * 100);
     Text_RenderToScreen(&state->textObj, 8, 128, Str_SPrintf("scale:%d.%02d", integer, fractional));
 }
 
@@ -238,7 +577,7 @@ void GrpCheck_PrintColorChannels(GrpCheckState* state) {
 void GrpCheck_PrintScreenPos(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 160, 256, 24);
     Text_RenderToScreen(&state->textObj, 8, 160, Str_SPrintf("%s", data_ov038_02086fe4[state->unk_1165C].unk_00));
-    Text_RenderToScreen(&state->textObj, 8, 168, Str_SPrintf("„¤%s", data_ov038_02087004[state->unk_1165C].unk_00));
+    Text_RenderToScreen(&state->textObj, 8, 168, Str_SPrintf("ï¿½ï¿½%s", data_ov038_02087004[state->unk_1165C].unk_00));
     Text_RenderToScreen(&state->textObj, 8, 176,
                         Str_SPrintf("SCREEN POS %d %d", F2I(state->screenPosX), F2I(state->screenPosY)));
 }
@@ -250,7 +589,7 @@ void GrpCheck_PrintWarnings(GrpCheckState* state) {
     if (state->isVramLimitReached) {
         yOffset++;
         // "VRAM limit reached. Please delete objects by pressing X or Touch + X."
-        Text_RenderToScreen(&state->textObj, 8, 184, "VRAMãŒÀBX‚Ü‚½‚Íƒ^ƒbƒ`+X‚ÅOBJ‚ðíœ‚µ‚Ä‚­‚¾‚³‚¢B");
+        Text_RenderToScreen(&state->textObj, 8, 184, "VRAMï¿½ï¿½ï¿½ï¿½BXï¿½Ü‚ï¿½ï¿½Íƒ^ï¿½bï¿½`+Xï¿½ï¿½OBJï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B");
     }
 
     if (state->isPaused != FALSE) {
@@ -259,33 +598,116 @@ void GrpCheck_PrintWarnings(GrpCheckState* state) {
 }
 
 void GrpCheck_PrintControls(GrpCheckState* state) {
-    Text_RenderToScreen(&state->textObj, 176, 40, "©¨FƒAƒjƒ‚Ö‚ñ‚±‚¤");  // "©¨: Change animation"
-    Text_RenderToScreen(&state->textObj, 176, 48, "ª«FƒJ[ƒ\\ƒ‹ã‰º");   // "ª«: Move cursor up/down"
-    Text_RenderToScreen(&state->textObj, 176, 56, "‚k‚qF‚ ‚½‚¢‚Ö‚ñ‚±‚¤");  // "LR: Change value"
-    Text_RenderToScreen(&state->textObj, 176, 64, "ƒ^ƒbƒ`F‚¢‚Ç‚¤");        // "Touch: Move"
-    Text_RenderToScreen(&state->textObj, 176, 72, "ƒ^ƒbƒ`{‚wF‚³‚­‚¶‚å");  // "Touch + X: Delete"
-    Text_RenderToScreen(&state->textObj, 176, 80, "‚wF‚·‚×‚Ä‚³‚­‚¶‚å");    // "X: Delete all"
-    Text_RenderToScreen(&state->textObj, 176, 88, "‚`FƒRƒ}‚¨‚­‚è");        // "A: Step forward"
-    Text_RenderToScreen(&state->textObj, 176, 96, "@@ƒAƒjƒ‚³‚¢‚©‚¢");    // "  Restart animation"
-    Text_RenderToScreen(&state->textObj, 176, 104, "‚aFƒAƒjƒ‚Ð‚Ð‚å‚¤‚¶"); // "B: Display animation"
-    Text_RenderToScreen(&state->textObj, 176, 112, "‚r‚s‚`‚q‚sFƒ|[ƒY");   // "START: Pause"
-    Text_RenderToScreen(&state->textObj, 176, 120, "‚r‚d‚k‚d‚b‚sF‚¨‚í‚é"); // "SELECT: Exit"
+    Text_RenderToScreen(&state->textObj, 176, 40, "ï¿½ï¿½ï¿½ï¿½ï¿½Fï¿½Aï¿½jï¿½ï¿½ï¿½Ö‚ñ‚±‚ï¿½"); // "ï¿½ï¿½ï¿½ï¿½: Change animation"
+    Text_RenderToScreen(&state->textObj, 176, 48, "ï¿½ï¿½ï¿½ï¿½ï¿½Fï¿½Jï¿½[ï¿½\\ï¿½ï¿½ï¿½ã‰º");                         // "ï¿½ï¿½ï¿½ï¿½: Move cursor up/down"
+    Text_RenderToScreen(&state->textObj, 176, 56, "ï¿½kï¿½qï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö‚ñ‚±‚ï¿½"); // "LR: Change value"
+    Text_RenderToScreen(&state->textObj, 176, 64, "ï¿½^ï¿½bï¿½`ï¿½Fï¿½ï¿½ï¿½Ç‚ï¿½");                              // "Touch: Move"
+    Text_RenderToScreen(&state->textObj, 176, 72, "ï¿½^ï¿½bï¿½`ï¿½{ï¿½wï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");                       // "Touch + X: Delete"
+    Text_RenderToScreen(&state->textObj, 176, 80, "ï¿½wï¿½Fï¿½ï¿½ï¿½×‚Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");                            // "X: Delete all"
+    Text_RenderToScreen(&state->textObj, 176, 88, "ï¿½`ï¿½Fï¿½Rï¿½}ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");                             // "A: Step forward"
+    Text_RenderToScreen(&state->textObj, 176, 96, "ï¿½@ï¿½@ï¿½Aï¿½jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");                         // "  Restart animation"
+    Text_RenderToScreen(&state->textObj, 176, 104, "ï¿½aï¿½Fï¿½Aï¿½jï¿½ï¿½ï¿½Ð‚Ð‚å‚¤ï¿½ï¿½");                         // "B: Display animation"
+    Text_RenderToScreen(&state->textObj, 176, 112, "ï¿½rï¿½sï¿½`ï¿½qï¿½sï¿½Fï¿½|ï¿½[ï¿½Y");                        // "START: Pause"
+    Text_RenderToScreen(&state->textObj, 176, 120, "ï¿½rï¿½dï¿½kï¿½dï¿½bï¿½sï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½");                       // "SELECT: Exit"
 }
 
-s32 func_ov038_02083c64(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_02083c64(GrpCheckState* state) {
+    for (s32 i = 0; i < 16; i++) {
+        if (state->unk_116C0[i].unk_44 == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-void* func_ov038_02083c94(void* arg0, s32 arg2) {
-    // Not yet implemented
+SpriteFrameInfo* func_ov038_02083c94(Sprite* sprite, s32 arg1, s32 mode) {
+    SpriteFrameInfo* info      = NULL;
+    s32*             ownerData = sprite->owner;
+
+    switch (mode) {
+        case SPRITE_FRAME_UPDATE:
+            g_SpriteFrameInfo.updateSteps = 1;
+            return &g_SpriteFrameInfo;
+        case SPRITE_FRAME_RENDER:
+            if (*ownerData != 0x1000) {
+                sprite->unk_0A.unk_00 = 1;
+                sprite->unk_0A.unk_01 = 1;
+                sprite->unk_0A.unk_05 = OamMgr_AllocAffineGroup(&g_OamMgr[sprite->bits_0_1], 0, *ownerData, *ownerData, 0);
+            } else {
+                sprite->unk_0A.unk_00 = 0;
+                sprite->unk_0A.unk_01 = 0;
+                sprite->unk_0A.unk_05 = 0;
+            }
+            info                         = &g_SpriteFrameInfo;
+            g_SpriteFrameInfo.pieceCount = 0;
+            g_SpriteFrameInfo.cellPieces = NULL;
+            g_SpriteFrameInfo.affine     = NULL;
+            g_SpriteFrameInfo.sortKey    = -1;
+            if ((sprite->animData != NULL) && (sprite->cellTable != NULL)) {
+                if (sprite->cellIndex >= 0) {
+                    g_SpriteFrameInfo.pieceCount = *((u16*)sprite->cellTable + (sprite->cellIndex * 4 + 1));
+                    g_SpriteFrameInfo.cellPieces =
+                        (OamCellPiece*)((u16*)sprite->cellTable + sprite->cellTable[sprite->cellIndex].pieceOffset);
+                }
+            }
+            /* fallthrough */
+        default:
+            return info;
+    }
 }
 
-struct _struct_data_ov038_02085c6c_0x8* func_ov038_02083de0(s32 arg0) {
-    // Not yet implemented
+extern BinIdentifier data_ov038_02085c6c[];
+
+BinIdentifier* func_ov038_02083de0(const char* name) {
+    for (u32 i = 0; i < 0xB9; i++) {
+        if (strcmp(data_ov038_02085c6c[i].path, name) == 0) {
+            return &data_ov038_02085c6c[i];
+        }
+    }
+    return NULL;
 }
 
-void func_ov038_02083e28(void* arg0, u16 arg1, void* arg2) {
-    // Not yet implemented
+typedef struct {
+    /* 0x0 */ u16 unk_0;
+    /* 0x2 */ u16 unk_2;
+    /* 0x4 */ u16 unk_4;
+    /* 0x6 */ u16 unk_6;
+} GrpCheckUnkSmall;
+
+extern GrpCheckUnkSmall data_ov038_02085b50;
+extern SpriteAnimation  data_ov038_02085bb8;
+
+void func_ov038_02083e28(GrpCheckState* state, u16 engine, void* arg2) {
+    GrpCheckBigUnk* entry = arg2;
+    SpriteAnimation anim  = data_ov038_02085bb8;
+    SpriteConfig*   config;
+
+    anim.bits_0_1 = engine;
+    anim.owner    = &entry->unk_48;
+    anim.posX     = data_ov038_02085b50.unk_4;
+    anim.posY     = data_ov038_02085b50.unk_6;
+    anim.dataType = state->unk_00004;
+
+    config         = &data_ov038_020ac980.unk_04[entry->unk_40];
+    anim.binIden   = func_ov038_02083de0(config->unk_10);
+    anim.unk_18    = config->unk_20;
+    anim.packIndex = config->unk_22;
+    anim.bits_7_9  = config->unk_14;
+    anim.unk_1C    = config->unk_16;
+    anim.unk_20    = config->unk_18;
+    anim.unk_26    = config->unk_1A;
+    anim.unk_28    = config->unk_1C;
+    anim.unk_22    = config->unk_1E;
+    if (func_ov038_020832a8(state, entry->unk_40) != 0) {
+        anim.animIndex = config->unk_2C;
+    }
+    if (_Sprite_Load(&entry->sprite, &anim) != 0) {
+        entry->unk_44             = 1;
+        state->isVramLimitReached = 0;
+        return;
+    }
+    entry->unk_44             = 0;
+    state->isVramLimitReached = 1;
 }
 
 void func_ov038_02083ff8(GrpCheckState* state) {
@@ -301,7 +723,28 @@ void func_ov038_02083ff8(GrpCheckState* state) {
 }
 
 void func_ov038_02084054(GrpCheckState* state) {
-    // Not yet implemented
+    s32 index = func_ov038_02083c64(state);
+
+    state->unk_11B80 = index;
+    if (index < 0) {
+        state->isVramLimitReached = TRUE;
+        return;
+    }
+    GrpCheckBigUnk* entry = &state->unk_116C0[index];
+
+    entry->unk_40 = state->unk_11B8C;
+    entry->unk_48 = 0x1000;
+
+    if (data_ov038_020b7200.unk_4 == 2) {
+        if (data_ov038_020ac980.unk_04[state->unk_11B8C].unk_0C == 2) {
+            func_ov038_02083e28(state, 2, entry);
+            return;
+        }
+    }
+    if (data_ov038_020ac980.unk_04[state->unk_11B8C].unk_0C == 2) {
+        return;
+    }
+    func_ov038_02083e28(state, 0, entry);
 }
 
 void GrpCheck_DestroySprite(GrpCheckState* state, s32 index) {
@@ -322,55 +765,215 @@ void GrpCheck_DestroyAllSprites(GrpCheckState* state) {
 }
 
 void GrpCheck_Delete(GrpCheckState* state) {
-    // Not yet implemented
+    s32 i = 0;
+
+    state->isVramLimitReached = 0;
+    if (state->unk_11B9C != 0) {
+        s32 index = state->unk_11B88;
+
+        if (index < 0) {
+            return;
+        }
+        if (index == state->unk_11B80) {
+            return;
+        }
+        GrpCheck_DestroySprite(state, index);
+        return;
+    }
+    for (i = 0; i < 16; i++) {
+        if ((i != state->unk_11B80) && (state->unk_116C0[i].unk_44 != 0)) {
+            GrpCheck_DestroySprite(state, i);
+        }
+    }
 }
 
-void func_ov038_0208424c(void* arg0) {
-    // Not yet implemented
+extern GrpCheckBgParams data_ov038_02085be4;
+
+void func_ov038_0208424c(GrpCheckState* state) {
+    GrpCheckBgParams params = data_ov038_02085be4;
+    GrpCheckUnk*     entry  = &data_ov038_02086fe4[state->unk_1165C];
+
+    params.unk_14 = state->unk_00000;
+    params.unk_18 = (void*)&entry->unk_04;
+    params.unk_1C = *(s16*)((u8*)entry + 0xC);
+    params.unk_20 = *(s16*)((u8*)entry + 0xE);
+    params.unk_24 = *(s16*)((u8*)entry + 0x10);
+    params.unk_26 = *(s16*)((u8*)entry + 0x12);
+    params.unk_28 = *(s16*)((u8*)entry + 0x14);
+    params.unk_2A = *(s16*)((u8*)entry + 0x16);
+    params.unk_2C = *(s16*)((u8*)entry + 0x18);
+    params.unk_2E = *(s16*)((u8*)entry + 0x1A);
+    params.unk_30 = *(s16*)((u8*)entry + 0x1C);
+    func_ov038_0208287c(&state->unk_115A0, &params);
+    GrpCheck_PrintScreenPos(state);
 }
 
-void func_ov038_020843a8(void* arg0) {
-    // Not yet implemented
+void func_ov038_020843a8(GrpCheckState* state) {
+    func_ov038_02082e44(&state->unk_115A0);
 }
 
 void func_ov038_020843bc(GrpCheckState* state) {
-    // Not yet implemented
+    u32 value = state->unk_1165C + 1;
+
+    state->unk_1165C = value;
+    if (value >= 0x126) {
+        state->unk_1165C = 0;
+    }
+    func_ov038_020843a8(state);
+    func_ov038_0208424c(state);
 }
 
 void func_ov038_020843fc(GrpCheckState* state) {
-    // Not yet implemented
+    s32 value = state->unk_1165C - 1;
+
+    state->unk_1165C = value;
+    if (value < 0) {
+        state->unk_1165C = 0x125;
+    }
+    func_ov038_020843a8(state);
+    func_ov038_0208424c(state);
 }
 
 void func_ov038_02084434(GrpCheckState* state) {
-    // Not yet implemented
+    s32 offsetX = -state->screenPosX;
+    s32 offsetY = -state->screenPosY;
+
+    if (state->unk_115A0.params.unk_2E != 0) {
+        offsetX += 0x80000;
+    }
+    if (state->unk_115A0.params.unk_2C == 0) {
+        offsetY += 0x40000;
+    } else {
+        offsetY += 0x140000;
+    }
+    func_ov038_02082fc4(&state->unk_115A0, offsetX, offsetY);
+    func_ov038_02082ed0(&state->unk_115A0);
 }
 
 void func_ov038_02084498(GrpCheckState* state) {
-    // Not yet implemented
+    state->unk_1165C = func_ov038_02083010(state);
+    func_ov038_020843a8(state);
+    func_ov038_0208424c(state);
 }
 
 void func_ov038_020844c0(GrpCheckState* state) {
-    // Not yet implemented
+    state->unk_1165C = func_ov038_0208307c(state);
+    func_ov038_020843a8(state);
+    func_ov038_0208424c(state);
 }
 
-s32 func_ov038_020844e8(void* arg0, s16 arg1, s16 arg2) {
-    // Not yet implemented
+s32 func_ov038_020844e8(GrpCheckState* state, s16 arg1, s16 arg2) {
+    for (s32 i = 0; i < 16; i++) {
+        if (state->unk_116C0[i].unk_44 != 0) {
+            if (func_ov038_020825c8(&state->unk_116C0[i], arg1, arg2) != 0) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
-void func_ov038_0208454c(void* arg0) {
-    // Not yet implemented
+void func_02040100(void);
+s32  func_020401e0(u16* rawInput);
+
+void func_ov038_0208454c(GrpCheckState* state) {
+    u16 rawInput[4];
+    s16 deltaX;
+    s16 deltaY;
+
+    do {
+        func_02040100();
+    } while (func_020401e0(rawInput) != 0);
+
+    if (rawInput[2] != 0) {
+        if (state->unk_11B9C == 0) {
+            state->unk_11B9C = 1;
+            state->unk_11B88 = func_ov038_020844e8(state, rawInput[0], rawInput[1]);
+            state->unk_11BA0 = rawInput[0];
+            state->unk_11BA2 = rawInput[1];
+        }
+        if (state->unk_11B88 >= 0) {
+            state->unk_116C0[state->unk_11B88].sprite.posX = rawInput[0];
+            state->unk_116C0[state->unk_11B88].sprite.posY = rawInput[1] + 0x10;
+        } else {
+            f32 var;
+            s32 fixed;
+
+            deltaX = rawInput[0] - state->unk_11BA0;
+            deltaY = rawInput[1] - state->unk_11BA2;
+
+            fixed = deltaX << 12;
+            if (deltaX > 0) {
+                var = 0.5f + (f32)fixed;
+            } else {
+                var = (f32)fixed - 0.5f;
+            }
+            state->screenPosX += (s32)var;
+
+            fixed = deltaY << 12;
+            if (deltaY > 0) {
+                var = 0.5f + (f32)fixed;
+            } else {
+                var = (f32)fixed - 0.5f;
+            }
+            state->screenPosY += (s32)var;
+
+            GrpCheck_PrintScreenPos(state);
+        }
+        state->unk_11BA0 = rawInput[0];
+        state->unk_11BA2 = rawInput[1];
+        return;
+    }
+    state->unk_11B9C = 0;
 }
 
-s32 func_ov038_020846f4(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_020846f4(GrpCheckState* state) {
+    s32 index = state->unk_11B80;
+
+    if (index < 0) {
+        return 0;
+    }
+    if (index >= 16) {
+        return 0;
+    }
+    if (state->unk_116C0[index].unk_44 != 0) {
+        return 1;
+    }
+    return 0;
 }
 
-s32 func_ov038_02084734(void* arg0) {
-    // Not yet implemented
+s32 func_ov038_02084734(GrpCheckState* state) {
+    GrpCheckBigUnk* entry = &state->unk_116C0[state->unk_11B80];
+
+    if ((entry->sprite.posX == 0x80) && (entry->sprite.posY == 0x60)) {
+        return 0;
+    }
+    return 1;
 }
 
 void func_ov038_0208476c(GrpCheckState* state) {
-    // Not yet implemented
+    GrpCheckBigUnk* entry  = &state->unk_116C0[state->unk_11B80];
+    SpriteConfig*   config = &data_ov038_020ac980.unk_04[state->unk_11B8C];
+
+    if (func_02048210(entry->sprite.resourceData->binIden->path, config->unk_10) != 0) {
+        if (state->hasSprite) {
+            Sprite_Destroy(&state->unk_11674);
+        }
+        if ((func_ov038_020846f4(state) != 0) && (func_ov038_02084734(state) == 0)) {
+            GrpCheck_DestroySprite(state, state->unk_11B80);
+        }
+        func_ov038_02083ff8(state);
+        func_ov038_02084054(state);
+        return;
+    }
+    if (state->hasSprite) {
+        Sprite_Destroy(&state->unk_11674);
+    }
+    func_ov038_02083ff8(state);
+    if ((func_ov038_020846f4(state) != 0) && (func_ov038_02084734(state) == 0)) {
+        GrpCheck_DestroySprite(state, state->unk_11B80);
+    }
+    func_ov038_02084054(state);
 }
 
 void func_ov038_02084874(GrpCheckState* state) {
@@ -442,7 +1045,19 @@ void func_ov038_02084b3c(GrpCheckState* state) {
 }
 
 void func_ov038_02084b64(GrpCheckState* state) {
-    // Not yet implemented
+    s16 maxFrame = state->unk_116C0[state->unk_11B80].sprite.animData[0];
+
+    state->unk_11B90++;
+    if (state->unk_11B90 >= maxFrame) {
+        state->unk_11B8C = func_ov038_02083260(state);
+        func_ov038_020849c0(state);
+        return;
+    }
+
+    if ((func_ov038_020846f4(state) != 0) && (func_ov038_02084734(state) != 0)) {
+        func_ov038_02084054(state);
+    }
+    func_ov038_02084874(state);
 }
 
 void func_ov038_02084bf0(GrpCheckState* state) {
@@ -473,8 +1088,26 @@ void GrpCheck_DecreaseValue(GrpCheckState* state) {
     }
 }
 
-void func_ov038_02084cb0(GrpCheckState* state, Sprite* arg1) {
-    // Not yet implemented
+void func_ov038_02084cb0(GrpCheckState* state, Sprite* sprite) {
+    GrpCheckBigUnk* entry = (GrpCheckBigUnk*)sprite;
+    s16             pos[2];
+
+    Sprite_UpdateAndCheck(sprite);
+    if (func_ov038_020832a8(state, entry->unk_40) == 0) {
+        return;
+    }
+    if (sprite->isPlaying != 1) {
+        return;
+    }
+    u32 engine    = sprite->bits_0_1;
+    pos[0]        = sprite->posX;
+    pos[1]        = sprite->posY;
+    entry->unk_40 = func_ov038_02083300(entry->unk_40, pos[1], pos[0]);
+    Sprite_Destroy(sprite);
+    func_ov038_02083e28(state, engine, sprite);
+    sprite->posX = pos[0];
+    sprite->posY = pos[1];
+    Sprite_UpdateAndCheck(sprite);
 }
 
 void GrpCheck_RenderAllSprites(GrpCheckState* state) {
@@ -679,7 +1312,7 @@ void GrpCheck_ProcessUserInput(GrpCheckState* state) {
         }
     }
 
-    if (state->currentRow >= 0 && state->currentRow < 3) {
+    if (state->currentRow >= 0 && (u32)state->currentRow < 3) {
         if (SysControl.buttonState.holdButtons == INPUT_BUTTON_L) {
             func_ov038_02084968(state);
         }
@@ -697,8 +1330,41 @@ void GrpCheck_ProcessUserInput(GrpCheckState* state) {
     GrpCheck_PrintWarnings(state);
 }
 
+extern SpriteConfig data_ov038_0208993c[];
+extern SpriteConfig data_ov038_02086234[];
+
 void func_ov038_02085268(GrpCheckState* state) {
-    // Not yet implemented
+    s32 i = 0;
+
+    state->unk_11B8C                               = 0;
+    state->unk_11B90                               = 1;
+    state->unk_11B80                               = 0;
+    state->unk_116C0[0].sprite.posX                = 0x80;
+    state->unk_116C0[state->unk_11B80].sprite.posY = 0x60;
+    for (i = 0; i < 16; i++) {
+        state->unk_116C0[i].unk_44 = 0;
+    }
+    state->unk_1165C          = 0;
+    state->isAnimDisplayed    = 1;
+    state->unk_11B88          = -1;
+    state->currentRow         = 0;
+    state->isPaused           = 0;
+    state->unk_11B9C          = 0;
+    state->isVramLimitReached = 0;
+    state->bgR                = 8;
+    state->bgG                = 0x10;
+    state->bgB                = 0x10;
+    state->bgA                = 0;
+    state->screenPosX         = 0;
+    state->screenPosY         = 0;
+
+    if (data_ov038_020b7200.unk_4 != 2) {
+        data_ov038_020ac980.unk_04 = data_ov038_0208993c;
+        data_ov038_020b7200.unk_0  = 0xBAC;
+        return;
+    }
+    data_ov038_020ac980.unk_04 = data_ov038_02086234;
+    data_ov038_020b7200.unk_0  = 0x49;
 }
 
 void GrpCheck_InitOverlay(GrpCheckState* state) {
