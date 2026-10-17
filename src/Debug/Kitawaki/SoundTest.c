@@ -19,9 +19,6 @@
 
 void func_ov029_020833c4(void);
 
-const char* data_ov029_02083400 = "Seq_SoundTest()";
-
-// Nonmatching: Built order differs
 const char* soundEffects[1388] = {
     "SE_battle_in",
     "SE_battle_out",
@@ -1412,6 +1409,8 @@ const char* soundEffects[1388] = {
     "EV_strmse_reserve09",
     "EV_strmse_reserve10",
 };
+
+const char* data_ov029_02083400 = "Seq_SoundTest()";
 
 void func_ov029_020824a0(SoundTestState* state) {
     UnkStruct_usedby_02025b68 local_30;
