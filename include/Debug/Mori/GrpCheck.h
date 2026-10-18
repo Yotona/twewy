@@ -13,10 +13,13 @@ typedef enum {
 } RGBAChannel;
 
 typedef struct {
-    /* 0x00 */ const char* unk_00;
-    /* 0x04 */ char        unk_04[0x14];
-    /* 0x18 */ s16         unk_18;
-    /* 0x1A */ char        unk_1A[0xA];
+    /* 0x00 */ const char*   unk_00;
+    /* 0x04 */ BinIdentifier unk_04;
+    /* 0x0C */ u32           memberIndex;
+    /* 0x10 */ u16           members[4];
+    /* 0x18 */ s16           unk_18;
+    /* 0x1A */ u16           options[3];
+    /* 0x20 */ const char*   entryName;
 } GrpCheckUnk; // Size: 0x24
 
 typedef struct {
@@ -40,8 +43,7 @@ typedef struct {
     /* 0x1E */ u16         unk_1E;
     /* 0x20 */ u16         unk_20;
     /* 0x22 */ s16         unk_22;
-    /* 0x24 */ u16         unk_24;
-    /* 0x26 */ s16         unk_26;
+    /* 0x24 */ const char* unk_24; // Animation/resource label.
     /* 0x28 */ u32         unk_28;
     /* 0x2C */ s16         unk_2C;
     /* 0x2E */ s16         unk_2E;

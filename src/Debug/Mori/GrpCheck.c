@@ -15,14 +15,15 @@
 void GrpCheck_RegisterVBlank(void);
 void GrpCheck_ClearVBlank(void);
 
-GrpCheckUnk data_ov038_02086fe4[];
-GrpCheckUnk data_ov038_02087004[];
+extern char data_ov038_020ad3e4[15];
+
+extern const GrpCheckUnk data_ov038_02086fe4[294];
 
 struct {
-    /* 0x0 */ const char*   sequence;
-    /* 0x4 */ SpriteConfig* unk_04;
+    /* 0x0 */ const char*         sequence;
+    /* 0x4 */ const SpriteConfig* unk_04;
 } data_ov038_020ac980 = {
-    .sequence = "Seq_GrpCheck()",
+    .sequence = data_ov038_020ad3e4,
     .unk_04   = NULL,
 };
 
@@ -324,11 +325,11 @@ void func_ov038_02082fc4(GrpCheckBg* bg, s32 offsetX, s32 offsetY) {
 
 s32 func_02048210(const char* str1, const char* str2);
 
-s32 func_ov038_02082fd0(void* arg0, void* arg1, s32 count) {
-    char** str1   = arg0;
-    char** str2   = arg1;
-    s32    result = 0;
-    s32    i      = 0;
+s32 func_ov038_02082fd0(const void* arg0, const void* arg1, s32 count) {
+    const char* const* str1   = arg0;
+    const char* const* str2   = arg1;
+    s32                result = 0;
+    s32                i      = 0;
 
     if (count < 0) {
         return result;
@@ -347,7 +348,7 @@ u32 func_ov038_02083010(GrpCheckState* state) {
     u32 current = state->unk_1165C;
 
     while (current < 294) {
-        GrpCheckUnk* address = &data_ov038_02086fe4[current];
+        const GrpCheckUnk* address = &data_ov038_02086fe4[current];
         if (func_ov038_02082fd0(address, &data_ov038_02086fe4[state->unk_1165C], 0) != 0) {
             return current;
         }
@@ -358,12 +359,12 @@ u32 func_ov038_02083010(GrpCheckState* state) {
 }
 
 s32 func_ov038_0208307c(GrpCheckState* state) {
-    s32          k = state->unk_1165C;
-    s32          j;
-    GrpCheckUnk* base = data_ov038_02086fe4;
+    s32                k = state->unk_1165C;
+    s32                j;
+    const GrpCheckUnk* base = data_ov038_02086fe4;
 
     if (k >= 0) {
-        GrpCheckUnk* entry = &base[k];
+        const GrpCheckUnk* entry = &base[k];
         do {
             if (func_ov038_02082fd0(entry, &base[state->unk_1165C], 0) != 0) {
                 break;
@@ -377,7 +378,7 @@ s32 func_ov038_0208307c(GrpCheckState* state) {
     }
     j = k;
     if (k >= 0) {
-        GrpCheckUnk* entry = &base[k];
+        const GrpCheckUnk* entry = &base[k];
         do {
             if (func_ov038_02082fd0(entry, &base[k], 0) != 0) {
                 break;
@@ -509,8 +510,8 @@ void GrpCheck_PrintSpritePath(GrpCheckState* state) {
     Text_RenderToScreen(&state->textObj, 8, 0x20, Str_SPrintf("anime:%d", temp_r4->sprite.animIndex));
 }
 
-// TODO: Fix encoding errors, contains multiple characters with 0x5c escapes which are not properly handled
-const char data_ov038_020b6fe0[]; // "�\�t�g�E�F�A�X�v���C�g��\���ł��܂���"
+// Defined with explicit Shift-JIS byte escapes in GrpCheckData.inc.
+extern char data_ov038_020b6fe0[39]; // "�\�t�g�E�F�A�X�v���C�g��\���ł��܂���"
 
 void GrpCheck_PrintSpriteDetails(GrpCheckState* state) {
     GrpCheckBigUnk* temp_r4 = &state->unk_116C0[state->unk_11B80];
@@ -577,7 +578,7 @@ void GrpCheck_PrintColorChannels(GrpCheckState* state) {
 void GrpCheck_PrintScreenPos(GrpCheckState* state) {
     func_02010b84(&state->textObj, 8, 160, 256, 24);
     Text_RenderToScreen(&state->textObj, 8, 160, Str_SPrintf("%s", data_ov038_02086fe4[state->unk_1165C].unk_00));
-    Text_RenderToScreen(&state->textObj, 8, 168, Str_SPrintf("��%s", data_ov038_02087004[state->unk_1165C].unk_00));
+    Text_RenderToScreen(&state->textObj, 8, 168, Str_SPrintf("��%s", data_ov038_02086fe4[state->unk_1165C].entryName));
     Text_RenderToScreen(&state->textObj, 8, 176,
                         Str_SPrintf("SCREEN POS %d %d", F2I(state->screenPosX), F2I(state->screenPosY)));
 }
@@ -656,9 +657,9 @@ SpriteFrameInfo* func_ov038_02083c94(Sprite* sprite, s32 arg1, s32 mode) {
     }
 }
 
-extern BinIdentifier data_ov038_02085c6c[];
+extern const BinIdentifier data_ov038_02085c6c[185];
 
-BinIdentifier* func_ov038_02083de0(const char* name) {
+const BinIdentifier* func_ov038_02083de0(const char* name) {
     for (u32 i = 0; i < 0xB9; i++) {
         if (strcmp(data_ov038_02085c6c[i].path, name) == 0) {
             return &data_ov038_02085c6c[i];
@@ -674,13 +675,13 @@ typedef struct {
     /* 0x6 */ u16 unk_6;
 } GrpCheckUnkSmall;
 
-extern GrpCheckUnkSmall data_ov038_02085b50;
-extern SpriteAnimation  data_ov038_02085bb8;
+extern const GrpCheckUnkSmall data_ov038_02085b50;
+extern const SpriteAnimation  data_ov038_02085bb8;
 
 void func_ov038_02083e28(GrpCheckState* state, u16 engine, void* arg2) {
-    GrpCheckBigUnk* entry = arg2;
-    SpriteAnimation anim  = data_ov038_02085bb8;
-    SpriteConfig*   config;
+    GrpCheckBigUnk*     entry = arg2;
+    SpriteAnimation     anim  = data_ov038_02085bb8;
+    const SpriteConfig* config;
 
     anim.bits_0_1 = engine;
     anim.owner    = &entry->unk_48;
@@ -787,11 +788,11 @@ void GrpCheck_Delete(GrpCheckState* state) {
     }
 }
 
-extern GrpCheckBgParams data_ov038_02085be4;
+extern const GrpCheckBgParams data_ov038_02085be4;
 
 void func_ov038_0208424c(GrpCheckState* state) {
-    GrpCheckBgParams params = data_ov038_02085be4;
-    GrpCheckUnk*     entry  = &data_ov038_02086fe4[state->unk_1165C];
+    GrpCheckBgParams   params = data_ov038_02085be4;
+    const GrpCheckUnk* entry  = &data_ov038_02086fe4[state->unk_1165C];
 
     params.unk_14 = state->unk_00000;
     params.unk_18 = (void*)&entry->unk_04;
@@ -952,8 +953,8 @@ s32 func_ov038_02084734(GrpCheckState* state) {
 }
 
 void func_ov038_0208476c(GrpCheckState* state) {
-    GrpCheckBigUnk* entry  = &state->unk_116C0[state->unk_11B80];
-    SpriteConfig*   config = &data_ov038_020ac980.unk_04[state->unk_11B8C];
+    GrpCheckBigUnk*     entry  = &state->unk_116C0[state->unk_11B80];
+    const SpriteConfig* config = &data_ov038_020ac980.unk_04[state->unk_11B8C];
 
     if (func_02048210(entry->sprite.resourceData->binIden->path, config->unk_10) != 0) {
         if (state->hasSprite) {
@@ -1330,8 +1331,8 @@ void GrpCheck_ProcessUserInput(GrpCheckState* state) {
     GrpCheck_PrintWarnings(state);
 }
 
-extern SpriteConfig data_ov038_0208993c[];
-extern SpriteConfig data_ov038_02086234[];
+extern const SpriteConfig data_ov038_0208993c[];
+extern const SpriteConfig data_ov038_02086234[];
 
 void func_ov038_02085268(GrpCheckState* state) {
     s32 i = 0;
@@ -1605,3 +1606,5 @@ void GrpCheck_RegisterVBlank(void) {
 void GrpCheck_ClearVBlank(void) {
     Interrupts_RegisterVBlankCallback(NULL, 1);
 }
+
+#include "GrpCheckData.inc"
