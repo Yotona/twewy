@@ -2,46 +2,46 @@
 #include "Field/FO3D.h"
 #include <nitro/fx.h>
 
-extern const char* data_ov030_02108fe4[];
-extern const void* data_ov030_02108f2c[];
-extern const s32*  data_ov030_02108e74[];
-extern const s32   data_ov030_020ee880[];
+extern const char* FO3DViewer_ScenePaths[];
+extern const void* FO3DViewer_SceneSampleFrames[];
+extern const s32*  FO3DViewer_ScenePoints[];
+extern const s32   FO3DViewer_ScenePointCounts[];
 
-s32 func_ov030_020d1b28(const char* name, Vec* pos, s32 slot);
+s32 FO3DViewer_GetExtraNodePos(const char* name, Vec* pos, s32 slot);
 
 // Nonmatching: stack slot order of count/tableCount and one register swap
-void func_ov030_020d1098(s32 scene, BOOL replaceTexture) {
+void FO3DViewer_LoadScene(s32 scene, BOOL replaceTexture) {
     void* anims[4];
     u32   count;
     void* coli;
-    void* new_var[2];
+    void* files[2];
     s32   animCount;
     long  i;
     u32*  chunk;
     s32   resIndex;
     long  k;
-    coli       = 0;
-    new_var[0] = 0;
-    new_var[1] = 0;
-    func_ov030_020d21e0();
-    func_ov030_020d224c(data_ov030_02108fe4[scene], 1);
-    count     = func_ov030_020d246c();
+    coli     = 0;
+    files[0] = 0;
+    files[1] = 0;
+    FOFileList_Create();
+    FOFileList_Open(FO3DViewer_ScenePaths[scene], 1);
+    count     = FOFileList_GetEntryCount();
     animCount = 0;
     for (i = 0; i < count; i++) {
-        chunk = func_ov030_020d2378(0, i);
+        chunk = FOFileList_ReadEntry(0, i);
         switch (*chunk) {
             case ((((u32)'B') | (((u32)'M') << 8)) | (((u32)'D') << 16)) | (((u32)'0') << 24):
-                new_var[0] = chunk;
+                files[0] = chunk;
                 break;
 
             case ((((u32)'B') | (((u32)'T') << 8)) | (((u32)'X') << 16)) | (((u32)'0') << 24):
-                if (new_var[1] == 0) {
-                    new_var[1] = chunk;
+                if (files[1] == 0) {
+                    files[1] = chunk;
                 } else if (replaceTexture) {
-                    func_ov030_020d21d4(new_var[1]);
-                    new_var[1] = chunk;
+                    FOFileIO_Release(files[1]);
+                    files[1] = chunk;
                 } else {
-                    func_ov030_020d21d4(chunk);
+                    FOFileIO_Release(chunk);
                 }
                 break;
 
@@ -62,56 +62,56 @@ void func_ov030_020d1098(s32 scene, BOOL replaceTexture) {
         }
     }
 
-    func_ov030_020d2334();
-    func_ov030_020d2218();
-    data_ov030_02109ddc->scene         = scene;
-    data_ov030_02109ddc->modelCount    = func_ov030_020cdb7c(new_var[0]);
-    data_ov030_02109ddc->resourceCount = data_ov030_02109ddc->modelCount * (animCount + 1);
-    if (new_var[1] != 0) {
-        data_ov030_02109ddc->resourceCount++;
+    FOFileList_Close();
+    FOFileList_Destroy();
+    gFO3DViewer->scene         = scene;
+    gFO3DViewer->modelCount    = FO3DRes_GetModelCount(files[0]);
+    gFO3DViewer->resourceCount = gFO3DViewer->modelCount * (animCount + 1);
+    if (files[1] != 0) {
+        gFO3DViewer->resourceCount++;
     }
-    data_ov030_02109ddc->modelFile = new_var[0];
-    data_ov030_02109ddc->resources = func_ov030_020d0f18(data_ov030_02109ddc->resourceCount * (sizeof(FieldResourceState*)));
-    data_ov030_02109ddc->models    = func_ov030_020d0f18(data_ov030_02109ddc->modelCount * (sizeof(FO3DModel*)));
-    for (i = 0, resIndex = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        data_ov030_02109ddc->models[i] = func_ov030_020cf554();
-        func_ov030_020d0020();
-        func_ov030_020cf848(data_ov030_02108f2c[scene], data_ov030_020ee880[scene]);
-        data_ov030_02109ddc->resources[resIndex++] = func_ov030_020cdac0();
-        func_ov030_020cdbac(new_var[0], i);
-        func_ov030_020d0084(func_ov030_020cdb6c());
+    gFO3DViewer->modelFile = files[0];
+    gFO3DViewer->resources = FO3DViewerImd_Alloc(gFO3DViewer->resourceCount * (sizeof(FieldResourceState*)));
+    gFO3DViewer->models    = FO3DViewerImd_Alloc(gFO3DViewer->modelCount * (sizeof(FO3DModel*)));
+    for (i = 0, resIndex = 0; i < gFO3DViewer->modelCount; i++) {
+        gFO3DViewer->models[i] = FO3DObjMgr_Create();
+        FO3DObjMgr_ResetObj();
+        FO3DObjMgr_SetSampleFrames(FO3DViewer_SceneSampleFrames[scene], FO3DViewer_ScenePointCounts[scene]);
+        gFO3DViewer->resources[resIndex++] = FO3DRes_Create();
+        FO3DRes_SetModel(files[0], i);
+        FO3DObjMgr_SetModel(FO3DRes_GetCurrent());
         for (k = 0; k < animCount; k++) {
-            data_ov030_02109ddc->resources[resIndex++] = func_ov030_020cdac0();
-            func_ov030_020cdc70(anims[k], i);
-            func_ov030_020d036c(func_ov030_020cdb6c());
+            gFO3DViewer->resources[resIndex++] = FO3DRes_Create();
+            FO3DRes_SetAnim(anims[k], i);
+            FO3DObjMgr_AddAnim(FO3DRes_GetCurrent());
         }
     }
 
-    if (new_var[1] != 0) {
-        data_ov030_02109ddc->resources[resIndex] = func_ov030_020cdac0();
-        func_ov030_020cdc40(new_var[1]);
-        for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-            func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-            func_ov030_020d0304(func_ov030_020cdb6c());
+    if (files[1] != 0) {
+        gFO3DViewer->resources[resIndex] = FO3DRes_Create();
+        FO3DRes_SetTexture(files[1]);
+        for (i = 0; i < gFO3DViewer->modelCount; i++) {
+            FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+            FO3DObjMgr_SetTexture(FO3DRes_GetCurrent());
         }
     }
-    func_ov030_020cb21c(&data_ov030_02109ddc->world, 0, coli);
+    func_ov030_020cb21c(&gFO3DViewer->world, 0, coli);
 }
 
-void func_ov030_020d1404(void) {
-    if (data_ov030_02109ddc->extraModelFiles[0] != NULL) {
-        func_ov030_020cdba0(data_ov030_02109ddc->extraModelFiles[0]);
+void FO3DViewer_LoadToVram(void) {
+    if (gFO3DViewer->extraModelFiles[0] != NULL) {
+        FO3DRes_LoadToVram(gFO3DViewer->extraModelFiles[0]);
     }
-    if (data_ov030_02109ddc->extraModelFiles[1] != NULL) {
-        func_ov030_020cdba0(data_ov030_02109ddc->extraModelFiles[1]);
+    if (gFO3DViewer->extraModelFiles[1] != NULL) {
+        FO3DRes_LoadToVram(gFO3DViewer->extraModelFiles[1]);
     }
-    if (data_ov030_02109ddc->modelFile != NULL) {
-        func_ov030_020cdba0(data_ov030_02109ddc->modelFile);
+    if (gFO3DViewer->modelFile != NULL) {
+        FO3DRes_LoadToVram(gFO3DViewer->modelFile);
     }
 }
 
 // Nonmatching: register allocation
-void func_ov030_020d1458(s32 scene, const char* path) {
+void FO3DViewer_LoadExtra(s32 scene, const char* path) {
     void* anims[FO3D_ANIM_MAX];
     void* model;
     u32   count;
@@ -124,12 +124,12 @@ void func_ov030_020d1458(s32 scene, const char* path) {
 
     model   = NULL;
     texture = NULL;
-    func_ov030_020d21e0();
-    func_ov030_020d224c(path, TRUE);
-    count     = func_ov030_020d246c();
+    FOFileList_Create();
+    FOFileList_Open(path, TRUE);
+    count     = FOFileList_GetEntryCount();
     animCount = 0;
     for (j = 0; j < count; j++) {
-        u32* chunk = func_ov030_020d2378(NULL, j);
+        u32* chunk = FOFileList_ReadEntry(NULL, j);
 
         switch (*chunk) {
             case FO3D_CHUNK_BMD0:
@@ -139,7 +139,7 @@ void func_ov030_020d1458(s32 scene, const char* path) {
                 if (texture == NULL) {
                     texture = chunk;
                 } else {
-                    func_ov030_020d21d4(chunk);
+                    FOFileIO_Release(chunk);
                 }
                 break;
             case FO3D_CHUNK_BTP0:
@@ -151,74 +151,73 @@ void func_ov030_020d1458(s32 scene, const char* path) {
                 break;
         }
     }
-    func_ov030_020d2334();
-    func_ov030_020d2218();
-    slot = data_ov030_02109ddc->extraCount;
+    FOFileList_Close();
+    FOFileList_Destroy();
+    slot = gFO3DViewer->extraCount;
     if (slot >= FO3D_VIEWER_EXTRA_MAX) {
         return;
     }
-    data_ov030_02109ddc->extraCount               = slot + 1;
-    data_ov030_02109ddc->extraModelCount[slot]    = func_ov030_020cdb7c(model);
-    data_ov030_02109ddc->extraResourceCount[slot] = data_ov030_02109ddc->extraModelCount[slot] * (animCount + 1);
+    gFO3DViewer->extraCount               = slot + 1;
+    gFO3DViewer->extraModelCount[slot]    = FO3DRes_GetModelCount(model);
+    gFO3DViewer->extraResourceCount[slot] = gFO3DViewer->extraModelCount[slot] * (animCount + 1);
     if (texture != NULL) {
-        data_ov030_02109ddc->extraResourceCount[slot]++;
+        gFO3DViewer->extraResourceCount[slot]++;
     }
-    data_ov030_02109ddc->extraModelFiles[slot] = model;
-    data_ov030_02109ddc->extraResources[slot] =
-        func_ov030_020d0f18(data_ov030_02109ddc->extraResourceCount[slot] * sizeof(FieldResourceState*));
-    data_ov030_02109ddc->extraModels[slot] =
-        func_ov030_020d0f18(data_ov030_02109ddc->extraModelCount[slot] * sizeof(FO3DModel*));
-    for (j = 0, resIndex = 0; j < data_ov030_02109ddc->extraModelCount[slot]; j++) {
-        data_ov030_02109ddc->extraModels[slot][j] = func_ov030_020cf554();
-        func_ov030_020d0020();
-        func_ov030_020cf848(data_ov030_02108f2c[scene], data_ov030_020ee880[scene]);
-        data_ov030_02109ddc->extraResources[slot][resIndex++] = func_ov030_020cdac0();
-        func_ov030_020cdbac(model, j);
-        func_ov030_020d0084(func_ov030_020cdb6c());
+    gFO3DViewer->extraModelFiles[slot] = model;
+    gFO3DViewer->extraResources[slot] =
+        FO3DViewerImd_Alloc(gFO3DViewer->extraResourceCount[slot] * sizeof(FieldResourceState*));
+    gFO3DViewer->extraModels[slot] = FO3DViewerImd_Alloc(gFO3DViewer->extraModelCount[slot] * sizeof(FO3DModel*));
+    for (j = 0, resIndex = 0; j < gFO3DViewer->extraModelCount[slot]; j++) {
+        gFO3DViewer->extraModels[slot][j] = FO3DObjMgr_Create();
+        FO3DObjMgr_ResetObj();
+        FO3DObjMgr_SetSampleFrames(FO3DViewer_SceneSampleFrames[scene], FO3DViewer_ScenePointCounts[scene]);
+        gFO3DViewer->extraResources[slot][resIndex++] = FO3DRes_Create();
+        FO3DRes_SetModel(model, j);
+        FO3DObjMgr_SetModel(FO3DRes_GetCurrent());
         for (k = 0; k < animCount; k++) {
-            data_ov030_02109ddc->extraResources[slot][resIndex++] = func_ov030_020cdac0();
-            func_ov030_020cdc70(anims[k], j);
-            func_ov030_020d036c(func_ov030_020cdb6c());
+            gFO3DViewer->extraResources[slot][resIndex++] = FO3DRes_Create();
+            FO3DRes_SetAnim(anims[k], j);
+            FO3DObjMgr_AddAnim(FO3DRes_GetCurrent());
         }
     }
     if (texture == NULL) {
         return;
     }
-    data_ov030_02109ddc->extraResources[slot][resIndex] = func_ov030_020cdac0();
-    func_ov030_020cdc40(texture);
-    for (j = 0; j < data_ov030_02109ddc->extraModelCount[slot]; j++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[slot][j]);
-        func_ov030_020d0304(func_ov030_020cdb6c());
+    gFO3DViewer->extraResources[slot][resIndex] = FO3DRes_Create();
+    FO3DRes_SetTexture(texture);
+    for (j = 0; j < gFO3DViewer->extraModelCount[slot]; j++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[slot][j]);
+        FO3DObjMgr_SetTexture(FO3DRes_GetCurrent());
     }
 }
 
-void func_ov030_020d17c0(s32 scene) {
+void FO3DViewer_Init(s32 scene) {
     s32 count;
     s32 i;
 
-    func_ov030_020d0f64();
-    func_ov030_020cd7d4();
-    func_ov030_020d1098(scene, FALSE);
-    if (data_ov030_02109ddc == NULL) {
+    FO3DViewerImd_Create();
+    FOAllocator_Init();
+    FO3DViewer_LoadScene(scene, FALSE);
+    if (gFO3DViewer == NULL) {
         return;
     }
-    count                       = data_ov030_020ee880[scene];
-    data_ov030_02109ddc->points = func_ov030_020d0f18(count * sizeof(FieldPos));
-    data_ov030_02109ddc->pos.x  = data_ov030_02108e74[scene][0] << FX32_SHIFT;
-    data_ov030_02109ddc->pos.y  = data_ov030_02108e74[scene][1] << FX32_SHIFT;
+    count               = FO3DViewer_ScenePointCounts[scene];
+    gFO3DViewer->points = FO3DViewerImd_Alloc(count * sizeof(FieldPos));
+    gFO3DViewer->pos.x  = FO3DViewer_ScenePoints[scene][0] << FX32_SHIFT;
+    gFO3DViewer->pos.y  = FO3DViewer_ScenePoints[scene][1] << FX32_SHIFT;
     for (i = 0; i < count; i++) {
-        FieldPos* point = &data_ov030_02109ddc->points[i];
+        FieldPos* point = &gFO3DViewer->points[i];
 
-        point->x = data_ov030_02108e74[scene][i * 2];
-        point->y = data_ov030_02108e74[scene][i * 2 + 1];
+        point->x = FO3DViewer_ScenePoints[scene][i * 2];
+        point->y = FO3DViewer_ScenePoints[scene][i * 2 + 1];
         if (i != 0 && count < 25) {
-            point->x -= data_ov030_02109ddc->points[0].x;
-            point->y -= data_ov030_02109ddc->points[0].y;
+            point->x -= gFO3DViewer->points[0].x;
+            point->y -= gFO3DViewer->points[0].y;
         }
     }
 }
 
-BOOL func_ov030_020d18cc(s32 x, s32 y) {
+BOOL FO3DViewer_Update(s32 x, s32 y) {
     BOOL moved = FALSE;
     BOOL changed;
     s32  oldX;
@@ -226,8 +225,8 @@ BOOL func_ov030_020d18cc(s32 x, s32 y) {
     s32  i;
 
     changed = FALSE;
-    oldX    = data_ov030_02109ddc->pos.x;
-    oldY    = data_ov030_02109ddc->pos.y;
+    oldX    = gFO3DViewer->pos.x;
+    oldY    = gFO3DViewer->pos.y;
     if (x != oldX) {
         changed = TRUE;
     }
@@ -235,185 +234,185 @@ BOOL func_ov030_020d18cc(s32 x, s32 y) {
         changed = TRUE;
     }
     if (changed) {
-        data_ov030_02109ddc->pos.x = x;
-        data_ov030_02109ddc->pos.y = y;
-        if (func_ov030_020cf910(&data_ov030_02109ddc->pos, data_ov030_02109ddc->points)) {
+        gFO3DViewer->pos.x = x;
+        gFO3DViewer->pos.y = y;
+        if (FO3DObjMgr_UpdateBlendWeights(&gFO3DViewer->pos, gFO3DViewer->points)) {
             moved = TRUE;
         } else {
-            data_ov030_02109ddc->pos.x = oldX;
-            data_ov030_02109ddc->pos.y = oldY;
+            gFO3DViewer->pos.x = oldX;
+            gFO3DViewer->pos.y = oldY;
         }
     }
-    for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-        func_ov030_020d0630(&data_ov030_02109ddc->pos, data_ov030_02109ddc->points);
+    for (i = 0; i < gFO3DViewer->modelCount; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+        FO3DObjMgr_UpdateAndDraw(&gFO3DViewer->pos, gFO3DViewer->points);
     }
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[0]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[0][i]);
-        func_ov030_020d0630(&data_ov030_02109ddc->pos, data_ov030_02109ddc->points);
+    for (i = 0; i < gFO3DViewer->extraModelCount[0]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[0][i]);
+        FO3DObjMgr_UpdateAndDraw(&gFO3DViewer->pos, gFO3DViewer->points);
     }
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[1]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[1][i]);
-        func_ov030_020d0630(&data_ov030_02109ddc->pos, data_ov030_02109ddc->points);
+    for (i = 0; i < gFO3DViewer->extraModelCount[1]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[1][i]);
+        FO3DObjMgr_UpdateAndDraw(&gFO3DViewer->pos, gFO3DViewer->points);
     }
     return moved;
 }
 
-void func_ov030_020d1a1c(s32 x, s32 y) {
+void FO3DViewer_SetOffset(s32 x, s32 y) {
     Vec pos;
     s32 i;
 
     pos.x = x - (128 << FX32_SHIFT);
     pos.y = y - (96 << FX32_SHIFT);
     pos.z = 0;
-    for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-        func_ov030_020d08e8(&pos);
+    for (i = 0; i < gFO3DViewer->modelCount; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+        FO3DObjMgr_SetOffset(&pos);
     }
 }
 
-BOOL func_ov030_020d1a8c(const char* name, Vec* pos) {
+BOOL FO3DViewer_GetNodePos(const char* name, Vec* pos) {
     s32 i;
 
-    for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-        if (func_ov030_020d0b24(name, pos)) {
+    for (i = 0; i < gFO3DViewer->modelCount; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+        if (FO3DObjMgr_GetNodePos(name, pos)) {
             return TRUE;
         }
     }
-    if (func_ov030_020d1b28(name, pos, 0)) {
+    if (FO3DViewer_GetExtraNodePos(name, pos, 0)) {
         return TRUE;
     }
-    if (func_ov030_020d1b28(name, pos, 1)) {
+    if (FO3DViewer_GetExtraNodePos(name, pos, 1)) {
         return TRUE;
     }
     return FALSE;
 }
 
-BOOL func_ov030_020d1b28(const char* name, Vec* pos, s32 slot) {
+BOOL FO3DViewer_GetExtraNodePos(const char* name, Vec* pos, s32 slot) {
     s32 i;
 
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[slot]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[slot][i]);
-        if (func_ov030_020d0b24(name, pos)) {
+    for (i = 0; i < gFO3DViewer->extraModelCount[slot]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[slot][i]);
+        if (FO3DObjMgr_GetNodePos(name, pos)) {
             return TRUE;
         }
     }
     return FALSE;
 }
 
-s32 func_ov030_020d1ba0(const char* name) {
+s32 FO3DViewer_GetAnimFrame(const char* name) {
     s32 i;
 
-    for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-        if (func_ov030_020d0c38(name) && data_ov030_02109ddc->models[i]->blendMode == 0 && !func_ov030_020d0bf0()) {
-            return func_ov030_020d0bc0();
+    for (i = 0; i < gFO3DViewer->modelCount; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+        if (FO3DObjMgr_IsNamed(name) && gFO3DViewer->models[i]->blendMode == 0 && !FO3DObjMgr_HasTexPatAnm()) {
+            return FO3DObjMgr_GetFrame();
         }
     }
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[0]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[0][i]);
-        if (func_ov030_020d0c38(name) && data_ov030_02109ddc->extraModels[0][i]->blendMode == 0 && !func_ov030_020d0bf0()) {
-            return func_ov030_020d0bc0();
+    for (i = 0; i < gFO3DViewer->extraModelCount[0]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[0][i]);
+        if (FO3DObjMgr_IsNamed(name) && gFO3DViewer->extraModels[0][i]->blendMode == 0 && !FO3DObjMgr_HasTexPatAnm()) {
+            return FO3DObjMgr_GetFrame();
         }
     }
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[1]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[1][i]);
-        if (func_ov030_020d0c38(name) && data_ov030_02109ddc->extraModels[1][i]->blendMode == 0 && !func_ov030_020d0bf0()) {
-            return func_ov030_020d0bc0();
+    for (i = 0; i < gFO3DViewer->extraModelCount[1]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[1][i]);
+        if (FO3DObjMgr_IsNamed(name) && gFO3DViewer->extraModels[1][i]->blendMode == 0 && !FO3DObjMgr_HasTexPatAnm()) {
+            return FO3DObjMgr_GetFrame();
         }
     }
     return 0;
 }
 
-#define FO3D_VIEWER_FIND_AND(name, action)                               \
-    do {                                                                 \
-        s32 i;                                                           \
-                                                                         \
-        for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {          \
-            func_ov030_020cf838(data_ov030_02109ddc->models[i]);         \
-            if (func_ov030_020d0c38(name)) {                             \
-                action();                                                \
-                return;                                                  \
-            }                                                            \
-        }                                                                \
-        for (i = 0; i < data_ov030_02109ddc->extraModelCount[0]; i++) {  \
-            func_ov030_020cf838(data_ov030_02109ddc->extraModels[0][i]); \
-            if (func_ov030_020d0c38(name)) {                             \
-                action();                                                \
-                return;                                                  \
-            }                                                            \
-        }                                                                \
-        for (i = 0; i < data_ov030_02109ddc->extraModelCount[1]; i++) {  \
-            func_ov030_020cf838(data_ov030_02109ddc->extraModels[1][i]); \
-            if (func_ov030_020d0c38(name)) {                             \
-                action();                                                \
-                return;                                                  \
-            }                                                            \
-        }                                                                \
+#define FO3D_VIEWER_FIND_AND(name, action)                         \
+    do {                                                           \
+        s32 i;                                                     \
+                                                                   \
+        for (i = 0; i < gFO3DViewer->modelCount; i++) {            \
+            FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);         \
+            if (FO3DObjMgr_IsNamed(name)) {                        \
+                action();                                          \
+                return;                                            \
+            }                                                      \
+        }                                                          \
+        for (i = 0; i < gFO3DViewer->extraModelCount[0]; i++) {    \
+            FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[0][i]); \
+            if (FO3DObjMgr_IsNamed(name)) {                        \
+                action();                                          \
+                return;                                            \
+            }                                                      \
+        }                                                          \
+        for (i = 0; i < gFO3DViewer->extraModelCount[1]; i++) {    \
+            FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[1][i]); \
+            if (FO3DObjMgr_IsNamed(name)) {                        \
+                action();                                          \
+                return;                                            \
+            }                                                      \
+        }                                                          \
     } while (0)
 
-void func_ov030_020d1d08(const char* name) {
-    FO3D_VIEWER_FIND_AND(name, func_ov030_020d0c70);
+void FO3DViewer_RestartAnim(const char* name) {
+    FO3D_VIEWER_FIND_AND(name, FO3DObjMgr_RestartAnim);
 }
 
-void func_ov030_020d1e00(const char* name) {
-    FO3D_VIEWER_FIND_AND(name, func_ov030_020d0cd4);
+void FO3DViewer_Show(const char* name) {
+    FO3D_VIEWER_FIND_AND(name, FO3DObjMgr_Show);
 }
 
-void func_ov030_020d1ef8(const char* name) {
-    FO3D_VIEWER_FIND_AND(name, func_ov030_020d0cf0);
+void FO3DViewer_Hide(const char* name) {
+    FO3D_VIEWER_FIND_AND(name, FO3DObjMgr_Hide);
 }
 
-void func_ov030_020d1ff0(s32 slot) {
+void FO3DViewer_FreeExtra(s32 slot) {
     s32 i;
 
-    for (i = 0; i < data_ov030_02109ddc->extraResourceCount[slot]; i++) {
-        func_ov030_020cdb5c(data_ov030_02109ddc->extraResources[slot][i]);
-        func_ov030_020cdb18();
+    for (i = 0; i < gFO3DViewer->extraResourceCount[slot]; i++) {
+        FO3DRes_SetCurrent(gFO3DViewer->extraResources[slot][i]);
+        FO3DRes_Destroy();
     }
-    for (i = 0; i < data_ov030_02109ddc->extraModelCount[slot]; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->extraModels[slot][i]);
-        func_ov030_020cf6a0();
+    for (i = 0; i < gFO3DViewer->extraModelCount[slot]; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->extraModels[slot][i]);
+        FO3DObjMgr_Destroy();
     }
-    if (data_ov030_02109ddc->extraResources[slot] != NULL) {
-        func_ov030_020d0f4c(data_ov030_02109ddc->extraResources[slot]);
+    if (gFO3DViewer->extraResources[slot] != NULL) {
+        FO3DViewerImd_Free(gFO3DViewer->extraResources[slot]);
     }
-    if (data_ov030_02109ddc->extraModels[slot] != NULL) {
-        func_ov030_020d0f4c(data_ov030_02109ddc->extraModels[slot]);
+    if (gFO3DViewer->extraModels[slot] != NULL) {
+        FO3DViewerImd_Free(gFO3DViewer->extraModels[slot]);
     }
 }
 
-void func_ov030_020d20bc(void) {
+void FO3DViewer_Destroy(void) {
     s32 i;
 
-    for (i = 0; i < data_ov030_02109ddc->resourceCount; i++) {
-        func_ov030_020cdb5c(data_ov030_02109ddc->resources[i]);
-        func_ov030_020cdb18();
+    for (i = 0; i < gFO3DViewer->resourceCount; i++) {
+        FO3DRes_SetCurrent(gFO3DViewer->resources[i]);
+        FO3DRes_Destroy();
     }
-    for (i = 0; i < data_ov030_02109ddc->modelCount; i++) {
-        func_ov030_020cf838(data_ov030_02109ddc->models[i]);
-        func_ov030_020cf6a0();
+    for (i = 0; i < gFO3DViewer->modelCount; i++) {
+        FO3DObjMgr_SetCurrent(gFO3DViewer->models[i]);
+        FO3DObjMgr_Destroy();
     }
-    func_ov030_020d0f4c(data_ov030_02109ddc->resources);
-    func_ov030_020d0f4c(data_ov030_02109ddc->models);
-    func_ov030_020d0f4c(data_ov030_02109ddc->points);
-    func_ov030_020d21d4(data_ov030_02109ddc->world.indexTable);
-    func_ov030_020d1ff0(0);
-    func_ov030_020d1ff0(1);
-    func_ov030_020d1060();
+    FO3DViewerImd_Free(gFO3DViewer->resources);
+    FO3DViewerImd_Free(gFO3DViewer->models);
+    FO3DViewerImd_Free(gFO3DViewer->points);
+    FOFileIO_Release(gFO3DViewer->world.indexTable);
+    FO3DViewer_FreeExtra(0);
+    FO3DViewer_FreeExtra(1);
+    FO3DViewerImd_Destroy();
 }
 
-void* func_ov030_020d2188(s32 size) {
+void* FOFileIO_Alloc(s32 size) {
     void* data = Mem_AllocHeapTail(&gMainHeap, size);
     Mem_SetSequence(&gMainHeap, data, "FOFileIO_Alloc");
     return data;
 }
 
-void func_ov030_020d21bc(void* data) {
+void FOFileIO_Free(void* data) {
     Mem_Free(&gMainHeap, data);
 }
 
-void func_ov030_020d21d4(void* data) {
-    func_ov030_020d21bc(data);
+void FOFileIO_Release(void* data) {
+    FOFileIO_Free(data);
 }

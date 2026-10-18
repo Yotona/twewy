@@ -2,67 +2,67 @@
 #include "Field/FO3D.h"
 #include <nitro/fx.h>
 
-Field3DObject* data_ov030_02109d9c;
+Field3DObject* gFO3DObj;
 
-void func_ov030_020cde0c(s32 arg0);
-void func_ov030_020cde40(s32 arg0);
+void func_ov030_020cde0c(s32 value);
+void func_ov030_020cde40(s32 value);
 
-void func_ov030_020cdcec(Field3DObject* state) {
-    data_ov030_02109d9c = state;
+void FO3DObj_SetCurrent(Field3DObject* state) {
+    gFO3DObj = state;
 }
 
-Field3DObject* func_ov030_020cdcfc(void) {
-    data_ov030_02109d9c = func_ov030_020cdca0(0x5C);
+Field3DObject* FO3DObj_Create(void) {
+    gFO3DObj = FO3DBase_Alloc(0x5C);
 
-    data_ov030_02109d9c->unk_0C = 0;
-    data_ov030_02109d9c->unk_10 = 0;
-    data_ov030_02109d9c->unk_14 = 0;
-    data_ov030_02109d9c->unk_18 = 0;
-    data_ov030_02109d9c->unk_1C = 0;
-    data_ov030_02109d9c->unk_50 = 0;
-    func_ov030_020cdde8(0, 0, 0);
-    func_ov030_020cdd98(0);
+    gFO3DObj->unk_0C = 0;
+    gFO3DObj->unk_10 = 0;
+    gFO3DObj->unk_14 = 0;
+    gFO3DObj->unk_18 = 0;
+    gFO3DObj->unk_1C = 0;
+    gFO3DObj->unk_50 = 0;
+    FO3DObj_SetPos(0, 0, 0);
+    FO3DObj_SetRotY(0);
     func_ov030_020cde0c(1);
     func_ov030_020cde40(1);
-    return data_ov030_02109d9c;
+    return gFO3DObj;
 }
 
-void func_ov030_020cdd74(void) {
-    func_ov030_020cdcd4(data_ov030_02109d9c);
-    data_ov030_02109d9c = NULL;
+void FO3DObj_Destroy(void) {
+    FO3DBase_Free(gFO3DObj);
+    gFO3DObj = NULL;
 }
 
-void func_ov030_020cdd98(s16 arg0) {
-    s32 temp_r2 = (arg0 >> 4) * 2;
-    Mtx_YRot33(&data_ov030_02109d9c->unk_20, FX_SinCosTable_[temp_r2], FX_SinCosTable_[temp_r2 + 1]);
-    data_ov030_02109d9c->unk_44 = arg0;
+void FO3DObj_SetRotY(s16 rotY) {
+    s32 idx = (rotY >> 4) * 2;
+    Mtx_YRot33(&gFO3DObj->rotMtx, FX_SinCosTable_[idx], FX_SinCosTable_[idx + 1]);
+    gFO3DObj->rotY = rotY;
 }
 
-void func_ov030_020cdde8(s32 arg0, s32 arg1, s32 arg2) {
-    data_ov030_02109d9c->unk_00 = arg0;
-    data_ov030_02109d9c->unk_04 = arg1;
-    data_ov030_02109d9c->unk_08 = arg2;
+void FO3DObj_SetPos(s32 x, s32 y, s32 z) {
+    gFO3DObj->x = x;
+    gFO3DObj->y = y;
+    gFO3DObj->z = z;
 }
 
-void func_ov030_020cde0c(s32 arg0) {
-    data_ov030_02109d9c->unk_48 = arg0;
+void func_ov030_020cde0c(s32 value) {
+    gFO3DObj->unk_48 = value;
 }
 
-void func_ov030_020cde20(s32 arg0) {
-    data_ov030_02109d9c->unk_4C = arg0;
-    data_ov030_02109d9c->unk_50 = 1;
+void func_ov030_020cde20(s32 value) {
+    gFO3DObj->unk_4C = value;
+    gFO3DObj->unk_50 = 1;
 }
 
-void func_ov030_020cde40(s32 arg0) {
-    data_ov030_02109d9c->unk_58 = arg0;
+void func_ov030_020cde40(s32 value) {
+    gFO3DObj->unk_58 = value;
 }
 
-void* func_ov030_020cde54(s32 size) {
+void* FO3DObj_Alloc(s32 size) {
     void* data = Mem_AllocHeapTail(&gDebugHeap, size);
     Mem_SetSequence(&gDebugHeap, data, "FO3DObj_Alloc");
     return data;
 }
 
-void func_ov030_020cde88(void* data) {
+void FO3DObj_Free(void* data) {
     Mem_Free(&gDebugHeap, data);
 }

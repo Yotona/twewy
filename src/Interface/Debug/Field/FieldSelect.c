@@ -13,15 +13,15 @@ extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 heig
 extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textObj);
 
-extern s32  func_ov030_020af350(void);
+extern s32  Field_GetCurrentTrendZone(void);
 extern s32  func_ov030_020b7b00(void);
 extern s32  func_ov030_020b7b40(void);
 extern s32  func_ov030_020b7b60(void);
 extern void func_ov030_020b7c58(s32 area, s32* arg1, s32* arg2, s32* arg3);
 extern void func_ov030_020c268c(s32 arg0);
-extern s16  func_ov030_020c5930(void);
+extern s16  FieldNoise_GetTotalQuota(void);
 extern void func_ov030_020ae96c(s32 arg0);
-extern void func_ov030_020d4f74(void);
+extern void ProcessOverlay_Flash(void);
 
 // Per chapter setup routines, indexed by MainData::chapter.
 extern void (*const data_ov030_020dbe30[44])(void);
@@ -102,7 +102,7 @@ const char* func_ov030_020b0534(s32 area) {
 
 void func_ov030_020b0544(FieldSelectObject* object) {
     func_02010b84(&object->text, 0, 0x10, 0x100, 0x60);
-    Text_RenderToScreen(&object->text, 8, 0x10, func_ov030_020b0534(gSaveData.unk_2458));
+    Text_RenderToScreen(&object->text, 8, 0x10, func_ov030_020b0534(gSaveData.fieldArea));
     Text_RenderToScreen(&object->text, 8, 0x18, Str_SPrintf("width:%d", func_ov030_020b7b00()));
 
     s32 building = func_ov030_020b7b40();
@@ -120,7 +120,7 @@ void func_ov030_020b0544(FieldSelectObject* object) {
     Text_RenderToScreen(&object->text, 8, 0x38,
                         Str_SPrintf("botomScale:%03d.%02d", whole2, ((gSaveData.unk_2490 * 100) >> 12) - (whole2 * 100)));
 
-    Text_RenderToScreen(&object->text, 8, 0x40, Str_SPrintf("NPC:%3d", gSaveData.unk_2548[gSaveData.unk_2458]));
+    Text_RenderToScreen(&object->text, 8, 0x40, Str_SPrintf("NPC:%3d", gSaveData.areaPopulation[gSaveData.fieldArea]));
 
     if (gSaveData.unk_26F0 != 0) {
         Text_RenderToScreen(&object->text, 8, 0x48, "DEBUG WINDOW ON ");
@@ -135,7 +135,7 @@ void func_ov030_020b0544(FieldSelectObject* object) {
     }
 
     Text_RenderToScreen(&object->text, 8, 0x58, Str_SPrintf("partner:%d", gSaveData.playerStats.activePartner));
-    Text_RenderToScreen(&object->text, 8, 0x60, Str_SPrintf("noize symbol:%d", gSaveData.unk_3110));
+    Text_RenderToScreen(&object->text, 8, 0x60, Str_SPrintf("noize symbol:%d", gSaveData.noiseSymbolCount));
     Text_RenderToScreen(&object->text, 8, 0x68, Str_SPrintf("top brand:%d", object->unk_219B8));
     Text_RenderToScreen(&object->text, 0, (object->unk_219B4 * 8) + 0x10, ">");
 }
@@ -145,7 +145,7 @@ void func_ov030_020b0820(FieldSelectObject* object) {
 }
 
 void func_ov030_020b0834(FieldSelectObject* object) {
-    s32 index = func_ov030_020af350();
+    s32 index = Field_GetCurrentTrendZone();
     if (index < 0) {
         object->unk_219B8 = -1;
         return;
@@ -154,7 +154,7 @@ void func_ov030_020b0834(FieldSelectObject* object) {
 }
 
 void func_ov030_020b0878(FieldSelectObject* object) {
-    s32 index = func_ov030_020af350();
+    s32 index = Field_GetCurrentTrendZone();
     if (index < 0) {
         return;
     }
@@ -164,7 +164,7 @@ void func_ov030_020b0878(FieldSelectObject* object) {
 void func_ov030_020b08b0(FieldSelectObject* object) {
     func_ov030_020b0834(object);
     if (gSaveData.unk_2484 != 0) {
-        gSaveData.unk_3110 = func_ov030_020c5930();
+        gSaveData.noiseSymbolCount = FieldNoise_GetTotalQuota();
     }
     func_ov030_020c26ec();
     func_ov030_020b04ac(object);
@@ -190,19 +190,19 @@ void func_ov030_020b08fc(void) {
 // Steps the selected area with the D-Pad and refreshes everything derived from it.
 void func_ov030_020b0948(FieldSelectObject* object) {
     if (SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) {
-        gSaveData.unk_2458++;
+        gSaveData.fieldArea++;
     } else if (SysControl.buttonState.holdButtons & INPUT_BUTTON_LEFT) {
-        gSaveData.unk_2458--;
+        gSaveData.fieldArea--;
     }
 
-    if (gSaveData.unk_2458 >= 0x2C) {
-        gSaveData.unk_2458 = 0x2B;
+    if (gSaveData.fieldArea >= 0x2C) {
+        gSaveData.fieldArea = 0x2B;
     }
-    if (gSaveData.unk_2458 < 0) {
-        gSaveData.unk_2458 = 0;
+    if (gSaveData.fieldArea < 0) {
+        gSaveData.fieldArea = 0;
     }
 
-    func_ov030_020b7c58(gSaveData.unk_2458, &gSaveData.unk_248C, &gSaveData.unk_2490, &gSaveData.unk_2494);
+    func_ov030_020b7c58(gSaveData.fieldArea, &gSaveData.unk_248C, &gSaveData.unk_2490, &gSaveData.unk_2494);
     func_ov030_020b0834(object);
 
     if (!(SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) &&
@@ -210,7 +210,7 @@ void func_ov030_020b0948(FieldSelectObject* object) {
     {
         return;
     }
-    gSaveData.unk_3110 = func_ov030_020c5930();
+    gSaveData.noiseSymbolCount = FieldNoise_GetTotalQuota();
 }
 
 // Toggles a flag with the D-Pad.
@@ -240,7 +240,7 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
     OverlayTag tag2;
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
-        func_ov030_020ae96c(gSaveData.unk_2458);
+        func_ov030_020ae96c(gSaveData.fieldArea);
         gSaveData.unk_24B4 = 0;
         if (gSaveData.unk_26EC != 0) {
             func_ov030_020c268c(4);
@@ -271,7 +271,7 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
             func_ov030_020b0948(object);
             break;
         case 6:
-            func_ov030_020b0a40(&gSaveData.unk_2548[gSaveData.unk_2458]);
+            func_ov030_020b0a40(&gSaveData.areaPopulation[gSaveData.fieldArea]);
             break;
         case 7:
             func_ov030_020b0a14(&gSaveData.unk_26F0);
@@ -283,11 +283,11 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
             func_ov030_020b08fc();
             break;
         case 10:
-            func_ov030_020b0a40(&gSaveData.unk_3110);
-            if (gSaveData.unk_3110 < 0) {
-                gSaveData.unk_3110 = 0;
-            } else if (gSaveData.unk_3110 >= 0x80) {
-                gSaveData.unk_3110 = 0x7F;
+            func_ov030_020b0a40(&gSaveData.noiseSymbolCount);
+            if (gSaveData.noiseSymbolCount < 0) {
+                gSaveData.noiseSymbolCount = 0;
+            } else if (gSaveData.noiseSymbolCount >= 0x80) {
+                gSaveData.noiseSymbolCount = 0x7F;
             }
             break;
         case 11:
@@ -304,7 +304,7 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
             break;
     }
 
-    func_ov030_020ae96c(gSaveData.unk_2458);
+    func_ov030_020ae96c(gSaveData.fieldArea);
     func_ov030_020b0544(object);
 }
 
@@ -369,11 +369,11 @@ void func_ov030_020b0e4c(void) {
 void func_ov030_020b0e58(void) {
     gSaveData.unk_2484 = 1;
     func_ov030_020c26ec();
-    gSaveData.unk_2488 = 1;
-    gSaveData.unk_30FC = 0;
-    gSaveData.unk_30FE = -1;
-    gSaveData.unk_3100 = -1;
-    gSaveData.unk_24BE = 0;
+    gSaveData.unk_2488  = 1;
+    gSaveData.unk_30FC  = 0;
+    gSaveData.unk_30FE  = -1;
+    gSaveData.unk_3100  = -1;
+    gSaveData.mailEvent = 0;
 
     if (gSaveData.chapter <= 6) {
         gSaveData.playerStats.activePartner = PARTNER_SHIKI;
@@ -391,21 +391,21 @@ void func_ov030_020b0e58(void) {
 
     func_ov030_020aec38(6);
     func_ov030_020aec38(9);
-    gSaveData.unk_3104 = 0;
-    gSaveData.unk_310C = NULL;
-    gSaveData.unk_30FE = 39;
+    gSaveData.noiseQuotaStep = 0;
+    gSaveData.unk_310C       = NULL;
+    gSaveData.unk_30FE       = 39;
     func_ov030_020aead0(2);
     func_ov030_020aead0(4);
     func_ov030_020aec38(10);
     func_ov030_020b7ac8();
     data_ov030_020dbe30[gSaveData.chapter]();
 
-    if (gSaveData.unk_3124 == -1) {
+    if (gSaveData.flashSequence == -1) {
         OverlayTag tag;
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
     } else {
         OverlayTag tag;
-        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, PROCESS_STAGE_INIT);
+        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, ProcessOverlay_Flash, NULL, PROCESS_STAGE_INIT);
     }
 }
 

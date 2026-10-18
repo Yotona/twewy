@@ -7,34 +7,34 @@ typedef struct {
     u32 parameters[9];
 } FieldAllocatorCallbacks;
 
-FieldAllocatorState data_ov030_02109d88;
+FieldAllocatorState gFOAllocator;
 
-void* func_ov030_020cd790(Heap* heap, s32 size);
-void  func_ov030_020cd7c0(Heap* heap, void* data);
+void* FOAllocator_Alloc(Heap* heap, s32 size);
+void  FOAllocator_Free(Heap* heap, void* data);
 
-const FieldAllocatorCallbacks data_ov030_020ed198 = {
-    func_ov030_020cd790, func_ov030_020cd7c0, {0x7C0003E0, 31, 16, 16, 32767, 0, 10, 0x7FFF0000, 5}
+const FieldAllocatorCallbacks FOAllocator_Callbacks = {
+    FOAllocator_Alloc, FOAllocator_Free, {0x7C0003E0, 31, 16, 16, 32767, 0, 10, 0x7FFF0000, 5}
 };
 
-void* func_ov030_020cd790(Heap* heap, s32 size) {
+void* FOAllocator_Alloc(Heap* heap, s32 size) {
     void* data = Mem_AllocHeapTail(&gDebugHeap, size);
     Mem_SetSequence(&gDebugHeap, data, "FOAllocatorAlloc");
     return data;
 }
 
-void func_ov030_020cd7c0(Heap* heap, void* data) {
+void FOAllocator_Free(Heap* heap, void* data) {
     Mem_Free(&gDebugHeap, data);
 }
 
-void func_ov030_020cd7d4(void) {
-    data_ov030_02109d88.callbacks = &data_ov030_020ed198;
-    data_ov030_02109d88.state0    = 0;
-    data_ov030_02109d88.state1    = 0;
-    data_ov030_02109d88.state2    = 0;
+void FOAllocator_Init(void) {
+    gFOAllocator.callbacks = &FOAllocator_Callbacks;
+    gFOAllocator.state0    = 0;
+    gFOAllocator.state1    = 0;
+    gFOAllocator.state2    = 0;
 }
 
-FieldAllocatorState* func_ov030_020cd7fc(void) {
-    return &data_ov030_02109d88;
+FieldAllocatorState* FOAllocator_Get(void) {
+    return &gFOAllocator;
 }
 
 #define G3D_SIGNATURE_BMD0 0x30444D42
@@ -61,7 +61,7 @@ extern s32 (*data_02065fd0)(u32 key);
 extern u32 (*data_02065fd4)(u32 size, BOOL is4pltt, u32 opt);
 extern s32 (*data_02065fd8)(u32 key);
 
-BOOL func_ov030_020cd808(void* resource) {
+BOOL FO3D_LoadToVram(void* resource) {
     switch (*(u32*)resource) {
         case G3D_SIGNATURE_BMD0:
         case G3D_SIGNATURE_BTX0: {

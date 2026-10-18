@@ -101,6 +101,7 @@ src/Interface/Debug/Field/FieldMessageSelect.c:
     .data       start:0x0210882c end:0x021088ec
 
 src/Field/Battle/FieldBattleTransition.c:
+    complete
     .text       start:0x020aed54 end:0x020af320
     .data       start:0x021002ec end:0x02100338
 
@@ -291,9 +292,16 @@ src/Field/Tasks/Fld_TalkEventPlate.c:
     .data       start:0x02107580 end:0x02107598
 
 src/Field/Battle/FieldNoiseEncounter.c:
-    .text       start:0x020c5744 end:0x020c59b0
-    .rodata     start:0x020e7460 end:0x020ea438
-    .data       start:0x02107670 end:0x02108464
+    complete
+    .text       start:0x020c5744 end:0x020c58a0
+    .rodata     start:0x020e7460 end:0x020e9944
+    .data       start:0x02107670 end:0x02108328
+
+src/Field/Battle/FieldNoiseQuota.c:
+    complete
+    .text       start:0x020c58a0 end:0x020c59b0
+    .rodata     start:0x020e9944 end:0x020ea438
+    .data       start:0x02108328 end:0x02108464
 
 src/Field/Tasks/Fld_EventMail.c:
     .text       start:0x020c8868 end:0x020c8a58

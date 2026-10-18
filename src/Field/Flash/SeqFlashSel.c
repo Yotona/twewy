@@ -34,27 +34,27 @@ typedef struct {
     /* 0x216B4 */ char             unk_216B4[0x219B0 - 0x216B4];
 } FlashSelectOverlayState; // Size: 0x219B0
 
-extern const FlashSequence data_ov030_020fda64[];
+extern const FlashSequence FlashSequences[];
 
 extern void func_02010b50(TextObject* textObj);
 extern void func_02025b68(void* textBg, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textBg);
-extern void func_ov030_020d4f74(void* state);
+extern void ProcessOverlay_Flash(void* state);
 
-void func_ov030_020d51fc(FlashSelectOverlayState* state);
-void func_ov030_020d52bc(FlashSelectOverlayState* state);
-void func_ov030_020d533c(FlashSelectOverlayState* state);
+void SeqFlashSel_Init(FlashSelectOverlayState* state);
+void SeqFlashSel_Update(FlashSelectOverlayState* state);
+void SeqFlashSel_Destroy(FlashSelectOverlayState* state);
 
-char* data_ov030_02109bc4     = "Seq_FlashSel()";
-char  data_ov030_02109bd8[16] = "Flash select";
+char* SeqFlashSel_Sequence  = "Seq_FlashSel()";
+char  SeqFlashSel_Title[16] = "Flash select";
 
 const OverlayProcess OvlProc_FlashSel = {
-    .init = func_ov030_020d51fc,
-    .main = func_ov030_020d52bc,
-    .exit = func_ov030_020d533c,
+    .init = SeqFlashSel_Init,
+    .main = SeqFlashSel_Update,
+    .exit = SeqFlashSel_Destroy,
 };
 
-void func_ov030_020d4fb4(FlashSelectOverlayState* state) {
+void SeqFlashSel_InitText(FlashSelectOverlayState* state) {
     UnkStruct_usedby_02025b68 params;
 
     params.unk_00 = 1;
@@ -68,33 +68,33 @@ void func_ov030_020d4fb4(FlashSelectOverlayState* state) {
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
     func_02025b68(&state->textBg, &params);
-    Text_RenderToScreen(&state->text, 0, 0, data_ov030_02109bd8);
+    Text_RenderToScreen(&state->text, 0, 0, SeqFlashSel_Title);
 }
 
-void func_ov030_020d503c(FlashSelectOverlayState* state) {
+void SeqFlashSel_DrawText(FlashSelectOverlayState* state) {
     func_02010b50(&state->text);
-    Text_RenderToScreen(&state->text, 0, 0, data_ov030_02109bd8);
-    if (gSaveData.unk_3124 >= 0 && gSaveData.unk_3124 < FLASH_SEQUENCE_COUNT) {
+    Text_RenderToScreen(&state->text, 0, 0, SeqFlashSel_Title);
+    if (gSaveData.flashSequence >= 0 && gSaveData.flashSequence < FLASH_SEQUENCE_COUNT) {
         Text_RenderToScreen(&state->text, 8, 0x10,
-                            Str_SPrintf("flash:%d %s", gSaveData.unk_3124, data_ov030_020fda64[gSaveData.unk_3124].name));
+                            Str_SPrintf("flash:%d %s", gSaveData.flashSequence, FlashSequences[gSaveData.flashSequence].name));
     } else {
-        Text_RenderToScreen(&state->text, 8, 0x10, Str_SPrintf("flash:%d", gSaveData.unk_3124));
+        Text_RenderToScreen(&state->text, 8, 0x10, Str_SPrintf("flash:%d", gSaveData.flashSequence));
     }
 }
 
-void func_ov030_020d50ec(FlashSelectOverlayState* state) {
+void SeqFlashSel_ReleaseText(FlashSelectOverlayState* state) {
     func_02025e30(&state->textBg);
 }
 
-void func_ov030_020d5100(FlashSelectOverlayState* state) {
-    func_ov030_020d4fb4(state);
+void SeqFlashSel_CreateScreen(FlashSelectOverlayState* state) {
+    SeqFlashSel_InitText(state);
 }
 
-void func_ov030_020d510c(FlashSelectOverlayState* state) {
-    func_ov030_020d50ec(state);
+void SeqFlashSel_DestroyScreen(FlashSelectOverlayState* state) {
+    SeqFlashSel_ReleaseText(state);
 }
 
-void func_ov030_020d5118(s32* value, s16 count) {
+void SeqFlashSel_StepValue(s32* value, s16 count) {
     if (SysControl.buttonState.holdButtons & INPUT_BUTTON_RIGHT) {
         *value += 1;
         if (*value >= count) {
@@ -108,65 +108,65 @@ void func_ov030_020d5118(s32* value, s16 count) {
     }
 }
 
-void func_ov030_020d5174(FlashSelectOverlayState* state) {
+void SeqFlashSel_HandleInput(FlashSelectOverlayState* state) {
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
         OverlayTag tag;
-        gSaveData.unk_3128 = 4;
-        MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_30_ID, func_ov030_020d4f74, NULL, PROCESS_STAGE_INIT);
+        gSaveData.flashExitMode = 4;
+        MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_30_ID, ProcessOverlay_Flash, NULL, PROCESS_STAGE_INIT);
     } else if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_SELECT) {
         OverlayTag tag;
         MainOvlDisp_Pop(&tag);
     } else {
-        func_ov030_020d5118(&gSaveData.unk_3124, FLASH_SEQUENCE_COUNT);
+        SeqFlashSel_StepValue(&gSaveData.flashSequence, FLASH_SEQUENCE_COUNT);
     }
-    func_ov030_020d503c(state);
+    SeqFlashSel_DrawText(state);
 }
 
 // Nonmatching
-void func_ov030_020d51fc(FlashSelectOverlayState* state) {
-    const char* sequence = data_ov030_02109bc4;
+void SeqFlashSel_Init(FlashSelectOverlayState* state) {
+    const char* sequence = SeqFlashSel_Sequence;
 
     state = Mem_AllocHeapTail(&gDebugHeap, sizeof(FlashSelectOverlayState));
     Mem_SetSequence(&gDebugHeap, state, sequence);
     MainOvlDisp_SetCbArg(state);
     state->dataSlot = DatMgr_AllocateSlot();
-    if (gSaveData.unk_3124 >= FLASH_SEQUENCE_COUNT) {
-        gSaveData.unk_3124 = 0;
+    if (gSaveData.flashSequence >= FLASH_SEQUENCE_COUNT) {
+        gSaveData.flashSequence = 0;
     }
-    func_ov030_020d57c8();
+    FlashGfx_Init();
     g_DisplaySettings.controls[DISPLAY_MAIN].layers     = 0;
     state->previousResources                            = ResourceMgr_ReinitManagers(&state->resources);
     data_02066aec                                       = 0;
     data_02066eec                                       = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
-    func_ov030_020d5100(state);
+    SeqFlashSel_CreateScreen(state);
     MainOvlDisp_NextProcessStage();
 }
 
-void func_ov030_020d52bc(FlashSelectOverlayState* state) {
+void SeqFlashSel_Update(FlashSelectOverlayState* state) {
     OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
-    func_ov030_020d5174(state);
+    SeqFlashSel_HandleInput(state);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }
 
-void func_ov030_020d533c(FlashSelectOverlayState* state) {
-    func_ov030_020d510c(state);
+void SeqFlashSel_Destroy(FlashSelectOverlayState* state) {
+    SeqFlashSel_DestroyScreen(state);
     ResourceMgr_ReinitManagers(NULL);
     DatMgr_ClearSlot(state->dataSlot);
     Mem_Free(&gDebugHeap, state);
 }
 
-void func_ov030_020d5370(FlashSelectOverlayState* state) {
+void ProcessOverlay_FlashSel(FlashSelectOverlayState* state) {
     s32 stage = MainOvlDisp_GetProcessStage();
     if (stage == PROCESS_STAGE_EXIT) {
-        func_ov030_020d533c(state);
+        SeqFlashSel_Destroy(state);
     } else {
         OvlProc_FlashSel.funcs[stage](state);
     }

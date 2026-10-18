@@ -109,7 +109,7 @@ void func_ov030_020bc104(Sprite* sprite, MapJumpData* data) {
 s16 func_ov030_020bc1dc(s16 arg0) {
     u32 i;
 
-    if (arg0 == 0x2D42 && gSaveData.unk_2458 == 0x13) {
+    if (arg0 == 0x2D42 && gSaveData.fieldArea == 0x13) {
         return 0x2D55;
     }
     for (i = 0; i < 0xD; i++) {
@@ -159,7 +159,7 @@ s32 func_ov030_020bc324(TaskPool* pool, Task* task, void* args) {
 s32 func_ov030_020bc364(TaskPool* pool, Task* task, void* args) {
     MapJumpData* data = task->data;
 
-    if (func_ov030_020aefbc() != 0 || func_ov030_020aefe0() != 0) {
+    if (FieldScan_IsOpen() != 0 || Field_IsTalkEventActive() != 0) {
         return 1;
     }
     data->sprite.posX = (data->pos.x - data->hdr.origin->x) >> 12;

@@ -32,7 +32,7 @@ FlashManager::~FlashManager() {
 }
 
 void FlashManager::InitGraphics() {
-    func_ov030_020d5a2c();
+    FlashGfx_Init3D();
     FlashTexture::InitHeaps();
 }
 
@@ -61,7 +61,7 @@ void FlashManager::Draw() {
 }
 
 void FlashManager::VBlank() {
-    func_ov030_020d5c90();
+    FlashGfx_SwapScreens();
 #ifdef REGION_USA
     if (m_updated && m_drawn && IsPlaying() == TRUE) {
 #else

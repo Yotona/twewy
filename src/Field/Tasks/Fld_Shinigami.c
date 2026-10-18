@@ -41,8 +41,8 @@ void func_ov030_020cb21c(ShiniWorld* world, void* arg1, u8* file) {
     data_ov030_02109d84->unk_10 = &data_ov030_02109d84->indexTable[data_ov030_02109d84->grid->unk_1C];
 }
 
-extern void func_ov030_020af6f0(s32);
-extern void func_ov030_020af708(s16);
+extern void Field_SetTouchEventResult(s32);
+extern void Field_SetTouchEventTarget(s16);
 extern s32  func_ov030_020bfee4(TaskPool*, s32, s32);
 extern void func_ov030_020bff68(Task*, s32);
 extern s32  func_ov030_020c0184(TaskPool*, s32, s32, s16, s16);
@@ -725,7 +725,7 @@ s32 func_ov030_020cc670(TaskPool* pool, Fld_Shinigami* shini) {
         sel = func_ov030_020cc7fc(pool, shini);
         if (sel == 0) {
             func_ov030_020cc748(pool, shini, sel);
-            func_ov030_020af6f0(3);
+            Field_SetTouchEventResult(3);
             SndMgr_PlaySEWithPan(SEIDX_SE_KEYWORD_SWITCH, 0xE2);
             shini->unk_28 = 1;
             func_ov030_020cd550(EasyTask_GetTaskById(pool, shini->taskId[5]));
@@ -758,8 +758,8 @@ void func_ov030_020cc748(TaskPool* pool, Fld_Shinigami* shini, s32 sel) {
 s32 func_ov030_020cc7a0(TaskPool* pool, Fld_Shinigami* shini) {
     if (shini->unk_24 == 1) {
         func_ov030_020bff68(EasyTask_GetTaskById(pool, shini->taskId[3]), 2);
-        func_ov030_020af6f0(5);
-        func_ov030_020af708(0xD);
+        Field_SetTouchEventResult(5);
+        Field_SetTouchEventTarget(0xD);
         SndMgr_PlaySEWithPan(SEIDX_SE_KEYWORD_SWITCH, 0x23);
         func_ov030_020cd550(EasyTask_GetTaskById(pool, shini->taskId[5]));
     }

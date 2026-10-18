@@ -60,10 +60,9 @@ void func_ov030_020bf23c(Ov030LargeGingo* data) {
         return;
     }
     func_02026590(&data->fade, 0x10000, data->timer);
-    data->timer                                            = (u16)(data->timer - 1);
-    v                                                      = data->fade >> 0xC;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = 0x10 - v;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = v;
+    data->timer = (u16)(data->timer - 1);
+    v           = data->fade >> 0xC;
+    Display_SetBlendCoeffs(DISPLAY_SUB, 0x10 - v, v);
 }
 
 s32 func_ov030_020bf288(TaskPool* pool, Task* task) {

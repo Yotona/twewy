@@ -64,11 +64,11 @@ extern const u16  data_ov030_02107360[];
 s32  FX_Atan2Idx(s32 x, s32 y);
 s32  FX_Sqrt(s32 x);
 s32  func_ov030_020aad40(void);
-u32  func_ov030_020ac028(void);
+u32  Field_GetChapterGroup(void);
 s32  func_ov030_020aeca4(s32 y);
-s32  func_ov030_020aefbc(void);
-s32  func_ov030_020af080(void);
-void func_ov030_020af564(FieldPos* pos);
+s32  FieldScan_IsOpen(void);
+s32  Field_IsIdle(void);
+void Field_ApplyVertexColorAt(FieldPos* pos);
 s32  func_ov030_020af730(void);
 s32  func_ov030_020c8818(TaskPool* pool, s32 arg1, s32 x, s32 y, s32 arg4, s32 scale, s32 arg6);
 s32  func_ov030_020cb634(FieldPos* pos, s32 x, s32 y);
@@ -291,7 +291,7 @@ s32 func_ov030_020bc834(FldPartner* obj) {
 void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
     s16 state;
 
-    if (obj->unk_A0 == 0 && func_ov030_020af080() != 0) {
+    if (obj->unk_A0 == 0 && Field_IsIdle() != 0) {
         func_ov030_020bc564(obj, func_ov030_020bcab4);
         if (obj->taskId_0 == -1) {
             return;
@@ -308,7 +308,7 @@ void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
     if (state == 0) {
         func_ov030_020be258(&obj->chara, (u16)(s16)obj->unk_8C, 1);
     } else if (state == 0xF8) {
-        if (func_ov030_020af080() != 0 && obj->taskId_0 == -1 && func_ov030_020aad40() != 0 && func_ov030_020bc578() != 0) {
+        if (Field_IsIdle() != 0 && obj->taskId_0 == -1 && func_ov030_020aad40() != 0 && func_ov030_020bc578() != 0) {
             obj->taskId_0 = func_ov030_020bacb0(pool, 1, &obj->delta, &obj->unk_88, 0x34000, 1);
         }
         if (obj->unk_CC == 0) {
@@ -317,14 +317,14 @@ void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
             func_ov030_020be258(&obj->chara, 0xB, 1);
         }
     }
-    if (func_ov030_020af080() == 0 || func_ov030_020aad40() == 0) {
+    if (Field_IsIdle() == 0 || func_ov030_020aad40() == 0) {
         if (obj->taskId_0 != -1) {
             EasyTask_DeleteTask(pool, obj->taskId_0);
             obj->taskId_0 = -1;
             obj->unk_5C   = 0;
         }
     }
-    if (func_ov030_020af080() != 0) {
+    if (Field_IsIdle() != 0) {
         obj->unk_5C = obj->unk_5C + 1;
     }
 }
@@ -346,11 +346,11 @@ void func_ov030_020bcab4(TaskPool* pool, FldPartner* obj) {
     s32 dx;
     s32 dy;
 
-    if (func_ov030_020aefbc() != 0) {
+    if (FieldScan_IsOpen() != 0) {
         func_ov030_020bc564(obj, func_ov030_020bc8b8);
         return;
     }
-    if (func_ov030_020af080() == 0) {
+    if (Field_IsIdle() == 0) {
         func_ov030_020bc564(obj, func_ov030_020bc8b8);
         return;
     }
@@ -433,7 +433,7 @@ s32 func_ov030_020bcd14(TaskPool* pool, Task* task, void* args) {
     obj->taskId_1 = -1;
     obj->unk_88   = func_ov030_020aeca4(obj->pos.y);
     func_ov030_020bc564(obj, func_ov030_020bc758);
-    type = func_ov030_020ac028();
+    type = Field_GetChapterGroup();
     if (type > 2) {
         type = 0;
     }
@@ -530,7 +530,7 @@ s32 func_ov030_020bcffc(TaskPool* pool, Task* task, void* args) {
         flip = 1;
     }
     obj->unk_50 = OamMgr_AllocAffineGroup(&g_OamMgr[obj->chara.sprite.bits_0_1], 0, obj->unk_88, obj->unk_88, flip);
-    func_ov030_020af564(&obj->pos);
+    Field_ApplyVertexColorAt(&obj->pos);
     Sprite_RenderFrame(&obj->chara.sprite);
     flags = 2;
     if (func_ov030_020be3c0(&obj->chara.sprite) != 0) {
@@ -540,7 +540,7 @@ s32 func_ov030_020bcffc(TaskPool* pool, Task* task, void* args) {
     func_ov030_020be3dc(&obj->chara, 0x1000);
     REG_GFX_FIFO_VERTEX_COLOR = 0x421;
     func_ov030_020be3e4(&obj->chara.sprite, 0xC);
-    REG_GFX_FIFO_VERTEX_COLOR = func_ov030_020af53c();
+    REG_GFX_FIFO_VERTEX_COLOR = Field_GetLightColor();
     return 1;
 }
 

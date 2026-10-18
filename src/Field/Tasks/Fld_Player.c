@@ -21,10 +21,10 @@ s32  FX_Atan2Idx(s32 x, s32 y);
 s32  FX_Sqrt(s32 x);
 s32  func_ov030_020aad40(void);
 s32  func_ov030_020aeca4(s32 y);
-s32  func_ov030_020aee5c(void);
-s32  func_ov030_020aeecc(void);
-s32  func_ov030_020af080(void);
-void func_ov030_020af564(FieldPos* pos);
+s32  Field_IsMoveTouchActive(void);
+s32  Field_IsMoveInputActive(void);
+s32  Field_IsIdle(void);
+void Field_ApplyVertexColorAt(FieldPos* pos);
 s32  func_ov030_020af730(void);
 s32  func_ov030_020af748(void);
 s32  func_ov030_020b7c18(void);
@@ -74,7 +74,7 @@ void func_ov030_020b21d4(Ov030Player* arg0) {
     } else if (arg0->origin->x > hiSh) {
         arg0->origin->x = hiSh;
     }
-    if (gSaveData.unk_2458 == 0) {
+    if (gSaveData.fieldArea == 0) {
         hi = func_ov030_020b7d04(arg0->origin->x);
         lo = 0xE000;
     } else {
@@ -184,7 +184,7 @@ void func_ov030_020b24b0(TaskPool* arg0, Ov030Player* arg1) {
     arg1->unkB0 = arg1->pos->y;
     p           = arg1->pos;
     func_ov030_020b22a4(arg1, p->x - 0x80000, p->y - 0x60000);
-    if (func_ov030_020aeecc() != 0 && func_ov030_020af080() != 0 && func_ov030_020af748() != 0) {
+    if (Field_IsMoveInputActive() != 0 && Field_IsIdle() != 0 && func_ov030_020af748() != 0) {
         func_ov030_020b21c0(arg1, func_ov030_020b27bc);
         if (arg1->unkD4 == 0) {
             func_ov030_020b233c((arg1->pos->x - arg1->origin->x) >> 0xC, &arg1->chara.sprite);
@@ -217,7 +217,7 @@ void func_ov030_020b24b0(TaskPool* arg0, Ov030Player* arg1) {
         }
         func_ov030_020be258(&arg1->chara, 1, 1);
     }
-    if (func_ov030_020af080() == 0) {
+    if (Field_IsIdle() == 0) {
         arg1->unkA0 = 0;
         if (arg1->unkE8 == -1) {
             return;
@@ -285,7 +285,7 @@ void func_ov030_020b2748(Ov030Player* arg0) {
 s32 func_ov030_020b278c(TaskPool* pool, Ov030Player* obj, s32* out) {
     s32 value = 0;
 
-    if (func_ov030_020b84a4(gSaveData.unk_2458, &value, out) == 0) {
+    if (func_ov030_020b84a4(gSaveData.fieldArea, &value, out) == 0) {
         return value;
     }
     return 0;
@@ -303,13 +303,13 @@ void func_ov030_020b27bc(TaskPool* arg0, Ov030Player* arg1) {
     s32        ret;
 
     arg1->unkA8 |= 1;
-    if (func_ov030_020aefbc() != 0) {
+    if (FieldScan_IsOpen() != 0) {
         arg1->unkA8 &= ~1;
         func_ov030_020b21c0(arg1, func_ov030_020b24b0);
         arg1->unkA0 = 0xF8;
         return;
     }
-    if (func_ov030_020af080() == 0 || func_ov030_020af748() == 0) {
+    if (Field_IsIdle() == 0 || func_ov030_020af748() == 0) {
         arg1->unkA8 &= ~1;
         func_ov030_020b22a4(arg1, arg1->pos->x - 0x80000, arg1->pos->y - 0x60000);
         func_ov030_020b233c((arg1->pos->x - arg1->origin->x) >> 0xC, &arg1->chara.sprite);
@@ -322,7 +322,7 @@ void func_ov030_020b27bc(TaskPool* arg0, Ov030Player* arg1) {
         arg1->unkAC = arg1->pos->x;
         arg1->unkB0 = arg1->pos->y;
     } else {
-        if (func_ov030_020aee5c() != 0) {
+        if (Field_IsMoveTouchActive() != 0) {
             TouchInput_GetCoord(&coord);
             pos         = coord;
             arg1->unkAC = arg1->origin->x + (pos.x << 0xC);
@@ -358,7 +358,7 @@ void func_ov030_020b27bc(TaskPool* arg0, Ov030Player* arg1) {
         func_ov030_020b22a4(arg1, arg1->pos->x - 0x80000, arg1->pos->y - 0x60000);
         return;
     }
-    if (func_ov030_020aeecc() != 0) {
+    if (Field_IsMoveInputActive() != 0) {
         func_ov030_020b2394(arg1);
         return;
     }
@@ -458,7 +458,7 @@ s32 func_ov030_020b2d24(TaskPool* pool, Task* task) {
     }
     scale      = obj->unkC8;
     obj->unk50 = OamMgr_AllocAffineGroup(&g_OamMgr[obj->chara.sprite.bits_0_1], 0, scale, scale, flip);
-    func_ov030_020af564(obj->pos);
+    Field_ApplyVertexColorAt(obj->pos);
     Sprite_RenderFrame(&obj->chara.sprite);
     flip       = 2;
     flip       = flip | (func_ov030_020be3c0(&obj->chara.sprite) != 0);
@@ -467,7 +467,7 @@ s32 func_ov030_020b2d24(TaskPool* pool, Task* task) {
     func_ov030_020be3dc(&obj->chara, 0x1000);
     REG_GFX_FIFO_VERTEX_COLOR = 0x421;
     func_ov030_020be3e4(&obj->chara.sprite, 0xC);
-    REG_GFX_FIFO_VERTEX_COLOR = func_ov030_020af53c();
+    REG_GFX_FIFO_VERTEX_COLOR = Field_GetLightColor();
     if (obj->unkA8 & 1) {
         dy                = obj->unkAC - obj->origin->x;
         flip              = obj->unkB0 - obj->origin->y;

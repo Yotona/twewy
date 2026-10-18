@@ -13,7 +13,7 @@ typedef struct {
 #endif
 } FlashTextureHeaps; // Size: 0xC
 
-FlashTextureHeaps data_ov030_0210a20c;
+FlashTextureHeaps gFlashTextureHeaps;
 
 FlashTexture::FlashTexture() {
     m_def = NULL;
@@ -22,8 +22,8 @@ FlashTexture::FlashTexture() {
 FlashTexture::~FlashTexture() {
     m_def->m_texRefs--;
     if (m_def->m_texRefs == 0) {
-        data_ov030_0210a20c.texHeap->Free(m_def->m_texNode);
-        data_ov030_0210a20c.plttHeap->Free(m_def->m_plttNode);
+        gFlashTextureHeaps.texHeap->Free(m_def->m_texNode);
+        gFlashTextureHeaps.plttHeap->Free(m_def->m_plttNode);
         m_def->m_state = 0;
         FlashFreeArray(m_def->m_palette);
         m_def->m_palette = NULL;
@@ -31,24 +31,24 @@ FlashTexture::~FlashTexture() {
 }
 
 void FlashTexture::InitHeaps() {
-    if (data_ov030_0210a20c.texHeap == NULL) {
-        data_ov030_0210a20c.texHeap = new FlashHeap();
+    if (gFlashTextureHeaps.texHeap == NULL) {
+        gFlashTextureHeaps.texHeap = new FlashHeap();
     }
-    data_ov030_0210a20c.texHeap->Init(0x40000);
-    if (data_ov030_0210a20c.plttHeap == NULL) {
-        data_ov030_0210a20c.plttHeap = new FlashHeap();
+    gFlashTextureHeaps.texHeap->Init(0x40000);
+    if (gFlashTextureHeaps.plttHeap == NULL) {
+        gFlashTextureHeaps.plttHeap = new FlashHeap();
     }
-    data_ov030_0210a20c.plttHeap->Init(0x10000);
+    gFlashTextureHeaps.plttHeap->Init(0x10000);
 }
 
 void FlashTexture::FreeHeaps() {
-    if (data_ov030_0210a20c.texHeap != NULL) {
-        delete data_ov030_0210a20c.texHeap;
-        data_ov030_0210a20c.texHeap = NULL;
+    if (gFlashTextureHeaps.texHeap != NULL) {
+        delete gFlashTextureHeaps.texHeap;
+        gFlashTextureHeaps.texHeap = NULL;
     }
-    if (data_ov030_0210a20c.plttHeap != NULL) {
-        delete data_ov030_0210a20c.plttHeap;
-        data_ov030_0210a20c.plttHeap = NULL;
+    if (gFlashTextureHeaps.plttHeap != NULL) {
+        delete gFlashTextureHeaps.plttHeap;
+        gFlashTextureHeaps.plttHeap = NULL;
     }
 }
 
@@ -77,8 +77,8 @@ void FlashTexture::Init(FlashPlayer* player, FlashCharDef* def) {
         case 4:
             break;
     }
-    def->m_texNode  = data_ov030_0210a20c.texHeap->Alloc(size);
-    def->m_plttNode = data_ov030_0210a20c.plttHeap->Alloc(0x200);
+    def->m_texNode  = gFlashTextureHeaps.texHeap->Alloc(size);
+    def->m_plttNode = gFlashTextureHeaps.plttHeap->Alloc(0x200);
     player->m_manager->m_loader->Load(player->m_stream, def, def->m_texNode->addr, def->m_plttNode->addr);
 }
 

@@ -12,11 +12,11 @@ extern TaskHandle   data_ov030_020e6f98;
 extern NsymUGMgrFns data_ov030_020e6fa4;
 
 extern u32  func_ov030_020c2458(TaskPool* pool, s32 encounter, s32 counter);
-extern s32  func_ov030_020af8ac(void);
-extern void func_ov030_020af760(s32 frames);
-extern s32  func_ov030_020aeff8(void);
-extern s32  func_ov030_020aef74(void);
-extern s32  func_ov030_020aef44(void);
+extern s32  Field_GetMaxChainedEncounters(void);
+extern void FieldScan_AddTime(s32 frames);
+extern s32  FieldScan_IsClosing(void);
+extern s32  FieldScan_IsBattleStarting(void);
+extern s32  FieldScan_IsEnteringBattle(void);
 
 s32 func_ov030_020c08ec(TaskPool* pool, Task* task, s32* args) {
     NsymUGMgr* data = task->data;
@@ -39,15 +39,15 @@ s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
     s32        limit;
     s32        scaled;
 
-    if (func_ov030_020aeff8() != 0) {
+    if (FieldScan_IsClosing() != 0) {
         return 1;
     }
     i = 0;
     if (data->count > 0) {
         do {
             if (data->ids[i] != -1 && func_ov030_020bbc38(pool, data->ids[i]) != 0) {
-                if (gSaveData.battleCount < func_ov030_020af8ac() && func_ov030_020aef74() == 0) {
-                    if (func_ov030_020aef44() == 0) {
+                if (gSaveData.battleCount < Field_GetMaxChainedEncounters() && FieldScan_IsBattleStarting() == 0) {
+                    if (FieldScan_IsEnteringBattle() == 0) {
                         if (data->unk_218 == 0) {
                             func_ov030_020bbdc4(pool, data->ids[i]);
                             data->unk_218 = data->unk_218 + 1;
@@ -69,7 +69,7 @@ s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
                         data->dropRate = 0x270F;
                     }
                     func_ov030_020c2070(pool, data->luckTaskId, data->dropRate);
-                    func_ov030_020af760(0x14);
+                    FieldScan_AddTime(0x14);
                     data->chainCount = data->chainCount + 1;
                     if (data->chainTaskId != -1) {
                         EasyTask_DeleteTask(pool, data->chainTaskId);

@@ -45,7 +45,7 @@ typedef struct {
     /* 0x8 */ s32 base;
 } FieldSlope; // Size: 0xC
 
-// Per-area map parameters, indexed by MainData::unk_2458.
+// Per-area map parameters, indexed by MainData::fieldArea.
 typedef struct {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;

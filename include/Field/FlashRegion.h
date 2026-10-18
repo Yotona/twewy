@@ -4,12 +4,6 @@
 // Placeholder names follow USA addresses; JP builds map them to the JP addresses.
 #ifndef REGION_USA
     #define data_0205c9b0       data_0205d03c
-    #define data_ov030_020fde54 data_ov030_020fcf50
-    #define data_ov030_020fde60 data_ov030_020fcf5c
-    #define data_ov030_02109c00 data_ov030_02108a28
-    #define data_ov030_02109df0 data_ov030_02108c10
-    #define data_ov030_0210a1f8 data_ov030_02109014
-    #define data_ov030_0210a20c data_ov030_02109024
     #define data_ov030_0210a218 data_ov030_0210902c
     #define func_02010b50       func_02010aec
     #define func_02025b68       func_02025b10
@@ -25,11 +19,6 @@
     #define func_ov003_0208ec74 func_ov003_0208f4e0
     #define func_ov030_020ae92c func_ov030_020af028
     #define func_ov042_020824a0 func_ov041_02082e80
-    #define func_ov030_020d57c8 func_ov030_020d4c18
-    #define func_ov030_020d57e4 func_ov030_020d4c34
-    #define func_ov030_020d58a4 func_ov030_020d4cf4
-    #define func_ov030_020d5a00 func_ov030_020d4e50
-    #define func_ov030_020d5a2c func_ov030_020d4e7c
 #endif
 
 #endif // FIELD_FLASHREGION_H

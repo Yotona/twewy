@@ -156,16 +156,16 @@ typedef struct {
 } NNSG3dRenderObj; // Size: 0x54
 
 typedef struct Field3DObject {
-    /* 0x00 */ s32   unk_00;
-    /* 0x04 */ s32   unk_04;
-    /* 0x08 */ s32   unk_08;
+    /* 0x00 */ s32   x;
+    /* 0x04 */ s32   y;
+    /* 0x08 */ s32   z;
     /* 0x0C */ s32   unk_0C;
     /* 0x10 */ s32   unk_10;
     /* 0x14 */ s32   unk_14;
     /* 0x18 */ s32   unk_18;
     /* 0x1C */ s32   unk_1C;
-    /* 0x20 */ Mtx33 unk_20;
-    /* 0x44 */ u16   unk_44;
+    /* 0x20 */ Mtx33 rotMtx;
+    /* 0x44 */ u16   rotY;
     /* 0x46 */ char  unk_46[0x48 - 0x46];
     /* 0x48 */ s32   unk_48;
     /* 0x4C */ s32   unk_4C;
@@ -245,85 +245,85 @@ typedef struct {
     /* 0x68 */ void*                extraModelFiles[FO3D_VIEWER_EXTRA_MAX];
 } FieldViewerState; // Size: 0x70
 
-extern FieldViewerState* data_ov030_02109ddc;
+extern FieldViewerState* gFO3DViewer;
 
 // FOAllocator
-void                 func_ov030_020cd7d4(void);
-FieldAllocatorState* func_ov030_020cd7fc(void);
+void                 FOAllocator_Init(void);
+FieldAllocatorState* FOAllocator_Get(void);
 
 // FO3DRes
-FieldResourceState* func_ov030_020cdac0(void);
-void                func_ov030_020cdb18(void);
-void                func_ov030_020cdb5c(FieldResourceState* state);
-FieldResourceState* func_ov030_020cdb6c(void);
-u8                  func_ov030_020cdb7c(void* resource);
-s32                 func_ov030_020cdba0(void* resource);
-void                func_ov030_020cdbac(void* resource, s32 index);
-void                func_ov030_020cdc40(void* resource);
-void                func_ov030_020cdc70(void* resource, s32 index);
-void*               func_ov030_020cdca0(s32 size);
-void                func_ov030_020cdcd4(void* data);
+FieldResourceState* FO3DRes_Create(void);
+void                FO3DRes_Destroy(void);
+void                FO3DRes_SetCurrent(FieldResourceState* state);
+FieldResourceState* FO3DRes_GetCurrent(void);
+u8                  FO3DRes_GetModelCount(void* resource);
+s32                 FO3DRes_LoadToVram(void* resource);
+void                FO3DRes_SetModel(void* resource, s32 index);
+void                FO3DRes_SetTexture(void* resource);
+void                FO3DRes_SetAnim(void* resource, s32 index);
+void*               FO3DBase_Alloc(s32 size);
+void                FO3DBase_Free(void* data);
 
 // FO3DObj
-Field3DObject* func_ov030_020cdcfc(void);
-void           func_ov030_020cdcec(Field3DObject* obj);
-void           func_ov030_020cdd74(void);
-void           func_ov030_020cdd98(s16 rotY);
-void           func_ov030_020cdde8(s32 x, s32 y, s32 z);
-void           func_ov030_020cde20(s32 arg0);
-void*          func_ov030_020cde54(s32 size);
-void           func_ov030_020cde88(void* data);
+Field3DObject* FO3DObj_Create(void);
+void           FO3DObj_SetCurrent(Field3DObject* obj);
+void           FO3DObj_Destroy(void);
+void           FO3DObj_SetRotY(s16 rotY);
+void           FO3DObj_SetPos(s32 x, s32 y, s32 z);
+void           func_ov030_020cde20(s32 value);
+void*          FO3DObj_Alloc(s32 size);
+void           FO3DObj_Free(void* data);
 
 // FO3DObjMgr
-FO3DModel* func_ov030_020cf554(void);
-void       func_ov030_020cf6a0(void);
-void       func_ov030_020cf838(FO3DModel* model);
-void       func_ov030_020cf848(const s32* frames, s32 count);
-BOOL       func_ov030_020cf910(FieldPos* pos, FieldPos* points);
-void       func_ov030_020d0020(void);
-void       func_ov030_020d0084(FieldResourceState* res);
-void       func_ov030_020d0304(FieldResourceState* res);
-void       func_ov030_020d036c(FieldResourceState* res);
-void       func_ov030_020d0630(FieldPos* pos, FieldPos* points);
-void       func_ov030_020d08e8(Vec* pos);
-BOOL       func_ov030_020d0b24(const char* name, Vec* pos);
-fx32       func_ov030_020d0bc0(void);
-BOOL       func_ov030_020d0bf0(void);
-BOOL       func_ov030_020d0c38(const char* name);
-void       func_ov030_020d0c70(void);
-void       func_ov030_020d0cd4(void);
-void       func_ov030_020d0cf0(void);
+FO3DModel* FO3DObjMgr_Create(void);
+void       FO3DObjMgr_Destroy(void);
+void       FO3DObjMgr_SetCurrent(FO3DModel* model);
+void       FO3DObjMgr_SetSampleFrames(const s32* frames, s32 count);
+BOOL       FO3DObjMgr_UpdateBlendWeights(FieldPos* pos, FieldPos* points);
+void       FO3DObjMgr_ResetObj(void);
+void       FO3DObjMgr_SetModel(FieldResourceState* res);
+void       FO3DObjMgr_SetTexture(FieldResourceState* res);
+void       FO3DObjMgr_AddAnim(FieldResourceState* res);
+void       FO3DObjMgr_UpdateAndDraw(FieldPos* pos, FieldPos* points);
+void       FO3DObjMgr_SetOffset(Vec* pos);
+BOOL       FO3DObjMgr_GetNodePos(const char* name, Vec* pos);
+fx32       FO3DObjMgr_GetFrame(void);
+BOOL       FO3DObjMgr_HasTexPatAnm(void);
+BOOL       FO3DObjMgr_IsNamed(const char* name);
+void       FO3DObjMgr_RestartAnim(void);
+void       FO3DObjMgr_Show(void);
+void       FO3DObjMgr_Hide(void);
 
 // FO3DViewerImd
-void*             func_ov030_020d0f18(s32 size);
-void              func_ov030_020d0f4c(void* data);
-FieldViewerState* func_ov030_020d0f64(void);
-void              func_ov030_020d1060(void);
+void*             FO3DViewerImd_Alloc(s32 size);
+void              FO3DViewerImd_Free(void* data);
+FieldViewerState* FO3DViewerImd_Create(void);
+void              FO3DViewerImd_Destroy(void);
 
 // FOFileList
-void* func_ov030_020d21e0(void);
-void  func_ov030_020d2218(void);
-u32   func_ov030_020d224c(const char* path, BOOL loadTable);
-void  func_ov030_020d2334(void);
-void* func_ov030_020d2378(void* buffer, u32 wantedIndex);
-u32   func_ov030_020d246c(void);
+void* FOFileList_Create(void);
+void  FOFileList_Destroy(void);
+u32   FOFileList_Open(const char* path, BOOL loadTable);
+void  FOFileList_Close(void);
+void* FOFileList_ReadEntry(void* buffer, u32 wantedIndex);
+u32   FOFileList_GetEntryCount(void);
 
-// FOFileList
-void* func_ov030_020d2488(s32 size);
-void  func_ov030_020d24bc(void* data);
+// FOFileList heap
+void* FOList_Alloc(s32 size);
+void  FOList_Free(void* data);
 
 // FOPtrList
-void*         func_ov030_020d24d4(void);
-void          func_ov030_020d2504(void);
-void          func_ov030_020d2538(FieldPtrList* list);
-FieldPtrList* func_ov030_020d2548(void);
-void          func_ov030_020d2558(s32 capacity);
-void          func_ov030_020d258c(void);
-s32           func_ov030_020d25cc(void* item);
+void*         FOPtrList_Create(void);
+void          FOPtrList_Destroy(void);
+void          FOPtrList_SetCurrent(FieldPtrList* list);
+FieldPtrList* FOPtrList_GetCurrent(void);
+void          FOPtrList_Init(s32 capacity);
+void          FOPtrList_Clear(void);
+s32           FOPtrList_Add(void* item);
 
 // FO3DViewer
-void* func_ov030_020d2188(s32 size);
-void  func_ov030_020d21bc(void* data);
-void  func_ov030_020d21d4(void* data);
+void* FOFileIO_Alloc(s32 size);
+void  FOFileIO_Free(void* data);
+void  FOFileIO_Release(void* data);
 
 #endif // FIELD_FO3D_H

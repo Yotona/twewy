@@ -65,7 +65,7 @@ s32 func_ov030_020babec(TaskPool* pool, Task* task) {
 
     sprite->sprite.posX = sprite->screen->x >> 0xC;
     sprite->sprite.posY = (sprite->screen->y - offset) >> 0xC;
-    if (func_ov030_020aefe0() == 0) {
+    if (Field_IsTalkEventActive() == 0) {
         Sprite_Render(&sprite->sprite);
     }
     return 1;

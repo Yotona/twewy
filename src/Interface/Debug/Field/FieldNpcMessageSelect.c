@@ -79,7 +79,7 @@ extern u8 func_ov030_020ca778(SysFont* arg0, s32 mesNo, s32 arg2, const u8* winK
 extern const TaskHandle Tsk_Task_Window;
 
 // Message range tables, defined in the field data blobs.
-extern const FldNpcMesRange data_ov030_020d9904;
+extern const FldNpcMesRange FieldEncounterRangesByChapterGroup;
 extern const FldNpcMesRange data_ov030_020d990c;
 extern const FldNpcMesRange data_ov030_020d9914;
 extern const FldNpcMesRange data_ov030_020d991c;
@@ -89,7 +89,7 @@ extern const FldNpcMesRange data_ov030_020da8fe;
 extern const FldNpcMesRange data_ov030_020da906;
 extern const FldNpcMesRange data_ov030_020da8ee;
 extern const FldNpcMesRange data_ov030_020da90e;
-extern const FldNpcMesRange data_ov030_020da8de;
+extern const FldNpcMesRange FieldEncounterRangesByArea;
 extern const FldNpcMesRange data_ov030_020da916;
 extern const FldNpcMesRange data_ov030_020da91e;
 extern const FldNpcMesRange data_ov030_020da926;
@@ -104,7 +104,7 @@ extern const FldNpcMesRange data_ov030_020da96e;
 extern const FldNpcMesRange data_ov030_020da976;
 extern const FldNpcMesRange data_ov030_020da986;
 extern const FldNpcMesRange data_ov030_020da98e;
-extern const FldNpcMesRange data_ov030_020d9f2a;
+extern const FldNpcMesRange FieldEncounterRangesByRank;
 extern const FldNpcMesRange data_ov030_020d9f32;
 extern const FldNpcMesRange data_ov030_020d9f3a;
 extern const FldNpcMesRange data_ov030_020d9f42;
@@ -121,44 +121,44 @@ extern const FldNpcMesRange data_ov030_020d9f8a;
 static const char* FldNpcMesSelSequence = "Seq_FldNpcMesSel()";
 
 static const FldNpcMesEntry FldNpcMesSelTable[FLD_NPC_MES_COUNT] = {
-    {        "SHIKI_FREE", &data_ov030_020d9904},
-    {       "JOSHUA_FREE", &data_ov030_020d990c},
-    {         "BEAT_FREE", &data_ov030_020d9914},
-    {     "KAIKETSU_FREE", &data_ov030_020d991c},
-    {         "MAP_ce001", &data_ov030_020da8e6},
-    {         "MAP_ce002", &data_ov030_020da8f6},
-    {         "MAP_ce003", &data_ov030_020da8fe},
-    {         "MAP_ce004", &data_ov030_020da906},
-    {         "MAP_no001", &data_ov030_020da8ee},
-    {         "MAP_no002", &data_ov030_020da90e},
-    {         "MAP_no003", &data_ov030_020da8de},
-    {         "MAP_no004", &data_ov030_020da916},
-    {         "MAP_no005", &data_ov030_020da91e},
-    {         "MAP_no006", &data_ov030_020da926},
-    {         "MAP_no008", &data_ov030_020da936},
-    {         "MAP_no009", &data_ov030_020da93e},
-    {         "MAP_no010", &data_ov030_020da946},
-    {         "MAP_ea001", &data_ov030_020da94e},
-    {         "MAP_ea002", &data_ov030_020da956},
-    {         "MAP_ea003", &data_ov030_020da95e},
-    {         "MAP_so001", &data_ov030_020da966},
-    {         "MAP_so002", &data_ov030_020da96e},
-    {         "MAP_we001", &data_ov030_020da976},
-    {         "MAP_we003", &data_ov030_020da986},
-    {         "MAP_we004", &data_ov030_020da98e},
-    {         "MUSRATTUS", &data_ov030_020d9f2a},
-    {                "DB", &data_ov030_020d9f32},
-    {        "TIGREPUNKS", &data_ov030_020d9f3a},
-    {    "LAPINANGELIQUE", &data_ov030_020d9f42},
-    {     "DRAGONCOUTURE", &data_ov030_020d9f4a},
-    {          "HIPSNAKE", &data_ov030_020d9f52},
-    {            "PEGASO", &data_ov030_020d9f5a},
-    {     "SHEEPHEAVENLY", &data_ov030_020d9f62},
-    {"JUPITEROFTHEMONKEY", &data_ov030_020d9f6a},
-    {          "PAVOREAL", &data_ov030_020d9f72},
-    {      "NATURALPUPPY", &data_ov030_020d9f7a},
-    {          "WILDBOAR", &data_ov030_020d9f82},
-    {            "GATITO", &data_ov030_020d9f8a},
+    {        "SHIKI_FREE", &FieldEncounterRangesByChapterGroup},
+    {       "JOSHUA_FREE",                &data_ov030_020d990c},
+    {         "BEAT_FREE",                &data_ov030_020d9914},
+    {     "KAIKETSU_FREE",                &data_ov030_020d991c},
+    {         "MAP_ce001",                &data_ov030_020da8e6},
+    {         "MAP_ce002",                &data_ov030_020da8f6},
+    {         "MAP_ce003",                &data_ov030_020da8fe},
+    {         "MAP_ce004",                &data_ov030_020da906},
+    {         "MAP_no001",                &data_ov030_020da8ee},
+    {         "MAP_no002",                &data_ov030_020da90e},
+    {         "MAP_no003",         &FieldEncounterRangesByArea},
+    {         "MAP_no004",                &data_ov030_020da916},
+    {         "MAP_no005",                &data_ov030_020da91e},
+    {         "MAP_no006",                &data_ov030_020da926},
+    {         "MAP_no008",                &data_ov030_020da936},
+    {         "MAP_no009",                &data_ov030_020da93e},
+    {         "MAP_no010",                &data_ov030_020da946},
+    {         "MAP_ea001",                &data_ov030_020da94e},
+    {         "MAP_ea002",                &data_ov030_020da956},
+    {         "MAP_ea003",                &data_ov030_020da95e},
+    {         "MAP_so001",                &data_ov030_020da966},
+    {         "MAP_so002",                &data_ov030_020da96e},
+    {         "MAP_we001",                &data_ov030_020da976},
+    {         "MAP_we003",                &data_ov030_020da986},
+    {         "MAP_we004",                &data_ov030_020da98e},
+    {         "MUSRATTUS",         &FieldEncounterRangesByRank},
+    {                "DB",                &data_ov030_020d9f32},
+    {        "TIGREPUNKS",                &data_ov030_020d9f3a},
+    {    "LAPINANGELIQUE",                &data_ov030_020d9f42},
+    {     "DRAGONCOUTURE",                &data_ov030_020d9f4a},
+    {          "HIPSNAKE",                &data_ov030_020d9f52},
+    {            "PEGASO",                &data_ov030_020d9f5a},
+    {     "SHEEPHEAVENLY",                &data_ov030_020d9f62},
+    {"JUPITEROFTHEMONKEY",                &data_ov030_020d9f6a},
+    {          "PAVOREAL",                &data_ov030_020d9f72},
+    {      "NATURALPUPPY",                &data_ov030_020d9f7a},
+    {          "WILDBOAR",                &data_ov030_020d9f82},
+    {            "GATITO",                &data_ov030_020d9f8a},
 };
 
 void FldNpcMesSel_CreateTextView(FldNpcMesSelObject* selObj) {

@@ -7,20 +7,20 @@
 extern "C" {
 #endif
 
-void func_ov030_020d57c8(void);
-void func_ov030_020d5a2c(void);
-void func_ov030_020d5c90(void);
+void FlashGfx_Init(void);
+void FlashGfx_Init3D(void);
+void FlashGfx_SwapScreens(void);
 
-void func_ov030_020d63c8(void);
-void func_ov030_020d6470(void);
-void func_ov030_020d6548(const char* path);
-void func_ov030_020d6584(void);
-void func_ov030_020d659c(void);
-void func_ov030_020d65b4(void);
-BOOL func_ov030_020d65e0(void);
-BOOL func_ov030_020d65f8(void);
-void func_ov030_020d6610(void (*callback)(void));
-void func_ov030_020d662c(void);
+void Flash_Init(void);
+void Flash_Shutdown(void);
+void Flash_Load(const char* path);
+void Flash_Update(void);
+void Flash_Draw(void);
+void Flash_VBlank(void);
+BOOL Flash_Start(void);
+BOOL Flash_IsPlaying(void);
+void Flash_SetDrawCallback(void (*callback)(void));
+void Flash_ClearDrawCallback(void);
 
 #ifdef __cplusplus
 } // extern "C"

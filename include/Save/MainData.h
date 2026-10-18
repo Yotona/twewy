@@ -131,7 +131,7 @@ typedef struct MainData {
     /* 0x2440 */ char           unk_2440[0x244C - 0x2440];
     /* 0x244C */ FieldPos       fieldPos; // player position on the field map
     /* 0x2454 */ s32            unk_2454;
-    /* 0x2458 */ s16            unk_2458;
+    /* 0x2458 */ s16            fieldArea;
     /* 0x245A */ u16            unk_245A;
     /* 0x245C */ u32            progressFlags[4]; // 128 flags
     /* 0x246C */ u32            unk_246C;
@@ -158,13 +158,13 @@ typedef struct MainData {
     /* 0x24B6 */ u16            unk_24B6;
     /* 0x24B8 */ u32            unk_24B8;
     /* 0x24BC */ u16            currentStoryEvent; // Most recently completed story event, for progress gating and rewards
-    /* 0x24BE */ u16            unk_24BE;
+    /* 0x24BE */ u16            mailEvent;
     /* 0x24C0 */ u16            unk_24C0;
     /* 0x24C2 */ u16            unk_24C2;
     /* 0x24C4 */ u32            unk_24C4;
     /* 0x24C8 */ s32            unk_24C8[16];
     /* 0x2508 */ s32            unk_2508[16]; // parallel to unk_24C8
-    /* 0x2548 */ s16            unk_2548[44];
+    /* 0x2548 */ s16            areaPopulation[44];
     /* 0x25A0 */ char           unk_25A0[0x2648 - 0x25A0];
     union {
         /* 0x2648 */ s16 exitStates[75]; // per map exit, passable at >= 4; ids below 0x38 are Fld_Wall barriers
@@ -261,18 +261,18 @@ typedef struct MainData {
     /* 0x30FE */ s16              unk_30FE;
     /* 0x3100 */ s16              unk_3100;
     /* 0x3102 */ s16              unk_3102;
-    /* 0x3104 */ s16              unk_3104;
-    /* 0x3106 */ s16              unk_3106;
+    /* 0x3104 */ s16              noiseQuotaStep;
+    /* 0x3106 */ u16              unk_3106;
     /* 0x3108 */ s16              unk_3108;
     /* 0x310A */ char             unk_310A[0x310C - 0x310A];
     /* 0x310C */ void*            unk_310C;
-    /* 0x3110 */ s16              unk_3110;
-    /* 0x3112 */ s16              unk_3112[6]; // encounter cursors, a pair per FieldEncounter range table
+    /* 0x3110 */ s16              noiseSymbolCount;
+    /* 0x3112 */ s16              encounterCursors[6]; // encounter cursors, a pair per FieldEncounter range table
     /* 0x311E */ s16              unk_311E;
     /* 0x3120 */ s16              unk_3120;
     /* 0x3122 */ char             unk_3122[0x3124 - 0x3122];
-    /* 0x3124 */ s32              unk_3124;
-    /* 0x3128 */ s16              unk_3128;
+    /* 0x3124 */ s32              flashSequence;
+    /* 0x3128 */ s16              flashExitMode;
     /* 0x312A */ char             unk_312A[0x312C - 0x312A];
     /* 0x312C */ s32              unk_312C;
     /* 0x3130 */ s32              unk_3130;

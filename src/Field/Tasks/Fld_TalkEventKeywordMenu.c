@@ -77,7 +77,7 @@ void func_ov030_020c3e30(TaskPool* pool, Task* task) {
 
     s32 var_r5 = 2;
 
-    menu->unk_3C = func_ov030_020b0418();
+    menu->unk_3C = FieldTalk_GetKeywordCount();
     if (menu->unk_3C == 0) {
         return;
     }

@@ -64,8 +64,7 @@ s32 Fld_UGFade_Update(TaskPool* pool, Task* task, void* args) {
 
         fade->unk_10--;
 
-        g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff0 = F2I(fade->blendCoeff0);
-        g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff1 = F2I(fade->blendCoeff1);
+        Display_SetBlendCoeffs(DISPLAY_MAIN, F2I(fade->blendCoeff0), F2I(fade->blendCoeff1));
         return 1;
     }
     *fade->unk_14 = -1;

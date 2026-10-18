@@ -45,9 +45,9 @@ typedef struct {
 extern const char       data_ov030_02106524[];
 extern const TaskHandle Task_Window;
 
-extern s32  func_ov030_020aacb0(void);
+extern s32  Field_HasBustShotsOnBothSides(void);
 extern s32  func_ov030_020aad28(void);
-extern BOOL func_ov030_020b0454(void);
+extern BOOL FieldEvent_IsDebugSkipHeld(void);
 
 extern u8 func_ov030_020ca778(SysFont* font, s32 mesNo, s32 arg2, const u8* winKind);
 
@@ -118,7 +118,7 @@ const SpriteAnimation data_ov030_020e0898 = {
 };
 
 s16 func_ov030_020b3d00(u32 arg0, s32 arg1) {
-    if (func_ov030_020aacb0() != 0) {
+    if (Field_HasBustShotsOnBothSides() != 0) {
         return 0x80;
     }
     if (arg0 > 3) {
@@ -223,9 +223,9 @@ s32 func_ov030_020b3d88(TaskPool* pool, s32 datSlot, s32 arg2, s16 arg3, s32 arg
     } else if (arg4 == -1023) {
         param.unk_08.sx = func_ov030_020b3d00(param.unk_19, 1);
     } else {
-        param.unk_08.sx = func_ov030_020af6a0(arg4);
+        param.unk_08.sx = Field_ResolvePresetCoord(arg4);
     }
-    param.unk_04.sx = func_ov030_020af6a0(arg2);
+    param.unk_04.sx = Field_ResolvePresetCoord(arg2);
     param.unk_16    = arg8;
     param.unk_0C    = 0xA;
     param.unk_04.sy = arg3;
@@ -271,7 +271,7 @@ void func_ov030_020b4060(Task* task, s16 arg1) {
     if (task == NULL) {
         return;
     }
-    if (func_ov030_020b0454() != 0) {
+    if (FieldEvent_IsDebugSkipHeld() != 0) {
         step *= 3;
     }
     entity       = task->data;
@@ -436,7 +436,7 @@ s32 func_ov030_020b4340(TaskPool* pool, Task* task, void* args) {
 s32 func_ov030_020b4414(TaskPool* pool, Task* task, void* args) {
     FldBadgeItem* item = task->data;
 
-    if ((gSaveData.unk_2458 == 0x25) && (item->sprite.bits_0_1 == 0)) {
+    if ((gSaveData.fieldArea == 0x25) && (item->sprite.bits_0_1 == 0)) {
         return 1;
     }
     if (item->visible != 0) {

@@ -282,9 +282,16 @@ src/Field/Tasks/Fld_TalkEventPlate.c:
     .data       start:0x02106680 end:0x02106698
 
 src/Field/Battle/FieldNoiseEncounter.c:
-    .text       start:0x020c5c54 end:0x020c5ec0
-    .rodata     start:0x020e6734 end:0x020e970c
-    .data       start:0x02106770 end:0x02107564
+    complete
+    .text       start:0x020c5c54 end:0x020c5db0
+    .rodata     start:0x020e6734 end:0x020e8c18
+    .data       start:0x02106770 end:0x02107428
+
+src/Field/Battle/FieldNoiseQuota.c:
+    complete
+    .text       start:0x020c5db0 end:0x020c5ec0
+    .rodata     start:0x020e8c18 end:0x020e970c
+    .data       start:0x02107428 end:0x02107564
 
 src/Field/Tasks/Fld_EventMail.c:
     .text       start:0x020c8d78 end:0x020c8f68

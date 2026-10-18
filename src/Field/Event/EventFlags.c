@@ -68,7 +68,7 @@ void func_ov030_020aec58(s32 arg0) {
 
 s32 func_ov030_020aeca4(s32 arg0) {
     s32 temp_r0 = (s32)(arg0 - (func_ov030_020b7b40() << 0xC)) / func_ov030_020b7b60();
-    if ((gSaveData.unk_2458 == 0) && (arg0 < 0x8E000)) {
+    if ((gSaveData.fieldArea == 0) && (arg0 < 0x8E000)) {
         return (s32)(((s64)(arg0 / 142) * 0xE66 + 0x800) >> 12);
     }
     return gSaveData.unk_248C + (s32)(((s64)gSaveData.unk_2494 * temp_r0 + 0x800) >> 12);

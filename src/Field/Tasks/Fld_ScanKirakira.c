@@ -47,7 +47,7 @@ extern SpriteAnimation data_ov030_020e6334;
 extern ScanKirakiraFns data_ov030_020e6324;
 extern TaskHandle      data_ov030_020e6318;
 
-extern s32  func_ov030_020aef44(void);
+extern s32  FieldScan_IsEnteringBattle(void);
 extern void func_ov030_020beba0(TaskPool* pool, s32 unk44, s16 x, s16 y, s32 unk48, s32 unk4C, s32 unk50, Task* human);
 
 SpriteFrameInfo* func_ov030_020be114(Sprite* sprite, s32 arg, s32 mode) {
@@ -209,7 +209,7 @@ s32 func_ov030_020be5ec(TaskPool* pool, Task* task, ScanKirakiraArgs* args) {
 }
 
 s32 func_ov030_020be640(s32 arg0, s32 arg1) {
-    if (gSaveData.unk_2458 == 1) {
+    if (gSaveData.fieldArea == 1) {
         return 1;
     }
     if (arg0 > 0x100) {
@@ -246,10 +246,10 @@ s32 func_ov030_020be68c(TaskPool* pool, Task* task) {
             return 0;
         }
     }
-    if (func_ov030_020aefbc() == 0) {
+    if (FieldScan_IsOpen() == 0) {
         return 0;
     }
-    if (func_ov030_020aef44() != 0) {
+    if (FieldScan_IsEnteringBattle() != 0) {
         return 0;
     }
     Sprite_Update(&data->sprite);

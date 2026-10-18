@@ -48,8 +48,8 @@ extern Ov030CoinFns    data_ov030_020ed114;
 extern TaskHandle      data_ov030_020ed108;
 extern SpriteAnimation data_ov030_020ed124;
 extern Ov030CoinRegion data_ov030_0210896c[3];
-extern void            func_ov030_020af6f0(s32);
-extern void            func_ov030_020af708(s16);
+extern void            Field_SetTouchEventResult(s32);
+extern void            Field_SetTouchEventTarget(s16);
 
 s32 func_ov030_020ccda8(Sprite*, TouchCoord);
 u32 func_ov030_020cd204(Ov030CoinSprite*, Ov030CoinSprite*);
@@ -211,24 +211,24 @@ s32 func_ov030_020ccf60(Ov030CoinSprite* arg0, Ov030CoinSprite* arg1) {
 s32 func_ov030_020ccf90(Ov030CoinSprite* arg0, Ov030CoinSprite* arg1) {
     if (arg1->unk6E == 0) {
         if (func_ov030_020ccdec(arg0, arg1) != 0) {
-            func_ov030_020af6f0(5);
-            func_ov030_020af708(0);
+            Field_SetTouchEventResult(5);
+            Field_SetTouchEventTarget(0);
             SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
         }
         if (func_ov030_020ccef8(arg0, arg1) != 0) {
-            func_ov030_020af6f0(5);
-            func_ov030_020af708(1);
+            Field_SetTouchEventResult(5);
+            Field_SetTouchEventTarget(1);
             SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
         }
         if (func_ov030_020cce68(arg0, arg1) != 0) {
-            func_ov030_020af6f0(5);
-            func_ov030_020af708(2);
+            Field_SetTouchEventResult(5);
+            Field_SetTouchEventTarget(2);
             SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
         }
     }
     if (func_ov030_020ccf60(arg0, arg1) != 0) {
-        func_ov030_020af6f0(5);
-        func_ov030_020af708(0xC);
+        Field_SetTouchEventResult(5);
+        Field_SetTouchEventTarget(0xC);
         SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
     }
     arg1->unk54 = arg0->sprite.posX;
@@ -244,51 +244,51 @@ s32 func_ov030_020cd078(Ov030CoinSprite* arg0, Ov030CoinSprite* arg1) {
             default:
                 break;
             case 2:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(4);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(4);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
             case 1:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(3);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(3);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
             case 0:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(5);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(5);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
             case 6:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(0xA);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(0xA);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 arg1->unk6E = 1;
                 break;
             case 5:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(9);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(9);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 arg1->unk6E = 1;
                 break;
             case 4:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(0xB);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(0xB);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 arg1->unk6E = 1;
                 break;
             case 9:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(7);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(7);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
             case 8:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(6);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(6);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
             case 7:
-                func_ov030_020af6f0(5);
-                func_ov030_020af708(8);
+                Field_SetTouchEventResult(5);
+                Field_SetTouchEventTarget(8);
                 SndMgr_PlaySEWithPan(0xC4, arg0->sprite.posX);
                 break;
         }

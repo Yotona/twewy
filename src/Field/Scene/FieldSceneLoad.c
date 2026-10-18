@@ -1,5 +1,3 @@
-// USA 0x020b69f4-0x020b7a00: the field-loading overlay's display bring-up and
-// area-selection task. Display widths/offsets come from the ARM loads.
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -26,22 +24,21 @@
 #include <nitro/gx.h>
 #include <nitro/mi/cpumem.h>
 
-// ---- externs without headers -------------------------------------------------
 extern void func_02010b50(TextObject* textObj);
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
 extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textResource);
 
 extern s32         func_ov030_0208430c(void);
-extern s32         func_ov030_020af350(void);
+extern s32         Field_GetCurrentTrendZone(void);
 extern void        func_ov030_020b20c0(void);
 extern const char* func_ov030_020b5fe8(void);
 extern s32         func_ov030_020b600c(void);
-extern void        func_ov030_020d1404(void);
-extern void        func_ov030_020d1458(s32 arg0, void* arg1);
-extern void        func_ov030_020d17c0(s32 arg0);
-extern void        func_ov030_020d1e00(void* arg0);
-extern void        func_ov030_020d1ef8(void* arg0);
+extern void        FO3DViewer_LoadToVram(void);
+extern void        FO3DViewer_LoadExtra(s32 arg0, void* arg1);
+extern void        FO3DViewer_Init(s32 arg0);
+extern void        FO3DViewer_Show(void* arg0);
+extern void        FO3DViewer_Hide(void* arg0);
 
 extern void func_ov030_020b69b4(void* arg0);
 extern void GX_LoadBgPltt(void* ptr, u32 offset, u32 size);
@@ -50,8 +47,6 @@ extern void GXs_LoadBgPltt(void* ptr, u32 offset, u32 size);
 extern u32  GXs_LoadObjPltt(void* ptr, u32 offset, u32 size);
 extern void G3i_OrthoW(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void G3i_LookAt(Vec* eye, Vec* up, Vec* target, s32 arg3, s32 arg4);
-
-// ---- local data views --------------------------------------------------------
 
 extern s32 (*data_02065fd4)(s32, s32, s32);
 
@@ -97,7 +92,6 @@ extern const Ov030Ptr14 data_ov030_020e0dec;
 const Vec data_ov030_020e0d24 = {0, 0x1000, 0};
 const Vec data_ov030_020e0d30 = {0, 0, -0x1000};
 
-// ---- functions ---------------------------------------------------------------
 void func_ov030_020b69f4(EventSelectObject* arg0);
 void func_ov030_020b6a74(EventSelectObject* arg0);
 void func_ov030_020b6b14(EventSelectObject* arg0);
@@ -199,8 +193,7 @@ void func_ov030_020b6bc8(EventSelectObject* arg0) {
     func_ov030_020b6a74(arg0);
 }
 
-// Nonmatching: tail-store register allocation (0 kept in scratch r12 vs callee-saved r3; zero-store order) (USA 93.92%; JP
-// unvalidated).
+// Nonmatching
 void func_ov030_020b6ca0(void) {
     EventSelectObject* obj;
     const char*        seq;
@@ -244,12 +237,12 @@ void func_ov030_020b6dec(void* arg0) {
 
     if (stage == 0x7FFFFFFF) {
         func_ov030_020b6dbc(arg0);
-        return;
+    } else {
+        data_ov030_020e0d18[stage](arg0);
     }
-    data_ov030_020e0d18[stage](arg0);
 }
 
-// Nonmatching: store scheduling around the sub BG0 register write (USA 92.86%; JP unvalidated).
+// Nonmatching
 void func_ov030_020b6e2c(void) {
     Vec v2C;
     Vec v20;
@@ -394,34 +387,31 @@ void func_ov030_020b741c(void) {
     u32 i = 0;
 
     do {
-        func_ov030_020d1ef8(data_ov030_02106a94[i]);
+        FO3DViewer_Hide(data_ov030_02106a94[i]);
         i += 1;
     } while (i < 0xB);
 }
 
 void func_ov030_020b7444(void) {
     u32 i    = 0;
-    s32 skip = gSaveData.unk_2458 - 0x18;
+    s32 skip = gSaveData.fieldArea - 0x18;
 
     do {
         if (i != skip) {
-            func_ov030_020d1ef8(data_ov030_02106ac0[i]);
+            FO3DViewer_Hide(data_ov030_02106ac0[i]);
         }
         i += 1;
     } while (i < 0xD);
 }
 
-// Loops over the fixed load lists compare a signed index against the unsigned
-// ARRAY_LEN_U count, which keeps mwcc from peeling the
-// single-entry lists.
 void func_ov030_020b7484(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a74); i++) {
-        func_ov030_020d1e00(data_ov030_02106a74[i]);
+        FO3DViewer_Show(data_ov030_02106a74[i]);
     }
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a80); i++) {
-        func_ov030_020d1e00(data_ov030_02106a80[i]);
+        FO3DViewer_Show(data_ov030_02106a80[i]);
     }
 }
 
@@ -429,10 +419,10 @@ void func_ov030_020b74cc(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a74); i++) {
-        func_ov030_020d1e00(data_ov030_02106a74[i]);
+        FO3DViewer_Show(data_ov030_02106a74[i]);
     }
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a78); i++) {
-        func_ov030_020d1e00(data_ov030_02106a78[i]);
+        FO3DViewer_Show(data_ov030_02106a78[i]);
     }
 }
 
@@ -440,10 +430,10 @@ void func_ov030_020b7514(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a70); i++) {
-        func_ov030_020d1e00(data_ov030_02106a70[i]);
+        FO3DViewer_Show(data_ov030_02106a70[i]);
     }
     for (i = 0; i < ARRAY_LEN_U(data_ov030_02106a88); i++) {
-        func_ov030_020d1e00(data_ov030_02106a88[i]);
+        FO3DViewer_Show(data_ov030_02106a88[i]);
     }
 }
 
@@ -453,7 +443,7 @@ void func_ov030_020b755c(s32 arg0) {
 
     do {
         if (i != arg0) {
-            func_ov030_020d1ef8(tbl.p[i]);
+            FO3DViewer_Hide(tbl.p[i]);
         }
         i += 1;
     } while (i < 4U);
@@ -468,7 +458,7 @@ void func_ov030_020b75a4(void) {
     if (v >= 0xD) {
         v = 0;
     }
-    func_ov030_020d1458(0, tblA.p[v]);
+    FO3DViewer_LoadExtra(0, tblA.p[v]);
     v2 = gSaveData.brandTrends[1].ranking[0];
     if (func_ov030_0208430c() == 0) {
         v2 = 0xD;
@@ -476,21 +466,21 @@ void func_ov030_020b75a4(void) {
     if (v2 >= 0xE) {
         v2 = 0;
     }
-    func_ov030_020d1458(0, tblB.p[v2]);
+    FO3DViewer_LoadExtra(0, tblB.p[v2]);
 }
 
 void func_ov030_020b765c(void) {
     Ov030Ptr14 tbl = data_ov030_020e0db4;
     u8         v;
 
-    v = gSaveData.brandTrends[func_ov030_020af350()].ranking[0];
+    v = gSaveData.brandTrends[Field_GetCurrentTrendZone()].ranking[0];
     if (func_ov030_0208430c() == 0) {
         v = 0xD;
     }
     if (v >= 0xE) {
         v = 0;
     }
-    func_ov030_020d1458(gSaveData.unk_2458, tbl.p[v]);
+    FO3DViewer_LoadExtra(gSaveData.fieldArea, tbl.p[v]);
 }
 
 void func_ov030_020b76dc(void) {
@@ -500,7 +490,7 @@ void func_ov030_020b76dc(void) {
     if (v >= 0xD) {
         v = 0;
     }
-    func_ov030_020d1458(gSaveData.unk_2458, tbl.p[v]);
+    FO3DViewer_LoadExtra(gSaveData.fieldArea, tbl.p[v]);
 }
 
 void func_ov030_020b7744(s32* arg0, s32 arg1) {
@@ -516,15 +506,15 @@ void func_ov030_020b7744(s32* arg0, s32 arg1) {
     func_020267e0(0x80);
     func_02027b0c(0x4000, 1);
     *arg0 = data_02065fd4(0x800, 0, 1);
-    area  = gSaveData.unk_2458;
+    area  = gSaveData.fieldArea;
     if (area == 0) {
-        func_ov030_020d17c0(2);
+        FO3DViewer_Init(2);
     } else if (area == 1) {
-        func_ov030_020d17c0(0);
+        FO3DViewer_Init(0);
     } else if (area == 2) {
-        func_ov030_020d17c0(1);
+        FO3DViewer_Init(1);
     } else if (area == 5) {
-        func_ov030_020d17c0(5);
+        FO3DViewer_Init(5);
         if (func_0202599c(0) != 0) {
             func_ov030_020b755c(2);
         } else if (func_0202599c(8) != 0) {
@@ -533,49 +523,49 @@ void func_ov030_020b7744(s32* arg0, s32 arg1) {
             func_ov030_020b755c(0);
         }
     } else if (area == 0x18) {
-        func_ov030_020d17c0(0x18);
+        FO3DViewer_Init(0x18);
         func_ov030_020b741c();
         func_ov030_020b7484();
         func_ov030_020b7444();
     } else if (area == 0x19) {
-        func_ov030_020d17c0(0x18);
+        FO3DViewer_Init(0x18);
         func_ov030_020b741c();
         func_ov030_020b74cc();
         func_ov030_020b7444();
     } else if (area >= 0x1A && area <= 0x24) {
-        func_ov030_020d17c0(0x18);
+        FO3DViewer_Init(0x18);
         func_ov030_020b741c();
         func_ov030_020b7514();
         func_ov030_020b7444();
     } else if (area == 0x13) {
-        func_ov030_020d17c0(0x13);
+        FO3DViewer_Init(0x13);
         if (func_0202599c(4) == 0) {
-            func_ov030_020d1ef8(data_ov030_0210722c);
+            FO3DViewer_Hide(data_ov030_0210722c);
         } else {
-            func_ov030_020d1ef8(data_ov030_02107238);
+            FO3DViewer_Hide(data_ov030_02107238);
         }
     } else if (area == 0x27) {
         if (func_0202599c(6) != 0) {
-            func_ov030_020d17c0(0x2D);
+            FO3DViewer_Init(0x2D);
         } else {
-            func_ov030_020d17c0(0x27);
+            FO3DViewer_Init(0x27);
         }
     } else if (area >= 0x2C) {
-        func_ov030_020d17c0(0x25);
+        FO3DViewer_Init(0x25);
     } else {
-        func_ov030_020d17c0(area);
+        FO3DViewer_Init(area);
     }
-    if (gSaveData.unk_2458 == 1) {
+    if (gSaveData.fieldArea == 1) {
         func_ov030_020b75a4();
     }
-    if (gSaveData.unk_2458 == 0xE) {
-        func_ov030_020d1458(gSaveData.unk_2458, data_ov030_02107244);
+    if (gSaveData.fieldArea == 0xE) {
+        FO3DViewer_LoadExtra(gSaveData.fieldArea, data_ov030_02107244);
     }
-    if (gSaveData.unk_2458 == 3) {
+    if (gSaveData.fieldArea == 3) {
         func_ov030_020b765c();
     }
-    if (gSaveData.unk_2458 == 4) {
+    if (gSaveData.fieldArea == 4) {
         func_ov030_020b76dc();
     }
-    func_ov030_020d1404();
+    FO3DViewer_LoadToVram();
 }

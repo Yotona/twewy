@@ -48,12 +48,12 @@ extern void func_ov030_020846bc(FieldEventManager*, s32);
 extern s32  func_ov030_020aa4bc(FieldEventManager*);
 extern void func_ov030_020aac84(FieldEventManager*);
 extern BOOL func_ov030_020ab3ec(u32);
-extern void func_ov030_020ac95c(FieldEventManager*);
-extern void func_ov030_020ad044(FieldEventManager*);
-extern void func_ov030_020ad1ac(FieldEventManager*);
-extern void func_ov030_020ad428(FieldEventManager*);
-extern void func_ov030_020af364(s32);
-extern BOOL func_ov030_020b0454(void);
+extern void Field_SpawnHumans(FieldEventManager*);
+extern void Field_CreateHud(FieldEventManager*);
+extern void Field_DestroyHud(FieldEventManager*);
+extern void Field_ReleaseEventPicture(FieldEventManager*);
+extern void FieldBattle_SetupScripted(s32);
+extern BOOL FieldEvent_IsDebugSkipHeld(void);
 extern void func_ov030_020b3034(Task*);
 extern s32  func_ov030_020b3774(TaskPool*, s32, s32, s32, s32, s16, s16, s16);
 extern void func_ov030_020b37cc(Task*, s32, s32);
@@ -112,7 +112,7 @@ s32 func_ov030_020a66e8(FieldEventManager* object) {
             return 1;
         }
     }
-    if (object->unk_21D22 != 0) {
+    if (object->touchEventKind != 0) {
         return 1;
     }
     return 0;
@@ -254,7 +254,7 @@ BOOL func_ov030_020a6ab4(FieldEventManager* eventMgr) {
 
     for (i = 0; i < 32; i++) {
         if ((eventMgr->unk_21C48[i] != -1) && (EasyTask_ValidateTaskId(&eventMgr->taskPool, &eventMgr->unk_21C48[i]))) {
-            if (func_ov030_020b0454() != 0) {
+            if (FieldEvent_IsDebugSkipHeld() != 0) {
                 if (eventMgr->unk_21CD4 == i) {
                     func_ov030_020b4038(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_21C48[i]));
                 } else {
@@ -271,7 +271,7 @@ BOOL func_ov030_020a6ab4(FieldEventManager* eventMgr) {
 void func_ov030_020a6b6c(FieldEventManager* eventMgr, s32 arg1, s32 arg2, s32 arg3) {
     for (s32 i = arg2; i < arg3; i++) {
         if ((eventMgr->unk_21C48[i] != -1) && (eventMgr->unk_21CD4 != i)) {
-            if (func_ov030_020b0454() != 0) {
+            if (FieldEvent_IsDebugSkipHeld() != 0) {
                 EasyTask_DeleteTask(&eventMgr->taskPool, eventMgr->unk_21C48[i]);
                 eventMgr->unk_21C48[i] = -1;
             } else {
@@ -293,7 +293,7 @@ void func_ov030_020a6c38(FieldEventManager* eventMgr, s32 arg1) {
 void func_ov030_020a6c4c(FieldEventManager* eventMgr, s32 arg1, s32 arg2, s32 arg3) {
     for (s32 i = arg2; i < arg3; i++) {
         if (eventMgr->unk_21C48[i] != -1) {
-            if (func_ov030_020b0454() != 0) {
+            if (FieldEvent_IsDebugSkipHeld() != 0) {
                 EasyTask_DeleteTask(&eventMgr->taskPool, eventMgr->unk_21C48[i]);
                 eventMgr->unk_21C48[i] = -1;
             } else {
@@ -345,19 +345,19 @@ void FldEvent_InitState(FieldEventManager* eventMgr) {
         eventMgr->unk_21C48[i] = -1;
     }
 
-    eventMgr->unk_21CEA = 0;
-    eventMgr->unk_21CD4 = -1;
-    eventMgr->unk_21D00 = 280;
-    eventMgr->unk_21CEC = 0;
-    eventMgr->unk_21CF0 = 1;
-    eventMgr->unk_21AD8 = 0;
-    eventMgr->unk_21ADC = 1;
-    eventMgr->unk_21AE0 = 0;
-    eventMgr->unk_21CF8 = 0;
-    eventMgr->unk_21CFC = 0;
-    eventMgr->unk_21758 = 0;
-    eventMgr->unk_2176A = 0;
-    eventMgr->unk_21D22 = 0;
+    eventMgr->unk_21CEA      = 0;
+    eventMgr->unk_21CD4      = -1;
+    eventMgr->unk_21D00      = 280;
+    eventMgr->unk_21CEC      = 0;
+    eventMgr->unk_21CF0      = 1;
+    eventMgr->unk_21AD8      = 0;
+    eventMgr->unk_21ADC      = 1;
+    eventMgr->unk_21AE0      = 0;
+    eventMgr->unk_21CF8      = 0;
+    eventMgr->unk_21CFC      = 0;
+    eventMgr->unk_21758      = 0;
+    eventMgr->unk_2176A      = 0;
+    eventMgr->touchEventKind = 0;
 }
 
 s32 func_ov030_020a6e50(void) {
@@ -383,7 +383,7 @@ void func_ov030_020a6eac(FieldEventManager* eventMgr, s32 arg1, s32 arg2, s32 ar
         func_ov030_020b3b70(task, arg5, arg6, arg2);
         func_ov030_020a6e64(eventMgr, *taskIdPtr, task);
     } else {
-        *taskIdPtr = func_ov030_020b3774(&eventMgr->taskPool, eventMgr->unk_21614, resourceId, arg2, arg3, arg4, arg5, arg6);
+        *taskIdPtr = func_ov030_020b3774(&eventMgr->taskPool, eventMgr->dataType, resourceId, arg2, arg3, arg4, arg5, arg6);
     }
 }
 
@@ -392,7 +392,7 @@ void func_ov030_020a6f90(FieldEventManager* eventMgr) {
     u32*  temp_r5 = (u32*)func_ov030_020a6960(eventMgr, eventMgr->unk_21D00);
     Task* task    = EasyTask_GetTaskById(&eventMgr->taskPool, *temp_r5);
     s32   val     = func_ov030_020b3cc8(task);
-    *temp_r4      = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->unk_21614, val, 0xD0, val, 0xD0, 0, 0x16, 8, 0, 0, 0);
+    *temp_r4      = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->dataType, val, 0xD0, val, 0xD0, 0, 0x16, 8, 0, 0, 0);
 }
 
 s32 func_ov030_020a701c(FieldEventManager* eventMgr) {
@@ -417,8 +417,8 @@ s32 func_ov030_020a701c(FieldEventManager* eventMgr) {
             g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer1 = 0;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = 0;
             g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = 0;
-            eventMgr->unk_216C0 = Fld_TalkEventDecide_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4, 0x78);
-            eventMgr->unk_216C4 = func_ov030_020b44b8(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4, 0x78, 0, 1);
+            eventMgr->unk_216C0 = Fld_TalkEventDecide_CreateTask(&eventMgr->taskPool, eventMgr->dataType, temp_r4, 0x78);
+            eventMgr->unk_216C4 = func_ov030_020b44b8(&eventMgr->taskPool, eventMgr->dataType, temp_r4, 0x78, 0, 1);
             func_ov030_020b4570(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216C4), 2);
             func_ov030_020a6f90(eventMgr);
             func_ov030_020a6d0c(eventMgr, 0x44);
@@ -457,7 +457,7 @@ s32 func_ov030_020a722c(FieldEventManager* eventMgr) {
     {
         return 1;
     }
-    if (func_ov030_020b0454() != 0) {
+    if (FieldEvent_IsDebugSkipHeld() != 0) {
         return 1;
     }
     return 0;
@@ -505,11 +505,11 @@ void func_ov030_020a737c(FieldEventManager* eventMgr) {
         func_ov030_020846bc(eventMgr, 2);
         func_ov030_020830ac(eventMgr);
         g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_BG1;
-        func_ov030_020ad1ac(eventMgr);
-        func_ov030_020b458c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216B0), 0);
+        Field_DestroyHud(eventMgr);
+        func_ov030_020b458c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Badge), 0);
         FldEvent_AdvanceScript(eventMgr);
         EasyFade_FadeBothDisplays(FADER_INSTANT, 0, eventMgr->unk_21D12);
-        eventMgr->unk_216C8 = Fld_TalkEventTitle_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614);
+        eventMgr->unk_216C8 = Fld_TalkEventTitle_CreateTask(&eventMgr->taskPool, eventMgr->dataType);
         return;
     }
     FldEvent_AdvanceScript(eventMgr);
@@ -571,13 +571,13 @@ s32 func_ov030_020a75d8(FieldEventManager* eventMgr, s16 arg1) {
                 return 1;
             }
             if (arg1 == 0x49) {
-                arg1 = gSaveData.unk_2458;
+                arg1 = gSaveData.fieldArea;
             }
             func_ov030_0208434c(eventMgr, 3, arg1);
             if (eventMgr->unk_21AC4 != 0) {
                 EasyFade_FadeMainDisplay(FADER_INSTANT, 0, eventMgr->unk_21D12);
                 if (eventMgr->taskId_UGFade == -1) {
-                    if (arg1 == gSaveData.unk_2458) {
+                    if (arg1 == gSaveData.fieldArea) {
                         eventMgr->taskId_UGFade =
                             Fld_UGFade_CreateTask(&eventMgr->taskPool, (u16)eventMgr->unk_21D12, 0, &eventMgr->taskId_UGFade);
                     } else {
@@ -591,7 +591,7 @@ s32 func_ov030_020a75d8(FieldEventManager* eventMgr, s16 arg1) {
         return 1;
     }
 
-    eventMgr->unk_21A5C = (arg1 == gSaveData.unk_2458) ? 2 : 9;
+    eventMgr->unk_21A5C = (arg1 == gSaveData.fieldArea) ? 2 : 9;
     return 0;
 }
 
@@ -617,7 +617,6 @@ s32 func_ov030_020a775c(u16 itemID, u16* arg1, u16* arg2) {
     return val;
 }
 
-// Nonmatching
 void func_ov030_020a7810(FieldEventManager* eventMgr) {
     g_DisplaySettings.controls[DISPLAY_SUB].layers |= 8;
 
@@ -627,20 +626,19 @@ void func_ov030_020a7810(FieldEventManager* eventMgr) {
     g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer0 = 8;
     g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer1 = 20;
 
-    eventMgr->unk_21AB0 = 0;
-    eventMgr->unk_21AB4 = 0x10000;
+    eventMgr->blendEva = 0;
+    eventMgr->blendEvb = 0x10000;
 
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = F2I(eventMgr->unk_21AB0);
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = F2I(0x10000);
+    Display_SetBlendCoeffs(DISPLAY_SUB, F2I(eventMgr->blendEva), F2I(eventMgr->blendEvb));
 
-    eventMgr->unk_21AAE = 30;
+    eventMgr->blendTimer = 30;
     DebugOvlDisp_Push(func_ov030_02082e70, eventMgr, PROCESS_STAGE_INIT);
 }
 
 void func_ov030_020a7890(FieldEventManager* eventMgr) {
-    eventMgr->unk_21AB0 = 0xA000;
-    eventMgr->unk_21AB4 = 0x8000;
-    eventMgr->unk_21AAE = 10;
+    eventMgr->blendEva   = 0xA000;
+    eventMgr->blendEvb   = 0x8000;
+    eventMgr->blendTimer = 10;
     DebugOvlDisp_Push(func_ov030_02082f10, eventMgr, PROCESS_STAGE_INIT);
 }
 
@@ -649,7 +647,7 @@ void func_ov030_020a78d0(FieldEventManager* eventMgr) {
         SndMgr_StartPlayingSeqWithCustomSeqArc(1, 2, 7);
         eventMgr->unk_21CF0 = 0;
     }
-    if (eventMgr->unk_21CF4 != 0) {
+    if (eventMgr->talkEventActive != 0) {
         func_ov030_020a737c(eventMgr);
         return;
     }
@@ -688,10 +686,10 @@ s32 func_ov030_020a7994(FieldEventManager* eventMgr) {
     }
     if (eventMgr->unk_21A24 == -1) {
         s32 var_r2 = 0;
-        if (eventMgr->unk_21CF4 != 0) {
+        if (eventMgr->talkEventActive != 0) {
             var_r2 = 1;
         }
-        eventMgr->unk_21A24 = Fld_TouchNext_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, var_r2);
+        eventMgr->unk_21A24 = Fld_TouchNext_CreateTask(&eventMgr->taskPool, eventMgr->dataType, var_r2);
     }
     if (func_ov030_020a722c(eventMgr) != 0) {
         SndMgr_StartPlayingSE(SEIDX_SE_DIALOG_NEXT);
@@ -814,7 +812,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x1A: {
             u32* temp_r6 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r6     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
+                &eventMgr->taskPool, eventMgr->dataType, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x40, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 8, 8, 1, (s32)eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r6, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
@@ -823,7 +821,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x1B: {
             u32* temp_r7 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
+                &eventMgr->taskPool, eventMgr->dataType, (s16)(gSaveData.unk_24A0[gSaveData.unk_249C + 1] - 0x40),
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x40, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 8, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
                 (s32)eventMgr->unk_21CEA);
@@ -834,7 +832,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             func_ov030_020a6a1c(eventMgr);
             u32* temp_r6_2 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r6_2     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0x80, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 2, 0, 0, eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r6_2, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
@@ -843,7 +841,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x1D: {
             u32* temp_r7_2 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_2     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xC, 8, 1, (s32)eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_2, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
@@ -852,7 +850,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x1E: {
             u32* temp_r7_3 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_3     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xC, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
                 (s32)eventMgr->unk_21CEA);
@@ -862,7 +860,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x1F: {
             u32* temp_r7_4 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_4     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xE, 8, 1, (s32)eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_4, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
@@ -871,7 +869,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x20: {
             u32* temp_r7_5 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_5     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xA, 8, 1, (s32)eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_5, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 3]);
@@ -880,7 +878,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x21: {
             u32* temp_r7_6 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_6     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], 0xA, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 1,
                 (s32)eventMgr->unk_21CEA);
@@ -890,7 +888,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x22: {
             u32* temp_r8_3 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r8_3     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 4], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 5],
                 (s32)(u8)gSaveData.unk_24A0[gSaveData.unk_249C + 6], (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 7],
@@ -909,7 +907,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
                     EasyTask_GetTaskById(&eventMgr->taskPool, *(u32*)func_ov030_020a6960(eventMgr, eventMgr->unk_21D00)));
                 var_r2 = var_r0;
             }
-            *temp_r7_7 = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->unk_21614, var_r2, 0xD0, var_r0, 0xD0,
+            *temp_r7_7 = func_ov030_020b3d88(&eventMgr->taskPool, eventMgr->dataType, var_r2, 0xD0, var_r0, 0xD0,
                                              gSaveData.unk_24A0[gSaveData.unk_249C + 5], var_r6,
                                              gSaveData.unk_24A0[gSaveData.unk_249C + 7], 0, 0, eventMgr->unk_21CEA);
             func_ov030_020a7aa0(*temp_r7_7, eventMgr, (u16)gSaveData.unk_24A0[gSaveData.unk_249C + 5]);
@@ -918,7 +916,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x24: {
             u32* temp_r7_8 = (u32*)func_ov030_020a6d80(eventMgr);
             *temp_r7_8     = func_ov030_020b3fbc(
-                &eventMgr->taskPool, eventMgr->unk_21614, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
+                &eventMgr->taskPool, eventMgr->dataType, gSaveData.unk_24A0[gSaveData.unk_249C + 1],
                 gSaveData.unk_24A0[gSaveData.unk_249C + 2], 0xFFFFFC02, (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 2],
                 (s32)gSaveData.unk_24A0[gSaveData.unk_249C + 3], (s32)(u8)gSaveData.unk_24A0[gSaveData.unk_249C + 4], 8, 1,
                 (s32)eventMgr->unk_21CEA);
@@ -972,11 +970,11 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             FldEvent_AdvanceScript(eventMgr);
             return;
         case 0x2D:
-            func_ov030_020af364(*(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)));
+            FieldBattle_SetupScripted(*(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 1) * 2)));
             FldEvent_AdvanceScript(eventMgr);
             return;
         case 0x2E:
-            eventMgr->unk_21630 = 3;
+            eventMgr->exitRequest = 3;
             DebugOvlDisp_Pop();
             FldEvent_AdvanceScript(eventMgr);
             return;
@@ -1008,7 +1006,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             FldEvent_AdvanceScript(eventMgr);
             return;
         case 0x35:
-            if (func_ov030_020b0454() != 0) {
+            if (FieldEvent_IsDebugSkipHeld() != 0) {
                 eventMgr->unk_21CE8 = 1U;
             }
             if (eventMgr->unk_21CE4 == 0) {
@@ -1075,7 +1073,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             FldEvent_AdvanceScript(eventMgr);
             return;
         case 0x3C:
-            func_ov030_020b4570(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216B0),
+            func_ov030_020b4570(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Badge),
                                 *(gSaveData.unk_24A0 + ((gSaveData.unk_249C + 2) * 2)));
             FldEvent_AdvanceScript(eventMgr);
             return;
@@ -1100,7 +1098,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
                 if (eventMgr->unk_21ADC == 0) {
                     return;
                 }
-                if (func_ov030_020b0454() == 0) {
+                if (FieldEvent_IsDebugSkipHeld() == 0) {
                     return;
                 }
                 FldEvent_AdvanceScript(eventMgr);
@@ -1120,29 +1118,29 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
         case 0x43:
             eventMgr->unk_21758 = (u16)(eventMgr->unk_21758 - 1);
             if (eventMgr->unk_21748[eventMgr->unk_21758] == 0) {
-                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24014);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 24014);
             } else if (eventMgr->unk_21748[eventMgr->unk_21758] == 1) {
-                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24015);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 24015);
             } else {
-                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 24016);
+                eventMgr->unk_21704 = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 24016);
             }
 
             eventMgr->taskId_Mess =
-                Fld_GetMess_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, eventMgr->unk_21728[eventMgr->unk_21758],
+                Fld_GetMess_CreateTask(&eventMgr->taskPool, eventMgr->dataType, eventMgr->unk_21728[eventMgr->unk_21758],
                                        eventMgr->unk_21738[eventMgr->unk_21758]);
-            eventMgr->taskId_Plate = Fld_TalkEventStringPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x88, 0x60,
+            eventMgr->taskId_Plate = Fld_TalkEventStringPlate_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x88, 0x60,
                                                                          eventMgr->unk_21748[eventMgr->unk_21758],
                                                                          eventMgr->unk_21718[eventMgr->unk_21758], 0);
 
             if (eventMgr->unk_21748[eventMgr->unk_21758] == 0) {
-                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 4, 1);
-                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 5, 1);
+                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 4, 1);
+                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 5, 1);
             } else if (eventMgr->unk_21748[eventMgr->unk_21758] == 1) {
-                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 7, 1);
-                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 8, 1);
+                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 7, 1);
+                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 8, 1);
             } else {
-                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 0xA, 1);
-                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, 0x60, 0xB, 1);
+                eventMgr->taskId_Item  = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 0xA, 1);
+                eventMgr->taskId_Arrow = Fld_WhichArrow_CreateTask(&eventMgr->taskPool, eventMgr->dataType, 0x60, 0xB, 1);
             }
             SndMgr_StartPlayingSE(SEIDX_SE_GET_KEYWORD);
             FldEvent_AdvanceScript(eventMgr);
@@ -1163,11 +1161,11 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             eventMgr->unk_2176A--;
 
             s32 temp_r4_2          = func_ov030_020a775c(eventMgr->unk_2175A[eventMgr->unk_2176A], &sp22, &sp20);
-            eventMgr->unk_21704    = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, sp22);
-            eventMgr->taskId_Mess  = Fld_GetMess_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, sp20, 0xFFFF);
-            eventMgr->taskId_Plate = Fld_GetBase_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4_2);
+            eventMgr->unk_21704    = Fld_GetPlate_CreateTask(&eventMgr->taskPool, eventMgr->dataType, sp22);
+            eventMgr->taskId_Mess  = Fld_GetMess_CreateTask(&eventMgr->taskPool, eventMgr->dataType, sp20, 0xFFFF);
+            eventMgr->taskId_Plate = Fld_GetBase_CreateTask(&eventMgr->taskPool, eventMgr->dataType, temp_r4_2);
             eventMgr->taskId_Item =
-                Fld_GetItem_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, eventMgr->unk_2175A[eventMgr->unk_2176A]);
+                Fld_GetItem_CreateTask(&eventMgr->taskPool, eventMgr->dataType, eventMgr->unk_2175A[eventMgr->unk_2176A]);
             SndMgr_StartPlayingSE(SEIDX_SE_GET_ITEM);
             FldEvent_AdvanceScript(eventMgr);
         } break;
@@ -1291,7 +1289,7 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             FldEvent_AdvanceScript(eventMgr);
             return;
         case 0x51:
-            eventMgr->unk_21D14 = gSaveData.unk_24A0[gSaveData.unk_249C];
+            eventMgr->eventPictureId = gSaveData.unk_24A0[gSaveData.unk_249C];
             if ((GXx_GetMasterBrightness(&REG_MASTER_BRIGHT) != 0x10) &&
                 (GXx_GetMasterBrightness(&REG_MASTER_BRIGHT) != -0x10))
             {
@@ -1404,31 +1402,31 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             if (eventMgr->unk_21A5C != 1) {
                 func_ov030_020846bc(eventMgr, 1);
             }
-            if (eventMgr->unk_21CF4 != 0) {
+            if (eventMgr->talkEventActive != 0) {
                 REG_POWER_CNT &= ~0x8000;
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~2;
-                func_ov030_020ad044(eventMgr);
-                func_ov030_020b458c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216B0), 1);
-                eventMgr->unk_21CF4 = 0;
+                Field_CreateHud(eventMgr);
+                func_ov030_020b458c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Badge), 1);
+                eventMgr->talkEventActive = 0;
             }
             if (eventMgr->unk_21CF8 != 0) {
                 if (eventMgr->unk_21CFC != 0) {
                     eventMgr->unk_21CF8 = 0;
                 } else {
-                    if (eventMgr->unk_21918 != 0) {
+                    if (eventMgr->humanCount != 0) {
                         s32 var_r7_2 = 0;
-                        if (eventMgr->unk_21918 > 0) {
+                        if (eventMgr->humanCount > 0) {
                             do {
-                                EasyTask_DeleteTask(&eventMgr->taskPool, eventMgr->unk_21788[var_r7_2]);
+                                EasyTask_DeleteTask(&eventMgr->taskPool, eventMgr->taskId_Humans[var_r7_2]);
                                 var_r7_2 += 1;
-                            } while (var_r7_2 < (s32)eventMgr->unk_21918);
+                            } while (var_r7_2 < (s32)eventMgr->humanCount);
                         }
                         func_ov030_020c6300();
-                        eventMgr->unk_21918 = 0;
+                        eventMgr->humanCount = 0;
                         return;
                     }
                     func_ov030_020c6150(&eventMgr->unk_21D30);
-                    func_ov030_020ac95c(eventMgr);
+                    Field_SpawnHumans(eventMgr);
                     eventMgr->unk_21CFC = 1;
                     return;
                 }
@@ -1439,12 +1437,12 @@ void func_ov030_020a7b50(FieldEventManager* eventMgr) {
             g_DisplaySettings.engineState[DISPLAY_MAIN].blendLayer1 = 0x3F;
             g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff0 = 0xA;
             g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff1 = 6;
-            func_ov030_020b4598(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216B0), 0);
+            func_ov030_020b4598(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Badge), 0);
             gSaveData.unk_2498 = 0;
             SndMgr_StartPlayingSE(SEIDX_EV_SE_LOOP_STOP);
             func_ov030_020c2de8();
-            func_ov030_020c2d50(gSaveData.unk_2548[gSaveData.unk_2458]);
-            func_ov030_020ad428(eventMgr);
+            func_ov030_020c2d50(gSaveData.areaPopulation[gSaveData.fieldArea]);
+            Field_ReleaseEventPicture(eventMgr);
             if (eventMgr->unk_21D0C != 0) {
                 func_ov030_020c2e28();
             }
@@ -1466,21 +1464,21 @@ void FldEvent_BeginScript(FieldEventManager* eventMgr, FieldEvent event, s32 arg
         event -= 0x8000;
     }
 
-    gSaveData.unk_249C  = 0;
-    gSaveData.unk_24A4  = arg2;
-    eventMgr->unk_21D0C = FALSE;
-    eventMgr->unk_21CF4 = FALSE;
+    gSaveData.unk_249C        = 0;
+    gSaveData.unk_24A4        = arg2;
+    eventMgr->unk_21D0C       = FALSE;
+    eventMgr->talkEventActive = FALSE;
 
     if (event >= 0x4000) {
         eventMgr->unk_21D0C = TRUE;
         event -= 0x4000;
     } else if (event >= 0x2000) {
-        eventMgr->unk_21CF4 = TRUE;
+        eventMgr->talkEventActive = TRUE;
         event -= 0x2000;
     }
 
     FldEvent_SetCurrent(event);
-    func_ov030_020b3034(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216D4));
+    func_ov030_020b3034(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Player));
 }
 
 s32 func_ov030_020a9d00(FieldEventManager* eventMgr, FieldEvent event) {
@@ -1513,9 +1511,9 @@ void func_ov030_020a9db8(FieldEventManager* eventMgr, FieldEvent event) {
     if (func_ov030_020a9d00(eventMgr, event) == 0) {
         return;
     }
-    if (eventMgr->unk_21D22 == 3) {
+    if (eventMgr->touchEventKind == 3) {
         DebugOvlDisp_Push(func_ov030_02082a04, eventMgr, PROCESS_STAGE_INIT);
-    } else if (eventMgr->unk_21D18 != 3) {
+    } else if (eventMgr->touchEventResult != 3) {
         DebugOvlDisp_Push(func_ov030_02082b4c, eventMgr, PROCESS_STAGE_INIT);
     }
     DebugOvlDisp_Push(func_ov030_02082d64, eventMgr, PROCESS_STAGE_INIT);
@@ -1526,10 +1524,10 @@ void func_ov030_020a9e48(FieldEventManager* eventMgr) {
     Task* task    = EasyTask_GetTaskById(&eventMgr->taskPool, func_ov030_020a6960(eventMgr, eventMgr->unk_21D00));
     s32   temp_r0 = func_ov030_020b3cc8(task);
 
-    eventMgr->unk_216BC = func_ov030_020b44b8(&eventMgr->taskPool, eventMgr->unk_21614, temp_r0, 0x78, 0, 1);
+    eventMgr->unk_216BC = func_ov030_020b44b8(&eventMgr->taskPool, eventMgr->dataType, temp_r0, 0x78, 0, 1);
     SndMgr_PlaySEWithPan(0x122, temp_r0);
     func_ov030_020b4570(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_216BC), 2);
-    eventMgr->unk_216C4 = func_ov030_020c3654(&eventMgr->taskPool, eventMgr->unk_21614, temp_r0, 0x78);
+    eventMgr->unk_216C4 = func_ov030_020c3654(&eventMgr->taskPool, eventMgr->dataType, temp_r0, 0x78);
     eventMgr->unk_21D2A = -1;
     func_ov030_020a6d20(eventMgr, 0x44);
     if (eventMgr->taskId_KeywordMenu != -1) {
@@ -1556,9 +1554,9 @@ s32 func_ov030_020a9f54(FieldEventManager* eventMgr, s32 (*callback)(FieldEventM
         va_end(choices);
 
         eventMgr->unk_21784 =
-            func_ov030_020b3fbc(&eventMgr->taskPool, eventMgr->unk_21614, 0x80, 0x60, 0x80, 0x60, arg2, 2, 0, 0, 0);
+            func_ov030_020b3fbc(&eventMgr->taskPool, eventMgr->dataType, 0x80, 0x60, 0x80, 0x60, arg2, 2, 0, 0, 0);
         eventMgr->taskId_Choice =
-            Fld_Choice_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, (s16)count, eventMgr->unk_2176C);
+            Fld_Choice_CreateTask(&eventMgr->taskPool, eventMgr->dataType, (s16)count, eventMgr->unk_2176C);
     } else {
         eventMgr->unk_2177C =
             func_ov030_020c83e8(&eventMgr->taskPool, EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->taskId_Choice));
@@ -1581,7 +1579,7 @@ s32 func_ov030_020aa0c8(FieldEventManager* eventMgr, s32 arg1, s16 arg2, s16 arg
     eventMgr->unk_21D08 = arg4;
     if ((eventMgr->unk_21AD8 == 0) && (eventMgr->unk_216CC == -1)) {
         Task* task = EasyTask_GetTaskById(&eventMgr->taskPool, *(u32*)func_ov030_020a6960(eventMgr, eventMgr->unk_21D00));
-        eventMgr->unk_216CC = func_ov030_020c4810(&eventMgr->taskPool, eventMgr->unk_21614, func_ov030_020b3cc8(task), 0x78);
+        eventMgr->unk_216CC = func_ov030_020c4810(&eventMgr->taskPool, eventMgr->dataType, func_ov030_020b3cc8(task), 0x78);
     } else if ((eventMgr->unk_21AD8 == 0) && (EasyTask_ValidateTaskId(&eventMgr->taskPool, &eventMgr->unk_216CC) == 0)) {
         eventMgr->unk_21AD8 = 1;
         eventMgr->unk_216CC = -1;
@@ -1602,9 +1600,9 @@ s32 func_ov030_020aa0c8(FieldEventManager* eventMgr, s32 arg1, s16 arg2, s16 arg
                 func_ov030_020b3cd4(temp_r0, 0);
                 temp_r4 = func_ov030_020b3cc8(temp_r0);
                 func_ov030_020b400c(EasyTask_GetTaskById(&eventMgr->taskPool, eventMgr->unk_21C48[eventMgr->unk_21CD4]), 2);
-                if ((eventMgr->unk_21D08 != 0) && (func_ov030_020b0418() != 0)) {
+                if ((eventMgr->unk_21D08 != 0) && (FieldTalk_GetKeywordCount() != 0)) {
                     eventMgr->taskId_KeywordMenu =
-                        Fld_TalkEventKeywordMenu_CreateTask(&eventMgr->taskPool, eventMgr->unk_21614, temp_r4);
+                        Fld_TalkEventKeywordMenu_CreateTask(&eventMgr->taskPool, eventMgr->dataType, temp_r4);
                 }
                 func_ov030_02083940(eventMgr, 1);
                 func_ov030_020a7810(eventMgr);
@@ -1628,7 +1626,7 @@ s32 func_ov030_020aa0c8(FieldEventManager* eventMgr, s32 arg1, s16 arg2, s16 arg
 }
 
 s32 func_ov030_020aa390(FieldEventManager* eventMgr) {
-    switch (eventMgr->unk_21D1C) {
+    switch (eventMgr->touchEventTarget) {
         case 0:
             FldEvent_SetCurrent(6);
             return 1;
@@ -1689,7 +1687,7 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
         gSaveData.unk_24B4          = 0;
         gSaveData.unk_24B8          = 1;
         gSaveData.currentStoryEvent = temp_r0_2;
-        func_ov030_020af364(-2);
+        FieldBattle_SetupScripted(-2);
         return 1;
     }
     if (func_ov030_020ab3ec(gSaveData.currentStoryEvent) != 0) {
@@ -1698,19 +1696,19 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
     }
 
     if (gSaveData.currentStoryEvent == 0x30A) {
-        gSaveData.unk_3124  = 0x30;
-        gSaveData.unk_3128  = 0;
-        eventMgr->unk_21630 = 4;
+        gSaveData.flashSequence = 0x30;
+        gSaveData.flashExitMode = 0;
+        eventMgr->exitRequest   = 4;
         DebugOvlDisp_Pop();
         return 0;
     } else if (gSaveData.currentStoryEvent == 0x36) {
         if (func_ov030_020a9d00(eventMgr, 5) == 0) {
             return 1;
         }
-        eventMgr->unk_21D22 = 3;
-        eventMgr->unk_21D24 = func_ov030_020aa390;
-        eventMgr->unk_21D28 = 0x5DCC;
-        eventMgr->unk_21D18 = 0;
+        eventMgr->touchEventKind   = 3;
+        eventMgr->unk_21D24        = func_ov030_020aa390;
+        eventMgr->unk_21D28        = 0x5DCC;
+        eventMgr->touchEventResult = 0;
         DebugOvlDisp_Push(func_ov030_020824a0, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082c04, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082bf0, eventMgr, PROCESS_STAGE_INIT);
@@ -1721,26 +1719,26 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
         if (func_ov030_020a9d00(eventMgr, 5) == 0) {
             return 1;
         }
-        eventMgr->unk_21D1E = 0x83;
-        eventMgr->unk_21D20 = 0x83;
-        eventMgr->unk_21D22 = 1;
-        eventMgr->unk_21D24 = NULL;
+        eventMgr->unk_21D1E      = 0x83;
+        eventMgr->unk_21D20      = 0x83;
+        eventMgr->touchEventKind = 1;
+        eventMgr->unk_21D24      = NULL;
 
-        if (eventMgr->unk_21D22 == 1) {
+        if (eventMgr->touchEventKind == 1) {
             func_ov030_020aec1c(3);
             func_ov030_020aec1c(2);
-        } else if (eventMgr->unk_21D22 == 2) {
+        } else if (eventMgr->touchEventKind == 2) {
             func_ov030_020aec38(3);
             func_ov030_020aec1c(2);
-        } else if (eventMgr->unk_21D22 == 4) {
+        } else if (eventMgr->touchEventKind == 4) {
             func_ov030_020aec1c(3);
             func_ov030_020aec38(2);
-        } else if (eventMgr->unk_21D22 == 5) {
+        } else if (eventMgr->touchEventKind == 5) {
             func_ov030_020aec38(3);
             func_ov030_020aec38(2);
         }
 
-        eventMgr->unk_21D18 = 0;
+        eventMgr->touchEventResult = 0;
         DebugOvlDisp_Push(func_ov030_020824a0, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082c04, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082bf0, eventMgr, PROCESS_STAGE_INIT);
@@ -1751,26 +1749,26 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
         if (func_ov030_020a9d00(eventMgr, 5) == 0) {
             return 1;
         }
-        eventMgr->unk_21D1E = 0x83;
-        eventMgr->unk_21D20 = 0x83;
-        eventMgr->unk_21D22 = 5;
-        eventMgr->unk_21D24 = NULL;
+        eventMgr->unk_21D1E      = 0x83;
+        eventMgr->unk_21D20      = 0x83;
+        eventMgr->touchEventKind = 5;
+        eventMgr->unk_21D24      = NULL;
 
-        if (eventMgr->unk_21D22 == 1) {
+        if (eventMgr->touchEventKind == 1) {
             func_ov030_020aec1c(3);
             func_ov030_020aec1c(2);
-        } else if (eventMgr->unk_21D22 == 2) {
+        } else if (eventMgr->touchEventKind == 2) {
             func_ov030_020aec38(3);
             func_ov030_020aec1c(2);
-        } else if (eventMgr->unk_21D22 == 4) {
+        } else if (eventMgr->touchEventKind == 4) {
             func_ov030_020aec1c(3);
             func_ov030_020aec38(2);
-        } else if (eventMgr->unk_21D22 == 5) {
+        } else if (eventMgr->touchEventKind == 5) {
             func_ov030_020aec38(3);
             func_ov030_020aec38(2);
         }
 
-        eventMgr->unk_21D18 = 0;
+        eventMgr->touchEventResult = 0;
         DebugOvlDisp_Push(func_ov030_020824a0, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082c04, eventMgr, PROCESS_STAGE_INIT);
         DebugOvlDisp_Push(func_ov030_02082bf0, eventMgr, PROCESS_STAGE_INIT);
@@ -1779,30 +1777,30 @@ s32 func_ov030_020aa4bc(FieldEventManager* eventMgr) {
         return 1;
     } else {
         if (func_ov030_020a66e8(eventMgr) != 0) {
-            if (eventMgr->unk_21D18 == 0) {
+            if (eventMgr->touchEventResult == 0) {
                 return 1;
-            } else if (eventMgr->unk_21D18 == 1) {
+            } else if (eventMgr->touchEventResult == 1) {
                 func_ov030_020a9db8(eventMgr, eventMgr->unk_21D1E);
                 return 1;
-            } else if (eventMgr->unk_21D18 == 2) {
+            } else if (eventMgr->touchEventResult == 2) {
                 func_ov030_020a9db8(eventMgr, eventMgr->unk_21D20);
                 return 1;
-            } else if (eventMgr->unk_21D18 == 4) {
-                FldEvent_SetCurrent((s32)eventMgr->unk_21D1C);
+            } else if (eventMgr->touchEventResult == 4) {
+                FldEvent_SetCurrent((s32)eventMgr->touchEventTarget);
                 FldEvent_AdvanceScript(eventMgr);
-                eventMgr->unk_21D18 = 0;
+                eventMgr->touchEventResult = 0;
                 return 1;
-            } else if (eventMgr->unk_21D18 == 5) {
+            } else if (eventMgr->touchEventResult == 5) {
                 if (eventMgr->unk_21D24 != NULL) {
                     if (eventMgr->unk_21D24(eventMgr) != 0) {
                         FldEvent_AdvanceScript(eventMgr);
-                        eventMgr->unk_21D18 = 0;
+                        eventMgr->touchEventResult = 0;
                     }
                     return 1;
                 }
                 func_ov030_020a9db8(eventMgr, 4);
                 return 1;
-            } else if (eventMgr->unk_21D18 == 3) {
+            } else if (eventMgr->touchEventResult == 3) {
                 func_ov030_020a9db8(eventMgr, 4);
                 return 1;
             }
@@ -1838,7 +1836,7 @@ void func_ov030_020aa9f4(FieldEventManager* eventMgr, s16 arg1, s16 arg2, s16 ar
 }
 
 u8 func_ov030_020aaad8(void) {
-    return gSaveData.brandTrends[func_ov030_020af350()].ranking[0];
+    return gSaveData.brandTrends[Field_GetCurrentTrendZone()].ranking[0];
 }
 
 s32 func_ov030_020aaaf8(u16 itemID, s32 arg1) {

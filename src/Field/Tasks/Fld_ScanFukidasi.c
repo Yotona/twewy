@@ -40,8 +40,8 @@ extern const TaskHandle Task_Window;
 extern s32              data_ov030_02109d64;
 extern FldScanData*     data_ov030_02109d70;
 
-extern s32  func_ov030_020aee10(void);
-extern void func_ov030_020aed54(s32 id);
+extern s32  FieldScan_IsTouchActive(void);
+extern void FieldScan_MarkSeen(s32 id);
 extern void func_ov030_020af6d4(s32 mode);
 extern void func_ov030_020b400c(Task* task, s32 mode);
 extern s32  func_ov030_020b40e8(Task* task);
@@ -127,7 +127,7 @@ s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
     TouchCoord   coord;
     s32          i;
 
-    if (func_ov030_020aee10() != 0) {
+    if (FieldScan_IsTouchActive() != 0) {
         TouchInput_GetCoord(&coord);
         for (i = 0; i < data->unk600; i++) {
             if (func_ov030_020be884(&data->entries[i], &coord) != 0) {
@@ -274,7 +274,7 @@ void func_ov030_020bed54(TaskPool* pool, FldScanData* data, FldScanEntry* entry)
     param.msg.datSlot = data->unk604;
     param.msg.mesNo   = entry->unk8;
     param.msg.winKind = 6;
-    func_ov030_020aed54(entry->unk8);
+    FieldScan_MarkSeen(entry->unk8);
     param.msg.unk_0C    = -1;
     param.msg.unk_16    = 8;
     param.x             = 0x80;

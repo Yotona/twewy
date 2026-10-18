@@ -111,7 +111,7 @@ SpriteFrameInfo* Fld_MapJumpName_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode)
 }
 
 s32 func_ov030_020c4cbc(s32 mapId) {
-    if (mapId == 0x2d40 && gSaveData.unk_2458 == 3) {
+    if (mapId == 0x2d40 && gSaveData.fieldArea == 3) {
         return -15;
     }
     return 0;

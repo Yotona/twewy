@@ -4,7 +4,7 @@
 #include <nitro/types.h>
 
 // A map position in fx32. The field camera origin (FieldEventManager::origin,
-// returned by func_ov030_020af99c) has this shape, and the field tasks keep a
+// returned by Field_GetCameraOrigin) has this shape, and the field tasks keep a
 // pointer to it to turn their map positions into screen positions.
 typedef struct FieldPos {
     /* 0x0 */ s32 x;

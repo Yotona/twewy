@@ -31,22 +31,22 @@ static const Field_020c5404_Entry data_ov030_020e7380[] = {
 };
 
 s32 func_ov030_020c5404(s32 index) {
-    if (index < 0x46 || index >= 0x59) {
+    if (index < 70 || index >= 89) {
         return 0;
     }
-    return data_ov030_020e7380[index - 0x46].unk_02;
+    return data_ov030_020e7380[index - 70].unk_02;
 }
 
 s32 func_ov030_020c5430(s32 index) {
-    if (index < 0x46 || index >= 0x59) {
+    if (index < 70 || index >= 89) {
         return 0;
     }
-    return data_ov030_020e7380[index - 0x46].message;
+    return data_ov030_020e7380[index - 70].message;
 }
 
 s32 func_ov030_020c5460(s32 index) {
-    if (index < 0x46 || index >= 0x59) {
+    if (index < 70 || index >= 89) {
         return 0;
     }
-    return data_ov030_020e7380[index - 0x46].unk_04;
+    return data_ov030_020e7380[index - 70].unk_04;
 }

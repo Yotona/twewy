@@ -37,9 +37,9 @@ extern s32                  func_0202bd5c(s32 arg0);
 extern s32                  func_0202bd9c(s32 arg0, s32 arg1);
 extern void                 func_ov030_020b7400(void);
 extern void                 func_ov030_020b6dec(void* arg0);
-extern void                 func_ov030_020cd7d4(void);
-extern s32                  func_ov030_020cd7fc(void);
-extern s32                  func_ov030_020cdb7c(s32 arg0);
+extern void                 FOAllocator_Init(void);
+extern s32                  FOAllocator_Get(void);
+extern s32                  FO3DRes_GetModelCount(s32 arg0);
 extern void                 G3X_ResetMtxStack(void);
 
 // ---- local data views --------------------------------------------------------
@@ -344,7 +344,7 @@ void func_ov030_020b6014(Ov030B5C58Root* arg0) {
         gSaveData.unk_26E0 = 0;
     }
     rec = data_ov030_0210655c[gSaveData.unk_26E0];
-    func_ov030_020cd7d4();
+    FOAllocator_Init();
     i = 0;
     do {
         if (rec->binIdens[i].path == NULL) {
@@ -354,7 +354,7 @@ void func_ov030_020b6014(Ov030B5C58Root* arg0) {
         }
         i++;
     } while (i < 5);
-    arg0->unk1352C = func_ov030_020cdb7c((s32)arg0->unk13488[0]->buffer);
+    arg0->unk1352C = FO3DRes_GetModelCount((s32)arg0->unk13488[0]->buffer);
     stride         = func_0202bd5c((s32)arg0->unk13488[0]->buffer);
     func_0202b8a0((s32)arg0->unk13488[0]->buffer);
     j = 0;
@@ -364,27 +364,24 @@ void func_ov030_020b6014(Ov030B5C58Root* arg0) {
             arg0->unk12A88[j] = G3dResMdlSet_GetModel(func_0202bd4c((s32)arg0->unk13488[0]->buffer), j);
             func_02028250(elem);
             arg0->unk12B88[j] = func_0202bd9c((s32)arg0->unk13488[1]->buffer, j);
-            arg0->unk12C88[j] = (Ov030B5Anim*)func_0202bac0(func_ov030_020cd7fc(), arg0->unk12B88[j], (s32)arg0->unk12A88[j]);
+            arg0->unk12C88[j] = (Ov030B5Anim*)func_0202bac0(FOAllocator_Get(), arg0->unk12B88[j], (s32)arg0->unk12A88[j]);
             func_020281c0((s32)arg0->unk12C88[j], arg0->unk12B88[j], (s32)arg0->unk12A88[j], 0);
             func_020283c4(elem, (s32)arg0->unk12C88[j]);
             if (arg0->unk13488[2] != NULL) {
                 arg0->unk12D88[j] = func_0202bd9c((s32)arg0->unk13488[2]->buffer, j);
-                arg0->unk12E88[j] =
-                    (Ov030B5Anim*)func_0202bac0(func_ov030_020cd7fc(), arg0->unk12D88[j], (s32)arg0->unk12A88[j]);
+                arg0->unk12E88[j] = (Ov030B5Anim*)func_0202bac0(FOAllocator_Get(), arg0->unk12D88[j], (s32)arg0->unk12A88[j]);
                 func_020281c0((s32)arg0->unk12E88[j], arg0->unk12D88[j], (s32)arg0->unk12A88[j], 0);
                 func_020283c4(elem, (s32)arg0->unk12E88[j]);
             }
             if (arg0->unk13488[3] != NULL) {
                 arg0->unk12F88[j] = func_0202bd9c((s32)arg0->unk13488[3]->buffer, j);
-                arg0->unk13088[j] =
-                    (Ov030B5Anim*)func_0202bac0(func_ov030_020cd7fc(), arg0->unk12F88[j], (s32)arg0->unk12A88[j]);
+                arg0->unk13088[j] = (Ov030B5Anim*)func_0202bac0(FOAllocator_Get(), arg0->unk12F88[j], (s32)arg0->unk12A88[j]);
                 func_020281c0((s32)arg0->unk13088[j], arg0->unk12F88[j], (s32)arg0->unk12A88[j], 0);
                 func_020283c4(elem, (s32)arg0->unk13088[j]);
             }
             if (arg0->unk13488[4] != NULL) {
                 arg0->unk13188[j] = func_0202bd9c((s32)arg0->unk13488[4]->buffer, j);
-                arg0->unk13288[j] =
-                    (Ov030B5Anim*)func_0202bac0(func_ov030_020cd7fc(), arg0->unk13188[j], (s32)arg0->unk12A88[j]);
+                arg0->unk13288[j] = (Ov030B5Anim*)func_0202bac0(FOAllocator_Get(), arg0->unk13188[j], (s32)arg0->unk12A88[j]);
                 func_020281c0((s32)arg0->unk13288[j], arg0->unk13188[j], (s32)arg0->unk12A88[j], stride);
                 func_020283c4(elem, (s32)arg0->unk13288[j]);
             }
@@ -405,15 +402,15 @@ void func_ov030_020b6464(Ov030B5C58Root* arg0) {
     i = 0;
     if (arg0->unk1352C > 0) {
         do {
-            func_0202bae4(func_ov030_020cd7fc(), (s32)arg0->unk12C88[i]);
+            func_0202bae4(FOAllocator_Get(), (s32)arg0->unk12C88[i]);
             if (arg0->unk13488[2] != NULL) {
-                func_0202bae4(func_ov030_020cd7fc(), (s32)arg0->unk12E88[i]);
+                func_0202bae4(FOAllocator_Get(), (s32)arg0->unk12E88[i]);
             }
             if (arg0->unk13488[3] != NULL) {
-                func_0202bae4(func_ov030_020cd7fc(), (s32)arg0->unk13088[i]);
+                func_0202bae4(FOAllocator_Get(), (s32)arg0->unk13088[i]);
             }
             if (arg0->unk13488[4] != NULL) {
-                func_0202bae4(func_ov030_020cd7fc(), (s32)arg0->unk13288[i]);
+                func_0202bae4(FOAllocator_Get(), (s32)arg0->unk13288[i]);
             }
             i++;
         } while (i < arg0->unk1352C);

@@ -191,17 +191,17 @@ s32 func_ov030_020bf660(Ov030TouchData* arg0, s32 arg1) {
         if (entry->value >= 0x64) {
             func_ov030_020bf494(arg0);
             if (arg1 == 6) {
-                func_ov030_020af6f0(4);
-                func_ov030_020af708(0x17);
+                Field_SetTouchEventResult(4);
+                Field_SetTouchEventTarget(0x17);
             } else if (entry->count < data_ov030_020e6db0[arg1].b) {
-                func_ov030_020af6f0(4);
-                func_ov030_020af708((s16)(entry->count + data_ov030_020e6db0[arg1].a));
+                Field_SetTouchEventResult(4);
+                Field_SetTouchEventTarget((s16)(entry->count + data_ov030_020e6db0[arg1].a));
                 entry->count += 1;
             } else if (arg1 == 5) {
-                func_ov030_020af6f0(1);
+                Field_SetTouchEventResult(1);
                 arg0->unk48 = 1;
             } else {
-                func_ov030_020af6f0(2);
+                Field_SetTouchEventResult(2);
                 arg0->unk48 = 1;
             }
         }
@@ -227,7 +227,7 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
         if (r5 != -1) {
             func_ov030_020bf43c(arg0, data, r5);
             if (r5 == 0) {
-                func_ov030_020af6f0(3);
+                Field_SetTouchEventResult(3);
                 SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 data->unk48 = 1;
             } else if (r5 == 1) {
@@ -235,16 +235,16 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
                 func_ov030_020bff68(EasyTask_GetTaskById(arg0, data->taskIds[3]), 2);
                 func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 1);
                 if (data->unk1C != 1) {
-                    func_ov030_020af6f0(4);
-                    func_ov030_020af708(0x19);
+                    Field_SetTouchEventResult(4);
+                    Field_SetTouchEventTarget(0x19);
                     SndMgr_PlaySEWithPan(0xC4, 0x23);
                 }
             } else if (r5 == 2) {
                 func_ov030_020bff68(EasyTask_GetTaskById(arg0, data->taskIds[3]), 1);
                 func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 2);
                 if (data->unk1C != 2) {
-                    func_ov030_020af6f0(4);
-                    func_ov030_020af708(5);
+                    Field_SetTouchEventResult(4);
+                    Field_SetTouchEventTarget(5);
                     SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 }
             }
@@ -256,15 +256,15 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
                 s16 id = func_ov030_020bf360();
 
                 if (id != data->unk4C) {
-                    func_ov030_020af6f0(4);
-                    func_ov030_020af708((s16)(func_ov030_020bf360() + 0x1A));
+                    Field_SetTouchEventResult(4);
+                    Field_SetTouchEventTarget((s16)(func_ov030_020bf360() + 0x1A));
                 }
                 data->unk4C = func_ov030_020bf360();
             } else if (t0 == 2) {
                 r5 = func_ov030_020bf360();
                 if (r5 != data->unk4C && r5 != 6) {
-                    func_ov030_020af6f0(4);
-                    func_ov030_020af708((s16)(r5 + 0x22));
+                    Field_SetTouchEventResult(4);
+                    Field_SetTouchEventTarget((s16)(r5 + 0x22));
                 }
                 data->unk4C = func_ov030_020bf360();
             }
@@ -287,11 +287,11 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
         data->unk44++;
         if (data->unk44 > 0x258) {
             data->unk44 = 0;
-            func_ov030_020af6f0(4);
+            Field_SetTouchEventResult(4);
             if (data->unk1C == 2) {
-                func_ov030_020af708(0x18);
+                Field_SetTouchEventTarget(0x18);
             } else {
-                func_ov030_020af708(0x21);
+                Field_SetTouchEventTarget(0x21);
             }
         }
     }

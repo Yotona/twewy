@@ -8,7 +8,7 @@
 #include "Save.h"
 #include <nitro/types.h>
 
-extern void func_ov030_020ab554(void*);
+extern void Field_MainUpdate(void*);
 extern s32  data_ov030_020da4b8[];
 
 void func_ov030_02082788(FieldEventManager*);
@@ -26,7 +26,7 @@ void func_ov030_020824a0(FieldEventManager* mgr) {
 
 void func_ov030_020824e4(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
-    if (mgr->unk_21630 == 4 || mgr->unk_21630 == 7) {
+    if (mgr->exitRequest == 4 || mgr->exitRequest == 7) {
         EasyFade_FadeBothDisplays(FADER_LINEAR, -0x10, 0x1000);
     } else {
         EasyFade_FadeBothDisplays(FADER_LINEAR, 0x10, 0x1000);
@@ -45,7 +45,7 @@ void func_ov030_02082534(FieldEventManager* mgr) {
 }
 
 void func_ov030_02082578(FieldEventManager* mgr) {
-    if (func_ov030_020b0454() != 0) {
+    if (FieldEvent_IsDebugSkipHeld() != 0) {
         EasyFade_FadeMainDisplay(FADER_INSTANT, mgr->targetBrightness, 1);
     } else {
         EasyFade_FadeMainDisplay(FADER_INSTANT, mgr->targetBrightness, mgr->unk_21D12);
@@ -60,29 +60,29 @@ void func_ov030_020825d8(FieldEventManager* mgr) {
     if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
         DebugOvlDisp_Push((OverlayCB)func_ov030_020828fc, mgr, 0);
-        mgr->unk_21AAE = 0x1E;
-        mgr->unk_21AB0 = 0x10000;
-        if (mgr->unk_21ACC != 0 && gSaveData.unk_2458 != 0x25) {
-            mgr->unk_216D0 = LocaTitle_CreateTask(&mgr->taskPool, mgr->unk_21614, func_ov030_02082fc0());
+        mgr->blendTimer = 0x1E;
+        mgr->blendEva   = 0x10000;
+        if (mgr->unk_21ACC != 0 && gSaveData.fieldArea != 0x25) {
+            mgr->unk_216D0 = LocaTitle_CreateTask(&mgr->taskPool, mgr->dataType, func_ov030_02082fc0());
         } else {
             mgr->unk_216D0 = -1;
         }
-        func_ov030_020b3034(EasyTask_GetTaskById(&mgr->taskPool, mgr->unk_216D4));
-        func_ov030_020c2d50(gSaveData.unk_2548[gSaveData.unk_2458]);
+        func_ov030_020b3034(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player));
+        func_ov030_020c2d50(gSaveData.areaPopulation[gSaveData.fieldArea]);
     }
 }
 
 void func_ov030_020826a4(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
-    if (mgr->unk_21AAE != 0) {
-        func_02026590(&mgr->unk_21AB0, 0x10000, mgr->unk_21AAE);
-        mgr->unk_21AAE--;
+    if (mgr->blendTimer != 0) {
+        func_02026590(&mgr->blendEva, 0x10000, mgr->blendTimer);
+        mgr->blendTimer--;
     }
 
-    s32 temp = F2I(mgr->unk_21AB0);
+    s32 temp = F2I(mgr->blendEva);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -temp, 0);
     if (temp >= 0x10) {
-        func_ov030_020ad3a8(mgr);
+        Field_DestroyObjects(mgr);
         if (mgr->unk_21700 != -1) {
             EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_21700);
             mgr->unk_21700 = -1;
@@ -107,7 +107,7 @@ void func_ov030_020827b0(FieldEventManager* mgr) {
     if (mgr->unk_21AAC != 0) {
         mgr->unk_21AAC--;
     } else {
-        mgr->unk_21AAE = 0x1E;
+        mgr->blendTimer = 0x1E;
         DebugOvlDisp_Pop();
     }
 }
@@ -115,18 +115,18 @@ void func_ov030_020827b0(FieldEventManager* mgr) {
 void func_ov030_020827e4(FieldEventManager* mgr) {
     Mem_ValidateSequences(&gMainHeap);
     Mem_ValidateSequences(&gDebugHeap);
-    if (gSaveData.unk_2458 == 23) {
+    if (gSaveData.fieldArea == 23) {
         func_ov030_020aeaa0(23, 1);
     }
-    func_ov030_020b88e8(mgr->unk_21A58);
-    if (mgr->unk_21A58->destRegion == 102) {
+    func_ov030_020b88e8(mgr->activeExit);
+    if (mgr->activeExit->destRegion == 102) {
         gSaveData.fieldPos.x = mgr->unk_21B08;
         gSaveData.fieldPos.y = mgr->unk_21B0C;
     }
     gSaveData.unk_2454 = func_ov030_020aeca4(gSaveData.fieldPos.y);
     func_ov030_020c1960();
-    func_ov030_020ad278(mgr);
-    func_ov030_020bd298(EasyTask_GetTaskById(&mgr->taskPool, mgr->unk_216D8));
+    Field_CreateObjects(mgr);
+    func_ov030_020bd298(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
     func_ov030_02083024(mgr);
     DebugOvlDisp_Pop();
     DebugOvlDisp_Push((OverlayCB)func_ov030_020825d8, mgr, 0);
@@ -134,28 +134,28 @@ void func_ov030_020827e4(FieldEventManager* mgr) {
     mgr->unk_21AAC = 24;
     mgr->unk_21A5C = 10;
     func_ov030_020846bc(mgr, 1);
-    func_ov030_020af10c();
+    FieldDebug_DrawAreaName();
     func_ov030_020c2f74();
 }
 
 void func_ov030_020828fc(FieldEventManager* mgr) {
-    if (mgr->unk_21AAE != 0) {
-        func_02026590(&mgr->unk_21AB0, 0, mgr->unk_21AAE);
-        mgr->unk_21AAE--;
+    if (mgr->blendTimer != 0) {
+        func_02026590(&mgr->blendEva, 0, mgr->blendTimer);
+        mgr->blendTimer--;
     }
 
-    s32 temp = F2I(mgr->unk_21AB0);
+    s32 temp = F2I(mgr->blendEva);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -temp, 0);
     mgr->unk_21AC8 = 1;
     if (temp == 0 && func_ov030_02082fe4(mgr)) {
         DebugOvlDisp_Pop();
         mgr->unk_21AC8 = 0;
-        DebugOvlDisp_Push((OverlayCB)func_ov030_020ab554, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)Field_MainUpdate, mgr, 0);
     }
 }
 
 void func_ov030_0208299c(FieldEventManager* mgr) {
-    if (func_ov030_020b0454() != 0) {
+    if (FieldEvent_IsDebugSkipHeld() != 0) {
         EasyFade_FadeMainDisplay(FADER_INSTANT, 0, 1);
     } else {
         EasyFade_FadeMainDisplay(FADER_INSTANT, 0, mgr->unk_21D12);
@@ -186,7 +186,7 @@ void func_ov030_02082a50(FieldEventManager* mgr) {
 
 void func_ov030_02082a84(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
-    func_ov030_020b0454();
+    FieldEvent_IsDebugSkipHeld();
     EasyFade_FadeMainDisplay(FADER_INSTANT, 0, mgr->unk_21D12);
     if (mgr->taskId_UGFade == -1) {
         if (mgr->unk_21A5C != 9) {
@@ -202,33 +202,33 @@ void func_ov030_02082a84(FieldEventManager* mgr) {
 
 void func_ov030_02082b4c(FieldEventManager* mgr) {
     func_ov030_02082a84(mgr);
-    if (gSaveData.unk_2458 == 5) {
+    if (gSaveData.fieldArea == 5) {
         func_ov030_0208434c(mgr, 3, 5);
         mgr->unk_21A5C = 2;
     }
 }
 
 void func_ov030_02082b8c(FieldEventManager* mgr) {
-    func_ov030_020ad4f4(mgr);
+    Field_LoadEventPicture(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 2) & ~1;
-    if (mgr->unk_216C8 == -1 && mgr->unk_21CF4 != 0) {
-        mgr->unk_216C8 = Fld_TalkEventTitle_CreateTask(&mgr->taskPool, mgr->unk_21614);
+    if (mgr->unk_216C8 == -1 && mgr->talkEventActive != 0) {
+        mgr->unk_216C8 = Fld_TalkEventTitle_CreateTask(&mgr->taskPool, mgr->dataType);
     }
     DebugOvlDisp_Pop();
 }
 
 void func_ov030_02082bf0(FieldEventManager* mgr) {
-    func_ov030_020ad958(mgr, 0);
+    Field_SetupDisplay2D(mgr, 0);
     DebugOvlDisp_Pop();
 }
 
 void func_ov030_02082c04(FieldEventManager* mgr) {
     REG_POWER_CNT &= ~0x8000;
     // Bug: Can never execute
-    if (mgr->unk_21D22 == 1 && mgr->unk_21D22 == 2) {
+    if (mgr->touchEventKind == 1 && mgr->touchEventKind == 2) {
         func_ov030_020846bc(mgr, 7);
     }
-    func_ov030_020ad730(mgr);
+    Field_LoadTouchEventBg(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 2) & ~1;
     DebugOvlDisp_Pop();
 }
@@ -240,9 +240,9 @@ void func_ov030_02082c68(FieldEventManager* mgr) {
         mgr->unk_216C8 = -1;
     }
     if (mgr->unk_21AC4 != 0) {
-        func_ov030_020ad3a8(mgr);
+        Field_DestroyObjects(mgr);
     } else {
-        func_ov030_020ad48c(mgr);
+        Field_CloseEventPicture(mgr);
     }
     DebugOvlDisp_Pop();
     DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
@@ -250,7 +250,7 @@ void func_ov030_02082c68(FieldEventManager* mgr) {
 }
 
 void func_ov030_02082cec(FieldEventManager* mgr) {
-    func_ov030_020ad278(mgr);
+    Field_CreateObjects(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers & ~2) | 1;
     DebugOvlDisp_Pop();
     DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
@@ -258,7 +258,7 @@ void func_ov030_02082cec(FieldEventManager* mgr) {
 }
 
 void func_ov030_02082d3c(FieldEventManager* mgr) {
-    func_ov030_020adaf8(mgr);
+    Field_SetupDisplay3D(mgr);
     DebugOvlDisp_Pop();
     DebugOvlDisp_Push((OverlayCB)func_ov030_02082cec, mgr, 0);
 }
@@ -272,8 +272,8 @@ void func_ov030_02082d64(FieldEventManager* mgr) {
         EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_216C8);
         mgr->unk_216C8 = -1;
     }
-    if (mgr->unk_21D22 != 3) {
-        func_ov030_020ad48c(mgr);
+    if (mgr->touchEventKind != 3) {
+        Field_CloseEventPicture(mgr);
         DebugOvlDisp_Pop();
         DebugOvlDisp_Push((OverlayCB)func_ov030_02082d3c, mgr, 0);
     } else {
@@ -287,45 +287,34 @@ void func_ov030_02082d64(FieldEventManager* mgr) {
         }
         DebugOvlDisp_Pop();
     }
-    mgr->unk_21D22 = 0;
+    mgr->touchEventKind = 0;
     DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
     mgr->unk_21AAC = 2;
 }
 
 void func_ov030_02082e70(FieldEventManager* mgr) {
-    if (mgr->unk_21AAE != 0) {
-        if (func_ov030_020b0454() != 0) {
-            mgr->unk_21AAE = 1;
+    if (mgr->blendTimer != 0) {
+        if (FieldEvent_IsDebugSkipHeld() != 0) {
+            mgr->blendTimer = 1;
         }
-        func_02026590(&mgr->unk_21AB0, 0xA000, mgr->unk_21AAE);
-        func_02026590(&mgr->unk_21AB4, 0x8000, mgr->unk_21AAE);
-        mgr->unk_21AAE--;
-
-        s32 coeff0 = mgr->unk_21AB0;
-        s32 coeff1 = mgr->unk_21AB4;
-
-        g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = coeff0 >> 0xC;
-        g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = coeff1 >> 0xC;
-
+        func_02026590(&mgr->blendEva, 0xA000, mgr->blendTimer);
+        func_02026590(&mgr->blendEvb, 0x8000, mgr->blendTimer);
+        mgr->blendTimer--;
+        Display_SetBlendCoeffs(DISPLAY_SUB, F2I(mgr->blendEva), F2I(mgr->blendEvb));
     } else {
         DebugOvlDisp_Pop();
     }
 }
 
 void func_ov030_02082f10(FieldEventManager* mgr) {
-    if (mgr->unk_21AAE != 0) {
-        if (func_ov030_020b0454() != 0) {
-            mgr->unk_21AAE = 1;
+    if (mgr->blendTimer != 0) {
+        if (FieldEvent_IsDebugSkipHeld() != 0) {
+            mgr->blendTimer = 1;
         }
-        func_02026590(&mgr->unk_21AB0, 0, mgr->unk_21AAE);
-        func_02026590(&mgr->unk_21AB4, 0x10000, mgr->unk_21AAE);
-        mgr->unk_21AAE--;
-
-        s32 coeff0 = mgr->unk_21AB0;
-        s32 coeff1 = mgr->unk_21AB4;
-
-        g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0 = coeff0 >> 0xC;
-        g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1 = coeff1 >> 0xC;
+        func_02026590(&mgr->blendEva, 0, mgr->blendTimer);
+        func_02026590(&mgr->blendEvb, 0x10000, mgr->blendTimer);
+        mgr->blendTimer--;
+        Display_SetBlendCoeffs(DISPLAY_SUB, F2I(mgr->blendEva), F2I(mgr->blendEvb));
     } else {
         g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~8;
         DebugOvlDisp_Pop();
@@ -333,8 +322,8 @@ void func_ov030_02082f10(FieldEventManager* mgr) {
 }
 
 s32 func_ov030_02082fc0(void) {
-    if ((u32)gSaveData.unk_2458 >= 44) {
+    if ((u32)gSaveData.fieldArea >= 44) {
         return 7;
     }
-    return data_ov030_020da4b8[gSaveData.unk_2458];
+    return data_ov030_020da4b8[gSaveData.fieldArea];
 }

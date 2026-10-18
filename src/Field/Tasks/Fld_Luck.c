@@ -63,14 +63,14 @@ extern FieldScanEvent data_0205c5be[];
 extern char           data_ov030_021074d4[];
 extern char           data_ov030_021074e4[];
 
-s16  func_ov030_020c5804(s32 kind);
+s16  FieldNoise_RollEncounter(s32 kind);
 s32  func_ov030_020c5f5c(s32 encounter);
-s32  func_ov030_020c58c4(s32 component);
+s32  FieldNoise_GetQuota(s32 kind);
 s32  func_020259e4(s32 itemId);
-s32  func_ov030_020aee5c(void);
+s32  Field_IsMoveTouchActive(void);
 s32  func_ov030_020aec08(s32 mask);
 void func_ov030_020aec58(s32 gate);
-BOOL func_ov030_020aef98(void);
+BOOL Field_IsBattlePending(void);
 s32  func_ov030_020b4514(Task* task);
 s16  func_ov030_020b7b20(void);
 
@@ -182,7 +182,7 @@ s32 func_ov030_020c0d28(TaskPool* pool, u32 id1, u32 id2) {
             return 1;
         }
     }
-    if (func_ov030_020aee5c() != 0) {
+    if (Field_IsMoveTouchActive() != 0) {
         return 0;
     }
     if (func_ov030_020b4514(EasyTask_GetTaskById(pool, id2)) != 0) {
@@ -229,7 +229,7 @@ s32 func_ov030_020c0f00(s32 idx) {
     if (gSaveData.scanSymbols[idx].category != 8) {
         return 0;
     }
-    if (gSaveData.unk_2458 < 0x18 || gSaveData.unk_2458 > 0x24) {
+    if (gSaveData.fieldArea < 0x18 || gSaveData.fieldArea > 0x24) {
         return 0;
     }
     return func_ov030_020c0ea8();
@@ -282,7 +282,7 @@ s32 func_ov030_020c1088(TaskPool* pool, u16 x, u16 y, s16 kind, s16 mode, s32 ma
         return 0;
     }
     if (k == 0) {
-        k = func_ov030_020c5804(0);
+        k = FieldNoise_RollEncounter(0);
         if (k == -1) {
             k = 1;
         }
@@ -319,9 +319,9 @@ void func_ov030_020c1230(s32 arg0) {
 
     count = gSaveData.scanSymbolCount;
     if (gSaveData.unk_2488 != 0) {
-        limit = gSaveData.scanSymbolCount + func_ov030_020c58c4(arg0);
+        limit = gSaveData.scanSymbolCount + FieldNoise_GetQuota(arg0);
     } else {
-        limit = count + gSaveData.unk_3110;
+        limit = count + gSaveData.noiseSymbolCount;
     }
     if (limit >= 0x80) {
         limit = 0x80;
@@ -335,7 +335,7 @@ void func_ov030_020c1230(s32 arg0) {
     v0 = func_ov030_020b7b00();
     v0 = v1 - v0 / 2;
     for (; count < limit; count++) {
-        gSaveData.scanSymbols[count].encounter = func_ov030_020c5804(arg0);
+        gSaveData.scanSymbols[count].encounter = FieldNoise_RollEncounter(arg0);
         if (gSaveData.scanSymbols[count].encounter == -1) {
             if (gSaveData.unk_2488 != 0) {
                 break;
@@ -380,7 +380,7 @@ s32 func_ov030_020c1424(void) {
             u16 flags = ev->flags;
 
             if (!(flags & 2) && (!(flags & 1) || Inventory_HasRequiredQuantity(0x2AE, 1, 0) != 0) &&
-                ev->area == gSaveData.unk_2458)
+                ev->area == gSaveData.fieldArea)
             {
                 if (ev->firstChapter <= (s32)gSaveData.chapter && (s32)gSaveData.chapter <= ev->lastChapter) {
                     if (func_020259e4(i) == 0 && func_ov030_020c5f5c(ev->encounter) == 8) {
@@ -407,13 +407,13 @@ void func_ov030_020c14f8(void) {
     }
     ev = data_0205c5be;
     do {
-        if ((!(ev->flags & 1) || Inventory_HasRequiredQuantity(0x2AE, 1, 0) != 0) && ev->area == gSaveData.unk_2458) {
+        if ((!(ev->flags & 1) || Inventory_HasRequiredQuantity(0x2AE, 1, 0) != 0) && ev->area == gSaveData.fieldArea) {
             if (ev->firstChapter <= (s32)gSaveData.chapter && (s32)gSaveData.chapter <= ev->lastChapter) {
                 if (func_020259e4(i) != 0) {
                     if ((u16)ev->encounter == 0xBE) {
                         gSaveData.scanSymbols[gSaveData.scanSymbolCount].x         = ev->x;
                         gSaveData.scanSymbols[gSaveData.scanSymbolCount].y         = ev->y;
-                        gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter = func_ov030_020c5804(0);
+                        gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter = FieldNoise_RollEncounter(0);
                         if (gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter != -1) {
                             gSaveData.scanSymbols[gSaveData.scanSymbolCount].state = 1;
                             gSaveData.scanSymbols[gSaveData.scanSymbolCount].category =
@@ -466,7 +466,7 @@ void func_ov030_020c17d0(void) {
         if (kind == 0x46) {
             return;
         }
-        if (gSaveData.unk_2458 == kind && base[i].unk_8 == func_ov030_020aec08(base[i].unk_4)) {
+        if (gSaveData.fieldArea == kind && base[i].unk_8 == func_ov030_020aec08(base[i].unk_4)) {
             break;
         }
         i += 1;
@@ -478,7 +478,7 @@ void func_ov030_020c17d0(void) {
         s32 encounter = sp->encounter;
 
         if (encounter == -1) {
-            gSaveData.scanSymbols[i].encounter = func_ov030_020c5804(0);
+            gSaveData.scanSymbols[i].encounter = FieldNoise_RollEncounter(0);
             if (gSaveData.scanSymbols[i].encounter == -1) {
                 if (gSaveData.unk_2488 != 0) {
                     break;
@@ -511,7 +511,7 @@ void func_ov030_020c1960(void) {
     func_ov030_020c1230(0);
     func_ov030_020c1230(1);
     func_ov030_020c14f8();
-    if (gSaveData.unk_2458 != 0x29) {
+    if (gSaveData.fieldArea != 0x29) {
         return;
     }
     if ((s16)gSaveData.unk_26B4 < 4) {
@@ -529,7 +529,7 @@ void func_ov030_020c19bc(void) {
         if (gSaveData.scanSymbols[i].state == 2) {
             gSaveData.scanSymbols[i].state = 0;
             changed += 1;
-            if (gSaveData.unk_3100 == gSaveData.unk_2458) {
+            if (gSaveData.unk_3100 == gSaveData.fieldArea) {
                 if (gSaveData.unk_30FE != 0x27 && gSaveData.unk_30FE != gSaveData.scanSymbols[i].category) {
                 } else {
                     gSaveData.unk_30FC += 1;
@@ -649,7 +649,7 @@ s32 func_ov030_020c1e2c(TaskPool* pool, Task* task, void* args) {
 
     if (obj->unk_190 != 0 && obj->unk_188 != obj->unk_18C) {
         obj->unk_194 = (s16)(obj->unk_194 + 1);
-        if (func_ov030_020aef98() != 0) {
+        if (Field_IsBattlePending() != 0) {
             obj->unk_188 = obj->unk_18C;
         } else if (!(obj->unk_194 & 1)) {
             s32 target = obj->unk_18C;

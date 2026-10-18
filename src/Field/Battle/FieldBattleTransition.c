@@ -5,8 +5,6 @@
 #include "Field/TaskHelpers.h"
 #include "Save.h"
 
-// USA: interaction/mode helpers at 0x020aed54-0x020af320.
-// The provisional file name groups helpers also called by battle setup.
 extern s32       func_ov030_020ae2c8(FieldEventManager*);
 extern const s32 data_ov030_020da778[44];
 
@@ -15,195 +13,189 @@ extern s32  func_ov030_020847c8(FieldEventManager*);
 extern s8*  func_ov030_020b0534(s16 area);
 extern void func_02011e94(void* dst, s32 arg1, s32 arg2, void* src);
 
-extern char data_ov030_021002ec[];
-extern char data_ov030_02100300[];
-extern char data_ov030_02100314[];
-extern char data_ov030_02100328[];
-
-void func_ov030_020aed54(s32 id) {
+void FieldScan_MarkSeen(s32 id) {
     FieldEventManager* field = data_ov030_02109d60;
-    s32                i     = 0;
-    do {
-        s32 existing = field->unk_21B3C[i];
-        if (existing == -1) {
-            field->unk_21B3C[i] = id;
+
+    for (s32 i = 0; i < 32; i++) {
+        if (field->scanSeenIds[i] == -1) {
+            field->scanSeenIds[i] = id;
             return;
         }
-        if (id == existing) {
+        if (id == field->scanSeenIds[i]) {
             return;
         }
-        i++;
-    } while (i < 32);
+    }
 }
 
-BOOL func_ov030_020aed9c(s32 id) {
+BOOL FieldScan_WasSeen(s32 id) {
     FieldEventManager* field = data_ov030_02109d60;
-    s32                i;
 
     if (id == -1) {
-        for (i = 0; i < 32; i++) {
-            if (field->unk_21B3C[i] != -1) {
-                return 1;
+        for (s32 i = 0; i < 32; i++) {
+            if (field->scanSeenIds[i] != -1) {
+                return TRUE;
             }
         }
-        return 0;
+        return FALSE;
     }
-    for (i = 0; i < 32; i++) {
-        if (id == field->unk_21B3C[i]) {
-            return 1;
+
+    for (s32 i = 0; i < 32; i++) {
+        if (id == field->scanSeenIds[i]) {
+            return TRUE;
         }
     }
-    return 0;
+    return FALSE;
 }
 
-BOOL func_ov030_020aee10(void) {
+BOOL FieldScan_IsTouchActive(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    if (TouchInput_IsTouchActive() == 0) {
-        return 0;
+    if (!TouchInput_IsTouchActive()) {
+        return FALSE;
     }
-    if (func_ov030_02084788(field) != 0) {
-        return 0;
+    if (func_ov030_02084788(field)) {
+        return FALSE;
     }
-    return field->unk_21B14 == 3;
+    return field->scanPhase == 3;
 }
 
-BOOL func_ov030_020aee5c(void) {
+BOOL Field_IsMoveTouchActive(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    if (TouchInput_IsTouchActive() == 0) {
-        return 0;
+    if (!TouchInput_IsTouchActive()) {
+        return FALSE;
     }
-    if (func_ov030_020b3058(EasyTask_GetTaskById(&field->taskPool, field->unk_216D4)) != 0) {
-        return 0;
+    if (func_ov030_020b3058(EasyTask_GetTaskById(&field->taskPool, field->taskId_Player))) {
+        return FALSE;
     }
-    if (func_ov030_020847c8(field) != 0) {
-        return 0;
+    if (func_ov030_020847c8(field)) {
+        return FALSE;
     }
-    return field->unk_21B14 == 5;
+    return field->scanPhase == 5;
 }
 
-BOOL func_ov030_020aeecc(void) {
+BOOL Field_IsMoveInputActive(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    if (SysControl.buttonState.currButtons & 0xCF3) {
-        if (func_ov030_020847c8(field) != 0) {
-            return 0;
+    if (SysControl.buttonState.currButtons & (INPUT_DPAD | INPUT_ABXY)) {
+        if (func_ov030_020847c8(field)) {
+            return FALSE;
         }
-        return field->unk_21B14 == 5;
+        return field->scanPhase == 5;
     }
-    return func_ov030_020aee5c();
+    return Field_IsMoveTouchActive();
 }
 
 s32 func_ov030_020aef2c(void) {
     return func_ov030_020ae2c8(data_ov030_02109d60);
 }
-BOOL func_ov030_020aef44(void) {
-    s32 mode = data_ov030_02109d60->unk_21B14;
-    if (mode == 6) {
-        return 1;
+
+BOOL FieldScan_IsEnteringBattle(void) {
+    if (data_ov030_02109d60->scanPhase == 6) {
+        return TRUE;
     }
-    if (mode == 7) {
-        return 1;
+    if (data_ov030_02109d60->scanPhase == 7) {
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
-BOOL func_ov030_020aef74(void) {
-    return data_ov030_02109d60->unk_21B14 == 7;
+
+BOOL FieldScan_IsBattleStarting(void) {
+    return data_ov030_02109d60->scanPhase == 7;
 }
-BOOL func_ov030_020aef98(void) {
-    return data_ov030_02109d60->unk_21630 == 2;
+
+BOOL Field_IsBattlePending(void) {
+    return data_ov030_02109d60->exitRequest == 2;
 }
-BOOL func_ov030_020aefbc(void) {
-    return data_ov030_02109d60->unk_21B14 != 5;
+
+BOOL FieldScan_IsOpen(void) {
+    return data_ov030_02109d60->scanPhase != 5;
 }
-s32 func_ov030_020aefe0(void) {
-    return data_ov030_02109d60->unk_21CF4;
+
+s32 Field_IsTalkEventActive(void) {
+    return data_ov030_02109d60->talkEventActive;
 }
-BOOL func_ov030_020aeff8(void) {
-    return data_ov030_02109d60->unk_21B14 == 4;
+
+BOOL FieldScan_IsClosing(void) {
+    return data_ov030_02109d60->scanPhase == 4;
 }
 
 BOOL func_ov030_020af01c(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->unk_216B4)) != 0) {
-        return 0;
+    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
+        return FALSE;
     }
     if (field->unk_21A5C == 1) {
-        return 1;
+        return TRUE;
     }
     return gSaveData.unk_2498 == 0;
 }
 
-BOOL func_ov030_020af080(void) {
+BOOL Field_IsIdle(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
     if (field->unk_21AC8 != 0) {
-        return 0;
+        return FALSE;
     }
     if (field->unk_21AAC != 0) {
-        return 0;
+        return FALSE;
     }
-    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->unk_216B4)) != 0) {
-        return 0;
+    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
+        return FALSE;
     }
     if (gSaveData.unk_2498 != 0) {
-        return 0;
+        return FALSE;
     }
-    return field->unk_21630 == 0;
+    return field->exitRequest == 0;
 }
 
-void func_ov030_020af10c(void) {
-    FieldEventManager* field = data_ov030_02109d60;
-    s8*                src;
-    u8*                data;
-    s32                i;
-
-    if (field->unk_22E20 == -1) {
-        return;
-    }
-    data = EasyTask_GetTaskById(&field->taskPool, field->unk_22E20)->data;
-    src  = func_ov030_020b0534(gSaveData.unk_2458);
-    i    = 0;
-    do {
-        field->unk_22E24[i] = src[i];
-        i++;
-    } while (i < 5);
-    field->unk_22E24[i] = 0;
-    func_02011e94(data + 0x10, 0, 0, field->unk_22E24);
-}
-
-void func_ov030_020af198(void) {
-    FieldEventManager* field = data_ov030_02109d60;
-    u8*                data;
-    s32                value;
-
-    if (field->unk_22E20 == -1) {
-        return;
-    }
-    data = EasyTask_GetTaskById(&field->taskPool, field->unk_22E20)->data;
-    func_02011e94(data + 0x10, 0, 0x18,
-                  Str_SPrintf(data_ov030_021002ec, gSaveData.fieldPos.x >> 0xC, gSaveData.fieldPos.y >> 0xC));
-    value = func_ov030_020aeca4(gSaveData.fieldPos.y);
-    func_02011e94(data + 0x10, 0, 0x20,
-                  Str_SPrintf(data_ov030_02100300, value >> 0xC, ((value * 0x64) >> 0xC) - ((value >> 0xC) * 0x64)));
-    func_02011e94(data + 0x10, 0, 0x28,
-                  Str_SPrintf(data_ov030_02100314, (field->origin.x >> 0xC) + 0x80, (field->origin.y >> 0xC) + 0x60));
-    func_02011e94(data + 0x10, 0, 0x38, Str_SPrintf(data_ov030_02100328, field->unk_22E38, field->unk_21918));
-}
-
-s32 func_ov030_020af2b8(void) {
+void FieldDebug_DrawAreaName(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    return func_ov030_020b4858(EasyTask_GetTaskById(&field->taskPool, field->unk_216B4));
+    if (field->taskId_DebugText != -1) {
+        void* data = EasyTask_GetTaskById(&field->taskPool, field->taskId_DebugText)->data;
+        char* src  = func_ov030_020b0534(gSaveData.fieldArea);
+
+        s32 i;
+        for (i = 0; i < 5; i++) {
+            field->debugAreaName[i] = src[i];
+        }
+        field->debugAreaName[i] = 0;
+        func_02011e94(data + 0x10, 0, 0, field->debugAreaName);
+    }
 }
 
-s32 func_ov030_020af2e4(void) {
-    return data_ov030_02109d60->unk_21B10;
+void FieldDebug_DrawPlayerInfo(void) {
+    FieldEventManager* field = data_ov030_02109d60;
+
+    if (field->taskId_DebugText != -1) {
+        void* data = EasyTask_GetTaskById(&field->taskPool, field->taskId_DebugText)->data;
+
+        func_02011e94(data + 0x10, 0, 24,
+                      Str_SPrintf("player:%04d,%03d", F2I(gSaveData.fieldPos.x), F2I(gSaveData.fieldPos.y)));
+
+        s32 value = func_ov030_020aeca4(gSaveData.fieldPos.y);
+        func_02011e94(data + 0x10, 0, 32, Str_SPrintf(" Scale:%03d.%02d", F2I(value), F2I(value * 100) - F2I(value) * 100));
+        func_02011e94(data + 0x10, 0, 40,
+                      Str_SPrintf("camera:%04d,%03d", F2I(field->origin.x) + 128, F2I(field->origin.y) + 96));
+        func_02011e94(data + 0x10, 0, 56, Str_SPrintf("NPC %04d / %04d", field->drawnHumanCount, field->humanCount));
+    }
 }
+
+s32 FieldScan_GetRadius(void) {
+    FieldEventManager* field = data_ov030_02109d60;
+
+    return func_ov030_020b4858(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea));
+}
+
+s32 FieldScan_IsActive(void) {
+    return data_ov030_02109d60->scanActive;
+}
+
 s32 func_ov030_020af2fc(void) {
-    s16 area = gSaveData.unk_2458;
+    s16 area = gSaveData.fieldArea;
+
     if ((u32)area >= 44) {
         return 25;
     }

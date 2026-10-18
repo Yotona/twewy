@@ -9,10 +9,10 @@ typedef struct {
     u32*    entrySizes;
 } FieldCache;
 
-FieldCache* data_ov030_02109de0;
+FieldCache* gFOFileList;
 
-extern void* func_ov030_020d2188(s32 size);
-extern void  func_ov030_020d21bc(void* data);
+extern void* FOFileIO_Alloc(s32 size);
+extern void  FOFileIO_Free(void* data);
 extern BOOL  FS_GetFileSystemStatus(void);
 extern BOOL  FS_InitFileSystem(s32 flags);
 
@@ -20,59 +20,57 @@ static inline BOOL FS_IsFileOpen(volatile const FS_File* file) {
     return (file->status & FS_FILE_STATUS_IS_FILE) != 0;
 }
 
-void* func_ov030_020d21e0(void) {
-    data_ov030_02109de0             = func_ov030_020d2188(0x54);
-    data_ov030_02109de0->entrySizes = NULL;
-    data_ov030_02109de0->dataOffset = 0;
-    data_ov030_02109de0->entryCount = 0;
-    return data_ov030_02109de0;
+void* FOFileList_Create(void) {
+    gFOFileList             = FOFileIO_Alloc(0x54);
+    gFOFileList->entrySizes = NULL;
+    gFOFileList->dataOffset = 0;
+    gFOFileList->entryCount = 0;
+    return gFOFileList;
 }
 
-void func_ov030_020d2218(void) {
-    func_ov030_020d21bc(data_ov030_02109de0->entrySizes);
-    func_ov030_020d21bc(data_ov030_02109de0);
-    data_ov030_02109de0 = NULL;
+void FOFileList_Destroy(void) {
+    FOFileIO_Free(gFOFileList->entrySizes);
+    FOFileIO_Free(gFOFileList);
+    gFOFileList = NULL;
 }
 
-u32 func_ov030_020d224c(const char* path, BOOL loadTable) {
+u32 FOFileList_Open(const char* path, BOOL loadTable) {
     u32 fileSize = 0;
 
-    if (data_ov030_02109de0 != NULL) {
+    if (gFOFileList != NULL) {
         if (!FS_GetFileSystemStatus()) {
             FS_InitFileSystem(-1);
         }
-        FS_FileInit(&data_ov030_02109de0->file);
-        if (FS_FileOpen(&data_ov030_02109de0->file, path)) {
-            fileSize = data_ov030_02109de0->file.endPosition - data_ov030_02109de0->file.startPosition;
+        FS_FileInit(&gFOFileList->file);
+        if (FS_FileOpen(&gFOFileList->file, path)) {
+            fileSize = gFOFileList->file.endPosition - gFOFileList->file.startPosition;
             if (loadTable != FALSE) {
                 u32 tableSize;
 
-                FS_FileSeek(&data_ov030_02109de0->file, 0, 0);
-                FS_FileRead(&data_ov030_02109de0->file, &data_ov030_02109de0->dataOffset,
-                            sizeof(data_ov030_02109de0->dataOffset));
-                FS_FileRead(&data_ov030_02109de0->file, &data_ov030_02109de0->entryCount,
-                            sizeof(data_ov030_02109de0->entryCount));
-                tableSize                       = data_ov030_02109de0->entryCount * sizeof(*data_ov030_02109de0->entrySizes);
-                data_ov030_02109de0->entrySizes = func_ov030_020d2188(tableSize);
-                FS_FileRead(&data_ov030_02109de0->file, data_ov030_02109de0->entrySizes, tableSize);
+                FS_FileSeek(&gFOFileList->file, 0, 0);
+                FS_FileRead(&gFOFileList->file, &gFOFileList->dataOffset, sizeof(gFOFileList->dataOffset));
+                FS_FileRead(&gFOFileList->file, &gFOFileList->entryCount, sizeof(gFOFileList->entryCount));
+                tableSize               = gFOFileList->entryCount * sizeof(*gFOFileList->entrySizes);
+                gFOFileList->entrySizes = FOFileIO_Alloc(tableSize);
+                FS_FileRead(&gFOFileList->file, gFOFileList->entrySizes, tableSize);
             }
         }
     }
     return fileSize;
 }
 
-void func_ov030_020d2334(void) {
-    if (data_ov030_02109de0 != NULL && FS_IsFileOpen(&data_ov030_02109de0->file)) {
-        FS_FileClose(&data_ov030_02109de0->file);
-        FS_FileInit(&data_ov030_02109de0->file);
+void FOFileList_Close(void) {
+    if (gFOFileList != NULL && FS_IsFileOpen(&gFOFileList->file)) {
+        FS_FileClose(&gFOFileList->file);
+        FS_FileInit(&gFOFileList->file);
     }
 }
 
-void* func_ov030_020d2378(void* buffer, u32 wantedIndex) {
+void* FOFileList_ReadEntry(void* buffer, u32 wantedIndex) {
     void*       dst = NULL;
     u32         offset;
     u32         i;
-    FieldCache* cache = data_ov030_02109de0;
+    FieldCache* cache = gFOFileList;
 
     if (cache == NULL) {
         return dst;
@@ -88,12 +86,12 @@ void* func_ov030_020d2378(void* buffer, u32 wantedIndex) {
             u32 remaining;
             u8* readDst;
 
-            FS_FileSeek(&data_ov030_02109de0->file, data_ov030_02109de0->dataOffset + offset, 0);
-            size = data_ov030_02109de0->entrySizes[i];
+            FS_FileSeek(&gFOFileList->file, gFOFileList->dataOffset + offset, 0);
+            size = gFOFileList->entrySizes[i];
             if (buffer != NULL) {
                 dst = buffer;
             } else {
-                dst = func_ov030_020d2188(size);
+                dst = FOFileIO_Alloc(size);
             }
             chunk     = 0x6800;
             remaining = size;
@@ -102,7 +100,7 @@ void* func_ov030_020d2378(void* buffer, u32 wantedIndex) {
                 if (remaining < chunk) {
                     chunk = remaining;
                 }
-                FS_FileRead(&data_ov030_02109de0->file, readDst, chunk);
+                FS_FileRead(&gFOFileList->file, readDst, chunk);
                 readDst += chunk;
                 remaining -= chunk;
             }
@@ -114,9 +112,9 @@ void* func_ov030_020d2378(void* buffer, u32 wantedIndex) {
     return dst;
 }
 
-u32 func_ov030_020d246c(void) {
+u32 FOFileList_GetEntryCount(void) {
     u32         count = 0;
-    FieldCache* cache = data_ov030_02109de0;
+    FieldCache* cache = gFOFileList;
 
     if (cache != NULL) {
         count = cache->entryCount;
@@ -124,17 +122,17 @@ u32 func_ov030_020d246c(void) {
     return count;
 }
 
-void* func_ov030_020d2488(s32 size) {
+void* FOList_Alloc(s32 size) {
     void* data = Mem_AllocHeapTail(&gMainHeap, size);
     Mem_SetSequence(&gMainHeap, data, "FOList_Alloc");
     return data;
 }
 
-void func_ov030_020d24bc(void* data) {
+void FOList_Free(void* data) {
     Mem_Free(&gMainHeap, data);
 }
 
-const u32 data_ov030_020ee880[47] = {
+const u32 FO3DViewer_ScenePointCounts[47] = {
     9,  25, 25, 9,  25, 9,  25, 25, 25, 25, 9,  25, 25, 25, 25, 25, 25, 25, 25, 25, 9, 25, 25,  25,
     25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 9, 25, -16,
 };

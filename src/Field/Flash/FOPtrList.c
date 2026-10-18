@@ -10,52 +10,52 @@
 #include "common_data.h"
 #include <nitro/gx.h>
 
-extern FieldPtrList* data_ov030_02109de4;
+extern FieldPtrList* gFOPtrList;
 
-void* func_ov030_020d24d4(void) {
-    data_ov030_02109de4           = func_ov030_020d2488(sizeof(*data_ov030_02109de4));
-    data_ov030_02109de4->items    = NULL;
-    data_ov030_02109de4->capacity = 0;
-    return data_ov030_02109de4;
+void* FOPtrList_Create(void) {
+    gFOPtrList           = FOList_Alloc(sizeof(*gFOPtrList));
+    gFOPtrList->items    = NULL;
+    gFOPtrList->capacity = 0;
+    return gFOPtrList;
 }
 
-void func_ov030_020d2504(void) {
-    func_ov030_020d24bc(data_ov030_02109de4->items);
-    func_ov030_020d24bc(data_ov030_02109de4);
-    data_ov030_02109de4 = NULL;
+void FOPtrList_Destroy(void) {
+    FOList_Free(gFOPtrList->items);
+    FOList_Free(gFOPtrList);
+    gFOPtrList = NULL;
 }
 
-void func_ov030_020d2538(FieldPtrList* list) {
-    data_ov030_02109de4 = list;
+void FOPtrList_SetCurrent(FieldPtrList* list) {
+    gFOPtrList = list;
 }
 
-FieldPtrList* func_ov030_020d2548(void) {
-    return data_ov030_02109de4;
+FieldPtrList* FOPtrList_GetCurrent(void) {
+    return gFOPtrList;
 }
 
-void func_ov030_020d2558(s32 capacity) {
-    func_ov030_020d24d4();
-    data_ov030_02109de4->items    = func_ov030_020d2488(capacity * sizeof(*data_ov030_02109de4->items));
-    data_ov030_02109de4->capacity = capacity;
-    func_ov030_020d258c();
+void FOPtrList_Init(s32 capacity) {
+    FOPtrList_Create();
+    gFOPtrList->items    = FOList_Alloc(capacity * sizeof(*gFOPtrList->items));
+    gFOPtrList->capacity = capacity;
+    FOPtrList_Clear();
 }
 
-void func_ov030_020d258c(void) {
+void FOPtrList_Clear(void) {
     s32 i;
 
-    if (data_ov030_02109de4 == NULL) {
+    if (gFOPtrList == NULL) {
         return;
     }
-    i = data_ov030_02109de4->capacity;
+    i = gFOPtrList->capacity;
     while (i > 0) {
-        data_ov030_02109de4->items[--i] = NULL;
+        gFOPtrList->items[--i] = NULL;
     }
 }
 
-s32 func_ov030_020d25cc(void* item) {
+s32 FOPtrList_Add(void* item) {
     s32           result = -1;
     s32           i      = 0;
-    FieldPtrList* list   = data_ov030_02109de4;
+    FieldPtrList* list   = gFOPtrList;
 
     if (list->capacity > 0) {
         do {
@@ -71,7 +71,7 @@ s32 func_ov030_020d25cc(void* item) {
 }
 
 // Nonmatching
-void func_ov030_020d2620(void) {
+void FO3D_InitGraphics(void) {
     Interrupts_Init();
     HBlank_Init();
     GX_Init();
@@ -152,7 +152,7 @@ void func_ov030_020d2620(void) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
 
-void func_ov030_020d2930(void) {
+void FO3D_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
@@ -169,23 +169,23 @@ void func_ov030_020d2930(void) {
     }
 }
 
-void func_ov030_020d2a00(void) {
-    func_ov030_020d2620();
-    Interrupts_RegisterVBlankCallback(func_ov030_020d2930, 1);
+void FO3D_InitDisplay(void) {
+    FO3D_InitGraphics();
+    Interrupts_RegisterVBlankCallback(FO3D_VBlank, 1);
 }
 
-void func_ov030_020d2a1c(void) {
+void FO3D_ExitDisplay(void) {
     Interrupts_RegisterVBlankCallback(NULL, 1);
 }
 
-void func_ov030_020d2a30(void) {
+void FO3D_FadeInStep(void) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x800);
     if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
     }
 }
 
-void func_ov030_020d2a58(void) {
+void FO3D_FadeOutStep(void) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, -0x20, 0x800);
     if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();

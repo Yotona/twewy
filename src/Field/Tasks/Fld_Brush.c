@@ -50,8 +50,8 @@ extern void func_ov030_020c050c(Task* task, s32 mode);
 extern void func_ov030_020c0730(TaskPool* pool, s32 owner);
 extern void func_ov030_020bff68(Task* task, s32 mode);
 extern s32  func_0202599c(s32 flagIndex);
-extern void func_ov030_020af6f0(s32 arg);
-extern void func_ov030_020af708(s32 arg);
+extern void Field_SetTouchEventResult(s32 arg);
+extern void Field_SetTouchEventTarget(s32 arg);
 extern void func_ov030_020aec1c(s32 arg);
 extern void SndMgr_PlaySEWithPan(s32 sound, s32 pan);
 
@@ -171,22 +171,22 @@ s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
         if (selected != -1) {
             func_ov030_020c8b38(pool, data, selected);
             if (selected == 0) {
-                func_ov030_020af6f0(3);
+                Field_SetTouchEventResult(3);
                 SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 data->closing = 1;
             } else if (selected == 1) {
                 func_ov030_020bff68(EasyTask_GetTaskById(pool, data->taskIds[3]), 2);
                 func_ov030_020c050c(EasyTask_GetTaskById(pool, data->taskIds[4]), 1);
                 if (data->activeBrush != 1) {
-                    func_ov030_020af6f0(4);
-                    func_ov030_020af708(0x19);
+                    Field_SetTouchEventResult(4);
+                    Field_SetTouchEventTarget(0x19);
                     SndMgr_PlaySEWithPan(0xC4, 0x23);
                 }
             } else if (selected == 2) {
                 func_ov030_020bff68(EasyTask_GetTaskById(pool, data->taskIds[3]), 4);
                 func_ov030_020c050c(EasyTask_GetTaskById(pool, data->taskIds[4]), 2);
                 if (data->activeBrush != 2) {
-                    func_ov030_020af6f0(4);
+                    Field_SetTouchEventResult(4);
                     SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 }
             }
@@ -201,7 +201,7 @@ s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
             data->frame = 5;
         }
         if (func_ov030_020c8d24(data)) {
-            func_ov030_020af6f0(1);
+            Field_SetTouchEventResult(1);
             data->closing = 1;
             func_ov030_020aec1c(8);
         }

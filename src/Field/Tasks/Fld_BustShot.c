@@ -82,11 +82,11 @@ extern TaskHandle          data_ov030_020df684;
 extern BustShotStages      data_ov030_020df690;
 extern TaskHandle          data_ov030_020ee998;
 
-extern s32       func_ov030_020aeecc(void);
+extern s32       Field_IsMoveInputActive(void);
 extern s32       func_ov030_020b26bc(void);
 extern s32       func_ov030_020b310c(s32 arg0);
-extern FieldPos* func_ov030_020af99c(void);
-extern s32       func_ov030_020b0454(void);
+extern FieldPos* Field_GetCameraOrigin(void);
+extern s32       FieldEvent_IsDebugSkipHeld(void);
 extern s32       FX_Atan2Idx(s32 y, s32 x);
 
 s32 func_ov030_020b38a4(Task* task);
@@ -95,7 +95,7 @@ s32 func_ov030_020b3128(s32* out) {
     TouchCoord pos;
     TouchCoord coord;
 
-    if (func_ov030_020aeecc() == 0) {
+    if (Field_IsMoveInputActive() == 0) {
         return 0;
     }
     if (SysControl.buttonState.currButtons & 0xCF3) {
@@ -105,7 +105,7 @@ s32 func_ov030_020b3128(s32* out) {
 
         TouchInput_GetCoord(&coord);
         pos    = coord;
-        origin = func_ov030_020af99c();
+        origin = Field_GetCameraOrigin();
         *out   = func_ov030_020b310c(FX_Atan2Idx((origin->y + (pos.y << 0xC)) - gSaveData.fieldPos.y,
                                                  (origin->x + (pos.x << 0xC)) - gSaveData.fieldPos.x));
     }
@@ -173,7 +173,7 @@ void func_ov030_020b33bc(TaskPool* pool, Task* task, BustShotArgs* args) {
     sprite->unkC4 = entry;
     sprite->unkC8 = 0;
     sprite->unk58 = (s16)args->unkC;
-    pos.sx        = func_ov030_020af6a0(args->unk12);
+    pos.sx        = Field_ResolvePresetCoord(args->unk12);
     if (pos.sx < 0x80) {
         mirrored = 1;
     } else {
@@ -194,7 +194,7 @@ void func_ov030_020b33bc(TaskPool* pool, Task* task, BustShotArgs* args) {
     } else {
         dy = 0 - entry->unkA;
     }
-    sprite->unk4C = (dy + func_ov030_020af6a0(args->unk10)) << 0xC;
+    sprite->unk4C = (dy + Field_ResolvePresetCoord(args->unk10)) << 0xC;
     sprite->unk40 = sprite->unk48;
     sprite->unk44 = sprite->unk4C;
     sprite->unk50 = pos.sy << 0xC;
@@ -225,7 +225,7 @@ s32 func_ov030_020b356c(TaskPool* pool, Task* task) {
         sprite->unkA0  = 1;
     }
     if (sprite->unk58 != 0) {
-        if (func_ov030_020b0454() != 0) {
+        if (FieldEvent_IsDebugSkipHeld() != 0) {
             sprite->unk58 = 1;
         }
         func_020265d4(&sprite->unk40, sprite->unk44, (u16)sprite->unk58);
@@ -306,14 +306,14 @@ void func_ov030_020b37cc(Task* task, s32 arg1, s32 arg2) {
     x = sprite->unk40;
     if (arg1 != 0) {
         if (x < 0x80000) {
-            slideX = (dx + func_ov030_020af6a0(-0x3FD)) << 0xC;
+            slideX = (dx + Field_ResolvePresetCoord(-0x3FD)) << 0xC;
         } else {
-            slideX = (dx + func_ov030_020af6a0(0xFFFFFC0D)) << 0xC;
+            slideX = (dx + Field_ResolvePresetCoord(0xFFFFFC0D)) << 0xC;
         }
     } else if (x >= 0x80000) {
-        slideX = (dx + func_ov030_020af6a0(-0x3FD)) << 0xC;
+        slideX = (dx + Field_ResolvePresetCoord(-0x3FD)) << 0xC;
     } else {
-        slideX = (dx + func_ov030_020af6a0(0xFFFFFC0D)) << 0xC;
+        slideX = (dx + Field_ResolvePresetCoord(0xFFFFFC0D)) << 0xC;
     }
     sprite->unk44 = slideX;
     sprite->unk48 = slideX;
@@ -453,7 +453,7 @@ void func_ov030_020b3b70(Task* task, s16 arg1, s32 arg2, s16 arg3) {
     } else {
         dy = 0 - sprite->unkC4->unkA;
     }
-    sprite->unk44 = (dy + func_ov030_020af6a0(arg1)) << 0xC;
+    sprite->unk44 = (dy + Field_ResolvePresetCoord(arg1)) << 0xC;
     sprite->unk54 = (sprite->unkC4->unkC + func_ov030_020b3384(arg2)) << 0xC;
     sprite->unk58 = arg3;
 }

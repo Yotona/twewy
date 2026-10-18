@@ -10,9 +10,9 @@
 #include "SpriteMgr.h"
 
 s32  func_ov030_020aeca4(s32 arg0);
-s32  func_ov030_020af5ec(void);
+s32  Field_GetPlayerHeight(void);
 void func_ov030_020b7ac8(void);
-s16  func_ov030_020c5930(void);
+s16  FieldNoise_GetTotalQuota(void);
 void func_ov030_020aec1c(s32 arg0);
 void func_ov030_020aec38(s32 arg0);
 
@@ -83,13 +83,13 @@ void func_ov030_020c26ec(void) {
         gSaveData.unk_24C8[i] = -1;
         i++;
     } while (i < 0x10);
-    gSaveData.unk_3104 = 0;
-    gSaveData.unk_3110 = func_ov030_020c5930();
-    gSaveData.unk_2470 = 0;
+    gSaveData.noiseQuotaStep   = 0;
+    gSaveData.noiseSymbolCount = FieldNoise_GetTotalQuota();
+    gSaveData.unk_2470         = 0;
     func_ov030_020c268c(0);
-    gSaveData.unk_3128 = 0;
-    gSaveData.unk_3124 = -1;
-    gSaveData.unk_3120 = 0;
+    gSaveData.flashExitMode = 0;
+    gSaveData.flashSequence = -1;
+    gSaveData.unk_3120      = 0;
 }
 
 s32 func_ov030_020c27f4(u32 arg0) {
@@ -189,7 +189,7 @@ s32 func_ov030_020c2adc(TaskPool* pool, Task* task, Ov030WallConfig* arg2) {
     sprite->affine.unk_0E   = 0;
     sprite->unk48           = 0;
     sprite->x               = gSaveData.fieldPos.x;
-    tmp                     = func_ov030_020af5ec();
+    tmp                     = Field_GetPlayerHeight();
     sprite->y               = gSaveData.fieldPos.y - tmp / 2;
     sprite->origin          = arg2->origin;
     func_ov030_020c280c(sprite);

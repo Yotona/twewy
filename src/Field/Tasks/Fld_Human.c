@@ -19,15 +19,15 @@ extern s32 FX_Atan2Idx(s32 y, s32 x);
 
 extern s32   func_ov030_020aeca4(s32 arg0);
 extern s32   func_ov030_020af01c(void);
-extern s32   func_ov030_020af2e4(void);
-extern void  func_ov030_020af4d8(s32 arg0, s32 arg1);
-extern void  func_ov030_020af4fc(void);
+extern s32   FieldScan_IsActive(void);
+extern void  Field_BeginScript(s32 arg0, s32 arg1);
+extern void  Field_CountDrawnHuman(void);
 extern void  func_ov030_020af51c(void);
-extern void  func_ov030_020af564(FieldPos* pos);
-extern void* func_ov030_020af5d4(void);
-extern s16   func_ov030_020af944(s32 arg0);
+extern void  Field_ApplyVertexColorAt(FieldPos* pos);
+extern void* Field_GetHumanPalette(void);
+extern s16   Field_AddEncounterHumanCount(s32 arg0);
 extern s16   func_ov030_020abe64(u32 arg0);
-extern u16   func_ov030_020ac144(s32 arg0, s32 arg1);
+extern u16   FieldEncounter_RollForHuman(s32 arg0, s32 arg1);
 extern s32   func_ov030_020be7fc(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7,
                                  Task* human);
 extern void  func_ov030_020c6498(Sprite** sprites, s32 arg1, s32 arg2);
@@ -189,11 +189,11 @@ s32 func_ov030_020b4bf8(FieldPos pos) {
     s32 r5b;
     s32 r7;
 
-    if (func_ov030_020aefbc() != 0) {
+    if (FieldScan_IsOpen() != 0) {
         r5  = (pos.y - (func_ov030_020aeca4(pos.y) * 0x2C)) - 0x8000;
         r6  = gSaveData.fieldPos.x - pos.x;
         r5b = (gSaveData.fieldPos.y - (func_ov030_020aeca4(gSaveData.fieldPos.y) * 0x2C)) - r5;
-        r7  = func_ov030_020af2b8();
+        r7  = FieldScan_GetRadius();
         if ((r6 < 0 ? -r6 : r6) >= 0x100000 || (r5b < 0 ? -r5b : r5b) >= 0xC0000) {
             return 0;
         }
@@ -282,19 +282,19 @@ void func_ov030_020b4dfc(FldHuman* arg0) {
     if (r4 == 0) {
         return;
     }
-    if (func_0202599c(9) == 0 && func_ov030_020af944(0) < 6 && RNG_Next(0x100) < 0x40U) {
+    if (func_0202599c(9) == 0 && Field_AddEncounterHumanCount(0) < 6 && RNG_Next(0x100) < 0x40U) {
         if (func_ov030_020abe64((u16)arg0->init.tpl.unk_10) != 0) {
             gSaveData.unk_311E -= 1;
         }
         {
-            s32 t                 = func_ov030_020ac144(arg0->init.unk_30, 4);
+            s32 t                 = FieldEncounter_RollForHuman(arg0->init.unk_30, 4);
             arg0->init.tpl.unk_10 = t;
             arg0->init.tpl.unk_0E = (s16)(t + 1);
         }
         return;
     }
     if (arg0->init.tpl.unk_10 != -2) {
-        func_ov030_020af944(-1);
+        Field_AddEncounterHumanCount(-1);
         if (func_ov030_020abe64((u16)arg0->init.tpl.unk_10) != 0) {
             gSaveData.unk_311E -= 1;
         }
@@ -304,14 +304,14 @@ void func_ov030_020b4dfc(FldHuman* arg0) {
     if (func_0202599c(9) != 0) {
         return;
     }
-    if (func_ov030_020af944(0) >= 4) {
+    if (Field_AddEncounterHumanCount(0) >= 4) {
         return;
     }
     if (func_ov030_020abe64((u16)arg0->init.tpl.unk_10) != 0) {
         gSaveData.unk_311E -= 1;
     }
     {
-        s32 t                 = func_ov030_020ac144(arg0->init.unk_30, 4);
+        s32 t                 = FieldEncounter_RollForHuman(arg0->init.unk_30, 4);
         arg0->init.tpl.unk_10 = t;
         arg0->init.tpl.unk_0E = (s16)(t + 1);
     }
@@ -411,19 +411,19 @@ void func_ov030_020b5228(FldHuman* arg0) {
     func_ov030_020c6498(&arg0->unk_98, arg0->init.unk_30, func_ov030_020b4920(arg0->init.angle));
     func_ov030_020b4980(arg0);
     func_ov030_020b4dd0(arg0);
-    if (func_0202599c(9) == 0 && func_ov030_020af944(0) < 0xF && RNG_Next(0x100) < 0x40U) {
+    if (func_0202599c(9) == 0 && Field_AddEncounterHumanCount(0) < 0xF && RNG_Next(0x100) < 0x40U) {
         if (func_ov030_020abe64((u16)arg0->init.tpl.unk_10) != 0) {
             gSaveData.unk_311E -= 1;
         }
         {
-            s32 t                 = func_ov030_020ac144(arg0->init.unk_30, 0xF);
+            s32 t                 = FieldEncounter_RollForHuman(arg0->init.unk_30, 0xF);
             arg0->init.tpl.unk_10 = t;
             arg0->init.tpl.unk_0E = (s16)(t + 1);
         }
         return;
     }
     if (arg0->init.tpl.unk_10 != -2) {
-        func_ov030_020af944(-1);
+        Field_AddEncounterHumanCount(-1);
         if (func_ov030_020abe64((u16)arg0->init.tpl.unk_10) != 0) {
             gSaveData.unk_311E -= 1;
         }
@@ -515,7 +515,7 @@ s32 func_ov030_020b5684(TaskPool* pool, Task* task, void* args) {
         if (obj->unk_88 != -1) {
             func_ov030_020bacf8(EasyTask_GetTaskById(pool, (u32)obj->unk_88));
         }
-        if (obj->unk_68 == 0 && func_ov030_020af2e4() == 1) {
+        if (obj->unk_68 == 0 && FieldScan_IsActive() == 1) {
             if (obj->init.unk_30 != -1 && obj->init.unk_30 != 0xCD) {
                 func_ov030_020b55f8(pool, obj, task);
             }
@@ -527,7 +527,7 @@ s32 func_ov030_020b5684(TaskPool* pool, Task* task, void* args) {
         obj->unk_68 = 0;
         if (obj->init.tpl.unk_0A == 8 && func_ov030_020b4ce8(obj) != 0) {
             obj->init.tpl.unk_0A = 0;
-            func_ov030_020af4d8(obj->init.tpl.unk_0C, obj->init.unk_0C);
+            Field_BeginScript(obj->init.tpl.unk_0C, obj->init.unk_0C);
         }
     }
     if (obj->unk_70 != 0) {
@@ -631,7 +631,7 @@ void func_ov030_020b5990(FldHuman* arg0) {
     old                  = data_0206a890.unk_0C;
     data_0206a890.unk_0C = v & 0x1F;
     arg0->oamAttr2       = (u16)((arg0->oamAttr2 & ~0xC) | 4);
-    func_ov030_020b5824(arg0, func_ov030_020af5d4());
+    func_ov030_020b5824(arg0, Field_GetHumanPalette());
     data_0206a890.unk_0C = old & 0x1F;
     arg0->oamAttr2       = (u16)(arg0->oamAttr2 & ~0xC);
 }
@@ -640,17 +640,17 @@ s32 func_ov030_020b5a34(TaskPool* pool, Task* task, void* args) {
     FldHuman* obj = task->data;
 
     if (func_ov030_020b580c(obj) != 0) {
-        if (gSaveData.unk_2458 != 1 && func_ov030_020cb72c(&obj->pos) == 1) {
+        if (gSaveData.fieldArea != 1 && func_ov030_020cb72c(&obj->pos) == 1) {
             obj->unk_90 = obj->screen.y + 0x1C3000;
         } else {
             obj->unk_90 = obj->screen.y + 0x1000;
         }
-        func_ov030_020af4fc();
-        if (func_ov030_020aefbc() == 0) {
-            if (gSaveData.unk_2458 != 1) {
-                func_ov030_020af564(&obj->pos);
+        Field_CountDrawnHuman();
+        if (FieldScan_IsOpen() == 0) {
+            if (gSaveData.fieldArea != 1) {
+                Field_ApplyVertexColorAt(&obj->pos);
                 func_ov030_020b5824(obj, obj->palette);
-                REG_GFX_FIFO_VERTEX_COLOR = func_ov030_020af53c();
+                REG_GFX_FIFO_VERTEX_COLOR = Field_GetLightColor();
             } else {
                 func_ov030_020b5824(obj, obj->palette);
             }
@@ -659,7 +659,7 @@ s32 func_ov030_020b5a34(TaskPool* pool, Task* task, void* args) {
         } else {
             REG_GFX_FIFO_VERTEX_COLOR = 0x4108;
             func_ov030_020b5824(obj, obj->palette);
-            REG_GFX_FIFO_VERTEX_COLOR = func_ov030_020af53c();
+            REG_GFX_FIFO_VERTEX_COLOR = Field_GetLightColor();
         }
     }
     return 1;

@@ -712,21 +712,21 @@ s32 func_02025a2c(s32 playTime) {
 }
 
 void func_02025ac4(MainData* arg0) {
-    arg0->unk_246C    = 0;
-    arg0->unk_2474    = 0;
-    arg0->unk_2478    = 0;
-    arg0->unk_247C    = 0;
-    arg0->unk_2480    = 0;
-    arg0->unk_3106    = 0;
-    arg0->unk_3108    = -1;
-    arg0->unk_3112[0] = 0;
-    arg0->unk_3112[1] = 0;
-    arg0->unk_3112[2] = 0;
-    arg0->unk_3112[3] = 0;
-    arg0->unk_3112[4] = 0;
-    arg0->unk_3112[5] = 0;
-    arg0->unk_3124    = -1;
-    arg0->unk_312C    = 1;
+    arg0->unk_246C            = 0;
+    arg0->unk_2474            = 0;
+    arg0->unk_2478            = 0;
+    arg0->unk_247C            = 0;
+    arg0->unk_2480            = 0;
+    arg0->unk_3106            = 0;
+    arg0->unk_3108            = -1;
+    arg0->encounterCursors[0] = 0;
+    arg0->encounterCursors[1] = 0;
+    arg0->encounterCursors[2] = 0;
+    arg0->encounterCursors[3] = 0;
+    arg0->encounterCursors[4] = 0;
+    arg0->encounterCursors[5] = 0;
+    arg0->flashSequence       = -1;
+    arg0->unk_312C            = 1;
 }
 
 void Savefile_InitNewGameDefaults(void) {

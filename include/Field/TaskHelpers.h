@@ -14,7 +14,7 @@ void func_ov030_020bad3c(Task* task);
 s32  func_ov030_020c01ec(Task* task);
 
 s32               func_ov030_020aef2c(void);
-s32               func_ov030_020af2b8(void);
+s32               FieldScan_GetRadius(void);
 struct FieldExit* func_ov030_020b84a4(s32 area, s32* blocked, s32* direction);
 s32               func_ov030_020c04d8(TaskPool* pool, s32 dataType, s16 animation);
 
@@ -24,8 +24,8 @@ s32 func_ov030_020bacb0(TaskPool* pool, s32 dataType, FieldPos* screen, s32* sca
 s32 func_ov030_020bc028(TaskPool* pool, s32 dataType, u16* pos, s32 mode, s32 effect);
 s32 func_ov030_020c2c94(TaskPool* pool, s32 dataType, FieldPos* origin, s32 dir);
 
-u16 func_ov030_020af53c(void);
-s32 func_ov030_020af6a0(s32 value);
+u16 Field_GetLightColor(void);
+s32 Field_ResolvePresetCoord(s32 value);
 s16 func_ov030_020c105c(void);
 s16 func_ov030_020b7b00(void);
 s16 func_ov030_020b7b40(void);
@@ -54,9 +54,9 @@ void func_02028b0c(s32 arg0, s32 arg1);
 s32  func_0202599c(s32 flagIndex);
 
 // ov030 helpers shared by several Field TUs.
-s32  func_ov030_020aefbc(void);
-s32  func_ov030_020aefe0(void);
-void func_ov030_020af6f0(s32 arg0);
-void func_ov030_020af708(s16 arg0);
+s32  FieldScan_IsOpen(void);
+s32  Field_IsTalkEventActive(void);
+void Field_SetTouchEventResult(s32 arg0);
+void Field_SetTouchEventTarget(s16 arg0);
 
 #endif

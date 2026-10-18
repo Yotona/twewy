@@ -85,7 +85,7 @@ extern void func_ov030_020b6dec(void* state);
 extern void ProcessOverlay_FldNpcMesSel(void* state);
 extern void ProcessOverlay_FldMesSel(void* state);
 extern void ProcessOverlay_LocaTitleSeq(void* state);
-extern void func_ov030_020d5370(void* state);
+extern void ProcessOverlay_FlashSel(void* state);
 extern void ProcessOverlay_OpenEnd(void* state);
 
 extern void ProcessOverlay_GrpCheck_HwSprites(void* state);
@@ -203,7 +203,7 @@ const DebugLauncherOption Options_Kitawaki[9] = {
     {3,                "機能\:imd",             "説明:imd disp test",                  30,         func_ov030_020b6dec},
     {4,         "機能\:sound test",                          "説明:",                  29,         func_ov029_02082f9c},
     {5,       "機能\:event select", "説明:debug用のイベントセレクト",                  30,         func_ov030_020b17b4},
-    {6,              "機能\:flash",              "説明:flash select",                  30,         func_ov030_020d5370},
+    {6,              "機能\:flash",              "説明:flash select",                  30,     ProcessOverlay_FlashSel},
     {7, "機能\:NPC message select",        "説明:NPC message select",                  30, ProcessOverlay_FldNpcMesSel},
     {8,     "機能\:message select",            "説明:message select",                  30,    ProcessOverlay_FldMesSel},
     {0,                       NULL,                             NULL, OVERLAY_ID_UNLOADED,                        NULL},

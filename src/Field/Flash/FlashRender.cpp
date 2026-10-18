@@ -11,15 +11,15 @@ extern "C" {
 #include "Field/FlashPlayer.h"
 
 extern "C" {
-extern const VecFx32 data_ov030_020fde54 = {0, 0, 0x100000};
-extern const VecFx32 data_ov030_020fde60 = {0, 0x1000, 0};
+extern const VecFx32 FlashCameraPos = {0, 0, 0x100000};
+extern const VecFx32 FlashCameraUp  = {0, 0x1000, 0};
 
-extern BOOL data_ov030_02109c00;
-extern BOOL data_ov030_02109df0;
+extern BOOL gFlashDrawBottomScreen;
+extern BOOL gFlashSwapPending;
 
-void func_ov030_020d57e4(void);
-void func_ov030_020d58a4(void);
-void func_ov030_020d5a00(void);
+void FlashGfx_ShowMainOnTop(void);
+void FlashGfx_ShowMainOnBottom(void);
+void FlashGfx_SwapBuffers(void);
 void func_02028108(s32 type, u32 dst, const void* src, u32 size);
 void G3X_SetClearColor(u32 rgb, u32 alpha, u32 depth, u32 polygonId, BOOL fog);
 void G3i_LookAt(const VecFx32* camPos, const VecFx32* camUp, const VecFx32* target, BOOL draw, void* mtx);
@@ -40,38 +40,38 @@ void FlashPlayer::Render() {
     G3X_Reset();
     G3X_SetClearColor(m_bgColor, 1, 0x7FFF, 63, FALSE);
 
-    VecFx32 camPos = data_ov030_020fde54;
+    VecFx32 camPos = FlashCameraPos;
     VecFx32 target = {0, 0, 0};
-    VecFx32 camUp  = data_ov030_020fde60;
+    VecFx32 camUp  = FlashCameraUp;
 
     G3i_LookAt(&camPos, &camUp, &target, TRUE, NULL);
     REG_GFX_FIFO_MATRIX_PUSH     = 0;
     REG_GFX_FIFO_MATRIX_MODE     = 3;
     REG_GFX_FIFO_MATRIX_IDENTITY = 0;
     REG_GFX_FIFO_MATRIX_MODE     = 2;
-    if (data_ov030_02109c00) {
+    if (gFlashDrawBottomScreen) {
         DrawDisplayList(m_height - 192);
     } else {
         DrawDisplayList(0);
     }
     REG_GFX_FIFO_MATRIX_POP = 1;
-    func_ov030_020d5a00();
+    FlashGfx_SwapBuffers();
 }
 
-extern "C" void func_ov030_020d5c90(void) {
-    if (data_ov030_02109df0 && REG_VCOUNT <= (s16)193) {
+extern "C" void FlashGfx_SwapScreens(void) {
+    if (gFlashSwapPending && REG_VCOUNT <= (s16)193) {
         OS_Delay(784);
     }
-    if ((REG_GFX_STATUS & 0x8000000) || (data_ov030_02109df0 == 0)) {
+    if ((REG_GFX_STATUS & 0x8000000) || (gFlashSwapPending == 0)) {
         return;
     }
-    if (data_ov030_02109c00) {
-        func_ov030_020d58a4();
+    if (gFlashDrawBottomScreen) {
+        FlashGfx_ShowMainOnBottom();
     } else {
-        func_ov030_020d57e4();
+        FlashGfx_ShowMainOnTop();
     }
-    data_ov030_02109df0 = FALSE;
-    data_ov030_02109c00 = !data_ov030_02109c00;
+    gFlashSwapPending      = FALSE;
+    gFlashDrawBottomScreen = !gFlashDrawBottomScreen;
 }
 
 void FlashRect::Init(u16 id, const void* verts, u16 color) {

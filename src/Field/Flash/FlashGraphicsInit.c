@@ -18,19 +18,19 @@ extern void GXs_LoadBgPltt(const void* src, u32 offset, u32 size);
 extern void GXs_LoadObjPltt(const void* src, u32 offset, u32 size);
 extern void G3i_OrthoW(fx32 top, fx32 bottom, fx32 left, fx32 right, fx32 near, fx32 far, fx32 scaleW, BOOL draw, void* mtx);
 
-void func_ov030_020d53b0(void);
-void func_ov030_020d56f8(void);
-void func_ov030_020d57e4(void);
-void func_ov030_020d58a4(void);
-void func_ov030_020d5938(void);
-void func_ov030_020d5a00(void);
+void FlashGfx_InitDisplay(void);
+void FlashGfx_VBlank(void);
+void FlashGfx_ShowMainOnTop(void);
+void FlashGfx_ShowMainOnBottom(void);
+void FlashGfx_InitCaptureOam(void);
+void FlashGfx_SwapBuffers(void);
 
-BOOL      data_ov030_02109c00 = TRUE;
-BOOL      data_ov030_02109df0;
-GXOamAttr data_ov030_02109df4[128];
+BOOL      gFlashDrawBottomScreen = TRUE;
+BOOL      gFlashSwapPending;
+GXOamAttr gFlashCaptureOam[128];
 
 // Nonmatching: not yet compared
-void func_ov030_020d53b0(void) {
+void FlashGfx_InitDisplay(void) {
     Interrupts_Init();
     HBlank_Init();
     while (REG_VCOUNT < (s16)0xC0) {
@@ -112,7 +112,7 @@ void func_ov030_020d53b0(void) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
 }
 
-void func_ov030_020d56f8(void) {
+void FlashGfx_VBlank(void) {
     if (SystemStatusFlags.vblank) {
         Display_Commit();
         DMA_Flush();
@@ -126,12 +126,12 @@ void func_ov030_020d56f8(void) {
     }
 }
 
-void func_ov030_020d57c8(void) {
-    func_ov030_020d53b0();
-    Interrupts_RegisterVBlankCallback(func_ov030_020d56f8, TRUE);
+void FlashGfx_Init(void) {
+    FlashGfx_InitDisplay();
+    Interrupts_RegisterVBlankCallback(FlashGfx_VBlank, TRUE);
 }
 
-void func_ov030_020d57e4(void) {
+void FlashGfx_ShowMainOnTop(void) {
     REG_POWER_CNT |= 0x8000;
     GX_ResetBankForSubObj();
     GX_SetBankForSubBg(4);
@@ -147,7 +147,7 @@ void func_ov030_020d57e4(void) {
     REG_BG2CNT_SUB &= ~0x40;
 }
 
-void func_ov030_020d58a4(void) {
+void FlashGfx_ShowMainOnBottom(void) {
     REG_POWER_CNT &= ~0x8000;
     GX_ResetBankForSubBg();
     GX_SetBankForSubObj(8);
@@ -160,7 +160,7 @@ void func_ov030_020d58a4(void) {
     REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x1F00) | 0x1000;
 }
 
-void func_ov030_020d5938(void) {
+void FlashGfx_InitCaptureOam(void) {
     s32 i;
     s32 x;
     s32 y;
@@ -169,31 +169,31 @@ void func_ov030_020d5938(void) {
     REG_DISPCNT_SUB = (REG_DISPCNT_SUB & ~0x60) | 0x20;
     index           = 0;
     for (i = 0; i < 128; i++) {
-        data_ov030_02109df4[i].attr01 = 0;
-        data_ov030_02109df4[i].attr23 = 0;
+        gFlashCaptureOam[i].attr01 = 0;
+        gFlashCaptureOam[i].attr23 = 0;
     }
     for (y = 0; y < 192; y += 64) {
         for (x = 0; x < 256; x += 64) {
-            data_ov030_02109df4[index].attr01 = (y & 0xFF) | 0xC0000C00 | (((u32)x << 23) >> 7);
-            data_ov030_02109df4[index].attr2  = (x / 8 + (y / 8) * 32) | 0xF000;
+            gFlashCaptureOam[index].attr01 = (y & 0xFF) | 0xC0000C00 | (((u32)x << 23) >> 7);
+            gFlashCaptureOam[index].attr2  = (x / 8 + (y / 8) * 32) | 0xF000;
             index++;
         }
     }
-    DC_PurgeRange(data_ov030_02109df4, 0x400);
-    GXs_LoadOam(data_ov030_02109df4, 0, 0x400);
+    DC_PurgeRange(gFlashCaptureOam, 0x400);
+    GXs_LoadOam(gFlashCaptureOam, 0, 0x400);
 }
 
-void func_ov030_020d5a00(void) {
+void FlashGfx_SwapBuffers(void) {
     u32 irq = OS_DisableIRQ();
 
     REG_GFX_FIFO_SWAP_BUFFERS = 1;
-    data_ov030_02109df0       = TRUE;
+    gFlashSwapPending         = TRUE;
     OS_RestoreIRQ(irq);
 }
 
-void func_ov030_020d5a2c(void) {
-    data_ov030_02109c00 = TRUE;
-    data_ov030_02109df0 = FALSE;
+void FlashGfx_Init3D(void) {
+    gFlashDrawBottomScreen = TRUE;
+    gFlashSwapPending      = FALSE;
     G3X_Init();
     G3X_InitTable();
     G3X_InitMtxStack();
@@ -201,7 +201,7 @@ void func_ov030_020d5a2c(void) {
     GX_SetBankForTexPltt(0x10);
     G3X_AntiAlias(TRUE);
     G3X_AlphaBlend(TRUE);
-    func_ov030_020d5938();
+    FlashGfx_InitCaptureOam();
     REG_GFX_FIFO_VIEWPORT        = 0xBFFF0000;
     REG_GFX_FIFO_MATRIX_MODE     = 0;
     REG_GFX_FIFO_MATRIX_IDENTITY = 0;
@@ -211,5 +211,5 @@ void func_ov030_020d5a2c(void) {
     GX_DispOn();
     REG_DISPCNT_SUB |= 0x10000;
     G3X_Reset();
-    func_ov030_020d5a00();
+    FlashGfx_SwapBuffers();
 }

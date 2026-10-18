@@ -80,14 +80,14 @@ s32  FX_Sqrt(s32 value);
 void func_02026564(u16* angle, u16 target, s32 mode);
 void func_ov030_020aebf0(s32 flagMask);
 s32  func_ov030_020aeca4(s32 y);
-s32  func_ov030_020aef44(void);
-void func_ov030_020af644(s16* x, s16* y);
-void func_ov030_020af780(s32 category);
-s32  func_ov030_020af8f0(void);
-void func_ov030_020af920(void);
+s32  FieldScan_IsEnteringBattle(void);
+void Field_GetPlayerScreenPos(s16* x, s16* y);
+void FieldScan_RaiseBgLevel(s32 category);
+s32  FieldScan_CanChainEncounter(void);
+void FieldScan_AddChainedEncounter(void);
 void func_ov030_020be430(s32* x12, s32* y12, s32 angle, s32 step);
 s32  func_ov030_020c5704(TaskPool* pool, s32 spawnType, s32 x, s32 y, s32 category);
-s32  func_ov030_020d1a8c(void* name, Vec* pos);
+s32  FO3DViewer_GetNodePos(void* name, Vec* pos);
 
 extern const char  data_ov030_021072b4[];
 extern void* const data_ov030_021072c8[];
@@ -220,7 +220,7 @@ void func_ov030_020bae90(TaskPool* pool, FldNSymbolUG* sym) {
         func_ov030_020bae10(sym, func_ov030_020bae18);
         return;
     }
-    func_ov030_020af644(&x, &y);
+    Field_GetPlayerScreenPos(&x, &y);
     func_ov030_020be430(&sym->x12, &sym->y12, FX_Atan2Idx((y << 0xC) - sym->y12, (x << 0xC) - sym->x12), sym->speed);
     sym->sprite.posX = sym->x12 >> 0xC;
     sym->sprite.posY = sym->y12 >> 0xC;
@@ -273,7 +273,7 @@ void func_ov030_020bb020(FldNSymbolUG* sym) {
         sym->timer = RNG_Next(0x3C);
     }
     func_ov030_020be430(&sym->x12, &sym->y12, sym->angle, sym->angleStep);
-    if (func_ov030_020aef44() != 0) {
+    if (FieldScan_IsEnteringBattle() != 0) {
         halfW = sym->halfW;
         x     = sym->sprite.posX;
         if (x <= -halfW) {
@@ -330,19 +330,19 @@ void func_ov030_020bb1e4(TaskPool* pool, FldNSymbolUG* sym) {
     TouchCoord coord;
     s16        mode;
 
-    if (func_ov030_020aef44() != 0 && func_ov030_020bad80(sym) != 0 && func_ov030_020af8f0() != 0) {
+    if (FieldScan_IsEnteringBattle() != 0 && func_ov030_020bad80(sym) != 0 && FieldScan_CanChainEncounter() != 0) {
         TouchInput_GetCoord(&coord);
         sym->dragDX = sym->sprite.posX - coord.x;
         sym->dragDY = sym->sprite.posY - coord.y;
         func_ov030_020bae10(sym, func_ov030_020bae18);
-        func_ov030_020af920();
+        FieldScan_AddChainedEncounter();
         sym->state = 2;
         if (sym->taskId != (u32)-1) {
             return;
         }
         sym->taskId =
             func_ov030_020bc028(pool, sym->spawnType, (u16*)&sym->sprite.posX, 1, data_ov030_020e5f28[sym->catIdx].arg);
-        func_ov030_020af780(sym->category);
+        FieldScan_RaiseBgLevel(sym->category);
         SndMgr_PlaySEWithPan(0x113, sym->sprite.posX);
         return;
     }
@@ -350,7 +350,7 @@ void func_ov030_020bb1e4(TaskPool* pool, FldNSymbolUG* sym) {
     if (mode == 1) {
         func_ov030_020baf48(sym);
     } else if (mode >= 3) {
-        func_ov030_020d1a8c(data_ov030_021072c8[mode - 3], &pos);
+        FO3DViewer_GetNodePos(data_ov030_021072c8[mode - 3], &pos);
         sym->sprite.posX = (pos.x - sym->anchor->x) >> 0xC;
         sym->sprite.posY = (0 - (pos.y + sym->anchor->y)) >> 0xC;
     } else if (mode == 2) {
@@ -364,7 +364,7 @@ void func_ov030_020bb35c(TaskPool* pool, FldNSymbolUG* sym) {
     if (func_ov030_020bad80(sym) == 0) {
         return;
     }
-    func_ov030_020af8f0();
+    FieldScan_CanChainEncounter();
 }
 
 void func_ov030_020bb378(TaskPool* pool, FldNSymbolUG* sym) {
@@ -390,7 +390,7 @@ void func_ov030_020bb378(TaskPool* pool, FldNSymbolUG* sym) {
 }
 
 void func_ov030_020bb43c(TaskPool* pool, FldNSymbolUG* sym) {
-    if ((sym->dist < 0 || sym->dist > func_ov030_020af2b8()) && func_ov030_020aef2c() != 0) {
+    if ((sym->dist < 0 || sym->dist > FieldScan_GetRadius()) && func_ov030_020aef2c() != 0) {
         return;
     }
     func_ov030_020bae10(sym, func_ov030_020bb378);
@@ -522,7 +522,7 @@ s32 func_ov030_020bb760(TaskPool* pool, Task* task, void* args) {
         sym->home.y = py;
         pos.x       = sym->home.x;
     } else if (sym->mode >= 3) {
-        func_ov030_020d1a8c(data_ov030_021072c8[sym->mode - 3], &world);
+        FO3DViewer_GetNodePos(data_ov030_021072c8[sym->mode - 3], &world);
         pos.x = (world.x - sym->anchor->x) >> 0xC;
         pos.y = (0 - (world.y + sym->anchor->y)) >> 0xC;
     } else {
@@ -640,7 +640,7 @@ s32 func_ov030_020bbc38(TaskPool* pool, u32 id) {
     if (sym->state != 2) {
         return 0;
     }
-    func_ov030_020af644(&x, &y);
+    Field_GetPlayerScreenPos(&x, &y);
     if (x - 0x10 < sym->sprite.posX && sym->sprite.posX < x + 0x10 && y - 0x10 < sym->sprite.posY &&
         sym->sprite.posY < y + 0x20)
     {
@@ -658,10 +658,10 @@ void func_ov030_020bbcb4(TaskPool* pool, u32 id) {
     if (sym->category == 0x16) {
         return;
     }
-    func_ov030_020af920();
+    FieldScan_AddChainedEncounter();
     sym->timer = 0x5A;
     sym->state = 1;
-    func_ov030_020af644(&x, &y);
+    Field_GetPlayerScreenPos(&x, &y);
     sym->x12b = x << 0xC;
     sym->y12b = y << 0xC;
     sym->x12  = sym->sprite.posX << 0xC;

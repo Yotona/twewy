@@ -26,7 +26,7 @@ extern TaskHandle      data_ov030_020e7004;
 extern FldChainFns     data_ov030_020e7010;
 extern SpriteAnimation data_ov030_020e7020;
 
-extern void func_ov030_020af644(s16* out0, s16* out1);
+extern void Field_GetPlayerScreenPos(s16* out0, s16* out1);
 
 SpriteFrameInfo* func_ov030_020c2088(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
@@ -53,7 +53,7 @@ s32 func_ov030_020c21a4(TaskPool* pool, Task* task, FldChainArgs* args) {
 
     units = args->value % 10;
     tens  = args->value / 10;
-    func_ov030_020af644(&posX, &posY);
+    Field_GetPlayerScreenPos(&posX, &posY);
     posX -= 4;
     func_ov030_020c2124(&data->sprites[0], args->dataType, 0xB, posX, posY);
     posX += 0x17;

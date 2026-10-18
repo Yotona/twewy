@@ -1941,7 +1941,7 @@ void func_ov030_020b10b0(EventSelectObject* object) {
         Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:— %d", gSaveData.chapter - 21));
     }
 
-    Text_RenderToScreen(&object->text, 8, 0x28, func_ov030_020b0534(gSaveData.unk_2458));
+    Text_RenderToScreen(&object->text, 8, 0x28, func_ov030_020b0534(gSaveData.fieldArea));
     Text_RenderToScreen(&object->text, 0, (gSaveData.unk_26E8 * 8) + 0x10, ">");
 }
 
@@ -2004,7 +2004,7 @@ void func_ov030_020b1450(EventSelectObject* object) {
     OverlayTag tag2;
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
-        func_ov030_020ae96c(gSaveData.unk_2458);
+        func_ov030_020ae96c(gSaveData.fieldArea);
         gSaveData.unk_24B4          = 0;
         gSaveData.unk_24B8          = 1;
         gSaveData.currentStoryEvent = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].eventId;
@@ -2024,15 +2024,15 @@ void func_ov030_020b1450(EventSelectObject* object) {
     } else {
         if (gSaveData.unk_26E8 == 0) {
             if (func_ov030_020b139c(&gSaveData.unk_26E6, EVENT_SELECT_CATEGORY_COUNT) != 0) {
-                gSaveData.unk_2458 = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
-                gSaveData.unk_26E4 = 0;
+                gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
+                gSaveData.unk_26E4  = 0;
             }
         } else if (gSaveData.unk_26E8 == 1) {
             func_ov030_020b139c(&gSaveData.unk_26E4, data_ov030_020de334[gSaveData.unk_26E6].count);
         } else if (gSaveData.unk_26E8 == 2) {
             func_ov030_020b1404(&gSaveData.chapter);
         } else {
-            func_ov030_020b139c(&gSaveData.unk_2458, 0x2C);
+            func_ov030_020b139c(&gSaveData.fieldArea, 0x2C);
         }
     }
 
@@ -2055,7 +2055,7 @@ void func_ov030_020b1620(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = data_02066eec = g_DisplaySettings.controls[DISPLAY_MAIN].brightness =
         data_02066aec                                                  = 0;
     func_ov030_020b1330(object);
-    gSaveData.unk_2458 = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
+    gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
     MainOvlDisp_NextProcessStage();
 }
 

@@ -9,7 +9,6 @@
 #include "common_data.h"
 #include <nitro/mi/cpumem.h>
 
-// State of the "Seq_LocaTitle(void *)" debug sequence, the launcher entry that cycles through the LocaTitle banners.
 typedef struct {
     /* 0x00000 */ TaskPool        taskPool;
     /* 0x00080 */ Heap            heap;
@@ -17,14 +16,14 @@ typedef struct {
     /* 0x0408C */ ResourceManager resources;
 } LocaTitleSeq; // Size: 0x1560C
 
-extern void func_ov030_020d2a00(void);
-extern void func_ov030_020d2a1c(void);
-extern void func_ov030_020d2a30(void);
-extern void func_ov030_020d2a58(void);
+extern void FO3D_InitDisplay(void);
+extern void FO3D_ExitDisplay(void);
+extern void FO3D_FadeInStep(void);
+extern void FO3D_FadeOutStep(void);
 extern s32  LocaTitle_CreateTask(TaskPool* pool, s32 dataType, s32 packIndex);
 extern void func_02001b44(s32 arg0, s32 arg1, void* arg2, s32 arg3);
 
-extern s32 data_ov030_02109de8; // Task id of the live LocaTitle task
+s32 data_ov030_02109de8;
 
 typedef struct {
     /* 0x0 */ s32         spawnNext;
@@ -35,8 +34,6 @@ typedef struct {
 
 static LocaTitleSeqState LocaTitleSeq_State = {1, "Seq_LocaTitle(void *)", -16, 0x28};
 
-// Nonmatching: the target keeps two literal pool words for the task id slot
-// Starts the next LocaTitle banner once the previous one has finished.
 void func_ov030_020d2a80(LocaTitleSeq* seq) {
     if (LocaTitleSeq_State.spawnNext != 0) {
         data_ov030_02109de8          = LocaTitle_CreateTask(&seq->taskPool, 1, LocaTitleSeq_State.packIndex);
@@ -72,7 +69,7 @@ void LocaTitleSeq_Init(LocaTitleSeq* seq) {
         MainOvlDisp_SetCbArg(seq);
     }
     MI_CpuFill(0, seq, Mem_GetBlockSize(&gDebugHeap, seq));
-    func_ov030_020d2a00();
+    FO3D_InitDisplay();
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = -16;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = -16;
     ResourceMgr_ReinitManagers(&seq->resources);
@@ -80,15 +77,13 @@ void LocaTitleSeq_Init(LocaTitleSeq* seq) {
     EasyTask_InitializePool(&seq->taskPool, &seq->heap, 0x40, NULL, NULL);
     EasyTask_CreateTask(&seq->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     DebugOvlDisp_Init();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_020d2a58, seq, 0);
+    DebugOvlDisp_Push((OverlayCB)FO3D_FadeOutStep, seq, 0);
     DebugOvlDisp_Push((OverlayCB)LocaTitleSeq_Main, seq, 0);
-    DebugOvlDisp_Push((OverlayCB)func_ov030_020d2a30, seq, 0);
+    DebugOvlDisp_Push((OverlayCB)FO3D_FadeInStep, seq, 0);
     MainOvlDisp_NextProcessStage();
 }
 
 void LocaTitleSeq_Update(LocaTitleSeq* seq) {
-    OverlayTag tag;
-
     OamMgr_Reset3DState();
     OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
     OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
@@ -97,6 +92,7 @@ void LocaTitleSeq_Update(LocaTitleSeq* seq) {
     OamMgr_ResetCommandQueues(&g_OamMgr[DISPLAY_SUB]);
     DebugOvlDisp_Run();
     if (DebugOvlDisp_IsStackAtBase() == TRUE) {
+        OverlayTag tag;
         MainOvlDisp_Pop(&tag);
     }
     EasyTask_UpdatePool(&seq->taskPool);
@@ -110,13 +106,12 @@ void LocaTitleSeq_Update(LocaTitleSeq* seq) {
 }
 
 void LocaTitleSeq_Destroy(LocaTitleSeq* seq) {
-    if (seq == NULL) {
-        return;
+    if (seq != NULL) {
+        FO3D_ExitDisplay();
+        ResourceMgr_ReinitManagers(NULL);
+        Mem_Free(&gDebugHeap, seq);
+        MainOvlDisp_SetCbArg(NULL);
     }
-    func_ov030_020d2a1c();
-    ResourceMgr_ReinitManagers(NULL);
-    Mem_Free(&gDebugHeap, seq);
-    MainOvlDisp_SetCbArg(NULL);
 }
 
 static const OverlayProcess OvlProc_LocaTitleSeq = {
