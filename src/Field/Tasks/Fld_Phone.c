@@ -1,30 +1,15 @@
-// USA 0x020bdec8-0x020be114: the phone HUD task. A single Sprite shows the
-// phone icon; the animation switches to the "message" pose when the player has
-// the required item.
+#include "Field/Tasks/Fld_Phone.h"
 #include "Engine/EasyTask.h"
-#include "Field/Ov030Data.h"
+#include "Field/Event/EventTables.h"
 #include "Player/Inventory.h"
 #include "SpriteMgr.h"
 
-extern const char data_ov030_021073b8[];
+static SpriteFrameInfo* Fld_Phone_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2);
+static s32              Fld_Phone_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-SpriteFrameInfo* func_ov030_020bdec8(Sprite* sprite, s32 arg1, s32 arg2);
-void             func_ov030_020bdf64(Sprite* sprite, s32* arg1);
-s32              func_ov030_020bdfec(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020be004(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020be058(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020be06c(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020be080(TaskPool* pool, Task* task, void* args, s32 stage);
-s32              func_ov030_020be0c8(TaskPool* pool, s32 arg1);
-void             func_ov030_020be0f8(Task* task);
+static const TaskHandle Tsk_Fld_Phone = {"Tsk_Fld_Phone", Fld_Phone_RunTask, sizeof(Sprite)};
 
-const TaskHandle data_ov030_020e62d0 = {data_ov030_021073b8, func_ov030_020be080, sizeof(Sprite)};
-
-const TaskStages data_ov030_020e62dc = {
-    {func_ov030_020bdfec, func_ov030_020be004, func_ov030_020be058, func_ov030_020be06c}
-};
-
-const SpriteAnimation data_ov030_020e62ec = {
+static const SpriteAnimation Fld_Phone_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -35,10 +20,10 @@ const SpriteAnimation data_ov030_020e62ec = {
     .unk_02.raw        = 0x0C00,
     .posX              = 0xC0,
     .posY              = 0,
-    .frameInfoCallback = func_ov030_020bdec8,
+    .frameInfoCallback = Fld_Phone_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 4,
     .unk_1C            = 1,
@@ -51,12 +36,12 @@ const SpriteAnimation data_ov030_020e62ec = {
     .animIndex         = 0x10,
 };
 
-SpriteFrameInfo* func_ov030_020bdec8(Sprite* sprite, s32 arg1, s32 arg2) {
+static SpriteFrameInfo* Fld_Phone_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2) {
     Sprite_FrameInfoCallback(sprite, arg2);
 }
 
-void func_ov030_020bdf64(Sprite* sprite, s32* arg1) {
-    SpriteAnimation anim = data_ov030_020e62ec;
+static void Fld_Phone_Load(Sprite* sprite, s32* arg1) {
+    SpriteAnimation anim = Fld_Phone_Anim;
 
     anim.dataType = (u16)*arg1;
     if (Inventory_HasRequiredQuantity(0x2A7, 1, 0) == 0) {
@@ -65,12 +50,12 @@ void func_ov030_020bdf64(Sprite* sprite, s32* arg1) {
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020bdfec(TaskPool* pool, Task* task, void* args) {
-    func_ov030_020bdf64(task->data, args);
+static s32 Fld_Phone_Init(TaskPool* pool, Task* task, void* args) {
+    Fld_Phone_Load(task->data, args);
     return 1;
 }
 
-s32 func_ov030_020be004(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Phone_Update(TaskPool* pool, Task* task, void* args) {
     Sprite* sprite = task->data;
 
     if (sprite->animIndex == 0x12 && Inventory_HasRequiredQuantity(0x2A7, 1, 0) != 0) {
@@ -80,29 +65,34 @@ s32 func_ov030_020be004(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020be058(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Phone_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_RenderFrame(task->data);
     return 1;
 }
 
-s32 func_ov030_020be06c(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Phone_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Release(task->data);
     return 1;
 }
 
-s32 func_ov030_020be080(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e62dc;
+static s32 Fld_Phone_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Phone_Init,
+        .update     = Fld_Phone_Update,
+        .render     = Fld_Phone_Render,
+        .cleanup    = Fld_Phone_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020be0c8(TaskPool* pool, s32 arg1) {
+s32 Fld_Phone_CreateTask(TaskPool* pool, s32 arg1) {
     s32 param = arg1;
 
-    return EasyTask_CreateTask(pool, &data_ov030_020e62d0, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Phone, NULL, 0, NULL, &param);
 }
 
-void func_ov030_020be0f8(Task* task) {
+void Fld_Phone_Press(Task* task) {
     Sprite* sprite = task->data;
 
     Sprite_SetAnimation(sprite, sprite->animData, 0x11, sprite->cellTable);

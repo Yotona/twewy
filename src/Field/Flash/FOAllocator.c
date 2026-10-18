@@ -1,5 +1,6 @@
+#include "Field/Flash/FOAllocator.h"
 #include "Engine/Core/Memory.h"
-#include "Field/FO3D.h"
+#include "Field/Flash/FO3D.h"
 
 typedef struct {
     void* (*allocate)(Heap*, s32);

@@ -1,21 +1,39 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include "Field/Events.h"
-#include "Field/FieldTasks.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Scene/FieldAmbientSound.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldMain.h"
+#include "Field/Scene/FieldMusic.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Scene/LocaTitle.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_Partner.h"
+#include "Field/Tasks/Fld_Player.h"
+#include "Field/Tasks/Fld_TalkEventTitle.h"
+#include "Field/Tasks/Fld_TouchShine.h"
+#include "Field/Tasks/Fld_UGFade.h"
 #include "Save.h"
 #include <nitro/types.h>
 
-extern void Field_MainUpdate(void*);
-extern s32  data_ov030_020da4b8[];
+extern void func_02026590(s32* value, s32 target, u16 frames);
 
-void func_ov030_02082788(FieldEventManager*);
-void func_ov030_020827e4(FieldEventManager*);
-void func_ov030_020828fc(FieldEventManager*);
+static s32  FieldMain_GetAreaTitleKind(void);
+static void FieldMain_StepLoadArea(FieldEventManager*);
+static void FieldMain_StepAreaFadeIn(FieldEventManager*);
 
-void func_ov030_020824a0(FieldEventManager* mgr) {
+void FieldMain_StepFadeIn(FieldEventManager* mgr) {
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x1000);
     mgr->unk_21AC8 = 1;
     if (EasyFade_IsFading() == FALSE) {
@@ -24,7 +42,7 @@ void func_ov030_020824a0(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_020824e4(FieldEventManager* mgr) {
+void FieldMain_StepFadeOutExit(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
     if (mgr->exitRequest == 4 || mgr->exitRequest == 7) {
         EasyFade_FadeBothDisplays(FADER_LINEAR, -0x10, 0x1000);
@@ -36,7 +54,7 @@ void func_ov030_020824e4(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082534(FieldEventManager* mgr) {
+void FieldMain_StepFadeBoth(FieldEventManager* mgr) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, mgr->targetBrightness, mgr->unk_21D12);
     mgr->unk_21AC8 = 1;
     if (EasyFade_IsFading() == FALSE) {
@@ -44,7 +62,7 @@ void func_ov030_02082534(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082578(FieldEventManager* mgr) {
+void FieldMain_StepFadeMain(FieldEventManager* mgr) {
     if (FieldEvent_IsDebugSkipHeld() != 0) {
         EasyFade_FadeMainDisplay(FADER_INSTANT, mgr->targetBrightness, 1);
     } else {
@@ -56,23 +74,23 @@ void func_ov030_02082578(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_020825d8(FieldEventManager* mgr) {
+void FieldMain_StepEnterArea(FieldEventManager* mgr) {
     if (EasyFade_IsFading() == FALSE) {
         DebugOvlDisp_Pop();
-        DebugOvlDisp_Push((OverlayCB)func_ov030_020828fc, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepAreaFadeIn, mgr, 0);
         mgr->blendTimer = 0x1E;
         mgr->blendEva   = 0x10000;
         if (mgr->unk_21ACC != 0 && gSaveData.fieldArea != 0x25) {
-            mgr->unk_216D0 = LocaTitle_CreateTask(&mgr->taskPool, mgr->dataType, func_ov030_02082fc0());
+            mgr->unk_216D0 = LocaTitle_CreateTask(&mgr->taskPool, mgr->dataType, FieldMain_GetAreaTitleKind());
         } else {
             mgr->unk_216D0 = -1;
         }
-        func_ov030_020b3034(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player));
+        Fld_Player_StopWalking(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player));
         func_ov030_020c2d50(gSaveData.areaPopulation[gSaveData.fieldArea]);
     }
 }
 
-void func_ov030_020826a4(FieldEventManager* mgr) {
+void FieldMain_StepLeaveArea(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
     if (mgr->blendTimer != 0) {
         func_02026590(&mgr->blendEva, 0x10000, mgr->blendTimer);
@@ -88,14 +106,14 @@ void func_ov030_020826a4(FieldEventManager* mgr) {
             mgr->unk_21700 = -1;
         }
         DebugOvlDisp_Pop();
-        DebugOvlDisp_Push((OverlayCB)func_ov030_020827e4, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepLoadArea, mgr, 0);
         mgr->unk_21AAC = 2;
-        DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
         func_ov030_020c3360();
     }
 }
 
-void func_ov030_02082788(FieldEventManager* mgr) {
+void FieldMain_StepWait(FieldEventManager* mgr) {
     if (mgr->unk_21AAC != 0) {
         mgr->unk_21AAC--;
     } else {
@@ -103,7 +121,7 @@ void func_ov030_02082788(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_020827b0(FieldEventManager* mgr) {
+void FieldMain_StepWaitThenBlend(FieldEventManager* mgr) {
     if (mgr->unk_21AAC != 0) {
         mgr->unk_21AAC--;
     } else {
@@ -112,7 +130,7 @@ void func_ov030_020827b0(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_020827e4(FieldEventManager* mgr) {
+static void FieldMain_StepLoadArea(FieldEventManager* mgr) {
     Mem_ValidateSequences(&gMainHeap);
     Mem_ValidateSequences(&gDebugHeap);
     if (gSaveData.fieldArea == 23) {
@@ -124,21 +142,21 @@ void func_ov030_020827e4(FieldEventManager* mgr) {
         gSaveData.fieldPos.y = mgr->unk_21B0C;
     }
     gSaveData.unk_2454 = func_ov030_020aeca4(gSaveData.fieldPos.y);
-    func_ov030_020c1960();
+    Fld_Luck_GenerateSymbols();
     Field_CreateObjects(mgr);
-    func_ov030_020bd298(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
-    func_ov030_02083024(mgr);
+    Fld_Partner_WarpToPlayer(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
+    FieldBg_UpdateWalkSpeed(mgr);
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_020825d8, mgr, 0);
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepEnterArea, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
     mgr->unk_21AAC = 24;
     mgr->unk_21A5C = 10;
-    func_ov030_020846bc(mgr, 1);
+    FieldBg_SetTopBgMode(mgr, 1);
     FieldDebug_DrawAreaName();
     func_ov030_020c2f74();
 }
 
-void func_ov030_020828fc(FieldEventManager* mgr) {
+static void FieldMain_StepAreaFadeIn(FieldEventManager* mgr) {
     if (mgr->blendTimer != 0) {
         func_02026590(&mgr->blendEva, 0, mgr->blendTimer);
         mgr->blendTimer--;
@@ -147,14 +165,14 @@ void func_ov030_020828fc(FieldEventManager* mgr) {
     s32 temp = F2I(mgr->blendEva);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -temp, 0);
     mgr->unk_21AC8 = 1;
-    if (temp == 0 && func_ov030_02082fe4(mgr)) {
+    if (temp == 0 && FieldBg_IsAreaTitleDone(mgr)) {
         DebugOvlDisp_Pop();
         mgr->unk_21AC8 = 0;
         DebugOvlDisp_Push((OverlayCB)Field_MainUpdate, mgr, 0);
     }
 }
 
-void func_ov030_0208299c(FieldEventManager* mgr) {
+void FieldMain_StepFadeInMain(FieldEventManager* mgr) {
     if (FieldEvent_IsDebugSkipHeld() != 0) {
         EasyFade_FadeMainDisplay(FADER_INSTANT, 0, 1);
     } else {
@@ -167,7 +185,7 @@ void func_ov030_0208299c(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082a04(FieldEventManager* mgr) {
+void FieldMain_StepFadeInBoth(FieldEventManager* mgr) {
     EasyFade_FadeBothDisplays(FADER_INSTANT, 0, mgr->unk_21D12);
     mgr->unk_21AC8 = 1;
     if (EasyFade_IsFading() == FALSE) {
@@ -176,7 +194,7 @@ void func_ov030_02082a04(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082a50(FieldEventManager* mgr) {
+void FieldMain_StepWaitFade(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
     if (EasyFade_IsFading() == FALSE) {
         mgr->unk_21AC8 = 0;
@@ -184,7 +202,7 @@ void func_ov030_02082a50(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082a84(FieldEventManager* mgr) {
+void FieldMain_StepStartUGFade(FieldEventManager* mgr) {
     mgr->unk_21AC8 = 1;
     FieldEvent_IsDebugSkipHeld();
     EasyFade_FadeMainDisplay(FADER_INSTANT, 0, mgr->unk_21D12);
@@ -197,18 +215,18 @@ void func_ov030_02082a84(FieldEventManager* mgr) {
     }
     EasyFade_FadeSubDisplay(FADER_INSTANT, 0, mgr->unk_21D12);
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082a50, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepWaitFade, mgr, 0);
 }
 
-void func_ov030_02082b4c(FieldEventManager* mgr) {
-    func_ov030_02082a84(mgr);
+void FieldMain_StepStartUGFadeWithBg(FieldEventManager* mgr) {
+    FieldMain_StepStartUGFade(mgr);
     if (gSaveData.fieldArea == 5) {
-        func_ov030_0208434c(mgr, 3, 5);
+        FieldBg_LoadAreaBg(mgr, 3, 5);
         mgr->unk_21A5C = 2;
     }
 }
 
-void func_ov030_02082b8c(FieldEventManager* mgr) {
+void FieldMain_StepOpenEventPicture(FieldEventManager* mgr) {
     Field_LoadEventPicture(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 2) & ~1;
     if (mgr->unk_216C8 == -1 && mgr->talkEventActive != 0) {
@@ -217,23 +235,23 @@ void func_ov030_02082b8c(FieldEventManager* mgr) {
     DebugOvlDisp_Pop();
 }
 
-void func_ov030_02082bf0(FieldEventManager* mgr) {
+void FieldMain_StepSetup2D(FieldEventManager* mgr) {
     Field_SetupDisplay2D(mgr, 0);
     DebugOvlDisp_Pop();
 }
 
-void func_ov030_02082c04(FieldEventManager* mgr) {
+void FieldMain_StepOpenTouchEvent(FieldEventManager* mgr) {
     REG_POWER_CNT &= ~0x8000;
     // Bug: Can never execute
     if (mgr->touchEventKind == 1 && mgr->touchEventKind == 2) {
-        func_ov030_020846bc(mgr, 7);
+        FieldBg_SetTopBgMode(mgr, 7);
     }
     Field_LoadTouchEventBg(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers | 2) & ~1;
     DebugOvlDisp_Pop();
 }
 
-void func_ov030_02082c68(FieldEventManager* mgr) {
+void FieldMain_StepCloseEventPicture(FieldEventManager* mgr) {
     func_ov030_020a6a68(mgr);
     if (mgr->unk_216C8 != -1) {
         EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_216C8);
@@ -245,26 +263,26 @@ void func_ov030_02082c68(FieldEventManager* mgr) {
         Field_CloseEventPicture(mgr);
     }
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
     mgr->unk_21AAC = 1;
 }
 
-void func_ov030_02082cec(FieldEventManager* mgr) {
+static void FieldMain_StepRestoreObjects(FieldEventManager* mgr) {
     Field_CreateObjects(mgr);
     g_DisplaySettings.controls[DISPLAY_MAIN].layers = (g_DisplaySettings.controls[DISPLAY_MAIN].layers & ~2) | 1;
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
     mgr->unk_21AAC = 0x18;
 }
 
-void func_ov030_02082d3c(FieldEventManager* mgr) {
+static void FieldMain_StepSetup3D(FieldEventManager* mgr) {
     Field_SetupDisplay3D(mgr);
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082cec, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepRestoreObjects, mgr, 0);
 }
 
-void func_ov030_02082d64(FieldEventManager* mgr) {
-    if (func_ov030_020c0770() != 0) {
+void FieldMain_StepCloseTouchEvent(FieldEventManager* mgr) {
+    if (Fld_TouchShine_GetActiveCount() != 0) {
         return;
     }
     func_ov030_020a6a68(mgr);
@@ -275,7 +293,7 @@ void func_ov030_02082d64(FieldEventManager* mgr) {
     if (mgr->touchEventKind != 3) {
         Field_CloseEventPicture(mgr);
         DebugOvlDisp_Pop();
-        DebugOvlDisp_Push((OverlayCB)func_ov030_02082d3c, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup3D, mgr, 0);
     } else {
         if (mgr->unk_21A90 != -1) {
             EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_21A90);
@@ -288,11 +306,11 @@ void func_ov030_02082d64(FieldEventManager* mgr) {
         DebugOvlDisp_Pop();
     }
     mgr->touchEventKind = 0;
-    DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
     mgr->unk_21AAC = 2;
 }
 
-void func_ov030_02082e70(FieldEventManager* mgr) {
+void FieldMain_StepBlendInSub(FieldEventManager* mgr) {
     if (mgr->blendTimer != 0) {
         if (FieldEvent_IsDebugSkipHeld() != 0) {
             mgr->blendTimer = 1;
@@ -306,7 +324,7 @@ void func_ov030_02082e70(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_02082f10(FieldEventManager* mgr) {
+void FieldMain_StepBlendOutSub(FieldEventManager* mgr) {
     if (mgr->blendTimer != 0) {
         if (FieldEvent_IsDebugSkipHeld() != 0) {
             mgr->blendTimer = 1;
@@ -321,9 +339,9 @@ void func_ov030_02082f10(FieldEventManager* mgr) {
     }
 }
 
-s32 func_ov030_02082fc0(void) {
+static s32 FieldMain_GetAreaTitleKind(void) {
     if ((u32)gSaveData.fieldArea >= 44) {
         return 7;
     }
-    return data_ov030_020da4b8[gSaveData.fieldArea];
+    return Field_AreaTitleKinds[gSaveData.fieldArea];
 }

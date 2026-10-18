@@ -1,7 +1,10 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/EasyTask.h"
 #include "Engine/File/BinMgr.h"
-#include "Field/FieldTasks.h"
+#include "Field/Scene/LocaTitle.h"
 #include "SpriteMgr.h"
+#include <nitro/mi/cpumem.h>
 
 typedef struct LocaTitle {
     /* 0x00 */ Sprite sprites[2];

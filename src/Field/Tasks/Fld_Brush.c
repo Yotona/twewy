@@ -1,6 +1,16 @@
+#include "Field/Tasks/Fld_Brush.h"
+#include "EasyFade.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Math/Sqrt.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Tasks/Fld_BrushHati.h"
+#include "Field/Tasks/Fld_TouchCommand.h"
+#include "Field/Tasks/Fld_TouchCursor.h"
+#include "Field/Tasks/Fld_TouchSeal.h"
+#include "Field/Tasks/Fld_TouchShine.h"
+#include "SndMgr.h"
 #include <nitro/types.h>
 
 struct BrushTouchTarget {
@@ -23,10 +33,7 @@ typedef struct {
     /* 0x58 */ s32 closing;
 } Fld_Brush; // Size: 0x5C
 
-extern s32  func_ov030_020c01ec(Task* task);
-extern void func_ov030_020c01c4(Task* task, s32 mode);
-
-const struct BrushTouchTarget data_ov030_020ecb18[14] = {
+static const struct BrushTouchTarget Fld_Brush_Targets[14] = {
     {101,  35, 7},
     {119,  32, 7},
     {107,  56, 7},
@@ -42,26 +49,13 @@ const struct BrushTouchTarget data_ov030_020ecb18[14] = {
     {150, 126, 9},
     {167, 138, 7},
 };
-
-extern s32  func_ov030_020c0184(TaskPool* pool, s32 owner, s32 type, s32 dataType, s32 size);
-extern s32  func_ov030_020bfee4(TaskPool* pool, s32 owner, s32 type);
-extern s32  func_ov030_020c04d8(TaskPool* pool, s32 owner);
-extern void func_ov030_020c050c(Task* task, s32 mode);
-extern void func_ov030_020c0730(TaskPool* pool, s32 owner);
-extern void func_ov030_020bff68(Task* task, s32 mode);
-extern s32  func_0202599c(s32 flagIndex);
-extern void Field_SetTouchEventResult(s32 arg);
-extern void Field_SetTouchEventTarget(s32 arg);
-extern void func_ov030_020aec1c(s32 arg);
-extern void SndMgr_PlaySEWithPan(s32 sound, s32 pan);
-
-s32 Fld_Brush_Destroy(TaskPool* pool, Task* task, void* args);
-s32 Fld_Brush_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+extern s32 func_0202599c(s32 flagIndex);
+static s32 Fld_Brush_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_Brush = {"Tsk_Fld_Brush", Fld_Brush_RunTask, sizeof(Fld_Brush)};
 
 // Nonmatching: the target also copies the touch coordinates to a second stack struct
-s32 func_ov030_020c8a58(void) {
+static s32 Fld_Brush_GetTouchedBrush(void) {
     TouchCoord coord;
     s32        x;
     s32        y;
@@ -73,42 +67,41 @@ s32 func_ov030_020c8a58(void) {
     x   = coord.x;
     y   = coord.y;
     for (index = 0; index < 14u; index++) {
-        s32 dy              = data_ov030_020ecb18[index].y - y;
+        s32 dy              = Fld_Brush_Targets[index].y - y;
         s32 distanceSquared = dy * dy;
-        s32 dx              = data_ov030_020ecb18[index].x - x;
+        s32 dx              = Fld_Brush_Targets[index].x - x;
         distanceSquared += dx * dx;
-        if (Sqrti(distanceSquared) < data_ov030_020ecb18[index].radius) {
+        if (Sqrti(distanceSquared) < Fld_Brush_Targets[index].radius) {
             return index;
         }
     }
     return 14;
 }
 
-s32 func_ov030_020c8ae0(TaskPool* pool, Fld_Brush* data) {
+static s32 Fld_Brush_FindTouchedSeal(TaskPool* pool, Fld_Brush* data) {
     s16 index;
 
     for (index = 0; index < 3; index++) {
-        if (data->taskIds[index] != -1 && func_ov030_020c01ec(EasyTask_GetTaskById(pool, data->taskIds[index]))) {
+        if (data->taskIds[index] != -1 && Fld_TouchSeal_IsTouched(EasyTask_GetTaskById(pool, data->taskIds[index]))) {
             return index;
         }
     }
     return -1;
 }
 
-void func_ov030_020c8b38(TaskPool* pool, Fld_Brush* data, s32 selected) {
+static void Fld_Brush_SelectSeal(TaskPool* pool, Fld_Brush* data, s32 selected) {
     s32 index;
 
     for (index = 0; index < 3; index++) {
         if (data->taskIds[index] != -1) {
             Task* task = EasyTask_GetTaskById(pool, data->taskIds[index]);
             s32   mode = index == selected ? 1 : 2;
-            func_ov030_020c01c4(task, mode);
+            ((void (*)())Fld_TouchSeal_SetAnimation)(task, mode);
         }
     }
 }
 
-// Nonmatching: activeBrush stores use r2 in the target, r0 here
-s32 Fld_Brush_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Brush_Init(TaskPool* pool, Task* task, void* args) {
     Fld_Brush* data     = task->data;
     s32*       ownerArg = args;
     s32        index;
@@ -121,21 +114,21 @@ s32 Fld_Brush_Init(TaskPool* pool, Task* task, void* args) {
         data->taskIds[brushIndex + 5] = Fld_BrushHati_CreateTask(pool, *ownerArg, (s16)brushIndex);
     }
 
-    data->taskIds[0] = func_ov030_020c0184(pool, *ownerArg, 0, 0xE2, 0xA7);
+    data->taskIds[0] = Fld_TouchSeal_CreateTask(pool, *ownerArg, 0, 0xE2, 0xA7);
     if (func_0202599c(2)) {
-        data->taskIds[1] = func_ov030_020c0184(pool, *ownerArg, 2, 0x23, 0xA0);
+        data->taskIds[1] = Fld_TouchSeal_CreateTask(pool, *ownerArg, 2, 0x23, 0xA0);
     }
     if (func_0202599c(3)) {
-        data->taskIds[2] = func_ov030_020c0184(pool, *ownerArg, 3, 0xE2, 0x21);
-        func_ov030_020c01c4(EasyTask_GetTaskById(pool, data->taskIds[2]), 1);
-        data->taskIds[3]  = func_ov030_020bfee4(pool, *ownerArg, 4);
+        data->taskIds[2] = Fld_TouchSeal_CreateTask(pool, *ownerArg, 3, 0xE2, 0x21);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[2]), 1);
+        data->taskIds[3]  = Fld_TouchCommand_CreateTask(pool, *ownerArg, 4);
         data->activeBrush = 2;
-        data->taskIds[4]  = func_ov030_020c04d8(pool, *ownerArg);
+        data->taskIds[4]  = Fld_TouchCursor_CreateTask(pool, *ownerArg, 2);
     } else if (func_0202599c(2)) {
-        func_ov030_020c01c4(EasyTask_GetTaskById(pool, data->taskIds[1]), 1);
-        data->taskIds[3]  = func_ov030_020bfee4(pool, *ownerArg, 2);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[1]), 1);
+        data->taskIds[3]  = Fld_TouchCommand_CreateTask(pool, *ownerArg, 2);
         data->activeBrush = 1;
-        data->taskIds[4]  = func_ov030_020c04d8(pool, *ownerArg);
+        data->taskIds[4]  = Fld_TouchCursor_CreateTask(pool, *ownerArg, 1);
     } else {
         data->taskIds[3]  = -1;
         data->activeBrush = -1;
@@ -146,7 +139,7 @@ s32 Fld_Brush_Init(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 func_ov030_020c8d24(Fld_Brush* data) {
+static s32 Fld_Brush_AreAllBrushesErased(Fld_Brush* data) {
     u32 index;
 
     for (index = 0; index < 14; index++) {
@@ -158,7 +151,7 @@ s32 func_ov030_020c8d24(Fld_Brush* data) {
 }
 
 // Nonmatching: the target does not CSE selected + 5 across the touch checks
-s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
     Fld_Brush* data = task->data;
     s32        selected;
 
@@ -167,24 +160,24 @@ s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
     }
     EasyFade_FadeBothDisplays(0, 0, 0x1000);
     if (TouchInput_WasTouchPressed()) {
-        selected = func_ov030_020c8ae0(pool, data);
+        selected = Fld_Brush_FindTouchedSeal(pool, data);
         if (selected != -1) {
-            func_ov030_020c8b38(pool, data, selected);
+            Fld_Brush_SelectSeal(pool, data, selected);
             if (selected == 0) {
                 Field_SetTouchEventResult(3);
                 SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 data->closing = 1;
             } else if (selected == 1) {
-                func_ov030_020bff68(EasyTask_GetTaskById(pool, data->taskIds[3]), 2);
-                func_ov030_020c050c(EasyTask_GetTaskById(pool, data->taskIds[4]), 1);
+                Fld_TouchCommand_SetCommand(EasyTask_GetTaskById(pool, data->taskIds[3]), 2);
+                Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 1);
                 if (data->activeBrush != 1) {
                     Field_SetTouchEventResult(4);
                     Field_SetTouchEventTarget(0x19);
                     SndMgr_PlaySEWithPan(0xC4, 0x23);
                 }
             } else if (selected == 2) {
-                func_ov030_020bff68(EasyTask_GetTaskById(pool, data->taskIds[3]), 4);
-                func_ov030_020c050c(EasyTask_GetTaskById(pool, data->taskIds[4]), 2);
+                Fld_TouchCommand_SetCommand(EasyTask_GetTaskById(pool, data->taskIds[3]), 4);
+                Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 2);
                 if (data->activeBrush != 2) {
                     Field_SetTouchEventResult(4);
                     SndMgr_PlaySEWithPan(0xC4, 0xE2);
@@ -193,14 +186,14 @@ s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
             data->activeBrush = selected;
         }
     } else if (TouchInput_IsTouchActive() && data->activeBrush == 2) {
-        selected = func_ov030_020c8a58();
+        selected = Fld_Brush_GetTouchedBrush();
         if (selected != 14 && data->frame == 0 && data->taskIds[selected + 5] != -1) {
             EasyTask_DeleteTask(pool, data->taskIds[selected + 5]);
             data->taskIds[selected + 5] = -1;
-            func_ov030_020c0730(pool, data->owner);
+            Fld_TouchShine_CreateTask(pool, data->owner);
             data->frame = 5;
         }
-        if (func_ov030_020c8d24(data)) {
+        if (Fld_Brush_AreAllBrushesErased(data)) {
             Field_SetTouchEventResult(1);
             data->closing = 1;
             func_ov030_020aec1c(8);
@@ -212,11 +205,11 @@ s32 Fld_Brush_Update(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_Brush_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Brush_Render(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_Brush_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Brush_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_Brush* data = task->data;
     s32        index;
 
@@ -228,7 +221,7 @@ s32 Fld_Brush_Destroy(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_Brush_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_Brush_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_Brush_Init,
         .update     = Fld_Brush_Update,

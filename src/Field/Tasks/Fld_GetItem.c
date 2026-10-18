@@ -1,12 +1,16 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"
 #include "Engine/File/DatMgr.h"
-#include "Field/FieldTasks.h"
+#include "Field/Tasks/Fld_GetItem.h"
 #include "Player/Inventory.h"
 #include "Player/Inventory/Items.h"
 #include "Player/Inventory/Pins.h"
 #include "SpriteMgr.h"
 #include <nitro/mi/cpumem.h>
+
+extern void func_02026590(s32* value, s32 target, u16 frames);
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
@@ -19,24 +23,22 @@ typedef struct {
     /* 0x4 */ u16 unk_4;
 } Fld_GetItem_Args;
 
-SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_GetItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Fld_GetItem_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_GetItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_GetItem = {"Tsk_Fld_GetItem", Fld_GetItem_RunTask, sizeof(Fld_GetItem)};
 
-extern s32 data_ov030_020ec9b8;
-
-static const BinIdentifier data_ov030_020ec9f4[7] = {
-    {30,      "Apl_Tak/Grp_Item.bin"},
-    {30,      "Apl_Tak/ItemData.bin"},
-    {30,      "Apl_Tak/FoodData.bin"},
+static const BinIdentifier Fld_GetItem_Packs[7] = {
+    [1] = {30,      "Apl_Tak/ItemData.bin"},
+      [0] = {30,      "Apl_Tak/Grp_Item.bin"},
+      [2] = {30,      "Apl_Tak/FoodData.bin"},
     {30,  "Apl_Tak/TreasureData.bin"},
-    {30,        "Data/BadgeData.bin"},
-    {30, "Apl_Tak/Grp_DummyItem.bin"},
+      {30,        "Data/BadgeData.bin"},
+      {30, "Apl_Tak/Grp_DummyItem.bin"},
     {30,     "Apl_Tak/Grp_Badge.bin"},
 };
 
-static const SpriteAnimation data_ov030_020ec9c8 = {
+static const SpriteAnimation Fld_GetItem_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -47,10 +49,10 @@ static const SpriteAnimation data_ov030_020ec9c8 = {
     .unk_02.raw        = 3,
     .posX              = 0x80,
     .posY              = 0x51,
-    .frameInfoCallback = func_ov030_020c7d20,
+    .frameInfoCallback = Fld_GetItem_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020ec9f4[5],
+    .binIden           = &Fld_GetItem_Packs[5],
     .unk_18            = 2,
     .packIndex         = 1,
     .unk_1C            = 1,
@@ -63,23 +65,23 @@ static const SpriteAnimation data_ov030_020ec9c8 = {
     .animIndex         = 1,
 };
 
-void Fld_GetItem_LoadThreadData(RawItemData* itemData, s32 arg1) {
-    Data_LoadToBuffer(1, *itemData, &data_ov030_020ec9f4[1], arg1);
+static void Fld_GetItem_LoadThreadData(RawItemData* itemData, s32 arg1) {
+    Data_LoadToBuffer(1, *itemData, &Fld_GetItem_Packs[1], arg1);
 }
 
-void Fld_GetItem_LoadFoodData(RawFoodData* foodData, s32 arg1) {
-    Data_LoadToBuffer(1, *foodData, &data_ov030_020ec9f4[2], arg1);
+static void Fld_GetItem_LoadFoodData(RawFoodData* foodData, s32 arg1) {
+    Data_LoadToBuffer(1, *foodData, &Fld_GetItem_Packs[2], arg1);
 }
 
-void Fld_GetItem_LoadTreasureData(RawTreasureData* treasureData, s32 arg1) {
-    Data_LoadToBuffer(1, *treasureData, &data_ov030_020ec9f4[3], arg1);
+static void Fld_GetItem_LoadTreasureData(RawTreasureData* treasureData, s32 arg1) {
+    Data_LoadToBuffer(1, *treasureData, &Fld_GetItem_Packs[3], arg1);
 }
 
-void Fld_GetItem_LoadPinData(RawPinData* pinData, s32 arg1) {
-    Data_LoadToBuffer(1, *pinData, &data_ov030_020ec9f4[4], arg1);
+static void Fld_GetItem_LoadPinData(RawPinData* pinData, s32 arg1) {
+    Data_LoadToBuffer(1, *pinData, &Fld_GetItem_Packs[4], arg1);
 }
 
-s16 func_ov030_020c7b24(u16 itemID, s32* arg1) {
+static s16 Fld_GetItem_GetIconIndex(u16 itemID, s32* arg1) {
     ItemCategory category = Inventory_GetCategory(itemID);
     s32          itemIdx  = Inventory_GetCategorizedIndex(itemID);
 
@@ -109,13 +111,13 @@ s16 func_ov030_020c7b24(u16 itemID, s32* arg1) {
 }
 
 // Nonmatching: Regswap
-void func_ov030_020c7bc0(Sprite* arg0, Fld_GetItem_Args* arg1, s32 arg2, s32 arg3) {
+static void Fld_GetItem_LoadIcon(Sprite* arg0, Fld_GetItem_Args* arg1, s32 arg2, s32 arg3) {
     s32 var_r2 = 0;
     if (arg3 != 0) {
         var_r2 = 6;
     }
     s32            temp_r5 = arg1->unk_0;
-    BinIdentifier* temp_r6 = &data_ov030_020ec9f4[var_r2];
+    BinIdentifier* temp_r6 = &Fld_GetItem_Packs[var_r2];
 
     Data* sp8;
     if (BinMgr_FindById((s32)temp_r6) == NULL) {
@@ -173,36 +175,50 @@ void func_ov030_020c7bc0(Sprite* arg0, Fld_GetItem_Args* arg1, s32 arg2, s32 arg
     DatMgr_ReleaseData(sp8);
 }
 
-SpriteFrameInfo* func_ov030_020c7d20(Sprite* sprite, s32 arg, s32 mode) {
-    // Not yet implemented
+// Nonmatching: the NULL info value lives in r4 in the target, r3 here
+static SpriteFrameInfo* Fld_GetItem_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Fld_GetItem*     owner = sprite->owner;
+    SpriteFrameInfo* info  = NULL;
+
+    switch (mode) {
+        case SPRITE_FRAME_UPDATE:
+            g_SpriteFrameInfo.updateSteps = 1;
+            return &g_SpriteFrameInfo;
+        case SPRITE_FRAME_RENDER:
+            info = &g_SpriteFrameInfo;
+            Sprite_FillFrameInfo(info, sprite);
+            sprite->unk_0A.unk_05 = OamMgr_AllocAffineGroup(&g_OamMgr[1], 0, 0x1000, owner->unk_40, 0);
+            break;
+    }
+    return info;
 }
 
-void func_ov030_020c7e00(Sprite* sprite, Fld_GetItem_Args* args, void* arg2) {
+static void Fld_GetItem_Load(Sprite* sprite, Fld_GetItem_Args* args, void* arg2) {
     s32             temp;
-    SpriteAnimation anim = data_ov030_020ec9c8;
+    SpriteAnimation anim = Fld_GetItem_Anim;
 
     anim.dataType = args->unk_0;
     anim.owner    = arg2;
 
-    s16 temp_r4_3 = func_ov030_020c7b24(args->unk_4, &temp);
+    s16 temp_r4_3 = Fld_GetItem_GetIconIndex(args->unk_4, &temp);
     if (temp != 0) {
         anim.posX -= 4;
         anim.posY -= 4;
     }
     _Sprite_Load(sprite, &anim);
-    func_ov030_020c7bc0(sprite, args, (u16)temp_r4_3, temp);
+    Fld_GetItem_LoadIcon(sprite, args, (u16)temp_r4_3, temp);
 }
 
-s32 Fld_GetItem_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetItem_Init(TaskPool* pool, Task* task, void* args) {
     Fld_GetItem* item = task->data;
 
-    func_ov030_020c7e00(&item->sprite, args, item);
+    Fld_GetItem_Load(&item->sprite, args, item);
     item->unk_44 = 0x14;
     item->unk_40 = 0;
     return 1;
 }
 
-s32 Fld_GetItem_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetItem_Update(TaskPool* pool, Task* task, void* args) {
     Fld_GetItem* item = task->data;
 
     if (item->unk_44 != 0) {
@@ -213,21 +229,21 @@ s32 Fld_GetItem_Update(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetItem_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetItem_Render(TaskPool* pool, Task* task, void* args) {
     Fld_GetItem* item = task->data;
 
     Sprite_RenderFrame(&item->sprite);
     return 1;
 }
 
-s32 Fld_GetItem_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetItem_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_GetItem* item = task->data;
 
     Sprite_Destroy(&item->sprite);
     return 1;
 }
 
-s32 Fld_GetItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_GetItem_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_GetItem_Init,
         .update     = Fld_GetItem_Update,

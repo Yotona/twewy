@@ -1,17 +1,48 @@
-#include "Field/Events.h"
-#include "Field/Ov030Data.h"
-#include "Field/TaskHelpers.h"
+#include "Field/FieldRegion.h"
+
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/FieldTypes.h"
+#include "Field/Flash/FO3DViewer.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Scene/FieldShopName.h"
+#include "Field/Tasks/Fld_BustShot.h"
 #include "Save.h"
 #include <nitro/fx/fx_matrix.h>
 
+extern s32  func_0202599c(s32 flagIndex);
+extern void func_0202688c(void);
+extern void func_02028a44(void);
+
 extern void func_02027c94(s32);
-extern s32  func_ov030_020aeaf4(void);
-extern s32  func_ov030_020af618(void);
-extern s32  func_ov030_020b3128(s32*);
-extern u16  func_ov030_020c5430(void);
-extern void FO3DViewer_Update(s32, s32);
-extern void FO3DViewer_SetOffset(s32, s32);
-extern void FO3DViewer_Destroy(void);
+
+// Piecewise-linear lookup row: the first row whose limit exceeds the input
+// gives base + input * slope (fx32).
+typedef struct {
+    /* 0x0 */ s32 limit;
+    /* 0x4 */ s32 slope;
+    /* 0x8 */ s32 base;
+} FieldSlope; // Size: 0xC
+
+// Per-area map parameters, indexed by MainData::fieldArea.
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s16 unk_18;
+    /* 0x1A */ s16 unk_1A;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ u16 unk_1E;
+} FieldAreaParameters; // Size: 0x20
+
+extern const FieldAreaParameters data_ov030_020e1d64[];
 
 extern const FieldSlope data_ov030_020e0fb4[3];
 extern const FieldSlope data_ov030_020e14f8[6];
@@ -43,23 +74,29 @@ void func_ov030_020b7ac8(void) {
 s16 func_ov030_020b7b00(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_18;
 }
+
 s16 func_ov030_020b7b20(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_02;
 }
+
 s16 func_ov030_020b7b40(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_04;
 }
+
 s16 func_ov030_020b7b60(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_1A;
 }
+
 s32 func_ov030_020b7b80(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_00 / 2;
 }
+
 s32 func_ov030_020b7ba8(void) {
     s16 origin = func_ov030_020b7b40();
     s32 extent = func_ov030_020b7b60();
     return origin + extent / 2;
 }
+
 s16 func_ov030_020b7bc4(void) {
     s16 area   = gSaveData.fieldArea;
     s16 second = data_ov030_020e1d64[area].unk_18;
@@ -69,15 +106,18 @@ s16 func_ov030_020b7bc4(void) {
     }
     return first;
 }
+
 s16 func_ov030_020b7bf8(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_10;
 }
+
 s32 func_ov030_020b7c18(void) {
     return data_ov030_020e1d64[gSaveData.fieldArea].unk_14;
 }
+
 u16 func_ov030_020b7c34(s32 area) {
     if (area >= 70) {
-        return func_ov030_020c5430();
+        return func_ov030_020c5430(area);
     }
     return data_ov030_020e1d64[area].unk_1E;
 }
@@ -137,7 +177,7 @@ s32 func_ov030_020b7dd8(s32 arg0) {
     if (func_ov030_020af618() == 0) {
         return 0;
     }
-    if (func_ov030_020b3128(&value) == 0) {
+    if (Fld_BustShot_GetMoveInputDir(&value) == 0) {
         return 0;
     }
     if (arg0 == value) {

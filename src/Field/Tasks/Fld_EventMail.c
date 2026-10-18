@@ -1,61 +1,90 @@
-// Preliminary USA TU; original assembly remains linked (incomplete).
-// Range: 0x020c8868-0x020c8a58; 9 functions.
-// Research draft: docs/decomp/ov030/Fld_EventMail.c
-// Boundary evidence: docs/tu-boundaries/ov030.md.
-// Unassigned data stays in generated gaps; do not mark complete yet.
+#include "Field/Tasks/Fld_EventMail.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 
-typedef TaskStages Ov030EventMailFns;
+static SpriteFrameInfo* Fld_EventMail_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_EventMail_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern SpriteAnimation   data_ov030_020ecad0;
-extern Ov030EventMailFns data_ov030_020ecac0;
-extern TaskHandle        data_ov030_020ecab4;
+static const TaskHandle Tsk_Fld_EventMail = {"Tsk_Fld_EventMail", Fld_EventMail_RunTask, sizeof(Sprite)};
 
-SpriteFrameInfo* func_ov030_020c8868(Sprite* sprite, s32 arg, s32 mode) {
+static const SpriteAnimation Fld_EventMail_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0C00,
+    .posX              = 14,
+    .posY              = 10,
+    .frameInfoCallback = Fld_EventMail_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldDownScreen,
+    .unk_18            = 2,
+    .packIndex         = 4,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .animIndex         = 29,
+};
+
+static SpriteFrameInfo* Fld_EventMail_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void func_ov030_020c8904(Sprite* sprite, s32* dataType) {
-    SpriteAnimation anim = data_ov030_020ecad0;
+static void Fld_EventMail_Load(Sprite* sprite, s32* dataType) {
+    SpriteAnimation anim = Fld_EventMail_Anim;
 
     anim.dataType = *dataType;
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020c8970(TaskPool* pool, Task* task, s32* dataType) {
-    func_ov030_020c8904(task->data, dataType);
+static s32 Fld_EventMail_Init(TaskPool* pool, Task* task, void* args) {
+    s32* dataType = args;
+    Fld_EventMail_Load(task->data, dataType);
     return 1;
 }
 
-s32 func_ov030_020c8988(TaskPool* pool, Task* task) {
+static s32 Fld_EventMail_Update(TaskPool* pool, Task* task, void* args) {
     Sprite_Update(task->data);
     return 1;
 }
 
-s32 func_ov030_020c899c(TaskPool* pool, Task* task) {
+static s32 Fld_EventMail_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_RenderFrame(task->data);
     return 1;
 }
 
-s32 func_ov030_020c89b0(TaskPool* pool, Task* task) {
+static s32 Fld_EventMail_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Release(task->data);
     return 1;
 }
 
-s32 func_ov030_020c89c4(TaskPool* pool, Task* task, void* args, s32 stage) {
-    Ov030EventMailFns funcs = data_ov030_020ecac0;
+static s32 Fld_EventMail_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_EventMail_Init,
+        .update     = Fld_EventMail_Update,
+        .render     = Fld_EventMail_Render,
+        .cleanup    = Fld_EventMail_Destroy,
+    };
 
-    return funcs.iter[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c8a0c(TaskPool* pool, s32 dataType) {
+s32 Fld_EventMail_CreateTask(TaskPool* pool, s32 dataType) {
     s32 param = dataType;
 
-    return EasyTask_CreateTask(pool, &data_ov030_020ecab4, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_EventMail, NULL, 0, NULL, &param);
 }
 
-void func_ov030_020c8a3c(Task* task) {
+void Fld_EventMail_Press(Task* task) {
     Sprite* sprite = task->data;
 
     Sprite_SetAnimation(sprite, sprite->animData, 0x1E, sprite->cellTable);

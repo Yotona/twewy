@@ -1,6 +1,9 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
+#include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -13,34 +16,31 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
-#include "Field/FieldDebug.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Flash/FO3DViewer.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldSceneLoad.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Interface/Debug/Field/FieldDebug.h"
 #include "Save.h"
 #include "common_data.h"
 
-#include "Field/Ov030Data.h"
-#include "Field/TaskHelpers.h"
 #include <nitro/fx/fx_matrix.h>
 #include <nitro/g3.h>
 #include <nitro/gx.h>
 #include <nitro/mi/cpumem.h>
 
+extern s32  func_0202599c(s32 flagIndex);
+extern void func_020267e0(s32 arg0);
+extern void func_02027b0c(s32 arg0, s32 arg1);
+extern void func_02028a44(void);
+extern void func_02028ad0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void func_02028b0c(s32 arg0, s32 arg1);
+
 extern void func_02010b50(TextObject* textObj);
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
 extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textResource);
-
-extern s32         func_ov030_0208430c(void);
-extern s32         Field_GetCurrentTrendZone(void);
-extern void        func_ov030_020b20c0(void);
-extern const char* func_ov030_020b5fe8(void);
-extern s32         func_ov030_020b600c(void);
-extern void        FO3DViewer_LoadToVram(void);
-extern void        FO3DViewer_LoadExtra(s32 arg0, void* arg1);
-extern void        FO3DViewer_Init(s32 arg0);
-extern void        FO3DViewer_Show(void* arg0);
-extern void        FO3DViewer_Hide(void* arg0);
-
-extern void func_ov030_020b69b4(void* arg0);
 extern void GX_LoadBgPltt(void* ptr, u32 offset, u32 size);
 extern void GX_LoadObjPltt(void* ptr, u32 offset, u32 size);
 extern void GXs_LoadBgPltt(void* ptr, u32 offset, u32 size);
@@ -91,30 +91,6 @@ extern const Ov030Ptr14 data_ov030_020e0dec;
 
 const Vec data_ov030_020e0d24 = {0, 0x1000, 0};
 const Vec data_ov030_020e0d30 = {0, 0, -0x1000};
-
-void func_ov030_020b69f4(EventSelectObject* arg0);
-void func_ov030_020b6a74(EventSelectObject* arg0);
-void func_ov030_020b6b14(EventSelectObject* arg0);
-void func_ov030_020b6b28(EventSelectObject* arg0);
-void func_ov030_020b6b34(EventSelectObject* arg0);
-void func_ov030_020b6bc8(EventSelectObject* arg0);
-void func_ov030_020b6ca0(void);
-void func_ov030_020b6d3c(void* arg0);
-void func_ov030_020b6dbc(void* arg0);
-void func_ov030_020b6dec(void* arg0);
-void func_ov030_020b6e2c(void);
-u32  func_ov030_020b7330(void);
-void func_ov030_020b7400(void);
-void func_ov030_020b741c(void);
-void func_ov030_020b7444(void);
-void func_ov030_020b7484(void);
-void func_ov030_020b74cc(void);
-void func_ov030_020b7514(void);
-void func_ov030_020b755c(s32 arg0);
-void func_ov030_020b75a4(void);
-void func_ov030_020b765c(void);
-void func_ov030_020b76dc(void);
-void func_ov030_020b7744(s32* arg0, s32 arg1);
 
 void func_ov030_020b69f4(EventSelectObject* arg0) {
     UnkStruct_usedby_02025b68 params;
@@ -460,7 +436,7 @@ void func_ov030_020b75a4(void) {
     }
     FO3DViewer_LoadExtra(0, tblA.p[v]);
     v2 = gSaveData.brandTrends[1].ranking[0];
-    if (func_ov030_0208430c() == 0) {
+    if (FieldBg_AreTrendsVisible() == 0) {
         v2 = 0xD;
     }
     if (v2 >= 0xE) {
@@ -474,7 +450,7 @@ void func_ov030_020b765c(void) {
     u8         v;
 
     v = gSaveData.brandTrends[Field_GetCurrentTrendZone()].ranking[0];
-    if (func_ov030_0208430c() == 0) {
+    if (FieldBg_AreTrendsVisible() == 0) {
         v = 0xD;
     }
     if (v >= 0xE) {

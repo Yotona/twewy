@@ -1,5 +1,7 @@
+#include "Field/Flash/FO3DObj.h"
 #include "Engine/Core/Memory.h"
-#include "Field/FO3D.h"
+#include "Field/Flash/FO3D.h"
+#include "Field/Flash/FO3DRes.h"
 #include <nitro/fx.h>
 
 Field3DObject* gFO3DObj;

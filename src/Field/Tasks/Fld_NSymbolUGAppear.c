@@ -1,4 +1,6 @@
+#include "Field/Tasks/Fld_NSymbolUGAppear.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 
 typedef struct {
@@ -16,11 +18,9 @@ typedef struct {
 
 s32              Fld_NSymbolUGAppear_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 SpriteFrameInfo* Fld_NSymbolUGAppear_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-void             Fld_NSymbolUGAppear_Load(Sprite* sprite, s32 arg, Fld_NSymbolUGAppear_Args* args);
 
-static const TaskHandle      Tsk_Fld_NSymbolUGAppear = {"Tsk_Fld_NSymbolUGAppear", Fld_NSymbolUGAppear_RunTask,
-                                                        sizeof(Fld_NSymbolUGAppear)};
-extern BinIdentifier         data_ov030_020d9954;
+static const TaskHandle      Tsk_Fld_NSymbolUGAppear  = {"Tsk_Fld_NSymbolUGAppear", Fld_NSymbolUGAppear_RunTask,
+                                                         sizeof(Fld_NSymbolUGAppear)};
 static const SpriteAnimation Fld_NSymbolUGAppear_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
@@ -35,7 +35,7 @@ static const SpriteAnimation Fld_NSymbolUGAppear_Anim = {
     .frameInfoCallback = Fld_NSymbolUGAppear_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9954,
+    .binIden           = &Iden_FldEncount,
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 51,
@@ -109,8 +109,6 @@ s32 Fld_NSymbolUGAppear_Destroy(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_NSymbolUGAppear_Init(TaskPool* pool, Task* task, void* args);
-
 s32 Fld_NSymbolUGAppear_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_NSymbolUGAppear_Init,
@@ -121,7 +119,7 @@ s32 Fld_NSymbolUGAppear_RunTask(TaskPool* pool, Task* task, void* args, s32 stag
     return stages.iter[stage](pool, task, args);
 }
 
-s32 Fld_NSymbolUGAppear_CreateTask(TaskPool* pool, s32 dataType, s16 posX, s16 posY, s32 kind) {
+s32 Fld_NSymbolUGAppear_CreateTask(TaskPool* pool, s32 dataType, s32 posX, s32 posY, s32 kind) {
     Fld_NSymbolUGAppear_Args args;
     args.dataType = dataType;
     args.posX     = posX;

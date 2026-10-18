@@ -1,10 +1,13 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/EasyTask.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_Chain.h"
+#include "SndMgr.h"
 #include "SpriteMgr.h"
 
-// USA 0x020c2088-0x020c248c: the combo/chain number display task. The task data
-// is four Sprites (tens, units, two static glyphs) followed by the fixed-point
-// vertical offset/step, the shrink timer and the number of active glyphs.
+extern void func_020265d4(s32* value, s32 target, u16 scale);
 
 typedef struct {
     /* 0x000 */ Sprite sprites[4];
@@ -20,22 +23,45 @@ typedef struct {
     /* 0x4 */ s32 value; // drawn as tens/units
 } FldChainArgs;
 
-typedef TaskStages FldChainFns;
+static SpriteFrameInfo* Fld_Chain_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_Chain_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern TaskHandle      data_ov030_020e7004;
-extern FldChainFns     data_ov030_020e7010;
-extern SpriteAnimation data_ov030_020e7020;
+static const TaskHandle Tsk_Fld_Chain = {"Tsk_Fld_Chain", Fld_Chain_RunTask, sizeof(FldChainData)};
 
-extern void Field_GetPlayerScreenPos(s16* out0, s16* out1);
+static const SpriteAnimation Fld_Chain_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0000,
+    .posX              = 0,
+    .posY              = 0,
+    .frameInfoCallback = Fld_Chain_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldScan,
+    .unk_18            = 2,
+    .packIndex         = 6,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .animIndex         = 1,
+};
 
-SpriteFrameInfo* func_ov030_020c2088(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_Chain_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-// Fills one glyph of the combo counter: the shared animation template plus the
-// dataType, the glyph frame and its screen position.
-void func_ov030_020c2124(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, s16 posY) {
-    SpriteAnimation anim = data_ov030_020e7020;
+// Fills one glyph of the combo counter.
+static void Fld_Chain_LoadGlyph(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, s16 posY) {
+    SpriteAnimation anim = Fld_Chain_Anim;
 
     anim.dataType  = dataType;
     anim.animIndex = animIndex;
@@ -44,28 +70,29 @@ void func_ov030_020c2124(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, 
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020c21a4(TaskPool* pool, Task* task, FldChainArgs* args) {
-    FldChainData* data = task->data;
+static s32 Fld_Chain_Init(TaskPool* pool, Task* task, void* args) {
+    FldChainArgs* params = args;
+    FldChainData* data   = task->data;
     s16           posX;
     s16           posY;
     s32           units;
     s32           tens;
 
-    units = args->value % 10;
-    tens  = args->value / 10;
+    units = params->value % 10;
+    tens  = params->value / 10;
     Field_GetPlayerScreenPos(&posX, &posY);
     posX -= 4;
-    func_ov030_020c2124(&data->sprites[0], args->dataType, 0xB, posX, posY);
+    Fld_Chain_LoadGlyph(&data->sprites[0], params->dataType, 0xB, posX, posY);
     posX += 0x17;
     data->count = 3;
     if (tens != 0) {
-        func_ov030_020c2124(&data->sprites[3], args->dataType, (s16)(tens + 1), posX, posY);
+        Fld_Chain_LoadGlyph(&data->sprites[3], params->dataType, (s16)(tens + 1), posX, posY);
         posX += 7;
         data->count = data->count + 1;
     }
-    func_ov030_020c2124(&data->sprites[1], args->dataType, (s16)(units + 1), posX, posY);
+    Fld_Chain_LoadGlyph(&data->sprites[1], params->dataType, (s16)(units + 1), posX, posY);
     posX += 8;
-    func_ov030_020c2124(&data->sprites[2], args->dataType, 0xC, posX, posY);
+    Fld_Chain_LoadGlyph(&data->sprites[2], params->dataType, 0xC, posX, posY);
     data->posY = posY << 0xC;
     posY -= 0x20;
     if (posY < 8) {
@@ -77,7 +104,7 @@ s32 func_ov030_020c21a4(TaskPool* pool, Task* task, FldChainArgs* args) {
     return 1;
 }
 
-s32 func_ov030_020c2310(TaskPool* pool, Task* task) {
+static s32 Fld_Chain_Update(TaskPool* pool, Task* task, void* args) {
     FldChainData* data = task->data;
     s32           i;
 
@@ -92,7 +119,7 @@ s32 func_ov030_020c2310(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c2390(TaskPool* pool, Task* task) {
+static s32 Fld_Chain_Render(TaskPool* pool, Task* task, void* args) {
     FldChainData* data = task->data;
     s32           i;
 
@@ -102,7 +129,7 @@ s32 func_ov030_020c2390(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c23d0(TaskPool* pool, Task* task) {
+static s32 Fld_Chain_Destroy(TaskPool* pool, Task* task, void* args) {
     FldChainData* data = task->data;
     s32           i;
 
@@ -112,16 +139,21 @@ s32 func_ov030_020c23d0(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c2410(TaskPool* pool, Task* task, void* args, s32 stage) {
-    FldChainFns funcs = data_ov030_020e7010;
+static s32 Fld_Chain_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Chain_Init,
+        .update     = Fld_Chain_Update,
+        .render     = Fld_Chain_Render,
+        .cleanup    = Fld_Chain_Destroy,
+    };
 
-    return funcs.iter[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c2458(TaskPool* pool, s32 dataType, s32 value) {
+s32 Fld_Chain_CreateTask(TaskPool* pool, s32 dataType, s32 value) {
     FldChainArgs params;
 
     params.dataType = dataType;
     params.value    = value;
-    return EasyTask_CreateTask(pool, &data_ov030_020e7004, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Chain, NULL, 0, NULL, &params);
 }

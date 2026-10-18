@@ -1,64 +1,64 @@
-func_ov030_020824a0 kind:function(arm,size=0x44) addr:0x020824a0
-func_ov030_020824e4 kind:function(arm,size=0x50) addr:0x020824e4
-func_ov030_02082534 kind:function(arm,size=0x44) addr:0x02082534
-func_ov030_02082578 kind:function(arm,size=0x60) addr:0x02082578
-func_ov030_020825d8 kind:function(arm,size=0xcc) addr:0x020825d8
-func_ov030_020826a4 kind:function(arm,size=0xe4) addr:0x020826a4
-func_ov030_02082788 kind:function(arm,size=0x28) addr:0x02082788
-func_ov030_020827b0 kind:function(arm,size=0x34) addr:0x020827b0
-func_ov030_020827e4 kind:function(arm,size=0x118) addr:0x020827e4
-func_ov030_020828fc kind:function(arm,size=0xa0) addr:0x020828fc
-func_ov030_0208299c kind:function(arm,size=0x68) addr:0x0208299c
-func_ov030_02082a04 kind:function(arm,size=0x4c) addr:0x02082a04
-func_ov030_02082a50 kind:function(arm,size=0x34) addr:0x02082a50
-func_ov030_02082a84 kind:function(arm,size=0xc8) addr:0x02082a84
-func_ov030_02082b4c kind:function(arm,size=0x40) addr:0x02082b4c
-func_ov030_02082b8c kind:function(arm,size=0x64) addr:0x02082b8c
-func_ov030_02082bf0 kind:function(arm,size=0x14) addr:0x02082bf0
-func_ov030_02082c04 kind:function(arm,size=0x64) addr:0x02082c04
-func_ov030_02082c68 kind:function(arm,size=0x84) addr:0x02082c68
-func_ov030_02082cec kind:function(arm,size=0x50) addr:0x02082cec
-func_ov030_02082d3c kind:function(arm,size=0x28) addr:0x02082d3c
-func_ov030_02082d64 kind:function(arm,size=0x10c) addr:0x02082d64
-func_ov030_02082e70 kind:function(arm,size=0xa0) addr:0x02082e70
-func_ov030_02082f10 kind:function(arm,size=0xb0) addr:0x02082f10
-func_ov030_02082fc0 kind:function(arm,size=0x24) addr:0x02082fc0
-func_ov030_02082fe4 kind:function(arm,size=0x40) addr:0x02082fe4
-func_ov030_02083024 kind:function(arm,size=0x64) addr:0x02083024
-func_ov030_02083088 kind:function(arm,size=0x24) addr:0x02083088
-func_ov030_020830ac kind:function(arm,size=0x148) addr:0x020830ac
-func_ov030_020831f4 kind:function(arm,size=0x128) addr:0x020831f4
-func_ov030_0208331c kind:function(arm,size=0x34) addr:0x0208331c
-func_ov030_02083350 kind:function(arm,size=0xac) addr:0x02083350
-func_ov030_020833fc kind:function(arm,size=0xc8) addr:0x020833fc
-func_ov030_020834c4 kind:function(arm,size=0x64) addr:0x020834c4
-func_ov030_02083528 kind:function(arm,size=0x13c) addr:0x02083528
-func_ov030_02083664 kind:function(arm,size=0x64) addr:0x02083664
-func_ov030_020836c8 kind:function(arm,size=0x13c) addr:0x020836c8
-func_ov030_02083804 kind:function(arm,size=0x13c) addr:0x02083804
-func_ov030_02083940 kind:function(arm,size=0x174) addr:0x02083940
-func_ov030_02083ab4 kind:function(arm,size=0x118) addr:0x02083ab4
-func_ov030_02083bcc kind:function(arm,size=0x24) addr:0x02083bcc
-func_ov030_02083bf0 kind:function(arm,size=0x14) addr:0x02083bf0
-func_ov030_02083c04 kind:function(arm,size=0xa8) addr:0x02083c04
-func_ov030_02083cac kind:function(arm,size=0xa8) addr:0x02083cac
-func_ov030_02083d54 kind:function(arm,size=0xa8) addr:0x02083d54
-func_ov030_02083dfc kind:function(arm,size=0x15c) addr:0x02083dfc
-func_ov030_02083f58 kind:function(arm,size=0xe4) addr:0x02083f58
-func_ov030_0208403c kind:function(arm,size=0x130) addr:0x0208403c
-func_ov030_0208416c kind:function(arm,size=0x2c) addr:0x0208416c
-func_ov030_02084198 kind:function(arm,size=0x11c) addr:0x02084198
-func_ov030_020842b4 kind:function(arm,size=0x58) addr:0x020842b4
-func_ov030_0208430c kind:function(arm,size=0x40) addr:0x0208430c
-func_ov030_0208434c kind:function(arm,size=0x370) addr:0x0208434c
-func_ov030_020846bc kind:function(arm,size=0xcc) addr:0x020846bc
-func_ov030_02084788 kind:function(arm,size=0x40) addr:0x02084788
-func_ov030_020847c8 kind:function(arm,size=0x2c) addr:0x020847c8
-func_ov030_020847f4 kind:function(arm,size=0x6c) addr:0x020847f4
-func_ov030_02084860 kind:function(arm,size=0x44) addr:0x02084860
-func_ov030_020848a4 kind:function(arm,size=0x40) addr:0x020848a4
-func_ov030_020848e4 kind:function(arm,size=0x60) addr:0x020848e4
-func_ov030_02084944 kind:function(arm,size=0x28) addr:0x02084944
+FieldMain_StepFadeIn kind:function(arm,size=0x44) addr:0x020824a0
+FieldMain_StepFadeOutExit kind:function(arm,size=0x50) addr:0x020824e4
+FieldMain_StepFadeBoth kind:function(arm,size=0x44) addr:0x02082534
+FieldMain_StepFadeMain kind:function(arm,size=0x60) addr:0x02082578
+FieldMain_StepEnterArea kind:function(arm,size=0xcc) addr:0x020825d8
+FieldMain_StepLeaveArea kind:function(arm,size=0xe4) addr:0x020826a4
+FieldMain_StepWait kind:function(arm,size=0x28) addr:0x02082788
+FieldMain_StepWaitThenBlend kind:function(arm,size=0x34) addr:0x020827b0
+FieldMain_StepLoadArea kind:function(arm,size=0x118) addr:0x020827e4 local
+FieldMain_StepAreaFadeIn kind:function(arm,size=0xa0) addr:0x020828fc local
+FieldMain_StepFadeInMain kind:function(arm,size=0x68) addr:0x0208299c
+FieldMain_StepFadeInBoth kind:function(arm,size=0x4c) addr:0x02082a04
+FieldMain_StepWaitFade kind:function(arm,size=0x34) addr:0x02082a50
+FieldMain_StepStartUGFade kind:function(arm,size=0xc8) addr:0x02082a84
+FieldMain_StepStartUGFadeWithBg kind:function(arm,size=0x40) addr:0x02082b4c
+FieldMain_StepOpenEventPicture kind:function(arm,size=0x64) addr:0x02082b8c
+FieldMain_StepSetup2D kind:function(arm,size=0x14) addr:0x02082bf0
+FieldMain_StepOpenTouchEvent kind:function(arm,size=0x64) addr:0x02082c04
+FieldMain_StepCloseEventPicture kind:function(arm,size=0x84) addr:0x02082c68
+FieldMain_StepRestoreObjects kind:function(arm,size=0x50) addr:0x02082cec local
+FieldMain_StepSetup3D kind:function(arm,size=0x28) addr:0x02082d3c local
+FieldMain_StepCloseTouchEvent kind:function(arm,size=0x10c) addr:0x02082d64
+FieldMain_StepBlendInSub kind:function(arm,size=0xa0) addr:0x02082e70
+FieldMain_StepBlendOutSub kind:function(arm,size=0xb0) addr:0x02082f10
+FieldMain_GetAreaTitleKind kind:function(arm,size=0x24) addr:0x02082fc0 local
+FieldBg_IsAreaTitleDone kind:function(arm,size=0x40) addr:0x02082fe4
+FieldBg_UpdateWalkSpeed kind:function(arm,size=0x64) addr:0x02083024
+FieldBg_ResetScanSeen kind:function(arm,size=0x24) addr:0x02083088
+FieldBg_LoadScanPicture kind:function(arm,size=0x148) addr:0x020830ac
+FieldBg_ShowEventPicture kind:function(arm,size=0x128) addr:0x020831f4
+FieldBg_GetScanLevel kind:function(arm,size=0x34) addr:0x0208331c local
+FieldBg_UpdateScanPicturePalette kind:function(arm,size=0xac) addr:0x02083350
+FieldBg_UpdateTopBgPalette kind:function(arm,size=0xc8) addr:0x020833fc
+FieldBg_ReleaseSubBg0 kind:function(arm,size=0x64) addr:0x020834c4
+FieldBg_LoadScanSubBg0 kind:function(arm,size=0x13c) addr:0x02083528
+FieldBg_ReleaseSubBg1 kind:function(arm,size=0x64) addr:0x02083664
+FieldBg_LoadScanSubBg1 kind:function(arm,size=0x13c) addr:0x020836c8
+FieldBg_LoadScanFrameSubBg0 kind:function(arm,size=0x13c) addr:0x02083804
+FieldBg_LoadDownScreenSubBg kind:function(arm,size=0x174) addr:0x02083940
+FieldBg_SetTopBg kind:function(arm,size=0x118) addr:0x02083ab4 local
+FieldBg_SetTopBgDefault kind:function(arm,size=0x24) addr:0x02083bcc local
+FieldBg_GetBrandBgIndex kind:function(arm,size=0x14) addr:0x02083bf0 local
+FieldBg_LoadUpBg kind:function(arm,size=0xa8) addr:0x02083c04 local
+FieldBg_LoadScanTopBg kind:function(arm,size=0xa8) addr:0x02083cac local
+FieldBg_LoadScanTopBgAlt kind:function(arm,size=0xa8) addr:0x02083d54 local
+FieldBg_LoadScanLevelSubBg1 kind:function(arm,size=0x15c) addr:0x02083dfc
+FieldBg_LoadScanSubBg3 kind:function(arm,size=0xe4) addr:0x02083f58
+FieldBg_LoadScanLevelTopBg kind:function(arm,size=0x130) addr:0x0208403c
+FieldBg_LoadShopData kind:function(arm,size=0x2c) addr:0x0208416c local
+FieldBg_LoadShopBg kind:function(arm,size=0x11c) addr:0x02084198 local
+FieldBg_LoadEventPictureTopBg kind:function(arm,size=0x58) addr:0x020842b4 local
+FieldBg_AreTrendsVisible kind:function(arm,size=0x40) addr:0x0208430c
+FieldBg_LoadAreaBg kind:function(arm,size=0x370) addr:0x0208434c
+FieldBg_SetTopBgMode kind:function(arm,size=0xcc) addr:0x020846bc
+FieldBg_IsBadgeTapped kind:function(arm,size=0x40) addr:0x02084788
+FieldBg_IsBadgeHeld kind:function(arm,size=0x2c) addr:0x020847c8
+FieldBg_GetTouchedHuman kind:function(arm,size=0x6c) addr:0x020847f4
+FieldBg_IsPlayerNear kind:function(arm,size=0x44) addr:0x02084860
+FieldBg_IsPlayerInRect kind:function(arm,size=0x40) addr:0x020848a4
+FieldBg_CheckExit kind:function(arm,size=0x60) addr:0x020848e4
+FieldBg_SetAreaPopulation kind:function(arm,size=0x28) addr:0x02084944
 func_ov030_0208496c kind:function(arm,size=0x4) addr:0x0208496c
 func_ov030_02084970 kind:function(arm,size=0x8) addr:0x02084970
 func_ov030_02084978 kind:function(arm,size=0x8) addr:0x02084978
@@ -558,122 +558,122 @@ func_ov030_020b1ff0 kind:function(arm,size=0xd0) addr:0x020b1ff0
 func_ov030_020b20c0 kind:function(arm,size=0x1c) addr:0x020b20c0
 
 
-func_ov030_020b20dc kind:function(arm,size=0x9c) addr:0x020b20dc
-func_ov030_020b2178 kind:function(arm,size=0x48) addr:0x020b2178
-func_ov030_020b21c0 kind:function(arm,size=0x14) addr:0x020b21c0
-func_ov030_020b21d4 kind:function(arm,size=0xd0) addr:0x020b21d4
-func_ov030_020b22a4 kind:function(arm,size=0x98) addr:0x020b22a4
-func_ov030_020b233c kind:function(arm,size=0x58) addr:0x020b233c
-func_ov030_020b2394 kind:function(arm,size=0x5c) addr:0x020b2394
-func_ov030_020b23f0 kind:function(arm,size=0x28) addr:0x020b23f0
-func_ov030_020b2418 kind:function(arm,size=0x98) addr:0x020b2418
-func_ov030_020b24b0 kind:function(arm,size=0x20c) addr:0x020b24b0
-func_ov030_020b26bc kind:function(arm,size=0x8c) addr:0x020b26bc
-func_ov030_020b2748 kind:function(arm,size=0x44) addr:0x020b2748
-func_ov030_020b278c kind:function(arm,size=0x30) addr:0x020b278c
-func_ov030_020b27bc kind:function(arm,size=0x334) addr:0x020b27bc
-func_ov030_020b2af0 kind:function(arm,size=0x1a4) addr:0x020b2af0
-func_ov030_020b2c94 kind:function(arm,size=0x90) addr:0x020b2c94
-func_ov030_020b2d24 kind:function(arm,size=0x1e8) addr:0x020b2d24
-func_ov030_020b2f0c kind:function(arm,size=0x6c) addr:0x020b2f0c
-func_ov030_020b2f78 kind:function(arm,size=0x48) addr:0x020b2f78
-func_ov030_020b2fc0 kind:function(arm,size=0x34) addr:0x020b2fc0
-func_ov030_020b2ff4 kind:function(arm,size=0x20) addr:0x020b2ff4
-func_ov030_020b3014 kind:function(arm,size=0xc) addr:0x020b3014
-func_ov030_020b3020 kind:function(arm,size=0x14) addr:0x020b3020
-func_ov030_020b3034 kind:function(arm,size=0x24) addr:0x020b3034
-func_ov030_020b3058 kind:function(arm,size=0x78) addr:0x020b3058
-func_ov030_020b30d0 kind:function(arm,size=0x24) addr:0x020b30d0
-func_ov030_020b30f4 kind:function(arm,size=0x18) addr:0x020b30f4
-func_ov030_020b310c kind:function(arm,size=0x1c) addr:0x020b310c
-func_ov030_020b3128 kind:function(arm,size=0xa8) addr:0x020b3128
-func_ov030_020b31d0 kind:function(arm,size=0xa8) addr:0x020b31d0
-func_ov030_020b3278 kind:function(arm,size=0x10c) addr:0x020b3278
-func_ov030_020b3384 kind:function(arm,size=0x38) addr:0x020b3384
-func_ov030_020b33bc kind:function(arm,size=0x1b0) addr:0x020b33bc
-func_ov030_020b356c kind:function(arm,size=0x18c) addr:0x020b356c
-func_ov030_020b36f8 kind:function(arm,size=0x20) addr:0x020b36f8
-func_ov030_020b3718 kind:function(arm,size=0x14) addr:0x020b3718
-func_ov030_020b372c kind:function(arm,size=0x48) addr:0x020b372c
-func_ov030_020b3774 kind:function(arm,size=0x58) addr:0x020b3774
-func_ov030_020b37cc kind:function(arm,size=0xd8) addr:0x020b37cc
-func_ov030_020b38a4 kind:function(arm,size=0x30) addr:0x020b38a4
-func_ov030_020b38d4 kind:function(arm,size=0x18) addr:0x020b38d4
-func_ov030_020b38ec kind:function(arm,size=0xc) addr:0x020b38ec
-func_ov030_020b38f8 kind:function(arm,size=0x3c) addr:0x020b38f8
-func_ov030_020b3934 kind:function(arm,size=0x14) addr:0x020b3934
-func_ov030_020b3948 kind:function(arm,size=0x98) addr:0x020b3948
-func_ov030_020b39e0 kind:function(arm,size=0x130) addr:0x020b39e0
-func_ov030_020b3b10 kind:function(arm,size=0x2c) addr:0x020b3b10
-func_ov030_020b3b3c kind:function(arm,size=0x28) addr:0x020b3b3c
-func_ov030_020b3b64 kind:function(arm,size=0xc) addr:0x020b3b64
-func_ov030_020b3b70 kind:function(arm,size=0x6c) addr:0x020b3b70
-func_ov030_020b3bdc kind:function(arm,size=0xa8) addr:0x020b3bdc
-func_ov030_020b3c84 kind:function(arm,size=0x1c) addr:0x020b3c84
-func_ov030_020b3ca0 kind:function(arm,size=0x28) addr:0x020b3ca0
-func_ov030_020b3cc8 kind:function(arm,size=0xc) addr:0x020b3cc8
-func_ov030_020b3cd4 kind:function(arm,size=0x1c) addr:0x020b3cd4
-func_ov030_020b3cf0 kind:function(arm,size=0x10) addr:0x020b3cf0
-func_ov030_020b3d00 kind:function(arm,size=0x40) addr:0x020b3d00
-func_ov030_020b3d40 kind:function(arm,size=0x30) addr:0x020b3d40
-func_ov030_020b3d70 kind:function(arm,size=0x18) addr:0x020b3d70
-func_ov030_020b3d88 kind:function(arm,size=0x234) addr:0x020b3d88
-func_ov030_020b3fbc kind:function(arm,size=0x50) addr:0x020b3fbc
-func_ov030_020b400c kind:function(arm,size=0x2c) addr:0x020b400c
-func_ov030_020b4038 kind:function(arm,size=0x28) addr:0x020b4038
-func_ov030_020b4060 kind:function(arm,size=0x4c) addr:0x020b4060
-func_ov030_020b40ac kind:function(arm,size=0x3c) addr:0x020b40ac
-func_ov030_020b40e8 kind:function(arm,size=0x34) addr:0x020b40e8
-func_ov030_020b411c kind:function(arm,size=0x28) addr:0x020b411c
-func_ov030_020b4144 kind:function(arm,size=0x28) addr:0x020b4144
-func_ov030_020b416c kind:function(arm,size=0x38) addr:0x020b416c
-func_ov030_020b41a4 kind:function(arm,size=0x9c) addr:0x020b41a4
-func_ov030_020b4240 kind:function(arm,size=0xc4) addr:0x020b4240
-func_ov030_020b4304 kind:function(arm,size=0x3c) addr:0x020b4304
-func_ov030_020b4340 kind:function(arm,size=0xd4) addr:0x020b4340
-func_ov030_020b4414 kind:function(arm,size=0x48) addr:0x020b4414
-func_ov030_020b445c kind:function(arm,size=0x14) addr:0x020b445c
-func_ov030_020b4470 kind:function(arm,size=0x48) addr:0x020b4470
-func_ov030_020b44b8 kind:function(arm,size=0x48) addr:0x020b44b8
-func_ov030_020b4500 kind:function(arm,size=0x14) addr:0x020b4500
-func_ov030_020b4514 kind:function(arm,size=0x5c) addr:0x020b4514
-func_ov030_020b4570 kind:function(arm,size=0x1c) addr:0x020b4570
-func_ov030_020b458c kind:function(arm,size=0xc) addr:0x020b458c
-func_ov030_020b4598 kind:function(arm,size=0x1c) addr:0x020b4598
-func_ov030_020b45b4 kind:function(arm,size=0x2c) addr:0x020b45b4
-func_ov030_020b45e0 kind:function(arm,size=0x20) addr:0x020b45e0
-func_ov030_020b4600 kind:function(arm,size=0x78) addr:0x020b4600
-func_ov030_020b4678 kind:function(arm,size=0xf0) addr:0x020b4678
-func_ov030_020b4768 kind:function(arm,size=0x40) addr:0x020b4768
-func_ov030_020b47a8 kind:function(arm,size=0x8) addr:0x020b47a8
-func_ov030_020b47b0 kind:function(arm,size=0x48) addr:0x020b47b0
-func_ov030_020b47f8 kind:function(arm,size=0x40) addr:0x020b47f8
-func_ov030_020b4838 kind:function(arm,size=0x14) addr:0x020b4838
-func_ov030_020b484c kind:function(arm,size=0xc) addr:0x020b484c
-func_ov030_020b4858 kind:function(arm,size=0xc) addr:0x020b4858
-func_ov030_020b4864 kind:function(arm,size=0x10) addr:0x020b4864
-func_ov030_020b4874 kind:function(arm,size=0xac) addr:0x020b4874
-func_ov030_020b4920 kind:function(arm,size=0x60) addr:0x020b4920
-func_ov030_020b4980 kind:function(arm,size=0x2c) addr:0x020b4980
-func_ov030_020b49ac kind:function(arm,size=0x24c) addr:0x020b49ac
-func_ov030_020b4bf8 kind:function(arm,size=0xf0) addr:0x020b4bf8
-func_ov030_020b4ce8 kind:function(arm,size=0x74) addr:0x020b4ce8
-func_ov030_020b4d5c kind:function(arm,size=0x74) addr:0x020b4d5c
-func_ov030_020b4dd0 kind:function(arm,size=0x2c) addr:0x020b4dd0
-func_ov030_020b4dfc kind:function(arm,size=0x2b0) addr:0x020b4dfc
-func_ov030_020b50ac kind:function(arm,size=0x17c) addr:0x020b50ac
-func_ov030_020b5228 kind:function(arm,size=0x250) addr:0x020b5228
-func_ov030_020b5478 kind:function(arm,size=0x3c) addr:0x020b5478
-func_ov030_020b54b4 kind:function(arm,size=0x144) addr:0x020b54b4
-func_ov030_020b55f8 kind:function(arm,size=0x8c) addr:0x020b55f8
-func_ov030_020b5684 kind:function(arm,size=0x188) addr:0x020b5684
-func_ov030_020b580c kind:function(arm,size=0x18) addr:0x020b580c
-func_ov030_020b5824 kind:function(arm,size=0x16c) addr:0x020b5824
-func_ov030_020b5990 kind:function(arm,size=0xa4) addr:0x020b5990
-func_ov030_020b5a34 kind:function(arm,size=0xfc) addr:0x020b5a34
-func_ov030_020b5b30 kind:function(arm,size=0x24) addr:0x020b5b30
-func_ov030_020b5b54 kind:function(arm,size=0x48) addr:0x020b5b54
-func_ov030_020b5b9c kind:function(arm,size=0xbc) addr:0x020b5b9c
+Fld_Player_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b20dc local
+Fld_Player_LoadTargetMarker kind:function(arm,size=0x48) addr:0x020b2178 local
+Fld_Player_SetState kind:function(arm,size=0x14) addr:0x020b21c0 local
+Fld_Player_ClampCamera kind:function(arm,size=0xd0) addr:0x020b21d4 local
+Fld_Player_ScrollCamera kind:function(arm,size=0x98) addr:0x020b22a4 local
+Fld_Player_PlayFootsteps kind:function(arm,size=0x58) addr:0x020b233c local
+Fld_Player_AnimateWalk kind:function(arm,size=0x5c) addr:0x020b2394 local
+Fld_Player_StateStart kind:function(arm,size=0x28) addr:0x020b23f0 local
+Fld_Player_StateBattleIn kind:function(arm,size=0x98) addr:0x020b2418 local
+Fld_Player_StateIdle kind:function(arm,size=0x20c) addr:0x020b24b0 local
+Fld_Player_GetDPadAngle kind:function(arm,size=0x8c) addr:0x020b26bc
+Fld_Player_SaveFacing kind:function(arm,size=0x44) addr:0x020b2748 local
+Fld_Player_IsExitBlocked kind:function(arm,size=0x30) addr:0x020b278c local
+Fld_Player_StateWalk kind:function(arm,size=0x334) addr:0x020b27bc local
+Fld_Player_Init kind:function(arm,size=0x1a4) addr:0x020b2af0 local
+Fld_Player_Update kind:function(arm,size=0x90) addr:0x020b2c94 local
+Fld_Player_Render kind:function(arm,size=0x1e8) addr:0x020b2d24 local
+Fld_Player_Destroy kind:function(arm,size=0x6c) addr:0x020b2f0c local
+Fld_Player_RunTask kind:function(arm,size=0x48) addr:0x020b2f78 local
+Fld_Player_CreateTask kind:function(arm,size=0x34) addr:0x020b2fc0
+Fld_Player_IsWalking kind:function(arm,size=0x20) addr:0x020b2ff4
+Fld_Player_SetSpeed kind:function(arm,size=0xc) addr:0x020b3014
+Fld_Player_GetHeight kind:function(arm,size=0x14) addr:0x020b3020
+Fld_Player_StopWalking kind:function(arm,size=0x24) addr:0x020b3034
+Fld_Player_IsTouched kind:function(arm,size=0x78) addr:0x020b3058
+Fld_Player_IsTalkTouched kind:function(arm,size=0x24) addr:0x020b30d0
+Fld_Player_StartBattleIn kind:function(arm,size=0x18) addr:0x020b30f4
+Fld_Player_AngleToDir kind:function(arm,size=0x1c) addr:0x020b310c
+Fld_BustShot_GetMoveInputDir kind:function(arm,size=0xa8) addr:0x020b3128
+Fld_BustShot_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020b31d0 local
+Fld_BustShot_LoadSprite kind:function(arm,size=0x10c) addr:0x020b3278 local
+Fld_BustShot_ResolvePresetY kind:function(arm,size=0x38) addr:0x020b3384 local
+Fld_BustShot_Init kind:function(arm,size=0x1b0) addr:0x020b33bc local
+Fld_BustShot_Update kind:function(arm,size=0x18c) addr:0x020b356c local
+Fld_BustShot_Render kind:function(arm,size=0x20) addr:0x020b36f8 local
+Fld_BustShot_Destroy kind:function(arm,size=0x14) addr:0x020b3718 local
+Fld_BustShot_RunTask kind:function(arm,size=0x48) addr:0x020b372c local
+Fld_BustShot_CreateTask kind:function(arm,size=0x58) addr:0x020b3774
+Fld_BustShot_SlideOut kind:function(arm,size=0xd8) addr:0x020b37cc
+Fld_BustShot_IsSlideOutDone kind:function(arm,size=0x30) addr:0x020b38a4
+Fld_BustShot_IsMoveDone kind:function(arm,size=0x18) addr:0x020b38d4
+Fld_BustShot_GetPosX kind:function(arm,size=0xc) addr:0x020b38ec
+Fld_BustShot_Nudge kind:function(arm,size=0x3c) addr:0x020b38f8
+Fld_BustShot_MoveToCenter kind:function(arm,size=0x14) addr:0x020b3934
+Fld_BustShot_ToggleFlip kind:function(arm,size=0x98) addr:0x020b3948
+Fld_BustShot_CrossFadeTo kind:function(arm,size=0x130) addr:0x020b39e0
+Fld_BustShot_IsCrossFadeDone kind:function(arm,size=0x2c) addr:0x020b3b10
+Fld_BustShot_SwapSide kind:function(arm,size=0x28) addr:0x020b3b3c
+Fld_BustShot_SetSortKey kind:function(arm,size=0xc) addr:0x020b3b64
+Fld_BustShot_MoveTo kind:function(arm,size=0x6c) addr:0x020b3b70
+Fld_BustShot_ChangePose kind:function(arm,size=0xa8) addr:0x020b3bdc
+Fld_BustShot_ConsumePoseChanged kind:function(arm,size=0x1c) addr:0x020b3c84
+Fld_BustShot_StartShake kind:function(arm,size=0x28) addr:0x020b3ca0
+Fld_BustShot_GetScreenX kind:function(arm,size=0xc) addr:0x020b3cc8
+Fld_BustShot_SetPriority kind:function(arm,size=0x1c) addr:0x020b3cd4
+Fld_BustShot_ClearPoseChanged kind:function(arm,size=0x10) addr:0x020b3cf0
+FldMesWindow_GetX kind:function(arm,size=0x40) addr:0x020b3d00 local
+FldMesWindow_GetXForAnchor kind:function(arm,size=0x30) addr:0x020b3d40 local
+FldMesWindow_OffsetX kind:function(arm,size=0x18) addr:0x020b3d70 local
+FldMesWindow_Create kind:function(arm,size=0x234) addr:0x020b3d88
+FldMesWindow_CreateMessage kind:function(arm,size=0x50) addr:0x020b3fbc
+FldMesWindow_SetPriority kind:function(arm,size=0x2c) addr:0x020b400c
+FldMesWindow_SkipAnim kind:function(arm,size=0x28) addr:0x020b4038
+FldMesWindow_ScrollUp kind:function(arm,size=0x4c) addr:0x020b4060
+FldMesWindow_Move kind:function(arm,size=0x3c) addr:0x020b40ac
+FldMesWindow_IsAnimating kind:function(arm,size=0x34) addr:0x020b40e8
+FldMesWindow_Close kind:function(arm,size=0x28) addr:0x020b411c
+FldMesWindow_Highlight kind:function(arm,size=0x28) addr:0x020b4144
+FldMesWindow_Press kind:function(arm,size=0x38) addr:0x020b416c
+Fld_Badge_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020b41a4 local
+Fld_Badge_Load kind:function(arm,size=0xc4) addr:0x020b4240 local
+Fld_Badge_Init kind:function(arm,size=0x3c) addr:0x020b4304 local
+Fld_Badge_Update kind:function(arm,size=0xd4) addr:0x020b4340 local
+Fld_Badge_Render kind:function(arm,size=0x48) addr:0x020b4414 local
+Fld_Badge_Destroy kind:function(arm,size=0x14) addr:0x020b445c local
+Fld_Badge_RunTask kind:function(arm,size=0x48) addr:0x020b4470 local
+Fld_Badge_CreateTask kind:function(arm,size=0x48) addr:0x020b44b8
+Fld_Badge_IsHeld kind:function(arm,size=0x14) addr:0x020b4500
+Fld_Badge_IsTouched kind:function(arm,size=0x5c) addr:0x020b4514
+Fld_Badge_SetAnimation kind:function(arm,size=0x1c) addr:0x020b4570
+Fld_Badge_SetVisible kind:function(arm,size=0xc) addr:0x020b458c
+Fld_Badge_SetPriority kind:function(arm,size=0x1c) addr:0x020b4598
+Fld_ScanArea_Reset kind:function(arm,size=0x2c) addr:0x020b45b4 local
+Fld_ScanArea_Init kind:function(arm,size=0x20) addr:0x020b45e0 local
+Fld_ScanArea_Update kind:function(arm,size=0x78) addr:0x020b4600 local
+Fld_ScanArea_DrawQuad kind:function(arm,size=0xf0) addr:0x020b4678 local
+Fld_ScanArea_Render kind:function(arm,size=0x40) addr:0x020b4768 local
+Fld_ScanArea_Destroy kind:function(arm,size=0x8) addr:0x020b47a8 local
+Fld_ScanArea_RunTask kind:function(arm,size=0x48) addr:0x020b47b0 local
+Fld_ScanArea_CreateTask kind:function(arm,size=0x40) addr:0x020b47f8
+Fld_ScanArea_SetTargetScale kind:function(arm,size=0x14) addr:0x020b4838
+Fld_ScanArea_GetScale kind:function(arm,size=0xc) addr:0x020b484c
+Fld_ScanArea_GetRadius kind:function(arm,size=0xc) addr:0x020b4858
+Fld_ScanArea_FadeOut kind:function(arm,size=0x10) addr:0x020b4864
+Fld_ScanArea_Open kind:function(arm,size=0xac) addr:0x020b4874
+Fld_Human_AngleToAnim kind:function(arm,size=0x60) addr:0x020b4920 local
+Fld_Human_UpdateFlip kind:function(arm,size=0x2c) addr:0x020b4980 local
+Fld_Human_Init kind:function(arm,size=0x24c) addr:0x020b49ac local
+Fld_Human_GetScanWeight kind:function(arm,size=0xf0) addr:0x020b4bf8 local
+Fld_Human_IsNearPlayer kind:function(arm,size=0x74) addr:0x020b4ce8 local
+Fld_Human_MoveAlongAngle kind:function(arm,size=0x74) addr:0x020b4d5c local
+Fld_Human_UpdateScreenPos kind:function(arm,size=0x2c) addr:0x020b4dd0 local
+Fld_Human_WalkStraight kind:function(arm,size=0x2b0) addr:0x020b4dfc local
+Fld_Human_HasReachedTarget kind:function(arm,size=0x17c) addr:0x020b50ac local
+Fld_Human_WalkRoute kind:function(arm,size=0x250) addr:0x020b5228 local
+Fld_Human_Move kind:function(arm,size=0x3c) addr:0x020b5478 local
+Fld_Human_UpdateTalkIcon kind:function(arm,size=0x144) addr:0x020b54b4 local
+Fld_Human_SpawnScanKirakira kind:function(arm,size=0x8c) addr:0x020b55f8 local
+Fld_Human_Update kind:function(arm,size=0x188) addr:0x020b5684 local
+Fld_Human_HasSprite kind:function(arm,size=0x18) addr:0x020b580c local
+Fld_Human_DrawSprites kind:function(arm,size=0x16c) addr:0x020b5824 local
+Fld_Human_DrawHighlighted kind:function(arm,size=0xa4) addr:0x020b5990 local
+Fld_Human_Render kind:function(arm,size=0xfc) addr:0x020b5a34 local
+Fld_Human_Destroy kind:function(arm,size=0x24) addr:0x020b5b30 local
+Fld_Human_RunTask kind:function(arm,size=0x48) addr:0x020b5b54 local
+Fld_Human_CreateTask kind:function(arm,size=0xbc) addr:0x020b5b9c
 func_ov030_020b5c58 kind:function(arm,size=0x80) addr:0x020b5c58
 func_ov030_020b5cd8 kind:function(arm,size=0xc) addr:0x020b5cd8
 func_ov030_020b5ce4 kind:function(arm,size=0x24) addr:0x020b5ce4
@@ -797,287 +797,287 @@ func_ov030_020ba9f8 kind:function(arm,size=0x34) addr:0x020ba9f8 local
 func_ov030_020baa2c kind:function(arm,size=0x38) addr:0x020baa2c
 
 
-func_ov030_020baa64 kind:function(arm,size=0xa8) addr:0x020baa64
-func_ov030_020bab0c kind:function(arm,size=0x74) addr:0x020bab0c
-func_ov030_020bab80 kind:function(arm,size=0x58) addr:0x020bab80
-func_ov030_020babd8 kind:function(arm,size=0x14) addr:0x020babd8
-func_ov030_020babec kind:function(arm,size=0x68) addr:0x020babec
-func_ov030_020bac54 kind:function(arm,size=0x14) addr:0x020bac54
-func_ov030_020bac68 kind:function(arm,size=0x48) addr:0x020bac68
-func_ov030_020bacb0 kind:function(arm,size=0x48) addr:0x020bacb0
-func_ov030_020bacf8 kind:function(arm,size=0x44) addr:0x020bacf8
-func_ov030_020bad3c kind:function(arm,size=0x44) addr:0x020bad3c
-func_ov030_020bad80 kind:function(arm,size=0x90) addr:0x020bad80
-func_ov030_020bae10 kind:function(arm,size=0x8) addr:0x020bae10
-func_ov030_020bae18 kind:function(arm,size=0x78) addr:0x020bae18
-func_ov030_020bae90 kind:function(arm,size=0xb8) addr:0x020bae90
-func_ov030_020baf48 kind:function(arm,size=0xbc) addr:0x020baf48
-func_ov030_020bb004 kind:function(arm,size=0x1c) addr:0x020bb004
-func_ov030_020bb020 kind:function(arm,size=0x12c) addr:0x020bb020
-func_ov030_020bb14c kind:function(arm,size=0x98) addr:0x020bb14c
-func_ov030_020bb1e4 kind:function(arm,size=0x178) addr:0x020bb1e4
-func_ov030_020bb35c kind:function(arm,size=0x1c) addr:0x020bb35c
-func_ov030_020bb378 kind:function(arm,size=0xc4) addr:0x020bb378
-func_ov030_020bb43c kind:function(arm,size=0xb0) addr:0x020bb43c
-func_ov030_020bb4ec kind:function(arm,size=0x58) addr:0x020bb4ec
-func_ov030_020bb544 kind:function(arm,size=0xd0) addr:0x020bb544
-func_ov030_020bb614 kind:function(arm,size=0x14c) addr:0x020bb614
-func_ov030_020bb760 kind:function(arm,size=0x330) addr:0x020bb760
-func_ov030_020bba90 kind:function(arm,size=0x30) addr:0x020bba90
-func_ov030_020bbac0 kind:function(arm,size=0x3c) addr:0x020bbac0
-func_ov030_020bbafc kind:function(arm,size=0x28) addr:0x020bbafc
-func_ov030_020bbb24 kind:function(arm,size=0x48) addr:0x020bbb24
-func_ov030_020bbb6c kind:function(arm,size=0x48) addr:0x020bbb6c
-func_ov030_020bbbb4 kind:function(arm,size=0x70) addr:0x020bbbb4
-func_ov030_020bbc24 kind:function(arm,size=0x14) addr:0x020bbc24
-func_ov030_020bbc38 kind:function(arm,size=0x7c) addr:0x020bbc38
-func_ov030_020bbcb4 kind:function(arm,size=0x110) addr:0x020bbcb4
-func_ov030_020bbdc4 kind:function(arm,size=0x44) addr:0x020bbdc4
-func_ov030_020bbe08 kind:function(arm,size=0xb0) addr:0x020bbe08
-func_ov030_020bbeb8 kind:function(arm,size=0xac) addr:0x020bbeb8
-func_ov030_020bbf64 kind:function(arm,size=0x28) addr:0x020bbf64
-func_ov030_020bbf8c kind:function(arm,size=0x2c) addr:0x020bbf8c
-func_ov030_020bbfb8 kind:function(arm,size=0x14) addr:0x020bbfb8
-func_ov030_020bbfcc kind:function(arm,size=0x14) addr:0x020bbfcc
-func_ov030_020bbfe0 kind:function(arm,size=0x48) addr:0x020bbfe0
-func_ov030_020bc028 kind:function(arm,size=0x40) addr:0x020bc028
-func_ov030_020bc068 kind:function(arm,size=0x9c) addr:0x020bc068
-func_ov030_020bc104 kind:function(arm,size=0xd8) addr:0x020bc104
-func_ov030_020bc1dc kind:function(arm,size=0x5c) addr:0x020bc1dc
-func_ov030_020bc238 kind:function(arm,size=0xec) addr:0x020bc238
-func_ov030_020bc324 kind:function(arm,size=0x40) addr:0x020bc324
-func_ov030_020bc364 kind:function(arm,size=0x68) addr:0x020bc364
-func_ov030_020bc3cc kind:function(arm,size=0x28) addr:0x020bc3cc
-func_ov030_020bc3f4 kind:function(arm,size=0x48) addr:0x020bc3f4
-func_ov030_020bc43c kind:function(arm,size=0x7c) addr:0x020bc43c
-func_ov030_020bc4b8 kind:function(arm,size=0x20) addr:0x020bc4b8
-func_ov030_020bc4d8 kind:function(arm,size=0x40) addr:0x020bc4d8
-func_ov030_020bc518 kind:function(arm,size=0x4c) addr:0x020bc518
-func_ov030_020bc564 kind:function(arm,size=0x14) addr:0x020bc564
-func_ov030_020bc578 kind:function(arm,size=0x44) addr:0x020bc578
-func_ov030_020bc5bc kind:function(arm,size=0x7c) addr:0x020bc5bc
-func_ov030_020bc638 kind:function(arm,size=0x60) addr:0x020bc638
-func_ov030_020bc698 kind:function(arm,size=0xc0) addr:0x020bc698
-func_ov030_020bc758 kind:function(arm,size=0x28) addr:0x020bc758
-func_ov030_020bc780 kind:function(arm,size=0x60) addr:0x020bc780
-func_ov030_020bc7e0 kind:function(arm,size=0xc) addr:0x020bc7e0
-func_ov030_020bc7ec kind:function(arm,size=0x48) addr:0x020bc7ec
-func_ov030_020bc834 kind:function(arm,size=0x84) addr:0x020bc834
-func_ov030_020bc8b8 kind:function(arm,size=0x194) addr:0x020bc8b8
-func_ov030_020bca4c kind:function(arm,size=0x68) addr:0x020bca4c
-func_ov030_020bcab4 kind:function(arm,size=0x150) addr:0x020bcab4
-func_ov030_020bcc04 kind:function(arm,size=0x78) addr:0x020bcc04
-func_ov030_020bcc7c kind:function(arm,size=0x98) addr:0x020bcc7c
-func_ov030_020bcd14 kind:function(arm,size=0x188) addr:0x020bcd14
-func_ov030_020bce9c kind:function(arm,size=0x160) addr:0x020bce9c
-func_ov030_020bcffc kind:function(arm,size=0x1d4) addr:0x020bcffc
-func_ov030_020bd1d0 kind:function(arm,size=0x4c) addr:0x020bd1d0
-func_ov030_020bd21c kind:function(arm,size=0x48) addr:0x020bd21c
-func_ov030_020bd264 kind:function(arm,size=0x34) addr:0x020bd264
-func_ov030_020bd298 kind:function(arm,size=0x78) addr:0x020bd298
-func_ov030_020bd310 kind:function(arm,size=0xc) addr:0x020bd310
-func_ov030_020bd31c kind:function(arm,size=0x24) addr:0x020bd31c
-func_ov030_020bd340 kind:function(arm,size=0xc) addr:0x020bd340
-func_ov030_020bd34c kind:function(arm,size=0x18) addr:0x020bd34c
-func_ov030_020bd364 kind:function(arm,size=0x9c) addr:0x020bd364
-func_ov030_020bd400 kind:function(arm,size=0xbc) addr:0x020bd400
-func_ov030_020bd4bc kind:function(arm,size=0x20) addr:0x020bd4bc
-func_ov030_020bd4dc kind:function(arm,size=0x4c) addr:0x020bd4dc
-func_ov030_020bd528 kind:function(arm,size=0x14) addr:0x020bd528
-func_ov030_020bd53c kind:function(arm,size=0x14) addr:0x020bd53c
-func_ov030_020bd550 kind:function(arm,size=0x48) addr:0x020bd550
-func_ov030_020bd598 kind:function(arm,size=0x34) addr:0x020bd598
-func_ov030_020bd5cc kind:function(arm,size=0x9c) addr:0x020bd5cc
-func_ov030_020bd668 kind:function(arm,size=0x74) addr:0x020bd668
-func_ov030_020bd6dc kind:function(arm,size=0x20) addr:0x020bd6dc
-func_ov030_020bd6fc kind:function(arm,size=0xf0) addr:0x020bd6fc
-func_ov030_020bd7ec kind:function(arm,size=0x14) addr:0x020bd7ec
-func_ov030_020bd800 kind:function(arm,size=0x14) addr:0x020bd800
-func_ov030_020bd814 kind:function(arm,size=0x48) addr:0x020bd814
-func_ov030_020bd85c kind:function(arm,size=0x34) addr:0x020bd85c
-func_ov030_020bd890 kind:function(arm,size=0x9c) addr:0x020bd890
-func_ov030_020bd92c kind:function(arm,size=0x78) addr:0x020bd92c
-func_ov030_020bd9a4 kind:function(arm,size=0x18) addr:0x020bd9a4
-func_ov030_020bd9bc kind:function(arm,size=0x148) addr:0x020bd9bc
-func_ov030_020bdb04 kind:function(arm,size=0x2d8) addr:0x020bdb04
-func_ov030_020bdddc kind:function(arm,size=0x44) addr:0x020bdddc
-func_ov030_020bde20 kind:function(arm,size=0x30) addr:0x020bde20
-func_ov030_020bde50 kind:function(arm,size=0x48) addr:0x020bde50
-func_ov030_020bde98 kind:function(arm,size=0x30) addr:0x020bde98
-func_ov030_020bdec8 kind:function(arm,size=0x9c) addr:0x020bdec8
-func_ov030_020bdf64 kind:function(arm,size=0x88) addr:0x020bdf64
-func_ov030_020bdfec kind:function(arm,size=0x18) addr:0x020bdfec
-func_ov030_020be004 kind:function(arm,size=0x54) addr:0x020be004
-func_ov030_020be058 kind:function(arm,size=0x14) addr:0x020be058
-func_ov030_020be06c kind:function(arm,size=0x14) addr:0x020be06c
-func_ov030_020be080 kind:function(arm,size=0x48) addr:0x020be080
-func_ov030_020be0c8 kind:function(arm,size=0x30) addr:0x020be0c8
-func_ov030_020be0f8 kind:function(arm,size=0x1c) addr:0x020be0f8
-func_ov030_020be114 kind:function(arm,size=0xc4) addr:0x020be114
-func_ov030_020be1d8 kind:function(arm,size=0x80) addr:0x020be1d8
-func_ov030_020be258 kind:function(arm,size=0x110) addr:0x020be258
-func_ov030_020be368 kind:function(arm,size=0x58) addr:0x020be368
-func_ov030_020be3c0 kind:function(arm,size=0x1c) addr:0x020be3c0
-func_ov030_020be3dc kind:function(arm,size=0x8) addr:0x020be3dc
-func_ov030_020be3e4 kind:function(arm,size=0x4c) addr:0x020be3e4
-func_ov030_020be430 kind:function(arm,size=0x74) addr:0x020be430
-func_ov030_020be4a4 kind:function(arm,size=0x9c) addr:0x020be4a4
-func_ov030_020be540 kind:function(arm,size=0xac) addr:0x020be540
-func_ov030_020be5ec kind:function(arm,size=0x54) addr:0x020be5ec
-func_ov030_020be640 kind:function(arm,size=0x4c) addr:0x020be640
-func_ov030_020be68c kind:function(arm,size=0x100) addr:0x020be68c
-func_ov030_020be78c kind:function(arm,size=0x14) addr:0x020be78c
-func_ov030_020be7a0 kind:function(arm,size=0x14) addr:0x020be7a0
-func_ov030_020be7b4 kind:function(arm,size=0x48) addr:0x020be7b4
-func_ov030_020be7fc kind:function(arm,size=0x60) addr:0x020be7fc
-func_ov030_020be85c kind:function(arm,size=0x28) addr:0x020be85c
-func_ov030_020be884 kind:function(arm,size=0x54) addr:0x020be884
-func_ov030_020be8d8 kind:function(arm,size=0x80) addr:0x020be8d8
-func_ov030_020be958 kind:function(arm,size=0x16c) addr:0x020be958
-func_ov030_020beac4 kind:function(arm,size=0x8) addr:0x020beac4
-func_ov030_020beacc kind:function(arm,size=0x8c) addr:0x020beacc
-func_ov030_020beb58 kind:function(arm,size=0x48) addr:0x020beb58
-func_ov030_020beba0 kind:function(arm,size=0x1b4) addr:0x020beba0
-func_ov030_020bed54 kind:function(arm,size=0xd0) addr:0x020bed54
-func_ov030_020bee24 kind:function(arm,size=0x9c) addr:0x020bee24
-func_ov030_020beec0 kind:function(arm,size=0xcc) addr:0x020beec0
-func_ov030_020bef8c kind:function(arm,size=0x2c) addr:0x020bef8c
-func_ov030_020befb8 kind:function(arm,size=0x8) addr:0x020befb8
-func_ov030_020befc0 kind:function(arm,size=0x24) addr:0x020befc0
-func_ov030_020befe4 kind:function(arm,size=0x24) addr:0x020befe4
-func_ov030_020bf008 kind:function(arm,size=0x48) addr:0x020bf008
-func_ov030_020bf050 kind:function(arm,size=0x34) addr:0x020bf050
-func_ov030_020bf084 kind:function(arm,size=0xac) addr:0x020bf084
-func_ov030_020bf130 kind:function(arm,size=0x10c) addr:0x020bf130
-func_ov030_020bf23c kind:function(arm,size=0x4c) addr:0x020bf23c
-func_ov030_020bf288 kind:function(arm,size=0x28) addr:0x020bf288
-func_ov030_020bf2b0 kind:function(arm,size=0x8) addr:0x020bf2b0
-func_ov030_020bf2b8 kind:function(arm,size=0x30) addr:0x020bf2b8
-func_ov030_020bf2e8 kind:function(arm,size=0x48) addr:0x020bf2e8
-func_ov030_020bf330 kind:function(arm,size=0x30) addr:0x020bf330
-func_ov030_020bf360 kind:function(arm,size=0x84) addr:0x020bf360
-func_ov030_020bf3e4 kind:function(arm,size=0x58) addr:0x020bf3e4
-func_ov030_020bf43c kind:function(arm,size=0x58) addr:0x020bf43c
-func_ov030_020bf494 kind:function(arm,size=0x20) addr:0x020bf494
-func_ov030_020bf4b4 kind:function(arm,size=0x20) addr:0x020bf4b4
-func_ov030_020bf4d4 kind:function(arm,size=0x18c) addr:0x020bf4d4
-func_ov030_020bf660 kind:function(arm,size=0x164) addr:0x020bf660
-func_ov030_020bf7c4 kind:function(arm,size=0x2fc) addr:0x020bf7c4
-func_ov030_020bfac0 kind:function(arm,size=0x8) addr:0x020bfac0
-func_ov030_020bfac8 kind:function(arm,size=0x40) addr:0x020bfac8
-func_ov030_020bfb08 kind:function(arm,size=0x48) addr:0x020bfb08
-func_ov030_020bfb50 kind:function(arm,size=0x30) addr:0x020bfb50
-func_ov030_020bfb80 kind:function(arm,size=0x9c) addr:0x020bfb80
-func_ov030_020bfc1c kind:function(arm,size=0x8c) addr:0x020bfc1c
-func_ov030_020bfca8 kind:function(arm,size=0xa4) addr:0x020bfca8
-func_ov030_020bfd4c kind:function(arm,size=0xdc) addr:0x020bfd4c
-func_ov030_020bfe28 kind:function(arm,size=0x14) addr:0x020bfe28
-func_ov030_020bfe3c kind:function(arm,size=0x28) addr:0x020bfe3c
-func_ov030_020bfe64 kind:function(arm,size=0x48) addr:0x020bfe64
-func_ov030_020bfeac kind:function(arm,size=0x38) addr:0x020bfeac
-func_ov030_020bfee4 kind:function(arm,size=0x4c) addr:0x020bfee4
-func_ov030_020bff30 kind:function(arm,size=0x38) addr:0x020bff30
-func_ov030_020bff68 kind:function(arm,size=0x44) addr:0x020bff68
-func_ov030_020bffac kind:function(arm,size=0x9c) addr:0x020bffac
-func_ov030_020c0048 kind:function(arm,size=0x98) addr:0x020c0048
-func_ov030_020c00e0 kind:function(arm,size=0x20) addr:0x020c00e0
-func_ov030_020c0100 kind:function(arm,size=0x14) addr:0x020c0100
-func_ov030_020c0114 kind:function(arm,size=0x14) addr:0x020c0114
-func_ov030_020c0128 kind:function(arm,size=0x14) addr:0x020c0128
-func_ov030_020c013c kind:function(arm,size=0x48) addr:0x020c013c
-func_ov030_020c0184 kind:function(arm,size=0x40) addr:0x020c0184
-func_ov030_020c01c4 kind:function(arm,size=0x28) addr:0x020c01c4
-func_ov030_020c01ec kind:function(arm,size=0x7c) addr:0x020c01ec
-func_ov030_020c0268 kind:function(arm,size=0x9c) addr:0x020c0268
-func_ov030_020c0304 kind:function(arm,size=0x74) addr:0x020c0304
-func_ov030_020c0378 kind:function(arm,size=0x34) addr:0x020c0378
-func_ov030_020c03ac kind:function(arm,size=0xb0) addr:0x020c03ac
-func_ov030_020c045c kind:function(arm,size=0x20) addr:0x020c045c
-func_ov030_020c047c kind:function(arm,size=0x14) addr:0x020c047c
-func_ov030_020c0490 kind:function(arm,size=0x48) addr:0x020c0490
-func_ov030_020c04d8 kind:function(arm,size=0x34) addr:0x020c04d8
-func_ov030_020c050c kind:function(arm,size=0x28) addr:0x020c050c
-func_ov030_020c0534 kind:function(arm,size=0x9c) addr:0x020c0534
-func_ov030_020c05d0 kind:function(arm,size=0x8c) addr:0x020c05d0
-func_ov030_020c065c kind:function(arm,size=0x28) addr:0x020c065c
-func_ov030_020c0684 kind:function(arm,size=0x28) addr:0x020c0684
-func_ov030_020c06ac kind:function(arm,size=0x14) addr:0x020c06ac
-func_ov030_020c06c0 kind:function(arm,size=0x28) addr:0x020c06c0
-func_ov030_020c06e8 kind:function(arm,size=0x48) addr:0x020c06e8
-func_ov030_020c0730 kind:function(arm,size=0x30) addr:0x020c0730
-func_ov030_020c0760 kind:function(arm,size=0x10) addr:0x020c0760
-func_ov030_020c0770 kind:function(arm,size=0x10) addr:0x020c0770
-func_ov030_020c0780 kind:function(arm,size=0x68) addr:0x020c0780
-func_ov030_020c07e8 kind:function(arm,size=0x98) addr:0x020c07e8
-func_ov030_020c0880 kind:function(arm,size=0x8) addr:0x020c0880
-func_ov030_020c0888 kind:function(arm,size=0x1c) addr:0x020c0888
-func_ov030_020c08a4 kind:function(arm,size=0x48) addr:0x020c08a4
-func_ov030_020c08ec kind:function(arm,size=0x6c) addr:0x020c08ec
-func_ov030_020c0958 kind:function(arm,size=0x184) addr:0x020c0958
-func_ov030_020c0adc kind:function(arm,size=0x8) addr:0x020c0adc
-func_ov030_020c0ae4 kind:function(arm,size=0x80) addr:0x020c0ae4
-func_ov030_020c0b64 kind:function(arm,size=0x48) addr:0x020c0b64
-func_ov030_020c0bac kind:function(arm,size=0x30) addr:0x020c0bac
-func_ov030_020c0bdc kind:function(arm,size=0x1c) addr:0x020c0bdc
-func_ov030_020c0bf8 kind:function(arm,size=0xcc) addr:0x020c0bf8
-func_ov030_020c0cc4 kind:function(arm,size=0x64) addr:0x020c0cc4
-func_ov030_020c0d28 kind:function(arm,size=0x10c) addr:0x020c0d28
-func_ov030_020c0e34 kind:function(arm,size=0x74) addr:0x020c0e34
-func_ov030_020c0ea8 kind:function(arm,size=0x58) addr:0x020c0ea8
-func_ov030_020c0f00 kind:function(arm,size=0x50) addr:0x020c0f00
-func_ov030_020c0f50 kind:function(arm,size=0x10c) addr:0x020c0f50
-func_ov030_020c105c kind:function(arm,size=0x2c) addr:0x020c105c
-func_ov030_020c1088 kind:function(arm,size=0x1a8) addr:0x020c1088
-func_ov030_020c1230 kind:function(arm,size=0x154) addr:0x020c1230
-func_ov030_020c1384 kind:function(arm,size=0xa0) addr:0x020c1384
-func_ov030_020c1424 kind:function(arm,size=0xd4) addr:0x020c1424
-func_ov030_020c14f8 kind:function(arm,size=0x2d8) addr:0x020c14f8
-func_ov030_020c17d0 kind:function(arm,size=0x190) addr:0x020c17d0
-func_ov030_020c1960 kind:function(arm,size=0x5c) addr:0x020c1960
-func_ov030_020c19bc kind:function(arm,size=0xe0) addr:0x020c19bc
-func_ov030_020c1a9c kind:function(arm,size=0xc) addr:0x020c1a9c
-func_ov030_020c1aa8 kind:function(arm,size=0x50) addr:0x020c1aa8
-func_ov030_020c1af8 kind:function(arm,size=0x84) addr:0x020c1af8
-func_ov030_020c1b7c kind:function(arm,size=0x9c) addr:0x020c1b7c
-func_ov030_020c1c18 kind:function(arm,size=0x80) addr:0x020c1c18
-func_ov030_020c1c98 kind:function(arm,size=0x110) addr:0x020c1c98
-func_ov030_020c1da8 kind:function(arm,size=0x84) addr:0x020c1da8
-func_ov030_020c1e2c kind:function(arm,size=0xfc) addr:0x020c1e2c
-func_ov030_020c1f28 kind:function(arm,size=0x58) addr:0x020c1f28
-func_ov030_020c1f80 kind:function(arm,size=0x48) addr:0x020c1f80
-func_ov030_020c1fc8 kind:function(arm,size=0x48) addr:0x020c1fc8
-func_ov030_020c2010 kind:function(arm,size=0x34) addr:0x020c2010
-func_ov030_020c2044 kind:function(arm,size=0x2c) addr:0x020c2044
-func_ov030_020c2070 kind:function(arm,size=0x18) addr:0x020c2070
-func_ov030_020c2088 kind:function(arm,size=0x9c) addr:0x020c2088
-func_ov030_020c2124 kind:function(arm,size=0x80) addr:0x020c2124
-func_ov030_020c21a4 kind:function(arm,size=0x16c) addr:0x020c21a4
-func_ov030_020c2310 kind:function(arm,size=0x80) addr:0x020c2310
-func_ov030_020c2390 kind:function(arm,size=0x40) addr:0x020c2390
-func_ov030_020c23d0 kind:function(arm,size=0x40) addr:0x020c23d0
-func_ov030_020c2410 kind:function(arm,size=0x48) addr:0x020c2410
-func_ov030_020c2458 kind:function(arm,size=0x34) addr:0x020c2458
-func_ov030_020c248c kind:function(arm,size=0x9c) addr:0x020c248c
-func_ov030_020c2528 kind:function(arm,size=0x7c) addr:0x020c2528
-func_ov030_020c25a4 kind:function(arm,size=0x18) addr:0x020c25a4
-func_ov030_020c25bc kind:function(arm,size=0x14) addr:0x020c25bc
-func_ov030_020c25d0 kind:function(arm,size=0x14) addr:0x020c25d0
-func_ov030_020c25e4 kind:function(arm,size=0x14) addr:0x020c25e4
-func_ov030_020c25f8 kind:function(arm,size=0x48) addr:0x020c25f8
-func_ov030_020c2640 kind:function(arm,size=0x4c) addr:0x020c2640
-func_ov030_020c268c kind:function(arm,size=0x30) addr:0x020c268c
-func_ov030_020c26bc kind:function(arm,size=0x30) addr:0x020c26bc
-func_ov030_020c26ec kind:function(arm,size=0x108) addr:0x020c26ec
-func_ov030_020c27f4 kind:function(arm,size=0x18) addr:0x020c27f4
-func_ov030_020c280c kind:function(arm,size=0x170) addr:0x020c280c
-func_ov030_020c297c kind:function(arm,size=0xb0) addr:0x020c297c
-func_ov030_020c2a2c kind:function(arm,size=0xb0) addr:0x020c2a2c
-func_ov030_020c2adc kind:function(arm,size=0xf0) addr:0x020c2adc
-func_ov030_020c2bcc kind:function(arm,size=0x28) addr:0x020c2bcc
-func_ov030_020c2bf4 kind:function(arm,size=0x44) addr:0x020c2bf4
-func_ov030_020c2c38 kind:function(arm,size=0x14) addr:0x020c2c38
-func_ov030_020c2c4c kind:function(arm,size=0x48) addr:0x020c2c4c
-func_ov030_020c2c94 kind:function(arm,size=0x38) addr:0x020c2c94
+Fld_TalkIcon_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020baa64 local
+Fld_TalkIcon_Load kind:function(arm,size=0x74) addr:0x020bab0c local
+Fld_TalkIcon_Init kind:function(arm,size=0x58) addr:0x020bab80 local
+Fld_TalkIcon_Update kind:function(arm,size=0x14) addr:0x020babd8 local
+Fld_TalkIcon_Render kind:function(arm,size=0x68) addr:0x020babec local
+Fld_TalkIcon_Destroy kind:function(arm,size=0x14) addr:0x020bac54 local
+Fld_TalkIcon_RunTask kind:function(arm,size=0x48) addr:0x020bac68 local
+Fld_TalkIcon_CreateTask kind:function(arm,size=0x48) addr:0x020bacb0
+Fld_TalkIcon_Highlight kind:function(arm,size=0x44) addr:0x020bacf8
+Fld_TalkIcon_Unhighlight kind:function(arm,size=0x44) addr:0x020bad3c
+Fld_NSymbolUG_IsTouched kind:function(arm,size=0x90) addr:0x020bad80 local
+Fld_NSymbolUG_SetUpdate kind:function(arm,size=0x8) addr:0x020bae10 local
+Fld_NSymbolUG_UpdateDrag kind:function(arm,size=0x78) addr:0x020bae18 local
+Fld_NSymbolUG_UpdateChase kind:function(arm,size=0xb8) addr:0x020bae90 local
+Fld_NSymbolUG_UpdateWobble kind:function(arm,size=0xbc) addr:0x020baf48 local
+Fld_NSymbolUG_IsChaserCategory kind:function(arm,size=0x1c) addr:0x020bb004 local
+Fld_NSymbolUG_UpdateRoam kind:function(arm,size=0x12c) addr:0x020bb020 local
+Fld_NSymbolUG_UpdateBob kind:function(arm,size=0x98) addr:0x020bb14c local
+Fld_NSymbolUG_UpdateIdle kind:function(arm,size=0x178) addr:0x020bb1e4 local
+Fld_NSymbolUG_UpdateSpecial kind:function(arm,size=0x1c) addr:0x020bb35c local
+Fld_NSymbolUG_UpdateAppearing kind:function(arm,size=0xc4) addr:0x020bb378 local
+Fld_NSymbolUG_UpdateHidden kind:function(arm,size=0xb0) addr:0x020bb43c local
+Fld_NSymbolUG_UpdateAbsorb kind:function(arm,size=0x58) addr:0x020bb4ec local
+Fld_NSymbolUG_GetFrameInfo kind:function(arm,size=0xd0) addr:0x020bb544 local
+Fld_NSymbolUG_Load kind:function(arm,size=0x14c) addr:0x020bb614 local
+Fld_NSymbolUG_Init kind:function(arm,size=0x330) addr:0x020bb760 local
+Fld_NSymbolUG_IsVisible kind:function(arm,size=0x30) addr:0x020bba90 local
+Fld_NSymbolUG_Update kind:function(arm,size=0x3c) addr:0x020bbac0 local
+Fld_NSymbolUG_Render kind:function(arm,size=0x28) addr:0x020bbafc local
+Fld_NSymbolUG_Destroy kind:function(arm,size=0x48) addr:0x020bbb24 local
+Fld_NSymbolUG_RunTask kind:function(arm,size=0x48) addr:0x020bbb6c local
+Fld_NSymbolUG_CreateTask kind:function(arm,size=0x70) addr:0x020bbbb4
+Fld_NSymbolUG_IsTaskTouched kind:function(arm,size=0x14) addr:0x020bbc24
+Fld_NSymbolUG_IsNearPlayer kind:function(arm,size=0x7c) addr:0x020bbc38
+Fld_NSymbolUG_Capture kind:function(arm,size=0x110) addr:0x020bbcb4
+Fld_NSymbolUG_MarkDefeated kind:function(arm,size=0x44) addr:0x020bbdc4
+Fld_NSymbolUGEffect_GetFrameInfo kind:function(arm,size=0xb0) addr:0x020bbe08 local
+Fld_NSymbolUGEffect_Load kind:function(arm,size=0xac) addr:0x020bbeb8 local
+Fld_NSymbolUGEffect_Init kind:function(arm,size=0x28) addr:0x020bbf64 local
+Fld_NSymbolUGEffect_Update kind:function(arm,size=0x2c) addr:0x020bbf8c local
+Fld_NSymbolUGEffect_Render kind:function(arm,size=0x14) addr:0x020bbfb8 local
+Fld_NSymbolUGEffect_Destroy kind:function(arm,size=0x14) addr:0x020bbfcc local
+Fld_NSymbolUGEffect_RunTask kind:function(arm,size=0x48) addr:0x020bbfe0 local
+Fld_NSymbolUGEffect_CreateTask kind:function(arm,size=0x40) addr:0x020bc028
+Fld_MapJumpArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bc068 local
+Fld_MapJumpArrow_Load kind:function(arm,size=0xd8) addr:0x020bc104 local
+Fld_MapJumpArrow_RemapMessage kind:function(arm,size=0x5c) addr:0x020bc1dc local
+Fld_MapJumpArrow_Init kind:function(arm,size=0xec) addr:0x020bc238 local
+Fld_MapJumpArrow_Update kind:function(arm,size=0x40) addr:0x020bc324 local
+Fld_MapJumpArrow_Render kind:function(arm,size=0x68) addr:0x020bc364 local
+Fld_MapJumpArrow_Destroy kind:function(arm,size=0x28) addr:0x020bc3cc local
+Fld_MapJumpArrow_RunTask kind:function(arm,size=0x48) addr:0x020bc3f4 local
+Fld_MapJumpArrow_CreateTask kind:function(arm,size=0x7c) addr:0x020bc43c
+FldCharaWalk_AngleToCell kind:function(arm,size=0x20) addr:0x020bc4b8
+FldCharaWalk_GetLoopFrame kind:function(arm,size=0x40) addr:0x020bc4d8
+FldCharaWalk_MoveWithCollision kind:function(arm,size=0x4c) addr:0x020bc518
+Fld_Partner_SetState kind:function(arm,size=0x14) addr:0x020bc564 local
+Fld_Partner_IsPresent kind:function(arm,size=0x44) addr:0x020bc578 local
+Fld_Partner_PlayFootsteps kind:function(arm,size=0x7c) addr:0x020bc5bc local
+Fld_Partner_AnimateWalk kind:function(arm,size=0x60) addr:0x020bc638 local
+Fld_Partner_StateBattleIn kind:function(arm,size=0xc0) addr:0x020bc698 local
+Fld_Partner_StateStart kind:function(arm,size=0x28) addr:0x020bc758 local
+Fld_Partner_IsOffScreen kind:function(arm,size=0x60) addr:0x020bc780 local
+Fld_Partner_ShouldWarp kind:function(arm,size=0xc) addr:0x020bc7e0 local
+Fld_Partner_UpdateTargetTimer kind:function(arm,size=0x48) addr:0x020bc7ec local
+Fld_Partner_IsTouched kind:function(arm,size=0x84) addr:0x020bc834 local
+Fld_Partner_StateIdle kind:function(arm,size=0x194) addr:0x020bc8b8 local
+Fld_Partner_FacePlayer kind:function(arm,size=0x68) addr:0x020bca4c local
+Fld_Partner_StateWalk kind:function(arm,size=0x150) addr:0x020bcab4 local
+Fld_Partner_GetFollowPos kind:function(arm,size=0x78) addr:0x020bcc04 local
+Fld_Partner_FindFreePos kind:function(arm,size=0x98) addr:0x020bcc7c local
+Fld_Partner_Init kind:function(arm,size=0x188) addr:0x020bcd14 local
+Fld_Partner_Update kind:function(arm,size=0x160) addr:0x020bce9c local
+Fld_Partner_Render kind:function(arm,size=0x1d4) addr:0x020bcffc local
+Fld_Partner_Destroy kind:function(arm,size=0x4c) addr:0x020bd1d0 local
+Fld_Partner_RunTask kind:function(arm,size=0x48) addr:0x020bd21c local
+Fld_Partner_CreateTask kind:function(arm,size=0x34) addr:0x020bd264
+Fld_Partner_WarpToPlayer kind:function(arm,size=0x78) addr:0x020bd298
+Fld_Partner_SetSpeed kind:function(arm,size=0xc) addr:0x020bd310
+Fld_Partner_IsTalkTouched kind:function(arm,size=0x24) addr:0x020bd31c
+Fld_Partner_GetPosY kind:function(arm,size=0xc) addr:0x020bd340
+Fld_Partner_StartBattleIn kind:function(arm,size=0x18) addr:0x020bd34c
+Fld_OnePicturCell_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bd364 local
+Fld_OnePicturCell_Load kind:function(arm,size=0xbc) addr:0x020bd400 local
+Fld_OnePicturCell_Init kind:function(arm,size=0x20) addr:0x020bd4bc local
+Fld_OnePicturCell_Update kind:function(arm,size=0x4c) addr:0x020bd4dc local
+Fld_OnePicturCell_Render kind:function(arm,size=0x14) addr:0x020bd528 local
+Fld_OnePicturCell_Destroy kind:function(arm,size=0x14) addr:0x020bd53c local
+Fld_OnePicturCell_RunTask kind:function(arm,size=0x48) addr:0x020bd550 local
+Fld_OnePicturCell_CreateTask kind:function(arm,size=0x34) addr:0x020bd598
+Fld_CockPit_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bd5cc local
+Fld_CockPit_Load kind:function(arm,size=0x74) addr:0x020bd668 local
+Fld_CockPit_Init kind:function(arm,size=0x20) addr:0x020bd6dc local
+Fld_CockPit_Update kind:function(arm,size=0xf0) addr:0x020bd6fc local
+Fld_CockPit_Render kind:function(arm,size=0x14) addr:0x020bd7ec local
+Fld_CockPit_Destroy kind:function(arm,size=0x14) addr:0x020bd800 local
+Fld_CockPit_RunTask kind:function(arm,size=0x48) addr:0x020bd814 local
+Fld_CockPit_CreateTask kind:function(arm,size=0x34) addr:0x020bd85c
+Fld_Watch_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bd890 local
+Fld_Watch_LoadSprite kind:function(arm,size=0x78) addr:0x020bd92c local
+Fld_Watch_To12Hour kind:function(arm,size=0x18) addr:0x020bd9a4 local
+Fld_Watch_Init kind:function(arm,size=0x148) addr:0x020bd9bc local
+Fld_Watch_Update kind:function(arm,size=0x2d8) addr:0x020bdb04 local
+Fld_Watch_Render kind:function(arm,size=0x44) addr:0x020bdddc local
+Fld_Watch_Destroy kind:function(arm,size=0x30) addr:0x020bde20 local
+Fld_Watch_RunTask kind:function(arm,size=0x48) addr:0x020bde50 local
+Fld_Watch_CreateTask kind:function(arm,size=0x30) addr:0x020bde98
+Fld_Phone_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bdec8 local
+Fld_Phone_Load kind:function(arm,size=0x88) addr:0x020bdf64 local
+Fld_Phone_Init kind:function(arm,size=0x18) addr:0x020bdfec local
+Fld_Phone_Update kind:function(arm,size=0x54) addr:0x020be004 local
+Fld_Phone_Render kind:function(arm,size=0x14) addr:0x020be058 local
+Fld_Phone_Destroy kind:function(arm,size=0x14) addr:0x020be06c local
+Fld_Phone_RunTask kind:function(arm,size=0x48) addr:0x020be080 local
+Fld_Phone_CreateTask kind:function(arm,size=0x30) addr:0x020be0c8
+Fld_Phone_Press kind:function(arm,size=0x1c) addr:0x020be0f8
+FldChara_GetFrameInfo kind:function(arm,size=0xc4) addr:0x020be114 local
+FldChara_Load kind:function(arm,size=0x80) addr:0x020be1d8
+FldChara_SetCell kind:function(arm,size=0x110) addr:0x020be258
+FldChara_SetFlip kind:function(arm,size=0x58) addr:0x020be368
+FldChara_IsFlipped kind:function(arm,size=0x1c) addr:0x020be3c0
+FldChara_SetSortKey kind:function(arm,size=0x8) addr:0x020be3dc
+FldChara_RenderWithAlpha kind:function(arm,size=0x4c) addr:0x020be3e4
+FldChara_MoveAlongAngle kind:function(arm,size=0x74) addr:0x020be430
+Fld_ScanKirakira_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020be4a4 local
+Fld_ScanKirakira_Load kind:function(arm,size=0xac) addr:0x020be540 local
+Fld_ScanKirakira_Init kind:function(arm,size=0x54) addr:0x020be5ec local
+Fld_ScanKirakira_IsOnScreen kind:function(arm,size=0x4c) addr:0x020be640 local
+Fld_ScanKirakira_Update kind:function(arm,size=0x100) addr:0x020be68c local
+Fld_ScanKirakira_Render kind:function(arm,size=0x14) addr:0x020be78c local
+Fld_ScanKirakira_Destroy kind:function(arm,size=0x14) addr:0x020be7a0 local
+Fld_ScanKirakira_RunTask kind:function(arm,size=0x48) addr:0x020be7b4 local
+Fld_ScanKirakira_CreateTask kind:function(arm,size=0x60) addr:0x020be7fc
+Fld_ScanFukidasi_Init kind:function(arm,size=0x28) addr:0x020be85c local
+Fld_ScanFukidasi_HitTest kind:function(arm,size=0x54) addr:0x020be884 local
+Fld_ScanFukidasi_Select kind:function(arm,size=0x80) addr:0x020be8d8 local
+Fld_ScanFukidasi_Update kind:function(arm,size=0x16c) addr:0x020be958 local
+Fld_ScanFukidasi_Render kind:function(arm,size=0x8) addr:0x020beac4 local
+Fld_ScanFukidasi_Destroy kind:function(arm,size=0x8c) addr:0x020beacc local
+Fld_ScanFukidasi_RunTask kind:function(arm,size=0x48) addr:0x020beb58 local
+Fld_ScanFukidasi_AddSpot kind:function(arm,size=0x1b4) addr:0x020beba0
+Fld_ScanFukidasi_OpenWindow kind:function(arm,size=0xd0) addr:0x020bed54 local
+Fld_NpcRG_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bee24 local
+Fld_NpcRG_Load kind:function(arm,size=0xcc) addr:0x020beec0 local
+Fld_NpcRG_Init kind:function(arm,size=0x2c) addr:0x020bef8c local
+Fld_NpcRG_Update kind:function(arm,size=0x8) addr:0x020befb8 local
+Fld_NpcRG_Render kind:function(arm,size=0x24) addr:0x020befc0 local
+Fld_NpcRG_Destroy kind:function(arm,size=0x24) addr:0x020befe4 local
+Fld_NpcRG_RunTask kind:function(arm,size=0x48) addr:0x020bf008 local
+Fld_NpcRG_CreateTask kind:function(arm,size=0x34) addr:0x020bf050
+Fld_LargeGingo_Init kind:function(arm,size=0xac) addr:0x020bf084 local
+Fld_LargeGingo_UpdateScroll kind:function(arm,size=0x10c) addr:0x020bf130 local
+Fld_LargeGingo_UpdateFade kind:function(arm,size=0x4c) addr:0x020bf23c local
+Fld_LargeGingo_Update kind:function(arm,size=0x28) addr:0x020bf288 local
+Fld_LargeGingo_Render kind:function(arm,size=0x8) addr:0x020bf2b0 local
+Fld_LargeGingo_Destroy kind:function(arm,size=0x30) addr:0x020bf2b8 local
+Fld_LargeGingo_RunTask kind:function(arm,size=0x48) addr:0x020bf2e8 local
+Fld_LargeGingo_CreateTask kind:function(arm,size=0x30) addr:0x020bf330
+Fld_Touch_GetTouchedArea kind:function(arm,size=0x84) addr:0x020bf360 local
+Fld_Touch_FindTouchedSeal kind:function(arm,size=0x58) addr:0x020bf3e4 local
+Fld_Touch_SelectSeal kind:function(arm,size=0x58) addr:0x020bf43c local
+Fld_Touch_ResetRubProgress kind:function(arm,size=0x20) addr:0x020bf494 local
+Fld_Touch_ResetRubCounts kind:function(arm,size=0x20) addr:0x020bf4b4 local
+Fld_Touch_Init kind:function(arm,size=0x18c) addr:0x020bf4d4 local
+Fld_Touch_RubArea kind:function(arm,size=0x164) addr:0x020bf660 local
+Fld_Touch_Update kind:function(arm,size=0x2fc) addr:0x020bf7c4 local
+Fld_Touch_Render kind:function(arm,size=0x8) addr:0x020bfac0 local
+Fld_Touch_Destroy kind:function(arm,size=0x40) addr:0x020bfac8 local
+Fld_Touch_RunTask kind:function(arm,size=0x48) addr:0x020bfb08 local
+Fld_Touch_CreateTask kind:function(arm,size=0x30) addr:0x020bfb50
+Fld_TouchCommand_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bfb80 local
+Fld_TouchCommand_Load kind:function(arm,size=0x8c) addr:0x020bfc1c local
+Fld_TouchCommand_Init kind:function(arm,size=0xa4) addr:0x020bfca8 local
+Fld_TouchCommand_Update kind:function(arm,size=0xdc) addr:0x020bfd4c local
+Fld_TouchCommand_Render kind:function(arm,size=0x14) addr:0x020bfe28 local
+Fld_TouchCommand_Destroy kind:function(arm,size=0x28) addr:0x020bfe3c local
+Fld_TouchCommand_RunTask kind:function(arm,size=0x48) addr:0x020bfe64 local
+Fld_TouchCommand_GetLabelMsg kind:function(arm,size=0x38) addr:0x020bfeac local
+Fld_TouchCommand_CreateTask kind:function(arm,size=0x4c) addr:0x020bfee4
+Fld_TouchCommand_CreateTaskWithMsg kind:function(arm,size=0x38) addr:0x020bff30
+Fld_TouchCommand_SetCommand kind:function(arm,size=0x44) addr:0x020bff68
+Fld_TouchSeal_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020bffac local
+Fld_TouchSeal_Load kind:function(arm,size=0x98) addr:0x020c0048 local
+Fld_TouchSeal_Init kind:function(arm,size=0x20) addr:0x020c00e0 local
+Fld_TouchSeal_Update kind:function(arm,size=0x14) addr:0x020c0100 local
+Fld_TouchSeal_Render kind:function(arm,size=0x14) addr:0x020c0114 local
+Fld_TouchSeal_Destroy kind:function(arm,size=0x14) addr:0x020c0128 local
+Fld_TouchSeal_RunTask kind:function(arm,size=0x48) addr:0x020c013c local
+Fld_TouchSeal_CreateTask kind:function(arm,size=0x40) addr:0x020c0184
+Fld_TouchSeal_SetAnimation kind:function(arm,size=0x28) addr:0x020c01c4
+Fld_TouchSeal_IsTouched kind:function(arm,size=0x7c) addr:0x020c01ec
+Fld_TouchCursor_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c0268 local
+Fld_TouchCursor_Load kind:function(arm,size=0x74) addr:0x020c0304 local
+Fld_TouchCursor_Init kind:function(arm,size=0x34) addr:0x020c0378 local
+Fld_TouchCursor_Update kind:function(arm,size=0xb0) addr:0x020c03ac local
+Fld_TouchCursor_Render kind:function(arm,size=0x20) addr:0x020c045c local
+Fld_TouchCursor_Destroy kind:function(arm,size=0x14) addr:0x020c047c local
+Fld_TouchCursor_RunTask kind:function(arm,size=0x48) addr:0x020c0490 local
+Fld_TouchCursor_CreateTask kind:function(arm,size=0x34) addr:0x020c04d8
+Fld_TouchCursor_SetAnimation kind:function(arm,size=0x28) addr:0x020c050c
+Fld_TouchShine_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c0534 local
+Fld_TouchShine_Load kind:function(arm,size=0x8c) addr:0x020c05d0 local
+Fld_TouchShine_Init kind:function(arm,size=0x28) addr:0x020c065c local
+Fld_TouchShine_Update kind:function(arm,size=0x28) addr:0x020c0684 local
+Fld_TouchShine_Render kind:function(arm,size=0x14) addr:0x020c06ac local
+Fld_TouchShine_Destroy kind:function(arm,size=0x28) addr:0x020c06c0 local
+Fld_TouchShine_RunTask kind:function(arm,size=0x48) addr:0x020c06e8 local
+Fld_TouchShine_CreateTask kind:function(arm,size=0x30) addr:0x020c0730
+Fld_TouchShine_SetActiveCount kind:function(arm,size=0x10) addr:0x020c0760
+Fld_TouchShine_GetActiveCount kind:function(arm,size=0x10) addr:0x020c0770
+Fld_Raster_Init kind:function(arm,size=0x68) addr:0x020c0780 local
+Fld_Raster_Update kind:function(arm,size=0x98) addr:0x020c07e8 local
+Fld_Raster_Render kind:function(arm,size=0x8) addr:0x020c0880 local
+Fld_Raster_Destroy kind:function(arm,size=0x1c) addr:0x020c0888 local
+Fld_Raster_RunTask kind:function(arm,size=0x48) addr:0x020c08a4 local
+Fld_NSymbolUGMgr_Init kind:function(arm,size=0x6c) addr:0x020c08ec local
+Fld_NSymbolUGMgr_Update kind:function(arm,size=0x184) addr:0x020c0958 local
+Fld_NSymbolUGMgr_Render kind:function(arm,size=0x8) addr:0x020c0adc local
+Fld_NSymbolUGMgr_Destroy kind:function(arm,size=0x80) addr:0x020c0ae4 local
+Fld_NSymbolUGMgr_RunTask kind:function(arm,size=0x48) addr:0x020c0b64 local
+Fld_NSymbolUGMgr_CreateTask kind:function(arm,size=0x30) addr:0x020c0bac
+Fld_Luck_IsVariantCategory kind:function(arm,size=0x1c) addr:0x020c0bdc local
+Fld_Luck_RemoveOtherSymbols kind:function(arm,size=0xcc) addr:0x020c0bf8 local
+Fld_Luck_SelectSymbol kind:function(arm,size=0x64) addr:0x020c0cc4 local
+Fld_Luck_TrySelectSymbol kind:function(arm,size=0x10c) addr:0x020c0d28
+Fld_Luck_RemoveActiveSymbols kind:function(arm,size=0x74) addr:0x020c0e34
+Fld_Luck_HasActiveNormalSymbol kind:function(arm,size=0x58) addr:0x020c0ea8 local
+Fld_Luck_IsSymbolHidden kind:function(arm,size=0x50) addr:0x020c0f00 local
+Fld_Luck_SpawnSymbols kind:function(arm,size=0x10c) addr:0x020c0f50
+Fld_Luck_GetDropRate kind:function(arm,size=0x2c) addr:0x020c105c
+Fld_Luck_AddSymbol kind:function(arm,size=0x1a8) addr:0x020c1088
+Fld_Luck_RollRandomSymbols kind:function(arm,size=0x154) addr:0x020c1230 local
+Fld_Luck_AddSpecialSymbol kind:function(arm,size=0xa0) addr:0x020c1384 local
+Fld_Luck_HasScanEventSymbol kind:function(arm,size=0xd4) addr:0x020c1424 local
+Fld_Luck_AddScanEventSymbols kind:function(arm,size=0x2d8) addr:0x020c14f8 local
+Fld_Luck_AddPlacedSymbols kind:function(arm,size=0x190) addr:0x020c17d0 local
+Fld_Luck_GenerateSymbols kind:function(arm,size=0x5c) addr:0x020c1960
+Fld_Luck_RetireBattledSymbols kind:function(arm,size=0xe0) addr:0x020c19bc
+Fld_Luck_IsScanEventAvailable kind:function(arm,size=0xc) addr:0x020c1a9c
+Fld_Luck_RestoreSelectedSymbols kind:function(arm,size=0x50) addr:0x020c1aa8
+Fld_Luck_GetNormalSymbolPercent kind:function(arm,size=0x84) addr:0x020c1af8
+Fld_Luck_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c1b7c local
+Fld_Luck_LoadDigit kind:function(arm,size=0x80) addr:0x020c1c18 local
+Fld_Luck_SetDigits kind:function(arm,size=0x110) addr:0x020c1c98 local
+Fld_Luck_Init kind:function(arm,size=0x84) addr:0x020c1da8 local
+Fld_Luck_Update kind:function(arm,size=0xfc) addr:0x020c1e2c local
+Fld_Luck_Render kind:function(arm,size=0x58) addr:0x020c1f28 local
+Fld_Luck_Destroy kind:function(arm,size=0x48) addr:0x020c1f80 local
+Fld_Luck_RunTask kind:function(arm,size=0x48) addr:0x020c1fc8 local
+Fld_Luck_CreateTask kind:function(arm,size=0x34) addr:0x020c2010
+Fld_Luck_SetVisible kind:function(arm,size=0x2c) addr:0x020c2044 local
+Fld_Luck_SetTarget kind:function(arm,size=0x18) addr:0x020c2070
+Fld_Chain_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c2088 local
+Fld_Chain_LoadGlyph kind:function(arm,size=0x80) addr:0x020c2124 local
+Fld_Chain_Init kind:function(arm,size=0x16c) addr:0x020c21a4 local
+Fld_Chain_Update kind:function(arm,size=0x80) addr:0x020c2310 local
+Fld_Chain_Render kind:function(arm,size=0x40) addr:0x020c2390 local
+Fld_Chain_Destroy kind:function(arm,size=0x40) addr:0x020c23d0 local
+Fld_Chain_RunTask kind:function(arm,size=0x48) addr:0x020c2410 local
+Fld_Chain_CreateTask kind:function(arm,size=0x34) addr:0x020c2458
+Fld_ScanMoya_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c248c local
+Fld_ScanMoya_Load kind:function(arm,size=0x7c) addr:0x020c2528 local
+Fld_ScanMoya_Init kind:function(arm,size=0x18) addr:0x020c25a4 local
+Fld_ScanMoya_Update kind:function(arm,size=0x14) addr:0x020c25bc local
+Fld_ScanMoya_Render kind:function(arm,size=0x14) addr:0x020c25d0 local
+Fld_ScanMoya_Destroy kind:function(arm,size=0x14) addr:0x020c25e4 local
+Fld_ScanMoya_RunTask kind:function(arm,size=0x48) addr:0x020c25f8 local
+Fld_ScanMoya_CreateTask kind:function(arm,size=0x4c) addr:0x020c2640
+Fld_Wall_SetAllExitStates kind:function(arm,size=0x30) addr:0x020c268c
+Fld_Wall_SetAllWallStates kind:function(arm,size=0x30) addr:0x020c26bc
+Field_ResetDayProgress kind:function(arm,size=0x108) addr:0x020c26ec
+Fld_Wall_GetFacing kind:function(arm,size=0x18) addr:0x020c27f4 local
+Fld_Wall_PlaceAhead kind:function(arm,size=0x170) addr:0x020c280c local
+Fld_Wall_GetFrameInfo kind:function(arm,size=0xb0) addr:0x020c297c local
+Fld_Wall_Load kind:function(arm,size=0xb0) addr:0x020c2a2c local
+Fld_Wall_Init kind:function(arm,size=0xf0) addr:0x020c2adc local
+Fld_Wall_Update kind:function(arm,size=0x28) addr:0x020c2bcc local
+Fld_Wall_Render kind:function(arm,size=0x44) addr:0x020c2bf4 local
+Fld_Wall_Destroy kind:function(arm,size=0x14) addr:0x020c2c38 local
+Fld_Wall_RunTask kind:function(arm,size=0x48) addr:0x020c2c4c local
+Fld_Wall_CreateTask kind:function(arm,size=0x38) addr:0x020c2c94
 func_ov030_020c2ccc kind:function(arm,size=0x84) addr:0x020c2ccc
 func_ov030_020c2d50 kind:function(arm,size=0x64) addr:0x020c2d50
 func_ov030_020c2db4 kind:function(arm,size=0x34) addr:0x020c2db4
@@ -1093,71 +1093,71 @@ func_ov030_020c30ec kind:function(arm,size=0x194) addr:0x020c30ec
 func_ov030_020c3280 kind:function(arm,size=0x84) addr:0x020c3280
 func_ov030_020c3304 kind:function(arm,size=0x5c) addr:0x020c3304
 func_ov030_020c3360 kind:function(arm,size=0x20) addr:0x020c3360
-func_ov030_020c3380 kind:function(arm,size=0xa4) addr:0x020c3380
-func_ov030_020c3424 kind:function(arm,size=0xec) addr:0x020c3424
-func_ov030_020c3510 kind:function(arm,size=0x40) addr:0x020c3510
-func_ov030_020c3550 kind:function(arm,size=0x54) addr:0x020c3550
-func_ov030_020c35a4 kind:function(arm,size=0x34) addr:0x020c35a4
-func_ov030_020c35d8 kind:function(arm,size=0x34) addr:0x020c35d8
-func_ov030_020c360c kind:function(arm,size=0x48) addr:0x020c360c
-func_ov030_020c3654 kind:function(arm,size=0x3c) addr:0x020c3654
-func_ov030_020c3690 kind:function(arm,size=0x40) addr:0x020c3690
-func_ov030_020c36d0 kind:function(arm,size=0xa4) addr:0x020c36d0
-func_ov030_020c3774 kind:function(arm,size=0x84) addr:0x020c3774
-func_ov030_020c37f8 kind:function(arm,size=0x58) addr:0x020c37f8
-func_ov030_020c3850 kind:function(arm,size=0x48) addr:0x020c3850
-func_ov030_020c3898 kind:function(arm,size=0x14) addr:0x020c3898
-func_ov030_020c38ac kind:function(arm,size=0x14) addr:0x020c38ac
-func_ov030_020c38c0 kind:function(arm,size=0x48) addr:0x020c38c0
-func_ov030_020c3908 kind:function(arm,size=0x40) addr:0x020c3908
+Fld_TalkEventTouch_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c3380 local
+Fld_TalkEventTouch_LoadPart kind:function(arm,size=0xec) addr:0x020c3424 local
+Fld_TalkEventTouch_Init kind:function(arm,size=0x40) addr:0x020c3510 local
+Fld_TalkEventTouch_Update kind:function(arm,size=0x54) addr:0x020c3550 local
+Fld_TalkEventTouch_Render kind:function(arm,size=0x34) addr:0x020c35a4 local
+Fld_TalkEventTouch_Destroy kind:function(arm,size=0x34) addr:0x020c35d8 local
+Fld_TalkEventTouch_RunTask kind:function(arm,size=0x48) addr:0x020c360c local
+Fld_TalkEventTouch_CreateTask kind:function(arm,size=0x3c) addr:0x020c3654
+Fld_TalkEventTouch_CreateKeywordTask kind:function(arm,size=0x40) addr:0x020c3690
+Fld_TalkEventPlate_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c36d0 local
+Fld_TalkEventPlate_Load kind:function(arm,size=0x84) addr:0x020c3774 local
+Fld_TalkEventPlate_Init kind:function(arm,size=0x58) addr:0x020c37f8 local
+Fld_TalkEventPlate_Update kind:function(arm,size=0x48) addr:0x020c3850 local
+Fld_TalkEventPlate_Render kind:function(arm,size=0x14) addr:0x020c3898 local
+Fld_TalkEventPlate_Destroy kind:function(arm,size=0x14) addr:0x020c38ac local
+Fld_TalkEventPlate_RunTask kind:function(arm,size=0x48) addr:0x020c38c0 local
+Fld_TalkEventPlate_CreateTask kind:function(arm,size=0x40) addr:0x020c3908
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
-Fld_TalkEventStringPlate_GetFrameInfo kind:function(arm,size=0x104) addr:0x020c3948
-Fld_TalkEventStringPlate_Load kind:function(arm,size=0xbc) addr:0x020c3a4c
-Fld_TalkEventStringPlate_Init kind:function(arm,size=0xec) addr:0x020c3b08
-Fld_TalkEventStringPlate_Update kind:function(arm,size=0x78) addr:0x020c3bf4
-Fld_TalkEventStringPlate_Render kind:function(arm,size=0x1c) addr:0x020c3c6c
-Fld_TalkEventStringPlate_Destroy kind:function(arm,size=0x3c) addr:0x020c3c88
-Fld_TalkEventStringPlate_RunTask kind:function(arm,size=0x48) addr:0x020c3cc4
+Fld_TalkEventStringPlate_GetFrameInfo kind:function(arm,size=0x104) addr:0x020c3948 local
+Fld_TalkEventStringPlate_Load kind:function(arm,size=0xbc) addr:0x020c3a4c local
+Fld_TalkEventStringPlate_Init kind:function(arm,size=0xec) addr:0x020c3b08 local
+Fld_TalkEventStringPlate_Update kind:function(arm,size=0x78) addr:0x020c3bf4 local
+Fld_TalkEventStringPlate_Render kind:function(arm,size=0x1c) addr:0x020c3c6c local
+Fld_TalkEventStringPlate_Destroy kind:function(arm,size=0x3c) addr:0x020c3c88 local
+Fld_TalkEventStringPlate_RunTask kind:function(arm,size=0x48) addr:0x020c3cc4 local
 Fld_TalkEventStringPlate_CreateTask kind:function(arm,size=0x50) addr:0x020c3d0c
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
-func_ov030_020c3d5c kind:function(arm,size=0x20) addr:0x020c3d5c
-func_ov030_020c3d7c kind:function(arm,size=0x60) addr:0x020c3d7c
-func_ov030_020c3ddc kind:function(arm,size=0x54) addr:0x020c3ddc
-func_ov030_020c3e30 kind:function(arm,size=0x154) addr:0x020c3e30
-func_ov030_020c3f84 kind:function(arm,size=0x7c) addr:0x020c3f84
-func_ov030_020c4000 kind:function(arm,size=0x74) addr:0x020c4000
-Fld_TalkEventKeywordMenu_Init kind:function(arm,size=0x50) addr:0x020c4074
-Fld_TalkEventKeywordMenu_Update kind:function(arm,size=0x20) addr:0x020c40c4
-Fld_TalkEventKeywordMenu_Render kind:function(arm,size=0x8) addr:0x020c40e4
-Fld_TalkEventKeywordMenu_Destroy kind:function(arm,size=0xa4) addr:0x020c40ec
-Fld_TalkEventKeywordMenu_RunTask kind:function(arm,size=0x48) addr:0x020c4190
+Fld_TalkEventKeywordMenu_StateWait kind:function(arm,size=0x20) addr:0x020c3d5c local
+Fld_TalkEventKeywordMenu_StateSelect kind:function(arm,size=0x60) addr:0x020c3d7c local
+Fld_TalkEventKeywordMenu_StateFirstSelect kind:function(arm,size=0x54) addr:0x020c3ddc local
+Fld_TalkEventKeywordMenu_StateOpen kind:function(arm,size=0x154) addr:0x020c3e30 local
+Fld_TalkEventKeywordMenu_StateWaitBadge kind:function(arm,size=0x7c) addr:0x020c3f84 local
+Fld_TalkEventKeywordMenu_StateShowBadge kind:function(arm,size=0x74) addr:0x020c4000 local
+Fld_TalkEventKeywordMenu_Init kind:function(arm,size=0x50) addr:0x020c4074 local
+Fld_TalkEventKeywordMenu_Update kind:function(arm,size=0x20) addr:0x020c40c4 local
+Fld_TalkEventKeywordMenu_Render kind:function(arm,size=0x8) addr:0x020c40e4 local
+Fld_TalkEventKeywordMenu_Destroy kind:function(arm,size=0xa4) addr:0x020c40ec local
+Fld_TalkEventKeywordMenu_RunTask kind:function(arm,size=0x48) addr:0x020c4190 local
 Fld_TalkEventKeywordMenu_CreateTask kind:function(arm,size=0x34) addr:0x020c41d8
 
 
-func_ov030_020c420c kind:function(arm,size=0xdc) addr:0x020c420c
-Fld_TalkEventCursor_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c42e8
-Fld_TalkEventCursor_Load kind:function(arm,size=0xf8) addr:0x020c438c
-Fld_TalkEventCursor_Init kind:function(arm,size=0x4c) addr:0x020c4484
-Fld_TalkEventCursor_Update kind:function(arm,size=0x34) addr:0x020c44d0
-Fld_TalkEventCursor_Render kind:function(arm,size=0x34) addr:0x020c4504
-Fld_TalkEventCursor_Destroy kind:function(arm,size=0x34) addr:0x020c4538
-Fld_TalkEventCursor_RunTask kind:function(arm,size=0x48) addr:0x020c456c
+Fld_TalkEventKeywordMenu_GetTouchedKeyword kind:function(arm,size=0xdc) addr:0x020c420c
+Fld_TalkEventCursor_GetFrameInfo kind:function(arm,size=0xa4) addr:0x020c42e8 local
+Fld_TalkEventCursor_Load kind:function(arm,size=0xf8) addr:0x020c438c local
+Fld_TalkEventCursor_Init kind:function(arm,size=0x4c) addr:0x020c4484 local
+Fld_TalkEventCursor_Update kind:function(arm,size=0x34) addr:0x020c44d0 local
+Fld_TalkEventCursor_Render kind:function(arm,size=0x34) addr:0x020c4504 local
+Fld_TalkEventCursor_Destroy kind:function(arm,size=0x34) addr:0x020c4538 local
+Fld_TalkEventCursor_RunTask kind:function(arm,size=0x48) addr:0x020c456c local
 Fld_TalkEventCursor_CreateTask kind:function(arm,size=0x38) addr:0x020c45b4
-Fld_TalkEventDecide_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c45ec
-Fld_TalkEventDecide_Load kind:function(arm,size=0x84) addr:0x020c4688
-Fld_TalkEventDecide_Init kind:function(arm,size=0x2c) addr:0x020c470c
-Fld_TalkEventDecide_Update kind:function(arm,size=0x28) addr:0x020c4738
-Fld_TalkEventDecide_Render kind:function(arm,size=0x14) addr:0x020c4760
-Fld_TalkEventDecide_Destroy kind:function(arm,size=0x14) addr:0x020c4774
-Fld_TalkEventDecide_RunTask kind:function(arm,size=0x48) addr:0x020c4788
+Fld_TalkEventDecide_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c45ec local
+Fld_TalkEventDecide_Load kind:function(arm,size=0x84) addr:0x020c4688 local
+Fld_TalkEventDecide_Init kind:function(arm,size=0x2c) addr:0x020c470c local
+Fld_TalkEventDecide_Update kind:function(arm,size=0x28) addr:0x020c4738 local
+Fld_TalkEventDecide_Render kind:function(arm,size=0x14) addr:0x020c4760 local
+Fld_TalkEventDecide_Destroy kind:function(arm,size=0x14) addr:0x020c4774 local
+Fld_TalkEventDecide_RunTask kind:function(arm,size=0x48) addr:0x020c4788 local
 Fld_TalkEventDecide_CreateTask kind:function(arm,size=0x40) addr:0x020c47d0
-func_ov030_020c4810 kind:function(arm,size=0x40) addr:0x020c4810
+Fld_TalkEventDecide_CreateSpeakerTask kind:function(arm,size=0x40) addr:0x020c4810
 Fld_TalkEventTitle_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4850
 Fld_TalkEventTitle_Load kind:function(arm,size=0x6c) addr:0x020c48ec
 Fld_TalkEventTitle_Init kind:function(arm,size=0x38) addr:0x020c4958
@@ -1166,18 +1166,18 @@ Fld_TalkEventTitle_Render kind:function(arm,size=0x14) addr:0x020c49d8
 Fld_TalkEventTitle_Destroy kind:function(arm,size=0x14) addr:0x020c49ec
 Fld_TalkEventTitle_RunTask kind:function(arm,size=0x48) addr:0x020c4a00
 Fld_TalkEventTitle_CreateTask kind:function(arm,size=0x30) addr:0x020c4a48
-func_ov030_020c4a78 kind:function(arm,size=0x70) addr:0x020c4a78
-func_ov030_020c4ae8 kind:function(arm,size=0xa4) addr:0x020c4ae8
-func_ov030_020c4b8c kind:function(arm,size=0x94) addr:0x020c4b8c
-Fld_MapJumpName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4c20
-func_ov030_020c4cbc kind:function(arm,size=0x20) addr:0x020c4cbc
-func_ov030_020c4cdc kind:function(arm,size=0xa4) addr:0x020c4cdc
-func_ov030_020c4d80 kind:function(arm,size=0x15c) addr:0x020c4d80
-Fld_MapJumpName_Update kind:function(arm,size=0x8) addr:0x020c4edc
-func_ov030_020c4ee4 kind:function(arm,size=0xb4) addr:0x020c4ee4
-Fld_MapJumpName_Destroy kind:function(arm,size=0x3c) addr:0x020c4f98
-Fld_MapJumpName_RunTask kind:function(arm,size=0x48) addr:0x020c4fd4
-func_ov030_020c501c kind:function(arm,size=0x6c) addr:0x020c501c
+Fld_Mess_StartText kind:function(arm,size=0x70) addr:0x020c4a78
+Fld_Mess_GetStrCat kind:function(arm,size=0xa4) addr:0x020c4ae8
+Fld_Mess_CenterText kind:function(arm,size=0x94) addr:0x020c4b8c
+Fld_MapJumpName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c4c20 local
+Fld_MapJumpName_GetOffsetX kind:function(arm,size=0x20) addr:0x020c4cbc local
+Fld_MapJumpName_Load kind:function(arm,size=0xa4) addr:0x020c4cdc
+Fld_MapJumpName_Init kind:function(arm,size=0x15c) addr:0x020c4d80
+Fld_MapJumpName_Update kind:function(arm,size=0x8) addr:0x020c4edc local
+Fld_MapJumpName_Render kind:function(arm,size=0xb4) addr:0x020c4ee4
+Fld_MapJumpName_Destroy kind:function(arm,size=0x3c) addr:0x020c4f98 local
+Fld_MapJumpName_RunTask kind:function(arm,size=0x48) addr:0x020c4fd4 local
+Fld_MapJumpName_CreateTask kind:function(arm,size=0x6c) addr:0x020c501c
 Fld_MapName_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c5088
 Fld_MapName_Load kind:function(arm,size=0x84) addr:0x020c5124
 Fld_MapName_Init kind:function(arm,size=0xdc) addr:0x020c51a8
@@ -1186,8 +1186,8 @@ Fld_MapName_Render kind:function(arm,size=0x68) addr:0x020c528c
 Fld_MapName_Destroy kind:function(arm,size=0x38) addr:0x020c52f4
 Fld_MapName_RunTask kind:function(arm,size=0x48) addr:0x020c532c
 Fld_MapName_CreateTask kind:function(arm,size=0x38) addr:0x020c5374
-func_ov030_020c53ac kind:function(arm,size=0x3c) addr:0x020c53ac
-func_ov030_020c53e8 kind:function(arm,size=0x1c) addr:0x020c53e8
+Fld_MapName_CreateTaskOnMain kind:function(arm,size=0x3c) addr:0x020c53ac
+Fld_MapName_SetPosition kind:function(arm,size=0x1c) addr:0x020c53e8
 func_ov030_020c5404 kind:function(arm,size=0x2c) addr:0x020c5404
 func_ov030_020c5430 kind:function(arm,size=0x30) addr:0x020c5430
 func_ov030_020c5460 kind:function(arm,size=0x2c) addr:0x020c5460
@@ -1206,19 +1206,19 @@ FieldNoise_GetQuotaArea kind:function(arm,size=0x24) addr:0x020c58a0
 FieldNoise_GetQuota kind:function(arm,size=0x6c) addr:0x020c58c4
 FieldNoise_GetTotalQuota kind:function(arm,size=0x3c) addr:0x020c5930
 FieldNoise_AdvanceQuotaStep kind:function(arm,size=0x44) addr:0x020c596c
-func_ov030_020c59b0 kind:function(arm,size=0x4c) addr:0x020c59b0
-func_ov030_020c59fc kind:function(arm,size=0x2c) addr:0x020c59fc
-Fld_Piranha_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020c5a28
-func_ov030_020c5ad0 kind:function(arm,size=0x108) addr:0x020c5ad0
-func_ov030_020c5bd8 kind:function(arm,size=0x94) addr:0x020c5bd8
-func_ov030_020c5c6c kind:function(arm,size=0x20) addr:0x020c5c6c
-func_ov030_020c5c8c kind:function(arm,size=0x190) addr:0x020c5c8c
-func_ov030_020c5e1c kind:function(arm,size=0x58) addr:0x020c5e1c
-Fld_Piranha_Destroy kind:function(arm,size=0x14) addr:0x020c5e74
-Fld_Piranha_RunTask kind:function(arm,size=0x48) addr:0x020c5e88
-func_ov030_020c5ed0 kind:function(arm,size=0x38) addr:0x020c5ed0
-func_ov030_020c5f08 kind:function(arm,size=0x54) addr:0x020c5f08
-func_ov030_020c5f5c kind:function(arm,size=0x14) addr:0x020c5f5c
+Fld_Piranha_AngleToAnim kind:function(arm,size=0x4c) addr:0x020c59b0 local
+Fld_Piranha_GetAngleToPlayer kind:function(arm,size=0x2c) addr:0x020c59fc
+Fld_Piranha_GetFrameInfo kind:function(arm,size=0xa8) addr:0x020c5a28 local
+Fld_Piranha_Load kind:function(arm,size=0x108) addr:0x020c5ad0
+Fld_Piranha_Init kind:function(arm,size=0x94) addr:0x020c5bd8
+Fld_Piranha_GetAnimGroupEnd kind:function(arm,size=0x20) addr:0x020c5c6c
+Fld_Piranha_Update kind:function(arm,size=0x190) addr:0x020c5c8c
+Fld_Piranha_Render kind:function(arm,size=0x58) addr:0x020c5e1c
+Fld_Piranha_Destroy kind:function(arm,size=0x14) addr:0x020c5e74 local
+Fld_Piranha_RunTask kind:function(arm,size=0x48) addr:0x020c5e88 local
+Fld_Piranha_CreateTask kind:function(arm,size=0x38) addr:0x020c5ed0
+Fld_Piranha_IsNear kind:function(arm,size=0x54) addr:0x020c5f08
+Field_GetEncounterCategory kind:function(arm,size=0x14) addr:0x020c5f5c
 func_ov030_020c5f70 kind:function(arm,size=0x90) addr:0x020c5f70
 func_ov030_020c6000 kind:function(arm,size=0xa4) addr:0x020c6000
 func_ov030_020c60a4 kind:function(arm,size=0xac) addr:0x020c60a4
@@ -1227,9 +1227,9 @@ func_ov030_020c61f0 kind:function(arm,size=0x110) addr:0x020c61f0
 func_ov030_020c6300 kind:function(arm,size=0xc8) addr:0x020c6300
 func_ov030_020c63c8 kind:function(arm,size=0xd0) addr:0x020c63c8
 func_ov030_020c6498 kind:function(arm,size=0x3a4) addr:0x020c6498
-func_ov030_020c683c kind:function(arm,size=0x28) addr:0x020c683c
-func_ov030_020c6864 kind:function(arm,size=0x240) addr:0x020c6864
-func_ov030_020c6aa4 kind:function(arm,size=0x1b4) addr:0x020c6aa4
+FldOamCell_GetFrame kind:function(arm,size=0x28) addr:0x020c683c
+FldOamCell_DrawPiece kind:function(arm,size=0x240) addr:0x020c6864
+FldOamCell_DrawCell kind:function(arm,size=0x1b4) addr:0x020c6aa4
 Fld_TouchNext_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c6c58
 Fld_TouchNext_Load kind:function(arm,size=0x8c) addr:0x020c6cf4
 Fld_TouchNext_Init kind:function(arm,size=0x34) addr:0x020c6d80
@@ -1250,110 +1250,110 @@ Fld_GetPlate_CreateTask kind:function(arm,size=0x34) addr:0x020c717c
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
-Fld_GetMess_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c71b0
-Fld_GetMess_Load kind:function(arm,size=0x6c) addr:0x020c724c
-Fld_GetMess_Init kind:function(arm,size=0x10c) addr:0x020c72b8
-Fld_GetMess_Update kind:function(arm,size=0x40) addr:0x020c73c4
-Fld_GetMess_Render kind:function(arm,size=0x68) addr:0x020c7404
-Fld_GetMess_Destroy kind:function(arm,size=0x38) addr:0x020c746c
-Fld_GetMess_RunTask kind:function(arm,size=0x48) addr:0x020c74a4
+Fld_GetMess_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c71b0 local
+Fld_GetMess_Load kind:function(arm,size=0x6c) addr:0x020c724c local
+Fld_GetMess_Init kind:function(arm,size=0x10c) addr:0x020c72b8 local
+Fld_GetMess_Update kind:function(arm,size=0x40) addr:0x020c73c4 local
+Fld_GetMess_Render kind:function(arm,size=0x68) addr:0x020c7404 local
+Fld_GetMess_Destroy kind:function(arm,size=0x38) addr:0x020c746c local
+Fld_GetMess_RunTask kind:function(arm,size=0x48) addr:0x020c74a4 local
 Fld_GetMess_CreateTask kind:function(arm,size=0x38) addr:0x020c74ec
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
-Fld_WhichArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c7524
-Fld_WhichArrow_Load kind:function(arm,size=0xa8) addr:0x020c75c0
-Fld_WhichArrow_Init kind:function(arm,size=0xa4) addr:0x020c7668
-Fld_WhichArrow_Update kind:function(arm,size=0x48) addr:0x020c770c
-Fld_WhichArrow_Render kind:function(arm,size=0x14) addr:0x020c7754
-Fld_WhichArrow_Destroy kind:function(arm,size=0x14) addr:0x020c7768
-Fld_WhichArrow_RunTask kind:function(arm,size=0x48) addr:0x020c777c
+Fld_WhichArrow_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c7524 local
+Fld_WhichArrow_Load kind:function(arm,size=0xa8) addr:0x020c75c0 local
+Fld_WhichArrow_Init kind:function(arm,size=0xa4) addr:0x020c7668 local
+Fld_WhichArrow_Update kind:function(arm,size=0x48) addr:0x020c770c local
+Fld_WhichArrow_Render kind:function(arm,size=0x14) addr:0x020c7754 local
+Fld_WhichArrow_Destroy kind:function(arm,size=0x14) addr:0x020c7768 local
+Fld_WhichArrow_RunTask kind:function(arm,size=0x48) addr:0x020c777c local
 Fld_WhichArrow_CreateTask kind:function(arm,size=0x40) addr:0x020c77c4
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
-Fld_GetBase_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7804
-Fld_GetBase_Load kind:function(arm,size=0x80) addr:0x020c78e4
-Fld_GetBase_Init kind:function(arm,size=0x30) addr:0x020c7964
-Fld_GetBase_Update kind:function(arm,size=0x3c) addr:0x020c7994
-Fld_GetBase_Render kind:function(arm,size=0x14) addr:0x020c79d0
-Fld_GetBase_Destroy kind:function(arm,size=0x14) addr:0x020c79e4
-Fld_GetBase_RunTask kind:function(arm,size=0x48) addr:0x020c79f8
+Fld_GetBase_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7804 local
+Fld_GetBase_Load kind:function(arm,size=0x80) addr:0x020c78e4 local
+Fld_GetBase_Init kind:function(arm,size=0x30) addr:0x020c7964 local
+Fld_GetBase_Update kind:function(arm,size=0x3c) addr:0x020c7994 local
+Fld_GetBase_Render kind:function(arm,size=0x14) addr:0x020c79d0 local
+Fld_GetBase_Destroy kind:function(arm,size=0x14) addr:0x020c79e4 local
+Fld_GetBase_RunTask kind:function(arm,size=0x48) addr:0x020c79f8 local
 Fld_GetBase_CreateTask kind:function(arm,size=0x34) addr:0x020c7a40
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
-Fld_GetItem_LoadThreadData kind:function(arm,size=0x2c) addr:0x020c7a74
-Fld_GetItem_LoadFoodData kind:function(arm,size=0x2c) addr:0x020c7aa0
-Fld_GetItem_LoadTreasureData kind:function(arm,size=0x2c) addr:0x020c7acc
-Fld_GetItem_LoadPinData kind:function(arm,size=0x2c) addr:0x020c7af8
-func_ov030_020c7b24 kind:function(arm,size=0x9c) addr:0x020c7b24
-func_ov030_020c7bc0 kind:function(arm,size=0x160) addr:0x020c7bc0
-func_ov030_020c7d20 kind:function(arm,size=0xe0) addr:0x020c7d20
-func_ov030_020c7e00 kind:function(arm,size=0xbc) addr:0x020c7e00
-Fld_GetItem_Init kind:function(arm,size=0x30) addr:0x020c7ebc
-Fld_GetItem_Update kind:function(arm,size=0x3c) addr:0x020c7eec
-Fld_GetItem_Render kind:function(arm,size=0x14) addr:0x020c7f28
-Fld_GetItem_Destroy kind:function(arm,size=0x14) addr:0x020c7f3c
-Fld_GetItem_RunTask kind:function(arm,size=0x48) addr:0x020c7f50
+Fld_GetItem_LoadThreadData kind:function(arm,size=0x2c) addr:0x020c7a74 local
+Fld_GetItem_LoadFoodData kind:function(arm,size=0x2c) addr:0x020c7aa0 local
+Fld_GetItem_LoadTreasureData kind:function(arm,size=0x2c) addr:0x020c7acc local
+Fld_GetItem_LoadPinData kind:function(arm,size=0x2c) addr:0x020c7af8 local
+Fld_GetItem_GetIconIndex kind:function(arm,size=0x9c) addr:0x020c7b24 local
+Fld_GetItem_LoadIcon kind:function(arm,size=0x160) addr:0x020c7bc0 local
+Fld_GetItem_GetFrameInfo kind:function(arm,size=0xe0) addr:0x020c7d20 local
+Fld_GetItem_Load kind:function(arm,size=0xbc) addr:0x020c7e00 local
+Fld_GetItem_Init kind:function(arm,size=0x30) addr:0x020c7ebc local
+Fld_GetItem_Update kind:function(arm,size=0x3c) addr:0x020c7eec local
+Fld_GetItem_Render kind:function(arm,size=0x14) addr:0x020c7f28 local
+Fld_GetItem_Destroy kind:function(arm,size=0x14) addr:0x020c7f3c local
+Fld_GetItem_RunTask kind:function(arm,size=0x48) addr:0x020c7f50 local
 Fld_GetItem_CreateTask kind:function(arm,size=0x34) addr:0x020c7f98
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
-func_ov030_020c7fcc kind:function(arm,size=0x4) addr:0x020c7fcc
-func_ov030_020c7fd0 kind:function(arm,size=0x94) addr:0x020c7fd0
-func_ov030_020c8064 kind:function(arm,size=0x68) addr:0x020c8064
-func_ov030_020c80cc kind:function(arm,size=0x100) addr:0x020c80cc
-Fld_Choice_Init kind:function(arm,size=0x50) addr:0x020c81cc
-Fld_Choice_Update kind:function(arm,size=0x20) addr:0x020c821c
-Fld_Choice_Render kind:function(arm,size=0x8) addr:0x020c823c
-Fld_Choice_Destroy kind:function(arm,size=0x7c) addr:0x020c8244
-Fld_Choice_RunTask kind:function(arm,size=0x48) addr:0x020c82c0
+Fld_Choice_StateDone kind:function(arm,size=0x4) addr:0x020c7fcc local
+Fld_Choice_StateConfirm kind:function(arm,size=0x94) addr:0x020c7fd0 local
+Fld_Choice_StateSelect kind:function(arm,size=0x68) addr:0x020c8064 local
+Fld_Choice_StateOpen kind:function(arm,size=0x100) addr:0x020c80cc local
+Fld_Choice_Init kind:function(arm,size=0x50) addr:0x020c81cc local
+Fld_Choice_Update kind:function(arm,size=0x20) addr:0x020c821c local
+Fld_Choice_Render kind:function(arm,size=0x8) addr:0x020c823c local
+Fld_Choice_Destroy kind:function(arm,size=0x7c) addr:0x020c8244 local
+Fld_Choice_RunTask kind:function(arm,size=0x48) addr:0x020c82c0 local
 Fld_Choice_CreateTask kind:function(arm,size=0x38) addr:0x020c8308
-func_ov030_020c8340 kind:function(arm,size=0xa8) addr:0x020c8340
-func_ov030_020c83e8 kind:function(arm,size=0xc) addr:0x020c83e8
+Fld_Choice_GetTouchedItem kind:function(arm,size=0xa8) addr:0x020c8340 local
+Fld_Choice_GetResult kind:function(arm,size=0xc) addr:0x020c83e8
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
-Fld_UGFade_Init kind:function(arm,size=0xac) addr:0x020c83f4
-Fld_UGFade_Update kind:function(arm,size=0x74) addr:0x020c84a0
-Fld_UGFade_Render kind:function(arm,size=0x8) addr:0x020c8514
-Fld_UGFade_Destroy kind:function(arm,size=0x8) addr:0x020c851c
-Fld_UGFade_RunTask kind:function(arm,size=0x48) addr:0x020c8524
+Fld_UGFade_Init kind:function(arm,size=0xac) addr:0x020c83f4 local
+Fld_UGFade_Update kind:function(arm,size=0x74) addr:0x020c84a0 local
+Fld_UGFade_Render kind:function(arm,size=0x8) addr:0x020c8514 local
+Fld_UGFade_Destroy kind:function(arm,size=0x8) addr:0x020c851c local
+Fld_UGFade_RunTask kind:function(arm,size=0x48) addr:0x020c8524 local
 Fld_UGFade_CreateTask kind:function(arm,size=0x38) addr:0x020c856c
 
 
-Fld_BattleIn_GetFrameInfo kind:function(arm,size=0xe4) addr:0x020c85a4
-Fld_BattleIn_Load kind:function(arm,size=0xe0) addr:0x020c8688
-Fld_BattleIn_Init kind:function(arm,size=0x2c) addr:0x020c8768
-Fld_BattleIn_Update kind:function(arm,size=0x14) addr:0x020c8794
-Fld_BattleIn_Render kind:function(arm,size=0x14) addr:0x020c87a8
-Fld_BattleIn_Destroy kind:function(arm,size=0x14) addr:0x020c87bc
-Fld_BattleIn_RunTask kind:function(arm,size=0x48) addr:0x020c87d0
+Fld_BattleIn_GetFrameInfo kind:function(arm,size=0xe4) addr:0x020c85a4 local
+Fld_BattleIn_Load kind:function(arm,size=0xe0) addr:0x020c8688 local
+Fld_BattleIn_Init kind:function(arm,size=0x2c) addr:0x020c8768 local
+Fld_BattleIn_Update kind:function(arm,size=0x14) addr:0x020c8794 local
+Fld_BattleIn_Render kind:function(arm,size=0x14) addr:0x020c87a8 local
+Fld_BattleIn_Destroy kind:function(arm,size=0x14) addr:0x020c87bc local
+Fld_BattleIn_RunTask kind:function(arm,size=0x48) addr:0x020c87d0 local
 Fld_BattleIn_CreateTask kind:function(arm,size=0x50) addr:0x020c8818
-func_ov030_020c8868 kind:function(arm,size=0x9c) addr:0x020c8868
-func_ov030_020c8904 kind:function(arm,size=0x6c) addr:0x020c8904
-func_ov030_020c8970 kind:function(arm,size=0x18) addr:0x020c8970
-func_ov030_020c8988 kind:function(arm,size=0x14) addr:0x020c8988
-func_ov030_020c899c kind:function(arm,size=0x14) addr:0x020c899c
-func_ov030_020c89b0 kind:function(arm,size=0x14) addr:0x020c89b0
-func_ov030_020c89c4 kind:function(arm,size=0x48) addr:0x020c89c4
-func_ov030_020c8a0c kind:function(arm,size=0x30) addr:0x020c8a0c
-func_ov030_020c8a3c kind:function(arm,size=0x1c) addr:0x020c8a3c
-func_ov030_020c8a58 kind:function(arm,size=0x88) addr:0x020c8a58
-func_ov030_020c8ae0 kind:function(arm,size=0x58) addr:0x020c8ae0
-func_ov030_020c8b38 kind:function(arm,size=0x58) addr:0x020c8b38
-Fld_Brush_Init kind:function(arm,size=0x194) addr:0x020c8b90
-func_ov030_020c8d24 kind:function(arm,size=0x30) addr:0x020c8d24
-Fld_Brush_Update kind:function(arm,size=0x1f8) addr:0x020c8d54
-Fld_Brush_Render kind:function(arm,size=0x8) addr:0x020c8f4c
-Fld_Brush_Destroy kind:function(arm,size=0x40) addr:0x020c8f54
-Fld_Brush_RunTask kind:function(arm,size=0x48) addr:0x020c8f94
+Fld_EventMail_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c8868 local
+Fld_EventMail_Load kind:function(arm,size=0x6c) addr:0x020c8904 local
+Fld_EventMail_Init kind:function(arm,size=0x18) addr:0x020c8970 local
+Fld_EventMail_Update kind:function(arm,size=0x14) addr:0x020c8988 local
+Fld_EventMail_Render kind:function(arm,size=0x14) addr:0x020c899c local
+Fld_EventMail_Destroy kind:function(arm,size=0x14) addr:0x020c89b0 local
+Fld_EventMail_RunTask kind:function(arm,size=0x48) addr:0x020c89c4 local
+Fld_EventMail_CreateTask kind:function(arm,size=0x30) addr:0x020c8a0c
+Fld_EventMail_Press kind:function(arm,size=0x1c) addr:0x020c8a3c
+Fld_Brush_GetTouchedBrush kind:function(arm,size=0x88) addr:0x020c8a58 local
+Fld_Brush_FindTouchedSeal kind:function(arm,size=0x58) addr:0x020c8ae0 local
+Fld_Brush_SelectSeal kind:function(arm,size=0x58) addr:0x020c8b38 local
+Fld_Brush_Init kind:function(arm,size=0x194) addr:0x020c8b90 local
+Fld_Brush_AreAllBrushesErased kind:function(arm,size=0x30) addr:0x020c8d24 local
+Fld_Brush_Update kind:function(arm,size=0x1f8) addr:0x020c8d54 local
+Fld_Brush_Render kind:function(arm,size=0x8) addr:0x020c8f4c local
+Fld_Brush_Destroy kind:function(arm,size=0x40) addr:0x020c8f54 local
+Fld_Brush_RunTask kind:function(arm,size=0x48) addr:0x020c8f94 local
 Fld_Brush_CreateTask kind:function(arm,size=0x30) addr:0x020c8fdc
 Fld_BrushHati_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020c900c
 Fld_BrushHati_Load kind:function(arm,size=0x7c) addr:0x020c90a8
@@ -1388,16 +1388,16 @@ FldMesSel_Init kind:function(arm,size=0x12c) addr:0x020c9fa0
 FldMesSel_Update kind:function(arm,size=0x8c) addr:0x020ca0cc
 FldMesSel_Destroy kind:function(arm,size=0x5c) addr:0x020ca158
 ProcessOverlay_FldMesSel kind:function(arm,size=0x40) addr:0x020ca1b4
-func_ov030_020ca1f4 kind:function(arm,size=0xc) addr:0x020ca1f4
-func_ov030_020ca200 kind:function(arm,size=0x104) addr:0x020ca200
-func_ov030_020ca304 kind:function(arm,size=0x7c) addr:0x020ca304
-func_ov030_020ca380 kind:function(arm,size=0x64) addr:0x020ca380
-func_ov030_020ca3e4 kind:function(arm,size=0x4) addr:0x020ca3e4
-Task_Mess_Init kind:function(arm,size=0x3c) addr:0x020ca3e8
-Task_Mess_Update kind:function(arm,size=0x24) addr:0x020ca424
-Task_Mess_Render kind:function(arm,size=0x14) addr:0x020ca448
-Task_Mess_Destroy kind:function(arm,size=0x18) addr:0x020ca45c
-Task_Mess_RunTask kind:function(arm,size=0x48) addr:0x020ca474
+Task_Mess_StateDone kind:function(arm,size=0xc) addr:0x020ca1f4 local
+Task_Mess_Setup kind:function(arm,size=0x104) addr:0x020ca200 local
+Task_Mess_DrawNext kind:function(arm,size=0x7c) addr:0x020ca304 local
+Task_Mess_StateDraw kind:function(arm,size=0x64) addr:0x020ca380 local
+Task_Mess_StateIdle kind:function(arm,size=0x4) addr:0x020ca3e4 local
+Task_Mess_Init kind:function(arm,size=0x3c) addr:0x020ca3e8 local
+Task_Mess_Update kind:function(arm,size=0x24) addr:0x020ca424 local
+Task_Mess_Render kind:function(arm,size=0x14) addr:0x020ca448 local
+Task_Mess_Destroy kind:function(arm,size=0x18) addr:0x020ca45c local
+Task_Mess_RunTask kind:function(arm,size=0x48) addr:0x020ca474 local
 func_ov030_020ca4bc kind:function(arm,size=0x58) addr:0x020ca4bc
 func_ov030_020ca514 kind:function(arm,size=0x74) addr:0x020ca514
 func_ov030_020ca588 kind:function(arm,size=0x1f0) addr:0x020ca588
@@ -1411,68 +1411,68 @@ func_ov030_020cb09c kind:function(arm,size=0x90) addr:0x020cb09c
 Task_Window_Render kind:function(arm,size=0x3c) addr:0x020cb12c
 Task_Window_Destroy kind:function(arm,size=0x6c) addr:0x020cb168
 Task_Window_RunTask kind:function(arm,size=0x48) addr:0x020cb1d4
-func_ov030_020cb21c kind:function(arm,size=0x68) addr:0x020cb21c
-func_ov030_020cb284 kind:function(arm,size=0xd0) addr:0x020cb284
-func_ov030_020cb354 kind:function(arm,size=0x2e0) addr:0x020cb354
-func_ov030_020cb634 kind:function(arm,size=0x98) addr:0x020cb634
-func_ov030_020cb6cc kind:function(arm,size=0x60) addr:0x020cb6cc
-func_ov030_020cb72c kind:function(arm,size=0x44) addr:0x020cb72c
-func_ov030_020cb770 kind:function(arm,size=0xac) addr:0x020cb770
-func_ov030_020cb81c kind:function(arm,size=0x7c) addr:0x020cb81c
-func_ov030_020cb898 kind:function(arm,size=0xf8) addr:0x020cb898
-func_ov030_020cb990 kind:function(arm,size=0x270) addr:0x020cb990
-func_ov030_020cbc00 kind:function(arm,size=0x298) addr:0x020cbc00
-func_ov030_020cbe98 kind:function(arm,size=0x2d8) addr:0x020cbe98
-func_ov030_020cc170 kind:function(arm,size=0x1d0) addr:0x020cc170
-func_ov030_020cc340 kind:function(arm,size=0x154) addr:0x020cc340
-func_ov030_020cc494 kind:function(arm,size=0x90) addr:0x020cc494
-func_ov030_020cc524 kind:function(arm,size=0x5c) addr:0x020cc524
-func_ov030_020cc580 kind:function(arm,size=0x50) addr:0x020cc580
-func_ov030_020cc5d0 kind:function(arm,size=0x20) addr:0x020cc5d0
-func_ov030_020cc5f0 kind:function(arm,size=0x20) addr:0x020cc5f0
-func_ov030_020cc610 kind:function(arm,size=0x60) addr:0x020cc610
-func_ov030_020cc670 kind:function(arm,size=0xd8) addr:0x020cc670
-func_ov030_020cc748 kind:function(arm,size=0x58) addr:0x020cc748
-func_ov030_020cc7a0 kind:function(arm,size=0x5c) addr:0x020cc7a0
-func_ov030_020cc7fc kind:function(arm,size=0x58) addr:0x020cc7fc
-func_ov030_020cc854 kind:function(arm,size=0x7c) addr:0x020cc854
-func_ov030_020cc8d0 kind:function(arm,size=0x194) addr:0x020cc8d0
-func_ov030_020cca64 kind:function(arm,size=0x54) addr:0x020cca64
-func_ov030_020ccab8 kind:function(arm,size=0x8) addr:0x020ccab8
-func_ov030_020ccac0 kind:function(arm,size=0x40) addr:0x020ccac0
-func_ov030_020ccb00 kind:function(arm,size=0x48) addr:0x020ccb00
-func_ov030_020ccb48 kind:function(arm,size=0x30) addr:0x020ccb48
-func_ov030_020ccb78 kind:function(arm,size=0x9c) addr:0x020ccb78
-func_ov030_020ccc14 kind:function(arm,size=0x80) addr:0x020ccc14
-func_ov030_020ccc94 kind:function(arm,size=0x114) addr:0x020ccc94
-func_ov030_020ccda8 kind:function(arm,size=0x44) addr:0x020ccda8
-func_ov030_020ccdec kind:function(arm,size=0x7c) addr:0x020ccdec
-func_ov030_020cce68 kind:function(arm,size=0x6c) addr:0x020cce68
-func_ov030_020cced4 kind:function(arm,size=0x24) addr:0x020cced4
-func_ov030_020ccef8 kind:function(arm,size=0x68) addr:0x020ccef8
-func_ov030_020ccf60 kind:function(arm,size=0x30) addr:0x020ccf60
-func_ov030_020ccf90 kind:function(arm,size=0xe8) addr:0x020ccf90
-func_ov030_020cd078 kind:function(arm,size=0x18c) addr:0x020cd078
-func_ov030_020cd204 kind:function(arm,size=0x184) addr:0x020cd204
-func_ov030_020cd388 kind:function(arm,size=0x7c) addr:0x020cd388
-func_ov030_020cd404 kind:function(arm,size=0x48) addr:0x020cd404
-func_ov030_020cd44c kind:function(arm,size=0x14) addr:0x020cd44c
-func_ov030_020cd460 kind:function(arm,size=0x14) addr:0x020cd460
-func_ov030_020cd474 kind:function(arm,size=0x48) addr:0x020cd474
-func_ov030_020cd4bc kind:function(arm,size=0x30) addr:0x020cd4bc
-func_ov030_020cd4ec kind:function(arm,size=0x44) addr:0x020cd4ec
-func_ov030_020cd530 kind:function(arm,size=0x20) addr:0x020cd530
-func_ov030_020cd550 kind:function(arm,size=0x10) addr:0x020cd550
-func_ov030_020cd560 kind:function(arm,size=0x18) addr:0x020cd560
-func_ov030_020cd578 kind:function(arm,size=0x9c) addr:0x020cd578
-func_ov030_020cd614 kind:function(arm,size=0x80) addr:0x020cd614
-func_ov030_020cd694 kind:function(arm,size=0x1c) addr:0x020cd694
-func_ov030_020cd6b0 kind:function(arm,size=0x14) addr:0x020cd6b0
-func_ov030_020cd6c4 kind:function(arm,size=0x14) addr:0x020cd6c4
-func_ov030_020cd6d8 kind:function(arm,size=0x14) addr:0x020cd6d8
-func_ov030_020cd6ec kind:function(arm,size=0x48) addr:0x020cd6ec
-func_ov030_020cd734 kind:function(arm,size=0x30) addr:0x020cd734
-func_ov030_020cd764 kind:function(arm,size=0x2c) addr:0x020cd764
+Fld_Shinigami_SetWorld kind:function(arm,size=0x68) addr:0x020cb21c
+Fld_Shinigami_TestPoint kind:function(arm,size=0xd0) addr:0x020cb284 local
+Fld_Shinigami_ResolveMove kind:function(arm,size=0x2e0) addr:0x020cb354 local
+Fld_Shinigami_MoveWithCollision kind:function(arm,size=0x98) addr:0x020cb634
+Fld_Shinigami_GetFloorAttr kind:function(arm,size=0x60) addr:0x020cb6cc
+Fld_Shinigami_IsOccluded kind:function(arm,size=0x44) addr:0x020cb72c
+Fld_Shinigami_FindWall kind:function(arm,size=0xac) addr:0x020cb770 local
+Fld_Shinigami_GetCell kind:function(arm,size=0x7c) addr:0x020cb81c local
+Fld_Shinigami_TestWall kind:function(arm,size=0xf8) addr:0x020cb898 local
+Fld_Shinigami_SlideAlongWall kind:function(arm,size=0x270) addr:0x020cb990 local
+Fld_Shinigami_IntersectSegments kind:function(arm,size=0x298) addr:0x020cbc00 local
+Fld_Shinigami_ProjectOntoEdge kind:function(arm,size=0x2d8) addr:0x020cbe98 local
+Fld_Shinigami_PushOutOfWall kind:function(arm,size=0x1d0) addr:0x020cc170 local
+Fld_Shinigami_PushSideways kind:function(arm,size=0x154) addr:0x020cc340 local
+Fld_Shinigami_StepUntilFree kind:function(arm,size=0x90) addr:0x020cc494 local
+Fld_Shinigami_SideOfLine kind:function(arm,size=0x5c) addr:0x020cc524 local
+Fld_Shinigami_Distance kind:function(arm,size=0x50) addr:0x020cc580 local
+Fld_Shinigami_ToWallSpace kind:function(arm,size=0x20) addr:0x020cc5d0 local
+Fld_Shinigami_FromWallSpace kind:function(arm,size=0x20) addr:0x020cc5f0 local
+Fld_Shinigami_RoundToPixel kind:function(arm,size=0x60) addr:0x020cc610 local
+Fld_Shinigami_UpdateSeals kind:function(arm,size=0xd8) addr:0x020cc670 local
+Fld_Shinigami_SelectSeal kind:function(arm,size=0x58) addr:0x020cc748 local
+Fld_Shinigami_ApplySelection kind:function(arm,size=0x5c) addr:0x020cc7a0 local
+Fld_Shinigami_FindTouchedSeal kind:function(arm,size=0x58) addr:0x020cc7fc local
+Fld_Shinigami_UpdateOnIndicator kind:function(arm,size=0x7c) addr:0x020cc854 local
+Fld_Shinigami_Init kind:function(arm,size=0x194) addr:0x020cc8d0 local
+Fld_Shinigami_Update kind:function(arm,size=0x54) addr:0x020cca64 local
+Fld_Shinigami_Render kind:function(arm,size=0x8) addr:0x020ccab8 local
+Fld_Shinigami_Destroy kind:function(arm,size=0x40) addr:0x020ccac0 local
+Fld_Shinigami_RunTask kind:function(arm,size=0x48) addr:0x020ccb00 local
+Fld_Shinigami_CreateTask kind:function(arm,size=0x30) addr:0x020ccb48
+Fld_ShinigamiCoin_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020ccb78 local
+Fld_ShinigamiCoin_Load kind:function(arm,size=0x80) addr:0x020ccc14 local
+Fld_ShinigamiCoin_UpdateDrag kind:function(arm,size=0x114) addr:0x020ccc94 local
+Fld_ShinigamiCoin_IsTouched kind:function(arm,size=0x44) addr:0x020ccda8 local
+Fld_ShinigamiCoin_CheckStartMove kind:function(arm,size=0x7c) addr:0x020ccdec local
+Fld_ShinigamiCoin_CheckIdle kind:function(arm,size=0x6c) addr:0x020cce68 local
+Fld_ShinigamiCoin_GetMoveDistSq kind:function(arm,size=0x24) addr:0x020cced4 local
+Fld_ShinigamiCoin_CheckFlick kind:function(arm,size=0x68) addr:0x020ccef8 local
+Fld_ShinigamiCoin_TickFlickTimer kind:function(arm,size=0x30) addr:0x020ccf60 local
+Fld_ShinigamiCoin_UpdateMoveEvents kind:function(arm,size=0xe8) addr:0x020ccf90 local
+Fld_ShinigamiCoin_UpdateRegionEvents kind:function(arm,size=0x18c) addr:0x020cd078 local
+Fld_ShinigamiCoin_UpdateRegions kind:function(arm,size=0x184) addr:0x020cd204 local
+Fld_ShinigamiCoin_Init kind:function(arm,size=0x7c) addr:0x020cd388 local
+Fld_ShinigamiCoin_Update kind:function(arm,size=0x48) addr:0x020cd404 local
+Fld_ShinigamiCoin_Render kind:function(arm,size=0x14) addr:0x020cd44c local
+Fld_ShinigamiCoin_Destroy kind:function(arm,size=0x14) addr:0x020cd460 local
+Fld_ShinigamiCoin_RunTask kind:function(arm,size=0x48) addr:0x020cd474 local
+Fld_ShinigamiCoin_CreateTask kind:function(arm,size=0x30) addr:0x020cd4bc
+Fld_ShinigamiCoin_Reset kind:function(arm,size=0x44) addr:0x020cd4ec
+Fld_ShinigamiCoin_GetOnAnim kind:function(arm,size=0x20) addr:0x020cd530
+Fld_ShinigamiCoin_Suppress kind:function(arm,size=0x10) addr:0x020cd550
+Fld_ShinigamiCoin_IsSuppressed kind:function(arm,size=0x18) addr:0x020cd560
+Fld_ShinigamiON_GetFrameInfo kind:function(arm,size=0x9c) addr:0x020cd578 local
+Fld_ShinigamiON_Load kind:function(arm,size=0x80) addr:0x020cd614 local
+Fld_ShinigamiON_Init kind:function(arm,size=0x1c) addr:0x020cd694 local
+Fld_ShinigamiON_Update kind:function(arm,size=0x14) addr:0x020cd6b0 local
+Fld_ShinigamiON_Render kind:function(arm,size=0x14) addr:0x020cd6c4 local
+Fld_ShinigamiON_Destroy kind:function(arm,size=0x14) addr:0x020cd6d8 local
+Fld_ShinigamiON_RunTask kind:function(arm,size=0x48) addr:0x020cd6ec local
+Fld_ShinigamiON_CreateTask kind:function(arm,size=0x30) addr:0x020cd734
+Fld_ShinigamiON_SetAnimation kind:function(arm,size=0x2c) addr:0x020cd764
 
 FOAllocator_Alloc kind:function(arm,size=0x30) addr:0x020cd790
 FOAllocator_Free kind:function(arm,size=0x14) addr:0x020cd7c0
@@ -1838,12 +1838,12 @@ data_ov030_020d9586 kind:data(any) addr:0x020d9586
 data_ov030_020d9588 kind:data(any) addr:0x020d9588
 data_ov030_020d958a kind:data(any) addr:0x020d958a
 data_ov030_020d958e kind:data(any) addr:0x020d958e
-data_ov030_020d9594 kind:data(any) addr:0x020d9594
-data_ov030_020d959c kind:data(any) addr:0x020d959c
-data_ov030_020d95a4 kind:data(any) addr:0x020d95a4
-data_ov030_020d95ac kind:data(any) addr:0x020d95ac
-data_ov030_020d95b4 kind:data(any) addr:0x020d95b4
-data_ov030_020d95bc kind:data(any) addr:0x020d95bc
+Iden_FldBG kind:data(any) addr:0x020d9594
+Iden_FldCommonTxc kind:data(any) addr:0x020d959c
+Iden_NpcCeparate kind:data(any) addr:0x020d95a4
+Iden_FldScan kind:data(any) addr:0x020d95ac
+Iden_FldTouch kind:data(any) addr:0x020d95b4
+Iden_ShopData kind:data(any) addr:0x020d95bc
 data_ov030_020d95c4 kind:data(any) addr:0x020d95c4
 data_ov030_020d95d0 kind:data(any) addr:0x020d95d0
 data_ov030_020d95dc kind:data(any) addr:0x020d95dc
@@ -1887,7 +1887,7 @@ data_ov030_020d9870 kind:data(any) addr:0x020d9870
 data_ov030_020d9882 kind:data(any) addr:0x020d9882
 data_ov030_020d9894 kind:data(any) addr:0x020d9894
 FieldPresetCoords kind:data(any) addr:0x020d98a6
-data_ov030_020d98bc kind:data(any) addr:0x020d98bc
+Iden_FldEventPacks kind:data(any) addr:0x020d98bc
 data_ov030_020d98d4 kind:data(any) addr:0x020d98d4
 data_ov030_020d98ec kind:data(any) addr:0x020d98ec
 FieldEncounterRangesByChapterGroup kind:data(any) addr:0x020d9904
@@ -1895,9 +1895,9 @@ data_ov030_020d990c kind:data(any) addr:0x020d990c
 data_ov030_020d9914 kind:data(any) addr:0x020d9914
 data_ov030_020d991c kind:data(any) addr:0x020d991c
 data_ov030_020d9924 kind:data(any) addr:0x020d9924
-data_ov030_020d9944 kind:data(any) addr:0x020d9944
-data_ov030_020d994c kind:data(any) addr:0x020d994c
-data_ov030_020d9954 kind:data(any) addr:0x020d9954
+Iden_FldDownScreen kind:data(any) addr:0x020d9944
+Iden_FldUpBg kind:data(any) addr:0x020d994c
+Iden_FldEncount kind:data(any) addr:0x020d9954
 data_ov030_020d9964 kind:data(any) addr:0x020d9964
 data_ov030_020d9988 kind:data(any) addr:0x020d9988
 data_ov030_020d99ac kind:data(any) addr:0x020d99ac
@@ -1951,7 +1951,7 @@ data_ov030_020da264 kind:data(any) addr:0x020da264
 data_ov030_020da2f0 kind:data(any) addr:0x020da2f0
 data_ov030_020da382 kind:data(any) addr:0x020da382
 data_ov030_020da414 kind:data(any) addr:0x020da414
-data_ov030_020da4b8 kind:data(any) addr:0x020da4b8
+Field_AreaTitleKinds kind:data(any) addr:0x020da4b8
 FieldChapterEventChecks kind:data(any) addr:0x020da568
 
 data_ov030_020da618 kind:data(any) addr:0x020da618
@@ -1981,7 +1981,7 @@ data_ov030_020da976 kind:data(any) addr:0x020da976
 data_ov030_020da986 kind:data(any) addr:0x020da986
 data_ov030_020da98e kind:data(any) addr:0x020da98e
 FieldAreaRoutes kind:data(any) addr:0x020da998
-data_ov030_020daa58 kind:data(any) addr:0x020daa58
+Field_AreaBgIndices kind:data(any) addr:0x020daa58
 data_ov030_020dab1c kind:data(any) addr:0x020dab1c
 data_ov030_020dabe2 kind:data(any) addr:0x020dabe2
 data_ov030_020dacba kind:data(any) addr:0x020dacba
@@ -1994,7 +1994,7 @@ data_ov030_020db2d0 kind:data(any) addr:0x020db2d0
 data_ov030_020db40a kind:data(any) addr:0x020db40a
 data_ov030_020db554 kind:data(any) addr:0x020db554
 data_ov030_020db748 kind:data(any) addr:0x020db748
-data_ov030_020dbda4 kind:data(any) addr:0x020dbda4
+Iden_NpcCeparateRG kind:data(any) addr:0x020dbda4
 FieldAreaZones kind:data(any) addr:0x020dbdac
 data_ov030_020dbdd8 kind:data(any) addr:0x020dbdd8
 data_ov030_020dbe30 kind:data(any) addr:0x020dbe30
@@ -2055,33 +2055,30 @@ EventSelect_AnotherDay_PartOne kind:data(any) addr:0x020de598
 data_ov030_020de880 kind:data(any) addr:0x020de880
 data_ov030_020decb8 kind:data(any) addr:0x020decb8
 data_ov030_020df118 kind:data(any) addr:0x020df118
-data_ov030_020df5a0 kind:data(any) addr:0x020df5a0
-data_ov030_020df5a8 kind:data(any) addr:0x020df5a8
-data_ov030_020df5b4 kind:data(any) addr:0x020df5b4
-data_ov030_020df5c4 kind:data(any) addr:0x020df5c4
-data_ov030_020df5e8 kind:data(any) addr:0x020df5e8
-data_ov030_020df614 kind:data(any) addr:0x020df614
-data_ov030_020df67c kind:data(any) addr:0x020df67c
-data_ov030_020df684 kind:data(any) addr:0x020df684
-data_ov030_020df690 kind:data(any) addr:0x020df690
-data_ov030_020df6a0 kind:data(any) addr:0x020df6a0
-data_ov030_020df6b8 kind:data(any) addr:0x020df6b8
-data_ov030_020df6e4 kind:data(any) addr:0x020df6e4
-data_ov030_020e0000 kind:data(any) addr:0x020e0000
-data_ov030_020e06f4 kind:data(any) addr:0x020e06f4 ambiguous
-data_ov030_020e06fc kind:data(any) addr:0x020e06fc ambiguous
-data_ov030_020e0704 kind:data(any) addr:0x020e0704 ambiguous
-data_ov030_020e070c kind:data(any) addr:0x020e070c ambiguous
-data_ov030_020e0864 kind:data(any) addr:0x020e0864
-data_ov030_020e087c kind:data(any) addr:0x020e087c
-data_ov030_020e0888 kind:data(any) addr:0x020e0888
-data_ov030_020e0898 kind:data(any) addr:0x020e0898
-data_ov030_020e08c4 kind:data(any) addr:0x020e08c4
-data_ov030_020e08d0 kind:data(any) addr:0x020e08d0
-data_ov030_020e0918 kind:data(any) addr:0x020e0918
-data_ov030_020e091c kind:data(any) addr:0x020e091c
-data_ov030_020e0924 kind:data(any) addr:0x020e0924
-data_ov030_020e0930 kind:data(any) addr:0x020e0930
+Iden_PlayerUGTex kind:data(any) addr:0x020df5a0 local
+Tsk_Fld_Player kind:data(any) addr:0x020df5a8 local
+@1962 kind:data(any) addr:0x020df5b4 local
+Fld_Player_AngleDirs kind:data(any) addr:0x020df5c4 local
+Fld_Player_MarkerAnim kind:data(any) addr:0x020df5e8 local
+Fld_Player_Cells kind:data(any) addr:0x020df614 local
+Fld_BustShot_PresetY kind:data(any) addr:0x020df67c local
+Tsk_Fld_BustShot kind:data(any) addr:0x020df684 local
+@1631 kind:data(any) addr:0x020df690 local
+Fld_BustShot_Packs kind:data(any) addr:0x020df6a0 local
+Fld_BustShot_Anim kind:data(any) addr:0x020df6b8 local
+Fld_BustShot_Poses kind:data(any) addr:0x020df6e4 local
+FldMesWindow_PositionX kind:data(any) addr:0x020e0864 local
+Tsk_Fld_Badge kind:data(any) addr:0x020e087c local
+@1687 kind:data(any) addr:0x020e0888 local
+Fld_Badge_Anim kind:data(any) addr:0x020e0898 local
+Tsk_Fld_ScanArea kind:data(any) addr:0x020e08c4 local
+Fld_ScanArea_Stages kind:data(any) addr:0x020e08d0 local
+@1132 kind:data(any) addr:0x020e08e0 local
+Fld_ScanArea_QuadVertices kind:data(any) addr:0x020e0900
+Fld_Human_BaseOamAttr2 kind:data(any) addr:0x020e0918 local
+Fld_Human_Margin kind:data(any) addr:0x020e091c local
+Tsk_Fld_Human kind:data(any) addr:0x020e0924 local
+@2016 kind:data(any) addr:0x020e0930 local
 data_ov030_020e0940 kind:data(any) addr:0x020e0940
 data_ov030_020e094c kind:data(any) addr:0x020e094c
 data_ov030_020e0958 kind:data(any) addr:0x020e0958
@@ -2370,125 +2367,124 @@ data_ov030_020e59ac kind:data(any) addr:0x020e59ac
 data_ov030_020e5b34 kind:data(any) addr:0x020e5b34
 data_ov030_020e5cd8 kind:data(any) addr:0x020e5cd8
 FieldDefaultSpawnTemplate kind:data(any) addr:0x020e5e7c
-data_ov030_020e5e98 kind:data(any) addr:0x020e5e98
-data_ov030_020e5ea4 kind:data(any) addr:0x020e5ea4
-data_ov030_020e5eb4 kind:data(any) addr:0x020e5eb4
-data_ov030_020e5ee0 kind:data(any) addr:0x020e5ee0
-data_ov030_020e5eec kind:data(any) addr:0x020e5eec
-data_ov030_020e5efc kind:data(any) addr:0x020e5efc
-data_ov030_020e5f28 kind:data(any) addr:0x020e5f28
-data_ov030_020e6018 kind:data(any) addr:0x020e6018
-data_ov030_020e6024 kind:data(any) addr:0x020e6024
-data_ov030_020e6034 kind:data(any) addr:0x020e6034
-data_ov030_020e6060 kind:data(any) addr:0x020e6060
-data_ov030_020e606c kind:data(any) addr:0x020e606c
-data_ov030_020e607c kind:data(any) addr:0x020e607c
-data_ov030_020e60a8 kind:data(any) addr:0x020e60a8
-data_ov030_020e60dc kind:data(any) addr:0x020e60dc
-data_ov030_020e60f0 kind:data(any) addr:0x020e60f0
-data_ov030_020e60fc kind:data(any) addr:0x020e60fc
-data_ov030_020e610c kind:data(any) addr:0x020e610c
-data_ov030_020e6124 kind:data(any) addr:0x020e6124
-data_ov030_020e6144 kind:data(any) addr:0x020e6144
-data_ov030_020e6164 kind:data(any) addr:0x020e6164
-data_ov030_020e61d4 kind:data(any) addr:0x020e61d4
-data_ov030_020e61e0 kind:data(any) addr:0x020e61e0
-data_ov030_020e61f0 kind:data(any) addr:0x020e61f0
-data_ov030_020e6208 kind:data(any) addr:0x020e6208
-data_ov030_020e6234 kind:data(any) addr:0x020e6234
-data_ov030_020e6240 kind:data(any) addr:0x020e6240
-data_ov030_020e6250 kind:data(any) addr:0x020e6250
-data_ov030_020e6288 kind:data(any) addr:0x020e6288
-data_ov030_020e6294 kind:data(any) addr:0x020e6294
-data_ov030_020e62a4 kind:data(any) addr:0x020e62a4
-data_ov030_020e62d0 kind:data(any) addr:0x020e62d0
-data_ov030_020e62dc kind:data(any) addr:0x020e62dc
-data_ov030_020e62ec kind:data(any) addr:0x020e62ec
-data_ov030_020e6318 kind:data(any) addr:0x020e6318
-data_ov030_020e6324 kind:data(any) addr:0x020e6324
-data_ov030_020e6334 kind:data(any) addr:0x020e6334
-data_ov030_020e6360 kind:data(any) addr:0x020e6360
-data_ov030_020e636c kind:data(any) addr:0x020e636c
-data_ov030_020e637c kind:data(any) addr:0x020e637c
-data_ov030_020e6388 kind:data(any) addr:0x020e6388
-data_ov030_020e6398 kind:data(any) addr:0x020e6398
-data_ov030_020e63c4 kind:data(any) addr:0x020e63c4
-data_ov030_020e68d0 kind:data(any) addr:0x020e68d0 ambiguous
-data_ov030_020e6d78 kind:data(any) addr:0x020e6d78
-data_ov030_020e6d84 kind:data(any) addr:0x020e6d84
-data_ov030_020e6d94 kind:data(any) addr:0x020e6d94
-data_ov030_020e6da0 kind:data(any) addr:0x020e6da0
-data_ov030_020e6db0 kind:data(any) addr:0x020e6db0
-data_ov030_020e6dcc kind:data(any) addr:0x020e6dcc
-data_ov030_020e6e3c kind:data(any) addr:0x020e6e3c
-data_ov030_020e6e48 kind:data(any) addr:0x020e6e48
-data_ov030_020e6e58 kind:data(any) addr:0x020e6e58
-data_ov030_020e6e84 kind:data(any) addr:0x020e6e84
-data_ov030_020e6e90 kind:data(any) addr:0x020e6e90
-data_ov030_020e6ea0 kind:data(any) addr:0x020e6ea0
-data_ov030_020e6ec0 kind:data(any) addr:0x020e6ec0
-data_ov030_020e6eec kind:data(any) addr:0x020e6eec
-data_ov030_020e6ef8 kind:data(any) addr:0x020e6ef8
-data_ov030_020e6f08 kind:data(any) addr:0x020e6f08
-data_ov030_020e6f34 kind:data(any) addr:0x020e6f34
-data_ov030_020e6f40 kind:data(any) addr:0x020e6f40
-data_ov030_020e6f50 kind:data(any) addr:0x020e6f50
+Tsk_Fld_TalkIcon kind:data(any) addr:0x020e5e98 local
+@1656 kind:data(any) addr:0x020e5ea4 local
+Fld_TalkIcon_Anim kind:data(any) addr:0x020e5eb4 local
+Tsk_Fld_NSymbolUG kind:data(any) addr:0x020e5ee0 local
+@1984 kind:data(any) addr:0x020e5eec local
+Fld_NSymbolUG_Anim kind:data(any) addr:0x020e5efc local
+Fld_NSymbolUG_Categories kind:data(any) addr:0x020e5f28 local
+Tsk_Fld_NSymbolUGEffect kind:data(any) addr:0x020e6018 local
+@1570 kind:data(any) addr:0x020e6024 local
+Fld_NSymbolUGEffect_Anim kind:data(any) addr:0x020e6034 local
+Tsk_Fld_MapJumpArrow kind:data(any) addr:0x020e6060 local
+@1679 kind:data(any) addr:0x020e606c local
+Fld_MapJumpArrow_Anim kind:data(any) addr:0x020e607c local
+Fld_MapJumpArrow_MessageRemap kind:data(any) addr:0x020e60a8 local
+FldCharaWalk_AngleCells kind:data(any) addr:0x020e60dc local
+Tsk_Fld_Partner kind:data(any) addr:0x020e60f0 local
+@1929 kind:data(any) addr:0x020e60fc local
+Fld_Partner_Packs kind:data(any) addr:0x020e610c local
+Fld_Partner_FollowAngles kind:data(any) addr:0x020e6124 local
+Fld_Partner_SearchAngles kind:data(any) addr:0x020e6144 local
+Fld_Partner_Cells kind:data(any) addr:0x020e6164 local
+Tsk_Fld_OnePicturCell kind:data(any) addr:0x020e61d4 local
+@1532 kind:data(any) addr:0x020e61e0 local
+Fld_OnePicturCell_Pictures kind:data(any) addr:0x020e61f0 local
+Fld_OnePicturCell_Anim kind:data(any) addr:0x020e6208 local
+Tsk_Fld_CockPit kind:data(any) addr:0x020e6234 local
+@1567 kind:data(any) addr:0x020e6240 local
+Fld_CockPit_Anim kind:data(any) addr:0x020e6250 local
+Fld_Watch_DigitPosX kind:data(any) addr:0x020e627c local
+Tsk_Fld_Watch kind:data(any) addr:0x020e6288 local
+@1638 kind:data(any) addr:0x020e6294 local
+Fld_Watch_Anim kind:data(any) addr:0x020e62a4 local
+Tsk_Fld_Phone kind:data(any) addr:0x020e62d0 local
+@1529 kind:data(any) addr:0x020e62dc local
+Fld_Phone_Anim kind:data(any) addr:0x020e62ec local
+Tsk_Fld_ScanKirakira kind:data(any) addr:0x020e6318 local
+@1971 kind:data(any) addr:0x020e6324 local
+Fld_ScanKirakira_Anim kind:data(any) addr:0x020e6334 local
+Tsk_Fld_ScanFukidasi kind:data(any) addr:0x020e6360
+@635 kind:data(any) addr:0x020e636c local
+Tsk_Fld_NpcRG kind:data(any) addr:0x020e637c local
+@1511 kind:data(any) addr:0x020e6388 local
+Fld_NpcRG_Anim kind:data(any) addr:0x020e6398 local
+Fld_NpcRG_Npcs kind:data(any) addr:0x020e63c4 local
+Tsk_Fld_LargeGingo kind:data(any) addr:0x020e6d78 local
+@1041 kind:data(any) addr:0x020e6d84 local
+Tsk_Fld_Touch kind:data(any) addr:0x020e6d94 local
+@1631 kind:data(any) addr:0x020e6da0 local
+Fld_Touch_AreaEvents kind:data(any) addr:0x020e6db0 local
+Fld_Touch_Areas kind:data(any) addr:0x020e6dcc local
+Tsk_Fld_TouchCommand kind:data(any) addr:0x020e6e3c local
+@1575 kind:data(any) addr:0x020e6e48 local
+Fld_TouchCommand_Anim kind:data(any) addr:0x020e6e58 local
+Tsk_Fld_TouchSeal kind:data(any) addr:0x020e6e84 local
+@1560 kind:data(any) addr:0x020e6e90 local
+Fld_TouchSeal_Seals kind:data(any) addr:0x020e6ea0 local
+Fld_TouchSeal_Anim kind:data(any) addr:0x020e6ec0 local
+Tsk_Fld_TouchCursor kind:data(any) addr:0x020e6eec local
+@1575 kind:data(any) addr:0x020e6ef8 local
+Fld_TouchCursor_Anim kind:data(any) addr:0x020e6f08 local
+Tsk_Fld_TouchShine kind:data(any) addr:0x020e6f34 local
+@1525 kind:data(any) addr:0x020e6f40 local
+Fld_TouchShine_Anim kind:data(any) addr:0x020e6f50 local
 Tsk_Fld_Raster kind:data(any) addr:0x020e6f7c
-data_ov030_020e6f88 kind:data(any) addr:0x020e6f88
-data_ov030_020e6f98 kind:data(any) addr:0x020e6f98
-data_ov030_020e6fa4 kind:data(any) addr:0x020e6fa4
-data_ov030_020e6fb4 kind:data(any) addr:0x020e6fb4
-data_ov030_020e6fbc kind:data(any) addr:0x020e6fbc
-data_ov030_020e6fc8 kind:data(any) addr:0x020e6fc8
-data_ov030_020e6fd8 kind:data(any) addr:0x020e6fd8
-data_ov030_020e7004 kind:data(any) addr:0x020e7004
-data_ov030_020e7010 kind:data(any) addr:0x020e7010
-data_ov030_020e7020 kind:data(any) addr:0x020e7020
-data_ov030_020e704c kind:data(any) addr:0x020e704c
-data_ov030_020e7058 kind:data(any) addr:0x020e7058
-data_ov030_020e7068 kind:data(any) addr:0x020e7068
-data_ov030_020e7094 kind:data(any) addr:0x020e7094
-data_ov030_020e70a0 kind:data(any) addr:0x020e70a0
-data_ov030_020e70ac kind:data(any) addr:0x020e70ac ambiguous
-data_ov030_020e70b0 kind:data(any) addr:0x020e70b0
-data_ov030_020e70d0 kind:data(any) addr:0x020e70d0
+@150 kind:data(any) addr:0x020e6f88 local
+Tsk_Fld_NSymbolUGMgr kind:data(any) addr:0x020e6f98 local
+@1200 kind:data(any) addr:0x020e6fa4 local
+Iden_MenuLuck kind:data(any) addr:0x020e6fb4 local
+Tsk_Fld_Luck kind:data(any) addr:0x020e6fbc local
+@1994 kind:data(any) addr:0x020e6fc8 local
+Fld_Luck_Anim kind:data(any) addr:0x020e6fd8 local
+Tsk_Fld_Chain kind:data(any) addr:0x020e7004 local
+@1591 kind:data(any) addr:0x020e7010 local
+Fld_Chain_Anim kind:data(any) addr:0x020e7020 local
+Tsk_Fld_ScanMoya kind:data(any) addr:0x020e704c local
+@1499 kind:data(any) addr:0x020e7058 local
+Fld_ScanMoya_Anim kind:data(any) addr:0x020e7068 local
+Tsk_Fld_Wall kind:data(any) addr:0x020e7094 local
+@1831 kind:data(any) addr:0x020e70a0 local
+Fld_Wall_DirFacings kind:data(any) addr:0x020e70b0 local
+Fld_Wall_Anim kind:data(any) addr:0x020e70d0 local
 data_ov030_020e70fc kind:data(any) addr:0x020e70fc
 data_ov030_020e7108 kind:data(any) addr:0x020e7108
-data_ov030_020e7124 kind:data(any) addr:0x020e7124
-data_ov030_020e7130 kind:data(any) addr:0x020e7130
-data_ov030_020e7140 kind:data(any) addr:0x020e7140
-data_ov030_020e716c kind:data(any) addr:0x020e716c
-data_ov030_020e7178 kind:data(any) addr:0x020e7178
-data_ov030_020e7188 kind:data(any) addr:0x020e7188
+Tsk_Fld_TalkEventTouch kind:data(any) addr:0x020e7124 local
+@1569 kind:data(any) addr:0x020e7130 local
+Fld_TalkEventTouch_Anim kind:data(any) addr:0x020e7140 local
+Tsk_Fld_TalkEventPlate kind:data(any) addr:0x020e716c local
+@1587 kind:data(any) addr:0x020e7178 local
+Fld_TalkEventPlate_Anim kind:data(any) addr:0x020e7188 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
-Tsk_Fld_TalkEventStringPlate kind:data(any) addr:0x020e71b4
-@1135 kind:data(any) addr:0x020e71c0
-data_ov030_020e71d0 kind:data(any) addr:0x020e71d0
+Tsk_Fld_TalkEventStringPlate kind:data(any) addr:0x020e71b4 local
+@1494 kind:data(any) addr:0x020e71c0 local
+Fld_TalkEventStringPlate_Anim kind:data(any) addr:0x020e71d0 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
-Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc
-@259 kind:data(any) addr:0x020e7208 local
+Tsk_Fld_TalkEventKeywordMenu kind:data(any) addr:0x020e71fc local
+@1250 kind:data(any) addr:0x020e7208 local
 
 
 Tsk_Fld_TalkEventCursor kind:data(any) addr:0x020e7218 local
-@1359 kind:data(any) addr:0x020e7224 local
+@1442 kind:data(any) addr:0x020e7224 local
 Fld_TalkEventCursor_Anim kind:data(any) addr:0x020e7234 local
 Tsk_Fld_TalkEventDecide kind:data(any) addr:0x020e7260 local
-@1350 kind:data(any) addr:0x020e726c local
+@1381 kind:data(any) addr:0x020e726c local
 Fld_TalkEventDecide_Anim kind:data(any) addr:0x020e727c local
 Tsk_Fld_TalkEventTitle kind:data(any) addr:0x020e72a8 local
 @1352 kind:data(any) addr:0x020e72b4 local
 Fld_TalkEventTitle_Anim kind:data(any) addr:0x020e72c4 local
-Tsk_Fld_MapJumpName kind:data(any) addr:0x020e72f0
-@1553 kind:data(any) addr:0x020e72fc local
-Fld_MapJumpName_Anim kind:data(any) addr:0x020e730c
+Tsk_Fld_MapJumpName kind:data(any) addr:0x020e72f0 local
+@1580 kind:data(any) addr:0x020e72fc local
+Fld_MapJumpName_Anim kind:data(any) addr:0x020e730c local
 Tsk_Fld_MapName kind:data(any) addr:0x020e7338 local
-@1496 kind:data(any) addr:0x020e7344 local
+@1508 kind:data(any) addr:0x020e7344 local
 Fld_MapName_Anim kind:data(any) addr:0x020e7354 local
 data_ov030_020e7380 kind:data(any) addr:0x020e7380 local
 Tsk_Fld_NSymbolUGAppear kind:data(any) addr:0x020e7418 local
@@ -3343,11 +3339,11 @@ NoiseQuota_Ch02_Step0 kind:data(any) addr:0x020ea2a4
 NoiseQuota_Ch16_Step0 kind:data(any) addr:0x020ea2f4
 NoiseQuota_Ch00_Step0 kind:data(any) addr:0x020ea344
 NoiseQuotaAreaIndex kind:data(any) addr:0x020ea394
-data_ov030_020ea438 kind:data(any) addr:0x020ea438
-Tsk_Fld_Piranha kind:data(any) addr:0x020ea440
-@1341 kind:data(any) addr:0x020ea44c local
-Fld_Piranha_Anim kind:data(any) addr:0x020ea45c
-data_ov030_020ea488 kind:data(any) addr:0x020ea488
+Iden_FldPiranha kind:data(any) addr:0x020ea438 local
+Tsk_Fld_Piranha kind:data(any) addr:0x020ea440 local
+@1372 kind:data(any) addr:0x020ea44c local
+Fld_Piranha_Anim kind:data(any) addr:0x020ea45c local
+Field_EncounterCategories kind:data(any) addr:0x020ea488 local
 data_ov030_020eae80 kind:data(any) addr:0x020eae80
 data_ov030_020eae84 kind:data(any) addr:0x020eae84
 data_ov030_020eae8c kind:data(any) addr:0x020eae8c
@@ -3478,7 +3474,7 @@ data_ov030_020eb9e4 kind:data(any) addr:0x020eb9e4
 data_ov030_020eba44 kind:data(any) addr:0x020eba44
 data_ov030_020ebaa4 kind:data(any) addr:0x020ebaa4
 data_ov030_020ebb24 kind:data(any) addr:0x020ebb24
-data_ov030_020ec824 kind:data(any) addr:0x020ec824
+FldOamCell_AttrMasks kind:data(any) addr:0x020ec824
 Tsk_Fld_TouchNext kind:data(any) addr:0x020ec844 local
 @1348 kind:data(any) addr:0x020ec850 local
 Fld_TouchNext_Anim kind:data(any) addr:0x020ec860 local
@@ -3490,54 +3486,54 @@ Fld_GetPlate_Anim kind:data(any) addr:0x020ec8a8 local
 // src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetMess kind:data(any) addr:0x020ec8d4 local
-@1365 kind:data(any) addr:0x020ec8e0 local
-data_ov030_020ec8f0 kind:data(any) addr:0x020ec8f0 local
+@1517 kind:data(any) addr:0x020ec8e0 local
+Fld_GetMess_Anim kind:data(any) addr:0x020ec8f0 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_WhichArrow kind:data(any) addr:0x020ec91c local
-@1397 kind:data(any) addr:0x020ec928 local
-data_ov030_020ec938 kind:data(any) addr:0x020ec938 local
+@1420 kind:data(any) addr:0x020ec928 local
+Fld_WhichArrow_Anim kind:data(any) addr:0x020ec938 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetBase kind:data(any) addr:0x020ec964 local
-@1052 kind:data(any) addr:0x020ec970 local
-data_ov030_020ec980 kind:data(any) addr:0x020ec980 local
+@1473 kind:data(any) addr:0x020ec970 local
+Fld_GetBase_Anim kind:data(any) addr:0x020ec980 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_GetItem kind:data(any) addr:0x020ec9ac local
-@1296 kind:data(any) addr:0x020ec9b8 local
-data_ov030_020ec9c8 kind:data(any) addr:0x020ec9c8 local
-data_ov030_020ec9f4 kind:data(any) addr:0x020ec9f4 local
+@1633 kind:data(any) addr:0x020ec9b8 local
+Fld_GetItem_Anim kind:data(any) addr:0x020ec9c8 local
+Fld_GetItem_Packs kind:data(any) addr:0x020ec9f4 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_Choice kind:data(any) addr:0x020eca2c local
-@267 kind:data(any) addr:0x020eca38 local
+@204 kind:data(any) addr:0x020eca38 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
 Tsk_Fld_UGFade kind:data(any) addr:0x020eca48 local
-@690 kind:data(any) addr:0x020eca54 local
+@988 kind:data(any) addr:0x020eca54 local
 
 
-data_ov030_020eca64 kind:data(any) addr:0x020eca64
+Fld_BattleIn_PackIndices kind:data(any) addr:0x020eca64 local
 Tsk_Fld_BattleIn kind:data(any) addr:0x020eca6c local
-@1436 kind:data(any) addr:0x020eca78 local
+@1448 kind:data(any) addr:0x020eca78 local
 Fld_BattleIn_Anim kind:data(any) addr:0x020eca88 local
-data_ov030_020ecab4 kind:data(any) addr:0x020ecab4
-data_ov030_020ecac0 kind:data(any) addr:0x020ecac0
-data_ov030_020ecad0 kind:data(any) addr:0x020ecad0
+Tsk_Fld_EventMail kind:data(any) addr:0x020ecab4 local
+@1497 kind:data(any) addr:0x020ecac0 local
+Fld_EventMail_Anim kind:data(any) addr:0x020ecad0 local
 Tsk_Fld_Brush kind:data(any) addr:0x020ecafc local
 @247 kind:data(any) addr:0x020ecb08 local
-data_ov030_020ecb18 kind:data(any) addr:0x020ecb18
+Fld_Brush_Targets kind:data(any) addr:0x020ecb18 local
 Tsk_Fld_BrushHati kind:data(any) addr:0x020ecb88 local
 @1348 kind:data(any) addr:0x020ecb94 local
 Fld_BrushHati_Anim kind:data(any) addr:0x020ecba4 local
@@ -3546,7 +3542,7 @@ FldNpcMesSelTable kind:data(any) addr:0x020ecbdc local
 OvlProc_FldMesSel kind:data(any) addr:0x020ecd0c local
 FldMesWinKindTable kind:data(any) addr:0x020ecd18 local
 Tsk_Task_Mess kind:data(any) addr:0x020ecda8
-@1528 kind:data(any) addr:0x020ecdb4 local
+@1540 kind:data(any) addr:0x020ecdb4 local
 data_ov030_020ecdc4 kind:data(any) addr:0x020ecdc4
 data_ov030_020ecdcc kind:data(any) addr:0x020ecdcc
 @1373 kind:data(any) addr:0x020ecddc local
@@ -3560,15 +3556,15 @@ data_ov030_020ece82 kind:data(any) addr:0x020ece82
 data_ov030_020eceba kind:data(any) addr:0x020eceba
 data_ov030_020ecfa4 kind:data(any) addr:0x020ecfa4
 Tsk_Task_Window kind:data(any) addr:0x020ed0d8
-data_ov030_020ed0e4 kind:data(any) addr:0x020ed0e4
-data_ov030_020ed0f0 kind:data(any) addr:0x020ed0f0
-data_ov030_020ed100 kind:data(any) addr:0x020ed100
-data_ov030_020ed108 kind:data(any) addr:0x020ed108
-data_ov030_020ed114 kind:data(any) addr:0x020ed114
-data_ov030_020ed124 kind:data(any) addr:0x020ed124
-data_ov030_020ed150 kind:data(any) addr:0x020ed150
-data_ov030_020ed15c kind:data(any) addr:0x020ed15c
-data_ov030_020ed16c kind:data(any) addr:0x020ed16c
+Tsk_Fld_Shinigami kind:data(any) addr:0x020ed0e4 local
+@969 kind:data(any) addr:0x020ed0f0 local
+Iden_FldShinigami kind:data(any) addr:0x020ed100
+Tsk_Fld_ShinigamiCoin kind:data(any) addr:0x020ed108 local
+@1596 kind:data(any) addr:0x020ed114 local
+Fld_ShinigamiCoin_Anim kind:data(any) addr:0x020ed124 local
+Tsk_Fld_ShinigamiON kind:data(any) addr:0x020ed150 local
+@1521 kind:data(any) addr:0x020ed15c local
+Fld_ShinigamiON_Anim kind:data(any) addr:0x020ed16c local
 FOAllocator_Callbacks kind:data(any) addr:0x020ed198
 sGridRing3x3 kind:data(any) addr:0x020ed1c4
 sGridRings5x5 kind:data(any) addr:0x020ed1e8
@@ -4382,7 +4378,7 @@ OvlProc_FlashSel kind:data(any) addr:0x020fde48
 FlashCameraPos kind:data(any) addr:0x020fde54
 FlashCameraUp kind:data(any) addr:0x020fde60
 data_ov030_020fde80 kind:data(any) addr:0x020fde80
-data_ov030_020fde84 kind:data(any) addr:0x020fde84
+Field_BrandBgIndices kind:data(any) addr:0x020fde84
 
 EventScripts kind:data(any) addr:0x020fdeb8
 
@@ -6217,15 +6213,15 @@ data_ov030_02106458 kind:data(any) addr:0x02106458
 data_ov030_0210646c kind:data(any) addr:0x0210646c
 data_ov030_0210647c kind:data(any) addr:0x0210647c
 data_ov030_0210648c kind:data(any) addr:0x0210648c
-data_ov030_02106490 kind:data(any) addr:0x02106490
-data_ov030_021064a0 kind:data(any) addr:0x021064a0
-data_ov030_021064bc kind:data(any) addr:0x021064bc
-data_ov030_021064d0 kind:data(any) addr:0x021064d0
-data_ov030_021064ec kind:data(any) addr:0x021064ec
-data_ov030_02106508 kind:data(any) addr:0x02106508
-data_ov030_02106524 kind:data(any) addr:0x02106524
-data_ov030_02106534 kind:data(any) addr:0x02106534
-data_ov030_02106548 kind:data(any) addr:0x02106548
+@1671 kind:data(any) addr:0x02106490 local
+@1670 kind:data(any) addr:0x021064a0 local
+@1505 kind:data(any) addr:0x021064bc local
+@1506 kind:data(any) addr:0x021064d0 local
+@1507 kind:data(any) addr:0x021064ec local
+@1508 kind:data(any) addr:0x02106508 local
+@1606 kind:data(any) addr:0x02106524 local
+@1104 kind:data(any) addr:0x02106534 local
+@1551 kind:data(any) addr:0x02106548 local
 data_ov030_02106558 kind:data(any) addr:0x02106558
 data_ov030_0210655c kind:data(any) addr:0x0210655c
 data_ov030_021065ac kind:data(any) addr:0x021065ac
@@ -6374,70 +6370,70 @@ data_ov030_02107210 kind:data(any) addr:0x02107210
 data_ov030_0210722c kind:data(any) addr:0x0210722c
 data_ov030_02107238 kind:data(any) addr:0x02107238
 data_ov030_02107244 kind:data(any) addr:0x02107244
-data_ov030_02107260 kind:data(any) addr:0x02107260
-data_ov030_02107274 kind:data(any) addr:0x02107274
-data_ov030_0210727c kind:data(any) addr:0x0210727c
-data_ov030_02107284 kind:data(any) addr:0x02107284
-data_ov030_0210728c kind:data(any) addr:0x0210728c
-data_ov030_02107294 kind:data(any) addr:0x02107294
-data_ov030_0210729c kind:data(any) addr:0x0210729c
-data_ov030_021072a4 kind:data(any) addr:0x021072a4
-data_ov030_021072ac kind:data(any) addr:0x021072ac
-data_ov030_021072b4 kind:data(any) addr:0x021072b4
-data_ov030_021072c8 kind:data(any) addr:0x021072c8
-data_ov030_021072e8 kind:data(any) addr:0x021072e8
-data_ov030_02107300 kind:data(any) addr:0x02107300
-data_ov030_02107318 kind:data(any) addr:0x02107318
-data_ov030_02107328 kind:data(any) addr:0x02107328
-data_ov030_02107344 kind:data(any) addr:0x02107344
-data_ov030_02107360 kind:data(any) addr:0x02107360
-data_ov030_02107380 kind:data(any) addr:0x02107380
-data_ov030_02107398 kind:data(any) addr:0x02107398
-data_ov030_021073a8 kind:data(any) addr:0x021073a8
-data_ov030_021073b8 kind:data(any) addr:0x021073b8
-data_ov030_021073c8 kind:data(any) addr:0x021073c8
-data_ov030_021073f4 kind:data(any) addr:0x021073f4
-data_ov030_0210740c kind:data(any) addr:0x0210740c
-data_ov030_02107424 kind:data(any) addr:0x02107424
-data_ov030_02107434 kind:data(any) addr:0x02107434
-data_ov030_02107448 kind:data(any) addr:0x02107448
-data_ov030_02107458 kind:data(any) addr:0x02107458
-data_ov030_02107470 kind:data(any) addr:0x02107470
-data_ov030_02107484 kind:data(any) addr:0x02107484
-data_ov030_02107498 kind:data(any) addr:0x02107498
-data_ov030_021074ac kind:data(any) addr:0x021074ac
-data_ov030_021074bc kind:data(any) addr:0x021074bc
-data_ov030_021074d4 kind:data(any) addr:0x021074d4
-data_ov030_021074e4 kind:data(any) addr:0x021074e4
-data_ov030_02107500 kind:data(any) addr:0x02107500
-data_ov030_02107510 kind:data(any) addr:0x02107510
-data_ov030_02107524 kind:data(any) addr:0x02107524
+@1597 kind:data(any) addr:0x02107260 local
+@1666 kind:data(any) addr:0x02107274 local
+@1667 kind:data(any) addr:0x0210727c local
+@1673 kind:data(any) addr:0x02107284 local
+@1672 kind:data(any) addr:0x0210728c local
+@1671 kind:data(any) addr:0x02107294 local
+@1670 kind:data(any) addr:0x0210729c local
+@1669 kind:data(any) addr:0x021072a4 local
+@1668 kind:data(any) addr:0x021072ac local
+@1665 kind:data(any) addr:0x021072b4 local
+Fld_NSymbolUG_HoleNodes kind:data(any) addr:0x021072c8 local
+@1503 kind:data(any) addr:0x021072e8 local
+@1584 kind:data(any) addr:0x02107300 local
+@1648 kind:data(any) addr:0x02107318 local
+@1651 kind:data(any) addr:0x02107328 local
+@1650 kind:data(any) addr:0x02107344 local
+@1649 kind:data(any) addr:0x02107360 local
+@1468 kind:data(any) addr:0x02107380 local
+@1497 kind:data(any) addr:0x02107398 local
+@1533 kind:data(any) addr:0x021073a8 local
+@1473 kind:data(any) addr:0x021073b8 local
+FldChara_Anim kind:data(any) addr:0x021073c8 local
+@1883 kind:data(any) addr:0x021073f4 local
+@531 kind:data(any) addr:0x0210740c local
+@1446 kind:data(any) addr:0x02107424 local
+@988 kind:data(any) addr:0x02107434 local
+@1420 kind:data(any) addr:0x02107448 local
+@1507 kind:data(any) addr:0x02107458 local
+@1508 kind:data(any) addr:0x02107470 local
+@1505 kind:data(any) addr:0x02107484 local
+@1471 kind:data(any) addr:0x02107498 local
+@97 kind:data(any) addr:0x021074ac local
+@1124 kind:data(any) addr:0x021074bc local
+@1505 kind:data(any) addr:0x021074d4 local
+@1504 kind:data(any) addr:0x021074e4 local
+@1505 kind:data(any) addr:0x02107500 local
+@1446 kind:data(any) addr:0x02107510 local
+@1692 kind:data(any) addr:0x02107524 local
 data_ov030_02107534 kind:data(any) addr:0x02107534
 data_ov030_02107540 kind:data(any) addr:0x02107540
 data_ov030_0210754c kind:data(any) addr:0x0210754c
 data_ov030_02107558 kind:data(any) addr:0x02107558
 data_ov030_02107560 kind:data(any) addr:0x02107560
-data_ov030_02107568 kind:data(any) addr:0x02107568
-data_ov030_02107580 kind:data(any) addr:0x02107580
+@1474 kind:data(any) addr:0x02107568 local
+@1526 kind:data(any) addr:0x02107580 local
 
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventStringPlate.c
 //////////////////////////////////////////////////////////////////////
-@1066 kind:data(any) addr:0x02107598 local
+@1414 kind:data(any) addr:0x02107598 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_TalkEventKeywordMenu.c
 //////////////////////////////////////////////////////////////////////
-@145 kind:data(any) addr:0x021075b8 local
+@1136 kind:data(any) addr:0x021075b8 local
 
 
-@1326 kind:data(any) addr:0x021075d8 local
-@1298 kind:data(any) addr:0x021075f0 local
+@1357 kind:data(any) addr:0x021075d8 local
+@1329 kind:data(any) addr:0x021075f0 local
 @1296 kind:data(any) addr:0x02107608 local
-data_ov030_02107620 kind:data(any) addr:0x02107620
-@1480 kind:data(any) addr:0x02107634 local
-@1428 kind:data(any) addr:0x02107648 local
+Fld_Mess_GetStrCat_SeqName kind:data(any) addr:0x02107620 local
+@1500 kind:data(any) addr:0x02107634 local
+@1440 kind:data(any) addr:0x02107648 local
 @1284 kind:data(any) addr:0x02107658 local
 NoiseEncounters_Area28 kind:data(any) addr:0x02107670
 NoiseEncounters_Area12 kind:data(any) addr:0x021076c8
@@ -6500,52 +6496,52 @@ NoiseQuotaSteps_Ch07 kind:data(any) addr:0x021083d8
 NoiseQuotaSteps_Ch08 kind:data(any) addr:0x021083e4
 NoiseQuotaSteps_Ch05 kind:data(any) addr:0x021083f4
 NoiseQuotaByChapter kind:data(any) addr:0x02108408
-@1290 kind:data(any) addr:0x02108464 local
-data_ov030_02108474 kind:data(any) addr:0x02108474
+@1308 kind:data(any) addr:0x02108464 local
+@1307 kind:data(any) addr:0x02108474 local
 @1293 kind:data(any) addr:0x02108490 local
 @1416 kind:data(any) addr:0x021084a4 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetMess.c
 //////////////////////////////////////////////////////////////////////
-@1292 kind:data(any) addr:0x021084b8 local
+@1448 kind:data(any) addr:0x021084b8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_WhichArrow.c
 //////////////////////////////////////////////////////////////////////
-@1318 kind:data(any) addr:0x021084c8 local
+@1345 kind:data(any) addr:0x021084c8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetBase.c
 //////////////////////////////////////////////////////////////////////
-@998 kind:data(any) addr:0x021084dc local
+@1414 kind:data(any) addr:0x021084dc local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_GetItem.c
 //////////////////////////////////////////////////////////////////////
-@1145 kind:data(any) addr:0x021084ec local
-@1150 kind:data(any) addr:0x021084fc local
-@1147 kind:data(any) addr:0x02108510 local
-@1148 kind:data(any) addr:0x02108528 local
-@1146 kind:data(any) addr:0x02108540 local
-@1152 kind:data(any) addr:0x02108558 local
-@1149 kind:data(any) addr:0x02108570 local
-@1151 kind:data(any) addr:0x0210858c local
+@1477 kind:data(any) addr:0x021084ec local
+@1482 kind:data(any) addr:0x021084fc local
+@1478 kind:data(any) addr:0x02108510 local
+@1480 kind:data(any) addr:0x02108528 local
+@1479 kind:data(any) addr:0x02108540 local
+@1484 kind:data(any) addr:0x02108558 local
+@1481 kind:data(any) addr:0x02108570 local
+@1483 kind:data(any) addr:0x0210858c local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_Choice.c
 //////////////////////////////////////////////////////////////////////
-@179 kind:data(any) addr:0x021085a8 local
+@116 kind:data(any) addr:0x021085a8 local
 
 //////////////////////////////////////////////////////////////////////
 // src/Field/Tasks/Fld_UGFade.c
 //////////////////////////////////////////////////////////////////////
-@644 kind:data(any) addr:0x021085b8 local
+@942 kind:data(any) addr:0x021085b8 local
 
 
-@1378 kind:data(any) addr:0x021085c8 local
-data_ov030_021085dc kind:data(any) addr:0x021085dc
-@223 kind:data(any) addr:0x021085f0 local
+@1390 kind:data(any) addr:0x021085c8 local
+@1446 kind:data(any) addr:0x021085dc local
+@91 kind:data(any) addr:0x021085f0 local
 @1298 kind:data(any) addr:0x02108600 local
 data_ov030_02108614 kind:data(any) addr:0x02108614
 FldNpcMesSelSequence kind:data(any) addr:0x02108618 local
@@ -6610,14 +6606,14 @@ FldMesSelSequence kind:data(any) addr:0x0210882c local
 @1577 kind:data(byte[19]) addr:0x021088c8 local
 @1578 kind:data(byte[12]) addr:0x021088dc local
 @1579 kind:data(byte[2]) addr:0x021088e8 local
-@1519 kind:data(any) addr:0x021088ec local
+@1531 kind:data(any) addr:0x021088ec local
 @1342 kind:data(any) addr:0x021088f8 local
 data_ov030_02108904 kind:data(any) addr:0x02108904
-data_ov030_02108920 kind:data(any) addr:0x02108920
-data_ov030_02108934 kind:data(any) addr:0x02108934
-data_ov030_0210894c kind:data(any) addr:0x0210894c
-data_ov030_0210896c kind:data(any) addr:0x0210896c
-data_ov030_021089b4 kind:data(any) addr:0x021089b4
+@394 kind:data(any) addr:0x02108920 local
+@1356 kind:data(any) addr:0x02108934 local
+@1355 kind:data(any) addr:0x0210894c local
+Fld_ShinigamiCoin_Regions kind:data(any) addr:0x0210896c local
+@1469 kind:data(any) addr:0x021089b4 local
 
 @40 kind:data(any) addr:0x021089c8 local
 
@@ -6879,12 +6875,12 @@ _ZTV11FlashStream kind:data(any) addr:0x02109d14
 data_ov030_02109d60 kind:bss addr:0x02109d60
 data_ov030_02109d64 kind:bss addr:0x02109d64
 data_ov030_02109d68 kind:bss addr:0x02109d68
-data_ov030_02109d70 kind:bss addr:0x02109d70
-data_ov030_02109d74 kind:bss addr:0x02109d74
-data_ov030_02109d78 kind:bss addr:0x02109d78
+Fld_ScanFukidasi_Instance kind:bss addr:0x02109d70 local
+Fld_TouchShine_ActiveCount kind:bss addr:0x02109d74 local
+Fld_NSymbolUGMgr_Instance kind:bss addr:0x02109d78
 data_ov030_02109d7c kind:bss addr:0x02109d7c
 data_ov030_02109d80 kind:bss addr:0x02109d80
-data_ov030_02109d84 kind:bss addr:0x02109d84
+Fld_Shinigami_World kind:bss addr:0x02109d84 local
 gFOAllocator kind:bss addr:0x02109d88
 gFO3DRes kind:bss addr:0x02109d98
 gFO3DObj kind:bss addr:0x02109d9c

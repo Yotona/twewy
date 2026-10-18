@@ -1,12 +1,14 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/EasyTask.h"
-#include "Engine/File/DatMgr.h"
-#include "Field/FieldTasks.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_GetMess.h"
+#include "Field/Tasks/Fld_MapJumpName.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
-#include "common_data.h"
 #include <nitro/types.h>
 
-extern BinIdentifier data_ov030_020d9944;
+extern void func_020265d4(s32* value, s32 target, u16 scale);
 
 typedef struct {
     /* 0x00 */ Sprite  sprite;
@@ -24,12 +26,12 @@ typedef struct {
     /* 0x6 */ u16 unk_6;
 } Fld_GetMess_Args;
 
-SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_GetMess_RunTask(TaskPool*, Task*, void*, s32);
+static SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_GetMess_RunTask(TaskPool*, Task*, void*, s32);
 
 static const TaskHandle Tsk_Fld_GetMess = {"Tsk_Fld_GetMess", Fld_GetMess_RunTask, sizeof(Fld_GetMess)};
 
-static const SpriteAnimation data_ov030_020ec8f0 = {
+static const SpriteAnimation Fld_GetMess_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -43,7 +45,7 @@ static const SpriteAnimation data_ov030_020ec8f0 = {
     .frameInfoCallback = Fld_GetMess_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 11,
     .unk_1C            = 2,
@@ -56,18 +58,18 @@ static const SpriteAnimation data_ov030_020ec8f0 = {
     .animIndex         = 3,
 };
 
-SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_GetMess_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void Fld_GetMess_Load(Sprite* sprite, Fld_GetMess_Args* args) {
-    SpriteAnimation anim = data_ov030_020ec8f0;
+static void Fld_GetMess_Load(Sprite* sprite, Fld_GetMess_Args* args) {
+    SpriteAnimation anim = Fld_GetMess_Anim;
 
     anim.dataType = args->unk_0;
     _Sprite_Load(sprite, &anim);
 }
 
-s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess*      mess     = task->data;
     Fld_GetMess_Args* messArgs = args;
 
@@ -87,15 +89,15 @@ s32 Fld_GetMess_Init(TaskPool* pool, Task* task, void* args) {
         SysFont_SetPos(&mess->font, 13, 9);
     } else if (messArgs->unk_6 == 0xFFFE) {
         mess->unk_C8 = SysFont_GetMsgBuf(&mess->font, messArgs->unk_4);
-        func_ov030_020c4b8c(&mess->font, mess->unk_C8, 0, mess);
+        Fld_Mess_CenterText(&mess->font, mess->unk_C8, 0, &mess->sprite);
     } else {
-        mess->unk_C8 = func_ov030_020c4ae8(&mess->font, messArgs->unk_4, messArgs->unk_6);
-        func_ov030_020c4b8c(&mess->font, mess->unk_C8, 0, mess);
+        mess->unk_C8 = Fld_Mess_GetStrCat(&mess->font, messArgs->unk_4, messArgs->unk_6);
+        Fld_Mess_CenterText(&mess->font, mess->unk_C8, 0, &mess->sprite);
     }
     return 1;
 }
 
-s32 Fld_GetMess_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetMess_Update(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess* mess = task->data;
 
     if (mess->unk_48 != 0) {
@@ -106,7 +108,7 @@ s32 Fld_GetMess_Update(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetMess_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetMess_Render(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess* mess = task->data;
 
     Sprite_RenderFrame(&mess->sprite);
@@ -122,7 +124,7 @@ s32 Fld_GetMess_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetMess_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetMess_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_GetMess* mess = task->data;
 
     Sprite_Destroy(&mess->sprite);
@@ -133,7 +135,7 @@ s32 Fld_GetMess_Destroy(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetMess_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_GetMess_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_GetMess_Init,
         .update     = Fld_GetMess_Update,

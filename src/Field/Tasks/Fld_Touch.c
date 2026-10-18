@@ -1,19 +1,15 @@
-#include "Field/TaskHelpers.h"
-// USA TU; original assembly remains linked (incomplete).
-// Range: 0x020bf360-0x020bfb80; 12 functions.
-// Research draft: docs/decomp/ov030/Fld_Touch.c
+#include "Field/Tasks/Fld_Touch.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Tasks/Fld_TouchCommand.h"
+#include "Field/Tasks/Fld_TouchCursor.h"
+#include "Field/Tasks/Fld_TouchSeal.h"
+#include "Field/Tasks/Fld_TouchShine.h"
 #include "SndMgr.h"
-#include "SpriteMgr.h"
 
-s32  func_ov030_020bfee4(TaskPool* arg0, s32 arg1, s32 arg2);
-void func_ov030_020bff68(Task* arg0, s32 arg1);
-s32  func_ov030_020c0184(TaskPool* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void func_ov030_020c01c4(Task* arg0, s32 arg1);
-void func_ov030_020c050c(Task* arg0, s32 arg1);
-s32  func_ov030_020c0730(TaskPool* arg0, s32 arg1);
+extern s32 func_0202599c(s32 flagIndex);
 
 typedef struct {
     /* 0x00 */ s16 id;
@@ -48,14 +44,35 @@ typedef struct {
     /* 0x48 */ s32             unk48;
     /* 0x4C */ s16             unk4C;
 } Ov030TouchData; // Size: 0x50
+static s32 Fld_Touch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern TaskHandle     data_ov030_020e6d94;
-extern TaskStages     data_ov030_020e6da0;
-extern Ov030TouchPair data_ov030_020e6db0[];
+static const TaskHandle Tsk_Fld_Touch = {"Tsk_Fld_Touch", Fld_Touch_RunTask, sizeof(Ov030TouchData)};
 
-extern Ov030TouchRegion data_ov030_020e6dcc[0xB];
+static const Ov030TouchPair Fld_Touch_AreaEvents[7] = {
+    { 6, 3},
+    { 9, 3},
+    {12, 3},
+    {15, 3},
+    {18, 3},
+    {21, 2},
+    {23, 1},
+};
 
-s16 func_ov030_020bf360(void) {
+static const Ov030TouchRegion Fld_Touch_Areas[11] = {
+    {0,  95,  23, 138,  50},
+    {1,  97,  51, 138,  93},
+    {1, 138,  66, 151,  93},
+    {2,  95,  94, 112, 119},
+    {2,  85, 119, 112, 143},
+    {2, 113,  94, 135, 143},
+    {3, 136,  94, 166, 143},
+    {4, 167, 125, 184, 150},
+    {5,  72, 144, 187, 169},
+    {5,  44, 166,  97, 191},
+    {5, 100, 169, 173, 175},
+};
+
+static s16 Fld_Touch_GetTouchedArea(void) {
     TouchCoord pos;
     TouchCoord coord;
     u32        i;
@@ -63,21 +80,21 @@ s16 func_ov030_020bf360(void) {
     TouchInput_GetCoord(&coord);
     pos = coord;
     for (i = 0; i < 0xB; i++) {
-        if (data_ov030_020e6dcc[i].xMin <= pos.x && pos.x <= data_ov030_020e6dcc[i].xMax &&
-            data_ov030_020e6dcc[i].yMin <= pos.y && pos.y <= data_ov030_020e6dcc[i].yMax)
+        if (Fld_Touch_Areas[i].xMin <= pos.x && pos.x <= Fld_Touch_Areas[i].xMax && Fld_Touch_Areas[i].yMin <= pos.y &&
+            pos.y <= Fld_Touch_Areas[i].yMax)
         {
-            return data_ov030_020e6dcc[i].id;
+            return Fld_Touch_Areas[i].id;
         }
     }
     return 6;
 }
 
-s32 func_ov030_020bf3e4(TaskPool* arg0, Ov030TouchData* arg1) {
+static s32 Fld_Touch_FindTouchedSeal(TaskPool* pool, Ov030TouchData* arg1) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
         if (arg1->taskIds[i] != -1) {
-            if (func_ov030_020c01ec(EasyTask_GetTaskById(arg0, arg1->taskIds[i])) != 0) {
+            if (Fld_TouchSeal_IsTouched(EasyTask_GetTaskById(pool, arg1->taskIds[i])) != 0) {
                 return i;
             }
         }
@@ -85,12 +102,12 @@ s32 func_ov030_020bf3e4(TaskPool* arg0, Ov030TouchData* arg1) {
     return -1;
 }
 
-void func_ov030_020bf43c(TaskPool* arg0, Ov030TouchData* arg1, s32 arg2) {
+static void Fld_Touch_SelectSeal(TaskPool* pool, Ov030TouchData* arg1, s32 arg2) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
         if (arg1->taskIds[i] != -1) {
-            Task* task = EasyTask_GetTaskById(arg0, arg1->taskIds[i]);
+            Task* task = EasyTask_GetTaskById(pool, arg1->taskIds[i]);
             s32   state;
 
             if (i == arg2) {
@@ -98,12 +115,12 @@ void func_ov030_020bf43c(TaskPool* arg0, Ov030TouchData* arg1, s32 arg2) {
             } else {
                 state = 2;
             }
-            func_ov030_020c01c4(task, state);
+            ((void (*)())Fld_TouchSeal_SetAnimation)(task, state);
         }
     }
 }
 
-void func_ov030_020bf494(Ov030TouchData* arg0) {
+static void Fld_Touch_ResetRubProgress(Ov030TouchData* arg0) {
     s32 i = 0;
 
     do {
@@ -112,7 +129,7 @@ void func_ov030_020bf494(Ov030TouchData* arg0) {
     } while (i < 7);
 }
 
-void func_ov030_020bf4b4(Ov030TouchData* arg0) {
+static void Fld_Touch_ResetRubCounts(Ov030TouchData* arg0) {
     s32 i = 0;
 
     do {
@@ -121,35 +138,36 @@ void func_ov030_020bf4b4(Ov030TouchData* arg0) {
     } while (i < 7);
 }
 
-s32 func_ov030_020bf4d4(TaskPool* arg0, Task* task, s32* arg2) {
+static s32 Fld_Touch_Init(TaskPool* pool, Task* task, void* args) {
+    s32*            arg2 = args;
     Ov030TouchData* data = task->data;
 
-    data->taskIds[0] = func_ov030_020c0184(arg0, *arg2, 0, 0xE2, 0xA7);
+    data->taskIds[0] = Fld_TouchSeal_CreateTask(pool, *arg2, 0, 0xE2, 0xA7);
     data->taskIds[1] = -1;
     data->taskIds[2] = -1;
     data->taskIds[4] = -1;
     if (func_0202599c(2) != 0) {
-        data->taskIds[1] = func_ov030_020c0184(arg0, *arg2, 2, 0x23, 0xA0);
+        data->taskIds[1] = Fld_TouchSeal_CreateTask(pool, *arg2, 2, 0x23, 0xA0);
     }
     if (func_0202599c(3) != 0) {
-        data->taskIds[2] = func_ov030_020c0184(arg0, *arg2, 1, 0xE2, 0x21);
-        func_ov030_020c01c4(EasyTask_GetTaskById(arg0, data->taskIds[2]), 1);
-        data->taskIds[3] = func_ov030_020bfee4(arg0, *arg2, 1);
+        data->taskIds[2] = Fld_TouchSeal_CreateTask(pool, *arg2, 1, 0xE2, 0x21);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[2]), 1);
+        data->taskIds[3] = Fld_TouchCommand_CreateTask(pool, *arg2, 1);
         data->unk1C      = 2;
-        data->taskIds[4] = func_ov030_020c04d8(arg0, *arg2, data->unk1C);
+        data->taskIds[4] = Fld_TouchCursor_CreateTask(pool, *arg2, data->unk1C);
     } else if (func_0202599c(2) != 0) {
-        func_ov030_020c01c4(EasyTask_GetTaskById(arg0, data->taskIds[1]), 1);
-        data->taskIds[3] = func_ov030_020bfee4(arg0, *arg2, 2);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[1]), 1);
+        data->taskIds[3] = Fld_TouchCommand_CreateTask(pool, *arg2, 2);
         data->unk1C      = 1;
-        data->taskIds[4] = func_ov030_020c04d8(arg0, *arg2, data->unk1C);
+        data->taskIds[4] = Fld_TouchCursor_CreateTask(pool, *arg2, data->unk1C);
     } else {
         data->taskIds[3] = -1;
         data->unk1C      = -1;
     }
     data->unk0 = *arg2;
     data->unk4 = 0;
-    func_ov030_020bf494(data);
-    func_ov030_020bf4b4(data);
+    Fld_Touch_ResetRubProgress(data);
+    Fld_Touch_ResetRubCounts(data);
     data->unk3C = -1;
     data->unk40 = -1;
     data->unk44 = 0;
@@ -158,7 +176,7 @@ s32 func_ov030_020bf4d4(TaskPool* arg0, Task* task, s32* arg2) {
     return 1;
 }
 
-s32 func_ov030_020bf660(Ov030TouchData* arg0, s32 arg1) {
+static s32 Fld_Touch_RubArea(Ov030TouchData* arg0, s32 arg1) {
     TouchCoord       pos;
     TouchCoord       coord;
     s32              result = 0;
@@ -189,13 +207,13 @@ s32 func_ov030_020bf660(Ov030TouchData* arg0, s32 arg1) {
         entry->value += 4;
         arg0->unk4C = arg1;
         if (entry->value >= 0x64) {
-            func_ov030_020bf494(arg0);
+            Fld_Touch_ResetRubProgress(arg0);
             if (arg1 == 6) {
                 Field_SetTouchEventResult(4);
                 Field_SetTouchEventTarget(0x17);
-            } else if (entry->count < data_ov030_020e6db0[arg1].b) {
+            } else if (entry->count < Fld_Touch_AreaEvents[arg1].b) {
                 Field_SetTouchEventResult(4);
-                Field_SetTouchEventTarget((s16)(entry->count + data_ov030_020e6db0[arg1].a));
+                Field_SetTouchEventTarget((s16)(entry->count + Fld_Touch_AreaEvents[arg1].a));
                 entry->count += 1;
             } else if (arg1 == 5) {
                 Field_SetTouchEventResult(1);
@@ -213,7 +231,7 @@ after:
     return result;
 }
 
-s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
+static s32 Fld_Touch_Update(TaskPool* pool, Task* task, void* args) {
     Ov030TouchData* data = task->data;
     s32             r5;
     s16             t0;
@@ -223,25 +241,25 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
     }
     EasyFade_FadeBothDisplays(0, 0, 0x1000);
     if (TouchInput_WasTouchPressed() != 0) {
-        r5 = func_ov030_020bf3e4(arg0, data);
+        r5 = Fld_Touch_FindTouchedSeal(pool, data);
         if (r5 != -1) {
-            func_ov030_020bf43c(arg0, data, r5);
+            Fld_Touch_SelectSeal(pool, data, r5);
             if (r5 == 0) {
                 Field_SetTouchEventResult(3);
                 SndMgr_PlaySEWithPan(0xC4, 0xE2);
                 data->unk48 = 1;
             } else if (r5 == 1) {
-                func_ov030_020bf494(data);
-                func_ov030_020bff68(EasyTask_GetTaskById(arg0, data->taskIds[3]), 2);
-                func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 1);
+                Fld_Touch_ResetRubProgress(data);
+                Fld_TouchCommand_SetCommand(EasyTask_GetTaskById(pool, data->taskIds[3]), 2);
+                Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 1);
                 if (data->unk1C != 1) {
                     Field_SetTouchEventResult(4);
                     Field_SetTouchEventTarget(0x19);
                     SndMgr_PlaySEWithPan(0xC4, 0x23);
                 }
             } else if (r5 == 2) {
-                func_ov030_020bff68(EasyTask_GetTaskById(arg0, data->taskIds[3]), 1);
-                func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 2);
+                Fld_TouchCommand_SetCommand(EasyTask_GetTaskById(pool, data->taskIds[3]), 1);
+                Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 2);
                 if (data->unk1C != 2) {
                     Field_SetTouchEventResult(4);
                     Field_SetTouchEventTarget(5);
@@ -253,31 +271,31 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
         } else {
             t0 = data->unk1C;
             if (t0 == 1) {
-                s16 id = func_ov030_020bf360();
+                s16 id = Fld_Touch_GetTouchedArea();
 
                 if (id != data->unk4C) {
                     Field_SetTouchEventResult(4);
-                    Field_SetTouchEventTarget((s16)(func_ov030_020bf360() + 0x1A));
+                    Field_SetTouchEventTarget((s16)(Fld_Touch_GetTouchedArea() + 0x1A));
                 }
-                data->unk4C = func_ov030_020bf360();
+                data->unk4C = Fld_Touch_GetTouchedArea();
             } else if (t0 == 2) {
-                r5 = func_ov030_020bf360();
+                r5 = Fld_Touch_GetTouchedArea();
                 if (r5 != data->unk4C && r5 != 6) {
                     Field_SetTouchEventResult(4);
                     Field_SetTouchEventTarget((s16)(r5 + 0x22));
                 }
-                data->unk4C = func_ov030_020bf360();
+                data->unk4C = Fld_Touch_GetTouchedArea();
             }
         }
     } else if (TouchInput_IsTouchActive() != 0 && data->unk1C == 2) {
-        r5 = func_ov030_020bf360();
+        r5 = Fld_Touch_GetTouchedArea();
         if (r5 == data->unk4C && data->unk4C != 6) {
-            func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 5);
+            Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 5);
         } else {
-            func_ov030_020c050c(EasyTask_GetTaskById(arg0, data->taskIds[4]), 2);
+            Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, data->taskIds[4]), 2);
         }
-        if (func_ov030_020bf660(data, r5) != 0 && data->unk4 == 0 && r5 != 6 && r5 == data->unk4C) {
-            func_ov030_020c0730(arg0, data->unk0);
+        if (Fld_Touch_RubArea(data, r5) != 0 && data->unk4 == 0 && r5 != 6 && r5 == data->unk4C) {
+            Fld_TouchShine_CreateTask(pool, data->unk0);
             data->unk4 = 5;
         }
     }
@@ -302,31 +320,36 @@ s32 func_ov030_020bf7c4(TaskPool* arg0, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020bfac0(void) {
+static s32 Fld_Touch_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bfac8(TaskPool* arg0, Task* task) {
+static s32 Fld_Touch_Destroy(TaskPool* pool, Task* task, void* args) {
     Ov030TouchData* data = task->data;
     s32             i    = 0;
 
     do {
         if (data->taskIds[i] != -1) {
-            EasyTask_DeleteTask(arg0, data->taskIds[i]);
+            EasyTask_DeleteTask(pool, data->taskIds[i]);
         }
         i++;
     } while (i < 5);
     return 1;
 }
 
-s32 func_ov030_020bfb08(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3) {
-    TaskStages stages = data_ov030_020e6da0;
+static s32 Fld_Touch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Touch_Init,
+        .update     = Fld_Touch_Update,
+        .render     = Fld_Touch_Render,
+        .cleanup    = Fld_Touch_Destroy,
+    };
 
-    return stages.iter[arg3](arg0, arg1, arg2);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bfb50(TaskPool* arg0, s32 arg1) {
+s32 Fld_Touch_CreateTask(TaskPool* pool, s32 arg1) {
     s32 param = arg1;
 
-    return EasyTask_CreateTask(arg0, &data_ov030_020e6d94, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Touch, NULL, 0, NULL, &param);
 }

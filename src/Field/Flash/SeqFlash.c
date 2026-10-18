@@ -1,3 +1,5 @@
+#include "Field/FieldRegion.h"
+
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
@@ -8,34 +10,19 @@
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/ResourceMgr.h"
-#include "Field/FlashPlayer.h"
-#include "Field/FlashRegion.h"
+#include "Field/Flash/FlashWrapper.h"
+#include "Field/Flash/SeqFlash.h"
+#include "Field/Flash/SeqFlashSel.h"
+#include "Field/Scene/FieldSeq.h"
 #include "Save.h"
 #include "SndMgr.h"
-#include "common_data.h"
 #include <nitro/gx.h>
 #include <nitro/mi.h>
-
-typedef struct {
-    /* 0x0 */ const char*    path;
-    /* 0x4 */ CriSndMgrAdxId bgm;
-} FlashMovie; // Size: 0x8
-
-typedef struct {
-    /* 0x0 */ s32               count;
-    /* 0x4 */ const FlashMovie* movies;
-    /* 0x8 */ const char*       name;
-} FlashSequence; // Size: 0xC
-
-#define FLASH_SEQUENCE_COUNT 83
+#include <nitro/mi/cpumem.h>
 
 // Movie bgm values past the real track ids.
 #define FLASH_BGM_STOP (ADX_COUNT)
 #define FLASH_BGM_KEEP (ADX_COUNT + 1)
-
-typedef struct {
-    /* 0x00000 */ ResourceManager resources;
-} SeqFlashState; // Size: 0x11580
 
 void SeqFlash_Init(SeqFlashState* state);
 void SeqFlash_Update(SeqFlashState* state);
@@ -842,7 +829,6 @@ extern void ProcessOverlay_Result(void);
 extern void ProcessOverlay_Save(void);
 extern u32  OVERLAY_41_ID;
 
-// JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
     #define SEQFLASH_OVL_RESULT    OVERLAY_44_ID
     #define SEQFLASH_OVL_STAFFROLL OVERLAY_42_ID
@@ -852,8 +838,6 @@ extern u32  OVERLAY_41_ID;
     #define SEQFLASH_OVL_STAFFROLL OVERLAY_41_ID
     #define SEQFLASH_OVL_SAVE      OVERLAY_42_ID
 #endif
-extern void func_ov030_020ae92c(void);
-extern void ProcessOverlay_FlashSel(void);
 
 static inline s32 SeqFlash_ClampBrightness(s32 brightness) {
     s32 value = brightness;

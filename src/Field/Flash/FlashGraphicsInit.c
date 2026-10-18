@@ -1,29 +1,21 @@
+#include "Field/Flash/FlashGraphicsInit.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
-#include "Field/FlashPlayer.h"
 #include "common_data.h"
 #include <nitro/g3.h>
 #include <nitro/mi/cpumem.h>
 #include <nitro/os/cpustat.h>
 
-extern void Interrupts_ForceVBlank(void);
 extern void func_0202b878(void);
 extern void GX_LoadBgPltt(const void* src, u32 offset, u32 size);
 extern void GX_LoadObjPltt(const void* src, u32 offset, u32 size);
 extern void GXs_LoadBgPltt(const void* src, u32 offset, u32 size);
 extern void GXs_LoadObjPltt(const void* src, u32 offset, u32 size);
 extern void G3i_OrthoW(fx32 top, fx32 bottom, fx32 left, fx32 right, fx32 near, fx32 far, fx32 scaleW, BOOL draw, void* mtx);
-
-void FlashGfx_InitDisplay(void);
-void FlashGfx_VBlank(void);
-void FlashGfx_ShowMainOnTop(void);
-void FlashGfx_ShowMainOnBottom(void);
-void FlashGfx_InitCaptureOam(void);
-void FlashGfx_SwapBuffers(void);
 
 BOOL      gFlashDrawBottomScreen = TRUE;
 BOOL      gFlashSwapPending;

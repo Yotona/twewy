@@ -5,7 +5,10 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include "Field/FieldDebug.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Wall.h"
+#include "Interface/Debug/Field/FieldDebug.h"
 #include "Save.h"
 #include "common_data.h"
 
@@ -18,7 +21,7 @@ extern s32  func_ov030_020b7b00(void);
 extern s32  func_ov030_020b7b40(void);
 extern s32  func_ov030_020b7b60(void);
 extern void func_ov030_020b7c58(s32 area, s32* arg1, s32* arg2, s32* arg3);
-extern void func_ov030_020c268c(s32 arg0);
+extern void Fld_Wall_SetAllExitStates(s32 arg0);
 extern s16  FieldNoise_GetTotalQuota(void);
 extern void func_ov030_020ae96c(s32 arg0);
 extern void ProcessOverlay_Flash(void);
@@ -166,7 +169,7 @@ void func_ov030_020b08b0(FieldSelectObject* object) {
     if (gSaveData.unk_2484 != 0) {
         gSaveData.noiseSymbolCount = FieldNoise_GetTotalQuota();
     }
-    func_ov030_020c26ec();
+    Field_ResetDayProgress();
     func_ov030_020b04ac(object);
 }
 
@@ -243,9 +246,9 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
         func_ov030_020ae96c(gSaveData.fieldArea);
         gSaveData.unk_24B4 = 0;
         if (gSaveData.unk_26EC != 0) {
-            func_ov030_020c268c(4);
+            Fld_Wall_SetAllExitStates(4);
         } else {
-            func_ov030_020c268c(0);
+            Fld_Wall_SetAllExitStates(0);
         }
         func_ov030_020b0878(object);
         MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
@@ -368,7 +371,7 @@ void func_ov030_020b0e4c(void) {
 
 void func_ov030_020b0e58(void) {
     gSaveData.unk_2484 = 1;
-    func_ov030_020c26ec();
+    Field_ResetDayProgress();
     gSaveData.unk_2488  = 1;
     gSaveData.unk_30FC  = 0;
     gSaveData.unk_30FE  = -1;

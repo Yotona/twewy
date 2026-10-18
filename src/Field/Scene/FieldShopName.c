@@ -1,3 +1,4 @@
+#include "Field/Scene/FieldShopName.h"
 #include "Util/SysFontMsgs.h"
 #include <nitro/types.h>
 
@@ -37,7 +38,7 @@ s32 func_ov030_020c5404(s32 index) {
     return data_ov030_020e7380[index - 70].unk_02;
 }
 
-s32 func_ov030_020c5430(s32 index) {
+u16 func_ov030_020c5430(s32 index) {
     if (index < 70 || index >= 89) {
         return 0;
     }

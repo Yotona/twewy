@@ -1,4 +1,6 @@
+#include "Field/Tasks/Fld_TalkEventDecide.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
@@ -9,22 +11,15 @@ typedef struct {
     /* 0x8 */ s16 animIndex;
 } Fld_TalkEventDecide_Args;
 
-extern const BinIdentifier data_ov030_020d9944;
-
-SpriteFrameInfo* Fld_TalkEventDecide_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-void             Fld_TalkEventDecide_Load(Sprite* sprite, Fld_TalkEventDecide_Args* args);
-s32              Fld_TalkEventDecide_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventDecide_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventDecide_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventDecide_Destroy(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventDecide_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Fld_TalkEventDecide_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_TalkEventDecide_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_TalkEventDecide = {"Tsk_Fld_TalkEventDecide", Fld_TalkEventDecide_RunTask, sizeof(Sprite)};
 static const SpriteAnimation Fld_TalkEventDecide_Anim = {
     .bits_0_1          = 1,
     .bits_7_9          = 5,
     .frameInfoCallback = Fld_TalkEventDecide_GetFrameInfo,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 7,
     .unk_1C            = 1,
@@ -35,11 +30,11 @@ static const SpriteAnimation Fld_TalkEventDecide_Anim = {
     .animIndex         = 8,
 };
 
-SpriteFrameInfo* Fld_TalkEventDecide_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_TalkEventDecide_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void Fld_TalkEventDecide_Load(Sprite* sprite, Fld_TalkEventDecide_Args* args) {
+static void Fld_TalkEventDecide_Load(Sprite* sprite, Fld_TalkEventDecide_Args* args) {
     SpriteAnimation anim = Fld_TalkEventDecide_Anim;
 
     anim.dataType  = args->dataType;
@@ -49,7 +44,7 @@ void Fld_TalkEventDecide_Load(Sprite* sprite, Fld_TalkEventDecide_Args* args) {
     _Sprite_Load(sprite, &anim);
 }
 
-s32 Fld_TalkEventDecide_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventDecide_Init(TaskPool* pool, Task* task, void* args) {
     Sprite* sprite = task->data;
 
     Fld_TalkEventDecide_Load(sprite, args);
@@ -57,24 +52,24 @@ s32 Fld_TalkEventDecide_Init(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_TalkEventDecide_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventDecide_Update(TaskPool* pool, Task* task, void* args) {
     Sprite* sprite = task->data;
 
     Sprite_Update(sprite);
     return Sprite_HasAnimation(sprite) != FALSE;
 }
 
-s32 Fld_TalkEventDecide_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventDecide_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_RenderFrame(task->data);
     return TRUE;
 }
 
-s32 Fld_TalkEventDecide_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventDecide_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Release(task->data);
     return TRUE;
 }
 
-s32 Fld_TalkEventDecide_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_TalkEventDecide_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_TalkEventDecide_Init,
         .update     = Fld_TalkEventDecide_Update,
@@ -94,7 +89,7 @@ s32 Fld_TalkEventDecide_CreateTask(TaskPool* pool, s32 dataType, s16 posX, s16 p
     return EasyTask_CreateTask(pool, &Tsk_Fld_TalkEventDecide, NULL, 0, NULL, &args);
 }
 
-s32 func_ov030_020c4810(TaskPool* pool, s32 dataType, s16 posX, s16 posY) {
+s32 Fld_TalkEventDecide_CreateSpeakerTask(TaskPool* pool, s32 dataType, s16 posX, s16 posY) {
     Fld_TalkEventDecide_Args args;
 
     args.dataType  = dataType;

@@ -9,7 +9,7 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
-#include "Field/FieldDebug.h"
+#include "Interface/Debug/Field/FieldDebug.h"
 #include "Util/SysFont.h"
 #include "common_data.h"
 

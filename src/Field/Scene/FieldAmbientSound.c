@@ -1,7 +1,7 @@
+#include "Field/Scene/FieldAmbientSound.h"
+#include "Field/Battle/FieldEncounter.h"
 #include "Save.h"
 #include "SndMgr.h"
-
-extern s32 func_ov030_020ac254(void);
 
 SndMgrSeIdx data_ov030_02109d7c;
 

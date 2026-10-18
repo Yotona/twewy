@@ -1,10 +1,12 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/EasyTask.h"
-#include "Engine/File/BinMgr.h"
-#include "Field/FieldTasks.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_WhichArrow.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
-extern BinIdentifier data_ov030_020d9944;
+extern void func_02026590(s32* value, s32 target, u16 frames);
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
@@ -20,11 +22,11 @@ typedef struct {
     /* 0x8 */ s32 unk_8;
 } Fld_WhichArrow_Args;
 
-SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_WhichArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_WhichArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle      Tsk_Fld_WhichArrow  = {"Tsk_Fld_WhichArrow", Fld_WhichArrow_RunTask, 0x4C};
-static const SpriteAnimation data_ov030_020ec938 = {
+static const SpriteAnimation Fld_WhichArrow_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -38,7 +40,7 @@ static const SpriteAnimation data_ov030_020ec938 = {
     .frameInfoCallback = Fld_WhichArrow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 12,
     .unk_1C            = 2,
@@ -51,12 +53,12 @@ static const SpriteAnimation data_ov030_020ec938 = {
     .animIndex         = 1,
 };
 
-SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_WhichArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void Fld_WhichArrow_Load(Sprite* sprite, Fld_WhichArrow_Args* arrowArgs, s16 arg2) {
-    SpriteAnimation anim = data_ov030_020ec938;
+static void Fld_WhichArrow_Load(Sprite* sprite, Fld_WhichArrow_Args* arrowArgs, s16 arg2) {
+    SpriteAnimation anim = Fld_WhichArrow_Anim;
     anim.dataType        = arrowArgs->dataType;
     anim.posY            = arg2;
     anim.animIndex       = arrowArgs->unk_6;
@@ -69,7 +71,7 @@ void Fld_WhichArrow_Load(Sprite* sprite, Fld_WhichArrow_Args* arrowArgs, s16 arg
     _Sprite_Load(sprite, &anim);
 }
 
-s32 Fld_WhichArrow_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_WhichArrow_Init(TaskPool* pool, Task* task, void* args) {
     Fld_WhichArrow*      arrow     = task->data;
     Fld_WhichArrow_Args* arrowArgs = args;
 
@@ -96,7 +98,7 @@ s32 Fld_WhichArrow_Init(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_WhichArrow_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_WhichArrow_Update(TaskPool* pool, Task* task, void* args) {
     Fld_WhichArrow* arrow = task->data;
 
     Sprite_Update(&arrow->sprite);
@@ -108,21 +110,21 @@ s32 Fld_WhichArrow_Update(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_WhichArrow_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_WhichArrow_Render(TaskPool* pool, Task* task, void* args) {
     Fld_WhichArrow* arrow = task->data;
 
     Sprite_RenderFrame(&arrow->sprite);
     return 1;
 }
 
-s32 Fld_WhichArrow_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_WhichArrow_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_WhichArrow* arrow = task->data;
 
     Sprite_Release(&arrow->sprite);
     return 1;
 }
 
-s32 Fld_WhichArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_WhichArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_WhichArrow_Init,
         .update     = Fld_WhichArrow_Update,

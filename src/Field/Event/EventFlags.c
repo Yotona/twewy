@@ -1,8 +1,6 @@
-#include "Field/EventFlags.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Scene/FieldArea.h"
 #include "Save.h"
-
-extern s32 func_ov030_020b7b40();
-extern s32 func_ov030_020b7b60();
 
 void FldGate_Set(EventGate gate) {
     s32 word_idx = gate / 32;

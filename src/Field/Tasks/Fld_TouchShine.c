@@ -1,10 +1,7 @@
-// Preliminary USA TU; original assembly remains linked (incomplete).
-// Range: 0x020c0534-0x020c0780; 10 functions.
-// Research draft: docs/decomp/ov030/Fld_TouchShine.c
-// Boundary evidence: docs/tu-boundaries/ov030.md.
-// Unassigned data stays in generated gaps; do not mark complete yet.
+#include "Field/Tasks/Fld_TouchShine.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
+#include "Field/Event/EventTables.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
@@ -12,19 +9,46 @@ typedef struct {
     /* 0x00 */ s32 dataType;
 } Ov030TouchShineConfig;
 
-typedef TaskStages Ov030TouchShineFns;
+static s16 Fld_TouchShine_ActiveCount;
 
-extern SpriteAnimation    data_ov030_020e6f50;
-extern Ov030TouchShineFns data_ov030_020e6f40;
-extern TaskHandle         data_ov030_020e6f34;
-extern s16                data_ov030_02109d74;
+static SpriteFrameInfo* Fld_TouchShine_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_TouchShine_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-SpriteFrameInfo* func_ov030_020c0534(Sprite* arg0, s32 arg1, s32 arg2) {
-    Sprite_FrameInfoCallback(arg0, arg2);
+static const TaskHandle Tsk_Fld_TouchShine = {"Tsk_Fld_TouchShine", Fld_TouchShine_RunTask, sizeof(Sprite)};
+
+static const SpriteAnimation Fld_TouchShine_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 0,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0400,
+    .posX              = 0,
+    .posY              = 0,
+    .frameInfoCallback = Fld_TouchShine_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldTouch,
+    .unk_18            = 2,
+    .packIndex         = 2,
+    .unk_1C            = 2,
+    .unk_1E            = 0,
+    .unk_20            = 1,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 3,
+    .unk_28            = 4,
+    .animIndex         = 4,
+};
+
+static SpriteFrameInfo* Fld_TouchShine_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void func_ov030_020c05d0(Sprite* arg0, Ov030TouchShineConfig* arg1) {
-    SpriteAnimation anim = data_ov030_020e6f50;
+static void Fld_TouchShine_Load(Sprite* sprite, Ov030TouchShineConfig* arg1) {
+    SpriteAnimation anim = Fld_TouchShine_Anim;
     TouchCoord      coord;
 
     anim.dataType = arg1->dataType;
@@ -32,51 +56,57 @@ void func_ov030_020c05d0(Sprite* arg0, Ov030TouchShineConfig* arg1) {
     anim.posX = coord.x;
     anim.posY = coord.y;
     SndMgr_PlaySEWithPan(0xC7, anim.posX);
-    _Sprite_Load(arg0, &anim);
+    _Sprite_Load(sprite, &anim);
 }
 
-void func_ov030_020c065c(TaskPool* arg0, Task* arg1, Ov030TouchShineConfig* arg2) {
-    Sprite* sprite = arg1->data;
+static s32 Fld_TouchShine_Init(TaskPool* pool, Task* task, void* args) {
+    Ov030TouchShineConfig* arg2   = args;
+    Sprite*                sprite = task->data;
 
-    data_ov030_02109d74 += 1;
-    func_ov030_020c05d0(sprite, arg2);
+    Fld_TouchShine_ActiveCount += 1;
+    Fld_TouchShine_Load(sprite, arg2);
 }
 
-s32 func_ov030_020c0684(TaskPool* arg0, Task* arg1) {
-    Sprite* sprite = arg1->data;
+static s32 Fld_TouchShine_Update(TaskPool* pool, Task* task, void* args) {
+    Sprite* sprite = task->data;
 
     Sprite_Update(sprite);
     return Sprite_HasAnimation(sprite) != 0;
 }
 
-s32 func_ov030_020c06ac(TaskPool* arg0, Task* arg1) {
-    Sprite_RenderFrame(arg1->data);
+static s32 Fld_TouchShine_Render(TaskPool* pool, Task* task, void* args) {
+    Sprite_RenderFrame(task->data);
     return 1;
 }
 
-s32 func_ov030_020c06c0(TaskPool* arg0, Task* arg1) {
-    Sprite_Release(arg1->data);
-    data_ov030_02109d74 -= 1;
+static s32 Fld_TouchShine_Destroy(TaskPool* pool, Task* task, void* args) {
+    Sprite_Release(task->data);
+    Fld_TouchShine_ActiveCount -= 1;
     return 1;
 }
 
-s32 func_ov030_020c06e8(TaskPool* arg0, Task* arg1, void* arg2, s32 arg3) {
-    Ov030TouchShineFns funcs = data_ov030_020e6f40;
+static s32 Fld_TouchShine_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_TouchShine_Init,
+        .update     = Fld_TouchShine_Update,
+        .render     = Fld_TouchShine_Render,
+        .cleanup    = Fld_TouchShine_Destroy,
+    };
 
-    return funcs.iter[arg3](arg0, arg1, arg2);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c0730(TaskPool* arg0, s32 arg1) {
+s32 Fld_TouchShine_CreateTask(TaskPool* pool, s32 arg1) {
     s32 param;
 
     param = arg1;
-    return EasyTask_CreateTask(arg0, &data_ov030_020e6f34, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_TouchShine, NULL, 0, NULL, &param);
 }
 
-void func_ov030_020c0760(s16 arg0) {
-    data_ov030_02109d74 = arg0;
+void Fld_TouchShine_SetActiveCount(s16 arg0) {
+    Fld_TouchShine_ActiveCount = arg0;
 }
 
-s16 func_ov030_020c0770(void) {
-    return data_ov030_02109d74;
+s16 Fld_TouchShine_GetActiveCount(void) {
+    return Fld_TouchShine_ActiveCount;
 }

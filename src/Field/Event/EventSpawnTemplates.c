@@ -1,15 +1,12 @@
-#include "Field/Events.h"
+#include "Field/Event/EventSpawnTemplates.h"
+#include "Field/Event/EventFlags.h"
 #include "Field/FieldTypes.h"
 #include "Save.h"
 #include <nitro/types.h>
 
 // clang-format off
-const FldSpawnTemplate data_ov030_020e2dac[1] = {
-    {{0x259000, 0xc5000}, 174, 1, 2193, -2, -2, 16, 0},
-};
-
-const FldSpawnTemplate data_ov030_020e2bec[1] = {
-    {{0x259000, 0xc5000}, 175, 1, 1963, -2, -2, 32, 0},
+const FldSpawnTemplate data_ov030_020e2d90[1] = {
+    {{0x32000, 0xaf000}, 165, 1, 227, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2b0c[1] = {
@@ -20,28 +17,28 @@ const FldSpawnTemplate data_ov030_020e294c[1] = {
     {{0x113000, 0x11d000}, 194, 1, 1066, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e28dc[1] = {
-    {{0x138000, 0x11b000}, 164, 1, 892, -2, -2, 0, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e2a2c[1] = {
     {{0x23e000, 0x103000}, 174, 1, 2015, -2, -2, 64, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2ccc[1] = {
+const FldSpawnTemplate data_ov030_020e28dc[1] = {
+    {{0x138000, 0x11b000}, 164, 1, 892, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2cb0[1] = {
     {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2c5c[1] = {
-    {{0xbf000, 0xc8000}, -1, 1, 612, -2, -2, 8, 0},
+const FldSpawnTemplate data_ov030_020e2c40[1] = {
+    {{0x1a9000, 0xec000}, 3, 2, 0, 14391, 14390, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2a9c[1] = {
     {{0x23e000, 0x103000}, 174, 1, 2072, -2, -2, 128, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2e1c[1] = {
-    {{0x9f000, 0xc3000}, 196, 1, 911, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2e00[1] = {
+    {{0x95000, 0xa6000}, 174, 2, 1991, -2, -2, 32, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e29bc[1] = {
@@ -52,12 +49,12 @@ const FldSpawnTemplate data_ov030_020e2984[1] = {
     {{0x284000, 0xd5000}, 174, 1, 2188, -2, -2, 2, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2de4[1] = {
-    {{0x6c000, 0xc3000}, 197, 1, 1071, -2, -2, 160, 32},
-};
-
 const FldSpawnTemplate data_ov030_020e2a64[1] = {
     {{0xfd000, 0x111000}, 167, 1, 1061, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2dc8[1] = {
+    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2b7c[1] = {
@@ -72,8 +69,12 @@ const FldSpawnTemplate data_ov030_020e2a48[1] = {
     {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2c24[1] = {
-    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2c08[1] = {
+    {{0x118000, 0x8d000}, 193, 1, 808, -2, -2, 32, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2d20[1] = {
+    {{0x16c000, 0xf4000}, 167, 1, 895, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2ad4[1] = {
@@ -100,20 +101,20 @@ const FldSpawnTemplate data_ov030_020e2b98[1] = {
     {{0x3e000, 0xc5000}, 174, 2, 2118, -2, -2, 16384, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2d3c[1] = {
-    {{0x109000, 0x11f000}, 196, 1, 0, -2, -2, 0, 0},
-};
-
-const FldSpawnTemplate data_ov030_020e2d04[1] = {
-    {{0x10a000, 0x160000}, 175, 2, 278, -2, -2, 64, 0},
-};
-
-const FldSpawnTemplate data_ov030_020e2c08[1] = {
-    {{0x118000, 0x8d000}, 193, 1, 808, -2, -2, 32, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e271c[1] = {
     {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2ce8[1] = {
+    {{0x12c000, 0x4b000}, -1, 1, 876, -2, -2, 3, 1},
+};
+
+const FldSpawnTemplate data_ov030_020e2bec[1] = {
+    {{0x259000, 0xc5000}, 175, 1, 1963, -2, -2, 32, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2a80[1] = {
+    {{0xef000, 0x19e000}, 204, 1, 886, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2914[1] = {
@@ -124,8 +125,8 @@ const FldSpawnTemplate data_ov030_020e28f8[1] = {
     {{0x24d000, 0x10c000}, 168, 1, 904, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2dc8[1] = {
-    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2dac[1] = {
+    {{0x259000, 0xc5000}, 174, 1, 2193, -2, -2, 16, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2968[1] = {
@@ -144,52 +145,52 @@ const FldSpawnTemplate data_ov030_020e263c[1] = {
     {{0xee000, 0xf8000}, -1, 1, 75, -2, -2, 1024, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2e54[1] = {
-    {{0x113000, 0x11d000}, 203, 1, 910, -2, -2, 0, 0},
-};
-
-const FldSpawnTemplate data_ov030_020e2a80[1] = {
-    {{0xef000, 0x19e000}, 204, 1, 886, -2, -2, 0, 0},
-};
-
-const FldSpawnTemplate data_ov030_020e2c94[1] = {
-    {{0x5b000, 0x8d000}, 182, 1, 1070, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2e38[1] = {
+    {{0xc3000, 0xe5000}, 174, 1, 1997, -2, -2, 256, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2c78[1] = {
     {{0xee000, 0x113000}, 163, 1, 1057, -2, -2, 0, 0},
 };
 
+const FldSpawnTemplate data_ov030_020e2c5c[1] = {
+    {{0xbf000, 0xc8000}, -1, 1, 612, -2, -2, 8, 0},
+};
+
 const FldSpawnTemplate data_ov030_020e278c[1] = {
     {{0xd7000, 0xd3000}, 170, 1, 898, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2ce8[1] = {
-    {{0x12c000, 0x4b000}, -1, 1, 876, -2, -2, 3, 1},
-};
-
-const FldSpawnTemplate data_ov030_020e2d74[1] = {
-    {{0x80000, 0x107000}, 165, 1, 1065, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2ccc[1] = {
+    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2d58[1] = {
     {{0x255000, 0x228000}, 175, 1, 2095, -2, -2, 4, 0},
 };
 
+const FldSpawnTemplate data_ov030_020e2d3c[1] = {
+    {{0x109000, 0x11f000}, 196, 1, 0, -2, -2, 0, 0},
+};
+
 const FldSpawnTemplate data_ov030_020e27fc[1] = {
     {{0x234000, 0xad000}, 174, 1, 2199, -2, -2, 256, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2c40[1] = {
-    {{0x1a9000, 0xec000}, 3, 2, 0, 14391, 14390, 0, 0},
+const FldSpawnTemplate data_ov030_020e2c24[1] = {
+    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e26c8[1] = {
     {{0x116000, 0x84000}, -1, 1, 593, -2, -2, 5, 1},
 };
 
-const FldSpawnTemplate data_ov030_020e2e38[1] = {
-    {{0xc3000, 0xe5000}, 174, 1, 1997, -2, -2, 256, 0},
+const FldSpawnTemplate data_ov030_020e2e1c[1] = {
+    {{0x9f000, 0xc3000}, 196, 1, 911, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e286c[1] = {
+    {{0x36d000, 0xa5000}, 174, 1, 430, -2, -2, 10240, 2048},
 };
 
 const FldSpawnTemplate data_ov030_020e24ec[1] = {
@@ -240,8 +241,8 @@ const FldSpawnTemplate data_ov030_020e2770[1] = {
     {{0x2f8000, 0xb3000}, 171, 1, 901, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e286c[1] = {
-    {{0x36d000, 0xa5000}, 174, 1, 430, -2, -2, 10240, 2048},
+const FldSpawnTemplate data_ov030_020e2540[1] = {
+    {{0x3e000, 0xc5000}, 174, 2, 2142, -2, -2, 4194304, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2604[1] = {
@@ -260,8 +261,8 @@ const FldSpawnTemplate data_ov030_020e2498[1] = {
     {{0x122000, 0x122000}, 172, 1, 1059, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2e00[1] = {
-    {{0x95000, 0xa6000}, 174, 2, 1991, -2, -2, 32, 0},
+const FldSpawnTemplate data_ov030_020e2de4[1] = {
+    {{0x6c000, 0xc3000}, 197, 1, 1071, -2, -2, 160, 32},
 };
 
 const FldSpawnTemplate data_ov030_020e29a0[1] = {
@@ -300,10 +301,6 @@ const FldSpawnTemplate data_ov030_020e2888[1] = {
     {{0x13c000, 0xa6000}, 174, 1, 0, -2, -2, 8, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2540[1] = {
-    {{0x3e000, 0xc5000}, 174, 2, 2142, -2, -2, 4194304, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e2428[1] = {
     {{0x122000, 0x122000}, 173, 1, 607, -2, -2, 4, 0},
 };
@@ -324,8 +321,8 @@ const FldSpawnTemplate data_ov030_020e27c4[1] = {
     {{0x15a000, 0x114000}, 163, 1, 889, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2cb0[1] = {
-    {{0x32000, 0xaf000}, 0, 1, 0, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2c94[1] = {
+    {{0x5b000, 0x8d000}, 182, 1, 1070, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e27e0[1] = {
@@ -340,8 +337,8 @@ const FldSpawnTemplate data_ov030_020e2444[1] = {
     {{0x9c000, 0xb1000}, 203, 1, 870, -2, -2, 1, 1},
 };
 
-const FldSpawnTemplate data_ov030_020e2d20[1] = {
-    {{0x16c000, 0xf4000}, 167, 1, 895, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2d04[1] = {
+    {{0x10a000, 0x160000}, 175, 2, 278, -2, -2, 64, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2818[1] = {
@@ -356,8 +353,8 @@ const FldSpawnTemplate data_ov030_020e2834[1] = {
     {{0x177000, 0x115000}, 168, 2, 0, 14139, 65536, 4, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e2d90[1] = {
-    {{0x32000, 0xaf000}, 165, 1, 227, -2, -2, 0, 0},
+const FldSpawnTemplate data_ov030_020e2d74[1] = {
+    {{0x80000, 0x107000}, 165, 1, 1065, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e2850[1] = {
@@ -386,6 +383,10 @@ const FldSpawnTemplate data_ov030_020e25cc[1] = {
 
 const FldSpawnTemplate data_ov030_020e28a4[1] = {
     {{0x116000, 0x84000}, -1, 1, 73, -2, -2, 512, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e2e54[1] = {
+    {{0x113000, 0x11d000}, 203, 1, 910, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e28c0[1] = {
@@ -541,6 +542,12 @@ const FldSpawnTemplate data_ov030_020e33e8[2] = {
 const FldSpawnTemplate data_ov030_020e3420[2] = {
     {{0xeb000, 0xaf000}, 203, 1, 0, -2, -2, 4, 0},
     {{0x116000, 0x84000}, -1, 1, 102, -2, -2, 3, 1},
+};
+
+const FldSpawnTemplate data_ov030_020e38f0[3] = {
+    {{0xee000, 0x113000}, 183, 2, 0, 14391, 14390, 0, 0},
+    {{0x160000, 0x1b2000}, 78, 2, 0, 14391, 14390, 0, 0},
+    {{0x14b000, 0x264000}, 150, 2, 0, 14391, 14390, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e3944[3] = {
@@ -699,12 +706,6 @@ const FldSpawnTemplate data_ov030_020e389c[3] = {
     {{0x116000, 0x84000}, -1, 2, 127, -2, -2, 128, 128},
 };
 
-const FldSpawnTemplate data_ov030_020e38f0[3] = {
-    {{0xee000, 0x113000}, 183, 2, 0, 14391, 14390, 0, 0},
-    {{0x160000, 0x1b2000}, 78, 2, 0, 14391, 14390, 0, 0},
-    {{0x14b000, 0x264000}, 150, 2, 0, 14391, 14390, 0, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e3d34[4] = {
     {{0x82000, 0xdc000}, 180, 2, 741, 14375, 14374, 0, 0},
     {{0xa0000, 0xdc000}, 179, 1, 741, 14375, 14374, 0, 0},
@@ -780,6 +781,14 @@ const FldSpawnTemplate data_ov030_020e4194[4] = {
     {{0x64000, 0xaf000}, 1, 2, 1427, -2, -2, 0, 0},
     {{0x96000, 0xaf000}, 2, 1, 9620, -2, -2, 0, 0},
     {{0xc8000, 0xaf000}, 2, 1, 1428, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e477c[5] = {
+    {{0x12c000, 0x3c000}, 152, 1, 0, 14097, 14096, 32, 0},
+    {{0x12c000, 0x3c000}, 152, 1, 0, 14099, 14098, 262176, 32},
+    {{0x12c000, 0x3c000}, 152, 1, 0, 14101, 14100, 294912, 262144},
+    {{0x12c000, 0x3c000}, 152, 1, 0, -2, -2, 163840, 32768},
+    {{0x12c000, 0x4b000}, 167, 1, 185, -2, -2, 163840, 32768},
 };
 
 const FldSpawnTemplate data_ov030_020e4808[5] = {
@@ -910,14 +919,6 @@ const FldSpawnTemplate data_ov030_020e46f0[5] = {
     {{0xf2000, 0x117000}, 167, 1, 9192, -2, -2, 18432, 2048},
 };
 
-const FldSpawnTemplate data_ov030_020e477c[5] = {
-    {{0x12c000, 0x3c000}, 152, 1, 0, 14097, 14096, 32, 0},
-    {{0x12c000, 0x3c000}, 152, 1, 0, 14099, 14098, 262176, 32},
-    {{0x12c000, 0x3c000}, 152, 1, 0, 14101, 14100, 294912, 262144},
-    {{0x12c000, 0x3c000}, 152, 1, 0, -2, -2, 163840, 32768},
-    {{0x12c000, 0x4b000}, 167, 1, 185, -2, -2, 163840, 32768},
-};
-
 const FldSpawnTemplate data_ov030_020e4b50[6] = {
     {{0x1c1000, 0xed000}, 205, 1, 737, -2, -2, 8, 8},
     {{0x48000, 0xd8000}, 45, 1, 0, 14391, 14390, 0, 0},
@@ -963,16 +964,6 @@ const FldSpawnTemplate data_ov030_020e4df0[6] = {
     {{0x7c000, 0x10b000}, 169, 1, 0, -2, -2, 768, 256},
 };
 
-const FldSpawnTemplate data_ov030_020e4f48[7] = {
-    {{0x168000, 0xc8000}, 173, 1, 0, -2, -2, 0, 0},
-    {{0x180000, 0xc8000}, 174, 1, 0, -2, -2, 0, 0},
-    {{0x198000, 0xc8000}, 175, 1, 0, -2, -2, 0, 0},
-    {{0x1b0000, 0xc8000}, 176, 1, 0, -2, -2, 0, 0},
-    {{0x1c8000, 0xc8000}, 177, 1, 0, -2, -2, 0, 0},
-    {{0x1e0000, 0xc8000}, 206, 1, 0, -2, -2, 0, 0},
-    {{0x1f8000, 0xc8000}, 207, 1, 0, -2, -2, 0, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e500c[7] = {
     {{0x39e000, 0x116000}, 166, 1, 0, 14215, 14214, 3072, 1024},
     {{0x39e000, 0x116000}, 166, 1, 0, 14217, 65536, 2052, 2048},
@@ -981,6 +972,16 @@ const FldSpawnTemplate data_ov030_020e500c[7] = {
     {{0x13d000, 0xed000}, 90, 1, 0, -2, -2, 0, 0},
     {{0x160000, 0xef000}, 138, 1, 0, -2, -2, 0, 0},
     {{0x183000, 0xf1000}, 150, 1, 0, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e4f48[7] = {
+    {{0x168000, 0xc8000}, 173, 1, 0, -2, -2, 0, 0},
+    {{0x180000, 0xc8000}, 174, 1, 0, -2, -2, 0, 0},
+    {{0x198000, 0xc8000}, 175, 1, 0, -2, -2, 0, 0},
+    {{0x1b0000, 0xc8000}, 176, 1, 0, -2, -2, 0, 0},
+    {{0x1c8000, 0xc8000}, 177, 1, 0, -2, -2, 0, 0},
+    {{0x1e0000, 0xc8000}, 206, 1, 0, -2, -2, 0, 0},
+    {{0x1f8000, 0xc8000}, 207, 1, 0, -2, -2, 0, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e50d0[8] = {
@@ -1051,19 +1052,6 @@ const FldSpawnTemplate data_ov030_020e554c[9] = {
     {{0x10b000, 0xf4000}, 205, 1, 0, -2, -2, 65536, 65536},
 };
 
-const FldSpawnTemplate data_ov030_020e5648[10] = {
-    {{0x32000, 0xec000}, 175, 1, 713, -2, -2, 64, 0},
-    {{0x82000, 0x116000}, 178, 1, 0, -2, -2, 64, 0},
-    {{0xb4000, 0xd0000}, 175, 2, 713, -2, -2, 64, 0},
-    {{0x120000, 0xf5000}, 178, 1, 0, -2, -2, 64, 0},
-    {{0x144000, 0x12e000}, 175, 2, 713, -2, -2, 64, 0},
-    {{0x1a8000, 0xde000}, 175, 1, 716, -2, -2, 3, 1},
-    {{0x1a8000, 0xde000}, 175, 1, 713, -2, -2, 66, 2},
-    {{0x1f8000, 0x126000}, 175, 2, 713, -2, -2, 64, 0},
-    {{0x256000, 0xde000}, 178, 1, 0, -2, -2, 64, 0},
-    {{0x273000, 0x126000}, 175, 2, 713, -2, -2, 64, 0},
-};
-
 const FldSpawnTemplate data_ov030_020e5760[10] = {
     {{0x78000, 0xc8000}, 163, 1, 0, -2, -2, 0, 0},
     {{0x90000, 0xc8000}, 164, 1, 0, -2, -2, 0, 0},
@@ -1075,6 +1063,19 @@ const FldSpawnTemplate data_ov030_020e5760[10] = {
     {{0x120000, 0xc8000}, 170, 1, 0, -2, -2, 0, 0},
     {{0x138000, 0xc8000}, 171, 1, 0, -2, -2, 0, 0},
     {{0x150000, 0xc8000}, 172, 1, 0, -2, -2, 0, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e5648[10] = {
+    {{0x32000, 0xec000}, 175, 1, 713, -2, -2, 64, 0},
+    {{0x82000, 0x116000}, 178, 1, 0, -2, -2, 64, 0},
+    {{0xb4000, 0xd0000}, 175, 2, 713, -2, -2, 64, 0},
+    {{0x120000, 0xf5000}, 178, 1, 0, -2, -2, 64, 0},
+    {{0x144000, 0x12e000}, 175, 2, 713, -2, -2, 64, 0},
+    {{0x1a8000, 0xde000}, 175, 1, 716, -2, -2, 3, 1},
+    {{0x1a8000, 0xde000}, 175, 1, 713, -2, -2, 66, 2},
+    {{0x1f8000, 0x126000}, 175, 2, 713, -2, -2, 64, 0},
+    {{0x256000, 0xde000}, 178, 1, 0, -2, -2, 64, 0},
+    {{0x273000, 0x126000}, 175, 2, 713, -2, -2, 64, 0},
 };
 
 const FldSpawnTemplate data_ov030_020e5878[11] = {
@@ -1108,24 +1109,6 @@ const FldSpawnTemplate data_ov030_020e59ac[14] = {
     {{0x1b0000, 0xc8000}, 192, 1, 0, -2, -2, 0, 0},
 };
 
-const FldSpawnTemplate data_ov030_020e5b34[15] = {
-    {{0x6a000, 0xbe000}, 204, 1, 656, -2, -2, 8, 0},
-    {{0x6a000, 0xbe000}, 204, 1, 692, -2, -2, 516, 512},
-    {{0x6a000, 0xbe000}, -1, 1, 659, -2, -2, 80, 16},
-    {{0x6a000, 0xbe000}, -1, 1, 672, -2, -2, 192, 64},
-    {{0x6a000, 0xbe000}, -1, 1, 681, -2, -2, 384, 128},
-    {{0x4d000, 0x105000}, -1, 1, 660, -2, -2, 80, 16},
-    {{0x4d000, 0x105000}, -1, 1, 673, -2, -2, 192, 64},
-    {{0x4d000, 0x105000}, -1, 1, 682, -2, -2, 384, 128},
-    {{0x1f5000, 0xbe000}, -1, 1, 661, -2, -2, 80, 16},
-    {{0x1f5000, 0xbe000}, -1, 1, 674, -2, -2, 192, 64},
-    {{0x1f5000, 0xbe000}, -1, 1, 683, -2, -2, 384, 128},
-    {{0x1f5000, 0xbe000}, -1, 1, 702, -2, -2, 7, 5},
-    {{0x1f5000, 0x102000}, -1, 1, 662, -2, -2, 80, 16},
-    {{0x1f5000, 0x102000}, -1, 1, 675, -2, -2, 192, 64},
-    {{0x1f5000, 0x102000}, -1, 1, 684, -2, -2, 384, 128},
-};
-
 const FldSpawnTemplate data_ov030_020e5cd8[15] = {
     {{0x22d000, 0xe0000}, 168, 1, 244, -2, -2, 2048, 0},
     {{0x22d000, 0xe0000}, 168, 1, 0, 14151, 14150, 6144, 2048},
@@ -1142,6 +1125,24 @@ const FldSpawnTemplate data_ov030_020e5cd8[15] = {
     {{0x77000, 0xf3000}, 202, 1, 254, -2, -2, 196608, 65536},
     {{0x1fd000, 0xf3000}, 202, 1, 262, -2, -2, 2097152, 2097152},
     {{0x1ad000, 0x80000}, 174, 2, 1949, -2, -2, 8, 0},
+};
+
+const FldSpawnTemplate data_ov030_020e5b34[15] = {
+    {{0x6a000, 0xbe000}, 204, 1, 656, -2, -2, 8, 0},
+    {{0x6a000, 0xbe000}, 204, 1, 692, -2, -2, 516, 512},
+    {{0x6a000, 0xbe000}, -1, 1, 659, -2, -2, 80, 16},
+    {{0x6a000, 0xbe000}, -1, 1, 672, -2, -2, 192, 64},
+    {{0x6a000, 0xbe000}, -1, 1, 681, -2, -2, 384, 128},
+    {{0x4d000, 0x105000}, -1, 1, 660, -2, -2, 80, 16},
+    {{0x4d000, 0x105000}, -1, 1, 673, -2, -2, 192, 64},
+    {{0x4d000, 0x105000}, -1, 1, 682, -2, -2, 384, 128},
+    {{0x1f5000, 0xbe000}, -1, 1, 661, -2, -2, 80, 16},
+    {{0x1f5000, 0xbe000}, -1, 1, 674, -2, -2, 192, 64},
+    {{0x1f5000, 0xbe000}, -1, 1, 683, -2, -2, 384, 128},
+    {{0x1f5000, 0xbe000}, -1, 1, 702, -2, -2, 7, 5},
+    {{0x1f5000, 0x102000}, -1, 1, 662, -2, -2, 80, 16},
+    {{0x1f5000, 0x102000}, -1, 1, 675, -2, -2, 192, 64},
+    {{0x1f5000, 0x102000}, -1, 1, 684, -2, -2, 384, 128},
 };
 // clang-format on
 
@@ -2146,3 +2147,14 @@ const FldSpawnTemplate* func_ov030_020baa2c(s32* arg0) {
     }
     return data_ov030_020e4e98[gSaveData.chapter](arg0);
 }
+
+const FldSpawnTemplate FieldDefaultSpawnTemplate = {
+    .pos    = {0, 0x10000},
+    .unk_08 = 0,
+    .unk_0A = 0,
+    .unk_0C = 0,
+    .unk_0E = -2,
+    .unk_10 = -2,
+    .unk_14 = 0,
+    .unk_18 = 0,
+};

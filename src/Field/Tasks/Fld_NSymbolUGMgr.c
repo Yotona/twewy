@@ -1,39 +1,34 @@
+#include "Field/Tasks/Fld_NSymbolUGMgr.h"
 #include "Engine/EasyTask.h"
-#include "Field/NSymbol.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Tasks/Fld_Chain.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_NSymbolUG.h"
 #include "Save.h"
+static s32 Fld_NSymbolUGMgr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-// USA 0x020c08ec-0x020c0bdc: the manager task that spawns and retires the scan
-// Noise symbols. Its task data (NsymUGMgr) holds up to 0x80 symbol task ids
-// followed by the chain-battle bookkeeping.
+NsymUGMgr* Fld_NSymbolUGMgr_Instance;
 
-typedef TaskStages NsymUGMgrFns;
+static const TaskHandle Tsk_Fld_NSymbolUGMgr = {"Tsk_Fld_NSymbolUGMgr", Fld_NSymbolUGMgr_RunTask, sizeof(NsymUGMgr)};
 
-extern TaskHandle   data_ov030_020e6f98;
-extern NsymUGMgrFns data_ov030_020e6fa4;
+static s32 Fld_NSymbolUGMgr_Init(TaskPool* pool, Task* task, void* args) {
+    s32*       params = args;
+    NsymUGMgr* data   = task->data;
 
-extern u32  func_ov030_020c2458(TaskPool* pool, s32 encounter, s32 counter);
-extern s32  Field_GetMaxChainedEncounters(void);
-extern void FieldScan_AddTime(s32 frames);
-extern s32  FieldScan_IsClosing(void);
-extern s32  FieldScan_IsBattleStarting(void);
-extern s32  FieldScan_IsEnteringBattle(void);
-
-s32 func_ov030_020c08ec(TaskPool* pool, Task* task, s32* args) {
-    NsymUGMgr* data = task->data;
-
-    data_ov030_02109d78   = data;
-    data->dataType        = *args;
-    data->dropRate        = gSaveData.playerStats.dropRate;
-    data->chainCount      = 1;
-    data->chainTaskId     = -1;
-    gSaveData.battleCount = 1;
-    data->count           = 0;
-    data->unk_218         = 0;
-    data->luckTaskId      = func_ov030_020c2010(pool, data->dataType, data->dropRate);
+    Fld_NSymbolUGMgr_Instance = data;
+    data->dataType            = *params;
+    data->dropRate            = gSaveData.playerStats.dropRate;
+    data->chainCount          = 1;
+    data->chainTaskId         = -1;
+    gSaveData.battleCount     = 1;
+    data->count               = 0;
+    data->unk_218             = 0;
+    data->luckTaskId          = Fld_Luck_CreateTask(pool, data->dataType, data->dropRate);
     return 1;
 }
 
-s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
+static s32 Fld_NSymbolUGMgr_Update(TaskPool* pool, Task* task, void* args) {
     NsymUGMgr* data = task->data;
     s32        i;
     s32        limit;
@@ -45,16 +40,16 @@ s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
     i = 0;
     if (data->count > 0) {
         do {
-            if (data->ids[i] != -1 && func_ov030_020bbc38(pool, data->ids[i]) != 0) {
+            if (data->ids[i] != -1 && Fld_NSymbolUG_IsNearPlayer(pool, data->ids[i]) != 0) {
                 if (gSaveData.battleCount < Field_GetMaxChainedEncounters() && FieldScan_IsBattleStarting() == 0) {
                     if (FieldScan_IsEnteringBattle() == 0) {
                         if (data->unk_218 == 0) {
-                            func_ov030_020bbdc4(pool, data->ids[i]);
+                            Fld_NSymbolUG_MarkDefeated(pool, data->ids[i]);
                             data->unk_218 = data->unk_218 + 1;
                         }
                         break;
                     }
-                    func_ov030_020bbdc4(pool, data->ids[i]);
+                    Fld_NSymbolUG_MarkDefeated(pool, data->ids[i]);
                     EasyTask_DeleteTask(pool, data->ids[i]);
                     data->ids[i]                                      = -1;
                     gSaveData.battleEncounters[gSaveData.battleCount] = gSaveData.scanSymbols[i].encounter;
@@ -68,13 +63,13 @@ s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
                     if (scaled >= 0x270F) {
                         data->dropRate = 0x270F;
                     }
-                    func_ov030_020c2070(pool, data->luckTaskId, data->dropRate);
+                    Fld_Luck_SetTarget(pool, data->luckTaskId, data->dropRate);
                     FieldScan_AddTime(0x14);
                     data->chainCount = data->chainCount + 1;
                     if (data->chainTaskId != -1) {
                         EasyTask_DeleteTask(pool, data->chainTaskId);
                     }
-                    data->chainTaskId = func_ov030_020c2458(pool, data->dataType, data->chainCount);
+                    data->chainTaskId = Fld_Chain_CreateTask(pool, data->dataType, data->chainCount);
                 } else {
                     break;
                 }
@@ -85,11 +80,11 @@ s32 func_ov030_020c0958(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c0adc(void) {
+static s32 Fld_NSymbolUGMgr_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020c0ae4(TaskPool* pool, Task* task) {
+static s32 Fld_NSymbolUGMgr_Destroy(TaskPool* pool, Task* task, void* args) {
     NsymUGMgr* data = task->data;
     s32        i;
 
@@ -106,19 +101,24 @@ s32 func_ov030_020c0ae4(TaskPool* pool, Task* task) {
     if (data->chainTaskId != -1) {
         EasyTask_DeleteTask(pool, data->chainTaskId);
     }
-    data_ov030_02109d78 = NULL;
+    Fld_NSymbolUGMgr_Instance = NULL;
     return 1;
 }
 
-s32 func_ov030_020c0b64(TaskPool* pool, Task* task, void* args, s32 stage) {
-    NsymUGMgrFns funcs = data_ov030_020e6fa4;
+static s32 Fld_NSymbolUGMgr_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_NSymbolUGMgr_Init,
+        .update     = Fld_NSymbolUGMgr_Update,
+        .render     = Fld_NSymbolUGMgr_Render,
+        .cleanup    = Fld_NSymbolUGMgr_Destroy,
+    };
 
-    return funcs.iter[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c0bac(TaskPool* pool, s32 arg1) {
+s32 Fld_NSymbolUGMgr_CreateTask(TaskPool* pool, s32 arg1) {
     s32 param;
 
     param = arg1;
-    return EasyTask_CreateTask(pool, &data_ov030_020e6f98, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_NSymbolUGMgr, NULL, 0, NULL, &param);
 }

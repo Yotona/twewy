@@ -1,11 +1,18 @@
+#include "Field/Flash/FO3DViewer.h"
 #include "Engine/Core/Memory.h"
-#include "Field/FO3D.h"
+#include "Field/FieldTypes.h"
+#include "Field/Flash/FO3D.h"
+#include "Field/Flash/FO3DObjMgr.h"
+#include "Field/Flash/FO3DRes.h"
+#include "Field/Flash/FO3DViewerImd.h"
+#include "Field/Flash/FOAllocator.h"
+#include "Field/Flash/FOFileList.h"
+#include "Field/Tasks/Fld_Shinigami.h"
 #include <nitro/fx.h>
 
 extern const char* FO3DViewer_ScenePaths[];
 extern const void* FO3DViewer_SceneSampleFrames[];
 extern const s32*  FO3DViewer_ScenePoints[];
-extern const s32   FO3DViewer_ScenePointCounts[];
 
 s32 FO3DViewer_GetExtraNodePos(const char* name, Vec* pos, s32 slot);
 
@@ -95,7 +102,7 @@ void FO3DViewer_LoadScene(s32 scene, BOOL replaceTexture) {
             FO3DObjMgr_SetTexture(FO3DRes_GetCurrent());
         }
     }
-    func_ov030_020cb21c(&gFO3DViewer->world, 0, coli);
+    Fld_Shinigami_SetWorld(&gFO3DViewer->world, 0, coli);
 }
 
 void FO3DViewer_LoadToVram(void) {

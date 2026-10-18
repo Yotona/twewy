@@ -1,10 +1,12 @@
-#include "Engine/EasyTask.h"
 #include "Field/FieldRegion.h"
+
+#include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_TalkEventTitle.h"
 #include "SpriteMgr.h"
 #include <nitro/types.h>
 
-extern void                func_020265d4(s32* value, s32 target, s32 duration);
-extern const BinIdentifier data_ov030_020d9944;
+extern void func_020265d4(s32* value, s32 target, s32 duration);
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
@@ -16,11 +18,6 @@ typedef struct {
 typedef struct {
     /* 0x0 */ s32 dataType;
 } Fld_TalkEventTitle_Args;
-
-s32              Fld_TalkEventTitle_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventTitle_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventTitle_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventTitle_Destroy(TaskPool* pool, Task* task, void* args);
 s32              Fld_TalkEventTitle_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 SpriteFrameInfo* Fld_TalkEventTitle_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 
@@ -41,7 +38,7 @@ static const SpriteAnimation Fld_TalkEventTitle_Anim = {
     .frameInfoCallback = Fld_TalkEventTitle_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 7,
     .unk_1C            = 1,

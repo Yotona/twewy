@@ -1,9 +1,9 @@
-#include "Field/FlashRegion.h"
+#include "Field/FieldRegion.h"
 
 extern "C" {
 #include <nitro/mi/cpumem.h>
 }
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashPlayer.h"
 
 BOOL data_ov030_0210a218[2];
 

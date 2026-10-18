@@ -1,14 +1,15 @@
-// USA 0x020bc068-0x020bc4b8: map-jump arrow task. A Sprite-based marker that
-// walks toward the selected destination; the task data begins with a 0x30-byte
-// spawn header (a by-value FldSpawnTemplate rides inside it) followed by the
-// arrow Sprite and the destination window task id.
+#include "Field/Tasks/Fld_MapJumpArrow.h"
 #include "Engine/EasyTask.h"
-#include "Field/Ov030Data.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Event/EventTables.h"
+#include "Field/FieldTypes.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_MapJumpName.h"
 #include "Save.h"
 #include "SpriteMgr.h"
 
-// Map-jump code remap entry (13 entries).
+// Map-jump code remap entry.
 typedef struct {
     /* 0x00 */ s16 key;
     /* 0x02 */ s16 val;
@@ -31,31 +32,28 @@ typedef struct {
     /* 0x7C */ s32         unk_7C;
 } MapJumpData; // Size: 0x80
 
-extern const char        data_ov030_02107300[];
-extern const FldMapEntry data_ov030_020e60a8[];
+static SpriteFrameInfo* Fld_MapJumpArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_MapJumpArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern u16 func_ov030_020b7c34(s32 area);
-extern s32 func_ov030_020aeadc(s16 arg0, s32 arg1);
-extern s32 func_ov030_020c501c(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 dataType, s32 code, s32 animIndex,
-                               s32 useBig);
+static const TaskHandle Tsk_Fld_MapJumpArrow = {"Tsk_Fld_MapJumpArrow", Fld_MapJumpArrow_RunTask, sizeof(MapJumpData)};
 
-SpriteFrameInfo* func_ov030_020bc068(Sprite* sprite, s32 arg1, s32 arg2);
-void             func_ov030_020bc104(Sprite* sprite, MapJumpData* data);
-s16              func_ov030_020bc1dc(s16 arg0);
-s32              func_ov030_020bc238(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bc324(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bc364(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bc3cc(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bc3f4(TaskPool* pool, Task* task, void* args, s32 stage);
-s32 func_ov030_020bc43c(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 dataType, FldSpawnTemplate tmpl, s32 destArea);
-
-const TaskHandle data_ov030_020e6060 = {data_ov030_02107300, func_ov030_020bc3f4, sizeof(MapJumpData)};
-
-const TaskStages data_ov030_020e606c = {
-    {func_ov030_020bc238, func_ov030_020bc324, func_ov030_020bc364, func_ov030_020bc3cc}
+static const FldMapEntry Fld_MapJumpArrow_MessageRemap[13] = {
+    {0x2D42, 0x2D57},
+    {0x2D43, 0x2D58},
+    {0x2D44, 0x2D59},
+    {0x2D45, 0x2D5A},
+    {0x2D46, 0x2D5B},
+    {0x2D47, 0x2D5C},
+    {0x2D48, 0x2D5D},
+    {0x2D49, 0x2D5E},
+    {0x2D4A, 0x2D5F},
+    {0x2D4B, 0x2D60},
+    {0x2D4C, 0x2D61},
+    {0x2D4D, 0x2D62},
+    {0x2D4E, 0x2D63},
 };
 
-const SpriteAnimation data_ov030_020e607c = {
+static const SpriteAnimation Fld_MapJumpArrow_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -66,10 +64,10 @@ const SpriteAnimation data_ov030_020e607c = {
     .unk_02.raw        = 0x0C00,
     .posX              = 0,
     .posY              = 0,
-    .frameInfoCallback = func_ov030_020bc068,
+    .frameInfoCallback = Fld_MapJumpArrow_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 3,
     .unk_1C            = 1,
@@ -82,12 +80,12 @@ const SpriteAnimation data_ov030_020e607c = {
     .animIndex         = 1,
 };
 
-SpriteFrameInfo* func_ov030_020bc068(Sprite* sprite, s32 arg1, s32 arg2) {
-    Sprite_FrameInfoCallback(sprite, arg2);
+static SpriteFrameInfo* Fld_MapJumpArrow_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Sprite_FrameInfoCallback(sprite, mode);
 }
 
-void func_ov030_020bc104(Sprite* sprite, MapJumpData* data) {
-    SpriteAnimation anim = data_ov030_020e607c;
+static void Fld_MapJumpArrow_Load(Sprite* sprite, MapJumpData* data) {
+    SpriteAnimation anim = Fld_MapJumpArrow_Anim;
 
     anim.dataType = data->hdr.dataType;
     anim.posX     = (data->pos.x - data->hdr.origin->x) >> 12;
@@ -105,22 +103,22 @@ void func_ov030_020bc104(Sprite* sprite, MapJumpData* data) {
     _Sprite_Load(sprite, &anim);
 }
 
-// Remaps a map-jump message code through data_ov030_020e60a8.
-s16 func_ov030_020bc1dc(s16 arg0) {
+// Remaps a map-jump message code through Fld_MapJumpArrow_MessageRemap.
+static s16 Fld_MapJumpArrow_RemapMessage(s16 arg0) {
     u32 i;
 
     if (arg0 == 0x2D42 && gSaveData.fieldArea == 0x13) {
         return 0x2D55;
     }
     for (i = 0; i < 0xD; i++) {
-        if (arg0 == data_ov030_020e60a8[i].key) {
-            return data_ov030_020e60a8[i].val;
+        if (arg0 == Fld_MapJumpArrow_MessageRemap[i].key) {
+            return Fld_MapJumpArrow_MessageRemap[i].val;
         }
     }
     return arg0;
 }
 
-s32 func_ov030_020bc238(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_MapJumpArrow_Init(TaskPool* pool, Task* task, void* args) {
     MapJumpData* data = task->data;
     s32          useBig;
     s16          code;
@@ -128,25 +126,25 @@ s32 func_ov030_020bc238(TaskPool* pool, Task* task, void* args) {
     data->hdr   = *(MapJumpArgs*)args;
     data->pos.x = data->hdr.pos.x;
     data->pos.y = data->hdr.pos.y;
-    func_ov030_020bc104(&data->sprite, data);
+    Fld_MapJumpArrow_Load(&data->sprite, data);
     useBig      = 0;
     data->timer = 0;
     if (data->hdr.destArea >= 0x46) {
         useBig = 1;
     }
     if (data->hdr.destArea >= 0x46) {
-        code = func_ov030_020bc1dc(func_ov030_020b7c34(data->hdr.destArea));
+        code = Fld_MapJumpArrow_RemapMessage(func_ov030_020b7c34(data->hdr.destArea));
     } else if (func_ov030_020aeadc((s16)data->hdr.destArea, 1) == 0) {
         code = 0x2D56;
     } else {
-        code = func_ov030_020bc1dc(func_ov030_020b7c34(data->hdr.destArea));
+        code = Fld_MapJumpArrow_RemapMessage(func_ov030_020b7c34(data->hdr.destArea));
     }
-    data->unk_7C = func_ov030_020c501c(pool, data->hdr.origin, data->pos, data->hdr.dataType, (s32)code,
-                                       (s32)data->hdr.tmpl.unk_0A, useBig);
+    data->unk_7C = Fld_MapJumpName_CreateTask(pool, data->hdr.origin, data->pos, data->hdr.dataType, (s32)code,
+                                              (s32)data->hdr.tmpl.unk_0A, useBig);
     return 1;
 }
 
-s32 func_ov030_020bc324(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_MapJumpArrow_Update(TaskPool* pool, Task* task, void* args) {
     MapJumpData* data = task->data;
 
     if ((data->timer & 3) == 0 && gSaveData.unk_2498 == 0) {
@@ -156,7 +154,7 @@ s32 func_ov030_020bc324(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bc364(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_MapJumpArrow_Render(TaskPool* pool, Task* task, void* args) {
     MapJumpData* data = task->data;
 
     if (FieldScan_IsOpen() != 0 || Field_IsTalkEventActive() != 0) {
@@ -168,7 +166,7 @@ s32 func_ov030_020bc364(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bc3cc(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_MapJumpArrow_Destroy(TaskPool* pool, Task* task, void* args) {
     MapJumpData* data = task->data;
 
     Sprite_Destroy(&data->sprite);
@@ -176,13 +174,19 @@ s32 func_ov030_020bc3cc(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bc3f4(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e606c;
+static s32 Fld_MapJumpArrow_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_MapJumpArrow_Init,
+        .update     = Fld_MapJumpArrow_Update,
+        .render     = Fld_MapJumpArrow_Render,
+        .cleanup    = Fld_MapJumpArrow_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bc43c(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 dataType, FldSpawnTemplate tmpl, s32 destArea) {
+s32 Fld_MapJumpArrow_CreateTask(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 dataType, FldSpawnTemplate tmpl,
+                                s32 destArea) {
     MapJumpArgs param;
 
     param.origin   = origin;
@@ -191,5 +195,5 @@ s32 func_ov030_020bc43c(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 data
     param.dataType = dataType;
     param.tmpl     = tmpl;
     param.destArea = destArea;
-    return EasyTask_CreateTask(pool, &data_ov030_020e6060, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_MapJumpArrow, NULL, 0, NULL, &param);
 }

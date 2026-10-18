@@ -1,5 +1,7 @@
+#include "Field/Tasks/Fld_Choice.h"
 #include "Engine/IO/TouchInput.h"
-#include "Field/FieldTasks.h"
+#include "Field/Tasks/Fld_TalkEventStringPlate.h"
+#include "Field/Tasks/Fld_WhichArrow.h"
 #include "SndMgr.h"
 
 typedef struct {
@@ -25,18 +27,18 @@ typedef struct {
     /* 0x8 */ s16* unk_8;
 } Fld_Choice_Args;
 
-static s32 func_ov030_020c8340(TaskPool* pool, Task* task);
-s32        Fld_Choice_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static s32 Fld_Choice_GetTouchedItem(TaskPool* pool, Task* task);
+static s32 Fld_Choice_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_Choice = {"Tsk_Fld_Choice", Fld_Choice_RunTask, 0x4C};
 
-void func_ov030_020c7fcc(TaskPool* pool, Task* task) {
+static void Fld_Choice_StateDone(TaskPool* pool, Task* task) {
     return;
 }
 
-void func_ov030_020c7fd0(TaskPool* pool, Task* task) {
+static void Fld_Choice_StateConfirm(TaskPool* pool, Task* task) {
     Fld_Choice* choice  = task->data;
-    s32         temp_r0 = func_ov030_020c8340(pool, task);
+    s32         temp_r0 = Fld_Choice_GetTouchedItem(pool, task);
 
     if (temp_r0 >= 0) {
         if (choice->unk_3A != temp_r0) {
@@ -46,26 +48,26 @@ void func_ov030_020c7fd0(TaskPool* pool, Task* task) {
             choice->unk_3A = (s16)temp_r0;
         } else {
             choice->unk_3C = (s16)temp_r0;
-            choice->unk_2C = func_ov030_020c7fcc;
+            choice->unk_2C = Fld_Choice_StateDone;
             SndMgr_StartPlayingSE(SEIDX_MENU_MSYSTEM_EXECUTE);
         }
     }
 }
 
-void func_ov030_020c8064(TaskPool* pool, Task* task) {
+static void Fld_Choice_StateSelect(TaskPool* pool, Task* task) {
     Fld_Choice* choice = task->data;
 
-    s32 temp_r0 = func_ov030_020c8340(pool, task);
+    s32 temp_r0 = Fld_Choice_GetTouchedItem(pool, task);
     if (temp_r0 >= 0) {
         choice->taskId_arrow =
             Fld_WhichArrow_CreateTask(pool, choice->dataType, (s16)(choice->unk_38 + ((s16)temp_r0 * 0x14)), 3, 0);
-        choice->unk_2C = func_ov030_020c7fd0;
+        choice->unk_2C = Fld_Choice_StateConfirm;
         choice->unk_3A = temp_r0;
     }
 }
 
 // Nonmatching
-void func_ov030_020c80cc(TaskPool* pool, Task* task) {
+static void Fld_Choice_StateOpen(TaskPool* pool, Task* task) {
     Fld_Choice* choice = task->data;
     s16         var_r8 = 0x60 - (s16)((choice->unk_30 - 1) * 10);
 
@@ -79,10 +81,10 @@ void func_ov030_020c80cc(TaskPool* pool, Task* task) {
     }
 
     choice->unk_04 = Fld_WhichArrow_CreateTask(pool, choice->dataType, (s16)(var_r8 - 0x14), 2, 0);
-    choice->unk_2C = func_ov030_020c8064;
+    choice->unk_2C = Fld_Choice_StateSelect;
 }
 
-s32 Fld_Choice_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Choice_Init(TaskPool* pool, Task* task, void* args) {
     Fld_Choice*      choice     = task->data;
     Fld_Choice_Args* choiceArgs = args;
 
@@ -91,12 +93,12 @@ s32 Fld_Choice_Init(TaskPool* pool, Task* task, void* args) {
     choice->unk_34       = choiceArgs->unk_8;
     choice->taskId_arrow = -1;
     choice->unk_3C       = -1;
-    choice->unk_2C       = func_ov030_020c80cc;
+    choice->unk_2C       = Fld_Choice_StateOpen;
     SndMgr_StartPlayingSE(SEIDX_EV_SE_SELECT_APPEAR);
     return 1;
 }
 
-s32 Fld_Choice_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Choice_Update(TaskPool* pool, Task* task, void* args) {
     Fld_Choice* choice = task->data;
 
     if (choice->unk_2C != NULL) {
@@ -105,11 +107,11 @@ s32 Fld_Choice_Update(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_Choice_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Choice_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_Choice_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Choice_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_Choice* choice = task->data;
 
     if (choice->taskId_arrow != -1) {
@@ -125,7 +127,7 @@ s32 Fld_Choice_Destroy(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_Choice_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_Choice_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_Choice_Init,
         .update     = Fld_Choice_Update,
@@ -143,7 +145,7 @@ s32 Fld_Choice_CreateTask(TaskPool* pool, s32 arg1, s16 arg2, s16* arg3) {
     return EasyTask_CreateTask(pool, &Tsk_Fld_Choice, NULL, 0, NULL, &args);
 }
 
-s32 func_ov030_020c8340(TaskPool* pool, Task* task) {
+s32 Fld_Choice_GetTouchedItem(TaskPool* pool, Task* task) {
     if (TouchInput_WasTouchPressed() == 0) {
         return -1;
     }
@@ -170,7 +172,7 @@ s32 func_ov030_020c8340(TaskPool* pool, Task* task) {
     return -1;
 }
 
-s16 func_ov030_020c83e8(TaskPool* pool, Task* task) {
+s16 Fld_Choice_GetResult(TaskPool* pool, Task* task) {
     Fld_Choice* choice = task->data;
 
     return choice->unk_3C;

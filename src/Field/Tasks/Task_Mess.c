@@ -1,3 +1,4 @@
+#include "Field/Tasks/Task_Mess.h"
 #include "Engine/EasyTask.h"
 #include "Util/SysFont.h"
 #include <nitro/mi/cpumem.h>
@@ -33,11 +34,11 @@ struct Task_Mess {
 
 extern s32 Task_Mess_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-void func_ov030_020ca1f4(Task_Mess* data) {
+static void Task_Mess_StateDone(Task_Mess* data) {
     data->active = FALSE;
 }
 
-void func_ov030_020ca200(Task_Mess* data) {
+static void Task_Mess_Setup(Task_Mess* data) {
     s32 minX;
     s32 minY;
     s32 width;
@@ -69,7 +70,7 @@ void func_ov030_020ca200(Task_Mess* data) {
     SysFont_SetPos(&data->font, (u16)x, (u16)y);
 }
 
-s32 func_ov030_020ca304(Task_Mess* data) {
+static s32 Task_Mess_DrawNext(Task_Mess* data) {
     BOOL (*isTerminator)();
 
     if (data->args.mode == 0) {
@@ -87,15 +88,15 @@ s32 func_ov030_020ca304(Task_Mess* data) {
 }
 
 // Nonmatching: argument/store scheduling in the pacing loop
-void func_ov030_020ca380(Task_Mess* data) {
+static void Task_Mess_StateDraw(Task_Mess* data) {
     if (*data->args.completionFlag == 0) {
         return;
     }
     if (data->delay == 0) {
         do {
             data->delay = data->args.mode;
-            if (func_ov030_020ca304(data) == 0) {
-                data->update = func_ov030_020ca1f4;
+            if (Task_Mess_DrawNext(data) == 0) {
+                data->update = Task_Mess_StateDone;
                 return;
             }
         } while (data->args.mode == 0);
@@ -104,19 +105,19 @@ void func_ov030_020ca380(Task_Mess* data) {
     }
 }
 
-void func_ov030_020ca3e4(Task_Mess* data) {}
+static void Task_Mess_StateIdle(Task_Mess* data) {}
 
-s32 Task_Mess_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Task_Mess_Init(TaskPool* pool, Task* task, void* args) {
     Task_Mess* data = task->data;
 
     MI_CpuCopyU8(args, &data->args, sizeof(data->args));
-    data->update = func_ov030_020ca3e4;
+    data->update = Task_Mess_StateIdle;
     data->active = TRUE;
-    func_ov030_020ca200(data);
+    Task_Mess_Setup(data);
     return TRUE;
 }
 
-s32 Task_Mess_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Task_Mess_Update(TaskPool* pool, Task* task, void* args) {
     Task_Mess* data = task->data;
 
     if (data->update != NULL) {
@@ -125,12 +126,12 @@ s32 Task_Mess_Update(TaskPool* pool, Task* task, void* args) {
     return data->active;
 }
 
-s32 Task_Mess_Render(TaskPool* pool, Task* task, void* args) {
-    func_ov030_020ca380(task->data);
+static s32 Task_Mess_Render(TaskPool* pool, Task* task, void* args) {
+    Task_Mess_StateDraw(task->data);
     return TRUE;
 }
 
-s32 Task_Mess_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Task_Mess_Destroy(TaskPool* pool, Task* task, void* args) {
     Task_Mess* data = task->data;
 
     SysFont_Destroy(&data->font);
@@ -139,7 +140,7 @@ s32 Task_Mess_Destroy(TaskPool* pool, Task* task, void* args) {
 
 const TaskHandle Tsk_Task_Mess = {"Task_Mess", Task_Mess_RunTask, sizeof(Task_Mess)};
 
-s32 Task_Mess_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Task_Mess_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Task_Mess_Init,
         .update     = Task_Mess_Update,

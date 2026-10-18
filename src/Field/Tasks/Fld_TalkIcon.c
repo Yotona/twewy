@@ -1,12 +1,11 @@
+#include "Field/Tasks/Fld_TalkIcon.h"
 #include "Engine/EasyTask.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Event/EventTables.h"
+#include "Field/FieldTypes.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
-
-// USA 0x020baa64-0x020bad80: the field talk-icon sprite task, a Sprite that
-// follows a screen position (raised by scale * height). A SpriteAnimation
-// template at data_ov030_020e5eb4 is copied and patched per spawned icon.
 
 typedef struct {
     /* 0x00 */ Sprite    sprite;
@@ -23,43 +22,70 @@ typedef struct {
     /* 0x10 */ s32       animIndex;
 } TalkIconArgs; // Size: 0x14
 
-typedef TaskStages TalkIconFns;
+static SpriteFrameInfo* Fld_TalkIcon_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_TalkIcon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern SpriteAnimation data_ov030_020e5eb4;
-extern TalkIconFns     data_ov030_020e5ea4;
-extern TaskHandle      data_ov030_020e5e98;
+static const TaskHandle Tsk_Fld_TalkIcon = {"Tsk_Fld_TalkIcon", Fld_TalkIcon_RunTask, sizeof(TalkIconSprite)};
 
-SpriteFrameInfo* func_ov030_020baa64(Sprite* sprite, s32 arg, s32 mode) {
+static const SpriteAnimation Fld_TalkIcon_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 1,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0C00,
+    .posX              = 0,
+    .posY              = 0,
+    .frameInfoCallback = Fld_TalkIcon_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldDownScreen,
+    .unk_18            = 2,
+    .packIndex         = 2,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 7,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .animIndex         = 1,
+};
+
+static SpriteFrameInfo* Fld_TalkIcon_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackWith(sprite, mode, temp_->sortKey = 0xC0 - sprite->posY)
 }
 
-void func_ov030_020bab0c(Sprite* sprite, TalkIconArgs* args) {
-    SpriteAnimation anim = data_ov030_020e5eb4;
+static void Fld_TalkIcon_Load(Sprite* sprite, TalkIconArgs* args) {
+    SpriteAnimation anim = Fld_TalkIcon_Anim;
 
     anim.dataType  = args->dataType;
     anim.animIndex = args->animIndex;
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020bab80(TaskPool* pool, Task* task, TalkIconArgs* args) {
+static s32 Fld_TalkIcon_Init(TaskPool* pool, Task* task, void* args) {
+    TalkIconArgs*   params = args;
     TalkIconSprite* sprite = task->data;
 
-    sprite->screen = args->screen;
-    sprite->scale  = args->scale;
-    sprite->height = args->height;
-    func_ov030_020bab0c(&sprite->sprite, args);
+    sprite->screen = params->screen;
+    sprite->scale  = params->scale;
+    sprite->height = params->height;
+    Fld_TalkIcon_Load(&sprite->sprite, params);
     if (SndMgr_IsSEPlaying((SndMgrSeIdx)0xC3) == 0 && gSaveData.unk_2498 == 0) {
         SndMgr_StartPlayingSE((SndMgrSeIdx)0xC3);
     }
     return 1;
 }
 
-s32 func_ov030_020babd8(TaskPool* pool, Task* task) {
+static s32 Fld_TalkIcon_Update(TaskPool* pool, Task* task, void* args) {
     Sprite_UpdateAndCheck(task->data);
     return 1;
 }
 
-s32 func_ov030_020babec(TaskPool* pool, Task* task) {
+static s32 Fld_TalkIcon_Render(TaskPool* pool, Task* task, void* args) {
     TalkIconSprite* sprite = task->data;
     s32             offset = (s32)(((s64)sprite->height * *sprite->scale + 0x800) >> 0xC);
 
@@ -71,18 +97,23 @@ s32 func_ov030_020babec(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020bac54(TaskPool* pool, Task* task) {
+static s32 Fld_TalkIcon_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Destroy(task->data);
     return 1;
 }
 
-s32 func_ov030_020bac68(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TalkIconFns funcs = data_ov030_020e5ea4;
+static s32 Fld_TalkIcon_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_TalkIcon_Init,
+        .update     = Fld_TalkIcon_Update,
+        .render     = Fld_TalkIcon_Render,
+        .cleanup    = Fld_TalkIcon_Destroy,
+    };
 
-    return funcs.iter[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bacb0(TaskPool* pool, s32 dataType, FieldPos* screen, s32* scale, s32 height, s32 animIndex) {
+s32 Fld_TalkIcon_CreateTask(TaskPool* pool, s32 dataType, FieldPos* screen, s32* scale, s32 height, s32 animIndex) {
     TalkIconArgs params;
 
     params.dataType  = dataType;
@@ -90,10 +121,10 @@ s32 func_ov030_020bacb0(TaskPool* pool, s32 dataType, FieldPos* screen, s32* sca
     params.scale     = scale;
     params.height    = height;
     params.animIndex = animIndex;
-    return EasyTask_CreateTask(pool, &data_ov030_020e5e98, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_TalkIcon, NULL, 0, NULL, &params);
 }
 
-void func_ov030_020bacf8(Task* task) {
+void Fld_TalkIcon_Highlight(Task* task) {
     TalkIconSprite* sprite = task->data;
 
     if (sprite->sprite.animIndex == 1) {
@@ -103,7 +134,7 @@ void func_ov030_020bacf8(Task* task) {
     }
 }
 
-void func_ov030_020bad3c(Task* task) {
+void Fld_TalkIcon_Unhighlight(Task* task) {
     TalkIconSprite* sprite = task->data;
 
     if (sprite->sprite.animIndex == 2) {

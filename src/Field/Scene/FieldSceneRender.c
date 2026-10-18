@@ -1,8 +1,5 @@
-// Preliminary USA TU; original assembly remains linked (incomplete).
-// Range: 0x020b5c58-0x020b69f4; 21 functions.
-// Research draft: docs/decomp/ov030/Field_020b5c58.c
-// Boundary evidence: docs/tu-boundaries/ov030.md.
-// Unassigned data stays in generated gaps; do not mark complete yet.
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -13,15 +10,24 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Field/Flash/FO3DRes.h"
+#include "Field/Flash/FOAllocator.h"
+#include "Field/Scene/FieldSceneLoad.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Tasks/Fld_Human.h"
 #include "Save.h"
+#include "common_data.h"
 
-#include "Field/FldHuman.h"
-#include "Field/Ov030Data.h"
-#include "Field/TaskHelpers.h"
 #include <nitro/fx/fx_matrix.h>
 #include <nitro/g3.h>
 
-// ---- externs without headers -------------------------------------------------
+extern void func_020267e0(s32 arg0);
+extern void func_0202688c(void);
+extern void func_02027b0c(s32 arg0, s32 arg1);
+extern void func_02028a44(void);
+extern void func_02028ad0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+extern void func_02028b0c(s32 arg0, s32 arg1);
+
 extern void                 func_020281c0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 extern void                 func_02028250(void* arg0);
 extern void                 func_020283c4(void* arg0, s32 arg1);
@@ -35,14 +41,8 @@ extern void                 func_0202bae4(s32 arg0, s32 arg1);
 extern struct G3dResMdlSet* func_0202bd4c(s32 arg0);
 extern s32                  func_0202bd5c(s32 arg0);
 extern s32                  func_0202bd9c(s32 arg0, s32 arg1);
-extern void                 func_ov030_020b7400(void);
-extern void                 func_ov030_020b6dec(void* arg0);
-extern void                 FOAllocator_Init(void);
-extern s32                  FOAllocator_Get(void);
-extern s32                  FO3DRes_GetModelCount(s32 arg0);
 extern void                 G3X_ResetMtxStack(void);
 
-// ---- local data views --------------------------------------------------------
 // NitroSystem G3D resource dictionary (NNSG3dResDict) heading a model set.
 typedef struct {
     /* 0x0 */ u8  revision;
@@ -70,7 +70,7 @@ static inline void* G3dResMdlSet_GetModel(G3dResMdlSet* set, s32 idx) {
     return (u8*)set + *(u32*)&hdr->data[hdr->sizeUnit * idx];
 }
 
-// +0x1349C render transform object (angles + fixed-point matrix).
+// Render transform object (angles + fixed-point matrix).
 typedef struct {
     /* 0x00 */ s32 unk00;
     /* 0x04 */ s32 unk04;
@@ -103,9 +103,8 @@ typedef struct {
     /* 0x08 */ s32 unk8;
 } Ov030B5Sub; // Size: 0xC
 
-// The frame-count table an Ov030B5Anim attaches to.  Only the halfword at +4
-// is read here: func_ov030_020b6728 wraps the animation's 12.4 fixed-point
-// position (Ov030B5Anim::unk0) at frameCount frames.
+// The frame-count table an Ov030B5Anim attaches to; the animation's 12.4
+// fixed-point position wraps at frameCount frames.
 typedef struct {
     /* 0x00 */ u8  pad00[4];
     /* 0x04 */ u16 frameCount;
@@ -119,17 +118,13 @@ typedef struct Ov030B5Anim {
     /* 0x8 */ Ov030B5AnimData* unk8;
 } Ov030B5Anim;
 
-// One render layer of the field scene: a 0x54-byte engine-side record holding
-// one attached sprite animation.  This module never touches its fields -- it
-// hands the record to the engine (func_02028250 / func_020283c4 /
-// func_02029270) -- but it walks the 64-record slab at +0x11588 one record per
-// loop iteration, so the stride is the element size.
+// One render layer of the field scene: an engine-side record holding one
+// attached sprite animation.
 typedef struct {
     /* 0x00 */ u8 pad00[0x54];
 } Ov030B5SpriteLayer; // Size: 0x54
 
-// One field-data record: 5 pack identifiers, then two fixed-point camera
-// offsets (both s32 in the retail loads).
+// One field-data record: 5 pack identifiers, then two fixed-point camera offsets.
 typedef struct {
     /* 0x00 */ BinIdentifier binIdens[5];
     /* 0x28 */ s32           unk28;
@@ -138,7 +133,7 @@ typedef struct {
 
 // Field task root: resource managers, four 64-entry sprite pointer arrays, the
 // five loaded pack identifiers, the render transform and the camera block.
-typedef struct {
+typedef struct Ov030B5C58Root {
     /* 0x00000 */ ResourceManager    resources;
     /* 0x11580 */ ResourceManager*   prevResources;
     /* 0x11584 */ u8                 pad11584[0x11588 - 0x11584];
@@ -162,9 +157,6 @@ typedef struct {
     /* 0x1352C */ s32                unk1352C;
 } Ov030B5C58Root;
 
-extern s16 data_0205e4e0[];
-extern s16 data_02066aec;
-extern s16 data_02066eec;
 extern Vec data_ov030_020e0940;
 extern void (*data_ov030_020e094c[])(void*);
 extern char*          data_ov030_02106558;
@@ -173,7 +165,6 @@ extern Ov030FieldRec* data_ov030_0210655c[];
 extern void func_ov030_020b5dc4(Ov030RenderObj* arg0);
 extern void func_ov030_020b6534(Ov030B5Sub* arg0, s32 arg1);
 
-// ---- functions ---------------------------------------------------------------
 s32 func_ov030_020b5c58(FldHuman* human) {
     TouchCoord coord;
     s32        limitX;
@@ -257,15 +248,15 @@ void func_ov030_020b5dc4(Ov030RenderObj* arg0) {
     u16 b = arg0->unk6E;
     u16 c = arg0->unk70;
 
-    arg0->unk14 = (data_0205e4e0[(a >> 4) * 2 + 1] * arg0->unk68) >> 0xC;
-    arg0->unk18 = (data_0205e4e0[(a >> 4) * 2] * arg0->unk68) >> 0xC;
-    arg0->unk1C = (data_0205e4e0[(a >> 4) * 2 + 1] * arg0->unk68) >> 0xC;
-    arg0->unk14 = (arg0->unk14 * data_0205e4e0[(b >> 4) * 2] + arg0->unk20) >> 0xC;
+    arg0->unk14 = (FX_SinCosTable_[(a >> 4) * 2 + 1] * arg0->unk68) >> 0xC;
+    arg0->unk18 = (FX_SinCosTable_[(a >> 4) * 2] * arg0->unk68) >> 0xC;
+    arg0->unk1C = (FX_SinCosTable_[(a >> 4) * 2 + 1] * arg0->unk68) >> 0xC;
+    arg0->unk14 = (arg0->unk14 * FX_SinCosTable_[(b >> 4) * 2] + arg0->unk20) >> 0xC;
     arg0->unk18 = arg0->unk18 + arg0->unk24;
-    arg0->unk1C = (arg0->unk1C * data_0205e4e0[(b >> 4) * 2 + 1] + arg0->unk28) >> 0xC;
-    arg0->unk2C = (s32)(((s64)data_0205e4e0[(c >> 4) * 2] * data_0205e4e0[(b >> 4) * 2 + 1] + 0x800) >> 0xC);
-    arg0->unk30 = data_0205e4e0[(c >> 4) * 2 + 1];
-    arg0->unk34 = -(s32)(((s64)data_0205e4e0[(c >> 4) * 2] * data_0205e4e0[(b >> 4) * 2] + 0x800) >> 0xC);
+    arg0->unk1C = (arg0->unk1C * FX_SinCosTable_[(b >> 4) * 2 + 1] + arg0->unk28) >> 0xC;
+    arg0->unk2C = (s32)(((s64)FX_SinCosTable_[(c >> 4) * 2] * FX_SinCosTable_[(b >> 4) * 2 + 1] + 0x800) >> 0xC);
+    arg0->unk30 = FX_SinCosTable_[(c >> 4) * 2 + 1];
+    arg0->unk34 = -(s32)(((s64)FX_SinCosTable_[(c >> 4) * 2] * FX_SinCosTable_[(b >> 4) * 2] + 0x800) >> 0xC);
 }
 
 void func_ov030_020b5ed4(Ov030RenderObj* arg0) {

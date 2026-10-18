@@ -1,7 +1,6 @@
-// USA TU; original assembly remains linked (incomplete).
-// Range: 0x020c3380-0x020c36d0; 9 functions.
-// Research draft: docs/decomp/ov030/Fld_TalkEventTouch.c
+#include "Field/Tasks/Fld_TalkEventTouch.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
@@ -16,16 +15,45 @@ typedef struct {
     /* 0x08 */ s32 style;
 } Ov030TalkParams;
 
-extern TaskHandle      data_ov030_020e7124;
-extern TaskStages      data_ov030_020e7130;
-extern SpriteAnimation data_ov030_020e7140;
+static SpriteFrameInfo* Fld_TalkEventTouch_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_TalkEventTouch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-SpriteFrameInfo* func_ov030_020c3380(Sprite* sprite, s32 arg, s32 mode) {
+static const TaskHandle Tsk_Fld_TalkEventTouch = {"Tsk_Fld_TalkEventTouch", Fld_TalkEventTouch_RunTask,
+                                                  sizeof(Ov030TalkTouch)};
+
+static const SpriteAnimation Fld_TalkEventTouch_Anim = {
+    .bits_0_1          = 1,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0000,
+    .posX              = 0,
+    .posY              = 0,
+    .frameInfoCallback = Fld_TalkEventTouch_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldDownScreen,
+    .unk_18            = 2,
+    .packIndex         = 7,
+    .unk_1C            = 1,
+    .unk_1E            = 0,
+    .unk_20            = 4,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 2,
+    .unk_28            = 3,
+    .animIndex         = 6,
+};
+
+static SpriteFrameInfo* Fld_TalkEventTouch_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackWith(sprite, mode, temp_->sortKey = 0x12)
 }
 
-void func_ov030_020c3424(Sprite* sprite, Ov030TalkParams* params, s16 part) {
-    SpriteAnimation anim = data_ov030_020e7140;
+static void Fld_TalkEventTouch_LoadPart(Sprite* sprite, Ov030TalkParams* params, s16 part) {
+    SpriteAnimation anim = Fld_TalkEventTouch_Anim;
 
     anim.dataType = params->dataType;
     anim.posX     = params->x;
@@ -51,17 +79,18 @@ void func_ov030_020c3424(Sprite* sprite, Ov030TalkParams* params, s16 part) {
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020c3510(TaskPool* pool, Task* task, Ov030TalkParams* params) {
-    Ov030TalkTouch* touch = task->data;
-    s16             i;
+static s32 Fld_TalkEventTouch_Init(TaskPool* pool, Task* task, void* args) {
+    Ov030TalkParams* params = args;
+    Ov030TalkTouch*  touch  = task->data;
+    s16              i;
 
     for (i = 1; i >= 0; i--) {
-        func_ov030_020c3424(&touch->sprites[i], params, i);
+        Fld_TalkEventTouch_LoadPart(&touch->sprites[i], params, i);
     }
     return 1;
 }
 
-s32 func_ov030_020c3550(TaskPool* pool, Task* task) {
+static s32 Fld_TalkEventTouch_Update(TaskPool* pool, Task* task, void* args) {
     Ov030TalkTouch* touch = task->data;
     s16             i;
 
@@ -74,7 +103,7 @@ s32 func_ov030_020c3550(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c35a4(TaskPool* pool, Task* task) {
+static s32 Fld_TalkEventTouch_Render(TaskPool* pool, Task* task, void* args) {
     Ov030TalkTouch* touch = task->data;
     s16             i;
 
@@ -84,7 +113,7 @@ s32 func_ov030_020c35a4(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c35d8(TaskPool* pool, Task* task) {
+static s32 Fld_TalkEventTouch_Destroy(TaskPool* pool, Task* task, void* args) {
     Ov030TalkTouch* touch = task->data;
     s16             i;
 
@@ -94,28 +123,33 @@ s32 func_ov030_020c35d8(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020c360c(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e7130;
+static s32 Fld_TalkEventTouch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_TalkEventTouch_Init,
+        .update     = Fld_TalkEventTouch_Update,
+        .render     = Fld_TalkEventTouch_Render,
+        .cleanup    = Fld_TalkEventTouch_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c3654(TaskPool* pool, s32 dataType, s16 x, s16 y) {
+s32 Fld_TalkEventTouch_CreateTask(TaskPool* pool, s32 dataType, s16 x, s16 y) {
     Ov030TalkParams params;
 
     params.x        = x;
     params.dataType = dataType;
     params.y        = y;
     params.style    = 0;
-    return EasyTask_CreateTask(pool, &data_ov030_020e7124, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_TalkEventTouch, NULL, 0, NULL, &params);
 }
 
-s32 func_ov030_020c3690(TaskPool* pool, s32 dataType, s16 x, s16 y) {
+s32 Fld_TalkEventTouch_CreateKeywordTask(TaskPool* pool, s32 dataType, s16 x, s16 y) {
     Ov030TalkParams params;
 
     params.dataType = dataType;
     params.x        = x;
     params.style    = 1;
     params.y        = y;
-    return EasyTask_CreateTask(pool, &data_ov030_020e7124, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_TalkEventTouch, NULL, 0, NULL, &params);
 }

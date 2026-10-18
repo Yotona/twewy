@@ -1,20 +1,25 @@
+#include "Field/Tasks/Fld_Partner.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
-#include "Field/FieldChara.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/FieldTypes.h"
+#include "Field/Tasks/FldChara.h"
+#include "Field/Tasks/FldCharaWalk.h"
+#include "Field/Tasks/Fld_BattleIn.h"
+#include "Field/Tasks/Fld_Shinigami.h"
+#include "Field/Tasks/Fld_TalkIcon.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
+#include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
-// USA 0x020bc4b8-0x020bd364: the field partner follower (walk cycle task).
-// The task data is a Sprite (offset 0) extended with partner state: a fixed
-// point position triple relative to the player, a wander/chase state machine
-// driven through the callback at 0x60, and two optional sub-task IDs. The
-// wander direction tables data_ov030_020e6124/020e6144 hold 8 compass angles;
-// data_ov030_020e610c/020e6164 feed func_ov030_020be1d8's animation setup.
+extern s32 func_0202599c(s32 flagIndex);
 
 typedef struct {
     /* 0x0 */ const FieldPos* center;
@@ -56,73 +61,23 @@ struct FldPartner {
     /* 0xCD */ char               unk_CD[3];
 }; // Size: 0xD0
 
-extern const char data_ov030_02107318[];
-extern const u16  data_ov030_02107328[];
-extern const u16  data_ov030_02107344[];
-extern const u16  data_ov030_02107360[];
+static void Fld_Partner_StateIdle(TaskPool* pool, FldPartner* obj);
+static void Fld_Partner_StateWalk(TaskPool* pool, FldPartner* obj);
+static s32  Fld_Partner_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-s32  FX_Atan2Idx(s32 x, s32 y);
-s32  FX_Sqrt(s32 x);
-s32  func_ov030_020aad40(void);
-u32  Field_GetChapterGroup(void);
-s32  func_ov030_020aeca4(s32 y);
-s32  FieldScan_IsOpen(void);
-s32  Field_IsIdle(void);
-void Field_ApplyVertexColorAt(FieldPos* pos);
-s32  func_ov030_020af730(void);
-s32  func_ov030_020c8818(TaskPool* pool, s32 arg1, s32 x, s32 y, s32 arg4, s32 scale, s32 arg6);
-s32  func_ov030_020cb634(FieldPos* pos, s32 x, s32 y);
-s32  func_ov030_020cb72c(FieldPos* pos);
+static const TaskHandle Tsk_Fld_Partner = {"Tsk_Fld_Partner", Fld_Partner_RunTask, 0xD0};
 
-u16  func_ov030_020bc4b8(s32 angle);
-u16  func_ov030_020bc4d8(Sprite* sprite);
-s32  func_ov030_020bc518(FieldPos* pos, s32 angle, s32 dist);
-void func_ov030_020bc564(FldPartner* obj, FldPartnerCallback callback);
-s32  func_ov030_020bc578(void);
-void func_ov030_020bc5bc(s32* counter, s32 pan, FldPartner* obj);
-void func_ov030_020bc638(FldPartner* obj);
-void func_ov030_020bc698(TaskPool* pool, FldPartner* obj);
-void func_ov030_020bc758(TaskPool* pool, FldPartner* obj);
-s32  func_ov030_020bc780(FldPartner* obj);
-s32  func_ov030_020bc7e0(FldPartner* obj);
-s32  func_ov030_020bc7ec(FldPartner* obj);
-s32  func_ov030_020bc834(FldPartner* obj);
-void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj);
-void func_ov030_020bca4c(FldPartner* obj);
-void func_ov030_020bcab4(TaskPool* pool, FldPartner* obj);
-void func_ov030_020bcc04(FieldPos* out);
-void func_ov030_020bcc7c(FieldPos* out);
-s32  func_ov030_020bcd14(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020bce9c(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020bcffc(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020bd1d0(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020bd21c(TaskPool* pool, Task* task, void* args, s32 stage);
-s32  func_ov030_020bd264(TaskPool* pool, const FieldPos* center, const FieldPos* startPos);
-void func_ov030_020bd298(Task* task);
-void func_ov030_020bd310(Task* task, s32 value);
-s32  func_ov030_020bd31c(Task* task);
-s32  func_ov030_020bd340(Task* task);
-void func_ov030_020bd34c(Task* task);
-
-const u16 data_ov030_020e60dc[10] = {2, 1, 0, 1, 2, 3, 4, 3, 2, 0};
-
-const TaskHandle data_ov030_020e60f0 = {data_ov030_02107318, func_ov030_020bd21c, 0xD0};
-
-const TaskStages data_ov030_020e60fc = {
-    {func_ov030_020bcd14, func_ov030_020bce9c, func_ov030_020bcffc, func_ov030_020bd1d0}
+static const BinIdentifier Fld_Partner_Packs[3] = {
+    {30, "Apl_Kit/GRP_PartnerUGTEX.bin"},
+    {30,  "Apl_Kit/GRP_JoshuaUGTEX.bin"},
+    {30,    "Apl_Kit/GRP_BeatUGTEX.bin"},
 };
 
-const BinIdentifier data_ov030_020e610c[3] = {
-    {0x1E, data_ov030_02107360},
-    {0x1E, data_ov030_02107344},
-    {0x1E, data_ov030_02107328},
-};
+static const s32 Fld_Partner_SearchAngles[8] = {0x0000, 0x8000, 0xE000, 0xA000, 0x2000, 0x6000, 0x4000, 0xC000};
 
-const s32 data_ov030_020e6124[8] = {0x4000, 0x2000, 0x0000, 0xE000, 0xC000, 0xA000, 0x8000, 0x6000};
+static const s32 Fld_Partner_FollowAngles[8] = {0x4000, 0x2000, 0x0000, 0xE000, 0xC000, 0xA000, 0x8000, 0x6000};
 
-const s32 data_ov030_020e6144[8] = {0x0000, 0x8000, 0xE000, 0xA000, 0x2000, 0x6000, 0x4000, 0xC000};
-
-const FldCharaCell data_ov030_020e6164[14] = {
+static const FldCharaCell Fld_Partner_Cells[14] = {
     {0x01, 0x03, 0x02, 0},
     {0x04, 0x06, 0x05, 0},
     {0x07, 0x09, 0x08, 0},
@@ -139,32 +94,13 @@ const FldCharaCell data_ov030_020e6164[14] = {
     {0x1F, 0x21, 0x20, 3},
 };
 
-u16 func_ov030_020bc4b8(s32 angle) {
-    return data_ov030_020e60dc[((angle >> 0xC) & 1) + (angle >> 0xD)];
-}
-
-u16 func_ov030_020bc4d8(Sprite* sprite) {
-    if (SpriteMgr_IsFrameFinished(sprite) != 0) {
-        return (u16)(sprite->currentFrame - sprite->loopFrame + 1);
-    }
-    return (u16)(sprite->currentFrame - sprite->loopFrame);
-}
-
-s32 func_ov030_020bc518(FieldPos* pos, s32 angle, s32 dist) {
-    s32 x = pos->x;
-    s32 y = pos->y;
-
-    func_ov030_020be430(&x, &y, angle, dist);
-    return func_ov030_020cb634(pos, x, y);
-}
-
-void func_ov030_020bc564(FldPartner* obj, FldPartnerCallback callback) {
+static void Fld_Partner_SetState(FldPartner* obj, FldPartnerCallback callback) {
     obj->callback = callback;
     obj->unk_5E   = 0;
     obj->unk_5C   = 0;
 }
 
-s32 func_ov030_020bc578(void) {
+static s32 Fld_Partner_IsPresent(void) {
     if (gSaveData.chapter == 0x15) {
         return 0;
     }
@@ -174,15 +110,15 @@ s32 func_ov030_020bc578(void) {
     return func_ov030_020af730() == 0;
 }
 
-void func_ov030_020bc5bc(s32* counter, s32 pan, FldPartner* obj) {
-    if (func_ov030_020bc578() == 0) {
+static void Fld_Partner_PlayFootsteps(s32* counter, s32 pan, FldPartner* obj) {
+    if (Fld_Partner_IsPresent() == 0) {
         *counter += 1;
         return;
     }
     if (obj->chara.sprite.bit_11 != 1) {
         return;
     }
-    switch (func_ov030_020bc4d8(&obj->chara.sprite)) {
+    switch (FldCharaWalk_GetLoopFrame(&obj->chara.sprite)) {
         case 1:
             SndMgr_PlaySEWithPan(3, pan);
             return;
@@ -192,26 +128,26 @@ void func_ov030_020bc5bc(s32* counter, s32 pan, FldPartner* obj) {
     }
 }
 
-void func_ov030_020bc638(FldPartner* obj) {
-    func_ov030_020be258(&obj->chara, (u16)(s16)(obj->unk_8C + 5), 1);
+static void Fld_Partner_AnimateWalk(FldPartner* obj) {
+    FldChara_SetCell(&obj->chara, (u16)(s16)(obj->unk_8C + 5), 1);
     if (obj->unk_94 != 0) {
         obj->unk_94 = 0;
         obj->unk_90 = 0;
     }
-    func_ov030_020bc5bc(&obj->unk_90, (obj->pos.x - obj->center->x) >> 0xC, obj);
+    Fld_Partner_PlayFootsteps(&obj->unk_90, (obj->pos.x - obj->center->x) >> 0xC, obj);
 }
 
 // Nonmatching: register allocation: scaled-shift temps in r1/r3 vs r2/r1 (USA 99.58%; JP unvalidated).
-void func_ov030_020bc698(TaskPool* pool, FldPartner* obj) {
+static void Fld_Partner_StateBattleIn(TaskPool* pool, FldPartner* obj) {
     s32 deltaX;
     s32 deltaY;
     s32 flavor;
 
-    if (func_ov030_020bc578() == 0) {
+    if (Fld_Partner_IsPresent() == 0) {
         return;
     }
     if (obj->unk_5C == 0) {
-        func_ov030_020be258(&obj->chara, 1, 1);
+        FldChara_SetCell(&obj->chara, 1, 1);
     }
     if (obj->unk_5C < 5) {
         obj->unk_5C = obj->unk_5C + 1;
@@ -228,16 +164,16 @@ void func_ov030_020bc698(TaskPool* pool, FldPartner* obj) {
     }
     deltaY        = obj->delta.y;
     deltaX        = obj->delta.x;
-    obj->taskId_1 = func_ov030_020c8818(pool, 1, (deltaX * 0x10) >> 0x10, (deltaY * 0x10) >> 0x10,
-                                        func_ov030_020be3c0(&obj->chara.sprite), obj->unk_88, flavor);
+    obj->taskId_1 = Fld_BattleIn_CreateTask(pool, 1, (deltaX * 0x10) >> 0x10, (deltaY * 0x10) >> 0x10,
+                                            FldChara_IsFlipped(&obj->chara.sprite), obj->unk_88, flavor);
 }
 
-void func_ov030_020bc758(TaskPool* pool, FldPartner* obj) {
-    func_ov030_020bc564(obj, func_ov030_020bc8b8);
+static void Fld_Partner_StateStart(TaskPool* pool, FldPartner* obj) {
+    Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
     obj->unk_5C = obj->unk_5C + 1;
 }
 
-s32 func_ov030_020bc780(FldPartner* obj) {
+static s32 Fld_Partner_IsOffScreen(FldPartner* obj) {
     s32 dx = obj->pos.x - obj->center->x;
     s32 dy = obj->pos.y - obj->center->y;
 
@@ -250,11 +186,11 @@ s32 func_ov030_020bc780(FldPartner* obj) {
     return 0;
 }
 
-s32 func_ov030_020bc7e0(FldPartner* obj) {
-    return func_ov030_020bc780(obj);
+static s32 Fld_Partner_ShouldWarp(FldPartner* obj) {
+    return Fld_Partner_IsOffScreen(obj);
 }
 
-s32 func_ov030_020bc7ec(FldPartner* obj) {
+static s32 Fld_Partner_UpdateTargetTimer(FldPartner* obj) {
     if (!(obj->prev.x == obj->target.x && obj->prev.y == obj->target.y)) {
         if (obj->unk_A0 != 0) {
             obj->unk_A0 = obj->unk_A0 - 1;
@@ -267,7 +203,7 @@ s32 func_ov030_020bc7ec(FldPartner* obj) {
     return 0;
 }
 
-s32 func_ov030_020bc834(FldPartner* obj) {
+static s32 Fld_Partner_IsTouched(FldPartner* obj) {
     TouchCoord coord;
     s32        yTop;
     s32        xLeft;
@@ -288,11 +224,11 @@ s32 func_ov030_020bc834(FldPartner* obj) {
     return 0;
 }
 
-void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
+static void Fld_Partner_StateIdle(TaskPool* pool, FldPartner* obj) {
     s16 state;
 
     if (obj->unk_A0 == 0 && Field_IsIdle() != 0) {
-        func_ov030_020bc564(obj, func_ov030_020bcab4);
+        Fld_Partner_SetState(obj, Fld_Partner_StateWalk);
         if (obj->taskId_0 == -1) {
             return;
         }
@@ -306,15 +242,15 @@ void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
     obj->unk_94 = 1;
     state       = obj->unk_5C;
     if (state == 0) {
-        func_ov030_020be258(&obj->chara, (u16)(s16)obj->unk_8C, 1);
+        FldChara_SetCell(&obj->chara, (u16)(s16)obj->unk_8C, 1);
     } else if (state == 0xF8) {
-        if (Field_IsIdle() != 0 && obj->taskId_0 == -1 && func_ov030_020aad40() != 0 && func_ov030_020bc578() != 0) {
-            obj->taskId_0 = func_ov030_020bacb0(pool, 1, &obj->delta, &obj->unk_88, 0x34000, 1);
+        if (Field_IsIdle() != 0 && obj->taskId_0 == -1 && func_ov030_020aad40() != 0 && Fld_Partner_IsPresent() != 0) {
+            obj->taskId_0 = Fld_TalkIcon_CreateTask(pool, 1, &obj->delta, &obj->unk_88, 0x34000, 1);
         }
         if (obj->unk_CC == 0) {
-            func_ov030_020be258(&obj->chara, 0xC, 1);
+            FldChara_SetCell(&obj->chara, 0xC, 1);
         } else {
-            func_ov030_020be258(&obj->chara, 0xB, 1);
+            FldChara_SetCell(&obj->chara, 0xB, 1);
         }
     }
     if (Field_IsIdle() == 0 || func_ov030_020aad40() == 0) {
@@ -329,29 +265,29 @@ void func_ov030_020bc8b8(TaskPool* pool, FldPartner* obj) {
     }
 }
 
-void func_ov030_020bca4c(FldPartner* obj) {
+static void Fld_Partner_FacePlayer(FldPartner* obj) {
     s32 angle = FX_Atan2Idx(gSaveData.fieldPos.y - obj->pos.y, gSaveData.fieldPos.x - obj->pos.x);
 
-    obj->unk_8C = func_ov030_020bc4b8(angle);
+    obj->unk_8C = FldCharaWalk_AngleToCell(angle);
     if ((s32)(u16)(angle - 0x4000) < 0x8000) {
-        func_ov030_020be368(&obj->chara.sprite, 0);
+        FldChara_SetFlip(&obj->chara.sprite, 0);
     } else {
-        func_ov030_020be368(&obj->chara.sprite, 1);
+        FldChara_SetFlip(&obj->chara.sprite, 1);
     }
 }
 
-void func_ov030_020bcab4(TaskPool* pool, FldPartner* obj) {
+static void Fld_Partner_StateWalk(TaskPool* pool, FldPartner* obj) {
     s32 len;
     s32 angle;
     s32 dx;
     s32 dy;
 
     if (FieldScan_IsOpen() != 0) {
-        func_ov030_020bc564(obj, func_ov030_020bc8b8);
+        Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
         return;
     }
     if (Field_IsIdle() == 0) {
-        func_ov030_020bc564(obj, func_ov030_020bc8b8);
+        Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
         return;
     }
     obj->unk_C4 = 1;
@@ -360,24 +296,24 @@ void func_ov030_020bcab4(TaskPool* pool, FldPartner* obj) {
     len         = FX_Sqrt((s32)(((s64)dx * dx + 0x800) >> 0xC) + (s32)(((s64)dy * dy + 0x800) >> 0xC));
     angle       = FX_Atan2Idx(dy, dx);
     if (len >> 0xC >= 9) {
-        obj->unk_8C = func_ov030_020bc4b8(angle);
+        obj->unk_8C = FldCharaWalk_AngleToCell(angle);
         if ((s32)(u16)(angle - 0x4000) < 0x8000) {
-            func_ov030_020be368(&obj->chara.sprite, 0);
+            FldChara_SetFlip(&obj->chara.sprite, 0);
         } else {
-            func_ov030_020be368(&obj->chara.sprite, 1);
+            FldChara_SetFlip(&obj->chara.sprite, 1);
         }
-        if (func_ov030_020bc518(&obj->pos, angle, (s32)(((s64)obj->unk_98 * obj->unk_88 + 0x800) >> 0xC)) != 0) {
-            func_ov030_020bca4c(obj);
-            func_ov030_020bc564(obj, func_ov030_020bc8b8);
+        if (FldCharaWalk_MoveWithCollision(&obj->pos, angle, (s32)(((s64)obj->unk_98 * obj->unk_88 + 0x800) >> 0xC)) != 0) {
+            Fld_Partner_FacePlayer(obj);
+            Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
         }
-        func_ov030_020bc638(obj);
+        Fld_Partner_AnimateWalk(obj);
         return;
     }
-    func_ov030_020bca4c(obj);
-    func_ov030_020bc564(obj, func_ov030_020bc8b8);
+    Fld_Partner_FacePlayer(obj);
+    Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
 }
 
-void func_ov030_020bcc04(FieldPos* out) {
+static void Fld_Partner_GetFollowPos(FieldPos* out) {
     FieldPos tmp = gSaveData.fieldPos;
     s32      i;
     s32      dist;
@@ -388,18 +324,18 @@ void func_ov030_020bcc04(FieldPos* out) {
     if (i >= 8) {
         i -= 8;
     }
-    func_ov030_020be430(&tmp.x, &tmp.y, data_ov030_020e6124[i], dist);
+    FldChara_MoveAlongAngle(&tmp.x, &tmp.y, Fld_Partner_FollowAngles[i], dist);
     *out = tmp;
 }
 
-void func_ov030_020bcc7c(FieldPos* out) {
+static void Fld_Partner_FindFreePos(FieldPos* out) {
     FieldPos tmp;
     s32      dist = gSaveData.unk_2454 * 0x30;
     u32      i;
 
     for (i = 0; i < 8; i++) {
         tmp = gSaveData.fieldPos;
-        if (func_ov030_020bc518(&tmp, data_ov030_020e6144[i], dist) == 0) {
+        if (FldCharaWalk_MoveWithCollision(&tmp, Fld_Partner_SearchAngles[i], dist) == 0) {
             *out = tmp;
             return;
         }
@@ -407,7 +343,7 @@ void func_ov030_020bcc7c(FieldPos* out) {
     *out = gSaveData.fieldPos;
 }
 
-s32 func_ov030_020bcd14(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Partner_Init(TaskPool* pool, Task* task, void* args) {
     FldPartner*     obj = task->data;
     FldPartnerArgs* a   = args;
     u32             type;
@@ -432,25 +368,25 @@ s32 func_ov030_020bcd14(TaskPool* pool, Task* task, void* args) {
     obj->taskId_0 = -1;
     obj->taskId_1 = -1;
     obj->unk_88   = func_ov030_020aeca4(obj->pos.y);
-    func_ov030_020bc564(obj, func_ov030_020bc758);
+    Fld_Partner_SetState(obj, Fld_Partner_StateStart);
     type = Field_GetChapterGroup();
     if (type > 2) {
         type = 0;
     }
     obj->unk_CC = (u8)type;
-    func_ov030_020be1d8(&obj->chara, &data_ov030_020e610c[type], data_ov030_020e6164, 0, 0x22, 0x50);
+    FldChara_Load(&obj->chara, &Fld_Partner_Packs[type], Fld_Partner_Cells, 0, 0x22, 0x50);
     if ((s16)gSaveData.unk_245A <= 4) {
-        func_ov030_020be368(&obj->chara.sprite, 1);
+        FldChara_SetFlip(&obj->chara.sprite, 1);
         obj->unk_8C = (s16)gSaveData.unk_245A;
     } else {
-        func_ov030_020be368(&obj->chara.sprite, 0);
+        FldChara_SetFlip(&obj->chara.sprite, 0);
         obj->unk_8C = 8 - (s16)gSaveData.unk_245A;
     }
     Sprite_Update(&obj->chara.sprite);
     return 1;
 }
 
-s32 func_ov030_020bce9c(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Partner_Update(TaskPool* pool, Task* task, void* args) {
     FldPartner* obj = task->data;
 
     if (obj->home.x == gSaveData.fieldPos.x && obj->home.y == gSaveData.fieldPos.y) {
@@ -458,20 +394,20 @@ s32 func_ov030_020bce9c(TaskPool* pool, Task* task, void* args) {
     } else {
         obj->unk_C8 = 1;
     }
-    if (func_ov030_020bc7e0(obj) != 0) {
+    if (Fld_Partner_ShouldWarp(obj) != 0) {
         FieldPos tmp;
 
         obj->prev = obj->target;
-        func_ov030_020bcc04(&tmp);
+        Fld_Partner_GetFollowPos(&tmp);
         obj->target = tmp;
         obj->unk_A0 = 0;
     } else if (obj->unk_C8 != 0) {
         FieldPos tmp;
 
-        if (func_ov030_020bc7ec(obj) != 0) {
+        if (Fld_Partner_UpdateTargetTimer(obj) != 0) {
             obj->prev = obj->target;
         }
-        func_ov030_020bcc04(&tmp);
+        Fld_Partner_GetFollowPos(&tmp);
         obj->target = tmp;
     } else if (obj->unk_C4 == 0) {
         s16 timer = obj->unk_C0;
@@ -483,7 +419,7 @@ s32 func_ov030_020bce9c(TaskPool* pool, Task* task, void* args) {
             FieldPos tmp;
 
             obj->unk_A0 = 0;
-            func_ov030_020bcc7c(&tmp);
+            Fld_Partner_FindFreePos(&tmp);
             obj->target = tmp;
         }
     } else {
@@ -502,7 +438,7 @@ s32 func_ov030_020bce9c(TaskPool* pool, Task* task, void* args) {
 // Nonmatching: delta.y temp lands in r1 (retail r2, forcing a posY reload) and the
 // OamMgr_AllocAffineGroup argument setup schedules scale/flag work before the pointer math
 // (USA 82.61%; JP unvalidated).
-s32 func_ov030_020bcffc(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Partner_Render(TaskPool* pool, Task* task, void* args) {
     FldPartner* obj = task->data;
     s32         flip;
     s32         flags;
@@ -510,7 +446,7 @@ s32 func_ov030_020bcffc(TaskPool* pool, Task* task, void* args) {
     if (func_ov030_020af730() != 0 && gSaveData.unk_2498 == 0) {
         return 1;
     }
-    if (func_ov030_020bc578() == 0) {
+    if (Fld_Partner_IsPresent() == 0) {
         return 1;
     }
     if (obj->taskId_1 != -1 && obj->unk_5C >= 5) {
@@ -520,31 +456,31 @@ s32 func_ov030_020bcffc(TaskPool* pool, Task* task, void* args) {
     obj->delta.y           = obj->pos.y - obj->center->y;
     obj->chara.sprite.posX = (s16)(obj->delta.x >> 0xC);
     obj->chara.sprite.posY = (s16)(obj->delta.y >> 0xC);
-    if (func_ov030_020cb72c(&obj->pos) == 1) {
-        func_ov030_020be3dc(&obj->chara, (obj->pos.y + 0x1C3000) - obj->center->y);
+    if (Fld_Shinigami_IsOccluded(&obj->pos) == 1) {
+        FldChara_SetSortKey(&obj->chara, (obj->pos.y + 0x1C3000) - obj->center->y);
     } else {
-        func_ov030_020be3dc(&obj->chara, (obj->pos.y + 0x1000) - obj->center->y);
+        FldChara_SetSortKey(&obj->chara, (obj->pos.y + 0x1000) - obj->center->y);
     }
     flip = 0;
-    if (func_ov030_020be3c0(&obj->chara.sprite) != 0) {
+    if (FldChara_IsFlipped(&obj->chara.sprite) != 0) {
         flip = 1;
     }
     obj->unk_50 = OamMgr_AllocAffineGroup(&g_OamMgr[obj->chara.sprite.bits_0_1], 0, obj->unk_88, obj->unk_88, flip);
     Field_ApplyVertexColorAt(&obj->pos);
     Sprite_RenderFrame(&obj->chara.sprite);
     flags = 2;
-    if (func_ov030_020be3c0(&obj->chara.sprite) != 0) {
+    if (FldChara_IsFlipped(&obj->chara.sprite) != 0) {
         flags |= 1;
     }
     obj->unk_50 = OamMgr_AllocAffineGroup(&g_OamMgr[obj->chara.sprite.bits_0_1], 0, obj->unk_88, obj->unk_88 / 6, flags);
-    func_ov030_020be3dc(&obj->chara, 0x1000);
+    FldChara_SetSortKey(&obj->chara, 0x1000);
     REG_GFX_FIFO_VERTEX_COLOR = 0x421;
-    func_ov030_020be3e4(&obj->chara.sprite, 0xC);
+    FldChara_RenderWithAlpha(&obj->chara.sprite, 0xC);
     REG_GFX_FIFO_VERTEX_COLOR = Field_GetLightColor();
     return 1;
 }
 
-s32 func_ov030_020bd1d0(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Partner_Destroy(TaskPool* pool, Task* task, void* args) {
     FldPartner* obj = task->data;
 
     Sprite_Release(&obj->chara.sprite);
@@ -557,21 +493,26 @@ s32 func_ov030_020bd1d0(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bd21c(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages stages = data_ov030_020e60fc;
+static s32 Fld_Partner_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Partner_Init,
+        .update     = Fld_Partner_Update,
+        .render     = Fld_Partner_Render,
+        .cleanup    = Fld_Partner_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bd264(TaskPool* pool, const FieldPos* center, const FieldPos* startPos) {
+s32 Fld_Partner_CreateTask(TaskPool* pool, const FieldPos* center, const FieldPos* startPos) {
     FldPartnerArgs initArgs;
 
     initArgs.center   = center;
     initArgs.startPos = startPos;
-    return EasyTask_CreateTask(pool, &data_ov030_020e60f0, NULL, 0, NULL, &initArgs);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Partner, NULL, 0, NULL, &initArgs);
 }
 
-void func_ov030_020bd298(Task* task) {
+void Fld_Partner_WarpToPlayer(Task* task) {
     FldPartner* obj = task->data;
     s32         y;
 
@@ -584,31 +525,31 @@ void func_ov030_020bd298(Task* task) {
     obj->unk_C0 = 8;
     obj->unk_C4 = 0;
     obj->unk_C8 = 0;
-    func_ov030_020bca4c(obj);
-    func_ov030_020bc564(obj, func_ov030_020bc8b8);
+    Fld_Partner_FacePlayer(obj);
+    Fld_Partner_SetState(obj, Fld_Partner_StateIdle);
 }
 
-void func_ov030_020bd310(Task* task, s32 value) {
+void Fld_Partner_SetSpeed(Task* task, s32 value) {
     FldPartner* obj = task->data;
 
     obj->unk_98 = value;
 }
 
-s32 func_ov030_020bd31c(Task* task) {
+s32 Fld_Partner_IsTalkTouched(Task* task) {
     FldPartner* obj = task->data;
 
     if (obj->taskId_0 == -1) {
         return 0;
     }
-    return func_ov030_020bc834(obj);
+    return Fld_Partner_IsTouched(obj);
 }
 
-s32 func_ov030_020bd340(Task* task) {
+s32 Fld_Partner_GetPosY(Task* task) {
     FldPartner* obj = task->data;
 
     return obj->pos.y;
 }
 
-void func_ov030_020bd34c(Task* task) {
-    func_ov030_020bc564(task->data, func_ov030_020bc698);
+void Fld_Partner_StartBattleIn(Task* task) {
+    Fld_Partner_SetState(task->data, Fld_Partner_StateBattleIn);
 }

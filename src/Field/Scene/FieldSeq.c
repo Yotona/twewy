@@ -1,14 +1,13 @@
+#include "Field/Scene/FieldSeq.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Scene/FieldArea.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include <nitro/types.h>
 
 extern void func_ov030_020ae848(void*);
 extern void (*data_ov030_020d95dc[])(void*);
-extern s32  Field_GetAreaZone(s32 area);
-extern void func_ov030_020b7c58(s32, s32*, s32*, s32*);
-extern s32  func_ov030_020b7b80(void);
-extern s32  func_ov030_020b7ba8(void);
 
 void func_ov030_020ae92c(void* arg) {
     OverlayProcessStage stage = MainOvlDisp_GetProcessStage();

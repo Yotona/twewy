@@ -1,7 +1,7 @@
 #ifndef SAVE_MAINDATA_H
 #define SAVE_MAINDATA_H
 
-#include "Field/Events.h"
+#include "Field/FieldTypes.h"
 #include "Player/Inventory.h"
 #include "Player/Stats.h"
 
@@ -9,6 +9,10 @@ typedef struct {
     /* 0x0 */ s16 unk_0;
     /* 0x2 */ u16 unk_2;
 } UnkSmallStruct;
+
+typedef struct {
+    /* 0x0 */ u8 completedStars[4];
+} SecretReport;
 
 // A Noise symbol placed on the field map (scan mode). The field rebuilds the
 // table on area entry and the battle request copies the selected record's
@@ -24,6 +28,22 @@ typedef struct {
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s32 unk_10;
 } ScanSymbolRecord; // Size: 0x14
+
+// Scan-event table, 67 records.
+typedef struct {
+    /* 0x0 */ s16 firstChapter;
+    /* 0x2 */ s16 lastChapter;
+    /* 0x4 */ s16 x;
+    /* 0x6 */ s16 y;
+    /* 0x8 */ s16 area;
+    /* 0xA */ union {
+        s16 encounter;
+        u16 encounterId;
+    };
+    /* 0xC */ u16 flags;
+} FieldScanEvent;
+
+extern FieldScanEvent data_0205c5be[67];
 
 typedef struct {
     /* 0x00 */ u16 scores[13];

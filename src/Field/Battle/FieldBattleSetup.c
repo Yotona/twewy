@@ -1,55 +1,40 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
+#include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/BgResMgr.h"
-#include "Field/Events.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Battle/FieldNoiseEncounter.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Event/Events.h"
+#include "Field/FieldTypes.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldPaths.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Badge.h"
+#include "Field/Tasks/Fld_LargeGingo.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_Partner.h"
+#include "Field/Tasks/Fld_Piranha.h"
+#include "Field/Tasks/Fld_Player.h"
+#include "Field/Tasks/Fld_Raster.h"
+#include "Field/Tasks/Fld_ScanArea.h"
+#include "Field/Tasks/Fld_Shinigami.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include <nitro/fx.h>
 
-extern const u8         FieldAreaZones[44];
-extern const s16        FieldPresetCoords[];
-extern const u16        data_ov030_020d9964[];
-extern const TaskHandle Tsk_Fld_Raster;
-extern const u32        data_0205a124[];
+extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
 
-s32  func_ov030_020af2fc(void);
-s16  FieldNoise_RollEncounter(s32 kind);
-void Field_PlayNekuVoice(void);
-void Field_DestroyHud(FieldEventManager* mgr);
-void Field_ReleaseEventPicture(FieldEventManager* mgr);
-void FieldScan_MarkSeen(s32 id);
-void func_ov030_020830ac(FieldEventManager* mgr);
-void func_ov030_020831f4(FieldEventManager* mgr);
-void func_ov030_02083350(FieldEventManager* mgr);
-void func_ov030_020833fc(FieldEventManager* mgr);
-void func_ov030_020834c4(FieldEventManager* mgr);
-void func_ov030_02083528(FieldEventManager* mgr);
-void func_ov030_02083664(FieldEventManager* mgr);
-void func_ov030_020836c8(FieldEventManager* mgr);
-void func_ov030_02083804(FieldEventManager* mgr);
-void func_ov030_02083dfc(FieldEventManager* mgr);
-void func_ov030_02083f58(FieldEventManager* mgr);
-void func_ov030_0208403c(FieldEventManager* mgr);
-void func_ov030_020846bc(FieldEventManager* mgr, s32 mode);
-s32  func_ov030_02084788(FieldEventManager* mgr);
-s32  func_ov030_020b2ff4(Task* task);
-s32  func_ov030_020b3020(Task* task);
-void func_ov030_020b30f4(Task* task);
-void func_ov030_020b458c(Task* task, s32 stage);
-void func_ov030_020b4598(Task* task, s32 stage);
-s32  func_ov030_020b4838(Task* task, s32 stage);
-void func_ov030_020b4864(Task* task);
-void func_ov030_020bd34c(Task* task);
-s32  func_ov030_020bf330(TaskPool* pool, s32 id);
-s32  func_ov030_020c0d28(TaskPool* pool, s32 id, s32 id2);
-s32  func_ov030_020c0e34(TaskPool* pool, u32 id);
-s32  func_ov030_020c5f08(TaskPool* pool, u32 id, s32 arg);
-s32  func_ov030_020cb6cc(FieldPos* pos, u16* out);
-void DebugOvlDisp_Pop(void);
+extern void      func_02026590(s32* value, s32 target, u16 frames);
+extern const u32 data_0205a124[];
 
 u8 Field_GetAreaZone(u32 area) {
     if (area >= 44) {
@@ -135,7 +120,7 @@ void Field_ApplyVertexColorAt(FieldPos* pos) {
     u16 color;
 
     if (gSaveData.fieldArea == 8) {
-        if (func_ov030_020cb6cc(pos, &color)) {
+        if (Fld_Shinigami_GetFloorAttr(pos, &color)) {
             if (color != GX_RGB(19, 19, 19)) {
                 REG_GFX_FIFO_VERTEX_COLOR = color;
             }
@@ -143,7 +128,7 @@ void Field_ApplyVertexColorAt(FieldPos* pos) {
             REG_GFX_FIFO_VERTEX_COLOR = GX_RGB(19, 19, 19);
         }
     } else {
-        if (func_ov030_020cb6cc(pos, &color)) {
+        if (Fld_Shinigami_GetFloorAttr(pos, &color)) {
             REG_GFX_FIFO_VERTEX_COLOR = color;
         }
     }
@@ -154,11 +139,11 @@ PaletteResource* Field_GetHumanPalette(void) {
 }
 
 s32 Field_GetPlayerHeight(void) {
-    return func_ov030_020b3020(EasyTask_GetTaskById(&data_ov030_02109d60->taskPool, data_ov030_02109d60->taskId_Player));
+    return Fld_Player_GetHeight(EasyTask_GetTaskById(&data_ov030_02109d60->taskPool, data_ov030_02109d60->taskId_Player));
 }
 
 s32 func_ov030_020af618(void) {
-    return func_ov030_020b2ff4(EasyTask_GetTaskById(&data_ov030_02109d60->taskPool, data_ov030_02109d60->taskId_Player));
+    return Fld_Player_IsWalking(EasyTask_GetTaskById(&data_ov030_02109d60->taskPool, data_ov030_02109d60->taskId_Player));
 }
 
 void Field_GetPlayerScreenPos(s16* out0, s16* out1) {
@@ -176,7 +161,7 @@ s32 Field_ResolvePresetCoord(s32 x) {
 }
 
 void func_ov030_020af6d4(s32 mode) {
-    func_ov030_020846bc(data_ov030_02109d60, mode);
+    FieldBg_SetTopBgMode(data_ov030_02109d60, mode);
 }
 
 void Field_SetTouchEventResult(s32 result) {
@@ -205,21 +190,21 @@ void FieldScan_RaiseBgLevel(s32 category) {
 
     if (category >= 23 && mgr->scanBgLevel < 23) {
         mgr->scanBgLevel = category;
-        func_ov030_020833fc(mgr);
-        func_ov030_02083350(mgr);
+        FieldBg_UpdateTopBgPalette(mgr);
+        FieldBg_UpdateScanPicturePalette(mgr);
     } else if (category >= 9 && mgr->scanBgLevel < 9) {
         mgr->scanBgLevel = category;
-        func_ov030_020833fc(mgr);
-        func_ov030_02083350(mgr);
+        FieldBg_UpdateTopBgPalette(mgr);
+        FieldBg_UpdateScanPicturePalette(mgr);
     }
 }
 
 void func_ov030_020af7f0(void) {
     FieldEventManager* mgr = data_ov030_02109d60;
 
-    func_ov030_020831f4(mgr);
+    FieldBg_ShowEventPicture(mgr);
     if (mgr->taskId_Badge != -1) {
-        func_ov030_020b4598(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge), 3);
+        Fld_Badge_SetPriority(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge), 3);
     }
 }
 
@@ -236,7 +221,7 @@ BOOL func_ov030_020af834(s32 arg0, s32 arg1) {
         end   = 64;
     }
     for (s32 i = start; i < end; i++) {
-        if (i != arg0 && func_ov030_020c5f08(&mgr->taskPool, mgr->unk_21924[i], arg1)) {
+        if (i != arg0 && Fld_Piranha_IsNear(&mgr->taskPool, mgr->unk_21924[i], arg1)) {
             return TRUE;
         }
     }
@@ -321,7 +306,7 @@ void FieldScan_Update(FieldEventManager* mgr) {
         case 0: {
             if (mgr->scanTimer != 0) {
                 if (mgr->scanTimer == 25) {
-                    func_ov030_02083528(mgr);
+                    FieldBg_LoadScanSubBg0(mgr);
                     FieldScan_MarkSeen(-2);
                 }
                 if (mgr->scanTimer < 23) {
@@ -343,22 +328,22 @@ void FieldScan_Update(FieldEventManager* mgr) {
                 g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0 | LAYER_BG1;
                 g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[0].priority = 1;
                 g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[1].priority = 1;
-                func_ov030_02083804(mgr);
-                func_ov030_020836c8(mgr);
+                FieldBg_LoadScanFrameSubBg0(mgr);
+                FieldBg_LoadScanSubBg1(mgr);
                 Field_PlayNekuVoice();
                 Display_SetBGOffset(DISPLAY_SUB, DISPLAY_BG0, 0, I2F(64));
                 Display_SetBGOffset(DISPLAY_SUB, DISPLAY_BG1, 0, I2F(64));
             } else {
-                mgr->taskId_LargeGingo = func_ov030_020bf330(&mgr->taskPool, mgr->dataType);
-                func_ov030_020846bc(mgr, 4);
-                func_ov030_020830ac(mgr);
+                mgr->taskId_LargeGingo = Fld_LargeGingo_CreateTask(&mgr->taskPool, mgr->dataType);
+                FieldBg_SetTopBgMode(mgr, 4);
+                FieldBg_LoadScanPicture(mgr);
                 mgr->scanPhase++;
                 mgr->blendEva                                         = 0;
                 mgr->blendEvb                                         = I2F(16);
                 mgr->scanTimer                                        = 75;
                 g_DisplaySettings.engineState[DISPLAY_MAIN].blendMode = 1;
                 Display_SetBlendLayers(DISPLAY_MAIN, 0x2, 0x33);
-                func_ov030_020b4864(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea));
+                Fld_ScanArea_FadeOut(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea));
             }
         } break;
 
@@ -381,11 +366,11 @@ void FieldScan_Update(FieldEventManager* mgr) {
         } break;
 
         case 3: {
-            if (func_ov030_02084788(mgr)) {
+            if (FieldBg_IsBadgeTapped(mgr)) {
                 SndMgr_StartPlayingSE(SEIDX_SE_SCANS_CLOSE);
                 mgr->scanPhase++;
                 EasyFade_FadeBothDisplays(FADER_LINEAR, 16, FX32_ONE);
-            } else if (func_ov030_020c0d28(&mgr->taskPool, mgr->taskId_NSymbolUGMgr, mgr->taskId_Badge)) {
+            } else if (Fld_Luck_TrySelectSymbol(&mgr->taskPool, mgr->taskId_NSymbolUGMgr, mgr->taskId_Badge)) {
                 mgr->scanBgLevel = gSaveData.scanSymbols[gSaveData.scanSymbolSelection].category;
                 if (mgr->scanBgLevel == 22) {
                     mgr->exitRequest = 7;
@@ -394,10 +379,10 @@ void FieldScan_Update(FieldEventManager* mgr) {
                     mgr->taskId_Raster = EasyTask_CreateTask(&mgr->taskPool, &Tsk_Fld_Raster, NULL, 0, NULL, NULL);
                     g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG2;
                     g_DisplaySettings.controls[DISPLAY_SUB].layers &= ~LAYER_BG3;
-                    func_ov030_02083dfc(mgr);
-                    func_ov030_02083f58(mgr);
-                    func_ov030_0208403c(mgr);
-                    func_ov030_02083350(mgr);
+                    FieldBg_LoadScanLevelSubBg1(mgr);
+                    FieldBg_LoadScanSubBg3(mgr);
+                    FieldBg_LoadScanLevelTopBg(mgr);
+                    FieldBg_UpdateScanPicturePalette(mgr);
                     g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[1].priority = 2;
                     g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[2].priority = 1;
                     g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[3].priority = 3;
@@ -410,7 +395,7 @@ void FieldScan_Update(FieldEventManager* mgr) {
                     g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[1].priority = 3;
                     EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_21B24);
                     Field_DestroyHud(mgr);
-                    func_ov030_020b458c(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge), 0);
+                    Fld_Badge_SetVisible(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge), 0);
                     for (s32 i = 0; i < mgr->humanCount; i++) {
                         EasyTask_DeleteTask(&mgr->taskPool, mgr->taskId_Humans[i]);
                     }
@@ -428,14 +413,14 @@ void FieldScan_Update(FieldEventManager* mgr) {
                     mgr->taskId_Raster = -1;
                 }
                 g_DisplaySettings.controls[DISPLAY_MAIN].layers &= ~LAYER_BG1;
-                func_ov030_020846bc(mgr, 1);
+                FieldBg_SetTopBgMode(mgr, 1);
                 EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_21B24);
-                func_ov030_020b4838(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea), 0);
+                Fld_ScanArea_SetTargetScale(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea), 0);
                 g_DisplaySettings.engineState[DISPLAY_MAIN].blendMode = 1;
                 Display_SetBlendLayers(DISPLAY_MAIN, 0x1, 0x3F);
                 Display_SetBlendCoeffs(DISPLAY_MAIN, 10, 6);
-                func_ov030_020834c4(mgr);
-                func_ov030_02083664(mgr);
+                FieldBg_ReleaseSubBg0(mgr);
+                FieldBg_ReleaseSubBg1(mgr);
                 Field_ReleaseEventPicture(mgr);
                 mgr->unk_21A6C = BgResMgr_AllocScreen(g_BgResourceManagers[1], data_0205a124,
                                                       g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[0].screenBase, 0);
@@ -467,9 +452,9 @@ void FieldScan_Update(FieldEventManager* mgr) {
             } else {
                 mgr->scanPhase = 7;
                 mgr->scanTimer = 30;
-                func_ov030_020b30f4(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player));
-                func_ov030_020bd34c(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
-                func_ov030_020c0e34(&mgr->taskPool, mgr->taskId_NSymbolUGMgr);
+                Fld_Player_StartBattleIn(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player));
+                Fld_Partner_StartBattleIn(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
+                Fld_Luck_RemoveActiveSymbols(&mgr->taskPool, mgr->taskId_NSymbolUGMgr);
             }
         } break;
 
@@ -510,7 +495,7 @@ void FieldScan_Update(FieldEventManager* mgr) {
                 if (func_ov030_020afa58()) {
                     gSaveData.unk_3140 |= 1;
                 }
-                gSaveData.battleDropRate = func_ov030_020c105c();
+                gSaveData.battleDropRate = Fld_Luck_GetDropRate();
                 SndMgr_StartPlayingSE(SEIDX_SE_BATTLE_IN);
                 DebugOvlDisp_Pop();
             }

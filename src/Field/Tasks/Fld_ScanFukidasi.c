@@ -1,10 +1,16 @@
-// USA 0x020be85c-0x020bee24: the scan "fukidasi" (speech-bubble) manager. It
-// keeps a table of hit-test entries (each backed by a scan marker task) and a
-// message-window task that follows the currently selected entry. The manager
-// pointer lives in data_ov030_02109d70.
+#include "Field/Tasks/Fld_ScanFukidasi.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
-#include "Field/Ov030Data.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/FieldTypes.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/FldMesWindow.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_NpcRG.h"
+#include "Field/Tasks/Fld_ScanMoya.h"
+#include "Field/Tasks/Task_Window.h"
 #include "SndMgr.h"
 
 // Follow-window spawn block: the window's screen position, then its params.
@@ -14,7 +20,7 @@ typedef struct {
     /* 0x04 */ FldMesTaskParam msg;
 } FldScanWinParam; // Size: 0x2C
 
-// A scannable spot (stride 0x18, count at FldScanData.unk600).
+// A scannable spot (count at FldScanData.unk600).
 typedef struct {
     /* 0x00 */ s32          unk0; // backing task id
     /* 0x04 */ FldScreenPos pos;
@@ -24,8 +30,7 @@ typedef struct {
     /* 0x14 */ Task*        human; // NPC the spot belongs to
 } FldScanEntry;                    // Size: 0x18
 
-// Scan task state: 64 entries followed by the counters. Size is 0x614, which
-// the TaskHandle below depends on.
+// Scan task state: 64 entries followed by the counters.
 typedef struct {
     /* 0x000 */ FldScanEntry entries[64];
     /* 0x600 */ s32          unk600; // live entry count
@@ -35,51 +40,23 @@ typedef struct {
     /* 0x610 */ s32          unk610; // current selection
 } FldScanData;                       // Size: 0x614
 
-extern const char       data_ov030_0210740c[];
 extern const TaskHandle Task_Window;
-extern s32              data_ov030_02109d64;
-extern FldScanData*     data_ov030_02109d70;
+static FldScanData*     Fld_ScanFukidasi_Instance = NULL;
+static s32              Fld_ScanFukidasi_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static void             Fld_ScanFukidasi_OpenWindow(TaskPool* pool, FldScanData* data, FldScanEntry* entry);
 
-extern s32  FieldScan_IsTouchActive(void);
-extern void FieldScan_MarkSeen(s32 id);
-extern void func_ov030_020af6d4(s32 mode);
-extern void func_ov030_020b400c(Task* task, s32 mode);
-extern s32  func_ov030_020b40e8(Task* task);
-extern void func_ov030_020b4144(Task* task);
-extern void func_ov030_020b416c(Task* task);
-extern void func_ov030_020b5d08(Task* task, s32 arg1);
-extern s32  func_ov030_020b5d58(Task* task);
-extern s32  func_ov030_020bf050(TaskPool* pool, s32 arg1, s32 arg2);
-extern s32  func_ov030_020c2640(TaskPool* pool, s32 dataType, FldScreenPos pos);
-extern s32  func_ov030_020c1088(TaskPool* pool, s16 x, s16 y, s16 kind, s16 mode, s32 mask);
-extern u8   func_ov030_020ca778(void* font, s32 mesNo, s32 arg2, const u8* winKind);
+const TaskHandle Tsk_Fld_ScanFukidasi = {"Tsk_Fld_ScanFukidasi", Fld_ScanFukidasi_RunTask, sizeof(FldScanData)};
 
-s32  func_ov030_020be85c(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020be884(FldScanEntry* entry, TouchCoord* coord);
-void func_ov030_020be8d8(TaskPool* pool, FldScanData* data, s32 sel);
-s32  func_ov030_020be958(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020beac4(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020beacc(TaskPool* pool, Task* task, void* args);
-s32  func_ov030_020beb58(TaskPool* pool, Task* task, void* args, s32 stage);
-void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, Task* arg7);
-void func_ov030_020bed54(TaskPool* pool, FldScanData* data, FldScanEntry* entry);
-
-const TaskHandle data_ov030_020e6360 = {data_ov030_0210740c, func_ov030_020beb58, sizeof(FldScanData)};
-
-const TaskStages data_ov030_020e636c = {
-    {func_ov030_020be85c, func_ov030_020be958, func_ov030_020beac4, func_ov030_020beacc}
-};
-
-s32 func_ov030_020be85c(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_ScanFukidasi_Init(TaskPool* pool, Task* task, void* args) {
     FldScanData* data = task->data;
 
-    data_ov030_02109d70 = data;
-    data->unk600        = 0;
-    data->unk610        = -1;
+    Fld_ScanFukidasi_Instance = data;
+    data->unk600              = 0;
+    data->unk610              = -1;
     return 1;
 }
 
-s32 func_ov030_020be884(FldScanEntry* entry, TouchCoord* coord) {
+static s32 Fld_ScanFukidasi_HitTest(FldScanEntry* entry, TouchCoord* coord) {
     s32 x = (s16)entry->pos.x;
     s32 y = (s16)entry->pos.y;
 
@@ -98,7 +75,7 @@ s32 func_ov030_020be884(FldScanEntry* entry, TouchCoord* coord) {
     return 0;
 }
 
-void func_ov030_020be8d8(TaskPool* pool, FldScanData* data, s32 sel) {
+static void Fld_ScanFukidasi_Select(TaskPool* pool, FldScanData* data, s32 sel) {
     s32 i;
     s32 a;
     s32 b;
@@ -112,7 +89,7 @@ void func_ov030_020be8d8(TaskPool* pool, FldScanData* data, s32 sel) {
             b = 1;
         }
         if (data->entries[i].unkC < 0x10000) {
-            func_ov030_020b400c(EasyTask_GetTaskById(pool, data->entries[i].unk0), a);
+            FldMesWindow_SetPriority(EasyTask_GetTaskById(pool, data->entries[i].unk0), a);
         }
         func_ov030_020b5d08(data->entries[i].human, b);
     }
@@ -122,7 +99,7 @@ void func_ov030_020be8d8(TaskPool* pool, FldScanData* data, s32 sel) {
 // Retail keeps a separate early-return epilogue for the aee10()==0 path
 // (`b 0x214` + add sp/#8/mov r0,#1/ldmia laid out between the loop and the
 // post-loop tail); ours shares a single epilogue with the final return.
-s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_ScanFukidasi_Update(TaskPool* pool, Task* task, void* args) {
     FldScanData* data = task->data;
     TouchCoord   coord;
     s32          i;
@@ -130,13 +107,13 @@ s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
     if (FieldScan_IsTouchActive() != 0) {
         TouchInput_GetCoord(&coord);
         for (i = 0; i < data->unk600; i++) {
-            if (func_ov030_020be884(&data->entries[i], &coord) != 0) {
+            if (Fld_ScanFukidasi_HitTest(&data->entries[i], &coord) != 0) {
                 Task* t;
 
-                func_ov030_020be8d8(pool, data, i);
+                Fld_ScanFukidasi_Select(pool, data, i);
                 t = EasyTask_GetTaskById(pool, data->entries[i].unk0);
                 if (data->entries[i].unkC < 0x10000) {
-                    func_ov030_020b416c(t);
+                    FldMesWindow_Press(t);
                 }
                 if (i != data->unk610) {
                     if (data->unk610 >= 0) {
@@ -144,8 +121,8 @@ s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
                         EasyTask_DeleteTask(pool, data->unk60C);
                     }
                     SndMgr_StartPlayingSE(0xC1);
-                    func_ov030_020bed54(pool, data, &data->entries[i]);
-                    data->unk60C = func_ov030_020bf050(pool, data->unk604, data->entries[i].unk10);
+                    Fld_ScanFukidasi_OpenWindow(pool, data, &data->entries[i]);
+                    data->unk60C = Fld_NpcRG_CreateTask(pool, data->unk604, data->entries[i].unk10);
                     data->unk610 = i;
                     func_ov030_020af6d4(5);
                 }
@@ -158,8 +135,8 @@ s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
             if (sel >= 0) {
                 Task* t = EasyTask_GetTaskById(pool, data->entries[sel].unk0);
 
-                if (func_ov030_020b40e8(t) == 0) {
-                    func_ov030_020b4144(t);
+                if (FldMesWindow_IsAnimating(t) == 0) {
+                    FldMesWindow_Highlight(t);
                 }
             }
         }
@@ -167,11 +144,11 @@ s32 func_ov030_020be958(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020beac4(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_ScanFukidasi_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020beacc(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_ScanFukidasi_Destroy(TaskPool* pool, Task* task, void* args) {
     FldScanData* data = task->data;
     s32          i;
 
@@ -183,12 +160,17 @@ s32 func_ov030_020beacc(TaskPool* pool, Task* task, void* args) {
         EasyTask_DeleteTask(pool, data->unk608);
         EasyTask_DeleteTask(pool, data->unk60C);
     }
-    data_ov030_02109d70 = NULL;
+    Fld_ScanFukidasi_Instance = NULL;
     return 1;
 }
 
-s32 func_ov030_020beb58(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e636c;
+static s32 Fld_ScanFukidasi_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_ScanFukidasi_Init,
+        .update     = Fld_ScanFukidasi_Update,
+        .render     = Fld_ScanFukidasi_Render,
+        .cleanup    = Fld_ScanFukidasi_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
@@ -196,7 +178,7 @@ s32 func_ov030_020beb58(TaskPool* pool, Task* task, void* args, s32 stage) {
 // Nonmatching: register allocation in the window-param block (USA 90.50%; JP unvalidated).
 // Retail batches the unk4/unk6 reloads into r8/r9 and orders datSlot before mesNo;
 // ours swaps r8/r9 and reorders the store pair
-void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, Task* arg7) {
+void Fld_ScanFukidasi_AddSpot(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, Task* task) {
     FldScanData*    data;
     FldScanEntry*   entry;
     FldMesTaskParam param;
@@ -206,10 +188,10 @@ void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     param.unk_14 = 0;
     x            = arg2;
     y            = arg3;
-    if (data_ov030_02109d70 == NULL) {
+    if (Fld_ScanFukidasi_Instance == NULL) {
         return;
     }
-    data         = data_ov030_02109d70;
+    data         = Fld_ScanFukidasi_Instance;
     entry        = &data->entries[data->unk600];
     data->unk600 = data->unk600 + 1;
     if (x < 0x20) {
@@ -230,10 +212,10 @@ void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     entry->unk8  = arg5;
     entry->unkC  = arg4;
     entry->unk10 = arg6;
-    entry->human = arg7;
+    entry->human = task;
     if (arg4 >= 0x10000) {
-        entry->unk0 = func_ov030_020c2640(pool, data->unk604, entry->pos);
-        func_ov030_020c1088(pool, (s16)entry->pos.x, (s16)entry->pos.y, (s16)(arg4 - 0x10000), 1, func_ov030_020b5d58(arg7));
+        entry->unk0 = Fld_ScanMoya_CreateTask(pool, data->unk604, entry->pos);
+        Fld_Luck_AddSymbol(pool, (s16)entry->pos.x, (s16)entry->pos.y, (s16)(arg4 - 0x10000), 1, func_ov030_020b5d58(task));
     } else {
         s32 id;
         u16 px;
@@ -258,7 +240,7 @@ void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
         param.unk_1C    = 0;
         id              = EasyTask_CreateTask(pool, &Task_Window, NULL, 0, NULL, &param);
         entry->unk0     = id;
-        func_ov030_020b400c(EasyTask_GetTaskById(pool, id), 1);
+        FldMesWindow_SetPriority(EasyTask_GetTaskById(pool, id), 1);
     }
     SndMgr_PlaySEWithPan(0xC0, x);
 }
@@ -267,7 +249,7 @@ void func_ov030_020beba0(TaskPool* pool, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
 // Retail derives -1 with `sub r1,r2,#1` after `mov r2,#0` (the zero constant
 // register is allocated before 0x80/0x8c, so the -1 peephole fires); ours emits
 // `mvn r1,#0` because our zero is materialised last.
-void func_ov030_020bed54(TaskPool* pool, FldScanData* data, FldScanEntry* entry) {
+static void Fld_ScanFukidasi_OpenWindow(TaskPool* pool, FldScanData* data, FldScanEntry* entry) {
     FldScanWinParam param;
 
     param.msg.unk_14  = 0;

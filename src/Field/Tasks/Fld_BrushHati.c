@@ -1,9 +1,8 @@
+#include "Field/Tasks/Fld_BrushHati.h"
 #include "Engine/EasyTask.h"
-#include "Engine/File/BinMgr.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 #include <nitro/types.h>
-
-extern BinIdentifier data_ov030_020d95b4;
 
 typedef struct {
     s32 dataType;
@@ -11,13 +10,7 @@ typedef struct {
 } Fld_BrushHati_Args;
 
 SpriteFrameInfo* Fld_BrushHati_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_BrushHati_Load(Sprite* sprite, Fld_BrushHati_Args* args);
-s32              Fld_BrushHati_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_BrushHati_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_BrushHati_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_BrushHati_Destroy(TaskPool* pool, Task* task, void* args);
 s32              Fld_BrushHati_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
-s32              Fld_BrushHati_CreateTask(TaskPool* pool, s32 dataType, s16 animIndex);
 
 static const TaskHandle Tsk_Fld_BrushHati = {"Tsk_Fld_BrushHati", Fld_BrushHati_RunTask, sizeof(Sprite)};
 
@@ -35,7 +28,7 @@ static const SpriteAnimation Fld_BrushHati_Anim = {
     .frameInfoCallback = (SpriteFrameInfoCallback)Fld_BrushHati_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d95b4,
+    .binIden           = &Iden_FldTouch,
     .unk_18            = 2,
     .packIndex         = 11,
     .unk_1C            = 2,

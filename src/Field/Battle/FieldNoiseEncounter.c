@@ -1,4 +1,6 @@
+#include "Field/Battle/FieldNoiseEncounter.h"
 #include "Engine/Math/Random.h"
+#include "Field/Tasks/Fld_Piranha.h"
 #include "Save.h"
 
 typedef struct {
@@ -9,8 +11,6 @@ typedef struct {
 typedef struct {
     /* 0x00 */ const FieldNoiseEntry* const* tables[41];
 } FieldNoiseTableSet; // Size: 0xA4
-
-extern s32 func_ov030_020c5f5c(s32 encounter);
 
 // clang-format off
 const FieldNoiseEntry NoiseEncounters_Area39_Ch15[] = {{-1, 0}};
@@ -1770,7 +1770,7 @@ const FieldNoiseEntry* const* FieldNoise_GetAreaTables(void) {
 }
 
 BOOL FieldNoise_IsKind(s32 kind, s32 encounter) {
-    s32 category = func_ov030_020c5f5c(encounter);
+    s32 category = Field_GetEncounterCategory(encounter);
 
     if (kind == 0) {
         return category < 24;

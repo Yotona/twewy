@@ -1,15 +1,17 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/Core/System.h"
 #include "Engine/IO/Str.h"
 #include "Engine/IO/TouchInput.h"
-#include "Field/Events.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Player.h"
+#include "Field/Tasks/Fld_ScanArea.h"
 #include "Save.h"
-
-extern s32       func_ov030_020ae2c8(FieldEventManager*);
-extern const s32 data_ov030_020da778[44];
-
-extern s32  func_ov030_02084788(FieldEventManager*);
-extern s32  func_ov030_020847c8(FieldEventManager*);
 extern s8*  func_ov030_020b0534(s16 area);
 extern void func_02011e94(void* dst, s32 arg1, s32 arg2, void* src);
 
@@ -53,7 +55,7 @@ BOOL FieldScan_IsTouchActive(void) {
     if (!TouchInput_IsTouchActive()) {
         return FALSE;
     }
-    if (func_ov030_02084788(field)) {
+    if (FieldBg_IsBadgeTapped(field)) {
         return FALSE;
     }
     return field->scanPhase == 3;
@@ -65,10 +67,10 @@ BOOL Field_IsMoveTouchActive(void) {
     if (!TouchInput_IsTouchActive()) {
         return FALSE;
     }
-    if (func_ov030_020b3058(EasyTask_GetTaskById(&field->taskPool, field->taskId_Player))) {
+    if (Fld_Player_IsTouched(EasyTask_GetTaskById(&field->taskPool, field->taskId_Player))) {
         return FALSE;
     }
-    if (func_ov030_020847c8(field)) {
+    if (FieldBg_IsBadgeHeld(field)) {
         return FALSE;
     }
     return field->scanPhase == 5;
@@ -78,7 +80,7 @@ BOOL Field_IsMoveInputActive(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
     if (SysControl.buttonState.currButtons & (INPUT_DPAD | INPUT_ABXY)) {
-        if (func_ov030_020847c8(field)) {
+        if (FieldBg_IsBadgeHeld(field)) {
             return FALSE;
         }
         return field->scanPhase == 5;
@@ -123,7 +125,7 @@ BOOL FieldScan_IsClosing(void) {
 BOOL func_ov030_020af01c(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
+    if (Fld_ScanArea_GetScale(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
         return FALSE;
     }
     if (field->unk_21A5C == 1) {
@@ -141,7 +143,7 @@ BOOL Field_IsIdle(void) {
     if (field->unk_21AAC != 0) {
         return FALSE;
     }
-    if (func_ov030_020b484c(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
+    if (Fld_ScanArea_GetScale(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea))) {
         return FALSE;
     }
     if (gSaveData.unk_2498 != 0) {
@@ -186,7 +188,7 @@ void FieldDebug_DrawPlayerInfo(void) {
 s32 FieldScan_GetRadius(void) {
     FieldEventManager* field = data_ov030_02109d60;
 
-    return func_ov030_020b4858(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea));
+    return Fld_ScanArea_GetRadius(EasyTask_GetTaskById(&field->taskPool, field->taskId_ScanArea));
 }
 
 s32 FieldScan_IsActive(void) {

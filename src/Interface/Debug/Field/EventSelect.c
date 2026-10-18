@@ -6,7 +6,9 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include "Field/FieldDebug.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Wall.h"
+#include "Interface/Debug/Field/FieldDebug.h"
 #include "common_data.h"
 
 #include "Save.h"
@@ -17,7 +19,7 @@ extern void func_02025e30(void* textObj);
 
 extern void  func_ov030_020ae96c(s32 arg0);
 extern char* func_ov030_020b0534(s32 arg0);
-extern void  func_ov030_020c268c(s32 arg0);
+extern void  Fld_Wall_SetAllExitStates(s32 arg0);
 
 const EventSelectEntry EventSelect_Shiki_DayOne[20] = {
     {         EVENT_SHIKI1_BEGIN_GAME, 3,     "e_01_001"},
@@ -1950,9 +1952,9 @@ void func_ov030_020b131c(EventSelectObject* object) {
 }
 
 void func_ov030_020b1330(EventSelectObject* object) {
-    func_ov030_020c26ec();
+    Field_ResetDayProgress();
     gSaveData.unk_2488 = 0;
-    func_ov030_020c268c(4);
+    Fld_Wall_SetAllExitStates(4);
     if (gSaveData.unk_26E4 >= data_ov030_020de334[gSaveData.unk_26E6].count) {
         gSaveData.unk_26E4 = 0;
     }

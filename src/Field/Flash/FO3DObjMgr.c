@@ -1,5 +1,12 @@
-#include "Field/FO3D.h"
-#include "Field/FO3DRegion.h"
+#include "Field/FieldRegion.h"
+
+#include "Field/FieldTypes.h"
+#include "Field/Flash/FO3D.h"
+#include "Field/Flash/FO3DObj.h"
+#include "Field/Flash/FO3DObjMgr.h"
+#include "Field/Flash/FOAllocator.h"
+#include "Field/Flash/FOPtrList.h"
+
 #include <string.h>
 
 typedef struct {
@@ -69,11 +76,8 @@ static const s32 sGridRings5x5[9][9] = {
     {7,  1,  0,  5,  6, 21, 22, 23,  8},
     {8, 10,  1,  0,  7, 22, 23, 24,  9},
 };
-
-void FO3DObjMgr_CaptureMaterialSample(NNSG3dRS* rs);
 void FO3DObjMgr_CaptureMatColorSample(NNSG3dRS* rs);
 void FO3DObjMgr_CaptureTexSrtSample(NNSG3dRS* rs);
-void FO3DObjMgr_StoreNodeTrans(NNSG3dRS* rs);
 void FO3DObjMgr_BlendTransAdditive(NNSG3dJntAnmResult* result, u32 node, s32 base);
 void FO3DObjMgr_BlendScaleAdditive(NNSG3dJntAnmResult* result, s32 base);
 void FO3DObjMgr_BlendRotAdditive(NNSG3dJntAnmResult* result, s32 base);
@@ -87,12 +91,8 @@ s32  FO3DObjMgr_FindNearestPoint(FieldPos* pos, FieldPos* points, const s32* lis
 BOOL FO3DObjMgr_CalcLineRatio(FieldPos* pos, FieldPos* points);
 u8   FO3DObjMgr_GetNodeCount(void);
 u8   FO3DObjMgr_GetMatCount(void);
-void FO3DObjMgr_SetupSampleCallbacks(NNSG3dRS* rs);
 void FO3DObjMgr_StepSampling(void);
 void FO3DObjMgr_ApplyLineFrame(NNSG3dAnmObj* anmObj, fx32 frameMax);
-BOOL FO3DObjMgr_BlendMatColorAnm(NNSG3dMatAnmResult* result, NNSG3dAnmObj* anmObj, u32 mat);
-BOOL FO3DObjMgr_BlendTexSrtAnm(NNSG3dMatAnmResult* result, NNSG3dAnmObj* anmObj, u32 mat);
-BOOL FO3DObjMgr_BlendJointAnm(NNSG3dJntAnmResult* result, NNSG3dAnmObj* anmObj, u32 node);
 void FO3DObjMgr_TexPatAnmFunc(NNSG3dMatAnmResult* result, NNSG3dAnmObj* anmObj, u32 mat);
 void FO3DObjMgr_NullAnmFunc(void);
 

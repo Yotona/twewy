@@ -1,10 +1,6 @@
-#include "Field/TaskHelpers.h"
-// Preliminary USA TU; original assembly remains linked (incomplete).
-// Range: 0x020bbe08-0x020bc068; 8 functions.
-// Research draft: docs/decomp/ov030/Fld_NSymbolUGEffect.c
-// Boundary evidence: docs/tu-boundaries/ov030.md.
-// Unassigned data stays in generated gaps; do not mark complete yet.
+#include "Field/Tasks/Fld_NSymbolUGEffect.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 
 typedef struct {
@@ -19,17 +15,40 @@ typedef struct {
     /* 0x0C */ s32  effect;
 } Ov030UGEffectConfig;
 
-typedef TaskStages Ov030UGEffectFns;
+static SpriteFrameInfo* Fld_NSymbolUGEffect_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_NSymbolUGEffect_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-extern SpriteAnimation  data_ov030_020e6034;
-extern Ov030UGEffectFns data_ov030_020e6024;
-extern TaskHandle       data_ov030_020e6018;
+static const TaskHandle Tsk_Fld_NSymbolUGEffect = {"Tsk_Fld_NSymbolUGEffect", Fld_NSymbolUGEffect_RunTask,
+                                                   sizeof(Ov030UGEffectSprite)};
 
-// Written out instead of `Sprite_FrameInfoCallbackSorted` (which hoists
-// `info_ = &g_SpriteFrameInfo` above the switch): the original keeps `info_`
-// NULL until the render case, so the zero constant is shared with the
-// pieceCount/cellPieces/affine stores and the single exit `mov r0, r3`.
-SpriteFrameInfo* func_ov030_020bbe08(Sprite* sprite, s32 arg, s32 mode) {
+static const SpriteAnimation Fld_NSymbolUGEffect_Anim = {
+    .bits_0_1          = 0,
+    .dataType          = 0,
+    .bit_6             = 0,
+    .bits_7_9          = 5,
+    .bits_10_11        = 0,
+    .bits_12_13        = 1,
+    .bits_14_15        = 0,
+    .unk_02.raw        = 0x0000,
+    .posX              = 0,
+    .posY              = 0,
+    .frameInfoCallback = Fld_NSymbolUGEffect_GetFrameInfo,
+    .callbackArg       = 0,
+    .owner             = NULL,
+    .binIden           = &Iden_FldEncount,
+    .unk_18            = 0,
+    .packIndex         = 0,
+    .unk_1C            = 43,
+    .unk_1E            = 0,
+    .unk_20            = 46,
+    .unk_22            = 1,
+    .unk_24            = 0,
+    .unk_26            = 44,
+    .unk_28            = 45,
+    .animIndex         = 1,
+};
+
+static SpriteFrameInfo* Fld_NSymbolUGEffect_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     SpriteFrameInfo* info_ = NULL;
 
     switch (mode) {
@@ -46,12 +65,8 @@ SpriteFrameInfo* func_ov030_020bbe08(Sprite* sprite, s32 arg, s32 mode) {
     return info_;
 }
 
-// posY is assigned before posX on purpose: mwcc then loads pos[0] first and
-// lets pos[1]'s load reuse the base register, which is the target's pairing
-// (`ldrh r1,[r1,#0]` / `ldrh r0,[r1,#2]`). Written in the natural order both
-// the loads and the stores come out with the two values' registers swapped.
-void func_ov030_020bbeb8(Sprite* sprite, s32 dataType, Ov030UGEffectConfig* config) {
-    SpriteAnimation anim = data_ov030_020e6034;
+static void Fld_NSymbolUGEffect_Load(Sprite* sprite, s32 dataType, Ov030UGEffectConfig* config) {
+    SpriteAnimation anim = Fld_NSymbolUGEffect_Anim;
     u16*            pos;
     s16             posY;
     s16             posX;
@@ -73,15 +88,16 @@ void func_ov030_020bbeb8(Sprite* sprite, s32 dataType, Ov030UGEffectConfig* conf
     _Sprite_Load(sprite, &anim);
 }
 
-s32 func_ov030_020bbf64(TaskPool* pool, Task* task, Ov030UGEffectConfig* config) {
+static s32 Fld_NSymbolUGEffect_Init(TaskPool* pool, Task* task, void* args) {
+    Ov030UGEffectConfig* config = args;
     Ov030UGEffectSprite* sprite = task->data;
 
-    func_ov030_020bbeb8(&sprite->sprite, config->dataType, config);
+    Fld_NSymbolUGEffect_Load(&sprite->sprite, config->dataType, config);
     sprite->pos = config->pos;
     return 1;
 }
 
-s32 func_ov030_020bbf8c(TaskPool* pool, Task* task) {
+static s32 Fld_NSymbolUGEffect_Update(TaskPool* pool, Task* task, void* args) {
     Ov030UGEffectSprite* sprite = task->data;
     u16*                 pos;
     s16                  x;
@@ -97,28 +113,33 @@ s32 func_ov030_020bbf8c(TaskPool* pool, Task* task) {
     return 1;
 }
 
-s32 func_ov030_020bbfb8(TaskPool* pool, Task* task) {
+static s32 Fld_NSymbolUGEffect_Render(TaskPool* pool, Task* task, void* args) {
     Sprite_Render(&((Ov030UGEffectSprite*)task->data)->sprite);
     return 1;
 }
 
-s32 func_ov030_020bbfcc(TaskPool* pool, Task* task) {
+static s32 Fld_NSymbolUGEffect_Destroy(TaskPool* pool, Task* task, void* args) {
     Sprite_Destroy(&((Ov030UGEffectSprite*)task->data)->sprite);
     return 1;
 }
 
-s32 func_ov030_020bbfe0(TaskPool* pool, Task* task, void* args, s32 stage) {
-    Ov030UGEffectFns funcs = data_ov030_020e6024;
+static s32 Fld_NSymbolUGEffect_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_NSymbolUGEffect_Init,
+        .update     = Fld_NSymbolUGEffect_Update,
+        .render     = Fld_NSymbolUGEffect_Render,
+        .cleanup    = Fld_NSymbolUGEffect_Destroy,
+    };
 
-    return funcs.iter[stage](pool, task, args);
+    return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bc028(TaskPool* pool, s32 dataType, u16* pos, s32 mode, s32 effect) {
+s32 Fld_NSymbolUGEffect_CreateTask(TaskPool* pool, s32 dataType, u16* pos, s32 mode, s32 effect) {
     Ov030UGEffectConfig params;
 
     params.dataType = dataType;
     params.pos      = pos;
     params.mode     = mode;
     params.effect   = effect;
-    return EasyTask_CreateTask(pool, &data_ov030_020e6018, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_NSymbolUGEffect, NULL, 0, NULL, &params);
 }

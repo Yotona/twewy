@@ -1,27 +1,21 @@
-#include "Field/FlashRegion.h"
+#include "Field/FieldRegion.h"
 
 extern "C" {
-#include "Engine/Core/System.h"
 #include "FixedPoint.h"
 #include <nitro/g3.h>
 #include <nitro/mi/cpumem.h>
 #include <nitro/os/cache.h>
 #include <nitro/os/cpustat.h>
 }
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashGraphicsInit.h"
+#include "Field/Flash/FlashPlayer.h"
+#include "Field/Flash/FlashRender.h"
 
 extern "C" {
 extern const VecFx32 FlashCameraPos = {0, 0, 0x100000};
 extern const VecFx32 FlashCameraUp  = {0, 0x1000, 0};
 
-extern BOOL gFlashDrawBottomScreen;
-extern BOOL gFlashSwapPending;
-
-void FlashGfx_ShowMainOnTop(void);
-void FlashGfx_ShowMainOnBottom(void);
-void FlashGfx_SwapBuffers(void);
 void func_02028108(s32 type, u32 dst, const void* src, u32 size);
-void G3X_SetClearColor(u32 rgb, u32 alpha, u32 depth, u32 polygonId, BOOL fog);
 void G3i_LookAt(const VecFx32* camPos, const VecFx32* camUp, const VecFx32* target, BOOL draw, void* mtx);
 }
 

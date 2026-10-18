@@ -1,4 +1,6 @@
+#include "Field/Tasks/Fld_TouchNext.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 
 typedef struct {
@@ -12,13 +14,7 @@ typedef struct {
 } Fld_TouchNext_Args;
 
 SpriteFrameInfo* Fld_TouchNext_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_TouchNext_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_TouchNext_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_TouchNext_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_TouchNext_Destroy(TaskPool* pool, Task* task, void* args);
 s32              Fld_TouchNext_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
-
-extern BinIdentifier data_ov030_020d9944;
 
 static const TaskHandle      Tsk_Fld_TouchNext  = {"Tsk_Fld_TouchNext", Fld_TouchNext_RunTask, sizeof(Fld_TouchNext)};
 static const SpriteAnimation Fld_TouchNext_Anim = {
@@ -35,7 +31,7 @@ static const SpriteAnimation Fld_TouchNext_Anim = {
     .frameInfoCallback = Fld_TouchNext_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 10,
     .unk_1C            = 2,
@@ -102,7 +98,7 @@ s32 Fld_TouchNext_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-s32 Fld_TouchNext_CreateTask(TaskPool* pool, s32 dataType, u16 flags) {
+s32 Fld_TouchNext_CreateTask(TaskPool* pool, s32 dataType, s32 flags) {
     Fld_TouchNext_Args args;
     args.dataType = dataType;
     args.flags    = flags;

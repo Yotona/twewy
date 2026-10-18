@@ -1,14 +1,15 @@
+#include "Field/Scene/FieldMusic.h"
 #include "CriSndMgr.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Math/Random.h"
 #include "Field/FieldTypes.h"
+#include "Field/Flash/FO3DViewer.h"
+#include "FixedPoint.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include <nitro/fx/fx_vector.h>
 
 extern s32 CriSndMgr_Play(void);
-extern s32 FO3DViewer_GetNodePos(void* name, Vec* pos);
-extern s32 FO3DViewer_GetAnimFrame(void* name);
 
 // Field BGM pool of a chapter group.
 typedef struct {

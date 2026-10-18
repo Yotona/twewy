@@ -1,16 +1,27 @@
+#include "Field/Flash/FOPtrList.h"
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
+#include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
-#include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include "Field/FO3D.h"
+#include "Field/Flash/FO3D.h"
+#include "Field/Flash/FOFileList.h"
 #include "common_data.h"
 #include <nitro/gx.h>
+#include <nitro/mi/cpumem.h>
+
+extern void func_0202b878(void);
+extern void GX_LoadBgPltt(const void* src, u32 offset, u32 size);
+extern void GX_LoadObjPltt(const void* src, u32 offset, u32 size);
+extern void GXs_LoadBgPltt(const void* src, u32 offset, u32 size);
+extern void GXs_LoadObjPltt(const void* src, u32 offset, u32 size);
 
 extern FieldPtrList* gFOPtrList;
+
+void FOPtrList_Clear(void);
 
 void* FOPtrList_Create(void) {
     gFOPtrList           = FOList_Alloc(sizeof(*gFOPtrList));

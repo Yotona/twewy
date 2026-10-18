@@ -1,13 +1,13 @@
+#include "Field/Tasks/Fld_MapName.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_MapJumpName.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
 #include "Util/SysFontMsgs.h"
 #include <nitro/types.h>
-
-extern const BinIdentifier data_ov030_020d9944;
-extern s32                 func_ov030_020aeadc(s32 area, s32 flags);
-extern void                func_ov030_020c4b8c(SysFont* font, SysCode* msg, s32 arg2, void* arg3);
 
 typedef struct {
     Sprite   sprite;
@@ -22,13 +22,8 @@ typedef struct {
 typedef struct {
     s32 dataType;
     s32 messageId;
-    s32 unk_08;
+    s32 onMainEngine;
 } Fld_MapName_Args;
-
-s32              Fld_MapName_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_MapName_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_MapName_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_MapName_Destroy(TaskPool* pool, Task* task, void* args);
 s32              Fld_MapName_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 SpriteFrameInfo* Fld_MapName_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 
@@ -48,7 +43,7 @@ static const SpriteAnimation Fld_MapName_Anim = {
     .frameInfoCallback = Fld_MapName_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 3,
     .unk_1C            = 1,
@@ -70,7 +65,7 @@ void Fld_MapName_Load(Sprite* sprite, Fld_MapName_Args* args, s16 width) {
 
     anim.dataType = args->dataType;
     anim.posX     = width;
-    if (args->unk_08 != 0) {
+    if (args->onMainEngine != 0) {
         anim.bits_0_1 = 0;
     }
     _Sprite_Load(sprite, &anim);
@@ -95,7 +90,7 @@ s32 Fld_MapName_Init(TaskPool* pool, Task* task, void* args) {
     Sprite_Update(&mapName->sprite);
     mapName->unk_44 = 2;
     SysFont_SetSpacing(&mapName->font, TRUE, 0);
-    func_ov030_020c4b8c(&mapName->font, mapName->msg, 1, mapName);
+    Fld_Mess_CenterText(&mapName->font, mapName->msg, 1, &mapName->sprite);
     return 1;
 }
 
@@ -142,21 +137,21 @@ s32 Fld_MapName_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 s32 Fld_MapName_CreateTask(TaskPool* pool, s32 dataType, s32 messageId) {
     Fld_MapName_Args args;
-    args.dataType  = dataType;
-    args.messageId = messageId;
-    args.unk_08    = 0;
+    args.dataType     = dataType;
+    args.messageId    = messageId;
+    args.onMainEngine = 0;
     return EasyTask_CreateTask(pool, &Tsk_Fld_MapName, NULL, 0, NULL, &args);
 }
 
-s32 func_ov030_020c53ac(TaskPool* pool, s32 dataType, s32 messageId) {
+s32 Fld_MapName_CreateTaskOnMain(TaskPool* pool, s32 dataType, s32 messageId) {
     Fld_MapName_Args args;
-    args.dataType  = dataType;
-    args.messageId = messageId;
-    args.unk_08    = 1;
+    args.dataType     = dataType;
+    args.messageId    = messageId;
+    args.onMainEngine = 1;
     return EasyTask_CreateTask(pool, &Tsk_Fld_MapName, NULL, 0, NULL, &args);
 }
 
-void func_ov030_020c53e8(Task* task, s16 x, s16 y) {
+void Fld_MapName_SetPosition(Task* task, s16 x, s16 y) {
     Fld_MapName* mapName = task->data;
 
     mapName->sprite.posY = y + 4;

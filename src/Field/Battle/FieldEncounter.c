@@ -1,7 +1,8 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Color.h"
-#include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
@@ -13,10 +14,45 @@
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/ObjResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
-#include "Field/EventFlags.h"
-#include "Field/Events.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventSpawnTemplates.h"
+#include "Field/Event/EventTables.h"
 #include "Field/FieldTypes.h"
-#include "Field/FldHuman.h"
+#include "Field/Flash/FO3DViewer.h"
+#include "Field/Scene/FieldAmbientSound.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldMain.h"
+#include "Field/Scene/FieldMusic.h"
+#include "Field/Scene/FieldSceneLoad.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/FldSpriteFrame.h"
+#include "Field/Tasks/Fld_Badge.h"
+#include "Field/Tasks/Fld_Brush.h"
+#include "Field/Tasks/Fld_BustShot.h"
+#include "Field/Tasks/Fld_CockPit.h"
+#include "Field/Tasks/Fld_EventMail.h"
+#include "Field/Tasks/Fld_Human.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_MapJumpArrow.h"
+#include "Field/Tasks/Fld_NSymbolUGMgr.h"
+#include "Field/Tasks/Fld_OnePicturCell.h"
+#include "Field/Tasks/Fld_Partner.h"
+#include "Field/Tasks/Fld_Phone.h"
+#include "Field/Tasks/Fld_Piranha.h"
+#include "Field/Tasks/Fld_Player.h"
+#include "Field/Tasks/Fld_ScanArea.h"
+#include "Field/Tasks/Fld_ScanFukidasi.h"
+#include "Field/Tasks/Fld_Shinigami.h"
+#include "Field/Tasks/Fld_TalkEventTitle.h"
+#include "Field/Tasks/Fld_Touch.h"
+#include "Field/Tasks/Fld_TouchCommand.h"
+#include "Field/Tasks/Fld_TouchShine.h"
+#include "Field/Tasks/Fld_Watch.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
@@ -24,173 +60,21 @@
 #include <nitro/fx.h>
 #include <nitro/types.h>
 
-extern s32        func_0202599c(s32 flagIndex);
-extern s32        func_ov030_020b30d0(Task* task);
-extern s32        func_ov030_020b38ec(Task* task);
-extern s32        func_ov030_020b5cd8(Task* task);
-extern s32        func_ov030_020b5d4c(Task* task);
-extern FieldExit* func_ov030_020b8358(s32 area, FieldPos pos, s32 arg3, s32* arg4);
-extern void       func_ov030_020be0f8(Task* task);
-extern s32        func_ov030_020bd31c(Task* task);
-extern s32        func_ov030_020bd340(Task* task);
-extern s32        func_ov030_020c8a0c(TaskPool* pool, s32 arg1);
-extern void       func_ov030_020c8a3c(Task* task);
-extern void       FO3DViewer_RestartAnim(const char* name);
-extern void       func_ov030_020aec38(s32 arg0);
-extern void       func_ov030_020a7b50(FieldEventManager* mgr);
-extern s32        func_ov030_020847f4(FieldEventManager* mgr);
-extern void       func_ov030_020826a4(FieldEventManager* mgr);
-extern void       func_ov030_02082788(FieldEventManager* mgr);
-extern void       func_ov030_020827b0(FieldEventManager* mgr);
-extern void       func_ov030_02082a50(FieldEventManager* mgr);
-extern s32        Field_GetChapterGroup(void);
-extern void       Field_SpawnMapJumpArrows(FieldEventManager* mgr);
-extern void       Field_DeleteMapJumpArrows(FieldEventManager* mgr);
-extern void       func_02001b44(s32 arg0, s32 arg1, void* arg2, s32 arg3);
+extern s32  func_0202599c(s32 flagIndex);
+extern void Field_SpawnMapJumpArrows(FieldEventManager* mgr);
+extern void Field_DeleteMapJumpArrows(FieldEventManager* mgr);
+extern void func_02001b44(s32 arg0, s32 arg1, void* arg2, s32 arg3);
 extern s32 (*data_02065fd4)(s32 arg0, s32 arg1, s32 arg2);
-extern void func_ov030_020b7744(s32* arg0, s32 arg1);
-extern s32  func_ov030_020b47f8(void* arg0, void* arg1, void* arg2, s32 arg3, s32 arg4);
-extern s32  func_ov030_020c5ed0(void* arg0, s32 arg1, void* arg2, s32 arg3);
-extern void func_ov030_020c6150(s32* arg0);
-extern void Field_SpawnHumans(FieldEventManager* mgr);
 
-extern void                    Field_SetEncounterHumanCount(s16 count);
-extern s16                     func_ov030_020b7b20(void);
-extern s16                     func_ov030_020b7bc4(void);
-extern s32                     func_ov030_020aec08(s32 mask);
-extern const FldSpawnTemplate* func_ov030_020baa2c(s32* count);
-// Per-area human spawn percentages (24 areas): [0] random spawns, [1] route spawns.
-extern const s16 FieldHumanSpawnPercents[24][2];
+extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
+extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
+extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
 
-// Walking routes of an area: NPCs spawn along one of `count` segments, in
-// either direction.
-typedef struct {
-    /* 0x0 */ FldHumanSpawnEntry* routes;
-    /* 0x4 */ s16                 count;
-} FldAreaRoutes; // Size: 0x8
-
-extern const FldAreaRoutes FieldAreaRoutes[24];
-extern s32                 func_ov030_020c1af8(void);
-extern s32                 func_ov030_020bd85c(void* arg0, s32 arg1, s32 arg2);
-extern s32                 func_ov030_020c1a9c(void);
-extern s32                 func_ov030_020bde98(void* arg0, s32 arg1);
-extern s32                 func_ov030_020be0c8(void* arg0, s32 arg1);
-extern s32                 func_020236a0(void);
-extern s32                 func_ov030_020b2fc0(void* arg0, void* arg1, void* arg2);
-extern s32                 func_ov030_020bd264(void* arg0, void* arg1, void* arg2);
-extern void                func_ov030_02083024(FieldEventManager* mgr);
-extern s32                 func_ov030_020b44b8(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
-extern s32                 func_ov030_020c4a48(void* arg0, s32 arg1);
-extern s32                 func_ov030_020bd598(void* arg0, s32 arg1, s32 arg2);
-extern s32                 func_ov030_020ccb48(void* arg0, s32 arg1);
-extern s32                 func_ov030_020bff30(void* arg0, s32 arg1, u16 arg2, s32 arg3);
-extern s32                 func_ov030_020c8fdc(void* arg0, s32 arg1);
-extern s32                 func_ov030_020bfb50(void* arg0, s32 arg1);
-extern void                func_ov030_020c0760(s16 arg0);
-extern s16                 data_ov030_020d9924[];
-extern BinIdentifier       data_ov030_020d95b4;
-extern BinIdentifier       data_ov030_020d98bc[];
-extern BgResource*         BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-extern BgResource*         BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern BgResource*         BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
-extern void                func_ov030_020c2d50(s32 arg0);
-extern void                func_ov030_020aeaa0(s32 arg0, s32 arg1);
-extern void                func_ov030_020c3360(void);
-extern void                FieldScan_Update(FieldEventManager* mgr);
-extern s32                 func_ov030_020c0bac(TaskPool* pool, s32 arg1);
-extern void                func_ov030_020c0f50(TaskPool* pool, s32 arg1, void* arg2);
-extern void                func_ov030_020b4874(Task* task);
-extern void                func_ov030_020c6300(void);
-extern void                func_ov030_020aec1c(s32 arg0);
-extern u16                 data_ov030_020d95c4[][2];
-extern BinIdentifier       data_ov030_020d9944;
-extern BinIdentifier       data_ov030_020d95a4;
-extern TaskHandle          data_ov030_020e6360;
-extern s16                 FieldRankLevelRanges[][2];
-
-// Two encounter id ranges; the second is used when FieldEncounter_UsesFirstRange says no.
-typedef struct {
-    /* 0x0 */ u16 lo1;
-    /* 0x2 */ u16 hi1;
-    /* 0x4 */ u16 lo2;
-    /* 0x6 */ u16 hi2;
-} FldEncounterRanges;
-
-extern FldEncounterRanges         FieldEncounterRangesByArea[];         // by area
-extern FldEncounterRanges         FieldEncounterRangesByRank[];         // by brand group
-extern FldEncounterRanges         FieldEncounterRangesByChapterGroup[]; // by chapter group
-extern const FieldEventRewardFunc data_ov030_020da6c8[];
-extern s32 (*const FieldChapterEventChecks[])(FieldEventManager*);
-extern s32 data_ov030_020d98ec[][2];
-
-// Initial template values shared by the spawner setup functions.
-extern FldSpawnTemplate FieldDefaultSpawnTemplate;
-
-void       func_ov030_020aac84(FieldEventManager* mgr);
-s32        Field_HasBustShotsOnBothSides(void);
-s32        func_ov030_020aad28(void);
-s32        func_ov030_020aad40(void);
-u16        Field_GetMailEvent(void);
-s32        func_ov030_020aad94(FieldEventManager* mgr, s32* outY);
-s32        Field_CheckMailIconTouch(FieldEventManager* mgr);
-s32        Field_CheckChapterEvent(FieldEventManager* mgr);
-s32        Field_CheckEventTriggers(FieldEventManager* mgr);
-s32        Field_CheckExit(FieldEventManager* mgr);
-void       Field_PlayNekuVoice(void);
-void       Field_BeginExitTransition(FieldEventManager* mgr);
-void       Field_PlayElevatorAnim(FieldEventManager* mgr);
-s32        Field_CheckPhoneMenuInput(FieldEventManager* mgr);
-s32        func_ov030_020ab3b8(s32 arg0);
-s32        func_ov030_020ab3ec(s32 arg0);
-u16        func_ov030_020ab420(s32 arg0);
-u16        func_ov030_020ab454(void);
-s32        func_ov030_020ab494(FieldEventManager* mgr);
-void       Field_MainUpdate(FieldEventManager* mgr);
-void       Field_ScriptUpdate(FieldEventManager* mgr);
-void       Field_ScanUpdate(FieldEventManager* mgr);
-void       Field_InitState(FieldEventManager* mgr);
-void       Field_ReleasePacks(FieldEventManager* mgr);
-void       func_ov030_020abbcc(FieldEventManager* mgr);
-void       Field_DestroyHumans(FieldEventManager* mgr);
-s16        FieldEncounter_GetRankBaseLevel(s32 rank);
-s16        FieldEncounter_GetRankForLevel(s32 level);
-s32        Field_RollHumanLevel(s32 index);
-s32        FieldEncounter_UsesFirstRange(s32 level);
-s32        func_ov030_020abe64(u32 arg0);
-u16        FieldEncounter_NextByArea(s32 level);
-u16        FieldEncounter_NextByRank(s32 level);
-s32        Field_GetChapterGroup(void);
-u16        FieldEncounter_NextByChapter(s32 level);
-u16        FieldEncounter_RollForHuman(s32 level, s32 limit);
-void       FieldEncounter_AssignToTemplate(s32 level, FldSpawnTemplate* tpl, s32 limit);
-s32        func_ov030_020ac254(void);
-s32        func_ov030_020ac294(void);
-void       Field_SpawnArea5Humans(FieldEventManager* mgr);
-void       func_ov030_020acd98(FieldEventManager* mgr, u32* arg1);
-void       Field_InitHumans(FieldEventManager* mgr);
-void       func_ov030_020acfc4(FieldEventManager* mgr);
-void       Field_CreateHud(FieldEventManager* mgr);
-void       Field_DestroyHud(FieldEventManager* mgr);
-void       Field_CreateObjects(FieldEventManager* mgr);
-void       Field_DestroyObjects(FieldEventManager* mgr);
-void       Field_ReleaseEventPicture(FieldEventManager* mgr);
-void       Field_CloseEventPicture(FieldEventManager* mgr);
-void       Field_LoadEventPicture(FieldEventManager* mgr);
-void       Field_LoadTouchEventBg(FieldEventManager* mgr);
-void       Field_SetupDisplay2D(FieldEventManager* mgr, s32 use256Colors);
-void       Field_SetupDisplay3D(FieldEventManager* mgr);
-s16        func_ov030_020adc84(void);
-void       Field_SpawnHuman(FieldEventManager* mgr, FieldPos pos, s32 level, FldSpawnTemplate tmpl, s32 routes, s16 routeCount,
-                            s16 segment, s32 angle, FieldPos target);
-void       Field_SpawnStandingHuman(FieldEventManager* mgr, FieldPos pos, s32 level, FldSpawnTemplate tmpl, s32 angle);
-extern s32 Field_AddEncounterHumanCount(s32 arg0);
-extern s32 func_ov030_020aeaf4(void);
-extern s32 func_ov030_020b86bc(FieldPos* pos, s16* arg1, s32* arg2, s32 arg3);
-extern s32 func_ov030_020bc43c(TaskPool* pool, FieldPos* origin, FieldPos pos, s32 arg3, FldSpawnTemplate arg4, s32 arg5);
-extern s32 func_ov030_020b5b9c(TaskPool* pool, FieldPos* origin, FieldPos start, s32 arg4, s32 dataType, FldSpawnTemplate tpl,
-                               s32 arg7, s32 speed, s32 spawns, s32 angle, s16 arg11, s16 route, FieldPos target);
-// Fixed NPC placements of area 5: x, y (pixels), unk_08 (-1 = by brand ranking), unk_0A.
-extern s16 FieldArea5HumanPlacements[][4];
+void Field_ScriptUpdate(FieldEventManager* mgr);
+void Field_ScanUpdate(FieldEventManager* mgr);
+void Field_SpawnHuman(FieldEventManager* mgr, FieldPos pos, s32 level, FldSpawnTemplate tmpl, s32 routes, s16 routeCount,
+                      s16 segment, s32 angle, FieldPos target);
+void Field_SpawnStandingHuman(FieldEventManager* mgr, FieldPos pos, s32 level, FldSpawnTemplate tmpl, s32 angle);
 
 void func_ov030_020aac84(FieldEventManager* mgr) {
     if (gSaveData.unk_24A0[gSaveData.unk_249C] == 72) {
@@ -207,7 +91,7 @@ BOOL Field_HasBustShotsOnBothSides(void) {
 
     for (i = 0; i < 35; i++) {
         if (mgr->unk_21BBC[i] != -1) {
-            if (func_ov030_020b38ec(EasyTask_GetTaskById(&mgr->taskPool, mgr->unk_21BBC[i])) < 128) {
+            if (Fld_BustShot_GetPosX(EasyTask_GetTaskById(&mgr->taskPool, mgr->unk_21BBC[i])) < 128) {
                 foundLo = TRUE;
             } else {
                 foundHi = TRUE;
@@ -244,7 +128,7 @@ BOOL func_ov030_020aad94(FieldEventManager* mgr, s32* outY) {
         if (group == 3) {
             return FALSE;
         }
-        if (func_ov030_020bd31c(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner))) {
+        if (Fld_Partner_IsTalkTouched(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner))) {
             mgr->unk_22E14 = 30;
             if (RNG_Next(128) < 32U) {
                 mgr->unk_22E18 = 1028;
@@ -255,10 +139,10 @@ BOOL func_ov030_020aad94(FieldEventManager* mgr, s32* outY) {
             } else {
                 mgr->unk_22E18 = data_ov030_020d98ec[group][1];
             }
-            *outY = func_ov030_020bd340(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
+            *outY = Fld_Partner_GetPosY(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner));
             return TRUE;
         }
-    } else if (func_ov030_020b30d0(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player))) {
+    } else if (Fld_Player_IsTalkTouched(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player))) {
         *outY = gSaveData.fieldPos.y;
         return TRUE;
     }
@@ -276,7 +160,7 @@ BOOL Field_CheckMailIconTouch(FieldEventManager* mgr) {
     }
     TouchInput_GetCoord(&coord);
     if (coord.x >= 6 && coord.x <= 22 && coord.y >= 2 && coord.y <= 18) {
-        func_ov030_020c8a3c(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_EventMail));
+        Fld_EventMail_Press(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_EventMail));
         return TRUE;
     }
     return FALSE;
@@ -298,7 +182,7 @@ BOOL Field_CheckEventTriggers(FieldEventManager* mgr) {
         FldEvent_BeginScript(mgr, func_ov030_020aad40(), 0);
         wantHook = TRUE;
     }
-    npcIndex = func_ov030_020847f4(mgr);
+    npcIndex = FieldBg_GetTouchedHuman(mgr);
     if (npcIndex != -1) {
         if (wantHook && func_ov030_020b5d4c(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Humans[npcIndex])) < hookY) {
             return TRUE;
@@ -349,7 +233,7 @@ void Field_PlayNekuVoice(void) {
 
 void Field_BeginExitTransition(FieldEventManager* mgr) {
     DebugOvlDisp_Pop();
-    DebugOvlDisp_Push((OverlayCB)func_ov030_020826a4, mgr, 0);
+    DebugOvlDisp_Push((OverlayCB)FieldMain_StepLeaveArea, mgr, 0);
     mgr->blendTimer = 30;
     mgr->blendEva   = 0;
 }
@@ -374,7 +258,7 @@ void Field_PlayElevatorAnim(FieldEventManager* mgr) {
     if (played) {
         SndMgr_PlaySEWithPan(SEIDX_BG_CITY_ELE_OPEN, F2I(gSaveData.fieldPos.x - mgr->origin.x));
         mgr->unk_21AAC = 81;
-        DebugOvlDisp_Push((OverlayCB)func_ov030_020827b0, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepWaitThenBlend, mgr, 0);
     }
 }
 
@@ -392,7 +276,7 @@ BOOL Field_CheckPhoneMenuInput(FieldEventManager* mgr) {
     }
     TouchInput_GetCoord(&coord);
     if (coord.x >= 238 && coord.y <= 26) {
-        func_ov030_020be0f8(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Phone));
+        Fld_Phone_Press(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Phone));
         SndMgr_StartPlayingSE(SEIDX_MENU_MENTER);
         return TRUE;
     }
@@ -480,12 +364,12 @@ BOOL func_ov030_020ab494(FieldEventManager* mgr) {
 void Field_MainUpdate(FieldEventManager* mgr) {
     func_ov030_020c2d50(gSaveData.areaPopulation[gSaveData.fieldArea]);
     if (mgr->taskId_EventMail == -1 && Field_GetMailEvent() != 0 && gSaveData.fieldArea != 37) {
-        mgr->taskId_EventMail = func_ov030_020c8a0c(&mgr->taskPool, mgr->dataType);
+        mgr->taskId_EventMail = Fld_EventMail_CreateTask(&mgr->taskPool, mgr->dataType);
     }
     if (mgr->unk_21AF4 != 0) {
         mgr->unk_21AAC = mgr->unk_21AF4;
         mgr->unk_21AF4 = 0;
-        DebugOvlDisp_Push((OverlayCB)func_ov030_02082788, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepWait, mgr, 0);
         return;
     }
     if (gSaveData.fieldArea != 23 && gSaveData.fieldArea != 37) {
@@ -501,7 +385,7 @@ void Field_MainUpdate(FieldEventManager* mgr) {
             mgr->unk_21AD0  = 0;
             mgr->activeExit = &mgr->unk_21AF8;
             Field_BeginExitTransition(mgr);
-        } else if (func_ov030_02084788(mgr)) {
+        } else if (FieldBg_IsBadgeTapped(mgr)) {
             func_ov030_020c3360();
             mgr->scanActive = 1;
             mgr->scanPhase  = 0;
@@ -509,15 +393,15 @@ void Field_MainUpdate(FieldEventManager* mgr) {
             mgr->scanTimer  = 25;
             mgr->unk_21B20  = -1;
             SndMgr_StartPlayingSE(SEIDX_SE_SCANL_OPEN);
-            mgr->unk_21B24           = EasyTask_CreateTask(&mgr->taskPool, &data_ov030_020e6360, NULL, 0, NULL, NULL);
-            mgr->taskId_NSymbolUGMgr = func_ov030_020c0bac(&mgr->taskPool, mgr->dataType);
+            mgr->unk_21B24           = EasyTask_CreateTask(&mgr->taskPool, &Tsk_Fld_ScanFukidasi, NULL, 0, NULL, NULL);
+            mgr->taskId_NSymbolUGMgr = Fld_NSymbolUGMgr_CreateTask(&mgr->taskPool, mgr->dataType);
             mgr->chainedEncounters   = 0;
-            func_ov030_020c0f50(&mgr->taskPool, mgr->taskId_NSymbolUGMgr, &mgr->origin);
+            Fld_Luck_SpawnSymbols(&mgr->taskPool, mgr->taskId_NSymbolUGMgr, &mgr->origin);
             if (mgr->unk_21700 != -1) {
                 EasyTask_DeleteTask(&mgr->taskPool, mgr->unk_21700);
                 mgr->unk_21700 = -1;
             }
-            func_ov030_020b4874(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea));
+            Fld_ScanArea_Open(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_ScanArea));
             EasyFade_FadeSubDisplay(FADER_SMOOTH, 16, 0);
             g_DisplaySettings.controls[DISPLAY_SUB].layers |= LAYER_BG0;
             mgr->scanSlideY = I2F(64);
@@ -543,7 +427,7 @@ void Field_MainUpdate(FieldEventManager* mgr) {
             DebugOvlDisp_Pop();
             mgr->exitRequest = 1;
         } else {
-            func_ov030_02083088(mgr);
+            FieldBg_ResetScanSeen(mgr);
             mgr->unk_21AD4 = 1;
         }
     }
@@ -575,7 +459,7 @@ void Field_ScanUpdate(FieldEventManager* mgr) {
     if (mgr->scanActive == 0) {
         DebugOvlDisp_Pop();
         DebugOvlDisp_Push((OverlayCB)Field_MainUpdate, mgr, 0);
-        DebugOvlDisp_Push((OverlayCB)func_ov030_02082a50, mgr, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepWaitFade, mgr, 0);
         func_ov030_020c2de8();
     }
 }
@@ -606,7 +490,7 @@ void Field_InitState(FieldEventManager* mgr) {
     mgr->taskId_EventMail = -1;
     mgr->unk_21A24        = -1;
     mgr->taskId_Choice    = -1;
-    func_ov030_020c0760(0);
+    Fld_TouchShine_SetActiveCount(0);
     mgr->unk_21AF0         = 0;
     mgr->unk_21AF4         = 0;
     mgr->exitRequest       = 0;
@@ -614,7 +498,7 @@ void Field_InitState(FieldEventManager* mgr) {
     mgr->blendTimer        = 0;
     mgr->unk_21AAC         = 0;
     mgr->blendEva          = 0;
-    mgr->unk_21620         = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d9944, 6, FALSE);
+    mgr->unk_21620         = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldDownScreen, 6, FALSE);
     mgr->unk_22E34         = 0;
     mgr->scanActive        = 0;
     mgr->mapJumpArrowCount = 0;
@@ -627,8 +511,8 @@ void Field_InitState(FieldEventManager* mgr) {
     mgr->lightLevel        = 31;
     FldEvent_InitState(mgr);
     mgr->unk_21AC4 = 0;
-    mgr->unk_21A28 = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95a4, 74, FALSE);
-    func_ov030_02083088(mgr);
+    mgr->unk_21A28 = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_NpcCeparate, 74, FALSE);
+    FieldBg_ResetScanSeen(mgr);
     func_ov030_020aec1c(3);
     func_ov030_020aec1c(2);
 }
@@ -1071,8 +955,8 @@ void Field_SpawnHuman(FieldEventManager* mgr, FieldPos pos, s32 level, FldSpawnT
                       s16 segment, s32 angle, FieldPos target) {
     if (mgr->canSpawnHumans != 0) {
         mgr->taskId_Humans[mgr->humanCount] =
-            func_ov030_020b5b9c(&mgr->taskPool, &mgr->origin, pos, mgr->humanCount, mgr->dataType, tmpl, level,
-                                RNG_Next(819) + 819, routes, angle, routeCount, segment, target);
+            Fld_Human_CreateTask(&mgr->taskPool, &mgr->origin, pos, mgr->humanCount, mgr->dataType, tmpl, level,
+                                 RNG_Next(819) + 819, routes, angle, routeCount, segment, target);
         if (mgr->taskId_Humans[mgr->humanCount] == -1) {
             mgr->canSpawnHumans = 0;
         }
@@ -1103,7 +987,7 @@ void Field_SpawnMapJumpArrows(FieldEventManager* mgr) {
                 kind = func_ov030_020aeaf4();
             }
             mgr->taskId_MapJumpArrows[mgr->mapJumpArrowCount] =
-                func_ov030_020bc43c(&mgr->taskPool, &mgr->origin, pos, mgr->dataType, template, kind);
+                Fld_MapJumpArrow_CreateTask(&mgr->taskPool, &mgr->origin, pos, mgr->dataType, template, kind);
         } else {
             mgr->taskId_MapJumpArrows[mgr->mapJumpArrowCount] = -1;
         }
@@ -1145,10 +1029,10 @@ void Field_InitHumans(FieldEventManager* mgr) {
     mgr->unk_21AE4      = 0;
     mgr->unk_21AEC      = 0;
     mgr->taskId_ScanArea =
-        func_ov030_020b47f8(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos, mgr->unk_21AA0, mgr->unk_21AA4);
+        Fld_ScanArea_CreateTask(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos, mgr->unk_21AA0, mgr->unk_21AA4);
     if (gSaveData.fieldArea == 41) {
         for (s32 i = 0; i < 64; i++) {
-            mgr->unk_21924[i] = func_ov030_020c5ed0(&mgr->taskPool, mgr->unk_21610, &mgr->origin, i);
+            mgr->unk_21924[i] = Fld_Piranha_CreateTask(&mgr->taskPool, mgr->unk_21610, &mgr->origin, i);
         }
     }
     gSaveData.unk_311E = 0;
@@ -1158,8 +1042,8 @@ void Field_InitHumans(FieldEventManager* mgr) {
 }
 
 void func_ov030_020acfc4(FieldEventManager* mgr) {
-    s32 v = func_ov030_020c1af8();
-    s32 id;
+    s32 v = Fld_Luck_GetNormalSymbolPercent();
+    s16 id;
 
     if (mgr->unk_216E0 != -1) {
         if (mgr->unk_216E8 != -1) {
@@ -1174,37 +1058,37 @@ void func_ov030_020acfc4(FieldEventManager* mgr) {
         } else {
             id = 9;
         }
-        mgr->unk_216E8 = func_ov030_020bd85c(&mgr->taskPool, mgr->dataType, id);
+        mgr->unk_216E8 = Fld_CockPit_CreateTask(&mgr->taskPool, mgr->dataType, id);
     }
 }
 
 void Field_CreateHud(FieldEventManager* mgr) {
     if (mgr->unk_216E0 == -1 && gSaveData.fieldArea != 37) {
-        s32 v1 = 6;
-        if (func_ov030_020c1a9c()) {
+        s16 v1 = 6;
+        if (Fld_Luck_IsScanEventAvailable()) {
             v1 = 5;
         }
-        mgr->unk_216E0 = func_ov030_020bd85c(&mgr->taskPool, mgr->dataType, v1);
+        mgr->unk_216E0 = Fld_CockPit_CreateTask(&mgr->taskPool, mgr->dataType, v1);
 
-        s32 v2 = 4;
+        s16 v2 = 4;
         if (func_0202599c(10)) {
             v2 = 3;
         }
-        mgr->unk_216E4 = func_ov030_020bd85c(&mgr->taskPool, mgr->dataType, v2);
+        mgr->unk_216E4 = Fld_CockPit_CreateTask(&mgr->taskPool, mgr->dataType, v2);
 
         func_ov030_020acfc4(mgr);
-        mgr->unk_216EC = func_ov030_020bd85c(&mgr->taskPool, mgr->dataType, (s16)(gSaveData.unk_2470 + 11));
+        mgr->unk_216EC = Fld_CockPit_CreateTask(&mgr->taskPool, mgr->dataType, (s16)(gSaveData.unk_2470 + 11));
 
-        s32 v3 = 2;
+        s16 v3 = 2;
         if (func_020236a0()) {
             v3 = 1;
         }
-        mgr->unk_216F8 = func_ov030_020bd85c(&mgr->taskPool, mgr->dataType, v3);
+        mgr->unk_216F8 = Fld_CockPit_CreateTask(&mgr->taskPool, mgr->dataType, v3);
 
-        mgr->taskId_Watch = func_ov030_020bde98(&mgr->taskPool, mgr->dataType);
-        mgr->taskId_Phone = func_ov030_020be0c8(&mgr->taskPool, mgr->dataType);
+        mgr->taskId_Watch = Fld_Watch_CreateTask(&mgr->taskPool, mgr->dataType);
+        mgr->taskId_Phone = Fld_Phone_CreateTask(&mgr->taskPool, mgr->dataType);
         if (mgr->taskId_EventMail == -1 && Field_GetMailEvent() != 0) {
-            mgr->taskId_EventMail = func_ov030_020c8a0c(&mgr->taskPool, mgr->dataType);
+            mgr->taskId_EventMail = Fld_EventMail_CreateTask(&mgr->taskPool, mgr->dataType);
         }
     }
 }
@@ -1226,14 +1110,14 @@ void Field_DestroyHud(FieldEventManager* mgr) {
 }
 
 void Field_CreateObjects(FieldEventManager* mgr) {
-    mgr->taskId_Player  = func_ov030_020b2fc0(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos);
-    mgr->taskId_Partner = func_ov030_020bd264(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos);
-    func_ov030_02083024(mgr);
+    mgr->taskId_Player  = Fld_Player_CreateTask(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos);
+    mgr->taskId_Partner = Fld_Partner_CreateTask(&mgr->taskPool, &mgr->origin, &gSaveData.fieldPos);
+    FieldBg_UpdateWalkSpeed(mgr);
 
     mgr->unk_21A2C    = Data_GetPackEntryData(mgr->unk_21A28, 1);
     mgr->humanPalette = PaletteMgr_AcquireContiguous(g_PaletteManagers[2], mgr->unk_21A2C, 5, 1);
     Field_CreateHud(mgr);
-    mgr->taskId_Badge       = func_ov030_020b44b8(&mgr->taskPool, mgr->dataType, 240, 176, 0, 0);
+    mgr->taskId_Badge       = Fld_Badge_CreateTask(&mgr->taskPool, mgr->dataType, 240, 176, 0, 0);
     mgr->taskId_KeywordMenu = -1;
     mgr->unk_216BC          = -1;
     mgr->unk_216C0          = -1;
@@ -1303,9 +1187,9 @@ void Field_LoadEventPicture(FieldEventManager* mgr) {
 
     Data* pack;
     if (id == 148) {
-        pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95b4, 9, FALSE);
+        pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldTouch, 9, FALSE);
     } else {
-        pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d98bc[binIndex], entryIndex, FALSE);
+        pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldEventPacks[binIndex], entryIndex, FALSE);
     }
 
     void* charData   = Data_GetPackEntryData(pack, 1);
@@ -1325,9 +1209,9 @@ void Field_LoadEventPicture(FieldEventManager* mgr) {
                                                 g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[1].charBase, 0, charSize);
     mgr->eventPicPalette = PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], palData, 0, 0, 16);
     if (id == 3) {
-        mgr->unk_21A90 = func_ov030_020bd598(&mgr->taskPool, mgr->dataType, 0);
+        mgr->unk_21A90 = Fld_OnePicturCell_CreateTask(&mgr->taskPool, mgr->dataType, 0);
     } else if (id == 8) {
-        mgr->unk_21A90 = func_ov030_020bd598(&mgr->taskPool, mgr->dataType, 1);
+        mgr->unk_21A90 = Fld_OnePicturCell_CreateTask(&mgr->taskPool, mgr->dataType, 1);
     } else {
         mgr->unk_21A90 = -1;
     }
@@ -1344,7 +1228,7 @@ void Field_LoadTouchEventBg(FieldEventManager* mgr) {
         entryIndex = 10;
     }
 
-    Data* pack          = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95b4, entryIndex, FALSE);
+    Data* pack          = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldTouch, entryIndex, FALSE);
     void* charData      = Data_GetPackEntryData(pack, 1);
     void* screenData    = Data_GetPackEntryData(pack, 2);
     void* palData       = Data_GetPackEntryData(pack, 3);
@@ -1361,15 +1245,15 @@ void Field_LoadTouchEventBg(FieldEventManager* mgr) {
     mgr->eventPicPalette = PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_MAIN], palData, 0, 0, 16);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], mgr->eventPicPalette);
     DatMgr_ReleaseData(pack);
-    func_ov030_020c0760(0);
+    Fld_TouchShine_SetActiveCount(0);
 
     if (mgr->touchEventKind == 3) {
-        mgr->unk_21A90 = func_ov030_020ccb48(&mgr->taskPool, mgr->dataType);
-        mgr->unk_21A94 = func_ov030_020bff30(&mgr->taskPool, mgr->dataType, mgr->unk_21D28, 0);
+        mgr->unk_21A90 = Fld_Shinigami_CreateTask(&mgr->taskPool, mgr->dataType);
+        mgr->unk_21A94 = Fld_TouchCommand_CreateTaskWithMsg(&mgr->taskPool, mgr->dataType, mgr->unk_21D28, 0);
     } else if ((u16)(s16)(mgr->touchEventKind - 4) <= 1) {
         mgr->unk_21A90 = Fld_Brush_CreateTask(&mgr->taskPool, mgr->dataType);
     } else {
-        mgr->unk_21A90 = func_ov030_020bfb50(&mgr->taskPool, mgr->dataType);
+        mgr->unk_21A90 = Fld_Touch_CreateTask(&mgr->taskPool, mgr->dataType);
     }
 }
 

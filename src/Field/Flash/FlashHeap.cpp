@@ -1,9 +1,7 @@
-#include "Field/FlashRegion.h"
-
 extern "C" {
 #include <nitro/mi/cpumem.h>
 }
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashPlayer.h"
 
 void FlashHeap::Init(u32 size) {
     FlashHeapNode* node;

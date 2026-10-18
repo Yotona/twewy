@@ -1,3 +1,5 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -10,36 +12,15 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
-#include "Field/FlashPlayer.h"
-#include "Field/FlashRegion.h"
+#include "Field/Flash/FlashGraphicsInit.h"
+#include "Field/Flash/SeqFlash.h"
+#include "Field/Flash/SeqFlashSel.h"
 #include "Save.h"
 #include "common_data.h"
-
-typedef struct {
-    /* 0x0 */ s32         count;
-    /* 0x4 */ const void* movies;
-    /* 0x8 */ const char* name;
-} FlashSequence; // Size: 0xC
-
-#define FLASH_SEQUENCE_COUNT 83
-
-typedef struct {
-    /* 0x00000 */ ResourceManager  resources;
-    /* 0x11580 */ ResourceManager* previousResources;
-    /* 0x11584 */ s32              dataSlot;
-    /* 0x11588 */ char             unk_11588[0x1000C];
-    /* 0x21594 */ s32              textBg;
-    /* 0x21598 */ char             unk_21598[0x8];
-    /* 0x215A0 */ TextObject       text;
-    /* 0x216B4 */ char             unk_216B4[0x219B0 - 0x216B4];
-} FlashSelectOverlayState; // Size: 0x219B0
-
-extern const FlashSequence FlashSequences[];
 
 extern void func_02010b50(TextObject* textObj);
 extern void func_02025b68(void* textBg, UnkStruct_usedby_02025b68* params);
 extern void func_02025e30(void* textBg);
-extern void ProcessOverlay_Flash(void* state);
 
 void SeqFlashSel_Init(FlashSelectOverlayState* state);
 void SeqFlashSel_Update(FlashSelectOverlayState* state);

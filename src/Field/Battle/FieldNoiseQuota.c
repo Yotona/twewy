@@ -1,3 +1,4 @@
+#include "Field/Battle/FieldNoiseQuota.h"
 #include "Save.h"
 
 typedef struct {

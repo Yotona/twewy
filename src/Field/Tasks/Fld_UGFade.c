@@ -1,8 +1,10 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
-#include "Field/FieldTasks.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Tasks/Fld_UGFade.h"
 
 extern void func_02026590(s32*, s32, u16);
-extern void func_ov030_020af7f0(void);
 
 typedef struct {
     /* 0x00 */ s32  blendCoeff0;
@@ -20,11 +22,11 @@ typedef struct {
     s32* unk_8;
 } Fld_UGFade_Args;
 
-s32 Fld_UGFade_RunTask(TaskPool*, Task*, void*, s32);
+static s32 Fld_UGFade_RunTask(TaskPool*, Task*, void*, s32);
 
 static const TaskHandle Tsk_Fld_UGFade = {"Tsk_Fld_UGFade", Fld_UGFade_RunTask, sizeof(Fld_UGFade)};
 
-s32 Fld_UGFade_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_UGFade_Init(TaskPool* pool, Task* task, void* args) {
     Fld_UGFade*      fade     = task->data;
     Fld_UGFade_Args* fadeArgs = args;
 
@@ -55,7 +57,7 @@ s32 Fld_UGFade_Init(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_UGFade_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_UGFade_Update(TaskPool* pool, Task* task, void* args) {
     Fld_UGFade* fade = task->data;
 
     if (fade->unk_10 != 0) {
@@ -71,15 +73,15 @@ s32 Fld_UGFade_Update(TaskPool* pool, Task* task, void* args) {
     return 0;
 }
 
-s32 Fld_UGFade_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_UGFade_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_UGFade_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_UGFade_Destroy(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_UGFade_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_UGFade_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_UGFade_Init,
         .update     = Fld_UGFade_Update,

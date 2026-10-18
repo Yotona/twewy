@@ -1,6 +1,5 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
-#include "Field/ScanEvent.h"
 #include "Save.h"
 #include "Save/FriendData.h"
 #include "Save/MainData.h"

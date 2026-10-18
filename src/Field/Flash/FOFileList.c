@@ -1,4 +1,6 @@
+#include "Field/Flash/FOFileList.h"
 #include "Engine/Core/Memory.h"
+#include "Field/Flash/FO3DViewer.h"
 #include <nitro/fs/file.h>
 #include <nitro/os/cache.h>
 
@@ -10,11 +12,8 @@ typedef struct {
 } FieldCache;
 
 FieldCache* gFOFileList;
-
-extern void* FOFileIO_Alloc(s32 size);
-extern void  FOFileIO_Free(void* data);
-extern BOOL  FS_GetFileSystemStatus(void);
-extern BOOL  FS_InitFileSystem(s32 flags);
+extern BOOL FS_GetFileSystemStatus(void);
+extern BOOL FS_InitFileSystem(s32 flags);
 
 static inline BOOL FS_IsFileOpen(volatile const FS_File* file) {
     return (file->status & FS_FILE_STATUS_IS_FILE) != 0;

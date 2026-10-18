@@ -1,19 +1,20 @@
+#include "Field/Tasks/Fld_Luck.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
-#include "Field/EventFlags.h"
-#include "Field/NSymbol.h"
-#include "Field/ScanEvent.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Battle/FieldNoiseEncounter.h"
+#include "Field/Battle/FieldNoiseQuota.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/FieldTypes.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Tasks/Fld_Badge.h"
+#include "Field/Tasks/Fld_NSymbolUG.h"
+#include "Field/Tasks/Fld_NSymbolUGMgr.h"
+#include "Field/Tasks/Fld_Piranha.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
-
-// USA 0x020c0bdc-0x020c2088: the field "luck"/encounter scan-symbol cluster.
-// The first half fills and walks MainData::scanSymbols and the symbol tasks of
-// the running manager (NsymUGMgr, data_ov030_02109d78). The second half is the
-// floating luck-number sprite popup (FldLuckDigit), a digit-sprite task whose
-// handle/stages/animation live in this TU's .rodata.
 
 // Fixed symbol placement of an area (FldLuckEntry::spawns).
 typedef struct FldLuckSpawn {
@@ -40,9 +41,7 @@ typedef struct {
     /* 0x4 */ s32 value;
 } FldLuckDigitArgs;
 
-// ---------------------------------------------------------------------------
-// Luck-number sprite digit object (0x198 bytes; TaskHandle dataSize).
-// ---------------------------------------------------------------------------
+// Luck-number sprite digit object.
 typedef struct FldLuckDigit {
     /* 0x000 */ Sprite sprites[5];
     /* 0x140 */ Sprite extra;
@@ -55,56 +54,16 @@ typedef struct FldLuckDigit {
     /* 0x196 */ s16    pad_196;
 } FldLuckDigit; // Size: 0x198
 
-// ---------------------------------------------------------------------------
-// Externs / prototypes.
-// ---------------------------------------------------------------------------
-extern s32            data_0205c968;
-extern FieldScanEvent data_0205c5be[];
-extern char           data_ov030_021074d4[];
-extern char           data_ov030_021074e4[];
+extern s32              data_0205c968;
+s32                     func_020259e4(s32 itemId);
+static SpriteFrameInfo* Fld_Luck_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_Luck_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-s16  FieldNoise_RollEncounter(s32 kind);
-s32  func_ov030_020c5f5c(s32 encounter);
-s32  FieldNoise_GetQuota(s32 kind);
-s32  func_020259e4(s32 itemId);
-s32  Field_IsMoveTouchActive(void);
-s32  func_ov030_020aec08(s32 mask);
-void func_ov030_020aec58(s32 gate);
-BOOL Field_IsBattlePending(void);
-s32  func_ov030_020b4514(Task* task);
-s16  func_ov030_020b7b20(void);
+static const BinIdentifier Iden_MenuLuck = {30, "Apl_Tak/Grp_MenuLuck.bin"};
 
-void             func_ov030_020c0bf8(TaskPool* pool, NsymUGMgr* mgr, s32 mode);
-void             func_ov030_020c0cc4(TaskPool* pool, NsymUGMgr* mgr, s32 idx);
-s32              func_ov030_020c0ea8(void);
-s32              func_ov030_020c0f00(s32 idx);
-void             func_ov030_020c1230(s32 arg0);
-void             func_ov030_020c1384(void);
-s32              func_ov030_020c1424(void);
-void             func_ov030_020c14f8(void);
-void             func_ov030_020c17d0(void);
-void             func_ov030_020c1960(void);
-SpriteFrameInfo* func_ov030_020c1b7c(Sprite* sprite, s32 arg, s32 mode);
-void             func_ov030_020c1c18(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, s16 posY);
-void             func_ov030_020c1c98(FldLuckDigit* obj, s32 value, s32 big);
-s32              func_ov030_020c1da8(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020c1e2c(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020c1f28(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020c1f80(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020c1fc8(TaskPool* pool, Task* task, void* args, s32 stage);
+static const TaskHandle Tsk_Fld_Luck = {"Tsk_Fld_Luck", Fld_Luck_RunTask, 0x198};
 
-// ---------------------------------------------------------------------------
-// Data objects (this TU's .rodata).
-// ---------------------------------------------------------------------------
-const BinIdentifier data_ov030_020e6fb4 = {0x1E, data_ov030_021074e4};
-
-const TaskHandle data_ov030_020e6fbc = {data_ov030_021074d4, func_ov030_020c1fc8, 0x198};
-
-const TaskStages data_ov030_020e6fc8 = {
-    {func_ov030_020c1da8, func_ov030_020c1e2c, func_ov030_020c1f28, func_ov030_020c1f80}
-};
-
-const SpriteAnimation data_ov030_020e6fd8 = {
+static const SpriteAnimation Fld_Luck_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -115,10 +74,10 @@ const SpriteAnimation data_ov030_020e6fd8 = {
     .unk_02.raw        = 0,
     .posX              = 0,
     .posY              = 0,
-    .frameInfoCallback = func_ov030_020c1b7c,
+    .frameInfoCallback = Fld_Luck_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020e6fb4,
+    .binIden           = &Iden_MenuLuck,
     .unk_18            = 0,
     .packIndex         = 0,
     .unk_1C            = 1,
@@ -130,17 +89,16 @@ const SpriteAnimation data_ov030_020e6fd8 = {
     .unk_28            = 3,
     .animIndex         = 1,
 };
+static void Fld_Luck_SetVisible(TaskPool* pool, u32 id, s32 arg2);
 
-// ---------------------------------------------------------------------------
-// Functions.
-// ---------------------------------------------------------------------------
-s32 func_ov030_020c0bdc(s32 arg0) {
+static s32 Fld_Luck_IsVariantCategory(s32 arg0) {
     if (arg0 >= 0x1F && arg0 < 0x27) {
         return 1;
     }
     return 0;
 }
-void func_ov030_020c0bf8(TaskPool* pool, NsymUGMgr* mgr, s32 mode) {
+
+static void Fld_Luck_RemoveOtherSymbols(TaskPool* pool, NsymUGMgr* mgr, s32 mode) {
     s32 i;
 
     for (i = 0; i < mgr->count; i++) {
@@ -149,57 +107,57 @@ void func_ov030_020c0bf8(TaskPool* pool, NsymUGMgr* mgr, s32 mode) {
                 EasyTask_DeleteTask(pool, mgr->ids[i]);
                 mgr->ids[i] = -1;
             }
-        } else if (func_ov030_020c0bdc(mode) != 0) {
-            if (func_ov030_020c0bdc(gSaveData.scanSymbols[i].category) == 0) {
+        } else if (Fld_Luck_IsVariantCategory(mode) != 0) {
+            if (Fld_Luck_IsVariantCategory(gSaveData.scanSymbols[i].category) == 0) {
                 EasyTask_DeleteTask(pool, mgr->ids[i]);
                 mgr->ids[i] = -1;
             }
-        } else if (gSaveData.scanSymbols[i].category == 8 || func_ov030_020c0bdc(gSaveData.scanSymbols[i].category) != 0) {
+        } else if (gSaveData.scanSymbols[i].category == 8 ||
+                   Fld_Luck_IsVariantCategory(gSaveData.scanSymbols[i].category) != 0)
+        {
             EasyTask_DeleteTask(pool, mgr->ids[i]);
             mgr->ids[i] = -1;
         }
     }
 }
 
-void func_ov030_020c0cc4(TaskPool* pool, NsymUGMgr* mgr, s32 idx) {
+static void Fld_Luck_SelectSymbol(TaskPool* pool, NsymUGMgr* mgr, s32 idx) {
     gSaveData.scanSymbolSelection = idx;
-    func_ov030_020bbcb4(pool, mgr->ids[idx]);
+    Fld_NSymbolUG_Capture(pool, mgr->ids[idx]);
     if (gSaveData.scanSymbols[idx].category == 0x16) {
         return;
     }
-    func_ov030_020c2044(pool, mgr->luckTaskId, 1);
-    func_ov030_020c0bf8(pool, mgr, gSaveData.scanSymbols[idx].category);
+    Fld_Luck_SetVisible(pool, mgr->luckTaskId, 1);
+    Fld_Luck_RemoveOtherSymbols(pool, mgr, gSaveData.scanSymbols[idx].category);
 }
 
-s32 func_ov030_020c0d28(TaskPool* pool, u32 id1, u32 id2) {
+s32 Fld_Luck_TrySelectSymbol(TaskPool* pool, u32 id1, u32 id2) {
     NsymUGMgr* mgr;
     s16        i;
 
     mgr = EasyTask_GetTaskById(pool, id1)->data;
     for (i = 0; i < mgr->count; i++) {
         if (mgr->ids[i] != -1 && gSaveData.scanSymbols[i].state == 2) {
-            func_ov030_020c0cc4(pool, mgr, i);
+            Fld_Luck_SelectSymbol(pool, mgr, i);
             return 1;
         }
     }
     if (Field_IsMoveTouchActive() != 0) {
         return 0;
     }
-    if (func_ov030_020b4514(EasyTask_GetTaskById(pool, id2)) != 0) {
+    if (Fld_Badge_IsTouched(EasyTask_GetTaskById(pool, id2)) != 0) {
         return 0;
     }
     for (i = 0; i < mgr->count; i++) {
-        if (mgr->ids[i] != -1 && func_ov030_020bbc24(pool, mgr->ids[i]) != 0) {
-            func_ov030_020c0cc4(pool, mgr, i);
+        if (mgr->ids[i] != -1 && Fld_NSymbolUG_IsTaskTouched(pool, mgr->ids[i]) != 0) {
+            Fld_Luck_SelectSymbol(pool, mgr, i);
             return 1;
         }
     }
     return 0;
 }
 
-// Declared non-void without a return statement: retail keeps r0 out of the
-// loop's temporaries, as mwcc does for an implicit (undefined) return value.
-s32 func_ov030_020c0e34(TaskPool* pool, u32 id) {
+s32 Fld_Luck_RemoveActiveSymbols(TaskPool* pool, u32 id) {
     NsymUGMgr* mgr;
     s16        i;
 
@@ -212,7 +170,7 @@ s32 func_ov030_020c0e34(TaskPool* pool, u32 id) {
     }
 }
 
-s32 func_ov030_020c0ea8(void) {
+static s32 Fld_Luck_HasActiveNormalSymbol(void) {
     s16 count;
     s32 i;
 
@@ -225,23 +183,23 @@ s32 func_ov030_020c0ea8(void) {
     return 0;
 }
 
-s32 func_ov030_020c0f00(s32 idx) {
+static s32 Fld_Luck_IsSymbolHidden(s32 idx) {
     if (gSaveData.scanSymbols[idx].category != 8) {
         return 0;
     }
     if (gSaveData.fieldArea < 0x18 || gSaveData.fieldArea > 0x24) {
         return 0;
     }
-    return func_ov030_020c0ea8();
+    return Fld_Luck_HasActiveNormalSymbol();
 }
 
-void func_ov030_020c0f50(TaskPool* pool, u32 id, FieldPos* anchor) {
+void Fld_Luck_SpawnSymbols(TaskPool* pool, u32 id, FieldPos* anchor) {
     NsymUGMgr* mgr;
     s32        i;
 
     mgr = EasyTask_GetTaskById(pool, id)->data;
     for (i = 0; i < gSaveData.scanSymbolCount; i++) {
-        if (func_ov030_020c0f00(i) != 0) {
+        if (Fld_Luck_IsSymbolHidden(i) != 0) {
             mgr->ids[mgr->count] = -1;
         } else if (gSaveData.scanSymbols[i].state == 1) {
             FldScreenPos pos;
@@ -251,8 +209,8 @@ void func_ov030_020c0f50(TaskPool* pool, u32 id, FieldPos* anchor) {
             }
             pos.x                = gSaveData.scanSymbols[i].x;
             pos.y                = gSaveData.scanSymbols[i].y;
-            mgr->ids[mgr->count] = func_ov030_020bbbb4(pool, mgr->dataType, pos, gSaveData.scanSymbols[i].category,
-                                                       gSaveData.scanSymbols[i].mode, 0, anchor, i);
+            mgr->ids[mgr->count] = Fld_NSymbolUG_CreateTask(pool, mgr->dataType, pos, gSaveData.scanSymbols[i].category,
+                                                            gSaveData.scanSymbols[i].mode, 0, anchor, i);
         } else {
             mgr->ids[mgr->count] = -1;
         }
@@ -260,20 +218,20 @@ void func_ov030_020c0f50(TaskPool* pool, u32 id, FieldPos* anchor) {
     }
 }
 
-s16 func_ov030_020c105c(void) {
-    if (data_ov030_02109d78 == NULL) {
+s16 Fld_Luck_GetDropRate(void) {
+    if (Fld_NSymbolUGMgr_Instance == NULL) {
         return (s16)gSaveData.playerStats.dropRate;
     }
-    return data_ov030_02109d78->dropRate;
+    return Fld_NSymbolUGMgr_Instance->dropRate;
 }
 
-s32 func_ov030_020c1088(TaskPool* pool, u16 x, u16 y, s16 kind, s16 mode, s32 mask) {
+s32 Fld_Luck_AddSymbol(TaskPool* pool, s16 x, s16 y, s16 kind, s16 mode, s32 mask) {
     NsymUGMgr*   mgr;
     s16          k;
     s32          category;
     FldScreenPos pos;
 
-    mgr = data_ov030_02109d78;
+    mgr = Fld_NSymbolUGMgr_Instance;
     k   = kind;
     if (mgr == NULL) {
         return 0;
@@ -287,13 +245,13 @@ s32 func_ov030_020c1088(TaskPool* pool, u16 x, u16 y, s16 kind, s16 mode, s32 ma
             k = 1;
         }
     }
-    category = func_ov030_020c5f5c(k);
+    category = Field_GetEncounterCategory(k);
     if (mode == 1 && category < 8) {
         category += 0x1F;
     }
     pos.x                = x;
     pos.y                = y;
-    mgr->ids[mgr->count] = func_ov030_020bbbb4(pool, mgr->dataType, pos, category, mode, mask, NULL, -1);
+    mgr->ids[mgr->count] = Fld_NSymbolUG_CreateTask(pool, mgr->dataType, pos, category, mode, mask, NULL, -1);
     gSaveData.scanSymbols[mgr->count].encounter = k;
     gSaveData.scanSymbols[mgr->count].state     = 1;
     gSaveData.scanSymbols[mgr->count].category  = category;
@@ -309,7 +267,7 @@ s32 func_ov030_020c1088(TaskPool* pool, u16 x, u16 y, s16 kind, s16 mode, s32 ma
 // Nonmatching: register allocation only (count/v0 accumulator pair swapped:
 // target count=r9, dy-base v0=r6; ours count=r6, v0=r9) and the loop-tail
 // compare sits two instructions early (USA 99.41%; JP unvalidated).
-void func_ov030_020c1230(s32 arg0) {
+static void Fld_Luck_RollRandomSymbols(s32 arg0) {
     s32 limit;
     s32 v0;
     s32 v1;
@@ -345,7 +303,7 @@ void func_ov030_020c1230(s32 arg0) {
         gSaveData.scanSymbols[count].x        = v0 + RNG_Next(func_ov030_020b7b00());
         gSaveData.scanSymbols[count].y        = dy + RNG_Next(y2);
         gSaveData.scanSymbols[count].state    = 1;
-        gSaveData.scanSymbols[count].category = func_ov030_020c5f5c(gSaveData.scanSymbols[count].encounter);
+        gSaveData.scanSymbols[count].category = Field_GetEncounterCategory(gSaveData.scanSymbols[count].encounter);
         gSaveData.scanSymbols[count].mode     = 2;
         gSaveData.scanSymbols[count].unk_10   = -1;
         gSaveData.scanSymbols[count].unk_0C   = 0;
@@ -353,7 +311,7 @@ void func_ov030_020c1230(s32 arg0) {
     gSaveData.scanSymbolCount = count;
 }
 
-void func_ov030_020c1384(void) {
+static void Fld_Luck_AddSpecialSymbol(void) {
     s32 i = gSaveData.scanSymbolCount;
 
     gSaveData.scanSymbols[i].encounter = 0;
@@ -367,7 +325,7 @@ void func_ov030_020c1384(void) {
     gSaveData.scanSymbolCount++;
 }
 
-s32 func_ov030_020c1424(void) {
+static s32 Fld_Luck_HasScanEventSymbol(void) {
     s32             i;
     s32             n;
     FieldScanEvent* ev;
@@ -383,7 +341,7 @@ s32 func_ov030_020c1424(void) {
                 ev->area == gSaveData.fieldArea)
             {
                 if (ev->firstChapter <= (s32)gSaveData.chapter && (s32)gSaveData.chapter <= ev->lastChapter) {
-                    if (func_020259e4(i) == 0 && func_ov030_020c5f5c(ev->encounter) == 8) {
+                    if (func_020259e4(i) == 0 && Field_GetEncounterCategory(ev->encounter) == 8) {
                         return 1;
                     }
                 }
@@ -395,7 +353,7 @@ s32 func_ov030_020c1424(void) {
     return 0;
 }
 
-void func_ov030_020c14f8(void) {
+static void Fld_Luck_AddScanEventSymbols(void) {
     s32             i;
     s32             n;
     FieldScanEvent* ev;
@@ -417,7 +375,7 @@ void func_ov030_020c14f8(void) {
                         if (gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter != -1) {
                             gSaveData.scanSymbols[gSaveData.scanSymbolCount].state = 1;
                             gSaveData.scanSymbols[gSaveData.scanSymbolCount].category =
-                                (s16)func_ov030_020c5f5c(gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter);
+                                (s16)Field_GetEncounterCategory(gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter);
                             gSaveData.scanSymbols[i].mode   = 2;
                             gSaveData.scanSymbols[i].unk_10 = -1;
                             gSaveData.scanSymbols[i].unk_0C = 0;
@@ -428,9 +386,9 @@ void func_ov030_020c14f8(void) {
                     gSaveData.scanSymbols[gSaveData.scanSymbolCount].x         = ev->x;
                     gSaveData.scanSymbols[gSaveData.scanSymbolCount].y         = ev->y;
                     gSaveData.scanSymbols[gSaveData.scanSymbolCount].state     = 1;
-                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter = ev->encounterId; // retail reads it unsigned
-                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].category  = (s16)func_ov030_020c5f5c(ev->encounter);
-                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].mode      = 0;
+                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].encounter = ev->encounterId;
+                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].category = (s16)Field_GetEncounterCategory(ev->encounter);
+                    gSaveData.scanSymbols[gSaveData.scanSymbolCount].mode     = 0;
                     if (gSaveData.scanSymbols[gSaveData.scanSymbolCount].category >= 9 &&
                         gSaveData.scanSymbols[gSaveData.scanSymbolCount].category < 0x16)
                     {
@@ -449,7 +407,7 @@ void func_ov030_020c14f8(void) {
     } while (i < n);
 }
 
-void func_ov030_020c17d0(void) {
+static void Fld_Luck_AddPlacedSymbols(void) {
     s16           i;
     FldLuckEntry* base;
     s16           n;
@@ -493,7 +451,7 @@ void func_ov030_020c17d0(void) {
         gSaveData.scanSymbols[i].unk_10   = sp->gate;
         gSaveData.scanSymbols[i].unk_0C   = 0;
         gSaveData.scanSymbols[i].state    = 1;
-        gSaveData.scanSymbols[i].category = func_ov030_020c5f5c(gSaveData.scanSymbols[i].encounter);
+        gSaveData.scanSymbols[i].category = Field_GetEncounterCategory(gSaveData.scanSymbols[i].encounter);
         gSaveData.scanSymbols[i].mode     = 0;
         if (gSaveData.scanSymbols[i].category <= 0x17) {
             gSaveData.scanSymbols[i].category += 0x1F;
@@ -505,22 +463,22 @@ void func_ov030_020c17d0(void) {
     gSaveData.scanSymbolCount = i;
 }
 
-void func_ov030_020c1960(void) {
+void Fld_Luck_GenerateSymbols(void) {
     gSaveData.scanSymbolCount = 0;
-    func_ov030_020c17d0();
-    func_ov030_020c1230(0);
-    func_ov030_020c1230(1);
-    func_ov030_020c14f8();
+    Fld_Luck_AddPlacedSymbols();
+    Fld_Luck_RollRandomSymbols(0);
+    Fld_Luck_RollRandomSymbols(1);
+    Fld_Luck_AddScanEventSymbols();
     if (gSaveData.fieldArea != 0x29) {
         return;
     }
     if ((s16)gSaveData.unk_26B4 < 4) {
         return;
     }
-    func_ov030_020c1384();
+    Fld_Luck_AddSpecialSymbol();
 }
 
-void func_ov030_020c19bc(void) {
+void Fld_Luck_RetireBattledSymbols(void) {
     s32 i;
     s16 changed;
 
@@ -547,11 +505,11 @@ void func_ov030_020c19bc(void) {
     }
 }
 
-s32 func_ov030_020c1a9c(void) {
-    return func_ov030_020c1424();
+s32 Fld_Luck_IsScanEventAvailable(void) {
+    return Fld_Luck_HasScanEventSymbol();
 }
 
-void func_ov030_020c1aa8(void) {
+void Fld_Luck_RestoreSelectedSymbols(void) {
     s32 i;
 
     for (i = 0; i < gSaveData.scanSymbolCount; i++) {
@@ -561,7 +519,7 @@ void func_ov030_020c1aa8(void) {
     }
 }
 
-s16 func_ov030_020c1af8(void) {
+s16 Fld_Luck_GetNormalSymbolPercent(void) {
     s16 count;
     s32 i;
     s32 good;
@@ -584,12 +542,12 @@ s16 func_ov030_020c1af8(void) {
     return (good * 0x64) / count;
 }
 
-SpriteFrameInfo* func_ov030_020c1b7c(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_Luck_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallback(sprite, mode)
 }
 
-void func_ov030_020c1c18(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, s16 posY) {
-    SpriteAnimation anim = data_ov030_020e6fd8;
+static void Fld_Luck_LoadDigit(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, s16 posY) {
+    SpriteAnimation anim = Fld_Luck_Anim;
 
     anim.dataType  = dataType;
     anim.animIndex = animIndex;
@@ -598,7 +556,7 @@ void func_ov030_020c1c18(Sprite* sprite, s32 dataType, s16 animIndex, s16 posX, 
     _Sprite_Load(sprite, &anim);
 }
 
-void func_ov030_020c1c98(FldLuckDigit* obj, s32 value, s32 big) {
+static void Fld_Luck_SetDigits(FldLuckDigit* obj, s32 value, s32 big) {
     s32     val;
     s16     x;
     s32     i;
@@ -620,7 +578,7 @@ void func_ov030_020c1c98(FldLuckDigit* obj, s32 value, s32 big) {
         if ((s32)obj->unk_184 > i) {
             Sprite_ChangeAnimation(sp, obj->sprites[i].animData, (s16)(val % 10 + step), obj->sprites[i].cellTable);
         } else {
-            func_ov030_020c1c18(sp, obj->unk_180, (s16)(val % 10 + step), x, 0xB8);
+            Fld_Luck_LoadDigit(sp, obj->unk_180, (s16)(val % 10 + step), x, 0xB8);
         }
         val = val / 10;
         x -= 7;
@@ -630,21 +588,21 @@ void func_ov030_020c1c98(FldLuckDigit* obj, s32 value, s32 big) {
     obj->unk_184 = i;
 }
 
-s32 func_ov030_020c1da8(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Luck_Init(TaskPool* pool, Task* task, void* args) {
     FldLuckDigit* obj = task->data;
 
     obj->unk_180 = ((FldLuckDigitArgs*)args)->dataType;
     obj->unk_188 = 0;
     obj->unk_18C = ((FldLuckDigitArgs*)args)->value;
     obj->unk_184 = 0;
-    func_ov030_020c1c98(obj, obj->unk_188, 0);
-    func_ov030_020c1c18(&obj->extra, obj->unk_180, 0xB, (s16)(0xEF - ((obj->unk_184 + 1) * 7)), 0xB8);
+    Fld_Luck_SetDigits(obj, obj->unk_188, 0);
+    Fld_Luck_LoadDigit(&obj->extra, obj->unk_180, 0xB, (s16)(0xEF - ((obj->unk_184 + 1) * 7)), 0xB8);
     obj->unk_194 = 0;
     obj->unk_190 = 0;
     return 1;
 }
 
-s32 func_ov030_020c1e2c(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Luck_Update(TaskPool* pool, Task* task, void* args) {
     FldLuckDigit* obj = task->data;
 
     if (obj->unk_190 != 0 && obj->unk_188 != obj->unk_18C) {
@@ -667,7 +625,7 @@ s32 func_ov030_020c1e2c(TaskPool* pool, Task* task, void* args) {
                 }
             }
         }
-        func_ov030_020c1c98(obj, obj->unk_188, 1);
+        Fld_Luck_SetDigits(obj, obj->unk_188, 1);
         obj->extra.posX = (s16)(0xEF - ((obj->unk_184 + 1) * 7));
     }
     {
@@ -687,7 +645,7 @@ s32 func_ov030_020c1e2c(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020c1f28(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Luck_Render(TaskPool* pool, Task* task, void* args) {
     FldLuckDigit* obj = task->data;
     s32           i;
 
@@ -708,7 +666,7 @@ s32 func_ov030_020c1f28(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020c1f80(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Luck_Destroy(TaskPool* pool, Task* task, void* args) {
     FldLuckDigit* obj = task->data;
     s32           i;
 
@@ -726,21 +684,26 @@ s32 func_ov030_020c1f80(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020c1fc8(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e6fc8;
+static s32 Fld_Luck_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Luck_Init,
+        .update     = Fld_Luck_Update,
+        .render     = Fld_Luck_Render,
+        .cleanup    = Fld_Luck_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020c2010(TaskPool* pool, s32 dataType, s32 value) {
+s32 Fld_Luck_CreateTask(TaskPool* pool, s32 dataType, s32 value) {
     FldLuckDigitArgs params;
 
     params.dataType = dataType;
     params.value    = value;
-    return EasyTask_CreateTask(pool, &data_ov030_020e6fbc, NULL, 0, NULL, &params);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Luck, NULL, 0, NULL, &params);
 }
 
-void func_ov030_020c2044(TaskPool* pool, u32 id, s32 arg2) {
+static void Fld_Luck_SetVisible(TaskPool* pool, u32 id, s32 arg2) {
     FldLuckDigit* obj = EasyTask_GetTaskById(pool, id)->data;
 
     if (arg2 != 0) {
@@ -749,7 +712,7 @@ void func_ov030_020c2044(TaskPool* pool, u32 id, s32 arg2) {
     obj->unk_190 = arg2;
 }
 
-void func_ov030_020c2070(TaskPool* pool, u32 id, s32 arg2) {
+void Fld_Luck_SetTarget(TaskPool* pool, u32 id, s32 arg2) {
     FldLuckDigit* obj = EasyTask_GetTaskById(pool, id)->data;
 
     obj->unk_18C = arg2;

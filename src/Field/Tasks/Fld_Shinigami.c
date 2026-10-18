@@ -1,16 +1,16 @@
+#include "Field/Tasks/Fld_Shinigami.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
-#include "Field/Shinigami.h"
-#include "Field/TaskHelpers.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/FieldTypes.h"
+#include "Field/Tasks/Fld_ShinigamiCoin.h"
+#include "Field/Tasks/Fld_ShinigamiON.h"
+#include "Field/Tasks/Fld_TouchCommand.h"
+#include "Field/Tasks/Fld_TouchCursor.h"
+#include "Field/Tasks/Fld_TouchSeal.h"
 #include "SndMgr.h"
 #include <nitro/fx.h>
-
-// The "Shinigami" (reaper wall) collision helpers and the reaper menu task. Positions are 2D fx32 (12-bit fraction). The map
-// in data_ov030_02109d84 holds a grid of cells, each listing indices of wall
-// triangles (3 vertices + category/attr); wall containment classifies points as
-// inside (1), touching (-1) or free (0), and the slide helpers steer movement
-// along wall edges.
 
 typedef struct {
     /* 0x00 */ s32 unk_00;
@@ -22,93 +22,58 @@ typedef struct {
     /* 0x28 */ s32 unk_28;
 } Fld_Shinigami; // Size: 0x2C
 
-extern ShiniWorld* data_ov030_02109d84;
+static ShiniWorld* Fld_Shinigami_World;
 
 // Wall indices listed for a cell; cell->offset is a byte offset into the index table.
 static inline s32* Shini_GetCellWalls(ShiniCell* cell) {
-    return (s32*)(data_ov030_02109d84->indexTable + cell->offset);
+    return (s32*)(Fld_Shinigami_World->indexTable + cell->offset);
 }
 
-void func_ov030_020cb21c(ShiniWorld* world, void* arg1, u8* file) {
-    data_ov030_02109d84             = world;
-    data_ov030_02109d84->indexTable = file;
-    if (data_ov030_02109d84->indexTable == NULL) {
+void Fld_Shinigami_SetWorld(ShiniWorld* world, void* arg1, u8* file) {
+    Fld_Shinigami_World             = world;
+    Fld_Shinigami_World->indexTable = file;
+    if (Fld_Shinigami_World->indexTable == NULL) {
         return;
     }
-    data_ov030_02109d84->grid   = (ShiniGridInfo*)data_ov030_02109d84->indexTable;
-    data_ov030_02109d84->cells  = (ShiniCell*)&data_ov030_02109d84->indexTable[sizeof(ShiniGridInfo)];
-    data_ov030_02109d84->walls  = (ShiniWall*)&data_ov030_02109d84->indexTable[data_ov030_02109d84->grid->wallsOffset];
-    data_ov030_02109d84->unk_10 = &data_ov030_02109d84->indexTable[data_ov030_02109d84->grid->unk_1C];
+    Fld_Shinigami_World->grid   = (ShiniGridInfo*)Fld_Shinigami_World->indexTable;
+    Fld_Shinigami_World->cells  = (ShiniCell*)&Fld_Shinigami_World->indexTable[sizeof(ShiniGridInfo)];
+    Fld_Shinigami_World->walls  = (ShiniWall*)&Fld_Shinigami_World->indexTable[Fld_Shinigami_World->grid->wallsOffset];
+    Fld_Shinigami_World->unk_10 = &Fld_Shinigami_World->indexTable[Fld_Shinigami_World->grid->unk_1C];
 }
 
-extern void Field_SetTouchEventResult(s32);
-extern void Field_SetTouchEventTarget(s16);
-extern s32  func_ov030_020bfee4(TaskPool*, s32, s32);
-extern void func_ov030_020bff68(Task*, s32);
-extern s32  func_ov030_020c0184(TaskPool*, s32, s32, s16, s16);
-extern void func_ov030_020c01c4(Task*, s32);
-extern void func_ov030_020c050c(Task*, s16);
-extern s32  func_ov030_020cd4bc(TaskPool*, s32);
-extern void func_ov030_020cd4ec(Task*, s32);
-extern s16  func_ov030_020cd530(Task*);
-extern void func_ov030_020cd550(Task*);
-extern s32  func_ov030_020cd560(Task*);
-extern s32  func_ov030_020cd734(TaskPool*, s32);
-extern s32  func_ov030_020cd764(Task*, s16);
-extern s32  func_0202599c(s32);
+extern s32        func_0202599c(s32);
+static ShiniWall* Fld_Shinigami_FindWall(FieldPos* pos, s32 category);
+static ShiniCell* Fld_Shinigami_GetCell(FieldPos* pos);
+static s32        Fld_Shinigami_TestWall(ShiniWall* wall, FieldPos* pos);
+static void       Fld_Shinigami_SlideAlongWall(FieldPos* out, ShiniWall* wall, FieldPos* from, FieldPos* to);
+static s32        Fld_Shinigami_IntersectSegments(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
+static s32        Fld_Shinigami_ProjectOntoEdge(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
+static s32        Fld_Shinigami_PushOutOfWall(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
+static void       Fld_Shinigami_PushSideways(FieldPos* out, FieldPos* from, FieldPos* to);
+static s32        Fld_Shinigami_StepUntilFree(FieldPos* pos, s32 dx, s32 dy, s32 depth);
+static s32        Fld_Shinigami_SideOfLine(FieldPos* a, FieldPos* b, FieldPos* c);
+static s32        Fld_Shinigami_Distance(FieldPos* a, FieldPos* b);
+static void       Fld_Shinigami_ToWallSpace(FieldPos* out, s32 x, s32 y);
+static void       Fld_Shinigami_FromWallSpace(FieldPos* out, s32 x, s32 y);
+static s32        Fld_Shinigami_RoundToPixel(s32 v);
+static void       Fld_Shinigami_SelectSeal(TaskPool* pool, Fld_Shinigami* shini, s32 sel);
+static s32        Fld_Shinigami_ApplySelection(TaskPool* pool, Fld_Shinigami* shini);
+static s16        Fld_Shinigami_FindTouchedSeal(TaskPool* pool, Fld_Shinigami* shini);
+static s32        Fld_Shinigami_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-s32        func_ov030_020cb284(FieldPos* pos, s32 category);
-void       func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 category);
-s32        func_ov030_020cb634(FieldPos* pos, s32 x, s32 y);
-s32        func_ov030_020cb6cc(FieldPos* pos, u16* outAttr);
-s32        func_ov030_020cb72c(FieldPos* pos);
-ShiniWall* func_ov030_020cb770(FieldPos* pos, s32 category);
-ShiniCell* func_ov030_020cb81c(FieldPos* pos);
-s32        func_ov030_020cb898(ShiniWall* wall, FieldPos* pos);
-void       func_ov030_020cb990(FieldPos* out, ShiniWall* wall, FieldPos* from, FieldPos* to);
-s32        func_ov030_020cbc00(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
-s32        func_ov030_020cbe98(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
-s32        func_ov030_020cc170(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2);
-void       func_ov030_020cc340(FieldPos* out, FieldPos* from, FieldPos* to);
-s32        func_ov030_020cc494(FieldPos* pos, s32 dx, s32 dy, s32 depth);
-s32        func_ov030_020cc524(FieldPos* a, FieldPos* b, FieldPos* c);
-s32        func_ov030_020cc580(FieldPos* a, FieldPos* b);
-void       func_ov030_020cc5d0(FieldPos* out, s32 x, s32 y);
-void       func_ov030_020cc5f0(FieldPos* out, s32 x, s32 y);
-s32        func_ov030_020cc610(s32 v);
-s32        func_ov030_020cc670(TaskPool* pool, Fld_Shinigami* shini);
-void       func_ov030_020cc748(TaskPool* pool, Fld_Shinigami* shini, s32 sel);
-s32        func_ov030_020cc7a0(TaskPool* pool, Fld_Shinigami* shini);
-s16        func_ov030_020cc7fc(TaskPool* pool, Fld_Shinigami* shini);
-s32        func_ov030_020cc854(TaskPool* pool, Fld_Shinigami* shini);
-s32        func_ov030_020cc8d0(TaskPool* pool, Task* task, void* args);
-s32        func_ov030_020cca64(TaskPool* pool, Task* task, void* args);
-s32        func_ov030_020ccab8(TaskPool* pool, Task* task, void* args);
-s32        func_ov030_020ccac0(TaskPool* pool, Task* task, void* args);
-s32        func_ov030_020ccb00(TaskPool* pool, Task* task, void* args, s32 stage);
-s32        func_ov030_020ccb48(TaskPool* pool, s32 kind);
+static const TaskHandle Tsk_Fld_Shinigami = {"Tsk_Fld_Shinigami", Fld_Shinigami_RunTask, sizeof(Fld_Shinigami)};
 
-char data_ov030_02108920[] = "Tsk_Fld_Shinigami";
-char data_ov030_02108934[] = "Tsk_Fld_ShinigamiCoin";
-char data_ov030_0210894c[] = "Apl_Abe/Grp_FldShinigami.bin";
-
-const TaskHandle data_ov030_020ed0e4 = {data_ov030_02108920, func_ov030_020ccb00, 0x2C};
-
-const TaskStages data_ov030_020ed0f0 = {
-    {func_ov030_020cc8d0, func_ov030_020cca64, func_ov030_020ccab8, func_ov030_020ccac0}
-};
-
-s32 func_ov030_020cb284(FieldPos* pos, s32 category) {
+static s32 Fld_Shinigami_TestPoint(FieldPos* pos, s32 category) {
     ShiniCell* cell;
     s32*       list;
     s32        numTouch;
     s32        one;
     s32        i;
 
-    if (data_ov030_02109d84->indexTable == NULL) {
+    if (Fld_Shinigami_World->indexTable == NULL) {
         return 0;
     }
-    cell = func_ov030_020cb81c(pos);
+    cell = Fld_Shinigami_GetCell(pos);
     if (cell->count == 0) {
         return 0;
     }
@@ -116,9 +81,9 @@ s32 func_ov030_020cb284(FieldPos* pos, s32 category) {
     i        = 0;
     list     = Shini_GetCellWalls(cell);
     for (i = 0; i < cell->count; i++) {
-        ShiniWall* wall = &data_ov030_02109d84->walls[list[i]];
+        ShiniWall* wall = &Fld_Shinigami_World->walls[list[i]];
         if (wall->category == category) {
-            s32 r = func_ov030_020cb898(wall, pos);
+            s32 r = Fld_Shinigami_TestWall(wall, pos);
             if (r == 1) {
                 return 1;
             }
@@ -138,7 +103,7 @@ s32 func_ov030_020cb284(FieldPos* pos, s32 category) {
     return 0 - one;
 }
 
-void func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 category) {
+static void Fld_Shinigami_ResolveMove(FieldPos* out, FieldPos* from, FieldPos* to, s32 category) {
     Vec        diff;
     FieldPos   cand;
     FieldPos   best;
@@ -156,17 +121,17 @@ void func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 catego
         to->x = (diff.x << 1) + from->x;
         to->y = (diff.y << 1) + from->y;
     }
-    from->x = func_ov030_020cc610(from->x);
-    from->y = func_ov030_020cc610(from->y);
-    to->x   = func_ov030_020cc610(to->x);
-    to->y   = func_ov030_020cc610(to->y);
+    from->x = Fld_Shinigami_RoundToPixel(from->x);
+    from->y = Fld_Shinigami_RoundToPixel(from->y);
+    to->x   = Fld_Shinigami_RoundToPixel(to->x);
+    to->y   = Fld_Shinigami_RoundToPixel(to->y);
     best    = *to;
-    if (data_ov030_02109d84->indexTable == NULL) {
+    if (Fld_Shinigami_World->indexTable == NULL) {
         *out = best;
         return;
     }
-    rFrom = func_ov030_020cb284(from, category);
-    rTo   = func_ov030_020cb284(to, category);
+    rFrom = Fld_Shinigami_TestPoint(from, category);
+    rTo   = Fld_Shinigami_TestPoint(to, category);
     if ((rFrom == 1) && (rTo == 1)) {
         *out = best;
         return;
@@ -184,10 +149,10 @@ void func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 catego
         return;
     }
     if (rTo == 1) {
-        cell   = func_ov030_020cb81c(from);
+        cell   = Fld_Shinigami_GetCell(from);
         origin = *from;
     } else {
-        cell   = func_ov030_020cb81c(to);
+        cell   = Fld_Shinigami_GetCell(to);
         origin = *to;
     }
     if (cell->count == 0) {
@@ -200,11 +165,11 @@ void func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 catego
         s32  i;
 
         for (i = 0; i < cell->count; i++) {
-            ShiniWall* wall = &data_ov030_02109d84->walls[list[i]];
+            ShiniWall* wall = &Fld_Shinigami_World->walls[list[i]];
             if (wall->category == category) {
-                func_ov030_020cb990(&cand, wall, from, to);
+                Fld_Shinigami_SlideAlongWall(&cand, wall, from, to);
                 if ((cand.x != to->x) || (cand.y != to->y)) {
-                    s32 dist = func_ov030_020cc580(&origin, &cand);
+                    s32 dist = Fld_Shinigami_Distance(&origin, &cand);
                     if (bestDist > dist) {
                         bestDist = dist;
                         best     = cand;
@@ -213,23 +178,23 @@ void func_ov030_020cb354(FieldPos* out, FieldPos* from, FieldPos* to, s32 catego
             }
         }
     }
-    if (func_ov030_020cb284(&best, 0) == 0) {
-        func_ov030_020cc340(&best, from, to);
+    if (Fld_Shinigami_TestPoint(&best, 0) == 0) {
+        Fld_Shinigami_PushSideways(&best, from, to);
     }
     *out = best;
 }
 
-s32 func_ov030_020cb634(FieldPos* pos, s32 x, s32 y) {
+s32 Fld_Shinigami_MoveWithCollision(FieldPos* pos, s32 x, s32 y) {
     FieldPos from;
     FieldPos to;
     FieldPos res;
     FieldPos conv;
 
-    func_ov030_020cc5d0(&from, pos->x, pos->y);
-    func_ov030_020cc5d0(&to, x, y);
-    func_ov030_020cb354(&res, &from, &to, 0);
+    Fld_Shinigami_ToWallSpace(&from, pos->x, pos->y);
+    Fld_Shinigami_ToWallSpace(&to, x, y);
+    Fld_Shinigami_ResolveMove(&res, &from, &to, 0);
     if ((res.x != to.x) || (res.y != to.y)) {
-        func_ov030_020cc5f0(&conv, res.x, res.y);
+        Fld_Shinigami_FromWallSpace(&conv, res.x, res.y);
         *pos = conv;
         return 1;
     }
@@ -238,14 +203,14 @@ s32 func_ov030_020cb634(FieldPos* pos, s32 x, s32 y) {
     return 0;
 }
 
-s32 func_ov030_020cb6cc(FieldPos* pos, u16* outAttr) {
+s32 Fld_Shinigami_GetFloorAttr(FieldPos* pos, u16* outAttr) {
     FieldPos   pt;
     ShiniWall* wall;
     s32        i;
 
-    func_ov030_020cc5d0(&pt, pos->x, pos->y);
+    Fld_Shinigami_ToWallSpace(&pt, pos->x, pos->y);
     for (i = 1; i < 3; i++) {
-        wall = func_ov030_020cb770(&pt, i);
+        wall = Fld_Shinigami_FindWall(&pt, i);
         if (wall != NULL) {
             *outAttr = wall->attr;
             return 1;
@@ -254,44 +219,44 @@ s32 func_ov030_020cb6cc(FieldPos* pos, u16* outAttr) {
     return 0;
 }
 
-s32 func_ov030_020cb72c(FieldPos* pos) {
+s32 Fld_Shinigami_IsOccluded(FieldPos* pos) {
     FieldPos   pt;
     ShiniWall* wall;
     s32        hit;
 
     hit = 0;
-    func_ov030_020cc5d0(&pt, pos->x, pos->y);
-    wall = func_ov030_020cb770(&pt, 3);
+    Fld_Shinigami_ToWallSpace(&pt, pos->x, pos->y);
+    wall = Fld_Shinigami_FindWall(&pt, 3);
     if ((wall != NULL) && (wall->attr == 0x3E0)) {
         hit = 1;
     }
     return hit;
 }
 
-ShiniWall* func_ov030_020cb770(FieldPos* pos, s32 category) {
+static ShiniWall* Fld_Shinigami_FindWall(FieldPos* pos, s32 category) {
     ShiniCell* cell;
     ShiniWall* wall;
     s32*       list;
     s32        i;
 
-    if (data_ov030_02109d84->indexTable == NULL) {
+    if (Fld_Shinigami_World->indexTable == NULL) {
         return NULL;
     }
-    cell = func_ov030_020cb81c(pos);
+    cell = Fld_Shinigami_GetCell(pos);
     if (cell->count == 0) {
         return NULL;
     }
     list = Shini_GetCellWalls(cell);
     for (i = 0; i < cell->count; i++) {
-        wall = &data_ov030_02109d84->walls[list[i]];
-        if ((wall->category == category) && (func_ov030_020cb898(wall, pos) != 0)) {
+        wall = &Fld_Shinigami_World->walls[list[i]];
+        if ((wall->category == category) && (Fld_Shinigami_TestWall(wall, pos) != 0)) {
             return wall;
         }
     }
     return NULL;
 }
 
-ShiniCell* func_ov030_020cb81c(FieldPos* pos) {
+static ShiniCell* Fld_Shinigami_GetCell(FieldPos* pos) {
     ShiniGridInfo* grid;
     ShiniCell*     cells;
     s32            cx;
@@ -300,8 +265,8 @@ ShiniCell* func_ov030_020cb81c(FieldPos* pos) {
     s32            dy;
     s32            h;
 
-    grid  = data_ov030_02109d84->grid;
-    cells = data_ov030_02109d84->cells;
+    grid  = Fld_Shinigami_World->grid;
+    cells = Fld_Shinigami_World->cells;
     dx    = pos->x - cells->originX;
     dy    = pos->y - cells->originY;
     cx    = (dx / grid->cellWidth) >> 0xC;
@@ -322,7 +287,7 @@ ShiniCell* func_ov030_020cb81c(FieldPos* pos) {
     return &cells[(cy * grid->width) + cx];
 }
 
-s32 func_ov030_020cb898(ShiniWall* wall, FieldPos* pos) {
+static s32 Fld_Shinigami_TestWall(ShiniWall* wall, FieldPos* pos) {
     FieldPos v0;
     FieldPos v1;
     FieldPos v2;
@@ -336,9 +301,9 @@ s32 func_ov030_020cb898(ShiniWall* wall, FieldPos* pos) {
     v1.y = wall->v[1].y & ~0xFFF;
     v2.x = wall->v[2].x & ~0xFFF;
     v2.y = wall->v[2].y & ~0xFFF;
-    t1   = func_ov030_020cc524(pos, &v0, &v1);
-    t2   = func_ov030_020cc524(pos, &v1, &v2);
-    t3   = func_ov030_020cc524(pos, &v2, &v0);
+    t1   = Fld_Shinigami_SideOfLine(pos, &v0, &v1);
+    t2   = Fld_Shinigami_SideOfLine(pos, &v1, &v2);
+    t3   = Fld_Shinigami_SideOfLine(pos, &v2, &v0);
     if ((t1 > 0) && (t2 > 0) && (t3 > 0)) {
         return 1;
     }
@@ -354,7 +319,7 @@ s32 func_ov030_020cb898(ShiniWall* wall, FieldPos* pos) {
     return 0;
 }
 
-void func_ov030_020cb990(FieldPos* out, ShiniWall* wall, FieldPos* from, FieldPos* to) {
+static void Fld_Shinigami_SlideAlongWall(FieldPos* out, ShiniWall* wall, FieldPos* from, FieldPos* to) {
     FieldPos v0;
     FieldPos v1;
     FieldPos v2;
@@ -370,53 +335,53 @@ void func_ov030_020cb990(FieldPos* out, ShiniWall* wall, FieldPos* from, FieldPo
     v2.y     = wall->v[2].y & ~0xFFF;
     best     = *to;
     bestDist = 0x7FFFFFFF;
-    if (func_ov030_020cbc00(&cand, &v0, &v1, from, to) != 0) {
-        func_ov030_020cbe98(&cand, &v0, &v1, from, to);
-        if (func_ov030_020cb284(&cand, 0) != 0) {
-            s32 dist = func_ov030_020cc580(to, &cand);
+    if (Fld_Shinigami_IntersectSegments(&cand, &v0, &v1, from, to) != 0) {
+        Fld_Shinigami_ProjectOntoEdge(&cand, &v0, &v1, from, to);
+        if (Fld_Shinigami_TestPoint(&cand, 0) != 0) {
+            s32 dist = Fld_Shinigami_Distance(to, &cand);
             if (dist < 0x7FFFFFFF) {
                 bestDist = dist;
                 best     = cand;
             }
         } else {
-            func_ov030_020cc170(&cand, &v0, &v1, from, to);
+            Fld_Shinigami_PushOutOfWall(&cand, &v0, &v1, from, to);
             best = cand;
         }
     }
-    if (func_ov030_020cbc00(&cand, &v1, &v2, from, to) != 0) {
-        func_ov030_020cbe98(&cand, &v1, &v2, from, to);
-        if (func_ov030_020cb284(&cand, 0) != 0) {
-            s32 dist = func_ov030_020cc580(to, &cand);
+    if (Fld_Shinigami_IntersectSegments(&cand, &v1, &v2, from, to) != 0) {
+        Fld_Shinigami_ProjectOntoEdge(&cand, &v1, &v2, from, to);
+        if (Fld_Shinigami_TestPoint(&cand, 0) != 0) {
+            s32 dist = Fld_Shinigami_Distance(to, &cand);
             if (bestDist > dist) {
                 bestDist = dist;
                 best     = cand;
             }
         } else {
-            func_ov030_020cc170(&cand, &v1, &v2, from, to);
+            Fld_Shinigami_PushOutOfWall(&cand, &v1, &v2, from, to);
             best = cand;
         }
     }
-    if (func_ov030_020cbc00(&cand, &v2, &v0, from, to) != 0) {
-        func_ov030_020cbe98(&cand, &v2, &v0, from, to);
-        if (func_ov030_020cb284(&cand, 0) != 0) {
-            if (bestDist > func_ov030_020cc580(to, &cand)) {
+    if (Fld_Shinigami_IntersectSegments(&cand, &v2, &v0, from, to) != 0) {
+        Fld_Shinigami_ProjectOntoEdge(&cand, &v2, &v0, from, to);
+        if (Fld_Shinigami_TestPoint(&cand, 0) != 0) {
+            if (bestDist > Fld_Shinigami_Distance(to, &cand)) {
                 best = cand;
             }
         } else {
-            func_ov030_020cc170(&cand, &v2, &v0, from, to);
+            Fld_Shinigami_PushOutOfWall(&cand, &v2, &v0, from, to);
             best = cand;
         }
     }
     *out = best;
 }
 
-s32 func_ov030_020cbc00(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
+static s32 Fld_Shinigami_IntersectSegments(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
     s32 ix;
     s32 iy;
     s32 slope1;
     s32 slope2;
 
-    /* AABB reject between the wall edge (a1-a2) and the move segment (b1-b2). */
+    // AABB reject between the wall edge (a1-a2) and the move segment (b1-b2).
     if (((a1->x < a2->x) ? a1->x : a2->x) > ((b1->x > b2->x) ? b1->x : b2->x)) {
         return 0;
     }
@@ -429,10 +394,10 @@ s32 func_ov030_020cbc00(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     if (((b1->y < b2->y) ? b1->y : b2->y) > ((a1->y > a2->y) ? a1->y : a2->y)) {
         return 0;
     }
-    if (func_ov030_020cc524(b1, a1, a2) * func_ov030_020cc524(b2, a1, a2) > 0) {
+    if (Fld_Shinigami_SideOfLine(b1, a1, a2) * Fld_Shinigami_SideOfLine(b2, a1, a2) > 0) {
         return 0;
     }
-    if (func_ov030_020cc524(a1, b1, b2) * func_ov030_020cc524(a2, b1, b2) > 0) {
+    if (Fld_Shinigami_SideOfLine(a1, b1, b2) * Fld_Shinigami_SideOfLine(a2, b1, b2) > 0) {
         return 0;
     }
     if ((a1->x == a2->x) && (b1->x == b2->x)) {
@@ -467,7 +432,7 @@ s32 func_ov030_020cbc00(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     return 1;
 }
 
-s32 func_ov030_020cbe98(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
+static s32 Fld_Shinigami_ProjectOntoEdge(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
     Vec      diff;
     Vec      e1;
     Vec      e2;
@@ -485,7 +450,7 @@ s32 func_ov030_020cbe98(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     overflow = 0;
     mag      = Vec_Magnitude(&diff);
     saved    = *(FieldPos*)b2;
-    if (func_ov030_020cc524(out, b1, b2) != 0) {
+    if (Fld_Shinigami_SideOfLine(out, b1, b2) != 0) {
         b2->x = out->x + diff.x / 2;
         b2->y = out->y + diff.y / 2;
     }
@@ -543,7 +508,7 @@ s32 func_ov030_020cbe98(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     return 1;
 }
 
-s32 func_ov030_020cc170(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
+static s32 Fld_Shinigami_PushOutOfWall(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1, FieldPos* b2) {
     s32 dy;
     s32 dx;
     s32 origDx;
@@ -580,13 +545,13 @@ s32 func_ov030_020cc170(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     }
     if ((dx * dx) < (dy * dy)) {
         out->x += dx;
-        if (func_ov030_020cb284(out, 0) == 0) {
+        if (Fld_Shinigami_TestPoint(out, 0) == 0) {
             out->x -= dx;
             out->y += dy;
         }
     } else {
         out->y += dy;
-        if (func_ov030_020cb284(out, 0) == 0) {
+        if (Fld_Shinigami_TestPoint(out, 0) == 0) {
             out->y -= dy;
             out->x += dx;
         }
@@ -594,7 +559,7 @@ s32 func_ov030_020cc170(FieldPos* out, FieldPos* a1, FieldPos* a2, FieldPos* b1,
     return 1;
 }
 
-void func_ov030_020cc340(FieldPos* out, FieldPos* from, FieldPos* to) {
+static void Fld_Shinigami_PushSideways(FieldPos* out, FieldPos* from, FieldPos* to) {
     FieldPos pt;
     s32      dx;
     s32      dy;
@@ -604,32 +569,32 @@ void func_ov030_020cc340(FieldPos* out, FieldPos* from, FieldPos* to) {
     pt = *from;
     dx = (to->x - from->x) * 8;
     dy = (to->y - from->y) * 8;
-    n1 = func_ov030_020cc494(&pt, 0 - dy, dx, 0);
-    n2 = func_ov030_020cc494(&pt, dy, 0 - dx, 0);
+    n1 = Fld_Shinigami_StepUntilFree(&pt, 0 - dy, dx, 0);
+    n2 = Fld_Shinigami_StepUntilFree(&pt, dy, 0 - dx, 0);
     if (n1 < n2) {
         pt.x = from->x + (dy >> 3);
         pt.y = from->y - (dx >> 3);
-        if (func_ov030_020cb284(&pt, 0) == 0) {
+        if (Fld_Shinigami_TestPoint(&pt, 0) == 0) {
             pt.x = from->x - (dy >> 3);
             pt.y = from->y + (dx >> 3);
         }
     } else if (n2 < n1) {
         pt.x = from->x - (dy >> 3);
         pt.y = from->y + (dx >> 3);
-        if (func_ov030_020cb284(&pt, 0) == 0) {
+        if (Fld_Shinigami_TestPoint(&pt, 0) == 0) {
             pt.x = from->x + (dy >> 3);
             pt.y = from->y - (dx >> 3);
         }
     } else {
         pt = *from;
     }
-    if (func_ov030_020cb284(&pt, 0) == 0) {
+    if (Fld_Shinigami_TestPoint(&pt, 0) == 0) {
         pt = *from;
     }
     *out = pt;
 }
 
-s32 func_ov030_020cc494(FieldPos* pos, s32 dx, s32 dy, s32 depth) {
+static s32 Fld_Shinigami_StepUntilFree(FieldPos* pos, s32 dx, s32 dy, s32 depth) {
     FieldPos pt;
     s32      ny;
 
@@ -639,13 +604,13 @@ s32 func_ov030_020cc494(FieldPos* pos, s32 dx, s32 dy, s32 depth) {
     pt.x   = pos->x & ~0xFFF;
     pt.y   = ny & ~0xFFF;
     depth += 1;
-    if ((func_ov030_020cb284(&pt, 0) != 0) && (depth < 8)) {
-        depth = func_ov030_020cc494(pos, dx, dy, depth);
+    if ((Fld_Shinigami_TestPoint(&pt, 0) != 0) && (depth < 8)) {
+        depth = Fld_Shinigami_StepUntilFree(pos, dx, dy, depth);
     }
     return depth;
 }
 
-s32 func_ov030_020cc524(FieldPos* a, FieldPos* b, FieldPos* c) {
+static s32 Fld_Shinigami_SideOfLine(FieldPos* a, FieldPos* b, FieldPos* c) {
     s32 t;
     s32 r;
 
@@ -661,7 +626,7 @@ s32 func_ov030_020cc524(FieldPos* a, FieldPos* b, FieldPos* c) {
     return 0 - r;
 }
 
-s32 func_ov030_020cc580(FieldPos* a, FieldPos* b) {
+static s32 Fld_Shinigami_Distance(FieldPos* a, FieldPos* b) {
     s32 dx;
     s32 dy;
 
@@ -670,7 +635,7 @@ s32 func_ov030_020cc580(FieldPos* a, FieldPos* b) {
     return FX_Sqrt((s32)(((s64)dx * dx + 0x800) >> 0xC) + (s32)(((s64)dy * dy + 0x800) >> 0xC));
 }
 
-void func_ov030_020cc5d0(FieldPos* out, s32 x, s32 y) {
+static void Fld_Shinigami_ToWallSpace(FieldPos* out, s32 x, s32 y) {
     FieldPos pt;
 
     pt.x = x;
@@ -678,7 +643,7 @@ void func_ov030_020cc5d0(FieldPos* out, s32 x, s32 y) {
     *out = pt;
 }
 
-void func_ov030_020cc5f0(FieldPos* out, s32 x, s32 y) {
+static void Fld_Shinigami_FromWallSpace(FieldPos* out, s32 x, s32 y) {
     FieldPos pt;
 
     pt.x = x;
@@ -691,7 +656,7 @@ void func_ov030_020cc5f0(FieldPos* out, s32 x, s32 y) {
 // shape, guarding the negation, masking into a local, u16/s16 neighbours, ternary
 // sign propagation) are byte-identical, so it is an allocator tie (USA 98.12%;
 // JP unvalidated).
-s32 func_ov030_020cc610(s32 v) {
+static s32 Fld_Shinigami_RoundToPixel(s32 v) {
     s32 neg;
     s32 round;
 
@@ -713,32 +678,32 @@ s32 func_ov030_020cc610(s32 v) {
     return v + round;
 }
 
-s32 func_ov030_020cc670(TaskPool* pool, Fld_Shinigami* shini) {
+static s32 Fld_Shinigami_UpdateSeals(TaskPool* pool, Fld_Shinigami* shini) {
     s16 sel;
 
     EasyFade_FadeBothDisplays(FADER_LINEAR, 0, 0x1000);
     if (shini->unk_24 == 1) {
-        func_ov030_020c050c(EasyTask_GetTaskById(pool, shini->taskId[4]), 2);
+        Fld_TouchCursor_SetAnimation(EasyTask_GetTaskById(pool, shini->taskId[4]), 2);
         shini->unk_24 = 2;
     }
     if (TouchInput_WasTouchPressed() != 0) {
-        sel = func_ov030_020cc7fc(pool, shini);
+        sel = Fld_Shinigami_FindTouchedSeal(pool, shini);
         if (sel == 0) {
-            func_ov030_020cc748(pool, shini, sel);
+            Fld_Shinigami_SelectSeal(pool, shini, sel);
             Field_SetTouchEventResult(3);
             SndMgr_PlaySEWithPan(SEIDX_SE_KEYWORD_SWITCH, 0xE2);
             shini->unk_28 = 1;
-            func_ov030_020cd550(EasyTask_GetTaskById(pool, shini->taskId[5]));
+            Fld_ShinigamiCoin_Suppress(EasyTask_GetTaskById(pool, shini->taskId[5]));
         } else if ((sel != -1) && (shini->unk_24 != sel)) {
             shini->unk_24 = sel;
-            func_ov030_020cc748(pool, shini, sel);
-            func_ov030_020cc7a0(pool, shini);
+            Fld_Shinigami_SelectSeal(pool, shini, sel);
+            Fld_Shinigami_ApplySelection(pool, shini);
         }
     }
     return 1;
 }
 
-void func_ov030_020cc748(TaskPool* pool, Fld_Shinigami* shini, s32 sel) {
+static void Fld_Shinigami_SelectSeal(TaskPool* pool, Fld_Shinigami* shini, s32 sel) {
     s32 i;
     s32 v;
 
@@ -750,28 +715,28 @@ void func_ov030_020cc748(TaskPool* pool, Fld_Shinigami* shini, s32 sel) {
             } else {
                 v = 2;
             }
-            func_ov030_020c01c4(task, v);
+            ((void (*)())Fld_TouchSeal_SetAnimation)(task, v);
         }
     }
 }
 
-s32 func_ov030_020cc7a0(TaskPool* pool, Fld_Shinigami* shini) {
+static s32 Fld_Shinigami_ApplySelection(TaskPool* pool, Fld_Shinigami* shini) {
     if (shini->unk_24 == 1) {
-        func_ov030_020bff68(EasyTask_GetTaskById(pool, shini->taskId[3]), 2);
+        Fld_TouchCommand_SetCommand(EasyTask_GetTaskById(pool, shini->taskId[3]), 2);
         Field_SetTouchEventResult(5);
         Field_SetTouchEventTarget(0xD);
         SndMgr_PlaySEWithPan(SEIDX_SE_KEYWORD_SWITCH, 0x23);
-        func_ov030_020cd550(EasyTask_GetTaskById(pool, shini->taskId[5]));
+        Fld_ShinigamiCoin_Suppress(EasyTask_GetTaskById(pool, shini->taskId[5]));
     }
     return 1;
 }
 
-s16 func_ov030_020cc7fc(TaskPool* pool, Fld_Shinigami* shini) {
+static s16 Fld_Shinigami_FindTouchedSeal(TaskPool* pool, Fld_Shinigami* shini) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
         if (shini->taskId[i] != -1) {
-            if (func_ov030_020c01ec(EasyTask_GetTaskById(pool, shini->taskId[i])) != 0) {
+            if (Fld_TouchSeal_IsTouched(EasyTask_GetTaskById(pool, shini->taskId[i])) != 0) {
                 return i;
             }
         }
@@ -779,13 +744,13 @@ s16 func_ov030_020cc7fc(TaskPool* pool, Fld_Shinigami* shini) {
     return -1;
 }
 
-s32 func_ov030_020cc854(TaskPool* pool, Fld_Shinigami* shini) {
+static s32 Fld_Shinigami_UpdateOnIndicator(TaskPool* pool, Fld_Shinigami* shini) {
     TouchCoord coord;
     s16        anim;
 
     TouchInput_GetCoord(&coord);
-    anim = func_ov030_020cd530(EasyTask_GetTaskById(pool, shini->taskId[5]));
-    func_ov030_020cd764(EasyTask_GetTaskById(pool, shini->taskId[6]), anim);
+    anim = Fld_ShinigamiCoin_GetOnAnim(EasyTask_GetTaskById(pool, shini->taskId[5]));
+    Fld_ShinigamiON_SetAnimation(EasyTask_GetTaskById(pool, shini->taskId[6]), anim);
     if (anim != 0) {
         if (shini->unk_22 == 0) {
             shini->unk_22 = 1;
@@ -797,60 +762,60 @@ s32 func_ov030_020cc854(TaskPool* pool, Fld_Shinigami* shini) {
     return 1;
 }
 
-s32 func_ov030_020cc8d0(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Shinigami_Init(TaskPool* pool, Task* task, void* args) {
     Fld_Shinigami* shini = task->data;
     s32*           kind  = args;
 
-    shini->taskId[6] = func_ov030_020cd734(pool, *kind);
-    shini->taskId[5] = func_ov030_020cd4bc(pool, *kind);
-    shini->taskId[0] = func_ov030_020c0184(pool, *kind, 0, 0xE2, 0xA7);
+    shini->taskId[6] = Fld_ShinigamiON_CreateTask(pool, *kind);
+    shini->taskId[5] = Fld_ShinigamiCoin_CreateTask(pool, *kind);
+    shini->taskId[0] = Fld_TouchSeal_CreateTask(pool, *kind, 0, 0xE2, 0xA7);
     shini->taskId[1] = -1;
     shini->taskId[2] = -1;
     shini->taskId[4] = -1;
     if (func_0202599c(2) != 0) {
-        shini->taskId[1] = func_ov030_020c0184(pool, *kind, 2, 0x23, 0xA0);
+        shini->taskId[1] = Fld_TouchSeal_CreateTask(pool, *kind, 2, 0x23, 0xA0);
     }
     if (func_0202599c(3) != 0) {
-        shini->taskId[2] = func_ov030_020c0184(pool, *kind, 4, 0xE2, 0x21);
-        func_ov030_020c01c4(EasyTask_GetTaskById(pool, shini->taskId[2]), 1);
-        shini->taskId[3] = func_ov030_020bfee4(pool, *kind, 3);
+        shini->taskId[2] = Fld_TouchSeal_CreateTask(pool, *kind, 4, 0xE2, 0x21);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, shini->taskId[2]), 1);
+        shini->taskId[3] = Fld_TouchCommand_CreateTask(pool, *kind, 3);
         shini->unk_24    = 2;
-        shini->taskId[4] = func_ov030_020c04d8(pool, *kind, 2);
+        shini->taskId[4] = Fld_TouchCursor_CreateTask(pool, *kind, 2);
     } else if (func_0202599c(2) != 0) {
-        func_ov030_020c01c4(EasyTask_GetTaskById(pool, shini->taskId[1]), 1);
-        shini->taskId[3] = func_ov030_020bfee4(pool, *kind, 2);
+        Fld_TouchSeal_SetAnimation(EasyTask_GetTaskById(pool, shini->taskId[1]), 1);
+        shini->taskId[3] = Fld_TouchCommand_CreateTask(pool, *kind, 2);
         shini->unk_24    = 1;
-        shini->taskId[4] = func_ov030_020c04d8(pool, *kind, 1);
+        shini->taskId[4] = Fld_TouchCursor_CreateTask(pool, *kind, 1);
     } else {
         shini->taskId[3] = -1;
         shini->unk_24    = -1;
     }
-    func_ov030_020cd4ec(EasyTask_GetTaskById(pool, shini->taskId[5]), 1);
+    Fld_ShinigamiCoin_Reset(EasyTask_GetTaskById(pool, shini->taskId[5]), 1);
     shini->unk_20 = -1;
     shini->unk_22 = 0;
     shini->unk_28 = 0;
     return 1;
 }
 
-s32 func_ov030_020cca64(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Shinigami_Update(TaskPool* pool, Task* task, void* args) {
     Fld_Shinigami* shini = task->data;
 
     if (shini->unk_28 == 1) {
         return 1;
     }
-    if (func_ov030_020cd560(EasyTask_GetTaskById(pool, shini->taskId[5])) != 0) {
+    if (Fld_ShinigamiCoin_IsSuppressed(EasyTask_GetTaskById(pool, shini->taskId[5])) != 0) {
         return 1;
     }
-    func_ov030_020cc670(pool, shini);
-    func_ov030_020cc854(pool, shini);
+    Fld_Shinigami_UpdateSeals(pool, shini);
+    Fld_Shinigami_UpdateOnIndicator(pool, shini);
     return 1;
 }
 
-s32 func_ov030_020ccab8(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Shinigami_Render(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020ccac0(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Shinigami_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_Shinigami* shini = task->data;
     s32            i;
 
@@ -862,14 +827,19 @@ s32 func_ov030_020ccac0(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020ccb00(TaskPool* pool, Task* task, void* args, s32 stage) {
-    const TaskStages stages = data_ov030_020ed0f0;
+static s32 Fld_Shinigami_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Shinigami_Init,
+        .update     = Fld_Shinigami_Update,
+        .render     = Fld_Shinigami_Render,
+        .cleanup    = Fld_Shinigami_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020ccb48(TaskPool* pool, s32 kind) {
+s32 Fld_Shinigami_CreateTask(TaskPool* pool, s32 kind) {
     s32 arg = kind;
 
-    return EasyTask_CreateTask(pool, &data_ov030_020ed0e4, NULL, 0, NULL, &arg);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Shinigami, NULL, 0, NULL, &arg);
 }

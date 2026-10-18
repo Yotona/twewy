@@ -1,3 +1,4 @@
+#include "Field/Tasks/XFade.h"
 #include "Display.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"

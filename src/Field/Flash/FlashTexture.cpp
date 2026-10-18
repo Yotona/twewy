@@ -1,9 +1,7 @@
-#include "Field/FlashRegion.h"
-
 extern "C" {
 #include <nitro/g3.h>
 }
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashPlayer.h"
 
 typedef struct {
     /* 0x0 */ FlashHeap* texHeap;

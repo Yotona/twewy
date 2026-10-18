@@ -1,3 +1,5 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/Memory.h"
@@ -6,6 +8,9 @@
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Field/Flash/FOPtrList.h"
+#include "Field/Scene/LocaTitle.h"
+#include "Field/Scene/LocaTitleSeq.h"
 #include "common_data.h"
 #include <nitro/mi/cpumem.h>
 
@@ -15,12 +20,6 @@ typedef struct {
     /* 0x0008C */ u8              memBuffer[0x4000];
     /* 0x0408C */ ResourceManager resources;
 } LocaTitleSeq; // Size: 0x1560C
-
-extern void FO3D_InitDisplay(void);
-extern void FO3D_ExitDisplay(void);
-extern void FO3D_FadeInStep(void);
-extern void FO3D_FadeOutStep(void);
-extern s32  LocaTitle_CreateTask(TaskPool* pool, s32 dataType, s32 packIndex);
 extern void func_02001b44(s32 arg0, s32 arg1, void* arg2, s32 arg3);
 
 s32 data_ov030_02109de8;

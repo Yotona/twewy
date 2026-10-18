@@ -48,7 +48,7 @@ src/Interface/Debug/Field/FieldVBlank.c:
 
 src/Field/Event/EventSpawnTemplates.c:
     .text       start:0x020b901c end:0x020bb110
-    .rodata     start:0x020e1750 end:0x020e5150
+    .rodata     start:0x020e1750 end:0x020e516c
 
 src/Field/Tasks/Fld_TalkEventStringPlate.c:
     .text       start:0x020c3ebc end:0x020c42d0
@@ -56,7 +56,7 @@ src/Field/Tasks/Fld_TalkEventStringPlate.c:
     .data       start:0x02106698 end:0x021066b8
 
 src/Field/Tasks/Fld_TalkEventKeywordMenu.c:
-    .text       start:0x020c42d0 end:0x020c4780
+    .text       start:0x020c42d0 end:0x020c485c
     .rodata     start:0x020e64d0 end:0x020e64ec
     .data       start:0x021066b8 end:0x021066d8
 
@@ -106,12 +106,16 @@ src/Field/Tasks/Fld_Player.c:
 
 src/Field/Tasks/Fld_BustShot.c:
     .text       start:0x020b382c end:0x020b43fc
-    .rodata     start:0x020dea68 end:0x020df3ec
+    .rodata     start:0x020dea68 end:0x020dfc50
     .data       start:0x021055bc end:0x02105624
 
+src/Field/Tasks/FldMesWindow.c:
+    .text       start:0x020b43fc end:0x020b489c
+    .rodata     start:0x020dfc50 end:0x020dfc68
+
 src/Field/Tasks/Fld_Badge.c:
-    .text       start:0x020b43fc end:0x020b4cac
-    .rodata     start:0x020df3ec end:0x020dfcb0
+    .text       start:0x020b489c end:0x020b4cac
+    .rodata     start:0x020dfc68 end:0x020dfcb0
     .data       start:0x02105624 end:0x02105634
 
 src/Field/Tasks/Fld_ScanArea.c:
@@ -141,7 +145,7 @@ src/Field/Scene/FieldArea.c:
 
 src/Field/Tasks/Fld_TalkIcon.c:
     .text       start:0x020bb110 end:0x020bb42c
-    .rodata     start:0x020e5150 end:0x020e51b4
+    .rodata     start:0x020e516c end:0x020e51b4
     .data       start:0x02106360 end:0x02106374
 
 src/Field/Tasks/Fld_NSymbolUG.c:
@@ -159,9 +163,13 @@ src/Field/Tasks/Fld_MapJumpArrow.c:
     .rodata     start:0x020e5334 end:0x020e53b0
     .data       start:0x02106400 end:0x02106418
 
+src/Field/Tasks/FldCharaWalk.c:
+    .text       start:0x020bcb64 end:0x020bcc10
+    .rodata     start:0x020e53b0 end:0x020e53c4
+
 src/Field/Tasks/Fld_Partner.c:
-    .text       start:0x020bcb64 end:0x020bda10
-    .rodata     start:0x020e53b0 end:0x020e54a8
+    .text       start:0x020bcc10 end:0x020bda10
+    .rodata     start:0x020e53c4 end:0x020e54a8
     .data       start:0x02106418 end:0x02106480
 
 src/Field/Tasks/Fld_OnePicturCell.c:
@@ -171,12 +179,12 @@ src/Field/Tasks/Fld_OnePicturCell.c:
 
 src/Field/Tasks/Fld_CockPit.c:
     .text       start:0x020bdc78 end:0x020bdf3c
-    .rodata     start:0x020e5508 end:0x020e555c
+    .rodata     start:0x020e5508 end:0x020e5550
     .data       start:0x02106498 end:0x021064a8
 
 src/Field/Tasks/Fld_Watch.c:
     .text       start:0x020bdf3c end:0x020be4f0
-    .rodata     start:0x020e555c end:0x020e55a4
+    .rodata     start:0x020e5550 end:0x020e55a4
     .data       start:0x021064a8 end:0x021064b8
 
 src/Field/Tasks/Fld_Phone.c:
@@ -184,10 +192,14 @@ src/Field/Tasks/Fld_Phone.c:
     .rodata     start:0x020e55a4 end:0x020e55ec
     .data       start:0x021064b8 end:0x021064c8
 
+src/Field/Tasks/FldChara.c:
+    .text       start:0x020be73c end:0x020beacc
+    .data       start:0x021064c8 end:0x021064f4
+
 src/Field/Tasks/Fld_ScanKirakira.c:
-    .text       start:0x020be73c end:0x020bee84
+    .text       start:0x020beacc end:0x020bee84
     .rodata     start:0x020e55ec end:0x020e5634
-    .data       start:0x021064c8 end:0x0210650c
+    .data       start:0x021064f4 end:0x0210650c
 
 src/Field/Tasks/Fld_ScanFukidasi.c:
     .text       start:0x020bee84 end:0x020bf44c
@@ -197,12 +209,12 @@ src/Field/Tasks/Fld_ScanFukidasi.c:
 
 src/Field/Tasks/Fld_NpcRG.c:
     .text       start:0x020bf44c end:0x020bf6ac
-    .rodata     start:0x020e5650 end:0x020e5ba4
+    .rodata     start:0x020e5650 end:0x020e604c
     .data       start:0x02106524 end:0x02106534
 
 src/Field/Tasks/Fld_LargeGingo.c:
     .text       start:0x020bf6ac end:0x020bf988
-    .rodata     start:0x020e5ba4 end:0x020e6068
+    .rodata     start:0x020e604c end:0x020e6068
     .data       start:0x02106534 end:0x02106548
 
 src/Field/Tasks/Fld_Touch.c:
@@ -301,13 +313,13 @@ src/Field/Tasks/Fld_EventMail.c:
 src/Field/Tasks/Fld_Shinigami.c:
     .text       start:0x020ca674 end:0x020cbfd0
     .rodata     start:0x020ec1e0 end:0x020ec1fc
-    .data       start:0x02107748 end:0x02107794
+    .data       start:0x02107748 end:0x0210775c
     .bss        start:0x02108ba4 end:0x02108ba8
 
 src/Field/Tasks/Fld_ShinigamiCoin.c:
     .text       start:0x020cbfd0 end:0x020cc9d0
     .rodata     start:0x020ec1fc end:0x020ec24c
-    .data       start:0x02107794 end:0x021077dc
+    .data       start:0x0210775c end:0x021077dc
 
 src/Field/Tasks/Fld_ShinigamiON.c:
     .text       start:0x020cc9d0 end:0x020ccbe8
@@ -315,7 +327,7 @@ src/Field/Tasks/Fld_ShinigamiON.c:
     .data       start:0x021077dc end:0x021077f0
 
 src/Field/Tasks/Fld_TalkEventCursor.c:
-    .text       start:0x020c4780 end:0x020c4b60
+    .text       start:0x020c485c end:0x020c4b60
     .rodata     start:0x020e64ec end:0x020e6534
     .data       start:0x021066d8 end:0x021066f0
 

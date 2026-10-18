@@ -1,3 +1,5 @@
+#include "Field/FieldRegion.h"
+
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -6,45 +8,33 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
-#include "Field/EventFlags.h"
-#include "Field/Events.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Scene/FieldArea.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldMusic.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Scene/FieldShopName.h"
+#include "Field/Tasks/Fld_Badge.h"
+#include "Field/Tasks/Fld_MapName.h"
+#include "Field/Tasks/Fld_Partner.h"
+#include "Field/Tasks/Fld_Player.h"
+#include "Field/Tasks/Fld_Wall.h"
 #include "Player/Inventory.h"
 #include "Save.h"
 #include <nitro/types.h>
 
-extern BgResource*   BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-extern BgResource*   BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern BgResource*   BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
-extern void          func_02001b44(s32, s32, void*, s32);
-extern s32           func_0202599c(s32 flagIndex);
-extern void          func_ov030_020aec38(s32 arg0);
-extern void          Field_ReleaseEventPicture(FieldEventManager* mgr);
-extern void          func_ov030_020ae96c(s32 arg0);
-extern void          func_ov030_020b3014(Task* task, s32 arg1);
-extern void          func_ov030_020bd310(Task* task, s32 arg1);
-extern s32           func_ov030_020b4500(Task* task);
-extern s32           func_ov030_020b4514(Task* task);
-extern s32           func_ov030_020b5ce4(Task* task);
-extern s32           func_ov030_020b7c34(u32 arg0);
-extern s32           func_ov030_020b7dd8(s32 arg0);
-extern FieldExit*    func_ov030_020b85a8(s32 arg0, s32* arg1);
-extern void          func_ov030_020c26bc(s32 state);
-extern void          func_ov030_020c2fc0(s32 arg0);
-extern s32           func_ov030_020c5374(TaskPool* pool, s32 arg1, s32 arg2);
-extern s32           func_ov030_020c5404(s16 arg0);
-extern s32           func_ov030_020c5460(s16 arg0);
-extern s32           data_02059d24;
-extern s32           data_0205a124;
-extern BinIdentifier data_ov030_020d9594;
-extern BinIdentifier data_ov030_020d95ac;
-extern BinIdentifier data_ov030_020d95bc;
-extern BinIdentifier data_ov030_020d9944;
-extern BinIdentifier data_ov030_020d994c;
-extern s32           data_ov030_020daa58[];
-extern s32           data_ov030_020fde84[];
+extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
+extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
+extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
+extern void        func_02001b44(s32, s32, void*, s32);
+extern s32         func_0202599c(s32 flagIndex);
+extern s32         data_02059d24;
+extern s32         data_0205a124;
 
-// Raw 12-byte entries loaded from the data_ov030_020d95bc table (see
-// func_ov030_0208416c). Only offsets 0x2 and 0x4 are read here.
 typedef struct {
     u16 unk_00;
     u16 unk_02;
@@ -60,55 +50,14 @@ typedef struct {
     /* 0x4 */ u16 palettes[][0x40];
 } FldBgPaletteSet;
 
-s32  func_ov030_02082fe4(FieldEventManager* mgr);
-void func_ov030_02083024(FieldEventManager* mgr);
-void func_ov030_02083088(FieldEventManager* mgr);
-void func_ov030_020830ac(FieldEventManager* mgr);
-void func_ov030_020831f4(FieldEventManager* mgr);
-s32  func_ov030_0208331c(s32 arg0);
-void func_ov030_02083350(FieldEventManager* mgr);
-void func_ov030_020833fc(FieldEventManager* mgr);
-void func_ov030_020834c4(FieldEventManager* mgr);
-void func_ov030_02083528(FieldEventManager* mgr);
-void func_ov030_02083664(FieldEventManager* mgr);
-void func_ov030_020836c8(FieldEventManager* mgr);
-void func_ov030_02083804(FieldEventManager* mgr);
-void func_ov030_02083940(FieldEventManager* mgr, s32 arg1);
-void func_ov030_02083ab4(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack, s32 palCount);
-void func_ov030_02083bcc(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack);
-s32  func_ov030_02083bf0(u8 arg0);
-void func_ov030_02083c04(FieldEventManager* mgr, s32 arg1);
-void func_ov030_02083cac(FieldEventManager* mgr, s32 arg1);
-void func_ov030_02083d54(FieldEventManager* mgr, s32 arg1);
-void func_ov030_02083dfc(FieldEventManager* mgr);
-void func_ov030_02083f58(FieldEventManager* mgr);
-void func_ov030_0208403c(FieldEventManager* mgr);
-void func_ov030_0208416c(void* buffer, s32 index);
-void func_ov030_02084198(FieldEventManager* mgr);
-void func_ov030_020842b4(FieldEventManager* mgr, s32 arg1);
-s32  func_ov030_0208430c(void);
-void func_ov030_0208434c(FieldEventManager* mgr, s32 arg1, s32 arg2);
-void func_ov030_020846bc(FieldEventManager* mgr, s32 arg1);
-s32  func_ov030_02084788(FieldEventManager* mgr);
-s32  func_ov030_020847c8(FieldEventManager* mgr);
-s32  func_ov030_020847f4(FieldEventManager* mgr);
-s32  func_ov030_02084860(s32 arg0, s32 arg1, s32 arg2);
-s32  func_ov030_020848a4(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-s32  func_ov030_020848e4(FieldEventManager* mgr, s32 arg1);
-void func_ov030_02084944(s32 arg0, s32 arg1);
-void func_ov030_0208496c(void);
-s32  func_ov030_02084970(FieldEventManager* mgr);
-s32  func_ov030_02084978(FieldEventManager* mgr);
-void func_ov030_02084980(void);
-
-s32 func_ov030_02082fe4(FieldEventManager* mgr) {
+s32 FieldBg_IsAreaTitleDone(FieldEventManager* mgr) {
     if (mgr->unk_216D0 == -1) {
         return 1;
     }
     return EasyTask_ValidateTaskId(&mgr->taskPool, &mgr->unk_216D0) == 0;
 }
 
-void func_ov030_02083024(FieldEventManager* mgr) {
+void FieldBg_UpdateWalkSpeed(FieldEventManager* mgr) {
     s32 id;
 
     if (gSaveData.fieldArea == 1) {
@@ -116,11 +65,11 @@ void func_ov030_02083024(FieldEventManager* mgr) {
     } else {
         id = 0x2CCD;
     }
-    func_ov030_020b3014(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player), id);
-    func_ov030_020bd310(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner), id);
+    Fld_Player_SetSpeed(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Player), id);
+    Fld_Partner_SetSpeed(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Partner), id);
 }
 
-void func_ov030_02083088(FieldEventManager* mgr) {
+void FieldBg_ResetScanSeen(FieldEventManager* mgr) {
     s32 i;
 
     for (i = 0; i < 0x20; i++) {
@@ -128,8 +77,8 @@ void func_ov030_02083088(FieldEventManager* mgr) {
     }
 }
 
-void func_ov030_020830ac(FieldEventManager* mgr) {
-    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 2, FALSE);
+void FieldBg_LoadScanPicture(FieldEventManager* mgr) {
+    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 2, FALSE);
     void* charData   = Data_GetPackEntryData(pack, 1);
     void* screenData = Data_GetPackEntryData(pack, 2);
     void* palData    = Data_GetPackEntryData(pack, 4);
@@ -150,7 +99,7 @@ void func_ov030_020830ac(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_020831f4(FieldEventManager* mgr) {
+void FieldBg_ShowEventPicture(FieldEventManager* mgr) {
     Data* pack       = mgr->unk_21620;
     void* charData   = Data_GetPackEntryData(pack, 1);
     void* screenData = Data_GetPackEntryData(pack, 2);
@@ -172,7 +121,7 @@ void func_ov030_020831f4(FieldEventManager* mgr) {
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= 2;
 }
 
-s32 func_ov030_0208331c(s32 arg0) {
+static s32 FieldBg_GetScanLevel(s32 arg0) {
     if (arg0 >= 0x1F) {
         return 4;
     }
@@ -188,25 +137,25 @@ s32 func_ov030_0208331c(s32 arg0) {
     return 0;
 }
 
-void func_ov030_02083350(FieldEventManager* mgr) {
-    Data* pack    = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 2, FALSE);
-    void* palData = Data_GetPackEntryData(pack, func_ov030_0208331c(mgr->scanBgLevel) + 5);
+void FieldBg_UpdateScanPicturePalette(FieldEventManager* mgr) {
+    Data* pack    = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 2, FALSE);
+    void* palData = Data_GetPackEntryData(pack, FieldBg_GetScanLevel(mgr->scanBgLevel) + 5);
 
     PaletteMgr_SetSource(g_PaletteManagers[DISPLAY_MAIN], mgr->eventPicPalette, palData);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], mgr->eventPicPalette);
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_020833fc(FieldEventManager* mgr) {
-    Data* pack    = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 5, FALSE);
-    void* palData = Data_GetPackEntryData(pack, func_ov030_0208331c(mgr->scanBgLevel) + 0xC);
+void FieldBg_UpdateTopBgPalette(FieldEventManager* mgr) {
+    Data* pack    = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 5, FALSE);
+    void* palData = Data_GetPackEntryData(pack, FieldBg_GetScanLevel(mgr->scanBgLevel) + 0xC);
 
     PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_SUB], mgr->unk_21A68);
     mgr->unk_21A68 = PaletteMgr_AllocPalette(g_PaletteManagers[DISPLAY_SUB], palData, 0, 0, 0xE);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], mgr->unk_21A68);
 }
 
-void func_ov030_020834c4(FieldEventManager* mgr) {
+void FieldBg_ReleaseSubBg0(FieldEventManager* mgr) {
     if (mgr->unk_21A6C == 0) {
         return;
     }
@@ -216,15 +165,15 @@ void func_ov030_020834c4(FieldEventManager* mgr) {
     mgr->unk_21A6C = 0;
 }
 
-void func_ov030_02083528(FieldEventManager* mgr) {
+void FieldBg_LoadScanSubBg0(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
     void* palData;
     u32   charSize;
 
-    func_ov030_020834c4(mgr);
-    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 3, FALSE);
+    FieldBg_ReleaseSubBg0(mgr);
+    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 3, FALSE);
     charData       = Data_GetPackEntryData(pack, 1);
     screenData     = Data_GetPackEntryData(pack, 2);
     palData        = Data_GetPackEntryData(pack, 3);
@@ -241,7 +190,7 @@ void func_ov030_02083528(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083664(FieldEventManager* mgr) {
+void FieldBg_ReleaseSubBg1(FieldEventManager* mgr) {
     if (mgr->unk_21A78 == 0) {
         return;
     }
@@ -251,15 +200,15 @@ void func_ov030_02083664(FieldEventManager* mgr) {
     mgr->unk_21A78 = 0;
 }
 
-void func_ov030_020836c8(FieldEventManager* mgr) {
+void FieldBg_LoadScanSubBg1(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
     void* palData;
     u32   charSize;
 
-    func_ov030_02083664(mgr);
-    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 4, FALSE);
+    FieldBg_ReleaseSubBg1(mgr);
+    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 4, FALSE);
     charData       = Data_GetPackEntryData(pack, 1);
     screenData     = Data_GetPackEntryData(pack, 2);
     palData        = Data_GetPackEntryData(pack, 5);
@@ -276,15 +225,15 @@ void func_ov030_020836c8(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083804(FieldEventManager* mgr) {
+void FieldBg_LoadScanFrameSubBg0(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
     void* palData;
     u32   charSize;
 
-    func_ov030_020834c4(mgr);
-    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 4, FALSE);
+    FieldBg_ReleaseSubBg0(mgr);
+    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 4, FALSE);
     charData       = Data_GetPackEntryData(pack, 3);
     screenData     = Data_GetPackEntryData(pack, 4);
     palData        = Data_GetPackEntryData(pack, 5);
@@ -301,8 +250,8 @@ void func_ov030_02083804(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083940(FieldEventManager* mgr, s32 arg1) {
-    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d9944, 6, FALSE);
+void FieldBg_LoadDownScreenSubBg(FieldEventManager* mgr, s32 arg1) {
+    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldDownScreen, 6, FALSE);
     void* charData   = Data_GetPackEntryData(pack, 1);
     void* screenData = Data_GetPackEntryData(pack, 2);
     void* palData;
@@ -312,7 +261,7 @@ void func_ov030_02083940(FieldEventManager* mgr, s32 arg1) {
     } else {
         palData = Data_GetPackEntryData(pack, 4);
     }
-    func_ov030_02083664(mgr);
+    FieldBg_ReleaseSubBg1(mgr);
     mgr->unk_21A78 = BgResMgr_AllocScreen(g_BgResourceManagers[DISPLAY_SUB], screenData,
                                           g_DisplaySettings.engineState[1].bgSettings[3].screenBase, 0);
     {
@@ -328,7 +277,8 @@ void func_ov030_02083940(FieldEventManager* mgr, s32 arg1) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083ab4(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack, s32 palCount) {
+static void FieldBg_SetTopBg(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack,
+                             s32 palCount) {
     u32 charSize;
 
     if (mgr->unk_21A5C != 0) {
@@ -352,55 +302,55 @@ void func_ov030_02083ab4(FieldEventManager* mgr, void* charData, void* screenDat
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083bcc(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack) {
-    func_ov030_02083ab4(mgr, charData, screenData, palData, pack, 0xE);
+static void FieldBg_SetTopBgDefault(FieldEventManager* mgr, void* charData, void* screenData, void* palData, Data* pack) {
+    FieldBg_SetTopBg(mgr, charData, screenData, palData, pack, 0xE);
 }
 
-s32 func_ov030_02083bf0(u8 arg0) {
-    return data_ov030_020fde84[arg0] - 1;
+static s32 FieldBg_GetBrandBgIndex(u8 arg0) {
+    return Field_BrandBgIndices[arg0] - 1;
 }
 
-void func_ov030_02083c04(FieldEventManager* mgr, s32 arg1) {
-    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d994c, 1, FALSE);
+static void FieldBg_LoadUpBg(FieldEventManager* mgr, s32 arg1) {
+    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldUpBg, 1, FALSE);
     void* charData   = Data_GetPackEntryData(pack, 1);
     void* screenData = Data_GetPackEntryData(pack, 2);
     void* palData    = Data_GetPackEntryData(pack, 3);
 
-    func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+    FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
     mgr->unk_21A5C = arg1;
 }
 
-void func_ov030_02083cac(FieldEventManager* mgr, s32 arg1) {
-    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 2, FALSE);
+static void FieldBg_LoadScanTopBg(FieldEventManager* mgr, s32 arg1) {
+    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 2, FALSE);
     void* charData   = Data_GetPackEntryData(pack, 12);
     void* screenData = Data_GetPackEntryData(pack, 13);
     void* palData    = Data_GetPackEntryData(pack, 14);
 
-    func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+    FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
     mgr->unk_21A5C = arg1;
 }
 
-void func_ov030_02083d54(FieldEventManager* mgr, s32 arg1) {
-    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 2, FALSE);
+static void FieldBg_LoadScanTopBgAlt(FieldEventManager* mgr, s32 arg1) {
+    Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 2, FALSE);
     void* charData   = Data_GetPackEntryData(pack, 10);
     void* screenData = Data_GetPackEntryData(pack, 11);
     void* palData    = Data_GetPackEntryData(pack, 3);
 
-    func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+    FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
     mgr->unk_21A5C = arg1;
 }
 
-void func_ov030_02083dfc(FieldEventManager* mgr) {
+void FieldBg_LoadScanLevelSubBg1(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
     void* palData;
 
-    func_ov030_02083664(mgr);
-    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 5, FALSE);
+    FieldBg_ReleaseSubBg1(mgr);
+    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 5, FALSE);
     charData       = Data_GetPackEntryData(pack, 17);
     screenData     = Data_GetPackEntryData(pack, 18);
-    palData        = Data_GetPackEntryData(pack, func_ov030_0208331c(mgr->scanBgLevel) + 3);
+    palData        = Data_GetPackEntryData(pack, FieldBg_GetScanLevel(mgr->scanBgLevel) + 3);
     mgr->unk_21A78 = BgResMgr_AllocScreen(g_BgResourceManagers[DISPLAY_SUB], screenData,
                                           g_DisplaySettings.engineState[1].bgSettings[1].screenBase, 0);
     {
@@ -416,14 +366,14 @@ void func_ov030_02083dfc(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_02083f58(FieldEventManager* mgr) {
+void FieldBg_LoadScanSubBg3(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
     u32   charSize;
 
-    func_ov030_020834c4(mgr);
-    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 5, FALSE);
+    FieldBg_ReleaseSubBg0(mgr);
+    pack           = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 5, FALSE);
     charData       = Data_GetPackEntryData(pack, 10);
     screenData     = Data_GetPackEntryData(pack, 11);
     mgr->unk_21A6C = BgResMgr_AllocScreen(g_BgResourceManagers[DISPLAY_SUB], screenData,
@@ -437,7 +387,7 @@ void func_ov030_02083f58(FieldEventManager* mgr) {
     DatMgr_ReleaseData(pack);
 }
 
-void func_ov030_0208403c(FieldEventManager* mgr) {
+void FieldBg_LoadScanLevelTopBg(FieldEventManager* mgr) {
     Data* pack;
     void* charData;
     void* screenData;
@@ -446,24 +396,24 @@ void func_ov030_0208403c(FieldEventManager* mgr) {
     if (mgr->unk_21A5C == 8) {
         return;
     }
-    pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d95ac, 5, FALSE);
-    if (func_ov030_0208331c(mgr->scanBgLevel) == 2) {
+    pack = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldScan, 5, FALSE);
+    if (FieldBg_GetScanLevel(mgr->scanBgLevel) == 2) {
         charData   = Data_GetPackEntryData(pack, 8);
         screenData = Data_GetPackEntryData(pack, 9);
     } else {
         charData   = Data_GetPackEntryData(pack, 1);
         screenData = Data_GetPackEntryData(pack, 2);
     }
-    palData = Data_GetPackEntryData(pack, func_ov030_0208331c(mgr->scanBgLevel) + 0xC);
-    func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+    palData = Data_GetPackEntryData(pack, FieldBg_GetScanLevel(mgr->scanBgLevel) + 0xC);
+    FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
     mgr->unk_21A5C = 8;
 }
 
-void func_ov030_0208416c(void* buffer, s32 index) {
-    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, buffer, 0xC, &data_ov030_020d95bc, index * 0xC));
+static void FieldBg_LoadShopData(void* buffer, s32 index) {
+    DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, buffer, 0xC, &Iden_ShopData, index * 0xC));
 }
 
-void func_ov030_02084198(FieldEventManager* mgr) {
+static void FieldBg_LoadShopBg(FieldEventManager* mgr) {
     FldRawEntry entry;
     s16         sel = 0x46;
     s32         index;
@@ -471,7 +421,7 @@ void func_ov030_02084198(FieldEventManager* mgr) {
     if (mgr->activeExit != NULL) {
         sel = mgr->activeExit->destArea;
     }
-    func_ov030_0208416c(&entry, func_ov030_020c5404(sel));
+    FieldBg_LoadShopData(&entry, func_ov030_020c5404(sel));
     if (entry.unk_04 >= 3U) {
         entry.unk_04 = 0;
     }
@@ -485,17 +435,17 @@ void func_ov030_02084198(FieldEventManager* mgr) {
         index = 0x4E;
     }
     {
-        Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d9594, index, FALSE);
+        Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldBG, index, FALSE);
         void* charData   = Data_GetPackEntryData(pack, 1);
         void* screenData = Data_GetPackEntryData(pack, 2);
         void* palData    = Data_GetPackEntryData(pack, 3);
 
-        func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+        FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
     }
     mgr->unk_21A5C = 2;
 }
 
-void func_ov030_020842b4(FieldEventManager* mgr, s32 arg1) {
+static void FieldBg_LoadEventPictureTopBg(FieldEventManager* mgr, s32 arg1) {
     void* charData = Data_GetPackEntryData(mgr->unk_21620, 1);
     void* palData;
 
@@ -504,10 +454,10 @@ void func_ov030_020842b4(FieldEventManager* mgr, s32 arg1) {
     } else {
         palData = &data_0205a128;
     }
-    func_ov030_02083bcc(mgr, charData, &data_0205a124, palData, NULL);
+    FieldBg_SetTopBgDefault(mgr, charData, &data_0205a124, palData, NULL);
 }
 
-s32 func_ov030_0208430c(void) {
+s32 FieldBg_AreTrendsVisible(void) {
     if (Inventory_HasRequiredQuantity(0x2AE, 1, 0) != 0) {
         return 1;
     }
@@ -516,21 +466,21 @@ s32 func_ov030_0208430c(void) {
 
 // Nonmatching: pure register allocation (var_r5 in r4 vs target r5); all
 // branches, offsets and immediates verified identical.
-void func_ov030_0208434c(FieldEventManager* mgr, s32 arg1, s32 arg2) {
+void FieldBg_LoadAreaBg(FieldEventManager* mgr, s32 arg1, s32 arg2) {
     if (arg2 == 0x47) {
-        func_ov030_020842b4(mgr, 0);
+        FieldBg_LoadEventPictureTopBg(mgr, 0);
         mgr->unk_21A5C = arg1;
         return;
     }
     if (arg2 == 0x48) {
-        func_ov030_020842b4(mgr, 1);
+        FieldBg_LoadEventPictureTopBg(mgr, 1);
         mgr->unk_21A5C = arg1;
         return;
     }
     s32 var_r5;
 
     if ((u32)arg2 < 0x31U) {
-        var_r5 = data_ov030_020daa58[arg2];
+        var_r5 = Field_AreaBgIndices[arg2];
     } else {
         var_r5 = 0xC;
     }
@@ -582,27 +532,27 @@ void func_ov030_0208434c(FieldEventManager* mgr, s32 arg1, s32 arg2) {
             var_r5 = 0x4E;
         }
     } else if (arg2 != 0x25) {
-        mgr->unk_21700 = func_ov030_020c5374(&mgr->taskPool, mgr->dataType, func_ov030_020b7c34(arg2));
+        mgr->unk_21700 = Fld_MapName_CreateTask(&mgr->taskPool, mgr->dataType, func_ov030_020b7c34(arg2));
     }
     if (var_r5 == 3) {
-        if (func_ov030_0208430c() != 0) {
-            var_r5 = func_ov030_02083bf0(gSaveData.brandTrends[1].ranking[0]) + 0x6B;
+        if (FieldBg_AreTrendsVisible() != 0) {
+            var_r5 = FieldBg_GetBrandBgIndex(gSaveData.brandTrends[1].ranking[0]) + 0x6B;
         }
     } else if (var_r5 == 4) {
-        if (func_ov030_0208430c() != 0) {
-            var_r5 = func_ov030_02083bf0(gSaveData.brandTrends[1].ranking[0]) + 0x78;
+        if (FieldBg_AreTrendsVisible() != 0) {
+            var_r5 = FieldBg_GetBrandBgIndex(gSaveData.brandTrends[1].ranking[0]) + 0x78;
         }
     } else if (var_r5 == 1) {
-        if (func_ov030_0208430c() != 0) {
-            var_r5 = func_ov030_02083bf0(gSaveData.brandTrends[1].ranking[0]) + 0x51;
+        if (FieldBg_AreTrendsVisible() != 0) {
+            var_r5 = FieldBg_GetBrandBgIndex(gSaveData.brandTrends[1].ranking[0]) + 0x51;
         }
     } else if (var_r5 == 2) {
-        var_r5 = func_ov030_02083bf0(gSaveData.brandTrends[0].ranking[0]) + 0x5E;
+        var_r5 = FieldBg_GetBrandBgIndex(gSaveData.brandTrends[0].ranking[0]) + 0x5E;
     } else if (arg2 == 4 && arg1 == 2) {
-        var_r5 = func_ov030_02083bf0(gSaveData.brandTrends[0].ranking[0]) + 0x85;
+        var_r5 = FieldBg_GetBrandBgIndex(gSaveData.brandTrends[0].ranking[0]) + 0x85;
     }
     {
-        Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &data_ov030_020d9594, var_r5, FALSE);
+        Data* pack       = DatMgr_LoadPackEntry(mgr->dataType, NULL, 0, &Iden_FldBG, var_r5, FALSE);
         void* charData   = Data_GetPackEntryData(pack, 1);
         void* screenData = Data_GetPackEntryData(pack, 2);
         void* palData    = Data_GetPackEntryData(pack, 3);
@@ -612,15 +562,15 @@ void func_ov030_0208434c(FieldEventManager* mgr, s32 arg1, s32 arg2) {
             func_02001b44(7, (g_DisplaySettings.engineState[DISPLAY_SUB].bgSettings[2].charBase << 0xE) + 0x06205000,
                           extraData->palettes[arg2 - 0x18], 0x80);
             DMA_Flush();
-            func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+            FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
         } else {
-            func_ov030_02083bcc(mgr, charData, screenData, palData, pack);
+            FieldBg_SetTopBgDefault(mgr, charData, screenData, palData, pack);
         }
     }
     mgr->unk_21A5C = arg1;
 }
 
-void func_ov030_020846bc(FieldEventManager* mgr, s32 arg1) {
+void FieldBg_SetTopBgMode(FieldEventManager* mgr, s32 arg1) {
     if (mgr->unk_21A5C == arg1) {
         return;
     }
@@ -629,36 +579,36 @@ void func_ov030_020846bc(FieldEventManager* mgr, s32 arg1) {
         mgr->unk_21700 = -1;
     }
     if (arg1 == 4) {
-        func_ov030_02083cac(mgr, arg1);
+        FieldBg_LoadScanTopBg(mgr, arg1);
         return;
     }
     if (arg1 == 5) {
-        func_ov030_02083d54(mgr, arg1);
+        FieldBg_LoadScanTopBgAlt(mgr, arg1);
         return;
     }
     if (arg1 == 7) {
-        func_ov030_02083c04(mgr, arg1);
+        FieldBg_LoadUpBg(mgr, arg1);
         return;
     }
     if (arg1 == 2 && mgr->unk_21D0C != 0) {
-        func_ov030_02084198(mgr);
+        FieldBg_LoadShopBg(mgr);
         return;
     }
-    func_ov030_0208434c(mgr, arg1, gSaveData.fieldArea);
+    FieldBg_LoadAreaBg(mgr, arg1, gSaveData.fieldArea);
 }
 
-s32 func_ov030_02084788(FieldEventManager* mgr) {
+s32 FieldBg_IsBadgeTapped(FieldEventManager* mgr) {
     if (TouchInput_WasTouchPressed() == 0) {
         return 0;
     }
-    return func_ov030_020b4514(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge)) != 0;
+    return Fld_Badge_IsTouched(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge)) != 0;
 }
 
-s32 func_ov030_020847c8(FieldEventManager* mgr) {
-    return func_ov030_020b4500(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge)) != 0;
+s32 FieldBg_IsBadgeHeld(FieldEventManager* mgr) {
+    return Fld_Badge_IsHeld(EasyTask_GetTaskById(&mgr->taskPool, mgr->taskId_Badge)) != 0;
 }
 
-s32 func_ov030_020847f4(FieldEventManager* mgr) {
+s32 FieldBg_GetTouchedHuman(FieldEventManager* mgr) {
     s32 i;
 
     if (TouchInput_WasTouchPressed() == 0) {
@@ -672,7 +622,7 @@ s32 func_ov030_020847f4(FieldEventManager* mgr) {
     return -1;
 }
 
-s32 func_ov030_02084860(s32 arg0, s32 arg1, s32 arg2) {
+s32 FieldBg_IsPlayerNear(s32 arg0, s32 arg1, s32 arg2) {
     s32 dx = arg0 - (gSaveData.fieldPos.x >> 0xC);
     s32 dy;
 
@@ -691,7 +641,7 @@ s32 func_ov030_02084860(s32 arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-s32 func_ov030_020848a4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 FieldBg_IsPlayerInRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 cx = gSaveData.fieldPos.x >> 0xC;
     s32 cy;
 
@@ -704,7 +654,7 @@ s32 func_ov030_020848a4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return 0;
 }
 
-s32 func_ov030_020848e4(FieldEventManager* mgr, s32 arg1) {
+s32 FieldBg_CheckExit(FieldEventManager* mgr, s32 arg1) {
     s32 context;
 
     mgr->activeExit = func_ov030_020b85a8(arg1, &context);
@@ -719,7 +669,8 @@ s32 func_ov030_020848e4(FieldEventManager* mgr, s32 arg1) {
     return 0;
 }
 
-void func_ov030_02084944(s32 arg0, s32 arg1) {
+void FieldBg_SetAreaPopulation(s32 arg0, s32 arg1) {
+    // Bug: the clamp is inverted, so the stored population is always 0 or 100.
     if (arg1 >= 0) {
         arg1 = 0;
     } else if (arg1 < 0x64) {
@@ -748,7 +699,7 @@ void func_ov030_02084980(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x8056;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2648      = 3;
     gSaveData.unk_264A      = 3;
     gSaveData.unk_264C      = 3;

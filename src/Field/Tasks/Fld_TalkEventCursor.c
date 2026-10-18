@@ -1,5 +1,6 @@
+#include "Field/Tasks/Fld_TalkEventCursor.h"
 #include "Engine/EasyTask.h"
-#include "Field/FieldTasks.h"
+#include "Field/Event/EventTables.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
 
@@ -13,14 +14,8 @@ typedef struct {
     /* 0x6 */ s16 posY;
 } Fld_TalkEventCursor_Args;
 
-extern const BinIdentifier data_ov030_020d9944;
-
-SpriteFrameInfo* Fld_TalkEventCursor_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_TalkEventCursor_Init(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventCursor_Update(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventCursor_Render(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventCursor_Destroy(TaskPool* pool, Task* task, void* args);
-s32              Fld_TalkEventCursor_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Fld_TalkEventCursor_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_TalkEventCursor_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle      Tsk_Fld_TalkEventCursor  = {"Tsk_Fld_TalkEventCursor", Fld_TalkEventCursor_RunTask,
                                                          sizeof(Fld_TalkEventCursor)};
@@ -29,7 +24,7 @@ static const SpriteAnimation Fld_TalkEventCursor_Anim = {
     .bits_7_9          = 5,
     .bits_12_13        = 1,
     .frameInfoCallback = Fld_TalkEventCursor_GetFrameInfo,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 7,
     .unk_1C            = 1,
@@ -40,11 +35,11 @@ static const SpriteAnimation Fld_TalkEventCursor_Anim = {
     .animIndex         = 4,
 };
 
-SpriteFrameInfo* Fld_TalkEventCursor_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+static SpriteFrameInfo* Fld_TalkEventCursor_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
     Sprite_FrameInfoCallbackWith(sprite, mode, temp_->sortKey = 0xC);
 }
 
-s32 Fld_TalkEventCursor_Load(Sprite* sprite, Fld_TalkEventCursor_Args* args, s32 index) {
+static s32 Fld_TalkEventCursor_Load(Sprite* sprite, Fld_TalkEventCursor_Args* args, s32 index) {
     SpriteAnimation anim = Fld_TalkEventCursor_Anim;
     Unk_Bitfield    attr;
 
@@ -64,7 +59,7 @@ s32 Fld_TalkEventCursor_Load(Sprite* sprite, Fld_TalkEventCursor_Args* args, s32
     return _Sprite_Load(sprite, &anim);
 }
 
-s32 Fld_TalkEventCursor_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventCursor_Init(TaskPool* pool, Task* task, void* args) {
     Fld_TalkEventCursor* cursor = task->data;
     s16                  i;
 
@@ -75,7 +70,7 @@ s32 Fld_TalkEventCursor_Init(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_TalkEventCursor_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventCursor_Update(TaskPool* pool, Task* task, void* args) {
     Fld_TalkEventCursor* cursor = task->data;
     s16                  i;
 
@@ -85,7 +80,7 @@ s32 Fld_TalkEventCursor_Update(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_TalkEventCursor_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventCursor_Render(TaskPool* pool, Task* task, void* args) {
     Fld_TalkEventCursor* cursor = task->data;
     s16                  i;
 
@@ -95,7 +90,7 @@ s32 Fld_TalkEventCursor_Render(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_TalkEventCursor_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_TalkEventCursor_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_TalkEventCursor* cursor = task->data;
     s16                  i;
 
@@ -105,7 +100,7 @@ s32 Fld_TalkEventCursor_Destroy(TaskPool* pool, Task* task, void* args) {
     return TRUE;
 }
 
-s32 Fld_TalkEventCursor_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_TalkEventCursor_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_TalkEventCursor_Init,
         .update     = Fld_TalkEventCursor_Update,

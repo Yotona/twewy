@@ -1,5 +1,8 @@
+#include "Field/Flash/FO3DRes.h"
 #include "Engine/Core/Memory.h"
-#include "Field/FO3D.h"
+#include "Field/Flash/FO3D.h"
+#include "Field/Flash/FO3DViewer.h"
+#include "Field/Flash/FOAllocator.h"
 
 typedef struct {
     u8  header[9];
@@ -14,7 +17,6 @@ FieldResourceState* gFO3DRes;
 extern void* func_0202bd4c(void* resource);
 extern void* func_0202bd5c(void* resource);
 extern void* func_0202bd9c(void* resource, s32 index);
-extern s32   FO3D_LoadToVram(void* resource);
 
 void* FO3DRes_Alloc(s32 size) {
     void* data = Mem_AllocHeapTail(&gDebugHeap, size);

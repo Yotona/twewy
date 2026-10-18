@@ -1,32 +1,25 @@
-#include "Field/Events.h"
+#include "Field/FieldRegion.h"
+
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Field/Battle/FieldBattleSetup.h"
+#include "Field/Battle/FieldBattleTransition.h"
+#include "Field/Battle/FieldEncounter.h"
+#include "Field/Battle/FieldNoiseQuota.h"
+#include "Field/Event/EventFlags.h"
+#include "Field/Event/EventManager.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Event/Events.h"
+#include "Field/Scene/FieldBg.h"
+#include "Field/Scene/FieldMain.h"
+#include "Field/Scene/FieldSceneRender.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Luck.h"
+#include "Field/Tasks/Fld_Wall.h"
+#include "Player/Inventory.h"
 #include "Player/Stats.h"
 #include "Save.h"
+#include "SndMgr.h"
 #include <nitro/types.h>
-
-extern s32  FieldScan_WasSeen(s32);
-extern void func_ov030_020ae96c(s32);
-extern void func_ov030_020c26bc(s32);
-extern s32  func_ov030_020848a4(s32, s32, s32, s32);
-extern s32  func_ov030_020848e4(FieldEventManager*, s32);
-extern s32  func_ov030_02084978(FieldEventManager*);
-extern s32  func_ov030_020a75c0(FieldEventManager*);
-extern void func_ov030_020824a0(void*);
-extern void func_ov030_02082c04(void*);
-extern void func_ov030_02082bf0(void*);
-extern void func_ov030_02082c68(void*);
-extern void func_ov030_02082534(void*);
-
-extern s32 data_ov030_020d9b6c;
-extern s32 data_ov030_020d9c0c;
-extern s32 data_ov030_020d9b1c;
-extern s32 data_ov030_020d9b44;
-extern s32 data_ov030_020d9acc;
-extern s32 data_ov030_020d9af4;
-extern s32 data_ov030_020d9be4;
-extern s32 data_ov030_020d9b94;
-extern s32 data_ov030_020d9bbc;
-extern s32 data_ov030_020d9d34;
 
 s32 func_ov030_02084a2c(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 1) {
@@ -58,7 +51,7 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, EVENT_SHIKI1_BACK_IN_CROSSING, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 1) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(0x2C) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 1) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(0x2C) == 0)) {
             FldGate_Set(0x2C);
             if (FldGate_Get(39) == 0) {
                 FldGate_Set(39);
@@ -66,7 +59,7 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
                 return 1;
             }
         }
-        if ((func_ov030_020848e4(arg0, 3) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(45) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 3) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(45) == 0)) {
             FldGate_Set(45);
             if (FldGate_Get(39) == 0) {
                 FldGate_Set(39);
@@ -74,7 +67,7 @@ s32 func_ov030_02084a2c(FieldEventManager* arg0) {
                 return 1;
             }
         }
-        if ((func_ov030_020848e4(arg0, 0) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(3);
             FldEvent_BeginScript(arg0, EVENT_SHIKI1_RUN_INTO_WALL, 0);
             return 1;
@@ -306,7 +299,7 @@ void func_ov030_02085480(void) {
         FldGate_Set(GATE_GAME_CLEARED);
     }
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x6A;
@@ -317,7 +310,7 @@ void func_ov030_02085480(void) {
 
 s32 func_ov030_02085508(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 18) {
-        if ((FldGate_Get(0x20) == 0) && (func_ov030_020848a4(0, 0x96, 0x1E, 250) != 0)) {
+        if ((FldGate_Get(0x20) == 0) && (FieldBg_IsPlayerInRect(0, 0x96, 0x1E, 250) != 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x6B, 0);
             return 1;
@@ -355,12 +348,12 @@ s32 func_ov030_02085508(FieldEventManager* arg0) {
             FldGate_Set(41);
             FldEvent_BeginScript(arg0, 0x438, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 7) != 0) && (FldGate_Get(42) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 7) != 0) && (FldGate_Get(42) == 0)) {
             FldGate_Set(42);
             FldEvent_BeginScript(arg0, 0x76, 0);
             return 1;
         } else if ((FldGate_Get(42) != 0) && (FldGate_Get(43) == 0) && (FldGate_Get(5) == 0) &&
-                   (func_ov030_020848a4(0, 0xC8, 0x190, 0x159) != 0) && (FieldScan_WasSeen(-2) != 0))
+                   (FieldBg_IsPlayerInRect(0, 0xC8, 0x190, 0x159) != 0) && (FieldScan_WasSeen(-2) != 0))
         {
             FldGate_Set(43);
             FldEvent_BeginScript(arg0, 0x3CD, 0);
@@ -379,7 +372,7 @@ s32 func_ov030_02085508(FieldEventManager* arg0) {
             FldGate_Set(61);
             FldEvent_BeginScript(arg0, 0x442, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 7) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x2C) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 7) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x2C) == 0)) {
             FldGate_Set(0x2C);
             FldEvent_BeginScript(arg0, 0x78, 0);
             return 1;
@@ -394,7 +387,7 @@ s32 func_ov030_02085508(FieldEventManager* arg0) {
             FldGate_Set(45);
             FldEvent_BeginScript(arg0, 0x79, 0);
             return 1;
-        } else if ((func_ov030_020848a4(0x9B, 0x64, 0x190, 0x12C) != 0) && (FldGate_Get(6) == 0) &&
+        } else if ((FieldBg_IsPlayerInRect(0x9B, 0x64, 0x190, 0x12C) != 0) && (FldGate_Get(6) == 0) &&
                    (FieldScan_WasSeen(-2) != 0))
         {
             FldGate_Set(6);
@@ -496,7 +489,7 @@ s32 func_ov030_02085cf8(FieldEventManager* arg0) {
             break;
         case 0x6C:
             gSaveData.unk_310C = &data_ov030_020d9acc;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             FldEvent_GrantItem(arg0, ITEM_BOOK_ENEMY_ENCOUNTERS);
             break;
@@ -545,7 +538,7 @@ s32 func_ov030_02085cf8(FieldEventManager* arg0) {
         case 0x439:
             FieldNoise_AdvanceQuotaStep();
             gSaveData.unk_310C = &data_ov030_020d9af4;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -606,11 +599,11 @@ s32 func_ov030_02085cf8(FieldEventManager* arg0) {
                 func_ov030_020aec38(2);
             }
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x3CF:
             FldEvent_SetCurrent(0x81);
@@ -642,11 +635,11 @@ s32 func_ov030_02085cf8(FieldEventManager* arg0) {
                 func_ov030_020aec38(2);
             }
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x83:
             FldGate_Set(8);
@@ -748,7 +741,7 @@ void func_ov030_02086700(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x8A;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x39;
     func_ov030_020aec38(1);
     gSaveData.playerStats.activePartner = PARTNER_NONE;
@@ -758,7 +751,7 @@ s32 func_ov030_02086804(s32 arg0) {
     s16 var_r0;
 
     if (gSaveData.fieldArea == 0x13) {
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(0x24) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(0x24) == 0)) {
             if (FldGate_Get(0x44) == 0) {
                 FldGate_Set(0x44);
                 FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x91, 0);
@@ -768,7 +761,7 @@ s32 func_ov030_02086804(s32 arg0) {
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0xAE, 0);
             return 1;
         }
-        if (func_ov030_020848e4(arg0, 0x47) != 0) {
+        if (FieldBg_CheckExit(arg0, 0x47) != 0) {
             if (FldGate_Get(0x3B) == 0) {
                 if (FldGate_Get(0x44) == 0) {
                     FldGate_Set(0x44);
@@ -802,7 +795,7 @@ s32 func_ov030_02086804(s32 arg0) {
             FldGate_Set(9);
             FldEvent_BeginScript(arg0, 0xB1, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(18) != 0) && (FldGate_Get(39) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(18) != 0) && (FldGate_Get(39) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x3DC, 0);
             return 1;
@@ -815,7 +808,7 @@ s32 func_ov030_02086804(s32 arg0) {
             FldGate_Set(0x3C);
             FldEvent_BeginScript(arg0, 0xB7, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(43) != 0) && (FldGate_Get(41) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(43) != 0) && (FldGate_Get(41) == 0)) {
             FldGate_Set(41);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x3DF, 0);
             return 1;
@@ -827,7 +820,7 @@ s32 func_ov030_02086804(s32 arg0) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x90, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x49) != 0) && (FldGate_Get(0x44) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x49) != 0) && (FldGate_Get(0x44) == 0)) {
             FldGate_Set(0x44);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x91, 0);
             return 1;
@@ -872,7 +865,7 @@ s32 func_ov030_02086804(s32 arg0) {
     }
 
     if (gSaveData.fieldArea == 23) {
-        if ((func_ov030_02084860(0x12C, 0x87, 0x96) == 0) && (FldGate_Get(45) == 0)) {
+        if ((FieldBg_IsPlayerNear(0x12C, 0x87, 0x96) == 0) && (FldGate_Get(45) == 0)) {
             FldGate_Set(45);
             FldEvent_BeginScript(arg0, 0x8C, 0);
             return 1;
@@ -889,7 +882,7 @@ s32 func_ov030_02086804(s32 arg0) {
     return 0;
 }
 
-s32 func_ov030_02086f10(s32 arg0) {
+s32 func_ov030_02086f10(FieldEventManager* arg0) {
     switch (gSaveData.unk_24C8[gSaveData.unk_24C4]) {
         case 0x35F9:
             FldEvent_SetCurrent(0x3E4);
@@ -1188,12 +1181,12 @@ s32 func_ov030_020876c8(FieldEventManager* arg0) {
             FldEvent_AdvanceScript(arg0);
             return 1;
         case 0x43A:
-            if ((func_ov030_020848e4(arg0, 0x49) != 0) || (func_ov030_020848e4(arg0, 0x4A) != 0)) {
+            if ((FieldBg_CheckExit(arg0, 0x49) != 0) || (FieldBg_CheckExit(arg0, 0x4A) != 0)) {
                 arg0->exitRequest = 5;
                 DebugOvlDisp_Pop();
                 return 0;
             }
-            if (func_ov030_020848e4(arg0, 0x47) != 0) {
+            if (FieldBg_CheckExit(arg0, 0x47) != 0) {
                 FldGate_Set(0x3B);
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
@@ -1202,7 +1195,7 @@ s32 func_ov030_020876c8(FieldEventManager* arg0) {
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if (func_ov030_020848e4(arg0, 0x48) != 0) {
+            if (FieldBg_CheckExit(arg0, 0x48) != 0) {
                 FldGate_Set(0x24);
                 if (func_ov030_020a75c0(arg0) != 0) {
                     return 1;
@@ -1624,7 +1617,7 @@ void func_ov030_02088a5c(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xC4;
     gSaveData.flashSequence     = 58;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_26B8 = 0;
     gSaveData.unk_2648 = 2;
     gSaveData.unk_2666 = 2;
@@ -1657,21 +1650,20 @@ s32 func_ov030_02088b60(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0xC5, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(0x2C) == 0))
-        {
+        if ((FieldBg_CheckExit(arg0, 0) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(0x2C) == 0)) {
             FldGate_Set(0x2C);
             FldEvent_BeginScript(arg0, 0x3F7, 0);
             return 1;
         }
-        if (func_ov030_020848e4(arg0, 0) == 0) {
+        if (FieldBg_CheckExit(arg0, 0) == 0) {
             FldGate_Clear(0x2C);
         }
-        if ((func_ov030_020848e4(arg0, 0) != 0) && (FldGate_Get(4) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0) != 0) && (FldGate_Get(4) == 0)) {
             FldGate_Set(4);
             FldEvent_BeginScript(arg0, 0xC7, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 56) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(33) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 56) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(33) == 0)) {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0xC9, 0);
             return 1;
@@ -1683,7 +1675,7 @@ s32 func_ov030_02088b60(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 1) {
-        if ((func_ov030_020c1a9c() != 0) && (FldGate_Get(39) == 0)) {
+        if ((Fld_Luck_IsScanEventAvailable() != 0) && (FldGate_Get(39) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, 0xCF, 0);
             return 1;
@@ -1694,7 +1686,7 @@ s32 func_ov030_02088b60(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 11) {
-        if ((func_ov030_020848a4(0xAA, 0xB4, 0xB4, 0x140) != 0) && (FldGate_Get(0x28) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0xAA, 0xB4, 0xB4, 0x140) != 0) && (FldGate_Get(0x28) == 0)) {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0xD0, 0);
             return 1;
@@ -1708,7 +1700,7 @@ s32 func_ov030_02088b60(FieldEventManager* arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 12) && (func_ov030_020848e4(arg0, 15) != 0) && (FldGate_Get(6) == 0)) {
+    if ((gSaveData.fieldArea == 12) && (FieldBg_CheckExit(arg0, 15) != 0) && (FldGate_Get(6) == 0)) {
         FldGate_Set(6);
         FldEvent_BeginScript(arg0, 0xD3, 0);
         return 1;
@@ -2010,7 +2002,7 @@ void func_ov030_02089a40(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(6);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2658          = 4;
     gSaveData.flashSequence     = 0x3B;
     gSaveData.unk_24B4          = 0;
@@ -2060,7 +2052,7 @@ s32 func_ov030_02089b28(s32 arg0) {
             FldEvent_BeginScript(arg0, 0xDC, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x3C) != 0) && (FldGate_Get(33) == 0) && (FldGate_Get(0x46) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3C) != 0) && (FldGate_Get(33) == 0) && (FldGate_Get(0x46) == 0)) {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0xDD, 0);
             return 1;
@@ -2094,7 +2086,7 @@ s32 func_ov030_02089b28(s32 arg0) {
             FldGate_Clear(39);
             FldGate_Clear(0x28);
             FldGate_Clear(41);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
         }
         if ((FldGate_Get(38) != 0) && (FldGate_Get(8) == 0)) {
@@ -2479,7 +2471,7 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             break;
         case 0xDE:
             gSaveData.unk_310C = &data_ov030_020d9b1c;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -2487,7 +2479,7 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             FldGate_Clear(39);
             FldGate_Clear(0x28);
             FldGate_Clear(41);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -2519,11 +2511,11 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             arg0->unk_21D24        = func_ov030_0208a19c;
             arg0->unk_21D28        = 0x5ED4;
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x45B:
         case 0x45C:
@@ -2580,11 +2572,11 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             arg0->unk_21D24        = func_ov030_0208a3f0;
             arg0->unk_21D28        = 0x5F1F;
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x471:
             FldGate_Set(0x40);
@@ -2609,11 +2601,11 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             arg0->unk_21D24        = func_ov030_0208a648;
             arg0->unk_21D28        = 0x5F76;
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x486:
             FldGate_Set(0x41);
@@ -2638,11 +2630,11 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
             arg0->unk_21D24        = func_ov030_0208a8a0;
             arg0->unk_21D28        = 0x5FB1;
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x49B:
             FldGate_Set(0x42);
@@ -2658,7 +2650,7 @@ s32 func_ov030_0208aaf4(FieldEventManager* arg0) {
         case 0xEA:
             gSaveData.unk_310C = &data_ov030_020d9b44;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             if ((FldGate_Get(GATE_GAME_CLEARED) != 0) && (FldGate_Get(1) == 0) && (FldGate_Get(0x40) != 0) &&
                 (FldGate_Get(0x41) != 0) && (FldGate_Get(0x42) != 0))
@@ -2794,7 +2786,7 @@ void func_ov030_0208b87c(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0xF1;
     gSaveData.flashSequence     = 0x3C;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2648 = 4;
     gSaveData.unk_264E = 4;
     gSaveData.unk_2658 = 4;
@@ -2864,17 +2856,15 @@ s32 func_ov030_0208b97c(s32 arg0) {
             FldEvent_BeginScript(arg0, 250, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 0) != 0) || (func_ov030_020848e4(arg0, 1) != 0) ||
-             (func_ov030_020848e4(arg0, 3) != 0)) &&
+        if (((FieldBg_CheckExit(arg0, 0) != 0) || (FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) &&
             (FldGate_Get(15) != 0) && (FldGate_Get(0x24) == 0) && (FldGate_Get(0x11) == 0))
         {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0xFD, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0) == 0) && (func_ov030_020848e4(arg0, 1) == 0) &&
-            (func_ov030_020848e4(arg0, 3) == 0) && (FldGate_Get(15) != 0) && (FldGate_Get(0x24) != 0) &&
-            (FldGate_Get(0x11) == 0))
+        if ((FieldBg_CheckExit(arg0, 0) == 0) && (FieldBg_CheckExit(arg0, 1) == 0) && (FieldBg_CheckExit(arg0, 3) == 0) &&
+            (FldGate_Get(15) != 0) && (FldGate_Get(0x24) != 0) && (FldGate_Get(0x11) == 0))
         {
             FldGate_Clear(0x24);
         }
@@ -2897,16 +2887,15 @@ s32 func_ov030_0208b97c(s32 arg0) {
             FldEvent_BeginScript(arg0, 0x100, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 0) != 0) || (func_ov030_020848e4(arg0, 1) != 0) ||
-             (func_ov030_020848e4(arg0, 3) != 0)) &&
+        if (((FieldBg_CheckExit(arg0, 0) != 0) || (FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) &&
             (FldGate_Get(0x15) != 0) && (FldGate_Get(38) == 0))
         {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x104, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0) == 0) && (func_ov030_020848e4(arg0, 1) == 0) &&
-            (func_ov030_020848e4(arg0, 3) == 0) && (FldGate_Get(0x15) != 0) && (FldGate_Get(38) != 0))
+        if ((FieldBg_CheckExit(arg0, 0) == 0) && (FieldBg_CheckExit(arg0, 1) == 0) && (FieldBg_CheckExit(arg0, 3) == 0) &&
+            (FldGate_Get(0x15) != 0) && (FldGate_Get(38) != 0))
         {
             FldGate_Clear(38);
         }
@@ -2941,14 +2930,14 @@ s32 func_ov030_0208b97c(s32 arg0) {
             FldEvent_BeginScript(arg0, 0x102, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 4) != 0) || (func_ov030_020848e4(arg0, 5) != 0)) && (FldGate_Get(0x15) != 0) &&
+        if (((FieldBg_CheckExit(arg0, 4) != 0) || (FieldBg_CheckExit(arg0, 5) != 0)) && (FldGate_Get(0x15) != 0) &&
             (FldGate_Get(37) == 0))
         {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x103, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 4) == 0) && (func_ov030_020848e4(arg0, 5) == 0) && (FldGate_Get(0x15) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 4) == 0) && (FieldBg_CheckExit(arg0, 5) == 0) && (FldGate_Get(0x15) != 0) &&
             (FldGate_Get(37) != 0))
         {
             FldGate_Clear(37);
@@ -3005,7 +2994,7 @@ s32 func_ov030_0208b97c(s32 arg0) {
         if (((s32)var_r0_4 >= 2) && (FldGate_Get(0x31) != 0) && (FldGate_Get(0x35) == 0)) {
             FldGate_Set(0x35);
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(7);
         }
     }
@@ -3228,7 +3217,7 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             gSaveData.unk_264E = 2;
             gSaveData.unk_2648 = 2;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             func_ov030_020aec38(1);
             gSaveData.playerStats.activePartner = PARTNER_NONE;
@@ -3244,7 +3233,7 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             gSaveData.unk_264E = 4;
             gSaveData.unk_2648 = 4;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activePartner = PARTNER_SHIKI;
@@ -3273,7 +3262,7 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             func_ov030_020aec38(1);
             gSaveData.playerStats.activePartner = PARTNER_NONE;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -3415,17 +3404,17 @@ s32 func_ov030_0208c8a0(FieldEventManager* arg0) {
             arg0->unk_21CF8 = 1;
             break;
         case 0x7AB:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(7) != 0) && (FldGate_Get(0x30) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(7) != 0) && (FldGate_Get(0x30) == 0)) {
                 FldEvent_SetCurrent(0x7AF);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(7) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(7) != 0)) {
                 FldEvent_SetCurrent(0x7AD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(7) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(7) == 0)) {
                 FldEvent_SetCurrent(0x7AE);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -3530,7 +3519,7 @@ void func_ov030_0208d708(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x111;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 61;
     gSaveData.unk_264C      = 4;
     gSaveData.unk_266E      = 4;
@@ -3575,14 +3564,13 @@ s32 func_ov030_0208d80c(FieldEventManager* arg0) {
         DebugOvlDisp_Pop();
         return 0;
     }
-    if ((gSaveData.fieldArea == 5) && (func_ov030_020848e4(arg0, 7) != 0) && (FldGate_Get(33) == 0) && (FldGate_Get(43) == 0))
-    {
+    if ((gSaveData.fieldArea == 5) && (FieldBg_CheckExit(arg0, 7) != 0) && (FldGate_Get(33) == 0) && (FldGate_Get(43) == 0)) {
         FldGate_Set(33);
         FldEvent_BeginScript(arg0, 0x114, 0);
         return 1;
     }
     if (gSaveData.fieldArea == 0x11) {
-        if ((func_ov030_020848a4(0, 0x1EA, 0x190, 0x1F4) != 0) && (FldGate_Get(6) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0, 0x1EA, 0x190, 0x1F4) != 0) && (FldGate_Get(6) == 0)) {
             FldEvent_BeginScript(arg0, 0x117, 0);
             return 1;
         } else if ((FldGate_Get(0x28) != 0) && (FldGate_Get(39) == 0)) {
@@ -3597,7 +3585,7 @@ s32 func_ov030_0208d80c(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x11A, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x14) != 0) && (FldGate_Get(0x23) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x14) != 0) && (FldGate_Get(0x23) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -3925,7 +3913,7 @@ void func_ov030_0208e6e4(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_264C = 4;
     func_ov030_020aec38(1);
     gSaveData.playerStats.activePartner = PARTNER_NONE;
@@ -3937,7 +3925,7 @@ void func_ov030_0208e6e4(void) {
 
 s32 func_ov030_0208e7e4(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 1) {
-        if ((func_ov030_020848e4(arg0, 2) != 0) && (FldGate_Get(0x20) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 2) != 0) && (FldGate_Get(0x20) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x123, 0);
             return 1;
@@ -3971,17 +3959,17 @@ s32 func_ov030_0208e7e4(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x126, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 2) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(0x24) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 2) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(0x24) != 0) &&
             (FldGate_Get(0x23) == 0) && (FldGate_Get(0x22) == 0))
         {
             FldGate_Set(0x22);
             FldEvent_BeginScript(arg0, 0x128, 0);
             return 1;
         }
-        if (func_ov030_020848e4(arg0, 2) == 0) {
+        if (FieldBg_CheckExit(arg0, 2) == 0) {
             FldGate_Clear(0x22);
         }
-        if (func_ov030_02084860(0xEB, 0xAF, 0x64) != 0) {
+        if (FieldBg_IsPlayerNear(0xEB, 0xAF, 0x64) != 0) {
             FldGate_Set(0x24);
         }
         if ((FldGate_Get(0x23) == 0) && (FieldScan_WasSeen(0x3767) != 0)) {
@@ -4074,7 +4062,7 @@ s32 func_ov030_0208ec3c(FieldEventManager* arg0) {
             FldGate_Set(2);
             func_ov030_020aec38(9);
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -4197,7 +4185,7 @@ void func_ov030_0208f160(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x136;
     gSaveData.flashSequence     = 0x3F;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_264A = 2;
     gSaveData.unk_264E = 2;
     gSaveData.unk_2658 = 4;
@@ -4225,14 +4213,14 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x137, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) && (FldGate_Get(33) == 0) &&
+        if (((FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) && (FldGate_Get(33) == 0) &&
             (FldGate_Get(0x20) != 0) && (FldGate_Get(0x22) == 0))
         {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, 0x139, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 1) == 0) && (func_ov030_020848e4(arg0, 3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 1) == 0) && (FieldBg_CheckExit(arg0, 3) == 0)) {
             FldGate_Clear(33);
         }
         if ((FldGate_Get(0x22) == 0) && (FieldScan_WasSeen(0x3777) != 0)) {
@@ -4252,15 +4240,14 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 4) && (func_ov030_020848a4(0, 0xC8, 250, 0xF0) != 0) && (FldGate_Get(45) != 0) &&
+    if ((gSaveData.fieldArea == 4) && (FieldBg_IsPlayerInRect(0, 0xC8, 250, 0xF0) != 0) && (FldGate_Get(45) != 0) &&
         (FldGate_Get(8) != 0) && (FldGate_Get(38) == 0))
     {
         FldGate_Set(38);
         FldEvent_BeginScript(arg0, 0x143, 0);
         return 1;
     }
-    if ((gSaveData.fieldArea == 0) && (func_ov030_020848e4(arg0, 0x3C) != 0) && (FldGate_Get(8) != 0) &&
-        (FldGate_Get(39) == 0))
+    if ((gSaveData.fieldArea == 0) && (FieldBg_CheckExit(arg0, 0x3C) != 0) && (FldGate_Get(8) != 0) && (FldGate_Get(39) == 0))
     {
         FldGate_Set(39);
         FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x144, 0);
@@ -4275,14 +4262,14 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
         if ((FldGate_Get(10) != 0) && (FldGate_Get(11) != 0) && (FldGate_Get(46) == 0)) {
             FldGate_Set(46);
         }
-        if ((func_ov030_020848e4(arg0, 0xE) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x24) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0xE) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x24) == 0)) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x140, 0);
             return 1;
         }
     }
     if (gSaveData.fieldArea == 12) {
-        if ((func_ov030_020848e4(arg0, 13) != 0) && (FldGate_Get(0x24) != 0) && (FldGate_Get(37) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 13) != 0) && (FldGate_Get(0x24) != 0) && (FldGate_Get(37) == 0)) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x141, 0);
             return 1;
@@ -4294,12 +4281,12 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 8) {
-        if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(0x28) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3E) != 0) && (FldGate_Get(0x28) == 0)) {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0x145, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(0x28) != 0) && (FldGate_Get(41) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3E) != 0) && (FldGate_Get(0x28) != 0) && (FldGate_Get(41) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -4312,7 +4299,7 @@ s32 func_ov030_0208f288(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, EVENT_JOSHUA2_TIN_PIN, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 11) != 0) || (func_ov030_020848e4(arg0, 13) != 0)) && (FldGate_Get(43) != 0) &&
+        if (((FieldBg_CheckExit(arg0, 11) != 0) || (FieldBg_CheckExit(arg0, 13) != 0)) && (FldGate_Get(43) != 0) &&
             (FldGate_Get(0x2C) == 0))
         {
             FldGate_Set(0x2C);
@@ -4426,7 +4413,7 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
             gSaveData.playerStats.activePartner = PARTNER_JOSHUA;
             func_ov030_020aec38(9);
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -4450,7 +4437,7 @@ s32 func_ov030_0208faa4(FieldEventManager* arg0) {
         case 0x142:
             gSaveData.unk_2654 = 4;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             break;
         case 0x144:
@@ -4666,7 +4653,7 @@ void func_ov030_0209041c(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x15A;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_2648      = 0;
     gSaveData.unk_264C      = 0;
     gSaveData.unk_2652      = 0;
@@ -4729,7 +4716,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 4) {
-        if ((func_ov030_020848e4(arg0, 6) != 0) && (FldGate_Get(0x20) == 0) && (FldGate_Get(0x22) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 6) != 0) && (FldGate_Get(0x20) == 0) && (FldGate_Get(0x22) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x15B, 0);
             return 1;
@@ -4746,7 +4733,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
         return 1;
     }
     if (gSaveData.fieldArea == 6) {
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(9) != 0) && (FldGate_Get(12) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(9) != 0) && (FldGate_Get(12) == 0) &&
             (FldGate_Get(0x49) == 0))
         {
             arg0->unk_21AD0            = 1;
@@ -4756,7 +4743,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x49) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x49) != 0) &&
             (FldGate_Get(0x4B) == 0))
         {
             arg0->unk_21AD0            = 1;
@@ -4766,7 +4753,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x4B) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(12) == 0) && (FldGate_Get(0x4B) != 0)) {
             FldGate_Clear(0x4B);
         }
     }
@@ -4797,7 +4784,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 13) {
-        if ((func_ov030_020848e4(arg0, 15) != 0) && (FldGate_Get(42) != 0) && (FldGate_Get(43) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 15) != 0) && (FldGate_Get(42) != 0) && (FldGate_Get(43) == 0)) {
             FldGate_Set(43);
             FldEvent_BeginScript(arg0, 0x166, 0);
             return 1;
@@ -4815,20 +4802,20 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x174, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(47) != 0) && (FldGate_Get(0x30) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(47) != 0) && (FldGate_Get(0x30) == 0)) {
             FldGate_Set(0x30);
             FldGate_Set(0x31);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x175, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(11) != 0) && (FldGate_Get(0x31) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(11) != 0) && (FldGate_Get(0x31) == 0) &&
             (FldGate_Get(0x35) == 0))
         {
             FldGate_Set(0x31);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x177, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) == 0) && (FldGate_Get(11) != 0) && (FldGate_Get(0x35) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) == 0) && (FldGate_Get(11) != 0) && (FldGate_Get(0x35) == 0)) {
             FldGate_Clear(0x31);
         }
         if ((FldGate_Get(0x30) != 0) && (FldGate_Get(11) == 0)) {
@@ -4846,12 +4833,12 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x178, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(0x33) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(0x33) == 0)) {
             FldGate_Set(0x33);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x179, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(0x33) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(0x33) == 0)) {
             FldGate_Set(0x33);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x179, 0);
             return 1;
@@ -4861,7 +4848,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x17C, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(0x35) != 0) && (FldGate_Get(12) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(0x35) != 0) && (FldGate_Get(12) == 0)) {
             FldGate_Set(12);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x17D, 0);
             return 1;
@@ -4871,22 +4858,22 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x17E, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) == 0) && (FldGate_Get(13) != 0) && (FldGate_Get(56) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) == 0) && (FldGate_Get(13) != 0) && (FldGate_Get(56) == 0)) {
             FldGate_Set(0x37);
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(13) != 0) && (FldGate_Get(0x37) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(13) != 0) && (FldGate_Get(0x37) != 0) &&
             (FldGate_Get(56) == 0))
         {
             FldGate_Set(56);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x17F, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(56) != 0) && (FldGate_Get(0x31) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(56) != 0) && (FldGate_Get(0x31) == 0)) {
             FldGate_Set(0x31);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x177, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) == 0) && (FldGate_Get(56) != 0) && (FldGate_Get(0x31) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) == 0) && (FldGate_Get(56) != 0) && (FldGate_Get(0x31) != 0)) {
             FldGate_Clear(0x31);
         }
         if ((FldGate_Get(0x10) != 0) && (FldGate_Get(61) == 0)) {
@@ -4894,7 +4881,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x18A, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(0x11) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(0x11) != 0)) {
             if ((FldGate_Get(0x42) != 0) && (FldGate_Get(0x3E) == 0)) {
                 FldGate_Set(0x3E);
                 FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x18B, 0);
@@ -4943,7 +4930,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x15D, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(0x23) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(0x23) == 0)) {
             FldGate_Set(0x23);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x15E, 0);
             return 1;
@@ -4953,7 +4940,7 @@ s32 func_ov030_02090520(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x15F, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(9) != 0) && (FldGate_Get(0x2C) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(9) != 0) && (FldGate_Get(0x2C) == 0) &&
             (FldGate_Get(45) == 0))
         {
             FldGate_Set(0x2C);
@@ -5612,7 +5599,7 @@ void func_ov030_02092c4c(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x197;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_264E      = 0;
     gSaveData.unk_2656      = 0;
     gSaveData.unk_2654      = 0;
@@ -5641,8 +5628,8 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x1A7, 0);
             return 1;
         }
-        if (((func_ov030_020848e4(arg0, 0) != 0) || (func_ov030_020848e4(arg0, 1) != 0) ||
-             (func_ov030_020848e4(arg0, 2) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) &&
+        if (((FieldBg_CheckExit(arg0, 0) != 0) || (FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 2) != 0) ||
+             (FieldBg_CheckExit(arg0, 3) != 0)) &&
             (FldGate_Get(12) != 0) && (FldGate_Get(5) == 0))
         {
             FldGate_Set(5);
@@ -5669,34 +5656,33 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x19A, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 10) != 0) && (FldGate_Get(9) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 10) != 0) && (FldGate_Get(9) == 0)) {
             FldGate_Set(9);
             FldEvent_BeginScript(arg0, 0x19B, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 10) != 0) && (FldGate_Get(10) != 0) && (FldGate_Get(0x28) == 0) &&
-            (FldGate_Get(15) == 0))
+        if ((FieldBg_CheckExit(arg0, 10) != 0) && (FldGate_Get(10) != 0) && (FldGate_Get(0x28) == 0) && (FldGate_Get(15) == 0))
         {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0x1A0, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 10) == 0) && (FldGate_Get(10) != 0) && (FldGate_Get(0x28) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 10) == 0) && (FldGate_Get(10) != 0) && (FldGate_Get(0x28) != 0)) {
             FldGate_Clear(0x28);
         }
-        if (((func_ov030_020848e4(arg0, 8) != 0) || (func_ov030_020848e4(arg0, 9) != 0)) && (FldGate_Get(10) != 0) &&
+        if (((FieldBg_CheckExit(arg0, 8) != 0) || (FieldBg_CheckExit(arg0, 9) != 0)) && (FldGate_Get(10) != 0) &&
             (FldGate_Get(41) == 0) && (FldGate_Get(11) == 0))
         {
             FldGate_Set(41);
             FldEvent_BeginScript(arg0, 0x1A1, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 8) == 0) && (func_ov030_020848e4(arg0, 9) == 0) && (FldGate_Get(10) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 8) == 0) && (FieldBg_CheckExit(arg0, 9) == 0) && (FldGate_Get(10) != 0) &&
             (FldGate_Get(41) != 0))
         {
             FldGate_Clear(41);
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x35) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x35) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -5704,7 +5690,7 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x35) != 0) && (FldGate_Get(0x37) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x35) != 0) && (FldGate_Get(0x37) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -5712,7 +5698,7 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x37) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(0x37) != 0)) {
             FldGate_Clear(0x37);
         }
     }
@@ -5744,17 +5730,17 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x1D3, 0);
             return 1;
         }
-        if ((func_ov030_020848a4(0x96, 0x15E, 0x190, 0x186) != 0) && (FldGate_Get(37) != 0) && (FldGate_Get(6) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0x96, 0x15E, 0x190, 0x186) != 0) && (FldGate_Get(37) != 0) && (FldGate_Get(6) == 0)) {
             FldGate_Set(6);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x1D4, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 12) != 0) && (FldGate_Get(7) != 0) && (FldGate_Get(38) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 12) != 0) && (FldGate_Get(7) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x1D6, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 12) == 0) && (FldGate_Get(7) != 0) && (FldGate_Get(38) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 12) == 0) && (FldGate_Get(7) != 0) && (FldGate_Get(38) != 0)) {
             FldGate_Clear(38);
         }
         if ((FieldScan_WasSeen(0x3797) != 0) && (FldGate_Get(8) == 0)) {
@@ -5778,7 +5764,7 @@ s32 func_ov030_02092d50(FieldEventManager* arg0) {
         FldEvent_BeginScript(arg0, 0x1CC, 0);
         return 1;
     }
-    if ((gSaveData.fieldArea == 0x10) && (func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(0xE) != 0) &&
+    if ((gSaveData.fieldArea == 0x10) && (FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(0xE) != 0) &&
         (FldGate_Get(0x33) == 0))
     {
         FldGate_Set(0x33);
@@ -6185,7 +6171,7 @@ s32 func_ov030_02093db8(FieldEventManager* arg0) {
             func_ov030_020aec1c(9);
             gSaveData.unk_2660 = 2;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -6366,7 +6352,7 @@ void func_ov030_02094b08(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x1E2;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_2676      = 0;
     gSaveData.unk_2670      = 0;
     gSaveData.flashSequence = 0x42;
@@ -6396,7 +6382,7 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 1) {
-        if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) && (FldGate_Get(2) == 0)) {
+        if (((FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) && (FldGate_Get(2) == 0)) {
             FldGate_Set(2);
             FldEvent_BeginScript(arg0, 0x1E4, 0);
             return 1;
@@ -6407,13 +6393,13 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
         }
     }
 
-    if ((gSaveData.fieldArea == 3) && (func_ov030_020848e4(arg0, 56) != 0) && (FldGate_Get(0x34) == 0)) {
+    if ((gSaveData.fieldArea == 3) && (FieldBg_CheckExit(arg0, 56) != 0) && (FldGate_Get(0x34) == 0)) {
         FldGate_Set(0x34);
         FldEvent_BeginScript(arg0, 0x4C, 0);
         return 1;
     }
     if (gSaveData.fieldArea == 6) {
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -6421,7 +6407,7 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) != 0) && (FldGate_Get(0x43) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x3F) != 0) && (FldGate_Get(0x43) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -6429,12 +6415,11 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x43) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(0x43) != 0)) {
             FldGate_Clear(0x43);
         }
     }
-    if ((gSaveData.fieldArea == 12) && (func_ov030_020848e4(arg0, 15) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(33) == 0))
-    {
+    if ((gSaveData.fieldArea == 12) && (FieldBg_CheckExit(arg0, 15) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(33) == 0)) {
         FldGate_Set(33);
         FldEvent_BeginScript(arg0, 0x1E7, 0);
         return 1;
@@ -6463,7 +6448,7 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
         if ((var_r0 >= 2) && (FldGate_Get(0x32) != 0) && (FldGate_Get(0x33) == 0)) {
             FldGate_Set(0x33);
         }
-        if ((func_ov030_020848e4(arg0, 18) != 0) && (FldGate_Get(8) != 0) && (FldGate_Get(0x20) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 18) != 0) && (FldGate_Get(8) != 0) && (FldGate_Get(0x20) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x1E6, 0);
             return 1;
@@ -6471,7 +6456,7 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
     }
 
     if (gSaveData.fieldArea == 0x10) {
-        if ((func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(0x22) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(0x22) == 0)) {
             FldGate_Set(0x22);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x1E8, 0);
             return 1;
@@ -6482,11 +6467,11 @@ s32 func_ov030_02094bfc(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 18) {
-        if ((func_ov030_020848e4(arg0, 0x14) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(0x28) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x14) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(0x28) == 0)) {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0x1EE, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x13) != 0) && (FldGate_Get(0x28) != 0) && (FldGate_Get(41) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x13) != 0) && (FldGate_Get(0x28) != 0) && (FldGate_Get(41) == 0)) {
             FldGate_Set(41);
             FldEvent_BeginScript(arg0, 0x1EF, 0);
             return 1;
@@ -7062,7 +7047,7 @@ void func_ov030_02096790(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x200;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_264A      = 4;
     gSaveData.unk_2654      = 4;
     gSaveData.unk_2658      = 4;
@@ -7077,7 +7062,7 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             FldGate_Set(56);
             FldEvent_BeginScript(arg0, 0x448, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 1) != 0) && (FldGate_Get(33) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 1) != 0) && (FldGate_Get(33) == 0)) {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, 0x201, 0);
             return 1;
@@ -7100,7 +7085,7 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x207, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 8) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(38) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 8) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x208, 0);
             return 1;
@@ -7118,12 +7103,12 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x20C, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 10) != 0) && (FldGate_Get(41) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 10) != 0) && (FldGate_Get(41) == 0)) {
             FldGate_Set(41);
             FldEvent_BeginScript(arg0, 0x20D, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) == 0) && (FldGate_Get(46) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) == 0) && (FldGate_Get(46) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -7131,7 +7116,7 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) != 0) && (FldGate_Get(45) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(0x2C) != 0) && (FldGate_Get(45) == 0) &&
             (FldGate_Get(46) == 0))
         {
             arg0->unk_21AD0            = 1;
@@ -7141,10 +7126,10 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(45) != 0) && (FldGate_Get(46) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(45) != 0) && (FldGate_Get(46) == 0)) {
             FldGate_Clear(45);
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -7152,7 +7137,7 @@ s32 func_ov030_02096888(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(46) != 0) && (FldGate_Get(47) != 0)) {
             FldGate_Clear(47);
         }
     }
@@ -7505,7 +7490,7 @@ void func_ov030_020979d0(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x227;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2648      = 4;
     gSaveData.unk_2650      = 4;
     gSaveData.unk_2652      = 4;
@@ -7518,16 +7503,15 @@ void func_ov030_020979d0(void) {
 
 s32 func_ov030_02097acc(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 1) {
-        if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 2) != 0) ||
-             (func_ov030_020848e4(arg0, 3) != 0)) &&
+        if (((FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 2) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) &&
             (FldGate_Get(0x20) == 0))
         {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x228, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 1) == 0) && (func_ov030_020848e4(arg0, 2) == 0) &&
-            (func_ov030_020848e4(arg0, 3) == 0) && (FldGate_Get(0x20) != 0))
+        if ((FieldBg_CheckExit(arg0, 1) == 0) && (FieldBg_CheckExit(arg0, 2) == 0) && (FieldBg_CheckExit(arg0, 3) == 0) &&
+            (FldGate_Get(0x20) != 0))
         {
             FldGate_Clear(0x20);
         }
@@ -7551,11 +7535,11 @@ s32 func_ov030_02097acc(FieldEventManager* arg0) {
             FldGate_Set(46);
             FldEvent_BeginScript(arg0, 554, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x19) != 0) && (FldGate_Get(0x31) == 0) && (FldGate_Get(47) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x19) != 0) && (FldGate_Get(0x31) == 0) && (FldGate_Get(47) == 0)) {
             FldGate_Set(47);
             FldEvent_BeginScript(arg0, 555, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x19) == 0) && (FldGate_Get(0x31) != 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x19) == 0) && (FldGate_Get(0x31) != 0)) {
             FldGate_Clear(0x31);
         }
     }
@@ -7573,12 +7557,12 @@ s32 func_ov030_02097acc(FieldEventManager* arg0) {
         }
     }
     if (gSaveData.fieldArea == 0x19) {
-        if ((func_ov030_020848e4(arg0, 0x1C) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(0x30) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x1C) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(0x30) == 0)) {
             FldGate_Set(0x30);
             FldEvent_BeginScript(arg0, 0x231, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x1C) != 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x1C) != 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -7586,7 +7570,7 @@ s32 func_ov030_02097acc(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x1C) == 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x1C) == 0) && (FldGate_Get(0x30) != 0) && (FldGate_Get(0x32) != 0)) {
             FldGate_Clear(0x32);
         }
     }
@@ -7698,7 +7682,7 @@ s32 func_ov030_02097f4c(FieldEventManager* arg0) {
             if (FldGate_Get(3) == 0) {
                 FldGate_Set(3);
                 gSaveData.unk_310C = &data_ov030_020d9c0c;
-                func_ov030_020c1960();
+                Fld_Luck_GenerateSymbols();
                 func_ov030_020acfc4(arg0);
             }
             break;
@@ -7722,7 +7706,7 @@ s32 func_ov030_02097f4c(FieldEventManager* arg0) {
             if (FldGate_Get(5) == 0) {
                 FldGate_Set(5);
                 gSaveData.unk_310C = &data_ov030_020d9b6c;
-                func_ov030_020c1960();
+                Fld_Luck_GenerateSymbols();
                 func_ov030_020acfc4(arg0);
             }
             break;
@@ -7780,7 +7764,7 @@ void func_ov030_02098500(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x23B;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_264C = 4;
     gSaveData.unk_2656 = 4;
     gSaveData.unk_266E = 4;
@@ -7790,7 +7774,7 @@ void func_ov030_02098500(void) {
 }
 
 s32 func_ov030_02098604(FieldEventManager* arg0) {
-    if ((gSaveData.fieldArea == 1) && (func_ov030_020848e4(arg0, 2) != 0) && (FldGate_Get(0x20) == 0)) {
+    if ((gSaveData.fieldArea == 1) && (FieldBg_CheckExit(arg0, 2) != 0) && (FldGate_Get(0x20) == 0)) {
         FldGate_Set(0x20);
         FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x23C, 0);
         return 1;
@@ -7819,14 +7803,14 @@ s32 func_ov030_02098604(FieldEventManager* arg0) {
             FldGate_Set(42);
             FldEvent_BeginScript(arg0, 0x449, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 7) != 0) && (FldGate_Get(38) == 0) && (FldGate_Get(0x24) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 7) != 0) && (FldGate_Get(38) == 0) && (FldGate_Get(0x24) == 0)) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 580, 0);
             return 1;
-        } else if (func_ov030_020848e4(arg0, 7) == 0) {
+        } else if (FieldBg_CheckExit(arg0, 7) == 0) {
             FldGate_Clear(0x24);
         }
-        if ((func_ov030_020848e4(arg0, 0x13) != 0) && (FldGate_Get(37) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x13) != 0) && (FldGate_Get(37) == 0)) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 581, 0);
             return 1;
@@ -7834,11 +7818,11 @@ s32 func_ov030_02098604(FieldEventManager* arg0) {
     }
 
     if (gSaveData.fieldArea == 18) {
-        if ((func_ov030_020848e4(arg0, 0x14) != 0) && (FldGate_Get(38) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x14) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 582, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x13) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(39) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x13) != 0) && (FldGate_Get(38) != 0) && (FldGate_Get(39) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x248, 0);
             return 1;
@@ -7915,7 +7899,7 @@ s32 func_ov030_02098a30(FieldEventManager* arg0) {
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activePartner = PARTNER_BEAT;
             FieldNoise_AdvanceQuotaStep();
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             FieldBattle_SetupScripted(0x20);
             return 1;
@@ -8062,7 +8046,7 @@ void func_ov030_02099010(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x255;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2648      = 4;
     gSaveData.unk_264C      = 4;
     gSaveData.unk_2656      = 4;
@@ -8075,25 +8059,25 @@ void func_ov030_02099010(void) {
 
 s32 func_ov030_0209910c(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 1) {
-        if (((func_ov030_020848e4(arg0, 1) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) && (FldGate_Get(0x20) == 0) &&
+        if (((FieldBg_CheckExit(arg0, 1) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) && (FldGate_Get(0x20) == 0) &&
             (FldGate_Get(33) == 0))
         {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x257, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 1) == 0) && (func_ov030_020848e4(arg0, 3) == 0) && (FldGate_Get(0x20) != 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 1) == 0) && (FieldBg_CheckExit(arg0, 3) == 0) && (FldGate_Get(0x20) != 0) &&
                    (FldGate_Get(33) == 0))
         {
             FldGate_Clear(0x20);
         }
-        if ((func_ov030_020848e4(arg0, 0) != 0) && (FldGate_Get(0x22) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0) != 0) && (FldGate_Get(0x22) == 0)) {
             FldGate_Set(0x22);
             FldEvent_BeginScript(arg0, 0x259, 0);
             return 1;
         }
     }
 
-    if ((gSaveData.fieldArea == 3) && (func_ov030_020848e4(arg0, 4) != 0) && (FldGate_Get(33) == 0)) {
+    if ((gSaveData.fieldArea == 3) && (FieldBg_CheckExit(arg0, 4) != 0) && (FldGate_Get(33) == 0)) {
         FldGate_Set(33);
         FldEvent_BeginScript(arg0, 0x258, 0);
         return 1;
@@ -8107,11 +8091,11 @@ s32 func_ov030_0209910c(FieldEventManager* arg0) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0x25B, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x47) != 0) && (FldGate_Get(GATE_GAME_CLEARED) != 0) && (FldGate_Get(1) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x47) != 0) && (FldGate_Get(GATE_GAME_CLEARED) != 0) && (FldGate_Get(1) == 0)) {
             FldGate_Set(1);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x266, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x16) != 0) && (FldGate_Get(37) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x16) != 0) && (FldGate_Get(37) == 0)) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 605, 0);
             return 1;
@@ -8122,7 +8106,7 @@ s32 func_ov030_0209910c(FieldEventManager* arg0) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x25E, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x19) != 0) && (FldGate_Get(39) == 0) && (FldGate_Get(2) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x19) != 0) && (FldGate_Get(39) == 0) && (FldGate_Get(2) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, 0x25F, 0);
             return 1;
@@ -8262,7 +8246,7 @@ void func_ov030_02099858(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x26A;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_2648      = 2;
     gSaveData.unk_264A      = 2;
     gSaveData.unk_264C      = 2;
@@ -8283,24 +8267,24 @@ void func_ov030_02099858(void) {
 
 s32 func_ov030_02099990(FieldEventManager* arg0) {
     if (gSaveData.fieldArea == 1) {
-        if ((func_ov030_02084860(0x157, 0xD6, 0x32) == 0) && (FldGate_Get(0x20) == 0)) {
+        if ((FieldBg_IsPlayerNear(0x157, 0xD6, 0x32) == 0) && (FldGate_Get(0x20) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, 0x26B, 0);
             return 1;
-        } else if (((func_ov030_020848e4(arg0, 0) != 0) || (func_ov030_020848e4(arg0, 1) != 0) ||
-                    (func_ov030_020848e4(arg0, 2) != 0) || (func_ov030_020848e4(arg0, 3) != 0)) &&
+        } else if (((FieldBg_CheckExit(arg0, 0) != 0) || (FieldBg_CheckExit(arg0, 1) != 0) ||
+                    (FieldBg_CheckExit(arg0, 2) != 0) || (FieldBg_CheckExit(arg0, 3) != 0)) &&
                    (FldGate_Get(33) == 0) && (FldGate_Get(3) == 0))
         {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, 0x26C, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0) == 0) && (func_ov030_020848e4(arg0, 1) == 0) &&
-                   (func_ov030_020848e4(arg0, 2) == 0) && (func_ov030_020848e4(arg0, 3) == 0) && (FldGate_Get(33) != 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 0) == 0) && (FieldBg_CheckExit(arg0, 1) == 0) &&
+                   (FieldBg_CheckExit(arg0, 2) == 0) && (FieldBg_CheckExit(arg0, 3) == 0) && (FldGate_Get(33) != 0) &&
                    (FldGate_Get(3) == 0))
         {
             FldGate_Clear(33);
         }
-        if ((func_ov030_020848e4(arg0, 3) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x22) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 3) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x22) == 0)) {
             FldGate_Set(0x22);
             FldEvent_BeginScript(arg0, 0x26D, 0);
             return 1;
@@ -8337,7 +8321,7 @@ s32 func_ov030_02099990(FieldEventManager* arg0) {
             FldGate_Set(0x42);
             FldEvent_BeginScript(arg0, 0x44A, 0);
             return 1;
-        } else if (((func_ov030_020848e4(arg0, 8) != 0) || (func_ov030_020848e4(arg0, 9) != 0)) && (FldGate_Get(0x28) != 0) &&
+        } else if (((FieldBg_CheckExit(arg0, 8) != 0) || (FieldBg_CheckExit(arg0, 9) != 0)) && (FldGate_Get(0x28) != 0) &&
                    (FldGate_Get(41) == 0))
         {
             FldGate_Set(41);
@@ -8348,7 +8332,7 @@ s32 func_ov030_02099990(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x281, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(61) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(61) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -8356,7 +8340,7 @@ s32 func_ov030_02099990(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) != 0) && (FldGate_Get(61) != 0) && (FldGate_Get(0x3F) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) != 0) && (FldGate_Get(61) != 0) && (FldGate_Get(0x3F) == 0)) {
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
             arg0->unk_21AF8.destArea   = 37;
@@ -8364,7 +8348,7 @@ s32 func_ov030_02099990(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3B) == 0) && (FldGate_Get(0x3F) != 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3B) == 0) && (FldGate_Get(0x3F) != 0)) {
             FldGate_Clear(0x3F);
         }
     }
@@ -8601,11 +8585,11 @@ s32 func_ov030_0209a564(FieldEventManager* arg0) {
             arg0->unk_21D24        = func_ov030_02099f8c;
             arg0->unk_21D28        = 0x5FEA;
             arg0->touchEventResult = 0;
-            DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-            DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+            DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
             return 1;
         case 0x4B1:
             if (func_ov030_020a75c0(arg0) != 0) {
@@ -8828,28 +8812,28 @@ void func_ov030_0209af50(void) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x28C;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x48;
-    func_ov030_02084944(0xE, 0);
-    func_ov030_02084944(15, 0);
+    FieldBg_SetAreaPopulation(0xE, 0);
+    FieldBg_SetAreaPopulation(15, 0);
     func_ov030_020aec38(1);
     gSaveData.playerStats.activePartner = PARTNER_NONE;
 }
 
 s32 func_ov030_0209b058(s32 arg0) {
     if (gSaveData.fieldArea == 15) {
-        if ((func_ov030_020848e4(arg0, 0x11) != 0) && (FldGate_Get(0x24) == 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x11) != 0) && (FldGate_Get(0x24) == 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0x28E, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x11) == 0) && (FldGate_Get(0x24) != 0) && (FldGate_Get(3) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x11) == 0) && (FldGate_Get(0x24) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Clear(0x24);
         }
-        if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x10) != 0) && (FldGate_Get(37) == 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x28F, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x10) == 0) && (FldGate_Get(37) != 0) && (FldGate_Get(3) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x10) == 0) && (FldGate_Get(37) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Clear(37);
         }
         if ((FldGate_Get(3) != 0) && (FldGate_Get(0x45) == 0)) {
@@ -8857,37 +8841,35 @@ s32 func_ov030_0209b058(s32 arg0) {
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activePartner = PARTNER_BEAT;
         }
-        if ((func_ov030_020848e4(arg0, 0x11) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(38) == 0) && (FldGate_Get(4) == 0))
-        {
+        if ((FieldBg_CheckExit(arg0, 0x11) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(38) == 0) && (FldGate_Get(4) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x291, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x11) == 0) && (FldGate_Get(3) != 0) && (FldGate_Get(38) != 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 0x11) == 0) && (FldGate_Get(3) != 0) && (FldGate_Get(38) != 0) &&
                    (FldGate_Get(4) == 0))
         {
             FldGate_Clear(38);
         }
-        if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(4) == 0) && (FldGate_Get(41) == 0))
-        {
+        if ((FieldBg_CheckExit(arg0, 0x10) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(4) == 0) && (FldGate_Get(41) == 0)) {
             FldGate_Set(4);
             FldEvent_BeginScript(arg0, 0x292, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x11) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(39) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x11) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(39) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, 0x29C, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) == 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 0x10) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) == 0) &&
                    (FldGate_Get(41) == 0))
         {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0x29D, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x10) == 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) != 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 0x10) == 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) != 0) &&
                    (FldGate_Get(41) == 0))
         {
             FldGate_Clear(0x28);
         }
-        if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(8) != 0) && (FldGate_Get(9) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x10) != 0) && (FldGate_Get(8) != 0) && (FldGate_Get(9) == 0)) {
             FldGate_Set(9);
             FldEvent_BeginScript(arg0, 0x2B3, 0);
             return 1;
@@ -8896,7 +8878,7 @@ s32 func_ov030_0209b058(s32 arg0) {
             func_ov030_020aec1c(1);
             gSaveData.playerStats.activePartner = PARTNER_BEAT;
         }
-        if ((func_ov030_020848e4(arg0, 0x10) != 0) && (FldGate_Get(2) != 0) && (FldGate_Get(42) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x10) != 0) && (FldGate_Get(2) != 0) && (FldGate_Get(42) == 0)) {
             FldGate_Set(42);
             FldEvent_BeginScript(arg0, 0x2B5, 0);
             return 1;
@@ -8912,14 +8894,14 @@ s32 func_ov030_0209b058(s32 arg0) {
             FldGate_Set(0x23);
             FldEvent_BeginScript(arg0, 0x2B6, 0);
             return 1;
-        } else if (((func_ov030_020848e4(arg0, 15) != 0) || (func_ov030_020848e4(arg0, 0x10) != 0)) &&
-                   (FldGate_Get(0x23) == 0) && (FldGate_Get(33) == 0))
+        } else if (((FieldBg_CheckExit(arg0, 15) != 0) || (FieldBg_CheckExit(arg0, 0x10) != 0)) && (FldGate_Get(0x23) == 0) &&
+                   (FldGate_Get(33) == 0))
         {
             FldGate_Set(0x23);
             FldEvent_BeginScript(arg0, 0x2B7, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 15) == 0) && (func_ov030_020848e4(arg0, 0x10) == 0) &&
-                   (FldGate_Get(0x23) != 0) && (FldGate_Get(33) == 0))
+        } else if ((FieldBg_CheckExit(arg0, 15) == 0) && (FieldBg_CheckExit(arg0, 0x10) == 0) && (FldGate_Get(0x23) != 0) &&
+                   (FldGate_Get(33) == 0))
         {
             FldGate_Clear(0x23);
         }
@@ -9034,7 +9016,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             gSaveData.mailEvent = 0x2BF;
             func_ov030_020aec1c(10);
             gSaveData.unk_310C = &data_ov030_020d9b94;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -9045,7 +9027,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             FldGate_Clear(47);
             FldGate_Clear(0x30);
             FldGate_Clear(0x31);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             break;
         case 0x298:
@@ -9054,7 +9036,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             return 1;
         case 0x29B:
             FldGate_Set(5);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             break;
         case 0x29C:
@@ -9063,7 +9045,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
         case 0x29F:
             FldGate_Set(6);
             gSaveData.unk_310C = &data_ov030_020d9bbc;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -9080,7 +9062,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             FldGate_Clear(0x39);
             FldGate_Clear(58);
             FldGate_Clear(0x3B);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             break;
         case 0x2A5:
@@ -9090,7 +9072,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
         case 0x2A8:
             FldGate_Set(7);
             gSaveData.unk_310C = &data_ov030_020d9d34;
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -9104,7 +9086,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             FldGate_Clear(0x40);
             FldGate_Clear(0x41);
             FldGate_Clear(0x42);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             break;
         case 0x2AE:
@@ -9113,7 +9095,7 @@ s32 func_ov030_0209bacc(FieldEventManager* arg0) {
             return 1;
         case 0x2B1:
             FldGate_Set(8);
-            func_ov030_020c1960();
+            Fld_Luck_GenerateSymbols();
             func_ov030_020acfc4(arg0);
             arg0->unk_21CF8 = 1;
             break;
@@ -9221,14 +9203,13 @@ void func_ov030_0209c0f4(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2C2;
 
-    u64 temp = 7;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_265C = 0;
     gSaveData.unk_2660 = 2;
     gSaveData.unk_266C = 0;
     gSaveData.unk_2670 = 0;
     gSaveData.unk_2676 = 0;
-    func_ov030_02084944(temp);
+    FieldBg_SetAreaPopulation(7, 0);
     gSaveData.flashSequence = 0x49;
     gSaveData.unk_3120      = 0x14;
 }
@@ -9243,15 +9224,15 @@ s32 func_ov030_0209c208(s32 arg0) {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, 0x2C5, 0);
             return 1;
-        } else if (((func_ov030_020848e4(arg0, 8) != 0) || (func_ov030_020848e4(arg0, 9) != 0) ||
-                    (func_ov030_020848e4(arg0, 10) != 0)) &&
+        } else if (((FieldBg_CheckExit(arg0, 8) != 0) || (FieldBg_CheckExit(arg0, 9) != 0) ||
+                    (FieldBg_CheckExit(arg0, 10) != 0)) &&
                    (FldGate_Get(33) != 0) && (FldGate_Get(0x22) == 0) && (FldGate_Get(3) == 0))
         {
             FldGate_Set(3);
             FldEvent_BeginScript(arg0, 0x2C6, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 8) == 0) && (func_ov030_020848e4(arg0, 9) == 0) &&
-                   (func_ov030_020848e4(arg0, 10) == 0) && (FldGate_Get(33) != 0) && (FldGate_Get(0x22) == 0) &&
+        } else if ((FieldBg_CheckExit(arg0, 8) == 0) && (FieldBg_CheckExit(arg0, 9) == 0) &&
+                   (FieldBg_CheckExit(arg0, 10) == 0) && (FldGate_Get(33) != 0) && (FldGate_Get(0x22) == 0) &&
                    (FldGate_Get(3) != 0))
         {
             FldGate_Clear(3);
@@ -9267,7 +9248,7 @@ s32 func_ov030_0209c208(s32 arg0) {
             FldGate_Set(0x23);
             FldEvent_BeginScript(arg0, 0x2C8, 0);
             return 1;
-        } else if ((func_ov030_020848a4(0x64, 0x64, 0x96, 0x15E) != 0) && (FldGate_Get(6) == 0)) {
+        } else if ((FieldBg_IsPlayerInRect(0x64, 0x64, 0x96, 0x15E) != 0) && (FldGate_Get(6) == 0)) {
             FldGate_Set(6);
             FldEvent_BeginScript(arg0, 0x2CA, 0);
             return 1;
@@ -9275,7 +9256,7 @@ s32 func_ov030_0209c208(s32 arg0) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x2CB, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 12) != 0) && (FldGate_Get(6) != 0) && (FldGate_Get(38) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 12) != 0) && (FldGate_Get(6) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x2CD, 0);
             return 1;
@@ -9449,7 +9430,7 @@ void func_ov030_0209ca24(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2DA;
     gSaveData.flashSequence     = 0x4A;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_2670 = 0;
     gSaveData.unk_2676 = 0;
     func_ov030_020aec1c(5);
@@ -9478,8 +9459,8 @@ s32 func_ov030_0209cb70(s32 arg0) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0x2E0, 0);
             return 1;
-        } else if (((func_ov030_020848e4(arg0, 13) != 0) || (func_ov030_020848e4(arg0, 0xE) != 0)) &&
-                   (FldGate_Get(0x24) != 0) && (FldGate_Get(39) == 0))
+        } else if (((FieldBg_CheckExit(arg0, 13) != 0) || (FieldBg_CheckExit(arg0, 0xE) != 0)) && (FldGate_Get(0x24) != 0) &&
+                   (FldGate_Get(39) == 0))
         {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x2E2, 0);
@@ -9495,7 +9476,7 @@ s32 func_ov030_0209cb70(s32 arg0) {
         FldEvent_BeginScript(arg0, 0x2DB, 0);
         return 1;
     } else if (gSaveData.fieldArea == 0x13) {
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(2) != 0) && (FldGate_Get(38) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(2) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x2E7, 0);
             return 1;
@@ -9505,20 +9486,20 @@ s32 func_ov030_0209cb70(s32 arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 0xE) && (func_ov030_020848e4(arg0, 18) != 0) && (FldGate_Get(33) == 0)) {
+    if ((gSaveData.fieldArea == 0xE) && (FieldBg_CheckExit(arg0, 18) != 0) && (FldGate_Get(33) == 0)) {
         FldGate_Set(33);
         FldEvent_BeginScript(arg0, 0x2DC, 0);
         return 1;
     } else if (gSaveData.fieldArea == 0x10) {
-        if ((func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(3);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x2DD, 0);
             return 1;
-        } else if (func_ov030_020848e4(arg0, 0x45) != 0 && FldGate_Get(0x22) != 0 && FldGate_Get(0x23) == 0) {
+        } else if (FieldBg_CheckExit(arg0, 0x45) != 0 && FldGate_Get(0x22) != 0 && FldGate_Get(0x23) == 0) {
             FldGate_Set(0x23);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x2DF, 0);
             return 1;
-        } else if (func_ov030_020848e4(arg0, 0x45) == 0 && FldGate_Get(0x22) != 0 && FldGate_Get(0x23) != 0) {
+        } else if (FieldBg_CheckExit(arg0, 0x45) == 0 && FldGate_Get(0x22) != 0 && FldGate_Get(0x23) != 0) {
             FldGate_Clear(0x23);
         }
     }
@@ -9609,7 +9590,7 @@ void func_ov030_0209d1d8(void) {
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x2EC;
     gSaveData.flashSequence     = 0x4B;
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     func_ov030_020aec1c(5);
     gSaveData.unk_2676 = 0;
     gSaveData.unk_26B0 = 0;
@@ -9620,17 +9601,17 @@ void func_ov030_0209d1d8(void) {
 
 s32 func_ov030_0209d318(s32 arg0) {
     if (gSaveData.fieldArea == 0x10) {
-        if ((func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(0x20) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(0x20) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x2ED, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x45) == 0) && (FldGate_Get(0x20) != 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x45) == 0) && (FldGate_Get(0x20) != 0)) {
             FldGate_Clear(0x20);
         }
     }
 
     if (gSaveData.fieldArea == 0x13) {
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(47) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(47) == 0)) {
             FldGate_Set(47);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x312, 0);
             return 1;
@@ -9643,7 +9624,7 @@ s32 func_ov030_0209d318(s32 arg0) {
 
     if (gSaveData.fieldArea == 18) {
         gSaveData.unk_3120 = 20;
-        if ((func_ov030_020848e4(arg0, 20) != 0) && (FldGate_Get(33) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 20) != 0) && (FldGate_Get(33) == 0)) {
             FldGate_Set(33);
             FldEvent_BeginScript(arg0, 0x2EE, 0);
             return 1;
@@ -9662,36 +9643,36 @@ s32 func_ov030_0209d318(s32 arg0) {
             FldGate_Set(4);
             FldEvent_BeginScript(arg0, 0x2F3, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x34) != 0) && (FldGate_Get(0x22) == 0) && (FldGate_Get(0x23) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x34) != 0) && (FldGate_Get(0x22) == 0) && (FldGate_Get(0x23) == 0)) {
             FldGate_Set(0x22);
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0x2F4, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x34) != 0) && (FldGate_Get(0x23) != 0) && (FldGate_Get(0x24) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x34) != 0) && (FldGate_Get(0x23) != 0) && (FldGate_Get(0x24) == 0)) {
             FldGate_Set(0x24);
             FldEvent_BeginScript(arg0, 0x2F7, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x34) == 0) && (FldGate_Get(0x23) != 0) && (FldGate_Get(0x24) != 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x34) == 0) && (FldGate_Get(0x23) != 0) && (FldGate_Get(0x24) != 0)) {
             FldGate_Clear(0x24);
         }
     }
     if (gSaveData.fieldArea == 0x28) {
-        if ((func_ov030_020848a4(0x12C, 0xB4, 0x15E, 0x140) != 0) && (FldGate_Get(37) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0x12C, 0xB4, 0x15E, 0x140) != 0) && (FldGate_Get(37) == 0)) {
             FldGate_Set(37);
             FldEvent_BeginScript(arg0, 0x2F8, 0);
             return 1;
-        } else if ((func_ov030_020848a4(0x2A8, 0xB4, 0x2DA, 0x140) != 0) && (FldGate_Get(38) == 0)) {
+        } else if ((FieldBg_IsPlayerInRect(0x2A8, 0xB4, 0x2DA, 0x140) != 0) && (FldGate_Get(38) == 0)) {
             FldGate_Set(38);
             FldEvent_BeginScript(arg0, 0x2F9, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x35) != 0) && (FldGate_Get(5) == 0) && (FldGate_Get(39) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x35) != 0) && (FldGate_Get(5) == 0) && (FldGate_Get(39) == 0)) {
             FldGate_Set(39);
             FldEvent_BeginScript(arg0, 0x2FB, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x35) == 0) && (FldGate_Get(5) == 0) && (FldGate_Get(39) != 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x35) == 0) && (FldGate_Get(5) == 0) && (FldGate_Get(39) != 0)) {
             FldGate_Clear(39);
         }
-        if ((func_ov030_020848e4(arg0, 0x35) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x35) != 0) && (FldGate_Get(5) != 0) && (FldGate_Get(0x28) == 0)) {
             FldGate_Set(0x28);
             FldEvent_BeginScript(arg0, 0x2FC, 0);
             return 1;
@@ -9710,17 +9691,17 @@ s32 func_ov030_0209d318(s32 arg0) {
         }
     }
     if (gSaveData.fieldArea == 42) {
-        if ((func_ov030_020848a4(0x2A8, 0xB4, 0x2DA, 0x140) != 0) && (FldGate_Get(43) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0x2A8, 0xB4, 0x2DA, 0x140) != 0) && (FldGate_Get(43) == 0)) {
             FldGate_Set(43);
             FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x301, 0);
             return 1;
-        } else if ((func_ov030_020848e4(arg0, 0x37) != 0) && (FldGate_Get(0x2C) == 0)) {
+        } else if ((FieldBg_CheckExit(arg0, 0x37) != 0) && (FldGate_Get(0x2C) == 0)) {
             FldGate_Set(0x2C);
             FldEvent_BeginScript(arg0, 0x302, 0);
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 43) && (func_ov030_020848a4(0, 0x96, 0x12C, 0xC8) != 0) && (FldGate_Get(45) == 0)) {
+    if ((gSaveData.fieldArea == 43) && (FieldBg_IsPlayerInRect(0, 0x96, 0x12C, 0xC8) != 0) && (FldGate_Get(45) == 0)) {
         FldGate_Set(45);
         FldEvent_BeginScript(arg0, EVENTFLAG_NOBGM | 0x303, 0);
         return 1;
@@ -9972,7 +9953,7 @@ void func_ov030_0209e16c(void) {
     gSaveData.unk_26DA = 4;
     gSaveData.unk_26DC = 4;
     func_ov030_020ae96c(1);
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x317;
@@ -9995,7 +9976,7 @@ void func_ov030_0209e16c(void) {
     func_ov030_020aec1c(6);
     if (FldGate_Get(GATE_GAME_CLEARED) == FALSE) {
         FldGate_Set(127);
-        func_ov030_020c26bc(0);
+        Fld_Wall_SetAllWallStates(0);
         gSaveData.unk_26BA = 0;
         func_ov030_020ae96c(43);
         gSaveData.unk_24B4          = 0;
@@ -10024,7 +10005,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x318, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(2) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3E) != 0) && (FldGate_Get(2) == 0)) {
             FldGate_Set(0x7D);
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
@@ -10033,7 +10014,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3E) != 0) && (FldGate_Get(0x32) == 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3E) != 0) && (FldGate_Get(0x32) == 0) && (FldGate_Get(3) == 0)) {
             FldGate_Set(0x7D);
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
@@ -10042,7 +10023,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             arg0->unk_21B08            = 0x15D000;
             arg0->unk_21B0C            = 0xD6000;
         }
-        if ((func_ov030_020848e4(arg0, 0x3E) == 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(3) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x3E) == 0) && (FldGate_Get(0x32) != 0) && (FldGate_Get(3) == 0)) {
             FldGate_Clear(0x32);
         }
         if ((FldGate_Get(0x34) != 0) && (FldGate_Get(0x35) == 0)) {
@@ -10051,7 +10032,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 0x10) && (func_ov030_020848e4(arg0, 0x45) != 0) && (FldGate_Get(4) != 0) &&
+    if ((gSaveData.fieldArea == 0x10) && (FieldBg_CheckExit(arg0, 0x45) != 0) && (FldGate_Get(4) != 0) &&
         (FldGate_Get(0x34) == 0) && (FldGate_Get(0x5D) == 0) && (FldGate_Get(0x5A) == 0))
     {
         FldGate_Set(0x5A);
@@ -10059,46 +10040,44 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
         return 1;
     }
     if (gSaveData.fieldArea == 0x13) {
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) == 0)) {
             FldGate_Set(0x1E);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x371, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x46) == 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x46) == 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) == 0) &&
             (FldGate_Get(0x1E) != 0))
         {
             FldGate_Clear(0x1E);
         }
-        if ((func_ov030_020848e4(arg0, 0x46) != 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) != 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x46) != 0) && (FldGate_Get(0x1F) != 0) && (FldGate_Get(47) != 0) &&
             (FldGate_Get(0x1D) == 0))
         {
             FldGate_Set(0x1D);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x372, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x33) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(3) != 0) && (FldGate_Get(0x33) == 0)) {
             FldGate_Set(0x33);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x326, 0);
             return 1;
         }
-        if ((func_ov030_020848e4(arg0, 0x48) != 0) && (FldGate_Get(7) != 0) && (FldGate_Get(0x20) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x48) != 0) && (FldGate_Get(7) != 0) && (FldGate_Get(0x20) == 0)) {
             FldGate_Set(0x20);
             FldEvent_BeginScript(arg0, EVENTFLAG_SHOP | 0x32E, 0);
             return 1;
         }
-        if ((FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) && (func_ov030_020848e4(arg0, 23) != 0) &&
-            (FldGate_Get(0x5E) == 0))
+        if ((FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) && (FieldBg_CheckExit(arg0, 23) != 0) && (FldGate_Get(0x5E) == 0))
         {
             FldGate_Set(0x5E);
             FldEvent_BeginScript(arg0, 0x357, 0);
             return 1;
         }
-        if ((FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) && (func_ov030_020848e4(arg0, 23) == 0) &&
-            (FldGate_Get(0x5E) != 0))
+        if ((FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) && (FieldBg_CheckExit(arg0, 23) == 0) && (FldGate_Get(0x5E) != 0))
         {
             FldGate_Clear(0x5E);
         }
-        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (func_ov030_020848e4(arg0, 23) != 0) &&
+        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (FieldBg_CheckExit(arg0, 23) != 0) &&
             (FldGate_Get(0x5D) == 0))
         {
             FldGate_Set(0x5D);
@@ -10112,7 +10091,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x358, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x6E);
         }
     }
@@ -10122,7 +10101,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x359, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x6F);
         }
     }
@@ -10132,7 +10111,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x35A, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x72);
         }
     }
@@ -10142,7 +10121,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x35B, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x75);
         }
     }
@@ -10152,7 +10131,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x35C, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x78);
         }
     }
@@ -10162,10 +10141,10 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x35D, 0);
             return 1;
         }
-        if (func_ov030_020c1a9c() != 0) {
+        if (Fld_Luck_IsScanEventAvailable() != 0) {
             FldGate_Set(0x7A);
         }
-        if ((func_ov030_020848e4(arg0, 0x31) != 0) && (FldGate_Get(0x16) != 0) && (FldGate_Get(0x65) == 0)) {
+        if ((FieldBg_CheckExit(arg0, 0x31) != 0) && (FldGate_Get(0x16) != 0) && (FldGate_Get(0x65) == 0)) {
             FldGate_Set(0x7E);
             arg0->unk_21AD0            = 1;
             arg0->unk_21ACC            = 0;
@@ -10194,41 +10173,41 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 0x1A) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x1A) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x70);
     }
-    if ((gSaveData.fieldArea == 0x1B) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x1B) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x71);
     }
-    if ((gSaveData.fieldArea == 0x1D) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x1D) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x73);
     }
-    if ((gSaveData.fieldArea == 0x1E) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x1E) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x74);
     }
-    if ((gSaveData.fieldArea == 0x20) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x20) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x76);
     }
-    if ((gSaveData.fieldArea == 33) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 33) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x77);
     }
-    if ((gSaveData.fieldArea == 0x23) && (func_ov030_020c1a9c() != 0)) {
+    if ((gSaveData.fieldArea == 0x23) && (Fld_Luck_IsScanEventAvailable() != 0)) {
         FldGate_Set(0x79);
     }
     if (gSaveData.fieldArea == 18) {
-        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (func_ov030_020848e4(arg0, 0x14) != 0) &&
+        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (FieldBg_CheckExit(arg0, 0x14) != 0) &&
             (FldGate_Get(0x68) == 0))
         {
             FldGate_Set(0x68);
             FldEvent_BeginScript(arg0, 0x361, 0);
             return 1;
         }
-        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (func_ov030_020848e4(arg0, 0x14) == 0) &&
+        if (((FldGate_Get(4) == 0) || (FldGate_Get(47) != 0)) && (FieldBg_CheckExit(arg0, 0x14) == 0) &&
             (FldGate_Get(0x68) != 0))
         {
             FldGate_Clear(0x68);
         }
-        if ((func_ov030_020848e4(arg0, 0x14) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) &&
+        if ((FieldBg_CheckExit(arg0, 0x14) != 0) && (FldGate_Get(4) != 0) && (FldGate_Get(47) == 0) &&
             (FldGate_Get(0x67) == 0))
         {
             FldGate_Set(0x67);
@@ -10236,7 +10215,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             return 1;
         }
     }
-    if ((gSaveData.fieldArea == 39) && (func_ov030_020848a4(0x17C, 0, 0x190, 0x12C) != 0) && (FldGate_Get(0x69) == 0)) {
+    if ((gSaveData.fieldArea == 39) && (FieldBg_IsPlayerInRect(0x17C, 0, 0x190, 0x12C) != 0) && (FldGate_Get(0x69) == 0)) {
         FldGate_Set(0x69);
         FldEvent_BeginScript(arg0, 0x362, 0);
         return 1;
@@ -10254,7 +10233,7 @@ s32 func_ov030_0209e314(FieldEventManager* arg0) {
             FldEvent_BeginScript(arg0, 0x316, 0);
             return 1;
         }
-        if ((func_ov030_020848a4(0, 0, 0x12C, 0xE6) != 0) && (FldGate_Get(0x6B) != 0) && (FldGate_Get(0x6C) == 0)) {
+        if ((FieldBg_IsPlayerInRect(0, 0, 0x12C, 0xE6) != 0) && (FldGate_Get(0x6B) != 0) && (FldGate_Get(0x6C) == 0)) {
             FldGate_Set(0x6C);
             FldEvent_BeginScript(arg0, 0x365, 0);
             return 1;
@@ -11169,12 +11148,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21B0C            = 0xD6000;
             break;
         case 0x83A:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x6E) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x6E) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_1ST_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x6E) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x6E) == 0)) {
                 FldEvent_SetCurrent(0x861);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11194,12 +11173,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x83D:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x6F) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x6F) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_2ND_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x6F) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x6F) == 0)) {
                 FldEvent_SetCurrent(0x862);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11218,12 +11197,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x840:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x70) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x70) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_3RD_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x70) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x70) == 0)) {
                 FldEvent_SetCurrent(0x863);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11242,12 +11221,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x843:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x71) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x71) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_4TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x71) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x71) == 0)) {
                 FldEvent_SetCurrent(0x864);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11266,12 +11245,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x846:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x72) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x72) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_5TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x72) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x72) == 0)) {
                 FldEvent_SetCurrent(0x865);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11290,12 +11269,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x849:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x73) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x73) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_6TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x73) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x73) == 0)) {
                 FldEvent_SetCurrent(0x866);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11314,12 +11293,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x84C:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x74) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x74) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_7TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x74) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x74) == 0)) {
                 FldEvent_SetCurrent(0x867);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11338,12 +11317,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x84F:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x75) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x75) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_8TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x75) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x75) == 0)) {
                 FldEvent_SetCurrent(0x868);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11362,12 +11341,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x852:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x76) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x76) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_9TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x76) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x76) == 0)) {
                 FldEvent_SetCurrent(0x869);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11386,12 +11365,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x855:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x77) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x77) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_10TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x77) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x77) == 0)) {
                 FldEvent_SetCurrent(0x86A);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11410,12 +11389,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x858:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x78) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x78) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_11TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x78) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x78) == 0)) {
                 FldEvent_SetCurrent(0x86B);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11434,12 +11413,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x85B:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x79) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x79) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_12TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x79) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x79) == 0)) {
                 FldEvent_SetCurrent(0x86C);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11458,12 +11437,12 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
             arg0->unk_21CF8    = 1;
             break;
         case 0x85E:
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x7A) != 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x7A) != 0)) {
                 FldEvent_SetCurrent(EVENT_ANOTHERDAY_PORKCITY_13TH_REWARD);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
             }
-            if ((func_ov030_020c1a9c() == 0) && (FldGate_Get(0x7A) == 0)) {
+            if ((Fld_Luck_IsScanEventAvailable() == 0) && (FldGate_Get(0x7A) == 0)) {
                 FldEvent_SetCurrent(0x86D);
                 FldEvent_AdvanceScript(arg0);
                 return 1;
@@ -11496,7 +11475,7 @@ s32 func_ov030_0209f0e8(FieldEventManager* arg0) {
 
 void func_ov030_020a1ea8(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x37;
 }
 
@@ -11514,7 +11493,7 @@ s32 func_ov030_020a1ed0(FieldEventManager* arg0) {
         }
     }
 
-    if ((gSaveData.fieldArea == 18) && (func_ov030_02084860(0x181, 0xC2, 0x14) != 0)) {
+    if ((gSaveData.fieldArea == 18) && (FieldBg_IsPlayerNear(0x181, 0xC2, 0x14) != 0)) {
         arg0->unk_21AF0            = 1;
         arg0->unk_21AD0            = 1;
         arg0->unk_21ACC            = 0;
@@ -11560,7 +11539,7 @@ s32 func_ov030_020a206c(FieldEventManager* arg0) {
 
 void func_ov030_020a20f8(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 56;
 }
 
@@ -11593,7 +11572,7 @@ void func_ov030_020a2208(FieldEventManager* arg0) {
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = EVENTFLAG_NOBGM | 0x86E;
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_267A = 4;
 }
 
@@ -11801,7 +11780,7 @@ s32 func_ov030_020a2628(FieldEventManager* arg0) {
 
 void func_ov030_020a2a44(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 58;
     func_ov030_020aec38(1);
     gSaveData.playerStats.activePartner = PARTNER_NONE;
@@ -11872,11 +11851,11 @@ s32 func_ov030_020a2c20(FieldEventManager* arg0) {
         arg0->unk_21D24        = func_ov030_020a2a8c;
         arg0->unk_21D28        = 0x5ED6;
         arg0->touchEventResult = 0;
-        DebugOvlDisp_Push(&func_ov030_020824a0, arg0, 0);
-        DebugOvlDisp_Push(&func_ov030_02082c04, arg0, 0);
-        DebugOvlDisp_Push(&func_ov030_02082bf0, arg0, 0);
-        DebugOvlDisp_Push(&func_ov030_02082c68, arg0, 0);
-        DebugOvlDisp_Push(&func_ov030_02082534, arg0, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeIn, arg0, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepOpenTouchEvent, arg0, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepSetup2D, arg0, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepCloseEventPicture, arg0, 0);
+        DebugOvlDisp_Push((OverlayCB)FieldMain_StepFadeBoth, arg0, 0);
         return 1;
     }
     return 0;
@@ -11884,7 +11863,7 @@ s32 func_ov030_020a2c20(FieldEventManager* arg0) {
 
 void func_ov030_020a2d0c(void) {
     func_ov030_020ae96c(0x18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_267C = 4;
     gSaveData.unk_2680 = 4;
     gSaveData.unk_2682 = 4;
@@ -11950,7 +11929,7 @@ s32 func_ov030_020a2de8(FieldEventManager* arg0) {
 
 void func_ov030_020a2f74(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence     = 0x3C;
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
@@ -11983,7 +11962,7 @@ s32 func_ov030_020a306c(FieldEventManager* arg0) {
 
 void func_ov030_020a30a4(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 61;
 }
 
@@ -12012,7 +11991,7 @@ s32 func_ov030_020a30d4(FieldEventManager* arg0) {
 
 void func_ov030_020a315c(void) {
     func_ov030_020ae96c(0x10);
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
 }
 
 s32 func_ov030_020a3174(void) {
@@ -12027,7 +12006,7 @@ void func_ov030_020a3184(void) {
     func_ov030_020aec1c(4);
     gSaveData.unk_26D4 = 0;
     func_ov030_020ae96c(0x10);
-    func_ov030_020c26bc(4);
+    Fld_Wall_SetAllWallStates(4);
 }
 
 s32 func_ov030_020a31b4(void) {
@@ -12040,7 +12019,7 @@ s32 func_ov030_020a31bc(FieldEventManager* arg0) {
 
 void func_ov030_020a31c4(void) {
     func_ov030_020ae96c(1);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.unk_24B4          = 0;
     gSaveData.unk_24B8          = 1;
     gSaveData.currentStoryEvent = 0x88B;
@@ -12144,7 +12123,7 @@ s32 func_ov030_020a333c(FieldEventManager* arg0) {
             if (FldGate_Get(6) == 0) {
                 FldGate_Set(6);
                 gSaveData.unk_310C = &data_ov030_020d9be4;
-                func_ov030_020c1960();
+                Fld_Luck_GenerateSymbols();
                 func_ov030_020acfc4(arg0);
                 FldEvent_SetCurrent(2206);
                 FldEvent_AdvanceScript(arg0);
@@ -12182,12 +12161,12 @@ s32 func_ov030_020a333c(FieldEventManager* arg0) {
 
 void func_ov030_020a36d8(void) {
     func_ov030_020ae96c(0x10);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
 }
 
 s32 func_ov030_020a36f0(s32 arg0) {
     if (gSaveData.fieldArea == 0x10) {
-        func_ov030_020848e4(arg0, 0x44);
+        FieldBg_CheckExit(arg0, 0x44);
     }
     return 0;
 }
@@ -12198,7 +12177,7 @@ s32 func_ov030_020a3718(FieldEventManager* arg0) {
 
 void func_ov030_020a3720(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x42;
 }
 
@@ -12212,7 +12191,7 @@ s32 func_ov030_020a3750(FieldEventManager* arg0) {
 
 void func_ov030_020a3758(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x43;
 }
 
@@ -12226,7 +12205,7 @@ s32 func_ov030_020a3788(FieldEventManager* arg0) {
 
 void func_ov030_020a3790(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x44;
 }
 
@@ -12240,7 +12219,7 @@ s32 func_ov030_020a37c0(FieldEventManager* arg0) {
 
 void func_ov030_020a37c8(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x45;
 }
 
@@ -12254,7 +12233,7 @@ s32 func_ov030_020a37f8(FieldEventManager* arg0) {
 
 void func_ov030_020a3800(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x46;
 }
 
@@ -12268,7 +12247,7 @@ s32 func_ov030_020a3830(FieldEventManager* arg0) {
 
 void func_ov030_020a3838(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
 }
 
 s32 func_ov030_020a3850(void) {
@@ -12281,7 +12260,7 @@ s32 func_ov030_020a3858(FieldEventManager* arg0) {
 
 void func_ov030_020a3860(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x48;
 }
 
@@ -12295,7 +12274,7 @@ s32 func_ov030_020a3890(FieldEventManager* arg0) {
 
 void func_ov030_020a3898(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x49;
 }
 
@@ -12309,7 +12288,7 @@ s32 func_ov030_020a38c8(FieldEventManager* arg0) {
 
 void func_ov030_020a38d0(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x4A;
 }
 
@@ -12323,7 +12302,7 @@ s32 func_ov030_020a3900(FieldEventManager* arg0) {
 
 void func_ov030_020a3908(void) {
     func_ov030_020ae96c(18);
-    func_ov030_020c26bc(0);
+    Fld_Wall_SetAllWallStates(0);
     gSaveData.flashSequence = 0x4B;
 }
 

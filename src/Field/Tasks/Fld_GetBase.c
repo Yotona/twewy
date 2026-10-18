@@ -1,9 +1,12 @@
+#include "Field/FieldRegion.h"
+
+#include "Engine/Core/OamMgr.h"
 #include "Engine/EasyTask.h"
-#include "Engine/File/BinMgr.h"
-#include "Field/FieldTasks.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_GetBase.h"
 #include "SpriteMgr.h"
 
-extern BinIdentifier data_ov030_020d9944;
+extern void func_02026590(s32* value, s32 target, u16 frames);
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
@@ -16,12 +19,12 @@ typedef struct {
     /* 0x4 */ s32 unk_4;
 } Fld_GetBase_Args;
 
-SpriteFrameInfo* Fld_GetBase_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-s32              Fld_GetBase_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+static SpriteFrameInfo* Fld_GetBase_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
+static s32              Fld_GetBase_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
 static const TaskHandle Tsk_Fld_GetBase = {"Tsk_Fld_GetBase", Fld_GetBase_RunTask, 0x48};
 
-static const SpriteAnimation data_ov030_020ec980 = {
+static const SpriteAnimation Fld_GetBase_Anim = {
     .bits_0_1          = 1,
     .dataType          = 0,
     .bit_6             = 0,
@@ -35,7 +38,7 @@ static const SpriteAnimation data_ov030_020ec980 = {
     .frameInfoCallback = Fld_GetBase_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 11,
     .unk_1C            = 2,
@@ -48,12 +51,26 @@ static const SpriteAnimation data_ov030_020ec980 = {
     .animIndex         = 1,
 };
 
-SpriteFrameInfo* Fld_GetBase_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
-    // Not yet implemented
+// Nonmatching: the NULL info value lives in r4 in the target, r3 here
+static SpriteFrameInfo* Fld_GetBase_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode) {
+    Fld_GetBase*     owner = sprite->owner;
+    SpriteFrameInfo* info  = NULL;
+
+    switch (mode) {
+        case SPRITE_FRAME_UPDATE:
+            g_SpriteFrameInfo.updateSteps = 1;
+            return &g_SpriteFrameInfo;
+        case SPRITE_FRAME_RENDER:
+            info = &g_SpriteFrameInfo;
+            Sprite_FillFrameInfo(info, sprite);
+            sprite->unk_0A.unk_05 = OamMgr_AllocAffineGroup(&g_OamMgr[1], 0, 0x1000, owner->unk_40, 0);
+            break;
+    }
+    return info;
 }
 
-void Fld_GetBase_Load(Sprite* sprite, Fld_GetBase_Args* args, void* arg2) {
-    SpriteAnimation anim = data_ov030_020ec980;
+static void Fld_GetBase_Load(Sprite* sprite, Fld_GetBase_Args* args, void* arg2) {
+    SpriteAnimation anim = Fld_GetBase_Anim;
 
     anim.dataType = args->unk_0;
     anim.owner    = arg2;
@@ -63,7 +80,7 @@ void Fld_GetBase_Load(Sprite* sprite, Fld_GetBase_Args* args, void* arg2) {
     _Sprite_Load(sprite, &anim);
 }
 
-s32 Fld_GetBase_Init(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetBase_Init(TaskPool* pool, Task* task, void* args) {
     Fld_GetBase* base = task->data;
 
     Fld_GetBase_Load(&base->sprite, args, base);
@@ -72,7 +89,7 @@ s32 Fld_GetBase_Init(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetBase_Update(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetBase_Update(TaskPool* pool, Task* task, void* args) {
     Fld_GetBase* base = task->data;
 
     if (base->unk_44 != 0) {
@@ -83,21 +100,21 @@ s32 Fld_GetBase_Update(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 Fld_GetBase_Render(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetBase_Render(TaskPool* pool, Task* task, void* args) {
     Fld_GetBase* base = task->data;
 
     Sprite_RenderFrame(&base->sprite);
     return 1;
 }
 
-s32 Fld_GetBase_Destroy(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_GetBase_Destroy(TaskPool* pool, Task* task, void* args) {
     Fld_GetBase* base = task->data;
 
     Sprite_Destroy(&base->sprite);
     return 1;
 }
 
-s32 Fld_GetBase_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+static s32 Fld_GetBase_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     const TaskStages stages = {
         .initialize = Fld_GetBase_Init,
         .update     = Fld_GetBase_Update,

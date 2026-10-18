@@ -1,6 +1,5 @@
-#include "Field/FlashRegion.h"
-
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashWrapper.h"
+#include "Field/Flash/FlashPlayer.h"
 
 typedef struct {
     /* 0x00 */ FlashEventCallback* eventListener;

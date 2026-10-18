@@ -3,16 +3,13 @@
 
 #include <nitro/types.h>
 
-// A map position in fx32. The field camera origin (FieldEventManager::origin,
-// returned by Field_GetCameraOrigin) has this shape, and the field tasks keep a
-// pointer to it to turn their map positions into screen positions.
+// A map position in fx32.
 typedef struct FieldPos {
     /* 0x0 */ s32 x;
     /* 0x4 */ s32 y;
 } FieldPos; // Size: 0x8
 
-// A screen position in pixels, packed in one word so it can be passed by value
-// in a register. Readers use the unsigned or the signed view.
+// A screen position in pixels, packed in one word. Readers use the unsigned or the signed view.
 typedef union FldScreenPos {
     struct {
         /* 0x0 */ u16 x;
@@ -24,8 +21,7 @@ typedef union FldScreenPos {
     };
 } FldScreenPos; // Size: 0x4
 
-// Spawn template of a field NPC (0x1C bytes), passed by value along the spawner
-// chain (FieldEncounter -> Fld_Human, Fld_MapJumpArrow).
+// Spawn template of a field NPC, passed by value along the spawner chain.
 typedef struct FldSpawnTemplate {
     /* 0x00 */ FieldPos pos;
     /* 0x08 */ s16      unk_08;
@@ -36,6 +32,15 @@ typedef struct FldSpawnTemplate {
     /* 0x14 */ s32      unk_14;
     /* 0x18 */ s32      unk_18;
 } FldSpawnTemplate; // Size: 0x1C
+
+// A map exit: an entry of an area's exit table.
+typedef struct FieldExit {
+    /* 0x0 */ s32 region;     // trigger region kind
+    /* 0x4 */ s16 destArea;   // area the exit leads to, 0x46 = none
+    /* 0x6 */ s16 unk_06;
+    /* 0x8 */ s32 destRegion; // region to arrive at; 0x66 = FieldEventManager::unk_21B08/unk_21B0C
+    /* 0xC */ s32 exitId;     // MainData::exitStates index
+} FieldExit;                  // Size: 0x10
 
 // Creation parameters for a sprite selected only by resource slot and animation.
 typedef struct {

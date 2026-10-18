@@ -1,6 +1,10 @@
+#include "Field/FieldRegion.h"
+
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
-#include "Field/FieldRegion.h"
+#include "Field/Event/EventTables.h"
+#include "Field/Tasks/Fld_GetPlate.h"
+#include "Field/Tasks/Fld_MapJumpName.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
 #include "Util/SysFontMsgs.h"
@@ -19,12 +23,8 @@ typedef struct {
     /* 0x0 */ s32 dataType;
     /* 0x4 */ s32 messageIndex;
 } Fld_GetPlate_Args;
-
-s32                  Fld_GetPlate_Init(TaskPool* pool, Task* task, void* args);
-s32                  Fld_GetPlate_Render(TaskPool* pool, Task* task, void* args);
-s32                  Fld_GetPlate_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
-SpriteFrameInfo*     Fld_GetPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
-extern BinIdentifier data_ov030_020d9944;
+s32              Fld_GetPlate_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
+SpriteFrameInfo* Fld_GetPlate_GetFrameInfo(Sprite* sprite, s32 arg, s32 mode);
 
 static const TaskHandle      Tsk_Fld_GetPlate  = {"Tsk_Fld_GetPlate", Fld_GetPlate_RunTask, sizeof(Fld_GetPlate)};
 static const SpriteAnimation Fld_GetPlate_Anim = {
@@ -41,7 +41,7 @@ static const SpriteAnimation Fld_GetPlate_Anim = {
     .frameInfoCallback = Fld_GetPlate_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 11,
     .unk_1C            = 2,
@@ -74,7 +74,7 @@ s32 Fld_GetPlate_Init(TaskPool* pool, Task* task, void* args) {
 
     SysFont_InitWithFont(&plate->font, 1, TRUE);
     SysFont_SetSpacing(&plate->font, TRUE, 0);
-    plate->message    = func_ov030_020c4ae8(&plate->font, SYSMSG_SYSTEM_MESSAGE_START + 1, (u16)plateArgs->messageIndex);
+    plate->message    = Fld_Mess_GetStrCat(&plate->font, SYSMSG_SYSTEM_MESSAGE_START + 1, (u16)plateArgs->messageIndex);
     width             = SysFont_MeasureWidth(&plate->font, plate->message);
     plate->targetPosX = (width - 0x50) << 12;
     if (plate->targetPosX >= 0x80000) {

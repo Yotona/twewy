@@ -11,6 +11,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Text.h"
+#include "Field/FieldRegion.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"

@@ -93,6 +93,8 @@ s32 func_0202353c(u16 arg0);
 u16 func_02023588(void);
 
 void func_02023598(s16 arg0);
+s32  func_02023e58(u32 arg0);
+s32  func_02023f60(u32 arg0, u32 arg1);
 
 void func_020235a8(void);
 

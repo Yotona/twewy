@@ -1,14 +1,16 @@
-#include "Field/FlashRegion.h"
+#include "Field/FieldRegion.h"
 
 extern "C" {
+#include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
 #include <nitro/mi/cpumem.h>
 #include <nitro/os/cache.h>
 }
-#include "Field/FlashPlayer.h"
+#include "Field/Flash/FlashGraphicsInit.h"
+#include "Field/Flash/FlashPlayer.h"
+#include "Field/Flash/FlashRender.h"
 
 extern "C" {
-void Interrupts_ForceVBlank(void);
 u64  func_0203a444(void);
 void func_02028084(void* transfer, s32 count);
 void func_020280a8(void* transfer);

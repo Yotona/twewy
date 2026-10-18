@@ -7,6 +7,7 @@
 #include "Engine/IO/Input.h"
 #include "Engine/Math/Random.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Field/FieldRegion.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include <nitro/mi/cpumem.h>

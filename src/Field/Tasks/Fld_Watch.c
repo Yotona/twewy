@@ -1,42 +1,32 @@
-// USA 0x020bd890-0x020bdec8: the watch/clock HUD task. Five sprites draw the
-// time; the task data holds the five Sprites, the current digit codes at 0x144/
-// 0x148/0x14C and a frame timer at 0x150.
+#include "Field/Tasks/Fld_Watch.h"
 #include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
-#include "Field/Ov030Data.h"
-#include "Save.h"
+#include "Field/Event/EventTables.h"
 #include "SpriteMgr.h"
 
 typedef struct {
     /* 0x000 */ s32    unk0;
     /* 0x004 */ Sprite sprites[5];
-    /* 0x144 */ u32    hour; // hour/minute/second, filled by func_0204172c
+    /* 0x144 */ u32    hour; // hour/minute/second
     /* 0x148 */ u32    minute;
     /* 0x14C */ u32    second;
     /* 0x150 */ s16    frames;
 } FldWatchData; // Size: 0x154
 
-extern const char data_ov030_021073a8[];
-
 extern void func_0204172c(u32* time);
 
-SpriteFrameInfo* func_ov030_020bd890(Sprite* sprite, s32 arg1, s32 arg2);
-void             func_ov030_020bd92c(Sprite* sprite, s32 arg1, s16 arg2, s16 arg3);
-u32              func_ov030_020bd9a4(u32 arg0);
-s32              func_ov030_020bd9bc(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bdb04(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bdddc(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bde20(TaskPool* pool, Task* task, void* args);
-s32              func_ov030_020bde50(TaskPool* pool, Task* task, void* args, s32 stage);
-s32              func_ov030_020bde98(TaskPool* pool, s32 arg1);
+static SpriteFrameInfo* Fld_Watch_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2);
+static s32              Fld_Watch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 
-const TaskHandle data_ov030_020e6288 = {data_ov030_021073a8, func_ov030_020bde50, sizeof(FldWatchData)};
+#ifdef REGION_USA
+static const s16 Fld_Watch_DigitPosX[5] = {192, 178, 183, 190, 195};
+#else
+static const s16 Fld_Watch_DigitPosX[5] = {192, 192, 197, 204, 209};
+#endif
 
-const TaskStages data_ov030_020e6294 = {
-    {func_ov030_020bd9bc, func_ov030_020bdb04, func_ov030_020bdddc, func_ov030_020bde20}
-};
+static const TaskHandle Tsk_Fld_Watch = {"Tsk_Fld_Watch", Fld_Watch_RunTask, sizeof(FldWatchData)};
 
-const SpriteAnimation data_ov030_020e62a4 = {
+static const SpriteAnimation Fld_Watch_Anim = {
     .bits_0_1          = 0,
     .dataType          = 0,
     .bit_6             = 0,
@@ -47,10 +37,10 @@ const SpriteAnimation data_ov030_020e62a4 = {
     .unk_02.raw        = 0x0C00,
     .posX              = 0xC0,
     .posY              = 0,
-    .frameInfoCallback = func_ov030_020bd890,
+    .frameInfoCallback = Fld_Watch_GetFrameInfo,
     .callbackArg       = 0,
     .owner             = NULL,
-    .binIden           = &data_ov030_020d9944,
+    .binIden           = &Iden_FldDownScreen,
     .unk_18            = 2,
     .packIndex         = 4,
     .unk_1C            = 1,
@@ -63,12 +53,12 @@ const SpriteAnimation data_ov030_020e62a4 = {
     .animIndex         = 0xF,
 };
 
-SpriteFrameInfo* func_ov030_020bd890(Sprite* sprite, s32 arg1, s32 arg2) {
+static SpriteFrameInfo* Fld_Watch_GetFrameInfo(Sprite* sprite, s32 arg1, s32 arg2) {
     Sprite_FrameInfoCallback(sprite, arg2);
 }
 
-void func_ov030_020bd92c(Sprite* sprite, s32 arg1, s16 arg2, s16 arg3) {
-    SpriteAnimation anim = data_ov030_020e62a4;
+static void Fld_Watch_LoadSprite(Sprite* sprite, s32 arg1, s16 arg2, s16 arg3) {
+    SpriteAnimation anim = Fld_Watch_Anim;
 
     anim.posX      = arg2;
     anim.animIndex = arg3;
@@ -76,7 +66,7 @@ void func_ov030_020bd92c(Sprite* sprite, s32 arg1, s16 arg2, s16 arg3) {
     _Sprite_Load(sprite, &anim);
 }
 
-u32 func_ov030_020bd9a4(u32 arg0) {
+static u32 Fld_Watch_To12Hour(u32 arg0) {
     if (arg0 == 0) {
         return 0xC;
     }
@@ -86,7 +76,7 @@ u32 func_ov030_020bd9a4(u32 arg0) {
     return arg0;
 }
 
-s32 func_ov030_020bd9bc(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Watch_Init(TaskPool* pool, Task* task, void* args) {
     FldWatchData* data = task->data;
     s32*          arg2 = args;
     u32           digit;
@@ -95,15 +85,16 @@ s32 func_ov030_020bd9bc(TaskPool* pool, Task* task, void* args) {
     data->frames = 0;
     func_0204172c(&data->hour);
     if ((u32)data->hour < 0xC) {
-        func_ov030_020bd92c(&data->sprites[0], data->unk0, 0xC0, 0xF);
+        Fld_Watch_LoadSprite(&data->sprites[0], data->unk0, Fld_Watch_DigitPosX[0], 0xF);
     } else {
-        func_ov030_020bd92c(&data->sprites[0], data->unk0, 0xC0, 0x1F);
+        Fld_Watch_LoadSprite(&data->sprites[0], data->unk0, Fld_Watch_DigitPosX[0], 0x1F);
     }
-    digit = func_ov030_020bd9a4(data->hour);
-    func_ov030_020bd92c(&data->sprites[1], data->unk0, 0xB2, (s16)(digit / 10 + 0x13));
-    func_ov030_020bd92c(&data->sprites[2], data->unk0, 0xB7, (s16)(digit % 10 + 0x13));
-    func_ov030_020bd92c(&data->sprites[3], data->unk0, 0xBE, (s16)(data->minute / 10 + 0x13));
-    func_ov030_020bd92c(&data->sprites[4], data->unk0, 0xC3, (s16)(data->minute % 10 + 0x13));
+    digit = Fld_Watch_To12Hour(data->hour);
+    Fld_Watch_LoadSprite(&data->sprites[1], data->unk0, Fld_Watch_DigitPosX[1], (s16)(digit / 10 + 0x13));
+    Fld_Watch_LoadSprite(&data->sprites[2], data->unk0, Fld_Watch_DigitPosX[2], (s16)(digit % 10 + 0x13));
+    Fld_Watch_LoadSprite(&data->sprites[3], data->unk0, Fld_Watch_DigitPosX[3], (s16)(data->minute / 10 + 0x13));
+    Fld_Watch_LoadSprite(&data->sprites[4], data->unk0, Fld_Watch_DigitPosX[4], (s16)(data->minute % 10 + 0x13));
+
     {
         s32 i;
 
@@ -114,9 +105,9 @@ s32 func_ov030_020bd9bc(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-// SystemFlags.unk_10: when set, the watch re-reads the saved time and
+// When SystemFlags.unk_10 is set, the watch re-reads the saved time and
 // force-updates every digit instead of counting up on its own.
-s32 func_ov030_020bdb04(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Watch_Update(TaskPool* pool, Task* task, void* args) {
     FldWatchData* data = task->data;
     u32           digit;
     u32           resync;
@@ -158,7 +149,7 @@ s32 func_ov030_020bdb04(TaskPool* pool, Task* task, void* args) {
                 } else {
                     Sprite_ChangeAnimation(&data->sprites[0], data->sprites[0].animData, 0x1F, data->sprites[0].cellTable);
                 }
-                digit = func_ov030_020bd9a4((s16)data->hour);
+                digit = Fld_Watch_To12Hour((s16)data->hour);
                 Sprite_ChangeAnimation(&data->sprites[1], data->sprites[1].animData, (s16)(digit / 10 + 0x13),
                                        data->sprites[1].cellTable);
                 Sprite_ChangeAnimation(&data->sprites[2], data->sprites[2].animData, (s16)(digit % 10 + 0x13),
@@ -178,7 +169,7 @@ s32 func_ov030_020bdb04(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bdddc(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Watch_Render(TaskPool* pool, Task* task, void* args) {
     FldWatchData* data = task->data;
     s32           i;
 
@@ -191,7 +182,7 @@ s32 func_ov030_020bdddc(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bde20(TaskPool* pool, Task* task, void* args) {
+static s32 Fld_Watch_Destroy(TaskPool* pool, Task* task, void* args) {
     FldWatchData* data = task->data;
     s32           i;
 
@@ -201,14 +192,19 @@ s32 func_ov030_020bde20(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov030_020bde50(TaskPool* pool, Task* task, void* args, s32 stage) {
-    TaskStages stages = data_ov030_020e6294;
+static s32 Fld_Watch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
+    const TaskStages stages = {
+        .initialize = Fld_Watch_Init,
+        .update     = Fld_Watch_Update,
+        .render     = Fld_Watch_Render,
+        .cleanup    = Fld_Watch_Destroy,
+    };
 
     return stages.iter[stage](pool, task, args);
 }
 
-s32 func_ov030_020bde98(TaskPool* pool, s32 arg1) {
+s32 Fld_Watch_CreateTask(TaskPool* pool, s32 arg1) {
     s32 param = arg1;
 
-    return EasyTask_CreateTask(pool, &data_ov030_020e6288, NULL, 0, NULL, &param);
+    return EasyTask_CreateTask(pool, &Tsk_Fld_Watch, NULL, 0, NULL, &param);
 }
