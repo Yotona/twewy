@@ -32,10 +32,9 @@ s32 func_0200d1d8(ScreenMapEntry* entry, s32 engineId, s32 bgLayer, void* tilema
 }
 
 s32 func_0200d244(ScreenMapEntry* entry) {
-    s32                 wrapH;
-    s32                 wrapV;
-    s32                 prev;
-    DisplayEngineState* engState;
+    s32 wrapH;
+    s32 wrapV;
+    s32 prev;
 
     wrapH = ((entry->flags & 4) != 0) ? 1 : 0;
     wrapV = ((entry->flags & 8) != 0) ? 1 : 0;
@@ -43,20 +42,7 @@ s32 func_0200d244(ScreenMapEntry* entry) {
     prev = func_0200d1d8(entry, entry->engineId, entry->bgLayer, entry->tilemap, entry->tileData, entry->width, entry->height);
     func_0200d858(entry, wrapH, wrapV, entry->unk_18);
 
-    engState = &g_DisplaySettings.engineState[entry->engineId];
-
-    switch (engState->bgSettings[entry->bgLayer].bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            engState->bgAffines[entry->bgLayer].unk_14 = 1;
-            break;
-    }
-
-    engState->bgOffsets[entry->bgLayer].hOffset = entry->hOffset;
-    engState->bgOffsets[entry->bgLayer].vOffset = entry->vOffset;
+    Display_SetBGOffset(entry->engineId, entry->bgLayer, entry->hOffset, entry->vOffset);
     return prev;
 }
 

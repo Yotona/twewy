@@ -1,0 +1,8 @@
+#ifndef FIELD_BATTLE_FIELDNOISEENCOUNTER_H
+#define FIELD_BATTLE_FIELDNOISEENCOUNTER_H
+
+#include <nitro/types.h>
+
+s16 FieldNoise_RollEncounter(s32 kind);
+
+#endif // FIELD_BATTLE_FIELDNOISEENCOUNTER_H

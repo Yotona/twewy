@@ -82,10 +82,10 @@ extern void func_ov030_020b0fe8(void* state);
 extern void func_ov030_020b0e0c(void* state);
 extern void func_ov030_020b17b4(void* state);
 extern void func_ov030_020b6dec(void* state);
-extern void func_ov030_020c9950(void* state);
+extern void ProcessOverlay_FldNpcMesSel(void* state);
 extern void ProcessOverlay_FldMesSel(void* state);
-extern void func_ov030_020d2d6c(void* state);
-extern void func_ov030_020d5370(void* state);
+extern void ProcessOverlay_LocaTitleSeq(void* state);
+extern void ProcessOverlay_FlashSel(void* state);
 extern void ProcessOverlay_OpenEnd(void* state);
 
 extern void ProcessOverlay_GrpCheck_HwSprites(void* state);
@@ -198,15 +198,15 @@ const DebugLauncherOption Options_Sugata[2] = {
 };
 
 const DebugLauncherOption Options_Kitawaki[9] = {
-    {1,  "機能\:フィールド<->戦闘",    "説明:フィールドで戦闘起こる",                  30,      func_ov030_020b0fe8},
-    {2,     "機能\:Fld/フィールド",        "説明:3Dフィールドテスト",                  30,      func_ov030_020b0e0c},
-    {3,                "機能\:imd",             "説明:imd disp test",                  30,      func_ov030_020b6dec},
-    {4,         "機能\:sound test",                          "説明:",                  29,      func_ov029_02082f9c},
-    {5,       "機能\:event select", "説明:debug用のイベントセレクト",                  30,      func_ov030_020b17b4},
-    {6,              "機能\:flash",              "説明:flash select",                  30,      func_ov030_020d5370},
-    {7, "機能\:NPC message select",        "説明:NPC message select",                  30,      func_ov030_020c9950},
-    {8,     "機能\:message select",            "説明:message select",                  30, ProcessOverlay_FldMesSel},
-    {0,                       NULL,                             NULL, OVERLAY_ID_UNLOADED,                     NULL},
+    {1,  "機能\:フィールド<->戦闘",    "説明:フィールドで戦闘起こる",                  30,         func_ov030_020b0fe8},
+    {2,     "機能\:Fld/フィールド",        "説明:3Dフィールドテスト",                  30,         func_ov030_020b0e0c},
+    {3,                "機能\:imd",             "説明:imd disp test",                  30,         func_ov030_020b6dec},
+    {4,         "機能\:sound test",                          "説明:",                  29,         func_ov029_02082f9c},
+    {5,       "機能\:event select", "説明:debug用のイベントセレクト",                  30,         func_ov030_020b17b4},
+    {6,              "機能\:flash",              "説明:flash select",                  30,     ProcessOverlay_FlashSel},
+    {7, "機能\:NPC message select",        "説明:NPC message select",                  30, ProcessOverlay_FldNpcMesSel},
+    {8,     "機能\:message select",            "説明:message select",                  30,    ProcessOverlay_FldMesSel},
+    {0,                       NULL,                             NULL, OVERLAY_ID_UNLOADED,                        NULL},
 };
 
 const DebugLauncherOption Options_Furukawa[4] = {
@@ -222,7 +222,7 @@ const DebugLauncherOption Options_Mori[6] = {
     // "Function: Graphic Check", "Description: Software Sprites"
     {2,   "機能\:グラフィックチェック", "説明:ソ\フトウェアスプライト",                  38, ProcessOverlay_GrpCheck_SwSprites},
     {3,  "機能\:ChkBtl/バトルチェック",          "説明:バトルチェック",                  27,               func_ov027_020e9670},
-    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,               func_ov030_020d2d6c},
+    {4,           "機能\:ロケタイトル",                    "説明:test",                  30,       ProcessOverlay_LocaTitleSeq},
     {5, "機能\:オープニングとタイトル",                        "説明:",                  37,            ProcessOverlay_OpenEnd},
     {0,                           NULL,                           NULL, OVERLAY_ID_UNLOADED,                              NULL},
 };

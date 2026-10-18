@@ -1392,7 +1392,9 @@ typedef enum SndMgrSeIdx {
     SEIDX_EV_STRMSE_RESERVE08             = 1385,
     SEIDX_EV_STRMSE_RESERVE09             = 1386,
     SEIDX_EV_STRMSE_RESERVE10             = 1387,
-    SEIDX_COUNT                           = 1388,
+
+    SEIDX_DISABLESOUNDEFFECTS = 1388, // Sound disabled, nothing playing
+    SEIDX_COUNT               = 1388, // Total number of sound effect indices
 } SndMgrSeIdx;
 
 #endif // SNDMGRSEIDX_H

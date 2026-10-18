@@ -1,5 +1,6 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/File/DatMgr.h"
+#include "Field/FieldRegion.h"
 #include "Save.h"
 #include "common_data.h"
 #include <nitro/types.h>

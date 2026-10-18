@@ -60,6 +60,7 @@ extern "C" {
 #define REG_GFX_FIFO_MATRIX_SCALE               (*(vu32*)0x0400046C)
 #define REG_GFX_FIFO_MATRIX_TRANSLATE           (*(vu32*)0x04000470)
 #define REG_GFX_FIFO_VERTEX_COLOR               (*(vu32*)0x04000480)
+#define REG_GFX_FIFO_NORMAL                     (*(vu32*)0x04000484)
 #define REG_GFX_FIFO_VERTEX_TEXCOORD            (*(vu32*)0x04000488)
 #define REG_GFX_FIFO_VERTEX_16                  (*(vu32*)0x0400048c)
 #define REG_GFX_FIFO_POLYGON_ATTR               (*(vu32*)0x040004a4)

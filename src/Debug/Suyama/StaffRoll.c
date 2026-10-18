@@ -20,7 +20,7 @@ const BinIdentifier data_ov042_020847c0[] = {
     {0x2A, "Apl_Suy/Grp_Staff_PartD_Pack.bin"},
 };
 
-extern void func_ov030_020d4f74(void*);
+extern void ProcessOverlay_Flash(void*);
 
 void func_ov042_020846e4(void);
 void func_ov042_020842e4(void);
@@ -108,8 +108,8 @@ void func_ov042_02082620(StaffRollState* state) {
     EasyTask_UpdateActiveTasks(&state->taskPool);
     if (DebugOvlDisp_IsStackAtBase() != FALSE) {
         OverlayTag tag;
-        gSaveData.unk_3128 = 2;
-        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, func_ov030_020d4f74, NULL, 0);
+        gSaveData.flashExitMode = 2;
+        MainOvlDisp_ReplaceTop(&tag, &OVERLAY_30_ID, ProcessOverlay_Flash, NULL, 0);
         return;
     }
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
@@ -575,20 +575,12 @@ s32 StaffBg_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     }
 }
 
-// Nonmatching: Regswaps
 s32 StaffBg_Init(StaffBg* staffBg, StaffBgArgs* args) {
     g_DisplaySettings.engineState[args->unk_00].blendMode = 1;
-
-    s32 engine = args->unk_00;
-    s32 layer0 = args->unk_04;
-    s32 layer1 = args->unk_08;
-
     if (args->unk_08 == 0) {
-        g_DisplaySettings.engineState[engine].blendLayer0 = layer0;
-        g_DisplaySettings.engineState[engine].blendLayer1 = 32;
+        Display_SetBlendLayers(args->unk_00, args->unk_04, 32);
     } else {
-        g_DisplaySettings.engineState[engine].blendLayer0 = layer0;
-        g_DisplaySettings.engineState[engine].blendLayer1 = layer1;
+        Display_SetBlendLayers(args->unk_00, args->unk_04, args->unk_08);
     }
 
     staffBg->unk_00 = args->unk_00;
@@ -611,10 +603,7 @@ s32 StaffBg_Init(StaffBg* staffBg, StaffBgArgs* args) {
 
     s32 temp_r0_9 = func_ov042_02083344(staffBg);
 
-    engine = args->unk_00;
-
-    g_DisplaySettings.engineState[engine].blendCoeff0 = args->unk_0C;
-    g_DisplaySettings.engineState[engine].blendCoeff1 = temp_r0_9;
+    Display_SetBlendCoeffs(args->unk_00, args->unk_0C, temp_r0_9);
     return 1;
 }
 
@@ -642,10 +631,7 @@ s32 StaffBg_Update(StaffBg* staffBg) {
         coeff1 = 0x1F;
     }
 
-    s32 engine = staffBg->unk_00;
-
-    g_DisplaySettings.engineState[engine].blendCoeff0 = coeff0;
-    g_DisplaySettings.engineState[engine].blendCoeff1 = coeff1;
+    Display_SetBlendCoeffs(staffBg->unk_00, coeff0, coeff1);
     staffBg->unk_1C++;
     return var_r4;
 }
@@ -680,7 +666,6 @@ s32 func_ov042_020836d0(TaskPool* pool, Task* task, void* args, s32 stage) {
     }
 }
 
-// Nonmatching: Regswaps, incorrect instructions for DisplayEngineState access
 s32 func_ov042_02083708(BgScroll* scroll, BgScrollArgs* args) {
     MI_CpuSet(scroll, 0, sizeof(BgScroll));
     scroll->unk_00 = args->unk_00;
@@ -693,30 +678,10 @@ s32 func_ov042_02083708(BgScroll* scroll, BgScrollArgs* args) {
 
     scroll->unk_24 = 0;
 
-    s32 vOffset = round(scroll->unk_0A);
-    s32 hOffset = round(scroll->unk_08);
-
-    s32 engine  = scroll->unk_00;
-    s32 bgLayer = scroll->unk_04;
-
-    DisplayEngineState* temp_r5 = &g_DisplaySettings.engineState[engine];
-
-    switch (temp_r5->bgSettings[bgLayer].bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_r5->bgAffines[bgLayer].unk_14 = 1;
-            break;
-    }
-
-    temp_r5->bgOffsets[bgLayer].hOffset = hOffset;
-    temp_r5->bgOffsets[bgLayer].vOffset = vOffset;
+    Display_SetBGOffset(args->unk_00, args->unk_04, round(args->unk_08), round(args->unk_0A));
     return 1;
 }
 
-// Nonmatching: Incorrect instructions for DisplayEngineState access
 s32 func_ov042_02083838(BgScroll* scroll) {
     s32 var_r4 = 1;
 
@@ -743,24 +708,7 @@ s32 func_ov042_02083838(BgScroll* scroll) {
         scroll->unk_18 += scroll->unk_20;
     }
 
-    s32 bgLayer = scroll->unk_04;
-    s32 vOffset = scroll->unk_18;
-    s32 hOffset = scroll->unk_14;
-
-    DisplayEngineState* temp_lr = &g_DisplaySettings.engineState[scroll->unk_00];
-
-    switch (temp_lr->bgSettings[bgLayer].bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            temp_lr->bgAffines[bgLayer].unk_14 = 1;
-            break;
-    }
-
-    temp_lr->bgOffsets[bgLayer].hOffset = hOffset;
-    temp_lr->bgOffsets[bgLayer].vOffset = vOffset;
+    Display_SetBGOffset(scroll->unk_00, scroll->unk_04, scroll->unk_14, scroll->unk_18);
 
     scroll->unk_24++;
     return var_r4;
@@ -811,32 +759,13 @@ void func_ov042_02083bb8(FontRoll* fontRoll) {
     func_ov042_020827ec(fontRoll->unk_000, 6, &commandUnk);
 }
 
-// Nonmatching: Regswaps
 void func_ov042_02083be8(FontRoll* fontRoll) {
     fontRoll->unk_EA0 += fontRoll->unk_EA4;
     if (fontRoll->unk_EA0 >= 0x100000) {
         fontRoll->unk_EA0 -= 0x100000;
     }
 
-    s32 engine  = fontRoll->engine;
-    s32 bgLayer = fontRoll->bgLayer;
-
-    DisplayEngineState* engineState = &g_DisplaySettings.engineState[engine];
-
-    s32 vOffset = fontRoll->unk_EA0;
-
-    switch (engineState->bgSettings[bgLayer].bgMode) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            engineState->bgAffines[bgLayer].unk_14 = 1;
-            break;
-    }
-
-    engineState->bgOffsets[bgLayer].hOffset = 0;
-    engineState->bgOffsets[bgLayer].vOffset = vOffset;
+    Display_SetBGOffset(fontRoll->engine, fontRoll->bgLayer, 0, fontRoll->unk_EA0);
 }
 
 s32 func_ov042_02083c78(FontRoll* fontRoll) {

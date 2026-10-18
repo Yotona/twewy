@@ -858,31 +858,8 @@ s32 BtlFeat02_Step_LoadFinalPhaseResources(BtlFeat02* feat) {
     g_DisplaySettings.controls[0].layers |= 2;
     g_DisplaySettings.controls[1].layers |= 2;
 
-    DisplayEngineState* engineMain = &g_DisplaySettings.engineState[0];
-    switch (engineMain->bgSettings[1].bgMode) {
-        case DISPLAY_BGMODE_AFFINE:
-        case DISPLAY_BGMODE_PLTT:
-        case DISPLAY_BGMODE_BMP256:
-        case DISPLAY_BGMODE_BMPDIRECT:
-        case DISPLAY_BGMODE_BMPLARGE:
-            engineMain->bgAffines[1].unk_14 = 1;
-            break;
-    }
-    engineMain->bgOffsets[1].hOffset = 0;
-    engineMain->bgOffsets[1].vOffset = 0x8000;
-
-    DisplayEngineState* engineSub = &g_DisplaySettings.engineState[1];
-    switch (engineSub->bgSettings[1].bgMode) {
-        case DISPLAY_BGMODE_AFFINE:
-        case DISPLAY_BGMODE_PLTT:
-        case DISPLAY_BGMODE_BMP256:
-        case DISPLAY_BGMODE_BMPDIRECT:
-        case DISPLAY_BGMODE_BMPLARGE:
-            engineSub->bgAffines[1].unk_14 = 1;
-            break;
-    }
-    engineSub->bgOffsets[1].hOffset = 0;
-    engineSub->bgOffsets[1].vOffset = 0x8000;
+    Display_SetBGOffset(DISPLAY_MAIN, DISPLAY_BG1, 0, 0x8000);
+    Display_SetBGOffset(DISPLAY_SUB, DISPLAY_BG1, 0, 0x8000);
 
     Display_Commit();
     func_ov003_020bce18(0, 0, 2, 180);
@@ -1040,71 +1017,19 @@ s32 BtlFeat02_Update(TaskPool* pool, Task* task, void* args) {
     feat->bgLayerCOffsetH = feat->shakeScreenOffset;
 
     if (feat->unk_354 != 0) {
-        s32                 layer   = feat->unk_2E0;
-        DisplayEngineState* temp_ip = &g_DisplaySettings.engineState[feat->unk_2DC];
-
-        switch (temp_ip->bgSettings[layer].bgMode) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                temp_ip->bgAffines[layer].unk_14 = 1;
-                break;
-        }
-        temp_ip->bgOffsets[layer].hOffset = feat->bgLayerAOffsetH;
-        temp_ip->bgOffsets[layer].vOffset = (feat->bgLayerAOffsetV + 0x8000);
+        Display_SetBGOffset(feat->unk_2DC, feat->unk_2E0, feat->bgLayerAOffsetH, (feat->bgLayerAOffsetV + 0x8000));
     }
 
     if (feat->unk_360 != 0) {
-        s32                 layer   = feat->unk_330;
-        DisplayEngineState* temp_ip = &g_DisplaySettings.engineState[feat->unk_32C];
-
-        switch (temp_ip->bgSettings[layer].bgMode) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                temp_ip->bgAffines[layer].unk_14 = 1;
-                break;
-        }
-        temp_ip->bgOffsets[layer].hOffset = feat->bgLayerBOffsetH;
-        temp_ip->bgOffsets[layer].vOffset = (feat->bgLayerBOffsetV + 0x8000);
+        Display_SetBGOffset(feat->unk_32C, feat->unk_330, feat->bgLayerBOffsetH, (feat->bgLayerBOffsetV + 0x8000));
     }
 
     if (feat->unk_36C != 0) {
-        s32                 layer   = feat->unk_2B8;
-        DisplayEngineState* temp_ip = &g_DisplaySettings.engineState[feat->unk_2B4];
-
-        switch (temp_ip->bgSettings[layer].bgMode) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                temp_ip->bgAffines[layer].unk_14 = 1;
-                break;
-        }
-        temp_ip->bgOffsets[layer].hOffset = feat->bgLayerCOffsetH;
-        temp_ip->bgOffsets[layer].vOffset = (feat->bgLayerCOffsetV + 0x8000);
+        Display_SetBGOffset(feat->unk_2B4, feat->unk_2B8, feat->bgLayerCOffsetH, (feat->bgLayerCOffsetV + 0x8000));
     }
 
     if (feat->unk_378 != 0) {
-        s32                 layer   = feat->unk_308;
-        DisplayEngineState* temp_ip = &g_DisplaySettings.engineState[feat->unk_304];
-
-        switch (temp_ip->bgSettings[layer].bgMode) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                temp_ip->bgAffines[layer].unk_14 = 1;
-                break;
-        }
-        temp_ip->bgOffsets[layer].hOffset = feat->bgLayerDOffsetH;
-        temp_ip->bgOffsets[layer].vOffset = (feat->bgLayerDOffsetV + 0x8000);
+        Display_SetBGOffset(feat->unk_304, feat->unk_308, feat->bgLayerDOffsetH, (feat->bgLayerDOffsetV + 0x8000));
     }
 
     return 1;

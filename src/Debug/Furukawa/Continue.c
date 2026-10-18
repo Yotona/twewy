@@ -11,6 +11,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Text.h"
+#include "Field/FieldRegion.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
@@ -272,16 +273,16 @@ void func_ov025_020e7d70(ContinueObject* contObj) {
 void func_ov025_020e7dd0(ContinueObject* contObj) {
     switch (contObj->unk_120D0) {
         case 0: {
-            gSaveData.unk_3142 = 0;
-            gSaveData.unk_3141 = gSaveData.playerStats.difficulty;
+            gSaveData.unk_3142         = 0;
+            gSaveData.battleDifficulty = gSaveData.playerStats.difficulty;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
         } break;
 
         case 1: {
-            gSaveData.unk_3142 = 0;
-            gSaveData.unk_3141 = 0;
+            gSaveData.unk_3142         = 0;
+            gSaveData.battleDifficulty = 0;
 
             OverlayTag tag;
             MainOvlDisp_ReplaceTop(&tag, &OVERLAY_3_ID, &func_ov003_0208ec74, NULL, PROCESS_STAGE_INIT);
