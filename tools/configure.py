@@ -411,9 +411,11 @@ def main():
         )
         n.newline()
 
+        keep_mtime = f'"{PYTHON}" tools/keep_mtime.py'
         n.rule(
             name="delink",
-            command=f"{DSD} {DSD_BASE_FLAGS} delink --config-path $config_path",
+            command=f"{keep_mtime} $delinks_dir -- {DSD} {DSD_BASE_FLAGS} delink --config-path $config_path",
+            restat=True,
         )
         n.newline()
 
@@ -443,7 +445,11 @@ def main():
         )
         n.newline()
 
-        n.rule(name="lcf", command=f"{DSD} {DSD_BASE_FLAGS} lcf -c $config_path")
+        n.rule(
+            name="lcf",
+            command=f"{keep_mtime} $out -- {DSD} {DSD_BASE_FLAGS} lcf -c $config_path",
+            restat=True,
+        )
         n.newline()
 
         n.rule(
@@ -466,7 +472,8 @@ def main():
 
         n.rule(
             name="objdiff",
-            command=f"{DSD} {DSD_BASE_FLAGS} objdiff --config-path $config_path {DSD_OBJDIFF_ARGS}",
+            command=f"{keep_mtime} $out -- {DSD} {DSD_BASE_FLAGS} objdiff --config-path $config_path {DSD_OBJDIFF_ARGS}",
+            restat=True,
         )
         n.newline()
 
@@ -519,7 +526,8 @@ def main():
             add_objdiff_builds(n, project)
             add_apply_build(n, project)
 
-            n.default(["objdiff", "check", "sha1", "report"])
+            # Reports are refreshed explicitly; still compile incomplete units.
+            n.default(["objdiff", "objects", "check", "sha1"])
         else:
             n.default(["download_tools"])
 
@@ -737,11 +745,12 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
         n.comment("Delink ELF binaries when any delinks.txt file is modified")
         n.build(
             inputs=project.dsd_configs() + [rom_config],
-            implicit=DSD,
+            implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
             rule="delink",
             outputs=delink_files,
             variables={
                 "config_path": str(project.arm9_config_yaml()),
+                "delinks_dir": str(project.game_build / "delinks"),
             },
         )
         n.newline()
@@ -753,7 +762,7 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
     objects_file = project.arm9_objects_file()
     n.build(
         inputs=project.delinks_files + [str(rom_config)],
-        implicit=DSD,
+        implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
         rule="lcf",
         outputs=[lcf_file, objects_file],
         variables={
@@ -810,7 +819,7 @@ def add_check_builds(n: ninja_syntax.Writer, project: Project):
 def add_objdiff_builds(n: ninja_syntax.Writer, project: Project):
     n.build(
         inputs=project.dsd_configs(),
-        implicit=DSD,
+        implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
         rule="objdiff",
         outputs="objdiff.json",
         variables={
@@ -823,6 +832,15 @@ def add_objdiff_builds(n: ninja_syntax.Writer, project: Project):
         inputs="objdiff.json",
         rule="phony",
         outputs="objdiff",
+    )
+    n.newline()
+
+    # Incomplete units link their delinked object, so linking alone does not
+    # compile their source. Keep those objects in the default build as well.
+    n.build(
+        inputs=project.source_object_files(),
+        rule="phony",
+        outputs="objects",
     )
     n.newline()
 
@@ -852,7 +870,9 @@ def add_configure_build(n: ninja_syntax.Writer, project: Project):
             this_file,
             # Require dsd to exist when rerunning configure.py
             DSD,
-            *project.dsd_configs(),
+            # Symbols and relocations affect delinking, not graph membership.
+            str(project.arm9_config_yaml()),
+            *project.delinks_files,
         ],
     )
 
