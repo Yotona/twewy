@@ -22,10 +22,6 @@ extern s32  func_ov003_020cd11c(s32);
 
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 
-static inline s32 Mth_MulFixed(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 #define ABSVAL(value) ((value) < 0 ? -(value) : (value))
 
 void func_ov012_02125de4(BtlEnm014*);
@@ -209,8 +205,8 @@ void func_ov012_02125de4(BtlEnm014* data) {
                                                     data->actor.position.z);
                 if (data->unk_1D0 == 1) {
                     func_ov003_020c4cc4(data, 0x21A);
-                    boss->actor.zVelocity = Mth_MulFixed(boss->actor.zVelocity, 0x1800);
-                    boss->actor.yVelocity = Mth_MulFixed(boss->actor.yVelocity, 0x1800);
+                    boss->actor.zVelocity = FX_Mul(boss->actor.zVelocity, 0x1800);
+                    boss->actor.yVelocity = FX_Mul(boss->actor.yVelocity, 0x1800);
                 }
             }
             if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {

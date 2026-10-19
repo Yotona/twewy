@@ -3,6 +3,7 @@
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss03.h"
 #include "SpriteMgr.h"
+#include <nitro/fx.h>
 
 extern void func_0200d858(void*, s32, s32, void*);
 extern void func_0200d954(s32, s32);
@@ -56,7 +57,6 @@ void func_ov017_021301e0();
 void func_ov017_0213021c(void*);
 void func_ov017_02130280(void*);
 
-extern s32 data_0205e4e0;
 extern s32 gSaveState;
 
 extern s32 data_ov003_020e68d0;
@@ -1024,10 +1024,10 @@ void func_ov017_021277cc(void* arg0) {
     temp_r5_2 = ((s32)(u16)(FX_Atan2Idx(temp_r6, temp_r5) + 0x8000) >> 4) * 2;
     temp_r2   = 0x400000 - temp_r4;
     temp_r4_2 = (temp_r2 * 2) + 0x800;
-    temp_r1_2 = *(&data_0205e4e0 + ((temp_r5_2 + 1) * 2));
+    temp_r1_2 = *(FX_SinCosTable_ + ((temp_r5_2 + 1) * 2));
     temp_r5_3 = (temp_r4_2 >> 0xC) | (((((temp_r2 >> 0x1F) * 2) | ((u32)temp_r2 >> 0x1F)) + M2C_CARRY(temp_r4_2)) << 0x14);
     temp_r1_3 = (temp_r1_2 * temp_r5_3) + 0x800;
-    temp_r0_2 = *(s16*)((u8*)&data_0205e4e0 + (temp_r5_2 * 2));
+    temp_r0_2 = *(s16*)((u8*)&FX_SinCosTable_ + (temp_r5_2 * 2));
     temp_r2_2 = (temp_r0_2 * temp_r5_3) + 0x800;
     ((Boss03*)arg0)->unk28 = (s32)(((Boss03*)arg0)->unk28 +
                                    ((temp_r1_3 >> 0xC) | ((MULT_HI(temp_r1_2, temp_r5_3) + M2C_CARRY(temp_r1_3)) << 0x14)));
@@ -1650,12 +1650,12 @@ void func_ov017_02128ba0(void* arg0) {
     u32 temp_r3_2;
 
     temp_r2   = ((Boss03*)arg0)->unk1D4;
-    temp_r3   = *(&data_0205e4e0 + (((((s32)((Boss03*)arg0)->unk1D8 >> 4) * 2) + 1) * 2));
+    temp_r3   = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg0)->unk1D8 >> 4) * 2) + 1) * 2));
     temp_r3_2 = (temp_r3 * temp_r2) + 0x800;
     ((Boss03*)arg0)->unk28 =
         (s32)(((Boss03*)arg0)->unk28 + ((temp_r3_2 >> 0xC) | ((MULT_HI(temp_r3, temp_r2) + M2C_CARRY(temp_r3_2)) << 0x14)));
     temp_r1   = ((Boss03*)arg0)->unk1D4;
-    temp_r2_2 = *(&data_0205e4e0 + (((s32)((Boss03*)arg0)->unk1D8 >> 4) * 4));
+    temp_r2_2 = *(FX_SinCosTable_ + (((s32)((Boss03*)arg0)->unk1D8 >> 4) * 4));
     temp_r2_3 = (temp_r2_2 * temp_r1) + 0x800;
     ((Boss03*)arg0)->unk2C =
         (s32)(((Boss03*)arg0)->unk2C + ((temp_r2_3 >> 0xC) | ((MULT_HI(temp_r2_2, temp_r1) + M2C_CARRY(temp_r2_3)) << 0x14)));
@@ -2745,12 +2745,12 @@ void func_ov017_0212aa1c(void* arg0) {
     u32 temp_r3_2;
 
     temp_r2   = ((Boss03*)arg0)->unk1DC;
-    temp_r3   = *(&data_0205e4e0 + (((((s32)((Boss03*)arg0)->unk1D8 >> 4) * 2) + 1) * 2));
+    temp_r3   = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg0)->unk1D8 >> 4) * 2) + 1) * 2));
     temp_r3_2 = (temp_r3 * temp_r2) + 0x800;
     ((Boss03*)arg0)->unk28 =
         (s32)(((Boss03*)arg0)->unk28 + ((temp_r3_2 >> 0xC) | ((MULT_HI(temp_r3, temp_r2) + M2C_CARRY(temp_r3_2)) << 0x14)));
     temp_r1   = ((Boss03*)arg0)->unk1DC;
-    temp_r2_2 = *(&data_0205e4e0 + (((s32)((Boss03*)arg0)->unk1D8 >> 4) * 4));
+    temp_r2_2 = *(FX_SinCosTable_ + (((s32)((Boss03*)arg0)->unk1D8 >> 4) * 4));
     temp_r2_3 = (temp_r2_2 * temp_r1) + 0x800;
     ((Boss03*)arg0)->unk2C =
         (s32)(((Boss03*)arg0)->unk2C + ((temp_r2_3 >> 0xC) | ((MULT_HI(temp_r2_2, temp_r1) + M2C_CARRY(temp_r2_3)) << 0x14)));
@@ -3221,9 +3221,9 @@ s32 func_ov017_0212b770(void* arg1) {
     sp8       = temp_r0;
     temp_r2   = ((s32)((Boss03*)temp_r0)->unk588 >> 4) * 2;
     temp_r7   = data_ov003_020e71b8->unk3D898;
-    temp_r3   = *(s16*)((u8*)&data_0205e4e0 + (temp_r2 * 2));
+    temp_r3   = *(s16*)((u8*)&FX_SinCosTable_ + (temp_r2 * 2));
     var_r6    = ((Boss03*)temp_r7)->unk28;
-    temp_r4   = *(&data_0205e4e0 + ((temp_r2 + 1) * 2));
+    temp_r4   = *(FX_SinCosTable_ + ((temp_r2 + 1) * 2));
     temp_r0_2 = ((Boss03*)temp_r0)->unk0;
     temp_r9   = temp_r3 * 0x18;
     sp4       = temp_r4 * 0x18;
@@ -3672,12 +3672,12 @@ void func_ov017_0212c42c(void* arg0) {
     u32 temp_r3_2;
 
     temp_r2   = ((Boss03*)arg0)->unk1D8;
-    temp_r3   = *(&data_0205e4e0 + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
+    temp_r3   = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
     temp_r3_2 = (temp_r3 * temp_r2) + 0x800;
     ((Boss03*)arg0)->unk28 =
         (s32)(((Boss03*)arg0)->unk28 + ((temp_r3_2 >> 0xC) | ((MULT_HI(temp_r3, temp_r2) + M2C_CARRY(temp_r3_2)) << 0x14)));
     temp_r1   = ((Boss03*)arg0)->unk1D8;
-    temp_r2_2 = *(&data_0205e4e0 + (((s32)((Boss03*)arg0)->unk1D4 >> 4) * 4));
+    temp_r2_2 = *(FX_SinCosTable_ + (((s32)((Boss03*)arg0)->unk1D4 >> 4) * 4));
     temp_r2_3 = (temp_r2_2 * temp_r1) + 0x800;
     ((Boss03*)arg0)->unk2C =
         (s32)(((Boss03*)arg0)->unk2C + ((temp_r2_3 >> 0xC) | ((MULT_HI(temp_r2_2, temp_r1) + M2C_CARRY(temp_r2_3)) << 0x14)));
@@ -3956,8 +3956,8 @@ s32 func_ov017_0212cb50(void* arg1) {
     temp_r0   = ((Boss03*)arg1)->unk18;
     temp_r2   = ((s32)((Boss03*)temp_r0)->unk184 >> 4) * 2;
     temp_ip   = data_ov003_020e71b8->unk3D89C;
-    temp_r2_2 = *(s16*)((u8*)&data_0205e4e0 + (temp_r2 * 2)) * 0xC;
-    temp_r7   = *(&data_0205e4e0 + ((temp_r2 + 1) * 2)) * 0xC;
+    temp_r2_2 = *(s16*)((u8*)&FX_SinCosTable_ + (temp_r2 * 2)) * 0xC;
+    temp_r7   = *(FX_SinCosTable_ + ((temp_r2 + 1) * 2)) * 0xC;
     var_r5    = ((Boss03*)temp_ip)->unk28;
     var_r6    = ((Boss03*)temp_ip)->unk2C;
     temp_r4   = temp_r2_2 + (temp_r2_2 >> 0x1F);
@@ -4062,8 +4062,8 @@ s32 func_ov017_0212cd6c(void* arg1) {
     temp_r0   = ((Boss03*)arg1)->unk18;
     temp_r2   = ((s32)((Boss03*)temp_r0)->unk184 >> 4) * 2;
     temp_ip   = data_ov003_020e71b8->unk3D898;
-    temp_r2_2 = *(s16*)((u8*)&data_0205e4e0 + (temp_r2 * 2)) * 0xC;
-    temp_r7   = *(&data_0205e4e0 + ((temp_r2 + 1) * 2)) * 0xC;
+    temp_r2_2 = *(s16*)((u8*)&FX_SinCosTable_ + (temp_r2 * 2)) * 0xC;
+    temp_r7   = *(FX_SinCosTable_ + ((temp_r2 + 1) * 2)) * 0xC;
     var_r5    = ((Boss03*)temp_ip)->unk28;
     var_r6    = ((Boss03*)temp_ip)->unk2C;
     temp_r4   = temp_r2_2 + (temp_r2_2 >> 0x1F);
@@ -4458,7 +4458,7 @@ void func_ov017_0212d730(void) {
     temp_r2 = (void*)((u8*)&g_DisplaySettings + 0x284);
     temp_r3 = *(u16*)0x04000006;
     if ((s32)temp_r3 < 0xC0) {
-        temp_r1   = *(&data_0205e4e0 + (((s32)(u16)((data_ov017_021439f4.unk0 << 0xA) + (temp_r3 << 9)) >> 4) * 4));
+        temp_r1   = *(FX_SinCosTable_ + (((s32)(u16)((data_ov017_021439f4.unk0 << 0xA) + (temp_r3 << 9)) >> 4) * 4));
         temp_r1_2 = (temp_r1 * data_ov017_021439f4.unk8) + 0x800;
         var_r1    = (temp_r1_2 >> 0xC) | ((MULT_HI(temp_r1, data_ov017_021439f4.unk8) + M2C_CARRY(temp_r1_2)) << 0x14);
         if (data_ov017_021439f4.unk0 & 1) {
@@ -4852,13 +4852,13 @@ void func_ov017_0212e240(void* arg0) {
         ((Boss03*)arg0)->unk1D6 = (u16)(temp_r1 - 1);
         temp_r2                 = ((Boss03*)arg0)->unk1D4;
         if (((Boss03*)arg0)->unkCA & 1) {
-            temp_r1_2 = *(&data_0205e4e0 + (((s32)temp_r2 >> 4) * 4));
+            temp_r1_2 = *(FX_SinCosTable_ + (((s32)temp_r2 >> 4) * 4));
             temp_r0   = ((Boss03*)arg0)->unk1D0;
             temp_r1_3 = (temp_r1_2 * temp_r0) + 0x800;
             var_r0 =
                 ((Boss03*)arg0)->unk28 + ((temp_r1_3 >> 0xC) | ((MULT_HI(temp_r1_2, temp_r0) + M2C_CARRY(temp_r1_3)) << 0x14));
         } else {
-            temp_r1_4 = *(&data_0205e4e0 + (((s32)temp_r2 >> 4) * 4));
+            temp_r1_4 = *(FX_SinCosTable_ + (((s32)temp_r2 >> 4) * 4));
             temp_r0_2 = ((Boss03*)arg0)->unk1D0;
             temp_r1_5 = (temp_r1_4 * temp_r0_2) + 0x800;
             var_r0    = ((Boss03*)arg0)->unk28 -
@@ -4866,7 +4866,7 @@ void func_ov017_0212e240(void* arg0) {
         }
         ((Boss03*)arg0)->unk28 = var_r0;
         temp_r0_3              = ((Boss03*)arg0)->unk1D0;
-        temp_r1_6              = *(&data_0205e4e0 + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
+        temp_r1_6              = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
         temp_r1_7              = (temp_r1_6 * temp_r0_3) + 0x800;
         ((Boss03*)arg0)->unk2C =
             (s32)(((Boss03*)arg0)->unk2C +
@@ -5128,12 +5128,12 @@ void func_ov017_0212e8d0(void* arg0) {
     u32 temp_r3_2;
 
     temp_r2   = ((Boss03*)arg0)->unk1D0;
-    temp_r3   = *(&data_0205e4e0 + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
+    temp_r3   = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg0)->unk1D4 >> 4) * 2) + 1) * 2));
     temp_r3_2 = (temp_r3 * temp_r2) + 0x800;
     ((Boss03*)arg0)->unk28 =
         (s32)(((Boss03*)arg0)->unk28 + ((temp_r3_2 >> 0xC) | ((MULT_HI(temp_r3, temp_r2) + M2C_CARRY(temp_r3_2)) << 0x14)));
     temp_r1   = ((Boss03*)arg0)->unk1D0;
-    temp_r2_2 = *(&data_0205e4e0 + (((s32)((Boss03*)arg0)->unk1D4 >> 4) * 4));
+    temp_r2_2 = *(FX_SinCosTable_ + (((s32)((Boss03*)arg0)->unk1D4 >> 4) * 4));
     temp_r2_3 = (temp_r2_2 * temp_r1) + 0x800;
     ((Boss03*)arg0)->unk2C =
         (s32)(((Boss03*)arg0)->unk2C + ((temp_r2_3 >> 0xC) | ((MULT_HI(temp_r2_2, temp_r1) + M2C_CARRY(temp_r2_3)) << 0x14)));
@@ -5644,9 +5644,9 @@ void func_ov017_0212f674(void* arg0) {
     var_r4    = ((Boss03*)data_ov017_02143984)->unk28 - ((Boss03*)arg0)->unk6C;
     var_r5    = ((Boss03*)data_ov017_02143984)->unk2C - ((Boss03*)arg0)->unk70;
     temp_ip   = (FX_Atan2Idx(var_r5, var_r4) >> 4) * 2;
-    temp_r1   = *(&data_0205e4e0 + ((temp_ip + 1) * 2));
+    temp_r1   = *(FX_SinCosTable_ + ((temp_ip + 1) * 2));
     temp_r3   = ((Boss03*)arg0)->unk80;
-    temp_r0   = *(s16*)((u8*)&data_0205e4e0 + (temp_ip * 2));
+    temp_r0   = *(s16*)((u8*)&FX_SinCosTable_ + (temp_ip * 2));
     temp_r3_2 = (temp_r3 * temp_r1) + 0x800;
     ((Boss03*)arg0)->unk78 =
         (s32)(((Boss03*)arg0)->unk78 + ((temp_r3_2 >> 0xC) | ((MULT_HI(temp_r3, temp_r1) + M2C_CARRY(temp_r3_2)) << 0x14)));
@@ -5720,11 +5720,11 @@ s32 func_ov017_0212f890(void* arg1, void* arg2) {
     ((Boss03*)temp_r4)->unk70 = (s32)((Boss03*)arg2)->unk8;
     ((Boss03*)temp_r4)->unk74 = (s32)((Boss03*)arg2)->unkC;
     temp_r2                   = ((Boss03*)arg2)->unk10;
-    temp_r1                   = *(&data_0205e4e0 + (((((s32)((Boss03*)arg2)->unk2 >> 4) * 2) + 1) * 2));
+    temp_r1                   = *(FX_SinCosTable_ + (((((s32)((Boss03*)arg2)->unk2 >> 4) * 2) + 1) * 2));
     temp_r2_2                 = (temp_r2 * temp_r1) + 0x800;
     ((Boss03*)temp_r4)->unk78 = (s32)((temp_r2_2 >> 0xC) | ((MULT_HI(temp_r2, temp_r1) + M2C_CARRY(temp_r2_2)) << 0x14));
     temp_r2_3                 = ((Boss03*)arg2)->unk10;
-    temp_r1_2                 = *(&data_0205e4e0 + (((s32)((Boss03*)arg2)->unk2 >> 4) * 4));
+    temp_r1_2                 = *(FX_SinCosTable_ + (((s32)((Boss03*)arg2)->unk2 >> 4) * 4));
     temp_r2_4                 = (temp_r2_3 * temp_r1_2) + 0x800;
     ((Boss03*)temp_r4)->unk7C = (s32)((temp_r2_4 >> 0xC) | ((MULT_HI(temp_r2_3, temp_r1_2) + M2C_CARRY(temp_r2_4)) << 0x14));
     ((Boss03*)temp_r4)->unk80 = 0;

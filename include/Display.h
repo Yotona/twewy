@@ -241,6 +241,16 @@ static inline void Display_SetSubLayers(u32 mask) {
     g_DisplaySettings.controls[DISPLAY_SUB].layers |= mask;
 }
 
+static inline void Display_SetBlendLayers(DisplayEngine engine, u32 layer0, u32 layer1) {
+    g_DisplaySettings.engineState[engine].blendLayer0 = layer0;
+    g_DisplaySettings.engineState[engine].blendLayer1 = layer1;
+}
+
+static inline void Display_SetBlendCoeffs(DisplayEngine engine, u32 coeff0, u32 coeff1) {
+    g_DisplaySettings.engineState[engine].blendCoeff0 = coeff0;
+    g_DisplaySettings.engineState[engine].blendCoeff1 = coeff1;
+}
+
 static inline void Display_InitMainBG0(DisplayBGMode bgMode, GXBGScreenSizeText screenSizeText, GXBGColors colorMode,
                                        u32 screenBase, u32 charBase, u32 extPlttSlot, u32 regMask) {
     DisplayBGSettings* bg0Settings = Display_GetBG0Settings(DISPLAY_MAIN);

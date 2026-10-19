@@ -439,7 +439,7 @@ from:0x02086148 kind:load to:0x02071d10 add:0x1000 module:main
 from:0x0208614c kind:load to:0x0208ec24 module:overlay(44)
 from:0x02086150 kind:load to:0x02071d10 module:main
 from:0x02086210 kind:arm_call to:0x020048b4 module:main
-from:0x0208622c kind:load to:0x0209a204 module:overlays(38,39,45)
+from:0x0208622c kind:load to:0x0209a204 module:overlays(38,45)
 from:0x02086230 kind:load to:0x02071d10 module:main
 from:0x02086234 kind:load to:0x02071d10 add:0x7d module:main
 from:0x02086238 kind:load to:0x0206a9a4 module:main

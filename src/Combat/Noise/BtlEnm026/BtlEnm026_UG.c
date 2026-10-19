@@ -22,7 +22,6 @@ extern void  func_ov003_020c4fc8(void*);
 extern void  func_ov003_020ccec0(void*, s32);
 extern void* func_ov003_0208495c(void*);
 extern void* func_ov003_02084984(void*);
-extern s16   data_0205e4e0[];
 
 /// An element of the `unk3D8BC` list.
 typedef struct Ov003Node3D8BC {
@@ -33,10 +32,6 @@ typedef struct Ov003Node3D8BC {
     /* 0x048 */ u8    unk_048[0x108 - 0x48];
     /* 0x108 */ void* unk_108; // list link
 } Ov003Node3D8BC;
-
-static inline s32 Mth_MulFixed(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
 
 void        func_ov015_0212736c(BtlEnm026*);
 void        func_ov015_02127594(BtlEnm026*);
@@ -66,12 +61,12 @@ void func_ov015_02126fd8(BtlEnm026* data) {
 
             tx    = boss->actor.position.x + ((boss->actor.position.x > data->actor.position.x) ? -0x50000 : 0x50000);
             angle = FX_Atan2Idx(boss->actor.position.y - data->actor.position.y, tx - data->actor.position.x) >> 4;
-            sin   = data_0205e4e0[angle * 2 + 1];
-            cos   = data_0205e4e0[angle * 2];
-            mag   = Mth_MulFixed((sin < 0) ? -sin : sin, 0x2000);
+            sin   = FX_SinCosTable_[angle * 2 + 1];
+            cos   = FX_SinCosTable_[angle * 2];
+            mag   = FX_Mul((sin < 0) ? -sin : sin, 0x2000);
             mag += 0x1000;
-            data->unk_1E8          = Mth_MulFixed(sin, mag);
-            data->unk_1EC          = Mth_MulFixed(cos, mag);
+            data->unk_1E8          = FX_Mul(sin, mag);
+            data->unk_1EC          = FX_Mul(cos, mag);
             data->actor.position.x = data->actor.position.x + data->unk_1E8;
             data->actor.position.y = data->actor.position.y + data->unk_1EC;
             func_ov003_020c4ab4(data, (data->unk_1E8 > 0) ? 1 : 0);
@@ -191,10 +186,10 @@ void func_ov015_0212736c(BtlEnm026* data) {
             }
             CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
             r             = RNG_Next(0xFFFF);
-            sin           = data_0205e4e0[(r >> 4) * 2 + 1];
-            cos           = data_0205e4e0[(r >> 4) * 2];
-            data->unk_1E8 = Mth_MulFixed(sin, data->unk_1D0);
-            data->unk_1EC = Mth_MulFixed(cos, data->unk_1D0) >> 1;
+            sin           = FX_SinCosTable_[(r >> 4) * 2 + 1];
+            cos           = FX_SinCosTable_[(r >> 4) * 2];
+            data->unk_1E8 = FX_Mul(sin, data->unk_1D0);
+            data->unk_1EC = FX_Mul(cos, data->unk_1D0) >> 1;
             func_ov003_020c4ab4(data, (data->unk_1E8 > 0) ? 1 : 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = RNG_Next(data->unk_198);

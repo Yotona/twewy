@@ -168,6 +168,24 @@ static inline void Sprite_FillFrameInfo(SpriteFrameInfo* info, Sprite* sprite) {
         return info_;                                        \
     }
 
+// Sprite_FrameInfoCallback that also runs STMT on the filled info (`temp_`) before returning it.
+#define Sprite_FrameInfoCallbackWith(sprite, mode, STMT)     \
+    {                                                        \
+        SpriteFrameInfo* info_ = NULL;                       \
+        switch (mode) {                                      \
+            case SPRITE_FRAME_UPDATE:                        \
+                g_SpriteFrameInfo.updateSteps = 1;           \
+                return &g_SpriteFrameInfo;                   \
+            case SPRITE_FRAME_RENDER: {                      \
+                SpriteFrameInfo* temp_ = &g_SpriteFrameInfo; \
+                Sprite_FillFrameInfo(temp_, sprite);         \
+                STMT;                                        \
+                info_ = temp_;                               \
+            } break;                                         \
+        }                                                    \
+        return info_;                                        \
+    }
+
 #define Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, STMT) \
     {                                                         \
         SpriteFrameInfo* info_ = &g_SpriteFrameInfo;          \
@@ -187,6 +205,8 @@ static inline void Sprite_FillFrameInfo(SpriteFrameInfo* info, Sprite* sprite) {
 #define Sprite_FrameInfoCallbackEarly(sprite, mode) Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, (void)0)
 #define Sprite_FrameInfoCallbackSorted(sprite, mode, sortKey_)                   \
     Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, info_->sortKey = (sortKey_))
+#define Sprite_FrameInfoCallbackAffineSorted(sprite, mode, affine_, sortKey_)                                 \
+    Sprite_FrameInfoCallbackEarlyImpl(sprite, mode, (info_->affine = (affine_), info_->sortKey = (sortKey_)))
 
 void Sprite_Init(Sprite* sprite);
 

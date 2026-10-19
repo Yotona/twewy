@@ -21,7 +21,6 @@ static BOOL SaveIO_HasValidFooter(u8* buffer, const u8* magic, s32 magicLength, 
 static u16  SaveIO_GetChecksum16(void*, s16);
 
 extern s32 data_0205c23c;
-extern u16 data_0205c5be[];
 
 /**
  * Magic string used to validate the save file footer.
@@ -694,15 +693,13 @@ s32 func_020259e4(s32 itemId) {
 
 s32 func_02025a2c(s32 playTime) {
     s16 unlockedCount = 0;
-    for (unsigned long itemIndex = 0; itemIndex < 67; itemIndex++) {
-        u16 flags = data_0205c5be[(itemIndex * 7) + 6];
+    for (u32 itemIndex = 0; itemIndex < 67; itemIndex++) {
+        u16 flags = data_0205c5be[itemIndex].flags;
         if ((flags & 2) || ((flags & 1) && (Inventory_HasRequiredQuantity(ITEM_STICKER_GAME_CLEARED, 1, 0) == 0))) {
             continue;
         }
-        if ((*((s16*)((data_0205c5be + (itemIndex * 7)) + 0))) <= playTime) {
-            do {
-            } while (0);
-            if (playTime <= (*((s16*)((data_0205c5be + (7 * itemIndex)) + 1)))) {
+        if (data_0205c5be[itemIndex].firstChapter <= playTime) {
+            if (playTime <= data_0205c5be[itemIndex].lastChapter) {
                 if (func_020259e4(itemIndex) == 0) {
                     unlockedCount += 1;
                 }
@@ -714,21 +711,21 @@ s32 func_02025a2c(s32 playTime) {
 }
 
 void func_02025ac4(MainData* arg0) {
-    arg0->unk_246C = 0;
-    arg0->unk_2474 = 0;
-    arg0->unk_2478 = 0;
-    arg0->unk_247C = 0;
-    arg0->unk_2480 = 0;
-    arg0->unk_3106 = 0;
-    arg0->unk_3108 = -1;
-    arg0->unk_3112 = 0;
-    arg0->unk_3114 = 0;
-    arg0->unk_3116 = 0;
-    arg0->unk_3118 = 0;
-    arg0->unk_311A = 0;
-    arg0->unk_311C = 0;
-    arg0->unk_3124 = -1;
-    arg0->unk_312C = 1;
+    arg0->unk_246C            = 0;
+    arg0->unk_2474            = 0;
+    arg0->unk_2478            = 0;
+    arg0->unk_247C            = 0;
+    arg0->unk_2480            = 0;
+    arg0->unk_3106            = 0;
+    arg0->unk_3108            = -1;
+    arg0->encounterCursors[0] = 0;
+    arg0->encounterCursors[1] = 0;
+    arg0->encounterCursors[2] = 0;
+    arg0->encounterCursors[3] = 0;
+    arg0->encounterCursors[4] = 0;
+    arg0->encounterCursors[5] = 0;
+    arg0->flashSequence       = -1;
+    arg0->unk_312C            = 1;
 }
 
 void Savefile_InitNewGameDefaults(void) {

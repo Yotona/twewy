@@ -1,18 +1,37 @@
+    categories: Field
     .text       start:0x020824a0 end:0x020d9584 kind:code align:32
     .rodata     start:0x020d9584 end:0x020fde6c kind:rodata align:4
     .ctor       start:0x020fde6c end:0x020fde6c kind:rodata align:4
     .data       start:0x020fde80 end:0x02109d60 kind:data align:32
     .bss        start:0x02109d60 end:0x0210a220 kind:bss align:32
 
-src/Field/Events.c:
+src/Field/Scene/FieldMain.c:
+    complete
+    .text       start:0x020824a0 end:0x02082fe4
+
+src/Field/Event/EventTables.c:
+    .rodata     start:0x020d9584 end:0x020dbda4
+    .data       start:0x020fde80 end:0x02100134
+
+src/Field/Scene/FieldPaths.c:
+    .rodata     start:0x020dbda4 end:0x020dbee0
+    .data       start:0x02100134 end:0x021002c0
+
+src/Field/Scene/FieldBg.c:
+    .text       start:0x02082fe4 end:0x02084a2c
+
+src/Field/Battle/FieldEncounter.c:
+    .text       start:0x020aac84 end:0x020adcf4
+    .data       start:0x021002c0 end:0x021002e4
+
+src/Field/Event/Events.c:
     complete
     .text       start:0x02084a2c end:0x020a669c
-    .rodata     start:0x020da618 end:0x020da6c8
 
-src/Field/EventManager.c:
+src/Field/Event/EventManager.c:
     .text       start:0x020a669c end:0x020aac84
 
-src/Field/EventFlags.c:
+src/Field/Event/EventFlags.c:
     .text       start:0x020aeb34 end:0x020aed54
 
 src/Interface/Debug/Field/FieldSelect.c:
@@ -28,64 +47,502 @@ src/Interface/Debug/Field/EventSelect.c:
 src/Interface/Debug/Field/FieldVBlank.c:
     .text       start:0x020b1cd8 end:0x020b20dc
 
-src/Field/UnknownTables.c:
+src/Field/Event/EventSpawnTemplates.c:
     complete
     .text       start:0x020b891c end:0x020baa64
-    .rodata     start:0x020e4e98 end:0x020e4f48
+    .rodata     start:0x020e2364 end:0x020e5e98
 
-src/Field/Fld_TalkEventStringPlate.c:
-    categories: Field
+src/Field/Tasks/Fld_TalkEventStringPlate.c:
     .text       start:0x020c3948 end:0x020c3d5c
     .rodata     start:0x020e71b4 end:0x020e71fc
     .data       start:0x02107598 end:0x021075b8
 
-src/Field/Fld_TalkEventKeywordMenu.c:
-    categories: Field
-    .text       start:0x020c3d5c end:0x020c420c
+src/Field/Tasks/Fld_TalkEventKeywordMenu.c:
+    .text       start:0x020c3d5c end:0x020c42e8
     .rodata     start:0x020e71fc end:0x020e7218
     .data       start:0x021075b8 end:0x021075d8
 
-src/Field/Fld_GetMess.c:
-    categories: Field
+src/Field/Tasks/Fld_GetMess.c:
     complete
     .text       start:0x020c71b0 end:0x020c7524
     .rodata     start:0x020ec8d4 end:0x020ec91c
     .data       start:0x021084b8 end:0x021084c8
 
-src/Field/Fld_WhichArrow.c:
-    categories: Field
+src/Field/Tasks/Fld_WhichArrow.c:
     complete
     .text       start:0x020c7524 end:0x020c7804
     .rodata     start:0x020ec91c end:0x020ec964
     .data       start:0x021084c8 end:0x021084dc
 
-src/Field/Fld_GetBase.c:
-    categories: Field
+src/Field/Tasks/Fld_GetBase.c:
     .text       start:0x020c7804 end:0x020c7a74
     .rodata     start:0x020ec964 end:0x020ec9ac
     .data       start:0x021084dc end:0x021084ec
 
-src/Field/Fld_GetItem.c:
-    categories: Field
+src/Field/Tasks/Fld_GetItem.c:
     .text       start:0x020c7a74 end:0x020c7fcc
     .rodata     start:0x020ec9ac end:0x020eca2c
     .data       start:0x021084ec end:0x021085a8
 
-src/Field/Fld_Choice.c:
-    categories: Field
+src/Field/Tasks/Fld_Choice.c:
     .text       start:0x020c7fcc end:0x020c83f4
     .rodata     start:0x020eca2c end:0x020eca48
     .data       start:0x021085a8 end:0x021085b8
 
-src/Field/Fld_UGFade.c:
-    categories: Field
+src/Field/Tasks/Fld_UGFade.c:
     .text       start:0x020c83f4 end:0x020c85a4
     .rodata     start:0x020eca48 end:0x020eca64
     .data       start:0x021085b8 end:0x021085c8
 
 src/Interface/Debug/Field/FieldMessageSelect.c:
-    categories: Field
     complete
     .text       start:0x020c9990 end:0x020ca1f4
     .rodata     start:0x020ecd0c end:0x020ecda8
     .data       start:0x0210882c end:0x021088ec
+
+src/Field/Battle/FieldBattleTransition.c:
+    complete
+    .text       start:0x020aed54 end:0x020af320
+    .data       start:0x021002ec end:0x02100338
+
+src/Field/Battle/FieldBattleSetup.c:
+    complete
+    .text       start:0x020af320 end:0x020b04ac
+
+src/Field/Tasks/Fld_Player.c:
+    .text       start:0x020b20dc end:0x020b3128
+    .rodata     start:0x020df5a0 end:0x020df67c
+    .data       start:0x02106490 end:0x021064bc
+
+src/Field/Tasks/Fld_BustShot.c:
+    .text       start:0x020b3128 end:0x020b3d00
+    .rodata     start:0x020df67c end:0x020e0864
+    .data       start:0x021064bc end:0x02106524
+
+src/Field/Tasks/FldMesWindow.c:
+    .text       start:0x020b3d00 end:0x020b41a4
+    .rodata     start:0x020e0864 end:0x020e087c
+
+src/Field/Tasks/Fld_Badge.c:
+    .text       start:0x020b41a4 end:0x020b45b4
+    .rodata     start:0x020e087c end:0x020e08c4
+    .data       start:0x02106524 end:0x02106534
+
+src/Field/Tasks/Fld_ScanArea.c:
+    complete
+    .text       start:0x020b45b4 end:0x020b4920
+    .rodata     start:0x020e08c4 end:0x020e0918
+    .data       start:0x02106534 end:0x02106548
+
+src/Field/Tasks/Fld_Human.c:
+    .text       start:0x020b4920 end:0x020b5c58
+    .rodata     start:0x020e0918 end:0x020e0940
+    .data       start:0x02106548 end:0x02106558
+
+src/Field/Scene/FieldSceneRender.c:
+    .text       start:0x020b5c58 end:0x020b69f4
+    .rodata     start:0x020e0940 end:0x020e0d18
+    .data       start:0x02106558 end:0x02106a3c
+
+src/Field/Scene/FieldSceneLoad.c:
+    .text       start:0x020b69f4 end:0x020b7a00
+    .rodata     start:0x020e0d18 end:0x020e0e24
+    .data       start:0x02106a3c end:0x02107260
+    .bss        start:0x02109d68 end:0x02109d70
+
+src/Field/Scene/FieldArea.c:
+    .text       start:0x020b7a00 end:0x020b891c
+    .rodata     start:0x020e0e24 end:0x020e2364
+
+src/Field/Tasks/Fld_TalkIcon.c:
+    complete
+    .text       start:0x020baa64 end:0x020bad80
+    .rodata     start:0x020e5e98 end:0x020e5ee0
+    .data       start:0x02107260 end:0x02107274
+
+src/Field/Tasks/Fld_NSymbolUG.c:
+    .text       start:0x020bad80 end:0x020bbe08
+    .rodata     start:0x020e5ee0 end:0x020e6018
+    .data       start:0x02107274 end:0x021072e8
+
+src/Field/Tasks/Fld_NSymbolUGEffect.c:
+    .text       start:0x020bbe08 end:0x020bc068
+    .rodata     start:0x020e6018 end:0x020e6060
+    .data       start:0x021072e8 end:0x02107300
+
+src/Field/Tasks/Fld_MapJumpArrow.c:
+    .text       start:0x020bc068 end:0x020bc4b8
+    .rodata     start:0x020e6060 end:0x020e60dc
+    .data       start:0x02107300 end:0x02107318
+
+src/Field/Tasks/FldCharaWalk.c:
+    .text       start:0x020bc4b8 end:0x020bc564
+    .rodata     start:0x020e60dc end:0x020e60f0
+
+src/Field/Tasks/Fld_Partner.c:
+    .text       start:0x020bc564 end:0x020bd364
+    .rodata     start:0x020e60f0 end:0x020e61d4
+    .data       start:0x02107318 end:0x02107380
+
+src/Field/Tasks/Fld_OnePicturCell.c:
+    .text       start:0x020bd364 end:0x020bd5cc
+    .rodata     start:0x020e61d4 end:0x020e6234
+    .data       start:0x02107380 end:0x02107398
+
+src/Field/Tasks/Fld_CockPit.c:
+    .text       start:0x020bd5cc end:0x020bd890
+    .rodata     start:0x020e6234 end:0x020e627c
+    .data       start:0x02107398 end:0x021073a8
+
+src/Field/Tasks/Fld_Watch.c:
+    .text       start:0x020bd890 end:0x020bdec8
+    .rodata     start:0x020e627c end:0x020e62d0
+    .data       start:0x021073a8 end:0x021073b8
+
+src/Field/Tasks/Fld_Phone.c:
+    .text       start:0x020bdec8 end:0x020be114
+    .rodata     start:0x020e62d0 end:0x020e6318
+    .data       start:0x021073b8 end:0x021073c8
+
+src/Field/Tasks/FldChara.c:
+    .text       start:0x020be114 end:0x020be4a4
+    .data       start:0x021073c8 end:0x021073f4
+
+src/Field/Tasks/Fld_ScanKirakira.c:
+    .text       start:0x020be4a4 end:0x020be85c
+    .rodata     start:0x020e6318 end:0x020e6360
+    .data       start:0x021073f4 end:0x0210740c
+
+src/Field/Tasks/Fld_ScanFukidasi.c:
+    .text       start:0x020be85c end:0x020bee24
+    .rodata     start:0x020e6360 end:0x020e637c
+    .data       start:0x0210740c end:0x02107424
+    .bss        start:0x02109d70 end:0x02109d74
+
+src/Field/Tasks/Fld_NpcRG.c:
+    .text       start:0x020bee24 end:0x020bf084
+    .rodata     start:0x020e637c end:0x020e6d78
+    .data       start:0x02107424 end:0x02107434
+
+src/Field/Tasks/Fld_LargeGingo.c:
+    .text       start:0x020bf084 end:0x020bf360
+    .rodata     start:0x020e6d78 end:0x020e6d94
+    .data       start:0x02107434 end:0x02107448
+
+src/Field/Tasks/Fld_Touch.c:
+    .text       start:0x020bf360 end:0x020bfb80
+    .rodata     start:0x020e6d94 end:0x020e6e3c
+    .data       start:0x02107448 end:0x02107458
+
+src/Field/Tasks/Fld_TouchCommand.c:
+    .text       start:0x020bfb80 end:0x020bffac
+    .rodata     start:0x020e6e3c end:0x020e6e84
+    .data       start:0x02107458 end:0x02107470
+
+src/Field/Tasks/Fld_TouchSeal.c:
+    .text       start:0x020bffac end:0x020c0268
+    .rodata     start:0x020e6e84 end:0x020e6eec
+    .data       start:0x02107470 end:0x02107484
+
+src/Field/Tasks/Fld_TouchCursor.c:
+    .text       start:0x020c0268 end:0x020c0534
+    .rodata     start:0x020e6eec end:0x020e6f34
+    .data       start:0x02107484 end:0x02107498
+
+src/Field/Tasks/Fld_TouchShine.c:
+    .text       start:0x020c0534 end:0x020c0780
+    .rodata     start:0x020e6f34 end:0x020e6f7c
+    .data       start:0x02107498 end:0x021074ac
+    .bss        start:0x02109d74 end:0x02109d78
+
+src/Field/Tasks/Fld_Raster.c:
+    .text       start:0x020c0780 end:0x020c08ec
+    .rodata     start:0x020e6f7c end:0x020e6f98
+    .data       start:0x021074ac end:0x021074bc
+
+src/Field/Tasks/Fld_NSymbolUGMgr.c:
+    .text       start:0x020c08ec end:0x020c0bdc
+    .rodata     start:0x020e6f98 end:0x020e6fb4
+    .data       start:0x021074bc end:0x021074d4
+    .bss        start:0x02109d78 end:0x02109d7c
+
+src/Field/Tasks/Fld_Luck.c:
+    .text       start:0x020c0bdc end:0x020c2088
+    .rodata     start:0x020e6fb4 end:0x020e7004
+    .data       start:0x021074d4 end:0x02107500
+
+src/Field/Tasks/Fld_Chain.c:
+    .text       start:0x020c2088 end:0x020c248c
+    .rodata     start:0x020e7004 end:0x020e704c
+    .data       start:0x02107500 end:0x02107510
+
+src/Field/Tasks/Fld_ScanMoya.c:
+    .text       start:0x020c248c end:0x020c268c
+    .rodata     start:0x020e704c end:0x020e7094
+    .data       start:0x02107510 end:0x02107524
+
+src/Field/Tasks/Fld_Wall.c:
+    .text       start:0x020c268c end:0x020c2ccc
+    .rodata     start:0x020e7094 end:0x020e70fc
+    .data       start:0x02107524 end:0x02107534
+
+src/Field/Scene/FieldAmbientSound.c:
+    .text       start:0x020c2ccc end:0x020c2e00
+    .bss        start:0x02109d7c end:0x02109d80
+
+src/Field/Scene/FieldMusic.c:
+    .text       start:0x020c2e00 end:0x020c3380
+    .rodata     start:0x020e70fc end:0x020e7124
+    .data       start:0x02107534 end:0x02107568
+
+src/Field/Tasks/Fld_TalkEventTouch.c:
+    .text       start:0x020c3380 end:0x020c36d0
+    .rodata     start:0x020e7124 end:0x020e716c
+    .data       start:0x02107568 end:0x02107580
+
+src/Field/Tasks/Fld_TalkEventPlate.c:
+    .text       start:0x020c36d0 end:0x020c3948
+    .rodata     start:0x020e716c end:0x020e71b4
+    .data       start:0x02107580 end:0x02107598
+
+src/Field/Battle/FieldNoiseEncounter.c:
+    complete
+    .text       start:0x020c5744 end:0x020c58a0
+    .rodata     start:0x020e7460 end:0x020e9944
+    .data       start:0x02107670 end:0x02108328
+
+src/Field/Battle/FieldNoiseQuota.c:
+    complete
+    .text       start:0x020c58a0 end:0x020c59b0
+    .rodata     start:0x020e9944 end:0x020ea438
+    .data       start:0x02108328 end:0x02108464
+
+src/Field/Tasks/Fld_EventMail.c:
+    .text       start:0x020c8868 end:0x020c8a58
+    .rodata     start:0x020ecab4 end:0x020ecafc
+    .data       start:0x021085dc end:0x021085f0
+
+src/Field/Tasks/Fld_Shinigami.c:
+    .text       start:0x020cb21c end:0x020ccb78
+    .rodata     start:0x020ed0e4 end:0x020ed100
+    .data       start:0x02108920 end:0x02108934
+    .bss        start:0x02109d84 end:0x02109d88
+
+src/Field/Tasks/Fld_ShinigamiCoin.c:
+    .text       start:0x020ccb78 end:0x020cd578
+    .rodata     start:0x020ed100 end:0x020ed150
+    .data       start:0x02108934 end:0x021089b4
+
+src/Field/Tasks/Fld_ShinigamiON.c:
+    .text       start:0x020cd578 end:0x020cd790
+    .rodata     start:0x020ed150 end:0x020ed198
+    .data       start:0x021089b4 end:0x021089c8
+
+src/Field/Tasks/Fld_TalkEventCursor.c:
+    .text       start:0x020c42e8 end:0x020c45ec
+    .rodata     start:0x020e7218 end:0x020e7260
+    .data       start:0x021075d8 end:0x021075f0
+
+src/Field/Tasks/Fld_TalkEventDecide.c:
+    complete
+    .text       start:0x020c45ec end:0x020c4850
+    .rodata     start:0x020e7260 end:0x020e72a8
+    .data       start:0x021075f0 end:0x02107608
+
+src/Field/Tasks/Fld_TalkEventTitle.c:
+    complete
+    .text       start:0x020c4850 end:0x020c4a78
+    .rodata     start:0x020e72a8 end:0x020e72f0
+    .data       start:0x02107608 end:0x02107620
+
+src/Field/Tasks/Fld_MapJumpName.c:
+    .text       start:0x020c4a78 end:0x020c5088
+    .rodata     start:0x020e72f0 end:0x020e7338
+    .data       start:0x02107620 end:0x02107648
+
+src/Field/Tasks/Fld_MapName.c:
+    complete
+    .text       start:0x020c5088 end:0x020c5404
+    .rodata     start:0x020e7338 end:0x020e7380
+    .data       start:0x02107648 end:0x02107658
+
+src/Field/Scene/FieldShopName.c:
+    complete
+    .text       start:0x020c5404 end:0x020c548c
+    .rodata     start:0x020e7380 end:0x020e7418
+
+src/Field/Tasks/Fld_NSymbolUGAppear.c:
+    complete
+    .text       start:0x020c548c end:0x020c5744
+    .rodata     start:0x020e7418 end:0x020e7460
+    .data       start:0x02107658 end:0x02107670
+
+src/Field/Tasks/Fld_Piranha.c:
+    .text       start:0x020c59b0 end:0x020c5f70
+    .rodata     start:0x020ea438 end:0x020eae80
+    .data       start:0x02108464 end:0x02108490
+
+src/Field/Tasks/FldSpriteFrame.c:
+    .text       start:0x020c5f70 end:0x020c683c
+    .rodata     start:0x020eae80 end:0x020ec824
+    .bss        start:0x02109d80 end:0x02109d84
+
+src/Field/Tasks/FldOamCell.c:
+    .text       start:0x020c683c end:0x020c6c58
+    .rodata     start:0x020ec824 end:0x020ec844
+
+src/Field/Tasks/Fld_TouchNext.c:
+    complete
+    .text       start:0x020c6c58 end:0x020c6e90
+    .rodata     start:0x020ec844 end:0x020ec88c
+    .data       start:0x02108490 end:0x021084a4
+
+src/Field/Tasks/Fld_GetPlate.c:
+    complete
+    .text       start:0x020c6e90 end:0x020c71b0
+    .rodata     start:0x020ec88c end:0x020ec8d4
+    .data       start:0x021084a4 end:0x021084b8
+
+src/Field/Tasks/Fld_BattleIn.c:
+    .text       start:0x020c85a4 end:0x020c8868
+    .rodata     start:0x020eca64 end:0x020ecab4
+    .data       start:0x021085c8 end:0x021085dc
+
+src/Field/Tasks/Fld_Brush.c:
+    .text       start:0x020c8a58 end:0x020c900c
+    .rodata     start:0x020ecafc end:0x020ecb88
+    .data       start:0x021085f0 end:0x02108600
+
+src/Field/Tasks/Fld_BrushHati.c:
+    complete
+    .text       start:0x020c900c end:0x020c91f4
+    .rodata     start:0x020ecb88 end:0x020ecbd0
+    .data       start:0x02108600 end:0x02108614
+
+src/Interface/Debug/Field/FieldNpcMessageSelect.c:
+    .text       start:0x020c91f4 end:0x020c9990
+    .rodata     start:0x020ecbd0 end:0x020ecd0c
+    .data       start:0x02108614 end:0x0210882c
+
+src/Field/Tasks/Task_Mess.c:
+    .text       start:0x020ca1f4 end:0x020ca4bc
+    .rodata     start:0x020ecda8 end:0x020ecdc4
+    .data       start:0x021088ec end:0x021088f8
+
+src/Field/Tasks/Task_Window.c:
+    .text       start:0x020ca4bc end:0x020cb21c
+    .rodata     start:0x020ecdc4 end:0x020ed0e4
+    .data       start:0x021088f8 end:0x02108920
+
+src/Field/Scene/LocaTitle.c:
+    complete
+    .text       start:0x020d2dac end:0x020d317c
+    .rodata     start:0x020ee948 end:0x020ee998
+    .data       start:0x021090e4 end:0x02109110
+
+src/Field/Tasks/XFade.c:
+    .text       start:0x020d317c end:0x020d4830
+    .rodata     start:0x020ee998 end:0x020eea04
+    .data       start:0x02109110 end:0x0210916c
+
+src/Field/Event/EventScriptData.c:
+    .rodata     start:0x020eea04 end:0x020fd718
+
+src/Field/Scene/FieldSeq.c:
+    .text       start:0x020adcf4 end:0x020aeb34
+    .data       start:0x021002e4 end:0x021002ec
+    .bss        start:0x02109d60 end:0x02109d68
+
+src/Field/Flash/FOAllocator.c:
+    .text       start:0x020cd790 end:0x020cda74
+    .rodata     start:0x020ed198 end:0x020ed1c4
+    .data       start:0x021089c8 end:0x021089dc
+    .bss        start:0x02109d88 end:0x02109d98
+
+src/Field/Flash/FO3DRes.c:
+    complete
+    .text       start:0x020cda74 end:0x020cdcec
+    .data       start:0x021089dc end:0x021089fc
+    .bss        start:0x02109d98 end:0x02109d9c
+
+src/Field/Flash/FO3DObj.c:
+    complete
+    .text       start:0x020cdcec end:0x020cdea0
+    .data       start:0x021089fc end:0x02108a0c
+    .bss        start:0x02109d9c end:0x02109da0
+
+src/Field/Flash/FO3DObjMgr.c:
+    .text       start:0x020cdea0 end:0x020d0f18
+    .rodata     start:0x020ed1c4 end:0x020ed32c
+    .bss        start:0x02109da0 end:0x02109ddc
+
+src/Field/Flash/FO3DViewerImd.c:
+    complete
+    .text       start:0x020d0f18 end:0x020d1098
+    .data       start:0x02108a0c end:0x02108a20
+    .bss        start:0x02109ddc end:0x02109de0
+
+src/Field/Flash/FO3DViewer.c:
+    .text       start:0x020d1098 end:0x020d21e0
+    .rodata     start:0x020ed32c end:0x020ee880
+    .data       start:0x02108a20 end:0x021090ac
+
+src/Field/Flash/FOFileList.c:
+    .text       start:0x020d21e0 end:0x020d24d4
+    .rodata     start:0x020ee880 end:0x020ee93c
+    .data       start:0x021090ac end:0x021090bc
+    .bss        start:0x02109de0 end:0x02109de4
+
+src/Field/Flash/FOPtrList.c:
+    .text       start:0x020d24d4 end:0x020d2a80
+    .bss        start:0x02109de4 end:0x02109de8
+
+src/Field/Scene/LocaTitleSeq.c:
+    .text       start:0x020d2a80 end:0x020d2dac
+    .rodata     start:0x020ee93c end:0x020ee948
+    .data       start:0x021090bc end:0x021090e4
+    .bss        start:0x02109de8 end:0x02109dec
+
+src/Field/Flash/SeqFlash.c:
+    complete
+    .text       start:0x020d4830 end:0x020d4fb4
+    .rodata     start:0x020fd718 end:0x020fde48
+    .data       start:0x0210916c end:0x02109bc4
+    .bss        start:0x02109dec end:0x02109df0
+
+src/Field/Flash/SeqFlashSel.c:
+    .text       start:0x020d4fb4 end:0x020d53b0
+    .rodata     start:0x020fde48 end:0x020fde54
+    .data       start:0x02109bc4 end:0x02109c00
+
+src/Field/Flash/FlashGraphicsInit.c:
+    .text       start:0x020d53b0 end:0x020d5b28
+    .data       start:0x02109c00 end:0x02109c04
+    .bss        start:0x02109df0 end:0x0210a1f8
+
+src/Field/Flash/FlashRender.cpp:
+    .text       start:0x020d5b28 end:0x020d6244
+    .rodata     start:0x020fde54 end:0x020fde6c
+    .data       start:0x02109c04 end:0x02109c5c
+
+src/Field/Flash/FlashHeap.cpp:
+    complete
+    .text       start:0x020d6244 end:0x020d63c8
+
+src/Field/Flash/FlashWrapper.cpp:
+    .text       start:0x020d63c8 end:0x020d6710
+    .data       start:0x02109c5c end:0x02109cbc
+    .bss        start:0x0210a1f8 end:0x0210a20c
+
+src/Field/Flash/FlashTexture.cpp:
+    .text       start:0x020d6710 end:0x020d71fc
+    .bss        start:0x0210a20c end:0x0210a218
+
+src/Field/Flash/FlashDisplayList.cpp:
+    .text       start:0x020d71fc end:0x020d787c
+    .data       start:0x02109cbc end:0x02109d40
+    .bss        start:0x0210a218 end:0x0210a220
+
+src/Field/Flash/FlashPlayer.cpp:
+    .text       start:0x020d787c end:0x020d9584
+    .data       start:0x02109d40 end:0x02109d60

@@ -361,35 +361,8 @@ s32 BtlFeat01_Update(TaskPool* pool, Task* task, void* args) {
     }
     feat->unk_0F8 += 0x6000;
 
-    DisplayEngineState* engMain = &g_DisplaySettings.engineState[0];
-    s32                 offset  = feat->unk_0F8;
-
-    switch (engMain->bgSettings[3].bgMode) {
-        case DISPLAY_BGMODE_AFFINE:
-        case DISPLAY_BGMODE_PLTT:
-        case DISPLAY_BGMODE_BMP256:
-        case DISPLAY_BGMODE_BMPDIRECT:
-        case DISPLAY_BGMODE_BMPLARGE:
-            engMain->bgAffines[3].unk_14 = 1;
-            break;
-    }
-    engMain->bgOffsets[3].hOffset = offset;
-    engMain->bgOffsets[3].vOffset = 0;
-
-    DisplayEngineState* engSub = &g_DisplaySettings.engineState[1];
-    offset                     = feat->unk_0F8;
-
-    switch (engSub->bgSettings[3].bgMode) {
-        case DISPLAY_BGMODE_AFFINE:
-        case DISPLAY_BGMODE_PLTT:
-        case DISPLAY_BGMODE_BMP256:
-        case DISPLAY_BGMODE_BMPDIRECT:
-        case DISPLAY_BGMODE_BMPLARGE:
-            engSub->bgAffines[3].unk_14 = 1;
-            break;
-    }
-    engSub->bgOffsets[3].hOffset = offset;
-    engSub->bgOffsets[3].vOffset = 0;
+    Display_SetBGOffset(DISPLAY_MAIN, DISPLAY_BG3, feat->unk_0F8, 0);
+    Display_SetBGOffset(DISPLAY_SUB, DISPLAY_BG3, feat->unk_0F8, 0);
     return 1;
 }
 

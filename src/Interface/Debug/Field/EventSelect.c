@@ -6,7 +6,9 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
-#include "Field/FieldDebug.h"
+#include "Field/Scene/FieldSeq.h"
+#include "Field/Tasks/Fld_Wall.h"
+#include "Interface/Debug/Field/FieldDebug.h"
 #include "common_data.h"
 
 #include "Save.h"
@@ -17,7 +19,7 @@ extern void func_02025e30(void* textObj);
 
 extern void  func_ov030_020ae96c(s32 arg0);
 extern char* func_ov030_020b0534(s32 arg0);
-extern void  func_ov030_020c268c(s32 arg0);
+extern void  Fld_Wall_SetAllExitStates(s32 arg0);
 
 const EventSelectEntry EventSelect_Shiki_DayOne[20] = {
     {         EVENT_SHIKI1_BEGIN_GAME, 3,     "e_01_001"},
@@ -1941,7 +1943,7 @@ void func_ov030_020b10b0(EventSelectObject* object) {
         Text_RenderToScreen(&object->text, 8, 0x20, Str_SPrintf("chapter:— %d", gSaveData.chapter - 21));
     }
 
-    Text_RenderToScreen(&object->text, 8, 0x28, func_ov030_020b0534(gSaveData.unk_2458));
+    Text_RenderToScreen(&object->text, 8, 0x28, func_ov030_020b0534(gSaveData.fieldArea));
     Text_RenderToScreen(&object->text, 0, (gSaveData.unk_26E8 * 8) + 0x10, ">");
 }
 
@@ -1950,9 +1952,9 @@ void func_ov030_020b131c(EventSelectObject* object) {
 }
 
 void func_ov030_020b1330(EventSelectObject* object) {
-    func_ov030_020c26ec();
+    Field_ResetDayProgress();
     gSaveData.unk_2488 = 0;
-    func_ov030_020c268c(4);
+    Fld_Wall_SetAllExitStates(4);
     if (gSaveData.unk_26E4 >= data_ov030_020de334[gSaveData.unk_26E6].count) {
         gSaveData.unk_26E4 = 0;
     }
@@ -2004,7 +2006,7 @@ void func_ov030_020b1450(EventSelectObject* object) {
     OverlayTag tag2;
 
     if (SysControl.buttonState.pressedButtons & INPUT_BUTTON_A) {
-        func_ov030_020ae96c(gSaveData.unk_2458);
+        func_ov030_020ae96c(gSaveData.fieldArea);
         gSaveData.unk_24B4          = 0;
         gSaveData.unk_24B8          = 1;
         gSaveData.currentStoryEvent = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].eventId;
@@ -2024,15 +2026,15 @@ void func_ov030_020b1450(EventSelectObject* object) {
     } else {
         if (gSaveData.unk_26E8 == 0) {
             if (func_ov030_020b139c(&gSaveData.unk_26E6, EVENT_SELECT_CATEGORY_COUNT) != 0) {
-                gSaveData.unk_2458 = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
-                gSaveData.unk_26E4 = 0;
+                gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
+                gSaveData.unk_26E4  = 0;
             }
         } else if (gSaveData.unk_26E8 == 1) {
             func_ov030_020b139c(&gSaveData.unk_26E4, data_ov030_020de334[gSaveData.unk_26E6].count);
         } else if (gSaveData.unk_26E8 == 2) {
             func_ov030_020b1404(&gSaveData.chapter);
         } else {
-            func_ov030_020b139c(&gSaveData.unk_2458, 0x2C);
+            func_ov030_020b139c(&gSaveData.fieldArea, 0x2C);
         }
     }
 
@@ -2055,7 +2057,7 @@ void func_ov030_020b1620(void) {
     g_DisplaySettings.controls[DISPLAY_SUB].brightness = data_02066eec = g_DisplaySettings.controls[DISPLAY_MAIN].brightness =
         data_02066aec                                                  = 0;
     func_ov030_020b1330(object);
-    gSaveData.unk_2458 = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
+    gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
     MainOvlDisp_NextProcessStage();
 }
 

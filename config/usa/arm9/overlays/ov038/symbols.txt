@@ -136,10 +136,6 @@ data_ov038_020906ff kind:data(any) addr:0x020906ff
 data_ov038_02091034 kind:data(any) addr:0x02091034 ambiguous
 data_ov038_0209a204 kind:data(any) addr:0x0209a204 ambiguous
 data_ov038_0209bce4 kind:data(any) addr:0x0209bce4 ambiguous
-data_ov038_0209edc0 kind:data(any) addr:0x0209edc0 ambiguous
-data_ov038_0209eef4 kind:data(any) addr:0x0209eef4 ambiguous
-data_ov038_0209ef48 kind:data(any) addr:0x0209ef48 ambiguous
-data_ov038_0209ef6c kind:data(any) addr:0x0209ef6c ambiguous
 data_ov038_020a06ff kind:data(any) addr:0x020a06ff ambiguous
 data_ov038_020a15e8 kind:data(any) addr:0x020a15e8 ambiguous
 data_ov038_020ac980 kind:data(any) addr:0x020ac980

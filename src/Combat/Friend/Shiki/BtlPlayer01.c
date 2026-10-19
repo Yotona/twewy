@@ -7,6 +7,7 @@
 #include "Engine/IO/Input.h"
 #include "Engine/Math/Random.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Field/FieldRegion.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include <nitro/mi/cpumem.h>
@@ -74,7 +75,7 @@ BOOL func_ov004_020e7360(void) {
 
 // Nonmatching: External data access differences
 u16 func_ov004_020e737c(void) {
-    return data_ov004_020f0068[gSaveData.unk_3141];
+    return data_ov004_020f0068[gSaveData.battleDifficulty];
 }
 
 // Not yet implemented, unsure of correct structure being accessed

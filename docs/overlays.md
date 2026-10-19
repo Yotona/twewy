@@ -68,7 +68,7 @@ TODO: Document
 ## Overlay 02 - Otosu Menu
 
 **Files:**
-[OtosuMenu](../src/Debug/Fukuda/OtosuMenu.c)
+[OtosuMenu](../src/Otosu/Menu/)
 
 TODO: Document
 
@@ -105,8 +105,6 @@ Speculated purpose: Beat
 
 ## Overlay 07 - Fusion / Last Attacks
 
-**Category:** Combat
-
 **Files:**
 [BtlFusion](../src/Combat/Fusion/BtlFusion.c)
 
@@ -120,8 +118,6 @@ Status: 22 of 25 functions match byte-for-byte. `func_ov007_020e76dc`, `func_ov0
 marked `complete` until those are resolved.
 
 ## Overlay 08 - Tutorial Battles
-
-**Category:** Combat
 
 **Files:**
 [BtlTutorial](../src/Combat/Tutorial/BtlTutorial.c)
@@ -360,9 +356,12 @@ Contains a graphics testing module for viewing art assets and their relevant inf
 
 ## Overlay 39 - Tin Pin Slammer
 
-**Files:** N/A (Not yet decompiled)
+**Files:**
+[src/Otosu/Scene](../src/Otosu/Scene/),
+[src/Otosu/Stage](../src/Otosu/Stage/),
+[src/Otosu/Game](../src/Otosu/Game/)
 
-TODO: Decompile and document
+Contains board and pin setup, gameplay rules, wireless setup, visual effects, and other related functionalities of the Tin Pin Slammer minigame.
 
 ## Overlay 40 - Wireless Communications
 

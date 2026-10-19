@@ -2956,9 +2956,8 @@ data_0205ea86 kind:data(any) addr:0x0205ea86
 data_0205ea87 kind:data(any) addr:0x0205ea87
 data_0205eaa8 kind:data(any) addr:0x0205eaa8
 data_0205eab8 kind:data(any) addr:0x0205eab8
-data_0205eb6c kind:data(any) addr:0x0205eb6c
+FX_SinCosTable_ kind:data(any) addr:0x0205eb6c
 data_02060070 kind:data(any) addr:0x02060070
-data_02060206 kind:data(any) addr:0x02060206
 AtanTable kind:data(any) addr:0x02062b6c local
 data_02062c70 kind:data(any) addr:0x02062c70
 data_02062c80 kind:data(any) addr:0x02062c80
