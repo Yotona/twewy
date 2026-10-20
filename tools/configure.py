@@ -529,9 +529,14 @@ def main():
             add_extract_build(n, project)
             add_delink_and_lcf_builds(n, project)
             add_disassemble_builds(n, project)
-            add_mwcc_builds(n, project, mwcc_common_implicit)
+            # Ninja starts ready edges in manifest order. Emit the compiles the link
+            # needs first, then everything downstream of the link, then the other
+            # compiles (incomplete units, only needed for reports), so the link and
+            # ROM build overlap with compiling instead of waiting for it.
+            add_mwcc_builds(n, project, mwcc_common_implicit, link_inputs=True)
             add_mwld_and_rom_builds(n, project)
             add_check_builds(n, project)
+            add_mwcc_builds(n, project, mwcc_common_implicit, link_inputs=False)
             add_objdiff_builds(n, project)
             add_apply_build(n, project)
 
@@ -687,10 +692,21 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
 
 
 def add_mwcc_builds(
-    n: ninja_syntax.Writer, project: Project, mwcc_common_implicit: list[str]
+    n: ninja_syntax.Writer,
+    project: Project,
+    mwcc_common_implicit: list[str],
+    link_inputs: bool | None = None,
 ):
+    """Emit the compile edges. `link_inputs` selects the objects the arm9 link
+    consumes (True), the rest (False), or everything (None)."""
+    linked_objects = {Path(file["object_to_link"]) for file in project.files()}
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
+        if (
+            link_inputs is not None
+            and (src_obj_path.with_suffix(".o") in linked_objects) != link_inputs
+        ):
+            continue
         cc_flags: list[str] = []
 
         # Language flag
