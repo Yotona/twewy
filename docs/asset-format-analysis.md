@@ -2,6 +2,8 @@
 
 This document describes the various asset file formats used in The World Ends with You (Nintendo DS), based on analysis of the game code and community Python scripts from `Ega1232387/TWEWY_DS_pins` and `Ega1232387/TWEWYDS-tools`.
 
+For the reverse-engineering workflow used to derive and document these formats (loader tracing, evidence levels, validation strategy), see `asset-parsing-methodology.md`.
+
 ## Table of Contents
 1. [PACK Archive Format](#pack-archive-format)
 2. [Graphics/Tile Format](#graphicstile-format)
@@ -255,10 +257,10 @@ dic = {
 
     # Japanese Katakana (2 bytes)
     "B200": "ƒ@", "B300": "ƒA", "B400": "ƒB", "B500": "ƒC",
-    "FF00": "ƒ", "0001": "ƒ", "0101": "ƒ", "0201": "ƒ‘",
+    "FF00": "ƒ", "0001": "ƒ", "0101": "ƒ", "0201": "ƒ‘",
 
     # Special symbols (2-4 bytes)
-    "0A01": "A", "0B01": "D", "1001": "I", "1F01": "H",
+    "0A01": "A", "0B01": "D", "1001": "I", "1F01": "H",
 
     # Control codes
     "FEFF": "\t",  # Tab
@@ -296,7 +298,7 @@ def pack():
     res = ""
     with open("twewytext.txt", encoding="utf-8") as file2:
         read1 = file2.read()
-        read1 = read1.replace("c", "...")  # Normalize
+        read1 = read1.replace("c", "...")  # Normalize
 
         lst = list(filter(lambda x: len(x) > 0, read1.split("?")))
         for i in lst:

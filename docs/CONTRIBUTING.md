@@ -17,6 +17,8 @@ After initially building the project, running `ninja` again will reprocess any n
 
 [Objdiff](https://github.com/encounter/objdiff) is supported and preferred for analysing reverse engineered progress. [Ghidra](https://github.com/NationalSecurityAgency/ghidra) in combination with the [dsd-ghidra](https://github.com/AetiasHax/dsd-ghidra) extension are invaluable for this process.
 
+For asset-format reverse engineering and writeups, use [asset-parsing-methodology.md](asset-parsing-methodology.md) and the scaffold in [asset-format-doc-template.md](asset-format-doc-template.md).
+
 ## Guidelines for submission
 
 **Never** allow copyrighted content to be submitted. This includes any assets from your `extract` directory, any SDK file known to be obtained through illegitimate means, and any compiled binaries that may contain such contents.

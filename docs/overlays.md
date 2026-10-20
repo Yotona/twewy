@@ -4,36 +4,36 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 
 - [00 - Mini108](#overlay-00---mini108)
 - [01 - Font](#overlay-01---font)
-- [02 - OtosuMenu](#overlay-02---otosu-menu)
+- [02](#overlay-02)
 - [03](#overlay-03)
-- [04 - Shiki](#overlay-04---shiki)
+- [04](#overlay-04)
 - [05](#overlay-05)
 - [06](#overlay-06)
-- [07 - Fusion / Last Attacks](#overlay-07---fusion--last-attacks)
-- [08 - Tutorial Battles](#overlay-08---tutorial-battles)
-- [09 - Noise](#overlay-09---noise)
+- [07](#overlay-07)
+- [08](#overlay-08)
+- [09](#overlay-09)
 - [10](#overlay-10)
 - [11](#overlay-11)
 - [12](#overlay-12)
 - [13](#overlay-13)
 - [14](#overlay-14)
 - [15](#overlay-15)
-- [16 - Boss01](#overlay-16---boss01)
-- [17 - Boss02 and Boss03](#overlay-17---boss02-and-boss03)
-- [18 - Boss00](#overlay-18---boss00)
+- [16](#overlay-16)
+- [17](#overlay-17)
+- [18](#overlay-18)
 - [19](#overlay-19)
 - [20](#overlay-20)
 - [21](#overlay-21)
 - [22](#overlay-22)
 - [23](#overlay-23)
-- [24 - Boss15 and Boss16](#overlay-24---boss15-and-boss16)
-- [25 - Continue](#overlay-25---continue)
-- [26 - Tutorial](#overlay-26---tutorial)
+- [24](#overlay-24)
+- [25](#overlay-25)
+- [26](#overlay-26)
 - [27](#overlay-27)
 - [28 - Noise Report](#overlay-28---noise-report)
 - [29 - Sound Tests](#overlay-29---sound-tests)
 - [30](#overlay-30)
-- [31 - Font / PRC](#overlay-31---font--prc)
+- [31 - Font Rendering](#overlay-31---font-rendering)
 - [32](#overlay-32)
 - [33](#overlay-33)
 - [34](#overlay-34)
@@ -53,6 +53,8 @@ TWEWY contains 48 overlays, each being loaded on demand to provide specified fun
 
 ## Overlay 00 - Mini108
 
+**Category:** Debugging Menu
+
 **Files:**
 [Mini108](../src/Debug/Abe/Mini108.c)
 
@@ -60,17 +62,18 @@ TODO: Document
 
 ## Overlay 01 - Font
 
+**Category:** Debugging Menu
+
 **Files:**
 [Font](../src/Debug/Fukuda/Font.c)
 
 TODO: Document
 
-## Overlay 02 - Otosu Menu
+## Overlay 02
 
-**Files:**
-[OtosuMenu](../src/Otosu/Menu/)
+**Files:** N/A (Not yet decompiled)
 
-TODO: Document
+TODO: Decompile and document
 
 ## Overlay 03
 
@@ -80,12 +83,13 @@ TODO: Decompile and document
 
 Speculated purpose: main battle system logic
 
-## Overlay 04 - Shiki
+## Overlay 04
 
-**Files:**
-[Shiki](../src/Combat/Friend/Shiki/)
+**Files:** N/A (Not yet decompiled)
 
-TODO: Document
+TODO: Decompile and document
+
+Speculated purpose: Shiki
 
 ## Overlay 05
 
@@ -103,42 +107,29 @@ TODO: Decompile and document
 
 Speculated purpose: Beat
 
-## Overlay 07 - Fusion / Last Attacks
+## Overlay 07
 
-**Files:**
-[BtlFusion](../src/Combat/Fusion/BtlFusion.c)
-
-Provides the `Tsk_BtlPlayerLast` and `Tsk_BtlAuraLast` combat tasks. `Tsk_BtlPlayerLast` drives the
-player's finishing attack (screen-space reprojection plus an actor update callback); `Tsk_BtlAuraLast`
-manages a pool of 16 aura sprites used for the attack's visual effects, interpolating and spawning them
-from active/free lists.
-
-Status: 22 of 25 functions match byte-for-byte. `func_ov007_020e76dc`, `func_ov007_020e7a8c`, and
-`func_ov007_020e7da4` are Nonmatching due to MWCC register-allocation differences. The TU cannot be
-marked `complete` until those are resolved.
-
-## Overlay 08 - Tutorial Battles
-
-**Files:**
-[BtlTutorial](../src/Combat/Tutorial/BtlTutorial.c)
-
-Provides the `Tsk_BtlPlayerNone` and `Tsk_BtlTutorial` combat tasks. `Tsk_BtlTutorial` loads the tutorial
-graphics pack (`Apl_Fur/Grp_Tutorial.bin`), configures sub-engine BG1/BG2 for the tutorial overlay, and
-draws a combat sprite; `Tsk_BtlPlayerNone` is the stub partner task used while the tutorial runs. The
-active variant is selected from the combat context.
-
-TODO: Document the exact tutorial variants (`data_ov008_020e7a38`).
-
-## Overlay 09 - Noise
-
-**Files:**
-[BtlEnm003](../src/Combat/Noise/BtlEnm003),
-[BtlEnm012](../src/Combat/Noise/BtlEnm012),
-[BtlEnm019](../src/Combat/Noise/BtlEnm019),
-[BtlEnm028](../src/Combat/Noise/BtlEnm028),
-[BtlEnm044](../src/Combat/Noise/BtlEnm044),
+**Files:** N/A (Not yet decompiled)
 
 TODO: Decompile and document
+
+Speculated purpose: Fusion attacks
+
+## Overlay 08
+
+**Files:** N/A (Not yet decompiled)
+
+TODO: Decompile and document
+
+Speculated purpose: Tutorial battles
+
+## Overlay 09
+
+**Files:** N/A (Not yet decompiled)
+
+TODO: Decompile and document
+
+Speculated purpose: Noise
 
 ## Overlay 10
 
@@ -188,27 +179,27 @@ TODO: Decompile and document
 
 Speculated purpose: Noise
 
-## Overlay 16 - Boss01
+## Overlay 16
 
-**Files:**
-[Boss01](../src/Combat/Noise/Boss01.c)
-
-Contains logic for "Boss01". TODO: Determine which boss this is and document its functionality.
-
-## Overlay 17 - Boss02 and Boss03
-
-**Files:**
-[Boss02](../src/Combat/Noise/Boss02.c),
-[Boss03](../src/Combat/Noise/Boss03.c)
-
-TODO: Document
-
-## Overlay 18 - Boss00
-
-**Files:**
-[Boss00](../src/Combat/Noise/Boss00/)
+**Files:** N/A (Not yet decompiled)
 
 TODO: Decompile and document
+
+## Overlay 17
+
+**Files:** N/A (Not yet decompiled)
+
+TODO: Decompile and document
+
+Speculated purpose: Boss fight - Sho Minimimoto
+
+## Overlay 18
+
+**Files:** N/A (Not yet decompiled)
+
+TODO: Decompile and document
+
+Speculated purpose: Boss fight
 
 ## Overlay 19
 
@@ -250,27 +241,29 @@ TODO: Decompile and document
 
 Speculated purpose: Boss fight
 
-## Overlay 24 - Boss15 and Boss16
+## Overlay 24
 
-**Files:**
-[Boss15](../src/Combat/Noise/Boss15),
-[Boss16](../src/Combat/Noise/Boss16)
+**Files:** N/A (Not yet decompiled)
 
 TODO: Decompile and document
 
-## Overlay 25 - Continue
+Speculated purpose: Boss fight
 
-**Files:**
-[Continue](../src/Debug/Furukawa/Continue.c)
+## Overlay 25
 
-TODO: Document
+**Files:** N/A (Not yet decompiled)
 
-## Overlay 26 - Tutorial
+TODO: Decompile and document
 
-**Files:**
-[Tutorial](../src/Debug/Furukawa/Tutorial.c)
+Speculated purpose: game over screen
 
-TODO: Document
+## Overlay 26
+
+**Files:** N/A (Not yet decompiled)
+
+TODO: Decompile and document
+
+Speculated purpose: tutorial/help screen
 
 ## Overlay 27
 
@@ -282,12 +275,16 @@ Speculated purpose: battle selection menu for chain battles and encounter select
 
 ## Overlay 28 - Noise Report
 
+**Category:** Debugging Menu, UI
+
 **Files:**
 [NoiseReport](../src/Debug/Horii/NoiseReport.c)
 
 The Noise Report screen, which displays the Noise enemies and various statistics about them including their item drops and drop chances at various difficulties.
 
 ## Overlay 29 - Sound Tests
+
+**Category:** Debugging Menu
 
 **Files:**
 [SoundTest](../src/Debug/Kitawaki/SoundTest.c)
@@ -302,10 +299,11 @@ TODO: Decompile and document
 
 Speculated purpose: field exploration, various debugging menus, brand and region information, etc. Extremely large and varied in functionality.
 
-## Overlay 31 - Font / PRC
+## Overlay 31 - Font Rendering
 
-**Files:**
-[PrcMaster](../src/PrcMaster.c)
+**Category:** Core System
+
+**Files:** N/A (Not yet decompiled)
 
 TODO: Document
 
@@ -356,12 +354,9 @@ Contains a graphics testing module for viewing art assets and their relevant inf
 
 ## Overlay 39 - Tin Pin Slammer
 
-**Files:**
-[src/Otosu/Scene](../src/Otosu/Scene/),
-[src/Otosu/Stage](../src/Otosu/Stage/),
-[src/Otosu/Game](../src/Otosu/Game/)
+**Files:** N/A (Not yet decompiled)
 
-Contains board and pin setup, gameplay rules, wireless setup, visual effects, and other related functionalities of the Tin Pin Slammer minigame.
+TODO: Decompile and document
 
 ## Overlay 40 - Wireless Communications
 
@@ -393,7 +388,7 @@ End credits.
 [MenuEquip](../src/Debug/Takami/MenuEquip.c),
 [Shop](../src/Debug/Takami/Shop.c),
 [Depart](../src/Debug/Takami/Depart.c),
-[Save](../src/Interface/Menu/Save.c),
+[Save](../src/Debug/Takami/Save.c),
 [NRep](../src/Debug/Takami/NRep.c)
 
 Several menus, such as the main phone menu, pins, equipment, post-game scenario selection, shops, department stores, and the save screen.
@@ -426,9 +421,9 @@ The results screen displayed at the conclusion of battles. Displays the player's
 ## Overlay 45 - Mingle Mode and Friend List UI
 
 **Files:**
-[Tusin](../src/Interface/Menu/Tusin.c),
-[TusinSet](../src/Interface/Menu/TusinSet.c),
-[FriendList](../src/Interface/Menu/FriendList.c)
+[Tusin](../src/Debug/Takami/Tusin.c),
+[TusinSet](../src//Debug//Takami/TusinSet.c),
+[FriendList](../src/Debug/Takami/FriendList.c)
 
 Elements related to Mingle Mode. Includes the UI for configuring Mingle Mode, the Friends menu, and option to launch the game into Mingle Mode.
 

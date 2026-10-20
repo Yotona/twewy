@@ -1,8 +1,8 @@
 # Action Replay Codes Breakdown - The World Ends With You (DS)
 
-This document explains the Action Replay (AR) codes found in [docs/twewy-ar-codes.txt](docs/twewy-ar-codes.txt). These codes are used to modify the game's RAM during execution to achieve various effects.
+This document explains the Action Replay (AR) codes found in [twewy-ar-codes.txt](twewy-ar-codes.txt). These codes are used to modify the game's RAM during execution to achieve various effects.
 
-A pseudocode version showing the logic of each code is available at [docs/twewy-ar-codes-pseudocode.txt](docs/twewy-ar-codes-pseudocode.txt).
+A pseudocode version showing the logic of each code is available at [twewy-ar-codes-pseudocode.txt](twewy-ar-codes-pseudocode.txt).
 
 ## Action Replay Code Format Reference
 
@@ -269,7 +269,7 @@ The MainData structure begins at `0x02071D10` and contains player progression da
 - **Field:** `MainData.level`
 
 ### MainData Structure Summary
-**CONFIRMED from disassembly** (`build/usa/asm/main_36.s` line 4277):
+**CONFIRMED from disassembly** (`build/usa/asm/src/main_36.s`):
 - **Label**: `data_02071d10`
 - **Size**: `0x1C` (28 bytes)
 - **Address Range**: `0x02071D10` to `0x02071D2B`
@@ -300,10 +300,10 @@ struct MainData {  // data_02071d10
 ```
 
 **Referenced by functions**:
-- `Inventory_GetOpenPinStockpileCapacity` in `main_36.s` (loads and processes this data)
+- `Inventory_GetOpenPinStockpileCapacity` in `build/usa/asm/src/Inventory.s` (loads and processes this data)
 - Multiple functions across the codebase reference this structure
 
-**Note on C Source**: `src/main_36.c` contains a struct definition for `MainData`, but **there is a size/layout mismatch**. The disassembly's `.space 0x1c` directive (28 bytes) is the confirmed ground truth, while the C struct appears much larger and may combine multiple separate data sections. The AR code evidence (which successfully modifies game behavior) confirms the actual memory layout matches the disassembly, not the C struct.
+**Note on C Source**: Current source definitions relevant to `MainData` live in `include/Save.h`, with save/inventory behavior implemented in `src/Savefile.c` and `src/Inventory.c`. The disassembly `.space 0x1c` symbol at `data_02071d10` remains the ground truth for this compact RAM struct used by these AR writes.
 
 **Accurate Structure** (confirmed by disassembly + AR codes):
 ```c
@@ -484,7 +484,7 @@ d2000000 00000000  // End conditional
 - Awards maximum damage and drop rate bonuses
 
 ### BattleData Structure Summary
-**CONFIRMED from disassembly** (`build/usa/asm/main_36.s` lines 4357-4362):
+**CONFIRMED from disassembly** (`build/usa/asm/src/main_36.s`):
 
 Battle data spans multiple separate data sections:
 - **`data_02074e34`**: `0x22` (34 bytes) at `0x02074E34`-`0x02074E55`
@@ -917,7 +917,7 @@ The conditional checks ensure overlays are loaded before patching them.
 By cross-referencing AR code addresses with the game's disassembly in `build/usa/asm/`, we can confirm exact data structure sizes and boundaries:
 
 #### MainData Structure (`data_02071d10`)
-- **File**: `build/usa/asm/main_36.s` line 4277
+- **File**: `build/usa/asm/src/main_36.s`
 - **Definition**: `data_02071d10: .space 0x1c`
 - **Confirmed Size**: Exactly 28 bytes (0x1C)
 - **Confirmed Range**: 0x02071D10 to 0x02071D2B
@@ -925,7 +925,7 @@ By cross-referencing AR code addresses with the game's disassembly in `build/usa
 - **Purpose**: Player stats and progression data (level, money, attack, defense, drop rate, bravery, partner ID)
 
 #### Pin Collection Data
-- **File**: `build/usa/asm/main_36.s` lines 4293-4295
+- **File**: `build/usa/asm/src/main_36.s`
 - **Definitions**:
   - `data_020727c0: .space 0x2` (2 bytes - likely header)
   - `data_020727c2: .space 0x1` (1 byte - flag or count)
@@ -935,7 +935,7 @@ By cross-referencing AR code addresses with the game's disassembly in `build/usa
 - **Referenced By**: Functions in Shop.s, Result.s, MenuBadge.s
 
 #### Battle Data (`data_02074e34` and `data_02074e56`)
-- **File**: `build/usa/asm/main_36.s` lines 4357-4362
+- **File**: `build/usa/asm/src/main_36.s`
 - **Definitions**:
   - `data_02074e34: .space 0x22` (34 bytes containing invincible flag and battle state)
   - `data_02074e56: .space 0x4e` (78 bytes containing drop rate, combo counters)
@@ -946,8 +946,6 @@ By cross-referencing AR code addresses with the game's disassembly in `build/usa
 - **Addresses**: 0x020854C0-0x02085544
 - **AR Code Patches**: The "Pins Always Evolve" code replaces conditional checks with `mov r0, #0` to bypass evolution requirement logic
 - **Original Logic**: Checks pin battle count, evolution conditions, and specific requirements before allowing evolution
-
-### How to Use the Disassembly
 
 ### How to Use the Disassembly
 
@@ -966,7 +964,7 @@ grep "\.word data_02071d10" build/usa/asm/**/*.s
 Result: `.L_02022b3c: .word data_02071d10` in `Inventory_GetOpenPinStockpileCapacity`
 
 **3. Examine Function Code**
-Open `build/usa/asm/main_36.s` and read `Inventory_GetOpenPinStockpileCapacity` to see how MainData is accessed:
+Open `build/usa/asm/src/Inventory.s` and read `Inventory_GetOpenPinStockpileCapacity` to see how MainData is accessed:
 - Which offsets are read/written
 - What operations are performed
 - How the data relates to game logic
@@ -1153,7 +1151,7 @@ grep -r "0208470" build/usa/asm/**/*.s
 - Relationships between different data structures
 
 **Example: Pin Collection**
-**CONFIRMED from disassembly** (`build/usa/asm/main_36.s` lines 4293-4295):
+**CONFIRMED from disassembly** (`build/usa/asm/src/main_36.s`):
 - **`data_020727c0`**: `0x2` (2 bytes) at `0x020727C0`-`0x020727C1`
 - **`data_020727c2`**: `0x1` (1 byte) at `0x020727C2`
 - **`data_020727c3`**: `0x4BD` (1213 bytes) at `0x020727C3`-`0x02072C7F`
@@ -1180,23 +1178,22 @@ The "Unlock All Pins" AR code:
 
 ## Additional Resources
 
-- **Original AR Code File**: [docs/twewy-ar-codes.txt](docs/twewy-ar-codes.txt)
-- **Pseudocode Version**: [docs/twewy-ar-codes-pseudocode.txt](docs/twewy-ar-codes-pseudocode.txt)
+- **Original AR Code File**: [twewy-ar-codes.txt](twewy-ar-codes.txt)
+- **Pseudocode Version**: [twewy-ar-codes-pseudocode.txt](twewy-ar-codes-pseudocode.txt)
 - **Game Disassembly**: `build/usa/asm/` (main files, overlays, and source)
   - Main ARM9 code: `build/usa/asm/main_*.s`
   - Overlay code: `build/usa/asm/ov00X_*.s`
   - Source functions: `build/usa/asm/src/` (organized by developer/module)
-- **Assembly Modules**: [docs/assembly_modules.md](docs/assembly_modules.md)
-- **Contributing Guide**: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+- **Contributing Guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Key Disassembly Files for AR Code Analysis
 
 | AR Code Feature | Primary Disassembly File(s) | Line Numbers (approx) |
 |----------------|----------------------------|----------------------|
-| MainData structure | `build/usa/asm/main_36.s` | Line 4277 (data), Lines 1-100 (usage) |
-| Pin collection | `build/usa/asm/main_36.s` | Lines 4293-4295 (data) |
+| MainData structure | `build/usa/asm/src/main_36.s` | `data_02071d10` symbol area |
+| Pin collection | `build/usa/asm/src/main_36.s` | `data_020727c0`/`data_020727c3` symbol area |
 | Pin evolution | `build/usa/asm/ov002_4.s` | Lines 3380-3440 |
-| Battle data | `build/usa/asm/main_36.s` | Lines 4357-4362 (data), `ov003_4.s` (usage) |
+| Battle data | `build/usa/asm/src/main_36.s` | `data_02074e34`/`data_02074e56` symbol area, `ov003_4.s` (usage) |
 | Pin management | `build/usa/asm/src/Debug/Takami/MenuBadge.s` | Various |
 | Shop system | `build/usa/asm/src/Debug/Takami/Shop.s` | Various |
 | Battle results | `build/usa/asm/src/Debug/Takami/Result.s` | Various |
