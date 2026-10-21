@@ -4,3 +4,55 @@
     .ctor       start:0x020f0e34 end:0x020f0e34 kind:rodata align:4
     .data       start:0x020f0e40 end:0x020f1060 kind:data align:32
     .bss        start:0x020f1060 end:0x020f1080 kind:bss align:32
+
+
+src/Combat/Player03/BtlPlayer03.c:
+    .text       start:0x020e7360 end:0x020e9e7c
+    .rodata     start:0x020f07a0 end:0x020f0a2c
+    .data       start:0x020f0e40 end:0x020f0e50
+
+src/Combat/Player03/BtlEff_Board.c:
+    .text       start:0x020e9e7c end:0x020ea160
+    .rodata     start:0x020f0a2c end:0x020f0a78
+    .data       start:0x020f0e50 end:0x020f0e64
+
+src/Combat/Player03/BtlCmd_Suit.c:
+    .text       start:0x020ea160 end:0x020ea6c0
+    .rodata     start:0x020f0a78 end:0x020f0a94
+    .data       start:0x020f0e64 end:0x020f0e74
+
+src/Combat/Player03/BtlCard_Suit.c:
+    .text       start:0x020ea6c0 end:0x020eb620
+    .rodata     start:0x020f0a94 end:0x020f0ac0
+    .data       start:0x020f0e74 end:0x020f0e88
+
+src/Combat/Player03/BtlFeat20.c:
+    .text       start:0x020eb620 end:0x020ebf00
+    .rodata     start:0x020f0ac0 end:0x020f0b04
+    .data       start:0x020f0e88 end:0x020f0eb8
+
+src/Combat/Player03/BtlFeat20_Multi.c:
+    .text       start:0x020ebf00 end:0x020ec644
+    .rodata     start:0x020f0b04 end:0x020f0b60
+    .data       start:0x020f0eb8 end:0x020f0f14
+
+src/Combat/Player03/BtlFeat21.c:
+    .text       start:0x020ec644 end:0x020ed3f4
+    .rodata     start:0x020f0b60 end:0x020f0bc4
+    .data       start:0x020f0f14 end:0x020f0f5c
+
+src/Combat/Player03/BtlFeat21_Multi.c:
+    .text       start:0x020ed3f4 end:0x020edbbc
+    .rodata     start:0x020f0bc4 end:0x020f0d00
+    .data       start:0x020f0f5c end:0x020f0f98
+
+src/Combat/Player03/BtlFeat22.c:
+    .text       start:0x020edbbc end:0x020f0464
+    .rodata     start:0x020f0d00 end:0x020f0e18
+    .data       start:0x020f0f98 end:0x020f1034
+    .bss        start:0x020f1060 end:0x020f1080
+
+src/Combat/Player03/BtlFeat22_Awa.c:
+    .text       start:0x020f0464 end:0x020f07a0
+    .rodata     start:0x020f0e18 end:0x020f0e34
+    .data       start:0x020f1034 end:0x020f1060
