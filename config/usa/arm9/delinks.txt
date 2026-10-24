@@ -15,7 +15,16 @@ src/Engine/Core/UnknownFlag.c:
     categories: Engine
     .bss        start:0x02066a58 end:0x02066a5c
 
+libs/nitro/src/init/secure_area.c:
+    categories: Library, NitroSDK
+    .text       start:0x02000000 end:0x02000800
+
+libs/nitro/src/init/crt0.c:
+    categories: Library, NitroSDK
+    .text       start:0x02000800 end:0x02000bdc
+
 src/main.c:
+    categories: Engine
     complete
     .text       start:0x02000bdc end:0x02001254
     .data       start:0x020636a0 end:0x020636cc
@@ -174,16 +183,30 @@ src/Engine/Resources/SpriteMgr.c:
     .rodata     start:0x0205adb4 end:0x0205adf8
     .bss        start:0x0206b408 end:0x0206b41c
 
+src/Engine/main_0200edac.c:
+    categories: Engine
+    .text       start:0x0200edac end:0x0200f198
+
 src/Engine/EasyTask.c:
     categories: Engine
     complete
     .text       start:0x0200f198 end:0x0200f86c
     .data       start:0x02063828 end:0x02063844
 
+src/Engine/IO/main_0200f86c.c:
+    categories: Engine
+    .text       start:0x0200f86c end:0x0200f94c
+
 src/Engine/Text.c:
     categories: Engine
     .text       start:0x0200f94c end:0x02011f00
     .rodata     start:0x0205ae64 end:0x0205b754
+
+src/Engine/main_02011f00.c:
+    categories: Engine
+    .text       start:0x02011f00 end:0x0201202c
+    .data       start:0x02063844 end:0x0206386c
+    .bss        start:0x0206b41c end:0x0206b854
 
 libs/cri/src/adx_bahx.c:
     categories: CriWare, Library
@@ -457,41 +480,153 @@ libs/cri/src/criss.c:
     .bss        start:0x02071b00 end:0x02071cf0
 
 src/Inventory.c:
+    categories: Engine
     .text       start:0x02021fcc end:0x020246d4
 
 src/Savefile.c:
+    categories: Engine
     .text       start:0x020246d4 end:0x02025b68
     .rodata     start:0x0205c96c end:0x0205c988
     .data       start:0x02065be4 end:0x02065c08
 
 src/UnkResourceHandler.c:
+    categories: Engine
     .text       start:0x02025b68 end:0x02025e74
 
 src/CellText.c:
+    categories: Engine
     .text       start:0x02025e74 end:0x0202614c
 
 src/EasyFade.c:
+    categories: Engine
     complete
     .text       start:0x0202614c end:0x02026528
     .rodata     start:0x0205cb10 end:0x0205cb3c
     .data       start:0x02065c94 end:0x02065ca0
     .bss        start:0x020751dc end:0x02075204
 
+src/main_02026528.c:
+    categories: Engine
+    .text       start:0x02026528 end:0x020268f0
+    .data       start:0x02065ca0 end:0x02065cb0
+    .bss        start:0x02075204 end:0x02075214
+
 src/SndMgr.c:
+    categories: Engine
     complete
     .text       start:0x020268f0 end:0x02027294
     .data       start:0x02065cb0 end:0x02065cd0
     .bss        start:0x02075214 end:0x020768f0
 
 src/CriSndMgr.c:
+    categories: Engine
     .text       start:0x02027294 end:0x020274ac
     .rodata     start:0x0205e0ec end:0x0205e324
     .data       start:0x02065cd0 end:0x02065fcc
     .bss        start:0x020768f0 end:0x02076a14
 
-src/unk_main_44.c:
-    .text       start:0x020274ac end:0x020339e0
-    .data       start:0x02065fcc end:0x02066238
+libs/nns/src/fnd/fnd_020274ac.c:
+    categories: Library, NitroSystem
+    .text       start:0x020274ac end:0x02027b0c
+    .bss        start:0x02076a14 end:0x02076a24
+
+libs/nns/src/gfd/gfd_02027b0c.c:
+    categories: Library, NitroSystem
+    .text       start:0x02027b0c end:0x02027cb8
+    .data       start:0x02065fcc end:0x02065fdc
+    .bss        start:0x02076a24 end:0x02076a30
+
+libs/nns/src/gfd/gfd_02027cb8.c:
+    categories: Library, NitroSystem
+    .text       start:0x02027cb8 end:0x020281c0
+    .rodata     start:0x0205e324 end:0x0205e3b4
+    .bss        start:0x02076a30 end:0x02076a44
+
+libs/nns/src/gfd/gfd_020281c0.c:
+    categories: Library, NitroSystem
+    .text       start:0x020281c0 end:0x020288f0
+    .data       start:0x02065fdc end:0x02066050
+
+libs/nns/src/g3d/g3d_020288f0.c:
+    categories: Library, NitroSystem
+    .text       start:0x020288f0 end:0x0202a02c
+    .rodata     start:0x0205e3b4 end:0x0205e3f8
+    .data       start:0x02066050 end:0x02066078
+    .bss        start:0x02076a44 end:0x02077aac
+
+libs/nns/src/g3d/g3d_0202a02c.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202a02c end:0x0202b5d4
+    .data       start:0x02066078 end:0x02066178
+    .bss        start:0x02077aac end:0x020799ac
+
+libs/nns/src/g3d/g3d_0202b5d4.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202b5d4 end:0x0202b8a0
+    .bss        start:0x020799ac end:0x020799c0
+
+libs/nns/src/g3d/g3d_0202b8a0.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202b8a0 end:0x0202bf3c
+
+libs/nns/src/g3d/g3d_0202bf3c.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202bf3c end:0x0202d3f8
+    .rodata     start:0x0205e3f8 end:0x0205e41c
+
+libs/nns/src/g3d/g3d_0202d3f8.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202d3f8 end:0x0202db7c
+
+libs/nns/src/g3d/g3d_0202db7c.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202db7c end:0x0202f8a0
+    .data       start:0x02066178 end:0x02066258
+
+libs/nns/src/snd/snd_0202f8a0.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202f8a0 end:0x0202f99c
+    .bss        start:0x020799c0 end:0x0207bdc0
+
+libs/nns/src/snd/snd_0202f99c.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202f99c end:0x0202fb90
+    .bss        start:0x0207bdc0 end:0x0207bdcc
+
+libs/nns/src/snd/snd_0202fb90.c:
+    categories: Library, NitroSystem
+    .text       start:0x0202fb90 end:0x02030458
+    .bss        start:0x0207bdcc end:0x0207c6a4
+
+libs/nns/src/snd/snd_02030458.c:
+    categories: Library, NitroSystem
+    .text       start:0x02030458 end:0x02030a78
+    .bss        start:0x0207c6a4 end:0x0207c774
+
+libs/nns/src/snd/snd_02030a78.c:
+    categories: Library, NitroSystem
+    .text       start:0x02030a78 end:0x02030cec
+    .bss        start:0x0207c774 end:0x0207cd70
+
+libs/nns/src/snd/snd_02030cec.c:
+    categories: Library, NitroSystem
+    .text       start:0x02030cec end:0x02031364
+    .bss        start:0x0207cd70 end:0x0207cd74
+
+libs/nns/src/snd/snd_02031364.c:
+    categories: Library, NitroSystem
+    .text       start:0x02031364 end:0x02031b5c
+
+libs/nns/src/snd/snd_02031b5c.c:
+    categories: Library, NitroSystem
+    .text       start:0x02031b5c end:0x02032114
+    .bss        start:0x0207cd74 end:0x0207cdb0
+
+libs/nns/src/snd/snd_02032114.c:
+    categories: Library, NitroSystem
+    .text       start:0x02032114 end:0x020339f8
+    .rodata     start:0x0205e41c end:0x0205e4e0
+    .bss        start:0x0207cdb0 end:0x0207dc20
 
 libs/nitro/src/fx/fx_matrix.c:
     categories: Library, NitroSDK
@@ -531,14 +666,69 @@ libs/nitro/src/gx/gx_state.c:
     .text       start:0x02035568 end:0x020365e4
     .bss        start:0x0207dc24 end:0x0207dc40
 
+libs/nitro/src/gx/gx_020365e4.c:
+    categories: Library, NitroSDK
+    .text       start:0x020365e4 end:0x02036a54
+
+libs/nitro/src/gx/gx_02036a54.c:
+    categories: Library, NitroSDK
+    .text       start:0x02036a54 end:0x02036ab8
+
+libs/nitro/src/gx/gx_02036ab8.c:
+    categories: Library, NitroSDK
+    .text       start:0x02036ab8 end:0x02036b28
+
+libs/nitro/src/gx/gx_02036b28.c:
+    categories: Library, NitroSDK
+    .text       start:0x02036b28 end:0x0203701c
+
+libs/nitro/src/gx/gx_0203701c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203701c end:0x02037108
+
+libs/nitro/src/gx/gx_02037108.c:
+    categories: Library, NitroSDK
+    .text       start:0x02037108 end:0x02037d88
+    .bss        start:0x0207dc40 end:0x0207dc5c
+
+libs/nitro/src/gx/gx_02037d88.c:
+    categories: Library, NitroSDK
+    .text       start:0x02037d88 end:0x020381fc
+    .rodata     start:0x020625e4 end:0x02062754
+    .bss        start:0x0207dc5c end:0x0207dc7c
+
+libs/nitro/src/gx/gx_020381fc.c:
+    categories: Library, NitroSDK
+    .text       start:0x020381fc end:0x0203823c
+
+libs/nitro/src/os/os_0203823c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203823c end:0x020382b0
+
+libs/nitro/src/os/os_020382b0.c:
+    categories: Library, NitroSDK
+    .text       start:0x020382b0 end:0x020383bc
+    .data       start:0x02066260 end:0x02066270
+    .bss        start:0x0207dc7c end:0x0207dc84
+
 libs/nitro/src/os/interrupt.c:
     categories: Library, NitroSDK
     .text       start:0x020383bc end:0x02038664
+
+libs/nitro/src/os/os_02038664.c:
+    categories: Library, NitroSDK
+    .text       start:0x02038664 end:0x020389fc
+    .bss        start:0x0207dc84 end:0x0207dce0
 
 libs/nitro/src/os/thread.c:
     categories: Library, NitroSDK
     .text       start:0x020389fc end:0x0203927c
     .bss        start:0x0207dce0 end:0x0207df5c
+
+libs/nitro/src/os/os_0203927c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203927c end:0x02039594
+    .data       start:0x02066270 end:0x02066274
 
 libs/nitro/src/os/mutex.c:
     categories: Library, NitroSDK
@@ -560,6 +750,35 @@ libs/nitro/src/os/region.c:
     .text       start:0x02039918 end:0x02039cd0
     .bss        start:0x0207df5c end:0x0207df64
 
+libs/nitro/src/os/os_02039cd0.c:
+    categories: Library, NitroSDK
+    .text       start:0x02039cd0 end:0x0203a09c
+    .bss        start:0x0207df64 end:0x0207df88
+
+libs/nitro/src/os/os_0203a09c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a09c end:0x0203a114
+
+libs/nitro/src/os/os_0203a114.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a114 end:0x0203a318
+    .bss        start:0x0207df88 end:0x0207e034
+
+libs/nitro/src/os/os_0203a318.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a318 end:0x0203a354
+    .bss        start:0x0207e034 end:0x0207e038
+
+libs/nitro/src/os/os_0203a354.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a354 end:0x0203a554
+    .bss        start:0x0207e038 end:0x0207e048
+
+libs/nitro/src/os/os_0203a554.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a554 end:0x0203a5e4
+    .bss        start:0x0207e048 end:0x0207e054
+
 libs/nitro/src/os/valarm.c:
     categories: Library, NitroSDK
     complete
@@ -575,10 +794,68 @@ libs/nitro/src/os/reset.c:
     categories: Library, NitroSDK
     .text       start:0x0203a7fc end:0x0203a96c
 
+libs/nitro/src/os/os_0203a96c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203a96c end:0x0203aad0
+    .bss        start:0x0207e06c end:0x0207e084
+
+libs/nitro/src/os/os_0203aad0.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203aad0 end:0x0203aafc
+
+libs/nitro/src/mi/mi_0203aafc.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203aafc end:0x0203af70
+
+libs/nitro/src/gx/gx_0203af70.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203af70 end:0x0203b258
+    .bss        start:0x0207e084 end:0x0207e0a4
+
 libs/nitro/src/mi/cpumem.c:
     categories: Library, NitroSDK
     complete
     .text       start:0x0203b258 end:0x0203b59c
+
+libs/nitro/src/mi/mi_0203b59c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203b59c end:0x0203b8b4
+
+libs/nitro/src/mi/mi_0203b8b4.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203b8b4 end:0x0203babc
+
+libs/nitro/src/snd/snd_0203babc.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203babc end:0x0203bf08
+    .bss        start:0x0207e0a4 end:0x0207e0c0
+
+libs/nitro/src/snd/snd_0203bf08.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203bf08 end:0x0203c618
+    .bss        start:0x0207e0c0 end:0x0207fba0
+
+libs/nitro/src/snd/snd_0203c618.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203c618 end:0x0203c6dc
+    .bss        start:0x0207fba0 end:0x0207fc00
+
+libs/nitro/src/snd/snd_0203c6dc.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203c6dc end:0x0203cc10
+    .rodata     start:0x02062754 end:0x02063128
+    .bss        start:0x0207fc00 end:0x0207fc04
+
+libs/nitro/src/pxi/pxi_0203cc10.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203cc10 end:0x0203cf2c
+    .bss        start:0x0207fc04 end:0x0207fc88
+
+libs/nitro/src/fs/fs_0203cf2c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203cf2c end:0x0203dab8
+    .rodata     start:0x02063128 end:0x0206314c
+    .data       start:0x02066274 end:0x02066278
 
 libs/nitro/src/fs/record.c:
     categories: Library, NitroSDK
@@ -609,6 +886,95 @@ libs/c/src/ctype.c:
     categories: Library, MSL
     complete
     .rodata     start:0x020632c0 end:0x02063440
+
+libs/nitro/src/fs/fs_0203f350.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203f350 end:0x0203fbd0
+    .data       start:0x02066284 end:0x0206639c
+
+libs/nitro/src/os/os_0203fbd0.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203fbd0 end:0x0203fc4c
+
+libs/nitro/src/tp/tp_0203fc4c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0203fc4c end:0x020405d4
+    .bss        start:0x0207fd10 end:0x0207fd4c
+
+libs/nitro/src/mic/mic_020405d4.c:
+    categories: Library, NitroSDK
+    .text       start:0x020405d4 end:0x020409fc
+    .bss        start:0x0207fd4c end:0x0207fd6c
+
+libs/nitro/src/pm/pm_020409fc.c:
+    categories: Library, NitroSDK
+    .text       start:0x020409fc end:0x020415a4
+    .bss        start:0x0207fd6c end:0x0207fdd4
+
+libs/nitro/src/spi/spi_020415a4.c:
+    categories: Library, NitroSDK
+    .text       start:0x020415a4 end:0x02041e00
+    .bss        start:0x0207fdd4 end:0x0207fe00
+
+libs/nitro/src/spi/spi_02041e00.c:
+    categories: Library, NitroSDK
+    .text       start:0x02041e00 end:0x02042034
+    .data       start:0x0206639c end:0x020663d0
+
+libs/nitro/src/card/card_02042034.c:
+    categories: Library, NitroSDK
+    .text       start:0x02042034 end:0x02043388
+    .data       start:0x020663d0 end:0x020663d4
+    .bss        start:0x0207fe00 end:0x020806e0
+
+libs/nitro/src/card/card_02043388.c:
+    categories: Library, NitroSDK
+    .text       start:0x02043388 end:0x02043554
+    .bss        start:0x020806e0 end:0x02080700
+
+libs/nitro/src/wm/wm_02043554.c:
+    categories: Library, NitroSDK
+    .text       start:0x02043554 end:0x02043ed8
+    .bss        start:0x02080700 end:0x020811a0
+
+libs/nitro/src/wm/wm_02043ed8.c:
+    categories: Library, NitroSDK
+    .text       start:0x02043ed8 end:0x02045d20
+    .data       start:0x020663d4 end:0x020663d8
+    .bss        start:0x020811a0 end:0x02081220
+
+libs/nitro/src/wm/wm_02045d20.c:
+    categories: Library, NitroSDK
+    .text       start:0x02045d20 end:0x02046944
+    .bss        start:0x02081220 end:0x02081248
+
+libs/nitro/src/wm/wm_02046944.c:
+    categories: Library, NitroSDK
+    .text       start:0x02046944 end:0x02047684
+    .bss        start:0x02081248 end:0x02081924
+
+libs/nitro/src/ctrdg/ctrdg_02047684.c:
+    categories: Library, NitroSDK
+    .text       start:0x02047684 end:0x0204799c
+    .bss        start:0x02081924 end:0x02081940
+
+libs/nitro/src/ctrdg/ctrdg_0204799c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0204799c end:0x02047cf4
+    .bss        start:0x02081940 end:0x02081b08
+
+libs/nitro/src/os/os_02047cf4.c:
+    categories: Library, NitroSDK
+    .text       start:0x02047cf4 end:0x02047e84
+    .bss        start:0x02081b08 end:0x02081f30
+
+libs/nitro/src/std/std_02047e84.c:
+    categories: Library, NitroSDK
+    .text       start:0x02047e84 end:0x0204823c
+
+libs/nitro/src/os/os_0204823c.c:
+    categories: Library, NitroSDK
+    .text       start:0x0204823c end:0x02048c14
 
 libs/c/src/abort_exit_arm_eabi.c:
     categories: Library, MSL
@@ -727,16 +1093,41 @@ libs/c/src/strtoul.c:
     .text       start:0x0204dd98 end:0x0204e684
     .exceptix   start:0x02059048 end:0x0205906c
 
+libs/c/src/math/math_0204e684.c:
+    categories: Library, MSL
+    .text       start:0x0204e684 end:0x0204fd00
+    .bss        start:0x02082480 end:0x02082488
+
+libs/c/src/math/math_0204fd00.c:
+    categories: Library, MSL
+    .text       start:0x0204fd00 end:0x02051a48
+    .rodata     start:0x02063478 end:0x02063630
+    .bss        start:0x02082488 end:0x02082490
+
+libs/c/src/math/math_02051a48.c:
+    categories: Library, MSL
+    .text       start:0x02051a48 end:0x02052a18
+    .rodata     start:0x02063630 end:0x02063680
+
 libs/c/src/math/s_fabs.c:
     categories: Library, MSL
     complete
     .text       start:0x02052a18 end:0x02052a38
+
+libs/c/src/msl_02052a38.c:
+    categories: Library, MSL
+    .text       start:0x02052a38 end:0x02054604
+    .data       start:0x02066728 end:0x02066864
 
 libs/c/src/pool_alloc.c:
     categories: Library, MSL
     complete
     .text       start:0x02054604 end:0x02054634
     .exceptix   start:0x020591b0 end:0x020591c8
+
+libs/runtime/src/runtime_02054634.c:
+    categories: Library, MSL
+    .text       start:0x02054634 end:0x02057034
 
 libs/runtime/src/console_io.c:
     categories: Library, MSL
@@ -773,6 +1164,11 @@ libs/runtime/src/cxxabi_alloc.cpp:
     .text       start:0x020587a4 end:0x0205897c
     .exception  start:0x02058eb4 end:0x02058f04
     .exceptix   start:0x020592c4 end:0x020592f4
+
+libs/runtime/src/runtime_0205897c.cpp:
+    categories: Library, MSL
+    .text       start:0x0205897c end:0x020589f4
+    .data       start:0x02066978 end:0x02066a14
 
 libs/runtime/src/MWException.cpp:
     categories: Library, MSL
