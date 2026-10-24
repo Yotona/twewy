@@ -4,6 +4,7 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/DbgLog.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/Str.h"
@@ -155,7 +156,7 @@ void func_ov000_02082b1c(Mini108State* state) {
                          g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText);
     PaletteMgr_AllocPalette(g_PaletteManagers[1], temp_r5, 0, 0, 2);
 
-    func_0200eed4(&state->unk_850, &state->unk_8D0, 0x4000, 0x100);
+    MiniTask_InitPool(&state->unk_850, &state->unk_8D0, 0x4000, 0x100);
     UnkStruct_ov000_02082b1c s_04;
     s_04.unk_00 = 0;
     s_04.unk_04 = 0;
@@ -167,9 +168,9 @@ void func_ov000_02082b1c(Mini108State* state) {
     s_04.unk_1A = 0;
     s_04.unk_1C = 0x20;
     s_04.unk_1E = 0x18;
-    func_02025b68(&state->unk_14, &s_04);
+    BgText_Init(&state->unk_14, &s_04);
     s_04.unk_00 = 1;
-    func_02025b68(&state->unk_430, &s_04);
+    BgText_Init(&state->unk_430, &s_04);
     DebugOvlDisp_Init();
     DebugOvlDisp_Push(func_ov000_020830b8, state, 0);
     DebugOvlDisp_Push(func_ov000_020830bc, state, 0);
@@ -186,9 +187,9 @@ void func_ov000_02082b18(Mini108State* unk_r0) {
 void Mini108_Exit(Mini108State* state) {
     if (state != NULL) {
         DatMgr_ClearSlot(2);
-        func_0200ef80(&state->unk_850);
-        func_02025e30(&state->unk_14);
-        func_02025e30(&state->unk_430);
+        MiniTask_CleanupAll(&state->unk_850);
+        BgText_Free(&state->unk_14);
+        BgText_Free(&state->unk_430);
         Mini108_UnregisterVBlank();
         ResourceMgr_SetActiveManagers(state->unk_15e50);
         Mem_Free(&gDebugHeap, state);
@@ -210,7 +211,7 @@ void Mini108_Update(Mini108State* stateptr) {
     DebugOvlDisp_Run();
 
     if ((stateptr->buttonState.pressedButtons & INPUT_BUTTON_START) != 0) {
-        if (func_02011f44("Seq_Mini108(void *) reset") == 1) {
+        if (DbgLog_Print("Seq_Mini108(void *) reset") == 1) {
             data_02066a58 |= 2;
         }
         OverlayTag tag;
@@ -221,14 +222,14 @@ void Mini108_Update(Mini108State* stateptr) {
     }
 
     if (stateptr->unk_00 == 1) {
-        if (func_02011f44("Seq_Mini108(void *) leave") == 1) {
+        if (DbgLog_Print("Seq_Mini108(void *) leave") == 1) {
             data_02066a58 |= 2;
         }
         OverlayTag tag;
         MainOvlDisp_Pop(&tag);
         return;
     }
-    func_0200efdc(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
+    MiniTask_UpdatePool(&stateptr->unk_84C); // should have ->slotIndex(?) but throws "Illegal operand" error if it has that.
 
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
@@ -239,7 +240,7 @@ void Mini108_Update(Mini108State* stateptr) {
 const char* data_ov000_020831e0 = "Seq_Mini108(void *)";
 
 void Mini108_Init(Mini108State* stateptr) {
-    if (func_02011f44("Seq_Mini108(void *) enter") == 1) {
+    if (DbgLog_Print("Seq_Mini108(void *) enter") == 1) {
         data_02066a58 |= 2;
     }
     if (stateptr == NULL) {

@@ -14,8 +14,14 @@ void G2_SetBGAffine(u32* reg, MtxFx22* mtx, s32 x0, s32 y0, s32 x1, s32 y1);
 
 void _G2_SetBlend(u32* reg, u32 srcPlane, u32 dstPlane, u32 srcAlpha, u32 dstAlpha);
 
+void* G2_GetBG0ScrPtr(void);
+void* G2_GetBG1ScrPtr(void);
 void* G2_GetBG2ScrPtr(void);
 void* G2_GetBG3ScrPtr(void);
+void* G2S_GetBG0ScrPtr(void);
+void* G2S_GetBG1ScrPtr(void);
+void* G2S_GetBG2ScrPtr(void);
+void* G2S_GetBG3ScrPtr(void);
 void* G2S_func_0001();
 
 inline void G2_SetBG0Priority(u32 value) {

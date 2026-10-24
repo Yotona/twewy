@@ -7057,7 +7057,7 @@ s32 func_ov038_02083300(s32 arg0, s32 arg1, s32 arg2) {
     return func_ov038_020832d0(arg0);
 }
 
-void func_02025b68(void* textObj, GrpCheckTextParams* params);
+void BgText_Init(void* textObj, GrpCheckTextParams* params);
 
 void func_ov038_02083340(GrpCheckState* state) {
     GrpCheckTextParams params;
@@ -7072,11 +7072,11 @@ void func_ov038_02083340(GrpCheckState* state) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&state->unk_11BA4, &params);
+    BgText_Init(&state->unk_11BA4, &params);
 }
 
 void func_ov038_020833a4(GrpCheckState* state) {
-    func_02025e30(&state->unk_11BA4);
+    BgText_Free(&state->unk_11BA4);
 }
 
 void GrpCheck_PrintRowIndicator(GrpCheckState* state) {

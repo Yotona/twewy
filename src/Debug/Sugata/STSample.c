@@ -37,12 +37,12 @@ void func_ov041_02082730(STSampleState* state) {
     local_30.unk_1A = 0;
     local_30.unk_1C = 0x20;
     local_30.unk_1E = 0x18;
-    func_02025b68(&state->unk_21594, &local_30);
+    BgText_Init(&state->unk_21594, &local_30);
     Text_RenderToScreen(&state->unk_215A0, 0, 0, "‚·‚ê‚¿‚ª‚¢ƒTƒ“ƒvƒ‹"); // "StreetPass Sample"
 }
 
 void func_ov041_020827b8(STSampleState* state) {
-    func_02025e30(&state->unk_21594);
+    BgText_Free(&state->unk_21594);
 }
 
 /* Nonmatching */

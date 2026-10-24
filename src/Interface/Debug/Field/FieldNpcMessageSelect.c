@@ -71,8 +71,8 @@ typedef struct {
 #define FLD_NPC_MES_COUNT 38
 
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textObj);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textObj);
 
 extern u8 func_ov030_020ca778(SysFont* arg0, s32 mesNo, s32 arg2, const u8* winKind);
 
@@ -174,7 +174,7 @@ void FldNpcMesSel_CreateTextView(FldNpcMesSelObject* selObj) {
     stack.unk_1C = 0x20;
     stack.unk_1E = 0x18;
 
-    func_02025b68(&selObj->unk_21614, &stack);
+    BgText_Init(&selObj->unk_21614, &stack);
     Text_RenderToScreen(&selObj->text, 0, 0, "NPC message select");
 }
 
@@ -187,7 +187,7 @@ void FldNpcMesSel_DrawMenu(FldNpcMesSelObject* selObj) {
 }
 
 void FldNpcMesSel_DestroyTextView(FldNpcMesSelObject* selObj) {
-    func_02025e30(&selObj->unk_21614);
+    BgText_Free(&selObj->unk_21614);
 }
 
 s32 FldNpcMesSel_CreateMessageWindow(FldNpcMesSelObject* selObj, u8 winKind) {

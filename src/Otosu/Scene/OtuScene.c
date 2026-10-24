@@ -46,7 +46,7 @@ void OtuScene_InitText(TinPinSlammer_Scene* scene) {
     args.unk_1C = 0x20;
     args.unk_1E = 0x18;
 
-    func_02025b68(scene->textRes, &args);
+    BgText_Init(scene->textRes, &args);
     scene->textReady = 1;
 }
 
@@ -55,7 +55,7 @@ void OtuScene_ReleaseText(TinPinSlammer_Scene* scene) {
         return;
     }
 
-    func_02025e30(scene->textRes);
+    BgText_Free(scene->textRes);
     scene->textReady = 0;
 }
 

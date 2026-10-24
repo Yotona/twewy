@@ -235,7 +235,7 @@ void func_ov046_02082c0c(EasyListNode* list, BOOL unk_r1) {
                 EasyTask_DestroyPool(list->data);
                 return;
             case 4:
-                func_02025e30(list->data);
+                BgText_Free(list->data);
                 return;
         }
     }

@@ -19,8 +19,8 @@
 #include "common_data.h"
 
 extern void func_02010b50(TextObject* textObj);
-extern void func_02025b68(void* textBg, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textBg);
+extern void BgText_Init(void* textBg, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textBg);
 
 void SeqFlashSel_Init(FlashSelectOverlayState* state);
 void SeqFlashSel_Update(FlashSelectOverlayState* state);
@@ -48,7 +48,7 @@ void SeqFlashSel_InitText(FlashSelectOverlayState* state) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&state->textBg, &params);
+    BgText_Init(&state->textBg, &params);
     Text_RenderToScreen(&state->text, 0, 0, SeqFlashSel_Title);
 }
 
@@ -64,7 +64,7 @@ void SeqFlashSel_DrawText(FlashSelectOverlayState* state) {
 }
 
 void SeqFlashSel_ReleaseText(FlashSelectOverlayState* state) {
-    func_02025e30(&state->textBg);
+    BgText_Free(&state->textBg);
 }
 
 void SeqFlashSel_CreateScreen(FlashSelectOverlayState* state) {

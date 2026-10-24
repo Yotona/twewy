@@ -493,17 +493,17 @@ func_0200ed74 kind:function(arm,size=0x1c) addr:0x0200ed74
 func_0200ed90 kind:function(arm,size=0x1c) addr:0x0200ed90
 
 
-func_0200edac kind:function(arm,size=0x10) addr:0x0200edac
-func_0200edbc kind:function(arm,size=0xb0) addr:0x0200edbc
-func_0200ee6c kind:function(arm,size=0x54) addr:0x0200ee6c
-func_0200eec0 kind:function(arm,size=0x14) addr:0x0200eec0
-func_0200eed4 kind:function(arm,size=0xac) addr:0x0200eed4
-func_0200ef80 kind:function(arm,size=0x5c) addr:0x0200ef80
-func_0200efdc kind:function(arm,size=0x18) addr:0x0200efdc
-func_0200eff4 kind:function(arm,size=0xe8) addr:0x0200eff4
-func_0200f0dc kind:function(arm,size=0x4c) addr:0x0200f0dc
-func_0200f128 kind:function(arm,size=0x40) addr:0x0200f128
-func_0200f168 kind:function(arm,size=0x30) addr:0x0200f168
+MiniTask_Alloc kind:function(arm,size=0x10) addr:0x0200edac
+MiniTask_Recycle kind:function(arm,size=0xb0) addr:0x0200edbc
+MiniTask_Insert kind:function(arm,size=0x54) addr:0x0200ee6c
+MiniTask_ClearLists kind:function(arm,size=0x14) addr:0x0200eec0
+MiniTask_InitPool kind:function(arm,size=0xac) addr:0x0200eed4
+MiniTask_CleanupAll kind:function(arm,size=0x5c) addr:0x0200ef80
+MiniTask_UpdatePool kind:function(arm,size=0x18) addr:0x0200efdc
+MiniTask_ProcessPending kind:function(arm,size=0xe8) addr:0x0200eff4
+MiniTask_UpdateActive kind:function(arm,size=0x4c) addr:0x0200f0dc
+MiniTask_GetById kind:function(arm,size=0x40) addr:0x0200f128
+MiniTask_GetByHandle kind:function(arm,size=0x30) addr:0x0200f168
 
 /////////////////////////////////////////////////////////////
 // src/EasyTask.c
@@ -596,10 +596,10 @@ func_02011ecc kind:function(arm,size=0x34) addr:0x02011ecc
 
 
 
-func_02011f00 kind:function(arm,size=0x44) addr:0x02011f00
-func_02011f44 kind:function(arm,size=0xa0) addr:0x02011f44
-func_02011fe4 kind:function(arm,size=0x28) addr:0x02011fe4
-func_0201200c kind:function(arm,size=0x20) addr:0x0201200c
+DbgLog_Reset kind:function(arm,size=0x44) addr:0x02011f00
+DbgLog_Print kind:function(arm,size=0xa0) addr:0x02011f44
+DbgLog_GetEntry kind:function(arm,size=0x28) addr:0x02011fe4
+DbgLog_Dump kind:function(arm,size=0x20) addr:0x0201200c
 
 /////////////////////////////////////////////////////////////
 // libs/cri/src/adx_bahx.c
@@ -1566,8 +1566,8 @@ Savefile_InitNewGameDefaults kind:function(arm,size=0x4c) addr:0x02025b1c
 /////////////////////////////////////////////////////////////
 // src/CellText.c
 /////////////////////////////////////////////////////////////
-func_02025b68 kind:function(arm,size=0x2c8) addr:0x02025b68
-func_02025e30 kind:function(arm,size=0x44) addr:0x02025e30
+BgText_Init kind:function(arm,size=0x2c8) addr:0x02025b68
+BgText_Free kind:function(arm,size=0x44) addr:0x02025e30
 func_02025e74 kind:function(arm,size=0x198) addr:0x02025e74
 func_0202600c kind:function(arm,size=0x8) addr:0x0202600c
 CellText_Draw kind:function(arm,size=0x50) addr:0x02026014
@@ -1604,11 +1604,11 @@ func_02026590 kind:function(arm,size=0x30) addr:0x02026590
 func_020265c0 kind:function(arm,size=0x14) addr:0x020265c0
 func_020265d4 kind:function(arm,size=0x34) addr:0x020265d4
 func_02026608 kind:function(arm,size=0x70) addr:0x02026608
-func_02026678 kind:function(arm,size=0x38) addr:0x02026678
-func_020266b0 kind:function(arm,size=0xac) addr:0x020266b0
-func_0202675c kind:function(arm,size=0x84) addr:0x0202675c
-func_020267e0 kind:function(arm,size=0xac) addr:0x020267e0
-func_0202688c kind:function(arm,size=0x64) addr:0x0202688c
+NNSTexVram_FindFreeSlot kind:function(arm,size=0x38) addr:0x02026678
+NNSTexVram_Alloc kind:function(arm,size=0xac) addr:0x020266b0
+NNSTexVram_Free kind:function(arm,size=0x84) addr:0x0202675c
+NNSTexVram_Init kind:function(arm,size=0xac) addr:0x020267e0
+NNSTexVram_Shutdown kind:function(arm,size=0x64) addr:0x0202688c
 
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
@@ -2160,9 +2160,9 @@ G2S_GetBG0ScrPtr kind:function(arm,size=0x20) addr:0x02036618
 G2_GetBG1ScrPtr kind:function(arm,size=0x34) addr:0x02036638
 G2S_GetBG1ScrPtr kind:function(arm,size=0x20) addr:0x0203666c
 G2_GetBG2ScrPtr kind:function(arm,size=0x84) addr:0x0203668c
-func_02036710 kind:function(arm,size=0x74) addr:0x02036710
+G2S_GetBG2ScrPtr kind:function(arm,size=0x74) addr:0x02036710
 G2_GetBG3ScrPtr kind:function(arm,size=0x84) addr:0x02036784
-func_02036808 kind:function(arm,size=0x74) addr:0x02036808
+G2S_GetBG3ScrPtr kind:function(arm,size=0x74) addr:0x02036808
 G2_GetBG0CharPtr kind:function(arm,size=0x34) addr:0x0203687c
 G2S_GetBG0CharPtr kind:function(arm,size=0x20) addr:0x020368b0
 G2_GetBG1CharPtr kind:function(arm,size=0x34) addr:0x020368d0
@@ -3469,8 +3469,8 @@ data_0205c968 kind:data(any) addr:0x0205c968
 SaveFooterSignature kind:data(any) addr:0x0205c96c
 
 
-data_0205c988 kind:data(any) addr:0x0205c988
-data_0205c990 kind:data(any) addr:0x0205c990
+sFontFunakosi kind:data(any) addr:0x0205c988 local
+sBgTextDefaultPalette kind:data(any) addr:0x0205c990 local
 data_0205c9b0 kind:data(any) addr:0x0205c9b0
 data_0205ca88 kind:data(any) addr:0x0205ca88
 data_0205ca94 kind:data(any) addr:0x0205ca94
@@ -3639,7 +3639,7 @@ taskName$38 kind:data(any) addr:0x02063828 local
 @398 kind:data(any) addr:0x02063834 local
 
 data_02063844 kind:data(any) addr:0x02063844
-data_02063858 kind:data(any) addr:0x02063858
+sDbgLogFullMsg kind:data(any) addr:0x02063858 local
 data_0206385c kind:data(any) addr:0x0206385c
 
 
@@ -4019,7 +4019,7 @@ data_02065bd8 kind:data(any) addr:0x02065bd8
 
 
 data_02065c08 kind:data(any) addr:0x02065c08
-data_02065c24 kind:data(any) addr:0x02065c24
+sBgTextTemplate kind:data(any) addr:0x02065c24 local
 data_02065c74 kind:data(any) addr:0x02065c74
 data_02065c84 kind:data(any) addr:0x02065c84
 
@@ -4403,10 +4403,7 @@ data_0206b3e8 kind:bss addr:0x0206b3e8
 /////////////////////////////////////////////////////////////
 g_SpriteFrameInfo kind:bss addr:0x0206b408
 
-data_0206b41c kind:bss addr:0x0206b41c
-data_0206b42c kind:bss addr:0x0206b42c
-data_0206b430 kind:bss addr:0x0206b430
-data_0206b830 kind:bss addr:0x0206b830
+sDbgLog kind:bss(size=0x438) addr:0x0206b41c local
 
 /////////////////////////////////////////////////////////////
 // libs/cri/src/adx_bahx.c
@@ -4607,8 +4604,7 @@ gSaveData kind:bss addr:0x02071d10
 gFaders kind:bss addr:0x020751dc
 
 
-data_02075204 kind:bss addr:0x02075204
-
+sTexVramPool kind:bss(size=0x10) addr:0x02075204 local
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
 /////////////////////////////////////////////////////////////

@@ -2,23 +2,25 @@
 #define TEXT_H
 
 #include "Engine/File/DatMgr.h"
+#include "common_data.h"
 #include <nitro/types.h>
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x8];
-    /* 0x08 */ u32  unk_08;
-    /* 0x0C */ u32  unk_0C;
-    /* 0x10 */ u16  unk_10[2];
-    /* 0x14 */ u16  unk_14[2];
-    /* 0x18 */ u16  unk_18[2];
-    /* 0x1C */ u32  unk_1C;
-    /* 0x20 */ u32  unk_20;
-    /* 0x24 */ u32  unk_24;
-    /* 0x28 */ u32  unk_28;
-    /* 0x2C */ u16  unk_2C;
-    /* 0x2E */ u16  unk_2E;
-    /* 0x30 */ u32  unk_30;
-} UnkSmallText;
+    /* 0x00 */ u32                 unk_00;
+    /* 0x04 */ u32                 unk_04;
+    /* 0x08 */ u32                 unk_08;
+    /* 0x0C */ u32                 unk_0C;
+    /* 0x10 */ u16                 unk_10[2];
+    /* 0x14 */ u16                 unk_14[2];
+    /* 0x18 */ u16                 unk_18[2];
+    /* 0x1C */ u32                 unk_1C;
+    /* 0x20 */ u32                 unk_20;
+    /* 0x24 */ const TextFontInfo* font;
+    /* 0x28 */ u32                 unk_28;
+    /* 0x2C */ u16                 unk_2C;
+    /* 0x2E */ u16                 unk_2E;
+    /* 0x30 */ u16                 unk_30[16];
+} UnkSmallText; // Size: 0x50
 
 typedef struct {
     /* 0x00 */ u16   unk_00;

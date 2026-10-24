@@ -14,8 +14,8 @@
 #include "Save.h"
 
 extern void func_02010b50(TextObject* textObj);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textObj);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textObj);
 
 extern void  func_ov030_020ae96c(s32 arg0);
 extern char* func_ov030_020b0534(s32 arg0);
@@ -1914,7 +1914,7 @@ void func_ov030_020b1028(EventSelectObject* object) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&object->unk_21594, &params);
+    BgText_Init(&object->unk_21594, &params);
     Text_RenderToScreen(&object->text, 0, 0, "field select");
 }
 
@@ -1948,7 +1948,7 @@ void func_ov030_020b10b0(EventSelectObject* object) {
 }
 
 void func_ov030_020b131c(EventSelectObject* object) {
-    func_02025e30(&object->unk_21594);
+    BgText_Free(&object->unk_21594);
 }
 
 void func_ov030_020b1330(EventSelectObject* object) {

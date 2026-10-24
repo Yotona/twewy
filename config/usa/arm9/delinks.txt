@@ -185,6 +185,7 @@ src/Engine/Resources/SpriteMgr.c:
 
 src/Engine/main_0200edac.c:
     categories: Engine
+    complete
     .text       start:0x0200edac end:0x0200f198
 
 src/Engine/EasyTask.c:
@@ -195,6 +196,7 @@ src/Engine/EasyTask.c:
 
 src/Engine/IO/main_0200f86c.c:
     categories: Engine
+    complete
     .text       start:0x0200f86c end:0x0200f94c
 
 src/Engine/Text.c:
@@ -205,7 +207,7 @@ src/Engine/Text.c:
 src/Engine/main_02011f00.c:
     categories: Engine
     .text       start:0x02011f00 end:0x0201202c
-    .data       start:0x02063844 end:0x0206386c
+    .data       start:0x02063858 end:0x0206386c
     .bss        start:0x0206b41c end:0x0206b854
 
 libs/cri/src/adx_bahx.c:
@@ -492,6 +494,8 @@ src/Savefile.c:
 src/UnkResourceHandler.c:
     categories: Engine
     .text       start:0x02025b68 end:0x02025e74
+    .rodata     start:0x0205c988 end:0x0205ca88
+    .data       start:0x02065c08 end:0x02065c74
 
 src/CellText.c:
     categories: Engine

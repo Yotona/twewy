@@ -13,8 +13,8 @@
 #include "common_data.h"
 
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textObj);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textObj);
 
 extern s32  Field_GetCurrentTrendZone(void);
 extern s32  func_ov030_020b7b00(void);
@@ -95,7 +95,7 @@ void func_ov030_020b04ac(FieldSelectObject* object) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&object->unk_21594, &params);
+    BgText_Init(&object->unk_21594, &params);
     Text_RenderToScreen(&object->text, 0, 0, "field select");
 }
 
@@ -144,7 +144,7 @@ void func_ov030_020b0544(FieldSelectObject* object) {
 }
 
 void func_ov030_020b0820(FieldSelectObject* object) {
-    func_02025e30(&object->unk_21594);
+    BgText_Free(&object->unk_21594);
 }
 
 void func_ov030_020b0834(FieldSelectObject* object) {

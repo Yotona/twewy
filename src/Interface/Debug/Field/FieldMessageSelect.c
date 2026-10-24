@@ -47,8 +47,8 @@ typedef struct {
 #define FLD_MES_TOTAL 25233
 
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textObj);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textObj);
 
 extern u8 func_ov030_020ca778(SysFont* arg0, u16 mesNo, s32 arg2, const u8* winKind);
 
@@ -85,7 +85,7 @@ void FldMesSel_CreateTextView(FldMesSelObject* selObj) {
     stack.unk_1C = 0x20;
     stack.unk_1E = 0x18;
 
-    func_02025b68(&selObj->unk_21614, &stack);
+    BgText_Init(&selObj->unk_21614, &stack);
     Text_RenderToScreen(&selObj->text, 0, 0, "message select");
 }
 
@@ -99,7 +99,7 @@ void FldMesSel_DrawMenu(FldMesSelObject* selObj) {
 }
 
 void FldMesSel_DestroyTextView(FldMesSelObject* selObj) {
-    func_02025e30(&selObj->unk_21614);
+    BgText_Free(&selObj->unk_21614);
 }
 
 // Spawns the message window task previewing the current message in the given window style.

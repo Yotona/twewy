@@ -25,8 +25,8 @@
     #define func_0200d898 func_0200d834
     #define func_0200d8f0 func_0200d88c
     #define func_0200d90c func_0200d8a8
-    #define func_02025b68 func_02025b10
-    #define func_02025e30 func_02025dd8
+    #define BgText_Init   func_02025b10
+    #define BgText_Free   func_02025dd8
     #define func_020265d4 func_0202657c
     #define func_02027170 func_02027118
     #define func_0202b878 func_0202b820
