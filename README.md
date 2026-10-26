@@ -49,18 +49,6 @@ Note: For a byte-matching build, add a copy of the [ARM7 BIOS](docs/CONTRIBUTING
 
 After the build completes, the final executable will be found in the [build](build) directory, under the directory of the version that was configured.
 
-The default `ninja` build compiles all source objects, updates `objdiff.json`, and
-checks the linked modules, symbols, and ROM checksum. Progress reports are
-generated separately with `ninja report`; an existing `build/<version>/report.json`
-is not refreshed by the default build. CI explicitly builds the full report.
-Use `ninja objects` to compile all source objects without linking or reporting.
-
-To refresh the report for only the units you changed, run
-`python tools/report_units.py --changed` after `ninja` (or pass unit names or
-source paths instead of `--changed`). It prints per-function match changes and
-updates `report.json` in place, typically in about a second instead of over a
-minute. It needs an existing report, so run `ninja report` once first.
-
 ## Contributing
 
 Contributions are welcome! You may review the repository's [contribution guidelines](docs/CONTRIBUTING.md) if you are interested in contributing.

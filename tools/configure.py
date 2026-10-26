@@ -49,12 +49,6 @@ parser.add_argument(
     choices=VERSIONS,
     default=VERSIONS[DEFAULT_VERSION],
 )
-parser.add_argument(
-    "--batch-size",
-    type=int,
-    default=16,
-    help="Max sources compiled per mwcc process (see tools/mwcc_batch.py); 1 disables batching",
-)
 args = parser.parse_args()
 
 # Config
@@ -426,11 +420,9 @@ def main():
         )
         n.newline()
 
-        keep_mtime = f'"{PYTHON}" tools/keep_mtime.py'
         n.rule(
             name="delink",
-            command=f"{keep_mtime} $delinks_dir -- {DSD} {DSD_BASE_FLAGS} delink --config-path $config_path",
-            restat=True,
+            command=f"{DSD} {DSD_BASE_FLAGS} delink --config-path $config_path",
         )
         n.newline()
 
@@ -460,27 +452,7 @@ def main():
         )
         n.newline()
 
-        # Several sources per mwcc process; the fixed startup cost is about half of a small compile.
-        mwcc_prefix_cmd = (
-            f'{mwcc_prefix}"$compiler" $common_cc_flags {CC_INCLUDES} $cc_flags '
-            "-d $region_define -MD"
-        )
-        n.rule(
-            name="mwcc_batch",
-            command=(
-                f"$python -S tools/mwcc_batch.py --outdir $basedir --target $batch_target "
-                f"--depfile $batch_dep --extra-dep $compiler --srcs $in -- {mwcc_prefix_cmd}"
-            ),
-            depfile="$batch_dep",
-            restat=True,  # up-to-date members keep their mtime, see mwcc_batch.py
-        )
-        n.newline()
-
-        n.rule(
-            name="lcf",
-            command=f"{keep_mtime} $out -- {DSD} {DSD_BASE_FLAGS} lcf -c $config_path",
-            restat=True,
-        )
+        n.rule(name="lcf", command=f"{DSD} {DSD_BASE_FLAGS} lcf -c $config_path")
         n.newline()
 
         n.rule(
@@ -503,8 +475,7 @@ def main():
 
         n.rule(
             name="objdiff",
-            command=f"{keep_mtime} $out -- {DSD} {DSD_BASE_FLAGS} objdiff --config-path $config_path {DSD_OBJDIFF_ARGS}",
-            restat=True,
+            command=f"{DSD} {DSD_BASE_FLAGS} objdiff --config-path $config_path {DSD_OBJDIFF_ARGS}",
         )
         n.newline()
 
@@ -720,83 +691,52 @@ def add_mwcc_builds(
     link_inputs: bool | None = None,
 ):
     """Emit the compile edges. `link_inputs` selects the objects the arm9 link
-    consumes (True), the rest (False), or everything (None). Batches never mix
-    the two sets, so the link only waits for batches of its own inputs."""
+    consumes (True), the rest (False), or everything (None)."""
     linked_objects = {Path(file["object_to_link"]) for file in project.files()}
-    # Sources sharing compiler, flags and output directory can share a mwcc process.
-    groups: dict[tuple, list[Path]] = {}
-    for source_file in sorted(get_c_cpp_files([src_path, libs_path])):
-        in_link = (project.game_build / source_file).with_suffix(".o") in linked_objects
-        if link_inputs is not None and in_link != link_inputs:
+    for source_file in get_c_cpp_files([src_path, libs_path]):
+        src_obj_path = project.game_build / source_file
+        if (
+            link_inputs is not None
+            and (src_obj_path.with_suffix(".o") in linked_objects) != link_inputs
+        ):
             continue
+        cc_flags: list[str] = []
+
+        # Language flag
+        if is_cpp(source_file):
+            cc_flags.append("-lang=c++")
+        elif is_c(source_file):
+            cc_flags.append("-lang=c99")
+
         compiler_config = compiler_config_for_source(source_file)
-        lang = "-lang=c++" if is_cpp(source_file) else "-lang=c99"
-        key = (
-            compiler_config.version,
-            compiler_config.flags,
-            lang,
-            to_repo_relative(source_file).parent,
-            in_link,
+        compiler_path = compiler_executable_path(compiler_config.version)
+        implicit_tools = [*mwcc_common_implicit, compiler_path]
+
+        n.build(
+            inputs=str(source_file),
+            implicit=implicit_tools,
+            rule="mwcc",
+            outputs=str(src_obj_path.with_suffix(".o")),
+            variables={
+                "region_define": f"REGION_{project.game_version.upper()}",
+                "cc_flags": " ".join(cc_flags),
+                "basedir": os.path.dirname(src_obj_path),
+                "basefile": str(src_obj_path.with_suffix("")),
+                "compiler": compiler_path,
+                "common_cc_flags": compiler_config.flags,
+                "python": PYTHON,
+            },
         )
-        groups.setdefault(key, []).append(source_file)
+        n.newline()
 
-    for (version, flags, lang, _, _), files in groups.items():
-        compiler_path = compiler_executable_path(version)
-        variables = {
-            "region_define": f"REGION_{project.game_version.upper()}",
-            "cc_flags": lang,
-            "compiler": compiler_path,
-            "common_cc_flags": flags,
-            "python": PYTHON,
-        }
-        # Even-sized chunks of at most --batch-size sources
-        chunk_count = -(-len(files) // max(args.batch_size, 1))
-        chunks = [
-            files[len(files) * i // chunk_count : len(files) * (i + 1) // chunk_count]
-            for i in range(chunk_count)
-        ]
-        for chunk in chunks:
-            objs = [project.game_build / f.with_suffix(".o") for f in chunk]
-            basedir = os.path.dirname(objs[0])
-            if len(chunk) == 1 or args.batch_size <= 1:
-                for f, obj in zip(chunk, objs):
-                    n.build(
-                        inputs=str(f),
-                        implicit=[*mwcc_common_implicit, compiler_path],
-                        rule="mwcc",
-                        outputs=str(obj),
-                        variables={
-                            **variables,
-                            "basedir": basedir,
-                            "basefile": str(obj.with_suffix("")),
-                        },
-                    )
-                    n.newline()
-            else:
-                batch_dep = objs[0].with_name(f".batch_{chunk[0].stem}.d")
-                n.build(
-                    inputs=[str(f) for f in chunk],
-                    implicit=[*mwcc_common_implicit, compiler_path, "tools/mwcc_batch.py"],
-                    rule="mwcc_batch",
-                    outputs=[str(o) for o in objs],
-                    variables={
-                        **variables,
-                        "basedir": basedir,
-                        "batch_target": str(objs[0]),
-                        "batch_dep": str(batch_dep),
-                    },
-                )
-                n.newline()
-
-        for source_file in files:
-            src_obj_path = project.game_build / source_file
-            ctx_file = str(src_obj_path.with_suffix(f".ctx{source_file.suffix}"))
-            n.build(
-                inputs=str(source_file),
-                rule="m2ctx",
-                outputs=ctx_file,
-            )
-            n.newline()
+        extension = source_file.suffix
+        ctx_file = str(src_obj_path.with_suffix(f".ctx{extension}"))
+        n.build(
+            inputs=str(source_file),
+            rule="m2ctx",
+            outputs=ctx_file,
+        )
+        n.newline()
 
 
 def get_c_cpp_files(dirs: list[Path]):
@@ -823,12 +763,11 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
         n.comment("Delink ELF binaries when any delinks.txt file is modified")
         n.build(
             inputs=project.dsd_configs() + [rom_config],
-            implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
+            implicit=DSD,
             rule="delink",
             outputs=delink_files,
             variables={
                 "config_path": str(project.arm9_config_yaml()),
-                "delinks_dir": str(project.game_build / "delinks"),
             },
         )
         n.newline()
@@ -840,7 +779,7 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
     objects_file = project.arm9_objects_file()
     n.build(
         inputs=project.delinks_files + [str(rom_config)],
-        implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
+        implicit=DSD,
         rule="lcf",
         outputs=[lcf_file, objects_file],
         variables={
@@ -897,7 +836,7 @@ def add_check_builds(n: ninja_syntax.Writer, project: Project):
 def add_objdiff_builds(n: ninja_syntax.Writer, project: Project):
     n.build(
         inputs=project.dsd_configs(),
-        implicit=[DSD, "tools/keep_mtime.py", str(project.arm9_config_yaml())],
+        implicit=DSD,
         rule="objdiff",
         outputs="objdiff.json",
         variables={

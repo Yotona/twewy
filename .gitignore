@@ -25,6 +25,3 @@ update*
 /compile_commands.json
 nonmatchings/
 ctx.c
-permtmp
-permwork
-.opencode

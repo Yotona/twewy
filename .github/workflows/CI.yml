@@ -29,6 +29,3 @@ jobs:
 
       - name: Run pre-commit checks
         run: pre-commit run --all-files --verbose
-
-      - name: Test build helpers
-        run: python -m unittest discover -s tools/tests -v
