@@ -7777,7 +7777,7 @@ void GrpCheck_AdjustBGColorChannel(GrpCheckState* state, RGBAChannel channel, s3
     *value += delta;
     *value &= 0x1F;
 
-    data_02066eec = Color_PackRGB(state->bgR, state->bgG, state->bgB, state->bgA);
+    g_PaletteBuffers[DISPLAY_SUB].bg[0] = Color_PackRGB(state->bgR, state->bgG, state->bgB, state->bgA);
     GrpCheck_PrintColorChannels(state);
 }
 
@@ -7946,8 +7946,8 @@ void GrpCheck_InitOverlay(GrpCheckState* state) {
     GrpCheck_PrintColorChannels(state);
     GrpCheck_PrintScreenPos(state);
     GrpCheck_PrintControls(state);
-    data_02066aec = 0;
-    data_02066eec = Color_PackRGB(state->bgR, state->bgG, state->bgB, state->bgA);
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = Color_PackRGB(state->bgR, state->bgG, state->bgB, state->bgA);
     DebugOvlDisp_Init();
     MainOvlDisp_NextProcessStage();
 }
@@ -7983,7 +7983,7 @@ void GrpCheck_RunOverlay(GrpCheckState* state) {
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     if (GrpCheck_SpriteMode == 2) {
         PaletteMgr_Flush(g_PaletteManagers[DISPLAY_EXTENDED], NULL);
-        func_02001b44(2, 0, &data_020672ec, 0x400);
+        func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     }
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);

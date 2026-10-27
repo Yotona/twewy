@@ -125,9 +125,9 @@ void func_ov000_02082b1c(Mini108State* state) {
 
     TouchInput_Init();
 
-    state->unk_15e50 = ResourceMgr_ReinitManagers(&state->unk_48D0);
-    state->unk_84C   = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
-    data_02066aec    = 0x1f;
+    state->unk_15e50                     = ResourceMgr_ReinitManagers(&state->unk_48D0);
+    state->unk_84C                       = DatMgr_LoadRawData(2, 0, 0, &data_ov000_020831c0);
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0x1f;
 
     u8* temp_r1 = Data_GetPackEntryData(state->unk_84C, 1);
     u8* temp_r6 = Data_GetPackEntryData(state->unk_84C, 3);
@@ -141,7 +141,7 @@ void func_ov000_02082b1c(Mini108State* state) {
     BgResMgr_AllocScreen(g_BgResourceManagers[0], temp_r6, g_DisplaySettings.engineState[0].bgSettings[2].screenBase,
                          g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText);
     PaletteMgr_AllocPalette(g_PaletteManagers[0], temp_r5, 0, 0, 2);
-    data_02066eec = 0x1F;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0] = 0x1F;
 
     temp_r1 = Data_GetPackEntryData(state->unk_84C, 1);
     temp_r6 = Data_GetPackEntryData(state->unk_84C, 2);
@@ -315,8 +315,8 @@ void func_ov000_020825c0(void) {
     OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, 0x6800000, 0xa4000);
     OamMgr_ResetAndCommit();
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, 1);
 }
 
 void Mini108_RegisterVBlank(void) {
@@ -334,11 +334,11 @@ void Mini108_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }

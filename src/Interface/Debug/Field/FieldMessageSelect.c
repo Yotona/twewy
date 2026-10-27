@@ -266,8 +266,8 @@ void FldMesSel_Init(void* object) {
     OvlMgr_LoadOverlay(3, &OVERLAY_31_ID);
     OvlMgr_LoadOverlay(4, &OVERLAY_36_ID);
     SysFont_Init(&selObj->unk_21A30);
-    data_02066aec                                       = 0;
-    data_02066eec                                       = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     FldMesSel_Open(selObj);

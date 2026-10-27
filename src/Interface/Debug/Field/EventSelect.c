@@ -2041,9 +2041,6 @@ void func_ov030_020b1450(EventSelectObject* object) {
     func_ov030_020b10b0(object);
 }
 
-// Nonmatching: register allocation only. The four palette / brightness clears are emitted in the right
-// order, but mwcc loads &data_02066aec / &g_DisplaySettings from the literal pool in the opposite order
-// and so swaps the two registers they land in.
 void func_ov030_020b1620(void) {
     const char*        sequenceName = data_ov030_021008b0;
     EventSelectObject* object       = Mem_AllocHeapTail(&gDebugHeap, 0x219B4);
@@ -2053,9 +2050,11 @@ void func_ov030_020b1620(void) {
     object->unk_11584 = DatMgr_AllocateSlot();
     func_ov030_020b20c0();
     Display_SetMainLayers(LAYER_NONE);
-    object->prevResources                              = ResourceMgr_ReinitManagers(&object->resources);
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness = data_02066eec = g_DisplaySettings.controls[DISPLAY_MAIN].brightness =
-        data_02066aec                                                  = 0;
+    object->prevResources                               = ResourceMgr_ReinitManagers(&object->resources);
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov030_020b1330(object);
     gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
     MainOvlDisp_NextProcessStage();
@@ -2217,12 +2216,12 @@ void func_ov030_020b1bd8(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 

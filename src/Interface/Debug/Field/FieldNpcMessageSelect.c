@@ -342,8 +342,8 @@ void FldNpcMesSel_Init(void* object) {
     EasyTask_InitializePool(&selObj->taskPool, &selObj->heap, 0x100, NULL, NULL);
     OvlMgr_LoadOverlay(3, &OVERLAY_31_ID);
     SysFont_Init(&selObj->font);
-    data_02066aec                                       = 0;
-    data_02066eec                                       = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     FldNpcMesSel_Open(selObj);

@@ -31,12 +31,14 @@ typedef struct TextFontInfo {
 
 extern const TextFontInfo data_0205c9b0[6];
 
-extern u16 data_02066aec;
-extern s32 data_02066cec;
-extern u16 data_02066eec;
+typedef struct PaletteBuffer {
+    /* 0x000 */ u16 bg[256];
+    /* 0x200 */ u16 obj[256];
+} PaletteBuffer; // Size: 0x400
 
-extern s32 data_020670ec;
-extern s32 data_020672ec;
+/// RAM copies of the BG and OBJ palettes, indexed by DisplayEngine. The main and sub
+/// buffers are flushed to palette RAM every vblank; entry 0 of `bg` is the backdrop color.
+extern PaletteBuffer g_PaletteBuffers[3];
 
 typedef struct {
     /* 0x0 */ char pad_00[0x28];

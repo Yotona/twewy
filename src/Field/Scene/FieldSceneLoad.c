@@ -169,7 +169,6 @@ void func_ov030_020b6bc8(EventSelectObject* arg0) {
     func_ov030_020b6a74(arg0);
 }
 
-// Nonmatching
 void func_ov030_020b6ca0(void) {
     EventSelectObject* obj;
     const char*        seq;
@@ -181,8 +180,8 @@ void func_ov030_020b6ca0(void) {
     func_ov030_020b20c0();
     g_DisplaySettings.controls[0].layers     = 0;
     obj->prevResources                       = ResourceMgr_ReinitManagers(&obj->resources);
-    data_02066aec                            = 0;
-    data_02066eec                            = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
     g_DisplaySettings.controls[0].brightness = 0;
     g_DisplaySettings.controls[1].brightness = 0;
     func_ov030_020b6b28(obj);
@@ -254,8 +253,8 @@ void func_ov030_020b6e2c(void) {
     GXs_LoadOam(g_OamMgr[1].oam, 0, 0x400);
     OamMgr_InitEngine(0, DISPLAY_EXTENDED);
     OamMgr_SetAffineCount(&g_OamMgr[2], 0);
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, 1);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
     Display_CommitSynced();
     g_DisplaySettings.controls[0].dispMode  = GX_DISPMODE_GRAPHICS;
@@ -346,12 +345,12 @@ u32 func_ov030_020b7330(void) {
     GX_LoadOam(g_OamMgr[0].oam, 0, 0x400);
     DC_PurgeRange(g_OamMgr[1].oam, 0x400);
     GXs_LoadOam(g_OamMgr[1].oam, 0, 0x400);
-    DC_PurgeRange(&data_02066aec, 0x400);
-    GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-    GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-    DC_PurgeRange(&data_02066eec, 0x400);
-    GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-    return GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+    DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+    GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+    GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+    DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+    GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+    return GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
 }
 
 void func_ov030_020b7400(void) {

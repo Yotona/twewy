@@ -446,8 +446,8 @@ void func_ov030_020b65c0(void) {
     MainOvlDisp_SetCbArg(root);
     func_ov030_020b7400();
     root->prevResources                      = ResourceMgr_ReinitManagers(&root->resources);
-    data_02066eec                            = 0;
-    data_02066aec                            = 0x7FFF;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0x7FFF;
     g_DisplaySettings.controls[0].brightness = 0;
     g_DisplaySettings.controls[1].brightness = 0;
 

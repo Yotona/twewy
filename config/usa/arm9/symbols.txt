@@ -4315,13 +4315,7 @@ data_02066a58 kind:bss addr:0x02066a58
 data_02066a5c kind:bss addr:0x02066a5c
 data_02066aac kind:bss addr:0x02066aac
 
-data_02066aec kind:bss addr:0x02066aec
-data_02066cec kind:bss addr:0x02066cec
-data_02066eec kind:bss addr:0x02066eec
-data_02067000 kind:bss addr:0x02067000
-data_02067018 kind:bss addr:0x02067018
-data_020670ec kind:bss addr:0x020670ec
-data_020672ec kind:bss addr:0x020672ec
+g_PaletteBuffers kind:bss(size=0xc00) addr:0x02066aec
 g_OamMgr kind:bss addr:0x020676ec
 data_0206a890 kind:bss addr:0x0206a890
 

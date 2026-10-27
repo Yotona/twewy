@@ -16,8 +16,8 @@ void OpenEnd_InitHardware(void) {
     DMA_Init(0x100);
     Interrupts_ForceVBlank();
     GX_Init();
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT, 0 - 0x10);
     GXx_SetMasterBrightness(&REG_MASTER_BRIGHT_SUB, ~0xf);
     GX_DispOn();
@@ -63,8 +63,8 @@ void OpenEnd_InitHardware(void) {
     OamMgr_Init();
     OamMgr_ResetCommandQueues(&g_OamMgr[0]);
     OamMgr_ResetCommandQueues(&g_OamMgr[1]);
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0x0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0x0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0x0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0x0, 0x200, 1);
 }
 
 void OpenEnd_VBlankHandler(void) {
@@ -72,12 +72,12 @@ void OpenEnd_VBlankHandler(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 

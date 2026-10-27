@@ -311,7 +311,6 @@ void func_ov030_020b0a78(FieldSelectObject* object) {
     func_ov030_020b0544(object);
 }
 
-// Nonmatching: r1/r2 swapped for the g_DisplaySettings / data_02066eec pool loads
 void func_ov030_020b0ca4(void) {
     const char*        sequenceName = data_ov030_02100338;
     FieldSelectObject* object       = Mem_AllocHeapTail(&gDebugHeap, 0x219BC);
@@ -324,8 +323,10 @@ void func_ov030_020b0ca4(void) {
     Display_SetMainLayers(LAYER_NONE);
     object->prevResources = ResourceMgr_ReinitManagers(&object->resources);
 
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness = data_02066eec = g_DisplaySettings.controls[DISPLAY_MAIN].brightness =
-        data_02066aec                                                  = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
 
     func_ov030_020b08b0(object);
     MainOvlDisp_NextProcessStage();

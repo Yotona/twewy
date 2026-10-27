@@ -105,8 +105,8 @@ void Depart_Init(DepartState* state) {
     Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
     FS_LoadOverlay(0, &OVERLAY_31_ID);
     EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x200, NULL, NULL);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     func_ov043_020bcdb0(state);
     Depart_LoadBackgrounds(temp);
     func_ov043_020bcdfc(state);
@@ -279,13 +279,13 @@ void func_ov043_020bd7e4(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
-        func_02001b44(2, 0, &data_020672ec, 0x400);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
+        func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     }
 }
 

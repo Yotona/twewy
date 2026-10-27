@@ -67,8 +67,8 @@ static void OtuScene_ProcInitEditor(void) {
     EasyTask_InitializePool(&scene->pool2, &scene->heap, 0x180, NULL, NULL);
     func_0200d8f0();
 
-    data_02066aec                            = 0;
-    data_02066eec                            = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
     g_DisplaySettings.controls[0].brightness = 0x10;
     g_DisplaySettings.controls[1].brightness = 0x10;
 
@@ -106,8 +106,8 @@ static void OtuScene_ProcInitSinglePlayer(void) {
     EasyTask_InitializePool(&scene->pool2, &scene->heap, 0x180, NULL, NULL);
     func_0200d8f0();
 
-    data_02066aec                            = 0;
-    data_02066eec                            = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
     g_DisplaySettings.controls[0].brightness = 0x10;
     g_DisplaySettings.controls[1].brightness = 0x10;
 
@@ -121,7 +121,6 @@ static void OtuScene_ProcInitSinglePlayer(void) {
     MainOvlDisp_NextProcessStage();
 }
 
-// Nonmatching: the two halfword clears are scheduled differently
 static void OtuScene_ProcInitMultiplayer(void) {
     const char*          sequenceName = OtuScene_SequenceNames[1];
     TinPinSlammer_Scene* scene        = Mem_AllocHeapTail(&gDebugHeap, sizeof(TinPinSlammer_Scene));
@@ -149,8 +148,8 @@ static void OtuScene_ProcInitMultiplayer(void) {
     EasyTask_InitializePool(&scene->pool2, &scene->heap, 0x180, NULL, NULL);
     func_0200d8f0();
 
-    data_02066aec                            = 0;
-    data_02066eec                            = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
     g_DisplaySettings.controls[0].brightness = 0x10;
     g_DisplaySettings.controls[1].brightness = 0x10;
 

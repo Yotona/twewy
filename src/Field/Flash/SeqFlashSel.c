@@ -103,7 +103,6 @@ void SeqFlashSel_HandleInput(FlashSelectOverlayState* state) {
     SeqFlashSel_DrawText(state);
 }
 
-// Nonmatching
 void SeqFlashSel_Init(FlashSelectOverlayState* state) {
     const char* sequence = SeqFlashSel_Sequence;
 
@@ -117,8 +116,8 @@ void SeqFlashSel_Init(FlashSelectOverlayState* state) {
     FlashGfx_Init();
     g_DisplaySettings.controls[DISPLAY_MAIN].layers     = 0;
     state->previousResources                            = ResourceMgr_ReinitManagers(&state->resources);
-    data_02066aec                                       = 0;
-    data_02066eec                                       = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     SeqFlashSel_CreateScreen(state);
