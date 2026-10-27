@@ -88,22 +88,23 @@ GrpCheck_RunOverlay kind:function(arm,size=0x110) addr:0x02085ed4
 GrpCheck_TerminateOverlay kind:function(arm,size=0x6c) addr:0x02085fe4
 ProcessOverlay_GrpCheck_HwSprites kind:function(arm,size=0x40) addr:0x02086050
 ProcessOverlay_GrpCheck_SwSprites kind:function(arm,size=0x40) addr:0x02086090
-func_ov037_020860d0 kind:function(arm,size=0x35c) addr:0x020860d0
+GrpCheck_InitDisplay kind:function(arm,size=0x35c) addr:0x020860d0
 GrpCheck_VBlank kind:function(arm,size=0xd0) addr:0x0208642c
 GrpCheck_RegisterVBlank kind:function(arm,size=0x1c) addr:0x020864fc
 GrpCheck_ClearVBlank kind:function(arm,size=0x14) addr:0x02086518
 // src/Debug/Mori/GrpCheck.c data catalogs and strings.
 // byte[0] entries are interior relocation labels, not separate objects.
-data_ov037_0208652c kind:data(byte[8]) addr:0x0208652c
+data_ov037_0208652c kind:data(byte[4]) addr:0x0208652c
+GrpCheck_SpriteCenter kind:data(byte[4]) addr:0x02086530
 OvlProc_GrpCheck_HwSprites kind:data(byte[12]) addr:0x02086534
 OvlProc_GrpCheck_SwSprites kind:data(byte[12]) addr:0x02086540
-data_ov037_0208654c kind:data(byte[32]) addr:0x0208654c
-data_ov037_0208656c kind:data(byte[40]) addr:0x0208656c
-data_ov037_02086594 kind:data(byte[44]) addr:0x02086594
-data_ov037_020865c0 kind:data(byte[64]) addr:0x020865c0
-data_ov037_02086600 kind:data(byte[72]) addr:0x02086600
-data_ov037_02086648 kind:data(byte[1480]) addr:0x02086648
-data_ov037_02086c10 kind:data(byte[3504]) addr:0x02086c10
+GrpCheck_PressedButtonCallbacks kind:data(byte[32]) addr:0x0208654c
+GrpCheck_HeldButtonCallbacks kind:data(byte[40]) addr:0x0208656c
+GrpCheck_SpriteAnimTemplate kind:data(byte[44]) addr:0x02086594
+GrpCheck_BgParamsTemplate kind:data(byte[64]) addr:0x020865c0
+GrpCheck_ScalarCallbacks kind:data(byte[72]) addr:0x02086600
+GrpCheck_BinIdentifiers kind:data(byte[1480]) addr:0x02086648
+GrpCheck_SwSpriteConfigs kind:data(byte[3504]) addr:0x02086c10
 data_ov037_0208716c kind:data(byte[0]) addr:0x0208716c ambiguous
 data_ov037_020871ac kind:data(byte[0]) addr:0x020871ac ambiguous
 data_ov037_020871ec kind:data(byte[0]) addr:0x020871ec ambiguous
@@ -115,19 +116,10 @@ data_ov037_0208732c kind:data(byte[0]) addr:0x0208732c ambiguous
 data_ov037_0208736c kind:data(byte[0]) addr:0x0208736c ambiguous
 data_ov037_020873ac kind:data(byte[0]) addr:0x020873ac ambiguous
 data_ov037_020873ec kind:data(byte[0]) addr:0x020873ec ambiguous
-data_ov037_020879c0 kind:data(byte[10584]) addr:0x020879c0
-data_ov037_020879cc kind:data(byte[0]) addr:0x020879cc
-data_ov037_020879ce kind:data(byte[0]) addr:0x020879ce
-data_ov037_020879d0 kind:data(byte[0]) addr:0x020879d0
-data_ov037_020879d2 kind:data(byte[0]) addr:0x020879d2
-data_ov037_020879d4 kind:data(byte[0]) addr:0x020879d4
-data_ov037_020879d6 kind:data(byte[0]) addr:0x020879d6
-data_ov037_020879d8 kind:data(byte[0]) addr:0x020879d8
-data_ov037_020879da kind:data(byte[0]) addr:0x020879da
-data_ov037_020879dc kind:data(byte[0]) addr:0x020879dc
+GrpCheck_BgConfigs kind:data(byte[10584]) addr:0x020879c0
 data_ov037_020879e0 kind:data(byte[0]) addr:0x020879e0
 data_ov037_020885c8 kind:data(byte[0]) addr:0x020885c8 ambiguous
-data_ov037_0208a318 kind:data(byte[142800]) addr:0x0208a318
+GrpCheck_HwSpriteConfigs kind:data(byte[142800]) addr:0x0208a318
 data_ov037_0208d4d0 kind:data(byte[0]) addr:0x0208d4d0 ambiguous
 data_ov037_0208f021 kind:data(byte[0]) addr:0x0208f021
 data_ov037_0208f4e0 kind:data(byte[0]) addr:0x0208f4e0 ambiguous
@@ -139,7 +131,8 @@ data_ov037_020a0070 kind:data(byte[0]) addr:0x020a0070 ambiguous
 data_ov037_020a045c kind:data(byte[0]) addr:0x020a045c ambiguous
 data_ov037_020a06ff kind:data(byte[0]) addr:0x020a06ff ambiguous
 data_ov037_020ace7c kind:data(byte[0]) addr:0x020ace7c ambiguous
-data_ov037_020ad100 kind:data(byte[8]) addr:0x020ad100
+data_ov037_020ad100 kind:data(byte[4]) addr:0x020ad100
+GrpCheck_SpriteConfigs kind:data(byte[4]) addr:0x020ad104
 data_ov037_020ad108 kind:data(byte[5]) addr:0x020ad108
 data_ov037_020ad110 kind:data(byte[5]) addr:0x020ad110
 data_ov037_020ad118 kind:data(byte[5]) addr:0x020ad118
@@ -1957,5 +1950,5 @@ data_ov037_020b7914 kind:data(byte[19]) addr:0x020b7914
 data_ov037_020b7928 kind:data(byte[21]) addr:0x020b7928
 data_ov037_020b7940 kind:data(byte[19]) addr:0x020b7940
 data_ov037_020b7954 kind:data(byte[21]) addr:0x020b7954
-data_ov037_020b7980 kind:bss addr:0x020b7980
-data_ov037_020b7984 kind:bss addr:0x020b7984
+GrpCheck_SpriteConfigCount kind:bss addr:0x020b7980
+GrpCheck_SpriteMode kind:bss addr:0x020b7984

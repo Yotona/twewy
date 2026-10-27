@@ -10,6 +10,7 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "SndMgr.h"
@@ -1706,18 +1707,16 @@ BOOL SoundTest_ControlMenu(SoundTestState* state) {
 
 // Nonmatching
 void func_ov029_02082e40(SoundTestState* param) {
-    char*           name  = data_ov029_02083400;
+    const char*     name  = data_ov029_02083400;
     SoundTestState* state = Mem_AllocHeapTail(&gDebugHeap, sizeof(SoundTestState));
     Mem_SetSequence(&gDebugHeap, state, name);
     MainOvlDisp_SetCbArg(state);
     state->unk_11584 = DatMgr_AllocateSlot();
     func_ov029_020833c4();
     Display_SetMainLayers(LAYER_NONE);
-    state->unk_11580                                    = ResourceMgr_ReinitManagers(&state->unk_00000);
-    data_02066aec                                       = 0;
-    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
-    data_02066eec                                       = 0;
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
+    state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness =
+        (data_02066eec = (g_DisplaySettings.controls[DISPLAY_MAIN].brightness = (data_02066aec = 0)) & 0xFF);
     func_ov029_02082838(state);
     MainOvlDisp_NextProcessStage();
 }

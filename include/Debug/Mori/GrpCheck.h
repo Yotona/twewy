@@ -15,19 +15,20 @@ typedef enum {
 typedef struct {
     /* 0x00 */ const char*   unk_00;
     /* 0x04 */ BinIdentifier unk_04;
-    /* 0x0C */ u32           memberIndex;
-    /* 0x10 */ u16           members[4];
+    /* 0x0C */ s16           packIndex;
+    /* 0x0E */ s16           compressed;
+    /* 0x10 */ s16           members[4];
     /* 0x18 */ s16           unk_18;
-    /* 0x1A */ u16           options[3];
+    /* 0x1A */ s16           options[3];
     /* 0x20 */ const char*   entryName;
 } GrpCheckUnk; // Size: 0x24
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
     /* 0x40 */ s32    unk_40;
-    /* 0x44 */ s32    unk_44;
+    /* 0x44 */ BOOL   hasSprite; // Whether a sprite is currently loaded
     /* 0x48 */ s32    unk_48;
-} GrpCheckBigUnk; // Size: 0x4C
+} GrpCheckBigUnk;                // Size: 0x4C
 
 typedef struct {
     /* 0x00 */ const char* unk_00;
@@ -135,10 +136,7 @@ typedef struct {
     /* 0x11668 */ s32              maxChr;
     /* 0x1166C */ s32              maxAtr;
     /* 0x11670 */ s32              maxLineChr;
-    /* 0x11674 */ Sprite           unk_11674;
-    /* 0x116B4 */ s32              unk_116B4;
-    /* 0x116B8 */ BOOL             hasSprite; // Whether a sprite is currently loaded
-    /* 0x116BC */ s32              unk_116BC;
+    /* 0x11674 */ GrpCheckBigUnk   unk_11674;
     /* 0x116C0 */ GrpCheckBigUnk   unk_116C0[16];
     /* 0x11B80 */ s32              unk_11B80;
     /* 0x11B84 */ BOOL             isAnimDisplayed; // Whether the animation is currently being displayed
@@ -159,4 +157,9 @@ typedef struct {
     /* 0x11FC4 */ BOOL             isVramLimitReached; // Whether the VRAM limit has been reached
 } GrpCheckState;                                       // Size: 0x11FC8
 
-#endif                                                 // DEBUG_MORI_GRPCHECK_H
+extern s32 GrpCheck_SpriteMode;
+
+void GrpCheck_RegisterVBlank(void);
+void GrpCheck_ClearVBlank(void);
+
+#endif // DEBUG_MORI_GRPCHECK_H

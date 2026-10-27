@@ -17,30 +17,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Prepare
         run: |
           mv /extract/* ./extract
           mv ./extract/arm7_bios.bin .
 
-      - name: Download dsd
-        run: |
-          python tools/download_tool.py dsd v0.12.1 --path dsd
-
-      - name: Download objdiff
-        run: |
-          python tools/download_tool.py objdiff v3.8.1 --path objdiff-cli
-
-      - name: Download wibo
-        run: |
-          python tools/download_tool.py wibo 1.2.0 --path wibo
-
       - name: Build
         run: |
-          python tools/configure.py --version ${{ matrix.version }} -w wibo --compiler /mwccarm --no-extract
-          ninja objdiff objects check sha1 report
+          python tools/configure.py --version ${{ matrix.version }} --compiler /mwccarm -w wibo --no-extract --report
+          ninja
 
       - name: Upload report
         uses: actions/upload-artifact@v4
