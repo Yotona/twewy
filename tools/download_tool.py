@@ -60,6 +60,8 @@ if download_url.endswith(".zip"):
     zip_file.extractall(args.path)
 else:
     out_path: Path = args.path
-    with out_path.open("wb") as f:
+    tmp_path = out_path.with_name(f"{out_path.name}.download")
+    with tmp_path.open("wb") as f:
         f.write(response.content)
-    out_path.chmod(out_path.stat().st_mode | stat.S_IEXEC)
+    tmp_path.chmod(tmp_path.stat().st_mode | stat.S_IEXEC)
+    tmp_path.replace(out_path)

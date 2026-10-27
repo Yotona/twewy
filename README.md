@@ -40,14 +40,16 @@ Note: For a byte-matching build, add a copy of the [ARM7 BIOS](docs/CONTRIBUTING
     - Rename and place this file into the `extract` directory. Supported cartridges and expected names are detailed in the [extract](extract/README.md) directory.
 
 2. **Initialize the Build Configuration**:
-    - Run `python tools/configure.py`. Optionally, specify the version to configure (e.g., `--version jp` for the Japanese version). If no version is specified, it defaults to the USA version.
+    - Run `python tools/configure.py`. By default every version whose baserom is provided will be configured to be built together. Specific versions can be selected using the `--version` flag (e.g., `--version jp` will configure only the Japanese version).
+    - `objdiff` shows the USA version when its baserom is provided, or the specified version when `--version` is passed.
+    - Pass `--report` to also generate each version's objdiff progress report (`build/<version>/report.json`) whenever `ninja` runs.
     - This initializes the project for its first usage. After configuring once, the build command `ninja` will re-configure the project if needed.
 
 3. **Build the Project**:
     - Run `ninja`
     - When first performed, any missing required executables will be downloaded, as listed in the [tools](tools/download_tool.py) directory. This includes [dsd](https://github.com/AetiasHax/ds-decomp), [wibo](https://github.com/decompals/wibo), and the compilers used to build a matching executable.
 
-After the build completes, the final executable will be found in the [build](build) directory, under the directory of the version that was configured.
+After the build completes, the final executable will be found in the [build](build) directory, under the directory of each configured version.
 
 ## Contributing
 

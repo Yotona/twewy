@@ -1,67 +1,59 @@
 import argparse
-import os
-from pathlib import Path
 import platform
 import re
 import subprocess
+import sys
+from pathlib import Path
+
+from compiler_config import (
+    ROOT_PATH,
+    cc_flags,
+    compiler_config_for_source,
+    compiler_executable,
+    mwcc_include_args,
+    region_define,
+    repo_relative,
+)
 
 parser = argparse.ArgumentParser(description="Mangles function declarations")
 parser.add_argument("file", help="C/C++ source file with defined function to mangle")
-
-tools_dir = Path(os.path.dirname(os.path.realpath(__file__)))
-cc_path = tools_dir / "mwccarm" / "2.0" / "sp1p5" / "mwccarm.exe"
-root_dir = tools_dir.parent
-include_dir = root_dir / "include"
-libs_dir = root_dir / "libs"
-libs_include_dir = libs_dir / "include"
-
-if platform.system() == "Windows":
-    cc = [str(cc_path)]
-else:
-    cc = ["wine", str(cc_path)]
-
+parser.add_argument(
+    "-v",
+    "--version",
+    default="usa",
+    help="Game version whose region is defined (default: usa)",
+)
+parser.add_argument(
+    "-w",
+    dest="wine",
+    default="./wibo",
+    help="Path to Wine/Wibo relative to the repository root (linux only)",
+)
 args = parser.parse_args()
 
+# Compile the file the way the build does, so the listing has the same symbols
+source = repo_relative(Path(args.file).absolute())
+cc = [] if platform.system() == "Windows" else [args.wine]
 cc.extend(
     [
-        "-enum",
-        "int",
-        "-char",
-        "signed",
-        "-proc",
-        "arm946e",
-        "-gccext,on",
-        "-fp",
-        "soft",
-        "-inline",
-        "noauto",
-        "-Cpp_exceptions",
-        "off",
-        "-RTTI",
-        "off",
-        "-interworking",
+        str(compiler_executable(compiler_config_for_source(source).version)),
+        *cc_flags(source).split(),
+        *mwcc_include_args(),
+        "-d",
+        region_define(args.version),
         "-nolink",
-        "-msgstyle",
-        "gcc",
-        "-dis",
-        "-gccinc",
-        "-i",
-        include_dir,
-        "-i",
-        libs_include_dir,
-        args.file,
+        "-dis",  # Print the disassembly listing, which names each symbol
+        str(source),
     ]
 )
 
 try:
-    output = subprocess.check_output(cc)
+    output = subprocess.check_output(cc, cwd=ROOT_PATH)
 except subprocess.CalledProcessError as e:
     print(e.stdout.decode())
-    exit(1)
+    sys.exit(1)
 
 output = output.decode()
-
-# print(output)
 
 mangled_funcs: list[str] = re.findall(r".text +([^\$ ]\S+)", output)
 init_funcs: list[str] = re.findall(r".init +([^\$ ]\S+)", output)
