@@ -119,19 +119,14 @@ data_ov038_02086b0c kind:data(byte[0]) addr:0x02086b0c ambiguous
 data_ov038_02086b4c kind:data(byte[0]) addr:0x02086b4c ambiguous
 GrpCheck_BgConfigs kind:data(byte[10584]) addr:0x02086fe4
 data_ov038_02087004 kind:data(byte[0]) addr:0x02087004
-data_ov038_02088700 kind:data(byte[0]) addr:0x02088700 ambiguous
 GrpCheck_HwSpriteConfigs kind:data(byte[143424]) addr:0x0208993c
-data_ov038_0208cbc8 kind:data(byte[0]) addr:0x0208cbc8 ambiguous
 data_ov038_0208ec74 kind:data(byte[0]) addr:0x0208ec74 ambiguous
-data_ov038_0208f021 kind:data(byte[0]) addr:0x0208f021 ambiguous
+data_ov038_0208f021 kind:data(byte[0]) addr:0x0208f021
 data_ov038_0208f44c kind:data(byte[0]) addr:0x0208f44c ambiguous
 data_ov038_02090070 kind:data(byte[0]) addr:0x02090070
 data_ov038_020906ff kind:data(byte[0]) addr:0x020906ff
-data_ov038_02091034 kind:data(byte[0]) addr:0x02091034 ambiguous
 data_ov038_0209a204 kind:data(byte[0]) addr:0x0209a204 ambiguous
-data_ov038_0209bce4 kind:data(byte[0]) addr:0x0209bce4 ambiguous
 data_ov038_020a06ff kind:data(byte[0]) addr:0x020a06ff ambiguous
-data_ov038_020a15e8 kind:data(byte[0]) addr:0x020a15e8 ambiguous
 data_ov038_020ac980 kind:data(byte[4]) addr:0x020ac980
 GrpCheck_SpriteConfigs kind:data(byte[4]) addr:0x020ac984
 data_ov038_020ac988 kind:data(byte[5]) addr:0x020ac988
@@ -711,7 +706,6 @@ data_ov038_020aee98 kind:data(byte[20]) addr:0x020aee98
 data_ov038_020aeeac kind:data(byte[20]) addr:0x020aeeac
 data_ov038_020aeec0 kind:data(byte[20]) addr:0x020aeec0
 data_ov038_020aeed4 kind:data(byte[20]) addr:0x020aeed4
-data_ov038_020aeee0 kind:data(byte[0]) addr:0x020aeee0 ambiguous
 data_ov038_020aeee8 kind:data(byte[20]) addr:0x020aeee8
 data_ov038_020aeefc kind:data(byte[20]) addr:0x020aeefc
 data_ov038_020aef10 kind:data(byte[20]) addr:0x020aef10

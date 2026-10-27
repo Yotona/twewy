@@ -120,13 +120,9 @@ GrpCheck_BgConfigs kind:data(byte[10584]) addr:0x020879c0
 data_ov037_020879e0 kind:data(byte[0]) addr:0x020879e0
 data_ov037_020885c8 kind:data(byte[0]) addr:0x020885c8 ambiguous
 GrpCheck_HwSpriteConfigs kind:data(byte[142800]) addr:0x0208a318
-data_ov037_0208d4d0 kind:data(byte[0]) addr:0x0208d4d0 ambiguous
 data_ov037_0208f021 kind:data(byte[0]) addr:0x0208f021
-data_ov037_0208f4e0 kind:data(byte[0]) addr:0x0208f4e0 ambiguous
-data_ov037_0208f864 kind:data(byte[0]) addr:0x0208f864 ambiguous
 data_ov037_0209048c kind:data(byte[0]) addr:0x0209048c ambiguous
 data_ov037_020906ff kind:data(byte[0]) addr:0x020906ff
-data_ov037_0209ae50 kind:data(byte[0]) addr:0x0209ae50 ambiguous
 data_ov037_020a0070 kind:data(byte[0]) addr:0x020a0070 ambiguous
 data_ov037_020a045c kind:data(byte[0]) addr:0x020a045c ambiguous
 data_ov037_020a06ff kind:data(byte[0]) addr:0x020a06ff ambiguous

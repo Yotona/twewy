@@ -1,5 +1,5 @@
 from:0x020e7380 kind:arm_call to:0x020e73a4 module:overlay(28)
-from:0x020e73a0 kind:load to:0x020e70ac module:overlays(3,30)
+from:0x020e73a0 kind:load to:0x020e70ac module:overlay(3)
 from:0x020e775c kind:load to:0x020ecdc0 module:overlay(28)
 from:0x020e7760 kind:load to:0x020ecdc4 module:overlay(28)
 from:0x020e7764 kind:load to:0x020ecd58 module:overlay(28)

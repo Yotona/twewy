@@ -251,7 +251,7 @@ data_ov005_020f035c kind:data(any) addr:0x020f035c
 data_ov005_020f0368 kind:data(any) addr:0x020f0368
 data_ov005_020f0378 kind:data(any) addr:0x020f0378
 data_ov005_020f0384 kind:data(any) addr:0x020f0384
-data_ov005_020f0394 kind:data(any) addr:0x020f0394 ambiguous
+data_ov005_020f0394 kind:data(any) addr:0x020f0394
 data_ov005_020f039c kind:data(any) addr:0x020f039c ambiguous
 data_ov005_020f03a0 kind:data(any) addr:0x020f03a0
 data_ov005_020f03b0 kind:data(any) addr:0x020f03b0
@@ -271,16 +271,16 @@ data_ov005_020f0670 kind:data(any) addr:0x020f0670
 data_ov005_020f0688 kind:data(any) addr:0x020f0688
 data_ov005_020f0694 kind:data(any) addr:0x020f0694
 data_ov005_020f06a4 kind:data(any) addr:0x020f06a4
-data_ov005_020f0708 kind:data(any) addr:0x020f0708 ambiguous
+data_ov005_020f0708 kind:data(any) addr:0x020f0708
 data_ov005_020f0714 kind:data(any) addr:0x020f0714
 data_ov005_020f0724 kind:data(any) addr:0x020f0724
 data_ov005_020f0748 kind:data(any) addr:0x020f0748
 data_ov005_020f0754 kind:data(any) addr:0x020f0754
-data_ov005_020f0764 kind:data(any) addr:0x020f0764 ambiguous
+data_ov005_020f0764 kind:data(any) addr:0x020f0764
 data_ov005_020f0770 kind:data(any) addr:0x020f0770
 data_ov005_020f077c kind:data(any) addr:0x020f077c
 data_ov005_020f078c kind:data(any) addr:0x020f078c
-data_ov005_020f07a0 kind:data(any) addr:0x020f07a0 ambiguous
+data_ov005_020f07a0 kind:data(any) addr:0x020f07a0
 data_ov005_020f07a4 kind:data(any) addr:0x020f07a4
 data_ov005_020f07d4 kind:data(any) addr:0x020f07d4
 data_ov005_020f0820 kind:data(any) addr:0x020f0820
@@ -310,12 +310,12 @@ data_ov005_020f0a3c kind:data(any) addr:0x020f0a3c
 data_ov005_020f0a50 kind:data(any) addr:0x020f0a50
 data_ov005_020f0a64 kind:data(any) addr:0x020f0a64
 data_ov005_020f0a74 kind:data(any) addr:0x020f0a74
-data_ov005_020f0a94 kind:data(any) addr:0x020f0a94 ambiguous
+data_ov005_020f0a94 kind:data(any) addr:0x020f0a94
 data_ov005_020f0aa8 kind:data(any) addr:0x020f0aa8
 data_ov005_020f0aac kind:data(any) addr:0x020f0aac
 data_ov005_020f0ab0 kind:data(any) addr:0x020f0ab0
 data_ov005_020f0ab4 kind:data(any) addr:0x020f0ab4
-data_ov005_020f0ac0 kind:data(any) addr:0x020f0ac0 ambiguous
+data_ov005_020f0ac0 kind:data(any) addr:0x020f0ac0
 data_ov005_020f0b60 kind:data(any) addr:0x020f0b60 ambiguous
 data_ov005_020f0c20 kind:bss addr:0x020f0c20
 data_ov005_020f0c24 kind:bss addr:0x020f0c24

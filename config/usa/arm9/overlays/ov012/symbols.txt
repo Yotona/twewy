@@ -53,7 +53,7 @@ Tsk_BtlEnm014_Eff kind:data(any) addr:0x02127934
 Tsk_BtlEnm014_RG kind:data(any) addr:0x02127940
 data_ov012_0212794c kind:data(any) addr:0x0212794c
 Tsk_BtlEnm014_UG kind:data(any) addr:0x0212795c
-data_ov012_02127980 kind:data(any) addr:0x02127980 ambiguous
+data_ov012_02127980 kind:data(any) addr:0x02127980
 data_ov012_02127990 kind:data(any) addr:0x02127990
 data_ov012_021279ac kind:data(any) addr:0x021279ac
 data_ov012_021279c8 kind:data(any) addr:0x021279c8

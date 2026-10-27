@@ -50,10 +50,10 @@ data_ov012_02127bc4 kind:data(any) addr:0x02127bc4
 data_ov012_02127bcc kind:data(any) addr:0x02127bcc
 data_ov012_02127bd4 kind:data(any) addr:0x02127bd4
 data_ov012_02127c54 kind:data(any) addr:0x02127c54
-data_ov012_02127c60 kind:data(any) addr:0x02127c60 ambiguous
+data_ov012_02127c60 kind:data(any) addr:0x02127c60
 data_ov012_02127c6c kind:data(any) addr:0x02127c6c
-data_ov012_02127c7c kind:data(any) addr:0x02127c7c ambiguous
-data_ov012_02127ca0 kind:data(any) addr:0x02127ca0 ambiguous
+data_ov012_02127c7c kind:data(any) addr:0x02127c7c
+data_ov012_02127ca0 kind:data(any) addr:0x02127ca0
 data_ov012_02127cb0 kind:data(any) addr:0x02127cb0
 data_ov012_02127ccc kind:data(any) addr:0x02127ccc
 data_ov012_02127ce8 kind:data(any) addr:0x02127ce8

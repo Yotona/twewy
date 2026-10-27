@@ -205,7 +205,7 @@ BtlFeat02_Render kind:function(arm,size=0x230) addr:0x020f0250
 BtlFeat02_Destroy kind:function(arm,size=0x14) addr:0x020f0480
 BtlFeat02_RunTask kind:function(arm,size=0x48) addr:0x020f0494
 data_ov004_020f04dc kind:data(any) addr:0x020f04dc
-data_ov004_020f04e4 kind:data(any) addr:0x020f04e4 ambiguous
+data_ov004_020f04e4 kind:data(any) addr:0x020f04e4
 data_ov004_020f04f0 kind:data(any) addr:0x020f04f0
 data_ov004_020f0500 kind:data(any) addr:0x020f0500
 data_ov004_020f05c0 kind:data(any) addr:0x020f05c0 ambiguous
