@@ -5,7 +5,10 @@
     .bss        start:0x020b7980 end:0x020b79a0 kind:bss align:32
 
 src/Debug/Mori/GrpCheck.c:
-    .text       start:0x02082e80 end:0x0208652c
+    .text       start:0x02082e80 end:0x020860d0
     .rodata     start:0x0208652c end:0x020ad0e8
     .data       start:0x020ad100 end:0x020b7980
     .bss        start:0x020b7980 end:0x020b79a0
+
+src/Debug/Mori/GrpCheckDisplay.c:
+    .text       start:0x020860d0 end:0x0208652c

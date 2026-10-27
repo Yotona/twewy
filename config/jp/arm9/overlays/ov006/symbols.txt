@@ -232,7 +232,7 @@ data_ov006_020f10d4 kind:data(any) addr:0x020f10d4
 data_ov006_020f10f4 kind:data(any) addr:0x020f10f4
 data_ov006_020f1144 kind:data(any) addr:0x020f1144
 data_ov006_020f1194 kind:data(any) addr:0x020f1194
-data_ov006_020f11a0 kind:data(any) addr:0x020f11a0 ambiguous
+data_ov006_020f11a0 kind:data(any) addr:0x020f11a0
 data_ov006_020f11b8 kind:data(any) addr:0x020f11b8
 data_ov006_020f11c8 kind:data(any) addr:0x020f11c8
 data_ov006_020f11ec kind:data(any) addr:0x020f11ec

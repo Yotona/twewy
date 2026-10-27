@@ -23,9 +23,9 @@ func_ov007_020e81e8 kind:function(arm,size=0x5c) addr:0x020e81e8
 func_ov007_020e8244 kind:function(arm,size=0x10c) addr:0x020e8244
 func_ov007_020e8350 kind:function(arm,size=0x30) addr:0x020e8350
 func_ov007_020e8380 kind:function(arm,size=0x68) addr:0x020e8380
-data_ov007_020e83e8 kind:data(any) addr:0x020e83e8 ambiguous
+data_ov007_020e83e8 kind:data(any) addr:0x020e83e8
 data_ov007_020e83f4 kind:data(any) addr:0x020e83f4
-data_ov007_020e8404 kind:data(any) addr:0x020e8404 ambiguous
+data_ov007_020e8404 kind:data(any) addr:0x020e8404
 data_ov007_020e8410 kind:data(any) addr:0x020e8410
 data_ov007_020e8420 kind:data(any) addr:0x020e8420
 data_ov007_020e8440 kind:data(any) addr:0x020e8440

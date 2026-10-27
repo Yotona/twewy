@@ -90,9 +90,9 @@ Tsk_BtlEnm006_Swirl kind:data(any) addr:0x021292b8
 data_ov010_021292c0 kind:data(any) addr:0x021292c0 ambiguous
 data_ov010_021292c4 kind:data(any) addr:0x021292c4
 Tsk_BtlEnm006_Swlo kind:data(any) addr:0x021292dc
-Tsk_BtlEnm006_UG kind:data(any) addr:0x021292e8 ambiguous
+Tsk_BtlEnm006_UG kind:data(any) addr:0x021292e8
 data_ov010_021292f4 kind:data(any) addr:0x021292f4
-data_ov010_02129320 kind:data(any) addr:0x02129320 ambiguous
+data_ov010_02129320 kind:data(any) addr:0x02129320
 data_ov010_0212932c kind:data(any) addr:0x0212932c
 data_ov010_02129348 kind:data(any) addr:0x02129348
 data_ov010_02129364 kind:data(any) addr:0x02129364

@@ -307,7 +307,7 @@ from:0x02083f24 kind:load to:0x020676ec add:0x108c module:main
 from:0x02083f28 kind:load to:0x0206b3cc module:main
 from:0x02083f2c kind:overlay_id to:45
 from:0x02083f34 kind:overlay_id to:28
-from:0x02083f38 kind:load to:0x020e82d0 module:overlays(28,30)
+from:0x02083f38 kind:load to:0x020e82d0 module:overlay(28)
 from:0x02083f3c kind:overlay_id to:43
 from:0x02083f40 kind:load to:0x020a15e8 module:overlay(43)
 from:0x02083f44 kind:load to:0x0208f44c module:overlay(43)

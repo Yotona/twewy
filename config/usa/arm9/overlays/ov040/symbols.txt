@@ -249,7 +249,6 @@ data_ov040_020a06ff kind:bss addr:0x020a06ff ambiguous
 data_ov040_020a0cc0 kind:bss addr:0x020a0cc0
 data_ov040_020a14e0 kind:bss addr:0x020a14e0
 data_ov040_020a1500 kind:bss addr:0x020a1500
-data_ov040_020a15e8 kind:bss addr:0x020a15e8 ambiguous
 data_ov040_020a1700 kind:bss addr:0x020a1700
 data_ov040_020a1900 kind:bss addr:0x020a1900
 data_ov040_020a1d00 kind:bss addr:0x020a1d00

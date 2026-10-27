@@ -105,9 +105,9 @@ data_ov016_021292b0 kind:data(any) addr:0x021292b0
 data_ov016_021292b8 kind:data(any) addr:0x021292b8
 Tsk_Boss01_Eff kind:data(any) addr:0x021292c0
 data_ov016_021292cc kind:data(any) addr:0x021292cc
-data_ov016_021292dc kind:data(any) addr:0x021292dc ambiguous
+data_ov016_021292dc kind:data(any) addr:0x021292dc
 data_ov016_021292e8 kind:data(any) addr:0x021292e8
-data_ov016_021292f8 kind:data(any) addr:0x021292f8 ambiguous
+data_ov016_021292f8 kind:data(any) addr:0x021292f8
 data_ov016_02129304 kind:data(any) addr:0x02129304
 Tsk_Boss01s_FlyRG_Curve kind:data(any) addr:0x02129314
 data_ov016_02129320 kind:data(any) addr:0x02129320
@@ -150,7 +150,6 @@ data_ov016_0212954c kind:data(any) addr:0x0212954c
 @1334 kind:data(any) addr:0x02129560 local
 data_ov016_0212957c kind:data(any) addr:0x0212957c
 data_ov016_02129590 kind:data(any) addr:0x02129590
-data_ov016_02129594 kind:data(any) addr:0x02129594 ambiguous
 data_ov016_021295a4 kind:data(any) addr:0x021295a4
 data_ov016_021295b4 kind:data(any) addr:0x021295b4
 data_ov016_021295d0 kind:data(any) addr:0x021295d0

@@ -262,7 +262,6 @@ BtlFeat02_RunTask kind:function(arm,size=0x48) addr:0x020f0020
 data_ov004_020f0068 kind:data(any) addr:0x020f0068
 Tsk_BtlPlayer01 kind:data(any) addr:0x020f0070
 @1662 kind:data(any) addr:0x020f007c local
-data_ov004_020f0082 kind:data(any) addr:0x020f0082 ambiguous
 data_ov004_020f008c kind:data(any) addr:0x020f008c
 data_ov004_020f0120 kind:data(any) addr:0x020f0120 ambiguous
 

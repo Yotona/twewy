@@ -36,7 +36,7 @@ Delink, symbol, and reloc `.txt` files must be kept free of unneccessary whitesp
 
 Where applicable in `symbol.txt`, separate sections of listings by their relevant file and include a comment banner denoting that file's path.
 
-Pull requests must produce a matching build before being submitted by verifying that `ninja` compiles the project without errors and reports `build/<version>/twewy_<version>.nds: OK`, e.g. `build/usa/twewy_usa.nds: OK`. If a change affects more than one game version, verify each affected version by reconfiguring for it (`python tools/configure.py --version <version>`) and rebuilding. Changes will not be accepted while *any* supported version of the game fails to build successfully.
+Pull requests must produce a matching build before being submitted by verifying that `ninja` compiles the project without errors and reports `build/<version>/twewy_<version>.nds: OK` for all versions. Changes will not be accepted while *any* supported version of the game fails to build successfully.
 
 Pull requests must pass all `pre-commit` checks. You can confirm the status of your pre-commit checks prior to submitting a pull request by running `pre-commit run --all-files`.
 
