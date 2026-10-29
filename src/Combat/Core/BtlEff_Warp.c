@@ -8,9 +8,6 @@
 
 extern const BinIdentifier data_ov003_020d77f8;
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
-extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
-
 /// Task data of the warp effect (`Tsk_BtlEff_Warp`): a pair of sprites, one left behind at the
 /// previous position of the display actor and one at its new position.
 typedef struct BtlEff_Warp {

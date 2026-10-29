@@ -18,9 +18,6 @@ typedef struct BtlEffSwordSpawn {
     /* 0x00 */ s16 animIndex;
 } BtlEffSwordSpawn;
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
-extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
-
 extern const BinIdentifier data_ov003_020d77d8;
 
 extern const TaskHandle      data_ov003_020d8634;

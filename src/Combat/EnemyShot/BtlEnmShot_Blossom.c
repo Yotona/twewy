@@ -62,7 +62,6 @@ extern u8 data_ov003_020d4231[];
 
 extern s32  func_ov003_020c3c28(void);
 extern s32  func_ov003_020c37f8(CombatSprite* sprite);
-extern s32  func_ov003_020843b0(s32 engine, s32 x);
 extern void func_ov003_02084348(s32 engine, s16* x, s16* y, s32 worldX, s32 worldY, s32 worldZ);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
@@ -71,7 +70,6 @@ extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier*
                                 s32 palette, s32 anim);
 extern void func_ov003_0209f444(s32 engine, s32 x, s32 y, s32 z, s32 flag);
 extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
-extern void func_ov003_020c4b1c(Ov003EnemyActor* actor);
 extern void func_ov003_020c4f00(Ov003EnemyActor* actor);
 extern void func_ov003_020c4ee0(Ov003EnemyActor* actor);
 
@@ -182,11 +180,11 @@ void func_ov003_020cb304(BtlBinSet* set, u16 index) {
     }
 }
 
-s32 func_ov003_020cb32c(BtlBinSet* set, s32 id) {
-    return BinMgr_FindById(id) != NULL;
+s32 func_ov003_020cb32c(BtlBinSet* set, BinIdentifier* iden) {
+    return BinMgr_FindById((s32)iden) != NULL;
 }
 
-u16 func_ov003_020cb348(BtlBinSet* set, u16 index) {
+s32 func_ov003_020cb348(BtlBinSet* set, u16 index) {
     Bin* bin = BinMgr_FindById(set->entries[index].id);
 
     if (bin != NULL) {
@@ -325,7 +323,7 @@ void func_ov003_020cb594(Ov003EnemyActor* actor, s32 flag) {
 }
 
 /// Heals `actor` and its partner by `amount` (or just plays the effect for `flag`).
-void func_ov003_020cb5b0(Ov003EnemyActor* actor, s32 amount, s32 flag) {
+void func_ov003_020cb5b0(Ov003EnemyActor* actor, s16 amount, s32 flag) {
     s32 engine = func_ov003_020c37f8(&actor->sprite) ? 1 : 0;
 
     func_ov003_0209b564(engine, amount, &actor->actor, 1);

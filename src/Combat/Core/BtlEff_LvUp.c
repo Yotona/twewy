@@ -7,7 +7,6 @@ typedef struct BtlEffLvUp {
     CombatSprite sprites[2];
 } BtlEffLvUp;
 extern const BinIdentifier data_ov003_020d7800;
-extern s32                 func_ov003_020843b0(s32, s32);
 void                       func_ov003_020a0290(s32, BtlEffLvUp*);
 s32                        func_ov003_020a033c(BtlEffLvUp*);
 void                       func_ov003_020a0368(BtlEffLvUp*);

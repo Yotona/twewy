@@ -38,8 +38,6 @@ extern const BinIdentifier data_ov018_020fec90[]; // sprite pages of the group 0
 extern s32              func_ov003_020c3908(CombatSprite* sprite);
 extern void             func_ov003_020c3cdc(Ov003CutinActor* owner);
 extern TaskPool*        func_ov003_020c3ca4(Ov003CutinActor* owner);
-extern s32              func_ov003_020843b0(s32 engine, s32 x);
-extern s32              func_ov003_020843ec(s32 engine, s32 y, s32 z);
 extern void             func_ov003_02087fe0(s32 engine, CombatSprite* sprite, s32 arg2);
 extern void             func_ov003_02088064(CombatSprite* sprite, s32 x, s32 y);
 extern const TaskHandle data_ov003_020e0bf0;

@@ -4,8 +4,6 @@
 
 extern CombatActor*     func_ov003_02085dc8(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32              func_ov003_020843b0(s32, s32);
-extern s32              func_ov003_020843ec(s32, s32, s32);
 extern const TaskHandle data_ov003_020dd210;
 
 s32 func_ov003_020ba6c8(Ov003EffectContext* context, Ov003EffectState* effect) {

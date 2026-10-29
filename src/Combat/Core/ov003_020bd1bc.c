@@ -57,8 +57,6 @@ extern const CutinResources data_ov003_020dd854[6];
 extern Ov003CutinTask*      data_ov003_020e71d4;
 extern char                 data_ov003_020e533c[16];
 
-extern s32         func_ov003_020843b0(s32, s32);
-extern s32         func_ov003_020843ec(s32, s32, s32);
 extern s32         func_ov003_0208442c(s32, s32);
 extern s32         func_ov003_02084460(s32, s32, s32);
 extern void        func_0200d858(ScreenMapEntry*, s32, s32, s32);

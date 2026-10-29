@@ -54,7 +54,6 @@ typedef struct BtlFeatSplashEnm {
 
 extern s32 data_ov003_020e71e0;
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
 extern s32 func_ov003_02084460(s32 engine, s32 y, s32 z);
 
 s32 func_ov003_020bc088(BtlFeatSplashEnm* self);

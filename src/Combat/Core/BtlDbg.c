@@ -43,9 +43,6 @@ extern OamAffineParam data_02059ad4;
 extern VtxXY          data_02059ab0[4];
 extern TexCoordQuad   data_02059b14[];
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
-extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
-
 s32 func_ov003_020a2890(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_020a28ec(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_020a28f4(TaskPool* pool, Task* task, void* args);

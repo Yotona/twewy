@@ -49,7 +49,6 @@ extern s32           func_ov003_0208b1e8(u16);
 extern s32           func_ov003_020c37f8(CombatSprite*);
 extern s32           func_ov003_020c3c28(void);
 extern void          func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32           func_ov003_020843b0(s32 index, s32 x);
 extern void          func_ov003_0209c984(u32, s32, s32, s32, s32);
 extern void          func_02026590(s32*, s32, u16);
 extern void          func_020265d4(s32*, s32, u16);

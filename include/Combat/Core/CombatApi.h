@@ -54,8 +54,8 @@ void         func_ov003_020862a4(s32);
 void         func_ov003_020862f8(s32, s32);
 
 void         func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-s32          func_ov003_020843b0(s32, s32);
-s32          func_ov003_020843ec(s32, s32, s32);
+s16          func_ov003_020843b0(s32, s32);
+s16          func_ov003_020843ec(s32, s32, s32);
 s32          func_ov003_0208442c(s32, s32);
 s32          func_ov003_02084460(s32, s32, s32);
 void         func_ov003_02084634(Ov003Collider*, s32, s32, s32);
@@ -386,15 +386,15 @@ void         func_ov003_020a64ac(void);
 /// Initialises the effect's sprite anchor from the owning touch actor.
 void func_ov003_020a64d0(Ov003EffectState* effect, s16 arg1);
 /// Queues a sweep attack against `unit`, resetting the streak when the info record says so.
-s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003EnemyActor* unit, s32 x, s32 force, u16 amount);
+s32 func_ov003_020a6568(Ov003AttackStreak*, u16, Ov003EnemyActor*, s32, s32, u16);
 /// Queues a point attack at (x, y, z) and resets the streak when the info record says so.
-s32 func_ov003_020a6628(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s32 z, s32 force, u16 amount);
+s32 func_ov003_020a6628(Ov003AttackStreak*, u16, s32, s32, s32, s32, u16);
 /// Segment-segment intersection test; both segments are axis-aligned bounding boxes first.
 s32 func_ov003_020a67d4(s32 x1, s32 y1, s32 x2, s32 y2, s32 x3, s32 y3, s32 x4, s32 y4);
 /// Whether `unit`'s screen-space bounding box overlaps (x1, y1)-(x2, y2).
 s32 func_ov003_020a6924(Ov003EnemyActor* unit, s32 x1, s32 y1, s32 x2, s32 y2);
 /// Queues a sweep attack against every unit whose box overlaps (x1, y1)-(x2, y2).
-s32 func_ov003_020a6acc(Ov003AttackStreak* streak, s32 attackId, s32 x1, s32 y1, s32 x2, s32 y2, s32 x);
+s32 func_ov003_020a6acc(Ov003AttackStreak*, u16, s32, s32, s32, s32, s32);
 /// Clears `*out` when the current encounter uses the same hit kind as `unit`.
 void func_ov003_020a6bb8(s16* out, Ov003EnemyActor* unit);
 /// Story-progress gate for the pin effects: 0 = none, 1 = early, 2 = late.
@@ -680,7 +680,7 @@ Ov003ActorParams*    func_ov003_020c3c88(Ov003EnemyActor*);
 void                 func_ov003_020c3cec(void*, void*, void*, void*);
 s32                  func_ov003_020c3d28(void*, void*, void*, void*, s32*, s32*);
 s32                  func_ov003_020c3ec0(CombatActor*);
-void                 func_ov003_020c3efc(Ov003EnemyActor*, Ov003CutinCmdData*);
+s32                  func_ov003_020c3efc(Ov003EnemyActor*, Ov003CutinCmdData*);
 // ov003_020c41e8.c
 /// Resets a cut-in actor to its idle defaults (a fresh 0x1C0-byte actor block).
 void func_ov003_020c41e8(Ov003CutinActor* actor);
@@ -777,7 +777,7 @@ void func_ov003_020c495c(Ov003EnemyActor*);
 void func_ov003_020c4988(Ov003EnemyActor*);
 void func_ov003_020c4ab4(Ov003EnemyActor*, s32);
 void func_ov003_020c4af0(Ov003EnemyActor*);
-void func_ov003_020c4b1c(Ov003EnemyActor*);
+s32  func_ov003_020c4b1c(Ov003EnemyActor*);
 void func_ov003_020c4b5c(Ov003EnemyActor*);
 void func_ov003_020c4c1c(Ov003EnemyActor*);
 void func_ov003_020c4c5c(Ov003EnemyActor*);
@@ -829,13 +829,13 @@ void             func_ov003_020cbd30(BtlVec2*, BtlVec2, BtlVec2, BtlVec2, s32);
 s32   func_ov003_020cb200(BtlBinSet*, u16);
 s32   func_ov003_020cb264(BtlBinSet*, u32);
 void  func_ov003_020cb304(BtlBinSet*, u16);
-s32   func_ov003_020cb32c(BtlBinSet*, s32);
-u16   func_ov003_020cb348(BtlBinSet*, u16);
+s32   func_ov003_020cb32c(BtlBinSet*, BinIdentifier*);
+s32   func_ov003_020cb348(BtlBinSet*, u16);
 s32   func_ov003_020cb368(BinIdentifier*);
 void  func_ov003_020cb520(CombatActor*, s32);
 s32   func_ov003_020cb55c(Ov003EnemyActor*);
 void  func_ov003_020cb578(CombatActor*, s32);
-void  func_ov003_020cb5b0(Ov003EnemyActor*, s32, s32);
+void  func_ov003_020cb5b0(Ov003EnemyActor*, s16, s32);
 s32   func_ov003_020cb648(Ov003EnemyActor*, s32);
 s32   func_ov003_020cb744(s32);
 s32   func_ov003_020cb784(s32);

@@ -6,8 +6,6 @@ extern CombatActor*     func_ov003_02085dc8(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32              func_ov003_0208442c(s32, s32);
 extern s32              func_ov003_02084460(s32, s32, s32);
-extern s32              func_ov003_020843b0(s32, s32);
-extern s32              func_ov003_020843ec(s32, s32, s32);
 extern char             data_ov003_020e4ef0[];
 extern const TaskHandle data_ov003_020dca90;
 

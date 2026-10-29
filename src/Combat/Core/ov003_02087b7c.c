@@ -91,8 +91,6 @@ typedef struct Ov003AttackParams {
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern s32  func_ov003_020843b0(s32, s32);
-extern s32  func_ov003_020843ec(s32, s32, s32);
 extern s32  func_ov003_0208442c(s32, s32);
 extern s32  func_ov003_02084460(s32, s32, s32);
 extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);

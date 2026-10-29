@@ -78,7 +78,7 @@ extern void func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 s32  func_ov003_020a62b8(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 s32  func_ov003_020a632c(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void func_ov003_020a652c(Ov003AttackInfo* info, s32 force, u16 amount);
-s32  func_ov003_020a66f4(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s32 force, u16 amount);
+s32  func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 s32  func_ov003_020a6c7c(s32 arg0);
 s32  func_ov003_020a6cc4(s32 arg0);
 
@@ -397,7 +397,7 @@ void func_ov003_020a652c(Ov003AttackInfo* info, s32 force, u16 amount) {
 }
 
 /// Queues a sweep attack against `unit`, resetting the streak when the info record says so.
-s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003EnemyActor* unit, s32 x, s32 force, u16 amount) {
+s32 func_ov003_020a6568(Ov003AttackStreak* streak, u16 attackId, Ov003EnemyActor* unit, s32 x, s32 force, u16 amount) {
     Ov003AttackInfo info = *func_ov003_0208a114(attackId);
     s32             result;
 
@@ -417,7 +417,7 @@ s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003EnemyActor
 }
 
 /// Queues a point attack at (x, y, z) and resets the streak when the info record says so.
-s32 func_ov003_020a6628(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s32 z, s32 force, u16 amount) {
+s32 func_ov003_020a6628(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 z, s32 force, u16 amount) {
     Ov003AttackInfo info = *func_ov003_0208a114(attackId);
     s32             result;
 
@@ -437,7 +437,7 @@ s32 func_ov003_020a6628(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s
 }
 
 /// Queues a pixel-space attack at (x, y) and resets the streak when the info record says so.
-s32 func_ov003_020a66f4(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s32 force, u16 amount) {
+s32 func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount) {
     Ov003AttackInfo info = *func_ov003_0208a114(attackId);
     s32             result;
 
@@ -593,7 +593,7 @@ s32 func_ov003_020a6924(Ov003EnemyActor* unit, s32 x1, s32 y1, s32 x2, s32 y2) {
 }
 
 /// Queues a sweep attack against every unit whose box overlaps (x1, y1)-(x2, y2).
-s32 func_ov003_020a6acc(Ov003AttackStreak* streak, s32 attackId, s32 x1, s32 y1, s32 x2, s32 y2, s32 x) {
+s32 func_ov003_020a6acc(Ov003AttackStreak* streak, u16 attackId, s32 x1, s32 y1, s32 x2, s32 y2, s32 x) {
     Ov003EnemyActor* unit;
     s32              hit = 0;
 

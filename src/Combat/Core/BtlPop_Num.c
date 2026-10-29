@@ -54,9 +54,6 @@ typedef struct BtlPop_NumArgs {
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
-extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
-
 extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020d7ffc;
 extern const TaskStages    data_ov003_020d8008;

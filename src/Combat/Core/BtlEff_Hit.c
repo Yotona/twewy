@@ -25,9 +25,6 @@ typedef struct BtlEff_HitArgs {
 /// Named battle sprite-page identifiers.
 extern const BinIdentifier data_ov003_020d77f8;
 
-extern s32 func_ov003_020843b0(s32 engine, s32 x);
-extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
-
 // Defined in this unit.
 
 char data_ov003_020e3d90[0x10] = "Tsk_BtlEff_Hit";

@@ -84,8 +84,6 @@ extern u8       data_02071cf0[];
 extern s32 func_02053098(f64 x, f64 scale);
 extern u16 func_02054a50(f64 x);
 
-extern s32  func_ov003_020843b0(s32 engine, s32 x);
-extern s32  func_ov003_020843ec(s32 engine, s32 y, s32 z);
 extern void func_ov003_0208af9c(u16 x, u16 y);
 extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
 
@@ -122,7 +120,6 @@ s32               func_ov003_020c3c28(void);
 void              func_ov003_020c3c44(Ov003CutinScript* buffer, void* data, s16 count);
 Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor);
 s32               func_ov003_020c3ec0(CombatActor* actor);
-void              func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn);
 
 void func_ov003_020c2064(Ov003CutinTracks* tracks) {
     s32 i;
@@ -1088,7 +1085,8 @@ s32 func_ov003_020c3ec0(CombatActor* actor) {
 }
 
 /// Initialises one cut-in actor from a spawn record and its parameter block.
-void func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn) {
+/// Declared `int`: noise callers treat it like an undeclared (implicitly `int`) function.
+s32 func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn) {
     Ov003ActorParams* params = (Ov003ActorParams*)data_ov003_020e70ac[spawn->group][spawn->sprite];
 
     CombatActor_Init(&actor->actor, 1);

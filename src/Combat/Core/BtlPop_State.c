@@ -66,8 +66,6 @@ const SpriteAnimEntry data_ov003_020d80f8[5] = {
 // ---------------------------------------------------------------------------------------------
 
 extern BinIdentifier data_ov003_020d7800;
-extern s32           func_ov003_020843b0(s32 engine, s32 x);
-extern s32           func_ov003_020843ec(s32 engine, s32 y, s32 z);
 
 /// The status popup picks its sprite index conditionally and the retail call site passes it
 /// through without narrowing it to `CombatSprite_LoadFromTable`'s `u16` parameter, so call it

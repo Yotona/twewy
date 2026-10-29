@@ -42,8 +42,6 @@ typedef struct BtlPop_Tech_Args {
 
 extern void func_020265d4(void* value, s32 target, u16 frames);
 extern void func_ov003_0208afcc(s32 exp);
-extern s32  func_ov003_020843b0(s32 engine, s32 x);
-extern s32  func_ov003_020843ec(s32 engine, s32 y, s32 z);
 
 /// The retail call site passes the raw `s32` tech id as the animation index instead of narrowing
 /// it to `CombatSprite_LoadDirect`'s `u16` parameter.

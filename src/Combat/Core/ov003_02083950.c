@@ -523,13 +523,13 @@ void func_ov003_02084348(s32 index, s16* screenX, s16* screenY, s32 x, s32 y, s3
     *screenY = (y + z - camera->unk_40 + 0x60000 + camera->unk_08) >> 12;
 }
 
-s32 func_ov003_020843b0(s32 index, s32 x) {
+s16 func_ov003_020843b0(s32 index, s32 x) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[index];
 
     return (s16)((x - camera->unk_28 + 0x80000 + camera->unk_04) * 0x10 >> 16);
 }
 
-s32 func_ov003_020843ec(s32 index, s32 y, s32 z) {
+s16 func_ov003_020843ec(s32 index, s32 y, s32 z) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[index];
 
     return (s16)((y + z - camera->unk_40 + 0x60000 + camera->unk_08) * 0x10 >> 16);

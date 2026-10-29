@@ -27,7 +27,6 @@ s32               func_ov011_02129cec(BtlEnm010Tatt* data);
 s32               func_ov011_02129ea4(BtlEnm010Tatt* p);
 
 extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
 
 #define NEXT_REC(p) ((p) += sizeof(BtlEnm010TattRec) / sizeof(*(p)))
 

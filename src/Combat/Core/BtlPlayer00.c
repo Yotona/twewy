@@ -91,8 +91,8 @@ BOOL func_ov003_0208f664(BtlPlayer00* self);
 BOOL func_ov003_0208f8d4(BtlPlayer00* self);
 void func_ov003_0208f998(BtlPlayer00* self, CombatActor* target, s32 near);
 void func_ov003_0208fa78(BtlPlayer00* self, s32 mode);
-BOOL func_ov003_0208fc24(BtlPlayer00* self, s32 id, s32 x, s32 z);
-BOOL func_ov003_0208fc7c(BtlPlayer00* self, s32 id, s32 x, s32 z);
+BOOL func_ov003_0208fc24(BtlPlayer00* self, u16 id, s32 x, s32 z);
+BOOL func_ov003_0208fc7c(BtlPlayer00* self, u16 id, s32 x, s32 z);
 void func_ov003_0208fd6c(BtlPlayer00* self, s32 x, s32 z, s32 flag);
 void func_ov003_0208fde0(BtlPlayer00* self);
 void func_ov003_0208fe10(BtlPlayer00* self);
@@ -549,7 +549,7 @@ void func_ov003_0208fa78(BtlPlayer00* self, s32 mode) {
 }
 
 /// Casts the hit box `id` of the current attack `x`,`z` pixels in front of the player.
-BOOL func_ov003_0208fc24(BtlPlayer00* self, s32 id, s32 x, s32 z) {
+BOOL func_ov003_0208fc24(BtlPlayer00* self, u16 id, s32 x, s32 z) {
     Ov003EffectState* effect = self->command.state;
     s32               hitX;
 
@@ -563,7 +563,7 @@ BOOL func_ov003_0208fc24(BtlPlayer00* self, s32 id, s32 x, s32 z) {
 }
 
 /// The same for a multi-hit attack: counts the hits and puts the finishing flag on the last one.
-BOOL func_ov003_0208fc7c(BtlPlayer00* self, s32 id, s32 x, s32 z) {
+BOOL func_ov003_0208fc7c(BtlPlayer00* self, u16 id, s32 x, s32 z) {
     Ov003EffectState* effect = self->command.state;
     s32               hits   = effect->unk_08;
     s32               last   = hits >= effect->flag;

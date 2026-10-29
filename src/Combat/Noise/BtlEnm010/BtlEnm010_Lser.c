@@ -60,8 +60,6 @@ extern s32 func_ov011_02125e14(BtlEnm010Lser* data);
 extern s32 func_ov011_02126354(BtlEnm010Lser* data);
 extern s32 func_ov011_021265a8(BtlEnm010Lser* data);
 extern s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
-extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
-extern s32 func_ov003_020843ec(s32 a0, s32 a1, s32 a2);
 
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 

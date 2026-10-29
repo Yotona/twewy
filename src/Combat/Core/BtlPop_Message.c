@@ -7,8 +7,6 @@
 extern BinIdentifier data_ov003_020d7800;
 
 extern void func_020265d4(void* value, s32 target, u16 frames);
-extern s32  func_ov003_020843b0(s32 engine, s32 x);
-extern s32  func_ov003_020843ec(s32 engine, s32 y, s32 z);
 
 /// Task data of the short message popup (`Tsk_BtlPop_Message`): a single sprite that slides
 /// down towards its target Z, fades in, then fades out.

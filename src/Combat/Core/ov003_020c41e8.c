@@ -105,7 +105,6 @@ extern void**     data_ov003_020e6a44[];
 
 extern void func_02026590(s32* dst, s32 target, u16 weight);
 
-extern s32   func_ov003_020843b0(s32 engine, s32 x);
 extern void* func_ov003_0208495c(CombatList* list);
 extern void* func_ov003_02084984(CombatListNode* node);
 extern void  func_ov003_020849bc(CombatList* list, CombatListNode* node, void* item);
@@ -148,7 +147,7 @@ void func_ov003_020c495c(Ov003EnemyActor* actor);
 void func_ov003_020c4988(Ov003EnemyActor* actor);
 void func_ov003_020c4ab4(Ov003EnemyActor* actor, s32 arg1);
 void func_ov003_020c4af0(Ov003EnemyActor* actor);
-void func_ov003_020c4b1c(Ov003EnemyActor* actor);
+s32  func_ov003_020c4b1c(Ov003EnemyActor* actor);
 void func_ov003_020c4b5c(Ov003EnemyActor* actor);
 void func_ov003_020c4c1c(Ov003EnemyActor* actor);
 void func_ov003_020c4c5c(Ov003EnemyActor* actor);
@@ -521,7 +520,8 @@ void func_ov003_020c4af0(Ov003EnemyActor* actor) {
     func_ov003_020c4b5c(actor);
 }
 
-void func_ov003_020c4b1c(Ov003EnemyActor* actor) {
+/// Declared `int`: noise callers treat it like an undeclared (implicitly `int`) function.
+s32 func_ov003_020c4b1c(Ov003EnemyActor* actor) {
     if (actor->actor.position.x < ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.x) {
         func_ov003_020c4ab4(actor, 1);
         return;

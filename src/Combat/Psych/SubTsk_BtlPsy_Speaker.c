@@ -3,8 +3,6 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32         func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32         func_ov003_020843b0(s32, s32);
-extern s32         func_ov003_020843ec(s32, s32, s32);
 extern const s32   data_ov003_020dd074[2];
 extern const Vec2p data_ov003_020dd088[6];
 extern const Vec2p data_ov003_020dd0b8[8];

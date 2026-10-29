@@ -58,7 +58,6 @@ typedef struct Ov003EnemyShotRootLaser {
 } Ov003EnemyShotRootLaser; // Size: 0xE8
 
 extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32              func_ov003_020843b0(s32 engine, s32 x);
 extern void             func_ov003_02087f00(SndMgrSeIdx seIdx, s32 sePan);
 extern s32              func_ov003_020c3c28(void);
 extern s32              func_ov003_020c37f8(CombatSprite*);
