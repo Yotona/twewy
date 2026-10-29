@@ -4,7 +4,7 @@
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 
-typedef struct {
+typedef struct SpriteAnimEntry {
     u16 charDataIndex;
     u16 paletteDataIndex;
     u16 frameDataIndex;
@@ -26,16 +26,9 @@ typedef struct {
 } CombatSprite;
 
 typedef struct {
-    SpriteAnimation anim;
-    s32             unk_2C;
+    SpriteAnimation        anim;
+    const SpriteAnimEntry* animTable; // 0x2C
 } SpriteAnimationEx;
-
-struct SpriteAnimEntry {
-    u16 charDataIndex;
-    u16 paletteDataIndex;
-    u16 frameDataIndex;
-    s16 animDataIndex;
-};
 
 /// MARK: Functions
 
@@ -65,8 +58,8 @@ void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier*
 
 s32 CombatSprite_Load(CombatSprite* cSprite, SpriteAnimationEx* anim);
 
-void CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
-                                u16 arg5, u16 arg6);
+s32 CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
+                               u16 arg5, u16 arg6);
 
 void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifier* iden, s32 arg3, u16 arg4, u16 arg5,
                              u16 arg6, u16 arg7);

@@ -1,9 +1,9 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 typedef s32 (*BtlEnm010Fn)(void*, void*, void*);
@@ -57,8 +57,11 @@ s16         func_ov011_0212bce0(BtlEnm010UG* data, s32 arg1);
 void        func_ov011_0212bd3c(BtlEnm010UG* p, s32 i);
 void        func_ov011_0212bd90(BtlEnm010UG* p, s32 i);
 s32         func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
-extern void func_ov003_020c427c(void* p, void* arg1);
-extern s32  func_ov003_020c5bfc(void);
+
+extern s16  func_ov003_020843b0(s32 a, s32 b);
+extern s32  func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
+extern void func_ov003_020c427c(void*);
+extern s32  func_ov003_020c5bfc(void*);
 extern s32  func_ov003_020c42ec(void* p);
 extern s32  func_ov003_020cb744(s32 arg);
 extern s32  func_ov003_020cb7a4(s32 arg);
@@ -66,32 +69,26 @@ extern s32  func_ov003_020c4c9c(void* p);
 extern void func_ov003_020c48b0(void* p);
 extern void func_ov003_020c492c(void* p);
 extern s32  func_ov003_020cb520(void* p, s32 arg1);
-extern s32  func_ov003_020cb594(void* p, s32 arg1);
-extern s32  func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32  func_ov003_020c3efc(void* p, void* arg1);
 extern void func_ov003_020c4748(void* p);
-extern s32  func_ov003_020cb910(void* a0, void* a1, void* a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
+extern s32  func_ov003_0208810c(void* p, void* arg1);
 extern void func_ov011_0212a134(BtlEnm010UG* data);
 extern s32  func_ov011_0212b800(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov003_020c6bc8(BtlEnm010UG* data, s32 arg1);
 extern void func_ov011_0212b388(BtlEnm010UG* data);
 extern s32  func_ov003_020c6c2c(BtlEnm010UG* data, s32 arg1);
-extern s32  func_ov003_020c7070(BtlEnm010UG* data);
 extern s32  func_ov003_020c4c9c(void* p);
 extern void func_ov003_020c48b0(void* p);
 extern void func_ov003_020c492c(void* p);
-extern s32  func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 extern void func_ov003_020c4520(void* p);
 extern void func_ov003_020c4b5c(void* p);
 extern s32  func_ov011_0212b890(BtlEnm010UG* data, s16* arg1, s16* arg2, s32 arg3);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
-extern s32  func_ov003_020cb888(void* p, s32 arg1, s32 arg2);
 extern void func_ov011_0212a134(BtlEnm010UG* data);
 extern void func_ov011_0212a2ec(BtlEnm010UG* data);
 extern void func_ov011_0212a420(BtlEnm010UG* data);
 extern void func_ov011_0212a634(BtlEnm010UG* data);
-extern s32  func_ov003_020cb594(void* p, s32 arg1);
 extern s16  func_ov011_0212bce0(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov003_020cb744(s32 arg0);
 extern s32  func_ov003_020cb7a4(s32 arg0);
@@ -107,9 +104,8 @@ extern void func_ov011_0212a78c(BtlEnm010UG* data);
 extern void func_ov011_0212ac0c(BtlEnm010UG* data);
 extern void func_ov011_0212aee8(BtlEnm010UG* data);
 extern s32  func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
-extern s32  func_ov003_020c3bf0(void* p);
+extern void func_ov003_02084694(void* p, s32 arg1);
 extern s32  func_ov003_020c4668(void* p);
-extern s32  func_ov003_020cba2c(s32 a0, s32 a1, s32 a2, s32 a3);
 
 /// Per-slot cooldown: a random value in `unk_00 +/- unk_02` frames.
 const BtlEnm010Cooldown data_ov011_0212c30c[1] = {
@@ -164,7 +160,7 @@ char data_ov011_0212cc8c[20] = {0x54, 0x61, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 
                                 0x6D, 0x30, 0x31, 0x30, 0x5F, 0x55, 0x47, 0x00, 0x00, 0x00};
 
 void func_ov011_02129ed0(BtlEnm010UG* data, void (*func)(BtlEnm010UG*)) {
-    func_ov003_020c427c(data, (void*)func);
+    func_ov003_020c427c(data);
     data->unk_1C8 = func;
     data->unk_1C4 = 0;
     data->unk_1C0 = 0;
@@ -246,7 +242,7 @@ void func_ov011_02129f80(BtlEnm010UG* data) {
 }
 
 void func_ov011_0212a10c(BtlEnm010UG* data) {
-    if (func_ov003_020c5bfc() != 0) {
+    if (func_ov003_020c5bfc(data) != 0) {
         return;
     }
     func_ov011_02129ed0(data, func_ov011_0212a134);

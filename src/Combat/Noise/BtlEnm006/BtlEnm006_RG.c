@@ -1,27 +1,23 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEffect.h"
-#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 s16                       func_ov010_02126830(BtlEnm006* data, void* arg1);
 extern s32                func_ov010_021269d0(TaskPool*, Task*, void*, s32);
 extern s32                func_ov010_02126a20(BtlEnm006*, void*);
 extern s32                func_ov010_02126a94(BtlEnm006*);
-extern void               func_ov003_020c4878(void*);
-extern void               func_ov003_020c48fc(void*);
 extern void               func_ov003_020c427c(void*);
-extern s32                func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
 extern s32                func_ov003_020c5bfc(void*);
 extern s32                func_ov003_020c62c4(void*, s32);
-extern s32                func_ov003_020c4e0c(void*);
 extern s32                func_ov003_020cc354(void*);
 extern s32                func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
 extern s32                func_ov003_020c3efc(void*, void*);
-extern s32                func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
+extern void               func_ov003_02084694(void*, s32);
+extern s16                func_ov003_020843b0(s32, s32);
 extern void               CombatSprite_SetPaletteSource(CombatSprite*, s32);
 extern s32                func_ov003_020c4ab4(BtlEnm006*, s32);
 extern s32                func_ov003_020c6230(void*);
@@ -29,8 +25,6 @@ extern s32                func_ov003_020c4c1c(void*);
 extern void               func_ov003_020c4ee0(void*);
 extern s32                func_ov003_020c5b2c(u16, void*, s32, s32, s32);
 extern void               func_ov003_020cb578(BtlEnm006*, s32);
-extern s32                func_ov003_020cba2c(s32, s32, s32, s32);
-extern s32                func_ov003_020cb764(s32);
 extern s32                func_ov003_020cb784(s32);
 extern void               func_ov003_020c4c9c(BtlEnm006*);
 extern s32                func_ov003_020cb744(s32);
@@ -55,7 +49,6 @@ extern s32  func_ov003_020cb7a4(s32);
 extern void func_ov003_020c44ac(BtlEnm006*);
 extern void func_ov003_020c4b1c(BtlEnm006*);
 extern void func_ov003_020c4628(BtlEnm006*);
-extern s32  func_ov003_020c3bf0(BtlEnm006*);
 extern void func_ov010_02125de4(BtlEnm006*);
 extern char data_ov010_021293a4[20];
 

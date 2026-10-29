@@ -1,9 +1,9 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEffect.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006SpriteAlt3 {
@@ -33,9 +33,6 @@ extern s32                func_ov010_02128e80(BtlEnm006*);
 extern void               func_ov003_020c48b0(void*);
 extern void               func_ov003_020c492c(void*);
 extern void               func_ov003_020c427c(void*);
-extern s32                func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
-extern s32                func_ov003_020cba14(s32, s32, s32, s32);
-extern s32                func_ov003_020cb3c4(s32, s32);
 extern s32                func_ov003_020c5bfc(void*);
 extern s32                func_ov003_020c65cc(void*, s32);
 extern s32                func_ov003_020cc354(void*);
@@ -45,8 +42,6 @@ extern void               func_ov003_020c4520(void*);
 extern void               func_ov003_020c4b5c(void*);
 extern void               func_ov003_020c4668(void*);
 extern void               func_ov003_02084694(void*, s32);
-extern s32                func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
-extern s32                func_ov003_020cb498(s32, s32, void*, void*);
 extern s16                func_ov003_020843b0(s32, s32);
 extern void               CombatSprite_SetPaletteSource(CombatSprite*, s32);
 extern s32                func_ov003_020c4ab4(BtlEnm006*, s32);
@@ -55,8 +50,6 @@ extern s32                func_ov010_02128cbc(s32, BtlEnm006*, BtlEnm006*);
 extern void               func_ov003_020c4c5c(BtlEnm006*);
 extern void               func_ov003_020cb578(BtlEnm006*, s32);
 extern s32                func_ov010_02128bcc(void*, void*);
-extern s32                func_ov003_020cba2c(s32, s32, s32, s32);
-extern s32                func_ov003_020cb764(s32);
 extern void               func_ov003_020c4c9c(BtlEnm006*);
 extern s32                func_ov003_020cb744(s32);
 extern CombatEnemyParams* func_ov003_020c3c88(BtlEnm006*);
@@ -75,7 +68,6 @@ extern const Enm006CmdTbl* func_ov003_0208a114(u16);
 
 extern void func_ov010_02127764(BtlEnm006*);
 extern s32  func_ov003_020cb7a4(s32);
-extern s32  func_ov003_020c3bf0(BtlEnm006*);
 extern char data_ov010_021293e0[32];
 
 const TaskHandle Tsk_BtlEnm006_UG = {data_ov010_021293e0, func_ov010_02128dbc, 0x200};

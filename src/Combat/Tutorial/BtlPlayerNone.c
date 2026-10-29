@@ -1,9 +1,9 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Tutorial/BtlTutorial.h"
 #include "Engine/EasyTask.h"
 
-#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 s32  func_ov008_020e7374(TaskPool*, Task*, void*);

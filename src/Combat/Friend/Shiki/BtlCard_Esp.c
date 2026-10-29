@@ -1,34 +1,33 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Friend/Private/Shiki.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
 #include "SndMgr.h"
 
-extern s32 func_ov003_0208b690(u16);
-
 typedef struct {
-    /* 0x00 */ u16          unk_00;
-    /* 0x02 */ char         unk_02[2];
-    /* 0x04 */ CombatSprite unk_04;
-    /* 0x64 */ CombatSprite unk_64;
-    /* 0xC4 */ s16          unk_C4;
-    /* 0xC6 */ s16          unk_C6;
-    /* 0xC8 */ s16          unk_C8;
-    /* 0xCA */ u16          unk_CA;
-    /* 0xCC */ s16          unk_CC;
-    /* 0xCE */ s16          unk_CE;
-    /* 0xD0 */ s16          unk_D0;
-    /* 0xD4 */ s32          unk_D4;
-    /* 0xD8 */ s16          unk_D8;
-    /* 0xDA */ char         unk_DA[0x2];
-    /* 0xDC */ char         unk_DC[12];
+    /* 0x00 */ u16            unk_00;
+    /* 0x02 */ char           unk_02[2];
+    /* 0x04 */ CombatSprite   unk_04;
+    /* 0x64 */ CombatSprite   unk_64;
+    /* 0xC4 */ s16            unk_C4;
+    /* 0xC6 */ s16            unk_C6;
+    /* 0xC8 */ s16            unk_C8;
+    /* 0xCA */ u16            unk_CA;
+    /* 0xCC */ s16            unk_CC;
+    /* 0xCE */ s16            unk_CE;
+    /* 0xD0 */ s16            unk_D0;
+    /* 0xD4 */ s32            unk_D4;
+    /* 0xD8 */ s16            unk_D8;
+    /* 0xDA */ char           unk_DA[0x2];
+    /* 0xDC */ CombatListNode unk_DC;
 } CardUnkEntry; // Size: 0xE8
 
 typedef struct {
     /* 0x000 */ s16          unk_000;
     /* 0x002 */ char         unk_002[2];
-    /* 0x004 */ char         unk_004[0x8];
+    /* 0x004 */ CombatList   unk_004;
     /* 0x00C */ CardUnkEntry cards[3];
 } CardUnk; // Size: 0x2C4
 
@@ -89,7 +88,7 @@ void func_ov004_020eac00(CombatSprite* arg0, s32 arg1, s32 arg2) {
     anim.anim.unk_28     = data_ov004_020f0290[arg1].paletteDataIndex;
     anim.anim.unk_20     = 7;
     anim.anim.animIndex  = data_ov004_020f0290[arg1].animDataIndex + 1;
-    anim.unk_2C          = &data_ov004_020f0290;
+    anim.animTable       = data_ov004_020f0290;
     CombatSprite_Load(arg0, &anim);
     func_ov003_02082738(arg0, 0);
     func_ov003_02082730(arg0, 2);
@@ -113,7 +112,7 @@ void func_ov004_020eaccc(CardUnk* arg0, s16 arg1, s16 arg2, s16 arg3) {
     CombatSprite_SetPosition(&temp_r4->unk_04, arg2, arg3);
     CombatSprite_SetAnimFromTable(&temp_r4->unk_64, 0x18, 0);
     CombatSprite_SetPosition(&temp_r4->unk_64, (s16)(arg2 + 7), (s16)(arg3 + 7));
-    func_ov003_020849bc(&arg0->unk_004, temp_r4->unk_DC, temp_r4);
+    func_ov003_020849bc(&arg0->unk_004, &temp_r4->unk_DC, temp_r4);
 }
 
 void func_ov004_020eada8(CardUnkEntry* arg0) {
@@ -191,7 +190,7 @@ void func_ov004_020eafb0(CardUnk* arg0) {
         CombatSprite_Update(&var_r4->unk_04);
         CombatSprite_Update(&var_r4->unk_64);
         func_ov003_02086c78(&var_r4->unk_D4, &var_r4->unk_D8);
-        var_r4 = func_ov003_02084984(var_r4->unk_DC);
+        var_r4 = func_ov003_02084984(&var_r4->unk_DC);
     }
 }
 

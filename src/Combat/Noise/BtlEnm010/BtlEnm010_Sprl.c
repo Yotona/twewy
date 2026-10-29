@@ -1,8 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Sprl {
@@ -74,6 +73,7 @@ extern s32 func_ov011_021288c8(BtlEnm010Sprl* p);
 extern s32 func_ov011_02128b80(BtlEnm010Sprl* data);
 extern s32 func_ov011_02128c30(BtlEnm010Sprl* p);
 extern s32 func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
+extern s32 func_ov003_020c3c28(void);
 
 const TaskHandle data_ov011_0212c210 = {(const char*)data_ov011_0212cc54, func_ov011_02128758, 184};
 

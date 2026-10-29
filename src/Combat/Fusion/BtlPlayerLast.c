@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Fusion/BtlFusion.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/Input.h"
@@ -11,8 +12,6 @@ extern s16  func_ov003_020843ec(s32, s32, s32);
 extern void func_ov021_020f11bc(s32, s32*, s32*, s32*);
 extern void func_ov021_020f13b0(void);
 extern s32  func_ov021_020f1174(void);
-extern void func_ov003_02083ab0(s32, s32, s32, s32);
-extern s32  func_ov003_0208b690(u16);
 
 s32  func_ov007_020e7478(TaskPool*, Task*, void*);
 s32  func_ov007_020e7534(TaskPool*, Task*, void*);

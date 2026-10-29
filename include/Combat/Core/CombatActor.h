@@ -4,20 +4,38 @@
 #include "Combat/Core/CombatSprite.h"
 #include <nitro/fx.h>
 
+/// The staged attack payload: four halfwords copied around as one record.
+typedef struct Ov003AttackArgs {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 unk_02;
+    /* 0x04 */ s16 unk_04;
+    /* 0x06 */ s16 unk_06;
+} Ov003AttackArgs; // Size: 0x8
+
 typedef struct {
-    /* 0x00 */ s32  unk_00;
-    /* 0x04 */ s16  unk_04;
-    /* 0x06 */ s16  unk_06;
-    /* 0x08 */ s16  unk_08;
-    /* 0x0A */ s16  unk_0A;
-    /* 0x0C */ s32  unk_0C;
-    /* 0x10 */ s16  unk_10;
-    /* 0x12 */ u16  unk_12;
-    /* 0x14 */ u16  unk_14;
-    /* 0x16 */ u16  unk_16;
-    /* 0x18 */ u16  unk_18;
-    /* 0x1A */ u16  unk_1A;
-    /* 0x1C */ u16  unk_1C;
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ union {
+        Ov003AttackArgs baseArgs; // payload the actor hands to the attack spawners (`func_ov003_020c5b2c` and friends)
+        struct {
+            s16 unk_04;
+            s16 unk_06;
+            s16 unk_08;
+            s16 unk_0A;
+        };
+    };
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u16 unk_14;
+    /* 0x16 */ union {
+        Ov003AttackArgs attackArgs;
+        struct {
+            u16 unk_16;
+            u16 unk_18;
+            u16 unk_1A;
+            u16 unk_1C;
+        };
+    };
     /* 0x20 */ s32  pendingCommand;
     /* 0x24 */ BOOL isFlipped;
     /* 0x28 */ Vec  position;

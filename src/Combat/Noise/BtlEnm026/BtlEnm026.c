@@ -1,10 +1,8 @@
 #include "Combat/Noise/Private/BtlEnm026.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEffect.h"
-#include "Combat/Core/CombatSystem.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm026Variant {
@@ -41,6 +39,11 @@ extern void func_ov003_020c4628(void*);
 extern void func_ov003_020c4668(void*);
 extern void func_ov003_020c4cc4(void*, s32);
 extern s32  func_ov003_020c5bfc(void*);
+extern s32  func_ov003_020ccfec(void*);
+extern void func_ov003_02084694(void*, s32);
+extern s32  func_ov003_020ccedc(s32);
+extern s32  func_ov003_0208a08c(s32, void*, s32);
+extern void func_ov003_020ccf94(s32, void*, void*);
 extern void func_ov003_020c4af0(void*);
 extern s32  func_ov003_020c6b8c(void*, s32);
 extern s32  func_ov003_020c6bc8(void*, s32);

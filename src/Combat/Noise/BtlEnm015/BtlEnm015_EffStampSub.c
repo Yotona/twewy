@@ -103,7 +103,7 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
     CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
     u16 animData         = table[3];
     anim.anim.unk_20     = func_ov013_021256d0(owner->unk_080);
-    anim.unk_2C          = 0;
+    anim.animTable       = NULL;
     anim.anim.unk_26     = table[2];
     anim.anim.unk_28     = table[1];
     anim.anim.unk_1C     = table[0];

@@ -1,9 +1,8 @@
 #include "Combat/Noise/Private/BtlEnm015.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEffect.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm015Variant {
@@ -21,7 +20,6 @@ extern void               func_ov003_020c3efc(void*, void*);
 extern void               func_ov003_020c427c(void*);
 extern void               func_ov003_020c495c(void*);
 extern void               func_ov003_020c4ab4(void*, s32);
-extern s32                func_ov003_020c4e0c(void*);
 extern s16                func_ov003_020843b0(s32, s32);
 extern s16                func_ov003_020843ec(s32, s32, s32);
 extern void               func_ov003_02084634(void*, s32, s32, s32);
@@ -33,6 +31,7 @@ extern void               func_ov003_020c4668(void*);
 extern void               func_ov003_020c4748(void*);
 extern void               func_ov003_020c4cc4(void*, s32);
 extern s32                func_ov003_020c5bfc(void*);
+extern s32                func_ov003_020ccfec(void*);
 extern s32                func_ov003_020c4830(void*);
 extern s32                func_ov003_02088130(void);
 extern void               func_ov003_0208810c(void*, void*);
@@ -250,7 +249,7 @@ void func_ov013_02125b8c(s32 arg0, BtlEnm015* data, s32 arg2, s32 arg3) {
     anim.anim.unk_28           = entry->paletteDataIndex;
     anim.anim.unk_22           = 2;
     anim.anim.animIndex        = entry->animDataIndex + 1;
-    anim.unk_2C                = animTable;
+    anim.animTable             = animTable;
     CombatSprite_Load(&data->unk_084, &anim);
     CombatSprite_SetAnimFromTable(&data->unk_084, 0, 0);
 

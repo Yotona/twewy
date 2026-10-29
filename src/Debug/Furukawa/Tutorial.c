@@ -153,7 +153,7 @@ static void func_ov026_020e7728(void* state, s16 arg1) {
     anim.anim.unk_28     = 5;
     anim.anim.unk_20     = 6;
     anim.anim.animIndex  = 0;
-    anim.unk_2C          = arg1 + 1;
+    anim.animTable       = (const SpriteAnimEntry*)(arg1 + 1);
     CombatSprite_Load(state, &anim);
     CombatSprite_SetPosition(state, 0x80, 0x60);
 }

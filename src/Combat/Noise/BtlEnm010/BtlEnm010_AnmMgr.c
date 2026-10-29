@@ -1,6 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Bss {
@@ -54,16 +55,8 @@ extern s32  func_ov003_020cb348(BtlEnm010AnmMgr* data, u16 index);
 extern void func_ov003_020cb304(BtlEnm010AnmMgr* data, u16 index);
 extern s32  func_ov003_020cb368(void* binId);
 
-extern void func_ov003_020cb128(s32* p, void* a, s32 b);
-
 extern void func_ov003_020cb200(BtlEnm010AnmMgr* data, u16 index);
 extern s32  func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
-
-extern void func_ov003_020cb194(void* p);
-
-extern void func_ov003_020cb130(void* dst, void* a, u16 b, s32 c, void* e);
-
-extern s32 func_ov003_020cb150(void* p);
 
 typedef struct BtlEnm010Pair {
     s32 max;

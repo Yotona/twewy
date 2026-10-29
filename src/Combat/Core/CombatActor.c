@@ -2,6 +2,7 @@
 #include "Combat/Core/Combat.h"
 
 extern void func_ov003_0208b3cc(s32, s16);
+extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
 extern void func_ov003_0208b518(s32, void*, s16);
 
 static void func_ov003_02082d10(CombatActor* actor) {

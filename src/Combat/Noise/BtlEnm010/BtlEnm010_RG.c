@@ -2,8 +2,7 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
-#include "Combat/Core/CombatEffect.h"
-#include "Combat/Core/CombatSystem.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010RGAim {
@@ -38,7 +37,9 @@ s32         func_ov011_02127b98(void* arg0, Task* arg1);
 s32         func_ov011_02127bdc(void* arg0, Task* arg1);
 s32         func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1);
 s32         func_ov011_02127c4c(BtlEnm010RG* data);
-extern void func_ov003_020c427c(void* p, void* arg1);
+
+extern s16  func_ov003_020843b0(s32 a, s32 b);
+extern void func_ov003_020c427c(void*);
 extern void func_ov011_02126b2c(BtlEnm010RG* data);
 extern void func_ov011_02126bf8(BtlEnm010RG* data);
 extern void func_ov011_02126e80(BtlEnm010RG* data);
@@ -46,7 +47,7 @@ extern void func_ov011_02126fb0(BtlEnm010RG* data);
 extern void func_ov011_02127240(BtlEnm010RG* data);
 extern void func_ov011_02127370(BtlEnm010RG* data);
 extern void func_ov011_02127474(BtlEnm010RG* data);
-extern s32  func_ov003_020c5bfc(void);
+extern s32  func_ov003_020c5bfc(void*);
 extern s32  func_ov003_020c42ec(void* p);
 extern void func_ov011_02126aec(BtlEnm010RG* data);
 extern void func_ov011_0212681c(BtlEnm010RG* data);
@@ -56,7 +57,6 @@ extern s32  func_ov003_020c4ab4(BtlEnm010RG* data, s32 arg1);
 extern s32  func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1);
 extern s32  func_ov003_020c4c9c(void* p);
 extern s32  func_ov003_020cb520(void* p, s32 arg1);
-extern s32  func_ov003_020cb594(void* p, s32 arg1);
 extern s32  func_ov011_02127758(void* p, s32 arg1);
 extern s32  func_ov003_020c6230(void* p);
 extern s32  func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3);
@@ -66,12 +66,10 @@ extern s32  func_ov003_020c3efc(void* p, void* arg1);
 extern s32  func_ov003_020c44ac(void* p);
 extern s32  func_ov003_020c4b1c(void* p);
 extern void func_ov003_020c4748(void* p);
-extern s32  func_ov003_020cba54(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
-extern s32  func_ov003_020cb910(void* a0, void* a1, void* a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
+extern s32  func_ov003_0208810c(void* p, void* arg1);
 extern s32  func_ov003_020c4628(void* p);
 extern s32  func_ov003_020c4c9c(void* p);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
-extern s32  func_ov003_020cb594(void* p, s32 arg1);
 extern s32  func_ov003_020cb744(s32 arg0);
 extern s32  func_ov003_020cb7a4(s32 arg0);
 extern s32  func_ov003_020c42ec(void* p);
@@ -105,7 +103,7 @@ char data_ov011_0212cbfc[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 
                                 0x30, 0x31, 0x30, 0x5F, 0x52, 0x47, 0x00, 0x00, 0x00, 0x00};
 
 void func_ov011_021265d4(BtlEnm010RG* data, void (*func)(struct BtlEnm010RG*)) {
-    func_ov003_020c427c(data, (void*)func);
+    func_ov003_020c427c(data);
     data->unk_1C8 = func;
     data->unk_1C4 = 0;
     data->unk_1C0 = 0;
@@ -171,7 +169,7 @@ void func_ov011_021265fc(BtlEnm010RG* data) {
 }
 
 void func_ov011_021267f4(BtlEnm010RG* data) {
-    if (func_ov003_020c5bfc() != 0) {
+    if (func_ov003_020c5bfc(data) != 0) {
         return;
     }
     func_ov011_021265d4(data, func_ov011_0212681c);

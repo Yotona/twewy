@@ -1,5 +1,6 @@
 #include "Combat/Tutorial/BtlTutorial.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
@@ -9,7 +10,6 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 
-#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 extern void*       BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
@@ -92,7 +92,7 @@ void func_ov008_020e75f8(CombatSprite* cSprite, s32 variant) {
     anim.anim.unk_28     = 5;
     anim.anim.unk_20     = 6;
     anim.anim.animIndex  = data_ov008_020e7a94[variant] + 1;
-    anim.unk_2C          = 0;
+    anim.animTable       = NULL;
     CombatSprite_Load(cSprite, &anim);
     CombatSprite_SetPosition(cSprite, 0x80, 0x60);
 }

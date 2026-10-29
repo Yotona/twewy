@@ -44,7 +44,7 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     anim.anim.unk_20       = unk20;
     anim.anim.unk_22       = 2;
     anim.anim.animIndex    = entry->animDataIndex + 1;
-    anim.unk_2C            = table;
+    anim.animTable         = table;
     CombatSprite_Load(&data->sprite, &anim);
     CombatSprite_SetAnimFromTable(&data->sprite, args->unk_04, 1);
     CombatSprite_SetFlip(&data->sprite, data->unk_6C->unk_084.flags46 & 1);

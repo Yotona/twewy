@@ -1,6 +1,7 @@
 #include "Combat/Noise/Boss03.h"
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
@@ -11,7 +12,6 @@
 #include "Engine/Math/Random.h"
 #include "Engine/Resources/ResourceMgr.h"
 
-#include "Combat/Noise/BtlEnm.h"
 #include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
@@ -40,7 +40,7 @@ extern s32 func_02047e84(u16);
 // void  func_ov003_020cb200(void*, u16);                                                /* extern */
 // void  func_ov003_020cb304(void*, u16);                                                /* extern */
 // s32   func_ov003_020cb32c(void*, s32);                                                /* extern */
-// u32   func_ov003_020cb368();                                                          /* extern */
+extern u32 func_ov003_020cb368(); /* called with one argument everywhere except one site the decompiler lost it */
 // void* func_ov003_020cb42c(s32, s32, s32);                                             /* extern */
 // s32   func_ov003_020cb648(void*, s32);                                                /* extern */
 // s32   func_ov003_020cb764(s32);                                                       /* extern */
@@ -115,9 +115,36 @@ void* func_ov003_020c3c6c(void*); /* extern */
 // s32   func_ov003_020c6f68();                                                          /* extern */
 // s32   func_ov003_020c703c();                                                          /* extern */
 void* func_ov003_02085dc8(s32); /* extern */
-void* func_ov003_02085e78(s32); /* extern */
-void* func_ov003_02085ec0(s32); /* extern */
-void* func_ov003_02086014(s32); /* extern */
+/* extern */
+/* extern */
+/* extern */
+// void  func_ov003_020c4ab4(void*, s32);                                                /* extern */
+// s32   func_ov003_020c6230(void*);                                                     /* extern */
+// s32   func_ov003_020c6b8c(void*, s32);                                                /* extern */
+// s32   func_ov003_020c7070();                                                          /* extern */
+// void  func_ov003_020cb520(void*, s32);                                                /* extern */
+// void  func_ov003_020cb578(void*, s32);                                                /* extern */
+// void  func_ov003_020cb5b0(void*, s32, s32);                                           /* extern */
+// void  func_ov003_020cbcb4(s32*, s32*, u16, s32, s32);                                 /* extern */
+// s32   func_ov003_020cc300(void*, s32);                                                /* extern */
+// s32   func_ov003_020cc354(void*);                                                     /* extern */
+// u32   func_ov003_020cc430(void*, s32, s32, s32);                                      /* extern */
+// void  func_ov003_020cc784(void*, s32);                                                /* extern */
+// s32   func_ov003_020cc7c0(s16, s16, s32);                                             /* extern */
+// void  func_ov003_020cc834(void*, void*, void*, s32, s32);                             /* extern */
+// void  func_ov003_020cd988(void*, void*, void*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
+//                           s32);                                                       /* extern */
+// void  func_ov003_020d0518(void*, s32, s32, s32, void*, s32, s32, s32, s32, s32);      /* extern */
+// void  func_ov003_020d1dc0(void*, s32, s32, s32, s32);                                 /* extern */
+// void  func_ov003_020d23e8(void*, u16, s32, s32, s32, s32);                            /* extern */
+// void  func_ov003_020d2bc0(void**);                                                    /* extern */
+// s32   func_ov003_0208442c(s32, s32);                                                  /* extern */
+// void  func_ov003_0208810c(void*, void*);                                              /* extern */
+// void  func_ov003_020c4748();                                                          /* extern */
+// void  func_ov003_020c4c5c(void*);                                                     /* extern */
+
+void* func_ov009_020f3448(s32);
+void* func_ov009_020f6f88(s32);
 
 void func_ov017_0213ee0c();
 void func_ov017_0213efa8(s32*, s32*);
@@ -620,7 +647,7 @@ s32 BtlBoss03_00_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 const TaskHandle Tsk_BtlBoss03_00_RG = {"Tsk_BtlBoss03_00_RG", BtlBoss03_00_RG_RunTask, 0x1D4};
 
 void func_ov017_02130698(BtlBoss03_00_RG* rg, void (*arg1)(BtlBoss03_00_RG*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(rg);
     rg->unk_1C8 = arg1;
     rg->unk_184 = 0;
     rg->unk_188 = 0;
@@ -1887,7 +1914,7 @@ void func_ov017_021329bc(BtlBoss03_01_RG* rg) {
 void func_ov017_02132ac0(BtlBoss03_01_RG* rg) {
     RGBlob* temp_r4 = rg->unk_188;
 
-    if (func_ov003_020c703c() == 0) {
+    if (func_ov003_020c703c(rg) == 0) {
         temp_r4->unk_10 = 1;
         rg->unk_1CC     = 0;
         rg->actor.flags |= 4;
@@ -2129,7 +2156,7 @@ s32 BtlBoss03_01_RG_Update(BtlBoss03_01_RG* rg) {
     RGBlob* temp_r4 = rg->unk_184->unk_188;
     rg->unk_188     = temp_r4;
 
-    if (func_ov003_020c3bf0() != 0) {
+    if (func_ov003_020c3bf0(rg) != 0) {
         if (rg->actor.pendingCommand == 6) {
             CombatActor_PopPendingCommand(&rg->actor);
         }
@@ -3199,7 +3226,7 @@ void func_ov017_021352a0(void* arg0) {
     void* temp_r4;
 
     temp_r4 = ((Boss03*)arg0)->unk188;
-    if (func_ov003_020c7070() == 0) {
+    if (func_ov003_020c7070(arg0) == 0) {
         ((Boss03*)temp_r4)->unk10 = 1;
         ((Boss03*)arg0)->unk1CC   = 0;
         ((Boss03*)arg0)->unk54    = (s32)(((Boss03*)arg0)->unk54 | 4);

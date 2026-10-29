@@ -74,7 +74,7 @@ s32 func_ov015_021261d8(BtlEnm026Icon* data, Enm026IconSpawn* args) {
             anim.anim.unk_1C     = 1;
             anim.anim.unk_20     = 4;
             anim.anim.animIndex  = 1;
-            anim.unk_2C          = 0;
+            anim.animTable       = NULL;
             CombatSprite_Load(&data->unk_60, &anim);
             CombatSprite_LoadFromTable(owner->unk_084.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
                                        data_ov015_02128238, 3, 4, 0x10);

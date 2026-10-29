@@ -205,7 +205,7 @@ void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier*
 
 s32 CombatSprite_Load(CombatSprite* cSprite, SpriteAnimationEx* anim) {
     anim->anim.owner        = cSprite;
-    cSprite->animTable      = (SpriteAnimEntry*)(void*)(*((s32*)((u8*)anim + 0x2C)));
+    cSprite->animTable      = (SpriteAnimEntry*)anim->animTable;
     cSprite->animTableIndex = -1;
     cSprite->sortKey        = -1;
     cSprite->flags46        = 0;
@@ -221,8 +221,8 @@ s32 CombatSprite_Load(CombatSprite* cSprite, SpriteAnimationEx* anim) {
     return 1;
 }
 
-void CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
-                                u16 arg5, u16 arg6) {
+s32 CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
+                               u16 arg5, u16 arg6) {
     SpriteAnimationEx      anim;
     const SpriteAnimEntry* entry;
 
@@ -235,8 +235,8 @@ void CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifie
     anim.anim.unk_28     = entry->paletteDataIndex;
     anim.anim.unk_20     = arg5;
     anim.anim.animIndex  = entry->animDataIndex + 1;
-    anim.unk_2C          = arg3;
-    CombatSprite_Load(arg1, &anim);
+    anim.animTable       = arg3;
+    return CombatSprite_Load(arg1, &anim);
 }
 
 void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifier* iden, s32 arg3, u16 arg4, u16 arg5,
@@ -250,7 +250,7 @@ void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifie
     anim.anim.unk_28     = arg4;
     anim.anim.unk_20     = arg6;
     anim.anim.animIndex  = arg7 + 1;
-    anim.unk_2C          = 0;
+    anim.animTable       = NULL;
     CombatSprite_Load(cSprite, &anim);
 }
 

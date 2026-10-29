@@ -6,7 +6,13 @@
 #include "Player/Stats.h"
 
 typedef struct {
-    /* 0x0 */ s16 unk_0;
+    /* 0x0 */ union {
+        s16 unk_0;
+        struct {
+            s8 minimumBattleLevel;
+            s8 dropFlags;
+        };
+    };
     /* 0x2 */ u16 unk_2;
 } UnkSmallStruct;
 
@@ -81,6 +87,16 @@ typedef struct {
     /* 0x10 */ u16 unk_10[16];
 } MingleShop; // Size: 0x30
 
+typedef struct Ov003TouchSlotTable {
+    /* 0x00 */ u8  x[6];
+    /* 0x06 */ u8  playerX;
+    /* 0x07 */ u8  y[6];
+    /* 0x0D */ u8  playerY;
+    /* 0x0E */ u8  kind[6];
+    /* 0x14 */ s16 unk_14[6];
+    /* 0x20 */ s16 unk_20[6];
+} Ov003TouchSlotTable; // Size: 0x2C
+
 typedef struct MainData {
     /* 0x0000 */ PlayerStats    playerStats;
     /* 0x002C */ FriendStats    friendStats[3];
@@ -122,8 +138,13 @@ typedef struct MainData {
     /* 0x1EB2 */ u8             unk_1EB2[280];
     /* 0x1FCA */ u16            unk_1FCA;
     /* 0x1FCC */ UnkSmallStruct unk_1FCC[96];
-    /* 0x214C */ u16            unk_214C;
-    /* 0x214E */ char           unk_214E[0x22CC - 0x214E];
+    union {
+        /* 0x214C */ u32 bestDefeatTimes[96];
+        struct {
+            /* 0x214C */ u16  unk_214C;
+            /* 0x214E */ char unk_214E[0x22CC - 0x214E];
+        };
+    };
     /* 0x22CC */ SecretReport   secretReports[22];
     /* 0x2324 */ u16            unk_2324;
     /* 0x2326 */ u16            unk_2326[16];
@@ -305,31 +326,56 @@ typedef struct MainData {
     /* 0x3144 */ s16              battleCount;
     /* 0x3146 */ u16              battleEncounters[16]; // one per chained battle, indexed by battleCount
     /* 0x3166 */ u16              battleDropRate;       // drop-rate snapshot taken with the battle request
-    /* 0x3168 */ char             unk_3168[0x3180 - 0x3168];
-    /* 0x3180 */ u8               battlePartner;
-    /* 0x3181 */ u8               unk_3181;
-    /* 0x3182 */ s16              battleBasePP;
-    /* 0x3184 */ u32              battleParTime;
-    /* 0x3188 */ u32              battleClearTime;
-    /* 0x318C */ s16              battleMaxHits;
-    /* 0x318E */ u8               unk_318E;
-    /* 0x318F */ u8               unk_318F;
-    /* 0x3190 */ u32              battleBonusFlags;
-    /* 0x3194 */ UnkItemCount     battleDrops[32];
-    /* 0x3214 */ char             unk_3214[0x3234 - 0x3214];
-    /* 0x3234 */ s32              unk_3234;
-    /* 0x3238 */ u32              unk_3238;
-    /* 0x323C */ char             unk_323C[0x323E - 0x323C];
-    /* 0x323E */ u16              unk_323E;
-    /* 0x3240 */ char             unk_3240[0x33EC - 0x3240];
-    /* 0x33EC */ u8               otosuParentBssid[6];     // Tin Pin Slammer: the wireless game to rejoin
-    /* 0x33F2 */ u8               otosuPlayerBssids[4][6]; // Tin Pin Slammer: every player's console, in player order
-    /* 0x340A */ u8               otosuGameKey;     // Tin Pin Slammer: 0 opens the wireless menu, else the game's beacon key
-    /* 0x340B */ u8               otosuPlayerCount; // Tin Pin Slammer
-    /* 0x340C */ u8               otosuBoard;       // Tin Pin Slammer
-    /* 0x340D */ char             unk_340D[0x3414 - 0x340D];
-    /* 0x3414 */ u16              otosuScores[4];   // Tin Pin Slammer: each player's last round score
-    /* 0x341C */ u8               unk_341C;         // Tin Pin Slammer: the single-player match the story sets up
-} MainData;                                         // Size: 0x3420
+    /* 0x3168 */ s16              battleTimer;          // frames spent in the current chained battle
+    /* 0x316A */ s16              battleLevel;          // current level during the battle
+    /* 0x316C */ s16              battleMaxLevel;       // highest level reached during the battle
+    /* 0x316E */ u16              unk_316E;
+    /* 0x3170 */ s32              battleExpToNextLevel;
+    /* 0x3174 */ s16              battleHpGauge; // level-up gauge carried into the next chained battle
+    /* 0x3176 */ s16              battleHpGaugeSub0;
+    /* 0x3178 */ s16              battleHpGaugeSub1;
+    /* 0x317A */ union {
+        u16 unk_317A;
+        struct {
+            s8 battleChargeProgress;
+            s8 battleChargeStage;
+        };
+    };
+    /* 0x317C */ s8           unk_317C; // longest combo of the battle
+    /* 0x317D */ u8           unk_317D;
+    /* 0x317E */ s16          unk_317E; // highest damage dealt in the battle
+    /* 0x3180 */ u8           battlePartner;
+    /* 0x3181 */ u8           unk_3181;
+    /* 0x3182 */ s16          battleBasePP;
+    /* 0x3184 */ u32          battleParTime;
+    /* 0x3188 */ u32          battleClearTime;
+    /* 0x318C */ s16          battleMaxHits;
+    /* 0x318E */ u8           unk_318E;
+    /* 0x318F */ u8           unk_318F;
+    /* 0x3190 */ u32          battleBonusFlags;
+    /* 0x3194 */ UnkItemCount battleDrops[32];
+    /* 0x3214 */ char         unk_3214[0x3232 - 0x3214];
+    /* 0x3232 */ u16          unk_3232;
+    /* 0x3234 */ s32          unk_3234;
+    /* 0x3238 */ u32          unk_3238;
+    /* 0x323C */ char         unk_323C[0x323E - 0x323C];
+    /* 0x323E */ union {
+        Ov003TouchSlotTable battleTouchSlots;
+        struct {
+            u16  unk_323E;
+            char unk_3240[0x326A - 0x3240];
+        };
+    };
+    /* 0x326A */ UnkSmallStruct unk_326A[96];            // battle enemy-record snapshot restored into unk_1FCC
+    /* 0x33EA */ char           unk_33EA[0x33EC - 0x33EA];
+    /* 0x33EC */ u8             otosuParentBssid[6];     // Tin Pin Slammer: the wireless game to rejoin
+    /* 0x33F2 */ u8             otosuPlayerBssids[4][6]; // Tin Pin Slammer: every player's console, in player order
+    /* 0x340A */ u8             otosuGameKey;     // Tin Pin Slammer: 0 opens the wireless menu, else the game's beacon key
+    /* 0x340B */ u8             otosuPlayerCount; // Tin Pin Slammer
+    /* 0x340C */ u8             otosuBoard;       // Tin Pin Slammer
+    /* 0x340D */ char           unk_340D[0x3414 - 0x340D];
+    /* 0x3414 */ u16            otosuScores[4];   // Tin Pin Slammer: each player's last round score
+    /* 0x341C */ u8             unk_341C;         // Tin Pin Slammer: the single-player match the story sets up
+} MainData;                                       // Size: 0x3420
 
-#endif                                              // SAVE_MAINDATA_H
+#endif                                            // SAVE_MAINDATA_H
