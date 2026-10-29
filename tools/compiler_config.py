@@ -24,7 +24,6 @@ COMMON_CC_FLAGS = (
     "-gccext,on",  # Enable GCC extensions
     "-fp soft",  # Compute float operations in software
     "-inline noauto",  # Inline only functions marked with 'inline'
-    "-RTTI off",  # Disable runtime type information
     "-interworking",  # Enable ARM/Thumb interworking
     "-w off",  # Disable warnings
     "-sym on",  # Debug info, including line numbers
@@ -49,6 +48,7 @@ class CompilerConfig:
     ipa: str | None = "file"  # Interprocedural analysis scope, None if unsupported
     strings: str = "reuse"  # Whether identical string literals share storage
     exceptions: bool = False  # Exception tables, which are emitted for C functions too
+    rtti: bool = False  # Runtime type information (type_info objects referenced by vtables)
 
     def flags(self) -> list[str]:
         flags = [f"-char {self.char}"]
@@ -56,6 +56,7 @@ class CompilerConfig:
             flags.append(f"-ipa {self.ipa}")
         flags.append(f"-str {self.strings}")
         flags.append(f"-Cpp_exceptions {'on' if self.exceptions else 'off'}")
+        flags.append(f"-RTTI {'on' if self.rtti else 'off'}")
         return flags
 
 
@@ -67,6 +68,9 @@ COMPILER_CONFIGS: dict[Path, CompilerConfig] = {
     Path("libs/cri"): CompilerConfig(ipa="function", strings="noreuse"),
     Path("libs/runtime"): CompilerConfig(
         char="unsigned", ipa="function", exceptions=True
+    ),
+    Path("libs/runtime/src/cxxabi_rtti.cpp"): CompilerConfig(
+        char="unsigned", ipa="function", exceptions=True, rtti=True
     ),
     Path("src/Debug/Abe/Mini108.c"): CompilerConfig(version="1.2/sp4", ipa=None),
     Path("src/Field/Flash"): CompilerConfig(ipa="function", strings="noreuse"),

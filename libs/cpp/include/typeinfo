@@ -1,0 +1,17 @@
+#ifndef _CPP_TYPEINFO
+#define _CPP_TYPEINFO
+
+namespace std {
+
+    class type_info {
+    public:
+        virtual ~type_info();
+
+    private:
+        const char* __type_name;
+    };
+} // namespace std
+
+using std::type_info;
+
+#endif // _CPP_TYPEINFO

@@ -5,11 +5,9 @@
 #include "common_data.h"
 #include <nitro/types.h>
 
+#include <math.h>
 #include <nitro/mi/cpumem.h>
 #include <nitro/os.h>
-
-extern f64 func_02053098(f64, f64);
-extern s32 func_02054a9c(f64);
 
 typedef struct {
     f64 unk_00;
@@ -647,7 +645,7 @@ s32 func_02023480(u32 arg0, s32 arg1) {
     val1 = temp * *(f64*)((u8*)buffer + 0x8 + offset);
     val2 = temp * *(f64*)((u8*)buffer + 0x0 + offset);
 
-    return func_02054a9c(val2 + func_02053098(val0, val1));
+    return (u32)(val2 + pow(val0, val1));
 }
 
 // Nonmatching: Arithmetic differences
