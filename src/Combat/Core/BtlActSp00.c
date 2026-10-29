@@ -85,8 +85,8 @@ s32 func_ov003_020c1ed0(TaskPool*, Task*, void*, s32);
 
 extern const TaskHandle data_ov003_020dd838, data_ov003_020dd978, data_ov003_020dd984;
 extern const TaskHandle Tsk_BtlFeat00, Tsk_BtlFeat01, Tsk_BtlFeat02;
-extern const TaskHandle data_ov004_020f0570, data_ov005_020f0708, data_ov005_020f0764;
-extern const TaskHandle data_ov005_020f0ac0, data_ov005_020f0b60, data_ov006_020f0d0c;
+extern const TaskHandle data_ov005_020f0570, data_ov005_020f0708, data_ov005_020f0764;
+extern const TaskHandle data_ov006_020f0ac0, data_ov006_020f0b60, data_ov006_020f0d0c;
 
 char                 data_ov003_020e53e4[16] = "Tsk_BtlActSp00";
 const TaskHandle     data_ov003_020ddaac     = {data_ov003_020e53e4, func_ov003_020c1ed0, sizeof(BtlActSp)};
@@ -102,8 +102,8 @@ const BtlActSpAttackTable data_ov003_020ddad4 = {
 };
 const BtlActSpFeatures data_ov003_020ddaf8 = {
     {{&Tsk_BtlFeat00, &Tsk_BtlFeat01, &Tsk_BtlFeat02},
-     {&data_ov004_020f0570, &data_ov005_020f0708, &data_ov005_020f0764},
-     {&data_ov005_020f0ac0, &data_ov005_020f0b60, &data_ov006_020f0d0c}}
+     {&data_ov005_020f0570, &data_ov005_020f0708, &data_ov005_020f0764},
+     {&data_ov006_020f0ac0, &data_ov006_020f0b60, &data_ov006_020f0d0c}}
 };
 
 void func_ov003_020c1224(BtlActSp* self, void (*update)(BtlActSp*)) {
