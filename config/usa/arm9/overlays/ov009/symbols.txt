@@ -1391,7 +1391,6 @@ data_ov009_02125250 kind:data(any) addr:0x02125250
 data_ov009_0212526c kind:data(any) addr:0x0212526c
 data_ov009_02125288 kind:data(any) addr:0x02125288
 data_ov009_021252a4 kind:data(any) addr:0x021252a4
-data_ov009_021252bc kind:data(any) addr:0x021252bc ambiguous
 data_ov009_021252c0 kind:data(any) addr:0x021252c0
 data_ov009_021252d0 kind:data(any) addr:0x021252d0
 data_ov009_021252e4 kind:data(any) addr:0x021252e4

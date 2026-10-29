@@ -3,6 +3,9 @@
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006Swlo {
@@ -24,11 +27,6 @@ typedef struct Enm006Swlo {
 extern s32  func_ov010_02127178(TaskPool*, Task*, void*, s32);
 extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
 extern s32  func_ov010_021272e0(Enm006Swlo*);
-extern void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 radius, s32 scale);
-extern s32  func_ov003_020c37f8(void*);
-extern void func_ov003_02084694(void*, s32);
-extern s32  func_ov003_020c5b0c(u16, void*, s32);
-extern void func_ov003_020c4fc8(void*);
 extern char data_ov010_021293cc[20];
 
 const TaskHandle Tsk_BtlEnm006_Swlo      = {data_ov010_021293cc, func_ov010_02127178, 0x34};

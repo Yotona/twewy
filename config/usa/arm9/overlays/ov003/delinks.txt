@@ -30,12 +30,13 @@ src/Combat/Core/ov003_02086404.c:
 src/Combat/Core/ov003_020864c0.c:
     .text       start:0x020864c0 end:0x02087b7c
     .rodata     start:0x020d54f8 end:0x020d7620
+    .data       start:0x020e391c end:0x020e3934
     .bss        start:0x020e71b8 end:0x020e71bc
 
 src/Combat/Core/ov003_02087b7c.c:
     .text       start:0x02087b7c end:0x0208a488
     .rodata     start:0x020d7620 end:0x020d77d0
-    .data       start:0x020e391c end:0x020e397c
+    .data       start:0x020e3934 end:0x020e397c
 
 src/Combat/Core/ov003_0208a488.c:
     .text       start:0x0208a488 end:0x0208ee20
@@ -776,12 +777,12 @@ src/Combat/Core/ov003_020c41e8.c:
 src/Combat/Core/BossExp1.c:
     .text       start:0x020c703c end:0x020c9008
     .rodata     start:0x020e0a38 end:0x020e0b74
-    .data       start:0x020e6a30 end:0x020e6b48
+    .data       start:0x020e6a30 end:0x020e6b64
 
 src/Combat/Core/BtlEff_SideMove.c:
     .text       start:0x020c9008 end:0x020c96e4
     .rodata     start:0x020e0b74 end:0x020e0b90
-    .data       start:0x020e6b48 end:0x020e6b74
+    .data       start:0x020e6b64 end:0x020e6b74
     .bss        start:0x020e7254 end:0x020e7324
 
 src/Combat/Core/btlEnmAura.c:

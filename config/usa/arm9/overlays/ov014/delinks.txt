@@ -73,16 +73,29 @@ src/Combat/Noise/BtlEnm023/ov014_0212d868.c:
 src/Combat/Noise/BtlEnm023/ov014_0212dd00.c:
     .text       start:0x0212dd00 end:0x0212dfc0
     .rodata     start:0x0213499c end:0x021349d8
-    .data       start:0x021350a0 end:0x021350e4
+    .data       start:0x021350a0 end:0x021350c0
+
+src/Combat/Noise/BtlEnm023/ov014_0212dfc0.c:
+    .text       start:0x0212dfc0 end:0x0212dfd4
+    .rodata     start:0x021349d8 end:0x02134a1c
+    .data       start:0x021350c0 end:0x021350e4
 
 src/Combat/Noise/BtlEnm023/BtlEnm023_EffAtkKama.c:
-    .text       start:0x0212dfc0 end:0x0212e2f0
-    .rodata     start:0x021349d8 end:0x02134a28
-    .data       start:0x021350e4 end:0x02135124
+    .text       start:0x0212dfd4 end:0x0212e2f0
+    .rodata     start:0x02134a1c end:0x02134a28
+    .data       start:0x021350e4 end:0x02135100
+
+src/Combat/Noise/BtlEnm023/ov014_0212e2f0.c:
+    .text       start:0x0212e2f0 end:0x0212e480
+
+src/Combat/Noise/BtlEnm023/ov014_0212e480.c:
+    .text       start:0x0212e480 end:0x0212e494
+    .rodata     start:0x02134a28 end:0x02134a8c
+    .data       start:0x02135100 end:0x02135124
 
 src/Combat/Noise/BtlEnm023/BtlEnm023_EffBubbleRG.c:
-    .text       start:0x0212e2f0 end:0x0212eb70
-    .rodata     start:0x02134a28 end:0x02134a98
+    .text       start:0x0212e494 end:0x0212eb70
+    .rodata     start:0x02134a8c end:0x02134a98
     .data       start:0x02135124 end:0x02135140
 
 src/Combat/Noise/BtlEnm023/BtlEnm023_EffBubbleUG.c:
@@ -91,17 +104,28 @@ src/Combat/Noise/BtlEnm023/BtlEnm023_EffBubbleUG.c:
     .data       start:0x02135140 end:0x0213515c
 
 src/Combat/Noise/BtlEnm023/ov014_0212f238.c:
-    .text       start:0x0212f238 end:0x0212fb8c
+    .text       start:0x0212f238 end:0x0212f5fc
+
+src/Combat/Noise/BtlEnm023/ov014_0212f5fc.c:
+    .text       start:0x0212f5fc end:0x0212fb8c
     .rodata     start:0x02134aa4 end:0x02134af0
-    .data       start:0x0213515c end:0x021351a4
+    .data       start:0x0213515c end:0x02135180
+
+src/Combat/Noise/BtlEnm023/ov014_0212fb8c.c:
+    .text       start:0x0212fb8c end:0x0212fba0
+    .rodata     start:0x02134af0 end:0x02134b3c
+    .data       start:0x02135180 end:0x021351a4
 
 src/Combat/Noise/BtlEnm023/BtlEnm023_EffAtkKarasu.c:
-    .text       start:0x0212fb8c end:0x0212fef8
-    .rodata     start:0x02134af0 end:0x02134b48
+    .text       start:0x0212fba0 end:0x0212fef8
+    .rodata     start:0x02134b3c end:0x02134b48
     .data       start:0x021351a4 end:0x021351c0
 
 src/Combat/Noise/BtlEnm023/ov014_0212fef8.c:
-    .text       start:0x0212fef8 end:0x02130364
+    .text       start:0x0212fef8 end:0x02130220
+
+src/Combat/Noise/BtlEnm023/ov014_02130220.c:
+    .text       start:0x02130220 end:0x02130364
     .rodata     start:0x02134b48 end:0x02134b74
     .data       start:0x021351c0 end:0x021351e4
 

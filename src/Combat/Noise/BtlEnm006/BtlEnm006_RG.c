@@ -3,6 +3,8 @@
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEffect.h"
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 s16                       func_ov010_02126830(BtlEnm006* data, void* arg1);
@@ -11,19 +13,15 @@ extern s32                func_ov010_02126a20(BtlEnm006*, void*);
 extern s32                func_ov010_02126a94(BtlEnm006*);
 extern void               func_ov003_020c4878(void*);
 extern void               func_ov003_020c48fc(void*);
-extern s32                func_ov003_020c703c(void*);
 extern void               func_ov003_020c427c(void*);
 extern s32                func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
 extern s32                func_ov003_020c5bfc(void*);
 extern s32                func_ov003_020c62c4(void*, s32);
-extern s32                func_ov003_020c72b4(void*, s32, s32);
 extern s32                func_ov003_020c4e0c(void*);
 extern s32                func_ov003_020cc354(void*);
 extern s32                func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
 extern s32                func_ov003_020c3efc(void*, void*);
-extern void               func_ov003_02084694(void*, s32);
 extern s32                func_ov003_020cb910(void*, void*, s32, s32, s32, s32, s32, s32, s32, void*);
-extern s16                func_ov003_020843b0(s32, s32);
 extern void               CombatSprite_SetPaletteSource(CombatSprite*, s32);
 extern s32                func_ov003_020c4ab4(BtlEnm006*, s32);
 extern s32                func_ov003_020c6230(void*);

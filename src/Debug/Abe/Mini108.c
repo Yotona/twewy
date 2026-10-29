@@ -5,11 +5,11 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
-#include "Engine/DbgLog.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Util/DbgLog.h"
 #include "common_data.h"
 #include "nitro/reg.h"
 #include <nitro/gx.h>

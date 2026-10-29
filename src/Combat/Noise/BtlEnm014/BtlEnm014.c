@@ -2,6 +2,8 @@
 #include "Combat/Core/Combat.h"
 #include "Save.h"
 
+#include "Combat/Core/CombatEffect.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm014Variant {
@@ -17,10 +19,6 @@ extern void func_ov003_020c3efc(void*, void*);
 extern void func_ov003_020c427c(void*);
 extern void func_ov003_020c4cc4(void*, s32);
 extern s32  func_ov003_020c5bfc(void*);
-extern s32  func_ov003_020c72b4(void*, s32, s32);
-extern void func_ov003_020ccf58(s32, void*);
-extern s32  func_ov003_020ccfc8(void*, s32);
-extern s32  func_ov003_020ccfec(void*);
 
 extern char data_ov012_02127990[28];
 

@@ -2,6 +2,9 @@
 #include "Combat/Core/Combat.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEffect.h"
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm026Variant {
@@ -37,24 +40,13 @@ extern void func_ov003_020c427c(void*);
 extern void func_ov003_020c4628(void*);
 extern void func_ov003_020c4668(void*);
 extern void func_ov003_020c4cc4(void*, s32);
-extern void func_ov003_020ccea8(void*, void*);
 extern s32  func_ov003_020c5bfc(void*);
-extern s32  func_ov003_020ccfec(void*);
-extern s32  func_ov003_020c72b4(void*, s32, s32);
-extern void func_ov003_02084694(void*, s32);
-extern s32  func_ov003_020ccedc(s32);
-extern s32  func_ov003_0208a08c(s32, void*, s32);
-extern void func_ov003_020ccf94(s32, void*, void*);
 extern void func_ov003_020c4af0(void*);
-extern void func_ov003_020ccf58(s32, void*);
-extern s32  func_ov003_020ccfc8(void*, s32);
 extern s32  func_ov003_020c6b8c(void*, s32);
 extern s32  func_ov003_020c6bc8(void*, s32);
 extern s32  func_ov003_020c6c2c(void*, s32);
 extern s32  func_ov003_020c5e98(void*);
 extern void func_ov003_020c3cec(void*, void*, void*, void*);
-extern void func_ov003_020ccec0(void*, s32);
-extern s32  func_ov003_020cd010(void*);
 s32         func_ov015_02125c94(BtlEnm026*);
 void        func_ov015_02125e5c(BtlEnm026*);
 void        func_ov015_02125f00(BtlEnm026*);

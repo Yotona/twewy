@@ -11,6 +11,7 @@
 #include "Engine/Math/Random.h"
 #include "Engine/Resources/ResourceMgr.h"
 
+#include "Combat/Noise/BtlEnm.h"
 #include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
@@ -117,33 +118,6 @@ void* func_ov003_02085dc8(s32); /* extern */
 void* func_ov003_02085e78(s32); /* extern */
 void* func_ov003_02085ec0(s32); /* extern */
 void* func_ov003_02086014(s32); /* extern */
-// void  func_ov003_020c4ab4(void*, s32);                                                /* extern */
-// s32   func_ov003_020c6230(void*);                                                     /* extern */
-// s32   func_ov003_020c6b8c(void*, s32);                                                /* extern */
-// s32   func_ov003_020c7070();                                                          /* extern */
-// void  func_ov003_020cb520(void*, s32);                                                /* extern */
-// void  func_ov003_020cb578(void*, s32);                                                /* extern */
-// void  func_ov003_020cb5b0(void*, s32, s32);                                           /* extern */
-// void  func_ov003_020cbcb4(s32*, s32*, u16, s32, s32);                                 /* extern */
-// s32   func_ov003_020cc300(void*, s32);                                                /* extern */
-// s32   func_ov003_020cc354(void*);                                                     /* extern */
-// u32   func_ov003_020cc430(void*, s32, s32, s32);                                      /* extern */
-// void  func_ov003_020cc784(void*, s32);                                                /* extern */
-// s32   func_ov003_020cc7c0(s16, s16, s32);                                             /* extern */
-// void  func_ov003_020cc834(void*, void*, void*, s32, s32);                             /* extern */
-// void  func_ov003_020cd988(void*, void*, void*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
-//                           s32);                                                       /* extern */
-// void  func_ov003_020d0518(void*, s32, s32, s32, void*, s32, s32, s32, s32, s32);      /* extern */
-// void  func_ov003_020d1dc0(void*, s32, s32, s32, s32);                                 /* extern */
-// void  func_ov003_020d23e8(void*, u16, s32, s32, s32, s32);                            /* extern */
-// void  func_ov003_020d2bc0(void**);                                                    /* extern */
-// s32   func_ov003_0208442c(s32, s32);                                                  /* extern */
-// void  func_ov003_0208810c(void*, void*);                                              /* extern */
-// void  func_ov003_020c4748();                                                          /* extern */
-// void  func_ov003_020c4c5c(void*);                                                     /* extern */
-
-void* func_ov009_020f3448(s32);
-void* func_ov009_020f6f88(s32);
 
 void func_ov017_0213ee0c();
 void func_ov017_0213efa8(s32*, s32*);

@@ -18,11 +18,11 @@
 #include "SpriteMgr.h"
 #include "common_data.h"
 
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);
-extern void func_ov003_0208ec74(void);
 extern void func_ov027_020e860c(void);
 extern void func_ov030_020ae92c(void*, s32);
 extern void ProcessOverlay_OpenEnd(void);

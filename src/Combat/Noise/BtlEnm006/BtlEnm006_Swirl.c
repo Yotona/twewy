@@ -5,6 +5,7 @@
 #include "Engine/Math/Random.h"
 #include "SndMgr.h"
 
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006Swirl {
@@ -31,14 +32,11 @@ extern s32  func_ov010_02126d04(TaskPool*, Task*, void*, s32);
 extern s32  func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
 extern s32  func_ov010_02126e58(Enm006Swirl*);
 extern s32  func_ov010_02126fdc(Enm006Swirl*);
-extern void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 radius, s32 scale);
 extern s32  func_ov003_020c37f8(void*);
 extern s32  func_ov003_020c3c28(void);
 extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
 extern s16  func_ov003_020843b0(s32, s32);
 extern s32  func_ov003_020c5b2c(u16, void*, s32, s32, s32);
-extern s32  func_ov003_020cb744(s32);
-extern s32  func_ov003_020cb7a4(s32);
 
 const TaskHandleHead Tsk_BtlEnm006_Swirl    = {"Tsk_BtlEnm006_Swirl", func_ov010_02126d04};
 const s16            data_ov010_021292b0[4] = {0x17, 0x17, 0x17, 0};

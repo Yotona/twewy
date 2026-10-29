@@ -3,6 +3,7 @@
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEffect.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006SpriteAlt3 {
@@ -37,8 +38,6 @@ extern s32                func_ov003_020cba14(s32, s32, s32, s32);
 extern s32                func_ov003_020cb3c4(s32, s32);
 extern s32                func_ov003_020c5bfc(void*);
 extern s32                func_ov003_020c65cc(void*, s32);
-extern s32                func_ov003_020c72b4(void*, s32, s32);
-extern s32                func_ov003_020c7070(void*);
 extern s32                func_ov003_020cc354(void*);
 extern s32                func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
 extern s32                func_ov003_020c3efc(void*, void*);

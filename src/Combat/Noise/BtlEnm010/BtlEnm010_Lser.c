@@ -2,6 +2,8 @@
 #include "Combat/Noise/Private/BtlEnm010.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010LserRec {
@@ -58,7 +60,6 @@ typedef struct BtlEnm010CmdTbl {
 extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
 
 extern s32 func_ov003_0208a164(BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y, s32 z);
-extern s32 func_ov003_020cc7f4(s32 a0, s32 a1, s32 a2, s32 a3);
 
 s32 func_ov011_02125cf8(s32 arg0, Task* task, s32 arg2, s32 cmd);
 s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
@@ -69,19 +70,14 @@ s32 func_ov011_02126354(BtlEnm010Lser* data);
 s32 func_ov011_021265a8(BtlEnm010Lser* data);
 
 extern s32 func_ov011_021260e8(BtlEnm010Lser* data);
-extern s32 func_ov003_020c37f8(void* p);
 extern s32 func_ov011_02125e14(BtlEnm010Lser* data);
 extern s32 func_ov011_02126354(BtlEnm010Lser* data);
 extern s32 func_ov011_021265a8(BtlEnm010Lser* data);
 extern s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
-extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020cc354(void* p);
 extern s16 func_ov003_020843b0(s32 a, s32 b);
 extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
 extern s32 func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
-extern s32 func_ov003_020cbc50(s32* a, s32* b, u16 c, s32 d);
 extern s32 func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
-extern s32 func_ov003_020c3c28(void);
 extern s32 func_ov003_020843ec(s32 a0, s32 a1, s32 a2);
 
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))

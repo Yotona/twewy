@@ -2,6 +2,8 @@
 #include "Combat/Core/Combat.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEffect.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm015Variant {
@@ -30,10 +32,7 @@ extern void               func_ov003_020c4628(void*);
 extern void               func_ov003_020c4668(void*);
 extern void               func_ov003_020c4748(void*);
 extern void               func_ov003_020c4cc4(void*, s32);
-extern void               func_ov003_020ccea8(void*, void*);
 extern s32                func_ov003_020c5bfc(void*);
-extern s32                func_ov003_020ccfec(void*);
-extern s32                func_ov003_020c72b4(void*, s32, s32);
 extern s32                func_ov003_020c4830(void*);
 extern s32                func_ov003_02088130(void);
 extern void               func_ov003_0208810c(void*, void*);

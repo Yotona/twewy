@@ -3,6 +3,7 @@
 #include "Combat/Noise/Private/BtlEnm010.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 typedef s32 (*BtlEnm010Fn)(void*, void*, void*);
@@ -56,9 +57,6 @@ s16         func_ov011_0212bce0(BtlEnm010UG* data, s32 arg1);
 void        func_ov011_0212bd3c(BtlEnm010UG* p, s32 i);
 void        func_ov011_0212bd90(BtlEnm010UG* p, s32 i);
 s32         func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
-
-extern s16  func_ov003_020843b0(s32 a, s32 b);
-extern s32  func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
 extern void func_ov003_020c427c(void* p, void* arg1);
 extern s32  func_ov003_020c5bfc(void);
 extern s32  func_ov003_020c42ec(void* p);
@@ -73,7 +71,6 @@ extern s32  func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32  func_ov003_020c3efc(void* p, void* arg1);
 extern void func_ov003_020c4748(void* p);
-extern s32  func_ov003_0208810c(void* p, void* arg1);
 extern s32  func_ov003_020cb910(void* a0, void* a1, void* a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
 extern void func_ov011_0212a134(BtlEnm010UG* data);
 extern s32  func_ov011_0212b800(BtlEnm010UG* data, s32 arg1);
@@ -102,7 +99,6 @@ extern s32  func_ov003_020c6b8c(BtlEnm010UG* data, s32 arg1);
 extern void func_ov011_0212aa20(BtlEnm010UG* data);
 extern s32  func_ov011_0212b6e0(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov011_0212b5d8(BtlEnm010UG* data, s32 arg1);
-extern s32  func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
 extern s32  func_ov003_020cc7c0(s32 a0, s32 a1, s32 a2);
 extern s32  func_ov003_020c42ec(void* p);
 extern s32  func_ov003_020c4348(void* p);
@@ -111,7 +107,6 @@ extern void func_ov011_0212a78c(BtlEnm010UG* data);
 extern void func_ov011_0212ac0c(BtlEnm010UG* data);
 extern void func_ov011_0212aee8(BtlEnm010UG* data);
 extern s32  func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
-extern void func_ov003_02084694(void* p, s32 arg1);
 extern s32  func_ov003_020c3bf0(void* p);
 extern s32  func_ov003_020c4668(void* p);
 extern s32  func_ov003_020cba2c(s32 a0, s32 a1, s32 a2, s32 a3);

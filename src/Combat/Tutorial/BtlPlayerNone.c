@@ -3,10 +3,8 @@
 #include "Combat/Tutorial/BtlTutorial.h"
 #include "Engine/EasyTask.h"
 
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
-
-extern void func_ov003_02083ab0(s32, s32, s32, s32);
-extern s32  func_ov003_0208b690(u16);
 
 s32  func_ov008_020e7374(TaskPool*, Task*, void*);
 s32  func_ov008_020e742c(TaskPool*, Task*, void*);
