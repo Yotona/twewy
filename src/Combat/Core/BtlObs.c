@@ -44,9 +44,9 @@ void func_ov003_02094200(BtlObs* obs) {
             CombatSprite_SetAnimFromTable(&obs->sprites[0], 0, 0);
         obs->state++;
     }
-    if (obs->effect.sprite.motion.unk_1C != 0) {
-        obs->effect.actor.position.x += obs->effect.sprite.motion.offsetX >> 5;
-        obs->effect.actor.position.y += obs->effect.sprite.motion.offsetY >> 5;
+    if (obs->effect.sprite.collider.hitMask != 0) {
+        obs->effect.actor.position.x += obs->effect.sprite.collider.pushX >> 5;
+        obs->effect.actor.position.y += obs->effect.sprite.collider.pushY >> 5;
     }
 }
 

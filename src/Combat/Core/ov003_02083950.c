@@ -19,22 +19,6 @@
 // Types
 // ---------------------------------------------------------------------------------------------
 
-/// One round collider that pushes its neighbours away (`Ov003Global` keeps three lists of them, by side).
-typedef struct Ov003Collider {
-    /* 0x00 */ s32            side; // which list the collider is in
-    /* 0x04 */ s32            x;
-    /* 0x08 */ s32            y;
-    /* 0x0C */ s32            z;
-    /* 0x10 */ s32            radius;
-    /* 0x14 */ s32            height;
-    /* 0x18 */ u16            flags;   // bit 0: switched off
-    /* 0x1A */ u16            reserved1A;
-    /* 0x1C */ u32            hitMask; // one bit per side that touched this collider
-    /* 0x20 */ s32            pushX;
-    /* 0x24 */ s32            pushY;
-    /* 0x28 */ CombatListNode node;
-} Ov003Collider; // Size: 0x34
-
 /// The persistent settings array (25 limits and tunables), validated with a magic word.
 typedef struct Ov003Settings {
     /* 0x00 */ s32 reserved00;
@@ -656,19 +640,19 @@ void func_ov003_02084694(Ov003Collider* collider, s32 off) {
     }
 }
 
-void func_ov003_020846ac(Ov003CutinMotion* motion, s32 x, s32 y, s32 z) {
-    motion->x = x;
-    motion->y = y << 1;
-    motion->z = z;
+void func_ov003_020846ac(Ov003Collider* collider, s32 x, s32 y, s32 z) {
+    collider->x = x;
+    collider->y = y << 1;
+    collider->z = z;
 }
 
-/// Adds half of the motion's push to a position.
-void func_ov003_020846c0(Ov003CutinMotion* motion, s32* x, s32* y) {
-    if (motion->flags & 1) {
+/// Adds half of the collider's push to a position.
+void func_ov003_020846c0(Ov003Collider* collider, s32* x, s32* y, s32* z) {
+    if (collider->flags & 1) {
         return;
     }
-    *x += motion->offsetX >> 1;
-    *y += motion->offsetY >> 1;
+    *x += collider->pushX >> 1;
+    *y += collider->pushY >> 1;
 }
 
 CombatList* func_ov003_020846f0(s32 side) {

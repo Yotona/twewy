@@ -72,21 +72,6 @@ typedef struct Ov003ActorParams {
     /* 0x2A */ u16             unk_2A;
 } Ov003ActorParams; // Size: 0x2C
 
-typedef struct Ov003CutinMotion {
-    /* 0x00 */ s32            engine;
-    /* 0x04 */ s32            x;
-    /* 0x08 */ s32            y; // stored doubled
-    /* 0x0C */ s32            z;
-    /* 0x10 */ s32            scaleX;
-    /* 0x14 */ s32            scaleY;
-    /* 0x18 */ u16            flags;
-    /* 0x1A */ u16            unk_1A;
-    /* 0x1C */ s32            unk_1C;
-    /* 0x20 */ s32            offsetX;
-    /* 0x24 */ s32            offsetY;
-    /* 0x28 */ CombatListNode node;
-} Ov003CutinMotion; // Size: 0x34
-
 /// The first 0x1C0 bytes of a cut-in actor: what `func_ov003_020c41e8` resets. Enemy shot tasks embed only this part
 /// and place their own state behind it.
 typedef struct Ov003EnemyActor {
@@ -96,7 +81,7 @@ typedef struct Ov003EnemyActor {
     /* 0x082 */ u16                     id;    // running cut-in instance id
     /* 0x084 */ CombatSprite            sprite;
     /* 0x0E4 */ CombatSprite            subSprite;
-    /* 0x144 */ Ov003CutinMotion        motion;
+    /* 0x144 */ Ov003Collider           collider;
     /* 0x178 */ CombatListNode          node;
     /* 0x184 */ struct Ov003CutinActor* partner;
     /* 0x188 */ u8                      unk_188[0x18C - 0x188];

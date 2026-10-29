@@ -41,7 +41,7 @@ typedef struct Ov003HitDef {
 typedef struct BtlPlayer00 {
     /* 0x000 */ CombatActor       actor;
     /* 0x07C */ CombatSprite      sprite;
-    /* 0x0DC */ Ov003CutinMotion  motion;
+    /* 0x0DC */ Ov003Collider     collider;
     /* 0x110 */ CombatSprite      shadow;
     /* 0x170 */ CombatSprite      target; // the marker drawn at the stylus
     /* 0x1D0 */ u16               flags;  // 1: hidden, 2: marker shown, 4: follows the stylus
@@ -646,7 +646,7 @@ void func_ov003_0208fe10(BtlPlayer00* self) {
             if (self->timer == 0) {
                 self->actor.flags |= 2;
                 BtlPlayer00_FaceX(&self->actor, self->actor.unk_0C);
-                func_ov003_02084694(&self->motion, 0);
+                func_ov003_02084694(&self->collider, 0);
                 CombatSprite_SetAnimFromTable(&self->sprite, 4, 1);
                 CombatSprite_Restart(&self->sprite);
                 func_ov003_0208f498(self, 0);
@@ -781,7 +781,7 @@ void func_ov003_02090318(BtlPlayer00* self) {
         if (gSaveData.unk_3134 != 0x2B) {
             func_ov003_0208b278(4);
             self->actor.flags |= 4;
-            func_ov003_02084694(&self->motion, 0);
+            func_ov003_02084694(&self->collider, 0);
             CombatSprite_SetAnimFromTable(&self->sprite, 7, 1);
             EasyTask_CreateTask(&data_ov003_020e71b8->unk_3C2BC, &data_ov003_020d882c, NULL, 0, NULL, NULL);
         } else {
@@ -797,7 +797,7 @@ void func_ov003_02090318(BtlPlayer00* self) {
 void func_ov003_0209040c(BtlPlayer00* self) {
     switch (self->phase) {
         case 0:
-            func_ov003_02084694(&self->motion, 1);
+            func_ov003_02084694(&self->collider, 1);
             func_ov003_020827c0(&self->sprite, 2);
             CombatSprite_SetAnimFromTable(&self->sprite, 0x2F, 1);
             self->actor.zVelocity = -0x2000;
@@ -815,7 +815,7 @@ void func_ov003_0209040c(BtlPlayer00* self) {
             break;
         case 2:
             if (!(data_ov003_020e71b8->unk3D878 & 8)) {
-                func_ov003_02084694(&self->motion, 0);
+                func_ov003_02084694(&self->collider, 0);
                 self->actor.flags &= ~0x10;
                 func_ov003_0208f384(self, func_ov003_02090588);
             }
@@ -917,7 +917,7 @@ void func_ov003_020908c4(BtlPlayer00* self) {
             if (self->timer == 0) {
                 self->flags |= 4;
                 self->actor.flags |= 0x10;
-                func_ov003_02084694(&self->motion, 1);
+                func_ov003_02084694(&self->collider, 1);
                 CombatSprite_SetAnimFromTable(&self->sprite, 0xF, 1);
                 self->timer++;
             }
@@ -944,7 +944,7 @@ void func_ov003_020908c4(BtlPlayer00* self) {
             }
             if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
                 self->actor.flags &= ~0x10;
-                func_ov003_02084694(&self->motion, 0);
+                func_ov003_02084694(&self->collider, 0);
                 func_ov003_0208f384(self, func_ov003_02090588);
             }
             break;
@@ -959,7 +959,7 @@ void func_ov003_02090a5c(BtlPlayer00* self) {
             if (self->timer == 0) {
                 self->flags |= 4;
                 self->actor.flags |= 0x10;
-                func_ov003_02084694(&self->motion, 1);
+                func_ov003_02084694(&self->collider, 1);
                 CombatSprite_SetAnimFromTable(&self->sprite, 0x12, 1);
                 self->timer++;
             }
@@ -988,7 +988,7 @@ void func_ov003_02090a5c(BtlPlayer00* self) {
             if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
                 data_ov003_020e71b8->unk3D8C8 = 0;
                 self->actor.flags &= ~0x10;
-                func_ov003_02084694(&self->motion, 0);
+                func_ov003_02084694(&self->collider, 0);
                 func_ov003_0208f384(self, func_ov003_02090588);
             }
             break;
@@ -1167,7 +1167,7 @@ void func_ov003_02091214(BtlPlayer00* self) {
         func_ov003_0209e9f8(0, 1, self->actor.position.x, self->actor.position.y, 0, self->actor.isFlipped != 0);
     }
     if (tick >= 3 && tick < 6) {
-        func_ov003_02084694(&self->motion, 1);
+        func_ov003_02084694(&self->collider, 1);
         if (self->actor.isFlipped == 0) {
             func_ov003_0208b2fc(&self->actor.position.x, &self->actor.position.y, 0x8000, speed << 12);
         } else {
@@ -1187,7 +1187,7 @@ void func_ov003_02091214(BtlPlayer00* self) {
         func_ov003_02087f28(0x8E, self->actor.position.x);
     }
     if (tick == 6 && self->sprite.sprite.bit_11 == 1) {
-        func_ov003_02084694(&self->motion, 0);
+        func_ov003_02084694(&self->collider, 0);
     }
     if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
         data_ov003_020e71b8->unk3D8C8 = 0;
@@ -1522,7 +1522,7 @@ void func_ov003_020920c8(BtlPlayer00* self) {
     if (self->timer == 0) {
         self->flags |= 2;
         self->actor.flags |= 0x10;
-        func_ov003_02084694(&self->motion, 1);
+        func_ov003_02084694(&self->collider, 1);
     }
     if (self->timer == 4) {
         func_ov003_02087f28(0x3B, self->actor.position.x);
@@ -1544,7 +1544,7 @@ void func_ov003_020920c8(BtlPlayer00* self) {
     if (data_ov003_020e71b8->unk3D8C8 == 0) {
         self->flags &= ~1;
         self->actor.flags &= ~0x10;
-        func_ov003_02084694(&self->motion, 0);
+        func_ov003_02084694(&self->collider, 0);
         func_ov003_02087f28(0x3C, self->actor.position.x);
         func_ov003_0208f384(self, func_ov003_02090588);
         return;
@@ -1645,7 +1645,7 @@ s32 func_ov003_020924c0(TaskPool* pool, Task* task, void* args) {
     func_ov003_02087fe0(0, &self->shadow, 2);
     CombatSprite_LoadDirect(0, &self->target, &data_ov003_020d7800, 0x16, 0x18, 0x17, 0x3D, 0);
     func_ov003_02083ab0(0, self->actor.position.x, self->actor.position.y, self->actor.position.z);
-    func_ov003_02084634(&self->motion, 0, 0xC, 0x30);
+    func_ov003_02084634(&self->collider, 0, 0xC, 0x30);
     func_ov003_0208f384(self, func_ov003_0208fde0);
     return 1;
 }
@@ -1689,11 +1689,11 @@ s32 func_ov003_02092690(TaskPool* pool, Task* task, void* args) {
     func_ov003_02083074(self);
     func_ov003_02087458(0, &self->gaugeTimer);
     func_ov003_02087540(0);
-    if (self->motion.unk_1C != 0) {
-        func_ov003_020846c0(&self->motion, &self->actor.position.x, &self->actor.position.y, &self->actor.position.z);
+    if (self->collider.hitMask != 0) {
+        func_ov003_020846c0(&self->collider, &self->actor.position.x, &self->actor.position.y, &self->actor.position.z);
     }
     func_ov003_02083ca0(&self->actor.position.x, &self->actor.position.y, 0x8000, 0x8000);
-    func_ov003_020846ac(&self->motion, self->actor.position.x, self->actor.position.y, self->actor.position.z);
+    func_ov003_020846ac(&self->collider, self->actor.position.x, self->actor.position.y, self->actor.position.z);
     CombatSprite_Update(&self->sprite);
     CombatSprite_Update(&self->shadow);
     if (self->flags & 2) {

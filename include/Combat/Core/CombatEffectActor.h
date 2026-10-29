@@ -14,9 +14,9 @@ typedef struct Ov003EffectSpawn {
 
 // The existing cut-in motion record is also the prefix of a pooled effect visual.
 typedef struct Ov003EffectSprite {
-    /* 0x00 */ Ov003CutinMotion motion;
-    /* 0x34 */ u16              flags;
-    /* 0x36 */ u16              unk_36;
+    /* 0x00 */ Ov003Collider collider;
+    /* 0x34 */ u16           flags;
+    /* 0x36 */ u16           unk_36;
 } Ov003EffectSprite; // Size: 0x38
 
 typedef struct Ov003EffectActor {

@@ -47,7 +47,7 @@ void             func_ov003_02083e50(s32);
 void             func_ov003_020842e0(void);
 void             func_ov003_02084678(void*);
 void             func_ov003_020846ac(void*, s32, s32, s32);
-void             func_ov003_020846c0(Ov003CutinMotion*, s32*, s32*, s32*);
+void             func_ov003_020846c0(Ov003Collider*, s32*, s32*, s32*);
 void             func_ov003_020847f0(void);
 void             func_ov003_0208481c(void);
 Ov003TouchActor* func_ov003_02084998(CombatListNode*);

@@ -371,7 +371,7 @@ void func_ov003_020cb578(CombatActor* actor, s32 flag) {
 }
 
 void func_ov003_020cb594(Ov003CutinActor* actor, s32 flag) {
-    func_ov003_02084694(&actor->motion, flag == 0);
+    func_ov003_02084694(&actor->collider, flag == 0);
 }
 
 /// Heals `actor` and its partner by `amount` (or just plays the effect for `flag`).

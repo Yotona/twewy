@@ -116,7 +116,7 @@ extern void**     data_ov003_020e70ac[];
 extern void func_02026590(s32* dst, s32 target, u16 weight);
 
 extern s32                    func_ov003_020843b0(s32 engine, s32 x);
-extern void                   func_ov003_02084634(Ov003CutinMotion* motion, s32 engine, u8 scaleX, u8 scaleY);
+extern void                   func_ov003_02084634(Ov003Collider* collider, s32 side, u8 radius, u8 height);
 extern void*                  func_ov003_0208495c(CombatList* list);
 extern void*                  func_ov003_02084984(CombatListNode* node);
 extern void                   func_ov003_020849bc(CombatList* list, CombatListNode* node, void* item);
@@ -322,7 +322,7 @@ s32 func_ov003_020c4520(Ov003CutinActor* actor) {
     }
     func_ov003_020880e4(0, &actor->subSprite, actor);
     func_ov003_020c49c8(actor);
-    func_ov003_02084634(&actor->motion, 1, params->unk_03, params->unk_04);
+    func_ov003_02084634(&actor->collider, 1, params->unk_03, params->unk_04);
     func_ov003_020c44a4(actor);
     return result;
 }
@@ -341,7 +341,7 @@ s32 func_ov003_020c45a4(Ov003CutinActor* actor) {
     }
     func_ov003_020880e4(0, &actor->subSprite, actor);
     func_ov003_020c49c8(actor);
-    func_ov003_02084634(&actor->motion, 1, params->unk_03, params->unk_04);
+    func_ov003_02084634(&actor->collider, 1, params->unk_03, params->unk_04);
     func_ov003_020c44a4(actor);
     return result;
 }
@@ -364,8 +364,8 @@ void func_ov003_020c4668(Ov003CutinActor* actor) {
         actor->actor.zVelocity = 0;
     }
     CombatActor_UpdatePhysics(&actor->actor);
-    if (!(actor->flags18C & 4) && (actor->motion.flags != 0)) {
-        func_ov003_020846c0(&actor->motion, &actor->actor.position.x, &actor->actor.position.y, &actor->actor.position.z);
+    if (!(actor->flags18C & 4) && (actor->collider.flags != 0)) {
+        func_ov003_020846c0(&actor->collider, &actor->actor.position.x, &actor->actor.position.y, &actor->actor.position.z);
     }
     if (func_ov003_020c59f4(actor) == 0) {
         if (actor->actor.flags & 0x10000000) {
@@ -377,7 +377,7 @@ void func_ov003_020c4668(Ov003CutinActor* actor) {
         }
     }
     half = 0;
-    func_ov003_020846ac(&actor->motion, actor->actor.position.x, actor->actor.position.y, actor->actor.position.z);
+    func_ov003_020846ac(&actor->collider, actor->actor.position.x, actor->actor.position.y, actor->actor.position.z);
     CombatSprite_Update(&actor->sprite);
     CombatSprite_Update(&actor->subSprite);
 }
@@ -471,7 +471,7 @@ void func_ov003_020c492c(Ov003CutinActor* actor) {
     func_ov003_020c4a74(actor);
     CombatSprite_Release(&actor->sprite);
     CombatSprite_Release(&actor->subSprite);
-    func_ov003_02084678(&actor->motion);
+    func_ov003_02084678(&actor->collider);
 }
 
 void func_ov003_020c495c(Ov003CutinActor* actor) {

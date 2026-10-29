@@ -301,4 +301,20 @@ void func_ov003_02087f00(SndMgrSeIdx seIdx, s32 sePan);
 // Creates a psych task and forwards its ID (-1 on allocation/initialization failure).
 s32 func_ov003_020a6000(const TaskHandle* handle, void* arg);
 
-#endif // COMBAT_CORE_COMBAT_H
+/// One round collider that pushes its neighbours away (`Ov003Global` keeps three lists of them, by side).
+typedef struct Ov003Collider {
+    /* 0x00 */ s32            side; // which list the collider is in
+    /* 0x04 */ s32            x;
+    /* 0x08 */ s32            y;
+    /* 0x0C */ s32            z;
+    /* 0x10 */ s32            radius;
+    /* 0x14 */ s32            height;
+    /* 0x18 */ u16            flags;   // bit 0: switched off
+    /* 0x1A */ u16            reserved1A;
+    /* 0x1C */ u32            hitMask; // one bit per side that touched this collider
+    /* 0x20 */ s32            pushX;
+    /* 0x24 */ s32            pushY;
+    /* 0x28 */ CombatListNode node;
+} Ov003Collider; // Size: 0x34
+
+#endif           // COMBAT_CORE_COMBAT_H
