@@ -2,6 +2,7 @@
 #define COMBAT_NOISE_PRIVATE_BTLENM010_H
 
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 
 /// What ov003 hands a noise task's initialiser (same shape as `Enm015Spawn`'s head).
@@ -22,22 +23,14 @@ typedef struct BtlEnm010Owner {
 } BtlEnm010Owner; // Size: 0xE4
 
 typedef struct BtlEnm010RG {
-    /* 0x000 */ CombatActor  actor;
-    /* 0x07C */ s32          unk_07C;
-    /* 0x080 */ u16          unk_080;
-    /* 0x082 */ u16          unk_082;
-    /* 0x084 */ CombatSprite sprite;
-    /* 0x0E4 */ u8           unk_0E4[0x18C - 0xE4];
-    /* 0x18C */ u16          unk_18C;
-    /* 0x18E */ u8           unk_18E[0x1AC - 0x18E];
-    /* 0x1AC */ s32          unk_1AC;
-    /* 0x1B0 */ s32          unk_1B0;
-    /* 0x1B4 */ s32          unk_1B4;
-    /* 0x1B8 */ u8           unk_1B8[0x1C0 - 0x1B8];
-    /* 0x1C0 */ s16          unk_1C0;
-    /* 0x1C2 */ s16          unk_1C2;
-    /* 0x1C4 */ s16          unk_1C4;
-    /* 0x1C6 */ s16          unk_1C6;
+    /* 0x000 */ union {
+        Ov003EnemyActor base;
+        Ov003EnemyActor;
+    };
+    /* 0x1C0 */ s16 unk_1C0;
+    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x1C4 */ s16 unk_1C4;
+    /* 0x1C6 */ s16 unk_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010RG*);
     /* 0x1CC */ s32 unk_1CC;
     /* 0x1D0 */ s32 unk_1D0;
@@ -59,20 +52,14 @@ typedef struct BtlEnm010RG {
 } BtlEnm010RG; // Size: 0x208
 
 typedef struct BtlEnm010UG {
-    /* 0x000 */ CombatActor  actor;
-    /* 0x07C */ s32          unk_07C;
-    /* 0x080 */ u16          unk_080;
-    /* 0x082 */ u16          unk_082;
-    /* 0x084 */ CombatSprite sprite;
-    /* 0x0E4 */ u8           unk_0E4[0x144 - 0xE4];
-    /* 0x144 */ s32          unk_144;
-    /* 0x148 */ u8           unk_148[0x18C - 0x148];
-    /* 0x18C */ u16          unk_18C;
-    /* 0x18E */ u8           unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ s16          unk_1C0;
-    /* 0x1C2 */ s16          unk_1C2;
-    /* 0x1C4 */ s16          unk_1C4;
-    /* 0x1C6 */ s16          unk_1C6;
+    /* 0x000 */ union {
+        Ov003EnemyActor base;
+        Ov003EnemyActor;
+    };
+    /* 0x1C0 */ s16 unk_1C0;
+    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x1C4 */ s16 unk_1C4;
+    /* 0x1C6 */ s16 unk_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm010UG*);
     /* 0x1CC */ s32 unk_1CC;
     /* 0x1D0 */ s32 unk_1D0;

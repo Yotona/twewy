@@ -38,8 +38,8 @@ typedef struct Ov003EnemyActor {
     /* 0x0E4 */ CombatSprite            subSprite;
     /* 0x144 */ Ov003Collider           collider;
     /* 0x178 */ CombatListNode          node;
-    /* 0x184 */ struct Ov003CutinActor* partner;
-    /* 0x188 */ u8                      unk_188[0x18C - 0x188];
+    /* 0x184 */ struct Ov003EnemyActor* partner; // the actor this one is paired with (UG/RG twin, cut-in partner)
+    /* 0x188 */ void*                   unk_188; // per-type pointer: a twin's shared state, a spawn list, ...
     /* 0x18C */ u16                     flags18C;
     /* 0x18E */ s16                     unk_18E;
     /* 0x190 */ s16                     unk_190;

@@ -737,8 +737,8 @@ s32 func_ov003_020c4ff4(Ov003CutinActor* actor) {
     func_ov003_020c4fa0(actor);
     func_ov003_020c4ee0(actor);
     if (actor->partner != NULL) {
-        func_ov003_020c4fa0(actor->partner);
-        func_ov003_020c4f00(actor->partner);
+        func_ov003_020c4fa0((Ov003CutinActor*)actor->partner);
+        func_ov003_020c4f00((Ov003CutinActor*)actor->partner);
     }
     actor->actor.unk_5A           = 5;
     data_ov003_020e71b8->unk3D90A = 5;
@@ -752,8 +752,8 @@ s32 func_ov003_020c5058(Ov003CutinActor* actor) {
     func_ov003_020c4fa0(actor);
     func_ov003_020c4f00(actor);
     if (actor->partner != NULL) {
-        func_ov003_020c4fa0(actor->partner);
-        func_ov003_020c4ee0(actor->partner);
+        func_ov003_020c4fa0((Ov003CutinActor*)actor->partner);
+        func_ov003_020c4ee0((Ov003CutinActor*)actor->partner);
     }
     actor->actor.unk_5A           = 5;
     data_ov003_020e71b8->unk3D906 = 5;

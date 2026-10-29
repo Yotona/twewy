@@ -47,7 +47,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
 
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 2, 0);
             func_ov003_020c4cc4(data, 0x27F);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
@@ -77,7 +77,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xA, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xA, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 2;
             return;
@@ -87,15 +87,15 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             s32 dx;
 
             func_ov003_020c4b5c(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = data->unk_1C0 - 1;
             if (data->unk_1C0 >= 0) {
-                Sprite_Restart(&data->unk_084.sprite);
+                Sprite_Restart(&data->sprite.sprite);
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xB, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xB, 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             dx            = boss->actor.position.x - data->actor.position.x;
             data->unk_1C0 = ((dx < 0) ? -dx : dx) / 0x8000 + 5;
@@ -107,7 +107,7 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             s32 dy;
             s32 h;
 
-            data->actor.position.x += (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
+            data->actor.position.x += (data->sprite.flags46 & 1) ? 0x8000 : -0x8000;
             dy = boss->actor.position.y - data->actor.position.y;
             if (dy > 0x800) {
                 dy = 0x800;
@@ -125,8 +125,8 @@ void func_ov015_02126fd8(BtlEnm026* data) {
             if (data->unk_1C0 >= 0) {
                 return;
             }
-            data->unk_1E8 = (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xC, 1);
+            data->unk_1E8 = (data->sprite.flags46 & 1) ? 0x8000 : -0x8000;
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xC, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
         }
@@ -170,7 +170,7 @@ void func_ov015_0212736c(BtlEnm026* data) {
     }
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = func_ov003_020c42ec(data);
             break;
@@ -184,7 +184,7 @@ void func_ov015_0212736c(BtlEnm026* data) {
             if (data->unk_1C0 >= 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 2, 0);
             r             = RNG_Next(0xFFFF);
             sin           = FX_SinCosTable_[(r >> 4) * 2 + 1];
             cos           = FX_SinCosTable_[(r >> 4) * 2];
@@ -209,9 +209,9 @@ void func_ov015_0212736c(BtlEnm026* data) {
 
 void func_ov015_02127594(BtlEnm026* data) {
     if (data_ov015_02128500.result10 != -1) {
-        CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
+        CombatSprite_SetAnimFromTable(&data->sprite, 2, 0);
     } else {
-        CombatSprite_SetAnimFromTable(&data->unk_084, 3, 0);
+        CombatSprite_SetAnimFromTable(&data->sprite, 3, 0);
     }
     data->actor.position.x += data->unk_1D0;
     func_ov003_020c4ab4(data, (data->unk_1D0 > 0) ? 1 : 0);
@@ -244,9 +244,9 @@ s32 func_ov015_021275fc(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 void func_ov015_02127690(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         if (data->unk_1D4 == 1) {
-            data_ov015_02128500.unk_28 = data->unk_080;
+            data_ov015_02128500.unk_28 = data->spriteIndex;
         }
     }
 }
@@ -277,7 +277,7 @@ void func_ov015_02127758(BtlEnm026* data) {
     data_ov015_02128500.flag08 = 0;
     data_ov015_02128500.unk_1E = 5;
     data_ov015_02128500.unk_20 = 0;
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
     func_ov003_020ccec0(data, 1);
@@ -285,7 +285,7 @@ void func_ov015_02127758(BtlEnm026* data) {
 }
 
 void func_ov015_021277a4(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) == 0 && data_ov015_02128500.flag08 == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0 && data_ov015_02128500.flag08 == 0) {
         if (data_ov015_02128500.unk_20 != 0) {
             if (data_ov003_020e71b8->unk3D8F8 != 0) {
                 return;
@@ -296,7 +296,7 @@ void func_ov015_021277a4(BtlEnm026* data) {
                 return;
             }
             if (data->actor.currentHp != 0) {
-                if (data->unk_184->actor.currentHp != 0) {
+                if (data->partner->actor.currentHp != 0) {
                     data_ov015_02128500.result10 = -1;
                 }
             }
@@ -314,17 +314,17 @@ void func_ov015_021277a4(BtlEnm026* data) {
 void func_ov015_0212786c(BtlEnm026* data) {
     BtlEnm026* twin;
 
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
-    twin = data->unk_184;
+    twin = (BtlEnm026*)data->partner;
     if (data_ov015_02128500.unk14 == 2) {
         func_ov015_02125a64(twin->unk_188, (s32)func_ov015_02125e5c);
     }
 }
 
 void func_ov015_021278b0(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
     if (data->unk_1D4 != 1) {
@@ -344,48 +344,48 @@ void func_ov015_021278f8(BtlEnm026* data) {
 
 void func_ov015_02127950(BtlEnm026* data) {
     data_ov015_02128500.flag08 = 0;
-    data->unk_196 &= ~0x2;
+    data->flags196.raw &= ~0x2;
 }
 
 void func_ov015_02127974(BtlEnm026* data) {
     if ((u32)(data_ov015_02128500.unk14 - 1) > 1) {
         return;
     }
-    if (func_ov003_020c37f8(&data->unk_084) != 0) {
-        data->unk_196 |= 0x2;
+    if (func_ov003_020c37f8(&data->sprite) != 0) {
+        data->flags196.raw |= 0x2;
     }
     data->unk_1D8 = 1;
 }
 
 void func_ov015_021279c0(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) == 0 && data->unk_1D4 == 1) {
+    if (func_ov003_020c37f8(&data->sprite) == 0 && data->unk_1D4 == 1) {
         data->actor.flags |= 0x80000020;
-        data->unk_18C |= 0x1;
+        data->flags18C |= 0x1;
         return;
     }
-    data->unk_196 &= ~0x2;
+    data->flags196.raw &= ~0x2;
 }
 
 void func_ov015_02127a14(BtlEnm026* data) {
     BtlEnm026* twin;
 
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
-    twin = data->unk_184->unk_188;
-    twin->unk_18C |= 0x1;
-    if (data->unk_084.animTableIndex != 0) {
-        twin->unk_18C &= ~0x1;
+    twin = data->partner->unk_188;
+    twin->flags18C |= 0x1;
+    if (data->sprite.animTableIndex != 0) {
+        twin->flags18C &= ~0x1;
     }
 }
 
 void func_ov015_02127a60(BtlEnm026* data) {
-    data->unk_196 |= 0x200;
+    data->flags196.raw |= 0x200;
 }
 
 void func_ov015_02127a74(BtlEnm026* data) {
-    func_ov003_02084694(&data->unk_144, 1);
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    func_ov003_02084694(&data->collider.side, 1);
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
     if (data->unk_1D4 != 1) {
@@ -403,13 +403,13 @@ void func_ov015_02127ac4(BtlEnm026* data) {
             data->unk_1CC = 0;
         }
     }
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
-    twin = data->unk_184->unk_188;
-    CombatSprite_SetPaletteMode(&twin->unk_084, 0);
+    twin = data->partner->unk_188;
+    CombatSprite_SetPaletteMode(&twin->sprite, 0);
     if ((u32)(data_ov015_02128500.unk14 - 1) <= 1) {
-        CombatSprite_SetPaletteMode(&twin->unk_084, 2);
+        CombatSprite_SetPaletteMode(&twin->sprite, 2);
     }
     if (data->unk_1C4 != (void (*)(BtlEnm026*))data->unk_1C8) {
         return;
@@ -423,7 +423,7 @@ void func_ov015_02127ac4(BtlEnm026* data) {
     node = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
     while (node != 0) {
         func_ov003_020c4fc8(node);
-        node = func_ov003_02084984(&node->unk_178);
+        node = func_ov003_02084984(&node->node.prev);
     }
 }
 
@@ -432,7 +432,7 @@ void func_ov015_02127bc0(BtlEnm026* data) {
 }
 
 void func_ov015_02127bd0(BtlEnm026* data) {
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         return;
     }
     if (data->unk_1D4 != 1) {
@@ -445,7 +445,7 @@ void func_ov015_02127c18(BtlEnm026* data) {
     if (data->actor.pendingCommand != 3) {
         return;
     }
-    if (func_ov003_020c37f8(&data->unk_084) != 0) {
+    if (func_ov003_020c37f8(&data->sprite) != 0) {
         return;
     }
     if (data->unk_1D4 == data_ov015_02128500.counter1C + 1) {
@@ -457,8 +457,8 @@ void func_ov015_02127c18(BtlEnm026* data) {
 
 void func_ov015_02127c68(BtlEnm026* data) {
     data_ov015_02128500.flag08 = 0;
-    CombatSprite_SetAnimFromTable(&data->unk_084, 1, 0);
-    data->unk_196 &= ~0x2;
+    CombatSprite_SetAnimFromTable(&data->sprite, 1, 0);
+    data->flags196.raw &= ~0x2;
 }
 
 void func_ov015_02127ca0(BtlEnm026* data) {
@@ -479,7 +479,7 @@ void func_ov015_02127ca0(BtlEnm026* data) {
         return;
     }
     CombatActor_SetPendingCommand(&data->actor, 3);
-    if (func_ov003_020c37f8(&data->unk_084) == 0) {
+    if (func_ov003_020c37f8(&data->sprite) == 0) {
         data->actor.flags |= 0x2000;
     }
     if (SndMgr_IsSEPlaying(0x279) == 0) {
@@ -497,7 +497,7 @@ void func_ov015_02127d64(void) {
 void func_ov015_02127da4(BtlEnm026* data) {
     s32 q;
 
-    if (func_ov003_020c37f8(&data->unk_084) != 0 || data->unk_1D4 != 1) {
+    if (func_ov003_020c37f8(&data->sprite) != 0 || data->unk_1D4 != 1) {
         return;
     }
     if (data_ov003_020e71b8->unk3D874 != 2) {
@@ -526,11 +526,11 @@ void func_ov015_02127da4(BtlEnm026* data) {
 
 void func_ov015_02127e5c(BtlEnm026* data) {
     data->actor.flags |= 0x40;
-    data->unk_196 &= ~0x2;
+    data->flags196.raw &= ~0x2;
 }
 
 void func_ov015_02127e7c(BtlEnm026* data) {
-    BtlEnm026* twin = data->unk_184->unk_188;
+    BtlEnm026* twin = data->partner->unk_188;
 
     data->unk_1DC = data->unk_1DC - 1;
     if (data->unk_1DC == 0) {

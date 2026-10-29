@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss01.h"
 #include "Combat/Noise/Private/Boss01.h"
@@ -9,34 +10,14 @@
 #include <nitro/fx.h>
 
 typedef struct Boss01_RG {
-    /* 0x000 */ CombatActor actor;
-    // /* 0x000 */ char         unk_000[0x24];
-    // /* 0x024 */ s32          unk_24;
-    // /* 0x028 */ s32          unk_28;
-    // /* 0x02C */ s32          unk_2C;
-    // /* 0x030 */ s32          unk_30;
-    // /* 0x034 */ s16          unk_34;
-    // /* 0x036 */ s16          unk_36;
-    // /* 0x038 */ char         unk_38[0x3C - 0x38];
-    // /* 0x03C */ s32          unk_3C;
-    // /* 0x040 */ char         unk_40[0x54 - 0x40];
-    // /* 0x054 */ s32          actor.flags;
-    // /* 0x058 */ char         unk_58[0x7C - 0x58];
-    /* 0x07C */ s32          unk_7C;
-    /* 0x080 */ char         unk_80[0x84 - 0x80];
-    /* 0x084 */ CombatSprite unk_84;
-    /* 0x0E4 */ char         unk_E4[0x178 - 0xE4];
-    /* 0x178 */ s32          unk_178;
-    /* 0x17C */ s32          unk_17C;
-    /* 0x180 */ s32          unk_180;
-    /* 0x184 */ void*        unk_184;
-    /* 0x188 */ void*        unk_188;
-    /* 0x18C */ u16          unk_18C;
-    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ s16          unk_1C0;
-    /* 0x1C2 */ char         unk_1C2[0x1C8 - 0x1C2];
-    /* 0x1C8 */ s16          unk_1C8;
-    /* 0x1CA */ char         unk_1CA[0x1CC - 0x1CA];
+    /* 0x000 */ union {
+        Ov003EnemyActor base;
+        Ov003EnemyActor;
+    };
+    /* 0x1C0 */ s16  unk_1C0;
+    /* 0x1C2 */ char unk_1C2[0x1C8 - 0x1C2];
+    /* 0x1C8 */ s16  unk_1C8;
+    /* 0x1CA */ char unk_1CA[0x1CC - 0x1CA];
     /* 0x1CC */ void (*unk_1CC)(struct Boss01_RG*);
     /* 0x1D0 */ s32 unk_1D0;
     /* 0x1D4 */ s32 unk_1D4;
@@ -98,7 +79,7 @@ void func_ov016_02125c20(Boss01_RG* rg, s32 arg1) {
 
     Boss01_RG* var_r4 = func_ov003_0208495c(OV003_LIST_3D8AC);
     while (var_r4 != NULL) {
-        switch (var_r4->unk_7C) {
+        switch (var_r4->group) {
             case 7:
                 if (arg1 != 0) {
                     var_r4->actor.flags |= 0x30;
@@ -127,13 +108,13 @@ void func_ov016_02125c20(Boss01_RG* rg, s32 arg1) {
                 }
                 break;
         }
-        var_r4 = func_ov003_02084984(&var_r4->unk_178);
+        var_r4 = func_ov003_02084984(&var_r4->node.prev);
     }
 }
 
 void Boss01_MoveState_FlyAcross(Boss01_RG* rg) {
     Boss01_RG* temp_r4 = data_ov003_020e71b8->unk3D89C;
-    Boss01*    temp_r6 = rg->unk_184;
+    Boss01*    temp_r6 = (Boss01*)rg->partner;
     Boss01*    temp_r5 = temp_r6->unk_188;
 
     if (rg->unk_1C0 == 0) {
@@ -243,7 +224,7 @@ s32 Boss01_RG_Init(TaskPool* pool, Task* task, void* args) {
     MI_CpuSet(bossRG, 0, sizeof(Boss01_RG));
     func_ov003_020c3efc(bossRG, args);
     func_ov016_021256c0(&anim, 1, 0);
-    CombatSprite_Load(&bossRG->unk_84, &anim);
+    CombatSprite_Load(&bossRG->sprite, &anim);
     func_ov003_020c4c1c(bossRG);
     bossRG->actor.flags |= 0x10000000;
     bossRG->actor.zGravity   = 0;
@@ -271,7 +252,7 @@ s32 Boss01_RG_Update(TaskPool* pool, Task* task, void* args) {
         bossRG->unk_1CC(bossRG);
     }
     CombatActor_UpdateEffects(1, &bossRG->actor);
-    CombatSprite_Update(&bossRG->unk_84);
+    CombatSprite_Update(&bossRG->sprite);
     return bossRG->unk_1D0;
 }
 
@@ -279,11 +260,11 @@ s32 Boss01_RG_Render(TaskPool* pool, Task* task, void* args) {
     s16        spA, sp8;
     Boss01_RG* bossRG = task->data;
 
-    if (!(bossRG->unk_18C & 1)) {
+    if (!(bossRG->flags18C & 1)) {
         func_ov003_02084348(1, &spA, &sp8, bossRG->actor.position.x, bossRG->actor.position.y, bossRG->actor.position.z);
-        CombatSprite_SetPosition(&bossRG->unk_84, spA, sp8);
-        func_ov003_02082730(&bossRG->unk_84, 0x7FF3FFFF);
-        CombatSprite_Render(&bossRG->unk_84);
+        CombatSprite_SetPosition(&bossRG->sprite, spA, sp8);
+        func_ov003_02082730(&bossRG->sprite, 0x7FF3FFFF);
+        CombatSprite_Render(&bossRG->sprite);
         bossRG->actor.screenX = spA;
         bossRG->actor.screenY = sp8 + 80;
     }
@@ -293,7 +274,7 @@ s32 Boss01_RG_Render(TaskPool* pool, Task* task, void* args) {
 s32 Boss01_RG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01_RG* bossRG = task->data;
 
-    CombatSprite_Release(&bossRG->unk_84);
+    CombatSprite_Release(&bossRG->sprite);
     func_ov003_020c4a34(bossRG);
     return 1;
 }

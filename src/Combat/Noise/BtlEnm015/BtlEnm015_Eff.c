@@ -29,11 +29,11 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     if (args->unk_04 == 1) {
         flag = 0x118;
     }
-    s32 engine = owner->unk_084.sprite.bits_0_1;
+    s32 engine = owner->sprite.sprite.bits_0_1;
 
     SpriteAnimationEx anim;
-    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
-    s16              unk20 = func_ov013_021256d0(owner->unk_080);
+    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->spriteIndex));
+    s16              unk20 = func_ov013_021256d0(owner->spriteIndex);
     SpriteAnimEntry* table = func_ov013_021256e4();
     SpriteAnimEntry* entry = &table[args->unk_04];
     anim.anim.bits_10_11   = 1;
@@ -47,7 +47,7 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     anim.animTable         = table;
     CombatSprite_Load(&data->sprite, &anim);
     CombatSprite_SetAnimFromTable(&data->sprite, args->unk_04, 1);
-    CombatSprite_SetFlip(&data->sprite, data->unk_6C->unk_084.flags46 & 1);
+    CombatSprite_SetFlip(&data->sprite, data->unk_6C->sprite.flags46 & 1);
 }
 
 s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {

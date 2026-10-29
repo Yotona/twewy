@@ -86,7 +86,7 @@ void func_ov003_020c9064(const SpriteAnimationEx* anim) {
 
 /// Fills the animation slots from the cut-in actor and its partner.
 void func_ov003_020c9118(Ov003CutinActor* actor) {
-    Ov003CutinActor*  partner = actor->partner;
+    Ov003CutinActor*  partner = (Ov003CutinActor*)actor->partner;
     SpriteAnimationEx anim;
     SpriteAnimationEx copy;
 

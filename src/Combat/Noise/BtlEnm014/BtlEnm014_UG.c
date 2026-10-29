@@ -38,7 +38,7 @@ s32 func_ov012_02126a4c(BtlEnm014* data) {
     BtlEnm014* boss = data_ov003_020e71b8->unk3D898;
     s32        lo   = data->actor.position.x - 0x3C000;
 
-    if (data->unk_084.flags46 & 1) {
+    if (data->sprite.flags46 & 1) {
         lo = data->actor.position.x;
     }
     if (!(boss->actor.position.x - boss->actor.unk_70 >= lo + 0x3C000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
@@ -55,11 +55,11 @@ s32 func_ov012_02126ad8(BtlEnm014* data) {
     BtlEnm014* boss = data_ov003_020e71b8->unk3D898;
     s32        lo;
 
-    if (data->unk_080 == 0) {
+    if (data->spriteIndex == 0) {
         return 0;
     }
     lo = data->actor.position.x - 0x50000;
-    if (data->unk_084.flags46 & 1) {
+    if (data->sprite.flags46 & 1) {
         lo = data->actor.position.x;
     }
     if (!(boss->actor.position.x - boss->actor.unk_70 >= lo + 0x50000 || boss->actor.position.x + boss->actor.unk_70 <= lo ||
@@ -93,7 +93,7 @@ void func_ov012_02126bb0(BtlEnm014* data) {
 }
 
 void func_ov012_02126bd8(BtlEnm014* data) {
-    if (data->unk_080 == 2) {
+    if (data->spriteIndex == 2) {
         data->unk_1E0.word = 0;
     }
     func_ov012_02125768(data, (data->unk_1E0.word > 0x6000) ? func_ov012_02126e2c : func_ov012_02126dac);
@@ -103,12 +103,12 @@ void func_ov012_02126bd8(BtlEnm014* data) {
 s32 func_ov012_02126c1c(BtlEnm014* data) {
     BtlEnm014* boss = data_ov003_020e71b8->unk3D898;
 
-    if (!(data->unk_084.flags46 & 1)) {
+    if (!(data->sprite.flags46 & 1)) {
         if (data->actor.position.x < boss->actor.position.x) {
             goto hit;
         }
     }
-    if (data->unk_084.flags46 & 1) {
+    if (data->sprite.flags46 & 1) {
         if (data->actor.position.x > boss->actor.position.x) {
             goto hit;
         }
@@ -161,7 +161,7 @@ void func_ov012_02126c74(BtlEnm014* data) {
 void func_ov012_02126dac(BtlEnm014* data) {
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = func_ov003_020c42ec(data);
             break;
@@ -177,12 +177,12 @@ void func_ov012_02126dac(BtlEnm014* data) {
 void func_ov012_02126e2c(BtlEnm014* data) {
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 1, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 1, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 0;
             break;
         case 1:
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             func_ov012_02125768(data, func_ov012_02126dac);
@@ -196,7 +196,7 @@ void func_ov012_02126ea0(BtlEnm014* data) {
     }
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 2, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 2, 1);
             func_ov012_02126c74(data);
             func_ov003_020c4b5c(data);
             func_ov012_02126bb0(data);
@@ -211,7 +211,7 @@ void func_ov012_02126ea0(BtlEnm014* data) {
             func_ov003_020ccf1c(&data->unk_1D8, -(ABSVAL(data->unk_1D8) >> 4));
             func_ov003_020ccf1c(&data->unk_1DC, -(ABSVAL(data->unk_1DC) >> 4));
             func_ov012_02126b74(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             data->unk_1D8 = 0;
@@ -225,7 +225,7 @@ void func_ov012_02126ea0(BtlEnm014* data) {
                 return;
             }
             func_ov012_02126c74(data);
-            CombatSprite_SetAnimFromTable(&data->unk_084, 3, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 3, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 0x13;
             if (data->unk_1E8 != 0) {
@@ -239,7 +239,7 @@ void func_ov012_02126ea0(BtlEnm014* data) {
             func_ov003_020ccf1c(&data->unk_1D8, -(ABSVAL(data->unk_1D8) >> 4));
             func_ov003_020ccf1c(&data->unk_1DC, -(ABSVAL(data->unk_1DC) >> 4));
             func_ov012_02126b74(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             data->unk_1D8 = 0;
@@ -255,7 +255,7 @@ void func_ov012_02126ea0(BtlEnm014* data) {
                 func_ov012_02126bd8(data);
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 2, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 2, 1);
             func_ov012_02126c74(data);
             data->unk_1C2 = data->unk_1C2 - 1;
             data->unk_1C0 = 0x13;
@@ -268,7 +268,7 @@ void func_ov012_02127134(BtlEnm014* data) {
 
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xC, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xC, 1);
             data->unk_1D0 = 0;
             func_ov012_02126bb0(data);
             data->unk_1C2 = data->unk_1C2 + 1;
@@ -284,7 +284,7 @@ void func_ov012_02127134(BtlEnm014* data) {
             }
             if (data->unk_1C0 > 0x28 && data->unk_1C0 < 0x32) {
                 d = ROUND(func_ov003_020cd11c(0x82));
-                d = (data->unk_084.flags46 & 1) ? d : -d;
+                d = (data->sprite.flags46 & 1) ? d : -d;
                 x = data->actor.position.x;
                 if (data->unk_1D0 == 0) {
                     data->unk_1D0 = func_ov003_0208a164(func_ov003_0208a114(0x82), &data->actor.unk_04, x + d,
@@ -297,10 +297,10 @@ void func_ov012_02127134(BtlEnm014* data) {
                 }
             }
             func_ov012_02126b74(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xD, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xD, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 0;
             return;
@@ -308,7 +308,7 @@ void func_ov012_02127134(BtlEnm014* data) {
 
         case 2:
             func_ov012_02126b74(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             if (func_ov012_02126c1c(data) != 0 && data->unk_1D0 == 1) {
@@ -327,7 +327,7 @@ void func_ov012_02127378(BtlEnm014* data) {
     switch (data->unk_1C2) {
         case 0:
             data->unk_1EC = 0;
-            if ((u16)(data->unk_080 + 0xFFFE) <= 1) {
+            if ((u16)(data->spriteIndex + 0xFFFE) <= 1) {
                 data->unk_1EC = RNG_Next(2);
             }
             data->unk_1C2 = data->unk_1C2 + 1;
@@ -335,7 +335,7 @@ void func_ov012_02127378(BtlEnm014* data) {
             /* fallthrough */
 
         case 1:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xE, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xE, 1);
             data->unk_1D0 = 0;
             func_ov012_02126bb0(data);
             func_ov012_021256f0(0, data, 1);
@@ -349,22 +349,22 @@ void func_ov012_02127378(BtlEnm014* data) {
             func_ov012_02126b74(data);
             if (data->unk_1C0 == 0x31) {
                 func_ov003_020c4cc4(data, 0x21B);
-                func_ov003_020c4cc4(data, (data->unk_080 == 3) ? 0x21D : 0x21C);
+                func_ov003_020c4cc4(data, (data->spriteIndex == 3) ? 0x21D : 0x21C);
             }
             if (data->unk_1C0 > 0x31 && data->unk_1C0 < 0x3C && data->unk_1D0 == 0) {
                 s32 d;
                 s32 h;
-                se            = (data->unk_080 == 3) ? 0x84 : 0x83;
+                se            = (data->spriteIndex == 3) ? 0x84 : 0x83;
                 d             = ROUND(func_ov003_020cd11c(se));
-                d             = (data->unk_084.flags46 & 1) ? d : -d;
+                d             = (data->sprite.flags46 & 1) ? d : -d;
                 h             = func_ov003_0208a114(se);
                 data->unk_1D0 = func_ov003_0208a164(h, &data->actor.unk_04, data->actor.position.x + d, data->actor.position.y,
                                                     data->actor.position.z);
             }
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xF, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xF, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 0;
             return;
@@ -372,7 +372,7 @@ void func_ov012_02127378(BtlEnm014* data) {
 
         case 3:
             func_ov012_02126b74(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             if (data->unk_1EC > 0) {
@@ -424,7 +424,7 @@ s32 func_ov012_0212768c(BtlEnm014* data) {
             }
             break;
         case 3:
-            func_ov003_02084694(&data->unk_144, 1);
+            func_ov003_02084694(&data->collider.side, 1);
             func_ov012_02125768(data, func_ov012_02125810);
             break;
         case 4:
@@ -449,7 +449,7 @@ s32 func_ov012_0212768c(BtlEnm014* data) {
         data->unk_1C4(data);
     }
     func_ov003_020c4668(data);
-    func_ov003_020ccea8(data, &data->unk_084);
+    func_ov003_020ccea8(data, &data->sprite);
     func_ov012_021258e8();
     return data->unk_1CC;
 }

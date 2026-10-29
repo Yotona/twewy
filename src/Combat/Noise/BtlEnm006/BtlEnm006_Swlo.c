@@ -91,7 +91,7 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
     } else {
         target       = args->unk_0C;
         data->unk_0C = target;
-        func_ov003_02084694(&target->unk_144, 1);
+        func_ov003_02084694(&target->collider.side, 1);
         CombatActor_SetPendingCommand(&target->actor, 1);
         func_ov010_021256d0(data->unk_04, data->unk_0C);
     }
@@ -143,7 +143,7 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
             CombatActor_SetPendingCommand(&data->unk_08->actor, 2);
         } else {
             self = data->unk_0C;
-            self->unk_18C |= 0x1000;
+            self->flags18C |= 0x1000;
             func_ov003_020c4fc8(data->unk_0C);
         }
         self->actor.flags &= ~0x10000000;

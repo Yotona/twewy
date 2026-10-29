@@ -154,18 +154,18 @@ void func_ov012_0212582c(BtlEnm014* data) {
 void func_ov012_02125858(BtlEnm014* data) {
     BtlEnm014* boss;
 
-    if (data->unk_084.sprite.bits_0_1 == 0) {
+    if (data->sprite.sprite.bits_0_1 == 0) {
         boss = data_ov003_020e71b8->unk3D898;
     } else {
         boss = data_ov003_020e71b8->unk3D89C;
     }
     data->actor.unk_62 = 100;
-    if (data->unk_084.flags46 & 1) {
+    if (data->sprite.flags46 & 1) {
         if (data->actor.position.x < boss->actor.position.x) {
             goto hit;
         }
     }
-    if (!(data->unk_084.flags46 & 1)) {
+    if (!(data->sprite.flags46 & 1)) {
         if (data->actor.position.x > boss->actor.position.x) {
             goto hit;
         }
@@ -174,7 +174,7 @@ void func_ov012_02125858(BtlEnm014* data) {
 
 hit:
     data->actor.unk_62 = 50;
-    if (data->unk_080 == 3) {
+    if (data->spriteIndex == 3) {
         data->actor.unk_62 = 0;
     }
 }
@@ -193,7 +193,7 @@ void func_ov012_021258e8(void) {
 
 void func_ov012_02125958(BtlEnm014* data) {
     if (data->unk_1D4 == 0 && data->actor.unk_5A != 0 && data->actor.unk_62 != 0x64) {
-        func_ov012_021256f0(data->unk_084.sprite.bits_0_1, data, 0);
+        func_ov012_021256f0(data->sprite.sprite.bits_0_1, data, 0);
         func_ov003_020c4cc4(data, 0x21E);
     }
     data->unk_1D4 = data->actor.unk_5A;

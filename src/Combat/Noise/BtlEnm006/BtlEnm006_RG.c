@@ -94,7 +94,7 @@ void func_ov010_02125938(BtlEnm006* data) {
 void func_ov010_02125998(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0++;
-        data->unk_188 = data->twin->unk_188;
+        data->unk_188 = data->partner->unk_188;
     }
     if (func_ov003_020c5bfc(data) != 0) {
         return;
@@ -104,7 +104,7 @@ void func_ov010_02125998(BtlEnm006* data) {
 
 void func_ov010_021259e8(BtlEnm006* data) {
     s32 arrived;
-    if (data->unk_188[1] != 0) {
+    if (((u16*)data->unk_188)[1] != 0) {
         data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
         func_ov010_02125910(data, (void*)func_ov010_02125b28);
         return;
@@ -144,9 +144,9 @@ void func_ov010_02125b28(BtlEnm006* data) {
             return;
         case 1:
             if (data->unk_1C0 == 0) {
-                data->unk_18C |= 1;
+                data->flags18C |= 1;
                 data->actor.flags |= 0x20;
-                data->unk_18C |= 1;
+                data->flags18C |= 1;
                 func_ov003_020cb578(data, 0);
                 data->unk_1C2 = 1;
             }
@@ -160,7 +160,7 @@ void func_ov010_02125b28(BtlEnm006* data) {
         case 2:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0++;
-                data->unk_18C &= ~1;
+                data->flags18C &= ~1;
                 data->actor.flags &= ~0x20;
                 CombatSprite_SetAnimFromTable(cs, 4, 1);
                 func_ov003_020cb578(data, 1);
@@ -243,9 +243,9 @@ void func_ov010_02125de4(BtlEnm006* data) {
             return;
         case 2:
             if (data->unk_1C0 == 0) {
-                data->unk_18C |= 1;
+                data->flags18C |= 1;
                 data->actor.flags |= 0x20;
-                data->unk_18C |= 1;
+                data->flags18C |= 1;
                 func_ov003_020cb578(data, 0);
                 s32 v = (u32)((s32)data->ext.rg.unk_1F4 << 30) >> 30;
                 switch (v) {
@@ -271,7 +271,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
                 CombatSprite_SetAnimFromTable(cs, 0xD, 1);
-                data->unk_18C &= ~1;
+                data->flags18C &= ~1;
                 if (data->actor.isFlipped == 0) {
                     data->actor.position.x = data_ov003_020e71b8->unk3D7C0[1].unk_20 + 0x10000;
                 } else {
@@ -335,7 +335,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
             return;
         case 5:
             if (data->unk_1C0 == 0) {
-                data->unk_18C |= 1;
+                data->flags18C |= 1;
                 data->actor.flags |= 0x20;
                 func_ov003_020cb578(data, 0);
                 data->unk_1C2 = 0x3C;
@@ -350,7 +350,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
         case 6:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                data->unk_18C &= ~1;
+                data->flags18C &= ~1;
                 data->actor.flags &= ~0x20;
                 CombatSprite_SetAnimFromTable(cs, 4, 1);
                 func_ov003_020cb578(data, 1);
@@ -553,7 +553,7 @@ void func_ov010_02126934(BtlEnm006* data, u16 arg1) {
     if (data->unk_1E8 >= 4) {
         data->unk_1E8 = 3;
     } else {
-        CombatSprite_SetPaletteSource(&data->sprite, data_ov010_02129238[data->unk_080][data->unk_1E8]);
+        CombatSprite_SetPaletteSource(&data->sprite, data_ov010_02129238[data->spriteIndex][data->unk_1E8]);
         data->sprite.basePaletteSource = data->sprite.sprite.unk3C;
         data->sprite.basePalette       = data->sprite.sprite.paletteData;
         data->actor.unk_08             = (s16)((((s32)(data->unk_1E8 << 12) / 3 + 0x1000) * 0x64) >> 12);
@@ -605,13 +605,13 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
         case 1:
         case 2:
             if (flag == 0) {
-                func_ov003_02084694(&data->unk_144, 0);
+                func_ov003_02084694(&data->collider.side, 0);
                 func_ov010_02125910(data, (void*)func_ov010_0212636c);
             }
             break;
         case 3:
-            if (data->unk_18C & 0x10) {
-                data->unk_18C |= 0x20;
+            if (data->flags18C & 0x10) {
+                data->flags18C |= 0x20;
             } else {
                 func_ov010_02125910(data, (void*)func_ov010_02126420);
             }
@@ -633,7 +633,7 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
     u16* p    = data->unk_188;
     u16  step = p[1];
     if (step != 0) {
-        if ((data->unk_18C & 1) || data->sprite.animTableIndex == 0xD) {
+        if ((data->flags18C & 1) || data->sprite.animTableIndex == 0xD) {
             func_ov010_02126934(data, step);
             p[1] = 0;
         }

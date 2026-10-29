@@ -711,7 +711,7 @@ void func_ov003_020c32a4(Ov003CutinActor* src, Ov003CutinActor* dst) {
 
 /// Rotates the main/sub/third actor chain when the third actor is present.
 void func_ov003_020c34dc(Ov003CutinActor* actor) {
-    Ov003CutinActor* third = actor->partner;
+    Ov003CutinActor* third = (Ov003CutinActor*)actor->partner;
     u8               tmp[0x1F8];
 
     if (func_ov003_020c37f8(&actor->sprite) == 0) {
@@ -734,7 +734,7 @@ void func_ov003_020c353c(Ov003CutinActor* actor) {
 
 /// Third-actor entrance/exit state machine.
 s32 func_ov003_020c3570(Ov003CutinActor* actor, u16 animBase) {
-    Ov003CutinActor* third = actor->partner;
+    Ov003CutinActor* third = (Ov003CutinActor*)actor->partner;
 
     switch (actor->state) {
         case 0:
@@ -1098,8 +1098,8 @@ void func_ov003_020c3e64(void) {}
 
 void func_ov003_020c3e68(Ov003CutinActor* main, Ov003CutinActor* sub) {
     if ((main != NULL) && (sub != NULL)) {
-        main->partner      = sub;
-        sub->partner       = main;
+        main->partner      = &sub->base;
+        sub->partner       = &main->base;
         main->actor.unk_78 = (s32)sub;
         sub->actor.unk_78  = (s32)main;
     }

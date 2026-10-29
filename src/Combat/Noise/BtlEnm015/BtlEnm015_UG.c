@@ -16,7 +16,7 @@ const TaskHandle Tsk_BtlEnm015_UG = {data_ov013_02127610, func_ov013_02127370, 0
 void func_ov013_021270a0(BtlEnm015* arg0) {
     switch (arg0->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 0, 0);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 0, 0);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
@@ -32,17 +32,17 @@ void func_ov013_0212710c(BtlEnm015* arg0) {
 
     switch (arg0->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 7, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 7, 1);
             func_ov003_020c4cc4(arg0, 0x220);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
 
         case 1:
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 8, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 8, 1);
             func_ov003_020c4cc4(arg0, 0x226);
             func_ov013_021257a4(arg0, arg0->unk_1E8 & 1);
             arg0->unk_1E8 = arg0->unk_1E8 + 1;
@@ -53,7 +53,7 @@ void func_ov013_0212710c(BtlEnm015* arg0) {
             break;
 
         case 2:
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_021270a0);
@@ -66,7 +66,7 @@ void func_ov013_02127230(BtlEnm015* arg0) {
 
     switch (arg0->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 9, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 9, 1);
             arg0->unk_1DC = boss->actor.position.x;
             arg0->unk_1E0 = boss->actor.position.y;
             arg0->unk_1E4 = 0;
@@ -91,7 +91,7 @@ void func_ov013_02127230(BtlEnm015* arg0) {
                 }
             }
             arg0->unk_1C0 = arg0->unk_1C0 + 1;
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_021270a0);
@@ -114,10 +114,10 @@ s32 func_ov013_02127370(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 1:
             ret = func_ov013_02125d24(data);
             if (data->unk_1C4 != func_ov013_02125ed0) {
-                data->unk_148          = func_ov003_020ccedc(0) >> 1;
-                data->unk_14C          = 0x19000;
-                data->unk_150          = 0;
-                data->actor.position.x = data->unk_148;
+                data->collider.x       = func_ov003_020ccedc(0) >> 1;
+                data->collider.y       = 0x19000;
+                data->collider.z       = 0;
+                data->actor.position.x = data->collider.x;
                 data->actor.position.y = 0x19000;
                 data->actor.position.z = 0;
             }

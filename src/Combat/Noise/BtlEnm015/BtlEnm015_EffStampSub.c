@@ -23,7 +23,7 @@ s32         func_ov013_02126a30(TaskPool*, Task*, void*, s32);
 const TaskHandle Tsk_BtlEnm015_EffStampSub = {"Tsk_BtlEnm015_EffStampSub", func_ov013_02126a30, 0x74};
 
 s32 func_ov013_02126788(BtlEnm015StampSub* data) {
-    s32          engine = func_ov003_020c37f8(&data->unk_00->unk_084) != 0;
+    s32          engine = func_ov003_020c37f8(&data->unk_00->sprite) != 0;
     CombatActor* base;
     s32          se;
 
@@ -77,7 +77,7 @@ void func_ov013_021268d8(BtlEnm015StampSub* data) {
     s16 x;
     s16 y;
 
-    func_ov003_02084348(func_ov003_020c37f8(&data->unk_00->unk_084) != 0, &x, &y, data->unk_68, data->unk_6C, 0);
+    func_ov003_02084348(func_ov003_020c37f8(&data->unk_00->sprite) != 0, &x, &y, data->unk_68, data->unk_6C, 0);
     CombatSprite_SetPosition(&data->sprite, x, y);
     func_ov003_02082730(&data->sprite, 0x7FFFFFFF - data->unk_6C);
     CombatSprite_Render(&data->sprite);
@@ -97,12 +97,12 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
     data->unk_70 = 0;
 
     u16* table  = (u16*)func_ov013_021256e4();
-    s32  engine = owner->unk_084.sprite.bits_0_1;
+    s32  engine = owner->sprite.sprite.bits_0_1;
 
     SpriteAnimationEx anim;
-    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->unk_080));
+    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->spriteIndex));
     u16 animData         = table[3];
-    anim.anim.unk_20     = func_ov013_021256d0(owner->unk_080);
+    anim.anim.unk_20     = func_ov013_021256d0(owner->spriteIndex);
     anim.animTable       = NULL;
     anim.anim.unk_26     = table[2];
     anim.anim.unk_28     = table[1];

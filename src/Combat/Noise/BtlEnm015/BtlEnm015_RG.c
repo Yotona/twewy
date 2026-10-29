@@ -15,7 +15,7 @@ const TaskHandle Tsk_BtlEnm015_RG = {"Tsk_BtlEnm015_RG", func_ov013_02126dd8, 0x
 void func_ov013_02126ab0(BtlEnm015* arg0) {
     switch (arg0->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 0, 0);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 0, 0);
             func_ov003_020c4ee0(arg0);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = RNG_Next(0x3C) + 0x3C;
@@ -40,17 +40,17 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
             break;
 
         case 1:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 7, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 7, 1);
             func_ov003_020c4cc4(arg0, 0x220);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
 
         case 2:
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 8, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 8, 1);
             func_ov003_020c4cc4(arg0, 0x226);
             func_ov013_021257a4(arg0, 0);
             func_ov003_0208a08c(1, boss, 0);
@@ -60,7 +60,7 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
             break;
 
         case 3:
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_02126ab0);
@@ -81,7 +81,7 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
             break;
 
         case 1:
-            CombatSprite_SetAnimFromTable(&arg0->unk_084, 9, 1);
+            CombatSprite_SetAnimFromTable(&arg0->sprite, 9, 1);
             arg0->unk_1DC = boss->actor.position.x;
             arg0->unk_1E0 = boss->actor.position.y;
             arg0->unk_1E4 = boss->actor.position.z;
@@ -106,7 +106,7 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
                 }
             }
             arg0->unk_1C0 = arg0->unk_1C0 + 1;
-            if (SpriteMgr_IsAnimationFinished(&arg0->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_02126ab0);

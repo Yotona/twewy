@@ -34,15 +34,15 @@ s32 func_ov012_021259bc(BtlEnm014Eff* data, Enm014Spawn* args) {
     data->unk_60 = 0;
 
     if (args->unk_08 == 1) {
-        unk_06 = (args->unk_00->unk_080 == 3) ? 0xC8 : 0xB0;
+        unk_06 = (args->unk_00->spriteIndex == 3) ? 0xC8 : 0xB0;
     } else {
         unk_06 = 0x50;
     }
 
-    CombatSprite_LoadFromTable(args->unk_04, &data->sprite, func_ov012_021256c0(args->unk_00->unk_080), func_ov012_021256d0(),
-                               args->unk_08, func_ov012_021256dc(args->unk_00->unk_080), unk_06);
+    CombatSprite_LoadFromTable(args->unk_04, &data->sprite, func_ov012_021256c0(args->unk_00->spriteIndex),
+                               func_ov012_021256d0(), args->unk_08, func_ov012_021256dc(args->unk_00->spriteIndex), unk_06);
     CombatSprite_SetAnimFromTable(&data->sprite, args->unk_08, 1);
-    CombatSprite_SetFlip(&data->sprite, data->unk_70->unk_084.flags46 & 1);
+    CombatSprite_SetFlip(&data->sprite, data->unk_70->sprite.flags46 & 1);
     return 1;
 }
 
@@ -71,7 +71,7 @@ s32 func_ov012_02125ab4(TaskPool* pool, Task* task, void* args, s32 stage) {
                 if (data->unk_70->actor.flags & 4) {
                     return 0;
                 }
-                CombatSprite_SetFlip(&data->sprite, data->unk_70->unk_084.flags46 & 1);
+                CombatSprite_SetFlip(&data->sprite, data->unk_70->sprite.flags46 & 1);
                 data->unk_64 = data->unk_70->actor.position.x;
                 data->unk_68 = data->unk_70->actor.position.y;
                 data->unk_6C = data->unk_70->actor.position.z;

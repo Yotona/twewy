@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss01.h"
 #include "Combat/Noise/Private/Boss01.h"
@@ -11,17 +12,14 @@
 /// MARK: Boss01_UG
 
 typedef struct Boss01_UG {
-    /* 0x000 */ CombatActor  actor;
-    /* 0x07C */ char         unk_7C[0x84 - 0x7C];
-    /* 0x084 */ CombatSprite sprite;
-    /* 0x0E4 */ char         unk_E4[0x188 - 0xE4];
-    /* 0x188 */ void*        unk_188;
-    /* 0x18C */ u16          unk_18C;
-    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ s16          unk_1C0;
-    /* 0x1C2 */ char         unk_1C2[0x1C4 - 0x1C2];
-    /* 0x1C4 */ s16          unk_1C4;
-    /* 0x1C6 */ s16          unk_1C6;
+    /* 0x000 */ union {
+        Ov003EnemyActor base;
+        Ov003EnemyActor;
+    };
+    /* 0x1C0 */ s16  unk_1C0;
+    /* 0x1C2 */ char unk_1C2[0x1C4 - 0x1C2];
+    /* 0x1C4 */ s16  unk_1C4;
+    /* 0x1C6 */ s16  unk_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct Boss01_UG*);
     /* 0x1CC */ s32               unk_1CC;
     /* 0x1D0 */ s32               unk_1D0;
@@ -549,7 +547,7 @@ s32 Boss01_UG_Render(TaskPool* pool, Task* task, void* args) {
         bossUG->actor.flags &= ~1;
     }
 
-    if (!(bossUG->unk_18C & 1)) {
+    if (!(bossUG->flags18C & 1)) {
         func_ov003_02084348(0, &spA, &sp8, bossUG->actor.position.x, bossUG->actor.position.y, bossUG->actor.position.z);
         CombatSprite_SetPosition(&bossUG->sprite, spA, sp8);
         CombatSprite_Render(&bossUG->sprite);

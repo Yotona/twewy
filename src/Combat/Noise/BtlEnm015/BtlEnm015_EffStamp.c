@@ -137,7 +137,7 @@ s32 func_ov013_02126700(TaskPool* pool, Task* task, void* args, s32 stage) {
             if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
                 return 0;
             }
-            if (func_ov003_020c37f8(&data->unk_00->unk_084) != 0) {
+            if (func_ov003_020c37f8(&data->unk_00->sprite) != 0) {
                 return func_ov013_021265b0(data);
             }
             return func_ov013_02126254(data);

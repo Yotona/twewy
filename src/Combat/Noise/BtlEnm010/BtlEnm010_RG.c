@@ -115,7 +115,7 @@ void func_ov011_021265fc(BtlEnm010RG* data) {
 
     i    = 0;
     func = NULL;
-    switch (data->unk_080) {
+    switch (data->spriteIndex) {
         case 0:
             i = data_ov011_0212c18c[(u32)data->unk_1F4 % 5];
             break;
@@ -316,7 +316,7 @@ void func_ov011_02126bf8(BtlEnm010RG* data) {
     s32 angle;
 
     bit1  = (data->unk_1F6 << 30) >> 31;
-    count = data_ov011_0212c168[data->unk_080];
+    count = data_ov011_0212c168[data->spriteIndex];
     if (bit1 != 0 && ((data->unk_1F6 << 31) >> 31) != 0) {
         count = 2;
     }
@@ -459,7 +459,7 @@ void func_ov011_02126fb0(BtlEnm010RG* data) {
                 if (y % 15 == 0) {
                     s32 q = y / 15;
 
-                    if (q > 0 && q < data_ov011_0212c148[data->unk_080]) {
+                    if (q > 0 && q < data_ov011_0212c148[data->spriteIndex]) {
                         data->unk_1FC = func_ov011_02125b98(data, q);
                     }
                 }
@@ -470,11 +470,11 @@ void func_ov011_02126fb0(BtlEnm010RG* data) {
                 if (y % 15 == 0) {
                     s32 q = y / 15;
 
-                    if (q < data_ov011_0212c148[data->unk_080]) {
+                    if (q < data_ov011_0212c148[data->spriteIndex]) {
                         data->unk_1D0 = (data->actor.isFlipped == 0) ? 0x4000 : 0 - 0x4000;
                         data->unk_1E8 = 0;
                     }
-                    if (q == data_ov011_0212c148[data->unk_080] - 1) {
+                    if (q == data_ov011_0212c148[data->spriteIndex] - 1) {
                         CombatSprite_SetAnimFromTable(&data->sprite, 3, 1);
                     }
                 }
@@ -759,8 +759,8 @@ s32 func_ov011_02127a64(void* arg0, Task* arg1) {
             func_ov011_021265d4(data, func_ov011_02127628);
             break;
         case 3:
-            if (data->unk_18C & 0x10) {
-                data->unk_18C = data->unk_18C | 0x20;
+            if (data->flags18C & 0x10) {
+                data->flags18C = data->flags18C | 0x20;
             } else {
                 func_ov011_021265d4(data, func_ov011_02127698);
             }
@@ -794,7 +794,7 @@ s32 func_ov011_02127b98(void* arg0, Task* arg1) {
         func_ov003_020c4878(data);
     } else {
         func_ov003_020c4748(data);
-        func_ov003_0208810c(&data->unk_0E4, data);
+        func_ov003_0208810c(&data->subSprite, data);
     }
     return 1;
 }

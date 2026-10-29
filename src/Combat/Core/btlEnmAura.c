@@ -460,12 +460,12 @@ s32 func_ov003_020ca5e4(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 void func_ov003_020ca62c(Ov003CutinActor* owner) {
     if (func_ov003_020c37f8(&owner->sprite)) {
-        data_ov003_020e7324.ownerMain = owner->partner;
+        data_ov003_020e7324.ownerMain = (Ov003CutinActor*)owner->partner;
         data_ov003_020e7324.ownerSub  = owner;
         return;
     }
     data_ov003_020e7324.ownerMain = owner;
-    data_ov003_020e7324.ownerSub  = owner->partner;
+    data_ov003_020e7324.ownerSub  = (Ov003CutinActor*)owner->partner;
 }
 void func_ov003_020ca66c(Ov003CutinActor* owner) {
     func_ov003_020ca62c(owner);

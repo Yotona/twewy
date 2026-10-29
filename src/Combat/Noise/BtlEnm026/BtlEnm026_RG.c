@@ -26,10 +26,10 @@ char data_ov015_021284c0[20] = "Tsk_BtlEnm026_RG";
 void func_ov015_021268b0(BtlEnm026* data) {
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
             data->actor.flags &= ~0x10000000;
             func_ov003_020c4b1c(data);
-            data->unk_196 &= ~0x2;
+            data->flags196.raw &= ~0x2;
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = func_ov003_020c42ec(data);
             /* fallthrough */
@@ -41,7 +41,7 @@ void func_ov015_021268b0(BtlEnm026* data) {
             if (data->unk_1D8 == 1) {
                 s16 count;
 
-                data->unk_196 |= 0x2;
+                data->flags196.raw |= 0x2;
                 count         = RNG_Next(3) + 3;
                 data->unk_1F0 = count;
                 data->unk_1D8 = 0;
@@ -56,7 +56,7 @@ void func_ov015_0212699c(BtlEnm026* data) {
 
     switch (data->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xA, 1);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xA, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             data->unk_1C0 = 2;
             return;
@@ -65,15 +65,15 @@ void func_ov015_0212699c(BtlEnm026* data) {
             s32 dx;
 
             func_ov003_020c4b1c(data);
-            if (SpriteMgr_IsAnimationFinished(&data->unk_084.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = data->unk_1C0 - 1;
             if (data->unk_1C0 >= 0) {
-                Sprite_Restart(&data->unk_084.sprite);
+                Sprite_Restart(&data->sprite.sprite);
                 return;
             }
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xB, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xB, 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             dx            = boss->actor.position.x - data->actor.position.x;
             data->unk_1C0 = ((dx < 0) ? -dx : dx) / 0x8000 + 5;
@@ -88,7 +88,7 @@ void func_ov015_0212699c(BtlEnm026* data) {
             s32 dy;
             s32 h;
 
-            data->actor.position.x += (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
+            data->actor.position.x += (data->sprite.flags46 & 1) ? 0x8000 : -0x8000;
             dy = boss->actor.position.y - data->actor.position.y;
             if (dy > 0x800) {
                 dy = 0x800;
@@ -109,8 +109,8 @@ void func_ov015_0212699c(BtlEnm026* data) {
             if (data->actor.position.z < 0) {
                 return;
             }
-            data->unk_1E8 = (data->unk_084.flags46 & 1) ? 0x8000 : -0x8000;
-            CombatSprite_SetAnimFromTable(&data->unk_084, 0xC, 1);
+            data->unk_1E8 = (data->sprite.flags46 & 1) ? 0x8000 : -0x8000;
+            CombatSprite_SetAnimFromTable(&data->sprite, 0xC, 1);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
         }
@@ -126,7 +126,7 @@ void func_ov015_0212699c(BtlEnm026* data) {
             func_ov003_020c5924(data, target);
             data->unk_1AC = target[0];
             data->unk_1B0 = target[1];
-            CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
+            CombatSprite_SetAnimFromTable(&data->sprite, 2, 0);
             data->unk_1C2 = data->unk_1C2 + 1;
             return;
         }
@@ -187,7 +187,7 @@ void func_ov015_02126db8(BtlEnm026* data) {
         }
         switch (data->unk_1C2) {
             case 0:
-                CombatSprite_SetAnimFromTable(&data->unk_084, 0, 0);
+                CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
                 data->unk_1C2 = data->unk_1C2 + 1;
                 data->unk_1C0 = 0;
                 break;
@@ -204,9 +204,9 @@ void func_ov015_02126db8(BtlEnm026* data) {
 
 void func_ov015_02126ec4(BtlEnm026* data) {
     if (data_ov015_02128500.result10 != -1) {
-        CombatSprite_SetAnimFromTable(&data->unk_084, 2, 0);
+        CombatSprite_SetAnimFromTable(&data->sprite, 2, 0);
     } else {
-        CombatSprite_SetAnimFromTable(&data->unk_084, 3, 0);
+        CombatSprite_SetAnimFromTable(&data->sprite, 3, 0);
     }
     data->actor.position.x += data->unk_1D0 >> 1;
     func_ov003_020c4ab4(data, (data->unk_1D0 > 0) ? 1 : 0);

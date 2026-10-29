@@ -77,7 +77,7 @@ s32 func_ov010_02125780(Enm006DeadEff* data, Enm006Spawn* args) {
     s32 m;
     u16 v;
     MI_CpuSet(data, 0, 0x6C);
-    v = args->unk_00->unk_080;
+    v = args->unk_00->spriteIndex;
     m = args->unk_00->sprite.sprite.bits_0_1;
     CombatSprite_LoadFromTable(m, &data->sprite, func_ov010_021256c0(v), data_ov010_02129380[v], 0, data_ov010_02129200[v],
                                0x30);

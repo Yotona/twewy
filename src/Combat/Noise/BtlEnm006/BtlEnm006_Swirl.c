@@ -85,7 +85,7 @@ s32 func_ov010_02126d54(Enm006Swirl* data, Enm006Spawn* args) {
     u16 v;
     s32 i;
     MI_CpuSet(data, 0, 0xA0);
-    v = args->unk_00->unk_080;
+    v = args->unk_00->spriteIndex;
     m = args->unk_00->sprite.sprite.bits_0_1;
     CombatSprite_LoadFromTable(m, &data->sprite, func_ov010_021256c0(v), data_ov010_021292c4, 0, data_ov010_021292b0[v], 0x30);
     CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);

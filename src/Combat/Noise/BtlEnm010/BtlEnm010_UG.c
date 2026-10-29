@@ -170,7 +170,7 @@ void func_ov011_02129ef8(BtlEnm010UG* data) {
     void (*f)(BtlEnm010UG*);
 
     f = NULL;
-    switch (func_ov003_020cb888(data_ov011_0212cc7c[data->unk_080], 4, RNG_Next(0x64))) {
+    switch (func_ov003_020cb888(data_ov011_0212cc7c[data->spriteIndex], 4, RNG_Next(0x64))) {
         case 0:
             f = func_ov011_0212a134;
             break;
@@ -193,7 +193,7 @@ void func_ov011_02129f80(BtlEnm010UG* data) {
 
     v = 0;
     f = NULL;
-    switch (data->unk_080) {
+    switch (data->spriteIndex) {
         case 0:
             v = data_ov011_0212c37c[(u32)(data->unk_1F6) % 5];
             break;
@@ -465,7 +465,7 @@ void func_ov011_0212a78c(BtlEnm010UG* data) {
             data->unk_1C0 = data->unk_1C0 + 1;
             return;
         case 1:
-            limit = data_ov011_0212c34c[data->unk_080] * 10 + 0x14;
+            limit = data_ov011_0212c34c[data->spriteIndex] * 10 + 0x14;
             if (data->unk_1C0 == 0) {
                 data->unk_1F8 = 0x14;
                 data->unk_1FA = limit;
@@ -480,7 +480,7 @@ void func_ov011_0212a78c(BtlEnm010UG* data) {
             if (data->unk_1F8 == 0 && data->unk_1FA % 10 == 0) {
                 s32 q = (limit - data->unk_1FA) / 10;
 
-                if (q < data_ov011_0212c34c[data->unk_080]) {
+                if (q < data_ov011_0212c34c[data->spriteIndex]) {
                     s32 bias;
                     u16 a5;
 
@@ -495,7 +495,7 @@ void func_ov011_0212a78c(BtlEnm010UG* data) {
                     }
                     data->unk_1E8 = 0;
                     {
-                        s32 slot = data->unk_080;
+                        s32 slot = data->spriteIndex;
 
                         data->unk_208 =
                             func_ov011_02127f6c(data, bias, 0, 0 - 0x10000, data_ov011_0212c3c8[slot][q].unk_00, a5,
@@ -617,18 +617,18 @@ void func_ov011_0212ac0c(BtlEnm010UG* data) {
             if (data->unk_1C0 >= 0x28 && (data->unk_1C0 - 0x28) % 15 == 0) {
                 s32 q = (data->unk_1C0 - 0x28) / 15;
 
-                if (q > 0 && q < data_ov011_0212c33c[data->unk_080]) {
+                if (q > 0 && q < data_ov011_0212c33c[data->spriteIndex]) {
                     data->unk_208 = func_ov011_02125b98(data, q);
                 }
             }
             if (data->unk_1C0 >= 0x3C && (data->unk_1C0 - 0x3C) % 15 == 0) {
                 s32 q = (data->unk_1C0 - 0x3C) / 15;
 
-                if (q < data_ov011_0212c33c[data->unk_080]) {
+                if (q < data_ov011_0212c33c[data->spriteIndex]) {
                     data->unk_1D0 = (data->actor.isFlipped != 0) ? 0 - 0x4000 : 0x4000;
                     data->unk_1E8 = 0;
                 }
-                if (q == data_ov011_0212c33c[data->unk_080] - 1) {
+                if (q == data_ov011_0212c33c[data->spriteIndex] - 1) {
                     CombatSprite_SetAnimFromTable(&data->sprite, 3, 1);
                 }
             }
@@ -817,7 +817,7 @@ void func_ov011_0212b3ec(BtlEnm010UG* data) {
     if (func_ov003_020c6b8c(data, 4) != 0) {
         return;
     }
-    if (RNG_Next(0x64) < data_ov011_0212c35c[data->unk_080]) {
+    if (RNG_Next(0x64) < data_ov011_0212c35c[data->spriteIndex]) {
         v = data->actor.isFlipped;
         if ((v == 0 && ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.x < data->actor.position.x) ||
             (v == 1 && ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.x > data->actor.position.x))
@@ -1022,7 +1022,7 @@ void func_ov011_0212b9e4(void* arg0, Task* arg1, BtlEnm010Spawn* arg2) {
     func_ov011_02129ed0((void*)data, func_ov011_0212a10c);
     data->unk_206     = (data->unk_206 & 0xFE) | 1;
     data->actor.flags = data->actor.flags | 0x40000000;
-    data->unk_18C     = data->unk_18C | 4;
+    data->flags18C    = data->flags18C | 4;
 }
 
 s32 func_ov011_0212bac8(void* arg0, Task* arg1) {
@@ -1034,19 +1034,19 @@ s32 func_ov011_0212bac8(void* arg0, Task* arg1) {
             if (((u32)(data->unk_206 << 31) >> 31) == 0) {
                 break;
             }
-            func_ov003_02084694(&data->unk_144, 0);
+            func_ov003_02084694(&data->collider.side, 0);
             func_ov011_02129ed0(data, func_ov011_0212b3ec);
             break;
         case 3:
-            func_ov003_02084694(&data->unk_144, 1);
+            func_ov003_02084694(&data->collider.side, 1);
             func_ov011_02129ed0(data, func_ov011_0212b4f4);
             break;
         case 4:
-            func_ov003_02084694(&data->unk_144, 0);
+            func_ov003_02084694(&data->collider.side, 0);
             func_ov011_02129ed0(data, func_ov011_0212b318);
             break;
         case 5:
-            func_ov003_02084694(&data->unk_144, 0);
+            func_ov003_02084694(&data->collider.side, 0);
             func_ov011_02129ed0(data, func_ov011_0212b388);
             break;
         case 6:
@@ -1083,7 +1083,7 @@ s32 func_ov011_0212bc84(void* arg0, Task* arg1) {
         func_ov003_020c48b0(p);
     } else {
         func_ov003_020c4748(p);
-        func_ov003_0208810c(&p->unk_0E4, p);
+        func_ov003_0208810c(&p->subSprite, p);
     }
     return 1;
 }
