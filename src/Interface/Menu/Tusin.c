@@ -12,6 +12,7 @@
 #include "Engine/Math/Random.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Save.h"
 #include "SndMgr.h"
@@ -785,8 +786,8 @@ void Tusin_Init(TusinState* state) {
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
     OvlMgr_LoadOverlay(3, (u32)&OVERLAY_COMM);
     EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x200, NULL, NULL);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -16, 0x1000);
 
@@ -1011,14 +1012,14 @@ void Tusin_VBlank(void) {
         GX_LoadOam(g_OamMgr[DISPLAY_MAIN].oam, 0, 0x400);
         DC_PurgeRange(g_OamMgr[DISPLAY_SUB].oam, 0x400);
         GXs_LoadOam(g_OamMgr[DISPLAY_SUB].oam, 0, 0x400);
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
 #ifndef REGION_USA
-        func_02001b44(2, 0, &data_020672ec, 0x400);
+        func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
 #endif
     }
 }

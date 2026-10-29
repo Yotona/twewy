@@ -1,5 +1,6 @@
 #include "Field/FieldRegion.h"
 
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -19,8 +20,8 @@
 #include "common_data.h"
 
 extern void func_02010b50(TextObject* textObj);
-extern void func_02025b68(void* textBg, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textBg);
+extern void BgText_Init(void* textBg, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textBg);
 
 void SeqFlashSel_Init(FlashSelectOverlayState* state);
 void SeqFlashSel_Update(FlashSelectOverlayState* state);
@@ -48,7 +49,7 @@ void SeqFlashSel_InitText(FlashSelectOverlayState* state) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&state->textBg, &params);
+    BgText_Init(&state->textBg, &params);
     Text_RenderToScreen(&state->text, 0, 0, SeqFlashSel_Title);
 }
 
@@ -64,7 +65,7 @@ void SeqFlashSel_DrawText(FlashSelectOverlayState* state) {
 }
 
 void SeqFlashSel_ReleaseText(FlashSelectOverlayState* state) {
-    func_02025e30(&state->textBg);
+    BgText_Free(&state->textBg);
 }
 
 void SeqFlashSel_CreateScreen(FlashSelectOverlayState* state) {
@@ -103,7 +104,6 @@ void SeqFlashSel_HandleInput(FlashSelectOverlayState* state) {
     SeqFlashSel_DrawText(state);
 }
 
-// Nonmatching
 void SeqFlashSel_Init(FlashSelectOverlayState* state) {
     const char* sequence = SeqFlashSel_Sequence;
 
@@ -117,8 +117,8 @@ void SeqFlashSel_Init(FlashSelectOverlayState* state) {
     FlashGfx_Init();
     g_DisplaySettings.controls[DISPLAY_MAIN].layers     = 0;
     state->previousResources                            = ResourceMgr_ReinitManagers(&state->resources);
-    data_02066aec                                       = 0;
-    data_02066eec                                       = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     SeqFlashSel_CreateScreen(state);

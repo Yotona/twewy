@@ -1,6 +1,8 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm015.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015Stamp {
@@ -8,11 +10,6 @@ typedef struct BtlEnm015Stamp {
     /* 0x04 */ s32        unk_04;
     /* 0x08 */ u16        unk_08;
 } BtlEnm015Stamp; // Size: 0x0C
-
-extern s32 func_ov003_020c37f8(void*);
-extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020ccedc(s32);
-extern s32 func_ov003_020ccefc(s32);
 
 /// Rounds a fixed-point value through a float, matching the original codegen.
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))

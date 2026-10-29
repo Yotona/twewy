@@ -8,6 +8,7 @@
 #include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
 #include "common_data.h"
@@ -66,8 +67,8 @@ void Launcher_ResetDisplay(void) {
     OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, (void*)0x6800000, 0xa4000);
     OamMgr_ResetAndCommit();
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, TRUE);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, TRUE);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, TRUE);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, TRUE);
 }
 
 void Launcher_VBlank(void) {
@@ -75,12 +76,12 @@ void Launcher_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 
@@ -235,7 +236,7 @@ void func_ov046_02082c0c(EasyListNode* list, BOOL unk_r1) {
                 EasyTask_DestroyPool(list->data);
                 return;
             case 4:
-                func_02025e30(list->data);
+                BgText_Free(list->data);
                 return;
         }
     }
@@ -312,7 +313,7 @@ void func_ov046_02082c78(DebugLauncherState* state) {
     state->unk_18 = DatMgr_LoadPackEntry(state->unk_14, 0, 0, &data_ov046_02083a4c, 0, 0);
     EasyList_InsertSorted(&state->unk_list_15F14, 1, state->unk_14);
     EasyList_InsertSorted(&state->unk_list_15F14, 2, state->unk_18);
-    data_02066aec = 0x1F;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0x1F;
     // s32 r5 = state->unk_18 == NULL ? 0 : (state->unk_18)->unk_08 + 0x20 + *(s32*)((((state->unk_18)->unk_08) + 0x20) +
     // 0x08); s32 r6 = state->unk_18 == NULL ? 0 : (state->unk_18)->unk_08 + 0x20 + *(s32*)((((state->unk_18)->unk_08) + 0x20)
     // + 0x10); s32 r7 = state->unk_18 == NULL ? 0 : (state->unk_18)->unk_08 + 0x20 + *(s32*)((((state->unk_18)->unk_08) +

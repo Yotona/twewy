@@ -181,7 +181,7 @@ int func_02020a88(ACSFDR* fdr, int param_2) {
         case 0:
         default:
             lVar6 = (float)param_2 / 3238200;
-            uVar7 = func_0205308c(lVar6);
+            uVar7 = log10(lVar6);
             uVar7 *= 3.640625f;
             fVar2 = uVar7;
             break;
@@ -190,12 +190,12 @@ int func_02020a88(ACSFDR* fdr, int param_2) {
             break;
         case 2:
             lVar6 = (1.5707964f * param_2) / 3238200;
-            lVar6 = func_02052f00(lVar6);
+            lVar6 = sin(lVar6);
             uVar1 = lVar6;
             uVar1 = 3238200 * uVar1;
             uVar1 /= 3238200;
             lVar6 = uVar1;
-            uVar7 = func_0205308c(lVar6);
+            uVar7 = log10(lVar6);
             uVar7 *= 3.640625f;
             fVar2 = uVar7;
             break;
@@ -206,18 +206,18 @@ int func_02020a88(ACSFDR* fdr, int param_2) {
             uVar1 = 3238200 * uVar1;
             uVar1 /= 3238200;
             lVar6 = uVar1;
-            uVar7 = func_0205308c(lVar6);
+            uVar7 = log10(lVar6);
             uVar7 *= 3.640625f;
             fVar2 = uVar7;
             break;
         case 4:
-            uVar7 = func_0205308c(0, 4.4375f);
+            uVar7 = log10(0, 4.4375f);
             fVar3 = uVar7;
             uVar1 = (float)(3238200 - param_2);
             uVar1 = fVar3 * uVar1;
             uVar1 /= 3238200;
             lVar6 = uVar1;
-            uVar8 = func_02053098(0, 2.5625f, lVar6);
+            uVar8 = pow(0, 2.5625f, lVar6);
             uVar1 = uVar8;
             fVar2 = (float)func_02056264(0, uVar1);
     }

@@ -10,6 +10,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
@@ -79,8 +80,8 @@ static void Tutorial_InitHardware(void) {
     OamMgr_InitEngine(0, DISPLAY_SUB);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
     OamMgr_ResetAndCommit();
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, 1);
 }
 
 static void Tutorial_InitDisplay(void) {
@@ -120,12 +121,12 @@ static void Tutorial_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 
@@ -290,8 +291,8 @@ static void Tutorial_Init(TutorialObject* object) {
     EasyTask_InitializePool(&object->taskPool, &object->heap, 8, NULL, NULL);
     Tutorial_RegisterVBlank();
     ResourceMgr_ReinitManagers(&object->resMgr);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     Input_Init(&InputStatus, 12, 2, 1);
     TouchInput_Init();
     EasyTask_CreateTask(&object->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);

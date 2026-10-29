@@ -9,9 +9,8 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
-
-extern s32 func_ov003_0208b690(u16);
 
 extern void*       BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
 extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, GXBGScreenSizeText screenSize);

@@ -2,6 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm026.h"
 #include "SndMgr.h"
 
+#include "Combat/Core/CombatEnemy.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm026Icon {
@@ -16,8 +17,6 @@ typedef struct BtlEnm026Icon {
     /* 0x12E */ u16          unk_12E;
     /* 0x130 */ s32          unk_130;
 } BtlEnm026Icon; // Size: 0x134
-
-extern s32  func_ov003_020c37f8(void*);
 extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern void func_ov003_02087ed8(u16);
 s32         func_ov015_02126860(TaskPool*, Task*, void*, s32);

@@ -22,6 +22,7 @@ double __ieee754_atan2(double, double);
 double __ieee754_asin(double);
 double __ieee754_exp(double);
 int    __ieee754_rem_pio2(double, double*);
+int    __kernel_rem_pio2(double*, double*, int, int, int, const int*);
 
 double __kernel_sin(double, double, int);
 double __kernel_cos(double, double);
@@ -45,6 +46,7 @@ double fmod(double x, double y);
 double pow(double x, double y);
 double sqrt(double x);
 double log(double x);
+double log10(double x);
 float  log10f(float x);
 
 // In reality, these are "weak" functions which all have C++ names (except scalbn).

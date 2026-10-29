@@ -11,6 +11,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Player/Inventory.h"
 #include "Save.h"
@@ -65,7 +66,7 @@ void GX_LoadBgPltt(void* src, u32 offset, u32 size);
 void GX_LoadObjPltt(void* src, u32 offset, u32 size);
 void GXs_LoadBgPltt(void* src, u32 offset, u32 size);
 void GXs_LoadObjPltt(void* src, u32 offset, u32 size);
-BOOL func_02001b44(s32, s32, s32*, s32);
+BOOL func_02001b44(s32, s32, void*, s32);
 void Inventory_SetHelpSeen(s32);
 s32  Inventory_IsHelpSeen(s32);
 void func_0202b878(void);
@@ -1406,8 +1407,8 @@ void MenuBadge_Init(MenuBadgeState* state) {
     Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
     EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x100, NULL, NULL);
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     MenuBadge_InitState(state);
     MenuBadge_LoadBackgrounds(&state->menuBadge);
     MenuBadge_CreateTasks(state);
@@ -1526,10 +1527,10 @@ void MenuBadge_InitDisplay(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    data_0206aa78                                        = 0x300010;
+    data_0206aa7c                                        = 0x400040;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= 0xFF;
     Display_SetMainLayers(LAYER_BG0 | LAYER_BG3 | LAYER_OBJ);
-    data_0206aa78                                       = 0x300010;
-    data_0206aa7c                                       = 0x400040;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 16;
 
     g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
@@ -1576,13 +1577,13 @@ void MenuBadge_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
-        func_02001b44(2, 0, &data_020672ec, 0x400);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
+        func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     }
 }
 

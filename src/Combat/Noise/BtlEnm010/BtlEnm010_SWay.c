@@ -1,14 +1,12 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 extern char data_ov011_0212cc24[20];
 s32         func_ov011_0212801c(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
-
-extern s32 func_ov003_020c37f8(void* p);
-extern s32 func_ov003_020c3c28(void);
-extern s16 func_ov003_020843b0(s32 a, s32 b);
 
 typedef struct BtlEnm010SWayArgs {
     /* 0x00 */ BtlEnm010Owner* field_00;
@@ -34,8 +32,6 @@ typedef struct BtlEnm010SWay {
 s32 func_ov011_02128070(BtlEnm010SWay* p, BtlEnm010SWayArgs* a);
 s32 func_ov011_02128150(BtlEnm010SWay* p);
 s32 func_ov011_02128250(BtlEnm010SWay* p);
-
-extern s32 func_ov003_020c3c28(void);
 
 const TaskHandle data_ov011_0212c1e0 = {(const char*)data_ov011_0212cc24, func_ov011_0212801c, 32};
 

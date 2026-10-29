@@ -71,6 +71,15 @@ typedef void (*PalLoadIndirectFunc)(PaletteResource*, void*, u32, s32, s32);
  */
 extern PaletteMgr* g_PaletteManagers[3];
 
+typedef struct PaletteBuffer {
+    /* 0x000 */ u16 bg[256];
+    /* 0x200 */ u16 obj[256];
+} PaletteBuffer; // Size: 0x400
+
+/// RAM copies of the BG and OBJ palettes, indexed by DisplayEngine. The main and sub
+/// buffers are flushed to palette RAM every vblank; entry 0 of `bg` is the backdrop color.
+extern PaletteBuffer g_PaletteBuffers[3];
+
 /**
  * @brief Initialize a palette manager instance for a display engine.
  *

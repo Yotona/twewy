@@ -7,6 +7,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "Util/SysFont.h"
@@ -36,7 +37,7 @@ const BinIdentifier data_ov001_02082f90 = {1, "Apl_Fuk/Grp_ForTest.bin"};
 void FontTest_RegisterVBlank(void);
 
 void func_ov001_020824a0(FontState* arg0) {
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0] = 0;
     SysFont_InitWithFont(&arg0->font, 1, TRUE);
     SysFont_SetPos(&arg0->font, 0, 0);
     arg0->font.widthScale = 1;
@@ -104,8 +105,8 @@ void FontTest_Init(FontState* arg0) {
     FontTest_RegisterVBlank();
     arg0->unk_11580 = ResourceMgr_ReinitManagers(&arg0->unk_00000);
 
-    data_02066aec                                       = 0;
-    data_02066eec                                       = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
     g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
 
@@ -248,12 +249,12 @@ void FontTest_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 

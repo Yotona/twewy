@@ -435,7 +435,7 @@ src/Savefile.c:
     .rodata     start:0x0205cff8 end:0x0205d014
     .data       start:0x02066184 end:0x020661a8
 
-src/UnkResourceHandler.c:
+src/BgText.c:
     .text       start:0x02025b10 end:0x02025e1c
 
 src/CellText.c:
@@ -688,10 +688,150 @@ libs/c/src/strtoul.c:
     .text       start:0x0204e444 end:0x0204ed10
     .exceptix   start:0x020596d4 end:0x020596f8
 
+libs/c/src/math/e_acos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204ed10 end:0x0204f508
+    .exceptix   start:0x020596f8 end:0x02059704
+
+libs/c/src/math/e_asin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204f508 end:0x0204fc54
+    .exceptix   start:0x02059704 end:0x02059710
+
+libs/c/src/math/e_log.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204fc54 end:0x0205038c
+    .exceptix   start:0x02059710 end:0x0205971c
+    .bss        start:0x02082e60 end:0x02082e68
+
+libs/c/src/math/e_log10.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0205038c end:0x02050564
+    .exceptix   start:0x0205971c end:0x02059728
+    .bss        start:0x02082e68 end:0x02082e70
+
+libs/c/src/math/e_pow.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02050564 end:0x020516ec
+    .exception  start:0x020594ac end:0x020594b4
+    .exceptix   start:0x02059728 end:0x02059734
+    .rodata     start:0x02063a24 end:0x02063a54
+
+libs/c/src/math/e_rem_pio2.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020516ec end:0x02051db4
+    .exception  start:0x020594b4 end:0x020594bc
+    .exceptix   start:0x02059734 end:0x02059740
+    .rodata     start:0x02063a54 end:0x02063bdc
+
+libs/c/src/math/k_cos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02051db4 end:0x020520d4
+    .exceptix   start:0x02059740 end:0x0205974c
+
+libs/c/src/math/k_rem_pio2.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020520d4 end:0x02052c90
+    .exception  start:0x020594bc end:0x020594c4
+    .exceptix   start:0x0205974c end:0x02059758
+    .rodata     start:0x02063bdc end:0x02063c2c
+
+libs/c/src/math/k_sin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052c90 end:0x02052f0c
+    .exceptix   start:0x02059758 end:0x02059764
+
+libs/c/src/math/s_copysign.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052f0c end:0x02052f34
+
+libs/c/src/math/s_cos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052f34 end:0x020530a4
+    .exceptix   start:0x02059764 end:0x02059770
+
 libs/c/src/math/s_fabs.c:
     categories: Library, MSL
     complete
     .text       start:0x020530a4 end:0x020530c4
+
+libs/c/src/math/s_floor.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020530c4 end:0x02053284
+    .exceptix   start:0x02059770 end:0x0205977c
+
+libs/c/src/math/s_frexp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053284 end:0x02053340
+    .exceptix   start:0x0205977c end:0x02059788
+
+libs/c/src/math/s_ldexp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053340 end:0x0205358c
+    .exceptix   start:0x02059788 end:0x02059794
+
+libs/c/src/math/s_sin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0205358c end:0x02053700
+    .exceptix   start:0x02059794 end:0x020597a0
+
+libs/c/src/math/w_acos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053700 end:0x0205370c
+    .exceptix   start:0x020597a0 end:0x020597ac
+
+libs/c/src/math/w_asin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0205370c end:0x02053718
+    .exceptix   start:0x020597ac end:0x020597b8
+
+libs/c/src/math/w_log10.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053718 end:0x02053724
+    .exceptix   start:0x020597b8 end:0x020597c4
+
+libs/c/src/math/w_pow.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053724 end:0x02053730
+    .exceptix   start:0x020597c4 end:0x020597d0
+
+libs/c/src/ansi_fp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053730 end:0x02054b4c
+    .exception  start:0x020594c4 end:0x020594cc
+    .exceptix   start:0x020597d0 end:0x02059830
+    .data       start:0x02066cdc end:0x02066e18
+
+libs/c/src/math_api.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02054b4c end:0x02054c64
+
+libs/c/src/extras.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02054c64 end:0x02054c90
+    .exceptix   start:0x02059830 end:0x0205983c
 
 libs/c/src/pool_alloc.c:
     categories: Library, MSL

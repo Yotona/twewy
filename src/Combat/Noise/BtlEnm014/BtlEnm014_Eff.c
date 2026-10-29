@@ -1,5 +1,6 @@
 #include "Combat/Noise/Private/BtlEnm014.h"
 
+#include "Combat/Core/CombatEnemy.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm014Eff {
@@ -16,9 +17,6 @@ typedef struct BtlEnm014Eff {
 } BtlEnm014Eff; // Size: 0x7C
 
 extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32  func_ov003_020c37f8(void*);
-extern s32  func_ov003_020c3c28(void);
-extern s32  func_ov003_020c59a0(void*);
 
 s32 func_ov012_02125ab4(TaskPool*, Task*, void*, s32);
 

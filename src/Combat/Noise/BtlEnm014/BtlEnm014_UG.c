@@ -2,24 +2,11 @@
 #include "Combat/Noise/Private/BtlEnm014.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
-
-extern void func_ov003_02084694(void*, s32);
-extern s32  func_ov003_0208a114(u16);
-extern s32  func_ov003_0208a164(s32, void*, s32, s32, s32);
-extern s32  func_ov003_020c42ec(void*);
-extern void func_ov003_020c4668(void*);
-extern void func_ov003_020c48b0(void*);
-extern void func_ov003_020c492c(void*);
-extern void func_ov003_020c4b5c(void*);
-extern void func_ov003_020c4cc4(void*, s32);
-extern s32  func_ov003_020c6bac(void*, s32);
-extern s32  func_ov003_020c6bc8(void*, s32);
-extern s32  func_ov003_020c6c2c(void*, s32);
-extern void func_ov003_020ccea8(void*, void*);
-extern void func_ov003_020ccf1c(void*, s32);
-extern s32  func_ov003_020cd11c(s32);
 
 #define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 

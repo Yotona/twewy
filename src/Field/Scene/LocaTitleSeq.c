@@ -7,6 +7,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Field/Flash/FOPtrList.h"
 #include "Field/Scene/LocaTitle.h"
@@ -99,7 +100,7 @@ void LocaTitleSeq_Update(LocaTitleSeq* seq) {
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_MAIN]);
     OamMgr_FlushCommands(&g_OamMgr[DISPLAY_SUB]);
     PaletteMgr_Flush(g_PaletteManagers[2], NULL);
-    func_02001b44(2, 0, &data_020672ec, 0x400);
+    func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_MAIN], NULL);
     PaletteMgr_Flush(g_PaletteManagers[DISPLAY_SUB], NULL);
 }

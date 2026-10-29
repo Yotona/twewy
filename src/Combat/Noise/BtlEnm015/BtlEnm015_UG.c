@@ -1,18 +1,13 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm015.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
-
-extern void func_ov003_020c4cc4(void*, s32);
-
-extern s32  func_ov003_020ccedc(s32);
-extern void func_ov003_020c492c(void*);
-extern s32  func_ov003_0208a114(u16);
-extern s32  func_ov003_0208a164(s32, void*, s32, s32, s32);
-extern s32  func_ov003_0208a08c(s32, void*, s32);
-s32         func_ov013_02127370(TaskPool*, Task*, void*, s32);
-void        func_ov013_0212710c(BtlEnm015*);
-void        func_ov013_02127230(BtlEnm015*);
+s32  func_ov013_02127370(TaskPool*, Task*, void*, s32);
+void func_ov013_0212710c(BtlEnm015*);
+void func_ov013_02127230(BtlEnm015*);
 
 char data_ov013_02127610[48] = "Tsk_BtlEnm015_UG";
 

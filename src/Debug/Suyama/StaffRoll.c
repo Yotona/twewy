@@ -5,6 +5,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
 #include "Util/SysFont.h"
 #include "common_data.h"
@@ -88,9 +89,9 @@ void func_ov042_020824e0(StaffRollState* state) {
     state->unk_11580 = ResourceMgr_ReinitManagers(&state->unk_00000);
     Mem_InitializeHeap(&state->heap, &state->heapBuffer, sizeof(state->heapBuffer));
     EasyTask_InitializePool(&state->taskPool, &state->heap, 0x200, NULL, NULL);
-    state->unk_21614.pool = &state->taskPool;
-    data_02066aec         = 0;
-    data_02066eec         = 0;
+    state->unk_21614.pool                = &state->taskPool;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     DebugOvlDisp_Init();
     DebugOvlDisp_Push((OverlayCB)func_ov042_02082f94, &state->unk_21614, 0);
     DebugOvlDisp_Push((OverlayCB)func_ov042_02082ed8, &state->unk_21614, 0);
@@ -1025,8 +1026,8 @@ void func_ov042_020842e4(void) {
     MI_CpuFill(0, 0x06000000, 0x80000);
     MI_CpuFill(0, 0x06200000, 0x20000);
     OamMgr_Init();
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, 1);
     Interrupts_RegisterVBlankCallback(func_ov042_020846e4, 1);
 }
 
@@ -1039,11 +1040,11 @@ void func_ov042_020846e4(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }

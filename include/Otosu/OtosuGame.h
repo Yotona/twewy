@@ -3,6 +3,7 @@
 
 #include "Otosu/OtosuRegion.h"
 
+#include "BgText.h"
 #include "CriSndMgr.h"
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"
@@ -836,8 +837,8 @@ s32 OtosuGame_ovbg_CreateTask(TaskPool* pool, s32 dataType, Heap* heap, OtuBoard
 
 /// MARK: Outside the overlay
 
-void func_02025b68(void* resource, UnkStruct_usedby_02025b68* args);
-void func_02025e30(void* resource);
+void BgText_Init(void* resource, UnkStruct_usedby_02025b68* args);
+void BgText_Free(void* resource);
 
 s32 func_02047e84(u16 bits);
 

@@ -1998,8 +1998,8 @@ Iden_NpcCeparateRG kind:data(any) addr:0x020dbda4
 FieldAreaZones kind:data(any) addr:0x020dbdac
 data_ov030_020dbdd8 kind:data(any) addr:0x020dbdd8
 data_ov030_020dbe30 kind:data(any) addr:0x020dbe30
-data_ov030_020dbee0 kind:data(any) addr:0x020dbee0
-data_ov030_020dbeec kind:data(any) addr:0x020dbeec
+data_ov030_020dbee0 kind:data(any) addr:0x020dbee0 local
+data_ov030_020dbeec kind:data(any) addr:0x020dbeec local
 
 
 data_ov030_020dbef8 kind:data(any) addr:0x020dbef8
@@ -4357,7 +4357,7 @@ data_ov030_021002e4 kind:data(any) addr:0x021002e4
 @1459 kind:data(any) addr:0x02100300 local
 @1460 kind:data(any) addr:0x02100314 local
 @1461 kind:data(any) addr:0x02100328 local
-data_ov030_02100338 kind:data(any) addr:0x02100338
+data_ov030_02100338 kind:data(any) addr:0x02100338 local
 data_ov030_0210033c kind:data(any) addr:0x0210033c
 @10 kind:data(any) addr:0x021003fc local
 @11 kind:data(any) addr:0x02100400 local
@@ -6484,50 +6484,50 @@ NoiseQuotaByChapter kind:data(any) addr:0x02108408
 @1446 kind:data(any) addr:0x021085dc local
 @91 kind:data(any) addr:0x021085f0 local
 @1298 kind:data(any) addr:0x02108600 local
-data_ov030_02108614 kind:data(any) addr:0x02108614
+@1601 kind:data(any) addr:0x02108614 local
 FldNpcMesSelSequence kind:data(any) addr:0x02108618 local
-data_ov030_0210861c kind:data(any) addr:0x0210861c
-data_ov030_02108624 kind:data(any) addr:0x02108624
-data_ov030_0210862c kind:data(any) addr:0x0210862c
-data_ov030_02108638 kind:data(any) addr:0x02108638
-data_ov030_02108644 kind:data(any) addr:0x02108644
-data_ov030_02108650 kind:data(any) addr:0x02108650
-data_ov030_0210865c kind:data(any) addr:0x0210865c
-data_ov030_02108668 kind:data(any) addr:0x02108668
-data_ov030_02108674 kind:data(any) addr:0x02108674
-data_ov030_02108680 kind:data(any) addr:0x02108680
-data_ov030_0210868c kind:data(any) addr:0x0210868c
-data_ov030_02108698 kind:data(any) addr:0x02108698
-data_ov030_021086a4 kind:data(any) addr:0x021086a4
-data_ov030_021086b0 kind:data(any) addr:0x021086b0
-data_ov030_021086bc kind:data(any) addr:0x021086bc
-data_ov030_021086c8 kind:data(any) addr:0x021086c8
-data_ov030_021086d4 kind:data(any) addr:0x021086d4
-data_ov030_021086e0 kind:data(any) addr:0x021086e0
-data_ov030_021086ec kind:data(any) addr:0x021086ec
-data_ov030_021086f8 kind:data(any) addr:0x021086f8
-data_ov030_02108704 kind:data(any) addr:0x02108704
-data_ov030_02108710 kind:data(any) addr:0x02108710
-data_ov030_0210871c kind:data(any) addr:0x0210871c
-data_ov030_02108728 kind:data(any) addr:0x02108728
-data_ov030_02108734 kind:data(any) addr:0x02108734
-data_ov030_02108740 kind:data(any) addr:0x02108740
-data_ov030_0210874c kind:data(any) addr:0x0210874c
-data_ov030_02108758 kind:data(any) addr:0x02108758
-data_ov030_02108764 kind:data(any) addr:0x02108764
-data_ov030_02108770 kind:data(any) addr:0x02108770
-data_ov030_0210877c kind:data(any) addr:0x0210877c
-data_ov030_02108788 kind:data(any) addr:0x02108788
-data_ov030_02108798 kind:data(any) addr:0x02108798
-data_ov030_021087a8 kind:data(any) addr:0x021087a8
-data_ov030_021087b8 kind:data(any) addr:0x021087b8
-data_ov030_021087c8 kind:data(any) addr:0x021087c8
-data_ov030_021087d8 kind:data(any) addr:0x021087d8
-data_ov030_021087ec kind:data(any) addr:0x021087ec
-data_ov030_02108800 kind:data(any) addr:0x02108800
-data_ov030_02108814 kind:data(any) addr:0x02108814
-data_ov030_02108818 kind:data(any) addr:0x02108818
-data_ov030_02108820 kind:data(any) addr:0x02108820
+@1603 kind:data(any) addr:0x0210861c local
+@1609 kind:data(any) addr:0x02108624 local
+@1608 kind:data(any) addr:0x0210862c local
+@1600 kind:data(any) addr:0x02108638 local
+@1605 kind:data(any) addr:0x02108644 local
+@1575 kind:data(any) addr:0x02108650 local
+@1587 kind:data(any) addr:0x0210865c local
+@1588 kind:data(any) addr:0x02108668 local
+@1590 kind:data(any) addr:0x02108674 local
+@1586 kind:data(any) addr:0x02108680 local
+@1598 kind:data(any) addr:0x0210868c local
+@1582 kind:data(any) addr:0x02108698 local
+@1577 kind:data(any) addr:0x021086a4 local
+@1578 kind:data(any) addr:0x021086b0 local
+@1593 kind:data(any) addr:0x021086bc local
+@1594 kind:data(any) addr:0x021086c8 local
+@1573 kind:data(any) addr:0x021086d4 local
+@1591 kind:data(any) addr:0x021086e0 local
+@1592 kind:data(any) addr:0x021086ec local
+@1589 kind:data(any) addr:0x021086f8 local
+@1595 kind:data(any) addr:0x02108704 local
+@1579 kind:data(any) addr:0x02108710 local
+@1580 kind:data(any) addr:0x0210871c local
+@1585 kind:data(any) addr:0x02108728 local
+@1584 kind:data(any) addr:0x02108734 local
+@1583 kind:data(any) addr:0x02108740 local
+@1596 kind:data(any) addr:0x0210874c local
+@1581 kind:data(any) addr:0x02108758 local
+@1597 kind:data(any) addr:0x02108764 local
+@1572 kind:data(any) addr:0x02108770 local
+@1574 kind:data(any) addr:0x0210877c local
+@1607 kind:data(any) addr:0x02108788 local
+@1599 kind:data(any) addr:0x02108798 local
+@1606 kind:data(any) addr:0x021087a8 local
+@1576 kind:data(any) addr:0x021087b8 local
+@1604 kind:data(any) addr:0x021087c8 local
+@1571 kind:data(any) addr:0x021087d8 local
+@1602 kind:data(any) addr:0x021087ec local
+@1744 kind:data(any) addr:0x02108800 local
+@1755 kind:data(any) addr:0x02108814 local
+@1756 kind:data(any) addr:0x02108818 local
+@1757 kind:data(any) addr:0x02108820 local
 FldMesSelSequence kind:data(any) addr:0x0210882c local
 @1389 kind:data(byte[5]) addr:0x02108830 local
 @1388 kind:data(byte[5]) addr:0x02108838 local

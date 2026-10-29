@@ -1,3 +1,4 @@
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
@@ -6,6 +7,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Field/Scene/FieldSeq.h"
 #include "Field/Tasks/Fld_Wall.h"
 #include "Interface/Debug/Field/FieldDebug.h"
@@ -14,8 +16,8 @@
 #include "Save.h"
 
 extern void func_02010b50(TextObject* textObj);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textObj);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textObj);
 
 extern void  func_ov030_020ae96c(s32 arg0);
 extern char* func_ov030_020b0534(s32 arg0);
@@ -1914,7 +1916,7 @@ void func_ov030_020b1028(EventSelectObject* object) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&object->unk_21594, &params);
+    BgText_Init(&object->unk_21594, &params);
     Text_RenderToScreen(&object->text, 0, 0, "field select");
 }
 
@@ -1948,7 +1950,7 @@ void func_ov030_020b10b0(EventSelectObject* object) {
 }
 
 void func_ov030_020b131c(EventSelectObject* object) {
-    func_02025e30(&object->unk_21594);
+    BgText_Free(&object->unk_21594);
 }
 
 void func_ov030_020b1330(EventSelectObject* object) {
@@ -2041,9 +2043,6 @@ void func_ov030_020b1450(EventSelectObject* object) {
     func_ov030_020b10b0(object);
 }
 
-// Nonmatching: register allocation only. The four palette / brightness clears are emitted in the right
-// order, but mwcc loads &data_02066aec / &g_DisplaySettings from the literal pool in the opposite order
-// and so swaps the two registers they land in.
 void func_ov030_020b1620(void) {
     const char*        sequenceName = data_ov030_021008b0;
     EventSelectObject* object       = Mem_AllocHeapTail(&gDebugHeap, 0x219B4);
@@ -2053,9 +2052,11 @@ void func_ov030_020b1620(void) {
     object->unk_11584 = DatMgr_AllocateSlot();
     func_ov030_020b20c0();
     Display_SetMainLayers(LAYER_NONE);
-    object->prevResources                              = ResourceMgr_ReinitManagers(&object->resources);
-    g_DisplaySettings.controls[DISPLAY_SUB].brightness = data_02066eec = g_DisplaySettings.controls[DISPLAY_MAIN].brightness =
-        data_02066aec                                                  = 0;
+    object->prevResources                               = ResourceMgr_ReinitManagers(&object->resources);
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]                = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]                 = 0;
+    g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 0;
+    g_DisplaySettings.controls[DISPLAY_SUB].brightness  = 0;
     func_ov030_020b1330(object);
     gSaveData.fieldArea = data_ov030_020de334[gSaveData.unk_26E6].entries[gSaveData.unk_26E4].unk_2;
     MainOvlDisp_NextProcessStage();
@@ -2217,12 +2218,12 @@ void func_ov030_020b1bd8(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
     }
 }
 

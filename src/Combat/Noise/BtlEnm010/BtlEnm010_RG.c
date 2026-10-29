@@ -2,6 +2,8 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEffect.h"
+#include "Combat/Core/CombatSystem.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010RGAim {
@@ -36,8 +38,6 @@ s32         func_ov011_02127b98(void* arg0, Task* arg1);
 s32         func_ov011_02127bdc(void* arg0, Task* arg1);
 s32         func_ov011_02127bf0(BtlEnm010RG* data, s32 arg1);
 s32         func_ov011_02127c4c(BtlEnm010RG* data);
-
-extern s16  func_ov003_020843b0(s32 a, s32 b);
 extern void func_ov003_020c427c(void* p, void* arg1);
 extern void func_ov011_02126b2c(BtlEnm010RG* data);
 extern void func_ov011_02126bf8(BtlEnm010RG* data);
@@ -60,20 +60,16 @@ extern s32  func_ov003_020cb594(void* p, s32 arg1);
 extern s32  func_ov011_02127758(void* p, s32 arg1);
 extern s32  func_ov003_020c6230(void* p);
 extern s32  func_ov011_021277c8(void* p, s16* arg1, s16* arg2, s32 arg3);
-extern s32  func_ov003_020c703c(void* p);
 extern s32  func_ov003_020c62c4(void* p, s32 arg1);
-extern s32  func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32  func_ov003_020c3efc(void* p, void* arg1);
 extern s32  func_ov003_020c44ac(void* p);
 extern s32  func_ov003_020c4b1c(void* p);
 extern void func_ov003_020c4748(void* p);
-extern s32  func_ov003_0208810c(void* p, void* arg1);
 extern s32  func_ov003_020cba54(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
 extern s32  func_ov003_020cb910(void* a0, void* a1, void* a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
 extern s32  func_ov003_020c4628(void* p);
 extern s32  func_ov003_020c4c9c(void* p);
-extern s32  func_ov003_020c72b4(void* p, s32 arg1, s32 arg2);
 extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern s32  func_ov003_020cb594(void* p, s32 arg1);
 extern s32  func_ov003_020cb744(s32 arg0);

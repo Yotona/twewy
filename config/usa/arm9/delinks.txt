@@ -16,6 +16,7 @@ src/Engine/Core/UnknownFlag.c:
     .bss        start:0x02066a58 end:0x02066a5c
 
 src/main.c:
+    categories: Engine
     complete
     .text       start:0x02000bdc end:0x02001254
     .data       start:0x020636a0 end:0x020636cc
@@ -174,16 +175,31 @@ src/Engine/Resources/SpriteMgr.c:
     .rodata     start:0x0205adb4 end:0x0205adf8
     .bss        start:0x0206b408 end:0x0206b41c
 
+src/Engine/MiniTask.c:
+    categories: Engine
+    complete
+    .text       start:0x0200edac end:0x0200f198
+
 src/Engine/EasyTask.c:
     categories: Engine
     complete
     .text       start:0x0200f198 end:0x0200f86c
     .data       start:0x02063828 end:0x02063844
 
+src/Engine/IO/main_0200f86c.c:
+    categories: Engine
+    complete
+    .text       start:0x0200f86c end:0x0200f94c
+
 src/Engine/Text.c:
     categories: Engine
     .text       start:0x0200f94c end:0x02011f00
     .rodata     start:0x0205ae64 end:0x0205b754
+
+src/Util/DbgLog.c:
+    .text       start:0x02011f00 end:0x0201202c
+    .data       start:0x02063858 end:0x0206386c
+    .bss        start:0x0206b41c end:0x0206b854
 
 libs/cri/src/adx_bahx.c:
     categories: CriWare, Library
@@ -457,41 +473,53 @@ libs/cri/src/criss.c:
     .bss        start:0x02071b00 end:0x02071cf0
 
 src/Inventory.c:
+    categories: Engine
     .text       start:0x02021fcc end:0x020246d4
 
 src/Savefile.c:
+    categories: Engine
     .text       start:0x020246d4 end:0x02025b68
     .rodata     start:0x0205c96c end:0x0205c988
     .data       start:0x02065be4 end:0x02065c08
 
-src/UnkResourceHandler.c:
+src/BgText.c:
+    categories: Engine
     .text       start:0x02025b68 end:0x02025e74
+    .rodata     start:0x0205c988 end:0x0205ca88
+    .data       start:0x02065c08 end:0x02065c74
 
 src/CellText.c:
+    categories: Engine
     .text       start:0x02025e74 end:0x0202614c
 
 src/EasyFade.c:
+    categories: Engine
     complete
     .text       start:0x0202614c end:0x02026528
     .rodata     start:0x0205cb10 end:0x0205cb3c
     .data       start:0x02065c94 end:0x02065ca0
     .bss        start:0x020751dc end:0x02075204
 
+src/main_02026528.c:
+    categories: Engine
+    complete
+    .text       start:0x02026528 end:0x020268f0
+    .data       start:0x02065ca0 end:0x02065cb0
+    .bss        start:0x02075204 end:0x02075214
+
 src/SndMgr.c:
+    categories: Engine
     complete
     .text       start:0x020268f0 end:0x02027294
     .data       start:0x02065cb0 end:0x02065cd0
     .bss        start:0x02075214 end:0x020768f0
 
 src/CriSndMgr.c:
+    categories: Engine
     .text       start:0x02027294 end:0x020274ac
     .rodata     start:0x0205e0ec end:0x0205e324
     .data       start:0x02065cd0 end:0x02065fcc
     .bss        start:0x020768f0 end:0x02076a14
-
-src/unk_main_44.c:
-    .text       start:0x020274ac end:0x020339e0
-    .data       start:0x02065fcc end:0x02066238
 
 libs/nitro/src/fx/fx_matrix.c:
     categories: Library, NitroSDK
@@ -727,16 +755,160 @@ libs/c/src/strtoul.c:
     .text       start:0x0204dd98 end:0x0204e684
     .exceptix   start:0x02059048 end:0x0205906c
 
+libs/c/src/math/e_acos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204e684 end:0x0204ee7c
+    .exceptix   start:0x0205906c end:0x02059078
+
+libs/c/src/math/e_asin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204ee7c end:0x0204f5c8
+    .exceptix   start:0x02059078 end:0x02059084
+
+libs/c/src/math/e_log.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204f5c8 end:0x0204fd00
+    .exceptix   start:0x02059084 end:0x02059090
+    .bss        start:0x02082480 end:0x02082488
+
+libs/c/src/math/e_log10.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204fd00 end:0x0204fed8
+    .exceptix   start:0x02059090 end:0x0205909c
+    .bss        start:0x02082488 end:0x02082490
+
+libs/c/src/math/e_pow.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0204fed8 end:0x02051060
+    .exception  start:0x02058e20 end:0x02058e28
+    .exceptix   start:0x0205909c end:0x020590a8
+    .rodata     start:0x02063478 end:0x020634a8
+
+libs/c/src/math/e_rem_pio2.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02051060 end:0x02051728
+    .exception  start:0x02058e28 end:0x02058e30
+    .exceptix   start:0x020590a8 end:0x020590b4
+    .rodata     start:0x020634a8 end:0x02063630
+
+libs/c/src/math/k_cos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02051728 end:0x02051a48
+    .exceptix   start:0x020590b4 end:0x020590c0
+
+libs/c/src/math/k_rem_pio2.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02051a48 end:0x02052604
+    .exception  start:0x02058e30 end:0x02058e38
+    .exceptix   start:0x020590c0 end:0x020590cc
+    .rodata     start:0x02063630 end:0x02063680
+
+libs/c/src/math/k_sin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052604 end:0x02052880
+    .exceptix   start:0x020590cc end:0x020590d8
+
+libs/c/src/math/s_copysign.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052880 end:0x020528a8
+
+libs/c/src/math/s_cos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020528a8 end:0x02052a18
+    .exceptix   start:0x020590d8 end:0x020590e4
+
 libs/c/src/math/s_fabs.c:
     categories: Library, MSL
     complete
     .text       start:0x02052a18 end:0x02052a38
+
+libs/c/src/math/s_floor.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052a38 end:0x02052bf8
+    .exceptix   start:0x020590e4 end:0x020590f0
+
+libs/c/src/math/s_frexp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052bf8 end:0x02052cb4
+    .exceptix   start:0x020590f0 end:0x020590fc
+
+libs/c/src/math/s_ldexp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052cb4 end:0x02052f00
+    .exceptix   start:0x020590fc end:0x02059108
+
+libs/c/src/math/s_sin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02052f00 end:0x02053074
+    .exceptix   start:0x02059108 end:0x02059114
+
+libs/c/src/math/w_acos.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053074 end:0x02053080
+    .exceptix   start:0x02059114 end:0x02059120
+
+libs/c/src/math/w_asin.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053080 end:0x0205308c
+    .exceptix   start:0x02059120 end:0x0205912c
+
+libs/c/src/math/w_log10.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x0205308c end:0x02053098
+    .exceptix   start:0x0205912c end:0x02059138
+
+libs/c/src/math/w_pow.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x02053098 end:0x020530a4
+    .exceptix   start:0x02059138 end:0x02059144
+
+libs/c/src/ansi_fp.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020530a4 end:0x020544c0
+    .exception  start:0x02058e38 end:0x02058e40
+    .exceptix   start:0x02059144 end:0x020591a4
+    .data       start:0x02066728 end:0x02066864
+
+libs/c/src/math_api.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020544c0 end:0x020545d8
+
+libs/c/src/extras.c:
+    categories: Library, MSL
+    complete
+    .text       start:0x020545d8 end:0x02054604
+    .exceptix   start:0x020591a4 end:0x020591b0
 
 libs/c/src/pool_alloc.c:
     categories: Library, MSL
     complete
     .text       start:0x02054604 end:0x02054634
     .exceptix   start:0x020591b0 end:0x020591c8
+
+libs/runtime/src/runtime_02054634.c:
+    categories: Library, MSL
+    .text       start:0x02054634 end:0x02057034
 
 libs/runtime/src/console_io.c:
     categories: Library, MSL
@@ -773,6 +945,12 @@ libs/runtime/src/cxxabi_alloc.cpp:
     .text       start:0x020587a4 end:0x0205897c
     .exception  start:0x02058eb4 end:0x02058f04
     .exceptix   start:0x020592c4 end:0x020592f4
+
+libs/runtime/src/cxxabi_rtti.cpp:
+    categories: Library, MSL
+    .text       start:0x0205897c end:0x020589f4
+    .exceptix   start:0x020592f4 end:0x02059330
+    .data       start:0x02066978 end:0x02066a14
 
 libs/runtime/src/MWException.cpp:
     categories: Library, MSL

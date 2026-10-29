@@ -14,9 +14,6 @@
 // func_0200d954 is left out: its JP counterpart is named func_0200d8f0, which is aliased below.
 #ifndef REGION_USA
     #define data_0205c9b0 data_0205d03c
-    #define data_02066cec data_0206754c
-    #define data_020670ec data_0206794c
-    #define data_020672ec data_02067b4c
     #define data_0206aa78 data_0206b2d8
     #define data_0206aa7c data_0206b2dc
     #define func_02001b44 func_02001ae0
@@ -25,8 +22,8 @@
     #define func_0200d898 func_0200d834
     #define func_0200d8f0 func_0200d88c
     #define func_0200d90c func_0200d8a8
-    #define func_02025b68 func_02025b10
-    #define func_02025e30 func_02025dd8
+    #define BgText_Init   func_02025b10
+    #define BgText_Free   func_02025dd8
     #define func_020265d4 func_0202657c
     #define func_02027170 func_02027118
     #define func_0202b878 func_0202b820

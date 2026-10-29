@@ -11,6 +11,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Player/Inventory.h"
 #include "Save.h"
@@ -522,8 +523,8 @@ void Save_Init(SaveMenuState* state) {
     Mem_InitializeHeap(&state->base.heap, state->base.heapBuffer, sizeof(state->base.heapBuffer));
     FS_LoadOverlay(0, (u32)&OVERLAY_31_ID);
     EasyTask_InitializePool(&state->base.taskPool, &state->base.heap, 0x200, NULL, NULL);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     EasyTask_CreateTask(&state->base.taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, -16, 0x1000);
     friendData = Mem_AllocHeapTail(&gMainHeap, sizeof(GlobalFriendData));
@@ -690,13 +691,14 @@ void Save_InitDisplay(void) {
     g_DisplaySettings.engineState[DISPLAY_MAIN].bgSettings[3].mosaic   = 0;
     g_DisplaySettings.controls[DISPLAY_MAIN].objTileMode               = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode                = GX_OBJBMPMODE_1D_128K;
+    data_0206aa78                                                      = 0x300010;
+    data_0206aa7c                                                      = 0x400040;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode                = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode                 = GX_OBJBMPMODE_1D_128K;
-    g_DisplaySettings.controls[DISPLAY_MAIN].layers &= 0xFF;
     Display_SetMainLayers(LAYER_BG1 | LAYER_BG2 | LAYER_BG3);
-    data_0206aa78 = 0x300010;
-    data_0206aa7c = 0x400040;
+    Display_GetMainControls()->layers &= 0xFF;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers |= LAYER_OBJ;
+    g_DisplaySettings.controls[DISPLAY_MAIN].layers &= 0xFF;
 
     g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
@@ -750,13 +752,13 @@ void Save_VBlank(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 0x400);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 0x400);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
-        func_02001b44(2, 0, &data_020672ec, 0x400);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
+        func_02001b44(2, 0, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     }
 }
 

@@ -5,11 +5,83 @@
     .data       start:0x020ff3c0 end:0x020ff640 kind:data align:32
     .bss        start:0x020ff640 end:0x020ff660 kind:bss align:32
 
+src/Combat/Noise/Boss00/BtlFldBoss00_RG.c:
+    .text       start:0x020f1080 end:0x020f1ed8
+    .rodata     start:0x020fea58 end:0x020feb7c
+    .data       start:0x020ff3c0 end:0x020ff3f8
+    .bss        start:0x020ff640 end:0x020ff64c
+
+src/Combat/Noise/Boss00/BtlFldBoss00_UG.c:
+    .text       start:0x020f1ed8 end:0x020f2ce0
+    .rodata     start:0x020feb7c end:0x020fec60
+    .data       start:0x020ff3f8 end:0x020ff42c
+    .bss        start:0x020ff64c end:0x020ff658
+
+src/Combat/Noise/Boss00/Boss00Sml_RG.c:
+    .text       start:0x020f2ce0 end:0x020f4f64
+    .rodata     start:0x020fec60 end:0x020fed80
+    .data       start:0x020ff42c end:0x020ff498
+
+src/Combat/Noise/Boss00/TaskBoss00_Supple.c:
+    .text       start:0x020f4f64 end:0x020f56ec
+    .rodata     start:0x020fed80 end:0x020fedb0
+    .data       start:0x020ff498 end:0x020ff4ac
+
+src/Combat/Noise/Boss00/Boss00Lrg.c:
+    .text       start:0x020f56ec end:0x020fb0f8
+    .rodata     start:0x020fedb0 end:0x020ff110
+    .data       start:0x020ff4ac end:0x020ff518
+
+src/Combat/Noise/Boss00/TaskBoss00_Darkness.c:
+    .text       start:0x020fb0f8 end:0x020fb73c
+    .rodata     start:0x020ff110 end:0x020ff158
+    .data       start:0x020ff518 end:0x020ff540
+
+src/Combat/Noise/Boss00/ov018_020fb73c.c:
+    .text       start:0x020fb73c end:0x020fb774
+
+src/Combat/Noise/Boss00/TaskBoss00_Sonic.c:
+    .text       start:0x020fb774 end:0x020fc11c
+    .rodata     start:0x020ff158 end:0x020ff1a4
+    .data       start:0x020ff540 end:0x020ff554
+
+src/Combat/Noise/Boss00/TaskBoss00_Glide.c:
+    .text       start:0x020fc11c end:0x020fc3ac
+    .rodata     start:0x020ff1a4 end:0x020ff1cc
+    .data       start:0x020ff554 end:0x020ff568
+
+src/Combat/Noise/Boss00/TaskBoss00_Cross.c:
+    .text       start:0x020fc3ac end:0x020fcc5c
+    .rodata     start:0x020ff1cc end:0x020ff1f8
+    .data       start:0x020ff568 end:0x020ff57c
+
+src/Combat/Noise/Boss00/Boss00f_RG.c:
+    .text       start:0x020fcc5c end:0x020fd274
+    .rodata     start:0x020ff1f8 end:0x020ff250
+    .data       start:0x020ff57c end:0x020ff58c
+
+src/Combat/Noise/Boss00/TaskBoss00_BlinkUG.c:
+    .text       start:0x020fd274 end:0x020fd9a0
+    .rodata     start:0x020ff250 end:0x020ff298
+    .data       start:0x020ff58c end:0x020ff5b4
+
+src/Combat/Noise/Boss00/TaskBoss00_Spark.c:
+    .text       start:0x020fd9a0 end:0x020fdbf8
+    .rodata     start:0x020ff298 end:0x020ff2cc
+    .data       start:0x020ff5b4 end:0x020ff5c8
+    .bss        start:0x020ff658 end:0x020ff660
+
 src/Combat/Noise/Boss00/Boss00Light_RG.c:
     .text       start:0x020fdbf8 end:0x020fdeb8
+    .rodata     start:0x020ff2cc end:0x020ff2f0
+    .data       start:0x020ff5c8 end:0x020ff5dc
 
 src/Combat/Noise/Boss00/Boss00OBJ.c:
     .text       start:0x020fdeb8 end:0x020fe5d8
+    .rodata     start:0x020ff2f0 end:0x020ff368
+    .data       start:0x020ff5dc end:0x020ff614
 
 src/Combat/Noise/Boss00/BtlObsBoss00.c:
     .text       start:0x020fe5d8 end:0x020fea58
+    .rodata     start:0x020ff368 end:0x020ff3ac
+    .data       start:0x020ff614 end:0x020ff640

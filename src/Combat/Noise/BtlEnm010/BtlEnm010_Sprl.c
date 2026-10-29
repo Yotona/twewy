@@ -1,6 +1,8 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Sprl {
@@ -50,22 +52,11 @@ extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
 /// `func_ov003_0208a164` -- five arguments (r0-r3 plus one stack word), returning 1 on success.
 extern s32 func_ov003_0208a164(BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y, s32 z);
 
-/// `func_ov003_020cbcb4` -- writes a polar angle/radius pair into two x/y out-arrays; five
-/// arguments, the fifth on the caller's stack.
-extern void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 radius, s32 scale);
-
 extern s32 FX_Divide(s32 numer, s32 denom);
 s32        func_ov011_02128758(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
 s32        func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1);
 s32        func_ov011_02128b80(BtlEnm010Sprl* data);
 s32        func_ov011_02128c30(BtlEnm010Sprl* p);
-
-/// `func_ov003_020c37f8` -- reads the two-bit field at offset 0 of its argument and returns
-/// whether it is 1. One argument.
-extern s32 func_ov003_020c37f8(void* p);
-
-/// `func_ov003_020c3c28` -- no arguments; returns a global mode bit.
-extern s32 func_ov003_020c3c28(void);
 
 /// `CombatSprite_Update` (`func_ov003_02082b0c`) -- one argument, a `CombatSprite*`; ticks a
 /// palette timer behind the sprite's `flags46` bit 12. Declared in `Combat/Core/CombatSprite.h`.
@@ -83,8 +74,6 @@ extern s32 func_ov011_021288c8(BtlEnm010Sprl* p);
 extern s32 func_ov011_02128b80(BtlEnm010Sprl* data);
 extern s32 func_ov011_02128c30(BtlEnm010Sprl* p);
 extern s32 func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
-extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020cba2c(s32 a0, s32 a1, s32 a2, s32 a3);
 
 const TaskHandle data_ov011_0212c210 = {(const char*)data_ov011_0212cc54, func_ov011_02128758, 184};
 

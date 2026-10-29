@@ -1,4 +1,5 @@
 #include "Otosu/OtosuMenu.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Field/Scene/FieldSeq.h"
 
 extern void ProcessOverlay_OtosuGame_SinglePlayer();
@@ -1055,11 +1056,11 @@ static OtosuMenuObj* OtosuMenu_Init(void) {
     EasyTask_InitializePool(&obj->taskPool, &obj->heap, 0x100, NULL, NULL);
     EasyTask_CreateTask(&obj->taskPool, &Task_EasyFade, NULL, 0, NULL, NULL);
     func_0200d8f0();
-    data_02066aec       = 0;
-    data_02066eec       = 0;
-    obj->unk_46070      = SystemStatusFlags.unk_06;
-    obj->wirelessLoaded = 0;
-    obj->wirelessActive = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
+    obj->unk_46070                       = SystemStatusFlags.unk_06;
+    obj->wirelessLoaded                  = 0;
+    obj->wirelessActive                  = 0;
     return obj;
 }
 

@@ -9,6 +9,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 
 s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, void* arg2, s32 arg3);
@@ -174,13 +175,13 @@ void func_ov028_020e8310(void) {
         Display_Commit();
         DMA_Flush();
         OamMgr_Commit();
-        DC_PurgeRange(&data_02066aec, 1024);
-        GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-        GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-        DC_PurgeRange(&data_02066eec, 1024);
-        GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-        GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
-        func_02001b44(2, NULL, &data_020672ec, 0x400);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 1024);
+        GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+        GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+        DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 1024);
+        GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+        GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
+        func_02001b44(2, NULL, &g_PaletteBuffers[DISPLAY_EXTENDED], 0x400);
     }
 }
 
@@ -316,8 +317,8 @@ void func_ov028_020e8878(NoiseReportState* state) {
     TouchInput_Init();
     Mem_InitializeHeap(&state->heap, &state->memBlock, 0x10000);
     EasyTask_InitializePool(&state->taskPool, &state->heap, 512, NULL, NULL);
-    data_02066aec = 0;
-    data_02066eec = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0] = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]  = 0;
     EasyTask_CreateTask(&state->taskPool, &Task_EasyFade, NULL, 0, NULL, 0);
     EasyFade_FadeBothDisplays(FADER_SMOOTH, 16, 0x1000);
     func_ov028_020e7d08(&state->taskPool, &state->unk_21610);

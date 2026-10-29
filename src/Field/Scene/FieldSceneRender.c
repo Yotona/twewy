@@ -21,8 +21,8 @@
 #include <nitro/fx/fx_matrix.h>
 #include <nitro/g3.h>
 
-extern void func_020267e0(s32 arg0);
-extern void func_0202688c(void);
+extern void TexVram_Init(s32 arg0);
+extern void TexVram_Shutdown(void);
 extern void func_02027b0c(s32 arg0, s32 arg1);
 extern void func_02028a44(void);
 extern void func_02028ad0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
@@ -329,7 +329,7 @@ void func_ov030_020b6014(Ov030B5C58Root* arg0) {
     func_02028b0c(0, 0x7FFF);
     Mtx_OrthoW(0, -0xC0000, 0, 0x100000, -0x800000, 0x800000, 0x800000, &data_02076a4c);
     data_02076a44.unk_FC = data_02076a44.unk_FC & ~0x50;
-    func_020267e0(0x80);
+    TexVram_Init(0x80);
     func_02027b0c(0x4000, 1);
     if ((u32)gSaveData.unk_26E0 >= 0x14) {
         gSaveData.unk_26E0 = 0;
@@ -406,7 +406,7 @@ void func_ov030_020b6464(Ov030B5C58Root* arg0) {
             i++;
         } while (i < arg0->unk1352C);
     }
-    func_0202688c();
+    TexVram_Shutdown();
     for (i = 0; i < 5; i++) {
         data = arg0->unk13488[i];
         if (data != NULL) {
@@ -446,8 +446,8 @@ void func_ov030_020b65c0(void) {
     MainOvlDisp_SetCbArg(root);
     func_ov030_020b7400();
     root->prevResources                      = ResourceMgr_ReinitManagers(&root->resources);
-    data_02066eec                            = 0;
-    data_02066aec                            = 0x7FFF;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0x7FFF;
     g_DisplaySettings.controls[0].brightness = 0;
     g_DisplaySettings.controls[1].brightness = 0;
 

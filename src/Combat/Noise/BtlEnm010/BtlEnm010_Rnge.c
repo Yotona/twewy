@@ -1,6 +1,9 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Rnge {
@@ -12,16 +15,6 @@ typedef struct BtlEnm010Rnge {
 
 extern char data_ov011_0212cc10[20];
 s32         func_ov011_02127ce0(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
-
-extern s32 func_ov003_020c37f8(void* p);
-extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020cc354(void* p);
-extern s16 func_ov003_020843b0(s32 a, s32 b);
-extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
-extern s32 func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
-extern s32 func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
-extern s32 func_ov003_020c3c28(void);
-extern s32 func_ov003_020843ec(s32 a0, s32 a1, s32 a2);
 
 const TaskHandle data_ov011_0212c1d4 = {(const char*)data_ov011_0212cc10, func_ov011_02127ce0, 108};
 

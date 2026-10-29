@@ -263,7 +263,6 @@ data_ov004_020f0068 kind:data(any) addr:0x020f0068
 Tsk_BtlPlayer01 kind:data(any) addr:0x020f0070
 @1662 kind:data(any) addr:0x020f007c local
 data_ov004_020f008c kind:data(any) addr:0x020f008c
-data_ov004_020f0120 kind:data(any) addr:0x020f0120 ambiguous
 
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Friend/Shiki/BtlArm_Doll.c
@@ -324,7 +323,7 @@ data_ov004_020f0480 kind:data(any) addr:0x020f0480 local
 //////////////////////////////////////////////////////////////////////
 // src/Combat/Friend/Shiki/BtlFeat01.c
 //////////////////////////////////////////////////////////////////////
-Tsk_BtlFeat01 kind:data(any) addr:0x020f0498 ambiguous
+Tsk_BtlFeat01 kind:data(any) addr:0x020f0498
 @1223 kind:data(any) addr:0x020f04a4 local
 
 //////////////////////////////////////////////////////////////////////
@@ -348,7 +347,7 @@ data_ov004_020f0504 kind:data(any) addr:0x020f0504 local
 // src/Combat/Friend/Shiki/BtlFeat02.c
 //////////////////////////////////////////////////////////////////////
 data_ov004_020f051c kind:data(any) addr:0x020f051c
-Tsk_BtlFeat02 kind:data(any) addr:0x020f0524 ambiguous
+Tsk_BtlFeat02 kind:data(any) addr:0x020f0524
 data_ov004_020f0530 kind:data(any) addr:0x020f0530
 data_ov004_020f0540 kind:data(any) addr:0x020f0540
 data_ov004_020f0550 kind:data(any) addr:0x020f0550

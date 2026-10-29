@@ -1280,10 +1280,10 @@ void Field_SetupDisplay2D(FieldEventManager* mgr, s32 use256Colors) {
     Display_SetBlendLayers(DISPLAY_MAIN, 0x1, 0x3F);
     OamMgr_InitEngine(0, 0);
     OamMgr_Reset(&g_OamMgr[0], 0, 0);
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 512, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 512, 1);
     OamMgr_InitEngine(0, 2);
     OamMgr_SetAffineCount(&g_OamMgr[2], 0);
-    Color_CopyRange((u16*)&data_020672ec, &data_0205a128, 0, 512, 1);
+    Color_CopyRange((u16*)&g_PaletteBuffers[DISPLAY_EXTENDED], &data_0205a128, 0, 512, 1);
     OamMgr_ResetCommandQueues(&g_OamMgr[0]);
     BgResMgr_Init(&mgr->resources.mainBgMgr, 0);
     ObjResMgr_Init(&mgr->resources.objResMgr0, 0);
@@ -1312,10 +1312,10 @@ void Field_SetupDisplay3D(FieldEventManager* mgr) {
     Display_SetBlendLayers(DISPLAY_MAIN, 0x2, 0x33);
     OamMgr_InitEngine(0, 0);
     OamMgr_Reset(&g_OamMgr[0], 0, 0);
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 512, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 512, 1);
     OamMgr_InitEngine(0, 2);
     OamMgr_SetAffineCount(&g_OamMgr[2], 0);
-    Color_CopyRange((u16*)&data_020672ec, &data_0205a128, 0, 512, 1);
+    Color_CopyRange((u16*)&g_PaletteBuffers[DISPLAY_EXTENDED], &data_0205a128, 0, 512, 1);
     BgResMgr_Init(&mgr->resources.mainBgMgr, 0);
     ObjResMgr_Init(&mgr->resources.objResMgr0, 0);
     ObjResMgr_Init(&mgr->resources.objResMgr2, 2);

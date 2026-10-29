@@ -1,6 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEnemy.h"
 #include <nitro/mi/cpumem.h>
 
 extern char data_ov011_0212cc68[20];
@@ -38,8 +39,6 @@ extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
 extern s32                    func_ov003_0208a1a4(const BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y);
 extern void                   func_ov003_020cbd30(s32* out, s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 t);
 extern u16                    func_ov003_020cba14(s32 x0, s32 y0, s32 x1, s32 y1);
-extern s32                    func_ov003_020c37f8(void* p);
-extern s32                    func_ov003_020c3c28(void);
 extern s16                    func_ov003_020843b0(s32 a, s32 b);
 extern s32                    func_ov003_020843ec(s32 a, s32 b, s32 c);
 extern s32                    func_ov003_020cbc50(s32* a, s32* b, u16 c, s32 d);

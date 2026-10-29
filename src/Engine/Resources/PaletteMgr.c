@@ -3,11 +3,11 @@
 #include "Engine/Core/Memory.h"
 
 #include "Display.h"
+#include "common_data.h"
 
 #include <nitro/mi/cpumem.h>
 
 extern u16 data_02059d24;
-extern u8  data_02066aec;
 
 static void func_0200b09c(PaletteResource* arg0, void* arg1, s32 arg2, u32 arg3);
 static void func_0200b198(PaletteResource* arg0, void* arg1, s32 arg2, u32 arg3);
@@ -264,16 +264,16 @@ void PaletteMgr_Init(PaletteMgr* mgr, DisplayEngine engine) {
     GXVRam vramBank = GX_VRAM_NONE;
     switch (engine) {
         case DISPLAY_MAIN:
-            mgr->unk_04 = &data_02066aec + (engine << 0xA);
+            mgr->unk_04 = g_PaletteBuffers[engine].bg;
             vramBank    = GX_GetBankForBgExtPltt();
             break;
         case DISPLAY_SUB:
-            mgr->unk_04 = &data_02066aec + (engine << 0xA);
+            mgr->unk_04 = g_PaletteBuffers[engine].bg;
             vramBank    = GX_GetBankForSubBgExtPltt();
             break;
         case DISPLAY_EXTENDED: {
             PalSlot slot;
-            mgr->unk_04 = &data_02066aec + (engine << 0xA);
+            mgr->unk_04 = g_PaletteBuffers[engine].bg;
             func_0200a3b8(&slot, mgr->slots, 0, 0, 16);
         } break;
     }
@@ -334,7 +334,7 @@ void PaletteMgr_Init(PaletteMgr* mgr, DisplayEngine engine) {
     mgr->unk_1C = NULL;
 
     if (engine == DISPLAY_EXTENDED) {
-        void* temp  = &data_02066aec + (engine << 0xA);
+        void* temp  = g_PaletteBuffers[engine].bg;
         mgr->unk_18 = temp;
         mgr->unk_1C = (void*)((u8*)temp + 0x200);
         return;
@@ -342,11 +342,11 @@ void PaletteMgr_Init(PaletteMgr* mgr, DisplayEngine engine) {
 
     switch (engine) {
         case DISPLAY_MAIN:
-            mgr->unk_18 = &data_02066aec + (engine << 0xA) + 0x200;
+            mgr->unk_18 = g_PaletteBuffers[engine].obj;
             vramBank    = GX_GetBankForObjExtPltt();
             break;
         case DISPLAY_SUB:
-            mgr->unk_18 = &data_02066aec + (engine << 0xA) + 0x200;
+            mgr->unk_18 = g_PaletteBuffers[engine].obj;
             vramBank    = GX_GetBankForSubObjExtPltt();
             break;
     }

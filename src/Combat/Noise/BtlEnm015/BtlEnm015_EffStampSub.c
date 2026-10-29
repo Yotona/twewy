@@ -1,6 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm015.h"
 
+#include "Combat/Core/CombatEnemy.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015StampSub {
@@ -12,10 +13,6 @@ typedef struct BtlEnm015StampSub {
     /* 0x6C */ s32          unk_6C;
     /* 0x70 */ s32          unk_70;
 } BtlEnm015StampSub; // Size: 0x74
-
-extern s32  func_ov003_020c37f8(void*);
-extern s32  func_ov003_020c3c28(void);
-extern void func_ov003_020c4cc4(void*, s32);
 extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern void func_ov003_02087ed8(u16);
 extern s32  func_ov003_0208a114(u16);

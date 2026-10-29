@@ -155,4 +155,6 @@ s32 Mem_InitPool(Pool* pool, u32 size, const char* sequence);
 
 void* Mem_AllocPool(Pool* pool, u32 size);
 
+void Mem_ResetPool(Pool* pool);
+
 #endif // MEMORY_H

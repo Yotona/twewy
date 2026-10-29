@@ -1,6 +1,8 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
+#include "Combat/Core/CombatEnemy.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Shot {
@@ -55,18 +57,12 @@ s32 func_ov011_02128704(BtlEnm010SingleShot* p);
 extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
 extern s32                    func_ov003_0208a1a4(const BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y);
 extern s32                    func_ov003_0208442c(s32 a0, s32 a1);
-extern s32                    func_ov003_020c37f8(void* p);
-extern s32                    func_ov003_020c3c28(void);
 extern s16                    func_ov003_020843b0(s32 a, s32 b);
 extern s32                    func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
-extern s32                    func_ov003_020cbc50(s32* a, s32* b, u16 c, s32 d);
-extern s32                    func_ov003_020cb744(s32 arg);
 extern s32                    func_ov011_021283a8(BtlEnm010SingleShot* data, BtlEnm010SingleShotArgs* arg1);
 extern s32                    func_ov011_021284bc(BtlEnm010SingleShot* p);
 extern s32                    func_ov011_02128698(BtlEnm010SingleShot* p);
-extern s32                    func_ov003_020cb744(s32 arg0);
 extern s32                    func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
-extern s32                    func_ov003_020c3c28(void);
 
 const s32 data_ov011_0212c1ec[3] = {4096, 3584, 3072};
 

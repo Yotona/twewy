@@ -2,6 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm015.h"
 #include "Engine/Math/Random.h"
 
+#include "Combat/Core/CombatEnemy.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015Shake {
@@ -10,10 +11,7 @@ typedef struct BtlEnm015Shake {
     /* 0x08 */ s32          unk_08;
     /* 0x0C */ u16          unk_0C;
 } BtlEnm015Shake; // Size: 0x10
-
-extern s32 func_ov003_020c37f8(void*);
-extern s32 func_ov003_020c3c28(void);
-s32        func_ov013_02126ff4(TaskPool*, Task*, void*, s32);
+s32 func_ov013_02126ff4(TaskPool*, Task*, void*, s32);
 
 const TaskHandle Tsk_BtlEnm015_Shake = {"Tsk_BtlEnm015_Shake", func_ov013_02126ff4, 0x10};
 

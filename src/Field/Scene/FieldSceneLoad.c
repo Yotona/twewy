@@ -1,5 +1,6 @@
 #include "Field/FieldRegion.h"
 
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -31,7 +32,7 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32  func_0202599c(s32 flagIndex);
-extern void func_020267e0(s32 arg0);
+extern void TexVram_Init(s32 arg0);
 extern void func_02027b0c(s32 arg0, s32 arg1);
 extern void func_02028a44(void);
 extern void func_02028ad0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
@@ -39,8 +40,8 @@ extern void func_02028b0c(s32 arg0, s32 arg1);
 
 extern void func_02010b50(TextObject* textObj);
 extern void func_02010b84(TextObject* textObj, s32 x, s32 y, s32 width, s32 height);
-extern void func_02025b68(void* textObj, UnkStruct_usedby_02025b68* params);
-extern void func_02025e30(void* textResource);
+extern void BgText_Init(void* textObj, UnkStruct_usedby_02025b68* params);
+extern void BgText_Free(void* textResource);
 extern void GX_LoadBgPltt(void* ptr, u32 offset, u32 size);
 extern void GX_LoadObjPltt(void* ptr, u32 offset, u32 size);
 extern void GXs_LoadBgPltt(void* ptr, u32 offset, u32 size);
@@ -105,7 +106,7 @@ void func_ov030_020b69f4(EventSelectObject* arg0) {
     params.unk_1A = 0;
     params.unk_1C = 0x20;
     params.unk_1E = 0x18;
-    func_02025b68(&arg0->unk_21594, &params);
+    BgText_Init(&arg0->unk_21594, &params);
     Text_RenderToScreen(&arg0->text, 0, 0, data_ov030_02106a54);
 }
 
@@ -117,7 +118,7 @@ void func_ov030_020b6a74(EventSelectObject* arg0) {
 }
 
 void func_ov030_020b6b14(EventSelectObject* arg0) {
-    func_02025e30(&arg0->unk_21594);
+    BgText_Free(&arg0->unk_21594);
 }
 
 void func_ov030_020b6b28(EventSelectObject* arg0) {
@@ -169,7 +170,6 @@ void func_ov030_020b6bc8(EventSelectObject* arg0) {
     func_ov030_020b6a74(arg0);
 }
 
-// Nonmatching
 void func_ov030_020b6ca0(void) {
     EventSelectObject* obj;
     const char*        seq;
@@ -181,8 +181,8 @@ void func_ov030_020b6ca0(void) {
     func_ov030_020b20c0();
     g_DisplaySettings.controls[0].layers     = 0;
     obj->prevResources                       = ResourceMgr_ReinitManagers(&obj->resources);
-    data_02066aec                            = 0;
-    data_02066eec                            = 0;
+    g_PaletteBuffers[DISPLAY_MAIN].bg[0]     = 0;
+    g_PaletteBuffers[DISPLAY_SUB].bg[0]      = 0;
     g_DisplaySettings.controls[0].brightness = 0;
     g_DisplaySettings.controls[1].brightness = 0;
     func_ov030_020b6b28(obj);
@@ -254,8 +254,8 @@ void func_ov030_020b6e2c(void) {
     GXs_LoadOam(g_OamMgr[1].oam, 0, 0x400);
     OamMgr_InitEngine(0, DISPLAY_EXTENDED);
     OamMgr_SetAffineCount(&g_OamMgr[2], 0);
-    Color_CopyRange(&data_02066aec, &data_0205a128, 0, 0x200, 1);
-    Color_CopyRange(&data_02066eec, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_MAIN].bg, &data_0205a128, 0, 0x200, 1);
+    Color_CopyRange(g_PaletteBuffers[DISPLAY_SUB].bg, &data_0205a128, 0, 0x200, 1);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
     Display_CommitSynced();
     g_DisplaySettings.controls[0].dispMode  = GX_DISPMODE_GRAPHICS;
@@ -346,12 +346,12 @@ u32 func_ov030_020b7330(void) {
     GX_LoadOam(g_OamMgr[0].oam, 0, 0x400);
     DC_PurgeRange(g_OamMgr[1].oam, 0x400);
     GXs_LoadOam(g_OamMgr[1].oam, 0, 0x400);
-    DC_PurgeRange(&data_02066aec, 0x400);
-    GX_LoadBgPltt(&data_02066aec, 0, 0x200);
-    GX_LoadObjPltt(&data_02066cec, 0, 0x200);
-    DC_PurgeRange(&data_02066eec, 0x400);
-    GXs_LoadBgPltt(&data_02066eec, 0, 0x200);
-    return GXs_LoadObjPltt(&data_020670ec, 0, 0x200);
+    DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
+    GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
+    GX_LoadObjPltt(g_PaletteBuffers[DISPLAY_MAIN].obj, 0, 0x200);
+    DC_PurgeRange(g_PaletteBuffers[DISPLAY_SUB].bg, 0x400);
+    GXs_LoadBgPltt(g_PaletteBuffers[DISPLAY_SUB].bg, 0, 0x200);
+    return GXs_LoadObjPltt(g_PaletteBuffers[DISPLAY_SUB].obj, 0, 0x200);
 }
 
 void func_ov030_020b7400(void) {
@@ -479,7 +479,7 @@ void func_ov030_020b7744(s32* arg0, s32 arg1) {
     Mtx_OrthoW(0xC0000, 0, 0, 0x100000, -0x400000, 0x400000, 0x400000, &data_02076a4c);
     data_02076a44.unk_FC = data_02076a44.unk_FC & ~0x50;
     func_02028a44();
-    func_020267e0(0x80);
+    TexVram_Init(0x80);
     func_02027b0c(0x4000, 1);
     *arg0 = data_02065fd4(0x800, 0, 1);
     area  = gSaveData.fieldArea;

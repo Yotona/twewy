@@ -4,24 +4,18 @@
 #include "Engine/Math/Random.h"
 #include "SndMgr.h"
 
+#include "Combat/Core/CombatSystem.h"
+#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32   func_ov003_020c37f8(void*);
-extern void  func_ov003_020c4ab4(void*, s32);
-extern void  func_ov003_020c4cc4(void*, s32);
-extern void  func_ov003_02084694(void*, s32);
-extern void  func_ov003_020c48b0(void*);
-extern void  func_ov003_020c492c(void*);
-extern s32   func_ov003_0208a114(u16);
-extern s32   func_ov003_0208a164(s32, void*, s32, s32, s32);
-extern void  func_ov003_020ccf1c(void*, s32);
-extern s32   func_ov003_020c42ec(void*);
-extern void  func_ov003_020c4b5c(void*);
-extern void  func_ov003_020a4390(s32, s32);
-extern void  func_ov003_020c4fc8(void*);
-extern void  func_ov003_020ccec0(void*, s32);
-extern void* func_ov003_0208495c(void*);
-extern void* func_ov003_02084984(void*);
+extern s32  func_ov003_020c37f8(void*);
+extern void func_ov003_020c4ab4(void*, s32);
+extern void func_ov003_020c4cc4(void*, s32);
+extern void func_ov003_020c48b0(void*);
+extern void func_ov003_020c492c(void*);
+extern s32  func_ov003_020c42ec(void*);
+extern void func_ov003_020c4b5c(void*);
+extern void func_ov003_020c4fc8(void*);
 
 /// An element of the `unk3D8BC` list.
 typedef struct Ov003Node3D8BC {

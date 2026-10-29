@@ -1,5 +1,7 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatEffect.h"
 #include "Combat/Core/CombatSprite.h"
+#include "Combat/Core/CombatSystem.h"
 #include "Combat/Fusion/BtlFusion.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
@@ -16,17 +18,7 @@ typedef struct AuraTarget {
 } AuraTarget;
 
 extern BinIdentifier data_ov003_020d7800;
-extern void*         func_ov003_0208495c(void* list);
-extern void*         func_ov003_02084984(void* node);
-extern void          func_ov003_020849ac(void* list);
-extern void          func_ov003_020849bc(void* list, void* node, void* value);
-extern void          func_ov003_020849dc(void* list, void* node);
-extern void          func_ov003_02087f28(s32, s32);
-extern void          func_ov003_02087f64(s32, s32);
-extern void          func_ov003_020974f8(s32, s32);
-extern void          func_ov003_0208cbc8(s16*);
 extern void          func_020265d4(void*, s32, u16);
-extern s32           func_ov003_0208b690(u16);
 
 s32  func_ov007_020e7c98(TaskPool*, Task*, void*);
 s32  func_ov007_020e7d48(TaskPool*, Task*, void*);
