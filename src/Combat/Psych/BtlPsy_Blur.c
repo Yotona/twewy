@@ -1,15 +1,15 @@
 #include "Combat/Core/CombatPsychEffects.h"
 
 #include "Combat/Core/CombatApi.h"
-extern s32        func_ov003_020843b0(s32, s32);
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(CombatListNode*);
+extern s32              func_ov003_020843b0(s32, s32);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 
 extern const TaskHandle data_ov003_020dc760;
 extern const TaskStages data_ov003_020dc76c;
 
 // Nonmatching: coordinate-load scheduling and redundant halfword narrowing differ.
-s32 func_ov003_020acb74(Ov003ChargeLaser* self, Ov003Unit* unit) {
+s32 func_ov003_020acb74(Ov003ChargeLaser* self, Ov003EnemyActor* unit) {
     s32 x = func_ov003_020843b0(0, self->x);
     if (func_ov003_020a6568(&self->effect->streak, 0x16D, unit, x, 0, 0) == 1) {
         Ov003PsychEffectArgs effect;
@@ -31,7 +31,7 @@ s32 func_ov003_020acb74(Ov003ChargeLaser* self, Ov003Unit* unit) {
 }
 
 void func_ov003_020acc60(Ov003ChargeLaser* self) {
-    Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+    Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
     while (unit != NULL) {
         s32 distance = unit->actor.screenY - unit->actor.unk_76 - self->y;
         if (distance < 0)

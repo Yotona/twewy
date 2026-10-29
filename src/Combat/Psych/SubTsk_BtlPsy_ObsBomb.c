@@ -10,7 +10,7 @@ extern s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003A
 
 extern const TaskHandle data_ov003_020dc718;
 
-void func_ov003_020abb34(Ov003EffectState* effect, Ov003Unit* unit) {
+void func_ov003_020abb34(Ov003EffectState* effect, Ov003EnemyActor* unit) {
     Ov003PsychUnitArgs args;
     args.effect = effect;
     args.unit   = unit;
@@ -69,8 +69,8 @@ s32 func_ov003_020abb5c(TaskPool* pool, Task* task, void* args, s32 stage) {
             return 1;
         }
         case 2: {
-            Ov003ObsBomb* self = task->data;
-            Ov003Unit*    unit = self->args.unit;
+            Ov003ObsBomb*    self = task->data;
+            Ov003EnemyActor* unit = self->args.unit;
             CombatSprite_SetPosition(&self->sprite, unit->actor.screenX, (s16)(unit->actor.screenY - unit->actor.unk_76));
             func_ov003_02082730(&self->sprite, unit->actor.position.y + 0x1F4000);
             CombatSprite_Render(&self->sprite);

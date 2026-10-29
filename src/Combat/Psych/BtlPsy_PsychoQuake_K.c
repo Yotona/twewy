@@ -6,8 +6,8 @@
 
 extern void             func_ov003_02087ed8(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern Ov003Unit*       func_ov003_0208495c(CombatList*);
-extern Ov003Unit*       func_ov003_02084984(CombatListNode*);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 extern s32              func_ov003_0208442c(s32, s32);
 extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020843b0(s32, s32);
@@ -59,10 +59,10 @@ s32 func_ov003_020b0610(TaskPool* pool, Task* task, void* args, s32 stage) {
             switch (self->phase) {
                 case 0:
                     if (func_ov003_020a4ee8(&self->camera, 0x333, 0, 0x8000)) {
-                        Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+                        Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
                         while (unit != NULL) {
-                            if (unit->actor.position.z == 0 && unit->actor.zGravity != 0 && unit->unk_07C != 4 &&
-                                unit->unk_07C != 7 && unit->unk_07C != 8 && unit->unk_07C != 12 && unit->unk_07C != 15)
+                            if (unit->actor.position.z == 0 && unit->actor.zGravity != 0 && unit->group != 4 &&
+                                unit->group != 7 && unit->group != 8 && unit->group != 12 && unit->group != 15)
                                 func_ov003_020a6164(unit, 4);
                             unit = func_ov003_02084984(&unit->node);
                         }
@@ -146,7 +146,7 @@ s32 func_ov003_020b0610(TaskPool* pool, Task* task, void* args, s32 stage) {
             Ov003PsychoQuake* self = task->data;
             func_ov003_020a6464(0);
             Ov003EffectState* effect = self->effect;
-            Ov003Unit*        unit   = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+            Ov003EnemyActor*  unit   = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
             while (unit != NULL) {
                 if (func_ov003_020a60a8(unit, 4)) {
                     func_ov003_020a6198(unit, 4);

@@ -91,7 +91,7 @@ s32 func_ov003_020b3bdc(Ov003LockOnThunderP* self) {
         return 1;
     }
     func_ov003_020a5a94(self->effect);
-    Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+    Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
     while (unit != NULL) {
         s32 distance  = func_ov003_020a632c(unit->actor.screenX, unit->actor.screenY - unit->actor.unk_76, self->x, self->y);
         s32 radius    = FX_Mul(self->scaleX, 0x14000);

@@ -12,7 +12,7 @@ extern const Ov003ElementBindSounds data_ov003_020dc894[2];
 
 extern const TaskHandle data_ov003_020dc888;
 
-s32 func_ov003_020af75c(Ov003EffectState* effect, Ov003Unit* unit, s32 kind, s32 attackId) {
+s32 func_ov003_020af75c(Ov003EffectState* effect, Ov003EnemyActor* unit, s32 kind, s32 attackId) {
     Ov003ElementBindArgs args;
     args.effect   = effect;
     args.unit     = unit;
@@ -47,8 +47,8 @@ s32 func_ov003_020af790(TaskPool* pool, Task* task, void* args, s32 stage) {
             return 1;
         }
         case 1: {
-            self            = task->data;
-            Ov003Unit* unit = self->unit;
+            self                  = task->data;
+            Ov003EnemyActor* unit = self->unit;
             switch (self->sprite.animTableIndex) {
                 case 0:
                     self->timer++;

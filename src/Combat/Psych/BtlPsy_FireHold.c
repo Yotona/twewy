@@ -11,7 +11,7 @@ extern void func_ov003_02087f28(s32, s32);
 extern const TaskHandle data_ov003_020dc8f4;
 
 s32 func_ov003_020b0cd4(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = func_ov003_020b0fa0();
+    Ov003EnemyActor* unit = func_ov003_020b0fa0();
     if (unit == NULL)
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc8f4.taskName);
@@ -100,10 +100,10 @@ s32 func_ov003_020b0d2c(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 /// The actor currently held by the touch, if it is a live enemy.
-Ov003Unit* func_ov003_020b0fa0(void) {
+Ov003EnemyActor* func_ov003_020b0fa0(void) {
     if (!func_ov003_02085cfc(7))
         return NULL;
-    Ov003Unit* unit = (Ov003Unit*)func_ov003_020a62a0()->heldActor;
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_020a62a0()->heldActor;
     if (unit == NULL)
         return NULL;
     if (unit->actor.unk_00 != 1)
@@ -111,14 +111,14 @@ Ov003Unit* func_ov003_020b0fa0(void) {
     return unit;
 }
 
-void func_ov003_020b0fdc(Ov003Unit* unit) {
+void func_ov003_020b0fdc(Ov003EnemyActor* unit) {
     Ov003PsychEffectArgs args;
     func_ov003_020a88c0(&args, unit->actor.position.x, unit->actor.position.y, unit->actor.position.z, 2, 0xC2);
     func_ov003_020a899c(&args, 2);
     func_ov003_020a88a8(&args);
 }
 
-void func_ov003_020b1024(Ov003Unit* unit) {
+void func_ov003_020b1024(Ov003EnemyActor* unit) {
     Ov003PsychEffectArgs args;
     func_ov003_020a88c0(&args, unit->actor.position.x, unit->actor.position.y, unit->actor.position.z, 2, RNG_Next(2) + 0xC3);
     func_ov003_020a899c(&args, 1);
@@ -126,7 +126,7 @@ void func_ov003_020b1024(Ov003Unit* unit) {
     func_ov003_020a88a8(&args);
 }
 
-void func_ov003_020b1094(Ov003Unit* unit, s32 charged) {
+void func_ov003_020b1094(Ov003EnemyActor* unit, s32 charged) {
     Ov003PsychEffectArgs args;
     s32                  kind = 0xC5;
     if (charged != 0)

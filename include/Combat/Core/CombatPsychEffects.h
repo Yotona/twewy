@@ -2,6 +2,7 @@
 #define COMBAT_CORE_COMBATPSYCHEFFECTS_H
 
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Engine/Core/OamMgr.h"
 #include <nitro/fx.h>
 #include <nitro/math.h>
@@ -505,7 +506,7 @@ void func_ov003_020ab7f8(Ov003EffectState*, s32 x, s32 y, s32 z);
 /// The effect state plus the unit a unit-bound psych task acts on.
 typedef struct Ov003PsychUnitArgs {
     Ov003EffectState* effect;
-    Ov003Unit*        unit;
+    Ov003EnemyActor*  unit;
 } Ov003PsychUnitArgs; // Size: 8
 
 typedef struct Ov003ObsBomb {
@@ -522,7 +523,7 @@ typedef struct Ov003PsychoBomb {
     /* 0xD4 */ s32                    phase;
 } Ov003PsychoBomb; // Size: 0xD8
 
-void func_ov003_020abb34(Ov003EffectState*, Ov003Unit*);
+void func_ov003_020abb34(Ov003EffectState*, Ov003EnemyActor*);
 void func_ov003_020abe30(Ov003EffectState*, s32 x, s32 y, s32 z);
 
 typedef struct Ov003ChargeLaserArgs {
@@ -726,16 +727,16 @@ typedef struct Ov003ElementT {
 
 typedef struct Ov003ElementBindArgs {
     Ov003EffectState* effect;
-    Ov003Unit*        unit;
+    Ov003EnemyActor*  unit;
     s32               kind;
     s32               attackId;
 } Ov003ElementBindArgs; // Size: 0x10
 
-s32 func_ov003_020af75c(Ov003EffectState* effect, Ov003Unit* unit, s32 kind, s32 attackId);
+s32 func_ov003_020af75c(Ov003EffectState* effect, Ov003EnemyActor* unit, s32 kind, s32 attackId);
 
 typedef struct Ov003ElementBind {
     /* 0x00 */ Ov003EffectState* effect;
-    /* 0x04 */ Ov003Unit*        unit;
+    /* 0x04 */ Ov003EnemyActor*  unit;
     /* 0x08 */ Vec               position;
     /* 0x14 */ s16               height;
     /* 0x16 */ s16               reserved;
@@ -784,14 +785,14 @@ typedef struct Ov003PsychUnitTimer {
 
 typedef struct Ov003EnemyAirFlowArgs {
     Ov003EffectState* effect;
-    Ov003Unit*        unit;
+    Ov003EnemyActor*  unit;
     s32*              releaseFlag;
 } Ov003EnemyAirFlowArgs; // Size: 0xC
 
 typedef struct Ov003EnemyAirFlow {
     /* 0x00 */ s32               phase;
     /* 0x04 */ Ov003EffectState* effect;
-    /* 0x08 */ Ov003Unit*        unit;
+    /* 0x08 */ Ov003EnemyActor*  unit;
     /* 0x0C */ CombatSprite      sprite;
     /* 0x6C */ s32*              releaseFlag;
     /* 0x70 */ Vec               origin;
@@ -826,7 +827,7 @@ typedef struct Ov003PsychoTyphoon {
 typedef struct Ov003FireHold {
     /* 0x00 */ s32               state; // 0 = ignite, 1 = held
     /* 0x04 */ Ov003EffectState* effect;
-    /* 0x08 */ Ov003Unit*        unit;
+    /* 0x08 */ Ov003EnemyActor*  unit;
     /* 0x0C */ s32               timer;
     /* 0x10 */ s32               particleTimer;
     /* 0x14 */ s32               holdTimer; // 0x3C while the actor stays held
@@ -836,7 +837,7 @@ typedef struct Ov003FireHold {
 typedef struct Ov003IceHold {
     /* 0x00 */ s32               state; // 0 = freeze in, 1 = held, 2 = breaking, 3 = thawing
     /* 0x04 */ Ov003EffectState* effect;
-    /* 0x08 */ Ov003Unit*        unit;
+    /* 0x08 */ Ov003EnemyActor*  unit;
     /* 0x0C */ s32               timer;
     /* 0x10 */ s32               particleTimer;
     /* 0x14 */ s32               frames;
@@ -847,7 +848,7 @@ typedef struct Ov003IceHold {
 typedef struct Ov003OpticalHold {
     /* 0x000 */ s32               state;
     /* 0x004 */ Ov003EffectState* effect;
-    /* 0x008 */ Ov003Unit*        unit;
+    /* 0x008 */ Ov003EnemyActor*  unit;
     /* 0x00C */ s32               spawnTimer;
     /* 0x010 */ s32               holdTimer;
     /* 0x014 */ s32               heldFrames;
@@ -989,13 +990,13 @@ typedef struct Ov003PsychoT {
 } Ov003PsychoT; // Size: 0x8C
 
 typedef struct Ov003PsychoUnitArgs {
-    Ov003Unit*             unit;
+    Ov003EnemyActor*       unit;
     Ov003PsychoHitContext* context;
 } Ov003PsychoUnitArgs; // Size: 0x8
 
 typedef struct Ov003PsychoUnit {
     /* 0x00 */ s32                    phase;
-    /* 0x04 */ Ov003Unit*             unit;
+    /* 0x04 */ Ov003EnemyActor*       unit;
     /* 0x08 */ Ov003PsychoHitContext* context;
     /* 0x0C */ u16                    timer;
     /* 0x0E */ u16                    pad_0E;
@@ -1015,7 +1016,7 @@ typedef struct Ov003PsychoTuningTable {
     u16               padding;
 } Ov003PsychoTuningTable; // Size: 0x2C
 
-s32 func_ov003_020b0188(Ov003EffectState* effect, Ov003Unit* unit, s32* releaseFlag);
+s32 func_ov003_020b0188(Ov003EffectState* effect, Ov003EnemyActor* unit, s32* releaseFlag);
 
 s32 func_ov003_020afb64(s32 kind, s32 x, s32 y, s32 angle, s32 speed);
 
@@ -1097,7 +1098,7 @@ typedef struct Ov003StraightShotSKind {
 
 typedef struct Ov003PsychoD {
     /* 0x00 */ Ov003EffectState* effect;
-    /* 0x04 */ Ov003Unit*        unit;
+    /* 0x04 */ Ov003EnemyActor*  unit;
     /* 0x08 */ u16               flags;
     /* 0x0A */ u16               pad_0A;
     /* 0x0C */ s32               unk_0C;

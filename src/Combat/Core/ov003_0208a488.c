@@ -63,10 +63,10 @@ extern void func_0200d8f0(void);
 extern void func_0200d90c(void);
 extern s32  func_020067ec(void);
 
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(CombatListNode*);
-extern void       func_ov003_020849ac(CombatList*);
-extern void       func_ov003_02087ed8(s32);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
+extern void             func_ov003_020849ac(CombatList*);
+extern void             func_ov003_02087ed8(s32);
 
 extern s32 func_ov003_020a3330(u32);
 extern s32 func_ov003_020a3468(u32);
@@ -601,7 +601,7 @@ void func_ov003_0208ae24(s32 partner) {
 }
 
 /// Stops a level-up gauge actor and parks it.
-void func_ov003_0208ae98(Ov003Unit* unit) {
+void func_ov003_0208ae98(Ov003EnemyActor* unit) {
     unit->actor.flags     = (unit->actor.flags & 0xFFFFBFFD) & ~8;
     unit->actor.xVelocity = 0;
     unit->actor.yVelocity = 0;
@@ -611,18 +611,18 @@ void func_ov003_0208ae98(Ov003Unit* unit) {
 
 /// Checks that both unit lists only contain idle, on-screen units.
 BOOL func_ov003_0208aed8(void) {
-    Ov003Unit* unit;
-    BOOL       result = TRUE;
+    Ov003EnemyActor* unit;
+    BOOL             result = TRUE;
 
     for (unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4); unit != NULL; unit = func_ov003_02084984(&unit->node)) {
-        if (((unit->unk_196 >> 8) & 1) != 0 || (unit->actor.flags & 4) == 0) {
+        if (((unit->flags196.raw >> 8) & 1) != 0 || (unit->actor.flags & 4) == 0) {
             result = FALSE;
             break;
         }
     }
 
     for (unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC); unit != NULL; unit = func_ov003_02084984(&unit->node)) {
-        if (((unit->unk_196 >> 8) & 1) != 0 || (unit->actor.flags & 4) == 0) {
+        if (((unit->flags196.raw >> 8) & 1) != 0 || (unit->actor.flags & 4) == 0) {
             result = FALSE;
             break;
         }
@@ -672,11 +672,11 @@ void func_ov003_0208afcc(s32 exp) {
 
     data_ov003_020e71b8->unk3D904 = 0;
     data_ov003_020e71b8->unk3D906 = 0;
-    func_ov003_0208ae98((Ov003Unit*)data_ov003_020e71b8->unk3D898);
+    func_ov003_0208ae98((Ov003EnemyActor*)data_ov003_020e71b8->unk3D898);
 
     data_ov003_020e71b8->unk3D908 = 0;
     data_ov003_020e71b8->unk3D90A = 0;
-    func_ov003_0208ae98((Ov003Unit*)data_ov003_020e71b8->unk3D89C);
+    func_ov003_0208ae98((Ov003EnemyActor*)data_ov003_020e71b8->unk3D89C);
 
     EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020d8738, NULL, 0, NULL, NULL);
 }
@@ -804,7 +804,7 @@ void func_ov003_0208b3cc(s32 bank, s16 delta) {
 
 /// Adds (or removes) HP on a unit. Units flagged 0x8000000 use the second gauge instead of their own
 /// HP field.
-void func_ov003_0208b518(s32 bank, Ov003Unit* unit, s16 delta) {
+void func_ov003_0208b518(s32 bank, Ov003EnemyActor* unit, s16 delta) {
     // The original reloads the global on every use; keeping a pointer in a local changes the
     // register allocation of the whole function.
 
@@ -818,7 +818,7 @@ void func_ov003_0208b518(s32 bank, Ov003Unit* unit, s16 delta) {
         }
         unit->actor.currentHp += delta;
         if (unit->actor.unk_78 != 0) {
-            ((Ov003Unit*)unit->actor.unk_78)->actor.currentHp = unit->actor.currentHp;
+            ((Ov003EnemyActor*)unit->actor.unk_78)->actor.currentHp = unit->actor.currentHp;
         }
         return;
     }
@@ -853,7 +853,7 @@ void func_ov003_0208b518(s32 bank, Ov003Unit* unit, s16 delta) {
 
     unit->actor.currentHp = data_ov003_020e71b8->unk3D8D8;
     if (unit->actor.unk_78 != 0) {
-        ((Ov003Unit*)unit->actor.unk_78)->actor.currentHp = unit->actor.currentHp;
+        ((Ov003EnemyActor*)unit->actor.unk_78)->actor.currentHp = unit->actor.currentHp;
     }
 }
 
@@ -873,8 +873,8 @@ void func_ov003_0208b6d4(void) {
 /// Advances the battle state machine. Runs every frame from the battle task; decides when the battle
 /// is won and switches to the result screen.
 void func_ov003_0208b71c(void) {
-    BOOL       finished = FALSE;
-    Ov003Unit* unit;
+    BOOL             finished = FALSE;
+    Ov003EnemyActor* unit;
 
     if (data_ov003_020e71b8->unk3D874 != 2) {
         return;
@@ -905,8 +905,8 @@ void func_ov003_0208b71c(void) {
         data_ov003_020e71b8->unk3D878 |= 0x30000;
         data_ov003_020e71b8->unk3D878 |= 0x4000;
         data_ov003_020e71b8->unk3D878 |= 0x8000;
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D898)->actor.flags |= 0x10;
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D89C)->actor.flags |= 0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D898)->actor.flags |= 0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D89C)->actor.flags |= 0x10;
     }
 
     if (func_ov003_020bb47c() != 0) {
@@ -919,15 +919,15 @@ void func_ov003_0208b71c(void) {
     if (data_ov003_020e71b8->unk3D878 & 0x200000) {
         data_ov003_020e71b8->unk3D878 |= 0x20;
         func_ov003_0208b278(6);
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D898)->actor.flags &= ~0x10;
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D89C)->actor.flags &= ~0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D898)->actor.flags &= ~0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D89C)->actor.flags &= ~0x10;
         return;
     }
 
     if (EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020d8810, NULL, 0, NULL, NULL) != -1) {
         func_ov003_0208b278(3);
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D898)->actor.flags &= ~0x10;
-        ((Ov003Unit*)data_ov003_020e71b8->unk3D89C)->actor.flags &= ~0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D898)->actor.flags &= ~0x10;
+        ((Ov003EnemyActor*)data_ov003_020e71b8->unk3D89C)->actor.flags &= ~0x10;
     }
 }
 
@@ -1220,7 +1220,7 @@ s32 func_ov003_0208c718(void) {
 }
 
 /// True when `unit` is a valid target sitting on the requested side of the screen.
-BOOL func_ov003_0208c79c(Ov003Unit* unit, s32 side) {
+BOOL func_ov003_0208c79c(Ov003EnemyActor* unit, s32 side) {
     if ((unit->actor.flags & 4) || (unit->actor.flags & 0x10)) {
         return FALSE;
     }
@@ -1235,11 +1235,11 @@ BOOL func_ov003_0208c79c(Ov003Unit* unit, s32 side) {
 
 /// Finds the closest valid target to `x` on the given side, preferring airborne or grounded units as
 /// requested.
-Ov003Unit* func_ov003_0208c810(s32 x, s32 side, s32 airborne) {
-    Ov003Global* g        = data_ov003_020e71b8;
-    Ov003Unit*   best     = NULL;
-    s32          bestDist = 0x100000;
-    Ov003Unit*   unit;
+Ov003EnemyActor* func_ov003_0208c810(s32 x, s32 side, s32 airborne) {
+    Ov003Global*     g        = data_ov003_020e71b8;
+    Ov003EnemyActor* best     = NULL;
+    s32              bestDist = 0x100000;
+    Ov003EnemyActor* unit;
 
     for (unit = func_ov003_0208495c(&g->unk3D8AC); unit != NULL; unit = func_ov003_02084984(&unit->node)) {
         s32 dist;
@@ -1263,11 +1263,11 @@ Ov003Unit* func_ov003_0208c810(s32 x, s32 side, s32 airborne) {
 }
 
 /// Finds the farthest valid target to `x` on the given side.
-Ov003Unit* func_ov003_0208c8c0(s32 x, s32 side, s32 airborne) {
-    Ov003Global* g        = data_ov003_020e71b8;
-    Ov003Unit*   best     = NULL;
-    s32          bestDist = 0;
-    Ov003Unit*   unit;
+Ov003EnemyActor* func_ov003_0208c8c0(s32 x, s32 side, s32 airborne) {
+    Ov003Global*     g        = data_ov003_020e71b8;
+    Ov003EnemyActor* best     = NULL;
+    s32              bestDist = 0;
+    Ov003EnemyActor* unit;
 
     for (unit = func_ov003_0208495c(&g->unk3D8AC); unit != NULL; unit = func_ov003_02084984(&unit->node)) {
         s32 dist;

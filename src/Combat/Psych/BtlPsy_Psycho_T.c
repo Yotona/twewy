@@ -13,7 +13,7 @@ extern char             data_ov003_020e4ef0[];
 extern const TaskHandle data_ov003_020dca90;
 
 s32 func_ov003_020b5f74(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = func_ov003_020b6308(effect);
+    Ov003EnemyActor* unit = func_ov003_020b6308(effect);
     if (unit == NULL)
         return 0;
     if (!func_ov003_020a60ec(unit, 5))
@@ -63,7 +63,7 @@ s32 func_ov003_020b5fe4(TaskPool* pool, Task* task, void* args, s32 stage) {
                     }
                     if (func_ov003_02085cfc(2)) {
                         func_ov003_020a6494(touch->x);
-                        Ov003Unit* unit = func_ov003_020b6308(self->effect);
+                        Ov003EnemyActor* unit = func_ov003_020b6308(self->effect);
                         if (unit != NULL) {
                             func_ov003_020b4e48(unit, &self->hit);
                             self->timer = self->effect->params[0];
@@ -134,9 +134,9 @@ s32 func_ov003_020b5fe4(TaskPool* pool, Task* task, void* args, s32 stage) {
     }
 }
 
-Ov003Unit* func_ov003_020b6308(Ov003EffectState* effect) {
-    Ov003Unit* primary   = (Ov003Unit*)func_ov003_02085dc8(2);
-    Ov003Unit* secondary = (Ov003Unit*)func_ov003_02085dc8(1);
+Ov003EnemyActor* func_ov003_020b6308(Ov003EffectState* effect) {
+    Ov003EnemyActor* primary   = (Ov003EnemyActor*)func_ov003_02085dc8(2);
+    Ov003EnemyActor* secondary = (Ov003EnemyActor*)func_ov003_02085dc8(1);
     switch (effect->index) {
         case 0:
         case 1:

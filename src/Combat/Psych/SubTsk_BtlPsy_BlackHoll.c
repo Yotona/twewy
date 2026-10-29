@@ -5,14 +5,14 @@
 #include <nitro/fx/fx_vector.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32        func_ov003_0208442c(s32, s32);
-extern s32        func_ov003_02084460(s32, s32, s32);
-extern s32        func_ov003_020843b0(s32, s32);
-extern s32        func_ov003_020843ec(s32, s32, s32);
-extern s32        func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(CombatListNode*);
-extern void       func_ov003_02087f28(s32, s32);
+extern s32              func_ov003_0208442c(s32, s32);
+extern s32              func_ov003_02084460(s32, s32, s32);
+extern s32              func_ov003_020843b0(s32, s32);
+extern s32              func_ov003_020843ec(s32, s32, s32);
+extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
+extern void             func_ov003_02087f28(s32, s32);
 
 extern const TaskHandle data_ov003_020dc6d0;
 
@@ -59,7 +59,7 @@ s32 func_ov003_020aad24(TaskPool* pool, Task* task, void* args, s32 stage) {
             Ov003BlackHoll* self = task->data;
             if (--self->lifetime == 0)
                 return 0;
-            Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+            Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
             while (unit != NULL) {
                 if (func_ov003_020a60a8(unit, 2)) {
                     Vec origin = {self->position.x, self->position.y, self->position.z};
@@ -116,7 +116,7 @@ s32 func_ov003_020aad24(TaskPool* pool, Task* task, void* args, s32 stage) {
             CombatSprite_Release(&self->sprites[1]);
             func_ov003_020a5fc0(self->particles, 6);
             self->effect->unk_0A--;
-            Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+            Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
             while (unit != NULL) {
                 func_ov003_020a6198(unit, 2);
                 unit = func_ov003_02084984(&unit->node);

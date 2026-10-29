@@ -8,7 +8,7 @@ extern const TaskHandle data_ov003_020dca84;
 s32 func_ov003_020b5d54(Ov003EffectContext* context, Ov003EffectState* effect) {
     if (!func_ov003_02085cfc(4))
         return 0;
-    Ov003Unit* unit = func_ov003_020b5f04(effect->index);
+    Ov003EnemyActor* unit = func_ov003_020b5f04(effect->index);
     if (unit == NULL)
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca84.taskName);
@@ -56,13 +56,13 @@ s32 func_ov003_020b5dc4(TaskPool* pool, Task* task, void* args, s32 stage) {
     }
 }
 
-Ov003Unit* func_ov003_020b5f04(s32 index) {
-    Ov003Unit* secondary = NULL;
-    Ov003Unit* primary   = (Ov003Unit*)func_ov003_02085ec0(2);
+Ov003EnemyActor* func_ov003_020b5f04(s32 index) {
+    Ov003EnemyActor* secondary = NULL;
+    Ov003EnemyActor* primary   = (Ov003EnemyActor*)func_ov003_02085ec0(2);
     if (primary != NULL && !func_ov003_020a60ec(primary, 5))
         primary = NULL;
     if (index == 2) {
-        secondary = (Ov003Unit*)func_ov003_02085ec0(1);
+        secondary = (Ov003EnemyActor*)func_ov003_02085ec0(1);
         if (secondary != NULL && !func_ov003_020a60ec(secondary, 5))
             secondary = NULL;
     }

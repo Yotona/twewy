@@ -1,13 +1,13 @@
 #include "Combat/Core/CombatCutin.h"
 
-extern Ov003Unit*          func_ov003_0208495c(CombatList*);
-extern Ov003Unit*          func_ov003_02084984(CombatListNode*);
+extern Ov003EnemyActor*    func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor*    func_ov003_02084984(CombatListNode*);
 extern char                data_ov003_020e5170[20];
 extern Ov003ActorSnapshots data_ov003_020e71c8;
 
 u16 func_ov003_020bce6c(CombatList* list) {
-    u16        count = 0;
-    Ov003Unit* unit  = func_ov003_0208495c(list);
+    u16              count = 0;
+    Ov003EnemyActor* unit  = func_ov003_0208495c(list);
     while (unit != NULL) {
         if (!(unit->actor.flags & 4))
             count++;
@@ -21,8 +21,8 @@ u16 func_ov003_020bceac(CombatList* list, Ov003ActorSnapshot** snapshots) {
     u16                 count   = func_ov003_020bce6c(list);
     Ov003ActorSnapshot* entries = Mem_AllocHeapTail(&gDebugHeap, count * sizeof(*entries));
     Mem_SetSequence(&gDebugHeap, entries, data_ov003_020e5170);
-    *snapshots      = entries;
-    Ov003Unit* unit = func_ov003_0208495c(list);
+    *snapshots            = entries;
+    Ov003EnemyActor* unit = func_ov003_0208495c(list);
     while (unit != NULL) {
         if (!(unit->actor.flags & 4)) {
             entries[index].actor = unit->actor;
@@ -35,7 +35,7 @@ u16 func_ov003_020bceac(CombatList* list, Ov003ActorSnapshot** snapshots) {
 }
 
 void func_ov003_020bcf64(CombatList* list, s32 command) {
-    Ov003Unit* unit = func_ov003_0208495c(list);
+    Ov003EnemyActor* unit = func_ov003_0208495c(list);
     while (unit != NULL) {
         CombatActor_SetPendingCommand(&unit->actor, command);
         unit = func_ov003_02084984(&unit->node);
@@ -47,7 +47,7 @@ void func_ov003_020bcf98(CombatList* list, Ov003ActorSnapshot* snapshots, u32 co
     if (count == 0)
         return;
     do {
-        Ov003Unit* unit = func_ov003_0208495c(list);
+        Ov003EnemyActor* unit = func_ov003_0208495c(list);
         while (unit != NULL) {
             if (snapshots[index].unit == unit) {
                 unit->actor = snapshots[index].actor;

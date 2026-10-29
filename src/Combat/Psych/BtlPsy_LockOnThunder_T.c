@@ -6,7 +6,7 @@ extern CombatActor*     func_ov003_02085dc8(s32);
 extern const TaskHandle data_ov003_020dc99c;
 
 s32 func_ov003_020b3da8(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = (Ov003Unit*)func_ov003_02085dc8(1);
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_02085dc8(1);
     if (unit == NULL)
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc99c.taskName);

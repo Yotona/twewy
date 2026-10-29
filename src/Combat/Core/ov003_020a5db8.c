@@ -62,8 +62,8 @@ extern s32 func_020243d4(u8);
 
 extern BOOL Sprite_HasAnimation(Sprite*);
 
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(CombatListNode*);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 
 extern s32 func_ov003_0208442c(s32, s32);
 extern s32 func_ov003_02084460(s32, s32, s32);
@@ -210,7 +210,7 @@ void* func_ov003_020a6084(u32 id) {
 // ---------------------------------------------------------------------------------------------
 
 /// Whether `unit` can take the pending command tagged `arg1`.
-s32 func_ov003_020a60a8(Ov003Unit* unit, s32 arg1) {
+s32 func_ov003_020a60a8(Ov003EnemyActor* unit, s32 arg1) {
     s32 flags = unit->actor.flags;
 
     if ((flags & 2) || (flags & 0x10) || (flags & 4)) {
@@ -226,13 +226,13 @@ s32 func_ov003_020a60a8(Ov003Unit* unit, s32 arg1) {
 }
 
 /// Whether `unit` can be given `arg1`; the busy/idle and status bits gate it.
-s32 func_ov003_020a60ec(Ov003Unit* unit, s32 arg1) {
+s32 func_ov003_020a60ec(Ov003EnemyActor* unit, s32 arg1) {
     s32 flags = unit->actor.flags;
 
     if ((flags & 2) || (flags & 0x10) || (flags & 4)) {
         return 0;
     }
-    if (unit->actor.unk_00 == 1 && (unit->status.unk_00 || unit->status.unk_08)) {
+    if (unit->actor.unk_00 == 1 && (unit->flags196.bits.b0 || unit->flags196.bits.b8)) {
         return 0;
     }
     if (!(flags & 0x200)) {
@@ -245,7 +245,7 @@ s32 func_ov003_020a60ec(Ov003Unit* unit, s32 arg1) {
 }
 
 /// Applies pending command 4 to `unit` and records `arg1`.
-s32 func_ov003_020a6164(Ov003Unit* unit, u16 arg1) {
+s32 func_ov003_020a6164(Ov003EnemyActor* unit, u16 arg1) {
     if (func_ov003_020a60ec(unit, arg1) == 0) {
         return 0;
     }
@@ -255,7 +255,7 @@ s32 func_ov003_020a6164(Ov003Unit* unit, u16 arg1) {
 }
 
 /// Applies pending command 5 to `unit` and clears its velocity.
-void func_ov003_020a6198(Ov003Unit* unit, s32 arg1) {
+void func_ov003_020a6198(Ov003EnemyActor* unit, s32 arg1) {
     if (func_ov003_020a60a8(unit, arg1) == 0) {
         return;
     }
@@ -269,7 +269,8 @@ void func_ov003_020a6198(Ov003Unit* unit, s32 arg1) {
 }
 
 /// Applies pending command 5 and launches `unit` at `speed` in direction `angle`.
-void func_ov003_020a61e4(Ov003Unit* unit, u16 arg1, s32 attackId, Ov003AttackArgs* args, s32 angle, s32 speed, s32 zVelocity) {
+void func_ov003_020a61e4(Ov003EnemyActor* unit, u16 arg1, s32 attackId, Ov003AttackArgs* args, s32 angle, s32 speed,
+                         s32 zVelocity) {
     s32 idx;
 
     if (func_ov003_020a60ec(unit, arg1) == 0) {
@@ -387,7 +388,7 @@ void func_ov003_020a64d0(Ov003EffectState* effect, s16 arg1) {
     effect->unk_10 = arg1;
     effect->unk_12 = player->unk_0A;
     effect->unk_0E = (s16)actor->params.unk_2F;
-    func_ov003_020a6bb8(&effect->unk_0C, (Ov003Unit*)actor);
+    func_ov003_020a6bb8(&effect->unk_0C, (Ov003EnemyActor*)actor);
 }
 
 /// Overrides the info record's side bit and amount field.
@@ -401,7 +402,7 @@ void func_ov003_020a652c(Ov003AttackInfo* info, s32 force, u16 amount) {
 }
 
 /// Queues a sweep attack against `unit`, resetting the streak when the info record says so.
-s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003Unit* unit, s32 x, s32 force, u16 amount) {
+s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003EnemyActor* unit, s32 x, s32 force, u16 amount) {
     Ov003AttackInfo info = *func_ov003_0208a114(attackId);
     s32             result;
 
@@ -551,7 +552,7 @@ block_t2:
 }
 
 /// Whether `unit`'s screen-space bounding box overlaps (x1, y1)-(x2, y2).
-s32 func_ov003_020a6924(Ov003Unit* unit, s32 x1, s32 y1, s32 x2, s32 y2) {
+s32 func_ov003_020a6924(Ov003EnemyActor* unit, s32 x1, s32 y1, s32 x2, s32 y2) {
     s16 halfW   = unit->actor.unk_70;
     s16 halfH   = unit->actor.unk_72;
     s16 centerX = unit->actor.screenX;
@@ -598,8 +599,8 @@ s32 func_ov003_020a6924(Ov003Unit* unit, s32 x1, s32 y1, s32 x2, s32 y2) {
 
 /// Queues a sweep attack against every unit whose box overlaps (x1, y1)-(x2, y2).
 s32 func_ov003_020a6acc(Ov003AttackStreak* streak, s32 attackId, s32 x1, s32 y1, s32 x2, s32 y2, s32 x) {
-    Ov003Unit* unit;
-    s32        hit = 0;
+    Ov003EnemyActor* unit;
+    s32              hit = 0;
 
     for (unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4); unit != NULL; unit = func_ov003_02084984(&unit->node)) {
         if (func_ov003_020a6924(unit, x1, y1, x2, y2) != 0 && func_ov003_020a6568(streak, attackId, unit, x, 0, 0) == 1) {
@@ -610,7 +611,7 @@ s32 func_ov003_020a6acc(Ov003AttackStreak* streak, s32 attackId, s32 x1, s32 y1,
 }
 
 /// Plays the streak's current attack from `streak->args` and restores the unit's X velocity.
-s32 func_ov003_020a6b84(Ov003AttackStreak* streak, u16 arg1, Ov003Unit* unit) {
+s32 func_ov003_020a6b84(Ov003AttackStreak* streak, u16 arg1, Ov003EnemyActor* unit) {
     s32 velocity = unit->actor.xVelocity;
 
     unit->actor.xVelocity = 0x1000;
@@ -621,7 +622,7 @@ s32 func_ov003_020a6b84(Ov003AttackStreak* streak, u16 arg1, Ov003Unit* unit) {
 }
 
 /// Clears `*out` when the current encounter uses the same hit kind as `unit`.
-void func_ov003_020a6bb8(s16* out, Ov003Unit* unit) {
+void func_ov003_020a6bb8(s16* out, Ov003EnemyActor* unit) {
     u32 i;
 
     for (i = 0; i < 0xB; i++) {

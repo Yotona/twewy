@@ -19,17 +19,17 @@ const Ov003ElementKind data_ov003_020dc7b8[8] = {
     {0x56C, 0x47, 0x48, 0x15F, 0x27},
 };
 
-extern s32        func_ov003_0208442c(s32, s32);
-extern s32        func_ov003_02084460(s32, s32, s32);
-extern s32        func_ov003_020843b0(s32, s32);
-extern s32        func_ov003_020843ec(s32, s32, s32);
-extern s32        func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void       func_ov003_02087f28(s32, s32);
-extern s32        func_ov003_020a51c0(void);
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(CombatListNode*);
-extern s32        func_ov003_020a632c(s32, s32, s32, s32);
-extern s32        func_ov003_020a62b8(s32, s32, s32, s32);
+extern s32              func_ov003_0208442c(s32, s32);
+extern s32              func_ov003_02084460(s32, s32, s32);
+extern s32              func_ov003_020843b0(s32, s32);
+extern s32              func_ov003_020843ec(s32, s32, s32);
+extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern void             func_ov003_02087f28(s32, s32);
+extern s32              func_ov003_020a51c0(void);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
+extern s32              func_ov003_020a632c(s32, s32, s32, s32);
+extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
 
 s32 func_ov003_020ae414(Ov003EffectState* effect, s32 mode, s32 kind, s16 x, s16 y, s32 angle, s32 speed, s32 scale,
                         s32 uses) {
@@ -307,7 +307,7 @@ void func_ov003_020aefc0(Ov003Element* self) {
     s32 hit      = 0;
     if (attackId == 0x16F && func_ov003_020a51c0())
         attackId = 0x170;
-    Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+    Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
     while (unit != NULL) {
         s32 x       = func_ov003_020843b0(0, self->position.x) * 4096;
         s32 y       = func_ov003_020843ec(0, self->position.y, self->position.z) * 4096;
@@ -345,11 +345,11 @@ void func_ov003_020aefc0(Ov003Element* self) {
 
 // Nonmatching: Projection and list setup scheduling differ.
 CombatActor* func_ov003_020af1e0(Ov003Element* self) {
-    CombatActor* best    = NULL;
-    s32          nearest = 0x7FFFFFFF;
-    s32          x       = func_ov003_020843b0(0, self->position.x);
-    s32          y       = func_ov003_020843ec(0, self->position.y, self->position.z);
-    Ov003Unit*   unit    = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
+    CombatActor*     best    = NULL;
+    s32              nearest = 0x7FFFFFFF;
+    s32              x       = func_ov003_020843b0(0, self->position.x);
+    s32              y       = func_ov003_020843ec(0, self->position.y, self->position.z);
+    Ov003EnemyActor* unit    = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
     while (unit != NULL) {
         if (!(unit->actor.flags & 4)) {
             s32 distance = func_ov003_020a632c(x, y, unit->actor.screenX, unit->actor.screenY - unit->actor.unk_76);

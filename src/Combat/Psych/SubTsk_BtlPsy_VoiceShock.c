@@ -36,7 +36,7 @@ s32 func_ov003_020ba0b8(TaskPool* pool, Task* task, void* args, s32 stage) {
             return 1;
         case 1: {
             Ov003VoiceShock* shock = task->data;
-            Ov003Unit*       unit;
+            Ov003EnemyActor* unit;
             s32              y;
             s32              x = func_ov003_020843b0(0, shock->position.x);
             y                  = func_ov003_020843ec(0, shock->position.y, shock->position.z);

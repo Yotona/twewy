@@ -16,7 +16,7 @@ extern const TaskHandle data_ov003_020dc90c;
 
 /// OpticalHold task entry: starts the effect once the touch helper has a held actor.
 s32 func_ov003_020b15dc(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = func_ov003_020b1c50();
+    Ov003EnemyActor* unit = func_ov003_020b1c50();
     if (unit == NULL)
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc90c.taskName);
@@ -207,15 +207,15 @@ s32 func_ov003_020b1634(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 /// Returns the held actor while the optical-hold touch is active, or NULL when it is not.
-Ov003Unit* func_ov003_020b1c50(void) {
-    BtlTouchWork* touch;
-    Ov003Unit*    unit;
+Ov003EnemyActor* func_ov003_020b1c50(void) {
+    BtlTouchWork*    touch;
+    Ov003EnemyActor* unit;
     if (!func_ov003_02085cfc(6))
         return NULL;
     if (func_ov003_02085d3c(1))
         return NULL;
     touch = func_ov003_020a62a0();
-    unit  = (Ov003Unit*)touch->heldActor;
+    unit  = (Ov003EnemyActor*)touch->heldActor;
     if (unit == NULL)
         return NULL;
     if (unit->actor.unk_00 != 1)

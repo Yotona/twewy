@@ -12,7 +12,7 @@ extern s32  func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern const TaskHandle data_ov003_020dc900;
 
 s32 func_ov003_020b10d8(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = func_ov003_020b15a0();
+    Ov003EnemyActor* unit = func_ov003_020b15a0();
     if (unit == NULL)
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc900.taskName);
@@ -145,10 +145,10 @@ s32 func_ov003_020b1130(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 /// The actor tracked by the ice psych.
-Ov003Unit* func_ov003_020b15a0(void) {
+Ov003EnemyActor* func_ov003_020b15a0(void) {
     if (!func_ov003_02085cfc(3))
         return NULL;
-    Ov003Unit* unit = (Ov003Unit*)func_ov003_020a62a0()->trackedActor;
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_020a62a0()->trackedActor;
     if (unit == NULL)
         return NULL;
     if (unit->actor.unk_00 != 1)

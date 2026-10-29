@@ -18,7 +18,7 @@ s32 func_ov003_020b537c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     if (func_ov003_02085d3c(1))
         return 0;
-    Ov003Unit* unit = (Ov003Unit*)touch->heldActor;
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->heldActor;
     if (unit == NULL || &unit->actor != touch->candidateActor || (u32)(unit->actor.unk_00 - 1) > 1 ||
         (unit->actor.flags & 0x10))
         return 0;
@@ -135,7 +135,7 @@ s32 func_ov003_020b5480(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 s32 func_ov003_020b5744(Ov003PsychoD* self) {
-    Ov003Unit* unit = self->unit;
+    Ov003EnemyActor* unit = self->unit;
     if (!func_ov003_02085cfc(6)) {
         func_ov003_020a6198(self->unit, 5);
         func_ov003_02087f28(0x5C, unit->actor.position.x);
@@ -170,7 +170,7 @@ s32 func_ov003_020b5744(Ov003PsychoD* self) {
 // Nonmatching: mwcc if-converts the `dy <= 4` result to movle/movgt where the target keeps a
 // branchy 0/1 assignment.
 s32 func_ov003_020b585c(Ov003PsychoD* self) {
-    Ov003Unit* unit = self->unit;
+    Ov003EnemyActor* unit = self->unit;
     if (!func_ov003_02085cfc(6)) {
         func_ov003_020a6198(self->unit, 5);
         return 0;
@@ -199,8 +199,8 @@ s32 func_ov003_020b585c(Ov003PsychoD* self) {
 // Nonmatching: the final "above" flag is materialised as a branchy 0/1 value in the target; mwcc
 // if-converts it to movgt here and reloads `unit` in a different order.
 s32 func_ov003_020b5934(Ov003PsychoD* self) {
-    BtlTouchWork* touch = &data_ov003_020e71b8->touchWork;
-    Ov003Unit*    unit  = self->unit;
+    BtlTouchWork*    touch = &data_ov003_020e71b8->touchWork;
+    Ov003EnemyActor* unit  = self->unit;
     if (!func_ov003_02085cfc(6) && !func_ov003_02085cfc(7)) {
         s16 half = unit->actor.unk_70;
         if (func_ov003_02083af8(unit->actor.position.x, unit->actor.position.y, half << 12, (half / 2) << 12)) {
@@ -264,7 +264,7 @@ s32 func_ov003_020b5934(Ov003PsychoD* self) {
 }
 
 s32 func_ov003_020b5c84(Ov003PsychoD* self) {
-    Ov003Unit* unit = self->unit;
+    Ov003EnemyActor* unit = self->unit;
     if (self->timer == 0) {
         self->timer           = 0x10;
         unit->actor.xVelocity = 0;

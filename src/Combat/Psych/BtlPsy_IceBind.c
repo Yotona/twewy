@@ -11,7 +11,7 @@ s32 func_ov003_020afdf0(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     if (func_ov003_02085d3c(1))
         return 0;
-    Ov003Unit* unit = (Ov003Unit*)touch->heldActor;
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->heldActor;
     if (unit == NULL || &unit->actor != touch->candidateActor || unit->actor.unk_00 != 1 || (unit->actor.flags & 0x10))
         return 0;
     if (func_ov003_020a60a8(unit, 3))

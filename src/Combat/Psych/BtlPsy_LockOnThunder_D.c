@@ -9,7 +9,7 @@ extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
 extern const TaskHandle data_ov003_020dc984;
 
 void func_ov003_020b3284(Ov003Thunder* self) {
-    if (func_ov003_020a6568(&self->args.effect->streak, 0x16B, (Ov003Unit*)self->target, self->position.x, 0, 0) == 1) {
+    if (func_ov003_020a6568(&self->args.effect->streak, 0x16B, (Ov003EnemyActor*)self->target, self->position.x, 0, 0) == 1) {
         Ov003PsychEffectArgs effect;
         func_ov003_020a8908(&effect, (s16)(self->position.x >> 12), (s16)(self->position.y >> 12), 2,
                             self->args.effect->index + 0xC);

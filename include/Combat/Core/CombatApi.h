@@ -341,15 +341,16 @@ BOOL  func_ov003_020a603c(u32* id);
 void  func_ov003_020a6060(u32 id);
 void* func_ov003_020a6084(u32 id);
 /// Whether `unit` can take the pending command tagged `arg1`.
-s32 func_ov003_020a60a8(Ov003Unit* unit, s32 arg1);
+s32 func_ov003_020a60a8(Ov003EnemyActor* unit, s32 arg1);
 /// Whether `unit` can be given `arg1`; the busy/idle and status bits gate it.
-s32 func_ov003_020a60ec(Ov003Unit* unit, s32 arg1);
+s32 func_ov003_020a60ec(Ov003EnemyActor* unit, s32 arg1);
 /// Applies pending command 4 to `unit` and records `arg1`.
-s32 func_ov003_020a6164(Ov003Unit* unit, u16 arg1);
+s32 func_ov003_020a6164(Ov003EnemyActor* unit, u16 arg1);
 /// Applies pending command 5 to `unit` and clears its velocity.
-void func_ov003_020a6198(Ov003Unit* unit, s32 arg1);
+void func_ov003_020a6198(Ov003EnemyActor* unit, s32 arg1);
 /// Applies pending command 5 and launches `unit` at `speed` in direction `angle`.
-void func_ov003_020a61e4(Ov003Unit* unit, u16 arg1, s32 attackId, Ov003AttackArgs* args, s32 angle, s32 speed, s32 zVelocity);
+void func_ov003_020a61e4(Ov003EnemyActor* unit, u16 arg1, s32 attackId, Ov003AttackArgs* args, s32 angle, s32 speed,
+                         s32 zVelocity);
 s32  func_ov003_020a62d0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 s32  func_ov003_020a62ec(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 /// Whether a (0..0x100, 0..0xC0) point lies inside a square of half-size `arg2`.
@@ -368,17 +369,17 @@ void         func_ov003_020a64ac(void);
 /// Initialises the effect's sprite anchor from the owning touch actor.
 void func_ov003_020a64d0(Ov003EffectState* effect, s16 arg1);
 /// Queues a sweep attack against `unit`, resetting the streak when the info record says so.
-s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003Unit* unit, s32 x, s32 force, u16 amount);
+s32 func_ov003_020a6568(Ov003AttackStreak* streak, s32 attackId, Ov003EnemyActor* unit, s32 x, s32 force, u16 amount);
 /// Queues a point attack at (x, y, z) and resets the streak when the info record says so.
 s32 func_ov003_020a6628(Ov003AttackStreak* streak, s32 attackId, s32 x, s32 y, s32 z, s32 force, u16 amount);
 /// Segment-segment intersection test; both segments are axis-aligned bounding boxes first.
 s32 func_ov003_020a67d4(s32 x1, s32 y1, s32 x2, s32 y2, s32 x3, s32 y3, s32 x4, s32 y4);
 /// Whether `unit`'s screen-space bounding box overlaps (x1, y1)-(x2, y2).
-s32 func_ov003_020a6924(Ov003Unit* unit, s32 x1, s32 y1, s32 x2, s32 y2);
+s32 func_ov003_020a6924(Ov003EnemyActor* unit, s32 x1, s32 y1, s32 x2, s32 y2);
 /// Queues a sweep attack against every unit whose box overlaps (x1, y1)-(x2, y2).
 s32 func_ov003_020a6acc(Ov003AttackStreak* streak, s32 attackId, s32 x1, s32 y1, s32 x2, s32 y2, s32 x);
 /// Clears `*out` when the current encounter uses the same hit kind as `unit`.
-void func_ov003_020a6bb8(s16* out, Ov003Unit* unit);
+void func_ov003_020a6bb8(s16* out, Ov003EnemyActor* unit);
 /// Story-progress gate for the pin effects: 0 = none, 1 = early, 2 = late.
 s32 func_ov003_020a6c14(void);
 
@@ -480,18 +481,18 @@ s32 func_ov003_020b0470(Ov003EnemyAirFlow* self);
 
 // BtlPsy_FireHold.c
 /// The actor currently held by the touch, if it is a live enemy.
-Ov003Unit* func_ov003_020b0fa0(void);
-void       func_ov003_020b0fdc(Ov003Unit* unit);
-void       func_ov003_020b1024(Ov003Unit* unit);
-void       func_ov003_020b1094(Ov003Unit* unit, s32 charged);
+Ov003EnemyActor* func_ov003_020b0fa0(void);
+void             func_ov003_020b0fdc(Ov003EnemyActor* unit);
+void             func_ov003_020b1024(Ov003EnemyActor* unit);
+void             func_ov003_020b1094(Ov003EnemyActor* unit, s32 charged);
 
 // BtlPsy_IceHold.c
 /// The actor tracked by the ice psych.
-Ov003Unit* func_ov003_020b15a0(void);
+Ov003EnemyActor* func_ov003_020b15a0(void);
 
 // BtlPsy_OpticalHold.c
 /// Returns the held actor while the optical-hold touch is active, or NULL when it is not.
-Ov003Unit* func_ov003_020b1c50(void);
+Ov003EnemyActor* func_ov003_020b1c50(void);
 
 // BtlPsy_IcePillar_R.c
 /// Sways every pillar centre sideways and flips the sway direction for the
@@ -522,17 +523,17 @@ s32 func_ov003_020b42f4(TaskPool* pool, Task* task, void* args, s32 stage);
 s32 func_ov003_020b4a44(Ov003PsychoFallT* self);
 
 // SubTsk_BtlPsy_Psycho_T.c
-void func_ov003_020b4e48(Ov003Unit* unit, Ov003PsychoHitContext* context);
+void func_ov003_020b4e48(Ov003EnemyActor* unit, Ov003PsychoHitContext* context);
 s32  func_ov003_020b4e8c(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // BtlPsy_Psycho_D.c
 s32 func_ov003_020b5480(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // BtlPsy_Psycho_S.c
-Ov003Unit* func_ov003_020b5f04(s32 index);
+Ov003EnemyActor* func_ov003_020b5f04(s32 index);
 
 // BtlPsy_Psycho_T.c
-Ov003Unit* func_ov003_020b6308(Ov003EffectState* effect);
+Ov003EnemyActor* func_ov003_020b6308(Ov003EffectState* effect);
 
 // BtlPsy_Heal.c
 s32  func_ov003_020b6724(TaskPool* pool, Task* task, void* args, s32 stage);

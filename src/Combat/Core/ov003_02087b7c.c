@@ -73,7 +73,7 @@ typedef struct Ov003Hit {
     /* 0x04 */ void*                  payload;
     /* 0x08 */ u16                    kind;
     /* 0x0A */ u16                    pad;
-    /* 0x0C */ Ov003Unit*             unit;
+    /* 0x0C */ Ov003EnemyActor*       unit;
     /* 0x10 */ s32                    x;
     /* 0x14 */ s32                    y;
     /* 0x18 */ s32                    z;
@@ -101,12 +101,12 @@ extern void func_ov003_02087f64(SndMgrSeIdx, s32);
 extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
 extern s32  func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 extern void func_ov003_0208b3cc(s32, s16);
-extern s32  func_ov003_0208b518(s32, Ov003Unit*, s16);
+extern s32  func_ov003_0208b518(s32, Ov003EnemyActor*, s16);
 extern BOOL func_ov003_0208ca04(s32, u32);
 extern s16  func_ov003_0208ca24(s32, u32);
 extern void func_ov003_0208cb6c(s32, s32);
 extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void func_ov003_0209b61c(s32, s32, Ov003Unit*);
+extern void func_ov003_0209b61c(s32, s32, Ov003EnemyActor*);
 extern void func_ov003_0209c568(s32, u32, s32);
 extern void func_ov003_0209c984(s32, s32, s32, s32, s32);
 extern void func_ov003_0209ed70(u8, s32, s32, s32, s32);
@@ -189,10 +189,10 @@ char data_ov003_020e396c[0x10] = "ARG_Teleport_T";
 // Functions
 // ---------------------------------------------------------------------------------------------
 
-extern Ov003Unit* func_ov003_0208495c(CombatList*);
-extern Ov003Unit* func_ov003_02084984(void*);
-extern void       func_ov003_02089f90(s32 mode, Ov003Unit* unit, u16 variant, s16 arg3, s16 arg4);
-extern s32        func_ov003_0208a3ec(Ov003Hit* spawn);
+extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
+extern Ov003EnemyActor* func_ov003_02084984(void*);
+extern void             func_ov003_02089f90(s32 mode, Ov003EnemyActor* unit, u16 variant, s16 arg3, s16 arg4);
+extern s32              func_ov003_0208a3ec(Ov003Hit* spawn);
 
 /// TRUE when the two screen-space positions overlap on the axis `arg0` selects. The four
 /// halfwords at `Ov003Global + 0x3D378` are the current and previous touch/focus positions.
@@ -433,7 +433,7 @@ void func_ov003_02088064(CombatSprite* visual, s32 x, s32 y) {
 }
 
 /// Spawns a hit effect for `unit` at the effect size its hit box implies.
-void func_ov003_020880e4(s32 engine, CombatSprite* sprite, Ov003Unit* unit) {
+void func_ov003_020880e4(s32 engine, CombatSprite* sprite, Ov003EnemyActor* unit) {
     func_ov003_02087fe0(engine, sprite, func_ov003_02087fa0(unit->actor.unk_70));
 }
 
@@ -636,7 +636,7 @@ void func_ov003_02088428(s32 mode, s16* attack, s16* damage, u32 variant, s32 fr
 }
 
 /// Advances the "tension" gauge while the unit is falling off screen.
-void func_ov003_02088694(Ov003Unit* unit) {
+void func_ov003_02088694(Ov003EnemyActor* unit) {
     s16 tension;
 
     if (Inventory_GetOwnedCount(0x2AA) == 0) {
@@ -661,7 +661,7 @@ void func_ov003_02088694(Ov003Unit* unit) {
 }
 
 /// TRUE when `unit` cannot be hit by this attack.
-s32 func_ov003_02088714(Ov003Unit* unit, const Ov003AttackInfo* info) {
+s32 func_ov003_02088714(Ov003EnemyActor* unit, const Ov003AttackInfo* info) {
     s32 flags = unit->actor.flags;
 
     if ((flags & 0x8000) || (flags & 4) || (flags & 0x10)) {
@@ -674,7 +674,7 @@ s32 func_ov003_02088714(Ov003Unit* unit, const Ov003AttackInfo* info) {
 }
 
 /// Cancels the unit's current move if it is interruptible.
-s32 func_ov003_02088764(Ov003Unit* unit) {
+s32 func_ov003_02088764(Ov003EnemyActor* unit) {
     if (!(unit->actor.flags & 0x40)) {
         return 0;
     }
@@ -684,7 +684,7 @@ s32 func_ov003_02088764(Ov003Unit* unit) {
 
 /// Box overlap test between the unit's hit volume and the attack's.
 // Nonmatching: register allocation of the hit-volume bounds
-s32 func_ov003_02088788(Ov003Unit* unit, s32 x, s32 y, s32 z, s32 halfW, s32 halfH, s32 halfD) {
+s32 func_ov003_02088788(Ov003EnemyActor* unit, s32 x, s32 y, s32 z, s32 halfW, s32 halfH, s32 halfD) {
     s16 radius  = unit->actor.unk_70;
     s16 zRadius = unit->actor.unk_72;
     s32 posX    = unit->actor.position.x;
@@ -714,7 +714,7 @@ s32 func_ov003_02088788(Ov003Unit* unit, s32 x, s32 y, s32 z, s32 halfW, s32 hal
 
 /// Box overlap test in screen space, used for the attack's hit point.
 // Nonmatching: register allocation of the info/hit pointers
-s32 func_ov003_0208882c(Ov003Unit* unit, Ov003Hit* hit) {
+s32 func_ov003_0208882c(Ov003EnemyActor* unit, Ov003Hit* hit) {
     const Ov003AttackInfo* info  = hit->info;
     s32                    halfW = hit->x * 0x10;
     s16                    posY;
@@ -739,7 +739,7 @@ s32 func_ov003_0208882c(Ov003Unit* unit, Ov003Hit* hit) {
 
 /// Decides the unit's reaction to a hit and applies it.
 // Nonmatching: register allocation of the flags word
-void func_ov003_020888b0(Ov003Unit* unit, const Ov003AttackInfo* info, s32 arg2) {
+void func_ov003_020888b0(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32 arg2) {
     if (unit->actor.position.z < -0x10000 || unit->actor.pendingCommand == 2 || (unit->actor.flags & 0x4000) ||
         ((u32)(info->flags << 0xD) >> 0x1C) >= 6U)
     {
@@ -778,7 +778,7 @@ void func_ov003_02088988(const Ov003AttackInfo* info) {
 
 /// Turns the unit towards the attack's origin.
 // Nonmatching: register allocation of the flags word
-void func_ov003_02088a48(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
+void func_ov003_02088a48(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32 x) {
     s32 turn = 0;
     u16 bit;
 
@@ -797,7 +797,7 @@ void func_ov003_02088a48(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
 
 /// Gives the unit a knockback velocity away from the attack point.
 // Nonmatching: register allocation of the flags/variant temporaries
-void func_ov003_02088abc(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
+void func_ov003_02088abc(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32 x) {
     s32 targetX;
     u32 variant;
     s32 speed;
@@ -826,7 +826,7 @@ void func_ov003_02088abc(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
 }
 
 /// Rolls the attack's hit chance and damage and applies them to `unit`.
-void func_ov003_02088b5c(s32 mode, Ov003Unit* unit, u16 attackId) {
+void func_ov003_02088b5c(s32 mode, Ov003EnemyActor* unit, u16 attackId) {
     const Ov003AttackParams* params;
     s16                      damage;
     s16                      attack;
@@ -845,22 +845,22 @@ void func_ov003_02088b5c(s32 mode, Ov003Unit* unit, u16 attackId) {
             default:
                 break;
             case 1:
-                if (((u32)(unit->unk_196 << 0x1D) >> 0x1F) == 1) {
+                if (((u32)(unit->flags196.raw << 0x1D) >> 0x1F) == 1) {
                     hit = 1;
                 }
                 break;
             case 2:
-                if (((u32)(unit->unk_196 << 0x1B) >> 0x1F) == 1) {
+                if (((u32)(unit->flags196.raw << 0x1B) >> 0x1F) == 1) {
                     hit = 1;
                 }
                 break;
             case 3:
-                if (((u32)(unit->unk_196 << 0x1A) >> 0x1F) == 1) {
+                if (((u32)(unit->flags196.raw << 0x1A) >> 0x1F) == 1) {
                     hit = 1;
                 }
                 break;
             case 4:
-                if (((u32)(unit->unk_196 << 0x1C) >> 0x1F) == 1) {
+                if (((u32)(unit->flags196.raw << 0x1C) >> 0x1F) == 1) {
                     hit = 1;
                 }
                 break;
@@ -879,7 +879,7 @@ void func_ov003_02088b5c(s32 mode, Ov003Unit* unit, u16 attackId) {
 }
 
 // Nonmatching: register allocation of the flags word and branch delay slot
-void func_ov003_02088cc0(Ov003Unit* unit, const Ov003AttackInfo* info) {
+void func_ov003_02088cc0(Ov003EnemyActor* unit, const Ov003AttackInfo* info) {
     if (((u32)(info->flags << 0x17) >> 0x1F) == 0) {
         func_ov003_02088b5c(0, unit, (u16)((u32)(info->flags << 8) >> 0x1B));
         return;
@@ -889,7 +889,7 @@ void func_ov003_02088cc0(Ov003Unit* unit, const Ov003AttackInfo* info) {
 
 /// Spawns the attack's damage number and effect at the hit point.
 // Nonmatching: callee-saved register rotation of the position temporaries
-void func_ov003_02088d0c(Ov003Unit* unit, Ov003Hit* hit) {
+void func_ov003_02088d0c(Ov003EnemyActor* unit, Ov003Hit* hit) {
     s32 x;
     s32 y;
     s32 z;
@@ -976,7 +976,7 @@ void func_ov003_02088d0c(Ov003Unit* unit, Ov003Hit* hit) {
 }
 
 /// Starts the unit's "hit" reaction; returns 1 when the attack was applied.
-s32 func_ov003_02088f5c(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
+s32 func_ov003_02088f5c(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32 x) {
     if (!(unit->actor.flags & 8)) {
         return 0;
     }
@@ -1007,7 +1007,7 @@ s32 func_ov003_02088f5c(Ov003Unit* unit, const Ov003AttackInfo* info, s32 x) {
 
 /// Damage multiplier for the attack variant: 100% plus the per-variant bonus, and the hit
 /// direction marker (low/high/normal) in the unit's status bits.
-s32 func_ov003_020890f0(Ov003Unit* unit, const Ov003AttackInfo* info) {
+s32 func_ov003_020890f0(Ov003EnemyActor* unit, const Ov003AttackInfo* info) {
     s16 multiplier = 0x64;
 
     unit->actor.unk_12 =
@@ -1030,7 +1030,7 @@ s32 func_ov003_020890f0(Ov003Unit* unit, const Ov003AttackInfo* info) {
 
 /// Computes the damage a melee attack deals.
 // Nonmatching: register allocation around the sync multiplier
-s16 func_ov003_02089194(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
+s16 func_ov003_02089194(Ov003EnemyActor* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
     s16 damage = OV003_ATTACK_PERCENT((s16)args->unk_00, info->unk_00);
     s32 bonus;
 
@@ -1038,7 +1038,7 @@ s16 func_ov003_02089194(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov00
     damage = OV003_ATTACK_PERCENT(damage, unit->actor.unk_62);
     if (((u32)(info->flags << 0x17) >> 0x1F) == 0) {
         if (data_ov003_020e71b8->unk3D8F4 == 0 && ((u32)(info->flags << 0x12) >> 0x1F) != 1 &&
-            ((u32)(unit->unk_196 << 0x16) >> 0x1F) == 1)
+            ((u32)(unit->flags196.raw << 0x16) >> 0x1F) == 1)
         {
             damage = (s16)(damage / 4);
         }
@@ -1055,7 +1055,7 @@ s16 func_ov003_02089194(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov00
         func_ov003_020882f0(0, &damage);
     } else {
         if (data_ov003_020e71b8->unk3D8F0 == 0 && ((u32)(info->flags << 0x12) >> 0x1F) != 1 &&
-            ((u32)(unit->unk_196 << 0x16) >> 0x1F) == 1)
+            ((u32)(unit->flags196.raw << 0x16) >> 0x1F) == 1)
         {
             damage = (s16)(damage / 4);
         }
@@ -1075,7 +1075,7 @@ s16 func_ov003_02089194(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov00
 }
 
 /// Computes the damage a ranged attack deals.
-s16 func_ov003_0208943c(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
+s16 func_ov003_0208943c(Ov003EnemyActor* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
     s16 damage = (s16)args->unk_00 + info->unk_00;
 
     damage = OV003_ATTACK_PERCENT(damage, (s16)args->unk_04);
@@ -1099,7 +1099,7 @@ s16 func_ov003_0208943c(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov00
 }
 
 /// Applies the computed damage and the hit reaction to the unit.
-void func_ov003_020895ac(Ov003Unit* unit, const Ov003AttackInfo* info, s32 damage, s16 arg3) {
+void func_ov003_020895ac(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32 damage, s16 arg3) {
     if (damage < 0) {
         unit->actor.unk_12 = (u16)((unit->actor.unk_12 & ~0xC) | 4);
     }
@@ -1128,11 +1128,11 @@ void func_ov003_020895ac(Ov003Unit* unit, const Ov003AttackInfo* info, s32 damag
     if (damage <= 0) {
         return;
     }
-    func_ov003_020888b0(unit, info, ((u32)(unit->unk_196 << 0x1E) >> 0x1F) == 1 ? 1 : 0);
+    func_ov003_020888b0(unit, info, ((u32)(unit->flags196.raw << 0x1E) >> 0x1F) == 1 ? 1 : 0);
 }
 
 /// Applies the "gauge" damage bank used by the special attacks.
-void func_ov003_020896d0(Ov003Unit* unit, const Ov003AttackInfo* info, s16 gauge) {
+void func_ov003_020896d0(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s16 gauge) {
     if (((u32)(info->flags << 0x17) >> 0x1F) == 0) {
         func_ov003_02088264(0, &gauge);
         func_ov003_0208b3cc(0, -gauge);
@@ -1158,7 +1158,7 @@ void func_ov003_020896d0(Ov003Unit* unit, const Ov003AttackInfo* info, s16 gauge
 }
 
 /// Resolves one attack against a unit: computes the damage and applies it.
-void func_ov003_02089804(Ov003Unit* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
+void func_ov003_02089804(Ov003EnemyActor* unit, const Ov003AttackInfo* info, const Ov003AttackArgs* args) {
     unit->actor.unk_12 &= ~2;
     unit->actor.unk_12 &= ~0xC;
     unit->actor.unk_12 &= ~0x30;
@@ -1199,11 +1199,11 @@ s32 func_ov003_02089884(Ov003Hit* hit) {
 
 /// Resolves an area hit against every unit the attack overlaps.
 s32 func_ov003_02089974(Ov003Hit* hit) {
-    s32        result = 0;
-    Ov003Unit* unit;
-    s32        halfW;
-    s32        halfH;
-    s32        halfD;
+    s32              result = 0;
+    Ov003EnemyActor* unit;
+    s32              halfW;
+    s32              halfH;
+    s32              halfD;
 
     func_ov003_020881b4(hit);
     halfW = hit->info->unk_05 << 12;
@@ -1244,10 +1244,10 @@ s32 func_ov003_02089974(Ov003Hit* hit) {
 
 /// Resolves a line hit against the first unit in front of the attack.
 s32 func_ov003_02089b04(Ov003Hit* hit) {
-    Ov003Unit* unit;
-    s32        halfW;
-    s32        halfH;
-    s32        halfD;
+    Ov003EnemyActor* unit;
+    s32              halfW;
+    s32              halfH;
+    s32              halfD;
 
     func_ov003_020881b4(hit);
     if (((u32)(hit->info->flags << 0x17) >> 0x1F) == 0) {
@@ -1285,9 +1285,9 @@ s32 func_ov003_02089b04(Ov003Hit* hit) {
 
 /// Resolves a screen-space (projected) hit against every overlapping unit.
 s32 func_ov003_02089c74(Ov003Hit* hit) {
-    Ov003Unit* unit;
-    s32        x;
-    s32        result = 0;
+    Ov003EnemyActor* unit;
+    s32              x;
+    s32              result = 0;
 
     func_ov003_020881b4(hit);
     if (((u32)(hit->info->flags << 0x17) >> 0x1F) == 0) {
@@ -1329,8 +1329,8 @@ s32 func_ov003_02089c74(Ov003Hit* hit) {
 
 /// Resolves a screen-space hit against the main display actor.
 s32 func_ov003_02089e18(Ov003Hit* hit) {
-    Ov003Unit* unit;
-    s32        x;
+    Ov003EnemyActor* unit;
+    s32              x;
 
     func_ov003_020881b4(hit);
     if (((u32)(hit->info->flags << 0x17) >> 0x1F) == 0) {
@@ -1367,7 +1367,7 @@ s32 func_ov003_02089e18(Ov003Hit* hit) {
 }
 
 /// Starts the unit's periodic hit effect and, for a fresh effect, its sprite animation.
-void func_ov003_02089f90(s32 mode, Ov003Unit* unit, u16 variant, s16 arg3, s16 arg4) {
+void func_ov003_02089f90(s32 mode, Ov003EnemyActor* unit, u16 variant, s16 arg3, s16 arg4) {
     u16 previous = unit->actor.periodicEffectMode;
 
     CombatActor_ClearPeriodicEffect(&unit->actor);
@@ -1394,7 +1394,7 @@ void func_ov003_02089f90(s32 mode, Ov003Unit* unit, u16 variant, s16 arg3, s16 a
 }
 
 /// Applies a plain hit to a unit (used by the projectile effects).
-s32 func_ov003_0208a028(s32 mode, Ov003Unit* unit, u16 attackId) {
+s32 func_ov003_0208a028(s32 mode, Ov003EnemyActor* unit, u16 attackId) {
     s32 flags = unit->actor.flags;
 
     if ((flags & 4) || (flags & 0x10) || (flags & 0x4000) || unit->actor.pendingCommand == 2) {
@@ -1406,7 +1406,7 @@ s32 func_ov003_0208a028(s32 mode, Ov003Unit* unit, u16 attackId) {
 }
 
 /// Applies a bare "stagger" hit to a unit.
-s32 func_ov003_0208a08c(s32 mode, Ov003Unit* unit, s32 arg2) {
+s32 func_ov003_0208a08c(s32 mode, Ov003EnemyActor* unit, s32 arg2) {
     s32 flags = unit->actor.flags;
 
     if ((flags & 4) || (flags & 0x10) || (flags & 0x4000) || unit->actor.pendingCommand == 2) {
@@ -1415,7 +1415,7 @@ s32 func_ov003_0208a08c(s32 mode, Ov003Unit* unit, s32 arg2) {
     unit->actor.flags = flags & ~8;
     CombatActor_SetPendingCommand(&unit->actor, 1);
     if (arg2 > 0) {
-        ((void (*)(s32, Ov003Unit*, u16, s32, s32))func_ov003_02089f90)(mode, unit, 4, 0, arg2);
+        ((void (*)(s32, Ov003EnemyActor*, u16, s32, s32))func_ov003_02089f90)(mode, unit, 4, 0, arg2);
     }
     return 1;
 }
@@ -1475,7 +1475,7 @@ s32 func_ov003_0208a1e8(const Ov003AttackInfo* info, void* payload, s32 arg2) {
 }
 
 /// Copies a spawn's attack arguments into the record the hit resolvers read.
-void func_ov003_0208a234(s16 arg0, const Ov003AttackArgs* args, Ov003Unit* unit) {
+void func_ov003_0208a234(s16 arg0, const Ov003AttackArgs* args, Ov003EnemyActor* unit) {
     unit->actor.unk_14     = arg0;
     unit->actor.attackArgs = *args;
 }

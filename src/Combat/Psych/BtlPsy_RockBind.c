@@ -6,7 +6,7 @@ extern CombatActor*     func_ov003_02085dc8(s32);
 extern const TaskHandle data_ov003_020dc8c4;
 
 s32 func_ov003_020b0058(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = (Ov003Unit*)func_ov003_02085dc8(1);
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_02085dc8(1);
     if (unit == NULL)
         return 0;
     if (func_ov003_020a60a8(unit, 3))

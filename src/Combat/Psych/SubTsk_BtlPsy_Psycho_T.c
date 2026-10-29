@@ -29,7 +29,7 @@ s32 func_ov003_020b4e2c(u32 size) {
     return 2;
 }
 
-void func_ov003_020b4e48(Ov003Unit* unit, Ov003PsychoHitContext* context) {
+void func_ov003_020b4e48(Ov003EnemyActor* unit, Ov003PsychoHitContext* context) {
     Ov003PsychoUnitArgs args;
 
     if (!func_ov003_020a60ec(unit, 5))
@@ -155,8 +155,8 @@ s32 func_ov003_020b4e8c(TaskPool* pool, Task* task, void* args, s32 stage) {
             return result;
         }
         case 2: {
-            Ov003Unit* unit;
-            s32        x, y;
+            Ov003EnemyActor* unit;
+            s32              x, y;
             self = task->data;
             unit = self->unit;
             x    = unit->actor.screenX;

@@ -12,7 +12,7 @@ extern void             func_ov003_02087ed8(s32);
 extern const TaskHandle data_ov003_020dc73c;
 
 s32 func_ov003_020ac36c(Ov003EffectContext* context, Ov003EffectState* effect) {
-    Ov003Unit* unit = func_ov003_02085e78(2);
+    Ov003EnemyActor* unit = func_ov003_02085e78(2);
     if (unit == NULL || !func_ov003_020a63e4())
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc73c.taskName);

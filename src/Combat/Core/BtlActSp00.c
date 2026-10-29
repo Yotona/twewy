@@ -67,7 +67,7 @@ typedef char                  check_ActSpStatus[(sizeof(BtlActSpStatus) == 0xC) 
 typedef char                  check_ActSpStatus_released[(offsetof(BtlActSpStatus, released) == 8) ? 1 : -1];
 extern BtlActSpStatus         data_ov003_020e71d8;
 extern const Ov003AttackInfo* func_ov003_0208a114(u16);
-extern void                   func_ov003_0208a128(const Ov003AttackInfo*, Ov003AttackArgs*, Ov003Unit*, s32);
+extern void                   func_ov003_0208a128(const Ov003AttackInfo*, Ov003AttackArgs*, Ov003EnemyActor*, s32);
 extern void                   func_ov003_0208a1e8(const Ov003AttackInfo*, Ov003AttackArgs*, s32);
 extern void                   func_ov003_0208b3cc(s32, s16);
 extern void                   func_ov003_020bd2a8(s32);
@@ -118,11 +118,11 @@ void func_ov003_020c1238(u16 character, u16 level) {
     BtlActSpAttackTable mainAttacks = data_ov003_020ddae6;
     CombatActor*        mainActor   = data_ov003_020e71b8->unk3D898;
     Ov003AttackArgs     args;
-    args.unk_00     = mainActor->unk_66;
-    args.unk_04     = 0x64;
-    args.unk_06     = 0x64;
-    args.unk_02     = 0x5A;
-    Ov003Unit* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC);
+    args.unk_00           = mainActor->unk_66;
+    args.unk_04           = 0x64;
+    args.unk_06           = 0x64;
+    args.unk_02           = 0x5A;
+    Ov003EnemyActor* unit = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC);
     if (unit) {
         u16 attack = subAttacks.entries[character][level];
         do {
@@ -382,8 +382,8 @@ void func_ov003_020c1918(BtlActSp* self) {
         case 4:
             if (self->character == 3) {
                 if (!self->timer) {
-                    Ov003Unit*   unit  = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC);
-                    CombatActor* owner = data_ov003_020e71b8->unk3D89C;
+                    Ov003EnemyActor* unit  = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC);
+                    CombatActor*     owner = data_ov003_020e71b8->unk3D89C;
                     func_ov003_0208a1e8(func_ov003_0208a114(0x12D), &unit->actor.baseArgs, owner->position.x);
                     unit  = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8A4);
                     owner = data_ov003_020e71b8->unk3D898;
