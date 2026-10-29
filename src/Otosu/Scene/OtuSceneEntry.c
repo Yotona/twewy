@@ -183,9 +183,6 @@ static void OtuScene_ProcInitMultiplayer(void) {
 }
 
 static void OtuScene_ProcMainSinglePlayer(TinPinSlammer_Scene* scene) {
-    OverlayTag menuTag;
-    OverlayTag resultTag;
-
     TouchInput_Update();
     OamMgr_Reset3DState();
     OamMgr_Reset(&g_OamMgr[0], 0, 0);
@@ -206,8 +203,10 @@ static void OtuScene_ProcMainSinglePlayer(TinPinSlammer_Scene* scene) {
 
     if (scene->done != 0) {
         if (gSaveData.unk_341C != 0x1F) {
+            OverlayTag menuTag;
             MainOvlDisp_ReplaceTop(&menuTag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_SinglePlayerRanking, NULL, 0);
         } else {
+            OverlayTag resultTag;
             MainOvlDisp_ReplaceTop(&resultTag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_RoleSelection, NULL, 0);
         }
     }
@@ -222,9 +221,6 @@ static void OtuScene_ProcMainSinglePlayer(TinPinSlammer_Scene* scene) {
 }
 
 static void OtuScene_ProcMainMultiplayer(TinPinSlammer_Scene* scene) {
-    OverlayTag linkTag;
-    OverlayTag resultTag;
-
     TouchInput_Update();
     OamMgr_Reset3DState();
     OamMgr_Reset(&g_OamMgr[0], 0, 0);
@@ -238,7 +234,6 @@ static void OtuScene_ProcMainMultiplayer(TinPinSlammer_Scene* scene) {
         if (scene->playing != 0) {
             EasyTask_ProcessPendingTasks(&scene->pool2);
         }
-
         OtuScene_RunStagesWireless(scene);
     }
 
@@ -247,8 +242,10 @@ static void OtuScene_ProcMainMultiplayer(TinPinSlammer_Scene* scene) {
 
     if (scene->done != 0) {
         if (scene->linkError == 0) {
+            OverlayTag linkTag;
             MainOvlDisp_ReplaceTop(&linkTag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_MultiplayerRanking, NULL, 0);
         } else {
+            OverlayTag resultTag;
             MainOvlDisp_ReplaceTop(&resultTag, &OVERLAY_2_ID, ProcessOverlay_OtosuMenu_ConnectionError, NULL, 0);
         }
     }
@@ -282,28 +279,23 @@ static void OtuScene_ProcExitMultiplayer(TinPinSlammer_Scene* scene) {
     SystemStatusFlags.unk_06 = scene->linkStatus;
     SystemStatusFlags;
     SystemStatusFlags.unk_07 = scene->wirelessStatus != 0;
-
     OtuScene_Destroy(scene);
 }
 
 void ProcessOverlay_OtosuGame_SinglePlayer(TinPinSlammer_Scene* scene) {
     s32 stage = MainOvlDisp_GetProcessStage();
-
     if (stage == 0x7FFFFFFF) {
         OtuScene_ProcExitSinglePlayer(scene);
-        return;
+    } else {
+        OtuScene_SinglePlayerProcs[stage](scene);
     }
-
-    OtuScene_SinglePlayerProcs[stage](scene);
 }
 
 void ProcessOverlay_OtosuGame_Multiplayer(TinPinSlammer_Scene* scene) {
     s32 stage = MainOvlDisp_GetProcessStage();
-
     if (stage == 0x7FFFFFFF) {
         OtuScene_ProcExitMultiplayer(scene);
-        return;
+    } else {
+        OtuScene_MultiplayerProcs[stage](scene);
     }
-
-    OtuScene_MultiplayerProcs[stage](scene);
 }

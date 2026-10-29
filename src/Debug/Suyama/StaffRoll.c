@@ -5,6 +5,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
 #include "Util/SysFont.h"
 #include "common_data.h"

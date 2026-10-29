@@ -2,6 +2,7 @@
 #include "Display.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 #include <nitro/gx/gx.h>
 #include <nitro/os/cache.h>

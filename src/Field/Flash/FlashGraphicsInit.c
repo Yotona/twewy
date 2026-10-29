@@ -5,6 +5,7 @@
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 #include <nitro/g3.h>
 #include <nitro/mi/cpumem.h>

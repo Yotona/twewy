@@ -7,6 +7,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/IO/Input.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Field/Flash/FOPtrList.h"
 #include "Field/Scene/LocaTitle.h"

@@ -1,6 +1,7 @@
 #ifndef TEXT_H
 #define TEXT_H
 
+#include "BgText.h"
 #include "Engine/File/DatMgr.h"
 #include "common_data.h"
 #include <nitro/types.h>

@@ -1,4 +1,5 @@
 #include "Debug/Mini108.h"
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/Memory.h"
@@ -8,6 +9,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Input.h"
 #include "Engine/IO/Str.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 #include "nitro/reg.h"
 #include <nitro/gx.h>

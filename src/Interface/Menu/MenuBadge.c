@@ -11,6 +11,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Player/Inventory.h"
 #include "Save.h"
@@ -1526,10 +1527,10 @@ void MenuBadge_InitDisplay(void) {
     g_DisplaySettings.controls[DISPLAY_MAIN].objBmpMode  = GX_OBJBMPMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objTileMode  = GX_OBJTILEMODE_1D_128K;
     g_DisplaySettings.controls[DISPLAY_SUB].objBmpMode   = GX_OBJBMPMODE_1D_128K;
+    data_0206aa78                                        = 0x300010;
+    data_0206aa7c                                        = 0x400040;
     g_DisplaySettings.controls[DISPLAY_MAIN].layers &= 0xFF;
     Display_SetMainLayers(LAYER_BG0 | LAYER_BG3 | LAYER_OBJ);
-    data_0206aa78                                       = 0x300010;
-    data_0206aa7c                                       = 0x400040;
     g_DisplaySettings.controls[DISPLAY_MAIN].brightness = 16;
 
     g_DisplaySettings.controls[DISPLAY_SUB].bgMode = GX_BGMODE_0;

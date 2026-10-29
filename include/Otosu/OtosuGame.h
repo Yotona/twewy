@@ -3,6 +3,7 @@
 
 #include "Otosu/OtosuRegion.h"
 
+#include "BgText.h"
 #include "CriSndMgr.h"
 #include "EasyFade.h"
 #include "Engine/Core/OamMgr.h"

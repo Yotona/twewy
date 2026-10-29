@@ -242,8 +242,8 @@ void func_020104c0(TextObject* obj, UnkSmallText* param_2) {
     obj->unk_34 = param_2->unk_2C;
     obj->unk_36 = param_2->unk_2E;
 
-    func_020105d4(obj, (u32)param_2->font, param_2->unk_28);
-    obj->unk_38 = (u32)param_2->font;
+    func_020105d4(obj, param_2->font, param_2->unk_28);
+    obj->unk_38 = param_2->font;
     obj->unk_2C = func_0200fa10(0x8140, obj->unk_50, obj->unk_54, obj->unk_46);
     func_02010adc(obj, &param_2->unk_30);
     func_02010870(obj);

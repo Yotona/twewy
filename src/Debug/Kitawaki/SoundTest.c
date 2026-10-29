@@ -4,6 +4,7 @@
  */
 
 #include "Debug/SoundTest.h"
+#include "BgText.h"
 #include "CriSndMgr.h"
 #include "Display.h"
 #include "Engine/Core/Interrupts.h"
@@ -13,6 +14,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "SndMgr.h"
 #include "common_data.h"
 #include <nitro/reg.h>

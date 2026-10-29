@@ -10,65 +10,11 @@ extern struct {
     /* 0x0C */ s32 unk_0C;
 } data_0206a890;
 
-typedef struct TextFontFile {
-    /* 0x00 */ u32         flags;
-    /* 0x04 */ const char* path;
-} TextFontFile;
-
-typedef struct TextFontInfo {
-    /* 0x00 */ const TextFontFile* file;
-    /* 0x04 */ u32                 unk_04;
-    /* 0x08 */ u32                 unk_08;
-    /* 0x0C */ u16                 unk_0C;
-    /* 0x0E */ u16                 unk_0E;
-    /* 0x10 */ u16                 glyphWidth;
-    /* 0x12 */ u16                 glyphHeight;
-    /* 0x14 */ u32                 unk_14;
-    /* 0x18 */ u32                 unk_18;
-    /* 0x1C */ u32                 unk_1C;
-    /* 0x20 */ u32                 lineHeight;
-} TextFontInfo; // Size: 0x24
-
-extern const TextFontInfo data_0205c9b0[6];
-
-typedef struct PaletteBuffer {
-    /* 0x000 */ u16 bg[256];
-    /* 0x200 */ u16 obj[256];
-} PaletteBuffer; // Size: 0x400
-
-/// RAM copies of the BG and OBJ palettes, indexed by DisplayEngine. The main and sub
-/// buffers are flushed to palette RAM every vblank; entry 0 of `bg` is the backdrop color.
-extern PaletteBuffer g_PaletteBuffers[3];
-
 typedef struct {
     /* 0x0 */ char pad_00[0x28];
     /* 0x28 */ u16 unk_28;
 } UnkStruct_02074E10;
 extern UnkStruct_02074E10 data_02074e10;
-
-typedef struct {
-    /* 0x00 */ s32   unk_00;
-    /* 0x04 */ s32   unk_04;
-    /* 0x08 */ s32   unk_08;
-    /* 0x0C */ s32   unk_0C;
-    /* 0x10 */ s32   unk_10;
-    /* 0x14 */ void* unk_14;
-    union {
-        struct {
-            /* 0x18 */ u16 unk_18;
-            /* 0x1A */ u16 unk_1A;
-        };
-        /* 0x18 */ u16 tilePos[2];
-    };
-    union {
-        struct {
-            /* 0x1C */ u16 unk_1C;
-            /* 0x1E */ u16 unk_1E;
-        };
-        /* 0x1C */ u16 tileSize[2];
-    };
-} UnkStruct_usedby_02025b68;
-extern UnkStruct_usedby_02025b68 usedby_02025b68;
 
 typedef struct {
     /* 0x000 */ char unk_00[0x40A];

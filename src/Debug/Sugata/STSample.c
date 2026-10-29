@@ -1,10 +1,12 @@
 #include "Debug/STSample.h"
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "common_data.h"
 #include <nitro/os/cache.h>

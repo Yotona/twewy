@@ -10,6 +10,7 @@
 #include "Engine/IO/Input.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Text.h"
 #include "Field/FieldRegion.h"
 #include "Save.h"

@@ -1,3 +1,4 @@
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -7,6 +8,7 @@
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
 #include "Interface/Debug/Field/FieldDebug.h"
@@ -121,44 +123,44 @@ extern const FldNpcMesRange data_ov030_020d9f8a;
 static const char* FldNpcMesSelSequence = "Seq_FldNpcMesSel()";
 
 static const FldNpcMesEntry FldNpcMesSelTable[FLD_NPC_MES_COUNT] = {
-    {        "SHIKI_FREE", &FieldEncounterRangesByChapterGroup},
-    {       "JOSHUA_FREE",                &data_ov030_020d990c},
-    {         "BEAT_FREE",                &data_ov030_020d9914},
-    {     "KAIKETSU_FREE",                &data_ov030_020d991c},
-    {         "MAP_ce001",                &data_ov030_020da8e6},
-    {         "MAP_ce002",                &data_ov030_020da8f6},
-    {         "MAP_ce003",                &data_ov030_020da8fe},
-    {         "MAP_ce004",                &data_ov030_020da906},
-    {         "MAP_no001",                &data_ov030_020da8ee},
-    {         "MAP_no002",                &data_ov030_020da90e},
-    {         "MAP_no003",         &FieldEncounterRangesByArea},
-    {         "MAP_no004",                &data_ov030_020da916},
-    {         "MAP_no005",                &data_ov030_020da91e},
-    {         "MAP_no006",                &data_ov030_020da926},
-    {         "MAP_no008",                &data_ov030_020da936},
-    {         "MAP_no009",                &data_ov030_020da93e},
-    {         "MAP_no010",                &data_ov030_020da946},
-    {         "MAP_ea001",                &data_ov030_020da94e},
-    {         "MAP_ea002",                &data_ov030_020da956},
-    {         "MAP_ea003",                &data_ov030_020da95e},
-    {         "MAP_so001",                &data_ov030_020da966},
-    {         "MAP_so002",                &data_ov030_020da96e},
-    {         "MAP_we001",                &data_ov030_020da976},
-    {         "MAP_we003",                &data_ov030_020da986},
-    {         "MAP_we004",                &data_ov030_020da98e},
-    {         "MUSRATTUS",         &FieldEncounterRangesByRank},
-    {                "DB",                &data_ov030_020d9f32},
-    {        "TIGREPUNKS",                &data_ov030_020d9f3a},
-    {    "LAPINANGELIQUE",                &data_ov030_020d9f42},
-    {     "DRAGONCOUTURE",                &data_ov030_020d9f4a},
-    {          "HIPSNAKE",                &data_ov030_020d9f52},
-    {            "PEGASO",                &data_ov030_020d9f5a},
-    {     "SHEEPHEAVENLY",                &data_ov030_020d9f62},
-    {"JUPITEROFTHEMONKEY",                &data_ov030_020d9f6a},
-    {          "PAVOREAL",                &data_ov030_020d9f72},
-    {      "NATURALPUPPY",                &data_ov030_020d9f7a},
-    {          "WILDBOAR",                &data_ov030_020d9f82},
-    {            "GATITO",                &data_ov030_020d9f8a},
+    [0]  = {        "SHIKI_FREE", &FieldEncounterRangesByChapterGroup},
+    [2]  = {         "BEAT_FREE",                &data_ov030_020d9914},
+    [1]  = {       "JOSHUA_FREE",                &data_ov030_020d990c},
+    [6]  = {         "MAP_ce003",                &data_ov030_020da8fe},
+    [3]  = {     "KAIKETSU_FREE",                &data_ov030_020d991c},
+    [7]  = {         "MAP_ce004",                &data_ov030_020da906},
+    [8]  = {         "MAP_no001",                &data_ov030_020da8ee},
+    [9]  = {         "MAP_no002",                &data_ov030_020da90e},
+    [10] = {         "MAP_no003",         &FieldEncounterRangesByArea},
+    [11] = {         "MAP_no004",                &data_ov030_020da916},
+    [5]  = {         "MAP_ce002",                &data_ov030_020da8f6},
+    [13] = {         "MAP_no006",                &data_ov030_020da926},
+    [14] = {         "MAP_no008",                &data_ov030_020da936},
+    [15] = {         "MAP_no009",                &data_ov030_020da93e},
+    [16] = {         "MAP_no010",                &data_ov030_020da946},
+    [17] = {         "MAP_ea001",                &data_ov030_020da94e},
+    [18] = {         "MAP_ea002",                &data_ov030_020da956},
+    [19] = {         "MAP_ea003",                &data_ov030_020da95e},
+    [20] = {         "MAP_so001",                &data_ov030_020da966},
+    [23] = {         "MAP_we003",                &data_ov030_020da986},
+    [21] = {         "MAP_so002",                &data_ov030_020da96e},
+    [4]  = {         "MAP_ce001",                &data_ov030_020da8e6},
+    [24] = {         "MAP_we004",                &data_ov030_020da98e},
+    [25] = {         "MUSRATTUS",         &FieldEncounterRangesByRank},
+    [12] = {         "MAP_no005",                &data_ov030_020da91e},
+    [27] = {        "TIGREPUNKS",                &data_ov030_020d9f3a},
+    [22] = {         "MAP_we001",                &data_ov030_020da976},
+    [29] = {     "DRAGONCOUTURE",                &data_ov030_020d9f4a},
+    [30] = {          "HIPSNAKE",                &data_ov030_020d9f52},
+    [26] = {                "DB",                &data_ov030_020d9f32},
+    [33] = {"JUPITEROFTHEMONKEY",                &data_ov030_020d9f6a},
+    [31] = {            "PEGASO",                &data_ov030_020d9f5a},
+    [28] = {    "LAPINANGELIQUE",                &data_ov030_020d9f42},
+    [34] = {          "PAVOREAL",                &data_ov030_020d9f72},
+    [32] = {     "SHEEPHEAVENLY",                &data_ov030_020d9f62},
+    [35] = {      "NATURALPUPPY",                &data_ov030_020d9f7a},
+    [36] = {          "WILDBOAR",                &data_ov030_020d9f82},
+    [37] = {            "GATITO",                &data_ov030_020d9f8a},
 };
 
 void FldNpcMesSel_CreateTextView(FldNpcMesSelObject* selObj) {

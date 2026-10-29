@@ -24,39 +24,35 @@ void OtuScene_LoadPlayerDeck(TinPinSlammer_Scene* scene) {
     }
 
     if (scene->decks[0][0] == OTU_NO_PIN) {
-        scene->decks[0][0] = 0xE5;
+        scene->decks[0][0] = PIN_TIN_PIN_FIRE;
     }
 }
 
 void OtuScene_InitText(TinPinSlammer_Scene* scene) {
     UnkStruct_usedby_02025b68 args;
 
-    if (scene->textReady != 0) {
-        return;
+    if (scene->textReady == FALSE) {
+        args.unk_00 = 1;
+        args.unk_04 = 0;
+        args.unk_08 = scene->dataType;
+        args.unk_0C = (s32)&data_0205c9b0;
+        args.unk_10 = 0;
+        args.unk_14 = NULL;
+        args.unk_18 = 0;
+        args.unk_1A = 0;
+        args.unk_1C = 0x20;
+        args.unk_1E = 0x18;
+
+        BgText_Init(scene->textRes, &args);
+        scene->textReady = 1;
     }
-
-    args.unk_00 = 1;
-    args.unk_04 = 0;
-    args.unk_08 = scene->dataType;
-    args.unk_0C = (s32)&data_0205c9b0;
-    args.unk_10 = 0;
-    args.unk_14 = NULL;
-    args.unk_18 = 0;
-    args.unk_1A = 0;
-    args.unk_1C = 0x20;
-    args.unk_1E = 0x18;
-
-    BgText_Init(scene->textRes, &args);
-    scene->textReady = 1;
 }
 
 void OtuScene_ReleaseText(TinPinSlammer_Scene* scene) {
-    if (scene->textReady == 0) {
-        return;
+    if (scene->textReady) {
+        BgText_Free(scene->textRes);
+        scene->textReady = FALSE;
     }
-
-    BgText_Free(scene->textRes);
-    scene->textReady = 0;
 }
 
 void OtuScene_Init(TinPinSlammer_Scene* scene) {
@@ -109,13 +105,11 @@ void OtuScene_RunStages(TinPinSlammer_Scene* scene) {
 }
 
 void OtuScene_RunStagesWireless(TinPinSlammer_Scene* scene) {
-    u8* base = (u8*)scene;
-    s32 reset;
     OtuStageDispatch_Enter(&scene->stage, scene);
     OtuStageDispatch_Run(&scene->stage, scene);
 
     if (OtuStageDispatch_GetStage(&scene->stage) != &OtuScene_DisconnectStage &&
-        OtuStageDispatch_IsFinished(&scene->stage) == 0)
+        OtuStageDispatch_IsFinished(&scene->stage) == FALSE)
     {
         switch (func_ov040_0209cb78()) {
             case 8:
@@ -136,30 +130,30 @@ void OtuScene_RunStagesWireless(TinPinSlammer_Scene* scene) {
             } break;
         }
 
-        reset = (SystemStatusFlags.reset != 0);
+        BOOL reset = (SystemStatusFlags.reset != 0);
         if (reset) {
             func_ov040_0209d990();
             OtuStageDispatch_SetNext(&scene->stage, &OtuScene_DisconnectStage);
         }
     }
 
-    if (scene->linkLost != 0) {
-        scene->linkError = 1;
+    if (scene->linkLost) {
+        scene->linkError = TRUE;
         func_ov040_0209d990();
         OtuStageDispatch_SetNext(&scene->stage, &OtuScene_DisconnectStage);
-        scene->linkLost = 0;
+        scene->linkLost = FALSE;
     }
 
-    if (scene->linkTimeout != 0) {
-        scene->linkError = 1;
+    if (scene->linkTimeout) {
+        scene->linkError = TRUE;
         func_ov040_0209d990();
         OtuStageDispatch_SetNext(&scene->stage, &OtuScene_DisconnectStage);
-        scene->linkTimeout = 0;
+        scene->linkTimeout = FALSE;
     }
 
     OtuStageDispatch_Exit(&scene->stage, scene);
 
-    if (OtuStageDispatch_IsFinished(&scene->stage) != 0) {
+    if (OtuStageDispatch_IsFinished(&scene->stage)) {
         scene->done = 1;
     }
 }

@@ -6,6 +6,7 @@
 #include "Engine/Core/System.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 #include "common_data.h"

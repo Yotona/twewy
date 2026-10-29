@@ -8,6 +8,7 @@
 #include "Engine/IO/Input.h"
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SndMgrSeIdx.h"
 #include "SpriteMgr.h"

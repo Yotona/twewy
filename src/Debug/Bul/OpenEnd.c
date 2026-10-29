@@ -5,6 +5,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/IO/TouchInput.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"

@@ -7,6 +7,7 @@
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Field/Flash/FO3D.h"
 #include "Field/Flash/FOFileList.h"
 #include "common_data.h"

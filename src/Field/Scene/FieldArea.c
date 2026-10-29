@@ -12,7 +12,7 @@
 #include <nitro/fx/fx_matrix.h>
 
 extern s32  func_0202599c(s32 flagIndex);
-extern void NNSTexVram_Shutdown(void);
+extern void TexVram_Shutdown(void);
 extern void func_02028a44(void);
 
 extern void func_02027c94(s32);
@@ -60,7 +60,7 @@ void func_ov030_020b7a00(void* arg1, FieldPos origin) {
 void func_ov030_020b7aac(s32* arg0) {
     FO3DViewer_Destroy();
     func_02027c94(*arg0);
-    NNSTexVram_Shutdown();
+    TexVram_Shutdown();
 }
 
 void func_ov030_020b7ac8(void) {

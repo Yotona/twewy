@@ -3,6 +3,7 @@
 #include "Engine/Color.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 #include <nitro/os.h>
 #include <nitro/reg.h>

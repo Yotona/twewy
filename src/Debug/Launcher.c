@@ -8,6 +8,7 @@
 #include "Engine/Core/System.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/TouchInput.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Engine/Text.h"
 #include "common_data.h"

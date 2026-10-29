@@ -1,3 +1,4 @@
+#include "Engine/Resources/PaletteMgr.h"
 #include "Otosu/OtosuMenu.h"
 
 typedef union {

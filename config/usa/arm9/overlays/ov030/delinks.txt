@@ -35,6 +35,7 @@ src/Field/Event/EventFlags.c:
     .text       start:0x020aeb34 end:0x020aed54
 
 src/Interface/Debug/Field/FieldSelect.c:
+    complete
     .text       start:0x020b04ac end:0x020b1028
     .rodata     start:0x020dbee0 end:0x020dbef8
     .data       start:0x02100338 end:0x021008b0
@@ -420,6 +421,7 @@ src/Field/Tasks/Fld_BrushHati.c:
     .data       start:0x02108600 end:0x02108614
 
 src/Interface/Debug/Field/FieldNpcMessageSelect.c:
+    complete
     .text       start:0x020c91f4 end:0x020c9990
     .rodata     start:0x020ecbd0 end:0x020ecd0c
     .data       start:0x02108614 end:0x0210882c
@@ -498,6 +500,7 @@ src/Field/Flash/FOPtrList.c:
     .bss        start:0x02109de4 end:0x02109de8
 
 src/Field/Scene/LocaTitleSeq.c:
+    complete
     .text       start:0x020d2a80 end:0x020d2dac
     .rodata     start:0x020ee93c end:0x020ee948
     .data       start:0x021090bc end:0x021090e4
@@ -511,6 +514,7 @@ src/Field/Flash/SeqFlash.c:
     .bss        start:0x02109dec end:0x02109df0
 
 src/Field/Flash/SeqFlashSel.c:
+    complete
     .text       start:0x020d4fb4 end:0x020d53b0
     .rodata     start:0x020fde48 end:0x020fde54
     .data       start:0x02109bc4 end:0x02109c00

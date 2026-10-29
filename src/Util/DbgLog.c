@@ -1,6 +1,6 @@
+#include "Engine/DbgLog.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/System.h"
-#include "Engine/DbgLog.h"
 #include "Engine/IO/Str.h"
 
 #define DBGLOG_ENTRIES 256
@@ -21,13 +21,10 @@ static DbgLog sDbgLog;
 
 // Nonmatching: r1/r2 swapped between the loop base and the NULL constant
 void DbgLog_Reset(void) {
-    DbgLogRing* ring;
-    u32         i;
-
     Mem_ResetPool(&sDbgLog.pool);
-    ring              = &sDbgLog.ring;
+    DbgLogRing* ring  = &sDbgLog.ring;
     sDbgLog.ring.head = 0;
-    for (i = 0; i < DBGLOG_ENTRIES; i++) {
+    for (u32 i = 0; i < DBGLOG_ENTRIES; i++) {
         ring->entries[i] = NULL;
     }
 }
@@ -44,7 +41,7 @@ BOOL DbgLog_Print(const char* str) {
 
     sDbgLog.ring.entries[(u8)sDbgLog.ring.head] = copy;
     sDbgLog.ring.head                           = (u8)(sDbgLog.ring.head + 1);
-    data_02066a58; // the target reads the flags word once more here and drops the value
+    data_02066a58;
     if (sDbgLog.ring.head == 0) {
         if ((data_02066a58 << 26) >> 31) {
             full = TRUE;
@@ -61,9 +58,7 @@ const char* DbgLog_GetEntry(s32 index) {
 }
 
 void DbgLog_Dump(void) {
-    s32 i;
-
-    for (i = 0; i < DBGLOG_ENTRIES; i++) {
+    for (s32 i = 0; i < DBGLOG_ENTRIES; i++) {
         DbgLog_GetEntry(i);
     }
 }

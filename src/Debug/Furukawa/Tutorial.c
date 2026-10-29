@@ -10,6 +10,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"

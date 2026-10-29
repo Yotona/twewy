@@ -6,9 +6,9 @@ typedef struct {
     /* 0x04 */ s32           unk_04;
     /* 0x08 */ s32           totalSize;
     /* 0x0C */ ObjResource** resources;
-} NNSTexVramPool; // Size: 0x10
+} TexVramPool; // Size: 0x10
 
-extern u32 (*data_02065fcc)(u32 size, BOOL is4x4comp, u32 opt);
+extern u32 (*data_02065fcc)(u32 size, BOOL flag, u32 opt);
 extern s32 (*data_02065fd0)(u32 key);
 
 s32  func_02026528(s32 angle, s32 target);
@@ -17,15 +17,13 @@ void func_02026590(s32* value, s32 target, u16 frames);
 u16  func_020265c0(s32 scale);
 void func_020265d4(s32* value, s32 target, u16 scale);
 void func_02026608(s32* value, s32 target, u16 duration, s32 minStep);
-s32  NNSTexVram_FindFreeSlot(void);
-u32  NNSTexVram_Alloc(u32 size, BOOL is4x4comp, u32 opt);
-s32  NNSTexVram_Free(u32 key);
-void NNSTexVram_Init(s32 count);
-void NNSTexVram_Shutdown(void);
+s32  TexVram_FindFreeSlot(void);
+u32  TexVram_Alloc(u32 size, BOOL flag, u32 opt);
+s32  TexVram_Free(u32 key);
+void TexVram_Init(s32 count);
+void TexVram_Shutdown(void);
 
-#define NNS_TEXKEY(addr, size, is4x4) ((u16)((u32)(addr) >> 3) | (((u32)(size) >> 4) << 16) | ((is4x4) << 31))
-
-static NNSTexVramPool sTexVramPool;
+static TexVramPool sTexVramPool;
 
 s32 func_02026528(s32 angle, s32 target) {
     u16 a    = angle;
@@ -85,7 +83,7 @@ void func_02026608(s32* value, s32 target, u16 duration, s32 minStep) {
     *value += step;
 }
 
-s32 NNSTexVram_FindFreeSlot(void) {
+s32 TexVram_FindFreeSlot(void) {
     s32 i;
 
     for (i = 0; i < sTexVramPool.count; i++) {
@@ -96,12 +94,12 @@ s32 NNSTexVram_FindFreeSlot(void) {
     return i;
 }
 
-// Nonmatching: r2/r3 swapped in the size update
-u32 NNSTexVram_Alloc(u32 size, BOOL is4x4comp, u32 opt) {
-    ObjResource* res;
-    s32          slot = NNSTexVram_FindFreeSlot();
+u32 TexVram_Alloc(u32 size, BOOL flag, u32 opt) {
+    ObjResource*  res;
+    s32           slot = TexVram_FindFreeSlot();
+    ObjResource** resources;
 
-    if (is4x4comp) {
+    if (flag) {
         return 0;
     }
     if (slot == sTexVramPool.count) {
@@ -109,22 +107,22 @@ u32 NNSTexVram_Alloc(u32 size, BOOL is4x4comp, u32 opt) {
     }
 
     sTexVramPool.resources[slot] = ObjResMgr_AllocResource(g_ObjResourceManagers[2], NULL, (size + 0x1F) & ~0x1F, 0);
-    sTexVramPool.totalSize       = sTexVramPool.totalSize + sTexVramPool.resources[slot]->vramOffset;
-    res                          = sTexVramPool.resources[slot];
+    resources                    = sTexVramPool.resources;
+    sTexVramPool.totalSize += resources[slot]->vramOffset;
+    res = resources[slot];
     if (res == NULL) {
         return 0;
     }
-    return (((u32)res->vramOffset >> 4) << 16) | (u16)(res->bitmapIndex << 2) | (is4x4comp << 31);
+    return (((u32)res->vramOffset >> 4) << 16) | (u16)(res->bitmapIndex << 2) | (flag << 31);
 }
 
-s32 NNSTexVram_Free(u32 key) {
+s32 TexVram_Free(u32 key) {
     s32 index = (key & 0xFFFF) >> 2;
-    s32 i;
 
     if (key == 0) {
         return 0;
     }
-    for (i = 0; i < sTexVramPool.count; i++) {
+    for (s32 i = 0; i < sTexVramPool.count; i++) {
         if (sTexVramPool.resources[i] != NULL && index == sTexVramPool.resources[i]->bitmapIndex) {
             ObjResMgr_ReleaseResource(g_ObjResourceManagers[2], sTexVramPool.resources[i]);
             sTexVramPool.resources[i] = NULL;
@@ -134,27 +132,24 @@ s32 NNSTexVram_Free(u32 key) {
     return 1;
 }
 
-void NNSTexVram_Init(s32 count) {
+void TexVram_Init(s32 count) {
     ObjResource** resources;
-    s32           i;
 
     sTexVramPool.count = count;
     resources          = Mem_AllocHeapTail(&gDebugHeap, count * 32);
     Mem_SetSequence(&gDebugHeap, resources, "SprRscTexForNNS");
     sTexVramPool.resources = resources;
-    for (i = 0; i < sTexVramPool.count; i++) {
+    for (s32 i = 0; i < sTexVramPool.count; i++) {
         sTexVramPool.resources[i] = NULL;
     }
     sTexVramPool.unk_04    = 0;
-    data_02065fcc          = NNSTexVram_Alloc;
-    data_02065fd0          = NNSTexVram_Free;
+    data_02065fcc          = TexVram_Alloc;
+    data_02065fd0          = TexVram_Free;
     sTexVramPool.totalSize = 0;
 }
 
-void NNSTexVram_Shutdown(void) {
-    s32 i;
-
-    for (i = 0; i < sTexVramPool.count; i++) {
+void TexVram_Shutdown(void) {
+    for (s32 i = 0; i < sTexVramPool.count; i++) {
         if (sTexVramPool.resources[i] != NULL) {
             ObjResMgr_ReleaseResource(g_ObjResourceManagers[2], sTexVramPool.resources[i]);
         }

@@ -1,4 +1,5 @@
 #include "Debug/Mori/GrpCheck.h"
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/Interrupts.h"
@@ -9,6 +10,7 @@
 #include "Engine/IO/Str.h"
 #include "Engine/Math/Rect.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "FixedPoint.h"
 #include "common_data.h"
 #include <string.h>

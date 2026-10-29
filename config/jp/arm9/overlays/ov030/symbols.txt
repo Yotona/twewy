@@ -3470,7 +3470,7 @@ data_ov030_020ee628 kind:data(any) addr:0x020ed724
 data_ov030_020ee6f0 kind:data(any) addr:0x020ed7ec
 data_ov030_020ee7b8 kind:data(any) addr:0x020ed8b4
 FO3DViewer_ScenePointCounts kind:data(any) addr:0x020ed97c
-OvlProc_LocaTitleSeq kind:data(any) addr:0x020eda38
+OvlProc_LocaTitleSeq kind:data(any) addr:0x020eda38 local
 data_ov030_020ee948 kind:data(any) addr:0x020eda44
 Tsk_LocaTitle kind:data(any) addr:0x020eda4c local
 @1379 kind:data(any) addr:0x020eda58 local
@@ -6381,8 +6381,8 @@ FO3DViewer_SceneSampleFrames kind:data(any) addr:0x02107d54
 FO3DViewer_ScenePaths kind:data(any) addr:0x02107e0c
 data_ov030_0210909c kind:data(any) addr:0x02107ec4
 data_ov030_021090ac kind:data(any) addr:0x02107ed4
-LocaTitleSeq_State kind:data(any) addr:0x02107ee4
-@1175 kind:data(any) addr:0x02107ef4
+LocaTitleSeq_State kind:data(any) addr:0x02107ee4 local
+@1175 kind:data(any) addr:0x02107ef4 local
 @1331 kind:data(any) addr:0x02107f0c local
 @1320 kind:data(any) addr:0x02107f1c local
 @1390 kind:data(any) addr:0x02107f38
@@ -6562,10 +6562,10 @@ FlashPath_b_03_end kind:data(any) addr:0x021089a4
 FlashPath_b_04_end kind:data(any) addr:0x021089bc
 FlashPath_b_05_end kind:data(any) addr:0x021089d4
 SeqFlashSel_Sequence kind:data(any) addr:0x021089ec
-data_ov030_02109bc8 kind:data(any) addr:0x021089f0
+@1570 kind:data(any) addr:0x021089f0 local
 SeqFlashSel_Title kind:data(any) addr:0x02108a00
-data_ov030_02109be8 kind:data(any) addr:0x02108a10
-data_ov030_02109bf4 kind:data(any) addr:0x02108a1c
+@1595 kind:data(any) addr:0x02108a10 local
+@1596 kind:data(any) addr:0x02108a1c local
 gFlashDrawBottomScreen kind:data(any) addr:0x02108a28
 _ZTV10FlashImage kind:data(any) addr:0x02108a2c
 _ZTV9FlashRect kind:data(any) addr:0x02108a58

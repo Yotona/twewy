@@ -1,5 +1,6 @@
 #include "Field/FieldRegion.h"
 
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -31,7 +32,7 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32  func_0202599c(s32 flagIndex);
-extern void NNSTexVram_Init(s32 arg0);
+extern void TexVram_Init(s32 arg0);
 extern void func_02027b0c(s32 arg0, s32 arg1);
 extern void func_02028a44(void);
 extern void func_02028ad0(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
@@ -478,7 +479,7 @@ void func_ov030_020b7744(s32* arg0, s32 arg1) {
     Mtx_OrthoW(0xC0000, 0, 0, 0x100000, -0x400000, 0x400000, 0x400000, &data_02076a4c);
     data_02076a44.unk_FC = data_02076a44.unk_FC & ~0x50;
     func_02028a44();
-    NNSTexVram_Init(0x80);
+    TexVram_Init(0x80);
     func_02027b0c(0x4000, 1);
     *arg0 = data_02065fd4(0x800, 0, 1);
     area  = gSaveData.fieldArea;

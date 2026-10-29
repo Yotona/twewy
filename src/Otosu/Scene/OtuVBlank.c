@@ -4,6 +4,7 @@
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Otosu/OtosuGame.h"
 #include "common_data.h"
 #include <nitro/gx.h>

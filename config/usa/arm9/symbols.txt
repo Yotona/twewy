@@ -1604,11 +1604,11 @@ func_02026590 kind:function(arm,size=0x30) addr:0x02026590
 func_020265c0 kind:function(arm,size=0x14) addr:0x020265c0
 func_020265d4 kind:function(arm,size=0x34) addr:0x020265d4
 func_02026608 kind:function(arm,size=0x70) addr:0x02026608
-NNSTexVram_FindFreeSlot kind:function(arm,size=0x38) addr:0x02026678
-NNSTexVram_Alloc kind:function(arm,size=0xac) addr:0x020266b0
-NNSTexVram_Free kind:function(arm,size=0x84) addr:0x0202675c
-NNSTexVram_Init kind:function(arm,size=0xac) addr:0x020267e0
-NNSTexVram_Shutdown kind:function(arm,size=0x64) addr:0x0202688c
+TexVram_FindFreeSlot kind:function(arm,size=0x38) addr:0x02026678
+TexVram_Alloc kind:function(arm,size=0xac) addr:0x020266b0
+TexVram_Free kind:function(arm,size=0x84) addr:0x0202675c
+TexVram_Init kind:function(arm,size=0xac) addr:0x020267e0
+TexVram_Shutdown kind:function(arm,size=0x64) addr:0x0202688c
 
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c
@@ -2160,9 +2160,9 @@ G2S_GetBG0ScrPtr kind:function(arm,size=0x20) addr:0x02036618
 G2_GetBG1ScrPtr kind:function(arm,size=0x34) addr:0x02036638
 G2S_GetBG1ScrPtr kind:function(arm,size=0x20) addr:0x0203666c
 G2_GetBG2ScrPtr kind:function(arm,size=0x84) addr:0x0203668c
-G2S_GetBG2ScrPtr kind:function(arm,size=0x74) addr:0x02036710
+func_02036710 kind:function(arm,size=0x74) addr:0x02036710
 G2_GetBG3ScrPtr kind:function(arm,size=0x84) addr:0x02036784
-G2S_GetBG3ScrPtr kind:function(arm,size=0x74) addr:0x02036808
+func_02036808 kind:function(arm,size=0x74) addr:0x02036808
 G2_GetBG0CharPtr kind:function(arm,size=0x34) addr:0x0203687c
 G2S_GetBG0CharPtr kind:function(arm,size=0x20) addr:0x020368b0
 G2_GetBG1CharPtr kind:function(arm,size=0x34) addr:0x020368d0
@@ -4029,7 +4029,7 @@ data_02065c84 kind:data(any) addr:0x02065c84
 @907 kind:data(any) addr:0x02065c94 local
 
 
-data_02065ca0 kind:data(any) addr:0x02065ca0
+@1151 kind:data(any) addr:0x02065ca0 local
 
 /////////////////////////////////////////////////////////////
 // src/SndMgr.c

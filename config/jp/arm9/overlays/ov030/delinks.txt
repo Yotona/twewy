@@ -479,6 +479,7 @@ src/Field/Flash/FOPtrList.c:
     .bss        start:0x02108c04 end:0x02108c08
 
 src/Field/Scene/LocaTitleSeq.c:
+    complete
     .text       start:0x020d1ed8 end:0x020d2204
     .rodata     start:0x020eda38 end:0x020eda44
     .data       start:0x02107ee4 end:0x02107f0c
@@ -492,6 +493,7 @@ src/Field/Flash/SeqFlash.c:
     .bss        start:0x02108c0c end:0x02108c10
 
 src/Field/Flash/SeqFlashSel.c:
+    complete
     .text       start:0x020d4404 end:0x020d4800
     .rodata     start:0x020fcf44 end:0x020fcf50
     .data       start:0x021089ec end:0x02108a28

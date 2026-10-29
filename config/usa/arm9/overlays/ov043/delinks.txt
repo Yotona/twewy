@@ -183,6 +183,7 @@ src/Interface/Menu/Top/MenuTop_helpCurU.c:
     .data       start:0x020cb9b0 end:0x020cb9c8
 
 src/Interface/Menu/MenuBadge.c:
+    complete
     .text       start:0x0208b854 end:0x0208f9d8
     .rodata     start:0x020c82c8 end:0x020c83c4
     .data       start:0x020cb9c8 end:0x020cbb6c
@@ -379,6 +380,7 @@ src/Debug/Takami/MenuScena.c:
     .data       start:0x020cbec4 end:0x020cc134
 
 src/Interface/Menu/MenuEquip.c:
+    complete
     .text       start:0x0209f320 end:0x020a1b70
     .rodata     start:0x020c96e4 end:0x020c97d0
     .data       start:0x020cc134 end:0x020cc2d8

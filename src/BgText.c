@@ -1,8 +1,8 @@
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Text.h"
-#include "common_data.h"
 #include <nitro/g2.h>
 #include <nitro/gx.h>
 #include <nitro/mi/cpumem.h>
@@ -29,6 +29,12 @@ typedef struct {
 // BgResMgr.c defines this with an extra stack argument; its callers pass four.
 BgResource* BgResMgr_AllocCharAligned(BgResMgr* mgr, UnkSmallStruct_DispBG* src, u32 charBase, u32 size);
 void        func_020105b8(TextObject* obj);
+void*       G2_GetBG0ScrPtr(void);
+void*       G2_GetBG1ScrPtr(void);
+void*       G2S_GetBG0ScrPtr(void);
+void*       G2S_GetBG1ScrPtr(void);
+void*       func_02036710(void);
+void*       func_02036808(void);
 
 s32  BgText_Init(BgText* bgText, UnkStruct_usedby_02025b68* args);
 void BgText_Free(BgText* bgText);
@@ -144,10 +150,10 @@ s32 BgText_Init(BgText* bgText, UnkStruct_usedby_02025b68* args) {
                 scr = G2S_GetBG1ScrPtr();
                 break;
             case 2:
-                scr = G2S_GetBG2ScrPtr();
+                scr = func_02036710();
                 break;
             case 3:
-                scr = G2S_GetBG3ScrPtr();
+                scr = func_02036808();
                 break;
         }
     }

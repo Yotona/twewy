@@ -4,6 +4,7 @@
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 
 void func_ov030_020b1cd8(void) {

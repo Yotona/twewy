@@ -1,4 +1,5 @@
 #include "Otosu/OtosuMenu.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Field/Scene/FieldSeq.h"
 
 extern void ProcessOverlay_OtosuGame_SinglePlayer();

@@ -1,3 +1,4 @@
+#include "BgText.h"
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/Core/OamMgr.h"
@@ -5,6 +6,7 @@
 #include "Engine/File/DatMgr.h"
 #include "Engine/IO/Str.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "Field/Event/EventFlags.h"
 #include "Field/Scene/FieldSeq.h"
 #include "Field/Tasks/Fld_Wall.h"

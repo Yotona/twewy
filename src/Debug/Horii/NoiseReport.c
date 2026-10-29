@@ -9,6 +9,7 @@
 #include "Engine/IO/TouchInput.h"
 #include "Engine/Overlay/OverlayDispatcher.h"
 #include "Engine/Overlay/OverlayManager.h"
+#include "Engine/Resources/PaletteMgr.h"
 #include "common_data.h"
 
 s32 func_ov028_020eb9dc(TaskPool* pool, Task* task, void* arg2, s32 arg3);
