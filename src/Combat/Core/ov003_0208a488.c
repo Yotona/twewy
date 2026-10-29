@@ -2439,7 +2439,8 @@ void func_ov003_0208e830(BtlMgrWork* work) {
         gSaveData.battleLevel          = gSaveData.playerStats.currentLevel;
         gSaveData.battleMaxLevel       = gSaveData.playerStats.maxLevel;
         gSaveData.battleExpToNextLevel = gSaveData.playerStats.expToNextLevel;
-        gSaveData.unk_317A             = 0;
+        gSaveData.battleChargeProgress = 0;
+        gSaveData.battleChargeStage    = 0;
         gSaveData.unk_317C             = 0;
         gSaveData.unk_317D             = 0;
         gSaveData.unk_317E             = 0;

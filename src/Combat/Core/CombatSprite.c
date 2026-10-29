@@ -123,12 +123,10 @@ void func_ov003_02082738(CombatSprite* cSprite, s32 arg1) {
 
 void CombatSprite_SetFlip(CombatSprite* cSprite, s32 arg1) {
     if (arg1 != 0) {
-        cSprite->sprite.unk_0A.raw = ((cSprite->sprite.unk_0A.raw & ~0x3E0) |
-                                      ((u32)((u16)(((cSprite->sprite.unk_0A.raw << 0x16) >> 0x1B) | 8) << 0x1B) >> 0x16));
+        cSprite->sprite.unk_0A.unk_05 |= 8;
         cSprite->flags46 |= 1;
     } else {
-        cSprite->sprite.unk_0A.raw = ((cSprite->sprite.unk_0A.raw & ~0x3E0) |
-                                      ((u32)((u16)(((cSprite->sprite.unk_0A.raw << 0x16) >> 0x1B) & ~8) << 0x1B) >> 0x16));
+        cSprite->sprite.unk_0A.unk_05 &= ~8;
         cSprite->flags46 &= ~1;
     }
 }

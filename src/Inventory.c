@@ -261,9 +261,9 @@ void Savefile_ResetAllGameplay(MainData* arg0) {
     }
 
     func_0202255c(arg0->unk_1EB2);
-    func_0202258c(&arg0->unk_323E);
+    func_0202258c(&arg0->battleTouchSlots);
     func_020225c4(&arg0->unk_1FCA);
-    func_020225ec(&arg0->unk_214C);
+    func_020225ec(arg0->bestDefeatTimes);
     Savefile_ResetSecretReports(arg0->secretReports);
 
     gSaveData.unk_2324 = 0;
