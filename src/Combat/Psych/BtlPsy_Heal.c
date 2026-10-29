@@ -2,11 +2,8 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern void                      func_ov003_02087f28(s32, s32);
 extern void                      func_ov003_0209b564(s32, s32, CombatActor*, s32);
 extern void                      func_ov003_0208b3cc(s32, s16);
-extern Ov003TouchActor*          func_ov003_0208495c(CombatList*);
-extern Ov003TouchActor*          func_ov003_02084984(CombatListNode*);
 extern const TaskHandle          data_ov003_020dca9c;
 extern const Ov003HealAnimations data_ov003_020dcaa8[2][4];
 extern char                      data_ov003_020e4f00[12];

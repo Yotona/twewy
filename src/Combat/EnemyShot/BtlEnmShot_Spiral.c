@@ -1,12 +1,11 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32                    func_ov003_020c37f8(CombatSprite*);
-extern void                   func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern const Ov003AttackInfo* func_ov003_0208a114(u16);
-extern s32                    func_ov003_0208a1a4(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32);
-extern const TaskHandle       data_ov003_020e0cbc;
+extern s32              func_ov003_020c37f8(CombatSprite*);
+extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+extern const TaskHandle data_ov003_020e0cbc;
 
 s32 func_ov003_020d23e8(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 acceleration, u16 angleStep, s32 yScale) {
     Ov003EnemyShotSpiralArgs args;

@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "CriSndMgr.h"
 #include "Display.h"
@@ -46,9 +47,7 @@ extern u16 data_02066eec[];
 extern void func_0202fbf4(s32 arg0);
 extern void func_02026590(void* dst, s32 step, u16 count);
 extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_02082724(CombatSprite* sprite, s32 x, s32 y);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern s32  func_ov003_020825b8(CombatSprite* sprite, u16 anim, s32 mode);
 extern void func_ov003_0208b278(s32 arg0);
 
 void func_ov003_020a1c80(BtlOver* self);
@@ -101,7 +100,7 @@ void func_ov003_020a1728(s32 engine, CombatSprite* sprite) {
     anim.anim.animIndex  = 1;
     anim.animTable       = NULL;
     CombatSprite_Load(sprite, &anim);
-    func_ov003_020825b8(sprite, 0, 1);
+    CombatSprite_SetAnim(sprite, 0, 1);
     func_ov003_02082738(sprite, 0);
 }
 
@@ -395,8 +394,8 @@ void func_ov003_020a1eb4(BtlOver* self) {
     if (self->timer == 0) {
         self->timer = 30;
         EasyFade_FadeBothDisplays(0, 0, 0x1000);
-        func_ov003_020825b8(&self->sprites[0], 1, 1);
-        func_ov003_020825b8(&self->sprites[1], 1, 1);
+        CombatSprite_SetAnim(&self->sprites[0], 1, 1);
+        CombatSprite_SetAnim(&self->sprites[1], 1, 1);
         g_DisplaySettings.controls[0].layers &= ~8;
         g_DisplaySettings.controls[1].layers &= ~8;
     }
@@ -444,10 +443,10 @@ s32 func_ov003_020a1ff4(TaskPool* pool, Task* task, void* args) {
 s32 func_ov003_020a203c(TaskPool* pool, Task* task, void* args) {
     BtlOver* self = task->data;
 
-    func_ov003_02082724(&self->sprites[0], (self->x * 0x10) >> 16, 0x60);
+    CombatSprite_SetPosition(&self->sprites[0], (self->x * 0x10) >> 16, 0x60);
     func_ov003_02082730(&self->sprites[0], 0);
     CombatSprite_Render(&self->sprites[0]);
-    func_ov003_02082724(&self->sprites[1], (self->subX * 0x10) >> 16, 0x60);
+    CombatSprite_SetPosition(&self->sprites[1], (self->subX * 0x10) >> 16, 0x60);
     func_ov003_02082730(&self->sprites[1], 0);
     CombatSprite_Render(&self->sprites[1]);
     return 1;

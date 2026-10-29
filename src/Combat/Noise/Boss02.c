@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss03.h"
 #include "SpriteMgr.h"
@@ -1942,7 +1943,7 @@ s32 func_ov017_02129438(void* arg1, s32 arg2) {
     CombatSprite_LoadFromTable(0, (CombatSprite*)temp_r4 + 0x84, &data_ov017_02141518, &data_ov017_02141568, 0, 0xD, 0x120);
     func_ov003_020880e4(0, temp_r4 + 0xE4, temp_r4);
     func_ov003_020c49c8(temp_r4);
-    func_ov003_02084634(temp_r4 + 0x144, 1, ((Boss03*)temp_r5)->unk3, ((Boss03*)temp_r5)->unk4);
+    func_ov003_02084634(&((Ov003EnemyActor*)temp_r4)->collider, 1, ((Boss03*)temp_r5)->unk3, ((Boss03*)temp_r5)->unk4);
     func_ov003_020c4b5c(temp_r4);
     func_ov017_02128b7c(temp_r4, (void (*)(void*))func_ov017_02128c24);
     func_ov017_02130280(temp_r4);
@@ -1972,7 +1973,7 @@ s32 func_ov017_0212952c(void* arg1) {
             break;
         case 1:
         case 2:
-            func_ov003_02084694(temp_r4 + 0x144, 0);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
             func_ov017_02128b7c(temp_r4, (void (*)(void*))func_ov017_021290a4);
             break;
         case 7:
@@ -1984,7 +1985,7 @@ s32 func_ov017_0212952c(void* arg1) {
             }
             break;
         case 3:
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_02128b7c(temp_r4, (void (*)(void*))func_ov017_02129134);
             break;
         case 6:
@@ -2966,11 +2967,11 @@ s32 func_ov017_0212b114(void* arg1) {
     switch ((s32)temp_r0) { /* irregular */
         case 1:
         case 2:
-            func_ov003_02084694(temp_r4 + 0x144, 0);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
             func_ov017_0212a888(temp_r4, func_ov017_0212af5c);
             break;
         case 3:
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_0212a888(temp_r4, func_ov017_0212afe8);
             break;
     }
@@ -3838,11 +3839,11 @@ s32 func_ov017_0212c8a4(void* arg1) {
     switch (temp_r0) { /* irregular */
         case 1:
         case 2:
-            func_ov003_02084694(temp_r4 + 0x144, 0);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
             func_ov017_0212c3a8(temp_r4, func_ov017_0212c6c0);
             break;
         case 3:
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_0212c3a8(temp_r4, func_ov017_0212c758);
             break;
     }
@@ -5290,7 +5291,7 @@ s32 func_ov017_0212ed18(void* arg1) {
             if ((temp_r0 != 1) && (temp_r0 != 2)) {
 
             } else {
-                func_ov003_02084694(temp_r4 + 0x144, 0);
+                func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
                 func_ov017_0212e8ac(temp_r4, func_ov017_0212ec84);
             }
         }

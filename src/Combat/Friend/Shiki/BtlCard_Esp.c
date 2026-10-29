@@ -32,13 +32,10 @@ typedef struct {
 } CardUnk; // Size: 0x2C4
 
 typedef struct {
-    /* 0x000 */ CombatSprite sprite;
-    /* 0x060 */ char         unk_060[0x8];
-    /* 0x068 */ s32          unk_068;
-    /* 0x06C */ char         unk_06C[0x6E - 0x6C];
-    /* 0x06E */ u16          unk_06E;
-    /* 0x070 */ char         unk_070[0x28];
-    /* 0x098 */ CardUnk      unk_098;
+    /* 0x000 */ CombatSprite   sprite;
+    /* 0x060 */ char           unk_060[0x8];
+    /* 0x068 */ Ov003EffectCmd effectCmd;
+    /* 0x098 */ CardUnk        unk_098;
 } BtlCard_Esp; // Size: 0x35C
 
 s32 BtlCard_Esp_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -238,7 +235,7 @@ s32 BtlCard_Esp_Init(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
     MI_CpuSet(esp, 0, sizeof(BtlCard_Esp));
-    func_ov003_02087094(&esp->unk_068, 0, &esp->unk_098);
+    func_ov003_02087094(&esp->effectCmd, 0, (s32)&esp->unk_098);
     if (func_ov004_020e7360() == 0) {
         func_ov003_0208722c();
     }
@@ -255,7 +252,7 @@ s32 BtlCard_Esp_Init(TaskPool* pool, Task* task, void* args) {
 s32 BtlCard_Esp_Update(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
-    if ((esp->unk_06E & 1) == 0) {
+    if ((esp->effectCmd.flags & 1) == 0) {
         func_ov004_020eafb0(&esp->unk_098);
         CombatSprite_Update(&esp->sprite);
     }
@@ -265,7 +262,7 @@ s32 BtlCard_Esp_Update(TaskPool* pool, Task* task, void* args) {
 s32 BtlCard_Esp_Render(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
-    if ((esp->unk_06E & 1) == 0) {
+    if ((esp->effectCmd.flags & 1) == 0) {
         func_ov004_020eb004(&esp->unk_098);
         func_ov004_020eb0d8(esp);
     }
@@ -277,7 +274,7 @@ s32 BtlCard_Esp_Destroy(TaskPool* pool, Task* task, void* args) {
 
     func_ov004_020eb0a0(&esp->unk_098);
     CombatSprite_Release(&esp->sprite);
-    func_ov003_020871b0(&esp->unk_068);
+    func_ov003_020871b0(&esp->effectCmd);
     return 1;
 }
 

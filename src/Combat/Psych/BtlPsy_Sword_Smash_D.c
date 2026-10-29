@@ -15,8 +15,7 @@ typedef struct BtlPsySmash {
     /* 0x10 */ s32 active;
 } BtlPsySmash; // Size: 0x14
 
-extern void func_ov003_02087f28(SndMgrSeIdx, s32);
-void        func_ov003_020956c4(BtlPsySmash*);
+void func_ov003_020956c4(BtlPsySmash*);
 
 void func_ov003_020953b4(BtlPsySmash* smash, void (*update)(BtlPsySmash*)) {
     smash->update = update;

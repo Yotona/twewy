@@ -24,9 +24,6 @@ typedef struct BtlEffDeadSpawn {
     /* 0x10 */ s32 hasPartner;
 } BtlEffDeadSpawn; // Size: 0x14
 
-extern void func_ov003_02087f28(s32 seIdx, s32 pan);
-extern void func_ov003_02087f64(s32 seIdx, s32 pan);
-
 extern s32 func_ov003_020843b0(s32 engine, s32 x);
 extern s32 func_ov003_020843ec(s32 engine, s32 y, s32 z);
 

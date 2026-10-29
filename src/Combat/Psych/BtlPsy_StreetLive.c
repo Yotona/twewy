@@ -3,7 +3,6 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32                          func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void                         func_ov003_02087f28(s32, s32);
 extern const TaskHandle             data_ov003_020dd1dc;
 extern const Ov003StreetLiveSpeaker data_ov003_020dd1e8[5];
 

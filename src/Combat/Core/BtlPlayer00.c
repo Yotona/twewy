@@ -31,13 +31,6 @@ typedef struct BtlPlayer00Step {
     /* 0x4 */ s16 z;
 } BtlPlayer00Step;       // Size: 0x6
 
-/// A hit box description the effects use (`flags` bit 12 marks the last hit of an attack).
-typedef struct Ov003HitDef {
-    /* 0x0 */ s32 unk_00;
-    /* 0x4 */ s32 unk_04;
-    /* 0x8 */ u32 flags;
-} Ov003HitDef; // Size: 0xC
-
 typedef struct BtlPlayer00 {
     /* 0x000 */ CombatActor       actor;
     /* 0x07C */ CombatSprite      sprite;
@@ -71,26 +64,19 @@ extern const s16           data_0205e4e0[];
 
 extern Ov003ActionEffect* func_ov003_02087358(void);
 extern void               func_ov003_020872b4(Ov003ActionEffect* effect);
-extern void               func_ov003_02087f28(s32 id, s32 x);
-extern void               func_ov003_02087f64(s32 id, s32 x);
 extern void               func_ov003_02087804(s32 sub);
 extern void               func_ov003_02087fe0(s32 arg0, CombatSprite* sprite, s32 arg2);
 extern u16                func_ov003_0208765c(u16* state, s32 value, s32 arg2);
 extern s32                func_ov003_020a58d4(void);
 extern s32                func_ov003_020a58c4(void);
-extern Ov003HitDef*       func_ov003_0208a114(s32 id);
-extern s32                func_ov003_0208a164(Ov003HitDef* hit, void* region, s32 x, s32 y, s32 z);
-extern void               func_ov003_0209fc88(s32 mode, s32 x, s32 y, s32 z, s32 arg4, s32 arg5);
 extern void               func_ov003_0209f000(s32 id);
 extern void               func_ov003_0209c568(s32 arg0);
 extern void               func_ov003_0209b564(s32 arg0, s32 amount, CombatActor* actor, s32 arg3);
-extern void               func_ov003_0208b3cc(s32 arg0, s32 amount);
 extern s16                func_ov003_0208ca54(void);
 extern s16                func_ov003_0208cae0(s32 arg0);
 extern void               func_ov003_0208b278(s32 id);
 extern void               func_ov003_02083000(s32 arg0, void* actor);
 extern void               func_ov003_02083074(void* actor);
-extern void               func_ov003_0208810c(CombatSprite* sprite, void* actor);
 extern void               func_ov003_02087540(s32 arg0);
 extern void               func_02026590(s32* value, s32 target, u16 step);
 
@@ -572,7 +558,7 @@ BOOL func_ov003_0208fc24(BtlPlayer00* self, s32 id, s32 x, s32 z) {
     } else {
         hitX = self->actor.position.x + (x << 12);
     }
-    return func_ov003_0208a164(func_ov003_0208a114(id), (u8*)effect + 0xC, hitX, self->actor.position.y,
+    return func_ov003_0208a164(func_ov003_0208a114(id), (Ov003AttackArgs*)&effect->unk_0C, hitX, self->actor.position.y,
                                self->actor.position.z + (z << 12)) == 1;
 }
 
@@ -592,12 +578,13 @@ BOOL func_ov003_0208fc7c(BtlPlayer00* self, s32 id, s32 x, s32 z) {
     }
     hitZ = self->actor.position.z + (z << 12);
     if (last == 0) {
-        result = func_ov003_0208a164(func_ov003_0208a114(id), (u8*)effect + 0xC, hitX, self->actor.position.y, hitZ);
+        result = func_ov003_0208a164(func_ov003_0208a114(id), (Ov003AttackArgs*)&effect->unk_0C, hitX, self->actor.position.y,
+                                     hitZ);
     } else {
-        Ov003HitDef hit = *func_ov003_0208a114(id);
+        Ov003AttackInfo hit = *func_ov003_0208a114(id);
 
         hit.flags |= 0x1000;
-        result = func_ov003_0208a164(&hit, (u8*)effect + 0xC, hitX, self->actor.position.y, hitZ);
+        result = func_ov003_0208a164(&hit, (Ov003AttackArgs*)&effect->unk_0C, hitX, self->actor.position.y, hitZ);
     }
     if (result != 1) {
         return FALSE;
@@ -798,7 +785,7 @@ void func_ov003_0209040c(BtlPlayer00* self) {
     switch (self->phase) {
         case 0:
             func_ov003_02084694(&self->collider, 1);
-            func_ov003_020827c0(&self->sprite, 2);
+            CombatSprite_SetPaletteMode(&self->sprite, 2);
             CombatSprite_SetAnimFromTable(&self->sprite, 0x2F, 1);
             self->actor.zVelocity = -0x2000;
             self->phase++;
@@ -809,7 +796,7 @@ void func_ov003_0209040c(BtlPlayer00* self) {
             }
             if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
                 CombatSprite_SetAnimFromTable(&self->sprite, 2, 0);
-                func_ov003_020827c0(&self->sprite, 0);
+                CombatSprite_SetPaletteMode(&self->sprite, 0);
                 self->phase++;
             }
             break;
@@ -1620,7 +1607,7 @@ s32 func_ov003_020924c0(TaskPool* pool, Task* task, void* args) {
     Ov003Global* global;
 
     MI_CpuSet(self, 0, sizeof(BtlPlayer00));
-    func_ov003_02083118(self, 0);
+    CombatActor_Init(&self->actor, 0);
     data_ov003_020e71b8->unk3D898 = self;
     data_ov003_020e71b8->unk3D8C8 = 0;
     self->actor.position.x        = data_ov003_020e71b8->unk3D7C0[0].unk_0C / 2;
@@ -1713,7 +1700,7 @@ s32 func_ov003_02092880(TaskPool* pool, Task* task, void* args) {
 
     if (!(self->flags & 1)) {
         CombatActor_Render(&self->actor, &self->sprite);
-        func_ov003_0208810c(&self->shadow, self);
+        func_ov003_0208810c(&self->shadow, &self->actor);
     }
     if (self->flags & 2) {
         s32 x = func_ov003_020843b0(0, self->targetX);

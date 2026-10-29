@@ -6,8 +6,6 @@
 /// Hold-type fire psych: the held actor is engulfed for as long as the touch
 /// stays on it, then the effect switches to its release loop.
 
-extern void func_ov003_02087f28(s32, s32);
-
 extern const TaskHandle data_ov003_020dc8f4;
 
 s32 func_ov003_020b0cd4(Ov003EffectContext* context, Ov003EffectState* effect) {

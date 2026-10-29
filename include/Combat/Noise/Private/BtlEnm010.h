@@ -6,12 +6,6 @@
 #include "Combat/Core/CombatSprite.h"
 
 /// What ov003 hands a noise task's initialiser (same shape as `Enm015Spawn`'s head).
-typedef struct BtlEnm010Spawn {
-    /* 0x00 */ void* unk_00;
-    /* 0x04 */ u16   unk_04; // variant slot
-    /* 0x06 */ u16   unk_06;
-} BtlEnm010Spawn;
-
 /// The unit prefix `Tsk_BtlEnm010_RG` and `Tsk_BtlEnm010_UG` share. Projectiles keep a pointer to
 /// their spawner and only look at this much of it.
 typedef struct BtlEnm010Owner {

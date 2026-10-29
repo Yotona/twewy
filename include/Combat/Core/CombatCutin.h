@@ -3,6 +3,7 @@
 
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatActorParams.h"
 #include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/File/DatMgr.h"
@@ -23,36 +24,6 @@ typedef struct Ov003CutinPaletteEntries {
 static inline void* Ov003Cutin_Tiles(Data* pack, s32 index) {
     return ((Ov003CutinTileBlock*)Data_GetPackEntryData(pack, index))->tiles;
 }
-
-typedef struct Ov003ActorParams {
-    /* 0x00 */ u8              unk_00;
-    /* 0x01 */ u8              unk_01;
-    /* 0x02 */ u8              unk_02;
-    /* 0x03 */ u8              unk_03;
-    /* 0x04 */ u8              unk_04;
-    /* 0x05 */ s8              unk_05;
-    /* 0x06 */ s8              unk_06;
-    /* 0x07 */ u8              unk_07;
-    /* 0x08 */ u16             unk_08;
-    /* 0x0A */ s16             unk_0A;
-    /* 0x0C */ s16             unk_0C;
-    /* 0x0E */ s16             unk_0E;
-    /* 0x10 */ s16             unk_10;
-    /* 0x12 */ s16             unk_12;
-    /* 0x14 */ u16             unk_14;
-    /* 0x16 */ Ov003CutinFlags flags16;
-    /* 0x18 */ s8              unk_18;
-    /* 0x19 */ s8              unk_19;
-    /* 0x1A */ u8              unk_1A[0x1C - 0x1A];
-    /* 0x1C */ s16             unk_1C;
-    /* 0x1E */ s16             unk_1E;
-    /* 0x20 */ s16             unk_20;
-    /* 0x22 */ s16             unk_22;
-    /* 0x24 */ s16             unk_24;
-    /* 0x26 */ s16             unk_26;
-    /* 0x28 */ u16             unk_28;
-    /* 0x2A */ u16             unk_2A;
-} Ov003ActorParams; // Size: 0x2C
 
 typedef struct Ov003CutinActor {
     /* 0x000 */ union {
@@ -164,5 +135,28 @@ void func_ov003_020bd150(s32 mode, Ov003SnapshotCallback callback, void* args);
 void func_ov003_020be194(Ov003CutinTask* self);
 void func_ov003_020be100(Ov003CutinTask* self);
 void func_ov003_020be20c(Ov003CutinTask* self);
+
+/// One task-spawn record produced while parsing a cut-in script; also the data block the
+/// EasyTask callbacks receive.
+typedef struct Ov003CutinCmdData {
+    /* 0x00 */ s32 group;
+    /* 0x04 */ u16 sprite;
+    /* 0x06 */ union {
+        u16             flags;
+        Ov003CutinFlags spawnFlags;
+    };
+    /* 0x08 */ s32 x;
+    /* 0x0C */ s32 y;
+    /* 0x10 */ s32 z;
+} Ov003CutinCmdData; // Size: 0x14
+
+typedef struct Ov003CutinScript {
+    /* 0x00 */ void* data;
+    /* 0x04 */ u16   count;
+    /* 0x06 */ u16   flags;
+    /* 0x08 */ s32   cursor;
+    /* 0x0C */ s32   unk_0C;
+    /* 0x10 */ s32   unk_10;
+} Ov003CutinScript; // Size: 0x14
 
 #endif

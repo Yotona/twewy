@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatBossExp.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
@@ -43,10 +44,9 @@ typedef struct BossExp1Piece {
 extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020e0a48;
 
-extern void func_ov003_020c439c(Ov003CutinActor* actor, SpriteAnimationEx* anim);
+extern void func_ov003_020c439c(Ov003EnemyActor* actor, SpriteAnimationEx* anim);
 extern s32  func_ov003_020c37f8(CombatSprite* sprite);
-extern void func_ov003_020c5130(Ov003CutinActor* actor);
-extern void func_ov003_020824a0(CombatSprite* sprite, u16 anim, s32 arg2);
+extern void func_ov003_020c5130(Ov003EnemyActor* actor);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02084348(s32 engine, s16* x, s16* y, s32 worldX, s32 worldY, s32 worldZ);
 
@@ -85,8 +85,8 @@ void func_ov003_020c9064(const SpriteAnimationEx* anim) {
 }
 
 /// Fills the animation slots from the cut-in actor and its partner.
-void func_ov003_020c9118(Ov003CutinActor* actor) {
-    Ov003CutinActor*  partner = (Ov003CutinActor*)actor->partner;
+void func_ov003_020c9118(Ov003EnemyActor* actor) {
+    Ov003EnemyActor*  partner = actor->partner;
     SpriteAnimationEx anim;
     SpriteAnimationEx copy;
 
@@ -118,7 +118,7 @@ void func_ov003_020c9118(Ov003CutinActor* actor) {
 }
 
 /// Starts the burst task and waits for it. Returns 0 once the burst is over.
-s32 func_ov003_020c9338(Ov003CutinActor* actor) {
+s32 func_ov003_020c9338(Ov003EnemyActor* actor) {
     s32 result = 1;
 
     switch (data_ov003_020e7254.phase) {
@@ -171,7 +171,7 @@ s32 func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage) {
                 self->fall       = -0xA000;
                 self->frame      = 0;
                 CombatSprite_LoadFromTable(1, &self->sprite, &data_ov003_020d7800, data_ov003_020e0b80, 0, 0x3F, 0);
-                func_ov003_020824a0(&self->sprite, 0, 1);
+                CombatSprite_SetAnimFromTable(&self->sprite, 0, 1);
                 if (self->actor->actor.position.x > ((Ov003CutinActor*)data_ov003_020e71b8->unk3D89C)->actor.position.x) {
                     CombatSprite_SetFlip(&self->sprite, 1);
                     self->position.x -= 0x18000;

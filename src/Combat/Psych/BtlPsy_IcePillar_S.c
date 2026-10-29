@@ -5,7 +5,6 @@
 extern s32              func_ov003_0208442c(s32, s32);
 extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020a51c0(void);
-extern void             func_ov003_02087f28(s32, s32);
 extern const TaskHandle data_ov003_020dc948;
 extern const s32        data_ov003_020dc954[3];
 

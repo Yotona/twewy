@@ -38,21 +38,18 @@ extern void*                 func_ov003_0208495c(CombatList*);
 extern void*                 func_ov003_02084984(CombatListNode*);
 extern void                  func_ov003_020849ac(CombatList*);
 extern void                  func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern void                  func_ov003_020849dc(CombatList*, CombatListNode*);
-extern void                  func_ov003_02087f28(s32, s32);
-extern void                  func_ov003_02087f64(s32, s32);
 extern s32                   func_ov003_020c2008(TaskPool*);
 extern s32                   func_ov003_020c37f8(CombatSprite*);
 extern s32                   func_ov003_020c3c28(void);
-extern Ov003ActorParams*     func_ov003_020c3c88(Ov003CutinActor*);
+extern Ov003ActorParams*     func_ov003_020c3c88(Ov003EnemyActor*);
 extern void                  func_ov003_020cac38(s32, s32);
 extern s32                   func_ov024_020f10d8(Ov003CutinActor*);
 void                         func_ov003_020c9de8(BtlEnmAura*);
 void                         func_ov003_020ca188(BtlEnmAura*);
 
 void func_ov003_020c96e4(void) {
-    Ov003ActorParams* sub  = func_ov003_020c3c88(data_ov003_020e7324.ownerSub);
-    Ov003ActorParams* main = func_ov003_020c3c88(data_ov003_020e7324.ownerMain);
+    Ov003ActorParams* sub  = func_ov003_020c3c88(&data_ov003_020e7324.ownerSub->base);
+    Ov003ActorParams* main = func_ov003_020c3c88(&data_ov003_020e7324.ownerMain->base);
     if (data_ov003_020e7324.activeMain) {
         data_ov003_020e7324.ownerSub->actor.unk_08  = sub->unk_0C * 3 / 2;
         data_ov003_020e7324.ownerMain->actor.unk_08 = main->unk_0C;

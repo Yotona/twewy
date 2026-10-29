@@ -10,8 +10,6 @@
 // The condition-boot badge (`Tsk_BtlBadge_ConditionBoot`): a small badge sprite whose visible
 // window follows the battle state of the actor it was spawned from.
 
-extern void func_ov003_02087ed8(s32);
-
 /// The battle sprite page the badge family loads from (`Apl_Hir/Grp_BtlBadge.bin`).
 extern const BinIdentifier data_ov003_020dc044;
 
@@ -65,8 +63,8 @@ s32 func_ov003_020a6fdc(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_18     = 2;
             anim.anim.unk_26     = 2;
             anim.anim.packIndex  = 1;
-            func_ov003_02082998(&self->badge, &anim);
-            func_ov003_020825b8(&self->badge, 0x17, 0);
+            CombatSprite_Load(&self->badge, &anim);
+            CombatSprite_SetAnim(&self->badge, 0x17, 0);
             func_ov003_02082738(&self->badge, 0);
             func_ov003_02082730(&self->badge, 0x3F3000);
             return 1;
@@ -102,7 +100,7 @@ s32 func_ov003_020a6fdc(TaskPool* pool, Task* task, void* args, s32 stage) {
                     }
                 }
             }
-            func_ov003_02082b0c(&self->badge);
+            CombatSprite_Update(&self->badge);
             return 1;
         }
         case 2: {
@@ -120,16 +118,16 @@ s32 func_ov003_020a6fdc(TaskPool* pool, Task* task, void* args, s32 stage) {
             actor = self->actor;
             posX  = (s32)(actor->x * 0x10) >> 16;
             posY  = (s32)(actor->y * 0x10) >> 16;
-            func_ov003_02082724(&actor->sprite, posX, posY);
-            func_ov003_02082724(&self->badge, posX, posY);
-            func_ov003_02082b64(&actor->sprite);
-            func_ov003_02082b64(&self->badge);
+            CombatSprite_SetPosition(&actor->sprite, posX, posY);
+            CombatSprite_SetPosition(&self->badge, posX, posY);
+            CombatSprite_Render(&actor->sprite);
+            CombatSprite_Render(&self->badge);
             return 1;
         }
         case 3: {
             BtlBadgeConditionBoot* self = task->data;
 
-            func_ov003_02082cc4(&self->badge);
+            CombatSprite_Release(&self->badge);
             return 1;
         }
     }

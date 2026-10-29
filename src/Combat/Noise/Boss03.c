@@ -41,7 +41,6 @@ extern s32 func_02047e84(u16);
 // void  func_ov003_020cb200(void*, u16);                                                /* extern */
 // void  func_ov003_020cb304(void*, u16);                                                /* extern */
 // s32   func_ov003_020cb32c(void*, s32);                                                /* extern */
-extern u32 func_ov003_020cb368(); /* called with one argument everywhere except one site the decompiler lost it */
 // void* func_ov003_020cb42c(s32, s32, s32);                                             /* extern */
 // s32   func_ov003_020cb648(void*, s32);                                                /* extern */
 // s32   func_ov003_020cb764(s32);                                                       /* extern */
@@ -49,10 +48,8 @@ extern u32 func_ov003_020cb368(); /* called with one argument everywhere except 
 // s32   func_ov003_020cba54(s32, s32, s32, s32, s32, s32);                              /* extern */
 // void  func_ov003_020cc38c(s32, s32, s32, s32);                                        /* extern */
 // void* func_ov003_020cc750(s32);                                                       /* extern */
-void* func_ov003_0208a114(u16); /* extern */
 // s32   func_ov003_0208a1e8(s32, void*, s32);                                           /* extern */
 // void  func_ov003_0208afcc(s32);                                                       /* extern */
-void* func_ov003_020c3c6c(void*); /* extern */
 // s32   func_ov003_020c59a0(void*);                                                     /* extern */
 // void  func_ov003_020cb264(void*, void*);                                              /* extern */
 // s32   func_ov003_020cb348(void*, s32);                                                /* extern */
@@ -115,7 +112,6 @@ void* func_ov003_020c3c6c(void*); /* extern */
 // s32   func_ov003_020c5e98();                                                          /* extern */
 // s32   func_ov003_020c6f68();                                                          /* extern */
 // s32   func_ov003_020c703c();                                                          /* extern */
-void* func_ov003_02085dc8(s32); /* extern */
 /* extern */
 /* extern */
 /* extern */
@@ -157,7 +153,7 @@ void func_ov017_0213e088(u32 arg0, s32 arg1);
 s32* func_ov017_0213e204(s32 arg0);
 void func_ov017_0213f394(void* arg0);
 void func_ov017_0213f4cc(void* arg0);
-s32  func_ov017_0213f630(void* arg1, s32* arg2);
+s32  func_ov017_0213f630(s32 arg0, Ov003EnemyActor* arg1, void* arg2);
 void func_ov017_0212bf64(void* arg0);
 void func_ov017_0212c018(void* arg0);
 void func_ov017_0212c6c0(void* arg0);
@@ -325,9 +321,9 @@ extern s32            data_ov017_021435bc;
 extern s32            data_ov017_021435be;
 extern s32            data_ov017_02143614;
 extern s32            data_ov017_02143660;
-extern s32            data_ov017_021436ac;
-extern s32            data_ov017_02143a24;
-extern s32            data_ov017_02143a38;
+extern const char     data_ov017_021436ac[];
+extern BtlBinSet      data_ov017_02143a24;
+extern BtlBinEntry    data_ov017_02143a38[];
 extern s32            data_ov017_02143a40;
 extern s32            data_ov017_02143a48;
 extern s32            data_ov017_02143a50;
@@ -438,10 +434,10 @@ extern s32            data_ov017_021426e0;
 extern s32            data_ov017_021426e2;
 
 /////////////////////// KEEP FORWARD DECLARED ///////////////////////
-s32  func_ov017_0213064c(void* arg1);
-s32  func_ov017_0213066c(s32 arg0, void* arg1, void (*arg2)(void*));
-void func_ov017_0213ed98(s32, void*);
-void func_ov017_021337e4(void* arg0);
+static s32 func_ov017_0213064c(s32 arg0, Ov003EnemyActor* arg1, void* arg2);
+static s32 func_ov017_0213066c(s32 arg0, Ov003EnemyActor* arg1, void* arg2);
+void       func_ov017_0213ed98(s32, void*);
+void       func_ov017_021337e4(void* arg0);
 
 void BtlBoss03_NoisAttk_CreateTask(s32* arg0);
 void BtlBoss03_FailPly_CreateTask(s32, s32);
@@ -484,7 +480,7 @@ static void func_ov017_021302f0(void* arg0) {
 
     sp8     = data_ov017_02142040.unk20;
     spC     = data_ov017_02142040.unk24;
-    temp_r4 = func_ov003_020cb744(1, data_ov017_02142040.unk28, data_ov017_02142040.unk2C);
+    temp_r4 = func_ov003_020cb744(1);
     temp_r5 = func_ov003_020cb7a4(1);
     if ((s32)(((Boss03*)arg0)->unk28 - (temp_r4 >> 1)) >= 0) {
         var_r2 = 1;
@@ -506,7 +502,7 @@ static void func_ov017_021302f0(void* arg0) {
 }
 
 static void func_ov017_021303d4(void* arg0) {
-    BOOL var_r0 = func_ov003_020c37f8(arg0 + 0x84) != 0;
+    BOOL var_r0 = func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) != 0;
 
     func_ov003_020cb498(var_r0, 0x3C, func_ov017_0213066c, &BtlBoss03_NoisAttk_CreateTask);
 }
@@ -598,7 +594,7 @@ static s32 func_ov017_02130630(s32 arg0) {
     func_ov003_020cb498(arg0, 0x3C, func_ov017_0213064c, NULL);
 }
 
-static s32 func_ov017_0213064c(void* arg1) {
+static s32 func_ov017_0213064c(s32 arg0, Ov003EnemyActor* arg1, void* arg2) {
     s32 temp_r0 = ((Boss03*)arg1)->unk7C;
 
     if ((temp_r0 >= 0x2B) && (temp_r0 <= 0x2E)) {
@@ -607,14 +603,14 @@ static s32 func_ov017_0213064c(void* arg1) {
     return 1;
 }
 
-static s32 func_ov017_0213066c(s32 arg0, void* arg1, void (*arg2)(void*)) {
+static s32 func_ov017_0213066c(s32 arg0, Ov003EnemyActor* arg1, void* arg2) {
     s32 temp_r0;
 
     temp_r0 = ((Boss03*)arg1)->unk7C;
     if ((temp_r0 >= 0x2B) && (temp_r0 <= 0x2E)) {
         return 0;
     }
-    arg2(arg1);
+    ((void (*)(void*))arg2)(arg1);
     return 1;
 }
 
@@ -643,7 +639,7 @@ s32 BtlBoss03_00_RG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 const TaskHandle Tsk_BtlBoss03_00_RG = {"Tsk_BtlBoss03_00_RG", BtlBoss03_00_RG_RunTask, 0x1D4};
 
 void func_ov017_02130698(BtlBoss03_00_RG* rg, void (*arg1)(BtlBoss03_00_RG*)) {
-    func_ov003_020c427c(rg);
+    func_ov003_020c427c(&rg->base);
     rg->unk_1C8 = arg1;
     rg->partner = 0;
     rg->unk_188 = 0;
@@ -654,7 +650,7 @@ void func_ov017_021306c0(BtlBoss03_00_RG* rg) {
         data_ov003_020e71b8->unk3D875 = 2;
     }
 
-    if (func_ov003_020c5bfc(rg) == 0) {
+    if (func_ov003_020c5bfc(&rg->base) == 0) {
         func_ov017_02130698(rg, func_ov017_02130714);
     }
 }
@@ -737,7 +733,7 @@ void func_ov017_02130990(BtlBoss03_00_RG* rg) {
     if (rg->unk_1C0 == 0) {
         rg->unk_1C0++;
     }
-    if (func_ov003_020c72b4(rg, 0, 0) == 0) {
+    if (func_ov003_020c72b4(&rg->base, 0, 0) == 0) {
         func_ov017_02130698(rg, func_ov017_02130714);
     }
 }
@@ -747,7 +743,7 @@ s32 func_ov017_021309d8(BtlBoss03_00_RG* rg, s16 arg1) {
         CombatSprite_Release(&rg->sprite);
         func_ov017_02140a8c(1, &rg->sprite, 3, 0);
         CombatSprite_SetAnimFromTable(&rg->sprite, 1, 1);
-        func_ov003_020c4ab4(rg, 0);
+        func_ov003_020c4ab4(&rg->base, 0);
     }
 
     if ((rg->sprite.sprite.cellIndex == 11) && (rg->sprite.sprite.frameTimer == 1)) {
@@ -769,16 +765,16 @@ s32 BtlBoss03_00_RG_Init(TaskPool* pool, Task* task, void* args) {
     BtlBoss03_00_RG* rg = task->data;
 
     MI_CpuSet(rg, 0, 0x1D4);
-    func_ov003_020c3efc(rg, args);
-    func_ov003_020c44ac(rg);
-    func_ov003_020c4b1c(rg);
+    func_ov003_020c3efc(&rg->base, args);
+    func_ov003_020c44ac(&rg->base);
+    func_ov003_020c4b1c(&rg->base);
     rg->unk_1CC = 1;
-    func_ov003_020cb520(rg, 0);
+    func_ov003_020cb520(&rg->actor, 0);
     rg->actor.position.x = (func_ov003_020cb744(1) >> 1);
     rg->actor.position.y = (func_ov003_020cb7a4(1) >> 1);
     rg->actor.position.z = -0x4A000;
     rg->actor.flags |= 0x30;
-    func_ov003_02084694(&rg->collider.side, 1);
+    func_ov003_02084694(&rg->collider, 1);
     func_ov017_02130698(rg, func_ov017_021306c0);
     func_ov017_0213ed98((s32)func_ov017_02130a90, rg);
     return 1;
@@ -805,7 +801,7 @@ s32 BtlBoss03_00_RG_Update(TaskPool* pool, Task* task, void* args) {
     if (rg->unk_1C8 != NULL) {
         rg->unk_1C8(rg);
     }
-    func_ov003_020c4628(rg);
+    func_ov003_020c4628(&rg->base);
     return rg->unk_1CC;
 }
 
@@ -863,12 +859,12 @@ s32 BtlBoss03_00_UG_Init(TaskPool* pool, Task* task, void* args) {
     func_ov017_0213e088(16, 0);
     BtlBoss03_KindanMgr_CreateTask();
     func_ov017_0213f20c(0);
-    func_ov003_020c3efc(ug, args);
-    func_ov003_020c4520(ug);
+    func_ov003_020c3efc(&ug->base, args);
+    func_ov003_020c4520(&ug->base);
     ug->unk_188 = &ug->unk_1D4;
     ug->flags18C |= 1;
     ug->actor.flags |= 0x30;
-    func_ov003_02084694(&ug->collider.side, 1);
+    func_ov003_02084694(&ug->collider, 1);
     CombatSprite_Release(&ug->sprite);
     ug->unk_1CC = 1;
 }
@@ -908,21 +904,21 @@ s32 BtlBoss03_00_UG_Update(TaskPool* pool, Task* task, void* args) {
     if (temp_r1_2 != NULL) {
         temp_r1_2(temp_r4);
     }
-    func_ov003_020c4668(temp_r4);
+    func_ov003_020c4668((Ov003EnemyActor*)temp_r4);
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
 s32 BtlBoss03_00_UG_Render(TaskPool* pool, Task* task, void* args) {
     BtlBoss03_00_UG* ug = task->data;
 
-    func_ov003_020c48b0(ug);
+    func_ov003_020c48b0(&ug->base);
     return 1;
 }
 
 s32 BtlBoss03_00_UG_Destroy(TaskPool* pool, Task* task, void* args) {
     BtlBoss03_00_UG* ug = task->data;
 
-    func_ov003_020c492c(ug);
+    func_ov003_020c492c(&ug->base);
     if (ug->unk_1E0 == 0) {
         func_ov017_0213e074();
     }
@@ -1050,7 +1046,7 @@ static inline void BtlBoss03_01_RG_PlaySE_BtlAtc(BtlBoss03_01_RG* rg, s32 arg1) 
 const TaskHandle Tsk_BtlBoss03_01_RG = {"Tsk_BtlBoss03_01_RG", BtlBoss03_01_RG_RunTask, sizeof(BtlBoss03_01_RG)};
 
 void BtlBoss03_01_RG_SetState(BtlBoss03_01_RG* rg, void (*callback)(BtlBoss03_01_RG*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(&rg->base);
     rg->unk_1C8 = callback;
     rg->unk_1C4 = 0;
     rg->unk_1C0 = 0;
@@ -1081,7 +1077,7 @@ void func_ov017_02130f10(BtlBoss03_01_RG* rg) {
             data_ov003_020e71b8->unk3D875 = 2;
         }
     }
-    if (func_ov003_020c5bfc(rg) == 0) {
+    if (func_ov003_020c5bfc(&rg->base) == 0) {
         BtlBoss03_01_RG_SetState(rg, func_ov017_0213104c);
     }
 }
@@ -1100,7 +1096,7 @@ void func_ov017_02130f78(BtlBoss03_01_RG* rg) {
     } else if (temp->unk_0C != 0) {
         rg->flags18C &= ~1;
         rg->actor.flags &= ~0x10;
-        func_ov003_02084694(&rg->collider.side, 0);
+        func_ov003_02084694(&rg->collider, 0);
         BtlBoss03_01_RG_SetState(rg, func_ov017_02132378);
     } else if (temp->unk_08 != 0) {
         temp->unk_08 = 0;
@@ -1120,7 +1116,7 @@ void func_ov017_0213104c(BtlBoss03_01_RG* rg) {
         } else {
             CombatSprite_SetAnimFromTable(&rg->sprite, 0, 0);
         }
-        rg->unk_1C2 = func_ov003_020c42ec(rg);
+        rg->unk_1C2 = func_ov003_020c42ec(&rg->base);
         if (temp != NULL) {
             temp->unk_1C = 1;
         }
@@ -1133,7 +1129,7 @@ void func_ov017_0213104c(BtlBoss03_01_RG* rg) {
         return;
     }
 
-    func_ov003_020c4b1c(rg);
+    func_ov003_020c4b1c(&rg->base);
 
     if (rg->spriteIndex == 0) {
         if (((rg->actor.currentHp * 100) / rg->actor.maxHp) < 30) {
@@ -1143,7 +1139,7 @@ void func_ov017_0213104c(BtlBoss03_01_RG* rg) {
         }
 
         s32 threshold;
-        if ((func_ov003_020cb648(rg, 70) != 0) || (threshold = (rg->actor.maxHp / 10), temp->unk_00 >= threshold)) {
+        if ((func_ov003_020cb648(&rg->base, 70) != 0) || (threshold = (rg->actor.maxHp / 10), temp->unk_00 >= threshold)) {
             temp->unk_1C = 0;
             BtlBoss03_01_RG_SetState(rg, func_ov017_02131fcc);
             return;
@@ -1163,19 +1159,19 @@ void func_ov017_0213104c(BtlBoss03_01_RG* rg) {
                 temp->unk_18 = 0;
                 temp->unk_24 = 0;
                 BtlBoss03_01_RG_SetState(rg, func_ov017_02131458);
-                func_ov003_020cb578(rg, 0);
+                func_ov003_020cb578(&rg->actor, 0);
                 return;
             }
         }
     } else if ((rg->spriteIndex == 2) && (temp->unk_24 != 0)) {
         BtlBoss03_01_RG_SetState(rg, func_ov017_02131458);
-        func_ov003_020cb578(rg, 0);
+        func_ov003_020cb578(&rg->actor, 0);
         return;
     }
 
     if (rg->unk_1C0 > rg->unk_1C2) {
         temp->unk_1C = 0;
-        if (func_ov003_020c4348(rg) != 0) {
+        if (func_ov003_020c4348(&rg->base) != 0) {
             func_ov017_02130ec4(rg);
         } else if (BtlBoss03_01_RG_IsCooldownReady(rg, 3) != 0) {
             func_ov017_02130e7c(rg);
@@ -1235,16 +1231,16 @@ void func_ov017_02131458(BtlBoss03_01_RG* rg) {
         case 1: {
             if (rg->unk_1C0 == 0) {
                 rg->spriteIndex = (rg->spriteIndex == 1) ? 2 : 1;
-                void* temp      = func_ov003_020c3c6c(rg);
+                void* temp      = func_ov003_020c3c6c(&rg->base);
                 CombatSprite_SetPaletteSource(&rg->sprite, ((Boss03*)temp)->unkA);
                 ((Boss03*)rg)->unkD4  = (s32)((Boss03*)rg)->unkC0;
-                void* temp_r0         = func_ov003_020c3c88(rg);
+                void* temp_r0         = func_ov003_020c3c88(&rg->base);
                 ((Boss03*)rg)->unk192 = (s16)((Boss03*)temp_r0)->unk10;
                 ((Boss03*)rg)->unk194 = (s16)((Boss03*)temp_r0)->unk12;
                 BtlBoss03_01_RG_PlaySE_BtlFb(rg, 1);
             }
             if (BtlBoss03_01_RG_WarpAppear(rg, rg->unk_1C0) == 0) {
-                func_ov003_020cb578(rg, 1);
+                func_ov003_020cb578(&rg->actor, 1);
                 BtlBoss03_01_RG_SetState(rg, func_ov017_0213104c);
                 BtlBoss03_01_RG_ResetCooldownRandom(rg, 0);
             } else {
@@ -1286,12 +1282,12 @@ void func_ov017_021316f0(BtlBoss03_01_RG* rg) {
     switch (rg->unk_1C4) {
         case 0: {
             if (rg->unk_1C0 == 0) {
-                if (func_ov003_020cb648(rg, 70) != 0) {
+                if (func_ov003_020cb648(&rg->base, 70) != 0) {
                     func_ov017_0213f20c(1);
                 } else {
                     func_ov017_0213f20c(0);
                 }
-                func_ov003_020c4ab4(rg, 0);
+                func_ov003_020c4ab4(&rg->base, 0);
                 BtlBoss03_01_RG_PlaySE_BtlAtc(rg, 1);
                 rg->unk_1E6 &= ~2;
             }
@@ -1356,7 +1352,7 @@ void func_ov017_021318a8(BtlBoss03_01_RG* rg) {
                 rg->unk_1C0++;
                 rg->unk_1E6 |= 2;
             }
-            if (func_ov003_020c6230(rg) == 0) {
+            if (func_ov003_020c6230(&rg->base) == 0) {
                 rg->unk_1C0 = 0;
                 rg->unk_1C4 = 1;
             }
@@ -1394,7 +1390,7 @@ void func_ov017_021318a8(BtlBoss03_01_RG* rg) {
                     sp88 -= 0x28000;
                     sp8E = 0x20;
                     sp92 = ((Boss03*)var_r6)->unk8;
-                    func_ov003_020d1dc0(&sp74, 0x4000, var_r5, 0x1000, 5);
+                    func_ov003_020d1dc0((Ov003EnemyShotSource*)&sp74, 0x4000, var_r5, 0x1000, 5);
                     func_ov003_02087f00(SEIDX_SE_B005_FIRING_SHOT, func_ov003_020843b0(1, rg->actor.position.x));
                 } else {
                     func_ov003_020cc834(&sp48, rg, var_r6, 0, 0);
@@ -1407,7 +1403,8 @@ void func_ov017_021318a8(BtlBoss03_01_RG* rg) {
                     sp30 -= 0x28000;
                     sp66 = ((Boss03*)var_r6)->unk8 - 0x16;
                     sp3A = ((Boss03*)var_r6)->unk8 - 0x16;
-                    func_ov003_020d0518(&sp48, 0x4000, var_r5, 4, &sp1C, 0x3000, var_r5, 0x1000, 3, 0x1E);
+                    func_ov003_020d0518((Ov003EnemyShotSource*)&sp48, 0x4000, var_r5, 0x1000, 4, (Ov003EnemyShotSource*)&sp1C,
+                                        0x3000, var_r5, 0x1000, 3, 0x1E);
                     func_ov003_02087f00(SEIDX_SE_B005_FIRING_RAPID_SLOW, func_ov003_020843b0(1, rg->actor.position.x));
                     ((Boss03*)rg)->unk1E8 = 0x1E;
                 }
@@ -1477,7 +1474,7 @@ void func_ov017_02131cd0(BtlBoss03_01_RG* rg) {
                 rg->unk_1C0++;
                 rg->unk_1E6 |= 2;
             }
-            if (func_ov003_020c6230(rg) == 0) {
+            if (func_ov003_020c6230(&rg->base) == 0) {
                 rg->unk_1C0 = 0;
                 rg->unk_1C4 = 1;
             }
@@ -1518,7 +1515,7 @@ void func_ov017_02131cd0(BtlBoss03_01_RG* rg) {
                     sp26 = temp_r0 - 0x16;
                 }
                 do {
-                    func_ov003_020d23e8(&sp8, var_r10, 0x2000, 0x800, 0x400, 0x800);
+                    func_ov003_020d23e8((Ov003EnemyShotSource*)&sp8, var_r10, 0x2000, 0x800, 0x400, 0x800);
                     var_r9 += 1;
                     var_r10 += 0x2000;
                 } while (var_r9 < 8);
@@ -1698,7 +1695,7 @@ void func_ov017_02132378(BtlBoss03_01_RG* rg) {
         case 1: {
             if (rg->unk_1C0 == 0) {
                 func_ov017_021302f0(rg);
-                func_ov003_020c4b1c(rg);
+                func_ov003_020c4b1c(&rg->base);
                 rg->actor.position.z = 0;
             }
             func_ov017_021302b8(rg->unk_1C0);
@@ -1837,7 +1834,7 @@ void func_ov017_02132378(BtlBoss03_01_RG* rg) {
                 BtlBoss03_SeqEntry_CreateTask(&sp4);
                 rg->flags18C |= 1;
                 rg->actor.flags |= 0x10;
-                func_ov003_02084694(&rg->collider.side, 1);
+                func_ov003_02084694(&rg->collider, 1);
                 temp_r4->unk_20 = 1;
                 temp_r4->unk_10 = 1;
                 rg->unk_1CC     = 0;
@@ -1883,7 +1880,7 @@ void func_ov017_021329bc(BtlBoss03_01_RG* rg) {
                 func_ov017_02140a8c(1, &rg->sprite, 0, 0);
                 CombatSprite_SetAnimFromTable(&rg->sprite, 0, 0);
             }
-            if ((func_ov003_020cb648(rg, 30) != 0) || (func_ov017_0213eeb8() != 0)) {
+            if ((func_ov003_020cb648(&rg->base, 30) != 0) || (func_ov017_0213eeb8() != 0)) {
                 BtlBoss03_01_RG_SetState(rg, func_ov017_0213104c);
             }
         } break;
@@ -1893,7 +1890,7 @@ void func_ov017_021329bc(BtlBoss03_01_RG* rg) {
 void func_ov017_02132ac0(BtlBoss03_01_RG* rg) {
     RGBlob* temp_r4 = rg->unk_188;
 
-    if (func_ov003_020c703c(rg) == 0) {
+    if (func_ov003_020c703c(&rg->base) == 0) {
         temp_r4->unk_10 = 1;
         rg->unk_1CC     = 0;
         rg->actor.flags |= 4;
@@ -1910,7 +1907,7 @@ void func_ov017_02132b0c(BtlBoss03_01_RG* rg) {
             func_ov017_02140a8c(1, &rg->sprite, 0, 0);
         }
     }
-    if (func_ov003_020c72b4(rg, 0, 0) == 0) {
+    if (func_ov003_020c72b4(&rg->base, 0, 0) == 0) {
         BtlBoss03_01_RG_SetState(rg, func_ov017_0213104c);
     }
 }
@@ -1920,7 +1917,7 @@ s32 BtlBoss03_01_RG_WarpDisappear(BtlBoss03_01_RG* rg, s16 arg1) {
         CombatSprite* sprite = &rg->sprite;
 
         rg->actor.flags |= 0x10;
-        func_ov003_02084694(&rg->collider.side, 1);
+        func_ov003_02084694(&rg->collider, 1);
         if (rg->spriteIndex == 0) {
             CombatSprite_Release(sprite);
             func_ov017_02140a8c(1, sprite, 1, 0);
@@ -1952,16 +1949,16 @@ s32 BtlBoss03_01_RG_WarpAppear(BtlBoss03_01_RG* rg, s16 arg1) {
         } else {
             CombatSprite_SetAnimFromTable(sprite, 8, 1);
         }
-        func_ov003_020c4b1c(rg);
+        func_ov003_020c4b1c(&rg->base);
         func_ov003_02087f00(SEIDX_SE_B005_KUUKANN_TENNI_APPEAR, func_ov003_020843b0(1, rg->actor.position.x));
         rg->unk_1AC = rg->actor.position.x;
         rg->unk_1B0 = rg->actor.position.y;
         rg->unk_1B4 = rg->actor.position.z;
     }
     if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite)) {
-        func_ov003_02084694(&rg->collider.side, 0);
+        func_ov003_02084694(&rg->collider, 0);
         rg->actor.flags &= ~0x10;
-        func_ov003_02084694(&rg->collider.side, 0);
+        func_ov003_02084694(&rg->collider, 0);
         return 0;
     } else {
         rg->unk_1C0++;
@@ -2061,10 +2058,10 @@ s32 BtlBoss03_01_RG_Init(BtlBoss03_01_RG* rg, void* arg1) {
         ((Boss03*)arg1)->unk4 = 1;
     }
 
-    func_ov003_020c3efc(rg, arg1);
-    func_ov003_020c44ac(rg);
-    func_ov003_020c4b1c(rg);
-    func_ov003_020cb520(rg, 0);
+    func_ov003_020c3efc(&rg->base, arg1);
+    func_ov003_020c44ac(&rg->base);
+    func_ov003_020c4b1c(&rg->base);
+    func_ov003_020cb520(&rg->actor, 0);
     rg->actor.flags |= 0x40000000;
 
     for (s32 i = 0; i < 4; i++) {
@@ -2086,7 +2083,7 @@ s32 BtlBoss03_01_RG_Init(BtlBoss03_01_RG* rg, void* arg1) {
 
 void func_ov017_02133074(BtlBoss03_01_RG* rg) {
     void*            temp_r4 = func_ov003_020cb42c(1, 43, 0);
-    BtlBoss03_01_RG* temp    = func_ov003_020cb42c(1, 45, 0);
+    BtlBoss03_01_RG* temp    = (BtlBoss03_01_RG*)func_ov003_020cb42c(1, 45, 0);
 
     rg->actor.flags |= 0x20;
     if (data_ov003_020e71b8->unk3D874 == 0) {
@@ -2094,7 +2091,7 @@ void func_ov017_02133074(BtlBoss03_01_RG* rg) {
         if ((InputStatus.buttonState.currButtons & INPUT_BUTTON_A) == 0) {
             rg->flags18C |= 1;
             rg->actor.flags |= 0x10;
-            func_ov003_02084694(&rg->collider.side, 1);
+            func_ov003_02084694(&rg->collider, 1);
             BtlBoss03_01_RG_SetState(rg, func_ov017_02130f78);
             CombatSprite_Release(&rg->sprite);
         } else {
@@ -2120,7 +2117,7 @@ void func_ov017_02133074(BtlBoss03_01_RG* rg) {
     } else {
         rg->flags18C |= 1;
         rg->actor.flags |= 0x10;
-        func_ov003_02084694(&rg->collider.side, 1);
+        func_ov003_02084694(&rg->collider, 1);
         BtlBoss03_01_RG_SetState(rg, func_ov017_02130f78);
         CombatSprite_Release(&rg->sprite);
     }
@@ -2147,7 +2144,7 @@ s32 BtlBoss03_01_RG_Update(BtlBoss03_01_RG* rg) {
         temp_r4->unk_00 += temp_r1;
     }
 
-    if ((rg->spriteIndex == 1) && (((u32)(rg->unk_1E6 << 0x1F) >> 0x1F) == 0) && (func_ov003_020cb648(rg, 0xA) != 0)) {
+    if ((rg->spriteIndex == 1) && (((u32)(rg->unk_1E6 << 0x1F) >> 0x1F) == 0) && (func_ov003_020cb648(&rg->base, 0xA) != 0)) {
         rg->unk_1E6 = (u16)((rg->unk_1E6 & ~1) | 1);
         func_ov003_02087f00(SEIDX_MINAMI_BTL_PNC01, func_ov003_020843b0(1, rg->actor.position.x));
     }
@@ -2155,7 +2152,7 @@ s32 BtlBoss03_01_RG_Update(BtlBoss03_01_RG* rg) {
     switch (CombatActor_PopPendingCommand(&rg->actor)) {
         case 3:
             if (rg->spriteIndex != 0) {
-                func_ov003_02084694(&rg->collider.side, 1);
+                func_ov003_02084694(&rg->collider, 1);
                 BtlBoss03_01_RG_SetState(rg, func_ov017_02132ac0);
             }
             break;
@@ -2178,12 +2175,12 @@ s32 BtlBoss03_01_RG_Update(BtlBoss03_01_RG* rg) {
         (BtlBoss03_01_RG_IsCooldownReady(rg, 2) != 0))
     {
         BtlBoss03_01_RG_ResetCooldownRandom(rg, 2);
-        func_ov003_020cb5b0(rg, 33, 1);
+        func_ov003_020cb5b0(&rg->base, 33, 1);
     }
     if (rg->unk_1C8 != NULL) {
         rg->unk_1C8(rg);
     }
-    func_ov003_020c4628(rg);
+    func_ov003_020c4628(&rg->base);
     rg->unk_1D0 = rg->actor.currentHp;
     return rg->unk_1CC;
 }
@@ -2231,7 +2228,7 @@ s32 BtlBoss03_01_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
 const TaskHandle Tsk_BtlBoss03_01_UG = {"Tsk_BtlBoss03_01_UG", BtlBoss03_01_UG_RunTask, 0x0228};
 
 void func_ov017_02133524(void* arg0, void (*arg1)(void*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(arg0);
     ((Boss03*)arg0)->unk1C8 = arg1;
     ((Boss03*)arg0)->unk1C4 = 0;
     ((Boss03*)arg0)->unk1C0 = 0;
@@ -2718,7 +2715,7 @@ void func_ov017_02134378(void* arg0) {
             sp88 -= 0x28000;
             sp8E = 0x20;
             sp92 = ((Boss03*)var_r7)->unk8;
-            func_ov003_020d1dc0(&sp74, 0x4000, var_r6, 0x1000, 5);
+            func_ov003_020d1dc0((Ov003EnemyShotSource*)&sp74, 0x4000, var_r6, 0x1000, 5);
             func_ov003_02087f00(SEIDX_SE_B005_FIRING_SHOT, func_ov003_020843b0(0, ((Boss03*)arg0)->unk28));
         } else {
             func_ov003_020cc834(&sp48, arg0, var_r7, 0);
@@ -2732,7 +2729,8 @@ void func_ov017_02134378(void* arg0) {
             sp66 = ((Boss03*)var_r7)->unk8 - 0x16;
             sp3A = ((Boss03*)var_r7)->unk8 - 0x16;
             func_ov003_02087f00(SEIDX_SE_B005_FIRING_RAPID_SLOW, func_ov003_020843b0(0, ((Boss03*)arg0)->unk28));
-            func_ov003_020d0518(&sp48, 0x4000, var_r6, 4, &sp1C, 0x3000, var_r6, 0x1000, 3, 0x1E);
+            func_ov003_020d0518((Ov003EnemyShotSource*)&sp48, 0x4000, var_r6, 0x1000, 4, (Ov003EnemyShotSource*)&sp1C, 0x3000,
+                                var_r6, 0x1000, 3, 0x1E);
         }
     }
     if ((((Boss03*)arg0)->unk80 != 0) && (((Boss03*)arg0)->unk1C0 == 0x2A)) {
@@ -2804,7 +2802,7 @@ void func_ov017_02134600(void* arg0) {
                     sp26 = temp_r0 - 0x16;
                 }
                 do {
-                    func_ov003_020d23e8(&sp8, var_r10, 0x2000, 0x800, 0x400, 0x800);
+                    func_ov003_020d23e8((Ov003EnemyShotSource*)&sp8, var_r10, 0x2000, 0x800, 0x400, 0x800);
                     var_r9 += 1;
                     var_r10 += 0x2000;
                 } while (var_r9 < 8);
@@ -2955,7 +2953,7 @@ void func_ov017_021348c0(void* arg0) {
                     spBC                              = 0xC00;
                     spB0                              = 0x4000;
                     spB4                              = 0x4000;
-                    func_ov003_020d2bc0(&sp94);
+                    func_ov003_020d2bc0((Ov003EnemyShotSplitArgs*)&sp94);
                     func_ov003_02087f00(SEIDX_SE_B005_FIRING_SPLIT, func_ov003_020843b0(0, ((Boss03*)arg0)->unk28));
                 } else {
                     BtlBoss03_ShotEff_CreateTask((s32)arg0);
@@ -2971,9 +2969,28 @@ void func_ov017_021348c0(void* arg0) {
                         sp86 = ((Boss03*)var_r6)->unk8 - 0x16;
                         sp5A = ((Boss03*)var_r7)->unk8 - 0x16;
                     }
-                    func_ov003_020cd988(&subroutine_arg0, &sp68, &sp3C, 0x1E, ((Boss03*)arg0)->unk28 + var_r5,
-                                        ((Boss03*)arg0)->unk2C, -0x50000, 0x1E, 8, 0x4000, 0x4000, 0x800, 0x3C, 8, 0x4000,
-                                        0x4000, 0x400, 0xC00);
+                    {
+                        Ov003EnemyShotChargeSplitArgs charge;
+
+                        charge.source                = (Ov003EnemyShotSource*)&sp68;
+                        charge.childSource           = (Ov003EnemyShotSource*)&sp3C;
+                        charge.travelFrames          = 0x1E;
+                        charge.target.x              = ((Boss03*)arg0)->unk28 + var_r5;
+                        charge.target.y              = ((Boss03*)arg0)->unk2C;
+                        charge.target.z              = -0x50000;
+                        charge.patterns[0].delay     = 0x1E;
+                        charge.patterns[0].count     = 8;
+                        charge.patterns[0].speed     = 0x4000;
+                        charge.patterns[0].velocityZ = 0x4000;
+                        charge.patterns[0].damping   = 0x800;
+                        charge.patterns[1].delay     = 0x3C;
+                        charge.patterns[1].count     = 8;
+                        charge.patterns[1].speed     = 0x4000;
+                        charge.patterns[1].velocityZ = 0x4000;
+                        charge.patterns[1].damping   = 0x400;
+                        charge.yScale                = 0xC00;
+                        func_ov003_020cd988(&charge);
+                    }
                     func_ov003_02087f00(SEIDX_SE_B005_FIRING_BURST, func_ov003_020843b0(0, ((Boss03*)arg0)->unk28));
                 }
             }
@@ -3164,7 +3181,7 @@ void func_ov017_02135124(void* arg0) {
     ((Boss03*)temp_r5)->unkC = 1;
     ((Boss03*)arg0)->unk18C  = (u16)(((Boss03*)arg0)->unk18C | 1);
     ((Boss03*)arg0)->unk54   = (s32)(((Boss03*)arg0)->unk54 | 0x10);
-    func_ov003_02084694((void**)((u8*)arg0 + 0x144), 0);
+    func_ov003_02084694(&((Ov003EnemyActor*)arg0)->collider, 0);
     func_ov017_02133524(arg0, func_ov017_0213368c);
     CombatSprite_Release(arg0 + 0x84);
 }
@@ -3394,9 +3411,9 @@ s32 BtlBoss03_01_UG_Init(TaskPool* pool, Task* task, void* args) {
         func_ov017_0213e088(0xF, 0);
         func_ov017_0213e088(0x10, 0);
     }
-    func_ov003_020c3efc(temp_r4, args);
-    func_ov003_020c4520(temp_r4);
-    func_ov003_020c4b5c(temp_r4);
+    func_ov003_020c3efc((Ov003EnemyActor*)temp_r4, args);
+    func_ov003_020c4520((Ov003EnemyActor*)temp_r4);
+    func_ov003_020c4b5c((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk188 = (void*)(temp_r4 + 0x1E8);
     var_r6                     = 0;
     ((Boss03*)temp_r4)->unk20C = 0;
@@ -3493,7 +3510,7 @@ s32 BtlBoss03_01_UG_Update(TaskPool* pool, Task* task, void* args) {
         ((Boss03*)temp_r4)->unk1E8 = (s16)(((Boss03*)temp_r4)->unk1E8 + temp_r1);
     }
     if ((((Boss03*)temp_r4)->unk80 == 1) && (((u32)(((Boss03*)temp_r4)->unk224 << 0x1F) >> 0x1F) == 0) &&
-        (func_ov003_020cb648(temp_r4, 0xA) != 0))
+        (func_ov003_020cb648((Ov003EnemyActor*)temp_r4, 0xA) != 0))
     {
         ((Boss03*)temp_r4)->unk224 = (u16)((((Boss03*)temp_r4)->unk224 & ~1) | 1);
         func_ov003_02087f00(SEIDX_MINAMI_BTL_PNC01, func_ov003_020843b0(0, ((Boss03*)temp_r4)->unk28));
@@ -3505,13 +3522,13 @@ s32 BtlBoss03_01_UG_Update(TaskPool* pool, Task* task, void* args) {
                 ((Boss03*)temp_r4)->unk38 = 0;
             } else {
                 ((Boss03*)temp_r5)->unk18 = 0;
-                func_ov003_02084694((void**)((u8*)temp_r4 + 0x144), 0);
+                func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
                 func_ov017_02133524(temp_r4, func_ov017_021352ec);
             }
             break;
         case 3:
             if (((Boss03*)temp_r4)->unk80 != 0) {
-                func_ov003_02084694(temp_r4 + 0x144, 1);
+                func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
                 func_ov017_02133524(temp_r4, func_ov017_021352a0);
             }
             break;
@@ -3544,7 +3561,7 @@ s32 BtlBoss03_01_UG_Update(TaskPool* pool, Task* task, void* args) {
     if (temp_r1_2 != NULL) {
         temp_r1_2(temp_r4);
     }
-    func_ov003_020c4668(temp_r4);
+    func_ov003_020c4668((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk210 = (s16)((Boss03*)temp_r4)->unk6C;
     return ((Boss03*)temp_r4)->unk1CC;
 }
@@ -3633,7 +3650,7 @@ void func_ov017_02135edc(void* arg0, s32 arg1, s16 arg2) {
 }
 
 void func_ov017_02135eec(void* arg0, void (*arg1)(void*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(arg0);
     ((Boss03*)arg0)->unk1C8 = arg1;
     ((Boss03*)arg0)->unk1C4 = 0;
     ((Boss03*)arg0)->unk1C0 = 0;
@@ -4311,7 +4328,7 @@ void func_ov017_02137110(void* arg0) {
             data_ov003_020e71b8->unk3D878 = (s32)(data_ov003_020e71b8->unk3D878 & ~0x80000);
             func_ov003_0208afcc(0);
             ((Boss03*)data_ov003_020e71b8->unk3D89C)->unk10 = 0;
-            var_r1 = SECOND_REG(func_ov003_020cc784(data_ov003_020e71b8->unk3D89C, 1));
+            func_ov003_020cc784(data_ov003_020e71b8->unk3D89C, 1);
         }
         CombatSprite_Release((CombatSprite*)((u8*)arg0 + 0x84));
         func_ov017_02140a8c(1, arg0 + 0x84, 8, 0);
@@ -4505,8 +4522,8 @@ s32 func_ov017_021377d4(void* arg0) {
     if (((Boss03*)arg0)->unk24 == 0) {
         var_ip = -0x48000;
     }
-    func_ov003_020cc38c(data_ov003_020e71b8->unk3D89C, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
-                        ((Boss03*)arg0)->unk30 - 0x20000);
+    return func_ov003_020cc38c(data_ov003_020e71b8->unk3D89C, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
+                               ((Boss03*)arg0)->unk30 - 0x20000, 0x10000, 0x20000, 0x10000);
 }
 
 void func_ov017_02137834(void* arg0, s32 arg1) {
@@ -4652,7 +4669,7 @@ s32 func_ov017_02137bd0(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 void func_ov017_02137c18(void* arg0, void (*arg1)(void*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(arg0);
     ((Boss03*)arg0)->unk1C8 = arg1;
     ((Boss03*)arg0)->unk1C4 = 0;
     ((Boss03*)arg0)->unk1C0 = 0;
@@ -5491,8 +5508,8 @@ s32 func_ov017_02139550(void* arg0) {
     if (((Boss03*)arg0)->unk24 == 0) {
         var_ip = -0x48000;
     }
-    func_ov003_020cc38c(data_ov003_020e71b8->unk3D898, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
-                        ((Boss03*)arg0)->unk30);
+    return func_ov003_020cc38c(data_ov003_020e71b8->unk3D898, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
+                               ((Boss03*)arg0)->unk30, 0x10000, 0x20000, 0x10000);
 }
 
 /// MARK: BtlBoss03_02_UG
@@ -5517,9 +5534,9 @@ s32 BtlBoss03_02_UG_Init(TaskPool* pool, Task* task, void* args) {
     func_ov017_0213e17c(0x10, 0);
     func_ov017_0213e088(8, 0);
     func_ov017_0213f20c(1);
-    func_ov003_020c3efc(temp_r4, args);
-    func_ov003_020c4520(temp_r4);
-    func_ov003_020c4b5c(temp_r4);
+    func_ov003_020c3efc((Ov003EnemyActor*)temp_r4, args);
+    func_ov003_020c4520((Ov003EnemyActor*)temp_r4);
+    func_ov003_020c4b5c((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk54  = (s32)(((Boss03*)temp_r4)->unk54 | 0x40000020);
     ((Boss03*)temp_r4)->unk188 = (void*)(temp_r4 + 0x1F4);
     ((Boss03*)temp_r4)->unk1CC = 1;
@@ -5535,7 +5552,7 @@ s32 BtlBoss03_02_UG_Init(TaskPool* pool, Task* task, void* args) {
         } else {
             ((Boss03*)temp_r4)->unk18C = (u16)(((Boss03*)temp_r4)->unk18C | 1);
             ((Boss03*)temp_r4)->unk54  = (s32)(((Boss03*)temp_r4)->unk54 | 0x10);
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_02137c18(temp_r4, func_ov017_02137d34);
             CombatSprite_Release(temp_r4 + 0x84);
         }
@@ -5550,7 +5567,7 @@ s32 BtlBoss03_02_UG_Init(TaskPool* pool, Task* task, void* args) {
         } else {
             ((Boss03*)temp_r4)->unk18C = (u16)(((Boss03*)temp_r4)->unk18C | 1);
             ((Boss03*)temp_r4)->unk54  = (s32)(((Boss03*)temp_r4)->unk54 | 0x10);
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_02137c18(temp_r4, func_ov017_02137d34);
             CombatSprite_Release(temp_r4 + 0x84);
         }
@@ -5582,13 +5599,13 @@ s32 BtlBoss03_02_UG_Update(TaskPool* pool, Task* task, void* args) {
             if (((u32)(((Boss03*)temp_r4)->unk208 << 0x1E) >> 0x1F) == 0) {
                 ((Boss03*)temp_r4)->unk38 = 0;
             } else {
-                func_ov003_02084694(temp_r4 + 0x144, 0);
+                func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
                 ((Boss03*)temp_r4)->unk54 = (s32)(((Boss03*)temp_r4)->unk54 & ~0x10000000);
                 func_ov017_02137c18(temp_r4, func_ov017_02138ce0);
             }
             break;
         case 6:
-            func_ov003_02084694(temp_r4 + 0x144, 0);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
             temp_r0_2                 = (((Boss03*)temp_r4)->unk54 & ~0x10000000) | 1;
             ((Boss03*)temp_r4)->unk54 = temp_r0_2;
             if (temp_r0_2 == 0) {
@@ -5611,7 +5628,7 @@ s32 BtlBoss03_02_UG_Update(TaskPool* pool, Task* task, void* args) {
     if (temp_r1_2 != NULL) {
         temp_r1_2(temp_r4);
     }
-    func_ov003_020c4668(temp_r4);
+    func_ov003_020c4668((Ov003EnemyActor*)temp_r4);
     return ((Boss03*)temp_r4)->unk1CC;
 }
 
@@ -5627,9 +5644,9 @@ s32 BtlBoss03_02_UG_Render(TaskPool* pool, Task* task, void* args) {
         var_z = ((Boss03*)temp_r4)->unk214 == 0;
     }
     if (var_z) {
-        func_ov003_020c48b0();
+        func_ov003_020c48b0(temp_r4);
     } else {
-        func_ov003_020c4748();
+        func_ov003_020c4748(temp_r4);
         func_ov003_0208810c(temp_r4 + 0xE4, temp_r4);
     }
     return 1;
@@ -5657,7 +5674,7 @@ s32 BtlBoss03_02_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 void func_ov017_021399dc(void* arg0, void (*arg1)(void*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(arg0);
     ((Boss03*)arg0)->unk1C8 = arg1;
     ((Boss03*)arg0)->unk1C4 = 0;
     ((Boss03*)arg0)->unk1C0 = 0;
@@ -6392,14 +6409,16 @@ s32 BtlBoss03_03_RG_Update(TaskPool* pool, Task* task, void* args) {
         }
         return 1;
     }
-    if ((((u32)(((Boss03*)temp_r4)->unk1FA << 0x1F) >> 0x1F) == 0) && (func_ov003_020cb648(temp_r4, 0xA) != 0)) {
+    if ((((u32)(((Boss03*)temp_r4)->unk1FA << 0x1F) >> 0x1F) == 0) &&
+        (func_ov003_020cb648((Ov003EnemyActor*)temp_r4, 0xA) != 0))
+    {
         ((Boss03*)temp_r4)->unk1FA = (u8)((((Boss03*)temp_r4)->unk1FA & ~1) | 1);
         func_ov003_02087f00(SEIDX_MINAMI_N_BTL_FB05, func_ov003_020843b0(1, ((Boss03*)temp_r4)->unk28));
     }
     temp_r0 = CombatActor_PopPendingCommand(temp_r4);
     switch (temp_r0) { /* switch 1; irregular */
         case 3:        /* switch 1 */
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_021399dc(temp_r4, func_ov017_0213a674);
             break;
         case 6: /* switch 1 */
@@ -6510,15 +6529,15 @@ s32 BtlBoss03_03_UG_Init(TaskPool* pool, Task* task, void* args) {
     func_ov017_0213e17c(0xF, 0);
     func_ov017_0213e17c(0x10, 0);
     func_ov017_0213f20c(1);
-    func_ov003_020c3efc(temp_r4, args);
-    func_ov003_020c4520(temp_r4);
+    func_ov003_020c3efc((Ov003EnemyActor*)temp_r4, args);
+    func_ov003_020c4520((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk54 = (s32)(((Boss03*)temp_r4)->unk54 | 0x20);
     if (data_ov003_020e71b8->unk3D874 != 0) {
         ((Boss03*)temp_r4)->unk6C = (s16)((Boss03*)temp_r5)->unk6C;
     }
     ((Boss03*)temp_r4)->unk18C = (u16)(((Boss03*)temp_r4)->unk18C | 1);
     ((Boss03*)temp_r4)->unk54  = (s32)(((Boss03*)temp_r4)->unk54 | 0x10);
-    func_ov003_02084694(temp_r4 + 0x144, 1);
+    func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
     CombatSprite_Release(temp_r4 + 0x84);
     ((Boss03*)temp_r4)->unk1CC = 1;
 }
@@ -6574,7 +6593,7 @@ s32 BtlBoss03_03_UG_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
 }
 
 void func_ov017_0213b454(void* arg0, void (*arg1)(void*)) {
-    func_ov003_020c427c();
+    func_ov003_020c427c(arg0);
     ((Boss03*)arg0)->unk1C8 = arg1;
     ((Boss03*)arg0)->unk1C4 = 0;
     ((Boss03*)arg0)->unk1C0 = 0;
@@ -7588,8 +7607,8 @@ s32 func_ov017_0213d298(void* arg0) {
     if (((Boss03*)arg0)->unk24 == 0) {
         var_ip = -0x48000;
     }
-    func_ov003_020cc38c(data_ov003_020e71b8->unk3D898, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
-                        ((Boss03*)arg0)->unk30);
+    return func_ov003_020cc38c(data_ov003_020e71b8->unk3D898, ((Boss03*)arg0)->unk28 + var_ip, ((Boss03*)arg0)->unk2C,
+                               ((Boss03*)arg0)->unk30, 0x10000, 0x20000, 0x10000);
 }
 
 s32 func_ov017_0213d2f4(void* arg0) {
@@ -7621,9 +7640,9 @@ s32 BtlBoss03_04_UG_Init(TaskPool* pool, Task* task, void* args) {
     MI_CpuSet(temp_r4, 0, 0x20C);
     func_ov017_0213df24(1);
     func_ov017_0213e088(8U, 1);
-    func_ov003_020c3efc(temp_r4, args);
-    func_ov003_020c4520(temp_r4);
-    func_ov003_020c4b5c(temp_r4);
+    func_ov003_020c3efc((Ov003EnemyActor*)temp_r4, args);
+    func_ov003_020c4520((Ov003EnemyActor*)temp_r4);
+    func_ov003_020c4b5c((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1CC = 1;
     ((Boss03*)temp_r4)->unk200 = (u8)(((Boss03*)temp_r4)->unk200 & ~2);
     func_ov017_0213d1e0(temp_r4, 0);
@@ -7647,7 +7666,9 @@ s32 BtlBoss03_04_UG_Update(TaskPool* pool, Task* task, void* args) {
         }
         return 1;
     }
-    if ((((u32)(((Boss03*)temp_r4)->unk200 << 0x1E) >> 0x1F) == 0) && (func_ov003_020cb648(temp_r4, 0x32) != 0)) {
+    if ((((u32)(((Boss03*)temp_r4)->unk200 << 0x1E) >> 0x1F) == 0) &&
+        (func_ov003_020cb648((Ov003EnemyActor*)temp_r4, 0x32) != 0))
+    {
         ((Boss03*)temp_r4)->unk200 = (u8)(((Boss03*)temp_r4)->unk200 | 2);
         func_ov003_02087f00(SEIDX_HANEKOMA_N_BTL_FB04, func_ov003_020843b0(0, ((Boss03*)temp_r4)->unk28));
     }
@@ -7657,17 +7678,17 @@ s32 BtlBoss03_04_UG_Update(TaskPool* pool, Task* task, void* args) {
             if (((u32)(((Boss03*)temp_r4)->unk200 << 0x1D) >> 0x1F) == 0) {
                 ((Boss03*)temp_r4)->unk38 = 0;
             } else {
-                func_ov003_02084694(temp_r4 + 0x144, 0);
+                func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
                 ((Boss03*)temp_r4)->unk54 = (s32)(((Boss03*)temp_r4)->unk54 & ~0x10000000);
                 func_ov017_0213b454(temp_r4, &func_ov017_0213c7c0);
             }
             break;
         case 3:
-            func_ov003_02084694(temp_r4 + 0x144, 1);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 1);
             func_ov017_0213b454(temp_r4, &func_ov017_0213c930);
             break;
         case 6:
-            func_ov003_02084694(temp_r4 + 0x144, 0);
+            func_ov003_02084694(&((Ov003EnemyActor*)temp_r4)->collider, 0);
             temp_r0_2                 = (((Boss03*)temp_r4)->unk54 & ~0x10000000) | 1;
             ((Boss03*)temp_r4)->unk54 = temp_r0_2;
             if (temp_r0_2 == 0) {
@@ -7683,7 +7704,7 @@ s32 BtlBoss03_04_UG_Update(TaskPool* pool, Task* task, void* args) {
     if (temp_r1 != NULL) {
         temp_r1(temp_r4);
     }
-    func_ov003_020c4668(temp_r4);
+    func_ov003_020c4668((Ov003EnemyActor*)temp_r4);
     ((Boss03*)temp_r4)->unk1F4    = (s16)((Boss03*)temp_r4)->unk6C;
     data_ov003_020e71b8->unk3D8A0 = 0;
     return ((Boss03*)temp_r4)->unk1CC;
@@ -7925,7 +7946,7 @@ s32 BtlBoss03_BlckBall_Abs_CreateTask(void* arg0) {
     void**    sp8;
     TaskPool* taskPool;
 
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         taskPool = &data_ov003_020e71b8->unk_00000;
     } else {
         taskPool = &data_ov003_020e71b8->taskPool;
@@ -7968,9 +7989,9 @@ s32 BtlBoss03_BlckBall_Abs_RunTask(TaskPool* pool, Task* task, void* args, s32 s
             ((Boss03*)temp_r5)->unk6C = (s32)(((Boss03*)temp_r4)->unk28 + ((RNG_Next(0x31) - 0x18) << 0xC));
             ((Boss03*)temp_r5)->unk70 = (s32)((Boss03*)temp_r4)->unk2C;
             ((Boss03*)temp_r5)->unk74 = (s32)((((Boss03*)temp_r4)->unk30 - 0x20000) + ((RNG_Next(0x41) - 0x20) << 0xC));
-            func_ov003_020cb910(temp_r5 + 0x78, temp_r5 + 0x7C, temp_r5 + 0x80, ((Boss03*)temp_r5)->unk60,
-                                ((Boss03*)temp_r5)->unk64, ((Boss03*)temp_r5)->unk68, ((Boss03*)temp_r5)->unk6C,
-                                ((Boss03*)temp_r5)->unk70, ((Boss03*)temp_r5)->unk74, 0x2000);
+            func_ov003_020cb910((s32*)((u8*)temp_r5 + 0x78), (s32*)((u8*)temp_r5 + 0x7C), (s32*)((u8*)temp_r5 + 0x80),
+                                ((Boss03*)temp_r5)->unk60, ((Boss03*)temp_r5)->unk64, ((Boss03*)temp_r5)->unk68,
+                                ((Boss03*)temp_r5)->unk6C, ((Boss03*)temp_r5)->unk70, ((Boss03*)temp_r5)->unk74, 0x2000);
             ((Boss03*)temp_r5)->unk90 = 1;
             ((Boss03*)temp_r5)->unk94 = (void*)args;
             ((Boss03*)args)->unk18E   = 0;
@@ -8017,9 +8038,10 @@ s32 BtlBoss03_BlckBall_Abs_RunTask(TaskPool* pool, Task* task, void* args, s32 s
                     ((Boss03*)temp_r5)->unk70 = (s32)((Boss03*)temp_r4_2)->unk2C;
                     ((Boss03*)temp_r5)->unk74 =
                         (s32)((((Boss03*)temp_r4_2)->unk30 - 0x20000) + ((RNG_Next(0x41) - 0x20) << 0xC));
-                    func_ov003_020cb910(temp_r5 + 0x78, temp_r5 + 0x7C, temp_r5 + 0x80, ((Boss03*)temp_r5)->unk60,
-                                        ((Boss03*)temp_r5)->unk64, ((Boss03*)temp_r5)->unk68, ((Boss03*)temp_r5)->unk6C,
-                                        ((Boss03*)temp_r5)->unk70, ((Boss03*)temp_r5)->unk74, 0x2000);
+                    func_ov003_020cb910((s32*)((u8*)temp_r5 + 0x78), (s32*)((u8*)temp_r5 + 0x7C), (s32*)((u8*)temp_r5 + 0x80),
+                                        ((Boss03*)temp_r5)->unk60, ((Boss03*)temp_r5)->unk64, ((Boss03*)temp_r5)->unk68,
+                                        ((Boss03*)temp_r5)->unk6C, ((Boss03*)temp_r5)->unk70, ((Boss03*)temp_r5)->unk74,
+                                        0x2000);
                 }
                 ((Boss03*)temp_r5)->unk60 = (s32)(((Boss03*)temp_r5)->unk60 + ((Boss03*)temp_r5)->unk78);
                 ((Boss03*)temp_r5)->unk64 = (s32)(((Boss03*)temp_r5)->unk64 + ((Boss03*)temp_r5)->unk7C);
@@ -8039,12 +8061,13 @@ s32 BtlBoss03_BlckBall_Abs_RunTask(TaskPool* pool, Task* task, void* args, s32 s
             if (func_ov003_020c3c28() != 0) {
                 return 1;
             }
-            if (func_ov003_020c37f8(temp_r5) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)temp_r5) != 0) {
                 var_r0_3 = 1;
             } else {
                 var_r0_3 = 0;
             }
-            func_ov003_02084348(var_r0_3, &sp1A, &sp18, ((Boss03*)temp_r5)->unk60);
+            func_ov003_02084348(var_r0_3, &sp1A, &sp18, ((Boss03*)temp_r5)->unk60, ((Boss03*)temp_r5)->unk64,
+                                ((Boss03*)temp_r5)->unk68);
             CombatSprite_SetPosition((CombatSprite*)temp_r5, sp1A, sp18);
             func_ov003_02082730((CombatSprite*)temp_r5, 0x7FFFFFFF - ((Boss03*)temp_r5)->unk64);
             CombatSprite_Render((CombatSprite*)temp_r5);
@@ -8103,7 +8126,7 @@ void func_ov017_0213df24(s32 arg0) {
             var_r9 = temp_r0_3;
         }
     } while (var_r10 < 0x13);
-    func_ov003_020cb128(&data_ov017_02143a38, 0, 0U);
+    func_ov003_020cb128((s32*)data_ov017_02143a38, 0, 0U);
     func_ov003_020cb128(&data_ov017_02143a40, 0, var_r5);
     temp_r4 = var_r5 + var_r6;
     func_ov003_020cb128(&data_ov017_02143a48, 0, temp_r4);
@@ -8115,7 +8138,7 @@ void func_ov017_0213df24(s32 arg0) {
     } else {
         var_r3 = temp_r4 + var_r9;
     }
-    func_ov003_020cb130(&data_ov017_02143a24, &data_ov017_02143a38, 0x13, var_r3, &data_ov017_021436ac);
+    func_ov003_020cb130(&data_ov017_02143a24, data_ov017_02143a38, 0x13, var_r3, data_ov017_021436ac);
     func_ov003_020cb150(&data_ov017_02143a24);
 }
 
@@ -8227,7 +8250,7 @@ s32 BtlBoss03_EffSign_CreateTask(void* arg0) {
     void*  var_r0;
 
     sp8 = arg0;
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         var_r0 = &data_ov003_020e71b8->unk_00000;
     } else {
         var_r0 = &data_ov003_020e71b8->taskPool;
@@ -8240,7 +8263,7 @@ void BtlBoss03_EffPosture_CreateTask(void* arg0) {
     void*  var_r0;
 
     sp8 = arg0;
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         var_r0 = &data_ov003_020e71b8->unk_00000;
     } else {
         var_r0 = &data_ov003_020e71b8->taskPool;
@@ -8253,7 +8276,7 @@ void BtlBoss03_EffCatch_CreateTask(void* arg0) {
     TaskPool* taskPool;
 
     sp8 = arg0;
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         taskPool = &data_ov003_020e71b8->unk_00000;
     } else {
         taskPool = &data_ov003_020e71b8->taskPool;
@@ -8267,7 +8290,7 @@ void BtlBoss03_EffPress_CreateTask(void* arg0) {
 
     if (data_ov017_02143a60 != 0) {
         sp8 = arg0;
-        if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+        if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
             taskPool = &data_ov003_020e71b8->unk_00000;
         } else {
             taskPool = &data_ov003_020e71b8->taskPool;
@@ -8392,12 +8415,13 @@ s32 BtlBoss03_EffPosture_RunTask(TaskPool* pool, Task* task, void* args, s32 sta
                 return 1;
             }
             temp_r6 = ((Boss03*)temp_r4)->unk60;
-            if (func_ov003_020c37f8(temp_r4) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)temp_r4) != 0) {
                 var_r0 = 1;
             } else {
                 var_r0 = 0;
             }
-            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk30);
+            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk2C,
+                                ((Boss03*)temp_r6)->unk30);
             CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
             func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFFFFF - ((Boss03*)((Boss03*)temp_r4)->unk60)->unk2C);
             CombatSprite_Render((CombatSprite*)temp_r4);
@@ -8458,12 +8482,13 @@ s32 BtlBoss03_EffCatch_RunTask(TaskPool* pool, Task* task, void* args, s32 stage
                 return 1;
             }
             temp_r6 = ((Boss03*)temp_r4)->unk60;
-            if (func_ov003_020c37f8(temp_r4) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)temp_r4) != 0) {
                 var_r0 = 1;
             } else {
                 var_r0 = 0;
             }
-            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk30);
+            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk2C,
+                                ((Boss03*)temp_r6)->unk30);
             CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
             func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFFFFF - ((Boss03*)((Boss03*)temp_r4)->unk60)->unk2C);
             CombatSprite_Render((CombatSprite*)temp_r4);
@@ -8539,12 +8564,13 @@ s32 BtlBoss03_EffPress_RunTask(TaskPool* pool, Task* task, void* args, s32 stage
             if (func_ov003_020c3c28() != 0) {
                 return 1;
             }
-            if (func_ov003_020c37f8(temp_r4) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)temp_r4) != 0) {
                 var_r0_2 = 1;
             } else {
                 var_r0_2 = 0;
             }
-            func_ov003_02084348(var_r0_2, &spA, &sp8, ((Boss03*)((Boss03*)temp_r4)->unk60)->unk28);
+            func_ov003_02084348(var_r0_2, &spA, &sp8, ((Boss03*)((Boss03*)temp_r4)->unk60)->unk28,
+                                ((Boss03*)((Boss03*)temp_r4)->unk60)->unk2C, ((Boss03*)((Boss03*)temp_r4)->unk60)->unk30);
             CombatSprite_SetPosition((CombatSprite*)temp_r4, spA, sp8);
             func_ov003_02082730((CombatSprite*)temp_r4, 0x7FFFFFFF - ((Boss03*)((Boss03*)temp_r4)->unk60)->unk2C);
             CombatSprite_Render((CombatSprite*)temp_r4);
@@ -8566,7 +8592,7 @@ s32 BtlBoss03_EffRush_CreateTask(void* arg0) {
     void*  var_r0;
 
     sp8 = arg0;
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         var_r0 = &data_ov003_020e71b8->unk_00000;
     } else {
         var_r0 = &data_ov003_020e71b8->taskPool;
@@ -8620,12 +8646,13 @@ s32 BtlBoss03_EffRush_RunTask(TaskPool* pool, Task* task, void* args, s32 stage)
                 return 1;
             }
             temp_r6 = *temp_r4;
-            if (func_ov003_020c37f8(temp_r4 + 4) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)(temp_r4 + 4)) != 0) {
                 var_r0 = 1;
             } else {
                 var_r0 = 0;
             }
-            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk30);
+            func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r6)->unk28, ((Boss03*)temp_r6)->unk2C,
+                                ((Boss03*)temp_r6)->unk30);
             CombatSprite_SetPosition((CombatSprite*)temp_r4 + 4, spA, sp8);
             func_ov003_02082730((CombatSprite*)temp_r4 + 4, 0x7FFFFFFF - ((Boss03*)*temp_r4)->unk2C);
             CombatSprite_Render((CombatSprite*)temp_r4 + 4);
@@ -8677,7 +8704,7 @@ void BtlBoss03_FailPly_CreateTask(s32 arg0, s32 arg1) {
 
     args.unk_0 = arg0;
     args.unk_4 = arg1;
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         taskPool = &data_ov003_020e71b8->unk_00000;
     } else {
         taskPool = &data_ov003_020e71b8->taskPool;
@@ -8973,10 +9000,10 @@ u32 func_ov017_0213f2a8(void* arg0) {
     var_r5 = 0;
     var_r6 = 0;
     do {
-        func_ov017_0213ece0((u32)var_r6);
-        temp_r1 = arg0 + (var_r6 * 4);
+        void* iden = func_ov017_0213ece0((u32)var_r6);
+        temp_r1    = arg0 + (var_r6 * 4);
         var_r6 += 1;
-        ((Boss03*)temp_r1)->unk10 = func_ov003_020cb368();
+        ((Boss03*)temp_r1)->unk10 = func_ov003_020cb368(iden);
     } while ((s32)var_r6 < 5);
     var_r3 = 0;
     do {
@@ -9161,11 +9188,11 @@ s32 func_ov017_0213f5fc(s32 arg0) {
     return sp0;
 }
 
-s32 func_ov017_0213f630(void* arg1, s32* arg2) {
+s32 func_ov017_0213f630(s32 arg0, Ov003EnemyActor* arg1, void* arg2) {
     s32   temp_r1;
     void* temp_r0;
 
-    if (*arg2 == 0) {
+    if (*(s32*)arg2 == 0) {
         return 0;
     }
     if ((s32)((Boss03*)arg1)->unk7C >= 0x20) {
@@ -9179,12 +9206,12 @@ s32 func_ov017_0213f630(void* arg1, s32* arg2) {
     if ((((Boss03*)arg1)->unkC8 != ((Boss03*)temp_r0)->unk8) && (func_ov003_020c59a0(arg1) == 0) &&
         (((Boss03*)arg1)->unk5C != 4))
     {
-        *arg2 = 0;
+        *(s32*)arg2 = 0;
         return 0;
     }
 block_11:
     if (((Boss03*)arg1)->unk18C & 0x10) {
-        *arg2 = 0;
+        *(s32*)arg2 = 0;
         return 0;
     }
     return 1;
@@ -9542,7 +9569,7 @@ const TaskHandle Task_BtlBoss03_NoisAttk = {"Task_BtlBoss03_NoisAttk", BtlBoss03
 void BtlBoss03_NoisAttk_CreateTask(s32* arg0) {
     TaskPool* taskPool;
 
-    if (func_ov003_020c37f8(arg0 + 0x84) == 0) {
+    if (func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84)) == 0) {
         taskPool = &data_ov003_020e71b8->unk_00000;
     } else {
         taskPool = &data_ov003_020e71b8->taskPool;
@@ -9711,12 +9738,13 @@ s32 BtlBoss03_NoisAttk_Update(TaskPool* pool, Task* task, void* args) {
             ((Boss03*)temp_r4)->unk88 = (s32)(((Boss03*)temp_r4)->unk88 + ((Boss03*)temp_r4)->unkF8);
             ((Boss03*)temp_r4)->unk8C = (s32)(((Boss03*)temp_r4)->unk8C + ((Boss03*)temp_r4)->unkFC);
             ((Boss03*)temp_r4)->unk90 = (s32)(((Boss03*)temp_r4)->unk90 + ((Boss03*)temp_r4)->unk100);
-            if (func_ov003_020c37f8(temp_r4) != 0) {
+            if (func_ov003_020c37f8((CombatSprite*)temp_r4) != 0) {
                 var_r0_3 = 0xFC;
             } else {
                 var_r0_3 = 0xF6;
             }
-            func_ov003_020c5b2c(var_r0_3, ((Boss03*)temp_r4)->unkDC, ((Boss03*)temp_r4)->unk88, ((Boss03*)temp_r4)->unk8C);
+            func_ov003_020c5b2c(var_r0_3, ((Boss03*)temp_r4)->unkDC, ((Boss03*)temp_r4)->unk88, ((Boss03*)temp_r4)->unk8C,
+                                ((Boss03*)temp_r4)->unk90);
             temp_r1_8 = ((Boss03*)temp_r4)->unkE0;
             if ((s32)temp_r1_8 < (s32)((Boss03*)temp_r4)->unkE2) {
                 ((Boss03*)temp_r4)->unkE0 = (s16)(temp_r1_8 + 1);
@@ -9769,7 +9797,8 @@ s32 BtlBoss03_NoisAttk_Render(TaskPool* pool, Task* task, void* args) {
         } else {
             var_r0 = 0;
         }
-        func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r4)->unk88);
+        func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_r4)->unk88, ((Boss03*)temp_r4)->unk8C,
+                            ((Boss03*)temp_r4)->unk90);
         CombatSprite_SetPosition(temp_r4, spA, sp8);
         func_ov003_02082730(temp_r4, 0x7FFFFFFF - ((Boss03*)temp_r4)->unk8C);
         CombatSprite_Render(temp_r4);
@@ -9934,7 +9963,7 @@ const TaskHandle Tsk_BtlBoss03_ShotEff = {"Tsk_BtlBoss03_ShotEff", BtlBoss03_Sho
 void BtlBoss03_ShotEff_CreateTask(s32 arg0) {
     s32 sp8;
 
-    func_ov003_020c37f8(arg0 + 0x84);
+    func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84));
     sp8 = arg0;
     EasyTask_CreateTask(&data_ov003_020e71b8->taskPool, &Tsk_BtlBoss03_ShotEff, 0, 0, 0, &sp8);
 }
@@ -10005,7 +10034,7 @@ s32 BtlBoss03_ShotEff_Render(BtlBoss03_ShotEff* shotEff) {
     } else {
         var_r0 = 0;
     }
-    func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_ip)->unk28, ((Boss03*)temp_ip)->unk30);
+    func_ov003_02084348(var_r0, &spA, &sp8, ((Boss03*)temp_ip)->unk28, ((Boss03*)temp_ip)->unk2C, ((Boss03*)temp_ip)->unk30);
     if (((Boss03*)*temp_r1)->unk24 == 0) {
         CombatSprite_SetPosition(&shotEff->unk_04, (s16)(spA - 0x20), (s16)(sp8 - 0x30));
     } else {
@@ -10100,7 +10129,7 @@ void func_ov017_02140b9c(void* arg0, s16 arg1) {
     BtlBoss03_ThrwBdge_Args args;
     void*                   temp_r5;
 
-    func_ov003_020c37f8(arg0 + 0x84);
+    func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84));
     args.unk_04 = arg1;
     args.unk_00 = arg0;
     temp_r5     = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x8C));
@@ -10115,7 +10144,7 @@ void func_ov017_02140b9c(void* arg0, s16 arg1) {
 s32 func_ov017_02140c40(void* arg0, s32 arg1, s32 arg2, s32 arg3, s16 arg4) {
     BtlBoss03_ThrwBdge_Args args;
 
-    func_ov003_020c37f8(arg0 + 0x84);
+    func_ov003_020c37f8((CombatSprite*)(arg0 + 0x84));
     args.unk_00 = arg0;
     args.unk_04 = 2;
     args.unk_08 = arg1;
@@ -10197,7 +10226,7 @@ s32 BtlBoss03_ThrwBdge_Init(BtlBoss03_ThrwBdge* thrwBdge, BtlBoss03_ThrwBdge_Arg
     thrwBdge->actor.currentHp         = 2;
     thrwBdge->actor.xVelocity         = args->unk_08;
     thrwBdge->actor.yVelocity         = args->unk_0C;
-    thrwBdge->unk_118                 = func_ov003_020cb55c(&args->unk_00);
+    thrwBdge->unk_118                 = func_ov003_020cb55c((Ov003EnemyActor*)args->unk_00);
 
     void* temp_r2 = args->unk_00;
 

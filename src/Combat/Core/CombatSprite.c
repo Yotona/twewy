@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
 #include "Engine/Resources/ResourceMgr.h"

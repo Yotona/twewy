@@ -10,8 +10,6 @@
 // The time-boot badge (`Tsk_BtlBadge_TimeBoot`): the "boot time" countdown badge. Its payload
 // keeps a pointer to the touch actor that owns it, and the three sprites it draws.
 
-extern void func_ov003_02087ed8(s32);
-
 /// The battle sprite page the badge family loads from (`Apl_Hir/Grp_BtlBadge.bin`).
 extern const BinIdentifier data_ov003_020dc044;
 
@@ -71,16 +69,16 @@ s32 func_ov003_020a8350(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_26     = 1;
             anim.anim.packIndex  = 1;
             anim.anim.animIndex  = 1;
-            func_ov003_02082998(&self->badge, &anim);
-            func_ov003_020825b8(&self->badge, 0, 0);
+            CombatSprite_Load(&self->badge, &anim);
+            CombatSprite_SetAnim(&self->badge, 0, 0);
             func_ov003_02082738(&self->badge, 0);
             func_ov003_02082730(&self->badge, 0x3F5000);
-            func_ov003_02082998(&self->bar, &anim);
-            func_ov003_020825b8(&self->bar, 2, 0);
+            CombatSprite_Load(&self->bar, &anim);
+            CombatSprite_SetAnim(&self->bar, 2, 0);
             func_ov003_02082738(&self->bar, 0);
             func_ov003_02082730(&self->bar, 0x3F4000);
-            func_ov003_02082998(&self->fill, &anim);
-            func_ov003_020825b8(&self->fill, 1, 0);
+            CombatSprite_Load(&self->fill, &anim);
+            CombatSprite_SetAnim(&self->fill, 1, 0);
             func_ov003_02082738(&self->fill, 0);
             func_ov003_02082730(&self->fill, 0x3F3000);
             return 1;
@@ -114,7 +112,7 @@ s32 func_ov003_020a8350(TaskPool* pool, Task* task, void* args, s32 stage) {
                 }
                 if (self->armed == 0 && self->actor->unk_048 < self->unk_008 / 2) {
                     self->armed = 1;
-                    func_ov003_020825b8(&self->bar, 3, 0);
+                    CombatSprite_SetAnim(&self->bar, 3, 0);
                 }
                 if (self->actor->unk_048 < 0) {
                     func_ov003_02087ed8(0x2D);
@@ -122,9 +120,9 @@ s32 func_ov003_020a8350(TaskPool* pool, Task* task, void* args, s32 stage) {
                     return 0;
                 }
             }
-            func_ov003_02082b0c(&self->badge);
-            func_ov003_02082b0c(&self->bar);
-            func_ov003_02082b0c(&self->fill);
+            CombatSprite_Update(&self->badge);
+            CombatSprite_Update(&self->bar);
+            CombatSprite_Update(&self->fill);
             return 1;
         }
         case 2: {
@@ -144,20 +142,20 @@ s32 func_ov003_020a8350(TaskPool* pool, Task* task, void* args, s32 stage) {
             CombatSprite_SetAffineTransform(&self->fill, (u16)FX_Mul(ratio, 0x10000), 0x1000, 0x1000, 0);
             posX = (s32)(self->actor->x * 0x10) >> 16;
             posY = (s32)(self->actor->y * 0x10) >> 16;
-            func_ov003_02082724(&self->badge, posX, posY);
-            func_ov003_02082724(&self->bar, posX, posY);
-            func_ov003_02082724(&self->fill, posX, posY);
-            func_ov003_02082b64(&self->badge);
-            func_ov003_02082b64(&self->bar);
-            func_ov003_02082b64(&self->fill);
+            CombatSprite_SetPosition(&self->badge, posX, posY);
+            CombatSprite_SetPosition(&self->bar, posX, posY);
+            CombatSprite_SetPosition(&self->fill, posX, posY);
+            CombatSprite_Render(&self->badge);
+            CombatSprite_Render(&self->bar);
+            CombatSprite_Render(&self->fill);
             return 1;
         }
         case 3: {
             BtlBadgeTimeBoot* self = task->data;
 
-            func_ov003_02082cc4(&self->badge);
-            func_ov003_02082cc4(&self->bar);
-            func_ov003_02082cc4(&self->fill);
+            CombatSprite_Release(&self->badge);
+            CombatSprite_Release(&self->bar);
+            CombatSprite_Release(&self->fill);
             return 1;
         }
     }

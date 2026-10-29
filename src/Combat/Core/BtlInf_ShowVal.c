@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/File/DatMgr.h"
 #include "Player/Inventory.h"
@@ -54,7 +55,6 @@ extern void                func_ov003_020a30d4(s32, s32, u32);
 extern u8        data_ov003_020d9a80[];
 extern u8        data_ov003_020d9a90[];
 extern u8        data_ov003_020d9aa8[];
-extern void      func_ov003_02083470(void);
 extern void      func_ov003_02083478(void);
 extern void      func_ov003_020835d4(void);
 extern void      func_ov003_02083700(void);

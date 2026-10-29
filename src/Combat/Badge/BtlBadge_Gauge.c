@@ -11,8 +11,6 @@
 // The level-up gauge badge (`Tsk_BtlBadge_Gauge`): the badge sprite, its gauge bar and the flash
 // that plays when the actor is hit, all following the touch actor's remaining lifetime.
 
-extern void func_ov003_02087ed8(s32);
-
 /// The battle sprite page the badge family loads from (`Apl_Hir/Grp_BtlBadge.bin`).
 extern const BinIdentifier data_ov003_020dc044;
 
@@ -56,16 +54,16 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_20     = 4;
             anim.anim.unk_28     = 3;
             anim.anim.unk_26     = 1;
-            func_ov003_02082998(&self->badge, &anim);
-            func_ov003_020825b8(&self->badge, 7, 0);
+            CombatSprite_Load(&self->badge, &anim);
+            CombatSprite_SetAnim(&self->badge, 7, 0);
             func_ov003_02082738(&self->badge, 0);
             func_ov003_02082730(&self->badge, 0x3E9000);
-            func_ov003_02082998(&self->bar, &anim);
-            func_ov003_020825b8(&self->bar, 9, 0);
+            CombatSprite_Load(&self->bar, &anim);
+            CombatSprite_SetAnim(&self->bar, 9, 0);
             func_ov003_02082738(&self->bar, 0);
             func_ov003_02082730(&self->bar, 0x3EA000);
-            func_ov003_02082998(&self->flash, &anim);
-            func_ov003_020825b8(&self->flash, 0x15, 0);
+            CombatSprite_Load(&self->flash, &anim);
+            CombatSprite_SetAnim(&self->flash, 0x15, 0);
             func_ov003_02082738(&self->flash, 0);
             func_ov003_02082730(&self->flash, 0x3F2000);
             return 1;
@@ -84,10 +82,10 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
             if (state == 3 || state == 7) {
                 if (actor->unk_044 == actor->unk_046) {
                     self->glowing = 1;
-                    func_ov003_020825b8(&self->bar, 9, 0);
+                    CombatSprite_SetAnim(&self->bar, 9, 0);
                 } else {
                     self->glowing = 0;
-                    func_ov003_020825b8(&self->bar, 8, 0);
+                    CombatSprite_SetAnim(&self->bar, 8, 0);
                 }
                 if (data_ov003_020e71b8->unk3D874 == 2) {
                     SpriteAnimationEx anim;
@@ -102,8 +100,8 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
                     anim.anim.unk_18     = 2;
                     anim.anim.unk_26     = 3;
                     anim.anim.packIndex  = 1;
-                    func_ov003_02082998(&self->glow, &anim);
-                    func_ov003_020825b8(&self->glow, 0x16, 1);
+                    CombatSprite_Load(&self->glow, &anim);
+                    CombatSprite_SetAnim(&self->glow, 0x16, 1);
                     func_ov003_02082738(&self->glow, 0);
                     func_ov003_02082730(&self->glow, 0x3F2000);
                 }
@@ -117,7 +115,7 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
                 case 3:
                     if (self->glowing != 0 && actor->unk_044 < actor->unk_046) {
                         self->glowing = 0;
-                        func_ov003_020825b8(&self->bar, 8, 0);
+                        CombatSprite_SetAnim(&self->bar, 8, 0);
                     }
                     if (actor->unk_044 <= 0) {
                         func_ov003_020a4390(actor, 2);
@@ -130,15 +128,15 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
             }
             if (Sprite_HasAnimation(&self->glow.sprite) != 0) {
                 if (SpriteMgr_IsAnimationFinished(&self->glow.sprite) != 0) {
-                    func_ov003_02082cc4(&self->glow);
+                    CombatSprite_Release(&self->glow);
                 } else {
-                    func_ov003_02082b0c(&self->glow);
+                    CombatSprite_Update(&self->glow);
                 }
             }
-            func_ov003_02082b0c(&self->flash);
-            func_ov003_02082b0c(&self->bar);
-            func_ov003_02082b0c(&self->badge);
-            func_ov003_02082b0c(&self->actor.sprite);
+            CombatSprite_Update(&self->flash);
+            CombatSprite_Update(&self->bar);
+            CombatSprite_Update(&self->badge);
+            CombatSprite_Update(&self->actor.sprite);
             return 1;
         }
         case 2: {
@@ -152,40 +150,41 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
                 return 1;
             }
             if (actor->unk_044 != actor->unk_046) {
-                func_ov003_0208260c(&self->bar, 0, FX_Divide(actor->unk_044 << 12, actor->unk_046 << 12), 0x1000, 0);
+                CombatSprite_SetAffineTransform(&self->bar, 0, FX_Divide(actor->unk_044 << 12, actor->unk_046 << 12), 0x1000,
+                                                0);
             } else {
-                func_ov003_0208260c(&self->bar, 0, 0x1000, 0x1000, 0);
+                CombatSprite_SetAffineTransform(&self->bar, 0, 0x1000, 0x1000, 0);
             }
             posX = (s32)(actor->x * 0x10) >> 16;
             posY = (s32)(actor->y * 0x10) >> 16;
-            func_ov003_02082724(&self->flash, posX, posY);
-            func_ov003_02082724(&self->bar, posX, posY);
-            func_ov003_02082724(&self->badge, posX, posY);
-            func_ov003_02082724(&self->actor.sprite, posX, posY);
+            CombatSprite_SetPosition(&self->flash, posX, posY);
+            CombatSprite_SetPosition(&self->bar, posX, posY);
+            CombatSprite_SetPosition(&self->badge, posX, posY);
+            CombatSprite_SetPosition(&self->actor.sprite, posX, posY);
             state = actor->state;
             if (func_ov003_020a3edc(actor) != 0) {
                 if (state == 5) {
-                    func_ov003_02082b64(&self->flash);
+                    CombatSprite_Render(&self->flash);
                 } else {
-                    func_ov003_02082b64(&self->bar);
-                    func_ov003_02082b64(&self->badge);
+                    CombatSprite_Render(&self->bar);
+                    CombatSprite_Render(&self->badge);
                 }
-                func_ov003_02082b64(&self->actor.sprite);
+                CombatSprite_Render(&self->actor.sprite);
             } else {
                 if (state == 5) {
-                    func_ov003_02082848(&self->flash, 8);
+                    CombatSprite_RenderWithPalette(&self->flash, 8);
                 } else {
-                    func_ov003_02082848(&self->bar, 8);
-                    func_ov003_02082848(&self->badge, 8);
+                    CombatSprite_RenderWithPalette(&self->bar, 8);
+                    CombatSprite_RenderWithPalette(&self->badge, 8);
                 }
-                func_ov003_02082848(&self->actor.sprite, 8);
+                CombatSprite_RenderWithPalette(&self->actor.sprite, 8);
             }
             if (Sprite_HasAnimation(&self->glow.sprite) != 0) {
-                func_ov003_02082724(&self->glow, posX, posY);
+                CombatSprite_SetPosition(&self->glow, posX, posY);
                 if (func_ov003_020a3edc(actor) != 0) {
-                    func_ov003_02082b64(&self->glow);
+                    CombatSprite_Render(&self->glow);
                 } else {
-                    func_ov003_02082848(&self->glow, 8);
+                    CombatSprite_RenderWithPalette(&self->glow, 8);
                 }
             }
             return 1;
@@ -194,10 +193,10 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
             BtlBadgeGauge*   self  = task->data;
             Ov003TouchActor* actor = &self->actor;
 
-            func_ov003_02082cc4(&self->flash);
-            func_ov003_02082cc4(&self->bar);
-            func_ov003_02082cc4(&self->badge);
-            func_ov003_02082cc4(&self->actor.sprite);
+            CombatSprite_Release(&self->flash);
+            CombatSprite_Release(&self->bar);
+            CombatSprite_Release(&self->badge);
+            CombatSprite_Release(&self->actor.sprite);
             func_ov003_020a3dac(actor);
             return 1;
         }

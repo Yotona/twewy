@@ -5,7 +5,6 @@
 extern s32                          func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32                          func_ov003_020843b0(s32, s32);
 extern s32                          func_ov003_020843ec(s32, s32, s32);
-extern void                         func_ov003_02087f28(s32, s32);
 extern const u8                     data_ov003_020dc87c[4];
 extern const s32                    data_ov003_020dc880[2];
 extern const Ov003ElementBindSounds data_ov003_020dc894[2];

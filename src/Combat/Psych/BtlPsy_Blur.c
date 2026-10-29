@@ -1,9 +1,7 @@
 #include "Combat/Core/CombatPsychEffects.h"
 
 #include "Combat/Core/CombatApi.h"
-extern s32              func_ov003_020843b0(s32, s32);
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
+extern s32 func_ov003_020843b0(s32, s32);
 
 extern const TaskHandle data_ov003_020dc760;
 extern const TaskStages data_ov003_020dc76c;

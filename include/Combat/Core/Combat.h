@@ -273,24 +273,6 @@ typedef struct {
 
 extern Ov003Global* data_ov003_020e71b8;
 
-/// Per-enemy parameter record returned by `func_ov003_020c3c88(unit)`. The noise tasks scale
-/// the halfwords at 0x1C..0x26 by their damage level to get per-state speeds/timers.
-typedef struct CombatEnemyParams {
-    /* 0x00 */ u8  unk_00[0x3];
-    /* 0x03 */ u8  unk_03;
-    /* 0x04 */ u8  unk_04;
-    /* 0x05 */ u8  unk_05[0x10 - 0x5];
-    /* 0x10 */ s16 unk_10;
-    /* 0x12 */ s16 unk_12;
-    /* 0x14 */ u8  unk_14[0x1C - 0x14];
-    /* 0x1C */ s16 unk_1C;
-    /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ s16 unk_20;
-    /* 0x22 */ s16 unk_22;
-    /* 0x24 */ s16 unk_24;
-    /* 0x26 */ s16 unk_26;
-} CombatEnemyParams;
-
 // Used in TaskStage.render functions
 void func_ov003_020c4878(void*);
 
@@ -317,4 +299,55 @@ typedef struct Ov003Collider {
     /* 0x28 */ CombatListNode node;
 } Ov003Collider; // Size: 0x34
 
-#endif           // COMBAT_CORE_COMBAT_H
+/// One 8-byte record of an `Ov003AnimLayer`'s frame table.
+typedef struct Ov003AnimFrame {
+    /* 0x00 */ u16 dataId;
+    /* 0x02 */ s16 entry;
+    /* 0x04 */ u16 duration;
+    /* 0x06 */ s16 randomRange;
+} Ov003AnimFrame; // Size: 0x8
+
+/// One layer of a layered sprite animation: a chain of slots that share a frame index.
+typedef struct Ov003AnimLayer {
+    /* 0x00 */ BinIdentifier*        iden;
+    /* 0x04 */ Data*                 data;
+    /* 0x08 */ s32                   unk_08;
+    /* 0x0C */ void**                dest; // receives the current cell pointer
+    /* 0x10 */ const Ov003AnimFrame* frames;
+    /* 0x14 */ s16                   loadedId;
+    /* 0x16 */ s16                   index;
+    /* 0x18 */ s16                   duration;
+    /* 0x1A */ s16                   timer;
+    union {
+        /* 0x1C */ struct {
+            u16 loop    : 1; // restart from frame 0 at the end
+            u16 oneShot : 1; // reached the end and stopped
+            u16 random  : 1; // `duration` of 0 means "pick a random one in [1, randomRange]"
+            u16 chained : 1; // driven by a parent layer
+            u16 ended   : 1; // the end marker was already hit once
+            u16 _pad1C  : 11;
+        };
+        u16 flags;
+    };
+    /* 0x1E */ s16                    unk_1E;
+    /* 0x20 */ struct Ov003AnimLayer* next;
+} Ov003AnimLayer; // Size: 0x24
+
+/// Battle scene work area, allocated from `gDebugHeap` and referenced from the overlay dispatcher
+/// (`MainOvlDisp_SetCbArg`) and the debug overlay stack.
+typedef struct BtlMgrWork {
+    /* 0x00000 */ TaskPool        taskPool;
+    /* 0x00080 */ Heap            heap;
+    /* 0x0008C */ u8              heapData[0x800];
+    /* 0x0088C */ ResourceManager resources;
+    /* 0x11E0C */ s32             active;         // tasks are only ticked while a battle is running
+    /* 0x11E10 */ u16             step;           // result/continue state machine step
+    /* 0x11E12 */ u16             musicId;        // BGM currently requested
+    /* 0x11E14 */ u16             encounterId;    // noise id of the battle being fought
+    /* 0x11E16 */ u16             battleDuration; // frames the current chained battle lasts
+    /* 0x11E18 */ s16             fadeCounter;
+    /* 0x11E1A */ s16             unk_11E1A;
+    /* 0x11E1C */ s32             keepBattleState; // carry the level-up gauge into the next battle
+} BtlMgrWork;                                      // Size: 0x11E20
+
+#endif                                             // COMBAT_CORE_COMBAT_H

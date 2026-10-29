@@ -42,35 +42,12 @@ typedef struct Ov003SaveRuntime {
 // Spelled as a byte offset past the header: `OV003_CUTIN_SAVE->slots[i]` makes mwcc fold the offset into the load.
 #define OV003_CUTIN_SLOTS ((u32*)&((u8*)&gSaveData)[sizeof(MainData) + sizeof(u32)])
 
-typedef struct Ov003CutinScript {
-    /* 0x00 */ void* data;
-    /* 0x04 */ u16   count;
-    /* 0x06 */ u16   flags;
-    /* 0x08 */ s32   cursor;
-    /* 0x0C */ s32   unk_0C;
-    /* 0x10 */ s32   unk_10;
-} Ov003CutinScript; // Size: 0x14
-
 /// A circular buffer of motion tracks plus the playback cursor.
 typedef struct Ov003CutinTracks {
     /* 0x00 */ Vec* tracks;
     /* 0x04 */ u16  count;
     /* 0x06 */ u16  cursor;
 } Ov003CutinTracks; // Size: 0x8
-
-/// One task-spawn record produced while parsing a cut-in script; also the data block the
-/// EasyTask callbacks receive.
-typedef struct Ov003CutinCmdData {
-    /* 0x00 */ s32 group;
-    /* 0x04 */ u16 sprite;
-    /* 0x06 */ union {
-        u16             flags;
-        Ov003CutinFlags spawnFlags;
-    };
-    /* 0x08 */ s32 x;
-    /* 0x0C */ s32 y;
-    /* 0x10 */ s32 z;
-} Ov003CutinCmdData; // Size: 0x14
 
 /// Bit view shared by the cut-in parameter flags (`flags16`) and the actor flags (`flags196`).
 
@@ -102,21 +79,15 @@ extern u8       data_ov003_020e7204[];
 extern const s8 data_ov003_020e09f8[];
 extern u8       data_ov003_020e6a38[];
 extern void**   data_ov003_020e6a44[];
-extern void**   data_ov003_020e70ac[];
 extern u8       data_02071cf0[];
 
 extern s32 func_02053098(f64 x, f64 scale);
 extern u16 func_02054a50(f64 x);
 
-extern s32                    func_ov003_020843b0(s32 engine, s32 x);
-extern s32                    func_ov003_020843ec(s32 engine, s32 y, s32 z);
-extern void                   func_ov003_02087f28(void* arg0, s32 arg1);
-extern void                   func_ov003_02087f64(void* arg0, s32 arg1);
-extern void                   func_ov003_0208810c(void* arg0, void* arg1);
-extern const Ov003AttackInfo* func_ov003_0208a114(u16 id);
-extern void                   func_ov003_0208af9c(u16 x, u16 y);
-extern void                   func_ov003_020c427c(void*);
-extern void                   func_ov003_020c4b5c(Ov003CutinActor* actor);
+extern s32  func_ov003_020843b0(s32 engine, s32 x);
+extern s32  func_ov003_020843ec(s32 engine, s32 y, s32 z);
+extern void func_ov003_0208af9c(u16 x, u16 y);
+extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
 
 // Data owned by this unit.
 extern u8       data_ov003_020e71e4[];
@@ -133,7 +104,6 @@ extern const s8 data_ov003_020e09f8[];
 // Data owned by neighbouring units / arm9.
 extern u8     data_ov003_020e6a38[];
 extern void** data_ov003_020e6a44[];
-extern void** data_ov003_020e70ac[];
 extern u8     data_ov003_020e7204[];
 extern u8     data_ov003_020e722c[];
 extern u8     data_02071cf0[];
@@ -150,12 +120,9 @@ s32               func_ov003_020c3908(CombatSprite* sprite);
 u32               func_ov003_020c3aac(u32 id);
 s32               func_ov003_020c3c28(void);
 void              func_ov003_020c3c44(Ov003CutinScript* buffer, void* data, s16 count);
-Ov003ActorParams* func_ov003_020c3c6c(Ov003CutinActor* actor);
-Ov003ActorParams* func_ov003_020c3c88(Ov003CutinActor* actor);
-void              func_ov003_020c3cec(void* mainTask, void* subTask, u32* mainData, u32* subData);
-s32               func_ov003_020c3d28(void* subTask, void* mainTask, u32* subData, u32* mainData, s32* mainOut, s32* subOut);
+Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor);
 s32               func_ov003_020c3ec0(CombatActor* actor);
-void              func_ov003_020c3efc(Ov003CutinActor* actor, Ov003CutinCmdData* spawn);
+void              func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn);
 
 void func_ov003_020c2064(Ov003CutinTracks* tracks) {
     s32 i;
@@ -221,7 +188,7 @@ void func_ov003_020c20d4(Ov003CutinTracks* tracks, Ov003CutinActor* actor) {
                 CombatSprite_SetPosition(&actor->sprite, posX, posY);
                 func_ov003_02082730(&actor->sprite, limit + (spriteIndex << 12));
                 CombatSprite_Render(&actor->sprite);
-                func_ov003_0208810c(&actor->subSprite, actor);
+                func_ov003_0208810c(&actor->subSprite, &actor->actor);
             }
             offset += 0xC;
             i++;
@@ -451,7 +418,7 @@ void func_ov003_020c2b5c(Ov003CutinActor* actor) {
 }
 
 void func_ov003_020c2b68(Ov003CutinActor* actor) {
-    func_ov003_020c427c(actor);
+    func_ov003_020c427c(&actor->base);
     actor->flags18C &= ~0x80;
     actor->actor.flags &= ~0x10;
     actor->state          = 0;
@@ -598,7 +565,7 @@ s32 func_ov003_020c2f68(Ov003CutinActor* actor, s32 animBase, s32 speed, s32 spr
     switch (actor->state) {
         case 0:
             if (actor->timer == 0) {
-                func_ov003_020c4b5c(actor);
+                func_ov003_020c4b5c(&actor->base);
                 if (actor->actor.position.x < 0x50000) {
                     actor->velocityX = speed;
                 } else if (actor->actor.position.x > limit - 0x50000) {
@@ -656,7 +623,7 @@ s32 func_ov003_020c2f68(Ov003CutinActor* actor, s32 animBase, s32 speed, s32 spr
                 }
             }
             if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
-                func_ov003_020c4b5c(actor);
+                func_ov003_020c4b5c(&actor->base);
                 return 0;
             }
             actor->timer++;
@@ -725,10 +692,10 @@ void func_ov003_020c34dc(Ov003CutinActor* actor) {
 }
 
 void func_ov003_020c353c(Ov003CutinActor* actor) {
-    Ov003ActorParams* params = func_ov003_020c3c6c(actor);
+    const BtlSpriteDesc* params = func_ov003_020c3c6c(&actor->base);
 
     CombatSprite_SetPaletteMode(&actor->sprite, 0);
-    CombatSprite_SetPaletteSource(&actor->sprite, (u16)params->unk_0A);
+    CombatSprite_SetPaletteSource(&actor->sprite, params->palette);
     actor->sprite.basePaletteSource = actor->sprite.sprite.unk3C;
 }
 
@@ -786,7 +753,7 @@ void func_ov003_020c36d4(s32 scale, Vec* src, Vec* dst) {
     Vec_MultAdd(scale, src, &zero, dst);
 }
 
-void func_ov003_020c3700(Ov003CutinActor* actor) {
+void func_ov003_020c3700(Ov003EnemyActor* actor) {
     s32 x      = actor->actor.position.x;
     s16 radius = actor->actor.unk_70;
     f32 scaled;
@@ -806,7 +773,7 @@ void func_ov003_020c3700(Ov003CutinActor* actor) {
     actor->actor.flags &= ~0x10000000;
 }
 
-void func_ov003_020c3794(Ov003CutinActor* actor) {
+void func_ov003_020c3794(Ov003EnemyActor* actor) {
     if (!(actor->flags18C & 8)) {
         return;
     }
@@ -814,7 +781,7 @@ void func_ov003_020c3794(Ov003CutinActor* actor) {
     actor->actor.flags |= 0x10000000;
 }
 
-void func_ov003_020c37bc(Ov003CutinActor* actor) {
+void func_ov003_020c37bc(Ov003EnemyActor* actor) {
     actor->unk_1A4 = 0;
     actor->unk_1A8 = 0;
     func_ov003_020c3794(actor);
@@ -1025,11 +992,11 @@ void func_ov003_020c3c44(Ov003CutinScript* buffer, void* data, s16 count) {
     buffer->unk_10 = 0;
 }
 
-Ov003ActorParams* func_ov003_020c3c6c(Ov003CutinActor* actor) {
-    return (Ov003ActorParams*)data_ov003_020e6a44[actor->group][actor->spriteIndex];
+const BtlSpriteDesc* func_ov003_020c3c6c(Ov003EnemyActor* actor) {
+    return (const BtlSpriteDesc*)data_ov003_020e6a44[actor->group][actor->spriteIndex];
 }
 
-Ov003ActorParams* func_ov003_020c3c88(Ov003CutinActor* actor) {
+Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor) {
     return (Ov003ActorParams*)data_ov003_020e70ac[actor->group][actor->spriteIndex];
 }
 
@@ -1049,7 +1016,7 @@ void func_ov003_020c3cdc(Ov003CutinActor* actor) {
     func_ov003_020c3938(&actor->sprite);
 }
 
-void func_ov003_020c3cec(void* mainTask, void* subTask, u32* mainData, u32* subData) {
+void func_ov003_020c3cec(void* mainTask, void* subTask, void* mainData, void* subData) {
     s32 main;
     s32 sub;
 
@@ -1057,7 +1024,7 @@ void func_ov003_020c3cec(void* mainTask, void* subTask, u32* mainData, u32* subD
 }
 
 /// Creates the two EasyTasks driving a cut-in actor pair and links the two task data blocks.
-s32 func_ov003_020c3d28(void* subTask, void* mainTask, u32* subData, u32* mainData, s32* mainOut, s32* subOut) {
+s32 func_ov003_020c3d28(void* subTask, void* mainTask, void* subData, void* mainData, s32* mainOut, s32* subOut) {
     s32   mainId;
     s32   subId;
     void* mainBlock;
@@ -1094,12 +1061,12 @@ s32 func_ov003_020c3d28(void* subTask, void* mainTask, u32* subData, u32* mainDa
     return 1;
 }
 
-void func_ov003_020c3e64(void) {}
+void func_ov003_020c3e64(Ov003EnemyActor* actor) {}
 
-void func_ov003_020c3e68(Ov003CutinActor* main, Ov003CutinActor* sub) {
+void func_ov003_020c3e68(Ov003EnemyActor* main, Ov003EnemyActor* sub) {
     if ((main != NULL) && (sub != NULL)) {
-        main->partner      = &sub->base;
-        sub->partner       = &main->base;
+        main->partner      = sub;
+        sub->partner       = main;
         main->actor.unk_78 = (s32)sub;
         sub->actor.unk_78  = (s32)main;
     }
@@ -1108,7 +1075,7 @@ void func_ov003_020c3e68(Ov003CutinActor* main, Ov003CutinActor* sub) {
 void func_ov003_020c3e88(Ov003CutinActor* actor, s32 arg1) {
     s32 flag = (func_ov003_020c3cbc(actor) == 0) ? 1 : 0;
 
-    func_ov003_020c3e68(actor, func_ov003_020cb42c(flag, arg1, 0));
+    func_ov003_020c3e68(&actor->base, func_ov003_020cb42c(flag, arg1, 0));
 }
 
 s32 func_ov003_020c3ec0(CombatActor* actor) {
@@ -1121,7 +1088,7 @@ s32 func_ov003_020c3ec0(CombatActor* actor) {
 }
 
 /// Initialises one cut-in actor from a spawn record and its parameter block.
-void func_ov003_020c3efc(Ov003CutinActor* actor, Ov003CutinCmdData* spawn) {
+void func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn) {
     Ov003ActorParams* params = (Ov003ActorParams*)data_ov003_020e70ac[spawn->group][spawn->sprite];
 
     CombatActor_Init(&actor->actor, 1);

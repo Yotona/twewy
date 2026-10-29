@@ -7,8 +7,6 @@
 
 #include <nitro/mi/cpumem.h>
 
-extern s16  func_ov003_020843b0(s32, s32);
-extern s16  func_ov003_020843ec(s32, s32, s32);
 extern void func_ov021_020f11bc(s32, s32*, s32*, s32*);
 extern void func_ov021_020f13b0(void);
 extern s32  func_ov021_020f1174(void);

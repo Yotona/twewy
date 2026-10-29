@@ -38,23 +38,6 @@
 /// Common prefix shared by every combat unit (players, partners, noise). Only the fields the battle
 /// manager itself touches are modelled here; concrete units extend this layout.
 
-/// Battle scene work area, allocated from `gDebugHeap` and referenced from the overlay dispatcher
-/// (`MainOvlDisp_SetCbArg`) and the debug overlay stack.
-typedef struct BtlMgrWork {
-    /* 0x00000 */ TaskPool        taskPool;
-    /* 0x00080 */ Heap            heap;
-    /* 0x0008C */ u8              heapData[0x800];
-    /* 0x0088C */ ResourceManager resources;
-    /* 0x11E0C */ s32             active;         // tasks are only ticked while a battle is running
-    /* 0x11E10 */ u16             step;           // result/continue state machine step
-    /* 0x11E12 */ u16             musicId;        // BGM currently requested
-    /* 0x11E14 */ u16             encounterId;    // noise id of the battle being fought
-    /* 0x11E16 */ u16             battleDuration; // frames the current chained battle lasts
-    /* 0x11E18 */ s16             fadeCounter;
-    /* 0x11E1A */ s16             unk_11E1A;
-    /* 0x11E1C */ s32             keepBattleState; // carry the level-up gauge into the next battle
-} BtlMgrWork;                                      // Size: 0x11E20
-
 /// A battle icon whose animation is driven by the shared state at `Ov003Global.unk3D376`.
 
 extern void func_02001b44(s32, s32, void*, s32);
@@ -63,13 +46,7 @@ extern void func_0200d8f0(void);
 extern void func_0200d90c(void);
 extern s32  func_020067ec(void);
 
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
-extern void             func_ov003_020849ac(CombatList*);
-extern void             func_ov003_02087ed8(s32);
-
-extern s32 func_ov003_020a3330(u32);
-extern s32 func_ov003_020a3468(u32);
+extern void func_ov003_020849ac(CombatList*);
 
 /// Overlay 4 id per noise id.
 extern const s8 data_ov003_020d6ab0[];

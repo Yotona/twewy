@@ -406,4 +406,26 @@ s32  func_ov003_020cce34(s32);
 void func_ov003_020d1dc0(Ov003EnemyShotSource*, s32, u16, u16, u16);
 s32  func_ov003_020d1ec4(Ov003EnemyShotSource*, s32, s32, s32, s32);
 
+typedef s32 (*BtlActorFilter)(s32 count, Ov003EnemyActor* actor, void* arg);
+
+typedef struct BtlBinEntry {
+    /* 0x0 */ u32 id;
+    /* 0x4 */ s32 offset; // where the entry starts inside the shared buffer
+} BtlBinEntry;            // Size: 0x8
+
+/// A set of packed resources that live in one heap buffer.
+typedef struct BtlBinSet {
+    /* 0x00 */ void*              buffer;
+    /* 0x04 */ s32                size;
+    /* 0x08 */ const BtlBinEntry* entries;
+    /* 0x0C */ u16                count;
+    /* 0x0E */ u16                reserved0E;
+    /* 0x10 */ const char*        tag; // name the buffer is registered under
+} BtlBinSet;                           // Size: 0x14
+
+typedef struct BtlVec2 {
+    /* 0x0 */ s32 x;
+    /* 0x4 */ s32 y;
+} BtlVec2;
+
 #endif

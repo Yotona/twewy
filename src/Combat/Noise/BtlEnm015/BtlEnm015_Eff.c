@@ -1,6 +1,6 @@
 #include "Combat/Noise/Private/BtlEnm015.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015Eff {
@@ -73,7 +73,7 @@ s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 2: {
             s16 x;
             s16 y;
-            func_ov003_02084348(func_ov003_020c37f8(data) ? 1 : 0, &x, &y, data->unk_60, data->unk_64, data->unk_68);
+            func_ov003_02084348(func_ov003_020c37f8(&data->sprite) ? 1 : 0, &x, &y, data->unk_60, data->unk_64, data->unk_68);
             CombatSprite_SetPosition(&data->sprite, x, y);
             func_ov003_02082730(&data->sprite, 0x7FFFFFFF - data->unk_64);
             CombatSprite_Render(&data->sprite);

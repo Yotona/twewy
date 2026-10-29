@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
@@ -41,8 +42,6 @@ extern const BinIdentifier data_ov003_020d7818;
 extern void func_020265d4(void* dst, s32 step, u16 count);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_02082724(CombatSprite* sprite, s32 x, s32 y);
-extern void func_ov003_02087ed8(s32 seIdx);
 extern void func_ov003_0208b278(s32 arg0);
 extern void func_ov003_02085c78(void);
 
@@ -349,23 +348,23 @@ s32 func_ov003_020a0d2c(TaskPool* pool, Task* task, void* args) {
     }
     subX = (self->subX * 0x10) >> 16;
     x    = (self->x * 0x10) >> 16;
-    func_ov003_02082724(&self->sprites[3], subX, self->y);
+    CombatSprite_SetPosition(&self->sprites[3], subX, self->y);
     CombatSprite_Render(&self->sprites[3]);
     if (data_ov003_020e71b8->unk3D878 & 0x80000000) {
-        func_ov003_02082724(&self->sprites[4], x, self->y);
+        CombatSprite_SetPosition(&self->sprites[4], x, self->y);
         CombatSprite_Render(&self->sprites[4]);
-        func_ov003_02082724(&self->sprites[5], x, self->y);
+        CombatSprite_SetPosition(&self->sprites[5], x, self->y);
         CombatSprite_Render(&self->sprites[5]);
     }
     if (data_ov003_020e71b8->unk3D88D == 3) {
         return 1;
     }
-    func_ov003_02082724(&self->sprites[0], x, self->y);
+    CombatSprite_SetPosition(&self->sprites[0], x, self->y);
     CombatSprite_Render(&self->sprites[0]);
     if (data_ov003_020e71b8->unk3D878 & 0x80000000) {
-        func_ov003_02082724(&self->sprites[1], subX, self->y);
+        CombatSprite_SetPosition(&self->sprites[1], subX, self->y);
         CombatSprite_Render(&self->sprites[1]);
-        func_ov003_02082724(&self->sprites[2], subX, self->y);
+        CombatSprite_SetPosition(&self->sprites[2], subX, self->y);
         CombatSprite_Render(&self->sprites[2]);
     }
     return 1;

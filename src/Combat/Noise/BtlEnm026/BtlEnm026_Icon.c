@@ -2,7 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm026.h"
 #include "SndMgr.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm026Icon {
@@ -18,7 +18,6 @@ typedef struct BtlEnm026Icon {
     /* 0x130 */ s32          unk_130;
 } BtlEnm026Icon; // Size: 0x134
 extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern void func_ov003_02087ed8(u16);
 s32         func_ov015_02126860(TaskPool*, Task*, void*, s32);
 extern char data_ov015_0212846c[20];
 extern char data_ov015_02128480[32];
@@ -164,7 +163,7 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
             if (SpriteMgr_IsAnimationFinished(&data->unk_00.sprite) == 0) {
                 break;
             }
-            func_ov003_02082d04(&data->unk_00);
+            CombatSprite_Restart(&data->unk_00);
             if (SndMgr_IsSEPlaying(0x279) == 0) {
                 if (data_ov015_02128500.flag08 == 0) {
                     if (data_ov003_020e71b8->unk3D874 == 2) {
@@ -180,14 +179,14 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
 
 s32 func_ov015_02126660(BtlEnm026Icon* data) {
     BtlEnm026* owner  = data->unk_120;
-    s32        engine = (func_ov003_020c37f8(data) != 0);
+    s32        engine = (func_ov003_020c37f8(&data->unk_00) != 0);
     s32        px;
     s32        pz;
     s32        py;
     s16        sx;
     s16        sy;
 
-    if (func_ov003_020c37f8(data) != 0) {
+    if (func_ov003_020c37f8(&data->unk_00) != 0) {
         if (owner->flags18C & 0x10) {
             return 1;
         }

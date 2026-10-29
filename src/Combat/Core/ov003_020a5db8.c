@@ -62,19 +62,14 @@ extern s32 func_020243d4(u8);
 
 extern BOOL Sprite_HasAnimation(Sprite*);
 
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
-
 extern s32 func_ov003_0208442c(s32, s32);
 extern s32 func_ov003_02084460(s32, s32, s32);
 
-extern const Ov003AttackInfo* func_ov003_0208a114(s32);
-extern s32                    func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
-extern s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
-extern s32                    func_ov003_0208a1a4(const Ov003AttackInfo*, void*, s32, s32);
-extern void                   func_ov003_0208a234(u16, Ov003AttackArgs*, void*);
-extern s32                    func_ov003_0208a25c(void*);
-extern void                   func_ov003_0209fc88(s32, s32, s32, s32, s32, s32);
+extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
+extern s32  func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
+extern s32  func_ov003_0208a1a4(const Ov003AttackInfo*, void*, s32, s32);
+extern void func_ov003_0208a234(u16, Ov003AttackArgs*, void*);
+extern s32  func_ov003_0208a25c(void*);
 
 extern void func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 

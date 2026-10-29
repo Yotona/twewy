@@ -6,8 +6,6 @@
 
 #include "SpriteMgr.h"
 extern const BinIdentifier data_ov003_020d77f8;
-extern s16                 func_ov003_020843b0(s32, s32);
-extern s16                 func_ov003_020843ec(s32, s32, s32);
 typedef struct BtlPsyInvisible {
     Ov003EffectState* effect;
     CombatSprite      sprite;

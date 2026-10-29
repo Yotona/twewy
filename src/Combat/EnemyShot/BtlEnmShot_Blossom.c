@@ -1,3 +1,4 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
@@ -20,36 +21,6 @@
 // Types
 // ---------------------------------------------------------------------------------------------
 
-typedef struct BtlBinEntry {
-    /* 0x0 */ u32 id;
-    /* 0x4 */ s32 offset; // where the entry starts inside the shared buffer
-} BtlBinEntry;            // Size: 0x8
-
-/// A set of packed resources that live in one heap buffer.
-typedef struct BtlBinSet {
-    /* 0x00 */ void*              buffer;
-    /* 0x04 */ s32                size;
-    /* 0x08 */ const BtlBinEntry* entries;
-    /* 0x0C */ u16                count;
-    /* 0x0E */ u16                reserved0E;
-    /* 0x10 */ const char*        tag; // name the buffer is registered under
-} BtlBinSet;                           // Size: 0x14
-
-typedef struct BtlVec2 {
-    /* 0x0 */ s32 x;
-    /* 0x4 */ s32 y;
-} BtlVec2;
-
-/// The sprite descriptor `func_ov003_020ccf94` loads from.
-typedef struct BtlSpriteDesc {
-    /* 0x0 */ const BinIdentifier*   iden;
-    /* 0x4 */ const SpriteAnimEntry* table;
-    /* 0x8 */ u16                    entry;
-    /* 0xA */ u16                    palette;
-    /* 0xC */ u16                    paletteCount;
-} BtlSpriteDesc;
-
-typedef s32 (*BtlActorFilter)(s32 count, Ov003CutinActor* actor, s32 arg);
 typedef s32 (*BtlItemFilter)(s32 count, void* item, s32 arg);
 
 /// A petal's task parameter.
@@ -93,37 +64,16 @@ extern s32  func_ov003_020c3c28(void);
 extern s32  func_ov003_020c37f8(CombatSprite* sprite);
 extern s32  func_ov003_020843b0(s32 engine, s32 x);
 extern void func_ov003_02084348(s32 engine, s16* x, s16* y, s32 worldX, s32 worldY, s32 worldZ);
-extern void func_ov003_02082724(CombatSprite* sprite, s32 x, s32 y);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern s32  func_ov003_020825b8(void* sprite, u16 anim, s32 mode);
-extern void func_ov003_02082b0c(CombatSprite* sprite);
-extern void func_ov003_02082b64(CombatSprite* sprite);
-extern void func_ov003_02082cc4(CombatSprite* sprite);
-extern void func_ov003_02084694(void* motion, s32 flag);
-extern void func_ov003_02087f00(SndMgrSeIdx seIdx, s32 pan);
-extern void func_ov003_0209b564(s32 engine, s32 amount, Ov003CutinActor* actor, s32 arg3);
-extern void func_ov003_0208b518(s32 engine, Ov003CutinActor* actor, s32 amount);
 extern void func_ov003_0209f444(s32 engine, s32 x, s32 y, s32 z, s32 flag);
-extern void func_ov003_020864dc(CombatActor* out, s32 id);
-extern void func_ov003_020c65cc(Ov003CutinActor* actor);
-extern void func_ov003_020c62c4(Ov003CutinActor* actor);
-extern void func_ov003_020c7070(Ov003CutinActor* actor);
-extern void func_ov003_020c703c(Ov003CutinActor* actor);
-extern void func_ov003_020c4520(Ov003CutinActor* actor);
-extern void func_ov003_020c4b5c(Ov003CutinActor* actor);
-extern void func_ov003_020c44ac(Ov003CutinActor* actor);
-extern void func_ov003_020c4b1c(Ov003CutinActor* actor);
-extern void func_ov003_020c3e64(Ov003CutinActor* actor);
-extern void func_ov003_020c4f00(Ov003CutinActor* actor);
-extern void func_ov003_020c4ee0(Ov003CutinActor* actor);
-extern void func_ov003_020c4a34(Ov003CutinActor* actor);
-extern const void* func_ov003_0208a114(u16 attackId);
-extern s32         func_ov003_0208a1a4(const void* info, void* position, s32 x, s32 y);
-extern void        func_ov003_020849dc(CombatList*, CombatListNode*);
+extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
+extern void func_ov003_020c4b1c(Ov003EnemyActor* actor);
+extern void func_ov003_020c4f00(Ov003EnemyActor* actor);
+extern void func_ov003_020c4ee0(Ov003EnemyActor* actor);
 
 s32 func_ov003_020cd1c8(Ov003EnemyShotBlossom* self, Ov003EnemyShotBlossomArgs* args);
 s32 func_ov003_020cd44c(Ov003EnemyShotBlossom* self);
@@ -293,8 +243,8 @@ u16 func_ov003_020cb3c4(s32 side, s32 group) {
 }
 
 /// The `n`-th enemy of the screen `side` that belongs to `group`.
-Ov003CutinActor* func_ov003_020cb42c(s32 side, s32 group, s32 n) {
-    Ov003CutinActor* actor;
+Ov003EnemyActor* func_ov003_020cb42c(s32 side, s32 group, s32 n) {
+    Ov003EnemyActor* actor;
     CombatListNode*  node;
 
     if (side == 1) {
@@ -320,7 +270,7 @@ Ov003CutinActor* func_ov003_020cb42c(s32 side, s32 group, s32 n) {
 }
 
 /// How many enemies of `group` on the screen `side` pass `filter`.
-s32 func_ov003_020cb498(s32 side, s32 group, BtlActorFilter filter, s32 arg) {
+s32 func_ov003_020cb498(s32 side, s32 group, BtlActorFilter filter, void* arg) {
     s32             count = 0;
     CombatListNode* node;
 
@@ -333,7 +283,7 @@ s32 func_ov003_020cb498(s32 side, s32 group, BtlActorFilter filter, s32 arg) {
         return count;
     }
     do {
-        Ov003CutinActor* actor = node->item;
+        Ov003EnemyActor* actor = node->item;
 
         if (group == 0x3C || actor->group == group) {
             if (filter(count, actor, arg) != 0) {
@@ -357,7 +307,7 @@ void func_ov003_020cb520(CombatActor* actor, s32 flag) {
     actor->zGravity = fresh.zGravity;
 }
 
-s32 func_ov003_020cb55c(Ov003CutinActor* actor) {
+s32 func_ov003_020cb55c(Ov003EnemyActor* actor) {
     return actor->sprite.sprite.bits_0_1 == 1;
 }
 
@@ -370,15 +320,15 @@ void func_ov003_020cb578(CombatActor* actor, s32 flag) {
     }
 }
 
-void func_ov003_020cb594(Ov003CutinActor* actor, s32 flag) {
+void func_ov003_020cb594(Ov003EnemyActor* actor, s32 flag) {
     func_ov003_02084694(&actor->collider, flag == 0);
 }
 
 /// Heals `actor` and its partner by `amount` (or just plays the effect for `flag`).
-void func_ov003_020cb5b0(Ov003CutinActor* actor, s32 amount, s32 flag) {
+void func_ov003_020cb5b0(Ov003EnemyActor* actor, s32 amount, s32 flag) {
     s32 engine = func_ov003_020c37f8(&actor->sprite) ? 1 : 0;
 
-    func_ov003_0209b564(engine, amount, actor, 1);
+    func_ov003_0209b564(engine, amount, &actor->actor, 1);
     if (flag != 0) {
         func_ov003_0208b518(engine, actor, amount);
         return;
@@ -394,7 +344,7 @@ void func_ov003_020cb5b0(Ov003CutinActor* actor, s32 amount, s32 flag) {
 }
 
 /// Whether the actor's HP percentage is at most `percent`.
-s32 func_ov003_020cb648(Ov003CutinActor* actor, s32 percent) {
+s32 func_ov003_020cb648(Ov003EnemyActor* actor, s32 percent) {
     return actor->actor.currentHp * 100 / actor->actor.maxHp <= percent;
 }
 
@@ -692,7 +642,7 @@ s32 func_ov003_020cc2d0(CombatActor* actor, s32 index) {
 }
 
 /// Whether the actor sits fully inside the camera's field.
-s32 func_ov003_020cc300(Ov003CutinActor* actor, s32 index) {
+s32 func_ov003_020cc300(Ov003EnemyActor* actor, s32 index) {
     s32 x      = actor->actor.position.x;
     s32 y      = actor->actor.position.y;
     s16 radius = actor->actor.unk_70;
@@ -1126,7 +1076,7 @@ void func_ov003_020ccf1c(s32* value, s32 step) {
     }
 }
 
-void func_ov003_020ccf58(s32 side, Ov003CutinActor* actor) {
+void func_ov003_020ccf58(s32 side, Ov003EnemyActor* actor) {
     if (side == 0) {
         func_ov003_020c4520(actor);
         func_ov003_020c4b5c(actor);
@@ -1142,24 +1092,24 @@ void func_ov003_020ccf94(s32 engine, CombatSprite* sprite, const BtlSpriteDesc* 
     func_ov003_02082a04(engine, &sprite->sprite, desc->iden, desc->table, desc->entry, desc->palette, desc->paletteCount);
 }
 
-void func_ov003_020ccfc8(Ov003CutinActor* actor) {
+s32 func_ov003_020ccfc8(Ov003EnemyActor* actor, u16 anim) {
     if (actor->sprite.sprite.bits_0_1 == 0) {
-        func_ov003_020c65cc(actor);
+        return func_ov003_020c65cc(actor, anim);
     } else {
-        func_ov003_020c62c4(actor);
+        return func_ov003_020c62c4(actor, anim);
     }
 }
 
-void func_ov003_020ccfec(Ov003CutinActor* actor) {
+s32 func_ov003_020ccfec(Ov003EnemyActor* actor) {
     if (actor->sprite.sprite.bits_0_1 == 0) {
-        func_ov003_020c7070(actor);
+        return func_ov003_020c7070(actor);
     } else {
-        func_ov003_020c703c(actor);
+        return func_ov003_020c703c(actor);
     }
 }
 
 /// One frame of an enemy's defeat sequence. Returns 0 once it is over.
-s32 func_ov003_020cd010(Ov003CutinActor* actor) {
+s32 func_ov003_020cd010(Ov003EnemyActor* actor) {
     if (actor->unk_1A4 == 0) {
         if (actor->sprite.sprite.bits_0_1 == 0) {
             func_ov003_020c4f00(actor);
@@ -1244,7 +1194,7 @@ s32 func_ov003_020cd1c8(Ov003EnemyShotBlossom* self, Ov003EnemyShotBlossomArgs* 
     }
     func_ov003_02082a90(engine, &self->sprite.sprite, visual->base.file, entry->charDataIndex, entry->paletteDataIndex,
                         entry->frameDataIndex, visual->base.paletteSlot, entry->animDataIndex);
-    func_ov003_020825b8(&self->sprite, self->source.animation, self->source.animationMode);
+    CombatSprite_SetAnim(&self->sprite, self->source.animation, self->source.animationMode);
     self->source.core.sprite = &self->sprite;
     func_ov003_020cdfbc(&self->source, args->source->core.owner->sprite.flags46 & 1, 0);
     func_ov003_020cccf0(engine, args->source);
@@ -1280,7 +1230,7 @@ s32 func_ov003_020cd44c(Ov003EnemyShotBlossom* self) {
     self->source.core.hitResult =
         func_ov003_0208a1a4(func_ov003_0208a114(self->source.core.attackId), &self->source.core.owner->actor.baseArgs, sx, sy);
     self->frame++;
-    func_ov003_02082b0c(&self->sprite);
+    CombatSprite_Update(&self->sprite);
     return 1;
 }
 
@@ -1290,14 +1240,14 @@ s32 func_ov003_020cd618(Ov003EnemyShotBlossom* self) {
 
     func_ov003_02084348(func_ov003_020c37f8(&self->sprite) ? 1 : 0, &x, &y, self->source.core.position.x,
                         self->source.core.position.y, self->source.core.position.z);
-    func_ov003_02082724(&self->sprite, y, x);
+    CombatSprite_SetPosition(&self->sprite, y, x);
     func_ov003_02082730(&self->sprite, 0x7FFFFFFF - self->source.core.position.y);
-    func_ov003_02082b64(&self->sprite);
+    CombatSprite_Render(&self->sprite);
     return 1;
 }
 
 s32 func_ov003_020cd690(Ov003EnemyShotBlossom* self) {
-    func_ov003_02082cc4(&self->sprite);
+    CombatSprite_Release(&self->sprite);
     return 1;
 }
 

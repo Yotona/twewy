@@ -54,7 +54,7 @@ extern void          func_ov003_0209c984(u32, s32, s32, s32, s32);
 extern void          func_02026590(s32*, s32, u16);
 extern void          func_020265d4(s32*, s32, u16);
 s32                  func_ov003_020bb590(Ov003CutinActor*, s32);
-s32                  func_ov003_020bb6d4(const Ov003ActorSpriteParams*);
+s32                  func_ov003_020bb6d4(const Ov003ActorParams*);
 void                 func_ov003_020bb73c(s32, s16);
 void                 func_ov003_020bb7c4(s32, s16, s8);
 s32                  func_ov003_020bb878(u32);
@@ -486,8 +486,8 @@ s32 func_ov003_020bb590(Ov003CutinActor* actor, s32 spawn) {
     if (actor->group < 0 || actor->group >= 60)
         return -1;
     func_ov003_020bb73c(actor->group, actor->spriteIndex);
-    const Ov003ActorSpriteParams* params = data_ov003_020e70ac[actor->group][actor->spriteIndex];
-    s32                           grade  = func_ov003_020bb6d4(params);
+    const Ov003ActorParams* params = data_ov003_020e70ac[actor->group][actor->spriteIndex];
+    s32                     grade  = func_ov003_020bb6d4(params);
     if (grade == -1)
         return -1;
     if (spawn) {
@@ -507,7 +507,7 @@ s32 func_ov003_020bb590(Ov003CutinActor* actor, s32 spawn) {
     return result;
 }
 
-s32 func_ov003_020bb6d4(const Ov003ActorSpriteParams* params) {
+s32 func_ov003_020bb6d4(const Ov003ActorParams* params) {
     s8 grade = func_ov003_020bb8bc();
     do {
         s32 rate = (u16)data_ov003_020e71b8->unk3D892 * params->dropRates[grade];

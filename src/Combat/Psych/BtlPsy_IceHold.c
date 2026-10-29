@@ -6,8 +6,7 @@
 /// Hold-type ice psych: two sprites are attached to the held actor, the first
 /// one plays the freeze-in animation while the second one trails behind.
 
-extern void func_ov003_02087f28(s32, s32);
-extern s32  func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 extern const TaskHandle data_ov003_020dc900;
 

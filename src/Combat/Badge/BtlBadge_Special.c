@@ -107,7 +107,7 @@ void func_ov003_02094668(CombatSprite* sprite, s32 index) {
             break;
     }
     record = &data_ov003_020d7d40[partner];
-    func_ov003_02082940(&anim, 2, &data_ov003_020d7810);
+    CombatSprite_InitAnim(&anim.anim, 2, &data_ov003_020d7810);
     anim.anim.bits_10_11 = 1;
     anim.anim.unk_18     = 2;
     anim.anim.packIndex  = record->anim;
@@ -118,7 +118,7 @@ void func_ov003_02094668(CombatSprite* sprite, s32 index) {
     anim.anim.unk_28     = record->spriteA;
     anim.anim.animIndex  = record->spriteC + 1;
     anim.animTable       = (const SpriteAnimEntry*)&record->unk_02;
-    func_ov003_02082998(sprite, &anim);
+    CombatSprite_Load(sprite, &anim);
     func_ov003_02082738(sprite, 0);
     func_ov003_02082730(sprite, 0x3E8000);
 }
@@ -164,7 +164,7 @@ s32 func_ov003_02094850(TaskPool* pool, Task* task, void* args) {
 
         if (self->index != index) {
             self->index = index;
-            func_ov003_02082cc4(&self->actor.sprite);
+            CombatSprite_Release(&self->actor.sprite);
             func_ov003_020a0244(self->index, &self->actor);
             func_ov003_02087ed8(0x156);
             func_ov003_02094668(&self->actor.sprite, self->index);
@@ -186,13 +186,13 @@ s32 func_ov003_02094850(TaskPool* pool, Task* task, void* args) {
         func_ov003_02087008();
         self->index         = 0;
         self->actor.unk_044 = 0;
-        func_ov003_02082cc4(&self->actor.sprite);
+        CombatSprite_Release(&self->actor.sprite);
     }
     if (self->index > 0) {
         if (self->timer > 0) {
             self->timer--;
         }
-        func_ov003_02082b0c(&self->actor.sprite);
+        CombatSprite_Update(&self->actor.sprite);
     }
     return 1;
 }
@@ -206,8 +206,9 @@ s32 func_ov003_020949e4(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
     if (self->index > 0 && self->timer <= 0) {
-        func_ov003_02082724(&self->actor.sprite, (s32)((u32)self->actor.x << 4) >> 16, (s32)((u32)self->actor.y << 4) >> 16);
-        func_ov003_02082b64(&self->actor.sprite);
+        CombatSprite_SetPosition(&self->actor.sprite, (s32)((u32)self->actor.x << 4) >> 16,
+                                 (s32)((u32)self->actor.y << 4) >> 16);
+        CombatSprite_Render(&self->actor.sprite);
     }
     return 1;
 }
@@ -218,7 +219,7 @@ s32 func_ov003_02094a4c(TaskPool* pool, Task* task, void* args) {
     BtlBadgeSpecial* self = task->data;
 
     if (self->index > 0) {
-        func_ov003_02082cc4(&self->actor.sprite);
+        CombatSprite_Release(&self->actor.sprite);
     }
     return 1;
 }

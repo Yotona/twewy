@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatList.h"
 #include "Combat/Core/CombatTouch.h"

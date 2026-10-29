@@ -1,4 +1,5 @@
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include "Combat/Core/CombatList.h"
@@ -45,12 +46,10 @@ typedef struct Ov003EnemyShotLaserSub {
     /* 0x0FC */ s32                   targetY;
 } Ov003EnemyShotLaserSub; // Size: 0x100
 
-extern void                   func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32                    func_ov003_020c3c28(void);
-extern s32                    func_ov003_020c37f8(CombatSprite*);
-extern const TaskHandle       data_ov003_020e0c8c;
-extern const Ov003AttackInfo* func_ov003_0208a114(u16 attackId);
-s32                           func_ov003_0208a1a4(const Ov003AttackInfo* info, Ov003AttackArgs* position, s16 x, s16 y);
+extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+extern s32              func_ov003_020c3c28(void);
+extern s32              func_ov003_020c37f8(CombatSprite*);
+extern const TaskHandle data_ov003_020e0c8c;
 
 void func_ov003_020d07a8(Ov003EnemyShotSource* source, CombatList* list, Ov003EnemyShotRoot* root, u16 animation, s16 inset,
                          s16 length, s32 step, s16 delay) {

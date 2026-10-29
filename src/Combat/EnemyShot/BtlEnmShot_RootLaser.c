@@ -1,4 +1,5 @@
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include "Combat/Core/CombatList.h"
@@ -201,7 +202,7 @@ s32 func_ov003_020d1c98(Ov003EnemyShotRootLaser* self) {
             return 1;
         func_ov003_020d11b8(root, NULL, NULL, NULL, &rootX, &rootY, &rootZ);
         func_ov003_02084348(0, &x, &y, rootX, rootY, rootZ);
-        func_ov003_02082724(&self->sprite, x, y);
+        CombatSprite_SetPosition(&self->sprite, x, y);
         func_ov003_02082730(&self->sprite, 0);
         CombatSprite_Render(&self->sprite);
     }

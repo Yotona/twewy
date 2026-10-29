@@ -5,10 +5,7 @@
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32              func_ov003_020843b0(s32, s32);
 extern s32              func_ov003_020843ec(s32, s32, s32);
-extern void             func_ov003_02087f28(s32, s32);
 extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 extern const TaskHandle data_ov003_020dc77c;
 
 s32 func_ov003_020acd6c(TaskPool* pool, Task* task, void* args) {

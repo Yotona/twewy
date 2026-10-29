@@ -27,9 +27,6 @@
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern void func_ov003_02087ed8(s32 seIdx);
-extern void func_ov003_02087f28(s32 seIdx, s32 pan);
-extern void func_ov003_02087f64(s32 seIdx, s32 pan);
 extern void func_02026590(s32* value, s32 target, u16 frames);
 
 extern const BinIdentifier data_ov003_020d7800;

@@ -92,7 +92,7 @@ s32 func_ov003_020a7c9c(TaskPool* pool, Task* task, void* args, s32 stage) {
 
             MI_CpuSet(self, 0, sizeof(*self));
             self->source = arg->actor;
-            func_ov003_02082940(&anim, 2, &data_ov003_020dc044);
+            CombatSprite_InitAnim(&anim.anim, 2, &data_ov003_020dc044);
             anim.anim.bits_10_11 = 0;
             anim.anim.unk_1C     = 3;
             anim.anim.animIndex  = 2;
@@ -102,8 +102,8 @@ s32 func_ov003_020a7c9c(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_18     = 2;
             anim.anim.unk_26     = 2;
             anim.anim.packIndex  = 1;
-            func_ov003_02082998(&self->sprite, &anim);
-            func_ov003_020825b8(&self->sprite, arg->spriteIndex, 0);
+            CombatSprite_Load(&self->sprite, &anim);
+            CombatSprite_SetAnim(&self->sprite, arg->spriteIndex, 0);
             func_ov003_02082738(&self->sprite, 0);
             func_ov003_02082730(&self->sprite, 0x3F6000);
             return 1;
@@ -114,7 +114,7 @@ s32 func_ov003_020a7c9c(TaskPool* pool, Task* task, void* args, s32 stage) {
             if (data_ov003_020e71b8->unk3D874 == 2) {
                 return 0;
             }
-            func_ov003_02082b0c(&self->sprite);
+            CombatSprite_Update(&self->sprite);
             return 1;
         }
         case 2: {
@@ -130,18 +130,18 @@ s32 func_ov003_020a7c9c(TaskPool* pool, Task* task, void* args, s32 stage) {
             }
             x = (s32)((u32)self->source->x << 4) >> 16;
             y = (s32)((u32)self->source->y << 4) >> 16;
-            func_ov003_02082724(&self->sprite, x, y);
+            CombatSprite_SetPosition(&self->sprite, x, y);
             if (func_ov003_020a3edc(self->source) != 0) {
-                func_ov003_02082b64(&self->sprite);
+                CombatSprite_Render(&self->sprite);
             } else {
-                func_ov003_02082848(&self->sprite, 8);
+                CombatSprite_RenderWithPalette(&self->sprite, 8);
             }
             return 1;
         }
         case 3: {
             BtlBadgeRankingEffect* self = task->data;
 
-            func_ov003_02082cc4(&self->sprite);
+            CombatSprite_Release(&self->sprite);
             return 1;
         }
     }

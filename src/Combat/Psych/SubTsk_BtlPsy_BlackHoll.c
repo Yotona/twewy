@@ -5,14 +5,11 @@
 #include <nitro/fx/fx_vector.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
-extern s32              func_ov003_020843b0(s32, s32);
-extern s32              func_ov003_020843ec(s32, s32, s32);
-extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
-extern void             func_ov003_02087f28(s32, s32);
+extern s32 func_ov003_0208442c(s32, s32);
+extern s32 func_ov003_02084460(s32, s32, s32);
+extern s32 func_ov003_020843b0(s32, s32);
+extern s32 func_ov003_020843ec(s32, s32, s32);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 extern const TaskHandle data_ov003_020dc6d0;
 
@@ -70,7 +67,7 @@ s32 func_ov003_020aad24(TaskPool* pool, Task* task, void* args, s32 stage) {
                     unit->actor.zVelocity = 0;
                     s32 distance          = Vec_Distance(&origin, &target);
                     if (self->mode == 1 && distance <= 0x1000) {
-                        func_ov003_020c5058((Ov003CutinActor*)unit);
+                        func_ov003_020c5058(unit);
                     } else {
                         Vec_Sub(&origin, &target, &direction);
                         Vec_Normalize(&direction, &direction);

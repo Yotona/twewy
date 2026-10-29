@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatTouch.h"
 #include "Engine/Core/System.h"
 #include <nitro/mi/cpumem.h>

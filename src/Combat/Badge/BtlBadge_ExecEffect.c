@@ -62,16 +62,16 @@ s32 func_ov003_020a72cc(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_18     = 2;
             anim.anim.unk_26     = 0;
             anim.anim.packIndex  = 1;
-            func_ov003_02082998(&self->mae, &anim);
-            func_ov003_020825b8(&self->mae, 0, 0);
+            CombatSprite_Load(&self->mae, &anim);
+            CombatSprite_SetAnim(&self->mae, 0, 0);
             func_ov003_02082738(&self->mae, 0);
             func_ov003_02082730(&self->mae, 0x3E7000);
-            func_ov003_02082998(&self->ato, &anim);
-            func_ov003_020825b8(&self->ato, 1, 0);
+            CombatSprite_Load(&self->ato, &anim);
+            CombatSprite_SetAnim(&self->ato, 1, 0);
             func_ov003_02082738(&self->ato, 0);
             func_ov003_02082730(&self->ato, 0x3E7000);
-            func_ov003_02082998(&self->finish, &anim);
-            func_ov003_020825b8(&self->finish, 2, 1);
+            CombatSprite_Load(&self->finish, &anim);
+            CombatSprite_SetAnim(&self->finish, 2, 1);
             func_ov003_02082738(&self->finish, 0);
             func_ov003_02082730(&self->finish, 0x3F3000);
             return 1;
@@ -93,10 +93,10 @@ s32 func_ov003_020a72cc(TaskPool* pool, Task* task, void* args, s32 stage) {
             }
             if (self->actor->unk_054 != 0) {
                 self->actor->unk_054 = 0;
-                func_ov003_02082d04(&self->finish);
+                CombatSprite_Restart(&self->finish);
             }
             for (i = 0; i < 3; i++) {
-                func_ov003_02082b0c(&self->sprites[i]);
+                CombatSprite_Update(&self->sprites[i]);
             }
             return 1;
         }
@@ -118,25 +118,25 @@ s32 func_ov003_020a72cc(TaskPool* pool, Task* task, void* args, s32 stage) {
             posX = (s32)(self->actor->x * 0x10) >> 16;
             posY = (s32)(self->actor->y * 0x10) >> 16;
             for (i = 0; i < 3; i++) {
-                func_ov003_02082724(&self->sprites[i], posX, posY);
+                CombatSprite_SetPosition(&self->sprites[i], posX, posY);
             }
             if (func_ov003_020a3edc(self->actor) != 0) {
                 if (self->actor->unk_050 > 0) {
-                    func_ov003_02082b64(&self->mae);
+                    CombatSprite_Render(&self->mae);
                 } else if (self->actor->unk_052 > 0) {
-                    func_ov003_02082b64(&self->ato);
+                    CombatSprite_Render(&self->ato);
                 }
                 if (SpriteMgr_IsAnimationFinished(&self->finish.sprite) == 0) {
-                    func_ov003_02082b64(&self->finish);
+                    CombatSprite_Render(&self->finish);
                 }
             } else {
                 if (self->actor->unk_050 > 0) {
-                    func_ov003_02082848(&self->mae, 8);
+                    CombatSprite_RenderWithPalette(&self->mae, 8);
                 } else if (self->actor->unk_052 > 0) {
-                    func_ov003_02082848(&self->ato, 8);
+                    CombatSprite_RenderWithPalette(&self->ato, 8);
                 }
                 if (SpriteMgr_IsAnimationFinished(&self->finish.sprite) == 0) {
-                    func_ov003_02082848(&self->finish, 8);
+                    CombatSprite_RenderWithPalette(&self->finish, 8);
                 }
             }
             return 1;
@@ -146,7 +146,7 @@ s32 func_ov003_020a72cc(TaskPool* pool, Task* task, void* args, s32 stage) {
             s32                 i;
 
             for (i = 0; i < 3; i++) {
-                func_ov003_02082cc4(&self->sprites[i]);
+                CombatSprite_Release(&self->sprites[i]);
             }
             return 1;
         }

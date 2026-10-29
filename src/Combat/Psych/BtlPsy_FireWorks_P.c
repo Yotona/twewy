@@ -10,7 +10,6 @@ typedef struct BtlFireWorksCharge {
 
 extern s32              func_ov003_0208442c(s32, s32);
 extern s32              func_ov003_02084460(s32, s32, s32);
-extern void             func_ov003_02087ed8(s32);
 extern const TaskHandle data_ov003_020dc730;
 
 s32 func_ov003_020ac1ec(Ov003EffectContext* context, Ov003EffectState* effect) {

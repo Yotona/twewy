@@ -1,9 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/Core/CombatSystem.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Rnge {
@@ -62,7 +60,7 @@ s32 func_ov011_02127ce0(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
             if (func_ov003_020c3c28() != 0) {
                 return 0;
             }
-            if (func_ov003_020cc354(data->unk_060) != 0 || (data->unk_060->actor.flags & 0x200) != 0 ||
+            if (func_ov003_020cc354(&data->unk_060->actor) != 0 || (data->unk_060->actor.flags & 0x200) != 0 ||
                 (data->unk_060->actor.flags & 0x4000) != 0)
             {
                 return 0;

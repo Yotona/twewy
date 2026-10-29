@@ -13,15 +13,6 @@ typedef struct BtlEnm010ArmFrame {
     /* 0x06 */ u16 unk_06;
 } BtlEnm010ArmFrame;
 
-typedef struct BtlEnm010CmdTbl {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8  unk_04;
-    /* 0x05 */ u8  unk_05;
-    /* 0x06 */ u8  unk_06;
-    /* 0x07 */ u8  unk_07;
-    /* 0x08 */ s32 unk_08;
-} BtlEnm010CmdTbl;
-
 void              func_ov011_02128e30(BtlEnm010Tatt* data);
 void              func_ov011_02128eb0(BtlEnm010Tatt* data);
 void              func_ov011_02128f10(BtlEnm010TattRec* p, u16 v);
@@ -35,13 +26,8 @@ s32               func_ov011_02129b84(BtlEnm010Tatt* data);
 s32               func_ov011_02129cec(BtlEnm010Tatt* data);
 s32               func_ov011_02129ea4(BtlEnm010Tatt* p);
 
-extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
-extern s32                    func_ov003_0208a1a4(const BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y);
-extern s32                    func_ov003_020c37f8(void* p);
-extern s32                    func_ov003_020c3c28(void);
-extern s16                    func_ov003_020843b0(s32 a, s32 b);
-extern s32                    func_ov003_020843ec(s32 a, s32 b, s32 c);
-extern s32                    func_ov003_020cbc50(s32* a, s32* b, u16 c, s32 d);
+extern s32 func_ov003_020c3c28(void);
+extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
 
 #define NEXT_REC(p) ((p) += sizeof(BtlEnm010TattRec) / sizeof(*(p)))
 
@@ -53,9 +39,17 @@ const TaskHandle data_ov011_0212c240 = {(const char*)data_ov011_0212cc68, func_o
 
 const s32 data_ov011_0212c24c[4] = {-786432, -589824, -393216, -196608};
 
-const s32 data_ov011_0212c25c[6] = {-81920, -294912, -81920, -458752, -344064, -458752};
+const BtlVec2 data_ov011_0212c25c[3] = {
+    { -81920, -294912},
+    { -81920, -458752},
+    {-344064, -458752}
+};
 
-const s32 data_ov011_0212c274[6] = {196608, -131072, 196608, -458752, -65536, -458752};
+const BtlVec2 data_ov011_0212c274[3] = {
+    {196608, -131072},
+    {196608, -458752},
+    {-65536, -458752}
+};
 
 const BtlEnm010ArmFrame data_ov011_0212c28c[16] = {
     { 2366, 10, 1, 0},
@@ -254,16 +248,16 @@ void func_ov011_02129110(BtlEnm010Tatt* p) {
 
 void func_ov011_02129188(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
     struct {
-        s32 m[2];
-        s32 org[2];
+        BtlVec2 m;
+        s32     org[2];
     } f;
-    s32        state;
-    const s32* tpl;
-    s32        limit;
-    s32        count;
-    s32        cur;
-    s32        dst;
-    s32        d;
+    s32            state;
+    const BtlVec2* tpl;
+    s32            limit;
+    s32            count;
+    s32            cur;
+    s32            dst;
+    s32            d;
 
     state = rec->unk_64;
     switch (state) {
@@ -289,9 +283,9 @@ void func_ov011_02129188(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
                 rec->unk_60 = 0;
                 rec->unk_64 = 1;
             } else {
-                func_ov003_020cbd30(f.m, tpl[0], tpl[1], tpl[2], tpl[3], tpl[4], tpl[5], _s32_div_f(ROUND(count), limit));
-                rec->unk_68 = (((u32)(p->unk_24C << 31) >> 31) != 0) ? 0 - f.m[0] : f.m[0];
-                rec->unk_6C = f.m[1];
+                func_ov003_020cbd30(&f.m, tpl[0], tpl[1], tpl[2], _s32_div_f(ROUND(count), limit));
+                rec->unk_68 = (((u32)(p->unk_24C << 31) >> 31) != 0) ? 0 - f.m.x : f.m.x;
+                rec->unk_6C = f.m.y;
                 rec->unk_60 = rec->unk_60 + 1;
             }
             func_ov011_02128f10(rec, func_ov003_020cba14(f.org[0], f.org[1], rec->unk_68, rec->unk_6C));

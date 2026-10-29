@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAura.h"
 #include "Combat/Core/CombatList.h"
 #include "Combat/Core/CombatSprite.h"
@@ -51,8 +52,6 @@ typedef struct BtlAura {
 
 extern const BinIdentifier data_ov003_020d7800;
 
-extern void func_ov003_02087f28(s32 seIdx, s32 x);
-extern void func_ov003_02087f64(s32 seIdx, s32 x);
 extern s32  func_ov003_020a3330(s32 actionId);
 extern s32  func_ov003_020a3340(s32 actionId);
 extern s32  func_ov003_020a3350(s32 actionId);
@@ -63,16 +62,11 @@ extern void func_ov003_0208cbc8(void);
 extern BOOL func_ov003_0208b690(u16 encounterId);
 extern void func_020265d4(void* dst, s32 step, u16 count);
 extern void func_ov003_020974f8(s32 x, s32 y);
-extern void func_ov003_0208260c(CombatSprite* sprite, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-extern void func_ov003_020824a0(CombatSprite* sprite, u16 anim, s32 arg2);
-extern s32  func_ov003_020825b8(void* sprite, u16 anim, s32 mode);
-extern void func_ov003_02082724(CombatSprite* sprite, s32 x, s32 y);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern void func_ov003_020849dc(CombatList*, CombatListNode*);
 extern void func_ov003_020849ac(CombatList*);
 extern void func_ov003_020849bc(CombatList*, CombatListNode*, void*);
 extern void* func_ov003_0208495c(CombatList*);
@@ -254,8 +248,8 @@ void func_ov003_020963a0(BtlAura* self, s32 mode) {
         sortKey = 0x80000000 - ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.y;
     }
     func_ov003_02082a90(engine, &flame->sprite.sprite, &data_ov003_020d7800, 0x13, 0x15, 0x14, palette, (u16)anim);
-    func_ov003_020825b8(flame, (u16)anim, 1);
-    func_ov003_02082724(&flame->sprite, (x * 0x10) >> 16, (y * 0x10) >> 16);
+    CombatSprite_SetAnim(&flame->sprite, (u16)anim, 1);
+    CombatSprite_SetPosition(&flame->sprite, (x * 0x10) >> 16, (y * 0x10) >> 16);
     func_ov003_02082730(&flame->sprite, sortKey);
     func_ov003_020849dc(&self->free, &flame->node);
     func_ov003_020849bc(&self->active, &flame->node, flame);
@@ -453,8 +447,8 @@ void func_ov003_02096afc(BtlAura* self) {
                 if (func_ov003_020a3330(0x3B)) {
                     self->timer = self->timer - (s16)func_ov003_020a3468(0x3B);
                 }
-                func_ov003_020824a0(&self->sprites[0], 0, 0);
-                func_ov003_020824a0(&self->sprites[1], 0, 0);
+                CombatSprite_SetAnimFromTable(&self->sprites[0], 0, 0);
+                CombatSprite_SetAnimFromTable(&self->sprites[1], 0, 0);
                 self->cooldown = 2;
             }
             if (self->timer > 0) {
@@ -483,8 +477,8 @@ void func_ov003_02096afc(BtlAura* self) {
             }
             self->x = x;
             self->y = y;
-            func_ov003_020824a0(&self->sprites[0], 1, 0);
-            func_ov003_020824a0(&self->sprites[1], 1, 0);
+            CombatSprite_SetAnimFromTable(&self->sprites[0], 1, 0);
+            CombatSprite_SetAnimFromTable(&self->sprites[1], 1, 0);
             self->rising = 0;
             func_ov003_0209609c(self, func_ov003_020969a4);
             return;
@@ -505,8 +499,8 @@ s32 func_ov003_02096d0c(TaskPool* pool, Task* task, void* args) {
     data_ov003_020e71b8->unk3D8F4 = 0;
     func_ov003_02082a04(1, &self->sprites[0].sprite, &data_ov003_020d7800, data_ov003_020d7eb8, 0, 0x40, 0x40);
     func_ov003_02082a04(0, &self->sprites[1].sprite, &data_ov003_020d7800, data_ov003_020d7eb8, 0, 0x3E, 0x40);
-    func_ov003_020824a0(&self->sprites[0], 1, 0);
-    func_ov003_020824a0(&self->sprites[1], 1, 0);
+    CombatSprite_SetAnimFromTable(&self->sprites[0], 1, 0);
+    CombatSprite_SetAnimFromTable(&self->sprites[1], 1, 0);
     func_ov003_02096614(self);
     self->rising = 0;
     func_ov003_0209609c(self, func_ov003_020969a4);
@@ -536,8 +530,8 @@ s32 func_ov003_02096e68(TaskPool* pool, Task* task, void* args) {
             if (self->y < 0xD8000) {
                 CombatActor* actor = data_ov003_020e71b8->unk3D89C;
 
-                func_ov003_0208260c(&self->sprites[0], 0, self->intensity, self->intensity, 1);
-                func_ov003_02082724(&self->sprites[0], (self->x * 0x10) >> 16, (self->y * 0x10) >> 16);
+                CombatSprite_SetAffineTransform(&self->sprites[0], 0, self->intensity, self->intensity, 1);
+                CombatSprite_SetPosition(&self->sprites[0], (self->x * 0x10) >> 16, (self->y * 0x10) >> 16);
                 func_ov003_02082730(&self->sprites[0], 0x80000001 - actor->position.y);
                 CombatSprite_Render(&self->sprites[0]);
             }
@@ -546,8 +540,8 @@ s32 func_ov003_02096e68(TaskPool* pool, Task* task, void* args) {
             if (self->y > 0xA8000) {
                 CombatActor* actor = data_ov003_020e71b8->unk3D898;
 
-                func_ov003_0208260c(&self->sprites[1], 0, self->intensity, self->intensity, 1);
-                func_ov003_02082724(&self->sprites[1], (self->x * 0x10) >> 16, (s16)((self->y >> 12) - 0xC0));
+                CombatSprite_SetAffineTransform(&self->sprites[1], 0, self->intensity, self->intensity, 1);
+                CombatSprite_SetPosition(&self->sprites[1], (self->x * 0x10) >> 16, (s16)((self->y >> 12) - 0xC0));
                 func_ov003_02082730(&self->sprites[1], 0x80000001 - actor->position.y);
                 CombatSprite_Render(&self->sprites[1]);
             }

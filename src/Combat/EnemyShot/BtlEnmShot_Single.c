@@ -1,15 +1,14 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
 #define SHOT_ROUND(value) ((value) > 0 ? (f32)((value) << 12) + 0.5f : (f32)((value) << 12) - 0.5f)
 
-extern s32                    func_ov003_020c37f8(CombatSprite*);
-extern void                   func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern const Ov003AttackInfo* func_ov003_0208a114(u16);
-extern s32                    func_ov003_0208a1a4(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32);
-extern s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
-extern const TaskHandle       data_ov003_020e0cb0;
+extern s32              func_ov003_020c37f8(CombatSprite*);
+extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+extern s32              func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
+extern const TaskHandle data_ov003_020e0cb0;
 
 s32 func_ov003_020d1eec(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 screenHit, s32 rotate, u16 angle) {
     Ov003EnemyShotSingleArgs args;

@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
@@ -209,7 +210,7 @@ s32 func_ov003_02093f74(TaskPool* pool, Task* task, void* args) {
         do {
             posX = func_ov003_020843b0(0, band->position.x);
             posY = func_ov003_020843ec(0, band->position.y, band->position.z);
-            func_ov003_02082724(&band->sprite, posX, posY);
+            CombatSprite_SetPosition(&band->sprite, posX, posY);
             CombatSprite_Render(&band->sprite);
             i++;
             band++;

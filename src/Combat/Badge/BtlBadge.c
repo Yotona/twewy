@@ -49,8 +49,8 @@ s32 func_ov003_020a6d6c(TaskPool* pool, Task* task, void* args, s32 stage) {
             anim.anim.unk_18     = 2;
             anim.anim.unk_26     = 2;
             anim.anim.packIndex  = 1;
-            func_ov003_02082998(&self->badge, &anim);
-            func_ov003_020825b8(&self->badge, 0x15, 0);
+            CombatSprite_Load(&self->badge, &anim);
+            CombatSprite_SetAnim(&self->badge, 0x15, 0);
             func_ov003_02082738(&self->badge, 0);
             func_ov003_02082730(&self->badge, 0x3F2000);
             return 1;
@@ -65,8 +65,8 @@ s32 func_ov003_020a6d6c(TaskPool* pool, Task* task, void* args, s32 stage) {
             }
             func_ov003_020a43c8(&self->actor);
             func_ov003_020a3d98(&self->actor);
-            func_ov003_02082b0c(&self->badge);
-            func_ov003_02082b0c(&self->actor.sprite);
+            CombatSprite_Update(&self->badge);
+            CombatSprite_Update(&self->actor.sprite);
             return 1;
         }
         case 2: {
@@ -80,26 +80,26 @@ s32 func_ov003_020a6d6c(TaskPool* pool, Task* task, void* args, s32 stage) {
             posX = (s32)(self->actor.x * 0x10) >> 16;
             posY = (s32)(self->actor.y * 0x10) >> 16;
 
-            func_ov003_02082724(&self->badge, posX, posY);
-            func_ov003_02082724(&self->actor.sprite, posX, posY);
+            CombatSprite_SetPosition(&self->badge, posX, posY);
+            CombatSprite_SetPosition(&self->actor.sprite, posX, posY);
             if (func_ov003_020a3edc(&self->actor) != 0) {
                 if (self->actor.state == 5) {
-                    func_ov003_02082b64(&self->badge);
+                    CombatSprite_Render(&self->badge);
                 }
-                func_ov003_02082b64(&self->actor.sprite);
+                CombatSprite_Render(&self->actor.sprite);
             } else {
                 if (self->actor.state == 5) {
-                    func_ov003_02082848(&self->badge, 8);
+                    CombatSprite_RenderWithPalette(&self->badge, 8);
                 }
-                func_ov003_02082848(&self->actor.sprite, 8);
+                CombatSprite_RenderWithPalette(&self->actor.sprite, 8);
             }
             return 1;
         }
         case 3: {
             BtlBadge* self = task->data;
 
-            func_ov003_02082cc4(&self->badge);
-            func_ov003_02082cc4(&self->actor.sprite);
+            CombatSprite_Release(&self->badge);
+            CombatSprite_Release(&self->actor.sprite);
             func_ov003_020a3dac(&self->actor);
             return 1;
         }

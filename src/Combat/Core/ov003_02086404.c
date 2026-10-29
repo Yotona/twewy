@@ -1,3 +1,4 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatEffectActor.h"
 
 extern const Ov003AnimSet  data_ov003_020d71bc[24];

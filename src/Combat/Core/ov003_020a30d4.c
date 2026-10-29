@@ -67,8 +67,6 @@ extern void ADXT_SetExtraInfo(s32, s32);
 extern void               func_ov003_02083478(void);
 extern void               func_ov003_020835d4(void);
 extern void               func_ov003_02083700(void);
-extern Ov003TouchActor*   func_ov003_0208495c(CombatList*);
-extern Ov003TouchActor*   func_ov003_02084984(CombatListNode*);
 extern void               func_ov003_020849ac(CombatList*);
 extern void               func_ov003_020849bc(CombatList*, CombatListNode*, void*);
 extern s32                func_ov003_020a410c(Ov003TouchActor*, s16, s16);

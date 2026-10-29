@@ -13,11 +13,10 @@ const BtlBombKind data_ov003_020dc700[1] = {
     {0x18F, 0x9D, 0x9E}
 };
 
-extern s32  func_ov003_020843b0(s32, s32);
-extern s32  func_ov003_020843ec(s32, s32, s32);
-extern s32  func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
-extern s32  func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void func_ov003_02087f28(s32, s32);
+extern s32 func_ov003_020843b0(s32, s32);
+extern s32 func_ov003_020843ec(s32, s32, s32);
+extern s32 func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 extern const TaskHandle data_ov003_020dc6f4;
 

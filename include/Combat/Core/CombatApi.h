@@ -8,66 +8,66 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatCutin.h"
+#include "Combat/Core/CombatEnemyShot.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Core/CombatTouch.h"
 
 // CombatSprite.c
-void func_ov003_020824a0(CombatSprite*, u16, s32);
-s32  func_ov003_020825b8(void*, u16, s32);
-void func_ov003_0208260c(CombatSprite*, s32, s32, s32, s32);
-void func_ov003_020826c8(CombatSprite*, u16);
-void func_ov003_02082724(CombatSprite*, void*, s32);
-void func_ov003_02082750(CombatSprite*, s32);
-void func_ov003_020827c0(CombatSprite*, s32);
-void func_ov003_02082848(CombatSprite*, s32);
-void func_ov003_02082940(void*, s32, const BinIdentifier*);
-void func_ov003_02082998(void*, const void*);
-void func_ov003_02082b0c(CombatSprite*);
-void func_ov003_02082b64(CombatSprite*);
-void func_ov003_02082cc4(CombatSprite*);
-void func_ov003_02082d04(CombatSprite*);
 
 // CombatActor.c
-void func_ov003_02082f1c(CombatActor*, s32);
-void func_ov003_02083118(void*, s32);
 
 // ov003_02083300.c
 s32 func_ov003_02083470(void);
 
 // ov003_02083950.c
 /// Sets up the camera projection/position for one engine from a camera path entry.
-void             func_ov003_02083a2c(s32, s32, s32, s32, s32);
-void             func_ov003_02083ab0(s32, s32, s32, s32);
-s32              func_ov003_02083bfc(s32*, s32, s32);
-s32              func_ov003_02083c50(s32*, s32);
-BOOL             func_ov003_02083ca0(s32*, s32*, s32, s32);
-void             func_ov003_02083d34(void);
-void             func_ov003_02083e50(s32);
-void             func_ov003_020842e0(void);
-void             func_ov003_02084678(void*);
-void             func_ov003_020846ac(void*, s32, s32, s32);
-void             func_ov003_020846c0(Ov003Collider*, s32*, s32*, s32*);
-void             func_ov003_020847f0(void);
-void             func_ov003_0208481c(void);
-Ov003TouchActor* func_ov003_02084998(CombatListNode*);
-void             func_ov003_02084b88(void);
-s32              func_ov003_02084d80(s32);
-s32              func_ov003_02084db0(void);
-void             func_ov003_02085054(void);
-void             func_ov003_0208508c(void);
-void             func_ov003_02085c78(void);
-s32              func_ov003_02085cfc(s32);
-s32              func_ov003_02085d3c(s32);
-s32              func_ov003_02085d60(void*);
-void*            func_ov003_02085e78(s32);
-void*            func_ov003_02085ec0(s32);
-void*            func_ov003_02086014(s32);
-void             func_ov003_020860c4(void);
-void             func_ov003_02086130(void);
-void             func_ov003_020862a4(s32);
-void             func_ov003_020862f8(s32, s32);
+void         func_ov003_02083a2c(s32, s32, s32, s32, s32);
+void         func_ov003_02083ab0(s32, s32, s32, s32);
+s32          func_ov003_02083bfc(s32*, s32, s32);
+s32          func_ov003_02083c50(s32*, s32);
+BOOL         func_ov003_02083ca0(s32*, s32*, s32, s32);
+void         func_ov003_02083d34(void);
+void         func_ov003_02083e50(s32);
+void         func_ov003_020842e0(void);
+void         func_ov003_02084678(Ov003Collider*);
+void         func_ov003_020846ac(Ov003Collider*, s32, s32, s32);
+void         func_ov003_020846c0(Ov003Collider*, s32*, s32*, s32*);
+void         func_ov003_020847f0(void);
+void         func_ov003_0208481c(void);
+void*        func_ov003_02084998(CombatListNode*);
+void         func_ov003_02084b88(void);
+s32          func_ov003_02084d80(s32);
+s32          func_ov003_02084db0(void);
+void         func_ov003_02085054(void);
+void         func_ov003_0208508c(void);
+void         func_ov003_02085c78(void);
+BOOL         func_ov003_02085cfc(u16);
+BOOL         func_ov003_02085d3c(s32);
+BOOL         func_ov003_02085d60(CombatActor*);
+CombatActor* func_ov003_02085e78(s32);
+CombatActor* func_ov003_02085ec0(s32);
+CombatActor* func_ov003_02086014(s32);
+void         func_ov003_020860c4(void);
+void         func_ov003_02086130(void);
+void         func_ov003_020862a4(s32);
+void         func_ov003_020862f8(s32, s32);
 
+void         func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+s32          func_ov003_020843b0(s32, s32);
+s32          func_ov003_020843ec(s32, s32, s32);
+s32          func_ov003_0208442c(s32, s32);
+s32          func_ov003_02084460(s32, s32, s32);
+void         func_ov003_02084634(Ov003Collider*, s32, s32, s32);
+void         func_ov003_02084694(Ov003Collider*, s32);
+CombatList*  func_ov003_020846f0(s32);
+void         func_ov003_020846fc(CombatList*, CombatList*);
+void*        func_ov003_0208495c(CombatList*);
+void*        func_ov003_02084984(CombatListNode*);
+void         func_ov003_020849ac(CombatList*);
+void         func_ov003_020849bc(CombatList*, CombatListNode*, void*);
+void*        func_ov003_020849dc(CombatList*, CombatListNode*);
+CombatActor* func_ov003_02085dc8(s32);
 // ov003_02086404.c
 s32 func_ov003_02086404(s32 engine, CombatSprite* sprite, u32 id);
 
@@ -97,6 +97,14 @@ void func_ov003_02087804(s32 sub);
 /// Moves the display actor of one engine to a new position and tells the HUD about it.
 void func_ov003_02087b00(s32 mode, s32 x, s32 y, s32 z);
 
+void func_ov003_020864dc(CombatActor*, u16);
+s32  func_ov003_0208656c(void);
+void func_ov003_02086c78(s32*, s16*);
+s16* func_ov003_02086e94(void);
+s32  func_ov003_02086f20(s32, s32);
+void func_ov003_02087094(Ov003EffectCmd*, u8, s32);
+void func_ov003_020871b0(Ov003EffectCmd*);
+void func_ov003_0208722c(void);
 // ov003_0208a488.c
 /// True for the two encounters that are allowed to take damage while the battle is paused.
 BOOL func_ov003_0208b690(u16 encounterId);
@@ -111,6 +119,12 @@ void func_ov003_0208ed98(BtlIcon* icon);
 /// Plays the icon's damage animation for the current battle state.
 void func_ov003_0208edcc(BtlIcon* icon);
 
+void             func_ov003_0208afcc(s32);
+void             func_ov003_0208b3cc(s32, s16);
+void             func_ov003_0208b518(s32, Ov003EnemyActor*, s16);
+BOOL             func_ov003_0208c79c(Ov003EnemyActor*, s32);
+Ov003EnemyActor* func_ov003_0208c810(s32, s32, s32);
+void             func_ov003_0208ec74(BtlMgrWork*);
 // BtlBarBS.c
 /// Spawns the BS bar task for the actor that just entered the battle.
 void func_ov003_0209ab9c(CombatActor* actor);
@@ -205,6 +219,7 @@ s32  func_ov003_0209fbec(TaskPool* pool, Task* task, void* args);
 s32  func_ov003_0209fc2c(TaskPool* pool, Task* task, void* args);
 s32  func_ov003_0209fc40(TaskPool* pool, Task* task, void* args, s32 stage);
 
+void func_ov003_0209fc88(s32, s32, s32, s32, s16, s32);
 // BtlEff_Star.c
 void func_ov003_0209fd48(s32 engine, CombatSprite* sprite);
 s32  func_ov003_0209ff9c(TaskPool* pool, Task* task, void* args);
@@ -251,6 +266,8 @@ s32 func_ov003_020a3980(void);
 /// Picks the actor under the touch/stylus and moves it there; SELECT resets the positions.
 void func_ov003_020a3a80(void);
 
+s32 func_ov003_020a3330(s32);
+s32 func_ov003_020a3468(s32);
 // ov003_020a3b9c.c
 /// TRUE while the actor can be pushed around by the other actors.
 s32 func_ov003_020a3e50(Ov003TouchActor* actor);
@@ -576,6 +593,7 @@ void func_ov003_020bb190(s32, u32, s32);
 s32  func_ov003_020bb47c(void);
 void func_ov003_020bb580(void*);
 
+s32 func_ov003_020bb48c(s32, s8, u16, s32, s32, s32, s32);
 // ov003_020bd1bc.c
 void func_ov003_020be210(Ov003CutinTask* self);
 void func_ov003_020be2a8(Ov003CutinTask* self);
@@ -619,9 +637,9 @@ void func_ov003_020c353c(Ov003CutinActor* actor);
 /// Third-actor entrance/exit state machine.
 s32  func_ov003_020c3570(Ov003CutinActor* actor, u16 animBase);
 void func_ov003_020c36d4(s32 scale, Vec* src, Vec* dst);
-void func_ov003_020c3700(Ov003CutinActor* actor);
-void func_ov003_020c3794(Ov003CutinActor* actor);
-void func_ov003_020c37bc(Ov003CutinActor* actor);
+void func_ov003_020c3700(Ov003EnemyActor* actor);
+void func_ov003_020c3794(Ov003EnemyActor* actor);
+void func_ov003_020c37bc(Ov003EnemyActor* actor);
 /// Fills an animation descriptor from a cut-in actor parameter table and loads it into a sprite.
 void func_ov003_020c3814(s32 arg0, CombatSprite* sprite, s32 unused, const u8* table, u16 index, u16 arg4, u16 arg5, s16 arg6,
                          u16 arg7, s16 arg8);
@@ -647,25 +665,37 @@ TaskPool* func_ov003_020c3ca4(Ov003CutinActor* actor);
 s32       func_ov003_020c3cbc(Ov003CutinActor* actor);
 void      func_ov003_020c3ccc(Ov003CutinActor* actor);
 void      func_ov003_020c3cdc(Ov003CutinActor* actor);
-void      func_ov003_020c3e64(void);
-void      func_ov003_020c3e68(Ov003CutinActor* main, Ov003CutinActor* sub);
+void      func_ov003_020c3e64(Ov003EnemyActor*);
+void      func_ov003_020c3e68(Ov003EnemyActor*, Ov003EnemyActor*);
 void      func_ov003_020c3e88(Ov003CutinActor* actor, s32 arg1);
 
+s32                  func_ov003_020c37f8(CombatSprite*);
+s32                  func_ov003_020c38e8(CombatSprite*);
+s32                  func_ov003_020c3908(CombatSprite*);
+u32                  func_ov003_020c3aac(u32);
+s32                  func_ov003_020c3c28(void);
+void                 func_ov003_020c3c44(Ov003CutinScript*, void*, s16);
+const BtlSpriteDesc* func_ov003_020c3c6c(Ov003EnemyActor*);
+Ov003ActorParams*    func_ov003_020c3c88(Ov003EnemyActor*);
+void                 func_ov003_020c3cec(void*, void*, void*, void*);
+s32                  func_ov003_020c3d28(void*, void*, void*, void*, s32*, s32*);
+s32                  func_ov003_020c3ec0(CombatActor*);
+void                 func_ov003_020c3efc(Ov003EnemyActor*, Ov003CutinCmdData*);
 // ov003_020c41e8.c
 /// Resets a cut-in actor to its idle defaults (a fresh 0x1C0-byte actor block).
 void func_ov003_020c41e8(Ov003CutinActor* actor);
-void func_ov003_020c4264(Ov003CutinActor* actor);
+void func_ov003_020c4264(Ov003EnemyActor* actor);
 /// Releases the main sprite's resources.
 void func_ov003_020c4268(Ov003CutinActor* actor);
-void func_ov003_020c4288(Ov003CutinActor* actor);
+void func_ov003_020c4288(Ov003EnemyActor* actor);
 void func_ov003_020c42d4(Ov003CutinActor* actor);
-s32  func_ov003_020c44a4(Ov003CutinActor* actor);
+s32  func_ov003_020c44a4(Ov003EnemyActor* actor);
 /// Same as `func_ov003_020c4520`, using the secondary load template.
 s32  func_ov003_020c45a4(Ov003CutinActor* actor);
-void func_ov003_020c49c8(Ov003CutinActor* actor);
+void func_ov003_020c49c8(Ov003EnemyActor* actor);
 void func_ov003_020c4a08(Ov003CutinActor* actor);
-s32  func_ov003_020c4a34(Ov003CutinActor* actor);
-s32  func_ov003_020c4a74(Ov003CutinActor* actor);
+s32  func_ov003_020c4a34(Ov003EnemyActor* actor);
+s32  func_ov003_020c4a74(Ov003EnemyActor* actor);
 void func_ov003_020c4b9c(Ov003CutinActor* actor);
 void func_ov003_020c4bdc(Ov003CutinActor* actor);
 /// Returns 1 if `value` is already in `table`.
@@ -682,33 +712,33 @@ s32  func_ov003_020c4e0c(s32 value);
 s32  func_ov003_020c4e7c(s32 value);
 void func_ov003_020c4eb4(Ov003CutinActor* actor);
 /// Retires the actor's main-screen command slot.
-void func_ov003_020c4f00(Ov003CutinActor* actor);
+void func_ov003_020c4f00(Ov003EnemyActor* actor);
 /// True if any actor on `list` has cut-in instance id `id`.
 s32  func_ov003_020c4f20(s32 id, CombatList* list);
 void func_ov003_020c4f60(s32 id);
 void func_ov003_020c4f80(s32 id);
 /// Knocks the actor out: zero HP, defeat command, "defeated" flag.
-void func_ov003_020c4fa0(Ov003CutinActor* actor);
-s32  func_ov003_020c4ff4(Ov003CutinActor* actor);
-s32  func_ov003_020c5058(Ov003CutinActor* actor);
+void func_ov003_020c4fa0(Ov003EnemyActor* actor);
+s32  func_ov003_020c4ff4(Ov003EnemyActor* actor);
+s32  func_ov003_020c5058(Ov003EnemyActor* actor);
 void func_ov003_020c50bc(void);
 /// Pushes the actor's hit effects to the combo counters.
-void func_ov003_020c5130(Ov003CutinActor* actor);
+void func_ov003_020c5130(Ov003EnemyActor* actor);
 /// Nudges the actor one eighth of the way towards (x, y), clamped to +/-0x8000.
 void func_ov003_020c51a4(Ov003CutinActor* actor, s32 x, s32 y);
 /// True if the actor and its partner swapped sides of the sub-screen centre.
-s32 func_ov003_020c5220(Ov003CutinActor* actor);
+s32 func_ov003_020c5220(Ov003EnemyActor* actor);
 /// True if the actor's box does not overlap any actor on the sub-screen list.
-s32 func_ov003_020c5288(Ov003CutinActor* actor, s32 x, s32 y);
+s32 func_ov003_020c5288(Ov003EnemyActor* actor, s32 x, s32 y);
 /// Counts the sub-screen cut-in actors, and how many of them are "large" (width > 0x40).
 void func_ov003_020c54e0(s32* over, s32* total);
 /// Picks a randomised rise speed for the cut-in, scaled by how crowded the sub screen is.
-void func_ov003_020c554c(Ov003CutinActor* actor, s32* outX, s32* outY, u16 arg3);
+void func_ov003_020c554c(Ov003EnemyActor* actor, s32* outX, s32* outY, u16 arg3);
 s32  func_ov003_020c5864(Ov003CutinActor* actor, s32* outX, s32* outY);
 s32  func_ov003_020c58c8(Ov003CutinActor* actor, s32* outX, s32* outY, u16 arg3);
-s32  func_ov003_020c59cc(Ov003CutinActor* actor);
-s32  func_ov003_020c59e0(Ov003CutinActor* actor);
-s32  func_ov003_020c59f4(Ov003CutinActor* actor);
+s32  func_ov003_020c59cc(Ov003EnemyActor* actor);
+s32  func_ov003_020c59e0(Ov003EnemyActor* actor);
+s32  func_ov003_020c59f4(Ov003EnemyActor* actor);
 s32  func_ov003_020c5a00(Ov003CutinActor* actor);
 s32  func_ov003_020c5a14(Ov003CutinActor* actor);
 s32  func_ov003_020c5a28(Ov003CutinActor* actor);
@@ -720,43 +750,173 @@ s32  func_ov003_020c5b64(u16 id, void* owner, s32 x, s32 y);
 s32  func_ov003_020c5b8c(const Ov003AttackInfo* info, void* owner, s32 x, s32 y, s32 z);
 s32  func_ov003_020c5ba4(u16 id, void* args, s32 arg2);
 /// Third cut-in state machine: dash in, bounce and recover.
-s32  func_ov003_020c6920(Ov003CutinActor* actor, u16 anim, s32 arg2);
+s32  func_ov003_020c6920(Ov003EnemyActor* actor, u16 anim, s32 arg2);
 void func_ov003_020c6b9c(Ov003CutinActor* actor, u16 anim);
 void func_ov003_020c6bbc(Ov003CutinActor* actor, u16 anim);
-void func_ov003_020c6e0c(Ov003CutinActor* actor);
-void func_ov003_020c6e58(Ov003CutinActor* actor);
+void func_ov003_020c6e0c(Ov003EnemyActor* actor);
+void func_ov003_020c6e58(Ov003EnemyActor* actor);
 /// Final cut-in sequence: camera fade-out and sprite release.
-s32  func_ov003_020c6e64(Ov003CutinActor* actor);
-void func_ov003_020c6f40(Ov003CutinActor* actor);
-void func_ov003_020c6f68(Ov003CutinActor* actor);
+s32 func_ov003_020c6e64(Ov003EnemyActor* actor);
+s32 func_ov003_020c6f40(Ov003EnemyActor*);
+s32 func_ov003_020c6f68(Ov003EnemyActor*);
 /// Drives the end-of-cut-in teardown task until the fade completes.
-s32 func_ov003_020c6f90(Ov003CutinActor* actor);
+s32 func_ov003_020c6f90(Ov003EnemyActor* actor);
 
+void func_ov003_020c427c(Ov003EnemyActor*);
+s16  func_ov003_020c42ec(Ov003EnemyActor*);
+s32  func_ov003_020c4348(Ov003EnemyActor*);
+s32  func_ov003_020c44ac(Ov003EnemyActor*);
+s32  func_ov003_020c4520(Ov003EnemyActor*);
+void func_ov003_020c4628(Ov003EnemyActor*);
+void func_ov003_020c4668(Ov003EnemyActor*);
+void func_ov003_020c4748(Ov003EnemyActor*);
+s32  func_ov003_020c4830(Ov003EnemyActor*);
+void func_ov003_020c48b0(Ov003EnemyActor*);
+void func_ov003_020c492c(Ov003EnemyActor*);
+void func_ov003_020c495c(Ov003EnemyActor*);
+void func_ov003_020c4988(Ov003EnemyActor*);
+void func_ov003_020c4ab4(Ov003EnemyActor*, s32);
+void func_ov003_020c4af0(Ov003EnemyActor*);
+void func_ov003_020c4b1c(Ov003EnemyActor*);
+void func_ov003_020c4b5c(Ov003EnemyActor*);
+void func_ov003_020c4c1c(Ov003EnemyActor*);
+void func_ov003_020c4c5c(Ov003EnemyActor*);
+void func_ov003_020c4c9c(Ov003EnemyActor*);
+void func_ov003_020c4cc4(Ov003EnemyActor*, s32);
+void func_ov003_020c4ee0(Ov003EnemyActor*);
+void func_ov003_020c4fc8(Ov003EnemyActor*);
+s32  func_ov003_020c5924(Ov003EnemyActor*, s32*);
+s32  func_ov003_020c59a0(Ov003EnemyActor*);
+s32  func_ov003_020c5b2c(u16, void*, s32, s32, s32);
+s32  func_ov003_020c5bc4(u16, Ov003AttackArgs*, s32, s32, s32);
+s32  func_ov003_020c5bfc(Ov003EnemyActor*);
+s32  func_ov003_020c5e98(Ov003EnemyActor*);
+s32  func_ov003_020c6230(Ov003EnemyActor*);
+s32  func_ov003_020c62c4(Ov003EnemyActor*, u16);
+s32  func_ov003_020c65cc(Ov003EnemyActor*, u16);
+s32  func_ov003_020c6b8c(Ov003EnemyActor*, u16);
+s32  func_ov003_020c6bac(Ov003EnemyActor*, u16);
+s32  func_ov003_020c6bc8(Ov003EnemyActor*, u16);
+s32  func_ov003_020c6c2c(Ov003EnemyActor*, u16);
 // BossExp1.c
-s32 func_ov003_020c703c(void*);
-s32 func_ov003_020c7070(void*);
-s32 func_ov003_020c72b4(void*, s32, s32);
+s32 func_ov003_020c703c(Ov003EnemyActor*);
+s32 func_ov003_020c7070(Ov003EnemyActor*);
+s32 func_ov003_020c72b4(Ov003EnemyActor*, s32, s32);
 s32 func_ov003_020c9008(void);
 
 // BtlEff_SideMove.c
-void func_ov003_020c9118(void);
-s32  func_ov003_020c9338(Ov003CutinActor*);
+void func_ov003_020c9118(Ov003EnemyActor*);
+s32  func_ov003_020c9338(Ov003EnemyActor*);
 
+void func_ov003_020c9064(const SpriteAnimationEx*);
 // BtlEnmShot_Blossom.c
-void  func_ov003_020cb128(s32*, void*, s32);
-void  func_ov003_020cb130(void*, void*, u16, s32, void*);
-s32   func_ov003_020cb150(void*);
-void  func_ov003_020cb194(void*);
-s32   func_ov003_020cb3c4(s32, s32);
-void* func_ov003_020cb42c(s32, s32, s32);
-s32   func_ov003_020cb498(s32, s32, void*, void*);
-s32   func_ov003_020cb594(void*, s32);
-s32   func_ov003_020cb764(s32);
-s32   func_ov003_020cb888(void*, s32, s32);
-s32   func_ov003_020cb910(void*, void*, void*, s32, s32, s32, s32, s32, s32, s32);
-u16   func_ov003_020cba14(s32, s32, s32, s32);
-s32   func_ov003_020cba2c(s32, s32, s32, s32);
-s32   func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
-void  func_ov003_020cbd30(s32*, s32, s32, s32, s32, s32, s32, s32);
+void             func_ov003_020cb128(s32*, s32, s32);
+void             func_ov003_020cb130(BtlBinSet*, const BtlBinEntry*, u16, s32, const char*);
+s32              func_ov003_020cb150(BtlBinSet*);
+void             func_ov003_020cb194(BtlBinSet*);
+u16              func_ov003_020cb3c4(s32, s32);
+Ov003EnemyActor* func_ov003_020cb42c(s32, s32, s32);
+s32              func_ov003_020cb498(s32, s32, BtlActorFilter, void*);
+void             func_ov003_020cb594(Ov003EnemyActor*, s32);
+s32              func_ov003_020cb764(s32);
+s16              func_ov003_020cb888(u16*, s32, s32);
+s32              func_ov003_020cb910(s32*, s32*, s32*, s32, s32, s32, s32, s32, s32, s32);
+s32              func_ov003_020cba14(s32, s32, s32, s32);
+s32              func_ov003_020cba2c(s32, s32, s32, s32);
+s32              func_ov003_020cba54(s32, s32, s32, s32, s32, s32);
+void             func_ov003_020cbd30(BtlVec2*, BtlVec2, BtlVec2, BtlVec2, s32);
+
+s32   func_ov003_020cb200(BtlBinSet*, u16);
+s32   func_ov003_020cb264(BtlBinSet*, u32);
+void  func_ov003_020cb304(BtlBinSet*, u16);
+s32   func_ov003_020cb32c(BtlBinSet*, s32);
+u16   func_ov003_020cb348(BtlBinSet*, u16);
+s32   func_ov003_020cb368(BinIdentifier*);
+void  func_ov003_020cb520(CombatActor*, s32);
+s32   func_ov003_020cb55c(Ov003EnemyActor*);
+void  func_ov003_020cb578(CombatActor*, s32);
+void  func_ov003_020cb5b0(Ov003EnemyActor*, s32, s32);
+s32   func_ov003_020cb648(Ov003EnemyActor*, s32);
+s32   func_ov003_020cb744(s32);
+s32   func_ov003_020cb784(s32);
+s32   func_ov003_020cb7a4(s32);
+s32   func_ov003_020cbafc(s32*, s32*, s32*, s32, s32, s32, s32, s32, s32, s32);
+void  func_ov003_020cbc50(s32*, s32*, u16, s32);
+void  func_ov003_020cbcb4(s32*, s32*, u16, s32, s32);
+s32   func_ov003_020cc300(Ov003EnemyActor*, s32);
+s32   func_ov003_020cc354(CombatActor*);
+s32   func_ov003_020cc38c(Ov003CutinActor*, s32, s32, s32, s32, s32, s32);
+u32   func_ov003_020cc430(Ov003CutinActor*, s32, s32, s32);
+s32   func_ov003_020cc5d0(CombatActor*);
+s32   func_ov003_020cc5fc(s32, s32);
+void* func_ov003_020cc750(s32);
+void  func_ov003_020cc784(CombatActor*, s32);
+s32   func_ov003_020cc7c0(s32, s32, s32);
+s32   func_ov003_020cc7f4(s32, s32, s32, s32);
+void  func_ov003_020ccea8(CombatActor*, CombatSprite*);
+void  func_ov003_020ccec0(CombatActor*, s32);
+s32   func_ov003_020ccedc(s32);
+s32   func_ov003_020ccefc(s32);
+void  func_ov003_020ccf1c(s32*, s32);
+void  func_ov003_020ccf58(s32, Ov003EnemyActor*);
+void  func_ov003_020ccf94(s32, CombatSprite*, const BtlSpriteDesc*);
+s32   func_ov003_020ccfc8(Ov003EnemyActor*, u16);
+s32   func_ov003_020ccfec(Ov003EnemyActor*);
+s32   func_ov003_020cd010(Ov003EnemyActor*);
+s32   func_ov003_020cd11c(s32);
+// ov003_02087b7c.c
+void                   func_ov003_02087ed8(SndMgrSeIdx);
+void                   func_ov003_02087f28(SndMgrSeIdx, s32);
+void                   func_ov003_02087f64(SndMgrSeIdx, s32);
+void                   func_ov003_02087fe0(s32, CombatSprite*, s32);
+void                   func_ov003_02088064(CombatSprite*, s32, s32);
+void                   func_ov003_020880e4(s32, CombatSprite*, Ov003EnemyActor*);
+void                   func_ov003_0208810c(CombatSprite*, CombatActor*);
+s32                    func_ov003_02088130(void);
+s32                    func_ov003_0208a08c(s32, Ov003EnemyActor*, s32);
+const Ov003AttackInfo* func_ov003_0208a114(u16);
+s32                    func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
+s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
+s32                    func_ov003_0208a1a4(const Ov003AttackInfo*, void*, s32, s32);
+s32                    func_ov003_0208a1e8(const Ov003AttackInfo*, void*, s32);
+
+// BtlAuraSub.c
+void func_ov003_020974f8(s32, s32);
+
+// BtlPop_Num.c
+void func_ov003_0209b564(s32, s32, CombatActor*, s32);
+void func_ov003_0209b61c(s32, s32, CombatActor*);
+
+// BtlFeat_SplashEnm.c
+void func_ov003_020bc690(u16, u16, s32);
+
+// BtlFeat_SplashBg.c
+void func_ov003_020bce18(s32, u16, u16, u16);
+
+// ov003_020bce6c.c
+void func_ov003_020bd150(s32, Ov003SnapshotCallback, void*);
+
+// BtlEnmShot_Charge.c
+s32 func_ov003_020cd988(Ov003EnemyShotChargeSplitArgs*);
+
+// BtlEnmShot_RapidSlow.c
+s32 func_ov003_020d0518(Ov003EnemyShotSource*, s32, u16, u16, u16, Ov003EnemyShotSource*, s32, u16, u16, u16, s16);
+
+// BtlEnmShot_RootLaser.c
+void func_ov003_020d1dc0(Ov003EnemyShotSource*, s32, u16, u16, u16);
+
+// BtlEnmShot_Spiral.c
+s32 func_ov003_020d23e8(Ov003EnemyShotSource*, u16, s32, s32, u16, s32);
+
+// BtlEnmShot_Split.c
+s32 func_ov003_020d2bc0(Ov003EnemyShotSplitArgs*);
+
+// ov003_020d36fc.c
+void func_ov003_020d3b6c(Ov003AnimLayer*, Data*, s16, u32, u32, u32);
+void func_ov003_020d3bec(Ov003AnimLayer*, BinIdentifier*, s32, void**, const Ov003AnimFrame*);
+void func_ov003_020d3c2c(Ov003AnimLayer*, const Ov003AnimFrame*);
+void func_ov003_020d3c98(Ov003AnimLayer*, Ov003AnimLayer*);
+void func_ov003_020d3cac(Ov003AnimLayer*);
+void func_ov003_020d3cf8(Ov003AnimLayer*);
 
 #endif // COMBAT_CORE_COMBATAPI_H

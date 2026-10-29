@@ -29,12 +29,11 @@ extern BtlEnmAuraState data_ov003_020e7324;
 
 /// One of the sixteen flame sprites (0x70 bytes each); the helpers address it as a `Sprite` at +0.
 typedef struct BtlAuraFlame {
-    /* 0x00 */ Sprite sprite;
-    /* 0x40 */ u8     unk_40[0x20];
-    /* 0x60 */ s32    height;    // how far above the ground the flame sits
-    /* 0x64 */ s32    riseSpeed; // vertical drift added every frame, 0 = static
-    /* 0x68 */ s32    x;
-    /* 0x6C */ s32    y;
+    /* 0x00 */ CombatSprite sprite;
+    /* 0x60 */ s32          height;    // how far above the ground the flame sits
+    /* 0x64 */ s32          riseSpeed; // vertical drift added every frame, 0 = static
+    /* 0x68 */ s32          x;
+    /* 0x6C */ s32          y;
 } BtlAuraFlame; // Size: 0x70
 
 /// The aura task data, `TaskHandle.dataSize` = 0x774.

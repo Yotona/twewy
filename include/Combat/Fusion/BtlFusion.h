@@ -2,6 +2,7 @@
 #define COMBAT_FUSION_BTLFUSION_H
 
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatList.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
 
@@ -15,8 +16,8 @@ typedef struct BtlPlayerLast {
 
 /// A pooled aura sprite, linked through the trailing node.
 typedef struct BtlAuraSprite {
-    /* 0x00 */ CombatSprite sprite;
-    /* 0x60 */ u8           node[0xC];
+    /* 0x00 */ CombatSprite   sprite;
+    /* 0x60 */ CombatListNode node;
 } BtlAuraSprite; // Size: 0x6C
 
 /// Task data for `Tsk_BtlAuraLast`.
@@ -24,8 +25,8 @@ typedef struct BtlAuraLast {
     /* 0x000 */ CombatSprite  unk_000;
     /* 0x060 */ CombatSprite  unk_060;
     /* 0x0C0 */ CombatSprite  unk_0C0;
-    /* 0x120 */ u8            unk_120[0x8];
-    /* 0x128 */ u8            unk_128[0x8];
+    /* 0x120 */ CombatList    freeSprites;
+    /* 0x128 */ CombatList    activeSprites;
     /* 0x130 */ BtlAuraSprite sprites[16];
     /* 0x7F0 */ s16           unk_7F0;
     /* 0x7F2 */ s16           unk_7F2;

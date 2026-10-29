@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
@@ -37,8 +38,6 @@ extern const BinIdentifier data_ov003_020d7818;
 extern void func_020265d4(void* dst, s32 step, u16 count);
 extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_02082724(CombatSprite* sprite, s32 x, s32 y);
-extern void func_ov003_02087ed8(s32 seIdx);
 extern void func_ov003_0208b278(s32 arg0);
 
 void func_ov003_020a13f8(BtlWin* self);
@@ -358,12 +357,12 @@ s32 func_ov003_020a1608(TaskPool* pool, Task* task, void* args) {
 s32 func_ov003_020a163c(TaskPool* pool, Task* task, void* args) {
     BtlWin* self = task->data;
 
-    func_ov003_02082724(&self->sprites[1], (self->subX * 0x10) >> 16, 0x60);
+    CombatSprite_SetPosition(&self->sprites[1], (self->subX * 0x10) >> 16, 0x60);
     CombatSprite_Render(&self->sprites[1]);
     if (data_ov003_020e71b8->unk3D88D == 3) {
         return 1;
     }
-    func_ov003_02082724(&self->sprites[0], (self->x * 0x10) >> 16, 0x60);
+    CombatSprite_SetPosition(&self->sprites[0], (self->x * 0x10) >> 16, 0x60);
     CombatSprite_Render(&self->sprites[0]);
     return 1;
 }

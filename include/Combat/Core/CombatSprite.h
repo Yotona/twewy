@@ -1,6 +1,7 @@
 #ifndef COMBAT_CORE_COMBATSPRITE_H
 #define COMBAT_CORE_COMBATSPRITE_H
 
+#include "Engine/File/BinMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 
@@ -73,5 +74,15 @@ void CombatSprite_Render(CombatSprite* cSprite);
 void CombatSprite_Release(CombatSprite* cSprite);
 
 void CombatSprite_Restart(CombatSprite* cSprite);
+
+/// Where a battle sprite comes from: its file, animation table, entry and palette slot.
+/// The sprite descriptor `func_ov003_020ccf94` loads from.
+typedef struct BtlSpriteDesc {
+    /* 0x0 */ const BinIdentifier*   iden;
+    /* 0x4 */ const SpriteAnimEntry* table;
+    /* 0x8 */ u16                    entry;
+    /* 0xA */ u16                    palette;
+    /* 0xC */ u16                    paletteCount;
+} BtlSpriteDesc;
 
 #endif // COMBAT_CORE_COMBATSPRITE_H

@@ -1,4 +1,5 @@
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatEnemyShot.h"
@@ -87,9 +88,9 @@ s32 func_ov003_020ced48(Ov003EnemyShotGenerator* self, Ov003EnemyShotGeneratorAr
     self->actor.actor.maxHp     = 1;
     self->actor.actor.currentHp = 1;
     if (engine == 0)
-        func_ov003_020c49c8((Ov003CutinActor*)self);
+        func_ov003_020c49c8(&self->actor);
     else
-        func_ov003_020c4988((Ov003CutinActor*)self);
+        func_ov003_020c4988(&self->actor);
     self->spreadStep  = FX_Mul(FX_CosIdx(args->moveAngle), args->moveSpeed);
     self->speedYStep  = FX_Mul(FX_SinIdx(args->moveAngle), args->moveSpeed);
     self->spreadDecay = FX_Mul(FX_CosIdx(args->moveAngle), args->moveDecay);

@@ -53,11 +53,8 @@ extern void func_02041048(s32);
 
 extern s32 CombatSprite_Load(CombatSprite*, SpriteAnimationEx*);
 
-extern Ov003TouchActor* func_ov003_0208495c(CombatList*);
 extern Ov003TouchActor* func_ov003_02084970(CombatList*);
-extern Ov003TouchActor* func_ov003_02084984(CombatListNode*);
 extern void             func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern void             func_ov003_02087ed8(s32);
 extern s32              func_ov003_020a3330(s32);
 extern s32              func_ov003_020a3468(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);

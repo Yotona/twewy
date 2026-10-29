@@ -1,9 +1,9 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 
 extern void func_ov003_0208b3cc(s32, s16);
 extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void func_ov003_0208b518(s32, void*, s16);
 
 static void func_ov003_02082d10(CombatActor* actor) {
     actor->unk_10 = 0;
@@ -59,7 +59,7 @@ static void CombatActor_ApplyPeriodicEffectTick(s32 arg0, CombatActor* actor) {
             data_ov003_020e71b8->unk3D878 |= 0x30000;
         }
     } else {
-        func_ov003_0208b518(arg0, actor, -val);
+        func_ov003_0208b518(arg0, (Ov003EnemyActor*)actor, -val);
         func_ov003_0209b61c(arg0, val, actor);
 
         if (actor->currentHp <= 0) {

@@ -13,7 +13,6 @@ typedef struct BtlObs {
     /* 0x190 */ s32 active;
 } BtlObs; // Size: 0x194
 
-extern void func_ov003_02084694(Ov003EffectSprite*, s32);
 extern void func_ov003_02086680(Ov003EffectActor*, Ov003EffectSpawn*);
 extern void func_ov003_020866f8(Ov003EffectActor*);
 extern void func_ov003_02086770(Ov003EffectActor*);
@@ -58,7 +57,7 @@ void func_ov003_02094294(BtlObs* obs) {
     if (obs->state != 0)
         return;
     obs->effect.actor.flags |= 0x200;
-    func_ov003_02084694(&obs->effect.sprite, 1);
+    func_ov003_02084694(&obs->effect.sprite.collider, 1);
     CombatSprite_SetAnimFromTable(&obs->sprites[0], 1, 0);
     obs->state++;
 }
@@ -75,7 +74,7 @@ void func_ov003_020942e8(BtlObs* obs) {
     if (func_ov003_020941d4(&obs->effect.actor)) {
         func_ov003_02086540(0, obs->effect.config, obs->effect.actor.position.x);
         obs->effect.actor.flags &= ~0x400;
-        func_ov003_02084694(&obs->effect.sprite, 0);
+        func_ov003_02084694(&obs->effect.sprite.collider, 0);
         if (obs->effect.id == 2)
             obs->effect.sprite.flags |= 1;
         func_ov003_020941ac(obs, func_ov003_02094200);

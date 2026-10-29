@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Display.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"

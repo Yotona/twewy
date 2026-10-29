@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatBgRes.h"
 #include "Combat/Core/CombatBgScroll.h"
 #include "Combat/Core/CombatSprite.h"

@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatBgScroll.h"
 #include "Combat/Core/CombatBossExp.h"
 #include "Combat/Core/CombatCutin.h"
@@ -90,22 +91,15 @@ extern s32              data_ov003_020e7254;
 extern const TaskHandle data_ov003_020d81e0;
 
 extern s32               func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage);
-extern Ov003ActorParams* func_ov003_020c3c88(Ov003CutinActor* actor);
-extern void              func_ov003_020c4af0(Ov003CutinActor* actor);
-extern void              func_ov003_020c6f40(Ov003CutinActor* actor);
-extern void              func_ov003_020c6f68(Ov003CutinActor* actor);
-extern void              func_ov003_020c6f90(Ov003CutinActor* actor);
+extern Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor);
+extern void              func_ov003_020c4af0(Ov003EnemyActor* actor);
 extern s32               func_ov003_020c37f8(CombatSprite* sprite);
 extern s32               func_ov003_020c38b8(CombatSprite* sprite, u16 anim, s32 arg2);
 extern s32               func_ov003_020bd2b8(void);
-extern void              func_ov003_020824a0(CombatSprite* sprite, u16 anim, s32 mode);
-extern void              func_ov003_020827c0(CombatSprite* sprite, s32 arg1);
-extern void              func_ov003_0208260c(CombatSprite* sprite, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern void              func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void              func_ov003_02082738(CombatSprite* sprite, s32 arg1);
 extern s32  func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
-extern void func_ov003_02087ed8(s32 seIdx);
 extern void func_ov003_02083e50(s32 arg0);
 extern void func_020265d4(void* dst, s32 step, u16 count);
 extern void func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
@@ -239,19 +233,19 @@ void* data_ov003_020e6a44[61] = {
 // Actor helpers
 // ---------------------------------------------------------------------------------------------
 
-void func_ov003_020c703c(Ov003CutinActor* actor) {
+s32 func_ov003_020c703c(Ov003EnemyActor* actor) {
     if (actor->flags196.bits.b8 && (actor->actor.flags & 0x2000)) {
-        func_ov003_020c6f90(actor);
+        return func_ov003_020c6f90(actor);
     } else {
-        func_ov003_020c6f40(actor);
+        return func_ov003_020c6f40(actor);
     }
 }
 
-void func_ov003_020c7070(Ov003CutinActor* actor) {
+s32 func_ov003_020c7070(Ov003EnemyActor* actor) {
     if (actor->flags196.bits.b8 && (actor->actor.flags & 0x2000)) {
-        func_ov003_020c6f90(actor);
+        return func_ov003_020c6f90(actor);
     } else {
-        func_ov003_020c6f68(actor);
+        return func_ov003_020c6f68(actor);
     }
 }
 
@@ -260,10 +254,10 @@ s32 func_ov003_020c70a4(Ov003CutinActor* actor, s32 anim) {
     switch (actor->unk_1A8) {
         case 0:
             if (actor->unk_1A4 == 0) {
-                func_ov003_020824a0(&actor->sprite, anim, 1);
+                CombatSprite_SetAnimFromTable(&actor->sprite, anim, 1);
                 CombatSprite_Restart(&actor->sprite);
                 if (actor->actor.unk_0C == 0) {
-                    func_ov003_020c4af0(actor);
+                    func_ov003_020c4af0(&actor->base);
                 } else {
                     if (actor->actor.position.x > actor->actor.unk_0C) {
                         actor->actor.isFlipped = 0;
@@ -283,7 +277,7 @@ s32 func_ov003_020c70a4(Ov003CutinActor* actor, s32 anim) {
             break;
         case 1:
             if (actor->unk_1A4 == 0) {
-                func_ov003_020824a0(&actor->sprite, (u16)(anim + 1), 0);
+                CombatSprite_SetAnimFromTable(&actor->sprite, (u16)(anim + 1), 0);
             }
             if (actor->unk_1A4 <= actor->unk_1A6) {
                 actor->unk_1A4++;
@@ -294,7 +288,7 @@ s32 func_ov003_020c70a4(Ov003CutinActor* actor, s32 anim) {
             break;
         case 2:
             if (actor->unk_1A4 == 0) {
-                func_ov003_020824a0(&actor->sprite, (u16)(anim + 2), 1);
+                CombatSprite_SetAnimFromTable(&actor->sprite, (u16)(anim + 2), 1);
                 actor->actor.flags &= ~8;
             }
             if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
@@ -307,14 +301,14 @@ s32 func_ov003_020c70a4(Ov003CutinActor* actor, s32 anim) {
 }
 
 /// Puts an actor back into its idle state after its defeat animation.
-void func_ov003_020c7224(Ov003CutinActor* actor) {
+void func_ov003_020c7224(Ov003EnemyActor* actor) {
     Ov003ActorParams* params = func_ov003_020c3c88(actor);
 
     actor->flags18C &= ~1;
     actor->flags18C &= ~0x10;
     actor->unk_1B8 = 0x1000;
     actor->unk_1BC = 0x1000;
-    func_ov003_020827c0(&actor->sprite, 0);
+    CombatSprite_SetPaletteMode(&actor->sprite, 0);
     actor->sprite.flags46 &= ~2;
     actor->actor.flags &= ~0x10;
     actor->actor.flags &= ~0x80000000;
@@ -328,7 +322,7 @@ void func_ov003_020c7224(Ov003CutinActor* actor) {
 }
 
 /// Starts an actor's death animation `a` (or `b` in the second variant) and waits for the transition.
-s32 func_ov003_020c72b4(Ov003CutinActor* actor, s32 a, s32 b) {
+s32 func_ov003_020c72b4(Ov003EnemyActor* actor, s32 a, s32 b) {
     if (actor->unk_1A4 == 0) {
         switch (func_ov003_020bd2b8()) {
             case 1:
@@ -618,8 +612,8 @@ void func_ov003_020c7e84(BossExp1* self) {
     for (e = 0; e <= 1; e++) {
         for (i = 0; i < 6; i++) {
             if (self->loadedC[e][i] != 0) {
-                func_ov003_0208260c(&self->groupC[e][i], 0, self->tintC[e][i], self->tintC[e][i],
-                                    self->frameC[e][i] != 0 ? 1 : 0);
+                CombatSprite_SetAffineTransform(&self->groupC[e][i], 0, self->tintC[e][i], self->tintC[e][i],
+                                                self->frameC[e][i] != 0 ? 1 : 0);
                 CombatSprite_Render(&self->groupC[e][i]);
             }
         }
@@ -696,8 +690,8 @@ void func_ov003_020c80b8(BossExp1* self) {
                 func_ov003_020c7ac0(self, 1);
             }
             func_020265d4(&self->tint, 0x1D00, (u16)(self->limit - self->timer));
-            func_ov003_0208260c(&self->groupB[0][1], 0, self->tint, self->tint, 1);
-            func_ov003_0208260c(&self->groupB[1][1], 0, self->tint, self->tint, 1);
+            CombatSprite_SetAffineTransform(&self->groupB[0][1], 0, self->tint, self->tint, 1);
+            CombatSprite_SetAffineTransform(&self->groupB[1][1], 0, self->tint, self->tint, 1);
             if (self->timer < self->limit) {
                 self->timer++;
                 return;
@@ -863,7 +857,7 @@ void func_ov003_020c86b4(BossExp1* self) {
                     g_DisplaySettings.engineState[e].window1Top    = 0x60000 - self->closeA;
                     g_DisplaySettings.engineState[e].window1Right  = 0xFF000;
                     g_DisplaySettings.engineState[e].window1Bottom = (0x60000 - self->closeA) + self->closeA * 2;
-                    func_ov003_0208260c(&self->groupB[e][2], 0, 0x1000, scale, 0);
+                    CombatSprite_SetAffineTransform(&self->groupB[e][2], 0, 0x1000, scale, 0);
                 }
             }
             if (self->timer == half + 1) {
@@ -881,7 +875,7 @@ void func_ov003_020c86b4(BossExp1* self) {
                     g_DisplaySettings.engineState[e].window0Top    = 0x60000 - self->closeB;
                     g_DisplaySettings.engineState[e].window0Right  = 0xFF000;
                     g_DisplaySettings.engineState[e].window0Bottom = (0x60000 - self->closeB) + self->closeB * 2;
-                    func_ov003_0208260c(&self->groupB[e][3], 0, 0x1000, scale, 0);
+                    CombatSprite_SetAffineTransform(&self->groupB[e][3], 0, 0x1000, scale, 0);
                 }
             }
             if (self->timer <= half + width) {

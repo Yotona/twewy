@@ -176,7 +176,7 @@ void func_ov009_021217dc(BtlEnm003_UG* ug) {
 
     if (ug->unk_1C0 == 0) {
         CombatSprite_SetAnimFromTable(&ug->sprite, 0, 0);
-        func_ov003_02084694(&ug->collider.side, 0);
+        func_ov003_02084694(&ug->collider, 0);
         ug->unk_1C6 = func_ov009_021214e4(ug);
     }
     if (ug->unk_1C0 > ug->unk_1C6) {
@@ -230,7 +230,7 @@ void func_ov009_021217dc(BtlEnm003_UG* ug) {
 void func_ov009_02121930(BtlEnm003_UG* ug) {
     if (ug->unk_1C0 == 0) {
         CombatSprite_SetAnimFromTable(&ug->sprite, 0, 0);
-        func_ov003_02084694(&ug->collider.side, 0);
+        func_ov003_02084694(&ug->collider, 0);
     }
     if (ug->unk_1C0 <= 60) {
         ug->unk_1C0++;
@@ -255,7 +255,7 @@ void func_ov009_02121998(BtlEnm003_UG* ug) {
 
     if (ug->unk_1C0 == 0) {
         CombatSprite_SetAnimFromTable(&ug->sprite, 1, 0);
-        func_ov003_02084694(&ug->collider.side, 0);
+        func_ov003_02084694(&ug->collider, 0);
         ug->unk_1C0++;
     }
     func_ov003_020c4b5c(ug);
@@ -305,7 +305,7 @@ void func_ov009_02121ba8(BtlEnm003_UG* ug) {
                     return;
                 }
                 CombatSprite_SetAnimFromTable(&ug->sprite, 7, 1);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
                 func_ov003_020c4b5c(ug);
                 func_ov003_02087f28(0x19F, ug->actor.position.x);
             }
@@ -321,7 +321,7 @@ void func_ov009_02121ba8(BtlEnm003_UG* ug) {
             if (ug->unk_1C0 == 0) {
                 CombatSprite_SetAnimFromTable(&ug->sprite, 8, 1);
                 func_ov009_02120b5c(ug, 0);
-                func_ov003_02084694(&ug->collider.side, 1);
+                func_ov003_02084694(&ug->collider, 1);
                 func_ov003_02087f28(412, ug->actor.position.x);
             }
             ug->unk_1C0++;
@@ -346,7 +346,7 @@ void func_ov009_02121ba8(BtlEnm003_UG* ug) {
                 ug->unk_1C0++;
             } else {
                 func_ov003_020c4b5c(ug);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
                 func_ov003_020c4f00(ug);
                 BtlEnm003_UG_SetState(ug, func_ov009_02121998);
             }
@@ -363,7 +363,7 @@ void func_ov009_02121da8(BtlEnm003_UG* ug) {
                     return;
                 }
                 CombatSprite_SetAnimFromTable(&ug->sprite, 9, 1);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
                 func_ov003_020c4b5c(ug);
                 func_ov003_02087f28(415, ug->actor.position.x);
             }
@@ -380,7 +380,7 @@ void func_ov009_02121da8(BtlEnm003_UG* ug) {
                 CombatSprite_SetAnimFromTable(&ug->sprite, 10, 1);
                 func_ov009_02120b5c(ug, 1);
                 func_ov003_02087f28(412, ug->actor.position.x);
-                func_ov003_02084694(&ug->collider.side, 1);
+                func_ov003_02084694(&ug->collider, 1);
             }
             if (ug->unk_1C0 == 3) {
                 if (func_ov003_020c5b2c(64, ug, ug->actor.position.x, ug->actor.position.y, ug->actor.position.z) == 1) {
@@ -404,7 +404,7 @@ void func_ov009_02121da8(BtlEnm003_UG* ug) {
                 ug->unk_1C0++;
             } else {
                 func_ov003_020c4b5c(ug);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
                 func_ov003_020c4f00(ug);
                 BtlEnm003_UG_SetState(ug, func_ov009_02121998);
             }
@@ -424,7 +424,7 @@ void func_ov009_02121fa4(BtlEnm003_UG* ug) {
                 }
                 CombatSprite_SetAnimFromTable(&ug->sprite, 11, 1);
                 func_ov003_020c4b5c(ug);
-                func_ov003_02084694(&ug->collider.side, 1);
+                func_ov003_02084694(&ug->collider, 1);
             }
             if (SpriteMgr_IsAnimationFinished(&ug->sprite.sprite) != 0) {
                 ug->unk_1C0 = 0;
@@ -511,7 +511,7 @@ void func_ov009_02121fa4(BtlEnm003_UG* ug) {
                 ug->unk_1C0++;
             } else {
                 func_ov003_020c4b5c(ug);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
                 func_ov003_020c4f00(ug);
                 BtlEnm003_UG_SetState(ug, func_ov009_02121998);
             }
@@ -538,7 +538,7 @@ void func_ov009_021223a0(BtlEnm003_UG* ug) {
         case 1: {
             if (ug->unk_1C0 == 0) {
                 CombatSprite_SetAnimFromTable(&ug->sprite, 12, 1);
-                func_ov003_02084694(&ug->collider.side, 0);
+                func_ov003_02084694(&ug->collider, 0);
             }
             if (SpriteMgr_IsAnimationFinished(&ug->sprite.sprite) != 0) {
                 ug->unk_1C0 = 0;
@@ -622,27 +622,27 @@ s32 BtlEnm003_UG_Update(TaskPool* pool, Task* task, void* args) {
 
     switch (CombatActor_PopPendingCommand(&ug->actor)) {
         case 1:
-            func_ov003_02084694(&ug->collider.side, 0);
+            func_ov003_02084694(&ug->collider, 0);
             BtlEnm003_UG_SetState(ug, func_ov009_0212252c);
             break;
         case 2:
-            func_ov003_02084694(&ug->collider.side, 0);
+            func_ov003_02084694(&ug->collider, 0);
             BtlEnm003_UG_SetState(ug, func_ov009_02122558);
             break;
         case 3:
-            func_ov003_02084694(&ug->collider.side, 1);
+            func_ov003_02084694(&ug->collider, 1);
             BtlEnm003_UG_SetState(ug, func_ov009_021225dc);
             break;
         case 4:
-            func_ov003_02084694(&ug->collider.side, 0);
+            func_ov003_02084694(&ug->collider, 0);
             BtlEnm003_UG_SetState(ug, func_ov009_02122584);
             break;
         case 5:
-            func_ov003_02084694(&ug->collider.side, 0);
+            func_ov003_02084694(&ug->collider, 0);
             BtlEnm003_UG_SetState(ug, func_ov009_021225b0);
             break;
         case 6:
-            func_ov003_02084694(&ug->collider.side, 0);
+            func_ov003_02084694(&ug->collider, 0);
             BtlEnm003_UG_SetState(ug, func_ov009_021225f8);
             break;
     }

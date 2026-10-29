@@ -1,3 +1,4 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
 #include "Engine/Math/Random.h"
@@ -5,11 +6,10 @@
 
 #define OPTION_ROUND(value) ((value) > 0 ? (f32)((value) << 12) + 0.5f : (f32)((value) << 12) - 0.5f)
 
-extern s32                    func_ov003_020c37f8(CombatSprite*);
-extern void                   func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern const Ov003AttackInfo* func_ov003_0208a114(u16);
-extern s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
-extern const TaskHandle       data_ov003_020e0c74;
+extern s32              func_ov003_020c37f8(CombatSprite*);
+extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
+extern s32              func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
+extern const TaskHandle data_ov003_020e0c74;
 
 s32 func_ov003_020cfedc(Ov003EnemyShotSource* source, u16 angleStep, s16 lifetime, s16 radius, s16 heightRange,
                         s16 minHeight) {

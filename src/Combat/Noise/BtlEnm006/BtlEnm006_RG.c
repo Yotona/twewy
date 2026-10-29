@@ -6,31 +6,14 @@
 
 #include <nitro/mi/cpumem.h>
 
-s16                       func_ov010_02126830(BtlEnm006* data, void* arg1);
-extern s32                func_ov010_021269d0(TaskPool*, Task*, void*, s32);
-extern s32                func_ov010_02126a20(BtlEnm006*, void*);
-extern s32                func_ov010_02126a94(BtlEnm006*);
-extern void               func_ov003_020c427c(void*);
-extern s32                func_ov003_020c5bfc(void*);
-extern s32                func_ov003_020c62c4(void*, s32);
-extern s32                func_ov003_020cc354(void*);
-extern s32                func_ov003_020cc38c(void*, s32, s32, s32, s32, s32, s32);
-extern s32                func_ov003_020c3efc(void*, void*);
-extern void               func_ov003_02084694(void*, s32);
-extern s16                func_ov003_020843b0(s32, s32);
-extern void               CombatSprite_SetPaletteSource(CombatSprite*, s32);
-extern s32                func_ov003_020c4ab4(BtlEnm006*, s32);
-extern s32                func_ov003_020c6230(void*);
-extern s32                func_ov003_020c4c1c(void*);
-extern void               func_ov003_020c4ee0(void*);
-extern s32                func_ov003_020c5b2c(u16, void*, s32, s32, s32);
-extern void               func_ov003_020cb578(BtlEnm006*, s32);
-extern s32                func_ov003_020cb784(s32);
-extern void               func_ov003_020c4c9c(BtlEnm006*);
-extern s32                func_ov003_020cb744(s32);
-extern CombatEnemyParams* func_ov003_020c3c88(BtlEnm006*);
-extern s32                func_ov003_020c42ec(BtlEnm006*);
-extern s32                func_ov003_020c4348(BtlEnm006*);
+s16         func_ov010_02126830(BtlEnm006* data, void* arg1);
+extern s32  func_ov010_021269d0(TaskPool*, Task*, void*, s32);
+extern s32  func_ov010_02126a20(BtlEnm006*, void*);
+extern s32  func_ov010_02126a94(BtlEnm006*);
+extern void CombatSprite_SetPaletteSource(CombatSprite*, s32);
+extern s32  func_ov003_020c5b2c(u16, void*, s32, s32, s32);
+extern s32  func_ov003_020cb784(s32);
+extern s32  func_ov003_020cb744(s32);
 
 /// One corner of the hexagon the RG patrols, relative to the screen centre.
 typedef struct Enm006Waypoint {
@@ -46,9 +29,6 @@ extern void func_ov010_02125c80(BtlEnm006*);
 extern void func_ov010_02125b28(BtlEnm006*);
 extern s32  func_ov010_021265ac(BtlEnm006*, s32);
 extern s32  func_ov003_020cb7a4(s32);
-extern void func_ov003_020c44ac(BtlEnm006*);
-extern void func_ov003_020c4b1c(BtlEnm006*);
-extern void func_ov003_020c4628(BtlEnm006*);
 extern void func_ov010_02125de4(BtlEnm006*);
 extern char data_ov010_021293a4[20];
 
@@ -73,7 +53,7 @@ const Enm006Waypoint data_ov010_02129250[6] = {
 char data_ov010_021293a4[20] = "Tsk_BtlEnm006_RG";
 
 void func_ov010_02125910(BtlEnm006* data, void* arg1) {
-    func_ov003_020c427c(data);
+    func_ov003_020c427c(&data->base);
     data->unk_1C8 = arg1;
     data->unk_1C4 = 0;
     data->unk_1C0 = 0;
@@ -96,7 +76,7 @@ void func_ov010_02125998(BtlEnm006* data) {
         data->unk_1C0++;
         data->unk_188 = data->partner->unk_188;
     }
-    if (func_ov003_020c5bfc(data) != 0) {
+    if (func_ov003_020c5bfc(&data->base) != 0) {
         return;
     }
     func_ov010_02125910(data, (void*)func_ov010_021259e8);
@@ -110,19 +90,19 @@ void func_ov010_021259e8(BtlEnm006* data) {
         return;
     }
     if (data->unk_1C0 == 0) {
-        CombatEnemyParams* g = func_ov003_020c3c88(data);
-        data->unk_19E        = ((-(data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_22) >> 12;
-        data->unk_1A2        = ((data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_26 >> 12;
-        data->unk_1C2        = func_ov003_020c42ec(data);
+        Ov003ActorParams* g = func_ov003_020c3c88(&data->base);
+        data->unk_19E       = ((-(data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_22) >> 12;
+        data->unk_1A2       = ((data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_26 >> 12;
+        data->unk_1C2       = func_ov003_020c42ec(&data->base);
     }
     arrived = func_ov010_021265ac(data, data->unk_1C0);
     if (data->unk_1C0 >= data->unk_1C2 && arrived != 0 && data->actor.position.y == func_ov003_020cb7a4(1) >> 1) {
-        if (func_ov003_020c4348(data) != 0) {
+        if (func_ov003_020c4348(&data->base) != 0) {
             func_ov010_02125938(data);
             return;
         }
         data->unk_1C0 = 1;
-        data->unk_1C2 = func_ov003_020c42ec(data);
+        data->unk_1C2 = func_ov003_020c42ec(&data->base);
         return;
     }
     data->unk_1C0 = data->unk_1C0 + 1;
@@ -147,7 +127,7 @@ void func_ov010_02125b28(BtlEnm006* data) {
                 data->flags18C |= 1;
                 data->actor.flags |= 0x20;
                 data->flags18C |= 1;
-                func_ov003_020cb578(data, 0);
+                func_ov003_020cb578(&data->actor, 0);
                 data->unk_1C2 = 1;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -163,7 +143,7 @@ void func_ov010_02125b28(BtlEnm006* data) {
                 data->flags18C &= ~1;
                 data->actor.flags &= ~0x20;
                 CombatSprite_SetAnimFromTable(cs, 4, 1);
-                func_ov003_020cb578(data, 1);
+                func_ov003_020cb578(&data->actor, 1);
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
                 return;
@@ -176,7 +156,7 @@ void func_ov010_02125b28(BtlEnm006* data) {
 void func_ov010_02125c80(BtlEnm006* data) {
     switch (data->unk_1C4) {
         case 0:
-            if (func_ov003_020c6230(data) != 0) {
+            if (func_ov003_020c6230(&data->base) != 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -193,7 +173,7 @@ void func_ov010_02125c80(BtlEnm006* data) {
                 data->unk_1D4 = data->actor.position.y;
                 data->unk_1D8 = data->actor.position.z;
                 data->unk_1C2 = func_ov010_02126830(data, (void*)0x4000);
-                func_ov003_020c4c1c(data);
+                func_ov003_020c4c1c(&data->base);
             }
             if (data->sprite.sprite.cellIndex == 1 && data->sprite.sprite.frameTimer == 1) {
                 func_ov003_02087f00(0x1CF, func_ov003_020843b0(1, data->actor.position.x));
@@ -204,7 +184,7 @@ void func_ov010_02125c80(BtlEnm006* data) {
                 return;
             }
             func_ov010_02125910(data, (void*)func_ov010_021259e8);
-            func_ov003_020c4ee0(data);
+            func_ov003_020c4ee0(&data->base);
             return;
     }
 }
@@ -222,7 +202,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 }
                 data->ext.rg.unk_1F8 = -1;
             }
-            if (func_ov003_020c6230(data) != 0) {
+            if (func_ov003_020c6230(&data->base) != 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -232,7 +212,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
                 CombatSprite_SetAnimFromTable(cs, 3, 1);
-                func_ov003_020c4c1c(data);
+                func_ov003_020c4c1c(&data->base);
                 func_ov003_02087f00(0x1CC, func_ov003_020843b0(1, data->actor.position.x));
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
@@ -246,7 +226,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->flags18C |= 1;
                 data->actor.flags |= 0x20;
                 data->flags18C |= 1;
-                func_ov003_020cb578(data, 0);
+                func_ov003_020cb578(&data->actor, 0);
                 s32 v = (u32)((s32)data->ext.rg.unk_1F4 << 30) >> 30;
                 switch (v) {
                     case 0:
@@ -299,8 +279,8 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->unk_1C0 = data->unk_1C0 + 1;
                 CombatSprite_SetAnimFromTable(cs, 0xE, 1);
                 data->actor.flags &= ~0x20;
-                func_ov003_020cb578(data, 1);
-                func_ov003_020c4c9c(data);
+                func_ov003_020cb578(&data->actor, 1);
+                func_ov003_020c4c9c(&data->base);
                 func_ov003_02087f00(0x1C9, func_ov003_020843b0(1, data->actor.position.x));
             }
             if (data->sprite.sprite.cellIndex == 6 && data->sprite.sprite.frameTimer == 1) {
@@ -337,7 +317,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
             if (data->unk_1C0 == 0) {
                 data->flags18C |= 1;
                 data->actor.flags |= 0x20;
-                func_ov003_020cb578(data, 0);
+                func_ov003_020cb578(&data->actor, 0);
                 data->unk_1C2 = 0x3C;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -353,7 +333,7 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 data->flags18C &= ~1;
                 data->actor.flags &= ~0x20;
                 CombatSprite_SetAnimFromTable(cs, 4, 1);
-                func_ov003_020cb578(data, 1);
+                func_ov003_020cb578(&data->actor, 1);
                 if (data->actor.isFlipped == 0) {
                     data->actor.position.x = func_ov003_020cb764(1) + 0x60000;
                 } else {
@@ -361,14 +341,14 @@ void func_ov010_02125de4(BtlEnm006* data) {
                 }
                 data->actor.position.y = func_ov003_020cb784(1);
                 data->actor.position.z = 0;
-                func_ov003_020c4b1c(data);
+                func_ov003_020c4b1c(&data->base);
                 func_ov003_02087f00(0x1CC, func_ov003_020843b0(1, data->actor.position.x));
             }
             if (SpriteMgr_IsAnimationFinished(&cs->sprite) == 0) {
                 return;
             }
             func_ov010_02125910(data, (void*)func_ov010_021259e8);
-            func_ov003_020c4ee0(data);
+            func_ov003_020c4ee0(&data->base);
             return;
     }
 }
@@ -378,7 +358,7 @@ void func_ov010_0212636c(BtlEnm006* data) {
         data->unk_1C0++;
         data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
     }
-    if (func_ov003_020c62c4(data, 6) != 0) {
+    if (func_ov003_020c62c4(&data->base, 6) != 0) {
         return;
     }
     func_ov010_02125910(data, (void*)func_ov010_021259e8);
@@ -389,14 +369,14 @@ void func_ov010_021263c4(BtlEnm006* data) {
         data->unk_1C0++;
         data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
     }
-    if (func_ov003_020c72b4(data, 0, 9) != 0) {
+    if (func_ov003_020c72b4(&data->base, 0, 9) != 0) {
         return;
     }
     func_ov010_02125910(data, (void*)func_ov010_021259e8);
 }
 
 s32 func_ov010_02126420(BtlEnm006* data) {
-    s32 result = func_ov003_020c703c(data);
+    s32 result = func_ov003_020c703c(&data->base);
     if (result == 0) {
         data->unk_1CC = result = 0;
     }
@@ -503,7 +483,7 @@ s32 func_ov010_021265ac(BtlEnm006* data, s32 arg1) {
         restart:;
         }
         CombatSprite_SetAnimFromTable(&data->sprite, v, 0);
-        func_ov003_020c4ab4(data, arg1);
+        func_ov003_020c4ab4(&data->base, arg1);
     }
     func_ov010_02126830(data, (void*)0x2000);
     if ((data->sprite.sprite.cellIndex - 1) % 4 == 0) {
@@ -578,9 +558,9 @@ s32 func_ov010_021269d0(TaskPool* pool, Task* task, void* args, s32 stage) {
 
 s32 func_ov010_02126a20(BtlEnm006* data, void* arg1) {
     MI_CpuSet(data, 0, 0x1FC);
-    func_ov003_020c3efc(data, arg1);
-    func_ov003_020c44ac(data);
-    func_ov003_020c4b1c(data);
+    func_ov003_020c3efc(&data->base, arg1);
+    func_ov003_020c44ac(&data->base);
+    func_ov003_020c4b1c(&data->base);
     data->actor.flags |= 0x80000000;
     func_ov010_02125910(data, (void*)func_ov010_02125998);
     data->unk_1CC = 1;
@@ -605,7 +585,7 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
         case 1:
         case 2:
             if (flag == 0) {
-                func_ov003_02084694(&data->collider.side, 0);
+                func_ov003_02084694(&data->collider, 0);
                 func_ov010_02125910(data, (void*)func_ov010_0212636c);
             }
             break;
@@ -639,7 +619,7 @@ s32 func_ov010_02126a94(BtlEnm006* data) {
         }
     }
     data->actor.flags |= 0x80000000;
-    func_ov003_020c4628(data);
+    func_ov003_020c4628(&data->base);
     return data->unk_1CC;
 }
 

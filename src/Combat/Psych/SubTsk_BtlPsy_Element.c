@@ -19,17 +19,14 @@ const Ov003ElementKind data_ov003_020dc7b8[8] = {
     {0x56C, 0x47, 0x48, 0x15F, 0x27},
 };
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
-extern s32              func_ov003_020843b0(s32, s32);
-extern s32              func_ov003_020843ec(s32, s32, s32);
-extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void             func_ov003_02087f28(s32, s32);
-extern s32              func_ov003_020a51c0(void);
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
-extern s32              func_ov003_020a632c(s32, s32, s32, s32);
-extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
+extern s32 func_ov003_0208442c(s32, s32);
+extern s32 func_ov003_02084460(s32, s32, s32);
+extern s32 func_ov003_020843b0(s32, s32);
+extern s32 func_ov003_020843ec(s32, s32, s32);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern s32 func_ov003_020a51c0(void);
+extern s32 func_ov003_020a632c(s32, s32, s32, s32);
+extern s32 func_ov003_020a62b8(s32, s32, s32, s32);
 
 s32 func_ov003_020ae414(Ov003EffectState* effect, s32 mode, s32 kind, s16 x, s16 y, s32 angle, s32 speed, s32 scale,
                         s32 uses) {

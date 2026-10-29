@@ -57,21 +57,16 @@
 // ---------------------------------------------------------------------------------------------
 // External functions
 // ---------------------------------------------------------------------------------------------
-extern s32   func_ov003_0208442c(s32, s16);
-extern s32   func_ov003_02084460(s32, s16, s32);
-extern void  func_ov003_02084634(Ov003EffectSprite*, s32, s16, s16);
 extern void* func_ov003_0208495c(CombatList*);
 extern void* func_ov003_02084970(CombatList*);
 extern void* func_ov003_02084984(CombatListNode*);
 extern void  func_ov003_020849ac(CombatList*);
 extern void  func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern void  func_ov003_020849dc(CombatList*, CombatListNode*);
 extern void  func_ov003_0208b3cc(s32, s16);
 extern BOOL  func_ov003_0208ca04(s32, u32);
 extern s16   func_ov003_0208ca24(s32, u32);
 extern void  func_ov003_0209b564(s32, s32, CombatActor*, s32);
 extern s32   func_ov003_020a3330(s32);
-extern s8    func_ov003_020a3468(s32);
 extern u16   func_ov004_020e737c(void);
 extern void  func_ov004_020e739c(s32, s32);
 extern void  func_ov005_020e740c(s32, s32);
@@ -93,8 +88,6 @@ extern const u8 data_ov003_020e3780[];
 /// Battle actor pack identifier (defined by the following unit).
 extern char data_ov003_020e391c[];
 
-extern void func_ov003_02087f28(s32, s32);
-extern void func_ov003_02087f64(s32, s32);
 extern void func_ov003_02087fe0(s32, CombatSprite*, s32);
 
 // ---------------------------------------------------------------------------------------------
@@ -1282,7 +1275,7 @@ void func_ov003_02086680(Ov003EffectActor* effect, Ov003EffectSpawn* spawn) {
     effect->actor.position.x = spawn->arg1;
     effect->actor.position.y = spawn->arg2;
     effect->actor.position.z = 0;
-    func_ov003_02084634(&effect->sprite, 3, effect->actor.unk_70, effect->actor.unk_72);
+    func_ov003_02084634(&effect->sprite.collider, 3, effect->actor.unk_70, effect->actor.unk_72);
     func_ov003_020849bc(OV003_EFFECT_ACTORS, &effect->node, effect);
 }
 
@@ -1301,11 +1294,12 @@ void func_ov003_020866f8(Ov003EffectActor* effect) {
             effect->actor.yVelocity = 0;
         }
     }
-    func_ov003_020846ac(&effect->sprite, effect->actor.position.x, effect->actor.position.y, effect->actor.position.z);
+    func_ov003_020846ac(&effect->sprite.collider, effect->actor.position.x, effect->actor.position.y,
+                        effect->actor.position.z);
 }
 
 void func_ov003_02086770(Ov003EffectActor* effect) {
-    func_ov003_02084678(&effect->sprite);
+    func_ov003_02084678(&effect->sprite.collider);
     func_ov003_020849dc(OV003_EFFECT_ACTORS, &effect->node);
 }
 

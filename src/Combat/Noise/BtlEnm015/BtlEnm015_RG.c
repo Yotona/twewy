@@ -2,9 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm015.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/Core/CombatSystem.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 s32  func_ov013_02126dd8(TaskPool*, Task*, void*, s32);
 void func_ov013_02126b30(BtlEnm015*);
@@ -16,7 +14,7 @@ void func_ov013_02126ab0(BtlEnm015* arg0) {
     switch (arg0->unk_1C2) {
         case 0:
             CombatSprite_SetAnimFromTable(&arg0->sprite, 0, 0);
-            func_ov003_020c4ee0(arg0);
+            func_ov003_020c4ee0(&arg0->base);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = RNG_Next(0x3C) + 0x3C;
             break;
@@ -32,7 +30,7 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
 
     switch (arg0->unk_1C2) {
         case 0:
-            if (func_ov003_020c6230(arg0) != 0) {
+            if (func_ov003_020c6230(&arg0->base) != 0) {
                 return;
             }
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
@@ -41,7 +39,7 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
 
         case 1:
             CombatSprite_SetAnimFromTable(&arg0->sprite, 7, 1);
-            func_ov003_020c4cc4(arg0, 0x220);
+            func_ov003_020c4cc4(&arg0->base, 0x220);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
@@ -51,9 +49,9 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
                 return;
             }
             CombatSprite_SetAnimFromTable(&arg0->sprite, 8, 1);
-            func_ov003_020c4cc4(arg0, 0x226);
+            func_ov003_020c4cc4(&arg0->base, 0x226);
             func_ov013_021257a4(arg0, 0);
-            func_ov003_0208a08c(1, boss, 0);
+            func_ov003_0208a08c(1, &boss->base, 0);
             func_ov013_02125838(arg0);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
@@ -73,7 +71,7 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
 
     switch (arg0->unk_1C2) {
         case 0:
-            if (func_ov003_020c6230(arg0) != 0) {
+            if (func_ov003_020c6230(&arg0->base) != 0) {
                 return;
             }
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
@@ -93,16 +91,16 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
             s32 h;
 
             if (arg0->unk_1C0 == 0) {
-                func_ov003_020c4cc4(arg0, 0x220);
+                func_ov003_020c4cc4(&arg0->base, 0x220);
             }
             if (arg0->unk_1C0 == 0x2B) {
                 func_ov013_021256f0(arg0, 1, arg0->unk_1DC, arg0->unk_1E0, arg0->unk_1E4);
             }
             if (arg0->unk_1C0 == 0x2C) {
-                func_ov003_020c4cc4(arg0, 0x224);
+                func_ov003_020c4cc4(&arg0->base, 0x224);
                 h = func_ov003_0208a114(0x8B);
-                if (func_ov003_0208a164(h, &arg0->actor.unk_04, arg0->unk_1DC, arg0->unk_1E0, arg0->unk_1E4) == 1) {
-                    func_ov003_020c4cc4(arg0, 0x225);
+                if (func_ov003_0208a164(h, &arg0->actor.baseArgs, arg0->unk_1DC, arg0->unk_1E0, arg0->unk_1E4) == 1) {
+                    func_ov003_020c4cc4(&arg0->base, 0x225);
                 }
             }
             arg0->unk_1C0 = arg0->unk_1C0 + 1;

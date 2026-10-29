@@ -4,10 +4,7 @@
 #include "SndMgr.h"
 #include <nitro/mi/cpumem.h>
 
-extern void             func_ov003_02087ed8(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 extern s32              func_ov003_0208442c(s32, s32);
 extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020843b0(s32, s32);

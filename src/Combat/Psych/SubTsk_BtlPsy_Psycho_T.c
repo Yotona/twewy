@@ -6,7 +6,6 @@
 extern s32  func_02026528(s32, s32);
 extern void func_02026590(s32*, s32, u16);
 extern void func_020265d4(s32*, s32, u16);
-extern void func_ov003_02087f28(SndMgrSeIdx, s32);
 extern s32  func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s16  func_ov003_020a40cc(Ov003TouchActor*, s32);
 extern s32  func_ov003_020a62b8(s32, s32, s32, s32);

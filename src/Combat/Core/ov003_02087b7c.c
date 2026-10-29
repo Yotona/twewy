@@ -95,18 +95,13 @@ extern s32  func_ov003_020843b0(s32, s32);
 extern s32  func_ov003_020843ec(s32, s32, s32);
 extern s32  func_ov003_0208442c(s32, s32);
 extern s32  func_ov003_02084460(s32, s32, s32);
-extern s32  func_ov003_02085dc8(s32);
-extern void func_ov003_02087f28(SndMgrSeIdx, s32);
-extern void func_ov003_02087f64(SndMgrSeIdx, s32);
 extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
 extern s32  func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 extern void func_ov003_0208b3cc(s32, s16);
-extern s32  func_ov003_0208b518(s32, Ov003EnemyActor*, s16);
 extern BOOL func_ov003_0208ca04(s32, u32);
 extern s16  func_ov003_0208ca24(s32, u32);
 extern void func_ov003_0208cb6c(s32, s32);
 extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void func_ov003_0209b61c(s32, s32, Ov003EnemyActor*);
 extern void func_ov003_0209c568(s32, u32, s32);
 extern void func_ov003_0209c984(s32, s32, s32, s32, s32);
 extern void func_ov003_0209ed70(u8, s32, s32, s32, s32);
@@ -189,10 +184,8 @@ char data_ov003_020e396c[0x10] = "ARG_Teleport_T";
 // Functions
 // ---------------------------------------------------------------------------------------------
 
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(void*);
-extern void             func_ov003_02089f90(s32 mode, Ov003EnemyActor* unit, u16 variant, s16 arg3, s16 arg4);
-extern s32              func_ov003_0208a3ec(Ov003Hit* spawn);
+extern void func_ov003_02089f90(s32 mode, Ov003EnemyActor* unit, u16 variant, s16 arg3, s16 arg4);
+extern s32  func_ov003_0208a3ec(Ov003Hit* spawn);
 
 /// TRUE when the two screen-space positions overlap on the axis `arg0` selects. The four
 /// halfwords at `Ov003Global + 0x3D378` are the current and previous touch/focus positions.
@@ -1105,7 +1098,7 @@ void func_ov003_020895ac(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32
     }
     if (((u32)(info->flags << 0x17) >> 0x1F) == 0) {
         func_ov003_0208b518(0, unit, -damage);
-        func_ov003_0209b61c(0, damage, unit);
+        func_ov003_0209b61c(0, damage, &unit->actor);
         if (damage > 0) {
             func_ov003_0208cb6c(0, damage);
             func_ov003_0209c150(arg3);
@@ -1113,7 +1106,7 @@ void func_ov003_020895ac(Ov003EnemyActor* unit, const Ov003AttackInfo* info, s32
         }
     } else {
         func_ov003_0208b518(1, unit, -damage);
-        func_ov003_0209b61c(1, damage, unit);
+        func_ov003_0209b61c(1, damage, &unit->actor);
         if (damage > 0) {
             func_ov003_0208cb6c(1, damage);
         }
@@ -1230,7 +1223,7 @@ s32 func_ov003_02089974(Ov003Hit* hit) {
                 result = 1;
             }
         }
-        unit = func_ov003_02084984(&unit->node.prev);
+        unit = func_ov003_02084984(&unit->node);
     }
     if (result == 1) {
         if (((u32)(hit->info->flags << 0x17) >> 0x1F) == 0) {
@@ -1315,7 +1308,7 @@ s32 func_ov003_02089c74(Ov003Hit* hit) {
                 result = 1;
             }
         }
-        unit = func_ov003_02084984(&unit->node.prev);
+        unit = func_ov003_02084984(&unit->node);
     }
     if (result == 1) {
         if (((u32)(hit->info->flags << 0x17) >> 0x1F) == 0) {

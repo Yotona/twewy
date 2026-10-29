@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
@@ -53,9 +54,8 @@ typedef struct BtlFeatSplashEnm {
 
 extern s32 data_ov003_020e71e0;
 
-extern void func_ov003_0209fc88(s32 engine, s32 x, s32 y, s32 z, s16 count, s32 independent);
-extern s32  func_ov003_020843b0(s32 engine, s32 x);
-extern s32  func_ov003_02084460(s32 engine, s32 y, s32 z);
+extern s32 func_ov003_020843b0(s32 engine, s32 x);
+extern s32 func_ov003_02084460(s32 engine, s32 y, s32 z);
 
 s32 func_ov003_020bc088(BtlFeatSplashEnm* self);
 s32 func_ov003_020bc0ac(BtlFeatSplashEnm* self);

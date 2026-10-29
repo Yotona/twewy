@@ -18,7 +18,7 @@
 #include "SpriteMgr.h"
 #include "common_data.h"
 
-#include "Combat/Core/CombatSystem.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 extern void HBlank_Init();

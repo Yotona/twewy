@@ -14,14 +14,6 @@ typedef struct Enm014Variant {
     /* 0x0E */ u16              unk_0E;
 } Enm014Variant; // Size: 0x10
 
-extern void func_ov003_020c3efc(void*, void*);
-extern void func_ov003_020c427c(void*);
-extern void func_ov003_020c4cc4(void*, s32);
-extern s32  func_ov003_020c5bfc(void*);
-extern void func_ov003_020ccf58(s32, void*);
-extern s32  func_ov003_020ccfc8(void*, s32);
-extern s32  func_ov003_020ccfec(void*);
-
 extern char data_ov012_02127990[28];
 
 extern char           data_ov012_021279ac[28];
@@ -111,7 +103,7 @@ void func_ov012_021256f0(s32 engine, BtlEnm014* data, s32 arg2) {
 }
 
 void func_ov012_02125768(BtlEnm014* data, void (*fn)(BtlEnm014*)) {
-    func_ov003_020c427c(data);
+    func_ov003_020c427c(&data->base);
     data->unk_1C4 = fn;
     data->unk_1C2 = 0;
     data->unk_1C0 = 0;
@@ -120,32 +112,32 @@ void func_ov012_02125768(BtlEnm014* data, void (*fn)(BtlEnm014*)) {
 void func_ov012_02125790(s32 engine, BtlEnm014* data, s32 arg2, s32 arg3) {
     data->unk_1CC = 1;
     data->unk_1C8 = arg3;
-    func_ov003_020c3efc(data, (void*)arg2);
-    func_ov003_020ccf58(engine, data);
+    func_ov003_020c3efc(&data->base, (void*)arg2);
+    func_ov003_020ccf58(engine, &data->base);
 }
 
 void func_ov012_021257c4(BtlEnm014* data) {
-    if (func_ov003_020c5bfc(data) != 0) {
+    if (func_ov003_020c5bfc(&data->base) != 0) {
         return;
     }
     func_ov012_02125768(data, (void (*)(BtlEnm014*))data->unk_1C8);
 }
 
 void func_ov012_021257e8(BtlEnm014* data) {
-    if (func_ov003_020ccfc8(data, 4) != 0) {
+    if (func_ov003_020ccfc8(&data->base, 4) != 0) {
         return;
     }
     func_ov012_02125768(data, (void (*)(BtlEnm014*))data->unk_1C8);
 }
 
 void func_ov012_02125810(BtlEnm014* data) {
-    if (func_ov003_020ccfec(data) == 0) {
+    if (func_ov003_020ccfec(&data->base) == 0) {
         data->unk_1CC = 0;
     }
 }
 
 void func_ov012_0212582c(BtlEnm014* data) {
-    if (func_ov003_020c72b4(data, 0, 7) != 0) {
+    if (func_ov003_020c72b4(&data->base, 0, 7) != 0) {
         return;
     }
     func_ov012_02125768(data, (void (*)(BtlEnm014*))data->unk_1C8);
@@ -194,7 +186,7 @@ void func_ov012_021258e8(void) {
 void func_ov012_02125958(BtlEnm014* data) {
     if (data->unk_1D4 == 0 && data->actor.unk_5A != 0 && data->actor.unk_62 != 0x64) {
         func_ov012_021256f0(data->sprite.sprite.bits_0_1, data, 0);
-        func_ov003_020c4cc4(data, 0x21E);
+        func_ov003_020c4cc4(&data->base, 0x21E);
     }
     data->unk_1D4 = data->actor.unk_5A;
 }

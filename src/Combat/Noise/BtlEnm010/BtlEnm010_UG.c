@@ -49,7 +49,7 @@ s32         func_ov011_0212b6e0(BtlEnm010UG* data, s32 arg1);
 s32         func_ov011_0212b800(BtlEnm010UG* data, s32 arg1);
 s32         func_ov011_0212b890(BtlEnm010UG* data, s16* p, s16* q, s32 arg3);
 s32         func_ov011_0212b99c(void* arg0, void* arg1, void* arg2, s32 index);
-void        func_ov011_0212b9e4(void* arg0, Task* arg1, BtlEnm010Spawn* arg2);
+void        func_ov011_0212b9e4(void* arg0, Task* arg1, Ov003CutinCmdData* arg2);
 s32         func_ov011_0212bac8(void* arg0, Task* arg1);
 s32         func_ov011_0212bc84(void* arg0, Task* arg1);
 s32         func_ov011_0212bcc8(void* arg0, Task* arg1);
@@ -58,33 +58,12 @@ void        func_ov011_0212bd3c(BtlEnm010UG* p, s32 i);
 void        func_ov011_0212bd90(BtlEnm010UG* p, s32 i);
 s32         func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
 
-extern s16  func_ov003_020843b0(s32 a, s32 b);
-extern s32  func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
-extern void func_ov003_020c427c(void*);
-extern s32  func_ov003_020c5bfc(void*);
-extern s32  func_ov003_020c42ec(void* p);
 extern s32  func_ov003_020cb744(s32 arg);
 extern s32  func_ov003_020cb7a4(s32 arg);
-extern s32  func_ov003_020c4c9c(void* p);
-extern void func_ov003_020c48b0(void* p);
-extern void func_ov003_020c492c(void* p);
-extern s32  func_ov003_020cb520(void* p, s32 arg1);
-extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
-extern s32  func_ov003_020c3efc(void* p, void* arg1);
-extern void func_ov003_020c4748(void* p);
-extern s32  func_ov003_0208810c(void* p, void* arg1);
 extern void func_ov011_0212a134(BtlEnm010UG* data);
 extern s32  func_ov011_0212b800(BtlEnm010UG* data, s32 arg1);
-extern s32  func_ov003_020c6bc8(BtlEnm010UG* data, s32 arg1);
 extern void func_ov011_0212b388(BtlEnm010UG* data);
-extern s32  func_ov003_020c6c2c(BtlEnm010UG* data, s32 arg1);
-extern s32  func_ov003_020c4c9c(void* p);
-extern void func_ov003_020c48b0(void* p);
-extern void func_ov003_020c492c(void* p);
-extern void func_ov003_020c4520(void* p);
-extern void func_ov003_020c4b5c(void* p);
 extern s32  func_ov011_0212b890(BtlEnm010UG* data, s16* arg1, s16* arg2, s32 arg3);
-extern s32  func_ov003_020c5b2c(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4);
 extern void func_ov011_0212a134(BtlEnm010UG* data);
 extern void func_ov011_0212a2ec(BtlEnm010UG* data);
 extern void func_ov011_0212a420(BtlEnm010UG* data);
@@ -92,20 +71,15 @@ extern void func_ov011_0212a634(BtlEnm010UG* data);
 extern s16  func_ov011_0212bce0(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov003_020cb744(s32 arg0);
 extern s32  func_ov003_020cb7a4(s32 arg0);
-extern s32  func_ov003_020c6b8c(BtlEnm010UG* data, s32 arg1);
 extern void func_ov011_0212aa20(BtlEnm010UG* data);
 extern s32  func_ov011_0212b6e0(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov011_0212b5d8(BtlEnm010UG* data, s32 arg1);
 extern s32  func_ov003_020cc7c0(s32 a0, s32 a1, s32 a2);
-extern s32  func_ov003_020c42ec(void* p);
-extern s32  func_ov003_020c4348(void* p);
 extern void func_ov011_0212b168(BtlEnm010UG* data);
 extern void func_ov011_0212a78c(BtlEnm010UG* data);
 extern void func_ov011_0212ac0c(BtlEnm010UG* data);
 extern void func_ov011_0212aee8(BtlEnm010UG* data);
 extern s32  func_ov011_0212bdbc(BtlEnm010UG* p, s32 i);
-extern void func_ov003_02084694(void* p, s32 arg1);
-extern s32  func_ov003_020c4668(void* p);
 
 /// Per-slot cooldown: a random value in `unk_00 +/- unk_02` frames.
 const BtlEnm010Cooldown data_ov011_0212c30c[1] = {
@@ -160,7 +134,7 @@ char data_ov011_0212cc8c[20] = {0x54, 0x61, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 
                                 0x6D, 0x30, 0x31, 0x30, 0x5F, 0x55, 0x47, 0x00, 0x00, 0x00};
 
 void func_ov011_02129ed0(BtlEnm010UG* data, void (*func)(BtlEnm010UG*)) {
-    func_ov003_020c427c(data);
+    func_ov003_020c427c(&data->base);
     data->unk_1C8 = func;
     data->unk_1C4 = 0;
     data->unk_1C0 = 0;
@@ -242,7 +216,7 @@ void func_ov011_02129f80(BtlEnm010UG* data) {
 }
 
 void func_ov011_0212a10c(BtlEnm010UG* data) {
-    if (func_ov003_020c5bfc(data) != 0) {
+    if (func_ov003_020c5bfc(&data->base) != 0) {
         return;
     }
     func_ov011_02129ed0(data, func_ov011_0212a134);
@@ -253,7 +227,7 @@ void func_ov011_0212a134(BtlEnm010UG* data) {
 
     switch (data->unk_1C4) {
         case 0:
-            data->unk_1C2 = func_ov003_020c42ec(data);
+            data->unk_1C2 = func_ov003_020c42ec(&data->base);
             data->unk_1FC = 0;
             data->unk_1C0 = 0;
             data->unk_1C4 = 2;
@@ -288,7 +262,7 @@ void func_ov011_0212a134(BtlEnm010UG* data) {
             }
             if (data->unk_1C2 > 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-            } else if (func_ov003_020c4348(data) != 0) {
+            } else if (func_ov003_020c4348(&data->base) != 0) {
                 func_ov011_02129f80(data);
             } else {
                 func_ov011_02129ef8(data);
@@ -372,7 +346,7 @@ void func_ov011_0212a540(BtlEnm010UG* data) {
     if (data->unk_1C0 == 0) {
         func_ov011_02125750(0, &data->sprite, 6);
         CombatSprite_SetAnimFromTable(&data->sprite, 0, 1);
-        func_ov003_020c4b5c(data);
+        func_ov003_020c4b5c(&data->base);
         v                      = 0 - 0x40000;
         data->actor.position.z = v;
         data->unk_1D0          = (data->actor.isFlipped == 0) ? v + 0x38000 : 0x8000;
@@ -388,8 +362,8 @@ void func_ov011_0212a540(BtlEnm010UG* data) {
     data->unk_1D8     = 0;
     data->unk_1D0     = 0;
     data->actor.flags = data->actor.flags & ~0x10000000;
-    func_ov003_020cb520(data, 1);
-    func_ov003_020cb594(data, 1);
+    func_ov003_020cb520(&data->actor, 1);
+    func_ov003_020cb594(&data->base, 1);
     func_ov011_02129ed0(data, func_ov011_0212a134);
 }
 
@@ -741,8 +715,8 @@ void func_ov011_0212b168(BtlEnm010UG* data) {
             if (data->unk_1C0 == 0) {
                 func_ov011_02125750(0, &data->sprite, 5);
                 CombatSprite_SetAnimFromTable(&data->sprite, 0, 1);
-                func_ov003_020cb520(data, 0);
-                func_ov003_020cb594(data, 0);
+                func_ov003_020cb520(&data->actor, 0);
+                func_ov003_020cb594(&data->base, 0);
                 data->actor.flags = data->actor.flags | 0x10000000;
                 data->unk_1C0     = data->unk_1C0 + 1;
                 func_ov003_02087f00(0x1E2, func_ov003_020843b0(0, data->actor.position.x));
@@ -782,7 +756,7 @@ void func_ov011_0212b318(BtlEnm010UG* data) {
         data->actor.flags = data->actor.flags & ~0x10000000;
         func_ov011_02125750(0, &data->sprite, 0);
     }
-    if (func_ov003_020c6bc8(data, 4) != 0) {
+    if (func_ov003_020c6bc8(&data->base, 4) != 0) {
         return;
     }
     func_ov011_02129ed0(data, func_ov011_0212b388);
@@ -796,7 +770,7 @@ void func_ov011_0212b388(BtlEnm010UG* data) {
         data->unk_1D0 = 0;
         func_ov011_02125750(0, &data->sprite, 0);
     }
-    if (func_ov003_020c6c2c(data, 5) != 0) {
+    if (func_ov003_020c6c2c(&data->base, 5) != 0) {
         return;
     }
     func_ov011_02129ed0(data, func_ov011_0212a134);
@@ -807,14 +781,14 @@ void func_ov011_0212b3ec(BtlEnm010UG* data) {
 
     if (data->unk_1C0 == 0) {
         data->unk_1C0 = data->unk_1C0 + 1;
-        func_ov003_020cb520(data, 1);
+        func_ov003_020cb520(&data->actor, 1);
         func_ov011_02125750(0, &data->sprite, 0);
         data->unk_1D8     = 0;
         data->unk_1D4     = 0;
         data->unk_1D0     = 0;
         data->actor.flags = data->actor.flags & ~0x10000000;
     }
-    if (func_ov003_020c6b8c(data, 4) != 0) {
+    if (func_ov003_020c6b8c(&data->base, 4) != 0) {
         return;
     }
     if (RNG_Next(0x64) < data_ov011_0212c35c[data->spriteIndex]) {
@@ -838,7 +812,7 @@ void func_ov011_0212b4f4(BtlEnm010UG* data) {
         data->unk_1D0     = 0;
         data->actor.flags = data->actor.flags & ~0x10000000;
     }
-    if (func_ov003_020c7070(data) == 0) {
+    if (func_ov003_020c7070(&data->base) == 0) {
         data->unk_1CC = 0;
     }
 }
@@ -846,14 +820,14 @@ void func_ov011_0212b4f4(BtlEnm010UG* data) {
 void func_ov011_0212b558(BtlEnm010UG* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0 = data->unk_1C0 + 1;
-        func_ov003_020cb520(data, 1);
+        func_ov003_020cb520(&data->actor, 1);
         func_ov011_02125750(0, &data->sprite, 0);
         data->unk_1D0     = 0;
         data->unk_1D4     = 0;
         data->unk_1D0     = 0;
         data->actor.flags = data->actor.flags & ~0x10000000;
     }
-    if (func_ov003_020c72b4(data, 0, 4) != 0) {
+    if (func_ov003_020c72b4(&data->base, 0, 4) != 0) {
         return;
     }
     func_ov011_02129ed0(data, func_ov011_0212a134);
@@ -898,7 +872,7 @@ s32 func_ov011_0212b6e0(BtlEnm010UG* data, s32 arg1) {
         data->unk_202 = 0;
         func_ov011_02125750(0, &data->sprite, 7);
         CombatSprite_SetAnimFromTable(&data->sprite, 0, 1);
-        func_ov003_020cb520(data, 0);
+        func_ov003_020cb520(&data->actor, 0);
     }
     switch (data->sprite.animTableIndex) {
         case 0:
@@ -919,7 +893,7 @@ s32 func_ov011_0212b6e0(BtlEnm010UG* data, s32 arg1) {
             goto out;
         case 2:
             if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
-                func_ov003_020cb520(data, 1);
+                func_ov003_020cb520(&data->actor, 1);
                 return 0;
             }
             goto out;
@@ -936,7 +910,7 @@ s32 func_ov011_0212b800(BtlEnm010UG* data, s32 arg1) {
     if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
         func_ov011_02125750(0, &data->sprite, 0);
         CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
-        func_ov003_020c4c9c(data);
+        func_ov003_020c4c9c(&data->base);
         if (data->actor.isFlipped == 0) {
             data->actor.position.x = data->actor.position.x + 0x10000;
         } else {
@@ -989,17 +963,17 @@ s32 func_ov011_0212b99c(void* arg0, void* arg1, void* arg2, s32 index) {
     return f(arg0, arg1, arg2);
 }
 
-void func_ov011_0212b9e4(void* arg0, Task* arg1, BtlEnm010Spawn* arg2) {
-    BtlEnm010UG*    data;
-    BtlEnm010Spawn* args;
+void func_ov011_0212b9e4(void* arg0, Task* arg1, Ov003CutinCmdData* arg2) {
+    BtlEnm010UG*       data;
+    Ov003CutinCmdData* args;
 
     data = arg1->data;
     args = arg2;
     MI_CpuSet(data, 0, 0x214);
-    func_ov011_021256c0(args->unk_04);
-    func_ov003_020c3efc(data, args);
-    func_ov003_020c4520(data);
-    func_ov003_020c4b5c(data);
+    func_ov011_021256c0(args->sprite);
+    func_ov003_020c3efc(&data->base, args);
+    func_ov003_020c4520(&data->base);
+    func_ov003_020c4b5c(&data->base);
     data->unk_1C0 = 0;
     data->unk_1C2 = 0;
     data->unk_1C4 = 0;
@@ -1034,19 +1008,19 @@ s32 func_ov011_0212bac8(void* arg0, Task* arg1) {
             if (((u32)(data->unk_206 << 31) >> 31) == 0) {
                 break;
             }
-            func_ov003_02084694(&data->collider.side, 0);
+            func_ov003_02084694(&data->collider, 0);
             func_ov011_02129ed0(data, func_ov011_0212b3ec);
             break;
         case 3:
-            func_ov003_02084694(&data->collider.side, 1);
+            func_ov003_02084694(&data->collider, 1);
             func_ov011_02129ed0(data, func_ov011_0212b4f4);
             break;
         case 4:
-            func_ov003_02084694(&data->collider.side, 0);
+            func_ov003_02084694(&data->collider, 0);
             func_ov011_02129ed0(data, func_ov011_0212b318);
             break;
         case 5:
-            func_ov003_02084694(&data->collider.side, 0);
+            func_ov003_02084694(&data->collider, 0);
             func_ov011_02129ed0(data, func_ov011_0212b388);
             break;
         case 6:
@@ -1071,7 +1045,7 @@ s32 func_ov011_0212bac8(void* arg0, Task* arg1) {
     data->unk_1D0          = data->unk_1D0 + data->unk_1E8;
     data->unk_1D4          = data->unk_1D4 + data->unk_1EC;
     data->unk_1D8          = data->unk_1D8 + data->unk_1F0;
-    func_ov003_020c4668(data);
+    func_ov003_020c4668(&data->base);
     return data->unk_1CC;
 }
 
@@ -1080,10 +1054,10 @@ s32 func_ov011_0212bc84(void* arg0, Task* arg1) {
 
     p = arg1->data;
     if (p->unk_20C == -1 || p->unk_210 == 0) {
-        func_ov003_020c48b0(p);
+        func_ov003_020c48b0(&p->base);
     } else {
-        func_ov003_020c4748(p);
-        func_ov003_0208810c(&p->subSprite, p);
+        func_ov003_020c4748(&p->base);
+        func_ov003_0208810c(&p->subSprite, &p->actor);
     }
     return 1;
 }

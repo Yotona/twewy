@@ -5,7 +5,6 @@
 
 extern s32       func_ov003_020a51c0(void);
 extern s32       func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void      func_ov003_02087f28(SndMgrSeIdx, s32);
 extern s32       func_ov003_020843b0(s32, s32);
 extern void      func_ov003_0209b564(s32, s32, CombatActor*, s32);
 extern void      func_ov003_0208b3cc(s32, s16);

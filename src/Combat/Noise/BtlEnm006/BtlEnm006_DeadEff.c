@@ -2,7 +2,7 @@
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Private/BtlEnm006.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006DeadEff {
@@ -17,7 +17,6 @@ typedef struct Enm006AnimEntryPad2 {
 
 extern s32  func_ov010_02125730(TaskPool*, Task*, void*, s32);
 extern s32  func_ov010_02125780(Enm006DeadEff*, Enm006Spawn*);
-extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
 extern char data_ov010_0212938c[24];
 
 const s16 data_ov010_02129200[3] = {0x17, 0x17, 0x17};

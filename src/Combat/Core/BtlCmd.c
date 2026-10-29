@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
@@ -97,7 +98,6 @@ extern u8                  data_02071cf0[];
 
 extern s32  func_ov003_020a3330(s32 id);
 extern s32  func_ov003_020a3468(s32 id);
-extern void func_ov003_02087ed8(s32 seIdx);
 extern void func_ov003_020868c8(s32 arg0);
 extern void func_ov003_0208697c(void);
 extern void func_ov003_020869c8(s32 arg0);

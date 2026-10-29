@@ -1,4 +1,5 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAura.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
@@ -86,8 +87,8 @@ void func_ov003_0209703c(s32 engine, BtlAuraSub* aura) {
             flame->riseSpeed = (RNG_Next(3) + 1) << 12;
             anim             = RNG_Next(2);
         }
-        func_ov003_02082a90(engine, &flame->sprite, &data_ov003_020d7800, 0x13, 0x15, 0x14, palette, anim);
-        func_ov003_020825b8((CombatSprite*)flame, (u16)anim, 1);
+        func_ov003_02082a90(engine, &flame->sprite.sprite, &data_ov003_020d7800, 0x13, 0x15, 0x14, palette, anim);
+        CombatSprite_SetAnim((CombatSprite*)flame, (u16)anim, 1);
         i++;
         spread += 0x1000;
         flame++;
@@ -104,11 +105,11 @@ void func_ov003_02097158(BtlAuraSub* aura) {
     i      = 0;
     flame  = aura->flames;
     do {
-        if (SpriteMgr_IsAnimationFinished(&flame->sprite) == 0) {
+        if (SpriteMgr_IsAnimationFinished(&flame->sprite.sprite) == 0) {
             if (flame->riseSpeed != 0) {
                 func_ov003_0208b2fc(&flame->x, &flame->y, flame->height, flame->riseSpeed);
             }
-            func_ov003_02082b0c((CombatSprite*)flame);
+            CombatSprite_Update((CombatSprite*)flame);
             active = 1;
         }
         i++;
@@ -127,16 +128,16 @@ void func_ov003_020971c0(BtlAuraSub* aura) {
     i     = 0;
     flame = aura->flames;
     do {
-        if (flame->sprite.bits_0_1 == 0) {
+        if (flame->sprite.sprite.bits_0_1 == 0) {
             owner = data_ov003_020e71b8->unk3D898;
         } else {
             owner = data_ov003_020e71b8->unk3D89C;
         }
         sortKey = 0x80000000 - owner->actor.position.y;
-        if (SpriteMgr_IsAnimationFinished(&flame->sprite) == 0) {
-            func_ov003_02082724(&flame->sprite, (s32)(flame->x * 0x10) >> 16, (s32)(flame->y * 0x10) >> 16);
+        if (SpriteMgr_IsAnimationFinished(&flame->sprite.sprite) == 0) {
+            CombatSprite_SetPosition(&flame->sprite, (s32)(flame->x * 0x10) >> 16, (s32)(flame->y * 0x10) >> 16);
             func_ov003_02082730((CombatSprite*)flame, sortKey);
-            func_ov003_02082b64((CombatSprite*)flame);
+            CombatSprite_Render((CombatSprite*)flame);
         }
         i++;
         flame++;
@@ -151,7 +152,7 @@ void func_ov003_02097254(BtlAuraSub* aura) {
     i     = 0;
     flame = aura->flames;
     do {
-        func_ov003_02082cc4((CombatSprite*)flame);
+        CombatSprite_Release((CombatSprite*)flame);
         i++;
         flame++;
     } while (i < 16);
@@ -179,7 +180,7 @@ s32 func_ov003_0209727c(TaskPool* pool, Task* task, void* args) {
         palette = 0x3E;
     }
     func_ov003_02082a04(engine, &aura->sprite.sprite, &data_ov003_020d7800, data_ov003_020d7ec8, 1, palette, 0x90);
-    func_ov003_02082724(&aura->sprite.sprite, (s32)(aura->x * 0x10) >> 16, (s32)(aura->y * 0x10) >> 16);
+    CombatSprite_SetPosition(&aura->sprite, (s32)(aura->x * 0x10) >> 16, (s32)(aura->y * 0x10) >> 16);
     func_ov003_0209703c(engine, aura);
     func_ov003_02087f00(SEIDX_SE_GREEN_LIGHT, (s32)(aura->x * 0x10) >> 16);
     return 1;
@@ -198,7 +199,7 @@ s32 func_ov003_02097364(TaskPool* pool, Task* task, void* args) {
         func_020265d4(&aura->sortKey, 0x1000, (u16)aura->timer);
         aura->timer = (s16)(aura->timer - 1);
     }
-    func_ov003_02082b0c(&aura->sprite);
+    CombatSprite_Update(&aura->sprite);
     func_ov003_02097158(aura);
     return aura->active;
 }
@@ -214,9 +215,9 @@ s32 func_ov003_020973e4(TaskPool* pool, Task* task, void* args) {
         } else {
             owner = data_ov003_020e71b8->unk3D89C;
         }
-        func_ov003_0208260c(&aura->sprite, 0, aura->sortKey, aura->sortKey, 1);
+        CombatSprite_SetAffineTransform(&aura->sprite, 0, aura->sortKey, aura->sortKey, 1);
         func_ov003_02082730(&aura->sprite, 0x80000000 - owner->actor.position.y);
-        func_ov003_02082b64(&aura->sprite);
+        CombatSprite_Render(&aura->sprite);
     }
     func_ov003_020971c0(aura);
     return 1;
@@ -226,7 +227,7 @@ s32 func_ov003_020973e4(TaskPool* pool, Task* task, void* args) {
 s32 func_ov003_02097470(TaskPool* pool, Task* task, void* args) {
     BtlAuraSub* aura = task->data;
 
-    func_ov003_02082cc4(&aura->sprite);
+    CombatSprite_Release(&aura->sprite);
     func_ov003_02097254(aura);
     return 1;
 }

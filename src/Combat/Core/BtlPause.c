@@ -21,7 +21,6 @@ extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020d8848;
 extern const TaskStages    data_ov003_020d8854;
 
-extern void func_ov003_02087ed8(s32 arg0);
 extern void func_ov003_0208b278(s32 arg0);
 extern void func_ov003_020a3a40(void);
 

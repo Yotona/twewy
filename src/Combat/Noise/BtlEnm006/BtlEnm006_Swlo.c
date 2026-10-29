@@ -26,9 +26,6 @@ extern s32  func_ov010_02127178(TaskPool*, Task*, void*, s32);
 extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
 extern s32  func_ov010_021272e0(Enm006Swlo*);
 extern void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 radius, s32 scale);
-extern s32  func_ov003_020c37f8(void*);
-extern void func_ov003_02084694(void*, s32);
-extern void func_ov003_020c4fc8(void*);
 extern char data_ov010_021293cc[20];
 
 const TaskHandle Tsk_BtlEnm006_Swlo      = {data_ov010_021293cc, func_ov010_02127178, 0x34};
@@ -91,7 +88,7 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
     } else {
         target       = args->unk_0C;
         data->unk_0C = target;
-        func_ov003_02084694(&target->collider.side, 1);
+        func_ov003_02084694(&target->collider, 1);
         CombatActor_SetPendingCommand(&target->actor, 1);
         func_ov010_021256d0(data->unk_04, data->unk_0C);
     }
@@ -144,7 +141,7 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
         } else {
             self = data->unk_0C;
             self->flags18C |= 0x1000;
-            func_ov003_020c4fc8(data->unk_0C);
+            func_ov003_020c4fc8(&data->unk_0C->base);
         }
         self->actor.flags &= ~0x10000000;
     }

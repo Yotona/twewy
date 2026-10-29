@@ -1,6 +1,6 @@
 #include "Combat/Noise/Private/BtlEnm014.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm014Eff {
@@ -58,7 +58,7 @@ s32 func_ov012_02125ab4(TaskPool* pool, Task* task, void* args, s32 stage) {
                 return 0;
             }
             if (data->sprite.animTableIndex == 1) {
-                if (func_ov003_020c59a0(data->unk_70) != 0) {
+                if (func_ov003_020c59a0(&data->unk_70->base) != 0) {
                     return 0;
                 }
                 data->unk_60 = data->unk_60 + 1;

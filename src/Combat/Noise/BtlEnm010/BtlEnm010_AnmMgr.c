@@ -9,22 +9,12 @@ typedef struct BtlEnm010Bss {
     /* 0x04 */ u8    tail[0x1C];
 } BtlEnm010Bss;
 
-typedef struct BtlEnm010AnmSlot {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u16 unk_06;
-} BtlEnm010AnmSlot;
-
 typedef struct BtlEnm010AnmMgr {
-    /* 0x00 */ void*            unk_00;
-    /* 0x04 */ s32              unk_04;
-    /* 0x08 */ void*            unk_08;
-    /* 0x0C */ s32              unk_0C;
-    /* 0x10 */ s32              unk_10;
-    /* 0x14 */ BtlEnm010AnmSlot unk_14[4];
-    /* 0x34 */ s32              unk_34;
-    /* 0x38 */ u16              unk_38;
-    /* 0x3A */ u16              pad_3A;
+    /* 0x00 */ BtlBinSet   bins;
+    /* 0x14 */ BtlBinEntry entries[4];
+    /* 0x34 */ s32         unk_34;
+    /* 0x38 */ u16         unk_38;
+    /* 0x3A */ u16         pad_3A;
 } BtlEnm010AnmMgr;
 
 typedef struct Ov011Rec_PPWW {
@@ -50,13 +40,7 @@ s32 func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd);
 s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
 s32 func_ov011_02125b88(BtlEnm010AnmMgr* data);
 
-extern s32  func_ov003_020cb32c(BtlEnm010AnmMgr* data, void* binId);
-extern s32  func_ov003_020cb348(BtlEnm010AnmMgr* data, u16 index);
-extern void func_ov003_020cb304(BtlEnm010AnmMgr* data, u16 index);
-extern s32  func_ov003_020cb368(void* binId);
-
-extern void func_ov003_020cb200(BtlEnm010AnmMgr* data, u16 index);
-extern s32  func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
+extern s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
 
 typedef struct BtlEnm010Pair {
     s32 max;
@@ -250,22 +234,22 @@ void func_ov011_02125750(s32 arg0, CombatSprite* arg1, s32 arg2) {
     CombatSprite_Release(arg1);
     data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
     bin  = data_ov011_0212cb1c[data->unk_38][arg2];
-    if (func_ov003_020cb32c(data, bin) == 0) {
+    if (func_ov003_020cb32c(&data->bins, bin) == 0) {
         slot = 0;
         do {
-            if (func_ov003_020cb348(data, (u16)slot) <= 1) {
+            if (func_ov003_020cb348(&data->bins, (u16)slot) <= 1) {
                 break;
             }
             slot++;
         } while (slot < 2);
-        func_ov003_020cb304(data, (u16)slot);
+        func_ov003_020cb304(&data->bins, (u16)slot);
         if (slot == 0) {
             size = 0;
         } else {
             size = data->unk_34 - func_ov003_020cb368(bin);
         }
-        func_ov003_020cb128(&data->unk_14[slot].unk_00, bin, size);
-        func_ov003_020cb200(data, (u16)slot);
+        func_ov003_020cb128(&data->entries[slot].id, bin, size);
+        func_ov003_020cb200(&data->bins, (u16)slot);
     }
     phase = data_ov011_0212bff4[arg2];
     if (data->unk_38 != 3) {
@@ -288,23 +272,23 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
 
     data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
     bin  = data_ov011_0212cae8[arg2];
-    if (func_ov003_020cb32c(data, bin) == 0) {
+    if (func_ov003_020cb32c(&data->bins, bin) == 0) {
         slot = 2;
         do {
-            if (func_ov003_020cb348(data, (u16)slot) <= 1) {
+            if (func_ov003_020cb348(&data->bins, (u16)slot) <= 1) {
                 break;
             }
             slot++;
         } while (slot < 4);
-        func_ov003_020cb304(data, (u16)slot);
+        func_ov003_020cb304(&data->bins, (u16)slot);
         if (slot == 2) {
             size = data->unk_34;
         } else {
-            s32 base = data->unk_04;
+            s32 base = data->bins.size;
             size     = base - func_ov003_020cb368(bin);
         }
-        func_ov003_020cb128(&data->unk_14[slot].unk_00, bin, size);
-        func_ov003_020cb200(data, (u16)slot);
+        func_ov003_020cb128(&data->entries[slot].id, bin, size);
+        func_ov003_020cb200(&data->bins, (u16)slot);
     }
     elem = data_ov011_0212bf78[arg2];
     pal  = data_ov011_0212bf7e[arg2];
@@ -350,19 +334,19 @@ s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1) {
             p3.sec = size;
         }
     }
-    func_ov003_020cb128(&data->unk_14[0].unk_00, data_ov011_0212cb1c[arg1[0]][0], 0);
-    func_ov003_020cb128(&data->unk_14[1].unk_00, 0, 0);
-    func_ov003_020cb128(&data->unk_14[2].unk_00, 0, 0);
-    func_ov003_020cb128(&data->unk_14[3].unk_00, 0, 0);
-    func_ov003_020cb130(data, &data->unk_14[0], 4, p10.max + p10.sec + p3.max + p3.sec, "BtlEnm010_AnmMgr");
-    func_ov003_020cb150(data);
-    func_ov003_020cb200(data, 0);
+    func_ov003_020cb128(&data->entries[0].id, data_ov011_0212cb1c[arg1[0]][0], 0);
+    func_ov003_020cb128(&data->entries[1].id, 0, 0);
+    func_ov003_020cb128(&data->entries[2].id, 0, 0);
+    func_ov003_020cb128(&data->entries[3].id, 0, 0);
+    func_ov003_020cb130(&data->bins, data->entries, 4, p10.max + p10.sec + p3.max + p3.sec, "BtlEnm010_AnmMgr");
+    func_ov003_020cb150(&data->bins);
+    func_ov003_020cb200(&data->bins, 0);
     data->unk_38 = arg1[0];
     data->unk_34 = p10.max + p10.sec;
     return 1;
 }
 
 s32 func_ov011_02125b88(BtlEnm010AnmMgr* data) {
-    func_ov003_020cb194(data);
+    func_ov003_020cb194(&data->bins);
     return 1;
 }

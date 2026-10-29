@@ -67,9 +67,6 @@ typedef struct Ov003EffectEntry {
 extern u32  func_0200f93c(void*);
 extern void func_020274e4(void*, s32, s32, const BinIdentifier*);
 
-extern Ov003TouchActor* func_ov003_0208495c(CombatList*);
-extern Ov003TouchActor* func_ov003_02084984(CombatListNode*);
-
 // Defined in this unit.
 void              func_ov003_020a5540(Ov003EffectState* effect, Ov003TouchActor* actor);
 void              func_ov003_020a563c(Ov003EffectState* effect);

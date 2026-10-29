@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern Ov003EnemyActor* func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor* func_ov003_02084984(CombatListNode*);
 extern const TaskHandle data_ov003_020dc8e8;
 
 /// Spawner state of the PsychoTyphoon effect. It walks the sub-screen unit list once and

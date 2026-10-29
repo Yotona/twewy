@@ -2,7 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern void             func_ov003_02087f28(s32, s32);
 extern const TaskHandle data_ov003_020dca84;
 
 s32 func_ov003_020b5d54(Ov003EffectContext* context, Ov003EffectState* effect) {

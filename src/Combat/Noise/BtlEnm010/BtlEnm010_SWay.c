@@ -1,8 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm010.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/Core/CombatSystem.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 extern char data_ov011_0212cc24[20];

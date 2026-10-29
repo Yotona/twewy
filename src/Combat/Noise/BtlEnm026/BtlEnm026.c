@@ -5,14 +5,6 @@
 
 #include <nitro/mi/cpumem.h>
 
-typedef struct Enm026Variant {
-    /* 0x00 */ BinIdentifier*   binIden;
-    /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u16              unk_08;
-    /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u32              unk_0C;
-} Enm026Variant; // Size: 0x10
-
 typedef struct Enm026IdPair {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -32,32 +24,15 @@ typedef struct Enm026StateFns {
     /* 0x04 */ void (*unk_04)();
 } Enm026StateFns;
 
-extern s32  func_ov003_020c37f8(void*);
-extern void func_ov003_020c3efc(void*, void*);
-extern void func_ov003_020c427c(void*);
-extern void func_ov003_020c4628(void*);
-extern void func_ov003_020c4668(void*);
-extern void func_ov003_020c4cc4(void*, s32);
-extern s32  func_ov003_020c5bfc(void*);
-extern s32  func_ov003_020ccfec(void*);
-extern void func_ov003_02084694(void*, s32);
-extern s32  func_ov003_020ccedc(s32);
-extern s32  func_ov003_0208a08c(s32, void*, s32);
-extern void func_ov003_020ccf94(s32, void*, void*);
-extern void func_ov003_020c4af0(void*);
-extern s32  func_ov003_020c6b8c(void*, s32);
-extern s32  func_ov003_020c6bc8(void*, s32);
-extern s32  func_ov003_020c6c2c(void*, s32);
-extern s32  func_ov003_020c5e98(void*);
-extern void func_ov003_020c3cec(void*, void*, void*, void*);
-s32         func_ov015_02125c94(BtlEnm026*);
-void        func_ov015_02125e5c(BtlEnm026*);
-void        func_ov015_02125f00(BtlEnm026*);
-void        func_ov015_02126070(BtlEnm026*);
-void        func_ov015_021260c4(BtlEnm026*);
-void        func_ov015_02126158(BtlEnm026*);
-void        func_ov015_02126184(BtlEnm026*);
-void        func_ov015_021261ac(BtlEnm026*);
+extern s32 func_ov003_020ccedc(s32);
+s32        func_ov015_02125c94(BtlEnm026*);
+void       func_ov015_02125e5c(BtlEnm026*);
+void       func_ov015_02125f00(BtlEnm026*);
+void       func_ov015_02126070(BtlEnm026*);
+void       func_ov015_021260c4(BtlEnm026*);
+void       func_ov015_02126158(BtlEnm026*);
+void       func_ov015_02126184(BtlEnm026*);
+void       func_ov015_021261ac(BtlEnm026*);
 
 extern char data_ov015_021282e0[28];
 
@@ -84,25 +59,25 @@ extern const BinIdentifier   data_ov015_021280b8;
 extern const BinIdentifier   data_ov015_021280c0;
 extern const SpriteAnimEntry data_ov015_021280c8[13];
 
-const Enm026Variant data_ov015_02127fd8 = {&data_ov015_02128078, data_ov015_021280c8, 0, 0x0D, 0x40};
+const BtlSpriteDesc data_ov015_02127fd8 = {&data_ov015_02128078, data_ov015_021280c8, 0, 0x0D, 0x40};
 
-const Enm026Variant data_ov015_02127fe8 = {&data_ov015_02128088, data_ov015_021280c8, 0, 0x0D, 0x44};
+const BtlSpriteDesc data_ov015_02127fe8 = {&data_ov015_02128088, data_ov015_021280c8, 0, 0x0D, 0x44};
 
-const Enm026Variant data_ov015_02127ff8 = {&data_ov015_021280a0, data_ov015_021280c8, 0, 0x0D, 0x30};
+const BtlSpriteDesc data_ov015_02127ff8 = {&data_ov015_021280a0, data_ov015_021280c8, 0, 0x0D, 0x30};
 
-const Enm026Variant data_ov015_02128008 = {&data_ov015_021280b0, data_ov015_021280c8, 0, 0x0D, 0x42};
+const BtlSpriteDesc data_ov015_02128008 = {&data_ov015_021280b0, data_ov015_021280c8, 0, 0x0D, 0x42};
 
-const Enm026Variant data_ov015_02128018 = {&data_ov015_02128090, data_ov015_021280c8, 0, 0x0D, 0x30};
+const BtlSpriteDesc data_ov015_02128018 = {&data_ov015_02128090, data_ov015_021280c8, 0, 0x0D, 0x30};
 
-const Enm026Variant data_ov015_02128028 = {&data_ov015_02128080, data_ov015_021280c8, 0, 0x0D, 0x40};
+const BtlSpriteDesc data_ov015_02128028 = {&data_ov015_02128080, data_ov015_021280c8, 0, 0x0D, 0x40};
 
-const Enm026Variant data_ov015_02128038 = {&data_ov015_021280c0, data_ov015_021280c8, 0, 0x10, 0x44};
+const BtlSpriteDesc data_ov015_02128038 = {&data_ov015_021280c0, data_ov015_021280c8, 0, 0x10, 0x44};
 
-const Enm026Variant data_ov015_02128048 = {&data_ov015_02128098, data_ov015_021280c8, 0, 0x0D, 0x30};
+const BtlSpriteDesc data_ov015_02128048 = {&data_ov015_02128098, data_ov015_021280c8, 0, 0x0D, 0x30};
 
-const Enm026Variant data_ov015_02128058 = {&data_ov015_021280b8, data_ov015_021280c8, 0, 0x0D, 0x46};
+const BtlSpriteDesc data_ov015_02128058 = {&data_ov015_021280b8, data_ov015_021280c8, 0, 0x0D, 0x46};
 
-const Enm026Variant data_ov015_02128068 = {&data_ov015_021280a8, data_ov015_021280c8, 0, 0x0D, 0x42};
+const BtlSpriteDesc data_ov015_02128068 = {&data_ov015_021280a8, data_ov015_021280c8, 0, 0x0D, 0x42};
 
 const BinIdentifier data_ov015_02128078 = {3, data_ov015_021282e0};
 
@@ -199,13 +174,13 @@ char data_ov015_021283dc[20] = "Apl_Hor/Grp_BtlEnm02";
 
 char data_ov015_021283f0[8] = "6b.bin";
 
-const Enm026Variant* data_ov015_021283f8[11] = {
+const BtlSpriteDesc* data_ov015_021283f8[11] = {
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fd8,
 };
 
-const Enm026Variant* data_ov015_02128424[18] = {
+const BtlSpriteDesc* data_ov015_02128424[18] = {
     &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02127fe8, &data_ov015_02128058, &data_ov015_02128028,
     &data_ov015_02128018, &data_ov015_02128018, &data_ov015_02128008, &data_ov015_02128048, &data_ov015_02127ff8,
     &data_ov015_02128068, &data_ov015_02127fd8, &data_ov015_02127fd8, &data_ov015_02128068, &data_ov015_02128068,
@@ -235,7 +210,7 @@ void func_ov015_021256f8(BtlEnm026* data) {
     }
     CombatSprite_Release(&data->sprite);
     func_ov003_020ccf94(engine, &data->sprite, data_ov015_02128424[data_ov015_02128500.variant]);
-    func_ov003_020c4af0(data);
+    func_ov003_020c4af0(&data->base);
     if (func_ov003_020c37f8(&data->sprite) == 0) {
         data_ov015_02128500.counter0C = data_ov015_02128500.counter0C + 1;
     }
@@ -288,7 +263,7 @@ void func_ov015_021257f8(BtlEnm026* data) {
             }
             data->unk_1D0 = vel;
         }
-        func_ov003_020ccec0(data, 1);
+        func_ov003_020ccec0(&data->actor, 1);
         data_ov003_020e71b8->unk3D878 |= 0x200000;
         if (data_ov015_02128500.variant == 3) {
             data_ov003_020e71b8->unk3D875 = 2;
@@ -326,15 +301,15 @@ s32 func_ov015_021259f4(BtlEnm026* owner, s32 kind, void* params) {
 }
 
 void func_ov015_02125a64(BtlEnm026* data, s32 stateFn) {
-    func_ov003_020c427c(data);
+    func_ov003_020c427c(&data->base);
     data->unk_1C4 = (void (*)(BtlEnm026*))stateFn;
     data->unk_1C2 = 0;
     data->unk_1C0 = 0;
 }
 
 void func_ov015_02125a8c(s32 engine, BtlEnm026* data, void* args, s32 stateFn) {
-    func_ov003_020c3efc(data, args);
-    func_ov003_020ccf58(engine, data);
+    func_ov003_020c3efc(&data->base, args);
+    func_ov003_020ccf58(engine, &data->base);
     data->unk_188 = data;
     func_ov015_02125a64(data, (s32)func_ov015_02126070);
     data->unk_1E0 = -1;
@@ -342,7 +317,7 @@ void func_ov015_02125a8c(s32 engine, BtlEnm026* data, void* args, s32 stateFn) {
     data->unk_1C8 = stateFn;
     data->unk_1D0 = (data->sprite.flags46 & 1) ? 0xC00 : -0xC00;
     func_ov015_021256f8(data);
-    func_ov003_02084694(&data->collider.side, 1);
+    func_ov003_02084694(&data->collider, 1);
 }
 
 s32 func_ov015_02125b08(BtlEnm026* data) {
@@ -355,7 +330,7 @@ s32 func_ov015_02125b08(BtlEnm026* data) {
             func_ov015_02125a64(data, (s32)func_ov015_02125e5c);
             break;
         case 3:
-            func_ov003_02084694(&data->collider.side, 1);
+            func_ov003_02084694(&data->collider, 1);
             if (data->flags18C & 0x10) {
                 data->flags18C |= 0x20;
             } else {
@@ -380,19 +355,19 @@ s32 func_ov015_02125b08(BtlEnm026* data) {
         data->unk_1C4(data);
     }
     if (func_ov003_020c37f8(&data->sprite) != 0) {
-        func_ov003_020c4628(data);
+        func_ov003_020c4628(&data->base);
     } else {
-        func_ov003_020c4668(data);
+        func_ov003_020c4668(&data->base);
     }
-    func_ov003_020ccea8(data, &data->sprite);
+    func_ov003_020ccea8(&data->actor, &data->sprite);
 
     if (data->sprite.animTableIndex == 2) {
         if (data->sprite.sprite.cellIndex == 1 && data->sprite.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
-            func_ov003_020c4cc4(data, 0x27B);
+            func_ov003_020c4cc4(&data->base, 0x27B);
         }
     } else if (data->sprite.animTableIndex == 3) {
         if (data->sprite.sprite.cellIndex == 4 && data->sprite.sprite.frameTimer == 1 && data->unk_1D4 == 1) {
-            func_ov003_020c4cc4(data, 0x27C);
+            func_ov003_020c4cc4(&data->base, 0x27C);
         }
     }
     return data->unk_1CC;
@@ -439,7 +414,7 @@ void func_ov015_02125e5c(BtlEnm026* data) {
     s32 ret;
 
     if (func_ov003_020c37f8(&data->sprite) != 0) {
-        ret = func_ov003_020ccfc8(data, 4);
+        ret = func_ov003_020ccfc8(&data->base, 4);
     } else if (data_ov015_02128500.variant != 7) {
         if (data->unk_1C0 == 0) {
             CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
@@ -447,7 +422,7 @@ void func_ov015_02125e5c(BtlEnm026* data) {
         data->unk_1C0 = data->unk_1C0 + 1;
         ret           = data->unk_1C0 < 0xF;
     } else {
-        ret = func_ov003_020ccfc8(data, 4);
+        ret = func_ov003_020ccfc8(&data->base, 4);
     }
     if (ret != 0) {
         return;
@@ -459,9 +434,9 @@ void func_ov015_02125f00(BtlEnm026* data) {
     s32 ret;
 
     if (func_ov003_020c37f8(&data->sprite) != 0) {
-        ret = func_ov003_020ccfc8(data, 4);
+        ret = func_ov003_020ccfc8(&data->base, 4);
     } else {
-        ret = func_ov003_020c6b8c(data, 7);
+        ret = func_ov003_020c6b8c(&data->base, 7);
     }
     if (ret != 0) {
         return;
@@ -470,7 +445,7 @@ void func_ov015_02125f00(BtlEnm026* data) {
 }
 
 void func_ov015_02125f48(BtlEnm026* data) {
-    if (func_ov003_020c5e98(data) != 0) {
+    if (func_ov003_020c5e98(&data->base) != 0) {
         return;
     }
     func_ov015_02125a64(data, (data->flags18C & 0x20) ? (s32)func_ov015_021260c4 : data->unk_1C8);
@@ -509,13 +484,13 @@ void func_ov015_02125f80(BtlEnm026* data) {
 }
 
 void func_ov015_02126070(BtlEnm026* data) {
-    s32 r4 = func_ov003_020c5bfc(data);
+    s32 r4 = func_ov003_020c5bfc(&data->base);
     func_ov015_02125f80(data);
     if (r4 != 0) {
         return;
     }
     if (data_ov015_02128500.variant == 9) {
-        func_ov003_020c4cc4(data, 0x281);
+        func_ov003_020c4cc4(&data->base, 0x281);
     }
     func_ov015_02125a64(data, data->unk_1C8);
 }
@@ -526,15 +501,15 @@ void func_ov015_021260c4(BtlEnm026* data) {
     data->actor.flags |= 0x4;
     if (data_ov015_02128500.variant == 6) {
         if (data_ov015_02128500.result10 != -1 && data->unk_1D4 == 3) {
-            ret = func_ov003_020ccfec(data);
+            ret = func_ov003_020ccfec(&data->base);
         } else {
-            ret = func_ov003_020cd010(data);
+            ret = func_ov003_020cd010(&data->base);
         }
     } else {
         if (data_ov015_02128500.result10 != -1 && data->unk_1D4 == 1) {
-            ret = func_ov003_020ccfec(data);
+            ret = func_ov003_020ccfec(&data->base);
         } else {
-            ret = func_ov003_020cd010(data);
+            ret = func_ov003_020cd010(&data->base);
         }
     }
     if (ret == 0) {
@@ -543,21 +518,21 @@ void func_ov015_021260c4(BtlEnm026* data) {
 }
 
 void func_ov015_02126158(BtlEnm026* data) {
-    if (func_ov003_020c6bc8(data, 7) != 0) {
+    if (func_ov003_020c6bc8(&data->base, 7) != 0) {
         return;
     }
     func_ov015_02125a64(data, (s32)func_ov015_02126184);
 }
 
 void func_ov015_02126184(BtlEnm026* data) {
-    if (func_ov003_020c6c2c(data, 7) != 0) {
+    if (func_ov003_020c6c2c(&data->base, 7) != 0) {
         return;
     }
     func_ov015_02125a64(data, data->unk_1C8);
 }
 
 void func_ov015_021261ac(BtlEnm026* data) {
-    if (func_ov003_020c72b4(data, 0, 7) != 0) {
+    if (func_ov003_020c72b4(&data->base, 0, 7) != 0) {
         return;
     }
     func_ov015_02125a64(data, data->unk_1C8);

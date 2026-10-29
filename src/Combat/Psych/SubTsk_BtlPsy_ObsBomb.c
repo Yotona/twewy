@@ -3,10 +3,8 @@
 #include "Engine/Math/Random.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32                    func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void                   func_ov003_02087f28(s32, s32);
-extern const Ov003AttackInfo* func_ov003_0208a114(u16);
-extern s32                    func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern s32 func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 
 extern const TaskHandle data_ov003_020dc718;
 

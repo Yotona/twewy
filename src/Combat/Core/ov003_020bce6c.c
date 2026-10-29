@@ -1,7 +1,6 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatCutin.h"
 
-extern Ov003EnemyActor*    func_ov003_0208495c(CombatList*);
-extern Ov003EnemyActor*    func_ov003_02084984(CombatListNode*);
 extern char                data_ov003_020e5170[20];
 extern Ov003ActorSnapshots data_ov003_020e71c8;
 

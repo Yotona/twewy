@@ -1,3 +1,4 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatCutin.h"
 
 extern const TaskStages data_ov003_020dd844;

@@ -27,29 +27,11 @@ extern char data_ov011_0212cc54[20];
 // function can be emitted in address order (the linker places functions
 // in source order).  Order within this block is unchanged.
 
-/// A 0xC-byte record out of the table `func_ov003_0208a114` walks (`base + index * 12`) -- the
-/// same table `BtlEnm006_UG.c` names `Enm006CmdTbl`. Only the bytes below are identified: callers
-/// copy the whole record (`ldm`/`stm` of three words), overwrite the gray triple at `+5`..`+7`,
-/// and hand the copy to `func_ov003_0208a164`/`func_ov003_0208a1a4`.
-///
-/// The two `s32` words are load-bearing: a byte-array record has alignment 1, and MWCC then
-/// copies it with a *byte loop* instead of the `ldm`/`stm` pair the original has.
-typedef struct BtlEnm010CmdTbl {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8  unk_04;
-    /* 0x05 */ u8  unk_05;
-    /* 0x06 */ u8  unk_06;
-    /* 0x07 */ u8  unk_07;
-    /* 0x08 */ s32 unk_08;
-} BtlEnm010CmdTbl;
-
 /// `func_ov003_0208a114` -- one argument; returns a pointer to the 0xC-byte record at
 /// `base + index * 12` (`mla r0, 0xc, r0, table; bx lr`). The `u16` parameter is load-bearing:
 /// call sites truncate a computed selector with `lsl #0x10 / lsr #0x10`.
-extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
 
 /// `func_ov003_0208a164` -- five arguments (r0-r3 plus one stack word), returning 1 on success.
-extern s32 func_ov003_0208a164(BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y, s32 z);
 
 extern s32 FX_Divide(s32 numer, s32 denom);
 s32        func_ov011_02128758(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
@@ -57,22 +39,19 @@ s32        func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1);
 s32        func_ov011_02128b80(BtlEnm010Sprl* data);
 s32        func_ov011_02128c30(BtlEnm010Sprl* p);
 
-/// `CombatSprite_Update` (`func_ov003_02082b0c`) -- one argument, a `CombatSprite*`; ticks a
+/// `CombatSprite_Update` (`CombatSprite_Update`) -- one argument, a `CombatSprite*`; ticks a
 /// palette timer behind the sprite's `flags46` bit 12. Declared in `Combat/Core/CombatSprite.h`.
 
 /// `func_ov003_020843b0` -- two arguments; turns a 4.12 y coordinate into a sound pan value.
-extern s16 func_ov003_020843b0(s32 a, s32 b);
 
 /// `func_ov003_02084348` -- six arguments: `mode`, two `s16*` out-parameters, then a raw
 /// x/y/z triple. The two out-parameters are written through the pointers and read back as
 /// `ldrsh`, so they are `s16`, not `s32`.
-extern s32 func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
 
 extern s32 func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1);
 extern s32 func_ov011_021288c8(BtlEnm010Sprl* p);
 extern s32 func_ov011_02128b80(BtlEnm010Sprl* data);
 extern s32 func_ov011_02128c30(BtlEnm010Sprl* p);
-extern s32 func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
 extern s32 func_ov003_020c3c28(void);
 
 const TaskHandle data_ov011_0212c210 = {(const char*)data_ov011_0212cc54, func_ov011_02128758, 184};
@@ -186,15 +165,15 @@ s32 func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1) {
 /// `unk_0A4 > data_ov003_020e71b8 + 0x3D000 + 0x7CC` -- the four-hop global load, spelled with the
 /// split bias exactly like the rest of this file.
 s32 func_ov011_021288c8(BtlEnm010Sprl* p) {
-    s32                    dx;
-    s32                    dy;
-    s32                    dist;
-    s32                    half;
-    s32                    pan;
-    s32                    i;
-    struct BtlEnm010CmdTbl fx;
-    s32                    t;
-    s16                    v;
+    s32             dx;
+    s32             dy;
+    s32             dist;
+    s32             half;
+    s32             pan;
+    s32             i;
+    Ov003AttackInfo fx;
+    s32             t;
+    s16             v;
 
     if (func_ov003_020c3c28() != 0) {
         return 0;
@@ -234,7 +213,7 @@ s32 func_ov011_021288c8(BtlEnm010Sprl* p) {
         fx.unk_05 = (u8)v;
         fx.unk_06 = (u8)v;
         fx.unk_07 = (u8)v;
-        if (func_ov003_0208a164(&fx, p->unk_0B0, p->unk_070[i], p->unk_084[i], p->unk_098) == 1) {
+        if (func_ov003_0208a164(&fx, (Ov003AttackArgs*)p->unk_0B0, p->unk_070[i], p->unk_084[i], p->unk_098) == 1) {
             s32 pan;
             if (func_ov003_020c37f8(&p->sprite) != 0) {
                 pan = func_ov003_020843b0(1, p->unk_070[i]);

@@ -2,7 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm015.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015Shake {

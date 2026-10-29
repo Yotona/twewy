@@ -1,3 +1,4 @@
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 

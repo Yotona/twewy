@@ -1,7 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm015.h"
 
-#include "Combat/Core/CombatEnemy.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015StampSub {
@@ -14,10 +14,6 @@ typedef struct BtlEnm015StampSub {
     /* 0x70 */ s32          unk_70;
 } BtlEnm015StampSub; // Size: 0x74
 extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern void func_ov003_02087ed8(u16);
-extern s32  func_ov003_0208a114(u16);
-extern s32  func_ov003_0208a164(s32, void*, s32, s32, s32);
-extern s32  func_ov003_0208a08c(s32, void*, s32);
 s32         func_ov013_02126a30(TaskPool*, Task*, void*, s32);
 
 const TaskHandle Tsk_BtlEnm015_EffStampSub = {"Tsk_BtlEnm015_EffStampSub", func_ov013_02126a30, 0x74};
@@ -47,11 +43,11 @@ s32 func_ov013_02126788(BtlEnm015StampSub* data) {
                     func_ov003_02087ed8(0x227);
                 }
                 h = func_ov003_0208a114(se);
-                r = func_ov003_0208a164(h, &data->unk_00->actor.unk_04, data->unk_68, data->unk_6C, data->unk_70);
+                r = func_ov003_0208a164(h, &data->unk_00->actor.baseArgs, data->unk_68, data->unk_6C, data->unk_70);
                 if (r == 1) {
-                    func_ov003_020c4cc4(data->unk_00, 0x228);
+                    func_ov003_020c4cc4(&data->unk_00->base, 0x228);
                 } else if (r != 2) {
-                    if (func_ov003_0208a08c(engine, base, 0) != 0) {
+                    if (func_ov003_0208a08c(engine, (Ov003EnemyActor*)base, 0) != 0) {
                         base->unk_10 = 1;
                     }
                 }
