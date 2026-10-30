@@ -123,29 +123,22 @@ void Comm_VBlank(void);
 
 // JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
-    #define TUSIN_OVL_MENU         OVERLAY_43_ID
-    #define TUSIN_OVL_MENU_ENTRY   ((void*)0x02084040) /* ProcessOverlay_MenuTop */
-    #define TUSIN_OVL_SET          OVERLAY_45_ID
-    #define TUSIN_OVL_SET_ENTRY    ProcessOverlay_TusinSet
-    #define TUSIN_OVL_RESULT       OVERLAY_44_ID
-    #define TUSIN_OVL_RESULT_ENTRY ((void*)0x02084A88)
-    #define TUSIN_OVL2_ENTRY_3     ((void*)0x02086B0C)
-    #define TUSIN_OVL2_ENTRY_4     ((void*)0x02086B4C)
-    #define TUSIN_OVL2_ENTRY_5     ((void*)0x02086A8C)
+    #define TUSIN_OVL_MENU   OVERLAY_43_ID
+    #define TUSIN_OVL_SET    OVERLAY_45_ID
+    #define TUSIN_OVL_RESULT OVERLAY_44_ID
 #else
-    #define TUSIN_OVL_MENU         OVERLAY_42_ID
-    #define TUSIN_OVL_MENU_ENTRY   ((void*)0x020849C4)
-    #define TUSIN_OVL_SET          OVERLAY_44_ID
-    #define TUSIN_OVL_SET_ENTRY    ProcessOverlay_TusinSet
-    #define TUSIN_OVL_RESULT       OVERLAY_43_ID
-    #define TUSIN_OVL_RESULT_ENTRY ((void*)0x020853C4)
-    #define TUSIN_OVL2_ENTRY_3     ((void*)0x020873AC)
-    #define TUSIN_OVL2_ENTRY_4     ((void*)0x020873EC)
-    #define TUSIN_OVL2_ENTRY_5     ((void*)0x0208736C)
+    #define TUSIN_OVL_MENU   OVERLAY_42_ID
+    #define TUSIN_OVL_SET    OVERLAY_44_ID
+    #define TUSIN_OVL_RESULT OVERLAY_43_ID
 #endif
 extern u32 OVERLAY_42_ID;
 
-extern void TUSIN_OVL_SET_ENTRY(void* state);
+extern void ProcessOverlay_MenuTop(void* state);
+extern void ProcessOverlay_TusinSet(void* state);
+extern void ProcessOverlay_Result(void* state);
+extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
 
 void Tusin_StoreFriend(TusinState* state, u16 index, u8 timesMet, u8 lastShopId);
 void Tusin_ProcessEsper(TusinState* state);
@@ -855,27 +848,29 @@ void Tusin_Update(TusinState* state) {
     switch (tusin->nextProcess) {
         case 0: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_MENU, TUSIN_OVL_MENU_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_MENU, ProcessOverlay_MenuTop, NULL, PROCESS_STAGE_INIT);
         } break;
         case 1: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_SET, TUSIN_OVL_SET_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_SET, ProcessOverlay_TusinSet, NULL, PROCESS_STAGE_INIT);
         } break;
         case 2: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_RESULT, TUSIN_OVL_RESULT_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSIN_OVL_RESULT, ProcessOverlay_Result, NULL, PROCESS_STAGE_INIT);
         } break;
         case 3: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, TUSIN_OVL2_ENTRY_3, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataLoadFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 4: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, TUSIN_OVL2_ENTRY_4, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataSaveFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 5: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, TUSIN_OVL2_ENTRY_5, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, NULL, PROCESS_STAGE_INIT);
         } break;
         default: {
             OverlayTag tag;

@@ -67,15 +67,17 @@ extern void func_ov043_020aeee0();
 // JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
     #define FRIENDLIST_OVL_MENU       OVERLAY_43_ID
-    #define FRIENDLIST_OVL_MENU_ENTRY ((void*)0x02084040) /* ProcessOverlay_MenuTop */
     #define FRIENDLIST_OVL_SHOP_ENTRY func_ov043_020aeee0
 #else
     #define FRIENDLIST_OVL_MENU       OVERLAY_42_ID
-    #define FRIENDLIST_OVL_MENU_ENTRY ((void*)0x020849C4)
     #define FRIENDLIST_OVL_SHOP_ENTRY func_ov042_020ace7c
 extern void func_ov042_020ace7c();
 #endif
-extern u32 OVERLAY_42_ID;
+extern void ProcessOverlay_MenuTop(void* state);
+extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
+extern u32  OVERLAY_42_ID;
 
 void FriendList_Init(FriendListState* state);
 void FriendList_Update(FriendListState* state);
@@ -739,7 +741,7 @@ void FriendList_Update(FriendListState* state) {
     switch (friendList->nextProcess) {
         case 0: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&FRIENDLIST_OVL_MENU, FRIENDLIST_OVL_MENU_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&FRIENDLIST_OVL_MENU, ProcessOverlay_MenuTop, NULL, PROCESS_STAGE_INIT);
         } break;
         case 1: {
             OverlayTag tag;
@@ -747,15 +749,17 @@ void FriendList_Update(FriendListState* state) {
         } break;
         case 2: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, (void*)0x02086B0C, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataLoadFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 3: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, (void*)0x02086B4C, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataSaveFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 4: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, (void*)0x02086A8C, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, NULL, PROCESS_STAGE_INIT);
         } break;
         default: {
             OverlayTag tag;

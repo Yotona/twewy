@@ -11,6 +11,7 @@ from typing import Any
 
 import ninja_syntax
 from compiler_config import (
+    ALL_WARNINGS_CC_FLAG,
     COMMON_CC_FLAGS,
     DEFAULT_COMPILER_CONFIG,
     ROOT_PATH,
@@ -68,7 +69,25 @@ parser.add_argument(
     action="store_true",
     help="Also generate each version's objdiff progress report when running ninja",
 )
+parser.add_argument(
+    "--shift-check",
+    action="store_true",
+    help="Also relink each version with every module padded when running ninja, to find addresses that would not move",
+)
+parser.add_argument(
+    "--verbose",
+    action="store_true",
+    help="Print everything, including all warnings. Implies --report and --shift-check",
+)
+parser.add_argument(
+    "--skip-check",
+    action="store_true",
+    help="Build the ROM without verifying it against the base ROM (for non-matching or shifted builds)",
+)
 args = parser.parse_args()
+if args.verbose:
+    args.report = True
+    args.shift_check = True
 
 # Config
 GAME = "twewy"
@@ -135,6 +154,7 @@ OBJDIFF = os.path.join(".", f"objdiff-cli{EXE}")
 LD = linker_executable_path(DEFAULT_COMPILER_CONFIG.version)
 PYTHON = sys.executable
 OBJDIFF_SCRATCH = str(tools_path / "objdiff_scratch.py")
+SHIFT_CHECK = str(tools_path / "shift_check.py")
 COMPILER_CONFIG = str(tools_path / "compiler_config.py")
 
 
@@ -173,6 +193,12 @@ def configure_args() -> list[str]:
         argv.append("--no-extract")
     if args.report:
         argv.append("--report")
+    if args.shift_check:
+        argv.append("--shift-check")
+    if args.verbose:
+        argv.append("--verbose")
+    if args.skip_check:
+        argv.append("--skip-check")
     return argv
 
 
@@ -259,6 +285,10 @@ class Project:
     def arm9_o(self) -> Path:
         return self.game_build / "arm9.o"
 
+    def shift_build(self) -> Path:
+        """Relink with every module padded, to find addresses that would not move"""
+        return self.game_build / "shift"
+
     def arm9_disassembly_dir(self) -> Path:
         return self.game_build / "asm"
 
@@ -290,6 +320,7 @@ VERSION_TARGETS = [
     "sha1",
     "check_modules",
     "check_symbols",
+    "check_shift",
     "check",
     "objdiff",
     "objects",
@@ -400,8 +431,11 @@ def main():
         n.newline()
 
         # -MMD excludes all includes instead of just system includes for some reason, so use -MD instead.
+        common_cc_flags = [*COMMON_CC_FLAGS]
+        if args.verbose:
+            common_cc_flags.append(ALL_WARNINGS_CC_FLAG)
         mwcc_cmd = (
-            f'{WINE_PREFIX}"$compiler" {" ".join(COMMON_CC_FLAGS)} {CC_INCLUDES} '
+            f'{WINE_PREFIX}"$compiler" {" ".join(common_cc_flags)} {CC_INCLUDES} '
             "$cc_flags -d $region_define -MD -c $in -o $basedir"
         )
         mwcc_common_implicit: list[str] = []
@@ -476,6 +510,18 @@ def main():
         )
         n.newline()
 
+        n.rule(
+            name="shift_lcf",
+            command=f"{PYTHON} {SHIFT_CHECK} lcf $in $out",
+        )
+        n.newline()
+
+        n.rule(
+            name="check_shift",
+            command=f"{PYTHON} {SHIFT_CHECK} check --lcf $lcf_file --elf $elf_path --shifted-elf $in --allowlist $allowlist --stamp $out",
+        )
+        n.newline()
+
         n.rule(name="sha1", command=f"{PYTHON} tools/sha1.py $in -c $sha1_file")
         n.newline()
 
@@ -513,9 +559,14 @@ def main():
                 add_apply_build(n, project)
             add_version_target_builds(n, projects)
 
-            defaults = ["objdiff", "objects", "check", "sha1"]
+            if args.skip_check:
+                defaults = ["objdiff", "objects", "rom"]
+            else:
+                defaults = ["objdiff", "objects", "check", "sha1"]
             if args.report:
                 defaults.append("report")
+            if args.shift_check:
+                defaults.append("check_shift")
             n.default(defaults)
         else:
             n.default(["download_tools"])
@@ -587,6 +638,15 @@ def add_download_tool_builds(n: ninja_syntax.Writer):
     n.newline()
 
 
+def add_action_build(
+    n: ninja_syntax.Writer, project: Project, name: str, **build_args: Any
+):
+    output = str(project.game_build / name)
+    n.build(outputs=output, **build_args)
+    n.build(inputs=output, rule="phony", outputs=project.target(name))
+    n.newline()
+
+
 def add_extract_build(n: ninja_syntax.Writer, project: Project):
     if not args.no_extract:
         n.build(
@@ -654,13 +714,14 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     )
     n.newline()
 
-    n.build(
+    add_action_build(
+        n,
+        project,
+        "sha1",
         inputs=rom_file,
         rule="sha1",
         variables={"sha1_file": project.game_config / "build.sha1"},
-        outputs=project.target("sha1"),
     )
-    n.newline()
 
 
 def add_mwcc_builds(
@@ -749,43 +810,102 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
 
 
 def add_disassemble_builds(n: ninja_syntax.Writer, project: Project):
-    n.build(
+    add_action_build(
+        n,
+        project,
+        "dis",
         inputs=project.dsd_configs(),
         implicit=DSD,
         rule="disassemble",
-        outputs=project.target("dis"),
         variables={
             "config_path": str(arm9_config_yaml(project.game_version)),
             "output_path": str(project.arm9_disassembly_dir()),
         },
     )
-    n.newline()
 
 
 def add_check_builds(n: ninja_syntax.Writer, project: Project):
-    n.build(
+    add_action_build(
+        n,
+        project,
+        "check_modules",
         inputs=str(project.arm9_o()),
         rule="check_modules",
-        outputs=project.target("check_modules"),
         variables={
             "config_path": str(arm9_config_yaml(project.game_version)),
         },
     )
-    n.newline()
 
-    n.build(
+    add_action_build(
+        n,
+        project,
+        "check_symbols",
         inputs=str(project.arm9_o()),
         rule="check_symbols",
-        outputs=project.target("check_symbols"),
         variables={
             "config_path": str(arm9_config_yaml(project.game_version)),
             "elf_path": str(project.arm9_o()),
         },
     )
+
+    lcf_file = project.arm9_lcf_file()
+    shift_lcf_file = str(project.shift_build() / "arm9.lcf")
+    n.build(
+        inputs=lcf_file,
+        implicit=SHIFT_CHECK,
+        rule="shift_lcf",
+        outputs=shift_lcf_file,
+    )
+    n.newline()
+
+    shift_elf_file = str(project.shift_build() / "arm9.o")
+    objects_file = project.arm9_objects_file()
+    n.build(
+        inputs=[
+            *(file["object_to_link"] for file in project.files()),
+            shift_lcf_file,
+            objects_file,
+        ],
+        implicit=LD,
+        rule="mwld",
+        outputs=shift_elf_file,
+        # The linker writes the module binaries next to the ELF but will not create the directory
+        implicit_outputs=str(project.shift_build() / "build" / "arm9.bin"),
+        variables={
+            "extra_ld_flags": ARM9_LD_FLAGS,
+            "lcf_file": shift_lcf_file,
+            "objects_file": str(objects_file),
+        },
+    )
+    n.newline()
+
+    shift_stamp = str(project.shift_build() / "check.ok")
+    allowlist = project.game_config / "shift_allowlist.txt"
+    n.build(
+        inputs=shift_elf_file,
+        implicit=[str(project.arm9_o()), str(allowlist), SHIFT_CHECK],
+        rule="check_shift",
+        outputs=shift_stamp,
+        variables={
+            "lcf_file": str(lcf_file),
+            "elf_path": str(project.arm9_o()),
+            "allowlist": str(allowlist),
+        },
+    )
     n.newline()
 
     n.build(
-        inputs=[project.target("check_modules"), project.target("check_symbols")],
+        inputs=shift_stamp,
+        rule="phony",
+        outputs=project.target("check_shift"),
+    )
+    n.newline()
+
+    n.build(
+        inputs=[
+            project.target("check_modules"),
+            project.target("check_symbols"),
+        ],
         rule="phony",
         outputs=project.target("check"),
     )
@@ -885,17 +1005,18 @@ def add_configure_build(n: ninja_syntax.Writer, versions: list[str]):
 
 
 def add_apply_build(n: ninja_syntax.Writer, project: Project):
-    n.build(
+    add_action_build(
+        n,
+        project,
+        "apply",
         inputs=project.dsd_configs() + [str(project.arm9_o())],
         implicit=DSD,
         rule="apply",
-        outputs=project.target("apply"),
         variables={
             "config_path": str(arm9_config_yaml(project.game_version)),
             "elf_path": str(project.arm9_o()),
         },
     )
-    n.newline()
 
 
 def get_config_files(game_config: Path, name: str) -> list[str]:

@@ -67,16 +67,14 @@ extern u32 OVERLAY_45_ID;
 
 // JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
-    #define RESULT_OVL_MENU       OVERLAY_43_ID
-    #define RESULT_OVL_MENU_ENTRY ((void*)0x02084040) /* ProcessOverlay_MenuTop */
-    #define RESULT_OVL_NEXT       OVERLAY_45_ID
-    #define RESULT_OVL_NEXT_ENTRY ((void*)0x02088700) /* ProcessOverlay_TusinSet */
+    #define RESULT_OVL_MENU OVERLAY_43_ID
+    #define RESULT_OVL_NEXT OVERLAY_45_ID
 #else
-    #define RESULT_OVL_MENU       OVERLAY_42_ID
-    #define RESULT_OVL_MENU_ENTRY ((void*)0x020849C4) /* func_ov042_020849c4 */
-    #define RESULT_OVL_NEXT       OVERLAY_44_ID
-    #define RESULT_OVL_NEXT_ENTRY ((void*)0x020885C8) /* ProcessOverlay_TusinSet */
+    #define RESULT_OVL_MENU OVERLAY_42_ID
+    #define RESULT_OVL_NEXT OVERLAY_44_ID
 #endif
+extern void ProcessOverlay_MenuTop(void* state);
+extern void ProcessOverlay_TusinSet(void* state);
 extern void func_ov030_020ae92c(void);
 extern void func_ov030_020b0fe8(void);
 extern void func_ov027_020e860c(void);
@@ -1045,12 +1043,12 @@ void Result_Update(ResultState* state) {
 
             case 3: {
                 OverlayTag tag;
-                MainOvlDisp_ReplaceTop(&tag, (s32)&RESULT_OVL_NEXT, RESULT_OVL_NEXT_ENTRY, NULL, PROCESS_STAGE_INIT);
+                MainOvlDisp_ReplaceTop(&tag, (s32)&RESULT_OVL_NEXT, ProcessOverlay_TusinSet, NULL, PROCESS_STAGE_INIT);
             } break;
 
             case 4: {
                 OverlayTag tag;
-                MainOvlDisp_ReplaceTop(&tag, (s32)&RESULT_OVL_MENU, RESULT_OVL_MENU_ENTRY, NULL, PROCESS_STAGE_INIT);
+                MainOvlDisp_ReplaceTop(&tag, (s32)&RESULT_OVL_MENU, ProcessOverlay_MenuTop, NULL, PROCESS_STAGE_INIT);
             } break;
 
             case 5: {

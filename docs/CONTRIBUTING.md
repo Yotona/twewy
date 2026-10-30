@@ -38,6 +38,8 @@ Where applicable in `symbol.txt`, separate sections of listings by their relevan
 
 Pull requests must produce a matching build before being submitted by verifying that `ninja` compiles the project without errors and reports `build/<version>/twewy_<version>.nds: OK` for all versions. Changes will not be accepted while *any* supported version of the game fails to build successfully.
 
+The build must also stay shiftable: `ninja check_shift` (part of the default build when configured with `--shift-check` or `--verbose`) relinks every module with padding and fails if a word that points into code or data keeps its old value. Fix those by referencing the symbol instead of a hardcoded address, or by adding the missing entry to `relocs.txt`. If a reported word is not actually a pointer (packed bytes, a constant, an instruction), add it to `config/<version>/shift_allowlist.txt`.
+
 Pull requests must pass all `pre-commit` checks. You can confirm the status of your pre-commit checks prior to submitting a pull request by running `pre-commit run --all-files`.
 
 ## Completing a file
