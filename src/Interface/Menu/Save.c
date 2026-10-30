@@ -64,22 +64,20 @@ extern u32  OVERLAY_42_ID;
 #ifdef REGION_USA
     #define SAVE_OVL_MENU    OVERLAY_43_ID
     #define SAVE_NEXT1_OVL   OVERLAY_30_ID
-    #define SAVE_NEXT1_ENTRY ((void*)0x020B0FE8)
-    #define SAVE_NEXT2_OVL   OVERLAY_37_ID
-    #define SAVE_NEXT2_ENTRY ((void*)0x0208370C)
-    #define SAVE_NEXT3_ENTRY ((void*)0x02086B0C)
-    #define SAVE_NEXT4_ENTRY ((void*)0x02086B4C)
-    #define SAVE_NEXT5_ENTRY ((void*)0x02086A8C)
+    #define SAVE_NEXT1_ENTRY func_ov030_020b0fe8
+extern void func_ov030_020b0fe8(void* state);
+    #define SAVE_NEXT2_OVL OVERLAY_37_ID
 #else
     #define SAVE_OVL_MENU    OVERLAY_42_ID
     #define SAVE_NEXT1_OVL   OVERLAY_30_ID
-    #define SAVE_NEXT1_ENTRY ((void*)0x020B16F0)
+    #define SAVE_NEXT1_ENTRY func_ov030_020b16f0
+extern void func_ov030_020b16f0(void* state);
     #define SAVE_NEXT2_OVL   OVERLAY_36_ID
-    #define SAVE_NEXT2_ENTRY ((void*)0x02083FB8)
-    #define SAVE_NEXT3_ENTRY ((void*)0x020873AC)
-    #define SAVE_NEXT4_ENTRY ((void*)0x020873EC)
-    #define SAVE_NEXT5_ENTRY ((void*)0x0208736C)
 #endif
+extern void ProcessOverlay_OpenEnd(void* state);
+extern void ProcessOverlay_OtosuMenu_DataLoadFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataSaveFailure(void* state);
+extern void ProcessOverlay_OtosuMenu_DataCorrupted(void* state);
 
 void Save_Init(SaveMenuState* state);
 void Save_Update(SaveMenuState* state);
@@ -590,19 +588,21 @@ void Save_Update(SaveMenuState* state) {
         } break;
         case 2: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&SAVE_NEXT2_OVL, SAVE_NEXT2_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&SAVE_NEXT2_OVL, ProcessOverlay_OpenEnd, NULL, PROCESS_STAGE_INIT);
         } break;
         case 3: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, SAVE_NEXT3_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataLoadFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 4: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, SAVE_NEXT4_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataSaveFailure, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 5: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, SAVE_NEXT5_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_DataCorrupted, NULL, PROCESS_STAGE_INIT);
         } break;
         default: {
             OverlayTag tag;

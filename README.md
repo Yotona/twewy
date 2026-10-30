@@ -43,6 +43,8 @@ Note: For a byte-matching build, add a copy of the [ARM7 BIOS](docs/CONTRIBUTING
     - Run `python tools/configure.py`. By default every version whose baserom is provided will be configured to be built together. Specific versions can be selected using the `--version` flag (e.g., `--version jp` will configure only the Japanese version).
     - `objdiff` shows the USA version when its baserom is provided, or the specified version when `--version` is passed.
     - Pass `--report` to also generate each version's objdiff progress report (`build/<version>/report.json`) whenever `ninja` runs.
+    - Pass `--shift-check` to also verify that the build stays shiftable (see [CONTRIBUTING](docs/CONTRIBUTING.md)) whenever `ninja` runs.
+    - Pass `--verbose` to do both and print every compiler warning. Changing this flag recompiles everything.
     - This initializes the project for its first usage. After configuring once, the build command `ninja` will re-configure the project if needed.
 
 3. **Build the Project**:

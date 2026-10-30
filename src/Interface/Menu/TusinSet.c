@@ -89,17 +89,16 @@ s32 TusinSet_helpCurU_CreateTask(TaskPool* pool, s32 dataType, TusinSetObject* t
 
 // JP has no counterpart to USA's ov036, so every later overlay number is one lower there.
 #ifdef REGION_USA
-    #define TUSINSET_OVL_SELF       45
-    #define TUSINSET_OVL_MENU       OVERLAY_43_ID
-    #define TUSINSET_OVL_MENU_ENTRY ((void*)0x02084040) /* ProcessOverlay_MenuTop */
-    #define TUSINSET_OVL_TUSIN      OVERLAY_45_ID
+    #define TUSINSET_OVL_SELF  45
+    #define TUSINSET_OVL_MENU  OVERLAY_43_ID
+    #define TUSINSET_OVL_TUSIN OVERLAY_45_ID
 #else
-    #define TUSINSET_OVL_SELF       44
-    #define TUSINSET_OVL_MENU       OVERLAY_42_ID
-    #define TUSINSET_OVL_MENU_ENTRY ((void*)0x020849C4)
-    #define TUSINSET_OVL_TUSIN      OVERLAY_44_ID
+    #define TUSINSET_OVL_SELF  44
+    #define TUSINSET_OVL_MENU  OVERLAY_42_ID
+    #define TUSINSET_OVL_TUSIN OVERLAY_44_ID
 #endif
-extern u32 OVERLAY_42_ID;
+extern void ProcessOverlay_MenuTop(void* state);
+extern u32  OVERLAY_42_ID;
 
 void ProcessOverlay_Tusin(void* state);
 
@@ -680,7 +679,7 @@ void TusinSet_Update(TusinSetState* state) {
     switch (tusinSet->nextProcess) {
         case 0: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSINSET_OVL_MENU, TUSINSET_OVL_MENU_ENTRY, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&TUSINSET_OVL_MENU, ProcessOverlay_MenuTop, NULL, PROCESS_STAGE_INIT);
         } break;
         case 1: {
             OverlayTag tag;

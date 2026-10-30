@@ -73,6 +73,10 @@ extern void func_ov028_020e82d0(void* state);
 extern void ProcessOverlay_MenuBadge(void* state);
 extern void func_ov043_0209bce4(void* state);
 extern void ProcessOverlay_Save(void* state);
+extern void ProcessOverlay_FriendList(void* state);
+extern void ProcessOverlay_OtosuMenu_MultiplayerEnter(void* menuObj);
+extern void ProcessOverlay_TusinSet(void* state);
+extern void func_ov030_020ae92c(void* arg);
 
 void MenuTop_InitState(MenuTopState* state);
 void MenuTop_CreateTasks(MenuTopState* state);
@@ -459,7 +463,7 @@ void MenuTop_Update(MenuTopState* state) {
     switch (topMenu->selectedEntry) {
         case 0: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_45_ID, (void*)0x02091034, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_45_ID, ProcessOverlay_FriendList, NULL, PROCESS_STAGE_INIT);
         } break;
         case 1: {
             OverlayTag tag;
@@ -479,11 +483,12 @@ void MenuTop_Update(MenuTopState* state) {
         } break;
         case 5: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, (void*)0x020868CC, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_2_ID, ProcessOverlay_OtosuMenu_MultiplayerEnter, NULL,
+                                   PROCESS_STAGE_INIT);
         } break;
         case 6: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_45_ID, (void*)0x02088700, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_45_ID, ProcessOverlay_TusinSet, NULL, PROCESS_STAGE_INIT);
         } break;
         case 7: {
             OverlayTag tag;
@@ -491,7 +496,7 @@ void MenuTop_Update(MenuTopState* state) {
         } break;
         case 9: {
             OverlayTag tag;
-            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_30_ID, (void*)0x020AE92C, NULL, PROCESS_STAGE_INIT);
+            MainOvlDisp_ReplaceTop(&tag, (s32)&OVERLAY_30_ID, func_ov030_020ae92c, NULL, PROCESS_STAGE_INIT);
         } break;
         default: {
             OverlayTag tag;
