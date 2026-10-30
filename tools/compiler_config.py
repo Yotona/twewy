@@ -16,6 +16,9 @@ DECOMP_ME_COMPILERS = {
     "2.0/sp1p5": "mwcc_30_131",
 }
 
+# Overrides the -w off of COMMON_CC_FLAGS to print every warning
+ALL_WARNINGS_CC_FLAG = "-w all"
+
 # Passed to every compile
 COMMON_CC_FLAGS = (
     "-O4,p",  # Optimize heavily, prioritize speed

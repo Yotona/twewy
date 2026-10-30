@@ -7934,9 +7934,14 @@ from:0x020aeef8 kind:load to:0x0206bc2c module:main
 from:0x020aeefc kind:load to:0x0206734c add:0x800 module:main
 from:0x020aef00 kind:load to:0x02073568 module:main
 from:0x020aef08 kind:load to:0x020e8438 module:overlay(26)
+from:0x020aef10 kind:load to:0x0208f4e0 module:overlay(3)
 from:0x020aef14 kind:load to:0x02074568 module:main
 from:0x020aef1c kind:load to:0x020d43c4 module:overlay(30)
+from:0x020aef24 kind:load to:0x020849c4 module:overlay(42)
 from:0x020aef28 kind:load to:0x02074968 module:main
+from:0x020aef2c kind:load to:0x020b9de4 module:overlay(42)
+from:0x020aef30 kind:load to:0x020ace7c module:overlay(42)
+from:0x020aef38 kind:load to:0x02083c20 module:overlay(38)
 from:0x020aef3c kind:load to:0x020af028 module:overlay(30)
 from:0x020aef40 kind:load to:0x020b1514 module:overlay(30)
 from:0x020aef64 kind:arm_call to:0x02027330 module:main
@@ -14905,10 +14910,6 @@ from:0x020e0b80 kind:load to:0x020e0260 module:overlay(30)
 from:0x020e0b88 kind:load to:0x020e0240 module:overlay(30)
 from:0x020e0b90 kind:load to:0x020e0380 module:overlay(30)
 from:0x020e0b98 kind:load to:0x020e0230 module:overlay(30)
-from:0x020e0d34 kind:load to:0x02070005 module:main
-from:0x020e0d3c kind:load to:0x0211018e module:overlays(32,33,34,35)
-from:0x020e0e84 kind:load to:0x02120004 module:overlays(32,33,35)
-from:0x020e1270 kind:load to:0x02120294 module:overlays(32,33,35)
 from:0x020e424c kind:load to:0x020b902c module:overlay(30)
 from:0x020e4250 kind:load to:0x020b907c module:overlay(30)
 from:0x020e4254 kind:load to:0x020b90e8 module:overlay(30)

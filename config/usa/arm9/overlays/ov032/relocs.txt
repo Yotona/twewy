@@ -2,6 +2,5 @@ from:0x0211a074 kind:load to:0x027e0070 module:dtcm
 from:0x0212716c kind:load to:0x02070070 module:main
 from:0x0212718c kind:load to:0x02090070 module:overlay(38)
 from:0x021271c0 kind:load to:0x020b0070 module:overlay(38)
-from:0x02127210 kind:load to:0x020f0082 module:overlay(30)
 from:0x0212722c kind:load to:0x02100060 module:overlay(30)
 from:0x0212724c kind:load to:0x02120070 module:overlay(32)
