@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020a51c0(void);
 extern const TaskHandle data_ov003_020dc948;
 extern const s32        data_ov003_020dc954[3];
@@ -19,11 +17,11 @@ s32 func_ov003_020b2710(Ov003EffectContext* context, Ov003EffectState* effect) {
     if (!func_ov003_02085cfc(4))
         return 0;
     touch = func_ov003_020a62a0();
-    if (touch->input.previousY > touch->input.y)
+    if (touch->endY > touch->startY)
         return 0;
     arg             = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc948.taskName);
     *arg            = effect;
-    context->handle = (TaskHandle*)&data_ov003_020dc948;
+    context->handle = &data_ov003_020dc948;
     context->arg    = arg;
     context->post   = NULL;
     return 1;
@@ -38,14 +36,14 @@ s32 func_ov003_020b2780(TaskPool* pool, Task* task, void* args, s32 stage) {
             BtlTouchWork*    touch = func_ov003_020a62a0();
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect = *arg;
-            self->x      = func_ov003_0208442c(0, touch->input.x);
-            self->y      = func_ov003_02084460(0, touch->input.y, 0);
+            self->x      = func_ov003_0208442c(0, touch->startX);
+            self->y      = func_ov003_02084460(0, touch->startY, 0);
             func_ov003_02083ca0(&self->x, &self->y, 0, 0);
             self->count = (u8)self->effect->params[0];
             self->timer = 0;
             func_ov003_020a6464(1);
             func_ov003_020a5aa4(self->effect);
-            if (touch->input.x >= touch->input.previousX)
+            if (touch->startX >= touch->endX)
                 self->step = -0x18000;
             else
                 self->step = 0x18000;

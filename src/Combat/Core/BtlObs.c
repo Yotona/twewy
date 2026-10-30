@@ -16,10 +16,7 @@ typedef struct BtlObs {
 extern void func_ov003_02086680(Ov003EffectActor*, Ov003EffectSpawn*);
 extern void func_ov003_020866f8(Ov003EffectActor*);
 extern void func_ov003_02086770(Ov003EffectActor*);
-extern void func_ov003_0208810c(CombatSprite*, CombatActor*);
 extern s32  func_ov003_0208a25c(CombatActor*);
-extern s32  func_ov003_020a3330(s32);
-extern s32  func_ov003_020a3468(s32);
 
 void func_ov003_020941ac(BtlObs* obs, void (*update)(BtlObs*)) {
     obs->update = update;

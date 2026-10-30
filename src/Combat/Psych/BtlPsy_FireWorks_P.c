@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlFireWorksCharge {
@@ -8,8 +9,6 @@ typedef struct BtlFireWorksCharge {
     /* 0x08 */ s32               reserved;
 } BtlFireWorksCharge; // Size: 0xC
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern const TaskHandle data_ov003_020dc730;
 
 s32 func_ov003_020ac1ec(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -17,7 +16,7 @@ s32 func_ov003_020ac1ec(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc730.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc730;
+    context->handle        = &data_ov003_020dc730;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -37,7 +36,7 @@ s32 func_ov003_020ac240(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->reserved = 0;
             func_ov003_020a6464(1);
             func_ov003_020a6494(touch->x);
-            func_ov003_02087f00(0x52, touch->x);
+            func_ov003_02087f00(SEIDX_SE_PSY_FIREWORKS01_01, touch->x);
             return 1;
         }
         case 1: {
@@ -60,7 +59,7 @@ s32 func_ov003_020ac240(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 2:
             return 1;
         case 3:
-            func_ov003_02087ed8(0x53);
+            func_ov003_02087ed8(SEIDX_SE_PSY_FIREWORKS01_01_CANCEL);
             func_ov003_020a6464(0);
             return 1;
     }

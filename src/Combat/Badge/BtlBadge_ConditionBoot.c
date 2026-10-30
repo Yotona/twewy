@@ -94,7 +94,7 @@ s32 func_ov003_020a6fdc(TaskPool* pool, Task* task, void* args, s32 stage) {
                     s32 triggered = self->unk_08 == 2 && func_ov003_020a5ac4(slots, 6, &self->actor->effect, 0) != 0;
 
                     if (triggered) {
-                        func_ov003_02087ed8(0x2D);
+                        func_ov003_02087ed8(SEIDX_SE_PSY_FULL);
                         func_ov003_020a4390(self->actor, 3);
                         return 0;
                     }

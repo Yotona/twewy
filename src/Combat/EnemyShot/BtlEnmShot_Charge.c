@@ -3,9 +3,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32              func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0c24;
 
 s32 func_ov003_020cd988(Ov003EnemyShotChargeSplitArgs* input) {
@@ -42,7 +39,7 @@ s32 func_ov003_020cda50(Ov003EnemyShotSource* source, Ov003EnemyShotSource* seco
     args.velocity.y   = y;
     args.velocity.z   = z;
     TaskPool* pool;
-    if (!func_ov003_020c37f8(&source->core.owner->sprite))
+    if (!func_ov003_020c37f8(&source->core.owner->base.sprite))
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -50,7 +47,7 @@ s32 func_ov003_020cda50(Ov003EnemyShotSource* source, Ov003EnemyShotSource* seco
 }
 
 s32 func_ov003_020cdae4(Ov003EnemyShotCharge* self, Ov003EnemyShotChargeArgs* args) {
-    s32 engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32 engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
     MI_CpuSet(self, 0, sizeof(*self));
     MI_CpuCopyU8(args->source, &self->source, sizeof(self->source));
     MI_CpuCopyU8(args->secondSource, &self->secondSource, sizeof(self->secondSource));
@@ -65,9 +62,9 @@ s32 func_ov003_020cdae4(Ov003EnemyShotCharge* self, Ov003EnemyShotChargeArgs* ar
                                visual->base.paletteSlot, visual->charFormat);
     CombatSprite_SetAnimFromTable(&self->sprites[0], self->source.animation, self->source.animationMode);
     CombatSprite_SetAnimFromTable(&self->sprites[1], self->secondSource.animation, 1);
-    CombatSprite_SetFlip(&self->sprites[0], self->source.core.owner->sprite.flags46 & 1);
+    CombatSprite_SetFlip(&self->sprites[0], self->source.core.owner->base.sprite.flags46 & 1);
     self->source.core.sprite = &self->sprites[0];
-    func_ov003_020cdfbc(&self->source, args->source->core.owner->sprite.flags46 & 1, 0);
+    func_ov003_020cdfbc(&self->source, args->source->core.owner->base.sprite.flags46 & 1, 0);
     func_ov003_020cccf0(engine, &self->source);
     self->activeSprite = &self->sprites[0];
     self->activeSource = &self->source;
@@ -100,7 +97,7 @@ s32 func_ov003_020cdc28(Ov003EnemyShotCharge* self) {
             break;
         case 1:
             self->source.core.hitResult =
-                func_ov003_0208a164(func_ov003_0208a114(source->core.attackId), &source->core.owner->actor.baseArgs,
+                func_ov003_0208a164(func_ov003_0208a114(source->core.attackId), &source->core.owner->base.actor.baseArgs,
                                     source->core.position.x, source->core.position.y, source->core.position.z);
             if (SpriteMgr_IsAnimationFinished(&sprite->sprite))
                 return 0;

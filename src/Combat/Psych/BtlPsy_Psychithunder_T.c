@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
 extern const TaskHandle data_ov003_020dd068;
@@ -10,7 +11,7 @@ s32 func_ov003_020b9838(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychArgs  value = {effect};
     Ov003PsychArgs* arg   = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dd068.taskName);
     *arg                  = value;
-    context->handle       = (TaskHandle*)&data_ov003_020dd068;
+    context->handle       = &data_ov003_020dd068;
     context->arg          = arg;
     context->post         = NULL;
     return 1;
@@ -86,12 +87,12 @@ void func_ov003_020b9a14(Ov003Psychithunder* self) {
     if (effect->index == 2) {
         s32 angle        = func_ov003_020a62d0(x, y, targetX, targetY);
         u16 first        = angle + 0x1000;
-        s32 dx           = FX_Mul(FX_SinCosTable_[(first >> 4) * 2 + 1], 0x64000);
-        s32 dy           = FX_Mul(FX_SinCosTable_[(first >> 4) * 2], 0x64000);
+        s32 dx           = FX_Mul(FX_CosIdx(first), 0x64000);
+        s32 dy           = FX_Mul(FX_SinIdx(first), 0x64000);
         self->taskIds[0] = func_ov003_020b9040(self->effect, 3, x, y, x + (dx >> 12), y + (dy >> 12), lifetime);
         u16 second       = angle - 0x1000;
-        dx               = FX_Mul(FX_SinCosTable_[(second >> 4) * 2 + 1], 0x64000);
-        dy               = FX_Mul(FX_SinCosTable_[(second >> 4) * 2], 0x64000);
+        dx               = FX_Mul(FX_CosIdx(second), 0x64000);
+        dy               = FX_Mul(FX_SinIdx(second), 0x64000);
         self->taskIds[1] = func_ov003_020b9040(self->effect, 3, x, y, x + (dx >> 12), y + (dy >> 12), lifetime);
         return;
     }

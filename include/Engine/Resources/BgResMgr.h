@@ -52,7 +52,9 @@ extern BgResMgr* g_BgResourceManagers[2];
 
 void BgResMgr_Init(BgResMgr* mgr, DisplayEngine engine);
 
-BOOL BgResMgr_ReleaseChar(BgResMgr* mgr, BgResource* resource);
+void*       BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, s32 charBase, u32 offset, u32 size);
+BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, s32 screenBase, GXBGScreenSizeText screenSize);
+BOOL        BgResMgr_ReleaseChar(BgResMgr* mgr, BgResource* resource);
 
 BOOL BgResMgr_ReleaseScreen(BgResMgr* mgr, BgResource* resource);
 

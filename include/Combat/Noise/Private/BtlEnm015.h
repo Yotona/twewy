@@ -19,12 +19,9 @@ typedef struct Enm015Spawn {
 } Enm015Spawn; // Size: 0x18
 
 typedef struct BtlEnm015 {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ s16 unk_1C0;
-    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             unk_1C0;
+    /* 0x1C2 */ s16             unk_1C2;
     /* 0x1C4 */ void (*unk_1C4)(struct BtlEnm015*);
     /* 0x1C8 */ s32 unk_1C8;
     /* 0x1CC */ s32 unk_1CC;

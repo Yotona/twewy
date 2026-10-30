@@ -8,7 +8,7 @@
 
 extern void func_0200d858(void*, s32, s32, void*);
 extern void func_0200d954(s32, s32);
-extern void func_02026590(void*, s32, u16);
+extern void func_02026590(s32* dst, s32 target, u16 weight);
 extern s32  func_02036974();
 
 void func_ov017_02125c6c(void* arg0);
@@ -69,7 +69,7 @@ extern s32              data_ov017_02141540;
 extern SpriteAnimEntry  data_ov017_021415a8;
 extern s16              data_ov017_0214398c;
 extern s32              data_ov017_0214399c;
-extern TaskHandle       data_ov017_02141f30;
+extern const TaskHandle data_ov017_02141f30;
 extern u16              data_ov017_02143980;
 extern SubroutineArgs   data_ov017_0214165c;
 extern s32              data_ov017_0214166c;
@@ -102,7 +102,7 @@ typedef struct {
 } Boss03_SmallPair;
 extern Boss03_SmallPair data_ov017_021439d4;
 extern SubroutineArgs   data_ov017_02141c38;
-extern TaskHandle       data_ov017_02141f4c;
+extern const TaskHandle data_ov017_02141f4c;
 extern BinIdentifier    data_ov017_02141518;
 extern SpriteAnimEntry  data_ov017_02141568;
 extern SubroutineArgs   data_ov017_02141c54;
@@ -114,7 +114,7 @@ extern s32              data_ov017_02141d40;
 extern s32              data_ov017_02141c68;
 extern SubroutineArgs   data_ov017_02141c78;
 extern s32              data_ov017_02143a04;
-extern TaskHandle       data_ov017_02141f94;
+extern const TaskHandle data_ov017_02141f94;
 extern u16              data_ov017_02143a00;
 typedef struct {
     u16    unk0;
@@ -129,16 +129,16 @@ extern void*            data_ov017_021439e0;
 extern s16              data_ov017_021439de;
 extern s32              data_ov017_02142f84;
 extern s32              data_ov017_021439d8;
-extern TaskHandle       data_ov017_02141dfc;
+extern const TaskHandle data_ov017_02141dfc;
 extern void*            data_ov017_02143984;
 extern SubroutineArgs   data_ov017_02141dec;
 extern Boss03DataStruct data_ov017_02141e18;
 extern SubroutineArgs   data_ov017_02141e08;
 extern u16              data_ov017_021439ec;
-extern TaskHandle       data_ov017_02141e84;
+extern const TaskHandle data_ov017_02141e84;
 extern void**           data_ov017_021439f0;
 extern SubroutineArgs   data_ov017_02141e58;
-extern TaskHandle       data_ov017_02141ea0;
+extern const TaskHandle data_ov017_02141ea0;
 extern SubroutineArgs   data_ov017_02141e74;
 extern SubroutineArgs   data_ov017_02141e90;
 extern SubroutineArgs   data_ov017_02141eac;
@@ -166,53 +166,10 @@ void func_ov017_021263dc(void* arg0, void (*arg1)(void*)) {
 }
 
 void func_ov017_021263f0(void* arg0) {
-    s32   temp_r1;
-    s32   temp_r1_3;
-    s32   temp_r2;
-    s32   temp_r2_2;
-    u32   temp_r0;
-    u32   temp_r3;
-    void* temp_ip;
-    void* temp_lr;
-    void* temp_r0_2;
-    void* temp_r1_2;
-
-    temp_r2 = ((Boss03*)arg0)->unk2C;
-    temp_r1 = (((Boss03*)arg0)->unk28 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_ip = ((Boss03*)arg0)->unk0;
-    temp_r3 = *(u32*)(temp_r1 + (temp_r2 * 0x3C));
-    switch (temp_r3) { /* switch 1 */
-        default:       /* switch 1 */
-            break;
-        case 1:        /* switch 1 */
-        case 2:        /* switch 1 */
-        case 3:        /* switch 1 */
-        case 4:        /* switch 1 */
-        case 5:        /* switch 1 */
-            ((Boss03*)((temp_r2 * 0x2C) + temp_r1))->unk124 = 1;
-            break;
-    }
-    temp_r1_2                   = temp_r1 + (temp_r2 * 8);
-    ((Boss03*)temp_r1_2)->unkF0 = (s32)(((Boss03*)temp_ip)->unk28 - 0x80000);
-    ((Boss03*)temp_r1_2)->unkF4 = (s32)(((Boss03*)temp_ip)->unk40 - 0x60000);
-    temp_r2_2                   = ((Boss03*)arg0)->unk54;
-    temp_r1_3                   = (((Boss03*)arg0)->unk50 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_lr                     = ((Boss03*)arg0)->unk0;
-    temp_r0                     = *(u32*)(temp_r1_3 + (temp_r2_2 * 0x3C));
-    switch (temp_r0) { /* switch 2 */
-        default:       /* switch 2 */
-            break;
-        case 1:        /* switch 2 */
-        case 2:        /* switch 2 */
-        case 3:        /* switch 2 */
-        case 4:        /* switch 2 */
-        case 5:        /* switch 2 */
-            ((Boss03*)((temp_r2_2 * 0x2C) + temp_r1_3))->unk124 = 1;
-            break;
-    }
-    temp_r0_2                   = temp_r1_3 + (temp_r2_2 * 8);
-    ((Boss03*)temp_r0_2)->unkF0 = (s32)(((Boss03*)temp_lr)->unk28 - 0x80000);
-    ((Boss03*)temp_r0_2)->unkF4 = (s32)(((Boss03*)temp_lr)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk28, ((Boss03*)arg0)->unk2C, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk50, ((Boss03*)arg0)->unk54, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
 }
 
 void func_ov017_021264e4(void* arg0) {
@@ -300,7 +257,7 @@ s32 func_ov017_0212665c(void* arg1, u16* arg2) {
     temp_r4 = ((Boss03*)arg1)->unk18;
     MI_CpuSet(temp_r4, 0, 0xE0);
     func_ov017_0212fbc4();
-    temp_ip                   = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D818));
+    temp_ip                   = &data_ov003_020e71b8->unk3D7C0[1];
     ((Boss03*)temp_r4)->unk0  = temp_ip;
     ((Boss03*)temp_ip)->unk2  = (u16)(((Boss03*)temp_ip)->unk2 | 1);
     ((Boss03*)temp_r4)->unkD4 = 0;
@@ -459,53 +416,10 @@ void func_ov017_02126be4(void* arg0, void (*arg1)(void*)) {
 }
 
 void func_ov017_02126bfc(void* arg0) {
-    s32   temp_r1;
-    s32   temp_r1_3;
-    s32   temp_r2;
-    s32   temp_r2_2;
-    u32   temp_r0;
-    u32   temp_r3;
-    void* temp_ip;
-    void* temp_lr;
-    void* temp_r0_2;
-    void* temp_r1_2;
-
-    temp_r2 = ((Boss03*)arg0)->unk20;
-    temp_r1 = (((Boss03*)arg0)->unk1C * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_ip = ((Boss03*)arg0)->unk0;
-    temp_r3 = *(u32*)(temp_r1 + (temp_r2 * 0x3C));
-    switch (temp_r3) { /* switch 1 */
-        default:       /* switch 1 */
-            break;
-        case 1:        /* switch 1 */
-        case 2:        /* switch 1 */
-        case 3:        /* switch 1 */
-        case 4:        /* switch 1 */
-        case 5:        /* switch 1 */
-            ((Boss03*)((temp_r2 * 0x2C) + temp_r1))->unk124 = 1;
-            break;
-    }
-    temp_r1_2                   = temp_r1 + (temp_r2 * 8);
-    ((Boss03*)temp_r1_2)->unkF0 = (s32)(((Boss03*)temp_ip)->unk28 - 0x80000);
-    ((Boss03*)temp_r1_2)->unkF4 = (s32)(((Boss03*)temp_ip)->unk40 - 0x60000);
-    temp_r2_2                   = ((Boss03*)arg0)->unk48;
-    temp_r1_3                   = (((Boss03*)arg0)->unk44 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_lr                     = ((Boss03*)arg0)->unk0;
-    temp_r0                     = *(u32*)(temp_r1_3 + (temp_r2_2 * 0x3C));
-    switch (temp_r0) { /* switch 2 */
-        default:       /* switch 2 */
-            break;
-        case 1:        /* switch 2 */
-        case 2:        /* switch 2 */
-        case 3:        /* switch 2 */
-        case 4:        /* switch 2 */
-        case 5:        /* switch 2 */
-            ((Boss03*)((temp_r2_2 * 0x2C) + temp_r1_3))->unk124 = 1;
-            break;
-    }
-    temp_r0_2                   = temp_r1_3 + (temp_r2_2 * 8);
-    ((Boss03*)temp_r0_2)->unkF0 = (s32)(((Boss03*)temp_lr)->unk28 - 0x180000);
-    ((Boss03*)temp_r0_2)->unkF4 = (s32)(((Boss03*)temp_lr)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk1C, ((Boss03*)arg0)->unk20, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk44, ((Boss03*)arg0)->unk48, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x180000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
 }
 
 void func_ov017_02126cf0(void* arg0) {
@@ -570,7 +484,7 @@ s32 func_ov017_02126dd4(void* arg1, void* arg2, void* arg3, s32 arg4, s32 arg5) 
         ((Boss03*)arg1)->unk4 = 0;
         ((Boss03*)arg1)->unk8 = NULL;
     } else {
-        ((Boss03*)arg1)->unk4    = EasyTask_GetTaskData((TaskPool*)data_ov003_020e71b8, sp8);
+        ((Boss03*)arg1)->unk4    = EasyTask_GetTaskData(&data_ov003_020e71b8->unk_00000, sp8);
         ((Boss03*)arg1)->unk0    = sp8;
         ((Boss03*)arg1)->unk8    = arg2;
         data_ov017_02143988.unkA = (s16)(data_ov017_02143988.unkA + ((Boss03*)arg2)->unk4);
@@ -651,7 +565,7 @@ void func_ov017_02126fd0(void* arg0) {
     if (data_ov017_02143988.unk24 == 0) {
         return;
     }
-    if (EasyTask_ValidateTaskId((TaskPool*)data_ov003_020e71b8, &data_ov017_021439a4) != 0) {
+    if (EasyTask_ValidateTaskId(&data_ov003_020e71b8->unk_00000, &data_ov017_021439a4) != 0) {
         return;
     }
     func_ov017_02126d90(arg0, &data_ov017_021439a4);
@@ -664,7 +578,7 @@ void func_ov017_02127020(void* arg0) {
     var_r6 = &data_ov017_021439b0;
     var_r5 = 0;
     do {
-        if ((EasyTask_ValidateTaskId((TaskPool*)data_ov003_020e71b8, var_r6) == 0) && (((Boss03*)var_r6)->unk8 != 0)) {
+        if ((EasyTask_ValidateTaskId(&data_ov003_020e71b8->unk_00000, var_r6) == 0) && (((Boss03*)var_r6)->unk8 != 0)) {
             func_ov017_02126eb4(arg0, var_r6);
         }
         var_r5 += 1;
@@ -676,7 +590,7 @@ void func_ov017_0212707c(s32* arg0, s32* arg1) {
     u32   temp_r0;
     void* temp_r2;
 
-    temp_r2 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r2 = data_ov003_020e71b8->unk3D7C0;
     *arg0   = ((Boss03*)temp_r2)->unkC;
     temp_r0 = ((Boss03*)temp_r2)->unk10;
     *arg1   = RNG_Next((s32)(temp_r0 + (temp_r0 >> 0x1F)) >> 0xD) << 0xC;
@@ -779,7 +693,7 @@ void func_ov017_021272f4(void* arg0) {
 void func_ov017_02127314(void* arg0) {
     void* temp_r4;
 
-    temp_r4 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r4 = data_ov003_020e71b8->unk3D7C0;
     func_ov003_02084634(arg0, 4, 0xC0, 0x40);
     func_ov003_020846ac(arg0, ((Boss03*)temp_r4)->unk4, ((Boss03*)temp_r4)->unk10, 0);
 }
@@ -865,7 +779,7 @@ void func_ov017_02127480(void* arg0, void* arg1) {
         return;
     }
     func_ov017_02127410(0);
-    EasyTask_DeleteTask((TaskPool*)data_ov003_020e71b8, ((Boss03*)arg1)->unk0);
+    EasyTask_DeleteTask(&data_ov003_020e71b8->unk_00000, ((Boss03*)arg1)->unk0);
     func_ov017_02126d90(arg0, arg1);
 }
 
@@ -1012,7 +926,7 @@ void func_ov017_021277cc(void* arg0) {
     u32   temp_r4_2;
     void* temp_r0;
 
-    temp_r0 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r0 = data_ov003_020e71b8->unk3D7C0;
     if (((Boss03*)arg0)->unk54 & 0x4200) {
         return;
     }
@@ -1174,10 +1088,10 @@ s32 func_ov017_02127c40(void* arg1, u16* arg2) {
     void* var_r6;
 
     temp_r4 = ((Boss03*)arg1)->unk18;
-    temp_r5 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r5 = data_ov003_020e71b8->unk3D7C0;
     MI_CpuSet(temp_r4, 0, 0x1DC);
     func_ov017_0212fc70();
-    temp_ip                  = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_ip                  = data_ov003_020e71b8->unk3D7C0;
     ((Boss03*)temp_r4)->unk0 = temp_ip;
     ((Boss03*)temp_ip)->unk2 = (u16)(((Boss03*)temp_ip)->unk2 | 1);
     temp_r0                  = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_0214171c, 1, 0);
@@ -1812,7 +1726,7 @@ void func_ov017_02128f98(void* arg0) {
             var_r0 = 0;
         }
         sp14 = var_r0;
-        EasyTask_CreateTask((TaskPool*)data_ov003_020e71b8, &data_ov017_02141f4c, 0, 0, 0, &sp8);
+        EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &data_ov017_02141f4c, 0, 0, 0, &sp8);
     }
     ((Boss03*)arg0)->unk1C0 = (s32)(((Boss03*)arg0)->unk1C0 + 1);
     if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)arg0 + 0x84)) == 0) {
@@ -2038,30 +1952,8 @@ void func_ov017_02129764(void* arg0, void (*arg1)(void*)) {
 }
 
 void func_ov017_02129778(void* arg0) {
-    s32   temp_r1;
-    s32   temp_r2;
-    u32   temp_r0;
-    void* temp_lr;
-    void* temp_r0_2;
-
-    temp_r2 = ((Boss03*)arg0)->unk14;
-    temp_r1 = (((Boss03*)arg0)->unk10 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_lr = ((Boss03*)arg0)->unk0;
-    temp_r0 = *(u32*)(temp_r1 + (temp_r2 * 0x3C));
-    switch (temp_r0) {
-        default:
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            ((Boss03*)((temp_r2 * 0x2C) + temp_r1))->unk124 = 1;
-            break;
-    }
-    temp_r0_2                   = temp_r1 + (temp_r2 * 8);
-    ((Boss03*)temp_r0_2)->unkF0 = (s32)(((Boss03*)temp_lr)->unk28 - 0x80000);
-    ((Boss03*)temp_r0_2)->unkF4 = (s32)(((Boss03*)temp_lr)->unk40 - 0x100000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk10, ((Boss03*)arg0)->unk14, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x100000);
 }
 
 void func_ov017_021297f8(void* arg0) {
@@ -2160,10 +2052,10 @@ s32 func_ov017_021299d0(void* arg1, u16* arg2) {
     void** temp_r4;
 
     temp_r4 = ((Boss03*)arg1)->unk18;
-    temp_r5 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r5 = data_ov003_020e71b8->unk3D7C0;
     MI_CpuSet(temp_r4, 0, 0x9C);
     func_ov017_0212fc70();
-    temp_lr                  = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_lr                  = data_ov003_020e71b8->unk3D7C0;
     ((Boss03*)temp_r4)->unk0 = temp_lr;
     ((Boss03*)temp_lr)->unk2 = (u16)(((Boss03*)temp_lr)->unk2 | 1);
     temp_r0                  = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_02141c68, 1, 0);
@@ -2782,7 +2674,7 @@ void func_ov017_0212aaa0(void* arg0) {
             var_r7 += 1;
             var_r8 += 0xA;
         } while (var_r7 < 6);
-        var_r5 = func_ov003_0208495c((void*)((u8*)data_ov003_020e71b8 + 0x3D8BC));
+        var_r5 = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC);
         if (var_r5 != 0) {
             do {
                 func_ov003_020a4390(var_r5, 4);
@@ -3657,7 +3549,7 @@ void func_ov017_0212c3cc(void* arg0) {
     s32   temp_r6;
     void* temp_r4;
 
-    temp_r4 = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r4 = data_ov003_020e71b8->unk3D7C0;
     temp_r6 = (s32)((Boss03*)temp_r4)->unk10 >> 0xC;
     ((Boss03*)arg0)->unk28 =
         (s32)(((Boss03*)temp_r4)->unk4 + (RNG_Next(((s32)((Boss03*)temp_r4)->unkC >> 0xC) - 0x40) << 0xC) + 0x20000);
@@ -4128,30 +4020,8 @@ void func_ov017_0212ce90(void* arg0) {
 }
 
 void func_ov017_0212cf08(void* arg0) {
-    s32   temp_r1;
-    s32   temp_r2;
-    u32   temp_r0;
-    void* temp_lr;
-    void* temp_r0_2;
-
-    temp_r2 = ((Boss03*)arg0)->unk14;
-    temp_r1 = (((Boss03*)arg0)->unk10 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_lr = ((Boss03*)arg0)->unk0;
-    temp_r0 = *(u32*)(temp_r1 + (temp_r2 * 0x3C));
-    switch (temp_r0) {
-        default:
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            ((Boss03*)((temp_r2 * 0x2C) + temp_r1))->unk124 = 1;
-            break;
-    }
-    temp_r0_2                   = temp_r1 + (temp_r2 * 8);
-    ((Boss03*)temp_r0_2)->unkF0 = (s32)(((Boss03*)temp_lr)->unk28 - 0x80000);
-    ((Boss03*)temp_r0_2)->unkF4 = (s32)(((Boss03*)temp_lr)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk10, ((Boss03*)arg0)->unk14, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
 }
 
 s32 func_ov017_0212cf88(void* arg1, u16* arg2) {
@@ -4173,13 +4043,13 @@ s32 func_ov017_0212cf88(void* arg1, u16* arg2) {
     temp_r4 = ((Boss03*)arg1)->unk18;
     MI_CpuSet(temp_r4, 0, 0x48);
     func_ov017_0212fbc4();
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x4C)) = (s32)(*(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x4C)) & ~4);
-    temp_ip                                               = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D818));
-    ((Boss03*)temp_r4)->unk0                              = temp_ip;
-    ((Boss03*)temp_ip)->unk2                              = (u16)(((Boss03*)temp_ip)->unk2 | 1);
-    ((Boss03*)temp_r4)->unk3C                             = 0;
-    temp_r0                  = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_02141ebc, 1, 0);
-    ((Boss03*)temp_r4)->unk4 = temp_r0;
+    g_DisplaySettings.controls[1].layers = (s32)(g_DisplaySettings.controls[1].layers & ~4);
+    temp_ip                              = &data_ov003_020e71b8->unk3D7C0[1];
+    ((Boss03*)temp_r4)->unk0             = temp_ip;
+    ((Boss03*)temp_ip)->unk2             = (u16)(((Boss03*)temp_ip)->unk2 | 1);
+    ((Boss03*)temp_r4)->unk3C            = 0;
+    temp_r0                              = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_02141ebc, 1, 0);
+    ((Boss03*)temp_r4)->unk4             = temp_r0;
     if (temp_r0 == NULL) {
         var_r1 = NULL;
     } else {
@@ -4275,30 +4145,8 @@ void func_ov017_0212d27c(void* arg0, void (*arg1)(void*)) {
 }
 
 void func_ov017_0212d290(void* arg0) {
-    s32   temp_r1;
-    s32   temp_r2;
-    u32   temp_r0;
-    void* temp_lr;
-    void* temp_r0_2;
-
-    temp_r2 = ((Boss03*)arg0)->unk14;
-    temp_r1 = (((Boss03*)arg0)->unk10 * 0x220) + (s32)((u8*)(void*)((u8*)&g_DisplaySettings + 0x64));
-    temp_lr = ((Boss03*)arg0)->unk0;
-    temp_r0 = *(u32*)(temp_r1 + (temp_r2 * 0x3C));
-    switch (temp_r0) {
-        default:
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            ((Boss03*)((temp_r2 * 0x2C) + temp_r1))->unk124 = 1;
-            break;
-    }
-    temp_r0_2                   = temp_r1 + (temp_r2 * 8);
-    ((Boss03*)temp_r0_2)->unkF0 = (s32)(((Boss03*)temp_lr)->unk28 - 0x80000);
-    ((Boss03*)temp_r0_2)->unkF4 = (s32)(((Boss03*)temp_lr)->unk40 - 0x60000);
+    Display_SetBGOffset(((Boss03*)arg0)->unk10, ((Boss03*)arg0)->unk14, ((Boss03*)((Boss03*)arg0)->unk0)->unk28 - 0x80000,
+                        ((Boss03*)((Boss03*)arg0)->unk0)->unk40 - 0x60000);
 }
 
 void func_ov017_0212d310(void* arg0) {
@@ -4341,12 +4189,12 @@ s32 func_ov017_0212d374(void* arg1, u16* arg2) {
     temp_r4 = ((Boss03*)arg1)->unk18;
     MI_CpuSet(temp_r4, 0, 0x44);
     func_ov017_0212fc70();
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x1C)) = (s32)(*(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x1C)) & ~4);
-    temp_ip                                               = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
-    ((Boss03*)temp_r4)->unk0                              = temp_ip;
-    ((Boss03*)temp_ip)->unk2                              = (u16)(((Boss03*)temp_ip)->unk2 | 1);
-    temp_r0                  = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_02141ee0, 1, 0);
-    ((Boss03*)temp_r4)->unk4 = temp_r0;
+    g_DisplaySettings.controls[0].layers = (s32)(g_DisplaySettings.controls[0].layers & ~4);
+    temp_ip                              = data_ov003_020e71b8->unk3D7C0;
+    ((Boss03*)temp_r4)->unk0             = temp_ip;
+    ((Boss03*)temp_ip)->unk2             = (u16)(((Boss03*)temp_ip)->unk2 | 1);
+    temp_r0                              = DatMgr_LoadPackEntry(1, 0, 0, (BinIdentifier*)&data_ov017_02141ee0, 1, 0);
+    ((Boss03*)temp_r4)->unk4             = temp_r0;
     if (temp_r0 == NULL) {
         var_r1 = NULL;
     } else {
@@ -4380,7 +4228,7 @@ s32 func_ov017_0212d374(void* arg1, u16* arg2) {
     data_ov003_020e71b8->unk3D7C0[1].unk_02 = 0;
     func_ov003_02083a2c(0, 0x20, 0x140, 0x1E0, 0, 0);
     func_ov003_02083a2c(1, 0x70, 0x1C8, 0x190, 0x200, 0);
-    temp_r6                   = (void*)((u8*)(void*)((u8*)data_ov003_020e71b8 + 0x3D7C0));
+    temp_r6                   = data_ov003_020e71b8->unk3D7C0;
     ((Boss03*)temp_r6)->unk18 = (s32)(0x100000 - ((Boss03*)temp_r6)->unk8);
     ((Boss03*)temp_r6)->unk1C = FX_Atan2Idx(0, 0x140);
     ((Boss03*)temp_r6)->unk54 = -0x30000;
@@ -4457,7 +4305,7 @@ void func_ov017_0212d730(void) {
     void* temp_r2;
 
     temp_r2 = (void*)((u8*)&g_DisplaySettings + 0x284);
-    temp_r3 = *(u16*)0x04000006;
+    temp_r3 = REG_VCOUNT;
     if ((s32)temp_r3 < 0xC0) {
         temp_r1   = *(FX_SinCosTable_ + (((s32)(u16)((data_ov017_021439f4.unk0 << 0xA) + (temp_r3 << 9)) >> 4) * 4));
         temp_r1_2 = (temp_r1 * data_ov017_021439f4.unk8) + 0x800;
@@ -4465,16 +4313,16 @@ void func_ov017_0212d730(void) {
         if (data_ov017_021439f4.unk0 & 1) {
             var_r1 *= -1;
         }
-        *(vu32*)0x04001010 = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF0 + var_r1) >> 0xC)) |
-                                   (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkF4 >> 0xC) << 0x10)));
-        *(vu32*)0x04001014 = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF8 + var_r1) >> 0xC)) |
-                                   (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkFC >> 0xC) << 0x10)));
-        *(vu32*)0x04001018 = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unk100 + var_r1) >> 0xC)) |
-                                   (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unk104 >> 0xC) << 0x10)));
-        *(vu32*)0x04000014 = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF8 + var_r1) >> 0xC)) |
-                                   (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkFC >> 0xC) << 0x10)));
-        *(vu32*)0x04000018 = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unk100 + var_r1) >> 0xC)) |
-                                   (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unk104 >> 0xC) << 0x10)));
+        REG_BG0OFS_SUB = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF0 + var_r1) >> 0xC)) |
+                               (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkF4 >> 0xC) << 0x10)));
+        REG_BG1OFS_SUB = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF8 + var_r1) >> 0xC)) |
+                               (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkFC >> 0xC) << 0x10)));
+        REG_BG2OFS_SUB = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unk100 + var_r1) >> 0xC)) |
+                               (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unk104 >> 0xC) << 0x10)));
+        REG_BG1OFS     = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unkF8 + var_r1) >> 0xC)) |
+                           (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unkFC >> 0xC) << 0x10)));
+        REG_BG2OFS     = (s32)((0x1FF & ((s32)(((Boss03*)temp_r2)->unk100 + var_r1) >> 0xC)) |
+                           (0x01FF0000 & (((s32)((Boss03*)temp_r2)->unk104 >> 0xC) << 0x10)));
     }
     if (temp_r3 != 0xBF) {
         return;
@@ -5245,7 +5093,7 @@ void func_ov017_0212ebc0(void* arg0) {
             var_r0 = 0;
         }
         sp14 = var_r0;
-        EasyTask_CreateTask((TaskPool*)data_ov003_020e71b8, &data_ov017_02141f4c, 0, 0, 0, &sp8);
+        EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &data_ov017_02141f4c, 0, 0, 0, &sp8);
     }
     ((Boss03*)arg0)->unk1C0 = (s32)(((Boss03*)arg0)->unk1C0 + 1);
     if (SpriteMgr_IsAnimationFinished((Sprite*)((u8*)arg0 + 0x84)) == 0) {
@@ -5824,55 +5672,19 @@ void BtlBoss02_Badge_CreateTask(s16 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4
 }
 
 void func_ov017_0212fbc4(void) {
-    void* temp_r0;
-    void* temp_r2;
-
-    temp_r0                                                = (void*)((u8*)&g_DisplaySettings + 0x2C0);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x2C0)) = 0;
-    ((Boss03*)temp_r0)->unk4                               = 1;
-    ((Boss03*)temp_r0)->unk1C                              = 0;
-    ((Boss03*)temp_r0)->unk20                              = 0;
-    ((Boss03*)temp_r0)->unk28                              = 1;
-    ((Boss03*)temp_r0)->unk2C                              = 0;
-    temp_r2                                                = (void*)((u8*)&g_DisplaySettings + 0x2FC);
-    *(vu16*)0x0400100A                                     = (u16)((*(vu16*)0x0400100A & 0x43) | 0x4004);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x2FC)) = 0;
-    ((Boss03*)temp_r2)->unk4                               = 1;
-    ((Boss03*)temp_r2)->unk28                              = 3;
-    ((Boss03*)temp_r2)->unk1C                              = 0;
-    ((Boss03*)temp_r2)->unk20                              = 2;
-    ((Boss03*)temp_r2)->unk2C                              = 1;
-    *(vu16*)0x0400100C                                     = (u16)((*(vu16*)0x0400100C & 0x43) | 0x420C);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x2F4)) = 2;
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x330)) = 2;
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x4C)) =
-        (s32)(((*(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x4C)) & ~1) | 6) & ~8);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 1, 0, 0x4004);
+    Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 2, 3, 1, 0x420C);
+    g_DisplaySettings.engineState[1].bgSettings[1].priority = 2;
+    g_DisplaySettings.engineState[1].bgSettings[2].priority = 2;
+    g_DisplaySettings.controls[1].layers                    = (s32)(((g_DisplaySettings.controls[1].layers & ~1) | 6) & ~8);
 }
 
 void func_ov017_0212fc70(void) {
-    void* temp_r0;
-    void* temp_r2;
-
-    temp_r0                                                = (void*)((u8*)&g_DisplaySettings + 0xA0);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0xA0))  = 0;
-    ((Boss03*)temp_r0)->unk4                               = 1;
-    ((Boss03*)temp_r0)->unk1C                              = 0;
-    ((Boss03*)temp_r0)->unk20                              = 0;
-    ((Boss03*)temp_r0)->unk28                              = 1;
-    ((Boss03*)temp_r0)->unk2C                              = 0;
-    temp_r2                                                = (void*)((u8*)&g_DisplaySettings + 0xDC);
-    *(vu16*)0x0400000A                                     = (u16)((*(vu16*)0x0400000A & 0x43) | 0x4004);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0xDC))  = 0;
-    ((Boss03*)temp_r2)->unk4                               = 1;
-    ((Boss03*)temp_r2)->unk28                              = 3;
-    ((Boss03*)temp_r2)->unk1C                              = 0;
-    ((Boss03*)temp_r2)->unk20                              = 2;
-    ((Boss03*)temp_r2)->unk2C                              = 1;
-    *(vu16*)0x0400000C                                     = (u16)((*(vu16*)0x0400000C & 0x43) | 0x420C);
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0xD4))  = 2;
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x110)) = 2;
-    *(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x1C)) =
-        (s32)((*(s32*)((u8*)(void*)((u8*)&g_DisplaySettings + 0x1C)) | 6) & ~8);
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 1, 0, 0x4004);
+    Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 2, 3, 1, 0x420C);
+    g_DisplaySettings.engineState[0].bgSettings[1].priority = 2;
+    g_DisplaySettings.engineState[0].bgSettings[2].priority = 2;
+    g_DisplaySettings.controls[0].layers                    = (s32)((g_DisplaySettings.controls[0].layers | 6) & ~8);
 }
 
 void func_ov017_0212fd18(void* arg0) {

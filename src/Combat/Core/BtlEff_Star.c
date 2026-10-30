@@ -21,7 +21,7 @@ typedef struct BtlEffStarArgs {
     s8               level;
 } BtlEffStarArgs;
 extern const BinIdentifier data_ov003_020d7800, data_ov003_020d7810;
-extern void                func_020265d4(void*, s32, u16);
+extern void                func_020265d4(s32* dst, s32 target, u16 weight);
 void                       func_ov003_0209fd98(BtlEffStar*);
 void                       func_ov003_0209fddc(BtlEffStar*);
 void                       func_ov003_0209fe58(BtlEffStar*);

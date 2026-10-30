@@ -2,9 +2,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern s32              func_ov003_020c3c28(void);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0c18;
 
 s32 func_ov003_020cd6f4(Ov003EnemyShotSource* source, s32 opacity, s32 decay) {
@@ -14,7 +11,7 @@ s32 func_ov003_020cd6f4(Ov003EnemyShotSource* source, s32 opacity, s32 decay) {
     args.opacity = opacity;
     args.decay   = decay;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -24,14 +21,14 @@ s32 func_ov003_020cd6f4(Ov003EnemyShotSource* source, s32 opacity, s32 decay) {
 s32 func_ov003_020cd778(Ov003EnemyShotBlur* self, Ov003EnemyShotBlurArgs* args) {
     const Ov003EnemyShotVisual* visual = args->source->visual;
     const SpriteAnimEntry*      entry  = &visual->entries[visual->entry];
-    func_ov003_020c37f8(&args->source->core.owner->sprite);
+    func_ov003_020c37f8(&args->source->core.owner->base.sprite);
     MI_CpuSet(self, 0, sizeof(*self));
     self->position.x = args->source->core.position.x;
     self->position.y = args->source->core.position.y;
     self->position.z = args->source->core.position.z;
     self->opacity    = args->opacity * 32 - 0x1000;
     self->decay      = args->decay * 32 - 0x1000;
-    CombatSprite_LoadDirect(func_ov003_020c37f8(&args->source->core.owner->sprite) ? 1 : 0, &self->sprite, visual->file,
+    CombatSprite_LoadDirect(func_ov003_020c37f8(&args->source->core.owner->base.sprite) ? 1 : 0, &self->sprite, visual->file,
                             entry->charDataIndex, entry->paletteDataIndex, entry->frameDataIndex, visual->paletteSlot,
                             entry->animDataIndex);
     CombatSprite_SetAnim(&self->sprite, args->source->animation, args->source->animationMode);

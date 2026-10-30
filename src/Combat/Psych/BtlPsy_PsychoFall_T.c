@@ -1,11 +1,10 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
-extern const s16        FX_SinCosTable_[];
 extern const TaskHandle data_ov003_020dca28;
 
 /// Spawner state of the PsychoFall effect: positions itself on the touch point and drops one
@@ -16,7 +15,7 @@ s32 func_ov003_020b47fc(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca28.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dca28;
+    context->handle        = &data_ov003_020dca28;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -42,7 +41,7 @@ s32 func_ov003_020b4854(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->timer  = 1;
             func_ov003_020a6464(1);
             func_ov003_020a6494(touch->x);
-            func_ov003_02087f00(0xAB, self->x);
+            func_ov003_02087f00(SEIDX_SE_PSY_PSYCOFALL02, self->x);
             func_ov003_02087804(0);
             return 1;
         case 1:
@@ -104,8 +103,8 @@ s32 func_ov003_020b4a44(Ov003PsychoFallT* self) {
         s32 z = -0x190000;
         if (i > 0) {
             s32 angle = RNG_Next(0x20) << 11;
-            x += (s32)(((s64)FX_SinCosTable_[(angle >> 4) * 2 + 1] * 0x20000 + 0x800) >> 0xC);
-            y += (s32)(((s64)FX_SinCosTable_[(angle >> 4) * 2] * 0x20000 + 0x800) >> 0xC);
+            x += (s32)(((s64)COS2(FX_SinCosTable_, angle) * 0x20000 + 0x800) >> 0xC);
+            y += (s32)(((s64)SIN2(FX_SinCosTable_, angle) * 0x20000 + 0x800) >> 0xC);
             z += (RNG_Next(0x21) - 0x40) * 4096;
         }
         func_ov003_020b42b4(self->effect, 0, x, y, z, 0x5000);

@@ -16,9 +16,7 @@ typedef struct BtlEnm014Eff {
     /* 0x7A */ u16          unk_7A;
 } BtlEnm014Eff; // Size: 0x7C
 
-extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-
-s32 func_ov012_02125ab4(TaskPool*, Task*, void*, s32);
+s32 func_ov012_02125ab4(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle Tsk_BtlEnm014_Eff = {"Tsk_BtlEnm014_Eff", func_ov012_02125ab4, 0x7C};
 
@@ -29,20 +27,21 @@ s32 func_ov012_021259bc(BtlEnm014Eff* data, Enm014Spawn* args) {
     data->unk_70 = args->unk_00;
     data->unk_74 = args->unk_04;
     data->unk_78 = args->unk_08;
-    data->unk_64 = data->unk_70->actor.position.x;
-    data->unk_68 = data->unk_70->actor.position.y;
+    data->unk_64 = data->unk_70->base.actor.position.x;
+    data->unk_68 = data->unk_70->base.actor.position.y;
     data->unk_60 = 0;
 
     if (args->unk_08 == 1) {
-        unk_06 = (args->unk_00->spriteIndex == 3) ? 0xC8 : 0xB0;
+        unk_06 = (args->unk_00->base.spriteIndex == 3) ? 0xC8 : 0xB0;
     } else {
         unk_06 = 0x50;
     }
 
-    CombatSprite_LoadFromTable(args->unk_04, &data->sprite, func_ov012_021256c0(args->unk_00->spriteIndex),
-                               func_ov012_021256d0(), args->unk_08, func_ov012_021256dc(args->unk_00->spriteIndex), unk_06);
+    CombatSprite_LoadFromTable(args->unk_04, &data->sprite, func_ov012_021256c0(args->unk_00->base.spriteIndex),
+                               func_ov012_021256d0(), args->unk_08, func_ov012_021256dc(args->unk_00->base.spriteIndex),
+                               unk_06);
     CombatSprite_SetAnimFromTable(&data->sprite, args->unk_08, 1);
-    CombatSprite_SetFlip(&data->sprite, data->unk_70->sprite.flags46 & 1);
+    CombatSprite_SetFlip(&data->sprite, data->unk_70->base.sprite.flags46 & 1);
     return 1;
 }
 
@@ -63,18 +62,18 @@ s32 func_ov012_02125ab4(TaskPool* pool, Task* task, void* args, s32 stage) {
                 }
                 data->unk_60 = data->unk_60 + 1;
                 if (data->unk_60 < 0x31) {
-                    data->unk_64 = data->unk_70->actor.position.x;
-                    data->unk_68 = data->unk_70->actor.position.y;
+                    data->unk_64 = data->unk_70->base.actor.position.x;
+                    data->unk_68 = data->unk_70->base.actor.position.y;
                 }
                 data->unk_6C = 0;
             } else {
-                if (data->unk_70->actor.flags & 4) {
+                if (data->unk_70->base.actor.flags & 4) {
                     return 0;
                 }
-                CombatSprite_SetFlip(&data->sprite, data->unk_70->sprite.flags46 & 1);
-                data->unk_64 = data->unk_70->actor.position.x;
-                data->unk_68 = data->unk_70->actor.position.y;
-                data->unk_6C = data->unk_70->actor.position.z;
+                CombatSprite_SetFlip(&data->sprite, data->unk_70->base.sprite.flags46 & 1);
+                data->unk_64 = data->unk_70->base.actor.position.x;
+                data->unk_68 = data->unk_70->base.actor.position.y;
+                data->unk_6C = data->unk_70->base.actor.position.z;
             }
             if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
                 return 0;

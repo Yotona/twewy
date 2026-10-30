@@ -6,6 +6,7 @@
 #include "Combat/Core/CombatList.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/EasyTask.h"
+#include "Player/Inventory/Pins.h"
 
 typedef union Ov003PsychParamsHead {
     struct {
@@ -47,11 +48,11 @@ typedef struct Ov003PsychParams {
 } Ov003PsychParams; // Size: 0x34
 
 typedef struct Ov003EffectContext {
-    /* 0x0 */ s32 (*callback)(void*); // run on start with `arg`
-    /* 0x4 */ TaskHandle* handle;     // optional task spawned on start
-    /* 0x8 */ void*       arg;        // passed to `callback`/the task
-    /* 0xC */ s32 (*post)(void*);     // run after the effect start callback
-} Ov003EffectContext;                 // Size: 0x10
+    /* 0x0 */ s32 (*callback)(void*);   // run on start with `arg`
+    /* 0x4 */ const TaskHandle* handle; // optional task spawned on start
+    /* 0x8 */ void*             arg;    // passed to `callback`/the task
+    /* 0xC */ s32 (*post)(void*);       // run after the effect start callback
+} Ov003EffectContext;                   // Size: 0x10
 
 typedef struct Ov003EffectState {
     union {
@@ -76,6 +77,17 @@ typedef struct Ov003EffectState {
     /* 0x28 */ s32                result;
     /* 0x2C */ Ov003EffectContext context;
 } Ov003EffectState; // Size: 0x3C
+
+/// The 0x10-byte action description `func_ov003_020a37a8` hands to the psych entry points.
+typedef struct Ov003PinAction {
+    /* 0x00 */ u16               pinId;
+    /* 0x02 */ s16               level;
+    /* 0x04 */ u8                unk_04;
+    /* 0x05 */ u8                unk_05[3];
+    /* 0x08 */ const RawPinData* pin;
+    /* 0x0C */ u8                slot;
+    /* 0x0D */ u8                unk_0D[3];
+} Ov003PinAction; // Size: 0x10
 
 /// The spawn record `func_ov003_020a3b9c` builds a touch actor from (also read by the badge tasks).
 typedef struct Ov003ActorSpawn {
@@ -137,40 +149,46 @@ typedef struct BtlIcon {
     /* 0x6C */ s32 unk_6C;
 } BtlIcon; // Size: 0x70
 
-// The gesture prefix of the battle touch-input state at Ov003Global+0x3D370.
-typedef struct BtlTouchInput {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u16 psychFlags;
-    /* 0x06 */ u16 iconAnim;
-    /* 0x08 */ s16 x;
-    /* 0x0A */ s16 y;
-    /* 0x0C */ s16 previousX;
-    /* 0x0E */ s16 previousY;
-    /* 0x10 */ s32 distance;
-    /* 0x14 */ u16 angle;
-    /* 0x16 */ u16 unk_16;
-    /* 0x18 */ s16 tapCount;
-    /* 0x1A */ u8  unk_1A[0x28 - 0x1A];
-    /* 0x28 */ s16 gestureX;
-    /* 0x2A */ s16 gestureY;
-    /* 0x2C */ u8  unk_2C[0x34 - 0x2C];
-} BtlTouchInput; // Size: 0x34
-
-// Extended touch state shared by psych effects and actor selection.
+/// The touch recognizer state, shared by psych effects and actor selection.
 typedef struct BtlTouchWork {
-    /* 0x00 */ BtlTouchInput input;
-    /* 0x34 */ s16           unk_34;
-    /* 0x36 */ u8            pad_36[4];
-    /* 0x3A */ s16           x;
-    /* 0x3C */ s16           y;
-    /* 0x3E */ s16           velocityX;
-    /* 0x40 */ s16           velocityY;
-    /* 0x42 */ u8            unk_42[6];
-    /* 0x48 */ CombatActor*  candidateActor;
-    /* 0x4C */ CombatActor*  heldActor;
-    /* 0x50 */ CombatActor*  trackedActor;
-    /* 0x54 */ s16           heldTime;
-    /* 0x56 */ u8            unk_56[6];
+    /* 0x00 */ s32          active;
+    /* 0x04 */ u16          flags; // which gestures the current mode allows
+    /* 0x06 */ u16          gesture;
+    /* 0x08 */ s16          startX;
+    /* 0x0A */ s16          startY;
+    /* 0x0C */ s16          endX;
+    /* 0x0E */ s16          endY;
+    /* 0x10 */ s32          distance;
+    /* 0x14 */ u16          angle;
+    /* 0x16 */ s16          tapTimer;
+    /* 0x18 */ s16          tapCount;
+    /* 0x1A */ u8           reserved1A[2];
+    /* 0x1C */ s32          watching;
+    /* 0x20 */ s16          watchFrames;
+    /* 0x22 */ u8           reserved22[2];
+    /* 0x24 */ s32          reserved24;
+    /* 0x28 */ s16          sweepCenterX;
+    /* 0x2A */ s16          sweepCenterY;
+    /* 0x2C */ s16          sweepMinX;
+    /* 0x2E */ s16          sweepMaxX;
+    /* 0x30 */ s16          sweepMinY;
+    /* 0x32 */ s16          sweepMaxY;
+    /* 0x34 */ s16          sweepFrames;
+    /* 0x36 */ s16          holdFrames;
+    /* 0x38 */ s16          releaseFrames;
+    /* 0x3A */ s16          x;
+    /* 0x3C */ s16          y;
+    /* 0x3E */ s16          velocityX;
+    /* 0x40 */ s16          velocityY;
+    /* 0x42 */ u8           reserved42[2];
+    /* 0x44 */ s32          targetKind;
+    /* 0x48 */ CombatActor* target;
+    /* 0x4C */ CombatActor* held;
+    /* 0x50 */ CombatActor* released;
+    /* 0x54 */ s16          stillFrames;
+    /* 0x56 */ s16          anchorX;
+    /* 0x58 */ s16          anchorY;
+    /* 0x5A */ u8           reserved5A[2];
 } BtlTouchWork; // Size: 0x5C
 
 void func_ov003_0208ecb4(BtlIcon* icon, void (*update)(BtlIcon*));

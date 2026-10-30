@@ -21,21 +21,21 @@ extern const BinIdentifier data_ov003_020d7800;
 
 // External functions.
 
-extern void func_020265d4(void* dst, s32 step, u16 count);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern void func_ov003_0208b2fc(s32* x, s32* y, s32 height, s32 speed);
+extern void func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 scale);
 
 extern void func_ov003_020e3c38(); // aura delegate that lives in a sibling unit
 
-s32 func_ov003_0209727c(TaskPool*, Task*, void*);
-s32 func_ov003_02097364(TaskPool*, Task*, void*);
-s32 func_ov003_020973e4(TaskPool*, Task*, void*);
-s32 func_ov003_02097470(TaskPool*, Task*, void*);
+s32 func_ov003_0209727c(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_02097364(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020973e4(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_02097470(TaskPool* pool, Task* task, void* args);
 
-s32 func_ov003_02097490(TaskPool*, Task*, void*, s32);
+s32 func_ov003_02097490(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // Defined in this unit.
 
@@ -133,7 +133,7 @@ void func_ov003_020971c0(BtlAuraSub* aura) {
         } else {
             owner = data_ov003_020e71b8->unk3D89C;
         }
-        sortKey = 0x80000000 - owner->actor.position.y;
+        sortKey = 0x80000000 - owner->base.actor.position.y;
         if (SpriteMgr_IsAnimationFinished(&flame->sprite.sprite) == 0) {
             CombatSprite_SetPosition(&flame->sprite, (s32)(flame->x * 0x10) >> 16, (s32)(flame->y * 0x10) >> 16);
             func_ov003_02082730((CombatSprite*)flame, sortKey);
@@ -216,7 +216,7 @@ s32 func_ov003_020973e4(TaskPool* pool, Task* task, void* args) {
             owner = data_ov003_020e71b8->unk3D89C;
         }
         CombatSprite_SetAffineTransform(&aura->sprite, 0, aura->sortKey, aura->sortKey, 1);
-        func_ov003_02082730(&aura->sprite, 0x80000000 - owner->actor.position.y);
+        func_ov003_02082730(&aura->sprite, 0x80000000 - owner->base.actor.position.y);
         CombatSprite_Render(&aura->sprite);
     }
     func_ov003_020971c0(aura);

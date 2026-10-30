@@ -58,20 +58,12 @@ typedef struct Ov003EncounterEntry {
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern s32 func_020243d4(u8);
+extern s32 func_020243d4(u32 arg0);
 
-extern BOOL Sprite_HasAnimation(Sprite*);
+extern void func_ov003_0208a234(u16 arg0, const Ov003AttackArgs* args, Ov003EnemyActor* unit);
+extern s32  func_ov003_0208a25c(CombatActor* actor);
 
-extern s32 func_ov003_0208442c(s32, s32);
-extern s32 func_ov003_02084460(s32, s32, s32);
-
-extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
-extern s32  func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
-extern s32  func_ov003_0208a1a4(const Ov003AttackInfo*, void*, s32, s32);
-extern void func_ov003_0208a234(u16, Ov003AttackArgs*, void*);
-extern s32  func_ov003_0208a25c(void*);
-
-extern void func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern s32 func_ov003_020a3498(CombatSprite* cSprite, s32 arg1, s32 arg2, s32 index, u16 arg4);
 
 // Defined in this unit.
 
@@ -157,11 +149,10 @@ void func_ov003_020a5ed4(Ov003AnimSprite* sprites, s32 count, s32 x, s32 y) {
         if (Sprite_HasAnimation(&sprite->sprite.sprite) != 0) {
             u16 angle = sprite->angle;
             s32 speed = sprite->animTimer;
-            s32 idx   = (angle >> 4) * 2;
 
             CombatSprite_SetAffineTransform(&sprite->sprite, (u16)(angle + 0x4000), 0x1000, 0x1000, 1);
-            CombatSprite_SetPosition(&sprite->sprite, (s16)(x + (FX_Mul(FX_SinCosTable_[idx + 1], speed) >> 12)),
-                                     (s16)(y + (FX_Mul(FX_SinCosTable_[idx], speed) >> 12)));
+            CombatSprite_SetPosition(&sprite->sprite, (s16)(x + (FX_Mul(FX_CosIdx(angle), speed) >> 12)),
+                                     (s16)(y + (FX_Mul(FX_SinIdx(angle), speed) >> 12)));
             func_ov003_02082730(&sprite->sprite, 0x385000);
             CombatSprite_Render(&sprite->sprite);
         }
@@ -343,7 +334,7 @@ s32 func_ov003_020a63e4(void) {
     if (func_ov003_02085d3c(1) != 0) {
         return 0;
     }
-    if (data_ov003_020e71b8->unk3D3C4 > 0xB) {
+    if (data_ov003_020e71b8->touchWork.stillFrames > 0xB) {
         return 1;
     }
     return 0;
@@ -611,7 +602,7 @@ s32 func_ov003_020a6b84(Ov003AttackStreak* streak, u16 arg1, Ov003EnemyActor* un
 
     unit->actor.xVelocity = 0x1000;
     func_ov003_0208a234(arg1, &streak->args, unit);
-    s32 result            = func_ov003_0208a25c(unit);
+    s32 result            = func_ov003_0208a25c(&unit->actor);
     unit->actor.xVelocity = velocity;
     return result;
 }

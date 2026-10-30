@@ -13,9 +13,6 @@
 // and when it flips between the screens the old side's flames burn out first. The task is `CombatSprite`-shaped at the
 // front because it drives two big sprites of its own.
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 // ---------------------------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------------------------
@@ -52,33 +49,19 @@ typedef struct BtlAura {
 
 extern const BinIdentifier data_ov003_020d7800;
 
-extern s32  func_ov003_020a3330(s32 actionId);
-extern s32  func_ov003_020a3340(s32 actionId);
-extern s32  func_ov003_020a3350(s32 actionId);
-extern s32  func_ov003_020a3468(s32 actionId);
-extern s32  func_ov003_020a3478(s32 actionId);
-extern s32  func_ov003_020a3488(s32 actionId);
-extern void func_ov003_0208cbc8(void);
-extern BOOL func_ov003_0208b690(u16 encounterId);
-extern void func_020265d4(void* dst, s32 step, u16 count);
-extern void func_ov003_020974f8(s32 x, s32 y);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern void func_ov003_020849ac(CombatList*);
-extern void func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern void* func_ov003_0208495c(CombatList*);
-extern void* func_ov003_02084984(CombatListNode*);
 
 void func_ov003_02096afc(BtlAura* self);
 void func_ov003_020969a4(BtlAura* self);
-s32  func_ov003_02096d0c(TaskPool*, Task*, void*);
-s32  func_ov003_02096e0c(TaskPool*, Task*, void*);
-s32  func_ov003_02096e68(TaskPool*, Task*, void*);
-s32  func_ov003_02096fac(TaskPool*, Task*, void*);
-s32  func_ov003_02096fd4(TaskPool*, Task*, void*, s32);
+s32  func_ov003_02096d0c(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02096e0c(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02096e68(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02096fac(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02096fd4(TaskPool* pool, Task* task, void* args, s32 stage);
 
 char data_ov003_020e3c38[0xC] = "Tsk_BtlAura";
 

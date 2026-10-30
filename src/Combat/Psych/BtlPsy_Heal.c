@@ -1,9 +1,8 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
 #include <nitro/mi/cpumem.h>
 
-extern void                      func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void                      func_ov003_0208b3cc(s32, s16);
 extern const TaskHandle          data_ov003_020dca9c;
 extern const Ov003HealAnimations data_ov003_020dcaa8[2][4];
 extern char                      data_ov003_020e4f00[12];
@@ -85,7 +84,7 @@ s32 func_ov003_020b6644(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003HealArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca9c.taskName);
     arg->effect        = effect;
     arg->actor         = actor;
-    context->handle    = (TaskHandle*)&data_ov003_020dca9c;
+    context->handle    = &data_ov003_020dca9c;
     context->arg       = arg;
     context->post      = func_ov003_020b65d8;
     return 1;
@@ -99,7 +98,7 @@ s32 func_ov003_020b66b4(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003HealArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca9c.taskName);
     arg->effect        = effect;
     arg->actor         = actor;
-    context->handle    = (TaskHandle*)&data_ov003_020dca9c;
+    context->handle    = &data_ov003_020dca9c;
     context->arg       = arg;
     context->post      = func_ov003_020b65d8;
     return 1;
@@ -120,7 +119,7 @@ s32 func_ov003_020b6724(TaskPool* pool, Task* task, void* args, s32 stage) {
                 func_ov003_020a40b0(arg->actor);
                 func_ov003_020a40bc(arg->actor);
             }
-            func_ov003_02087f00(0x9B, (s16)(func_ov003_020a5a34(self->effect)->x >> 12));
+            func_ov003_02087f00(SEIDX_SE_PSY_BADGE_PUSH, (s16)(func_ov003_020a5a34(self->effect)->x >> 12));
             return 1;
         case 1:
             return 0;

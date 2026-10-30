@@ -50,7 +50,7 @@ s32 func_ov003_02095ff8(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02096000(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02096000(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3c20[24] = "Tsk_BtlPsy_Sword_Spin_M";
 const TaskHandle data_ov003_020d7e80     = {data_ov003_020e3c20, func_ov003_02096000, 0xC};
 const TaskStages data_ov003_020d7e8c     = {
@@ -65,7 +65,7 @@ s32 func_ov003_02096048(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7e80.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7e80;
+    context->handle        = &data_ov003_020d7e80;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

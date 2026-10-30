@@ -45,11 +45,8 @@ typedef union BtlPrizeCount {
     };
 } BtlPrizeCount;
 extern BtlPrizeCount data_ov003_020e71c4;
-extern s32           func_ov003_0208b1e8(u16);
-extern s32           func_ov003_020c37f8(CombatSprite*);
-extern s32           func_ov003_020c3c28(void);
-extern void          func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern void          func_ov003_0209c984(u32, s32, s32, s32, s32);
+extern BOOL          func_ov003_0208b1e8(u32 itemId);
+extern void          func_ov003_0209c984(s32 engine, s32 animBase, s32 x, s32 y, s32 z);
 extern void          func_02026590(s32*, s32, u16);
 extern void          func_020265d4(s32*, s32, u16);
 s32                  func_ov003_020bb590(Ov003CutinActor*, s32);
@@ -482,27 +479,28 @@ void func_ov003_020bb580(void* actor) {
 // Nonmatching: actor/drop-selection register allocation.
 s32 func_ov003_020bb590(Ov003CutinActor* actor, s32 spawn) {
     s32 result = -1;
-    if (actor->group < 0 || actor->group >= 60)
+    if (actor->base.group < 0 || actor->base.group >= 60)
         return -1;
-    func_ov003_020bb73c(actor->group, actor->spriteIndex);
-    const Ov003ActorParams* params = data_ov003_020e70ac[actor->group][actor->spriteIndex];
+    func_ov003_020bb73c(actor->base.group, actor->base.spriteIndex);
+    const Ov003ActorParams* params = data_ov003_020e70ac[actor->base.group][actor->base.spriteIndex];
     s32                     grade  = func_ov003_020bb6d4(params);
     if (grade == -1)
         return -1;
     if (spawn) {
         s32 special = 0;
-        if (actor->group >= 0x11 && actor->group <= 0x1D)
+        if (actor->base.group >= 0x11 && actor->base.group <= 0x1D)
             special = 1;
-        s32 engine = func_ov003_020c37f8(&actor->sprite) ? 1 : 0;
-        result     = func_ov003_020bb48c(engine, func_ov003_020bb878(grade), params->dropItems[grade], actor->actor.position.x,
-                                         actor->actor.position.y, actor->actor.position.z, special);
+        s32 engine = func_ov003_020c37f8(&actor->base.sprite) ? 1 : 0;
+        result =
+            func_ov003_020bb48c(engine, func_ov003_020bb878(grade), params->dropItems[grade], actor->base.actor.position.x,
+                                actor->base.actor.position.y, actor->base.actor.position.z, special);
         if (result != -1)
-            func_ov003_020bb7c4(actor->group, actor->spriteIndex, func_ov003_020bb878(grade));
+            func_ov003_020bb7c4(actor->base.group, actor->base.spriteIndex, func_ov003_020bb878(grade));
         return result;
     }
     if (!func_ov003_0208b1e8(params->dropItems[grade]))
         return -1;
-    func_ov003_020bb7c4(actor->group, actor->spriteIndex, func_ov003_020bb878(grade));
+    func_ov003_020bb7c4(actor->base.group, actor->base.spriteIndex, func_ov003_020bb878(grade));
     return result;
 }
 

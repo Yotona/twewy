@@ -64,17 +64,13 @@ extern const s16           data_0205e4e0[];
 
 extern Ov003ActionEffect* func_ov003_02087358(void);
 extern void               func_ov003_020872b4(Ov003ActionEffect* effect);
-extern void               func_ov003_02087804(s32 sub);
-extern void               func_ov003_02087fe0(s32 arg0, CombatSprite* sprite, s32 arg2);
 extern u16                func_ov003_0208765c(u16* state, s32 value, s32 arg2);
 extern s32                func_ov003_020a58d4(void);
 extern s32                func_ov003_020a58c4(void);
-extern void               func_ov003_0209f000(s32 id);
+extern void               func_ov003_0209f000(s16 animIndex);
 extern void               func_ov003_0209c568(s32 arg0);
-extern void               func_ov003_0209b564(s32 arg0, s32 amount, CombatActor* actor, s32 arg3);
-extern s16                func_ov003_0208ca54(void);
-extern s16                func_ov003_0208cae0(s32 arg0);
-extern void               func_ov003_0208b278(s32 id);
+extern s32                func_ov003_0208cae0(s32 includePins);
+extern void               func_ov003_0208b278(u32 state);
 extern void               func_ov003_02083000(s32 arg0, void* actor);
 extern void               func_ov003_02083074(void* actor);
 extern void               func_ov003_02087540(s32 arg0);
@@ -445,8 +441,8 @@ BOOL func_ov003_0208f8d4(BtlPlayer00* self) {
         return FALSE;
     }
     global = data_ov003_020e71b8;
-    dy     = (global->unk3D37A - global->unk3D3AC) << 12;
-    dx     = (global->unk3D378 - global->unk3D3AA) << 12;
+    dy     = (global->touchWork.startY - global->touchWork.y) << 12;
+    dx     = (global->touchWork.startX - global->touchWork.x) << 12;
     if (FX_Sqrt(FX_Mul(dx, dx) + FX_Mul(dy, dy)) < 0x8000) {
         return FALSE;
     }
@@ -507,8 +503,8 @@ void func_ov003_0208fa78(BtlPlayer00* self, s32 mode) {
         if (!func_ov003_02085cfc(6)) {
             moved = FALSE;
         } else {
-            self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-            self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+            self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+            self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
             func_ov003_02083ca0(&self->targetX, &self->targetY, 0x8000, 0x8000);
             moved = TRUE;
         }
@@ -868,8 +864,8 @@ void func_ov003_02090688(BtlPlayer00* self) {
         return;
     }
     if (func_ov003_02085cfc(6)) {
-        self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-        self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+        self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+        self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
         func_ov003_02083ca0(&self->targetX, &self->targetY, 0x8000, 0x8000);
     }
     dx       = self->targetX - self->actor.position.x;
@@ -1517,8 +1513,8 @@ void func_ov003_020920c8(BtlPlayer00* self) {
     }
     if (self->timer > 4) {
         if (func_ov003_02085cfc(6)) {
-            self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-            self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+            self->targetX = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+            self->targetY = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
             func_ov003_02083ca0(&self->targetX, &self->targetY, 0x8000, 0x8000);
         }
         func_ov003_02083ab0(0, self->targetX, self->targetY, 0);
@@ -1616,7 +1612,7 @@ s32 func_ov003_020924c0(TaskPool* pool, Task* task, void* args) {
     self->actor.unk_70            = 5;
     self->actor.unk_72            = 0x28;
     self->actor.unk_76            = 0x18;
-    self->actor.unk_66            = func_ov003_0208ca54();
+    self->actor.unk_66            = func_ov003_0208ca54(0);
     self->actor.unk_68            = func_ov003_0208cae0(0);
     if (func_ov003_020a3340(1)) {
         self->actor.unk_66 += (s16)func_ov003_020a3478(1);

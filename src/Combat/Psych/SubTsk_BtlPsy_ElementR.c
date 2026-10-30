@@ -1,6 +1,7 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include "SndMgrSeIdx.h"
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
@@ -11,7 +12,7 @@ s32 func_ov003_020ade84(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc7a0.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc7a0;
+    context->handle        = &data_ov003_020dc7a0;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -83,7 +84,7 @@ s32 func_ov003_020adedc(TaskPool* pool, Task* task, void* args, s32 stage) {
                         for (s32 i = 0; i < 3; i++)
                             func_ov003_020ae350(self);
                         func_ov003_020a5a94(self->effect);
-                        func_ov003_02087f00(0xAE, (s16)self->position.x);
+                        func_ov003_02087f00(SEIDX_SE_PSY_EGENERATE_SHOT01_01, (s16)self->position.x);
                     }
                     if (++self->releasedFrames >= 30)
                         func_ov003_020ae324(self);
@@ -96,8 +97,8 @@ s32 func_ov003_020adedc(TaskPool* pool, Task* task, void* args, s32 stage) {
                         self->auraOpacity = 0;
                     break;
             }
-            if (!SndMgr_IsSEPlaying(0x99))
-                func_ov003_02087f00(0x99, (s16)self->position.x);
+            if (!SndMgr_IsSEPlaying(SEIDX_SE_PSY_EGENERATE_BOOT01_01))
+                func_ov003_02087f00(SEIDX_SE_PSY_EGENERATE_BOOT01_01, (s16)self->position.x);
             if (self->phase != 0) {
                 CombatSprite_Update(&self->sprites[0]);
                 CombatSprite_Update(&self->sprites[1]);
@@ -132,7 +133,7 @@ s32 func_ov003_020adedc(TaskPool* pool, Task* task, void* args, s32 stage) {
             CombatSprite_Release(&self->sprites[0]);
             CombatSprite_Release(&self->sprites[1]);
             CombatSprite_Release(&self->sprites[2]);
-            SndMgr_StopPlayingSE(0x99);
+            SndMgr_StopPlayingSE(SEIDX_SE_PSY_EGENERATE_BOOT01_01);
             return 1;
     }
 }

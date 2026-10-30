@@ -12,14 +12,13 @@
 
 #include <nitro/mi/cpumem.h>
 
-extern void*       BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, GXBGScreenSizeText screenSize);
+extern void* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
 
-s32  func_ov008_020e769c(TaskPool*, Task*, void*);
-s32  func_ov008_020e78e0(TaskPool*, Task*, void*);
-s32  func_ov008_020e78f8(TaskPool*, Task*, void*);
-s32  func_ov008_020e7910(TaskPool*, Task*, void*);
-s32  func_ov008_020e799c(TaskPool*, Task*, void*, s32);
+s32  func_ov008_020e769c(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e78e0(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e78f8(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e7910(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e799c(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov008_020e74dc(void);
 s32  func_ov008_020e7580(void);
 void func_ov008_020e75f8(CombatSprite*, s32);

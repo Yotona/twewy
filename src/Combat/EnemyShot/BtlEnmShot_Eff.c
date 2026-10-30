@@ -3,13 +3,6 @@
 #include "Engine/Math/Random.h"
 #include <nitro/mi/cpumem.h>
 
-// Retail evaluates separate random draws for the sign and rounded coordinate.
-#define EFFECT_RANDOM_OFFSET()                                                                                 \
-    ((RNG_Next(12) - 6) > 0 ? (f32)((RNG_Next(12) - 6) << 12) + 0.5f : (f32)((RNG_Next(12) - 6) << 12) - 0.5f)
-
-extern s32                 func_ov003_020c3c28(void);
-extern s32                 func_ov003_020c37f8(CombatSprite*);
-extern void                func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern const BinIdentifier data_ov003_020e0c30;
 extern const TaskHandle    data_ov003_020e0c38;
 Ov003EnemyShotEffectCounts data_ov003_020e7340;
@@ -72,8 +65,8 @@ s32 func_ov003_020ce02c(Ov003EnemyShotEffect* self, Ov003EnemyShotEffectArgs* ar
         case 1:
             animation = RNG_Next(2);
             CombatSprite_LoadDirect(args->source->sprite.bits_0_1, &self->sprite, &data_ov003_020e0c30, 4, 6, 5, 0, 0);
-            self->position.x = args->position.x + (s32)EFFECT_RANDOM_OFFSET();
-            self->position.y = args->position.y + (s32)EFFECT_RANDOM_OFFSET();
+            self->position.x = args->position.x + FX32_CONVERT(RNG_Next(12) - 6);
+            self->position.y = args->position.y + FX32_CONVERT(RNG_Next(12) - 6);
             data_ov003_020e7340.activeParticles++;
             break;
     }

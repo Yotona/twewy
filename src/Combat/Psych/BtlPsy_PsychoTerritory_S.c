@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern const TaskHandle data_ov003_020dd21c;
 
 s32 func_ov003_020baa58(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -11,7 +9,7 @@ s32 func_ov003_020baa58(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003PsychArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dd21c.taskName);
     arg->effect         = effect;
-    context->handle     = (TaskHandle*)&data_ov003_020dd21c;
+    context->handle     = &data_ov003_020dd21c;
     context->arg        = arg;
     context->post       = NULL;
     return 1;
@@ -26,17 +24,17 @@ s32 func_ov003_020baab0(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 0: {
             self                = task->data;
             BtlTouchWork* touch = func_ov003_020a62a0();
-            s16           midX  = touch->input.x + (touch->input.previousX - touch->input.x) / 2;
-            s16           midY  = touch->input.y + (touch->input.previousY - touch->input.y) / 2;
+            s16           midX  = touch->startX + (touch->endX - touch->startX) / 2;
+            s16           midY  = touch->startY + (touch->endY - touch->startY) / 2;
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect = arg->effect;
             self->timer  = 8;
             s32 y        = func_ov003_02084460(0, midY, 0);
             s32 x        = func_ov003_0208442c(0, midX);
-            s32 angle    = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX, touch->input.previousY);
+            s32 angle    = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
             func_ov003_020ba71c(self->effect, x, y, angle);
             func_ov003_020a6464(1);
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             func_ov003_020a5aa4(self->effect);
             func_ov003_020a5a94(self->effect);
             return 1;

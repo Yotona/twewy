@@ -2,7 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32                      func_ov003_0208442c(s32, s32);
 extern const TaskHandle         data_ov003_020dce04;
 extern const Ov003BoomerangKind data_ov003_020dce10[3];
 
@@ -11,7 +10,7 @@ s32 func_ov003_020b7bf4(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003PsychArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dce04.taskName);
     arg->effect         = effect;
-    context->handle     = (TaskHandle*)&data_ov003_020dce04;
+    context->handle     = &data_ov003_020dce04;
     context->arg        = arg;
     context->post       = NULL;
     return 1;
@@ -28,10 +27,10 @@ s32 func_ov003_020b7c4c(TaskPool* pool, Task* task, void* args, s32 stage) {
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect = arg->effect;
             self->timer  = 5;
-            self->angle  = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX, touch->input.previousY);
-            self->x      = touch->input.previousX;
+            self->angle  = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
+            self->x      = touch->endX;
             self->angle  = func_ov003_020b6b50(self->angle, data_ov003_020dce10[self->effect->index].angleLimit);
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             func_ov003_020a6464(1);
             return 1;
         }
@@ -56,11 +55,10 @@ s32 func_ov003_020b7c4c(TaskPool* pool, Task* task, void* args, s32 stage) {
                         return 0;
                     if (func_ov003_02085ec0(0)) {
                         BtlTouchWork* touch = &data_ov003_020e71b8->touchWork;
-                        func_ov003_020a6494(touch->input.previousX);
-                        self->angle = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX,
-                                                          touch->input.previousY);
+                        func_ov003_020a6494(touch->endX);
+                        self->angle = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
                         self->angle = func_ov003_020b6b50(self->angle, data_ov003_020dce10[self->effect->index].angleLimit);
-                        self->x     = touch->input.previousX;
+                        self->x     = touch->endX;
                         if (!func_ov003_020b7e68(self)) {
                             self->phase = 2;
                             self->timer = 12;

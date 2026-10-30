@@ -39,11 +39,8 @@ typedef struct BtlReady {
 
 extern const BinIdentifier data_ov003_020d7818;
 
-extern void func_020265d4(void* dst, s32 step, u16 count);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_0208b278(s32 arg0);
-extern void func_ov003_02085c78(void);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
+extern void func_ov003_0208b278(u32 state);
 
 void func_ov003_020a0910(BtlReady* self);
 void func_ov003_020a0954(BtlReady* self);
@@ -130,13 +127,13 @@ void func_ov003_020a0624(s32 engine, CombatSprite* sprite, u16 index, u16 x) {
 /// The generic line.
 void func_ov003_020a0708(s32 weak) {
     if (weak) {
-        func_ov003_02087ed8(0x351);
+        func_ov003_02087ed8(SEIDX_NEKU_BTL_OP_DANGER01);
         return;
     }
     if (RNG_Next(2) != 0) {
-        func_ov003_02087ed8(0x34F);
+        func_ov003_02087ed8(SEIDX_NEKU_BTL_OP01);
     } else {
-        func_ov003_02087ed8(0x350);
+        func_ov003_02087ed8(SEIDX_NEKU_BTL_OP03);
     }
 }
 
@@ -147,13 +144,13 @@ void func_ov003_020a0750(s32 weak) {
     if (weak) {
         switch (data_ov003_020e71b8->unk3D88D) {
             case 0:
-                func_ov003_02087ed8(0x37A);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_OP_DANGER01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3A2);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_OP_DANGER01);
                 break;
             case 2:
-                func_ov003_02087ed8(0x3CA);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_OP_DANGER01);
                 break;
         }
         return;
@@ -162,30 +159,30 @@ void func_ov003_020a0750(s32 weak) {
     if (data_ov003_020e71b8->unk3D88D == 0) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x378);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_OP01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x379);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_OP03);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 1) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x3A0);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_OP01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3A1);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_OP03);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 2) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x3C8);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_OP01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3C9);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_OP03);
                 break;
         }
     }
@@ -233,7 +230,7 @@ void func_ov003_020a0954(BtlReady* self) {
     if (self->timer == 0) {
         self->timer = 30;
         if (self->speaks != 0) {
-            func_ov003_02087ed8(0x14);
+            func_ov003_02087ed8(SEIDX_SE_READY01);
         }
     }
     if (self->timer > 0) {
@@ -278,7 +275,7 @@ void func_ov003_020a09f4(BtlReady* self) {
 void func_ov003_020a0ac0(BtlReady* self) {
     if (self->timer == 0) {
         self->timer = 30;
-        func_ov003_02087ed8(0x15);
+        func_ov003_02087ed8(SEIDX_SE_READY02);
     }
     if (self->timer > 0) {
         func_020265d4(&self->x, 0x180000, (u16)self->timer);

@@ -1,6 +1,7 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
@@ -59,8 +60,8 @@ s32 func_ov003_020a9530(TaskPool* pool, Task* task, void* args, s32 stage) {
                         child->state = 2;
                         break;
                     }
-                    child->position.x += FX_Mul(child->speed, FX_SinCosTable_[(child->angle >> 4) * 2 + 1]);
-                    child->position.y += FX_Mul(child->speed, FX_SinCosTable_[(child->angle >> 4) * 2]);
+                    child->position.x += FX_Mul(child->speed, COS2(FX_SinCosTable_, child->angle));
+                    child->position.y += FX_Mul(child->speed, SIN2(FX_SinCosTable_, child->angle));
                     if (func_ov003_020a6628(&child->effect->streak, (u16)child->attackId, child->position.x, child->position.y,
                                             0, 0, 0) == 1)
                         child->speed = 0;

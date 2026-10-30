@@ -2,14 +2,12 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern void             func_020265d4(void*, s32, u16);
+extern void             func_020265d4(s32* dst, s32 target, u16 weight);
 extern const TaskHandle data_ov003_020e0cd4;
 
 s32 func_ov003_020d2bc0(Ov003EnemyShotSplitArgs* args) {
     TaskPool* pool;
-    if (args->source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (args->source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -33,7 +31,7 @@ s32 func_ov003_020d2c24(Ov003EnemyShotSplit* self, Ov003EnemyShotSplitArgs* args
     self->yScale            = args->yScale;
     if (visual != NULL) {
         const SpriteAnimEntry* entry = &visual->entries[visual->entry];
-        CombatSprite_LoadDirect(self->source.core.owner->sprite.sprite.bits_0_1, &self->sprite, visual->file,
+        CombatSprite_LoadDirect(self->source.core.owner->base.sprite.sprite.bits_0_1, &self->sprite, visual->file,
                                 entry->charDataIndex, entry->paletteDataIndex, entry->frameDataIndex, visual->paletteSlot,
                                 entry->animDataIndex);
         CombatSprite_SetAnim(&self->sprite, self->source.animation, self->source.animationMode);

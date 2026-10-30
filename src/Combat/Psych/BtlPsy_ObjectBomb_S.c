@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlObjectBombCharge {
@@ -16,7 +17,7 @@ s32 func_ov003_020ac36c(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc73c.taskName);
     arg->effect             = effect;
     arg->unit               = unit;
-    context->handle         = (TaskHandle*)&data_ov003_020dc73c;
+    context->handle         = &data_ov003_020dc73c;
     context->arg            = arg;
     context->post           = NULL;
     return 1;
@@ -49,14 +50,14 @@ s32 func_ov003_020ac3d8(TaskPool* pool, Task* task, void* args, s32 stage) {
                 func_ov003_020a5a94(self->args.effect);
                 return 0;
             }
-            if (!SndMgr_IsSEPlaying(0x40))
+            if (!SndMgr_IsSEPlaying(SEIDX_SE_PSY_OBJBOMB01_01))
                 func_ov003_02087f28(0x40, self->args.unit->actor.position.x);
             return 1;
         }
         case 2:
             return 1;
         case 3:
-            func_ov003_02087ed8(0x41);
+            func_ov003_02087ed8(SEIDX_SE_PSY_OBJBOMB01_01_CANCEL);
             func_ov003_020a6464(0);
             return 1;
     }

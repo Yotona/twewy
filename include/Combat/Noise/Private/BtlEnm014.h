@@ -23,14 +23,11 @@ typedef union Enm014Chase {
 } Enm014Chase; // Size: 0x4
 
 typedef struct BtlEnm014 {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ s16 unk_1C0;
-    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             unk_1C0;
+    /* 0x1C2 */ s16             unk_1C2;
     /* 0x1C4 */ void (*unk_1C4)(struct BtlEnm014*);
-    /* 0x1C8 */ s32         unk_1C8;
+    /* 0x1C8 */ void (*unk_1C8)(struct BtlEnm014*);
     /* 0x1CC */ s32         unk_1CC;
     /* 0x1D0 */ s32         unk_1D0;
     /* 0x1D4 */ s16         unk_1D4;
@@ -50,7 +47,7 @@ const SpriteAnimEntry* func_ov012_021256d0(void);
 u16                    func_ov012_021256dc(s32);
 void                   func_ov012_021256f0(s32, BtlEnm014*, s32);
 void                   func_ov012_02125768(BtlEnm014*, void (*)(BtlEnm014*));
-void                   func_ov012_02125790(s32, BtlEnm014*, s32, s32);
+void                   func_ov012_02125790(s32, BtlEnm014*, void*, void (*)(BtlEnm014*));
 void                   func_ov012_021257c4(BtlEnm014*);
 void                   func_ov012_021257e8(BtlEnm014*);
 void                   func_ov012_02125810(BtlEnm014*);

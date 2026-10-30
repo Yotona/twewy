@@ -6,16 +6,13 @@
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm003_RG {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ s16  frameCount;    // Number of frames this actor has been in its current state
-    /* 0x1C2 */ char unk_1C2[0x1C4 - 0x1C2];
-    /* 0x1C4 */ u16  lifetime;      // Total number of frames this actor has been alive for
-    /* 0x1C6 */ s16  stateDuration; // Frames until next state transition
-    /* 0x1C8 */ s16  statePhase;    // Sub-state used within the current state
-    /* 0x1CA */ char unk_1CA[0x1CC - 0x1CA];
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             frameCount;    // Number of frames this actor has been in its current state
+    /* 0x1C2 */ char            unk_1C2[0x1C4 - 0x1C2];
+    /* 0x1C4 */ u16             lifetime;      // Total number of frames this actor has been alive for
+    /* 0x1C6 */ s16             stateDuration; // Frames until next state transition
+    /* 0x1C8 */ s16             statePhase;    // Sub-state used within the current state
+    /* 0x1CA */ char            unk_1CA[0x1CC - 0x1CA];
     /* 0x1CC */ void (*unk_1CC)(struct BtlEnm003_RG*);
     /* 0x1D0 */ BOOL isAlive;
     /* 0x1D4 */ s16  unk_1D4;
@@ -58,11 +55,11 @@ void BtlEnm003_RG_SetState(BtlEnm003_RG* rg, void (*callback)(BtlEnm003_RG*)) {
     rg->unk_1CC    = callback;
     rg->statePhase = 0;
     rg->frameCount = 0;
-    rg->flags18C &= ~0x80;
+    rg->base.flags18C &= ~0x80;
 }
 
 void func_ov009_02120c18(BtlEnm003_RG* rg) {
-    if (rg->partner != NULL && rg->partner->flags18C & 0x80) {
+    if (rg->base.partner != NULL && rg->base.partner->flags18C & 0x80) {
         BtlEnm003_RG_SetState(rg, func_ov009_021210f8);
     }
 }
@@ -75,7 +72,7 @@ void func_ov009_02120c48(BtlEnm003_RG* rg) {
 
 void func_ov009_02120c70(BtlEnm003_RG* rg) {
     if (rg->frameCount == 0) {
-        CombatSprite_SetAnimFromTable(&rg->sprite, 0, 0);
+        CombatSprite_SetAnimFromTable(&rg->base.sprite, 0, 0);
         rg->stateDuration = func_ov009_02120b94(rg);
     }
     if (rg->frameCount > rg->stateDuration) {
@@ -94,7 +91,7 @@ void func_ov009_02120c70(BtlEnm003_RG* rg) {
 
 void func_ov009_02120d18(BtlEnm003_RG* rg) {
     if (func_ov003_020c5e98() == 0) {
-        if (rg->flags18C & 0x20) {
+        if (rg->base.flags18C & 0x20) {
             BtlEnm003_RG_SetState(rg, func_ov009_021212a8);
         } else {
             BtlEnm003_RG_SetState(rg, func_ov009_02120c70);
@@ -104,10 +101,10 @@ void func_ov009_02120d18(BtlEnm003_RG* rg) {
 
 void func_ov009_02120d64(BtlEnm003_RG* rg) {
     u16 temp_r2 = RNG_Next(100);
-    s32 var_r0  = (rg->spriteIndex * 6) + (s32)&data_ov009_021247cc;
+    s32 var_r0  = (rg->base.spriteIndex * 6) + (s32)&data_ov009_021247cc;
 
-    if (rg->spriteIndex == 1) {
-        if (rg->actor.currentHp < (rg->actor.maxHp / 2)) {
+    if (rg->base.spriteIndex == 1) {
+        if (rg->base.actor.currentHp < (rg->base.actor.maxHp / 2)) {
             var_r0 = (s32)&data_ov009_021247b4;
         }
     }
@@ -126,10 +123,10 @@ void func_ov009_02120dd0(BtlEnm003_RG* rg) {
 
         case 1: {
             if (rg->frameCount == 0) {
-                func_ov003_02087f64(415, rg->actor.position.x);
+                func_ov003_02087f64(415, rg->base.actor.position.x);
             }
-            CombatSprite_SetAnimFromTable(&rg->sprite, 7, 1);
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
+            CombatSprite_SetAnimFromTable(&rg->base.sprite, 7, 1);
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
                 rg->frameCount = 0;
                 rg->statePhase++;
             } else {
@@ -139,16 +136,18 @@ void func_ov009_02120dd0(BtlEnm003_RG* rg) {
 
         case 2: {
             if (rg->frameCount == 0) {
-                CombatSprite_SetAnimFromTable(&rg->sprite, 8U, 1);
+                CombatSprite_SetAnimFromTable(&rg->base.sprite, 8U, 1);
                 func_ov009_02120b5c(rg, 0);
-                if (func_ov003_020c5b2c(68, rg, rg->actor.position.x, rg->actor.position.y, rg->actor.position.z) == 1) {
-                    func_ov003_02087f64(414, rg->actor.position.x);
+                if (func_ov003_020c5b2c(68, rg, rg->base.actor.position.x, rg->base.actor.position.y,
+                                        rg->base.actor.position.z) == 1)
+                {
+                    func_ov003_02087f64(414, rg->base.actor.position.x);
                 }
-                func_ov003_02087f64(412, rg->actor.position.x);
+                func_ov003_02087f64(412, rg->base.actor.position.x);
             }
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
-                rg->actor.position.x = rg->unk_1AC;
-                rg->actor.position.y = rg->unk_1B0;
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
+                rg->base.actor.position.x = rg->base.unk_1AC;
+                rg->base.actor.position.y = rg->base.unk_1B0;
                 func_ov003_020c4ee0(rg);
                 BtlEnm003_RG_SetState(rg, func_ov009_02120c70);
             } else {
@@ -170,10 +169,10 @@ void func_ov009_02120f64(BtlEnm003_RG* rg) {
 
         case 1: {
             if (rg->frameCount == 0) {
-                func_ov003_02087f64(415, rg->actor.position.x);
+                func_ov003_02087f64(415, rg->base.actor.position.x);
             }
-            CombatSprite_SetAnimFromTable(&rg->sprite, 9, 1);
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
+            CombatSprite_SetAnimFromTable(&rg->base.sprite, 9, 1);
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
                 rg->frameCount = 0;
                 rg->statePhase++;
             } else {
@@ -183,16 +182,18 @@ void func_ov009_02120f64(BtlEnm003_RG* rg) {
 
         case 2: {
             if (rg->frameCount == 0) {
-                CombatSprite_SetAnimFromTable(&rg->sprite, 10, 1);
+                CombatSprite_SetAnimFromTable(&rg->base.sprite, 10, 1);
                 func_ov009_02120b5c(rg, 1);
-                if (func_ov003_020c5b2c(69, rg, rg->actor.position.x, rg->actor.position.y, rg->actor.position.z) == 1) {
-                    func_ov003_02087f64(414, rg->actor.position.x);
+                if (func_ov003_020c5b2c(69, rg, rg->base.actor.position.x, rg->base.actor.position.y,
+                                        rg->base.actor.position.z) == 1)
+                {
+                    func_ov003_02087f64(414, rg->base.actor.position.x);
                 }
-                func_ov003_02087f64(412, rg->actor.position.x);
+                func_ov003_02087f64(412, rg->base.actor.position.x);
             }
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
-                rg->actor.position.x = rg->unk_1AC;
-                rg->actor.position.y = rg->unk_1B0;
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
+                rg->base.actor.position.x = rg->base.unk_1AC;
+                rg->base.actor.position.y = rg->base.unk_1B0;
                 func_ov003_020c4ee0(rg);
                 BtlEnm003_RG_SetState(rg, func_ov009_02120c70);
             } else {
@@ -203,14 +204,14 @@ void func_ov009_02120f64(BtlEnm003_RG* rg) {
 }
 
 void func_ov009_021210f8(BtlEnm003_RG* rg) {
-    BtlEnm003_RG* temp_r2 = (BtlEnm003_RG*)rg->partner;
+    BtlEnm003_RG* temp_r2 = (BtlEnm003_RG*)rg->base.partner;
 
     switch (rg->statePhase) {
         case 0: {
             if (rg->frameCount == 0) {
-                rg->flags18C |= 0x80;
+                rg->base.flags18C |= 0x80;
             }
-            if (temp_r2 == NULL || temp_r2->flags18C & 0x80) {
+            if (temp_r2 == NULL || temp_r2->base.flags18C & 0x80) {
                 rg->frameCount = 0;
                 rg->statePhase++;
             } else {
@@ -220,9 +221,9 @@ void func_ov009_021210f8(BtlEnm003_RG* rg) {
 
         case 1: {
             if (rg->frameCount == 0) {
-                CombatSprite_SetAnimFromTable(&rg->sprite, 12, 1);
+                CombatSprite_SetAnimFromTable(&rg->base.sprite, 12, 1);
             }
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
                 rg->frameCount = 0;
                 rg->statePhase++;
             } else {
@@ -232,15 +233,15 @@ void func_ov009_021210f8(BtlEnm003_RG* rg) {
 
         case 2: {
             if (rg->frameCount == 0) {
-                CombatSprite_SetAnimFromTable(&rg->sprite, 13, 1);
-                rg->flags18C &= ~0x80;
+                CombatSprite_SetAnimFromTable(&rg->base.sprite, 13, 1);
+                rg->base.flags18C &= ~0x80;
                 if (rg->unk_1D4 <= 0) {
-                    rg->actor.unk_08 *= 2;
+                    rg->base.actor.unk_08 *= 2;
                 }
                 rg->unk_1D4 = ((RNG_Next(6) + 15) * 60);
-                func_ov003_02087f64(420, rg->actor.position.x);
+                func_ov003_02087f64(420, rg->base.actor.position.x);
             }
-            if (SpriteMgr_IsAnimationFinished(&rg->sprite.sprite) != 0) {
+            if (SpriteMgr_IsAnimationFinished(&rg->base.sprite.sprite) != 0) {
                 BtlEnm003_RG_SetState(rg, func_ov009_02120c70);
             } else {
                 rg->frameCount++;
@@ -274,7 +275,7 @@ s32 BtlEnm003_RG_Init(TaskPool* pool, Task* task, void* args) {
     func_ov003_020c3efc(rg, args);
     func_ov003_020c44ac(rg);
     func_ov003_020c4b1c(rg);
-    rg->actor.flags |= 0x40000000;
+    rg->base.actor.flags |= 0x40000000;
     rg->isAlive = TRUE;
     BtlEnm003_RG_SetState(rg, func_ov009_02120c48);
     return 1;
@@ -283,15 +284,15 @@ s32 BtlEnm003_RG_Init(TaskPool* pool, Task* task, void* args) {
 s32 BtlEnm003_RG_Update(TaskPool* pool, Task* task, void* args) {
     BtlEnm003_RG* rg = task->data;
 
-    switch (CombatActor_PopPendingCommand(&rg->actor)) {
+    switch (CombatActor_PopPendingCommand(&rg->base.actor)) {
         case 1:
         case 2:
             BtlEnm003_RG_SetState(rg, func_ov009_0212127c);
             break;
 
         case 3:
-            if (rg->flags18C & 0x10) {
-                rg->flags18C |= 0x20;
+            if (rg->base.flags18C & 0x10) {
+                rg->base.flags18C |= 0x20;
             } else {
                 BtlEnm003_RG_SetState(rg, func_ov009_021212a8);
             }
@@ -308,7 +309,7 @@ s32 BtlEnm003_RG_Update(TaskPool* pool, Task* task, void* args) {
     if (rg->unk_1D4 > 0) {
         rg->unk_1D4--;
         if (rg->unk_1D4 == 0) {
-            rg->actor.unk_08 /= 2;
+            rg->base.actor.unk_08 /= 2;
         }
     }
     rg->lifetime++;

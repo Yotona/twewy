@@ -1,10 +1,9 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void*            func_ov003_0208495c(CombatList*);
-extern void*            func_ov003_02084984(CombatListNode*);
 extern s32              func_ov003_020a632c(s32, s32, s32, s32);
 extern const TaskHandle data_ov003_020dc990;
 
@@ -13,7 +12,7 @@ s32 func_ov003_020b39c0(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc990.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc990;
+    context->handle        = &data_ov003_020dc990;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -52,7 +51,7 @@ s32 func_ov003_020b3a14(TaskPool* pool, Task* task, void* args, s32 stage) {
                 result = func_ov003_020b3bdc(self);
             if (Sprite_HasAnimation(&self->sprite.sprite)) {
                 if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
-                    func_ov003_02087f00(0x66, self->x);
+                    func_ov003_02087f00(SEIDX_SE_PSY_ROCKONTHUNDER_DRAG01, self->x);
                     CombatSprite_Restart(&self->sprite);
                 }
                 CombatSprite_Update(&self->sprite);

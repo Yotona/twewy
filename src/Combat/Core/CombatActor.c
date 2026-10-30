@@ -1,9 +1,7 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
-
-extern void func_ov003_0208b3cc(s32, s16);
-extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
+#include <nitro/fx.h>
 
 static void func_ov003_02082d10(CombatActor* actor) {
     actor->unk_10 = 0;
@@ -36,8 +34,8 @@ static void CombatActor_ApplyPlanarDamping(CombatActor* actor) {
             }
         }
         if (actor->position.z >= 0) {
-            actor->xVelocity = F2I((((s64)actor->xVelocity * actor->dampingScale) + 0x800));
-            actor->yVelocity = F2I((((s64)actor->yVelocity * actor->dampingScale) + 0x800));
+            actor->xVelocity = FX_Mul(actor->xVelocity, actor->dampingScale);
+            actor->yVelocity = FX_Mul(actor->yVelocity, actor->dampingScale);
         }
     }
 }
@@ -152,7 +150,7 @@ void CombatActor_UpdatePhysics(CombatActor* actor) {
     } else if (actor->position.z > 0) {
         actor->position.z = 0;
 
-        s32 var_r1 = -(s32)((((s64)actor->zVelocity * actor->unk_50) + 0x800) >> 0xC);
+        s32 var_r1 = -FX_Mul(actor->zVelocity, actor->unk_50);
 
         actor->zVelocity = var_r1;
         if (var_r1 < 0) {

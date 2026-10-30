@@ -66,19 +66,18 @@ typedef struct BtlActSpStatus {
 typedef char          check_ActSpStatus[(sizeof(BtlActSpStatus) == 0xC) ? 1 : -1];
 typedef char          check_ActSpStatus_released[(offsetof(BtlActSpStatus, released) == 8) ? 1 : -1];
 extern BtlActSpStatus data_ov003_020e71d8;
-extern void           func_ov003_0208b3cc(s32, s16);
 extern void           func_ov003_020bd2a8(s32);
-extern u32            func_ov003_020be6d0(TaskPool*);
+extern s32            func_ov003_020be6d0(TaskPool* pool);
 void                  func_ov003_020c14ec(void);
 void                  func_ov003_020c17bc(void);
 void                  func_ov003_020c1848(BtlActSp*);
 void                  func_ov003_020c1918(BtlActSp*);
 
-s32 func_ov003_020c1dbc(TaskPool*, Task*, void*);
-s32 func_ov003_020c1e44(TaskPool*, Task*, void*);
-s32 func_ov003_020c1e68(TaskPool*, Task*, void*);
-s32 func_ov003_020c1e70(TaskPool*, Task*, void*);
-s32 func_ov003_020c1ed0(TaskPool*, Task*, void*, s32);
+s32 func_ov003_020c1dbc(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020c1e44(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020c1e68(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020c1e70(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020c1ed0(TaskPool* pool, Task* task, void* args, s32 stage);
 
 extern const TaskHandle data_ov003_020dd838, data_ov003_020dd978, data_ov003_020dd984;
 extern const TaskHandle Tsk_BtlFeat00, Tsk_BtlFeat01, Tsk_BtlFeat02;
@@ -162,8 +161,8 @@ void func_ov003_020c1238(u16 character, u16 level) {
 
 // Nonmatching: display-setting store scheduling.
 void func_ov003_020c14ec(void) {
-    g_DisplaySettings.controls[0].brightness = 0x10;
-    g_DisplaySettings.controls[1].brightness = 0x10;
+    Display_SetMainBrightness(0x10);
+    Display_SetSubBrightness(0x10);
     Display_CommitSynced();
     g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
@@ -171,85 +170,39 @@ void func_ov003_020c14ec(void) {
     g_DisplaySettings.controls[0].bgMode    = GX_BGMODE_0;
     g_DisplaySettings.controls[0].dimension = GX2D3D_MODE_3D;
     GX_SetGraphicsMode(GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX2D3D_MODE_3D);
-    g_DisplaySettings.engineState[0].bgSettings[1].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[0].bgSettings[1].screenSizeText = GX_BG_SIZE_TEXT_512x256;
-    g_DisplaySettings.engineState[0].bgSettings[1].colorMode      = GX_BG_COLORS_16;
-    g_DisplaySettings.engineState[0].bgSettings[1].screenBase     = 0;
-    g_DisplaySettings.engineState[0].bgSettings[1].charBase       = 1;
-    g_DisplaySettings.engineState[0].bgSettings[1].extPlttSlot    = 0;
-    REG_BG1CNT                                                    = (u16)((REG_BG1CNT & 0x43) | 0x4004);
-    g_DisplaySettings.engineState[0].bgSettings[2].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[0].bgSettings[2].screenSizeText = GX_BG_SIZE_TEXT_512x256;
-    g_DisplaySettings.engineState[0].bgSettings[2].colorMode      = GX_BG_COLORS_16;
-    g_DisplaySettings.engineState[0].bgSettings[2].screenBase     = 2;
-    g_DisplaySettings.engineState[0].bgSettings[2].charBase       = 3;
-    g_DisplaySettings.engineState[0].bgSettings[2].extPlttSlot    = 1;
-    REG_BG2CNT                                                    = (u16)((REG_BG2CNT & 0x43) | 0x420C);
-    g_DisplaySettings.engineState[0].bgSettings[3].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[0].bgSettings[3].screenSizeText = GX_BG_SIZE_TEXT_256x256;
-    g_DisplaySettings.engineState[0].bgSettings[3].colorMode      = GX_BG_COLORS_16;
-    g_DisplaySettings.engineState[0].bgSettings[3].screenBase     = 4;
-    g_DisplaySettings.engineState[0].bgSettings[3].charBase       = 1;
-    g_DisplaySettings.engineState[0].bgSettings[3].extPlttSlot    = 1;
-    REG_BG3CNT                                                    = (u16)((REG_BG3CNT & 0x43) | 0x404);
-    g_DisplaySettings.engineState[0].bgSettings[0].priority       = 1;
-    g_DisplaySettings.engineState[0].bgSettings[1].priority       = 2;
-    g_DisplaySettings.engineState[0].bgSettings[2].priority       = 2;
-    g_DisplaySettings.engineState[0].bgSettings[3].priority       = 3;
-    g_DisplaySettings.engineState[0].bgSettings[0].mosaic         = 0;
-    g_DisplaySettings.engineState[0].bgSettings[1].mosaic         = 0;
-    g_DisplaySettings.engineState[0].bgSettings[2].mosaic         = 0;
-    g_DisplaySettings.engineState[0].bgSettings[3].mosaic         = 0;
-    g_DisplaySettings.controls[0].layers                          = 0x1F;
-    g_DisplaySettings.controls[1].bgMode                          = GX_BGMODE_0;
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 1, 0, 0x4004);
+    Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 2, 3, 1, 0x420C);
+    Display_InitMainBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_16, 4, 1, 1, 0x404);
+    g_DisplaySettings.engineState[0].bgSettings[0].priority = 1;
+    g_DisplaySettings.engineState[0].bgSettings[1].priority = 2;
+    g_DisplaySettings.engineState[0].bgSettings[2].priority = 2;
+    g_DisplaySettings.engineState[0].bgSettings[3].priority = 3;
+    g_DisplaySettings.engineState[0].bgSettings[0].mosaic   = 0;
+    g_DisplaySettings.engineState[0].bgSettings[1].mosaic   = 0;
+    g_DisplaySettings.engineState[0].bgSettings[2].mosaic   = 0;
+    g_DisplaySettings.engineState[0].bgSettings[3].mosaic   = 0;
+    Display_SetMainLayers(0x1F);
+    g_DisplaySettings.controls[1].bgMode = GX_BGMODE_0;
     GXs_SetGraphicsMode(GX_BGMODE_0);
-    g_DisplaySettings.engineState[1].bgSettings[0].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[1].bgSettings[0].screenSizeText = GX_BG_SIZE_TEXT_512x256;
-    g_DisplaySettings.engineState[1].bgSettings[0].colorMode      = GX_BG_COLORS_256;
-    g_DisplaySettings.engineState[1].bgSettings[0].screenBase     = 6;
-    g_DisplaySettings.engineState[1].bgSettings[0].charBase       = 5;
-    g_DisplaySettings.engineState[1].bgSettings[0].extPlttSlot    = 0;
-    REG_BG0CNT_SUB                                                = (u16)((REG_BG0CNT_SUB & 0x43) | 0x4694);
-    g_DisplaySettings.engineState[1].bgSettings[1].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[1].bgSettings[1].screenSizeText = GX_BG_SIZE_TEXT_512x256;
-    g_DisplaySettings.engineState[1].bgSettings[1].colorMode      = GX_BG_COLORS_256;
-    g_DisplaySettings.engineState[1].bgSettings[1].screenBase     = 0;
-    g_DisplaySettings.engineState[1].bgSettings[1].charBase       = 1;
-    g_DisplaySettings.engineState[1].bgSettings[1].extPlttSlot    = 0;
-    REG_BG1CNT_SUB                                                = (u16)((REG_BG1CNT_SUB & 0x43) | 0x4084);
-    g_DisplaySettings.engineState[1].bgSettings[2].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[1].bgSettings[2].screenSizeText = GX_BG_SIZE_TEXT_512x256;
-    g_DisplaySettings.engineState[1].bgSettings[2].colorMode      = GX_BG_COLORS_256;
-    g_DisplaySettings.engineState[1].bgSettings[2].screenBase     = 2;
-    g_DisplaySettings.engineState[1].bgSettings[2].charBase       = 3;
-    g_DisplaySettings.engineState[1].bgSettings[2].extPlttSlot    = 1;
-    REG_BG2CNT_SUB                                                = (u16)((REG_BG2CNT_SUB & 0x43) | 0x428C);
-    g_DisplaySettings.engineState[1].bgSettings[3].bgMode         = DISPLAY_BGMODE_TEXT;
-    g_DisplaySettings.engineState[1].bgSettings[3].screenSizeText = GX_BG_SIZE_TEXT_256x256;
-    g_DisplaySettings.engineState[1].bgSettings[3].colorMode      = GX_BG_COLORS_256;
-    g_DisplaySettings.engineState[1].bgSettings[3].screenBase     = 4;
-    g_DisplaySettings.engineState[1].bgSettings[3].charBase       = 5;
-    g_DisplaySettings.engineState[1].bgSettings[3].extPlttSlot    = 1;
-    REG_BG3CNT_SUB                                                = (u16)((REG_BG3CNT_SUB & 0x43) | 0x494);
-    g_DisplaySettings.engineState[1].bgSettings[0].priority       = 1;
-    g_DisplaySettings.engineState[1].bgSettings[1].priority       = 2;
-    g_DisplaySettings.engineState[1].bgSettings[2].priority       = 2;
-    g_DisplaySettings.engineState[1].bgSettings[3].priority       = 3;
-    g_DisplaySettings.engineState[1].bgSettings[0].mosaic         = 0;
-    g_DisplaySettings.engineState[1].bgSettings[1].mosaic         = 0;
-    g_DisplaySettings.engineState[1].bgSettings[2].mosaic         = 0;
-    g_DisplaySettings.engineState[1].bgSettings[3].mosaic         = 0;
-    g_DisplaySettings.controls[1].layers                          = 0x1E;
-    g_DisplaySettings.engineState[0].blendMode                    = 1;
-    g_DisplaySettings.engineState[0].blendLayer0                  = 1;
-    g_DisplaySettings.engineState[0].blendLayer1                  = 0x3E;
-    g_DisplaySettings.engineState[0].blendCoeff0                  = 6;
-    g_DisplaySettings.engineState[0].blendCoeff1                  = 0xA;
-    g_DisplaySettings.engineState[1].blendMode                    = 1;
-    g_DisplaySettings.engineState[1].blendLayer0                  = 1;
-    g_DisplaySettings.engineState[1].blendLayer1                  = 0x3E;
-    g_DisplaySettings.engineState[1].blendCoeff0                  = 6;
-    g_DisplaySettings.engineState[1].blendCoeff1                  = 0xA;
+    Display_InitSubBG0(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_256, 6, 5, 0, 0x4694);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_256, 0, 1, 0, 0x4084);
+    Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_256, 2, 3, 1, 0x428C);
+    Display_InitSubBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_256x256, GX_BG_COLORS_256, 4, 5, 1, 0x494);
+    g_DisplaySettings.engineState[1].bgSettings[0].priority = 1;
+    g_DisplaySettings.engineState[1].bgSettings[1].priority = 2;
+    g_DisplaySettings.engineState[1].bgSettings[2].priority = 2;
+    g_DisplaySettings.engineState[1].bgSettings[3].priority = 3;
+    g_DisplaySettings.engineState[1].bgSettings[0].mosaic   = 0;
+    g_DisplaySettings.engineState[1].bgSettings[1].mosaic   = 0;
+    g_DisplaySettings.engineState[1].bgSettings[2].mosaic   = 0;
+    g_DisplaySettings.engineState[1].bgSettings[3].mosaic   = 0;
+    Display_SetSubLayers(0x1E);
+    g_DisplaySettings.engineState[0].blendMode = 1;
+    Display_SetBlendLayers(0, 1, 0x3E);
+    Display_SetBlendCoeffs(0, 6, 0xA);
+    g_DisplaySettings.engineState[1].blendMode = 1;
+    Display_SetBlendLayers(1, 1, 0x3E);
+    Display_SetBlendCoeffs(1, 6, 0xA);
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.engineState[0].windowObj            = 8;
     g_DisplaySettings.engineState[0].windowObjEffects     = 0;
@@ -264,16 +217,12 @@ void func_ov003_020c14ec(void) {
 }
 
 void func_ov003_020c17bc(void) {
-    g_DisplaySettings.engineState[0].blendMode   = 1;
-    g_DisplaySettings.engineState[0].blendLayer0 = 1;
-    g_DisplaySettings.engineState[0].blendLayer1 = 0x3E;
-    g_DisplaySettings.engineState[0].blendCoeff0 = 6;
-    g_DisplaySettings.engineState[0].blendCoeff1 = 0xA;
-    g_DisplaySettings.engineState[1].blendMode   = 1;
-    g_DisplaySettings.engineState[1].blendLayer0 = 1;
-    g_DisplaySettings.engineState[1].blendLayer1 = 0x3E;
-    g_DisplaySettings.engineState[1].blendCoeff0 = 6;
-    g_DisplaySettings.engineState[1].blendCoeff1 = 0xA;
+    g_DisplaySettings.engineState[0].blendMode = 1;
+    Display_SetBlendLayers(0, 1, 0x3E);
+    Display_SetBlendCoeffs(0, 6, 0xA);
+    g_DisplaySettings.engineState[1].blendMode = 1;
+    Display_SetBlendLayers(1, 1, 0x3E);
+    Display_SetBlendCoeffs(1, 6, 0xA);
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.engineState[0].windowObj            = 0;
     g_DisplaySettings.engineState[0].windowObjEffects     = 0;
@@ -292,7 +241,7 @@ void func_ov003_020c1848(BtlActSp* self) {
     s16 phase = self->phase;
     switch (phase) {
         case 0:
-            SndMgr_PlaySEWithPan(0x1E, 0x80);
+            SndMgr_PlaySEWithPan(SEIDX_SE_FINISHMOVE, 0x80);
             EasyFade_FadeBothDisplays(2, 0x10, 0x1000);
             data_ov003_020e71b8->unk3D878 |= 0x1000;
             data_ov003_020e71b8->unk3D878 |= 0x2000;
@@ -403,15 +352,15 @@ void func_ov003_020c1918(BtlActSp* self) {
 }
 
 // Nonmatching: argument-load scheduling and register allocation.
-s32 func_ov003_020c1dbc(TaskPool* pool, Task* task, void* rawArgs) {
-    BtlActSp*     self = task->data;
-    BtlActSpArgs* args = rawArgs;
+s32 func_ov003_020c1dbc(TaskPool* pool, Task* task, void* args) {
+    BtlActSp*     self  = task->data;
+    BtlActSpArgs* spawn = args;
     data_ov003_020e71b8->unk3D878 |= 2;
     MI_CpuSet(self, 0, sizeof(*self));
     data_ov003_020e71d8.released  = 0;
-    self->selection               = args->selection;
-    self->skipFeature             = args->skipFeature;
-    data_ov003_020e71d8.level     = args->level;
+    self->selection               = spawn->selection;
+    self->skipFeature             = spawn->skipFeature;
+    data_ov003_020e71d8.level     = spawn->level;
     data_ov003_020e71d8.character = self->character;
     self->active                  = 1;
     func_ov003_020c1224(self, func_ov003_020c1848);
@@ -440,7 +389,7 @@ s32 func_ov003_020c1ed0(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-void func_ov003_020c1f18(void* pool, u16 level) {
+void func_ov003_020c1f18(TaskPool* pool, u16 level) {
     BtlActSpArgs args;
     u16          character;
     switch (data_ov003_020e71b8->unk3D88D) {

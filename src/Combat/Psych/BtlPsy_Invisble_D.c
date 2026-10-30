@@ -19,11 +19,11 @@ typedef struct BtlPsyInvisible {
 } BtlPsyInvisible;
 void func_ov003_02094e40(BtlPsyInvisible*);
 void func_ov003_02094edc(BtlPsyInvisible*);
-s32  func_ov003_02094f24(TaskPool*, Task*, void*);
-s32  func_ov003_02094fb8(TaskPool*, Task*, void*);
-s32  func_ov003_02094fe4(TaskPool*, Task*, void*);
-s32  func_ov003_0209504c(TaskPool*, Task*, void*);
-s32  func_ov003_02095064(TaskPool*, Task*, void*, s32);
+s32  func_ov003_02094f24(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02094fb8(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02094fe4(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_0209504c(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02095064(TaskPool* pool, Task* task, void* args, s32 stage);
 
 char             data_ov003_020e3b84[24] = "Tsk_BtlPsy_Invisble_D";
 const TaskHandle data_ov003_020d7dc8     = {data_ov003_020e3b84, func_ov003_02095064, 0x7C};
@@ -108,7 +108,7 @@ s32 func_ov003_0209504c(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32 func_ov003_02095064(TaskPool*, Task*, void*, s32);
+s32 func_ov003_02095064(TaskPool* pool, Task* task, void* args, s32 stage);
 
 s32 func_ov003_02095064(TaskPool* pool, Task* task, void* args, s32 stage) {
     TaskStages stages = data_ov003_020d7dd4;
@@ -121,7 +121,7 @@ s32 func_ov003_020950ac(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7dc8.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7dc8;
+    context->handle        = &data_ov003_020d7dc8;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

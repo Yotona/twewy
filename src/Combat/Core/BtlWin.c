@@ -35,10 +35,8 @@ typedef struct BtlWin {
 
 extern const BinIdentifier data_ov003_020d7818;
 
-extern void func_020265d4(void* dst, s32 step, u16 count);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_0208b278(s32 arg0);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
+extern void func_ov003_0208b278(u32 state);
 
 void func_ov003_020a13f8(BtlWin* self);
 void func_ov003_020a147c(BtlWin* self);
@@ -94,19 +92,19 @@ void func_ov003_020a0fac(s32 weak) {
     u16 line;
 
     if (weak) {
-        func_ov003_02087ed8(0x375);
+        func_ov003_02087ed8(SEIDX_NEKU_BTL_WIN04);
         return;
     }
     line = RNG_Next(0xFFFF) % 3;
     switch (line) {
         case 0:
-            func_ov003_02087ed8(0x372);
+            func_ov003_02087ed8(SEIDX_NEKU_BTL_WIN01);
             break;
         case 1:
-            func_ov003_02087ed8(0x373);
+            func_ov003_02087ed8(SEIDX_NEKU_BTL_WIN02);
             break;
         case 2:
-            func_ov003_02087ed8(0x374);
+            func_ov003_02087ed8(SEIDX_NEKU_BTL_WIN03);
             break;
     }
 }
@@ -118,13 +116,13 @@ void func_ov003_020a1038(s32 weak) {
     if (weak) {
         switch (data_ov003_020e71b8->unk3D88D) {
             case 0:
-                func_ov003_02087ed8(0x39D);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_WIN04);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3C5);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_WIN04);
                 break;
             case 2:
-                func_ov003_02087ed8(0x3ED);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_WIN04);
                 break;
         }
         return;
@@ -133,39 +131,39 @@ void func_ov003_020a1038(s32 weak) {
     if (data_ov003_020e71b8->unk3D88D == 0) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x39A);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_WIN01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x39B);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_WIN02);
                 break;
             case 2:
-                func_ov003_02087ed8(0x39C);
+                func_ov003_02087ed8(SEIDX_SHIKI_BTL_WIN03);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 1) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x3C2);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_WIN01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3C3);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_WIN02);
                 break;
             case 2:
-                func_ov003_02087ed8(0x3C4);
+                func_ov003_02087ed8(SEIDX_YOSHUA_BTL_WIN03);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 2) {
         switch (line) {
             case 0:
-                func_ov003_02087ed8(0x3EA);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_WIN01);
                 break;
             case 1:
-                func_ov003_02087ed8(0x3EB);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_WIN02);
                 break;
             case 2:
-                func_ov003_02087ed8(0x3EC);
+                func_ov003_02087ed8(SEIDX_BIITO_BTL_WIN03);
                 break;
         }
     }
@@ -177,7 +175,7 @@ s32 func_ov003_020a11c8(void) {
 
     switch (data_ov003_020e71b8->unk3D88E) {
         case 13:
-            func_ov003_02087ed8(0x4E5);
+            func_ov003_02087ed8(SEIDX_KONISHI_N_BTL_OTHER01);
             break;
         case 16:
             func_ov003_02087ed8(result + 0x500);
@@ -186,54 +184,54 @@ s32 func_ov003_020a11c8(void) {
             func_ov003_02087ed8(result + 0x500);
             break;
         case 18:
-            func_ov003_02087ed8(0x50A);
+            func_ov003_02087ed8(SEIDX_MINAMI_N_BTL_OVR01);
             break;
         case 19:
-            func_ov003_02087ed8(0x515);
+            func_ov003_02087ed8(SEIDX_HIGASHI_N_BTL_OVR02);
             break;
         case 20:
-            func_ov003_02087ed8(0x4DA);
+            func_ov003_02087ed8(SEIDX_KITA_N_BTL_OVR01);
             break;
         case 21:
-            func_ov003_02087ed8(0x4DA);
+            func_ov003_02087ed8(SEIDX_KITA_N_BTL_OVR01);
             break;
         case 23:
-            func_ov003_02087ed8(0x3E8);
+            func_ov003_02087ed8(SEIDX_BIITO_BTL_OVR01);
             break;
         case 24:
-            func_ov003_02087ed8(0x3E8);
+            func_ov003_02087ed8(SEIDX_BIITO_BTL_OVR01);
             break;
         case 25:
-            func_ov003_02087ed8(0x3E8);
+            func_ov003_02087ed8(SEIDX_BIITO_BTL_OVR01);
             break;
         case 26:
-            func_ov003_02087ed8(0x3E8);
+            func_ov003_02087ed8(SEIDX_BIITO_BTL_OVR01);
             break;
         case 27:
-            func_ov003_02087ed8(0x4D4);
+            func_ov003_02087ed8(SEIDX_KITA_BTL_OVR01);
             break;
         case 28:
-            func_ov003_02087ed8(0x524);
+            func_ov003_02087ed8(SEIDX_KARIYA_BTL_OVR01);
             break;
         case 29:
-            func_ov003_02087ed8(0x53C);
+            func_ov003_02087ed8(SEIDX_YASHIRO_BTL_OVR01);
             break;
         case 30:
             if (RNG_Next(2) != 0) {
-                func_ov003_02087ed8(0x524);
+                func_ov003_02087ed8(SEIDX_KARIYA_BTL_OVR01);
             } else {
-                func_ov003_02087ed8(0x53C);
+                func_ov003_02087ed8(SEIDX_YASHIRO_BTL_OVR01);
             }
             break;
         case 31:
             if (RNG_Next(2) != 0) {
-                func_ov003_02087ed8(0x530);
+                func_ov003_02087ed8(SEIDX_KARIYA_B_BTL_OVR01);
             } else {
-                func_ov003_02087ed8(0x548);
+                func_ov003_02087ed8(SEIDX_YASHIRO_B_BTL_OVR01);
             }
             break;
         case 32:
-            func_ov003_02087ed8(0x4B0);
+            func_ov003_02087ed8(SEIDX_HANEKOMA_N_EVENT_YOROKOBIS01);
         default:
             result = 0;
             break;
@@ -273,7 +271,7 @@ void func_ov003_020a1374(void) {
 void func_ov003_020a13f8(BtlWin* self) {
     if (self->timer == 0) {
         self->timer = 30;
-        func_ov003_02087f00(0x16, 0x80);
+        func_ov003_02087f00(SEIDX_SE_NOISEERASED01, 0x80);
     }
     if (self->timer > 0) {
         func_020265d4(&self->x, 0x80000, (u16)self->timer);
@@ -305,7 +303,7 @@ void func_ov003_020a14c8(BtlWin* self) {
         case 0:
             if (self->timer == 0) {
                 self->timer = 30;
-                func_ov003_02087f00(0x17, 0x80);
+                func_ov003_02087f00(SEIDX_SE_NOISEERASED02, 0x80);
             }
             if (self->timer > 0) {
                 func_020265d4(&self->x, 0x180000, (u16)self->timer);
@@ -316,7 +314,7 @@ void func_ov003_020a14c8(BtlWin* self) {
                 return;
             }
             EasyFade_FadeBothDisplays(0, 0x10, 0x800);
-            func_ov003_02087ed8(1);
+            func_ov003_02087ed8(SEIDX_SE_BATTLE_OUT);
             self->phase++;
             self->timer = 0;
             break;

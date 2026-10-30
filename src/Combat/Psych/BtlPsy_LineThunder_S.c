@@ -11,7 +11,7 @@ s32 func_ov003_020b94b8(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychArgs  value = {effect};
     Ov003PsychArgs* arg   = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dd05c.taskName);
     *arg                  = value;
-    context->handle       = (TaskHandle*)&data_ov003_020dd05c;
+    context->handle       = &data_ov003_020dd05c;
     context->arg          = arg;
     context->post         = NULL;
     return 1;
@@ -28,14 +28,14 @@ s32 func_ov003_020b9518(TaskPool* pool, Task* task, void* args, s32 stage) {
             BtlTouchWork* touch = func_ov003_020a62a0();
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect    = arg->effect;
-            self->x         = touch->input.x;
-            self->y         = touch->input.y;
-            self->previousX = touch->input.previousX;
-            self->previousY = touch->input.previousY;
+            self->x         = touch->startX;
+            self->y         = touch->startY;
+            self->previousX = touch->endX;
+            self->previousY = touch->endY;
             self->timer     = 5;
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             func_ov003_020a6464(1);
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             self->phase = 0;
             self->timer = 5;
             return 1;
@@ -60,14 +60,14 @@ s32 func_ov003_020b9518(TaskPool* pool, Task* task, void* args, s32 stage) {
                         return 0;
                     if (func_ov003_02085cfc(4)) {
                         BtlTouchWork* touch = func_ov003_020a62a0();
-                        self->x             = touch->input.x;
-                        self->y             = touch->input.y;
-                        self->previousX     = touch->input.previousX;
-                        self->previousY     = touch->input.previousY;
+                        self->x             = touch->startX;
+                        self->y             = touch->startY;
+                        self->previousX     = touch->endX;
+                        self->previousY     = touch->endY;
                         func_ov003_020b96d8(self);
                         if (!func_ov003_020a5aa4(self->effect))
                             return 0;
-                        func_ov003_020a6494(touch->input.previousX);
+                        func_ov003_020a6494(touch->endX);
                         self->phase = 1;
                         self->timer = 30;
                     }

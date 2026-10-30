@@ -1,6 +1,8 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
@@ -85,8 +87,8 @@ void func_ov003_020b34c0(Ov003Thunder* self) {
         return;
     }
     self->angle = func_ov003_020a62b8(self->position.x, self->position.y, x, y);
-    self->position.x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-    self->position.y += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+    self->position.x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+    self->position.y += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
 }
 
 void func_ov003_020b35c0(Ov003Thunder* self) {
@@ -117,7 +119,7 @@ void func_ov003_020b3698(Ov003Thunder* self) {
     CombatSprite_Release(&self->sprite);
     func_ov003_020a3498(&self->sprite, 2, 1, self->args.effect->index + 4, 0);
     self->angle = (u16)(self->angle + (RNG_Next(0x1001) + 0x1000));
-    func_ov003_02087f00(0x14B, (s16)(self->position.x >> 12));
+    func_ov003_02087f00(SEIDX_SE_BOY_THUNDER, (s16)(self->position.x >> 12));
 }
 
 void func_ov003_020b371c(Ov003Thunder* self) {
@@ -125,8 +127,8 @@ void func_ov003_020b371c(Ov003Thunder* self) {
         self->phase = 4;
         return;
     }
-    self->position.x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-    self->position.y += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+    self->position.x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+    self->position.y += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
 }
 
 s32 func_ov003_020b37c8(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -136,7 +138,7 @@ s32 func_ov003_020b37c8(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc984.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc984;
+    context->handle        = &data_ov003_020dc984;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

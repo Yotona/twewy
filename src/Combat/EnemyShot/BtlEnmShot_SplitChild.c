@@ -1,11 +1,9 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatEnemyShot.h"
+#include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32              func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0cc8;
 
 s32 func_ov003_020d281c(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 damping) {
@@ -17,7 +15,7 @@ s32 func_ov003_020d281c(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 d
     args.velocity.z = z;
     args.damping    = damping;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -27,15 +25,15 @@ s32 func_ov003_020d281c(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 d
 s32 func_ov003_020d28b0(Ov003EnemyShotSplitChild* self, Ov003EnemyShotSplitChildArgs* args) {
     const Ov003EnemyShotVisual* visual = args->source->visual;
     const SpriteAnimEntry*      entry  = &visual->entries[visual->entry];
-    s32                         engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32                         engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
     MI_CpuSet(self, 0, sizeof(*self));
     MI_CpuCopyU8(args->source, &self->source, sizeof(self->source));
     self->velocity.x    = args->velocity.x;
     self->velocity.y    = args->velocity.y;
     self->velocity.z    = args->velocity.z;
-    self->dampingStep.x = (s32)(((s64)args->velocity.x * args->damping + 0x800) >> 12);
-    self->dampingStep.y = (s32)(((s64)args->velocity.y * args->damping + 0x800) >> 12);
-    self->dampingStep.z = (s32)(((s64)args->velocity.z * args->damping + 0x800) >> 12);
+    self->dampingStep.x = FX_Mul(args->velocity.x, args->damping);
+    self->dampingStep.y = FX_Mul(args->velocity.y, args->damping);
+    self->dampingStep.z = FX_Mul(args->velocity.z, args->damping);
     CombatSprite_LoadDirect(engine, &self->sprite, visual->file, entry->charDataIndex, entry->paletteDataIndex,
                             entry->frameDataIndex, visual->paletteSlot, entry->animDataIndex);
     CombatSprite_SetAnim(&self->sprite, self->source.animation, self->source.animationMode);
@@ -68,7 +66,7 @@ s32 func_ov003_020d29d4(Ov003EnemyShotSplitChild* self) {
         self->velocity.z -= self->dampingStep.z;
     }
     self->source.core.hitResult =
-        func_ov003_0208a164(func_ov003_0208a114(self->source.core.attackId), &self->source.core.owner->actor.baseArgs,
+        func_ov003_0208a164(func_ov003_0208a114(self->source.core.attackId), &self->source.core.owner->base.actor.baseArgs,
                             self->source.core.position.x, self->source.core.position.y, self->source.core.position.z);
     CombatSprite_Update(&self->sprite);
     return 1;

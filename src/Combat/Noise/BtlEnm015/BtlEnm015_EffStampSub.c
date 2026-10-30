@@ -13,13 +13,12 @@ typedef struct BtlEnm015StampSub {
     /* 0x6C */ s32          unk_6C;
     /* 0x70 */ s32          unk_70;
 } BtlEnm015StampSub; // Size: 0x74
-extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-s32         func_ov013_02126a30(TaskPool*, Task*, void*, s32);
+s32 func_ov013_02126a30(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle Tsk_BtlEnm015_EffStampSub = {"Tsk_BtlEnm015_EffStampSub", func_ov013_02126a30, 0x74};
 
 s32 func_ov013_02126788(BtlEnm015StampSub* data) {
-    s32          engine = func_ov003_020c37f8(&data->unk_00->sprite) != 0;
+    s32          engine = func_ov003_020c37f8(&data->unk_00->base.sprite) != 0;
     CombatActor* base;
     s32          se;
 
@@ -39,11 +38,11 @@ s32 func_ov013_02126788(BtlEnm015StampSub* data) {
                 s32 r;
 
                 func_ov013_02125838(data->unk_00);
-                if (SndMgr_IsSEPlaying(0x227) == 0) {
-                    func_ov003_02087ed8(0x227);
+                if (SndMgr_IsSEPlaying(SEIDX_SE_015_FOOTSTAMP02) == 0) {
+                    func_ov003_02087ed8(SEIDX_SE_015_FOOTSTAMP02);
                 }
                 h = func_ov003_0208a114(se);
-                r = func_ov003_0208a164(h, &data->unk_00->actor.baseArgs, data->unk_68, data->unk_6C, data->unk_70);
+                r = func_ov003_0208a164(h, &data->unk_00->base.actor.baseArgs, data->unk_68, data->unk_6C, data->unk_70);
                 if (r == 1) {
                     func_ov003_020c4cc4(&data->unk_00->base, 0x228);
                 } else if (r != 2) {
@@ -73,7 +72,7 @@ void func_ov013_021268d8(BtlEnm015StampSub* data) {
     s16 x;
     s16 y;
 
-    func_ov003_02084348(func_ov003_020c37f8(&data->unk_00->sprite) != 0, &x, &y, data->unk_68, data->unk_6C, 0);
+    func_ov003_02084348(func_ov003_020c37f8(&data->unk_00->base.sprite) != 0, &x, &y, data->unk_68, data->unk_6C, 0);
     CombatSprite_SetPosition(&data->sprite, x, y);
     func_ov003_02082730(&data->sprite, 0x7FFFFFFF - data->unk_6C);
     CombatSprite_Render(&data->sprite);
@@ -93,12 +92,12 @@ void func_ov013_02126960(BtlEnm015StampSub* data, Enm015Spawn* args) {
     data->unk_70 = 0;
 
     u16* table  = (u16*)func_ov013_021256e4();
-    s32  engine = owner->sprite.sprite.bits_0_1;
+    s32  engine = owner->base.sprite.sprite.bits_0_1;
 
     SpriteAnimationEx anim;
-    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->spriteIndex));
+    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->base.spriteIndex));
     u16 animData         = table[3];
-    anim.anim.unk_20     = func_ov013_021256d0(owner->spriteIndex);
+    anim.anim.unk_20     = func_ov013_021256d0(owner->base.spriteIndex);
     anim.animTable       = NULL;
     anim.anim.unk_26     = table[2];
     anim.anim.unk_28     = table[1];
@@ -118,7 +117,7 @@ s32 func_ov013_02126a30(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov013_02126960(data, (Enm015Spawn*)args);
             break;
         case 1:
-            if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
+            if ((owner->base.actor.flags & 4) || func_ov003_020c3c28() != 0) {
                 return 0;
             }
             return func_ov013_02126788(data);

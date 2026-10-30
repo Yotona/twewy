@@ -34,9 +34,7 @@ typedef struct Ov011Rec_PPPP {
 extern const BinIdentifier data_ov011_0212be28[3];
 extern const BinIdentifier data_ov011_0212be40;
 
-#define ENM010_POOL (&data_ov003_020e71b8->unk_10118)
-
-s32 func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd);
+s32 func_ov011_021259d0(TaskPool* pool, Task* task, void* args, s32 stage);
 s32 func_ov011_02125a08(BtlEnm010AnmMgr* data, u16* arg1);
 s32 func_ov011_02125b88(BtlEnm010AnmMgr* data);
 
@@ -155,8 +153,7 @@ const u8 data_ov011_0212bf94[8] = {1, 0, 3, 0, 2, 0, 0, 0};
 
 const u8 data_ov011_0212bf9c[8] = {1, 0, 3, 0, 2, 0, 0, 0};
 
-const TaskHandle data_ov011_0212bfa4 = {"Task_BtlEnm010_AnmMgr",
-                                        (s32(*)(struct TaskPool*, struct Task*, void*, s32))func_ov011_021259d0, 60};
+const TaskHandle data_ov011_0212bfa4 = {"Task_BtlEnm010_AnmMgr", func_ov011_021259d0, 60};
 
 const u8 data_ov011_0212bfb0[16] = {1, 0, 3, 0, 2, 0, 0, 0, 1, 0, 3, 0, 2, 0, 1, 0};
 
@@ -212,12 +209,12 @@ BtlEnm010Bss data_ov011_0212cca0;
 void func_ov011_021256c0(u16 arg0) {
     u16   param              = arg0;
     u32   zero               = 0;
-    Task* t                  = EasyTask_CreateTask(ENM010_POOL, &data_ov011_0212bfa4, 0, 0, zero, &param);
+    Task* t                  = EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov011_0212bfa4, 0, 0, zero, &param);
     data_ov011_0212cca0.task = t;
 }
 
 void func_ov011_02125714(void) {
-    Task* t = EasyTask_GetTaskById(ENM010_POOL, data_ov011_0212cca0.task);
+    Task* t = EasyTask_GetTaskById(&data_ov003_020e71b8->unk_10118, data_ov011_0212cca0.task);
     if (t != NULL) {
         t->flags |= 0x10;
     }
@@ -232,7 +229,7 @@ void func_ov011_02125750(s32 arg0, CombatSprite* arg1, s32 arg2) {
     u16              phase;
 
     CombatSprite_Release(arg1);
-    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
+    data = EasyTask_GetTaskData(&data_ov003_020e71b8->unk_10118, data_ov011_0212cca0.task);
     bin  = data_ov011_0212cb1c[data->unk_38][arg2];
     if (func_ov003_020cb32c(&data->bins, bin) == 0) {
         slot = 0;
@@ -270,7 +267,7 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
     u16              elem;
     u16              pal;
 
-    data = EasyTask_GetTaskData(ENM010_POOL, data_ov011_0212cca0.task);
+    data = EasyTask_GetTaskData(&data_ov003_020e71b8->unk_10118, data_ov011_0212cca0.task);
     bin  = data_ov011_0212cae8[arg2];
     if (func_ov003_020cb32c(&data->bins, bin) == 0) {
         slot = 2;
@@ -296,12 +293,12 @@ void func_ov011_021258b4(s32 arg0, CombatSprite* arg1, s32 arg2) {
                                elem, pal);
 }
 
-s32 func_ov011_021259d0(s32 arg0, Task* task, s32 arg2, s32 cmd) {
+s32 func_ov011_021259d0(TaskPool* pool, Task* task, void* args, s32 stage) {
     BtlEnm010AnmMgr* data = task->data;
 
-    switch (cmd) {
+    switch (stage) {
         case 0:
-            return func_ov011_02125a08(data, arg2);
+            return func_ov011_02125a08(data, args);
         case 3:
             return func_ov011_02125b88(data);
         default:

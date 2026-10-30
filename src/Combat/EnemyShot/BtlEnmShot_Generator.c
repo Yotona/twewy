@@ -39,9 +39,7 @@ typedef struct Ov003EnemyShotGeneratorArgs {
     /* 0x20 */ s32                   speedScale;
 } Ov003EnemyShotGeneratorArgs; // Size: 0x24
 
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern u32              func_ov003_02082f2c(void);
-extern s32              func_ov003_020c37f8(CombatSprite*);
 extern const TaskHandle data_ov003_020e0c50;
 
 s32 func_ov003_020cec78(Ov003EnemyShotSource* source, u16 moveAngle, s32 moveSpeed, s32 moveDecay,
@@ -62,7 +60,7 @@ s32 func_ov003_020cec78(Ov003EnemyShotSource* source, u16 moveAngle, s32 moveSpe
     args.speedScale  = speedScale;
     source->core.flags |= 0x40;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -73,7 +71,7 @@ s32 func_ov003_020ced48(Ov003EnemyShotGenerator* self, Ov003EnemyShotGeneratorAr
     const Ov003EnemyShotVisual* visual = args->source->visual;
     const SpriteAnimEntry*      entry  = &visual->entries[visual->entry];
     CombatSprite*               sprite = &self->actor.sprite;
-    s32                         engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32                         engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
     MI_CpuSet(self, 0, sizeof(*self));
     func_ov003_020cc8b0(&self->core, args->source);
     MI_CpuCopyU8(args->paramSource, &self->paramSource, sizeof(Ov003EnemyShotSource));
@@ -83,8 +81,8 @@ s32 func_ov003_020ced48(Ov003EnemyShotGenerator* self, Ov003EnemyShotGeneratorAr
     self->delayFrames = args->delayFrames;
     self->speedScale  = args->speedScale;
     func_ov003_020c41e8((Ov003CutinActor*)self);
-    self->actor.actor.unk_70    = *(s8*)&args->source->core.owner->actor.unk_1C;
-    self->actor.actor.unk_72    = *((s8*)&args->source->core.owner->actor.unk_1C + 1);
+    self->actor.actor.unk_70    = *(s8*)&args->source->core.owner->base.actor.unk_1C;
+    self->actor.actor.unk_72    = *((s8*)&args->source->core.owner->base.actor.unk_1C + 1);
     self->actor.actor.maxHp     = 1;
     self->actor.actor.currentHp = 1;
     if (engine == 0)

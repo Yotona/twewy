@@ -1,11 +1,9 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
-extern void             func_ov003_02087fe0(s32, CombatSprite*, s32);
-extern void             func_ov003_02088064(CombatSprite*, s32, s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
 extern const TaskHandle data_ov003_020dc960;
@@ -17,7 +15,7 @@ s32 func_ov003_020b292c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc960.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc960;
+    context->handle        = &data_ov003_020dc960;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -54,14 +52,14 @@ s32 func_ov003_020b2998(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov003_020a5a94(self->effect);
             func_ov003_020a6494(touch->x);
             self->effect->unk_0A++;
-            func_ov003_02087f00(0xA1, touch->x);
+            func_ov003_02087f00(SEIDX_SE_PSY_RHYME_FLY01_01, touch->x);
             return 1;
         }
         case 1:
             self = task->data;
             if (self->phase == 0 || self->phase == 2) {
-                self->position.x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-                self->position.z += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+                self->position.x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+                self->position.z += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
             }
             switch (self->phase) {
                 case 0:

@@ -25,8 +25,8 @@ void func_ov003_020953b4(BtlPsySmash* smash, void (*update)(BtlPsySmash*)) {
 s32 func_ov003_020953c8(void) {
     if (func_ov003_02085cfc(6)) {
         Ov003Global* global = data_ov003_020e71b8;
-        if (global->heldActor != NULL && global->heldActor->unk_00 == 0)
-            return global->unk3D3C4 > 16;
+        if (global->touchWork.held != NULL && global->touchWork.held->unk_00 == 0)
+            return global->touchWork.stillFrames > 16;
     }
     return 0;
 }
@@ -96,7 +96,7 @@ void func_ov003_02095608(BtlPsySmash* smash) {
         smash->tier = 0;
     if (func_ov003_02085cfc(6))
         return;
-    SndMgr_StopPlayingSE(0xB5);
+    SndMgr_StopPlayingSE(SEIDX_SE_PSY_HVSWORD_TAME01_01);
     func_ov003_0209557c(smash->effect, smash->tier);
     func_ov003_02085c78();
     func_ov003_02087250(smash->effect, data_ov003_020e71b8->unk3D898, smash->tier);
@@ -145,7 +145,7 @@ s32 func_ov003_02095824(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02095844(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02095844(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3bb8[28] = "Tsk_BtlPsy_Sword_Smash_D";
 const TaskHandle data_ov003_020d7e10     = {data_ov003_020e3bb8, func_ov003_02095844, sizeof(BtlPsySmash)};
 const TaskStages data_ov003_020d7e1c = {func_ov003_02095764, func_ov003_020957e4, func_ov003_0209581c, func_ov003_02095824};
@@ -158,7 +158,7 @@ s32 func_ov003_0209588c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7e10.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7e10;
+    context->handle        = &data_ov003_020d7e10;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

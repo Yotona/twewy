@@ -10,9 +10,8 @@ typedef struct BtlEnm015Eff {
     /* 0x68 */ s32          unk_68;
     /* 0x6C */ BtlEnm015*   unk_6C;
 } BtlEnm015Eff; // Size: 0x70
-extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 
-s32 func_ov013_021260e8(TaskPool*, Task*, void*, s32);
+s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle Tsk_BtlEnm015_Eff = {"Tsk_BtlEnm015_Eff", func_ov013_021260e8, 0x70};
 
@@ -29,11 +28,11 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     if (args->unk_04 == 1) {
         flag = 0x118;
     }
-    s32 engine = owner->sprite.sprite.bits_0_1;
+    s32 engine = owner->base.sprite.sprite.bits_0_1;
 
     SpriteAnimationEx anim;
-    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->spriteIndex));
-    s16              unk20 = func_ov013_021256d0(owner->spriteIndex);
+    CombatSprite_InitAnim(&anim.anim, engine, func_ov013_021256c0(owner->base.spriteIndex));
+    s16              unk20 = func_ov013_021256d0(owner->base.spriteIndex);
     SpriteAnimEntry* table = func_ov013_021256e4();
     SpriteAnimEntry* entry = &table[args->unk_04];
     anim.anim.bits_10_11   = 1;
@@ -47,7 +46,7 @@ void func_ov013_02125fd0(BtlEnm015Eff* data, Enm015Spawn* args) {
     anim.animTable         = table;
     CombatSprite_Load(&data->sprite, &anim);
     CombatSprite_SetAnimFromTable(&data->sprite, args->unk_04, 1);
-    CombatSprite_SetFlip(&data->sprite, data->unk_6C->sprite.flags46 & 1);
+    CombatSprite_SetFlip(&data->sprite, data->unk_6C->base.sprite.flags46 & 1);
 }
 
 s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
@@ -62,7 +61,7 @@ s32 func_ov013_021260e8(TaskPool* pool, Task* task, void* args, s32 stage) {
             if (func_ov003_020c3c28() != 0) {
                 return 0;
             }
-            if (owner->actor.flags & 4) {
+            if (owner->base.actor.flags & 4) {
                 return 0;
             }
             if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {

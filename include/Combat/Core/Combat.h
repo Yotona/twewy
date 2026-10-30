@@ -8,6 +8,7 @@
 #include "Engine/EasyTask.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Save/MainData.h"
 #include "SndMgrSeIdx.h"
 
 /// One per screen engine; `BtlEnm015_Shake` jitters the offset at 0x44..0x4C.
@@ -145,55 +146,29 @@ typedef struct Ov003EffectCmd {
 } Ov003EffectCmd;          // Size: 0x30
 
 typedef struct {
-    /* 0x00000 */ TaskPool         unk_00000;
-    /* 0x00080 */ Heap             heap_00080;
-    /* 0x0008C */ u8               heapData_00080[0x8000];
-    /* 0x0808C */ TaskPool         taskPool;
-    /* 0x0810C */ Heap             heap_0810C;
-    /* 0x08118 */ u8               heapData_0810C[0x8000];
-    /* 0x10118 */ TaskPool         unk_10118;
-    /* 0x10198 */ Heap             heap_10198;
-    /* 0x101A4 */ u8               heapData_10198[0x10000];
-    /* 0x201A4 */ TaskPool         unk_201A4;
-    /* 0x20224 */ Heap             heap_20224;
-    /* 0x20230 */ u8               heapData_20224[0x14000];
-    /* 0x34230 */ TaskPool         unk_34230;
-    /* 0x342B0 */ Heap             heap_342B0;
-    /* 0x342BC */ u8               heapData_342B0[0x8000];
-    /* 0x3C2BC */ TaskPool         unk_3C2BC;
-    /* 0x3C33C */ Heap             heap_3C33C;
-    /* 0x3C348 */ u8               heapData_3C33C[0x1000];
-    /* 0x3D348 */ PaletteResource* unk3D348[2];
-    /* 0x3D350 */ Data*            unk3D350;
-    /* 0x3D354 */ Data*            unk3D354;
-    /* 0x3D358 */ Ov003EffectSlots effectSlots;
-    union {
-        BtlTouchWork touchWork;
-        struct {
-            union {
-                BtlTouchInput touchInput;
-                struct {
-                    /* 0x3D370 */ u8  unk_3D370[4];
-                    /* 0x3D374 */ u16 unk3D374;
-                    /* 0x3D376 */ u16 unk3D376; // shared battle icon animation state
-                    /* 0x3D378 */ s16 unk3D378;
-                    /* 0x3D37A */ s16 unk3D37A;
-                    /* 0x3D37C */ s16 unk3D37C;
-                    /* 0x3D37E */ s16 unk3D37E;
-                    /* 0x3D380 */ u8  unk_3D380[0x24];
-                };
-            };
-            /* 0x3D3A4 */ s16          unk3D3A4;
-            /* 0x3D3A6 */ u8           unk_3D3A6[0x4];
-            /* 0x3D3AA */ s16          unk3D3AA;
-            /* 0x3D3AC */ s16          unk3D3AC;
-            /* 0x3D3AE */ u8           unk_3D3AE[0xE];
-            /* 0x3D3BC */ CombatActor* heldActor;
-            /* 0x3D3C0 */ u8           unk_3D3C0[4];
-            /* 0x3D3C4 */ s16          unk3D3C4;
-            /* 0x3D3C6 */ u8           unk_3D3C6[6];
-        };
-    };
+    /* 0x00000 */ TaskPool              unk_00000;
+    /* 0x00080 */ Heap                  heap_00080;
+    /* 0x0008C */ u8                    heapData_00080[0x8000];
+    /* 0x0808C */ TaskPool              taskPool;
+    /* 0x0810C */ Heap                  heap_0810C;
+    /* 0x08118 */ u8                    heapData_0810C[0x8000];
+    /* 0x10118 */ TaskPool              unk_10118;
+    /* 0x10198 */ Heap                  heap_10198;
+    /* 0x101A4 */ u8                    heapData_10198[0x10000];
+    /* 0x201A4 */ TaskPool              unk_201A4;
+    /* 0x20224 */ Heap                  heap_20224;
+    /* 0x20230 */ u8                    heapData_20224[0x14000];
+    /* 0x34230 */ TaskPool              unk_34230;
+    /* 0x342B0 */ Heap                  heap_342B0;
+    /* 0x342BC */ u8                    heapData_342B0[0x8000];
+    /* 0x3C2BC */ TaskPool              unk_3C2BC;
+    /* 0x3C33C */ Heap                  heap_3C33C;
+    /* 0x3C348 */ u8                    heapData_3C33C[0x1000];
+    /* 0x3D348 */ PaletteResource*      unk3D348[2];
+    /* 0x3D350 */ Data*                 unk3D350;
+    /* 0x3D354 */ Data*                 unk3D354;
+    /* 0x3D358 */ Ov003EffectSlots      effectSlots;
+    /* 0x3D370 */ BtlTouchWork          touchWork;
     /* 0x3D3CC */ Ov003ActionEffectPool actionEffects;
     /* 0x3D4BC */ Ov003TouchEvent       touchEvents[14];
     /* 0x3D75C */ u8                    unk_3D75C[4];
@@ -258,8 +233,8 @@ typedef struct {
     /* 0x3D8F4 */ s32               unk3D8F4;
     /* 0x3D8F8 */ s16               unk3D8F8;
     /* 0x3D8FA */ s16               unk3D8FA;
-    /* 0x3D8FC */ s8                unk3D8FC; // live message popups, main screen
-    /* 0x3D8FD */ s8                unk3D8FD; // live message popups, sub screen
+    /* 0x3D8FC */ s8                popupCountMain; // live message popups, main screen
+    /* 0x3D8FD */ s8                popupCountSub;  // live message popups, sub screen
     /* 0x3D8FE */ u8                unk3D8FE;
     /* 0x3D8FF */ u8                unk3D8FF;
     /* 0x3D900 */ u16               unk3D900;
@@ -332,6 +307,34 @@ typedef struct Ov003AnimLayer {
     /* 0x1E */ s16                    unk_1E;
     /* 0x20 */ struct Ov003AnimLayer* next;
 } Ov003AnimLayer; // Size: 0x24
+
+typedef struct Ov003CutinSaveState {
+    /* 0x00 */ u32 unk_00;
+    /* 0x04 */ u32 slots[9];
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ u32 magic;
+} Ov003CutinSaveState; // Size: 0x34
+
+/// The persistent settings array (25 limits and tunables), validated with a magic word.
+typedef struct Ov003Settings {
+    /* 0x00 */ s32 reserved00;
+    /* 0x04 */ s32 values[25];
+    /* 0x68 */ s32 unk_68;
+    /* 0x6C */ s32 unk_6C;
+    /* 0x70 */ s32 magic;
+    /* 0x74 */ s8  current;
+    /* 0x75 */ u8  reserved75[3];
+} Ov003Settings; // Size: 0x78
+
+/// The battle runtime that extends past the serialized MainData prefix in gSaveData's allocation.
+typedef struct Ov003SaveRuntime {
+    /* 0x0000 */ MainData            save;
+    /* 0x3420 */ Ov003CutinSaveState cutin;
+    /* 0x3454 */ Ov003Settings       settings;
+} Ov003SaveRuntime;
+
+#define OV003_SAVE ((Ov003SaveRuntime*)&gSaveData)
 
 /// Battle scene work area, allocated from `gDebugHeap` and referenced from the overlay dispatcher
 /// (`MainOvlDisp_SetCbArg`) and the debug overlay stack.

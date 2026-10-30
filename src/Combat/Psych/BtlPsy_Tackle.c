@@ -74,7 +74,7 @@ s32 func_ov003_02094c8c(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02094cb0(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02094cb0(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3b70[20] = "Tsk_BtlPsy_Tackle";
 const TaskHandle data_ov003_020d7dac     = {data_ov003_020e3b70, func_ov003_02094cb0, 0x1C};
 const TaskStages data_ov003_020d7db8     = {
@@ -89,7 +89,7 @@ s32 func_ov003_02094cf8(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7dac.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7dac;
+    context->handle        = &data_ov003_020d7dac;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -99,7 +99,7 @@ s32 func_ov003_02094d4c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7dac.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7dac;
+    context->handle        = &data_ov003_020d7dac;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

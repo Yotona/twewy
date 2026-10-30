@@ -13,7 +13,7 @@ s32 func_ov003_020b5d54(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca84.taskName);
     arg->effect             = effect;
     arg->unit               = unit;
-    context->handle         = (TaskHandle*)&data_ov003_020dca84;
+    context->handle         = &data_ov003_020dca84;
     context->arg            = arg;
     context->post           = NULL;
     return 1;
@@ -38,7 +38,7 @@ s32 func_ov003_020b5dc4(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov003_020a6464(1);
             func_ov003_020a5aa4(self->args.effect);
             func_ov003_020a5a94(self->args.effect);
-            func_ov003_020a61e4(self->args.unit, 5, 0x189, &self->args.effect->streak.args, touch->input.angle,
+            func_ov003_020a61e4(self->args.unit, 5, 0x189, &self->args.effect->streak.args, touch->angle,
                                 self->args.effect->params[0], self->args.effect->params[1]);
             func_ov003_02087f28(0x67, self->args.unit->actor.position.x);
             func_ov003_020a647c(self->args.unit->actor.position.x);

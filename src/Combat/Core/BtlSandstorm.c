@@ -1,6 +1,5 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
-#include "Combat/Core/CombatBgScroll.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
 #include "Engine/EasyTask.h"
@@ -27,15 +26,12 @@ typedef struct BtlSandstorm {
     /* 0x20 */ s32              offsetY;
 } BtlSandstorm; // Size: 0x24
 
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
+extern void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4);
 
-s32 func_ov003_0209e2cc(TaskPool*, Task*, void*);
-s32 func_ov003_0209e584(TaskPool*, Task*, void*);
-s32 func_ov003_0209e5a8(TaskPool*, Task*, void*);
-s32 func_ov003_0209e678(TaskPool*, Task*, void*);
-s32 func_ov003_0209e70c(TaskPool* pool, Task* task, void* args, s32 stage);
+s32 func_ov003_0209e2cc(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_0209e584(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_0209e5a8(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_0209e678(TaskPool* pool, Task* task, void* args);
 
 char                data_ov003_020e3d50[20] = "Tsk_BtlSandstorm";
 char                data_ov003_020e3d64[32] = "Apl_Fur/Grp_BtlFld_Noise.bin";
@@ -124,8 +120,8 @@ s32 func_ov003_0209e5a8(TaskPool* pool, Task* task, void* args) {
 
     self->offsetX += (RNG_Next(0x801) - 0x400) << 12;
     self->offsetY += (RNG_Next(0x801) - 0x400) << 12;
-    Ov003_ScrollBgById(0, 3, self->offsetX, self->offsetY);
-    Ov003_ScrollBgById(1, 3, self->offsetX, self->offsetY);
+    Display_SetBGOffset(0, 3, self->offsetX, self->offsetY);
+    Display_SetBGOffset(1, 3, self->offsetX, self->offsetY);
     return 1;
 }
 

@@ -17,7 +17,7 @@ s32 func_ov003_020b10d8(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc900.taskName);
     arg->effect             = effect;
     arg->unit               = unit;
-    context->handle         = (TaskHandle*)&data_ov003_020dc900;
+    context->handle         = &data_ov003_020dc900;
     context->arg            = arg;
     context->post           = NULL;
     return 1;
@@ -147,7 +147,7 @@ s32 func_ov003_020b1130(TaskPool* pool, Task* task, void* args, s32 stage) {
 Ov003EnemyActor* func_ov003_020b15a0(void) {
     if (!func_ov003_02085cfc(3))
         return NULL;
-    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_020a62a0()->trackedActor;
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)func_ov003_020a62a0()->released;
     if (unit == NULL)
         return NULL;
     if (unit->actor.unk_00 != 1)

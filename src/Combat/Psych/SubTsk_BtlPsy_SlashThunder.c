@@ -1,9 +1,8 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32              func_ov003_020a51c0(void);
@@ -92,8 +91,8 @@ s32 func_ov003_020b9088(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->angle      = func_ov003_020a62d0(arg->x, arg->y, arg->previousX, arg->previousY);
             func_ov003_020a3498(&self->sprite, 2, 1, data_ov003_020dd00c[self->kind].animations[self->phase], 1);
             s32 offset             = data_ov003_020dd00c[self->kind].offset;
-            s32 dy                 = FX_Mul(offset, FX_SinCosTable_[(self->angle >> 4) * 2]);
-            s32 dx                 = FX_Mul(offset, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
+            s32 dy                 = FX_Mul(offset, SIN2(FX_SinCosTable_, self->angle));
+            s32 dx                 = FX_Mul(offset, COS2(FX_SinCosTable_, self->angle));
             s16 y                  = arg->y + (dy >> 12);
             self->renderPosition.x = func_ov003_0208442c(0, (s16)(arg->x + (dx >> 12)));
             self->renderPosition.y = func_ov003_02084460(0, y, 0);
@@ -121,8 +120,8 @@ s32 func_ov003_020b9088(TaskPool* pool, Task* task, void* args, s32 stage) {
                     }
                     s32 x        = func_ov003_020843b0(0, self->position.x);
                     s32 y        = func_ov003_020843ec(0, self->position.y, 0);
-                    s32 dx       = FX_Mul(FX_SinCosTable_[(self->angle >> 4) * 2 + 1], 0x12C000);
-                    s32 dy       = FX_Mul(FX_SinCosTable_[(self->angle >> 4) * 2], 0x12C000);
+                    s32 dx       = FX_Mul(COS2(FX_SinCosTable_, self->angle), 0x12C000);
+                    s32 dy       = FX_Mul(SIN2(FX_SinCosTable_, self->angle), 0x12C000);
                     s32 endX     = (dx + x * 0x1000) >> 12;
                     s32 endY     = (dy + y * 0x1000) >> 12;
                     s32 attackId = data_ov003_020dd00c[self->kind].attackId;

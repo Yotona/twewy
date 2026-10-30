@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32 func_ov003_0208442c(s32, s32);
-extern s32 func_ov003_02084460(s32, s32, s32);
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 extern const TaskHandle data_ov003_020dc62c;

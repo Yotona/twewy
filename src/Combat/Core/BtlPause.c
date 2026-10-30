@@ -21,7 +21,7 @@ extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020d8848;
 extern const TaskStages    data_ov003_020d8854;
 
-extern void func_ov003_0208b278(s32 arg0);
+extern void func_ov003_0208b278(u32 state);
 extern void func_ov003_020a3a40(void);
 
 // The two touch reads are one comparison chain over the touch state.
@@ -53,13 +53,13 @@ void func_ov003_020a210c(BtlPause* self) {
         return;
     }
     if (self->resumed == 0) {
-        func_ov003_02087ed8(0x2A);
+        func_ov003_02087ed8(SEIDX_BTL_SYSTEM_CURSOR);
         CombatSprite_SetAnim(&self->sprites[2], 2, 1);
         CombatSprite_Restart(&self->sprites[2]);
         self->resumed = 1;
         return;
     }
-    func_ov003_02087ed8(0x2B);
+    func_ov003_02087ed8(SEIDX_BTL_SYSTEM_EXECUTE);
     func_ov003_0208b278(5);
 }
 
@@ -105,7 +105,7 @@ s32 func_ov003_020a2330(TaskPool* pool, Task* task, void* args) {
             CriSndMgr_Pause(data_ov003_020e71b8->unk3D870, 0);
         }
         func_02027200(data_ov003_020e71b8->unk3D87C);
-        func_ov003_02087ed8(2);
+        func_ov003_02087ed8(SEIDX_SE_PAUSE);
     }
     if (data_ov003_020e71b8->unk3D87C != 0 && data_ov003_020e71b8->unk3D874 == 2) {
         func_ov003_020a210c(self);

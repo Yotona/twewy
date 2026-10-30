@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
@@ -39,8 +40,8 @@ s32 func_ov003_020afbc4(TaskPool* pool, Task* task, void* args, s32 stage) {
             self = task->data;
             if (self->ticks++ >= 30)
                 return 0;
-            self->position.x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-            self->position.y += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+            self->position.x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+            self->position.y += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
             self->speed += self->acceleration;
             if (self->angle != 0x4000) {
                 if ((u32)self->angle < 0x4000) {

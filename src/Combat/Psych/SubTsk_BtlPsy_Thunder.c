@@ -2,9 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern void*            func_ov003_0208495c(CombatList*);
-extern void*            func_ov003_02084984(CombatListNode*);
-extern void*            func_ov003_020849dc(CombatList*, CombatListNode*);
 extern const TaskHandle data_ov003_020dc978;
 
 void func_ov003_020b3050(CombatList* list, Ov003TargetEntry* entry) {

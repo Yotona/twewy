@@ -48,7 +48,8 @@ extern void func_02001b44(s32 mode, s32 dst, const void* src, s32 size);
 
 extern void func_ov003_020d3eb4(Ov003SpriteSlot* slot, BinIdentifier* iden, const void* anims, void* charDest, u16 arg4,
                                 u16 arg5);
-extern void func_ov003_020d3f44(Ov003SpriteSlot* slot, s32 arg1, BinIdentifier* iden, u16 engine, u8 palStart, u8 palCount);
+extern void func_ov003_020d3f44(Ov003SpriteSlot* slot, PaletteResource* palette, BinIdentifier* iden, u16 engine, u8 palStart,
+                                u8 palCount);
 extern void func_ov003_020d3fd8(Ov003SpriteSlot* slot);
 extern void func_ov003_020d40fc(Ov003SpriteSlot* slot);
 

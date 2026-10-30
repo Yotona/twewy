@@ -1,11 +1,10 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
-extern void func_ov003_02087fe0(s32, CombatSprite*, s32);
-extern void func_ov003_02088064(CombatSprite*, s32, s32);
-extern s32  func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 // Retail names the first record's fields as separate objects. Keep both
 // records in one bounded array; the interior aliases still need matching work.
@@ -99,10 +98,9 @@ s32 func_ov003_020b42f4(TaskPool* pool, Task* task, void* args, s32 stage) {
                         tilt   = 0x400;
                         if ((rand + i) % 2)
                             tilt = -0x400;
-                        func_ov003_020b4048(self->effect, self->x, self->y, self->z,
-                                            FX_Mul(radius, FX_SinCosTable_[(angle >> 4) * 2 + 1]), tilt,
-                                            -FX_Mul(radius, FX_SinCosTable_[(angle >> 4) * 2]),
-                                            data_ov003_020dc9d0[self->index][i], trail);
+                        func_ov003_020b4048(
+                            self->effect, self->x, self->y, self->z, FX_Mul(radius, COS2(FX_SinCosTable_, angle)), tilt,
+                            -FX_Mul(radius, SIN2(FX_SinCosTable_, angle)), data_ov003_020dc9d0[self->index][i], trail);
                     }
                     self->phase = 2;
                     break;

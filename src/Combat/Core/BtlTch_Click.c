@@ -11,8 +11,8 @@ typedef struct BtlTchClick {
 extern const BinIdentifier data_ov003_020d6fac;
 
 s32 func_ov003_0208efb8(TaskPool* pool, Task* task, void* args) {
-    BtlTchClick*   effect = task->data;
-    BtlTouchInput* input  = &data_ov003_020e71b8->touchInput;
+    BtlTchClick*  effect = task->data;
+    BtlTouchWork* input  = &data_ov003_020e71b8->touchWork;
 
     MI_CpuSet(effect, 0, sizeof(*effect));
     effect->active = 1;
@@ -24,7 +24,7 @@ s32 func_ov003_0208efb8(TaskPool* pool, Task* task, void* args) {
     } else {
         CombatSprite_SetAnim(&effect->sprite, 3, 1);
     }
-    CombatSprite_SetPosition(&effect->sprite, input->previousX, input->previousY);
+    CombatSprite_SetPosition(&effect->sprite, input->endX, input->endY);
     func_ov003_02082738(&effect->sprite, 0);
     func_ov003_02082730(&effect->sprite, 0x3F2000);
     return 1;

@@ -3,6 +3,8 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatSprite.h"
+#include "Combat/Fusion/BtlFusion.h"
+#include "Combat/Tutorial/BtlTutorial.h"
 #include "EasyFade.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -20,11 +22,13 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
+#include "Field/Scene/FieldSeq.h"
 #include "Save.h"
 #include "common_data.h"
 
 #include <nitro/fx.h>
 #include <nitro/gx.h>
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 // Nonmatching: the battle manager. All functions are decompiled and instruction-accurate except for
@@ -38,24 +42,18 @@
 /// Common prefix shared by every combat unit (players, partners, noise). Only the fields the battle
 /// manager itself touches are modelled here; concrete units extend this layout.
 
-/// A battle icon whose animation is driven by the shared state at `Ov003Global.unk3D376`.
+/// A battle icon whose animation is driven by the shared state at `Ov003Global.touchWork.gesture`.
 
 extern void func_02001b44(s32, s32, void*, s32);
-extern s32  func_02023dd4(s32);
-extern void func_0200d8f0(void);
+extern BOOL func_02023dd4(u32 arg0);
 extern void func_0200d90c(void);
 extern s32  func_020067ec(void);
-
-extern void func_ov003_020849ac(CombatList*);
 
 /// Overlay 4 id per noise id.
 extern const s8 data_ov003_020d6ab0[];
 
 extern const TaskHandle Tsk_BtlPlayer01;
 extern const TaskHandle Tsk_BtlCard_Esp;
-extern const TaskHandle Tsk_BtlPlayerLast;
-extern const TaskHandle Tsk_BtlAuraLast;
-extern const TaskHandle Tsk_BtlPlayerNone;
 extern const TaskHandle data_ov004_020f0120;
 extern const TaskHandle data_ov005_020f0394;
 extern const TaskHandle data_ov005_020f07a0;
@@ -79,7 +77,6 @@ extern const TaskHandle data_ov003_020dc614;
 extern const TaskHandle data_ov003_020d4f74;
 
 extern void func_ov027_020e860c(void);
-extern void func_ov030_020ae92c(void*, s32);
 
 // Overlay ids are absolute linker symbols whose "address" is the overlay index.
 extern u32 OVERLAY_4_ID;
@@ -111,11 +108,9 @@ extern char* data_ov003_020e3ac0;
 void func_ov003_0208e830(BtlMgrWork*);
 void func_ov003_0208eb04(BtlMgrWork*);
 void func_ov003_0208ec1c(BtlMgrWork*);
-void func_ov003_0208ec74(BtlMgrWork*);
 void func_ov003_0208e5f8(BtlMgrWork*);
 void func_ov003_0208e668(BtlMgrWork*);
 void func_ov003_0208e7c0(BtlMgrWork*);
-void func_ov003_0208afcc(s32 exp);
 BOOL func_ov003_0208ca04(s32 mode, u32 effect);
 s16  func_ov003_0208ca24(s32 mode, u32 effect);
 s32  func_ov003_0208c694(void);
@@ -723,13 +718,13 @@ void func_ov003_0208b278(u32 state) {
 }
 
 /// Rotates a position by `angle` and adds it.
-void func_ov003_0208b2fc(s32* x, s32* y, u16 angle, s32 scale) {
+void func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 scale) {
     s32 index = (angle & 0xFFFF) >> 4;
     s32 sin   = FX_SinCosTable_[index * 2 + 1];
     s32 cos   = FX_SinCosTable_[index * 2];
 
-    *x += (s32)(((s64)sin * scale + 0x800) >> 12);
-    *y += (s32)(((s64)cos * scale + 0x800) >> 12);
+    *x += FX_Mul(sin, scale);
+    *y += FX_Mul(cos, scale);
 }
 
 /// Projects a world position onto the screen.
@@ -940,27 +935,27 @@ void func_ov003_0208b944(u16 encounterId, s32 isContinuation) {
     EasyTask_InitializePool(&data_ov003_020e71b8->unk_34230, &data_ov003_020e71b8->heap_342B0, 0x80, NULL, NULL);
     EasyTask_InitializePool(&data_ov003_020e71b8->unk_3C2BC, &data_ov003_020e71b8->heap_3C33C, 0x10, NULL, NULL);
 
-    data_ov003_020e71b8->unk3D90C = 0;
-    data_ov003_020e71b8->unk3D875 = 0;
-    data_ov003_020e71b8->unk3D878 = 0;
-    data_ov003_020e71b8->unk3D87C = 0;
-    data_ov003_020e71b8->unk3D880 = 0;
-    data_ov003_020e71b8->unk3D884 = 0;
-    data_ov003_020e71b8->unk3D888 = 0;
-    data_ov003_020e71b8->unk3D8D8 = 0;
-    data_ov003_020e71b8->unk3D8DA = 0;
-    data_ov003_020e71b8->unk3D8DC = 0;
-    data_ov003_020e71b8->unk3D8DE = 0;
-    data_ov003_020e71b8->unk3D8F8 = 0;
-    data_ov003_020e71b8->unk3D8FA = 0;
-    data_ov003_020e71b8->unk3D8FC = 0;
-    data_ov003_020e71b8->unk3D8FD = 0;
-    data_ov003_020e71b8->unk3D8FE = 0;
-    data_ov003_020e71b8->unk3D8FF = 0;
-    data_ov003_020e71b8->unk3D900 = 0;
-    data_ov003_020e71b8->unk3D902 = 0;
-    data_ov003_020e71b8->unk3D8A0 = NULL;
-    data_ov003_020e71b8->unk3D88C = gSaveData.unk_3142 - 1;
+    data_ov003_020e71b8->unk3D90C       = 0;
+    data_ov003_020e71b8->unk3D875       = 0;
+    data_ov003_020e71b8->unk3D878       = 0;
+    data_ov003_020e71b8->unk3D87C       = 0;
+    data_ov003_020e71b8->unk3D880       = 0;
+    data_ov003_020e71b8->unk3D884       = 0;
+    data_ov003_020e71b8->unk3D888       = 0;
+    data_ov003_020e71b8->unk3D8D8       = 0;
+    data_ov003_020e71b8->unk3D8DA       = 0;
+    data_ov003_020e71b8->unk3D8DC       = 0;
+    data_ov003_020e71b8->unk3D8DE       = 0;
+    data_ov003_020e71b8->unk3D8F8       = 0;
+    data_ov003_020e71b8->unk3D8FA       = 0;
+    data_ov003_020e71b8->popupCountMain = 0;
+    data_ov003_020e71b8->popupCountSub  = 0;
+    data_ov003_020e71b8->unk3D8FE       = 0;
+    data_ov003_020e71b8->unk3D8FF       = 0;
+    data_ov003_020e71b8->unk3D900       = 0;
+    data_ov003_020e71b8->unk3D902       = 0;
+    data_ov003_020e71b8->unk3D8A0       = NULL;
+    data_ov003_020e71b8->unk3D88C       = gSaveData.unk_3142 - 1;
 
     data_ov003_020e71b8->unk3D88D = func_ov003_0208a878(encounterId);
     data_ov003_020e71b8->unk3D88E = encounterId;
@@ -1061,7 +1056,7 @@ void func_ov003_0208c2a8(void) {
     if (func_ov003_020a3980() != 0) {
         pressed = (InputStatus.buttonState.currButtons & (INPUT_BUTTON_L | INPUT_BUTTON_R)) != 0;
         if (data_ov003_020e71b8->unk3D880 != pressed) {
-            func_ov003_02087ed8(0x33);
+            func_ov003_02087ed8(SEIDX_SE_WEAPON_SWITCH);
             data_ov003_020e71b8->unk3D880 = pressed;
         }
     }
@@ -1229,7 +1224,7 @@ Ov003EnemyActor* func_ov003_0208c810(s32 x, s32 side, s32 airborne) {
             continue;
         }
         dist    = unit->actor.position.x - x;
-        absDist = (dist < 0) ? -dist : dist;
+        absDist = ABS(dist);
         if (bestDist <= absDist) {
             continue;
         }
@@ -1257,7 +1252,7 @@ Ov003EnemyActor* func_ov003_0208c8c0(s32 x, s32 side, s32 airborne) {
             continue;
         }
         dist    = unit->actor.position.x - x;
-        absDist = (dist < 0) ? -dist : dist;
+        absDist = ABS(dist);
         if (bestDist >= absDist) {
             continue;
         }
@@ -1353,7 +1348,7 @@ s32 func_ov003_0208cae0(s32 includePins) {
 }
 
 /// Records that the battle saw a hit of the given kind and remembers the largest one.
-void func_ov003_0208cb6c(s32 kind, s16 damage) {
+void func_ov003_0208cb6c(s32 kind, s32 damage) {
     if (kind == 1) {
         gSaveData.unk_317D |= 2;
     } else {
@@ -1537,20 +1532,14 @@ void func_ov003_0208d010(void) {
     data_0206aa78                                        = 0x200010;
     data_0206aa7c                                        = 0x40;
 
-    OamMgr_InitEngine(0, 0);
-    OamMgr_InitEngine(0, 1);
-    OamMgr_InitEngine(0, 2);
+    OamMgr_InitEngine(0, DISPLAY_MAIN);
+    OamMgr_InitEngine(0, DISPLAY_SUB);
+    OamMgr_InitEngine(0, DISPLAY_EXTENDED);
 
     MI_CpuFill(0, (void*)0x06000000, 0x80000);
     MI_CpuFill(0, (void*)0x06800000, 0xA4000);
 
-    OamMgr_Reset(&g_OamMgr[DISPLAY_MAIN], 0, 0);
-    DC_PurgeRange(g_OamMgr[DISPLAY_MAIN].oam, 0x400);
-    GX_LoadOam(g_OamMgr[DISPLAY_MAIN].oam, 0, 0x400);
-
-    OamMgr_Reset(&g_OamMgr[DISPLAY_SUB], 0, 0);
-    DC_PurgeRange(g_OamMgr[DISPLAY_SUB].oam, 0x400);
-    GXs_LoadOam(g_OamMgr[DISPLAY_SUB].oam, 0, 0x400);
+    OamMgr_ResetAndCommit();
 
     OamMgr_SetAffineCount(&g_OamMgr[DISPLAY_EXTENDED], 0);
 
@@ -1661,16 +1650,12 @@ void func_ov003_0208d1d0(void) {
     Display_GetBGSettings(DISPLAY_SUB, DISPLAY_BG3)->mosaic   = 0;
     sub->layers                                               = 0x1E;
 
-    g_DisplaySettings.engineState[DISPLAY_MAIN].blendMode   = 1;
-    g_DisplaySettings.engineState[DISPLAY_MAIN].blendLayer0 = 1;
-    g_DisplaySettings.engineState[DISPLAY_MAIN].blendLayer1 = 0x3E;
-    g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff0 = 6;
-    g_DisplaySettings.engineState[DISPLAY_MAIN].blendCoeff1 = 0xA;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendMode    = 1;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer0  = 1;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendLayer1  = 0x3E;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff0  = 6;
-    g_DisplaySettings.engineState[DISPLAY_SUB].blendCoeff1  = 0xA;
+    g_DisplaySettings.engineState[DISPLAY_MAIN].blendMode = 1;
+    Display_SetBlendLayers(DISPLAY_MAIN, 1, 0x3E);
+    Display_SetBlendCoeffs(DISPLAY_MAIN, 6, 0xA);
+    g_DisplaySettings.engineState[DISPLAY_SUB].blendMode = 1;
+    Display_SetBlendLayers(DISPLAY_SUB, 1, 0x3E);
+    Display_SetBlendCoeffs(DISPLAY_SUB, 6, 0xA);
 
     main->windows |= 4;
     g_DisplaySettings.engineState[DISPLAY_MAIN].windowObj            = 8;
@@ -1694,10 +1679,7 @@ void func_ov003_0208d49c(void) {
     Display_Commit();
     DMA_Flush();
 
-    DC_PurgeRange(g_OamMgr[DISPLAY_MAIN].oam, 0x400);
-    GX_LoadOam(g_OamMgr[DISPLAY_MAIN].oam, 0, 0x400);
-    DC_PurgeRange(g_OamMgr[DISPLAY_SUB].oam, 0x400);
-    GXs_LoadOam(g_OamMgr[DISPLAY_SUB].oam, 0, 0x400);
+    OamMgr_Commit();
 
     DC_PurgeRange(g_PaletteBuffers[DISPLAY_MAIN].bg, 0x400);
     GX_LoadBgPltt(g_PaletteBuffers[DISPLAY_MAIN].bg, 0, 0x200);
@@ -2530,11 +2512,11 @@ void func_ov003_0208ecb4(BtlIcon* icon, void (*update)(BtlIcon*)) {
 
 /// Mirrors the shared battle icon animation state onto the icon's sprite.
 void func_ov003_0208ecbc(BtlIcon* icon) {
-    if (icon->animState == data_ov003_020e71b8->unk3D376) {
+    if (icon->animState == data_ov003_020e71b8->touchWork.gesture) {
         return;
     }
 
-    icon->animState = data_ov003_020e71b8->unk3D376;
+    icon->animState = data_ov003_020e71b8->touchWork.gesture;
 
     switch (icon->animState) {
         case 5:
@@ -2573,9 +2555,9 @@ void func_ov003_0208ed98(BtlIcon* icon) {
 
 /// Plays the icon's damage animation for the current battle state.
 void func_ov003_0208edcc(BtlIcon* icon) {
-    if (data_ov003_020e71b8->unk3D3A4 < 2) {
+    if (data_ov003_020e71b8->touchWork.sweepFrames < 2) {
         CombatSprite_SetAnim(&icon->sprite, 6, 0);
-    } else if (data_ov003_020e71b8->unk3D3A4 < 8) {
+    } else if (data_ov003_020e71b8->touchWork.sweepFrames < 8) {
         CombatSprite_SetAnim(&icon->sprite, 7, 0);
     } else {
         CombatSprite_SetAnim(&icon->sprite, 8, 0);

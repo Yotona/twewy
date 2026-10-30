@@ -7,27 +7,24 @@
 #include "Engine/File/BinMgr.h"
 
 typedef struct BtlEnm006 {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ s16   unk_1C0; // frames spent in the current state
-    /* 0x1C2 */ s16   unk_1C2; // state duration
-    /* 0x1C4 */ s16   unk_1C4; // state phase
-    /* 0x1C6 */ u8    unk_1C6[0x1C8 - 0x1C6];
-    /* 0x1C8 */ void* unk_1C8;
-    /* 0x1CC */ s32   unk_1CC;
-    /* 0x1D0 */ s32   unk_1D0;
-    /* 0x1D4 */ s32   unk_1D4;
-    /* 0x1D8 */ s32   unk_1D8;
-    /* 0x1DC */ s32   unk_1DC;
-    /* 0x1E0 */ s32   unk_1E0;
-    /* 0x1E4 */ s32   unk_1E4;
-    /* 0x1E8 */ u16   unk_1E8; // damage level, 0..3
-    /* 0x1EA */ u8    unk_1EA[0x1EC - 0x1EA];
-    /* 0x1EC */ s32   unk_1EC; // waypoint index
-    /* 0x1F0 */ s16   unk_1F0; // frames spent on the current waypoint leg
-    /* 0x1F2 */ s16   unk_1F2; // frames the current waypoint leg should take
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             unk_1C0; // frames spent in the current state
+    /* 0x1C2 */ s16             unk_1C2; // state duration
+    /* 0x1C4 */ s16             unk_1C4; // state phase
+    /* 0x1C6 */ u8              unk_1C6[0x1C8 - 0x1C6];
+    /* 0x1C8 */ void*           unk_1C8;
+    /* 0x1CC */ s32             unk_1CC;
+    /* 0x1D0 */ s32             unk_1D0;
+    /* 0x1D4 */ s32             unk_1D4;
+    /* 0x1D8 */ s32             unk_1D8;
+    /* 0x1DC */ s32             unk_1DC;
+    /* 0x1E0 */ s32             unk_1E0;
+    /* 0x1E4 */ s32             unk_1E4;
+    /* 0x1E8 */ u16             unk_1E8; // damage level, 0..3
+    /* 0x1EA */ u8              unk_1EA[0x1EC - 0x1EA];
+    /* 0x1EC */ s32             unk_1EC; // waypoint index
+    /* 0x1F0 */ s16             unk_1F0; // frames spent on the current waypoint leg
+    /* 0x1F2 */ s16             unk_1F2; // frames the current waypoint leg should take
     /* 0x1F4 */ union {
         struct {
             /* 0x1F4 */ u8  unk_1F4; // bits 0-1: follow-up mode, bit 2: waypoint reflection

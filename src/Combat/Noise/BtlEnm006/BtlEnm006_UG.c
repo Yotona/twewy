@@ -4,6 +4,8 @@
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
+#include <nitro/fx.h>
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006SpriteAlt3 {
@@ -25,17 +27,14 @@ typedef struct Enm006PickCtx {
     /* 0x04 */ BtlEnm006* picked;
 } Enm006PickCtx;
 
-BtlEnm006*  func_ov010_02128b48(void);
-s32         func_ov010_02128c3c(void* arg0, BtlEnm006* unit);
-s32         func_ov010_02128c6c(s32 arg0, BtlEnm006* unit, Enm006PickCtx* ctx);
-extern s32  func_ov010_02128dbc(TaskPool*, Task*, void*, s32);
-extern s32  func_ov010_02128e80(BtlEnm006*);
-extern void CombatSprite_SetPaletteSource(CombatSprite*, s32);
-extern s32  func_ov003_020c5b2c(u16, void*, s32, s32, s32);
-extern s32  func_ov010_02128cbc(s32, BtlEnm006*, BtlEnm006*);
-extern s32  func_ov010_02128bcc(void*, void*);
-extern s32  func_ov003_020cb744(s32);
-extern s32  func_ov010_02128a08(BtlEnm006*, s32);
+BtlEnm006* func_ov010_02128b48(void);
+s32        func_ov010_02128c3c(void* arg0, BtlEnm006* unit);
+s32        func_ov010_02128c6c(s32 arg0, BtlEnm006* unit, Enm006PickCtx* ctx);
+extern s32 func_ov010_02128dbc(TaskPool* pool, Task* task, void* args, s32 stage);
+extern s32 func_ov010_02128e80(BtlEnm006*);
+extern s32 func_ov010_02128cbc(s32, BtlEnm006*, BtlEnm006*);
+extern s32 func_ov010_02128bcc(void*, void*);
+extern s32 func_ov010_02128a08(BtlEnm006*, s32);
 
 typedef struct Enm006CmdTbl {
     u8            pad00[5];
@@ -44,7 +43,6 @@ typedef struct Enm006CmdTbl {
 } Enm006CmdTbl;
 
 extern void func_ov010_02127764(BtlEnm006*);
-extern s32  func_ov003_020cb7a4(s32);
 extern char data_ov010_021293e0[32];
 
 const TaskHandle Tsk_BtlEnm006_UG = {data_ov010_021293e0, func_ov010_02128dbc, 0x200};
@@ -66,7 +64,7 @@ void func_ov010_02127460(BtlEnm006* data, void* arg1) {
 }
 
 void func_ov010_02127488(BtlEnm006* data) {
-    if (data->spriteIndex != 0) {
+    if (data->base.spriteIndex != 0) {
         if (RNG_Next(0x64) >= 0x5A) {
             goto big;
         }
@@ -84,7 +82,7 @@ big:
 void func_ov010_02127500(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0++;
-        data->unk_188 = data->ext.ug.unk_1F6;
+        data->base.unk_188 = data->ext.ug.unk_1F6;
     }
     if (func_ov003_020c5bfc(&data->base) != 0) {
         return;
@@ -95,8 +93,8 @@ void func_ov010_02127500(BtlEnm006* data) {
 void func_ov010_02127550(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
         Ov003ActorParams* g = func_ov003_020c3c88(&data->base);
-        data->unk_198       = ((-(data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_1C) >> 12;
-        data->unk_19C       = ((data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_20 >> 12;
+        data->base.unk_198  = ((-(data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_1C) >> 12;
+        data->base.unk_19C  = ((data->unk_1E8 << 11) / 3 + 0x1000) * g->unk_20 >> 12;
         data->unk_1C2       = func_ov003_020c42ec(&data->base);
     }
     func_ov010_02128a08(data, data->unk_1C0);
@@ -117,15 +115,15 @@ bump:
 
 void func_ov010_02127650(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
-        CombatSprite_SetAnimFromTable(&data->sprite, 0xC, 0);
+        CombatSprite_SetAnimFromTable(&data->base.sprite, 0xC, 0);
         s32 mid = func_ov003_020cb744(0);
-        if (data->actor.position.x < mid >> 1) {
-            data->unk_1D0 = data->actor.position.x + 0x80000;
+        if (data->base.actor.position.x < mid >> 1) {
+            data->unk_1D0 = data->base.actor.position.x + 0x80000;
         } else {
-            data->unk_1D0 = data->actor.position.x - 0x80000;
+            data->unk_1D0 = data->base.actor.position.x - 0x80000;
         }
-        data->unk_1D4 = data->actor.position.y;
-        data->unk_1D8 = data->actor.position.z;
+        data->unk_1D4 = data->base.actor.position.y;
+        data->unk_1D8 = data->base.actor.position.z;
         data->unk_1C2 = func_ov010_02128a6c(data, (void*)0x4000);
         if (data->unk_1DC < 0) {
             func_ov003_020c4ab4(&data->base, 0);
@@ -133,10 +131,10 @@ void func_ov010_02127650(BtlEnm006* data) {
             func_ov003_020c4ab4(&data->base, 1);
         }
     }
-    if (data->sprite.sprite.cellIndex == 1 && data->sprite.sprite.frameTimer == 1) {
-        func_ov003_02087f00(0x1CF, func_ov003_020843b0(0, data->actor.position.x));
+    if (data->base.sprite.sprite.cellIndex == 1 && data->base.sprite.sprite.frameTimer == 1) {
+        func_ov003_02087f00(SEIDX_SE_006_WATER_MOVEL, func_ov003_020843b0(0, data->base.actor.position.x));
     }
-    func_ov003_020c5b2c(0x4C, data, data->actor.position.x, data->actor.position.y, data->actor.position.z);
+    func_ov003_020c5b2c(0x4C, data, data->base.actor.position.x, data->base.actor.position.y, data->base.actor.position.z);
     if (data->unk_1C0 < data->unk_1C2) {
         data->unk_1C0 = data->unk_1C0 + 1;
         return;
@@ -149,17 +147,17 @@ void func_ov010_02127764(BtlEnm006* data) {
         case 0:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                CombatSprite_SetAnimFromTable(&data->sprite, 3, 1);
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 3, 1);
                 func_ov003_020c4c5c(&data->base);
-                if (data->actor.flags & 0x40000000) {
+                if (data->base.actor.flags & 0x40000000) {
                     data->ext.ug.unk_1F5 |= 2;
                 } else {
                     data->ext.ug.unk_1F5 &= ~2;
-                    data->actor.flags |= 0x40000000;
+                    data->base.actor.flags |= 0x40000000;
                 }
-                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->actor.position.x));
+                func_ov003_02087f00(SEIDX_SE_006_SPLUSH, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -167,10 +165,10 @@ void func_ov010_02127764(BtlEnm006* data) {
             return;
         case 1:
             if (data->unk_1C0 == 0) {
-                data->flags18C |= 1;
-                data->actor.flags |= 0x20;
-                data->flags18C |= 1;
-                func_ov003_020cb578(&data->actor, 0);
+                data->base.flags18C |= 1;
+                data->base.actor.flags |= 0x20;
+                data->base.flags18C |= 1;
+                func_ov003_020cb578(&data->base.actor, 0);
                 data->unk_1C2 = 0x3C;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -185,42 +183,42 @@ void func_ov010_02127764(BtlEnm006* data) {
                 data->unk_1C0    = data->unk_1C0 + 1;
                 BtlEnm006* other = func_ov010_02128b48();
                 if (other != NULL) {
-                    if (other->actor.unk_00 == 1) {
+                    if (other->base.actor.unk_00 == 1) {
                         data->ext.ug.unk_1F4 = 1;
                     } else {
                         data->ext.ug.unk_1F4 = 0;
                     }
                 }
-                CombatSprite_SetAnimFromTable(&data->sprite, 0xD, 1);
-                data->flags18C &= ~1;
-                if (data->actor.position.x < other->actor.position.x) {
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 0xD, 1);
+                data->base.flags18C &= ~1;
+                if (data->base.actor.position.x < other->base.actor.position.x) {
                     func_ov003_020c4ab4(&data->base, 1);
                 } else {
                     func_ov003_020c4ab4(&data->base, 0);
                 }
-                data->actor.position.y = other->actor.position.y;
-                data->actor.position.z = 0;
-                if (data->actor.position.y < 0x20000) {
-                    data->actor.position.y = 0x20000;
+                data->base.actor.position.y = other->base.actor.position.y;
+                data->base.actor.position.z = 0;
+                if (data->base.actor.position.y < 0x20000) {
+                    data->base.actor.position.y = 0x20000;
                 }
-                if (data->actor.isFlipped == 0) {
-                    data->actor.position.x = other->actor.position.x + 0x1C000;
+                if (data->base.actor.isFlipped == 0) {
+                    data->base.actor.position.x = other->base.actor.position.x + 0x1C000;
                 } else {
-                    data->actor.position.x = other->actor.position.x - 0x1C000;
+                    data->base.actor.position.x = other->base.actor.position.x - 0x1C000;
                 }
                 if (func_ov003_020cc300(&data->base, 0) == 0) {
                     func_ov003_020c4c9c(&data->base);
-                    if (data->actor.isFlipped == 0) {
-                        data->actor.position.x = other->actor.position.x + 0x1C000;
+                    if (data->base.actor.isFlipped == 0) {
+                        data->base.actor.position.x = other->base.actor.position.x + 0x1C000;
                     } else {
-                        data->actor.position.x = other->actor.position.x - 0x1C000;
+                        data->base.actor.position.x = other->base.actor.position.x - 0x1C000;
                     }
                 }
             }
-            if (data->sprite.sprite.cellIndex == 0xF && data->sprite.sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1CD, func_ov003_020843b0(0, data->actor.position.x));
+            if (data->base.sprite.sprite.cellIndex == 0xF && data->base.sprite.sprite.frameTimer == 1) {
+                func_ov003_02087f00(SEIDX_SE_006_WATER_SIGN, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -230,21 +228,21 @@ void func_ov010_02127764(BtlEnm006* data) {
         case 3:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                CombatSprite_SetAnimFromTable(&data->sprite, 0xE, 1);
-                data->actor.flags &= ~0x20;
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 0xE, 1);
+                data->base.actor.flags &= ~0x20;
                 if (data->ext.ug.unk_1F4 == 0) {
-                    func_ov003_020cb578(&data->actor, 1);
+                    func_ov003_020cb578(&data->base.actor, 1);
                 }
                 func_ov003_020c4c9c(&data->base);
-                func_ov003_02087f00(0x1C9, func_ov003_020843b0(0, data->actor.position.x));
+                func_ov003_02087f00(SEIDX_SE_006_VOC_BITE, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (data->sprite.sprite.cellIndex == 6 && data->sprite.sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1CA, func_ov003_020843b0(0, data->actor.position.x));
+            if (data->base.sprite.sprite.cellIndex == 6 && data->base.sprite.sprite.frameTimer == 1) {
+                func_ov003_02087f00(SEIDX_SE_006_BITE, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (data->sprite.sprite.cellIndex == 9 && data->sprite.sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1CB, func_ov003_020843b0(0, data->actor.position.x));
+            if (data->base.sprite.sprite.cellIndex == 9 && data->base.sprite.sprite.frameTimer == 1) {
+                func_ov003_02087f00(SEIDX_SE_006_SPLUSH_SP, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (data->sprite.sprite.cellIndex == 4 && data->sprite.sprite.frameTimer == 1) {
+            if (data->base.sprite.sprite.cellIndex == 4 && data->base.sprite.sprite.frameTimer == 1) {
                 void* t = data_ov003_020e71b8->unk3D898;
                 if (func_ov010_02128bcc(data, t) != 0) {
                     func_ov010_021270a8(data, t);
@@ -252,14 +250,14 @@ void func_ov010_02127764(BtlEnm006* data) {
                 data->ext.ug.unk_1F6[0] = func_ov003_020cb498(0, 0x3C, (void*)func_ov010_02128cbc, data);
                 data->ext.ug.unk_1F6[1] = data->ext.ug.unk_1F6[0];
             }
-            if (data->sprite.sprite.cellIndex < 9) {
-                if (data->actor.isFlipped == 0) {
-                    data->actor.position.x = data->actor.position.x + 0x800;
+            if (data->base.sprite.sprite.cellIndex < 9) {
+                if (data->base.actor.isFlipped == 0) {
+                    data->base.actor.position.x = data->base.actor.position.x + 0x800;
                 } else {
-                    data->actor.position.x = data->actor.position.x - 0x800;
+                    data->base.actor.position.x = data->base.actor.position.x - 0x800;
                 }
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -267,9 +265,9 @@ void func_ov010_02127764(BtlEnm006* data) {
             return;
         case 4:
             if (data->unk_1C0 == 0) {
-                data->flags18C |= 1;
-                data->actor.flags |= 0x20;
-                func_ov003_020cb578(&data->actor, 0);
+                data->base.flags18C |= 1;
+                data->base.actor.flags |= 0x20;
+                func_ov003_020cb578(&data->base.actor, 0);
                 data->unk_1C2 = 0x3C;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -282,21 +280,21 @@ void func_ov010_02127764(BtlEnm006* data) {
         case 5:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                data->flags18C &= ~1;
-                data->actor.flags &= ~0x20;
-                CombatSprite_SetAnimFromTable(&data->sprite, 4, 1);
-                func_ov003_020cb578(&data->actor, 1);
+                data->base.flags18C &= ~1;
+                data->base.actor.flags &= ~0x20;
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 4, 1);
+                func_ov003_020cb578(&data->base.actor, 1);
                 func_ov003_020c4c5c(&data->base);
-                data->actor.position.x = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
-                data->actor.position.y = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
-                data->actor.position.z = 0;
-                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->actor.position.x));
+                data->base.actor.position.x = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
+                data->base.actor.position.y = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
+                data->base.actor.position.z = 0;
+                func_ov003_02087f00(SEIDX_SE_006_SPLUSH, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             if (((u32)data->ext.ug.unk_1F5 << 30) >> 31 == 0) {
-                data->actor.flags &= ~0x40000000;
+                data->base.actor.flags &= ~0x40000000;
             }
             func_ov010_02127460(data, (void*)func_ov010_02127550);
             return;
@@ -310,10 +308,10 @@ void func_ov010_02127cc0(BtlEnm006* data) {
         case 0:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                CombatSprite_SetAnimFromTable(&data->sprite, 3, 1);
-                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->actor.position.x));
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 3, 1);
+                func_ov003_02087f00(SEIDX_SE_006_SPLUSH, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -321,10 +319,10 @@ void func_ov010_02127cc0(BtlEnm006* data) {
             return;
         case 1:
             if (data->unk_1C0 == 0) {
-                data->flags18C |= 1;
-                data->actor.flags |= 0x20;
-                data->flags18C |= 1;
-                func_ov003_020cb578(&data->actor, 0);
+                data->base.flags18C |= 1;
+                data->base.actor.flags |= 0x20;
+                data->base.flags18C |= 1;
+                func_ov003_020cb578(&data->base.actor, 0);
                 data->unk_1C2 = 0x3C;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -337,36 +335,38 @@ void func_ov010_02127cc0(BtlEnm006* data) {
         case 2:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                CombatSprite_SetAnimFromTable(&data->sprite, 0xF, 1);
-                data->flags18C &= ~1;
-                if (data->actor.position.x < ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.x) {
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 0xF, 1);
+                data->base.flags18C &= ~1;
+                if (data->base.actor.position.x < ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.x) {
                     func_ov003_020c4ab4(&data->base, 0);
                 } else {
                     func_ov003_020c4ab4(&data->base, 1);
                 }
-                data->actor.position.y = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.y;
-                data->actor.position.z = 0;
-                if (data->actor.position.y < 0x20000) {
-                    data->actor.position.y = 0x20000;
+                data->base.actor.position.y = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.y;
+                data->base.actor.position.z = 0;
+                if (data->base.actor.position.y < 0x20000) {
+                    data->base.actor.position.y = 0x20000;
                 }
-                if (data->actor.isFlipped == 0) {
-                    data->actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.x - 0x60000;
+                if (data->base.actor.isFlipped == 0) {
+                    data->base.actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.x - 0x60000;
                 } else {
-                    data->actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.x + 0x60000;
+                    data->base.actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.x + 0x60000;
                 }
                 if (func_ov003_020cc300(&data->base, 0) == 0) {
                     func_ov003_020c4c9c(&data->base);
-                    if (data->actor.isFlipped == 0) {
-                        data->actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.x - 0x60000;
+                    if (data->base.actor.isFlipped == 0) {
+                        data->base.actor.position.x =
+                            ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.x - 0x60000;
                     } else {
-                        data->actor.position.x = ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->actor.position.x + 0x60000;
+                        data->base.actor.position.x =
+                            ((BtlEnm006*)data_ov003_020e71b8->unk3D898)->base.actor.position.x + 0x60000;
                     }
                 }
             }
-            if (data->sprite.sprite.cellIndex == 0xC && data->sprite.sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1CD, func_ov003_020843b0(0, data->actor.position.x));
+            if (data->base.sprite.sprite.cellIndex == 0xC && data->base.sprite.sprite.frameTimer == 1) {
+                func_ov003_02087f00(SEIDX_SE_006_WATER_SIGN, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             data->unk_1C0 = 0;
@@ -374,44 +374,46 @@ void func_ov010_02127cc0(BtlEnm006* data) {
             return;
         case 3:
             if (data->unk_1C0 == 0) {
-                CombatSprite_SetAnimFromTable(&data->sprite, 0x10, 1);
-                data->flags18C &= ~1;
-                data->actor.flags &= ~0x20;
-                func_ov003_020cb578(&data->actor, 1);
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 0x10, 1);
+                data->base.flags18C &= ~1;
+                data->base.actor.flags &= ~0x20;
+                func_ov003_020cb578(&data->base.actor, 1);
             }
-            if (data->sprite.sprite.cellIndex == 0xF && data->sprite.sprite.frameTimer == 1) {
-                if (data->spriteIndex == 2) {
+            if (data->base.sprite.sprite.cellIndex == 0xF && data->base.sprite.sprite.frameTimer == 1) {
+                if (data->base.spriteIndex == 2) {
                     func_ov010_02126c38(data);
                 }
-                func_ov003_02087f00(0x1D1, func_ov003_020843b0(0, data->actor.position.x));
+                func_ov003_02087f00(SEIDX_SE_006_WATER_IN, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (data->spriteIndex == 1) {
+            if (data->base.spriteIndex == 1) {
                 v = 0xF;
                 n = 0x4E;
             } else {
-                if (data->spriteIndex == 2) {
+                if (data->base.spriteIndex == 2) {
                     v = 0xE;
                     n = 0x4F;
                 }
             }
-            if (data->sprite.sprite.cellIndex == v && data->sprite.sprite.frameTimer == 1) {
+            if (data->base.sprite.sprite.cellIndex == v && data->base.sprite.sprite.frameTimer == 1) {
                 s32 t = func_ov003_0208a114(n)->unk_05;
                 s32 x;
-                if (data->actor.isFlipped == 0) {
-                    x = data->actor.position.x - 0x48000 + (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
+                if (data->base.actor.isFlipped == 0) {
+                    x = data->base.actor.position.x - 0x48000 +
+                        (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
                 } else {
-                    x = data->actor.position.x + 0x48000 - (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
+                    x = data->base.actor.position.x + 0x48000 -
+                        (s32)(t != 0 ? (f32)(t * 0x1000) + 0.5f : (f32)(t * 0x1000) - 0.5f);
                 }
-                func_ov003_020c5b2c(n, data, x, data->actor.position.y, data->actor.position.z);
+                func_ov003_020c5b2c(n, data, x, data->base.actor.position.y, data->base.actor.position.z);
             }
             if (data->unk_1C0 == 0x19) {
-                if (data->actor.isFlipped == 0) {
-                    data->actor.position.x = data->actor.position.x + 0x48000;
+                if (data->base.actor.isFlipped == 0) {
+                    data->base.actor.position.x = data->base.actor.position.x + 0x48000;
                 } else {
-                    data->actor.position.x = data->actor.position.x - 0x48000;
+                    data->base.actor.position.x = data->base.actor.position.x - 0x48000;
                 }
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) != 0) {
                 data->unk_1C0 = 0;
                 data->unk_1C4 = 4;
                 return;
@@ -420,9 +422,9 @@ void func_ov010_02127cc0(BtlEnm006* data) {
             return;
         case 4:
             if (data->unk_1C0 == 0) {
-                data->flags18C |= 1;
-                data->actor.flags |= 0x20;
-                func_ov003_020cb578(&data->actor, 0);
+                data->base.flags18C |= 1;
+                data->base.actor.flags |= 0x20;
+                func_ov003_020cb578(&data->base.actor, 0);
                 data->unk_1C2 = 0x3C;
             }
             if (data->unk_1C0 < data->unk_1C2) {
@@ -435,18 +437,18 @@ void func_ov010_02127cc0(BtlEnm006* data) {
         case 5:
             if (data->unk_1C0 == 0) {
                 data->unk_1C0 = data->unk_1C0 + 1;
-                CombatSprite_SetAnimFromTable(&data->sprite, 4, 1);
-                data->flags18C &= ~1;
-                data->actor.flags &= ~0x20;
-                CombatSprite_SetAnimFromTable(&data->sprite, 4, 1);
-                func_ov003_020cb578(&data->actor, 1);
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 4, 1);
+                data->base.flags18C &= ~1;
+                data->base.actor.flags &= ~0x20;
+                CombatSprite_SetAnimFromTable(&data->base.sprite, 4, 1);
+                func_ov003_020cb578(&data->base.actor, 1);
                 func_ov003_020c4c5c(&data->base);
-                data->actor.position.x = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
-                data->actor.position.y = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
-                data->actor.position.z = 0;
-                func_ov003_02087f00(0x1CC, func_ov003_020843b0(0, data->actor.position.x));
+                data->base.actor.position.x = RNG_Next((func_ov003_020cb744(0) >> 12) + 1) << 12;
+                data->base.actor.position.y = RNG_Next((func_ov003_020cb7a4(0) >> 12) + 1) << 12;
+                data->base.actor.position.z = 0;
+                func_ov003_02087f00(SEIDX_SE_006_SPLUSH, func_ov003_020843b0(0, data->base.actor.position.x));
             }
-            if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&data->base.sprite.sprite) == 0) {
                 return;
             }
             func_ov010_02127460(data, (void*)func_ov010_02127550);
@@ -457,7 +459,7 @@ void func_ov010_02127cc0(BtlEnm006* data) {
 void func_ov010_021282b8(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0++;
-        data->actor.zVelocity = data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
+        data->base.actor.zVelocity = data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
     }
     if (func_ov003_020c65cc(&data->base, 6) != 0) {
         return;
@@ -468,15 +470,15 @@ void func_ov010_021282b8(BtlEnm006* data) {
 void func_ov010_02128314(BtlEnm006* data) {
     if (data->unk_1C0 == 0) {
         data->unk_1C0++;
-        data->unk_1E4         = 0;
-        data->unk_1E0         = 0;
-        data->unk_1DC         = 0;
-        data->actor.zVelocity = 0;
-        data->actor.xVelocity = (s32)((((s64)data->actor.xVelocity * 0x2800) + 0x800) >> 12);
+        data->unk_1E4              = 0;
+        data->unk_1E0              = 0;
+        data->unk_1DC              = 0;
+        data->base.actor.zVelocity = 0;
+        data->base.actor.xVelocity = FX_Mul(data->base.actor.xVelocity, 0x2800);
         if (((u32)data->ext.ug.unk_1F5 << 30) >> 31 == 0) {
-            data->actor.flags &= ~0x40000000;
+            data->base.actor.flags &= ~0x40000000;
         }
-        data->actor.flags &= ~0x4000;
+        data->base.actor.flags &= ~0x4000;
     }
     if (func_ov003_020c65cc(&data->base, 9) != 0) {
         return;
@@ -489,7 +491,7 @@ void func_ov010_021283c0(BtlEnm006* data) {
         data->unk_1C0++;
         data->unk_1DC = data->unk_1E0 = data->unk_1E4 = 0;
         if (((u32)data->ext.ug.unk_1F5 << 30) >> 31 == 0) {
-            data->actor.flags &= ~0x40000000;
+            data->base.actor.flags &= ~0x40000000;
         }
     }
     if (func_ov003_020c72b4(&data->base, 0, 9) != 0) {
@@ -518,11 +520,11 @@ void func_ov010_0212847c(s32* outX, s32* outY, BtlEnm006* data, s32 index) {
 
     if (i < 0) {
         s32 d = i - 5;
-        i     = i + 10 * ((d < 0 ? -d : d) / 6);
+        i     = i + 10 * (ABS(d) / 6);
     }
     i %= 10;
 
-    s32 v = data->actor.unk_70;
+    s32 v = data->base.actor.unk_70;
     rad   = (s32)(v > 0 ? (f32)(v * 0x1000) + 0.5f : (f32)(v * 0x1000) - 0.5f);
 
     lo    = func_ov003_020cb744(0);
@@ -584,25 +586,25 @@ s32 func_ov010_02128624(BtlEnm006* data) {
     s32 i;
     for (i = 0; i < 10; i++) {
         func_ov010_0212847c(&x, &y, data, i);
-        s32 flip = data->actor.isFlipped;
+        s32 flip = data->base.actor.isFlipped;
         if (flip == 0) {
-            if (x > data->actor.position.x) {
+            if (x > data->base.actor.position.x) {
                 continue;
             }
         }
         if (flip == 1) {
-            if (x < data->actor.position.x) {
+            if (x < data->base.actor.position.x) {
                 continue;
             }
         }
-        s32 d = func_ov003_020cba2c(data->actor.position.x, data->actor.position.y, x, y);
+        s32 d = func_ov003_020cba2c(data->base.actor.position.x, data->base.actor.position.y, x, y);
         if (d < bestD) {
             bestD = d;
             bestI = i;
         }
     }
     if (bestI == -1) {
-        if (data->actor.position.x < func_ov003_020cb764(1)) {
+        if (data->base.actor.position.x < func_ov003_020cb764(1)) {
             bestI = 0;
         } else {
             bestI = 5;
@@ -618,7 +620,7 @@ s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outW
     s32 angle;
     s32 i;
 
-    angle     = func_ov003_020cba14(data->actor.position.x, data->actor.position.y, x1, y1);
+    angle     = func_ov003_020cba14(data->base.actor.position.x, data->base.actor.position.y, x1, y1);
     a         = 0x182D;
     b         = 0x67D2;
     sector[0] = a;
@@ -652,7 +654,7 @@ s32 func_ov010_021286e8(BtlEnm006* data, s32 x1, s32 y1, s16* outHalf, s32* outW
             return 1;
     }
     *outHalf = 0;
-    s32 v    = data->actor.position.x;
+    s32 v    = data->base.actor.position.x;
     if (v < x1) {
         v        = 1;
         *outWord = 1;
@@ -684,8 +686,8 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     if (arg1 == 0) {
         Vec toOwner;
         Vec edge;
-        toOwner.x = data->actor.position.x - o1a;
-        toOwner.y = data->actor.position.y - o1b;
+        toOwner.x = data->base.actor.position.x - o1a;
+        toOwner.y = data->base.actor.position.y - o1b;
         toOwner.z = 0;
         edge.x    = o2a - o1a;
         edge.y    = o2b - o1b;
@@ -701,7 +703,7 @@ void func_ov010_02128820(BtlEnm006* data, s32 arg1) {
     data->unk_1D4 = o1b;
     data->unk_1D8 = 0;
     func_ov010_021286e8(data, o1a, o1b, &h, &w);
-    CombatSprite_SetAnimFromTable(&data->sprite, h, 0);
+    CombatSprite_SetAnimFromTable(&data->base.sprite, h, 0);
     func_ov003_020c4ab4(&data->base, w);
     data->unk_1F2 = func_ov010_02128a6c(data, (void*)0x2800);
 
@@ -730,22 +732,23 @@ s32 func_ov010_02128a08(BtlEnm006* data, s32 arg1) {
         data->unk_1F0 = 0;
     }
     func_ov010_02128820(data, arg1);
-    if ((data->sprite.sprite.cellIndex - 1) % 4 == 0) {
-        if (data->sprite.sprite.frameTimer == 1) {
-            func_ov003_02087f00(0x1CE, func_ov003_020843b0(0, data->actor.position.x));
+    if ((data->base.sprite.sprite.cellIndex - 1) % 4 == 0) {
+        if (data->base.sprite.sprite.frameTimer == 1) {
+            func_ov003_02087f00(SEIDX_SE_006_WATER_MOVES, func_ov003_020843b0(0, data->base.actor.position.x));
         }
     }
     return 1;
 }
 
 s16 func_ov010_02128a6c(BtlEnm006* data, void* arg1) {
-    return func_ov003_020cb910(&data->unk_1DC, &data->unk_1E0, &data->unk_1E4, data->actor.position.x, data->actor.position.y,
-                               data->actor.position.z, data->unk_1D0, data->unk_1D4, data->unk_1D8, arg1);
+    return func_ov003_020cb910(&data->unk_1DC, &data->unk_1E0, &data->unk_1E4, data->base.actor.position.x,
+                               data->base.actor.position.y, data->base.actor.position.z, data->unk_1D0, data->unk_1D4,
+                               data->unk_1D8, arg1);
 }
 
 s32 func_ov010_02128ac8(BtlEnm006* data) {
-    return func_ov003_020cba54(data->actor.position.x, data->actor.position.y, data->actor.position.z, data->unk_1D0,
-                               data->unk_1D4, data->unk_1D8);
+    return func_ov003_020cba54(data->base.actor.position.x, data->base.actor.position.y, data->base.actor.position.z,
+                               data->unk_1D0, data->unk_1D4, data->unk_1D8);
 }
 
 s32 func_ov010_02128b00(void) {
@@ -773,13 +776,13 @@ s32 func_ov010_02128bcc(void* arg0, void* arg1) {
     if (func_ov003_020cc354(arg1) != 0) {
         return 0;
     }
-    s32 flip = data->actor.isFlipped == 0 ? 0x8000 : -0x8000;
-    return func_ov003_020cc38c(arg1, data->actor.position.x + flip, data->actor.position.y + 0x8000, data->actor.position.z,
-                               0x18000, 0x20000, 0x20000);
+    s32 flip = data->base.actor.isFlipped == 0 ? 0x8000 : -0x8000;
+    return func_ov003_020cc38c(arg1, data->base.actor.position.x + flip, data->base.actor.position.y + 0x8000,
+                               data->base.actor.position.z, 0x18000, 0x20000, 0x20000);
 }
 
 s32 func_ov010_02128c3c(void* arg0, BtlEnm006* unit) {
-    s32 v = unit->group;
+    s32 v = unit->base.group;
     if (v < -1) {
         goto zero;
     }
@@ -796,7 +799,7 @@ one:
 }
 
 s32 func_ov010_02128c6c(s32 arg0, BtlEnm006* unit, Enm006PickCtx* ctx) {
-    s32 v = unit->group;
+    s32 v = unit->base.group;
     if (v < -1) {
         goto zero;
     }
@@ -821,10 +824,10 @@ body:
 }
 
 s32 func_ov010_02128cbc(s32 arg0, BtlEnm006* unit, BtlEnm006* data) {
-    if (unit->group == 5) {
+    if (unit->base.group == 5) {
         return 0;
     }
-    if (unit->actor.flags & 4) {
+    if (unit->base.actor.flags & 4) {
         return 0;
     }
     if (func_ov010_02128bcc(data, unit) == 0) {
@@ -841,12 +844,12 @@ void func_ov010_02128d20(BtlEnm006* data, u16 arg1) {
     if (data->unk_1E8 >= 4) {
         data->unk_1E8 = 3;
     } else {
-        CombatSprite_SetPaletteSource(&data->sprite, data_ov010_021292f4[data->spriteIndex][data->unk_1E8]);
-        data->sprite.basePaletteSource = data->sprite.sprite.unk3C;
-        data->sprite.basePalette       = data->sprite.sprite.paletteData;
-        data->actor.unk_08             = (s16)((((s32)(data->unk_1E8 << 12) / 3 + 0x1000) * 0x64) >> 12);
+        CombatSprite_SetPaletteSource(&data->base.sprite, data_ov010_021292f4[data->base.spriteIndex][data->unk_1E8]);
+        data->base.sprite.basePaletteSource = data->base.sprite.sprite.unk3C;
+        data->base.sprite.basePalette       = data->base.sprite.sprite.paletteData;
+        data->base.actor.unk_08             = (s16)((((s32)(data->unk_1E8 << 12) / 3 + 0x1000) * 0x64) >> 12);
     }
-    data->actor.flags |= 0x40000000;
+    data->base.actor.flags |= 0x40000000;
 }
 
 s32 func_ov010_02128dbc(TaskPool* pool, Task* task, void* args, s32 stage) {
@@ -869,7 +872,7 @@ s32 func_ov010_02128e0c(BtlEnm006* data, void* arg1) {
     func_ov003_020c3efc(&data->base, arg1);
     func_ov003_020c4520(&data->base);
     func_ov003_020c4b5c(&data->base);
-    func_ov003_02084694(&data->collider, 1);
+    func_ov003_02084694(&data->base.collider, 1);
     func_ov010_02127460(data, (void*)func_ov010_02127500);
     data->unk_1CC = 1;
     data->unk_1DC = 0;
@@ -880,16 +883,16 @@ s32 func_ov010_02128e0c(BtlEnm006* data, void* arg1) {
 }
 
 s32 func_ov010_02128e80(BtlEnm006* data) {
-    data->actor.zVelocity = 0;
+    data->base.actor.zVelocity = 0;
     if (data->unk_1C8 != (void*)func_ov010_02127500) {
         if (func_ov003_020c3bf0(data) != 0) {
             return 1;
         }
     }
-    switch (CombatActor_PopPendingCommand(&data->actor)) {
+    switch (CombatActor_PopPendingCommand(&data->base.actor)) {
         case 1:
             func_ov010_02127460(data, (void*)func_ov010_021282b8);
-            data->actor.zVelocity = 0;
+            data->base.actor.zVelocity = 0;
             break;
         case 2:
             func_ov010_02127460(data, (void*)func_ov010_02128314);
@@ -898,27 +901,27 @@ s32 func_ov010_02128e80(BtlEnm006* data) {
             func_ov010_02127460(data, (void*)func_ov010_02128434);
             break;
         case 6:
-            data->actor.flags |= 1;
-            if (data->actor.flags != 0) {
+            data->base.actor.flags |= 1;
+            if (data->base.actor.flags != 0) {
                 break;
             }
             func_ov010_02127460(data, (void*)func_ov010_021283c0);
             break;
     }
-    data->actor.position.x += data->unk_1DC;
-    data->actor.position.y += data->unk_1E0;
-    data->actor.position.z += data->unk_1E4;
+    data->base.actor.position.x += data->unk_1DC;
+    data->base.actor.position.y += data->unk_1E0;
+    data->base.actor.position.z += data->unk_1E4;
     if (data->unk_1C8 != NULL) {
         ((void (*)(BtlEnm006*))data->unk_1C8)(data);
     }
     u16 flag = data->ext.ug.unk_1F6[0];
     if (flag != 0) {
-        if ((data->flags18C & 1) || data->sprite.animTableIndex == 0xD || data->sprite.animTableIndex == 0xF) {
+        if ((data->base.flags18C & 1) || data->base.sprite.animTableIndex == 0xD || data->base.sprite.animTableIndex == 0xF) {
             func_ov010_02128d20(data, flag);
             data->ext.ug.unk_1F6[0] = 0;
         }
     }
-    data->actor.flags |= 0x80000000;
+    data->base.actor.flags |= 0x80000000;
     func_ov003_020c4668(&data->base);
     return data->unk_1CC;
 }

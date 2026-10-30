@@ -11,15 +11,15 @@ s32 func_ov003_020afdf0(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     if (func_ov003_02085d3c(1))
         return 0;
-    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->heldActor;
-    if (unit == NULL || &unit->actor != touch->candidateActor || unit->actor.unk_00 != 1 || (unit->actor.flags & 0x10))
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->held;
+    if (unit == NULL || &unit->actor != touch->target || unit->actor.unk_00 != 1 || (unit->actor.flags & 0x10))
         return 0;
     if (func_ov003_020a60a8(unit, 3))
         return 0;
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc8b8.taskName);
     arg->effect             = effect;
     arg->unit               = unit;
-    context->handle         = (TaskHandle*)&data_ov003_020dc8b8;
+    context->handle         = &data_ov003_020dc8b8;
     context->arg            = arg;
     context->post           = NULL;
     return 1;
@@ -42,7 +42,7 @@ s32 func_ov003_020afeb4(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 1: {
             Ov003IceBind* self  = task->data;
             BtlTouchWork* touch = func_ov003_020a62a0();
-            CombatActor*  held  = touch->heldActor;
+            CombatActor*  held  = touch->held;
             if (!func_ov003_02085cfc(6))
                 return 0;
             if (func_ov003_020a63a8(self->args.effect))

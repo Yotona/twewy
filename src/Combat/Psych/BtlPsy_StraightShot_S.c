@@ -14,7 +14,7 @@ s32 func_ov003_020b87a0(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003PsychArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dcea8.taskName);
     arg->effect         = effect;
-    context->handle     = (TaskHandle*)&data_ov003_020dcea8;
+    context->handle     = &data_ov003_020dcea8;
     context->arg        = arg;
     context->post       = NULL;
     return 1;
@@ -34,8 +34,8 @@ s32 func_ov003_020b87f8(TaskPool* pool, Task* task, void* args, s32 stage) {
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect = arg->effect;
             self->timer  = 5;
-            self->angle  = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX, touch->input.previousY);
-            self->x      = touch->input.previousX;
+            self->angle  = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
+            self->x      = touch->endX;
             self->angle  = func_ov003_020b6b50(self->angle, data_ov003_020dceb4[self->effect->index].angleLimit);
             self->taskId = -1;
             func_ov003_020a6494(self->x);
@@ -70,11 +70,10 @@ s32 func_ov003_020b87f8(TaskPool* pool, Task* task, void* args, s32 stage) {
                         state->burstCount++;
                     } else if (func_ov003_02085ec0(0) != 0) {
                         BtlTouchWork* touch = &data_ov003_020e71b8->touchWork;
-                        func_ov003_020a6494(touch->input.previousX);
-                        state->angle = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX,
-                                                           touch->input.previousY);
+                        func_ov003_020a6494(touch->endX);
+                        state->angle = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
                         state->angle = func_ov003_020b6b50(state->angle, data_ov003_020dceb4[state->effect->index].angleLimit);
-                        state->x     = touch->input.previousX;
+                        state->x     = touch->endX;
                         relaunch     = 1;
                         state->burstCount = 0;
                     }

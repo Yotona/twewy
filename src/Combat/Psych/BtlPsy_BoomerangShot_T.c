@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32                      func_ov003_0208442c(s32, s32);
-extern s32                      func_ov003_02084460(s32, s32, s32);
 extern s32                      func_ov003_020a62b8(s32, s32, s32, s32);
 extern const TaskHandle         data_ov003_020dce28;
 extern const Ov003BoomerangKind data_ov003_020dce34[3];
@@ -13,7 +11,7 @@ s32 func_ov003_020b7f9c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003PsychArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dce28.taskName);
     arg->effect         = effect;
-    context->handle     = (TaskHandle*)&data_ov003_020dce28;
+    context->handle     = &data_ov003_020dce28;
     context->arg        = arg;
     context->post       = NULL;
     return 1;
@@ -32,7 +30,7 @@ s32 func_ov003_020b7ff4(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->x      = touch->x;
             self->y      = touch->y;
             self->timer  = 5;
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             func_ov003_020a6464(1);
             return 1;
         }

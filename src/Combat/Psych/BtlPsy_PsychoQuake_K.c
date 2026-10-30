@@ -5,8 +5,6 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern const TaskHandle data_ov003_020dc8dc;
 
 s32 func_ov003_020b05b8(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -14,7 +12,7 @@ s32 func_ov003_020b05b8(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc8dc.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc8dc;
+    context->handle        = &data_ov003_020dc8dc;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -49,8 +47,8 @@ s32 func_ov003_020b0610(TaskPool* pool, Task* task, void* args, s32 stage) {
                 result = 0;
                 goto done;
             }
-            if (!SndMgr_IsSEPlaying(0x6B))
-                func_ov003_02087ed8(0x6B);
+            if (!SndMgr_IsSEPlaying(SEIDX_SE_PSY_SYCOQUAKE01))
+                func_ov003_02087ed8(SEIDX_SE_PSY_SYCOQUAKE01);
             switch (self->phase) {
                 case 0:
                     if (func_ov003_020a4ee8(&self->camera, 0x333, 0, 0x8000)) {
@@ -150,7 +148,7 @@ s32 func_ov003_020b0610(TaskPool* pool, Task* task, void* args, s32 stage) {
                 unit = func_ov003_02084984(&unit->node);
             }
             func_ov003_020a4fd0(&self->camera);
-            SndMgr_StopPlayingSE(0x6B);
+            SndMgr_StopPlayingSE(SEIDX_SE_PSY_SYCOQUAKE01);
             CombatSprite_Release(&self->spriteA);
             CombatSprite_Release(&self->spriteB);
             return 1;

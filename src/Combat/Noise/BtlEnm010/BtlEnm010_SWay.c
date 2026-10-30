@@ -5,28 +5,28 @@
 #include <nitro/mi/cpumem.h>
 
 extern char data_ov011_0212cc24[20];
-s32         func_ov011_0212801c(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
+s32         func_ov011_0212801c(TaskPool* pool, Task* task, void* args, s32 stage);
 
 typedef struct BtlEnm010SWayArgs {
-    /* 0x00 */ BtlEnm010Owner* field_00;
-    /* 0x04 */ s32             field_04;
-    /* 0x08 */ s32             field_08;
-    /* 0x0C */ s32             field_0C;
-    /* 0x10 */ s32             field_10;
-    /* 0x14 */ u16             field_14; // centre angle
-    /* 0x16 */ s16             field_16;
-    /* 0x18 */ s32             field_18; // shot count, at most 5
-    /* 0x1C */ u16             field_1C; // spread
-    /* 0x1E */ u16             pad_1E;
+    /* 0x00 */ Ov003EnemyActor* field_00;
+    /* 0x04 */ s32              field_04;
+    /* 0x08 */ s32              field_08;
+    /* 0x0C */ s32              field_0C;
+    /* 0x10 */ s32              field_10;
+    /* 0x14 */ u16              field_14; // centre angle
+    /* 0x16 */ s16              field_16;
+    /* 0x18 */ s32              field_18; // shot count, at most 5
+    /* 0x1C */ u16              field_1C; // spread
+    /* 0x1E */ u16              pad_1E;
 } BtlEnm010SWayArgs;
 
 typedef struct BtlEnm010SWay {
-    /* 0x00 */ BtlEnm010Owner* unk_00;
-    /* 0x04 */ s32             unk_04; // sub engine
-    /* 0x08 */ s16             unk_08;
-    /* 0x0A */ s16             unk_0A;
-    /* 0x0C */ s32             unk_0C[5]; // SingleShot task ids
-} BtlEnm010SWay;                          // Size: 0x20
+    /* 0x00 */ Ov003EnemyActor* unk_00;
+    /* 0x04 */ s32              unk_04; // sub engine
+    /* 0x08 */ s16              unk_08;
+    /* 0x0A */ s16              unk_0A;
+    /* 0x0C */ s32              unk_0C[5]; // SingleShot task ids
+} BtlEnm010SWay;                           // Size: 0x20
 
 s32 func_ov011_02128070(BtlEnm010SWay* p, BtlEnm010SWayArgs* a);
 s32 func_ov011_02128150(BtlEnm010SWay* p);
@@ -37,11 +37,12 @@ const TaskHandle data_ov011_0212c1e0 = {(const char*)data_ov011_0212cc24, func_o
 char data_ov011_0212cc24[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 0x6E, 0x6D,
                                 0x30, 0x31, 0x30, 0x5F, 0x53, 0x57, 0x61, 0x79, 0x00, 0x00};
 
-s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5, u16 arg6, s32 arg7, s16 arg8) {
+s32 func_ov011_02127f6c(Ov003EnemyActor* owner, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5, u16 arg6, s32 arg7,
+                        s16 arg8) {
     BtlEnm010SWayArgs t;
     TaskPool*         pool;
 
-    if (func_ov003_020c37f8(&((BtlEnm010Owner*)arg0)->sprite) == 0) {
+    if (func_ov003_020c37f8(&owner->sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
@@ -49,7 +50,7 @@ s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 
     if (arg4 == 1) {
         arg6 = 0;
     }
-    t.field_00 = arg0;
+    t.field_00 = owner;
     t.field_04 = arg1;
     t.field_08 = arg2;
     t.field_0C = arg3;
@@ -61,15 +62,15 @@ s32 func_ov011_02127f6c(void* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u16 
     return EasyTask_CreateTask(pool, &data_ov011_0212c1e0, 0, 0, 0, (void*)&t);
 }
 
-s32 func_ov011_0212801c(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
+s32 func_ov011_0212801c(TaskPool* pool, Task* task, void* args, s32 stage) {
     void* p;
     s32   r;
 
-    p = arg1->data;
+    p = task->data;
     r = 1;
-    switch (index) {
+    switch (stage) {
         case 0:
-            r = func_ov011_02128070(p, arg2);
+            r = func_ov011_02128070(p, args);
             break;
         case 1:
             r = func_ov011_02128150(p);
@@ -100,10 +101,10 @@ s32 func_ov011_02128070(BtlEnm010SWay* p, BtlEnm010SWayArgs* a) {
 }
 
 s32 func_ov011_02128150(BtlEnm010SWay* p) {
-    BtlEnm010Owner* o;
-    TaskPool*       pool;
-    s32             r;
-    s32             i;
+    Ov003EnemyActor* o;
+    TaskPool*        pool;
+    s32              r;
+    s32              i;
 
     r = 0;
     if (func_ov003_020c3c28() != 0) {
@@ -120,7 +121,7 @@ s32 func_ov011_02128150(BtlEnm010SWay* p) {
         } else {
             pan = func_ov003_020843b0(0, o->actor.position.x);
         }
-        func_ov003_02087f00(0x1D9, pan);
+        func_ov003_02087f00(SEIDX_SE_010_BUBBLEATTACK, pan);
         p->unk_08 = p->unk_08 + 1;
     }
     if (p->unk_04 == 0) {

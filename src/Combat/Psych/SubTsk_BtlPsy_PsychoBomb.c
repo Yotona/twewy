@@ -3,7 +3,7 @@
 #include <nitro/mi/cpumem.h>
 
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32 func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32 func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 
 extern const TaskHandle data_ov003_020dc724;
 

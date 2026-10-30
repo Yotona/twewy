@@ -14,9 +14,6 @@
 // camera clamps, fixed-point curves and the check that decides when a shot has left play. The Blossom task at the end
 // flings a petal out along an arc and leaves a trail of blurred copies.
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 // ---------------------------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------------------------
@@ -60,18 +57,10 @@ typedef struct Ov003EnemyShotBlossom {
 
 extern u8 data_ov003_020d4231[];
 
-extern s32  func_ov003_020c3c28(void);
-extern s32  func_ov003_020c37f8(CombatSprite* sprite);
-extern void func_ov003_02084348(s32 engine, s16* x, s16* y, s32 worldX, s32 worldY, s32 worldZ);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern void func_ov003_0209f444(s32 engine, s32 x, s32 y, s32 z, s32 flag);
-extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
-extern void func_ov003_020c4f00(Ov003EnemyActor* actor);
-extern void func_ov003_020c4ee0(Ov003EnemyActor* actor);
 
 s32 func_ov003_020cd1c8(Ov003EnemyShotBlossom* self, Ov003EnemyShotBlossomArgs* args);
 s32 func_ov003_020cd44c(Ov003EnemyShotBlossom* self);
@@ -107,8 +96,6 @@ s32 func_ov003_020cb150(BtlBinSet* set) {
     set->buffer = buffer;
     return buffer != NULL;
 }
-
-void func_ov003_020cb304(BtlBinSet* set, u16 index);
 
 void func_ov003_020cb194(BtlBinSet* set) {
     s32 i;
@@ -233,7 +220,7 @@ u16 func_ov003_020cb3c4(s32 side, s32 group) {
         Ov003CutinActor* actor = node->item;
 
         node = node->next;
-        if (group == 0x3C || actor->group == group) {
+        if (group == 0x3C || actor->base.group == group) {
             count++;
         }
     } while (node != NULL);
@@ -353,7 +340,7 @@ s32 func_ov003_020cb648(Ov003EnemyActor* actor, s32 percent) {
 /// Pushes `*value` past the camera's left edge shifted by the view angle.
 s32 func_ov003_020cb674(s32 index, s32* value, s32 margin, s32 scale) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[index];
-    s32          limit  = camera->posX + FX_Mul(FX_SinCosTable_[(camera->rotation >> 4) * 2], scale);
+    s32          limit  = camera->posX + FX_Mul(FX_SinIdx(camera->rotation), scale);
 
     if (*value - margin < limit) {
         *value = limit + margin;
@@ -441,10 +428,6 @@ s16 func_ov003_020cb888(u16* weights, s32 count, s32 target) {
 // Fixed-point geometry
 // ---------------------------------------------------------------------------------------------
 
-s32 func_ov003_020cba54(s32 x0, s32 y0, s32 z0, s32 x1, s32 y1, s32 z1);
-s32 func_ov003_020cbafc(s32* vx, s32* vy, s32* vz, s32 x0, s32 y0, s32 z0, s32 x1, s32 y1, s32 z1, s32 speed);
-s32 func_ov003_020cb910(s32* vx, s32* vy, s32* vz, s32 x0, s32 y0, s32 z0, s32 x1, s32 y1, s32 z1, s32 steps);
-
 void func_ov003_020cb8cc(s32* vx, s32* vy, s32 x0, s32 y0, s32 x1, s32 y1, s32 steps) {
     s32 vz;
 
@@ -467,7 +450,7 @@ s32 func_ov003_020cb910(s32* vx, s32* vy, s32* vz, s32 x0, s32 y0, s32 z0, s32 x
         return 0;
     }
     frames = (FX_Divide(length, speed) * 0x10) >> 16;
-    whole  = (s32)ROUND_FX(frames);
+    whole  = FX32_CONVERT(frames);
     if (whole != 0) {
         *vx = FX_Divide(dx, whole);
         *vy = FX_Divide(dy, whole);
@@ -541,17 +524,14 @@ void func_ov003_020cbc10(s32* mx, s32* my, s32* mz, s32 x0, s32 y0, s32 z0, s32 
 
 /// (cos, sin) of `angle` times `scale`.
 void func_ov003_020cbc50(s32* outCos, s32* outSin, u16 angle, s32 scale) {
-    s32 index = (angle >> 4) * 2;
-
-    *outCos = FX_Mul(FX_SinCosTable_[index + 1], scale);
-    *outSin = FX_Mul(FX_SinCosTable_[index], scale);
+    *outCos = FX_Mul(FX_CosIdx(angle), scale);
+    *outSin = FX_Mul(FX_SinIdx(angle), scale);
 }
 
 /// The same on an ellipse that is `yScale` as tall.
 void func_ov003_020cbcb4(s32* outX, s32* outY, u16 angle, s32 scale, s32 yScale) {
-    s32 index = (angle >> 4) * 2;
-    s32 cosv  = FX_Mul(FX_SinCosTable_[index + 1], scale);
-    s32 sinv  = FX_Mul(FX_SinCosTable_[index], scale);
+    s32 cosv = FX_Mul(FX_CosIdx(angle), scale);
+    s32 sinv = FX_Mul(FX_SinIdx(angle), scale);
 
     *outX = cosv;
     *outY = FX_Mul(sinv, yScale);
@@ -658,36 +638,36 @@ s32 func_ov003_020cc354(CombatActor* actor) {
 
 /// Whether the actor's box overlaps the box around (`x`,`y`,`z`).
 s32 func_ov003_020cc38c(Ov003CutinActor* actor, s32 x, s32 y, s32 z, s32 marginX, s32 marginY, s32 marginZ) {
-    s16 width  = actor->actor.unk_70;
-    s16 height = actor->actor.unk_72;
+    s16 width  = actor->base.actor.unk_70;
+    s16 height = actor->base.actor.unk_72;
     s32 half   = width / 2;
 
-    if (actor->actor.position.x - (width << 12) > x + marginX) {
+    if (actor->base.actor.position.x - (width << 12) > x + marginX) {
         return 0;
     }
-    if (actor->actor.position.x + (width << 12) < x - marginX) {
+    if (actor->base.actor.position.x + (width << 12) < x - marginX) {
         return 0;
     }
-    if (actor->actor.position.y - (half << 12) > y + marginY) {
+    if (actor->base.actor.position.y - (half << 12) > y + marginY) {
         return 0;
     }
-    if (actor->actor.position.y + (half << 12) < y - marginY) {
+    if (actor->base.actor.position.y + (half << 12) < y - marginY) {
         return 0;
     }
-    if (actor->actor.position.z < z - marginZ) {
+    if (actor->base.actor.position.z < z - marginZ) {
         return 0;
     }
-    return actor->actor.position.z - (height << 12) <= z + marginZ;
+    return actor->base.actor.position.z - (height << 12) <= z + marginZ;
 }
 
 /// A mask of the 32 points around the actor (at `radius`, `yScale` as tall) that are inside the camera's field.
 u32 func_ov003_020cc430(Ov003CutinActor* actor, s32 index, s32 radius, s32 yScale) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[index];
-    s16          size   = actor->actor.unk_70;
-    s32          left   = (s32)ROUND_FX(size);
-    s32          right  = camera->unk_0C - (s32)ROUND_FX(size);
-    s32          top    = (s32)ROUND_FX(size) / 2;
-    s32          bottom = camera->unk_10 - (s32)ROUND_FX(size) / 2;
+    s16          size   = actor->base.actor.unk_70;
+    s32          left   = FX32_CONVERT(size);
+    s32          right  = camera->unk_0C - FX32_CONVERT(size);
+    s32          top    = FX32_CONVERT(size) / 2;
+    s32          bottom = camera->unk_10 - FX32_CONVERT(size) / 2;
     u32          mask   = 0;
     s32          i;
     s32          px;
@@ -695,8 +675,8 @@ u32 func_ov003_020cc430(Ov003CutinActor* actor, s32 index, s32 radius, s32 yScal
 
     for (i = 0; i < 0x20; i++) {
         func_ov003_020cbcb4(&px, &py, (u16)(i * 0x800), radius, yScale);
-        px += actor->actor.position.x;
-        py += actor->actor.position.y;
+        px += actor->base.actor.position.x;
+        py += actor->base.actor.position.y;
         if (px >= left && px <= right && py >= top / 2 && py <= bottom) {
             mask |= 1 << i;
         }
@@ -851,9 +831,9 @@ void func_ov003_020cc834(Ov003EnemyShotSource* source, Ov003CutinActor* owner, c
     source->core.attackId   = attackId;
     source->animation       = 0;
     source->animationMode   = 0;
-    source->core.position.x = owner->actor.position.x;
-    source->core.position.y = owner->actor.position.y;
-    source->core.position.z = owner->actor.position.z;
+    source->core.position.x = owner->base.actor.position.x;
+    source->core.position.y = owner->base.actor.position.y;
+    source->core.position.z = owner->base.actor.position.z;
     source->core.timer      = 0;
     ((s8*)&source->kind)[0] = 0;
     ((s8*)&source->kind)[1] = 0;
@@ -891,8 +871,8 @@ s32 func_ov003_020cc8fc(u16 flags, s32 engine, s32 x, s32 y, s32 z, s32 marginX,
         if (z > 0) {
             return 1;
         }
-        if (func_ov003_020ccd50(screen, x, y, (s32)ROUND_FX(marginX), (s32)ROUND_FX(marginY)) != 0) {
-            if (func_ov003_020ccdb8(screen, x, y, z, (s32)ROUND_FX(marginX), (s32)ROUND_FX(marginY)) != 0) {
+        if (func_ov003_020ccd50(screen, x, y, FX32_CONVERT(marginX), FX32_CONVERT(marginY)) != 0) {
+            if (func_ov003_020ccdb8(screen, x, y, z, FX32_CONVERT(marginX), FX32_CONVERT(marginY)) != 0) {
                 return 1;
             }
         }
@@ -918,12 +898,12 @@ s32 func_ov003_020cc8fc(u16 flags, s32 engine, s32 x, s32 y, s32 z, s32 marginX,
         return 1;
     }
     if (flags & 8) {
-        if ((owner->actor.flags & 2) || (owner->actor.flags & 0x4000) || (owner->actor.flags & 0x200)) {
+        if ((owner->base.actor.flags & 2) || (owner->base.actor.flags & 0x4000) || (owner->base.actor.flags & 0x200)) {
             return 1;
         }
     }
     if (flags & 0x10) {
-        if (owner->actor.flags & 4) {
+        if (owner->base.actor.flags & 4) {
             return 1;
         }
     }
@@ -1029,10 +1009,10 @@ s32 func_ov003_020cce34(s32 side) {
     }
     if (actor != NULL) {
         do {
-            if (actor->group < 0x3C && actor->group >= 0) {
+            if (actor->base.group < 0x3C && actor->base.group >= 0) {
                 return 1;
             }
-            actor = func_ov003_02084984(&actor->node);
+            actor = func_ov003_02084984(&actor->base.node);
         } while (actor != NULL);
     }
     return 0;
@@ -1158,7 +1138,7 @@ s32 func_ov003_020cd134(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 
     args.speed      = speed;
     args.curveSpeed = curveSpeed;
     args.yScale     = yScale;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0) {
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
@@ -1169,15 +1149,15 @@ s32 func_ov003_020cd134(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 
 s32 func_ov003_020cd1c8(Ov003EnemyShotBlossom* self, Ov003EnemyShotBlossomArgs* args) {
     const Ov003EnemyShotTableVisual* visual = args->source->tableVisual;
     const SpriteAnimEntry*           entry  = &visual->base.entries[visual->base.entry];
-    s32                              engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32                              engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
 
     MI_CpuSet(self, 0, sizeof(*self));
     MI_CpuCopyU8(args->source, self, sizeof(Ov003EnemyShotSource));
     self->angle       = args->angle;
-    self->velocityX   = FX_Mul(FX_SinCosTable_[(args->angle >> 4) * 2 + 1], args->speed);
-    self->velocityY   = FX_Mul(FX_SinCosTable_[(args->angle >> 4) * 2], args->speed);
-    self->decayX      = FX_Mul(FX_SinCosTable_[(args->angle >> 4) * 2 + 1], args->curveSpeed);
-    self->decayY      = FX_Mul(FX_SinCosTable_[(args->angle >> 4) * 2], args->curveSpeed);
+    self->velocityX   = FX_Mul(FX_CosIdx(args->angle), args->speed);
+    self->velocityY   = FX_Mul(FX_SinIdx(args->angle), args->speed);
+    self->decayX      = FX_Mul(FX_CosIdx(args->angle), args->curveSpeed);
+    self->decayY      = FX_Mul(FX_SinIdx(args->angle), args->curveSpeed);
     self->curveFrames = args->speed / args->curveSpeed;
     self->curvePhase  = 0x10000 / self->curveFrames;
     {
@@ -1185,16 +1165,16 @@ s32 func_ov003_020cd1c8(Ov003EnemyShotBlossom* self, Ov003EnemyShotBlossomArgs* 
         s32 big   = FX_Mul(args->curveSpeed, args->yScale);
         s32 small = FX_Mul(args->speed, args->yScale);
 
-        self->curveStepX = FX_Mul(FX_SinCosTable_[(side >> 4) * 2 + 1], small);
-        self->curveStepY = FX_Mul(FX_SinCosTable_[(side >> 4) * 2], small);
-        self->curveX     = FX_Mul(FX_SinCosTable_[(side >> 4) * 2 + 1], big);
-        self->curveY     = FX_Mul(FX_SinCosTable_[(side >> 4) * 2], big);
+        self->curveStepX = FX_Mul(FX_CosIdx(side), small);
+        self->curveStepY = FX_Mul(FX_SinIdx(side), small);
+        self->curveX     = FX_Mul(FX_CosIdx(side), big);
+        self->curveY     = FX_Mul(FX_SinIdx(side), big);
     }
     func_ov003_02082a90(engine, &self->sprite.sprite, visual->base.file, entry->charDataIndex, entry->paletteDataIndex,
                         entry->frameDataIndex, visual->base.paletteSlot, entry->animDataIndex);
     CombatSprite_SetAnim(&self->sprite, self->source.animation, self->source.animationMode);
     self->source.core.sprite = &self->sprite;
-    func_ov003_020cdfbc(&self->source, args->source->core.owner->sprite.flags46 & 1, 0);
+    func_ov003_020cdfbc(&self->source, args->source->core.owner->base.sprite.flags46 & 1, 0);
     func_ov003_020cccf0(engine, args->source);
     return 1;
 }
@@ -1225,8 +1205,8 @@ s32 func_ov003_020cd44c(Ov003EnemyShotBlossom* self) {
     }
     func_ov003_02084348(func_ov003_020c37f8(&self->sprite) ? 1 : 0, &sy, &sx, self->source.core.position.x,
                         self->source.core.position.y, self->source.core.position.z);
-    self->source.core.hitResult =
-        func_ov003_0208a1a4(func_ov003_0208a114(self->source.core.attackId), &self->source.core.owner->actor.baseArgs, sx, sy);
+    self->source.core.hitResult = func_ov003_0208a1a4(func_ov003_0208a114(self->source.core.attackId),
+                                                      &self->source.core.owner->base.actor.baseArgs, sx, sy);
     self->frame++;
     CombatSprite_Update(&self->sprite);
     return 1;

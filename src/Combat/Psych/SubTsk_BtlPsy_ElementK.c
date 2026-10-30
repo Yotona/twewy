@@ -1,10 +1,12 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32              func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32              func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 extern const TaskHandle data_ov003_020dc794;
 
 s32 func_ov003_020ad720(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -12,7 +14,7 @@ s32 func_ov003_020ad720(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc794.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc794;
+    context->handle        = &data_ov003_020dc794;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -28,8 +30,8 @@ s32 func_ov003_020ad778(TaskPool* pool, Task* task, void* args, s32 stage) {
             BtlTouchWork* touch = func_ov003_020a62a0();
             MI_CpuSet(self, 0, sizeof(*self));
             self->effect    = *arg;
-            self->x         = touch->input.gestureX;
-            self->y         = touch->input.gestureY;
+            self->x         = touch->sweepCenterX;
+            self->y         = touch->sweepCenterY;
             self->cancelled = 0;
             func_ov003_020a3498(&self->sprite, 2, 1, 0x74, 1);
             func_ov003_020a3498(&self->aura, 2, 1, 0x82, 0);
@@ -100,8 +102,8 @@ s32 func_ov003_020ad778(TaskPool* pool, Task* task, void* args, s32 stage) {
             }
             for (i = 0; i < 3; i++)
                 func_ov003_020add40(&self->rays[i], self->x, self->y, self->effect);
-            if (!SndMgr_IsSEPlaying(0x99))
-                func_ov003_02087f00(0x99, self->x);
+            if (!SndMgr_IsSEPlaying(SEIDX_SE_PSY_EGENERATE_BOOT01_01))
+                func_ov003_02087f00(SEIDX_SE_PSY_EGENERATE_BOOT01_01, self->x);
             CombatSprite_Update(&self->sprite);
             CombatSprite_Update(&self->aura);
             return 1;
@@ -127,7 +129,7 @@ s32 func_ov003_020ad778(TaskPool* pool, Task* task, void* args, s32 stage) {
             CombatSprite_Release(&self->aura);
             for (s32 i = 0; i < 3; i++)
                 func_ov003_020ade74(&self->rays[i]);
-            SndMgr_StopPlayingSE(0x99);
+            SndMgr_StopPlayingSE(SEIDX_SE_PSY_EGENERATE_BOOT01_01);
             return 1;
     }
 }
@@ -178,8 +180,8 @@ void func_ov003_020add40(Ov003ElementKRay* ray, s16 x, s16 y, Ov003EffectState* 
         ray->active = 0;
         return;
     }
-    s16 offsetX = FX_Mul(FX_SinCosTable_[(ray->angle >> 4) * 2 + 1], 0x24000) >> 12;
-    s16 offsetY = FX_Mul(FX_SinCosTable_[(ray->angle >> 4) * 2], 0x24000) >> 12;
+    s16 offsetX = FX_Mul(COS2(FX_SinCosTable_, ray->angle), 0x24000) >> 12;
+    s16 offsetY = FX_Mul(SIN2(FX_SinCosTable_, ray->angle), 0x24000) >> 12;
     func_ov003_020a66f4(&effect->streak, 0x161, (s16)(x + offsetX), (s16)(y + offsetY), 0, 0);
     CombatSprite_Update(&ray->sprite);
 }

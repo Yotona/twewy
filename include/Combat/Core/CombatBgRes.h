@@ -1,10 +1,13 @@
 #ifndef COMBAT_CORE_COMBATBGRES_H
 #define COMBAT_CORE_COMBATBGRES_H
 
+#include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatSpriteSlot.h"
+#include "Display.h"
 #include "Engine/File/DatMgr.h"
 #include "Engine/Resources/BgResMgr.h"
 #include "Engine/Resources/PaletteMgr.h"
+#include "Engine/Resources/ScreenMapper.h"
 
 /// One command of a resource-loading script: `run` advances `state->cursor` past its own operands.
 /// The operands are two words of packed halfwords; their meaning depends on `run`.
@@ -27,5 +30,15 @@ typedef struct Ov003BgResState {
     /* 0x88 */ s16                unk_88;
     /* 0x8A */ s16                paletteCount;
 } Ov003BgResState; // Size: 0x8C
+
+/// Scrolls the BG of `map` to the camera's position, shifted by `offsetX`/`offsetY`.
+static inline void BtlField_ScrollRow(ScreenMapEntry* map, Ov003Camera* camera, s32 offsetX, s32 offsetY) {
+    s32                 layer  = map->bgLayer;
+    DisplayEngineState* engine = &g_DisplaySettings.engineState[map->engineId];
+    s32                 posY   = camera->unk_40 - offsetY;
+    s32                 posX   = camera->unk_28 - offsetX;
+
+    Display_SetEngineBGOffset(engine, layer, posX, posY);
+}
 
 #endif

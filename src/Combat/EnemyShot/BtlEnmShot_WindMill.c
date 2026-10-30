@@ -2,7 +2,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c3c28(void);
 extern const TaskHandle data_ov003_020e0cec;
 
 s32 func_ov003_020d33f0(Ov003EnemyShotSource* source, s32 speed, u16 angle, u16 angleStep, u16 count, u16 interval, u16 bursts,
@@ -18,7 +17,7 @@ s32 func_ov003_020d33f0(Ov003EnemyShotSource* source, s32 speed, u16 angle, u16 
     args.bursts    = bursts;
     args.yScale    = yScale;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -42,11 +41,11 @@ s32 func_ov003_020d349c(Ov003EnemyShotWindMill* self, Ov003EnemyShotWindMillArgs
 s32 func_ov003_020d350c(Ov003EnemyShotWindMill* self) {
     if (data_ov003_020e71b8->unk3D878 & 0x40)
         return 1;
-    if (!func_ov003_020cce34(self->source.core.owner->sprite.sprite.bits_0_1))
+    if (!func_ov003_020cce34(self->source.core.owner->base.sprite.sprite.bits_0_1))
         return 0;
-    if (self->source.core.owner->actor.flags & 2)
+    if (self->source.core.owner->base.actor.flags & 2)
         return 0;
-    if (self->source.core.owner->actor.flags & 4)
+    if (self->source.core.owner->base.actor.flags & 4)
         return 0;
     if (self->bursts <= 0)
         return 0;

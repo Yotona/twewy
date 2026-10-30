@@ -109,12 +109,12 @@ void func_ov003_02098da0(BtlBar* bar) {
         if (bar->unk_3F8 == 0) {
             CombatSprite_SetAnim(&bar->sprites[0], 5, 1);
             CombatSprite_SetAnim(&bar->sprites[5], 5, 1);
-            func_ov003_02087ed8(0x1D);
+            func_ov003_02087ed8(SEIDX_SE_WARNING);
             bar->unk_3F8 = 1;
         } else if (SpriteMgr_IsAnimationFinished(&bar->sprites[0].sprite)) {
             CombatSprite_Restart(&bar->sprites[0]);
             CombatSprite_Restart(&bar->sprites[5]);
-            func_ov003_02087ed8(0x1D);
+            func_ov003_02087ed8(SEIDX_SE_WARNING);
         }
     } else {
         CombatSprite_SetAnim(&bar->sprites[0], 0, 0);

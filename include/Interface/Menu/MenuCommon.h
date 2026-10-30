@@ -9,9 +9,6 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 
-BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
-BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, u32 screenBase, u32 screenSize);
-
 typedef struct Point {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;

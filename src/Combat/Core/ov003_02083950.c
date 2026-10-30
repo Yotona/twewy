@@ -10,6 +10,7 @@
 #include "Player/Inventory.h"
 #include "Save.h"
 #include <nitro/fx.h>
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 // The combat core: battle background selection, the camera and its projection, the collision lists, the touch gesture
@@ -19,59 +20,6 @@
 // ---------------------------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------------------------
-
-/// The persistent settings array (25 limits and tunables), validated with a magic word.
-typedef struct Ov003Settings {
-    /* 0x00 */ s32 reserved00;
-    /* 0x04 */ s32 values[25];
-    /* 0x68 */ s32 unk_68;
-    /* 0x6C */ s32 unk_6C;
-    /* 0x70 */ s32 magic;
-    /* 0x74 */ s8  current;
-    /* 0x75 */ u8  reserved75[3];
-} Ov003Settings; // Size: 0x78
-
-/// The touch recognizer state at `Ov003Global + 0x3D370`.
-typedef struct Ov003TouchState {
-    /* 0x00 */ s32          active;
-    /* 0x04 */ u16          flags; // which gestures the current mode allows
-    /* 0x06 */ u16          gesture;
-    /* 0x08 */ s16          startX;
-    /* 0x0A */ s16          startY;
-    /* 0x0C */ s16          endX;
-    /* 0x0E */ s16          endY;
-    /* 0x10 */ s32          distance;
-    /* 0x14 */ s16          angle;
-    /* 0x16 */ s16          tapTimer;
-    /* 0x18 */ s16          tapCount;
-    /* 0x1A */ u8           reserved1A[2];
-    /* 0x1C */ s32          watching;
-    /* 0x20 */ s16          watchFrames;
-    /* 0x22 */ u8           reserved22[2];
-    /* 0x24 */ s32          reserved24;
-    /* 0x28 */ s16          sweepCenterX;
-    /* 0x2A */ s16          sweepCenterY;
-    /* 0x2C */ s16          sweepMinX;
-    /* 0x2E */ s16          sweepMaxX;
-    /* 0x30 */ s16          sweepMinY;
-    /* 0x32 */ s16          sweepMaxY;
-    /* 0x34 */ s16          sweepFrames;
-    /* 0x36 */ s16          holdFrames;
-    /* 0x38 */ s16          releaseFrames;
-    /* 0x3A */ s16          x;
-    /* 0x3C */ s16          y;
-    /* 0x3E */ s16          velocityX;
-    /* 0x40 */ s16          velocityY;
-    /* 0x42 */ u8           reserved42[2];
-    /* 0x44 */ s32          targetKind;
-    /* 0x48 */ CombatActor* target;
-    /* 0x4C */ CombatActor* held;
-    /* 0x50 */ CombatActor* released;
-    /* 0x54 */ s16          stillFrames;
-    /* 0x56 */ s16          anchorX;
-    /* 0x58 */ s16          anchorY;
-    /* 0x5A */ u8           reserved5A[2];
-} Ov003TouchState; // Size: 0x5C
 
 /// The sprite descriptor template at `data_ov003_020e38f0`.
 typedef struct Ov003SpriteTemplate {
@@ -84,10 +32,6 @@ typedef struct Ov003SpriteTemplate {
     /* 0x24 */ u32   unk_24;
     /* 0x28 */ u32   unk_28;
 } Ov003SpriteTemplate; // Size: 0x2C
-
-#define TOUCH_STATE     ((Ov003TouchState*)((u8*)data_ov003_020e71b8 + 0x3D370))
-#define SETTINGS        ((Ov003Settings*)((u8*)&gSaveData + 0x3454))
-#define SETTINGS_VALUES ((s32*)((u8*)&gSaveData + 0x3458))
 
 // ---------------------------------------------------------------------------------------------
 // Data
@@ -121,25 +65,15 @@ extern const TaskHandle data_ov008_020e7a68;
 
 extern void func_ov003_0208380c(void);
 extern void func_ov003_020838d8(void);
-extern s32  func_0202599c(void);
-extern void func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 length);
-extern void func_ov003_020a2f7c(TaskPool* pool, ...);
+extern void func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 scale);
+extern s32  func_ov003_020a2f7c(TaskPool* pool, ...);
 void        func_ov003_02084dc0(void);
 void        func_ov003_02084ee4(void);
-s32         func_ov003_02084d80(s32 index);
-extern s32  func_ov003_020a2a04(u16 kind, u16 life, s32 x, s32 y, s16 width, s16 height);
-extern void func_ov003_02086590(s32 kind, s32 x, s32 y);
 
 void  func_ov003_02084880(CombatListNode* node, CombatListNode** head, CombatListNode** tail);
 void  func_ov003_020848b4(CombatListNode* node, CombatListNode** head, CombatListNode** tail);
 void  func_ov003_02084924(CombatListNode* node, CombatListNode** head, CombatListNode** tail, CombatListNode* before);
-void* func_ov003_0208495c(CombatList* list);
 void* func_ov003_02084970(CombatList* list);
-void* func_ov003_02084984(CombatListNode* node);
-void* func_ov003_02084998(CombatListNode* node);
-void  func_ov003_020849ac(CombatList* list);
-void  func_ov003_020849bc(CombatList* list, CombatListNode* node, void* item);
-void* func_ov003_020849dc(CombatList* list, CombatListNode* node);
 void  func_ov003_02084514(Ov003Collider* a, Ov003Collider* b);
 
 CombatList data_ov003_020e71a0[3];
@@ -267,7 +201,7 @@ void func_ov003_02083968(void) {
             gSaveData.unk_3232 = func_ov003_02083950(0);
             break;
         case 4:
-            if (func_0202599c() != 0) {
+            if (func_0202599c(0) != 0) {
                 gSaveData.unk_3232 = 1;
             }
             break;
@@ -307,7 +241,7 @@ void func_ov003_02083ab0(s32 index, s32 x, s32 y, s32 z) {
 /// Whether a box around (`x`,`y`) is outside the camera's field.
 s32 func_ov003_02083af8(s32 x, s32 y, s32 marginX, s32 marginY) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[0];
-    s32          limit  = camera->posX + FX_Mul(FX_SinCosTable_[(camera->rotation >> 4) * 2], x);
+    s32          limit  = camera->posX + FX_Mul(FX_SinIdx(camera->rotation), x);
 
     if (y - marginY < limit) {
         return 1;
@@ -327,7 +261,7 @@ s32 func_ov003_02083af8(s32 x, s32 y, s32 marginX, s32 marginY) {
 s32 func_ov003_02083b8c(s32* value, s32 margin, s32 scale) {
     Ov003Camera* camera = &data_ov003_020e71b8->unk3D7C0[0];
     s32          moved  = 0;
-    s32          limit  = camera->posX + FX_Mul(FX_SinCosTable_[(camera->rotation >> 4) * 2], scale);
+    s32          limit  = camera->posX + FX_Mul(FX_SinIdx(camera->rotation), scale);
 
     if (*value - margin < limit) {
         *value = limit + margin;
@@ -593,10 +527,10 @@ void func_ov003_02084514(Ov003Collider* a, Ov003Collider* b) {
     s32 dz;
     s32 angle;
 
-    if ((dx < 0 ? -dx : dx) >= radii) {
+    if (ABS(dx) >= radii) {
         return;
     }
-    if ((dy < 0 ? -dy : dy) >= radii) {
+    if (ABS(dy) >= radii) {
         return;
     }
     distance = FX_Sqrt(FX_Mul(dx, dx) + FX_Mul(dy, dy));
@@ -832,14 +766,15 @@ void func_ov003_02084a08(CombatList* list, CombatListNode* before, CombatListNod
 
 /// Clamps setting `index` into [`lo`, `hi`].
 void func_ov003_02084a30(s32 index, s32 lo, s32 hi) {
-    s32 value = SETTINGS_VALUES[index];
+    s32* values = OV003_SAVE->settings.values;
+    s32  value  = values[index];
 
     if (value < lo) {
-        SETTINGS_VALUES[index] = lo;
+        values[index] = lo;
         return;
     }
     if (value > hi) {
-        SETTINGS_VALUES[index] = hi;
+        values[index] = hi;
     }
 }
 
@@ -876,18 +811,18 @@ void func_ov003_02084a54(void) {
 
 /// Sets the settings up on the first call.
 void func_ov003_02084b88(void) {
-    if (SETTINGS->magic == 0x6128248) {
+    Ov003Settings* settings = &OV003_SAVE->settings;
+
+    if (settings->magic == 0x6128248) {
         return;
     }
-    MI_CpuSet(SETTINGS, 0, 0x78);
+    MI_CpuSet(settings, 0, 0x78);
     func_ov003_02084a54();
-    SETTINGS->unk_68  = 0;
-    SETTINGS->unk_6C  = 0;
-    SETTINGS->magic   = 0x6128248;
-    SETTINGS->current = -1;
+    settings->unk_68  = 0;
+    settings->unk_6C  = 0;
+    settings->magic   = 0x6128248;
+    settings->current = -1;
 }
-
-s32 func_ov003_02084d80(s32 index);
 
 /// Clamps every setting into its legal range.
 void func_ov003_02084bdc(void) {
@@ -919,19 +854,19 @@ void func_ov003_02084bdc(void) {
 }
 
 s32 func_ov003_02084d80(s32 index) {
-    return SETTINGS_VALUES[index];
+    return ((s32*)&OV003_SAVE->settings.values)[index];
 }
 
 void func_ov003_02084d90(s32 index, s32 value) {
-    SETTINGS_VALUES[index] = value;
+    ((s32*)&OV003_SAVE->settings.values)[index] = value;
 }
 
 void func_ov003_02084da0(s32 value) {
-    SETTINGS->current = value;
+    OV003_SAVE->settings.current = value;
 }
 
 s32 func_ov003_02084db0(void) {
-    return SETTINGS->current;
+    return OV003_SAVE->settings.current;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -953,7 +888,7 @@ void func_ov003_02084dc0(void) {
             radius = actor->unk_70;
             func_ov003_020a2a04(0, 0, actor->position.x - (radius << 12), actor->position.y - ((radius / 2) << 12), radius * 2,
                                 radius);
-            actor = func_ov003_02084984((CombatListNode*)((u8*)actor + 0x178));
+            actor = func_ov003_02084984(&((Ov003EnemyActor*)actor)->node);
         } while (actor != NULL);
     }
     item = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8B4);
@@ -986,7 +921,7 @@ void func_ov003_02084ee4(void) {
             height = actor->unk_72;
             func_ov003_020a2a04(3, 0, actor->position.x - (radius << 12),
                                 actor->position.z + (actor->position.y - (height << 12)), radius * 2, height + 0xC);
-            actor = func_ov003_02084984((CombatListNode*)((u8*)actor + 0x178));
+            actor = func_ov003_02084984(&((Ov003EnemyActor*)actor)->node);
         } while (actor != NULL);
     }
     item = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8B4);
@@ -1089,12 +1024,12 @@ BOOL func_ov003_02085164(s32 x0, s32 y0, s32 x1, s32 y1, s32 ax, s32 ay, s32 bx,
 }
 
 /// A quick short touch.
-BOOL func_ov003_020852b4(Ov003TouchState* touch) {
+BOOL func_ov003_020852b4(BtlTouchWork* touch) {
     return touch->holdFrames < 12 && touch->distance < 0x10000;
 }
 
 /// Counts taps; the fifth quick tap starts the tap effect.
-BOOL func_ov003_020852d0(Ov003TouchState* touch) {
+BOOL func_ov003_020852d0(BtlTouchWork* touch) {
     if (!(touch->flags & 2)) {
         return FALSE;
     }
@@ -1110,7 +1045,7 @@ BOOL func_ov003_020852d0(Ov003TouchState* touch) {
 }
 
 /// A short touch that travelled far: a flick.
-BOOL func_ov003_02085358(Ov003TouchState* touch) {
+BOOL func_ov003_02085358(BtlTouchWork* touch) {
     if (!(touch->flags & 4)) {
         return FALSE;
     }
@@ -1121,7 +1056,7 @@ BOOL func_ov003_02085358(Ov003TouchState* touch) {
 }
 
 /// A long touch that stays near where it started.
-BOOL func_ov003_0208538c(Ov003TouchState* touch) {
+BOOL func_ov003_0208538c(BtlTouchWork* touch) {
     s32 dx;
     s32 dy;
 
@@ -1136,7 +1071,7 @@ BOOL func_ov003_0208538c(Ov003TouchState* touch) {
     if (dx < 0) {
         dx = -dx;
     }
-    if (dx > 0x4000 || (dy < 0 ? -dy : dy) > 0x4000) {
+    if (dx > 0x4000 || ABS(dy) > 0x4000) {
         touch->watching = 0;
         return FALSE;
     }
@@ -1145,7 +1080,7 @@ BOOL func_ov003_0208538c(Ov003TouchState* touch) {
 }
 
 /// A fast back and forth scribble.
-BOOL func_ov003_0208540c(Ov003TouchState* touch) {
+BOOL func_ov003_0208540c(BtlTouchWork* touch) {
     s32 speed;
 
     if (!(touch->flags & 0x20)) {
@@ -1188,8 +1123,8 @@ BOOL func_ov003_0208540c(Ov003TouchState* touch) {
 
 /// Whether the current touch point is on `actor`.
 BOOL func_ov003_02085564(CombatActor* actor) {
-    s32 x     = data_ov003_020e71b8->unk3D3AA;
-    s32 y     = data_ov003_020e71b8->unk3D3AC;
+    s32 x     = data_ov003_020e71b8->touchWork.x;
+    s32 y     = data_ov003_020e71b8->touchWork.y;
     s32 flags = actor->flags;
 
     if ((flags & 4) || (flags & 0x10)) {
@@ -1274,10 +1209,10 @@ BOOL func_ov003_02085638(CombatActor* actor, s32 x0, s32 y0, s32 x1, s32 y1) {
 /// Keeps `actor` as the best candidate when the stroke crosses it near its middle.
 void func_ov003_020857e0(CombatActor** best, s32* bestDistance, CombatActor* actor) {
     Ov003Global* global = data_ov003_020e71b8;
-    s16          x1     = global->unk3D37C;
-    s16          x0     = global->unk3D378;
-    s16          y0     = global->unk3D37A;
-    s16          y1     = global->unk3D37E;
+    s16          x1     = global->touchWork.endX;
+    s16          x0     = global->touchWork.startX;
+    s16          y0     = global->touchWork.startY;
+    s16          y1     = global->touchWork.endY;
     s32          distance;
 
     if (!func_ov003_02085638(actor, x0, y0, x1, y1)) {
@@ -1297,7 +1232,7 @@ void func_ov003_02085888(CombatActor** best, s32* bestDistance, CombatActor* act
     if (!func_ov003_02085564(actor)) {
         return;
     }
-    distance = func_ov003_02085104(actor, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC);
+    distance = func_ov003_02085104(actor, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y);
     if (distance < *bestDistance) {
         *bestDistance = distance;
         *best         = actor;
@@ -1312,7 +1247,7 @@ void func_ov003_020858e4(CombatActor** best, s32* bestDistance) {
     }
     do {
         func_ov003_02085888(best, bestDistance, actor);
-        actor = func_ov003_02084984((CombatListNode*)((u8*)actor + 0x178));
+        actor = func_ov003_02084984(&((Ov003EnemyActor*)actor)->node);
     } while (actor != NULL);
 }
 
@@ -1342,7 +1277,7 @@ CombatActor* func_ov003_02085984(void) {
 }
 
 /// The stylus came down.
-void func_ov003_020859f8(Ov003TouchState* touch) {
+void func_ov003_020859f8(BtlTouchWork* touch) {
     CombatActor* actor = func_ov003_02085984();
 
     if (actor != NULL) {
@@ -1367,7 +1302,7 @@ void func_ov003_020859f8(Ov003TouchState* touch) {
 }
 
 /// The stylus came up.
-void func_ov003_02085a70(Ov003TouchState* touch) {
+void func_ov003_02085a70(BtlTouchWork* touch) {
     s32 dx;
     s32 dy;
 
@@ -1382,7 +1317,7 @@ void func_ov003_02085a70(Ov003TouchState* touch) {
 }
 
 /// Re-targets the held actor when the stylus slid off it.
-void func_ov003_02085afc(Ov003TouchState* touch) {
+void func_ov003_02085afc(BtlTouchWork* touch) {
     if (touch->held != NULL) {
         if (func_ov003_02085564(touch->held)) {
             return;
@@ -1394,7 +1329,7 @@ void func_ov003_02085afc(Ov003TouchState* touch) {
 }
 
 /// Classifies the touch of this frame: 0 none, 1 down, 2/3/4 tap kinds, 5 hold, 6 drag, 7 scribble.
-s32 func_ov003_02085b34(Ov003TouchState* touch) {
+s32 func_ov003_02085b34(BtlTouchWork* touch) {
     if (TouchInput_WasTouchReleased()) {
         if (func_ov003_020852b4(touch)) {
             if (func_ov003_020852d0(touch)) {
@@ -1428,27 +1363,27 @@ s32 func_ov003_02085b34(Ov003TouchState* touch) {
 }
 
 void func_ov003_02085c78(void) {
-    TOUCH_STATE->gesture       = 0;
-    TOUCH_STATE->active        = 0;
-    TOUCH_STATE->holdFrames    = 0;
-    TOUCH_STATE->releaseFrames = 0;
-    TOUCH_STATE->watchFrames   = 0;
-    TOUCH_STATE->targetKind    = 0;
-    TOUCH_STATE->target        = NULL;
-    TOUCH_STATE->held          = NULL;
-    TOUCH_STATE->released      = NULL;
+    data_ov003_020e71b8->touchWork.gesture       = 0;
+    data_ov003_020e71b8->touchWork.active        = 0;
+    data_ov003_020e71b8->touchWork.holdFrames    = 0;
+    data_ov003_020e71b8->touchWork.releaseFrames = 0;
+    data_ov003_020e71b8->touchWork.watchFrames   = 0;
+    data_ov003_020e71b8->touchWork.targetKind    = 0;
+    data_ov003_020e71b8->touchWork.target        = NULL;
+    data_ov003_020e71b8->touchWork.held          = NULL;
+    data_ov003_020e71b8->touchWork.released      = NULL;
 }
 
 /// Whether the touch state is in gesture `gesture`.
 BOOL func_ov003_02085cfc(u16 gesture) {
-    if (data_ov003_020e71b8->touchInput.unk_00 != 0) {
-        return data_ov003_020e71b8->unk3D376 == gesture;
+    if (data_ov003_020e71b8->touchWork.active != 0) {
+        return data_ov003_020e71b8->touchWork.gesture == gesture;
     }
     return FALSE;
 }
 
 BOOL func_ov003_02085d3c(s32 kind) {
-    return TOUCH_STATE->targetKind == kind;
+    return data_ov003_020e71b8->touchWork.targetKind == kind;
 }
 
 /// Whether the current drag crosses `actor`.
@@ -1459,7 +1394,8 @@ BOOL func_ov003_02085d60(CombatActor* actor) {
         return FALSE;
     }
     global = data_ov003_020e71b8;
-    return func_ov003_02085638(actor, global->unk3D378, global->unk3D37A, global->unk3D37C, global->unk3D37E);
+    return func_ov003_02085638(actor, global->touchWork.startX, global->touchWork.startY, global->touchWork.endX,
+                               global->touchWork.endY);
 }
 
 /// The actor of `kind` under the stylus on a tap.
@@ -1488,7 +1424,7 @@ CombatActor* func_ov003_02085dc8(s32 kind) {
 
 /// The held actor, when it is of side `side`.
 CombatActor* func_ov003_02085e78(s32 side) {
-    CombatActor* held = TOUCH_STATE->held;
+    CombatActor* held = data_ov003_020e71b8->touchWork.held;
 
     if (!func_ov003_02085cfc(6)) {
         return NULL;
@@ -1510,7 +1446,9 @@ CombatActor* func_ov003_02085ec0(s32 kind) {
     if (kind == 0) {
         Ov003Global* global = data_ov003_020e71b8;
 
-        if (func_ov003_02085638(global->unk3D898, global->unk3D378, global->unk3D37A, global->unk3D37C, global->unk3D37E)) {
+        if (func_ov003_02085638(global->unk3D898, global->touchWork.startX, global->touchWork.startY, global->touchWork.endX,
+                                global->touchWork.endY))
+        {
             best = data_ov003_020e71b8->unk3D898;
         }
     }
@@ -1523,7 +1461,7 @@ CombatActor* func_ov003_02085ec0(s32 kind) {
         if (actor != NULL) {
             do {
                 func_ov003_020857e0(&best, &distance, actor);
-                actor = func_ov003_02084984((CombatListNode*)((u8*)actor + 0x178));
+                actor = func_ov003_02084984(&((Ov003EnemyActor*)actor)->node);
             } while (actor != NULL);
         }
     }
@@ -1568,7 +1506,7 @@ CombatActor* func_ov003_02086014(s32 kind) {
 }
 
 void func_ov003_020860c4(void) {
-    Ov003TouchState* touch = TOUCH_STATE;
+    BtlTouchWork* touch = &data_ov003_020e71b8->touchWork;
 
     touch->active      = 0;
     touch->flags       = 0;
@@ -1589,9 +1527,9 @@ void func_ov003_020860c4(void) {
 
 /// Reads the stylus and advances the gesture recognizer by one frame.
 void func_ov003_02086130(void) {
-    Ov003TouchState* touch = TOUCH_STATE;
-    TouchCoord       coord;
-    TouchCoord       delta;
+    BtlTouchWork* touch = &data_ov003_020e71b8->touchWork;
+    TouchCoord    coord;
+    TouchCoord    delta;
 
     TouchInput_GetCoord(&coord);
     TouchInput_GetDelta(&delta);
@@ -1653,7 +1591,7 @@ classify:
 }
 
 /// Drops a spawn of `kind` at a random place of the field.
-void func_ov003_020862a4(s32 kind) {
+void func_ov003_020862a4(u16 kind) {
     Ov003Global* global = data_ov003_020e71b8;
     s32          height = global->unk3D7C0[0].unk_10;
     s32          width  = global->unk3D7C0[0].unk_0C;

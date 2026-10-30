@@ -1,5 +1,6 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
+#include "Combat/Core/CombatBgRes.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Engine/File/DatMgr.h"
 #include "Player/Inventory.h"
@@ -55,9 +56,9 @@ extern void                func_ov003_020a30d4(s32, s32, u32);
 extern u8        data_ov003_020d9a80[];
 extern u8        data_ov003_020d9a90[];
 extern u8        data_ov003_020d9aa8[];
-extern void      func_ov003_02083478(void);
-extern void      func_ov003_020835d4(void);
-extern void      func_ov003_02083700(void);
+extern s32       func_ov003_02083478(Ov003BgResState* state);
+extern s32       func_ov003_020835d4(Ov003BgResState* state);
+extern s32       func_ov003_02083700(Ov003BgResState* state);
 extern const u32 data_ov003_020d88ac[];
 extern const u32 data_ov003_020d88d8[];
 extern const u32 data_ov003_020d88f0[];
@@ -266,8 +267,7 @@ void func_ov003_020a303c(const u16* items, s32 touchIndex) {
     s32         i;
     for (i = 0; i < 4; i++) {
         if (func_02023b7c(items[i])) {
-            DatMgr_ReleaseData(DatMgr_LoadRawDataWithOffset(1, &item, sizeof(item), &data_ov003_020da744,
-                                                            Inventory_GetCategorizedIndex(items[i]) * sizeof(item)));
+            Data_LoadToBuffer(1, item, &data_ov003_020da744, Inventory_GetCategorizedIndex(items[i]));
             if (item.unk_10 != 0xFF)
                 func_ov003_020a30d4(item.unk_10, touchIndex, -1);
         }

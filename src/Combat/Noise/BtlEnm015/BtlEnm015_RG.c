@@ -4,7 +4,7 @@
 
 #include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
-s32  func_ov013_02126dd8(TaskPool*, Task*, void*, s32);
+s32  func_ov013_02126dd8(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov013_02126b30(BtlEnm015*);
 void func_ov013_02126c64(BtlEnm015*);
 
@@ -13,14 +13,14 @@ const TaskHandle Tsk_BtlEnm015_RG = {"Tsk_BtlEnm015_RG", func_ov013_02126dd8, 0x
 void func_ov013_02126ab0(BtlEnm015* arg0) {
     switch (arg0->unk_1C2) {
         case 0:
-            CombatSprite_SetAnimFromTable(&arg0->sprite, 0, 0);
+            CombatSprite_SetAnimFromTable(&arg0->base.sprite, 0, 0);
             func_ov003_020c4ee0(&arg0->base);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = RNG_Next(0x3C) + 0x3C;
             break;
 
         case 1:
-            func_ov013_02125a04(arg0, (s32)func_ov013_02126c64, (s32)func_ov013_02126b30, arg0->unk_1A2);
+            func_ov013_02125a04(arg0, (s32)func_ov013_02126c64, (s32)func_ov013_02126b30, arg0->base.unk_1A2);
             break;
     }
 }
@@ -38,17 +38,17 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
             break;
 
         case 1:
-            CombatSprite_SetAnimFromTable(&arg0->sprite, 7, 1);
+            CombatSprite_SetAnimFromTable(&arg0->base.sprite, 7, 1);
             func_ov003_020c4cc4(&arg0->base, 0x220);
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
 
         case 2:
-            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->base.sprite.sprite) == 0) {
                 return;
             }
-            CombatSprite_SetAnimFromTable(&arg0->sprite, 8, 1);
+            CombatSprite_SetAnimFromTable(&arg0->base.sprite, 8, 1);
             func_ov003_020c4cc4(&arg0->base, 0x226);
             func_ov013_021257a4(arg0, 0);
             func_ov003_0208a08c(1, &boss->base, 0);
@@ -58,7 +58,7 @@ void func_ov013_02126b30(BtlEnm015* arg0) {
             break;
 
         case 3:
-            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->base.sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_02126ab0);
@@ -79,10 +79,10 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
             break;
 
         case 1:
-            CombatSprite_SetAnimFromTable(&arg0->sprite, 9, 1);
-            arg0->unk_1DC = boss->actor.position.x;
-            arg0->unk_1E0 = boss->actor.position.y;
-            arg0->unk_1E4 = boss->actor.position.z;
+            CombatSprite_SetAnimFromTable(&arg0->base.sprite, 9, 1);
+            arg0->unk_1DC = boss->base.actor.position.x;
+            arg0->unk_1E0 = boss->base.actor.position.y;
+            arg0->unk_1E4 = boss->base.actor.position.z;
             arg0->unk_1C2 = arg0->unk_1C2 + 1;
             arg0->unk_1C0 = 0;
             break;
@@ -99,12 +99,12 @@ void func_ov013_02126c64(BtlEnm015* arg0) {
             if (arg0->unk_1C0 == 0x2C) {
                 func_ov003_020c4cc4(&arg0->base, 0x224);
                 h = func_ov003_0208a114(0x8B);
-                if (func_ov003_0208a164(h, &arg0->actor.baseArgs, arg0->unk_1DC, arg0->unk_1E0, arg0->unk_1E4) == 1) {
+                if (func_ov003_0208a164(h, &arg0->base.actor.baseArgs, arg0->unk_1DC, arg0->unk_1E0, arg0->unk_1E4) == 1) {
                     func_ov003_020c4cc4(&arg0->base, 0x225);
                 }
             }
             arg0->unk_1C0 = arg0->unk_1C0 + 1;
-            if (SpriteMgr_IsAnimationFinished(&arg0->sprite.sprite) == 0) {
+            if (SpriteMgr_IsAnimationFinished(&arg0->base.sprite.sprite) == 0) {
                 return;
             }
             func_ov013_02125b64(arg0, (s32)func_ov013_02126ab0);
@@ -125,15 +125,15 @@ s32 func_ov013_02126dd8(TaskPool* pool, Task* task, void* args, s32 stage) {
             MI_CpuSet(data, 0, 0x1E8);
             func_ov013_02125b8c(1, data, (s32)args, (s32)func_ov013_02126ab0);
             func_ov013_02125b64(data, (s32)func_ov013_02125e90);
-            data->unk_1AC                           = func_ov003_020ccedc(1) >> 2;
-            data->actor.position.x                  = data->unk_1AC;
-            data->unk_1B0                           = (func_ov003_020ccefc(1) >> 1) + 1;
-            data->actor.position.y                  = data->unk_1B0;
-            data->unk_1B4                           = 0;
-            data->actor.position.z                  = 0;
+            data->base.unk_1AC                      = func_ov003_020ccedc(1) >> 2;
+            data->base.actor.position.x             = data->base.unk_1AC;
+            data->base.unk_1B0                      = (func_ov003_020ccefc(1) >> 1) + 1;
+            data->base.actor.position.y             = data->base.unk_1B0;
+            data->base.unk_1B4                      = 0;
+            data->base.actor.position.z             = 0;
             boss                                    = (BtlEnm015*)data_ov003_020e71b8->unk3D89C;
             x                                       = (func_ov003_020ccedc(1) >> 1) + 0x40000;
-            boss->actor.position.x                  = x;
+            boss->base.actor.position.x             = x;
             data_ov003_020e71b8->unk3D7C0[1].unk_20 = x;
             data_ov003_020e71b8->unk3D878 |= 0x40000000;
             break;

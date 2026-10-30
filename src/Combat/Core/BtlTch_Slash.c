@@ -20,13 +20,13 @@ typedef struct BtlTchSlash {
 extern const BinIdentifier data_ov003_020d6fac;
 
 s32 func_ov003_0208f134(TaskPool* pool, Task* task, void* args) {
-    BtlTchSlash*   effect = task->data;
-    BtlTouchInput* input  = &data_ov003_020e71b8->touchInput;
+    BtlTchSlash*  effect = task->data;
+    BtlTouchWork* input  = &data_ov003_020e71b8->touchWork;
 
     MI_CpuSet(effect, 0, sizeof(*effect));
     effect->active = 1;
-    effect->x      = input->x;
-    effect->y      = input->y;
+    effect->x      = input->startX;
+    effect->y      = input->startY;
     effect->scaleX = 0x1000;
     effect->scaleY = input->distance / 64;
     effect->angle  = input->angle + 0xC000;
@@ -38,11 +38,11 @@ s32 func_ov003_0208f134(TaskPool* pool, Task* task, void* args) {
     func_ov003_02082738(&effect->sprite, 0);
     func_ov003_02082730(&effect->sprite, 0x3F2000);
     if (effect->scaleY < 0x800) {
-        func_ov003_02087f00(15, effect->x);
+        func_ov003_02087f00(SEIDX_SE_PENEFFECTS, effect->x);
     } else if (effect->scaleY < 0x1000) {
-        func_ov003_02087f00(16, effect->x);
+        func_ov003_02087f00(SEIDX_SE_PENEFFECTM, effect->x);
     } else {
-        func_ov003_02087f00(17, effect->x);
+        func_ov003_02087f00(SEIDX_SE_PENEFFECTL, effect->x);
     }
     return 1;
 }

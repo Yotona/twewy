@@ -31,11 +31,6 @@ typedef struct BtlInf_Star {
     /* 0x70 */ s32          complete;   // 1 once the step counter reached the step count
 } BtlInf_Star;                          // Size: 0x74
 
-/// Minimal view of the charge-command state at `Ov003Global + 0x3D8E8`; the full layout lives
-/// with the effect-command unit as `Ov003EffectCmd`.
-
-#define BTLINF_STAR_CHARGE (data_ov003_020e71b8->effectCmd)
-
 // ---------------------------------------------------------------------------------------------
 // External functions
 // ---------------------------------------------------------------------------------------------
@@ -87,7 +82,7 @@ void func_ov003_0209d5ac(s16* digits, s32 value) {
 /// Refreshes the panel from the charge-command state; each element is only reloaded when its
 /// source value changed.
 void func_ov003_0209d5e0(BtlInf_Star* data) {
-    Ov003EffectCmd* charge = BTLINF_STAR_CHARGE;
+    Ov003EffectCmd* charge = data_ov003_020e71b8->effectCmd;
 
     if (data->step != charge->current) {
         data->step     = charge->current;
@@ -112,7 +107,7 @@ void func_ov003_0209d5e0(BtlInf_Star* data) {
 
 /// Whether the charge-command task asked for the HUD to be hidden this frame.
 s32 func_ov003_0209d688(void) {
-    if (BTLINF_STAR_CHARGE->flags & 1) {
+    if (data_ov003_020e71b8->effectCmd->flags & 1) {
         return 1;
     }
     return 0;

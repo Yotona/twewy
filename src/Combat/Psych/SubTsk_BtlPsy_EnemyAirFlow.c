@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
@@ -118,8 +119,8 @@ s32 func_ov003_020b0470(Ov003EnemyAirFlow* self) {
     oldX                   = unit->actor.position.x;
     oldY                   = unit->actor.position.y;
     oldZ                   = unit->actor.position.z;
-    unit->actor.position.x = self->origin.x + FX_Mul(self->radius, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-    unit->actor.position.y = self->origin.y + FX_Mul(self->radius, FX_SinCosTable_[(self->angle >> 4) * 2]);
+    unit->actor.position.x = self->origin.x + FX_Mul(self->radius, COS2(FX_SinCosTable_, self->angle));
+    unit->actor.position.y = self->origin.y + FX_Mul(self->radius, SIN2(FX_SinCosTable_, self->angle));
     unit->actor.position.z += self->zVelocity;
     x     = func_ov003_020843b0(0, unit->actor.position.x);
     s32 y = func_ov003_020843ec(0, unit->actor.position.y, unit->actor.position.z);

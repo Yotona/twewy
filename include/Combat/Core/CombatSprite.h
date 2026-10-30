@@ -65,6 +65,12 @@ s32 CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier
 void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifier* iden, s32 arg3, u16 arg4, u16 arg5,
                              u16 arg6, u16 arg7);
 
+#define CombatSprite_LoadFromTableNoProto                                                                                   \
+    ((void (*)(s32, CombatSprite*, const BinIdentifier*, const SpriteAnimEntry*, s32, s32, s32))CombatSprite_LoadFromTable)
+
+#define CombatSprite_LoadDirectNoProto                                                                     \
+    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
+
 void CombatSprite_Init(CombatSprite* cSprite);
 
 void CombatSprite_Update(CombatSprite* cSprite);

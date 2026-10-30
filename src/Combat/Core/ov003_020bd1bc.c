@@ -13,10 +13,6 @@ typedef struct CutinTable3 {
 typedef struct CutinResources {
     u16 pack, palette, characters, maps[2];
 } CutinResources;
-typedef struct CutinMap {
-    u32 header;
-    u16 tiles[];
-} CutinMap;
 
 extern char                 data_ov003_020e5184[28];
 extern char                 data_ov003_020e51a0[28];
@@ -54,16 +50,13 @@ extern const CutinTable3    data_ov003_020dd82c;
 extern const TaskHandle     data_ov003_020dd838;
 extern const TaskStages     data_ov003_020dd844;
 extern const CutinResources data_ov003_020dd854[6];
-extern Ov003CutinTask*      data_ov003_020e71d4;
+extern s32                  data_ov003_020e71d4;
 extern char                 data_ov003_020e533c[16];
 
-extern s32         func_ov003_0208442c(s32, s32);
-extern s32         func_ov003_02084460(s32, s32, s32);
-extern void        func_0200d858(ScreenMapEntry*, s32, s32, s32);
-extern void        func_0200d954(s32, s32);
-extern void        func_02026590(s32*, s32, u16);
-extern BgResource* BgResMgr_AllocChar32(BgResMgr*, void*, u32, u32, u32);
-extern u8          data_ov003_020e71d9;
+extern void func_0200d858(ScreenMapEntry*, s32, s32, s32);
+extern void func_0200d954(s32, s32);
+extern void func_02026590(s32*, s32, u16);
+extern u8   data_ov003_020e71d9;
 
 s32 func_ov003_020bd1bc(s32 mode, Ov003ActorSnapshot* entry) {
     if (mode == 1)
@@ -87,10 +80,10 @@ void func_ov003_020bd260(s32 mode, Ov003ActorSnapshot* entry, s32 y) {
     else
         entry->unit->actor.position.y = func_ov003_02084460(0, y, entry->unit->actor.position.z);
 }
-void func_ov003_020bd2a8(Ov003CutinTask* self) {
-    data_ov003_020e71d4 = self;
+void func_ov003_020bd2a8(s32 kind) {
+    data_ov003_020e71d4 = kind;
 }
-Ov003CutinTask* func_ov003_020bd2b8(void) {
+s32 func_ov003_020bd2b8(void) {
     return data_ov003_020e71d4;
 }
 
@@ -112,7 +105,7 @@ void func_ov003_020bd2c8(s32 kind, s32 index) {
             break;
         }
         case 3:
-            SndMgr_StartPlayingSE(0x544);
+            SndMgr_StartPlayingSE(SEIDX_YASHIRO_B_BTL_ATCM04);
             break;
     }
 }
@@ -134,7 +127,7 @@ void func_ov003_020bd370(s32 kind, s32 index) {
             break;
         }
         case 3:
-            SndMgr_StartPlayingSE(0x52B);
+            SndMgr_StartPlayingSE(SEIDX_KARIYA_B_BTL_ATCS04);
             break;
     }
 }
@@ -157,15 +150,10 @@ void func_ov003_020bd430(Ov003CutinTask* self) {
                         self->backgrounds[1].offsets[1] - 0x80000, 0);
 }
 
-static inline void* CutinMapTiles(Data* pack, s32 index) {
-    CutinMap* map = Data_GetPackEntryData(pack, index);
-    return map->tiles;
-}
-
 void func_ov003_020bd6bc(Ov003CutinBackground* self, s32 index) {
     const CutinResources* resources = &data_ov003_020dd854[index];
-    Display_InitSubBG1(0, 1, 0, 0, 1, 0, 0x4004);
-    Display_InitSubBG2(0, 1, 0, 2, 1, 1, 0x4204);
+    Display_InitSubBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 1, 0, 0x4004);
+    Display_InitSubBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 2, 1, 1, 0x4204);
     g_DisplaySettings.engineState[1].bgSettings[1].priority = 0;
     g_DisplaySettings.engineState[1].bgSettings[2].priority = 0;
     Display_SetBGOffset(1, 1, 0, 0);
@@ -179,8 +167,8 @@ void func_ov003_020bd6bc(Ov003CutinBackground* self, s32 index) {
     self->characters = BgResMgr_AllocChar32(g_BgResourceManagers[1], characters,
                                             g_DisplaySettings.engineState[1].bgSettings[1].charBase, 0, 0x8000);
     PaletteMgr_Flush(g_PaletteManagers[1], self->palette);
-    self->tileData[0] = CutinMapTiles(self->pack, resources->maps[0]);
-    self->tileData[1] = CutinMapTiles(self->pack, resources->maps[1]);
+    self->tileData[0] = Ov003Cutin_Tiles(self->pack, resources->maps[0]);
+    self->tileData[1] = Ov003Cutin_Tiles(self->pack, resources->maps[1]);
     func_0200d1d8(&self->maps[0], 1, 1, NULL, &self->tileData[0], 1, 1);
     func_0200d1d8(&self->maps[1], 1, 2, NULL, &self->tileData[1], 1, 1);
     func_0200d858(&self->maps[0], 0, 0, 0);
@@ -188,8 +176,8 @@ void func_ov003_020bd6bc(Ov003CutinBackground* self, s32 index) {
 }
 void func_ov003_020bd9b4(Ov003CutinBackground* self, s32 index) {
     const CutinResources* resources = &data_ov003_020dd854[index];
-    Display_InitMainBG1(0, 1, 0, 0, 3, 0, 0x400C);
-    Display_InitMainBG2(0, 1, 0, 2, 3, 1, 0x420C);
+    Display_InitMainBG1(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 0, 3, 0, 0x400C);
+    Display_InitMainBG2(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 2, 3, 1, 0x420C);
     g_DisplaySettings.engineState[0].bgSettings[1].priority = 0;
     g_DisplaySettings.engineState[0].bgSettings[2].priority = 0;
     Display_SetBGOffset(0, 1, 0, 0);
@@ -203,8 +191,8 @@ void func_ov003_020bd9b4(Ov003CutinBackground* self, s32 index) {
     self->characters = BgResMgr_AllocChar32(g_BgResourceManagers[0], characters,
                                             g_DisplaySettings.engineState[0].bgSettings[1].charBase, 0, 0x8000);
     PaletteMgr_Flush(g_PaletteManagers[0], self->palette);
-    self->tileData[0] = CutinMapTiles(self->pack, resources->maps[0]);
-    self->tileData[1] = CutinMapTiles(self->pack, resources->maps[1]);
+    self->tileData[0] = Ov003Cutin_Tiles(self->pack, resources->maps[0]);
+    self->tileData[1] = Ov003Cutin_Tiles(self->pack, resources->maps[1]);
     func_0200d1d8(&self->maps[0], 0, 1, NULL, &self->tileData[0], 1, 1);
     func_0200d1d8(&self->maps[1], 0, 2, NULL, &self->tileData[1], 1, 1);
     func_0200d858(&self->maps[0], 0, 0, 0);
@@ -212,11 +200,11 @@ void func_ov003_020bd9b4(Ov003CutinBackground* self, s32 index) {
 }
 
 void func_ov003_020bdcb8(Ov003CutinTask* self, s32 index) {
-    Display_InitMainBG3(0, 1, 0, 4, 1, 1, 0x4404);
+    Display_InitMainBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 4, 1, 1, 0x4404);
     g_DisplaySettings.controls[0].windows &= ~4;
     g_DisplaySettings.engineState[0].bgSettings[3].priority = 1;
     Display_SetBGOffset(0, 3, 0, 0);
-    Display_InitSubBG3(0, 1, 0, 4, 5, 1, 0x4414);
+    Display_InitSubBG3(DISPLAY_BGMODE_TEXT, GX_BG_SIZE_TEXT_512x256, GX_BG_COLORS_16, 4, 5, 1, 0x4414);
     g_DisplaySettings.controls[1].windows &= ~4;
     g_DisplaySettings.engineState[1].bgSettings[3].priority = 0;
     Display_SetBGOffset(1, 3, 0, 0);
@@ -226,9 +214,9 @@ void func_ov003_020bdcb8(Ov003CutinTask* self, s32 index) {
     self->overlayPalettes[0] =
         PaletteMgr_AllocPalette(g_PaletteManagers[0], Data_GetPackEntryData(self->overlayPack, 5), 0, 15, 1);
     PaletteMgr_Flush(g_PaletteManagers[0], self->overlayPalettes[0]);
-    self->overlayTileData[0][0] = CutinMapTiles(self->overlayPack, 2);
-    self->overlayTileData[0][1] = CutinMapTiles(self->overlayPack, 3);
-    self->overlayTileData[0][2] = CutinMapTiles(self->overlayPack, 4);
+    self->overlayTileData[0][0] = Ov003Cutin_Tiles(self->overlayPack, 2);
+    self->overlayTileData[0][1] = Ov003Cutin_Tiles(self->overlayPack, 3);
+    self->overlayTileData[0][2] = Ov003Cutin_Tiles(self->overlayPack, 4);
     func_0200d1d8(&self->overlayMaps[0], 0, 3, NULL, self->overlayTileData[0], 3, 1);
     func_0200d858(&self->overlayMaps[0], 0, 0, 0);
     self->overlayCharacters[1] = BgResMgr_AllocChar32(g_BgResourceManagers[1], Data_GetPackEntryData(self->overlayPack, 6),
@@ -237,9 +225,9 @@ void func_ov003_020bdcb8(Ov003CutinTask* self, s32 index) {
     self->overlayPalettes[1]   = PaletteMgr_AllocPalette(
         g_PaletteManagers[1], Data_GetPackEntryData(self->overlayPack, palettes.values[index - 1]), 0, 15, 1);
     PaletteMgr_Flush(g_PaletteManagers[1], self->overlayPalettes[1]);
-    self->overlayTileData[1][0] = CutinMapTiles(self->overlayPack, 7);
-    self->overlayTileData[1][1] = CutinMapTiles(self->overlayPack, 8);
-    self->overlayTileData[1][2] = CutinMapTiles(self->overlayPack, 9);
+    self->overlayTileData[1][0] = Ov003Cutin_Tiles(self->overlayPack, 7);
+    self->overlayTileData[1][1] = Ov003Cutin_Tiles(self->overlayPack, 8);
+    self->overlayTileData[1][2] = Ov003Cutin_Tiles(self->overlayPack, 9);
     func_0200d1d8(&self->overlayMaps[1], 1, 3, NULL, self->overlayTileData[1], 3, 1);
     func_0200d858(&self->overlayMaps[1], 0, 0, 0);
     self->overlayTimer      = 90;
@@ -472,4 +460,4 @@ const CutinResources data_ov003_020dd854[6] = {
     {9, 4, 1, {2, 3}},
 };
 
-Ov003CutinTask* data_ov003_020e71d4;
+s32 data_ov003_020e71d4;

@@ -3,6 +3,7 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatEffectActor.h"
 #include "Combat/Core/CombatSprite.h"
+#include "Combat/Friend/Shiki.h"
 #include "EasyFade.h"
 #include "Engine/Color.h"
 #include "Engine/Core/DMA.h"
@@ -51,24 +52,13 @@
 
 /// Header of the `Ov003ActionEffect` pool: two lists (free, in use) followed by the entries.
 
-/// The battle-status block of `MainData` (0x3100..0x31FF). `Combat.h`'s users reach it by raw
-/// offset, so only the fields this unit touches are named here.
-
 // ---------------------------------------------------------------------------------------------
 // External functions
 // ---------------------------------------------------------------------------------------------
-extern void* func_ov003_0208495c(CombatList*);
 extern void* func_ov003_02084970(CombatList*);
-extern void* func_ov003_02084984(CombatListNode*);
-extern void  func_ov003_020849ac(CombatList*);
-extern void  func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern void  func_ov003_0208b3cc(s32, s16);
 extern BOOL  func_ov003_0208ca04(s32, u32);
 extern s16   func_ov003_0208ca24(s32, u32);
-extern void  func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern s32   func_ov003_020a3330(s32);
-extern u16   func_ov004_020e737c(void);
-extern void  func_ov004_020e739c(s32, s32);
+extern void  func_ov004_020e739c(s16* arg0, s32 arg1);
 extern void  func_ov005_020e740c(s32, s32);
 extern void  func_ov005_020eb29c(s32, s32, s32);
 extern void  func_ov006_020e73b8(CombatSprite*, s32, s32, s32, s16, s16);
@@ -88,8 +78,6 @@ extern const u8 data_ov003_020e3780[];
 /// Battle actor pack identifier (defined by the following unit).
 extern char data_ov003_020e391c[];
 
-extern void func_ov003_02087fe0(s32, CombatSprite*, s32);
-
 // ---------------------------------------------------------------------------------------------
 // Helpers over the delinked initialisation table
 // ---------------------------------------------------------------------------------------------
@@ -100,20 +88,6 @@ extern void func_ov003_02087fe0(s32, CombatSprite*, s32);
 #define OV003_ACTOR_CONFIG(id)    ((const Ov003ActorConfig*)(data_ov003_020d72dc + ((id) << 5)))
 #define OV003_ACTOR_CONFIG_02(id) (*(const u16*)(data_ov003_020d72de + ((id) << 5)))
 #define OV003_ACTOR_CONFIG_04(id) (*(const s32*)(data_ov003_020d72e0 + ((id) << 5)))
-
-/// `Ov003Global`'s pointer slots, which `Combat.h` models as raw data.
-#define OV003_CHARGE_STATE (data_ov003_020e71b8->chargeState)
-#define OV003_EFFECT_CMD   (data_ov003_020e71b8->effectCmd)
-/// The battle-status block of `MainData`; the retail build reaches the stage/progress halfwords
-/// through a `gSaveData + 0x3000 + 0x100` base and the rest through `gSaveData + 0x3100`.
-
-/// The 0x1C-byte-per-entry effect pool, split out of the middle of `Ov003Global`.
-#define OV003_ACTION_EFFECTS (&data_ov003_020e71b8->actionEffects)
-/// The pool's "in flight" list; the retail build reaches it by its own absolute offset.
-#define OV003_ACTION_EFFECTS_ACTIVE (&data_ov003_020e71b8->actionEffects.active)
-
-/// The list the battle effect actors are linked into.
-#define OV003_EFFECT_ACTORS (&data_ov003_020e71b8->unk3D8B4)
 
 // ---------------------------------------------------------------------------------------------
 // Data
@@ -1257,7 +1231,7 @@ s32 func_ov003_020865a0(u16 id, s32 arg1, s32 arg2, s32* out) {
             break;
     }
     *out = EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, handle, NULL, 0, NULL, &spawn);
-    return (s32)func_ov003_02084970(OV003_EFFECT_ACTORS);
+    return (s32)func_ov003_02084970(&data_ov003_020e71b8->unk3D8B4);
 }
 
 void func_ov003_02086654(Ov003EffectActor* effect) {
@@ -1276,7 +1250,7 @@ void func_ov003_02086680(Ov003EffectActor* effect, Ov003EffectSpawn* spawn) {
     effect->actor.position.y = spawn->arg2;
     effect->actor.position.z = 0;
     func_ov003_02084634(&effect->sprite.collider, 3, effect->actor.unk_70, effect->actor.unk_72);
-    func_ov003_020849bc(OV003_EFFECT_ACTORS, &effect->node, effect);
+    func_ov003_020849bc(&data_ov003_020e71b8->unk3D8B4, &effect->node, effect);
 }
 
 void func_ov003_020866f8(Ov003EffectActor* effect) {
@@ -1300,11 +1274,11 @@ void func_ov003_020866f8(Ov003EffectActor* effect) {
 
 void func_ov003_02086770(Ov003EffectActor* effect) {
     func_ov003_02084678(&effect->sprite.collider);
-    func_ov003_020849dc(OV003_EFFECT_ACTORS, &effect->node);
+    func_ov003_020849dc(&data_ov003_020e71b8->unk3D8B4, &effect->node);
 }
 
 void func_ov003_020867a0(void) {
-    func_ov003_020849ac(OV003_EFFECT_ACTORS);
+    func_ov003_020849ac(&data_ov003_020e71b8->unk3D8B4);
 }
 
 /// Picks the hit effect/SE combo for whatever the main engine's camera is currently showing.
@@ -1350,7 +1324,7 @@ void func_ov003_020867c0(void) {
 }
 
 void func_ov003_020868c8(u16 value) {
-    Ov003ChargeState* state = OV003_CHARGE_STATE;
+    Ov003ChargeState* state = data_ov003_020e71b8->chargeState;
     Ov003ChargeEntry* entry;
 
     state->unk_08 = 0;
@@ -1368,7 +1342,7 @@ void func_ov003_020868c8(u16 value) {
 }
 
 void func_ov003_02086934(Ov003ChargeEntry* entry) {
-    Ov003ChargeState* state = OV003_CHARGE_STATE;
+    Ov003ChargeState* state = data_ov003_020e71b8->chargeState;
 
     if (entry == NULL) {
         return;
@@ -1379,7 +1353,7 @@ void func_ov003_02086934(Ov003ChargeEntry* entry) {
 }
 
 void func_ov003_0208697c(void) {
-    Ov003ChargeEntry* entry = func_ov003_0208495c(&OV003_CHARGE_STATE->unk_14);
+    Ov003ChargeEntry* entry = func_ov003_0208495c(&data_ov003_020e71b8->chargeState->unk_14);
 
     if (entry == NULL) {
         return;
@@ -1391,12 +1365,12 @@ void func_ov003_0208697c(void) {
     } while (entry != NULL);
 }
 
-void func_ov003_020869c8(s16 value) {
-    OV003_CHARGE_STATE->unk_00 = value;
+void func_ov003_020869c8(s32 value) {
+    data_ov003_020e71b8->chargeState->unk_00 = value;
 }
 
 u16 func_ov003_020869e4(void) {
-    Ov003ChargeState* state = OV003_CHARGE_STATE;
+    Ov003ChargeState* state = data_ov003_020e71b8->chargeState;
     u16               value = 0;
     Ov003ChargeEntry* entry = func_ov003_0208495c(&state->unk_14);
 
@@ -1410,7 +1384,7 @@ u16 func_ov003_020869e4(void) {
 }
 
 u16 func_ov003_02086a40(void) {
-    Ov003ChargeState* state = OV003_CHARGE_STATE;
+    Ov003ChargeState* state = data_ov003_020e71b8->chargeState;
     u16               value = state->unk_00;
 
     state->unk_00 = 0;
@@ -1418,22 +1392,22 @@ u16 func_ov003_02086a40(void) {
 }
 
 s32 func_ov003_02086a64(void) {
-    return OV003_CHARGE_STATE->unk_08;
+    return data_ov003_020e71b8->chargeState->unk_08;
 }
 
 s32 func_ov003_02086a80(void) {
-    if (OV003_CHARGE_STATE->flags & 4) {
+    if (data_ov003_020e71b8->chargeState->flags & 4) {
         return 1;
     }
     return 0;
 }
 
 void func_ov003_02086aa8(s32 value) {
-    OV003_CHARGE_STATE->unk_08 = value;
+    data_ov003_020e71b8->chargeState->unk_08 = value;
 }
 
 void func_ov003_02086ac4(s32 enabled) {
-    Ov003ChargeState* state = OV003_CHARGE_STATE;
+    Ov003ChargeState* state = data_ov003_020e71b8->chargeState;
 
     if (enabled != 0) {
         state->flags |= 4;
@@ -1443,7 +1417,7 @@ void func_ov003_02086ac4(s32 enabled) {
 }
 
 void func_ov003_02086af0(void) {
-    OV003_CHARGE_STATE->flags &= ~2;
+    data_ov003_020e71b8->chargeState->flags &= ~2;
 }
 
 /// Resets a sync gauge state and seeds its 16 pooled entries into the free list.
@@ -1514,7 +1488,7 @@ void func_ov003_02086c78(s32* value, s16* index) {
 
 /// Refills the effect command's queue with a fresh shuffle.
 void func_ov003_02086cc0(void) {
-    Ov003EffectCmd* cmd = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd = data_ov003_020e71b8->effectCmd;
 
     switch (cmd->mode) {
         case 1:
@@ -1530,7 +1504,7 @@ void func_ov003_02086cc0(void) {
 }
 
 u16 func_ov003_02086d24(void) {
-    Ov003EffectCmd* cmd = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd = data_ov003_020e71b8->effectCmd;
     u16             value;
 
     if (cmd->mode == 2) {
@@ -1548,7 +1522,7 @@ u16 func_ov003_02086d24(void) {
 /// Draws one battle effect frame: a sprite animation for the charge effects, a delegated draw for
 /// the special ones.
 void func_ov003_02086d8c(CombatSprite* sprite, s32 animId, s32 flipped, s32 x, s16 y, s16 z) {
-    switch (OV003_EFFECT_CMD->mode) {
+    switch (data_ov003_020e71b8->effectCmd->mode) {
         case 0:
         case 1: {
             u16 anim = animId * 2;
@@ -1571,7 +1545,7 @@ void func_ov003_02086d8c(CombatSprite* sprite, s32 animId, s32 flipped, s32 x, s
 /// Fires the effect command: the charge effects add a card attack, the special ones spawn their
 /// own task.
 void func_ov003_02086e38(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    Ov003EffectCmd* cmd = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd = data_ov003_020e71b8->effectCmd;
     s32             value;
 
     if (cmd->flags & 1) {
@@ -1593,7 +1567,7 @@ void func_ov003_02086e38(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s16* func_ov003_02086e94(void) {
-    return (s16*)OV003_EFFECT_CMD->unk_2C;
+    return (s16*)data_ov003_020e71b8->effectCmd->unk_2C;
 }
 
 /// Number of charge steps the active partner's sticker grants, clamped to 1..3.
@@ -1623,7 +1597,7 @@ u8 func_ov003_02086eb0(void) {
 }
 
 s32 func_ov003_02086f20(s32 arg0, s32 arg1) {
-    Ov003EffectCmd* cmd = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd = data_ov003_020e71b8->effectCmd;
 
     if (cmd->current >= cmd->count) {
         return 0;
@@ -1636,7 +1610,7 @@ s32 func_ov003_02086f20(s32 arg0, s32 arg1) {
 s32 func_ov003_02086f7c(void) {
     s32 done = 0;
 
-    switch (OV003_EFFECT_CMD->mode) {
+    switch (data_ov003_020e71b8->effectCmd->mode) {
         case 1:
             if (*func_ov003_02086e94() >= 5) {
                 done = 1;
@@ -1656,12 +1630,12 @@ s32 func_ov003_02086f7c(void) {
 }
 
 s8 func_ov003_02086fec(void) {
-    return OV003_EFFECT_CMD->current;
+    return data_ov003_020e71b8->effectCmd->current;
 }
 
 /// Starts the next charge step: advances the stage, re-shuffles the queue and restarts the effect.
 void func_ov003_02087008(void) {
-    Ov003EffectCmd* cmd      = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd      = data_ov003_020e71b8->effectCmd;
     s8              stage    = cmd->current;
     u16             previous = stage - 1;
 
@@ -1710,7 +1684,7 @@ void func_ov003_020871b0(Ov003EffectCmd* cmd) {
 }
 
 void func_ov003_020871cc(s32 arg0) {
-    Ov003EffectCmd* cmd = OV003_EFFECT_CMD;
+    Ov003EffectCmd* cmd = data_ov003_020e71b8->effectCmd;
 
     switch (cmd->mode) {
         case 1:
@@ -1727,12 +1701,12 @@ void func_ov003_020871cc(s32 arg0) {
 }
 
 void func_ov003_0208722c(void) {
-    OV003_EFFECT_CMD->flags |= 1;
+    data_ov003_020e71b8->effectCmd->flags |= 1;
 }
 
 /// Pushes a battle actor towards `x`/`y`/`z` through the shared action-effect pool.
 void func_ov003_02087250(Ov003EffectState* state, CombatActor* target, s32 angle) {
-    Ov003ActionEffectPool* pool = OV003_ACTION_EFFECTS;
+    Ov003ActionEffectPool* pool = &data_ov003_020e71b8->actionEffects;
     Ov003ActionEffect*     effect;
 
     if (target == NULL) {
@@ -1750,7 +1724,7 @@ void func_ov003_02087250(Ov003EffectState* state, CombatActor* target, s32 angle
 }
 
 void func_ov003_020872b4(Ov003ActionEffect* effect) {
-    Ov003ActionEffectPool* pool = OV003_ACTION_EFFECTS;
+    Ov003ActionEffectPool* pool = &data_ov003_020e71b8->actionEffects;
 
     if (effect == NULL || effect->target == NULL) {
         return;
@@ -1764,7 +1738,7 @@ void func_ov003_020872b4(Ov003ActionEffect* effect) {
 }
 
 void func_ov003_02087310(void) {
-    Ov003ActionEffect* effect = func_ov003_0208495c(OV003_ACTION_EFFECTS_ACTIVE);
+    Ov003ActionEffect* effect = func_ov003_0208495c(&data_ov003_020e71b8->actionEffects.active);
 
     if (effect == NULL) {
         return;
@@ -1777,11 +1751,11 @@ void func_ov003_02087310(void) {
 }
 
 void func_ov003_02087358(void) {
-    func_ov003_0208495c(OV003_ACTION_EFFECTS_ACTIVE);
+    func_ov003_0208495c(&data_ov003_020e71b8->actionEffects.active);
 }
 
 void func_ov003_02087378(void) {
-    Ov003ActionEffectPool* pool = OV003_ACTION_EFFECTS;
+    Ov003ActionEffectPool* pool = &data_ov003_020e71b8->actionEffects;
     s32                    i;
     Ov003ActionEffect*     effect;
 
@@ -1800,7 +1774,7 @@ void func_ov003_02087378(void) {
 
 /// Retires the action effects whose target actor is gone or defeated.
 void func_ov003_020873e0(void) {
-    Ov003ActionEffect* effect = func_ov003_0208495c(OV003_ACTION_EFFECTS_ACTIVE);
+    Ov003ActionEffect* effect = func_ov003_0208495c(&data_ov003_020e71b8->actionEffects.active);
 
     if (effect == NULL) {
         return;
@@ -1917,8 +1891,8 @@ s32 func_ov003_02087704(void) {
     if (func_ov003_02085cfc(6) == 0 || func_ov003_02085d3c(1) == 0) {
         return 0;
     }
-    x = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-    y = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+    x = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+    y = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
     func_ov003_02083ca0(&x, &y, 0x8000, 0x8000);
     actor = data_ov003_020e71b8->unk3D898;
     dx    = x - actor->position.x;

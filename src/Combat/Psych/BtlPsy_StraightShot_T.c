@@ -9,7 +9,7 @@ s32 func_ov003_020b8c1c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dcf2c.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dcf2c;
+    context->handle        = &data_ov003_020dcf2c;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

@@ -45,10 +45,8 @@ extern u16 data_02066aec[];
 extern u16 data_02066eec[];
 
 extern void func_0202fbf4(s32 arg0);
-extern void func_02026590(void* dst, s32 step, u16 count);
-extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void func_ov003_0208b278(s32 arg0);
+extern void func_02026590(s32* dst, s32 target, u16 weight);
+extern void func_ov003_0208b278(u32 state);
 
 void func_ov003_020a1c80(BtlOver* self);
 void func_ov003_020a1d04(BtlOver* self);
@@ -110,72 +108,72 @@ s32 func_ov003_020a17bc(void) {
 
     switch (data_ov003_020e71b8->unk3D88E) {
         case 10:
-            SndMgr_StartPlayingSE(0x4E4);
+            SndMgr_StartPlayingSE(SEIDX_KONISHI_N_BTL_WIN01);
             break;
         case 11:
-            SndMgr_StartPlayingSE(0x4E4);
+            SndMgr_StartPlayingSE(SEIDX_KONISHI_N_BTL_WIN01);
             break;
         case 12:
-            SndMgr_StartPlayingSE(0x4E4);
+            SndMgr_StartPlayingSE(SEIDX_KONISHI_N_BTL_WIN01);
             break;
         case 13:
-            SndMgr_StartPlayingSE(0x4E4);
+            SndMgr_StartPlayingSE(SEIDX_KONISHI_N_BTL_WIN01);
             break;
         case 14:
-            SndMgr_StartPlayingSE(0x4E4);
+            SndMgr_StartPlayingSE(SEIDX_KONISHI_N_BTL_WIN01);
             break;
         case 15:
-            SndMgr_StartPlayingSE(0x4F2);
+            SndMgr_StartPlayingSE(SEIDX_MINAMI_BTL_WIN01);
             break;
         case 16:
-            SndMgr_StartPlayingSE(0x500);
+            SndMgr_StartPlayingSE(SEIDX_MINAMI_H_BTL_WIN01);
             break;
         case 17:
-            SndMgr_StartPlayingSE(0x4C3);
+            SndMgr_StartPlayingSE(SEIDX_MINAMI_EVENT_YOROKOBIL01);
             break;
         case 18:
-            SndMgr_StartPlayingSE(0x4C3);
+            SndMgr_StartPlayingSE(SEIDX_MINAMI_EVENT_YOROKOBIL01);
             break;
         case 19:
-            SndMgr_StartPlayingSE(0x514);
+            SndMgr_StartPlayingSE(SEIDX_HIGASHI_N_BTL_WIN01);
             break;
         case 20:
-            SndMgr_StartPlayingSE(0x4D9);
+            SndMgr_StartPlayingSE(SEIDX_KITA_N_BTL_WIN01);
             break;
         case 21:
-            SndMgr_StartPlayingSE(0x4D9);
+            SndMgr_StartPlayingSE(SEIDX_KITA_N_BTL_WIN01);
             break;
         case 22:
-            SndMgr_StartPlayingSE(0x4D9);
+            SndMgr_StartPlayingSE(SEIDX_KITA_N_BTL_WIN01);
             break;
         case 23:
         case 24:
         case 25:
         case 26:
             if (RNG_Next(2) != 0) {
-                SndMgr_StartPlayingSE(0x3EA);
+                SndMgr_StartPlayingSE(SEIDX_BIITO_BTL_WIN01);
             } else {
-                SndMgr_StartPlayingSE(0x3EC);
+                SndMgr_StartPlayingSE(SEIDX_BIITO_BTL_WIN03);
             }
             break;
         case 27:
-            SndMgr_StartPlayingSE(0x4D3);
+            SndMgr_StartPlayingSE(SEIDX_KITA_BTL_WIN01);
             break;
         case 28:
-            SndMgr_StartPlayingSE(0x523);
+            SndMgr_StartPlayingSE(SEIDX_KARIYA_BTL_WIN01);
             break;
         case 29:
-            SndMgr_StartPlayingSE(0x53B);
+            SndMgr_StartPlayingSE(SEIDX_YASHIRO_BTL_WIN01);
             break;
         case 30:
             if (RNG_Next(2) != 0) {
-                SndMgr_StartPlayingSE(0x523);
+                SndMgr_StartPlayingSE(SEIDX_KARIYA_BTL_WIN01);
             } else {
-                SndMgr_StartPlayingSE(0x53B);
+                SndMgr_StartPlayingSE(SEIDX_YASHIRO_BTL_WIN01);
             }
             break;
         case 32:
-            SndMgr_StartPlayingSE(0x558);
+            SndMgr_StartPlayingSE(SEIDX_HANEKOMA_N_BTL_FB06);
             break;
         default:
             result = 0;
@@ -206,10 +204,10 @@ void func_ov003_020a1994(void) {
     if (other || RNG_Next(2) != 0) {
         switch (line) {
             case 0:
-                SndMgr_StartPlayingSE(0x370);
+                SndMgr_StartPlayingSE(SEIDX_NEKU_BTL_OVR01);
                 break;
             case 1:
-                SndMgr_StartPlayingSE(0x371);
+                SndMgr_StartPlayingSE(SEIDX_NEKU_BTL_OVR02);
                 break;
         }
         return;
@@ -217,30 +215,30 @@ void func_ov003_020a1994(void) {
     if (data_ov003_020e71b8->unk3D88D == 0) {
         switch (line) {
             case 0:
-                SndMgr_StartPlayingSE(0x398);
+                SndMgr_StartPlayingSE(SEIDX_SHIKI_BTL_OVR01);
                 break;
             case 1:
-                SndMgr_StartPlayingSE(0x399);
+                SndMgr_StartPlayingSE(SEIDX_SHIKI_BTL_OVR02);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 1) {
         switch (line) {
             case 0:
-                SndMgr_StartPlayingSE(0x3C0);
+                SndMgr_StartPlayingSE(SEIDX_YOSHUA_BTL_OVR01);
                 break;
             case 1:
-                SndMgr_StartPlayingSE(0x3C1);
+                SndMgr_StartPlayingSE(SEIDX_YOSHUA_BTL_OVR02);
                 break;
         }
     }
     if (data_ov003_020e71b8->unk3D88D == 2) {
         switch (line) {
             case 0:
-                SndMgr_StartPlayingSE(0x3E8);
+                SndMgr_StartPlayingSE(SEIDX_BIITO_BTL_OVR01);
                 break;
             case 1:
-                SndMgr_StartPlayingSE(0x3E9);
+                SndMgr_StartPlayingSE(SEIDX_BIITO_BTL_OVR02);
                 break;
         }
     }
@@ -267,19 +265,15 @@ void func_ov003_020a1b34(BtlOver* self) {
     g_DisplaySettings.controls[0].windows &= ~4;
     g_DisplaySettings.engineState[0].bgSettings[3].priority = 0;
     g_DisplaySettings.engineState[0].blendMode              = 1;
-    g_DisplaySettings.engineState[0].blendLayer0            = 8;
-    g_DisplaySettings.engineState[0].blendLayer1            = 0x37;
-    g_DisplaySettings.engineState[0].blendCoeff0            = 8;
-    g_DisplaySettings.engineState[0].blendCoeff1            = 8;
+    Display_SetBlendLayers(0, 8, 0x37);
+    Display_SetBlendCoeffs(0, 8, 8);
     g_DisplaySettings.controls[1].windows &= ~4;
     g_DisplaySettings.engineState[1].bgSettings[3].priority = 0;
     g_DisplaySettings.engineState[1].blendMode              = 1;
-    g_DisplaySettings.engineState[1].blendLayer0            = 8;
-    g_DisplaySettings.engineState[1].blendLayer1            = 0x37;
-    g_DisplaySettings.engineState[1].blendCoeff0            = 8;
-    g_DisplaySettings.engineState[1].blendCoeff1            = 8;
-    self->blend                                             = 0;
-    self->blendTimer                                        = 0x50;
+    Display_SetBlendLayers(1, 8, 0x37);
+    Display_SetBlendCoeffs(1, 8, 8);
+    self->blend      = 0;
+    self->blendTimer = 0x50;
 }
 
 /// Closes the blend in.
@@ -290,28 +284,22 @@ void func_ov003_020a1bbc(BtlOver* self) {
         func_02026590(&self->blend, 0x8000, (u16)self->blendTimer);
         self->blendTimer--;
     }
-    amount                                       = self->blend >> 12;
-    g_DisplaySettings.engineState[0].blendCoeff0 = 8 - amount;
-    g_DisplaySettings.engineState[0].blendCoeff1 = amount + 8;
-    g_DisplaySettings.engineState[1].blendCoeff0 = 8 - amount;
-    g_DisplaySettings.engineState[1].blendCoeff1 = amount + 8;
+    amount = self->blend >> 12;
+    Display_SetBlendCoeffs(0, 8 - amount, amount + 8);
+    Display_SetBlendCoeffs(1, 8 - amount, amount + 8);
     if (self->blendTimer > 0) {
         return;
     }
     g_DisplaySettings.controls[0].windows |= 4;
     g_DisplaySettings.engineState[0].bgSettings[3].priority = 3;
     g_DisplaySettings.engineState[0].blendMode              = 1;
-    g_DisplaySettings.engineState[0].blendLayer0            = 1;
-    g_DisplaySettings.engineState[0].blendLayer1            = 0x3E;
-    g_DisplaySettings.engineState[0].blendCoeff0            = 8;
-    g_DisplaySettings.engineState[0].blendCoeff1            = 8;
+    Display_SetBlendLayers(0, 1, 0x3E);
+    Display_SetBlendCoeffs(0, 8, 8);
     g_DisplaySettings.controls[1].windows |= 4;
     g_DisplaySettings.engineState[1].bgSettings[3].priority = 3;
     g_DisplaySettings.engineState[1].blendMode              = 1;
-    g_DisplaySettings.engineState[1].blendLayer0            = 1;
-    g_DisplaySettings.engineState[1].blendLayer1            = 0x3E;
-    g_DisplaySettings.engineState[1].blendCoeff0            = 8;
-    g_DisplaySettings.engineState[1].blendCoeff1            = 8;
+    Display_SetBlendLayers(1, 1, 0x3E);
+    Display_SetBlendCoeffs(1, 8, 8);
 }
 
 /// The music stops and the screen fades.
@@ -320,7 +308,7 @@ void func_ov003_020a1c80(BtlOver* self) {
         self->timer = 30;
         func_0202fbf4(0);
         CriSndMgr_Stop(data_ov003_020e71b8->unk3D870);
-        SndMgr_PlaySEWithPan(0x18, 0x80);
+        SndMgr_PlaySEWithPan(SEIDX_SE_GAMEOVER, 0x80);
         EasyFade_FadeBothDisplays(0, 0, 0x1000);
     }
     self->timer--;
@@ -376,8 +364,8 @@ void func_ov003_020a1db4(BtlOver* self) {
             g_DisplaySettings.controls[1].layers &= ~2;
             g_DisplaySettings.controls[1].layers &= ~4;
         } else {
-            g_DisplaySettings.controls[0].layers = 0x10;
-            g_DisplaySettings.controls[1].layers = 0x10;
+            Display_SetMainLayers(0x10);
+            Display_SetSubLayers(0x10);
         }
         data_ov003_020e71b8->unk3D884 = 1;
     }

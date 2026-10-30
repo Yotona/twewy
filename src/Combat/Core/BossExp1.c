@@ -1,6 +1,5 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
-#include "Combat/Core/CombatBgScroll.h"
 #include "Combat/Core/CombatBossExp.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
@@ -90,21 +89,13 @@ extern char             data_ov003_020e6b64[];
 extern s32              data_ov003_020e7254;
 extern const TaskHandle data_ov003_020d81e0;
 
-extern s32               func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage);
-extern Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor);
-extern void              func_ov003_020c4af0(Ov003EnemyActor* actor);
-extern s32               func_ov003_020c37f8(CombatSprite* sprite);
-extern s32               func_ov003_020c38b8(CombatSprite* sprite, u16 anim, s32 arg2);
-extern s32               func_ov003_020bd2b8(void);
-extern void              func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void              func_ov003_02082738(CombatSprite* sprite, s32 arg1);
+extern s32  func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage);
+extern s32  func_ov003_020bd2b8(void);
 extern s32  func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
-extern void func_ov003_02083e50(s32 arg0);
-extern void func_020265d4(void* dst, s32 step, u16 count);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 extern void func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
 extern void func_0200d954(s32 engine, s32 bg);
-extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
 
 void func_ov003_020c7f58(BossExp1* self);
 void func_ov003_020c80b8(BossExp1* self);
@@ -251,50 +242,50 @@ s32 func_ov003_020c7070(Ov003EnemyActor* actor) {
 
 /// One frame of an enemy's defeat animation, which plays animations `anim`, `anim + 1` and `anim + 2` in turn.
 s32 func_ov003_020c70a4(Ov003CutinActor* actor, s32 anim) {
-    switch (actor->unk_1A8) {
+    switch (actor->base.unk_1A8) {
         case 0:
-            if (actor->unk_1A4 == 0) {
-                CombatSprite_SetAnimFromTable(&actor->sprite, anim, 1);
-                CombatSprite_Restart(&actor->sprite);
-                if (actor->actor.unk_0C == 0) {
+            if (actor->base.unk_1A4 == 0) {
+                CombatSprite_SetAnimFromTable(&actor->base.sprite, anim, 1);
+                CombatSprite_Restart(&actor->base.sprite);
+                if (actor->base.actor.unk_0C == 0) {
                     func_ov003_020c4af0(&actor->base);
                 } else {
-                    if (actor->actor.position.x > actor->actor.unk_0C) {
-                        actor->actor.isFlipped = 0;
+                    if (actor->base.actor.position.x > actor->base.actor.unk_0C) {
+                        actor->base.actor.isFlipped = 0;
                     }
-                    if (actor->actor.position.x < actor->actor.unk_0C) {
-                        actor->actor.isFlipped = 1;
+                    if (actor->base.actor.position.x < actor->base.actor.unk_0C) {
+                        actor->base.actor.isFlipped = 1;
                     }
                 }
-                actor->actor.flags |= 8;
+                actor->base.actor.flags |= 8;
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
-                actor->unk_1A4 = 0;
-                actor->unk_1A8++;
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
+                actor->base.unk_1A4 = 0;
+                actor->base.unk_1A8++;
             } else {
-                actor->unk_1A4++;
+                actor->base.unk_1A4++;
             }
             break;
         case 1:
-            if (actor->unk_1A4 == 0) {
-                CombatSprite_SetAnimFromTable(&actor->sprite, (u16)(anim + 1), 0);
+            if (actor->base.unk_1A4 == 0) {
+                CombatSprite_SetAnimFromTable(&actor->base.sprite, (u16)(anim + 1), 0);
             }
-            if (actor->unk_1A4 <= actor->unk_1A6) {
-                actor->unk_1A4++;
+            if (actor->base.unk_1A4 <= actor->base.unk_1A6) {
+                actor->base.unk_1A4++;
             } else {
-                actor->unk_1A4 = 0;
-                actor->unk_1A8++;
+                actor->base.unk_1A4 = 0;
+                actor->base.unk_1A8++;
             }
             break;
         case 2:
-            if (actor->unk_1A4 == 0) {
-                CombatSprite_SetAnimFromTable(&actor->sprite, (u16)(anim + 2), 1);
-                actor->actor.flags &= ~8;
+            if (actor->base.unk_1A4 == 0) {
+                CombatSprite_SetAnimFromTable(&actor->base.sprite, (u16)(anim + 2), 1);
+                actor->base.actor.flags &= ~8;
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 return 0;
             }
-            actor->unk_1A4++;
+            actor->base.unk_1A4++;
             break;
     }
     return 1;
@@ -388,8 +379,8 @@ void func_ov003_020c73a0(void) {
         g_DisplaySettings.engineState[e].bgSettings[1].priority = 1;
         g_DisplaySettings.engineState[e].bgSettings[2].priority = 2;
         g_DisplaySettings.controls[e].layers                    = 0x10;
-        Ov003_ScrollBgById(e, 1, 0, 0);
-        Ov003_ScrollBgById(e, 2, 0, 0);
+        Display_SetBGOffset(e, 1, 0, 0);
+        Display_SetBGOffset(e, 2, 0, 0);
         g_DisplaySettings.controls[e].windows                 = 7;
         g_DisplaySettings.engineState[e].window0              = 4;
         g_DisplaySettings.engineState[e].window0Effects       = 0;
@@ -668,9 +659,9 @@ void func_ov003_020c80b8(BossExp1* self) {
             func_ov003_020c75ec(self, 1);
             func_ov003_020c7940(self, 0);
             if (self->anims.actor->group == 0x21) {
-                func_ov003_02087ed8(0x1C4);
+                func_ov003_02087ed8(SEIDX_SE_LBAT_DYINGFX01);
             } else {
-                func_ov003_02087ed8(0x6F);
+                func_ov003_02087ed8(SEIDX_SE_BOSS_DYINGFX01);
             }
             self->phase++;
             return;
@@ -911,10 +902,14 @@ void func_ov003_020c86b4(BossExp1* self) {
 /// Scrolls all four backdrop layers up by twice the scroll value.
 void func_ov003_020c8a18(BossExp1* self, s32 time) {
     func_020265d4(&self->scroll, 0xA00000, (u16)(0xB9 - time));
-    Ov003_ScrollBg(&g_DisplaySettings.engineState[self->maps[0][0].engineId], self->maps[0][0].bgLayer, 0, self->scroll * 2);
-    Ov003_ScrollBg(&g_DisplaySettings.engineState[self->maps[0][1].engineId], self->maps[0][1].bgLayer, 0, self->scroll * 2);
-    Ov003_ScrollBg(&g_DisplaySettings.engineState[self->maps[1][0].engineId], self->maps[1][0].bgLayer, 0, self->scroll * 2);
-    Ov003_ScrollBg(&g_DisplaySettings.engineState[self->maps[1][1].engineId], self->maps[1][1].bgLayer, 0, self->scroll * 2);
+    Display_SetEngineBGOffset(&g_DisplaySettings.engineState[self->maps[0][0].engineId], self->maps[0][0].bgLayer, 0,
+                              self->scroll * 2);
+    Display_SetEngineBGOffset(&g_DisplaySettings.engineState[self->maps[0][1].engineId], self->maps[0][1].bgLayer, 0,
+                              self->scroll * 2);
+    Display_SetEngineBGOffset(&g_DisplaySettings.engineState[self->maps[1][0].engineId], self->maps[1][0].bgLayer, 0,
+                              self->scroll * 2);
+    Display_SetEngineBGOffset(&g_DisplaySettings.engineState[self->maps[1][1].engineId], self->maps[1][1].bgLayer, 0,
+                              self->scroll * 2);
 }
 
 /// The last scene: a second backdrop scrolls past and the screen fades out.
@@ -926,9 +921,9 @@ void func_ov003_020c8be8(BossExp1* self) {
                 func_ov003_020c75ec(self, 2);
                 func_ov003_020c75ec(self, 3);
                 if (self->anims.actor->group == 0x21) {
-                    func_ov003_02087ed8(0x1C5);
+                    func_ov003_02087ed8(SEIDX_SE_LBAT_DYINGFX02);
                 } else {
-                    func_ov003_02087ed8(0x70);
+                    func_ov003_02087ed8(SEIDX_SE_BOSS_DYINGFX02);
                 }
             }
             if (self->timer <= 0) {

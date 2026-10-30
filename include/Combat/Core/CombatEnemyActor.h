@@ -26,9 +26,8 @@ typedef union Ov003CutinFlags {
 } Ov003CutinFlags; // Size: 0x2
 
 /// The battle actor every cut-in, enemy shot and noise enemy starts with: what `func_ov003_020c41e8` resets.
-/// Types built on it open with `union { Ov003EnemyActor base; Ov003EnemyActor; };`, so the fields read directly
-/// and `&x->base` is what the shared actor functions take. Code that treats it as an attack target used to call
-/// it `Ov003Unit`.
+/// Types built on it open with an `Ov003EnemyActor base;` member, and `&x->base` is what the shared actor functions
+/// take. Code that treats it as an attack target used to call it `Ov003Unit`.
 typedef struct Ov003EnemyActor {
     /* 0x000 */ CombatActor             actor;
     /* 0x07C */ s32                     group; // index into data_ov003_020e70ac

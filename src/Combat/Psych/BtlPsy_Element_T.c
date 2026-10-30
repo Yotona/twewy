@@ -11,7 +11,7 @@ s32 func_ov003_020af41c(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003ElementTArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc864.taskName);
     arg->effect            = effect;
     arg->kind              = effect->index == 4 ? 3 : 2;
-    context->handle        = (TaskHandle*)&data_ov003_020dc864;
+    context->handle        = &data_ov003_020dc864;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

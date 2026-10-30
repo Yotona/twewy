@@ -43,7 +43,7 @@ extern const BinIdentifier data_ov003_020d7810;
 
 extern s32  func_ov003_02086fec(void);
 extern void func_ov003_02087008(void);
-extern void func_ov003_020a0244(s32 index, Ov003TouchActor* actor);
+extern s32  func_ov003_020a0244(s32 level, Ov003TouchActor* owner);
 
 void func_ov003_02094668(CombatSprite* sprite, s32 index);
 s32  func_ov003_0209477c(TaskPool* pool, Task* task, void* args);
@@ -166,7 +166,7 @@ s32 func_ov003_02094850(TaskPool* pool, Task* task, void* args) {
             self->index = index;
             CombatSprite_Release(&self->actor.sprite);
             func_ov003_020a0244(self->index, &self->actor);
-            func_ov003_02087ed8(0x156);
+            func_ov003_02087ed8(SEIDX_SE_GIRL_ESP_FULL);
             func_ov003_02094668(&self->actor.sprite, self->index);
         }
     } else {
@@ -175,7 +175,7 @@ s32 func_ov003_02094850(TaskPool* pool, Task* task, void* args) {
         if (self->index > 0) {
             self->actor.unk_044 = 1;
             func_ov003_020a0244(self->index, &self->actor);
-            func_ov003_02087ed8(0x156);
+            func_ov003_02087ed8(SEIDX_SE_GIRL_ESP_FULL);
             func_ov003_02094668(&self->actor.sprite, self->index);
         }
     }

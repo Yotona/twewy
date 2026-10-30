@@ -6,9 +6,6 @@
 #include "Engine/Math/Random.h"
 #include <nitro/mi/cpumem.h>
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 /// The task parameter: the root of the beam to follow and how the beam grows along it.
 typedef struct Ov003EnemyShotLaserSubArgs {
     /* 0x00 */ Ov003EnemyShotSource* source;
@@ -46,9 +43,6 @@ typedef struct Ov003EnemyShotLaserSub {
     /* 0x0FC */ s32                   targetY;
 } Ov003EnemyShotLaserSub; // Size: 0x100
 
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32              func_ov003_020c3c28(void);
-extern s32              func_ov003_020c37f8(CombatSprite*);
 extern const TaskHandle data_ov003_020e0c8c;
 
 void func_ov003_020d07a8(Ov003EnemyShotSource* source, CombatList* list, Ov003EnemyShotRoot* root, u16 animation, s16 inset,
@@ -116,9 +110,9 @@ s32 func_ov003_020d0990(Ov003EnemyShotLaserSub* self) {
                     self->growTotal = self->targetY;
                     self->phase++;
                     if (self->direction == 0x4000)
-                        self->y -= FX_Mul(self->targetY, (s32)ROUND_FX(self->inset));
+                        self->y -= FX_Mul(self->targetY, FX32_CONVERT(self->inset));
                     else
-                        self->y += FX_Mul(self->targetY, (s32)ROUND_FX(self->inset));
+                        self->y += FX_Mul(self->targetY, FX32_CONVERT(self->inset));
                     self->direction += 0x8000;
                 }
             } else {
@@ -129,9 +123,9 @@ s32 func_ov003_020d0990(Ov003EnemyShotLaserSub* self) {
                     self->growTotal = self->targetX;
                     self->phase++;
                     if (self->direction == 0)
-                        self->x -= FX_Mul(self->targetX, (s32)ROUND_FX(self->inset));
+                        self->x -= FX_Mul(self->targetX, FX32_CONVERT(self->inset));
                     else
-                        self->x += FX_Mul(self->targetX, (s32)ROUND_FX(self->inset));
+                        self->x += FX_Mul(self->targetX, FX32_CONVERT(self->inset));
                     self->direction += 0x8000;
                 }
             }
@@ -170,10 +164,10 @@ s32 func_ov003_020d0990(Ov003EnemyShotLaserSub* self) {
             return 0;
     }
     info      = *func_ov003_0208a114(self->source->core.attackId);
-    halfWidth = FX_Mul(self->growX, (s32)ROUND_FX(self->inset)) >> 1;
+    halfWidth = FX_Mul(self->growX, FX32_CONVERT(self->inset)) >> 1;
     if (halfWidth < 0x1000)
         halfWidth = 0x1000;
-    halfHeight = FX_Mul(self->growY, (s32)ROUND_FX(self->inset)) >> 1;
+    halfHeight = FX_Mul(self->growY, FX32_CONVERT(self->inset)) >> 1;
     if (halfHeight < 0x1000)
         halfHeight = 0x1000;
     info.unk_05 = halfWidth >> 12;
@@ -183,20 +177,20 @@ s32 func_ov003_020d0990(Ov003EnemyShotLaserSub* self) {
     boxZ        = self->z;
     switch (self->direction) {
         case 0:
-            boxX -= FX_Mul(self->growX, (s32)ROUND_FX(self->inset)) >> 1;
+            boxX -= FX_Mul(self->growX, FX32_CONVERT(self->inset)) >> 1;
             break;
         case 0x8000:
-            boxX += FX_Mul(self->growX, (s32)ROUND_FX(self->inset)) >> 1;
+            boxX += FX_Mul(self->growX, FX32_CONVERT(self->inset)) >> 1;
             break;
         case 0x4000:
-            boxY -= FX_Mul(self->growY, (s32)ROUND_FX(self->inset)) >> 1;
+            boxY -= FX_Mul(self->growY, FX32_CONVERT(self->inset)) >> 1;
             break;
         case 0xC000:
-            boxY += FX_Mul(self->growY, (s32)ROUND_FX(self->inset)) >> 1;
+            boxY += FX_Mul(self->growY, FX32_CONVERT(self->inset)) >> 1;
             break;
     }
     func_ov003_02084348(0, &x, &y, boxX, boxY, boxZ);
-    func_ov003_0208a1a4(&info, &self->source->core.owner->actor.baseArgs, x, y);
+    func_ov003_0208a1a4(&info, &self->source->core.owner->base.actor.baseArgs, x, y);
     CombatSprite_Update(&self->sprite);
     CombatSprite_Update(&self->sprite2);
     return 1;

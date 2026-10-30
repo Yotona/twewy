@@ -5,14 +5,11 @@
 #include "Combat/Noise/Private/Boss01.h"
 
 typedef struct BtlObs_RG {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ u16  unk_1C0;
-    /* 0x1C2 */ u16  unk_1C2;
-    /* 0x1C4 */ char unk_1C4[0x284 - 0x1C4];
-    /* 0x284 */ Quad unk_284;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ u16             unk_1C0;
+    /* 0x1C2 */ u16             unk_1C2;
+    /* 0x1C4 */ char            unk_1C4[0x284 - 0x1C4];
+    /* 0x284 */ Quad            unk_284;
     /* 0x28C */ void (*unk_28C)(struct BtlObs_RG*);
     /* 0x290 */ u16 unk_290;
     /* 0x292 */ s16 unk_292;
@@ -43,20 +40,21 @@ static void BtlObs_RG_StateIdle(BtlObs_RG* obs) {
 }
 
 static void BtlObs_RG_StateHit(BtlObs_RG* obs) {
-    obs->actor.flags |= 6;
+    obs->base.actor.flags |= 6;
     func_ov003_020c4a34(obs);
 
     if (data_ov003_020e71b8->unk3D8A0 == obs) {
         data_ov003_020e71b8->unk3D8A0 = NULL;
     }
 
-    if (obs->flags18C & 0x1000) {
+    if (obs->base.flags18C & 0x1000) {
         obs->unk_294 = 0;
         return;
     }
 
     if (func_ov009_020fa71c(&obs->unk_1C0) != 0) {
-        BtlEff_Bomb_CreateTaskDefault(233, &obs->unk_284, obs->actor.position.x, obs->actor.position.y, obs->actor.position.z);
+        BtlEff_Bomb_CreateTaskDefault(233, &obs->unk_284, obs->base.actor.position.x, obs->base.actor.position.y,
+                                      obs->base.actor.position.z);
         obs->unk_294 = 0;
     } else {
         BtlObs_RG_SetState(obs, BtlObs_RG_StateFall);
@@ -68,14 +66,14 @@ static void BtlObs_RG_StateFall(BtlObs_RG* obs) {
 
     if (obs->unk_292 == 0) {
         if (obs->unk_1C2 == 0) {
-            CombatSprite_SetAnimFromTable(&obs->sprite, 1, 0);
+            CombatSprite_SetAnimFromTable(&obs->base.sprite, 1, 0);
         }
 
-        obs->actor.xVelocity = (obs->actor.position.x >= temp_r5->actor.position.x) ? 0x5000 : -0x5000;
-        obs->actor.yVelocity = 0;
-        obs->actor.zVelocity = 0;
+        obs->base.actor.xVelocity = (obs->base.actor.position.x >= temp_r5->base.actor.position.x) ? 0x5000 : -0x5000;
+        obs->base.actor.yVelocity = 0;
+        obs->base.actor.zVelocity = 0;
     }
-    if ((obs->actor.position.z == 0) && (obs->actor.zVelocity == 0)) {
+    if ((obs->base.actor.position.z == 0) && (obs->base.actor.zVelocity == 0)) {
         obs->unk_294 = 0;
     } else {
         obs->unk_292++;
@@ -90,12 +88,12 @@ static s32 BtlObs_RG_Init(TaskPool* pool, Task* task, void* args) {
 
     obs->unk_284 = *spawnArgs->unk_C;
 
-    func_ov003_02086404(1, &obs->sprite, spawnArgs->unk_2);
+    func_ov003_02086404(1, &obs->base.sprite, spawnArgs->unk_2);
     func_ov003_020864dc(obs, spawnArgs->unk_2);
     obs->unk_1C2 = spawnArgs->unk_2;
 
     if (RNG_Next(2) != 0) {
-        CombatSprite_SetFlip(&obs->sprite, 1);
+        CombatSprite_SetFlip(&obs->base.sprite, 1);
     }
 
     func_ov003_020c4988(obs);
@@ -111,7 +109,7 @@ static s32 BtlObs_RG_Update(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
 
-    s32 temp = CombatActor_PopPendingCommand(&obs->actor);
+    s32 temp = CombatActor_PopPendingCommand(&obs->base.actor);
     if ((temp == 1) || (temp == 3)) {
         BtlObs_RG_SetState(obs, BtlObs_RG_StateHit);
     }
@@ -120,8 +118,8 @@ static s32 BtlObs_RG_Update(TaskPool* pool, Task* task, void* args) {
         obs->unk_28C(obs);
     }
 
-    CombatActor_UpdatePhysics(&obs->actor);
-    CombatSprite_Update(&obs->sprite);
+    CombatActor_UpdatePhysics(&obs->base.actor);
+    CombatSprite_Update(&obs->base.sprite);
     return obs->unk_294;
 }
 
@@ -131,14 +129,14 @@ static s32 BtlObs_RG_Render(TaskPool* pool, Task* task, void* args) {
     if (func_ov003_0208656c() == 0) {
         return 1;
     }
-    CombatActor_Render(&obs->actor, &obs->sprite);
+    CombatActor_Render(&obs->base.actor, &obs->base.sprite);
     return 1;
 }
 
 static s32 BtlObs_RG_Destroy(TaskPool* pool, Task* task, void* args) {
     BtlObs_RG* obs = task->data;
 
-    CombatSprite_Release(&obs->sprite);
+    CombatSprite_Release(&obs->base.sprite);
     func_ov003_020c4a34(obs);
     if (data_ov003_020e71b8->unk3D8A0 == obs) {
         data_ov003_020e71b8->unk3D8A0 = NULL;

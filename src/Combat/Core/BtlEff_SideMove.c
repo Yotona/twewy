@@ -10,9 +10,6 @@
 // (`Tsk_BossExp1`, defined with the boss explosion) is started with them once the cut-in teardown reaches it. The
 // stage function at the end drives one of the sprites that fly out of the boss.
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 // ---------------------------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------------------------
@@ -45,10 +42,6 @@ extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020e0a48;
 
 extern void func_ov003_020c439c(Ov003EnemyActor* actor, SpriteAnimationEx* anim);
-extern s32  func_ov003_020c37f8(CombatSprite* sprite);
-extern void func_ov003_020c5130(Ov003EnemyActor* actor);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void func_ov003_02084348(s32 engine, s16* x, s16* y, s32 worldX, s32 worldY, s32 worldZ);
 
 char data_ov003_020e6b38[0x10] = "Tsk_BossExp1";
 char data_ov003_020e6b48[0x1C] = "Apl_Mor/Grp_BossExp1.bin";
@@ -163,16 +156,18 @@ s32 func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage) {
 
                 MI_CpuSet(self, 0, sizeof(*self));
                 self->actor      = args;
-                self->position.x = self->actor->actor.position.x;
-                self->position.y = self->actor->actor.position.y;
-                self->position.z = self->actor->actor.position.z;
-                self->velocityX  = (self->actor->unk_1AC - self->actor->actor.position.x) / 30;
-                self->velocityY  = (self->actor->unk_1B0 - self->actor->actor.position.y) / 20;
+                self->position.x = self->actor->base.actor.position.x;
+                self->position.y = self->actor->base.actor.position.y;
+                self->position.z = self->actor->base.actor.position.z;
+                self->velocityX  = (self->actor->base.unk_1AC - self->actor->base.actor.position.x) / 30;
+                self->velocityY  = (self->actor->base.unk_1B0 - self->actor->base.actor.position.y) / 20;
                 self->fall       = -0xA000;
                 self->frame      = 0;
                 CombatSprite_LoadFromTable(1, &self->sprite, &data_ov003_020d7800, data_ov003_020e0b80, 0, 0x3F, 0);
                 CombatSprite_SetAnimFromTable(&self->sprite, 0, 1);
-                if (self->actor->actor.position.x > ((Ov003CutinActor*)data_ov003_020e71b8->unk3D89C)->actor.position.x) {
+                if (self->actor->base.actor.position.x >
+                    ((Ov003CutinActor*)data_ov003_020e71b8->unk3D89C)->base.actor.position.x)
+                {
                     CombatSprite_SetFlip(&self->sprite, 1);
                     self->position.x -= 0x18000;
                 } else {
@@ -189,7 +184,7 @@ s32 func_ov003_020c9478(TaskPool* pool, Task* task, void* args, s32 stage) {
                 CombatSprite_Update(&self->sprite);
                 self->position.x += self->velocityX;
                 self->position.y += self->velocityY;
-                self->position.z += self->fall + (s32)ROUND_FX(self->frame);
+                self->position.z += self->fall + FX32_CONVERT(self->frame);
                 self->frame++;
                 break;
             case 2: {

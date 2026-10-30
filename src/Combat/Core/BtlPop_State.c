@@ -67,12 +67,6 @@ const SpriteAnimEntry data_ov003_020d80f8[5] = {
 
 extern BinIdentifier data_ov003_020d7800;
 
-/// The status popup picks its sprite index conditionally and the retail call site passes it
-/// through without narrowing it to `CombatSprite_LoadFromTable`'s `u16` parameter, so call it
-/// through a plain-integer signature (same idiom as `CombatSprite_LoadDirectNoProto`).
-#define CombatSprite_LoadFromTableNoProto                                                                                   \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, const SpriteAnimEntry*, s32, s32, s32))CombatSprite_LoadFromTable)
-
 /// Picks the label sprite for the unit's current periodic effect mode. Mode 0 (no effect) hides
 /// the popup by clearing `active`; modes 1..4 map onto the four sprite table entries.
 void func_ov003_0209ca18(BtlPop_State* data) {

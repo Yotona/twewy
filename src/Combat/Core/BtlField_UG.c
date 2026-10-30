@@ -1,7 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatBgRes.h"
-#include "Combat/Core/CombatBgScroll.h"
+#include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
@@ -14,6 +14,7 @@
 #include "SpriteMgr.h"
 
 #include <nitro/g2.h>
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 // The main-screen field background of a battle: one BG tilemap driven by the camera, and the floor
@@ -63,15 +64,14 @@ extern const BtlFieldDef data_ov003_020da2bc[];
 
 // External functions.
 
-extern BgResource*  BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern void         func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
-extern void         func_0200d954(s32 engine, s32 bg);
-extern void         func_02026590(void* dst, s32 step, u16 count);
-extern void         func_ov003_02083300(Ov003BgResState* state, s32 engine, BinIdentifier* iden);
-extern void         func_ov003_0208335c(Ov003BgResState* state, const Ov003ResCmd* script, void* arg);
-extern void         func_ov003_02083390(Ov003BgResState* state);
-extern void         func_ov003_020833cc(Ov003BgResState* state);
-extern Ov003Camera* func_ov003_0209409c(s32 bgIndex);
+extern void func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
+extern void func_0200d954(s32 engine, s32 bg);
+extern void func_02026590(s32* dst, s32 target, u16 weight);
+extern void func_ov003_02083300(Ov003BgResState* state, s32 engine, BinIdentifier* iden);
+extern void func_ov003_0208335c(Ov003BgResState* state, const Ov003ResCmd* script, void* arg);
+extern void func_ov003_02083390(Ov003BgResState* state);
+extern void func_ov003_020833cc(Ov003BgResState* state);
+extern void func_ov003_0209409c(s32 bgIndex);
 
 // Defined in this unit.
 
@@ -82,12 +82,12 @@ void func_ov003_020934c8(Ov003Camera* camera);
 void func_ov003_02093608(BtlFieldUG* state);
 void func_ov003_020936fc(BtlFieldUG* state);
 
-s32 func_ov003_0209378c(TaskPool*, Task*, void*);
-s32 func_ov003_02093b40(TaskPool*, Task*, void*);
-s32 func_ov003_02093b94(TaskPool*, Task*, void*);
-s32 func_ov003_02093ba8(TaskPool*, Task*, void*);
+s32 func_ov003_0209378c(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_02093b40(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_02093b94(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_02093ba8(TaskPool* pool, Task* task, void* args);
 
-s32 func_ov003_02093c28(TaskPool*, Task*, void*, s32);
+s32 func_ov003_02093c28(TaskPool* pool, Task* task, void* args, s32 stage);
 
 /// `TaskHandle.taskName` of `data_ov003_020d7b68`.
 char data_ov003_020e3b28[0x10] = "Tsk_BtlField_UG";
@@ -161,13 +161,13 @@ void func_ov003_020934c8(Ov003Camera* camera) {
     dy = (camera->unk_38 - camera->unk_2C) >> 5;
     dz = (camera->unk_3C - camera->unk_30) >> 2;
 
-    mag = (dx < 0) ? -dx : dx;
+    mag = ABS(dx);
     if (mag < 0x666)
         dx = 0;
-    mag = (dy < 0) ? -dy : dy;
+    mag = ABS(dy);
     if (mag < 0x666)
         dy = 0;
-    mag = (dz < 0) ? -dz : dz;
+    mag = ABS(dz);
     if (mag < 0x666)
         dz = 0;
 
@@ -192,16 +192,6 @@ void func_ov003_020934c8(Ov003Camera* camera) {
     }
     camera->unk_28 = camera->unk_28 + camera->unk_44;
     camera->unk_40 += camera->unk_48 + camera->unk_4C;
-}
-
-/// Scrolls the BG of `map` to the camera's position, shifted by `offsetX`/`offsetY`.
-static inline void BtlField_ScrollRow(ScreenMapEntry* map, Ov003Camera* camera, s32 offsetX, s32 offsetY) {
-    s32                 layer  = map->bgLayer;
-    DisplayEngineState* engine = &g_DisplaySettings.engineState[map->engineId];
-    s32                 posY   = camera->unk_40 - offsetY;
-    s32                 posX   = camera->unk_28 - offsetX;
-
-    Ov003_ScrollBg(engine, layer, posX, posY);
 }
 
 /// Parks the two floor strips behind the camera: the near one first, then the far one.
@@ -262,10 +252,10 @@ s32 func_ov003_0209378c(TaskPool* pool, Task* task, void* args) {
 
     state->data = DatMgr_LoadPackEntry(1, NULL, 0, def->iden, def->rowPack, 0);
     // The strips start after the 4-byte header of their pack entries.
-    state->rowData[0] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex0) + 4;
-    state->rowData[1] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex1) + 4;
-    state->rowData[2] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex2) + 4;
-    state->rowData[3] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex3) + 4;
+    state->rowData[0] = Ov003Cutin_Tiles(state->data, def->rowIndex0);
+    state->rowData[1] = Ov003Cutin_Tiles(state->data, def->rowIndex1);
+    state->rowData[2] = Ov003Cutin_Tiles(state->data, def->rowIndex2);
+    state->rowData[3] = Ov003Cutin_Tiles(state->data, def->rowIndex3);
 
     func_0200d1d8(&state->rowMaps[0], 0, 1, NULL, state->rowData, 1, 2);
     func_0200d1d8(&state->rowMaps[1], 0, 2, NULL, &state->rowData[2], 1, 2);

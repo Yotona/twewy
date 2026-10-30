@@ -11,7 +11,7 @@ s32 func_ov003_020af280(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc858.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc858;
+    context->handle        = &data_ov003_020dc858;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -33,10 +33,10 @@ s32 func_ov003_020af2d8(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov003_020a6464(1);
             Ov003EffectState* effect = self->effect;
             s32               kind   = effect->index == 3 ? 1 : 0;
-            s32 angle = func_ov003_020a62d0(touch->input.x, touch->input.y, touch->input.previousX, touch->input.previousY);
+            s32               angle  = func_ov003_020a62d0(touch->startX, touch->startY, touch->endX, touch->endY);
             func_ov003_020ae414(self->effect, 1, kind, player->screenX, (s16)(player->screenY - player->unk_76), angle,
                                 effect->params[1], effect->params[2], effect->params[3]);
-            func_ov003_020a6494(touch->input.previousX);
+            func_ov003_020a6494(touch->endX);
             return 1;
         }
         case 1:

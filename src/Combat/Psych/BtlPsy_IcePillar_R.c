@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatPsychEffects.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_0208442c(s32, s32);
-extern s32              func_ov003_02084460(s32, s32, s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern const TaskHandle data_ov003_020dc930;
 extern const s32        data_ov003_020dc93c[3];
@@ -21,7 +19,7 @@ s32 func_ov003_020b1fd4(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     arg             = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc930.taskName);
     *arg            = effect;
-    context->handle = (TaskHandle*)&data_ov003_020dc930;
+    context->handle = &data_ov003_020dc930;
     context->arg    = arg;
     context->post   = NULL;
     return 1;

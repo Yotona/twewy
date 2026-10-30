@@ -1,6 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/CombatApi.h"
+#include "Combat/Core/CombatBgRes.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Core/CombatTouch.h"
 #include "EasyFade.h"
@@ -45,17 +46,6 @@
 
 /// The 6-byte rendering of the six touch slots that the 3D layer reads back.
 
-/// The 0x10-byte action description `func_ov003_020a37a8` hands to the psych entry points.
-typedef struct Ov003PinAction {
-    /* 0x00 */ u16               pinId;
-    /* 0x02 */ s16               level;
-    /* 0x04 */ u8                unk_04;
-    /* 0x05 */ u8                unk_05[3];
-    /* 0x08 */ const RawPinData* pin;
-    /* 0x0C */ u8                slot;
-    /* 0x0D */ u8                unk_0D[3];
-} Ov003PinAction; // Size: 0x10
-
 // ---------------------------------------------------------------------------------------------
 // External functions
 // ---------------------------------------------------------------------------------------------
@@ -64,15 +54,13 @@ extern s32  func_020274ac(void*, s32, const BinIdentifier*);
 extern s32  func_02016900(void);
 extern void ADXT_SetExtraInfo(s32, s32);
 
-extern void               func_ov003_02083478(void);
-extern void               func_ov003_020835d4(void);
-extern void               func_ov003_02083700(void);
-extern void               func_ov003_020849ac(CombatList*);
-extern void               func_ov003_020849bc(CombatList*, CombatListNode*, void*);
+extern s32                func_ov003_02083478(Ov003BgResState* state);
+extern s32                func_ov003_020835d4(Ov003BgResState* state);
+extern s32                func_ov003_02083700(Ov003BgResState* state);
 extern s32                func_ov003_020a410c(Ov003TouchActor*, s16, s16);
 extern void               func_ov003_020a45d4(Ov003TouchActor*);
 extern const EquippedPin* func_ov003_020a4718(s32, s32);
-extern s32                func_ov003_020a6cc4(u8);
+extern s32                func_ov003_020a6cc4(s32 arg0);
 
 /// The per-touch start positions written by `func_ov003_020a39dc` (owned by arm9).
 extern const u8 data_0205c19d[];
@@ -132,21 +120,6 @@ extern char             data_ov003_020e4478[];
 extern char             data_ov003_020e4498[];
 extern char             data_ov003_020e44b8[];
 extern char             data_ov003_020e44d8[];
-
-// ---------------------------------------------------------------------------------------------
-// Ov003Global views
-// ---------------------------------------------------------------------------------------------
-
-/// The touch event pool and the actor list, both split out of the middle of `Ov003Global`.
-#define OV003_TOUCH_EVENTS (data_ov003_020e71b8->touchEvents)
-#define OV003_TOUCH_ACTORS (&data_ov003_020e71b8->unk3D8BC)
-#define OV003_TOUCH_SLOTS  (&gSaveData.battleTouchSlots)
-
-/// The per-psych battle flags updates of `func_ov003_020a37a8` touch.
-#define OV003_PSYCH_FLAGS data_ov003_020e71b8->unk3D374
-
-/// The touch slots an actor owns: the id of a slot is the word after its 8-byte record header and
-/// the amount it contributes is the following word.
 
 // ---------------------------------------------------------------------------------------------
 // Data
@@ -1373,7 +1346,7 @@ void func_ov003_020a30d4(s32 id, s32 touchIndex, u32 slot) {
     Ov003AbilityData ability;
     s32              i;
 
-    events = OV003_TOUCH_EVENTS;
+    events = data_ov003_020e71b8->touchEvents;
     func_020274ac(&ability, id, &data_ov003_020da73c);
     if (touchIndex >= 0 && touchIndex <= 2) {
         anyTouch = 0;
@@ -1422,7 +1395,8 @@ s32 func_ov003_020a31fc(s32 slot) {
     if (slot == -1) {
         return 1;
     }
-    for (actor = func_ov003_0208495c(OV003_TOUCH_ACTORS); actor != NULL; actor = func_ov003_02084984(&actor->node)) {
+    for (actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); actor != NULL; actor = func_ov003_02084984(&actor->node))
+    {
         if (actor->slot != slot) {
             continue;
         }
@@ -1439,7 +1413,7 @@ s32 func_ov003_020a31fc(s32 slot) {
 
 /// TRUE when `actionId` is one of the actions a queued touch event grants.
 s32 func_ov003_020a3298(s32 actionId, s32 touchMode) {
-    Ov003TouchEvent*        events = OV003_TOUCH_EVENTS;
+    Ov003TouchEvent*        events = data_ov003_020e71b8->touchEvents;
     const Ov003AbilityData* ability;
     s32                     i;
     s32                     j;
@@ -1477,7 +1451,7 @@ s32 func_ov003_020a3350(s32 actionId) {
 /// The amount of `actionId` a queued touch event grants: most actions add the recorded amount,
 /// but a few (the multi-hit ones) report their per-action value directly.
 s32 func_ov003_020a3360(s32 actionId, s32 touchMode) {
-    Ov003TouchEvent*        events = OV003_TOUCH_EVENTS;
+    Ov003TouchEvent*        events = data_ov003_020e71b8->touchEvents;
     const Ov003AbilityData* ability;
     s32                     i;
     s32                     j;
@@ -1569,16 +1543,16 @@ void func_ov003_020a35b8(CombatSprite* cSprite, s32 index, s32 arg2) {
 /// Drops every touch action actor of the battle.
 void func_ov003_020a35d8(void) {
     data_ov003_020e71b8->touchActorCount = 0;
-    func_ov003_020849ac(OV003_TOUCH_ACTORS);
+    func_ov003_020849ac(&data_ov003_020e71b8->unk3D8BC);
 }
 
 /// Publishes the actor positions to the 3D layer's slot table.
 // Nonmatching: the `MainData` slot table base is two adds instead of a folded pool word.
 void func_ov003_020a3608(void) {
-    Ov003TouchSlotTable* table = OV003_TOUCH_SLOTS;
+    Ov003TouchSlotTable* table = &gSaveData.battleTouchSlots;
     Ov003TouchActor*     actor;
 
-    actor = func_ov003_0208495c(OV003_TOUCH_ACTORS);
+    actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC);
     MI_CpuSet(table->kind, 0, 6);
     if (actor != NULL && actor->kind == 0xFFFE) {
         table->playerX = actor->x >> 12;
@@ -1661,12 +1635,12 @@ void func_ov003_020a37a8(s32 arg0) {
             case 14:
             case 18:
             case 40:
-                OV003_PSYCH_FLAGS |= 2;
+                data_ov003_020e71b8->touchWork.flags |= 2;
                 break;
             case 15:
             case 17:
             case 26:
-                OV003_PSYCH_FLAGS |= 0x20;
+                data_ov003_020e71b8->touchWork.flags |= 0x20;
                 break;
         }
     }
@@ -1677,7 +1651,7 @@ void func_ov003_020a37a8(s32 arg0) {
 void func_ov003_020a3924(void) {
     Ov003TouchActor* actor;
 
-    actor = func_ov003_0208495c(OV003_TOUCH_ACTORS);
+    actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC);
     func_ov003_020a4158();
     while (actor != NULL) {
         if (actor->kind != 0xFFFE) {
@@ -1691,7 +1665,8 @@ void func_ov003_020a3924(void) {
 s32 func_ov003_020a3980(void) {
     Ov003TouchActor* actor;
 
-    for (actor = func_ov003_0208495c(OV003_TOUCH_ACTORS); actor != NULL; actor = func_ov003_02084984(&actor->node)) {
+    for (actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); actor != NULL; actor = func_ov003_02084984(&actor->node))
+    {
         if (actor->kind != 0xFFFE && actor->unk_00E != 2) {
             return 1;
         }
@@ -1703,7 +1678,8 @@ s32 func_ov003_020a3980(void) {
 void func_ov003_020a39dc(void) {
     Ov003TouchActor* actor;
 
-    for (actor = func_ov003_0208495c(OV003_TOUCH_ACTORS); actor != NULL; actor = func_ov003_02084984(&actor->node)) {
+    for (actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); actor != NULL; actor = func_ov003_02084984(&actor->node))
+    {
         actor->x = data_0205c19d[actor->slot * 2] << 12;
         actor->y = data_0205c19d[actor->slot * 2 + 1] << 12;
     }
@@ -1713,7 +1689,8 @@ void func_ov003_020a39dc(void) {
 void func_ov003_020a3a40(void) {
     Ov003TouchActor* actor;
 
-    for (actor = func_ov003_0208495c(OV003_TOUCH_ACTORS); actor != NULL; actor = func_ov003_02084984(&actor->node)) {
+    for (actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); actor != NULL; actor = func_ov003_02084984(&actor->node))
+    {
         actor->unk_04C = 0;
     }
 }
@@ -1727,7 +1704,8 @@ void func_ov003_020a3a80(void) {
         func_ov003_020a39dc();
         return;
     }
-    for (actor = func_ov003_0208495c(OV003_TOUCH_ACTORS); actor != NULL; actor = func_ov003_02084984(&actor->node)) {
+    for (actor = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); actor != NULL; actor = func_ov003_02084984(&actor->node))
+    {
         s32 active = func_ov003_020a3e50(actor);
 
         if (actor->unk_04C != 0) {
@@ -1738,15 +1716,15 @@ void func_ov003_020a3a80(void) {
             }
         }
         if (selected == NULL && func_ov003_02085cfc(6) != 0 && active != 0) {
-            if (func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC) != 0) {
+            if (func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y) != 0) {
                 selected       = actor;
                 actor->unk_04C = 1;
             }
         }
     }
     if (selected != NULL) {
-        selected->x = data_ov003_020e71b8->unk3D3AA << 12;
-        selected->y = data_ov003_020e71b8->unk3D3AC << 12;
+        selected->x = data_ov003_020e71b8->touchWork.x << 12;
+        selected->y = data_ov003_020e71b8->touchWork.y << 12;
     }
     func_ov003_020a4158();
 }

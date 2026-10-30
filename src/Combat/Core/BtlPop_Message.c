@@ -6,7 +6,7 @@
 
 extern BinIdentifier data_ov003_020d7800;
 
-extern void func_020265d4(void* value, s32 target, u16 frames);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 
 /// Task data of the short message popup (`Tsk_BtlPop_Message`): a single sprite that slides
 /// down towards its target Z, fades in, then fades out.
@@ -30,20 +30,11 @@ typedef struct BtlPop_MessageArgs {
     /* 0x10 */ s32 z;
 } BtlPop_MessageArgs; // Size: 0x14
 
-#define OV003_POP_COUNT_MAIN (data_ov003_020e71b8->unk3D8FC)
-#define OV003_POP_COUNT_SUB  (data_ov003_020e71b8->unk3D8FD)
-
 s32 func_ov003_0209c688(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_0209c794(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_0209c840(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_0209c8b8(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_0209c91c(TaskPool* pool, Task* task, void* args, s32 stage);
-
-/// The popup picks its animation index conditionally and the retail call site passes it through
-/// without narrowing it to `CombatSprite_LoadDirect`'s `u16` parameter, so call it through a
-/// plain-integer signature (same idiom as `CombatSprite_LoadDirectNoProto` in `ov003_02087b7c.c`).
-#define CombatSprite_LoadDirectNoProto                                                                     \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
 
 char data_ov003_020e3cc4[0x14] = "Tsk_BtlPop_Message";
 
@@ -74,10 +65,10 @@ s32 func_ov003_0209c688(TaskPool* pool, Task* task, void* args) {
 
     if (p->engine == 0) {
         animIndex = 0x3D;
-        OV003_POP_COUNT_MAIN++;
+        data_ov003_020e71b8->popupCountMain++;
     } else {
         animIndex = 0x3F;
-        OV003_POP_COUNT_SUB++;
+        data_ov003_020e71b8->popupCountSub++;
     }
     CombatSprite_LoadDirectNoProto(p->engine, &pop->sprite, &data_ov003_020d7800, 0x25, 0x27, 0x26, animIndex,
                                    (u16)(p->animBase + 0x32));
@@ -137,9 +128,9 @@ s32 func_ov003_0209c8b8(TaskPool* pool, Task* task, void* args) {
     BtlPop_Message* pop = task->data;
 
     if (pop->sprite.sprite.bits_0_1 == 0) {
-        OV003_POP_COUNT_MAIN--;
+        data_ov003_020e71b8->popupCountMain--;
     } else {
-        OV003_POP_COUNT_SUB--;
+        data_ov003_020e71b8->popupCountSub--;
     }
     CombatSprite_Release(&pop->sprite);
     return 1;
@@ -161,9 +152,9 @@ void func_ov003_0209c984(s32 engine, s32 animBase, s32 x, s32 y, s32 z) {
     s32                live;
 
     if (engine == 0) {
-        live = data_ov003_020e71b8->unk3D8FC;
+        live = data_ov003_020e71b8->popupCountMain;
     } else {
-        live = data_ov003_020e71b8->unk3D8FD;
+        live = data_ov003_020e71b8->popupCountSub;
     }
     // The retail code folds the room test back into the same variable.
     live = live < 0xA;

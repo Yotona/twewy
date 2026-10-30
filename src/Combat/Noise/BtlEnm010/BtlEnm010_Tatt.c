@@ -20,17 +20,13 @@ BtlEnm010TattRec* func_ov011_02128f80(BtlEnm010Tatt* data);
 void              func_ov011_02129188(BtlEnm010Tatt* p, BtlEnm010TattRec* rec);
 void              func_ov011_021293a8(BtlEnm010Tatt* arg0, BtlEnm010TattRec* p);
 void              func_ov011_02129410(BtlEnm010Tatt* p, BtlEnm010TattRec* rec);
-s32               func_ov011_02129934(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
-s32               func_ov011_02129994(BtlEnm010Tatt* data, BtlEnm010Owner** arg1);
+s32               func_ov011_02129934(TaskPool* pool, Task* task, void* args, s32 stage);
+s32               func_ov011_02129994(BtlEnm010Tatt* data, Ov003EnemyActor** arg1);
 s32               func_ov011_02129b84(BtlEnm010Tatt* data);
 s32               func_ov011_02129cec(BtlEnm010Tatt* data);
 s32               func_ov011_02129ea4(BtlEnm010Tatt* p);
 
-extern s32 func_ov003_020c3c28(void);
-
 #define NEXT_REC(p) ((p) += sizeof(BtlEnm010TattRec) / sizeof(*(p)))
-
-#define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
 
 const s32 data_ov011_0212c230[4] = {-344064, 0, -65536, 0};
 
@@ -72,17 +68,17 @@ const BtlEnm010ArmFrame data_ov011_0212c28c[16] = {
 char data_ov011_0212cc68[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 0x6E, 0x6D,
                                 0x30, 0x31, 0x30, 0x5F, 0x54, 0x61, 0x74, 0x74, 0x00, 0x00};
 
-s32 func_ov011_02128c44(void* p) {
-    BtlEnm010Owner* arg0;
-    TaskPool*       pool;
+s32 func_ov011_02128c44(Ov003EnemyActor* owner) {
+    Ov003EnemyActor* arg0;
+    TaskPool*        pool;
 
-    arg0 = p;
+    arg0 = owner;
     if (func_ov003_020c37f8(&arg0->sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
     }
-    return EasyTask_CreateTask(pool, &data_ov011_0212c240, 0, 0, 0, (void*)&arg0);
+    return EasyTask_CreateTask(pool, &data_ov011_0212c240, 0, 0, 0, &arg0);
 }
 
 void func_ov011_02128ca4(BtlEnm010Tatt* data, void (*arg1)(BtlEnm010Tatt*)) {
@@ -282,7 +278,7 @@ void func_ov011_02129188(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
                 rec->unk_60 = 0;
                 rec->unk_64 = 1;
             } else {
-                func_ov003_020cbd30(&f.m, tpl[0], tpl[1], tpl[2], _s32_div_f(ROUND(count), limit));
+                func_ov003_020cbd30(&f.m, tpl[0], tpl[1], tpl[2], _s32_div_f(FX32_CONVERT(count), limit));
                 rec->unk_68 = (((u32)(p->unk_24C << 31) >> 31) != 0) ? 0 - f.m.x : f.m.x;
                 rec->unk_6C = f.m.y;
                 rec->unk_60 = rec->unk_60 + 1;
@@ -344,13 +340,13 @@ void func_ov011_02129410(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
     s32 off;
 
     if (((u32)(p->unk_24C << 30) >> 31) != 0) {
-        vx = ROUND(func_ov003_020843b0(1, ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.x));
-        vy = ROUND(func_ov003_020843ec(1, ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.y,
-                                       ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.z));
+        vx = FX32_CONVERT(func_ov003_020843b0(1, ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.x));
+        vy = FX32_CONVERT(func_ov003_020843ec(1, ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.y,
+                                              ((CombatActor*)data_ov003_020e71b8->unk3D89C)->position.z));
     } else {
-        vx = ROUND(func_ov003_020843b0(0, ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.x));
-        vy = ROUND(func_ov003_020843ec(0, ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.y,
-                                       ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.z));
+        vx = FX32_CONVERT(func_ov003_020843b0(0, ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.x));
+        vy = FX32_CONVERT(func_ov003_020843ec(0, ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.y,
+                                              ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.z));
     }
     switch (rec->unk_64) {
         case 0:
@@ -388,7 +384,7 @@ void func_ov011_02129410(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
         case 2:
             if (rec->unk_60 == 0) {
                 rec->unk_60 = rec->unk_60 + 1;
-                func_ov003_02087f00(0x1E1, (s16)((p->unk_23C + rec->unk_68) >> 12));
+                func_ov003_02087f00(SEIDX_SE_010_TATOO_TOBASHI02, (s16)((p->unk_23C + rec->unk_68) >> 12));
             }
             if (rec->unk_74 > 0) {
                 rec->unk_74 = rec->unk_74 - 0x8000;
@@ -427,15 +423,15 @@ void func_ov011_02129410(BtlEnm010Tatt* p, BtlEnm010TattRec* rec) {
     }
 }
 
-s32 func_ov011_02129934(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
+s32 func_ov011_02129934(TaskPool* pool, Task* task, void* args, s32 stage) {
     void* p;
     s32   r;
 
-    p = arg1->data;
+    p = task->data;
     r = 1;
-    switch (index) {
+    switch (stage) {
         case 0:
-            r = func_ov011_02129994(p, arg2);
+            r = func_ov011_02129994(p, args);
             break;
         case 1:
             r = func_ov011_02129b84(p);
@@ -450,7 +446,7 @@ s32 func_ov011_02129934(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
     return r;
 }
 
-s32 func_ov011_02129994(BtlEnm010Tatt* data, BtlEnm010Owner** arg1) {
+s32 func_ov011_02129994(BtlEnm010Tatt* data, Ov003EnemyActor** arg1) {
     s32               r;
     s32               i;
     BtlEnm010TattRec* q;
@@ -491,7 +487,7 @@ s32 func_ov011_02129994(BtlEnm010Tatt* data, BtlEnm010Owner** arg1) {
         data->unk_24C = data->unk_24C & ~2;
     }
     {
-        BtlEnm010Owner* owner = *arg1;
+        Ov003EnemyActor* owner = *arg1;
 
         data->unk_244 = *(const BtlEnm010Pair16*)&owner->actor.unk_04;
         data->unk_248 = *(const BtlEnm010Pair16*)&owner->actor.unk_08;
@@ -511,7 +507,7 @@ s32 func_ov011_02129b84(BtlEnm010Tatt* data) {
         return r;
     }
     {
-        BtlEnm010Owner* owner = data->unk_000;
+        Ov003EnemyActor* owner = data->unk_000;
 
         if (owner != NULL && (owner->actor.flags & 4) != 0) {
             return r;

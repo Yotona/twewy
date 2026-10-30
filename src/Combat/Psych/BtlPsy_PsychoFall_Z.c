@@ -3,8 +3,6 @@
 #include "Engine/Math/Random.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32 func_ov003_0208442c(s32, s32);
-extern s32 func_ov003_02084460(s32, s32, s32);
 extern s32 func_ov003_020a632c(s32, s32, s32, s32);
 
 /// Drops a PsychoFall falling-sprite sub-task at the trail's current pivot.
@@ -19,7 +17,7 @@ s32 func_ov003_020b4b60(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca34.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dca34;
+    context->handle        = &data_ov003_020dca34;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

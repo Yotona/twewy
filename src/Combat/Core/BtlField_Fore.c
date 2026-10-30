@@ -55,16 +55,14 @@ extern const BinIdentifier data_ov003_020da1b4;
 
 // External functions.
 
-extern void func_ov003_02082738(CombatSprite* cSprite, s32 arg1);
-
 // Defined in this unit.
 
 void func_ov003_02093c70(BtlFieldFore* fore, BtlFieldForeBand* band, s32 index);
-s32  func_ov003_02093d44(TaskPool*, Task*, void*);
-s32  func_ov003_02093f34(TaskPool*, Task*, void*);
-s32  func_ov003_02093f74(TaskPool*, Task*, void*);
-s32  func_ov003_0209400c(TaskPool*, Task*, void*);
-s32  func_ov003_02094054(TaskPool*, Task*, void*, s32);
+s32  func_ov003_02093d44(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02093f34(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02093f74(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_0209400c(TaskPool* pool, Task* task, void* args);
+s32  func_ov003_02094054(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov003_0209409c(s32 bgIndex);
 
 /// `TaskHandle.taskName` of `data_ov003_020d7b84`.

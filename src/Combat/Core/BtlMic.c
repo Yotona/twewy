@@ -5,8 +5,6 @@
 #include <nitro/mi/cpumem.h>
 
 extern void             func_02040770(BtlMicSampling* sampling);
-extern void*            func_ov003_0208495c(CombatList* list);
-extern void*            func_ov003_02084984(CombatListNode* node);
 extern const TaskHandle data_ov003_020dc228;
 
 void func_ov003_020a5080(void) {

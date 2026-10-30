@@ -1,10 +1,12 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32              func_ov003_020a62b8(s32, s32, s32, s32);
-extern s32              func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32              func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 extern const TaskHandle data_ov003_020dc69c;
 
 s32 func_ov003_020a9ec0(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -16,7 +18,7 @@ s32 func_ov003_020a9ec0(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003BadgeFormationArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc69c.taskName);
     *arg                         = initial;
-    context->handle              = (TaskHandle*)&data_ov003_020dc69c;
+    context->handle              = &data_ov003_020dc69c;
     context->arg                 = arg;
     context->post                = NULL;
     return 1;
@@ -36,7 +38,7 @@ s32 func_ov003_020a9f64(TaskPool* pool, Task* task, void* args, s32 stage) {
             MI_CpuCopyU8(arg->actors, formation->actors, sizeof(formation->actors));
             formation->effect->unk_0A++;
             owner = func_ov003_020a5a34(formation->effect);
-            func_ov003_02087f00(0x9B, (s16)(owner->x >> 12));
+            func_ov003_02087f00(SEIDX_SE_PSY_BADGE_PUSH, (s16)(owner->x >> 12));
             formation->state = 0;
             owner            = func_ov003_020a5a34(formation->effect);
             for (i = 0; i < 4; i++) {
@@ -63,7 +65,7 @@ s32 func_ov003_020a9f64(TaskPool* pool, Task* task, void* args, s32 stage) {
                             return 0;
                         formation->state = 1;
                         func_ov003_020a35b8(&formation->sprite, 0xFF, 1);
-                        func_ov003_02087f00(0xB4, (s16)(formation->position.x >> 12));
+                        func_ov003_02087f00(SEIDX_SE_PSY_BADGEBEAM01, (s16)(formation->position.x >> 12));
                     }
                     break;
                 case 1:
@@ -88,8 +90,8 @@ s32 func_ov003_020a9f64(TaskPool* pool, Task* task, void* args, s32 stage) {
                     s32 angle =
                         func_ov003_020a62b8(formation->position.x, formation->position.y,
                                             formation->actors[formation->index]->x, formation->actors[formation->index]->y);
-                    formation->position.x += FX_Mul(FX_SinCosTable_[(angle >> 4) * 2 + 1], 0xA000);
-                    formation->position.y += FX_Mul(FX_SinCosTable_[(angle >> 4) * 2], 0xA000);
+                    formation->position.x += FX_Mul(COS2(FX_SinCosTable_, angle), 0xA000);
+                    formation->position.y += FX_Mul(SIN2(FX_SinCosTable_, angle), 0xA000);
                     formation->angle = angle;
                     break;
                 }

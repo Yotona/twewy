@@ -11,7 +11,7 @@ typedef struct BtlEnm015Shake {
     /* 0x08 */ s32          unk_08;
     /* 0x0C */ u16          unk_0C;
 } BtlEnm015Shake; // Size: 0x10
-s32 func_ov013_02126ff4(TaskPool*, Task*, void*, s32);
+s32 func_ov013_02126ff4(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle Tsk_BtlEnm015_Shake = {"Tsk_BtlEnm015_Shake", func_ov013_02126ff4, 0x10};
 
@@ -44,7 +44,7 @@ s32 func_ov013_02126f8c(BtlEnm015Shake* data, BtlEnm015* args) {
     MI_CpuSet(data, 0, sizeof(BtlEnm015Shake));
     data->unk_00 = args;
 
-    if (func_ov003_020c37f8(&args->sprite) != 0) {
+    if (func_ov003_020c37f8(&args->base.sprite) != 0) {
         data->unk_04 = &data_ov003_020e71b8->unk3D7C0[1];
     } else {
         data->unk_04 = &data_ov003_020e71b8->unk3D7C0[0];
@@ -63,17 +63,17 @@ s32 func_ov013_02126ff4(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov013_02126f8c(data, (BtlEnm015*)args);
             break;
         case 1:
-            if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
+            if ((owner->base.actor.flags & 4) || func_ov003_020c3c28() != 0) {
                 return 0;
             }
             return func_ov013_02126ef0(data);
         case 2:
             break;
         case 3:
-            *((func_ov003_020c37f8(&owner->sprite) != 0) ? &data_ov013_02127640 : &data_ov013_02127644) = -1;
-            data->unk_04->unk_44                                                                        = 0;
-            data->unk_04->unk_48                                                                        = 0;
-            data->unk_04->unk_4C                                                                        = 0;
+            *((func_ov003_020c37f8(&owner->base.sprite) != 0) ? &data_ov013_02127640 : &data_ov013_02127644) = -1;
+            data->unk_04->unk_44                                                                             = 0;
+            data->unk_04->unk_48                                                                             = 0;
+            data->unk_04->unk_4C                                                                             = 0;
             break;
     }
     return 1;

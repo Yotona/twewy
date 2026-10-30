@@ -2,24 +2,25 @@
 #include "Combat/Noise/Private/BtlEnm010.h"
 
 #include "Combat/Core/CombatApi.h"
+#include <nitro/fx.h>
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Sprl {
-    /* 0x00 */ BtlEnm010Owner* unk_000;
-    /* 0x04 */ CombatSprite    sprite;
-    /* 0x64 */ s16             unk_064;    // launch SE played
-    /* 0x66 */ u8              unk_066[0x70 - 0x66];
-    /* 0x70 */ s32             unk_070[5]; // x of each link, head first
-    /* 0x84 */ s32             unk_084[5]; // y of each link
-    /* 0x98 */ s32             unk_098;    // z
-    /* 0x9C */ s32             unk_09C;    // spiral centre
-    /* 0xA0 */ s32             unk_0A0;
-    /* 0xA4 */ s32             unk_0A4;    // radius
-    /* 0xA8 */ s32             unk_0A8;    // radius step
-    /* 0xAC */ u16             unk_0AC;    // angle
-    /* 0xAE */ u16             unk_0AE;    // angle step
-    /* 0xB0 */ u16             unk_0B0[4]; // copy of the owner's actor.unk_04..unk_0A
-} BtlEnm010Sprl;                           // Size: 0xB8
+    /* 0x00 */ Ov003EnemyActor* unk_000;
+    /* 0x04 */ CombatSprite     sprite;
+    /* 0x64 */ s16              unk_064;    // launch SE played
+    /* 0x66 */ u8               unk_066[0x70 - 0x66];
+    /* 0x70 */ s32              unk_070[5]; // x of each link, head first
+    /* 0x84 */ s32              unk_084[5]; // y of each link
+    /* 0x98 */ s32              unk_098;    // z
+    /* 0x9C */ s32              unk_09C;    // spiral centre
+    /* 0xA0 */ s32              unk_0A0;
+    /* 0xA4 */ s32              unk_0A4;    // radius
+    /* 0xA8 */ s32              unk_0A8;    // radius step
+    /* 0xAC */ u16              unk_0AC;    // angle
+    /* 0xAE */ u16              unk_0AE;    // angle step
+    /* 0xB0 */ u16              unk_0B0[4]; // copy of the owner's actor.unk_04..unk_0A
+} BtlEnm010Sprl;                            // Size: 0xB8
 
 extern char data_ov011_0212cc54[20];
 
@@ -33,11 +34,10 @@ extern char data_ov011_0212cc54[20];
 
 /// `func_ov003_0208a164` -- five arguments (r0-r3 plus one stack word), returning 1 on success.
 
-extern s32 FX_Divide(s32 numer, s32 denom);
-s32        func_ov011_02128758(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
-s32        func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1);
-s32        func_ov011_02128b80(BtlEnm010Sprl* data);
-s32        func_ov011_02128c30(BtlEnm010Sprl* p);
+s32 func_ov011_02128758(TaskPool* pool, Task* task, void* args, s32 stage);
+s32 func_ov011_021287b8(BtlEnm010Sprl* data, Ov003EnemyActor** arg1);
+s32 func_ov011_02128b80(BtlEnm010Sprl* data);
+s32 func_ov011_02128c30(BtlEnm010Sprl* p);
 
 /// `CombatSprite_Update` (`CombatSprite_Update`) -- one argument, a `CombatSprite*`; ticks a
 /// palette timer behind the sprite's `flags46` bit 12. Declared in `Combat/Core/CombatSprite.h`.
@@ -48,11 +48,10 @@ s32        func_ov011_02128c30(BtlEnm010Sprl* p);
 /// x/y/z triple. The two out-parameters are written through the pointers and read back as
 /// `ldrsh`, so they are `s16`, not `s32`.
 
-extern s32 func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1);
+extern s32 func_ov011_021287b8(BtlEnm010Sprl* data, Ov003EnemyActor** arg1);
 extern s32 func_ov011_021288c8(BtlEnm010Sprl* p);
 extern s32 func_ov011_02128b80(BtlEnm010Sprl* data);
 extern s32 func_ov011_02128c30(BtlEnm010Sprl* p);
-extern s32 func_ov003_020c3c28(void);
 
 const TaskHandle data_ov011_0212c210 = {(const char*)data_ov011_0212cc54, func_ov011_02128758, 184};
 
@@ -66,24 +65,24 @@ char data_ov011_0212cc54[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 
 /// `sp + 8` into the outgoing slot only make sense if the caller gets a pointer to a pointer.
 /// It has to be a **local** copy: address-taken on the parameter itself makes MWCC push r0-r3
 /// and the function comes out 8 bytes long.
-s32 func_ov011_02128718(void* p) {
-    void* arg0;
+s32 func_ov011_02128718(Ov003EnemyActor* owner) {
+    Ov003EnemyActor* arg0;
 
-    arg0 = p;
-    return EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &data_ov011_0212c210, 0, 0, 0, (void*)&arg0);
+    arg0 = owner;
+    return EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &data_ov011_0212c210, 0, 0, 0, &arg0);
 }
 
 /// `Tsk_BtlEnm010_Sprl`'s task entry, third of the three identical four-way dispatchers
 /// (`0x0212801c`, `0x02128348`, `0x02128758`).
-s32 func_ov011_02128758(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
+s32 func_ov011_02128758(TaskPool* pool, Task* task, void* args, s32 stage) {
     void* p;
     s32   r;
 
-    p = arg1->data;
+    p = task->data;
     r = 1;
-    switch (index) {
+    switch (stage) {
         case 0:
-            r = func_ov011_021287b8(p, arg2);
+            r = func_ov011_021287b8(p, args);
             break;
         case 1:
             r = func_ov011_021288c8(p);
@@ -109,7 +108,7 @@ s32 func_ov011_02128758(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
 /// Open (51 bytes): the `+0x24`/arm block runs one register higher than the reference (chain in
 /// r1/v in r2 vs r0/r1) with the same live-value count -- the scratch rotation, not a
 /// declaration. Scoping `i` did not move it.
-s32 func_ov011_021287b8(BtlEnm010Sprl* data, BtlEnm010Owner** arg1) {
+s32 func_ov011_021287b8(BtlEnm010Sprl* data, Ov003EnemyActor** arg1) {
     s32 v;
 
     MI_CpuSet(data, 0, 0xB8);
@@ -193,7 +192,7 @@ s32 func_ov011_021288c8(BtlEnm010Sprl* p) {
         } else {
             pan = func_ov003_020843b0(0, p->unk_000->actor.position.x);
         }
-        func_ov003_02087f00(0x1DE, pan);
+        func_ov003_02087f00(SEIDX_SE_010_SPIRALATTACK, pan);
     }
     for (i = 1; i < 5; i++) {
         dx   = p->unk_070[i] - p->unk_070[i - 1];
@@ -203,8 +202,8 @@ s32 func_ov011_021288c8(BtlEnm010Sprl* p) {
         if (dist < (((data_ov011_0212c21c[i - 1] + data_ov011_0212c21c[i]) * 16) >> 1)) {
             continue;
         }
-        p->unk_070[i] = p->unk_070[i - 1] + FX_Divide((s32)(((long long)dx * (long long)half + 0x800) >> 12), dist);
-        p->unk_084[i] = p->unk_084[i - 1] + FX_Divide((s32)(((long long)dy * (long long)half + 0x800) >> 12), dist);
+        p->unk_070[i] = p->unk_070[i - 1] + FX_Divide(FX_Mul(dx, half), dist);
+        p->unk_084[i] = p->unk_084[i - 1] + FX_Divide(FX_Mul(dy, half), dist);
     }
     for (i = 0; i < 5; i++) {
         t         = (data_ov011_0212c21c[i] * 16) >> 12;
@@ -220,7 +219,7 @@ s32 func_ov011_021288c8(BtlEnm010Sprl* p) {
             } else {
                 pan = func_ov003_020843b0(0, p->unk_070[i]);
             }
-            func_ov003_02087f00(0x1DA, pan);
+            func_ov003_02087f00(SEIDX_SE_010_BUBBLEATTACK_HIT, pan);
         }
     }
     if (p->unk_0A4 > data_ov003_020e71b8->unk3D7C0[0].unk_0C) {

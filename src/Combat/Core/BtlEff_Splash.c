@@ -29,7 +29,7 @@ typedef struct BtlEffSplashArgs {
     s32 independent;
 } BtlEffSplashArgs;
 extern const BinIdentifier data_ov003_020d77d8, data_ov003_020d77e0, data_ov003_020d77e8, data_ov003_020d77f0;
-extern void                func_ov003_0208b2fc(s32*, s32*, u16, s32);
+extern void                func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 scale);
 void                       func_ov003_0209f8b0(BtlEffSplash*);
 void                       func_ov003_0209f9c4(BtlEffSplash*);
 void                       func_ov003_0209fa14(BtlEffSplash*);
@@ -78,7 +78,7 @@ void func_ov003_0209f9c4(BtlEffSplash* data) {
     BtlSplashParticle* particle;
     for (i = 0; i < data->count; i++) {
         particle = &data->particles[i];
-        func_ov003_0208b2fc(&particle->position.x, &particle->position.y, particle->angle, particle->speed);
+        func_ov003_0208b2fc(&particle->position.x, &particle->position.y, (u16)particle->angle, particle->speed);
         CombatSprite_Update(&particle->sprite);
     }
 }

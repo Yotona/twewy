@@ -63,12 +63,10 @@
 extern s32  func_0202599c(s32 flagIndex);
 extern void Field_SpawnMapJumpArrows(FieldEventManager* mgr);
 extern void Field_DeleteMapJumpArrows(FieldEventManager* mgr);
-extern void func_02001b44(s32 arg0, s32 arg1, void* arg2, s32 arg3);
+extern BOOL func_02001b44(s32 idx, s32 arg1, DmaRequest* req, s32 arg3);
 extern s32 (*data_02065fd4)(s32 arg0, s32 arg1, s32 arg2);
 
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
+extern void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4);
 
 void Field_ScriptUpdate(FieldEventManager* mgr);
 void Field_ScanUpdate(FieldEventManager* mgr);

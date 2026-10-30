@@ -5,9 +5,6 @@
 #include "Engine/EasyTask.h"
 #include <nitro/mi/cpumem.h>
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 // The blink streak of enemy 4 (`Task_BtlEnm004_Blink`): a sprite that slides along `dir` in `count` steps, from the
 // owner's position forwards, or backwards from the far end when `reverse` is set.
 
@@ -35,11 +32,6 @@ typedef struct BtlEnm004Blink {
 extern const BinIdentifier data_ov009_021232d8[]; // sprite pages of the group 4 owners
 extern const BinIdentifier data_ov018_020fec90[]; // sprite pages of the group 0x20 owners
 
-extern s32              func_ov003_020c3908(CombatSprite* sprite);
-extern void             func_ov003_020c3cdc(Ov003CutinActor* owner);
-extern TaskPool*        func_ov003_020c3ca4(Ov003CutinActor* owner);
-extern void             func_ov003_02087fe0(s32 engine, CombatSprite* sprite, s32 arg2);
-extern void             func_ov003_02088064(CombatSprite* sprite, s32 x, s32 y);
 extern const TaskHandle data_ov003_020e0bf0;
 
 /// Writes `src` scaled by `scale` to `dst`.
@@ -52,39 +44,39 @@ void func_ov003_020cac84(s32 scale, Vec* src, Vec* dst) {
     Vec_MultAdd(scale, src, &zero, dst);
 }
 
-s32 func_ov003_020cacb0(TaskPool* pool, Task* task, void* param) {
+s32 func_ov003_020cacb0(TaskPool* pool, Task* task, void* args) {
     BtlEnm004Blink*     self  = task->data;
-    BtlEnm004BlinkArgs* args  = param;
-    Ov003CutinActor*    owner = args->owner;
+    BtlEnm004BlinkArgs* spawn = args;
+    Ov003CutinActor*    owner = spawn->owner;
     Vec                 offset;
 
     MI_CpuSet(self, 0, sizeof(*self));
-    self->owner      = args->owner;
-    self->dir        = *args->dir;
-    self->count      = args->count;
-    self->reverse    = args->reverse;
-    self->position.x = owner->actor.position.x;
-    self->position.y = owner->actor.position.y - 0x1000;
-    self->position.z = owner->actor.position.z;
-    if (owner->group == 4) {
-        CombatSprite_LoadDirect(owner->sprite.sprite.bits_0_1, &self->sprite, &data_ov009_021232d8[owner->spriteIndex], 7, 9,
-                                8, 0xD, 0);
+    self->owner      = spawn->owner;
+    self->dir        = *spawn->dir;
+    self->count      = spawn->count;
+    self->reverse    = spawn->reverse;
+    self->position.x = owner->base.actor.position.x;
+    self->position.y = owner->base.actor.position.y - 0x1000;
+    self->position.z = owner->base.actor.position.z;
+    if (owner->base.group == 4) {
+        CombatSprite_LoadDirect(owner->base.sprite.sprite.bits_0_1, &self->sprite,
+                                &data_ov009_021232d8[owner->base.spriteIndex], 7, 9, 8, 0xD, 0);
     }
-    if (owner->group == 0x20) {
-        CombatSprite_LoadDirect(owner->sprite.sprite.bits_0_1, &self->sprite, &data_ov018_020fec90[owner->spriteIndex], 0xD,
-                                0xF, 0xE, 0x13, 0);
+    if (owner->base.group == 0x20) {
+        CombatSprite_LoadDirect(owner->base.sprite.sprite.bits_0_1, &self->sprite,
+                                &data_ov018_020fec90[owner->base.spriteIndex], 0xD, 0xF, 0xE, 0x13, 0);
     }
-    CombatSprite_SetFlip(&self->sprite, owner->sprite.flags46 & 1);
+    CombatSprite_SetFlip(&self->sprite, owner->base.sprite.flags46 & 1);
     Vec_Normalize(&self->dir, &self->step);
     func_ov003_020cac84(0xA000 / self->count, &self->step, &self->step);
     if (self->count > 2) {
         self->sprite.flags46 |= 4;
     }
     if (self->reverse == 0) {
-        func_ov003_020cac84((s32)ROUND_FX(self->count * self->count) / 2, &self->step, &offset);
+        func_ov003_020cac84(FX32_CONVERT(self->count * self->count) / 2, &self->step, &offset);
         Vec_Sub(&self->position, &offset, &self->position);
     }
-    func_ov003_02087fe0(owner->sprite.sprite.bits_0_1, &self->glow, 2);
+    func_ov003_02087fe0(owner->base.sprite.sprite.bits_0_1, &self->glow, 2);
     return 1;
 }
 
@@ -96,10 +88,10 @@ s32 func_ov003_020cae94(TaskPool* pool, Task* task, void* args) {
         CombatSprite_SetAnim(&self->sprite, 0, 0);
     }
     if (self->reverse != 0) {
-        func_ov003_020cac84((s32)ROUND_FX(self->frame), &self->step, &offset);
+        func_ov003_020cac84(FX32_CONVERT(self->frame), &self->step, &offset);
         Vec_Add(&self->position, &offset, &self->position);
     } else {
-        func_ov003_020cac84((s32)ROUND_FX(self->count - self->frame), &self->step, &offset);
+        func_ov003_020cac84(FX32_CONVERT(self->count - self->frame), &self->step, &offset);
         Vec_Add(&self->position, &offset, &self->position);
     }
     if (self->frame == self->count - 1 && self->reverse == 0) {

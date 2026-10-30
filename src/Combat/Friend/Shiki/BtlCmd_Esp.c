@@ -255,7 +255,7 @@ s32 BtlCmd_Esp_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-void BtlCmd_Esp_CreateTask(s16 arg0, s32 arg1, s32 arg2) {
+void BtlCmd_Esp_CreateTask(s32 arg0, s32 arg1, s32 arg2) {
     BtlCmd_Esp_Args args;
     args.unk_4 = arg1;
     args.unk_8 = arg2;

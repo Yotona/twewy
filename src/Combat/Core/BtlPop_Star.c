@@ -57,12 +57,7 @@ const TaskStages data_ov003_020d812c = {
 // ---------------------------------------------------------------------------------------------
 
 extern const BinIdentifier data_ov003_020d7800;
-extern void                func_020265d4(void* value, s32 target, u16 frames);
-
-/// The star sprite loader passes its animation variant straight through
-/// `CombatSprite_LoadDirect`'s `u16` parameter (no prototype was in scope there).
-#define CombatSprite_LoadDirectNoProto                                                                     \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
+extern void                func_020265d4(s32* dst, s32 target, u16 weight);
 
 // ---------------------------------------------------------------------------------------------
 // Functions

@@ -21,22 +21,19 @@ extern const BinIdentifier data_ov003_020e0b90;
 
 // External functions.
 
-extern void func_020265d4(void* dst, s32 step, u16 count);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 extern void func_ov003_02082a04(s32 engine, Sprite* sprite, const BinIdentifier* iden, const SpriteAnimEntry* table, u16 entry,
                                 s32 palette, s32 paletteCount);
 extern void func_ov003_02082a90(s32 engine, Sprite* sprite, const BinIdentifier* iden, u16 entry, u16 arg4, u16 arg5,
                                 s32 palette, s32 anim);
-extern void func_ov003_0208b2fc(s32* x, s32* y, s32 height, s32 speed);
-extern s32  func_ov003_020c37f8(CombatSprite* sprite);  // whether the enemy's aura is charged
-extern s32  func_ov003_020c3c28();                      // whether the enemy is mid-attack
-extern s16  func_ov003_020c42ec(Ov003EnemyActor* unit); // the unit's attack value
+extern void func_ov003_0208b2fc(s32* x, s32* y, s32 angle, s32 scale);
 
-s32 func_ov003_020ca9e4(TaskPool*, Task*, void*);
-s32 func_ov003_020caacc(TaskPool*, Task*, void*);
-s32 func_ov003_020cab4c(TaskPool*, Task*, void*);
-s32 func_ov003_020cabd0(TaskPool*, Task*, void*);
+s32 func_ov003_020ca9e4(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020caacc(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020cab4c(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020cabd0(TaskPool* pool, Task* task, void* args);
 
-s32 func_ov003_020cabf0(TaskPool*, Task*, void*, s32);
+s32 func_ov003_020cabf0(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // Defined in this unit.
 
@@ -70,7 +67,7 @@ void func_ov003_020ca6a8(Ov003CutinActor* unit) {
     if (data_ov003_020e7324.unk_16 > 0) {
         return;
     }
-    if (func_ov003_020c37f8(&unit->sprite) != 0) {
+    if (func_ov003_020c37f8(&unit->base.sprite) != 0) {
         if (data_ov003_020e7324.ready != 0 && data_ov003_020e7324.activeMain == 0) {
             return;
         }
@@ -87,8 +84,8 @@ void func_ov003_020ca6a8(Ov003CutinActor* unit) {
 s16 func_ov003_020ca728(Ov003CutinActor* unit) {
     s16 value;
 
-    if ((func_ov003_020c37f8(&unit->sprite) != 0 && data_ov003_020e7324.activeMain != 0) ||
-        (func_ov003_020c37f8(&unit->sprite) == 0 && data_ov003_020e7324.activeSub != 0))
+    if ((func_ov003_020c37f8(&unit->base.sprite) != 0 && data_ov003_020e7324.activeMain != 0) ||
+        (func_ov003_020c37f8(&unit->base.sprite) == 0 && data_ov003_020e7324.activeSub != 0))
     {
         value = func_ov003_020c42ec(&unit->base);
         return (s16)(data_ov003_020e7324.scale * value / 100);
@@ -171,7 +168,7 @@ void func_ov003_020ca934(BtlAuraSub* aura) {
         } else {
             owner = data_ov003_020e7324.ownerSub;
         }
-        sortKey = 0x80000000 - owner->actor.position.y;
+        sortKey = 0x80000000 - owner->base.actor.position.y;
         if (SpriteMgr_IsAnimationFinished(&flame->sprite.sprite) == 0) {
             CombatSprite_SetPosition(&flame->sprite, (s32)(flame->x * 0x10) >> 16, (s32)(flame->y * 0x10) >> 16);
             func_ov003_02082730((CombatSprite*)flame, sortKey);
@@ -260,7 +257,7 @@ s32 func_ov003_020cab4c(TaskPool* pool, Task* task, void* args) {
             owner = data_ov003_020e7324.ownerSub;
         }
         CombatSprite_SetAffineTransform(&aura->sprite, 0, aura->sortKey, aura->sortKey, 1);
-        func_ov003_02082730(&aura->sprite, 0x80000000 - owner->actor.position.y);
+        func_ov003_02082730(&aura->sprite, 0x80000000 - owner->base.actor.position.y);
         CombatSprite_Render(&aura->sprite);
     }
     func_ov003_020ca934(aura);

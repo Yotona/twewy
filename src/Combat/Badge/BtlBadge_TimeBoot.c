@@ -115,7 +115,7 @@ s32 func_ov003_020a8350(TaskPool* pool, Task* task, void* args, s32 stage) {
                     CombatSprite_SetAnim(&self->bar, 3, 0);
                 }
                 if (self->actor->unk_048 < 0) {
-                    func_ov003_02087ed8(0x2D);
+                    func_ov003_02087ed8(SEIDX_SE_PSY_FULL);
                     func_ov003_020a4390(self->actor, 3);
                     return 0;
                 }

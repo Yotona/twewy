@@ -21,6 +21,7 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Save.h"
+#include "SndMgr.h"
 #include "common_data.h"
 
 #include <nitro/fx.h>
@@ -91,22 +92,14 @@ typedef struct Ov003AttackParams {
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern s32  func_ov003_0208442c(s32, s32);
-extern s32  func_ov003_02084460(s32, s32, s32);
-extern s32  func_ov003_0208a128(const Ov003AttackInfo*, void*, void*, s32);
-extern s32  func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
-extern void func_ov003_0208b3cc(s32, s16);
 extern BOOL func_ov003_0208ca04(s32, u32);
 extern s16  func_ov003_0208ca24(s32, u32);
-extern void func_ov003_0208cb6c(s32, s32);
-extern void func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void func_ov003_0209c568(s32, u32, s32);
+extern void func_ov003_0208cb6c(s32 kind, s32 damage);
+// extern void func_ov003_0209c568(s32, u32, s32);
 extern void func_ov003_0209c984(s32, s32, s32, s32, s32);
 extern void func_ov003_0209ed70(u8, s32, s32, s32, s32);
 
 /// The special attack effect helpers of the other overlays, called through the attack handlers.
-extern void SndMgr_StartPlayingSE(s32);
-extern void SndMgr_PlaySEWithPan(s32, s32);
 
 /// Attack-info table (indexed by `func_ov003_0208a114`).
 extern const Ov003AttackInfo data_ov003_020d422c[];
@@ -189,10 +182,10 @@ extern s32  func_ov003_0208a3ec(Ov003Hit* spawn);
 /// halfwords at `Ov003Global + 0x3D378` are the current and previous touch/focus positions.
 // Nonmatching: register allocation of the four cached halfword positions
 s32 func_ov003_02087b7c(s32 arg0) {
-    s16 curX   = data_ov003_020e71b8->unk3D378;
-    s16 curY   = data_ov003_020e71b8->unk3D37A;
-    s16 prevX  = data_ov003_020e71b8->unk3D37C;
-    s16 prevY  = data_ov003_020e71b8->unk3D37E;
+    s16 curX   = data_ov003_020e71b8->touchWork.startX;
+    s16 curY   = data_ov003_020e71b8->touchWork.startY;
+    s16 prevX  = data_ov003_020e71b8->touchWork.endX;
+    s16 prevY  = data_ov003_020e71b8->touchWork.endY;
     s32 result = 0;
 
     switch (arg0) {
@@ -308,8 +301,8 @@ void func_ov003_02087da0(Ov003AttackData* data) {
     s32 y;
 
     func_ov003_02087f28(0x3B, ((CombatActor*)data_ov003_020e71b8->unk3D898)->position.x);
-    x = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-    y = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+    x = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+    y = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
     func_ov003_02083ca0(&x, &y, 0x8000, 0x8000);
     func_ov003_02087f28(0x3C, x);
     func_ov003_02087b00(0, x, y, 0);
@@ -386,13 +379,6 @@ s32 func_ov003_02087fa0(s32 arg0) {
     }
     return 5;
 }
-
-/// Loads a battle effect actor's box sprite.
-///
-/// The retail call site passes `variant` through without narrowing it to the `u16` parameter of
-/// `CombatSprite_LoadDirect`'s prototype, so call it through a plain-integer signature.
-#define CombatSprite_LoadDirectNoProto                                                                     \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
 
 void func_ov003_02087fe0(s32 engine, CombatSprite* sprite, s32 variant) {
     if (engine == 0) {
@@ -1040,7 +1026,7 @@ s16 func_ov003_02089194(Ov003EnemyActor* unit, const Ov003AttackInfo* info, cons
             s16 sync = data_ov003_020e71b8->unk3D8EE;
 
             damage = OV003_ATTACK_PERCENT(damage, sync);
-            func_ov003_0209c568(0, 0, damage);
+            func_ov003_0209c568(0);
             unit->actor.unk_12 |= 2;
         }
         func_ov003_020882f0(0, &damage);
@@ -1054,7 +1040,7 @@ s16 func_ov003_02089194(Ov003EnemyActor* unit, const Ov003AttackInfo* info, cons
             s16 sync = data_ov003_020e71b8->unk3D8EE;
 
             damage = OV003_ATTACK_PERCENT(damage, sync);
-            func_ov003_0209c568(1, 0, damage);
+            func_ov003_0209c568(1);
             unit->actor.unk_12 |= 2;
         }
         func_ov003_020882f0(1, &damage);
@@ -1466,7 +1452,7 @@ s32 func_ov003_0208a1e8(const Ov003AttackInfo* info, void* payload, s32 arg2) {
 }
 
 /// Copies a spawn's attack arguments into the record the hit resolvers read.
-void func_ov003_0208a234(s16 arg0, const Ov003AttackArgs* args, Ov003EnemyActor* unit) {
+void func_ov003_0208a234(u16 arg0, const Ov003AttackArgs* args, Ov003EnemyActor* unit) {
     unit->actor.unk_14     = arg0;
     unit->actor.attackArgs = *args;
 }

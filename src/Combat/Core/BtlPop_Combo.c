@@ -54,9 +54,7 @@ typedef struct BtlPop_ComboCmd {
 // External functions
 // ---------------------------------------------------------------------------------------------
 
-extern void func_020265d4(void* value, s32 target, u16 frames);
-extern s32  func_ov003_020a3330(s32 id);
-extern s32  func_ov003_020a3468(s32 id);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 
 extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020d8018;

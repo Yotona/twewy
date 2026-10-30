@@ -10,9 +10,6 @@
 // screens. Mode 1 walks both enemy lists and splashes one enemy of each screen in turn, mode 0 splashes at random
 // positions around the middle of the screen, speeding up from `start` to `end` frames between splashes.
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 // ---------------------------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------------------------
@@ -53,8 +50,6 @@ typedef struct BtlFeatSplashEnm {
 // ---------------------------------------------------------------------------------------------
 
 extern s32 data_ov003_020e71e0;
-
-extern s32 func_ov003_02084460(s32 engine, s32 y, s32 z);
 
 s32 func_ov003_020bc088(BtlFeatSplashEnm* self);
 s32 func_ov003_020bc0ac(BtlFeatSplashEnm* self);
@@ -122,19 +117,19 @@ s32 func_ov003_020bc0ac(BtlFeatSplashEnm* self) {
             return 2;
         }
         if ((self->shots & 1) && self->mainEnemy != NULL) {
-            s32 x = self->mainEnemy->actor.position.x;
-            func_ov003_0209fc88(1, x, self->mainEnemy->actor.position.y, self->mainEnemy->actor.position.z, 4, 1);
+            s32 x = self->mainEnemy->base.actor.position.x;
+            func_ov003_0209fc88(1, x, self->mainEnemy->base.actor.position.y, self->mainEnemy->base.actor.position.z, 4, 1);
             if (self->args.sound != -1) {
                 SndMgr_PlaySEWithPan(self->args.sound, func_ov003_020843b0(1, x));
             }
-            self->mainEnemy = func_ov003_02084984(&self->mainEnemy->node);
+            self->mainEnemy = func_ov003_02084984(&self->mainEnemy->base.node);
         } else if (self->subEnemy != NULL) {
-            s32 x = self->subEnemy->actor.position.x;
-            func_ov003_0209fc88(2, x, self->subEnemy->actor.position.y, self->subEnemy->actor.position.z, 4, 1);
+            s32 x = self->subEnemy->base.actor.position.x;
+            func_ov003_0209fc88(2, x, self->subEnemy->base.actor.position.y, self->subEnemy->base.actor.position.z, 4, 1);
             if (self->args.sound != -1) {
                 SndMgr_PlaySEWithPan(self->args.sound, func_ov003_020843b0(0, x));
             }
-            self->subEnemy = func_ov003_02084984(&self->subEnemy->node);
+            self->subEnemy = func_ov003_02084984(&self->subEnemy->base.node);
         }
         self->shots++;
     } else {
@@ -173,9 +168,9 @@ s32 func_ov003_020bc280(BtlFeatSplashEnm* self) {
     timer = self->timer;
     bitX  = (timer >> 1) & 1;
     odd   = timer & 1;
-    x     = (s32)ROUND_FX(bitX * 0x80) + (randX << 12);
+    x     = (s32)I2F_RND(bitX * 0x80) + (randX << 12);
     bitY  = (timer >> 2) & 1;
-    y     = (s32)ROUND_FX(bitY * 0x60) + (randY << 12);
+    y     = (s32)I2F_RND(bitY * 0x60) + (randY << 12);
     if (odd) {
         z = func_ov003_02084460(0, (y * 0x10) >> 16, 0);
         func_ov003_0209fc88(2, x, z, 0, 4, 1);

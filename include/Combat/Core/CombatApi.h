@@ -50,7 +50,7 @@ CombatActor* func_ov003_02085ec0(s32);
 CombatActor* func_ov003_02086014(s32);
 void         func_ov003_020860c4(void);
 void         func_ov003_02086130(void);
-void         func_ov003_020862a4(s32);
+void         func_ov003_020862a4(u16);
 void         func_ov003_020862f8(s32, s32);
 
 void         func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
@@ -159,7 +159,7 @@ s32 func_ov003_0209d038(s32 value, s16 x, s32 y);
 void func_ov003_0209d4b0(void);
 
 // BtlSandstorm.c
-s32 func_ov003_0209e70c(TaskPool*, Task*, void*, s32);
+s32 func_ov003_0209e70c(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // BtlEff.c
 /// Loads the effect sprite from the record `args->id` selects, positions it and accounts for it in
@@ -401,16 +401,16 @@ void func_ov003_020a6bb8(s16* out, Ov003EnemyActor* unit);
 s32 func_ov003_020a6c14(void);
 
 // BtlBadge.c
-void func_ov003_020a6d24(void*);
+void func_ov003_020a6d24(Ov003PinAction* action);
 
 // BtlBadge_ExecEffect.c
 void func_ov003_020a7284(Ov003TouchActor*);
 
 // BtlBadge_Gauge.c
-void func_ov003_020a7640(void*);
+void func_ov003_020a7640(Ov003PinAction* action);
 
 // BtlBadge_Stock.c
-void func_ov003_020a7e68(void*);
+void func_ov003_020a7e68(Ov003PinAction* action);
 
 // BtlBadge_RankingEffect.c
 void func_ov003_020a7ba8(Ov003TouchActor*);
@@ -605,7 +605,7 @@ s32 func_ov003_020be660(TaskPool* pool, Task* task, void* args);
 s32 func_ov003_020be688(TaskPool* pool, Task* task, void* args, s32 stage);
 
 // BtlActSp00.c
-void func_ov003_020c1f18(void*, u16);
+void func_ov003_020c1f18(TaskPool* pool, u16 level);
 
 // ov003_020c2064.c
 /// Scales `value` by `scale / total` while the cut-in slow-motion flag is off.
@@ -677,10 +677,11 @@ s32                  func_ov003_020c3c28(void);
 void                 func_ov003_020c3c44(Ov003CutinScript*, void*, s16);
 const BtlSpriteDesc* func_ov003_020c3c6c(Ov003EnemyActor*);
 Ov003ActorParams*    func_ov003_020c3c88(Ov003EnemyActor*);
-void                 func_ov003_020c3cec(void*, void*, void*, void*);
-s32                  func_ov003_020c3d28(void*, void*, void*, void*, s32*, s32*);
-s32                  func_ov003_020c3ec0(CombatActor*);
-s32                  func_ov003_020c3efc(Ov003EnemyActor*, Ov003CutinCmdData*);
+void func_ov003_020c3cec(const TaskHandle* mainHandle, const TaskHandle* subHandle, void* mainData, void* subData);
+s32 func_ov003_020c3d28(const TaskHandle* subHandle, const TaskHandle* mainHandle, void* subData, void* mainData, s32* mainOut,
+                        s32* subOut);
+s32 func_ov003_020c3ec0(CombatActor*);
+s32 func_ov003_020c3efc(Ov003EnemyActor*, Ov003CutinCmdData*);
 // ov003_020c41e8.c
 /// Resets a cut-in actor to its idle defaults (a fresh 0x1C0-byte actor block).
 void func_ov003_020c41e8(Ov003CutinActor* actor);

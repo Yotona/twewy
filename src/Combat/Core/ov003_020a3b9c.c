@@ -21,6 +21,7 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "Save.h"
+#include "SndMgr.h"
 #include "common_data.h"
 
 #include <nitro/fx.h>
@@ -51,21 +52,14 @@ extern s32  func_02040ac0(void);
 extern void func_02041030(s32);
 extern void func_02041048(s32);
 
-extern s32 CombatSprite_Load(CombatSprite*, SpriteAnimationEx*);
-
-extern Ov003TouchActor* func_ov003_02084970(CombatList*);
-extern void             func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern s32              func_ov003_020a3330(s32);
-extern s32              func_ov003_020a3468(s32);
-extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void             func_ov003_020a5540(Ov003EffectState*, Ov003TouchActor*);
-extern void             func_ov003_020a563c(Ov003EffectState*);
-extern void             func_ov003_020a58e4(Ov003EffectState*, u16, u8);
-extern s32              func_ov003_020a632c(s16, s16, s16, s16);
-extern s32              func_ov003_020a6c7c(s32);
-extern s32              func_ov003_020a6cc4(u8);
-
-extern s32 SndMgr_IsSEPlaying(s32);
+extern void* func_ov003_02084970(CombatList* list);
+extern s32   func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
+extern void  func_ov003_020a5540(Ov003EffectState*, Ov003TouchActor*);
+extern void  func_ov003_020a563c(Ov003EffectState*);
+extern void  func_ov003_020a58e4(Ov003EffectState*, u16, u8);
+extern s32   func_ov003_020a632c(s16, s16, s16, s16);
+extern s32   func_ov003_020a6c7c(s32);
+extern s32   func_ov003_020a6cc4(s32 arg0);
 
 /// Defined below; the state machine calls itself through these.
 s16                func_ov003_020a40cc(Ov003TouchActor*, s32);
@@ -75,19 +69,6 @@ s32                func_ov003_020a4908(Ov003PsychParams*, u16);
 s32                func_ov003_020a49b4(Ov003PsychParams*, u16);
 s32                func_ov003_020a49c8(Ov003PsychParams*, u16);
 const EquippedPin* func_ov003_020a4a24(s32 deck);
-
-// ---------------------------------------------------------------------------------------------
-// Ov003Global views
-// ---------------------------------------------------------------------------------------------
-
-/// The actor list and the live-actor counter, both split out of the middle of `Ov003Global`.
-#define OV003_TOUCH_ACTORS (&data_ov003_020e71b8->unk3D8BC)
-#define OV003_TOUCH_SLOTS  (&gSaveData.battleTouchSlots)
-
-/// The table of 6-byte per-slot start positions (see `ov003_020a30d4.c`).
-
-/// The live actor count at `Ov003Global + 0x3D8C4`.
-#define OV003_ACTOR_COUNT data_ov003_020e71b8->touchActorCount
 
 // ---------------------------------------------------------------------------------------------
 // Data
@@ -224,16 +205,16 @@ void func_ov003_020a3b9c(Ov003TouchActor* actor, const Ov003ActorSpawn* spawn) {
     func_ov003_02082738(&actor->sprite, 0);
     func_ov003_02082730(&actor->sprite, 0x3E8000);
     actor->radius    = 0x10;
-    actor->x         = OV003_TOUCH_SLOTS->x[actor->slot] << 12;
-    actor->y         = OV003_TOUCH_SLOTS->y[actor->slot] << 12;
+    actor->x         = gSaveData.battleTouchSlots.x[actor->slot] << 12;
+    actor->y         = gSaveData.battleTouchSlots.y[actor->slot] << 12;
     angle            = (RNG_Next(0x10000) >> 4) * 2;
     actor->velocityX = FX_Mul(FX_SinCosTable_[angle + 1], FX32_ONE);
     actor->velocityY = FX_Mul(FX_SinCosTable_[angle], FX32_ONE);
     func_ov003_020a58e4(&actor->effect, actor->params.head.unk_02, actor->params.unk_04);
     func_ov003_020a7284(actor);
     func_ov003_020a7ba8(actor);
-    OV003_ACTOR_COUNT++;
-    func_ov003_020849bc(OV003_TOUCH_ACTORS, &actor->node, actor);
+    data_ov003_020e71b8->touchActorCount++;
+    func_ov003_020849bc(&data_ov003_020e71b8->unk3D8BC, &actor->node, actor);
 }
 
 void func_ov003_020a3d98(Ov003TouchActor* actor) {
@@ -301,18 +282,18 @@ s32 func_ov003_020a3edc(Ov003TouchActor* actor) {
 /// TRUE when a touch is inside one of the actor's active touch areas.
 s32 func_ov003_020a3f20(Ov003TouchActor* actor) {
     if (func_ov003_02085cfc(2) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC) != 0)
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y) != 0)
     {
         return 1;
     }
     if (func_ov003_02085cfc(6) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D378, data_ov003_020e71b8->unk3D37A) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC) != 0)
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.startX, data_ov003_020e71b8->touchWork.startY) != 0 &&
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y) != 0)
     {
         return 1;
     }
     if (func_ov003_02085cfc(3) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D37C, data_ov003_020e71b8->unk3D37E) != 0)
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.endX, data_ov003_020e71b8->touchWork.endY) != 0)
     {
         return 1;
     }
@@ -322,12 +303,12 @@ s32 func_ov003_020a3f20(Ov003TouchActor* actor) {
 /// TRUE when the release point of the current touch is inside the actor.
 s32 func_ov003_020a401c(Ov003TouchActor* actor) {
     if (func_ov003_02085cfc(2) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC) != 0)
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y) != 0)
     {
         return 1;
     }
     if (func_ov003_02085cfc(3) != 0 &&
-        func_ov003_020a410c(actor, data_ov003_020e71b8->unk3D37C, data_ov003_020e71b8->unk3D37E) != 0)
+        func_ov003_020a410c(actor, data_ov003_020e71b8->touchWork.endX, data_ov003_020e71b8->touchWork.endY) != 0)
     {
         return 1;
     }
@@ -374,10 +355,10 @@ void func_ov003_020a4158(void) {
     Ov003TouchActor* a;
     Ov003TouchActor* b;
 
-    for (a = func_ov003_0208495c(OV003_TOUCH_ACTORS); a != NULL; a = func_ov003_02084984(&a->node)) {
+    for (a = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); a != NULL; a = func_ov003_02084984(&a->node)) {
         s32 aActive = func_ov003_020a3e50(a);
 
-        for (b = func_ov003_02084970(OV003_TOUCH_ACTORS); b != NULL; b = func_ov003_02084998(&b->node)) {
+        for (b = func_ov003_02084970(&data_ov003_020e71b8->unk3D8BC); b != NULL; b = func_ov003_02084998(&b->node)) {
             s32 bActive = func_ov003_020a3e50(b);
             s32 radius;
             s32 dx;
@@ -398,9 +379,9 @@ void func_ov003_020a4158(void) {
             }
             push = (radius << 12) - FX_Sqrt(FX_Mul(dx, dx) + FX_Mul(dy, dy));
             if (push > 0) {
-                s32 angle = (FX_Atan2Idx(dy, dx) >> 4) * 2;
-                s32 pushX = FX_Mul(FX_SinCosTable_[angle + 1], push);
-                s32 pushY = FX_Mul(FX_SinCosTable_[angle], push);
+                u16 angle = FX_Atan2Idx(dy, dx);
+                s32 pushX = FX_Mul(FX_CosIdx(angle), push);
+                s32 pushY = FX_Mul(FX_SinIdx(angle), push);
 
                 a->x += pushX;
                 a->y += pushY;
@@ -409,7 +390,7 @@ void func_ov003_020a4158(void) {
             }
         }
     }
-    for (a = func_ov003_0208495c(OV003_TOUCH_ACTORS); a != NULL; a = func_ov003_02084984(&a->node)) {
+    for (a = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8BC); a != NULL; a = func_ov003_02084984(&a->node)) {
         s32 radius;
 
         if (func_ov003_020a3e50(a) == 0) {
@@ -434,7 +415,7 @@ void func_ov003_020a4158(void) {
 void func_ov003_020a4390(Ov003TouchActor* actor, s32 request) {
     if (request == 5) {
         func_ov003_020a45d4(actor);
-        func_ov003_02087ed8(0x2D);
+        func_ov003_02087ed8(SEIDX_SE_PSY_FULL);
         return;
     }
     if (request == 2 && actor->params.unk_1E == 0) {
@@ -538,7 +519,7 @@ void func_ov003_020a45d4(Ov003TouchActor* actor) {
             break;
     }
     if (((s32)gSaveData.unk_3142 > 1) && data_ov003_020e71b8->unk3D890 == 0xD) {
-        switch (OV003_TOUCH_SLOTS->kind[actor->slot]) {
+        switch (gSaveData.battleTouchSlots.kind[actor->slot]) {
             case 3:
                 actor->request = 7;
                 break;
@@ -682,8 +663,8 @@ s32 func_ov003_020a4aac(Ov003TrailEffect* effect) {
     CombatSprite_Update(&effect->spriteB);
     switch (effect->state) {
         case 0:
-            effect->points[effect->count][0] = data_ov003_020e71b8->unk3D3AA;
-            effect->points[effect->count][1] = data_ov003_020e71b8->unk3D3AC;
+            effect->points[effect->count][0] = data_ov003_020e71b8->touchWork.x;
+            effect->points[effect->count][1] = data_ov003_020e71b8->touchWork.y;
             effect->count++;
             if (func_ov003_02085cfc(6) == 0) {
                 effect->state = 3;
@@ -692,16 +673,16 @@ s32 func_ov003_020a4aac(Ov003TrailEffect* effect) {
             count = effect->count;
             if (count > 2) {
                 if (func_ov003_020a632c(effect->points[count - 1][0], effect->points[count - 1][1],
-                                        data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC) > 0x6000)
+                                        data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y) > 0x6000)
                 {
                     if (effect->count < 0x78) {
                         s16 x = effect->points[count - 1][0];
                         s16 y = effect->points[count - 1][1];
 
-                        effect->points[count - 1][0]     = x + (data_ov003_020e71b8->unk3D3AA - x) / 2;
-                        effect->points[count - 1][1]     = y + (data_ov003_020e71b8->unk3D3AC - y) / 2;
-                        effect->points[effect->count][0] = data_ov003_020e71b8->unk3D3AA;
-                        effect->points[effect->count][1] = data_ov003_020e71b8->unk3D3AC;
+                        effect->points[count - 1][0]     = x + (data_ov003_020e71b8->touchWork.x - x) / 2;
+                        effect->points[count - 1][1]     = y + (data_ov003_020e71b8->touchWork.y - y) / 2;
+                        effect->points[effect->count][0] = data_ov003_020e71b8->touchWork.x;
+                        effect->points[effect->count][1] = data_ov003_020e71b8->touchWork.y;
                         effect->count++;
                     }
                 }
@@ -715,8 +696,8 @@ s32 func_ov003_020a4aac(Ov003TrailEffect* effect) {
                     return 1;
                 }
             }
-            if (SndMgr_IsSEPlaying(0x45) == 0) {
-                func_ov003_02087f00(SEIDX_SE_PSY_FIREBALL01_01, data_ov003_020e71b8->unk3D3AA);
+            if (SndMgr_IsSEPlaying(SEIDX_SE_PSY_FIREBALL01_01) == 0) {
+                func_ov003_02087f00(SEIDX_SE_PSY_FIREBALL01_01, data_ov003_020e71b8->touchWork.x);
             }
             return 1;
         case 1:
@@ -752,7 +733,7 @@ void func_ov003_020a4c8c(Ov003TrailEffect* effect) {
     if (effect->state != 0) {
         return;
     }
-    CombatSprite_SetPosition(&effect->spriteB, data_ov003_020e71b8->unk3D3AA, data_ov003_020e71b8->unk3D3AC);
+    CombatSprite_SetPosition(&effect->spriteB, data_ov003_020e71b8->touchWork.x, data_ov003_020e71b8->touchWork.y);
     func_ov003_02082730(&effect->spriteB, 0x3B7000);
     CombatSprite_Render(&effect->spriteB);
 }

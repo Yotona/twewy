@@ -1,8 +1,9 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include "SndMgrSeIdx.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
-extern CombatActor*     func_ov003_02085dc8(s32);
 extern s32              func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern const TaskHandle data_ov003_020dd210;
 
@@ -43,7 +44,7 @@ s32 func_ov003_020ba74c(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->angle      = arg->angle;
             self->phase      = 0;
             func_ov003_020a3498(&self->sprite, 2, 1, 0xE9, 1);
-            func_ov003_02087ed8(0x3D);
+            func_ov003_02087ed8(SEIDX_SE_PSY_PSYCOTERRITORY01_01);
             return 1;
         case 1:
             self = task->data;
@@ -52,7 +53,7 @@ s32 func_ov003_020ba74c(TaskPool* pool, Task* task, void* args, s32 stage) {
                     if (SpriteMgr_IsAnimationFinished(&self->sprite.sprite)) {
                         self->phase = 1;
                         func_ov003_020a35b8(&self->sprite, 0xEA, 1);
-                        func_ov003_02087ed8(0x3E);
+                        func_ov003_02087ed8(SEIDX_SE_PSY_PSYCOTERRITORY01_02);
                     }
                     break;
                 case 1:
@@ -78,14 +79,14 @@ s32 func_ov003_020ba74c(TaskPool* pool, Task* task, void* args, s32 stage) {
                 case 2: {
                     s32 x      = func_ov003_020843b0(0, self->position.x);
                     s32 y      = func_ov003_020843ec(0, self->position.y, self->position.z);
-                    s32 dy     = FX_Mul(FX_SinCosTable_[(self->angle >> 4) * 2], 0x12C000);
-                    s32 dx     = FX_Mul(FX_SinCosTable_[(self->angle >> 4) * 2 + 1], 0x12C000);
+                    s32 dy     = FX_Mul(SIN2(FX_SinCosTable_, self->angle), 0x12C000);
+                    s32 dx     = FX_Mul(COS2(FX_SinCosTable_, self->angle), 0x12C000);
                     s32 endY   = (dy + y * 0x1000) >> 12;
                     s32 startY = (y * 0x1000 - dy) >> 12;
                     s32 endX   = (dx + x * 0x1000) >> 12;
                     s32 startX = (x * 0x1000 - dx) >> 12;
                     if (func_ov003_020a6acc(&self->effect->streak, 0x16C, startX, startY, endX, endY, self->position.x) == 1)
-                        func_ov003_02087ed8(0x3F);
+                        func_ov003_02087ed8(SEIDX_SE_PSY_PSYCOTERRITORY01_HIT);
                     break;
                 }
             }

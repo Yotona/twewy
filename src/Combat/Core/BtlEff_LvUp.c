@@ -64,7 +64,7 @@ s32 func_ov003_020a0430(TaskPool* pool, Task* task, void* args) {
     data_ov003_020e71b8->unk3D878 |= 8;
     func_ov003_020a0290(0, &data[0]);
     func_ov003_020a0290(1, &data[1]);
-    func_ov003_02087ed8(0x14f);
+    func_ov003_02087ed8(SEIDX_SE_BOY_LEVELUP);
     return 1;
 }
 s32 func_ov003_020a0490(TaskPool* pool, Task* task, void* args) {

@@ -5,46 +5,46 @@
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010Rnge {
-    /* 0x00 */ CombatSprite    sprite;
-    /* 0x60 */ BtlEnm010Owner* unk_060;
-    /* 0x64 */ s32             unk_064;
-    /* 0x68 */ s32             unk_068;
+    /* 0x00 */ CombatSprite     sprite;
+    /* 0x60 */ Ov003EnemyActor* unk_060;
+    /* 0x64 */ s32              unk_064;
+    /* 0x68 */ s32              unk_068;
 } BtlEnm010Rnge;
 
 extern char data_ov011_0212cc10[20];
-s32         func_ov011_02127ce0(TaskPool* arg0, Task* arg1, void* arg2, s32 index);
+s32         func_ov011_02127ce0(TaskPool* pool, Task* task, void* args, s32 stage);
 
 const TaskHandle data_ov011_0212c1d4 = {(const char*)data_ov011_0212cc10, func_ov011_02127ce0, 108};
 
 char data_ov011_0212cc10[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 0x6E, 0x6D,
                                 0x30, 0x31, 0x30, 0x5F, 0x52, 0x6E, 0x67, 0x65, 0x00, 0x00};
 
-s32 func_ov011_02127c84(void* p) {
-    BtlEnm010Owner* data;
-    TaskPool*       pool;
+s32 func_ov011_02127c84(Ov003EnemyActor* owner) {
+    Ov003EnemyActor* data;
+    TaskPool*        pool;
 
-    data = p;
+    data = owner;
     if (func_ov003_020c37f8(&data->sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
     }
-    return EasyTask_CreateTask(pool, &data_ov011_0212c1d4, 0, 0, 0, (void*)&data);
+    return EasyTask_CreateTask(pool, &data_ov011_0212c1d4, 0, 0, 0, &data);
 }
 
-s32 func_ov011_02127ce0(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
-    BtlEnm010Rnge*   data;
-    BtlEnm010Owner** spawn;
-    s32              r;
-    s32              snd;
-    s32              pan;
-    s32              bias;
-    s32              y;
+s32 func_ov011_02127ce0(TaskPool* pool, Task* task, void* args, s32 stage) {
+    BtlEnm010Rnge*    data;
+    Ov003EnemyActor** spawn;
+    s32               r;
+    s32               snd;
+    s32               pan;
+    s32               bias;
+    s32               y;
 
-    data  = arg1->data;
-    spawn = arg2;
+    data  = task->data;
+    spawn = args;
     r     = 1;
-    switch (index) {
+    switch (stage) {
         case 0:
             MI_CpuSet(data, 0, 0x6C);
             func_ov011_021258b4((*spawn)->sprite.sprite.bits_0_1, &data->sprite, 0);
@@ -78,13 +78,13 @@ s32 func_ov011_02127ce0(TaskPool* arg0, Task* arg1, void* arg2, s32 index) {
                 bias = -bias;
             }
             if (data->sprite.sprite.cellIndex == 2 && data->sprite.sprite.frameTimer == 1) {
-                func_ov003_02087f00(0x1DB, pan);
+                func_ov003_02087f00(SEIDX_SE_010_FIREATTACK, pan);
             }
             if (data->sprite.sprite.cellIndex >= 4 && data->sprite.sprite.cellIndex <= 6) {
                 if (func_ov003_020c5b2c((u16)snd, data->unk_060->actor.position.x + bias, data->unk_060->actor.position.y,
                                         data->unk_060->actor.position.z, data->unk_060->actor.position.z) == 1)
                 {
-                    func_ov003_02087f00(0x1DC, pan);
+                    func_ov003_02087f00(SEIDX_SE_010_FIREATTACK_HIT, pan);
                 }
             }
             if (SpriteMgr_IsAnimationFinished(&data->sprite.sprite) != 0) {

@@ -7,9 +7,6 @@
 #include "SndMgr.h"
 #include <nitro/mi/cpumem.h>
 
-// Rounds `v` (20.12 fixed point built from an integer) to the nearest integer the way the original build does.
-#define ROUND_FX(v) ((v) > 0 ? 0.5f + (f32)((v) << 12) : (f32)((v) << 12) - 0.5f)
-
 /// The task parameter: the shot to snapshot, the root shot it repeats and the placement ranges of the roots.
 typedef struct Ov003EnemyShotRootLaserArgs {
     /* 0x00 */ Ov003EnemyShotSource* source;
@@ -57,10 +54,6 @@ typedef struct Ov003EnemyShotRootLaser {
     /* 0xE4 */ SndMgrSeIdx          sound2;
 } Ov003EnemyShotRootLaser; // Size: 0xE8
 
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern void             func_ov003_02087f00(SndMgrSeIdx seIdx, s32 sePan);
-extern s32              func_ov003_020c3c28(void);
-extern s32              func_ov003_020c37f8(CombatSprite*);
 extern const TaskHandle data_ov003_020e0ca4;
 
 void func_ov003_020d1538(Ov003EnemyShotRootLaserArgs* args) {
@@ -80,18 +73,18 @@ s32 func_ov003_020d1570(Ov003EnemyShotRootLaser* self) {
     u16              angle;
     s32              result;
 
-    half  = (s32)ROUND_FX(target->actor.unk_72);
+    half  = FX32_CONVERT(target->base.actor.unk_72);
     z     = self->owner.core.position.z;
     x     = self->owner.core.position.x;
     y     = self->owner.core.position.y;
-    limit = target->actor.position.y - (half >> 1) - z;
+    limit = target->base.actor.position.y - (half >> 1) - z;
     while (x <= camera->unk_0C && x >= 0) {
         parity = (u16)((parity + 1) % 2);
         if (parity == 0) {
             f32 jitter = RNG_Next(self->verticalMax - self->verticalMin + 1) > 0
                              ? 0.5f + (f32)(RNG_Next(self->verticalMax - self->verticalMin + 1) << 12)
                              : (f32)(RNG_Next(self->verticalMax - self->verticalMin + 1) << 12) - 0.5f;
-            scale      = (s32)ROUND_FX(self->verticalMin) + (s32)jitter;
+            scale      = FX32_CONVERT(self->verticalMin) + (s32)jitter;
             angle      = (y < limit) ? 0xC000 : 0x4000;
             if (self->override != 0) {
                 angle          = (self->override == 2) ? 0xC000 : 0x4000;
@@ -99,21 +92,21 @@ s32 func_ov003_020d1570(Ov003EnemyShotRootLaser* self) {
             }
             result = func_ov003_020d1228(&self->source, &self->list, angle, x, y, z, 0x1000, scale);
             if (angle == 0xC000) {
-                x += FX_Mul(scale, (s32)ROUND_FX(self->spacing));
+                x += FX_Mul(scale, FX32_CONVERT(self->spacing));
             } else {
-                x += FX_Mul(scale, (s32)ROUND_FX(-self->spacing));
+                x += FX_Mul(scale, FX32_CONVERT(-self->spacing));
             }
         } else {
             f32 jitter = RNG_Next(self->horizontalMax - self->horizontalMin + 1) > 0
                              ? 0.5f + (f32)(RNG_Next(self->horizontalMax - self->horizontalMin + 1) << 12)
                              : (f32)(RNG_Next(self->horizontalMax - self->horizontalMin + 1) << 12) - 0.5f;
-            scale      = (s32)ROUND_FX(self->horizontalMin) + (s32)jitter;
-            angle      = (self->owner.core.owner->sprite.flags46 & 1) ? 0x8000 : 0;
+            scale      = FX32_CONVERT(self->horizontalMin) + (s32)jitter;
+            angle      = (self->owner.core.owner->base.sprite.flags46 & 1) ? 0x8000 : 0;
             result     = func_ov003_020d1228(&self->source, &self->list, angle, x, y, z, scale, 0x1000);
             if (angle == 0x8000) {
-                x += FX_Mul(scale, (s32)ROUND_FX(self->spacing));
+                x += FX_Mul(scale, FX32_CONVERT(self->spacing));
             } else {
-                x += FX_Mul(scale, (s32)ROUND_FX(-self->spacing));
+                x += FX_Mul(scale, FX32_CONVERT(-self->spacing));
             }
         }
         if (result == -1)
@@ -158,7 +151,7 @@ s32 func_ov003_020d1ae8(Ov003EnemyShotRootLaser* self) {
         return 0;
     switch (self->state) {
         case 0: {
-            s32 flags = self->owner.core.owner->actor.flags;
+            s32 flags = self->owner.core.owner->base.actor.flags;
             if ((flags & 2) || (flags & 4) || (flags & 0x4000) || (flags & 0x200))
                 return 0;
             self->timer--;

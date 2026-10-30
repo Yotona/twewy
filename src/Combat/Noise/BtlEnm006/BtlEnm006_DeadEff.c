@@ -15,7 +15,7 @@ typedef struct Enm006AnimEntryPad2 {
     /* 0x08 */ u8              pad[2];
 } Enm006AnimEntryPad2; // Size: 0xA
 
-extern s32  func_ov010_02125730(TaskPool*, Task*, void*, s32);
+extern s32  func_ov010_02125730(TaskPool* pool, Task* task, void* args, s32 stage);
 extern s32  func_ov010_02125780(Enm006DeadEff*, Enm006Spawn*);
 extern char data_ov010_0212938c[24];
 
@@ -49,7 +49,7 @@ void func_ov010_021256d0(BtlEnm006* owner, BtlEnm006* target) {
     TaskPool*  pool;
     args[0] = owner;
     args[1] = target;
-    if (func_ov003_020c37f8(&target->sprite) == 0) {
+    if (func_ov003_020c37f8(&target->base.sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
@@ -76,15 +76,15 @@ s32 func_ov010_02125780(Enm006DeadEff* data, Enm006Spawn* args) {
     s32 m;
     u16 v;
     MI_CpuSet(data, 0, 0x6C);
-    v = args->unk_00->spriteIndex;
-    m = args->unk_00->sprite.sprite.bits_0_1;
+    v = args->unk_00->base.spriteIndex;
+    m = args->unk_00->base.sprite.sprite.bits_0_1;
     CombatSprite_LoadFromTable(m, &data->sprite, func_ov010_021256c0(v), data_ov010_02129380[v], 0, data_ov010_02129200[v],
                                0x30);
     CombatSprite_SetAnimFromTable(&data->sprite, 0, 1);
-    CombatSprite_SetFlip(&data->sprite, args->unk_00->actor.isFlipped == 1);
-    data->position.x = args->unk_00->actor.position.x;
-    data->position.y = args->unk_00->actor.position.y;
-    data->position.z = args->unk_00->actor.position.z;
+    CombatSprite_SetFlip(&data->sprite, args->unk_00->base.actor.isFlipped == 1);
+    data->position.x = args->unk_00->base.actor.position.x;
+    data->position.y = args->unk_00->base.actor.position.y;
+    data->position.z = args->unk_00->base.actor.position.z;
     return 1;
 }
 

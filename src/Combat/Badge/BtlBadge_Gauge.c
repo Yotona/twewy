@@ -30,10 +30,10 @@ typedef struct BtlBadgeGauge {
 char             data_ov003_020e4924[0x14] = "Tsk_BtlBadge_Gauge";
 const TaskHandle data_ov003_020dc5e4       = {data_ov003_020e4924, func_ov003_020a7688, sizeof(BtlBadgeGauge)};
 
-void func_ov003_020a7640(void* arg0) {
-    s32 sp8 = (s32)arg0;
+void func_ov003_020a7640(Ov003PinAction* action) {
+    Ov003PinAction* args = action;
 
-    EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020dc5e4, NULL, 0, NULL, &sp8);
+    EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020dc5e4, NULL, 0, NULL, &args);
 }
 
 s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
@@ -119,7 +119,7 @@ s32 func_ov003_020a7688(TaskPool* pool, Task* task, void* args, s32 stage) {
                     }
                     if (actor->unk_044 <= 0) {
                         func_ov003_020a4390(actor, 2);
-                        func_ov003_02087ed8(0x2E);
+                        func_ov003_02087ed8(SEIDX_SE_PSY_EMPTY);
                     }
                     break;
                 case 4:

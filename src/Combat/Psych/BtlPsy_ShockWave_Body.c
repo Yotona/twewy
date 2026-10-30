@@ -1,12 +1,13 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern const Ov003ShockWaveKind data_ov003_020dcb10[27];
 
 extern s32 func_ov003_020a632c(s32, s32, s32, s32);
-extern s32 func_ov003_020a66f4(Ov003EffectState*, u16, s16, s16, s32, s32);
+extern s32 func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 void       func_ov003_020b716c(Ov003ShockWaveBody* self);
 void       func_ov003_020b71a0(Ov003ShockWaveBody* self);
 s32        func_ov003_020b7240(Ov003ShockWaveBody* self);
@@ -266,8 +267,8 @@ void func_ov003_020b716c(Ov003ShockWaveBody* self) {
 }
 
 void func_ov003_020b71a0(Ov003ShockWaveBody* self) {
-    self->x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-    self->y += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+    self->x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+    self->y += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
     self->distance += self->speed;
     self->speed += self->acceleration;
 }
@@ -311,7 +312,7 @@ s32 func_ov003_020b72b8(Ov003ShockWaveBody* self) {
     kind = data_ov003_020dcb10[self->kind].attackKind;
     if (kind == 0x180 && func_ov003_020a51c0() != 0)
         kind = 0x181;
-    if (func_ov003_020a66f4(self->effect, (u16)kind, x, y, 0, 0) == 1) {
+    if (func_ov003_020a66f4(&self->effect->streak, (u16)kind, (s16)x, (s16)y, 0, 0) == 1) {
         s32 sound = data_ov003_020dcb10[self->kind].spawnSound;
         s32 sePan = self->x;
 
@@ -421,7 +422,7 @@ void func_ov003_020b7760(Ov003ShockWaveBody* self) {
     if (!func_ov003_02085cfc(4))
         return;
     func_ov003_02087f28(0xA5, self->x);
-    self->renderAngle = self->angle = touch->input.angle;
+    self->renderAngle = self->angle = touch->angle;
 }
 
 s32 func_ov003_020b77a8(Ov003ShockWaveBody* self) {

@@ -10,8 +10,6 @@ typedef struct FireWaveDef {
 extern const FireWaveDef data_ov003_020dc674[5];
 extern const TaskHandle  data_ov003_020dc668;
 extern s32               func_ov003_020a51c0(void);
-extern s32               func_ov003_0208442c(s32, s32);
-extern s32               func_ov003_02084460(s32, s32, s32);
 
 // Nonmatching: mwcc merges the two identical task-handle literals.
 s32 func_ov003_020a9a58(Ov003EffectContext* context, Ov003EffectState* effect) {
@@ -21,7 +19,7 @@ s32 func_ov003_020a9a58(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc668.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020dc668;
+    context->handle        = &data_ov003_020dc668;
     context->arg           = arg;
     context->post          = NULL;
     return 1;
@@ -36,8 +34,8 @@ s32 func_ov003_020a9ac4(TaskPool* pool, Task* task, void* args, s32 stage) {
             wave = task->data;
             MI_CpuSet(wave, 0, sizeof(*wave));
             wave->effect     = *(Ov003EffectState**)args;
-            wave->position.x = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-            wave->position.y = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+            wave->position.x = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+            wave->position.y = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
             wave->flags      = 0;
             wave->hasSpawned = 0;
             wave->exhausted  = 0;
@@ -58,8 +56,8 @@ s32 func_ov003_020a9ac4(TaskPool* pool, Task* task, void* args, s32 stage) {
                     break;
                 case 1:
                     if (wave->wasHeld == 0) {
-                        wave->position.x  = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-                        wave->position.y  = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+                        wave->position.x  = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+                        wave->position.y  = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
                         wave->activeTicks = 0;
                         wave->flags |= 1;
                     }
@@ -77,8 +75,8 @@ s32 func_ov003_020a9ac4(TaskPool* pool, Task* task, void* args, s32 stage) {
                 wave->flags |= 1;
             }
             if (wave->flags & 1) {
-                s32 x = func_ov003_0208442c(0, data_ov003_020e71b8->unk3D3AA);
-                s32 y = func_ov003_02084460(0, data_ov003_020e71b8->unk3D3AC, 0);
+                s32 x = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.x);
+                s32 y = func_ov003_02084460(0, data_ov003_020e71b8->touchWork.y, 0);
                 wave->position.x += (x - wave->position.x) >> 3;
                 wave->position.y += (y - wave->position.y) >> 3;
                 func_ov003_02083ca0(&wave->position.x, &wave->position.y, 0, 0);

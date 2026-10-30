@@ -96,24 +96,18 @@ typedef struct BtlCmd {
 extern const BinIdentifier data_ov003_020d7808;
 extern u8                  data_02071cf0[];
 
-extern s32  func_ov003_020a3330(s32 id);
-extern s32  func_ov003_020a3468(s32 id);
-extern void func_ov003_020868c8(s32 arg0);
+extern void func_ov003_020868c8(u16 value);
 extern void func_ov003_0208697c(void);
-extern void func_ov003_020869c8(s32 arg0);
+extern void func_ov003_020869c8(s32 value);
 extern s32  func_ov003_02086a64(void);
 extern s32  func_ov003_02086a80(void);
 extern void func_ov003_02086af0(void);
-extern void func_ov003_02086b14(BtlCmd* self);
+extern void func_ov003_02086b14(Ov003ChargeState* state);
 extern u16  func_ov003_02086d24(void);
-extern void func_ov003_02086d8c(CombatSprite* sprite, u16 value, s32 ready, s32 x, s32 y, s32 width);
-extern void func_ov003_02086e38(u16 value, s32 x, s32 y, s32 width);
+extern void func_ov003_02086d8c(CombatSprite* sprite, s32 animId, s32 flipped, s32 x, s16 y, s16 z);
+extern void func_ov003_02086e38(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 extern s32  func_ov003_02086f7c(void);
-extern void func_ov003_020871cc(s32 arg0);
-extern BOOL func_ov003_0208b690(u16 encounterId);
-extern void func_02026590(void* dst, s32 step, u16 count);
-extern void func_ov003_02082730(CombatSprite* sprite, s32 sortKey);
-extern void func_ov003_02082738(CombatSprite* sprite, s32 arg1);
+extern void func_02026590(s32* dst, s32 target, u16 weight);
 
 void func_ov003_0209842c(BtlCmd* self);
 void func_ov003_02098458(BtlCmd* self);
@@ -310,14 +304,14 @@ u32 func_ov003_02097984(u32 wanted) {
     Ov003CutinActor* enemy  = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8AC);
 
     while (enemy != NULL) {
-        if (!(enemy->actor.flags & 4) && !(enemy->actor.flags & 0x10)) {
-            if (gauge->position.x < enemy->actor.position.x) {
+        if (!(enemy->base.actor.flags & 4) && !(enemy->base.actor.flags & 0x10)) {
+            if (gauge->position.x < enemy->base.actor.position.x) {
                 ahead++;
             } else {
                 behind++;
             }
         }
-        enemy = func_ov003_02084984(&enemy->node);
+        enemy = func_ov003_02084984(&enemy->base.node);
     }
     if (wanted == 0x800 && behind > 0) {
         return wanted;
@@ -345,13 +339,13 @@ void func_ov003_02097a40(BtlCmd* self) {
     }
     switch (self->mode) {
         case 0:
-            wait = *(s16*)((u8*)data_ov003_020d7f08 + (level << 2));
+            wait = data_ov003_020d7f08[level * 2];
             break;
         case 1:
-            wait = *(s16*)((u8*)data_ov003_020d7f08 + (level << 2));
+            wait = data_ov003_020d7f08[level * 2];
             break;
         case 2:
-            wait = *(s16*)((u8*)data_ov003_020d7f0a + (level << 2));
+            wait = data_ov003_020d7f0a[level * 2];
             break;
         default:
             return;
@@ -392,7 +386,9 @@ void func_ov003_02097b70(BtlCmd* self) {
         self->input = InputStatus.buttonState.holdButtons;
         return;
     }
-    if (InputStatus.buttonState.currButtons & 0xCF3) {
+    if (InputStatus.buttonState.currButtons & (INPUT_BUTTON_A | INPUT_BUTTON_B | INPUT_BUTTON_RIGHT | INPUT_BUTTON_LEFT |
+                                               INPUT_BUTTON_UP | INPUT_BUTTON_DOWN | INPUT_BUTTON_X | INPUT_BUTTON_Y))
+    {
         data_ov003_020e71b8->unk3D878 &= ~0x10;
         self->mode    = 1;
         self->counter = 0;
@@ -588,16 +584,16 @@ void func_ov003_020981f8(BtlCmd* self, s32 cancel) {
         func_ov003_02097544(self, func_ov003_0209842c);
         return;
     }
-    cursor = self->cursor * 4;
+    cursor = self->cursor * sizeof(BtlCmdCell);
     cells  = self->current->cells;
-    switch (*(u16*)((u8*)cells + cursor)) {
+    switch (((BtlCmdCell*)((u8*)cells + cursor))->state) {
         case 1:
-            func_ov003_02087ed8(0x154);
+            func_ov003_02087ed8(SEIDX_SE_GIRL_DART_CURSOR01);
             func_ov003_020868c8(1);
             break;
         case 2:
             self->visible = 0;
-            func_ov003_02087ed8(0x155);
+            func_ov003_02087ed8(SEIDX_SE_GIRL_DART_CURSOR02);
             func_ov003_020868c8(2);
             func_ov003_02086e38(self->current->value, self->x, self->y, self->cellWidth);
             break;
@@ -615,22 +611,22 @@ void func_ov003_020981f8(BtlCmd* self, s32 cancel) {
 void func_ov003_0209830c(BtlCmd* self) {
     u16 input = self->input;
 
-    if (input & 0x82) {
+    if (input & (INPUT_BUTTON_B | INPUT_BUTTON_DOWN)) {
         func_ov003_020868c8(6);
         func_ov003_02097544(self, func_ov003_0209842c);
         return;
     }
-    if (input & 0x440) {
+    if (input & (INPUT_BUTTON_X | INPUT_BUTTON_UP)) {
         func_ov003_020868c8(7);
         func_ov003_02097544(self, func_ov003_0209842c);
         return;
     }
-    if (input & 0x820) {
+    if (input & (INPUT_BUTTON_Y | INPUT_BUTTON_LEFT)) {
         func_ov003_02097f3c(self, 0, 1);
         func_ov003_02097544(self, func_ov003_0209862c);
         return;
     }
-    if (input & 0x11) {
+    if (input & (INPUT_BUTTON_A | INPUT_BUTTON_RIGHT)) {
         func_ov003_02097f3c(self, 0, 2);
         func_ov003_02097544(self, func_ov003_0209862c);
     }
@@ -640,17 +636,17 @@ void func_ov003_0209830c(BtlCmd* self) {
 void func_ov003_020983ac(BtlCmd* self) {
     u16 input = self->input;
 
-    if (input & 0x82) {
+    if (input & (INPUT_BUTTON_B | INPUT_BUTTON_DOWN)) {
         func_ov003_020868c8(6);
         func_ov003_02097544(self, func_ov003_0209842c);
         return;
     }
-    if (input & 0x820) {
+    if (input & (INPUT_BUTTON_Y | INPUT_BUTTON_LEFT)) {
         func_ov003_02097f3c(self, 1, 1);
         func_ov003_02097544(self, func_ov003_0209862c);
         return;
     }
-    if (input & 0x11) {
+    if (input & (INPUT_BUTTON_A | INPUT_BUTTON_RIGHT)) {
         func_ov003_02097f3c(self, 1, 2);
         func_ov003_02097544(self, func_ov003_0209862c);
     }
@@ -676,15 +672,15 @@ void func_ov003_02098458(BtlCmd* self) {
 /// Follows the cursor along the current record.
 void func_ov003_02098484(BtlCmd* self) {
     func_ov003_02097b1c(self);
-    if (self->input & 0x820) {
+    if (self->input & (INPUT_BUTTON_Y | INPUT_BUTTON_LEFT)) {
         func_ov003_020981f8(self, self->cellWidth > 0 ? 1 : 0);
         return;
     }
-    if (self->input & 0x11) {
+    if (self->input & (INPUT_BUTTON_A | INPUT_BUTTON_RIGHT)) {
         func_ov003_020981f8(self, self->cellWidth <= 0 ? 1 : 0);
         return;
     }
-    if (self->input & 0x440) {
+    if (self->input & (INPUT_BUTTON_X | INPUT_BUTTON_UP)) {
         if (self->cursor == self->current->first) {
             func_ov003_020868c8(4);
             func_ov003_02098090(self, self->otherA);
@@ -699,7 +695,7 @@ void func_ov003_02098484(BtlCmd* self) {
         func_ov003_02097544(self, func_ov003_0209842c);
         return;
     }
-    if (self->input & 0x82) {
+    if (self->input & (INPUT_BUTTON_B | INPUT_BUTTON_DOWN)) {
         if (self->cursor == self->current->second) {
             func_ov003_020868c8(5);
             func_ov003_02098090(self, self->otherB);
@@ -786,7 +782,7 @@ s32 func_ov003_02098718(TaskPool* pool, Task* task, void* args) {
     self->input    = 0;
     self->counter  = 0;
     data_ov003_020e71b8->unk3D878 &= ~0x10;
-    func_ov003_02086b14(self);
+    func_ov003_02086b14((Ov003ChargeState*)self);
     func_ov003_020977e0(self);
     func_ov003_02097544(self, func_ov003_0209842c);
     return 1;

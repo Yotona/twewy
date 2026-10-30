@@ -4,7 +4,6 @@
 #include "Combat/Core/CombatTouch.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32 func_ov003_0208442c(s32, s32);
 typedef struct BtlPsyPierce {
     Ov003EffectState* effect;
     s32               unk_04;
@@ -19,10 +18,10 @@ s32 func_ov003_020958e0(void) {
     if (!func_ov003_02085d60(data_ov003_020e71b8->unk3D898))
         return 0;
     global = data_ov003_020e71b8;
-    y      = global->touchInput.y;
-    py     = global->touchInput.previousY;
-    x      = global->touchInput.x;
-    px     = global->touchInput.previousX;
+    y      = global->touchWork.startY;
+    py     = global->touchWork.endY;
+    x      = global->touchWork.startX;
+    px     = global->touchWork.endX;
     dy     = y - py;
     if (dy < 0)
         dy = -dy;
@@ -35,14 +34,14 @@ s32 func_ov003_02095954(TaskPool* pool, Task* task, void* args) {
     BtlPsyPierce*      self = task->data;
     Ov003EffectState** arg  = args;
     MI_CpuSet(self, 0, sizeof(*self));
-    data_ov003_020e71b8->unk3D8CC = func_ov003_0208442c(0, data_ov003_020e71b8->touchInput.previousX);
+    data_ov003_020e71b8->unk3D8CC = func_ov003_0208442c(0, data_ov003_020e71b8->touchWork.endX);
     data_ov003_020e71b8->unk3D8C8 = 1;
     self->effect                  = *arg;
     self->active                  = 1;
     self->update                  = NULL;
     self->state                   = 0;
     self->timer                   = 0;
-    func_ov003_02087250(self->effect, data_ov003_020e71b8->unk3D898, data_ov003_020e71b8->touchInput.angle);
+    func_ov003_02087250(self->effect, data_ov003_020e71b8->unk3D898, data_ov003_020e71b8->touchWork.angle);
     return 1;
 }
 s32 func_ov003_020959f4(TaskPool* pool, Task* task, void* args) {
@@ -65,7 +64,7 @@ s32 func_ov003_02095a60(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02095a80(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02095a80(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3bd4[28] = "Tsk_BtlPsy_Sword_Pierce_S";
 const TaskHandle data_ov003_020d7e2c     = {data_ov003_020e3bd4, func_ov003_02095a80, 0x14};
 const TaskStages data_ov003_020d7e38     = {
@@ -80,7 +79,7 @@ s32 func_ov003_02095ac8(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003EffectState** arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7e2c.taskName);
     *arg                   = effect;
-    context->handle        = (TaskHandle*)&data_ov003_020d7e2c;
+    context->handle        = &data_ov003_020d7e2c;
     context->arg           = arg;
     context->post          = NULL;
     return 1;

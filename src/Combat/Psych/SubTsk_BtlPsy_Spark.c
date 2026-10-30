@@ -1,9 +1,10 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern s32 func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32 func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 
 extern const TaskHandle data_ov003_020dc788;
 
@@ -16,8 +17,8 @@ s32 func_ov003_020ad280(Ov003AttackStreak* streak, s32 x, s32 y, s32 angle, s32 
     args.scale        = scale;
     args.speed        = speed;
     args.animation    = 0x70;
-    args.position.x   = FX_Mul(0x20000, FX_SinCosTable_[(angle >> 4) * 2 + 1]) + (s32)((u32)x << 12);
-    args.position.y   = FX_Mul(0x20000, FX_SinCosTable_[(angle >> 4) * 2]) + (s32)((u32)y << 12);
+    args.position.x   = FX_Mul(0x20000, COS2(FX_SinCosTable_, angle)) + (s32)((u32)x << 12);
+    args.position.y   = FX_Mul(0x20000, SIN2(FX_SinCosTable_, angle)) + (s32)((u32)y << 12);
     args.acceleration = 0x333;
     args.range        = 0x80000;
     return func_ov003_020a6000(&data_ov003_020dc788, &args);
@@ -49,8 +50,8 @@ s32 func_ov003_020ad364(TaskPool* pool, Task* task, void* args, s32 stage) {
             return 1;
         case 1: {
             Ov003Spark* self = task->data;
-            self->position.x += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-            self->position.y += FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+            self->position.x += FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+            self->position.y += FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
             self->traveled += self->speed;
             self->speed += self->acceleration;
             CombatSprite_Update(&self->sprite);
@@ -65,8 +66,8 @@ s32 func_ov003_020ad364(TaskPool* pool, Task* task, void* args, s32 stage) {
                 return 0;
             for (s32 i = 0; i < 3; i++) {
                 func_ov003_020a90e8(&self->trailIds[i]);
-                s32 x = self->position.x - FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-                s32 y = self->position.y - FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+                s32 x = self->position.x - FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+                s32 y = self->position.y - FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
                 func_ov003_020a910c(self->trailIds[i], x >> 12, y >> 12);
             }
             return 1;

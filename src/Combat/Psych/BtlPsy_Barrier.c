@@ -26,7 +26,7 @@ s32 func_ov003_020aaad4(Ov003EffectContext* context, Ov003EffectState* effect, s
     if (automatic == 0) {
         if (!func_ov003_02085cfc(6))
             return 0;
-        if (touch->heldActor != func_ov003_020a6438())
+        if (touch->held != func_ov003_020a6438())
             return 0;
     }
     Ov003BarrierArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc6c4.taskName);
@@ -34,7 +34,7 @@ s32 func_ov003_020aaad4(Ov003EffectContext* context, Ov003EffectState* effect, s
     arg->automatic        = automatic;
     arg->spawn.mode       = mode;
     arg->spawn.kind       = kind;
-    context->handle       = (TaskHandle*)&data_ov003_020dc6c4;
+    context->handle       = &data_ov003_020dc6c4;
     context->arg          = arg;
     context->post         = NULL;
     return 1;
@@ -65,7 +65,7 @@ s32 func_ov003_020aaba0(TaskPool* pool, Task* task, void* args, s32 stage) {
             BtlTouchWork* touch = func_ov003_020a62a0();
             func_ov003_020a5a94(charge->args.spawn.effect);
             if (func_ov003_020a63a8(charge->args.spawn.effect) || !func_ov003_02085cfc(6) ||
-                touch->heldActor != func_ov003_020a6438())
+                touch->held != func_ov003_020a6438())
             {
                 func_ov003_020a6464(0);
                 return 0;

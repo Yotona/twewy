@@ -18,9 +18,8 @@ s32 func_ov003_020b537c(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     if (func_ov003_02085d3c(1))
         return 0;
-    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->heldActor;
-    if (unit == NULL || &unit->actor != touch->candidateActor || (u32)(unit->actor.unk_00 - 1) > 1 ||
-        (unit->actor.flags & 0x10))
+    Ov003EnemyActor* unit = (Ov003EnemyActor*)touch->held;
+    if (unit == NULL || &unit->actor != touch->target || (u32)(unit->actor.unk_00 - 1) > 1 || (unit->actor.flags & 0x10))
         return 0;
     if (!func_ov003_020a60ec(unit, 5))
         return 0;
@@ -39,7 +38,7 @@ s32 func_ov003_020b537c(Ov003EffectContext* context, Ov003EffectState* effect) {
         Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dca78.taskName);
         arg->effect             = effect;
         arg->unit               = unit;
-        context->handle         = (TaskHandle*)&data_ov003_020dca78;
+        context->handle         = &data_ov003_020dca78;
         context->arg            = arg;
         context->post           = NULL;
         return 1;
@@ -179,12 +178,12 @@ s32 func_ov003_020b585c(Ov003PsychoD* self) {
     unit->actor.position.y = self->y;
     unit->actor.position.z = -0x10000;
     unit->actor.zVelocity  = 0;
-    s32 dx                 = data_ov003_020e71b8->touchWork.input.x - data_ov003_020e71b8->touchWork.x;
+    s32 dx                 = data_ov003_020e71b8->touchWork.startX - data_ov003_020e71b8->touchWork.x;
     if (dx < 0)
         dx = -dx;
     s32 near;
     if (dx <= 4) {
-        s32 dy = data_ov003_020e71b8->touchWork.input.y - data_ov003_020e71b8->touchWork.y;
+        s32 dy = data_ov003_020e71b8->touchWork.startY - data_ov003_020e71b8->touchWork.y;
         if (dy < 0)
             dy = -dy;
         near = dy <= 4;

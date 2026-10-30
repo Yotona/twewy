@@ -2,10 +2,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-#define MACHINE_GUN_ROUND(value) ((value) > 0 ? (f32)((value) << 12) + 0.5f : (f32)((value) << 12) - 0.5f)
-
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern s32              func_ov003_020c3c28(void);
 extern const TaskHandle data_ov003_020e0c68;
 
 s32 func_ov003_020cf81c(Ov003EnemyShotSource* source, s32 speed, u16 count, u16 interval, s32 fixedAim, s32 rotate, u16 angle,
@@ -21,7 +17,7 @@ s32 func_ov003_020cf81c(Ov003EnemyShotSource* source, s32 speed, u16 count, u16 
     args.angle          = angle;
     args.stopOnCrossing = stopOnCrossing;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -31,13 +27,13 @@ s32 func_ov003_020cf81c(Ov003EnemyShotSource* source, s32 speed, u16 count, u16 
 
 void func_ov003_020cf8d4(Ov003EnemyShotMachineGun* self) {
     TaskPool* pool;
-    if (self->source.core.owner->sprite.sprite.bits_0_1 == 0)
+    if (self->source.core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
     s32 i;
     for (i = self->lastTask; i >= 0; i--) {
-        s32 result = func_ov003_020ccca4(self->source.core.owner->sprite.sprite.bits_0_1, self->taskIds[i]);
+        s32 result = func_ov003_020ccca4(self->source.core.owner->base.sprite.sprite.bits_0_1, self->taskIds[i]);
         if (result != 0) {
             if (self->source.core.hitResult != 1)
                 self->source.core.hitResult = 2;
@@ -52,15 +48,15 @@ void func_ov003_020cf8d4(Ov003EnemyShotMachineGun* self) {
 }
 
 s32 func_ov003_020cf990(Ov003EnemyShotMachineGun* self) {
-    if (!func_ov003_020cce34(self->source.core.owner->sprite.sprite.bits_0_1))
+    if (!func_ov003_020cce34(self->source.core.owner->base.sprite.sprite.bits_0_1))
         return 1;
-    if (self->source.core.owner->actor.flags & 2)
+    if (self->source.core.owner->base.actor.flags & 2)
         return 1;
-    if (self->source.core.owner->actor.flags & 4)
+    if (self->source.core.owner->base.actor.flags & 4)
         return 1;
     if (self->crossing != 0) {
         CombatActor* target;
-        if (func_ov003_020c37f8(&self->source.core.owner->sprite))
+        if (func_ov003_020c37f8(&self->source.core.owner->base.sprite))
             target = data_ov003_020e71b8->unk3D89C;
         else
             target = data_ov003_020e71b8->unk3D898;
@@ -75,7 +71,7 @@ s32 func_ov003_020cf990(Ov003EnemyShotMachineGun* self) {
     }
     if (self->remaining < 0) {
         TaskPool* pool;
-        if (self->source.core.owner->sprite.sprite.bits_0_1 == 0)
+        if (self->source.core.owner->base.sprite.sprite.bits_0_1 == 0)
             pool = &data_ov003_020e71b8->unk_00000;
         else
             pool = &data_ov003_020e71b8->taskPool;
@@ -108,11 +104,11 @@ s32 func_ov003_020cfad8(Ov003EnemyShotMachineGun* self, Ov003EnemyShotMachineGun
     for (i = 0; i < 10; i++)
         self->taskIds[i] = -1;
     CombatActor* target;
-    if (func_ov003_020c37f8(&self->source.core.owner->sprite))
+    if (func_ov003_020c37f8(&self->source.core.owner->base.sprite))
         target = data_ov003_020e71b8->unk3D89C;
     else
         target = data_ov003_020e71b8->unk3D898;
-    s32 height       = (s32)MACHINE_GUN_ROUND(target->unk_72);
+    s32 height       = FX32_CONVERT(target->unk_72);
     s32 targetZ      = target->position.z - (height >> 1);
     s32 dx           = target->position.x - self->source.core.position.x;
     s32 dz           = targetZ - self->source.core.position.z;
@@ -140,11 +136,11 @@ s32 func_ov003_020cfc9c(Ov003EnemyShotMachineGun* self) {
         s8 result = self->source.core.hitResult;
         if (self->fixedAim == 0) {
             CombatActor* target;
-            if (func_ov003_020c37f8(&self->source.core.owner->sprite))
+            if (func_ov003_020c37f8(&self->source.core.owner->base.sprite))
                 target = data_ov003_020e71b8->unk3D89C;
             else
                 target = data_ov003_020e71b8->unk3D898;
-            s32 height       = (s32)MACHINE_GUN_ROUND(target->unk_72);
+            s32 height       = FX32_CONVERT(target->unk_72);
             s32 targetZ      = target->position.z - (height >> 1);
             s32 dx           = target->position.x - self->source.core.position.x;
             s32 dz           = targetZ - self->source.core.position.z;

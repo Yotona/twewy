@@ -13,7 +13,7 @@ s32 func_ov003_020ba2e8(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003PsychArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dd1dc.taskName);
     arg->effect         = effect;
-    context->handle     = (TaskHandle*)&data_ov003_020dd1dc;
+    context->handle     = &data_ov003_020dd1dc;
     context->arg        = arg;
     context->post       = NULL;
     return 1;

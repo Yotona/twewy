@@ -3,8 +3,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0cbc;
 
 s32 func_ov003_020d23e8(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 acceleration, u16 angleStep, s32 yScale) {
@@ -17,7 +15,7 @@ s32 func_ov003_020d23e8(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 
     args.angleStep    = angleStep;
     args.yScale       = yScale;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -27,7 +25,7 @@ s32 func_ov003_020d23e8(Ov003EnemyShotSource* source, u16 angle, s32 speed, s32 
 s32 func_ov003_020d2484(Ov003EnemyShotSpiral* self, Ov003EnemyShotSpiralArgs* args) {
     const Ov003EnemyShotVisual* visual = args->source->visual;
     const SpriteAnimEntry*      entry  = &visual->entries[visual->entry];
-    s32                         engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32                         engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
     MI_CpuSet(self, 0, sizeof(*self));
     MI_CpuCopyU8(args->source, &self->source, sizeof(self->source));
     self->angle        = args->angle;
@@ -41,7 +39,7 @@ s32 func_ov003_020d2484(Ov003EnemyShotSpiral* self, Ov003EnemyShotSpiralArgs* ar
                             entry->frameDataIndex, visual->paletteSlot, entry->animDataIndex);
     CombatSprite_SetAnim(&self->sprite, self->source.animation, self->source.animationMode);
     self->source.core.sprite = &self->sprite;
-    func_ov003_020cdfbc(&self->source, args->source->core.owner->sprite.flags46 & 1, 0);
+    func_ov003_020cdfbc(&self->source, args->source->core.owner->base.sprite.flags46 & 1, 0);
     func_ov003_020cccf0(engine, &self->source);
     return 1;
 }
@@ -59,8 +57,8 @@ s32 func_ov003_020d25e8(Ov003EnemyShotSpiral* self) {
     s16 x, y;
     func_ov003_02084348(func_ov003_020c37f8(&self->sprite) ? 1 : 0, &x, &y, self->source.core.position.x,
                         self->source.core.position.y, self->source.core.position.z);
-    self->source.core.hitResult =
-        func_ov003_0208a1a4(func_ov003_0208a114(self->source.core.attackId), &self->source.core.owner->actor.baseArgs, x, y);
+    self->source.core.hitResult = func_ov003_0208a1a4(func_ov003_0208a114(self->source.core.attackId),
+                                                      &self->source.core.owner->base.actor.baseArgs, x, y);
     CombatSprite_Update(&self->sprite);
     return 1;
 }

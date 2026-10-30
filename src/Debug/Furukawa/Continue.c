@@ -4,6 +4,7 @@
 #include "EasyFade.h"
 #include "EasyList.h"
 #include "Engine/Core/DMA.h"
+#include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
@@ -13,6 +14,7 @@
 #include "Engine/Resources/PaletteMgr.h"
 #include "Engine/Text.h"
 #include "Field/FieldRegion.h"
+#include "Field/Scene/FieldSeq.h"
 #include "Save.h"
 #include "SndMgr.h"
 #include "SpriteMgr.h"
@@ -21,10 +23,8 @@
 #include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
-extern void HBlank_Init();
 extern void func_020265d4(void*, void*, u16);
 extern void func_ov027_020e860c(void);
-extern void func_ov030_020ae92c(void*, s32);
 extern void ProcessOverlay_OpenEnd(void);
 
 void func_ov025_020e7f90(ContinueObject* contObj);
@@ -57,8 +57,8 @@ void func_ov025_020e7360(void) {
 }
 
 void func_ov025_020e749c(void) {
-    g_DisplaySettings.controls[0].brightness = 16;
-    g_DisplaySettings.controls[1].brightness = 16;
+    Display_SetMainBrightness(16);
+    Display_SetSubBrightness(16);
     Display_CommitSynced();
     g_DisplaySettings.unk_000 = 0;
 

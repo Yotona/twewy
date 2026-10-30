@@ -56,18 +56,8 @@ typedef struct Ov003ShakeStep {
     /* 0x08 */ s32 offsetY;
 } Ov003ShakeStep; // Size: 0xC
 
-/// The shared prototype for `CombatSprite_LoadFromTable` (CombatSprite.h) drops its return value;
-/// the loader reports whether the animation could be started, so call it through this type.
-typedef s32 (*CombatSprite_LoadFromTableFn)(s32, CombatSprite*, const BinIdentifier*, const SpriteAnimEntry*, u16, u16, u16);
-#define CombatSprite_LoadFromTable ((CombatSprite_LoadFromTableFn)CombatSprite_LoadFromTable)
-
 extern void func_02001b44(s32 mode, s32 dst, const void* src, s32 size);
-extern void func_0200d244(s32 arg0);
-
-/// `PaletteResource.unk_0C` bits 8..20: the entry count a sprite palette is allocated with.
-static inline u32 Ov003_PaletteEntryCount(PaletteResource* palette) {
-    return (((const u32*)palette)[3] << 19) >> 27;
-}
+extern s32  func_0200d244(ScreenMapEntry* entry);
 
 /// Points `sprite` (the sprite embedded at 0x84 of `owner`) at `cmd->table[index]` and gives it a
 /// new palette. Returns 0 when the animation could not be loaded.
@@ -95,7 +85,7 @@ s32 func_ov003_020d37a0(Ov003EnemyActor* owner, const Ov003SpriteLoadCmd* cmd, u
     PaletteResource*  palette = sprite->paletteData;
     UnkSmallInternal* palSrc  = sprite->unk3C;
     s32               engine  = sprite->bits_0_1;
-    u16               count   = Ov003_PaletteEntryCount(palette);
+    u16               count   = palette->chunkCount;
 
     Sprite_Release(sprite);
     CombatSprite_LoadFromTable(engine, &owner->sprite, (const BinIdentifier*)&cmd->entries[index], cmd->table, arg3, 0,

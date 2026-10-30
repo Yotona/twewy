@@ -17,14 +17,13 @@ typedef struct AuraTarget {
 } AuraTarget;
 
 extern BinIdentifier data_ov003_020d7800;
-extern void          func_ov003_020974f8(s32, s32);
-extern void          func_020265d4(void*, s32, u16);
+extern void          func_020265d4(s32* dst, s32 target, u16 weight);
 
-s32  func_ov007_020e7c98(TaskPool*, Task*, void*);
-s32  func_ov007_020e7d48(TaskPool*, Task*, void*);
-s32  func_ov007_020e7da4(TaskPool*, Task*, void*);
-s32  func_ov007_020e7eb0(TaskPool*, Task*, void*);
-s32  func_ov007_020e7ee0(TaskPool*, Task*, void*, s32);
+s32  func_ov007_020e7c98(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7d48(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7da4(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7eb0(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7ee0(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov007_020e75e4(BtlAuraLast*, void (*)(BtlAuraLast*));
 void func_ov007_020e75fc(s32, CombatSprite*, u16, u16);
 void func_ov007_020e76dc(BtlAuraLast*, s32);

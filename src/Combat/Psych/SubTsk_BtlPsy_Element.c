@@ -1,9 +1,8 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
 #include "Engine/Math/Random.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
-
-extern s32 func_ov003_020ae46c(TaskPool* pool, Task* task, void* args, s32 stage);
 
 char             data_ov003_020e4c04[24] = "SubTsk_BtlPsy_Element";
 const TaskHandle data_ov003_020dc7ac     = {data_ov003_020e4c04, func_ov003_020ae46c, sizeof(Ov003Element)};
@@ -19,8 +18,6 @@ const Ov003ElementKind data_ov003_020dc7b8[8] = {
     {0x56C, 0x47, 0x48, 0x15F, 0x27},
 };
 
-extern s32 func_ov003_0208442c(s32, s32);
-extern s32 func_ov003_02084460(s32, s32, s32);
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 extern s32 func_ov003_020a51c0(void);
 extern s32 func_ov003_020a632c(s32, s32, s32, s32);
@@ -67,8 +64,8 @@ s32 func_ov003_020ae46c(TaskPool* pool, Task* task, void* args, s32 stage) {
             self->firstTick       = 1;
             self->deflectionAngle = 0;
             self->deflectionSpeed = 0;
-            self->velocity.x      = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-            self->velocity.y      = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+            self->velocity.x      = FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+            self->velocity.y      = FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
             switch (self->mode) {
                 case 2:
                     self->target = func_ov003_020a6438();
@@ -154,8 +151,8 @@ void func_ov003_020ae890(Ov003Element* self) {
 }
 
 void func_ov003_020ae8b4(Ov003Element* self) {
-    self->position.x += FX_Mul(self->deflectionSpeed, FX_SinCosTable_[(self->deflectionAngle >> 4) * 2 + 1]);
-    self->position.y += FX_Mul(self->deflectionSpeed, FX_SinCosTable_[(self->deflectionAngle >> 4) * 2]);
+    self->position.x += FX_Mul(self->deflectionSpeed, COS2(FX_SinCosTable_, self->deflectionAngle));
+    self->position.y += FX_Mul(self->deflectionSpeed, SIN2(FX_SinCosTable_, self->deflectionAngle));
     if (self->deflectionSpeed > 0) {
         self->deflectionSpeed -= FX_Mul(self->scale, 0x19A);
         if (self->deflectionSpeed < 0)
@@ -179,8 +176,8 @@ void func_ov003_020ae980(Ov003Element* self) {
         }
         self->angle      = angle;
         self->turnTimer  = 4;
-        self->velocity.x = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-        self->velocity.y = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+        self->velocity.x = FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+        self->velocity.y = FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
     } else {
         self->turnTimer--;
     }
@@ -211,8 +208,8 @@ void func_ov003_020aeb0c(Ov003Element* self) {
         }
         self->angle      = angle;
         self->turnTimer  = frames;
-        self->velocity.x = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2 + 1]);
-        self->velocity.y = FX_Mul(self->speed, FX_SinCosTable_[(self->angle >> 4) * 2]);
+        self->velocity.x = FX_Mul(self->speed, COS2(FX_SinCosTable_, self->angle));
+        self->velocity.y = FX_Mul(self->speed, SIN2(FX_SinCosTable_, self->angle));
     } else {
         self->turnTimer--;
     }

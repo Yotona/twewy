@@ -3,11 +3,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-#define SHOT_ROUND(value) ((value) > 0 ? (f32)((value) << 12) + 0.5f : (f32)((value) << 12) - 0.5f)
-
-extern s32              func_ov003_020c37f8(CombatSprite*);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-extern s32              func_ov003_0208a164(const Ov003AttackInfo*, Ov003AttackArgs*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0cb0;
 
 s32 func_ov003_020d1eec(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 screenHit, s32 rotate, u16 angle) {
@@ -21,7 +16,7 @@ s32 func_ov003_020d1eec(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 s
     args.rotate     = rotate;
     args.angle      = angle;
     TaskPool* pool;
-    if (source->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (source->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -32,7 +27,7 @@ s32 func_ov003_020d1eec(Ov003EnemyShotSource* source, s32 x, s32 y, s32 z, s32 s
 s32 func_ov003_020d1f90(Ov003EnemyShotSingle* self, Ov003EnemyShotSingleArgs* args) {
     const Ov003EnemyShotVisual* visual = args->source->visual;
     const SpriteAnimEntry*      entry  = &visual->entries[visual->entry];
-    s32                         engine = args->source->core.owner->sprite.sprite.bits_0_1;
+    s32                         engine = args->source->core.owner->base.sprite.sprite.bits_0_1;
     MI_CpuSet(self, 0, sizeof(*self));
     func_ov003_020cc8b0(&self->source, args->source);
     self->velocity.x = args->velocity.x;
@@ -47,17 +42,17 @@ s32 func_ov003_020d1f90(Ov003EnemyShotSingle* self, Ov003EnemyShotSingleArgs* ar
     self->angle         = args->angle;
     if (args->rotate) {
         s16 nextX, nextY, x, y;
-        s32 projectionEngine = !!self->source.owner->sprite.sprite.bits_0_1;
+        s32 projectionEngine = !!self->source.owner->base.sprite.sprite.bits_0_1;
         self->flags |= 2;
         func_ov003_02084348(projectionEngine, &nextX, &nextY, self->source.position.x + args->velocity.x,
                             self->source.position.y + args->velocity.y, self->source.position.z + args->velocity.z);
         func_ov003_02084348(projectionEngine, &x, &y, self->source.position.x, self->source.position.y,
                             self->source.position.z);
-        f32 dx = SHOT_ROUND(nextX - x);
-        f32 dy = SHOT_ROUND(nextY - y);
+        f32 dx = I2F_RND(nextX - x);
+        f32 dy = I2F_RND(nextY - y);
         self->angle += FX_Atan2Idx((s32)dy, (s32)dx);
     }
-    func_ov003_020cdff4(&self->source, args->source->core.owner->sprite.flags46 & 1, 0);
+    func_ov003_020cdff4(&self->source, args->source->core.owner->base.sprite.flags46 & 1, 0);
     func_ov003_020cccf0(engine, args->source);
     return 1;
 }
@@ -76,10 +71,10 @@ s32 func_ov003_020d21c0(Ov003EnemyShotSingle* self) {
         func_ov003_02084348(func_ov003_020c37f8(&self->sprite) ? 1 : 0, &x, &y, self->source.position.x,
                             self->source.position.y, self->source.position.z);
         self->source.hitResult =
-            func_ov003_0208a1a4(func_ov003_0208a114(self->source.attackId), &self->source.owner->actor.baseArgs, x, y);
+            func_ov003_0208a1a4(func_ov003_0208a114(self->source.attackId), &self->source.owner->base.actor.baseArgs, x, y);
     } else {
         self->source.hitResult =
-            func_ov003_0208a164(func_ov003_0208a114(self->source.attackId), &self->source.owner->actor.baseArgs,
+            func_ov003_0208a164(func_ov003_0208a114(self->source.attackId), &self->source.owner->base.actor.baseArgs,
                                 self->source.position.x, self->source.position.y, self->source.position.z);
     }
     CombatSprite_Update(&self->sprite);

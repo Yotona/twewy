@@ -5,23 +5,9 @@
 #include "Combat/Noise/Private/Boss01.h"
 
 typedef struct BtlObs_Bus {
-    /* 0x000 */ char        unk_000[0x2];
-    /* 0x002 */ s16         unk_002;
-    /* 0x004 */ CombatActor actor;
-    // /* 0x004 */ u32          unk_004;
-    // /* 0x008 */ char         unk_008[0x2C - 0x8];
-    // /* 0x02C */ s32          unk_02C;
-    // /* 0x030 */ s32          unk_030;
-    // /* 0x034 */ s32          unk_034;
-    // /* 0x038 */ char         unk_038[0x40 - 0x38];
-    // /* 0x040 */ s32          unk_040;
-    // /* 0x044 */ char         unk_044[0x4C - 0x44];
-    // /* 0x04C */ s32          unk_04C;
-    // /* 0x050 */ char         unk_050[0x58 - 0x50];
-    // /* 0x058 */ u32          unk_058;
-    // /* 0x05C */ char         unk_05C[0x74 - 0x5C];
-    // /* 0x074 */ s16          unk_074;
-    // /* 0x076 */ s16          unk_076;
+    /* 0x000 */ char         unk_000[0x2];
+    /* 0x002 */ s16          unk_002;
+    /* 0x004 */ CombatActor  actor;
     /* 0x080 */ char         unk_080[0xC4 - 0x80];
     /* 0x0C4 */ CombatSprite unk_0C4;
     /* 0x124 */ CombatSprite unk_124;
@@ -201,8 +187,8 @@ s32 BtlObs_Bus_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return data_ov016_02129110.iter[stage](pool, task, args);
 }
 
-void* BtlObs_Bus_CreateTask(void* bossUG) {
-    void* sp8 = bossUG;
+void* BtlObs_Bus_CreateTask(struct Boss01_UG* bossUG) {
+    struct Boss01_UG* sp8 = bossUG;
 
     s32 taskId = EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &Tsk_BtlObs_Bus, NULL, 0, NULL, &sp8);
     return EasyTask_GetTaskData(&data_ov003_020e71b8->unk_00000, taskId);

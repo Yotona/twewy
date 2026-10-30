@@ -1,5 +1,6 @@
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatPsychEffects.h"
+#include <nitro/math.h>
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlBombKind {
@@ -13,7 +14,7 @@ const BtlBombKind data_ov003_020dc700[1] = {
     {0x18F, 0x9D, 0x9E}
 };
 
-extern s32 func_ov003_020a66f4(Ov003AttackStreak*, s32, s32, s32, s32, u16);
+extern s32 func_ov003_020a66f4(Ov003AttackStreak* streak, u16 attackId, s32 x, s32 y, s32 force, u16 amount);
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 
 extern const TaskHandle data_ov003_020dc6f4;
@@ -62,8 +63,8 @@ s32 func_ov003_020ab56c(TaskPool* pool, Task* task, void* args, s32 stage) {
                 func_ov003_02087f28(0x56, self->args.position.x);
                 return 0;
             }
-            self->args.position.x += FX_Mul(self->args.speed, FX_SinCosTable_[(self->args.angle >> 4) * 2 + 1]);
-            self->args.position.y += FX_Mul(self->args.speed, FX_SinCosTable_[(self->args.angle >> 4) * 2]);
+            self->args.position.x += FX_Mul(self->args.speed, COS2(FX_SinCosTable_, self->args.angle));
+            self->args.position.y += FX_Mul(self->args.speed, SIN2(FX_SinCosTable_, self->args.angle));
             CombatSprite_Update(&self->sprite);
             return 1;
         }

@@ -31,8 +31,6 @@
 #include "SndMgr.h"
 #include <nitro/fx.h>
 
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-
 extern void      func_02026590(s32* value, s32 target, u16 frames);
 extern const u32 data_0205a124[];
 

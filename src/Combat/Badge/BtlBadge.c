@@ -23,10 +23,10 @@ typedef struct BtlBadge {
 char             data_ov003_020e48e0[0x10] = "Tsk_BtlBadge";
 const TaskHandle data_ov003_020dc5c0       = {data_ov003_020e48e0, func_ov003_020a6d6c, sizeof(BtlBadge)};
 
-void func_ov003_020a6d24(void* arg0) {
-    s32 sp8 = (s32)arg0;
+void func_ov003_020a6d24(Ov003PinAction* action) {
+    Ov003PinAction* args = action;
 
-    EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020dc5c0, NULL, 0, NULL, &sp8);
+    EasyTask_CreateTask(&data_ov003_020e71b8->unk_10118, &data_ov003_020dc5c0, NULL, 0, NULL, &args);
 }
 
 s32 func_ov003_020a6d6c(TaskPool* pool, Task* task, void* args, s32 stage) {
@@ -35,10 +35,9 @@ s32 func_ov003_020a6d6c(TaskPool* pool, Task* task, void* args, s32 stage) {
         case 0: {
             BtlBadge*         self = task->data;
             SpriteAnimationEx anim;
-            const s32*        arg = args;
 
             MI_CpuSet(self, 0, sizeof(*self));
-            func_ov003_020a3b9c(&self->actor, (const void*)arg[0]);
+            func_ov003_020a3b9c(&self->actor, *(void**)args);
             CombatSprite_InitAnim(&anim.anim, 2, &data_ov003_020dc044);
             anim.anim.bits_10_11 = 0;
             anim.anim.unk_1C     = 3;

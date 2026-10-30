@@ -14,12 +14,9 @@ typedef struct Enm026IconSpawn {
 } Enm026IconSpawn; // Size: 0x0C
 
 typedef struct BtlEnm026 {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ s16 unk_1C0;
-    /* 0x1C2 */ s16 unk_1C2;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             unk_1C0;
+    /* 0x1C2 */ s16             unk_1C2;
     /* 0x1C4 */ void (*unk_1C4)(struct BtlEnm026*);
     /* 0x1C8 */ s32 unk_1C8;
     /* 0x1CC */ s32 unk_1CC;
@@ -58,7 +55,7 @@ void                    func_ov015_02125a64(BtlEnm026*, s32);
 void                    func_ov015_02125a8c(s32, BtlEnm026*, void*, s32);
 s32                     func_ov015_02125b08(BtlEnm026*);
 s32                     func_ov015_02125c94(BtlEnm026*);
-void                    func_ov015_02125d0c(BtlEnm026*, s32, void*, void*);
+void                    func_ov015_02125d0c(BtlEnm026*, s32, const TaskHandle*, const TaskHandle*);
 void                    func_ov015_02125e5c(BtlEnm026*);
 void                    func_ov015_02125f48(BtlEnm026*);
 void                    func_ov015_02127690(BtlEnm026*);

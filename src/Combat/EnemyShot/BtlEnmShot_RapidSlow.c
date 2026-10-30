@@ -2,7 +2,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c3c28(void);
 extern const TaskHandle data_ov003_020e0c80;
 
 s32 func_ov003_020d0518(Ov003EnemyShotSource* finalSource, s32 finalSpeed, u16 finalAngle, u16 finalSpread, u16 finalCount,
@@ -22,7 +21,7 @@ s32 func_ov003_020d0518(Ov003EnemyShotSource* finalSource, s32 finalSpeed, u16 f
     args.initialCount  = initialCount;
     args.delay         = delay;
     TaskPool* pool;
-    if (finalSource->core.owner->sprite.sprite.bits_0_1 == 0)
+    if (finalSource->core.owner->base.sprite.sprite.bits_0_1 == 0)
         pool = &data_ov003_020e71b8->unk_00000;
     else
         pool = &data_ov003_020e71b8->taskPool;
@@ -46,11 +45,11 @@ s32 func_ov003_020d05dc(Ov003EnemyShotRapidSlow* self, Ov003EnemyShotRapidSlowAr
 }
 
 s32 func_ov003_020d0664(Ov003EnemyShotRapidSlow* self) {
-    if (!func_ov003_020cce34(self->finalShot.source.core.owner->sprite.sprite.bits_0_1))
+    if (!func_ov003_020cce34(self->finalShot.source.core.owner->base.sprite.sprite.bits_0_1))
         return 0;
-    if (self->finalShot.source.core.owner->actor.flags & 2)
+    if (self->finalShot.source.core.owner->base.actor.flags & 2)
         return 0;
-    if (self->finalShot.source.core.owner->actor.flags & 4)
+    if (self->finalShot.source.core.owner->base.actor.flags & 4)
         return 0;
     if (func_ov003_020c3c28())
         return 0;

@@ -26,21 +26,18 @@ static inline void* Ov003Cutin_Tiles(Data* pack, s32 index) {
 }
 
 typedef struct Ov003CutinActor {
-    /* 0x000 */ union {
-        Ov003EnemyActor base;
-        Ov003EnemyActor;
-    };
-    /* 0x1C0 */ u8  unk_1C0[0x1D0 - 0x1C0];
-    /* 0x1D0 */ s32 velocityX;
-    /* 0x1D4 */ s32 velocityY;
-    /* 0x1D8 */ s32 velocityZ;
-    /* 0x1DC */ s32 targetX;
-    /* 0x1E0 */ s32 targetY;
-    /* 0x1E4 */ s32 targetZ;
-    /* 0x1E8 */ s32 unk_1E8;
-    /* 0x1EC */ s32 timer;
-    /* 0x1F0 */ s32 timerLimit;
-    /* 0x1F4 */ s32 state;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ u8              unk_1C0[0x1D0 - 0x1C0];
+    /* 0x1D0 */ s32             velocityX;
+    /* 0x1D4 */ s32             velocityY;
+    /* 0x1D8 */ s32             velocityZ;
+    /* 0x1DC */ s32             targetX;
+    /* 0x1E0 */ s32             targetY;
+    /* 0x1E4 */ s32             targetZ;
+    /* 0x1E8 */ s32             unk_1E8;
+    /* 0x1EC */ s32             timer;
+    /* 0x1F0 */ s32             timerLimit;
+    /* 0x1F4 */ s32             state;
 } Ov003CutinActor; // Size: 0x1F8
 
 typedef union Ov003CutinFlags8 {
@@ -67,6 +64,9 @@ typedef struct Ov003CutinGlobal {
     /* 0x18 */ void*            cameraSub;
     /* 0x1C */ void*            unk_1C;
 } Ov003CutinGlobal; // Size: 0x20
+
+extern u8 data_ov003_020e71e4[];
+#define g_Cutin ((Ov003CutinGlobal*)data_ov003_020e71e4)
 
 typedef struct Ov003CutinBackground {
     /* 0x00 */ Data*            pack;

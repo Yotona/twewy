@@ -4,8 +4,6 @@
 #include "SndMgr.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32 func_ov003_0208442c(s32, s32);
-extern s32 func_ov003_02084460(s32, s32, s32);
 extern s32 func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
 /// Owned by the IcePillar_S unit; only the task name string lives here.
 extern const TaskHandle data_ov003_020dc90c;
@@ -21,7 +19,7 @@ s32 func_ov003_020b15dc(Ov003EffectContext* context, Ov003EffectState* effect) {
     Ov003PsychUnitArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc90c.taskName);
     arg->effect             = effect;
     arg->unit               = unit;
-    context->handle         = (TaskHandle*)&data_ov003_020dc90c;
+    context->handle         = &data_ov003_020dc90c;
     context->arg            = arg;
     context->post           = NULL;
     return 1;
@@ -214,7 +212,7 @@ Ov003EnemyActor* func_ov003_020b1c50(void) {
     if (func_ov003_02085d3c(1))
         return NULL;
     touch = func_ov003_020a62a0();
-    unit  = (Ov003EnemyActor*)touch->heldActor;
+    unit  = (Ov003EnemyActor*)touch->held;
     if (unit == NULL)
         return NULL;
     if (unit->actor.unk_00 != 1)

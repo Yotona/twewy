@@ -58,11 +58,6 @@ extern const BinIdentifier data_ov003_020d7800;
 extern const TaskHandle    data_ov003_020d7ffc;
 extern const TaskStages    data_ov003_020d8008;
 
-/// The retail call sites pass the `s32` animation variant straight through
-/// `CombatSprite_LoadDirect`'s `u16` parameter (no prototype was in scope there).
-#define CombatSprite_LoadDirectNoProto                                                                     \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
-
 // ---------------------------------------------------------------------------------------------
 // Functions
 // ---------------------------------------------------------------------------------------------
@@ -156,11 +151,11 @@ s32 func_ov003_0209b0a0(TaskPool* pool, Task* task, void* args) {
     }
 
     if (data->engine != 1) {
-        animIndex                     = 0x3D;
-        data_ov003_020e71b8->unk3D8FC = data_ov003_020e71b8->unk3D8FC + 1;
+        animIndex                           = 0x3D;
+        data_ov003_020e71b8->popupCountMain = data_ov003_020e71b8->popupCountMain + 1;
     } else {
-        animIndex                     = 0x3F;
-        data_ov003_020e71b8->unk3D8FD = data_ov003_020e71b8->unk3D8FD + 1;
+        animIndex                          = 0x3F;
+        data_ov003_020e71b8->popupCountSub = data_ov003_020e71b8->popupCountSub + 1;
     }
     func_ov003_0209b04c(data->engine, &data->sprite, 0, animIndex);
 
@@ -251,9 +246,9 @@ s32 func_ov003_0209b498(TaskPool* pool, Task* task, void* args) {
 
     CombatSprite_Release(&data->sprite);
     if (data->engine != 1) {
-        data_ov003_020e71b8->unk3D8FC = data_ov003_020e71b8->unk3D8FC - 1;
+        data_ov003_020e71b8->popupCountMain = data_ov003_020e71b8->popupCountMain - 1;
     } else {
-        data_ov003_020e71b8->unk3D8FD = data_ov003_020e71b8->unk3D8FD - 1;
+        data_ov003_020e71b8->popupCountSub = data_ov003_020e71b8->popupCountSub - 1;
     }
     return 1;
 }
@@ -276,9 +271,9 @@ void func_ov003_0209b564(s32 engine, s32 value, CombatActor* actor, s32 element)
     s32            count;
 
     if (engine != 1) {
-        count = data_ov003_020e71b8->unk3D8FC;
+        count = data_ov003_020e71b8->popupCountMain;
     } else {
-        count = data_ov003_020e71b8->unk3D8FD;
+        count = data_ov003_020e71b8->popupCountSub;
     }
     // At most ten popups may be alive per screen. The original materialises the test into a
     // value before switching on it, so this is a `switch` rather than an `if`.
@@ -308,9 +303,9 @@ void func_ov003_0209b61c(s32 engine, s32 value, CombatActor* actor) {
     s32            count;
 
     if (engine != 1) {
-        count = data_ov003_020e71b8->unk3D8FC;
+        count = data_ov003_020e71b8->popupCountMain;
     } else {
-        count = data_ov003_020e71b8->unk3D8FD;
+        count = data_ov003_020e71b8->popupCountSub;
     }
     // At most ten popups may be alive per screen (see func_ov003_0209b564).
     switch (count < 10) {

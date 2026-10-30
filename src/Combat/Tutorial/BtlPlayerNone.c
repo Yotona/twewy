@@ -6,11 +6,11 @@
 
 #include <nitro/mi/cpumem.h>
 
-s32  func_ov008_020e7374(TaskPool*, Task*, void*);
-s32  func_ov008_020e742c(TaskPool*, Task*, void*);
-s32  func_ov008_020e7464(TaskPool*, Task*, void*);
-s32  func_ov008_020e746c(TaskPool*, Task*, void*);
-s32  func_ov008_020e7474(TaskPool*, Task*, void*, s32);
+s32  func_ov008_020e7374(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e742c(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e7464(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e746c(TaskPool* pool, Task* task, void* args);
+s32  func_ov008_020e7474(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov008_020e7360(BtlPlayerNone*, void (*)(BtlPlayerNone*));
 
 const TaskHandle Tsk_BtlPlayerNone = {"Tsk_BtlPlayerNone", func_ov008_020e7474, 0x84};

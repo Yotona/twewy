@@ -1,7 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatBgRes.h"
-#include "Combat/Core/CombatBgScroll.h"
+#include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Display.h"
 #include "Engine/Core/DMA.h"
@@ -79,26 +79,26 @@ typedef struct BtlFieldRG {
 extern const BtlFieldDefRG data_ov003_020d9c90[];
 extern const BtlFieldExtra data_ov003_020d9afc[];
 
-extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern void        func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
-extern void        func_0200d954(s32 engine, s32 bg);
-extern void        func_02026590(void* dst, s32 step, u16 count);
-extern void        func_ov003_02083300(Ov003BgResState* state, s32 engine, BinIdentifier* iden);
-extern void        func_ov003_0208335c(Ov003BgResState* state, const Ov003ResCmd* script, void* arg);
-extern void        func_ov003_02083390(Ov003BgResState* state);
-extern void        func_ov003_020833cc(Ov003BgResState* state);
+extern void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4);
+extern void  func_0200d858(ScreenMapEntry* entry, s32 wrapH, s32 wrapV, void* defaultTile);
+extern void  func_0200d954(s32 engine, s32 bg);
+extern void  func_02026590(s32* dst, s32 target, u16 weight);
+extern void  func_ov003_02083300(Ov003BgResState* state, s32 engine, BinIdentifier* iden);
+extern void  func_ov003_0208335c(Ov003BgResState* state, const Ov003ResCmd* script, void* arg);
+extern void  func_ov003_02083390(Ov003BgResState* state);
+extern void  func_ov003_020833cc(Ov003BgResState* state);
 
 void func_ov003_020929a4(BtlFieldRG* state, void (*update)(BtlFieldRG*));
 void func_ov003_02092c10(BtlFieldRG* state);
 void func_ov003_02092c88(Ov003Camera* camera);
 void func_ov003_02092dbc(BtlFieldRG* state);
 
-s32 func_ov003_02092f30(TaskPool*, Task*, void*);
-s32 func_ov003_0209327c(TaskPool*, Task*, void*);
-s32 func_ov003_020932d0(TaskPool*, Task*, void*);
-s32 func_ov003_020932e4(TaskPool*, Task*, void*);
+s32 func_ov003_02092f30(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_0209327c(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020932d0(TaskPool* pool, Task* task, void* args);
+s32 func_ov003_020932e4(TaskPool* pool, Task* task, void* args);
 
-s32 func_ov003_02093394(TaskPool*, Task*, void*, s32);
+s32 func_ov003_02093394(TaskPool* pool, Task* task, void* args, s32 stage);
 
 /// `TaskHandle.taskName` of `data_ov003_020d7b4c`.
 char data_ov003_020e3b18[0x10] = "Tsk_BtlField_RG";
@@ -185,8 +185,8 @@ s32 func_ov003_02092b14(BtlFieldRG* state, u8 index) {
         return 0;
     }
     extra               = &data_ov003_020d9afc[index];
-    state->extraData[0] = (u8*)Data_GetPackEntryData(state->data, extra->rowIndex0) + 4;
-    state->extraData[1] = (u8*)Data_GetPackEntryData(state->data, extra->rowIndex1) + 4;
+    state->extraData[0] = Ov003Cutin_Tiles(state->data, extra->rowIndex0);
+    state->extraData[1] = Ov003Cutin_Tiles(state->data, extra->rowIndex1);
     func_0200d1d8(&state->extraMap, 1, 0, NULL, state->extraData, 2, 1);
     func_0200d858(&state->extraMap, 0, 1, NULL);
     g_DisplaySettings.engineState[1].bgSettings[0].priority = 0;
@@ -258,16 +258,6 @@ void func_ov003_02092c88(Ov003Camera* camera) {
     camera->unk_40 += camera->unk_48 + camera->unk_4C;
 }
 
-/// Scrolls the BG of `map` to the camera's position, shifted by `offsetX`/`offsetY`.
-static inline void BtlField_ScrollRow(ScreenMapEntry* map, Ov003Camera* camera, s32 offsetX, s32 offsetY) {
-    s32                 layer  = map->bgLayer;
-    DisplayEngineState* engine = &g_DisplaySettings.engineState[map->engineId];
-    s32                 posY   = camera->unk_40 - offsetY;
-    s32                 posX   = camera->unk_28 - offsetX;
-
-    Ov003_ScrollBg(engine, layer, posX, posY);
-}
-
 /// Parks the strips behind the camera.
 void func_ov003_02092dbc(BtlFieldRG* state) {
     BtlField_ScrollRow(&state->rowMaps[0], state->camera, 0x80000, 0x60000);
@@ -313,8 +303,8 @@ s32 func_ov003_02092f30(TaskPool* pool, Task* task, void* args) {
 
     state->data = DatMgr_LoadPackEntry(1, NULL, 0, def->iden, def->rowPack, 0);
     // The strips start after the 4-byte header of their pack entries.
-    state->rowData[0] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex0) + 4;
-    state->rowData[1] = (u8*)Data_GetPackEntryData(state->data, def->rowIndex1) + 4;
+    state->rowData[0] = Ov003Cutin_Tiles(state->data, def->rowIndex0);
+    state->rowData[1] = Ov003Cutin_Tiles(state->data, def->rowIndex1);
 
     func_0200d1d8(&state->rowMaps[0], 1, 1, NULL, &state->rowData[0], 1, 1);
     func_0200d1d8(&state->rowMaps[1], 1, 2, NULL, &state->rowData[1], 1, 1);

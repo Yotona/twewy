@@ -19,10 +19,10 @@ typedef struct BtlPsySlash {
 } BtlPsySlash;
 u16 func_ov003_02095120(void) {
     Ov003Global* global = data_ov003_020e71b8;
-    s32          x      = global->touchInput.x;
-    s32          y      = global->touchInput.y;
-    s32          px     = global->touchInput.previousX;
-    s32          py     = global->touchInput.previousY;
+    s32          x      = global->touchWork.startX;
+    s32          y      = global->touchWork.startY;
+    s32          px     = global->touchWork.endX;
+    s32          py     = global->touchWork.endY;
     s32          dy     = y - py;
     s32          dx;
     if (dy < 0)
@@ -84,7 +84,7 @@ s32 func_ov003_020952e0(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02095308(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02095308(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3b9c[28] = "Tsk_BtlPsy_Sword_Slash_S";
 const TaskHandle data_ov003_020d7df4     = {data_ov003_020e3b9c, func_ov003_02095308, 0x14};
 const TaskStages data_ov003_020d7e00     = {
@@ -102,7 +102,7 @@ s32 func_ov003_02095350(Ov003EffectContext* context, Ov003EffectState* effect) {
     arg->effect          = effect;
     arg->target          = target;
     arg->direction       = func_ov003_02095120();
-    context->handle      = (TaskHandle*)&data_ov003_020d7df4;
+    context->handle      = &data_ov003_020d7df4;
     context->arg         = arg;
     context->post        = NULL;
     return 1;

@@ -29,8 +29,8 @@ s32 func_ov003_0208eebc(TaskPool* pool, Task* task, void* args) {
         icon->update(icon);
     }
     if (icon->unk_6C != 0) {
-        icon->x = data_ov003_020e71b8->unk3D3AA;
-        icon->y = data_ov003_020e71b8->unk3D3AC;
+        icon->x = data_ov003_020e71b8->touchWork.x;
+        icon->y = data_ov003_020e71b8->touchWork.y;
         CombatSprite_Update(&icon->sprite);
     }
     return 1;

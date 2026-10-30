@@ -17,8 +17,7 @@ typedef struct BtlEnm026Icon {
     /* 0x12E */ u16          unk_12E;
     /* 0x130 */ s32          unk_130;
 } BtlEnm026Icon; // Size: 0x134
-extern void func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
-s32         func_ov015_02126860(TaskPool*, Task*, void*, s32);
+s32         func_ov015_02126860(TaskPool* pool, Task* task, void* args, s32 stage);
 extern char data_ov015_0212846c[20];
 extern char data_ov015_02128480[32];
 extern char data_ov015_021284a0[32];
@@ -75,35 +74,35 @@ s32 func_ov015_021261d8(BtlEnm026Icon* data, Enm026IconSpawn* args) {
             anim.anim.animIndex  = 1;
             anim.animTable       = NULL;
             CombatSprite_Load(&data->unk_60, &anim);
-            CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238,
-                                       3, 4, 0x10);
+            CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0x10);
             break;
         }
 
         case 1:
-            CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228, data_ov015_02128238,
-                                       3, 4, 2);
+            CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 2);
             r5 = 0x10;
             CombatSprite_SetAnimFromTable(&data->unk_60, 3, 0);
-            CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238,
-                                       3, 4, 2);
+            CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 2);
             CombatSprite_SetAnimFromTable(&data->unk_C0, 3, 0);
             break;
 
         case 2:
             r5 = 4;
-            CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228, data_ov015_02128238,
-                                       3, 4, 0);
-            CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228, data_ov015_02128238,
-                                       3, 4, 0);
+            CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_60, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0);
+            CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_C0, &data_ov015_02128228,
+                                       data_ov015_02128238, 3, 4, 0);
             break;
     }
 
-    CombatSprite_LoadFromTable(owner->sprite.sprite.bits_0_1, &data->unk_00, &data_ov015_02128228, data_ov015_02128238,
+    CombatSprite_LoadFromTable(owner->base.sprite.sprite.bits_0_1, &data->unk_00, &data_ov015_02128228, data_ov015_02128238,
                                data->unk_124, 4, r5);
     CombatSprite_SetAnimFromTable(&data->unk_00, data->unk_124, data->unk_124 == 2);
     if (data->unk_124 != 2) {
-        CombatSprite_SetFlip(&data->unk_00, owner->sprite.flags46 & 1);
+        CombatSprite_SetFlip(&data->unk_00, owner->base.sprite.flags46 & 1);
     }
     return 1;
 }
@@ -112,9 +111,9 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
     BtlEnm026* owner = data->unk_120;
 
     if (data->unk_124 != 2) {
-        CombatSprite_SetFlip(&data->unk_00, owner->sprite.flags46 & 1);
+        CombatSprite_SetFlip(&data->unk_00, owner->base.sprite.flags46 & 1);
     }
-    if (owner->actor.flags & 4) {
+    if (owner->base.actor.flags & 4) {
         return 0;
     }
     switch (data->unk_00.animTableIndex) {
@@ -130,13 +129,13 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
             if (data->unk_130 == 0) {
                 if (data_ov003_020e71b8->unk3D874 == 2) {
                     if (hp == 0) {
-                        if (SndMgr_IsSEPlaying(0x27E) == 0) {
-                            func_ov003_02087ed8(0x27E);
+                        if (SndMgr_IsSEPlaying(SEIDX_SE_026_TIMER0) == 0) {
+                            func_ov003_02087ed8(SEIDX_SE_026_TIMER0);
                         }
                         data->unk_130 = 1;
                     } else if (data->unk_12C != hp) {
-                        if (SndMgr_IsSEPlaying(0x27D) == 0) {
-                            func_ov003_02087ed8(0x27D);
+                        if (SndMgr_IsSEPlaying(SEIDX_SE_026_TIMER) == 0) {
+                            func_ov003_02087ed8(SEIDX_SE_026_TIMER);
                         }
                     }
                 }
@@ -164,10 +163,10 @@ s32 func_ov015_02126464(BtlEnm026Icon* data) {
                 break;
             }
             CombatSprite_Restart(&data->unk_00);
-            if (SndMgr_IsSEPlaying(0x279) == 0) {
+            if (SndMgr_IsSEPlaying(SEIDX_SE_026_VOC_IBIKI) == 0) {
                 if (data_ov015_02128500.flag08 == 0) {
                     if (data_ov003_020e71b8->unk3D874 == 2) {
-                        func_ov003_02087ed8(0x279);
+                        func_ov003_02087ed8(SEIDX_SE_026_VOC_IBIKI);
                     }
                 }
             }
@@ -187,13 +186,13 @@ s32 func_ov015_02126660(BtlEnm026Icon* data) {
     s16        sy;
 
     if (func_ov003_020c37f8(&data->unk_00) != 0) {
-        if (owner->flags18C & 0x10) {
+        if (owner->base.flags18C & 0x10) {
             return 1;
         }
     }
-    px = owner->actor.position.x + ((owner->sprite.flags46 & 1) ? 0xF000 : -0xF000);
-    pz = owner->actor.position.z - 0x19000;
-    py = owner->actor.position.y;
+    px = owner->base.actor.position.x + ((owner->base.sprite.flags46 & 1) ? 0xF000 : -0xF000);
+    pz = owner->base.actor.position.z - 0x19000;
+    py = owner->base.actor.position.y;
 
     switch (data->unk_00.animTableIndex) {
         case 0:

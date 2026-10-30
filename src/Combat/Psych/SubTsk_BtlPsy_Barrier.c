@@ -5,8 +5,6 @@
 
 extern s32       func_ov003_020a51c0(void);
 extern s32       func_ov003_020a3498(CombatSprite*, s32, s32, s32, u16);
-extern void      func_ov003_0209b564(s32, s32, CombatActor*, s32);
-extern void      func_ov003_0208b3cc(s32, s16);
 extern const s32 data_ov003_020dc6b4[4];
 
 extern const TaskHandle data_ov003_020dc6a8;
@@ -104,12 +102,12 @@ s32 func_ov003_020aa358(TaskPool* pool, Task* task, void* args, s32 stage) {
             switch (barrier->spawn.mode) {
                 case 0:
                     if (!func_ov003_020a5aa4(barrier->spawn.effect) || func_ov003_020a63a8(barrier->spawn.effect) ||
-                        !func_ov003_02085cfc(6) || touch->heldActor != func_ov003_020a6438())
+                        !func_ov003_02085cfc(6) || touch->held != func_ov003_020a6438())
                         active = 0;
                     break;
                 case 1:
                     if (!func_ov003_020a5aa4(barrier->spawn.effect) || func_ov003_020a63a8(barrier->spawn.effect) ||
-                        !func_ov003_02085cfc(6) || touch->heldActor != func_ov003_020a6438())
+                        !func_ov003_02085cfc(6) || touch->held != func_ov003_020a6438())
                         active = 0;
                     break;
             }
@@ -203,7 +201,7 @@ void func_ov003_020aa990(Ov003Barrier* barrier) {
 void func_ov003_020aa9f4(Ov003EffectState* effect, s32 percent) {
     CombatActor* player = func_ov003_020a6438();
     s32          amount = data_ov003_020e71b8->unk3D8D2 * percent / 100;
-    SndMgr_PlaySEWithPan(0x14E, func_ov003_020843b0(0, player->position.x));
+    SndMgr_PlaySEWithPan(SEIDX_SE_BOY_RECOVER_DRINK, func_ov003_020843b0(0, player->position.x));
     func_ov003_020b67dc(effect, player);
     func_ov003_0209b564(2, amount, player, 1);
     func_ov003_0208b3cc(0, (s16)amount);

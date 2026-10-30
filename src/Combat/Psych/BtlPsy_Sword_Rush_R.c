@@ -30,7 +30,7 @@ void func_ov003_02095b1c(BtlPsyRush* self) {
         self->timer = 15;
     }
     self->timer--;
-    if (data_ov003_020e71b8->touchInput.tapCount != 0)
+    if (data_ov003_020e71b8->touchWork.tapCount != 0)
         return;
     func_ov003_02087310();
 }
@@ -61,7 +61,7 @@ s32 func_ov003_02095c5c(TaskPool* pool, Task* task, void* args) {
     return 1;
 }
 
-s32              func_ov003_02095c64(TaskPool*, Task*, void*, s32);
+s32              func_ov003_02095c64(TaskPool* pool, Task* task, void* args, s32 stage);
 char             data_ov003_020e3bf0[24] = "Tsk_BtlPsy_Sword_Rush_R";
 const TaskHandle data_ov003_020d7e48     = {data_ov003_020e3bf0, func_ov003_02095c64, 0x18};
 const TaskStages data_ov003_020d7e54     = {
@@ -78,7 +78,7 @@ s32 func_ov003_02095cac(Ov003EffectContext* context, Ov003EffectState* effect) {
     BtlPsyRushArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020d7e48.taskName);
     arg->effect         = effect;
     arg->target         = target;
-    context->handle     = (TaskHandle*)&data_ov003_020d7e48;
+    context->handle     = &data_ov003_020d7e48;
     context->arg        = arg;
     context->post       = NULL;
     return 1;

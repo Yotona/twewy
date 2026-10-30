@@ -17,7 +17,7 @@ s32 func_ov003_020ac634(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003ChargeLaserArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc754.taskName);
     *arg                      = args;
-    context->handle           = (TaskHandle*)&data_ov003_020dc754;
+    context->handle           = &data_ov003_020dc754;
     context->arg              = arg;
     context->post             = NULL;
     return 1;
@@ -35,7 +35,7 @@ s32 func_ov003_020ac6bc(Ov003EffectContext* context, Ov003EffectState* effect) {
         return 0;
     Ov003ChargeLaserArgs* arg = func_ov003_020a5d2c(sizeof(*arg), data_ov003_020dc754.taskName);
     *arg                      = args;
-    context->handle           = (TaskHandle*)&data_ov003_020dc754;
+    context->handle           = &data_ov003_020dc754;
     context->arg              = arg;
     context->post             = NULL;
     return 1;

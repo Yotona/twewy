@@ -7,7 +7,7 @@
 
 extern BinIdentifier data_ov003_020d7800;
 
-extern void func_020265d4(void* value, s32 target, u16 frames);
+extern void func_020265d4(s32* dst, s32 target, u16 weight);
 
 /// Task data of the damage-rate popup (`Tsk_BtlPop_Rate`): one sprite per rate digit,
 /// the tens digit only being shown when the rate has a non-zero tens digit.
@@ -33,12 +33,6 @@ typedef struct BtlPop_RateArgs {
     /* 0x0C */ s32 z;
     /* 0x10 */ s16 rate;
 } BtlPop_RateArgs; // Size: 0x14
-
-/// The rate popup picks its animation index conditionally and the retail call site passes it
-/// through without narrowing it to `CombatSprite_LoadFromTable`'s `u16` parameter, so call it
-/// through a plain-integer signature (same idiom as `CombatSprite_LoadDirectNoProto`).
-#define CombatSprite_LoadFromTableNoProto                                                                                   \
-    ((void (*)(s32, CombatSprite*, const BinIdentifier*, const SpriteAnimEntry*, s32, s32, s32))CombatSprite_LoadFromTable)
 
 s32  func_ov003_0209c270(TaskPool* pool, Task* task, void* args);
 s32  func_ov003_0209c378(TaskPool* pool, Task* task, void* args);

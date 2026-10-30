@@ -4,6 +4,7 @@
 #include "Combat/Core/CombatAttack.h"
 #include "Combat/Core/CombatCutin.h"
 #include "Combat/Core/CombatSprite.h"
+#include "Combat/Noise/Boss01.h"
 #include "Engine/Core/Memory.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
@@ -22,25 +23,6 @@
 // still differ in register allocation or in the recovered cut-in actor/track layout (worst:
 // func_ov003_020c3814). The owned .rodata tables have the right contents and sizes, but mwcc orders
 // same-size objects differently from the delinked target.
-
-// The battle runtime extends past the serialized MainData prefix in gSaveData's BSS allocation.
-// Keep this view local: enlarging MainData would change the serialized save format.
-typedef struct Ov003CutinSaveState {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u32 slots[9];
-    /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ u32 magic;
-} Ov003CutinSaveState; // Size: 0x34
-
-typedef struct Ov003SaveRuntime {
-    /* 0x0000 */ MainData            save;
-    /* 0x3420 */ Ov003CutinSaveState cutin;
-} Ov003SaveRuntime;
-
-#define OV003_CUTIN_SAVE (&((Ov003SaveRuntime*)&gSaveData)->cutin)
-// Spelled as a byte offset past the header: `OV003_CUTIN_SAVE->slots[i]` makes mwcc fold the offset into the load.
-#define OV003_CUTIN_SLOTS ((u32*)&((u8*)&gSaveData)[sizeof(MainData) + sizeof(u32)])
 
 /// A circular buffer of motion tracks plus the playback cursor.
 typedef struct Ov003CutinTracks {
@@ -68,12 +50,10 @@ typedef union Ov003CutinCmd {
 
 /// The four adjacent .bss objects at 0x020e71e4..0x020e7204, as one block.
 
-extern u8 data_ov003_020e71e4[];
 extern u8 data_ov003_020e71e8[];
 extern u8 data_ov003_020e71ec[];
 extern u8 data_ov003_020e71f8[];
 
-#define g_Cutin ((Ov003CutinGlobal*)data_ov003_020e71e4)
 extern u8       data_ov003_020e722c[];
 extern u8       data_ov003_020e7204[];
 extern const s8 data_ov003_020e09f8[];
@@ -84,20 +64,18 @@ extern u8       data_02071cf0[];
 extern s32 func_02053098(f64 x, f64 scale);
 extern u16 func_02054a50(f64 x);
 
-extern void func_ov003_0208af9c(u16 x, u16 y);
-extern void func_ov003_020c4b5c(Ov003EnemyActor* actor);
+extern void func_ov003_0208af9c(s32 time, s32 amount);
 
 // Data owned by this unit.
-extern u8       data_ov003_020e71e4[];
-extern u8       data_ov003_020e71e8[];
-extern u8       data_ov003_020e71ec[];
-extern u8       data_ov003_020e71f8[];
-extern void*    data_ov003_020e53f4[];
-extern void*    data_ov003_020e67e0[];
-extern void*    data_ov003_020e68d0[];
-extern const u8 data_ov003_020e05d4[];
-extern const u8 data_ov003_020e0664[];
-extern const s8 data_ov003_020e09f8[];
+extern u8                data_ov003_020e71e8[];
+extern u8                data_ov003_020e71ec[];
+extern u8                data_ov003_020e71f8[];
+extern void*             data_ov003_020e53f4[];
+extern const TaskHandle* data_ov003_020e67e0[];
+extern const TaskHandle* data_ov003_020e68d0[];
+extern const u8          data_ov003_020e05d4[];
+extern const u8          data_ov003_020e0664[];
+extern const s8          data_ov003_020e09f8[];
 
 // Data owned by neighbouring units / arm9.
 extern u8     data_ov003_020e6a38[];
@@ -109,17 +87,9 @@ extern u8     data_02071cf0[];
 /// Clears every motion track of a cut-in track buffer.
 
 // Forward declarations (the retail unit defines these in address order).
-void              func_ov003_020c2064(Ov003CutinTracks* tracks);
-void              func_ov003_020c20b8(Ov003CutinTracks* tracks, Vec* data, u16 count);
-void              func_ov003_020c20d4(Ov003CutinTracks* tracks, Ov003CutinActor* actor);
-s32               func_ov003_020c37f8(CombatSprite* sprite);
-s32               func_ov003_020c38e8(CombatSprite* sprite);
-s32               func_ov003_020c3908(CombatSprite* sprite);
-u32               func_ov003_020c3aac(u32 id);
-s32               func_ov003_020c3c28(void);
-void              func_ov003_020c3c44(Ov003CutinScript* buffer, void* data, s16 count);
-Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor);
-s32               func_ov003_020c3ec0(CombatActor* actor);
+void func_ov003_020c2064(Ov003CutinTracks* tracks);
+void func_ov003_020c20b8(Ov003CutinTracks* tracks, Vec* data, u16 count);
+void func_ov003_020c20d4(Ov003CutinTracks* tracks, Ov003CutinActor* actor);
 
 void func_ov003_020c2064(Ov003CutinTracks* tracks) {
     s32 i;
@@ -156,25 +126,25 @@ void func_ov003_020c20d4(Ov003CutinTracks* tracks, Ov003CutinActor* actor) {
     s32 spriteIndex;
 
     current = (s32)tracks->cursor % (s32)tracks->count;
-    saved.x = actor->actor.position.x;
-    saved.y = actor->actor.position.y;
-    saved.z = actor->actor.position.z;
-    actor->sprite.flags46 |= 4;
+    saved.x = actor->base.actor.position.x;
+    saved.y = actor->base.actor.position.y;
+    saved.z = actor->base.actor.position.z;
+    actor->base.sprite.flags46 |= 4;
     i = 0;
     if ((s32)tracks->count > 0) {
         limit  = 0x7FFFFFFF - saved.y;
         offset = 0;
         do {
             if ((tracks->tracks[i].x != 0) || (tracks->tracks[i].y != 0) || (tracks->tracks[i].z != 0)) {
-                actor->actor.position.x = tracks->tracks[i].x;
-                actor->actor.position.y = tracks->tracks[i].y;
-                actor->actor.position.z = tracks->tracks[i].z;
-                if (actor->sprite.sprite.bits_0_1 == 0) {
-                    posX = func_ov003_020843b0(0, actor->actor.position.x);
-                    posY = func_ov003_020843ec(0, actor->actor.position.y, actor->actor.position.z);
+                actor->base.actor.position.x = tracks->tracks[i].x;
+                actor->base.actor.position.y = tracks->tracks[i].y;
+                actor->base.actor.position.z = tracks->tracks[i].z;
+                if (actor->base.sprite.sprite.bits_0_1 == 0) {
+                    posX = func_ov003_020843b0(0, actor->base.actor.position.x);
+                    posY = func_ov003_020843ec(0, actor->base.actor.position.y, actor->base.actor.position.z);
                 } else {
-                    posX = func_ov003_020843b0(1, actor->actor.position.x);
-                    posY = func_ov003_020843ec(1, actor->actor.position.y, actor->actor.position.z);
+                    posX = func_ov003_020843b0(1, actor->base.actor.position.x);
+                    posY = func_ov003_020843ec(1, actor->base.actor.position.y, actor->base.actor.position.z);
                 }
                 if (i == current) {
                     spriteIndex = tracks->count;
@@ -182,20 +152,20 @@ void func_ov003_020c20d4(Ov003CutinTracks* tracks, Ov003CutinActor* actor) {
                     temp        = tracks->count;
                     spriteIndex = (temp + (current - i)) % temp;
                 }
-                CombatSprite_SetPosition(&actor->sprite, posX, posY);
-                func_ov003_02082730(&actor->sprite, limit + (spriteIndex << 12));
-                CombatSprite_Render(&actor->sprite);
-                func_ov003_0208810c(&actor->subSprite, &actor->actor);
+                CombatSprite_SetPosition(&actor->base.sprite, posX, posY);
+                func_ov003_02082730(&actor->base.sprite, limit + (spriteIndex << 12));
+                CombatSprite_Render(&actor->base.sprite);
+                func_ov003_0208810c(&actor->base.subSprite, &actor->base.actor);
             }
             offset += 0xC;
             i++;
         } while (i < (s32)tracks->count);
     }
-    actor->sprite.flags46 &= ~4;
-    tracks->tracks[current] = saved;
-    actor->actor.position.x = saved.x;
-    actor->actor.position.y = saved.y;
-    actor->actor.position.z = saved.z;
+    actor->base.sprite.flags46 &= ~4;
+    tracks->tracks[current]      = saved;
+    actor->base.actor.position.x = saved.x;
+    actor->base.actor.position.y = saved.y;
+    actor->base.actor.position.z = saved.z;
     tracks->cursor++;
 }
 
@@ -206,7 +176,7 @@ void func_ov003_020c228c(s32 value, s32 total) {
     if (g_Cutin->flags.bits.b0 == 0) {
         v = func_02054a50(((f64)v * func_02053098((f64)total, 0.7)) / (f64)total);
     }
-    func_ov003_0208af9c(v, 0);
+    func_ov003_0208af9c((u16)v, 0);
 }
 void func_ov003_020c2324(s32 value, s32 total) {
     s32 v = value;
@@ -214,7 +184,7 @@ void func_ov003_020c2324(s32 value, s32 total) {
     if (g_Cutin->flags.bits.b0 == 0) {
         v = func_02054a50(((f64)v * func_02053098((f64)total, 0.5)) / (f64)total);
     }
-    func_ov003_0208af9c(0, v);
+    func_ov003_0208af9c(0, (u16)v);
 }
 /// Default cut-in layout, used when the battle does not select a scripted one.
 void func_ov003_020c23bc(void) {
@@ -392,22 +362,22 @@ void func_ov003_020c2a7c(void) {
 
 /// (Re)initialises the shared save-resident cut-in slot table.
 void func_ov003_020c2af0(void) {
-    if (OV003_CUTIN_SAVE->magic == 0x06128248) {
+    if (OV003_SAVE->cutin.magic == 0x06128248) {
         return;
     }
-    MI_CpuSet(OV003_CUTIN_SAVE, 0, 0x34);
+    MI_CpuSet(&OV003_SAVE->cutin, 0, 0x34);
     func_ov003_020c2a7c();
-    OV003_CUTIN_SAVE->unk_28 = 0;
-    OV003_CUTIN_SAVE->unk_2C = 0;
-    OV003_CUTIN_SAVE->magic  = 0x06128248;
+    OV003_SAVE->cutin.unk_28 = 0;
+    OV003_SAVE->cutin.unk_2C = 0;
+    OV003_SAVE->cutin.magic  = 0x06128248;
 }
 
 u32 func_ov003_020c2b3c(s32 index) {
-    return OV003_CUTIN_SLOTS[index];
+    return ((u32*)&OV003_SAVE->cutin.slots)[index];
 }
 
 void func_ov003_020c2b4c(s32 index, s32 value) {
-    OV003_CUTIN_SLOTS[index] = value;
+    ((u32*)&OV003_SAVE->cutin.slots)[index] = value;
 }
 
 void func_ov003_020c2b5c(Ov003CutinActor* actor) {
@@ -416,12 +386,12 @@ void func_ov003_020c2b5c(Ov003CutinActor* actor) {
 
 void func_ov003_020c2b68(Ov003CutinActor* actor) {
     func_ov003_020c427c(&actor->base);
-    actor->flags18C &= ~0x80;
-    actor->actor.flags &= ~0x10;
-    actor->state          = 0;
-    actor->timerLimit     = 0;
-    actor->timer          = 0;
-    actor->actor.zGravity = func_ov003_020c37f8(&actor->sprite) ? 0 : 0x400;
+    actor->base.flags18C &= ~0x80;
+    actor->base.actor.flags &= ~0x10;
+    actor->state               = 0;
+    actor->timerLimit          = 0;
+    actor->timer               = 0;
+    actor->base.actor.zGravity = func_ov003_020c37f8(&actor->base.sprite) ? 0 : 0x400;
 }
 
 /// True while the actor is safely inside the camera bounds.
@@ -430,14 +400,14 @@ s32 func_ov003_020c2bbc(Ov003CutinActor* actor) {
     Ov003Camera*     cam   = &p->unk3D7C0[0];
     Ov003CutinActor* other = (Ov003CutinActor*)p->unk3D898;
 
-    if (actor->actor.position.x < 0x50000) {
-        if (other->actor.position.x < 0x80000) {
+    if (actor->base.actor.position.x < 0x50000) {
+        if (other->base.actor.position.x < 0x80000) {
             return 1;
         }
         return 0;
     }
-    if (actor->actor.position.x > cam->unk_0C - 0x50000) {
-        if (other->actor.position.x > cam->unk_0C - 0x80000) {
+    if (actor->base.actor.position.x > cam->unk_0C - 0x50000) {
+        if (other->base.actor.position.x > cam->unk_0C - 0x80000) {
             return 1;
         }
         return 0;
@@ -467,17 +437,17 @@ s32 func_ov003_020c2c30(Ov003CutinActor* actor, s32 animBase, s32 targetX, s32 t
     switch (state) {
         case 0:
             if (actor->timer == 0) {
-                s32 dir = actor->actor.isFlipped;
+                s32 dir = actor->base.actor.isFlipped;
 
-                if (((dir == 0) && (actor->actor.position.x >= targetX)) ||
-                    ((dir != 0) && (actor->actor.position.x <= targetX)))
+                if (((dir == 0) && (actor->base.actor.position.x >= targetX)) ||
+                    ((dir != 0) && (actor->base.actor.position.x <= targetX)))
                 {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim0, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim0, 1);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim3, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim3, 1);
                 }
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 actor->timer = 0;
                 actor->state++;
             } else {
@@ -486,31 +456,34 @@ s32 func_ov003_020c2c30(Ov003CutinActor* actor, s32 animBase, s32 targetX, s32 t
             return 1;
         case 1:
             if (actor->timer == 0) {
-                s32 dir = actor->actor.isFlipped;
+                s32 dir = actor->base.actor.isFlipped;
 
-                if (((dir == 0) && (actor->actor.position.x >= targetX)) ||
-                    ((dir != 0) && (actor->actor.position.x <= targetX)))
+                if (((dir == 0) && (actor->base.actor.position.x >= targetX)) ||
+                    ((dir != 0) && (actor->base.actor.position.x <= targetX)))
                 {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim1, 0);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim1, 0);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim4, 0);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim4, 0);
                 }
-                actor->targetX    = targetX;
-                actor->targetY    = targetY;
-                actor->targetZ    = targetZ;
-                actor->timerLimit = func_ov003_020cb910(
-                    &actor->velocityX, &actor->velocityY, &actor->velocityZ, actor->actor.position.x, actor->actor.position.y,
-                    actor->actor.position.z, actor->targetX, actor->targetY, actor->targetZ, arg5);
+                actor->targetX = targetX;
+                actor->targetY = targetY;
+                actor->targetZ = targetZ;
+                actor->timerLimit =
+                    func_ov003_020cb910(&actor->velocityX, &actor->velocityY, &actor->velocityZ, actor->base.actor.position.x,
+                                        actor->base.actor.position.y, actor->base.actor.position.z, actor->targetX,
+                                        actor->targetY, actor->targetZ, arg5);
             }
-            actor->actor.position.x += actor->velocityX;
-            actor->actor.position.y += actor->velocityY;
-            actor->actor.position.z += actor->velocityZ;
-            if ((actor->actor.isFlipped == 1 && actor->actor.position.x > data_ov003_020e71b8->unk3D7C0[1].unk_0C / 2) ||
-                (actor->actor.isFlipped == 0 && actor->actor.position.x < data_ov003_020e71b8->unk3D7C0[1].unk_0C / 2))
+            actor->base.actor.position.x += actor->velocityX;
+            actor->base.actor.position.y += actor->velocityY;
+            actor->base.actor.position.z += actor->velocityZ;
+            if ((actor->base.actor.isFlipped == 1 &&
+                 actor->base.actor.position.x > data_ov003_020e71b8->unk3D7C0[1].unk_0C / 2) ||
+                (actor->base.actor.isFlipped == 0 &&
+                 actor->base.actor.position.x < data_ov003_020e71b8->unk3D7C0[1].unk_0C / 2))
             {
-                actor->unk_1AC = actor->targetX;
-                actor->unk_1B0 = actor->targetY;
-                actor->unk_1B4 = actor->targetZ;
+                actor->base.unk_1AC = actor->targetX;
+                actor->base.unk_1B0 = actor->targetY;
+                actor->base.unk_1B4 = actor->targetZ;
             }
             if (actor->timer < actor->timerLimit) {
                 actor->timer++;
@@ -521,18 +494,18 @@ s32 func_ov003_020c2c30(Ov003CutinActor* actor, s32 animBase, s32 targetX, s32 t
             return 1;
         case 2:
             if (actor->timer == 0) {
-                s32 dir = actor->actor.isFlipped;
+                s32 dir = actor->base.actor.isFlipped;
 
-                if (((dir == 0) && (actor->actor.position.x >= targetX)) ||
-                    ((dir != 0) && (actor->actor.position.x <= targetX)))
+                if (((dir == 0) && (actor->base.actor.position.x >= targetX)) ||
+                    ((dir != 0) && (actor->base.actor.position.x <= targetX)))
                 {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim2, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim2, 1);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim5, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim5, 1);
                 }
-                actor->actor.position.z = actor->targetZ;
+                actor->base.actor.position.z = actor->targetZ;
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 return 0;
             }
             actor->timer++;
@@ -563,24 +536,24 @@ s32 func_ov003_020c2f68(Ov003CutinActor* actor, s32 animBase, s32 speed, s32 spr
         case 0:
             if (actor->timer == 0) {
                 func_ov003_020c4b5c(&actor->base);
-                if (actor->actor.position.x < 0x50000) {
+                if (actor->base.actor.position.x < 0x50000) {
                     actor->velocityX = speed;
-                } else if (actor->actor.position.x > limit - 0x50000) {
+                } else if (actor->base.actor.position.x > limit - 0x50000) {
                     actor->velocityX = -speed;
-                } else if (actor->actor.position.x < other->actor.position.x) {
+                } else if (actor->base.actor.position.x < other->base.actor.position.x) {
                     actor->velocityX = -speed;
                 } else {
                     actor->velocityX = speed;
                 }
                 actor->velocityY = -spread + RNG_Next(spread * 2 + 1);
-                dir              = actor->actor.isFlipped;
+                dir              = actor->base.actor.isFlipped;
                 if (((dir == 0) && (actor->velocityX < 0)) || ((dir != 0) && (actor->velocityX > 0))) {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, animBase, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, animBase, 1);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim3, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim3, 1);
                 }
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 actor->timer = 0;
                 actor->state++;
             } else {
@@ -589,20 +562,21 @@ s32 func_ov003_020c2f68(Ov003CutinActor* actor, s32 animBase, s32 speed, s32 spr
             return 1;
         case 1:
             if (actor->timer == 0) {
-                dir = actor->actor.isFlipped;
+                dir = actor->base.actor.isFlipped;
                 if (((dir == 0) && (actor->velocityX < 0)) || ((dir != 0) && (actor->velocityX > 0))) {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim1, 0);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim1, 0);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim4, 0);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim4, 0);
                 }
                 actor->timerLimit = 0x5A;
             }
-            actor->actor.position.x += actor->velocityX;
-            actor->actor.position.y += actor->velocityY;
-            jitter = (0x50 - actor->actor.unk_70) / (speed >> 12);
-            if (actor->timer > actor->timerLimit || (((actor->velocityX < 0 && actor->actor.position.x <= 0x50000) ||
-                                                      (actor->velocityX > 0 && actor->actor.position.x >= limit - 0x50000)) &&
-                                                     RNG_Next(jitter / 2) == 0))
+            actor->base.actor.position.x += actor->velocityX;
+            actor->base.actor.position.y += actor->velocityY;
+            jitter = (0x50 - actor->base.actor.unk_70) / (speed >> 12);
+            if (actor->timer > actor->timerLimit ||
+                (((actor->velocityX < 0 && actor->base.actor.position.x <= 0x50000) ||
+                  (actor->velocityX > 0 && actor->base.actor.position.x >= limit - 0x50000)) &&
+                 RNG_Next(jitter / 2) == 0))
             {
                 actor->timer = 0;
                 actor->state++;
@@ -612,14 +586,14 @@ s32 func_ov003_020c2f68(Ov003CutinActor* actor, s32 animBase, s32 speed, s32 spr
             return 1;
         case 2:
             if (actor->timer == 0) {
-                dir = actor->actor.isFlipped;
+                dir = actor->base.actor.isFlipped;
                 if (((dir == 0) && (actor->velocityX < 0)) || ((dir != 0) && (actor->velocityX > 0))) {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, anim2, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, anim2, 1);
                 } else {
-                    CombatSprite_SetAnimFromTable(&actor->sprite, animFar, 1);
+                    CombatSprite_SetAnimFromTable(&actor->base.sprite, animFar, 1);
                 }
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 func_ov003_020c4b5c(&actor->base);
                 return 0;
             }
@@ -632,53 +606,53 @@ void func_ov003_020c32a4(Ov003CutinActor* src, Ov003CutinActor* dst) {
     u16 lo;
     u16 hi;
 
-    lo                              = *(u16*)&src->actor.unk_04; // copied as raw halfwords
-    hi                              = *(u16*)&src->actor.unk_06;
-    dst->actor.unk_04               = lo;
-    dst->actor.unk_06               = hi;
-    hi                              = *(u16*)&src->actor.unk_0A;
-    lo                              = *(u16*)&src->actor.unk_08;
-    dst->actor.unk_08               = lo;
-    dst->actor.unk_0A               = hi;
-    dst->actor.periodicEffectMode   = src->actor.periodicEffectMode;
-    dst->actor.periodicEffectTimer  = src->actor.periodicEffectTimer;
-    dst->actor.periodicEffectAmount = src->actor.periodicEffectAmount;
-    dst->actor.unk_62               = src->actor.unk_62;
-    dst->actor.unk_64               = src->actor.unk_64;
-    dst->actor.unk_66               = src->actor.unk_66;
-    dst->actor.unk_68               = src->actor.unk_68;
-    dst->actor.unk_6A               = src->actor.unk_6A;
-    dst->group                      = src->group;
-    dst->spriteIndex                = src->spriteIndex;
-    dst->unk_18E                    = src->unk_18E;
-    dst->unk_190                    = src->unk_190;
-    dst->unk_192                    = src->unk_192;
-    dst->unk_194                    = src->unk_194;
-    dst->flags196.bits.b0           = src->flags196.bits.b0;
-    dst->flags196.bits.b1           = src->flags196.bits.b1;
-    dst->flags196.bits.b3           = src->flags196.bits.b3;
-    dst->flags196.bits.b4           = src->flags196.bits.b4;
-    dst->flags196.bits.b5           = src->flags196.bits.b5;
-    dst->flags196.bits.b6           = src->flags196.bits.b6;
-    dst->flags196.bits.b7           = src->flags196.bits.b7;
-    dst->flags196.bits.b8           = src->flags196.bits.b8;
-    dst->flags196.bits.b9           = src->flags196.bits.b9;
-    dst->flags196.bits.b10          = src->flags196.bits.b10;
-    dst->flags196.bits.b11          = src->flags196.bits.b11;
-    dst->unk_198                    = src->unk_198;
-    dst->unk_19A                    = src->unk_19A;
-    dst->unk_19C                    = src->unk_19C;
-    dst->unk_19E                    = src->unk_19E;
-    dst->unk_1A0                    = src->unk_1A0;
-    dst->unk_1A2                    = src->unk_1A2;
+    lo                                   = *(u16*)&src->base.actor.unk_04; // copied as raw halfwords
+    hi                                   = *(u16*)&src->base.actor.unk_06;
+    dst->base.actor.unk_04               = lo;
+    dst->base.actor.unk_06               = hi;
+    hi                                   = *(u16*)&src->base.actor.unk_0A;
+    lo                                   = *(u16*)&src->base.actor.unk_08;
+    dst->base.actor.unk_08               = lo;
+    dst->base.actor.unk_0A               = hi;
+    dst->base.actor.periodicEffectMode   = src->base.actor.periodicEffectMode;
+    dst->base.actor.periodicEffectTimer  = src->base.actor.periodicEffectTimer;
+    dst->base.actor.periodicEffectAmount = src->base.actor.periodicEffectAmount;
+    dst->base.actor.unk_62               = src->base.actor.unk_62;
+    dst->base.actor.unk_64               = src->base.actor.unk_64;
+    dst->base.actor.unk_66               = src->base.actor.unk_66;
+    dst->base.actor.unk_68               = src->base.actor.unk_68;
+    dst->base.actor.unk_6A               = src->base.actor.unk_6A;
+    dst->base.group                      = src->base.group;
+    dst->base.spriteIndex                = src->base.spriteIndex;
+    dst->base.unk_18E                    = src->base.unk_18E;
+    dst->base.unk_190                    = src->base.unk_190;
+    dst->base.unk_192                    = src->base.unk_192;
+    dst->base.unk_194                    = src->base.unk_194;
+    dst->base.flags196.bits.b0           = src->base.flags196.bits.b0;
+    dst->base.flags196.bits.b1           = src->base.flags196.bits.b1;
+    dst->base.flags196.bits.b3           = src->base.flags196.bits.b3;
+    dst->base.flags196.bits.b4           = src->base.flags196.bits.b4;
+    dst->base.flags196.bits.b5           = src->base.flags196.bits.b5;
+    dst->base.flags196.bits.b6           = src->base.flags196.bits.b6;
+    dst->base.flags196.bits.b7           = src->base.flags196.bits.b7;
+    dst->base.flags196.bits.b8           = src->base.flags196.bits.b8;
+    dst->base.flags196.bits.b9           = src->base.flags196.bits.b9;
+    dst->base.flags196.bits.b10          = src->base.flags196.bits.b10;
+    dst->base.flags196.bits.b11          = src->base.flags196.bits.b11;
+    dst->base.unk_198                    = src->base.unk_198;
+    dst->base.unk_19A                    = src->base.unk_19A;
+    dst->base.unk_19C                    = src->base.unk_19C;
+    dst->base.unk_19E                    = src->base.unk_19E;
+    dst->base.unk_1A0                    = src->base.unk_1A0;
+    dst->base.unk_1A2                    = src->base.unk_1A2;
 }
 
 /// Rotates the main/sub/third actor chain when the third actor is present.
 void func_ov003_020c34dc(Ov003CutinActor* actor) {
-    Ov003CutinActor* third = (Ov003CutinActor*)actor->partner;
+    Ov003CutinActor* third = (Ov003CutinActor*)actor->base.partner;
     u8               tmp[0x1F8];
 
-    if (func_ov003_020c37f8(&actor->sprite) == 0) {
+    if (func_ov003_020c37f8(&actor->base.sprite) == 0) {
         return;
     }
     func_ov003_020c32a4(actor, (Ov003CutinActor*)tmp);
@@ -691,25 +665,25 @@ void func_ov003_020c34dc(Ov003CutinActor* actor) {
 void func_ov003_020c353c(Ov003CutinActor* actor) {
     const BtlSpriteDesc* params = func_ov003_020c3c6c(&actor->base);
 
-    CombatSprite_SetPaletteMode(&actor->sprite, 0);
-    CombatSprite_SetPaletteSource(&actor->sprite, params->palette);
-    actor->sprite.basePaletteSource = actor->sprite.sprite.unk3C;
+    CombatSprite_SetPaletteMode(&actor->base.sprite, 0);
+    CombatSprite_SetPaletteSource(&actor->base.sprite, params->palette);
+    actor->base.sprite.basePaletteSource = actor->base.sprite.sprite.unk3C;
 }
 
 /// Third-actor entrance/exit state machine.
 s32 func_ov003_020c3570(Ov003CutinActor* actor, u16 animBase) {
-    Ov003CutinActor* third = (Ov003CutinActor*)actor->partner;
+    Ov003CutinActor* third = (Ov003CutinActor*)actor->base.partner;
 
     switch (actor->state) {
         case 0:
             if (actor->timer == 0) {
-                actor->flags18C |= 0x80;
+                actor->base.flags18C |= 0x80;
             }
-            if (third->flags18C & 0x80) {
-                actor->flags18C &= ~0x80;
-                third->flags18C &= ~0x80;
-                actor->actor.flags |= 0x10;
-                third->actor.flags |= 0x10;
+            if (third->base.flags18C & 0x80) {
+                actor->base.flags18C &= ~0x80;
+                third->base.flags18C &= ~0x80;
+                actor->base.actor.flags |= 0x10;
+                third->base.actor.flags |= 0x10;
                 actor->timer = 0;
                 actor->state++;
                 third->timer = 0;
@@ -718,9 +692,9 @@ s32 func_ov003_020c3570(Ov003CutinActor* actor, u16 animBase) {
             return 1;
         case 1:
             if (actor->timer == 0) {
-                CombatSprite_SetAnimFromTable(&actor->sprite, animBase, 1);
+                CombatSprite_SetAnimFromTable(&actor->base.sprite, animBase, 1);
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 actor->timer = 0;
                 actor->state++;
             } else {
@@ -729,11 +703,11 @@ s32 func_ov003_020c3570(Ov003CutinActor* actor, u16 animBase) {
             return 1;
         case 2:
             if (actor->timer == 0) {
-                CombatSprite_SetAnimFromTable(&actor->sprite, animBase + 1, 1);
-                actor->actor.flags &= ~0x10;
+                CombatSprite_SetAnimFromTable(&actor->base.sprite, animBase + 1, 1);
+                actor->base.actor.flags &= ~0x10;
                 func_ov003_020c34dc(actor);
             }
-            if (SpriteMgr_IsAnimationFinished(&actor->sprite.sprite)) {
+            if (SpriteMgr_IsAnimationFinished(&actor->base.sprite.sprite)) {
                 return 0;
             }
             actor->timer++;
@@ -961,11 +935,11 @@ void func_ov003_020c3ba8(s32 x, s32 y) {
     Ov003CutinActor* sub    = p->unk3D89C;
     Ov003Camera*     camera = &p->unk3D7C0[1];
 
-    camera->unk_20        = x;
-    sub->actor.position.x = x;
-    camera->unk_24        = y;
-    sub->actor.position.y = y;
-    func_ov003_02083ab0(1, sub->actor.position.x, y, sub->actor.position.z);
+    camera->unk_20             = x;
+    sub->base.actor.position.x = x;
+    camera->unk_24             = y;
+    sub->base.actor.position.y = y;
+    func_ov003_02083ab0(1, sub->base.actor.position.x, y, sub->base.actor.position.z);
 }
 
 s32 func_ov003_020c3bf0(void* actor) {
@@ -998,30 +972,31 @@ Ov003ActorParams* func_ov003_020c3c88(Ov003EnemyActor* actor) {
 }
 
 TaskPool* func_ov003_020c3ca4(Ov003CutinActor* actor) {
-    return func_ov003_020c3a10(actor->sprite.sprite.bits_0_1);
+    return func_ov003_020c3a10(actor->base.sprite.sprite.bits_0_1);
 }
 
 s32 func_ov003_020c3cbc(Ov003CutinActor* actor) {
-    return func_ov003_020c3908(&actor->sprite);
+    return func_ov003_020c3908(&actor->base.sprite);
 }
 
 void func_ov003_020c3ccc(Ov003CutinActor* actor) {
-    func_ov003_020c3920(&actor->sprite);
+    func_ov003_020c3920(&actor->base.sprite);
 }
 
 void func_ov003_020c3cdc(Ov003CutinActor* actor) {
-    func_ov003_020c3938(&actor->sprite);
+    func_ov003_020c3938(&actor->base.sprite);
 }
 
-void func_ov003_020c3cec(void* mainTask, void* subTask, void* mainData, void* subData) {
+void func_ov003_020c3cec(const TaskHandle* mainHandle, const TaskHandle* subHandle, void* mainData, void* subData) {
     s32 main;
     s32 sub;
 
-    func_ov003_020c3d28(subTask, mainTask, subData, mainData, &main, &sub);
+    func_ov003_020c3d28(subHandle, mainHandle, subData, mainData, &main, &sub);
 }
 
 /// Creates the two EasyTasks driving a cut-in actor pair and links the two task data blocks.
-s32 func_ov003_020c3d28(void* subTask, void* mainTask, void* subData, void* mainData, s32* mainOut, s32* subOut) {
+s32 func_ov003_020c3d28(const TaskHandle* subHandle, const TaskHandle* mainHandle, void* subData, void* mainData, s32* mainOut,
+                        s32* subOut) {
     s32   mainId;
     s32   subId;
     void* mainBlock;
@@ -1029,18 +1004,18 @@ s32 func_ov003_020c3d28(void* subTask, void* mainTask, void* subData, void* main
 
     *subOut  = -1;
     *mainOut = -1;
-    if ((mainTask == NULL) && (subTask == NULL)) {
+    if ((mainHandle == NULL) && (subHandle == NULL)) {
         return 0;
     }
-    if (mainTask != NULL) {
-        mainId  = EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, mainTask, NULL, 0, NULL, mainData);
+    if (mainHandle != NULL) {
+        mainId  = EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, mainHandle, NULL, 0, NULL, mainData);
         *subOut = mainId;
         if (mainId == -1) {
             return 0;
         }
     }
-    if (subTask != NULL) {
-        subId    = EasyTask_CreateTask(&data_ov003_020e71b8->taskPool, subTask, NULL, 0, NULL, subData);
+    if (subHandle != NULL) {
+        subId    = EasyTask_CreateTask(&data_ov003_020e71b8->taskPool, subHandle, NULL, 0, NULL, subData);
         *mainOut = subId;
         if (subId == -1) {
             if (*subOut != -1) {
@@ -1049,7 +1024,7 @@ s32 func_ov003_020c3d28(void* subTask, void* mainTask, void* subData, void* main
             return 0;
         }
     }
-    if ((subTask != NULL) && (mainTask != NULL)) {
+    if ((subHandle != NULL) && (mainHandle != NULL)) {
         mainBlock = EasyTask_GetTaskData(&data_ov003_020e71b8->unk_00000, *subOut);
         subBlock  = EasyTask_GetTaskData(&data_ov003_020e71b8->taskPool, *mainOut);
         func_ov003_020c3e68(mainBlock, subBlock);
@@ -1141,169 +1116,85 @@ s32 func_ov003_020c3efc(Ov003EnemyActor* actor, Ov003CutinCmdData* spawn) {
     SndMgr_TrackSeqArc(data_ov003_020e09f8[actor->group]);
 }
 
-extern void Tsk_Boss01_RG(void);
-extern void Tsk_Boss01_UG(void);
-extern u8   data_ov009_02122970[];
-extern u8   data_ov009_021229a0[];
-extern u8   data_ov009_02122bfc[];
-extern u8   data_ov009_02122c2c[];
-extern u8   data_ov009_02122df4[];
-extern u8   data_ov009_02122e14[];
-extern u8   data_ov009_02122e20[];
-extern u8   data_ov009_021230d4[];
-extern u8   data_ov009_021230f0[];
-extern u8   data_ov009_0212325c[];
-extern u8   data_ov009_021232ac[];
-extern u8   data_ov009_02123368[];
-extern u8   data_ov009_02123374[];
-extern u8   data_ov009_021234cc[];
-extern u8   data_ov009_02123540[];
-extern u8   data_ov009_02123670[];
-extern u8   data_ov009_021236a0[];
-extern u8   data_ov009_02123b30[];
-extern u8   data_ov009_02123b6c[];
-extern u8   data_ov009_02123d5c[];
-extern u8   data_ov009_02123d78[];
-extern u8   data_ov009_021240b8[];
-extern u8   data_ov009_021240f8[];
-extern u8   data_ov009_02124584[];
-extern u8   data_ov009_0212459c[];
-extern u8   data_ov009_021247e0[];
-extern u8   data_ov009_0212481c[];
-extern u8   data_ov010_0212922c[];
-extern u8   data_ov010_021292e8[];
-extern u8   data_ov011_0212c130[];
-extern u8   data_ov011_0212c448[];
-extern u8   data_ov012_02127940[];
-extern u8   data_ov012_0212795c[];
-extern u8   data_ov013_02127510[];
-extern u8   data_ov013_02127528[];
-extern u8   data_ov014_021348f0[];
-extern u8   data_ov014_0213493c[];
-extern u8   data_ov015_021282ac[];
-extern u8   data_ov017_02141650[];
-extern u8   data_ov017_02141c2c[];
-extern u8   data_ov017_02141c48[];
-extern u8   data_ov017_02141dc4[];
-extern u8   data_ov017_02141de0[];
-extern u8   data_ov017_02141e4c[];
-extern u8   data_ov017_02141e68[];
-extern u8   data_ov017_02141f14[];
-extern u8   data_ov017_02141f94[];
-extern u8   data_ov017_02141fb0[];
-extern u8   data_ov017_02141fcc[];
-extern u8   data_ov017_02141ff8[];
-extern u8   data_ov017_02142618[];
-extern u8   data_ov017_02142634[];
-extern u8   data_ov017_02142650[];
-extern u8   data_ov017_021426c4[];
-extern u8   data_ov017_0214273c[];
-extern u8   data_ov017_02142748[];
-extern u8   data_ov017_02142764[];
-extern u8   data_ov017_02142790[];
-extern u8   data_ov017_021427ac[];
-extern u8   data_ov018_020fed68[];
-extern u8   data_ov018_020ff104[];
-extern u8   data_ov018_020ff1f8[];
-extern u8   data_ov019_020fa4a8[];
-extern u8   data_ov019_020fa734[];
-extern u8   data_ov020_020f6f5c[];
-extern u8   data_ov020_020f6f90[];
-extern u8   data_ov020_020f7070[];
-extern u8   data_ov020_020f762c[];
-extern u8   data_ov020_020f7644[];
-extern u8   data_ov021_020f769c[];
-extern u8   data_ov021_020f785c[];
-extern u8   data_ov021_020f78ec[];
-extern u8   data_ov022_020f59b4[];
-extern u8   data_ov022_020f5a48[];
-extern u8   data_ov024_020f6710[];
-extern u8   data_ov024_020f674c[];
-extern u8   data_ov024_020f68a8[];
-extern u8   data_ov024_020f68d8[];
-extern void func_ov010_021282b8(void);
-
-extern void Tsk_Boss01_RG(void);
-extern void Tsk_Boss01_UG(void);
-extern u8   data_ov009_02122970[];
-extern u8   data_ov009_021229a0[];
-extern u8   data_ov009_02122bfc[];
-extern u8   data_ov009_02122c2c[];
-extern u8   data_ov009_02122df4[];
-extern u8   data_ov009_02122e14[];
-extern u8   data_ov009_02122e20[];
-extern u8   data_ov009_021230d4[];
-extern u8   data_ov009_021230f0[];
-extern u8   data_ov009_0212325c[];
-extern u8   data_ov009_021232ac[];
-extern u8   data_ov009_02123368[];
-extern u8   data_ov009_02123374[];
-extern u8   data_ov009_021234cc[];
-extern u8   data_ov009_02123540[];
-extern u8   data_ov009_02123670[];
-extern u8   data_ov009_021236a0[];
-extern u8   data_ov009_02123b30[];
-extern u8   data_ov009_02123b6c[];
-extern u8   data_ov009_02123d5c[];
-extern u8   data_ov009_02123d78[];
-extern u8   data_ov009_021240b8[];
-extern u8   data_ov009_021240f8[];
-extern u8   data_ov009_02124584[];
-extern u8   data_ov009_0212459c[];
-extern u8   data_ov009_021247e0[];
-extern u8   data_ov009_0212481c[];
-extern u8   data_ov010_0212922c[];
-extern u8   data_ov010_021292e8[];
-extern u8   data_ov011_0212c130[];
-extern u8   data_ov011_0212c448[];
-extern u8   data_ov012_02127940[];
-extern u8   data_ov012_0212795c[];
-extern u8   data_ov013_02127510[];
-extern u8   data_ov013_02127528[];
-extern u8   data_ov014_021348f0[];
-extern u8   data_ov014_0213493c[];
-extern u8   data_ov015_021282ac[];
-extern u8   data_ov017_02141650[];
-extern u8   data_ov017_02141c2c[];
-extern u8   data_ov017_02141c48[];
-extern u8   data_ov017_02141dc4[];
-extern u8   data_ov017_02141de0[];
-extern u8   data_ov017_02141e4c[];
-extern u8   data_ov017_02141e68[];
-extern u8   data_ov017_02141f14[];
-extern u8   data_ov017_02141f94[];
-extern u8   data_ov017_02141fb0[];
-extern u8   data_ov017_02141fcc[];
-extern u8   data_ov017_02141ff8[];
-extern u8   data_ov017_02142618[];
-extern u8   data_ov017_02142634[];
-extern u8   data_ov017_02142650[];
-extern u8   data_ov017_021426c4[];
-extern u8   data_ov017_0214273c[];
-extern u8   data_ov017_02142748[];
-extern u8   data_ov017_02142764[];
-extern u8   data_ov017_02142790[];
-extern u8   data_ov017_021427ac[];
-extern u8   data_ov018_020fed68[];
-extern u8   data_ov018_020ff104[];
-extern u8   data_ov018_020ff1f8[];
-extern u8   data_ov019_020fa4a8[];
-extern u8   data_ov019_020fa734[];
-extern u8   data_ov020_020f6f5c[];
-extern u8   data_ov020_020f6f90[];
-extern u8   data_ov020_020f7070[];
-extern u8   data_ov020_020f762c[];
-extern u8   data_ov020_020f7644[];
-extern u8   data_ov021_020f769c[];
-extern u8   data_ov021_020f785c[];
-extern u8   data_ov021_020f78ec[];
-extern u8   data_ov022_020f59b4[];
-extern u8   data_ov022_020f5a48[];
-extern u8   data_ov024_020f6710[];
-extern u8   data_ov024_020f674c[];
-extern u8   data_ov024_020f68a8[];
-extern u8   data_ov024_020f68d8[];
-extern void func_ov010_021282b8(void);
+extern const TaskHandle data_ov009_02122970;
+extern const TaskHandle data_ov009_021229a0;
+extern const TaskHandle data_ov009_02122bfc;
+extern const TaskHandle data_ov009_02122c2c;
+extern const TaskHandle data_ov009_02122df4;
+extern const TaskHandle data_ov009_02122e14;
+extern const TaskHandle data_ov009_02122e20;
+extern const TaskHandle data_ov009_021230d4;
+extern const TaskHandle data_ov009_021230f0;
+extern const TaskHandle data_ov009_0212325c;
+extern const TaskHandle data_ov009_021232ac;
+extern const TaskHandle data_ov009_02123368;
+extern const TaskHandle data_ov009_02123374;
+extern const TaskHandle data_ov009_021234cc;
+extern const TaskHandle data_ov009_02123540;
+extern const TaskHandle data_ov009_02123670;
+extern const TaskHandle data_ov009_021236a0;
+extern const TaskHandle data_ov009_02123b30;
+extern const TaskHandle data_ov009_02123b6c;
+extern const TaskHandle data_ov009_02123d5c;
+extern const TaskHandle data_ov009_02123d78;
+extern const TaskHandle data_ov009_021240b8;
+extern const TaskHandle data_ov009_021240f8;
+extern const TaskHandle data_ov009_02124584;
+extern const TaskHandle data_ov009_0212459c;
+extern const TaskHandle data_ov009_021247e0;
+extern const TaskHandle data_ov009_0212481c;
+extern const TaskHandle data_ov010_0212922c;
+extern const TaskHandle data_ov010_021292e8;
+extern const TaskHandle data_ov011_0212c130;
+extern const TaskHandle data_ov011_0212c448;
+extern const TaskHandle data_ov012_02127940;
+extern const TaskHandle data_ov012_0212795c;
+extern const TaskHandle data_ov013_02127510;
+extern const TaskHandle data_ov013_02127528;
+extern const TaskHandle data_ov014_021348f0;
+extern const TaskHandle data_ov014_0213493c;
+extern const TaskHandle Tsk_BtlEnm026_RG;
+extern const TaskHandle Tsk_BtlEnm026_UG;
+extern const TaskHandle data_ov017_02141650;
+extern const TaskHandle data_ov017_02141c2c;
+extern const TaskHandle data_ov017_02141c48;
+extern const TaskHandle data_ov017_02141dc4;
+extern const TaskHandle data_ov017_02141de0;
+extern const TaskHandle data_ov017_02141e4c;
+extern const TaskHandle data_ov017_02141e68;
+extern const TaskHandle data_ov017_02141f14;
+extern const TaskHandle data_ov017_02141f94;
+extern const TaskHandle data_ov017_02141fb0;
+extern const TaskHandle data_ov017_02141fcc;
+extern const TaskHandle data_ov017_02141ff8;
+extern const TaskHandle data_ov017_02142618;
+extern const TaskHandle data_ov017_02142634;
+extern const TaskHandle data_ov017_02142650;
+extern const TaskHandle data_ov017_021426c4;
+extern const TaskHandle data_ov017_0214273c;
+extern const TaskHandle data_ov017_02142748;
+extern const TaskHandle data_ov017_02142764;
+extern const TaskHandle data_ov017_02142790;
+extern const TaskHandle data_ov017_021427ac;
+extern const TaskHandle data_ov018_020fed68;
+extern const TaskHandle data_ov018_020ff104;
+extern const TaskHandle data_ov018_020ff1f8;
+extern const TaskHandle data_ov019_020fa4a8;
+extern const TaskHandle data_ov019_020fa734;
+extern const TaskHandle data_ov020_020f6f5c;
+extern const TaskHandle data_ov020_020f6f90;
+extern const TaskHandle data_ov020_020f7070;
+extern const TaskHandle data_ov020_020f762c;
+extern const TaskHandle data_ov020_020f7644;
+extern const TaskHandle data_ov021_020f769c;
+extern const TaskHandle data_ov021_020f785c;
+extern const TaskHandle data_ov021_020f78ec;
+extern const TaskHandle data_ov022_020f59b4;
+extern const TaskHandle data_ov022_020f5a48;
+extern const TaskHandle data_ov024_020f6710;
+extern const TaskHandle data_ov024_020f674c;
+extern const TaskHandle data_ov024_020f68a8;
+extern const TaskHandle data_ov024_020f68d8;
 
 // ---------------------------------------------------------------------------------------------
 // Data objects owned by this unit (see tmp/e_gendata.py). The large .rodata run 0x020ddb1c..
@@ -5995,39 +5886,129 @@ void* data_ov003_020e53f4[1275] = {
     (void*)&data_ov003_020ddbf0, (void*)&data_ov003_020def54, (void*)&data_ov003_020df1f2, (void*)&data_ov003_020ddbf8,
     (void*)&data_ov003_020df850, (void*)&data_ov003_020de304, (void*)&data_ov003_020df85a,
 };
-void* data_ov003_020e67e0[60] = {
-    (void*)0x00000000,           (void*)&data_ov009_021230d4, (void*)&data_ov009_0212325c, (void*)&data_ov009_021247e0,
-    (void*)&data_ov009_02123368, (void*)&data_ov010_0212922c, (void*)&data_ov011_0212c130, (void*)&data_ov009_021234cc,
-    (void*)&data_ov009_02123b30, (void*)&data_ov009_02122bfc, (void*)&data_ov012_02127940, (void*)&data_ov013_02127510,
-    (void*)&data_ov009_02123d5c, (void*)&data_ov009_02122970, (void*)&data_ov009_02123670, (void*)&data_ov014_021348f0,
-    (void*)&data_ov009_02122df4, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac,
-    (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac,
-    (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac,
-    (void*)&data_ov015_021282ac, (void*)&data_ov015_021282ac, (void*)&data_ov009_021240b8, (void*)&data_ov009_02124584,
-    (void*)&data_ov018_020fed68, (void*)&data_ov018_020ff1f8, (void*)&Tsk_Boss01_RG,       (void*)&data_ov017_02141650,
-    (void*)&data_ov017_02141c2c, (void*)&data_ov017_02141dc4, (void*)&data_ov017_02141e4c, (void*)&data_ov017_02141f14,
-    (void*)&data_ov017_02141ff8, (void*)&data_ov017_02141f94, (void*)&data_ov017_02141fb0, (void*)&data_ov017_02142618,
-    (void*)&data_ov017_02142650, (void*)&data_ov017_0214273c, (void*)&data_ov017_02142764, (void*)0x00000000,
-    (void*)&data_ov019_020fa4a8, (void*)&data_ov020_020f6f5c, (void*)0x00000000,           (void*)&data_ov020_020f762c,
-    (void*)0x00000000,           (void*)&data_ov022_020f59b4, (void*)0x00000000,           (void*)0x00000000,
-    (void*)&data_ov024_020f6710, (void*)0x00000000,           (void*)&data_ov024_020f68a8, (void*)&data_ov021_020f785c,
+const TaskHandle* data_ov003_020e67e0[60] = {
+    NULL,
+    &data_ov009_021230d4,
+    &data_ov009_0212325c,
+    &data_ov009_021247e0,
+    &data_ov009_02123368,
+    &data_ov010_0212922c,
+    &data_ov011_0212c130,
+    &data_ov009_021234cc,
+    &data_ov009_02123b30,
+    &data_ov009_02122bfc,
+    &data_ov012_02127940,
+    &data_ov013_02127510,
+    &data_ov009_02123d5c,
+    &data_ov009_02122970,
+    &data_ov009_02123670,
+    &data_ov014_021348f0,
+    &data_ov009_02122df4,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &Tsk_BtlEnm026_RG,
+    &data_ov009_021240b8,
+    &data_ov009_02124584,
+    &data_ov018_020fed68,
+    &data_ov018_020ff1f8,
+    &Tsk_Boss01_RG,
+    &data_ov017_02141650,
+    &data_ov017_02141c2c,
+    &data_ov017_02141dc4,
+    &data_ov017_02141e4c,
+    &data_ov017_02141f14,
+    &data_ov017_02141ff8,
+    &data_ov017_02141f94,
+    &data_ov017_02141fb0,
+    &data_ov017_02142618,
+    &data_ov017_02142650,
+    &data_ov017_0214273c,
+    &data_ov017_02142764,
+    NULL,
+    &data_ov019_020fa4a8,
+    &data_ov020_020f6f5c,
+    NULL,
+    &data_ov020_020f762c,
+    NULL,
+    &data_ov022_020f59b4,
+    NULL,
+    NULL,
+    &data_ov024_020f6710,
+    NULL,
+    &data_ov024_020f68a8,
+    &data_ov021_020f785c,
 };
-void* data_ov003_020e68d0[60] = {
-    (void*)&data_ov009_02122e20, (void*)&data_ov009_021230f0, (void*)&data_ov009_021232ac, (void*)&data_ov009_0212481c,
-    (void*)&data_ov009_02123374, (void*)&data_ov010_021292e8, (void*)&data_ov011_0212c448, (void*)&data_ov009_02123540,
-    (void*)&data_ov009_02123b6c, (void*)&data_ov009_02122c2c, (void*)&data_ov012_0212795c, (void*)&data_ov013_02127528,
-    (void*)&data_ov009_02123d78, (void*)&data_ov009_021229a0, (void*)&data_ov009_021236a0, (void*)&data_ov014_0213493c,
-    (void*)&data_ov009_02122e14, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8,
-    (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8,
-    (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8,
-    (void*)&func_ov010_021282b8, (void*)&func_ov010_021282b8, (void*)&data_ov009_021240f8, (void*)&data_ov009_0212459c,
-    (void*)0x00000000,           (void*)&data_ov018_020ff104, (void*)&Tsk_Boss01_UG,       (void*)0x00000000,
-    (void*)&data_ov017_02141c48, (void*)&data_ov017_02141de0, (void*)&data_ov017_02141e68, (void*)0x00000000,
-    (void*)0x00000000,           (void*)0x00000000,           (void*)&data_ov017_02141fcc, (void*)&data_ov017_02142634,
-    (void*)&data_ov017_021426c4, (void*)&data_ov017_02142748, (void*)&data_ov017_02142790, (void*)&data_ov017_021427ac,
-    (void*)&data_ov019_020fa734, (void*)&data_ov020_020f6f90, (void*)&data_ov020_020f7070, (void*)&data_ov021_020f769c,
-    (void*)&data_ov021_020f78ec, (void*)&data_ov022_020f5a48, (void*)&data_ov020_020f7644, (void*)&data_ov024_020f674c,
-    (void*)0x00000000,           (void*)&data_ov024_020f68d8, (void*)0x00000000,           (void*)0x00000000,
+const TaskHandle* data_ov003_020e68d0[60] = {
+    &data_ov009_02122e20,
+    &data_ov009_021230f0,
+    &data_ov009_021232ac,
+    &data_ov009_0212481c,
+    &data_ov009_02123374,
+    &data_ov010_021292e8,
+    &data_ov011_0212c448,
+    &data_ov009_02123540,
+    &data_ov009_02123b6c,
+    &data_ov009_02122c2c,
+    &data_ov012_0212795c,
+    &data_ov013_02127528,
+    &data_ov009_02123d78,
+    &data_ov009_021229a0,
+    &data_ov009_021236a0,
+    &data_ov014_0213493c,
+    &data_ov009_02122e14,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &Tsk_BtlEnm026_UG,
+    &data_ov009_021240f8,
+    &data_ov009_0212459c,
+    NULL,
+    &data_ov018_020ff104,
+    &Tsk_Boss01_UG,
+    NULL,
+    &data_ov017_02141c48,
+    &data_ov017_02141de0,
+    &data_ov017_02141e68,
+    NULL,
+    NULL,
+    NULL,
+    &data_ov017_02141fcc,
+    &data_ov017_02142634,
+    &data_ov017_021426c4,
+    &data_ov017_02142748,
+    &data_ov017_02142790,
+    &data_ov017_021427ac,
+    &data_ov019_020fa734,
+    &data_ov020_020f6f90,
+    &data_ov020_020f7070,
+    &data_ov021_020f769c,
+    &data_ov021_020f78ec,
+    &data_ov022_020f5a48,
+    &data_ov020_020f7644,
+    &data_ov024_020f674c,
+    NULL,
+    &data_ov024_020f68d8,
+    NULL,
+    NULL,
 };
 u8 data_ov003_020e71e4[0x4];
 u8 data_ov003_020e71e8[0x4];

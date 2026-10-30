@@ -2,8 +2,6 @@
 #include "Combat/Core/CombatEnemyShot.h"
 #include <nitro/mi/cpumem.h>
 
-extern s32              func_ov003_020c3c28(void);
-extern void             func_ov003_02084348(s32, s16*, s16*, s32, s32, s32);
 extern const TaskHandle data_ov003_020e0c98;
 
 s32 func_ov003_020d1228(Ov003EnemyShotSource* source, CombatList* list, u16 angle, s32 x, s32 y, s32 z, s32 scaleX,

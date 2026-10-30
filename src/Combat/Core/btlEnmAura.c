@@ -34,14 +34,7 @@ extern const TaskHandle      data_ov003_020e0b98;
 extern const SpriteAnimEntry data_ov003_020e0ba4[2];
 extern const TaskStages      data_ov003_020e0bb4;
 extern void                  func_020265d4(s32*, s32, u16);
-extern void*                 func_ov003_0208495c(CombatList*);
-extern void*                 func_ov003_02084984(CombatListNode*);
-extern void                  func_ov003_020849ac(CombatList*);
-extern void                  func_ov003_020849bc(CombatList*, CombatListNode*, void*);
-extern s32                   func_ov003_020c2008(TaskPool*);
-extern s32                   func_ov003_020c37f8(CombatSprite*);
-extern s32                   func_ov003_020c3c28(void);
-extern Ov003ActorParams*     func_ov003_020c3c88(Ov003EnemyActor*);
+extern s32                   func_ov003_020c2008(TaskPool* pool);
 extern void                  func_ov003_020cac38(s32, s32);
 extern s32                   func_ov024_020f10d8(Ov003CutinActor*);
 void                         func_ov003_020c9de8(BtlEnmAura*);
@@ -51,17 +44,17 @@ void func_ov003_020c96e4(void) {
     Ov003ActorParams* sub  = func_ov003_020c3c88(&data_ov003_020e7324.ownerSub->base);
     Ov003ActorParams* main = func_ov003_020c3c88(&data_ov003_020e7324.ownerMain->base);
     if (data_ov003_020e7324.activeMain) {
-        data_ov003_020e7324.ownerSub->actor.unk_08  = sub->unk_0C * 3 / 2;
-        data_ov003_020e7324.ownerMain->actor.unk_08 = main->unk_0C;
+        data_ov003_020e7324.ownerSub->base.actor.unk_08  = sub->unk_0C * 3 / 2;
+        data_ov003_020e7324.ownerMain->base.actor.unk_08 = main->unk_0C;
         return;
     }
     if (data_ov003_020e7324.activeSub) {
-        data_ov003_020e7324.ownerSub->actor.unk_08  = sub->unk_0C;
-        data_ov003_020e7324.ownerMain->actor.unk_08 = main->unk_0C * 3 / 2;
+        data_ov003_020e7324.ownerSub->base.actor.unk_08  = sub->unk_0C;
+        data_ov003_020e7324.ownerMain->base.actor.unk_08 = main->unk_0C * 3 / 2;
         return;
     }
-    data_ov003_020e7324.ownerSub->actor.unk_08  = sub->unk_0C;
-    data_ov003_020e7324.ownerMain->actor.unk_08 = main->unk_0C;
+    data_ov003_020e7324.ownerSub->base.actor.unk_08  = sub->unk_0C;
+    data_ov003_020e7324.ownerMain->base.actor.unk_08 = main->unk_0C;
 }
 void func_ov003_020c9788(BtlEnmAura* self, BtlEnmAuraUpdate update) {
     self->update = update;
@@ -76,26 +69,26 @@ void func_ov003_020c97a0(s32* value, s32 target, u16 frames) {
     *value += delta / frames;
 }
 void func_ov003_020c97dc(Ov003CutinActor* owner) {
-    switch ((u32)(owner->group - 0x37)) {
+    switch ((u32)(owner->base.group - 0x37)) {
         case 0:
         case 1:
-            if (owner->spriteIndex >= 2)
+            if (owner->base.spriteIndex >= 2)
                 return;
             if (RNG_Next(2)) {
-                func_ov003_02087f28(0x525, data_ov003_020e7324.ownerMain->actor.position.x);
+                func_ov003_02087f28(0x525, data_ov003_020e7324.ownerMain->base.actor.position.x);
                 return;
             }
-            func_ov003_02087f28(0x526, data_ov003_020e7324.ownerMain->actor.position.x);
+            func_ov003_02087f28(0x526, data_ov003_020e7324.ownerMain->base.actor.position.x);
             return;
         case 2:
         case 3:
-            if (owner->spriteIndex >= 2)
+            if (owner->base.spriteIndex >= 2)
                 return;
             if (RNG_Next(2)) {
-                func_ov003_02087f64(0x53D, data_ov003_020e7324.ownerSub->actor.position.x);
+                func_ov003_02087f64(0x53D, data_ov003_020e7324.ownerSub->base.actor.position.x);
                 return;
             }
-            func_ov003_02087f64(0x53E, data_ov003_020e7324.ownerSub->actor.position.x);
+            func_ov003_02087f64(0x53E, data_ov003_020e7324.ownerSub->base.actor.position.x);
             return;
         default:
             return;
@@ -140,26 +133,26 @@ void func_ov003_020c98b0(BtlEnmAura* self, s32 mode) {
             s32 dy                = RNG_Next(0x31) - 16;
             engine                = 1;
             palette               = 8;
-            self->flamePosition.x = data_ov003_020e7324.ownerSub->actor.position.x + (dx << 12);
+            self->flamePosition.x = data_ov003_020e7324.ownerSub->base.actor.position.x + (dx << 12);
             x                     = self->x + (dx << 12);
             y                     = self->y + (dy << 12);
-            self->flamePosition.y = data_ov003_020e7324.ownerSub->actor.position.y;
-            self->flamePosition.z = data_ov003_020e7324.ownerSub->actor.position.z + (dy << 12) - 0x20000;
+            self->flamePosition.y = data_ov003_020e7324.ownerSub->base.actor.position.y;
+            self->flamePosition.z = data_ov003_020e7324.ownerSub->base.actor.position.z + (dy << 12) - 0x20000;
         } else {
             s32 dx                = RNG_Next(0x19) - 12;
             s32 dy                = RNG_Next(0x31) - 16;
             engine                = 0;
             palette               = 7;
-            self->flamePosition.x = data_ov003_020e7324.ownerMain->actor.position.x + (dx << 12);
+            self->flamePosition.x = data_ov003_020e7324.ownerMain->base.actor.position.x + (dx << 12);
             x                     = self->x + (dx << 12);
-            self->flamePosition.y = data_ov003_020e7324.ownerMain->actor.position.y;
+            self->flamePosition.y = data_ov003_020e7324.ownerMain->base.actor.position.y;
             y                     = self->y + (dy << 12) - 0xC0000;
-            self->flamePosition.z = data_ov003_020e7324.ownerMain->actor.position.z + (dy << 12) - 0x20000;
+            self->flamePosition.z = data_ov003_020e7324.ownerMain->base.actor.position.z + (dy << 12) - 0x20000;
         }
         self->cooldown = 4;
     }
     Ov003CutinActor* owner = engine ? data_ov003_020e7324.ownerSub : data_ov003_020e7324.ownerMain;
-    sortKey                = 0x80000000 - owner->actor.position.y;
+    sortKey                = 0x80000000 - owner->base.actor.position.y;
     CombatSprite_LoadDirect(engine, &flame->sprite, &data_ov003_020e0b90, 4, 6, 5, palette, (u16)anim);
     CombatSprite_SetAnim(&flame->sprite, (u16)anim, 1);
     CombatSprite_SetPosition(&flame->sprite, (x << 4) >> 16, (y << 4) >> 16);
@@ -205,9 +198,9 @@ void func_ov003_020c9c40(BtlEnmAura* self) {
         return;
     do {
         if (flame->sprite.sprite.bits_0_1 == 1)
-            func_ov003_02082730(&flame->sprite, 0x80000000 - data_ov003_020e7324.ownerSub->actor.position.y);
+            func_ov003_02082730(&flame->sprite, 0x80000000 - data_ov003_020e7324.ownerSub->base.actor.position.y);
         else
-            func_ov003_02082730(&flame->sprite, 0x80000000 - data_ov003_020e7324.ownerMain->actor.position.y);
+            func_ov003_02082730(&flame->sprite, 0x80000000 - data_ov003_020e7324.ownerMain->base.actor.position.y);
         CombatSprite_Render(&flame->sprite);
         flame = func_ov003_02084984(&flame->node);
     } while (flame != NULL);
@@ -220,12 +213,12 @@ void func_ov003_020c9cb8(BtlEnmAura* self) {
 }
 void func_ov003_020c9cf0(BtlEnmAura* self, s32 side) {
     if (side == 1) {
-        self->x = data_ov003_020e7324.ownerSub->actor.screenX << 12;
-        self->y = (data_ov003_020e7324.ownerSub->actor.screenY - 0x20) << 12;
+        self->x = data_ov003_020e7324.ownerSub->base.actor.screenX << 12;
+        self->y = (data_ov003_020e7324.ownerSub->base.actor.screenY - 0x20) << 12;
         return;
     }
-    self->x = data_ov003_020e7324.ownerMain->actor.screenX << 12;
-    self->y = (data_ov003_020e7324.ownerMain->actor.screenY + 0xA0) << 12;
+    self->x = data_ov003_020e7324.ownerMain->base.actor.screenX << 12;
+    self->y = (data_ov003_020e7324.ownerMain->base.actor.screenY + 0xA0) << 12;
 }
 void func_ov003_020c9d54(BtlEnmAura* self) {
     if (self->intensity >= 0x1000)
@@ -337,11 +330,11 @@ void func_ov003_020ca188(BtlEnmAura* self) {
     s16 screenX;
     s32 screenY;
     if (self->side == 1) {
-        screenX = data_ov003_020e7324.ownerSub->actor.screenX;
-        screenY = data_ov003_020e7324.ownerSub->actor.screenY - 0x20;
+        screenX = data_ov003_020e7324.ownerSub->base.actor.screenX;
+        screenY = data_ov003_020e7324.ownerSub->base.actor.screenY - 0x20;
     } else {
-        screenX = data_ov003_020e7324.ownerMain->actor.screenX;
-        screenY = data_ov003_020e7324.ownerMain->actor.screenY + 0xA0;
+        screenX = data_ov003_020e7324.ownerMain->base.actor.screenX;
+        screenY = data_ov003_020e7324.ownerMain->base.actor.screenY + 0xA0;
     }
     s32 x = screenX << 12;
     s32 y = screenY << 12;
@@ -429,7 +422,7 @@ s32 func_ov003_020ca498(TaskPool* pool, Task* task, void* args) {
             Ov003CutinActor* owner = data_ov003_020e7324.ownerSub;
             CombatSprite_SetAffineTransform(&self->sprites[0], 0, scale, scale, 1);
             CombatSprite_SetPosition(&self->sprites[0], (self->x << 4) >> 16, (self->y << 4) >> 16);
-            func_ov003_02082730(&self->sprites[0], 0x80000001 - owner->actor.position.y);
+            func_ov003_02082730(&self->sprites[0], 0x80000001 - owner->base.actor.position.y);
             CombatSprite_Render(&self->sprites[0]);
         }
         if (self->y > 0xA8000 && !data_ov003_020e7324.activeMain) {
@@ -437,7 +430,7 @@ s32 func_ov003_020ca498(TaskPool* pool, Task* task, void* args) {
             Ov003CutinActor* owner = data_ov003_020e7324.ownerMain;
             CombatSprite_SetAffineTransform(&self->sprites[1], 0, scale, scale, 1);
             CombatSprite_SetPosition(&self->sprites[1], (self->x << 4) >> 16, (s16)((self->y >> 12) - 0xC0));
-            func_ov003_02082730(&self->sprites[1], 0x80000001 - owner->actor.position.y);
+            func_ov003_02082730(&self->sprites[1], 0x80000001 - owner->base.actor.position.y);
             CombatSprite_Render(&self->sprites[1]);
         }
     }
@@ -456,13 +449,13 @@ s32 func_ov003_020ca5e4(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 void func_ov003_020ca62c(Ov003CutinActor* owner) {
-    if (func_ov003_020c37f8(&owner->sprite)) {
-        data_ov003_020e7324.ownerMain = (Ov003CutinActor*)owner->partner;
+    if (func_ov003_020c37f8(&owner->base.sprite)) {
+        data_ov003_020e7324.ownerMain = (Ov003CutinActor*)owner->base.partner;
         data_ov003_020e7324.ownerSub  = owner;
         return;
     }
     data_ov003_020e7324.ownerMain = owner;
-    data_ov003_020e7324.ownerSub  = (Ov003CutinActor*)owner->partner;
+    data_ov003_020e7324.ownerSub  = (Ov003CutinActor*)owner->base.partner;
 }
 void func_ov003_020ca66c(Ov003CutinActor* owner) {
     func_ov003_020ca62c(owner);

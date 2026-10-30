@@ -59,9 +59,6 @@ typedef struct BtlFeatSplashBg {
 
 extern s32 data_ov003_020e71e0;
 
-extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* charData, u32 charBase, u32 offset, u32 size);
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* screenData, u32 screenBase, u32 screenSize);
-
 extern BinIdentifier data_ov003_020dd7bc;
 extern BinIdentifier data_ov003_020dd7c4;
 extern BinIdentifier data_ov003_020dd7d4;
