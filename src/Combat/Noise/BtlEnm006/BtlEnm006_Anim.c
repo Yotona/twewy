@@ -2,15 +2,6 @@
 #include "Combat/Noise/Private/BtlEnm006.h"
 
 /// One of the `Tsk_BtlEnm006` asset variants.
-typedef struct Enm006Variant {
-    /* 0x00 */ BinIdentifier*   binIden;
-    /* 0x04 */ SpriteAnimEntry* animTable;
-    /* 0x08 */ u16              unk_08;
-    /* 0x0A */ u16              unk_0A;
-    /* 0x0C */ u16              unk_0C;
-    /* 0x0E */ u16              unk_0E;
-} Enm006Variant; // Size: 0x10
-
 extern char                  data_ov010_0212932c[28];
 extern char                  data_ov010_02129348[28];
 extern char                  data_ov010_02129364[28];
@@ -20,12 +11,12 @@ extern const SpriteAnimEntry data_ov010_021290f0[14];
 extern const SpriteAnimEntry data_ov010_02129178[17];
 
 typedef struct Enm006VariantTail {
-    /* 0x00 */ Enm006Variant   variant;
+    /* 0x00 */ BtlSpriteDesc   variant;
     /* 0x10 */ SpriteAnimEntry anim[3];
 } Enm006VariantTail; // Size: 0x28
 
-const Enm006Variant data_ov010_02129008 = {&data_ov010_02129050[2], data_ov010_021290f0, 0, 0x13, 0x160};
-const Enm006Variant data_ov010_02129018 = {&data_ov010_02129050[1], data_ov010_02129068, 0, 0x13, 0x150};
+const BtlSpriteDesc data_ov010_02129008 = {&data_ov010_02129050[2], data_ov010_021290f0, 0, 0x13, 0x160};
+const BtlSpriteDesc data_ov010_02129018 = {&data_ov010_02129050[1], data_ov010_02129068, 0, 0x13, 0x150};
 
 const Enm006VariantTail data_ov010_02129028 = {
     {&data_ov010_02129050[0], data_ov010_02129178, 0, 0x13, 0x150},
@@ -105,7 +96,7 @@ const SpriteAnimEntry data_ov010_02129178[17] = {
     { 1,  3,  2, 0},
 };
 
-Enm006Variant* data_ov010_02129320[3] = {
+BtlSpriteDesc* data_ov010_02129320[3] = {
     &data_ov010_02129028.variant,
     &data_ov010_02129018,
     &data_ov010_02129008,

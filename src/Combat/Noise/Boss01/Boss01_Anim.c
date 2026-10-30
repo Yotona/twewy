@@ -34,7 +34,7 @@ void func_ov016_021256c0(SpriteAnimationEx* arg0, s32 arg1, s32 arg2) {
     arg0->anim.unk_28                = temp_r6->unk2;
     arg0->anim.unk_20                = 4;
     arg0->anim.animIndex             = (temp_r6->unk6 + 1);
-    arg0->unk_2C                     = 0;
+    arg0->animTable                  = NULL;
     arg0->anim.posX                  = 0x80;
     arg0->anim.posY                  = 0x60;
 

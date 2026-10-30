@@ -27,13 +27,11 @@
 #include "Save.h"
 #include <nitro/types.h>
 
-extern BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* source, s32 screenBase, s32 screenSize);
-extern BgResource* BgResMgr_AllocChar32(BgResMgr* mgr, void* source, u32 charBase, u32 offset, u32 size);
-extern BgResource* BgResMgr_AllocCharExtended(BgResMgr* mgr, void* source, s32 charBase, u32 arg3, u32 size);
-extern void        func_02001b44(s32, s32, void*, s32);
-extern s32         func_0202599c(s32 flagIndex);
-extern s32         data_02059d24;
-extern s32         data_0205a124;
+extern void* BgResMgr_AllocCharExtended(BgResMgr* arg0, void* arg1, s32 arg2, u32 arg3, u32 arg4);
+extern void  func_02001b44(s32, s32, void*, s32);
+extern s32   func_0202599c(s32 flagIndex);
+extern s32   data_02059d24;
+extern s32   data_0205a124;
 
 typedef struct {
     u16 unk_00;

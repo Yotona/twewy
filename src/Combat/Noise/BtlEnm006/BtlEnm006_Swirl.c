@@ -5,7 +5,7 @@
 #include "Engine/Math/Random.h"
 #include "SndMgr.h"
 
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006Swirl {
@@ -21,26 +21,15 @@ typedef struct Enm006Swirl {
     /* 0x7C */ u16          unk_7C; // angle, clamped to 0x200
     /* 0x7E */ u16          unk_7E;
     /* 0x80 */ s32          unk_80[8];
-} Enm006Swirl; // Size: 0xA0 (from the Tsk_BtlEnm006_Swirl TaskHandle)
+} Enm006Swirl; // Size: 0xA0
 
-typedef struct TaskHandleHead {
-    /* 0x00 */ const char* taskName;
-    /* 0x04 */ s32 (*taskFunc)(TaskPool*, Task*, void*, s32);
-} TaskHandleHead; // Size: 0x8
+extern s32 func_ov010_02126d04(TaskPool* pool, Task* task, void* args, s32 stage);
+extern s32 func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
+extern s32 func_ov010_02126e58(Enm006Swirl*);
+extern s32 func_ov010_02126fdc(Enm006Swirl*);
 
-extern s32  func_ov010_02126d04(TaskPool*, Task*, void*, s32);
-extern s32  func_ov010_02126d54(Enm006Swirl*, Enm006Spawn*);
-extern s32  func_ov010_02126e58(Enm006Swirl*);
-extern s32  func_ov010_02126fdc(Enm006Swirl*);
-extern s32  func_ov003_020c37f8(void*);
-extern s32  func_ov003_020c3c28(void);
-extern void func_ov003_02084348(s32, void*, void*, s32, s32, s32);
-extern s16  func_ov003_020843b0(s32, s32);
-extern s32  func_ov003_020c5b2c(u16, void*, s32, s32, s32);
-
-const TaskHandleHead Tsk_BtlEnm006_Swirl    = {"Tsk_BtlEnm006_Swirl", func_ov010_02126d04};
-const s16            data_ov010_021292b0[4] = {0x17, 0x17, 0x17, 0};
-const u32            data_ov010_021292c0    = 0xA0;
+const s16        data_ov010_021292b0[4] = {0x17, 0x17, 0x17, 0};
+const TaskHandle Tsk_BtlEnm006_Swirl    = {"Tsk_BtlEnm006_Swirl", func_ov010_02126d04, sizeof(Enm006Swirl)};
 
 const SpriteAnimEntry data_ov010_021292c4[3] = {
     {16, 18, 17, 4},
@@ -51,12 +40,12 @@ const SpriteAnimEntry data_ov010_021292c4[3] = {
 void func_ov010_02126c38(BtlEnm006* arg0) {
     BtlEnm006* self = arg0;
     TaskPool*  pool;
-    if (func_ov003_020c37f8(&self->sprite) == 0) {
+    if (func_ov003_020c37f8(&self->base.sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
     }
-    EasyTask_CreateTask(pool, (const TaskHandle*)&Tsk_BtlEnm006_Swirl, 0, 0, 0, &self);
+    EasyTask_CreateTask(pool, &Tsk_BtlEnm006_Swirl, 0, 0, 0, &self);
 }
 
 void func_ov010_02126c94(Enm006Swirl* data, s32* outX, s32* outY, s32 index) {
@@ -85,16 +74,16 @@ s32 func_ov010_02126d54(Enm006Swirl* data, Enm006Spawn* args) {
     u16 v;
     s32 i;
     MI_CpuSet(data, 0, 0xA0);
-    v = args->unk_00->unk_080;
-    m = args->unk_00->sprite.sprite.bits_0_1;
+    v = args->unk_00->base.spriteIndex;
+    m = args->unk_00->base.sprite.sprite.bits_0_1;
     CombatSprite_LoadFromTable(m, &data->sprite, func_ov010_021256c0(v), data_ov010_021292c4, 0, data_ov010_021292b0[v], 0x30);
     CombatSprite_SetAnimFromTable(&data->sprite, 0, 0);
     data->unk_00 = args->unk_00;
-    data->unk_68 = args->unk_00->actor.position.x;
-    data->unk_6C = args->unk_00->actor.position.y;
+    data->unk_68 = args->unk_00->base.actor.position.x;
+    data->unk_6C = args->unk_00->base.actor.position.y;
     data->unk_74 = 0;
     data->unk_7E = 0;
-    if (args->unk_00->actor.isFlipped == 0) {
+    if (args->unk_00->base.actor.isFlipped == 0) {
         data->unk_78 = 1;
         data->unk_68 += 0x20000;
     } else {
@@ -114,7 +103,7 @@ s32 func_ov010_02126e58(Enm006Swirl* data) {
     }
     if (data->unk_64 == 0) {
         data->unk_64++;
-        func_ov003_02087f00(0x1D0, func_ov003_020843b0(0, data->unk_00->actor.position.x));
+        func_ov003_02087f00(SEIDX_SE_006_WATER_SWIRL, func_ov003_020843b0(0, data->unk_00->base.actor.position.x));
     }
     s32 w = func_ov003_020cb744(0);
     s32 h = func_ov003_020cb7a4(0);

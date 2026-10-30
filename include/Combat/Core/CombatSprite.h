@@ -1,10 +1,11 @@
 #ifndef COMBAT_CORE_COMBATSPRITE_H
 #define COMBAT_CORE_COMBATSPRITE_H
 
+#include "Engine/File/BinMgr.h"
 #include "Engine/Resources/ResourceMgr.h"
 #include "SpriteMgr.h"
 
-typedef struct {
+typedef struct SpriteAnimEntry {
     u16 charDataIndex;
     u16 paletteDataIndex;
     u16 frameDataIndex;
@@ -26,16 +27,9 @@ typedef struct {
 } CombatSprite;
 
 typedef struct {
-    SpriteAnimation anim;
-    s32             unk_2C;
+    SpriteAnimation        anim;
+    const SpriteAnimEntry* animTable; // 0x2C
 } SpriteAnimationEx;
-
-struct SpriteAnimEntry {
-    u16 charDataIndex;
-    u16 paletteDataIndex;
-    u16 frameDataIndex;
-    s16 animDataIndex;
-};
 
 /// MARK: Functions
 
@@ -65,11 +59,17 @@ void CombatSprite_InitAnim(SpriteAnimation* anim, s32 arg1, const BinIdentifier*
 
 s32 CombatSprite_Load(CombatSprite* cSprite, SpriteAnimationEx* anim);
 
-void CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
-                                u16 arg5, u16 arg6);
+s32 CombatSprite_LoadFromTable(s32 arg0, CombatSprite* arg1, const BinIdentifier* arg2, const SpriteAnimEntry* arg3, u16 arg4,
+                               u16 arg5, u16 arg6);
 
 void CombatSprite_LoadDirect(s32 arg0, CombatSprite* cSprite, const BinIdentifier* iden, s32 arg3, u16 arg4, u16 arg5,
                              u16 arg6, u16 arg7);
+
+#define CombatSprite_LoadFromTableNoProto                                                                                   \
+    ((void (*)(s32, CombatSprite*, const BinIdentifier*, const SpriteAnimEntry*, s32, s32, s32))CombatSprite_LoadFromTable)
+
+#define CombatSprite_LoadDirectNoProto                                                                     \
+    ((void (*)(s32, CombatSprite*, const BinIdentifier*, s32, s32, s32, s32, s32))CombatSprite_LoadDirect)
 
 void CombatSprite_Init(CombatSprite* cSprite);
 
@@ -80,5 +80,15 @@ void CombatSprite_Render(CombatSprite* cSprite);
 void CombatSprite_Release(CombatSprite* cSprite);
 
 void CombatSprite_Restart(CombatSprite* cSprite);
+
+/// Where a battle sprite comes from: its file, animation table, entry and palette slot.
+/// The sprite descriptor `func_ov003_020ccf94` loads from.
+typedef struct BtlSpriteDesc {
+    /* 0x0 */ const BinIdentifier*   iden;
+    /* 0x4 */ const SpriteAnimEntry* table;
+    /* 0x8 */ u16                    entry;
+    /* 0xA */ u16                    palette;
+    /* 0xC */ u16                    paletteCount;
+} BtlSpriteDesc;
 
 #endif // COMBAT_CORE_COMBATSPRITE_H

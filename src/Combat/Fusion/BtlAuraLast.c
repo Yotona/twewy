@@ -1,7 +1,6 @@
 #include "Combat/Core/Combat.h"
-#include "Combat/Core/CombatEffect.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
-#include "Combat/Core/CombatSystem.h"
 #include "Combat/Fusion/BtlFusion.h"
 #include "Engine/EasyTask.h"
 #include "Engine/Math/Random.h"
@@ -18,13 +17,13 @@ typedef struct AuraTarget {
 } AuraTarget;
 
 extern BinIdentifier data_ov003_020d7800;
-extern void          func_020265d4(void*, s32, u16);
+extern void          func_020265d4(s32* dst, s32 target, u16 weight);
 
-s32  func_ov007_020e7c98(TaskPool*, Task*, void*);
-s32  func_ov007_020e7d48(TaskPool*, Task*, void*);
-s32  func_ov007_020e7da4(TaskPool*, Task*, void*);
-s32  func_ov007_020e7eb0(TaskPool*, Task*, void*);
-s32  func_ov007_020e7ee0(TaskPool*, Task*, void*, s32);
+s32  func_ov007_020e7c98(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7d48(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7da4(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7eb0(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7ee0(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov007_020e75e4(BtlAuraLast*, void (*)(BtlAuraLast*));
 void func_ov007_020e75fc(s32, CombatSprite*, u16, u16);
 void func_ov007_020e76dc(BtlAuraLast*, s32);
@@ -76,7 +75,7 @@ void func_ov007_020e769c(s16* out) {
     if (*out > 0x1F4) {
         *out = 0x1F4;
     }
-    func_ov003_0208cbc8(out);
+    func_ov003_0208cbc8();
 }
 
 void func_ov007_020e76dc(BtlAuraLast* data, s32 arg) {
@@ -95,7 +94,7 @@ void func_ov007_020e76dc(BtlAuraLast* data, s32 arg) {
     u16            size;
     s32            posXBase;
 
-    sprite = func_ov003_0208495c(&data->unk_120);
+    sprite = func_ov003_0208495c(&data->freeSprites);
     if (sprite == NULL) {
         return;
     }
@@ -136,8 +135,8 @@ void func_ov007_020e76dc(BtlAuraLast* data, s32 arg) {
     CombatSprite_SetAnim(&sprite->sprite, (u16)animIndex, 1);
     CombatSprite_SetPosition(&sprite->sprite, posX, posY);
     func_ov003_02082730(&sprite->sprite, flip);
-    func_ov003_020849dc(&data->unk_120, sprite->node);
-    func_ov003_020849bc(&data->unk_128, sprite->node, sprite);
+    func_ov003_020849dc(&data->freeSprites, &sprite->node);
+    func_ov003_020849bc(&data->activeSprites, &sprite->node, sprite);
 }
 
 void func_ov007_020e78e4(BtlAuraLast* data, BtlAuraSprite* sprite) {
@@ -145,43 +144,43 @@ void func_ov007_020e78e4(BtlAuraLast* data, BtlAuraSprite* sprite) {
         return;
     }
     CombatSprite_Release(&sprite->sprite);
-    func_ov003_020849dc(&data->unk_128, sprite->node);
-    func_ov003_020849bc(&data->unk_120, sprite->node, sprite);
+    func_ov003_020849dc(&data->activeSprites, &sprite->node);
+    func_ov003_020849bc(&data->freeSprites, &sprite->node, sprite);
 }
 
 void func_ov007_020e791c(BtlAuraLast* data) {
-    func_ov003_020849ac(&data->unk_120);
-    func_ov003_020849ac(&data->unk_128);
+    func_ov003_020849ac(&data->freeSprites);
+    func_ov003_020849ac(&data->activeSprites);
     data->unk_7F0 = 0;
 
     s32            i;
     BtlAuraSprite* s = data->sprites;
     for (i = 0; i < 16; i++, s++) {
         CombatSprite_Init(&s->sprite);
-        func_ov003_020849bc(&data->unk_120, s->node, s);
+        func_ov003_020849bc(&data->freeSprites, &s->node, s);
     }
 }
 
 void func_ov007_020e7970(BtlAuraLast* data) {
-    BtlAuraSprite* sprite = func_ov003_0208495c(&data->unk_128);
+    BtlAuraSprite* sprite = func_ov003_0208495c(&data->activeSprites);
     if (sprite == NULL) {
         return;
     }
 
     do {
         if (SpriteMgr_IsAnimationFinished(&sprite->sprite.sprite)) {
-            BtlAuraSprite* next = func_ov003_02084984(sprite->node);
+            BtlAuraSprite* next = func_ov003_02084984(&sprite->node);
             func_ov007_020e78e4(data, sprite);
             sprite = next;
         } else {
             CombatSprite_Update(&sprite->sprite);
-            sprite = func_ov003_02084984(sprite->node);
+            sprite = func_ov003_02084984(&sprite->node);
         }
     } while (sprite != NULL);
 }
 
 void func_ov007_020e79d8(BtlAuraLast* data) {
-    BtlAuraSprite* sprite = func_ov003_0208495c(&data->unk_128);
+    BtlAuraSprite* sprite = func_ov003_0208495c(&data->activeSprites);
     if (sprite == NULL) {
         return;
     }
@@ -194,7 +193,7 @@ void func_ov007_020e79d8(BtlAuraLast* data) {
             func_ov003_02082730(&sprite->sprite, 0x80000000 - target->unk_2C);
         }
         CombatSprite_Render(&sprite->sprite);
-        sprite = func_ov003_02084984(sprite->node);
+        sprite = func_ov003_02084984(&sprite->node);
     } while (sprite != NULL);
 }
 

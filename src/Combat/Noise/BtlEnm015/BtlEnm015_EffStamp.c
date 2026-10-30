@@ -1,8 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Noise/Private/BtlEnm015.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm015Stamp {
@@ -12,9 +11,7 @@ typedef struct BtlEnm015Stamp {
 } BtlEnm015Stamp; // Size: 0x0C
 
 /// Rounds a fixed-point value through a float, matching the original codegen.
-#define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
-
-s32 func_ov013_02126700(TaskPool*, Task*, void*, s32);
+s32 func_ov013_02126700(TaskPool* pool, Task* task, void* args, s32 stage);
 
 char data_ov013_021275b4[24] = "Tsk_BtlEnm015_EffStamp";
 
@@ -41,11 +38,11 @@ s32 func_ov013_02126254(BtlEnm015Stamp* data) {
                 s32 q2 = t / 60 + 1;
                 for (i = 0; i < 5; i++) {
                     s32 angle = i * 0x200;
-                    s32 dy    = FX_Mul(FX_SinCosTable_[angle * 2 + 1], ROUND(q2 * 0x28));
+                    s32 dy    = FX_Mul(FX_SinCosTable_[angle * 2 + 1], FX32_CONVERT(q2 * 0x28));
                     s16 tx    = FX_SinCosTable_[angle * 2];
-                    s32 px    = data->unk_00->actor.position.x + dy;
-                    s32 dx    = FX_Mul(tx, ROUND(q2 * 0x28));
-                    s32 py    = (data->unk_00->actor.position.y + dx) >> 1;
+                    s32 px    = data->unk_00->base.actor.position.x + dy;
+                    s32 dx    = FX_Mul(tx, FX32_CONVERT(q2 * 0x28));
+                    s32 py    = (data->unk_00->base.actor.position.y + dx) >> 1;
                     if (func_ov013_021261e8(px, py) != 0) {
                         count++;
                         if (count >= 5) {
@@ -65,11 +62,11 @@ s32 func_ov013_02126254(BtlEnm015Stamp* data) {
                 s32 q2 = t / 60 + 1;
                 for (i = 0; i < 4; i++) {
                     s32 angle = i * 0x200 + 0x100;
-                    s32 dy    = FX_Mul(FX_SinCosTable_[angle * 2 + 1], ROUND(q2 * 0x28));
+                    s32 dy    = FX_Mul(FX_SinCosTable_[angle * 2 + 1], FX32_CONVERT(q2 * 0x28));
                     s16 tx    = FX_SinCosTable_[angle * 2];
-                    s32 px    = data->unk_00->actor.position.x + dy;
-                    s32 dx    = FX_Mul(tx, ROUND(q2 * 0x28));
-                    s32 py    = (data->unk_00->actor.position.y + dx) >> 1;
+                    s32 px    = data->unk_00->base.actor.position.x + dy;
+                    s32 dx    = FX_Mul(tx, FX32_CONVERT(q2 * 0x28));
+                    s32 py    = (data->unk_00->base.actor.position.y + dx) >> 1;
                     if (func_ov013_021261e8(px, py) != 0) {
                         count++;
                         if (count >= 4) {
@@ -100,13 +97,13 @@ s32 func_ov013_021265b0(BtlEnm015Stamp* data) {
         s32 sec = t / 60;
         s32 dx;
 
-        if (owner->actor.position.x < boss->actor.position.x) {
-            dx = ROUND(0x28 * sec);
+        if (owner->base.actor.position.x < boss->base.actor.position.x) {
+            dx = FX32_CONVERT(0x28 * sec);
         } else {
-            dx = ROUND(-(0x28 * sec));
+            dx = FX32_CONVERT(-(0x28 * sec));
         }
 
-        func_ov013_021256f0(owner, 0, owner->actor.position.x + dx - 0x8000, owner->actor.position.y, 0);
+        func_ov013_021256f0(owner, 0, owner->base.actor.position.x + dx - 0x8000, owner->base.actor.position.y, 0);
 
         if (sec >= 5) {
             return 0;
@@ -134,10 +131,10 @@ s32 func_ov013_02126700(TaskPool* pool, Task* task, void* args, s32 stage) {
             func_ov013_021266c8(data, (Enm015Spawn*)args);
             break;
         case 1:
-            if ((owner->actor.flags & 4) || func_ov003_020c3c28() != 0) {
+            if ((owner->base.actor.flags & 4) || func_ov003_020c3c28() != 0) {
                 return 0;
             }
-            if (func_ov003_020c37f8(&data->unk_00->unk_084) != 0) {
+            if (func_ov003_020c37f8(&data->unk_00->base.sprite) != 0) {
                 return func_ov013_021265b0(data);
             }
             return func_ov013_02126254(data);

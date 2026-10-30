@@ -1,24 +1,21 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Fusion/BtlFusion.h"
 #include "Engine/EasyTask.h"
 #include "Engine/IO/Input.h"
 
 #include <nitro/mi/cpumem.h>
 
-extern s16  func_ov003_020843b0(s32, s32);
-extern s16  func_ov003_020843ec(s32, s32, s32);
 extern void func_ov021_020f11bc(s32, s32*, s32*, s32*);
 extern void func_ov021_020f13b0(void);
 extern s32  func_ov021_020f1174(void);
-extern void func_ov003_02083ab0(s32, s32, s32, s32);
-extern s32  func_ov003_0208b690(u16);
 
-s32  func_ov007_020e7478(TaskPool*, Task*, void*);
-s32  func_ov007_020e7534(TaskPool*, Task*, void*);
-s32  func_ov007_020e756c(TaskPool*, Task*, void*);
-s32  func_ov007_020e7574(TaskPool*, Task*, void*);
-s32  func_ov007_020e757c(TaskPool*, Task*, void*, s32);
+s32  func_ov007_020e7478(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7534(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e756c(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e7574(TaskPool* pool, Task* task, void* args);
+s32  func_ov007_020e757c(TaskPool* pool, Task* task, void* args, s32 stage);
 void func_ov007_020e7360(BtlPlayerLast*, void (*)(BtlPlayerLast*));
 void func_ov007_020e7374(BtlPlayerLast*, u16);
 void func_ov007_020e73d8(BtlPlayerLast*);
@@ -44,17 +41,19 @@ void func_ov007_020e73d8(BtlPlayerLast* data) {
 
     switch (state) {
         case 0:
-            if (InputStatus.buttonState.pressedButtons & 0x820) {
+            if (InputStatus.buttonState.pressedButtons & (INPUT_BUTTON_Y | INPUT_BUTTON_LEFT)) {
                 func_ov007_020e7374(data, (u16)state);
             }
             break;
         case 2:
-            if (InputStatus.buttonState.pressedButtons & 0x11) {
+            if (InputStatus.buttonState.pressedButtons & (INPUT_BUTTON_A | INPUT_BUTTON_RIGHT)) {
                 func_ov007_020e7374(data, (u16)state);
             }
             break;
         case 1:
-            if (InputStatus.buttonState.pressedButtons & 0x4C2) {
+            if (InputStatus.buttonState.pressedButtons &
+                (INPUT_BUTTON_X | INPUT_BUTTON_UP | INPUT_BUTTON_B | INPUT_BUTTON_DOWN))
+            {
                 func_ov007_020e7374(data, (u16)state);
             }
             break;

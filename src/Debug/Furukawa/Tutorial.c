@@ -1,7 +1,9 @@
 #include "Debug/Furukawa/Tutorial.h"
+#include "Combat/Core/CombatApi.h"
 #include "Display.h"
 #include "EasyFade.h"
 #include "Engine/Core/DMA.h"
+#include "Engine/Core/HBlank.h"
 #include "Engine/Core/Interrupts.h"
 #include "Engine/Core/OamMgr.h"
 #include "Engine/Core/System.h"
@@ -12,20 +14,14 @@
 #include "Engine/Overlay/OverlayManager.h"
 #include "Engine/Resources/PaletteMgr.h"
 #include "Save.h"
+#include "SndMgr.h"
 #include "SndMgrSeIdx.h"
 #include "common_data.h"
 #include <nitro/gx.h>
 #include <nitro/types.h>
 
 // Forward declarations of external functions
-extern void HBlank_Init(void);
-extern void GX_Init(void);
 extern void MI_CpuFill(s32, void*, s32);
-extern void SndMgr_StartPlayingSE(s32);
-
-extern InputState InputStatus;
-extern void*      func_ov003_0208ec74;
-extern Heap       gDebugHeap;
 
 // Local structures
 typedef struct {
@@ -85,8 +81,8 @@ static void Tutorial_InitHardware(void) {
 }
 
 static void Tutorial_InitDisplay(void) {
-    g_DisplaySettings.controls[0].brightness = 0x10;
-    g_DisplaySettings.controls[1].brightness = 0x10;
+    Display_SetMainBrightness(0x10);
+    Display_SetSubBrightness(0x10);
     Display_CommitSynced();
     g_DisplaySettings.unk_000 = 0;
     REG_POWER_CNT &= ~0x8000;
@@ -153,7 +149,7 @@ static void func_ov026_020e7728(void* state, s16 arg1) {
     anim.anim.unk_28     = 5;
     anim.anim.unk_20     = 6;
     anim.anim.animIndex  = 0;
-    anim.unk_2C          = arg1 + 1;
+    anim.animTable       = (const SpriteAnimEntry*)(arg1 + 1);
     CombatSprite_Load(state, &anim);
     CombatSprite_SetPosition(state, 0x80, 0x60);
 }

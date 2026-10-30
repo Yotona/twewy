@@ -607,7 +607,7 @@ static void BgResMgr_LoadCharToVram(BgResMgr* mgr, BgResource* resource, UnkSmal
 
 // Nonmatching: Register differences
 // Scratch: MF4jF
-BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, UnkSmallStruct_DispBG* arg1, s32 screenBase, GXBGScreenSizeText screenSize) {
+BgResource* BgResMgr_AllocScreen(BgResMgr* mgr, void* arg1, s32 screenBase, GXBGScreenSizeText screenSize) {
     if (mgr == NULL) {
         return NULL;
     }

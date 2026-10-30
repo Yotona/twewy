@@ -1,11 +1,9 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Noise/Private/BtlEnm006.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/Core/CombatSystem.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct Enm006Swlo {
@@ -24,7 +22,7 @@ typedef struct Enm006Swlo {
     u8                    pad31[0x34 - 0x31];
 } Enm006Swlo; // Size: 0x34 (from the Tsk_BtlEnm006_Swlo TaskHandle)
 
-extern s32  func_ov010_02127178(TaskPool*, Task*, void*, s32);
+extern s32  func_ov010_02127178(TaskPool* pool, Task* task, void* args, s32 stage);
 extern s32  func_ov010_021271c0(Enm006Swlo*, Enm006Spawn*);
 extern s32  func_ov010_021272e0(Enm006Swlo*);
 extern char data_ov010_021293cc[20];
@@ -38,7 +36,7 @@ s32 func_ov010_021270a8(BtlEnm006* owner, BtlEnm006* target) {
     args.unk_04 = owner;
     args.unk_00 = NULL;
     args.unk_08 = target;
-    if (func_ov003_020c37f8(&owner->sprite) == 0) {
+    if (func_ov003_020c37f8(&owner->base.sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
@@ -52,7 +50,7 @@ void func_ov010_02127110(BtlEnm006* owner, BtlEnm006* target) {
     args.unk_04 = owner;
     args.unk_00 = (BtlEnm006*)1;
     args.unk_0C = target;
-    if (func_ov003_020c37f8(&owner->sprite) == 0) {
+    if (func_ov003_020c37f8(&owner->base.sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
@@ -81,27 +79,27 @@ s32 func_ov010_021271c0(Enm006Swlo* data, Enm006Spawn* args) {
     if (data->unk_00 == NULL) {
         target       = args->unk_08;
         data->unk_08 = target;
-        if (func_ov003_020c5b0c(func_ov003_020c37f8(&data->unk_04->sprite) != 0 ? 0x52 : 0x4D, data->unk_04,
-                                data->unk_08->actor.position.x) != 1)
+        if (func_ov003_020c5b0c(func_ov003_020c37f8(&data->unk_04->base.sprite) != 0 ? 0x52 : 0x4D, data->unk_04,
+                                data->unk_08->base.actor.position.x) != 1)
         {
             return 0;
         }
     } else {
         target       = args->unk_0C;
         data->unk_0C = target;
-        func_ov003_02084694(&target->unk_144, 1);
-        CombatActor_SetPendingCommand(&target->actor, 1);
+        func_ov003_02084694(&target->base.collider, 1);
+        CombatActor_SetPendingCommand(&target->base.actor, 1);
         func_ov010_021256d0(data->unk_04, data->unk_0C);
     }
     data->unk_30 = (data->unk_30 & ~1) | 1;
-    target->actor.flags |= 0x10000000;
-    target->actor.unk_10 = 600;
-    data->unk_10         = args->unk_04->actor.position.x;
-    data->unk_14         = args->unk_04->actor.position.y;
-    data->unk_2C         = 0x4000;
-    data->unk_2E         = 0;
-    data->unk_18         = (RNG_Next(9) - 4) << 12;
-    data->unk_1C         = (RNG_Next(9) - 4) << 12;
+    target->base.actor.flags |= 0x10000000;
+    target->base.actor.unk_10 = 600;
+    data->unk_10              = args->unk_04->base.actor.position.x;
+    data->unk_14              = args->unk_04->base.actor.position.y;
+    data->unk_2C              = 0x4000;
+    data->unk_2E              = 0;
+    data->unk_18              = (RNG_Next(9) - 4) << 12;
+    data->unk_1C              = (RNG_Next(9) - 4) << 12;
     return 1;
 }
 
@@ -115,36 +113,36 @@ s32 func_ov010_021272e0(Enm006Swlo* data) {
     s32 x;
     s32 y;
     func_ov003_020cbcb4(&x, &y, data->unk_2C, 0x20000, 0x400);
-    if (data->unk_04->actor.isFlipped == 0) {
+    if (data->unk_04->base.actor.isFlipped == 0) {
         x = -x;
     }
     if (data->unk_00 == NULL) {
-        data->unk_08->actor.position.x = x + data->unk_10 + data->unk_18;
-        data->unk_08->actor.position.y = y + data->unk_14;
-        data->unk_08->actor.position.z = data->unk_1C - 0x8000;
+        data->unk_08->base.actor.position.x = x + data->unk_10 + data->unk_18;
+        data->unk_08->base.actor.position.y = y + data->unk_14;
+        data->unk_08->base.actor.position.z = data->unk_1C - 0x8000;
     } else {
-        data->unk_0C->actor.position.x = x + data->unk_10 + data->unk_18;
-        data->unk_0C->actor.position.y = y + data->unk_14;
-        data->unk_0C->actor.position.z = data->unk_1C - 0x8000;
+        data->unk_0C->base.actor.position.x = x + data->unk_10 + data->unk_18;
+        data->unk_0C->base.actor.position.y = y + data->unk_14;
+        data->unk_0C->base.actor.position.z = data->unk_1C - 0x8000;
     }
     if (result == 0) {
         BtlEnm006* self;
         if (data->unk_00 == NULL) {
-            self               = data->unk_08;
-            self->actor.unk_10 = 0;
-            if (data->unk_08->actor.isFlipped == 0) {
-                data->unk_08->actor.xVelocity = 0x1800;
+            self                    = data->unk_08;
+            self->base.actor.unk_10 = 0;
+            if (data->unk_08->base.actor.isFlipped == 0) {
+                data->unk_08->base.actor.xVelocity = 0x1800;
             } else {
-                data->unk_08->actor.xVelocity = -0x1800;
+                data->unk_08->base.actor.xVelocity = -0x1800;
             }
-            data->unk_08->actor.zVelocity = -0x5000;
-            CombatActor_SetPendingCommand(&data->unk_08->actor, 2);
+            data->unk_08->base.actor.zVelocity = -0x5000;
+            CombatActor_SetPendingCommand(&data->unk_08->base.actor, 2);
         } else {
             self = data->unk_0C;
-            self->unk_18C |= 0x1000;
-            func_ov003_020c4fc8(data->unk_0C);
+            self->base.flags18C |= 0x1000;
+            func_ov003_020c4fc8(&data->unk_0C->base);
         }
-        self->actor.flags &= ~0x10000000;
+        self->base.actor.flags &= ~0x10000000;
     }
     return result;
 }

@@ -2,8 +2,7 @@
 #include "Combat/Noise/Private/BtlEnm010.h"
 #include "Engine/Math/Random.h"
 
-#include "Combat/Core/CombatEnemy.h"
-#include "Combat/EnemyShot/BtlEnmShot.h"
+#include "Combat/Core/CombatApi.h"
 #include <nitro/mi/cpumem.h>
 
 typedef struct BtlEnm010LserRec {
@@ -22,7 +21,7 @@ typedef struct BtlEnm010LserEmit {
 } BtlEnm010LserEmit;
 
 typedef struct BtlEnm010Lser {
-    /* 0x000 */ BtlEnm010Owner*   unk_00;
+    /* 0x000 */ Ov003EnemyActor*  unk_00;
     /* 0x004 */ CombatActor       copy; // the owner's actor, refreshed every frame
     /* 0x080 */ CombatSprite      sprite[4];
     /* 0x200 */ BtlEnm010LserEmit emit;
@@ -40,28 +39,15 @@ typedef struct BtlEnm010Lser {
 } BtlEnm010Lser;
 
 typedef struct BtlEnm010LserArgs {
-    /* 0x00 */ BtlEnm010Owner* unk_00;
-    /* 0x04 */ s32             pad_04[3];
-    /* 0x10 */ s32             unk_10;
-    /* 0x14 */ s32             unk_14;
+    /* 0x00 */ Ov003EnemyActor* unk_00;
+    /* 0x04 */ s32              pad_04[3];
+    /* 0x10 */ s32              unk_10;
+    /* 0x14 */ s32              unk_14;
 } BtlEnm010LserArgs;
 
 extern char data_ov011_0212cbe8[20];
 
-typedef struct BtlEnm010CmdTbl {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8  unk_04;
-    /* 0x05 */ u8  unk_05;
-    /* 0x06 */ u8  unk_06;
-    /* 0x07 */ u8  unk_07;
-    /* 0x08 */ s32 unk_08;
-} BtlEnm010CmdTbl;
-
-extern const BtlEnm010CmdTbl* func_ov003_0208a114(u16 idx);
-
-extern s32 func_ov003_0208a164(BtlEnm010CmdTbl* rec, void* p, s32 x, s32 y, s32 z);
-
-s32 func_ov011_02125cf8(s32 arg0, Task* task, s32 arg2, s32 cmd);
+s32 func_ov011_02125cf8(TaskPool* pool, Task* task, void* args, s32 stage);
 s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
 s32 func_ov011_02125e14(BtlEnm010Lser* data);
 s32 func_ov011_02125f24(BtlEnm010Lser* data);
@@ -74,32 +60,24 @@ extern s32 func_ov011_02125e14(BtlEnm010Lser* data);
 extern s32 func_ov011_02126354(BtlEnm010Lser* data);
 extern s32 func_ov011_021265a8(BtlEnm010Lser* data);
 extern s32 func_ov011_02125d48(BtlEnm010Lser* data, BtlEnm010LserArgs* args);
-extern s16 func_ov003_020843b0(s32 a, s32 b);
-extern s32 func_ov003_020843ec(s32 a, s32 b, s32 c);
-extern s32 func_ov003_02084348(s32 a, s16* b, s16* c, s32 d, s32 e, s32 f);
-extern s32 func_ov003_02084348(s32 a0, s16* a1, s16* a2, s32 a3, s32 a4, s32 a5);
-extern s32 func_ov003_020843ec(s32 a0, s32 a1, s32 a2);
 
-#define ROUND(value) ((s32)((value) > 0 ? (f32)((value) * 0x1000) + 0.5f : (f32)((value) * 0x1000) - 0.5f))
-
-const TaskHandle data_ov011_0212c118 = {(const char*)data_ov011_0212cbe8,
-                                        (s32(*)(struct TaskPool*, struct Task*, void*, s32))func_ov011_02125cf8, 596};
+const TaskHandle data_ov011_0212c118 = {(const char*)data_ov011_0212cbe8, func_ov011_02125cf8, 596};
 
 const s32 data_ov011_0212c124[3] = {-32768, -65536, 0};
 
 char data_ov011_0212cbe8[20] = {0x54, 0x73, 0x6B, 0x5F, 0x42, 0x74, 0x6C, 0x45, 0x6E, 0x6D,
                                 0x30, 0x31, 0x30, 0x5F, 0x4C, 0x73, 0x65, 0x72, 0x00, 0x00};
 
-s32 func_ov011_02125b98(void* arg0, s32 arg1) {
+s32 func_ov011_02125b98(Ov003EnemyActor* owner, s32 arg1) {
     BtlEnm010LserArgs args;
     TaskPool*         pool;
 
-    if (func_ov003_020c37f8(&((BtlEnm010Owner*)arg0)->sprite) == 0) {
+    if (func_ov003_020c37f8(&owner->sprite) == 0) {
         pool = &data_ov003_020e71b8->unk_00000;
     } else {
         pool = &data_ov003_020e71b8->taskPool;
     }
-    args.unk_00 = arg0;
+    args.unk_00 = owner;
     args.unk_14 = arg1;
     return EasyTask_CreateTask(pool, &data_ov011_0212c118, 0, 0, 0, &args);
 }
@@ -136,12 +114,12 @@ void func_ov011_02125c44(CombatActor* owner, BtlEnm010LserRec* rec, CombatSprite
     rec->unk_08 = 0 - (RNG_Next(0x1001) + 0x1000);
 }
 
-s32 func_ov011_02125cf8(s32 arg0, Task* task, s32 arg2, s32 cmd) {
+s32 func_ov011_02125cf8(TaskPool* pool, Task* task, void* args, s32 stage) {
     BtlEnm010Lser* data = task->data;
 
-    switch (cmd) {
+    switch (stage) {
         case 0:
-            return func_ov011_02125d48(data, arg2);
+            return func_ov011_02125d48(data, args);
         case 1:
             return func_ov011_02125e14(data);
         case 2:
@@ -313,7 +291,7 @@ s32 func_ov011_021260e8(BtlEnm010Lser* data) {
     }
     if (data->emit.unk_24 == 0x11) {
         data->unk_250 |= 4;
-        func_ov003_02087f00(0x1DD, func_ov003_020843b0(mode, data->copy.position.x));
+        func_ov003_02087f00(SEIDX_SE_010_LAZERATTACK, func_ov003_020843b0(mode, data->copy.position.x));
     }
     if ((u32)(data->unk_250 << 29) >> 31) {
         data->unk_22C = data->unk_22C + data->unk_248;
@@ -322,7 +300,7 @@ s32 func_ov011_021260e8(BtlEnm010Lser* data) {
         }
     }
     if (data->emit.unk_24 >= 0xA) {
-        BtlEnm010CmdTbl rec;
+        Ov003AttackInfo rec;
         s32             x;
         s32             idx;
 
@@ -343,8 +321,8 @@ s32 func_ov011_021260e8(BtlEnm010Lser* data) {
         } else {
             x = data->unk_22C;
         }
-        if (func_ov003_0208a164(&rec, &data->copy.unk_04, x, data->unk_230, data->unk_234) == 1) {
-            func_ov003_02087f00(0x1DA, func_ov003_020843b0(mode, x));
+        if (func_ov003_0208a164(&rec, &data->copy.baseArgs, x, data->unk_230, data->unk_234) == 1) {
+            func_ov003_02087f00(SEIDX_SE_010_BUBBLEATTACK_HIT, func_ov003_020843b0(mode, x));
         }
     }
     data->emit.unk_24 = data->emit.unk_24 + 1;
@@ -375,8 +353,8 @@ s32 func_ov011_02126354(BtlEnm010Lser* data) {
         mode = 0;
     }
     func_ov011_02125c00(&outX, &outY, &outZ, &data->copy, data->unk_24C);
-    vx = ROUND(func_ov003_020843b0(mode, outX));
-    vy = ROUND(func_ov003_020843ec(mode, outY, outZ));
+    vx = FX32_CONVERT(func_ov003_020843b0(mode, outX));
+    vy = FX32_CONVERT(func_ov003_020843ec(mode, outY, outZ));
 
     if ((u32)(data->unk_250 << 31) >> 31) {
         rec = &data->emit.rec[0];

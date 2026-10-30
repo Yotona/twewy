@@ -11,6 +11,6 @@
 
 #define F2Ix(f) ((f) * 0x10 >> 0x10)
 
-#define I2F_RND(i) (i > 0) ? (I2F(i) + 0.5f) : (I2F(i) - 0.5f)
+#define I2F_RND(i) (((i) > 0) ? (I2F(i) + 0.5f) : (I2F(i) - 0.5f))
 
 #endif // FIXED_POINT_H

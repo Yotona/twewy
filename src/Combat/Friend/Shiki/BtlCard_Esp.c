@@ -1,45 +1,41 @@
 #include "Combat/Core/Combat.h"
+#include "Combat/Core/CombatApi.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Friend/Private/Shiki.h"
 #include "EasyFade.h"
 #include "Engine/EasyTask.h"
 #include "SndMgr.h"
 
-extern s32 func_ov003_0208b690(u16);
-
 typedef struct {
-    /* 0x00 */ u16          unk_00;
-    /* 0x02 */ char         unk_02[2];
-    /* 0x04 */ CombatSprite unk_04;
-    /* 0x64 */ CombatSprite unk_64;
-    /* 0xC4 */ s16          unk_C4;
-    /* 0xC6 */ s16          unk_C6;
-    /* 0xC8 */ s16          unk_C8;
-    /* 0xCA */ u16          unk_CA;
-    /* 0xCC */ s16          unk_CC;
-    /* 0xCE */ s16          unk_CE;
-    /* 0xD0 */ s16          unk_D0;
-    /* 0xD4 */ s32          unk_D4;
-    /* 0xD8 */ s16          unk_D8;
-    /* 0xDA */ char         unk_DA[0x2];
-    /* 0xDC */ char         unk_DC[12];
+    /* 0x00 */ u16            unk_00;
+    /* 0x02 */ char           unk_02[2];
+    /* 0x04 */ CombatSprite   unk_04;
+    /* 0x64 */ CombatSprite   unk_64;
+    /* 0xC4 */ s16            unk_C4;
+    /* 0xC6 */ s16            unk_C6;
+    /* 0xC8 */ s16            unk_C8;
+    /* 0xCA */ u16            unk_CA;
+    /* 0xCC */ s16            unk_CC;
+    /* 0xCE */ s16            unk_CE;
+    /* 0xD0 */ s16            unk_D0;
+    /* 0xD4 */ s32            unk_D4;
+    /* 0xD8 */ s16            unk_D8;
+    /* 0xDA */ char           unk_DA[0x2];
+    /* 0xDC */ CombatListNode unk_DC;
 } CardUnkEntry; // Size: 0xE8
 
 typedef struct {
     /* 0x000 */ s16          unk_000;
     /* 0x002 */ char         unk_002[2];
-    /* 0x004 */ char         unk_004[0x8];
+    /* 0x004 */ CombatList   unk_004;
     /* 0x00C */ CardUnkEntry cards[3];
 } CardUnk; // Size: 0x2C4
 
 typedef struct {
-    /* 0x000 */ CombatSprite sprite;
-    /* 0x060 */ char         unk_060[0x8];
-    /* 0x068 */ s32          unk_068;
-    /* 0x06C */ char         unk_06C[0x6E - 0x6C];
-    /* 0x06E */ u16          unk_06E;
-    /* 0x070 */ char         unk_070[0x28];
-    /* 0x098 */ CardUnk      unk_098;
+    /* 0x000 */ CombatSprite   sprite;
+    /* 0x060 */ char           unk_060[0x8];
+    /* 0x068 */ Ov003EffectCmd effectCmd;
+    /* 0x098 */ CardUnk        unk_098;
 } BtlCard_Esp; // Size: 0x35C
 
 s32 BtlCard_Esp_RunTask(TaskPool* pool, Task* task, void* args, s32 stage);
@@ -89,7 +85,7 @@ void func_ov004_020eac00(CombatSprite* arg0, s32 arg1, s32 arg2) {
     anim.anim.unk_28     = data_ov004_020f0290[arg1].paletteDataIndex;
     anim.anim.unk_20     = 7;
     anim.anim.animIndex  = data_ov004_020f0290[arg1].animDataIndex + 1;
-    anim.unk_2C          = &data_ov004_020f0290;
+    anim.animTable       = data_ov004_020f0290;
     CombatSprite_Load(arg0, &anim);
     func_ov003_02082738(arg0, 0);
     func_ov003_02082730(arg0, 2);
@@ -113,7 +109,7 @@ void func_ov004_020eaccc(CardUnk* arg0, s16 arg1, s16 arg2, s16 arg3) {
     CombatSprite_SetPosition(&temp_r4->unk_04, arg2, arg3);
     CombatSprite_SetAnimFromTable(&temp_r4->unk_64, 0x18, 0);
     CombatSprite_SetPosition(&temp_r4->unk_64, (s16)(arg2 + 7), (s16)(arg3 + 7));
-    func_ov003_020849bc(&arg0->unk_004, temp_r4->unk_DC, temp_r4);
+    func_ov003_020849bc(&arg0->unk_004, &temp_r4->unk_DC, temp_r4);
 }
 
 void func_ov004_020eada8(CardUnkEntry* arg0) {
@@ -191,7 +187,7 @@ void func_ov004_020eafb0(CardUnk* arg0) {
         CombatSprite_Update(&var_r4->unk_04);
         CombatSprite_Update(&var_r4->unk_64);
         func_ov003_02086c78(&var_r4->unk_D4, &var_r4->unk_D8);
-        var_r4 = func_ov003_02084984(var_r4->unk_DC);
+        var_r4 = func_ov003_02084984(&var_r4->unk_DC);
     }
 }
 
@@ -239,7 +235,7 @@ s32 BtlCard_Esp_Init(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
     MI_CpuSet(esp, 0, sizeof(BtlCard_Esp));
-    func_ov003_02087094(&esp->unk_068, 0, &esp->unk_098);
+    func_ov003_02087094(&esp->effectCmd, 0, (s32)&esp->unk_098);
     if (func_ov004_020e7360() == 0) {
         func_ov003_0208722c();
     }
@@ -256,7 +252,7 @@ s32 BtlCard_Esp_Init(TaskPool* pool, Task* task, void* args) {
 s32 BtlCard_Esp_Update(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
-    if ((esp->unk_06E & 1) == 0) {
+    if ((esp->effectCmd.flags & 1) == 0) {
         func_ov004_020eafb0(&esp->unk_098);
         CombatSprite_Update(&esp->sprite);
     }
@@ -266,7 +262,7 @@ s32 BtlCard_Esp_Update(TaskPool* pool, Task* task, void* args) {
 s32 BtlCard_Esp_Render(TaskPool* pool, Task* task, void* args) {
     BtlCard_Esp* esp = task->data;
 
-    if ((esp->unk_06E & 1) == 0) {
+    if ((esp->effectCmd.flags & 1) == 0) {
         func_ov004_020eb004(&esp->unk_098);
         func_ov004_020eb0d8(esp);
     }
@@ -278,7 +274,7 @@ s32 BtlCard_Esp_Destroy(TaskPool* pool, Task* task, void* args) {
 
     func_ov004_020eb0a0(&esp->unk_098);
     CombatSprite_Release(&esp->sprite);
-    func_ov003_020871b0(&esp->unk_068);
+    func_ov003_020871b0(&esp->effectCmd);
     return 1;
 }
 

@@ -1,8 +1,7 @@
 #include "Combat/Core/CombatActor.h"
 #include "Combat/Core/Combat.h"
-
-extern void func_ov003_0208b3cc(s32, s16);
-extern void func_ov003_0208b518(s32, void*, s16);
+#include "Combat/Core/CombatApi.h"
+#include <nitro/fx.h>
 
 static void func_ov003_02082d10(CombatActor* actor) {
     actor->unk_10 = 0;
@@ -35,8 +34,8 @@ static void CombatActor_ApplyPlanarDamping(CombatActor* actor) {
             }
         }
         if (actor->position.z >= 0) {
-            actor->xVelocity = F2I((((s64)actor->xVelocity * actor->dampingScale) + 0x800));
-            actor->yVelocity = F2I((((s64)actor->yVelocity * actor->dampingScale) + 0x800));
+            actor->xVelocity = FX_Mul(actor->xVelocity, actor->dampingScale);
+            actor->yVelocity = FX_Mul(actor->yVelocity, actor->dampingScale);
         }
     }
 }
@@ -58,7 +57,7 @@ static void CombatActor_ApplyPeriodicEffectTick(s32 arg0, CombatActor* actor) {
             data_ov003_020e71b8->unk3D878 |= 0x30000;
         }
     } else {
-        func_ov003_0208b518(arg0, actor, -val);
+        func_ov003_0208b518(arg0, (Ov003EnemyActor*)actor, -val);
         func_ov003_0209b61c(arg0, val, actor);
 
         if (actor->currentHp <= 0) {
@@ -151,7 +150,7 @@ void CombatActor_UpdatePhysics(CombatActor* actor) {
     } else if (actor->position.z > 0) {
         actor->position.z = 0;
 
-        s32 var_r1 = -(s32)((((s64)actor->zVelocity * actor->unk_50) + 0x800) >> 0xC);
+        s32 var_r1 = -FX_Mul(actor->zVelocity, actor->unk_50);
 
         actor->zVelocity = var_r1;
         if (var_r1 < 0) {

@@ -85,6 +85,8 @@ typedef struct {
 
 extern const BinIdentifier data_ov016_02128f88;
 extern const BinIdentifier data_ov016_02128f90;
+struct Boss01_UG;
+
 extern const BinIdentifier data_ov016_02128f98;
 extern const BinIdentifier data_ov016_0212909c;
 
@@ -94,7 +96,7 @@ void  BtlEff_Bomb_CreateTask(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4,
 void  BtlEff_Bomb_CreateTaskDefault(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4);
 void  func_ov016_021256c0(SpriteAnimationEx* arg0, s32 arg1, s32 arg2);
 void  BtlEff_Fall_CreateTask(UnkStruct_Boss01* arg0, Boss01* arg1, s32 arg2);
-void* BtlObs_Bus_CreateTask(void* bossUG);
+void* BtlObs_Bus_CreateTask(struct Boss01_UG* bossUG);
 s32   BtlObs_RG_CreateTask(u16 arg0, void* arg1);
 void  Boss01_Eff_CreateTask(Boss01* boss);
 void  Boss01s_FlyRG_Curve_CreateTask(void);

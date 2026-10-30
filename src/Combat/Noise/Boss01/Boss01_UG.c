@@ -1,5 +1,7 @@
 #include "Combat/Core/Combat.h"
 #include "Combat/Core/CombatActor.h"
+#include "Combat/Core/CombatEffectActor.h"
+#include "Combat/Core/CombatEnemyActor.h"
 #include "Combat/Core/CombatSprite.h"
 #include "Combat/Noise/Boss01.h"
 #include "Combat/Noise/Private/Boss01.h"
@@ -11,17 +13,11 @@
 /// MARK: Boss01_UG
 
 typedef struct Boss01_UG {
-    /* 0x000 */ CombatActor  actor;
-    /* 0x07C */ char         unk_7C[0x84 - 0x7C];
-    /* 0x084 */ CombatSprite sprite;
-    /* 0x0E4 */ char         unk_E4[0x188 - 0xE4];
-    /* 0x188 */ void*        unk_188;
-    /* 0x18C */ u16          unk_18C;
-    /* 0x18E */ char         unk_18E[0x1C0 - 0x18E];
-    /* 0x1C0 */ s16          unk_1C0;
-    /* 0x1C2 */ char         unk_1C2[0x1C4 - 0x1C2];
-    /* 0x1C4 */ s16          unk_1C4;
-    /* 0x1C6 */ s16          unk_1C6;
+    /* 0x000 */ Ov003EnemyActor base;
+    /* 0x1C0 */ s16             unk_1C0;
+    /* 0x1C2 */ char            unk_1C2[0x1C4 - 0x1C2];
+    /* 0x1C4 */ s16             unk_1C4;
+    /* 0x1C6 */ s16             unk_1C6;
     /* 0x1C8 */ void (*unk_1C8)(struct Boss01_UG*);
     /* 0x1CC */ s32               unk_1CC;
     /* 0x1D0 */ s32               unk_1D0;
@@ -45,8 +41,6 @@ extern void* data_ov009_02123540;
 extern void* data_ov009_021234cc;
 static s32   data_ov016_021291d8 = 1;
 
-#define OV003_LIST_3D8B4 ((void*)((u8*)data_ov003_020e71b8 + 0x3D8B4))
-
 const TaskHandle Tsk_Boss01_UG = {"Tsk_Boss01_UG", Boss01_UG_RunTask, 0x1F4};
 
 void func_ov016_021262d8(Boss01_UG* bossUG) {
@@ -60,39 +54,40 @@ void func_ov016_021262d8(Boss01_UG* bossUG) {
     PaletteResource* temp_r4 = bossUG->unk_1D8;
 
     u16 var_r0;
-    if (bossUG->sprite.flags46 & 1) {
+    if (bossUG->base.sprite.flags46 & 1) {
         var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, bossUG->unk_1DC, bossUG->unk_1DC, 1);
     } else {
         var_r0 = OamMgr_AllocAffineGroup(&g_OamMgr[DISPLAY_EXTENDED], 0, bossUG->unk_1DC, bossUG->unk_1DC, 0);
     }
 
-    bossUG->sprite.sprite.unk_0A.raw  = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) | ((u32)(var_r0 << 0x1B) >> 0x16));
-    s16               temp_r7         = bossUG->sprite.sprite.scaleY;
-    PaletteResource*  temp_r6         = bossUG->sprite.sprite.paletteData;
-    UnkSmallInternal* temp_r5         = bossUG->sprite.sprite.unk3C;
-    u32               temp_r0_2       = -temp_r7;
-    bossUG->sprite.sprite.paletteData = temp_r4;
-    bossUG->sprite.sprite.unk3C       = var_r8;
-    bossUG->sprite.sprite.scaleY      = (s16)((s32)(-temp_r7 + (-temp_r7 >> 0x1F)) >> 1);
-    bossUG->sprite.sprite.unk_0A.raw  = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~1) | 1);
-    bossUG->sprite.sprite.unk_0A.raw &= ~2;
-    bossUG->sprite.sprite.unk_0A.raw = (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0xC) | 4);
-    CombatSprite_RenderWithPalette(&bossUG->sprite, 8);
-    bossUG->sprite.sprite.paletteData   = temp_r6;
-    bossUG->sprite.sprite.unk3C         = temp_r5;
-    bossUG->sprite.sprite.scaleY        = temp_r7;
-    bossUG->sprite.sprite.unk_0A.unk_00 = 0;
-    bossUG->sprite.sprite.unk_0A.unk_01 = 0;
-    bossUG->sprite.sprite.unk_0A.unk_02 = 0;
+    bossUG->base.sprite.sprite.unk_0A.raw =
+        (u16)((bossUG->base.sprite.sprite.unk_0A.raw & ~0x3E0) | ((u32)(var_r0 << 0x1B) >> 0x16));
+    s16               temp_r7              = bossUG->base.sprite.sprite.scaleY;
+    PaletteResource*  temp_r6              = bossUG->base.sprite.sprite.paletteData;
+    UnkSmallInternal* temp_r5              = bossUG->base.sprite.sprite.unk3C;
+    u32               temp_r0_2            = -temp_r7;
+    bossUG->base.sprite.sprite.paletteData = temp_r4;
+    bossUG->base.sprite.sprite.unk3C       = var_r8;
+    bossUG->base.sprite.sprite.scaleY      = (s16)((s32)(-temp_r7 + (-temp_r7 >> 0x1F)) >> 1);
+    bossUG->base.sprite.sprite.unk_0A.raw  = (u16)((bossUG->base.sprite.sprite.unk_0A.raw & ~1) | 1);
+    bossUG->base.sprite.sprite.unk_0A.raw &= ~2;
+    bossUG->base.sprite.sprite.unk_0A.raw = (u16)((bossUG->base.sprite.sprite.unk_0A.raw & ~0xC) | 4);
+    CombatSprite_RenderWithPalette(&bossUG->base.sprite, 8);
+    bossUG->base.sprite.sprite.paletteData   = temp_r6;
+    bossUG->base.sprite.sprite.unk3C         = temp_r5;
+    bossUG->base.sprite.sprite.scaleY        = temp_r7;
+    bossUG->base.sprite.sprite.unk_0A.unk_00 = 0;
+    bossUG->base.sprite.sprite.unk_0A.unk_01 = 0;
+    bossUG->base.sprite.sprite.unk_0A.unk_02 = 0;
 
-    if (bossUG->sprite.flags46 & 1) {
-        bossUG->sprite.sprite.unk_0A.raw =
-            (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) |
-                  ((u32)((u16)((bossUG->sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) | 8) << 0x1B) >> 0x16));
+    if (bossUG->base.sprite.flags46 & 1) {
+        bossUG->base.sprite.sprite.unk_0A.raw =
+            (u16)((bossUG->base.sprite.sprite.unk_0A.raw & ~0x3E0) |
+                  ((u32)((u16)((bossUG->base.sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) | 8) << 0x1B) >> 0x16));
     } else {
-        bossUG->sprite.sprite.unk_0A.raw =
-            (u16)((bossUG->sprite.sprite.unk_0A.raw & ~0x3E0) |
-                  ((u32)((u16)((bossUG->sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) & ~8) << 0x1B) >> 0x16));
+        bossUG->base.sprite.sprite.unk_0A.raw =
+            (u16)((bossUG->base.sprite.sprite.unk_0A.raw & ~0x3E0) |
+                  ((u32)((u16)((bossUG->base.sprite.sprite.unk_0A.raw << 0x16 >> 0x1B) & ~8) << 0x1B) >> 0x16));
     }
 }
 
@@ -102,15 +97,16 @@ s32 func_ov016_02126468(Boss01_UG* bossUG) {
     s32 var_ip_2;
     s32 var_r3;
 
-    temp_lr = bossUG->actor.isFlipped;
+    temp_lr = bossUG->base.actor.isFlipped;
     var_r3  = 1;
     var_ip  = 0;
-    if ((temp_lr == 0) && ((s32)bossUG->actor.position.x < -0x80000)) {
+    if ((temp_lr == 0) && ((s32)bossUG->base.actor.position.x < -0x80000)) {
         var_ip = 1;
     }
     if (var_ip == 0) {
         var_ip_2 = 0;
-        if ((temp_lr != 0) && ((s32)bossUG->actor.position.x > (s32)(data_ov003_020e71b8->unk3D7C0[0].unk_0C + 0x80000))) {
+        if ((temp_lr != 0) && ((s32)bossUG->base.actor.position.x > (s32)(data_ov003_020e71b8->unk3D7C0[0].unk_0C + 0x80000)))
+        {
             var_ip_2 = 1;
         }
         if (var_ip_2 == 0) {
@@ -128,8 +124,8 @@ void func_ov016_021264d8(void*) {
 }
 
 s32 func_ov016_02126514(Boss01_UG* bossUG, Boss01_UG* arg1) {
-    if ((func_ov003_020c5a28(bossUG, (u8*)arg1 + 4) != 0) && (arg1->actor.yVelocity == 0) &&
-        (arg1->actor.linearDampingStep == 0) && (arg1->actor.screenX == 0))
+    if ((func_ov003_020c5a28(bossUG, &arg1->base.actor.baseArgs) != 0) && (arg1->base.actor.yVelocity == 0) &&
+        (arg1->base.actor.linearDampingStep == 0) && (arg1->base.actor.screenX == 0))
     {
         return 1;
     }
@@ -149,7 +145,7 @@ s32 func_ov016_02126554(Boss01_UG* bossUG, Boss01_UG* arg1, s32 arg2) {
 Boss01_UG* func_ov016_021265a8(Boss01_UG* bossUG, s32 arg1) {
     Boss01_UG* var_r4  = NULL;
     s32        temp_r5 = RNG_Next(func_ov003_020cc5fc(0, 0x19));
-    Boss01_UG* var_r8  = func_ov003_0208495c(OV003_LIST_3D8B4);
+    Boss01_UG* var_r8  = func_ov003_0208495c(&data_ov003_020e71b8->unk3D8B4);
 
     for (s32 var_r9 = 0; var_r8 != NULL; var_r9++) {
         if (func_ov016_02126554(bossUG, var_r8, arg1) != 0) {
@@ -158,7 +154,7 @@ Boss01_UG* func_ov016_021265a8(Boss01_UG* bossUG, s32 arg1) {
                 break;
             }
         }
-        var_r8 = func_ov003_02084984((u8*)var_r8 + 0xB8);
+        var_r8 = func_ov003_02084984(&((Ov003EffectActor*)var_r8)->node);
     }
     return var_r4;
 }
@@ -171,8 +167,8 @@ Boss01_UG* func_ov016_02126638(Boss01_UG* bossUG) {
 
     temp_r4   = func_ov016_021265a8(bossUG, 0);
     var_r0    = func_ov016_021265a8(bossUG, 1);
-    temp_r1_2 = bossUG->actor.maxHp;
-    if ((s32)bossUG->actor.currentHp <= (s32)((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1)) {
+    temp_r1_2 = bossUG->base.actor.maxHp;
+    if ((s32)bossUG->base.actor.currentHp <= (s32)((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1)) {
         temp_r1 = bossUG->unk_1E4;
         if (temp_r1 != NULL) {
             return temp_r1;
@@ -263,13 +259,13 @@ void func_ov016_02126854(Boss01_UG* bossUG) {
 
     if (bossUG->unk_1C0 == 0) {
         func_ov003_020c4c5c(bossUG);
-        bossUG->actor.flags |= 0x10;
-        bossUG->unk_1DC          = 0x666;
-        bossUG->actor.position.y = temp_r4->actor.position.y;
-        bossUG->actor.position.z = -0x200000;
-        bossUG->unk_1D0          = (bossUG->actor.isFlipped != 0) ? 0x3000 : -0x3000;
+        bossUG->base.actor.flags |= 0x10;
+        bossUG->unk_1DC               = 0x666;
+        bossUG->base.actor.position.y = temp_r4->base.actor.position.y;
+        bossUG->base.actor.position.z = -0x200000;
+        bossUG->unk_1D0               = (bossUG->base.actor.isFlipped != 0) ? 0x3000 : -0x3000;
 
-        if ((bossUG->unk_188 == 0) && (bossUG->unk_1E0 != NULL)) {
+        if ((bossUG->base.unk_188 == 0) && (bossUG->unk_1E0 != NULL)) {
             func_ov003_02086654();
             bossUG->unk_1E8 = 0;
             bossUG->unk_1E0 = NULL;
@@ -277,34 +273,35 @@ void func_ov016_02126854(Boss01_UG* bossUG) {
         if (bossUG->unk_1E8 != 0) {
             bossUG->unk_1EC = (RNG_Next(2) == 0) ? 1 : 0;
             if (bossUG->unk_1EC != 0) {
-                temp_r3         = FX_Divide(0x2800, bossUG->unk_1E0->actor.dampingScale) >> 0xC;
-                temp_r1         = temp_r3 * (bossUG->unk_1E0->actor.dampingScale * temp_r3);
+                temp_r3         = FX_Divide(0x2800, bossUG->unk_1E0->base.actor.dampingScale) >> 0xC;
+                temp_r1         = temp_r3 * (bossUG->unk_1E0->base.actor.dampingScale * temp_r3);
                 bossUG->unk_1F0 = (s32)((temp_r3 * 0x2800) - ((s32)(temp_r1 + (temp_r1 >> 0x1F)) >> 1));
             }
         }
     }
-    bossUG->actor.position.x += bossUG->unk_1D0;
+    bossUG->base.actor.position.x += bossUG->unk_1D0;
     if (bossUG->unk_1E8 != 0) {
-        sp8       = bossUG->actor.position.x;
-        temp_r1_2 = bossUG->unk_1E0->actor.unk_74;
-        func_ov003_02083bfc((u8*)bossUG + 0x2C, ((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1) << 0xC,
-                            bossUG->actor.position.x);
-        bossUG->unk_1E0->actor.position.y = bossUG->actor.position.x;
-        bossUG->unk_1E0->actor.position.z = bossUG->actor.position.y;
-        bossUG->unk_1E0->actor.screenX    = bossUG->actor.position.z;
+        sp8       = bossUG->base.actor.position.x;
+        temp_r1_2 = bossUG->unk_1E0->base.actor.unk_74;
+        func_ov003_02083bfc(&bossUG->base.actor.position.y, ((s32)(temp_r1_2 + ((u32)temp_r1_2 >> 0x1F)) >> 1) << 0xC,
+                            bossUG->base.actor.position.x);
+        bossUG->unk_1E0->base.actor.position.y = bossUG->base.actor.position.x;
+        bossUG->unk_1E0->base.actor.position.z = bossUG->base.actor.position.y;
+        bossUG->unk_1E0->base.actor.screenX    = bossUG->base.actor.position.z;
         if ((bossUG->unk_1EC != 0) &&
             (((temp_r3_2 = bossUG->unk_1D0, (temp_r3_2 > 0)) &&
-              ((s32)bossUG->actor.position.x > (s32)(temp_r4->actor.position.x - bossUG->unk_1F0))) ||
-             ((temp_r3_2 < 0) && ((s32)bossUG->actor.position.x < (s32)(temp_r4->actor.position.x + bossUG->unk_1F0)))) &&
-            (func_ov003_020c3960(&sp8, bossUG->unk_1E0->actor.unk_74 << 0xC) == 0))
+              ((s32)bossUG->base.actor.position.x > (s32)(temp_r4->base.actor.position.x - bossUG->unk_1F0))) ||
+             ((temp_r3_2 < 0) &&
+              ((s32)bossUG->base.actor.position.x < (s32)(temp_r4->base.actor.position.x + bossUG->unk_1F0)))) &&
+            (func_ov003_020c3960(&sp8, bossUG->unk_1E0->base.actor.unk_74 << 0xC) == 0))
         {
-            s32 var_r3 = (bossUG->actor.isFlipped != 0) ? 0x2800 : -0x2800;
-            func_ov003_020c5ac0(bossUG, 0xE5, (u8*)bossUG->unk_1E0 + 4, var_r3);
+            s32 var_r3 = (bossUG->base.actor.isFlipped != 0) ? 0x2800 : -0x2800;
+            func_ov003_020c5ac0(bossUG, 0xE5, &bossUG->unk_1E0->base.actor.baseArgs, var_r3);
 
             if (bossUG->unk_1E0 == bossUG->unk_1E4) {
                 BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 231);
-                bossUG->unk_1E0->actor.screenX = -0x120000;
-                bossUG->unk_1E4                = 0;
+                bossUG->unk_1E0->base.actor.screenX = -0x120000;
+                bossUG->unk_1E4                     = 0;
             } else {
                 if (func_ov009_020fa71c((UnkStruct_Boss01*)bossUG->unk_1E0) != 0) {
                     BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 230);
@@ -312,9 +309,9 @@ void func_ov016_02126854(Boss01_UG* bossUG) {
                     BtlEff_Fall_CreateTask((UnkStruct_Boss01*)bossUG->unk_1E0, (Boss01*)bossUG, 401);
                 }
             }
-            bossUG->unk_1E0 = NULL;
-            bossUG->unk_188 = 0;
-            bossUG->unk_1E8 = 0;
+            bossUG->unk_1E0      = NULL;
+            bossUG->base.unk_188 = 0;
+            bossUG->unk_1E8      = 0;
         }
     }
     if (func_ov016_02126468(bossUG) != 0) {
@@ -325,7 +322,7 @@ void func_ov016_02126854(Boss01_UG* bossUG) {
             return;
         }
         if ((temp_r0_3 == bossUG->unk_1E4) && (temp_r0_3 != NULL)) {
-            if ((s32)bossUG->actor.position.x < 0) {
+            if ((s32)bossUG->base.actor.position.x < 0) {
                 *data_ov016_021292c0 = 2;
                 Boss01_UG_SetState(bossUG, func_ov016_02126854);
                 return;
@@ -334,7 +331,7 @@ void func_ov016_02126854(Boss01_UG* bossUG) {
             Boss01_UG_SetState(bossUG, func_ov016_02126c24);
             return;
         }
-        if (func_ov003_0208495c(OV003_LIST_3D8B4) != 0) {
+        if (func_ov003_0208495c(&data_ov003_020e71b8->unk3D8B4) != 0) {
             *data_ov016_021292c0 = 3;
             Boss01_UG_SetState(bossUG, func_ov016_02126c24);
             return;
@@ -356,11 +353,11 @@ void func_ov016_02126c24(Boss01_UG* bossUG) {
 
     if (bossUG->unk_1C0 == 0) {
         func_ov003_020c4c5c(bossUG);
-        bossUG->actor.flags      = (s32)(bossUG->actor.flags | 0x10);
-        bossUG->unk_1DC          = 0xCCD;
-        bossUG->actor.position.y = (s32)temp_r5->unk_2C;
-        bossUG->actor.position.z = -0x12C000;
-        if (bossUG->actor.isFlipped == 0) {
+        bossUG->base.actor.flags      = (s32)(bossUG->base.actor.flags | 0x10);
+        bossUG->unk_1DC               = 0xCCD;
+        bossUG->base.actor.position.y = (s32)temp_r5->unk_2C;
+        bossUG->base.actor.position.z = -0x12C000;
+        if (bossUG->base.actor.isFlipped == 0) {
             bossUG->unk_1D0 = -0x4000;
         } else {
             bossUG->unk_1D0 = 0x4000;
@@ -369,7 +366,7 @@ void func_ov016_02126c24(Boss01_UG* bossUG) {
             func_ov003_020c4cc4(bossUG, 498);
         }
     }
-    bossUG->actor.position.x += bossUG->unk_1D0;
+    bossUG->base.actor.position.x += bossUG->unk_1D0;
     if (func_ov016_02126468(bossUG) != 0) {
         if (*data_ov016_021292c0 == 1) {
             Boss01_UG_SetState(bossUG, func_ov016_021266f4);
@@ -389,55 +386,55 @@ void func_ov016_02126d38(Boss01_UG* bossUG) {
     if (bossUG->unk_1C0 == 0) {
         bossUG->unk_1E0 = func_ov016_02126638(bossUG);
         func_ov003_020c4c5c(bossUG);
-        bossUG->actor.flags &= ~0x10;
+        bossUG->base.actor.flags &= ~0x10;
         bossUG->unk_1DC = 0x1000;
         bossUG->unk_1D4 = 0;
         if (bossUG->unk_1E0 != NULL) {
-            bossUG->actor.position.y = (s32)bossUG->unk_1E0->actor.position.z;
-            s32 temp_r0_3            = bossUG->unk_1E0->actor.unk_76 << 0xC;
+            bossUG->base.actor.position.y = (s32)bossUG->unk_1E0->base.actor.position.z;
+            s32 temp_r0_3                 = bossUG->unk_1E0->base.actor.unk_76 << 0xC;
 
             f32 var_r0;
-            if ((s32)bossUG->unk_1E0->actor.unk_76 > 0) {
+            if ((s32)bossUG->unk_1E0->base.actor.unk_76 > 0) {
                 var_r0 = (f32)temp_r0_3 + 0.5f;
             } else {
                 var_r0 = (f32)temp_r0_3 - 0.5f;
             }
-            bossUG->actor.position.z = -(s32)var_r0 - 0x8000;
+            bossUG->base.actor.position.z = -(s32)var_r0 - 0x8000;
         } else {
-            bossUG->actor.position.y = (s32)temp_r4->unk_2C;
-            bossUG->actor.position.z = -0x40000;
+            bossUG->base.actor.position.y = (s32)temp_r4->unk_2C;
+            bossUG->base.actor.position.z = -0x40000;
         }
 
-        bossUG->unk_1D0 = (bossUG->actor.isFlipped != 0) ? 0x4000 : -0x4000;
+        bossUG->unk_1D0 = (bossUG->base.actor.isFlipped != 0) ? 0x4000 : -0x4000;
 
         func_ov003_020c4cc4(bossUG, 0x1F2);
     }
-    bossUG->actor.position.x += bossUG->unk_1D0;
+    bossUG->base.actor.position.x += bossUG->unk_1D0;
     if (bossUG->unk_1E0 != NULL) {
         if (bossUG->unk_1E8 != 0) {
-            bossUG->unk_1E0->actor.position.y = (s32)bossUG->actor.position.x;
-            bossUG->unk_1E0->actor.position.z = (s32)bossUG->actor.position.y;
-            bossUG->unk_1E0->actor.screenX    = -0x8000;
+            bossUG->unk_1E0->base.actor.position.y = (s32)bossUG->base.actor.position.x;
+            bossUG->unk_1E0->base.actor.position.z = (s32)bossUG->base.actor.position.y;
+            bossUG->unk_1E0->base.actor.screenX    = -0x8000;
         }
 
-        if ((bossUG->actor.position.x >= (s32)(bossUG->unk_1E0->actor.position.y - 0x4000)) &&
-            (bossUG->actor.position.x < (s32)(bossUG->unk_1E0->actor.position.y + 0x4000)) &&
+        if ((bossUG->base.actor.position.x >= (s32)(bossUG->unk_1E0->base.actor.position.y - 0x4000)) &&
+            (bossUG->base.actor.position.x < (s32)(bossUG->unk_1E0->base.actor.position.y + 0x4000)) &&
             (func_ov016_02126514(bossUG, bossUG->unk_1E0) != 0))
         {
-            func_ov003_020c5a00((u8*)bossUG->unk_1E0 + 4);
-            bossUG->unk_1E0->actor.periodicEffectMode = 6;
-            bossUG->unk_1E8                           = 1;
-            bossUG->unk_188                           = (void*)bossUG->unk_1E0;
+            func_ov003_020c5a00(&bossUG->unk_1E0->base.actor.baseArgs);
+            bossUG->unk_1E0->base.actor.periodicEffectMode = 6;
+            bossUG->unk_1E8                                = 1;
+            bossUG->base.unk_188                           = (void*)bossUG->unk_1E0;
             func_ov003_020c4cc4(bossUG, 0x1F3);
 
-            s32 temp_r2_3 = bossUG->unk_1E0->actor.unk_76 * (bossUG->unk_1E0->actor.unk_74 << 0xD);
+            s32 temp_r2_3 = bossUG->unk_1E0->base.actor.unk_76 * (bossUG->unk_1E0->base.actor.unk_74 << 0xD);
             s32 temp_r1_2 = (s32)(temp_r2_3 + ((u32)(temp_r2_3 >> 5) >> 0x1A)) >> 6;
             s32 var_r1    = (s32)(temp_r1_2 + ((u32)(temp_r1_2 >> 4) >> 0x1B)) >> 5;
 
             if (var_r1 > 0x2000) {
                 var_r1 = 0x2000;
             }
-            if (bossUG->actor.isFlipped == 0) {
+            if (bossUG->base.actor.isFlipped == 0) {
                 bossUG->unk_1D0 += var_r1;
             } else {
                 bossUG->unk_1D0 -= var_r1;
@@ -445,12 +442,12 @@ void func_ov016_02126d38(Boss01_UG* bossUG) {
         }
     }
     if (bossUG->unk_1D4 == 0) {
-        bossUG->unk_1D4 =
-            func_ov003_020c5b2c(0xE4, bossUG, bossUG->actor.position.x, bossUG->actor.position.y, bossUG->actor.position.z);
+        bossUG->unk_1D4 = func_ov003_020c5b2c(0xE4, bossUG, bossUG->base.actor.position.x, bossUG->base.actor.position.y,
+                                              bossUG->base.actor.position.z);
     }
     Boss01_Eff_CreateTask((Boss01*)bossUG);
     if (func_ov016_02126468(bossUG) != 0) {
-        bossUG->actor.flags |= 0x10;
+        bossUG->base.actor.flags |= 0x10;
         if (bossUG->unk_1E8 == 0) {
             bossUG->unk_1E0 = NULL;
         }
@@ -470,12 +467,12 @@ void func_ov016_02126ff0(Boss01_UG* bossUG) {
     SpriteAnimationEx subroutine;
 
     if (bossUG->unk_1C0 == 0) {
-        func_ov016_021256c0(&subroutine, 0, bossUG->sprite.flags46 & 1);
+        func_ov016_021256c0(&subroutine, 0, bossUG->base.sprite.flags46 & 1);
         func_ov003_020c9064(&subroutine);
     }
     s32 temp_r5 = func_ov003_020c9338(bossUG);
     if ((func_ov003_020c9008() != 0) && (data_ov016_021291d8 != 0)) {
-        CombatSprite_Release(&bossUG->sprite);
+        CombatSprite_Release(&bossUG->base.sprite);
         data_ov016_021291d8 = 0;
     }
     if (temp_r5 == 0) {
@@ -499,18 +496,18 @@ s32 Boss01_UG_Init(TaskPool* pool, Task* task, void* args) {
 
     func_ov003_020c3efc(bossUG, args);
     func_ov016_021256c0(&subroutine, 2, 0);
-    CombatSprite_Load(&bossUG->sprite, &subroutine);
+    CombatSprite_Load(&bossUG->base.sprite, &subroutine);
     func_ov003_020c49c8(bossUG);
     func_ov003_020c4c5c(bossUG);
-    bossUG->actor.flags |= 0x10000010;
-    bossUG->actor.zGravity   = 0;
-    bossUG->actor.position.x = -0x80000;
-    bossUG->actor.position.y = 0;
-    bossUG->actor.position.z = -0x40000;
-    bossUG->unk_1DC          = 0x1000;
-    bossUG->unk_1CC          = 1;
-    bossUG->unk_1E4          = BtlObs_Bus_CreateTask(bossUG);
-    *data_ov016_021292c0     = 0;
+    bossUG->base.actor.flags |= 0x10000010;
+    bossUG->base.actor.zGravity   = 0;
+    bossUG->base.actor.position.x = -0x80000;
+    bossUG->base.actor.position.y = 0;
+    bossUG->base.actor.position.z = -0x40000;
+    bossUG->unk_1DC               = 0x1000;
+    bossUG->unk_1CC               = 1;
+    bossUG->unk_1E4               = BtlObs_Bus_CreateTask(bossUG);
+    *data_ov016_021292c0          = 0;
     Boss01_UG_SetState(bossUG, func_ov016_021266b4);
     return 1;
 }
@@ -522,7 +519,7 @@ s32 Boss01_UG_Update(TaskPool* pool, Task* task, void* args) {
         return 1;
     }
 
-    s32 temp_r0 = CombatActor_PopPendingCommand(&bossUG->actor);
+    s32 temp_r0 = CombatActor_PopPendingCommand(&bossUG->base.actor);
     if ((temp_r0 != 1) && (temp_r0 == 3)) {
         Boss01_UG_SetState(bossUG, func_ov016_02126ff0);
     }
@@ -532,12 +529,12 @@ s32 Boss01_UG_Update(TaskPool* pool, Task* task, void* args) {
     }
 
     if (((s32)*data_ov016_021292c0 > 1) && (func_ov003_020cb3c4(0, 7) < 4) && (RNG_Next(180) == 0) &&
-        !(bossUG->actor.flags & 4))
+        !(bossUG->base.actor.flags & 4))
     {
         func_ov016_021264d8(bossUG);
     }
-    CombatActor_UpdateEffects(0, &bossUG->actor);
-    CombatSprite_Update(&bossUG->sprite);
+    CombatActor_UpdateEffects(0, &bossUG->base.actor);
+    CombatSprite_Update(&bossUG->base.sprite);
     return bossUG->unk_1CC;
 }
 
@@ -545,18 +542,19 @@ s32 Boss01_UG_Render(TaskPool* pool, Task* task, void* args) {
     s16        spA, sp8;
     Boss01_UG* bossUG = task->data;
 
-    if (bossUG->actor.flags & 1) {
-        bossUG->actor.flags &= ~1;
+    if (bossUG->base.actor.flags & 1) {
+        bossUG->base.actor.flags &= ~1;
     }
 
-    if (!(bossUG->unk_18C & 1)) {
-        func_ov003_02084348(0, &spA, &sp8, bossUG->actor.position.x, bossUG->actor.position.y, bossUG->actor.position.z);
-        CombatSprite_SetPosition(&bossUG->sprite, spA, sp8);
-        CombatSprite_Render(&bossUG->sprite);
-        bossUG->actor.screenX = spA;
-        bossUG->actor.screenY = sp8 + 80;
-        func_ov003_02084348(0, &spA, &sp8, bossUG->actor.position.x, bossUG->actor.position.y, 0);
-        CombatSprite_SetPosition(&bossUG->sprite, spA, sp8);
+    if (!(bossUG->base.flags18C & 1)) {
+        func_ov003_02084348(0, &spA, &sp8, bossUG->base.actor.position.x, bossUG->base.actor.position.y,
+                            bossUG->base.actor.position.z);
+        CombatSprite_SetPosition(&bossUG->base.sprite, spA, sp8);
+        CombatSprite_Render(&bossUG->base.sprite);
+        bossUG->base.actor.screenX = spA;
+        bossUG->base.actor.screenY = sp8 + 80;
+        func_ov003_02084348(0, &spA, &sp8, bossUG->base.actor.position.x, bossUG->base.actor.position.y, 0);
+        CombatSprite_SetPosition(&bossUG->base.sprite, spA, sp8);
         func_ov016_021262d8(bossUG);
     }
     return 1;
@@ -566,7 +564,7 @@ s32 Boss01_UG_Destroy(TaskPool* pool, Task* task, void* args) {
     Boss01_UG* bossUG = task->data;
 
     PaletteMgr_ReleaseResource(g_PaletteManagers[DISPLAY_EXTENDED], bossUG->unk_1D8);
-    CombatSprite_Release(&bossUG->sprite);
+    CombatSprite_Release(&bossUG->base.sprite);
     func_ov003_020c4a74(bossUG);
     return 1;
 }

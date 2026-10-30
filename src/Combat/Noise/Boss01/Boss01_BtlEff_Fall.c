@@ -110,7 +110,7 @@ s32 BtlEff_Fall_Update(TaskPool* pool, Task* task, void* args) {
             if (eff->unk_60 == NULL) {
                 CombatActor_SetPendingCommand(eff->unk_64, 3);
             } else if (((Ov016SpriteParams*)eff->unk_60)->unk2 == 0x19) {
-                CombatActor_SetPendingCommand((CombatActor*)eff->unk_60 + 4, 1);
+                CombatActor_SetPendingCommand(eff->unk_60 + 4, 1);
             } else {
                 func_ov003_02086654(eff->unk_60);
             }
@@ -156,6 +156,6 @@ void BtlEff_Fall_CreateTask(UnkStruct_Boss01* arg0, Boss01* arg1, s32 arg2) {
     args.unk_8 = arg1;
     args.unk_C = arg2;
     args.unk_0 = arg0;
-    args.unk_4 = (s32)((u8*)arg0 + 4);
+    args.unk_4 = (s32)&arg0->unk_00[4];
     EasyTask_CreateTask(&data_ov003_020e71b8->unk_00000, &Task_BtlEff_Fall, 0, 0, 0, &args);
 }

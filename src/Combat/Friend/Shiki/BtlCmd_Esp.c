@@ -62,7 +62,7 @@ void func_ov004_020ea648(CombatSprite* arg0, u16 arg1) {
     sp0.anim.unk_28     = 6;
     sp0.anim.unk_20     = 7;
     sp0.anim.animIndex  = arg1 + 1;
-    sp0.unk_2C          = 0;
+    sp0.animTable       = NULL;
     CombatSprite_Load(arg0, &sp0);
     CombatSprite_SetAnim(arg0, arg1, 0);
     func_ov003_02082738(arg0, 0);
@@ -255,7 +255,7 @@ s32 BtlCmd_Esp_RunTask(TaskPool* pool, Task* task, void* args, s32 stage) {
     return stages.iter[stage](pool, task, args);
 }
 
-void BtlCmd_Esp_CreateTask(s16 arg0, s32 arg1, s32 arg2) {
+void BtlCmd_Esp_CreateTask(s32 arg0, s32 arg1, s32 arg2) {
     BtlCmd_Esp_Args args;
     args.unk_4 = arg1;
     args.unk_8 = arg2;
